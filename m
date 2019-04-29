@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F96BE8E1
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:41 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E15E8E3
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A9EB92122C305;
-	Mon, 29 Apr 2019 10:27:39 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0C2C72122C304;
+	Mon, 29 Apr 2019 10:27:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,17 +15,17 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1098C2122C2E4
- for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:38 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 1D3ED2121C128
+ for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:40 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id A9A5BAE8A;
- Mon, 29 Apr 2019 17:27:36 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id B6119AE8B;
+ Mon, 29 Apr 2019 17:27:38 +0000 (UTC)
 From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 To: linux-btrfs@vger.kernel.org
-Subject: [PATCH 15/18] btrfs: handle dax page zeroing
-Date: Mon, 29 Apr 2019 12:26:46 -0500
-Message-Id: <20190429172649.8288-16-rgoldwyn@suse.de>
+Subject: [PATCH 16/18] btrfs: Writeprotect mmap pages on snapshot
+Date: Mon, 29 Apr 2019 12:26:47 -0500
+Message-Id: <20190429172649.8288-17-rgoldwyn@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20190429172649.8288-1-rgoldwyn@suse.de>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
@@ -52,86 +52,113 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 
-btrfs_dax_zero_block() zeros part of the page, either from the
-front or the regular rest of the block.
+Inorder to make sure mmap'd files don't change after snapshot,
+writeprotect the mmap pages on snapshot. This is done by performing
+a data writeback on the pages (which simply mark the pages are
+wrprotected). This way if the user process tries to access the memory
+we will get another fault and we can perform a CoW.
+
+In order to accomplish this, we tag all CoW pages as
+PAGECACHE_TAG_TOWRITE, and add the mmapd inode in delalloc_inodes.
+During snapshot, it starts writeback of all delalloc'd inodes and
+here we perform a data writeback. We don't want to keep the inodes
+in delalloc_inodes until it umount (WARN_ON), so we remove it
+during inode evictions.
 
 Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 ---
- fs/btrfs/ctree.h |  1 +
- fs/btrfs/dax.c   | 27 ++++++++++++++++++++++++++-
- fs/btrfs/inode.c |  4 ++++
- 3 files changed, 31 insertions(+), 1 deletion(-)
+ fs/btrfs/ctree.h |  3 ++-
+ fs/btrfs/dax.c   |  7 +++++++
+ fs/btrfs/inode.c | 13 ++++++++++++-
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index d3d044125619..ee1ed18f8b3c 100644
+index ee1ed18f8b3c..d1b70f24adeb 100644
 --- a/fs/btrfs/ctree.h
 +++ b/fs/btrfs/ctree.h
-@@ -3806,6 +3806,7 @@ vm_fault_t btrfs_dax_fault(struct vm_fault *vmf);
- int btrfs_dax_file_range_compare(struct inode *src, loff_t srcoff,
- 		struct inode *dest, loff_t destoff, loff_t len,
- 		bool *is_same);
-+int btrfs_dax_zero_block(struct inode *inode, loff_t from, loff_t len, bool front);
- #else
- static inline ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *from)
- {
+@@ -3252,7 +3252,8 @@ int btrfs_create_subvol_root(struct btrfs_trans_handle *trans,
+ 			     struct btrfs_root *new_root,
+ 			     struct btrfs_root *parent_root,
+ 			     u64 new_dirid);
+- void btrfs_set_delalloc_extent(struct inode *inode, struct extent_state *state,
++void btrfs_add_delalloc_inodes(struct btrfs_root *root, struct inode *inode);
++void btrfs_set_delalloc_extent(struct inode *inode, struct extent_state *state,
+ 			       unsigned *bits);
+ void btrfs_clear_delalloc_extent(struct inode *inode,
+ 				 struct extent_state *state, unsigned *bits);
 diff --git a/fs/btrfs/dax.c b/fs/btrfs/dax.c
-index af64696a5337..bf2ddac5b5a1 100644
+index bf2ddac5b5a1..20ec2ec49c68 100644
 --- a/fs/btrfs/dax.c
 +++ b/fs/btrfs/dax.c
-@@ -132,7 +132,8 @@ static int btrfs_iomap_begin(struct inode *inode, loff_t pos,
- 	 * This will be true for reads only since we have already
- 	 * allocated em
- 	 */
--	if (em->block_start == EXTENT_MAP_HOLE) {
-+	if (em->block_start == EXTENT_MAP_HOLE ||
-+			em->flags == EXTENT_FLAG_FILLING) {
- 		iomap->type = IOMAP_HOLE;
- 		return 0;
- 	}
-@@ -235,4 +236,28 @@ int btrfs_dax_file_range_compare(struct inode *src, loff_t srcoff,
- 	return dax_file_range_compare(src, srcoff, dest, destoff, len,
- 				      is_same, &btrfs_iomap_ops);
+@@ -222,10 +222,17 @@ vm_fault_t btrfs_dax_fault(struct vm_fault *vmf)
+ {
+ 	vm_fault_t ret;
+ 	pfn_t pfn;
++	struct inode *inode = file_inode(vmf->vma->vm_file);
++	struct btrfs_inode *binode = BTRFS_I(inode);
+ 	ret = dax_iomap_fault(vmf, PE_SIZE_PTE, &pfn, NULL, &btrfs_iomap_ops);
+ 	if (ret & VM_FAULT_NEEDDSYNC)
+ 		ret = dax_finish_sync_fault(vmf, PE_SIZE_PTE, pfn);
+ 
++	/* Insert into delalloc so we get writeback calls on snapshots */
++	if (vmf->flags & FAULT_FLAG_WRITE &&
++			!test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
++		btrfs_add_delalloc_inodes(binode->root, inode);
++
+ 	return ret;
  }
-+
-+/*
-+ * zero a part of the page only. This should CoW (via iomap_begin) if required
-+ */
-+int btrfs_dax_zero_block(struct inode *inode, loff_t from, loff_t len, bool front)
-+{
-+	loff_t start = round_down(from, PAGE_SIZE);
-+	loff_t end = round_up(from, PAGE_SIZE);
-+	loff_t offset = from;
-+	int ret = 0;
-+
-+	if (front) {
-+		len = from - start;
-+		offset = start;
-+	} else	{
-+		if (!len)
-+			len = end - from;
-+	}
-+
-+	if (len)
-+		ret = iomap_zero_range(inode, offset, len, NULL, &btrfs_iomap_ops);
-+
-+	return (ret < 0) ? ret : 0;
-+}
- #endif /* CONFIG_FS_DAX */
+ 
 diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 05714ffc4894..7e88280a2c3b 100644
+index 7e88280a2c3b..e98fb512e1ca 100644
 --- a/fs/btrfs/inode.c
 +++ b/fs/btrfs/inode.c
-@@ -4833,6 +4833,10 @@ int btrfs_truncate_block(struct inode *inode, loff_t from, loff_t len,
- 	    (!len || IS_ALIGNED(len, blocksize)))
- 		goto out;
+@@ -1713,7 +1713,7 @@ void btrfs_merge_delalloc_extent(struct inode *inode, struct extent_state *new,
+ 	spin_unlock(&BTRFS_I(inode)->lock);
+ }
  
-+#ifdef CONFIG_FS_DAX
+-static void btrfs_add_delalloc_inodes(struct btrfs_root *root,
++void btrfs_add_delalloc_inodes(struct btrfs_root *root,
+ 				      struct inode *inode)
+ {
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
+@@ -5358,12 +5358,17 @@ void btrfs_evict_inode(struct inode *inode)
+ {
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
+ 	struct btrfs_trans_handle *trans;
++	struct btrfs_inode *binode = BTRFS_I(inode);
+ 	struct btrfs_root *root = BTRFS_I(inode)->root;
+ 	struct btrfs_block_rsv *rsv;
+ 	int ret;
+ 
+ 	trace_btrfs_inode_evict(inode);
+ 
++	if (IS_DAX(inode)
++	    && test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
++		btrfs_del_delalloc_inode(root, binode);
++
+ 	if (!root) {
+ 		clear_inode(inode);
+ 		return;
+@@ -8683,6 +8688,10 @@ static int btrfs_dax_writepages(struct address_space *mapping,
+ {
+ 	struct inode *inode = mapping->host;
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
++	struct btrfs_inode *binode = BTRFS_I(inode);
++	if ((wbc->sync_mode == WB_SYNC_ALL) &&
++	    test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
++		btrfs_del_delalloc_inode(binode->root, binode);
+ 	return dax_writeback_mapping_range(mapping, fs_info->fs_devices->latest_bdev,
+ 			wbc);
+ }
+@@ -9981,6 +9990,8 @@ static void btrfs_run_delalloc_work(struct btrfs_work *work)
+ 	delalloc_work = container_of(work, struct btrfs_delalloc_work,
+ 				     work);
+ 	inode = delalloc_work->inode;
 +	if (IS_DAX(inode))
-+		return btrfs_dax_zero_block(inode, from, len, front);
-+#endif
- 	block_start = round_down(from, blocksize);
- 	block_end = block_start + blocksize - 1;
- 
++		filemap_fdatawrite(inode->i_mapping);
+ 	filemap_flush(inode->i_mapping);
+ 	if (test_bit(BTRFS_INODE_HAS_ASYNC_EXTENT,
+ 				&BTRFS_I(inode)->runtime_flags))
 -- 
 2.16.4
 
