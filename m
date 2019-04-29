@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E15E8E3
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7682EE8E4
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:45 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0C2C72122C304;
-	Mon, 29 Apr 2019 10:27:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5432D2122C302;
+	Mon, 29 Apr 2019 10:27:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,17 +15,17 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1D3ED2121C128
- for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:40 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 2CCA42122C30B
+ for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:42 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id B6119AE8B;
- Mon, 29 Apr 2019 17:27:38 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id C88F7AE8D;
+ Mon, 29 Apr 2019 17:27:40 +0000 (UTC)
 From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 To: linux-btrfs@vger.kernel.org
-Subject: [PATCH 16/18] btrfs: Writeprotect mmap pages on snapshot
-Date: Mon, 29 Apr 2019 12:26:47 -0500
-Message-Id: <20190429172649.8288-17-rgoldwyn@suse.de>
+Subject: [PATCH 17/18] btrfs: Disable dax-based defrag and send
+Date: Mon, 29 Apr 2019 12:26:48 -0500
+Message-Id: <20190429172649.8288-18-rgoldwyn@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20190429172649.8288-1-rgoldwyn@suse.de>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
@@ -52,113 +52,67 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 
-Inorder to make sure mmap'd files don't change after snapshot,
-writeprotect the mmap pages on snapshot. This is done by performing
-a data writeback on the pages (which simply mark the pages are
-wrprotected). This way if the user process tries to access the memory
-we will get another fault and we can perform a CoW.
-
-In order to accomplish this, we tag all CoW pages as
-PAGECACHE_TAG_TOWRITE, and add the mmapd inode in delalloc_inodes.
-During snapshot, it starts writeback of all delalloc'd inodes and
-here we perform a data writeback. We don't want to keep the inodes
-in delalloc_inodes until it umount (WARN_ON), so we remove it
-during inode evictions.
+This is temporary, and a TODO.
 
 Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 ---
- fs/btrfs/ctree.h |  3 ++-
- fs/btrfs/dax.c   |  7 +++++++
- fs/btrfs/inode.c | 13 ++++++++++++-
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ fs/btrfs/ioctl.c | 13 +++++++++++++
+ fs/btrfs/send.c  |  4 ++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index ee1ed18f8b3c..d1b70f24adeb 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -3252,7 +3252,8 @@ int btrfs_create_subvol_root(struct btrfs_trans_handle *trans,
- 			     struct btrfs_root *new_root,
- 			     struct btrfs_root *parent_root,
- 			     u64 new_dirid);
-- void btrfs_set_delalloc_extent(struct inode *inode, struct extent_state *state,
-+void btrfs_add_delalloc_inodes(struct btrfs_root *root, struct inode *inode);
-+void btrfs_set_delalloc_extent(struct inode *inode, struct extent_state *state,
- 			       unsigned *bits);
- void btrfs_clear_delalloc_extent(struct inode *inode,
- 				 struct extent_state *state, unsigned *bits);
-diff --git a/fs/btrfs/dax.c b/fs/btrfs/dax.c
-index bf2ddac5b5a1..20ec2ec49c68 100644
---- a/fs/btrfs/dax.c
-+++ b/fs/btrfs/dax.c
-@@ -222,10 +222,17 @@ vm_fault_t btrfs_dax_fault(struct vm_fault *vmf)
- {
- 	vm_fault_t ret;
- 	pfn_t pfn;
-+	struct inode *inode = file_inode(vmf->vma->vm_file);
-+	struct btrfs_inode *binode = BTRFS_I(inode);
- 	ret = dax_iomap_fault(vmf, PE_SIZE_PTE, &pfn, NULL, &btrfs_iomap_ops);
- 	if (ret & VM_FAULT_NEEDDSYNC)
- 		ret = dax_finish_sync_fault(vmf, PE_SIZE_PTE, pfn);
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 5ebb52848d5a..2470f90c9983 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2990,6 +2990,12 @@ static int btrfs_ioctl_defrag(struct file *file, void __user *argp)
+ 			goto out;
+ 		}
  
-+	/* Insert into delalloc so we get writeback calls on snapshots */
-+	if (vmf->flags & FAULT_FLAG_WRITE &&
-+			!test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
-+		btrfs_add_delalloc_inodes(binode->root, inode);
++		if (IS_DAX(inode)) {
++			btrfs_warn(root->fs_info, "File defrag is not supported with DAX");
++			ret = -EOPNOTSUPP;
++			goto out;
++		}
 +
- 	return ret;
- }
+ 		if (argp) {
+ 			if (copy_from_user(range, argp,
+ 					   sizeof(*range))) {
+@@ -4653,6 +4659,10 @@ static long btrfs_ioctl_balance(struct file *file, void __user *arg)
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
  
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 7e88280a2c3b..e98fb512e1ca 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1713,7 +1713,7 @@ void btrfs_merge_delalloc_extent(struct inode *inode, struct extent_state *new,
- 	spin_unlock(&BTRFS_I(inode)->lock);
- }
- 
--static void btrfs_add_delalloc_inodes(struct btrfs_root *root,
-+void btrfs_add_delalloc_inodes(struct btrfs_root *root,
- 				      struct inode *inode)
- {
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-@@ -5358,12 +5358,17 @@ void btrfs_evict_inode(struct inode *inode)
- {
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
- 	struct btrfs_trans_handle *trans;
-+	struct btrfs_inode *binode = BTRFS_I(inode);
- 	struct btrfs_root *root = BTRFS_I(inode)->root;
- 	struct btrfs_block_rsv *rsv;
++	/* send can be on a directory, so check super block instead */
++	if (btrfs_test_opt(fs_info, DAX))
++		return -EOPNOTSUPP;
++
+ 	ret = mnt_want_write_file(file);
+ 	if (ret)
+ 		return ret;
+@@ -5505,6 +5515,9 @@ static int _btrfs_ioctl_send(struct file *file, void __user *argp, bool compat)
+ 	struct btrfs_ioctl_send_args *arg;
  	int ret;
  
- 	trace_btrfs_inode_evict(inode);
- 
-+	if (IS_DAX(inode)
-+	    && test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
-+		btrfs_del_delalloc_inode(root, binode);
++	if (IS_DAX(file_inode(file)))
++		return -EOPNOTSUPP;
 +
- 	if (!root) {
- 		clear_inode(inode);
- 		return;
-@@ -8683,6 +8688,10 @@ static int btrfs_dax_writepages(struct address_space *mapping,
- {
- 	struct inode *inode = mapping->host;
- 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-+	struct btrfs_inode *binode = BTRFS_I(inode);
-+	if ((wbc->sync_mode == WB_SYNC_ALL) &&
-+	    test_bit(BTRFS_INODE_IN_DELALLOC_LIST, &binode->runtime_flags))
-+		btrfs_del_delalloc_inode(binode->root, binode);
- 	return dax_writeback_mapping_range(mapping, fs_info->fs_devices->latest_bdev,
- 			wbc);
- }
-@@ -9981,6 +9990,8 @@ static void btrfs_run_delalloc_work(struct btrfs_work *work)
- 	delalloc_work = container_of(work, struct btrfs_delalloc_work,
- 				     work);
- 	inode = delalloc_work->inode;
-+	if (IS_DAX(inode))
-+		filemap_fdatawrite(inode->i_mapping);
- 	filemap_flush(inode->i_mapping);
- 	if (test_bit(BTRFS_INODE_HAS_ASYNC_EXTENT,
- 				&BTRFS_I(inode)->runtime_flags))
+ 	if (compat) {
+ #if defined(CONFIG_64BIT) && defined(CONFIG_COMPAT)
+ 		struct btrfs_ioctl_send_args_32 args32;
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index 7ea2d6b1f170..9679fd54db86 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -6609,6 +6609,10 @@ long btrfs_ioctl_send(struct file *mnt_file, struct btrfs_ioctl_send_args *arg)
+ 	int sort_clone_roots = 0;
+ 	int index;
+ 
++	/* send can be on a directory, so check super block instead */
++	if (btrfs_test_opt(fs_info, DAX))
++		return -EOPNOTSUPP;
++
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
 -- 
 2.16.4
 
