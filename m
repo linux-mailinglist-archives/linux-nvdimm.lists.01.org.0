@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F55FE8DA
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCA6E8DB
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:28 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F41AF2122C2F6;
-	Mon, 29 Apr 2019 10:27:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3A3C42122C2E8;
+	Mon, 29 Apr 2019 10:27:27 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,18 +15,17 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 866422122C2F6
- for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:23 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9840F2194EB7E
+ for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:25 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 2A3BAADD7;
- Mon, 29 Apr 2019 17:27:22 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 41383ADDB;
+ Mon, 29 Apr 2019 17:27:24 +0000 (UTC)
 From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 To: linux-btrfs@vger.kernel.org
-Subject: [PATCH 08/18] dax: memcpy page in case of IOMAP_DAX_COW for mmap
- faults
-Date: Mon, 29 Apr 2019 12:26:39 -0500
-Message-Id: <20190429172649.8288-9-rgoldwyn@suse.de>
+Subject: [PATCH 09/18] btrfs: Add dax specific address_space_operations
+Date: Mon, 29 Apr 2019 12:26:40 -0500
+Message-Id: <20190429172649.8288-10-rgoldwyn@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20190429172649.8288-1-rgoldwyn@suse.de>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
@@ -53,87 +52,105 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 
-Change dax_iomap_pfn to return the address as well in order to
-use it for performing a memcpy in case the type is IOMAP_DAX_COW.
-We don't handle PMD because btrfs does not support hugepages.
-
-Question:
-The sequence of bdev_dax_pgoff() and dax_direct_access() is
-used multiple times to calculate address and pfn's. Would it make
-sense to call it while calculating address as well to reduce code?
-
 Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 ---
- fs/dax.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/btrfs/inode.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 610bfa861a28..718b1632a39d 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -984,7 +984,7 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index af4b56cba104..05714ffc4894 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -28,6 +28,7 @@
+ #include <linux/magic.h>
+ #include <linux/iversion.h>
+ #include <linux/swap.h>
++#include <linux/dax.h>
+ #include <asm/unaligned.h>
+ #include "ctree.h"
+ #include "disk-io.h"
+@@ -65,6 +66,7 @@ static const struct inode_operations btrfs_dir_ro_inode_operations;
+ static const struct inode_operations btrfs_special_inode_operations;
+ static const struct inode_operations btrfs_file_inode_operations;
+ static const struct address_space_operations btrfs_aops;
++static const struct address_space_operations btrfs_dax_aops;
+ static const struct file_operations btrfs_dir_file_operations;
+ static const struct extent_io_ops btrfs_extent_io_ops;
+ 
+@@ -3757,7 +3759,10 @@ static int btrfs_read_locked_inode(struct inode *inode,
+ 
+ 	switch (inode->i_mode & S_IFMT) {
+ 	case S_IFREG:
+-		inode->i_mapping->a_ops = &btrfs_aops;
++		if (btrfs_test_opt(fs_info, DAX))
++			inode->i_mapping->a_ops = &btrfs_dax_aops;
++		else
++			inode->i_mapping->a_ops = &btrfs_aops;
+ 		BTRFS_I(inode)->io_tree.ops = &btrfs_extent_io_ops;
+ 		inode->i_fop = &btrfs_file_operations;
+ 		inode->i_op = &btrfs_file_inode_operations;
+@@ -3778,6 +3783,7 @@ static int btrfs_read_locked_inode(struct inode *inode,
+ 	}
+ 
+ 	btrfs_sync_inode_flags_to_i_flags(inode);
++
+ 	return 0;
  }
  
- static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
--			 pfn_t *pfnp)
-+			 pfn_t *pfnp, void **addr)
- {
- 	const sector_t sector = dax_iomap_sector(iomap, pos);
- 	pgoff_t pgoff;
-@@ -996,7 +996,7 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
- 		return rc;
- 	id = dax_read_lock();
- 	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
--				   NULL, pfnp);
-+				   addr, pfnp);
- 	if (length < 0) {
- 		rc = length;
- 		goto out;
-@@ -1286,6 +1286,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 	XA_STATE(xas, &mapping->i_pages, vmf->pgoff);
- 	struct inode *inode = mapping->host;
- 	unsigned long vaddr = vmf->address;
-+	void *addr;
- 	loff_t pos = (loff_t)vmf->pgoff << PAGE_SHIFT;
- 	struct iomap iomap = { 0 };
- 	unsigned flags = IOMAP_FAULT;
-@@ -1375,16 +1376,26 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 	sync = dax_fault_is_synchronous(flags, vma, &iomap);
+@@ -6538,7 +6544,10 @@ static int btrfs_create(struct inode *dir, struct dentry *dentry,
+ 	*/
+ 	inode->i_fop = &btrfs_file_operations;
+ 	inode->i_op = &btrfs_file_inode_operations;
+-	inode->i_mapping->a_ops = &btrfs_aops;
++	if (IS_DAX(inode) && S_ISREG(mode))
++		inode->i_mapping->a_ops = &btrfs_dax_aops;
++	else
++		inode->i_mapping->a_ops = &btrfs_aops;
  
- 	switch (iomap.type) {
-+	case IOMAP_DAX_COW:
- 	case IOMAP_MAPPED:
- 		if (iomap.flags & IOMAP_F_NEW) {
- 			count_vm_event(PGMAJFAULT);
- 			count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
- 			major = VM_FAULT_MAJOR;
- 		}
--		error = dax_iomap_pfn(&iomap, pos, PAGE_SIZE, &pfn);
-+		error = dax_iomap_pfn(&iomap, pos, PAGE_SIZE, &pfn, &addr);
- 		if (error < 0)
- 			goto error_finish_iomap;
+ 	err = btrfs_init_inode_security(trans, inode, dir, &dentry->d_name);
+ 	if (err)
+@@ -8665,6 +8674,15 @@ static int btrfs_writepages(struct address_space *mapping,
+ 	return extent_writepages(mapping, wbc);
+ }
  
-+		if (iomap.type == IOMAP_DAX_COW) {
-+			if (iomap.inline_data) {
-+				error = memcpy_mcsafe(addr, iomap.inline_data,
-+					      PAGE_SIZE);
-+				if (error < 0)
-+					goto error_finish_iomap;
-+			} else
-+				memset(addr, 0, PAGE_SIZE);
-+		}
- 		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
- 						 0, write && !sync);
++static int btrfs_dax_writepages(struct address_space *mapping,
++			    struct writeback_control *wbc)
++{
++	struct inode *inode = mapping->host;
++	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
++	return dax_writeback_mapping_range(mapping, fs_info->fs_devices->latest_bdev,
++			wbc);
++}
++
+ static int
+ btrfs_readpages(struct file *file, struct address_space *mapping,
+ 		struct list_head *pages, unsigned nr_pages)
+@@ -10436,7 +10454,10 @@ static int btrfs_tmpfile(struct inode *dir, struct dentry *dentry, umode_t mode)
+ 	inode->i_fop = &btrfs_file_operations;
+ 	inode->i_op = &btrfs_file_inode_operations;
  
-@@ -1597,7 +1608,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+-	inode->i_mapping->a_ops = &btrfs_aops;
++	if (IS_DAX(inode))
++		inode->i_mapping->a_ops = &btrfs_dax_aops;
++	else
++		inode->i_mapping->a_ops = &btrfs_aops;
+ 	BTRFS_I(inode)->io_tree.ops = &btrfs_extent_io_ops;
  
- 	switch (iomap.type) {
- 	case IOMAP_MAPPED:
--		error = dax_iomap_pfn(&iomap, pos, PMD_SIZE, &pfn);
-+		error = dax_iomap_pfn(&iomap, pos, PMD_SIZE, &pfn, NULL);
- 		if (error < 0)
- 			goto finish_iomap;
+ 	ret = btrfs_init_inode_security(trans, inode, dir, NULL);
+@@ -10892,6 +10913,13 @@ static const struct address_space_operations btrfs_aops = {
+ 	.swap_deactivate = btrfs_swap_deactivate,
+ };
  
++static const struct address_space_operations btrfs_dax_aops = {
++	.writepages             = btrfs_dax_writepages,
++	.direct_IO              = noop_direct_IO,
++	.set_page_dirty         = noop_set_page_dirty,
++	.invalidatepage         = noop_invalidatepage,
++};
++
+ static const struct inode_operations btrfs_file_inode_operations = {
+ 	.getattr	= btrfs_getattr,
+ 	.setattr	= btrfs_setattr,
 -- 
 2.16.4
 
