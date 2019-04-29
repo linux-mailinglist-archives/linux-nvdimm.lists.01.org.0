@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2770E8DD
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:33 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE0E8DE
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Apr 2019 19:27:35 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6A0EF2121C128;
-	Mon, 29 Apr 2019 10:27:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A48A02122C2FE;
+	Mon, 29 Apr 2019 10:27:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,17 +15,17 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C35272121797B
- for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:29 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id C99EF2122C2E8
+ for <linux-nvdimm@lists.01.org>; Mon, 29 Apr 2019 10:27:31 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 67F39ADE3;
- Mon, 29 Apr 2019 17:27:28 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 6BA01AE29;
+ Mon, 29 Apr 2019 17:27:30 +0000 (UTC)
 From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 To: linux-btrfs@vger.kernel.org
-Subject: [PATCH 11/18] btrfs: add dax mmap support
-Date: Mon, 29 Apr 2019 12:26:42 -0500
-Message-Id: <20190429172649.8288-12-rgoldwyn@suse.de>
+Subject: [PATCH 12/18] btrfs: allow MAP_SYNC mmap
+Date: Mon, 29 Apr 2019 12:26:43 -0500
+Message-Id: <20190429172649.8288-13-rgoldwyn@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20190429172649.8288-1-rgoldwyn@suse.de>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
@@ -50,98 +50,38 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+From: Adam Borowski <kilobyte@angband.pl>
 
-Add a new vm_operations struct btrfs_dax_vm_ops
-specifically for dax files.
-
-Since we will be removing(nulling) readpages/writepages for dax
-return ENOEXEC only for non-dax files.
-
+Used by userspace to detect DAX.
+[rgoldwyn@suse.com: Added CONFIG_FS_DAX around mmap_supported_flags]
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 ---
- fs/btrfs/ctree.h |  1 +
- fs/btrfs/dax.c   | 13 ++++++++++++-
- fs/btrfs/file.c  | 18 ++++++++++++++++--
- 3 files changed, 29 insertions(+), 3 deletions(-)
+ fs/btrfs/file.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index eec01eb92f33..2b7bdabb44f8 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -3802,6 +3802,7 @@ int btree_readahead_hook(struct extent_buffer *eb, int err);
- /* dax.c */
- ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to);
- ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *from);
-+vm_fault_t btrfs_dax_fault(struct vm_fault *vmf);
- #else
- static inline ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *from)
- {
-diff --git a/fs/btrfs/dax.c b/fs/btrfs/dax.c
-index f5cc9bcdbf14..de957d681e16 100644
---- a/fs/btrfs/dax.c
-+++ b/fs/btrfs/dax.c
-@@ -139,7 +139,7 @@ static int btrfs_iomap_begin(struct inode *inode, loff_t pos,
- 
- 	iomap->addr = em->block_start + diff;
- 	/* Check if we really need to copy data from old extent */
--	if (bi && !bi->nocow && (offset || pos + length < bi->end)) {
-+	if (bi && !bi->nocow && (offset || pos + length < bi->end || flags & IOMAP_FAULT)) {
- 		iomap->type = IOMAP_DAX_COW;
- 		if (srcblk) {
- 			sector_t sector = (srcblk + (pos & PAGE_MASK) -
-@@ -216,4 +216,15 @@ ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *iter)
- 	}
- 	return ret;
- }
-+
-+vm_fault_t btrfs_dax_fault(struct vm_fault *vmf)
-+{
-+	vm_fault_t ret;
-+	pfn_t pfn;
-+	ret = dax_iomap_fault(vmf, PE_SIZE_PTE, &pfn, NULL, &btrfs_iomap_ops);
-+	if (ret & VM_FAULT_NEEDDSYNC)
-+		ret = dax_finish_sync_fault(vmf, PE_SIZE_PTE, pfn);
-+
-+	return ret;
-+}
- #endif /* CONFIG_FS_DAX */
 diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index a795023e26ca..9d5a3c99a6b9 100644
+index 9d5a3c99a6b9..362a9cf9dcb2 100644
 --- a/fs/btrfs/file.c
 +++ b/fs/btrfs/file.c
-@@ -2214,15 +2214,29 @@ static const struct vm_operations_struct btrfs_file_vm_ops = {
- 	.page_mkwrite	= btrfs_page_mkwrite,
- };
- 
+@@ -16,6 +16,7 @@
+ #include <linux/btrfs.h>
+ #include <linux/uio.h>
+ #include <linux/iversion.h>
++#include <linux/mman.h>
+ #include "ctree.h"
+ #include "disk-io.h"
+ #include "transaction.h"
+@@ -3319,6 +3320,9 @@ const struct file_operations btrfs_file_operations = {
+ 	.splice_read	= generic_file_splice_read,
+ 	.write_iter	= btrfs_file_write_iter,
+ 	.mmap		= btrfs_file_mmap,
 +#ifdef CONFIG_FS_DAX
-+static const struct vm_operations_struct btrfs_dax_vm_ops = {
-+	.fault          = btrfs_dax_fault,
-+	.page_mkwrite   = btrfs_dax_fault,
-+	.pfn_mkwrite    = btrfs_dax_fault,
-+};
-+#else
-+#define btrfs_dax_vm_ops btrfs_file_vm_ops
++	.mmap_supported_flags = MAP_SYNC,
 +#endif
-+
- static int btrfs_file_mmap(struct file	*filp, struct vm_area_struct *vma)
- {
- 	struct address_space *mapping = filp->f_mapping;
-+	struct inode *inode = file_inode(filp);
- 
--	if (!mapping->a_ops->readpage)
-+	if (!IS_DAX(inode) && !mapping->a_ops->readpage)
- 		return -ENOEXEC;
- 
- 	file_accessed(filp);
--	vma->vm_ops = &btrfs_file_vm_ops;
-+	if (IS_DAX(inode))
-+		vma->vm_ops = &btrfs_dax_vm_ops;
-+	else
-+		vma->vm_ops = &btrfs_file_vm_ops;
- 
- 	return 0;
- }
+ 	.open		= btrfs_file_open,
+ 	.release	= btrfs_release_file,
+ 	.fsync		= btrfs_sync_file,
 -- 
 2.16.4
 
