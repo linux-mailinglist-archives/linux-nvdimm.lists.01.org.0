@@ -1,74 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756C310D21
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 May 2019 21:18:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AE410F7C
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 01:02:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 64B0B212377E2;
-	Wed,  1 May 2019 12:18:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id AA1422120ADE0;
+	Wed,  1 May 2019 16:02:13 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com;
- envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
- [IPv6:2607:f8b0:4864:20::842])
+ client-ip=2607:f8b0:4864:20::e49; helo=mail-vs1-xe49.google.com;
+ envelope-from=3csxkxa4kdnaxd09zw9342249e2aa270.ya8749gj-9hz48874efe.mn.ad2@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-vs1-xe49.google.com (mail-vs1-xe49.google.com
+ [IPv6:2607:f8b0:4864:20::e49])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4BDA22122DDB9
- for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 12:18:53 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id d13so21080789qth.5
- for <linux-nvdimm@lists.01.org>; Wed, 01 May 2019 12:18:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
- h=from:to:subject:date:message-id:in-reply-to:references:mime-version
- :content-transfer-encoding;
- bh=XCMEqsTnk0N2iAxyILP6Z/EwAN/LZaWM24sWvUxI210=;
- b=CqskdudS7mwUlxptslgcXZ0QXR8Q/fCHG6QqeM31KcRRrgba1pDwhhpkltcSnQ8E+L
- gVy3qEXIP9svc8iYegEcV/mBtjU32rZrilr/1yEVwo3ZBgQDRnFeooOZWLI8PWqA/aqM
- 2/abCp/DzPl3aAXbPZE+wmVPChF1H6i7y2NZdzqN2QTmKPCkeyYfe/ey1dloFGFUYdQ7
- o7Gv4D4ybUKpi4nRzae4TegIE0OMPPpqe7hjxF3DaArCCD0eBslynFzDIPmzA8HLX8iU
- HvG+db1yeo/SI2iFKCPOwjyYWIRzRQ1gJWm58qJrs6DibYEVtfnlNuz1y4juHcc9P8NZ
- f31Q==
+ by ml01.01.org (Postfix) with ESMTPS id C1C1F211EB2BF
+ for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 16:02:11 -0700 (PDT)
+Received: by mail-vs1-xe49.google.com with SMTP id j26so30977vso.20
+ for <linux-nvdimm@lists.01.org>; Wed, 01 May 2019 16:02:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=De7JrG6+3XL344zZMScSqunmKbgZceVjMJC0FL9AbxY=;
+ b=qtzfVeePMbJhJqE+Yf+Kv1DhoZE9ng7nvFaWF8RJXgdCikBdWv36SI916RGwYzUukq
+ xZ9iRq7CanllZWM7N5EMvSrH76h/QHHPUoEYCnmM+oUL1rzrZdP/C9kf6bQfkkH2oii8
+ V97WCJiEG/EbkMT96CrHZ3ULLAQCRx09BXRHAZU8A+nmmtZPD4qqi9tcI9XX7ENyOW6Q
+ pByKUepLMJrt85M4mkzTyPvyDYRRbm2pwYxrVTb6Gm/Oqz+saBFL/hmmcJKeXHcDy2/O
+ 6eNpA52lwMEF/MP27yaxHbVokdjjs1RKVkQH0OPZY00rCv9fgG3G1mGLf74KJ8HBy8CY
+ U+lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=XCMEqsTnk0N2iAxyILP6Z/EwAN/LZaWM24sWvUxI210=;
- b=rRo6lFrt/48ROiSInnXeftWLggevHSpceMi+fl8Vj6F/0IqNdyqvy/cm91B8FmrQBc
- Luf+OUz3eWCNKXq9pHxyeR9lYqqRhl67ZuF8W1Yo5uPB1ykxxE3+xHY891FaFislKeX3
- EYU5DqDRuiKc3yqsWT9On94xCGDsKvu3Rt85qvsvCaJcNav7FtMQfeSx4i2lwdsg/Uf3
- 2KbBP8b9ro0Xr06Q2o7K0nlGdN1vNRFD1qQPX/SXpBueqER+lrAS73Db6O7bJULWFQvw
- mCBuptc5r0P/lX0UleCCI90s72/sAejNHVRwrGOHIZKsDvTyXTXr24UPLe+4+hjH0KKg
- 6bLQ==
-X-Gm-Message-State: APjAAAVe+oe09VPiPuQDbKib4L2D4IoSa6G7MVHR7o4pRwdNTRII9SL4
- ODTsYxanpz5ZzMbt3kEPjO8/Ew==
-X-Google-Smtp-Source: APXvYqzmNaTzzfNQY+U4p8zlZSxKvZsU3NG8OeWx/CjintReZDdamrlUDLJx9jczTgf2Hvh5qF+FYA==
-X-Received: by 2002:ac8:3553:: with SMTP id z19mr51949671qtb.146.1556738332321; 
- Wed, 01 May 2019 12:18:52 -0700 (PDT)
-Received: from localhost.localdomain (c-73-69-118-222.hsd1.nh.comcast.net.
- [73.69.118.222])
- by smtp.gmail.com with ESMTPSA id x47sm12610946qth.68.2019.05.01.12.18.50
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 01 May 2019 12:18:51 -0700 (PDT)
-From: Pavel Tatashin <pasha.tatashin@soleen.com>
-To: pasha.tatashin@soleen.com, jmorris@namei.org, sashal@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-nvdimm@lists.01.org, akpm@linux-foundation.org, mhocko@suse.com,
- dave.hansen@linux.intel.com, dan.j.williams@intel.com,
- keith.busch@intel.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
- zwisler@kernel.org, thomas.lendacky@amd.com, ying.huang@intel.com,
- fengguang.wu@intel.com, bp@suse.de, bhelgaas@google.com,
- baiyaowei@cmss.chinamobile.com, tiwai@suse.de, jglisse@redhat.com,
- david@redhat.com
-Subject: [v4 2/2] device-dax: "Hotremove" persistent memory that is used like
- normal RAM
-Date: Wed,  1 May 2019 15:18:46 -0400
-Message-Id: <20190501191846.12634-3-pasha.tatashin@soleen.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190501191846.12634-1-pasha.tatashin@soleen.com>
-References: <20190501191846.12634-1-pasha.tatashin@soleen.com>
-MIME-Version: 1.0
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=De7JrG6+3XL344zZMScSqunmKbgZceVjMJC0FL9AbxY=;
+ b=ZNkVu5bcY9dJtCp5hxHWbAJiFqICp4rMrIXe4VEfu5qQ/Ygz9qKaBixMFfko27RhcT
+ ihfhMDMcIh1zFjIr87pKo8eej48hWpXUS3/p7pvXp6U9KryBChOwzyCSSWJHbmGkXVVK
+ splIpk1w4o/91ftV3sFfnJadJcScjgH3Hf3EF+XlFqsZvFPirfGV5kfm6kuL4wRNy5Gk
+ zpNN69/mt4YOMCqWaNVpZrC0VvtDgTUXG/S/EaM2ZuS4fF8bktWOiuaic+JxmQQLs5kc
+ iAa4mf2/o23IfghG9g/Hyh9WXGY1WhXei8SMX3d/fby69A/fZ9Pj481Q8dZjo3yipHmv
+ 1IfA==
+X-Gm-Message-State: APjAAAX79b1ftILIAiFf9nPcf/8cLzTaDL29hn9mQ4SA9ezHpgM03MkJ
+ k6bFiekOsqM8JWgCxHdSmXINSZ/LLJRPRdxAqm89GQ==
+X-Google-Smtp-Source: APXvYqytaGaXIlQSl5wsYvREjZvXVeqTJ4FhNvP2xNvz38NyshdL0U4pqVOMRR/ps0I6/FLnggB5b5wmfrnXtO1aUnE0lA==
+X-Received: by 2002:ab0:20a1:: with SMTP id y1mr213208ual.101.1556751729917;
+ Wed, 01 May 2019 16:02:09 -0700 (PDT)
+Date: Wed,  1 May 2019 16:01:09 -0700
+Message-Id: <20190501230126.229218-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.21.0.593.g511ec345e18-goog
+Subject: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, keescook@google.com, 
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org, 
+ sboyd@kernel.org, shuah@kernel.org
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,180 +66,86 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, linux-kernel@vger.kernel.org, daniel@ffwll.ch,
+ mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-It is now allowed to use persistent memory like a regular RAM, but
-currently there is no way to remove this memory until machine is
-rebooted.
+## TLDR
 
-This work expands the functionality to also allows hotremoving
-previously hotplugged persistent memory, and recover the device for use
-for other purposes.
+I rebased the last patchset on 5.1-rc7 in hopes that we can get this in
+5.2.
 
-To hotremove persistent memory, the management software must first
-offline all memory blocks of dax region, and than unbind it from
-device-dax/kmem driver. So, operations should look like this:
+Shuah, I think you, Greg KH, and myself talked off thread, and we agreed
+we would merge through your tree when the time came? Am I remembering
+correctly?
 
-echo offline > echo offline > /sys/devices/system/memory/memoryN/state
-...
-echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
+## Background
 
-Note: if unbind is done without offlining memory beforehand, it won't be
-possible to do dax0.0 hotremove, and dax's memory is going to be part of
-System RAM until reboot.
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
 
-Signed-off-by: Pavel Tatashin <pasha.tatashin@soleen.com>
----
- drivers/dax/dax-private.h |  2 +
- drivers/dax/kmem.c        | 99 +++++++++++++++++++++++++++++++++++++--
- 2 files changed, 97 insertions(+), 4 deletions(-)
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+and does not require tests to be written in userspace running on a host
+kernel. Additionally, KUnit is fast: From invocation to completion KUnit
+can run several dozen tests in under a second. Currently, the entire
+KUnit test suite for KUnit runs in under a second from the initial
+invocation (build time excluded).
 
-diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-index a45612148ca0..999aaf3a29b3 100644
---- a/drivers/dax/dax-private.h
-+++ b/drivers/dax/dax-private.h
-@@ -53,6 +53,7 @@ struct dax_region {
-  * @pgmap - pgmap for memmap setup / lifetime (driver owned)
-  * @ref: pgmap reference count (driver owned)
-  * @cmp: @ref final put completion (driver owned)
-+ * @dax_mem_res: physical address range of hotadded DAX memory
-  */
- struct dev_dax {
- 	struct dax_region *region;
-@@ -62,6 +63,7 @@ struct dev_dax {
- 	struct dev_pagemap pgmap;
- 	struct percpu_ref ref;
- 	struct completion cmp;
-+	struct resource *dax_kmem_res;
- };
- 
- static inline struct dev_dax *to_dev_dax(struct device *dev)
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 4c0131857133..72b868066026 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -71,21 +71,112 @@ int dev_dax_kmem_probe(struct device *dev)
- 		kfree(new_res);
- 		return rc;
- 	}
-+	dev_dax->dax_kmem_res = new_res;
- 
- 	return 0;
- }
- 
-+#ifdef CONFIG_MEMORY_HOTREMOVE
-+static int
-+check_devdax_mem_offlined_cb(struct memory_block *mem, void *arg)
-+{
-+	/* Memory block device */
-+	struct device *mem_dev = &mem->dev;
-+	bool is_offline;
-+
-+	device_lock(mem_dev);
-+	is_offline = mem_dev->offline;
-+	device_unlock(mem_dev);
-+
-+	/*
-+	 * Check that device-dax's memory_blocks are offline. If a memory_block
-+	 * is not offline a warning is printed and an error is returned.
-+	 */
-+	if (!is_offline) {
-+		/* Dax device device */
-+		struct device *dev = (struct device *)arg;
-+		struct dev_dax *dev_dax = to_dev_dax(dev);
-+		struct resource *res = &dev_dax->region->res;
-+		unsigned long spfn = section_nr_to_pfn(mem->start_section_nr);
-+		unsigned long epfn = section_nr_to_pfn(mem->end_section_nr) +
-+						       PAGES_PER_SECTION - 1;
-+		phys_addr_t spa = spfn << PAGE_SHIFT;
-+		phys_addr_t epa = epfn << PAGE_SHIFT;
-+
-+		dev_err(dev,
-+			"DAX region %pR cannot be hotremoved until the next reboot. Memory block [%pa-%pa] is not offline.\n",
-+			res, &spa, &epa);
-+
-+		return -EBUSY;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dev_dax_kmem_remove(struct device *dev)
-+{
-+	struct dev_dax *dev_dax = to_dev_dax(dev);
-+	struct resource *res = dev_dax->dax_kmem_res;
-+	resource_size_t kmem_start;
-+	resource_size_t kmem_size;
-+	unsigned long start_pfn;
-+	unsigned long end_pfn;
-+	int rc;
-+
-+	kmem_start = res->start;
-+	kmem_size = resource_size(res);
-+	start_pfn = kmem_start >> PAGE_SHIFT;
-+	end_pfn = start_pfn + (kmem_size >> PAGE_SHIFT) - 1;
-+
-+	/*
-+	 * Keep hotplug lock while checking memory state, and also required
-+	 * during __remove_memory() call. Admin can't change memory state via
-+	 * sysfs while this lock is kept.
-+	 */
-+	lock_device_hotplug();
-+
-+	/*
-+	 * Walk and check that every singe memory_block of dax region is
-+	 * offline. Hotremove can succeed only when every memory_block is
-+	 * offlined beforehand.
-+	 */
-+	rc = walk_memory_range(start_pfn, end_pfn, dev,
-+			       check_devdax_mem_offlined_cb);
-+
-+	/*
-+	 * If admin has not offlined memory beforehand, we cannot hotremove dax.
-+	 * Unfortunately, because unbind will still succeed there is no way for
-+	 * user to hotremove dax after this.
-+	 */
-+	if (rc) {
-+		unlock_device_hotplug();
-+		return rc;
-+	}
-+
-+	/* Hotremove memory, cannot fail because memory is already offlined */
-+	__remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-+	unlock_device_hotplug();
-+
-+	/* Release and free dax resources */
-+	release_resource(res);
-+	kfree(res);
-+	dev_dax->dax_kmem_res = NULL;
-+
-+	return 0;
-+}
-+#else
- static int dev_dax_kmem_remove(struct device *dev)
- {
- 	/*
--	 * Purposely leak the request_mem_region() for the device-dax
--	 * range and return '0' to ->remove() attempts. The removal of
--	 * the device from the driver always succeeds, but the region
--	 * is permanently pinned as reserved by the unreleased
-+	 * Without hotremove purposely leak the request_mem_region() for the
-+	 * device-dax range and return '0' to ->remove() attempts. The removal
-+	 * of the device from the driver always succeeds, but the region is
-+	 * permanently pinned as reserved by the unreleased
- 	 * request_mem_region().
- 	 */
- 	return 0;
- }
-+#endif /* CONFIG_MEMORY_HOTREMOVE */
- 
- static struct dax_device_driver device_dax_kmem_driver = {
- 	.drv = {
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+## What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+## Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+## More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here:
+https://google.github.io/kunit-docs/third_party/kernel/docs/
+Additionally for convenience, I have applied these patches to a branch:
+https://kunit.googlesource.com/linux/+/kunit/rfc/v5.1-rc7/v1
+The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.1-rc7/v1 branch.
+
+## Changes Since Last Version
+
+None. I just rebased the last patchset on v5.1-rc7.
+
 -- 
-2.21.0
+2.21.0.593.g511ec345e18-goog
 
 _______________________________________________
 Linux-nvdimm mailing list
