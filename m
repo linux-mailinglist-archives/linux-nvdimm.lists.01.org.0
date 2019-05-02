@@ -2,36 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 919EB11328
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 08:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE101132A
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 08:09:21 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6FA3721962301;
-	Wed,  1 May 2019 23:09:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C94442123780B;
+	Wed,  1 May 2019 23:09:20 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.151; helo=mga17.intel.com;
+ client-ip=134.134.136.31; helo=mga06.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CD618212377F9
- for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 23:09:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 959B821237806
+ for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 23:09:19 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 01 May 2019 23:09:14 -0700
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 01 May 2019 23:09:19 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,420,1549958400"; d="scan'208";a="140583170"
+X-IronPort-AV: E=Sophos;i="5.60,420,1549958400"; d="scan'208";a="136147452"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga006.jf.intel.com with ESMTP; 01 May 2019 23:09:13 -0700
-Subject: [PATCH v7 01/12] mm/sparsemem: Introduce struct mem_section_usage
+ by orsmga007.jf.intel.com with ESMTP; 01 May 2019 23:09:18 -0700
+Subject: [PATCH v7 02/12] mm/sparsemem: Introduce common definitions for the
+ size and mask of a section
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Wed, 01 May 2019 22:55:27 -0700
-Message-ID: <155677652762.2336373.6522945152928524695.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Wed, 01 May 2019 22:55:32 -0700
+Message-ID: <155677653274.2336373.11220321059915670288.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -48,383 +49,62 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: mhocko@suse.com, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>, osalvador@suse.de
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+ linux-mm@kvack.org, =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>, osalvador@suse.de
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Towards enabling memory hotplug to track partial population of a
-section, introduce 'struct mem_section_usage'.
-
-A pointer to a 'struct mem_section_usage' instance replaces the existing
-pointer to a 'pageblock_flags' bitmap. Effectively it adds one more
-'unsigned long' beyond the 'pageblock_flags' (usemap) allocation to
-house a new 'map_active' bitmap.  The new bitmap enables the memory
-hot{plug,remove} implementation to act on incremental sub-divisions of a
-section.
-
-The primary motivation for this functionality is to support platforms
-that mix "System RAM" and "Persistent Memory" within a single section,
-or multiple PMEM ranges with different mapping lifetimes within a single
-section. The section restriction for hotplug has caused an ongoing saga
-of hacks and bugs for devm_memremap_pages() users.
-
-Beyond the fixups to teach existing paths how to retrieve the 'usemap'
-from a section, and updates to usemap allocation path, there are no
-expected behavior changes.
-
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- include/linux/mmzone.h |   23 ++++++++++++--
- mm/memory_hotplug.c    |   18 ++++++-----
- mm/page_alloc.c        |    2 +
- mm/sparse.c            |   81 ++++++++++++++++++++++++------------------------
- 4 files changed, 71 insertions(+), 53 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 70394cabaf4e..f0bbd85dc19a 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1160,6 +1160,19 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
- #define SECTION_ALIGN_UP(pfn)	(((pfn) + PAGES_PER_SECTION - 1) & PAGE_SECTION_MASK)
- #define SECTION_ALIGN_DOWN(pfn)	((pfn) & PAGE_SECTION_MASK)
- 
-+#define SECTION_ACTIVE_SIZE ((1UL << SECTION_SIZE_BITS) / BITS_PER_LONG)
-+#define SECTION_ACTIVE_MASK (~(SECTION_ACTIVE_SIZE - 1))
-+
-+struct mem_section_usage {
-+	/*
-+	 * SECTION_ACTIVE_SIZE portions of the section that are populated in
-+	 * the memmap
-+	 */
-+	unsigned long map_active;
-+	/* See declaration of similar field in struct zone */
-+	unsigned long pageblock_flags[0];
-+};
-+
- struct page;
- struct page_ext;
- struct mem_section {
-@@ -1177,8 +1190,7 @@ struct mem_section {
- 	 */
- 	unsigned long section_mem_map;
- 
--	/* See declaration of similar field in struct zone */
--	unsigned long *pageblock_flags;
-+	struct mem_section_usage *usage;
- #ifdef CONFIG_PAGE_EXTENSION
- 	/*
- 	 * If SPARSEMEM, pgdat doesn't have page_ext pointer. We use
-@@ -1209,6 +1221,11 @@ extern struct mem_section **mem_section;
- extern struct mem_section mem_section[NR_SECTION_ROOTS][SECTIONS_PER_ROOT];
- #endif
- 
-+static inline unsigned long *section_to_usemap(struct mem_section *ms)
-+{
-+	return ms->usage->pageblock_flags;
-+}
-+
- static inline struct mem_section *__nr_to_section(unsigned long nr)
- {
- #ifdef CONFIG_SPARSEMEM_EXTREME
-@@ -1220,7 +1237,7 @@ static inline struct mem_section *__nr_to_section(unsigned long nr)
- 	return &mem_section[SECTION_NR_TO_ROOT(nr)][nr & SECTION_ROOT_MASK];
- }
- extern int __section_nr(struct mem_section* ms);
--extern unsigned long usemap_size(void);
-+extern size_t mem_section_usage_size(void);
- 
- /*
-  * We use the lower bits of the mem_map pointer to store
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 328878b6799d..a76fc6a6e9fe 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -165,9 +165,10 @@ void put_page_bootmem(struct page *page)
- #ifndef CONFIG_SPARSEMEM_VMEMMAP
- static void register_page_bootmem_info_section(unsigned long start_pfn)
- {
--	unsigned long *usemap, mapsize, section_nr, i;
-+	unsigned long mapsize, section_nr, i;
- 	struct mem_section *ms;
- 	struct page *page, *memmap;
-+	struct mem_section_usage *usage;
- 
- 	section_nr = pfn_to_section_nr(start_pfn);
- 	ms = __nr_to_section(section_nr);
-@@ -187,10 +188,10 @@ static void register_page_bootmem_info_section(unsigned long start_pfn)
- 	for (i = 0; i < mapsize; i++, page++)
- 		get_page_bootmem(section_nr, page, SECTION_INFO);
- 
--	usemap = ms->pageblock_flags;
--	page = virt_to_page(usemap);
-+	usage = ms->usage;
-+	page = virt_to_page(usage);
- 
--	mapsize = PAGE_ALIGN(usemap_size()) >> PAGE_SHIFT;
-+	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
- 
- 	for (i = 0; i < mapsize; i++, page++)
- 		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
-@@ -199,9 +200,10 @@ static void register_page_bootmem_info_section(unsigned long start_pfn)
- #else /* CONFIG_SPARSEMEM_VMEMMAP */
- static void register_page_bootmem_info_section(unsigned long start_pfn)
- {
--	unsigned long *usemap, mapsize, section_nr, i;
-+	unsigned long mapsize, section_nr, i;
- 	struct mem_section *ms;
- 	struct page *page, *memmap;
-+	struct mem_section_usage *usage;
- 
- 	section_nr = pfn_to_section_nr(start_pfn);
- 	ms = __nr_to_section(section_nr);
-@@ -210,10 +212,10 @@ static void register_page_bootmem_info_section(unsigned long start_pfn)
- 
- 	register_page_bootmem_memmap(section_nr, memmap, PAGES_PER_SECTION);
- 
--	usemap = ms->pageblock_flags;
--	page = virt_to_page(usemap);
-+	usage = ms->usage;
-+	page = virt_to_page(usage);
- 
--	mapsize = PAGE_ALIGN(usemap_size()) >> PAGE_SHIFT;
-+	mapsize = PAGE_ALIGN(mem_section_usage_size()) >> PAGE_SHIFT;
- 
- 	for (i = 0; i < mapsize; i++, page++)
- 		get_page_bootmem(section_nr, page, MIX_SECTION_INFO);
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 1f99db76b1ff..61c2b54a5b61 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -403,7 +403,7 @@ static inline unsigned long *get_pageblock_bitmap(struct page *page,
- 							unsigned long pfn)
- {
- #ifdef CONFIG_SPARSEMEM
--	return __pfn_to_section(pfn)->pageblock_flags;
-+	return section_to_usemap(__pfn_to_section(pfn));
- #else
- 	return page_zone(page)->pageblock_flags;
- #endif /* CONFIG_SPARSEMEM */
-diff --git a/mm/sparse.c b/mm/sparse.c
-index fd13166949b5..f87de7ad32c8 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -288,33 +288,31 @@ struct page *sparse_decode_mem_map(unsigned long coded_mem_map, unsigned long pn
- 
- static void __meminit sparse_init_one_section(struct mem_section *ms,
- 		unsigned long pnum, struct page *mem_map,
--		unsigned long *pageblock_bitmap)
-+		struct mem_section_usage *usage)
- {
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
- 	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum) |
- 							SECTION_HAS_MEM_MAP;
-- 	ms->pageblock_flags = pageblock_bitmap;
-+	ms->usage = usage;
- }
- 
--unsigned long usemap_size(void)
-+static unsigned long usemap_size(void)
- {
- 	return BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS) * sizeof(unsigned long);
- }
- 
--#ifdef CONFIG_MEMORY_HOTPLUG
--static unsigned long *__kmalloc_section_usemap(void)
-+size_t mem_section_usage_size(void)
- {
--	return kmalloc(usemap_size(), GFP_KERNEL);
-+	return sizeof(struct mem_section_usage) + usemap_size();
- }
--#endif /* CONFIG_MEMORY_HOTPLUG */
- 
- #ifdef CONFIG_MEMORY_HOTREMOVE
--static unsigned long * __init
-+static struct mem_section_usage * __init
- sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
- 					 unsigned long size)
- {
-+	struct mem_section_usage *usage;
- 	unsigned long goal, limit;
--	unsigned long *p;
- 	int nid;
- 	/*
- 	 * A page may contain usemaps for other sections preventing the
-@@ -330,15 +328,16 @@ sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
- 	limit = goal + (1UL << PA_SECTION_SHIFT);
- 	nid = early_pfn_to_nid(goal >> PAGE_SHIFT);
- again:
--	p = memblock_alloc_try_nid(size, SMP_CACHE_BYTES, goal, limit, nid);
--	if (!p && limit) {
-+	usage = memblock_alloc_try_nid(size, SMP_CACHE_BYTES, goal, limit, nid);
-+	if (!usage && limit) {
- 		limit = 0;
- 		goto again;
- 	}
--	return p;
-+	return usage;
- }
- 
--static void __init check_usemap_section_nr(int nid, unsigned long *usemap)
-+static void __init check_usemap_section_nr(int nid,
-+		struct mem_section_usage *usage)
- {
- 	unsigned long usemap_snr, pgdat_snr;
- 	static unsigned long old_usemap_snr;
-@@ -352,7 +351,7 @@ static void __init check_usemap_section_nr(int nid, unsigned long *usemap)
- 		old_pgdat_snr = NR_MEM_SECTIONS;
- 	}
- 
--	usemap_snr = pfn_to_section_nr(__pa(usemap) >> PAGE_SHIFT);
-+	usemap_snr = pfn_to_section_nr(__pa(usage) >> PAGE_SHIFT);
- 	pgdat_snr = pfn_to_section_nr(__pa(pgdat) >> PAGE_SHIFT);
- 	if (usemap_snr == pgdat_snr)
- 		return;
-@@ -380,14 +379,15 @@ static void __init check_usemap_section_nr(int nid, unsigned long *usemap)
- 		usemap_snr, pgdat_snr, nid);
- }
- #else
--static unsigned long * __init
-+static struct mem_section_usage * __init
- sparse_early_usemaps_alloc_pgdat_section(struct pglist_data *pgdat,
- 					 unsigned long size)
- {
- 	return memblock_alloc_node(size, SMP_CACHE_BYTES, pgdat->node_id);
- }
- 
--static void __init check_usemap_section_nr(int nid, unsigned long *usemap)
-+static void __init check_usemap_section_nr(int nid,
-+		struct mem_section_usage *usage)
- {
- }
- #endif /* CONFIG_MEMORY_HOTREMOVE */
-@@ -474,14 +474,13 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 				   unsigned long pnum_end,
- 				   unsigned long map_count)
- {
--	unsigned long pnum, usemap_longs, *usemap;
-+	struct mem_section_usage *usage;
-+	unsigned long pnum;
- 	struct page *map;
- 
--	usemap_longs = BITS_TO_LONGS(SECTION_BLOCKFLAGS_BITS);
--	usemap = sparse_early_usemaps_alloc_pgdat_section(NODE_DATA(nid),
--							  usemap_size() *
--							  map_count);
--	if (!usemap) {
-+	usage = sparse_early_usemaps_alloc_pgdat_section(NODE_DATA(nid),
-+			mem_section_usage_size() * map_count);
-+	if (!usage) {
- 		pr_err("%s: node[%d] usemap allocation failed", __func__, nid);
- 		goto failed;
- 	}
-@@ -497,9 +496,9 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 			pnum_begin = pnum;
- 			goto failed;
- 		}
--		check_usemap_section_nr(nid, usemap);
--		sparse_init_one_section(__nr_to_section(pnum), pnum, map, usemap);
--		usemap += usemap_longs;
-+		check_usemap_section_nr(nid, usage);
-+		sparse_init_one_section(__nr_to_section(pnum), pnum, map, usage);
-+		usage = (void *) usage + mem_section_usage_size();
- 	}
- 	sparse_buffer_fini();
- 	return;
-@@ -701,9 +700,9 @@ int __meminit sparse_add_one_section(int nid, unsigned long start_pfn,
- 				     struct vmem_altmap *altmap)
- {
- 	unsigned long section_nr = pfn_to_section_nr(start_pfn);
-+	struct mem_section_usage *usage;
- 	struct mem_section *ms;
- 	struct page *memmap;
--	unsigned long *usemap;
- 	int ret;
- 
- 	/*
-@@ -717,8 +716,8 @@ int __meminit sparse_add_one_section(int nid, unsigned long start_pfn,
- 	memmap = kmalloc_section_memmap(section_nr, nid, altmap);
- 	if (!memmap)
- 		return -ENOMEM;
--	usemap = __kmalloc_section_usemap();
--	if (!usemap) {
-+	usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
-+	if (!usage) {
- 		__kfree_section_memmap(memmap, altmap);
- 		return -ENOMEM;
- 	}
-@@ -736,11 +735,11 @@ int __meminit sparse_add_one_section(int nid, unsigned long start_pfn,
- 	page_init_poison(memmap, sizeof(struct page) * PAGES_PER_SECTION);
- 
- 	section_mark_present(ms);
--	sparse_init_one_section(ms, section_nr, memmap, usemap);
-+	sparse_init_one_section(ms, section_nr, memmap, usage);
- 
- out:
- 	if (ret < 0) {
--		kfree(usemap);
-+		kfree(usage);
- 		__kfree_section_memmap(memmap, altmap);
- 	}
- 	return ret;
-@@ -777,20 +776,20 @@ static inline void clear_hwpoisoned_pages(struct page *memmap, int nr_pages)
- }
- #endif
- 
--static void free_section_usemap(struct page *memmap, unsigned long *usemap,
--		struct vmem_altmap *altmap)
-+static void free_section_usage(struct page *memmap,
-+		struct mem_section_usage *usage, struct vmem_altmap *altmap)
- {
--	struct page *usemap_page;
-+	struct page *usage_page;
- 
--	if (!usemap)
-+	if (!usage)
- 		return;
- 
--	usemap_page = virt_to_page(usemap);
-+	usage_page = virt_to_page(usage);
- 	/*
- 	 * Check to see if allocation came from hot-plug-add
- 	 */
--	if (PageSlab(usemap_page) || PageCompound(usemap_page)) {
--		kfree(usemap);
-+	if (PageSlab(usage_page) || PageCompound(usage_page)) {
-+		kfree(usage);
- 		if (memmap)
- 			__kfree_section_memmap(memmap, altmap);
- 		return;
-@@ -809,19 +808,19 @@ void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
- 		unsigned long map_offset, struct vmem_altmap *altmap)
- {
- 	struct page *memmap = NULL;
--	unsigned long *usemap = NULL;
-+	struct mem_section_usage *usage = NULL;
- 
- 	if (ms->section_mem_map) {
--		usemap = ms->pageblock_flags;
-+		usage = ms->usage;
- 		memmap = sparse_decode_mem_map(ms->section_mem_map,
- 						__section_nr(ms));
- 		ms->section_mem_map = 0;
--		ms->pageblock_flags = NULL;
-+		ms->usage = NULL;
- 	}
- 
- 	clear_hwpoisoned_pages(memmap + map_offset,
- 			PAGES_PER_SECTION - map_offset);
--	free_section_usemap(memmap, usemap, altmap);
-+	free_section_usage(memmap, usage, altmap);
- }
- #endif /* CONFIG_MEMORY_HOTREMOVE */
- #endif /* CONFIG_MEMORY_HOTPLUG */
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+VXAtbGV2ZWwgdGhlIGxvY2FsIHNlY3Rpb24gc2l6ZSBhbmQgbWFzayBmcm9tIGtlcm5lbC9tZW1y
+ZW1hcC5jIHRvCmdsb2JhbCBkZWZpbml0aW9ucy4gIFRoZXNlIHdpbGwgYmUgdXNlZCBieSB0aGUg
+bmV3IHN1Yi1zZWN0aW9uIGhvdHBsdWcKc3VwcG9ydC4KCkNjOiBNaWNoYWwgSG9ja28gPG1ob2Nr
+b0BzdXNlLmNvbT4KQ2M6IFZsYXN0aW1pbCBCYWJrYSA8dmJhYmthQHN1c2UuY3o+CkNjOiBKw6ly
+w7RtZSBHbGlzc2UgPGpnbGlzc2VAcmVkaGF0LmNvbT4KQ2M6IExvZ2FuIEd1bnRob3JwZSA8bG9n
+YW5nQGRlbHRhdGVlLmNvbT4KU2lnbmVkLW9mZi1ieTogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxs
+aWFtc0BpbnRlbC5jb20+Ci0tLQogaW5jbHVkZS9saW51eC9tbXpvbmUuaCB8ICAgIDIgKysKIGtl
+cm5lbC9tZW1yZW1hcC5jICAgICAgfCAgIDEwICsrKystLS0tLS0KIG1tL2htbS5jICAgICAgICAg
+ICAgICAgfCAgICAyIC0tCiAzIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwgOCBkZWxl
+dGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L21tem9uZS5oIGIvaW5jbHVkZS9s
+aW51eC9tbXpvbmUuaAppbmRleCBmMGJiZDg1ZGMxOWEuLjY3MjZmYzE3NWI1MSAxMDA2NDQKLS0t
+IGEvaW5jbHVkZS9saW51eC9tbXpvbmUuaAorKysgYi9pbmNsdWRlL2xpbnV4L21tem9uZS5oCkBA
+IC0xMTM0LDYgKzExMzQsOCBAQCBzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgZWFybHlfcGZu
+X3RvX25pZCh1bnNpZ25lZCBsb25nIHBmbikKICAqIFBGTl9TRUNUSU9OX1NISUZUCQlwZm4gdG8v
+ZnJvbSBzZWN0aW9uIG51bWJlcgogICovCiAjZGVmaW5lIFBBX1NFQ1RJT05fU0hJRlQJKFNFQ1RJ
+T05fU0laRV9CSVRTKQorI2RlZmluZSBQQV9TRUNUSU9OX1NJWkUJCSgxVUwgPDwgUEFfU0VDVElP
+Tl9TSElGVCkKKyNkZWZpbmUgUEFfU0VDVElPTl9NQVNLCQkofihQQV9TRUNUSU9OX1NJWkUtMSkp
+CiAjZGVmaW5lIFBGTl9TRUNUSU9OX1NISUZUCShTRUNUSU9OX1NJWkVfQklUUyAtIFBBR0VfU0hJ
+RlQpCiAKICNkZWZpbmUgTlJfTUVNX1NFQ1RJT05TCQkoMVVMIDw8IFNFQ1RJT05TX1NISUZUKQpk
+aWZmIC0tZ2l0IGEva2VybmVsL21lbXJlbWFwLmMgYi9rZXJuZWwvbWVtcmVtYXAuYwppbmRleCA0
+ZTU5ZDI5MjQ1ZjQuLmYzNTU1ODZlYTU0YSAxMDA2NDQKLS0tIGEva2VybmVsL21lbXJlbWFwLmMK
+KysrIGIva2VybmVsL21lbXJlbWFwLmMKQEAgLTE0LDggKzE0LDYgQEAKICNpbmNsdWRlIDxsaW51
+eC9obW0uaD4KIAogc3RhdGljIERFRklORV9YQVJSQVkocGdtYXBfYXJyYXkpOwotI2RlZmluZSBT
+RUNUSU9OX01BU0sgfigoMVVMIDw8IFBBX1NFQ1RJT05fU0hJRlQpIC0gMSkKLSNkZWZpbmUgU0VD
+VElPTl9TSVpFICgxVUwgPDwgUEFfU0VDVElPTl9TSElGVCkKIAogI2lmIElTX0VOQUJMRUQoQ09O
+RklHX0RFVklDRV9QUklWQVRFKQogdm1fZmF1bHRfdCBkZXZpY2VfcHJpdmF0ZV9lbnRyeV9mYXVs
+dChzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSwKQEAgLTk4LDggKzk2LDggQEAgc3RhdGljIHZv
+aWQgZGV2bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZvaWQgKmRhdGEpCiAJCXB1dF9wYWdlKHBm
+bl90b19wYWdlKHBmbikpOwogCiAJLyogcGFnZXMgYXJlIGRlYWQgYW5kIHVudXNlZCwgdW5kbyB0
+aGUgYXJjaCBtYXBwaW5nICovCi0JYWxpZ25fc3RhcnQgPSByZXMtPnN0YXJ0ICYgfihTRUNUSU9O
+X1NJWkUgLSAxKTsKLQlhbGlnbl9zaXplID0gQUxJR04ocmVzLT5zdGFydCArIHJlc291cmNlX3Np
+emUocmVzKSwgU0VDVElPTl9TSVpFKQorCWFsaWduX3N0YXJ0ID0gcmVzLT5zdGFydCAmIH4oUEFf
+U0VDVElPTl9TSVpFIC0gMSk7CisJYWxpZ25fc2l6ZSA9IEFMSUdOKHJlcy0+c3RhcnQgKyByZXNv
+dXJjZV9zaXplKHJlcyksIFBBX1NFQ1RJT05fU0laRSkKIAkJLSBhbGlnbl9zdGFydDsKIAogCW5p
+ZCA9IHBhZ2VfdG9fbmlkKHBmbl90b19wYWdlKGFsaWduX3N0YXJ0ID4+IFBBR0VfU0hJRlQpKTsK
+QEAgLTE2MCw4ICsxNTgsOCBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0cnVjdCBkZXZp
+Y2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlpZiAoIXBnbWFwLT5yZWYgfHwg
+IXBnbWFwLT5raWxsKQogCQlyZXR1cm4gRVJSX1BUUigtRUlOVkFMKTsKIAotCWFsaWduX3N0YXJ0
+ID0gcmVzLT5zdGFydCAmIH4oU0VDVElPTl9TSVpFIC0gMSk7Ci0JYWxpZ25fc2l6ZSA9IEFMSUdO
+KHJlcy0+c3RhcnQgKyByZXNvdXJjZV9zaXplKHJlcyksIFNFQ1RJT05fU0laRSkKKwlhbGlnbl9z
+dGFydCA9IHJlcy0+c3RhcnQgJiB+KFBBX1NFQ1RJT05fU0laRSAtIDEpOworCWFsaWduX3NpemUg
+PSBBTElHTihyZXMtPnN0YXJ0ICsgcmVzb3VyY2Vfc2l6ZShyZXMpLCBQQV9TRUNUSU9OX1NJWkUp
+CiAJCS0gYWxpZ25fc3RhcnQ7CiAJYWxpZ25fZW5kID0gYWxpZ25fc3RhcnQgKyBhbGlnbl9zaXpl
+IC0gMTsKIApkaWZmIC0tZ2l0IGEvbW0vaG1tLmMgYi9tbS9obW0uYwppbmRleCAwZGI4NDkxMDkw
+YjguLmE3ZTdmOGUzM2M1ZiAxMDA2NDQKLS0tIGEvbW0vaG1tLmMKKysrIGIvbW0vaG1tLmMKQEAg
+LTM0LDggKzM0LDYgQEAKICNpbmNsdWRlIDxsaW51eC9tbXVfbm90aWZpZXIuaD4KICNpbmNsdWRl
+IDxsaW51eC9tZW1vcnlfaG90cGx1Zy5oPgogCi0jZGVmaW5lIFBBX1NFQ1RJT05fU0laRSAoMVVM
+IDw8IFBBX1NFQ1RJT05fU0hJRlQpCi0KICNpZiBJU19FTkFCTEVEKENPTkZJR19ITU1fTUlSUk9S
+KQogc3RhdGljIGNvbnN0IHN0cnVjdCBtbXVfbm90aWZpZXJfb3BzIGhtbV9tbXVfbm90aWZpZXJf
+b3BzOwogCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
+aW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6
+Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
