@@ -2,60 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A99A1131D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 08:07:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFFC11481
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 09:48:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8B79E21B02822;
-	Wed,  1 May 2019 23:07:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id BD00B21B02822;
+	Thu,  2 May 2019 00:48:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3D6BD201B03F6
- for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 23:07:34 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id r20so1046434otg.4
- for <linux-nvdimm@lists.01.org>; Wed, 01 May 2019 23:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+eUa2WBJtTifEb3RkGF9DZb4oB8mFlPtN9ka+3YCHXQ=;
- b=j2Qp3PZj0gAuSV09rXDWyVVdTgNPHV1NuRFvruWgIdSKimbJnOwIGC0fYBy5B5qoHJ
- Rrn1Db9TkutnPaxiErVY866vskShinsDhpr6Q1ojWBBuL55Bdt2rtZfuofkk6TzuXaYc
- fHoPj3YHxRK09nnIprBPHa76pyDTPTBXY4iusLJB1qS5eHRaqbZIhiiejETqGTj4LIQW
- AUQk+uBMSEzTJARjaMzAY1wHxa0JIuuyQCvwlwqKS0DPwQ+s4eEbB4H+z2MEe2H3bDFZ
- mjkGIfFMLLHa/uKpBIQLuDLN98DrEZL+dCtIfDZ8MQaPIRagyD/tOcYYTrfo8Uc7dgO7
- yOHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+eUa2WBJtTifEb3RkGF9DZb4oB8mFlPtN9ka+3YCHXQ=;
- b=EacY1xLP0LS/+o8h3hfwD/jfeVnUgUf3j4SAk9VK8zrdurU5dUetx3wmmSNJ4I+cwn
- hU3v9gm5jGvb+/RSOSEApJ+p/pSyd8HUAxtvf2/rzV3QXVsKhZC4X2TyZk7G2DDXN4B8
- OkzKc/apQ7ayRfUz6782DRDBiv5W7qhQRSf4N+wQUX+SV4A5MtvCVIGu2GIe2To2Gt7Y
- gTLKXac+TvwM0KqsOPHnSFmZqrKTr6zfthcvkOFJKZo2F+2bXatC+wYLJ5bNnicxpJoo
- oO8XSkQeYwH/coMKwDe32u/fHdUm5VUr+0gls6Ncn7U4ZrEzrPTbWkNljdVNIHqggqdY
- az4w==
-X-Gm-Message-State: APjAAAUzA+R4gD0LC1weLrjqiwn6PNFAB7uDKEKKS5gVsMv+9uQ5xr8Y
- HIH0Z2FGgFSm3+C5MncBC19HmV3pjXEjQ9sgsHL7Mw==
-X-Google-Smtp-Source: APXvYqyuasNHY2N4vYwpauHssWwpKgShtN9TAkBJGZaP4i4nxgI12gknIizrWWjBcJs5E5SwLyuWyjQNMx423OzBves=
-X-Received: by 2002:a9d:19ed:: with SMTP id k100mr1396693otk.214.1556777252755; 
- Wed, 01 May 2019 23:07:32 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id B4254212377E0
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 00:48:14 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 5EA80AD6D;
+ Thu,  2 May 2019 07:48:12 +0000 (UTC)
+Date: Thu, 2 May 2019 09:48:08 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v7 03/12] mm/sparsemem: Add helpers track active portions
+ of a section at boot
+Message-ID: <20190502074803.GA3495@linux>
+References: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155677653785.2336373.11131100812252340469.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
-References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155552634075.2015392.3371070426600230054.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190501232517.crbmgcuk7u4gvujr@soleen.tm1wkky2jk1uhgkn0ivaxijq1c.bx.internal.cloudapp.net>
-In-Reply-To: <20190501232517.crbmgcuk7u4gvujr@soleen.tm1wkky2jk1uhgkn0ivaxijq1c.bx.internal.cloudapp.net>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 1 May 2019 23:07:21 -0700
-Message-ID: <CAPcyv4hxy86gWN3ncTQmHi8DT31k8YzsweMfGHgCh=sORMQQcg@mail.gmail.com>
-Subject: Re: [PATCH v6 01/12] mm/sparsemem: Introduce struct mem_section_usage
-To: Pavel Tatashin <pasha.tatashin@soleen.com>
+Content-Disposition: inline
+In-Reply-To: <155677653785.2336373.11131100812252340469.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,80 +44,158 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- David Hildenbrand <david@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
  Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 1, 2019 at 4:25 PM Pavel Tatashin <pasha.tatashin@soleen.com> wrote:
->
-> On 19-04-17 11:39:00, Dan Williams wrote:
-> > Towards enabling memory hotplug to track partial population of a
-> > section, introduce 'struct mem_section_usage'.
-> >
-> > A pointer to a 'struct mem_section_usage' instance replaces the existing
-> > pointer to a 'pageblock_flags' bitmap. Effectively it adds one more
-> > 'unsigned long' beyond the 'pageblock_flags' (usemap) allocation to
-> > house a new 'map_active' bitmap.  The new bitmap enables the memory
-> > hot{plug,remove} implementation to act on incremental sub-divisions of a
-> > section.
-> >
-> > The primary motivation for this functionality is to support platforms
-> > that mix "System RAM" and "Persistent Memory" within a single section,
-> > or multiple PMEM ranges with different mapping lifetimes within a single
-> > section. The section restriction for hotplug has caused an ongoing saga
-> > of hacks and bugs for devm_memremap_pages() users.
-> >
-> > Beyond the fixups to teach existing paths how to retrieve the 'usemap'
-> > from a section, and updates to usemap allocation path, there are no
-> > expected behavior changes.
-> >
-> > Cc: Michal Hocko <mhocko@suse.com>
-> > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > Cc: Logan Gunthorpe <logang@deltatee.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  include/linux/mmzone.h |   23 ++++++++++++--
-> >  mm/memory_hotplug.c    |   18 ++++++-----
-> >  mm/page_alloc.c        |    2 +
-> >  mm/sparse.c            |   81 ++++++++++++++++++++++++------------------------
-> >  4 files changed, 71 insertions(+), 53 deletions(-)
-> >
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 70394cabaf4e..f0bbd85dc19a 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -1160,6 +1160,19 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
-> >  #define SECTION_ALIGN_UP(pfn)        (((pfn) + PAGES_PER_SECTION - 1) & PAGE_SECTION_MASK)
-> >  #define SECTION_ALIGN_DOWN(pfn)      ((pfn) & PAGE_SECTION_MASK)
-> >
-> > +#define SECTION_ACTIVE_SIZE ((1UL << SECTION_SIZE_BITS) / BITS_PER_LONG)
-> > +#define SECTION_ACTIVE_MASK (~(SECTION_ACTIVE_SIZE - 1))
-> > +
-> > +struct mem_section_usage {
-> > +     /*
-> > +      * SECTION_ACTIVE_SIZE portions of the section that are populated in
-> > +      * the memmap
-> > +      */
-> > +     unsigned long map_active;
->
-> I think this should be proportional to section_size / subsection_size.
-> For example, on intel section size = 128M, and subsection is 2M, so
-> 64bits work nicely. But, on arm64 section size if 1G, so subsection is
-> 16M.
->
-> On the other hand 16M is already much better than what we have: with 1G
-> section size and 2M pmem alignment we guaranteed to loose 1022M. And
-> with 16M subsection it is only 14M.
+On Wed, May 01, 2019 at 10:55:37PM -0700, Dan Williams wrote:
+> Prepare for hot{plug,remove} of sub-ranges of a section by tracking a
+> section active bitmask, each bit representing 2MB (SECTION_SIZE (128M) /
+> map_active bitmask length (64)). If it turns out that 2MB is too large
+> of an active tracking granularity it is trivial to increase the size of
+> the map_active bitmap.
+> 
+> The implications of a partially populated section is that pfn_valid()
+> needs to go beyond a valid_section() check and read the sub-section
+> active ranges from the bitmask.
+> 
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Tested-by: Jane Chu <jane.chu@oracle.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-I'm ok with it being 16M for now unless it causes a problem in
-practice, i.e. something like the minimum hardware mapping alignment
-for physical memory being less than 16M.
+Unfortunately I did not hear back about the comments/questions I made for this
+in the previous version.
+
+> ---
+>  include/linux/mmzone.h |   29 ++++++++++++++++++++++++++++-
+>  mm/page_alloc.c        |    4 +++-
+>  mm/sparse.c            |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 79 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 6726fc175b51..cffde898e345 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1175,6 +1175,8 @@ struct mem_section_usage {
+>  	unsigned long pageblock_flags[0];
+>  };
+>  
+> +void section_active_init(unsigned long pfn, unsigned long nr_pages);
+> +
+>  struct page;
+>  struct page_ext;
+>  struct mem_section {
+> @@ -1312,12 +1314,36 @@ static inline struct mem_section *__pfn_to_section(unsigned long pfn)
+>  
+>  extern int __highest_present_section_nr;
+>  
+> +static inline int section_active_index(phys_addr_t phys)
+> +{
+> +	return (phys & ~(PA_SECTION_MASK)) / SECTION_ACTIVE_SIZE;
+> +}
+> +
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+> +{
+> +	int idx = section_active_index(PFN_PHYS(pfn));
+> +
+> +	return !!(ms->usage->map_active & (1UL << idx));
+
+section_active_mask() also converts the value to address/size.
+Why do we need to convert the values and we cannot work with pfn/pages instead?
+It should be perfectly possible unless I am missing something.
+
+The only thing required would be to export earlier your:
+
++#define PAGES_PER_SUB_SECTION (SECTION_ACTIVE_SIZE / PAGE_SIZE)
++#define PAGE_SUB_SECTION_MASK (~(PAGES_PER_SUB_SECTION-1))
+
+and change section_active_index to:
+
+static inline int section_active_index(unsigned long pfn)
+{
+	return (pfn & ~(PAGE_SECTION_MASK)) / SUB_SECTION_ACTIVE_PAGES;
+}
+
+In this way we do need to shift the values every time and we can work with them
+directly.
+Maybe you made it work this way because a reason I am missing.
+
+> +static unsigned long section_active_mask(unsigned long pfn,
+> +		unsigned long nr_pages)
+> +{
+> +	int idx_start, idx_size;
+> +	phys_addr_t start, size;
+> +
+> +	if (!nr_pages)
+> +		return 0;
+> +
+> +	start = PFN_PHYS(pfn);
+> +	size = PFN_PHYS(min(nr_pages, PAGES_PER_SECTION
+> +				- (pfn & ~PAGE_SECTION_MASK)));
+
+It seems to me that we already picked the lowest value back in
+section_active_init, so we should be fine if we drop the min() here?
+
+Another thing is why do we need to convert the values to address/size, and we
+cannot work with pfns/pages.
+Unless I am missing something it should be possible.
+
+> +	size = ALIGN(size, SECTION_ACTIVE_SIZE);
+> +
+> +	idx_start = section_active_index(start);
+> +	idx_size = section_active_index(size);
+> +
+> +	if (idx_size == 0)
+> +		return -1;
+
+Maybe we would be better off converting that -1 into something like "FULL_SECTION",
+or at least dropping a comment there that "-1" means that the section is fully
+populated.
+
+> +	return ((1UL << idx_size) - 1) << idx_start;
+> +}
+> +
+> +void section_active_init(unsigned long pfn, unsigned long nr_pages)
+> +{
+> +	int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
+> +	int i, start_sec = pfn_to_section_nr(pfn);
+> +
+> +	if (!nr_pages)
+> +		return;
+> +
+> +	for (i = start_sec; i <= end_sec; i++) {
+> +		struct mem_section *ms;
+> +		unsigned long mask;
+> +		unsigned long pfns;
+> +
+> +		pfns = min(nr_pages, PAGES_PER_SECTION
+> +				- (pfn & ~PAGE_SECTION_MASK));
+> +		mask = section_active_mask(pfn, pfns);
+> +
+> +		ms = __nr_to_section(i);
+> +		ms->usage->map_active |= mask;
+> +		pr_debug("%s: sec: %d mask: %#018lx\n", __func__, i, ms->usage->map_active);
+> +
+> +		pfn += pfns;
+> +		nr_pages -= pfns;
+> +	}
+> +}
+> +
+>  /* Record a memory area against a node. */
+>  void __init memory_present(int nid, unsigned long start, unsigned long end)
+>  {
+> 
+
+-- 
+Oscar Salvador
+SUSE L3
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
