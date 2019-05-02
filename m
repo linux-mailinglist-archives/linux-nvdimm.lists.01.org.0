@@ -1,42 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231C71133D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 08:10:17 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A99A1131D
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 08:07:39 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D214721237AA5;
-	Wed,  1 May 2019 23:10:15 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8B79E21B02822;
+	Wed,  1 May 2019 23:07:37 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.151; helo=mga17.intel.com;
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D0D91212377FF
- for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 23:10:14 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 01 May 2019 23:10:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,420,1549958400"; d="scan'208";a="166797701"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga002.fm.intel.com with ESMTP; 01 May 2019 23:10:12 -0700
-Subject: [PATCH v7 12/12] libnvdimm/pfn: Stop padding pmem namespaces to
- section alignment
-From: Dan Williams <dan.j.williams@intel.com>
-To: akpm@linux-foundation.org
-Date: Wed, 01 May 2019 22:56:26 -0700
-Message-ID: <155677658661.2336373.9934181067409522929.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+ by ml01.01.org (Postfix) with ESMTPS id 3D6BD201B03F6
+ for <linux-nvdimm@lists.01.org>; Wed,  1 May 2019 23:07:34 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id r20so1046434otg.4
+ for <linux-nvdimm@lists.01.org>; Wed, 01 May 2019 23:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+eUa2WBJtTifEb3RkGF9DZb4oB8mFlPtN9ka+3YCHXQ=;
+ b=j2Qp3PZj0gAuSV09rXDWyVVdTgNPHV1NuRFvruWgIdSKimbJnOwIGC0fYBy5B5qoHJ
+ Rrn1Db9TkutnPaxiErVY866vskShinsDhpr6Q1ojWBBuL55Bdt2rtZfuofkk6TzuXaYc
+ fHoPj3YHxRK09nnIprBPHa76pyDTPTBXY4iusLJB1qS5eHRaqbZIhiiejETqGTj4LIQW
+ AUQk+uBMSEzTJARjaMzAY1wHxa0JIuuyQCvwlwqKS0DPwQ+s4eEbB4H+z2MEe2H3bDFZ
+ mjkGIfFMLLHa/uKpBIQLuDLN98DrEZL+dCtIfDZ8MQaPIRagyD/tOcYYTrfo8Uc7dgO7
+ yOHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+eUa2WBJtTifEb3RkGF9DZb4oB8mFlPtN9ka+3YCHXQ=;
+ b=EacY1xLP0LS/+o8h3hfwD/jfeVnUgUf3j4SAk9VK8zrdurU5dUetx3wmmSNJ4I+cwn
+ hU3v9gm5jGvb+/RSOSEApJ+p/pSyd8HUAxtvf2/rzV3QXVsKhZC4X2TyZk7G2DDXN4B8
+ OkzKc/apQ7ayRfUz6782DRDBiv5W7qhQRSf4N+wQUX+SV4A5MtvCVIGu2GIe2To2Gt7Y
+ gTLKXac+TvwM0KqsOPHnSFmZqrKTr6zfthcvkOFJKZo2F+2bXatC+wYLJ5bNnicxpJoo
+ oO8XSkQeYwH/coMKwDe32u/fHdUm5VUr+0gls6Ncn7U4ZrEzrPTbWkNljdVNIHqggqdY
+ az4w==
+X-Gm-Message-State: APjAAAUzA+R4gD0LC1weLrjqiwn6PNFAB7uDKEKKS5gVsMv+9uQ5xr8Y
+ HIH0Z2FGgFSm3+C5MncBC19HmV3pjXEjQ9sgsHL7Mw==
+X-Google-Smtp-Source: APXvYqyuasNHY2N4vYwpauHssWwpKgShtN9TAkBJGZaP4i4nxgI12gknIizrWWjBcJs5E5SwLyuWyjQNMx423OzBves=
+X-Received: by 2002:a9d:19ed:: with SMTP id k100mr1396693otk.214.1556777252755; 
+ Wed, 01 May 2019 23:07:32 -0700 (PDT)
 MIME-Version: 1.0
+References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155552634075.2015392.3371070426600230054.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190501232517.crbmgcuk7u4gvujr@soleen.tm1wkky2jk1uhgkn0ivaxijq1c.bx.internal.cloudapp.net>
+In-Reply-To: <20190501232517.crbmgcuk7u4gvujr@soleen.tm1wkky2jk1uhgkn0ivaxijq1c.bx.internal.cloudapp.net>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 1 May 2019 23:07:21 -0700
+Message-ID: <CAPcyv4hxy86gWN3ncTQmHi8DT31k8YzsweMfGHgCh=sORMQQcg@mail.gmail.com>
+Subject: Re: [PATCH v6 01/12] mm/sparsemem: Introduce struct mem_section_usage
+To: Pavel Tatashin <pasha.tatashin@soleen.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,219 +67,80 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: mhocko@suse.com, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, osalvador@suse.de
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ David Hildenbrand <david@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Now that the mm core supports section-unaligned hotplug of ZONE_DEVICE
-memory, we no longer need to add padding at pfn/dax device creation
-time. The kernel will still honor padding established by older kernels.
+On Wed, May 1, 2019 at 4:25 PM Pavel Tatashin <pasha.tatashin@soleen.com> wrote:
+>
+> On 19-04-17 11:39:00, Dan Williams wrote:
+> > Towards enabling memory hotplug to track partial population of a
+> > section, introduce 'struct mem_section_usage'.
+> >
+> > A pointer to a 'struct mem_section_usage' instance replaces the existing
+> > pointer to a 'pageblock_flags' bitmap. Effectively it adds one more
+> > 'unsigned long' beyond the 'pageblock_flags' (usemap) allocation to
+> > house a new 'map_active' bitmap.  The new bitmap enables the memory
+> > hot{plug,remove} implementation to act on incremental sub-divisions of a
+> > section.
+> >
+> > The primary motivation for this functionality is to support platforms
+> > that mix "System RAM" and "Persistent Memory" within a single section,
+> > or multiple PMEM ranges with different mapping lifetimes within a single
+> > section. The section restriction for hotplug has caused an ongoing saga
+> > of hacks and bugs for devm_memremap_pages() users.
+> >
+> > Beyond the fixups to teach existing paths how to retrieve the 'usemap'
+> > from a section, and updates to usemap allocation path, there are no
+> > expected behavior changes.
+> >
+> > Cc: Michal Hocko <mhocko@suse.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: Logan Gunthorpe <logang@deltatee.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  include/linux/mmzone.h |   23 ++++++++++++--
+> >  mm/memory_hotplug.c    |   18 ++++++-----
+> >  mm/page_alloc.c        |    2 +
+> >  mm/sparse.c            |   81 ++++++++++++++++++++++++------------------------
+> >  4 files changed, 71 insertions(+), 53 deletions(-)
+> >
+> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> > index 70394cabaf4e..f0bbd85dc19a 100644
+> > --- a/include/linux/mmzone.h
+> > +++ b/include/linux/mmzone.h
+> > @@ -1160,6 +1160,19 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
+> >  #define SECTION_ALIGN_UP(pfn)        (((pfn) + PAGES_PER_SECTION - 1) & PAGE_SECTION_MASK)
+> >  #define SECTION_ALIGN_DOWN(pfn)      ((pfn) & PAGE_SECTION_MASK)
+> >
+> > +#define SECTION_ACTIVE_SIZE ((1UL << SECTION_SIZE_BITS) / BITS_PER_LONG)
+> > +#define SECTION_ACTIVE_MASK (~(SECTION_ACTIVE_SIZE - 1))
+> > +
+> > +struct mem_section_usage {
+> > +     /*
+> > +      * SECTION_ACTIVE_SIZE portions of the section that are populated in
+> > +      * the memmap
+> > +      */
+> > +     unsigned long map_active;
+>
+> I think this should be proportional to section_size / subsection_size.
+> For example, on intel section size = 128M, and subsection is 2M, so
+> 64bits work nicely. But, on arm64 section size if 1G, so subsection is
+> 16M.
+>
+> On the other hand 16M is already much better than what we have: with 1G
+> section size and 2M pmem alignment we guaranteed to loose 1022M. And
+> with 16M subsection it is only 14M.
 
-Reported-by: Jeff Moyer <jmoyer@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/nvdimm/pfn.h      |   11 ++-----
- drivers/nvdimm/pfn_devs.c |   75 +++++++--------------------------------------
- include/linux/mmzone.h    |    4 ++
- 3 files changed, 19 insertions(+), 71 deletions(-)
-
-diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
-index e901e3a3b04c..ae589cc528f2 100644
---- a/drivers/nvdimm/pfn.h
-+++ b/drivers/nvdimm/pfn.h
-@@ -41,18 +41,13 @@ struct nd_pfn_sb {
- 	__le64 checksum;
- };
- 
--#ifdef CONFIG_SPARSEMEM
--#define PFN_SECTION_ALIGN_DOWN(x) SECTION_ALIGN_DOWN(x)
--#define PFN_SECTION_ALIGN_UP(x) SECTION_ALIGN_UP(x)
--#else
- /*
-  * In this case ZONE_DEVICE=n and we will disable 'pfn' device support,
-  * but we still want pmem to compile.
-  */
--#define PFN_SECTION_ALIGN_DOWN(x) (x)
--#define PFN_SECTION_ALIGN_UP(x) (x)
-+#ifndef SUB_SECTION_ALIGN_DOWN
-+#define SUB_SECTION_ALIGN_DOWN(x) (x)
-+#define SUB_SECTION_ALIGN_UP(x) (x)
- #endif
- 
--#define PHYS_SECTION_ALIGN_DOWN(x) PFN_PHYS(PFN_SECTION_ALIGN_DOWN(PHYS_PFN(x)))
--#define PHYS_SECTION_ALIGN_UP(x) PFN_PHYS(PFN_SECTION_ALIGN_UP(PHYS_PFN(x)))
- #endif /* __NVDIMM_PFN_H */
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index a2406253eb70..7bdaaf3dc77e 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -595,14 +595,14 @@ static u32 info_block_reserve(void)
- }
- 
- /*
-- * We hotplug memory at section granularity, pad the reserved area from
-- * the previous section base to the namespace base address.
-+ * We hotplug memory at sub-section granularity, pad the reserved area
-+ * from the previous section base to the namespace base address.
-  */
- static unsigned long init_altmap_base(resource_size_t base)
- {
- 	unsigned long base_pfn = PHYS_PFN(base);
- 
--	return PFN_SECTION_ALIGN_DOWN(base_pfn);
-+	return SUB_SECTION_ALIGN_DOWN(base_pfn);
- }
- 
- static unsigned long init_altmap_reserve(resource_size_t base)
-@@ -610,7 +610,7 @@ static unsigned long init_altmap_reserve(resource_size_t base)
- 	unsigned long reserve = info_block_reserve() >> PAGE_SHIFT;
- 	unsigned long base_pfn = PHYS_PFN(base);
- 
--	reserve += base_pfn - PFN_SECTION_ALIGN_DOWN(base_pfn);
-+	reserve += base_pfn - SUB_SECTION_ALIGN_DOWN(base_pfn);
- 	return reserve;
- }
- 
-@@ -641,8 +641,7 @@ static int __nvdimm_setup_pfn(struct nd_pfn *nd_pfn, struct dev_pagemap *pgmap)
- 		nd_pfn->npfns = le64_to_cpu(pfn_sb->npfns);
- 		pgmap->altmap_valid = false;
- 	} else if (nd_pfn->mode == PFN_MODE_PMEM) {
--		nd_pfn->npfns = PFN_SECTION_ALIGN_UP((resource_size(res)
--					- offset) / PAGE_SIZE);
-+		nd_pfn->npfns = PHYS_PFN((resource_size(res) - offset));
- 		if (le64_to_cpu(nd_pfn->pfn_sb->npfns) > nd_pfn->npfns)
- 			dev_info(&nd_pfn->dev,
- 					"number of pfns truncated from %lld to %ld\n",
-@@ -658,50 +657,10 @@ static int __nvdimm_setup_pfn(struct nd_pfn *nd_pfn, struct dev_pagemap *pgmap)
- 	return 0;
- }
- 
--static u64 phys_pmem_align_down(struct nd_pfn *nd_pfn, u64 phys)
--{
--	return min_t(u64, PHYS_SECTION_ALIGN_DOWN(phys),
--			ALIGN_DOWN(phys, nd_pfn->align));
--}
--
--/*
-- * Check if pmem collides with 'System RAM', or other regions when
-- * section aligned.  Trim it accordingly.
-- */
--static void trim_pfn_device(struct nd_pfn *nd_pfn, u32 *start_pad, u32 *end_trunc)
--{
--	struct nd_namespace_common *ndns = nd_pfn->ndns;
--	struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
--	struct nd_region *nd_region = to_nd_region(nd_pfn->dev.parent);
--	const resource_size_t start = nsio->res.start;
--	const resource_size_t end = start + resource_size(&nsio->res);
--	resource_size_t adjust, size;
--
--	*start_pad = 0;
--	*end_trunc = 0;
--
--	adjust = start - PHYS_SECTION_ALIGN_DOWN(start);
--	size = resource_size(&nsio->res) + adjust;
--	if (region_intersects(start - adjust, size, IORESOURCE_SYSTEM_RAM,
--				IORES_DESC_NONE) == REGION_MIXED
--			|| nd_region_conflict(nd_region, start - adjust, size))
--		*start_pad = PHYS_SECTION_ALIGN_UP(start) - start;
--
--	/* Now check that end of the range does not collide. */
--	adjust = PHYS_SECTION_ALIGN_UP(end) - end;
--	size = resource_size(&nsio->res) + adjust;
--	if (region_intersects(start, size, IORESOURCE_SYSTEM_RAM,
--				IORES_DESC_NONE) == REGION_MIXED
--			|| !IS_ALIGNED(end, nd_pfn->align)
--			|| nd_region_conflict(nd_region, start, size))
--		*end_trunc = end - phys_pmem_align_down(nd_pfn, end);
--}
--
- static int nd_pfn_init(struct nd_pfn *nd_pfn)
- {
- 	struct nd_namespace_common *ndns = nd_pfn->ndns;
- 	struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
--	u32 start_pad, end_trunc, reserve = info_block_reserve();
- 	resource_size_t start, size;
- 	struct nd_region *nd_region;
- 	struct nd_pfn_sb *pfn_sb;
-@@ -736,43 +695,35 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 		return -ENXIO;
- 	}
- 
--	memset(pfn_sb, 0, sizeof(*pfn_sb));
--
--	trim_pfn_device(nd_pfn, &start_pad, &end_trunc);
--	if (start_pad + end_trunc)
--		dev_info(&nd_pfn->dev, "%s alignment collision, truncate %d bytes\n",
--				dev_name(&ndns->dev), start_pad + end_trunc);
--
- 	/*
- 	 * Note, we use 64 here for the standard size of struct page,
- 	 * debugging options may cause it to be larger in which case the
- 	 * implementation will limit the pfns advertised through
- 	 * ->direct_access() to those that are included in the memmap.
- 	 */
--	start = nsio->res.start + start_pad;
-+	start = nsio->res.start;
- 	size = resource_size(&nsio->res);
--	npfns = PFN_SECTION_ALIGN_UP((size - start_pad - end_trunc - reserve)
--			/ PAGE_SIZE);
-+	npfns = PHYS_PFN(size - SZ_8K);
- 	if (nd_pfn->mode == PFN_MODE_PMEM) {
- 		/*
- 		 * The altmap should be padded out to the block size used
- 		 * when populating the vmemmap. This *should* be equal to
- 		 * PMD_SIZE for most architectures.
- 		 */
--		offset = ALIGN(start + reserve + 64 * npfns,
--				max(nd_pfn->align, PMD_SIZE)) - start;
-+		offset = ALIGN(start + SZ_8K + 64 * npfns,
-+				max(nd_pfn->align, SECTION_ACTIVE_SIZE)) - start;
- 	} else if (nd_pfn->mode == PFN_MODE_RAM)
--		offset = ALIGN(start + reserve, nd_pfn->align) - start;
-+		offset = ALIGN(start + SZ_8K, nd_pfn->align) - start;
- 	else
- 		return -ENXIO;
- 
--	if (offset + start_pad + end_trunc >= size) {
-+	if (offset >= size) {
- 		dev_err(&nd_pfn->dev, "%s unable to satisfy requested alignment\n",
- 				dev_name(&ndns->dev));
- 		return -ENXIO;
- 	}
- 
--	npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
-+	npfns = PHYS_PFN(size - offset);
- 	pfn_sb->mode = cpu_to_le32(nd_pfn->mode);
- 	pfn_sb->dataoff = cpu_to_le64(offset);
- 	pfn_sb->npfns = cpu_to_le64(npfns);
-@@ -781,8 +732,6 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 	memcpy(pfn_sb->parent_uuid, nd_dev_to_uuid(&ndns->dev), 16);
- 	pfn_sb->version_major = cpu_to_le16(1);
- 	pfn_sb->version_minor = cpu_to_le16(3);
--	pfn_sb->start_pad = cpu_to_le32(start_pad);
--	pfn_sb->end_trunc = cpu_to_le32(end_trunc);
- 	pfn_sb->align = cpu_to_le32(nd_pfn->align);
- 	checksum = nd_sb_checksum((struct nd_gen_sb *) pfn_sb);
- 	pfn_sb->checksum = cpu_to_le64(checksum);
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 3237c5e456df..d2445c483ad4 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1155,6 +1155,10 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
- #define PAGES_PER_SUB_SECTION (SECTION_ACTIVE_SIZE / PAGE_SIZE)
- #define PAGE_SUB_SECTION_MASK (~(PAGES_PER_SUB_SECTION-1))
- 
-+#define SUB_SECTION_ALIGN_UP(pfn) (((pfn) + PAGES_PER_SUB_SECTION - 1) \
-+		& PAGE_SUB_SECTION_MASK)
-+#define SUB_SECTION_ALIGN_DOWN(pfn) ((pfn) & PAGE_SUB_SECTION_MASK)
-+
- struct mem_section_usage {
- 	/*
- 	 * SECTION_ACTIVE_SIZE portions of the section that are populated in
-
+I'm ok with it being 16M for now unless it causes a problem in
+practice, i.e. something like the minimum hardware mapping alignment
+for physical memory being less than 16M.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
