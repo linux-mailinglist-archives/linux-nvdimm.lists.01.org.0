@@ -2,68 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CFC1239C
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 22:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3701123F7
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 23:16:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4D1B9212449EA;
-	Thu,  2 May 2019 13:50:36 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D9A1821243BC7;
+	Thu,  2 May 2019 14:16:28 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 23A9921243BC7
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 13:50:33 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 02 May 2019 13:50:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,423,1549958400"; d="scan'208";a="140790498"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
- by orsmga006.jf.intel.com with ESMTP; 02 May 2019 13:50:31 -0700
-Received: from fmsmsx155.amr.corp.intel.com (10.18.116.71) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Thu, 2 May 2019 13:50:31 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.30]) by
- FMSMSX155.amr.corp.intel.com ([169.254.5.71]) with mapi id 14.03.0415.000;
- Thu, 2 May 2019 13:50:30 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "jmorris@namei.org" <jmorris@namei.org>, "tiwai@suse.de" <tiwai@suse.de>,
- "sashal@kernel.org" <sashal@kernel.org>, "pasha.tatashin@soleen.com"
- <pasha.tatashin@soleen.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "david@redhat.com" <david@redhat.com>, "bp@suse.de" <bp@suse.de>, "Williams,
- Dan J" <dan.j.williams@intel.com>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "linux-nvdimm@lists.01.org"
- <linux-nvdimm@lists.01.org>, "jglisse@redhat.com" <jglisse@redhat.com>,
- "zwisler@kernel.org" <zwisler@kernel.org>, "mhocko@suse.com"
- <mhocko@suse.com>, "Jiang, Dave" <dave.jiang@intel.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>, "Busch, Keith"
- <keith.busch@intel.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
- "Huang, Ying" <ying.huang@intel.com>, "Wu, Fengguang"
- <fengguang.wu@intel.com>, "baiyaowei@cmss.chinamobile.com"
- <baiyaowei@cmss.chinamobile.com>
-Subject: Re: [v5 0/3] "Hotremove" persistent memory
-Thread-Topic: [v5 0/3] "Hotremove" persistent memory
-Thread-Index: AQHVARb3UO0Lxl+oRESN1JIk0+ExN6ZYxIMA
-Date: Thu, 2 May 2019 20:50:30 +0000
-Message-ID: <76dfe7943f2a0ceaca73f5fd23e944dfdc0309d1.camel@intel.com>
-References: <20190502184337.20538-1-pasha.tatashin@soleen.com>
-In-Reply-To: <20190502184337.20538-1-pasha.tatashin@soleen.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <66CC36D5F7E4B44EB689D71200F1FBD1@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 44D5321243BA5
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 14:16:27 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id w22so317196pgi.6
+ for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 14:16:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=SXzn4PL7BS9Zk+Qjz5Z6ao7p78pnuZhgvrrpjIHBgqs=;
+ b=kCJFdJIIF969KctuD3d2wM6Ofbq6dPOZFLTH8wlGl+7+cVokVRuDwro7NOWN9ohV8k
+ ImAl50lyzEBsv7yN+yDsApIRZoLtSCfwhyzyxPvjXoEWcvwOBh4YVBGfYFjfXofVIUhG
+ 4IdfwHyJltRS5sW89ee6jcilUM33Ka1rf9l/1hx/r4xvkgirrOsCcjMVyOo7fNRjZFEX
+ W57GSaPxOGJB3pNyXX+NzqVUj3/2JEPXwOjRvCBv8sNkyMt8fb6SSscfdGTffg6t6JdB
+ E1xSneePimV/qvTL3gOacgC8P6jcyMC1ik1HBxyp2Tove1HOXYfOKbo6mTy7cNVaJPvY
+ TkNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=SXzn4PL7BS9Zk+Qjz5Z6ao7p78pnuZhgvrrpjIHBgqs=;
+ b=tw2CQZaT7Ri0uKW8rIgjaRanBidfqN0KkWVSV26XW31bdWXfzzGHk+IFGvJ00OmUj8
+ kpuTtYbQ/zRO9OlcDnoEFfGt6k5+4TN9JYAgpFpLTqluRrD4t8rpLv9DHR8UdIXCgKTl
+ xnUNiGCDAVsudA7gMGIc5yoBMnOSMWQiTmOu3seOVq3CJRGZtxqInBtEc8F8AceY81Z/
+ obDx4xqH5+d6LASXaCj75a50jUCKVQUVLjGaLzuo+JI6n7RhbGN1mDqKjoH5+Kbxnfcb
+ dmOPhfUBlnevdLEpG9Vp/fUewMIHfRk41Au/6NENnARb6rgz1UEUkgUO1nuTN4s67vJi
+ It3A==
+X-Gm-Message-State: APjAAAWY/gM+5ZO1+FqbNiNXOo9PRr8yuGo3dq0MMWG7D81H5hRVI49k
+ MZOvVxEMHbYYajNnqLaKgyw=
+X-Google-Smtp-Source: APXvYqyaAKrOO8dNkOZg12O3d42lENfOgkrL7qBtR/V01hTlj71I+CQb4vEU5IP/L2A0+G0+xdSQEg==
+X-Received: by 2002:a63:5f42:: with SMTP id t63mr6174518pgb.275.1556831786717; 
+ Thu, 02 May 2019 14:16:26 -0700 (PDT)
+Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
+ [24.6.192.50])
+ by smtp.gmail.com with ESMTPSA id f63sm102173pfc.180.2019.05.02.14.16.23
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 02 May 2019 14:16:26 -0700 (PDT)
+Subject: Re: [PATCH v2 12/17] kunit: tool: add Python wrappers for running
+ KUnit tests
+To: Brendan Higgins <brendanhiggins@google.com>,
+ Greg KH <gregkh@linuxfoundation.org>
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <20190501230126.229218-13-brendanhiggins@google.com>
+ <20190502110220.GD12416@kroah.com>
+ <CAFd5g47t=EdLKFCT=CnPkrM2z0nDVo24Gz4j0VxFOJbARP37Lg@mail.gmail.com>
+From: Frank Rowand <frowand.list@gmail.com>
+Message-ID: <a49c5088-a821-210c-66de-f422536f5b01@gmail.com>
+Date: Thu, 2 May 2019 14:16:23 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <CAFd5g47t=EdLKFCT=CnPkrM2z0nDVo24Gz4j0VxFOJbARP37Lg@mail.gmail.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,185 +79,76 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
+ Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
+ shuah@kernel.org, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
+ Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Felix Guo <felixguoxiuping@gmail.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ kunit-dev@googlegroups.com, Richard Weinberger <richard@nod.at>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, 2019-05-02 at 14:43 -0400, Pavel Tatashin wrote:
-> The series of operations look like this:
+On 5/2/19 11:07 AM, Brendan Higgins wrote:
+> On Thu, May 2, 2019 at 4:02 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Wed, May 01, 2019 at 04:01:21PM -0700, Brendan Higgins wrote:
+>>> From: Felix Guo <felixguoxiuping@gmail.com>
+>>>
+>>> The ultimate goal is to create minimal isolated test binaries; in the
+>>> meantime we are using UML to provide the infrastructure to run tests, so
+>>> define an abstract way to configure and run tests that allow us to
+>>> change the context in which tests are built without affecting the user.
+>>> This also makes pretty and dynamic error reporting, and a lot of other
+>>> nice features easier.
+>>>
+>>> kunit_config.py:
+>>>   - parse .config and Kconfig files.
+>>>
+>>> kunit_kernel.py: provides helper functions to:
+>>>   - configure the kernel using kunitconfig.
+>>>   - build the kernel with the appropriate configuration.
+>>>   - provide function to invoke the kernel and stream the output back.
+>>>
+>>> Signed-off-by: Felix Guo <felixguoxiuping@gmail.com>
+>>> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+>>
+>> Ah, here's probably my answer to my previous logging format question,
+>> right?  What's the chance that these wrappers output stuff in a standard
+>> format that test-framework-tools can already parse?  :)
 > 
-> 1. After boot restore /dev/pmem0 to ramdisk to be consumed by apps.
->    and free ramdisk.
-> 2. Convert raw pmem0 to devdax
->    ndctl create-namespace --mode devdax --map mem -e namespace0.0 -f
-> 3. Hotadd to System RAM
->    echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
->    echo dax0.0 > /sys/bus/dax/drivers/kmem/new_id
->    echo online_movable > /sys/devices/system/memoryXXX/state
-> 4. Before reboot hotremove device-dax memory from System RAM
->    echo offline > /sys/devices/system/memoryXXX/state
->    echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
+> It should be pretty easy to do. I had some patches that pack up the
+> results into a serialized format for a presubmit service; it should be
+> pretty straightforward to take the same logic and just change the
+> output format.
 
-Hi Pavel,
+When examining and trying out the previous versions of the patch I found
+the wrappers useful to provide information about how to control and use
+the tests, but I had no interest in using the scripts as they do not
+fit in with my personal environment and workflow.
 
-I am working on adding this sort of a workflow into a new daxctl command
-(daxctl-reconfigure-device)- this will allow changing the 'mode' of a
-dax device to kmem, online the resulting memory, and with your patches,
-also attempt to offline the memory, and change back to device-dax.
+In the previous versions of the patch, these helper scripts are optional,
+which is good for my use case.  If the helper scripts are required to
+get the data into the proper format then the scripts are not quite so
+optional, they become the expected environment.  I think the proper
+format should exist without the helper scripts.
 
-In running with these patches, and testing the offlining part, I ran
-into the following lockdep below.
-
-This is with just these three patches on top of -rc7.
-
-
-[  +0.004886] ======================================================
-[  +0.001576] WARNING: possible circular locking dependency detected
-[  +0.001506] 5.1.0-rc7+ #13 Tainted: G           O     
-[  +0.000929] ------------------------------------------------------
-[  +0.000708] daxctl/22950 is trying to acquire lock:
-[  +0.000548] 00000000f4d397f7 (kn->count#424){++++}, at: kernfs_remove_by_name_ns+0x40/0x80
-[  +0.000922] 
-              but task is already holding lock:
-[  +0.000657] 000000002aa52a9f (mem_sysfs_mutex){+.+.}, at: unregister_memory_section+0x22/0xa0
-[  +0.000960] 
-              which lock already depends on the new lock.
-
-[  +0.001001] 
-              the existing dependency chain (in reverse order) is:
-[  +0.000837] 
-              -> #3 (mem_sysfs_mutex){+.+.}:
-[  +0.000631]        __mutex_lock+0x82/0x9a0
-[  +0.000477]        unregister_memory_section+0x22/0xa0
-[  +0.000582]        __remove_pages+0xe9/0x520
-[  +0.000489]        arch_remove_memory+0x81/0xc0
-[  +0.000510]        devm_memremap_pages_release+0x180/0x270
-[  +0.000633]        release_nodes+0x234/0x280
-[  +0.000483]        device_release_driver_internal+0xf4/0x1d0
-[  +0.000701]        bus_remove_device+0xfc/0x170
-[  +0.000529]        device_del+0x16a/0x380
-[  +0.000459]        unregister_dev_dax+0x23/0x50
-[  +0.000526]        release_nodes+0x234/0x280
-[  +0.000487]        device_release_driver_internal+0xf4/0x1d0
-[  +0.000646]        unbind_store+0x9b/0x130
-[  +0.000467]        kernfs_fop_write+0xf0/0x1a0
-[  +0.000510]        vfs_write+0xba/0x1c0
-[  +0.000438]        ksys_write+0x5a/0xe0
-[  +0.000521]        do_syscall_64+0x60/0x210
-[  +0.000489]        entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[  +0.000637] 
-              -> #2 (mem_hotplug_lock.rw_sem){++++}:
-[  +0.000717]        get_online_mems+0x3e/0x80
-[  +0.000491]        kmem_cache_create_usercopy+0x2e/0x270
-[  +0.000609]        kmem_cache_create+0x12/0x20
-[  +0.000507]        ptlock_cache_init+0x20/0x28
-[  +0.000506]        start_kernel+0x240/0x4d0
-[  +0.000480]        secondary_startup_64+0xa4/0xb0
-[  +0.000539] 
-              -> #1 (cpu_hotplug_lock.rw_sem){++++}:
-[  +0.000784]        cpus_read_lock+0x3e/0x80
-[  +0.000511]        online_pages+0x37/0x310
-[  +0.000469]        memory_subsys_online+0x34/0x60
-[  +0.000611]        device_online+0x60/0x80
-[  +0.000611]        state_store+0x66/0xd0
-[  +0.000552]        kernfs_fop_write+0xf0/0x1a0
-[  +0.000649]        vfs_write+0xba/0x1c0
-[  +0.000487]        ksys_write+0x5a/0xe0
-[  +0.000459]        do_syscall_64+0x60/0x210
-[  +0.000482]        entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[  +0.000646] 
-              -> #0 (kn->count#424){++++}:
-[  +0.000669]        lock_acquire+0x9e/0x180
-[  +0.000471]        __kernfs_remove+0x26a/0x310
-[  +0.000518]        kernfs_remove_by_name_ns+0x40/0x80
-[  +0.000583]        remove_files.isra.1+0x30/0x70
-[  +0.000555]        sysfs_remove_group+0x3d/0x80
-[  +0.000524]        sysfs_remove_groups+0x29/0x40
-[  +0.000532]        device_remove_attrs+0x42/0x80
-[  +0.000522]        device_del+0x162/0x380
-[  +0.000464]        device_unregister+0x16/0x60
-[  +0.000505]        unregister_memory_section+0x6e/0xa0
-[  +0.000591]        __remove_pages+0xe9/0x520
-[  +0.000492]        arch_remove_memory+0x81/0xc0
-[  +0.000568]        try_remove_memory+0xba/0xd0
-[  +0.000510]        remove_memory+0x23/0x40
-[  +0.000483]        dev_dax_kmem_remove+0x29/0x57 [kmem]
-[  +0.000608]        device_release_driver_internal+0xe4/0x1d0
-[  +0.000637]        unbind_store+0x9b/0x130
-[  +0.000464]        kernfs_fop_write+0xf0/0x1a0
-[  +0.000685]        vfs_write+0xba/0x1c0
-[  +0.000594]        ksys_write+0x5a/0xe0
-[  +0.000449]        do_syscall_64+0x60/0x210
-[  +0.000481]        entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[  +0.000619] 
-              other info that might help us debug this:
-
-[  +0.000889] Chain exists of:
-                kn->count#424 --> mem_hotplug_lock.rw_sem --> mem_sysfs_mutex
-
-[  +0.001269]  Possible unsafe locking scenario:
-
-[  +0.000652]        CPU0                    CPU1
-[  +0.000505]        ----                    ----
-[  +0.000523]   lock(mem_sysfs_mutex);
-[  +0.000422]                                lock(mem_hotplug_lock.rw_sem);
-[  +0.000905]                                lock(mem_sysfs_mutex);
-[  +0.000793]   lock(kn->count#424);
-[  +0.000394] 
-               *** DEADLOCK ***
-
-[  +0.000665] 7 locks held by daxctl/22950:
-[  +0.000458]  #0: 000000005f6d3c13 (sb_writers#4){.+.+}, at: vfs_write+0x159/0x1c0
-[  +0.000943]  #1: 00000000e468825d (&of->mutex){+.+.}, at: kernfs_fop_write+0xbd/0x1a0
-[  +0.000895]  #2: 00000000caa17dbb (&dev->mutex){....}, at: device_release_driver_internal+0x1a/0x1d0
-[  +0.001019]  #3: 000000002119b22c (device_hotplug_lock){+.+.}, at: remove_memory+0x16/0x40
-[  +0.000942]  #4: 00000000150c8efe (cpu_hotplug_lock.rw_sem){++++}, at: try_remove_memory+0x2e/0xd0
-[  +0.001019]  #5: 000000003d6b2a0f (mem_hotplug_lock.rw_sem){++++}, at: percpu_down_write+0x25/0x120
-[  +0.001118]  #6: 000000002aa52a9f (mem_sysfs_mutex){+.+.}, at: unregister_memory_section+0x22/0xa0
-[  +0.001033] 
-              stack backtrace:
-[  +0.000507] CPU: 5 PID: 22950 Comm: daxctl Tainted: G           O      5.1.0-rc7+ #13
-[  +0.000896] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.11.1-0-g0551a4be2c-prebuilt.qemu-project.org 04/01/2014
-[  +0.001360] Call Trace:
-[  +0.000293]  dump_stack+0x85/0xc0
-[  +0.000390]  print_circular_bug.isra.41.cold.60+0x15c/0x195
-[  +0.000651]  check_prev_add.constprop.50+0x5fd/0xbe0
-[  +0.000563]  ? call_rcu_zapped+0x80/0x80
-[  +0.000449]  __lock_acquire+0xcee/0xfd0
-[  +0.000437]  lock_acquire+0x9e/0x180
-[  +0.000428]  ? kernfs_remove_by_name_ns+0x40/0x80
-[  +0.000531]  __kernfs_remove+0x26a/0x310
-[  +0.000451]  ? kernfs_remove_by_name_ns+0x40/0x80
-[  +0.000529]  ? kernfs_name_hash+0x12/0x80
-[  +0.000462]  kernfs_remove_by_name_ns+0x40/0x80
-[  +0.000513]  remove_files.isra.1+0x30/0x70
-[  +0.000483]  sysfs_remove_group+0x3d/0x80
-[  +0.000458]  sysfs_remove_groups+0x29/0x40
-[  +0.000477]  device_remove_attrs+0x42/0x80
-[  +0.000461]  device_del+0x162/0x380
-[  +0.000399]  device_unregister+0x16/0x60
-[  +0.000442]  unregister_memory_section+0x6e/0xa0
-[  +0.001232]  __remove_pages+0xe9/0x520
-[  +0.000443]  arch_remove_memory+0x81/0xc0
-[  +0.000459]  try_remove_memory+0xba/0xd0
-[  +0.000460]  remove_memory+0x23/0x40
-[  +0.000461]  dev_dax_kmem_remove+0x29/0x57 [kmem]
-[  +0.000603]  device_release_driver_internal+0xe4/0x1d0
-[  +0.000590]  unbind_store+0x9b/0x130
-[  +0.000409]  kernfs_fop_write+0xf0/0x1a0
-[  +0.000448]  vfs_write+0xba/0x1c0
-[  +0.000395]  ksys_write+0x5a/0xe0
-[  +0.000382]  do_syscall_64+0x60/0x210
-[  +0.000418]  entry_SYSCALL_64_after_hwframe+0x49/0xbe
-[  +0.000573] RIP: 0033:0x7fd1f7442fa8
-[  +0.000407] Code: 89 02 48 c7 c0 ff ff ff ff eb b3 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 8d 05 75 77 0d 00 8b 00 85 c0 75 17 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 41 54 49 89 d4 55
-[  +0.002119] RSP: 002b:00007ffd48f58e28 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[  +0.000833] RAX: ffffffffffffffda RBX: 000000000210c817 RCX: 00007fd1f7442fa8
-[  +0.000795] RDX: 0000000000000007 RSI: 000000000210c817 RDI: 0000000000000003
-[  +0.000816] RBP: 0000000000000007 R08: 000000000210c7d0 R09: 00007fd1f74d4e80
-[  +0.000808] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-[  +0.000819] R13: 00007fd1f72b9ce8 R14: 0000000000000000 R15: 00007ffd48f58e70
+-Frank
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
