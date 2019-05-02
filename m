@@ -2,60 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934AC11F8E
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 17:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0383611FCE
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 18:12:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E601321243BC6;
-	Thu,  2 May 2019 08:54:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 46F4D21243BCE;
+	Thu,  2 May 2019 09:12:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
+ client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B678D21243BC2
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 08:54:37 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id r20so2537355otg.4
- for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 08:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by ml01.01.org (Postfix) with ESMTPS id 830B621243BC6
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 09:12:27 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id a8so2637357edx.3
+ for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 09:12:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=XEew1Olq/3yX7Jk5X3KVQichukbbRYn348zBto8NbGk=;
- b=l/qtAsPAilsFN9GFnTDJXUqqxoRw+RgeUo6XZJsy11pBhIPXZGMzGF9+cbUADCM0B4
- 8iGGS9XFOfiMSc18kxqUi/FrQbB8BGPoeqIiCS4NxCBkSswNMUAa08zk6l4P2My0dOe0
- 04E1cGuNmL/RZr/cQrVby9FjQmJi3SNN4ZD7VrtcPpCjFU0qQFhIMUAeLHgFXIB5XF0A
- 3qGq7yAL6+K8T9hFUj5c1u1FxvQCOQOavF3lz8czs9YLvxDB9NJyVd/IBFCfKZyRk6aU
- 5iTinm6ydcZDpVFf4A+TbuJ8GCfB0rySLRIrUaqnFCnNAjD46wWnjao2EdlBw4Hpis2C
- t6Iw==
+ :cc; bh=PmuDEks26u7TosMg6YO9rFojJhi017p7aPym+WIjY/s=;
+ b=ZRcrCjA5yDrtzuhuaxGA218aPuy8sioowVXNbMz96fmtX1Q3YhAiRGlzgamPi0mAvB
+ nixiSO3SdAXaNwXkkyRiwjWAOPYOnlW3ZaGc3IMwRN6X6T0kJBBIeKpYX6/gW3tvhj2v
+ tvfJ/mI0Ws/aUUfRVyG59bggwQfeK8Xo8ncypTOvY/rJGjB4xOUAk10lU9CKRYTM6Nss
+ qYhP5n+dg2IjGEpOo0V8UzIRXLskytJ1Quc1RDZAozElxiQIMW+tW/Jmc5ffpKQiTnp1
+ eTJ5SHTsoZHRFQxKrcXR5/EFeOHgq/xPq8bvxS678Opw86soN2msVgRGObpkLlonfB/7
+ eVZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=XEew1Olq/3yX7Jk5X3KVQichukbbRYn348zBto8NbGk=;
- b=CL0e9vROOF0GoUU2lg9v922sHuRIi6rCEGHOE9MgTZBKwJeA4c8fpTXzZZ96BpslUl
- ELGLnmx7s6MZUkFy/XyEqj+Q4qpPaNKIR7A4DfobafjlpaKpTRMp6VKdDMI/biEkiQFL
- WJvF5k89iHLaqPQIpdEBrAdbS43dLV5/3oNYZs3zau2RZ15ym2CNCNE1HsrUT6I7rZOX
- UBfKP5i7EMn/LRrnno9kiXFxslh3EXhdsPtfky4E/6/8ryhhUJmwDXZ00KH7Paos9V5C
- w65dBdgwWF9n6sVR4gwT+RebQ78ZiMM/UJby5UNoixTt6DYqhVvNdKKGeLOQkPKCYoh2
- eyCA==
-X-Gm-Message-State: APjAAAXE3sUWXapBQSlJfTi3f9r9DX/KoijEHBgGt/UfDKBH/DlqEVgy
- amFf3R/8+q2WYqnLBwAykDWp/ucTKfEw5Ej+lhxThQ==
-X-Google-Smtp-Source: APXvYqzTa2L8Y3hvzATDf0GPOGP2MovJVdb2TkdVVwyYLpPc2dggi9AbseY9kp1r15MyCVm90wXUgeQ6+oMS2GDxWaE=
-X-Received: by 2002:a9d:7ad1:: with SMTP id m17mr2061812otn.367.1556812476635; 
- Thu, 02 May 2019 08:54:36 -0700 (PDT)
+ bh=PmuDEks26u7TosMg6YO9rFojJhi017p7aPym+WIjY/s=;
+ b=An/1UGWq2XpzKnqttvotnIcAnwr+ZEL4bKtJ8qJZRd1h+2VULqJ0cz+ElFGJauZtyt
+ Lh8K72yIT6CkBGemkGeYf/qxAiShvmOTcxcd0rrgKQShDoCqIQlKv09O7tduMsz/IhhA
+ voUiaOrjvosOC9Vly5q7M+V/PkbwtdFCXJS/MDpRdb4fXwR/bwLuoaGMIe+ILCSiPcoR
+ EupJHja4MCnWBKh2GNjagfiobOZ/wcFsSOWrxQRNFItPymhwe/O9b3XbPrdbFjvFMZci
+ uCSYJpAMK+YS1Wadmei1an3z99AVLlNoFajdf+BLqZY24Dr0D4uREmVIJTIaEIy7mi3J
+ CaQg==
+X-Gm-Message-State: APjAAAUskfxRiwXQBZbaljznyQfPN3nRXjSrkvnDfcUX2wjzpn9T/f6U
+ GpfM0tsKf4JErrc1jc4laNJWVhCv33sBpNGtSvbLGQ==
+X-Google-Smtp-Source: APXvYqwyYTUtFEmJ3Pk1Kxl+N/9cXpVtziHTpF16SYo8jOemVRi2MW8HQ4q0f3So4cyRee2cDlyFYKUmjwTvJxrP1fU=
+X-Received: by 2002:a17:906:4988:: with SMTP id
+ p8mr2289364eju.220.1556813545671; 
+ Thu, 02 May 2019 09:12:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190501191846.12634-1-pasha.tatashin@soleen.com>
- <20190501191846.12634-3-pasha.tatashin@soleen.com>
-In-Reply-To: <20190501191846.12634-3-pasha.tatashin@soleen.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 2 May 2019 08:54:25 -0700
-Message-ID: <CAPcyv4iPzpP-gzuDtPB2ixd6_uTuO8-YdVSfGw_Dq=igaKuOEg@mail.gmail.com>
-Subject: Re: [v4 2/2] device-dax: "Hotremove" persistent memory that is used
- like normal RAM
-To: Pavel Tatashin <pasha.tatashin@soleen.com>
+References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155552635098.2015392.5460028594173939000.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <155552635098.2015392.5460028594173939000.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 2 May 2019 12:12:14 -0400
+Message-ID: <CA+CK2bAfnCVYz956jPTNQ+AqHJs7uY1ZqWfL8fSUFWQOdKxHcg@mail.gmail.com>
+Subject: Re: [PATCH v6 03/12] mm/sparsemem: Add helpers track active portions
+ of a section at boot
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,183 +67,212 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Takashi Iwai <tiwai@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Huang, Ying" <ying.huang@intel.com>, James Morris <jmorris@namei.org>,
- David Hildenbrand <david@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Borislav Petkov <bp@suse.de>, Yaowei Bai <baiyaowei@cmss.chinamobile.com>,
- Ross Zwisler <zwisler@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Fengguang Wu <fengguang.wu@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ David Hildenbrand <david@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 1, 2019 at 12:19 PM Pavel Tatashin
-<pasha.tatashin@soleen.com> wrote:
+On Wed, Apr 17, 2019 at 2:53 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> It is now allowed to use persistent memory like a regular RAM, but
-> currently there is no way to remove this memory until machine is
-> rebooted.
+> Prepare for hot{plug,remove} of sub-ranges of a section by tracking a
+> section active bitmask, each bit representing 2MB (SECTION_SIZE (128M) /
+> map_active bitmask length (64)). If it turns out that 2MB is too large
+> of an active tracking granularity it is trivial to increase the size of
+> the map_active bitmap.
+
+Please mention that 2M on Intel, and 16M on Arm64.
+
 >
-> This work expands the functionality to also allows hotremoving
-> previously hotplugged persistent memory, and recover the device for use
-> for other purposes.
+> The implications of a partially populated section is that pfn_valid()
+> needs to go beyond a valid_section() check and read the sub-section
+> active ranges from the bitmask.
 >
-> To hotremove persistent memory, the management software must first
-> offline all memory blocks of dax region, and than unbind it from
-> device-dax/kmem driver. So, operations should look like this:
->
-> echo offline > echo offline > /sys/devices/system/memory/memoryN/state
-> ...
-> echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
->
-> Note: if unbind is done without offlining memory beforehand, it won't be
-> possible to do dax0.0 hotremove, and dax's memory is going to be part of
-> System RAM until reboot.
->
-> Signed-off-by: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  drivers/dax/dax-private.h |  2 +
->  drivers/dax/kmem.c        | 99 +++++++++++++++++++++++++++++++++++++--
->  2 files changed, 97 insertions(+), 4 deletions(-)
+>  include/linux/mmzone.h |   29 ++++++++++++++++++++++++++++-
+>  mm/page_alloc.c        |    4 +++-
+>  mm/sparse.c            |   48 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 79 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-> index a45612148ca0..999aaf3a29b3 100644
-> --- a/drivers/dax/dax-private.h
-> +++ b/drivers/dax/dax-private.h
-> @@ -53,6 +53,7 @@ struct dax_region {
->   * @pgmap - pgmap for memmap setup / lifetime (driver owned)
->   * @ref: pgmap reference count (driver owned)
->   * @cmp: @ref final put completion (driver owned)
-> + * @dax_mem_res: physical address range of hotadded DAX memory
->   */
->  struct dev_dax {
->         struct dax_region *region;
-> @@ -62,6 +63,7 @@ struct dev_dax {
->         struct dev_pagemap pgmap;
->         struct percpu_ref ref;
->         struct completion cmp;
-> +       struct resource *dax_kmem_res;
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 6726fc175b51..cffde898e345 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -1175,6 +1175,8 @@ struct mem_section_usage {
+>         unsigned long pageblock_flags[0];
 >  };
 >
->  static inline struct dev_dax *to_dev_dax(struct device *dev)
-> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index 4c0131857133..72b868066026 100644
-> --- a/drivers/dax/kmem.c
-> +++ b/drivers/dax/kmem.c
-> @@ -71,21 +71,112 @@ int dev_dax_kmem_probe(struct device *dev)
->                 kfree(new_res);
->                 return rc;
->         }
-> +       dev_dax->dax_kmem_res = new_res;
+> +void section_active_init(unsigned long pfn, unsigned long nr_pages);
+> +
+>  struct page;
+>  struct page_ext;
+>  struct mem_section {
+> @@ -1312,12 +1314,36 @@ static inline struct mem_section *__pfn_to_section(unsigned long pfn)
 >
->         return 0;
->  }
+>  extern int __highest_present_section_nr;
 >
-> +#ifdef CONFIG_MEMORY_HOTREMOVE
-> +static int
-> +check_devdax_mem_offlined_cb(struct memory_block *mem, void *arg)
+> +static inline int section_active_index(phys_addr_t phys)
 > +{
-> +       /* Memory block device */
-> +       struct device *mem_dev = &mem->dev;
-> +       bool is_offline;
-> +
-> +       device_lock(mem_dev);
-> +       is_offline = mem_dev->offline;
-> +       device_unlock(mem_dev);
-> +
-> +       /*
-> +        * Check that device-dax's memory_blocks are offline. If a memory_block
-> +        * is not offline a warning is printed and an error is returned.
-> +        */
-> +       if (!is_offline) {
-> +               /* Dax device device */
-> +               struct device *dev = (struct device *)arg;
-> +               struct dev_dax *dev_dax = to_dev_dax(dev);
-> +               struct resource *res = &dev_dax->region->res;
-> +               unsigned long spfn = section_nr_to_pfn(mem->start_section_nr);
-> +               unsigned long epfn = section_nr_to_pfn(mem->end_section_nr) +
-> +                                                      PAGES_PER_SECTION - 1;
-> +               phys_addr_t spa = spfn << PAGE_SHIFT;
-> +               phys_addr_t epa = epfn << PAGE_SHIFT;
-> +
-> +               dev_err(dev,
-> +                       "DAX region %pR cannot be hotremoved until the next reboot. Memory block [%pa-%pa] is not offline.\n",
-> +                       res, &spa, &epa);
-> +
-> +               return -EBUSY;
-> +       }
-> +
-> +       return 0;
+> +       return (phys & ~(PA_SECTION_MASK)) / SECTION_ACTIVE_SIZE;
+
+How about also defining SECTION_ACTIVE_SHIFT like this:
+
+/* BITS_PER_LONG = 2^6 */
+#define BITS_PER_LONG_SHIFT 6
+#define SECTION_ACTIVE_SHIFT (SECTION_SIZE_BITS - BITS_PER_LONG_SHIFT)
+#define SECTION_ACTIVE_SIZE (1 << SECTION_ACTIVE_SHIFT)
+
+The return above would become:
+return (phys & ~(PA_SECTION_MASK)) >> SECTION_ACTIVE_SHIFT;
+
 > +}
 > +
-> +static int dev_dax_kmem_remove(struct device *dev)
+> +#ifdef CONFIG_SPARSEMEM_VMEMMAP
+> +static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
 > +{
-> +       struct dev_dax *dev_dax = to_dev_dax(dev);
-> +       struct resource *res = dev_dax->dax_kmem_res;
-> +       resource_size_t kmem_start;
-> +       resource_size_t kmem_size;
-> +       unsigned long start_pfn;
-> +       unsigned long end_pfn;
-> +       int rc;
+> +       int idx = section_active_index(PFN_PHYS(pfn));
 > +
-> +       kmem_start = res->start;
-> +       kmem_size = resource_size(res);
-> +       start_pfn = kmem_start >> PAGE_SHIFT;
-> +       end_pfn = start_pfn + (kmem_size >> PAGE_SHIFT) - 1;
+> +       return !!(ms->usage->map_active & (1UL << idx));
+> +}
+> +#else
+> +static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
+> +{
+> +       return 1;
+> +}
+> +#endif
 > +
-> +       /*
-> +        * Keep hotplug lock while checking memory state, and also required
-> +        * during __remove_memory() call. Admin can't change memory state via
-> +        * sysfs while this lock is kept.
-> +        */
-> +       lock_device_hotplug();
+>  #ifndef CONFIG_HAVE_ARCH_PFN_VALID
+>  static inline int pfn_valid(unsigned long pfn)
+>  {
+> +       struct mem_section *ms;
 > +
-> +       /*
-> +        * Walk and check that every singe memory_block of dax region is
-> +        * offline. Hotremove can succeed only when every memory_block is
-> +        * offlined beforehand.
-> +        */
-> +       rc = walk_memory_range(start_pfn, end_pfn, dev,
-> +                              check_devdax_mem_offlined_cb);
-> +
-> +       /*
-> +        * If admin has not offlined memory beforehand, we cannot hotremove dax.
-> +        * Unfortunately, because unbind will still succeed there is no way for
-> +        * user to hotremove dax after this.
-> +        */
-> +       if (rc) {
-> +               unlock_device_hotplug();
-> +               return rc;
+>         if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+>                 return 0;
+> -       return valid_section(__nr_to_section(pfn_to_section_nr(pfn)));
+> +       ms = __nr_to_section(pfn_to_section_nr(pfn));
+> +       if (!valid_section(ms))
+> +               return 0;
+> +       return pfn_section_valid(ms, pfn);
+>  }
+>  #endif
+>
+> @@ -1349,6 +1375,7 @@ void sparse_init(void);
+>  #define sparse_init()  do {} while (0)
+>  #define sparse_index_init(_sec, _nid)  do {} while (0)
+>  #define pfn_present pfn_valid
+> +#define section_active_init(_pfn, _nr_pages) do {} while (0)
+>  #endif /* CONFIG_SPARSEMEM */
+>
+>  /*
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index f671401a7c0b..c9ad28a78018 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7273,10 +7273,12 @@ void __init free_area_init_nodes(unsigned long *max_zone_pfn)
+>
+>         /* Print out the early node map */
+>         pr_info("Early memory node ranges\n");
+> -       for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
+> +       for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+>                 pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
+>                         (u64)start_pfn << PAGE_SHIFT,
+>                         ((u64)end_pfn << PAGE_SHIFT) - 1);
+> +               section_active_init(start_pfn, end_pfn - start_pfn);
 > +       }
+>
+>         /* Initialise every node */
+>         mminit_verify_pageflags_layout();
+> diff --git a/mm/sparse.c b/mm/sparse.c
+> index f87de7ad32c8..5ef2f884c4e1 100644
+> --- a/mm/sparse.c
+> +++ b/mm/sparse.c
+> @@ -210,6 +210,54 @@ static inline unsigned long first_present_section_nr(void)
+>         return next_present_section_nr(-1);
+>  }
+>
+> +static unsigned long section_active_mask(unsigned long pfn,
+> +               unsigned long nr_pages)
+> +{
+> +       int idx_start, idx_size;
+> +       phys_addr_t start, size;
 > +
-> +       /* Hotremove memory, cannot fail because memory is already offlined */
-> +       __remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-> +       unlock_device_hotplug();
+> +       if (!nr_pages)
+> +               return 0;
+> +
+> +       start = PFN_PHYS(pfn);
+> +       size = PFN_PHYS(min(nr_pages, PAGES_PER_SECTION
+> +                               - (pfn & ~PAGE_SECTION_MASK)));
+> +       size = ALIGN(size, SECTION_ACTIVE_SIZE);
+> +
+> +       idx_start = section_active_index(start);
+> +       idx_size = section_active_index(size);
+> +
+> +       if (idx_size == 0)
+> +               return -1;
+> +       return ((1UL << idx_size) - 1) << idx_start;
+> +}
+> +
+> +void section_active_init(unsigned long pfn, unsigned long nr_pages)
+> +{
+> +       int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
+> +       int i, start_sec = pfn_to_section_nr(pfn);
+> +
+> +       if (!nr_pages)
+> +               return;
+> +
+> +       for (i = start_sec; i <= end_sec; i++) {
+> +               struct mem_section *ms;
+> +               unsigned long mask;
+> +               unsigned long pfns;
+> +
+> +               pfns = min(nr_pages, PAGES_PER_SECTION
+> +                               - (pfn & ~PAGE_SECTION_MASK));
+> +               mask = section_active_mask(pfn, pfns);
+> +
+> +               ms = __nr_to_section(i);
+> +               pr_debug("%s: sec: %d mask: %#018lx\n", __func__, i, mask);
+> +               ms->usage->map_active = mask;
+> +
+> +               pfn += pfns;
+> +               nr_pages -= pfns;
+> +       }
+> +}
 
-Currently the kmem driver can be built as a module, and I don't see a
-need to drop that flexibility. What about wrapping these core
-routines:
+For some reasons the above code is confusing to me. It seems all the
+code supposed to do is set all map_active to -1, and trim the first
+and last sections (can be the same section of course). So, I would
+replace the above two functions with one function like this:
 
-    unlock_device_hotplug
-    __remove_memory
-    walk_memory_range
-    lock_device_hotplug
+void section_active_init(unsigned long pfn, unsigned long nr_pages)
+{
+        int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
+        int i, idx, start_sec = pfn_to_section_nr(pfn);
+        struct mem_section *ms;
 
-...into a common exported (gpl) helper like:
+        if (!nr_pages)
+                return;
 
-    int try_remove_memory(int nid, struct resource *res)
+        for (i = start_sec; i <= end_sec; i++) {
+                ms = __nr_to_section(i);
+                ms->usage->map_active = ~0ul;
+        }
 
-Because as far as I can see there's nothing device-dax specific about
-this "try remove iff offline" functionality outside of looking up the
-related 'struct resource'. The check_devdax_mem_offlined_cb callback
-can be made generic if the callback argument is the resource pointer.
+        /* Might need to trim active pfns from the beginning and end */
+        idx = section_active_index(PFN_PHYS(pfn));
+        ms = __nr_to_section(start_sec);
+        ms->usage->map_active &= (~0ul << idx);
+
+        idx = section_active_index(PFN_PHYS(pfn + nr_pages -1));
+        ms = __nr_to_section(end_sec);
+        ms->usage->map_active &= (~0ul >> (BITS_PER_LONG - idx - 1));
+}
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
