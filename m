@@ -1,62 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C816E1221E
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 20:45:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E583912289
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 May 2019 21:18:52 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D0230212449E3;
-	Thu,  2 May 2019 11:45:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 22361212449E4;
+	Thu,  2 May 2019 12:18:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
+ client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B8ECB21243BDB
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 11:45:55 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id w130so2124604oie.6
- for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 11:45:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ by ml01.01.org (Postfix) with ESMTPS id 3BFF221243BDE
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 12:18:48 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id l25so3120696eda.9
+ for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 12:18:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=17OVt5sF62dgswwCTgJsxP7RAt3WsAf5VJ4Ut9AHOnQ=;
- b=P9mmkEctGFviK6NgZSHwMcUWXoaX/YoeIAK9bJMcE3Lx9wj9ioBeHG7azUaTRvfMEz
- TY2RHOx0ThWPnz2RyK/JeVea8tpHo/vQkabwSgIPQaucOPCDrRgdtpJvHIeyfXSXZIdh
- EEpMDUWFYZWhjIh9jDc8FJvMTlSL8vQ8VfgY4koM+if0RzgjLUM+G7N96Iar9oJO2RWW
- y2bZo1FvLirTsbvZcF5UvfSKsfdjWdxyGHNZOdT8DOFyQvGPVysWQaUTlUo3hkMnOD0e
- RSC2W/FJE39vCVMCViynhllAgBlnR6+D6q04cTiRfgx2IG0+4k0zkzJ9Spq984jh3G9l
- lWjw==
+ :cc; bh=/EtrDUZnPlRu7IrcyamY8IpVJksLUEb2L4C6Vl0TUQE=;
+ b=oY66xYN+gJbH6VpzA77vhKfQaiig9FE2gWSvaganWGQHxbnAWNBjdK5IxmHDl/lulB
+ 6W2/Xu6OkEtP8EzI5IoyuCT9YBGVw5tvyjPDFWBkUqfZQpnYmkvUeHHSR6HD9M3whi9I
+ 0RcBrH0LDorwvHBC018lfCEvaAiT8BwChZuwyw0bGNQ8t6reNn9yI72NAJTHpjLRUJlg
+ LCM39zL0LwzvspTxYRli24Jer9qJRz+CVCjC6684O6EDMB0WaaYj3PyULoK2HTbRkXDi
+ ghyRy0ZVgVkbC6WyahwWy/PSLoe00mm05d6lyrce//A9Vuv45sVK7mWoQ+xalrdJVd8R
+ AILw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=17OVt5sF62dgswwCTgJsxP7RAt3WsAf5VJ4Ut9AHOnQ=;
- b=bd9NtM5UOTwoF0AXnzLCo0wO5GxMMRirBjn98hOiKGy6RA07iyDhcJLOnLFv1qce01
- IeZc7mG4hasjLUm3yuS6kkMLcsnpoNyRxKJUrkJ2/8WfVmpDYvx9kfcwgPb5/yiQYRMy
- thV0eR+PwyiSMVurGgQZDKk7/qhJvihK09n+J7sMTZZ6RdazG8Im6+6ettseqAl5xtZl
- ZLuKXO/h6OLzZ64ZvyjxhnTiaOT9QCo7dB1ZMf8dB3LnEt8+JZ/kp2VLJ40Qrr4H2N1v
- u5kkBcWnCnWKz+S5QhUegYIAVeBu4lBIe9FJ3XsF3OosrG0pDgiCVCwBzVU8mRiqWSwB
- xakQ==
-X-Gm-Message-State: APjAAAUfHlkmPHlqnTFtSMJ/xpOQWR94CyXtA6b8VK29OQFJ5a7Bjr2n
- DvJlR+slvMoL/1SlvSUQ+ZK7gbU7CQhkVKI9h3I1pg==
-X-Google-Smtp-Source: APXvYqzC6lEhFzCwba9WNGtoNJlN2/sxNxsRqKIHnQJUgSQQ4oc4XCI9kW3OGRwazcEXau+lGinuQZlka+T3d8xNOxI=
-X-Received: by 2002:aca:4586:: with SMTP id s128mr3264542oia.148.1556822754511; 
- Thu, 02 May 2019 11:45:54 -0700 (PDT)
+ bh=/EtrDUZnPlRu7IrcyamY8IpVJksLUEb2L4C6Vl0TUQE=;
+ b=M7/Q+h2aeVQBUR3x60kTF5VMlCaOHaXSQe7VZQBB7B7dnnCMwhN7aOup5j/lssvbDt
+ xMoErVG4hENbd4JPZPFE1Ikhh9lSbf+uXbuRputvC7ZdyX5AuXQzCWJzjrZDl1VLNJnt
+ pipa2rYWKk8BVNfbnzlr9V/pWXYb+y9/gbrY07ZthYimTHswRkcOWvT2YIfWSvIfg6F7
+ ToWDCckV0796XE97xlU0+szPM8uXQDvyGKTPiJ0WBK2bjLX+O6/K+k01AhtweKR+lbRL
+ erbAC4CdAiS2iMMTHLcZPjqqeuYP3W4eL1/yXoyHHEgtyGrWpiiwuB+vP+EEs3vacNal
+ w++w==
+X-Gm-Message-State: APjAAAWqWhaeHQEUv2wsstl4VGHuTMhZxML8Zme0Thy9MLicLhP82iDu
+ rKQs/OS1BP4bnb7aAhPHwzwJjKsz2XJv/JJW37kAoA==
+X-Google-Smtp-Source: APXvYqzLcGp30q9Ib2/zU1la10GlqsQhJRi/epzUUZiwaqPYnOeJoISItPcXmhWHqTVl0n32Bm0pjTtLjkVqAOIx8xo=
+X-Received: by 2002:a50:fb19:: with SMTP id d25mr3732372edq.61.1556824727400; 
+ Thu, 02 May 2019 12:18:47 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190501230126.229218-1-brendanhiggins@google.com>
- <20190501230126.229218-17-brendanhiggins@google.com>
- <20190502110347.GE12416@kroah.com>
- <ECADFF3FD767C149AD96A924E7EA6EAF9770A3A0@USCULXMSG01.am.sony.com>
-In-Reply-To: <ECADFF3FD767C149AD96A924E7EA6EAF9770A3A0@USCULXMSG01.am.sony.com>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Thu, 2 May 2019 11:45:43 -0700
-Message-ID: <CAFd5g471Wawu6g14p0AO3aY8VPBKLA0mjHSdfR1qStFGzp3iGQ@mail.gmail.com>
-Subject: Re: [PATCH v2 16/17] kernel/sysctl-test: Add null pointer test for
- sysctl.c:proc_dointvec()
-To: "Bird, Timothy" <Tim.Bird@sony.com>
+References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155552635609.2015392.6246305135559796835.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <155552635609.2015392.6246305135559796835.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+Date: Thu, 2 May 2019 15:18:36 -0400
+Message-ID: <CA+CK2bD2b5XZCxGXQ47XXRA2RFvc69u2LKx7pu4Mtvw_ezMDLg@mail.gmail.com>
+Subject: Re: [PATCH v6 04/12] mm/hotplug: Prepare shrink_{zone, pgdat}_span
+ for sub-section removal
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,95 +66,35 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
- Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
- shuah@kernel.org, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Iurii Zaikin <yzaikin@google.com>, Kevin Hilman <khilman@baylibre.com>,
- Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org,
- Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- kunit-dev@googlegroups.com, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ David Hildenbrand <david@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 2, 2019 at 11:15 AM <Tim.Bird@sony.com> wrote:
+On Wed, Apr 17, 2019 at 2:53 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
+> Sub-section hotplug support reduces the unit of operation of hotplug
+> from section-sized-units (PAGES_PER_SECTION) to sub-section-sized units
+> (PAGES_PER_SUBSECTION). Teach shrink_{zone,pgdat}_span() to consider
+> PAGES_PER_SUBSECTION boundaries as the points where pfn_valid(), not
+> valid_section(), can toggle.
 >
->
-> > -----Original Message-----
-> > From: Greg KH
-> >
-> > On Wed, May 01, 2019 at 04:01:25PM -0700, Brendan Higgins wrote:
-> > > From: Iurii Zaikin <yzaikin@google.com>
-> > >
-> > > KUnit tests for initialized data behavior of proc_dointvec that is
-> > > explicitly checked in the code. Includes basic parsing tests including
-> > > int min/max overflow.
-> > >
-> > > Signed-off-by: Iurii Zaikin <yzaikin@google.com>
-> > > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> > > ---
-> > >  kernel/Makefile      |   2 +
-> > >  kernel/sysctl-test.c | 292
-> > +++++++++++++++++++++++++++++++++++++++++++
-> > >  lib/Kconfig.debug    |   6 +
-> > >  3 files changed, 300 insertions(+)
-> > >  create mode 100644 kernel/sysctl-test.c
-> > >
-> > > diff --git a/kernel/Makefile b/kernel/Makefile
-> > > index 6c57e78817dad..c81a8976b6a4b 100644
-> > > --- a/kernel/Makefile
-> > > +++ b/kernel/Makefile
-> > > @@ -112,6 +112,8 @@ obj-$(CONFIG_HAS_IOMEM) += iomem.o
-> > >  obj-$(CONFIG_ZONE_DEVICE) += memremap.o
-> > >  obj-$(CONFIG_RSEQ) += rseq.o
-> > >
-> > > +obj-$(CONFIG_SYSCTL_KUNIT_TEST) += sysctl-test.o
-> >
-> > You are going to have to have a "standard" naming scheme for test
-> > modules, are you going to recommend "foo-test" over "test-foo"?  If so,
-> > that's fine, we should just be consistant and document it somewhere.
-> >
-> > Personally, I'd prefer "test-foo", but that's just me, naming is hard...
->
-> My preference would be "test-foo" as well.  Just my 2 cents.
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  include/linux/mmzone.h |    2 ++
+>  mm/memory_hotplug.c    |   16 ++++++++--------
+>  2 files changed, 10 insertions(+), 8 deletions(-)
 
-I definitely agree we should be consistent. My personal bias
-(unsurprisingly) is "foo-test," but this is just because that is the
-convention I am used to in other projects I have worked on.
+given removing all unused "*ms"
 
-On an unbiased note, we are currently almost evenly split between the
-two conventions with *slight* preference for "foo-test": I ran the two
-following grep commands on v5.1-rc7:
-
-grep -Hrn --exclude-dir="build" -e "config [a-zA-Z_0-9]\+_TEST$" | wc -l
-grep -Hrn --exclude-dir="build" -e "config TEST_[a-zA-Z_0-9]\+" | wc -l
-
-"foo-test" has 36 occurrences.
-"test-foo" has 33 occurrences.
-
-The things I am more concerned about is how this would affect file
-naming. If we have a unit test for foo.c, I think foo_test.c is more
-consistent with our namespacing conventions. The other thing, is if we
-already have a Kconfig symbol called FOO_TEST (or TEST_FOO) what
-should we name the KUnit test in this case? FOO_UNIT_TEST?
-FOO_KUNIT_TEST, like I did above?
-
-Cheers
+Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
