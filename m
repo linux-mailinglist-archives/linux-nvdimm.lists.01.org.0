@@ -1,60 +1,40 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A7A127F5
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 08:48:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E89128E1
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 09:31:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E42D21244A1C;
-	Thu,  2 May 2019 23:48:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DD85C2123780E;
+	Fri,  3 May 2019 00:31:32 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 281552122CABD
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 23:48:42 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id f23so4385187otl.9
- for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 23:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=B/vgrL6mFJjbubEtdk9xy4dCVOTfDfNigFjtHMJz6Hg=;
- b=BWFlXcxdKPCg7HeydPM9nymqdJaKu5v0FhgYXNSsx2wC9FgZ6BWl9owIL4tp34RHzV
- 0O2CI2x3Gf2dd6TLPVl+UCJIuR6ugbJgNiJ5ahKuIYIQ+IA6TXvM7s76WSfiT5u9UOjU
- BAmfjJWmXXmLvLfanifCHtnmcT9eQgxYIv2/nMEQ/h+Jh7SQ4Wq8KAXXS2vmQSRvUjv3
- lY5jQIBJ2XBRYHgExTQbP6djFMEjOYOf+5XNpdQj+/aplIkBZPZ/tX1ygb8a9ZyYzeEG
- YiV5A2XgkK4p5mdxg0WTkGqiAuXfNRl77gHQcoJRclt/bqm0TtNUGFDJL3udF8SKeGs/
- dUEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=B/vgrL6mFJjbubEtdk9xy4dCVOTfDfNigFjtHMJz6Hg=;
- b=N+rP/JnBpOuOARbcUkOP2Ou9WVix/B8asEgLQe/vb2ooz33O/OZgk4dvdaJ+AnRE8b
- /zr8g04uN05m+txtDbSsUzgTn6OeCY0q1oUso5Lsm2N11u7M+YyyhDfQJRF0lY1/WN+J
- pB5xAhMWidkmSBSHLpFeQgw+Uxe2yTCUFiX7Z/o2yNLjx2mrhoO6iyUVrm4x+tOocwvQ
- KwtOSuNC3wqPTTBO8Fk7bIwDqE9ZSY73tZbWfyY5jjuMe2eK3RItO6MR7LBp7Bk+3ADz
- R+H3GtVB1lv6HLF3vk4fcEiSZl7Y8Pc7CUHUcTFP8lg8DhrC8SwltnAj/umZIPLtUINz
- xg8w==
-X-Gm-Message-State: APjAAAVWQU1pCGCpiMw9P8J1mZR/N4aqFn4BxJ1jZ5N2z6M/C3HH+gj9
- +qL2mf3jHDLdiouSyHuO61hWC9PNTLG3ZxTp48sJsQ==
-X-Google-Smtp-Source: APXvYqyPne+GcGg5xCp23Lwb83V334Sd3k9K4ces08vt/qj/xTxzgyMfUgwlwCqUT5AUGkcD/SfnjL8zKAwKDrfcpHY=
-X-Received: by 2002:a9d:5cc3:: with SMTP id r3mr5382470oti.338.1556866121691; 
- Thu, 02 May 2019 23:48:41 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 8E6B42121C109
+ for <linux-nvdimm@lists.01.org>; Fri,  3 May 2019 00:31:31 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id C5BB9AEA1;
+ Fri,  3 May 2019 07:31:29 +0000 (UTC)
+Date: Fri, 3 May 2019 09:31:26 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v7 03/12] mm/sparsemem: Add helpers track active portions
+ of a section at boot
+Message-ID: <20190503073121.GA15740@linux>
+References: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155677653785.2336373.11131100812252340469.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190502074803.GA3495@linux>
+ <CAPcyv4jPG56sf4hHaKEoacQbDEpcMrr4fJVEwkxGjcWcCmieNQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20190501230126.229218-1-brendanhiggins@google.com>
- <20190501230126.229218-9-brendanhiggins@google.com>
- <0a605543-477a-1854-eb35-6e586606889b@deltatee.com>
-In-Reply-To: <0a605543-477a-1854-eb35-6e586606889b@deltatee.com>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Thu, 2 May 2019 23:48:30 -0700
-Message-ID: <CAFd5g47hxAd=+72xbPJbWPdZCXRXmtLpsGhUh=zc7MSwfcaGJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 08/17] kunit: test: add support for test abort
-To: Logan Gunthorpe <logang@deltatee.com>
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jPG56sf4hHaKEoacQbDEpcMrr4fJVEwkxGjcWcCmieNQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,120 +46,40 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
- Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
- shuah@kernel.org, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- kunit-dev@googlegroups.com, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
- Kevin Hilman <khilman@baylibre.com>
+ Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 2, 2019 at 8:15 PM Logan Gunthorpe <logang@deltatee.com> wrote:
->
->
->
-> On 2019-05-01 5:01 p.m., Brendan Higgins wrote:
-> > +/*
-> > + * struct kunit_try_catch - provides a generic way to run code which might fail.
-> > + * @context: used to pass user data to the try and catch functions.
-> > + *
-> > + * kunit_try_catch provides a generic, architecture independent way to execute
-> > + * an arbitrary function of type kunit_try_catch_func_t which may bail out by
-> > + * calling kunit_try_catch_throw(). If kunit_try_catch_throw() is called, @try
-> > + * is stopped at the site of invocation and @catch is catch is called.
->
-> I found some of the C++ comparisons in this series a bit distasteful but
-> wasn't going to say anything until I saw the try catch.... But looking
-> into the implementation it's just a thread that can exit early which
-> seems fine to me. Just a poor choice of name I guess...
+On Thu, May 02, 2019 at 07:03:45AM -0700, Dan Williams wrote:
+> > section_active_mask() also converts the value to address/size.
+> > Why do we need to convert the values and we cannot work with pfn/pages instead?
+> > It should be perfectly possible unless I am missing something.
+> >
+> > The only thing required would be to export earlier your:
+> >
+> > +#define PAGES_PER_SUB_SECTION (SECTION_ACTIVE_SIZE / PAGE_SIZE)
+> > +#define PAGE_SUB_SECTION_MASK (~(PAGES_PER_SUB_SECTION-1))
+> >
+> > and change section_active_index to:
+> >
+> > static inline int section_active_index(unsigned long pfn)
+> > {
+> >         return (pfn & ~(PAGE_SECTION_MASK)) / SUB_SECTION_ACTIVE_PAGES;
 
-Guilty as charged (I have a long history with C++, sorry). Would you
-prefer I changed the name? I just figured that try-catch is a commonly
-understood pattern that describes exactly what I am doing.
+Sorry, here I meant:
 
->
-> [snip]
->
-> > +static void __noreturn kunit_abort(struct kunit *test)
-> > +{
-> > +     kunit_set_death_test(test, true);
-> > +
-> > +     kunit_try_catch_throw(&test->try_catch);
-> > +
-> > +     /*
-> > +      * Throw could not abort from test.
-> > +      *
-> > +      * XXX: we should never reach this line! As kunit_try_catch_throw is
-> > +      * marked __noreturn.
-> > +      */
-> > +     WARN_ONCE(true, "Throw could not abort from test!\n");
-> > +}
-> > +
-> >  int kunit_init_test(struct kunit *test, const char *name)
-> >  {
-> >       spin_lock_init(&test->lock);
-> > @@ -77,6 +103,7 @@ int kunit_init_test(struct kunit *test, const char *name)
-> >       test->name = name;
-> >       test->vprintk = kunit_vprintk;
-> >       test->fail = kunit_fail;
-> > +     test->abort = kunit_abort;
->
-> There are a number of these function pointers which seem to be pointless
-> to me as you only ever set them to one function. Just call the function
-> directly. As it is, it is an unnecessary indirection for someone reading
-> the code. If and when you have multiple implementations of the function
-> then add the pointer. Don't assume you're going to need it later on and
-> add all this maintenance burden if you never use it..
+return (pfn & ~(PAGE_SECTION_MASK)) / PAGES_PER_SUB_SECTION;
 
-Ah, yes, Frank (and probably others) previously asked me to remove
-unnecessary method pointers; I removed all the totally unused ones. As
-for these, I don't use them in this patchset, but I use them in my
-patchsets that will follow up this one. These in particular are
-present so that they can be mocked out for testing.
+But I think you got the idea :-)
 
->
-> [snip]
->
-> > +void kunit_generic_try_catch_init(struct kunit_try_catch *try_catch)
-> > +{
-> > +     try_catch->run = kunit_generic_run_try_catch;
-> > +     try_catch->throw = kunit_generic_throw;
-> > +}
->
-> Same here. There's only one implementation of try_catch and I can't
-> really see any sensible justification for another implementation. Even
-> if there is, add the indirection when the second implementation is
-> added. This isn't C++ and we don't need to make everything a "method".
-
-These methods are for a UML specific implementation in a follow up
-patchset, which is needed for some features like crash recovery, death
-tests, and removes dependence on kthreads.
-
-I know this probably sounds like premature complexity. Arguably it is
-in hindsight, but I wrote those features before I pulled out these
-interfaces (they were actually both originally in this patchset, but I
-dropped them to make this patchset easier to review). I can remove
-these methods and add them back in when I actually use them in the
-follow up patchsets if you prefer.
-
-Thanks!
+-- 
+Oscar Salvador
+SUSE L3
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
