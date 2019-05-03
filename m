@@ -2,60 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55ED01273D
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 07:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5B6127E1
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 08:41:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7B45C21244A1D;
-	Thu,  2 May 2019 22:48:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B147721244A17;
+	Thu,  2 May 2019 23:41:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4A8FA21244A12
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 22:48:29 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id r20so4312692otg.4
- for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 22:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=yJk8vxgxnyREeORp3ZGYiUe4W63+mvTYx011g+D2w9I=;
- b=gVy2A/3xGfxoPlL5Ko9/iS3jo2EDVupQVAr70qs6RZrFHNgUtzEok56tjyUqT06FB0
- N61EUVCJQSGnIGYHynH3drr29YDViWxqPU9Sza34pLTsoxVh0uUM8E5CV1L0C/mIM9w0
- WGa5tKq18lnS81IMo5BcR1Ykh3Nl7b9ExnnVx27s6jE5lyDFV5nm2p2xr1/VPFBW2Ah2
- kgZSCZQGbf96we5F6/cwHf89KEU3jBrsGd1WH/gd1lUYccvZTH42q4V6uaQ3GXtHhroy
- 5qgEL+EjcYwXRo906ivSwsvihl3a7m9bzISXOlTNYJMfYhl7JWVTEbNxfJuRwSUQRKBU
- kRfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=yJk8vxgxnyREeORp3ZGYiUe4W63+mvTYx011g+D2w9I=;
- b=mAOieiktOV/wlxVA9wfmPWtQ/sCBKCcTa80fhc+vjZAb+A1MLIaDyAmxa8KSxUYtGv
- mM6eCbT5IXWrYLz3+2+yvtXxY/RAgupafJFviVg99jToCw90xB4+ZfGbFe6y4GAvnfAg
- +QZVtAiTjtjQYCCW07Ua+t18tAh0r6c9Bc/M3K4fAgStodIDxGbgnGt9Cr0QbUDznKNP
- bxfVa8QKPHXUgmJXiJHbx5ogxM1zd2BusKPSTgvpbKQjpISPX7MjRkLyBFfWm2wL9Io9
- dpRldJEiGz2ZF9LPr342sY6bn/GiahWEjOcNj3T5cPoIJ3QizgjgRIs6xqBLGS4sEYGf
- GE/w==
-X-Gm-Message-State: APjAAAXV2GULjYlEyGb1cJ2+G14uenlNZbv8p47xPnTxHYV2gkStedAI
- nWujFh1pSrKGeb30h5JxOs+UIIQMgOuc71mkt7dj3Q==
-X-Google-Smtp-Source: APXvYqwsEAlSz/eNFlgajgo4Kt8DHISJN+MfNVQqCm9syohvOOWU5/fOAXzlAO0OoVTlNR0j/l6/cH2CfoUTavBQdJA=
-X-Received: by 2002:a9d:3621:: with SMTP id w30mr5187084otb.98.1556862507760; 
- Thu, 02 May 2019 22:48:27 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id 6F81E21959CB2
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 23:41:52 -0700 (PDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8CC3D2075E;
+ Fri,  3 May 2019 06:41:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1556865712;
+ bh=qAxjj5uiF5zEnzRbrg8NBWm/r/MITYyDqVpA7K94d04=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=T/xHj6l6GTULrzqty/QE9n+V3E7brgc1EE3YPacTpehUKVBEwYEB8Kjpj6eaNywET
+ vOVTIu5pClz9D1ixUfyq2wi+fG23/JAt0fEXA4iWbz4fYGFM70dWGs3kIuIpiDPLE5
+ z1ZErmGEyIuJkJ4kZlIVEyXnanSfyuAg225XdKNg=
+Date: Fri, 3 May 2019 08:41:49 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Brendan Higgins <brendanhiggins@google.com>
+Subject: Re: [PATCH v2 12/17] kunit: tool: add Python wrappers for running
+ KUnit tests
+Message-ID: <20190503064149.GB20723@kroah.com>
 References: <20190501230126.229218-1-brendanhiggins@google.com>
- <20190501230126.229218-5-brendanhiggins@google.com>
- <ead23600-eecd-cf74-bdd1-94a6964e29b2@kernel.org>
-In-Reply-To: <ead23600-eecd-cf74-bdd1-94a6964e29b2@kernel.org>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Thu, 2 May 2019 22:48:16 -0700
-Message-ID: <CAFd5g463PQGn3618Vo2Spu81zzL40jM6Skr1gSWtJqMx7Faj5A@mail.gmail.com>
-Subject: Re: [PATCH v2 04/17] kunit: test: add kunit_stream a std::stream like
- logger
-To: shuah <shuah@kernel.org>
+ <20190501230126.229218-13-brendanhiggins@google.com>
+ <20190502110220.GD12416@kroah.com>
+ <CAFd5g47t=EdLKFCT=CnPkrM2z0nDVo24Gz4j0VxFOJbARP37Lg@mail.gmail.com>
+ <a49c5088-a821-210c-66de-f422536f5b01@gmail.com>
+ <CAFd5g44iWRchQKdJYtjRtPY6e-6e0eXpKXXsx5Ooi6sWE474KA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAFd5g44iWRchQKdJYtjRtPY6e-6e0eXpKXXsx5Ooi6sWE474KA@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,63 +62,76 @@ Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
  dri-devel <dri-devel@lists.freedesktop.org>,
  Sasha Levin <Alexander.Levin@microsoft.com>,
  Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ shuah@kernel.org, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Felix Guo <felixguoxiuping@gmail.com>, wfg@linux.intel.com,
  Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
  Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
  devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org, "Bird,
  Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
  Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
  kunit-dev@googlegroups.com, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Stephen Boyd <sboyd@kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 2, 2019 at 6:50 PM shuah <shuah@kernel.org> wrote:
->
-> On 5/1/19 5:01 PM, Brendan Higgins wrote:
+On Thu, May 02, 2019 at 04:45:29PM -0700, Brendan Higgins wrote:
+> On Thu, May 2, 2019 at 2:16 PM Frank Rowand <frowand.list@gmail.com> wrote:
+> >
+> > On 5/2/19 11:07 AM, Brendan Higgins wrote:
+> > > On Thu, May 2, 2019 at 4:02 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >>
+> > >> On Wed, May 01, 2019 at 04:01:21PM -0700, Brendan Higgins wrote:
+> > >>> From: Felix Guo <felixguoxiuping@gmail.com>
+> > >>>
+> > >>> The ultimate goal is to create minimal isolated test binaries; in the
+> > >>> meantime we are using UML to provide the infrastructure to run tests, so
+> > >>> define an abstract way to configure and run tests that allow us to
+> > >>> change the context in which tests are built without affecting the user.
+> > >>> This also makes pretty and dynamic error reporting, and a lot of other
+> > >>> nice features easier.
+> > >>>
+> > >>> kunit_config.py:
+> > >>>   - parse .config and Kconfig files.
+> > >>>
+> > >>> kunit_kernel.py: provides helper functions to:
+> > >>>   - configure the kernel using kunitconfig.
+> > >>>   - build the kernel with the appropriate configuration.
+> > >>>   - provide function to invoke the kernel and stream the output back.
+> > >>>
+> > >>> Signed-off-by: Felix Guo <felixguoxiuping@gmail.com>
+> > >>> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> > >>
+> > >> Ah, here's probably my answer to my previous logging format question,
+> > >> right?  What's the chance that these wrappers output stuff in a standard
+> > >> format that test-framework-tools can already parse?  :)
+> 
+> To be clear, the test-framework-tools format we are talking about is
+> TAP13[1], correct?
 
-< snip >
+Yes.
 
-> > diff --git a/kunit/kunit-stream.c b/kunit/kunit-stream.c
-> > new file mode 100644
-> > index 0000000000000..93c14eec03844
-> > --- /dev/null
-> > +++ b/kunit/kunit-stream.c
-> > @@ -0,0 +1,149 @@
+> My understanding is that is what kselftest is being converted to use.
 
-< snip >
+Yes, and I think it's almost done.  The core of kselftest provides
+functions that all tests can use to log messages in the correct format.
 
-> > +static int kunit_stream_init(struct kunit_resource *res, void *context)
-> > +{
-> > +     struct kunit *test = context;
-> > +     struct kunit_stream *stream;
-> > +
-> > +     stream = kzalloc(sizeof(*stream), GFP_KERNEL);
-> > +     if (!stream)
-> > +             return -ENOMEM;
-> > +     res->allocation = stream;
-> > +     stream->test = test;
-> > +     spin_lock_init(&stream->lock);
-> > +     stream->internal_stream = new_string_stream();
-> > +
-> > +     if (!stream->internal_stream)
-> > +             return -ENOMEM;
->
-> What happens to stream? Don't you want to free that?
+The core of kunit should also log the messages in this format as well,
+and not rely on the helper scripts as Frank points out, not everyone
+will use/want them.  Might as well make it easy for everyone to always
+do the right thing and not force it to always be added in later.
 
-Good catch. Will fix in next revision.
+thanks,
 
-< snip >
-
-Cheers
+greg k-h
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
