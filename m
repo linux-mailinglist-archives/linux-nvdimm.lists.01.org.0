@@ -2,36 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C736112E8F
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 14:56:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C7312E91
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 14:57:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E4C792124B908;
-	Fri,  3 May 2019 05:56:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 463672124B907;
+	Fri,  3 May 2019 05:57:24 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
+ [IPv6:2a00:1450:4864:20::542])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 666F921244A78
- for <linux-nvdimm@lists.01.org>; Fri,  3 May 2019 05:56:39 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 91E0EAD62;
- Fri,  3 May 2019 12:56:37 +0000 (UTC)
-Date: Fri, 3 May 2019 14:56:34 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v7 09/12] mm/sparsemem: Support sub-section hotplug
-Message-ID: <20190503125634.GH15740@linux>
-References: <155677652226.2336373.8700273400832001094.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155677657023.2336373.4452495266651002382.stgit@dwillia2-desk3.amr.corp.intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 2EB3121244A78
+ for <linux-nvdimm@lists.01.org>; Fri,  3 May 2019 05:57:22 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id f37so5864781edb.13
+ for <linux-nvdimm@lists.01.org>; Fri, 03 May 2019 05:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=VaxPQ6IeVmYMFGePLBrY6yLBQaxZgQlHXQuFLzQ/+d4=;
+ b=Q1s+yLF06i2mWw5XUZDrN3OrhZkHA8MeRl3UBfwzVL1qD0zqGe2QutTZhtxhQAoE9D
+ xvQ5wXPYNODkqxiQUF3mOTp7pZE9B7BCM+r90yRx6rXkZ45fnVut3oNIknNMHV9McNkz
+ gnPbaALBFQupBUtkVTqzWtVenkPE2fscTIKqyRkAgsETnrM+I6zEsxcVGWz+wqVSLltU
+ /EYGqnwmMsMHGuJW2fhPE0vGgNHR0K9Q8kz4UKmPnoynnLJRvhF0Cch3nRtebAg2LxL7
+ sWpRPHoR6w4Xyl/FMtZRKVQr4qwfszDvBPp+SUx3ktr5jhhURApDYJ2I0IcQGnJaUENr
+ hK5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=VaxPQ6IeVmYMFGePLBrY6yLBQaxZgQlHXQuFLzQ/+d4=;
+ b=K2z2YcX9hhM0/IbGmQ2s9y9ECTQkKKlFQjliB31Q4NQvZWCub3XbZUPQU6IdAHWjw5
+ o2eVMNOj9UVwOKEkQotcKW8FQEHbx/bZgi7aeXnxJetqx6BGG6L2LOi/Rre+wfzwCijV
+ UuoXyN0wdMFPZJ7GobbvgCI/n/18Hh0xHrn5S1M/KscyRJ1AgV3dPysySZiLmaMpmfLQ
+ posAzXYYEw9DA7H5ZjbKBmFAOXyKaa2RpTdn9liBVtbvPoGdA9nPKyLKvEGubiCcgAxj
+ 0zQsWomgAJcLO8cb/N+p+8zqXAguNqA7LmajwNk89qg+mFVIn6oHNkDoqxO4vC+kRatv
+ 3zkg==
+X-Gm-Message-State: APjAAAVHPIgu1Nf24kboIgvy1cAWkjvDVLdzWdf1xWOjYRhEbTEM/DSq
+ n24tZTmw/IdNj2t/orOY2f2vuEXlSoz6asx96Q1oYw==
+X-Google-Smtp-Source: APXvYqxGpxdtpUzePQzoj8+ABR2xl3yPHLROkt/fFrbcMScpdOGg5GoJBHZkg6V088MaY7vMf4/rxnhdCFk/G/55mD8=
+X-Received: by 2002:a50:b56a:: with SMTP id z39mr8130377edd.91.1556888240692; 
+ Fri, 03 May 2019 05:57:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <155677657023.2336373.4452495266651002382.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155552634586.2015392.2662168839054356692.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CA+CK2bCkqLc82G2MW+rYrKTi4KafC+tLCASkaT8zRfVJCCe8HQ@mail.gmail.com>
+ <CAPcyv4g+KNu=upejy7Xm=jWR0cdhygPAdSRbkfFGpJeHFGc4+w@mail.gmail.com>
+ <bd76cb2f-7cdc-f11b-11ec-285862db66f3@arm.com>
+In-Reply-To: <bd76cb2f-7cdc-f11b-11ec-285862db66f3@arm.com>
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 3 May 2019 08:57:09 -0400
+Message-ID: <CA+CK2bBS5Csz0O9sDVwt_NjtrBtLaMfkycjhaOmR7mXoKJ5XEg@mail.gmail.com>
+Subject: Re: [PATCH v6 02/12] mm/sparsemem: Introduce common definitions for
+ the size and mask of a section
+To: Robin Murphy <robin.murphy@arm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,145 +70,46 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm@lists.01.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
- Vlastimil Babka <vbabka@suse.cz>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ David Hildenbrand <david@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 01, 2019 at 10:56:10PM -0700, Dan Williams wrote:
-> The libnvdimm sub-system has suffered a series of hacks and broken
-> workarounds for the memory-hotplug implementation's awkward
-> section-aligned (128MB) granularity. For example the following backtrace
-> is emitted when attempting arch_add_memory() with physical address
-> ranges that intersect 'System RAM' (RAM) with 'Persistent Memory' (PMEM)
-> within a given section:
-> 
->  WARNING: CPU: 0 PID: 558 at kernel/memremap.c:300 devm_memremap_pages+0x3b5/0x4c0
->  devm_memremap_pages attempted on mixed region [mem 0x200000000-0x2fbffffff flags 0x200]
->  [..]
->  Call Trace:
->    dump_stack+0x86/0xc3
->    __warn+0xcb/0xf0
->    warn_slowpath_fmt+0x5f/0x80
->    devm_memremap_pages+0x3b5/0x4c0
->    __wrap_devm_memremap_pages+0x58/0x70 [nfit_test_iomap]
->    pmem_attach_disk+0x19a/0x440 [nd_pmem]
-> 
-> Recently it was discovered that the problem goes beyond RAM vs PMEM
-> collisions as some platform produce PMEM vs PMEM collisions within a
-> given section. The libnvdimm workaround for that case revealed that the
-> libnvdimm section-alignment-padding implementation has been broken for a
-> long while. A fix for that long-standing breakage introduces as many
-> problems as it solves as it would require a backward-incompatible change
-> to the namespace metadata interpretation. Instead of that dubious route
-> [1], address the root problem in the memory-hotplug implementation.
-> 
-> [1]: https://lore.kernel.org/r/155000671719.348031.2347363160141119237.stgit@dwillia2-desk3.amr.corp.intel.com
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  mm/sparse.c |  223 ++++++++++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 150 insertions(+), 73 deletions(-)
-> 
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 198371e5fc87..419a3620af6e 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -83,8 +83,15 @@ static int __meminit sparse_index_init(unsigned long section_nr, int nid)
->  	unsigned long root = SECTION_NR_TO_ROOT(section_nr);
->  	struct mem_section *section;
->  
-> +	/*
-> +	 * An existing section is possible in the sub-section hotplug
-> +	 * case. First hot-add instantiates, follow-on hot-add reuses
-> +	 * the existing section.
-> +	 *
-> +	 * The mem_hotplug_lock resolves the apparent race below.
-> +	 */
->  	if (mem_section[root])
-> -		return -EEXIST;
-> +		return 0;
-
-Just a sidenote: we do not bail out on -EEXIST, so it should be fine if we
-stick with it.
-But if not, I would then clean up sparse_add_section:
-
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -901,13 +901,12 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
-        int ret;
- 
-        ret = sparse_index_init(section_nr, nid);
--       if (ret < 0 && ret != -EEXIST)
-+       if (ret < 0)
-                return ret;
- 
-        memmap = section_activate(nid, start_pfn, nr_pages, altmap);
-        if (IS_ERR(memmap))
-                return PTR_ERR(memmap);
--       ret = 0;
-
-
-> +
-> +	if (!mask)
-> +		rc = -EINVAL;
-> +	else if (mask & ms->usage->map_active)
-
-	else if (ms->usage->map_active) should be enough?
-
-> +		rc = -EEXIST;
-> +	else
-> +		ms->usage->map_active |= mask;
-> +
-> +	if (rc) {
-> +		if (usage)
-> +			ms->usage = NULL;
-> +		kfree(usage);
-> +		return ERR_PTR(rc);
-> +	}
-> +
-> +	/*
-> +	 * The early init code does not consider partially populated
-> +	 * initial sections, it simply assumes that memory will never be
-> +	 * referenced.  If we hot-add memory into such a section then we
-> +	 * do not need to populate the memmap and can simply reuse what
-> +	 * is already there.
-> +	 */
-
-This puzzles me a bit.
-I think we cannot have partially populated early sections, can we?
-And how we even come to hot-add memory into those?
-
-Could you please elaborate a bit here?
-
-> +	ms = __pfn_to_section(start_pfn);
->  	section_mark_present(ms);
-> -	sparse_init_one_section(ms, section_nr, memmap, usage);
-> +	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
->  
-> -out:
-> -	if (ret < 0) {
-> -		kfree(usage);
-> -		depopulate_section_memmap(start_pfn, PAGES_PER_SECTION, altmap);
-> -	}
-> +	if (ret < 0)
-> +		section_deactivate(start_pfn, nr_pages, nid, altmap);
-
-Uhm, if my eyes do not trick me, ret is only used for the return value from
-sparse_index_init(), so this is not needed. Can we get rid of it?
-
-Unfortunately I am running out of time, but I plan to keep reviewing this patch
-in the next few days.
-
--- 
-Oscar Salvador
-SUSE L3
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gRnJpLCBNYXkgMywgMjAxOSBhdCA2OjM1IEFNIFJvYmluIE11cnBoeSA8cm9iaW4ubXVycGh5
+QGFybS5jb20+IHdyb3RlOgo+Cj4gT24gMDMvMDUvMjAxOSAwMTo0MSwgRGFuIFdpbGxpYW1zIHdy
+b3RlOgo+ID4gT24gVGh1LCBNYXkgMiwgMjAxOSBhdCA3OjUzIEFNIFBhdmVsIFRhdGFzaGluIDxw
+YXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPiB3cm90ZToKPiA+Pgo+ID4+IE9uIFdlZCwgQXByIDE3
+LCAyMDE5IGF0IDI6NTIgUE0gRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+
+IHdyb3RlOgo+ID4+Pgo+ID4+PiBVcC1sZXZlbCB0aGUgbG9jYWwgc2VjdGlvbiBzaXplIGFuZCBt
+YXNrIGZyb20ga2VybmVsL21lbXJlbWFwLmMgdG8KPiA+Pj4gZ2xvYmFsIGRlZmluaXRpb25zLiAg
+VGhlc2Ugd2lsbCBiZSB1c2VkIGJ5IHRoZSBuZXcgc3ViLXNlY3Rpb24gaG90cGx1Zwo+ID4+PiBz
+dXBwb3J0Lgo+ID4+Pgo+ID4+PiBDYzogTWljaGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+Cj4g
+Pj4+IENjOiBWbGFzdGltaWwgQmFia2EgPHZiYWJrYUBzdXNlLmN6Pgo+ID4+PiBDYzogSsOpcsO0
+bWUgR2xpc3NlIDxqZ2xpc3NlQHJlZGhhdC5jb20+Cj4gPj4+IENjOiBMb2dhbiBHdW50aG9ycGUg
+PGxvZ2FuZ0BkZWx0YXRlZS5jb20+Cj4gPj4+IFNpZ25lZC1vZmYtYnk6IERhbiBXaWxsaWFtcyA8
+ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPgo+ID4+Cj4gPj4gU2hvdWxkIGJlIGRyb3BwZWQgZnJv
+bSB0aGlzIHNlcmllcyBhcyBpdCBoYXMgYmVlbiByZXBsYWNlZCBieSBhIHZlcnkKPiA+PiBzaW1p
+bGFyIHBhdGNoIGluIHRoZSBtYWlubGluZToKPiA+Pgo+ID4+IDdjNjk3ZDdmYjVjYjE0ZWY2MGUy
+YjY4NzMzM2JhM2VmYjc0ZjczZGEKPiA+PiAgIG1tL21lbXJlbWFwOiBSZW5hbWUgYW5kIGNvbnNv
+bGlkYXRlIFNFQ1RJT05fU0laRQo+ID4KPiA+IEkgc2F3IHRoYXQgcGF0Y2ggZmx5IGJ5IGFuZCBh
+Y2tlZCBpdCwgYnV0IEkgaGF2ZSBub3Qgc2VlbiBpdCBwaWNrZWQgdXAKPiA+IGFueXdoZXJlLiBJ
+IGdyYWJiZWQgbGF0ZXN0IC1saW51cyBhbmQgLW5leHQsIGJ1dCBkb24ndCBzZWUgdGhhdAo+ID4g
+Y29tbWl0Lgo+ID4KPiA+ICQgZ2l0IHNob3cgN2M2OTdkN2ZiNWNiMTRlZjYwZTJiNjg3MzMzYmEz
+ZWZiNzRmNzNkYQo+ID4gZmF0YWw6IGJhZCBvYmplY3QgN2M2OTdkN2ZiNWNiMTRlZjYwZTJiNjg3
+MzMzYmEzZWZiNzRmNzNkYQo+Cj4gWWVhaCwgSSBkb24ndCByZWNvZ25pc2UgdGhhdCBJRCBlaXRo
+ZXIsIG5vciBoYXZlIEkgaGFkIGFueSBub3RpZmljYXRpb25zCj4gdGhhdCBBbmRyZXcncyBwaWNr
+ZWQgdXAgYW55dGhpbmcgb2YgbWluZSB5ZXQgOi8KClNvcnJ5IGZvciB0aGUgY29uZnVzaW9uLiBJ
+IHRob3VnaHQgSSBjaGVja2VkIGluIGEgbWFzdGVyIGJyYW5jaCwgYnV0CnR1cm5zIG91dCBJIGNo
+ZWNrZWQgaW4gYSBicmFuY2ggd2hlcmUgSSBhcHBsaWVkIGFybSBob3RyZW1vdmUgcGF0Y2hlcwph
+bmQgUm9iaW4ncyBwYXRjaCBhcyB3ZWxsLiBUaGVzZSB0d28gcGF0Y2hlcyBhcmUgZXNzZW50aWFs
+bHkgdGhlIHNhbWUsCnNvIHdoaWNoIG9uZSBnb2VzIGZpcnN0IHRoZSBvdGhlciBzaG91bGQgYmUg
+ZHJvcHBlZC4KClJldmlld2VkLWJ5OiBQYXZlbCBUYXRhc2hpbiA8cGFzaGEudGF0YXNoaW5Ac29s
+ZWVuLmNvbT4KClRoYW5rIHlvdSwKUGFzaGEKCj4KPiBSb2Jpbi4KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApM
+aW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlz
+dGluZm8vbGludXgtbnZkaW1tCg==
