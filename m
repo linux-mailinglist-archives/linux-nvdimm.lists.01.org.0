@@ -2,62 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C172125A1
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 02:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1962D125A2
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 02:41:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6AAB4212449FF;
-	Thu,  2 May 2019 17:41:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B6B8D21244A02;
+	Thu,  2 May 2019 17:41:23 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
+ client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4AFCB212449FA
- for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 17:41:17 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id v23so3216973oif.8
- for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 17:41:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by ml01.01.org (Postfix) with ESMTPS id C8685212449F9
+ for <linux-nvdimm@lists.01.org>; Thu,  2 May 2019 17:41:21 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id t189so3144558oih.12
+ for <linux-nvdimm@lists.01.org>; Thu, 02 May 2019 17:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=SHIb7mMlQkdwyCNw9OmBZQRiEVvms1FbzqlKO0H0jyU=;
- b=e1IXm1t3gKlTz2nFZZhNAzGsgTFDXyOgM3CFnu4chnqlechdZ7feD30cbyHmMI5HHL
- Mow0+iu80TVLHPyMx1LwR9PuBhoBHNdhmDP4ahBt00mnUknZ8tdK5CEfHgeOiftwVL0S
- F5KwPhWFCCeZpNAS0pz0EsQW4O3toomBI0UHHT5HsSM2H9gakq2uQPs8CTymYw5aTArB
- GAUHldWl2nCQQ5HdMNPl5hcpiP+LINUzdOtMtfIPK+9cTWWmQXy3Gd8fS1jVCKi3RMxF
- xmqYUQj3Rn2ZSQ+YTn8wmsjBK0VE8AS4n33Qkh/623T5y/inK3uqJblSvzvsWPFjELMJ
- yjNg==
+ :cc; bh=i/LGIUMFfkHhxCSDT3fm51UOA28cPrGRFTawiLz9qdU=;
+ b=FJIAYLW9LNf9oanARKl7TfF4hN+5D95QZaw548QJynu0CjT8BCwlpKeraO6t9YYkOs
+ GtNX3/gAG5EXPOJwbqEw8XIrwSSwlKCrob0M1UGIcbcgu72bFgtpR14EttoAsQY2aDgu
+ R3g2UNQXhcb3FGDMQxi+sYsTRkYHs3qzvEqqHMGSEtbYKM2QA4nxdIkJahuLnsBoO2+c
+ TGr8njZSgd2pD66c4pynpYDwYtRx3F05qDNXkbRYRi3lANeuXFpYdvOTMjhMHRrrhF8P
+ 3i1MCfzjUMz11YJpZRIR9WsEPFVnmwGmtj8MUe4JYxQcAMMsvhz5BhNLX+0hNU5ukE4d
+ 83hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=SHIb7mMlQkdwyCNw9OmBZQRiEVvms1FbzqlKO0H0jyU=;
- b=on+F2mGvZjFv0Z1DpDuNnAVcb1fDrcvXj2S7egcTSdSKE+mFaomByvZP3uogI/CEPM
- qZivGjxHIbE5y5IpDhtNTKsQ9fxowJVqt7PsznRqnlAkN9/wWRto5XjKEFRnDUbiza63
- aDuZ3Im6PTXIBk8tqfikk2b/ji+f/7CMXjfh08Z+amAvao9HpNtyyBkyrt2aDx7tjdnH
- 04R//qfZ1L1NI8yoEjth1dNrA2BgKy0PnRvCYxWYSK0XlpMMPqbZ4pk7e5Tx/HHAZpHX
- EUZyxjQBkblUibHlptnLz+l7ALizxC8SFJfqpGxQv22twpzFJAYwSaWqC0qQ5zYN8mGe
- vE+g==
-X-Gm-Message-State: APjAAAXfFb6IXSE81bmiake+5dE0uOPwwleHyGX3MHbBapZYFmATJkRP
- 5zs6rFQbjLN1Ri4FYz2ykfZZP3dnKUxEwOuqiiqIEQ==
-X-Google-Smtp-Source: APXvYqyHWUCZG/bYwe3R1gmgamI4fU+xS8/lH0BFReBkq0nRMUCer+rB8GXaCig08T80kfmw9To4vMkmNRhGU8dh5W0=
-X-Received: by 2002:aca:47c3:: with SMTP id u186mr4629092oia.105.1556844076989; 
- Thu, 02 May 2019 17:41:16 -0700 (PDT)
+ :message-id:subject:to:cc;
+ bh=i/LGIUMFfkHhxCSDT3fm51UOA28cPrGRFTawiLz9qdU=;
+ b=pgqIP5GbSWhFYTnbhasd1Q95T9OHqyx7htf75KyZCsWO4unQDUnNAzP/itHp1x2LxL
+ o4HkgUyP1pgEhJesxP5kB9a9soCrgMSKkua6lJ0YQoa9MWv8oLs4mH49H/k5Eivc8JVA
+ ++uyxRBRe+dn5ZX57zuw9N2InelvzPHFFQHkDm+naDgo4UPQcTNKxent+ZFiXqC4nV68
+ jeXv82tp9/yL/F/J89w105T/XbOvMXeUi5UtPYoRxaQoquNRqqM5G9sHAia2uZdsUKqK
+ sHV3ssbVeAfTFaXnBt4h578nQaz1f55+N0lgptNIED+EXQbF/5BiSqCbsNBlR6/XwHnQ
+ RdPA==
+X-Gm-Message-State: APjAAAWTs+ZcuhiJ2JFUDFcNr/0238hXNDgCTteRCzRdIdjFkopyxNsd
+ xg7IeTHf5UntLN+ljvpO/oqZ3PGn0xwFzr8s8BSJ7Q==
+X-Google-Smtp-Source: APXvYqx+IeNo/M2uU5es7ZAJsOSGR6b01vZ0dEQaWTEj9cNFRVwEHLuSMfXDE/OIHXARFXXWqbF1LQIlh8BGLZyE6Eo=
+X-Received: by 2002:aca:4586:: with SMTP id s128mr4126147oia.148.1556844080319; 
+ Thu, 02 May 2019 17:41:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <155552633539.2015392.2477781120122237934.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155552634586.2015392.2662168839054356692.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CA+CK2bCkqLc82G2MW+rYrKTi4KafC+tLCASkaT8zRfVJCCe8HQ@mail.gmail.com>
-In-Reply-To: <CA+CK2bCkqLc82G2MW+rYrKTi4KafC+tLCASkaT8zRfVJCCe8HQ@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 2 May 2019 17:41:05 -0700
-Message-ID: <CAPcyv4g+KNu=upejy7Xm=jWR0cdhygPAdSRbkfFGpJeHFGc4+w@mail.gmail.com>
-Subject: Re: [PATCH v6 02/12] mm/sparsemem: Introduce common definitions for
- the size and mask of a section
-To: Pavel Tatashin <pasha.tatashin@soleen.com>
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <20190502105053.GA12416@kroah.com> <20190502110513.GF12416@kroah.com>
+In-Reply-To: <20190502110513.GF12416@kroah.com>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Thu, 2 May 2019 17:41:08 -0700
+Message-ID: <CAFd5g46RyQ+jaV3bDejBaeca4Yv3G9ppT5JxdKqZw6PSbiSDYw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+To: Greg KH <gregkh@linuxfoundation.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,34 +66,81 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Robin Murphy <robin.murphy@arm.com>, David Hildenbrand <david@redhat.com>,
- LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
+ Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linux-kselftest@vger.kernel.org,
+ shuah@kernel.org, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ kunit-dev@googlegroups.com, Richard Weinberger <richard@nod.at>,
+ Stephen Boyd <sboyd@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-T24gVGh1LCBNYXkgMiwgMjAxOSBhdCA3OjUzIEFNIFBhdmVsIFRhdGFzaGluIDxwYXNoYS50YXRh
-c2hpbkBzb2xlZW4uY29tPiB3cm90ZToKPgo+IE9uIFdlZCwgQXByIDE3LCAyMDE5IGF0IDI6NTIg
-UE0gRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+IHdyb3RlOgo+ID4KPiA+
-IFVwLWxldmVsIHRoZSBsb2NhbCBzZWN0aW9uIHNpemUgYW5kIG1hc2sgZnJvbSBrZXJuZWwvbWVt
-cmVtYXAuYyB0bwo+ID4gZ2xvYmFsIGRlZmluaXRpb25zLiAgVGhlc2Ugd2lsbCBiZSB1c2VkIGJ5
-IHRoZSBuZXcgc3ViLXNlY3Rpb24gaG90cGx1Zwo+ID4gc3VwcG9ydC4KPiA+Cj4gPiBDYzogTWlj
-aGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+Cj4gPiBDYzogVmxhc3RpbWlsIEJhYmthIDx2YmFi
-a2FAc3VzZS5jej4KPiA+IENjOiBKw6lyw7RtZSBHbGlzc2UgPGpnbGlzc2VAcmVkaGF0LmNvbT4K
-PiA+IENjOiBMb2dhbiBHdW50aG9ycGUgPGxvZ2FuZ0BkZWx0YXRlZS5jb20+Cj4gPiBTaWduZWQt
-b2ZmLWJ5OiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KPgo+IFNob3Vs
-ZCBiZSBkcm9wcGVkIGZyb20gdGhpcyBzZXJpZXMgYXMgaXQgaGFzIGJlZW4gcmVwbGFjZWQgYnkg
-YSB2ZXJ5Cj4gc2ltaWxhciBwYXRjaCBpbiB0aGUgbWFpbmxpbmU6Cj4KPiA3YzY5N2Q3ZmI1Y2Ix
-NGVmNjBlMmI2ODczMzNiYTNlZmI3NGY3M2RhCj4gIG1tL21lbXJlbWFwOiBSZW5hbWUgYW5kIGNv
-bnNvbGlkYXRlIFNFQ1RJT05fU0laRQoKSSBzYXcgdGhhdCBwYXRjaCBmbHkgYnkgYW5kIGFja2Vk
-IGl0LCBidXQgSSBoYXZlIG5vdCBzZWVuIGl0IHBpY2tlZCB1cAphbnl3aGVyZS4gSSBncmFiYmVk
-IGxhdGVzdCAtbGludXMgYW5kIC1uZXh0LCBidXQgZG9uJ3Qgc2VlIHRoYXQKY29tbWl0LgoKJCBn
-aXQgc2hvdyA3YzY5N2Q3ZmI1Y2IxNGVmNjBlMmI2ODczMzNiYTNlZmI3NGY3M2RhCmZhdGFsOiBi
-YWQgb2JqZWN0IDdjNjk3ZDdmYjVjYjE0ZWY2MGUyYjY4NzMzM2JhM2VmYjc0ZjczZGEKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
-aWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3Jn
-L21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+On Thu, May 2, 2019 at 4:05 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, May 02, 2019 at 12:50:53PM +0200, Greg KH wrote:
+> > On Wed, May 01, 2019 at 04:01:09PM -0700, Brendan Higgins wrote:
+> > > ## TLDR
+> > >
+> > > I rebased the last patchset on 5.1-rc7 in hopes that we can get this in
+> > > 5.2.
+> >
+> > That might be rushing it, normally trees are already closed now for
+> > 5.2-rc1 if 5.1-final comes out this Sunday.
+> >
+> > > Shuah, I think you, Greg KH, and myself talked off thread, and we agreed
+> > > we would merge through your tree when the time came? Am I remembering
+> > > correctly?
+> >
+> > No objection from me.
+> >
+> > Let me go review the latest round of patches now.
+>
+> Overall, looks good to me, and provides a framework we can build on.
+> I'm a bit annoyed at the reliance on uml at the moment, but we can work
+> on that in the future :)
+
+Eh, I mostly fixed that.
+
+I removed the KUnit framework's reliance on UML i.e. the actual tests
+now run on any architecture.
+
+The only UML dependent bit is the KUnit wrapper scripts, which could
+be made to work to support other architectures pretty trivially. The
+only limitation here is that it would be dependent on the actual
+workflow you are using.
+
+In anycase, if you are comfortable reading the results in the kernel
+logs, then there is no dependence on UML. (I should probably provide
+some documentation on that...)
+
+>
+> Thanks for sticking with this, now the real work begins...
+
+I don't doubt it.
+
+>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Does this cover all the patches in this set?
+
+Thanks!
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
