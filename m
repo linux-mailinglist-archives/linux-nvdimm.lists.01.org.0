@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C194F134EF
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 23:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FFD134F0
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 May 2019 23:32:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 022052124B93C;
+	by ml01.01.org (Postfix) with ESMTP id 3A77F2124B93F;
 	Fri,  3 May 2019 14:32:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,23 +15,22 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C6BCB2194EB76
- for <linux-nvdimm@lists.01.org>; Fri,  3 May 2019 14:32:42 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 2159521244A76
+ for <linux-nvdimm@lists.01.org>; Fri,  3 May 2019 14:32:43 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga008.fm.intel.com ([10.253.24.58])
  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
  03 May 2019 14:32:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,427,1549958400"; d="scan'208";a="145838671"
+X-IronPort-AV: E=Sophos;i="5.60,427,1549958400"; d="scan'208";a="145838674"
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by fmsmga008.fm.intel.com with ESMTP; 03 May 2019 14:32:41 -0700
+ by fmsmga008.fm.intel.com with ESMTP; 03 May 2019 14:32:42 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH 4/8] ndctl: add helpers to get/set the online state for
- a node
-Date: Fri,  3 May 2019 15:32:27 -0600
-Message-Id: <20190503213231.12280-5-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH 5/8] daxctl: add a new reconfigure-device command
+Date: Fri,  3 May 2019 15:32:28 -0600
+Message-Id: <20190503213231.12280-6-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190503213231.12280-1-vishal.l.verma@intel.com>
 References: <20190503213231.12280-1-vishal.l.verma@intel.com>
@@ -54,340 +53,287 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-In preparation for converting DAX devices for use as system-ram via the
-kernel's 'kmem' facility, add libndctl helpers to manipulate the sysfs
-interfaces to get the target_node of a DAX device, and to online,
-offline, and query the state of hotplugged memory sections associated
-with a given node.
-
-This adds the following new interfaces:
-
-  daxctl_dev_get_target_node
-  daxctl_dev_online_node
-  daxctl_dev_offline_node
-  daxctl_dev_node_is_online
+Add a new command 'daxctl-reconfigure-device'. This is used to switch
+the mode of a dax device between regular 'device_dax' and
+'system-memory'. The command also uses the memory hotplug sysfs
+interfaces to online the newly available memory when converting to
+'system-ram', and to attempt to offline the memory when converting back
+to a DAX device.
 
 Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- daxctl/lib/libdaxctl-private.h |   6 +
- daxctl/lib/libdaxctl.c         | 228 +++++++++++++++++++++++++++++++++
- daxctl/lib/libdaxctl.sym       |   4 +
- daxctl/libdaxctl.h             |   4 +
- 4 files changed, 242 insertions(+)
+ daxctl/Makefile.am |   2 +
+ daxctl/builtin.h   |   1 +
+ daxctl/daxctl.c    |   1 +
+ daxctl/device.c    | 217 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 221 insertions(+)
+ create mode 100644 daxctl/device.c
 
-diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-private.h
-index e64d0a7..ef443aa 100644
---- a/daxctl/lib/libdaxctl-private.h
-+++ b/daxctl/lib/libdaxctl-private.h
-@@ -33,6 +33,11 @@ static const char *dax_modules[] = {
- 	[DAXCTL_DEV_MODE_RAM] = "kmem",
+diff --git a/daxctl/Makefile.am b/daxctl/Makefile.am
+index 94f73f9..66dcc7f 100644
+--- a/daxctl/Makefile.am
++++ b/daxctl/Makefile.am
+@@ -15,10 +15,12 @@ daxctl_SOURCES =\
+ 		daxctl.c \
+ 		list.c \
+ 		migrate.c \
++		device.c \
+ 		../util/json.c
+ 
+ daxctl_LDADD =\
+ 	lib/libdaxctl.la \
+ 	../libutil.a \
+ 	$(UUID_LIBS) \
++	$(KMOD_LIBS) \
+ 	$(JSON_LIBS)
+diff --git a/daxctl/builtin.h b/daxctl/builtin.h
+index 00ef5e9..756ba2a 100644
+--- a/daxctl/builtin.h
++++ b/daxctl/builtin.h
+@@ -6,4 +6,5 @@
+ struct daxctl_ctx;
+ int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_migrate(int argc, const char **argv, struct daxctl_ctx *ctx);
++int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx);
+ #endif /* _DAXCTL_BUILTIN_H_ */
+diff --git a/daxctl/daxctl.c b/daxctl/daxctl.c
+index 2e41747..e1ba7b8 100644
+--- a/daxctl/daxctl.c
++++ b/daxctl/daxctl.c
+@@ -71,6 +71,7 @@ static struct cmd_struct commands[] = {
+ 	{ "list", .d_fn = cmd_list },
+ 	{ "help", .d_fn = cmd_help },
+ 	{ "migrate-device-model", .d_fn = cmd_migrate },
++	{ "reconfigure-device", .d_fn = cmd_reconfig_device },
  };
  
-+enum node_state {
-+	NODE_OFFLINE,
-+	NODE_ONLINE,
+ int main(int argc, const char **argv)
+diff --git a/daxctl/device.c b/daxctl/device.c
+new file mode 100644
+index 0000000..0a6102f
+--- /dev/null
++++ b/daxctl/device.c
+@@ -0,0 +1,217 @@
++// SPDX-License-Identifier: GPL-2.0
++/* Copyright(c) 2019 Intel Corporation. All rights reserved. */
++#include <stdio.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <limits.h>
++#include <util/json.h>
++#include <util/filter.h>
++#include <json-c/json.h>
++#include <daxctl/libdaxctl.h>
++#include <util/parse-options.h>
++#include <ccan/array_size/array_size.h>
++
++static struct {
++	const char *dev;
++	const char *mode;
++	int region_id;
++	bool no_online;
++	bool do_offline;
++	bool human;
++	bool verbose;
++} param = {
++	.region_id = -1,
 +};
 +
- /**
-  * struct daxctl_region - container for dax_devices
-  */
-@@ -63,6 +68,7 @@ struct daxctl_dev {
- 	struct kmod_module *module;
- 	struct kmod_list *kmod_list;
- 	struct daxctl_region *region;
-+	int target_node;
- };
- 
- static inline int check_kmod(struct kmod_ctx *kmod_ctx)
-diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-index d50b321..aab2364 100644
---- a/daxctl/lib/libdaxctl.c
-+++ b/daxctl/lib/libdaxctl.c
-@@ -28,6 +28,7 @@
- #include "libdaxctl-private.h"
- 
- static const char *attrs = "dax_region";
-+static const char *node_base = "/sys/devices/system/node";
- 
- static void free_region(struct daxctl_region *region, struct list_head *head);
- 
-@@ -397,6 +398,12 @@ static void *add_dax_dev(void *parent, int id, const char *daxdev_base)
- 	} else
- 		dbg(ctx, "%s: modalias attribute missing\n", devname);
- 
-+	sprintf(path, "%s/target_node", daxdev_base);
-+	if (sysfs_read_attr(ctx, path, buf) == 0)
-+		dev->target_node = strtol(buf, NULL, 0);
-+	else
-+		dev->target_node = -1;
-+
- 	daxctl_dev_foreach(region, dev_dup)
- 		if (dev_dup->id == dev->id) {
- 			free_dev(dev, NULL);
-@@ -897,3 +904,224 @@ DAXCTL_EXPORT unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev)
- {
- 	return dev->size;
- }
-+
-+DAXCTL_EXPORT int daxctl_dev_get_target_node(struct daxctl_dev *dev)
++static int dev_disable(struct daxctl_dev *dev)
 +{
-+	return dev->target_node;
-+}
-+
-+static int online_one_memblock(struct daxctl_dev *dev, char *path)
-+{
-+	const char *devname = daxctl_dev_get_devname(dev);
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	const char *mode = "online_movable";
-+	char buf[SYSFS_ATTR_SIZE];
 +	int rc;
 +
-+	rc = sysfs_read_attr(ctx, path, buf);
-+	if (rc) {
-+		err(ctx, "%s: Failed to read %s: %s\n",
-+			devname, path, strerror(-rc));
-+		return rc;
-+	}
-+
-+	/*
-+	 * if already online, possibly due to kernel config or a udev rule,
-+	 * there is nothing to do and we can skip over the memblock
-+	 */
-+	if (strncmp(buf, "online", 6) == 0)
++	if (!daxctl_dev_is_enabled(dev))
 +		return 0;
 +
-+	rc = sysfs_write_attr_quiet(ctx, path, mode);
++	rc = daxctl_dev_disable(dev);
 +	if (rc)
-+		err(ctx, "%s: Failed to online %s: %s\n",
-+			devname, path, strerror(-rc));
++		fprintf(stderr, "%s: disable failed: %s\n",
++			daxctl_dev_get_devname(dev), strerror(-rc));
++
 +	return rc;
 +}
 +
-+static int offline_one_memblock(struct daxctl_dev *dev, char *path)
++static int reconfig_mode_ram(struct daxctl_dev *dev)
 +{
 +	const char *devname = daxctl_dev_get_devname(dev);
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	const char *mode = "offline";
-+	char buf[SYSFS_ATTR_SIZE];
 +	int rc;
 +
-+	rc = sysfs_read_attr(ctx, path, buf);
-+	if (rc) {
-+		err(ctx, "%s: Failed to read %s: %s\n",
-+			devname, path, strerror(-rc));
++	rc = dev_disable(dev);
++	if (rc)
 +		return rc;
-+	}
++	rc = daxctl_dev_enable_ram(dev);
++	if (rc)
++		return rc;
 +
-+	/* if already offline, there is nothing to do */
-+	if (strncmp(buf, "offline", 6) == 0)
++	if (param.no_online)
 +		return 0;
 +
-+	rc = sysfs_write_attr_quiet(ctx, path, mode);
-+	if (rc)
-+		err(ctx, "%s: Failed to offline %s: %s\n",
-+			devname, path, strerror(-rc));
-+	return rc;
-+}
-+
-+static int daxctl_dev_node_set_state(struct daxctl_dev *dev,
-+		enum node_state state)
-+{
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	int target_node, rc, changed = 0;
-+	struct dirent *de;
-+	char *node_path;
-+	DIR *node_dir;
-+
-+	target_node = daxctl_dev_get_target_node(dev);
-+	if (target_node < 0) {
-+		err(ctx, "%s: Unable to get target node\n",
-+			daxctl_dev_get_devname(dev));
-+		return -ENXIO;
-+	}
-+
-+	rc = asprintf(&node_path, "%s/node%d", node_base, target_node);
-+	if (rc < 0)
-+		return -ENOMEM;
-+
-+	node_dir = opendir(node_path);
-+	if (!node_dir) {
-+		rc = -errno;
-+		goto out_path;
-+	}
-+
-+	errno = 0;
-+	while ((de = readdir(node_dir)) != NULL) {
-+		char *mem_path;
-+
-+		if (strcmp(de->d_name, ".") == 0 ||
-+				strcmp(de->d_name, "..") == 0)
-+			continue;
-+		if (strncmp(de->d_name, "memory", 6) == 0) {
-+			rc = asprintf(&mem_path, "%s/%s/state",
-+				node_path, de->d_name);
-+			if (rc < 0) {
-+				rc = -ENOMEM;
-+				goto out_dir;
-+			}
-+			if (state == NODE_ONLINE)
-+				rc = online_one_memblock(dev, mem_path);
-+			else if (state == NODE_OFFLINE)
-+				rc = offline_one_memblock(dev, mem_path);
-+			else
-+				rc = -EINVAL;
-+			free(mem_path);
-+			if (rc)
-+				goto out_dir;
-+			changed++;
-+		}
-+		errno = 0;
-+	}
-+	if (errno) {
-+		rc = -errno;
-+		goto out_dir;
-+	}
-+	rc = changed;
-+
-+out_dir:
-+	closedir(node_dir);
-+out_path:
-+	free(node_path);
-+	return rc;
-+}
-+
-+DAXCTL_EXPORT int daxctl_dev_online_node(struct daxctl_dev *dev)
-+{
-+	return daxctl_dev_node_set_state(dev, NODE_ONLINE);
-+}
-+
-+DAXCTL_EXPORT int daxctl_dev_offline_node(struct daxctl_dev *dev)
-+{
-+	return daxctl_dev_node_set_state(dev, NODE_OFFLINE);
-+}
-+
-+static int memblock_is_online(struct daxctl_dev *dev, char *path)
-+{
-+	const char *devname = daxctl_dev_get_devname(dev);
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	char buf[SYSFS_ATTR_SIZE];
-+	int rc;
-+
-+	rc = sysfs_read_attr(ctx, path, buf);
-+	if (rc) {
-+		err(ctx, "%s: Failed to read %s: %s\n",
-+			devname, path, strerror(-rc));
++	rc = daxctl_dev_online_node(dev);
++	if (rc < 0) {
++		fprintf(stderr, "%s: unable to online memory: %s\n",
++			devname, strerror(-rc));
 +		return rc;
 +	}
-+
-+	if (strncmp(buf, "online", 6) == 0)
-+		return 1;
++	if (param.verbose)
++		fprintf(stderr, "%s: onlined %d memory sections\n",
++			devname, rc);
 +
 +	return 0;
 +}
 +
-+DAXCTL_EXPORT int daxctl_dev_node_is_online(struct daxctl_dev *dev)
++static int reconfig_mode_devdax(struct daxctl_dev *dev)
 +{
 +	const char *devname = daxctl_dev_get_devname(dev);
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	int target_node, rc, num_online = 0;
-+	struct dirent *de;
-+	char *node_path;
-+	DIR *node_dir;
++	int rc;
 +
-+	target_node = daxctl_dev_get_target_node(dev);
-+	if (target_node < 0) {
-+		err(ctx, "%s: Unable to get target node\n", devname);
-+		return -ENXIO;
-+	}
-+
-+	rc = asprintf(&node_path, "%s/node%d", node_base, target_node);
-+	if (rc < 0)
-+		return -ENOMEM;
-+
-+	node_dir = opendir(node_path);
-+	if (!node_dir) {
-+		rc = -errno;
-+		goto out_path;
-+	}
-+
-+	errno = 0;
-+	while ((de = readdir(node_dir)) != NULL) {
-+		char *mem_path;
-+
-+		if (strcmp(de->d_name, ".") == 0 ||
-+				strcmp(de->d_name, "..") == 0)
-+			continue;
-+		if (strncmp(de->d_name, "memory", 6) == 0) {
-+			rc = asprintf(&mem_path, "%s/%s/state",
-+				node_path, de->d_name);
-+			if (rc < 0) {
-+				rc = -ENOMEM;
-+				goto out_dir;
-+			}
-+			rc = memblock_is_online(dev, mem_path);
-+			if (rc < 0) {
-+				err(ctx, "%s: Unable to determine state: %s\n",
-+					devname, mem_path);
-+				goto out_dir;
-+			}
-+			if (rc > 0)
-+				num_online++;
-+			free(mem_path);
++	if (param.do_offline) {
++		rc = daxctl_dev_offline_node(dev);
++		if (rc < 0) {
++			fprintf(stderr, "%s: unable to offline memory: %s\n",
++				devname, strerror(-rc));
++			return rc;
 +		}
-+		errno = 0;
++		if (param.verbose)
++			fprintf(stderr, "%s: offlined %d memory sections\n",
++				devname, rc);
 +	}
-+	if (errno) {
-+		rc = -errno;
-+		goto out_dir;
++
++	rc = daxctl_dev_node_is_online(dev);
++	if (rc < 0) {
++		fprintf(stderr, "%s: unable to determine node state: %s\n",
++			devname, strerror(-rc));
++		return rc;
 +	}
-+	rc = num_online;
++	if (rc > 0) {
++		if (param.verbose) {
++			fprintf(stderr, "%s: found %d memory sections online\n",
++				devname, rc);
++			fprintf(stderr, "%s: refusing to change modes\n",
++				devname);
++		}
++		return -EBUSY;
++	}
 +
-+out_dir:
-+	closedir(node_dir);
-+out_path:
-+	free(node_path);
-+	return rc;
++	rc = dev_disable(dev);
++	if (rc)
++		return rc;
 +
++	rc = daxctl_dev_enable_devdax(dev);
++	if (rc)
++		return rc;
++
++	return 0;
 +}
-diff --git a/daxctl/lib/libdaxctl.sym b/daxctl/lib/libdaxctl.sym
-index 19904a2..cc47ed6 100644
---- a/daxctl/lib/libdaxctl.sym
-+++ b/daxctl/lib/libdaxctl.sym
-@@ -54,8 +54,12 @@ global:
- LIBDAXCTL_6 {
- global:
- 	daxctl_dev_get_ctx;
-+	daxctl_dev_get_target_node;
- 	daxctl_dev_is_enabled;
- 	daxctl_dev_disable;
- 	daxctl_dev_enable_devdax;
- 	daxctl_dev_enable_ram;
-+	daxctl_dev_online_node;
-+	daxctl_dev_offline_node;
-+	daxctl_dev_node_is_online;
- } LIBDAXCTL_5;
-diff --git a/daxctl/libdaxctl.h b/daxctl/libdaxctl.h
-index b80488e..db0d4ea 100644
---- a/daxctl/libdaxctl.h
-+++ b/daxctl/libdaxctl.h
-@@ -68,10 +68,14 @@ int daxctl_dev_get_major(struct daxctl_dev *dev);
- int daxctl_dev_get_minor(struct daxctl_dev *dev);
- unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev);
- struct daxctl_ctx *daxctl_dev_get_ctx(struct daxctl_dev *dev);
-+int daxctl_dev_get_target_node(struct daxctl_dev *dev);
- int daxctl_dev_is_enabled(struct daxctl_dev *dev);
- int daxctl_dev_disable(struct daxctl_dev *dev);
- int daxctl_dev_enable_devdax(struct daxctl_dev *dev);
- int daxctl_dev_enable_ram(struct daxctl_dev *dev);
-+int daxctl_dev_online_node(struct daxctl_dev *dev);
-+int daxctl_dev_offline_node(struct daxctl_dev *dev);
-+int daxctl_dev_node_is_online(struct daxctl_dev *dev);
- 
- #define daxctl_dev_foreach(region, dev) \
-         for (dev = daxctl_dev_get_first(region); \
++
++static int do_reconfig(struct daxctl_dev *dev, unsigned long flags,
++		enum daxctl_dev_mode mode)
++{
++	int rc = 0;
++
++	switch (mode) {
++	case DAXCTL_DEV_MODE_RAM:
++		rc = reconfig_mode_ram(dev);
++		break;
++	case DAXCTL_DEV_MODE_DEVDAX:
++		rc = reconfig_mode_devdax(dev);
++		break;
++	default:
++		fprintf(stderr, "%s: unknown mode: %d\n",
++			daxctl_dev_get_devname(dev), mode);
++		rc = -EINVAL;
++	}
++
++	return rc;
++}
++
++int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx)
++{
++	const struct option options[] = {
++		OPT_INTEGER('r', "region", &param.region_id,
++				"restrict to the given region"),
++		OPT_STRING('m', "mode", &param.mode, "mode",
++				"mode to switch the device to"),
++		OPT_BOOLEAN('N', "no-online", &param.no_online,
++				"don't auto-online memory sections"),
++		OPT_BOOLEAN('\0', "attempt-offline", &param.do_offline,
++				"attempt to offline memory sections"),
++		OPT_BOOLEAN('u', "human", &param.human,
++				"use human friendly number formats"),
++		OPT_BOOLEAN('v', "verbose", &param.verbose,
++				"emit more debug messages"),
++		OPT_END(),
++	};
++	const char * const u[] = {
++		"daxctl reconfigure-device [<options>] <device> ...",
++		NULL
++	};
++	enum daxctl_dev_mode mode = DAXCTL_DEV_MODE_UNKNOWN;
++	struct daxctl_region *region;
++	int i, rc = 0, done = 0;
++	unsigned long flags = 0;
++	struct daxctl_dev *dev;
++
++        argc = parse_options(argc, argv, options, u, 0);
++	if (argc == 0)
++		usage_with_options(u, options);
++	for (i = 0; i < argc; i++) {
++		if (strcmp(argv[i], "all") == 0) {
++			argv[0] = "all";
++			argc = 1;
++			break;
++		}
++	}
++
++	if (param.human)
++		flags |= UTIL_JSON_HUMAN;
++
++	if (!param.mode) {
++		fprintf(stderr, "error: a 'mode' option is required\n");
++		usage_with_options(u, options);
++	}
++	if (strcmp(param.mode, "system-ram") == 0)
++		mode = DAXCTL_DEV_MODE_RAM;
++	else if (strcmp(param.mode, "devdax") == 0)
++		mode = DAXCTL_DEV_MODE_DEVDAX;
++
++	daxctl_region_foreach(ctx, region) {
++		if (param.region_id >= 0 && param.region_id
++				!= daxctl_region_get_id(region))
++			continue;
++
++		daxctl_dev_foreach(region, dev) {
++			bool dev_requested = false;
++
++			for (i = 0; i < argc; i++) {
++				if ((strcmp(daxctl_dev_get_devname(dev),
++						argv[i]) == 0) ||
++						(strcmp(argv[i], "all") == 0)) {
++					dev_requested = true;
++					break;
++				}
++			}
++			if (dev_requested) {
++				rc = do_reconfig(dev, flags, mode);
++				if (rc < 0)
++					goto out_err;
++				done++;
++			}
++		}
++	}
++	fprintf(stderr, "reconfigured %d device%s\n", done,
++		done == 1 ? "" : "s");
++	return 0;
++
++out_err:
++	fprintf(stderr, "error reconfiguring %s: %s\n",
++		daxctl_dev_get_devname(dev), strerror(-rc));
++	return rc;
++}
 -- 
 2.20.1
 
