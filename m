@@ -2,37 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D77156B0
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 01:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BE3156B1
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 01:53:52 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5F42521250471;
-	Mon,  6 May 2019 16:53:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A4D1321250471;
+	Mon,  6 May 2019 16:53:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.20; helo=mga02.intel.com;
+ client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 74A8921217957
- for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 16:53:45 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 8734821217957
+ for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 16:53:50 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 06 May 2019 16:53:45 -0700
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 06 May 2019 16:53:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,439,1549958400"; d="scan'208";a="230153605"
+X-IronPort-AV: E=Sophos;i="5.60,439,1549958400"; d="scan'208";a="149002609"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga001.jf.intel.com with ESMTP; 06 May 2019 16:53:45 -0700
-Subject: [PATCH v8 06/12] mm/hotplug: Kill is_dev_zone() usage in
- __remove_pages()
+ by orsmga003.jf.intel.com with ESMTP; 06 May 2019 16:53:50 -0700
+Subject: [PATCH v8 07/12] mm: Kill is_dev_zone() helper
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Mon, 06 May 2019 16:39:58 -0700
-Message-ID: <155718599876.130019.1344795832811586975.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 06 May 2019 16:40:03 -0700
+Message-ID: <155718600386.130019.2834681306356516509.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -56,38 +55,56 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-The zone type check was a leftover from the cleanup that plumbed altmap
-through the memory hotplug path, i.e. commit da024512a1fa "mm: pass the
-vmem_altmap to arch_remove_memory and __remove_pages".
+Given there are no more usages of is_dev_zone() outside of 'ifdef
+CONFIG_ZONE_DEVICE' protection, kill off the compilation helper.
 
 Cc: Michal Hocko <mhocko@suse.com>
 Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: David Hildenbrand <david@redhat.com>
 Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- mm/memory_hotplug.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/linux/mmzone.h |   12 ------------
+ mm/page_alloc.c        |    2 +-
+ 2 files changed, 1 insertion(+), 13 deletions(-)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 393ab2b9c3f7..cb9e68729ea3 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -544,11 +544,8 @@ void __remove_pages(struct zone *zone, unsigned long phys_start_pfn,
- 	unsigned long map_offset = 0;
- 	int sections_to_remove;
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 6dd52d544857..49e7fb452dfd 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -855,18 +855,6 @@ static inline int local_memory_node(int node_id) { return node_id; };
+  */
+ #define zone_idx(zone)		((zone) - (zone)->zone_pgdat->node_zones)
  
--	/* In the ZONE_DEVICE case device driver owns the memory region */
--	if (is_dev_zone(zone)) {
--		if (altmap)
--			map_offset = vmem_altmap_offset(altmap);
--	}
-+	if (altmap)
-+		map_offset = vmem_altmap_offset(altmap);
+-#ifdef CONFIG_ZONE_DEVICE
+-static inline bool is_dev_zone(const struct zone *zone)
+-{
+-	return zone_idx(zone) == ZONE_DEVICE;
+-}
+-#else
+-static inline bool is_dev_zone(const struct zone *zone)
+-{
+-	return false;
+-}
+-#endif
+-
+ /*
+  * Returns true if a zone has pages managed by the buddy allocator.
+  * All the reclaim decisions have to use this function rather than
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 13816c5a51eb..2a5c5cbfb5fc 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5864,7 +5864,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+ 	unsigned long start = jiffies;
+ 	int nid = pgdat->node_id;
  
- 	clear_zone_contiguous(zone);
+-	if (WARN_ON_ONCE(!pgmap || !is_dev_zone(zone)))
++	if (WARN_ON_ONCE(!pgmap || zone_idx(zone) != ZONE_DEVICE))
+ 		return;
  
+ 	/*
 
 _______________________________________________
 Linux-nvdimm mailing list
