@@ -2,36 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36076156B3
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 01:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A42156B4
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 01:54:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 138B421250C9D;
-	Mon,  6 May 2019 16:54:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 64A3521250C9F;
+	Mon,  6 May 2019 16:54:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.65; helo=mga03.intel.com;
+ client-ip=192.55.52.43; helo=mga05.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C234921217957
- for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 16:54:00 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 6A2A3212377FE
+ for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 16:54:06 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 06 May 2019 16:54:00 -0700
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 06 May 2019 16:54:06 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,439,1549958400"; d="scan'208";a="297766722"
+X-IronPort-AV: E=Sophos;i="5.60,439,1549958400"; d="scan'208";a="147053379"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga004.jf.intel.com with ESMTP; 06 May 2019 16:54:00 -0700
-Subject: [PATCH v8 09/12] mm/sparsemem: Support sub-section hotplug
+ by fmsmga008.fm.intel.com with ESMTP; 06 May 2019 16:54:05 -0700
+Subject: [PATCH v8 10/12] mm/devm_memremap_pages: Enable sub-section remap
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Mon, 06 May 2019 16:40:14 -0700
-Message-ID: <155718601407.130019.14248061058774128227.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 06 May 2019 16:40:19 -0700
+Message-ID: <155718601917.130019.30099990750225408.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -49,391 +49,133 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: mhocko@suse.com, Pavel Tatashin <pasha.tatashin@soleen.com>,
  linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@suse.cz>, osalvador@suse.de
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+ =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, osalvador@suse.de
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-The libnvdimm sub-system has suffered a series of hacks and broken
-workarounds for the memory-hotplug implementation's awkward
-section-aligned (128MB) granularity. For example the following backtrace
-is emitted when attempting arch_add_memory() with physical address
-ranges that intersect 'System RAM' (RAM) with 'Persistent Memory' (PMEM)
-within a given section:
-
- WARNING: CPU: 0 PID: 558 at kernel/memremap.c:300 devm_memremap_pages+0x3b5/0x4c0
- devm_memremap_pages attempted on mixed region [mem 0x200000000-0x2fbffffff flags 0x200]
- [..]
- Call Trace:
-   dump_stack+0x86/0xc3
-   __warn+0xcb/0xf0
-   warn_slowpath_fmt+0x5f/0x80
-   devm_memremap_pages+0x3b5/0x4c0
-   __wrap_devm_memremap_pages+0x58/0x70 [nfit_test_iomap]
-   pmem_attach_disk+0x19a/0x440 [nd_pmem]
-
-Recently it was discovered that the problem goes beyond RAM vs PMEM
-collisions as some platform produce PMEM vs PMEM collisions within a
-given section. The libnvdimm workaround for that case revealed that the
-libnvdimm section-alignment-padding implementation has been broken for a
-long while. A fix for that long-standing breakage introduces as many
-problems as it solves as it would require a backward-incompatible change
-to the namespace metadata interpretation. Instead of that dubious route
-[1], address the root problem in the memory-hotplug implementation.
-
-[1]: https://lore.kernel.org/r/155000671719.348031.2347363160141119237.stgit@dwillia2-desk3.amr.corp.intel.com
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- mm/sparse.c |  255 ++++++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 175 insertions(+), 80 deletions(-)
-
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 8867f8901ee2..34f322d14e62 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -83,8 +83,15 @@ static int __meminit sparse_index_init(unsigned long section_nr, int nid)
- 	unsigned long root = SECTION_NR_TO_ROOT(section_nr);
- 	struct mem_section *section;
- 
-+	/*
-+	 * An existing section is possible in the sub-section hotplug
-+	 * case. First hot-add instantiates, follow-on hot-add reuses
-+	 * the existing section.
-+	 *
-+	 * The mem_hotplug_lock resolves the apparent race below.
-+	 */
- 	if (mem_section[root])
--		return -EEXIST;
-+		return 0;
- 
- 	section = sparse_index_alloc(nid);
- 	if (!section)
-@@ -210,6 +217,15 @@ static inline unsigned long first_present_section_nr(void)
- 	return next_present_section_nr(-1);
- }
- 
-+void subsection_mask_set(unsigned long *map, unsigned long pfn,
-+		unsigned long nr_pages)
-+{
-+	int idx = subsection_map_index(pfn);
-+	int end = subsection_map_index(pfn + nr_pages - 1);
-+
-+	bitmap_set(map, idx, end - idx + 1);
-+}
-+
- void subsection_map_init(unsigned long pfn, unsigned long nr_pages)
- {
- 	int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
-@@ -219,20 +235,17 @@ void subsection_map_init(unsigned long pfn, unsigned long nr_pages)
- 		return;
- 
- 	for (i = start_sec; i <= end_sec; i++) {
--		int idx, end;
--		unsigned long pfns;
- 		struct mem_section *ms;
-+		unsigned long pfns;
- 
--		idx = subsection_map_index(pfn);
- 		pfns = min(nr_pages, PAGES_PER_SECTION
- 				- (pfn & ~PAGE_SECTION_MASK));
--		end = subsection_map_index(pfn + pfns - 1);
--
- 		ms = __nr_to_section(i);
--		bitmap_set(ms->usage->subsection_map, idx, end - idx + 1);
-+		subsection_mask_set(ms->usage->subsection_map, pfn, pfns);
- 
- 		pr_debug("%s: sec: %d pfns: %ld set(%d, %d)\n", __func__, i,
--				pfns, idx, end - idx + 1);
-+				pfns, subsection_map_index(pfn),
-+				subsection_map_index(pfn + pfns - 1));
- 
- 		pfn += pfns;
- 		nr_pages -= pfns;
-@@ -319,6 +332,15 @@ static void __meminit sparse_init_one_section(struct mem_section *ms,
- 		unsigned long pnum, struct page *mem_map,
- 		struct mem_section_usage *usage)
- {
-+	/*
-+	 * Given that SPARSEMEM_VMEMMAP=y supports sub-section hotplug,
-+	 * ->section_mem_map can not be guaranteed to point to a full
-+	 *  section's worth of memory.  The field is only valid / used
-+	 *  in the SPARSEMEM_VMEMMAP=n case.
-+	 */
-+	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
-+		mem_map = NULL;
-+
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
- 	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum) |
- 							SECTION_HAS_MEM_MAP;
-@@ -724,10 +746,142 @@ static void free_map_bootmem(struct page *memmap)
- #endif /* CONFIG_MEMORY_HOTREMOVE */
- #endif /* CONFIG_SPARSEMEM_VMEMMAP */
- 
-+#ifndef CONFIG_MEMORY_HOTREMOVE
-+static void free_map_bootmem(struct page *memmap)
-+{
-+}
-+#endif
-+
-+static bool is_early_section(struct mem_section *ms)
-+{
-+	struct page *usage_page;
-+
-+	usage_page = virt_to_page(ms->usage);
-+	if (PageSlab(usage_page) || PageCompound(usage_page))
-+		return false;
-+	else
-+		return true;
-+}
-+
-+static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
-+		int nid, struct vmem_altmap *altmap)
-+{
-+	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
-+	DECLARE_BITMAP(tmp, SUBSECTIONS_PER_SECTION) = { 0 };
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	bool early_section = is_early_section(ms);
-+	struct page *memmap = NULL;
-+	unsigned long *subsection_map = ms->usage
-+		? &ms->usage->subsection_map[0] : NULL;
-+
-+	subsection_mask_set(map, pfn, nr_pages);
-+	if (subsection_map)
-+		bitmap_and(tmp, map, subsection_map, SUBSECTIONS_PER_SECTION);
-+
-+	if (WARN(!subsection_map || !bitmap_equal(tmp, map, SUBSECTIONS_PER_SECTION),
-+				"section already deactivated (%#lx + %ld)\n",
-+				pfn, nr_pages))
-+		return;
-+
-+	if (WARN(!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP)
-+				&& nr_pages < PAGES_PER_SECTION,
-+				"partial memory section removal not supported\n"))
-+		return;
-+
-+	/*
-+	 * There are 3 cases to handle across two configurations
-+	 * (SPARSEMEM_VMEMMAP={y,n}):
-+	 *
-+	 * 1/ deactivation of a partial hot-added section (only possible
-+	 * in the SPARSEMEM_VMEMMAP=y case).
-+	 *    a/ section was present at memory init
-+	 *    b/ section was hot-added post memory init
-+	 * 2/ deactivation of a complete hot-added section
-+	 * 3/ deactivation of a complete section from memory init
-+	 *
-+	 * For 1/, when subsection_map does not empty we will not be
-+	 * freeing the usage map, but still need to free the vmemmap
-+	 * range.
-+	 *
-+	 * For 2/ and 3/ the SPARSEMEM_VMEMMAP={y,n} cases are unified
-+	 */
-+	bitmap_xor(subsection_map, map, subsection_map, SUBSECTIONS_PER_SECTION);
-+	if (bitmap_empty(subsection_map, SUBSECTIONS_PER_SECTION)) {
-+		unsigned long section_nr = pfn_to_section_nr(pfn);
-+
-+		if (!early_section) {
-+			kfree(ms->usage);
-+			ms->usage = NULL;
-+		}
-+		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
-+		ms->section_mem_map = sparse_encode_mem_map(NULL, section_nr);
-+	}
-+
-+	if (early_section && memmap)
-+		free_map_bootmem(memmap);
-+	else
-+		depopulate_section_memmap(pfn, nr_pages, altmap);
-+}
-+
-+static struct page * __meminit section_activate(int nid, unsigned long pfn,
-+		unsigned long nr_pages, struct vmem_altmap *altmap)
-+{
-+	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
-+	struct mem_section *ms = __pfn_to_section(pfn);
-+	struct mem_section_usage *usage = NULL;
-+	unsigned long *subsection_map;
-+	struct page *memmap;
-+	int rc = 0;
-+
-+	subsection_mask_set(map, pfn, nr_pages);
-+
-+	if (!ms->usage) {
-+		usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
-+		if (!usage)
-+			return ERR_PTR(-ENOMEM);
-+		ms->usage = usage;
-+	}
-+	subsection_map = &ms->usage->subsection_map[0];
-+
-+	if (bitmap_empty(map, SUBSECTIONS_PER_SECTION))
-+		rc = -EINVAL;
-+	else if (bitmap_intersects(map, subsection_map, SUBSECTIONS_PER_SECTION))
-+		rc = -EEXIST;
-+	else
-+		bitmap_or(subsection_map, map, subsection_map,
-+				SUBSECTIONS_PER_SECTION);
-+
-+	if (rc) {
-+		if (usage)
-+			ms->usage = NULL;
-+		kfree(usage);
-+		return ERR_PTR(rc);
-+	}
-+
-+	/*
-+	 * The early init code does not consider partially populated
-+	 * initial sections, it simply assumes that memory will never be
-+	 * referenced.  If we hot-add memory into such a section then we
-+	 * do not need to populate the memmap and can simply reuse what
-+	 * is already there.
-+	 */
-+	if (nr_pages < PAGES_PER_SECTION && is_early_section(ms))
-+		return pfn_to_page(pfn);
-+
-+	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap);
-+	if (!memmap) {
-+		section_deactivate(pfn, nr_pages, nid, altmap);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	return memmap;
-+}
-+
- /**
-- * sparse_add_one_section - add a memory section
-+ * sparse_add_section - add a memory section, or populate an existing one
-  * @nid: The node to add section on
-  * @start_pfn: start pfn of the memory range
-+ * @nr_pages: number of pfns to add in the section
-  * @altmap: device page map
-  *
-  * This is only intended for hotplug.
-@@ -741,49 +895,31 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
- 		unsigned long nr_pages, struct vmem_altmap *altmap)
- {
- 	unsigned long section_nr = pfn_to_section_nr(start_pfn);
--	struct mem_section_usage *usage;
- 	struct mem_section *ms;
- 	struct page *memmap;
- 	int ret;
- 
--	/*
--	 * no locking for this, because it does its own
--	 * plus, it does a kmalloc
--	 */
- 	ret = sparse_index_init(section_nr, nid);
- 	if (ret < 0 && ret != -EEXIST)
- 		return ret;
--	ret = 0;
--	memmap = populate_section_memmap(start_pfn, PAGES_PER_SECTION, nid,
--			altmap);
--	if (!memmap)
--		return -ENOMEM;
--	usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
--	if (!usage) {
--		depopulate_section_memmap(start_pfn, PAGES_PER_SECTION, altmap);
--		return -ENOMEM;
--	}
- 
--	ms = __pfn_to_section(start_pfn);
--	if (ms->section_mem_map & SECTION_MARKED_PRESENT) {
--		ret = -EEXIST;
--		goto out;
--	}
-+	memmap = section_activate(nid, start_pfn, nr_pages, altmap);
-+	if (IS_ERR(memmap))
-+		return PTR_ERR(memmap);
-+	ret = 0;
- 
- 	/*
- 	 * Poison uninitialized struct pages in order to catch invalid flags
- 	 * combinations.
- 	 */
--	page_init_poison(memmap, sizeof(struct page) * PAGES_PER_SECTION);
-+	page_init_poison(pfn_to_page(start_pfn), sizeof(struct page) * nr_pages);
- 
-+	ms = __pfn_to_section(start_pfn);
- 	section_mark_present(ms);
--	sparse_init_one_section(ms, section_nr, memmap, usage);
-+	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
- 
--out:
--	if (ret < 0) {
--		kfree(usage);
--		depopulate_section_memmap(start_pfn, PAGES_PER_SECTION, altmap);
--	}
-+	if (ret < 0)
-+		section_deactivate(start_pfn, nr_pages, nid, altmap);
- 	return ret;
- }
- 
-@@ -818,54 +954,13 @@ static inline void clear_hwpoisoned_pages(struct page *memmap, int nr_pages)
- }
- #endif
- 
--static void free_section_usage(struct page *memmap,
--		struct mem_section_usage *usage, unsigned long pfn,
--		unsigned long nr_pages, struct vmem_altmap *altmap)
--{
--	struct page *usage_page;
--
--	if (!usage)
--		return;
--
--	usage_page = virt_to_page(usage);
--	/*
--	 * Check to see if allocation came from hot-plug-add
--	 */
--	if (PageSlab(usage_page) || PageCompound(usage_page)) {
--		kfree(usage);
--		if (memmap)
--			depopulate_section_memmap(pfn, nr_pages, altmap);
--		return;
--	}
--
--	/*
--	 * The usemap came from bootmem. This is packed with other usemaps
--	 * on the section which has pgdat at boot time. Just keep it as is now.
--	 */
--
--	if (memmap)
--		free_map_bootmem(memmap);
--}
--
- void sparse_remove_section(struct zone *zone, struct mem_section *ms,
- 		unsigned long pfn, unsigned long nr_pages,
- 		unsigned long map_offset, struct vmem_altmap *altmap)
- {
--	struct page *memmap = NULL;
--	struct mem_section_usage *usage = NULL;
--
--	if (ms->section_mem_map) {
--		usage = ms->usage;
--		memmap = sparse_decode_mem_map(ms->section_mem_map,
--						__section_nr(ms));
--		ms->section_mem_map = 0;
--		ms->usage = NULL;
--	}
--
--	clear_hwpoisoned_pages(memmap + map_offset,
--			PAGES_PER_SECTION - map_offset);
--	free_section_usage(memmap, usage, section_nr_to_pfn(__section_nr(ms)),
--			PAGES_PER_SECTION, altmap);
-+	clear_hwpoisoned_pages(pfn_to_page(pfn) + map_offset,
-+			nr_pages - map_offset);
-+	section_deactivate(pfn, nr_pages, zone_to_nid(zone), altmap);
- }
- #endif /* CONFIG_MEMORY_HOTREMOVE */
- #endif /* CONFIG_MEMORY_HOTPLUG */
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+VGVhY2ggZGV2bV9tZW1yZW1hcF9wYWdlcygpIGFib3V0IHRoZSBuZXcgc3ViLXNlY3Rpb24gY2Fw
+YWJpbGl0aWVzIG9mCmFyY2hfe2FkZCxyZW1vdmV9X21lbW9yeSgpLiBFZmZlY3RpdmVseSwganVz
+dCByZXBsYWNlIGFsbCB1c2FnZSBvZgphbGlnbl9zdGFydCwgYWxpZ25fZW5kLCBhbmQgYWxpZ25f
+c2l6ZSB3aXRoIHJlcy0+c3RhcnQsIHJlcy0+ZW5kLCBhbmQKcmVzb3VyY2Vfc2l6ZShyZXMpLiBU
+aGUgZXhpc3Rpbmcgc2FuaXR5IGNoZWNrIHdpbGwgc3RpbGwgbWFrZSBzdXJlIHRoYXQKdGhlIHR3
+byBzZXBhcmF0ZSByZW1hcCBhdHRlbXB0cyBkbyBub3QgY29sbGlkZSB3aXRoaW4gYSBzdWItc2Vj
+dGlvbiAoMk1CCm9uIHg4NikuCgpDYzogTWljaGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+CkNj
+OiBUb3NoaSBLYW5pIDx0b3NoaS5rYW5pQGhwZS5jb20+CkNjOiBKw6lyw7RtZSBHbGlzc2UgPGpn
+bGlzc2VAcmVkaGF0LmNvbT4KQ2M6IExvZ2FuIEd1bnRob3JwZSA8bG9nYW5nQGRlbHRhdGVlLmNv
+bT4KQ2M6IE9zY2FyIFNhbHZhZG9yIDxvc2FsdmFkb3JAc3VzZS5kZT4KQ2M6IFBhdmVsIFRhdGFz
+aGluIDxwYXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPgpTaWduZWQtb2ZmLWJ5OiBEYW4gV2lsbGlh
+bXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KLS0tCiBrZXJuZWwvbWVtcmVtYXAuYyB8ICAg
+NjEgKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+IDEgZmlsZSBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAzNyBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9rZXJuZWwvbWVtcmVtYXAuYyBiL2tlcm5lbC9tZW1yZW1hcC5jCmluZGV4IGYzNTU1
+ODZlYTU0YS4uNDI1OTA0ODU4ZDk3IDEwMDY0NAotLS0gYS9rZXJuZWwvbWVtcmVtYXAuYworKysg
+Yi9rZXJuZWwvbWVtcmVtYXAuYwpAQCAtNTksNyArNTksNyBAQCBzdGF0aWMgdW5zaWduZWQgbG9u
+ZyBwZm5fZmlyc3Qoc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlzdHJ1Y3Qgdm1lbV9hbHRt
+YXAgKmFsdG1hcCA9ICZwZ21hcC0+YWx0bWFwOwogCXVuc2lnbmVkIGxvbmcgcGZuOwogCi0JcGZu
+ID0gcmVzLT5zdGFydCA+PiBQQUdFX1NISUZUOworCXBmbiA9IFBIWVNfUEZOKHJlcy0+c3RhcnQp
+OwogCWlmIChwZ21hcC0+YWx0bWFwX3ZhbGlkKQogCQlwZm4gKz0gdm1lbV9hbHRtYXBfb2Zmc2V0
+KGFsdG1hcCk7CiAJcmV0dXJuIHBmbjsKQEAgLTg3LDcgKzg3LDYgQEAgc3RhdGljIHZvaWQgZGV2
+bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZvaWQgKmRhdGEpCiAJc3RydWN0IGRldl9wYWdlbWFw
+ICpwZ21hcCA9IGRhdGE7CiAJc3RydWN0IGRldmljZSAqZGV2ID0gcGdtYXAtPmRldjsKIAlzdHJ1
+Y3QgcmVzb3VyY2UgKnJlcyA9ICZwZ21hcC0+cmVzOwotCXJlc291cmNlX3NpemVfdCBhbGlnbl9z
+dGFydCwgYWxpZ25fc2l6ZTsKIAl1bnNpZ25lZCBsb25nIHBmbjsKIAlpbnQgbmlkOwogCkBAIC05
+NiwyNSArOTUsMjEgQEAgc3RhdGljIHZvaWQgZGV2bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZv
+aWQgKmRhdGEpCiAJCXB1dF9wYWdlKHBmbl90b19wYWdlKHBmbikpOwogCiAJLyogcGFnZXMgYXJl
+IGRlYWQgYW5kIHVudXNlZCwgdW5kbyB0aGUgYXJjaCBtYXBwaW5nICovCi0JYWxpZ25fc3RhcnQg
+PSByZXMtPnN0YXJ0ICYgfihQQV9TRUNUSU9OX1NJWkUgLSAxKTsKLQlhbGlnbl9zaXplID0gQUxJ
+R04ocmVzLT5zdGFydCArIHJlc291cmNlX3NpemUocmVzKSwgUEFfU0VDVElPTl9TSVpFKQotCQkt
+IGFsaWduX3N0YXJ0OwotCi0JbmlkID0gcGFnZV90b19uaWQocGZuX3RvX3BhZ2UoYWxpZ25fc3Rh
+cnQgPj4gUEFHRV9TSElGVCkpOworCW5pZCA9IHBhZ2VfdG9fbmlkKHBmbl90b19wYWdlKFBIWVNf
+UEZOKHJlcy0+c3RhcnQpKSk7CiAKIAltZW1faG90cGx1Z19iZWdpbigpOwogCWlmIChwZ21hcC0+
+dHlwZSA9PSBNRU1PUllfREVWSUNFX1BSSVZBVEUpIHsKLQkJcGZuID0gYWxpZ25fc3RhcnQgPj4g
+UEFHRV9TSElGVDsKKwkJcGZuID0gUEhZU19QRk4ocmVzLT5zdGFydCk7CiAJCV9fcmVtb3ZlX3Bh
+Z2VzKHBhZ2Vfem9uZShwZm5fdG9fcGFnZShwZm4pKSwgcGZuLAotCQkJCWFsaWduX3NpemUgPj4g
+UEFHRV9TSElGVCwgTlVMTCk7CisJCQkJUEhZU19QRk4ocmVzb3VyY2Vfc2l6ZShyZXMpKSwgTlVM
+TCk7CiAJfSBlbHNlIHsKLQkJYXJjaF9yZW1vdmVfbWVtb3J5KG5pZCwgYWxpZ25fc3RhcnQsIGFs
+aWduX3NpemUsCisJCWFyY2hfcmVtb3ZlX21lbW9yeShuaWQsIHJlcy0+c3RhcnQsIHJlc291cmNl
+X3NpemUocmVzKSwKIAkJCQlwZ21hcC0+YWx0bWFwX3ZhbGlkID8gJnBnbWFwLT5hbHRtYXAgOiBO
+VUxMKTsKLQkJa2FzYW5fcmVtb3ZlX3plcm9fc2hhZG93KF9fdmEoYWxpZ25fc3RhcnQpLCBhbGln
+bl9zaXplKTsKKwkJa2FzYW5fcmVtb3ZlX3plcm9fc2hhZG93KF9fdmEocmVzLT5zdGFydCksIHJl
+c291cmNlX3NpemUocmVzKSk7CiAJfQogCW1lbV9ob3RwbHVnX2RvbmUoKTsKIAotCXVudHJhY2tf
+cGZuKE5VTEwsIFBIWVNfUEZOKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7CisJdW50cmFja19w
+Zm4oTlVMTCwgUEhZU19QRk4ocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUocmVzKSk7CiAJcGdt
+YXBfYXJyYXlfZGVsZXRlKHJlcyk7CiAJZGV2X1dBUk5fT05DRShkZXYsIHBnbWFwLT5hbHRtYXAu
+YWxsb2MsCiAJCSAgICAgICIlczogZmFpbGVkIHRvIGZyZWUgYWxsIHJlc2VydmVkIHBhZ2VzXG4i
+LCBfX2Z1bmNfXyk7CkBAIC0xNDEsMTYgKzEzNiwxMyBAQCBzdGF0aWMgdm9pZCBkZXZtX21lbXJl
+bWFwX3BhZ2VzX3JlbGVhc2Uodm9pZCAqZGF0YSkKICAqLwogdm9pZCAqZGV2bV9tZW1yZW1hcF9w
+YWdlcyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZfcGFnZW1hcCAqcGdtYXApCiB7Ci0J
+cmVzb3VyY2Vfc2l6ZV90IGFsaWduX3N0YXJ0LCBhbGlnbl9zaXplLCBhbGlnbl9lbmQ7Ci0Jc3Ry
+dWN0IHZtZW1fYWx0bWFwICphbHRtYXAgPSBwZ21hcC0+YWx0bWFwX3ZhbGlkID8KLQkJCSZwZ21h
+cC0+YWx0bWFwIDogTlVMTDsKIAlzdHJ1Y3QgcmVzb3VyY2UgKnJlcyA9ICZwZ21hcC0+cmVzOwog
+CXN0cnVjdCBkZXZfcGFnZW1hcCAqY29uZmxpY3RfcGdtYXA7CiAJc3RydWN0IG1ocF9yZXN0cmlj
+dGlvbnMgcmVzdHJpY3Rpb25zID0gewogCQkvKgogCQkgKiBXZSBkbyBub3Qgd2FudCBhbnkgb3B0
+aW9uYWwgZmVhdHVyZXMgb25seSBvdXIgb3duIG1lbW1hcAogCQkqLwotCQkuYWx0bWFwID0gYWx0
+bWFwLAorCQkuYWx0bWFwID0gcGdtYXAtPmFsdG1hcF92YWxpZCA/ICZwZ21hcC0+YWx0bWFwIDog
+TlVMTCwKIAl9OwogCXBncHJvdF90IHBncHJvdCA9IFBBR0VfS0VSTkVMOwogCWludCBlcnJvciwg
+bmlkLCBpc19yYW07CkBAIC0xNTgsMjYgKzE1MCwyMSBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3Bh
+Z2VzKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlpZiAo
+IXBnbWFwLT5yZWYgfHwgIXBnbWFwLT5raWxsKQogCQlyZXR1cm4gRVJSX1BUUigtRUlOVkFMKTsK
+IAotCWFsaWduX3N0YXJ0ID0gcmVzLT5zdGFydCAmIH4oUEFfU0VDVElPTl9TSVpFIC0gMSk7Ci0J
+YWxpZ25fc2l6ZSA9IEFMSUdOKHJlcy0+c3RhcnQgKyByZXNvdXJjZV9zaXplKHJlcyksIFBBX1NF
+Q1RJT05fU0laRSkKLQkJLSBhbGlnbl9zdGFydDsKLQlhbGlnbl9lbmQgPSBhbGlnbl9zdGFydCAr
+IGFsaWduX3NpemUgLSAxOwotCi0JY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZ
+U19QRk4oYWxpZ25fc3RhcnQpLCBOVUxMKTsKKwljb25mbGljdF9wZ21hcCA9IGdldF9kZXZfcGFn
+ZW1hcChQSFlTX1BGTihyZXMtPnN0YXJ0KSwgTlVMTCk7CiAJaWYgKGNvbmZsaWN0X3BnbWFwKSB7
+CiAJCWRldl9XQVJOKGRldiwgIkNvbmZsaWN0aW5nIG1hcHBpbmcgaW4gc2FtZSBzZWN0aW9uXG4i
+KTsKIAkJcHV0X2Rldl9wYWdlbWFwKGNvbmZsaWN0X3BnbWFwKTsKIAkJcmV0dXJuIEVSUl9QVFIo
+LUVOT01FTSk7CiAJfQogCi0JY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19Q
+Rk4oYWxpZ25fZW5kKSwgTlVMTCk7CisJY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAo
+UEhZU19QRk4ocmVzLT5lbmQpLCBOVUxMKTsKIAlpZiAoY29uZmxpY3RfcGdtYXApIHsKIAkJZGV2
+X1dBUk4oZGV2LCAiQ29uZmxpY3RpbmcgbWFwcGluZyBpbiBzYW1lIHNlY3Rpb25cbiIpOwogCQlw
+dXRfZGV2X3BhZ2VtYXAoY29uZmxpY3RfcGdtYXApOwogCQlyZXR1cm4gRVJSX1BUUigtRU5PTUVN
+KTsKIAl9CiAKLQlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0cyhhbGlnbl9zdGFydCwgYWxpZ25f
+c2l6ZSwKKwlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0cyhyZXMtPnN0YXJ0LCByZXNvdXJjZV9z
+aXplKHJlcyksCiAJCUlPUkVTT1VSQ0VfU1lTVEVNX1JBTSwgSU9SRVNfREVTQ19OT05FKTsKIAog
+CWlmIChpc19yYW0gIT0gUkVHSU9OX0RJU0pPSU5UKSB7CkBAIC0xOTgsOCArMTg1LDggQEAgdm9p
+ZCAqZGV2bV9tZW1yZW1hcF9wYWdlcyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZfcGFn
+ZW1hcCAqcGdtYXApCiAJaWYgKG5pZCA8IDApCiAJCW5pZCA9IG51bWFfbWVtX2lkKCk7CiAKLQll
+cnJvciA9IHRyYWNrX3Bmbl9yZW1hcChOVUxMLCAmcGdwcm90LCBQSFlTX1BGTihhbGlnbl9zdGFy
+dCksIDAsCi0JCQlhbGlnbl9zaXplKTsKKwllcnJvciA9IHRyYWNrX3Bmbl9yZW1hcChOVUxMLCAm
+cGdwcm90LCBQSFlTX1BGTihyZXMtPnN0YXJ0KSwgMCwKKwkJCXJlc291cmNlX3NpemUocmVzKSk7
+CiAJaWYgKGVycm9yKQogCQlnb3RvIGVycl9wZm5fcmVtYXA7CiAKQEAgLTIxNywyNSArMjA0LDI1
+IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3Qg
+ZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIGFyY2hfYWRkX21lbW9yeSgpLgogCSAqLwogCWlmIChw
+Z21hcC0+dHlwZSA9PSBNRU1PUllfREVWSUNFX1BSSVZBVEUpIHsKLQkJZXJyb3IgPSBhZGRfcGFn
+ZXMobmlkLCBhbGlnbl9zdGFydCA+PiBQQUdFX1NISUZULAotCQkJCWFsaWduX3NpemUgPj4gUEFH
+RV9TSElGVCwgJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0gYWRkX3BhZ2VzKG5pZCwgUEhZU19Q
+Rk4ocmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3VyY2Vfc2l6ZShyZXMpKSwgJnJlc3Ry
+aWN0aW9ucyk7CiAJfSBlbHNlIHsKLQkJZXJyb3IgPSBrYXNhbl9hZGRfemVyb19zaGFkb3coX192
+YShhbGlnbl9zdGFydCksIGFsaWduX3NpemUpOworCQllcnJvciA9IGthc2FuX2FkZF96ZXJvX3No
+YWRvdyhfX3ZhKHJlcy0+c3RhcnQpLCByZXNvdXJjZV9zaXplKHJlcykpOwogCQlpZiAoZXJyb3Ip
+IHsKIAkJCW1lbV9ob3RwbHVnX2RvbmUoKTsKIAkJCWdvdG8gZXJyX2thc2FuOwogCQl9CiAKLQkJ
+ZXJyb3IgPSBhcmNoX2FkZF9tZW1vcnkobmlkLCBhbGlnbl9zdGFydCwgYWxpZ25fc2l6ZSwKLQkJ
+CQkJJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0gYXJjaF9hZGRfbWVtb3J5KG5pZCwgcmVzLT5z
+dGFydCwgcmVzb3VyY2Vfc2l6ZShyZXMpLAorCQkJCSZyZXN0cmljdGlvbnMpOwogCX0KIAogCWlm
+ICghZXJyb3IpIHsKIAkJc3RydWN0IHpvbmUgKnpvbmU7CiAKIAkJem9uZSA9ICZOT0RFX0RBVEEo
+bmlkKS0+bm9kZV96b25lc1taT05FX0RFVklDRV07Ci0JCW1vdmVfcGZuX3JhbmdlX3RvX3pvbmUo
+em9uZSwgYWxpZ25fc3RhcnQgPj4gUEFHRV9TSElGVCwKLQkJCQlhbGlnbl9zaXplID4+IFBBR0Vf
+U0hJRlQsIGFsdG1hcCk7CisJCW1vdmVfcGZuX3JhbmdlX3RvX3pvbmUoem9uZSwgUEhZU19QRk4o
+cmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3VyY2Vfc2l6ZShyZXMpKSwgcmVzdHJpY3Rp
+b25zLmFsdG1hcCk7CiAJfQogCiAJbWVtX2hvdHBsdWdfZG9uZSgpOwpAQCAtMjQ3LDggKzIzNCw4
+IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3Qg
+ZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIHRvIGFsbG93IHVzIHRvIGRvIHRoZSB3b3JrIHdoaWxl
+IG5vdCBob2xkaW5nIHRoZSBob3RwbHVnIGxvY2suCiAJICovCiAJbWVtbWFwX2luaXRfem9uZV9k
+ZXZpY2UoJk5PREVfREFUQShuaWQpLT5ub2RlX3pvbmVzW1pPTkVfREVWSUNFXSwKLQkJCQlhbGln
+bl9zdGFydCA+PiBQQUdFX1NISUZULAotCQkJCWFsaWduX3NpemUgPj4gUEFHRV9TSElGVCwgcGdt
+YXApOworCQkJCVBIWVNfUEZOKHJlcy0+c3RhcnQpLAorCQkJCVBIWVNfUEZOKHJlc291cmNlX3Np
+emUocmVzKSksIHBnbWFwKTsKIAlwZXJjcHVfcmVmX2dldF9tYW55KHBnbWFwLT5yZWYsIHBmbl9l
+bmQocGdtYXApIC0gcGZuX2ZpcnN0KHBnbWFwKSk7CiAKIAllcnJvciA9IGRldm1fYWRkX2FjdGlv
+bl9vcl9yZXNldChkZXYsIGRldm1fbWVtcmVtYXBfcGFnZXNfcmVsZWFzZSwKQEAgLTI1OSw5ICsy
+NDYsOSBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0cnVjdCBkZXZpY2UgKmRldiwgc3Ry
+dWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlyZXR1cm4gX192YShyZXMtPnN0YXJ0KTsKIAogIGVy
+cl9hZGRfbWVtb3J5OgotCWthc2FuX3JlbW92ZV96ZXJvX3NoYWRvdyhfX3ZhKGFsaWduX3N0YXJ0
+KSwgYWxpZ25fc2l6ZSk7CisJa2FzYW5fcmVtb3ZlX3plcm9fc2hhZG93KF9fdmEocmVzLT5zdGFy
+dCksIHJlc291cmNlX3NpemUocmVzKSk7CiAgZXJyX2thc2FuOgotCXVudHJhY2tfcGZuKE5VTEws
+IFBIWVNfUEZOKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7CisJdW50cmFja19wZm4oTlVMTCwg
+UEhZU19QRk4ocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUocmVzKSk7CiAgZXJyX3Bmbl9yZW1h
+cDoKIAlwZ21hcF9hcnJheV9kZWxldGUocmVzKTsKICBlcnJfYXJyYXk6CgpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1h
+bi9saXN0aW5mby9saW51eC1udmRpbW0K
