@@ -2,58 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C59E14713
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 May 2019 11:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D1214773
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 May 2019 11:18:17 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 308F22125046E;
-	Mon,  6 May 2019 02:04:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 761C32125046E;
+	Mon,  6 May 2019 02:18:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
  envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 98953212108ED
- for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 02:04:02 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id r136so331821oie.7
- for <linux-nvdimm@lists.01.org>; Mon, 06 May 2019 02:04:02 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 520E72122C2ED
+ for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 02:18:14 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id w6so10827945otl.7
+ for <linux-nvdimm@lists.01.org>; Mon, 06 May 2019 02:18:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=w3CwerUbOgOXXiCSnS9RlnGeZVnQdj5otMQLyftCR5U=;
- b=e+nL3WusVlSphHxBUuOnwpeLcTbcxkM3d0tJwFVnHeQxPP67ruHIlvq20gXdKZhu2H
- bB9lDEUqhP1wiSu91mOioGKtT4ycBoUxoh4FC+hVoBp2F1BbODAaUF2mKyUrYhOAKqit
- T2YBO051njEtXYukqn8B+THQu9IDpG8A3FVKKTOi4pDJ7oz0d7KTjVHPE8z2o4ACwsE9
- ykptic7rc2BJziW9//fZQROuPUNapGoh5nZURetTsM9RFF/vX1CnGbAUdl8YpJIBiHYh
- HGrZrCbs8q8pyJ0vRF0MLBvicTMU2fCeAXdJWGTYB+VAAWlNl7nlXw7CpLz/tNO1+YWN
- PWrQ==
+ :cc; bh=EuMXXHqqPef2GwgL+nQvKY3dmYnxYLGClh5z++gsDCE=;
+ b=sqUiKiFkHuS/zMcsXJp/YVQ9Xvsj9z1z6Qymcl2DruVbxk25BEUbeggocvbWAnhm5w
+ zafVtoeptdhmkmQVySQB3JwkXQHS6fLm2/wWTVMXU2RAbc2imQQv9+YkBVvD6ic2JuMI
+ 1ikTcpdlA9VrSJ94GFL5FOP0BgugrA521QHxv3MHfGRZERmqFxPksbw8JgkSiOXb5kCz
+ NhICHik7i/u7iBVQPDnR6rVT2h+P/BC3GpK/7XThzUVtCWPANcl0bPo/9Evg9oejZRXN
+ F/kwBaILmSEdHFapwIeGtAxrGfQ7g/4sN7rpo+FU+AipihP/fGSchFlx5sCt7F6gjQZJ
+ akeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=w3CwerUbOgOXXiCSnS9RlnGeZVnQdj5otMQLyftCR5U=;
- b=XOLYbSUmoPB9nz1xc1UJZKftipLyqI/aVv1S8kYc3/ale2SK9OOOO1Ub/gJJ+Ugr2z
- wmF0Jouppv3sfMnFz/aVddcqvOJUPeVra+uT/FtCJgV1PtJ/Ga+Opb/yyLS/twOrMvNh
- gxVTSYmvPSmtNOZHnAyxDooQ3YLnmnawD2CTA4653tGhZoyiwEVKM4R+no23obUMazuf
- Cz+H8yRe5Vbv+3CBBRT+p2F1d0OOVPkvB78fVLcViKQUnTGR89S+3ACsbD9oPTEegx7n
- hSV5r5yGbsHRzDwdn6MItAkCBPKBfcxM89G9Y5AWMnwp5dlh+7lD9pXxz6M/R/FkRYKl
- myuA==
-X-Gm-Message-State: APjAAAUdkB81HLJvOdA9blBCj6T0tDK1p3m2z7mJHtJ3UsAmc7E3oqcj
- bcDMF74L00cRX3UYcwtByjU77PnUgRUlQgbJBy8trw==
-X-Google-Smtp-Source: APXvYqwEoyQ/+gdbpiq96mf1vlv5hUoY2bhtp6ecuZwu3ufRDNiX4lPMqoN7zAZpCfyk7yZAb5CAmenmXz4Vrtgwk5I=
-X-Received: by 2002:aca:d4cf:: with SMTP id l198mr457112oig.137.1557133441163; 
- Mon, 06 May 2019 02:04:01 -0700 (PDT)
+ bh=EuMXXHqqPef2GwgL+nQvKY3dmYnxYLGClh5z++gsDCE=;
+ b=bDfWtTkRutGQvorBCkjUUJtgXNnsq/6jJbWBW5xg5S3oyPqTFSdp7F7X5c3nxb2syX
+ YSC+zaa00K4Vs2uFjdUmwBSI4OODVEHs0RupBMYQDsT2dfO9IQqLzxsWVaj3F83VZspk
+ ljK3r+3YSmB8KXlQ9uJONkZLMXfJoBxWTh4HQWdlrajVA7+H440veKaWaStEQ19R7xOS
+ ic/uEodgmJ6we6+MrNgnu1ifQKFiiLq5kqupPBcqc6g6taTWVCgRlMOUk95JEnEAejAC
+ TY9gcP2H3vXKCPXoXBuWzW88hqtYcCP0A1vGpAPA/lugxHhSa404m5bzZtpg6gF4Knyn
+ WG3g==
+X-Gm-Message-State: APjAAAXE/RXTs95sHluAgR8uiYasbaXo8kDiM0DUSHTWeDmq4SPIViHg
+ T168LsxsWn7umU6kKwFf7//Cq74aJ5sV+PoPbf6SLQ==
+X-Google-Smtp-Source: APXvYqwJ3xWdH/Lcmkx6YRG/BMIY9WxqPyKwUn5ZqoX3PeD8nyMheiZI5T1OFI6UXxsrrwGRwMbiUWxrFpDFumPm0yg=
+X-Received: by 2002:a9d:71de:: with SMTP id z30mr15637896otj.113.1557134293178; 
+ Mon, 06 May 2019 02:18:13 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190501230126.229218-1-brendanhiggins@google.com>
- <20190501230126.229218-12-brendanhiggins@google.com>
- <8c37fd20-859c-9c34-4465-8adfcfdaab09@kernel.org>
-In-Reply-To: <8c37fd20-859c-9c34-4465-8adfcfdaab09@kernel.org>
+ <20190501230126.229218-16-brendanhiggins@google.com>
+ <68f88e1c-d40f-9dad-7296-ab2b2303c575@kernel.org>
+In-Reply-To: <68f88e1c-d40f-9dad-7296-ab2b2303c575@kernel.org>
 From: Brendan Higgins <brendanhiggins@google.com>
-Date: Mon, 6 May 2019 02:03:49 -0700
-Message-ID: <CAFd5g44q3qyahykujDzOoO01DwGMUm+Kce-tOAzSW90U4mQM7w@mail.gmail.com>
-Subject: Re: [PATCH v2 11/17] kunit: test: add test managed resource tests
+Date: Mon, 6 May 2019 02:18:01 -0700
+Message-ID: <CAFd5g456XwQV2+iy=0K7AwBc5wbQDRL2DAJgMEsJBLtFdZ5erQ@mail.gmail.com>
+Subject: Re: [PATCH v2 15/17] MAINTAINERS: add entry for KUnit the unit
+ testing framework
 To: shuah <shuah@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -78,9 +79,9 @@ Cc: Petr Mladek <pmladek@suse.com>, linux-doc@vger.kernel.org,
  Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
  Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
  devicetree <devicetree@vger.kernel.org>, linux-kbuild@vger.kernel.org, "Bird,
- Timothy" <Tim.Bird@sony.com>, Avinash Kondareddy <akndr41@gmail.com>,
- linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
- Julia Lawall <julia.lawall@lip6.fr>, kunit-dev@googlegroups.com,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Shuah Khan <skhan@linuxfoundation.org>, kunit-dev@googlegroups.com,
  Richard Weinberger <richard@nod.at>, Stephen Boyd <sboyd@kernel.org>,
  Greg KH <gregkh@linuxfoundation.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
@@ -91,21 +92,42 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 3, 2019 at 7:34 AM shuah <shuah@kernel.org> wrote:
+On Fri, May 3, 2019 at 7:38 AM shuah <shuah@kernel.org> wrote:
 >
 > On 5/1/19 5:01 PM, Brendan Higgins wrote:
-> > From: Avinash Kondareddy <akndr41@gmail.com>
+> > Add myself as maintainer of KUnit, the Linux kernel's unit testing
+> > framework.
 > >
-> > Tests how tests interact with test managed resources in their lifetime.
-> >
-> > Signed-off-by: Avinash Kondareddy <akndr41@gmail.com>
 > > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 > > ---
+> >   MAINTAINERS | 10 ++++++++++
+> >   1 file changed, 10 insertions(+)
+> >
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 5c38f21aee787..c78ae95c56b80 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -8448,6 +8448,16 @@ S:     Maintained
+> >   F:  tools/testing/selftests/
+> >   F:  Documentation/dev-tools/kselftest*
+> >
+> > +KERNEL UNIT TESTING FRAMEWORK (KUnit)
+> > +M:   Brendan Higgins <brendanhiggins@google.com>
+> > +L:   kunit-dev@googlegroups.com
+> > +W:   https://google.github.io/kunit-docs/third_party/kernel/docs/
+> > +S:   Maintained
+> > +F:   Documentation/kunit/
+> > +F:   include/kunit/
+> > +F:   kunit/
+> > +F:   tools/testing/kunit/
+> > +
 >
-> I think this change log could use more details. It is vague on what it
-> does.
+> Please add kselftest mailing list to this entry, based on our
+> conversation on taking these patches through kselftest tree.
 
-Agreed. Will fix in next revision.
+Will do.
+
+Thanks!
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
