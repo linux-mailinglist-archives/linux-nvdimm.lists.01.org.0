@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF6815902
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 07:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C41BE15951
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 07:36:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6802221253306;
-	Mon,  6 May 2019 22:33:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DB10721253310;
+	Mon,  6 May 2019 22:36:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,31 +15,30 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DDD9521253312
- for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 22:33:01 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9B3C521253307
+ for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 22:36:02 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id C565220B7C;
- Tue,  7 May 2019 05:33:00 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A392420B7C;
+ Tue,  7 May 2019 05:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557207181;
- bh=hRM3CkHZWwGltvoZR4cm9RhCs5oGf7nToMlyJYFNVc0=;
+ s=default; t=1557207362;
+ bh=B/gkt7iNSmPmscq9jO/iJBG7GmmIjSdgYLzaZQRpVmA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ZboXMsyULpAOhFtrIvvWM3d+xrXjs7QD+GWWXRRrWwIb953ve3nzqsrQlBI6D1poV
- C3jo5KB12IYKu4TKvG+GN/tZICsghNsRMWMSEPo0mqck9jPYhT2g0/CHYzoBQ+H5kV
- e5UW/RBeuDxajF3Ke0geBEG1bfFMEqRYCpg0FCm4=
+ b=2eFw6OY7htbyuF6kXuXcMlHCKY2VYGGSwXXA13vZUeb6EcqvAsW9unn6AFWuygK3p
+ Z0p7GPNBaq/Hb5QAuSJTyd0Z4wr8sAdNRlxJ0bC9hcs7S+3mkcm7GjS+TBvGhafYnO
+ zj/hovWJ09kQljXGkazMylYaXBlwG/qmG3N3WlUs=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.0 18/99] libnvdimm/pmem: fix a possible OOB access
- when read and write pmem
-Date: Tue,  7 May 2019 01:31:12 -0400
-Message-Id: <20190507053235.29900-18-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 04/81] acpi/nfit: Always dump _DSM output payload
+Date: Tue,  7 May 2019 01:34:35 -0400
+Message-Id: <20190507053554.30848-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190507053235.29900-1-sashal@kernel.org>
-References: <20190507053235.29900-1-sashal@kernel.org>
+In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
+References: <20190507053554.30848-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -54,70 +53,59 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
- Liang ZhiCheng <liangzhicheng@baidu.com>
+Cc: Sasha Levin <sashal@kernel.org>, linux-acpi@vger.kernel.org,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 9dc6488e84b0f64df17672271664752488cd6a25 ]
+[ Upstream commit 351f339faa308c1c1461314a18c832239a841ca0 ]
 
-If offset is not zero and length is bigger than PAGE_SIZE,
-this will cause to out of boundary access to a page memory
+The dynamic-debug statements for command payload output only get emitted
+when the command is not ND_CMD_CALL. Move the output payload dumping
+ahead of the early return path for ND_CMD_CALL.
 
-Fixes: 98cc093cba1e ("block, THP: make block_device_operations.rw_page support THP")
-Co-developed-by: Liang ZhiCheng <liangzhicheng@baidu.com>
-Signed-off-by: Liang ZhiCheng <liangzhicheng@baidu.com>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+Fixes: 31eca76ba2fc9 ("...whitelisted dimm command marshaling mechanism")
+Reported-by: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/pmem.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/nfit/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index bc2f700feef8..0279eb1da3ef 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -113,13 +113,13 @@ static void write_pmem(void *pmem_addr, struct page *page,
- 
- 	while (len) {
- 		mem = kmap_atomic(page);
--		chunk = min_t(unsigned int, len, PAGE_SIZE);
-+		chunk = min_t(unsigned int, len, PAGE_SIZE - off);
- 		memcpy_flushcache(pmem_addr, mem + off, chunk);
- 		kunmap_atomic(mem);
- 		len -= chunk;
- 		off = 0;
- 		page++;
--		pmem_addr += PAGE_SIZE;
-+		pmem_addr += chunk;
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 925dbc751322..8340c81b258b 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -542,6 +542,12 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 		goto out;
  	}
- }
  
-@@ -132,7 +132,7 @@ static blk_status_t read_pmem(struct page *page, unsigned int off,
- 
- 	while (len) {
- 		mem = kmap_atomic(page);
--		chunk = min_t(unsigned int, len, PAGE_SIZE);
-+		chunk = min_t(unsigned int, len, PAGE_SIZE - off);
- 		rem = memcpy_mcsafe(mem + off, pmem_addr, chunk);
- 		kunmap_atomic(mem);
- 		if (rem)
-@@ -140,7 +140,7 @@ static blk_status_t read_pmem(struct page *page, unsigned int off,
- 		len -= chunk;
- 		off = 0;
- 		page++;
--		pmem_addr += PAGE_SIZE;
-+		pmem_addr += chunk;
++	dev_dbg(dev, "%s cmd: %s output length: %d\n", dimm_name,
++			cmd_name, out_obj->buffer.length);
++	print_hex_dump_debug(cmd_name, DUMP_PREFIX_OFFSET, 4, 4,
++			out_obj->buffer.pointer,
++			min_t(u32, 128, out_obj->buffer.length), true);
++
+ 	if (call_pkg) {
+ 		call_pkg->nd_fw_size = out_obj->buffer.length;
+ 		memcpy(call_pkg->nd_payload + call_pkg->nd_size_in,
+@@ -560,12 +566,6 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
+ 		return 0;
  	}
- 	return BLK_STS_OK;
- }
+ 
+-	dev_dbg(dev, "%s cmd: %s output length: %d\n", dimm_name,
+-			cmd_name, out_obj->buffer.length);
+-	print_hex_dump_debug(cmd_name, DUMP_PREFIX_OFFSET, 4, 4,
+-			out_obj->buffer.pointer,
+-			min_t(u32, 128, out_obj->buffer.length), true);
+-
+ 	for (i = 0, offset = 0; i < desc->out_num; i++) {
+ 		u32 out_size = nd_cmd_out_size(nvdimm, cmd, desc, i, buf,
+ 				(u32 *) out_obj->buffer.pointer,
 -- 
 2.20.1
 
