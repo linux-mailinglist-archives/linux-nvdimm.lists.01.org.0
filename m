@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A973215953
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 07:36:10 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9EE15964
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 07:36:20 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 819542125330F;
-	Mon,  6 May 2019 22:36:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B9D5521253317;
+	Mon,  6 May 2019 22:36:19 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,27 +15,28 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BDA8721253307
- for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 22:36:07 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id E952521253307
+ for <linux-nvdimm@lists.01.org>; Mon,  6 May 2019 22:36:18 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E5A1E20989;
- Tue,  7 May 2019 05:36:06 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id CE2C120C01;
+ Tue,  7 May 2019 05:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557207367;
- bh=sHvKIOAEfB3iQ5fvdbpeeCL0PmmTlXV9b4O9QDwhKUo=;
+ s=default; t=1557207378;
+ bh=hBXc9T7g7moBL7FY6MAsud/UaYKdYSvABg4/xdbFYrU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=U2Ftj5LcGNlZ5MIt9jENqnuV2kWVIpukpo/FcLTz9y6+DTr0YHhsDcrLqLkk4OYyB
- kTw7v5vGuukvDv7pSrT5ps7IWDIHBYheaNyiHbqAQYwQR1yQbqBIAG/42rXnrK/TDg
- +nzHVgkHva8kNWRl+cOPdf0GsEUkwfXA5cIhgieY=
+ b=FqY9Die9YDgr1BSpEgLN2rrJisEtgB7ZKMSffg0q8vFJJrMAethJPzA2coR0OMl/F
+ QEHps3lHx5Ql/s8tnSHa0mdzoHZRmHGykSkneEGhEcHUBjZA8lr0ap5b9Zw2MXWlhx
+ zPnA2HIBZAOJ14DoRewc9CxEeHiEDChlj3csaBIY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 09/81] libnvdimm/btt: Fix a kmemdup failure check
-Date: Tue,  7 May 2019 01:34:40 -0400
-Message-Id: <20190507053554.30848-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 17/81] libnvdimm/pmem: fix a possible OOB access
+ when read and write pmem
+Date: Tue,  7 May 2019 01:34:48 -0400
+Message-Id: <20190507053554.30848-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190507053554.30848-1-sashal@kernel.org>
 References: <20190507053554.30848-1-sashal@kernel.org>
@@ -54,65 +55,69 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org,
- Aditya Pakki <pakki001@umn.edu>
+ Liang ZhiCheng <liangzhicheng@baidu.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Aditya Pakki <pakki001@umn.edu>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 486fa92df4707b5df58d6508728bdb9321a59766 ]
+[ Upstream commit 9dc6488e84b0f64df17672271664752488cd6a25 ]
 
-In case kmemdup fails, the fix releases resources and returns to
-avoid the NULL pointer dereference.
+If offset is not zero and length is bigger than PAGE_SIZE,
+this will cause to out of boundary access to a page memory
 
-Signed-off-by: Aditya Pakki <pakki001@umn.edu>
+Fixes: 98cc093cba1e ("block, THP: make block_device_operations.rw_page support THP")
+Co-developed-by: Liang ZhiCheng <liangzhicheng@baidu.com>
+Signed-off-by: Liang ZhiCheng <liangzhicheng@baidu.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/btt_devs.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/nvdimm/pmem.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvdimm/btt_devs.c b/drivers/nvdimm/btt_devs.c
-index 795ad4ff35ca..e341498876ca 100644
---- a/drivers/nvdimm/btt_devs.c
-+++ b/drivers/nvdimm/btt_devs.c
-@@ -190,14 +190,15 @@ static struct device *__nd_btt_create(struct nd_region *nd_region,
- 		return NULL;
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 1d432c5ed275..cff027fc2676 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -113,13 +113,13 @@ static void write_pmem(void *pmem_addr, struct page *page,
  
- 	nd_btt->id = ida_simple_get(&nd_region->btt_ida, 0, 0, GFP_KERNEL);
--	if (nd_btt->id < 0) {
--		kfree(nd_btt);
--		return NULL;
--	}
-+	if (nd_btt->id < 0)
-+		goto out_nd_btt;
- 
- 	nd_btt->lbasize = lbasize;
--	if (uuid)
-+	if (uuid) {
- 		uuid = kmemdup(uuid, 16, GFP_KERNEL);
-+		if (!uuid)
-+			goto out_put_id;
-+	}
- 	nd_btt->uuid = uuid;
- 	dev = &nd_btt->dev;
- 	dev_set_name(dev, "btt%d.%d", nd_region->id, nd_btt->id);
-@@ -212,6 +213,13 @@ static struct device *__nd_btt_create(struct nd_region *nd_region,
- 		return NULL;
+ 	while (len) {
+ 		mem = kmap_atomic(page);
+-		chunk = min_t(unsigned int, len, PAGE_SIZE);
++		chunk = min_t(unsigned int, len, PAGE_SIZE - off);
+ 		memcpy_flushcache(pmem_addr, mem + off, chunk);
+ 		kunmap_atomic(mem);
+ 		len -= chunk;
+ 		off = 0;
+ 		page++;
+-		pmem_addr += PAGE_SIZE;
++		pmem_addr += chunk;
  	}
- 	return dev;
-+
-+out_put_id:
-+	ida_simple_remove(&nd_region->btt_ida, nd_btt->id);
-+
-+out_nd_btt:
-+	kfree(nd_btt);
-+	return NULL;
  }
  
- struct device *nd_btt_create(struct nd_region *nd_region)
+@@ -132,7 +132,7 @@ static blk_status_t read_pmem(struct page *page, unsigned int off,
+ 
+ 	while (len) {
+ 		mem = kmap_atomic(page);
+-		chunk = min_t(unsigned int, len, PAGE_SIZE);
++		chunk = min_t(unsigned int, len, PAGE_SIZE - off);
+ 		rem = memcpy_mcsafe(mem + off, pmem_addr, chunk);
+ 		kunmap_atomic(mem);
+ 		if (rem)
+@@ -140,7 +140,7 @@ static blk_status_t read_pmem(struct page *page, unsigned int off,
+ 		len -= chunk;
+ 		off = 0;
+ 		page++;
+-		pmem_addr += PAGE_SIZE;
++		pmem_addr += chunk;
+ 	}
+ 	return BLK_STS_OK;
+ }
 -- 
 2.20.1
 
