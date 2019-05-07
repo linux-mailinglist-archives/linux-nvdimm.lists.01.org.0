@@ -2,46 +2,76 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A5D15EBA
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 10:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538C016311
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 13:50:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A3B452125331E;
-	Tue,  7 May 2019 01:01:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 77FD921237ABE;
+	Tue,  7 May 2019 04:50:07 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 571062122CA93
- for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 01:01:22 -0700 (PDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6057820B7C;
- Tue,  7 May 2019 08:01:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557216081;
- bh=QzyiMEIgGcOHF7/0RhAcYYAteXaKFmx6V5mlxAloU/E=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=JYZnGuH3Pbk4yrhdCzdKoMJOLOSIlgRBPlakGO9b31IdpbGDZVFQSkxHJZke5YiqF
- kLlxf+8LdYwPSAUw422OvFILYSfk5W9idQInw+r9Pj1esrAbnpH/5dYqp76eoeqJjE
- y7EgY8L7QWLFChBoIcI/eDpJ/HS6IYXXX+xBrQeg=
-Date: Tue, 7 May 2019 10:01:19 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Frank Rowand <frowand.list@gmail.com>
-Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
- testing framework
-Message-ID: <20190507080119.GB28121@kroah.com>
-References: <20190501230126.229218-1-brendanhiggins@google.com>
- <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id D38D32122C318
+ for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 04:50:04 -0700 (PDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x47Bkosj009825
+ for <linux-nvdimm@lists.01.org>; Tue, 7 May 2019 07:50:04 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sb6b2rqsd-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Tue, 07 May 2019 07:50:04 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Tue, 7 May 2019 12:50:01 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 May 2019 12:49:58 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x47Bnvdq62652642
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 May 2019 11:49:58 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D5DAAAE051;
+ Tue,  7 May 2019 11:49:57 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 01B7DAE04D;
+ Tue,  7 May 2019 11:49:57 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.196.155])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 May 2019 11:49:56 +0000 (GMT)
+X-Mailer: emacs 26.1 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: Re: [PATCH v2] drivers/dax: Allow to include DEV_DAX_PMEM as builtin
+In-Reply-To: <20190401051421.17878-1-aneesh.kumar@linux.ibm.com>
+References: <20190401051421.17878-1-aneesh.kumar@linux.ibm.com>
+Date: Tue, 07 May 2019 06:49:55 -0500
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19050711-0028-0000-0000-0000036B2C6B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19050711-0029-0000-0000-0000242AA536
+Message-Id: <87pnoumql8.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-07_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=946 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905070078
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,110 +83,59 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
- linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- kieran.bingham@ideasonboard.com, wfg@linux.intel.com, joel@jms.id.au,
- rientjes@google.com, jdike@addtoit.com, dan.carpenter@oracle.com,
- devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
- linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
- kunit-dev@googlegroups.com, richard@nod.at, sboyd@kernel.org,
- linux-kernel@vger.kernel.org, mcgrof@kernel.org, daniel@ffwll.ch,
- keescook@google.com, linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, May 06, 2019 at 08:14:12PM -0700, Frank Rowand wrote:
-> On 5/1/19 4:01 PM, Brendan Higgins wrote:
-> > ## TLDR
-> > 
-> > I rebased the last patchset on 5.1-rc7 in hopes that we can get this in
-> > 5.2.
-> > 
-> > Shuah, I think you, Greg KH, and myself talked off thread, and we agreed
-> > we would merge through your tree when the time came? Am I remembering
-> > correctly?
-> > 
-> > ## Background
-> > 
-> > This patch set proposes KUnit, a lightweight unit testing and mocking
-> > framework for the Linux kernel.
-> > 
-> > Unlike Autotest and kselftest, KUnit is a true unit testing framework;
-> > it does not require installing the kernel on a test machine or in a VM
-> > and does not require tests to be written in userspace running on a host
-> > kernel. Additionally, KUnit is fast: From invocation to completion KUnit
-> > can run several dozen tests in under a second. Currently, the entire
-> > KUnit test suite for KUnit runs in under a second from the initial
-> > invocation (build time excluded).
-> > 
-> > KUnit is heavily inspired by JUnit, Python's unittest.mock, and
-> > Googletest/Googlemock for C++. KUnit provides facilities for defining
-> > unit test cases, grouping related test cases into test suites, providing
-> > common infrastructure for running tests, mocking, spying, and much more.
-> 
-> As a result of the emails replying to this patch thread, I am now
-> starting to look at kselftest.  My level of understanding is based
-> on some slide presentations, an LWN article, https://kselftest.wiki.kernel.org/
-> and a _tiny_ bit of looking at kselftest code.
-> 
-> tl;dr; I don't really understand kselftest yet.
-> 
-> 
-> (1) why KUnit exists
-> 
-> > ## What's so special about unit testing?
-> > 
-> > A unit test is supposed to test a single unit of code in isolation,
-> > hence the name. There should be no dependencies outside the control of
-> > the test; this means no external dependencies, which makes tests orders
-> > of magnitudes faster. Likewise, since there are no external dependencies,
-> > there are no hoops to jump through to run the tests. Additionally, this
-> > makes unit tests deterministic: a failing unit test always indicates a
-> > problem. Finally, because unit tests necessarily have finer granularity,
-> > they are able to test all code paths easily solving the classic problem
-> > of difficulty in exercising error handling code.
-> 
-> (2) KUnit is not meant to replace kselftest
-> 
-> > ## Is KUnit trying to replace other testing frameworks for the kernel?
-> > 
-> > No. Most existing tests for the Linux kernel are end-to-end tests, which
-> > have their place. A well tested system has lots of unit tests, a
-> > reasonable number of integration tests, and some end-to-end tests. KUnit
-> > is just trying to address the unit test space which is currently not
-> > being addressed.
-> 
-> My understanding is that the intent of KUnit is to avoid booting a kernel on
-> real hardware or in a virtual machine.  That seems to be a matter of semantics
-> to me because isn't invoking a UML Linux just running the Linux kernel in
-> a different form of virtualization?
-> 
-> So I do not understand why KUnit is an improvement over kselftest.
-> 
-> It seems to me that KUnit is just another piece of infrastructure that I
-> am going to have to be familiar with as a kernel developer.  More overhead,
-> more information to stuff into my tiny little brain.
-> 
-> I would guess that some developers will focus on just one of the two test
-> environments (and some will focus on both), splitting the development
-> resources instead of pooling them on a common infrastructure.
-> 
-> What am I missing?
 
-kselftest provides no in-kernel framework for testing kernel code
-specifically.  That should be what kunit provides, an "easy" way to
-write in-kernel tests for things.
+Hi Dan,
 
-Brendan, did I get it right?
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
 
-thanks,
+> This move the dependency to DEV_DAX_PMEM_COMPAT such that only
+> if DEV_DAX_PMEM is built as module we can allow the compat support.
+>
+> This allows to test the new code easily in a emulation setup where we
+> often build things without module support.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-greg k-h
+Any update on this. Can we merge this?
+
+> ---
+> Changes from V1:
+> * Make sure we only build compat code as module
+>
+>  drivers/dax/Kconfig | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+> index 5ef624fe3934..a59f338f520f 100644
+> --- a/drivers/dax/Kconfig
+> +++ b/drivers/dax/Kconfig
+> @@ -23,7 +23,6 @@ config DEV_DAX
+>  config DEV_DAX_PMEM
+>  	tristate "PMEM DAX: direct access to persistent memory"
+>  	depends on LIBNVDIMM && NVDIMM_DAX && DEV_DAX
+> -	depends on m # until we can kill DEV_DAX_PMEM_COMPAT
+>  	default DEV_DAX
+>  	help
+>  	  Support raw access to persistent memory.  Note that this
+> @@ -50,7 +49,7 @@ config DEV_DAX_KMEM
+>  
+>  config DEV_DAX_PMEM_COMPAT
+>  	tristate "PMEM DAX: support the deprecated /sys/class/dax interface"
+> -	depends on DEV_DAX_PMEM
+> +	depends on m && DEV_DAX_PMEM=m
+>  	default DEV_DAX_PMEM
+>  	help
+>  	  Older versions of the libdaxctl library expect to find all
+> -- 
+> 2.20.1
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
