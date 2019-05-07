@@ -1,36 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 153B316E0C
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 May 2019 02:10:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412E16E0D
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 May 2019 02:10:16 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E4829212449F1;
-	Tue,  7 May 2019 17:10:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3CFE32124B939;
+	Tue,  7 May 2019 17:10:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.24; helo=mga09.intel.com;
+ client-ip=134.134.136.100; helo=mga07.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 21996211F9D7B
- for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 17:10:08 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 69E7B211F9D7B
+ for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 17:10:13 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 07 May 2019 17:10:07 -0700
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 07 May 2019 17:10:12 -0700
 X-ExtLoop1: 1
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga004.jf.intel.com with ESMTP; 07 May 2019 17:10:07 -0700
-Subject: [PATCH v2 4/6] lib/genalloc: Introduce chunk owners
+ by orsmga006.jf.intel.com with ESMTP; 07 May 2019 17:10:12 -0700
+Subject: [PATCH v2 5/6] PCI/P2PDMA: Track pgmap references per resource,
+ not globally
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Tue, 07 May 2019 16:56:21 -0700
-Message-ID: <155727338118.292046.13407378933221579644.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Tue, 07 May 2019 16:56:26 -0700
+Message-ID: <155727338646.292046.9922678317501435597.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155727335978.292046.12068191395005445711.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155727335978.292046.12068191395005445711.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -47,197 +48,253 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
  Bjorn Helgaas <bhelgaas@google.com>, Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-VGhlIHAycGRtYSBmYWNpbGl0eSBlbmFibGVzIGEgcHJvdmlkZXIgdG8gcHVibGlzaCBhIHBvb2wg
-b2YgZG1hCmFkZHJlc3NlcyBmb3IgYSBjb25zdW1lciB0byBhbGxvY2F0ZS4gQSBnZW5wb29sIGlz
-IHVzZWQgaW50ZXJuYWxseSBieQpwMnBkbWEgdG8gY29sbGVjdCBkbWEgcmVzb3VyY2VzLCAnY2h1
-bmtzJywgdG8gYmUgaGFuZGVkIG91dCB0bwpjb25zdW1lcnMuIFdoZW5ldmVyIGEgY29uc3VtZXIg
-YWxsb2NhdGVzIGEgcmVzb3VyY2UgaXQgbmVlZHMgdG8gcGluIHRoZQonc3RydWN0IGRldl9wYWdl
-bWFwJyBpbnN0YW5jZSB0aGF0IGJhY2tzIHRoZSBjaHVuayBzZWxlY3RlZCBieQpwY2lfYWxsb2Nf
-cDJwbWVtKCkuCgpDdXJyZW50bHkgdGhhdCByZWZlcmVuY2UgaXMgdGFrZW4gZ2xvYmFsbHkgb24g
-dGhlIGVudGlyZSBwcm92aWRlcgpkZXZpY2UuIFRoYXQgc2V0cyB1cCBhIGxpZmV0aW1lIG1pc21h
-dGNoIHdoZXJlYnkgdGhlIHAycGRtYSBjb3JlIG5lZWRzCnRvIG1haW50YWluIGhhY2tzIHRvIG1h
-a2Ugc3VyZSB0aGUgcGVyY3B1X3JlZiBpcyBub3QgcmVsZWFzZWQgdHdpY2UuCgpUaGlzIGxpZmV0
-aW1lIG1pc21hdGNoIGFsc28gc3RhbmRzIGluIHRoZSB3YXkgb2YgYSBmaXggdG8KZGV2bV9tZW1y
-ZW1hcF9wYWdlcygpIHdoZXJlYnkgZGV2bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKCkgbXVzdCB3
-YWl0CmZvciB0aGUgcGVyY3B1X3JlZiAtPnJlbGVhc2UoKSBjYWxsYmFjayB0byBjb21wbGV0ZSBi
-ZWZvcmUgaXQgY2FuCnByb2NlZWQgdG8gdGVhcmRvd24gcGFnZXMuCgpTbywgdG93YXJkcyBmaXhp
-bmcgdGhpcyBzaXR1YXRpb24sIGludHJvZHVjZSB0aGUgYWJpbGl0eSB0byBzdG9yZSBhCidjaHVu
-ayBvd25lcicgYXQgZ2VuX3Bvb2xfYWRkKCkgdGltZSwgYW5kIGEgZmFjaWxpdHkgdG8gcmV0cmll
-dmUgdGhlCm93bmVyIGF0IGdlbl9wb29sX3thbGxvYyxmcmVlfSgpIHRpbWUuIEZvciBwMnBkbWEg
-dGhpcyB3aWxsIGJlIHVzZWQgdG8Kc3RvcmUgYW5kIHJlY2FsbCBpbmRpdmlkdWFsIGRldl9wYWdl
-bWFwIHJlZmVyZW5jZSBjb3VudGVyIGluc3RhbmNlcwpwZXItY2h1bmsuCgpDYzogTG9nYW4gR3Vu
-dGhvcnBlIDxsb2dhbmdAZGVsdGF0ZWUuY29tPgpDYzogQmpvcm4gSGVsZ2FhcyA8YmhlbGdhYXNA
-Z29vZ2xlLmNvbT4KQ2M6ICJKw6lyw7RtZSBHbGlzc2UiIDxqZ2xpc3NlQHJlZGhhdC5jb20+CkNj
-OiBDaHJpc3RvcGggSGVsbHdpZyA8aGNoQGxzdC5kZT4KUmV2aWV3ZWQtYnk6IElyYSBXZWlueSA8
-aXJhLndlaW55QGludGVsLmNvbT4KU2lnbmVkLW9mZi1ieTogRGFuIFdpbGxpYW1zIDxkYW4uai53
-aWxsaWFtc0BpbnRlbC5jb20+Ci0tLQogaW5jbHVkZS9saW51eC9nZW5hbGxvYy5oIHwgICA1NSAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tCiBsaWIvZ2VuYWxs
-b2MuYyAgICAgICAgICAgfCAgIDUxICsrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0KIDIgZmlsZXMgY2hhbmdlZCwgNzQgaW5zZXJ0aW9ucygrKSwgMzIgZGVsZXRpb25z
-KC0pCgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9nZW5hbGxvYy5oIGIvaW5jbHVkZS9saW51
-eC9nZW5hbGxvYy5oCmluZGV4IGRkMGE0NTIzNzNlNy4uYTMzNzMxM2UwNjRmIDEwMDY0NAotLS0g
-YS9pbmNsdWRlL2xpbnV4L2dlbmFsbG9jLmgKKysrIGIvaW5jbHVkZS9saW51eC9nZW5hbGxvYy5o
-CkBAIC03NSw2ICs3NSw3IEBAIHN0cnVjdCBnZW5fcG9vbF9jaHVuayB7CiAJc3RydWN0IGxpc3Rf
-aGVhZCBuZXh0X2NodW5rOwkvKiBuZXh0IGNodW5rIGluIHBvb2wgKi8KIAlhdG9taWNfbG9uZ190
-IGF2YWlsOwogCXBoeXNfYWRkcl90IHBoeXNfYWRkcjsJCS8qIHBoeXNpY2FsIHN0YXJ0aW5nIGFk
-ZHJlc3Mgb2YgbWVtb3J5IGNodW5rICovCisJdm9pZCAqb3duZXI7CQkJLyogcHJpdmF0ZSBkYXRh
-IHRvIHJldHJpZXZlIGF0IGFsbG9jIHRpbWUgKi8KIAl1bnNpZ25lZCBsb25nIHN0YXJ0X2FkZHI7
-CS8qIHN0YXJ0IGFkZHJlc3Mgb2YgbWVtb3J5IGNodW5rICovCiAJdW5zaWduZWQgbG9uZyBlbmRf
-YWRkcjsJCS8qIGVuZCBhZGRyZXNzIG9mIG1lbW9yeSBjaHVuayAoaW5jbHVzaXZlKSAqLwogCXVu
-c2lnbmVkIGxvbmcgYml0c1swXTsJCS8qIGJpdG1hcCBmb3IgYWxsb2NhdGluZyBtZW1vcnkgY2h1
-bmsgKi8KQEAgLTk2LDggKzk3LDE1IEBAIHN0cnVjdCBnZW5wb29sX2RhdGFfZml4ZWQgewogCiBl
-eHRlcm4gc3RydWN0IGdlbl9wb29sICpnZW5fcG9vbF9jcmVhdGUoaW50LCBpbnQpOwogZXh0ZXJu
-IHBoeXNfYWRkcl90IGdlbl9wb29sX3ZpcnRfdG9fcGh5cyhzdHJ1Y3QgZ2VuX3Bvb2wgKnBvb2ws
-IHVuc2lnbmVkIGxvbmcpOwotZXh0ZXJuIGludCBnZW5fcG9vbF9hZGRfdmlydChzdHJ1Y3QgZ2Vu
-X3Bvb2wgKiwgdW5zaWduZWQgbG9uZywgcGh5c19hZGRyX3QsCi0JCQkgICAgIHNpemVfdCwgaW50
-KTsKK2V4dGVybiBpbnQgZ2VuX3Bvb2xfYWRkX293bmVyKHN0cnVjdCBnZW5fcG9vbCAqLCB1bnNp
-Z25lZCBsb25nLCBwaHlzX2FkZHJfdCwKKwkJCSAgICAgc2l6ZV90LCBpbnQsIHZvaWQgKik7CisK
-K3N0YXRpYyBpbmxpbmUgaW50IGdlbl9wb29sX2FkZF92aXJ0KHN0cnVjdCBnZW5fcG9vbCAqcG9v
-bCwgdW5zaWduZWQgbG9uZyBhZGRyLAorCQlwaHlzX2FkZHJfdCBwaHlzLCBzaXplX3Qgc2l6ZSwg
-aW50IG5pZCkKK3sKKwlyZXR1cm4gZ2VuX3Bvb2xfYWRkX293bmVyKHBvb2wsIGFkZHIsIHBoeXMs
-IHNpemUsIG5pZCwgTlVMTCk7Cit9CisKIC8qKgogICogZ2VuX3Bvb2xfYWRkIC0gYWRkIGEgbmV3
-IGNodW5rIG9mIHNwZWNpYWwgbWVtb3J5IHRvIHRoZSBwb29sCiAgKiBAcG9vbDogcG9vbCB0byBh
-ZGQgbmV3IG1lbW9yeSBjaHVuayB0bwpAQCAtMTE2LDEyICsxMjQsNDcgQEAgc3RhdGljIGlubGlu
-ZSBpbnQgZ2VuX3Bvb2xfYWRkKHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgdW5zaWduZWQgbG9uZyBh
-ZGRyLAogCXJldHVybiBnZW5fcG9vbF9hZGRfdmlydChwb29sLCBhZGRyLCAtMSwgc2l6ZSwgbmlk
-KTsKIH0KIGV4dGVybiB2b2lkIGdlbl9wb29sX2Rlc3Ryb3koc3RydWN0IGdlbl9wb29sICopOwot
-ZXh0ZXJuIHVuc2lnbmVkIGxvbmcgZ2VuX3Bvb2xfYWxsb2Moc3RydWN0IGdlbl9wb29sICosIHNp
-emVfdCk7Ci1leHRlcm4gdW5zaWduZWQgbG9uZyBnZW5fcG9vbF9hbGxvY19hbGdvKHN0cnVjdCBn
-ZW5fcG9vbCAqLCBzaXplX3QsCi0JCWdlbnBvb2xfYWxnb190IGFsZ28sIHZvaWQgKmRhdGEpOwor
-dW5zaWduZWQgbG9uZyBnZW5fcG9vbF9hbGxvY19hbGdvX293bmVyKHN0cnVjdCBnZW5fcG9vbCAq
-cG9vbCwgc2l6ZV90IHNpemUsCisJCWdlbnBvb2xfYWxnb190IGFsZ28sIHZvaWQgKmRhdGEsIHZv
-aWQgKipvd25lcik7CisKK3N0YXRpYyBpbmxpbmUgdW5zaWduZWQgbG9uZyBnZW5fcG9vbF9hbGxv
-Y19vd25lcihzdHJ1Y3QgZ2VuX3Bvb2wgKnBvb2wsCisJCXNpemVfdCBzaXplLCB2b2lkICoqb3du
-ZXIpCit7CisJcmV0dXJuIGdlbl9wb29sX2FsbG9jX2FsZ29fb3duZXIocG9vbCwgc2l6ZSwgcG9v
-bC0+YWxnbywgcG9vbC0+ZGF0YSwKKwkJCW93bmVyKTsKK30KKworc3RhdGljIGlubGluZSB1bnNp
-Z25lZCBsb25nIGdlbl9wb29sX2FsbG9jX2FsZ28oc3RydWN0IGdlbl9wb29sICpwb29sLAorCQlz
-aXplX3Qgc2l6ZSwgZ2VucG9vbF9hbGdvX3QgYWxnbywgdm9pZCAqZGF0YSkKK3sKKwlyZXR1cm4g
-Z2VuX3Bvb2xfYWxsb2NfYWxnb19vd25lcihwb29sLCBzaXplLCBhbGdvLCBkYXRhLCBOVUxMKTsK
-K30KKworLyoqCisgKiBnZW5fcG9vbF9hbGxvYyAtIGFsbG9jYXRlIHNwZWNpYWwgbWVtb3J5IGZy
-b20gdGhlIHBvb2wKKyAqIEBwb29sOiBwb29sIHRvIGFsbG9jYXRlIGZyb20KKyAqIEBzaXplOiBu
-dW1iZXIgb2YgYnl0ZXMgdG8gYWxsb2NhdGUgZnJvbSB0aGUgcG9vbAorICoKKyAqIEFsbG9jYXRl
-IHRoZSByZXF1ZXN0ZWQgbnVtYmVyIG9mIGJ5dGVzIGZyb20gdGhlIHNwZWNpZmllZCBwb29sLgor
-ICogVXNlcyB0aGUgcG9vbCBhbGxvY2F0aW9uIGZ1bmN0aW9uICh3aXRoIGZpcnN0LWZpdCBhbGdv
-cml0aG0gYnkgZGVmYXVsdCkuCisgKiBDYW4gbm90IGJlIHVzZWQgaW4gTk1JIGhhbmRsZXIgb24g
-YXJjaGl0ZWN0dXJlcyB3aXRob3V0CisgKiBOTUktc2FmZSBjbXB4Y2hnIGltcGxlbWVudGF0aW9u
-LgorICovCitzdGF0aWMgaW5saW5lIHVuc2lnbmVkIGxvbmcgZ2VuX3Bvb2xfYWxsb2Moc3RydWN0
-IGdlbl9wb29sICpwb29sLCBzaXplX3Qgc2l6ZSkKK3sKKwlyZXR1cm4gZ2VuX3Bvb2xfYWxsb2Nf
-YWxnbyhwb29sLCBzaXplLCBwb29sLT5hbGdvLCBwb29sLT5kYXRhKTsKK30KKwogZXh0ZXJuIHZv
-aWQgKmdlbl9wb29sX2RtYV9hbGxvYyhzdHJ1Y3QgZ2VuX3Bvb2wgKnBvb2wsIHNpemVfdCBzaXpl
-LAogCQlkbWFfYWRkcl90ICpkbWEpOwotZXh0ZXJuIHZvaWQgZ2VuX3Bvb2xfZnJlZShzdHJ1Y3Qg
-Z2VuX3Bvb2wgKiwgdW5zaWduZWQgbG9uZywgc2l6ZV90KTsKK2V4dGVybiB2b2lkIGdlbl9wb29s
-X2ZyZWVfb3duZXIoc3RydWN0IGdlbl9wb29sICpwb29sLCB1bnNpZ25lZCBsb25nIGFkZHIsCisJ
-CXNpemVfdCBzaXplLCB2b2lkICoqb3duZXIpOworc3RhdGljIGlubGluZSB2b2lkIGdlbl9wb29s
-X2ZyZWUoc3RydWN0IGdlbl9wb29sICpwb29sLCB1bnNpZ25lZCBsb25nIGFkZHIsCisgICAgICAg
-ICAgICAgICAgc2l6ZV90IHNpemUpCit7CisJZ2VuX3Bvb2xfZnJlZV9vd25lcihwb29sLCBhZGRy
-LCBzaXplLCBOVUxMKTsKK30KKwogZXh0ZXJuIHZvaWQgZ2VuX3Bvb2xfZm9yX2VhY2hfY2h1bmso
-c3RydWN0IGdlbl9wb29sICosCiAJdm9pZCAoKikoc3RydWN0IGdlbl9wb29sICosIHN0cnVjdCBn
-ZW5fcG9vbF9jaHVuayAqLCB2b2lkICopLCB2b2lkICopOwogZXh0ZXJuIHNpemVfdCBnZW5fcG9v
-bF9hdmFpbChzdHJ1Y3QgZ2VuX3Bvb2wgKik7CmRpZmYgLS1naXQgYS9saWIvZ2VuYWxsb2MuYyBi
-L2xpYi9nZW5hbGxvYy5jCmluZGV4IDdlODVkMWUzN2E2ZS4uNzcwYzc2OWQ3Y2I3IDEwMDY0NAot
-LS0gYS9saWIvZ2VuYWxsb2MuYworKysgYi9saWIvZ2VuYWxsb2MuYwpAQCAtMTY4LDIwICsxNjgs
-MjEgQEAgc3RydWN0IGdlbl9wb29sICpnZW5fcG9vbF9jcmVhdGUoaW50IG1pbl9hbGxvY19vcmRl
-ciwgaW50IG5pZCkKIEVYUE9SVF9TWU1CT0woZ2VuX3Bvb2xfY3JlYXRlKTsKIAogLyoqCi0gKiBn
-ZW5fcG9vbF9hZGRfdmlydCAtIGFkZCBhIG5ldyBjaHVuayBvZiBzcGVjaWFsIG1lbW9yeSB0byB0
-aGUgcG9vbAorICogZ2VuX3Bvb2xfYWRkX293bmVyLSBhZGQgYSBuZXcgY2h1bmsgb2Ygc3BlY2lh
-bCBtZW1vcnkgdG8gdGhlIHBvb2wKICAqIEBwb29sOiBwb29sIHRvIGFkZCBuZXcgbWVtb3J5IGNo
-dW5rIHRvCiAgKiBAdmlydDogdmlydHVhbCBzdGFydGluZyBhZGRyZXNzIG9mIG1lbW9yeSBjaHVu
-ayB0byBhZGQgdG8gcG9vbAogICogQHBoeXM6IHBoeXNpY2FsIHN0YXJ0aW5nIGFkZHJlc3Mgb2Yg
-bWVtb3J5IGNodW5rIHRvIGFkZCB0byBwb29sCiAgKiBAc2l6ZTogc2l6ZSBpbiBieXRlcyBvZiB0
-aGUgbWVtb3J5IGNodW5rIHRvIGFkZCB0byBwb29sCiAgKiBAbmlkOiBub2RlIGlkIG9mIHRoZSBu
-b2RlIHRoZSBjaHVuayBzdHJ1Y3R1cmUgYW5kIGJpdG1hcCBzaG91bGQgYmUKICAqICAgICAgIGFs
-bG9jYXRlZCBvbiwgb3IgLTEKKyAqIEBvd25lcjogcHJpdmF0ZSBkYXRhIHRoZSBwdWJsaXNoZXIg
-d291bGQgbGlrZSB0byByZWNhbGwgYXQgYWxsb2MgdGltZQogICoKICAqIEFkZCBhIG5ldyBjaHVu
-ayBvZiBzcGVjaWFsIG1lbW9yeSB0byB0aGUgc3BlY2lmaWVkIHBvb2wuCiAgKgogICogUmV0dXJu
-cyAwIG9uIHN1Y2Nlc3Mgb3IgYSAtdmUgZXJybm8gb24gZmFpbHVyZS4KICAqLwotaW50IGdlbl9w
-b29sX2FkZF92aXJ0KHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgdW5zaWduZWQgbG9uZyB2aXJ0LCBw
-aHlzX2FkZHJfdCBwaHlzLAotCQkgc2l6ZV90IHNpemUsIGludCBuaWQpCitpbnQgZ2VuX3Bvb2xf
-YWRkX293bmVyKHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgdW5zaWduZWQgbG9uZyB2aXJ0LCBwaHlz
-X2FkZHJfdCBwaHlzLAorCQkgc2l6ZV90IHNpemUsIGludCBuaWQsIHZvaWQgKm93bmVyKQogewog
-CXN0cnVjdCBnZW5fcG9vbF9jaHVuayAqY2h1bms7CiAJaW50IG5iaXRzID0gc2l6ZSA+PiBwb29s
-LT5taW5fYWxsb2Nfb3JkZXI7CkBAIC0xOTUsNiArMTk2LDcgQEAgaW50IGdlbl9wb29sX2FkZF92
-aXJ0KHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgdW5zaWduZWQgbG9uZyB2aXJ0LCBwaHlzX2FkZHJf
-dCBwaHkKIAljaHVuay0+cGh5c19hZGRyID0gcGh5czsKIAljaHVuay0+c3RhcnRfYWRkciA9IHZp
-cnQ7CiAJY2h1bmstPmVuZF9hZGRyID0gdmlydCArIHNpemUgLSAxOworCWNodW5rLT5vd25lciA9
-IG93bmVyOwogCWF0b21pY19sb25nX3NldCgmY2h1bmstPmF2YWlsLCBzaXplKTsKIAogCXNwaW5f
-bG9jaygmcG9vbC0+bG9jayk7CkBAIC0yMDMsNyArMjA1LDcgQEAgaW50IGdlbl9wb29sX2FkZF92
-aXJ0KHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgdW5zaWduZWQgbG9uZyB2aXJ0LCBwaHlzX2FkZHJf
-dCBwaHkKIAogCXJldHVybiAwOwogfQotRVhQT1JUX1NZTUJPTChnZW5fcG9vbF9hZGRfdmlydCk7
-CitFWFBPUlRfU1lNQk9MKGdlbl9wb29sX2FkZF9vd25lcik7CiAKIC8qKgogICogZ2VuX3Bvb2xf
-dmlydF90b19waHlzIC0gcmV0dXJuIHRoZSBwaHlzaWNhbCBhZGRyZXNzIG9mIG1lbW9yeQpAQCAt
-MjYwLDM1ICsyNjIsMjAgQEAgdm9pZCBnZW5fcG9vbF9kZXN0cm95KHN0cnVjdCBnZW5fcG9vbCAq
-cG9vbCkKIEVYUE9SVF9TWU1CT0woZ2VuX3Bvb2xfZGVzdHJveSk7CiAKIC8qKgotICogZ2VuX3Bv
-b2xfYWxsb2MgLSBhbGxvY2F0ZSBzcGVjaWFsIG1lbW9yeSBmcm9tIHRoZSBwb29sCi0gKiBAcG9v
-bDogcG9vbCB0byBhbGxvY2F0ZSBmcm9tCi0gKiBAc2l6ZTogbnVtYmVyIG9mIGJ5dGVzIHRvIGFs
-bG9jYXRlIGZyb20gdGhlIHBvb2wKLSAqCi0gKiBBbGxvY2F0ZSB0aGUgcmVxdWVzdGVkIG51bWJl
-ciBvZiBieXRlcyBmcm9tIHRoZSBzcGVjaWZpZWQgcG9vbC4KLSAqIFVzZXMgdGhlIHBvb2wgYWxs
-b2NhdGlvbiBmdW5jdGlvbiAod2l0aCBmaXJzdC1maXQgYWxnb3JpdGhtIGJ5IGRlZmF1bHQpLgot
-ICogQ2FuIG5vdCBiZSB1c2VkIGluIE5NSSBoYW5kbGVyIG9uIGFyY2hpdGVjdHVyZXMgd2l0aG91
-dAotICogTk1JLXNhZmUgY21weGNoZyBpbXBsZW1lbnRhdGlvbi4KLSAqLwotdW5zaWduZWQgbG9u
-ZyBnZW5fcG9vbF9hbGxvYyhzdHJ1Y3QgZ2VuX3Bvb2wgKnBvb2wsIHNpemVfdCBzaXplKQotewot
-CXJldHVybiBnZW5fcG9vbF9hbGxvY19hbGdvKHBvb2wsIHNpemUsIHBvb2wtPmFsZ28sIHBvb2wt
-PmRhdGEpOwotfQotRVhQT1JUX1NZTUJPTChnZW5fcG9vbF9hbGxvYyk7Ci0KLS8qKgotICogZ2Vu
-X3Bvb2xfYWxsb2NfYWxnbyAtIGFsbG9jYXRlIHNwZWNpYWwgbWVtb3J5IGZyb20gdGhlIHBvb2wK
-KyAqIGdlbl9wb29sX2FsbG9jX2FsZ29fb3duZXIgLSBhbGxvY2F0ZSBzcGVjaWFsIG1lbW9yeSBm
-cm9tIHRoZSBwb29sCiAgKiBAcG9vbDogcG9vbCB0byBhbGxvY2F0ZSBmcm9tCiAgKiBAc2l6ZTog
-bnVtYmVyIG9mIGJ5dGVzIHRvIGFsbG9jYXRlIGZyb20gdGhlIHBvb2wKICAqIEBhbGdvOiBhbGdv
-cml0aG0gcGFzc2VkIGZyb20gY2FsbGVyCiAgKiBAZGF0YTogZGF0YSBwYXNzZWQgdG8gYWxnb3Jp
-dGhtCisgKiBAb3duZXI6IG9wdGlvbmFsbHkgcmV0cmlldmUgdGhlIGNodW5rIG93bmVyCiAgKgog
-ICogQWxsb2NhdGUgdGhlIHJlcXVlc3RlZCBudW1iZXIgb2YgYnl0ZXMgZnJvbSB0aGUgc3BlY2lm
-aWVkIHBvb2wuCiAgKiBVc2VzIHRoZSBwb29sIGFsbG9jYXRpb24gZnVuY3Rpb24gKHdpdGggZmly
-c3QtZml0IGFsZ29yaXRobSBieSBkZWZhdWx0KS4KICAqIENhbiBub3QgYmUgdXNlZCBpbiBOTUkg
-aGFuZGxlciBvbiBhcmNoaXRlY3R1cmVzIHdpdGhvdXQKICAqIE5NSS1zYWZlIGNtcHhjaGcgaW1w
-bGVtZW50YXRpb24uCiAgKi8KLXVuc2lnbmVkIGxvbmcgZ2VuX3Bvb2xfYWxsb2NfYWxnbyhzdHJ1
-Y3QgZ2VuX3Bvb2wgKnBvb2wsIHNpemVfdCBzaXplLAotCQlnZW5wb29sX2FsZ29fdCBhbGdvLCB2
-b2lkICpkYXRhKQordW5zaWduZWQgbG9uZyBnZW5fcG9vbF9hbGxvY19hbGdvX293bmVyKHN0cnVj
-dCBnZW5fcG9vbCAqcG9vbCwgc2l6ZV90IHNpemUsCisJCWdlbnBvb2xfYWxnb190IGFsZ28sIHZv
-aWQgKmRhdGEsIHZvaWQgKipvd25lcikKIHsKIAlzdHJ1Y3QgZ2VuX3Bvb2xfY2h1bmsgKmNodW5r
-OwogCXVuc2lnbmVkIGxvbmcgYWRkciA9IDA7CkBAIC0yOTksNiArMjg2LDkgQEAgdW5zaWduZWQg
-bG9uZyBnZW5fcG9vbF9hbGxvY19hbGdvKHN0cnVjdCBnZW5fcG9vbCAqcG9vbCwgc2l6ZV90IHNp
-emUsCiAJQlVHX09OKGluX25taSgpKTsKICNlbmRpZgogCisJaWYgKG93bmVyKQorCQkqb3duZXIg
-PSBOVUxMOworCiAJaWYgKHNpemUgPT0gMCkKIAkJcmV0dXJuIDA7CiAKQEAgLTMyNiwxMiArMzE2
-LDE0IEBAIHVuc2lnbmVkIGxvbmcgZ2VuX3Bvb2xfYWxsb2NfYWxnbyhzdHJ1Y3QgZ2VuX3Bvb2wg
-KnBvb2wsIHNpemVfdCBzaXplLAogCQlhZGRyID0gY2h1bmstPnN0YXJ0X2FkZHIgKyAoKHVuc2ln
-bmVkIGxvbmcpc3RhcnRfYml0IDw8IG9yZGVyKTsKIAkJc2l6ZSA9IG5iaXRzIDw8IG9yZGVyOwog
-CQlhdG9taWNfbG9uZ19zdWIoc2l6ZSwgJmNodW5rLT5hdmFpbCk7CisJCWlmIChvd25lcikKKwkJ
-CSpvd25lciA9IGNodW5rLT5vd25lcjsKIAkJYnJlYWs7CiAJfQogCXJjdV9yZWFkX3VubG9jaygp
-OwogCXJldHVybiBhZGRyOwogfQotRVhQT1JUX1NZTUJPTChnZW5fcG9vbF9hbGxvY19hbGdvKTsK
-K0VYUE9SVF9TWU1CT0woZ2VuX3Bvb2xfYWxsb2NfYWxnb19vd25lcik7CiAKIC8qKgogICogZ2Vu
-X3Bvb2xfZG1hX2FsbG9jIC0gYWxsb2NhdGUgc3BlY2lhbCBtZW1vcnkgZnJvbSB0aGUgcG9vbCBm
-b3IgRE1BIHVzYWdlCkBAIC0zNjcsMTIgKzM1OSwxNCBAQCBFWFBPUlRfU1lNQk9MKGdlbl9wb29s
-X2RtYV9hbGxvYyk7CiAgKiBAcG9vbDogcG9vbCB0byBmcmVlIHRvCiAgKiBAYWRkcjogc3RhcnRp
-bmcgYWRkcmVzcyBvZiBtZW1vcnkgdG8gZnJlZSBiYWNrIHRvIHBvb2wKICAqIEBzaXplOiBzaXpl
-IGluIGJ5dGVzIG9mIG1lbW9yeSB0byBmcmVlCisgKiBAb3duZXI6IHByaXZhdGUgZGF0YSBzdGFz
-aGVkIGF0IGdlbl9wb29sX2FkZCgpIHRpbWUKICAqCiAgKiBGcmVlIHByZXZpb3VzbHkgYWxsb2Nh
-dGVkIHNwZWNpYWwgbWVtb3J5IGJhY2sgdG8gdGhlIHNwZWNpZmllZAogICogcG9vbC4gIENhbiBu
-b3QgYmUgdXNlZCBpbiBOTUkgaGFuZGxlciBvbiBhcmNoaXRlY3R1cmVzIHdpdGhvdXQKICAqIE5N
-SS1zYWZlIGNtcHhjaGcgaW1wbGVtZW50YXRpb24uCiAgKi8KLXZvaWQgZ2VuX3Bvb2xfZnJlZShz
-dHJ1Y3QgZ2VuX3Bvb2wgKnBvb2wsIHVuc2lnbmVkIGxvbmcgYWRkciwgc2l6ZV90IHNpemUpCit2
-b2lkIGdlbl9wb29sX2ZyZWVfb3duZXIoc3RydWN0IGdlbl9wb29sICpwb29sLCB1bnNpZ25lZCBs
-b25nIGFkZHIsIHNpemVfdCBzaXplLAorCQl2b2lkICoqb3duZXIpCiB7CiAJc3RydWN0IGdlbl9w
-b29sX2NodW5rICpjaHVuazsKIAlpbnQgb3JkZXIgPSBwb29sLT5taW5fYWxsb2Nfb3JkZXI7CkBA
-IC0zODIsNiArMzc2LDkgQEAgdm9pZCBnZW5fcG9vbF9mcmVlKHN0cnVjdCBnZW5fcG9vbCAqcG9v
-bCwgdW5zaWduZWQgbG9uZyBhZGRyLCBzaXplX3Qgc2l6ZSkKIAlCVUdfT04oaW5fbm1pKCkpOwog
-I2VuZGlmCiAKKwlpZiAob3duZXIpCisJCSpvd25lciA9IE5VTEw7CisKIAluYml0cyA9IChzaXpl
-ICsgKDFVTCA8PCBvcmRlcikgLSAxKSA+PiBvcmRlcjsKIAlyY3VfcmVhZF9sb2NrKCk7CiAJbGlz
-dF9mb3JfZWFjaF9lbnRyeV9yY3UoY2h1bmssICZwb29sLT5jaHVua3MsIG5leHRfY2h1bmspIHsK
-QEAgLTM5Miw2ICszODksOCBAQCB2b2lkIGdlbl9wb29sX2ZyZWUoc3RydWN0IGdlbl9wb29sICpw
-b29sLCB1bnNpZ25lZCBsb25nIGFkZHIsIHNpemVfdCBzaXplKQogCQkJQlVHX09OKHJlbWFpbik7
-CiAJCQlzaXplID0gbmJpdHMgPDwgb3JkZXI7CiAJCQlhdG9taWNfbG9uZ19hZGQoc2l6ZSwgJmNo
-dW5rLT5hdmFpbCk7CisJCQlpZiAob3duZXIpCisJCQkJKm93bmVyID0gY2h1bmstPm93bmVyOwog
-CQkJcmN1X3JlYWRfdW5sb2NrKCk7CiAJCQlyZXR1cm47CiAJCX0KQEAgLTM5OSw3ICszOTgsNyBA
-QCB2b2lkIGdlbl9wb29sX2ZyZWUoc3RydWN0IGdlbl9wb29sICpwb29sLCB1bnNpZ25lZCBsb25n
-IGFkZHIsIHNpemVfdCBzaXplKQogCXJjdV9yZWFkX3VubG9jaygpOwogCUJVRygpOwogfQotRVhQ
-T1JUX1NZTUJPTChnZW5fcG9vbF9mcmVlKTsKK0VYUE9SVF9TWU1CT0woZ2VuX3Bvb2xfZnJlZV9v
-d25lcik7CiAKIC8qKgogICogZ2VuX3Bvb2xfZm9yX2VhY2hfY2h1bmsgLSBjYWxsIGZ1bmMgZm9y
-IGV2ZXJ5IGNodW5rIG9mIGdlbmVyaWMgbWVtb3J5IHBvb2wKCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGlu
-dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3Rp
-bmZvL2xpbnV4LW52ZGltbQo=
+In preparation for fixing a race between devm_memremap_pages_release()
+and the final put of a page from the device-page-map, allocate a
+percpu-ref per p2pdma resource mapping.
+
+Cc: Logan Gunthorpe <logang@deltatee.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/pci/p2pdma.c |  124 +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 81 insertions(+), 43 deletions(-)
+
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index 595a534bd749..54d475569058 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -20,12 +20,16 @@
+ #include <linux/seq_buf.h>
+ 
+ struct pci_p2pdma {
+-	struct percpu_ref devmap_ref;
+-	struct completion devmap_ref_done;
+ 	struct gen_pool *pool;
+ 	bool p2pmem_published;
+ };
+ 
++struct p2pdma_pagemap {
++	struct dev_pagemap pgmap;
++	struct percpu_ref ref;
++	struct completion ref_done;
++};
++
+ static ssize_t size_show(struct device *dev, struct device_attribute *attr,
+ 			 char *buf)
+ {
+@@ -74,41 +78,45 @@ static const struct attribute_group p2pmem_group = {
+ 	.name = "p2pmem",
+ };
+ 
++static struct p2pdma_pagemap *to_p2p_pgmap(struct percpu_ref *ref)
++{
++	return container_of(ref, struct p2pdma_pagemap, ref);
++}
++
+ static void pci_p2pdma_percpu_release(struct percpu_ref *ref)
+ {
+-	struct pci_p2pdma *p2p =
+-		container_of(ref, struct pci_p2pdma, devmap_ref);
++	struct p2pdma_pagemap *p2p_pgmap = to_p2p_pgmap(ref);
+ 
+-	complete_all(&p2p->devmap_ref_done);
++	complete(&p2p_pgmap->ref_done);
+ }
+ 
+ static void pci_p2pdma_percpu_kill(struct percpu_ref *ref)
+ {
+-	/*
+-	 * pci_p2pdma_add_resource() may be called multiple times
+-	 * by a driver and may register the percpu_kill devm action multiple
+-	 * times. We only want the first action to actually kill the
+-	 * percpu_ref.
+-	 */
+-	if (percpu_ref_is_dying(ref))
+-		return;
+-
+ 	percpu_ref_kill(ref);
+ }
+ 
++static void pci_p2pdma_percpu_cleanup(void *ref)
++{
++	struct p2pdma_pagemap *p2p_pgmap = to_p2p_pgmap(ref);
++
++	wait_for_completion(&p2p_pgmap->ref_done);
++	percpu_ref_exit(&p2p_pgmap->ref);
++}
++
+ static void pci_p2pdma_release(void *data)
+ {
+ 	struct pci_dev *pdev = data;
++	struct pci_p2pdma *p2pdma = pdev->p2pdma;
+ 
+-	if (!pdev->p2pdma)
++	if (!p2pdma)
+ 		return;
+ 
+-	wait_for_completion(&pdev->p2pdma->devmap_ref_done);
+-	percpu_ref_exit(&pdev->p2pdma->devmap_ref);
++	/* Flush and disable pci_alloc_p2p_mem() */
++	pdev->p2pdma = NULL;
++	synchronize_rcu();
+ 
+-	gen_pool_destroy(pdev->p2pdma->pool);
++	gen_pool_destroy(p2pdma->pool);
+ 	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
+-	pdev->p2pdma = NULL;
+ }
+ 
+ static int pci_p2pdma_setup(struct pci_dev *pdev)
+@@ -124,12 +132,6 @@ static int pci_p2pdma_setup(struct pci_dev *pdev)
+ 	if (!p2p->pool)
+ 		goto out;
+ 
+-	init_completion(&p2p->devmap_ref_done);
+-	error = percpu_ref_init(&p2p->devmap_ref,
+-			pci_p2pdma_percpu_release, 0, GFP_KERNEL);
+-	if (error)
+-		goto out_pool_destroy;
+-
+ 	error = devm_add_action_or_reset(&pdev->dev, pci_p2pdma_release, pdev);
+ 	if (error)
+ 		goto out_pool_destroy;
+@@ -163,6 +165,7 @@ static int pci_p2pdma_setup(struct pci_dev *pdev)
+ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 			    u64 offset)
+ {
++	struct p2pdma_pagemap *p2p_pgmap;
+ 	struct dev_pagemap *pgmap;
+ 	void *addr;
+ 	int error;
+@@ -185,14 +188,32 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 			return error;
+ 	}
+ 
+-	pgmap = devm_kzalloc(&pdev->dev, sizeof(*pgmap), GFP_KERNEL);
+-	if (!pgmap)
++	p2p_pgmap = devm_kzalloc(&pdev->dev, sizeof(*p2p_pgmap), GFP_KERNEL);
++	if (!p2p_pgmap)
+ 		return -ENOMEM;
+ 
++	init_completion(&p2p_pgmap->ref_done);
++	error = percpu_ref_init(&p2p_pgmap->ref,
++			pci_p2pdma_percpu_release, 0, GFP_KERNEL);
++	if (error)
++		goto pgmap_free;
++
++	/*
++	 * FIXME: the percpu_ref_exit needs to be coordinated internal
++	 * to devm_memremap_pages_release(). Duplicate the same ordering
++	 * as other devm_memremap_pages() users for now.
++	 */
++	error = devm_add_action(&pdev->dev, pci_p2pdma_percpu_cleanup,
++			&p2p_pgmap->ref);
++	if (error)
++		goto ref_cleanup;
++
++	pgmap = &p2p_pgmap->pgmap;
++
+ 	pgmap->res.start = pci_resource_start(pdev, bar) + offset;
+ 	pgmap->res.end = pgmap->res.start + size - 1;
+ 	pgmap->res.flags = pci_resource_flags(pdev, bar);
+-	pgmap->ref = &pdev->p2pdma->devmap_ref;
++	pgmap->ref = &p2p_pgmap->ref;
+ 	pgmap->type = MEMORY_DEVICE_PCI_P2PDMA;
+ 	pgmap->pci_p2pdma_bus_offset = pci_bus_address(pdev, bar) -
+ 		pci_resource_start(pdev, bar);
+@@ -201,12 +222,13 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 	addr = devm_memremap_pages(&pdev->dev, pgmap);
+ 	if (IS_ERR(addr)) {
+ 		error = PTR_ERR(addr);
+-		goto pgmap_free;
++		goto ref_exit;
+ 	}
+ 
+-	error = gen_pool_add_virt(pdev->p2pdma->pool, (unsigned long)addr,
++	error = gen_pool_add_owner(pdev->p2pdma->pool, (unsigned long)addr,
+ 			pci_bus_address(pdev, bar) + offset,
+-			resource_size(&pgmap->res), dev_to_node(&pdev->dev));
++			resource_size(&pgmap->res), dev_to_node(&pdev->dev),
++			&p2p_pgmap->ref);
+ 	if (error)
+ 		goto pages_free;
+ 
+@@ -217,8 +239,10 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
++ref_cleanup:
++	percpu_ref_exit(&p2p_pgmap->ref);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, pgmap);
++	devm_kfree(&pdev->dev, p2p_pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
+@@ -555,19 +579,30 @@ EXPORT_SYMBOL_GPL(pci_p2pmem_find_many);
+  */
+ void *pci_alloc_p2pmem(struct pci_dev *pdev, size_t size)
+ {
+-	void *ret;
++	void *ret = NULL;
++	struct percpu_ref *ref;
+ 
++	/*
++	 * Pairs with synchronize_rcu() in pci_p2pdma_release() to
++	 * ensure pdev->p2pdma is non-NULL for the duration of the
++	 * read-lock.
++	 */
++	rcu_read_lock();
+ 	if (unlikely(!pdev->p2pdma))
+-		return NULL;
+-
+-	if (unlikely(!percpu_ref_tryget_live(&pdev->p2pdma->devmap_ref)))
+-		return NULL;
+-
+-	ret = (void *)gen_pool_alloc(pdev->p2pdma->pool, size);
++		goto out;
+ 
+-	if (unlikely(!ret))
+-		percpu_ref_put(&pdev->p2pdma->devmap_ref);
++	ret = (void *)gen_pool_alloc_owner(pdev->p2pdma->pool, size,
++			(void **) &ref);
++	if (!ret)
++		goto out;
+ 
++	if (unlikely(!percpu_ref_tryget_live(ref))) {
++		gen_pool_free(pdev->p2pdma->pool, (unsigned long) ret, size);
++		ret = NULL;
++		goto out;
++	}
++out:
++	rcu_read_unlock();
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(pci_alloc_p2pmem);
+@@ -580,8 +615,11 @@ EXPORT_SYMBOL_GPL(pci_alloc_p2pmem);
+  */
+ void pci_free_p2pmem(struct pci_dev *pdev, void *addr, size_t size)
+ {
+-	gen_pool_free(pdev->p2pdma->pool, (uintptr_t)addr, size);
+-	percpu_ref_put(&pdev->p2pdma->devmap_ref);
++	struct percpu_ref *ref;
++
++	gen_pool_free_owner(pdev->p2pdma->pool, (uintptr_t)addr, size,
++			(void **) &ref);
++	percpu_ref_put(ref);
+ }
+ EXPORT_SYMBOL_GPL(pci_free_p2pmem);
+ 
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
