@@ -2,78 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726FE167A3
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 18:18:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2255C16912
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 May 2019 19:24:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 698E721255825;
-	Tue,  7 May 2019 09:18:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 320B221255843;
+	Tue,  7 May 2019 10:24:13 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=darrick.wong@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 127FE2121794A
- for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 09:18:23 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x47GE4tr157451;
- Tue, 7 May 2019 16:17:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=JFFlnWS0WxSMENUMsRBMs4+e/sfuzMFmGvWcjKKQQuc=;
- b=TKQ0ZY42TnZrA9kUXuIIQxHZJtlgsPZc/HUlXzQ4TUAvfAYUIXRd3TufRkYlIsL/qYnH
- gEOc/3eGhv+v8nTxOS8S21kRqbBtPYiYTEKBQBAnom75SF+6NN9JdMkr6m+iXE4suPUy
- M8pk/1FBF18jWlrv22JoleV2scB2kxIrjAnXvCYleCsCB2wshmO8nENxJSX0+PxVJUiQ
- ZYNWGbaeLaZaSTwok9d5T6R6aHykl/CLecrfPWn2A3d57LkaTuFX9ZNvyXgC4fQ28IyP
- l2LCbcZAeGQ6QNp9COGNfS/FdR1duRVLEebs8Og572/1EJwAKTyBze4/M2itosUoGBUM Pg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2120.oracle.com with ESMTP id 2s94b0phet-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 07 May 2019 16:17:57 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x47GH2b6135005;
- Tue, 7 May 2019 16:17:56 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by aserp3020.oracle.com with ESMTP id 2s9ayeyus1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 07 May 2019 16:17:56 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x47GHiM0002137;
- Tue, 7 May 2019 16:17:44 GMT
-Received: from localhost (/67.169.218.210)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 07 May 2019 09:17:44 -0700
-Date: Tue, 7 May 2019 09:17:36 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v7 6/6] xfs: disable map_sync for async flush
-Message-ID: <20190507161736.GV5207@magnolia>
-References: <20190426050039.17460-1-pagupta@redhat.com>
- <20190426050039.17460-7-pagupta@redhat.com>
- <CAPcyv4hCP4E4xPkQx25tqhznon6ADwrYJB1yujkrO-A7LUnsmg@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id DCF5A2125583F
+ for <linux-nvdimm@lists.01.org>; Tue,  7 May 2019 10:24:11 -0700 (PDT)
+Received: from callcc.thunk.org (guestnat-104-133-0-109.corp.google.com
+ [104.133.0.109] (may be forged)) (authenticated bits=0)
+ (User authenticated as tytso@ATHENA.MIT.EDU)
+ by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x47HMurS031460
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 7 May 2019 13:22:59 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+ id 7D6D5420024; Tue,  7 May 2019 13:22:56 -0400 (EDT)
+Date: Tue, 7 May 2019 13:22:56 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+Message-ID: <20190507172256.GB5900@mit.edu>
+Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
+ Greg KH <gregkh@linuxfoundation.org>,
+ Frank Rowand <frowand.list@gmail.com>,
+ Brendan Higgins <brendanhiggins@google.com>, keescook@google.com,
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org,
+ sboyd@kernel.org, shuah@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
+ linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
+ Tim.Bird@sony.com, amir73il@gmail.com, dan.carpenter@oracle.com,
+ dan.j.williams@intel.com, daniel@ffwll.ch, jdike@addtoit.com,
+ joel@jms.id.au, julia.lawall@lip6.fr, khilman@baylibre.com,
+ knut.omang@oracle.com, logang@deltatee.com, mpe@ellerman.id.au,
+ pmladek@suse.com, richard@nod.at, rientjes@google.com,
+ rostedt@goodmis.org, wfg@linux.intel.com
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
+ <20190507080119.GB28121@kroah.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAPcyv4hCP4E4xPkQx25tqhznon6ADwrYJB1yujkrO-A7LUnsmg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905070105
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9250
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905070105
+In-Reply-To: <20190507080119.GB28121@kroah.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,82 +66,116 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
- virtualization@lists.linux-foundation.org,
- Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- kilobyte@angband.pl, Rik van Riel <riel@surriel.com>,
- yuval shaia <yuval.shaia@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Nitesh Narayan Lal <nilal@redhat.com>,
- Theodore Ts'o <tytso@mit.edu>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- cohuck@redhat.com, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-xfs <linux-xfs@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Igor Mammedov <imammedo@redhat.com>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
+ linux-nvdimm@lists.01.org, Frank Rowand <frowand.list@gmail.com>,
+ knut.omang@oracle.com, kieran.bingham@ideasonboard.com, wfg@linux.intel.com,
+ joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, sboyd@kernel.org, linux-kernel@vger.kernel.org,
+ mcgrof@kernel.org, daniel@ffwll.ch, keescook@google.com,
+ linux-fsdevel@vger.kernel.org, khilman@baylibre.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, May 07, 2019 at 08:37:01AM -0700, Dan Williams wrote:
-> On Thu, Apr 25, 2019 at 10:03 PM Pankaj Gupta <pagupta@redhat.com> wrote:
-> >
-> > Dont support 'MAP_SYNC' with non-DAX files and DAX files
-> > with asynchronous dax_device. Virtio pmem provides
-> > asynchronous host page cache flush mechanism. We don't
-> > support 'MAP_SYNC' with virtio pmem and xfs.
-> >
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> > ---
-> >  fs/xfs/xfs_file.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
+On Tue, May 07, 2019 at 10:01:19AM +0200, Greg KH wrote:
+> > My understanding is that the intent of KUnit is to avoid booting a kernel on
+> > real hardware or in a virtual machine.  That seems to be a matter of semantics
+> > to me because isn't invoking a UML Linux just running the Linux kernel in
+> > a different form of virtualization?
+> > 
+> > So I do not understand why KUnit is an improvement over kselftest.
+> > 
+> > It seems to me that KUnit is just another piece of infrastructure that I
+> > am going to have to be familiar with as a kernel developer.  More overhead,
+> > more information to stuff into my tiny little brain.
+> > 
+> > I would guess that some developers will focus on just one of the two test
+> > environments (and some will focus on both), splitting the development
+> > resources instead of pooling them on a common infrastructure.
+> > 
+> > What am I missing?
 > 
-> Darrick, does this look ok to take through the nvdimm tree?
+> kselftest provides no in-kernel framework for testing kernel code
+> specifically.  That should be what kunit provides, an "easy" way to
+> write in-kernel tests for things.
+> 
+> Brendan, did I get it right?
 
-<urk> forgot about this, sorry. :/
+Yes, that's basically right.  You don't *have* to use KUnit.  It's
+supposed to be a simple way to run a large number of small tests that
+for specific small components in a system.
 
-> >
-> > diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-> > index a7ceae90110e..f17652cca5ff 100644
-> > --- a/fs/xfs/xfs_file.c
-> > +++ b/fs/xfs/xfs_file.c
-> > @@ -1203,11 +1203,14 @@ xfs_file_mmap(
-> >         struct file     *filp,
-> >         struct vm_area_struct *vma)
-> >  {
-> > +       struct dax_device       *dax_dev;
-> > +
-> > +       dax_dev = xfs_find_daxdev_for_inode(file_inode(filp));
-> >         /*
-> > -        * We don't support synchronous mappings for non-DAX files. At least
-> > -        * until someone comes with a sensible use case.
-> > +        * We don't support synchronous mappings for non-DAX files and
-> > +        * for DAX files if underneath dax_device is not synchronous.
-> >          */
-> > -       if (!IS_DAX(file_inode(filp)) && (vma->vm_flags & VM_SYNC))
-> > +       if (!daxdev_mapping_supported(vma, dax_dev))
-> >                 return -EOPNOTSUPP;
+For example, I currently use xfstests using KVM and GCE to test all of
+ext4.  These tests require using multiple 5 GB and 20GB virtual disks,
+and it works by mounting ext4 file systems and exercising ext4 through
+the system call interfaces, using userspace tools such as fsstress,
+fsx, fio, etc.  It requires time overhead to start the VM, create and
+allocate virtual disks, etc.  For example, to run a single 3 seconds
+xfstest (generic/001), it requires full 10 seconds to run it via
+kvm-xfstests.
 
-LGTM, and I'm fine with it going through nvdimm.  Nothing in
-xfs-5.2-merge touches that function so it should be clean.
+KUnit is something else; it's specifically intended to allow you to
+create lightweight tests quickly and easily, and by reducing the
+effort needed to write and run unit tests, hopefully we'll have a lot
+more of them and thus improve kernel quality.
 
-Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
+As an example, I have a volunteer working on developing KUinit tests
+for ext4.  We're going to start by testing the ext4 extent status
+tree.  The source code is at fs/ext4/extent_status.c; it's
+approximately 1800 LOC.  The Kunit tests for the extent status tree
+will exercise all of the corner cases for the various extent status
+tree functions --- e.g., ext4_es_insert_delayed_block(),
+ext4_es_remove_extent(), ext4_es_cache_extent(), etc.  And it will do
+this in isolation without our needing to create a test file system or
+using a test block device.
 
---D
+Next we'll test the ext4 block allocator, again in isolation.  To test
+the block allocator we will have to write "mock functions" which
+simulate reading allocation bitmaps from disk.  Again, this will allow
+the test writer to explicitly construct corner cases and validate that
+the block allocator works as expected without having to reverese
+engineer file system data structures which will force a particular
+code path to be executed.
 
-> >
-> >         file_accessed(filp);
-> > --
-> > 2.20.1
-> >
+So this is why it's largely irrelevant to me that KUinit uses UML.  In
+fact, it's a feature.  We're not testing device drivers, or the
+scheduler, or anything else architecture-specific.  UML is not about
+virtualization.  What it's about in this context is allowing us to
+start running test code as quickly as possible.  Booting KVM takes
+about 3-4 seconds, and this includes initializing virtio_scsi and
+other device drivers.  If by using UML we can hold the amount of
+unnecessary kernel subsystem initialization down to the absolute
+minimum, and if it means that we can communicating to the test
+framework via a userspace "printf" from UML/KUnit code, as opposed to
+via a virtual serial port to KVM's virtual console, it all makes for
+lighter weight testing.
+
+Why did I go looking for a volunteer to write KUnit tests for ext4?
+Well, I have a plan to make some changes in restructing how ext4's
+write path works, in order to support things like copy-on-write, a
+more efficient delayed allocation system, etc.  This will require
+making changes to the extent status tree, and by having unit tests for
+the extent status tree, we'll be able to detect any bugs that we might
+accidentally introduce in the es tree far more quickly than if we
+didn't have those tests available.  Google has long found that having
+these sorts of unit tests is a real win for developer velocity for any
+non-trivial code module (or C++ class), even when you take into
+account the time it takes to create the unit tests.
+
+					- Ted
+
+P.S.  Many thanks to Brendan for finding such a volunteer for me; the
+person in question is a SRE from Switzerland who is interested in
+getting involved with kernel testing, and this is going to be their
+20% project.  :-)
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
