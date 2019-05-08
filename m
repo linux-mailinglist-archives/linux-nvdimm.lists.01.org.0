@@ -1,60 +1,56 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0D0180CC
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 May 2019 22:03:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3DB18106
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 May 2019 22:25:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6A0DD2125ADD0;
-	Wed,  8 May 2019 13:03:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5C2712125ADD2;
+	Wed,  8 May 2019 13:25:55 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
- envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7C96B2125ADC5
- for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 13:03:08 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id e24so23190363edq.6
- for <linux-nvdimm@lists.01.org>; Wed, 08 May 2019 13:03:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=hqCavPKB22MZs5nOo4f9Xk2o2K7Etf14pX1qZueQ7FY=;
- b=VhjLQMDYkWbhJZySQSfMDdFhZhVERC63HlsZg/tP70GT/xusXSPhr91WGiLy0u8Isa
- M+hc/4/BfrO41ZUD0L8gue84GaW30oGOLZ7uYYHcgtkZDa6EDBcWu+EUI+KtQdVcb+Of
- gySUqdQf+uxRd5/rRu6uV4XTZ+XgY1GOCVGoCKughfYq80HkTyJRSut8ppjOLZsPPJiG
- 55XbBB0Sb/zBBmSHQFsXcHqOFFdGhNfeIALxEs7o3tpDM6dzDJANlkOWhXYZUIE9K5Gb
- SkxBHHZLQUwgexmn4dfHa+n3Fo4W3CkePWzx20reUNk4+ChojT0ZQ4LC7ketsQWzjjv0
- 6ceA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=hqCavPKB22MZs5nOo4f9Xk2o2K7Etf14pX1qZueQ7FY=;
- b=TmVT1r9o+Z98meDf6glIyEFDxZ1FEMTfUpQXatx8040EdDHZIiP3XXbpEz7cqyHDBP
- UNbinaXpgIp/BKnUIjzV8SbeZ0w/AHlzMcmaSnCQ7yTwGgydMf0L9RooiDD25/6y9PwO
- tw6PaV5JigQy/UgNWZzAOBS8qUBB2kRZxCFXizGKjapPhwlxtUz/SSpyoqtomsXYdb8R
- s0ZmfO7rij6qYB7RIY+sir4iiAvKxE227aWaN9McOtXpmuppEzOcnYe3FEPOwwfq+5P/
- 6+ja39xkc+v/ihWa5Wf+wbXrCwWDMsFZjLnbjruoSy30ozhWn8OjLwnPx2xA/khqRr04
- IomA==
-X-Gm-Message-State: APjAAAWCm2SgrsiR01pGDAKUFwddA/2cl/lvZfKL0vCkvICH1TFCXhVp
- ROdOcYvbr3jm/JllxygDRQQ/VGJod6ZE55/7D6EFjVOYQKU=
-X-Google-Smtp-Source: APXvYqz82RPeJkHP9bbJPccbi6i2g6V2SbSIY1+pd8YJYVr5bevasj1/x4dh/Ftac/aQlxiP+DRqgwItvimg18hh0CA=
-X-Received: by 2002:a17:906:2583:: with SMTP id m3mr17450ejb.74.1557345785909; 
- Wed, 08 May 2019 13:03:05 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190508003851.32416-1-vishal.l.verma@intel.com>
-In-Reply-To: <20190508003851.32416-1-vishal.l.verma@intel.com>
-From: Pavel Tatashin <pasha.tatashin@soleen.com>
-Date: Wed, 8 May 2019 16:02:55 -0400
-Message-ID: <CA+CK2bAfOqSK-01wwxZiY=ApjSA7ccuy5K-Xbt1OoHom3Pf6+A@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id 69D052122C312
+ for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 13:25:53 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 May 2019 13:25:52 -0700
+X-ExtLoop1: 1
+Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
+ by fmsmga008.fm.intel.com with ESMTP; 08 May 2019 13:25:52 -0700
+Received: from fmsmsx117.amr.corp.intel.com (10.18.116.17) by
+ FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 8 May 2019 13:25:52 -0700
+Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.30]) by
+ fmsmsx117.amr.corp.intel.com ([169.254.3.26]) with mapi id 14.03.0415.000;
+ Wed, 8 May 2019 13:25:52 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>
 Subject: Re: [ndctl PATCH v2 00/10] daxctl: add a new reconfigure-device
  command
-To: Vishal Verma <vishal.l.verma@intel.com>
+Thread-Topic: [ndctl PATCH v2 00/10] daxctl: add a new reconfigure-device
+ command
+Thread-Index: AQHVBTaDWw5PNRcV6kW6PQiZqNjKPaZiHPiAgAAGZwA=
+Date: Wed, 8 May 2019 20:25:51 +0000
+Message-ID: <9056dc32dd38be97e96fe07d98076b540cee5db8.camel@intel.com>
+References: <20190508003851.32416-1-vishal.l.verma@intel.com>
+ <CA+CK2bAfOqSK-01wwxZiY=ApjSA7ccuy5K-Xbt1OoHom3Pf6+A@mail.gmail.com>
+In-Reply-To: <CA+CK2bAfOqSK-01wwxZiY=ApjSA7ccuy5K-Xbt1OoHom3Pf6+A@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.185]
+Content-ID: <C759E7ABA2D55742AC805FE7AA32AE74@intel.com>
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,98 +62,70 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-SGkgVmlzaGFsLAoKSSBhbSB0cnlpbmcgdG8gdXNlIHlvdXIgY2hhbmdlcywgYW5kIGdldHRpbmcg
-dGhlIGZvbGxvd2luZyBlcnJvcjoKbGliZGF4Y3RsOiBfX3N5c2ZzX2RldmljZV9wYXJzZTogZGF4
-MC4wOiBhZGRfZGV2KCkgZmFpbGVkCgpIZXJlIGlzIGZ1bGwgb3V0cHV0OgojIG5kY3RsIGNyZWF0
-ZS1uYW1lc3BhY2UgLS1tb2RlIGRldmRheCAtLW1hcCBtZW0gLWUgbmFtZXNwYWNlMC4wIC1mClsg
-ICAyNi44OTEwNTRdIGRheDAuMCBpbml0aWFsaXNlZCwgNTI0Mjg4IHBhZ2VzIGluIDltcwpbICAg
-MjYuODk0MjM5XSByYW5kb206IG5kY3RsOiB1bmluaXRpYWxpemVkIHVyYW5kb20gcmVhZCAoNCBi
-eXRlcyByZWFkKQpsaWJkYXhjdGw6IF9fc3lzZnNfZGV2aWNlX3BhcnNlOiBkYXgwLjA6IGFkZF9k
-ZXYoKSBmYWlsZWQKewogICJkZXYiOiJuYW1lc3BhY2UwLjAiLAogICJtb2RlIjoiZGV2ZGF4IiwK
-ICAibWFwIjoibWVtIiwKICAic2l6ZSI6IjIwNDYuMDAgTWlCICgyMTQ1LjM5IE1CKSIsCiAgInV1
-aWQiOiI2Njg0YjNiMC00YWIxLTQ1YmEtOWNlNi00OGFhMDQ2YjVmYzEiLAogICJkYXhyZWdpb24i
-OnsKICAgICJpZCI6MCwKICAgICJzaXplIjoiMjA0Ni4wMCBNaUIgKDIxNDUuMzkgTUIpIiwKICAg
-ICJhbGlnbiI6MjA5NzE1MgogIH0sCiAgImFsaWduIjoyMDk3MTUyCn0KIyBbICAgNzMuNjcwNTU2
-XSByYW5kb206IGNybmcgaW5pdCBkb25lCgpUaGFuayB5b3UsClBhc2hhCgpPbiBUdWUsIE1heSA3
-LCAyMDE5IGF0IDg6MzkgUE0gVmlzaGFsIFZlcm1hIDx2aXNoYWwubC52ZXJtYUBpbnRlbC5jb20+
-IHdyb3RlOgo+Cj4gQ2hhbmdlcyBpbiB2MjoKPiAgLSBBZGQgZXhhbXBsZXMgdG8gdGhlIGRvY3Vt
-ZW50YXRpb24gcGFnZSAoRGF2ZSBIYW5zZW4pCj4gIC0gQ2xhcmlmeSBkb2N1bWVudGF0aW9uIHJl
-Z2FyZGluZyB0aGUgY29udmVyc2lvbiBmcm9tIHN5c3RlbS1yYW0gdG8gZGV2ZGF4Cj4gIC0gUmVt
-b3ZlIGFueSByZWZlcmVuY2VzIHRvIGEgcGVyc2lzdGVudCBjb25maWcgZnJvbSB0aGUgZG9jdW1l
-bnRhdGlvbiAtCj4gICAgdGhvc2UgY2FuIGJlIGFkZGVkIHdoZW4gdGhlIGZlYXR1cmUgaXMgYWRk
-ZWQuCj4gIC0gZGV2aWNlLmM6IHZhbGlkYXRlIG9wdGlvbiBjb21wYXRpYmlsaXR5Cj4gIC0gZGF4
-Y3RsLWxpc3Q6IGRpc3BsYXkgbnVtYV9ub2RlIGZvciBkZXZpY2UgbGlzdGluZ3MKPiAgLSBkYXhj
-dGwtbGlzdDogZGlzcGxheSBtb2RlIGZvciBkZXZpY2UgbGlzdGluZ3MKPiAgLSBtYWtlIHRoZSBv
-cHRpb25zIG1vcmUgY29uc2lzdGVudCBieSBhZGRpbmcgYSAnLU8nIHNob3J0IG9wdGlvbgo+ICAg
-IGZvciAtLWF0dGVtcHQtb2ZmbGluZQo+Cj4gQWRkIGEgbmV3IGRheGN0bC1yZWNvbmZpZ3VyZS1k
-ZXZpY2UgY29tbWFuZCB0aGF0IGxldHMgdXMgcmVjb25maWd1cmUgREFYCj4gZGV2aWNlcyBiYWNr
-IGFuZCBmb3J0aCBiZXR3ZWVuICdzeXN0ZW0tcmFtJyBhbmQgJ2RldmljZS1kYXgnIG1vZGVzLiBJ
-dAo+IGFsc28gaW5jbHVkZXMgZmFjaWxpdGllcyB0byBvbmxpbmUgYW55IG5ld2x5IGhvdC1wbHVn
-Z2VkIG1lbW9yeQo+IChkZWZhdWx0KSwgYW5kIGF0dGVtcHQgdG8gb2ZmbGluZSBtZW1vcnkgYmVm
-b3JlIGNvbnZlcnRpbmcgYXdheSBmcm9tIHRoZQo+IHN5c3RlbS1yYW0gbW9kZSAobm90IGRlZmF1
-bHQsIHJlcXVpcmVzIGEgLS1hdHRlbXB0LW9mZmxpbmUgb3B0aW9uKS4KPgo+IEN1cnJlbnRseSBt
-aXNzaW5nIGZyb20gdGhpcyBzZXJpZXMgaXMgYSB3YXkgdG8gcGVyc2lzdGVudGx5IHN0b3JlIHdo
-aWNoCj4gZGV2aWNlcyBoYXZlIGJlZW4gJ21hcmtlZCcgZm9yIHVzZSBhcyBzeXN0ZW0tcmFtLiBU
-aGlzIGRlcGVuZHMgb24gYQo+IGNvbmZpZyBzeXN0ZW0gb3ZlcmhhdWwgaW4gbmRjdGwsIGFuZCBw
-YXRjaGVzIGZvciB0aG9zZSB3aWxsIGZvbGxvdwo+IHNlcGFyYXRlbHkgYW5kIGFyZSBpbmRlcGVu
-ZGVudCBvZiB0aGlzIHdvcmsuCj4KPiBFeGFtcGxlIGludm9jYXRpb25zOgo+Cj4gMS4gUmVjb25m
-aWd1cmUgZGF4MC4wIHRvIHN5c3RlbS1yYW0gbW9kZSwgZG9u4oCZdCBvbmxpbmUgdGhlIG1lbW9y
-eQo+ICAgICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1tb2RlPXN5c3RlbS1yYW0gLS1u
-by1vbmxpbmUgZGF4MC4wCj4gICAgIFsKPiAgICAgICB7Cj4gICAgICAgICAiY2hhcmRldiI6ImRh
-eDAuMCIsCj4gICAgICAgICAic2l6ZSI6MTY3NzcyMTYwMDAsCj4gICAgICAgICAibnVtYV9ub2Rl
-IjoyLAo+ICAgICAgICAgIm1vZGUiOiJzeXN0ZW0tcmFtIgo+ICAgICAgIH0KPiAgICAgXQo+Cj4g
-Mi4gUmVjb25maWd1cmUgZGF4MC4wIHRvIGRldmRheCBtb2RlLCBhdHRlbXB0IHRvIG9mZmxpbmUg
-dGhlIG1lbW9yeQo+ICAgICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1odW1hbiAtLW1v
-ZGU9ZGV2ZGF4IC0tYXR0ZW1wdC1vZmZsaW5lIGRheDAuMAo+ICAgICB7Cj4gICAgICAgImNoYXJk
-ZXYiOiJkYXgwLjAiLAo+ICAgICAgICJzaXplIjoiMTUuNjMgR2lCICgxNi43OCBHQikiLAo+ICAg
-ICAgICJudW1hX25vZGUiOjIsCj4gICAgICAgIm1vZGUiOiJkZXZkYXgiCj4gICAgIH0KPgo+IDMu
-IFJlY29uZmlndXJlIGFsbCBkYXggZGV2aWNlcyBvbiByZWdpb24wIHRvIHN5c3RlbS1yYW0gbW9k
-ZQo+ICAgICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1tb2RlPXN5c3RlbS1yYW0gLS1y
-ZWdpb249MCBhbGwKPiAgICAgWwo+ICAgICAgIHsKPiAgICAgICAgICJjaGFyZGV2IjoiZGF4MC4w
-IiwKPiAgICAgICAgICJzaXplIjoxNjc3NzIxNjAwMCwKPiAgICAgICAgICJudW1hX25vZGUiOjIs
-Cj4gICAgICAgICAibW9kZSI6InN5c3RlbS1yYW0iCj4gICAgICAgfSwKPiAgICAgICB7Cj4gICAg
-ICAgICAiY2hhcmRldiI6ImRheDAuMSIsCj4gICAgICAgICAic2l6ZSI6MTY3NzcyMTYwMDAsCj4g
-ICAgICAgICAibnVtYV9ub2RlIjozLAo+ICAgICAgICAgIm1vZGUiOiJzeXN0ZW0tcmFtIgo+ICAg
-ICAgIH0KPiAgICAgXQo+Cj4gVGhlc2UgcGF0Y2hlcyBjYW4gYWxzbyBiZSBmb3VuZCBpbiB0aGUg
-J2ttZW0tcGVuZGluZycgYnJhbmNoIG9uIGdpdGh1YjoKPiBodHRwczovL2dpdGh1Yi5jb20vcG1l
-bS9uZGN0bC90cmVlL2ttZW0tcGVuZGluZwo+Cj4gQ2M6IERhbiBXaWxsaWFtcyA8ZGFuLmoud2ls
-bGlhbXNAaW50ZWwuY29tPgo+IENjOiBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AbGludXguaW50
-ZWwuY29tPgo+IENjOiBQYXZlbCBUYXRhc2hpbiA8cGFzaGEudGF0YXNoaW5Ac29sZWVuLmNvbT4K
-Pgo+IFZpc2hhbCBWZXJtYSAoMTApOgo+ICAgbGliZGF4Y3RsOiBhZGQgaW50ZXJmYWNlcyBpbiBz
-dXBwb3J0IG9mIGRldmljZSBtb2Rlcwo+ICAgbGliZGF4Y3RsOiBjYWNoZSAnc3Vic3lzdGVtJyBp
-biBkYXhjdGxfY3R4Cj4gICBsaWJkYXhjdGw6IGFkZCBpbnRlcmZhY2VzIHRvIGVuYWJsZS9kaXNh
-YmxlIGRldmljZXMKPiAgIGxpYmRheGN0bDogYWRkIGludGVyZmFjZXMgdG8gZ2V0L3NldCB0aGUg
-b25saW5lIHN0YXRlIGZvciBhIG5vZGUKPiAgIGRheGN0bC9saXN0OiBhZGQgbnVtYV9ub2RlIGZv
-ciBkZXZpY2UgbGlzdGluZ3MKPiAgIGxpYmRheGN0bDogYWRkIGFuIGludGVyZmFjZSB0byBnZXQg
-dGhlIG1vZGUgZm9yIGEgZGF4IGRldmljZQo+ICAgZGF4Y3RsOiBhZGQgYSBuZXcgcmVjb25maWd1
-cmUtZGV2aWNlIGNvbW1hbmQKPiAgIERvY3VtZW50YXRpb24vZGF4Y3RsOiBhZGQgYSBtYW4gcGFn
-ZSBmb3IgZGF4Y3RsLXJlY29uZmlndXJlLWRldmljZQo+ICAgY29udHJpYi9uZGN0bDogZml4IHJl
-Z2lvbi1pZCBjb21wbGV0aW9ucyBmb3IgZGF4Y3RsCj4gICBjb250cmliL25kY3RsOiBhZGQgYmFz
-aC1jb21wbGV0aW9uIGZvciBkYXhjdGwtcmVjb25maWd1cmUtZGV2aWNlCj4KPiAgRG9jdW1lbnRh
-dGlvbi9kYXhjdGwvTWFrZWZpbGUuYW0gICAgICAgICAgICAgIHwgICAzICstCj4gIC4uLi9kYXhj
-dGwvZGF4Y3RsLXJlY29uZmlndXJlLWRldmljZS50eHQgICAgICB8IDExOCArKysrCj4gIGNvbnRy
-aWIvbmRjdGwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAzNCArLQo+ICBkYXhj
-dGwvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwo+ICBkYXhj
-dGwvYnVpbHRpbi5oICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+ICBkYXhj
-dGwvZGF4Y3RsLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+ICBkYXhj
-dGwvZGV2aWNlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAyMzcgKysrKysrKysK
-PiAgZGF4Y3RsL2xpYi9NYWtlZmlsZS5hbSAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICst
-Cj4gIGRheGN0bC9saWIvbGliZGF4Y3RsLXByaXZhdGUuaCAgICAgICAgICAgICAgICB8ICAyMSAr
-Cj4gIGRheGN0bC9saWIvbGliZGF4Y3RsLmMgICAgICAgICAgICAgICAgICAgICAgICB8IDU1NCAr
-KysrKysrKysrKysrKysrKy0KPiAgZGF4Y3RsL2xpYi9saWJkYXhjdGwuc3ltICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDE0ICsKPiAgZGF4Y3RsL2xpYmRheGN0bC5oICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDE2ICsKPiAgdXRpbC9qc29uLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDIyICsKPiAgMTMgZmlsZXMgY2hhbmdlZCwgMTAxNSBpbnNlcnRpb25zKCsp
-LCAxMSBkZWxldGlvbnMoLSkKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGF4
-Y3RsL2RheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UudHh0Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBk
-YXhjdGwvZGV2aWNlLmMKPgo+IC0tCj4gMi4yMC4xCj4KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1u
-dmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8v
-bGludXgtbnZkaW1tCg==
+
+On Wed, 2019-05-08 at 16:02 -0400, Pavel Tatashin wrote:
+> Hi Vishal,
+> 
+> I am trying to use your changes, and getting the following error:
+> libdaxctl: __sysfs_device_parse: dax0.0: add_dev() failed
+> 
+> Here is full output:
+> # ndctl create-namespace --mode devdax --map mem -e namespace0.0 -f
+> [   26.891054] dax0.0 initialised, 524288 pages in 9ms
+> [   26.894239] random: ndctl: uninitialized urandom read (4 bytes read)
+> libdaxctl: __sysfs_device_parse: dax0.0: add_dev() failed
+> {
+>   "dev":"namespace0.0",
+>   "mode":"devdax",
+>   "map":"mem",
+>   "size":"2046.00 MiB (2145.39 MB)",
+>   "uuid":"6684b3b0-4ab1-45ba-9ce6-48aa046b5fc1",
+>   "daxregion":{
+>     "id":0,
+>     "size":"2046.00 MiB (2145.39 MB)",
+>     "align":2097152
+>   },
+>   "align":2097152
+> }
+
+Thanks for the report!
+
+I suspect you may be using the "legacy" device-model. You can
+confirm by seeing if that device even shows up on the "dax" bus.
+Compare /sys/bus/dax/devices/ vs /sys/class/dax/
+
+If you see stuff in /sys/class/dax and nothing in
+/sys/bus/dax/devices then you need to configure the system to switch
+to the device-dax bus-model by running either of the following
+commands:
+
+# daxctl migrate-device-model
+
+...or:
+
+# cat <<EOF > /etc/modprobe.d/daxctl.conf
+blacklist dax_pmem_compat
+alias nd:t7* dax_pmem
+EOF
+
+...and then reload the subsystem:
+
+ndctl disable-region all
+ndctl enable-region all
+
+That said, if this was the cause, we should improve the failure mode in
+this case - I'll look into that, and test by forcing dax-class too.
+
+Thanks,
+-Vishal
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
