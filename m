@@ -1,57 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CFEE18397
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 04:14:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA16183A8
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 04:18:38 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 335332125ADD1;
-	Wed,  8 May 2019 19:14:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EDD942125ADD2;
+	Wed,  8 May 2019 19:18:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DAD8921256BC8
- for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 19:14:02 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id e6so359791pgc.4
- for <linux-nvdimm@lists.01.org>; Wed, 08 May 2019 19:14:02 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 27C34211E7444
+ for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 19:18:35 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id x15so320300pln.9
+ for <linux-nvdimm@lists.01.org>; Wed, 08 May 2019 19:18:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=subject:to:references:from:message-id:date:user-agent:mime-version
  :in-reply-to:content-language:content-transfer-encoding;
- bh=m2h4qfOyf/vTBN3ksTZ+p+B5Uh42DjnmBaKteMIQJDg=;
- b=d6Fl21d6H9hguqCIk66KfQTbpzIqdRCUj3hyqEHsDnZWMFK8wQPsR7wgx3oa+G2kjG
- 1seT91f0+lIwQZd84COg8BT3K9ELnhDM30SHEOrlnvKeE7/5VX5u1W/8fgPsbHGyE+tg
- N1mbck/bnevbonwY9JDeI4wL+fVc6yDfWWKPjYGMVo+t1urDbbw17h12P2lsuAick9RL
- +tTl21ycCYmhS8aq1IQN4QtpicNviaYVVDhPWJWCkKNQi57gYY8h3oQc9YLQvbqDRawh
- S+/psk+LuYFrjp041aE4v+E+1oI4xE/yaxSeWSVYuo1fFT8XcryTFla0UCjHS8CZoXbN
- /oeQ==
+ bh=67cKgHpKn5BasI4H9G5b29AFH8V2LHpBqBhNNX7AepI=;
+ b=IdWnqVyky2mloPBWQLjQqC3RNWwopYAaMClPvfqRz+kOE5FYbiQV2HYTeaz5LcNXRc
+ 7wOeWEeAayPUpVKD8GVgH5tlHGjOMXoHfdDjtYENRb51HqJzXvqoIVPN/c8gSgI1A8Bd
+ 27sn+YVD+VXjElLK8ki7xOEob0TJCp6WvbCU+Rl8BL3/htDMfD8jdKzGUvRX6k4w7lc7
+ Pf0CP6YbTC4sS274CsPgsIalQHztO9A4EhBK4Z9Lb7TnlcPn29QL3JvNlnhzeK+xhVUQ
+ HL6MkDTHh/MTo81DfiP0Voc8IagpScTcOZUNMy2+isvaJF7gRho5CMGYBOrvWGSA9sL6
+ 4Tqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=m2h4qfOyf/vTBN3ksTZ+p+B5Uh42DjnmBaKteMIQJDg=;
- b=a0Nvci24EzkTYjfzo7lx6iHBTQimvT6lDe4oo6MZXILFPg+DAEHjNPkSeOVRzZFBhx
- zsJjoeu8+dIrUDvOTcl1tN1olxiM7KJuZ9hGaZ5zEYodu43D0GkpfVOtYmPa/cwlZeI3
- XhYktPOgBmyF+c7fZ2rH/u95fDQAYTP3MvOIDpaKJPZmWeWEgwAFS7PKQZkyAIUH146T
- dBqJoEHxdAGb1x+PsKShVVf7OfR7A3k7WaDKtdYsCUd5hNA2tanX2fLtNwXqBVdf3m1U
- 6iEBt2aI5Tw07NYOoRo+WiW8x61mEi2ZdJciiAkK3f7RIfGO8EwExEb42XTqvsoDHgk7
- gxTg==
-X-Gm-Message-State: APjAAAWnW1QlAJVn6ui5BeMdErrnO9wE8VAN+HNzqzye/P25ysHKsg5t
- fuxWUG0pT8EmpWiQISekd7k=
-X-Google-Smtp-Source: APXvYqzL/TN1nN9Ct8HQ4wtcFHZZcQhp0SvsSuj3cK4ro/YW06pExZSQlXbu2Pcfe+Xz4ExfmkwqHw==
-X-Received: by 2002:a63:b64:: with SMTP id a36mr2188141pgl.58.1557368042377;
- Wed, 08 May 2019 19:14:02 -0700 (PDT)
+ bh=67cKgHpKn5BasI4H9G5b29AFH8V2LHpBqBhNNX7AepI=;
+ b=IJd5mMZ5TiAnQ9k++7ltwpD5Elb0NmXBlKEiU/Hjr6wyVJIeUj4fC2jSo5TVon7T40
+ hsMOfmuk98XQVg95Nrsqx8sAgycPiCqu7ckfkAyonhPpJLy3eqUdcp4gHQXQumVjNy+i
+ 1o72uSiosfIcG4AKTvTjbA752ES/gDjeuyr5xKtu/oQ6aUh1RjRns7RLSm5yrtwW3I10
+ pECIGbl6vZd01yS458Xk8TUhtOoC/rUysUqLUlqtWz0fVXhEmj06vInVyNYMBT2Iil8Z
+ I/EYtnDkZC0wNoNxsGp6RIBVEK5zwcjLQmwEO/TNGlJ//8eC5fKDAO/7PkJbAI2LXEi9
+ BWxw==
+X-Gm-Message-State: APjAAAXZLYg9yZ8ac1iTxwTOuNrRv2FxbC5oGXuEwLSdw4QcGIImPyWF
+ QzB0UxcJ3dCvvJIFS/PVNNM=
+X-Google-Smtp-Source: APXvYqxKONkqpvysOzcXsSL0stE2Fx1k07GjyXCU+F00vWxsMMPMatYsdoa5bWbRlxy93rTIbJhz0w==
+X-Received: by 2002:a17:902:8f82:: with SMTP id
+ z2mr1716364plo.51.1557368314774; 
+ Wed, 08 May 2019 19:18:34 -0700 (PDT)
 Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
  [24.6.192.50])
- by smtp.gmail.com with ESMTPSA id a17sm668823pff.82.2019.05.08.19.13.59
+ by smtp.gmail.com with ESMTPSA id r138sm777868pfr.2.2019.05.08.19.18.31
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 08 May 2019 19:14:01 -0700 (PDT)
+ Wed, 08 May 2019 19:18:33 -0700 (PDT)
 Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
  testing framework
 To: Theodore Ts'o <tytso@mit.edu>, Greg KH <gregkh@linuxfoundation.org>,
@@ -71,16 +72,16 @@ To: Theodore Ts'o <tytso@mit.edu>, Greg KH <gregkh@linuxfoundation.org>,
  wfg@linux.intel.com
 References: <20190501230126.229218-1-brendanhiggins@google.com>
  <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
- <20190507080119.GB28121@kroah.com>
- <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
- <20190509015856.GB7031@mit.edu>
+ <20190507080119.GB28121@kroah.com> <20190507172256.GB5900@mit.edu>
+ <4d963cdc-1cbb-35a3-292c-552f865ed1f7@gmail.com>
+ <20190509014407.GA7031@mit.edu>
 From: Frank Rowand <frowand.list@gmail.com>
-Message-ID: <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
-Date: Wed, 8 May 2019 19:13:59 -0700
+Message-ID: <458dcb03-8dee-a005-97e1-7296a9e5bbfd@gmail.com>
+Date: Wed, 8 May 2019 19:18:30 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190509015856.GB7031@mit.edu>
+In-Reply-To: <20190509014407.GA7031@mit.edu>
 Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -98,58 +99,53 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 5/8/19 6:58 PM, Theodore Ts'o wrote:
-> On Wed, May 08, 2019 at 05:43:35PM -0700, Frank Rowand wrote:
->> kselftest provides a mechanism for in-kernel tests via modules.  For
->> example, see:
+On 5/8/19 6:44 PM, Theodore Ts'o wrote:
+> On Wed, May 08, 2019 at 05:58:49PM -0700, Frank Rowand wrote:
 >>
->>   tools/testing/selftests/vm/run_vmtests invokes:
->>     tools/testing/selftests/vm/test_vmalloc.sh
->>       loads module:
->>         test_vmalloc
->>         (which is built from lib/test_vmalloc.c if CONFIG_TEST_VMALLOC)
+>> If KUnit is added to the kernel, and a subsystem that I am submitting
+>> code for has chosen to use KUnit instead of kselftest, then yes, I do
+>> *have* to use KUnit if my submission needs to contain a test for the
+>> code unless I want to convince the maintainer that somehow my case
+>> is special and I prefer to use kselftest instead of KUnittest.
 > 
-> The majority of the kselftests are implemented as userspace programs.
+> That's going to be between you and the maintainer.  Today, if you want
+> to submit a substantive change to xfs or ext4, you're going to be
+> asked to create test for that new feature using xfstests.  It doesn't
+> matter that xfstests isn't in the kernel --- if that's what is
+> required by the maintainer.
 
-Non-argument.
+Yes, that is exactly what I was saying.
+
+Please do not cut the pertinent parts of context that I am replying to.
 
 
-> You *can* run in-kernel test using modules; but there is no framework
-> for the in-kernel code found in the test modules, which means each of
-> the in-kernel code has to create their own in-kernel test
-> infrastructure.
+>>> supposed to be a simple way to run a large number of small tests that
+>>> for specific small components in a system.
+>>
+>> kselftest also supports running a subset of tests.  That subset of tests
+>> can also be a large number of small tests.  There is nothing inherent
+>> in KUnit vs kselftest in this regard, as far as I am aware.
 
-Why create an entire new subsystem (KUnit) when you can add a header
-file (and .c code as appropriate) that outputs the proper TAP formatted
-results from kselftest kernel test modules?
 
-There are already a multitude of in kernel test modules used by
-kselftest.  It would be good if they all used a common TAP compliant
-mechanism to report results.
-
- 
-> That's much like saying you can use vice grips to turn a nut or
-> bolt-head.  You *can*, but it might be that using a monkey wrench
-> would be a much better tool that is much easier.
+> The big difference is that kselftests are driven by a C program that
+> runs in userspace.  Take a look at tools/testing/selftests/filesystem/dnotify_test.c
+> it has a main(int argc, char *argv) function.
 > 
-> What would you say to a wood worker objecting that a toolbox should
-> contain a monkey wrench because he already knows how to use vise
-> grips, and his tiny brain shouldn't be forced to learn how to use a
-> wrench when he knows how to use a vise grip, which is a perfectly good
-> tool?
-> 
-> If you want to use vice grips as a hammer, screwdriver, monkey wrench,
-> etc.  there's nothing stopping you from doing that.  But it's not fair
-> to object to other people who might want to use better tools.
-> 
-> The reality is that we have a lot of testing tools.  It's not just
-> kselftests.  There is xfstests for file system code, blktests for
-> block layer tests, etc.   We use the right tool for the right job.
+> In contrast, KUnit are fragments of C code which run in the kernel;
+> not in userspace.  This allows us to test internal functions inside
+> complex file system (such as the block allocator in ext4) directly.
+> This makes it *fundamentally* different from kselftest.
 
-More specious arguments.
+No, totally incorrect.  kselftests also supports in kernel modules as
+I mention in another reply to this patch.
+
+This is talking past each other a little bit, because your next reply
+is a reply to my email about modules.
 
 -Frank
 
+> 
+> Cheers,
 > 
 > 						- Ted
 > 
