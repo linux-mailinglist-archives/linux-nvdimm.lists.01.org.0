@@ -1,83 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE38B1894D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 13:55:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D4A189AD
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 14:24:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DE7652125ADF1;
-	Thu,  9 May 2019 04:55:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 479E42125ADF7;
+	Thu,  9 May 2019 05:24:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=knut.omang@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+ client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7D74F21250CB8
- for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 04:55:14 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49BhXiK035955;
- Thu, 9 May 2019 11:52:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : subject
- : from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=corp-2018-07-02;
- bh=gg3Y5VCySPKtxUHkrDHjoNwU5vy2eC4csPWWlbbJ8cU=;
- b=Tci6MOI4XpYQJJX3nkl5kQckg2JxLZKQinmSowqBukGIWd/P3Vtb/l1zYSHK5OrtneqM
- 5/8tuqi9CYCxs9dhrTIyYhznJk6vkCml3NKYxKS/tLDkVJb7w+aSqNrTJ5fLNz0hLA9O
- d/I7sf8g4h472ilMMxO/jUq/gx1+rqYgoUr0oYssfbAt4xOVGZOEbkbuM3OIWNSk6NMJ
- S4ZWcUKVVG5pkz+FoKUqZ9pYDcND8rmQGOubwvUGvnH7TMrBL6+qhVwa1r2ojA5QgRKT
- ocFo45GNdn4G3RuQsBv55FhXD+jA2l7UjkL+BbHilSWKm2m+lPFr06S1LXYPAvfT0LHU 6A== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by userp2130.oracle.com with ESMTP id 2s94bga7hw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 May 2019 11:52:38 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49Bp6Qq194507;
- Thu, 9 May 2019 11:52:37 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3030.oracle.com with ESMTP id 2s94bar2sv-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 09 May 2019 11:52:37 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x49BqMD5002325;
- Thu, 9 May 2019 11:52:22 GMT
-Received: from abi.no.oracle.com (/141.143.213.42)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 09 May 2019 04:52:22 -0700
-Message-ID: <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
-Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
- testing framework
-From: Knut Omang <knut.omang@oracle.com>
-To: "Theodore Ts'o" <tytso@mit.edu>, Frank Rowand <frowand.list@gmail.com>
-Date: Thu, 09 May 2019 13:52:15 +0200
-In-Reply-To: <20190509032017.GA29703@mit.edu>
-References: <20190501230126.229218-1-brendanhiggins@google.com>
- <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
- <20190507080119.GB28121@kroah.com>
- <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
- <20190509015856.GB7031@mit.edu>
- <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
- <20190509032017.GA29703@mit.edu>
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+ by ml01.01.org (Postfix) with ESMTPS id 26F482125ADF0
+ for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 05:24:27 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 2D91C307D98F;
+ Thu,  9 May 2019 12:24:26 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AA6435C226;
+ Thu,  9 May 2019 12:24:25 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com
+ (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 257BD41F58;
+ Thu,  9 May 2019 12:24:25 +0000 (UTC)
+Date: Thu, 9 May 2019 08:24:24 -0400 (EDT)
+From: Pankaj Gupta <pagupta@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID: <511098535.27565704.1557404664499.JavaMail.zimbra@redhat.com>
+In-Reply-To: <CAPcyv4hRdvypEj4LBTMfUFm80BdpRYbOugrkkj-3Kk_LErXPqQ@mail.gmail.com>
+References: <20190426050039.17460-1-pagupta@redhat.com>
+ <20190426050039.17460-4-pagupta@redhat.com>
+ <CAPcyv4hRdvypEj4LBTMfUFm80BdpRYbOugrkkj-3Kk_LErXPqQ@mail.gmail.com>
+Subject: Re: [PATCH v7 3/6] libnvdimm: add dax_dev sync flag
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9251
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905090072
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9251
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905090072
+X-Originating-IP: [10.67.116.88, 10.4.195.16]
+Thread-Topic: libnvdimm: add dax_dev sync flag
+Thread-Index: ojaRi4mgEPnvOvl3Gx+91mTiXiceZg==
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.48]); Thu, 09 May 2019 12:24:26 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,122 +58,63 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
- linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com,
- kieran.bingham@ideasonboard.com, wfg@linux.intel.com, joel@jms.id.au,
- rientjes@google.com, jdike@addtoit.com, dan.carpenter@oracle.com,
- devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
- linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
- kunit-dev@googlegroups.com, richard@nod.at, sboyd@kernel.org,
- Greg KH <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- mcgrof@kernel.org, daniel@ffwll.ch, keescook@google.com,
- linux-fsdevel@vger.kernel.org
+Cc: cohuck@redhat.com, Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
+ virtualization@lists.linux-foundation.org,
+ Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
+ Andrea Arcangeli <aarcange@redhat.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+ kilobyte@angband.pl, Rik van Riel <riel@surriel.com>,
+ yuval shaia <yuval.shaia@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Nitesh Narayan Lal <nilal@redhat.com>,
+ Theodore Ts'o <tytso@mit.edu>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-xfs <linux-xfs@vger.kernel.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Igor Mammedov <imammedo@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 2019-05-08 at 23:20 -0400, Theodore Ts'o wrote:
-> On Wed, May 08, 2019 at 07:13:59PM -0700, Frank Rowand wrote:
-> > > If you want to use vice grips as a hammer, screwdriver, monkey wrench,
-> > > etc.  there's nothing stopping you from doing that.  But it's not fair
-> > > to object to other people who might want to use better tools.
-> > > 
-> > > The reality is that we have a lot of testing tools.  It's not just
-> > > kselftests.  There is xfstests for file system code, blktests for
-> > > block layer tests, etc.   We use the right tool for the right job.
-> > 
-> > More specious arguments.
+
+> >
+> > This patch adds 'DAXDEV_SYNC' flag which is set
+> > for nd_region doing synchronous flush. This later
+> > is used to disable MAP_SYNC functionality for
+> > ext4 & xfs filesystem for devices don't support
+> > synchronous flush.
+> >
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+> [..]
+> > diff --git a/include/linux/dax.h b/include/linux/dax.h
+> > index 0dd316a74a29..c97fc0cc7167 100644
+> > --- a/include/linux/dax.h
+> > +++ b/include/linux/dax.h
+> > @@ -7,6 +7,9 @@
+> >  #include <linux/radix-tree.h>
+> >  #include <asm/pgtable.h>
+> >
+> > +/* Flag for synchronous flush */
+> > +#define DAXDEV_F_SYNC true
 > 
-> Well, *I* don't think they are specious; so I think we're going to
-> have to agree to disagree.
+> I'd feel better, i.e. it reads more canonically, if this was defined
+> as (1UL << 0) and the argument to alloc_dax() was changed to 'unsigned
+> long flags' rather than a bool.
 
-Looking at both Frank's and Ted's arguments here, I don't think you 
-really disagree, I just think you are having different classes of tests in mind.
+Sure, Will send a v8 with suggested changes.
 
-In my view it's useful to think in terms of two main categories of 
-interesting unit tests for kernel code (using the term "unit test" pragmatically):
+Thank You,
+Pankaj
 
-1) Tests that exercises typically algorithmic or intricate, complex
-   code with relatively few outside dependencies, or where the dependencies 
-   are considered worth mocking, such as the basics of container data 
-   structures or page table code. If I get you right, Ted, the tests 
-   you refer to in this thread are such tests. I believe covering this space 
-   is the goal Brendan has in mind for KUnit.
-
-2) Tests that exercises interaction between a module under test and other 
-   parts of the kernel, such as testing intricacies of the interaction of 
-   a driver or file system with the rest of the kernel, and with hardware, 
-   whether that is real hardware or a model/emulation. 
-   Using your testing needs as example again, Ted, from my shallow understanding,
-   you have such needs within the context of xfstests (https://github.com/tytso/xfstests)
-
-To 1) I agree with Frank in that the problem with using UML is that you still have to
-relate to the complexity of a kernel run time system, while what you really want for these
-types of tests is just to compile a couple of kernel source files in a normal user land
-context, to allow the use of Valgrind and other user space tools on the code. The
-challenge is to get the code compiled in such an environment as it usually relies on
-subtle kernel macros and definitions, which is why UML seems like such an attractive
-solution. Like Frank I really see no big difference from a testing and debugging 
-perspective of UML versus running inside a Qemu/KVM process, and I think I have an idea 
-for a better solution: 
-
-In the early phases of the SIF project which mention below, I did a lot of experimentation around this. My biggest challenge then was to test the driver
-implementation of the pages table handling of an Intel page table compatible on-device 
-MMU, using a mix of page sizes, but with a few subtle limitations in the hardware. With some efforts of code generation and heavy automated use of
-compiler feedback, I was able 
-to do that to great satisfaction, as it probably saved the project a lot of time in 
-debugging, and myself a lot of pain :)
-
-To 2) most of the current xfstests (if not all?) are user space tests that do not use 
-extra test specific kernel code, or test specific changes to the modules under test (am I 
-right, Ted?) and I believe that's just as it should be: if something can be exercised well enough from user space, then that's the easier approach. 
-
-However sometimes the test cannot be made easily without interacting directly 
-with internal kernel interfaces, or having such interaction would greatly simplify or
-increase the precision of the test. This need was the initial motivation for us to make 
-KTF (https://github.com/oracle/ktf, http://heim.ifi.uio.no/~knuto/ktf/index.html) which we are working on to adapt to fit naturally and in the right way
-as a kernel patch set.
-
-We developed the SIF infiniband HCA driver
-(https://github.com/oracle/linux-uek/tree/uek4/qu7/drivers/infiniband/hw/sif)
-and associated user level libraries in what I like to call a "pragmatically test driven" 
-way. At the end of the project we had quite a few unit tests, but only a small fraction of them were KTF tests, most of the testing needs were covered
-by user land unit tests, 
-and higher level application testing.
-
-To you Frank, and your concern about having to learn yet another tool with it's own set of syntax, I completely agree with you. We definitely would want
-to minimize the need to 
-learn new ways, which is why I think it is important to see the whole complex of unit
-testing together, and at least make sure it works in a unified and efficient way from a
-syntax and operational way. 
-
-With KTF we focus on trying to make kernel testing as similar and integrated with user
-space tests as possible, using similar test macros, and also to not reinvent more wheels than necessary by basing reporting and test execution on
-existing user land tools.
-KTF integrates with Googletest for this functionality. This also makes the reporting format discussion here irrelevant for KTF, as KTF supports whatever
-reporting format the user land tool supports - Googletest for instance naturally supports pluggable reporting implementations, and there already seems
-to be a TAP reporting extension out there (I haven't tried it yet though)
-
-Using and relating to an existing user land framework allows us to have a set of 
-tests that works the same way from a user/developer perspective, 
-but some of them are kernel only tests, some are ordinary user land 
-tests, exercising system call boundaries and other kernel
-interfaces, and some are what we call "hybrid", where parts of 
-the test run in user mode and parts in kernel mode.
-
-I hope we can discuss this complex in more detail, for instance at the testing 
-and fuzzing workshop at LPC later this year, where I have proposed a topic for it.
-
-Thanks,
-Knut
-
-
-
-
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
