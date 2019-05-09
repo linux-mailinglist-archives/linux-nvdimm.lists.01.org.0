@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D1618355
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 03:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF701836D
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 03:59:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 417952125ADCC;
-	Wed,  8 May 2019 18:45:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 913A82125ADD0;
+	Wed,  8 May 2019 18:59:52 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,21 +15,21 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D5E6121256BC8
- for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 18:45:08 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 8FFFF21256BC8
+ for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 18:59:50 -0700 (PDT)
 Received: from callcc.thunk.org ([66.31.38.53]) (authenticated bits=0)
  (User authenticated as tytso@ATHENA.MIT.EDU)
- by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x491i7RW019749
+ by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x491wvb2023686
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 8 May 2019 21:44:09 -0400
+ Wed, 8 May 2019 21:58:57 -0400
 Received: by callcc.thunk.org (Postfix, from userid 15806)
- id 9759E420024; Wed,  8 May 2019 21:44:07 -0400 (EDT)
-Date: Wed, 8 May 2019 21:44:07 -0400
+ id D504A420024; Wed,  8 May 2019 21:58:56 -0400 (EDT)
+Date: Wed, 8 May 2019 21:58:56 -0400
 From: "Theodore Ts'o" <tytso@mit.edu>
 To: Frank Rowand <frowand.list@gmail.com>
 Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
  testing framework
-Message-ID: <20190509014407.GA7031@mit.edu>
+Message-ID: <20190509015856.GB7031@mit.edu>
 Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
  Frank Rowand <frowand.list@gmail.com>,
  Greg KH <gregkh@linuxfoundation.org>,
@@ -49,11 +49,11 @@ Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
  rostedt@goodmis.org, wfg@linux.intel.com
 References: <20190501230126.229218-1-brendanhiggins@google.com>
  <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
- <20190507080119.GB28121@kroah.com> <20190507172256.GB5900@mit.edu>
- <4d963cdc-1cbb-35a3-292c-552f865ed1f7@gmail.com>
+ <20190507080119.GB28121@kroah.com>
+ <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <4d963cdc-1cbb-35a3-292c-552f865ed1f7@gmail.com>
+In-Reply-To: <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -84,37 +84,40 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 08, 2019 at 05:58:49PM -0700, Frank Rowand wrote:
+On Wed, May 08, 2019 at 05:43:35PM -0700, Frank Rowand wrote:
+> kselftest provides a mechanism for in-kernel tests via modules.  For
+> example, see:
 > 
-> If KUnit is added to the kernel, and a subsystem that I am submitting
-> code for has chosen to use KUnit instead of kselftest, then yes, I do
-> *have* to use KUnit if my submission needs to contain a test for the
-> code unless I want to convince the maintainer that somehow my case
-> is special and I prefer to use kselftest instead of KUnittest.
+>   tools/testing/selftests/vm/run_vmtests invokes:
+>     tools/testing/selftests/vm/test_vmalloc.sh
+>       loads module:
+>         test_vmalloc
+>         (which is built from lib/test_vmalloc.c if CONFIG_TEST_VMALLOC)
 
-That's going to be between you and the maintainer.  Today, if you want
-to submit a substantive change to xfs or ext4, you're going to be
-asked to create test for that new feature using xfstests.  It doesn't
-matter that xfstests isn't in the kernel --- if that's what is
-required by the maintainer.
+The majority of the kselftests are implemented as userspace programs.
 
-> > supposed to be a simple way to run a large number of small tests that
-> > for specific small components in a system.
-> 
-> kselftest also supports running a subset of tests.  That subset of tests
-> can also be a large number of small tests.  There is nothing inherent
-> in KUnit vs kselftest in this regard, as far as I am aware.
+You *can* run in-kernel test using modules; but there is no framework
+for the in-kernel code found in the test modules, which means each of
+the in-kernel code has to create their own in-kernel test
+infrastructure.  
 
-The big difference is that kselftests are driven by a C program that
-runs in userspace.  Take a look at tools/testing/selftests/filesystem/dnotify_test.c
-it has a main(int argc, char *argv) function.
+That's much like saying you can use vice grips to turn a nut or
+bolt-head.  You *can*, but it might be that using a monkey wrench
+would be a much better tool that is much easier.
 
-In contrast, KUnit are fragments of C code which run in the kernel;
-not in userspace.  This allows us to test internal functions inside
-complex file system (such as the block allocator in ext4) directly.
-This makes it *fundamentally* different from kselftest.
+What would you say to a wood worker objecting that a toolbox should
+contain a monkey wrench because he already knows how to use vise
+grips, and his tiny brain shouldn't be forced to learn how to use a
+wrench when he knows how to use a vise grip, which is a perfectly good
+tool?
 
-Cheers,
+If you want to use vice grips as a hammer, screwdriver, monkey wrench,
+etc.  there's nothing stopping you from doing that.  But it's not fair
+to object to other people who might want to use better tools.
+
+The reality is that we have a lot of testing tools.  It's not just
+kselftests.  There is xfstests for file system code, blktests for
+block layer tests, etc.   We use the right tool for the right job.
 
 						- Ted
 _______________________________________________
