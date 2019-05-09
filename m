@@ -1,36 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C30618299
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 01:15:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F242182E4
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 02:43:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4F18821256BDF;
-	Wed,  8 May 2019 16:15:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 57C5D21256BB6;
+	Wed,  8 May 2019 17:43:41 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 21CB421250442
- for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 16:15:53 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 7B7EAAF0C;
- Wed,  8 May 2019 23:15:51 +0000 (UTC)
-Message-ID: <1557357332.3028.42.camel@suse.de>
-Subject: Re: [PATCH v8 09/12] mm/sparsemem: Support sub-section hotplug
-From: Oscar Salvador <osalvador@suse.de>
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-Date: Thu, 09 May 2019 01:15:32 +0200
-In-Reply-To: <155718601407.130019.14248061058774128227.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155718601407.130019.14248061058774128227.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-Mailer: Evolution 3.26.1 
-Mime-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id 5B8BA211F9D43
+ for <linux-nvdimm@lists.01.org>; Wed,  8 May 2019 17:43:39 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id v80so334072pfa.3
+ for <linux-nvdimm@lists.01.org>; Wed, 08 May 2019 17:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=1+Jfl9iXviaxHbmbhnDjk1eQnpFz6l/2Nut9ww82zvo=;
+ b=a3KgZzLZ0y84UNUIY8RS+nYDRzFkAivRDtTwVjhJ1vYp+v2Z6HVSzmnnRowbVUedfI
+ 93zPM5T0iF4iJCU1PddnaPwpC/nrCINNvHKs9PmQ0ayrLgURqYfh7EH67znRVZxTURN5
+ VsMO/ROT48Ly/mYey3OTt/dpawpdAk7DUuJetc8MAAQuinmU4P2PjwyMam4VRQGyIo8C
+ F5An8gjuExmDUN5kMRWiGJsQOqa4gz/Zgv9YpcjdE85z0otG8d1GXhf4e05Hdx2o8s1c
+ hn9kGYBDYT3L0e4JtQg2AhBurTKMtE9VNzBNe+yPm2LTyV/rg3Wp/BZ+nH8mhD2rC6M3
+ 7+6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=1+Jfl9iXviaxHbmbhnDjk1eQnpFz6l/2Nut9ww82zvo=;
+ b=jtq7qvVYjGIHkrSP1ix2OmYUGz+aoQE8a507S6gvwLpk02GZA01JKmVaxadGEJQ+A4
+ 9TBuHVgFpcUIwmTUNxYgsfBxhGTnUg6Mux4qq2SvDvvGm8Y18pcShVfEFe2laZNjuUng
+ xmA4Invqn2fYpfbgbn6zP83cCykdxYUoVu5GQv6Dr0AJd5JOKzyHQUj9gk6r2rmismM2
+ m/leOhRRnOHMpT1txNi0fMnZXy2r9oFp8Q6ileQrwsZAvi2lyYMdE4FWNo5xmHmWLy03
+ mEtbP7Jx9YwaKQJuDWLBmETvuxrdkyW3gBN+bZpL4LZvN3d95WOUpRjGl4JxG6RQj+kk
+ h6XQ==
+X-Gm-Message-State: APjAAAUHWMaF+7GX9JPK1Dsa+eeBfHUwxVQ8kq2ExSSFjh8ZSldSNODU
+ 1ScL9VIDwRGuMcQLjzrQzfk=
+X-Google-Smtp-Source: APXvYqzW2wEIzqNsRgYl9IE5EX5P/24Mi1edBj4NYy1YPo+96Z3/rjpt+DtwN4pC4yu/pBUKvsKvyA==
+X-Received: by 2002:a65:628b:: with SMTP id f11mr1432751pgv.95.1557362619650; 
+ Wed, 08 May 2019 17:43:39 -0700 (PDT)
+Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
+ [24.6.192.50])
+ by smtp.gmail.com with ESMTPSA id 63sm543120pfu.95.2019.05.08.17.43.36
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 08 May 2019 17:43:38 -0700 (PDT)
+Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+To: Greg KH <gregkh@linuxfoundation.org>
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
+ <20190507080119.GB28121@kroah.com>
+From: Frank Rowand <frowand.list@gmail.com>
+Message-ID: <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
+Date: Wed, 8 May 2019 17:43:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
+MIME-Version: 1.0
+In-Reply-To: <20190507080119.GB28121@kroah.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,104 +77,137 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ kieran.bingham@ideasonboard.com, wfg@linux.intel.com, joel@jms.id.au,
+ rientjes@google.com, jdike@addtoit.com, dan.carpenter@oracle.com,
+ devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
+ kunit-dev@googlegroups.com, richard@nod.at, sboyd@kernel.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, daniel@ffwll.ch,
+ keescook@google.com, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, 2019-05-06 at 16:40 -0700, Dan Williams wrote:
-> @@ -741,49 +895,31 @@ int __meminit sparse_add_section(int nid,
-> unsigned long start_pfn,
->  		unsigned long nr_pages, struct vmem_altmap *altmap)
->  {
->  	unsigned long section_nr = pfn_to_section_nr(start_pfn);
-> -	struct mem_section_usage *usage;
->  	struct mem_section *ms;
->  	struct page *memmap;
->  	int ret;
+On 5/7/19 1:01 AM, Greg KH wrote:
+> On Mon, May 06, 2019 at 08:14:12PM -0700, Frank Rowand wrote:
+>> On 5/1/19 4:01 PM, Brendan Higgins wrote:
+>>> ## TLDR
+>>>
+>>> I rebased the last patchset on 5.1-rc7 in hopes that we can get this in
+>>> 5.2.
+>>>
+>>> Shuah, I think you, Greg KH, and myself talked off thread, and we agreed
+>>> we would merge through your tree when the time came? Am I remembering
+>>> correctly?
+>>>
+>>> ## Background
+>>>
+>>> This patch set proposes KUnit, a lightweight unit testing and mocking
+>>> framework for the Linux kernel.
+>>>
+>>> Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+>>> it does not require installing the kernel on a test machine or in a VM
+>>> and does not require tests to be written in userspace running on a host
+>>> kernel. Additionally, KUnit is fast: From invocation to completion KUnit
+>>> can run several dozen tests in under a second. Currently, the entire
+>>> KUnit test suite for KUnit runs in under a second from the initial
+>>> invocation (build time excluded).
+>>>
+>>> KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+>>> Googletest/Googlemock for C++. KUnit provides facilities for defining
+>>> unit test cases, grouping related test cases into test suites, providing
+>>> common infrastructure for running tests, mocking, spying, and much more.
+>>
+>> As a result of the emails replying to this patch thread, I am now
+>> starting to look at kselftest.  My level of understanding is based
+>> on some slide presentations, an LWN article, https://kselftest.wiki.kernel.org/
+>> and a _tiny_ bit of looking at kselftest code.
+>>
+>> tl;dr; I don't really understand kselftest yet.
+>>
+>>
+>> (1) why KUnit exists
+>>
+>>> ## What's so special about unit testing?
+>>>
+>>> A unit test is supposed to test a single unit of code in isolation,
+>>> hence the name. There should be no dependencies outside the control of
+>>> the test; this means no external dependencies, which makes tests orders
+>>> of magnitudes faster. Likewise, since there are no external dependencies,
+>>> there are no hoops to jump through to run the tests. Additionally, this
+>>> makes unit tests deterministic: a failing unit test always indicates a
+>>> problem. Finally, because unit tests necessarily have finer granularity,
+>>> they are able to test all code paths easily solving the classic problem
+>>> of difficulty in exercising error handling code.
+>>
+>> (2) KUnit is not meant to replace kselftest
+>>
+>>> ## Is KUnit trying to replace other testing frameworks for the kernel?
+>>>
+>>> No. Most existing tests for the Linux kernel are end-to-end tests, which
+>>> have their place. A well tested system has lots of unit tests, a
+>>> reasonable number of integration tests, and some end-to-end tests. KUnit
+>>> is just trying to address the unit test space which is currently not
+>>> being addressed.
+>>
+>> My understanding is that the intent of KUnit is to avoid booting a kernel on
+>> real hardware or in a virtual machine.  That seems to be a matter of semantics
+>> to me because isn't invoking a UML Linux just running the Linux kernel in
+>> a different form of virtualization?
+>>
+>> So I do not understand why KUnit is an improvement over kselftest.
+>>
+>> It seems to me that KUnit is just another piece of infrastructure that I
+>> am going to have to be familiar with as a kernel developer.  More overhead,
+>> more information to stuff into my tiny little brain.
+>>
+>> I would guess that some developers will focus on just one of the two test
+>> environments (and some will focus on both), splitting the development
+>> resources instead of pooling them on a common infrastructure.
+>>
+>> What am I missing?
+> 
+> kselftest provides no in-kernel framework for testing kernel code
+> specifically.  That should be what kunit provides, an "easy" way to
+> write in-kernel tests for things.
 
-I already pointed this out in v7, but:
+kselftest provides a mechanism for in-kernel tests via modules.  For
+example, see:
 
->  
-> -	/*
-> -	 * no locking for this, because it does its own
-> -	 * plus, it does a kmalloc
-> -	 */
->  	ret = sparse_index_init(section_nr, nid);
->  	if (ret < 0 && ret != -EEXIST)
->  		return ret;
+  tools/testing/selftests/vm/run_vmtests invokes:
+    tools/testing/selftests/vm/test_vmalloc.sh
+      loads module:
+        test_vmalloc
+        (which is built from lib/test_vmalloc.c if CONFIG_TEST_VMALLOC)
 
-sparse_index_init() only returns either -ENOMEM or 0, so the above can
-be:
+A very quick and dirty search (likely to miss some tests) finds modules:
 
-	if (ret < 0) or if (ret)
+  test_bitmap
+  test_bpf
+  test_firmware
+  test_printf
+  test_static_key_base
+  test_static_keys
+  test_user_copy
+  test_vmalloc
 
-> -	ret = 0;
-> -	memmap = populate_section_memmap(start_pfn,
-> PAGES_PER_SECTION, nid,
-> -			altmap);
-> -	if (!memmap)
-> -		return -ENOMEM;
-> -	usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
-> -	if (!usage) {
-> -		depopulate_section_memmap(start_pfn,
-> PAGES_PER_SECTION, altmap);
-> -		return -ENOMEM;
-> -	}
->  
-> -	ms = __pfn_to_section(start_pfn);
-> -	if (ms->section_mem_map & SECTION_MARKED_PRESENT) {
-> -		ret = -EEXIST;
-> -		goto out;
-> -	}
-> +	memmap = section_activate(nid, start_pfn, nr_pages, altmap);
-> +	if (IS_ERR(memmap))
-> +		return PTR_ERR(memmap);
-> +	ret = 0;
+-Frank
 
-If we got here, sparse_index_init must have returned 0, so ret already
-contains 0.
-We can remove the assignment.
+> 
+> Brendan, did I get it right?
+> 
+> thanks,
+> 
+> greg k-h
+> .
+> 
 
->  
->  	/*
->  	 * Poison uninitialized struct pages in order to catch
-> invalid flags
->  	 * combinations.
->  	 */
-> -	page_init_poison(memmap, sizeof(struct page) *
-> PAGES_PER_SECTION);
-> +	page_init_poison(pfn_to_page(start_pfn), sizeof(struct page)
-> * nr_pages);
->  
-> +	ms = __pfn_to_section(start_pfn);
->  	section_mark_present(ms);
-> -	sparse_init_one_section(ms, section_nr, memmap, usage);
-> +	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
->  
-> -out:
-> -	if (ret < 0) {
-> -		kfree(usage);
-> -		depopulate_section_memmap(start_pfn,
-> PAGES_PER_SECTION, altmap);
-> -	}
-> +	if (ret < 0)
-> +		section_deactivate(start_pfn, nr_pages, nid,
-> altmap);
-
-AFAICS, ret is only set by the return code from sparse_index_init, so
-we cannot really get to this code being ret different than 0.
-So we can remove the above two lines.
-
-I will start reviewing the patches that lack review from this version
-soon.
-
--- 
-Oscar Salvador
-SUSE L3
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
