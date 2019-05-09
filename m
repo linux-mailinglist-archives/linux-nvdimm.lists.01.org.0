@@ -1,48 +1,113 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B2018E6A
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 18:49:22 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3253218E89
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 May 2019 19:00:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 214F3212604F2;
-	Thu,  9 May 2019 09:49:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 31310212604F5;
+	Thu,  9 May 2019 10:00:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2a01:111:f400:fe51::70e;
+ helo=nam05-dm3-obe.outbound.protection.outlook.com;
+ envelope-from=tim.bird@sony.com; receiver=linux-nvdimm@lists.01.org 
+Received: from NAM05-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam05on070e.outbound.protection.outlook.com
+ [IPv6:2a01:111:f400:fe51::70e])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D7E592125F1F2
- for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 09:49:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=gE30E8WxB7hYkwUgNS86rgGRZVvaab/3r9G8N035r+M=; b=ngKRs85UnQEDP1Ga/hab969hD
- GJhNmb9d7tPvBnkqLCuslGiXSWmVI/YSrhJAMIgJuJwkw746cyxl7cwv8I6dGzS6Junajeay76jrx
- HR2KCrYlqSTd3LCJXwhsGsmRX2EzQ5w4lmVfrYKm9xKmhkuTwxeDVt10+iLMa0liuT/qBloRrFU9+
- +s9EaOjVbm3Po1En6NrE1SP2yh58GpTqxbb0d2n15TtyBbMpGFzuaUU9mOnubwtx3OetcFPcCQx0z
- N8Xo9IhQywCFx1ybna0TEVHom1/suyCkds4AdGVeWmPkgZ5kmq0oABWghyswJnZyRZly6+T9heD12
- /O8LeqsOw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red
- Hat Linux)) id 1hOmEM-0004xN-Cr; Thu, 09 May 2019 16:49:14 +0000
-Date: Thu, 9 May 2019 09:49:14 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Larry Bassel <larry.bassel@oracle.com>
-Subject: Re: [PATCH, RFC 2/2] Implement sharing/unsharing of PMDs for FS/DAX
-Message-ID: <20190509164914.GA3862@bombadil.infradead.org>
-References: <1557417933-15701-1-git-send-email-larry.bassel@oracle.com>
- <1557417933-15701-3-git-send-email-larry.bassel@oracle.com>
+ by ml01.01.org (Postfix) with ESMTPS id 4B65221A00AE6
+ for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 10:00:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Sony.onmicrosoft.com; 
+ s=selector1-Sony-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hj7za5LUnS3zFMMO2i2thSHh33YnaMbus6hUzrCHz70=;
+ b=fZyZE9bXek/v+zqeTGXqLsq02pgGpAb5L0pYyehhI2lTcEvVKBRP0xh1kxZysII6cV0BOCxwsZRW3SiCaj6mwLS/bGcMU2DasvsmKLqxpjaeOXzRG55iDYPj3K+mOIoZZsAIgvC6lPNdTvcNDLWMAsyDzOA7QU6+xC0UIAJyCyg=
+Received: from BN6PR1301CA0008.namprd13.prod.outlook.com
+ (2603:10b6:405:29::21) by BN6PR13MB3122.namprd13.prod.outlook.com
+ (2603:10b6:405:7c::38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.1900.6; Thu, 9 May
+ 2019 17:00:30 +0000
+Received: from BL2NAM02FT044.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::207) by BN6PR1301CA0008.outlook.office365.com
+ (2603:10b6:405:29::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.20.1878.13 via Frontend
+ Transport; Thu, 9 May 2019 17:00:30 +0000
+Authentication-Results: spf=permerror (sender IP is 160.33.194.228)
+ smtp.mailfrom=sony.com; mit.edu; dkim=none (message not signed)
+ header.d=none;mit.edu; dmarc=none action=none header.from=sony.com;
+Received-SPF: PermError (protection.outlook.com: domain of sony.com used an
+ invalid SPF mechanism)
+Received: from usculsndmail01v.am.sony.com (160.33.194.228) by
+ BL2NAM02FT044.mail.protection.outlook.com (10.152.77.35) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ 15.20.1856.11 via Frontend Transport; Thu, 9 May 2019 17:00:30 +0000
+Received: from usculsndmail14v.am.sony.com (usculsndmail14v.am.sony.com
+ [146.215.230.105])
+ by usculsndmail01v.am.sony.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+ ESMTP id x49H0S82031039; Thu, 9 May 2019 17:00:28 GMT
+Received: from USCULXHUB07V.am.sony.com (hub.bc.in.sel.sony.com
+ [146.215.231.168])
+ by usculsndmail14v.am.sony.com (Sentrion-MTA-4.3.2/Sentrion-MTA-4.3.2) with
+ ESMTP id x49H0QOd029170; Thu, 9 May 2019 17:00:26 GMT
+Received: from USCULXMSG01.am.sony.com ([fe80::b09d:6cb6:665e:d1b5]) by
+ USCULXHUB07V.am.sony.com ([146.215.231.168]) with mapi id 14.03.0439.000;
+ Thu, 9 May 2019 13:00:26 -0400
+From: <Tim.Bird@sony.com>
+To: <tytso@mit.edu>, <knut.omang@oracle.com>
+Subject: RE: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+Thread-Topic: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+Thread-Index: AQHVAHIQqLn/HEswekaFpqcd6/u0haZfSAwAgABQOYCAAqpcgIAAFQ4AgAAENICAABKGgIAAjwuAgAAc8oD//+ajQA==
+Date: Thu, 9 May 2019 17:00:08 +0000
+Message-ID: <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
+ <20190507080119.GB28121@kroah.com>
+ <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
+ <20190509015856.GB7031@mit.edu>
+ <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+ <20190509032017.GA29703@mit.edu>
+ <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
+ <20190509133551.GD29703@mit.edu>
+In-Reply-To: <20190509133551.GD29703@mit.edu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [146.215.228.6]
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1557417933-15701-3-git-send-email-larry.bassel@oracle.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:160.33.194.228; IPV:NLI; CTRY:US; EFV:NLI;
+ SFV:NSPM;
+ SFS:(10019020)(1496009)(346002)(396003)(39860400002)(136003)(376002)(2980300002)(448002)(13464003)(189003)(199004)(8676002)(426003)(102836004)(14444005)(186003)(37786003)(26005)(30864003)(246002)(70586007)(70206006)(4326008)(47776003)(50466002)(7736002)(305945005)(76176011)(7416002)(7406005)(66066001)(476003)(486006)(126002)(356004)(6666004)(336012)(86362001)(11346002)(46406003)(446003)(33656002)(6116002)(97756001)(72206003)(2876002)(478600001)(229853002)(966005)(23726003)(316002)(8936002)(2171002)(6246003)(8746002)(5660300002)(86152003)(55016002)(6306002)(7696005)(2906002)(55846006)(85326001)(54906003)(110136005)(3846002)(5001870100001);
+ DIR:OUT; SFP:1102; SCL:1; SRVR:BN6PR13MB3122; H:usculsndmail01v.am.sony.com;
+ FPR:; SPF:PermError; LANG:en; PTR:mail.sonyusa.com,mail01.sonyusa.com; MX:1;
+ A:1; 
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d6dc6a46-680d-4910-2f70-08d6d49fd7cd
+X-Microsoft-Antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);
+ SRVR:BN6PR13MB3122; 
+X-MS-TrafficTypeDiagnostic: BN6PR13MB3122:
+X-MS-Exchange-PUrlCount: 2
+X-Microsoft-Antispam-PRVS: <BN6PR13MB31225A722ADF51990F09B1A5FD330@BN6PR13MB3122.namprd13.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Forefront-PRVS: 003245E729
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Message-Info: o9pdhShdV+EHwAY3qJ4cuBvscXWNit4RTatfKlpEOQ7TElks0dUc+Pt6moMO3mNJsFXNtig1dHHxtUU1CxJ+VQ5JH5jGO1E/y0K5abKPlD+QdalWpBcrsmy3G9dNQoW78qynQyXCWIgRnn+31+rLb1au34HIMvzFrIqZIY86FTgVqmvHaiucRssCEErBF7Mgy38kCKU9G0ERMO/o3nGE2claKnLlwT4H70wKpOrYN709cBGQFCyHsr3uyVURcxe9c/QURzCUayGQjpYBMDln15oho1mDgwZRgYtBmAWR6XWKIReP0AyuVQ/a+1E8tn8DRpw1qRN4/KH5b7ZG7iDoMQzo1byfpHWJ5rPqA7IqGQ0gDoTx8Be73UMVPtHalwMqdMATXaUDgd6IRxeTa4vCNTiGGP6fGl2F5B+aiE3+X9w=
+X-OriginatorOrg: sony.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2019 17:00:30.3830 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6dc6a46-680d-4910-2f70-08d6d49fd7cd
+X-MS-Exchange-CrossTenant-Id: 66c65d8a-9158-4521-a2d8-664963db48e4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=66c65d8a-9158-4521-a2d8-664963db48e4; Ip=[160.33.194.228];
+ Helo=[usculsndmail01v.am.sony.com]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR13MB3122
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,98 +119,239 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- mike.kravetz@oracle.com
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ brendanhiggins@google.com, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
+ linux-nvdimm@lists.01.org, frowand.list@gmail.com,
+ kieran.bingham@ideasonboard.com, wfg@linux.intel.com, joel@jms.id.au,
+ rientjes@google.com, khilman@baylibre.com, dan.carpenter@oracle.com,
+ devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, jdike@addtoit.com,
+ linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
+ kunit-dev@googlegroups.com, richard@nod.at, sboyd@kernel.org,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, mcgrof@kernel.org,
+ daniel@ffwll.ch, keescook@google.com, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 09, 2019 at 09:05:33AM -0700, Larry Bassel wrote:
-> This is based on (but somewhat different from) what hugetlbfs
-> does to share/unshare page tables.
+> -----Original Message-----
+> From: Theodore Ts'o 
+> 
+> On Thu, May 09, 2019 at 01:52:15PM +0200, Knut Omang wrote:
+> > 1) Tests that exercises typically algorithmic or intricate, complex
+> >    code with relatively few outside dependencies, or where the
+> dependencies
+> >    are considered worth mocking, such as the basics of container data
+> >    structures or page table code. If I get you right, Ted, the tests
+> >    you refer to in this thread are such tests. I believe covering this space
+> >    is the goal Brendan has in mind for KUnit.
+> 
+> Yes, that's correct.  I'd also add that one of the key differences is
+> that it sounds like Frank and you are coming from the perspective of
+> testing *device drivers* where in general there aren't a lot of
+> complex code which is hardware independent.
 
-Wow, that worked out far more cleanly than I was expecting to see.
+Ummm.  Not to speak for Frank, but he's representing the device tree
+layer, which I'd argue sits exactly at the intersection of testing device drivers
+AND lots of complex code which is hardware independent.  So maybe his
+case is special.
 
-> @@ -4763,6 +4763,19 @@ void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
->  				unsigned long *start, unsigned long *end)
->  {
->  }
-> +
-> +unsigned long page_table_shareable(struct vm_area_struct *svma,
-> +				   struct vm_area_struct *vma,
-> +				   unsigned long addr, pgoff_t idx)
-> +{
-> +	return 0;
-> +}
-> +
-> +bool vma_shareable(struct vm_area_struct *vma, unsigned long addr)
-> +{
-> +	return false;
-> +}
+> After all, the vast
+> majority of device drivers are primarily interface code to hardware,
+> with as much as possible abstracted away to common code.  (Take, for
+> example, the model of the SCSI layer; or all of the kobject code.)
+> 
+> > 2) Tests that exercises interaction between a module under test and other
+> >    parts of the kernel, such as testing intricacies of the interaction of
+> >    a driver or file system with the rest of the kernel, and with hardware,
+> >    whether that is real hardware or a model/emulation.
+> >    Using your testing needs as example again, Ted, from my shallow
+> understanding,
+> >    you have such needs within the context of xfstests
+> (https://github.com/tytso/xfstests)
+> 
+> Well, upstream is for xfstests is git://git.kernel.org/pub/scm/fs/xfs/xfstests-
+> dev.git
+> 
+> The test framework where I can run 20 hours worth of xfstests
+> (multiple file system features enabled, multiple mount options, etc.)
+> in 3 hours of wall clock time using multiple cloud VM is something
+> called gce-xfstests.
+> 
+> I also have kvm-xfstests, which optimizes low test latency, where I
+> want to run a one or a small number of tests with a minimum of
+> overhead --- gce startup and shutdown is around 2 minutes, where as
+> kvm startup and shutdown is about 7 seconds.  As far as I'm concerned,
+> 7 seconds is still too slow, but that's the best I've been able to do
+> given all of the other things I want a test framework to do, including
+> archiving test results, parsing the test results so it's easy to
+> interpret, etc.  Both kvm-xfstests and gce-xfstests are located at:
+> 
+> 	git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+> 
+> So if Frank's primary argument is "too many frameworks", it's already
+> too late.  The block layer has blktests has a seprate framework,
+> called blktests --- and yeah, it's a bit painful to launch or learn
+> how to set things up.
+> 
+> That's why I added support to run blktests using gce-xfstests and
+> kvm-xfstests, so that "gce-xfstests --blktests" or "kvm-xfstests
+> --xfstests" will pluck a kernel from your build tree, and launch at
+> test appliance VM using that kernel and run the block layer tests.
+> 
+> The point is we *already* have multiple test frameworks, which are
+> optimized for testing different parts of the kernel.  And if you plan
+> to do a lot of work in these parts of the kernel, you're going to have
+> to learn how to use some other test framework other than kselftest.
+> Sorry, that's just the way it goes.
+> 
+> Of course, I'll accept trivial patches that haven't been tested using
+> xfstests --- but that's because I can trivially run the smoke test for
+> you.  Of course, if I get a lot of patches from a contributor which
+> cause test regressions, I'll treat them much like someone who
+> contribute patches which fail to build.  I'll apply pressure to the
+> contributor to actually build test, or run a ten minute kvm-xfstests
+> smoke test.  Part of the reason why I feel comfortable to do this is
+> it's really easy to run the smoke test.  There are pre-compiled test
+> appliances, and a lot of documentation:
+> 
+> https://github.com/tytso/xfstests-bld/blob/master/Documentation/kvm-
+> quickstart.md
+> 
+> This is why I have close to zero sympathy to Frank's complaint that
+> extra test frameworks are a bad thing.  To me, that's whining.  I've
+> done a huge amount of work to meet contributors more than half-way.
+> The insistence that "There Must Be One", ala the Highlander movie, is
+> IMHO so wrong that it's not even close.  Is it really that hard to do
+> a "git pull", download a test appliance, set up a config file to tell
+> kvm-xfstests where to find your build tree, and then run "kvm-xfstests
+> --smoke" or "gce-xfstests --smoke"?  Cry me a river.
 
-I don't think you need these stubs, since the only caller of them is
-also gated by MAY_SHARE_FSDAX_PMD ... right?
+Handling these types of things that are not "really that hard to do" is
+exactly what meta-frameworks like KCI, Fuego, and LKFT are for.
+For a core developer in a sub-system, having them learn a particular
+specialized framework is OK.  However, for someone doing integration
+testing of the kernel (not a core developer
+in a particular subsystem), having lots of different frameworks turns
+into death by a thousand cuts.  But we're working to fix that.
+(Which reminds me that I have an outstanding action item to add an xfstest
+test definition to Fuego. :-) )
 
-> +	vma_interval_tree_foreach(svma, &mapping->i_mmap, idx, idx) {
-> +		if (svma == vma)
-> +			continue;
-> +
-> +		saddr = page_table_shareable(svma, vma, addr, idx);
-> +		if (saddr) {
-> +			spmd = huge_pmd_offset(svma->vm_mm, saddr,
-> +					       vma_mmu_pagesize(svma));
-> +			if (spmd) {
-> +				get_page(virt_to_page(spmd));
-> +				break;
-> +			}
-> +		}
-> +	}
+> 
+> There are already multiple test frameworks, and if you expect to do a
+> lot of work in a particular subsystem, you'll be expected to use the
+> Maintainer's choice of tests.  Deal with it.  We do this so we can
+> scale to the number of contributors we have in our subsystem.
 
-I'd be tempted to reduce the indentation here:
+This seems to me to be exactly backwards.  You scale your contributors
+by making it easier for them, which means adopting something already
+well-know or established - not by being different.
 
-	vma_interval_tree_foreach(svma, &mapping->i_mmap, idx, idx) {
-		if (svma == vma)
-			continue;
+I understand your vise grip metaphor, and agree with you.  In my opinion
+kselftest and kunit are optimized for different things, and are different tools
+in the Linux kernel testing toolbox.  But if you start having too many tools, or
+the tools are too specialized, there are less people familiar with them and
+ready to use them to help contribute.
 
-		saddr = page_table_shareable(svma, vma, addr, idx);
-		if (!saddr)
-			continue;
+> 
+> > To 1) I agree with Frank in that the problem with using UML is that you still
+> have to
+> > relate to the complexity of a kernel run time system, while what you really
+> want for these
+> > types of tests is just to compile a couple of kernel source files in a normal
+> user land
+> > context, to allow the use of Valgrind and other user space tools on the
+> code.
+> 
+> "Just compiling a couple of kernel source files in a normal user land"
+> is much harder than you think.  It requires writing vast numbers of
+> mocking functions --- for a file system I would have to simulate the
+> block device layer, large portions of the VFS layer, the scheduler and
+> the locking layer if I want to test locking bugs, etc., etc.  In
+> practice, UML itself is serving as mocking layer, by its mere
+> existence.  So when Frank says that KUnit doesn't provide any mocking
+> functions, I don't at all agree.  Using KUnit and UML makes testing
+> internal interfaces *far* simpler, especially if the comparison is
+> "just compile some kernel source files as part of a userspace test
+> program".
 
-		spmd = huge_pmd_offset(svma->vm_mm, saddr,
-					vma_mmu_pagesize(svma));
-		if (spmd)
-			break;
-	}
+I had one thing I wanted to ask about here.  You said previously that
+you plan to use KUnit to test a complicated but hardware independent
+part of the filesystem code.  If you test only via UML, will that give you
+coverage for non-x86 platforms? More specifically, will you get coverage
+for 32-bit, for big-endian as well as little-endian, for weird architectures?
+It seems like the software for these complicated sections of code is
+subject to regressions due to toolchain issues as much as from coding errors.
+That's why I was initially turned off when I  heard that KUnit only planned
+to support UML and not cross-compilation.
 
+I'm not sure what the status is of UML for all the weird embedded processors
+that get only cross-compiled and not natively-compiled, but there are multiple
+reasons why UML is less commonly used in the embedded space.
+ 
+> Perhaps your and Frank's experience is different --- perhaps that can
+> be explained by your past experience and interest in testing device
+> drivers as opposed to file systems.
+> 
+> The other thing I'd add is that at least for me, a really important
+> consideration is how quickly we can run tests.  I consider
+> minimization of developer friction (e.g., all you need to do is
+> running "make ; kvm-xfstests --smoke" to run tests), and maximizing
+> developer velocity to be high priority goals.  Developer velocity is
+> how quickly can you run the tests; ideally, less than 5-10 seconds.
+> 
+> And that's the other reason why I consider unit tests to be a
+> complement to integration tests.  "gce-xfstests --smoke" takes 10-15
+> minutes.  If I can have unit tests which takes 5-15 seconds for a
+> smoke test of the specific part of ext4 that I am modifying (and often
+> with much better coverage than integration tests from userspace),
+> that's at really big deal.  I can do this for e2fsprogs; but if I have
+> to launch a VM, the VM overhead pretty much eats all or most of that
+> time budget right there.
+> 
+> From looking at your documentation of KTF, you are targetting the use
+> case of continuous testing.  That's a different testing scenario than
+> what I'm describing; with continuous testing, overhead measured in
+> minutes or even tens of minutes is not a big deal.  But if you are
+> trying to do real-time testing as part of your development process ---
+> *real* Test Driven Development, then test latency is a really big
+> deal.
+> 
+> I'll grant that for people who are working on device drivers where
+> architecture dependencies are a big deal, building for an architecture
+> where you can run in a virtual environment or using test hardware is
+> going to be a better way to go.  And Brendan has said he's willing to
+> look at adapting KUnit so it can be built for use in a virtual
+> environment to accomodate your requirements.
 
-> +	if (!spmd)
-> +		goto out;
+This might solve my cross-compile needs, so that's good.
 
-... and move the get_page() down to here, so we don't split the
-"when we find it" logic between inside and outside the loop.
+> 
+> As far as I'm concerned, however, I would *not* be interested in KTF
+> unless you could demonstrate to me that launching at test VM, somehow
+> getting the kernel modules copied into the VM, and running the tests
+> as kernel modules, has zero overhead compared to using UML.
+> 
+> Ultimately, I'm a pragmatist.  If KTF serves your needs best, good for
+> you.  If other approaches are better for other parts of the kernel,
+> let's not try to impose a strict "There Must Be Only One" religion.
+> That's already not true today, and for good reason.  There are many
+> different kinds of kernel code, and many different types of test
+> philosophies.  Trying to force all kernel testing into a single
+> Procrustean Bed is simply not productive.
 
-	get_page(virt_to_page(spmd));
+Had to look up "Procrustean Bed" - great phrase.  :-)
 
-> +
-> +	ptl = pmd_lockptr(mm, spmd);
-> +	spin_lock(ptl);
-> +
-> +	if (pud_none(*pud)) {
-> +		pud_populate(mm, pud,
-> +			    (pmd_t *)((unsigned long)spmd & PAGE_MASK));
-> +		mm_inc_nr_pmds(mm);
-> +	} else {
-> +		put_page(virt_to_page(spmd));
-> +	}
-> +	spin_unlock(ptl);
-> +out:
-> +	pmd = pmd_alloc(mm, pud, addr);
-> +	i_mmap_unlock_write(mapping);
+I'm not of the opinion that there must only be one test framework
+in the kernel. But we should avoid unnecessary multiplication. Every
+person is going to have a different idea for where the line of necessity
+is drawn.  My own opinion is that what KUnit is adding is different enough
+from kselftest, that it's a valuable addition.  
 
-I would swap these two lines.  There's no need to hold the i_mmap_lock
-while allocating this PMD, is there?  I mean, we don't for the !may_share
-case.
+ -- Tim
+
 
 _______________________________________________
 Linux-nvdimm mailing list
