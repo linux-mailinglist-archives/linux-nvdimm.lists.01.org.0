@@ -2,39 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DC3197C5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 06:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB29B197F0
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 07:11:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1E86F21260A7E;
-	Thu,  9 May 2019 21:48:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 181F421265780;
+	Thu,  9 May 2019 22:11:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
- receiver=linux-nvdimm@lists.01.org 
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9ECAD2125ADF8
- for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 21:48:54 -0700 (PDT)
-Received: from callcc.thunk.org ([66.31.38.53]) (authenticated bits=0)
- (User authenticated as tytso@ATHENA.MIT.EDU)
- by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x4A4livR031694
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 May 2019 00:47:45 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
- id 11AEE420024; Fri, 10 May 2019 00:47:44 -0400 (EDT)
-Date: Fri, 10 May 2019 00:47:43 -0400
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Logan Gunthorpe <logang@deltatee.com>
+ by ml01.01.org (Postfix) with ESMTPS id 292C921260A78
+ for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 22:11:05 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id c13so2410960pgt.1
+ for <linux-nvdimm@lists.01.org>; Thu, 09 May 2019 22:11:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=subject:from:to:references:message-id:date:user-agent:mime-version
+ :in-reply-to:content-language:content-transfer-encoding;
+ bh=OmO2i50lqlsSgaoTI7x+LU0Rb4IXRz+Mg/lkHAf6xo4=;
+ b=h6HgSBhdR2q8pjCv5pazDNeWPWcAw6Ib0Ler3cJAxdQ1lH1ZXpe051KYcwiApiirUY
+ NsyyscPa9Pb1qYp2NkCmr/yZEKpRoeDVZEqfvtvnktwfJQ8ltTb4MS9CTsMkX86Qfl6R
+ wNMMYv103G1RYhl2X50sYZLrTrycqhSAGPUKSzzQl1mTsvFbaolXHksWaGgaRYrhfI5M
+ L4lQp7rhFYpWaiSOHm1RnPbJGA0qf76yGUjq/SbXMKhbxFo+Wh9SPCsR3N1CveT2dAsB
+ rZgYm5MWhhSu3m/dcDFfb9yq3sF+ceUTxztM4doeijTYv0drvN5XpBIqj67HbbygyZXH
+ tPcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:from:to:references:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=OmO2i50lqlsSgaoTI7x+LU0Rb4IXRz+Mg/lkHAf6xo4=;
+ b=HvmcNploCYaPEa3CoxRsVtC1Jn2rJZtn1fut5j+dL6NI2jws4P+BS8wXiIpMoYxPNd
+ jnEmhioRtuCTc5cI3P4OPR6Qn5DHW/2Ijk/WStX0Tpiu/tHsvQhI+5DmrnlQHtwBfyDM
+ 9EQ9tcLNif92w4irp0lDJmUQiNzbsBmhPHIIUOCh0CaowRiI3JUEn+iH3awIV4qFLKoM
+ 6TGKi7p2dx2ZDTqtng5cq2pf2lFMCo3+lm/TzlYIY3oyuu+xnIgPjYc040i3DssSsh1U
+ BElThbTT9dzCgsKHr18WYruyzQ7YJhS5oqYngEOMoXcDKrpeuzWQunz2AJT4QRGLehWT
+ J4SQ==
+X-Gm-Message-State: APjAAAUsyPoOcg5cDZ0TcS8RkqrqjnoG7JkVpjscY6pJ8QMPOXZvNUBX
+ eANxfBEWq0rX+HlKq7eY9K4=
+X-Google-Smtp-Source: APXvYqxPmwGpQEcDwqNzCE5QbzmkFOAz6RNpDPlo/AiSRWJuVcPZ5PLYe5dgPDT9VD5VjyQCjG9Hrw==
+X-Received: by 2002:aa7:93ba:: with SMTP id x26mr11246068pff.238.1557465065498; 
+ Thu, 09 May 2019 22:11:05 -0700 (PDT)
+Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
+ [24.6.192.50])
+ by smtp.gmail.com with ESMTPSA id k9sm5952733pfa.180.2019.05.09.22.11.02
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 09 May 2019 22:11:04 -0700 (PDT)
 Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
  testing framework
-Message-ID: <20190510044743.GA6889@mit.edu>
-Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
- Logan Gunthorpe <logang@deltatee.com>,
- Frank Rowand <frowand.list@gmail.com>, Tim.Bird@sony.com,
- knut.omang@oracle.com, gregkh@linuxfoundation.org,
- brendanhiggins@google.com, keescook@google.com,
+From: Frank Rowand <frowand.list@gmail.com>
+To: Theodore Ts'o <tytso@mit.edu>, Greg KH <gregkh@linuxfoundation.org>,
+ Brendan Higgins <brendanhiggins@google.com>, keescook@google.com,
  kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org,
  sboyd@kernel.org, shuah@kernel.org, devicetree@vger.kernel.org,
  dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
@@ -42,25 +64,25 @@ Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
  linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
  linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
- amir73il@gmail.com, dan.carpenter@oracle.com,
+ Tim.Bird@sony.com, amir73il@gmail.com, dan.carpenter@oracle.com,
  dan.j.williams@intel.com, daniel@ffwll.ch, jdike@addtoit.com,
  joel@jms.id.au, julia.lawall@lip6.fr, khilman@baylibre.com,
- mpe@ellerman.id.au, pmladek@suse.com, richard@nod.at,
- rientjes@google.com, rostedt@goodmis.org, wfg@linux.intel.com
-References: <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
- <20190509032017.GA29703@mit.edu>
- <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
- <20190509133551.GD29703@mit.edu>
- <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
- <875c546d-9713-bb59-47e4-77a1d2c69a6d@gmail.com>
- <20190509214233.GA20877@mit.edu>
- <b09ba170-229b-fde4-3e9a-e50d6ab4c1b5@deltatee.com>
- <20190509233043.GC20877@mit.edu>
- <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
+ knut.omang@oracle.com, logang@deltatee.com, mpe@ellerman.id.au,
+ pmladek@suse.com, richard@nod.at, rientjes@google.com, rostedt@goodmis.org,
+ wfg@linux.intel.com
+References: <20190501230126.229218-1-brendanhiggins@google.com>
+ <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
+ <20190507080119.GB28121@kroah.com>
+ <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
+ <20190509015856.GB7031@mit.edu>
+ <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+Message-ID: <78e4d46e-6212-9871-51d6-dd2126f39d45@gmail.com>
+Date: Thu, 9 May 2019 22:11:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,41 +94,139 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- brendanhiggins@google.com, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
- linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
- linux-nvdimm@lists.01.org, Frank Rowand <frowand.list@gmail.com>,
- knut.omang@oracle.com, kieran.bingham@ideasonboard.com, wfg@linux.intel.com,
- joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
- dan.carpenter@oracle.com, devicetree@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
- rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
- richard@nod.at, sboyd@kernel.org, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, mcgrof@kernel.org, daniel@ffwll.ch,
- keescook@google.com, linux-fsdevel@vger.kernel.org, khilman@baylibre.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 09, 2019 at 05:40:48PM -0600, Logan Gunthorpe wrote:
+Hi Ted,
+
+I'll try answering this again.
+
+The first time I was a little flippant in part of my answer because I
+thought your comments somewhat flippant.  This time I'll provide a
+more complete answer.
+
+
+On 5/8/19 7:13 PM, Frank Rowand wrote:
+> On 5/8/19 6:58 PM, Theodore Ts'o wrote:
+>> On Wed, May 08, 2019 at 05:43:35PM -0700, Frank Rowand wrote:
+
+*****  begin context from Greg KH that you snipped  *****
+
+On 5/7/19 1:01 AM, Greg KH wrote:
+
+<< note that I have snipped my original question above this point >>
+
+>
+> kselftest provides no in-kernel framework for testing kernel code
+> specifically.  That should be what kunit provides, an "easy" way to
+> write in-kernel tests for things.
+
+*****  end   context from Greg KH that you snipped  *****
+
+>>> kselftest provides a mechanism for in-kernel tests via modules.  For
+>>> example, see:
+>>>
+>>>   tools/testing/selftests/vm/run_vmtests invokes:
+>>>     tools/testing/selftests/vm/test_vmalloc.sh
+>>>       loads module:
+>>>         test_vmalloc
+>>>         (which is built from lib/test_vmalloc.c if CONFIG_TEST_VMALLOC)
+>>
+>> The majority of the kselftests are implemented as userspace programs.
+
+My flippant answer:
+
+> Non-argument.
+
+This time:
+
+My reply to Greg was pointing out that in-kernel tests do exist in
+kselftest.
+
+Your comment that the majority of kselftests are implemented as userspace
+programs has no bearing on whether kselftest support in-kernel tests.
+It does not counter the fact the kselftest supports in-kernel tests.
+
+
+>> You *can* run in-kernel test using modules; but there is no framework
+>> for the in-kernel code found in the test modules, which means each of
+>> the in-kernel code has to create their own in-kernel test
+>> infrastructure.
+
+The kselftest in-kernel tests follow a common pattern.  As such, there
+is a framework.
+
+This next two paragraphs you ignored entirely in your reply:
+
+> Why create an entire new subsystem (KUnit) when you can add a header
+> file (and .c code as appropriate) that outputs the proper TAP formatted
+> results from kselftest kernel test modules?
 > 
-> Based on some of the other commenters, I was under the impression that
-> kselftests had in-kernel tests but I'm not sure where or if they exist. If
-> they do exists, it seems like it would make sense to convert those to kunit
-> and have Kunit tests run-able in a VM or baremetal instance.
+> There are already a multitude of in kernel test modules used by
+> kselftest.  It would be good if they all used a common TAP compliant
+> mechanism to report results.
 
-There are kselftests tests which are shell scripts which load a
-module, and the module runs the in-kernel code.  However, I didn't see
-much infrastructure for the in-kernel test code; the one or two test
-modules called from kselftests looked pretty ad hoc to me.
 
-That's why I used the "vise grips" analogy.  You can use a pair of
-vise grips like a monkey wrench; but it's not really a monkey wrench,
-and might not be the best tool to loosen or tighten nuts and bolts.
+ 
+>> That's much like saying you can use vice grips to turn a nut or
+>> bolt-head.  You *can*, but it might be that using a monkey wrench
+>> would be a much better tool that is much easier.
+>>
+>> What would you say to a wood worker objecting that a toolbox should
+>> contain a monkey wrench because he already knows how to use vise
+>> grips, and his tiny brain shouldn't be forced to learn how to use a
+>> wrench when he knows how to use a vise grip, which is a perfectly good
+>> tool?
+>>
+>> If you want to use vice grips as a hammer, screwdriver, monkey wrench,
+>> etc.  there's nothing stopping you from doing that.  But it's not fair
+>> to object to other people who might want to use better tools.
+>>
+>> The reality is that we have a lot of testing tools.  It's not just
+>> kselftests.  There is xfstests for file system code, blktests for
+>> block layer tests, etc.   We use the right tool for the right job.
 
-       	   	     	       	   - Ted
+My flippant answer:
+
+> More specious arguments.
+
+This time:
+
+I took your answer as a straw man, and had no desire to spend time
+countering a straw man.
+
+I am not proposing using a vice grips (to use your analogy).  I
+am saying that maybe the monkey wrench already exists.
+
+My point of this whole thread has been to try to get the submitter
+to provide a better, more complete explanation of how and why KUnit 
+is a better tool.
+
+I have not yet objected to the number (and differences among) the
+many sub-system tests.  I am questioning whether there is a need
+for another _test framework_ for in-kernel testing.  If there is
+something important that KUnit provides that does not exist in
+existing frameworks then the next question would be to ask how
+to implement that important thing (improve the existing
+framework, replace the existing framework, or have two
+frameworks).  I still think it is premature to ask this
+question until we first know the answer to what unique features
+KUnit adds (and apparently until we know what the existing
+framework provides).
+
+-Frank
+
+> 
+> -Frank
+> 
+>>
+>> 						- Ted
+>>
+> 
+> 
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
