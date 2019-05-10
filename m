@@ -1,78 +1,85 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81051A11F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 18:16:40 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0071A126
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 18:18:38 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 93A5F2126CF86;
-	Fri, 10 May 2019 09:16:39 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1DE2C2126CF87;
+	Fri, 10 May 2019 09:18:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=larry.bassel@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+ client-ip=207.54.116.67; helo=ale.deltatee.com;
+ envelope-from=logang@deltatee.com; receiver=linux-nvdimm@lists.01.org 
+Received: from ale.deltatee.com (ale.deltatee.com [207.54.116.67])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CEA8F21268FA8
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 09:16:37 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4AG8faU027900;
- Fri, 10 May 2019 16:16:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=ikyWD5tw3+Fa2klAswpQ3zG257Y/SYQKpSWVthHNaDQ=;
- b=jTF0ls4cyPu4lSedw8dhdKuv+vpLCt0VH3bLgDV9dvGWnvAVyKs31jEKWxt23CxWULLe
- KdKut0Bqm/TJKO/jJzsWynABfRlBIs8SJs4xOeoYPDb3KD0IHG7KBeJo5FxJgkD+AhXw
- CFZOeUR/vri7jNs8vQaK2dJgqlPlpR8RMPBLJXtdvnovfc14TIJ+JFvbc6f+Fi9by9yA
- RWK/2h22VkMcoqAg4JfIVgk6812bBv2eGY1biLyyCsCZxQB2gRme7+xocJJq6CDx/Fnz
- MrTVuCkawwTYm0ebBeD30KgDpatU8Jk+d022WGuXpOS2WXl2+Vd4j5rJ6u5GvvCCouIE Jg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2130.oracle.com with ESMTP id 2s94bgj6dx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 May 2019 16:16:21 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4AGFATp008060;
- Fri, 10 May 2019 16:16:21 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
- by aserp3020.oracle.com with ESMTP id 2schw0gr97-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 May 2019 16:16:21 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
- by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4AGGIAk029191;
- Fri, 10 May 2019 16:16:18 GMT
-Received: from ubuette (/75.80.107.76) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Fri, 10 May 2019 16:16:17 +0000
-Date: Fri, 10 May 2019 09:16:07 -0700
-From: Larry Bassel <larry.bassel@oracle.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH, RFC 2/2] Implement sharing/unsharing of PMDs for FS/DAX
-Message-ID: <20190510161607.GB27674@ubuette>
-References: <1557417933-15701-1-git-send-email-larry.bassel@oracle.com>
- <1557417933-15701-3-git-send-email-larry.bassel@oracle.com>
- <20190509164914.GA3862@bombadil.infradead.org>
+ by ml01.01.org (Postfix) with ESMTPS id 284BE2125584F
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 09:18:34 -0700 (PDT)
+Received: from guinness.priv.deltatee.com ([172.16.1.162])
+ by ale.deltatee.com with esmtp (Exim 4.89)
+ (envelope-from <logang@deltatee.com>)
+ id 1hP8Dm-0006xr-3M; Fri, 10 May 2019 10:18:07 -0600
+To: Frank Rowand <frowand.list@gmail.com>, Theodore Ts'o <tytso@mit.edu>,
+ Tim.Bird@sony.com, knut.omang@oracle.com, gregkh@linuxfoundation.org,
+ brendanhiggins@google.com, keescook@google.com,
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org,
+ sboyd@kernel.org, shuah@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
+ linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
+ amir73il@gmail.com, dan.carpenter@oracle.com, dan.j.williams@intel.com,
+ daniel@ffwll.ch, jdike@addtoit.com, joel@jms.id.au, julia.lawall@lip6.fr,
+ khilman@baylibre.com, mpe@ellerman.id.au, pmladek@suse.com, richard@nod.at,
+ rientjes@google.com, rostedt@goodmis.org, wfg@linux.intel.com
+References: <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
+ <20190509015856.GB7031@mit.edu>
+ <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+ <20190509032017.GA29703@mit.edu>
+ <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
+ <20190509133551.GD29703@mit.edu>
+ <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
+ <875c546d-9713-bb59-47e4-77a1d2c69a6d@gmail.com>
+ <20190509214233.GA20877@mit.edu>
+ <b09ba170-229b-fde4-3e9a-e50d6ab4c1b5@deltatee.com>
+ <20190509233043.GC20877@mit.edu>
+ <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
+ <6d6e91ec-33d3-830b-4895-4d7a20ba7d45@gmail.com>
+From: Logan Gunthorpe <logang@deltatee.com>
+Message-ID: <3faa022b-0b70-0375-aa6d-12ea83a2671f@deltatee.com>
+Date: Fri, 10 May 2019 10:17:56 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190509164914.GA3862@bombadil.infradead.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905100110
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905100110
+In-Reply-To: <6d6e91ec-33d3-830b-4895-4d7a20ba7d45@gmail.com>
+Content-Language: en-CA
+X-SA-Exim-Connect-IP: 172.16.1.162
+X-SA-Exim-Rcpt-To: wfg@linux.intel.com, rostedt@goodmis.org,
+ rientjes@google.com, richard@nod.at, pmladek@suse.com, mpe@ellerman.id.au,
+ khilman@baylibre.com, julia.lawall@lip6.fr, joel@jms.id.au, jdike@addtoit.com,
+ daniel@ffwll.ch, dan.j.williams@intel.com, dan.carpenter@oracle.com,
+ amir73il@gmail.com, Alexander.Levin@microsoft.com,
+ linux-um@lists.infradead.org, linux-nvdimm@lists.01.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kunit-dev@googlegroups.com,
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, shuah@kernel.org,
+ sboyd@kernel.org, robh@kernel.org, mcgrof@kernel.org,
+ kieran.bingham@ideasonboard.com, keescook@google.com,
+ brendanhiggins@google.com, gregkh@linuxfoundation.org, knut.omang@oracle.com,
+ Tim.Bird@sony.com, tytso@mit.edu, frowand.list@gmail.com
+X-SA-Exim-Mail-From: logang@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-6.9 required=5.0 tests=ALL_TRUSTED,BAYES_00
+ autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,126 +91,50 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mike.kravetz@oracle.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 09 May 19 09:49, Matthew Wilcox wrote:
-> On Thu, May 09, 2019 at 09:05:33AM -0700, Larry Bassel wrote:
-> > This is based on (but somewhat different from) what hugetlbfs
-> > does to share/unshare page tables.
-> 
-> Wow, that worked out far more cleanly than I was expecting to see.
 
-Yes, I was pleasantly surprised. As I've mentioned already, I 
-think this is at least partially due to the nature of DAX.
 
-> 
-> > @@ -4763,6 +4763,19 @@ void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
-> >  				unsigned long *start, unsigned long *end)
-> >  {
-> >  }
-> > +
-> > +unsigned long page_table_shareable(struct vm_area_struct *svma,
-> > +				   struct vm_area_struct *vma,
-> > +				   unsigned long addr, pgoff_t idx)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> > +bool vma_shareable(struct vm_area_struct *vma, unsigned long addr)
-> > +{
-> > +	return false;
-> > +}
-> 
-> I don't think you need these stubs, since the only caller of them is
-> also gated by MAY_SHARE_FSDAX_PMD ... right?
+On 2019-05-09 11:18 p.m., Frank Rowand wrote:
 
-These are also called in mm/hugetlb.c, but those calls are gated by
-CONFIG_ARCH_WANT_HUGE_PMD_SHARE. In fact if this is not set (though
-it is the default), then one wouldn't get FS/DAX sharing even if
-MAY_SHARE_FSDAX_PMD is set. I think that this isn't what we want
-(perhaps the real question is how should these two config options interact?).
-Removing the stubs would fix this and I will make that change.
+> YES, kselftest has in-kernel tests.  (Excuse the shouting...)
 
-Maybe these two functions should be moved into mm/memory.c as well.
+Cool. From my cursory look, in my opinion, these would be greatly
+improved by converting them to the framework Brendan is proposing for Kunit.
 
+>> If they do exists, it seems like it would make sense to
+>> convert those to kunit and have Kunit tests run-able in a VM or
+>> baremetal instance.
 > 
-> > +	vma_interval_tree_foreach(svma, &mapping->i_mmap, idx, idx) {
-> > +		if (svma == vma)
-> > +			continue;
-> > +
-> > +		saddr = page_table_shareable(svma, vma, addr, idx);
-> > +		if (saddr) {
-> > +			spmd = huge_pmd_offset(svma->vm_mm, saddr,
-> > +					       vma_mmu_pagesize(svma));
-> > +			if (spmd) {
-> > +				get_page(virt_to_page(spmd));
-> > +				break;
-> > +			}
-> > +		}
-> > +	}
+> They already run in a VM.
 > 
-> I'd be tempted to reduce the indentation here:
+> They already run on bare metal.
 > 
-> 	vma_interval_tree_foreach(svma, &mapping->i_mmap, idx, idx) {
-> 		if (svma == vma)
-> 			continue;
-> 
-> 		saddr = page_table_shareable(svma, vma, addr, idx);
-> 		if (!saddr)
-> 			continue;
-> 
-> 		spmd = huge_pmd_offset(svma->vm_mm, saddr,
-> 					vma_mmu_pagesize(svma));
-> 		if (spmd)
-> 			break;
-> 	}
-> 
-> 
-> > +	if (!spmd)
-> > +		goto out;
-> 
-> ... and move the get_page() down to here, so we don't split the
-> "when we find it" logic between inside and outside the loop.
-> 
-> 	get_page(virt_to_page(spmd));
-> 
-> > +
-> > +	ptl = pmd_lockptr(mm, spmd);
-> > +	spin_lock(ptl);
-> > +
-> > +	if (pud_none(*pud)) {
-> > +		pud_populate(mm, pud,
-> > +			    (pmd_t *)((unsigned long)spmd & PAGE_MASK));
-> > +		mm_inc_nr_pmds(mm);
-> > +	} else {
-> > +		put_page(virt_to_page(spmd));
-> > +	}
-> > +	spin_unlock(ptl);
-> > +out:
-> > +	pmd = pmd_alloc(mm, pud, addr);
-> > +	i_mmap_unlock_write(mapping);
-> 
-> I would swap these two lines.  There's no need to hold the i_mmap_lock
-> while allocating this PMD, is there?  I mean, we don't for the !may_share
-> case.
-> 
+> They already run in UML.
 
-These were done in the style of functions already in mm/hugetlb.c and I was
-trying to change as little as necessary in my copy of those. I agree that
-these are good suggestions. One could argue that if these changes
-were made, they should also be made in mm/hugetlb.c, though
-this is perhaps beyond the scope of getting FS/DAX PMD sharing
-implemented -- your thoughts?
+Simply being able to run in UML is not the only thing here. Kunit
+provides the infrastructure to quickly build, run and report results for
+all the tests from userspace without needing to worry about the details
+of building and running a UML kernel, then parsing dmesg to figure out
+what tests were run or not.
 
-Thanks for the review, I'll wait a few more days for other comments
-and then send out a v2.
+> This is not to say that KUnit does not make sense.  But I'm still trying
+> to get a better description of the KUnit features (and there are
+> some).
 
-Larry
+So read the patches, or the documentation[1] or the LWN article[2]. It's
+pretty well described in a lot of places -- that's one of the big
+advantages of it. In contrast, few people seems to have any concept of
+what kselftests are or where they are or how to run them (I was
+surprised to find the in-kernel tests in the lib tree).
+
+Logan
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[2] https://lwn.net/Articles/780985/
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
