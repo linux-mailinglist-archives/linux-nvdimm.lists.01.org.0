@@ -2,61 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB29B197F0
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 07:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAA6197FE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 07:18:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 181F421265780;
-	Thu,  9 May 2019 22:11:08 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E0B1C21265783;
+	Thu,  9 May 2019 22:18:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 292C921260A78
- for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 22:11:05 -0700 (PDT)
-Received: by mail-pg1-x543.google.com with SMTP id c13so2410960pgt.1
- for <linux-nvdimm@lists.01.org>; Thu, 09 May 2019 22:11:05 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0618F21260A7F
+ for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 22:18:29 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id w22so2403491pgi.6
+ for <linux-nvdimm@lists.01.org>; Thu, 09 May 2019 22:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:from:to:references:message-id:date:user-agent:mime-version
+ h=subject:to:references:from:message-id:date:user-agent:mime-version
  :in-reply-to:content-language:content-transfer-encoding;
- bh=OmO2i50lqlsSgaoTI7x+LU0Rb4IXRz+Mg/lkHAf6xo4=;
- b=h6HgSBhdR2q8pjCv5pazDNeWPWcAw6Ib0Ler3cJAxdQ1lH1ZXpe051KYcwiApiirUY
- NsyyscPa9Pb1qYp2NkCmr/yZEKpRoeDVZEqfvtvnktwfJQ8ltTb4MS9CTsMkX86Qfl6R
- wNMMYv103G1RYhl2X50sYZLrTrycqhSAGPUKSzzQl1mTsvFbaolXHksWaGgaRYrhfI5M
- L4lQp7rhFYpWaiSOHm1RnPbJGA0qf76yGUjq/SbXMKhbxFo+Wh9SPCsR3N1CveT2dAsB
- rZgYm5MWhhSu3m/dcDFfb9yq3sF+ceUTxztM4doeijTYv0drvN5XpBIqj67HbbygyZXH
- tPcg==
+ bh=xr7T45ENj0X8h0TTVYIw3YN3QMd5VAPV0aYioKPyHGs=;
+ b=E1W7JeDYer401ts5Pou7l1Dg8TvNv88Ns4Lxp8N/AgQI/qtmKYf4sNUlvOULHL6msw
+ bA+I7RbCsYKAaaMHAvXT6Fy1BGVr1yesoASaRLH6j/RcI8tUmGMA5UmJ/rWF+KvKU+u2
+ kHaJkGp0GSxbcaoUl+lU2S18kDfjfldcm6/dgG8YRjndn5rv5Vcgo2gT7GV7bNpO12MH
+ WACO3dSP6EWF4OBYJVOjOuhUw87UecegOh600ZVYpyP23r15SmCI6/2JOlQtfBmzCiBv
+ GKCcSYfhY18upXwnqcnmZwEFLwwyITRtKemOfO3+vrLyFwKarkL6tbKzZ3EF3xyKXxzT
+ KHfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:references:message-id:date
+ h=x-gm-message-state:subject:to:references:from:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=OmO2i50lqlsSgaoTI7x+LU0Rb4IXRz+Mg/lkHAf6xo4=;
- b=HvmcNploCYaPEa3CoxRsVtC1Jn2rJZtn1fut5j+dL6NI2jws4P+BS8wXiIpMoYxPNd
- jnEmhioRtuCTc5cI3P4OPR6Qn5DHW/2Ijk/WStX0Tpiu/tHsvQhI+5DmrnlQHtwBfyDM
- 9EQ9tcLNif92w4irp0lDJmUQiNzbsBmhPHIIUOCh0CaowRiI3JUEn+iH3awIV4qFLKoM
- 6TGKi7p2dx2ZDTqtng5cq2pf2lFMCo3+lm/TzlYIY3oyuu+xnIgPjYc040i3DssSsh1U
- BElThbTT9dzCgsKHr18WYruyzQ7YJhS5oqYngEOMoXcDKrpeuzWQunz2AJT4QRGLehWT
- J4SQ==
-X-Gm-Message-State: APjAAAUsyPoOcg5cDZ0TcS8RkqrqjnoG7JkVpjscY6pJ8QMPOXZvNUBX
- eANxfBEWq0rX+HlKq7eY9K4=
-X-Google-Smtp-Source: APXvYqxPmwGpQEcDwqNzCE5QbzmkFOAz6RNpDPlo/AiSRWJuVcPZ5PLYe5dgPDT9VD5VjyQCjG9Hrw==
-X-Received: by 2002:aa7:93ba:: with SMTP id x26mr11246068pff.238.1557465065498; 
- Thu, 09 May 2019 22:11:05 -0700 (PDT)
+ bh=xr7T45ENj0X8h0TTVYIw3YN3QMd5VAPV0aYioKPyHGs=;
+ b=Bcp/0lFBqAor2lsXvS1k5Sy1wZ3vwtmVTe85AO3coJ/pE7pQJjjZLyfGRylMhsdXvT
+ pPHBpXC1Lt2+ykcphUqit0MkBF6hBoFul63D2KkS3zTYu4DUgWGssW+ivwyiAeH7+pfb
+ dAnlCo8P164gO/LH153z4E89EUPhYSLOHIm4OMo6JLNZ6Xh+qjlM3ZWcQZkEy7A8xTzD
+ RVSqCWPTe/AMUcwCrEbvPbejbi4Nza+qZv9ofe6/fRrbAD6SDpEOI8/hKHLQVFq9dczc
+ aW0SVENMlvvECD549eiQF6EOs9WjA2wYuIg6Eqriz1362om0F1cuwBQx+3H0Q1DS3Rnj
+ Ykbg==
+X-Gm-Message-State: APjAAAVByRKudPif4xFI0qBJUOWcEZQONoGAG10vTTA+rTBOGNibbG68
+ GvSqrapskzfA8LZ3i0cNC60=
+X-Google-Smtp-Source: APXvYqwtH7Skgh8l1ykgmrPjhuMGx9pfdkEsTTFsM6aBvQOxMoXlEpvU8usovtkKH/1Zc0SXCzAcIQ==
+X-Received: by 2002:a63:4820:: with SMTP id v32mr11058846pga.89.1557465509602; 
+ Thu, 09 May 2019 22:18:29 -0700 (PDT)
 Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
  [24.6.192.50])
- by smtp.gmail.com with ESMTPSA id k9sm5952733pfa.180.2019.05.09.22.11.02
+ by smtp.gmail.com with ESMTPSA id l19sm4974597pff.1.2019.05.09.22.18.26
  (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 09 May 2019 22:11:04 -0700 (PDT)
+ Thu, 09 May 2019 22:18:29 -0700 (PDT)
 Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
  testing framework
-From: Frank Rowand <frowand.list@gmail.com>
-To: Theodore Ts'o <tytso@mit.edu>, Greg KH <gregkh@linuxfoundation.org>,
- Brendan Higgins <brendanhiggins@google.com>, keescook@google.com,
+To: Logan Gunthorpe <logang@deltatee.com>, Theodore Ts'o <tytso@mit.edu>,
+ Tim.Bird@sony.com, knut.omang@oracle.com, gregkh@linuxfoundation.org,
+ brendanhiggins@google.com, keescook@google.com,
  kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org,
  sboyd@kernel.org, shuah@kernel.org, devicetree@vger.kernel.org,
  dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
@@ -64,24 +64,29 @@ To: Theodore Ts'o <tytso@mit.edu>, Greg KH <gregkh@linuxfoundation.org>,
  linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
  linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
- Tim.Bird@sony.com, amir73il@gmail.com, dan.carpenter@oracle.com,
- dan.j.williams@intel.com, daniel@ffwll.ch, jdike@addtoit.com,
- joel@jms.id.au, julia.lawall@lip6.fr, khilman@baylibre.com,
- knut.omang@oracle.com, logang@deltatee.com, mpe@ellerman.id.au,
- pmladek@suse.com, richard@nod.at, rientjes@google.com, rostedt@goodmis.org,
- wfg@linux.intel.com
-References: <20190501230126.229218-1-brendanhiggins@google.com>
- <54940124-50df-16ec-1a32-ad794ee05da7@gmail.com>
- <20190507080119.GB28121@kroah.com>
- <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
+ amir73il@gmail.com, dan.carpenter@oracle.com, dan.j.williams@intel.com,
+ daniel@ffwll.ch, jdike@addtoit.com, joel@jms.id.au, julia.lawall@lip6.fr,
+ khilman@baylibre.com, mpe@ellerman.id.au, pmladek@suse.com, richard@nod.at,
+ rientjes@google.com, rostedt@goodmis.org, wfg@linux.intel.com
+References: <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
  <20190509015856.GB7031@mit.edu>
  <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
-Message-ID: <78e4d46e-6212-9871-51d6-dd2126f39d45@gmail.com>
-Date: Thu, 9 May 2019 22:11:01 -0700
+ <20190509032017.GA29703@mit.edu>
+ <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
+ <20190509133551.GD29703@mit.edu>
+ <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
+ <875c546d-9713-bb59-47e4-77a1d2c69a6d@gmail.com>
+ <20190509214233.GA20877@mit.edu>
+ <b09ba170-229b-fde4-3e9a-e50d6ab4c1b5@deltatee.com>
+ <20190509233043.GC20877@mit.edu>
+ <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
+From: Frank Rowand <frowand.list@gmail.com>
+Message-ID: <6d6e91ec-33d3-830b-4895-4d7a20ba7d45@gmail.com>
+Date: Thu, 9 May 2019 22:18:25 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+In-Reply-To: <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
 Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -94,140 +99,85 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Ted,
-
-I'll try answering this again.
-
-The first time I was a little flippant in part of my answer because I
-thought your comments somewhat flippant.  This time I'll provide a
-more complete answer.
-
-
-On 5/8/19 7:13 PM, Frank Rowand wrote:
-> On 5/8/19 6:58 PM, Theodore Ts'o wrote:
->> On Wed, May 08, 2019 at 05:43:35PM -0700, Frank Rowand wrote:
-
-*****  begin context from Greg KH that you snipped  *****
-
-On 5/7/19 1:01 AM, Greg KH wrote:
-
-<< note that I have snipped my original question above this point >>
-
->
-> kselftest provides no in-kernel framework for testing kernel code
-> specifically.  That should be what kunit provides, an "easy" way to
-> write in-kernel tests for things.
-
-*****  end   context from Greg KH that you snipped  *****
-
->>> kselftest provides a mechanism for in-kernel tests via modules.  For
->>> example, see:
->>>
->>>   tools/testing/selftests/vm/run_vmtests invokes:
->>>     tools/testing/selftests/vm/test_vmalloc.sh
->>>       loads module:
->>>         test_vmalloc
->>>         (which is built from lib/test_vmalloc.c if CONFIG_TEST_VMALLOC)
->>
->> The majority of the kselftests are implemented as userspace programs.
-
-My flippant answer:
-
-> Non-argument.
-
-This time:
-
-My reply to Greg was pointing out that in-kernel tests do exist in
-kselftest.
-
-Your comment that the majority of kselftests are implemented as userspace
-programs has no bearing on whether kselftest support in-kernel tests.
-It does not counter the fact the kselftest supports in-kernel tests.
-
-
->> You *can* run in-kernel test using modules; but there is no framework
->> for the in-kernel code found in the test modules, which means each of
->> the in-kernel code has to create their own in-kernel test
->> infrastructure.
-
-The kselftest in-kernel tests follow a common pattern.  As such, there
-is a framework.
-
-This next two paragraphs you ignored entirely in your reply:
-
-> Why create an entire new subsystem (KUnit) when you can add a header
-> file (and .c code as appropriate) that outputs the proper TAP formatted
-> results from kselftest kernel test modules?
-> 
-> There are already a multitude of in kernel test modules used by
-> kselftest.  It would be good if they all used a common TAP compliant
-> mechanism to report results.
-
-
- 
->> That's much like saying you can use vice grips to turn a nut or
->> bolt-head.  You *can*, but it might be that using a monkey wrench
->> would be a much better tool that is much easier.
->>
->> What would you say to a wood worker objecting that a toolbox should
->> contain a monkey wrench because he already knows how to use vise
->> grips, and his tiny brain shouldn't be forced to learn how to use a
->> wrench when he knows how to use a vise grip, which is a perfectly good
->> tool?
->>
->> If you want to use vice grips as a hammer, screwdriver, monkey wrench,
->> etc.  there's nothing stopping you from doing that.  But it's not fair
->> to object to other people who might want to use better tools.
->>
->> The reality is that we have a lot of testing tools.  It's not just
->> kselftests.  There is xfstests for file system code, blktests for
->> block layer tests, etc.   We use the right tool for the right job.
-
-My flippant answer:
-
-> More specious arguments.
-
-This time:
-
-I took your answer as a straw man, and had no desire to spend time
-countering a straw man.
-
-I am not proposing using a vice grips (to use your analogy).  I
-am saying that maybe the monkey wrench already exists.
-
-My point of this whole thread has been to try to get the submitter
-to provide a better, more complete explanation of how and why KUnit 
-is a better tool.
-
-I have not yet objected to the number (and differences among) the
-many sub-system tests.  I am questioning whether there is a need
-for another _test framework_ for in-kernel testing.  If there is
-something important that KUnit provides that does not exist in
-existing frameworks then the next question would be to ask how
-to implement that important thing (improve the existing
-framework, replace the existing framework, or have two
-frameworks).  I still think it is premature to ask this
-question until we first know the answer to what unique features
-KUnit adds (and apparently until we know what the existing
-framework provides).
-
--Frank
-
-> 
-> -Frank
-> 
->>
->> 						- Ted
->>
-> 
-> 
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gNS85LzE5IDQ6NDAgUE0sIExvZ2FuIEd1bnRob3JwZSB3cm90ZToKPiAKPiAKPiBPbiAyMDE5
+LTA1LTA5IDU6MzAgcC5tLiwgVGhlb2RvcmUgVHMnbyB3cm90ZToKPj4gT24gVGh1LCBNYXkgMDks
+IDIwMTkgYXQgMDQ6MjA6MDVQTSAtMDYwMCwgTG9nYW4gR3VudGhvcnBlIHdyb3RlOgo+Pj4KPj4+
+IFRoZSBzZWNvbmQgaXRlbSwgYXJndWFibHksIGRvZXMgaGF2ZSBzaWduaWZpY2FudCBvdmVybGFw
+IHdpdGgga3NlbGZ0ZXN0Lgo+Pj4gV2hldGhlciB5b3UgYXJlIHJ1bm5pbmcgc2hvcnQgdGVzdHMg
+aW4gYSBsaWdodCB3ZWlnaHQgVU1MIGVudmlyb25tZW50IG9yCj4+PiBoaWdoZXIgbGV2ZWwgdGVz
+dHMgaW4gYW4gaGVhdmllciBWTSB0aGUgdHdvIGNvdWxkIGJlIHVzaW5nIHRoZSBzYW1lCj4+PiBm
+cmFtZXdvcmsgZm9yIHdyaXRpbmcgb3IgZGVmaW5pbmcgaW4ta2VybmVsIHRlc3RzLiBJdCAqbWF5
+KiBhbHNvIGJlIHZhbHVhYmxlCj4+PiBmb3Igc29tZSBwZW9wbGUgdG8gYmUgYWJsZSB0byBydW4g
+YWxsIHRoZSBVTUwgdGVzdHMgaW4gdGhlIGhlYXZ5IFZNCj4+PiBlbnZpcm9ubWVudCBhbG9uZyBz
+aWRlIG90aGVyIGhpZ2hlciBsZXZlbCB0ZXN0cy4KPj4+Cj4+PiBMb29raW5nIGF0IHRoZSBzZWxm
+dGVzdHMgdHJlZSBpbiB0aGUgcmVwbywgd2UgYWxyZWFkeSBoYXZlIHNpbWlsYXIgaXRlbXMgdG8K
+Pj4+IHdoYXQgS3VuaXQgaXMgYWRkaW5nIGFzIEkgZGVzY3JpYmVkIGluIHBvaW50ICgyKSBhYm92
+ZS4ga3NlbGZ0ZXN0X2hhcm5lc3MuaAo+Pj4gY29udGFpbnMgbWFjcm9zIGxpa2UgRVhQRUNUXyog
+YW5kIEFTU0VSVF8qIHdpdGggdmVyeSBzaW1pbGFyIGludGVudGlvbnMgdG8KPj4+IHRoZSBuZXcg
+S1VOSVRfRVhFQ1BUXyogYW5kIEtVTklUX0FTU0VSVF8qIG1hY3Jvcy4KPj4+Cj4+PiBIb3dldmVy
+LCB0aGUgbnVtYmVyIG9mIHVzZXJzIG9mIHRoaXMgaGFybmVzcyBhcHBlYXJzIHRvIGJlIHF1aXRl
+IHNtYWxsLiBNb3N0Cj4+PiBvZiB0aGUgY29kZSBpbiB0aGUgc2VsZnRlc3RzIHRyZWUgc2VlbXMg
+dG8gYmUgYSByYW5kb20gbWlzbWFzaCBvZiBzY3JpcHRzCj4+PiBhbmQgdXNlcnNwYWNlIGNvZGUg
+c28gaXQncyBub3QgaGFyZCB0byBzZWUgaXQgYXMgc29tZXRoaW5nIGNvbXBsZXRlbHkKPj4+IGRp
+ZmZlcmVudCBmcm9tIHRoZSBuZXcgS3VuaXQ6Cj4+Pgo+Pj4gJCBnaXQgZ3JlcCAtLWZpbGVzLXdp
+dGgtbWF0Y2hlcyBrc2VsZnRlc3RfaGFybmVzcy5oICoKPj4KPj4gVG8gdGhlIGV4dGVudCB0aGF0
+IHdlIGNhbiB1bmlmeSBob3cgdGVzdHMgYXJlIHdyaXR0ZW4sIEkgYWdyZWUgdGhhdAo+PiB0aGlz
+IHdvdWxkIGJlIGEgZ29vZCB0aGluZy7CoCBIb3dldmVyLCB5b3Ugc2hvdWxkIG5vdGUgdGhhdAo+
+PiBrc2VsZnRlc3RfaGFybmVzcy5oIGlzIGN1cnJlbnRseSBhc3N1bXMgdGhhdCBpdCB3aWxsIGJl
+IGluY2x1ZGVkIGluCj4+IHVzZXJzcGFjZSBwcm9ncmFtcy7CoCBUaGlzIGlzIG1vc3Qgb2J2aW91
+c2x5IHNlZW4gaWYgeW91IGxvb2sgY2xvc2VseQo+PiBhdCB0aGUgZnVuY3Rpb25zIGRlZmluZWQg
+aW4gdGhlIGhlYWRlciBmaWxlcyB3aGljaCBtYWtlcyBjYWxscyB0bwo+PiBmb3JrKCksIGFib3J0
+KCkgYW5kIGZwcmludGYoKS4KPiAKPiBBaCwgeWVzLiBJIG9idmlvdXNseSBkaWQgbm90IGRpZyBk
+ZWVwIGVub3VnaC4gVXNpbmcga3VuaXQgZm9yCj4gaW4ta2VybmVsIHRlc3RzIGFuZCBrc2VsZnRl
+c3RfaGFybmVzcyBmb3IgdXNlcnNwYWNlIHRlc3RzIHNlZW1zIGxpa2UKPiBhIHNlbnNpYmxlIGxp
+bmUgdG8gZHJhdyB0byBtZS4gVHJ5aW5nIHRvIHVuaWZ5IGtlcm5lbCBhbmQgdXNlcnNwYWNlCj4g
+aGVyZSBzb3VuZHMgbGlrZSBpdCBjb3VsZCBiZSBkaWZmaWN1bHQgc28gaXQncyBwcm9iYWJseSBu
+b3Qgd29ydGgKPiBmb3JjaW5nIHRoZSBpc3N1ZSB1bmxlc3Mgc29tZW9uZSB3YW50cyB0byBkbyBz
+b21lIHJlYWxseSBmYW5jeSB3b3JrCj4gdG8gZ2V0IGl0IGRvbmUuCj4gCj4gQmFzZWQgb24gc29t
+ZSBvZiB0aGUgb3RoZXIgY29tbWVudGVycywgSSB3YXMgdW5kZXIgdGhlIGltcHJlc3Npb24KPiB0
+aGF0IGtzZWxmdGVzdHMgaGFkIGluLWtlcm5lbCB0ZXN0cyBidXQgSSdtIG5vdCBzdXJlIHdoZXJl
+IG9yIGlmIHRoZXkKPiBleGlzdC4KCllFUywga3NlbGZ0ZXN0IGhhcyBpbi1rZXJuZWwgdGVzdHMu
+ICAoRXhjdXNlIHRoZSBzaG91dGluZy4uLikKCkhlcmUgaXMgYSBsaWtlbHkgbGlzdCBvZiB0aGVt
+IGluIHRoZSBrZXJuZWwgc291cmNlIHRyZWU6CgokIGdyZXAgbW9kdWxlX2luaXQgbGliL3Rlc3Rf
+Ki5jCmxpYi90ZXN0X2JpdGZpZWxkLmM6bW9kdWxlX2luaXQodGVzdF9iaXRmaWVsZHMpCmxpYi90
+ZXN0X2JpdG1hcC5jOm1vZHVsZV9pbml0KHRlc3RfYml0bWFwX2luaXQpOwpsaWIvdGVzdF9icGYu
+Yzptb2R1bGVfaW5pdCh0ZXN0X2JwZl9pbml0KTsKbGliL3Rlc3RfZGVidWdfdmlydHVhbC5jOm1v
+ZHVsZV9pbml0KHRlc3RfZGVidWdfdmlydHVhbF9pbml0KTsKbGliL3Rlc3RfZmlybXdhcmUuYzpt
+b2R1bGVfaW5pdCh0ZXN0X2Zpcm13YXJlX2luaXQpOwpsaWIvdGVzdF9oYXNoLmM6bW9kdWxlX2lu
+aXQodGVzdF9oYXNoX2luaXQpOwkvKiBEb2VzIGV2ZXJ5dGhpbmcgKi8KbGliL3Rlc3RfaGV4ZHVt
+cC5jOm1vZHVsZV9pbml0KHRlc3RfaGV4ZHVtcF9pbml0KTsKbGliL3Rlc3RfaWRhLmM6bW9kdWxl
+X2luaXQoaWRhX2NoZWNrcyk7CmxpYi90ZXN0X2thc2FuLmM6bW9kdWxlX2luaXQoa21hbGxvY190
+ZXN0c19pbml0KTsKbGliL3Rlc3RfbGlzdF9zb3J0LmM6bW9kdWxlX2luaXQobGlzdF9zb3J0X3Rl
+c3QpOwpsaWIvdGVzdF9tZW1jYXRfcC5jOm1vZHVsZV9pbml0KHRlc3RfbWVtY2F0X3BfaW5pdCk7
+CmxpYi90ZXN0X21vZHVsZS5jOnN0YXRpYyBpbnQgX19pbml0IHRlc3RfbW9kdWxlX2luaXQodm9p
+ZCkKbGliL3Rlc3RfbW9kdWxlLmM6bW9kdWxlX2luaXQodGVzdF9tb2R1bGVfaW5pdCk7CmxpYi90
+ZXN0X29iamFnZy5jOm1vZHVsZV9pbml0KHRlc3Rfb2JqYWdnX2luaXQpOwpsaWIvdGVzdF9vdmVy
+Zmxvdy5jOnN0YXRpYyBpbnQgX19pbml0IHRlc3RfbW9kdWxlX2luaXQodm9pZCkKbGliL3Rlc3Rf
+b3ZlcmZsb3cuYzptb2R1bGVfaW5pdCh0ZXN0X21vZHVsZV9pbml0KTsKbGliL3Rlc3RfcGFybWFu
+LmM6bW9kdWxlX2luaXQodGVzdF9wYXJtYW5faW5pdCk7CmxpYi90ZXN0X3ByaW50Zi5jOm1vZHVs
+ZV9pbml0KHRlc3RfcHJpbnRmX2luaXQpOwpsaWIvdGVzdF9yaGFzaHRhYmxlLmM6bW9kdWxlX2lu
+aXQodGVzdF9yaHRfaW5pdCk7CmxpYi90ZXN0X3NpcGhhc2guYzptb2R1bGVfaW5pdChzaXBoYXNo
+X3Rlc3RfaW5pdCk7CmxpYi90ZXN0X3NvcnQuYzptb2R1bGVfaW5pdCh0ZXN0X3NvcnRfaW5pdCk7
+CmxpYi90ZXN0X3N0YWNraW5pdC5jOm1vZHVsZV9pbml0KHRlc3Rfc3RhY2tpbml0X2luaXQpOwps
+aWIvdGVzdF9zdGF0aWNfa2V5X2Jhc2UuYzptb2R1bGVfaW5pdCh0ZXN0X3N0YXRpY19rZXlfYmFz
+ZV9pbml0KTsKbGliL3Rlc3Rfc3RhdGljX2tleXMuYzptb2R1bGVfaW5pdCh0ZXN0X3N0YXRpY19r
+ZXlfaW5pdCk7CmxpYi90ZXN0X3N0cmluZy5jOm1vZHVsZV9pbml0KHN0cmluZ19zZWxmdGVzdF9p
+bml0KTsKbGliL3Rlc3RfdWJzYW4uYzptb2R1bGVfaW5pdCh0ZXN0X3Vic2FuX2luaXQpOwpsaWIv
+dGVzdF91c2VyX2NvcHkuYzptb2R1bGVfaW5pdCh0ZXN0X3VzZXJfY29weV9pbml0KTsKbGliL3Rl
+c3RfdXVpZC5jOm1vZHVsZV9pbml0KHRlc3RfdXVpZF9pbml0KTsKbGliL3Rlc3Rfdm1hbGxvYy5j
+Om1vZHVsZV9pbml0KHZtYWxsb2NfdGVzdF9pbml0KQpsaWIvdGVzdF94YXJyYXkuYzptb2R1bGVf
+aW5pdCh4YXJyYXlfY2hlY2tzKTsKCgo+IElmIHRoZXkgZG8gZXhpc3RzLCBpdCBzZWVtcyBsaWtl
+IGl0IHdvdWxkIG1ha2Ugc2Vuc2UgdG8KPiBjb252ZXJ0IHRob3NlIHRvIGt1bml0IGFuZCBoYXZl
+IEt1bml0IHRlc3RzIHJ1bi1hYmxlIGluIGEgVk0gb3IKPiBiYXJlbWV0YWwgaW5zdGFuY2UuCgpU
+aGV5IGFscmVhZHkgcnVuIGluIGEgVk0uCgpUaGV5IGFscmVhZHkgcnVuIG9uIGJhcmUgbWV0YWwu
+CgpUaGV5IGFscmVhZHkgcnVuIGluIFVNTC4KClRoaXMgaXMgbm90IHRvIHNheSB0aGF0IEtVbml0
+IGRvZXMgbm90IG1ha2Ugc2Vuc2UuICBCdXQgSSdtIHN0aWxsIHRyeWluZwp0byBnZXQgYSBiZXR0
+ZXIgZGVzY3JpcHRpb24gb2YgdGhlIEtVbml0IGZlYXR1cmVzIChhbmQgdGhlcmUgYXJlCnNvbWUp
+LgoKLUZyYW5rCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+CkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRw
+czovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
