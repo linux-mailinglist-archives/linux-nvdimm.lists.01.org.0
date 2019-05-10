@@ -2,86 +2,81 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C6AF1A52A
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 May 2019 00:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831931A571
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 May 2019 00:45:35 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E7C32126CFAA;
-	Fri, 10 May 2019 15:18:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 984AF2126CFAB;
+	Fri, 10 May 2019 15:45:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=frowand.list@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=linux-nvdimm@lists.01.org 
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1C17A2126579C
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 15:18:55 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id z3so3636741pgp.8
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 15:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=JWNIOzLm8gYzjswJ0stuD8ZfC7VRlSMkrSvSD2LEBME=;
- b=P/2j/G6Tg95n62+yzenlSA3Fe0pt0SIy533WsV8PAhiO4U6QMrD/LPCgX7p0+fy1br
- hC5M+2BOpeKyuzAGKLKtSJGJfiGW6huf4uB8oxmUS3clCmAZbCLvxb63fMzQYNibrzvE
- g/0wKvadTvp8buahkQ7d5+QqfRBhvqoe7lMX/HVlVHMKL/NT3zUeSX8zgtu9vuoP5ZwJ
- IiDiVw+RFRdwP/xiMPRLN6zWFioxEyqadG1K/whFRwMC5yvyKxAJjt12VtVhT4RRN4V6
- 0KyLtrxcE94Qt84uBLuVdETBrm1ZlvpIwgo+iC04L8S4h1EL9vqN6pIBAse4cMPFaU7K
- QnMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=JWNIOzLm8gYzjswJ0stuD8ZfC7VRlSMkrSvSD2LEBME=;
- b=PoUfB/gRFb0LBIr6D3Xes6aziMSKlircJwtuGvdVMo6MyQKZ3x+lVa0LwsU3J3xdC+
- GI9lccNRb7IGJ8T352JBc6Lf9osF4Ixfjlf5vGOYleEjFD0TOH+VFIq1drZmN8RnADqe
- XbLdnEYRU1wuV82EtjaUfywE+knTGIm2ZtCRk5pLpxrVD86K0C1tMTDsjLLXF2bvr89V
- cARlsl7+aZoFFeHM5IYhxLwDUcDdJr93di2qsaB3NBsf0X3soWPrrRzIzMVsvxqS+qPN
- tie3f5EFGZjrJgqeE1OXuQ8BjCBLhqoK+29WrgzsJ8oX1rPjn+06dq1vB+6Xofyvf4y3
- oSXA==
-X-Gm-Message-State: APjAAAUYNMFgfU6c/+39n0/QXxvjA1FoljczmhhNfBjtqI0WHwWIycBj
- GFsMzl7juzWBjc7FX2fyjss=
-X-Google-Smtp-Source: APXvYqy+fj1DO30q2eAmvfdh58K/G484lihRNfnozec3z2KBcfgR9zOGT+yHPPd/VkXXCk9hNOlw5w==
-X-Received: by 2002:aa7:92d1:: with SMTP id k17mr17577516pfa.91.1557526735543; 
- Fri, 10 May 2019 15:18:55 -0700 (PDT)
-Received: from [192.168.1.70] (c-24-6-192-50.hsd1.ca.comcast.net.
- [24.6.192.50])
- by smtp.gmail.com with ESMTPSA id c129sm11732349pfg.178.2019.05.10.15.18.52
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 10 May 2019 15:18:55 -0700 (PDT)
-Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
- testing framework
-To: Brendan Higgins <brendanhiggins@google.com>,
- Knut Omang <knut.omang@oracle.com>
-References: <a09a7e0e-9894-8c1a-34eb-fc482b1759d0@gmail.com>
- <20190509015856.GB7031@mit.edu>
- <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
- <20190509032017.GA29703@mit.edu>
- <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
- <20190509133551.GD29703@mit.edu>
- <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
- <875c546d-9713-bb59-47e4-77a1d2c69a6d@gmail.com>
- <20190509214233.GA20877@mit.edu>
- <b09ba170-229b-fde4-3e9a-e50d6ab4c1b5@deltatee.com>
- <20190509233043.GC20877@mit.edu>
- <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
- <6d6e91ec-33d3-830b-4895-4d7a20ba7d45@gmail.com>
- <a1b88d5add15d43de0468c32d9a2427629337abb.camel@oracle.com>
- <CAKMK7uFd1xUx8u3xWLwifVSq4OEnMO4S-m0hESe68UzONXnMFg@mail.gmail.com>
- <CAFd5g47Fvafwgh15JNfxSBRf5qqG2z+V+XGAB2cJtNnHFTiFfQ@mail.gmail.com>
- <1781164863be8d21a7e1890ae6dfee9be101d0a0.camel@oracle.com>
- <CAFd5g46fn4nB-nd27-qj8BoC2h-dTCa=WMGoFNhgXDXY0xOdeg@mail.gmail.com>
-From: Frank Rowand <frowand.list@gmail.com>
-Message-ID: <ccec4818-1b9d-2554-e0e4-433eba659c8e@gmail.com>
-Date: Fri, 10 May 2019 15:18:52 -0700
+ by ml01.01.org (Postfix) with ESMTPS id 7D570212657B2
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 15:45:31 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4AMiYvu139156;
+ Fri, 10 May 2019 22:45:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=bf8P4q788pObPSRhE2yikT3tYYSQpmCfY0xoTw+mRbc=;
+ b=tJDg3KFbDYIWEVqN4zRx/qTj/SM3kNWXyLq8DekKk43DPTy4EJHOJoil4dQOslSkD0Fq
+ 8iunHzoBxOxSlelf6JLFmdzQj8nXkCwduTFP+mohuZ+4V+/7WVXDuCxhJrPY1cft9uTr
+ VA5djX2Z2BfHHiFh2M0+dgE6PGwYX3rNP04HmZlOrNHmOWNZXxfBJumAOJDD5eVF04g6
+ XPVd8mPBJD+Ad9RnRpO5yydcWexPYUKDqDWwZvF7uDkbGFCegZTnQpN+9FxA5Ch0syFd
+ ikPpnIjYazDAUp4v/QAMiW7CUYHo9JQkntMVr4FFPQkiTysvRcYATetsKTdoJc9xBSWY Xg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2130.oracle.com with ESMTP id 2s94bgkuj5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 May 2019 22:45:12 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4AMhSbp190646;
+ Fri, 10 May 2019 22:45:12 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3020.oracle.com with ESMTP id 2s94ahm8f7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 May 2019 22:45:11 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4AMj5kX031257;
+ Fri, 10 May 2019 22:45:05 GMT
+Received: from [192.168.1.222] (/71.63.128.209)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Fri, 10 May 2019 15:45:05 -0700
+Subject: Re: [PATCH, RFC 2/2] Implement sharing/unsharing of PMDs for FS/DAX
+To: Larry Bassel <larry.bassel@oracle.com>,
+ Matthew Wilcox <willy@infradead.org>
+References: <1557417933-15701-1-git-send-email-larry.bassel@oracle.com>
+ <1557417933-15701-3-git-send-email-larry.bassel@oracle.com>
+ <20190509164914.GA3862@bombadil.infradead.org>
+ <20190510161607.GB27674@ubuette>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <af218b46-ece3-1189-e43c-209ec5cf1022@oracle.com>
+Date: Fri, 10 May 2019 15:45:04 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAFd5g46fn4nB-nd27-qj8BoC2h-dTCa=WMGoFNhgXDXY0xOdeg@mail.gmail.com>
+In-Reply-To: <20190510161607.GB27674@ubuette>
 Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9253
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905100144
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9253
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905100144
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,222 +88,38 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Shuah Khan <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- kunit-dev@googlegroups.com, Theodore Ts'o <tytso@mit.edu>,
- Richard Weinberger <richard@nod.at>, Stephen Boyd <sboyd@kernel.org>,
- Greg KH <gregkh@linuxfoundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "Luis R. Rodriguez" <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 5/10/19 1:54 PM, Brendan Higgins wrote:
-> On Fri, May 10, 2019 at 5:13 AM Knut Omang <knut.omang@oracle.com> wrote:
->> On Fri, 2019-05-10 at 03:23 -0700, Brendan Higgins wrote:
->>>> On Fri, May 10, 2019 at 7:49 AM Knut Omang <knut.omang@oracle.com> wrote:
->>>>>
->>>>> On Thu, 2019-05-09 at 22:18 -0700, Frank Rowand wrote:
->>>>>> On 5/9/19 4:40 PM, Logan Gunthorpe wrote:
->>>>>>>
->>>>>>>
->>>>>>> On 2019-05-09 5:30 p.m., Theodore Ts'o wrote:
->>>>>>>> On Thu, May 09, 2019 at 04:20:05PM -0600, Logan Gunthorpe wrote:
->>>>>>>>>
->>>>>>>>> The second item, arguably, does have significant overlap with kselftest.
->>>>>>>>> Whether you are running short tests in a light weight UML environment or
->>>>>>>>> higher level tests in an heavier VM the two could be using the same
->>>>>>>>> framework for writing or defining in-kernel tests. It *may* also be valuable
->>>>>>>>> for some people to be able to run all the UML tests in the heavy VM
->>>>>>>>> environment along side other higher level tests.
->>>>>>>>>
->>>>>>>>> Looking at the selftests tree in the repo, we already have similar items to
->>>>>>>>> what Kunit is adding as I described in point (2) above. kselftest_harness.h
->>>>>>>>> contains macros like EXPECT_* and ASSERT_* with very similar intentions to
->>>>>>>>> the new KUNIT_EXECPT_* and KUNIT_ASSERT_* macros.
->>>>>>>>>
->>>>>>>>> However, the number of users of this harness appears to be quite small. Most
->>>>>>>>> of the code in the selftests tree seems to be a random mismash of scripts
->>>>>>>>> and userspace code so it's not hard to see it as something completely
->>>>>>>>> different from the new Kunit:
->>>>>>>>>
->>>>>>>>> $ git grep --files-with-matches kselftest_harness.h *
->>>>>>>>
->>>>>>>> To the extent that we can unify how tests are written, I agree that
->>>>>>>> this would be a good thing.  However, you should note that
->>>>>>>> kselftest_harness.h is currently assums that it will be included in
->>>>>>>> userspace programs.  This is most obviously seen if you look closely
->>>>>>>> at the functions defined in the header files which makes calls to
->>>>>>>> fork(), abort() and fprintf().
->>>>>>>
->>>>>>> Ah, yes. I obviously did not dig deep enough. Using kunit for
->>>>>>> in-kernel tests and kselftest_harness for userspace tests seems like
->>>>>>> a sensible line to draw to me. Trying to unify kernel and userspace
->>>>>>> here sounds like it could be difficult so it's probably not worth
->>>>>>> forcing the issue unless someone wants to do some really fancy work
->>>>>>> to get it done.
->>>>>>>
->>>>>>> Based on some of the other commenters, I was under the impression
->>>>>>> that kselftests had in-kernel tests but I'm not sure where or if they
->>>>>>> exist.
->>>>>>
->>>>>> YES, kselftest has in-kernel tests.  (Excuse the shouting...)
->>>>>>
->>>>>> Here is a likely list of them in the kernel source tree:
->>>>>>
->>>>>> $ grep module_init lib/test_*.c
->>>>>> lib/test_bitfield.c:module_init(test_bitfields)
->>>>>> lib/test_bitmap.c:module_init(test_bitmap_init);
->>>>>> lib/test_bpf.c:module_init(test_bpf_init);
->>>>>> lib/test_debug_virtual.c:module_init(test_debug_virtual_init);
->>>>>> lib/test_firmware.c:module_init(test_firmware_init);
->>>>>> lib/test_hash.c:module_init(test_hash_init);  /* Does everything */
->>>>>> lib/test_hexdump.c:module_init(test_hexdump_init);
->>>>>> lib/test_ida.c:module_init(ida_checks);
->>>>>> lib/test_kasan.c:module_init(kmalloc_tests_init);
->>>>>> lib/test_list_sort.c:module_init(list_sort_test);
->>>>>> lib/test_memcat_p.c:module_init(test_memcat_p_init);
->>>>>> lib/test_module.c:static int __init test_module_init(void)
->>>>>> lib/test_module.c:module_init(test_module_init);
->>>>>> lib/test_objagg.c:module_init(test_objagg_init);
->>>>>> lib/test_overflow.c:static int __init test_module_init(void)
->>>>>> lib/test_overflow.c:module_init(test_module_init);
->>>>>> lib/test_parman.c:module_init(test_parman_init);
->>>>>> lib/test_printf.c:module_init(test_printf_init);
->>>>>> lib/test_rhashtable.c:module_init(test_rht_init);
->>>>>> lib/test_siphash.c:module_init(siphash_test_init);
->>>>>> lib/test_sort.c:module_init(test_sort_init);
->>>>>> lib/test_stackinit.c:module_init(test_stackinit_init);
->>>>>> lib/test_static_key_base.c:module_init(test_static_key_base_init);
->>>>>> lib/test_static_keys.c:module_init(test_static_key_init);
->>>>>> lib/test_string.c:module_init(string_selftest_init);
->>>>>> lib/test_ubsan.c:module_init(test_ubsan_init);
->>>>>> lib/test_user_copy.c:module_init(test_user_copy_init);
->>>>>> lib/test_uuid.c:module_init(test_uuid_init);
->>>>>> lib/test_vmalloc.c:module_init(vmalloc_test_init)
->>>>>> lib/test_xarray.c:module_init(xarray_checks);
->>>>>>
->>>>>>
->>>>>>> If they do exists, it seems like it would make sense to
->>>>>>> convert those to kunit and have Kunit tests run-able in a VM or
->>>>>>> baremetal instance.
->>>>>>
->>>>>> They already run in a VM.
->>>>>>
->>>>>> They already run on bare metal.
->>>>>>
->>>>>> They already run in UML.
->>>>>>
->>>>>> This is not to say that KUnit does not make sense.  But I'm still trying
->>>>>> to get a better description of the KUnit features (and there are
->>>>>> some).
->>>>>
->>>>> FYI, I have a master student who looks at converting some of these to KTF, such as
->>> for
->>>>> instance the XArray tests, which lended themselves quite good to a semi-automated
->>>>> conversion.
->>>>>
->>>>> The result is also a somewhat more compact code as well as the flexibility
->>>>> provided by the Googletest executor and the KTF frameworks, such as running selected
->>>>> tests, output formatting, debugging features etc.
->>>>
->>>> So is KTF already in upstream? Or is the plan to unify the KTF and
->>>
->>> I am not certain about KTF's upstream plans, but I assume that Knut
->>> would have CC'ed me on the thread if he had started working on it.
+On 5/10/19 9:16 AM, Larry Bassel wrote:
+> On 09 May 19 09:49, Matthew Wilcox wrote:
+>> On Thu, May 09, 2019 at 09:05:33AM -0700, Larry Bassel wrote:
+>>> This is based on (but somewhat different from) what hugetlbfs
+>>> does to share/unshare page tables.
 >>
->> You are on the Github watcher list for KTF?
+>> Wow, that worked out far more cleanly than I was expecting to see.
 > 
-> Yep! I have been since LPC in 2017.
-> 
->> Quite a few of the commits there are preparatory for a forthcoming kernel patch set.
->> I'll of course CC: you on the patch set when we send it to the list.
-> 
-> Awesome! I appreciate it.
-> 
->>
->>>> Kunit in-kernel test harnesses? Because there's tons of these
->>>
->>> No, no plan. Knut and I talked about this a good while ago and it
->>> seemed that we had pretty fundamentally different approaches both in
->>> terms of implementation and end goal. Combining them seemed pretty
->>> infeasible, at least from a technical perspective. Anyway, I am sure
->>> Knut would like to give him perspective on the matter and I don't want
->>> to say too much without first giving him a chance to chime in on the
->>> matter.
->>
->> I need more time to study KUnit details to say, but from a 10k feet perspective:
->> I think at least there's a potential for some API unification, in using the same macro
->> names. How about removing the KUNIT_ prefix to the test macros ;-) ?
-> 
-> Heh, heh. That's actually the way I had it in the earliest versions of
-> KUnit! But that was pretty much the very first thing everyone
-> complained about. I think I went from no prefix (like you are
-> suggesting) to TEST_* before the first version of the RFC at the
-> request of several people I was kicking the idea around with, and then
-> I think I was asked to go from TEST_* to KUNIT_* in the very first
-> revision of the RFC.
-> 
-> In short, I am sympathetic to your suggestion, but I think that is
-> non-negotiable at this point. The community has a clear policy in
-> place on the matter, and at this point I would really prefer not to
-> change all the symbol names again.
+> Yes, I was pleasantly surprised. As I've mentioned already, I 
+> think this is at least partially due to the nature of DAX.
 
-This would not be the first time that a patch submitter has been
-told "do B instead of A" for version 1, then told "do C instead of
-B" for version 2, then told "do A instead of C" for the final version.
+I have not looked in detail to make sure this is indeed all the places you
+need to hook and special case for sharing/unsharing.  Since this scheme is
+somewhat like that used for hugetlb, I just wanted to point out some nasty
+bugs related to hugetlb PMD sharing that were fixed last year.
 
-It sucks, but it happens.
+5e41540c8a0f hugetlbfs: fix kernel BUG at fs/hugetlbfs/inode.c:444!
+dff11abe280b hugetlb: take PMD sharing into account when flushing tlb/caches
+017b1660df89 mm: migration: fix migration of huge PMD shared pages
 
-As an aside, can you point to where the "clear policy in place" is
-documented, and what the policy is?
-
--Frank
-
-
->> That would make the names shorter, saving typing when writing tests, and storage ;-)
->> and also make the names more similar to KTF's, and those of user land unit test
-> 
-> You mean the Googletest/Googlemock expectations/assertions?
-> 
-> It's a great library (with not so great a name), but unfortunately it
-> is written in C++, which I think pretty much counts it out here.
-> 
->> frameworks? Also it will make it possible to have functions compiling both with KTF and
->> KUnit, facilitating moving code between the two.
-> 
-> I think that would be cool, but again, I don't think this will be
-> possible with Googletest/Googlemock.
-> 
->>
->> Also the string stream facilities of KUnit looks interesting to share.
-> 
-> I am glad you think so!
-> 
-> If your biggest concern on my side is test macro names (which I think
-> is a no-go as I mentioned above), I think we should be in pretty good
-> shape once you are ready to move forward. Besides, I have a lot more
-> KUnit patches coming after this: landing this patchset is just the
-> beginning. So how about we keep moving forward on this patchset?
-> 
-
+The common issue in these is that when unmapping a page with a shared PMD
+mapping you need to flush the entire shared range and not just the unmapped
+page.  The above changes were hugetlb specific.  I do not know if any of
+this applies in the case of DAX.
+-- 
+Mike Kravetz
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
