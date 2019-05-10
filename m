@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669A31A089
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 17:52:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 152071A091
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 17:52:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6763C21268FBB;
-	Fri, 10 May 2019 08:52:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id AA41221268FBD;
+	Fri, 10 May 2019 08:52:55 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,30 +15,31 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 19D3421268FB7
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 08:52:31 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 4237D21268FB7
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 08:52:53 -0700 (PDT)
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
  [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 8867EA404A;
- Fri, 10 May 2019 15:52:30 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id 908B0356D5;
+ Fri, 10 May 2019 15:52:52 +0000 (UTC)
 Received: from dhcp201-121.englab.pnq.redhat.com (unknown [10.65.16.148])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7C85160BFB;
- Fri, 10 May 2019 15:52:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 097AD61980;
+ Fri, 10 May 2019 15:52:30 +0000 (UTC)
 From: Pankaj Gupta <pagupta@redhat.com>
 To: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
  virtualization@lists.linux-foundation.org, kvm@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-acpi@vger.kernel.org,
  qemu-devel@nongnu.org, linux-ext4@vger.kernel.org,
  linux-xfs@vger.kernel.org
-Subject: [PATCH v8 0/6] virtio pmem driver 
-Date: Fri, 10 May 2019 21:21:56 +0530
-Message-Id: <20190510155202.14737-1-pagupta@redhat.com>
-MIME-Version: 1.0
+Subject: [PATCH v8 1/6] libnvdimm: nd_region flush callback support
+Date: Fri, 10 May 2019 21:21:57 +0530
+Message-Id: <20190510155202.14737-2-pagupta@redhat.com>
+In-Reply-To: <20190510155202.14737-1-pagupta@redhat.com>
+References: <20190510155202.14737-1-pagupta@redhat.com>
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.38]); Fri, 10 May 2019 15:52:31 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.30]); Fri, 10 May 2019 15:52:52 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,159 +59,251 @@ Cc: jack@suse.cz, mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
  stefanha@redhat.com, pbonzini@redhat.com, kwolf@redhat.com, tytso@mit.edu,
  xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
  imammedo@redhat.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-IEhpIE1pY2hhZWwgJiBEYW4sCgogUGxlYXNlIHJldmlldy9hY2sgdGhlIHBhdGNoIHNlcmllcyBm
-cm9tIExJQk5WRElNTSAmIFZJUlRJTyBzaWRlLgogV2UgaGF2ZSBhY2sgb24gZXh0NCwgeGZzIHBh
-dGNoZXMoNCwgNSAmIDYpIHBhdGNoIDIuIFN0aWxsIG5lZWQKIHlvdXIgYWNrIG9uIG52ZGltbSBw
-YXRjaGVzKDEgJiAzKSAmIHZpcnRpbyBwYXRjaCAyLiAKCiBDaGFuZ2VzIGRvbmUgZnJvbSB2NyBh
-cmUgb25seSBpbiBwYXRjaCgyICYgMykgYW5kIG5vdAogYWZmZWN0aW5nIGV4aXN0aW5nIHJldmll
-d3MuIFJlcXVlc3QgdG8gcGxlYXNlIHJldmlldy4KIC0tLS0KCiBUaGlzIHBhdGNoIHNlcmllcyBo
-YXMgaW1wbGVtZW50YXRpb24gZm9yICJ2aXJ0aW8gcG1lbSIuIAogInZpcnRpbyBwbWVtIiBpcyBm
-YWtlIHBlcnNpc3RlbnQgbWVtb3J5KG52ZGltbSkgaW4gZ3Vlc3QgCiB3aGljaCBhbGxvd3MgdG8g
-YnlwYXNzIHRoZSBndWVzdCBwYWdlIGNhY2hlLiBUaGlzIGFsc28KIGltcGxlbWVudHMgYSBWSVJU
-SU8gYmFzZWQgYXN5bmNocm9ub3VzIGZsdXNoIG1lY2hhbmlzbS4gIAogCiBTaGFyaW5nIGd1ZXN0
-IGtlcm5lbCBkcml2ZXIgaW4gdGhpcyBwYXRjaHNldCB3aXRoIHRoZSAKIGNoYW5nZXMgc3VnZ2Vz
-dGVkIGluIHY0LiBUZXN0ZWQgd2l0aCBRZW11IHNpZGUgZGV2aWNlIAogZW11bGF0aW9uIFs2XSBm
-b3IgdmlydGlvLXBtZW0uIERvY3VtZW50ZWQgdGhlIGltcGFjdCBvZgogcG9zc2libGUgcGFnZSBj
-YWNoZSBzaWRlIGNoYW5uZWwgYXR0YWNrcyB3aXRoIHN1Z2dlc3RlZAogY291bnRlcm1lYXN1cmVz
-LgoKIERldGFpbHMgb2YgcHJvamVjdCBpZGVhIGZvciAndmlydGlvIHBtZW0nIGZsdXNoaW5nIGlu
-dGVyZmFjZSAKIGlzIHNoYXJlZCBbM10gJiBbNF0uCgogSW1wbGVtZW50YXRpb24gaXMgZGl2aWRl
-ZCBpbnRvIHR3byBwYXJ0czoKIE5ldyB2aXJ0aW8gcG1lbSBndWVzdCBkcml2ZXIgYW5kIHFlbXUg
-Y29kZSBjaGFuZ2VzIGZvciBuZXcgCiB2aXJ0aW8gcG1lbSBwYXJhdmlydHVhbGl6ZWQgZGV2aWNl
-LgoKMS4gR3Vlc3QgdmlydGlvLXBtZW0ga2VybmVsIGRyaXZlcgotLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0KICAgLSBSZWFkcyBwZXJzaXN0ZW50IG1lbW9yeSByYW5nZSBmcm9tIHBh
-cmF2aXJ0IGRldmljZSBhbmQgCiAgICAgcmVnaXN0ZXJzIHdpdGggJ252ZGltbV9idXMnLiAgCiAg
-IC0gJ252ZGltbS9wbWVtJyBkcml2ZXIgdXNlcyB0aGlzIGluZm9ybWF0aW9uIHRvIGFsbG9jYXRl
-IAogICAgIHBlcnNpc3RlbnQgbWVtb3J5IHJlZ2lvbiBhbmQgc2V0dXAgZmlsZXN5c3RlbSBvcGVy
-YXRpb25zIAogICAgIHRvIHRoZSBhbGxvY2F0ZWQgbWVtb3J5LiAKICAgLSB2aXJ0aW8gcG1lbSBk
-cml2ZXIgaW1wbGVtZW50cyBhc3luY2hyb25vdXMgZmx1c2hpbmcgCiAgICAgaW50ZXJmYWNlIHRv
-IGZsdXNoIGZyb20gZ3Vlc3QgdG8gaG9zdC4KCjIuIFFlbXUgdmlydGlvLXBtZW0gZGV2aWNlCi0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQogICAtIENyZWF0ZXMgdmlydGlvIHBtZW0g
-ZGV2aWNlIGFuZCBleHBvc2VzIGEgbWVtb3J5IHJhbmdlIHRvIAogICAgIEtWTSBndWVzdC4gCiAg
-IC0gQXQgaG9zdCBzaWRlIHRoaXMgaXMgZmlsZSBiYWNrZWQgbWVtb3J5IHdoaWNoIGFjdHMgYXMg
-CiAgICAgcGVyc2lzdGVudCBtZW1vcnkuIAogICAtIFFlbXUgc2lkZSBmbHVzaCB1c2VzIGFpbyB0
-aHJlYWQgcG9vbCBBUEkncyBhbmQgdmlydGlvIAogICAgIGZvciBhc3luY2hyb25vdXMgZ3Vlc3Qg
-bXVsdGkgcmVxdWVzdCBoYW5kbGluZy4gCgogICBEYXZpZCBIaWxkZW5icmFuZCBDQ2VkIGFsc28g
-cG9zdGVkIGEgbW9kaWZpZWQgdmVyc2lvbls3XSBvZiAKICAgcWVtdSB2aXJ0aW8tcG1lbSBjb2Rl
-IGJhc2VkIG9uIHVwZGF0ZWQgUWVtdSBtZW1vcnkgZGV2aWNlIEFQSS4gCgogVmlydGlvLXBtZW0g
-c2VjdXJpdHkgaW1wbGljYXRpb25zIGFuZCBjb3VudGVybWVhc3VyZXM6CiAtLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQoKIEluIHByZXZpb3VzIHBv
-c3Rpbmcgb2Yga2VybmVsIGRyaXZlciwgdGhlcmUgd2FzIGRpc2N1c3Npb24gWzldCiBvbiBwb3Nz
-aWJsZSBpbXBsaWNhdGlvbnMgb2YgcGFnZSBjYWNoZSBzaWRlIGNoYW5uZWwgYXR0YWNrcyB3aXRo
-IAogdmlydGlvIHBtZW0uIEFmdGVyIHRob3JvdWdoIGFuYWx5c2lzIG9mIGRldGFpbHMgb2Yga25v
-d24gc2lkZSAKIGNoYW5uZWwgYXR0YWNrcywgYmVsb3cgYXJlIHRoZSBzdWdnZXN0aW9uczoKCiAt
-IERlcGVuZHMgZW50aXJlbHkgb24gaG93IGhvc3QgYmFja2luZyBpbWFnZSBmaWxlIGlzIG1hcHBl
-ZCAKICAgaW50byBndWVzdCBhZGRyZXNzIHNwYWNlLiAKCiAtIHZpcnRpby1wbWVtIGRldmljZSBl
-bXVsYXRpb24sIGJ5IGRlZmF1bHQgc2hhcmVkIG1hcHBpbmcgaXMgdXNlZAogICB0byBtYXAgaG9z
-dCBiYWNraW5nIGZpbGUuIEl0IGlzIHJlY29tbWVuZGVkIHRvIHVzZSBzZXBhcmF0ZQogICBiYWNr
-aW5nIGZpbGUgYXQgaG9zdCBzaWRlIGZvciBldmVyeSBndWVzdC4gVGhpcyB3aWxsIHByZXZlbnQK
-ICAgYW55IHBvc3NpYmlsaXR5IG9mIGV4ZWN1dGluZyBjb21tb24gY29kZSBmcm9tIG11bHRpcGxl
-IGd1ZXN0cwogICBhbmQgYW55IGNoYW5jZSBvZiBpbmZlcnJpbmcgZ3Vlc3QgbG9jYWwgZGF0YSBi
-YXNlZCBiYXNlZCBvbiAKICAgZXhlY3V0aW9uIHRpbWUuCgogLSBJZiBiYWNraW5nIGZpbGUgaXMg
-cmVxdWlyZWQgdG8gYmUgc2hhcmVkIGFtb25nIG11bHRpcGxlIGd1ZXN0cyAKICAgaXQgaXMgcmVj
-b21tZW5kZWQgdG8gZG9uJ3Qgc3VwcG9ydCBob3N0IHBhZ2UgY2FjaGUgZXZpY3Rpb24gCiAgIGNv
-bW1hbmRzIGZyb20gdGhlIGd1ZXN0IGRyaXZlci4gVGhpcyB3aWxsIGF2b2lkIGFueSBwb3NzaWJp
-bGl0eQogICBvZiBpbmZlcnJpbmcgZ3Vlc3QgbG9jYWwgZGF0YSBvciBob3N0IGRhdGEgZnJvbSBh
-bm90aGVyIGd1ZXN0LiAKCiAtIFByb3Bvc2VkIGRldmljZSBzcGVjaWZpY2F0aW9uIFs4XSBmb3Ig
-dmlydGlvLXBtZW0gZGV2aWNlIHdpdGggCiAgIGRldGFpbHMgb2YgcG9zc2libGUgc2VjdXJpdHkg
-aW1wbGljYXRpb25zIGFuZCBzdWdnZXN0ZWQgCiAgIGNvdW50ZXJtZWFzdXJlcyBmb3IgZGV2aWNl
-IGVtdWxhdGlvbi4KCiBWaXJ0aW8tcG1lbSBlcnJvcnMgaGFuZGxpbmc6CiAtLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAgQ2hlY2tlZCBiZWhhdmlvdXIgb2YgdmlydGlv
-LXBtZW0gZm9yIGJlbG93IHR5cGVzIG9mIGVycm9ycwogIE5lZWQgc3VnZ2VzdGlvbnMgb24gZXhw
-ZWN0ZWQgYmVoYXZpb3VyIGZvciBoYW5kbGluZyB0aGVzZSBlcnJvcnM/CgogIC0gSGFyZHdhcmUg
-RXJyb3JzOiBVbmNvcnJlY3RhYmxlIHJlY292ZXJhYmxlIEVycm9yczogCiAgYV0gdmlydGlvLXBt
-ZW06IAogICAgLSBBcyBwZXIgY3VycmVudCBsb2dpYyBpZiBlcnJvciBwYWdlIGJlbG9uZ3MgdG8g
-UWVtdSBwcm9jZXNzLCAKICAgICAgaG9zdCBNQ0UgaGFuZGxlciBpc29sYXRlcyhod3BvaXNvbikg
-dGhhdCBwYWdlIGFuZCBzZW5kIFNJR0JVUy4gCiAgICAgIFFlbXUgU0lHQlVTIGhhbmRsZXIgaW5q
-ZWN0cyBleGNlcHRpb24gdG8gS1ZNIGd1ZXN0LiAKICAgIC0gS1ZNIGd1ZXN0IHRoZW4gaXNvbGF0
-ZXMgdGhlIHBhZ2UgYW5kIHNlbmQgU0lHQlVTIHRvIGd1ZXN0IAogICAgICB1c2Vyc3BhY2UgcHJv
-Y2VzcyB3aGljaCBoYXMgbWFwcGVkIHRoZSBwYWdlLiAKICAKICBiXSBFeGlzdGluZyBpbXBsZW1l
-bnRhdGlvbiBmb3IgQUNQSSBwbWVtIGRyaXZlcjogCiAgICAtIEhhbmRsZXMgc3VjaCBlcnJvcnMg
-d2l0aCBNQ0Ugbm90aWZpZXIgYW5kIGNyZWF0ZXMgYSBsaXN0IAogICAgICBvZiBiYWQgYmxvY2tz
-LiBSZWFkL2RpcmVjdCBhY2Nlc3MgREFYIG9wZXJhdGlvbiByZXR1cm4gRUlPIAogICAgICBpZiBh
-Y2Nlc3NlZCBtZW1vcnkgcGFnZSBmYWxsIGluIGJhZCBibG9jayBsaXN0LgogICAgLSBJdCBhbHNv
-IHN0YXJ0cyBiYWNrZ291bmQgc2NydWJiaW5nLiAgCiAgICAtIFNpbWlsYXIgZnVuY3Rpb25hbGl0
-eSBjYW4gYmUgcmV1c2VkIGluIHZpcnRpby1wbWVtIHdpdGggTUNFIAogICAgICBub3RpZmllciBi
-dXQgd2l0aG91dCBzY3J1YmJpbmcobm8gQUNQSS9BUlMpPyBOZWVkIGlucHV0cyB0byAKICAgICAg
-Y29uZmlybSBpZiB0aGlzIGJlaGF2aW91ciBpcyBvayBvciBuZWVkcyBhbnkgY2hhbmdlPwoKQ2hh
-bmdlcyBmcm9tIFBBVENIIHY3OiBbMV0KIC0gQ29ycmVjdGVkIHBlbmRpbmcgcmVxdWVzdCBxdWV1
-ZSBsb2dpYyAocGF0Y2ggMikgLSBKYWt1YiBTdGFyb8WECiAtIFVzZWQgdW5zaWduZWQgbG9uZyBm
-bGFncyBmb3IgcGFzc2luZyBEQVhERVZfRl9TWU5DIChwYXRjaCAzKSAtIERhbgogLSBGaXhlZCB0
-eXBvID0+ICB2bWEgJ2ZsYWcnIHRvICd2bV9mbGFnJyAocGF0Y2ggNCkKIC0gQWRkZWQgcm9iIGlu
-IHBhdGNoIDYgJiBwYXRjaCAyCgpDaGFuZ2VzIGZyb20gUEFUQ0ggdjY6IFsxXQogLSBDb3JyZWN0
-ZWQgY29tbWVudCBmb3JtYXQgaW4gcGF0Y2ggNSAmIHBhdGNoIDYuIFtEYXZlXQogLSBDaGFuZ2Vk
-IHZhcmlhYmxlIGRlY2xhcmF0aW9uIGluZGVudGF0aW9uIGluIHBhdGNoIDYgW0RhcnJpY2tdCiAt
-IEFkZCBSZXZpZXdlZC1ieSB0YWcgYnkgJ0phbiBLYXJhJyBpbiBwYXRjaCA0ICYgcGF0Y2ggNQoK
-Q2hhbmdlcyBmcm9tIFBBVENIIHY1OiBbMl0KICBDaGFuZ2VzIHN1Z2dlc3RlZCBpbiBieSAtIFtD
-b3JuZWxpYSwgWXV2YWxdCi0gUmVtb3ZlIGFzc2lnbm1lbnQgY2hhaW5pbmcgaW4gdmlydGlvIGRy
-aXZlcgotIEJldHRlciBlcnJvciBtZXNzYWdlIGFuZCByZW1vdmUgbm90IHJlcXVpcmVkIGZyZWUK
-LSBDaGVjayBuZF9yZWdpb24gYmVmb3JlIHVzZQoKICBDaGFuZ2VzIHN1Z2dlc3RlZCBieSAtIFtK
-YW4gS2FyYV0KLSBkYXhfc3luY2hyb25vdXMoKSBmb3IgIUNPTkZJR19EQVgKLSBDb3JyZWN0ICdk
-YXhkZXZfbWFwcGluZ19zdXBwb3J0ZWQnIGNvbW1lbnQgYW5kIG5vbi1kYXggaW1wbGVtZW50YXRp
-b24KCiAgQ2hhbmdlcyBzdWdnZXN0ZWQgYnkgLSBbRGFuIFdpbGxpYW1zXQotIFBhc3MgbWVhbmlu
-Z2Z1bCBmbGFnICdEQVhERVZfRl9TWU5DJyB0byBhbGxvY19kYXgKLSBHYXRlIG52ZGltbV9mbHVz
-aCBpbnN0ZWFkIG9mIGFkZGl0aW9uYWwgYXN5bmMgcGFyYW1ldGVyCi0gTW92ZSBibG9jayBjaGFp
-bmluZyBsb2dpYyB0byBmbHVzaCBjYWxsYmFjayB0aGFuIGNvbW1vbiBudmRpbW1fZmx1c2gKLSBV
-c2UgTlVMTCBmbHVzaCBjYWxsYmFjayBmb3IgZ2VuZXJpYyBmbHVzaCBmb3IgYmV0dGVyIHJlYWRh
-YmlsaXR5IFtEYW4sIEphbl0KCi0gVXNlIHZpcnRpbyBkZXZpY2UgaWQgMjcgZnJvbSAyNShhbHJl
-YWR5IHVzZWQpIC0gW01TVF0KCkNoYW5nZXMgZnJvbSBQQVRDSCB2NDoKLSBGYWN0b3Igb3V0IE1B
-UF9TWU5DIHN1cHBvcnRlZCBmdW5jdGlvbmFsaXR5IHRvIGEgY29tbW9uIGhlbHBlcgoJCQkJW0Rh
-dmUsIERhcnJpY2ssIEphbl0KLSBDb21tZW50LCBpbmRlbnRhdGlvbiBhbmQgdmlydHF1ZXVlX2tp
-Y2sgZmFpbHVyZSBoYW5kbGUgLSBZdXZhbCBTaGFpYQoKQ2hhbmdlcyBmcm9tIFBBVENIIHYzOiAK
-LSBVc2UgZ2VuZXJpYyBkYXhfc3luY2hyb25vdXMoKSBoZWxwZXIgdG8gY2hlY2sgZm9yIERBWERF
-Vl9TWU5DIAogIGZsYWcgLSBbRGFuLCBEYXJyaWNrLCBKYW5dCi0gQWRkICdpc19udmRpbW1fYXN5
-bmMnIGZ1bmN0aW9uCi0gRG9jdW1lbnQgcGFnZSBjYWNoZSBzaWRlIGNoYW5uZWwgYXR0YWNrcyBp
-bXBsaWNhdGlvbnMgJiAKICBjb3VudGVybWVhc3VyZXMgLSBbRGF2ZSBDaGlubmVyLCBNaWNoYWVs
-XQoKQ2hhbmdlcyBmcm9tIFBBVENIIHYyOiAKLSBEaXNhYmxlIE1BUF9TWU5DIGZvciBleHQ0ICYg
-WEZTIGZpbGVzeXN0ZW1zIC0gW0Rhbl0gCi0gVXNlIG5hbWUgJ3ZpcnRpbyBwbWVtJyBpbiBwbGFj
-ZSBvZiAnZmFrZSBkYXgnIAoKQ2hhbmdlcyBmcm9tIFBBVENIIHYxOiAKLSAwLWRheSBidWlsZCB0
-ZXN0IGZvciBidWlsZCBkZXBlbmRlbmN5IG9uIGxpYm52ZGltbSAKCiBDaGFuZ2VzIHN1Z2dlc3Rl
-ZCBieSAtIFtEYW4gV2lsbGlhbXNdCi0gU3BsaXQgdGhlIGRyaXZlciBpbnRvIHR3byBwYXJ0cyB2
-aXJ0aW8gJiBwbWVtICAKLSBNb3ZlIHF1ZXVpbmcgb2YgYXN5bmMgYmxvY2sgcmVxdWVzdCB0byBi
-bG9jayBsYXllcgotIEFkZCAic3luYyIgcGFyYW1ldGVyIGluIG52ZGltbV9mbHVzaCBmdW5jdGlv
-bgotIFVzZSBpbmRpcmVjdCBjYWxsIGZvciBudmRpbW1fZmx1c2gKLSBEb27igJl0IG1vdmUgZGVj
-bGFyYXRpb25zIHRvIGNvbW1vbiBnbG9iYWwgaGVhZGVyIGUuZyBuZC5oCi0gbnZkaW1tX2ZsdXNo
-KCkgcmV0dXJuIDAgb3IgLUVJTyBpZiBpdCBmYWlscwotIFRlYWNoIG5zaW9fcndfYnl0ZXMoKSB0
-aGF0IHRoZSBmbHVzaCBjYW4gZmFpbAotIFJlbmFtZSBudmRpbW1fZmx1c2goKSB0byBnZW5lcmlj
-X252ZGltbV9mbHVzaCgpCi0gVXNlICduZF9yZWdpb24tPnByb3ZpZGVyX2RhdGEnIGZvciBsb25n
-IGRlcmVmZXJlbmNpbmcKLSBSZW1vdmUgdmlydGlvX3BtZW1fZnJlZXplL3Jlc3RvcmUgZnVuY3Rp
-b25zCi0gUmVtb3ZlIEJTRCBsaWNlbnNlIHRleHQgd2l0aCBTUERYIGxpY2Vuc2UgdGV4dAoKLSBB
-ZGQgbWlnaHRfc2xlZXAoKSBpbiB2aXJ0aW9fcG1lbV9mbHVzaCAtIFtMdWl6XQotIE1ha2Ugc3Bp
-bl9sb2NrX2lycXNhdmUoKSBuYXJyb3cKClBhbmthaiBHdXB0YSAoNik6CiAgIGxpYm52ZGltbTog
-bmRfcmVnaW9uIGZsdXNoIGNhbGxiYWNrIHN1cHBvcnQKICAgdmlydGlvLXBtZW06IEFkZCB2aXJ0
-aW8tcG1lbSBndWVzdCBkcml2ZXIKICAgbGlibnZkaW1tOiBhZGQgbmRfcmVnaW9uIGJ1ZmZlcmVk
-IGRheF9kZXYgZmxhZwogICBkYXg6IGNoZWNrIHN5bmNocm9ub3VzIG1hcHBpbmcgaXMgc3VwcG9y
-dGVkCiAgIGV4dDQ6IGRpc2FibGUgbWFwX3N5bmMgZm9yIHZpcnRpbyBwbWVtCiAgIHhmczogZGlz
-YWJsZSBtYXBfc3luYyBmb3IgdmlydGlvIHBtZW0KClsxXSBodHRwczovL2xrbWwub3JnL2xrbWwv
-MjAxOS80LzI2LzM2ClsyXSBodHRwczovL2xrbWwub3JnL2xrbWwvMjAxOS80LzIzLzEwOTIKWzNd
-IGh0dHBzOi8vd3d3LnNwaW5pY3MubmV0L2xpc3RzL2t2bS9tc2cxNDk3NjEuaHRtbApbNF0gaHR0
-cHM6Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMva3ZtL21zZzE1MzA5NS5odG1sICAKWzVdIGh0dHBz
-Oi8vbGttbC5vcmcvbGttbC8yMDE4LzgvMzEvNDEzCls2XSBodHRwczovL21hcmMuaW5mby8/bD1s
-aW51eC1rZXJuZWwmbT0xNTM1NzIyMjg3MTkyMzcmdz0yIApbN10gaHR0cHM6Ly9tYXJjLmluZm8v
-P2w9cWVtdS1kZXZlbCZtPTE1MzU1NTcyMTkwMTgyNCZ3PTIKWzhdIGh0dHBzOi8vbGlzdHMub2Fz
-aXMtb3Blbi5vcmcvYXJjaGl2ZXMvdmlydGlvLWRldi8yMDE5MDMvbXNnMDAwODMuaHRtbApbOV0g
-aHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvMS85LzExOTEKCiBkcml2ZXJzL2FjcGkvbmZpdC9j
-b3JlLmMgICAgICAgICB8ICAgIDQgLQogZHJpdmVycy9kYXgvYnVzLmMgICAgICAgICAgICAgICAg
-fCAgICAyIAogZHJpdmVycy9kYXgvc3VwZXIuYyAgICAgICAgICAgICAgfCAgIDEzICsrKwogZHJp
-dmVycy9tZC9kbS5jICAgICAgICAgICAgICAgICAgfCAgICAzIAogZHJpdmVycy9udmRpbW0vTWFr
-ZWZpbGUgICAgICAgICAgfCAgICAxIAogZHJpdmVycy9udmRpbW0vY2xhaW0uYyAgICAgICAgICAg
-fCAgICA2ICsKIGRyaXZlcnMvbnZkaW1tL25kLmggICAgICAgICAgICAgIHwgICAgMSAKIGRyaXZl
-cnMvbnZkaW1tL25kX3ZpcnRpby5jICAgICAgIHwgIDEyOSArKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysKIGRyaXZlcnMvbnZkaW1tL3BtZW0uYyAgICAgICAgICAgIHwgICAx
-OCArKystLQogZHJpdmVycy9udmRpbW0vcmVnaW9uX2RldnMuYyAgICAgfCAgIDMzICsrKysrKysr
-KwogZHJpdmVycy9udmRpbW0vdmlydGlvX3BtZW0uYyAgICAgfCAgMTE3ICsrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrCiBkcml2ZXJzL3ZpcnRpby9LY29uZmlnICAgICAgICAgICB8
-ICAgMTAgKysrCiBmcy9leHQ0L2ZpbGUuYyAgICAgICAgICAgICAgICAgICB8ICAgMTAgKy0tCiBm
-cy94ZnMveGZzX2ZpbGUuYyAgICAgICAgICAgICAgICB8ICAgIDkgKy0KIGluY2x1ZGUvbGludXgv
-ZGF4LmggICAgICAgICAgICAgIHwgICAyNSArKysrKystCiBpbmNsdWRlL2xpbnV4L2xpYm52ZGlt
-bS5oICAgICAgICB8ICAgIDkgKysKIGluY2x1ZGUvbGludXgvdmlydGlvX3BtZW0uaCAgICAgIHwg
-ICA2MCArKysrKysrKysrKysrKysrKysKIGluY2x1ZGUvdWFwaS9saW51eC92aXJ0aW9faWRzLmgg
-IHwgICAgMSAKIGluY2x1ZGUvdWFwaS9saW51eC92aXJ0aW9fcG1lbS5oIHwgICAxMCArKysKIDE5
-IGZpbGVzIGNoYW5nZWQsIDQzNiBpbnNlcnRpb25zKCspLCAyNSBkZWxldGlvbnMoLSkKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
-aWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3Jn
-L21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+This patch adds functionality to perform flush from guest
+to host over VIRTIO. We are registering a callback based
+on 'nd_region' type. virtio_pmem driver requires this special
+flush function. For rest of the region types we are registering
+existing flush function. Report error returned by host fsync
+failure to userspace.
+
+Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+---
+ drivers/acpi/nfit/core.c     |  4 ++--
+ drivers/nvdimm/claim.c       |  6 ++++--
+ drivers/nvdimm/nd.h          |  1 +
+ drivers/nvdimm/pmem.c        | 13 ++++++++-----
+ drivers/nvdimm/region_devs.c | 26 ++++++++++++++++++++++++--
+ include/linux/libnvdimm.h    |  8 +++++++-
+ 6 files changed, 46 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 5a389a4f4f65..08dde76cf459 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2434,7 +2434,7 @@ static void write_blk_ctl(struct nfit_blk *nfit_blk, unsigned int bw,
+ 		offset = to_interleave_offset(offset, mmio);
+ 
+ 	writeq(cmd, mmio->addr.base + offset);
+-	nvdimm_flush(nfit_blk->nd_region);
++	nvdimm_flush(nfit_blk->nd_region, NULL);
+ 
+ 	if (nfit_blk->dimm_flags & NFIT_BLK_DCR_LATCH)
+ 		readq(mmio->addr.base + offset);
+@@ -2483,7 +2483,7 @@ static int acpi_nfit_blk_single_io(struct nfit_blk *nfit_blk,
+ 	}
+ 
+ 	if (rw)
+-		nvdimm_flush(nfit_blk->nd_region);
++		nvdimm_flush(nfit_blk->nd_region, NULL);
+ 
+ 	rc = read_blk_stat(nfit_blk, lane) ? -EIO : 0;
+ 	return rc;
+diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
+index fb667bf469c7..13510bae1e6f 100644
+--- a/drivers/nvdimm/claim.c
++++ b/drivers/nvdimm/claim.c
+@@ -263,7 +263,7 @@ static int nsio_rw_bytes(struct nd_namespace_common *ndns,
+ 	struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
+ 	unsigned int sz_align = ALIGN(size + (offset & (512 - 1)), 512);
+ 	sector_t sector = offset >> 9;
+-	int rc = 0;
++	int rc = 0, ret = 0;
+ 
+ 	if (unlikely(!size))
+ 		return 0;
+@@ -301,7 +301,9 @@ static int nsio_rw_bytes(struct nd_namespace_common *ndns,
+ 	}
+ 
+ 	memcpy_flushcache(nsio->addr + offset, buf, size);
+-	nvdimm_flush(to_nd_region(ndns->dev.parent));
++	ret = nvdimm_flush(to_nd_region(ndns->dev.parent), NULL);
++	if (ret)
++		rc = ret;
+ 
+ 	return rc;
+ }
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index a5ac3b240293..0c74d2428bd7 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -159,6 +159,7 @@ struct nd_region {
+ 	struct badblocks bb;
+ 	struct nd_interleave_set *nd_set;
+ 	struct nd_percpu_lane __percpu *lane;
++	int (*flush)(struct nd_region *nd_region, struct bio *bio);
+ 	struct nd_mapping mapping[0];
+ };
+ 
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index bc2f700feef8..f719245da170 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -192,6 +192,7 @@ static blk_status_t pmem_do_bvec(struct pmem_device *pmem, struct page *page,
+ 
+ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+ {
++	int ret = 0;
+ 	blk_status_t rc = 0;
+ 	bool do_acct;
+ 	unsigned long start;
+@@ -201,7 +202,7 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+ 	struct nd_region *nd_region = to_region(pmem);
+ 
+ 	if (bio->bi_opf & REQ_PREFLUSH)
+-		nvdimm_flush(nd_region);
++		ret = nvdimm_flush(nd_region, bio);
+ 
+ 	do_acct = nd_iostat_start(bio, &start);
+ 	bio_for_each_segment(bvec, bio, iter) {
+@@ -216,7 +217,10 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+ 		nd_iostat_end(bio, start);
+ 
+ 	if (bio->bi_opf & REQ_FUA)
+-		nvdimm_flush(nd_region);
++		ret = nvdimm_flush(nd_region, bio);
++
++	if (ret)
++		bio->bi_status = errno_to_blk_status(ret);
+ 
+ 	bio_endio(bio);
+ 	return BLK_QC_T_NONE;
+@@ -469,7 +473,6 @@ static int pmem_attach_disk(struct device *dev,
+ 	}
+ 	dax_write_cache(dax_dev, nvdimm_has_cache(nd_region));
+ 	pmem->dax_dev = dax_dev;
+-
+ 	gendev = disk_to_dev(disk);
+ 	gendev->groups = pmem_attribute_groups;
+ 
+@@ -527,14 +530,14 @@ static int nd_pmem_remove(struct device *dev)
+ 		sysfs_put(pmem->bb_state);
+ 		pmem->bb_state = NULL;
+ 	}
+-	nvdimm_flush(to_nd_region(dev->parent));
++	nvdimm_flush(to_nd_region(dev->parent), NULL);
+ 
+ 	return 0;
+ }
+ 
+ static void nd_pmem_shutdown(struct device *dev)
+ {
+-	nvdimm_flush(to_nd_region(dev->parent));
++	nvdimm_flush(to_nd_region(dev->parent), NULL);
+ }
+ 
+ static void nd_pmem_notify(struct device *dev, enum nvdimm_event event)
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index b4ef7d9ff22e..e5b59708865e 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -295,7 +295,9 @@ static ssize_t deep_flush_store(struct device *dev, struct device_attribute *att
+ 		return rc;
+ 	if (!flush)
+ 		return -EINVAL;
+-	nvdimm_flush(nd_region);
++	rc = nvdimm_flush(nd_region, NULL);
++	if (rc)
++		return rc;
+ 
+ 	return len;
+ }
+@@ -1085,6 +1087,11 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
+ 	dev->of_node = ndr_desc->of_node;
+ 	nd_region->ndr_size = resource_size(ndr_desc->res);
+ 	nd_region->ndr_start = ndr_desc->res->start;
++	if (ndr_desc->flush)
++		nd_region->flush = ndr_desc->flush;
++	else
++		nd_region->flush = NULL;
++
+ 	nd_device_register(dev);
+ 
+ 	return nd_region;
+@@ -1125,11 +1132,24 @@ struct nd_region *nvdimm_volatile_region_create(struct nvdimm_bus *nvdimm_bus,
+ }
+ EXPORT_SYMBOL_GPL(nvdimm_volatile_region_create);
+ 
++int nvdimm_flush(struct nd_region *nd_region, struct bio *bio)
++{
++	int rc = 0;
++
++	if (!nd_region->flush)
++		rc = generic_nvdimm_flush(nd_region);
++	else {
++		if (nd_region->flush(nd_region, bio))
++			rc = -EIO;
++	}
++
++	return rc;
++}
+ /**
+  * nvdimm_flush - flush any posted write queues between the cpu and pmem media
+  * @nd_region: blk or interleaved pmem region
+  */
+-void nvdimm_flush(struct nd_region *nd_region)
++int generic_nvdimm_flush(struct nd_region *nd_region)
+ {
+ 	struct nd_region_data *ndrd = dev_get_drvdata(&nd_region->dev);
+ 	int i, idx;
+@@ -1153,6 +1173,8 @@ void nvdimm_flush(struct nd_region *nd_region)
+ 		if (ndrd_get_flush_wpq(ndrd, i, 0))
+ 			writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
+ 	wmb();
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(nvdimm_flush);
+ 
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index feb342d026f2..a5f369ec3726 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -65,6 +65,9 @@ enum {
+ 	 */
+ 	ND_REGION_PERSIST_MEMCTRL = 2,
+ 
++	/* Platform provides asynchronous flush mechanism */
++	ND_REGION_ASYNC = 3,
++
+ 	/* mark newly adjusted resources as requiring a label update */
+ 	DPA_RESOURCE_ADJUSTED = 1 << 0,
+ };
+@@ -121,6 +124,7 @@ struct nd_mapping_desc {
+ 	int position;
+ };
+ 
++struct nd_region;
+ struct nd_region_desc {
+ 	struct resource *res;
+ 	struct nd_mapping_desc *mapping;
+@@ -133,6 +137,7 @@ struct nd_region_desc {
+ 	int target_node;
+ 	unsigned long flags;
+ 	struct device_node *of_node;
++	int (*flush)(struct nd_region *nd_region, struct bio *bio);
+ };
+ 
+ struct device;
+@@ -260,7 +265,8 @@ unsigned long nd_blk_memremap_flags(struct nd_blk_region *ndbr);
+ unsigned int nd_region_acquire_lane(struct nd_region *nd_region);
+ void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane);
+ u64 nd_fletcher64(void *addr, size_t len, bool le);
+-void nvdimm_flush(struct nd_region *nd_region);
++int nvdimm_flush(struct nd_region *nd_region, struct bio *bio);
++int generic_nvdimm_flush(struct nd_region *nd_region);
+ int nvdimm_has_flush(struct nd_region *nd_region);
+ int nvdimm_has_cache(struct nd_region *nd_region);
+ int nvdimm_in_overwrite(struct nvdimm *nvdimm);
+-- 
+2.20.1
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
