@@ -1,30 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09C619742
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 05:49:14 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DC3197C5
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 06:48:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B666B21260A7F;
-	Thu,  9 May 2019 20:49:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1E86F21260A7E;
+	Thu,  9 May 2019 21:48:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.14.28.215;
- helo=lists.01.org; envelope-from=postmaster@lists.01.org;
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu;
  receiver=linux-nvdimm@lists.01.org 
-Received: from lists.01.org (unknown [183.14.28.215])
- by ml01.01.org (Postfix) with ESMTP id 86A9E21260A7A
- for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 20:49:09 -0700 (PDT)
-From: "Mail Administrator" <postmaster@lists.01.org>
-To: linux-nvdimm@lists.01.org
-Subject: Returned mail: see transcript for details
-Date: Fri, 10 May 2019 11:47:23 +0800
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 9ECAD2125ADF8
+ for <linux-nvdimm@lists.01.org>; Thu,  9 May 2019 21:48:54 -0700 (PDT)
+Received: from callcc.thunk.org ([66.31.38.53]) (authenticated bits=0)
+ (User authenticated as tytso@ATHENA.MIT.EDU)
+ by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x4A4livR031694
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 10 May 2019 00:47:45 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+ id 11AEE420024; Fri, 10 May 2019 00:47:44 -0400 (EDT)
+Date: Fri, 10 May 2019 00:47:43 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Logan Gunthorpe <logang@deltatee.com>
+Subject: Re: [PATCH v2 00/17] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+Message-ID: <20190510044743.GA6889@mit.edu>
+Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Frank Rowand <frowand.list@gmail.com>, Tim.Bird@sony.com,
+ knut.omang@oracle.com, gregkh@linuxfoundation.org,
+ brendanhiggins@google.com, keescook@google.com,
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org,
+ sboyd@kernel.org, shuah@kernel.org, devicetree@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
+ linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
+ linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
+ amir73il@gmail.com, dan.carpenter@oracle.com,
+ dan.j.williams@intel.com, daniel@ffwll.ch, jdike@addtoit.com,
+ joel@jms.id.au, julia.lawall@lip6.fr, khilman@baylibre.com,
+ mpe@ellerman.id.au, pmladek@suse.com, richard@nod.at,
+ rientjes@google.com, rostedt@goodmis.org, wfg@linux.intel.com
+References: <580e092f-fa4e-eedc-9e9a-a57dd085f0a6@gmail.com>
+ <20190509032017.GA29703@mit.edu>
+ <7fd35df81c06f6eb319223a22e7b93f29926edb9.camel@oracle.com>
+ <20190509133551.GD29703@mit.edu>
+ <ECADFF3FD767C149AD96A924E7EA6EAF9770D591@USCULXMSG01.am.sony.com>
+ <875c546d-9713-bb59-47e4-77a1d2c69a6d@gmail.com>
+ <20190509214233.GA20877@mit.edu>
+ <b09ba170-229b-fde4-3e9a-e50d6ab4c1b5@deltatee.com>
+ <20190509233043.GC20877@mit.edu>
+ <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+Content-Disposition: inline
+In-Reply-To: <8914afef-1e66-e6e3-f891-5855768d3018@deltatee.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,70 +72,42 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============2219363431367333886=="
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ brendanhiggins@google.com, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, mpe@ellerman.id.au,
+ linux-kselftest@vger.kernel.org, shuah@kernel.org, robh@kernel.org,
+ linux-nvdimm@lists.01.org, Frank Rowand <frowand.list@gmail.com>,
+ knut.omang@oracle.com, kieran.bingham@ideasonboard.com, wfg@linux.intel.com,
+ joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, sboyd@kernel.org, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, daniel@ffwll.ch,
+ keescook@google.com, linux-fsdevel@vger.kernel.org, khilman@baylibre.com
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
-Message-Id: <20190510034912.B666B21260A7F@ml01.01.org>
 
-This is a multi-part message in MIME format.
+On Thu, May 09, 2019 at 05:40:48PM -0600, Logan Gunthorpe wrote:
+> 
+> Based on some of the other commenters, I was under the impression that
+> kselftests had in-kernel tests but I'm not sure where or if they exist. If
+> they do exists, it seems like it would make sense to convert those to kunit
+> and have Kunit tests run-able in a VM or baremetal instance.
 
---===============2219363431367333886==
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 7bit
+There are kselftests tests which are shell scripts which load a
+module, and the module runs the in-kernel code.  However, I didn't see
+much infrastructure for the in-kernel test code; the one or two test
+modules called from kselftests looked pretty ad hoc to me.
 
-æl¬Y¨R$Äøw¥ùÇP:à!-&c¶‰ƒÅÎÛÆãøÁ¾yâ¹ô¼Tp©_{iÇ–ô©)lÕŠZ3kÚ5%ÏUUt<ÊÁ—Joì¤i¬‚õ¼Ìd[şØMçÃ[êqîwj>‰a/4í-ç†Y`ÊK“ ó¾mQ'Ô‘ÔFw7¾’°ÖoÔßMGô‡›6Ík²·Dæ<¬š£kñ“&ÉcãÁTğó.K¬ÕOŠ«Ö±?<›æ£jã yìsñ©c ‘®"_ú£¬¶áüøj}ÔôŸ8W—Ñ,©Ú<£ø„öTíeäl?}Ëöó±~Ç§C&ûãõù-³(§
-ÂEŞƒH¡ëWGNtwñ'Š\¶ıÈìeEKe¾P
-½›U\»2&Ëõ
-àégÇab‘5K·ßÏ¡ Ñ{öRG’ñIñPšBp’¿”ÊµÊ U;2"
-lS¥«­‘Sq{lqM}¿¸¾6Üe–‡©·ğÚœß‰î×Í§±å²ƒfÁÆ”;Pi­:ÚÇ¹#şaª²øÉéMæ”
-§®U¥ë7;oÂ0:‡:öóÖ(œZx‰³|{¬ì ]æ\ÂJ z´}7^
-v¬PH
-Gm
-¤FÚÑ
-éŞÚËÏXà oÆì|560 ² “µüwnLGé&ÔHúm4j†|£ıœÖ±$ª(5ÈE!pIh¢wooïSÅÕ
-Ë&Â~¸á,Ú&ú”§´/†»YSSFhÛxÖC›êñt›µÀñá²kq¦Ò¨3©¿šŠwÜeª¡ºÄÚi?nt‹“x¶Ø/v—¸Ì3†ƒq“%T
-ÈÂÕÆ’±ŸI”ÓçÌÚä¶âà{rDDfjDı^u9ñ‡oªÇ‰ë<ş­ŸÇ­¬BùTø;¤İ6-›’p‚Tª‘3¼¤°ĞnS¾Ú’æ1ÎÓÔ¼c|)iü¤LPxNûwşÏlÁ§_ó§Ù·Hoµ»>pñ¤ê³n>àöÅøQ)¯::~ïø
-"¹qi÷#Â†
-†’OƒRç;É™å¥Æİ‰îå×hLN«İI“;A$İ‰ªÒïŸtˆ¤
-°‰g"g!nàôAAthôåÀlÅ$Pe…ª{×¿…cíıòóõ—ÊŠP0¾'-âW”PPn)0UØ“øSJAó¿}Öqs(ĞŞ0uÌÏ*şÂ6n]ás“ôTâàq­lqÕäÌÇ±%Ù®P’È3K\áw}üœ8 Ò>T¼\•¨'ÌÄ^L×¯®ià!ı˜Wø¤LE?˜N¡3'5ÄCtİS½O—Ş¯†î˜5Zš…_Í„ Œ7 ,ú(Ö®
-‚ãï.-¤
-ö¦b Úë ò”¥Ê¾Š"ëB‰?¬£•öÀ½2Ëõ
-‡Ë©ÀôZ*§h.©‰jàl” HŞ·ÚHUä½¾Zá®wLD5A‡ÊÑÁ¢
-J?÷ëJ\ÌpY´¡yCr†v¢IèÂ"N£Bİ¿B¾‹ƒ]4ëXTÉŸuMW°z¾ç¹)è|:r®£Jûı¨…w;µêáG¢¯‡ìW'—/¸aúz®rğAX³XÇå9*#¼f!KjõË•1”²ë!MîÌÚL7[rö$FcQûH*#A`ro(ª¸,:ç;ñ²MÕmø
-õmîuòXe¥q÷š$™·g¡˜Â/ËòDz£âÄBÍ
-AİqÇNW²ò
-BnâÁQEH|Ï¯­:E¾PÏ,íw¶İY.N´EÃ\‘”H†ZRk0*ÇTTó2’5¾&½õ•s/~¯ÄY¡!İâ?©aõ8şCª™7h7¹ëãbUái“4à~…¹£ÕíFvQáJºÉşQŞ/À¥‡HRªRÉ ¥fØ"ŞTmyHÇíŠ,‘KßcpS¤;À
-Ï2of¢'í6l}3*†L‡¦´U±³H|®/87œy…İãù)úËY:¨µ÷K*Zã“·fDãW§ uÁFJí§¦»PŠ%7‹dÛFÑzõ…èÎíê;]¨ÏNRáO„Ü1Ğé•jhzëqÊùŸ®fq›«ÆË¢Q×6
-Õ±±‘Ó#-‹Ôd³b÷Ô‘Rè¬t ˆĞos»JÚUêÈÎ¹‚dÛºn“1±<ín‚r“`ÎJx7tÉ/_"aßP]³7Ü-9»»ùÛ¿Û|&0ÎDteÅ0~çúB_Å!¸Ğ\
-ç ousŞ³Fœ—xˆã·~÷çëèÔî§½cc¡jlRT?¾î~í¨gxô FÉC®¸zXåè™³ùıµ¥ïÉ>
-ó™oµœIèÙT>ŠgsÅs)Ç.çÀ)O&ÉÚ¾ğÃı—}¶
-z÷ª:ûßÇÃì£¿ŠUáúğÓ Á…‡¦G÷Å¹L%bænŠÛ!Æçv‰¹#”£pµ|#õ°P­úağ·Uè
- [Vë—ƒf­#´ôtø1j'íd—ê>?SµÕ’e³ßÛDKø“.§ 5ƒ6ºÄJW*$~Ç:vãõ7›`J°µd‰oi·Š5Æ¦ìƒ[4ÏzIWv»0-Qwùx¼öÑ~¢%T©oo,¢ˆù®¢p±·İhy]&]E¸Gs¥®8Ÿ¡‰Âõ ?‹UåeŠDèà8ú[Åm¦ôõğ­8‚9\FO0Í½Ú×´Ó[vÖ¥#Â1ËÆ1Ú_Ø¸ÛÚIídQí:×(ĞpG!ôDÁÀt –tşv/Íä$È›5ëş"<çl>pÁ5W“Dtb9­YWã½g½h4
->±Q“–ı¹2ÔÛéÛúĞú[”Ù%wm|-i¦5Æ4—K73ÂzÑ&œ•]9æyÅ&ü“©’çÄüµEs†èkáöåW"oE1¼TŸ[.Sì%±Sófs~„
-’Äj‘Ær.p%Í,kc'Æ¡“ç±!R
-â.VwÈuhnLÈ´q’Juz”£ÙÆÁ?5¼ÂOKò_¨ŞôC{<³`SaÃµÉn,ûÍ‹áfCKûmUñGhêFîa‚ùtöšrpw,ha‰y`
-İß5ŞƒŸZöXàæğ-ø1µ;V|8òô›™J·Ç&˜ëà¢Mg>¡7Éø¥’¼ŞŞ‡>jŞ³’HNWğk[
-¢Å¦¥¾åAåÍÌâC˜>‘‰,£ûĞxjóxÏ‚î£jß†·äûøà¼R¥‹Öå•ìû¸ïzUT‚nóF?GK½I³p´ùçW‚¢†íªÔ”TOàú°½]«á¥ÛğÌY™)¢  òÍv®Ÿ\öşGYR]Õg<rsèX·p¨Øí¡,IİlJ*™!A¸®“K-5Ş¥ÌİùèK'äğ¯¥C¸·x[ˆB²
-!/¥ÄQ¢~Œ 7Ìöw—‡rjCs›{Jn
-Û° ÉÜä
-s¨'ıL—o“œ©¾{yPœ*Ç‹CÍåkœ#£°C5PßöÆ¶«k1¹Ü±åígë†{
-©‡¹bŞ°Ş!Œ¦±*ƒá!)özQA¤(Š:éW×›-×[1äQËrG¹¾Åñ‡uTb8O}ÍR¥/Â39 ²%ªVæjr<o™%vOiÙ.XÁF÷½aù†åAAA86tä”MÙŞ/ö)Æ,ÆÀ;%1¦”º§Şù-–1zùKkGÜ{Ş5Y½Ş7–Õ¹a]e°¹4aS…êF-Æ÷-ä¨åüîó||á‚^cy„À[ )T¢Îİ{Xj±ãP<ëå®Dv1ñøøR½é9Y¸¿Æ¯L÷”æ‰ÎĞic7B·Àô[‡“ZÑNúNî
-÷M:!ü˜î¼¼Ìƒ¥Â¼LëQ³£„Š^çÍ2$Œ¥O­êWTü
-VåÉé¡ß‹±Š2ñªæÔ{³<Ş5#9×DØ<İG 3Fh®{BÊ"®Î81”$nÊ1«9øá‡óx"±5É%Ó`®ğUJE?[ş2¬M¨ª”¡P‹,|ÁÁi—`}43Ï ^åÇxÈ¸Æ7Y[†Tè¯PKÒÆ²¦h
+That's why I used the "vise grips" analogy.  You can use a pair of
+vise grips like a monkey wrench; but it's not really a monkey wrench,
+and might not be the best tool to loosen or tighten nuts and bolts.
 
-
---===============2219363431367333886==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+       	   	     	       	   - Ted
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
 https://lists.01.org/mailman/listinfo/linux-nvdimm
-
---===============2219363431367333886==--
-
-
