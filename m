@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0BB19D7D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 14:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBB919DAC
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 15:00:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A8A5C21268F95;
-	Fri, 10 May 2019 05:56:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2DE8F21268F97;
+	Fri, 10 May 2019 06:00:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,22 +15,21 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5E48921268F91
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 05:56:57 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id CBD8A21268F92
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 06:00:26 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 851FFAE2C;
- Fri, 10 May 2019 12:56:55 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 749EDAEC6;
+ Fri, 10 May 2019 13:00:25 +0000 (UTC)
 MIME-Version: 1.0
-Date: Fri, 10 May 2019 14:56:54 +0200
+Date: Fri, 10 May 2019 15:00:25 +0200
 From: osalvador@suse.de
 To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v8 03/12] mm/sparsemem: Add helpers track active portions
- of a section at boot
-In-Reply-To: <155718598213.130019.10989541248734713186.stgit@dwillia2-desk3.amr.corp.intel.com>
+Subject: Re: [PATCH v8 08/12] mm/sparsemem: Prepare for sub-section ranges
+In-Reply-To: <155718600896.130019.3565988182718346388.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155718598213.130019.10989541248734713186.stgit@dwillia2-desk3.amr.corp.intel.com>
-Message-ID: <5ce1d8dfe8e485616f9ade30fade88a5@suse.de>
+ <155718600896.130019.3565988182718346388.stgit@dwillia2-desk3.amr.corp.intel.com>
+Message-ID: <3b031a3e721fd81dcfd5fa344e2a5bd0@suse.de>
 X-Sender: osalvador@suse.de
 User-Agent: Roundcube Webmail
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -45,41 +44,32 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, Vlastimil Babka <vbabka@suse.cz>
+ linux-nvdimm@lists.01.org, owner-linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 2019-05-07 01:39, Dan Williams wrote:
-> Prepare for hot{plug,remove} of sub-ranges of a section by tracking a
-> sub-section active bitmask, each bit representing a PMD_SIZE span of 
-> the
-> architecture's memory hotplug section size.
+On 2019-05-07 01:40, Dan Williams wrote:
+> Prepare the memory hot-{add,remove} paths for handling sub-section
+> ranges by plumbing the starting page frame and number of pages being
+> handled through arch_{add,remove}_memory() to
+> sparse_{add,remove}_one_section().
 > 
-> The implications of a partially populated section is that pfn_valid()
-> needs to go beyond a valid_section() check and read the sub-section
-> active ranges from the bitmask. The expectation is that the bitmask
-> (subsection_map) fits in the same cacheline as the valid_section() 
-> data,
-> so the incremental performance overhead to pfn_valid() should be
-> negligible.
+> This is simply plumbing, small cleanups, and some identifier renames. 
+> No
+> intended functional changes.
 > 
 > Cc: Michal Hocko <mhocko@suse.com>
 > Cc: Vlastimil Babka <vbabka@suse.cz>
 > Cc: Logan Gunthorpe <logang@deltatee.com>
 > Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Tested-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-Now that the handling is done in pfn/nr_pages, it looks better to me:
-
 Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
-Thanks
-
 
 
 _______________________________________________
