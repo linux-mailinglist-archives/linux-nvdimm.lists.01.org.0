@@ -2,58 +2,57 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1BE1A3F4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 22:22:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 839391A3D9
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 May 2019 22:15:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B160C2126CFA9;
-	Fri, 10 May 2019 13:22:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8D08C2126CF9C;
+	Fri, 10 May 2019 13:15:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E3E312126CF9E
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 13:22:46 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id y10so5428748oia.8
- for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 13:22:46 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 5C8E12121493E
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 13:15:41 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id g18so6470544otj.11
+ for <linux-nvdimm@lists.01.org>; Fri, 10 May 2019 13:15:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=glYXor0GQ9DfKpghbnKPKxe+zUzoJeb7GoYJ26Vk6ps=;
- b=yf8U/VwdNl5tfgFPEKe5qh3THkRWZb9un60SOgkfJ/5LhvAwk90OALPbQmqH8NGPZg
- Cr23IQd+McBJGud2E9ep2+5K3niud5mH6fhTcdytKwGg0ifP80vvI1KiLl0J9xx4xwjq
- TEllzhY/P52SG7Zgqu0zO0TcVHYyKzcfJiA7uwMKIIPnUXohIrhjvrd+s0fzp7fbWFpQ
- y62fi/8hXK8LlUhb+lV4PauDhwTsmzrWQoEzPH1EBWKu2DNHNpcM/c0ugQiTxq1CS/Pn
- ELZfOgWViQuoOxYDdqZ2L8n4KiCZbfdn+ONJLYDNxFTBB6M7dS0ALwRsezeWWJXIVakV
- lNVg==
+ :cc; bh=haQb/JJEXbzGwY8djXGgfBZiIn+/x5Yv5AUgQ4m38OM=;
+ b=WEeqre45hj7sSv58I/e7A5coRY+GxRJHinyFbk3h7U4aJrBJYpdYkhq9T1r4+5or5d
+ jRR3GR4Z+c950AiPGFzXe4QQXlx4J3RcgRXk7RadE4sRSsQK7+mC+RHs2IEhRwKUI7Zy
+ /T1NcmREZZ/qpW4sfz6npTMRE2tie3uif+puXikMYRBthExnMytzYTF00hoiHxBr5/P0
+ 7jNqauenyRbY3EQ6raNfL+QovOy++Rd9rquniNrMmi7pGZFEPwXRnlT7u+kZ42rUMzcD
+ v4eAUwbD5Njo6W9aRbjgU1OhGsIT/fgW+T3LVLT6M51FFHqJTii+xqDcL8xDANdQWGtc
+ 2Dxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=glYXor0GQ9DfKpghbnKPKxe+zUzoJeb7GoYJ26Vk6ps=;
- b=NqDMP5K4dYWXlZ/BrIjLUv+E/G8FGncXffgFWquePrB/OXnVjVvViywovoUMRj7dIX
- Jzzf/fYRdW45JjrwxQFW+0RXtdrOqQJUT7+nf0H2fdL3SE9X2ulRMvPHIBWdKw5FlPv8
- Nur8HhkesT4+Mma8xoErG1TNLYP0Q15GDRntP58oJ3uzWAjYQJ44u9zNPDS35ujvcN4J
- k+4ALQGtcbDLcbBycppdtKQkKHdQgA7JiHyPUL1a/46GMlNppNDryA88BOMDbfhcN1Nk
- rv6YLfTq+0NSxf4kT/Iqr/uktz/GUPygNp4K8RDw5/fcv0mFDYKu8Xukd3XdkqOgvFtg
- lqJA==
-X-Gm-Message-State: APjAAAX8mRJsTSOEisG5tI9EXSJNteXGKUanX3BL1b93Yha4/vcV6xmR
- YBFCJzIejgEs1MPGSwzZpm59WZkDsdjeGCupduL/vg==
-X-Google-Smtp-Source: APXvYqx7Iy3DOMIV9DNLu2fGaxr7KgtVySuDwyKCLAPX5/jruFRFKJ7CbI+68cxoMCTMjkHKJ+jW3/SnCYNqZpzsnJI=
-X-Received: by 2002:aca:4208:: with SMTP id p8mr6821131oia.105.1557519257995; 
- Fri, 10 May 2019 13:14:17 -0700 (PDT)
+ bh=haQb/JJEXbzGwY8djXGgfBZiIn+/x5Yv5AUgQ4m38OM=;
+ b=iF0NibEDclVoJra+7irfz7BdJJesBFtJmZw2RLahI/ldPkl/HjGAj8EXBYmPLL8mgH
+ Z44Nl8Lemsi7xqaEEZAZpWDYVgM2W8UhWcX4+HpJ7tNjogQ2hfQYeZvNI2kt0PMwr7ZZ
+ nSdMoAKqFCEel8GK8YKcdNAdutow/EfumDAP95Lw1FQj5TQ7v/pbd3JC1EIxcsAjxjk5
+ gh8m2u+1v/rdu7m6YO96QNkzRdpTJXo/xf7yuyHvFJMHOLXou0TsgoBCgWW1RHo3oOhK
+ NEqw6k2wElgqsU9SWnhsEkkhb9E7yILDdhTwHREnpgcU6btevwcs/KNE+Y/HXRp7GDlt
+ d9ug==
+X-Gm-Message-State: APjAAAVh8P82BdCl1HzCj1Gx0fICIwjGWgQT1ePQaGxrswJdDrW4WIAG
+ jPjpzHaDkOFX/T4w2M/sn56BSTz1qc3m/PUIzP/ufA==
+X-Google-Smtp-Source: APXvYqzGzV4vCYOWqp7L7v2b9h2jjvTQectDwMiq79aWZo81gT17ipgMl7EwlMGGL3BIVEygxWA2BmYfTI9FLFAVAXk=
+X-Received: by 2002:a9d:6f19:: with SMTP id n25mr2918893otq.367.1557519340452; 
+ Fri, 10 May 2019 13:15:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190510155202.14737-1-pagupta@redhat.com>
- <20190510155202.14737-4-pagupta@redhat.com>
-In-Reply-To: <20190510155202.14737-4-pagupta@redhat.com>
+In-Reply-To: <20190510155202.14737-1-pagupta@redhat.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 10 May 2019 13:14:07 -0700
-Message-ID: <CAPcyv4hbVNRFSyS2CTbmO88uhnbeH4eiukAng2cxgbDzLfizwg@mail.gmail.com>
-Subject: Re: [PATCH v8 3/6] libnvdimm: add dax_dev sync flag
+Date: Fri, 10 May 2019 13:15:29 -0700
+Message-ID: <CAPcyv4joEZaePvzc__N9Q3nozoHgQn7hNFPjBVo5BP6cc4rkEA@mail.gmail.com>
+Subject: Re: [PATCH v8 0/6] virtio pmem driver
 To: Pankaj Gupta <pagupta@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -92,43 +91,16 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 10, 2019 at 8:53 AM Pankaj Gupta <pagupta@redhat.com> wrote:
+On Fri, May 10, 2019 at 8:52 AM Pankaj Gupta <pagupta@redhat.com> wrote:
 >
-> This patch adds 'DAXDEV_SYNC' flag which is set
-> for nd_region doing synchronous flush. This later
-> is used to disable MAP_SYNC functionality for
-> ext4 & xfs filesystem for devices don't support
-> synchronous flush.
+>  Hi Michael & Dan,
 >
-> Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> ---
->  drivers/dax/bus.c            |  2 +-
->  drivers/dax/super.c          | 13 ++++++++++++-
->  drivers/md/dm.c              |  3 ++-
->  drivers/nvdimm/pmem.c        |  5 ++++-
->  drivers/nvdimm/region_devs.c |  7 +++++++
->  include/linux/dax.h          |  8 ++++++--
->  include/linux/libnvdimm.h    |  1 +
->  7 files changed, 33 insertions(+), 6 deletions(-)
-[..]
-> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> index 043f0761e4a0..ee007b75d9fd 100644
-> --- a/drivers/md/dm.c
-> +++ b/drivers/md/dm.c
-> @@ -1969,7 +1969,8 @@ static struct mapped_device *alloc_dev(int minor)
->         sprintf(md->disk->disk_name, "dm-%d", minor);
->
->         if (IS_ENABLED(CONFIG_DAX_DRIVER)) {
-> -               dax_dev = alloc_dax(md, md->disk->disk_name, &dm_dax_ops);
-> +               dax_dev = alloc_dax(md, md->disk->disk_name, &dm_dax_ops,
-> +                                                        DAXDEV_F_SYNC);
+>  Please review/ack the patch series from LIBNVDIMM & VIRTIO side.
+>  We have ack on ext4, xfs patches(4, 5 & 6) patch 2. Still need
+>  your ack on nvdimm patches(1 & 3) & virtio patch 2.
 
-Apologies for not realizing this until now, but this is broken.
-Imaging a device-mapper configuration composed of both 'async'
-virtio-pmem and 'sync' pmem. The 'sync' flag needs to be unified
-across all members. I would change this argument to '0' and then
-arrange for it to be set at dm_table_supports_dax() time after
-validating that all components support synchronous dax.
+I was planning to merge these via the nvdimm tree, not ack them. Did
+you have another maintainer lined up to take these patches?
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
