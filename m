@@ -1,52 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6801AF83
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 May 2019 06:43:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9521B779
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 May 2019 15:54:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EEBDA212604FF;
-	Sun, 12 May 2019 21:43:54 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 13AEA212735AB;
+	Mon, 13 May 2019 06:54:56 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0AA8021250C88
- for <linux-nvdimm@lists.01.org>; Sun, 12 May 2019 21:43:51 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 480622026B;
- Mon, 13 May 2019 04:43:50 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CAE774B6;
- Mon, 13 May 2019 04:43:49 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id ED18B18089CA;
- Mon, 13 May 2019 04:43:48 +0000 (UTC)
-Date: Mon, 13 May 2019 00:43:48 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Message-ID: <1713362444.28252458.1557722628363.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20190512124954-mutt-send-email-mst@kernel.org>
-References: <20190510155202.14737-1-pagupta@redhat.com>
- <20190510155202.14737-3-pagupta@redhat.com>
- <20190512124954-mutt-send-email-mst@kernel.org>
-Subject: Re: [Qemu-devel] [PATCH v8 2/6] virtio-pmem: Add virtio pmem driver
+ by ml01.01.org (Postfix) with ESMTPS id 498522126CFBE
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 06:54:54 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 47787AD64;
+ Mon, 13 May 2019 13:54:52 +0000 (UTC)
+Date: Mon, 13 May 2019 15:54:24 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v8 09/12] mm/sparsemem: Support sub-section hotplug
+Message-ID: <20190513135317.GA31168@linux>
+References: <155718596657.130019.17139634728875079809.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155718601407.130019.14248061058774128227.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
-X-Originating-IP: [10.65.16.148, 10.4.195.12]
-Thread-Topic: virtio-pmem: Add virtio pmem driver
-Thread-Index: IHi4BX5O2DPB0MTOeSCuwbiKswIAPw==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.29]); Mon, 13 May 2019 04:43:51 +0000 (UTC)
+Content-Disposition: inline
+In-Reply-To: <155718601407.130019.14248061058774128227.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,454 +43,306 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: jack@suse.cz, kvm@vger.kernel.org, david@redhat.com, jasowang@redhat.com,
- david@fromorbit.com, qemu-devel@nongnu.org,
- virtualization@lists.linux-foundation.org,
- adilger kernel <adilger.kernel@dilger.ca>, zwisler@kernel.org,
- aarcange@redhat.com, jstaron@google.com, linux-nvdimm@lists.01.org,
- willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
- linux-ext4@vger.kernel.org, lenb@kernel.org, kilobyte@angband.pl,
- riel@surriel.com, yuval shaia <yuval.shaia@oracle.com>, stefanha@redhat.com,
- imammedo@redhat.com, lcapitulino@redhat.com, kwolf@redhat.com,
- nilal@redhat.com, tytso@mit.edu,
- xiaoguangrong eric <xiaoguangrong.eric@gmail.com>, cohuck@redhat.com,
- rjw@rjwysocki.net, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, pbonzini@redhat.com,
- darrick wong <darrick.wong@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ akpm@linux-foundation.org, Vlastimil Babka <vbabka@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+On Mon, May 06, 2019 at 04:40:14PM -0700, Dan Williams wrote:
+>  
+> +void subsection_mask_set(unsigned long *map, unsigned long pfn,
+> +		unsigned long nr_pages)
+> +{
+> +	int idx = subsection_map_index(pfn);
+> +	int end = subsection_map_index(pfn + nr_pages - 1);
+> +
+> +	bitmap_set(map, idx, end - idx + 1);
+> +}
+> +
+>  void subsection_map_init(unsigned long pfn, unsigned long nr_pages)
+>  {
+>  	int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
+> @@ -219,20 +235,17 @@ void subsection_map_init(unsigned long pfn, unsigned long nr_pages)
+>  		return;
+>  
+>  	for (i = start_sec; i <= end_sec; i++) {
+> -		int idx, end;
+> -		unsigned long pfns;
+>  		struct mem_section *ms;
+> +		unsigned long pfns;
+>  
+> -		idx = subsection_map_index(pfn);
+>  		pfns = min(nr_pages, PAGES_PER_SECTION
+>  				- (pfn & ~PAGE_SECTION_MASK));
+> -		end = subsection_map_index(pfn + pfns - 1);
+> -
+>  		ms = __nr_to_section(i);
+> -		bitmap_set(ms->usage->subsection_map, idx, end - idx + 1);
+> +		subsection_mask_set(ms->usage->subsection_map, pfn, pfns);
+>  
+>  		pr_debug("%s: sec: %d pfns: %ld set(%d, %d)\n", __func__, i,
+> -				pfns, idx, end - idx + 1);
+> +				pfns, subsection_map_index(pfn),
+> +				subsection_map_index(pfn + pfns - 1));
 
-> > Guest reads the persistent memory range information from
-> > Qemu over VIRTIO and registers it on nvdimm_bus. It also
-> > creates a nd_region object with the persistent memory
-> > range information so that existing 'nvdimm/pmem' driver
-> > can reserve this into system memory map. This way
-> > 'virtio-pmem' driver uses existing functionality of pmem
-> > driver to register persistent memory compatible for DAX
-> > capable filesystems.
-> > 
-> > This also provides function to perform guest flush over
-> > VIRTIO from 'pmem' driver when userspace performs flush
-> > on DAX memory range.
-> > 
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> > Reviewed-by: Yuval Shaia <yuval.shaia@oracle.com>
-> 
-> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+I would definetely add subsection_mask_set() and above change to Patch#3.
+I think it suits there better than here.
 
-Thank you, Michael.
+>  
+>  		pfn += pfns;
+>  		nr_pages -= pfns;
+> @@ -319,6 +332,15 @@ static void __meminit sparse_init_one_section(struct mem_section *ms,
+>  		unsigned long pnum, struct page *mem_map,
+>  		struct mem_section_usage *usage)
+>  {
+> +	/*
+> +	 * Given that SPARSEMEM_VMEMMAP=y supports sub-section hotplug,
+> +	 * ->section_mem_map can not be guaranteed to point to a full
+> +	 *  section's worth of memory.  The field is only valid / used
+> +	 *  in the SPARSEMEM_VMEMMAP=n case.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
+> +		mem_map = NULL;
+> +
+>  	ms->section_mem_map &= ~SECTION_MAP_MASK;
+>  	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum) |
+>  							SECTION_HAS_MEM_MAP;
+> @@ -724,10 +746,142 @@ static void free_map_bootmem(struct page *memmap)
+>  #endif /* CONFIG_MEMORY_HOTREMOVE */
+>  #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+>  
+> +#ifndef CONFIG_MEMORY_HOTREMOVE
+> +static void free_map_bootmem(struct page *memmap)
+> +{
+> +}
+> +#endif
+> +
+> +static bool is_early_section(struct mem_section *ms)
+> +{
+> +	struct page *usage_page;
+> +
+> +	usage_page = virt_to_page(ms->usage);
+> +	if (PageSlab(usage_page) || PageCompound(usage_page))
+> +		return false;
+> +	else
+> +		return true;
+> +}
+> +
+> +static void section_deactivate(unsigned long pfn, unsigned long nr_pages,
+> +		int nid, struct vmem_altmap *altmap)
+> +{
+> +	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
+> +	DECLARE_BITMAP(tmp, SUBSECTIONS_PER_SECTION) = { 0 };
+> +	struct mem_section *ms = __pfn_to_section(pfn);
+> +	bool early_section = is_early_section(ms);
+> +	struct page *memmap = NULL;
+> +	unsigned long *subsection_map = ms->usage
+> +		? &ms->usage->subsection_map[0] : NULL;
+> +
+> +	subsection_mask_set(map, pfn, nr_pages);
+> +	if (subsection_map)
+> +		bitmap_and(tmp, map, subsection_map, SUBSECTIONS_PER_SECTION);
+> +
+> +	if (WARN(!subsection_map || !bitmap_equal(tmp, map, SUBSECTIONS_PER_SECTION),
+> +				"section already deactivated (%#lx + %ld)\n",
+> +				pfn, nr_pages))
+> +		return;
+> +
+> +	if (WARN(!IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP)
+> +				&& nr_pages < PAGES_PER_SECTION,
+> +				"partial memory section removal not supported\n"))
+> +		return;
+> +
+> +	/*
+> +	 * There are 3 cases to handle across two configurations
+> +	 * (SPARSEMEM_VMEMMAP={y,n}):
+> +	 *
+> +	 * 1/ deactivation of a partial hot-added section (only possible
+> +	 * in the SPARSEMEM_VMEMMAP=y case).
+> +	 *    a/ section was present at memory init
+> +	 *    b/ section was hot-added post memory init
+> +	 * 2/ deactivation of a complete hot-added section
+> +	 * 3/ deactivation of a complete section from memory init
+> +	 *
+> +	 * For 1/, when subsection_map does not empty we will not be
+> +	 * freeing the usage map, but still need to free the vmemmap
+> +	 * range.
+> +	 *
+> +	 * For 2/ and 3/ the SPARSEMEM_VMEMMAP={y,n} cases are unified
+> +	 */
+> +	bitmap_xor(subsection_map, map, subsection_map, SUBSECTIONS_PER_SECTION);
+> +	if (bitmap_empty(subsection_map, SUBSECTIONS_PER_SECTION)) {
+> +		unsigned long section_nr = pfn_to_section_nr(pfn);
+> +
+> +		if (!early_section) {
+> +			kfree(ms->usage);
+> +			ms->usage = NULL;
+> +		}
+> +		memmap = sparse_decode_mem_map(ms->section_mem_map, section_nr);
+> +		ms->section_mem_map = sparse_encode_mem_map(NULL, section_nr);
+> +	}
+> +
+> +	if (early_section && memmap)
+> +		free_map_bootmem(memmap);
+> +	else
+> +		depopulate_section_memmap(pfn, nr_pages, altmap);
+> +}
+> +
+> +static struct page * __meminit section_activate(int nid, unsigned long pfn,
+> +		unsigned long nr_pages, struct vmem_altmap *altmap)
+> +{
+> +	DECLARE_BITMAP(map, SUBSECTIONS_PER_SECTION) = { 0 };
+> +	struct mem_section *ms = __pfn_to_section(pfn);
+> +	struct mem_section_usage *usage = NULL;
+> +	unsigned long *subsection_map;
+> +	struct page *memmap;
+> +	int rc = 0;
+> +
+> +	subsection_mask_set(map, pfn, nr_pages);
+> +
+> +	if (!ms->usage) {
+> +		usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
+> +		if (!usage)
+> +			return ERR_PTR(-ENOMEM);
+> +		ms->usage = usage;
+> +	}
+> +	subsection_map = &ms->usage->subsection_map[0];
+> +
+> +	if (bitmap_empty(map, SUBSECTIONS_PER_SECTION))
+> +		rc = -EINVAL;
+> +	else if (bitmap_intersects(map, subsection_map, SUBSECTIONS_PER_SECTION))
+> +		rc = -EEXIST;
+> +	else
+> +		bitmap_or(subsection_map, map, subsection_map,
+> +				SUBSECTIONS_PER_SECTION);
+> +
+> +	if (rc) {
+> +		if (usage)
+> +			ms->usage = NULL;
+> +		kfree(usage);
+> +		return ERR_PTR(rc);
+> +	}
+> +
+> +	/*
+> +	 * The early init code does not consider partially populated
+> +	 * initial sections, it simply assumes that memory will never be
+> +	 * referenced.  If we hot-add memory into such a section then we
+> +	 * do not need to populate the memmap and can simply reuse what
+> +	 * is already there.
+> +	 */
+> +	if (nr_pages < PAGES_PER_SECTION && is_early_section(ms))
+> +		return pfn_to_page(pfn);
+> +
+> +	memmap = populate_section_memmap(pfn, nr_pages, nid, altmap);
+> +	if (!memmap) {
+> +		section_deactivate(pfn, nr_pages, nid, altmap);
+> +		return ERR_PTR(-ENOMEM);
+> +	}
+> +
+> +	return memmap;
+> +}
 
-Best regards,
-Pankaj
+I do not really like this.
+Sub-section scheme is only available on CONFIG_SPARSE_VMEMMAP, so I would rather
+have two internal __section_{activate,deactivate} functions for sparse-vmemmap and
+sparse-non-vmemmap.
+That way, we can hide all detail implementation and sub-section dance behind
+the __section_{activate,deactivate} functions.
 
-> 
-> > ---
-> >  drivers/nvdimm/Makefile          |   1 +
-> >  drivers/nvdimm/nd_virtio.c       | 129 +++++++++++++++++++++++++++++++
-> >  drivers/nvdimm/virtio_pmem.c     | 117 ++++++++++++++++++++++++++++
-> >  drivers/virtio/Kconfig           |  10 +++
-> >  include/linux/virtio_pmem.h      |  60 ++++++++++++++
-> >  include/uapi/linux/virtio_ids.h  |   1 +
-> >  include/uapi/linux/virtio_pmem.h |  10 +++
-> >  7 files changed, 328 insertions(+)
-> >  create mode 100644 drivers/nvdimm/nd_virtio.c
-> >  create mode 100644 drivers/nvdimm/virtio_pmem.c
-> >  create mode 100644 include/linux/virtio_pmem.h
-> >  create mode 100644 include/uapi/linux/virtio_pmem.h
-> > 
-> > diff --git a/drivers/nvdimm/Makefile b/drivers/nvdimm/Makefile
-> > index 6f2a088afad6..cefe233e0b52 100644
-> > --- a/drivers/nvdimm/Makefile
-> > +++ b/drivers/nvdimm/Makefile
-> > @@ -5,6 +5,7 @@ obj-$(CONFIG_ND_BTT) += nd_btt.o
-> >  obj-$(CONFIG_ND_BLK) += nd_blk.o
-> >  obj-$(CONFIG_X86_PMEM_LEGACY) += nd_e820.o
-> >  obj-$(CONFIG_OF_PMEM) += of_pmem.o
-> > +obj-$(CONFIG_VIRTIO_PMEM) += virtio_pmem.o nd_virtio.o
-> >  
-> >  nd_pmem-y := pmem.o
-> >  
-> > diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-> > new file mode 100644
-> > index 000000000000..ed7ddcc5a62c
-> > --- /dev/null
-> > +++ b/drivers/nvdimm/nd_virtio.c
-> > @@ -0,0 +1,129 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * virtio_pmem.c: Virtio pmem Driver
-> > + *
-> > + * Discovers persistent memory range information
-> > + * from host and provides a virtio based flushing
-> > + * interface.
-> > + */
-> > +#include <linux/virtio_pmem.h>
-> > +#include "nd.h"
-> > +
-> > + /* The interrupt handler */
-> > +void host_ack(struct virtqueue *vq)
-> > +{
-> > +	unsigned int len;
-> > +	unsigned long flags;
-> > +	struct virtio_pmem_request *req, *req_buf;
-> > +	struct virtio_pmem *vpmem = vq->vdev->priv;
-> > +
-> > +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> > +	while ((req = virtqueue_get_buf(vq, &len)) != NULL) {
-> > +		req->done = true;
-> > +		wake_up(&req->host_acked);
-> > +
-> > +		if (!list_empty(&vpmem->req_list)) {
-> > +			req_buf = list_first_entry(&vpmem->req_list,
-> > +					struct virtio_pmem_request, list);
-> > +			req_buf->wq_buf_avail = true;
-> > +			wake_up(&req_buf->wq_buf);
-> > +			list_del(&req_buf->list);
-> > +		}
-> > +	}
-> > +	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> > +}
-> > +EXPORT_SYMBOL_GPL(host_ack);
-> > +
-> > + /* The request submission function */
-> > +int virtio_pmem_flush(struct nd_region *nd_region)
-> > +{
-> > +	int err, err1;
-> > +	unsigned long flags;
-> > +	struct scatterlist *sgs[2], sg, ret;
-> > +	struct virtio_device *vdev = nd_region->provider_data;
-> > +	struct virtio_pmem *vpmem = vdev->priv;
-> > +	struct virtio_pmem_request *req;
-> > +
-> > +	might_sleep();
-> > +	req = kmalloc(sizeof(*req), GFP_KERNEL);
-> > +	if (!req)
-> > +		return -ENOMEM;
-> > +
-> > +	req->done = false;
-> > +	strcpy(req->name, "FLUSH");
-> > +	init_waitqueue_head(&req->host_acked);
-> > +	init_waitqueue_head(&req->wq_buf);
-> > +	INIT_LIST_HEAD(&req->list);
-> > +	sg_init_one(&sg, req->name, strlen(req->name));
-> > +	sgs[0] = &sg;
-> > +	sg_init_one(&ret, &req->ret, sizeof(req->ret));
-> > +	sgs[1] = &ret;
-> > +
-> > +	spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> > +	 /*
-> > +	  * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual
-> > +	  * queue does not have free descriptor. We add the request
-> > +	  * to req_list and wait for host_ack to wake us up when free
-> > +	  * slots are available.
-> > +	  */
-> > +	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req,
-> > +					GFP_ATOMIC)) == -ENOSPC) {
-> > +
-> > +		dev_err(&vdev->dev, "failed to send command to virtio pmem"\
-> > +			"device, no free slots in the virtqueue\n");
-> > +		req->wq_buf_avail = false;
-> > +		list_add_tail(&req->list, &vpmem->req_list);
-> > +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> > +
-> > +		/* When host has read buffer, this completes via host_ack */
-> > +		wait_event(req->wq_buf, req->wq_buf_avail);
-> > +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
-> > +	}
-> > +	err1 = virtqueue_kick(vpmem->req_vq);
-> > +	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
-> > +
-> > +	/*
-> > +	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
-> > +	 * do anything about that.
-> > +	 */
-> > +	if (err || !err1) {
-> > +		dev_info(&vdev->dev, "failed to send command to virtio pmem device\n");
-> > +		err = -EIO;
-> > +		goto ret;
-> > +	}
-> > +
-> > +	/* When host has read buffer, this completes via host_ack */
-> > +	wait_event(req->host_acked, req->done);
-> > +	err = req->ret;
-> > +ret:
-> > +	kfree(req);
-> > +	return err;
-> > +};
-> > +
-> > +/* The asynchronous flush callback function */
-> > +int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
-> > +{
-> > +	int rc = 0;
-> > +
-> > +	/* Create child bio for asynchronous flush and chain with
-> > +	 * parent bio. Otherwise directly call nd_region flush.
-> > +	 */
-> > +	if (bio && bio->bi_iter.bi_sector != -1) {
-> > +		struct bio *child = bio_alloc(GFP_ATOMIC, 0);
-> > +
-> > +		if (!child)
-> > +			return -ENOMEM;
-> > +		bio_copy_dev(child, bio);
-> > +		child->bi_opf = REQ_PREFLUSH;
-> > +		child->bi_iter.bi_sector = -1;
-> > +		bio_chain(child, bio);
-> > +		submit_bio(child);
-> > +	} else {
-> > +		if (virtio_pmem_flush(nd_region))
-> > +			rc = -EIO;
-> > +	}
-> > +
-> > +	return rc;
-> > +};
-> > +EXPORT_SYMBOL_GPL(async_pmem_flush);
-> > +MODULE_LICENSE("GPL");
-> > diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-> > new file mode 100644
-> > index 000000000000..cfc6381c4e5d
-> > --- /dev/null
-> > +++ b/drivers/nvdimm/virtio_pmem.c
-> > @@ -0,0 +1,117 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * virtio_pmem.c: Virtio pmem Driver
-> > + *
-> > + * Discovers persistent memory range information
-> > + * from host and registers the virtual pmem device
-> > + * with libnvdimm core.
-> > + */
-> > +#include <linux/virtio_pmem.h>
-> > +#include "nd.h"
-> > +
-> > +static struct virtio_device_id id_table[] = {
-> > +	{ VIRTIO_ID_PMEM, VIRTIO_DEV_ANY_ID },
-> > +	{ 0 },
-> > +};
-> > +
-> > + /* Initialize virt queue */
-> > +static int init_vq(struct virtio_pmem *vpmem)
-> > +{
-> > +	/* single vq */
-> > +	vpmem->req_vq = virtio_find_single_vq(vpmem->vdev,
-> > +				host_ack, "flush_queue");
-> > +	if (IS_ERR(vpmem->req_vq))
-> > +		return PTR_ERR(vpmem->req_vq);
-> > +
-> > +	spin_lock_init(&vpmem->pmem_lock);
-> > +	INIT_LIST_HEAD(&vpmem->req_list);
-> > +
-> > +	return 0;
-> > +};
-> > +
-> > +static int virtio_pmem_probe(struct virtio_device *vdev)
-> > +{
-> > +	int err = 0;
-> > +	struct resource res;
-> > +	struct virtio_pmem *vpmem;
-> > +	struct nd_region_desc ndr_desc = {};
-> > +	int nid = dev_to_node(&vdev->dev);
-> > +	struct nd_region *nd_region;
-> > +
-> > +	if (!vdev->config->get) {
-> > +		dev_err(&vdev->dev, "%s failure: config access disabled\n",
-> > +			__func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	vpmem = devm_kzalloc(&vdev->dev, sizeof(*vpmem), GFP_KERNEL);
-> > +	if (!vpmem) {
-> > +		err = -ENOMEM;
-> > +		goto out_err;
-> > +	}
-> > +
-> > +	vpmem->vdev = vdev;
-> > +	vdev->priv = vpmem;
-> > +	err = init_vq(vpmem);
-> > +	if (err)
-> > +		goto out_err;
-> > +
-> > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> > +			start, &vpmem->start);
-> > +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> > +			size, &vpmem->size);
-> > +
-> > +	res.start = vpmem->start;
-> > +	res.end   = vpmem->start + vpmem->size-1;
-> > +	vpmem->nd_desc.provider_name = "virtio-pmem";
-> > +	vpmem->nd_desc.module = THIS_MODULE;
-> > +
-> > +	vpmem->nvdimm_bus = nvdimm_bus_register(&vdev->dev,
-> > +						&vpmem->nd_desc);
-> > +	if (!vpmem->nvdimm_bus)
-> > +		goto out_vq;
-> > +
-> > +	dev_set_drvdata(&vdev->dev, vpmem->nvdimm_bus);
-> > +
-> > +	ndr_desc.res = &res;
-> > +	ndr_desc.numa_node = nid;
-> > +	ndr_desc.flush = async_pmem_flush;
-> > +	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
-> > +	set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
-> > +	nd_region = nvdimm_pmem_region_create(vpmem->nvdimm_bus, &ndr_desc);
-> > +
-> > +	if (!nd_region)
-> > +		goto out_nd;
-> > +	nd_region->provider_data = dev_to_virtio(nd_region->dev.parent->parent);
-> > +	return 0;
-> > +out_nd:
-> > +	err = -ENXIO;
-> > +	nvdimm_bus_unregister(vpmem->nvdimm_bus);
-> > +out_vq:
-> > +	vdev->config->del_vqs(vdev);
-> > +out_err:
-> > +	dev_err(&vdev->dev, "failed to register virtio pmem memory\n");
-> > +	return err;
-> > +}
-> > +
-> > +static void virtio_pmem_remove(struct virtio_device *vdev)
-> > +{
-> > +	struct nvdimm_bus *nvdimm_bus = dev_get_drvdata(&vdev->dev);
-> > +
-> > +	nvdimm_bus_unregister(nvdimm_bus);
-> > +	vdev->config->del_vqs(vdev);
-> > +	vdev->config->reset(vdev);
-> > +}
-> > +
-> > +static struct virtio_driver virtio_pmem_driver = {
-> > +	.driver.name		= KBUILD_MODNAME,
-> > +	.driver.owner		= THIS_MODULE,
-> > +	.id_table		= id_table,
-> > +	.probe			= virtio_pmem_probe,
-> > +	.remove			= virtio_pmem_remove,
-> > +};
-> > +
-> > +module_virtio_driver(virtio_pmem_driver);
-> > +MODULE_DEVICE_TABLE(virtio, id_table);
-> > +MODULE_DESCRIPTION("Virtio pmem driver");
-> > +MODULE_LICENSE("GPL");
-> > diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
-> > index 35897649c24f..9f634a2ed638 100644
-> > --- a/drivers/virtio/Kconfig
-> > +++ b/drivers/virtio/Kconfig
-> > @@ -42,6 +42,16 @@ config VIRTIO_PCI_LEGACY
-> >  
-> >  	  If unsure, say Y.
-> >  
-> > +config VIRTIO_PMEM
-> > +	tristate "Support for virtio pmem driver"
-> > +	depends on VIRTIO
-> > +	depends on LIBNVDIMM
-> > +	help
-> > +	This driver provides support for virtio based flushing interface
-> > +	for persistent memory range.
-> > +
-> > +	If unsure, say M.
-> > +
-> >  config VIRTIO_BALLOON
-> >  	tristate "Virtio balloon driver"
-> >  	depends on VIRTIO
-> > diff --git a/include/linux/virtio_pmem.h b/include/linux/virtio_pmem.h
-> > new file mode 100644
-> > index 000000000000..ab1da877575d
-> > --- /dev/null
-> > +++ b/include/linux/virtio_pmem.h
-> > @@ -0,0 +1,60 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * virtio_pmem.h: virtio pmem Driver
-> > + *
-> > + * Discovers persistent memory range information
-> > + * from host and provides a virtio based flushing
-> > + * interface.
-> > + **/
-> > +
-> > +#ifndef _LINUX_VIRTIO_PMEM_H
-> > +#define _LINUX_VIRTIO_PMEM_H
-> > +
-> > +#include <linux/virtio_ids.h>
-> > +#include <linux/module.h>
-> > +#include <linux/virtio_config.h>
-> > +#include <uapi/linux/virtio_pmem.h>
-> > +#include <linux/libnvdimm.h>
-> > +#include <linux/spinlock.h>
-> > +
-> > +struct virtio_pmem_request {
-> > +	/* Host return status corresponding to flush request */
-> > +	int ret;
-> > +
-> > +	/* command name*/
-> > +	char name[16];
-> > +
-> > +	/* Wait queue to process deferred work after ack from host */
-> > +	wait_queue_head_t host_acked;
-> > +	bool done;
-> > +
-> > +	/* Wait queue to process deferred work after virt queue buffer avail */
-> > +	wait_queue_head_t wq_buf;
-> > +	bool wq_buf_avail;
-> > +	struct list_head list;
-> > +};
-> > +
-> > +struct virtio_pmem {
-> > +	struct virtio_device *vdev;
-> > +
-> > +	/* Virtio pmem request queue */
-> > +	struct virtqueue *req_vq;
-> > +
-> > +	/* nvdimm bus registers virtio pmem device */
-> > +	struct nvdimm_bus *nvdimm_bus;
-> > +	struct nvdimm_bus_descriptor nd_desc;
-> > +
-> > +	/* List to store deferred work if virtqueue is full */
-> > +	struct list_head req_list;
-> > +
-> > +	/* Synchronize virtqueue data */
-> > +	spinlock_t pmem_lock;
-> > +
-> > +	/* Memory region information */
-> > +	uint64_t start;
-> > +	uint64_t size;
-> > +};
-> > +
-> > +void host_ack(struct virtqueue *vq);
-> > +int async_pmem_flush(struct nd_region *nd_region, struct bio *bio);
-> > +#endif
-> > diff --git a/include/uapi/linux/virtio_ids.h
-> > b/include/uapi/linux/virtio_ids.h
-> > index 6d5c3b2d4f4d..32b2f94d1f58 100644
-> > --- a/include/uapi/linux/virtio_ids.h
-> > +++ b/include/uapi/linux/virtio_ids.h
-> > @@ -43,5 +43,6 @@
-> >  #define VIRTIO_ID_INPUT        18 /* virtio input */
-> >  #define VIRTIO_ID_VSOCK        19 /* virtio vsock transport */
-> >  #define VIRTIO_ID_CRYPTO       20 /* virtio crypto */
-> > +#define VIRTIO_ID_PMEM         27 /* virtio pmem */
-> >  
-> >  #endif /* _LINUX_VIRTIO_IDS_H */
-> > diff --git a/include/uapi/linux/virtio_pmem.h
-> > b/include/uapi/linux/virtio_pmem.h
-> > new file mode 100644
-> > index 000000000000..fa3f7d52717a
-> > --- /dev/null
-> > +++ b/include/uapi/linux/virtio_pmem.h
-> > @@ -0,0 +1,10 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +
-> > +#ifndef _UAPI_LINUX_VIRTIO_PMEM_H
-> > +#define _UAPI_LINUX_VIRTIO_PMEM_H
-> > +
-> > +struct virtio_pmem_config {
-> > +	__le64 start;
-> > +	__le64 size;
-> > +};
-> > +#endif
-> > --
-> > 2.20.1
-> 
-> 
+> +
+> @@ -741,49 +895,31 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
+>  		unsigned long nr_pages, struct vmem_altmap *altmap)
+>  {
+>  	unsigned long section_nr = pfn_to_section_nr(start_pfn);
+> -	struct mem_section_usage *usage;
+>  	struct mem_section *ms;
+>  	struct page *memmap;
+>  	int ret;
+>  
+> -	/*
+> -	 * no locking for this, because it does its own
+> -	 * plus, it does a kmalloc
+> -	 */
+>  	ret = sparse_index_init(section_nr, nid);
+>  	if (ret < 0 && ret != -EEXIST)
+>  		return ret;
+> -	ret = 0;
+> -	memmap = populate_section_memmap(start_pfn, PAGES_PER_SECTION, nid,
+> -			altmap);
+> -	if (!memmap)
+> -		return -ENOMEM;
+> -	usage = kzalloc(mem_section_usage_size(), GFP_KERNEL);
+> -	if (!usage) {
+> -		depopulate_section_memmap(start_pfn, PAGES_PER_SECTION, altmap);
+> -		return -ENOMEM;
+> -	}
+>  
+> -	ms = __pfn_to_section(start_pfn);
+> -	if (ms->section_mem_map & SECTION_MARKED_PRESENT) {
+> -		ret = -EEXIST;
+> -		goto out;
+> -	}
+> +	memmap = section_activate(nid, start_pfn, nr_pages, altmap);
+> +	if (IS_ERR(memmap))
+> +		return PTR_ERR(memmap);
+> +	ret = 0;
+>  
+>  	/*
+>  	 * Poison uninitialized struct pages in order to catch invalid flags
+>  	 * combinations.
+>  	 */
+> -	page_init_poison(memmap, sizeof(struct page) * PAGES_PER_SECTION);
+> +	page_init_poison(pfn_to_page(start_pfn), sizeof(struct page) * nr_pages);
+>  
+> +	ms = __pfn_to_section(start_pfn);
+>  	section_mark_present(ms);
+> -	sparse_init_one_section(ms, section_nr, memmap, usage);
+> +	sparse_init_one_section(ms, section_nr, memmap, ms->usage);
+>  
+> -out:
+> -	if (ret < 0) {
+> -		kfree(usage);
+> -		depopulate_section_memmap(start_pfn, PAGES_PER_SECTION, altmap);
+> -	}
+> +	if (ret < 0)
+> +		section_deactivate(start_pfn, nr_pages, nid, altmap);
+>  	return ret;
+>  }
+
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 34f322d14e62..daeb2d7d8dd0 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -900,13 +900,12 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
+        int ret;
+ 
+        ret = sparse_index_init(section_nr, nid);
+-       if (ret < 0 && ret != -EEXIST)
++       if (ret < 0)
+                return ret;
+ 
+        memmap = section_activate(nid, start_pfn, nr_pages, altmap);
+        if (IS_ERR(memmap))
+                return PTR_ERR(memmap);
+-       ret = 0;
+ 
+        /*
+         * Poison uninitialized struct pages in order to catch invalid flags
+@@ -918,8 +917,6 @@ int __meminit sparse_add_section(int nid, unsigned long start_pfn,
+        section_mark_present(ms);
+        sparse_init_one_section(ms, section_nr, memmap, ms->usage);
+ 
+-       if (ret < 0)
+-               section_deactivate(start_pfn, nr_pages, nid, altmap);
+        return ret;
+ }
+
+-- 
+Oscar Salvador
+SUSE L3
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
