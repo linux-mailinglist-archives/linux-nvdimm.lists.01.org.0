@@ -1,57 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584011C1CF
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 07:27:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA2D1C1F3
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 07:43:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 641A2212746E5;
-	Mon, 13 May 2019 22:27:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 07526212746E6;
+	Mon, 13 May 2019 22:43:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com;
+ envelope-from=3ifxaxa4kdiko4r0qn0uvttv05t11tyr.p1zyv07a-08qvzzyv565.de.14t@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com
+ [IPv6:2607:f8b0:4864:20::54a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 60C8321CB74A4
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 22:27:22 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 09F663092670;
- Tue, 14 May 2019 05:27:21 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F3478600C6;
- Tue, 14 May 2019 05:27:19 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 9997218089C8;
- Tue, 14 May 2019 05:27:18 +0000 (UTC)
-Date: Tue, 14 May 2019 01:27:17 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <676644679.28490825.1557811637861.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4genJtCt6dp6N07_6RfPTwC6xXMhLp-dr0GWQy5q52YoA@mail.gmail.com>
-References: <20190510155202.14737-1-pagupta@redhat.com>
- <20190510155202.14737-4-pagupta@redhat.com>
- <CAPcyv4hbVNRFSyS2CTbmO88uhnbeH4eiukAng2cxgbDzLfizwg@mail.gmail.com>
- <864186878.28040999.1557535549792.JavaMail.zimbra@redhat.com>
- <CAPcyv4gL3ODfOr52Ztgq7BM4gVf1cih6cj0271gcpVvpi9aFSA@mail.gmail.com>
- <2003480558.28042237.1557537797923.JavaMail.zimbra@redhat.com>
- <116369545.28425569.1557768748009.JavaMail.zimbra@redhat.com>
- <CAPcyv4genJtCt6dp6N07_6RfPTwC6xXMhLp-dr0GWQy5q52YoA@mail.gmail.com>
-Subject: Re: [Qemu-devel] [PATCH v8 3/6] libnvdimm: add dax_dev sync flag
-MIME-Version: 1.0
-X-Originating-IP: [10.65.16.148, 10.4.195.17]
-Thread-Topic: libnvdimm: add dax_dev sync flag
-Thread-Index: wQqDJDTh4d6BDzUQZjrFKazK6E2QhQ==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.43]); Tue, 14 May 2019 05:27:21 +0000 (UTC)
+ by ml01.01.org (Postfix) with ESMTPS id A192B212746D6
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 22:43:37 -0700 (PDT)
+Received: by mail-pg1-x54a.google.com with SMTP id z7so10809932pgc.1
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 22:43:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=CA1N44QTqLhlVaroRojZdGi6CcVwoP2KNr1A1UImFq0=;
+ b=h6AZqHkX1OcXuKiWGxhO61tdk+HR2HvTKQEpCCBYcqn6plqrOohI9Okal84aTEN2gJ
+ pcUal3uJknEB+RrEmMmXoyWtFQ8z/VEve2BGMzS/N7pXPIQp0h1NVAva9rDSUnGHjLEJ
+ vx1VU8Uvu79S0JOwGTWgOfWHxd/ASKWGvpXSYxqiyDlRKx/kfa47HynTXrI6mghbfUkz
+ ftvsf604JHZwsEPgj7aK8R+INHqcBEEkFy98bk6arBDrrsX/GZ25q4wQIXVIU1DJAHdt
+ 6dh5pUod4MbGUjQOr69py/QRwji6PeGn961MqFFs+Tum9tKKLYMRMp7U9XKdfLOGJDyx
+ zipg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=CA1N44QTqLhlVaroRojZdGi6CcVwoP2KNr1A1UImFq0=;
+ b=NfsvWtVPwZebxJjjakeSu2qe/3BNCDD2KJNG8Woy+XwZbcDZcXrOcti9Mw3vS8AYFN
+ TGCaK7mZjXdD3VmdkbXw5fLAbzTAS9urRQha7YSoaLZCkwDGXTK6LUbGkcBEkm07m/aY
+ BsKdlss5bwzcga7a3co48XZuK9lUkzwl04/pKwbpMfnVsVoHb4I8gvxeC57pAo+LZ9Dt
+ M7tv0ujCdLWa06pMDC8yps7RLZVLsD2fMWEaRDnJv/CQzURVCjnj8hjo3k04b0pk2Ouw
+ DquRgG71HBz7ZInEpGmVpNsaTUll2XBa8iAyVOhyW6dGnvR0dYblWy5BewTxRgkm9JKe
+ qS9A==
+X-Gm-Message-State: APjAAAUgI/LzevFKhyYFgjGaB0QP18Jl8POFeRaRaVlwSWYXQkSWP+7m
+ iisS6xNmvypPqS0fKxisl0YLA4HJycYsDHba/U5Hdg==
+X-Google-Smtp-Source: APXvYqyBPTv6v4eKPVDjcz6uhAI6teASmDK3xBqeYKpM9SuSjEAG+BViYVdVY5Rrq8TOB5itpc/QrUR1WPgEkoPcFI6QTA==
+X-Received: by 2002:a65:550b:: with SMTP id f11mr35449216pgr.311.1557812616583; 
+ Mon, 13 May 2019 22:43:36 -0700 (PDT)
+Date: Mon, 13 May 2019 22:42:33 -0700
+Message-Id: <20190514054251.186196-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
+Subject: [PATCH v3 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, keescook@google.com, 
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, robh@kernel.org, 
+ sboyd@kernel.org, shuah@kernel.org, tytso@mit.edu, 
+ yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,84 +67,114 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
- virtualization@lists.linux-foundation.org,
- Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, jstaron@google.com,
- linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- Adam Borowski <kilobyte@angband.pl>, Rik van Riel <riel@surriel.com>,
- yuval shaia <yuval.shaia@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Nitesh Narayan Lal <nilal@redhat.com>,
- Theodore Ts'o <tytso@mit.edu>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- cohuck@redhat.com, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-xfs <linux-xfs@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Igor Mammedov <imammedo@redhat.com>,
- "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+## TLDR
 
-> >
-> >
-> > Hi Dan,
-> >
-> > While testing device mapper with DAX, I faced a bug with the commit:
-> >
-> > commit ad428cdb525a97d15c0349fdc80f3d58befb50df
-> > Author: Dan Williams <dan.j.williams@intel.com>
-> > Date:   Wed Feb 20 21:12:50 2019 -0800
-> >
-> > When I reverted the condition to old code[1] it worked for me. I
-> > am thinking when we map two different devices (e.g with device mapper),
-> > will
-> > start & end pfn still point to same pgmap? Or there is something else which
-> > I am missing here.
-> >
-> > Note: I tested only EXT4.
-> >
-> > [1]
-> >
-> > -               if (pgmap && pgmap->type == MEMORY_DEVICE_FS_DAX)
-> > +               end_pgmap = get_dev_pagemap(pfn_t_to_pfn(end_pfn), NULL);
-> > +               if (pgmap && pgmap == end_pgmap && pgmap->type ==
-> > MEMORY_DEVICE_FS_DAX
-> > +                               && pfn_t_to_page(pfn)->pgmap == pgmap
-> > +                               && pfn_t_to_page(end_pfn)->pgmap == pgmap
-> > +                               && pfn_t_to_pfn(pfn) ==
-> > PHYS_PFN(__pa(kaddr))
-> > +                               && pfn_t_to_pfn(end_pfn) ==
-> > PHYS_PFN(__pa(end_kaddr)))
-> 
-> Ugh, yes, device-mapper continues to be an awkward fit for dax (or
-> vice versa). We would either need a way to have a multi-level pfn to
-> pagemap lookup for composite devices, or a way to discern that even
-> though the pagemap is different that the result is still valid / not
-> an indication that we have leaked into an unassociated address range.
-> Perhaps a per-daxdev callback for ->dax_supported() so that
-> device-mapper internals can be used for this validation.
+I mostly wanted to incorporate feedback I got over the last week and a
+half.
 
-Yes, Will look at it.
+Biggest things to look out for:
 
-> 
-> We need to get that fixed up, but I don't see it as a blocker /
-> pre-requisite for virtio-pmem.
+- KUnit core now outputs results in TAP14.
+- Heavily reworked tools/testing/kunit/kunit.py
+  - Changed how parsing works.
+  - Added testing.
+  - Greg, Logan, you might want to re-review this.
+- Added documentation on how to use KUnit on non-UML kernels. You can
+  see the docs rendered here[1].
 
-Agree. Will send virtio-pmem patch series.
+There is still some discussion going on on the [PATCH v2 00/17] thread,
+but I wanted to get some of these updates out before they got too stale
+(and too difficult for me to keep track of). I hope no one minds.
 
-Thank you,
-Pankaj
-> 
-> 
+## Background
+
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
+
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in under a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
+
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+## What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+## Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+## More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[2].
+
+Additionally for convenience, I have applied these patches to a
+branch[3].
+The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.1/v3 branch.
+
+## Changes Since Last Version
+
+- Converted KUnit core to print test results in TAP14 format as
+  suggested by Greg and Frank.
+- Heavily reworked tools/testing/kunit/kunit.py
+  - Changed how parsing works.
+  - Added testing.
+- Added documentation on how to use KUnit on non-UML kernels. You can
+  see the docs rendered here[1].
+- Added a new set of EXPECTs and ASSERTs for pointer comparison.
+- Removed more function indirection as suggested by Logan.
+- Added a new patch that adds `kunit_try_catch_throw` to objtool's
+  noreturn list.
+- Fixed a number of minorish issues pointed out by Shuah, Masahiro, and
+  kbuild bot.
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[2] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[3] https://kunit.googlesource.com/linux/+/kunit/rfc/v5.1/v3
+
+-- 
+2.21.0.1020.gf2820cf01a-goog
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
