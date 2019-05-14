@@ -2,62 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335281CB65
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 17:08:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E382D1CB6B
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 17:10:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5D6A62125F1E2;
-	Tue, 14 May 2019 08:08:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C0869212746C9;
+	Tue, 14 May 2019 08:10:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
- envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=linux-nvdimm@lists.01.org 
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B44852122CA9A
- for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 08:08:40 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id a17so18131771qth.3
- for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 08:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=7kZvhpKITp7GpY2UYW4YcAvoZ7pH6PjHdqS7w9gr3cw=;
- b=FuNs4AlL6ZoplYtEJAQPOUNR/irdssflBkI+WQYPo1k/Wp9qb40VYJ1S/iMw+nVr0Z
- 4W4KadJrj7s3iAuyCBi8kLa3aqKQxyjzYo7fAC8lYvsILAF4pYUFEVOvOOhlTV4tyOG8
- JSmJJuF+v9bt7JN7AIJ7VGwKBNTBusf8T15Nwptam76/E/bo8Vlk4vb5QhKdKqRMpced
- Ke2C12ECJhs+pKHO4zwcieQTkqMX58OBTmeeO7l1iAcqgKYimyU921AyV77UcNGmNsfn
- Y5kfuxZg6vtXDRNqV7zxGzPkon5jAyrfhclfTkPWY0mMc7p7B0eCrm0cRmZ/7CiNimR7
- wczw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=7kZvhpKITp7GpY2UYW4YcAvoZ7pH6PjHdqS7w9gr3cw=;
- b=iIApwQjlmDbFVdisfVI9T+7Yau7W+AU3O5NUdzgmIWAyTN7+4riNL1LCA3bMReWTbE
- Aj6lQFy0WfEqEf5nKGOiocIAxvMRBXThyXky+IhkWLMH/Vikyl+aIJA6N8Kkuz0EkuSC
- XhohIRolNk3u+DJBtxQz3xB2fmAfL91LPdUbHPg4JIJVZdb0R0tOnlgLkX3PbvorZUIJ
- rNh/zR4CKiAHdKPEweyzk6ua5MbUEKyJpZ9MHEq28EnM+Iw7ZumiD++6dJKvaGI3i3Q0
- xWt7PMhridkeQM3obYhmUNAYdGBA/GgUhdnFo9gIwigpFIJ2K/3Xtqg26OT2Wusg451b
- EuPA==
-X-Gm-Message-State: APjAAAXS+daK9CcVUbHkhNCXMhyXSLZ5rVT7AnsZw0cp+Ku/DxomR4oD
- GlDcgT0BHIocVhfSlIu9FhhU7A==
-X-Google-Smtp-Source: APXvYqyJLWdC5h+BGz6LDsPy3eLEj1lu0rQj66IlbHa/gB1z6dYmdFdVXyCb+ij3Jws+g//usPep4g==
-X-Received: by 2002:ac8:2924:: with SMTP id y33mr29791366qty.212.1557846519358; 
- Tue, 14 May 2019 08:08:39 -0700 (PDT)
-Received: from ovpn-120-85.rdu2.redhat.com
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id b19sm8577242qkk.51.2019.05.14.08.08.37
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 14 May 2019 08:08:38 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: akpm@linux-foundation.org
-Subject: [RESEND PATCH] nvdimm: fix some compilation warnings
-Date: Tue, 14 May 2019 11:07:35 -0400
-Message-Id: <20190514150735.39625-1-cai@lca.pw>
-X-Mailer: git-send-email 2.20.1 (Apple Git-117)
+ by ml01.01.org (Postfix) with ESMTPS id EB2B12125F1DF
+ for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 08:10:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+ :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=vg3ia/r810H9SSaaH0GiclbWcxBsBWmX3eOHv52f7hg=; b=DmxHDtquirwoRt3leeWs0jqe4p
+ OBuVqen+B+T1sPmdQ/Xh/kJtVL1TYRU19cMa/+RiVhkDSyjlRsTaD8G7BLmbV/Erk3ZU9rNHcJAcz
+ AzPBib/3h55XEBCNcTmML3raNdaT8gVxGKrIDuTzMFSxcwxp90UfjeuWN/JU3sNy4iFSnaGH6kbtG
+ HICqbTL075Zfbakmx1maJv8+hRz1ukLMs87jNeIa2qAUbh4QZQaCfx1yAaQOHVQ0m/aqSDpXot4I5
+ fRMJhaeNDyY1S2W6k7vWeIWbdl1vpuIPODlGt6g9JU+fJi9lgIGmpqCHh9KDTrw8etTDZNxt/2mqI
+ qo+2U/+g==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16]
+ helo=midway.dunlab)
+ by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+ id 1hQZ3R-0000BE-Iq; Tue, 14 May 2019 15:09:22 +0000
+Subject: Re: [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
+To: Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, qemu-devel@nongnu.org,
+ linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org
+References: <20190514145422.16923-1-pagupta@redhat.com>
+ <20190514145422.16923-3-pagupta@redhat.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <c22d42f6-ef94-0310-36f2-e9085d3464c2@infradead.org>
+Date: Tue, 14 May 2019 08:09:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <20190514145422.16923-3-pagupta@redhat.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,110 +61,53 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- Qian Cai <cai@lca.pw>
+Cc: jack@suse.cz, mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
+ lcapitulino@redhat.com, adilger.kernel@dilger.ca, zwisler@kernel.org,
+ aarcange@redhat.com, jstaron@google.com, darrick.wong@oracle.com,
+ david@redhat.com, willy@infradead.org, hch@infradead.org, nilal@redhat.com,
+ lenb@kernel.org, kilobyte@angband.pl, riel@surriel.com, yuval.shaia@oracle.com,
+ stefanha@redhat.com, pbonzini@redhat.com, kwolf@redhat.com, tytso@mit.edu,
+ xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
+ imammedo@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Several places (dimm_devs.c, core.c etc) include label.h but only
-label.c uses NSINDEX_SIGNATURE, so move its definition to label.c
-instead.
-In file included from drivers/nvdimm/dimm_devs.c:23:
-drivers/nvdimm/label.h:41:19: warning: 'NSINDEX_SIGNATURE' defined but
-not used [-Wunused-const-variable=]
+On 5/14/19 7:54 AM, Pankaj Gupta wrote:
+> diff --git a/drivers/virtio/Kconfig b/drivers/virtio/Kconfig
+> index 35897649c24f..94bad084ebab 100644
+> --- a/drivers/virtio/Kconfig
+> +++ b/drivers/virtio/Kconfig
+> @@ -42,6 +42,17 @@ config VIRTIO_PCI_LEGACY
+>  
+>  	  If unsure, say Y.
+>  
+> +config VIRTIO_PMEM
+> +	tristate "Support for virtio pmem driver"
+> +	depends on VIRTIO
+> +	depends on LIBNVDIMM
+> +	help
+> +	This driver provides access to virtio-pmem devices, storage devices
+> +	that are mapped into the physical address space - similar to NVDIMMs
+> +	 - with a virtio-based flushing interface.
+> +
+> +	If unsure, say M.
 
-The commit d9b83c756953 ("libnvdimm, btt: rework error clearing") left
-an unused variable.
-drivers/nvdimm/btt.c: In function 'btt_read_pg':
-drivers/nvdimm/btt.c:1272:8: warning: variable 'rc' set but not used
-[-Wunused-but-set-variable]
+<beep>
+from Documentation/process/coding-style.rst:
+"Lines under a ``config`` definition
+are indented with one tab, while help text is indented an additional two
+spaces."
 
-Last, some places abuse "/**" which is only reserved for the kernel-doc.
-drivers/nvdimm/bus.c:648: warning: cannot understand function prototype:
-'struct attribute_group nd_device_attribute_group = '
-drivers/nvdimm/bus.c:677: warning: cannot understand function prototype:
-'struct attribute_group nd_numa_attribute_group = '
+> +
+>  config VIRTIO_BALLOON
+>  	tristate "Virtio balloon driver"
+>  	depends on VIRTIO
 
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- drivers/nvdimm/btt.c   | 6 ++----
- drivers/nvdimm/bus.c   | 4 ++--
- drivers/nvdimm/label.c | 2 ++
- drivers/nvdimm/label.h | 2 --
- 4 files changed, 6 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-index 4671776f5623..9f02a99cfac0 100644
---- a/drivers/nvdimm/btt.c
-+++ b/drivers/nvdimm/btt.c
-@@ -1269,11 +1269,9 @@ static int btt_read_pg(struct btt *btt, struct bio_integrity_payload *bip,
- 
- 		ret = btt_data_read(arena, page, off, postmap, cur_len);
- 		if (ret) {
--			int rc;
--
- 			/* Media error - set the e_flag */
--			rc = btt_map_write(arena, premap, postmap, 0, 1,
--				NVDIMM_IO_ATOMIC);
-+			btt_map_write(arena, premap, postmap, 0, 1,
-+				      NVDIMM_IO_ATOMIC);
- 			goto out_rtt;
- 		}
- 
-diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 7ff684159f29..2eb6a6cfe9e4 100644
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -642,7 +642,7 @@ static struct attribute *nd_device_attributes[] = {
- 	NULL,
- };
- 
--/**
-+/*
-  * nd_device_attribute_group - generic attributes for all devices on an nd bus
-  */
- struct attribute_group nd_device_attribute_group = {
-@@ -671,7 +671,7 @@ static umode_t nd_numa_attr_visible(struct kobject *kobj, struct attribute *a,
- 	return a->mode;
- }
- 
--/**
-+/*
-  * nd_numa_attribute_group - NUMA attributes for all devices on an nd bus
-  */
- struct attribute_group nd_numa_attribute_group = {
-diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index f3d753d3169c..02a51b7775e1 100644
---- a/drivers/nvdimm/label.c
-+++ b/drivers/nvdimm/label.c
-@@ -25,6 +25,8 @@ static guid_t nvdimm_btt2_guid;
- static guid_t nvdimm_pfn_guid;
- static guid_t nvdimm_dax_guid;
- 
-+static const char NSINDEX_SIGNATURE[] = "NAMESPACE_INDEX\0";
-+
- static u32 best_seq(u32 a, u32 b)
- {
- 	a &= NSINDEX_SEQ_MASK;
-diff --git a/drivers/nvdimm/label.h b/drivers/nvdimm/label.h
-index e9a2ad3c2150..4bb7add39580 100644
---- a/drivers/nvdimm/label.h
-+++ b/drivers/nvdimm/label.h
-@@ -38,8 +38,6 @@ enum {
- 	ND_NSINDEX_INIT = 0x1,
- };
- 
--static const char NSINDEX_SIGNATURE[] = "NAMESPACE_INDEX\0";
--
- /**
-  * struct nd_namespace_index - label set superblock
-  * @sig: NAMESPACE_INDEX\0
+thanks.
 -- 
-2.20.1 (Apple Git-117)
-
+~Randy
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
