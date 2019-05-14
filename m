@@ -1,83 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79EF91D12B
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 23:19:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900891E45D
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 May 2019 00:17:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BCBFF21276BA1;
-	Tue, 14 May 2019 14:19:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 867C621276BAC;
+	Tue, 14 May 2019 15:17:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=141.146.126.79; helo=aserp2130.oracle.com;
- envelope-from=jane.chu@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::c49; helo=mail-yw1-xc49.google.com;
+ envelope-from=3gz7bxa4kdfo3j6f52f9a88afk8gg8d6.4gedafmp-fn5aeedaklk.st.gj8@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-yw1-xc49.google.com (mail-yw1-xc49.google.com
+ [IPv6:2607:f8b0:4864:20::c49])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 414C62127675C
- for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 14:19:21 -0700 (PDT)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
- by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ELDlXD160157;
- Tue, 14 May 2019 21:19:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=EQWSirsGlqa3NQye335of+ycNoUAgzqdpgdwkI5ffCA=;
- b=UkWlsKxOm5yF3JEAAKMk7Fu3Ql4DnruLjduZWZQ8lkdO46S82VwlI9LjT6SClB+uPC4p
- Ug/8SzJy/TL/nViBHIATr3OZNgTB87wr3vupEMeITYrON3jcpr0jIqjvaFWnerryH+CD
- sru8FWnfSNp9K65VH0MPet9DFMz2XbkG4msOaLrp9GZTzEW4sc7LoMzLO4A/Adw2nfqi
- AOBQwOEvoqW4ROhZ/+i29aqEKuthSnYjsSsrqj4MupwzDAlPnAv1izKjghLkzQ4g58I5
- nhxiL7w361QOCttpEF+1Drl1obGHyHprEzaZHPn2XSl99xRh664sZZMX9YvzGe9zoNKU VQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by aserp2130.oracle.com with ESMTP id 2sdkwds4kg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 May 2019 21:19:06 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ELICvE069878;
- Tue, 14 May 2019 21:19:05 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by userp3030.oracle.com with ESMTP id 2sf3cnh6um-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 May 2019 21:19:05 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4ELJ1tX022558;
- Tue, 14 May 2019 21:19:02 GMT
-Received: from [10.159.158.136] (/10.159.158.136)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 14 May 2019 14:19:01 -0700
-Subject: Re: [PATCH v2 0/6] mm/devm_memremap_pages: Fix page release race
-To: Dan Williams <dan.j.williams@intel.com>
-References: <155727335978.292046.12068191395005445711.stgit@dwillia2-desk3.amr.corp.intel.com>
- <059859ca-3cc8-e3ff-f797-1b386931c41e@deltatee.com>
- <17ada515-f488-d153-90ef-7a5cc5fefb0f@deltatee.com>
- <8a7cfa6b-6312-e8e5-9314-954496d2f6ce@oracle.com>
- <CAPcyv4i28tQMVrscQo31cfu1ZcMAb74iMkKYhu9iO_BjJvp+9A@mail.gmail.com>
-From: Jane Chu <jane.chu@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <6bd8319d-3b73-bb1e-5f41-94c580ba271b@oracle.com>
-Date: Tue, 14 May 2019 14:18:59 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4i28tQMVrscQo31cfu1ZcMAb74iMkKYhu9iO_BjJvp+9A@mail.gmail.com>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905140140
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905140140
+ by ml01.01.org (Postfix) with ESMTPS id 5DA7721275478
+ for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 15:17:40 -0700 (PDT)
+Received: by mail-yw1-xc49.google.com with SMTP id t141so600469ywe.23
+ for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 15:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=Wtv/g4YDlWnregZkMuB6vGhT6mZK0s7Z+NfaxgtLekE=;
+ b=Q5HMOrwbJNM89YqHu+vD+8sRwSzKie4sE8pkjwQqXKbmvl8uUCrm4SpuFW4UU8JhnY
+ XeejyhCTCS9puS98uTFx8EFmIo2ivhwCloJ/U0p1hceMXJW+JMLxh7E0E2tQeOq2UuzA
+ uZxI0Ym2j+bs+4rerFEZdMmaFjvrOGk6StJ+TQn+bqsoaYxZ80ISDElTpKf5y0SFPk8h
+ VcJ7yADl/NR3VI+Ila1czReqJ0pnzAfR3bA5HRbf56qnKlhiN8U8YpErBnLxR7gClHqR
+ Qbxvzr+zfsgs5Z9UI/MeioiOkmyTPiLUIyzAE8HdShxJSC99+danDDMnvJhADTYyrN5z
+ MBUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=Wtv/g4YDlWnregZkMuB6vGhT6mZK0s7Z+NfaxgtLekE=;
+ b=ljCh0WVykW5yvjMjR/EcLk+vugsL0hOK5mCs+ApxK5rBhToFnutQRpIYF6IoP4ODq3
+ 3ecY+25ic9kQNGD8wsp12uOwB/YO2hedqrZM/eEgXrB4qvfYYBGDW6Sv5ce6Xuk3n0V+
+ dNugqE0Ezq9jiVECx5RaDWAtpuN0q8G2R4sKyliQGrwDKFbl9bZj/6ionTojakjY3y81
+ f1ISIj45Tv0mM+Rp0r25CyPx0XDEanmmATjW8cshqhtx1OoDfwCvhtEVKRf+RrylxJzI
+ KhH3oQQAoeIf+S4tDE6DHtUyy2d6S3h1tkq9gefIt/wwy0B5lVSHAeDF1zHlgOl6QeCM
+ eSTw==
+X-Gm-Message-State: APjAAAWXrkLGCMLQLnil3WiOJ5MKfqZxYu+H4dewQpehKpBnPQD8NJja
+ njDO1saXq5mrAy92AhxP3Y+ldetILUiTV3+JAO6m4w==
+X-Google-Smtp-Source: APXvYqzLw2GNR1CD/N7FU0EOf+vQnR8bF44lpYMHhbVCeioD/fNqnQCXEG9eHOkDZWuQz7kMqOBLBdCDFgs1RbGB1Bb/ig==
+X-Received: by 2002:a25:690d:: with SMTP id e13mr18821319ybc.178.1557872259260; 
+ Tue, 14 May 2019 15:17:39 -0700 (PDT)
+Date: Tue, 14 May 2019 15:16:53 -0700
+Message-Id: <20190514221711.248228-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.21.0.1020.gf2820cf01a-goog
+Subject: [PATCH v4 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
+ keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
+ peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
+ tytso@mit.edu, yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,163 +67,124 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset="utf-8"; Format="flowed"
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-T24gNS8xNC8yMDE5IDEyOjA0IFBNLCBEYW4gV2lsbGlhbXMgd3JvdGU6Cgo+IE9uIFR1ZSwgTWF5
-IDE0LCAyMDE5IGF0IDExOjUzIEFNIEphbmUgQ2h1IDxqYW5lLmNodUBvcmFjbGUuY29tPiB3cm90
-ZToKPj4gT24gNS8xMy8yMDE5IDEyOjIyIFBNLCBMb2dhbiBHdW50aG9ycGUgd3JvdGU6Cj4+Cj4+
-IE9uIDIwMTktMDUtMDggMTE6MDUgYS5tLiwgTG9nYW4gR3VudGhvcnBlIHdyb3RlOgo+Pgo+PiBP
-biAyMDE5LTA1LTA3IDU6NTUgcC5tLiwgRGFuIFdpbGxpYW1zIHdyb3RlOgo+Pgo+PiBDaGFuZ2Vz
-IHNpbmNlIHYxIFsxXToKPj4gLSBGaXggYSBOVUxMLXBvaW50ZXIgZGVyZWYgY3Jhc2ggaW4gcGNp
-X3AycGRtYV9yZWxlYXNlKCkgKExvZ2FuKQo+Pgo+PiAtIFJlZnJlc2ggdGhlIHAycGRtYSBwYXRj
-aCBoZWFkZXJzIHRvIG1hdGNoIHRoZSBmb3JtYXQgb2Ygb3RoZXIgcDJwZG1hCj4+ICAgICBwYXRj
-aGVzIChCam9ybikKPj4KPj4gLSBDb2xsZWN0IElyYSdzIHJldmlld2VkLWJ5Cj4+Cj4+IFsxXTog
-aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGttbC8xNTUzODczMjQzNzAuMjQ0Mzg0MS41NzQ3MTU3
-NDUyNjI2Mjg4Mzcuc3RnaXRAZHdpbGxpYTItZGVzazMuYW1yLmNvcnAuaW50ZWwuY29tLwo+Pgo+
-PiBUaGlzIHNlcmllcyBsb29rcyBnb29kIHRvIG1lOgo+Pgo+PiBSZXZpZXdlZC1ieTogTG9nYW4g
-R3VudGhvcnBlIDxsb2dhbmdAZGVsdGF0ZWUuY29tPgo+Pgo+PiBIb3dldmVyLCBJIGhhdmVuJ3Qg
-dGVzdGVkIGl0IHlldCBidXQgSSBpbnRlbmQgdG8gbGF0ZXIgdGhpcyB3ZWVrLgo+Pgo+PiBJJ3Zl
-IHRlc3RlZCBsaWJudmRpbW0tcGVuZGluZyB3aGljaCBpbmNsdWRlcyB0aGlzIHNlcmllcyBvbiBt
-eSBzZXR1cCBhbmQKPj4gZXZlcnl0aGluZyB3b3JrcyBncmVhdC4KPj4KPj4gSnVzdCB3b25kZXJp
-bmcgaW4gYSBkaWZmZXJlbmNlIHNjZW5hcmlvIHdoZXJlIHBtZW0gcGFnZXMgYXJlIGV4cG9ydGVk
-IHRvCj4+IGEgS1ZNIGd1ZXN0LCBhbmQgdGhlbiBieSBtaXN0YWtlIHRoZSB1c2VyIGlzc3VlcyAi
-bmRjdGwgZGVzdHJveS1uYW1lc3BhY2UgLWYiLAo+PiB3aWxsIHRoZSBrZXJuZWwgd2FpdCBpbmRl
-ZmluaXRlbHkgdW50aWwgdGhlIHVzZXIgZmlndXJlcyBvdXQgdG8ga2lsbCB0aGUgZ3Vlc3QKPj4g
-YW5kIHJlbGVhc2UgdGhlIHBtZW0gcGFnZXM/Cj4gSXQgZGVwZW5kcyBvbiB3aGV0aGVyIHRoZSBw
-YWdlcyBhcmUgcGlubmVkLiBUeXBpY2FsbHkgREFYIG1lbW9yeQo+IG1hcHBpbmdzIGFzc2lnbmVk
-IHRvIGEgZ3Vlc3QgYXJlIG5vdCBwaW5uZWQgaW4gdGhlIGhvc3QgYW5kIGNhbiBiZQo+IGludmFs
-aWRhdGVkIGF0IGFueSB0aW1lLiBUaGUgcGlubmluZyBvbmx5IG9jY3VycyB3aXRoIFZGSU8gYW5k
-Cj4gZGV2aWNlLWFzc2lnbm1lbnQgd2hpY2ggaXNuJ3QgdGhlIGNvbW1vbiBjYXNlLCBlc3BlY2lh
-bGx5IHNpbmNlIHRoYXQKPiBjb25maWd1cmF0aW9uIGlzIGJsb2NrZWQgYnkgZnNkYXguIEhvd2V2
-ZXIsIHdpdGggZGV2ZGF4LCB5ZXMgeW91IGNhbgo+IGFycmFuZ2UgZm9yIHRoZSBzeXN0ZW0gdG8g
-Z28gaW50byBhbiBpbmRlZmluaXRlIHdhaXQuCj4KPiBUaGlzIHNvbWV3aGF0IHRpZXMgYmFjayB0
-byB0aGUgZ2V0X3VzZXJfcGFnZXMoKSB2cyBEQVggZGViYXRlLiBUaGUKPiBpbmRlZmluaXRlIHN0
-YWxsIGlzc3VlIHdpdGggZGV2aWNlLWFzc2lnbm1lbnQgY291bGQgYmUgYWRkcmVzc2VkIHdpdGgK
-PiBhIHJlcXVpcmVtZW50IHRvIGhvbGQgYSBsZWFzZSBhbmQgZXhwZWN0IHRoYXQgYSBsZWFzZSBy
-ZXZvY2F0aW9uIGV2ZW50Cj4gbWF5IGVzY2FsYXRlIHRvIFNJR0tJTEwgaW4gcmVzcG9uc2UgdG8g
-J25kY3RsIGRlc3Ryb3ktbmFtZXNwYWNlJy4gVGhlCj4gZXhwZWN0YXRpb24gd2l0aCBkZXZpY2Ut
-ZGF4IGlzIHRoYXQgaXQgaXMgYWxyZWFkeSBhIHJhdyBpbnRlcmZhY2Ugd2l0aAo+IHBvaW50eSBl
-ZGdlcyBhbmQgY2F2ZWF0cywgYnV0IEkgd291bGQgbm90IGJlIG9wcG9zZWQgdG8gaW50cm9kdWNp
-bmcgYQo+IGxlYXNlIHNlbWFudGljLgoKVGhhbmtzIGZvciB0aGUgcXVpY2sgcmVzcG9uc2UgRGFu
-LgoKSSBhbSBub3QgY29udmluY2VkIHRoYXQgdGhlIGdldF91c2VyX3BhZ2VzKCkgdnMgRlMtREFY
-IGRpbGVtbWEgaXMgYSBwZXJmZWN0CmNvbXBhcmlzb24gdG8gIm5kY3RsIGRlc3Ryb3ktbmFtZXNw
-YWNlIC1mIiB2cyBuYW1lc3BhY2UtaXMtYnVzeSBkaWxlbW1hLgoKT3RoZXJzIG1pZ2h0IGRpc2Fn
-cmVlIHdpdGggbWUsIEkgdGhvdWdodCB0aGF0IHRoZXJlIGlzIG5vIHJpc2sgb2YgcGFuaWMKaWYg
-d2UgZmFpbCAibmRjdGwgZGVzdHJveS1uYW1lc3BhY2UgLWYiIHRvIGhvbm9yIGEgY2xlYW4gc2h1
-dGRvd24gb2YgdGhlCnVzZXIgYXBwbGljYXRpb24uIEFsc28sIGJvdGggYWN0aW9ucyBhcmUgb24g
-dGhlIHNhbWUgaG9zdCwgc28gaW4gdGhlb3J5CnRoZSBhZG1pbiBjb3VsZCBzaHV0ZG93biB0aGUg
-YXBwbGljYXRpb24gYmVmb3JlIGF0dGVtcHQgYSBkZXN0cnVjdGl2ZQphY3Rpb24uCgpCeSBhbGxv
-d2luZyAnb3Bwb3NpdGUnIGFjdGlvbnMgaW4gY29tcGV0aXRpb24gd2l0aCBlYWNoIG90aGVyIGF0
-IGZpbmUKZ3JhbnVsYXJpdHksIHRoZXJlIGlzIHBvdGVudGlhbCBmb3IgcGFuaWMgaW4gZ2VuZXJh
-bCwgbm90IG5lY2Vzc2FyaWx5IHdpdGgKcGlubmVkIHBhZ2UgSSBndWVzcy4gIEkganVzdCByYW4g
-YW4gZXhwZXJpbWVudCBhbmQgcGFuaWMnZCB0aGUgc3lzdGVtLgoKU28sIGFzIE9wdGFuZSBEQ1BN
-RU0gaXMgZ2VuZXJhbGx5IGZvciBzZXJ2ZXIvY2xvdWQgZGVwbG95bWVudCwgYW5kIGFzClJBUyBp
-cyBhIHByaW9yaXR5IGZvciBzZXJ2ZXIgb3ZlciBhZG1pbmlzdHJhdGl2ZSBjb21tYW5kcywgdG8g
-YWxsb3cKbmFtZXNwYWNlIG1hbmFnZW1lbnQgY29tbWFuZCB0byBwYW5pYyBrZXJuZWwgaXMgbm90
-IGFuIG9wdGlvbj8KCkhlcmUgaXMgbXkgc3RyZXNzIGV4cGVyaW1lbnQgLQogICAKU3RhcnQgb3V0
-IHdpdGggLi9jcmVhdGVfbm0uc2ggdG8gY3JlYXRlIGFzIG1hbnkgNDhHIGRldmRheCBuYW1lc3Bh
-Y2VzCmFzIHBvc3NpYmxlLiBPbmNlIHRoYXQncyBjb21wbGV0ZWQsIGZpcmluZyB1cCA2IGFjdGlv
-bnMgaW4gcXVpY2sKc3VjY2Vzc2lvbnMgaW4gYmVsb3cgb3JkZXI6CiAgwqAtPiBuZGN0bCBkZXN0
-cm95LW5hbWVzcGFjZSBhbGwgLWYKICAgLT4gLi9jcmVhdGVfbm0uc2gKICAgLT4gbmRjdGwgZGVz
-dHJveS1uYW1lc3BhY2UgYWxsIC1mCiAgIC0+IC4vY3JlYXRlX25tLnNoCiAgIC0+IG5kY3RsIGRl
-c3Ryb3ktbmFtZXNwYWNlIGFsbCAtZgogICAtPiAuL2NyZWF0ZV9ubS5zaAoKPT09PT09PT09PSAg
-Y29uc29sZSBtZXNzYWdlID09PT09PT0KS2VybmVsIDUuMS4wLXJjNy1uZXh0LTIwMTkwNTAxLWxp
-Ym52ZGltbS1wZW5kaW5nIG9uIGFuIHg4Nl82NAoKYmFuMjV1dXQxMzAgbG9naW46IFsgMTYyMC44
-NjY4MTNdIEJVRzoga2VybmVsIE5VTEwgcG9pbnRlciBkZXJlZmVyZW5jZSwgYWRkcmVzczogMDAw
-MDAwMDAwMDAwMDAyMApbIDE2MjAuODc0NTg1XSAjUEY6IHN1cGVydmlzb3IgcmVhZCBhY2Nlc3Mg
-aW4ga2VybmVsIG1vZGUKWyAxNjIwLjg4MDMxOV0gI1BGOiBlcnJvcl9jb2RlKDB4MDAwMCkgLSBu
-b3QtcHJlc2VudCBwYWdlClsgMTYyMC44ODYwNTJdIFBHRCAwIFA0RCAwClsgMTYyMC44ODg4Nzld
-IE9vcHM6IDAwMDAgWyMxXSBTTVAgTk9QVEkKWyAxNjIwLjg5Mjk2NF0gQ1BVOiAxOSBQSUQ6IDU2
-MTEgQ29tbToga3dvcmtlci91MTMwOjMgVGFpbnRlZDogRyAgICAgICAgVyAgICAgICAgIDUuMS4w
-LXJjNy1uZXh0LTIwMTkwNTAxLWxpYm52ZGltbS1wZW5kaW5nICM1ClsgMTYyMC45MDUzODldIEhh
-cmR3YXJlIG5hbWU6IE9yYWNsZSBDb3Jwb3JhdGlvbiBPUkFDTEUgU0VSVkVSIFg4LTJML0FTTSxN
-VEhSQkQsMlUsIEJJT1MgNTIwMjAxMDEgMDUvMDcvMjAxOQpbIDE2MjAuOTE2MDY5XSBXb3JrcXVl
-dWU6IGV2ZW50c191bmJvdW5kIGFzeW5jX3J1bl9lbnRyeV9mbgpbIDE2MjAuOTIxOTk3XSBSSVA6
-IDAwMTA6a2xpc3RfcHV0KzB4MWIvMHg2YwpbIDE2MjAuOTI2NDcxXSBDb2RlOiA0OCA4YiA0MyAw
-OCA1YiA0MSA1YyA0MSA1ZCA0MSA1ZSA0MSA1ZiA1ZCBjMyA1NSA0OCA4OSBlNSA0MSA1NiA0MSA4
-OSBmNiA0MSA1NSA0MSA1NCA1MyA0YyA4YiAyNyA0OCA4OSBmYiA0OSA4MyBlNCBmZSA0YyA4OSBl
-NyA8NGQ+IDhiIDZjIDI0IDIwIGU4IDNhIGQ0IDAxIDAwIDQ1IDg0IGY2IDc0IDEwIDQ4IDhiIDAz
-IGE4IDAxIDc0IDAyClsgMTYyMC45NDc0MjddIFJTUDogMDAxODpmZmZmYjFhNWU2NzI3ZGEwIEVG
-TEFHUzogMDAwMTAyNDYKWyAxNjIwLjk1MzI1OF0gUkFYOiBmZmZmOTU2Nzk2NjA0YzAwIFJCWDog
-ZmZmZjk1Njc5NjYwNGMyOCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDAKWyAxNjIwLjk2MTIyM10gUkRY
-OiBmZmZmOTU1MDAwYzJjNGQ4IFJTSTogMDAwMDAwMDAwMDAwMDAwMSBSREk6IDAwMDAwMDAwMDAw
-MDAwMDAKWyAxNjIwLjk2OTE4NV0gUkJQOiBmZmZmYjFhNWU2NzI3ZGMwIFIwODogMDAwMDAwMDAw
-MDAwMDAwMiBSMDk6IGZmZmZmZmZmYmI1NGIzYzAKWyAxNjIwLjk3NzE1MF0gUjEwOiBmZmZmYjFh
-NWU2NzI3ZDQwIFIxMTogZmVmZWZlZmVmZWZlZmVmZiBSMTI6IDAwMDAwMDAwMDAwMDAwMDAKWyAx
-NjIwLjk4NTExNl0gUjEzOiBmZmZmOTRkMThkY2ZkMDAwIFIxNDogMDAwMDAwMDAwMDAwMDAwMSBS
-MTU6IGZmZmY5NTUwMDBjYWYxNDAKWyAxNjIwLjk5MzA4MV0gRlM6ICAwMDAwMDAwMDAwMDAwMDAw
-KDAwMDApIEdTOmZmZmY5NTY3OWY0YzAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMApb
-IDE2MjEuMDAyMTEzXSBDUzogIDAwMTAgRFM6IDAwMDAgRVM6IDAwMDAgQ1IwOiAwMDAwMDAwMDgw
-MDUwMDMzClsgMTYyMS4wMDg1MjRdIENSMjogMDAwMDAwMDAwMDAwMDAyMCBDUjM6IDAwMDAwMDlm
-YTEwMGEwMDUgQ1I0OiAwMDAwMDAwMDAwNzYwNmUwClsgMTYyMS4wMTY0ODddIERSMDogMDAwMDAw
-MDAwMDAwMDAwMCBEUjE6IDAwMDAwMDAwMDAwMDAwMDAgRFIyOiAwMDAwMDAwMDAwMDAwMDAwClsg
-MTYyMS4wMjQ0NTBdIERSMzogMDAwMDAwMDAwMDAwMDAwMCBEUjY6IDAwMDAwMDAwZmZmZTBmZjAg
-RFI3OiAwMDAwMDAwMDAwMDAwNDAwClsgMTYyMS4wMzI0MTNdIFBLUlU6IDU1NTU1NTU0ClsgMTYy
-MS4wMzU0MzNdIENhbGwgVHJhY2U6ClsgMTYyMS4wMzgxNjFdICBrbGlzdF9kZWwrMHhlLzB4MTAK
-WyAxNjIxLjA0MTY2N10gIGRldmljZV9kZWwrMHg4YS8weDJjOQpbIDE2MjEuMDQ1NDYzXSAgPyBf
-X3N3aXRjaF90b19hc20rMHgzNC8weDcwClsgMTYyMS4wNDk4NDBdICA/IF9fc3dpdGNoX3RvX2Fz
-bSsweDQwLzB4NzAKWyAxNjIxLjA1NDIyMF0gIGRldmljZV91bnJlZ2lzdGVyKzB4NDQvMHg0Zgpb
-IDE2MjEuMDU4NjAzXSAgbmRfYXN5bmNfZGV2aWNlX3VucmVnaXN0ZXIrMHgyMi8weDJkIFtsaWJu
-dmRpbW1dClsgMTYyMS4wNjUwMTZdICBhc3luY19ydW5fZW50cnlfZm4rMHg0Ny8weDE1YQpbIDE2
-MjEuMDY5NTg4XSAgcHJvY2Vzc19vbmVfd29yaysweDFhMi8weDJlYgpbIDE2MjEuMDc0MDY0XSAg
-d29ya2VyX3RocmVhZCsweDFiOC8weDI2ZQpbIDE2MjEuMDc4MjM5XSAgPyBjYW5jZWxfZGVsYXll
-ZF93b3JrX3N5bmMrMHgxNS8weDE1ClsgMTYyMS4wODM0OTBdICBrdGhyZWFkKzB4ZjgvMHhmZApb
-IDE2MjEuMDg2ODk3XSAgPyBrdGhyZWFkX2Rlc3Ryb3lfd29ya2VyKzB4NDUvMHg0NQpbIDE2MjEu
-MDkxOTU0XSAgcmV0X2Zyb21fZm9yaysweDFmLzB4NDAKWyAxNjIxLjA5NTk0NF0gTW9kdWxlcyBs
-aW5rZWQgaW46IHh0X1JFRElSRUNUIHh0X25hdCB4dF9DSEVDS1NVTSBpcHRhYmxlX21hbmdsZSB4
-dF9NQVNRVUVSQURFIHh0X2Nvbm50cmFjayBpcHRfUkVKRUNUIG5mX3JlamVjdF9pcHY0IHR1biBi
-cmlkZ2Ugc3RwIGxsYyBlYnRhYmxlX2ZpbHRlciBlYnRhYmxlcyBpcDZ0YWJsZV9maWx0ZXIgaXB0
-YWJsZV9maWx0ZXIgc2NzaV90cmFuc3BvcnRfaXNjc2kgaXA2dGFibGVfbmF0IGlwNl90YWJsZXMg
-aXB0YWJsZV9uYXQgbmZfbmF0IG5mX2Nvbm50cmFjayBuZl9kZWZyYWdfaXB2NiBuZl9kZWZyYWdf
-aXB2NCB2ZmF0IGZhdCBza3hfZWRhYyBpbnRlbF9wb3dlcmNsYW1wIGNvcmV0ZW1wIGt2bV9pbnRl
-bCBrdm0gaXJxYnlwYXNzIGNyY3QxMGRpZl9wY2xtdWwgY3JjMzJfcGNsbXVsIGdoYXNoX2NsbXVs
-bmlfaW50ZWwgaVRDT193ZHQgaVRDT192ZW5kb3Jfc3VwcG9ydCBhZXNuaV9pbnRlbCBpcG1pX3Np
-IGNyeXB0b19zaW1kIGNyeXB0ZCBnbHVlX2hlbHBlciBpcG1pX2RldmludGYgaXBtaV9tc2doYW5k
-bGVyIHNnIHBjc3BrciBkYXhfcG1lbV9jb21wYXQgZGV2aWNlX2RheCBkYXhfcG1lbV9jb3JlIGky
-Y19pODAxIHBjY19jcHVmcmVxIGxwY19pY2ggaW9hdGRtYSB3bWkgbmZzZCBhdXRoX3JwY2dzcyBu
-ZnNfYWNsIGxvY2tkIGdyYWNlIHN1bnJwYyBpcF90YWJsZXMgeGZzIGxpYmNyYzMyYyBuZF9wbWVt
-IG5kX2J0dCBzcl9tb2QgY2Ryb20gc2RfbW9kIG1nYWcyMDAgZHJtX2ttc19oZWxwZXIgc3lzY29w
-eWFyZWEgY3JjMzJjX2ludGVsIHN5c2ZpbGxyZWN0IHN5c2ltZ2JsdCBmYl9zeXNfZm9wcyB0dG0g
-bWVnYXJhaWRfc2FzIGRybSBpZ2IgYWhjaSBsaWJhaGNpIHB0cCBsaWJhdGEgcHBzX2NvcmUgZGNh
-IGkyY19hbGdvX2JpdCBuZml0IGxpYm52ZGltbSB1YXMgdXNiX3N0b3JhZ2UgZG1fbWlycm9yIGRt
-X3JlZ2lvbl9oYXNoIGRtX2xvZyBkbV9tb2QKWyAxNjIxLjE4OTQ0OV0gQ1IyOiAwMDAwMDAwMDAw
-MDAwMDIwClsgMTYyMS4xOTMxNjldIC0tLVsgZW5kIHRyYWNlIDdjM2Y3MDI5ZWYyNGFhNWEgXS0t
-LQpbIDE2MjEuMzA1MzgzXSBSSVA6IDAwMTA6a2xpc3RfcHV0KzB4MWIvMHg2YwpbIDE2MjEuMzA5
-ODYwXSBDb2RlOiA0OCA4YiA0MyAwOCA1YiA0MSA1YyA0MSA1ZCA0MSA1ZSA0MSA1ZiA1ZCBjMyA1
-NSA0OCA4OSBlNSA0MSA1NiA0MSA4OSBmNiA0MSA1NSA0MSA1NCA1MyA0YyA4YiAyNyA0OCA4OSBm
-YiA0OSA4MyBlNCBmZSA0YyA4OSBlNyA8NGQ+IDhiIDZjIDI0IDIwIGU4IDNhIGQ0IDAxIDAwIDQ1
-IDg0IGY2IDc0IDEwIDQ4IDhiIDAzIGE4IDAxIDc0IDAyClsgMTYyMS4zMzA4MDldIFJTUDogMDAx
-ODpmZmZmYjFhNWU2NzI3ZGEwIEVGTEFHUzogMDAwMTAyNDYKWyAxNjIxLjMzNjY0Ml0gUkFYOiBm
-ZmZmOTU2Nzk2NjA0YzAwIFJCWDogZmZmZjk1Njc5NjYwNGMyOCBSQ1g6IDAwMDAwMDAwMDAwMDAw
-MDAKWyAxNjIxLjM0NDYwNl0gUkRYOiBmZmZmOTU1MDAwYzJjNGQ4IFJTSTogMDAwMDAwMDAwMDAw
-MDAwMSBSREk6IDAwMDAwMDAwMDAwMDAwMDAKWyAxNjIxLjM1MjU3MF0gUkJQOiBmZmZmYjFhNWU2
-NzI3ZGMwIFIwODogMDAwMDAwMDAwMDAwMDAwMiBSMDk6IGZmZmZmZmZmYmI1NGIzYzAKWyAxNjIx
-LjM2MDUzM10gUjEwOiBmZmZmYjFhNWU2NzI3ZDQwIFIxMTogZmVmZWZlZmVmZWZlZmVmZiBSMTI6
-IDAwMDAwMDAwMDAwMDAwMDAKWyAxNjIxLjM2ODQ5Nl0gUjEzOiBmZmZmOTRkMThkY2ZkMDAwIFIx
-NDogMDAwMDAwMDAwMDAwMDAwMSBSMTU6IGZmZmY5NTUwMDBjYWYxNDAKWyAxNjIxLjM3NjQ2MF0g
-RlM6ICAwMDAwMDAwMDAwMDAwMDAwKDAwMDApIEdTOmZmZmY5NTY3OWY0YzAwMDAoMDAwMCkga25s
-R1M6MDAwMDAwMDAwMDAwMDAwMApbIDE2MjEuMzg1NDkwXSBDUzogIDAwMTAgRFM6IDAwMDAgRVM6
-IDAwMDAgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzClsgMTYyMS4zOTE5MDJdIENSMjogMDAwMDAwMDAw
-MDAwMDAyMCBDUjM6IDAwMDAwMDlmYTEwMGEwMDUgQ1I0OiAwMDAwMDAwMDAwNzYwNmUwClsgMTYy
-MS4zOTk4NjddIERSMDogMDAwMDAwMDAwMDAwMDAwMCBEUjE6IDAwMDAwMDAwMDAwMDAwMDAgRFIy
-OiAwMDAwMDAwMDAwMDAwMDAwClsgMTYyMS40MDc4MzBdIERSMzogMDAwMDAwMDAwMDAwMDAwMCBE
-UjY6IDAwMDAwMDAwZmZmZTBmZjAgRFI3OiAwMDAwMDAwMDAwMDAwNDAwClsgMTYyMS40MTU3OTNd
-IFBLUlU6IDU1NTU1NTU0ClsgMTYyMS40MTg4MTRdIEtlcm5lbCBwYW5pYyAtIG5vdCBzeW5jaW5n
-OiBGYXRhbCBleGNlcHRpb24KWyAxNjIxLjQyNDc0MF0gS2VybmVsIE9mZnNldDogMHgzOTAwMDAw
-MCBmcm9tIDB4ZmZmZmZmZmY4MTAwMDAwMCAocmVsb2NhdGlvbiByYW5nZTogMHhmZmZmZmZmZjgw
-MDAwMDAwLTB4ZmZmZmZmZmZiZmZmZmZmZikKWyAxNjIxLjU1MDcxMV0gLS0tWyBlbmQgS2VybmVs
-IHBhbmljIC0gbm90IHN5bmNpbmc6IEZhdGFsIGV4Y2VwdGlvbiBdLS0tCgoKVGhhbmtzIQotamFu
-ZQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlz
-dHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+## TLDR
+
+A quick follow up to yesterday's revision. I got some feedback that I
+wanted to incorporate before anyone else read the update. For this
+reason, I will leave a TLDR of the biggest changes since v2.
+
+Biggest things to look out for (since v2):
+
+- KUnit core now outputs results in TAP14.
+- Heavily reworked tools/testing/kunit/kunit.py
+  - Changed how parsing works.
+  - Added testing.
+  - Greg, Logan, you might want to re-review this.
+- Added documentation on how to use KUnit on non-UML kernels. You can
+  see the docs rendered here[1].
+
+There is still some discussion going on on the [PATCH v2 00/17] thread,
+but I wanted to get some of these updates out before they got too stale
+(and too difficult for me to keep track of). I hope no one minds.
+
+## Background
+
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
+
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in under a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
+
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+## What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+## Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+## More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[2].
+
+Additionally for convenience, I have applied these patches to a
+branch[3].
+The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.1/v4 branch.
+
+## Changes Since Last Version
+
+As I mentioned above, there are a significant number of updates since
+v2:
+- Converted KUnit core to print test results in TAP14 format as
+  suggested by Greg and Frank.
+- Heavily reworked tools/testing/kunit/kunit.py
+  - Changed how parsing works.
+  - Added testing.
+- Added documentation on how to use KUnit on non-UML kernels. You can
+  see the docs rendered here[1].
+- Added a new set of EXPECTs and ASSERTs for pointer comparison.
+- Removed more function indirection as suggested by Logan.
+- Added a new patch that adds `kunit_try_catch_throw` to objtool's
+  noreturn list.
+- Fixed a number of minorish issues pointed out by Shuah, Masahiro, and
+  kbuild bot.
+
+Nevertheless, there are only a couple of minor updates since v3:
+- Added more context to the changelog on the objtool patch, as per
+  Peter's request.
+- Moved all KUnit documentation under the Documentation/dev-tools/
+  directory as per Jonathan's suggestion.
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[2] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[3] https://kunit.googlesource.com/linux/+/kunit/rfc/v5.1/v4
+
+-- 
+2.21.0.1020.gf2820cf01a-goog
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
