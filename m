@@ -1,30 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8141C11E
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 05:53:51 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536151C120
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 05:58:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D3002212746D0;
-	Mon, 13 May 2019 20:53:49 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 700BA212746D0;
+	Mon, 13 May 2019 20:58:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.14.28.33;
- helo=lists.01.org; envelope-from=mailer-daemon@lists.01.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from lists.01.org (unknown [183.14.28.33])
- by ml01.01.org (Postfix) with ESMTP id 4DFA22125ADD6
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:53:46 -0700 (PDT)
-From: "Mail Delivery Subsystem" <MAILER-DAEMON@lists.01.org>
-To: linux-nvdimm@lists.01.org
-Subject: Returned mail: Data format error
-Date: Tue, 14 May 2019 11:51:53 +0800
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 6E6172125ADD6
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:58:51 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id 203so11042099oid.13
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=cdKct2xWm3ro0UBx8IVBS27dWaO8IEoUZaes/VXIAl4=;
+ b=A2pj2SEKTSfipz0FKt48998bkaQjibSO0LrmPxJdhCviFLeLqezE2NwsTX4vLH0VNN
+ 7xPjJIoF74QtRsYvEoXUHinuYdzzF5t1YPQzLcoSf1zZyfajYgYJytcipJK5FUl4Mlny
+ oviyWw8fv6yYkIB25nhyDFRvcpnhzsjlwirqdt/oOQWZcHncrbGzYhiTtAjHM/VwdoEx
+ Z465FZGgCDqTJ0zF4ouRHd18tdhCEBUne41N5akjLyQ8er4GGX4sekH7adfb/pd/UYoX
+ 0JlPQOYpuryFUc7/W+CvrWhxds7OkTfp/G5tbIeQgp+qUrgpiMmQ0vY4MNA4R4UcIx9f
+ VCwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=cdKct2xWm3ro0UBx8IVBS27dWaO8IEoUZaes/VXIAl4=;
+ b=ZYtK8vDle15hGowizvdD9cydxV7kyxNU2hgxjUXauWNrqeLU6N5pPaUG5L8XzOP621
+ F1mcgFNqRY8CzHwbEzSCTwafawFV8aY1GahtpINK/wdYCIABDKJozmnwSRhX5AZqVeJe
+ NPpOgelnFiOnCo4CvzBL/Ut9zqbdbKyQl6aNf3H2fLJ62Mv1L0ksPAFCRoiJOVGdagDY
+ XH0ZQhBV0ox8bYIIPJLAN2yBQMhgZKO+dPUTSEBevzGyjxlM7Ywoyfm+jwdJ7y6OQNNv
+ heCLhuWf/lloJBH2uSbGPem5hVlPM6P6/95moggduNVAJ46I0zEs/e22YEMXmjbor8p3
+ 7W0A==
+X-Gm-Message-State: APjAAAVhTPnjxh5cVt0c2v6TZWVYZGKocvNZ3qpq05QyY+fhixeB9HK0
+ EykgBsuHGpkzfnz8HJVfpCGA4h6bmSeKiwUMKz/BJA==
+X-Google-Smtp-Source: APXvYqyCSekgO8kXJLyc6cL4sAJ4FYAjlvDT7H8G1xatSOxF0udFUauTtFneyF1PCwUl001x8VvXU+z2TeI3qINqNDY=
+X-Received: by 2002:aca:ab07:: with SMTP id u7mr1650949oie.73.1557806330382;
+ Mon, 13 May 2019 20:58:50 -0700 (PDT)
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 13 May 2019 20:58:38 -0700
+Message-ID: <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,86 +65,58 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: multipart/mixed; boundary="===============5020941607101117256=="
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
-Message-Id: <20190514035349.D3002212746D0@ml01.01.org>
 
-This is a multi-part message in MIME format.
+On Mon, May 13, 2019 at 7:56 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> The nfpn related change is needed to fix the kernel message
+>
+> "number of pfns truncated from 2617344 to 163584"
+>
+> The change makes sure the nfpns stored in the superblock is right value.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  drivers/nvdimm/pfn_devs.c    | 6 +++---
+>  drivers/nvdimm/region_devs.c | 8 ++++----
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> index 347cab166376..6751ff0296ef 100644
+> --- a/drivers/nvdimm/pfn_devs.c
+> +++ b/drivers/nvdimm/pfn_devs.c
+> @@ -777,8 +777,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+>                  * when populating the vmemmap. This *should* be equal to
+>                  * PMD_SIZE for most architectures.
+>                  */
+> -               offset = ALIGN(start + reserve + 64 * npfns,
+> -                               max(nd_pfn->align, PMD_SIZE)) - start;
+> +               offset = ALIGN(start + reserve + sizeof(struct page) * npfns,
+> +                              max(nd_pfn->align, PMD_SIZE)) - start;
 
---===============5020941607101117256==
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 7bit
+No, I think we need to record the page-size into the superblock format
+otherwise this breaks in debug builds where the struct-page size is
+extended.
 
-;“«ôÎÁ:kŞàZY?Ü¿ Ïñ3Ó²û7½ŞDO…Ku„
-z² ã<ßàÜŒåd‹†®U{ë‡YƒŠ¢ú´kŒ´~‚YÔ½á9\²÷hø%<ûB]`|¾7]½¡¢
-Ø2¦ìV·©ÊÇoÍèv³{
-/l¹DPŸ¢m
-„%<FCc0÷w
-)˜¡–š«8:ƒN¢ÕJ$‰ôÑİ-Šä(ãºuÛ~EŠ6ï'ğ<jpªDmğÑ¥° Ğ~ZRõ´uë¬ÜXaT.(3`t´¦ğïî·©y Ü¤¶ÊËD$Œ¦elçÃê½õ¨ıß$#ÓÛF·K“Fy»‚'%\L6LUjÂÕ—VşâÊøÀû\Ùr‚Ûîv¼ü)ç‚ßÚªG*Ü1 —¿Š&wE|™ÜøNö(¹Ò¢ô§
-¥a M,Xh¼S¢ºßR:ãÖ$4{—6¦xÁåÛs¦b*Ì:Ø`[<W
-bCz’¶ö'û¡'ÏÅTš¾ûÙYôñ0¡Yëd®SÛ
-¹¯˜N|´ŸÅÆ#S-àÜãØ§U«ÕK­®OöC“¼±¶äıUÄ%˜5 ê’¼ÆékÄ(©jíë…²a0ğUBIX®‡%xî«÷ÕÃçEŞıŸ’q®$ãœy—`Î±KÓC|¸dÌLß?ø‚‚jÉˆ‡¾•Ñ·JoÕÁkb~É±Í¶Æ
-¿Ÿ5-­¿’¾DqdéòÛçšÓÜÅÁkSnÖÊÙ¯Š…BÅŠxKg7Ï)'¼~{H#rùµj¬iUÂQÌ‰”›‹1¶ß(¤¯
-ìî‘±çı9¤ƒˆF–¢ïküvpÕ
-^¥É%
-ôÓw#“wÃL“±µşRÂı¯ñ#ßæ\âùwLóğ¯MNÀäï»Êt¢•¬úm^ˆ®z`‡ıjwì´ n§0.5æW-
-•vâºT.hÙ÷õ¸˜Ÿ®\?¦s˜z³\™ÃQ
-ÀªóDƒÃ×d¨O¡Ù©C™e;rê•Ùs´BîâÕ)ö<×íéG¸feVr,Üõp£È¾ÆU(:\o•ÛAïs~Ã×»ïá<kŞ´«î§¶øK
-âI8î|F'"C“ X‰ùUéç‡ FmÌ˜¢IúÒ«M×úşÁ¢(íÂ(M-Š×L·Î»åÆº1ù°3”KÉ??]Õæ-ÀeïŒuˆ’ı¸”v^ïhœĞŠ„óQO é„<k-ƒ‘çğıˆ•xĞ±6ÍD¦;w˜x£ïöÑ‰µ¸£qMæEŠ3ÃäM¼Óâ×ô{•™ŞŠ#J7o4À1>Ú.ø¸W,Š#µø&”.á/÷ÁLÈÈù·)~°ÃûDÛâÎÕ1Ü˜
-9µ‚¿zJ"M×»\9X'R^Í•¤'à¢ßÅ%¯‡‚XHN¼2CáHA~;“o“ °3<1Ö“8ì'q˜r§ıà7À•‚O647'‘Œ1º¼…U¢‚,x‹Pàè•
-ú½01G>6
-o·†_…ï.óB£»…×5líÊKËAÁîß!ŞÂ«9 ÌPÃloãkÍ"Š‘¦OovÓMºÁ,Æ5 »6ÆhÎ‰„o¥›iÑº—Qoï)÷åÖâXs1½ÎŠâ
-X³•
-9ôõWm©’¦ı|CøÆğÇ4I¡èXtIõR
-ì«ÜcõØWÙ6^Òik»äwymurĞ”eåÚ¸;±;ä«¸N¥óc.mT^Ûú“çS¾µ¦
-"úqÛeÓw¸ÖÔ­B¤›©Óğ]8–Q`Û:éÆƒJ8‚ÔµîE%8
-C
-Ã‰§sã“
-43
-Û< W§r
-â\
-Èyò<Œ^8®a}ââ‡_åRRçáÓNñõ-  ¿äµ,Í3ÆVyÔ¼Ò…¢SDÉ-œH°;~ë¹B10÷ïÂŒ‘£’jCğ×§Û!2Š®Ü6~Ë©‰p8ò“
-'÷<Ò:c{3ÊÜ˜‡‹µäOb¡c¦M†,]>ê
-xv¯®STÕík—¿êÏøö*óG÷0ıÏZJ•|x¥g`ñÖ¥2'UƒÊÀü¹¦(Œbà(¥VáØàÙ[~lQŠ‰!™{¹M"¼åSÓnIçùFZ,î•›ÁÔÏÈ
-ÚR~R³#U&ZZ‚Ó.ŒÌ©õ¹êá¼R’Ô¶W©¨‰Ë?«÷¤&,–KGWâ%<¹|ò`Ó (W#ê
-âò°ÎD~‘fÑóÜ‰ÈËpÜ»—íæà'ÕŞdl‘ şuAk^‡¬Zò2RrÓ‡Ei.CUgRËq43"èIºö¾W8RhNšĞ,Ê|‡VÈeZNq$&
- ±ÔË‚×[Íàh´]Ø[¬#Ó­Ux8eR‡jÒî§bâjã«Y~M/9òûV gR®Ö™Å–ËàrQøÆéÎf4é˜ÇÀâßŸsŸÆ»§àU¦ƒMG‹Ñ£°Št|mh¼DŠÖsäÓV[±e­EÛƒ±9z™Æ¹s³±›!3•i £F}kCÏ³ãÙ?.6Æ®Ì.,
-9ÛŒ’xv>İA^b%OµÙ±ß; '8;QmÇşÒáşÎÜXòÉx#Ğ’ˆ^ŠD.ªgü
-*™?wfèñâ¨–`£Ğ‰¡`ÄÊq)¬±ã´ûí•ÜùëTªö„<mYÆVX…"TÚë¸üôYòâM“:¼¾SE¸7åœÊÏéœP¸>W4°2p
-§gZû\Ã^hNÎn‘x©0è“ªÌ©êMœmÍ$&ªHÕlİw7-]lÏWW´’‘¬.ko‘¸7håÊÕ”Ór¢
-9úwS¨¬«Ù—/J´Ì!e]~†¨¤¸æSD z†ŒŠ_nòõòûPÅ
-—ÇsÃ^{²'ÌÔ”P8gò>:-:Ì‚QıÙ“`?Œ{
-ğ»¶ow#Cœ(k`ÂÈ‡”§A­Ì“"××Ò¡é6úaQ;ã©‡·6šêD¸„‡·PJû,o¢ø5‚]¹X×G?Ì³×Ç½
-–‹³™cbÄ˜ç¿eÀ'Õ¬·0<Z`’ÛÍhu¤bR¨JF ™bR\Ò¥œªì–`åZ21¼]ŒĞ&AYùA
-šQ­¨ (ÔW Ü
-„ã³ÃÎŞóÉö®îîô
-œqoÃñÕòW¿OøÈqğø¾•b`äQœò‡3›.õ
-,J¢É`
-óåÈ¥äò‡#e*•s•aSÚÄÕÙ¹\&¦¢r÷÷t™1Ìóåz¶å04¶/CŒ"iÉ PÖ®A¾o§G§!®]YRW‘«of‡0÷$Ìáºİæac«ˆ¤Šg ´RÎz ôÑ»Íş
-É–I¢¯âÎØ^xì(×Ò;ÚYvÂRÔAÌ
-ì«™ZV[´¿°’
-ÜÉÅşˆÆğîßïâ¶Ê`(Cs¸ê¡(¿ÜÓ
-ğŞ-ÑÛèé©4ê(NÖ»Zh#YŠiTæÂrárÜ
-ö×ó'r‚gÛR9’`´õ~ÛwĞC‚õY”Š¹–
-<gàCpÊuwæ‹§°Oİ
-.yÃ:q"ü
-r/†X!zRëšmC5õæPI—Æö'
-¼T%,¦ /zõnnÀ Y\v¯œœ4GG±‰¾—–}L{¾õôö›ìF:•Qzo˜s7P¢ØT{k`YµİC2E†z­yüó…7õl<¢‹4¹
+>         } else if (nd_pfn->mode == PFN_MODE_RAM)
+>                 offset = ALIGN(start + reserve, nd_pfn->align) - start;
+>         else
+> @@ -790,7 +790,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+>                 return -ENXIO;
+>         }
+>
+> -       npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
+> +       npfns = (size - offset - start_pad - end_trunc) / PAGE_SIZE;
 
-
---===============5020941607101117256==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Similar comment, if the page size is variable then the superblock
+needs to explicitly account for it.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
 https://lists.01.org/mailman/listinfo/linux-nvdimm
-
---===============5020941607101117256==--
-
-
