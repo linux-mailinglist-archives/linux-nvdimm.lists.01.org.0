@@ -2,58 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536151C120
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 05:58:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C15C1C127
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 06:04:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 700BA212746D0;
-	Mon, 13 May 2019 20:58:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2D127212746D2;
+	Mon, 13 May 2019 21:04:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6E6172125ADD6
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:58:51 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id 203so11042099oid.13
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:58:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=cdKct2xWm3ro0UBx8IVBS27dWaO8IEoUZaes/VXIAl4=;
- b=A2pj2SEKTSfipz0FKt48998bkaQjibSO0LrmPxJdhCviFLeLqezE2NwsTX4vLH0VNN
- 7xPjJIoF74QtRsYvEoXUHinuYdzzF5t1YPQzLcoSf1zZyfajYgYJytcipJK5FUl4Mlny
- oviyWw8fv6yYkIB25nhyDFRvcpnhzsjlwirqdt/oOQWZcHncrbGzYhiTtAjHM/VwdoEx
- Z465FZGgCDqTJ0zF4ouRHd18tdhCEBUne41N5akjLyQ8er4GGX4sekH7adfb/pd/UYoX
- 0JlPQOYpuryFUc7/W+CvrWhxds7OkTfp/G5tbIeQgp+qUrgpiMmQ0vY4MNA4R4UcIx9f
- VCwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=cdKct2xWm3ro0UBx8IVBS27dWaO8IEoUZaes/VXIAl4=;
- b=ZYtK8vDle15hGowizvdD9cydxV7kyxNU2hgxjUXauWNrqeLU6N5pPaUG5L8XzOP621
- F1mcgFNqRY8CzHwbEzSCTwafawFV8aY1GahtpINK/wdYCIABDKJozmnwSRhX5AZqVeJe
- NPpOgelnFiOnCo4CvzBL/Ut9zqbdbKyQl6aNf3H2fLJ62Mv1L0ksPAFCRoiJOVGdagDY
- XH0ZQhBV0ox8bYIIPJLAN2yBQMhgZKO+dPUTSEBevzGyjxlM7Ywoyfm+jwdJ7y6OQNNv
- heCLhuWf/lloJBH2uSbGPem5hVlPM6P6/95moggduNVAJ46I0zEs/e22YEMXmjbor8p3
- 7W0A==
-X-Gm-Message-State: APjAAAVhTPnjxh5cVt0c2v6TZWVYZGKocvNZ3qpq05QyY+fhixeB9HK0
- EykgBsuHGpkzfnz8HJVfpCGA4h6bmSeKiwUMKz/BJA==
-X-Google-Smtp-Source: APXvYqyCSekgO8kXJLyc6cL4sAJ4FYAjlvDT7H8G1xatSOxF0udFUauTtFneyF1PCwUl001x8VvXU+z2TeI3qINqNDY=
-X-Received: by 2002:aca:ab07:: with SMTP id u7mr1650949oie.73.1557806330382;
- Mon, 13 May 2019 20:58:50 -0700 (PDT)
+ client-ip=217.140.101.70; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from foss.arm.com (foss.arm.com [217.140.101.70])
+ by ml01.01.org (Postfix) with ESMTP id 01544212735A2
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 21:04:55 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 78EBB341;
+ Mon, 13 May 2019 21:04:55 -0700 (PDT)
+Received: from [10.163.1.137] (unknown [10.163.1.137])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8AD423F71E;
+ Mon, 13 May 2019 21:04:52 -0700 (PDT)
+Subject: Re: [RFC PATCH] mm/nvdimm: Fix kernel crash on
+ devm_mremap_pages_release
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, dan.j.williams@intel.com
+References: <20190514025354.9108-1-aneesh.kumar@linux.ibm.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <2f08e63e-5ff9-b036-1212-9345894cca26@arm.com>
+Date: Tue, 14 May 2019 09:35:01 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 13 May 2019 20:58:38 -0700
-Message-ID: <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190514025354.9108-1-aneesh.kumar@linux.ibm.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,57 +44,107 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, May 13, 2019 at 7:56 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> The nfpn related change is needed to fix the kernel message
->
-> "number of pfns truncated from 2617344 to 163584"
->
-> The change makes sure the nfpns stored in the superblock is right value.
->
+On 05/14/2019 08:23 AM, Aneesh Kumar K.V wrote:
+> When we initialize the namespace, if we support altmap, we don't initialize all the
+> backing struct page where as while releasing the namespace we look at some of
+> these uninitilized struct page. This results in a kernel crash as below.
+Yes this has been problematic which I have also previously encountered but in a bit
+different way (while searching memory resources).
+
+> 
+> kernel BUG at include/linux/mm.h:1034!
+What that would be ? Did not see a corresponding BUG_ON() line in the file.
+
+> cpu 0x2: Vector: 700 (Program Check) at [c00000024146b870]
+>     pc: c0000000003788f8: devm_memremap_pages_release+0x258/0x3a0
+>     lr: c0000000003788f4: devm_memremap_pages_release+0x254/0x3a0
+>     sp: c00000024146bb00
+>    msr: 800000000282b033
+>   current = 0xc000000241382f00
+>   paca    = 0xc00000003fffd680   irqmask: 0x03   irq_happened: 0x01
+>     pid   = 4114, comm = ndctl
+>  c0000000009bf8c0 devm_action_release+0x30/0x50
+>  c0000000009c0938 release_nodes+0x268/0x2d0
+>  c0000000009b95b4 device_release_driver_internal+0x164/0x230
+>  c0000000009b638c unbind_store+0x13c/0x190
+>  c0000000009b4f44 drv_attr_store+0x44/0x60
+>  c00000000058ccc0 sysfs_kf_write+0x70/0xa0
+>  c00000000058b52c kernfs_fop_write+0x1ac/0x290
+>  c0000000004a415c __vfs_write+0x3c/0x70
+>  c0000000004a85ac vfs_write+0xec/0x200
+>  c0000000004a8920 ksys_write+0x80/0x130
+>  c00000000000bee4 system_call+0x5c/0x70
+
+I saw this as memory hotplug problem with respect to ZONE_DEVICE based device memory.
+Hence a bit different explanation which I never posted. I guess parts of the commit
+message here can be used for a better comprehensive explanation of the problem.
+
+mm/hotplug: Initialize struct pages for vmem_altmap reserved areas
+
+The following ZONE_DEVICE ranges (altmap) have valid struct pages allocated
+from within device memory memmap range.
+
+A. Driver reserved area	[BASE -> BASE + RESV)
+B. Device mmap area	[BASE + RESV -> BASE + RESV + FREE]
+C. Device usable area	[BASE + RESV + FREE -> END]
+
+BASE - pgmap->altmap.base_pfn (pgmap->res.start >> PAGE_SHIFT)
+RESV - pgmap->altmap.reserve
+FREE - pgmap->altmap.free
+END  - pgmap->res->end >> PAGE_SHIFT
+
+Struct page init for all areas happens in two phases which detects altmap
+use case and init parts of the device range in each phase.
+
+1. memmap_init_zone		(Device mmap area)
+2. memmap_init_zone_device	(Device usable area)
+
+memmap_init_zone() skips driver reserved area and does not init the
+struct pages. This is problematic primarily for two reasons.
+
+Though NODE_DATA(device_node(dev))->node_zones[ZONE_DEVICE] contains the
+device memory range in it's entirety (in zone->spanned_pages) parts of this
+range does not have zone set to ZONE_DEVICE in their struct page.
+
+__remove_pages() called directly or from within arch_remove_memory() during
+ZONE_DEVICE tear down procedure (devm_memremap_pages_release) hits an error
+(like below) if there are reserved pages. This is because the first pfn of
+the device range (invariably also the first pfn from reserved area) cannot
+be identified belonging to ZONE_DEVICE. This erroneously leads range search
+within iomem_resource region which never had this device memory region. So
+this eventually ends up flashing the following error.
+
+Unable to release resource <0x0000000680000000-0x00000006bfffffff> (-22)
+
+Initialize struct pages for the driver reserved range while still staying
+clear from it's contents.
+
+> 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  drivers/nvdimm/pfn_devs.c    | 6 +++---
->  drivers/nvdimm/region_devs.c | 8 ++++----
->  2 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index 347cab166376..6751ff0296ef 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -777,8 +777,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->                  * when populating the vmemmap. This *should* be equal to
->                  * PMD_SIZE for most architectures.
->                  */
-> -               offset = ALIGN(start + reserve + 64 * npfns,
-> -                               max(nd_pfn->align, PMD_SIZE)) - start;
-> +               offset = ALIGN(start + reserve + sizeof(struct page) * npfns,
-> +                              max(nd_pfn->align, PMD_SIZE)) - start;
-
-No, I think we need to record the page-size into the superblock format
-otherwise this breaks in debug builds where the struct-page size is
-extended.
-
->         } else if (nd_pfn->mode == PFN_MODE_RAM)
->                 offset = ALIGN(start + reserve, nd_pfn->align) - start;
->         else
-> @@ -790,7 +790,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->                 return -ENXIO;
->         }
->
-> -       npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
-> +       npfns = (size - offset - start_pad - end_trunc) / PAGE_SIZE;
-
-Similar comment, if the page size is variable then the superblock
-needs to explicitly account for it.
+>  mm/page_alloc.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 59661106da16..892eabe1ec13 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5740,8 +5740,7 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+>  
+>  #ifdef CONFIG_ZONE_DEVICE
+>  	/*
+> -	 * Honor reservation requested by the driver for this ZONE_DEVICE
+> -	 * memory. We limit the total number of pages to initialize to just
+> +	 * We limit the total number of pages to initialize to just
+Comment needs bit change to reflect on the fact that both driver reserved as
+well as mapped area (containing altmap struct pages) needs init here.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
