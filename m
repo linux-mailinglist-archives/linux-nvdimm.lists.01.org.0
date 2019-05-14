@@ -2,78 +2,29 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669111C0C1
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 04:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8141C11E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 May 2019 05:53:51 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 48CC8212746CE;
-	Mon, 13 May 2019 19:56:22 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D3002212746D0;
+	Mon, 13 May 2019 20:53:49 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 16AF3212741F1
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 19:56:20 -0700 (PDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4E2kwHP023777
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 22:56:19 -0400
-Received: from e36.co.us.ibm.com (e36.co.us.ibm.com [32.97.110.154])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sfhg1qfdq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 22:56:19 -0400
-Received: from localhost
- by e36.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 14 May 2019 03:56:19 +0100
-Received: from b03cxnp08026.gho.boulder.ibm.com (9.17.130.18)
- by e36.co.us.ibm.com (192.168.1.136) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 14 May 2019 03:56:16 +0100
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4E2uFLW8585602
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 May 2019 02:56:16 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D168C6A054;
- Tue, 14 May 2019 02:56:15 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 889AF6A04F;
- Tue, 14 May 2019 02:56:08 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.80.221.111])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 14 May 2019 02:56:08 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-Date: Tue, 14 May 2019 08:26:04 +0530
-X-Mailer: git-send-email 2.21.0
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.14.28.33;
+ helo=lists.01.org; envelope-from=mailer-daemon@lists.01.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from lists.01.org (unknown [183.14.28.33])
+ by ml01.01.org (Postfix) with ESMTP id 4DFA22125ADD6
+ for <linux-nvdimm@lists.01.org>; Mon, 13 May 2019 20:53:46 -0700 (PDT)
+From: "Mail Delivery Subsystem" <MAILER-DAEMON@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: Returned mail: Data format error
+Date: Tue, 14 May 2019 11:51:53 +0800
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19051402-0020-0000-0000-00000EE86D1E
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011095; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000285; SDB=6.01202997; UDB=6.00631418; IPR=6.00983915; 
- MB=3.00026876; MTD=3.00000008; XFM=3.00000015; UTC=2019-05-14 02:56:18
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19051402-0021-0000-0000-000065D0C496
-Message-Id: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-14_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=953 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905140018
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,72 +36,86 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5020941607101117256=="
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
+Message-Id: <20190514035349.D3002212746D0@ml01.01.org>
 
-The nfpn related change is needed to fix the kernel message
+This is a multi-part message in MIME format.
 
-"number of pfns truncated from 2617344 to 163584"
+--===============5020941607101117256==
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-The change makes sure the nfpns stored in the superblock is right value.
+;“«ôÎÁ:kŞàZY?Ü¿ Ïñ3Ó²û7½ŞDO…Ku„
+z² ã<ßàÜŒåd‹†®U{ë‡YƒŠ¢ú´kŒ´~‚YÔ½á9\²÷hø%<ûB]`|¾7]½¡¢
+Ø2¦ìV·©ÊÇoÍèv³{
+/l¹DPŸ¢m
+„%<FCc0÷w
+)˜¡–š«8:ƒN¢ÕJ$‰ôÑİ-Šä(ãºuÛ~EŠ6ï'ğ<jpªDmğÑ¥° Ğ~ZRõ´uë¬ÜXaT.(3`t´¦ğïî·©y Ü¤¶ÊËD$Œ¦elçÃê½õ¨ıß$#ÓÛF·K“Fy»‚'%\L6LUjÂÕ—VşâÊøÀû\Ùr‚Ûîv¼ü)ç‚ßÚªG*Ü1 —¿Š&wE|™ÜøNö(¹Ò¢ô§
+¥a M,Xh¼S¢ºßR:ãÖ$4{—6¦xÁåÛs¦b*Ì:Ø`[<W
+bCz’¶ö'û¡'ÏÅTš¾ûÙYôñ0¡Yëd®SÛ
+¹¯˜N|´ŸÅÆ#S-àÜãØ§U«ÕK­®OöC“¼±¶äıUÄ%˜5 ê’¼ÆékÄ(©jíë…²a0ğUBIX®‡%xî«÷ÕÃçEŞıŸ’q®$ãœy—`Î±KÓC|¸dÌLß?ø‚‚jÉˆ‡¾•Ñ·JoÕÁkb~É±Í¶Æ
+¿Ÿ5-­¿’¾DqdéòÛçšÓÜÅÁkSnÖÊÙ¯Š…BÅŠxKg7Ï)'¼~{H#rùµj¬iUÂQÌ‰”›‹1¶ß(¤¯
+ìî‘±çı9¤ƒˆF–¢ïküvpÕ
+^¥É%
+ôÓw#“wÃL“±µşRÂı¯ñ#ßæ\âùwLóğ¯MNÀäï»Êt¢•¬úm^ˆ®z`‡ıjwì´ n§0.5æW-
+•vâºT.hÙ÷õ¸˜Ÿ®\?¦s˜z³\™ÃQ
+ÀªóDƒÃ×d¨O¡Ù©C™e;rê•Ùs´BîâÕ)ö<×íéG¸feVr,Üõp£È¾ÆU(:\o•ÛAïs~Ã×»ïá<kŞ´«î§¶øK
+âI8î|F'"C“ X‰ùUéç‡ FmÌ˜¢IúÒ«M×úşÁ¢(íÂ(M-Š×L·Î»åÆº1ù°3”KÉ??]Õæ-ÀeïŒuˆ’ı¸”v^ïhœĞŠ„óQO é„<k-ƒ‘çğıˆ•xĞ±6ÍD¦;w˜x£ïöÑ‰µ¸£qMæEŠ3ÃäM¼Óâ×ô{•™ŞŠ#J7o4À1>Ú.ø¸W,Š#µø&”.á/÷ÁLÈÈù·)~°ÃûDÛâÎÕ1Ü˜
+9µ‚¿zJ"M×»\9X'R^Í•¤'à¢ßÅ%¯‡‚XHN¼2CáHA~;“o“ °3<1Ö“8ì'q˜r§ıà7À•‚O647'‘Œ1º¼…U¢‚,x‹Pàè•
+ú½01G>6
+o·†_…ï.óB£»…×5líÊKËAÁîß!ŞÂ«9 ÌPÃloãkÍ"Š‘¦OovÓMºÁ,Æ5 »6ÆhÎ‰„o¥›iÑº—Qoï)÷åÖâXs1½ÎŠâ
+X³•
+9ôõWm©’¦ı|CøÆğÇ4I¡èXtIõR
+ì«ÜcõØWÙ6^Òik»äwymurĞ”eåÚ¸;±;ä«¸N¥óc.mT^Ûú“çS¾µ¦
+"úqÛeÓw¸ÖÔ­B¤›©Óğ]8–Q`Û:éÆƒJ8‚ÔµîE%8
+C
+Ã‰§sã“
+43
+Û< W§r
+â\
+Èyò<Œ^8®a}ââ‡_åRRçáÓNñõ-  ¿äµ,Í3ÆVyÔ¼Ò…¢SDÉ-œH°;~ë¹B10÷ïÂŒ‘£’jCğ×§Û!2Š®Ü6~Ë©‰p8ò“
+'÷<Ò:c{3ÊÜ˜‡‹µäOb¡c¦M†,]>ê
+xv¯®STÕík—¿êÏøö*óG÷0ıÏZJ•|x¥g`ñÖ¥2'UƒÊÀü¹¦(Œbà(¥VáØàÙ[~lQŠ‰!™{¹M"¼åSÓnIçùFZ,î•›ÁÔÏÈ
+ÚR~R³#U&ZZ‚Ó.ŒÌ©õ¹êá¼R’Ô¶W©¨‰Ë?«÷¤&,–KGWâ%<¹|ò`Ó (W#ê
+âò°ÎD~‘fÑóÜ‰ÈËpÜ»—íæà'ÕŞdl‘ şuAk^‡¬Zò2RrÓ‡Ei.CUgRËq43"èIºö¾W8RhNšĞ,Ê|‡VÈeZNq$&
+ ±ÔË‚×[Íàh´]Ø[¬#Ó­Ux8eR‡jÒî§bâjã«Y~M/9òûV gR®Ö™Å–ËàrQøÆéÎf4é˜ÇÀâßŸsŸÆ»§àU¦ƒMG‹Ñ£°Št|mh¼DŠÖsäÓV[±e­EÛƒ±9z™Æ¹s³±›!3•i £F}kCÏ³ãÙ?.6Æ®Ì.,
+9ÛŒ’xv>İA^b%OµÙ±ß; '8;QmÇşÒáşÎÜXòÉx#Ğ’ˆ^ŠD.ªgü
+*™?wfèñâ¨–`£Ğ‰¡`ÄÊq)¬±ã´ûí•ÜùëTªö„<mYÆVX…"TÚë¸üôYòâM“:¼¾SE¸7åœÊÏéœP¸>W4°2p
+§gZû\Ã^hNÎn‘x©0è“ªÌ©êMœmÍ$&ªHÕlİw7-]lÏWW´’‘¬.ko‘¸7håÊÕ”Ór¢
+9úwS¨¬«Ù—/J´Ì!e]~†¨¤¸æSD z†ŒŠ_nòõòûPÅ
+—ÇsÃ^{²'ÌÔ”P8gò>:-:Ì‚QıÙ“`?Œ{
+ğ»¶ow#Cœ(k`ÂÈ‡”§A­Ì“"××Ò¡é6úaQ;ã©‡·6šêD¸„‡·PJû,o¢ø5‚]¹X×G?Ì³×Ç½
+–‹³™cbÄ˜ç¿eÀ'Õ¬·0<Z`’ÛÍhu¤bR¨JF ™bR\Ò¥œªì–`åZ21¼]ŒĞ&AYùA
+šQ­¨ (ÔW Ü
+„ã³ÃÎŞóÉö®îîô
+œqoÃñÕòW¿OøÈqğø¾•b`äQœò‡3›.õ
+,J¢É`
+óåÈ¥äò‡#e*•s•aSÚÄÕÙ¹\&¦¢r÷÷t™1Ìóåz¶å04¶/CŒ"iÉ PÖ®A¾o§G§!®]YRW‘«of‡0÷$Ìáºİæac«ˆ¤Šg ´RÎz ôÑ»Íş
+É–I¢¯âÎØ^xì(×Ò;ÚYvÂRÔAÌ
+ì«™ZV[´¿°’
+ÜÉÅşˆÆğîßïâ¶Ê`(Cs¸ê¡(¿ÜÓ
+ğŞ-ÑÛèé©4ê(NÖ»Zh#YŠiTæÂrárÜ
+ö×ó'r‚gÛR9’`´õ~ÛwĞC‚õY”Š¹–
+<gàCpÊuwæ‹§°Oİ
+.yÃ:q"ü
+r/†X!zRëšmC5õæPI—Æö'
+¼T%,¦ /zõnnÀ Y\v¯œœ4GG±‰¾—–}L{¾õôö›ìF:•Qzo˜s7P¢ØT{k`YµİC2E†z­yüó…7õl<¢‹4¹
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- drivers/nvdimm/pfn_devs.c    | 6 +++---
- drivers/nvdimm/region_devs.c | 8 ++++----
- 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 347cab166376..6751ff0296ef 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -777,8 +777,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 		 * when populating the vmemmap. This *should* be equal to
- 		 * PMD_SIZE for most architectures.
- 		 */
--		offset = ALIGN(start + reserve + 64 * npfns,
--				max(nd_pfn->align, PMD_SIZE)) - start;
-+		offset = ALIGN(start + reserve + sizeof(struct page) * npfns,
-+			       max(nd_pfn->align, PMD_SIZE)) - start;
- 	} else if (nd_pfn->mode == PFN_MODE_RAM)
- 		offset = ALIGN(start + reserve, nd_pfn->align) - start;
- 	else
-@@ -790,7 +790,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 		return -ENXIO;
- 	}
- 
--	npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
-+	npfns = (size - offset - start_pad - end_trunc) / PAGE_SIZE;
- 	pfn_sb->mode = cpu_to_le32(nd_pfn->mode);
- 	pfn_sb->dataoff = cpu_to_le64(offset);
- 	pfn_sb->npfns = cpu_to_le64(npfns);
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index b4ef7d9ff22e..2d8facea5a03 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -994,10 +994,10 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 		struct nd_mapping_desc *mapping = &ndr_desc->mapping[i];
- 		struct nvdimm *nvdimm = mapping->nvdimm;
- 
--		if ((mapping->start | mapping->size) % SZ_4K) {
--			dev_err(&nvdimm_bus->dev, "%s: %s mapping%d is not 4K aligned\n",
--					caller, dev_name(&nvdimm->dev), i);
--
-+		if ((mapping->start | mapping->size) % PAGE_SIZE) {
-+			dev_err(&nvdimm_bus->dev,
-+				"%s: %s mapping%d is not 4K aligned\n",
-+				caller, dev_name(&nvdimm->dev), i);
- 			return NULL;
- 		}
- 
--- 
-2.21.0
+--===============5020941607101117256==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
 https://lists.01.org/mailman/listinfo/linux-nvdimm
+
+--===============5020941607101117256==--
+
+
