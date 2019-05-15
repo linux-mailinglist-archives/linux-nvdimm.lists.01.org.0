@@ -2,50 +2,26 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBC31EA43
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 May 2019 10:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC021E80F
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 May 2019 07:55:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DFB0B21277789;
-	Wed, 15 May 2019 01:38:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8B5AC21276B9C;
+	Tue, 14 May 2019 22:55:41 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 8976621276777
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 01:38:07 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id DF0FB59454;
- Wed, 15 May 2019 08:38:06 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CB90F64422;
- Wed, 15 May 2019 08:38:06 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id A90F818089C9;
- Wed, 15 May 2019 08:38:06 +0000 (UTC)
-Date: Wed, 15 May 2019 04:38:06 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <34965939.28870107.1557909486195.JavaMail.zimbra@redhat.com>
-In-Reply-To: <155789172402.748145.11853718580748830476.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <155789172402.748145.11853718580748830476.stgit@dwillia2-desk3.amr.corp.intel.com>
-Subject: Re: [PATCH] dax: Arrange for dax_supported check to span multiple
- devices
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=14.233.210.100;
+ helo=static.vnpt.vn; envelope-from=linux-nvdimm@lists.01.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from static.vnpt.vn (unknown [14.233.210.100])
+ by ml01.01.org (Postfix) with ESMTP id 355E52127546E
+ for <linux-nvdimm@lists.01.org>; Tue, 14 May 2019 22:55:38 -0700 (PDT)
+Message-ID: <109080288104984583139156@lists.01.org>
+From: <linux-nvdimm@lists.01.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: Hackers know password from your account. Password must be changed now.
+Date: 15 May 2019 18:21:15 +0600
 MIME-Version: 1.0
-X-Originating-IP: [10.65.16.80, 10.4.195.16]
-Thread-Topic: Arrange for dax_supported check to span multiple devices
-Thread-Index: DFYzSsTeR2lh7L09oG6Kp02APnkUKQ==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.39]); Wed, 15 May 2019 08:38:07 +0000 (UTC)
+X-Mailer: Dmfbuj xpcnxg
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,57 +33,80 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, snitzer@redhat.com, linux-nvdimm@lists.01.org,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, linux-fsdevel@vger.kernel.org, dm-devel@redhat.com,
- Matthew Wilcox <willy@infradead.org>,
- Martin Schwidefsky <schwidefsky@de.ibm.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============5118055020459796457=="
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+--===============5118055020459796457==
+Content-type: text/plain;
+ charset="cp-850"
+Content-transfer-encoding: 8bit
+
+Hello!
+
+I have very bad news for you.
+21/10/2018 - on this day I hacked your OS and got full access to your account linux-nvdimm@lists.01.org
+
+So, you can change the password, yes... But my malware intercepts it every time.
+
+How I made it:
+In the software of the router, through which you went online, was a vulnerability.
+I just hacked this router and placed my malicious code on it.
+When you went online, my trojan was installed on the OS of your device.
+
+After that, I made a full dump of your disk (I have all your address book, history of viewing sites, all files, phone numbers and addresses of all your contacts).
+
+A month ago, I wanted to lock your device and ask for a not big amount of btc to unlock.
+But I looked at the sites that you regularly visit, and I was shocked by what I saw!!!
+I'm talk you about sites for adults.
+
+I want to say - you are a BIG pervert. Your fantasy is shifted far away from the normal course!
+
+And I got an idea....
+I made a screenshot of the adult sites where you have fun (do you understand what it is about, huh?).
+After that, I made a screenshot of your joys (using the camera of your device) and glued them together.
+Turned out amazing! You are so spectacular!
+
+I'm know that you would not like to show these screenshots to your friends, relatives or colleagues.
+I think $725 is a very, very small amount for my silence.
+Besides, I have been spying on you for so long, having spent a lot of time!
+
+Pay ONLY in Bitcoins!
+My BTC wallet: 1E9qZgNC9KRnJfwZChcBtXN8D4g17T51p7
+
+You do not know how to use bitcoins?
+Enter a query in any search engine: "how to replenish btc wallet".
+It's extremely easy
+
+For this payment I give you two days (48 hours).
+As soon as this letter is opened, the timer will work.
+
+After payment, my virus and dirty screenshots with your enjoys will be self-destruct automatically.
+If I do not receive from you the specified amount, then your device will be locked, and all your contacts will receive a screenshots with your "enjoys".
+
+I hope you understand your situation.
+- Do not try to find and destroy my virus! (All your data, files and screenshots is already uploaded to a remote server)
+- Do not try to contact me (this is not feasible, I sent you an email from your account)
+- Various security services will not help you; formatting a disk or destroying a device will not help, since your data is already on a remote server.
+
+P.S. You are not my single victim. so, I guarantee you that I will not disturb you again after payment!
+ This is the word of honor hacker
+
+I also ask you to regularly update your antiviruses in the future. This way you will no longer fall into a similar situation.
+
+Do not hold evil! I just do my job.
+Have a nice day!
 
 
-> 
-> Pankaj reports that starting with commit ad428cdb525a "dax: Check the
-> end of the block-device capacity with dax_direct_access()" device-mapper
-> no longer allows dax operation. This results from the stricter checks in
-> __bdev_dax_supported() that validate that the start and end of a
-> block-device map to the same 'pagemap' instance.
-> 
-> Teach the dax-core and device-mapper to validate the 'pagemap' on a
-> per-target basis. This is accomplished by refactoring the
-> bdev_dax_supported() internals into generic_fsdax_supported() which
-> takes a sector range to validate. Consequently generic_fsdax_supported()
-> is suitable to be used in a device-mapper ->iterate_devices() callback.
-> A new ->dax_supported() operation is added to allow composite devices to
-> split and route upper-level bdev_dax_supported() requests.
-> 
-> Fixes: ad428cdb525a ("dax: Check the end of the block-device...")
-> Cc: <stable@vger.kernel.org>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Mike Snitzer <snitzer@redhat.com>
-> Cc: Keith Busch <keith.busch@intel.com>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
-> Reported-by: Pankaj Gupta <pagupta@redhat.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-
-Thank you for the patch. Looks good to me. 
-I also tested the patch and it works well.
-
-Reviewed-and-Tested-by: Pankaj Gupta <pagupta@redhat.com> 
-
-Best regards,
-Pankaj
-
+--===============5118055020459796457==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
 https://lists.01.org/mailman/listinfo/linux-nvdimm
+
+--===============5118055020459796457==--
