@@ -2,95 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943C41FBC5
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 May 2019 22:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01901FC0E
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 May 2019 23:07:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B9622212794B1;
-	Wed, 15 May 2019 13:53:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 17D6A212794B2;
+	Wed, 15 May 2019 14:07:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id A173221268FBE
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 13:53:08 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id C8B8B309264F;
- Wed, 15 May 2019 20:53:07 +0000 (UTC)
-Received: from [10.36.116.133] (ovpn-116-133.ams2.redhat.com [10.36.116.133])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5C08460BE5;
- Wed, 15 May 2019 20:52:54 +0000 (UTC)
-Subject: Re: [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
-From: David Hildenbrand <david@redhat.com>
-To: Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-acpi@vger.kernel.org, qemu-devel@nongnu.org,
- linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, mst@redhat.com
-References: <20190514145422.16923-1-pagupta@redhat.com>
- <20190514145422.16923-3-pagupta@redhat.com>
- <9f6b1d8e-ef90-7d8b-56da-61a426953ba3@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <1d6f6964-4653-ebf3-554f-666fda3779f1@redhat.com>
-Date: Wed, 15 May 2019 22:52:53 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+ by ml01.01.org (Postfix) with ESMTPS id 10F652126CF97
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 14:07:36 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id f23so1380496otl.9
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 14:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=zEAiaEFTDEo5AHTXNi1igG//m3yl73MYATUt/TyQM/s=;
+ b=JldDYW+LTAR5BoMmvzt3GhFBKSNFCQljO95A7CQF8h7lezT59wkCmoZR8HlZNeo3ZX
+ ACz18is11PqZLJkpbZTbPrVApVsXuwCwQzpumDKhMYUGYyeEKSs4shc89Funjj7rmnrR
+ zPCblVOMVW4B/FdfDdDBm0eQtlDpcEoDreFJYHB2TrhXh9porw+VCF0gkgtOPIdPF4AY
+ hPK/m0cAXNVhKubNUJt+B+Ge41ks183CJ7yggGXayFgFqQhy+nfr59BSRoNiAIUor77P
+ UmqXqpMAHdjAUWsPGhNLbi9iUpZ9FsKZwds3Nd3zmasJxQ+15Rm38l4yGAgNrmpf7grH
+ OFBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=zEAiaEFTDEo5AHTXNi1igG//m3yl73MYATUt/TyQM/s=;
+ b=Na904m8jBB933kI/A9CKRXJkvEDHV/Gc/pF7KV6DSgaPrzv6fuZGXNamf7FKtD+Mtp
+ FpCiASi86QZW2MDuA+BxMMeZs4YulZ7UJBoUV47CWtTE4En/f5UXahfGGq7eExTdVdru
+ 1jGMMvdGimeCvaD1mglMCaEmjXknRcRCnt6bDfcv80kNQf52GHMb2MvHxLKiAqQ1SL1a
+ UYwRuXQkhBSfamY6+I+jT/YqGz30/MUtGAaByAbidpZmyr41LYxlYe9j0qTbTiKX0AV4
+ 5z7RAq0xS24yAoNRZon3RUztNsq3g4g9EbZC8NStH7r7ADuhqpDvV1y9Pwb5wYtxoVU9
+ vc7Q==
+X-Gm-Message-State: APjAAAWkwhAnthPQZP2IwUal9nkAwKpVE1wDDSzuwoiKehqYRyDSggCI
+ IBY7i/j69PH4/Jquzkkl/p419AxMBdZY5EyBvSQx0w==
+X-Google-Smtp-Source: APXvYqyDA/EWUSXzmLh3QyRTwliJkHZQ726n1NRYV2Be3duzD6pV8jVLvRmpMo63mBrfvCQmmCONZIUwdUcOhHdo8aI=
+X-Received: by 2002:a05:6830:14d3:: with SMTP id
+ t19mr27993804otq.57.1557954454945; 
+ Wed, 15 May 2019 14:07:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <9f6b1d8e-ef90-7d8b-56da-61a426953ba3@redhat.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.43]); Wed, 15 May 2019 20:53:08 +0000 (UTC)
+References: <20190514145422.16923-1-pagupta@redhat.com>
+ <20190514145422.16923-2-pagupta@redhat.com>
+In-Reply-To: <20190514145422.16923-2-pagupta@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 15 May 2019 14:07:23 -0700
+Message-ID: <CAPcyv4gEr_zPJEQp3k89v2UXfHp9PQwnJXY+W99HwXfxpvua_w@mail.gmail.com>
+Subject: Re: [PATCH v9 1/7] libnvdimm: nd_region flush callback support
+To: Pankaj Gupta <pagupta@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,161 +68,98 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: jack@suse.cz, jasowang@redhat.com, david@fromorbit.com,
- lcapitulino@redhat.com, adilger.kernel@dilger.ca, zwisler@kernel.org,
- aarcange@redhat.com, jstaron@google.com, darrick.wong@oracle.com,
- willy@infradead.org, hch@infradead.org, nilal@redhat.com, lenb@kernel.org,
- kilobyte@angband.pl, riel@surriel.com, yuval.shaia@oracle.com,
- stefanha@redhat.com, pbonzini@redhat.com, kwolf@redhat.com, tytso@mit.edu,
- xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
- imammedo@redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: cohuck@redhat.com, Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
+ virtualization@lists.linux-foundation.org,
+ Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
+ Andrea Arcangeli <aarcange@redhat.com>, jstaron@google.com,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
+ Linux ACPI <linux-acpi@vger.kernel.org>,
+ linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
+ Adam Borowski <kilobyte@angband.pl>, Rik van Riel <riel@surriel.com>,
+ yuval shaia <yuval.shaia@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
+ Kevin Wolf <kwolf@redhat.com>, Nitesh Narayan Lal <nilal@redhat.com>,
+ Theodore Ts'o <tytso@mit.edu>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Darrick J. Wong" <darrick.wong@oracle.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-xfs <linux-xfs@vger.kernel.org>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Igor Mammedov <imammedo@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 15.05.19 22:46, David Hildenbrand wrote:
->> +	vpmem->vdev = vdev;
->> +	vdev->priv = vpmem;
->> +	err = init_vq(vpmem);
->> +	if (err) {
->> +		dev_err(&vdev->dev, "failed to initialize virtio pmem vq's\n");
->> +		goto out_err;
->> +	}
->> +
->> +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
->> +			start, &vpmem->start);
->> +	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
->> +			size, &vpmem->size);
->> +
->> +	res.start = vpmem->start;
->> +	res.end   = vpmem->start + vpmem->size-1;
-> 
-> nit: " - 1;"
-> 
->> +	vpmem->nd_desc.provider_name = "virtio-pmem";
->> +	vpmem->nd_desc.module = THIS_MODULE;
->> +
->> +	vpmem->nvdimm_bus = nvdimm_bus_register(&vdev->dev,
->> +						&vpmem->nd_desc);
->> +	if (!vpmem->nvdimm_bus) {
->> +		dev_err(&vdev->dev, "failed to register device with nvdimm_bus\n");
->> +		err = -ENXIO;
->> +		goto out_vq;
->> +	}
->> +
->> +	dev_set_drvdata(&vdev->dev, vpmem->nvdimm_bus);
->> +
->> +	ndr_desc.res = &res;
->> +	ndr_desc.numa_node = nid;
->> +	ndr_desc.flush = async_pmem_flush;
->> +	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
->> +	set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
->> +	nd_region = nvdimm_pmem_region_create(vpmem->nvdimm_bus, &ndr_desc);
->> +	if (!nd_region) {
->> +		dev_err(&vdev->dev, "failed to create nvdimm region\n");
->> +		err = -ENXIO;
->> +		goto out_nd;
->> +	}
->> +	nd_region->provider_data = dev_to_virtio(nd_region->dev.parent->parent);
->> +	return 0;
->> +out_nd:
->> +	nvdimm_bus_unregister(vpmem->nvdimm_bus);
->> +out_vq:
->> +	vdev->config->del_vqs(vdev);
->> +out_err:
->> +	return err;
->> +}
->> +
->> +static void virtio_pmem_remove(struct virtio_device *vdev)
->> +{
->> +	struct nvdimm_bus *nvdimm_bus = dev_get_drvdata(&vdev->dev);
->> +
->> +	nvdimm_bus_unregister(nvdimm_bus);
->> +	vdev->config->del_vqs(vdev);
->> +	vdev->config->reset(vdev);
->> +}
->> +
->> +static struct virtio_driver virtio_pmem_driver = {
->> +	.driver.name		= KBUILD_MODNAME,
->> +	.driver.owner		= THIS_MODULE,
->> +	.id_table		= id_table,
->> +	.probe			= virtio_pmem_probe,
->> +	.remove			= virtio_pmem_remove,
->> +};
->> +
->> +module_virtio_driver(virtio_pmem_driver);
->> +MODULE_DEVICE_TABLE(virtio, id_table);
->> +MODULE_DESCRIPTION("Virtio pmem driver");
->> +MODULE_LICENSE("GPL");
->> diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
->> new file mode 100644
->> index 000000000000..ab1da877575d
->> --- /dev/null
->> +++ b/drivers/nvdimm/virtio_pmem.h
->> @@ -0,0 +1,60 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +/*
->> + * virtio_pmem.h: virtio pmem Driver
->> + *
->> + * Discovers persistent memory range information
->> + * from host and provides a virtio based flushing
->> + * interface.
->> + **/
->> +
->> +#ifndef _LINUX_VIRTIO_PMEM_H
->> +#define _LINUX_VIRTIO_PMEM_H
->> +
->> +#include <linux/virtio_ids.h>
->> +#include <linux/module.h>
->> +#include <linux/virtio_config.h>
->> +#include <uapi/linux/virtio_pmem.h>
->> +#include <linux/libnvdimm.h>
->> +#include <linux/spinlock.h>
->> +
->> +struct virtio_pmem_request {
->> +	/* Host return status corresponding to flush request */
->> +	int ret;
->> +
->> +	/* command name*/
->> +	char name[16];
-> 
-> So ... why are we sending string commands and expect native-endianess
-> integers and don't define a proper request/response structure + request
-> types in include/uapi/linux/virtio_pmem.h like
-> 
-> struct virtio_pmem_resp {
-> 	__virtio32 ret;
-> }
-
-FWIW, I wonder if we should even properly translate return values and
-define types like
-
-VIRTIO_PMEM_RESP_TYPE_OK	0
-VIRTIO_PMEM_RESP_TYPE_EIO	1
-
-..
-
-> 
-> #define VIRTIO_PMEM_REQ_TYPE_FLUSH	1
-> struct virtio_pmem_req {
-> 	__virtio16 type;
-> }
-> 
-> ... and this way we also define a proper endianess format for exchange
-> and keep it extensible
-> 
-> @MST, what's your take on this?
-> 
-> 
-
-
--- 
-
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gVHVlLCBNYXkgMTQsIDIwMTkgYXQgNzo1NSBBTSBQYW5rYWogR3VwdGEgPHBhZ3VwdGFAcmVk
+aGF0LmNvbT4gd3JvdGU6Cj4KPiBUaGlzIHBhdGNoIGFkZHMgZnVuY3Rpb25hbGl0eSB0byBwZXJm
+b3JtIGZsdXNoIGZyb20gZ3Vlc3QKPiB0byBob3N0IG92ZXIgVklSVElPLiBXZSBhcmUgcmVnaXN0
+ZXJpbmcgYSBjYWxsYmFjayBiYXNlZAo+IG9uICduZF9yZWdpb24nIHR5cGUuIHZpcnRpb19wbWVt
+IGRyaXZlciByZXF1aXJlcyB0aGlzIHNwZWNpYWwKPiBmbHVzaCBmdW5jdGlvbi4gRm9yIHJlc3Qg
+b2YgdGhlIHJlZ2lvbiB0eXBlcyB3ZSBhcmUgcmVnaXN0ZXJpbmcKPiBleGlzdGluZyBmbHVzaCBm
+dW5jdGlvbi4gUmVwb3J0IGVycm9yIHJldHVybmVkIGJ5IGhvc3QgZnN5bmMKPiBmYWlsdXJlIHRv
+IHVzZXJzcGFjZS4KPgo+IFNpZ25lZC1vZmYtYnk6IFBhbmthaiBHdXB0YSA8cGFndXB0YUByZWRo
+YXQuY29tPgo+IC0tLQo+ICBkcml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMgICAgIHwgIDQgKystLQo+
+ICBkcml2ZXJzL252ZGltbS9jbGFpbS5jICAgICAgIHwgIDYgKysrKy0tCj4gIGRyaXZlcnMvbnZk
+aW1tL25kLmggICAgICAgICAgfCAgMSArCj4gIGRyaXZlcnMvbnZkaW1tL3BtZW0uYyAgICAgICAg
+fCAxMyArKysrKysrKy0tLS0tCj4gIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMgfCAyNiAr
+KysrKysrKysrKysrKysrKysrKysrKystLQo+ICBpbmNsdWRlL2xpbnV4L2xpYm52ZGltbS5oICAg
+IHwgIDggKysrKysrKy0KPiAgNiBmaWxlcyBjaGFuZ2VkLCA0NiBpbnNlcnRpb25zKCspLCAxMiBk
+ZWxldGlvbnMoLSkKPgo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMgYi9k
+cml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMKPiBpbmRleCA1YTM4OWE0ZjRmNjUuLjA4ZGRlNzZjZjQ1
+OSAxMDA2NDQKPiAtLS0gYS9kcml2ZXJzL2FjcGkvbmZpdC9jb3JlLmMKPiArKysgYi9kcml2ZXJz
+L2FjcGkvbmZpdC9jb3JlLmMKPiBAQCAtMjQzNCw3ICsyNDM0LDcgQEAgc3RhdGljIHZvaWQgd3Jp
+dGVfYmxrX2N0bChzdHJ1Y3QgbmZpdF9ibGsgKm5maXRfYmxrLCB1bnNpZ25lZCBpbnQgYncsCj4g
+ICAgICAgICAgICAgICAgIG9mZnNldCA9IHRvX2ludGVybGVhdmVfb2Zmc2V0KG9mZnNldCwgbW1p
+byk7Cj4KPiAgICAgICAgIHdyaXRlcShjbWQsIG1taW8tPmFkZHIuYmFzZSArIG9mZnNldCk7Cj4g
+LSAgICAgICBudmRpbW1fZmx1c2gobmZpdF9ibGstPm5kX3JlZ2lvbik7Cj4gKyAgICAgICBudmRp
+bW1fZmx1c2gobmZpdF9ibGstPm5kX3JlZ2lvbiwgTlVMTCk7Cj4KPiAgICAgICAgIGlmIChuZml0
+X2Jsay0+ZGltbV9mbGFncyAmIE5GSVRfQkxLX0RDUl9MQVRDSCkKPiAgICAgICAgICAgICAgICAg
+cmVhZHEobW1pby0+YWRkci5iYXNlICsgb2Zmc2V0KTsKPiBAQCAtMjQ4Myw3ICsyNDgzLDcgQEAg
+c3RhdGljIGludCBhY3BpX25maXRfYmxrX3NpbmdsZV9pbyhzdHJ1Y3QgbmZpdF9ibGsgKm5maXRf
+YmxrLAo+ICAgICAgICAgfQo+Cj4gICAgICAgICBpZiAocncpCj4gLSAgICAgICAgICAgICAgIG52
+ZGltbV9mbHVzaChuZml0X2Jsay0+bmRfcmVnaW9uKTsKPiArICAgICAgICAgICAgICAgbnZkaW1t
+X2ZsdXNoKG5maXRfYmxrLT5uZF9yZWdpb24sIE5VTEwpOwo+Cj4gICAgICAgICByYyA9IHJlYWRf
+YmxrX3N0YXQobmZpdF9ibGssIGxhbmUpID8gLUVJTyA6IDA7Cj4gICAgICAgICByZXR1cm4gcmM7
+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL2NsYWltLmMgYi9kcml2ZXJzL252ZGltbS9j
+bGFpbS5jCj4gaW5kZXggZmI2NjdiZjQ2OWM3Li4xMzUxMGJhZTFlNmYgMTAwNjQ0Cj4gLS0tIGEv
+ZHJpdmVycy9udmRpbW0vY2xhaW0uYwo+ICsrKyBiL2RyaXZlcnMvbnZkaW1tL2NsYWltLmMKPiBA
+QCAtMjYzLDcgKzI2Myw3IEBAIHN0YXRpYyBpbnQgbnNpb19yd19ieXRlcyhzdHJ1Y3QgbmRfbmFt
+ZXNwYWNlX2NvbW1vbiAqbmRucywKPiAgICAgICAgIHN0cnVjdCBuZF9uYW1lc3BhY2VfaW8gKm5z
+aW8gPSB0b19uZF9uYW1lc3BhY2VfaW8oJm5kbnMtPmRldik7Cj4gICAgICAgICB1bnNpZ25lZCBp
+bnQgc3pfYWxpZ24gPSBBTElHTihzaXplICsgKG9mZnNldCAmICg1MTIgLSAxKSksIDUxMik7Cj4g
+ICAgICAgICBzZWN0b3JfdCBzZWN0b3IgPSBvZmZzZXQgPj4gOTsKPiAtICAgICAgIGludCByYyA9
+IDA7Cj4gKyAgICAgICBpbnQgcmMgPSAwLCByZXQgPSAwOwo+Cj4gICAgICAgICBpZiAodW5saWtl
+bHkoIXNpemUpKQo+ICAgICAgICAgICAgICAgICByZXR1cm4gMDsKPiBAQCAtMzAxLDcgKzMwMSw5
+IEBAIHN0YXRpYyBpbnQgbnNpb19yd19ieXRlcyhzdHJ1Y3QgbmRfbmFtZXNwYWNlX2NvbW1vbiAq
+bmRucywKPiAgICAgICAgIH0KPgo+ICAgICAgICAgbWVtY3B5X2ZsdXNoY2FjaGUobnNpby0+YWRk
+ciArIG9mZnNldCwgYnVmLCBzaXplKTsKPiAtICAgICAgIG52ZGltbV9mbHVzaCh0b19uZF9yZWdp
+b24obmRucy0+ZGV2LnBhcmVudCkpOwo+ICsgICAgICAgcmV0ID0gbnZkaW1tX2ZsdXNoKHRvX25k
+X3JlZ2lvbihuZG5zLT5kZXYucGFyZW50KSwgTlVMTCk7Cj4gKyAgICAgICBpZiAocmV0KQo+ICsg
+ICAgICAgICAgICAgICByYyA9IHJldDsKPgo+ICAgICAgICAgcmV0dXJuIHJjOwo+ICB9Cj4gZGlm
+ZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL25kLmggYi9kcml2ZXJzL252ZGltbS9uZC5oCj4gaW5k
+ZXggYTVhYzNiMjQwMjkzLi4wYzc0ZDI0MjhiZDcgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9udmRp
+bW0vbmQuaAo+ICsrKyBiL2RyaXZlcnMvbnZkaW1tL25kLmgKPiBAQCAtMTU5LDYgKzE1OSw3IEBA
+IHN0cnVjdCBuZF9yZWdpb24gewo+ICAgICAgICAgc3RydWN0IGJhZGJsb2NrcyBiYjsKPiAgICAg
+ICAgIHN0cnVjdCBuZF9pbnRlcmxlYXZlX3NldCAqbmRfc2V0Owo+ICAgICAgICAgc3RydWN0IG5k
+X3BlcmNwdV9sYW5lIF9fcGVyY3B1ICpsYW5lOwo+ICsgICAgICAgaW50ICgqZmx1c2gpKHN0cnVj
+dCBuZF9yZWdpb24gKm5kX3JlZ2lvbiwgc3RydWN0IGJpbyAqYmlvKTsKClNvIHRoaXMgdHJpZ2dl
+cnM6CgpJbiBmaWxlIGluY2x1ZGVkIGZyb20gZHJpdmVycy9udmRpbW0vZTgyMC5jOjc6Ci4vaW5j
+bHVkZS9saW51eC9saWJudmRpbW0uaDoxNDA6NTE6IHdhcm5pbmc6IOKAmHN0cnVjdCBiaW/igJkg
+ZGVjbGFyZWQKaW5zaWRlIHBhcmFtZXRlciBsaXN0IHdpbGwgbm90IGJlIHZpc2libGUgb3V0c2lk
+ZSBvZiB0aGlzIGRlZmluaXRpb24Kb3IgZGVjbGFyYXRpb24KICBpbnQgKCpmbHVzaCkoc3RydWN0
+IG5kX3JlZ2lvbiAqbmRfcmVnaW9uLCBzdHJ1Y3QgYmlvICpiaW8pOwogICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn4KSSB3YXMgYWxyZWFkeSBmZWVs
+aW5nIHVuZWFzeSBhYm91dCB0cnlpbmcgdG8gc3F1ZWV6ZSB0aGlzIGludG8gdjUuMiwKYnV0IHRo
+aXMgd2FybmluZyBhbmQgdGhlIGNvbnRpbnVlZCBkcmlwIG9mIGNvbW1lbnRzIGxlYWRzIG1lIHRv
+CmNvbmNsdWRlIHRoYXQgdGhpcyBkcml2ZXIgd291bGQgZG8gd2VsbCB0byB3YWl0IG9uZSBtb3Jl
+IGRldmVsb3BtZW50CmN5Y2xlLiBMZXRzIGNsb3NlIG91dCB0aGUgZmluYWwgZml4dXBzIGFuZCBs
+ZXQgdGhpcyBkcml2ZXIgc29hayBpbgotbmV4dC4gVGhlbiBmb3IgdGhlIHY1LjMgY3ljbGUgSSds
+bCByZWRvdWJsZSBteSBlZmZvcnRzIHRvd2FyZHMgdGhlCmdvYWwgb2YgY2xvc2luZyBwYXRjaCBh
+Y2NlcHRhbmNlIGF0IHRoZSAtcmM2IC8gLXJjNyBkZXZlbG9wbWVudAptaWxlc3RvbmUuCl9fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBt
+YWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9y
+Zy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
