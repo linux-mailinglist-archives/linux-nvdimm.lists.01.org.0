@@ -1,61 +1,56 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297B31FCDB
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 02:26:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F451FCDD
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 02:29:20 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CFE1212794BE;
-	Wed, 15 May 2019 17:26:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4F1C8212794BF;
+	Wed, 15 May 2019 17:29:19 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D1E3A2126CFA9
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:26:54 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id 203so1171930oid.13
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:26:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ImJX0tiITgi2zeWUkjyeNnlcEhTnJ18f85h6yaNeNP4=;
- b=fQHacpe2ymfI8sqJ+whv4r+9XvKZbkea86O3xoYBqguZpTOJRspjOhxU64Qq/4vsH5
- oDLmngQ68PW81lPv5coyyGI58fcFPrrixmApE8YoVBMYYWjnerugGd8IPXk8j4syWpug
- Lriz/uX0F2DXGsHCNpWx1HztMF7wV0O+8B+3go5zyF9mxw4pxGvPJgCgdiV7nJCumxmU
- 1j5ClsNI05YpSBM/kp8JsA78iJijlHPOVKyo2zxBZynLYyCU8WQje8Zuq0izaBU864LD
- DLY2Xi3L22XXzhTdH69p5ubKJCm6s1XHfBYzcfxNV6FVhGiRxCIVVjZKO1w7D9hPXzoZ
- CKEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ImJX0tiITgi2zeWUkjyeNnlcEhTnJ18f85h6yaNeNP4=;
- b=qEQOwrqOBQbStNcmVWiY0sfLrt1qTUiRvDeVZJerqxGGguIibueYb6jlVVu4kTIN2X
- 4FolTNHWijP72dUVZh0iP9sqW6m0GcSowFfWAHGRKscNvQOIbjRYypuIRFDJjq8PlNdZ
- UtDZnp3w/Nye1TmJZ/4E9XJwJ3Lf4BzisZMdoBgjlIOcPLVv0hEB3L1IczGFS4zg/rOy
- kD5JCK+cw2VFM+gyEU3eA9cWA0WtphIo7MIGFOF16Q2QQYY5wj0KAxXuRkilqW5XopxR
- s6vp2QF82hSs8RurQkvDy083dAaJMzA1tuhnDcXyzX4TbJPW1ZFl9aJnfpQP1Uefejtf
- u2Fw==
-X-Gm-Message-State: APjAAAXWoYAfTVqrJK6FRUJavMCwoTdTI4DMp9kdjhw9PyNUjMVpgJ+i
- cVnY0jByZ37BAJM/B3+4ens+dQkk1JXUuYwtvLzbLA==
-X-Google-Smtp-Source: APXvYqz1lPEsteF4K+RpI1xzzM89PLC7bK4Z05lIhq9ljpLi+5CiwTZXSrfgudjrTM34TT+MrQbfj8EWmzgk0MRe5Zw=
-X-Received: by 2002:aca:ab07:: with SMTP id u7mr4326676oie.73.1557966413422;
- Wed, 15 May 2019 17:26:53 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id E3DA421268FA7
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:29:16 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 15 May 2019 17:29:16 -0700
+X-ExtLoop1: 1
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+ by fmsmga007.fm.intel.com with ESMTP; 15 May 2019 17:29:16 -0700
+Received: from FMSMSX110.amr.corp.intel.com (10.18.116.10) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 15 May 2019 17:29:15 -0700
+Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.118]) by
+ FMSMSX110.amr.corp.intel.com ([169.254.14.250]) with mapi id 14.03.0415.000;
+ Wed, 15 May 2019 17:29:15 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [RESEND PATCH] nvdimm: fix some compilation warnings
+Thread-Topic: [RESEND PATCH] nvdimm: fix some compilation warnings
+Thread-Index: AQHVCmbrIPMA4NdLGku6pgbfwA21dKZtS3IAgAAQxYCAAABlAIAAALUA
+Date: Thu, 16 May 2019 00:29:15 +0000
+Message-ID: <cd6db786ff5758914c77add4d7a9391886038c84.camel@intel.com>
 References: <20190514150735.39625-1-cai@lca.pw>
  <CAPcyv4gGwyPf0j4rXRM3JjsjGSHB6bGdZfwg+v2y8NQ6hNVK8g@mail.gmail.com>
  <7ba8164b60be4e41707559ed6623f9462c942735.camel@intel.com>
-In-Reply-To: <7ba8164b60be4e41707559ed6623f9462c942735.camel@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 15 May 2019 17:26:42 -0700
-Message-ID: <CAPcyv4gLr_WrNOg58C5tfpZTp2wso1C=kHGDkMvH4+sGniLQMQ@mail.gmail.com>
-Subject: Re: [RESEND PATCH] nvdimm: fix some compilation warnings
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+ <CAPcyv4gLr_WrNOg58C5tfpZTp2wso1C=kHGDkMvH4+sGniLQMQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4gLr_WrNOg58C5tfpZTp2wso1C=kHGDkMvH4+sGniLQMQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.185]
+Content-ID: <5A3A42854626C34E9EAD584400932357@intel.com>
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,37 +71,47 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 15, 2019 at 5:25 PM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
->
-> On Wed, 2019-05-15 at 16:25 -0700, Dan Williams wrote:
-> >
-> > > diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> > > index 4671776f5623..9f02a99cfac0 100644
-> > > --- a/drivers/nvdimm/btt.c
-> > > +++ b/drivers/nvdimm/btt.c
-> > > @@ -1269,11 +1269,9 @@ static int btt_read_pg(struct btt *btt, struct bio_integrity_payload *bip,
-> > >
-> > >                 ret = btt_data_read(arena, page, off, postmap, cur_len);
-> > >                 if (ret) {
-> > > -                       int rc;
-> > > -
-> > >                         /* Media error - set the e_flag */
-> > > -                       rc = btt_map_write(arena, premap, postmap, 0, 1,
-> > > -                               NVDIMM_IO_ATOMIC);
-> > > +                       btt_map_write(arena, premap, postmap, 0, 1,
-> > > +                                     NVDIMM_IO_ATOMIC);
-> > >                         goto out_rtt;
-> >
-> > This doesn't look correct to me, shouldn't we at least be logging that
-> > the bad-block failed to be persistently tracked?
->
-> Yes logging it sounds good to me. Qian, can you include this in your
-> respin or shall I send a fix for it separately (since we were always
-> ignoring the failure here regardless of this patch)?
 
-I think a separate fix for this makes more sense. Likely also needs to
-be a ratelimited message in case a storm of errors is encountered.
+On Wed, 2019-05-15 at 17:26 -0700, Dan Williams wrote:
+> On Wed, May 15, 2019 at 5:25 PM Verma, Vishal L
+> <vishal.l.verma@intel.com> wrote:
+> > On Wed, 2019-05-15 at 16:25 -0700, Dan Williams wrote:
+> > > > diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
+> > > > index 4671776f5623..9f02a99cfac0 100644
+> > > > --- a/drivers/nvdimm/btt.c
+> > > > +++ b/drivers/nvdimm/btt.c
+> > > > @@ -1269,11 +1269,9 @@ static int btt_read_pg(struct btt *btt,
+> > > > struct bio_integrity_payload *bip,
+> > > > 
+> > > >                 ret = btt_data_read(arena, page, off, postmap,
+> > > > cur_len);
+> > > >                 if (ret) {
+> > > > -                       int rc;
+> > > > -
+> > > >                         /* Media error - set the e_flag */
+> > > > -                       rc = btt_map_write(arena, premap,
+> > > > postmap, 0, 1,
+> > > > -                               NVDIMM_IO_ATOMIC);
+> > > > +                       btt_map_write(arena, premap, postmap, 0,
+> > > > 1,
+> > > > +                                     NVDIMM_IO_ATOMIC);
+> > > >                         goto out_rtt;
+> > > 
+> > > This doesn't look correct to me, shouldn't we at least be logging
+> > > that
+> > > the bad-block failed to be persistently tracked?
+> > 
+> > Yes logging it sounds good to me. Qian, can you include this in your
+> > respin or shall I send a fix for it separately (since we were always
+> > ignoring the failure here regardless of this patch)?
+> 
+> I think a separate fix for this makes more sense. Likely also needs to
+> be a ratelimited message in case a storm of errors is encountered.
+
+Yes good point on rate limiting - I was thinking WARN_ONCE but that
+might mask errors for distinct blocks, but a rate limited printk should
+work best. I'll prepare a patch.
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
