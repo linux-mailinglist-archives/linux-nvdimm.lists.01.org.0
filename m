@@ -2,43 +2,29 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B68D1FDA1
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 04:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD481FE42
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 05:50:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 60C67212657BC;
-	Wed, 15 May 2019 19:05:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3D175212657A3;
+	Wed, 15 May 2019 20:50:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 476A22125F1EE
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 19:05:19 -0700 (PDT)
-Subject: Re: [GIT PULL] libnvdimm fixes for v5.2-rc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1557972318;
- bh=vNqSnMbYYcXI324Ix8jOL7SnkxL6rCbYBcP08H/89pU=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=Wn/bZXpxxugnsiecPZIckdqvLImTt5wLCOX08tMwAYtNtX+aJ2aI6cgFXHb3zr42S
- 3BlTzDGVVImRxAdpRM5RTx+bauTDUaDVEUvt3rN+GqpXVjcFZJ3ryYwxNdfblBiXpL
- BwjmongDZJHwAhxTVt5kR58spAIgdIjOz6B9auks=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAPcyv4iXv7Jh4rjO9XQAFpeCJEZ4-4nvb46nZyQP554uLNbOyg@mail.gmail.com>
-References: <CAPcyv4iXv7Jh4rjO9XQAFpeCJEZ4-4nvb46nZyQP554uLNbOyg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAPcyv4iXv7Jh4rjO9XQAFpeCJEZ4-4nvb46nZyQP554uLNbOyg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
- tags/libnvdimm-fixes-5.2-rc1
-X-PR-Tracked-Commit-Id: 67476656febd7ec5f1fe1aeec3c441fcf53b1e45
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 83f3ef3de625a5766de2382f9e077d4daafd5bac
-Message-Id: <155797231889.20425.9070701612629696184.pr-tracker-bot@kernel.org>
-Date: Thu, 16 May 2019 02:05:18 +0000
-To: Dan Williams <dan.j.williams@intel.com>
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.14.30.28;
+ helo=lists.01.org; envelope-from=postmaster@lists.01.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from lists.01.org (unknown [183.14.30.28])
+ by ml01.01.org (Postfix) with ESMTP id 9F94E2194D3B3
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 20:50:14 -0700 (PDT)
+From: "Mail Delivery Subsystem" <postmaster@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: 
+Date: Thu, 16 May 2019 11:48:17 +0800
+MIME-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,27 +36,34 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
+Message-Id: <20190516035017.3D175212657A3@ml01.01.org>
 
-The pull request you sent on Wed, 15 May 2019 17:05:58 -0700:
+This Message was undeliverable due to the following reason:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-fixes-5.2-rc1
+Your message was not delivered because the destination computer was
+not reachable within the allowed queue period. The amount of time
+a message is queued before it is returned depends on local configura-
+tion parameters.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/83f3ef3de625a5766de2382f9e077d4daafd5bac
+Most likely there is a network problem that prevented delivery, but
+it is also possible that the computer is turned off, or does not
+have a mail system running right now.
 
-Thank you!
+Your message was not delivered within 2 days:
+Host 81.249.114.149 is not responding.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+The following recipients did not receive this message:
+<linux-nvdimm@lists.01.org>
+
+Please reply to postmaster@lists.01.org
+if you feel this message to be in error.
+
+
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
