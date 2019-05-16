@@ -1,65 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CA421049
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 23:51:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7790C21098
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 00:41:01 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 680BA2125582E;
-	Thu, 16 May 2019 14:51:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 545C7212657B6;
+	Thu, 16 May 2019 15:40:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 86D6921250464
- for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 14:51:53 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id c3so4911585otr.3
- for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 14:51:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Q9BJIUmtXvGA8NYL+nEThmnX3fsQkDEf9gjJHVtWFbw=;
- b=JK0kNXwowOzM74+Om7kEhXLK+rOIMCMEPEAa6Fk0D93qKu8M2dq0YJm2ZfDxgTeCiU
- ZnpolSVQFmjdgAGuHgNPUQKcuPGJMBEDpFs5OvgWHO2/r1lUKUoq+r79dmC3nusASLwW
- b7J6BtVgy9HYQwcAKkLHQsoshwVUNWjVqol42iFhSJKjgsIi6Dc+SwbzWrocF4PuQV9M
- IYPIajeB7RxjAFAl9a4GWlG5H5AeA23IEp+6x25xZR+whf8n/MJa5cQu6cdcsWrU1TDn
- /Arr+Bi1p3leIaZVgocYnoMbwVUjOA/IIrN5CFkLQKwwu660ooYhVCJaHs5KP3OXWCL+
- YIIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Q9BJIUmtXvGA8NYL+nEThmnX3fsQkDEf9gjJHVtWFbw=;
- b=hrGBdA7Qq4sINUwNHkx/Wy/xa2x9JUfaP8CCIunG+qmNFpX8C8LbUJj0WYzFabcQLH
- CAOT44h7NZHtdpL5Dy45NGyEYMhadC8tx7t7N9vHcuYZaYHdLY8uge1PsPqPuS+yxQLL
- QnrCSVFmN8nU6GXKqrfg8gOa1PkF9iwaq6FzX6p5MXO6yH8WXkikG7HQxkjn5PGRGftc
- wW1sx+nYVwoueGbmpF3ES9Ir4NSJos8JwWMwesnRp1apuQqRyHB4YYjEstTBuu7h649z
- N4DnZxU3dX+jYaWXgu6OME5caL43CNpiU81nq2hzzzCpd7psH/O256N9YzxV/eHYlGht
- WRew==
-X-Gm-Message-State: APjAAAVPH0YMypgcCDRzyW87r5MXqj/4T01llNvRHsP1KdemtA6lxrzF
- DfIrk0K5SYQ3fx7991mPfhdt+DiwgDgBF6MDGBWJtA==
-X-Google-Smtp-Source: APXvYqzibKwOyLJegIvrnmsMGvcFID1N0Mw2/FEB7rFcTHdA1PYSfF3HR1ZbWMzElybqvVBCcqSrRsrG3NhAGtjgYjo=
-X-Received: by 2002:a9d:2f0:: with SMTP id 103mr30133978otl.126.1558043512432; 
- Thu, 16 May 2019 14:51:52 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0599F212532F5
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 15:40:56 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 16 May 2019 15:40:55 -0700
+X-ExtLoop1: 1
+Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
+ by FMSMGA003.fm.intel.com with ESMTP; 16 May 2019 15:40:55 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [ndctl PATCH v3 00/10] daxctl: add a new reconfigure-device command
+Date: Thu, 16 May 2019 16:40:43 -0600
+Message-Id: <20190516224053.3655-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <155727335978.292046.12068191395005445711.stgit@dwillia2-desk3.amr.corp.intel.com>
- <059859ca-3cc8-e3ff-f797-1b386931c41e@deltatee.com>
- <17ada515-f488-d153-90ef-7a5cc5fefb0f@deltatee.com>
- <8a7cfa6b-6312-e8e5-9314-954496d2f6ce@oracle.com>
- <CAPcyv4i28tQMVrscQo31cfu1ZcMAb74iMkKYhu9iO_BjJvp+9A@mail.gmail.com>
- <6bd8319d-3b73-bb1e-5f41-94c580ba271b@oracle.com>
- <d699e312-0e88-30c7-8e50-ff624418d486@oracle.com>
-In-Reply-To: <d699e312-0e88-30c7-8e50-ff624418d486@oracle.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 16 May 2019 14:51:40 -0700
-Message-ID: <CAPcyv4hujnGHtTwE78gvmEoY3Y6nLsd1AhJfeKMwHrxLvStf9w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] mm/devm_memremap_pages: Fix page release race
-To: Jane Chu <jane.chu@oracle.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,55 +43,83 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 16, 2019 at 9:45 AM Jane Chu <jane.chu@oracle.com> wrote:
->
-> Hi,
->
-> I'm able to reproduce the panic below by running two sets of ndctl
-> commands that actually serve legitimate purpose in parallel (unlike
-> the brute force experiment earlier), each set in a indefinite loop.
-> This time it takes about an hour to panic.  But I gather the cause
-> is probably the same: I've overlapped ndctl commands on the same
-> region.
->
-> Could we add a check in nd_ioctl(), such that if there is
-> an ongoing ndctl command on a region, subsequent ndctl request
-> will fail immediately with something to the effect of EAGAIN?
-> The rationale being that kernel should protect itself against
-> user mistakes.
-
-We do already have locking in the driver to prevent configuration
-collisions. The problem looks to be broken assumptions about running
-the device unregistration path in a separate thread outside the lock.
-I suspect it may be incorrect assumptions about the userspace
-visibility of the device relative to teardown actions. To be clear
-this isn't the nd_ioctl() path this is the sysfs path.
-
-
-> Also, sensing the subject fix is for a different problem, and has been
-> verified, I'm happy to see it in upstream, so we have a better
-> code base to digger deeper in terms of how the destructive ndctl
-> commands interacts to typical mission critical applications, include
-> but not limited to rdma.
-
-Right, the crash signature you are seeing looks unrelated to the issue
-being address in these patches which is device-teardown racing active
-page pins. I'll start the investigation on the crash signature, but
-again I don't think it reads on this fix series.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Q2hhbmdlcyBpbiB2MzoKIC0gSW4gZGF4Y3RsX2Rldl9nZXRfbW9kZSgpLCByZW1vdmUgdGhlIHN1
+YnN5c3RlbSB3YXJuaW5nLCBkZXRlY3QgZGF4LWNsYXNzCiAgIGFuZCBzaW1wbHkgbWFrZSBpdCBy
+ZXR1cm4gZGV2ZGF4CgpDaGFuZ2VzIGluIHYyOgogLSBBZGQgZXhhbXBsZXMgdG8gdGhlIGRvY3Vt
+ZW50YXRpb24gcGFnZSAoRGF2ZSBIYW5zZW4pCiAtIENsYXJpZnkgZG9jdW1lbnRhdGlvbiByZWdh
+cmRpbmcgdGhlIGNvbnZlcnNpb24gZnJvbSBzeXN0ZW0tcmFtIHRvIGRldmRheAogLSBSZW1vdmUg
+YW55IHJlZmVyZW5jZXMgdG8gYSBwZXJzaXN0ZW50IGNvbmZpZyBmcm9tIHRoZSBkb2N1bWVudGF0
+aW9uIC0KICAgdGhvc2UgY2FuIGJlIGFkZGVkIHdoZW4gdGhlIGZlYXR1cmUgaXMgYWRkZWQuCiAt
+IGRldmljZS5jOiB2YWxpZGF0ZSBvcHRpb24gY29tcGF0aWJpbGl0eQogLSBkYXhjdGwtbGlzdDog
+ZGlzcGxheSBudW1hX25vZGUgZm9yIGRldmljZSBsaXN0aW5ncwogLSBkYXhjdGwtbGlzdDogZGlz
+cGxheSBtb2RlIGZvciBkZXZpY2UgbGlzdGluZ3MKIC0gbWFrZSB0aGUgb3B0aW9ucyBtb3JlIGNv
+bnNpc3RlbnQgYnkgYWRkaW5nIGEgJy1PJyBzaG9ydCBvcHRpb24KICAgZm9yIC0tYXR0ZW1wdC1v
+ZmZsaW5lCgpBZGQgYSBuZXcgZGF4Y3RsLXJlY29uZmlndXJlLWRldmljZSBjb21tYW5kIHRoYXQg
+bGV0cyB1cyByZWNvbmZpZ3VyZSBEQVgKZGV2aWNlcyBiYWNrIGFuZCBmb3J0aCBiZXR3ZWVuICdz
+eXN0ZW0tcmFtJyBhbmQgJ2RldmljZS1kYXgnIG1vZGVzLiBJdAphbHNvIGluY2x1ZGVzIGZhY2ls
+aXRpZXMgdG8gb25saW5lIGFueSBuZXdseSBob3QtcGx1Z2dlZCBtZW1vcnkKKGRlZmF1bHQpLCBh
+bmQgYXR0ZW1wdCB0byBvZmZsaW5lIG1lbW9yeSBiZWZvcmUgY29udmVydGluZyBhd2F5IGZyb20g
+dGhlCnN5c3RlbS1yYW0gbW9kZSAobm90IGRlZmF1bHQsIHJlcXVpcmVzIGEgLS1hdHRlbXB0LW9m
+ZmxpbmUgb3B0aW9uKS4KCkN1cnJlbnRseSBtaXNzaW5nIGZyb20gdGhpcyBzZXJpZXMgaXMgYSB3
+YXkgdG8gcGVyc2lzdGVudGx5IHN0b3JlIHdoaWNoCmRldmljZXMgaGF2ZSBiZWVuICdtYXJrZWQn
+IGZvciB1c2UgYXMgc3lzdGVtLXJhbS4gVGhpcyBkZXBlbmRzIG9uIGEKY29uZmlnIHN5c3RlbSBv
+dmVyaGF1bCBpbiBuZGN0bCwgYW5kIHBhdGNoZXMgZm9yIHRob3NlIHdpbGwgZm9sbG93CnNlcGFy
+YXRlbHkgYW5kIGFyZSBpbmRlcGVuZGVudCBvZiB0aGlzIHdvcmsuCgpFeGFtcGxlIGludm9jYXRp
+b25zOgoKMS4gUmVjb25maWd1cmUgZGF4MC4wIHRvIHN5c3RlbS1yYW0gbW9kZSwgZG9u4oCZdCBv
+bmxpbmUgdGhlIG1lbW9yeQogICAgIyBkYXhjdGwgcmVjb25maWd1cmUtZGV2aWNlIC0tbW9kZT1z
+eXN0ZW0tcmFtIC0tbm8tb25saW5lIGRheDAuMAogICAgWwogICAgICB7CiAgICAgICAgImNoYXJk
+ZXYiOiJkYXgwLjAiLAogICAgICAgICJzaXplIjoxNjc3NzIxNjAwMCwKICAgICAgICAibnVtYV9u
+b2RlIjoyLAogICAgICAgICJtb2RlIjoic3lzdGVtLXJhbSIKICAgICAgfQogICAgXQoKMi4gUmVj
+b25maWd1cmUgZGF4MC4wIHRvIGRldmRheCBtb2RlLCBhdHRlbXB0IHRvIG9mZmxpbmUgdGhlIG1l
+bW9yeQogICAgIyBkYXhjdGwgcmVjb25maWd1cmUtZGV2aWNlIC0taHVtYW4gLS1tb2RlPWRldmRh
+eCAtLWF0dGVtcHQtb2ZmbGluZSBkYXgwLjAKICAgIHsKICAgICAgImNoYXJkZXYiOiJkYXgwLjAi
+LAogICAgICAic2l6ZSI6IjE1LjYzIEdpQiAoMTYuNzggR0IpIiwKICAgICAgIm51bWFfbm9kZSI6
+MiwKICAgICAgIm1vZGUiOiJkZXZkYXgiCiAgICB9CgozLiBSZWNvbmZpZ3VyZSBhbGwgZGF4IGRl
+dmljZXMgb24gcmVnaW9uMCB0byBzeXN0ZW0tcmFtIG1vZGUKICAgICMgZGF4Y3RsIHJlY29uZmln
+dXJlLWRldmljZSAtLW1vZGU9c3lzdGVtLXJhbSAtLXJlZ2lvbj0wIGFsbAogICAgWwogICAgICB7
+CiAgICAgICAgImNoYXJkZXYiOiJkYXgwLjAiLAogICAgICAgICJzaXplIjoxNjc3NzIxNjAwMCwK
+ICAgICAgICAibnVtYV9ub2RlIjoyLAogICAgICAgICJtb2RlIjoic3lzdGVtLXJhbSIKICAgICAg
+fSwKICAgICAgewogICAgICAgICJjaGFyZGV2IjoiZGF4MC4xIiwKICAgICAgICAic2l6ZSI6MTY3
+NzcyMTYwMDAsCiAgICAgICAgIm51bWFfbm9kZSI6MywKICAgICAgICAibW9kZSI6InN5c3RlbS1y
+YW0iCiAgICAgIH0KICAgIF0KClRoZXNlIHBhdGNoZXMgY2FuIGFsc28gYmUgZm91bmQgaW4gdGhl
+ICdrbWVtLXBlbmRpbmcnIGJyYW5jaCBvbiBnaXRodWI6Cmh0dHBzOi8vZ2l0aHViLmNvbS9wbWVt
+L25kY3RsL3RyZWUva21lbS1wZW5kaW5nCgpDYzogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFt
+c0BpbnRlbC5jb20+CkNjOiBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29t
+PgpDYzogUGF2ZWwgVGF0YXNoaW4gPHBhc2hhLnRhdGFzaGluQHNvbGVlbi5jb20+CgoKVmlzaGFs
+IFZlcm1hICgxMCk6CiAgbGliZGF4Y3RsOiBhZGQgaW50ZXJmYWNlcyBpbiBzdXBwb3J0IG9mIGRl
+dmljZSBtb2RlcwogIGxpYmRheGN0bDogY2FjaGUgJ3N1YnN5c3RlbScgaW4gZGF4Y3RsX2N0eAog
+IGxpYmRheGN0bDogYWRkIGludGVyZmFjZXMgdG8gZW5hYmxlL2Rpc2FibGUgZGV2aWNlcwogIGxp
+YmRheGN0bDogYWRkIGludGVyZmFjZXMgdG8gZ2V0L3NldCB0aGUgb25saW5lIHN0YXRlIGZvciBh
+IG5vZGUKICBkYXhjdGwvbGlzdDogYWRkIG51bWFfbm9kZSBmb3IgZGV2aWNlIGxpc3RpbmdzCiAg
+bGliZGF4Y3RsOiBhZGQgYW4gaW50ZXJmYWNlIHRvIGdldCB0aGUgbW9kZSBmb3IgYSBkYXggZGV2
+aWNlCiAgZGF4Y3RsOiBhZGQgYSBuZXcgcmVjb25maWd1cmUtZGV2aWNlIGNvbW1hbmQKICBEb2N1
+bWVudGF0aW9uL2RheGN0bDogYWRkIGEgbWFuIHBhZ2UgZm9yIGRheGN0bC1yZWNvbmZpZ3VyZS1k
+ZXZpY2UKICBjb250cmliL25kY3RsOiBmaXggcmVnaW9uLWlkIGNvbXBsZXRpb25zIGZvciBkYXhj
+dGwKICBjb250cmliL25kY3RsOiBhZGQgYmFzaC1jb21wbGV0aW9uIGZvciBkYXhjdGwtcmVjb25m
+aWd1cmUtZGV2aWNlCgogRG9jdW1lbnRhdGlvbi9kYXhjdGwvTWFrZWZpbGUuYW0gICAgICAgICAg
+ICAgIHwgICAzICstCiAuLi4vZGF4Y3RsL2RheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UudHh0ICAg
+ICAgfCAxMTggKysrKwogY29udHJpYi9uZGN0bCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwgIDM0ICstCiBkYXhjdGwvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgIDIgKwogZGF4Y3RsL2J1aWx0aW4uaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHwgICAxICsKIGRheGN0bC9kYXhjdGwuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8
+ICAgMSArCiBkYXhjdGwvZGV2aWNlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAy
+MzcgKysrKysrKysKIGRheGN0bC9saWIvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgMyArLQogZGF4Y3RsL2xpYi9saWJkYXhjdGwtcHJpdmF0ZS5oICAgICAgICAgICAgICAg
+IHwgIDIxICsKIGRheGN0bC9saWIvbGliZGF4Y3RsLmMgICAgICAgICAgICAgICAgICAgICAgICB8
+IDU1MiArKysrKysrKysrKysrKysrKy0KIGRheGN0bC9saWIvbGliZGF4Y3RsLnN5bSAgICAgICAg
+ICAgICAgICAgICAgICB8ICAxNCArCiBkYXhjdGwvbGliZGF4Y3RsLmggICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgMTYgKwogdXRpbC9qc29uLmMgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgIDIyICsKIDEzIGZpbGVzIGNoYW5nZWQsIDEwMTMgaW5zZXJ0aW9ucygrKSwg
+MTEgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1lbnRhdGlvbi9kYXhjdGwv
+ZGF4Y3RsLXJlY29uZmlndXJlLWRldmljZS50eHQKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkYXhjdGwv
+ZGV2aWNlLmMKCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3Rz
+LjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGlt
+bQo=
