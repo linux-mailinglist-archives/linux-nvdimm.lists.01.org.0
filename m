@@ -1,52 +1,94 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9539D1FF84
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 08:28:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D491FFFC
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 09:10:27 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 955B3212657BD;
-	Wed, 15 May 2019 23:28:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1F46C21268FA7;
+	Thu, 16 May 2019 00:10:25 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C5A5F21250C96
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 23:28:23 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
+ by ml01.01.org (Postfix) with ESMTPS id 2671421256BBB
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 00:10:23 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 21F1B3DDBE;
- Thu, 16 May 2019 06:28:23 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F29145D9C3;
- Thu, 16 May 2019 06:28:22 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 973501806B11;
- Thu, 16 May 2019 06:28:21 +0000 (UTC)
-Date: Thu, 16 May 2019 02:28:20 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <1906905099.29162562.1557988100975.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4gEr_zPJEQp3k89v2UXfHp9PQwnJXY+W99HwXfxpvua_w@mail.gmail.com>
-References: <20190514145422.16923-1-pagupta@redhat.com>
- <20190514145422.16923-2-pagupta@redhat.com>
- <CAPcyv4gEr_zPJEQp3k89v2UXfHp9PQwnJXY+W99HwXfxpvua_w@mail.gmail.com>
-Subject: Re: [PATCH v9 1/7] libnvdimm: nd_region flush callback support
+ by mx1.redhat.com (Postfix) with ESMTPS id 740DDC004F44;
+ Thu, 16 May 2019 07:10:22 +0000 (UTC)
+Received: from [10.36.117.24] (ovpn-117-24.ams2.redhat.com [10.36.117.24])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 41EE59894;
+ Thu, 16 May 2019 07:10:13 +0000 (UTC)
+Subject: Re: [v5 0/3] "Hotremove" persistent memory
+To: Dan Williams <dan.j.williams@intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>
+References: <20190502184337.20538-1-pasha.tatashin@soleen.com>
+ <76dfe7943f2a0ceaca73f5fd23e944dfdc0309d1.camel@intel.com>
+ <CA+CK2bCKcJjXo7BGAVxvbQNYQFSDVLH5aB=S9yTmZWEfexOvtg@mail.gmail.com>
+ <CAPcyv4jj557QNNwyQ7ez+=PnURsnXk9cGZ11Mmihmtem2bJ-3A@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <9add7fd4-6d6e-fa80-08db-7cffc9ae0b75@redhat.com>
+Date: Thu, 16 May 2019 09:10:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-Originating-IP: [10.65.16.97, 10.4.195.4]
-Thread-Topic: libnvdimm: nd_region flush callback support
-Thread-Index: VrjlK3y+QUdLL94hHE7OyUkrop5Ojw==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+In-Reply-To: <CAPcyv4jj557QNNwyQ7ez+=PnURsnXk9cGZ11Mmihmtem2bJ-3A@mail.gmail.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.29]); Thu, 16 May 2019 06:28:23 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.32]); Thu, 16 May 2019 07:10:23 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,103 +100,82 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: cohuck@redhat.com, Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
- virtualization@lists.linux-foundation.org,
- Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, jstaron@google.com,
- linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- Adam Borowski <kilobyte@angband.pl>, Rik van Riel <riel@surriel.com>,
- yuval shaia <yuval.shaia@oracle.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, lcapitulino@redhat.com,
- Kevin Wolf <kwolf@redhat.com>, Nitesh Narayan Lal <nilal@redhat.com>,
- Theodore Ts'o <tytso@mit.edu>, Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- "Darrick J. Wong" <darrick.wong@oracle.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-xfs <linux-xfs@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Igor Mammedov <imammedo@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: "sashal@kernel.org" <sashal@kernel.org>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "mhocko@suse.com" <mhocko@suse.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+ "tiwai@suse.de" <tiwai@suse.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Huang,
+ Ying" <ying.huang@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "jmorris@namei.org" <jmorris@namei.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "jglisse@redhat.com" <jglisse@redhat.com>, "Wu,
+ Fengguang" <fengguang.wu@intel.com>,
+ "baiyaowei@cmss.chinamobile.com" <baiyaowei@cmss.chinamobile.com>,
+ "zwisler@kernel.org" <zwisler@kernel.org>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "bp@suse.de" <bp@suse.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Cj4gPgo+ID4gVGhpcyBwYXRjaCBhZGRzIGZ1bmN0aW9uYWxpdHkgdG8gcGVyZm9ybSBmbHVzaCBm
-cm9tIGd1ZXN0Cj4gPiB0byBob3N0IG92ZXIgVklSVElPLiBXZSBhcmUgcmVnaXN0ZXJpbmcgYSBj
-YWxsYmFjayBiYXNlZAo+ID4gb24gJ25kX3JlZ2lvbicgdHlwZS4gdmlydGlvX3BtZW0gZHJpdmVy
-IHJlcXVpcmVzIHRoaXMgc3BlY2lhbAo+ID4gZmx1c2ggZnVuY3Rpb24uIEZvciByZXN0IG9mIHRo
-ZSByZWdpb24gdHlwZXMgd2UgYXJlIHJlZ2lzdGVyaW5nCj4gPiBleGlzdGluZyBmbHVzaCBmdW5j
-dGlvbi4gUmVwb3J0IGVycm9yIHJldHVybmVkIGJ5IGhvc3QgZnN5bmMKPiA+IGZhaWx1cmUgdG8g
-dXNlcnNwYWNlLgo+ID4KPiA+IFNpZ25lZC1vZmYtYnk6IFBhbmthaiBHdXB0YSA8cGFndXB0YUBy
-ZWRoYXQuY29tPgo+ID4gLS0tCj4gPiAgZHJpdmVycy9hY3BpL25maXQvY29yZS5jICAgICB8ICA0
-ICsrLS0KPiA+ICBkcml2ZXJzL252ZGltbS9jbGFpbS5jICAgICAgIHwgIDYgKysrKy0tCj4gPiAg
-ZHJpdmVycy9udmRpbW0vbmQuaCAgICAgICAgICB8ICAxICsKPiA+ICBkcml2ZXJzL252ZGltbS9w
-bWVtLmMgICAgICAgIHwgMTMgKysrKysrKystLS0tLQo+ID4gIGRyaXZlcnMvbnZkaW1tL3JlZ2lv
-bl9kZXZzLmMgfCAyNiArKysrKysrKysrKysrKysrKysrKysrKystLQo+ID4gIGluY2x1ZGUvbGlu
-dXgvbGlibnZkaW1tLmggICAgfCAgOCArKysrKysrLQo+ID4gIDYgZmlsZXMgY2hhbmdlZCwgNDYg
-aW5zZXJ0aW9ucygrKSwgMTIgZGVsZXRpb25zKC0pCj4gPgo+ID4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvYWNwaS9uZml0L2NvcmUuYyBiL2RyaXZlcnMvYWNwaS9uZml0L2NvcmUuYwo+ID4gaW5kZXgg
-NWEzODlhNGY0ZjY1Li4wOGRkZTc2Y2Y0NTkgMTAwNjQ0Cj4gPiAtLS0gYS9kcml2ZXJzL2FjcGkv
-bmZpdC9jb3JlLmMKPiA+ICsrKyBiL2RyaXZlcnMvYWNwaS9uZml0L2NvcmUuYwo+ID4gQEAgLTI0
-MzQsNyArMjQzNCw3IEBAIHN0YXRpYyB2b2lkIHdyaXRlX2Jsa19jdGwoc3RydWN0IG5maXRfYmxr
-ICpuZml0X2JsaywKPiA+IHVuc2lnbmVkIGludCBidywKPiA+ICAgICAgICAgICAgICAgICBvZmZz
-ZXQgPSB0b19pbnRlcmxlYXZlX29mZnNldChvZmZzZXQsIG1taW8pOwo+ID4KPiA+ICAgICAgICAg
-d3JpdGVxKGNtZCwgbW1pby0+YWRkci5iYXNlICsgb2Zmc2V0KTsKPiA+IC0gICAgICAgbnZkaW1t
-X2ZsdXNoKG5maXRfYmxrLT5uZF9yZWdpb24pOwo+ID4gKyAgICAgICBudmRpbW1fZmx1c2gobmZp
-dF9ibGstPm5kX3JlZ2lvbiwgTlVMTCk7Cj4gPgo+ID4gICAgICAgICBpZiAobmZpdF9ibGstPmRp
-bW1fZmxhZ3MgJiBORklUX0JMS19EQ1JfTEFUQ0gpCj4gPiAgICAgICAgICAgICAgICAgcmVhZHEo
-bW1pby0+YWRkci5iYXNlICsgb2Zmc2V0KTsKPiA+IEBAIC0yNDgzLDcgKzI0ODMsNyBAQCBzdGF0
-aWMgaW50IGFjcGlfbmZpdF9ibGtfc2luZ2xlX2lvKHN0cnVjdCBuZml0X2Jsawo+ID4gKm5maXRf
-YmxrLAo+ID4gICAgICAgICB9Cj4gPgo+ID4gICAgICAgICBpZiAocncpCj4gPiAtICAgICAgICAg
-ICAgICAgbnZkaW1tX2ZsdXNoKG5maXRfYmxrLT5uZF9yZWdpb24pOwo+ID4gKyAgICAgICAgICAg
-ICAgIG52ZGltbV9mbHVzaChuZml0X2Jsay0+bmRfcmVnaW9uLCBOVUxMKTsKPiA+Cj4gPiAgICAg
-ICAgIHJjID0gcmVhZF9ibGtfc3RhdChuZml0X2JsaywgbGFuZSkgPyAtRUlPIDogMDsKPiA+ICAg
-ICAgICAgcmV0dXJuIHJjOwo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL2NsYWltLmMg
-Yi9kcml2ZXJzL252ZGltbS9jbGFpbS5jCj4gPiBpbmRleCBmYjY2N2JmNDY5YzcuLjEzNTEwYmFl
-MWU2ZiAxMDA2NDQKPiA+IC0tLSBhL2RyaXZlcnMvbnZkaW1tL2NsYWltLmMKPiA+ICsrKyBiL2Ry
-aXZlcnMvbnZkaW1tL2NsYWltLmMKPiA+IEBAIC0yNjMsNyArMjYzLDcgQEAgc3RhdGljIGludCBu
-c2lvX3J3X2J5dGVzKHN0cnVjdCBuZF9uYW1lc3BhY2VfY29tbW9uCj4gPiAqbmRucywKPiA+ICAg
-ICAgICAgc3RydWN0IG5kX25hbWVzcGFjZV9pbyAqbnNpbyA9IHRvX25kX25hbWVzcGFjZV9pbygm
-bmRucy0+ZGV2KTsKPiA+ICAgICAgICAgdW5zaWduZWQgaW50IHN6X2FsaWduID0gQUxJR04oc2l6
-ZSArIChvZmZzZXQgJiAoNTEyIC0gMSkpLCA1MTIpOwo+ID4gICAgICAgICBzZWN0b3JfdCBzZWN0
-b3IgPSBvZmZzZXQgPj4gOTsKPiA+IC0gICAgICAgaW50IHJjID0gMDsKPiA+ICsgICAgICAgaW50
-IHJjID0gMCwgcmV0ID0gMDsKPiA+Cj4gPiAgICAgICAgIGlmICh1bmxpa2VseSghc2l6ZSkpCj4g
-PiAgICAgICAgICAgICAgICAgcmV0dXJuIDA7Cj4gPiBAQCAtMzAxLDcgKzMwMSw5IEBAIHN0YXRp
-YyBpbnQgbnNpb19yd19ieXRlcyhzdHJ1Y3QgbmRfbmFtZXNwYWNlX2NvbW1vbgo+ID4gKm5kbnMs
-Cj4gPiAgICAgICAgIH0KPiA+Cj4gPiAgICAgICAgIG1lbWNweV9mbHVzaGNhY2hlKG5zaW8tPmFk
-ZHIgKyBvZmZzZXQsIGJ1Ziwgc2l6ZSk7Cj4gPiAtICAgICAgIG52ZGltbV9mbHVzaCh0b19uZF9y
-ZWdpb24obmRucy0+ZGV2LnBhcmVudCkpOwo+ID4gKyAgICAgICByZXQgPSBudmRpbW1fZmx1c2go
-dG9fbmRfcmVnaW9uKG5kbnMtPmRldi5wYXJlbnQpLCBOVUxMKTsKPiA+ICsgICAgICAgaWYgKHJl
-dCkKPiA+ICsgICAgICAgICAgICAgICByYyA9IHJldDsKPiA+Cj4gPiAgICAgICAgIHJldHVybiBy
-YzsKPiA+ICB9Cj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9udmRpbW0vbmQuaCBiL2RyaXZlcnMv
-bnZkaW1tL25kLmgKPiA+IGluZGV4IGE1YWMzYjI0MDI5My4uMGM3NGQyNDI4YmQ3IDEwMDY0NAo+
-ID4gLS0tIGEvZHJpdmVycy9udmRpbW0vbmQuaAo+ID4gKysrIGIvZHJpdmVycy9udmRpbW0vbmQu
-aAo+ID4gQEAgLTE1OSw2ICsxNTksNyBAQCBzdHJ1Y3QgbmRfcmVnaW9uIHsKPiA+ICAgICAgICAg
-c3RydWN0IGJhZGJsb2NrcyBiYjsKPiA+ICAgICAgICAgc3RydWN0IG5kX2ludGVybGVhdmVfc2V0
-ICpuZF9zZXQ7Cj4gPiAgICAgICAgIHN0cnVjdCBuZF9wZXJjcHVfbGFuZSBfX3BlcmNwdSAqbGFu
-ZTsKPiA+ICsgICAgICAgaW50ICgqZmx1c2gpKHN0cnVjdCBuZF9yZWdpb24gKm5kX3JlZ2lvbiwg
-c3RydWN0IGJpbyAqYmlvKTsKPiAKPiBTbyB0aGlzIHRyaWdnZXJzOgo+IAo+IEluIGZpbGUgaW5j
-bHVkZWQgZnJvbSBkcml2ZXJzL252ZGltbS9lODIwLmM6NzoKPiAuL2luY2x1ZGUvbGludXgvbGli
-bnZkaW1tLmg6MTQwOjUxOiB3YXJuaW5nOiDigJhzdHJ1Y3QgYmlv4oCZIGRlY2xhcmVkCj4gaW5z
-aWRlIHBhcmFtZXRlciBsaXN0IHdpbGwgbm90IGJlIHZpc2libGUgb3V0c2lkZSBvZiB0aGlzIGRl
-ZmluaXRpb24KPiBvciBkZWNsYXJhdGlvbgo+ICAgaW50ICgqZmx1c2gpKHN0cnVjdCBuZF9yZWdp
-b24gKm5kX3JlZ2lvbiwgc3RydWN0IGJpbyAqYmlvKTsKPiAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn4KClNvcnJ5ISBmb3IgdGhpcy4gRml4ZWQg
-bm93LgoKPiBJIHdhcyBhbHJlYWR5IGZlZWxpbmcgdW5lYXN5IGFib3V0IHRyeWluZyB0byBzcXVl
-ZXplIHRoaXMgaW50byB2NS4yLAo+IGJ1dCB0aGlzIHdhcm5pbmcgYW5kIHRoZSBjb250aW51ZWQg
-ZHJpcCBvZiBjb21tZW50cyBsZWFkcyBtZSB0bwo+IGNvbmNsdWRlIHRoYXQgdGhpcyBkcml2ZXIg
-d291bGQgZG8gd2VsbCB0byB3YWl0IG9uZSBtb3JlIGRldmVsb3BtZW50Cj4gY3ljbGUuIExldHMg
-Y2xvc2Ugb3V0IHRoZSBmaW5hbCBmaXh1cHMgYW5kIGxldCB0aGlzIGRyaXZlciBzb2FrIGluCj4g
-LW5leHQuIFRoZW4gZm9yIHRoZSB2NS4zIGN5Y2xlIEknbGwgcmVkb3VibGUgbXkgZWZmb3J0cyB0
-b3dhcmRzIHRoZQo+IGdvYWwgb2YgY2xvc2luZyBwYXRjaCBhY2NlcHRhbmNlIGF0IHRoZSAtcmM2
-IC8gLXJjNyBkZXZlbG9wbWVudAo+IG1pbGVzdG9uZS4KCm8uay4gV2lsbCB3YWl0IGZvciBNaWtl
-J3MgQUNLIG9uIGRldmljZSBtYXBwZXIgcGF0Y2ggYW5kIHNlbmQgdGhlIHYxMAp3aXRoIGZpbmFs
-IGZpeC11cHMuIFRoYW5rIHlvdSBmb3IgeW91ciBoZWxwLgoKQmVzdCByZWdhcmRzLApQYW5rYWoK
-CgoKPiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
-dXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8v
-bGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+On 16.05.19 02:42, Dan Williams wrote:
+> On Wed, May 15, 2019 at 11:12 AM Pavel Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+>>
+>>> Hi Pavel,
+>>>
+>>> I am working on adding this sort of a workflow into a new daxctl command
+>>> (daxctl-reconfigure-device)- this will allow changing the 'mode' of a
+>>> dax device to kmem, online the resulting memory, and with your patches,
+>>> also attempt to offline the memory, and change back to device-dax.
+>>>
+>>> In running with these patches, and testing the offlining part, I ran
+>>> into the following lockdep below.
+>>>
+>>> This is with just these three patches on top of -rc7.
+>>>
+>>>
+>>> [  +0.004886] ======================================================
+>>> [  +0.001576] WARNING: possible circular locking dependency detected
+>>> [  +0.001506] 5.1.0-rc7+ #13 Tainted: G           O
+>>> [  +0.000929] ------------------------------------------------------
+>>> [  +0.000708] daxctl/22950 is trying to acquire lock:
+>>> [  +0.000548] 00000000f4d397f7 (kn->count#424){++++}, at: kernfs_remove_by_name_ns+0x40/0x80
+>>> [  +0.000922]
+>>>               but task is already holding lock:
+>>> [  +0.000657] 000000002aa52a9f (mem_sysfs_mutex){+.+.}, at: unregister_memory_section+0x22/0xa0
+>>
+>> I have studied this issue, and now have a clear understanding why it
+>> happens, I am not yet sure how to fix it, so suggestions are welcomed
+>> :)
+> 
+> I would think that ACPI hotplug would have a similar problem, but it does this:
+> 
+>                 acpi_unbind_memory_blocks(info);
+>                 __remove_memory(nid, info->start_addr, info->length);
+> 
+> I wonder if that ordering prevents going too deep into the
+> device_unregister() call stack that you highlighted below.
+> 
+
+If that doesn't help, after we have
+
+[PATCH v2 0/8] mm/memory_hotplug: Factor out memory block device handling
+
+we could probably pull the memory device removal phase out from the
+mem_hotplug_lock protection and let it be protected by the
+device_hotplug_lock only. Might require some more work, though.
+
+-- 
+
+Thanks,
+
+David / dhildenb
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
