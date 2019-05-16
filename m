@@ -2,65 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B181FCE0
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 02:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DE61FCE2
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 02:42:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A673E212794C1;
-	Wed, 15 May 2019 17:34:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A63DE212794C4;
+	Wed, 15 May 2019 17:42:56 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::844; helo=mail-qt1-x844.google.com;
- envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
- [IPv6:2607:f8b0:4864:20::844])
+ client-ip=2607:f8b0:4864:20::330; helo=mail-ot1-x330.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com
+ [IPv6:2607:f8b0:4864:20::330])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7FE41212733EA
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:34:22 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id h1so1988287qtp.1
- for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:34:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=ScXaFeR9V6kuvpwBg/U8HCbHPSnAvCsxxSit7yP9Jc8=;
- b=VPAqTble6hRyhsj3VGsjmxvb/J600GeROXMLfbdJ6vJcB2QKVPQa4totwCIhVpAi0n
- fN/2i4xmqUU2K3TkH6isLjLJWlQD30QnMNLx8EUdVTEeWVFZvh/vKoY1nb5krg2tHLCS
- Fub3F2MxHS9blqY/JPQ6blDIYMbCWD0iZTBf3fBxRQFxKqrAD3LbAXUOp4cf1ahMj5mg
- IfS3mvd2iAFmLvH5NZnPLrV+7UsTHdP5gMb058Qqqz20YZd/Hs+TPC9AHHmAkTecNF2H
- MsjLMEBD8xE8AEmL8feaD27CqUASJ7om3ksk/ydwDkv9n/7EMizkt6HnwSCwiQs02cii
- YXZg==
+ by ml01.01.org (Postfix) with ESMTPS id 01CC0212794BB
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:42:54 -0700 (PDT)
+Received: by mail-ot1-x330.google.com with SMTP id j49so1775390otc.13
+ for <linux-nvdimm@lists.01.org>; Wed, 15 May 2019 17:42:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=4wF4B/XO+LFCzisDrNsMqmlSL+kOk21IiP/4p8K0X7U=;
+ b=U/Y22/bCzRIzE1Xsqh5f3+RBvJUV1RMz+pVgOjqYlQhz4iQqdrUPBRWbWciAaasKQe
+ vf8QyeNFoGsz8yqkGygyREx7lhw9HstPaMuVrr27/KyitIfiP0TnNsEbh+rsCCGBoUDY
+ irfkr7iszBcaj4LIg2eFjALBbAw0LyVbqSAuaajKOP0NsaCv5sTe9zXHbxvKAFhfARk0
+ 7L4havjtTmMCm3Md5Y9rr5ig4PFYphhp95oMlWixzxiSkNqTP59gYvQk/rhziKM7Zrrm
+ VAtwNZsGyNLgm0GA15nZVzk8++wQz8D0asXbsKwS3EQzV03FdRgsSypZRh/sKEIYDtVc
+ 9H7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=ScXaFeR9V6kuvpwBg/U8HCbHPSnAvCsxxSit7yP9Jc8=;
- b=nlRgb3NdycYOcOEGVjHc4ptr/J+WO7PqQdM9od9P5fpxmJL/cr2RGVYxTWFj09zZo7
- w63sdl5Nw6M0H16yoJGhOEvjiKaMuzGa5YpTjqajQKZCL5v9hitMaFylRYB5KnAKsgCL
- +jrUMV/x+N9vwCd2OyJwFoGIUkmxmNvuXFSYdILHrnYvOyJaLAAqdgrBUTiIxjm+fClB
- FS0sxWm2qPPzZkPNfY81MFyjCUqkiZIFGNWHRNxYTxSR0VJ76I6XNKC7uqAJdCFlrhH3
- LJd8owOU1kwJux3ihjY+WRl9yxMPhpRMtn7uoo70etQJM6MLDa+0n/uGqawNArriEe4g
- kV6A==
-X-Gm-Message-State: APjAAAVjZs08qZ2/S5N7ibxdTQfKQfSDizNIW4H8+xLykryDOMjf8eRm
- WS9JCJNa6JssrRDPfOKxE2/Dnw==
-X-Google-Smtp-Source: APXvYqxhnAL2MaTuSVRizp2xd9h/At7dau6miw7VR54nxw0WijrnCLeY+lfrVIB7bfiMVF28SDOghw==
-X-Received: by 2002:aed:20c4:: with SMTP id 62mr39762062qtb.256.1557966861491; 
- Wed, 15 May 2019 17:34:21 -0700 (PDT)
-Received: from qians-mbp.fios-router.home
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id b22sm2287417qtc.37.2019.05.15.17.34.20
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 15 May 2019 17:34:20 -0700 (PDT)
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [RESEND PATCH] nvdimm: fix some compilation warnings
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <CAPcyv4gGwyPf0j4rXRM3JjsjGSHB6bGdZfwg+v2y8NQ6hNVK8g@mail.gmail.com>
-Date: Wed, 15 May 2019 20:34:19 -0400
-Message-Id: <7BCECDBE-EC7B-47C6-AF7F-15C67AAA1D6F@lca.pw>
-References: <20190514150735.39625-1-cai@lca.pw>
- <CAPcyv4gGwyPf0j4rXRM3JjsjGSHB6bGdZfwg+v2y8NQ6hNVK8g@mail.gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>
-X-Mailer: Apple Mail (2.3445.104.11)
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=4wF4B/XO+LFCzisDrNsMqmlSL+kOk21IiP/4p8K0X7U=;
+ b=dmS6VqZNBF170RKy8hiKcvwbeOrkeLf9IJUCLAMZDBBiNzvUQ3zNxXJD6qMxgB++B2
+ icXz8zMB5awDpsve3GdmMfMJ9ewBA9urepcAF60fXwjbV+icz/+V9Gr4Wgzd34voQHUD
+ Hg2In2vaeK2LnkyYslXEQJvL3wUEvciOGjo2ahLoP1ppnhWKhbXvEZ/R5mIj5KcvVPV1
+ BocGTfMRqSqHQHC0lxPkp05cb4f5Q/6/2Ig/PQ5HIeTNa7P5PaH7ypUvfi8V2pFob+Wm
+ C1NVyMa0rCiQCs4icrkHGAKWZVnMSubRek6HNH3MivYGJYA4RRyPHLhgx+Av8Dbne4hf
+ PsMQ==
+X-Gm-Message-State: APjAAAWnJqwfvRKtUKHGwrvuJZ5KXIny5drZZUR2RpoqnUKWN8Cy75mr
+ tOnpTpzM+dyBZWtAHWVpZ1LuafTdvRsBUvUL0ZmZVw==
+X-Google-Smtp-Source: APXvYqxHHdBhJkGMx5fiIIlPrJsnSR6+qYmBOEInSq5ilrexTUGafywN2clUkUaBI+pWKFUlTJBtGXaBRq9YnBc8yJ0=
+X-Received: by 2002:a9d:d09:: with SMTP id 9mr28295683oti.82.1557967372879;
+ Wed, 15 May 2019 17:42:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190502184337.20538-1-pasha.tatashin@soleen.com>
+ <76dfe7943f2a0ceaca73f5fd23e944dfdc0309d1.camel@intel.com>
+ <CA+CK2bCKcJjXo7BGAVxvbQNYQFSDVLH5aB=S9yTmZWEfexOvtg@mail.gmail.com>
+In-Reply-To: <CA+CK2bCKcJjXo7BGAVxvbQNYQFSDVLH5aB=S9yTmZWEfexOvtg@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 15 May 2019 17:42:42 -0700
+Message-ID: <CAPcyv4jj557QNNwyQ7ez+=PnURsnXk9cGZ11Mmihmtem2bJ-3A@mail.gmail.com>
+Subject: Re: [v5 0/3] "Hotremove" persistent memory
+To: Pavel Tatashin <pasha.tatashin@soleen.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,36 +67,122 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: "sashal@kernel.org" <sashal@kernel.org>,
+ "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+ "mhocko@suse.com" <mhocko@suse.com>, "david@redhat.com" <david@redhat.com>,
+ "tiwai@suse.de" <tiwai@suse.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Huang,
+ Ying" <ying.huang@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "jmorris@namei.org" <jmorris@namei.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "jglisse@redhat.com" <jglisse@redhat.com>, "Wu,
+ Fengguang" <fengguang.wu@intel.com>,
+ "baiyaowei@cmss.chinamobile.com" <baiyaowei@cmss.chinamobile.com>,
+ "zwisler@kernel.org" <zwisler@kernel.org>,
+ "bhelgaas@google.com" <bhelgaas@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "bp@suse.de" <bp@suse.de>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Cgo+IE9uIE1heSAxNSwgMjAxOSwgYXQgNzoyNSBQTSwgRGFuIFdpbGxpYW1zIDxkYW4uai53aWxs
-aWFtc0BpbnRlbC5jb20+IHdyb3RlOgo+IAo+IE9uIFR1ZSwgTWF5IDE0LCAyMDE5IGF0IDg6MDgg
-QU0gUWlhbiBDYWkgPGNhaUBsY2EucHc+IHdyb3RlOgo+PiAKPj4gU2V2ZXJhbCBwbGFjZXMgKGRp
-bW1fZGV2cy5jLCBjb3JlLmMgZXRjKSBpbmNsdWRlIGxhYmVsLmggYnV0IG9ubHkKPj4gbGFiZWwu
-YyB1c2VzIE5TSU5ERVhfU0lHTkFUVVJFLCBzbyBtb3ZlIGl0cyBkZWZpbml0aW9uIHRvIGxhYmVs
-LmMKPj4gaW5zdGVhZC4KPj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGRyaXZlcnMvbnZkaW1tL2Rp
-bW1fZGV2cy5jOjIzOgo+PiBkcml2ZXJzL252ZGltbS9sYWJlbC5oOjQxOjE5OiB3YXJuaW5nOiAn
-TlNJTkRFWF9TSUdOQVRVUkUnIGRlZmluZWQgYnV0Cj4+IG5vdCB1c2VkIFstV3VudXNlZC1jb25z
-dC12YXJpYWJsZT1dCj4+IAo+PiBUaGUgY29tbWl0IGQ5YjgzYzc1Njk1MyAoImxpYm52ZGltbSwg
-YnR0OiByZXdvcmsgZXJyb3IgY2xlYXJpbmciKSBsZWZ0Cj4+IGFuIHVudXNlZCB2YXJpYWJsZS4K
-Pj4gZHJpdmVycy9udmRpbW0vYnR0LmM6IEluIGZ1bmN0aW9uICdidHRfcmVhZF9wZyc6Cj4+IGRy
-aXZlcnMvbnZkaW1tL2J0dC5jOjEyNzI6ODogd2FybmluZzogdmFyaWFibGUgJ3JjJyBzZXQgYnV0
-IG5vdCB1c2VkCj4+IFstV3VudXNlZC1idXQtc2V0LXZhcmlhYmxlXQo+PiAKPj4gTGFzdCwgc29t
-ZSBwbGFjZXMgYWJ1c2UgIi8qKiIgd2hpY2ggaXMgb25seSByZXNlcnZlZCBmb3IgdGhlIGtlcm5l
-bC1kb2MuCj4+IGRyaXZlcnMvbnZkaW1tL2J1cy5jOjY0ODogd2FybmluZzogY2Fubm90IHVuZGVy
-c3RhbmQgZnVuY3Rpb24gcHJvdG90eXBlOgo+PiAnc3RydWN0IGF0dHJpYnV0ZV9ncm91cCBuZF9k
-ZXZpY2VfYXR0cmlidXRlX2dyb3VwID0gJwo+PiBkcml2ZXJzL252ZGltbS9idXMuYzo2Nzc6IHdh
-cm5pbmc6IGNhbm5vdCB1bmRlcnN0YW5kIGZ1bmN0aW9uIHByb3RvdHlwZToKPj4gJ3N0cnVjdCBh
-dHRyaWJ1dGVfZ3JvdXAgbmRfbnVtYV9hdHRyaWJ1dGVfZ3JvdXAgPSAnCj4gCj4gQ2FuIHlvdSBp
-bmNsdWRlIHRoZSBjb21waWxlciB3aGVyZSB0aGVzZSBlcnJvcnMgc3RhcnQgYXBwZWFyaW5nLCBz
-aW5jZQo+IEkgZG9uJ3Qgc2VlIHRoZXNlIHdhcm5pbmdzIHdpdGggZ2NjLTguMy4xCgpUaGlzIGNh
-biBiZSByZXByb2R1Y2VkIGJ5IHBlcmZvcm1pbmcgZXh0cmEgY29tcGlsZXIgY2hlY2tzLCBpLmUs
-ICJtYWtlIFc9buKAnS4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-Cmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+On Wed, May 15, 2019 at 11:12 AM Pavel Tatashin
+<pasha.tatashin@soleen.com> wrote:
+>
+> > Hi Pavel,
+> >
+> > I am working on adding this sort of a workflow into a new daxctl command
+> > (daxctl-reconfigure-device)- this will allow changing the 'mode' of a
+> > dax device to kmem, online the resulting memory, and with your patches,
+> > also attempt to offline the memory, and change back to device-dax.
+> >
+> > In running with these patches, and testing the offlining part, I ran
+> > into the following lockdep below.
+> >
+> > This is with just these three patches on top of -rc7.
+> >
+> >
+> > [  +0.004886] ======================================================
+> > [  +0.001576] WARNING: possible circular locking dependency detected
+> > [  +0.001506] 5.1.0-rc7+ #13 Tainted: G           O
+> > [  +0.000929] ------------------------------------------------------
+> > [  +0.000708] daxctl/22950 is trying to acquire lock:
+> > [  +0.000548] 00000000f4d397f7 (kn->count#424){++++}, at: kernfs_remove_by_name_ns+0x40/0x80
+> > [  +0.000922]
+> >               but task is already holding lock:
+> > [  +0.000657] 000000002aa52a9f (mem_sysfs_mutex){+.+.}, at: unregister_memory_section+0x22/0xa0
+>
+> I have studied this issue, and now have a clear understanding why it
+> happens, I am not yet sure how to fix it, so suggestions are welcomed
+> :)
+
+I would think that ACPI hotplug would have a similar problem, but it does this:
+
+                acpi_unbind_memory_blocks(info);
+                __remove_memory(nid, info->start_addr, info->length);
+
+I wonder if that ordering prevents going too deep into the
+device_unregister() call stack that you highlighted below.
+
+
+>
+> Here is the problem:
+>
+> When we offline pages we have the following call stack:
+>
+> # echo offline > /sys/devices/system/memory/memory8/state
+> ksys_write
+>  vfs_write
+>   __vfs_write
+>    kernfs_fop_write
+>     kernfs_get_active
+>      lock_acquire                       kn->count#122 (lock for
+> "memory8/state" kn)
+>     sysfs_kf_write
+>      dev_attr_store
+>       state_store
+>        device_offline
+>         memory_subsys_offline
+>          memory_block_action
+>           offline_pages
+>            __offline_pages
+>             percpu_down_write
+>              down_write
+>               lock_acquire              mem_hotplug_lock.rw_sem
+>
+> When we unbind dax0.0 we have the following  stack:
+> # echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
+> drv_attr_store
+>  unbind_store
+>   device_driver_detach
+>    device_release_driver_internal
+>     dev_dax_kmem_remove
+>      remove_memory                      device_hotplug_lock
+>       try_remove_memory                 mem_hotplug_lock.rw_sem
+>        arch_remove_memory
+>         __remove_pages
+>          __remove_section
+>           unregister_memory_section
+>            remove_memory_section        mem_sysfs_mutex
+>             unregister_memory
+>              device_unregister
+>               device_del
+>                device_remove_attrs
+>                 sysfs_remove_groups
+>                  sysfs_remove_group
+>                   remove_files
+>                    kernfs_remove_by_name
+>                     kernfs_remove_by_name_ns
+>                      __kernfs_remove    kn->count#122
+>
+> So, lockdep found the ordering issue with the above two stacks:
+>
+> 1. kn->count#122 -> mem_hotplug_lock.rw_sem
+> 2. mem_hotplug_lock.rw_sem -> kn->count#122
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
