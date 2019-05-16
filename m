@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF4821099
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 00:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D1A2109A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 00:41:04 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 95A7821945DE5;
-	Thu, 16 May 2019 15:40:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EAFD321945DDA;
+	Thu, 16 May 2019 15:41:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,22 +15,21 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 18DFE21255850
- for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 15:40:57 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0CD0F2125F1C0
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 15:40:59 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga003.fm.intel.com ([10.253.24.29])
  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 16 May 2019 15:40:56 -0700
+ 16 May 2019 15:40:58 -0700
 X-ExtLoop1: 1
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by FMSMGA003.fm.intel.com with ESMTP; 16 May 2019 15:40:56 -0700
+ by FMSMGA003.fm.intel.com with ESMTP; 16 May 2019 15:40:58 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v3 01/10] libdaxctl: add interfaces in support of device
- modes
-Date: Thu, 16 May 2019 16:40:44 -0600
-Message-Id: <20190516224053.3655-2-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH v3 02/10] libdaxctl: cache 'subsystem' in daxctl_ctx
+Date: Thu, 16 May 2019 16:40:45 -0600
+Message-Id: <20190516224053.3655-3-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190516224053.3655-1-vishal.l.verma@intel.com>
 References: <20190516224053.3655-1-vishal.l.verma@intel.com>
@@ -53,88 +52,67 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-In preparation for libdaxctl and daxctl to grow operational modes for
-DAX devices, add the following supporting APIs:
-
-  daxctl_dev_get_ctx
-  daxctl_dev_is_enabled
+The 'DAX subsystem' in effect is determined at region or device init
+time, and dictates the sysfs base paths for all device/region
+operations. In preparation for adding bind/unbind functionality, cache
+the subsystem as determined at init time in the library context.
 
 Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- daxctl/lib/libdaxctl.c   | 30 ++++++++++++++++++++++++++++++
- daxctl/lib/libdaxctl.sym |  6 ++++++
- daxctl/libdaxctl.h       |  2 ++
- 3 files changed, 38 insertions(+)
+ daxctl/lib/libdaxctl.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-index c2e3a52..70f896b 100644
+index 70f896b..f8f5b8c 100644
 --- a/daxctl/lib/libdaxctl.c
 +++ b/daxctl/lib/libdaxctl.c
-@@ -559,6 +559,36 @@ static void dax_regions_init(struct daxctl_ctx *ctx)
- 	}
+@@ -46,6 +46,7 @@ struct daxctl_ctx {
+ 	void *userdata;
+ 	int regions_init;
+ 	struct list_head regions;
++	enum dax_subsystem subsys;
+ };
+ 
+ /**
+@@ -96,6 +97,7 @@ DAXCTL_EXPORT int daxctl_new(struct daxctl_ctx **ctx)
+ 	dbg(c, "log_priority=%d\n", c->ctx.log_priority);
+ 	*ctx = c;
+ 	list_head_init(&c->regions);
++	c->subsys = DAX_UNKNOWN;
+ 
+ 	return 0;
  }
+@@ -454,14 +456,18 @@ static void dax_devices_init(struct daxctl_region *region)
+ 	for (i = 0; i < ARRAY_SIZE(dax_subsystems); i++) {
+ 		char *region_path;
  
-+static int is_enabled(const char *drvpath)
-+{
-+	struct stat st;
-+
-+	if (lstat(drvpath, &st) < 0 || !S_ISLNK(st.st_mode))
-+		return 0;
-+	else
-+		return 1;
-+}
-+
-+DAXCTL_EXPORT int daxctl_dev_is_enabled(struct daxctl_dev *dev)
-+{
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	char *path = dev->dev_buf;
-+	int len = dev->buf_len;
-+
-+	if (snprintf(path, len, "%s/driver", dev->dev_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				daxctl_dev_get_devname(dev));
-+		return 0;
-+	}
-+
-+	return is_enabled(path);
-+}
-+
-+DAXCTL_EXPORT struct daxctl_ctx *daxctl_dev_get_ctx(struct daxctl_dev *dev)
-+{
-+	return dev->region->ctx;
-+}
-+
- DAXCTL_EXPORT struct daxctl_dev *daxctl_dev_get_first(struct daxctl_region *region)
- {
- 	dax_devices_init(region);
-diff --git a/daxctl/lib/libdaxctl.sym b/daxctl/lib/libdaxctl.sym
-index 84d3a69..c4af9a7 100644
---- a/daxctl/lib/libdaxctl.sym
-+++ b/daxctl/lib/libdaxctl.sym
-@@ -50,3 +50,9 @@ LIBDAXCTL_5 {
- global:
- 	daxctl_region_get_path;
- } LIBDAXCTL_4;
-+
-+LIBDAXCTL_6 {
-+global:
-+	daxctl_dev_get_ctx;
-+	daxctl_dev_is_enabled;
-+} LIBDAXCTL_5;
-diff --git a/daxctl/libdaxctl.h b/daxctl/libdaxctl.h
-index 1d13ea2..e20ccb4 100644
---- a/daxctl/libdaxctl.h
-+++ b/daxctl/libdaxctl.h
-@@ -67,6 +67,8 @@ const char *daxctl_dev_get_devname(struct daxctl_dev *dev);
- int daxctl_dev_get_major(struct daxctl_dev *dev);
- int daxctl_dev_get_minor(struct daxctl_dev *dev);
- unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev);
-+struct daxctl_ctx *daxctl_dev_get_ctx(struct daxctl_dev *dev);
-+int daxctl_dev_is_enabled(struct daxctl_dev *dev);
- 
- #define daxctl_dev_foreach(region, dev) \
-         for (dev = daxctl_dev_get_first(region); \
+-		if (i == DAX_BUS)
++		if (i == DAX_BUS) {
+ 			region_path = region->region_path;
+-		else if (i == DAX_CLASS) {
++			if (ctx->subsys == DAX_UNKNOWN)
++				ctx->subsys = DAX_BUS;
++		} else if (i == DAX_CLASS) {
+ 			if (asprintf(&region_path, "%s/dax",
+ 						region->region_path) < 0) {
+ 				dbg(ctx, "region path alloc fail\n");
+ 				continue;
+ 			}
++			if (ctx->subsys == DAX_UNKNOWN)
++				ctx->subsys = DAX_CLASS;
+ 		} else
+ 			continue;
+ 		sysfs_device_parse(ctx, region_path, daxdev_fmt, region,
+@@ -539,6 +545,8 @@ static void __dax_regions_init(struct daxctl_ctx *ctx, enum dax_subsystem subsys
+ 		free(dev_path);
+ 		if (!region)
+ 			err(ctx, "add_dax_region() for %s failed\n", de->d_name);
++		if (ctx->subsys == DAX_UNKNOWN)
++			ctx->subsys = subsys;
+ 	}
+ 	closedir(dir);
+ }
 -- 
 2.20.1
 
