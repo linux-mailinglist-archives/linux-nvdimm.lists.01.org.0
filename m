@@ -2,47 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141C72096E
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 16:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0629520C60
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 May 2019 18:05:47 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 20CB32125ADC8;
-	Thu, 16 May 2019 07:23:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 135C021268F99;
+	Thu, 16 May 2019 09:05:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=vgoyal@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
+ envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 05DCD21250C98
- for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 07:23:45 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id D2AD93083392;
- Thu, 16 May 2019 14:23:44 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.29])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8F70F5D6A9;
- Thu, 16 May 2019 14:23:42 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
- id 20E57220386; Thu, 16 May 2019 10:23:42 -0400 (EDT)
-Date: Thu, 16 May 2019 10:23:42 -0400
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 12/30] dax: remove block device dependencies
-Message-ID: <20190516142342.GA31638@redhat.com>
-References: <20190515192715.18000-1-vgoyal@redhat.com>
- <20190515192715.18000-13-vgoyal@redhat.com>
- <CAPcyv4i_-ri=w0jYJ4WjK4QD9E8pMzkGQNdMbt9H_nawDqYD3A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4i_-ri=w0jYJ4WjK4QD9E8pMzkGQNdMbt9H_nawDqYD3A@mail.gmail.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.44]); Thu, 16 May 2019 14:23:45 +0000 (UTC)
+ by ml01.01.org (Postfix) with ESMTPS id 8B2B0212604F3
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 09:05:42 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id a64so2596324qkg.5
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 09:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=from:to:cc:subject:date:message-id;
+ bh=zAUITjpKKLROuX37hMbdqPFlWmaHToD076fNZLb8xfM=;
+ b=paTihldvOejMhzU/pjmy6cxi8/gHfncg9BvJEgw2jZdu7GTTbC6dOi2N34C/kPD+Xe
+ llzWo0lUVN5/gH0xigfPAuVxfctO5acb6uM491mjwy+kalcRZrNptGYgtffAGrQm9xKD
+ z7cMdKXJJ63VeJ7S62XKUCWg+IJtnA/MuoC0yG1jQRxUMfjTvjsouU6GeU1UhoLOpUy4
+ O6jaxq5Vx3jRm2UgvJs0jhTxt1tfjYW5uy/RR5+JF5zvEl0wMsgK+PEzcCVYX5Ml6OgS
+ CWMiUYVZvGJpz30FdN/Uvc6ui0RhJyX+CoWvDh4wvgFBWaqBSYRetGUz7xlHg0r4k5NR
+ ODlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=zAUITjpKKLROuX37hMbdqPFlWmaHToD076fNZLb8xfM=;
+ b=FPKYAFKSrUio1XcZz19AHNmNbTnGAXvkCg3rzSPYQESYROcD7ucjl27P0nhHSbJg02
+ CxkyuVKZQTX/hOk7ZnygB7Tkqf0K0RQ7K3qSHgRu6CTd7PvXYz14AE2LBIuNEGij260d
+ lFNF6jRrZu7uf5zKG3UkG8VRhrsTAEsAV5+DiuI8SXGPNWbXO/McVCSSGfE0Jmu3CWQG
+ XxOU8EJzT0ipJfYW9pfI5EetEV4S1Zqbwx8k9sl5vgjejhdyg+W74bDu5P8n/hH2HFfE
+ yMk9Rob1t6ZrytMmv5ya2GgZSYHlPkpDB7BayISIKTl+RllWX/vA76S0U+jo01ilP6z0
+ ifjg==
+X-Gm-Message-State: APjAAAX7TtreyprtZzao4WluvzBGpou1DnQ1yE57Nez2S+iRqcM/XwaF
+ 4Dk9R71cx480AKBcVGHpbU4h0g==
+X-Google-Smtp-Source: APXvYqw/JHD28fUlPb8lI2g8to9VAAo+dI6jsWFcrAF1ACiFIBSxV5uVdFEIpYrHZwfcWMG0OgWwTw==
+X-Received: by 2002:a37:684a:: with SMTP id d71mr13791295qkc.25.1558022741627; 
+ Thu, 16 May 2019 09:05:41 -0700 (PDT)
+Received: from qcai.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id z29sm2569186qkg.19.2019.05.16.09.05.40
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 16 May 2019 09:05:40 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+To: dan.j.williams@intel.com
+Subject: [PATCH] nvdimm: fix compilation warnings with W=1
+Date: Thu, 16 May 2019 12:04:53 -0400
+Message-Id: <1558022693-9631-1-git-send-email-cai@lca.pw>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,29 +65,91 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: KVM list <kvm@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Miklos Szeredi <miklos@szeredi.hu>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Steven Whitehouse <swhiteho@redhat.com>
+Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+ Qian Cai <cai@lca.pw>, akpm@linux-foundation.org
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 15, 2019 at 05:21:51PM -0700, Dan Williams wrote:
+Several places (dimm_devs.c, core.c etc) include label.h but only
+label.c uses NSINDEX_SIGNATURE, so move its definition to label.c
+instead.
 
-[..]
-> It just seems to me that we should stop pretending that the
-> filesystem-dax facility requires block devices and try to move this
-> functionality to generically use a dax device across all interfaces.
+In file included from drivers/nvdimm/dimm_devs.c:23:
+drivers/nvdimm/label.h:41:19: warning: 'NSINDEX_SIGNATURE' defined but
+not used [-Wunused-const-variable=]
 
-That sounds reasonable and will help with our use case where we don't
-have the block device at all.
+Also, some places abuse "/**" which is only reserved for the kernel-doc.
 
-Vivek
+drivers/nvdimm/bus.c:648: warning: cannot understand function prototype:
+'struct attribute_group nd_device_attribute_group = '
+drivers/nvdimm/bus.c:677: warning: cannot understand function prototype:
+'struct attribute_group nd_numa_attribute_group = '
+
+Those are just some member assignments for the "struct attribute_group"
+instances and it can't be expressed in the kernel-doc.
+
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+Signed-off-by: Qian Cai <cai@lca.pw>
+---
+ drivers/nvdimm/bus.c   | 4 ++--
+ drivers/nvdimm/label.c | 2 ++
+ drivers/nvdimm/label.h | 2 --
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 7ff684159f29..2eb6a6cfe9e4 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -642,7 +642,7 @@ static ssize_t devtype_show(struct device *dev, struct device_attribute *attr,
+ 	NULL,
+ };
+ 
+-/**
++/*
+  * nd_device_attribute_group - generic attributes for all devices on an nd bus
+  */
+ struct attribute_group nd_device_attribute_group = {
+@@ -671,7 +671,7 @@ static umode_t nd_numa_attr_visible(struct kobject *kobj, struct attribute *a,
+ 	return a->mode;
+ }
+ 
+-/**
++/*
+  * nd_numa_attribute_group - NUMA attributes for all devices on an nd bus
+  */
+ struct attribute_group nd_numa_attribute_group = {
+diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
+index 2030805aa216..edf278067e72 100644
+--- a/drivers/nvdimm/label.c
++++ b/drivers/nvdimm/label.c
+@@ -25,6 +25,8 @@
+ static guid_t nvdimm_pfn_guid;
+ static guid_t nvdimm_dax_guid;
+ 
++static const char NSINDEX_SIGNATURE[] = "NAMESPACE_INDEX\0";
++
+ static u32 best_seq(u32 a, u32 b)
+ {
+ 	a &= NSINDEX_SEQ_MASK;
+diff --git a/drivers/nvdimm/label.h b/drivers/nvdimm/label.h
+index e9a2ad3c2150..4bb7add39580 100644
+--- a/drivers/nvdimm/label.h
++++ b/drivers/nvdimm/label.h
+@@ -38,8 +38,6 @@ enum {
+ 	ND_NSINDEX_INIT = 0x1,
+ };
+ 
+-static const char NSINDEX_SIGNATURE[] = "NAMESPACE_INDEX\0";
+-
+ /**
+  * struct nd_namespace_index - label set superblock
+  * @sig: NAMESPACE_INDEX\0
+-- 
+1.8.3.1
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
