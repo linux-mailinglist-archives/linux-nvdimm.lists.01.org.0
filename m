@@ -2,65 +2,70 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9725421E2E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 21:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6883621FED
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 23:54:46 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 94D7721260A59;
-	Fri, 17 May 2019 12:25:58 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 845AD212657B5;
+	Fri, 17 May 2019 14:54:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
- envelope-from=keescook@chromium.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com
+ [IPv6:2607:f8b0:4864:20::82d])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 8D22421250450
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 12:25:57 -0700 (PDT)
-Received: by mail-pl1-x642.google.com with SMTP id g69so3768406plb.7
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 12:25:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=6m950k0wpGbiOzwRM0Zmf6vFeYvepUmTaDILG4jsOaE=;
- b=MRIUWXTdcwy3u1sW6nKHueYTSpb0gJ7fF8cYZVlfUuPds94ETgvDpGDxvTp+t1DlXI
- 4AS+i7KmUjpAsXiZRYObHC7OVDJTf5O0aN4echqrlAa/dV2kkHUWDEIBh4xDmFPN2mZI
- OV8PFvr7njJVJaL9n7a1Kz3M75K/90YxuX/n0=
+ by ml01.01.org (Postfix) with ESMTPS id 9277E212532E0
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 14:54:42 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id k24so9768557qtq.7
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 14:54:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
+ h=from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cdLOc+SMSQhawrzrqz+8WbUA4suNHX51mq88wClVqBo=;
+ b=K88wU7ZUdBNygUX/4hEfsdd3b5xw9qN0XpxIE3OHk+2F1YuEDlAXKpNWqMhqXami4k
+ Rq+M0mPPlolFRa1Iqmv4IcS37oJ6ecEX1N9eDvHI1FXqYVx7PRBWSHcO938AyPfAy6n2
+ XgwYJuNGHk+mmQXu6QNfgphRBW3Qw+ggZG4Zn/k3agq3jrmMX47lHDL3hgntkK3tlrFe
+ MzTPFgiV5z2kkoxd2Czl5jcUGWo/Rp0FKQZ5nPu4hugHjmx6/T5MlDD54tQFv+ms1ZFi
+ 6hnAso8+98I16B6QtlV21IU3kzIM2/pM8GLq4UAnkoEW0JAODRiqXdfFAoS2nAe3TANG
+ 3GFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=6m950k0wpGbiOzwRM0Zmf6vFeYvepUmTaDILG4jsOaE=;
- b=YTZXHbOTKjubTZsiYCw45wOKsZ/ihjZoHD5YLbahtCdHSaoMermcAi3t7xIIIvO+Uv
- P+vc6hgeFgJjzGi7LRSuwjKz+3hYuccTnxaHYI6Jev5PZUywPwX2EnJPifA27e785odT
- UvSdIVSlK7HGSuokXSUKbAfOko4f+0iax0vTudtUQh3UNZk1/TMglzVWyBRTfCUT3qKZ
- rNA4W/7+6vaxl0VeuSaiRP06ZnUYbyt8xaSeGCc0UrEpP/9SnyZxkJ2RH2ajS+QUDYa5
- rLykJrOg1zUQP/YEniwGFPoASMOgqkVKpfiTGHj3EVitXS12hQv3j8diVlQh4nu4XmEl
- qBcw==
-X-Gm-Message-State: APjAAAWOP1x7i+zDB1Ph5hoxJWAquzrt3wVeR5ozNMpZPOWfkaVQzkme
- PXUsPzOXV4+yNNzgmMvsIL3R+g==
-X-Google-Smtp-Source: APXvYqx1H180sw6ugMRwdB57GS4R9rz+Su7MJuu5k1RoAAIBbeI3A+RJSaekWJWtXdGn9n8Fk40Phg==
-X-Received: by 2002:a17:902:2d03:: with SMTP id
- o3mr23240811plb.309.1558121156947; 
- Fri, 17 May 2019 12:25:56 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id g22sm11186901pfo.28.2019.05.17.12.25.55
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 17 May 2019 12:25:55 -0700 (PDT)
-Date: Fri, 17 May 2019 12:25:54 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
-Message-ID: <201905171225.29F9564BA2@keescook>
-References: <155805321833.867447.3864104616303535270.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190517084739.GB20550@quack2.suse.cz>
- <CAPcyv4iZZCgcC657ZOysBP9=1ejp3jfFj=VETVBPrgmfg7xUEw@mail.gmail.com>
- <201905170855.8E2E1AC616@keescook>
- <CAPcyv4g9HpMaifC+Qe2RVbgL_qq9vQvjwr-Jw813xhxcviehYQ@mail.gmail.com>
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cdLOc+SMSQhawrzrqz+8WbUA4suNHX51mq88wClVqBo=;
+ b=V6hyVpMObek7dI4aK3B41lMqsk8GOvIOKMEBv47GX2cLqVvmW2Q2ifvIqQITzB+T2G
+ rSKy/9bzyMdD9vOPi7jIeomrftmJ0e31/TYm6EcReMgZVuqPY0N+RRv+MJeeAfvTUqgL
+ GbJRNYl3hM0fGrm+sjPli/U+8lZ2xHcUHP8WqbhtCLM7e5Na+1vzwIU22p5+ay3dovZj
+ 5I7FMg6YCb4DnWLw2ConJdQOSuO/mApmKrzZir+rWU/EldJmSwqOEFu/8+btkh72WdkU
+ Ogh0vsKlzeZQsUYV7m92+jJe2kg3fxCZJ69WoqPjhmdlJljZ1+98NIqzE5tZ0ni+Idzj
+ aLaw==
+X-Gm-Message-State: APjAAAVxrxdlmb+wBQXN9sO9/vGwqbWDPjYN7JwxosBNJlNmg2L0YhkY
+ 1dLMuWbjhyY98pd1kue1Od4YIQ==
+X-Google-Smtp-Source: APXvYqzDq7uOxY4NjgPSre5B/TFHOi6ZL1hpPZUFQQ6FbqLBzaj9XaKLtw0yJDUtXZwxmvAQtpAwaQ==
+X-Received: by 2002:ac8:1b0a:: with SMTP id y10mr47723392qtj.91.1558130080605; 
+ Fri, 17 May 2019 14:54:40 -0700 (PDT)
+Received: from localhost.localdomain (c-73-69-118-222.hsd1.nh.comcast.net.
+ [73.69.118.222])
+ by smtp.gmail.com with ESMTPSA id n36sm6599813qtk.9.2019.05.17.14.54.38
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 17 May 2019 14:54:39 -0700 (PDT)
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+To: pasha.tatashin@soleen.com, jmorris@namei.org, sashal@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvdimm@lists.01.org, akpm@linux-foundation.org, mhocko@suse.com,
+ dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ keith.busch@intel.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
+ zwisler@kernel.org, thomas.lendacky@amd.com, ying.huang@intel.com,
+ fengguang.wu@intel.com, bp@suse.de, bhelgaas@google.com,
+ baiyaowei@cmss.chinamobile.com, tiwai@suse.de, jglisse@redhat.com,
+ david@redhat.com
+Subject: [v6 0/3] "Hotremove" persistent memory
+Date: Fri, 17 May 2019 17:54:35 -0400
+Message-Id: <20190517215438.6487-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4g9HpMaifC+Qe2RVbgL_qq9vQvjwr-Jw813xhxcviehYQ@mail.gmail.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,57 +77,93 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jeff Smits <jeff.smits@intel.com>, Matthew Wilcox <willy@infradead.org>,
- Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 17, 2019 at 10:28:48AM -0700, Dan Williams wrote:
-> On Fri, May 17, 2019 at 8:57 AM Kees Cook <keescook@chromium.org> wrote:
-> >
-> > On Fri, May 17, 2019 at 08:08:27AM -0700, Dan Williams wrote:
-> > > As far as I can see it's mostly check_heap_object() that is the
-> > > problem, so I'm open to finding a way to just bypass that sub-routine.
-> > > However, as far as I can see none of the other block / filesystem user
-> > > copy implementations submit to the hardened checks, like
-> > > bio_copy_from_iter(), and iov_iter_copy_from_user_atomic() . So,
-> > > either those need to grow additional checks, or the hardened copy
-> > > implementation is targeting single object copy use cases, not
-> > > necessarily block-I/O. Yes, Kees, please advise.
-> >
-> > The intention is mainly for copies that haven't had explicit bounds
-> > checking already performed on them, yes. Is there something getting
-> > checked out of the slab, or is it literally just the overhead of doing
-> > the "is this slab?" check that you're seeing?
-> 
-> It's literally the overhead of "is this slab?" since it needs to go
-> retrieve the struct page and read that potentially cold cacheline. In
-> the case where that page is on memory media that is higher latency
-> than DRAM we get the ~37% performance loss that Jeff measured.
+Changelog:
 
-Ah-ha! Okay, I understand now; thanks!
+v6
+- A few minor changes and added reviewed-by's.
+- Spent time studying lock ordering issue that was reported by Vishal
+  Verma, but that issue already exists in Linux, and can be reproduced
+  with exactly the same steps with ACPI memory hotplugging.
 
-> The path is via the filesystem ->write_iter() file operation. In the
-> DAX case the filesystem traps that path early, before submitting block
-> I/O, and routes it to the dax_iomap_actor() routine. That routine
-> validates that the logical file offset is within bounds of the file,
-> then it does a sector-to-pfn translation which validates that the
-> physical mapping is within bounds of the block device.
-> 
-> It seems dax_iomap_actor() is not a path where we'd be worried about
-> needing hardened user copy checks.
+v5
+- Addressed comments from Dan Williams: made remove_memory() to return
+  an error code, and use this function from dax.
 
-I would agree: I think the proposed patch makes sense. :)
+v4
+- Addressed comments from Dave Hansen
+
+v3
+- Addressed comments from David Hildenbrand. Don't release
+  lock_device_hotplug after checking memory status, and rename
+  memblock_offlined_cb() to check_memblock_offlined_cb()
+
+v2
+- Dan Williams mentioned that drv->remove() return is ignored
+  by unbind. Unbind always succeeds. Because we cannot guarantee
+  that memory can be offlined from the driver, don't even
+  attempt to do so. Simply check that every section is offlined
+  beforehand and only then proceed with removing dax memory.
+
+---
+
+Recently, adding a persistent memory to be used like a regular RAM was
+added to Linux. This work extends this functionality to also allow hot
+removing persistent memory.
+
+We (Microsoft) have an important use case for this functionality.
+
+The requirement is for physical machines with small amount of RAM (~8G)
+to be able to reboot in a very short period of time (<1s). Yet, there is
+a userland state that is expensive to recreate (~2G).
+
+The solution is to boot machines with 2G preserved for persistent
+memory.
+
+Copy the state, and hotadd the persistent memory so machine still has
+all 8G available for runtime. Before reboot, offline and hotremove
+device-dax 2G, copy the memory that is needed to be preserved to pmem0
+device, and reboot.
+
+The series of operations look like this:
+
+1. After boot restore /dev/pmem0 to ramdisk to be consumed by apps.
+   and free ramdisk.
+2. Convert raw pmem0 to devdax
+   ndctl create-namespace --mode devdax --map mem -e namespace0.0 -f
+3. Hotadd to System RAM
+   echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
+   echo dax0.0 > /sys/bus/dax/drivers/kmem/new_id
+   echo online_movable > /sys/devices/system/memoryXXX/state
+4. Before reboot hotremove device-dax memory from System RAM
+   echo offline > /sys/devices/system/memoryXXX/state
+   echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
+5. Create raw pmem0 device
+   ndctl create-namespace --mode raw  -e namespace0.0 -f
+6. Copy the state that was stored by apps to ramdisk to pmem device
+7. Do kexec reboot or reboot through firmware if firmware does not
+   zero memory in pmem0 region (These machines have only regular
+   volatile memory). So to have pmem0 device either memmap kernel
+   parameter is used, or devices nodes in dtb are specified.
+
+Pavel Tatashin (3):
+  device-dax: fix memory and resource leak if hotplug fails
+  mm/hotplug: make remove_memory() interface useable
+  device-dax: "Hotremove" persistent memory that is used like normal RAM
+
+ drivers/dax/dax-private.h      |  2 ++
+ drivers/dax/kmem.c             | 46 +++++++++++++++++++++---
+ include/linux/memory_hotplug.h |  8 +++--
+ mm/memory_hotplug.c            | 64 +++++++++++++++++++++++-----------
+ 4 files changed, 92 insertions(+), 28 deletions(-)
 
 -- 
-Kees Cook
+2.21.0
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
