@@ -2,85 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24ED21120
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 02:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14CC321129
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 02:12:45 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E026E2126CFBD;
-	Thu, 16 May 2019 17:02:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 259282126D822;
+	Thu, 16 May 2019 17:12:43 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=jane.chu@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=jstaron@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3F6AE21250462
- for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 17:02:01 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4H00CXw195918;
- Fri, 17 May 2019 00:01:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=wOL7Y2USzQ9HfFUmu2R99hBKeQx5shjfX/gs/NjLiiA=;
- b=goD8WGYWY/LAAhT5aiZ0jrWwtFG6K8R4fBt8JVShsdYUyQbaHl5ZLD9eG9+qjTQUq4mE
- p/NmNhQ20FZck+Gpa/+hT6rMeKX2wgb6IH5QT9FW53IxeSx8YNJf0N7n/0ZdkQHYEEUj
- vLp/vf8cLl6fC0zr5n+xc0dZYZQAtMMBB37k5cW8kg9DtBjrWIPQXKlvJzrBgdcnqWOz
- p8JItLa1I1LXbi5xwHHri0p09VjJhfQ2YFBbIQOAo5S1IDWzYsxuk/gpqhK7iPeP7qy1
- JCSbEAbJ/APZqXenrBVpFZnuEMK/zySp9evjKGVBOkyt9mQOEe3GfqI3q3mYiUCiZv4d Sw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by userp2130.oracle.com with ESMTP id 2sdntu6mtu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 May 2019 00:01:55 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4H01iJs127295;
- Fri, 17 May 2019 00:01:54 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by userp3020.oracle.com with ESMTP id 2shh5grkv2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 May 2019 00:01:54 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4H01peW018225;
- Fri, 17 May 2019 00:01:51 GMT
-Received: from [10.159.143.229] (/10.159.143.229)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 16 May 2019 17:01:51 -0700
-Subject: Re: [PATCH v2 0/6] mm/devm_memremap_pages: Fix page release race
-To: Dan Williams <dan.j.williams@intel.com>
-References: <155727335978.292046.12068191395005445711.stgit@dwillia2-desk3.amr.corp.intel.com>
- <059859ca-3cc8-e3ff-f797-1b386931c41e@deltatee.com>
- <17ada515-f488-d153-90ef-7a5cc5fefb0f@deltatee.com>
- <8a7cfa6b-6312-e8e5-9314-954496d2f6ce@oracle.com>
- <CAPcyv4i28tQMVrscQo31cfu1ZcMAb74iMkKYhu9iO_BjJvp+9A@mail.gmail.com>
- <6bd8319d-3b73-bb1e-5f41-94c580ba271b@oracle.com>
- <d699e312-0e88-30c7-8e50-ff624418d486@oracle.com>
- <CAPcyv4hujnGHtTwE78gvmEoY3Y6nLsd1AhJfeKMwHrxLvStf9w@mail.gmail.com>
-From: Jane Chu <jane.chu@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <d5227f37-4e44-169e-c54b-587c335514c1@oracle.com>
-Date: Thu, 16 May 2019 17:01:46 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ by ml01.01.org (Postfix) with ESMTPS id 4F5A621250448
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 17:12:41 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id d30so2351416pgm.7
+ for <linux-nvdimm@lists.01.org>; Thu, 16 May 2019 17:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=grI6nIUF/mMOBdv6LrPvHsdNVES0yai/LfFYIZ4bkWY=;
+ b=trB5X+v2CFHJR5/h5Ogo8pnGEbixSq/5SbMCfW0BvmcDG2zeRdzxHL4lknPMI8JsaG
+ 91o9aNowjUtiTckfyBLWY/pZJBmRERl33EcI9dq0zR0lXd+XHl45wImJtwD6qTmBiD3C
+ YvIdILOfNr02D208IUOgX7xjB1B80gLQERVK/akSkqvFqS79gmXpU/duephS4OxkvMCj
+ iFkaZbcWb+04sJYfOvlYsPNWM7LK/oP8HkDOryS8f1XdKVoMLZUlQ8YVZMbBQiMDnraB
+ fYXacmGWn0btEdYeftIv0rPSsHpeCBXpkkAwnfL+k2zqdhfQJ6WS6TGQ7DeGxI98ZyT1
+ d5aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=grI6nIUF/mMOBdv6LrPvHsdNVES0yai/LfFYIZ4bkWY=;
+ b=lixcndgL+UCfyZOXfBTUS2Ms7HNHwrcOx66JJvhDJ6rbME8QATcotA65TumEGt1z4u
+ qDeH7rbJq8fgkusZiri+txIiq4AZnRFI99Lapo02SbO6rx17/nVf38SJWByGw5cYh88A
+ RC8/IRm/FY8FEZg70juOUzML8yWIOM4zu0i0kB+NEqIARErXdztoog3VZNk7nHrufS+h
+ cSl4B7a80xqq/tZ75efz5q2Cf5XQRtMtT8s5UGjlPxrgi2Ujv28HGVSGDinwhnUSwO3v
+ hKCsMcg0qIEjmGnLWrx/S5NpDAh5kJlQ87DcTZIof0ifnwivoSV+k5MckF1VAbvEYUyq
+ 95tw==
+X-Gm-Message-State: APjAAAVRqMXJiGi3gEm1QT6WmLZA0V6WWMBO3rCnUHAGctj/r9LZMctV
+ j5huVAGSeOSCgGNm0oGd0O/grg==
+X-Google-Smtp-Source: APXvYqyv1iVBQbL6jyOdYGu6UtPQiwVBUuqofcSXUoK/ck1DMyLzSDgzGJaT2Ro5WErOmsiHR9V/gQ==
+X-Received: by 2002:a63:d816:: with SMTP id b22mr52619479pgh.16.1558051959951; 
+ Thu, 16 May 2019 17:12:39 -0700 (PDT)
+Received: from jstaron2.mtv.corp.google.com
+ ([2620:15c:202:201:b94f:2527:c39f:ca2d])
+ by smtp.gmail.com with ESMTPSA id a6sm7245768pgd.67.2019.05.16.17.12.37
+ (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+ Thu, 16 May 2019 17:12:39 -0700 (PDT)
+Subject: Re: [PATCH v9 2/7] virtio-pmem: Add virtio pmem driver
+To: Pankaj Gupta <pagupta@redhat.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, qemu-devel@nongnu.org,
+ linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org
+References: <20190514145422.16923-1-pagupta@redhat.com>
+ <20190514145422.16923-3-pagupta@redhat.com>
+From: =?UTF-8?Q?Jakub_Staro=c5=84?= <jstaron@google.com>
+Message-ID: <c06514fd-8675-ba74-4b7b-ff0eb4a91605@google.com>
+Date: Thu, 16 May 2019 17:12:36 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4hujnGHtTwE78gvmEoY3Y6nLsd1AhJfeKMwHrxLvStf9w@mail.gmail.com>
+In-Reply-To: <20190514145422.16923-3-pagupta@redhat.com>
 Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9259
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905160146
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9259
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905160146
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,62 +79,65 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: jack@suse.cz, mst@redhat.com, jasowang@redhat.com, david@fromorbit.com,
+ lcapitulino@redhat.com, adilger.kernel@dilger.ca, smbarber@google.com,
+ zwisler@kernel.org, aarcange@redhat.com, darrick.wong@oracle.com,
+ david@redhat.com, willy@infradead.org, hch@infradead.org, nilal@redhat.com,
+ lenb@kernel.org, kilobyte@angband.pl, riel@surriel.com, yuval.shaia@oracle.com,
+ stefanha@redhat.com, pbonzini@redhat.com, kwolf@redhat.com, tytso@mit.edu,
+ xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
+ imammedo@redhat.com
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 5/16/2019 2:51 PM, Dan Williams wrote:
+On 5/14/19 7:54 AM, Pankaj Gupta wrote:
+> +		if (!list_empty(&vpmem->req_list)) {
+> +			req_buf = list_first_entry(&vpmem->req_list,
+> +					struct virtio_pmem_request, list);
+> +			req_buf->wq_buf_avail = true;
+> +			wake_up(&req_buf->wq_buf);
+> +			list_del(&req_buf->list);
+Yes, this change is the right one, thank you!
 
-> On Thu, May 16, 2019 at 9:45 AM Jane Chu <jane.chu@oracle.com> wrote:
->> Hi,
->>
->> I'm able to reproduce the panic below by running two sets of ndctl
->> commands that actually serve legitimate purpose in parallel (unlike
->> the brute force experiment earlier), each set in a indefinite loop.
->> This time it takes about an hour to panic.  But I gather the cause
->> is probably the same: I've overlapped ndctl commands on the same
->> region.
->>
->> Could we add a check in nd_ioctl(), such that if there is
->> an ongoing ndctl command on a region, subsequent ndctl request
->> will fail immediately with something to the effect of EAGAIN?
->> The rationale being that kernel should protect itself against
->> user mistakes.
-> We do already have locking in the driver to prevent configuration
-> collisions. The problem looks to be broken assumptions about running
-> the device unregistration path in a separate thread outside the lock.
-> I suspect it may be incorrect assumptions about the userspace
-> visibility of the device relative to teardown actions. To be clear
-> this isn't the nd_ioctl() path this is the sysfs path.
+> +	 /*
+> +	  * If virtqueue_add_sgs returns -ENOSPC then req_vq virtual
+> +	  * queue does not have free descriptor. We add the request
+> +	  * to req_list and wait for host_ack to wake us up when free
+> +	  * slots are available.
+> +	  */
+> +	while ((err = virtqueue_add_sgs(vpmem->req_vq, sgs, 1, 1, req,
+> +					GFP_ATOMIC)) == -ENOSPC) {
+> +
+> +		dev_err(&vdev->dev, "failed to send command to virtio pmem" \
+> +			"device, no free slots in the virtqueue\n");
+> +		req->wq_buf_avail = false;
+> +		list_add_tail(&req->list, &vpmem->req_list);
+> +		spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+> +
+> +		/* A host response results in "host_ack" getting called */
+> +		wait_event(req->wq_buf, req->wq_buf_avail);
+> +		spin_lock_irqsave(&vpmem->pmem_lock, flags);
+> +	}
+> +	err1 = virtqueue_kick(vpmem->req_vq);
+> +	spin_unlock_irqrestore(&vpmem->pmem_lock, flags);
+> +
+> +	/*
+> +	 * virtqueue_add_sgs failed with error different than -ENOSPC, we can't
+> +	 * do anything about that.
+> +	 */
+> +	if (err || !err1) {
+> +		dev_info(&vdev->dev, "failed to send command to virtio pmem device\n");
+> +		err = -EIO;
+> +	} else {
+> +		/* A host repsonse results in "host_ack" getting called */
+> +		wait_event(req->host_acked, req->done);
+> +		err = req->ret;
+> +I confirm that the failures I was facing with the `-ENOSPC` error path are not present in v9.
 
-I see, thanks!
-
->
->> Also, sensing the subject fix is for a different problem, and has been
->> verified, I'm happy to see it in upstream, so we have a better
->> code base to digger deeper in terms of how the destructive ndctl
->> commands interacts to typical mission critical applications, include
->> but not limited to rdma.
-> Right, the crash signature you are seeing looks unrelated to the issue
-> being address in these patches which is device-teardown racing active
-> page pins. I'll start the investigation on the crash signature, but
-> again I don't think it reads on this fix series.
-
-Agreed on investigating the crash as separate issue, looking forward
-to see this patchset in upstream.
-
-Thanks!
--jane
-
+Best,
+Jakub Staron
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
