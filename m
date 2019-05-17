@@ -1,59 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783BC21A90
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 17:31:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2271321AFD
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 17:54:01 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7521121275462;
-	Fri, 17 May 2019 08:31:05 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 72DC521275462;
+	Fri, 17 May 2019 08:53:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
- envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
- [IPv6:2a00:1450:4864:20::543])
+ client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com;
+ envelope-from=keescook@chromium.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com
+ [IPv6:2607:f8b0:4864:20::434])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 94EFB21CB74A4
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 08:31:03 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id p27so11209418eda.1
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 08:31:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=o+nSlUDg8BrFt3rDs8b+CCqHMgbT+SghNKN3HnpgGGI=;
- b=ZAy1uX60oSFmzO3f13BCtkZJ9U2KdaKWgLCJnkwdwNW33ikMRdL1nvGKLSc+e7JACb
- oFNgulvpxMxsrkiNvb1AodwESeV+rKXnOqjrYuG9wZaM7woCP6RxeROMlCYe0insp2cr
- GJmPqb9AHUOiL7YDe8k4Wx3pJ/29XqZq24XH/R4nwd3c3tEZKBqV8DbTeaGhesl95iY3
- EJB8mpEh5sopSKDtk90RxzVzKD439bZojih/tXZ3pFu3vrWKSOW2K3S649obqmkiq1Tv
- CbqRWdVSM1+xKpMElUBmAkOY4c/JqR8NqyPNiFxYRM1jh+3kBu2Qhihlc6PNaHsh3bmc
- K8rg==
+ by ml01.01.org (Postfix) with ESMTPS id 755412126D82A
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 08:53:57 -0700 (PDT)
+Received: by mail-pf1-x434.google.com with SMTP id n19so3896719pfa.1
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 08:53:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=DeWYh2wXHt0SGoJqX0T0F4RONBrBgIxGbZCJ2kdSH6I=;
+ b=kP5ojcPfRjRGKbxsO4pF79WW/kSRZaLu97/2LsHLFWXmA56eKS99Mt+3JVChAIHpWm
+ /edz0dqcheadE+lCi2SLduXDhlV/p2PinTyIt4lzceJGxetX1fUXdKy/JmwgB4UYvVNK
+ Brmr62mRz4mVtq7sVy58XKgfbiMqAH/4IEa8o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=o+nSlUDg8BrFt3rDs8b+CCqHMgbT+SghNKN3HnpgGGI=;
- b=T/9RKkRt200rSMmmGH8v/Qv1lRibogsFgrqTjHoC7itx/uHLD57vfB0xvKr0z8Pc8K
- XC2zha3PMAShELQInvdoF5Yu3CGMBFY/9al3XYfBsCpIO7CtDJOgM7ajowaJ2/nc7XBl
- s504dOQBE5JkemNMiArwb7diEL63S+lVTVpeIO2ErR3I60TWKNspzqC8YnEVLM/za1t2
- f2shFej7NPD+VcC+dzDI9v5vBi582TUAE+6qaiQcJAXWBegRHieEbzCi2gzGikFa0JIt
- 6o8iodizr6oBkMK7D+n2nwyWGGQVV0g5Z99Wtvj6Q1cF8ygN4hA7xdC0wSONjGPiv+N6
- OC0w==
-X-Gm-Message-State: APjAAAXn5aoaNufzidmrOuxw/QAvKNrjjs50idd7XxldLPZ7AGI36t5S
- LtIEd4CTjtLlGv2kkvOPXCTy3SQ9S4pW4HQbc2/cQg==
-X-Google-Smtp-Source: APXvYqwXwfODEALGJFuNb3W4QPfr/h9bVR7PcifmjL3UGnN06dJDZ3z2obJpMmwiJzWB5jdtFFnrIQ5//ggESmGeztk=
-X-Received: by 2002:a50:ec87:: with SMTP id e7mr57884860edr.126.1558107061728; 
- Fri, 17 May 2019 08:31:01 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=DeWYh2wXHt0SGoJqX0T0F4RONBrBgIxGbZCJ2kdSH6I=;
+ b=KJ7dN5tYhWEEJkxk3+2a6T1h5oEI8TMnsLxsZuTp/qAY5sVLkMknD6VFWKtgysAcEu
+ oBkT5OBkX52jN3Lb5wmIVl5KX5DMn0r4+yw1Yn9mE354PSacYUlPm6C+m9BijEXJdOig
+ 8iC9R1lY4/c6pRADmnzm/QQ6PVPSdMGahh2J886AMnZMfpJU+vk6mBjELoT5xJu/eFSa
+ GXk3jLxq9Hf5cMEHBcyXcyE7Lj2viohPEA/m6BKs9CRrVoNKZ4zX4fkt1W0k7XairgV3
+ ie14EIZZVI8YPKbPp9DePkzKguGFpRx790XXuOogiHzGKsCs44cQQWv2RzvJGXGZQD8W
+ jWIw==
+X-Gm-Message-State: APjAAAVwVlu5M0Pc6LtX0C0pFAHwKkDxA9/Z/TMN8z81doNvVaF6Z/xC
+ z2Fi21KHrQAccbZ0TUVjPfDzGQ==
+X-Google-Smtp-Source: APXvYqyvXdwCR61IEEY49hfPBp0/QulW7H4+PkBv7xWEeGfEdGz2OO8yjJsd70M5DeFCJZN6lhnfqQ==
+X-Received: by 2002:a62:8893:: with SMTP id l141mr4899472pfd.261.1558108436771; 
+ Fri, 17 May 2019 08:53:56 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id m12sm5169259pgi.56.2019.05.17.08.53.55
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 17 May 2019 08:53:55 -0700 (PDT)
+Date: Fri, 17 May 2019 08:53:54 -0700
+From: Kees Cook <keescook@chromium.org>
+To: David Laight <David.Laight@ACULAB.COM>
+Subject: Re: [PATCH] libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
+Message-ID: <201905170845.1B4E2A03@keescook>
+References: <155805321833.867447.3864104616303535270.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190517084739.GB20550@quack2.suse.cz>
+ <2d8b1ba7890940bf8a512d4eef0d99b3@AcuMS.aculab.com>
 MIME-Version: 1.0
-References: <20190516224053.3655-1-vishal.l.verma@intel.com>
-In-Reply-To: <20190516224053.3655-1-vishal.l.verma@intel.com>
-From: Pavel Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 17 May 2019 11:30:50 -0400
-Message-ID: <CA+CK2bCEUjCNGHcfqh+4gxtf80eUkz_swNny6A2mkJwLi6Yn+Q@mail.gmail.com>
-Subject: Re: [ndctl PATCH v3 00/10] daxctl: add a new reconfigure-device
- command
-To: Vishal Verma <vishal.l.verma@intel.com>
+Content-Disposition: inline
+In-Reply-To: <2d8b1ba7890940bf8a512d4eef0d99b3@AcuMS.aculab.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,33 +69,64 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Jeff Smits <jeff.smits@intel.com>, Matthew Wilcox <willy@infradead.org>,
+ 'Jan Kara' <jack@suse.cz>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, May 16, 2019 at 6:40 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
->
-> Changes in v3:
->  - In daxctl_dev_get_mode(), remove the subsystem warning, detect dax-class
->    and simply make it return devdax
+On Fri, May 17, 2019 at 09:06:26AM +0000, David Laight wrote:
+> From: Jan Kara
+> > Sent: 17 May 2019 09:48
+> ...
+> > So this last paragraph is not obvious to me as check_copy_size() does a lot
+> > of various checks in CONFIG_HARDENED_USERCOPY case. I agree that some of
+> > those checks don't make sense for PMEM pages but I'd rather handle that by
+> > refining check_copy_size() and check_object_size() functions to detect and
+> > appropriately handle pmem pages rather that generally skip all the checks
+> > in pmem_copy_from/to_iter(). And yes, every check in such hot path is going
+> > to cost performance but that's what user asked for with
+> > CONFIG_HARDENED_USERCOPY... Kees?
+> 
+> Except that all the distros enable it by default.
+> So you get the performance cost whether you (as a user) want it or not.
 
-Hi Vishal,
+Note that it can be disabled on the kernel command line, but that seems
+like a last resort. :)
 
-I am still getting the same error as before:
+> 
+> I've changed some of our code to use __get_user() to avoid
+> these stupid overheads.
 
-# ndctl create-namespace --mode devdax --map mem -e namespace0.0 -f
-[  141.525873] dax0.0 initialised, 524288 pages in 7ms
-libdaxctl: __sysfs_device_parse: dax0.0: add_dev() failed
-...
+__get_user() skips even access_ok() checking too, so that doesn't seem
+like a good idea. Did you run access_ok() checks separately? (This
+generally isn't recommended.)
 
-I am building it via buildroot, and can share the initramfs file or
-anything that can help you with fixing this issue.
+The usercopy hardening is intended to only kick in when the copy size
+isn't a builtin constant -- it's attempting to do a bounds check on
+the size, with the pointer used to figure out what bounds checking is
+possible (basically "is this stack? check stack location/frame size"
+or "is this kmem cache? check the allocation size") and then do bounds
+checks from there. It tries to bail out early to avoid needless checking,
+so if there is some additional logic to be added to check_object_size()
+that is globally applicable, sure, let's do it.
 
-Thank you,
-Pavel
+I'm still not clear from this thread about the case that is getting
+tripped/slowed? If you're already doing bounds checks somewhere else
+and there isn't a chance for the pointer or size to change, then yeah,
+it seems safe to skip the usercopy size checks. But what's the actual
+code that is having a problem?
+
+-- 
+Kees Cook
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
