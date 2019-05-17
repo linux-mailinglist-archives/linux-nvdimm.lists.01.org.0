@@ -2,59 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A0421C60
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 19:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1B421C78
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 19:29:04 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E770721274216;
-	Fri, 17 May 2019 10:25:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7CB1021275462;
+	Fri, 17 May 2019 10:29:02 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com;
- envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com
- [IPv6:2a00:1450:4864:20::542])
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F3D3B212532E1
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 10:25:02 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id e24so11615325edq.6
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 10:25:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
+ by ml01.01.org (Postfix) with ESMTPS id 11DA62125330A
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 10:29:00 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id m204so5768405oib.0
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 10:29:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=KwxwPmgRkigdfsb2Wkb3RXFjzIqZbXV/qcyPm1HcIzw=;
- b=h+8kfPwUUJsUPbqk+gDlpRaeblBYE2fVW4Jl93m9L3oQKmknNCCYpao0UAd7gBMUks
- hPvzLnV7CdDh1/rNOvJ7v46flOg1P7P7cz6XzbCBCYHErwbjvAFHO8kAhowextIXP4K4
- wzyiG8+QdxKuZNzJAzTPlvWNsDUXruxytbe9VLr0sdzVqplAx0E4U5nvXrgAe4wbMxl6
- QCdQFy8r/2NXOgZ7Bbo8ZNYPwRVsY0c/6q0Ka037S0t7VHH6Oc7AMl/o6AVCy4Fohq/H
- 1yjg5kwJzWMAQJFZgNugwf1zgUhfH+A3fbYIKv1b5n1rqomPr0aaze9q+ODnrQSUr8zZ
- LBbg==
+ :cc; bh=DZg+iPjy57Sau/2Fv2Pd7vOTOxQm9eqfYjNJZeyrWIs=;
+ b=dJsV4x6IxLCgdPBEdcoEAdj7Zz5cN+2SMQigBpwwLCEnytqZSwk8zS1uvReMjOe4cj
+ Q24WakyMkK56lXo3uuygO/fpLNaDFdlHZ4HKZ89RdkRYdy7710qGfvhjYW0h2qLXROj5
+ Udi0Ja8h/Gn5ceLVB/Dd8MsMGQWpESB4ureyJ+HPhXQP+qv0PLzcH82NXB6OZOpHv/ol
+ jiw0rT7qOiQrtpVx/2IyOEEJ4tL4ltdsslvJg/tILl3oaaWcaKU303I9MpGYmzHslK2g
+ CI3AyFD5/HFMxWLbDcHtj5KFQRpwpFleoORC+4GRdyjxHEFM2eK+lztKXJz8ctBDuLma
+ Vs0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=KwxwPmgRkigdfsb2Wkb3RXFjzIqZbXV/qcyPm1HcIzw=;
- b=hK4V0VTyN+k74ISyvNu11UMTp/KKaNlu7VtRiuaj+UnEQ9YJ4es+rJkiedSr41HqZ9
- tRd9ZG1Top1wWsz4DqbfK0QVzsvSAQ66TRiQy7sI8H2W5LMly0pFpsmQm9VANlsdjUsA
- xw8CanGR3HvTMfoK1qU+DZ7aSdBvS92oagC8Xa39/itjKBRFT97ecSs4iZ8tSJRf+0M/
- t6UqSv1VR+zFVZTpz1etXoRIz34afiz1o/G4VDrX0vvVsHhjH1xuc1nbHiankGeNJVDF
- hSXT7roXLF5Z0Uxd+9iwLKkZdb+8BU5KuvKkGen4mPYHOrVgHj4jpxHBSV5UX5uUOt0j
- Fs6w==
-X-Gm-Message-State: APjAAAWADGeiO1ZmL8lB1mhCVk0iAli8XI5EUG4pHiB4COlyhi5COKmT
- r4AHhANa+K5LN76VPA2A0NGJ/R6kd2hOgYB39k8A1/gQzlY=
-X-Google-Smtp-Source: APXvYqwuyoSofrRAesux3TtniZbFtgeLGQpt/aaMsVyOQkqGRmuP2nmCLcnqBJYgiPbnM95G5HbA4GXqURtKw0f2SUc=
-X-Received: by 2002:a50:ec87:: with SMTP id e7mr58594743edr.126.1558113901537; 
- Fri, 17 May 2019 10:25:01 -0700 (PDT)
+ bh=DZg+iPjy57Sau/2Fv2Pd7vOTOxQm9eqfYjNJZeyrWIs=;
+ b=UxdxeHxgp1Mo0Lk5TAJ3pmDuwnjyH3ff/undV7ceIs3ZIBZ/r9VgVFVBWvF82PIv82
+ 4FfReX3sP8+b1izlWB0sltgjAa0JzUF2NvJ7Nhzuwg2aKKS50ALxMJx7QbF28Nccf+uN
+ FmyAxoXxVgVLcsvKTSnFtV34gLscxw/WqzU3cGEQI4GVsGnNTs0Oc8QVS2uXU3yU2f78
+ Z9hI+MPHUGGYLzhoCYuMXd15MQUI5KzajWD7GFCXR9WH3fno54+a/nhtjsm2M1ea0/nG
+ nvn3Fyh8b2meEfJnanoatZnknYk/az+6sNkjcu6lHeE4S/rTWIpbE/dA4nbjKy+AsKLh
+ y16A==
+X-Gm-Message-State: APjAAAXfRw5CTb2q2CMLKy8q482s8okyfe7R75Kei6SDwgj4Cw+b5DRS
+ dmOVXdafejTft0vaJLhk2UUIxgAPHpIqs37DICmUuw==
+X-Google-Smtp-Source: APXvYqyypz+lE+RFowzVzsoRyDPIn100uvW4JTOwzRg1F63adltFZC2q4xwOBjZ3OZAsNEKxmDVZopC2u4kD8gMpRhg=
+X-Received: by 2002:aca:4208:: with SMTP id p8mr16013695oia.105.1558114139313; 
+ Fri, 17 May 2019 10:28:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <CA+CK2bBeOJPnnyWBgj0CJ7E1z9GVWVg_EJAmDs07BSJDp3PYfQ@mail.gmail.com>
- <20190517143816.GO6836@dhcp22.suse.cz>
- <CA+CK2bA+2+HaV4GWNUNP04fjjTPKbEGQHSPrSrmY7HLD57au1Q@mail.gmail.com>
-In-Reply-To: <CA+CK2bA+2+HaV4GWNUNP04fjjTPKbEGQHSPrSrmY7HLD57au1Q@mail.gmail.com>
-From: Pavel Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 17 May 2019 13:24:50 -0400
-Message-ID: <CA+CK2bDq+2qu28afO__4kzO4=cnLH1P4DcHjc62rt0UtYwLm0A@mail.gmail.com>
-Subject: Re: NULL pointer dereference during memory hotremove
-To: Michal Hocko <mhocko@kernel.org>
+References: <155805321833.867447.3864104616303535270.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190517084739.GB20550@quack2.suse.cz>
+ <CAPcyv4iZZCgcC657ZOysBP9=1ejp3jfFj=VETVBPrgmfg7xUEw@mail.gmail.com>
+ <201905170855.8E2E1AC616@keescook>
+In-Reply-To: <201905170855.8E2E1AC616@keescook>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 17 May 2019 10:28:48 -0700
+Message-ID: <CAPcyv4g9HpMaifC+Qe2RVbgL_qq9vQvjwr-Jw813xhxcviehYQ@mail.gmail.com>
+Subject: Re: [PATCH] libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
+To: Kees Cook <keescook@chromium.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,50 +68,49 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "sashal@kernel.org" <sashal@kernel.org>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, "Wu,
- Fengguang" <fengguang.wu@intel.com>, "david@redhat.com" <david@redhat.com>,
- "tiwai@suse.de" <tiwai@suse.de>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Huang,
- Ying" <ying.huang@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "jmorris@namei.org" <jmorris@namei.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "jglisse@redhat.com" <jglisse@redhat.com>,
- "baiyaowei@cmss.chinamobile.com" <baiyaowei@cmss.chinamobile.com>,
- "zwisler@kernel.org" <zwisler@kernel.org>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "bp@suse.de" <bp@suse.de>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: Jeff Smits <jeff.smits@intel.com>, Matthew Wilcox <willy@infradead.org>,
+ Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ stable <stable@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 17, 2019 at 1:22 PM Pavel Tatashin
-<pasha.tatashin@soleen.com> wrote:
+On Fri, May 17, 2019 at 8:57 AM Kees Cook <keescook@chromium.org> wrote:
 >
-> On Fri, May 17, 2019 at 10:38 AM Michal Hocko <mhocko@kernel.org> wrote:
-> >
-> > On Fri 17-05-19 10:20:38, Pavel Tatashin wrote:
-> > > This panic is unrelated to circular lock issue that I reported in a
-> > > separate thread, that also happens during memory hotremove.
-> > >
-> > > xakep ~/x/linux$ git describe
-> > > v5.1-12317-ga6a4b66bd8f4
-> >
-> > Does this happen on 5.0 as well?
+> On Fri, May 17, 2019 at 08:08:27AM -0700, Dan Williams wrote:
+> > As far as I can see it's mostly check_heap_object() that is the
+> > problem, so I'm open to finding a way to just bypass that sub-routine.
+> > However, as far as I can see none of the other block / filesystem user
+> > copy implementations submit to the hardened checks, like
+> > bio_copy_from_iter(), and iov_iter_copy_from_user_atomic() . So,
+> > either those need to grow additional checks, or the hardened copy
+> > implementation is targeting single object copy use cases, not
+> > necessarily block-I/O. Yes, Kees, please advise.
 >
-> Yes, just reproduced it on 5.0 as well. Unfortunately, I do not have a
-> script, and have to do it manually, also it does not happen every
-> time, it happened on 3rd time for me.
+> The intention is mainly for copies that haven't had explicit bounds
+> checking already performed on them, yes. Is there something getting
+> checked out of the slab, or is it literally just the overhead of doing
+> the "is this slab?" check that you're seeing?
 
-Actually, sorry, I have not tested 5.0, I compiled 5.0, but my script
-still tested v5.1-12317-ga6a4b66bd8f4 build. I will report later if I
-am able to reproduce it on 5.0.
+It's literally the overhead of "is this slab?" since it needs to go
+retrieve the struct page and read that potentially cold cacheline. In
+the case where that page is on memory media that is higher latency
+than DRAM we get the ~37% performance loss that Jeff measured.
 
-Pasha
+The path is via the filesystem ->write_iter() file operation. In the
+DAX case the filesystem traps that path early, before submitting block
+I/O, and routes it to the dax_iomap_actor() routine. That routine
+validates that the logical file offset is within bounds of the file,
+then it does a sector-to-pfn translation which validates that the
+physical mapping is within bounds of the block device.
+
+It seems dax_iomap_actor() is not a path where we'd be worried about
+needing hardened user copy checks.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
