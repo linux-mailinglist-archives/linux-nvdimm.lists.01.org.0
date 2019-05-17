@@ -2,48 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5525A21CF4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 19:58:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F372421D23
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 May 2019 20:10:21 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 591BE21250454;
-	Fri, 17 May 2019 10:58:43 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 10DA12126CFB5;
+	Fri, 17 May 2019 11:10:20 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sboyd@kernel.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com
+ [IPv6:2a00:1450:4864:20::543])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5CDEF2118DC27
- for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 10:58:42 -0700 (PDT)
-Received: from kernel.org (unknown [104.132.0.74])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id F3396216FD;
- Fri, 17 May 2019 17:58:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1558115922;
- bh=6wuDO6C2j5ISFUHqCZvEZgXgmSk5Y1yp2LQuMtU2X3c=;
- h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
- b=sDtAwiFiKEC7wD2Ufzw/udB7/5BWIyScyUaJXH5U6VCsDwlqQoDM/P4m+X1+94VzN
- UMN8BtoINRqIUVkug6vKVri3xHvdA3/CbFFhbNpR4pZcBbxJrTK6xZUmI6Dk+l/a4V
- 1dq1lsjIu2TctOk9kzXv+Q2ILY/h6f897iZjhR+M=
+ by ml01.01.org (Postfix) with ESMTPS id 97FD821250447
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 11:10:17 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id j12so11781682eds.7
+ for <linux-nvdimm@lists.01.org>; Fri, 17 May 2019 11:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0RAJ8dFkgMXY5OQlUUJ6T1gPWQG4AjdkRmpcqOy8B8o=;
+ b=N6AVNHwED44tjfNeBflxf/4LK+NXnqWsv17JWf6m0n56Z8TxPCSc5PmhLfxKM9WFrq
+ YbKovej0m6JAq0uY+V0fukul3/8snNc7VVGW3uaJCYOv9kESzesDs34u+v4WAStgHP3c
+ sBeltk1m46EU7g2kMwLBL1Xlc9O9R/OxZjl/+/qkgn3IyGRlBAhWR9BgYqAdPvWtybzJ
+ IgFGR1LpSroJPjuo0A0Qc1QBzB29kPQIib6uBuK0f/3Wx8viB4rvGm7IMOZPK6bLo+in
+ ON8O8uP2Me8M1QHTOgHYyJqE46rojKl0mOXRMk3JP5y+xtGruIDjYea+Vte5dqNdk7pj
+ Jbjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0RAJ8dFkgMXY5OQlUUJ6T1gPWQG4AjdkRmpcqOy8B8o=;
+ b=CaQmbEKv+cZ5QsHHgN7+JaPkMflH3FmdtmWefZJqPHDqf5I9+NQjQMpFiMaJsyS9B3
+ Ouj2yLxEwubSh31SqS1nziVXC0sGy5RhpHxL65qo2XIcXHriGYbim1roRkLKuFHBfz0q
+ JlDQCaq6OVCcEU2gJeHp1799Idv5LRCcpLr6yu6bMMvQm1CPO/ebxqihCR68Ie90FY6g
+ CH1zpm84ZCR+wDLuVzaqHT/BCKKG5dOUKxELTDcnNZ4VcLlDmi3+WA+TgrhLTMoPyHTF
+ 4wRLoubKXz6sr/sfqUG1fkoC3x+72rLmr5TFH03X2h9GJxuYHD/SvbNBj3m9Sqf7CmOH
+ 1e7Q==
+X-Gm-Message-State: APjAAAXug2AjNdRWJPpyGmC96eJ34XsD6Ow71BhWEplPpQ5v+PnnXM8c
+ 4I39eyLOgKQqGJjX3e+KPqMW766c7vzO632A38lqKw==
+X-Google-Smtp-Source: APXvYqy265H8YTRxW0fmCC2I6ZxM8EIDTEHONdgksak2H40jR89a0QYHQFohoS/iSUfnFLtzqxC5+RMenGd+voNYkNc=
+X-Received: by 2002:a50:ee01:: with SMTP id g1mr58841265eds.263.1558116615828; 
+ Fri, 17 May 2019 11:10:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190514221711.248228-5-brendanhiggins@google.com>
-References: <20190514221711.248228-1-brendanhiggins@google.com>
- <20190514221711.248228-5-brendanhiggins@google.com>
-Subject: Re: [PATCH v4 04/18] kunit: test: add kunit_stream a std::stream like
- logger
-From: Stephen Boyd <sboyd@kernel.org>
-To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
- gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
- kieran.bingham@ideasonboard.com, mcgrof@kernel.org, peterz@infradead.org,
- robh@kernel.org, shuah@kernel.org, tytso@mit.edu,
- yamada.masahiro@socionext.com
-User-Agent: alot/0.8.1
-Date: Fri, 17 May 2019 10:58:41 -0700
-Message-Id: <20190517175841.F3396216FD@mail.kernel.org>
+References: <20190502184337.20538-1-pasha.tatashin@soleen.com>
+ <20190502184337.20538-3-pasha.tatashin@soleen.com>
+ <cac721ed-c404-19d1-71d1-37c66df9b2a8@intel.com>
+ <CAPcyv4greisKBSorzQWebcVOf2AqUH6DwbvNKMW0MQ5bCwYZrw@mail.gmail.com>
+In-Reply-To: <CAPcyv4greisKBSorzQWebcVOf2AqUH6DwbvNKMW0MQ5bCwYZrw@mail.gmail.com>
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 17 May 2019 14:10:04 -0400
+Message-ID: <CA+CK2bAeLJFRDTNnUrz_JCP5DVqM2N8+09q1TX7+OCE7b5v+1A@mail.gmail.com>
+Subject: Re: [v5 2/3] mm/hotplug: make remove_memory() interface useable
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,220 +67,90 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
- dan.carpenter@oracle.com, devicetree@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
- rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
- richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
- daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>,
+ Takashi Iwai <tiwai@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Linux MM <linux-mm@kvack.org>, Yaowei Bai <baiyaowei@cmss.chinamobile.com>,
+ Ross Zwisler <zwisler@kernel.org>, Sasha Levin <sashal@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, James Morris <jmorris@namei.org>,
+ "Huang, Ying" <ying.huang@intel.com>, Borislav Petkov <bp@suse.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Dave Hansen <dave.hansen@intel.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Fengguang Wu <fengguang.wu@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Quoting Brendan Higgins (2019-05-14 15:16:57)
-> diff --git a/kunit/kunit-stream.c b/kunit/kunit-stream.c
-> new file mode 100644
-> index 0000000000000..1884f1b550888
-> --- /dev/null
-> +++ b/kunit/kunit-stream.c
-> @@ -0,0 +1,152 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * C++ stream style string formatter and printer used in KUnit for outputting
-> + * KUnit messages.
-> + *
-> + * Copyright (C) 2019, Google LLC.
-> + * Author: Brendan Higgins <brendanhiggins@google.com>
-> + */
-> +
-> +#include <kunit/test.h>
-> +#include <kunit/kunit-stream.h>
-> +#include <kunit/string-stream.h>
-> +
-> +static const char *kunit_stream_get_level(struct kunit_stream *this)
-> +{
-> +       unsigned long flags;
-> +       const char *level;
-> +
-> +       spin_lock_irqsave(&this->lock, flags);
-> +       level = this->level;
-> +       spin_unlock_irqrestore(&this->lock, flags);
-> +
-> +       return level;
+Hi Dan,
 
-Please remove this whole function and inline it to the one call-site.
+Thank you very much for your review, my comments below:
 
-> +}
-> +
-> +void kunit_stream_set_level(struct kunit_stream *this, const char *level)
-> +{
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&this->lock, flags);
-> +       this->level = level;
-> +       spin_unlock_irqrestore(&this->lock, flags);
+On Mon, May 6, 2019 at 2:01 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Mon, May 6, 2019 at 10:57 AM Dave Hansen <dave.hansen@intel.com> wrote:
+> >
+> > > -static inline void remove_memory(int nid, u64 start, u64 size) {}
+> > > +static inline bool remove_memory(int nid, u64 start, u64 size)
+> > > +{
+> > > +     return -EBUSY;
+> > > +}
+> >
+> > This seems like an appropriate place for a WARN_ONCE(), if someone
+> > manages to call remove_memory() with hotplug disabled.
 
-I don't get the locking here. What are we protecting against? Are tests
-running in parallel using the same kunit_stream? If so, why is the level
-changeable in one call and then adding strings is done in a different
-function call? It would make sense to combine the level setting and
-string adding so that it's one atomic operation if it's truly a parallel
-operation, or remove the locking entirely.
+I decided not to do WARN_ONCE(), in all likelihood compiler will
+simply optimize this function out, but with WARN_ONCE() some traces of
+it will remain.
 
-> +}
-> +
-> +void kunit_stream_add(struct kunit_stream *this, const char *fmt, ...)
-> +{
-> +       va_list args;
-> +       struct string_stream *stream = this->internal_stream;
-> +
-> +       va_start(args, fmt);
-> +
-> +       if (string_stream_vadd(stream, fmt, args) < 0)
-> +               kunit_err(this->test, "Failed to allocate fragment: %s\n", fmt);
-> +
-> +       va_end(args);
-> +}
-> +
-> +void kunit_stream_append(struct kunit_stream *this,
-> +                               struct kunit_stream *other)
-> +{
-> +       struct string_stream *other_stream = other->internal_stream;
-> +       const char *other_content;
-> +
-> +       other_content = string_stream_get_string(other_stream);
-> +
-> +       if (!other_content) {
-> +               kunit_err(this->test,
-> +                         "Failed to get string from second argument for appending.\n");
-> +               return;
-> +       }
-> +
-> +       kunit_stream_add(this, other_content);
-> +}
-> +
-> +void kunit_stream_clear(struct kunit_stream *this)
-> +{
-> +       string_stream_clear(this->internal_stream);
-> +}
-> +
-> +void kunit_stream_commit(struct kunit_stream *this)
+> >
+> > BTW, I looked and can't think of a better errno, but -EBUSY probably
+> > isn't the best error code, right?
 
-Should this be rather called kunit_stream_flush()?
+-EBUSY is the only error that is returned in case of error by real
+remove_memory(), so I think it is OK to keep it here.
 
-> +{
-> +       struct string_stream *stream = this->internal_stream;
-> +       struct string_stream_fragment *fragment;
-> +       const char *level;
-> +       char *buf;
-> +
-> +       level = kunit_stream_get_level(this);
-> +       if (!level) {
-> +               kunit_err(this->test,
-> +                         "Stream was committed without a specified log level.\n");
+> >
+> > > -void remove_memory(int nid, u64 start, u64 size)
+> > > +/**
+> > > + * remove_memory
+> > > + * @nid: the node ID
+> > > + * @start: physical address of the region to remove
+> > > + * @size: size of the region to remove
+> > > + *
+> > > + * NOTE: The caller must call lock_device_hotplug() to serialize hotplug
+> > > + * and online/offline operations before this call, as required by
+> > > + * try_offline_node().
+> > > + */
+> > > +void __remove_memory(int nid, u64 start, u64 size)
+> > >  {
+> > > +
+> > > +     /*
+> > > +      * trigger BUG() is some memory is not offlined prior to calling this
+> > > +      * function
+> > > +      */
+> > > +     if (try_remove_memory(nid, start, size))
+> > > +             BUG();
+> > > +}
+> >
+> > Could we call this remove_offline_memory()?  That way, it makes _some_
+> > sense why we would BUG() if the memory isn't offline.
 
-Drop the full-stop?
+It is this particular code path, the second one: remove_memory(),
+actually tries to remove memory and returns failure if it can't. So, I
+think the current name is OK.
 
-> +               level = KERN_ERR;
-> +               kunit_stream_set_level(this, level);
-> +       }
-> +
-> +       buf = string_stream_get_string(stream);
-> +       if (!buf) {
-> +               kunit_err(this->test,
+>
+> Please WARN() instead of BUG() because failing to remove memory should
+> not be system fatal.
 
-Can you grow a local variable for 'this->test'? It's used many times.
+As mentioned earlier, I will keep BUG(), because existing code does
+that, and there is no good handling of this code to return on error.
 
-Also, 'this' is not very kernel idiomatic. We usually name variables by
-their type instead of 'this' which is a keyword in other languages.
-Perhaps it could be named 'kstream'?
-
-> +                        "Could not allocate buffer, dumping stream:\n");
-> +               list_for_each_entry(fragment, &stream->fragments, node) {
-> +                       kunit_err(this->test, fragment->fragment);
-> +               }
-> +               kunit_err(this->test, "\n");
-> +               goto cleanup;
-> +       }
-> +
-> +       kunit_printk(level, this->test, buf);
-> +       kfree(buf);
-> +
-> +cleanup:
-> +       kunit_stream_clear(this);
-> +}
-> +
-> +static int kunit_stream_init(struct kunit_resource *res, void *context)
-> +{
-> +       struct kunit *test = context;
-> +       struct kunit_stream *stream;
-> +
-> +       stream = kzalloc(sizeof(*stream), GFP_KERNEL);
-
-Of course, here it's called 'stream', so maybe it should be 'kstream'
-here too.
-
-> +       if (!stream)
-> +               return -ENOMEM;
-> +
-> +       res->allocation = stream;
-> +       stream->test = test;
-> +       spin_lock_init(&stream->lock);
-> +       stream->internal_stream = new_string_stream();
-
-Can new_string_stream() be renamed to alloc_string_stream()? Sorry, I
-just see so much C++ isms in here it's hard to read from the kernel
-developer perspective.
-
-> +
-> +       if (!stream->internal_stream) {
-
-Nitpick: Please join this to the "allocation" event above instead of
-keeping it separated.
-
-> +               kfree(stream);
-> +               return -ENOMEM;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
-> +static void kunit_stream_free(struct kunit_resource *res)
-> +{
-> +       struct kunit_stream *stream = res->allocation;
-> +
-> +       if (!string_stream_is_empty(stream->internal_stream)) {
-> +               kunit_err(stream->test,
-> +                        "End of test case reached with uncommitted stream entries.\n");
-> +               kunit_stream_commit(stream);
-> +       }
-> +
-> +       destroy_string_stream(stream->internal_stream);
-> +       kfree(stream);
-> +}
-> +
-> +struct kunit_stream *kunit_new_stream(struct kunit *test)
-> +{
-> +       struct kunit_resource *res;
-> +
-> +       res = kunit_alloc_resource(test,
-> +                                  kunit_stream_init,
-> +                                  kunit_stream_free,
-> +                                  test);
-> +
-> +       if (res)
-> +               return res->allocation;
-> +       else
-> +               return NULL;
-
-Don't have if (...) return ...; else return ..., just return instead of
-else.
-
+Thank you,
+Pavel
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
