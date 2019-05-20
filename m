@@ -1,66 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D619D23AB8
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 May 2019 16:44:44 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72BB23C5C
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 May 2019 17:41:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E27C82126579F;
-	Mon, 20 May 2019 07:44:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9CE4C21A07093;
+	Mon, 20 May 2019 08:41:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
- envelope-from=miklos@szeredi.hu; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
+ client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com
+ [IPv6:2607:f8b0:4864:20::32b])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F14EB212604ED
- for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 07:44:41 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id w13so4175630wru.11
- for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 07:44:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szeredi.hu; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=VceX0inl+xJT/Seg5xxtqBb9C3XXmdQzMS78vGAaEms=;
- b=FcuGOrg5reg1S0l1itKbd/lBbVqFPDu+TpXhYmKxOt4riBJtk788L6qVrB2kNxtIjT
- wChiwClJr+wp9uSjs+mxOmHyqFBahIdNrjOemwQVoibbcG1ucDEGvhyaULJH486swnpG
- M7azSxVKQItYeJojw0rwBFxFvde4EN/0byzg0=
+ by ml01.01.org (Postfix) with ESMTPS id 6FE6A211EDB56
+ for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 08:41:01 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id g18so13369764otj.11
+ for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 08:41:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=5QSUm6/xL4WGvvJmVrGCi+MUsTk2A8AVb5uoylgpYm0=;
+ b=yPev5JIATuPBAUeewEekviqNSsYEYMPVj34Ea7J3VHdDWfkJJm/Lss37NJzZXuSbcC
+ YRWqEDzGwnKyGJ7cfmBUCwLnOU/8qZso7KUyoxCpR1o8jo9s6hM/D8+pnibzSAEiHUth
+ qmci2Y5QYlrrWb6PkGnzvPjqxjjWW/5HxgR5KoDHlQ/Byo2F5xDeeHmYv19+at8R+TMZ
+ tu+Vu2APi20B80NNxCZHFz3fpj9rYA8GEe82GaUHJ8I6t+MvUs+Ar9a+Vgx2EB76jf89
+ ErQzIHthFAPF1mpVWGOYtN71zpeES9K3vrWlKWx5qmwTMgZWKug91Di3ce4BOAyUnJfW
+ dKnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=VceX0inl+xJT/Seg5xxtqBb9C3XXmdQzMS78vGAaEms=;
- b=VGHCRHLjdjcB8Wb6zU2sVf1mym7vCHIfFhv6701uA2NDzOoNE9nRolZw0wGWlvCX2+
- yHqijVe/aYdKkc4I16ALX3gUrk0WB+coQySk5MM9inePcoUclA7e8LQveUu+iKefiY3H
- jqIQwNpSIrjEzmDjh4TEyXRq5N8/asaryHdWamT+rmoYuX/ETrBneJvsh8vS8bAe3+rG
- 2FGEZEw7S5aAuZ+6aJAadrAoBRB6/4XX0Ktn0vUhSoRssHW5stxrRIEnJOMjYEvva0vh
- HOYf5nL+s+26LiOViCTWfiVwvPD0wYb38R3pMmx0fNjk5F9+vnWdZfSV9fHGia+BaHz5
- Zw9g==
-X-Gm-Message-State: APjAAAWH49r5g8HheWW+MkO3Rb28CuJMaziS4E3DvTq6OwSsAfpvtdK2
- eXKj8WQca644Hs5u37N7/YqXhg==
-X-Google-Smtp-Source: APXvYqwUDHLwWvqd8kuS304lx0z2yG9BSoE7TWQycdCiYRe7kl6qYXKvUo5n5KhEpN6Ls7rcR5k6/A==
-X-Received: by 2002:adf:f487:: with SMTP id l7mr47404596wro.127.1558363480523; 
- Mon, 20 May 2019 07:44:40 -0700 (PDT)
-Received: from localhost.localdomain (catv-212-96-48-140.catv.broadband.hu.
- [212.96.48.140])
- by smtp.gmail.com with ESMTPSA id y184sm18241241wmg.7.2019.05.20.07.44.38
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 20 May 2019 07:44:39 -0700 (PDT)
-Date: Mon, 20 May 2019 16:44:37 +0200
-From: Miklos Szeredi <miklos@szeredi.hu>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH v2 02/30] fuse: Clear setuid bit even in cache=never path
-Message-ID: <20190520144437.GB24093@localhost.localdomain>
-References: <20190515192715.18000-1-vgoyal@redhat.com>
- <20190515192715.18000-3-vgoyal@redhat.com>
- <20190520144137.GA24093@localhost.localdomain>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=5QSUm6/xL4WGvvJmVrGCi+MUsTk2A8AVb5uoylgpYm0=;
+ b=ZffoLLKJq712wxwveF0JVi9iM3qMvySrgCx2cvPpMUKhjS9vk8CD5ML306i7pFvWO/
+ Eb5hkkUGBsbsHH2+FaKbf964+kGidHa2MnW84WrkVf0CTzWfRH49Ou6TS3UcArbbkULj
+ oGa5XCGoPb4TCsNpvL/Vr7AIyUa84hPkuej/EhIbaK5TxoqYlSbBXzkq3iyv732IwLz5
+ 6avJQbSJsINW0ZNpTo6Qu8wBf3i/S7uMn2TtLhO2x17ePyxkSboS0drI1uG3KVzavm2v
+ SaQUu2BmSBuy8VqP7CK79tKllb2Or6rylnfk5ShCLIiPj1wPB+MWpZnxa6pVnKcggWHH
+ r6rA==
+X-Gm-Message-State: APjAAAVyi1E7EpWr52v48ptTOwX68tyyzppa5xiggUy5umpP6FKLecME
+ 1vJYuh3B9Ae0XvhDsChj20UFZbV5tzpms59zn7bMtA==
+X-Google-Smtp-Source: APXvYqxs3KuEEqHCDOtKW83Hc+3/Eh7qrrFqOEiop9JaJSWQJfM8wgC/rkaym0C4K7iuUNGIYwsqH+mgvaYu198CCOk=
+X-Received: by 2002:a05:6830:1182:: with SMTP id
+ u2mr34065267otq.71.1558366859535; 
+ Mon, 20 May 2019 08:40:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="KsGdsel6WgEHnImy"
-Content-Disposition: inline
-In-Reply-To: <20190520144137.GA24093@localhost.localdomain>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <155805321833.867447.3864104616303535270.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190517084739.GB20550@quack2.suse.cz>
+ <CAPcyv4iZZCgcC657ZOysBP9=1ejp3jfFj=VETVBPrgmfg7xUEw@mail.gmail.com>
+ <201905170855.8E2E1AC616@keescook>
+ <CAPcyv4g9HpMaifC+Qe2RVbgL_qq9vQvjwr-Jw813xhxcviehYQ@mail.gmail.com>
+ <201905171225.29F9564BA2@keescook>
+ <CAPcyv4iSeUPWFeSZW-dmYz9TnWhqVCx1Y1VjtUv+125_ZSQaYg@mail.gmail.com>
+ <20190520075232.GA30972@quack2.suse.cz>
+In-Reply-To: <20190520075232.GA30972@quack2.suse.cz>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 20 May 2019 08:40:48 -0700
+Message-ID: <CAPcyv4hwiKGDtkT7-r8Ei3kOQBMA3LwDGBNM9H8N6HC5fxi6tw@mail.gmail.com>
+Subject: Re: [PATCH] libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
+To: Jan Kara <jack@suse.cz>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,189 +73,48 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-nvdimm@lists.01.org, dgilbert@redhat.com,
- linux-kernel@vger.kernel.org, stefanha@redhat.com,
- linux-fsdevel@vger.kernel.org, swhiteho@redhat.com
+Cc: Jeff Smits <jeff.smits@intel.com>, Matthew Wilcox <willy@infradead.org>,
+ Kees Cook <keescook@chromium.org>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ stable <stable@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+On Mon, May 20, 2019 at 12:52 AM Jan Kara <jack@suse.cz> wrote:
+>
+> On Sat 18-05-19 21:46:03, Dan Williams wrote:
+> > On Fri, May 17, 2019 at 12:25 PM Kees Cook <keescook@chromium.org> wrote:
+> > > On Fri, May 17, 2019 at 10:28:48AM -0700, Dan Williams wrote:
+> > > > It seems dax_iomap_actor() is not a path where we'd be worried about
+> > > > needing hardened user copy checks.
+> > >
+> > > I would agree: I think the proposed patch makes sense. :)
+> >
+> > Sounds like an acked-by to me.
+>
+> Yeah, if Kees agrees, I'm fine with skipping the checks as well. I just
+> wanted that to be clarified. Also it helped me that you wrote:
+>
+> That routine (dax_iomap_actor()) validates that the logical file offset is
+> within bounds of the file, then it does a sector-to-pfn translation which
+> validates that the physical mapping is within bounds of the block device.
+>
+> That is more specific than "dax_iomap_actor() takes care of necessary
+> checks" which was in the changelog. And the above paragraph helped me
+> clarify which checks in dax_iomap_actor() you think replace those usercopy
+> checks. So I think it would be good to add that paragraph to those
+> copy_from_pmem() functions as a comment just in case we are wondering in
+> the future why we are skipping the checks... Also feel free to add:
+>
+> Acked-by: Jan Kara <jack@suse.cz>
 
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Mon, May 20, 2019 at 04:41:37PM +0200, Miklos Szeredi wrote:
-> On Wed, May 15, 2019 at 03:26:47PM -0400, Vivek Goyal wrote:
-> > If fuse daemon is started with cache=never, fuse falls back to direct IO.
-> > In that write path we don't call file_remove_privs() and that means setuid
-> > bit is not cleared if unpriviliged user writes to a file with setuid bit set.
-> > 
-> > pjdfstest chmod test 12.t tests this and fails.
-> 
-> I think better sulution is to tell the server if the suid bit needs to be
-> removed, so it can do so in a race free way.
-> 
-> Here's the kernel patch, and I'll reply with the libfuse patch.
-
-Here are the patches for libfuse and passthrough_ll.
-
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="libfuse-add-fuse_write_kill_priv.patch"
-
----
- include/fuse_common.h |    5 ++++-
- include/fuse_kernel.h |    2 ++
- lib/fuse_lowlevel.c   |   12 ++++++++----
- 3 files changed, 14 insertions(+), 5 deletions(-)
-
---- a/include/fuse_common.h
-+++ b/include/fuse_common.h
-@@ -64,8 +64,11 @@ struct fuse_file_info {
- 	   May only be set in ->release(). */
- 	unsigned int flock_release : 1;
- 
-+	/* Kill suid and sgid bits on write */
-+	unsigned int write_kill_priv : 1;
-+
- 	/** Padding.  Do not use*/
--	unsigned int padding : 27;
-+	unsigned int padding : 26;
- 
- 	/** File handle.  May be filled in by filesystem in open().
- 	    Available in all other file operations */
---- a/include/fuse_kernel.h
-+++ b/include/fuse_kernel.h
-@@ -304,9 +304,11 @@ struct fuse_file_lock {
-  *
-  * FUSE_WRITE_CACHE: delayed write from page cache, file handle is guessed
-  * FUSE_WRITE_LOCKOWNER: lock_owner field is valid
-+ * FUSE_WRITE_KILL_PRIV: kill suid and sgid bits
-  */
- #define FUSE_WRITE_CACHE	(1 << 0)
- #define FUSE_WRITE_LOCKOWNER	(1 << 1)
-+#define FUSE_WRITE_KILL_PRIV	(1 << 2)
- 
- /**
-  * Read flags
---- a/lib/fuse_lowlevel.c
-+++ b/lib/fuse_lowlevel.c
-@@ -1315,12 +1315,14 @@ static void do_write(fuse_req_t req, fus
- 
- 	memset(&fi, 0, sizeof(fi));
- 	fi.fh = arg->fh;
--	fi.writepage = (arg->write_flags & 1) != 0;
-+	fi.writepage = (arg->write_flags & FUSE_WRITE_CACHE) != 0;
-+	fi.write_kill_priv = (arg->write_flags & FUSE_WRITE_KILL_PRIV) != 0;
- 
- 	if (req->se->conn.proto_minor < 9) {
- 		param = ((char *) arg) + FUSE_COMPAT_WRITE_IN_SIZE;
- 	} else {
--		fi.lock_owner = arg->lock_owner;
-+		if (arg->write_flags & FUSE_WRITE_LOCKOWNER)
-+			fi.lock_owner = arg->lock_owner;
- 		fi.flags = arg->flags;
- 		param = PARAM(arg);
- 	}
-@@ -1345,7 +1347,8 @@ static void do_write_buf(fuse_req_t req,
- 
- 	memset(&fi, 0, sizeof(fi));
- 	fi.fh = arg->fh;
--	fi.writepage = arg->write_flags & 1;
-+	fi.writepage = (arg->write_flags & FUSE_WRITE_CACHE) != 0;
-+	fi.write_kill_priv = (arg->write_flags & FUSE_WRITE_KILL_PRIV) != 0;
- 
- 	if (se->conn.proto_minor < 9) {
- 		bufv.buf[0].mem = ((char *) arg) + FUSE_COMPAT_WRITE_IN_SIZE;
-@@ -1353,7 +1356,8 @@ static void do_write_buf(fuse_req_t req,
- 			FUSE_COMPAT_WRITE_IN_SIZE;
- 		assert(!(bufv.buf[0].flags & FUSE_BUF_IS_FD));
- 	} else {
--		fi.lock_owner = arg->lock_owner;
-+		if (arg->write_flags & FUSE_WRITE_LOCKOWNER)
-+			fi.lock_owner = arg->lock_owner;
- 		fi.flags = arg->flags;
- 		if (!(bufv.buf[0].flags & FUSE_BUF_IS_FD))
- 			bufv.buf[0].mem = PARAM(arg);
-
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="passthrough_ll-kill-suid.patch"
-
----
- example/passthrough_ll.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
-
---- a/example/passthrough_ll.c
-+++ b/example/passthrough_ll.c
-@@ -56,6 +56,7 @@
- #include <sys/file.h>
- #include <sys/xattr.h>
- #include <sys/syscall.h>
-+#include <sys/capability.h>
- 
- /* We are re-using pointers to our `struct lo_inode` and `struct
-    lo_dirp` elements as inodes. This means that we must be able to
-@@ -965,6 +966,11 @@ static void lo_write_buf(fuse_req_t req,
- 	(void) ino;
- 	ssize_t res;
- 	struct fuse_bufvec out_buf = FUSE_BUFVEC_INIT(fuse_buf_size(in_buf));
-+	struct __user_cap_header_struct cap_hdr = {
-+		.version = _LINUX_CAPABILITY_VERSION_1,
-+	};
-+	struct __user_cap_data_struct cap_orig;
-+	struct __user_cap_data_struct cap_new;
- 
- 	out_buf.buf[0].flags = FUSE_BUF_IS_FD | FUSE_BUF_FD_SEEK;
- 	out_buf.buf[0].fd = fi->fh;
-@@ -974,7 +980,28 @@ static void lo_write_buf(fuse_req_t req,
- 		fprintf(stderr, "lo_write(ino=%" PRIu64 ", size=%zd, off=%lu)\n",
- 			ino, out_buf.buf[0].size, (unsigned long) off);
- 
-+	if (fi->write_kill_priv) {
-+		res = capget(&cap_hdr, &cap_orig);
-+		if (res == -1) {
-+			fuse_reply_err(req, errno);
-+			return;
-+		}
-+		cap_new = cap_orig;
-+		cap_new.effective &= ~(1 << CAP_FSETID);
-+		res = capset(&cap_hdr, &cap_new);
-+		if (res == -1) {
-+			fuse_reply_err(req, errno);
-+			return;
-+		}
-+	}
-+
- 	res = fuse_buf_copy(&out_buf, in_buf, 0);
-+
-+	if (fi->write_kill_priv) {
-+		if (capset(&cap_hdr, &cap_orig) != 0)
-+			abort();
-+	}
-+
- 	if(res < 0)
- 		fuse_reply_err(req, -res);
- 	else
-@@ -1215,7 +1242,7 @@ static void lo_copy_file_range(fuse_req_
- 	res = copy_file_range(fi_in->fh, &off_in, fi_out->fh, &off_out, len,
- 			      flags);
- 	if (res < 0)
--		fuse_reply_err(req, -errno);
-+		fuse_reply_err(req, errno);
- 	else
- 		fuse_reply_write(req, res);
- }
-
---KsGdsel6WgEHnImy
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
+Will do, thanks Jan.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
 https://lists.01.org/mailman/listinfo/linux-nvdimm
-
---KsGdsel6WgEHnImy--
