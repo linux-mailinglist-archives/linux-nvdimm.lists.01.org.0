@@ -2,66 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72BB23C5C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 May 2019 17:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C06A23E10
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 May 2019 19:09:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CE4C21A07093;
-	Mon, 20 May 2019 08:41:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7F81F212735AE;
+	Mon, 20 May 2019 10:09:13 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com;
+ client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com
- [IPv6:2607:f8b0:4864:20::32b])
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6FE6A211EDB56
- for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 08:41:01 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id g18so13369764otj.11
- for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 08:41:01 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 7A3D2212735A0
+ for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 10:09:11 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id f4so10576794oib.4
+ for <linux-nvdimm@lists.01.org>; Mon, 20 May 2019 10:09:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5QSUm6/xL4WGvvJmVrGCi+MUsTk2A8AVb5uoylgpYm0=;
- b=yPev5JIATuPBAUeewEekviqNSsYEYMPVj34Ea7J3VHdDWfkJJm/Lss37NJzZXuSbcC
- YRWqEDzGwnKyGJ7cfmBUCwLnOU/8qZso7KUyoxCpR1o8jo9s6hM/D8+pnibzSAEiHUth
- qmci2Y5QYlrrWb6PkGnzvPjqxjjWW/5HxgR5KoDHlQ/Byo2F5xDeeHmYv19+at8R+TMZ
- tu+Vu2APi20B80NNxCZHFz3fpj9rYA8GEe82GaUHJ8I6t+MvUs+Ar9a+Vgx2EB76jf89
- ErQzIHthFAPF1mpVWGOYtN71zpeES9K3vrWlKWx5qmwTMgZWKug91Di3ce4BOAyUnJfW
- dKnw==
+ :cc; bh=yKxKhF1FvSDo9f8sIipTTZjoo77Dif+CkluYVXpcRgw=;
+ b=V/DLpIz2Cps7Vz9YsQHlqqdZTYdH0WHSn/FPCx9uvLu6vjEqKny+XWTmXKJJWtLCSx
+ qxNK1tixYTMzWbLi1LGbXZmIXn+vfxhi/AXVo82Y7ubuQefRIebHbUukIZV90wr62PoG
+ BXCoNyB11kyqHlXrUqFhjimKu+S0xXXtA0+rVhgdzTqeMKKO8t7L8yLNNYtnQYcJLlZd
+ bSvLceMtjPm6b6gA3c/1SdhYOlOPjCidwL/o5fRaZberQhryCP7bV729IcjXwCc8xDZF
+ g6jotOgS+H+MABwnFrtAE0Rg8L97s4KS8OS1x3HHi5a6qqa9CRACTCNHTe5jtOpYQ8YQ
+ e96g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=5QSUm6/xL4WGvvJmVrGCi+MUsTk2A8AVb5uoylgpYm0=;
- b=ZffoLLKJq712wxwveF0JVi9iM3qMvySrgCx2cvPpMUKhjS9vk8CD5ML306i7pFvWO/
- Eb5hkkUGBsbsHH2+FaKbf964+kGidHa2MnW84WrkVf0CTzWfRH49Ou6TS3UcArbbkULj
- oGa5XCGoPb4TCsNpvL/Vr7AIyUa84hPkuej/EhIbaK5TxoqYlSbBXzkq3iyv732IwLz5
- 6avJQbSJsINW0ZNpTo6Qu8wBf3i/S7uMn2TtLhO2x17ePyxkSboS0drI1uG3KVzavm2v
- SaQUu2BmSBuy8VqP7CK79tKllb2Or6rylnfk5ShCLIiPj1wPB+MWpZnxa6pVnKcggWHH
- r6rA==
-X-Gm-Message-State: APjAAAVyi1E7EpWr52v48ptTOwX68tyyzppa5xiggUy5umpP6FKLecME
- 1vJYuh3B9Ae0XvhDsChj20UFZbV5tzpms59zn7bMtA==
-X-Google-Smtp-Source: APXvYqxs3KuEEqHCDOtKW83Hc+3/Eh7qrrFqOEiop9JaJSWQJfM8wgC/rkaym0C4K7iuUNGIYwsqH+mgvaYu198CCOk=
-X-Received: by 2002:a05:6830:1182:: with SMTP id
- u2mr34065267otq.71.1558366859535; 
- Mon, 20 May 2019 08:40:59 -0700 (PDT)
+ bh=yKxKhF1FvSDo9f8sIipTTZjoo77Dif+CkluYVXpcRgw=;
+ b=UCFgjhxPoMTaw6KcGqu1NLC2uXRB+KGfvqKsKKTnKM7lKiAHEQ66sybfMtE2ICdcJ+
+ CdG2ucF3BMyoVKFNg3j4tH+sRUzwrxN1eoEio5i7C0j1p2WZ2s4Xd4pwH6Od8OZo+QMw
+ Fl1MQcJr2Ye4crqZHsWv5lf+7/Q4Te7AF7/EsxqT5UKLN6pl0CQOyBZsXwTRNmAHyrQ8
+ +D6RrOunPLddepImgjqUgE7I/sg0xQOOnhDELUp+ex9xMBhhELw+U8eSAUL7H05Qm1yT
+ 87iGKCM622dxvzrMRsTo3tT2c6tLrNzN05u1c8ZEibIKkbMBGIaefwI/srHHqPV7l8Yi
+ M7Bw==
+X-Gm-Message-State: APjAAAW/0EPJelPshGncHwX9xae8vkKxvQ5vRQ13ivrsgqr5FpACEh8A
+ D0cIZRA2lkE9nFlPZVKRLEXBPnw3rRpkF+Yk471R1ChO
+X-Google-Smtp-Source: APXvYqwBtWxgHgdvAiDLmO5TZSGZNCT4wiYmm0OQf+BmHaSAnpJX0G36CIkrI5eKeEcDT4auoPb9k0KbTK9uxTOuoQI=
+X-Received: by 2002:aca:b641:: with SMTP id g62mr110703oif.149.1558372150650; 
+ Mon, 20 May 2019 10:09:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <155805321833.867447.3864104616303535270.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190517084739.GB20550@quack2.suse.cz>
- <CAPcyv4iZZCgcC657ZOysBP9=1ejp3jfFj=VETVBPrgmfg7xUEw@mail.gmail.com>
- <201905170855.8E2E1AC616@keescook>
- <CAPcyv4g9HpMaifC+Qe2RVbgL_qq9vQvjwr-Jw813xhxcviehYQ@mail.gmail.com>
- <201905171225.29F9564BA2@keescook>
- <CAPcyv4iSeUPWFeSZW-dmYz9TnWhqVCx1Y1VjtUv+125_ZSQaYg@mail.gmail.com>
- <20190520075232.GA30972@quack2.suse.cz>
-In-Reply-To: <20190520075232.GA30972@quack2.suse.cz>
+References: <20190516055422.16939-1-vaibhav@linux.ibm.com>
+ <CAPcyv4j6Jhpqg9SqAAmz2A6PDry7UUtnniNVoc_qG=WXwuVOWA@mail.gmail.com>
+ <87bm01mylr.fsf@vajain21.in.ibm.com>
+In-Reply-To: <87bm01mylr.fsf@vajain21.in.ibm.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 20 May 2019 08:40:48 -0700
-Message-ID: <CAPcyv4hwiKGDtkT7-r8Ei3kOQBMA3LwDGBNM9H8N6HC5fxi6tw@mail.gmail.com>
-Subject: Re: [PATCH] libnvdimm/pmem: Bypass CONFIG_HARDENED_USERCOPY overhead
-To: Jan Kara <jack@suse.cz>
+Date: Mon, 20 May 2019 10:08:59 -0700
+Message-ID: <CAPcyv4j-OQbN=rYY6MH3XFCF+dPpooCYekYF7PJL+N-tCJey3g@mail.gmail.com>
+Subject: Re: [PATCH] dax: Fix last_page check in __bdev_dax_supported()
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,47 +67,48 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jeff Smits <jeff.smits@intel.com>, Matthew Wilcox <willy@infradead.org>,
- Kees Cook <keescook@chromium.org>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+Cc: Mike Snitzer <snitzer@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Al Viro <viro@zeniv.linux.org.uk>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Christoph Hellwig <hch@lst.de>
+ Chandan Rajendra <chandan@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, May 20, 2019 at 12:52 AM Jan Kara <jack@suse.cz> wrote:
+On Thu, May 16, 2019 at 10:37 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
 >
-> On Sat 18-05-19 21:46:03, Dan Williams wrote:
-> > On Fri, May 17, 2019 at 12:25 PM Kees Cook <keescook@chromium.org> wrote:
-> > > On Fri, May 17, 2019 at 10:28:48AM -0700, Dan Williams wrote:
-> > > > It seems dax_iomap_actor() is not a path where we'd be worried about
-> > > > needing hardened user copy checks.
-> > >
-> > > I would agree: I think the proposed patch makes sense. :)
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Wed, May 15, 2019 at 10:55 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+> >>
+> >> Presently __bdev_dax_supported() checks if first sector of last
+> >> page ( last_page ) on the block device is aligned to page
+> >> boundary. However the code to compute 'last_page' assumes that there
+> >> are 8 sectors/page assuming a 4K page-size.
+> >>
+> >> This assumption breaks on architectures which use a different page
+> >> size specifically PPC64 where page-size == 64K. Hence a warning is
+> >> seen while trying to mount a xfs/ext4 file-system with dax enabled:
+> >>
+> >> $ sudo mount -o dax /dev/pmem0 /mnt/pmem
+> >> XFS (pmem0): DAX enabled. Warning: EXPERIMENTAL, use at your own risk
+> >> XFS (pmem0): DAX unsupported by block device. Turning off DAX.
+> >>
+> >> The patch fixes this issue by updating calculation of 'last_var' to
+> >> take into account number-of-sectors/page instead of assuming it to be
+> >> '8'.
 > >
-> > Sounds like an acked-by to me.
+> > Yes, I noticed this too and fixed it up in a wider change that also
+> > allows device-mapper to validate each component device. Does this
+> > patch work for you?
+> >
+> > https://lore.kernel.org/lkml/155789172402.748145.11853718580748830476.stgit@dwillia2-desk3.amr.corp.intel.com/
 >
-> Yeah, if Kees agrees, I'm fine with skipping the checks as well. I just
-> wanted that to be clarified. Also it helped me that you wrote:
->
-> That routine (dax_iomap_actor()) validates that the logical file offset is
-> within bounds of the file, then it does a sector-to-pfn translation which
-> validates that the physical mapping is within bounds of the block device.
->
-> That is more specific than "dax_iomap_actor() takes care of necessary
-> checks" which was in the changelog. And the above paragraph helped me
-> clarify which checks in dax_iomap_actor() you think replace those usercopy
-> checks. So I think it would be good to add that paragraph to those
-> copy_from_pmem() functions as a comment just in case we are wondering in
-> the future why we are skipping the checks... Also feel free to add:
->
-> Acked-by: Jan Kara <jack@suse.cz>
+> Thanks Dan, I tested your patch and not seeing the issue anymore.
 
-Will do, thanks Jan.
+Thanks, I recorded a "Tested-by" for you.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
