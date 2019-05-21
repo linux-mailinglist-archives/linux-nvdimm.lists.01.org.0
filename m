@@ -1,62 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ADFB256CB
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 19:35:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E37B5256F7
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 19:46:45 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A8EED21275474;
-	Tue, 21 May 2019 10:35:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B32FD21275475;
+	Tue, 21 May 2019 10:46:43 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ client-ip=156.151.31.86; helo=userp2130.oracle.com;
  envelope-from=darrick.wong@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0728521275459
- for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 10:35:54 -0700 (PDT)
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
- by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LHXm37046297;
- Tue, 21 May 2019 17:35:45 GMT
+ by ml01.01.org (Postfix) with ESMTPS id 87940212733F9
+ for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 10:46:41 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LHhbwt040845;
+ Tue, 21 May 2019 17:46:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2018-07-02;
- bh=b7edMFrQ3NqOzy/by6yyi74dZMSbcYLO9I66oOhpcuY=;
- b=JqRri5zizpHhE68R0De70Dmh2C5xa9nJFcnupTVTPyh12mbNzc4VZrgtzFkH4bh0dsSL
- r5jrNQzTbWxa5p2bJum53XYtp35HSu1I4gvYsc+EgP+bFEyPV+jbLnDSg0F2Rymrznjh
- 6laTTC3JQYueewlNDY46SsNPmpTpEp5HHOZwfyqoabpa5yMo0uvKwE0uNDxXQnjbuQt0
- TXsHCyGoMZp1jEQNlovwZn3BLfVbmdZr7rUJPzNUqq0z1vHHMWykv05HLLPOeEOXdEvf
- ZFZWzACaNVsAP6xN9B1DWqU9N6S/bElQw7mbGHAlCWvwDtp3ZEW297M95c7vFTh5ch7W hw== 
+ bh=mxyCaD1FttKGOJyZPE9UrjXbiBQbnIlw4IFO99JAVQY=;
+ b=Rp/6Kf7/FUUfYIjjzflRnRnBUYF7tumD8zC+WpNNYXpc33gh3P/J/tLAIJAiiuaBY914
+ G+ME2CuRFUGetVn+/S8CjX1BL0icjqfP873PSlfHLOnEtzecV0QvI3OespaYKARU1Os/
+ zomhLubKZIvLuYgOYJYeY5jBMNl1luFrWAe4PPtv1GMM7nHF1fXcsH1G0prG6wZl+obe
+ dIUgqsdkE7R7BuHzSa90E6XZd+ehBCWFg7vyZbN+X7Fo4XHAf3D1HLmQV0NPo2H+JF08
+ vEE0eMoRnX8aFh5SRAEC5JVxCxa8igTJVaLDxpkr3Tf1FkEipNv3iMEPGyhRfgFWP+wn qw== 
 Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by aserp2130.oracle.com with ESMTP id 2sj7jdq7td-1
+ by userp2130.oracle.com with ESMTP id 2sj9ftf473-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2019 17:35:45 +0000
+ Tue, 21 May 2019 17:46:29 +0000
 Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LHZeUY025239;
- Tue, 21 May 2019 17:35:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
- by userp3020.oracle.com with ESMTP id 2sks1jk2c0-1
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LHjepT049866;
+ Tue, 21 May 2019 17:46:29 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by userp3020.oracle.com with ESMTP id 2sks1jk7hu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2019 17:35:44 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
- by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4LHZfdP003627;
- Tue, 21 May 2019 17:35:42 GMT
+ Tue, 21 May 2019 17:46:29 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4LHkRka024111;
+ Tue, 21 May 2019 17:46:27 GMT
 Received: from localhost (/67.169.218.210)
  by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 21 May 2019 17:35:41 +0000
-Date: Tue, 21 May 2019 10:35:40 -0700
+ with ESMTP ; Tue, 21 May 2019 17:46:26 +0000
+Date: Tue, 21 May 2019 10:46:25 -0700
 From: "Darrick J. Wong" <darrick.wong@oracle.com>
 To: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Subject: Re: [PATCH 10/18] dax: replace mmap entry in case of CoW
-Message-ID: <20190521173540.GE5125@magnolia>
+Subject: Re: [PATCH 08/18] dax: memcpy page in case of IOMAP_DAX_COW for mmap
+ faults
+Message-ID: <20190521174625.GF5125@magnolia>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-11-rgoldwyn@suse.de>
+ <20190429172649.8288-9-rgoldwyn@suse.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190429172649.8288-11-rgoldwyn@suse.de>
+In-Reply-To: <20190429172649.8288-9-rgoldwyn@suse.de>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
  signatures=668687
@@ -64,7 +65,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905210107
+ engine=8.0.1-1810050000 definitions=main-1905210109
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
  signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
@@ -72,7 +73,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905210108
+ definitions=main-1905210109
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,174 +94,102 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Apr 29, 2019 at 12:26:41PM -0500, Goldwyn Rodrigues wrote:
+On Mon, Apr 29, 2019 at 12:26:39PM -0500, Goldwyn Rodrigues wrote:
 > From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 > 
-> We replace the existing entry to the newly allocated one
-> in case of CoW. Also, we mark the entry as PAGECACHE_TAG_TOWRITE
-> so writeback marks this entry as writeprotected. This
-> helps us snapshots so new write pagefaults after snapshots
-> trigger a CoW.
+> Change dax_iomap_pfn to return the address as well in order to
+> use it for performing a memcpy in case the type is IOMAP_DAX_COW.
+> We don't handle PMD because btrfs does not support hugepages.
 > 
-> btrfs does not support hugepages so we don't handle PMD.
+> Question:
+> The sequence of bdev_dax_pgoff() and dax_direct_access() is
+> used multiple times to calculate address and pfn's. Would it make
+> sense to call it while calculating address as well to reduce code?
 > 
 > Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 > ---
->  fs/dax.c | 36 ++++++++++++++++++++++++++++--------
->  1 file changed, 28 insertions(+), 8 deletions(-)
+>  fs/dax.c | 19 +++++++++++++++----
+>  1 file changed, 15 insertions(+), 4 deletions(-)
 > 
 > diff --git a/fs/dax.c b/fs/dax.c
-> index 718b1632a39d..07e8ff20161d 100644
+> index 610bfa861a28..718b1632a39d 100644
 > --- a/fs/dax.c
 > +++ b/fs/dax.c
-> @@ -700,6 +700,9 @@ static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
->  	return 0;
+> @@ -984,7 +984,7 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
 >  }
 >  
-> +#define DAX_IF_DIRTY		(1ULL << 0)
-> +#define DAX_IF_COW		(1ULL << 1)
-> +
->  /*
->   * By this point grab_mapping_entry() has ensured that we have a locked entry
->   * of the appropriate size so we don't have to worry about downgrading PMDs to
-> @@ -709,14 +712,17 @@ static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
->   */
->  static void *dax_insert_entry(struct xa_state *xas,
->  		struct address_space *mapping, struct vm_fault *vmf,
-> -		void *entry, pfn_t pfn, unsigned long flags, bool dirty)
-> +		void *entry, pfn_t pfn, unsigned long flags,
-> +		unsigned long insert_flags)
-
-I think unsigned int would have sufficed here.
-
+>  static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+> -			 pfn_t *pfnp)
+> +			 pfn_t *pfnp, void **addr)
 >  {
->  	void *new_entry = dax_make_entry(pfn, flags);
-> +	bool dirty = insert_flags & DAX_IF_DIRTY;
-> +	bool cow = insert_flags & DAX_IF_COW;
->  
->  	if (dirty)
->  		__mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
->  
-> -	if (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE)) {
-> +	if (cow || (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE))) {
->  		unsigned long index = xas->xa_index;
->  		/* we are replacing a zero page with block mapping */
->  		if (dax_is_pmd_entry(entry))
-> @@ -728,12 +734,12 @@ static void *dax_insert_entry(struct xa_state *xas,
->  
->  	xas_reset(xas);
->  	xas_lock_irq(xas);
-> -	if (dax_entry_size(entry) != dax_entry_size(new_entry)) {
-> +	if (cow || (dax_entry_size(entry) != dax_entry_size(new_entry))) {
->  		dax_disassociate_entry(entry, mapping, false);
->  		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
->  	}
->  
-> -	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
-> +	if (cow || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
->  		/*
->  		 * Only swap our new entry into the page cache if the current
->  		 * entry is a zero page or an empty entry.  If a normal PTE or
-> @@ -753,6 +759,9 @@ static void *dax_insert_entry(struct xa_state *xas,
->  	if (dirty)
->  		xas_set_mark(xas, PAGECACHE_TAG_DIRTY);
->  
-> +	if (cow)
-> +		xas_set_mark(xas, PAGECACHE_TAG_TOWRITE);
-> +
->  	xas_unlock_irq(xas);
->  	return entry;
->  }
-> @@ -1032,7 +1041,7 @@ static vm_fault_t dax_load_hole(struct xa_state *xas,
->  	vm_fault_t ret;
->  
->  	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
-> -			DAX_ZERO_PAGE, false);
-> +			DAX_ZERO_PAGE, 0);
->  
->  	ret = vmf_insert_mixed(vmf->vma, vaddr, pfn);
->  	trace_dax_load_hole(inode, vmf, ret);
-> @@ -1296,6 +1305,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  	vm_fault_t ret = 0;
->  	void *entry;
->  	pfn_t pfn;
-> +	unsigned long insert_flags = 0;
->  
->  	trace_dax_pte_fault(inode, vmf, ret);
->  	/*
-> @@ -1357,6 +1367,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  			error = copy_user_dax(iomap.bdev, iomap.dax_dev,
->  					sector, PAGE_SIZE, vmf->cow_page, vaddr);
->  			break;
-> +		case IOMAP_DAX_COW:
-> +			/* Should not be setting this - fallthrough */
->  		default:
->  			WARN_ON_ONCE(1);
->  			error = -EIO;
-> @@ -1377,6 +1389,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+>  	const sector_t sector = dax_iomap_sector(iomap, pos);
+>  	pgoff_t pgoff;
+> @@ -996,7 +996,7 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+>  		return rc;
+>  	id = dax_read_lock();
+>  	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
+> -				   NULL, pfnp);
+> +				   addr, pfnp);
+>  	if (length < 0) {
+>  		rc = length;
+>  		goto out;
+> @@ -1286,6 +1286,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+>  	XA_STATE(xas, &mapping->i_pages, vmf->pgoff);
+>  	struct inode *inode = mapping->host;
+>  	unsigned long vaddr = vmf->address;
+> +	void *addr;
+>  	loff_t pos = (loff_t)vmf->pgoff << PAGE_SHIFT;
+>  	struct iomap iomap = { 0 };
+
+Ugh, I had forgotten that fs/dax.c open-codes iomap_apply, probably
+because the actor returns vm_fault_t, not bytes copied.  I guess that
+makes it a tiny bit more complicated to pass in two (struct iomap *) to
+the iomap_begin function...
+
+>  	unsigned flags = IOMAP_FAULT;
+> @@ -1375,16 +1376,26 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+>  	sync = dax_fault_is_synchronous(flags, vma, &iomap);
 >  
 >  	switch (iomap.type) {
->  	case IOMAP_DAX_COW:
-> +		insert_flags |= DAX_IF_COW;
-> +		/* fallthrough */
+> +	case IOMAP_DAX_COW:
 >  	case IOMAP_MAPPED:
 >  		if (iomap.flags & IOMAP_F_NEW) {
 >  			count_vm_event(PGMAJFAULT);
-> @@ -1396,8 +1410,10 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  			} else
->  				memset(addr, 0, PAGE_SIZE);
+>  			count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
+>  			major = VM_FAULT_MAJOR;
 >  		}
-> +		if (write && !sync)
-> +			insert_flags |= DAX_IF_DIRTY;
->  		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
-> -						 0, write && !sync);
-> +						 0, insert_flags);
->  
->  		/*
->  		 * If we are doing synchronous page fault and inode needs fsync,
-> @@ -1478,7 +1494,7 @@ static vm_fault_t dax_pmd_load_hole(struct xa_state *xas, struct vm_fault *vmf,
->  
->  	pfn = page_to_pfn_t(zero_page);
->  	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
-> -			DAX_PMD | DAX_ZERO_PAGE, false);
-> +			DAX_PMD | DAX_ZERO_PAGE, 0);
->  
->  	if (arch_needs_pgtable_deposit()) {
->  		pgtable = pte_alloc_one(vma->vm_mm);
-> @@ -1528,6 +1544,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
->  	loff_t pos;
->  	int error;
->  	pfn_t pfn;
-> +	unsigned long insert_flags = 0;
->  
->  	/*
->  	 * Check whether offset isn't beyond end of file now. Caller is
-> @@ -1612,8 +1629,11 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+> -		error = dax_iomap_pfn(&iomap, pos, PAGE_SIZE, &pfn);
+> +		error = dax_iomap_pfn(&iomap, pos, PAGE_SIZE, &pfn, &addr);
 >  		if (error < 0)
->  			goto finish_iomap;
+>  			goto error_finish_iomap;
 >  
-> +		if (write && !sync)
-> +			insert_flags |= DAX_IF_DIRTY;
-> +
->  		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
-> -						DAX_PMD, write && !sync);
-> +						DAX_PMD, insert_flags);
+> +		if (iomap.type == IOMAP_DAX_COW) {
+> +			if (iomap.inline_data) {
+> +				error = memcpy_mcsafe(addr, iomap.inline_data,
+> +					      PAGE_SIZE);
+> +				if (error < 0)
+> +					goto error_finish_iomap;
+> +			} else
+> +				memset(addr, 0, PAGE_SIZE);
 
-Otherwise, this seems reasonable enough to me.  What do the DAX
-developers think?
-
-FWIW I'm not thrilled by the fact that Goldwyn isn't wiring up the
-(rather similar looking) PMD code paths, but I grok that btrfs doesn't
-support hugepages so he has no way to test that the code path actually
-works so I'm ok with letting that go (until XFS joins the party) so long
-as the pmd code path changes aren't too dissimilar to the pte code
-paths.  Is that true?
+This memcpy_mcsafe/memset chunk shows up a lot in this series.  Maybe it
+should be a static inline within dax.c?
 
 --D
 
+> +		}
+>  		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
+>  						 0, write && !sync);
 >  
->  		/*
->  		 * If we are doing synchronous page fault and inode needs fsync,
+> @@ -1597,7 +1608,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
+>  
+>  	switch (iomap.type) {
+>  	case IOMAP_MAPPED:
+> -		error = dax_iomap_pfn(&iomap, pos, PMD_SIZE, &pfn);
+> +		error = dax_iomap_pfn(&iomap, pos, PMD_SIZE, &pfn, NULL);
+>  		if (error < 0)
+>  			goto finish_iomap;
+>  
 > -- 
 > 2.16.4
 > 
