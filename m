@@ -2,111 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE584252B0
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 16:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1560F25341
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 17:01:38 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ECF532127545D;
-	Tue, 21 May 2019 07:49:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 457FF21275459;
+	Tue, 21 May 2019 08:01:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.147.86; helo=mx0a-002e3701.pphosted.com;
- envelope-from=elliott@hpe.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com
- [148.163.147.86])
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=vgoyal@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7F33721275442
- for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 07:49:53 -0700 (PDT)
-Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
- by mx0b-002e3701.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4LEehgS008034; Tue, 21 May 2019 14:49:51 GMT
-Received: from g2t2352.austin.hpe.com (g2t2352.austin.hpe.com [15.233.44.25])
- by mx0b-002e3701.pphosted.com with ESMTP id 2smjsyge3y-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 May 2019 14:49:51 +0000
-Received: from G2W6311.americas.hpqcorp.net (g2w6311.austin.hp.com
- [16.197.64.53])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ by ml01.01.org (Postfix) with ESMTPS id 792C021265793
+ for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 08:01:34 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by g2t2352.austin.hpe.com (Postfix) with ESMTPS id 444C5CA;
- Tue, 21 May 2019 14:49:50 +0000 (UTC)
-Received: from G9W8672.americas.hpqcorp.net (16.220.49.31) by
- G2W6311.americas.hpqcorp.net (16.197.64.53) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Tue, 21 May 2019 14:49:49 +0000
-Received: from G9W9210.americas.hpqcorp.net (2002:10dc:429b::10dc:429b) by
- G9W8672.americas.hpqcorp.net (2002:10dc:311f::10dc:311f) with Microsoft SMTP
- Server (TLS) id 15.0.1367.3; Tue, 21 May 2019 14:49:49 +0000
-Received: from NAM02-BL2-obe.outbound.protection.outlook.com (15.241.52.12) by
- G9W9210.americas.hpqcorp.net (16.220.66.155) with Microsoft SMTP
- Server (TLS)
- id 15.0.1367.3 via Frontend Transport; Tue, 21 May 2019 14:49:49 +0000
-Received: from AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM (10.169.7.147) by
- AT5PR8401MB0692.NAMPRD84.PROD.OUTLOOK.COM (10.169.7.144) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.15; Tue, 21 May 2019 14:49:47 +0000
-Received: from AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2884:44eb:25bf:b376]) by AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::2884:44eb:25bf:b376%12]) with mapi id 15.20.1922.016; Tue, 21 May
- 2019 14:49:47 +0000
-From: "Elliott, Robert (Servers)" <elliott@hpe.com>
-To: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>, Dan Williams
- <dan.j.williams@intel.com>
-Subject: RE: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-Thread-Topic: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
-Thread-Index: AQHVCgChFb7/EbTm2EmzJ0DwQTd3laZp/p0AgAAB4ICAAAH7AIAACYkAgAsy44CAACJ3AIAAUp6Q
-Date: Tue, 21 May 2019 14:49:47 +0000
-Message-ID: <AT5PR8401MB1169DEEAA95D4E4EA9C61285AB070@AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
- <f99c4f11-a43d-c2d3-ab4f-b7072d090351@linux.ibm.com>
- <CAPcyv4gOr8SFbdtBbWhMOU-wdYuMCQ4Jn2SznGRsv6Vku97Xnw@mail.gmail.com>
- <02d1d14d-650b-da38-0828-1af330f594d5@linux.ibm.com>
- <CAPcyv4jcSgg0wxY9FAM4ke9JzVc9Pu3qe6dviS3seNgHfG2oNw@mail.gmail.com>
- <87mujgcf0h.fsf@linux.ibm.com>
-In-Reply-To: <87mujgcf0h.fsf@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [2601:2c3:877f:e23c:fdc1:1746:34b1:a6c]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 8bde30a5-0cc3-4142-e927-08d6ddfb920f
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);
- SRVR:AT5PR8401MB0692; 
-x-ms-traffictypediagnostic: AT5PR8401MB0692:
-x-microsoft-antispam-prvs: <AT5PR8401MB06927E80F27B0859F1AB8DD6AB070@AT5PR8401MB0692.NAMPRD84.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:1148;
-x-forefront-prvs: 0044C17179
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10019020)(396003)(136003)(346002)(376002)(366004)(39860400002)(199004)(13464003)(189003)(7736002)(6246003)(9686003)(6116002)(54906003)(2906002)(8676002)(110136005)(53936002)(99286004)(316002)(33656002)(476003)(305945005)(4326008)(7696005)(71200400001)(81166006)(76176011)(71190400001)(81156014)(68736007)(8936002)(6506007)(25786009)(102836004)(6436002)(53546011)(229853002)(55016002)(256004)(74316002)(66556008)(64756008)(52536014)(66446008)(5660300002)(66476007)(4744005)(186003)(46003)(486006)(76116006)(73956011)(66946007)(478600001)(86362001)(14454004)(446003)(11346002);
- DIR:OUT; SFP:1102; SCL:1; SRVR:AT5PR8401MB0692;
- H:AT5PR8401MB1169.NAMPRD84.PROD.OUTLOOK.COM; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: hpe.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: I6AvVHDPGKk7QMDyM6WBco+hI7j4gcsJhjY/RP65hwAnce/6EqoPnFr7NycudNWW9ykAfbvGBsXqofG9GOEdKXuVxkoghOugxPy3ZmPs5XmWsFNH7/nwWq/0P2CHf8xZIF6O1hM3qoOND1KbBukFQS0Jzsnga2R2c9sH0HvnWvjhsGh05GHPHbbWAety5ebD9Xi8jEgDd92n9XwaCsfvZ0OLzkVrA0qnk5HC5Vuq7M3iGWs8aU+8SIks3fqvKF5q+1jhyh3xExrwC1bYJK0HBcMkTqxOvXjfb020DqdHivYUcH/4t+FPx3qZME+wQa8ldQL3PLfJ2sjTToks2adNkqS2Zh+H6BNFmssdOAtDAY9TiTW5L++2MZo2liV1FRVPqLhFrT3BeLpjTFOGyJdqn5mjKy32ZsYQ9ijVLw74JM0=
+ by mx1.redhat.com (Postfix) with ESMTPS id DB08430842A8;
+ Tue, 21 May 2019 15:01:33 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.29])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9B432704DF;
+ Tue, 21 May 2019 15:01:31 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+ id 34034220A60; Tue, 21 May 2019 11:01:31 -0400 (EDT)
+Date: Tue, 21 May 2019 11:01:31 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Miklos Szeredi <miklos@szeredi.hu>
+Subject: Re: [PATCH v2 02/30] fuse: Clear setuid bit even in cache=never path
+Message-ID: <20190521150131.GB29075@redhat.com>
+References: <20190515192715.18000-1-vgoyal@redhat.com>
+ <20190515192715.18000-3-vgoyal@redhat.com>
+ <20190520144137.GA24093@localhost.localdomain>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8bde30a5-0cc3-4142-e927-08d6ddfb920f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 May 2019 14:49:47.4838 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: elliott@hpe.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AT5PR8401MB0692
-X-OriginatorOrg: hpe.com
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-21_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=855 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905210092
+Content-Disposition: inline
+In-Reply-To: <20190520144137.GA24093@localhost.localdomain>
+User-Agent: Mutt/1.11.3 (2019-02-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.40]); Tue, 21 May 2019 15:01:34 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,39 +54,74 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: kvm@vger.kernel.org, linux-nvdimm@lists.01.org, dgilbert@redhat.com,
+ linux-kernel@vger.kernel.org, stefanha@redhat.com,
+ linux-fsdevel@vger.kernel.org, swhiteho@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-
-> -----Original Message-----
-> From: Linux-nvdimm <linux-nvdimm-bounces@lists.01.org> On Behalf Of
-> Aneesh Kumar K.V
-> Sent: Tuesday, May 21, 2019 4:51 AM
-> Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of
-> opencoding
+On Mon, May 20, 2019 at 04:41:37PM +0200, Miklos Szeredi wrote:
+> On Wed, May 15, 2019 at 03:26:47PM -0400, Vivek Goyal wrote:
+> > If fuse daemon is started with cache=never, fuse falls back to direct IO.
+> > In that write path we don't call file_remove_privs() and that means setuid
+> > bit is not cleared if unpriviliged user writes to a file with setuid bit set.
+> > 
+> > pjdfstest chmod test 12.t tests this and fails.
 > 
-...
-> @@ -36,6 +36,9 @@ struct nd_pfn_sb {
->  	__le32 end_trunc;
->  	/* minor-version-2 record the base alignment of the mapping */
->  	__le32 align;
-> +	/* minor-version-3 record the page size and struct page size
-> */
-> +	__le32 page_size;
-> +	__le32 page_struct_size;
->  	u8 padding[4000];
->  	__le64 checksum;
->  };
+> I think better sulution is to tell the server if the suid bit needs to be
+> removed, so it can do so in a race free way.
+> 
+> Here's the kernel patch, and I'll reply with the libfuse patch.
 
-You might need to reduce the padding size to offset the extra added
-fields.
+Hi Miklos,
 
+I tested and it works for me.
 
+Vivek
+
+> 
+> ---
+>  fs/fuse2/file.c           |    2 ++
+>  include/uapi/linux/fuse.h |    3 +++
+>  2 files changed, 5 insertions(+)
+> 
+> --- a/fs/fuse2/file.c
+> +++ b/fs/fuse2/file.c
+> @@ -363,6 +363,8 @@ static ssize_t fuse_send_write(struct fu
+>  		inarg->flags |= O_DSYNC;
+>  	if (iocb->ki_flags & IOCB_SYNC)
+>  		inarg->flags |= O_SYNC;
+> +	if (!capable(CAP_FSETID))
+> +		inarg->write_flags |= FUSE_WRITE_KILL_PRIV;
+>  	req->inh.opcode = FUSE_WRITE;
+>  	req->inh.nodeid = ff->nodeid;
+>  	req->inh.len = req->inline_inlen + count;
+> --- a/include/uapi/linux/fuse.h
+> +++ b/include/uapi/linux/fuse.h
+> @@ -125,6 +125,7 @@
+>   *
+>   *  7.29
+>   *  - add FUSE_NO_OPENDIR_SUPPORT flag
+> + *  - add FUSE_WRITE_KILL_PRIV flag
+>   */
+>  
+>  #ifndef _LINUX_FUSE_H
+> @@ -318,9 +319,11 @@ struct fuse_file_lock {
+>   *
+>   * FUSE_WRITE_CACHE: delayed write from page cache, file handle is guessed
+>   * FUSE_WRITE_LOCKOWNER: lock_owner field is valid
+> + * FUSE_WRITE_KILL_PRIV: kill suid and sgid bits
+>   */
+>  #define FUSE_WRITE_CACHE	(1 << 0)
+>  #define FUSE_WRITE_LOCKOWNER	(1 << 1)
+> +#define FUSE_WRITE_KILL_PRIV	(1 << 2)
+>  
+>  /**
+>   * Read flags
+> 
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
