@@ -1,61 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512B625639
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 18:56:14 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0ED92565C
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 19:09:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4983E21275471;
-	Tue, 21 May 2019 09:56:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EADD821275471;
+	Tue, 21 May 2019 10:09:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=darrick.wong@oracle.com; receiver=linux-nvdimm@lists.01.org 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BE6B221275459
- for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 09:54:15 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id l17so17005277otq.1
- for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 09:54:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oHyxxdCulthGGKCbcuDYU1DyzLMsf7EAoBxw15HJNqA=;
- b=KmrwjgH55rKUw5bqIvpvFnD07PXHH7SJsCt1oTLDYR+Ngbo95qTBMiDayK/T72vXZN
- Avx47DGuOuF1vapQph16LlsXG1juDYSt9PIzVC+ClWmLndroDTHzFUWCacgdagkgOfKB
- RZNUEEoUbhaWH5kvICIk9zR+I59+NAep489TP336aGQG6FqPf2MTL+jNJ2GMoHDKTGUR
- t3Xc4Wf6A+/2QtsYp3wdSbw8oTBXMmxpJA4v3cI7HA5pT9zYwL6ebm8BLJuLsAKMmYzZ
- qZQmGLZqAMLzcj0iPF8/V6TgDHh0HnEDyIlIpVTw/SlnvwzNv+at8W4uxA6DmyOMLZMe
- TRoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oHyxxdCulthGGKCbcuDYU1DyzLMsf7EAoBxw15HJNqA=;
- b=iR7ws3HTSwDyxUIEQ6NvTlWcBovgIrSJ/II7DNG9THW44u63/FXFJ52JZD+Dv82NHQ
- BJ/mXiH/ZCqQrPoH3rVRwTy/AhkH1Jmjhr6itKaL0zPXANmxrDaljchHLCbxFdkg/yq3
- rH/f4dhkxeJtCkCWZlLSyoyFi2uPwNJjrnjcI6MgN3ricVVhdRM4rmooab0tbxK83s+o
- Udy92YZdcenH85qEvr6nurSesthlOc0VRXCLleiDBRm0+LO2UkgHelmoCAOyoQWg2LMd
- jQi5jRv34eyE3+JXl7J4aacbeNRwtv/LlH+a534JNX0eLNzLaV8x0aSzxSvK7zLPb3g3
- 8rnA==
-X-Gm-Message-State: APjAAAU4/7WW7SQZvjLBkNr2JT3lyveBxyR+pgHfBqA8802pjFsZFib7
- 8PBS/h00rdcpuGxTLwEl9iaOchFzZygIXYL56f4TsQ==
-X-Google-Smtp-Source: APXvYqwIKt/XH22CjB9xbefxXBJf+2suHAPutL2reWSQeS/hGSPLUhtpc4EiRbPj70y29pq/8uIl/yv2T9ANELNfFz0=
-X-Received: by 2002:a9d:6e96:: with SMTP id a22mr3999902otr.207.1558457654221; 
- Tue, 21 May 2019 09:54:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 14AFB212746FB
+ for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 10:09:01 -0700 (PDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LH4IcS021379;
+ Tue, 21 May 2019 17:08:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=HazVTBltFCp/JT3i6Fvm6JwAe4wUusgx/zu8SGigWk0=;
+ b=uMq4Uyq/16/NnldfnA2K8y7S+jtYyNqtdb/8owL5xEHH/CO9e4dEEbRrvS8ig+8OoHMV
+ /lAnQNlpnL6ThnZuMaeNQvKrR6zRUIscvFBIy39YKlROn/RJ+iSGiAqNF/i6wcDt43b8
+ r3K0vV6Axo219jhwn8yw1fG9p8DIfAdIn3hUQp//pMhy5sFrbkoDwBoZ2dzogvp973n9
+ m/usURFUxnDuQGU8UWgHoLOAinXajUFhMc5JF/vHw/m3L6MeOaboaipHsF8QZcPgiAgQ
+ ntrOzppGA5j2t6tle9IouCoiLtsJKvu3vqaYJZ+2GyUQrh8whS/po/tYK3RNeuAIDsHe hQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by aserp2130.oracle.com with ESMTP id 2sj7jdq33r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 May 2019 17:08:47 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LH84Y4042728;
+ Tue, 21 May 2019 17:08:46 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3020.oracle.com with ESMTP id 2sm0473gyw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 May 2019 17:08:46 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4LH8jBE018197;
+ Tue, 21 May 2019 17:08:45 GMT
+Received: from localhost (/67.169.218.210)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 21 May 2019 17:08:45 +0000
+Date: Tue, 21 May 2019 10:08:43 -0700
+From: "Darrick J. Wong" <darrick.wong@oracle.com>
+To: Goldwyn Rodrigues <rgoldwyn@suse.de>
+Subject: Re: [PATCH 07/18] btrfs: add dax write support
+Message-ID: <20190521170843.GC5125@magnolia>
+References: <20190429172649.8288-1-rgoldwyn@suse.de>
+ <20190429172649.8288-8-rgoldwyn@suse.de>
 MIME-Version: 1.0
-References: <20190517215438.6487-1-pasha.tatashin@soleen.com>
- <20190517215438.6487-4-pasha.tatashin@soleen.com>
-In-Reply-To: <20190517215438.6487-4-pasha.tatashin@soleen.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 21 May 2019 09:54:03 -0700
-Message-ID: <CAPcyv4iZ7sx6L+3yDKSXth6b+qdtCmVrLxmCvCuRAYBMbSM+Bw@mail.gmail.com>
-Subject: Re: [v6 3/3] device-dax: "Hotremove" persistent memory that is used
- like normal RAM
-To: Pavel Tatashin <pasha.tatashin@soleen.com>
+Content-Disposition: inline
+In-Reply-To: <20190429172649.8288-8-rgoldwyn@suse.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905210105
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905210105
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,120 +84,293 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>,
- Michal Hocko <mhocko@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Takashi Iwai <tiwai@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "Huang, Ying" <ying.huang@intel.com>, James Morris <jmorris@namei.org>,
- David Hildenbrand <david@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Borislav Petkov <bp@suse.de>, Yaowei Bai <baiyaowei@cmss.chinamobile.com>,
- Ross Zwisler <zwisler@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Fengguang Wu <fengguang.wu@intel.com>
+Cc: kilobyte@angband.pl, jack@suse.cz, linux-nvdimm@lists.01.org,
+ nborisov@suse.com, david@fromorbit.com, dsterba@suse.cz, willy@infradead.org,
+ Goldwyn Rodrigues <rgoldwyn@suse.com>, linux-fsdevel@vger.kernel.org,
+ hch@lst.de, linux-btrfs@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 17, 2019 at 2:54 PM Pavel Tatashin
-<pasha.tatashin@soleen.com> wrote:
->
-> It is now allowed to use persistent memory like a regular RAM, but
-> currently there is no way to remove this memory until machine is
-> rebooted.
->
-> This work expands the functionality to also allows hotremoving
-> previously hotplugged persistent memory, and recover the device for use
-> for other purposes.
->
-> To hotremove persistent memory, the management software must first
-> offline all memory blocks of dax region, and than unbind it from
-> device-dax/kmem driver. So, operations should look like this:
->
-> echo offline > /sys/devices/system/memory/memoryN/state
-> ...
-> echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
->
-> Note: if unbind is done without offlining memory beforehand, it won't be
-> possible to do dax0.0 hotremove, and dax's memory is going to be part of
-> System RAM until reboot.
->
-> Signed-off-by: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+On Mon, Apr 29, 2019 at 12:26:38PM -0500, Goldwyn Rodrigues wrote:
+> From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+> 
+> IOMAP_DAX_COW allows to inform the dax code, to first perform
+> a copy which are not page-aligned before performing the write.
+> The responsibility of checking if data edges are page aligned
+> is performed in ->iomap_begin() and the source address is
+> stored in ->inline_data
+> 
+> A new struct btrfs_iomap is passed from iomap_begin() to
+> iomap_end(), which contains all the accounting and locking information
+> for CoW based writes.
+> 
+> For writing to a hole, iomap->inline_data is set to zero.
+> 
+> Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 > ---
->  drivers/dax/dax-private.h |  2 ++
->  drivers/dax/kmem.c        | 41 +++++++++++++++++++++++++++++++++++----
->  2 files changed, 39 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-> index a45612148ca0..999aaf3a29b3 100644
-> --- a/drivers/dax/dax-private.h
-> +++ b/drivers/dax/dax-private.h
-> @@ -53,6 +53,7 @@ struct dax_region {
->   * @pgmap - pgmap for memmap setup / lifetime (driver owned)
->   * @ref: pgmap reference count (driver owned)
->   * @cmp: @ref final put completion (driver owned)
-> + * @dax_mem_res: physical address range of hotadded DAX memory
->   */
->  struct dev_dax {
->         struct dax_region *region;
-> @@ -62,6 +63,7 @@ struct dev_dax {
->         struct dev_pagemap pgmap;
->         struct percpu_ref ref;
->         struct completion cmp;
-> +       struct resource *dax_kmem_res;
->  };
->
->  static inline struct dev_dax *to_dev_dax(struct device *dev)
-> diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index 4c0131857133..3d0a7e702c94 100644
-> --- a/drivers/dax/kmem.c
-> +++ b/drivers/dax/kmem.c
-> @@ -71,21 +71,54 @@ int dev_dax_kmem_probe(struct device *dev)
->                 kfree(new_res);
->                 return rc;
->         }
-> +       dev_dax->dax_kmem_res = new_res;
->
->         return 0;
->  }
->
-> +#ifdef CONFIG_MEMORY_HOTREMOVE
-> +static int dev_dax_kmem_remove(struct device *dev)
+>  fs/btrfs/ctree.h |   6 ++
+>  fs/btrfs/dax.c   | 182 +++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>  fs/btrfs/file.c  |   4 +-
+>  3 files changed, 185 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+> index 1e3e758b83c2..eec01eb92f33 100644
+> --- a/fs/btrfs/ctree.h
+> +++ b/fs/btrfs/ctree.h
+> @@ -3801,6 +3801,12 @@ int btree_readahead_hook(struct extent_buffer *eb, int err);
+>  #ifdef CONFIG_FS_DAX
+>  /* dax.c */
+>  ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to);
+> +ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *from);
+> +#else
+> +static inline ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *from)
 > +{
-> +       struct dev_dax *dev_dax = to_dev_dax(dev);
-> +       struct resource *res = dev_dax->dax_kmem_res;
-> +       resource_size_t kmem_start = res->start;
-> +       resource_size_t kmem_size = resource_size(res);
-> +       int rc;
+> +	return 0;
+> +}
+>  #endif /* CONFIG_FS_DAX */
+>  
+>  static inline int is_fstree(u64 rootid)
+> diff --git a/fs/btrfs/dax.c b/fs/btrfs/dax.c
+> index bf3d46b0acb6..f5cc9bcdbf14 100644
+> --- a/fs/btrfs/dax.c
+> +++ b/fs/btrfs/dax.c
+> @@ -9,30 +9,184 @@
+>  #ifdef CONFIG_FS_DAX
+>  #include <linux/dax.h>
+>  #include <linux/iomap.h>
+> +#include <linux/uio.h>
+>  #include "ctree.h"
+>  #include "btrfs_inode.h"
+>  
+> +struct btrfs_iomap {
+> +	u64 start;
+> +	u64 end;
+> +	bool nocow;
+> +	struct extent_changeset *data_reserved;
+> +	struct extent_state *cached_state;
+> +};
 > +
-> +       /*
-> +        * We have one shot for removing memory, if some memory blocks were not
-> +        * offline prior to calling this function remove_memory() will fail, and
-> +        * there is no way to hotremove this memory until reboot because device
-> +        * unbind will succeed even if we return failure.
-> +        */
-> +       rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-> +       if (rc) {
-> +               dev_err(dev,
-> +                       "DAX region %pR cannot be hotremoved until the next reboot\n",
-> +                       res);
+> +static struct btrfs_iomap *btrfs_iomap_init(struct inode *inode,
+> +				     struct extent_map **em,
+> +				     loff_t pos, loff_t length)
+> +{
+> +	int ret = 0;
+> +	struct extent_map *map = *em;
+> +	struct btrfs_iomap *bi;
+> +
+> +	bi = kzalloc(sizeof(struct btrfs_iomap), GFP_NOFS);
+> +	if (!bi)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	bi->start = round_down(pos, PAGE_SIZE);
+> +	bi->end = PAGE_ALIGN(pos + length);
+> +
+> +	/* Wait for existing ordered extents in range to finish */
+> +	btrfs_wait_ordered_range(inode, bi->start, bi->end - bi->start);
+> +
+> +	lock_extent_bits(&BTRFS_I(inode)->io_tree, bi->start, bi->end, &bi->cached_state);
+> +
+> +	ret = btrfs_delalloc_reserve_space(inode, &bi->data_reserved,
+> +			bi->start, bi->end - bi->start);
+> +	if (ret) {
+> +		unlock_extent_cached(&BTRFS_I(inode)->io_tree, bi->start, bi->end,
+> +				&bi->cached_state);
+> +		kfree(bi);
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	refcount_inc(&map->refs);
+> +	ret = btrfs_get_extent_map_write(em, NULL,
+> +			inode, bi->start, bi->end - bi->start, &bi->nocow);
+> +	if (ret) {
+> +		unlock_extent_cached(&BTRFS_I(inode)->io_tree, bi->start, bi->end,
+> +				&bi->cached_state);
+> +		btrfs_delalloc_release_space(inode,
+> +				bi->data_reserved, bi->start,
+> +				bi->end - bi->start, true);
+> +		extent_changeset_free(bi->data_reserved);
+> +		kfree(bi);
+> +		return ERR_PTR(ret);
+> +	}
+> +	free_extent_map(map);
+> +	return bi;
+> +}
+> +
+> +static void *dax_address(struct block_device *bdev, struct dax_device *dax_dev,
+> +			 sector_t sector, loff_t pos, loff_t length)
 
-Small quibbles with this error message... "DAX" is redundant since the
-device name is printed by dev_err(). I'd suggest dropping "until the
-next reboot" since there is no guarantee it will work then either and
-the surefire mechanism to recover the memory from the kmem driver is
-to not add it in the first place. Perhaps also print out the error
-code in case it might specify a finer grained reason the memory is
-pinned.
+This looks like a common function for fs/dax.c.
 
-Other than that you can add
+--D
 
-   Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-...as it looks like Andrew will take this through -mm.
+> +{
+> +	size_t size = ALIGN(pos + length, PAGE_SIZE);
+> +	int id, ret = 0;
+> +	void *kaddr = NULL;
+> +	pgoff_t pgoff;
+> +	long map_len;
+> +
+> +	id = dax_read_lock();
+> +
+> +	ret = bdev_dax_pgoff(bdev, sector, size, &pgoff);
+> +	if (ret)
+> +		goto out;
+> +
+> +	map_len = dax_direct_access(dax_dev, pgoff, PHYS_PFN(size),
+> +			&kaddr, NULL);
+> +	if (map_len < 0)
+> +		ret = map_len;
+> +
+> +out:
+> +	dax_read_unlock(id);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +	return kaddr;
+> +}
+> +
+>  static int btrfs_iomap_begin(struct inode *inode, loff_t pos,
+>  		loff_t length, unsigned flags, struct iomap *iomap)
+>  {
+>  	struct extent_map *em;
+>  	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
+> +	struct btrfs_iomap *bi = NULL;
+> +	unsigned offset = pos & (PAGE_SIZE - 1);
+> +	u64 srcblk = 0;
+> +	loff_t diff;
+> +
+>  	em = btrfs_get_extent(BTRFS_I(inode), NULL, 0, pos, length, 0);
+> +
+> +	iomap->type = IOMAP_MAPPED;
+> +
+> +	if (flags & IOMAP_WRITE) {
+> +		if (em->block_start != EXTENT_MAP_HOLE)
+> +			srcblk = em->block_start + pos - em->start - offset;
+> +
+> +		bi = btrfs_iomap_init(inode, &em, pos, length);
+> +		if (IS_ERR(bi))
+> +			return PTR_ERR(bi);
+> +
+> +	}
+> +
+> +	/*
+> +	 * Advance the difference between pos and start, to align well with
+> +	 * inline_data in case of writes
+> +	 */
+> +	diff = round_down(pos - em->start, PAGE_SIZE);
+> +	iomap->offset = em->start + diff;
+> +	iomap->length = em->len - diff;
+> +	iomap->bdev = em->bdev;
+> +	iomap->dax_dev = fs_info->dax_dev;
+> +
+> +	/*
+> +	 * This will be true for reads only since we have already
+> +	 * allocated em
+> +	 */
+>  	if (em->block_start == EXTENT_MAP_HOLE) {
+>  		iomap->type = IOMAP_HOLE;
+>  		return 0;
+>  	}
+> -	iomap->type = IOMAP_MAPPED;
+> -	iomap->bdev = em->bdev;
+> -	iomap->dax_dev = fs_info->dax_dev;
+> -	iomap->offset = em->start;
+> -	iomap->length = em->len;
+> -	iomap->addr = em->block_start;
+> +
+> +	iomap->addr = em->block_start + diff;
+> +	/* Check if we really need to copy data from old extent */
+> +	if (bi && !bi->nocow && (offset || pos + length < bi->end)) {
+> +		iomap->type = IOMAP_DAX_COW;
+> +		if (srcblk) {
+> +			sector_t sector = (srcblk + (pos & PAGE_MASK) -
+> +					  iomap->offset) >> 9;
+> +			iomap->inline_data = dax_address(em->bdev,
+> +					fs_info->dax_dev, sector, pos, length);
+> +			if (IS_ERR(iomap->inline_data)) {
+> +				kfree(bi);
+> +				return PTR_ERR(iomap->inline_data);
+> +			}
+> +		}
+> +	}
+> +
+> +	iomap->private = bi;
+> +	return 0;
+> +}
+> +
+> +static int btrfs_iomap_end(struct inode *inode, loff_t pos,
+> +		loff_t length, ssize_t written, unsigned flags,
+> +		struct iomap *iomap)
+> +{
+> +	struct btrfs_iomap *bi = iomap->private;
+> +	u64 wend;
+> +
+> +	if (!bi)
+> +		return 0;
+> +
+> +	unlock_extent_cached(&BTRFS_I(inode)->io_tree, bi->start, bi->end,
+> +			&bi->cached_state);
+> +
+> +	wend = PAGE_ALIGN(pos + written);
+> +	if (wend < bi->end) {
+> +		btrfs_delalloc_release_space(inode,
+> +				bi->data_reserved, wend,
+> +				bi->end - wend, true);
+> +	}
+> +
+> +	btrfs_update_ordered_extent(inode, bi->start, wend - bi->start, true);
+> +	btrfs_delalloc_release_extents(BTRFS_I(inode), wend - bi->start, false);
+> +	extent_changeset_free(bi->data_reserved);
+> +	kfree(bi);
+>  	return 0;
+>  }
+>  
+>  static const struct iomap_ops btrfs_iomap_ops = {
+>  	.iomap_begin		= btrfs_iomap_begin,
+> +	.iomap_end		= btrfs_iomap_end,
+>  };
+>  
+>  ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to)
+> @@ -46,4 +200,20 @@ ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to)
+>  
+>  	return ret;
+>  }
+> +
+> +ssize_t btrfs_file_dax_write(struct kiocb *iocb, struct iov_iter *iter)
+> +{
+> +	ssize_t ret = 0;
+> +	u64 pos = iocb->ki_pos;
+> +	struct inode *inode = file_inode(iocb->ki_filp);
+> +	ret = dax_iomap_rw(iocb, iter, &btrfs_iomap_ops);
+> +
+> +	if (ret > 0) {
+> +		pos += ret;
+> +		if (pos > i_size_read(inode))
+> +			i_size_write(inode, pos);
+> +		iocb->ki_pos = pos;
+> +	}
+> +	return ret;
+> +}
+>  #endif /* CONFIG_FS_DAX */
+> diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+> index 9194591f9eea..a795023e26ca 100644
+> --- a/fs/btrfs/file.c
+> +++ b/fs/btrfs/file.c
+> @@ -1964,7 +1964,9 @@ static ssize_t btrfs_file_write_iter(struct kiocb *iocb,
+>  	if (sync)
+>  		atomic_inc(&BTRFS_I(inode)->sync_writers);
+>  
+> -	if (iocb->ki_flags & IOCB_DIRECT) {
+> +	if (IS_DAX(inode)) {
+> +		num_written = btrfs_file_dax_write(iocb, from);
+> +	} else if (iocb->ki_flags & IOCB_DIRECT) {
+>  		num_written = __btrfs_direct_write(iocb, from);
+>  	} else {
+>  		num_written = btrfs_buffered_write(iocb, from);
+> -- 
+> 2.16.4
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
