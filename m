@@ -1,78 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88532539E
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 17:17:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B883254DC
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 May 2019 18:07:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EA3712127545C;
-	Tue, 21 May 2019 08:17:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 036E9212746FE;
+	Tue, 21 May 2019 09:07:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=darrick.wong@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0FA0A21274210
- for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 08:17:21 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LF1mgP100602;
- Tue, 21 May 2019 15:16:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=8AVZkoBPVQWKSHRM3naLkNx4PGQvHgsKDNXXfZ9BJPM=;
- b=uBC3gJC/91gkOFdD6OjPXLEnzTlSyjQGCrmDVXhZL1I5manJ/JcGmIyvwR78kPPUEAMf
- VLuBHjCJq7J6itF1dPh3VhIUoe/s5PdjwsfFNO2HT/JvPp9bhP1Hyotxgv5w8orPU2eI
- rbg5jB9wGKnRCbZCqH2R8aL1sB+iiOPLlvz3Yy9qU13cgrhj0cK7WGE9eUPQ/xFM+W3N
- 4JeH/rBHz9e5qWCYrUqJ5XPlGpADGbRk6Z95xoP93H3QMOG+BR7IOtfdFjtL33ndytTR
- O3eeS/eBqlZ/NAuyAmn+Hj+vGiddEZ3xP0CZaLChLLPcE8ZDPXdV3e6CcKLQaoZ5jc2G iw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by userp2120.oracle.com with ESMTP id 2sjapqe15h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2019 15:16:55 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4LFDeAd052707;
- Tue, 21 May 2019 15:14:54 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3020.oracle.com with ESMTP id 2sks1jgsqn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 May 2019 15:14:54 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4LFEld2015657;
- Tue, 21 May 2019 15:14:48 GMT
-Received: from localhost (/67.169.218.210)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 21 May 2019 15:14:47 +0000
-Date: Tue, 21 May 2019 08:14:45 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Subject: Re: [PATCH 03/18] btrfs: basic dax read
-Message-ID: <20190521151445.GA5125@magnolia>
-References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-4-rgoldwyn@suse.de>
+ by ml01.01.org (Postfix) with ESMTPS id B076F211E092E
+ for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 09:07:14 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id f4so13232359oib.4
+ for <linux-nvdimm@lists.01.org>; Tue, 21 May 2019 09:07:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=qHnInBfAX+GoWjJM5B+1a+Vw2rTdSHZyw1ZFE7z7NrY=;
+ b=fR9U+EFoXp6HhXYT9l+xkijMGif7K3fz6bincJ22ZbB0d6OaUaMGrTRXdelLknFbfs
+ W+ZLsKJExrH5KaDHoKhSWCC0/MjPf0uktzpjdZekcC4BUpuM8dhQqEakhcSRzwfEdR3W
+ jdIEyi0RF68bIxCaFkl2lXnmRjr9DXLFTvqkBJCMLZxu0mjAr03gDUfxrgObVP4QkZIe
+ XwmJkmntN9CT1/uHTWvoG53gNa+73/obZEpIGYFxHczx8aaM2A6Zmax3vR9Zc+q3Ft8s
+ Qob6I/4L4bOjfPB2cVs9qYt4TPBKLg2RM962LdsC2KdYawUOqjKbIHg4YRO45qE0w3Wz
+ MrMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=qHnInBfAX+GoWjJM5B+1a+Vw2rTdSHZyw1ZFE7z7NrY=;
+ b=S3liJnvgQ4trlZJP1Sc9if9DOkgDY3lcyM1X5L+1r3cVzRm3vYQB2ksHrUa4zPiA3B
+ 96l/3fV6mD1InCuQ2xiZQCRLhc/HGyyB54PlxREHLkD+ykHTUPjO/e+NXGOigipTV8Qt
+ /DzvHuW8uHALhzT75YiulMG9fj1/kB55zaPNt3FVB0Jnv4EJvR3mfyk56itYhrfN5W6N
+ uNx8aTGhqXZEqb103eEaSX+NOx/M6DNY0rd7W+sroXdWUgGlcQaMOCaR1CvDUfGYU62J
+ J/0FK1fDpjAoMmm9INTi99vwaxj5SHKQQXLRKrf3+12t9+l7sldRFeqp0UTK+F2e8Vth
+ gH9A==
+X-Gm-Message-State: APjAAAWqFq3cRCShU9wx/QmB2EXo6wP9w6tjnEiPLLKOpu53sN4A2B6T
+ DZk1ziqr1O2U2lVQWVEytg0qhq3KaBekR0g+EYDYRQ==
+X-Google-Smtp-Source: APXvYqyu5x5mrKlEIasKp1NxpDGYmQJsGvrx6mxQiUGAiiyjZAOGd76nwvRmcYQhvDtlfylqQ/dEPb7N7a77yrnQFHQ=
+X-Received: by 2002:aca:ab07:: with SMTP id u7mr3889695oie.73.1558454833247;
+ Tue, 21 May 2019 09:07:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190429172649.8288-4-rgoldwyn@suse.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905210094
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9264
- signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905210094
+References: <20190514025604.9997-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iNgFbSq0Hqb+CStRhGWMHfXx7tL3vrDaQ95DcBBY8QCQ@mail.gmail.com>
+ <f99c4f11-a43d-c2d3-ab4f-b7072d090351@linux.ibm.com>
+ <CAPcyv4gOr8SFbdtBbWhMOU-wdYuMCQ4Jn2SznGRsv6Vku97Xnw@mail.gmail.com>
+ <02d1d14d-650b-da38-0828-1af330f594d5@linux.ibm.com>
+ <CAPcyv4jcSgg0wxY9FAM4ke9JzVc9Pu3qe6dviS3seNgHfG2oNw@mail.gmail.com>
+ <87mujgcf0h.fsf@linux.ibm.com>
+In-Reply-To: <87mujgcf0h.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 21 May 2019 09:07:02 -0700
+Message-ID: <CAPcyv4j5Y+AFkbvYjDnfqTdmN_Sq=O0qfGUorgpjAE8Ww7vH=A@mail.gmail.com>
+Subject: Re: [PATCH] mm/nvdimm: Use correct #defines instead of opencoding
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,147 +71,124 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, jack@suse.cz, linux-nvdimm@lists.01.org,
- nborisov@suse.com, david@fromorbit.com, dsterba@suse.cz, willy@infradead.org,
- Goldwyn Rodrigues <rgoldwyn@suse.com>, linux-fsdevel@vger.kernel.org,
- hch@lst.de, linux-btrfs@vger.kernel.org
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Apr 29, 2019 at 12:26:34PM -0500, Goldwyn Rodrigues wrote:
-> From: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> 
-> Perform a basic read using iomap support. The btrfs_iomap_begin()
-> finds the extent at the position and fills the iomap data
-> structure with the values.
-> 
-> Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> ---
->  fs/btrfs/Makefile |  1 +
->  fs/btrfs/ctree.h  |  5 +++++
->  fs/btrfs/dax.c    | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
->  fs/btrfs/file.c   | 11 ++++++++++-
->  4 files changed, 65 insertions(+), 1 deletion(-)
->  create mode 100644 fs/btrfs/dax.c
-> 
-> diff --git a/fs/btrfs/Makefile b/fs/btrfs/Makefile
-> index ca693dd554e9..1fa77b875ae9 100644
-> --- a/fs/btrfs/Makefile
-> +++ b/fs/btrfs/Makefile
-> @@ -12,6 +12,7 @@ btrfs-y += super.o ctree.o extent-tree.o print-tree.o root-tree.o dir-item.o \
->  	   reada.o backref.o ulist.o qgroup.o send.o dev-replace.o raid56.o \
->  	   uuid-tree.o props.o free-space-tree.o tree-checker.o
->  
-> +btrfs-$(CONFIG_FS_DAX) += dax.o
->  btrfs-$(CONFIG_BTRFS_FS_POSIX_ACL) += acl.o
->  btrfs-$(CONFIG_BTRFS_FS_CHECK_INTEGRITY) += check-integrity.o
->  btrfs-$(CONFIG_BTRFS_FS_REF_VERIFY) += ref-verify.o
-> diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-> index 9512f49262dd..b7bbe5130a3b 100644
-> --- a/fs/btrfs/ctree.h
-> +++ b/fs/btrfs/ctree.h
-> @@ -3795,6 +3795,11 @@ int btrfs_reada_wait(void *handle);
->  void btrfs_reada_detach(void *handle);
->  int btree_readahead_hook(struct extent_buffer *eb, int err);
->  
-> +#ifdef CONFIG_FS_DAX
-> +/* dax.c */
-> +ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to);
-> +#endif /* CONFIG_FS_DAX */
-> +
->  static inline int is_fstree(u64 rootid)
->  {
->  	if (rootid == BTRFS_FS_TREE_OBJECTID ||
-> diff --git a/fs/btrfs/dax.c b/fs/btrfs/dax.c
-> new file mode 100644
-> index 000000000000..bf3d46b0acb6
-> --- /dev/null
-> +++ b/fs/btrfs/dax.c
-> @@ -0,0 +1,49 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * DAX support for BTRFS
-> + *
-> + * Copyright (c) 2019  SUSE Linux
-> + * Author: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> + */
-> +
-> +#ifdef CONFIG_FS_DAX
-> +#include <linux/dax.h>
-> +#include <linux/iomap.h>
-> +#include "ctree.h"
-> +#include "btrfs_inode.h"
-> +
-> +static int btrfs_iomap_begin(struct inode *inode, loff_t pos,
-> +		loff_t length, unsigned flags, struct iomap *iomap)
-> +{
-> +	struct extent_map *em;
-> +	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
-> +	em = btrfs_get_extent(BTRFS_I(inode), NULL, 0, pos, length, 0);
-> +	if (em->block_start == EXTENT_MAP_HOLE) {
-> +		iomap->type = IOMAP_HOLE;
-> +		return 0;
+On Tue, May 21, 2019 at 2:51 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Mon, May 13, 2019 at 9:46 PM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> On 5/14/19 9:42 AM, Dan Williams wrote:
+> >> > On Mon, May 13, 2019 at 9:05 PM Aneesh Kumar K.V
+> >> > <aneesh.kumar@linux.ibm.com> wrote:
+> >> >>
+> >> >> On 5/14/19 9:28 AM, Dan Williams wrote:
+> >> >>> On Mon, May 13, 2019 at 7:56 PM Aneesh Kumar K.V
+> >> >>> <aneesh.kumar@linux.ibm.com> wrote:
+> >> >>>>
+> >> >>>> The nfpn related change is needed to fix the kernel message
+> >> >>>>
+> >> >>>> "number of pfns truncated from 2617344 to 163584"
+> >> >>>>
+> >> >>>> The change makes sure the nfpns stored in the superblock is right value.
+> >> >>>>
+> >> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> >>>> ---
+> >> >>>>    drivers/nvdimm/pfn_devs.c    | 6 +++---
+> >> >>>>    drivers/nvdimm/region_devs.c | 8 ++++----
+> >> >>>>    2 files changed, 7 insertions(+), 7 deletions(-)
+> >> >>>>
+> >> >>>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> >> >>>> index 347cab166376..6751ff0296ef 100644
+> >> >>>> --- a/drivers/nvdimm/pfn_devs.c
+> >> >>>> +++ b/drivers/nvdimm/pfn_devs.c
+> >> >>>> @@ -777,8 +777,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >> >>>>                    * when populating the vmemmap. This *should* be equal to
+> >> >>>>                    * PMD_SIZE for most architectures.
+> >> >>>>                    */
+> >> >>>> -               offset = ALIGN(start + reserve + 64 * npfns,
+> >> >>>> -                               max(nd_pfn->align, PMD_SIZE)) - start;
+> >> >>>> +               offset = ALIGN(start + reserve + sizeof(struct page) * npfns,
+> >> >>>> +                              max(nd_pfn->align, PMD_SIZE)) - start;
+> >> >>>
+> >> >>> No, I think we need to record the page-size into the superblock format
+> >> >>> otherwise this breaks in debug builds where the struct-page size is
+> >> >>> extended.
+> >> >>>
+> >> >>>>           } else if (nd_pfn->mode == PFN_MODE_RAM)
+> >> >>>>                   offset = ALIGN(start + reserve, nd_pfn->align) - start;
+> >> >>>>           else
+> >> >>>> @@ -790,7 +790,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >> >>>>                   return -ENXIO;
+> >> >>>>           }
+> >> >>>>
+> >> >>>> -       npfns = (size - offset - start_pad - end_trunc) / SZ_4K;
+> >> >>>> +       npfns = (size - offset - start_pad - end_trunc) / PAGE_SIZE;
+> >> >>>
+> >> >>> Similar comment, if the page size is variable then the superblock
+> >> >>> needs to explicitly account for it.
+> >> >>>
+> >> >>
+> >> >> PAGE_SIZE is not really variable. What we can run into is the issue you
+> >> >> mentioned above. The size of struct page can change which means the
+> >> >> reserved space for keeping vmemmap in device may not be sufficient for
+> >> >> certain kernel builds.
+> >> >>
+> >> >> I was planning to add another patch that fails namespace init if we
+> >> >> don't have enough space to keep the struct page.
+> >> >>
+> >> >> Why do you suggest we need to have PAGE_SIZE as part of pfn superblock?
+> >> >
+> >> > So that the kernel has a chance to identify cases where the superblock
+> >> > it is handling was created on a system with different PAGE_SIZE
+> >> > assumptions.
+> >> >
+> >>
+> >> The reason to do that is we don't have enough space to keep struct page
+> >> backing the total number of pfns? If so, what i suggested above should
+> >> handle that.
+> >>
+> >> or are you finding any other reason why we should fail a namespace init
+> >> with a different PAGE_SIZE value?
+> >
+> > I want the kernel to be able to start understand cross-architecture
+> > and cross-configuration geometries. Which to me means incrementing the
+> > info-block version and recording PAGE_SIZE and sizeof(struct page) in
+> > the info-block directly.
+> >
+> >> My another patch handle the details w.r.t devdax alignment for which
+> >> devdax got created with PAGE_SIZE 4K but we are now trying to load that
+> >> in a kernel with PAGE_SIZE 64k.
+> >
+> > Sure, but what about the reverse? These info-block format assumptions
+> > are as fundamental as the byte-order of the info-block, it needs to be
+> > cross-arch compatible and the x86 assumptions need to be fully lifted.
+>
+> Something like the below (Not tested). I am not sure what we will init the page_size
+> for minor version < 3. This will mark the namespace disabled if the
+> PAGE_SIZE and sizeof(struct page) doesn't match with the values used
+> during namespace create.
 
-I'm not doing a rigorous review of the btrfs-specific pieces, but you're
-required to fill out the other iomap fields for a read hole.
+Yes, this is on the right track.
 
---D
+I would special-case page_size == 0 as 4096 and page_struct_size == 0
+as 64. If either of those is non-zero then the info-block version
+needs to be revved and it needs to be crafted to make older kernels
+fail to parse it.
 
-> +	}
-> +	iomap->type = IOMAP_MAPPED;
-> +	iomap->bdev = em->bdev;
-> +	iomap->dax_dev = fs_info->dax_dev;
-> +	iomap->offset = em->start;
-> +	iomap->length = em->len;
-> +	iomap->addr = em->block_start;
-> +	return 0;
-> +}
-> +
-> +static const struct iomap_ops btrfs_iomap_ops = {
-> +	.iomap_begin		= btrfs_iomap_begin,
-> +};
-> +
-> +ssize_t btrfs_file_dax_read(struct kiocb *iocb, struct iov_iter *to)
-> +{
-> +	ssize_t ret;
-> +	struct inode *inode = file_inode(iocb->ki_filp);
-> +
-> +	inode_lock_shared(inode);
-> +	ret = dax_iomap_rw(iocb, to, &btrfs_iomap_ops);
-> +	inode_unlock_shared(inode);
-> +
-> +	return ret;
-> +}
-> +#endif /* CONFIG_FS_DAX */
-> diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-> index 34fe8a58b0e9..9194591f9eea 100644
-> --- a/fs/btrfs/file.c
-> +++ b/fs/btrfs/file.c
-> @@ -3288,9 +3288,18 @@ static int btrfs_file_open(struct inode *inode, struct file *filp)
->  	return generic_file_open(inode, filp);
->  }
->  
-> +static ssize_t btrfs_file_read_iter(struct kiocb *iocb, struct iov_iter *to)
-> +{
-> +#ifdef CONFIG_FS_DAX
-> +	if (IS_DAX(file_inode(iocb->ki_filp)))
-> +		return btrfs_file_dax_read(iocb, to);
-> +#endif
-> +	return generic_file_read_iter(iocb, to);
-> +}
-> +
->  const struct file_operations btrfs_file_operations = {
->  	.llseek		= btrfs_file_llseek,
-> -	.read_iter      = generic_file_read_iter,
-> +	.read_iter      = btrfs_file_read_iter,
->  	.splice_read	= generic_file_splice_read,
->  	.write_iter	= btrfs_file_write_iter,
->  	.mmap		= btrfs_file_mmap,
-> -- 
-> 2.16.4
-> 
+There was an earlier attempt to implement minimum info-block versions here:
+
+https://lore.kernel.org/lkml/155000670159.348031.17631616775326330606.stgit@dwillia2-desk3.amr.corp.intel.com/
+
+...but that was dropped in favor of the the "sub-section" patches.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
