@@ -1,81 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A733D2645E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 22 May 2019 15:12:34 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983A42698E
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 22 May 2019 20:05:53 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7A04C2127676B;
-	Wed, 22 May 2019 06:12:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7578521244A72;
+	Wed, 22 May 2019 11:05:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DF0ED21250479
- for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 06:12:30 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x4MCw7Xl145212
- for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 09:12:28 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2sn5qekywg-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 09:12:28 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 22 May 2019 14:12:26 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 May 2019 14:12:23 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x4MDCMti56098848
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 May 2019 13:12:22 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 21C1A42041;
- Wed, 22 May 2019 13:12:22 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9F3D42045;
- Wed, 22 May 2019 13:12:20 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.57.94])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 May 2019 13:12:20 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>,
- Keith Busch <keith.busch@intel.com>
-Subject: Re: [RFC PATCH] mm/nvdimm: Fix kernel crash on
- devm_mremap_pages_release
-In-Reply-To: <b775d65b-30e3-aceb-f2f8-f2413b129f52@linux.ibm.com>
-References: <20190514025354.9108-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hsTvyRnLGr3y4JB6zPzdxb7WGQgaWs=5vRqf=L1DYynQ@mail.gmail.com>
- <b775d65b-30e3-aceb-f2f8-f2413b129f52@linux.ibm.com>
-Date: Wed, 22 May 2019 18:42:19 +0530
+ by ml01.01.org (Postfix) with ESMTPS id EF98D212108CB
+ for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 11:05:49 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 22 May 2019 11:05:48 -0700
+X-ExtLoop1: 1
+Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
+ by FMSMGA003.fm.intel.com with ESMTP; 22 May 2019 11:05:48 -0700
+Received: from fmsmsx151.amr.corp.intel.com (10.18.125.4) by
+ FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 22 May 2019 11:05:48 -0700
+Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.118]) by
+ FMSMSX151.amr.corp.intel.com ([169.254.7.230]) with mapi id 14.03.0415.000;
+ Wed, 22 May 2019 11:05:48 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>
+Subject: Re: [ndctl PATCH v3 00/10] daxctl: add a new reconfigure-device
+ command
+Thread-Topic: [ndctl PATCH v3 00/10] daxctl: add a new reconfigure-device
+ command
+Thread-Index: AQHVDDhtWivggYEeR02OP0UA+22Nt6Zv5+sAgAAjo4CAAADtAIAFGaEAgALIwoA=
+Date: Wed, 22 May 2019 18:05:47 +0000
+Message-ID: <bf9698856035cdfa24969d303f1c452ce160aa4e.camel@intel.com>
+References: <20190516224053.3655-1-vishal.l.verma@intel.com>
+ <CA+CK2bCEUjCNGHcfqh+4gxtf80eUkz_swNny6A2mkJwLi6Yn+Q@mail.gmail.com>
+ <ff36c9ecc9073ea39b0a501d8abf5cfc48db388f.camel@intel.com>
+ <CA+CK2bCtZGAjQa9OAckgoecz31xN_1iYFkUjzmLhshSa80bSFA@mail.gmail.com>
+ <63ad1bacb0016bf722d038546499a6a38cc22501.camel@intel.com>
+In-Reply-To: <63ad1bacb0016bf722d038546499a6a38cc22501.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.185]
+Content-ID: <D18817E3AD27894EA4D3018D95771B8B@intel.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19052213-4275-0000-0000-000003376C43
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19052213-4276-0000-0000-00003847052A
-Message-Id: <875zq2k4zw.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-05-22_06:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1905220095
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,97 +65,93 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+On Mon, 2019-05-20 at 23:34 +0000, Verma, Vishal L wrote:
+> On Fri, 2019-05-17 at 13:41 -0400, Pavel Tatashin wrote:
+> > > Hi Pavel,
+> > > 
+> > > I've still not been able to hit this in my testing, is it
+something
+> > > you
+> > > hit only after applying these patches? i.e. does plain v65 work?
+> > 
+> > Yes, plain v65 works, but with these patches I see this error.
+> > 
+> Hm, So there are only two patches that touch the add_dax_dev function:
+> 
+>   2bf9a8e libdaxctl: add interfaces to enable/disable devices
+>   25be8f4 libdaxctl: add interfaces to get/set the online state for a
+node
+> 
+> And of these, the second one to get the target node doesn't return an
+> error in any case.
+> 
+> The first one can fail, so it must be that condition you're hitting,
+but
+> I'm not sure in what way it is failing.
+> 
+> The exact check is:
+> 
+> 	sprintf(path, "%s/modalias", daxdev_base);
+> 	rc = sysfs_read_attr(ctx, path, buf);
+> 	/* older kernels may be lack the modalias attribute */
+> 	if (rc < 0 && rc != -ENOENT)
+> 		goto err_read;
+> 	if (rc == 0) {
+> 		dev->kmod_list = to_module_list(ctx, buf);
+> 		if (dev->kmod_list == NULL)
+> 			goto err_read;
 
-> On 5/14/19 9:45 AM, Dan Williams wrote:
->> [ add Keith who was looking at something similar ]
->> 
+Dan points out that it might actually be the kmod portion that might be
+failing. Is libkmod present in the buildroot setup, and has a depmod run
+completed successfully before this point?
 
-...
+In any case, this incremental patch should /at least/ delay the error
+until you actually try to enable a kmem device. I'll fold this into the
+next version of the series.
 
->>
->> If it's reserved then we should not be accessing, even if the above
->> works in practice. Isn't the fix something more like this to fix up
->> the assumptions at release time?
->> 
->> diff --git a/kernel/memremap.c b/kernel/memremap.c
->> index a856cb5ff192..9074ba14572c 100644
->> --- a/kernel/memremap.c
->> +++ b/kernel/memremap.c
->> @@ -90,6 +90,7 @@ static void devm_memremap_pages_release(void *data)
->>    struct device *dev = pgmap->dev;
->>    struct resource *res = &pgmap->res;
->>    resource_size_t align_start, align_size;
->> + struct vmem_altmap *altmap = pgmap->altmap_valid ? &pgmap->altmap : NULL;
->>    unsigned long pfn;
->>    int nid;
->> 
->> @@ -102,7 +103,10 @@ static void devm_memremap_pages_release(void *data)
->>    align_size = ALIGN(res->start + resource_size(res), SECTION_SIZE)
->>    - align_start;
->> 
->> - nid = page_to_nid(pfn_to_page(align_start >> PAGE_SHIFT));
->> + pfn = align_start >> PAGE_SHIFT;
->> + if (altmap)
->> + pfn += vmem_altmap_offset(altmap);
->> + nid = page_to_nid(pfn_to_page(pfn));
->> 
->>    mem_hotplug_begin();
->>    if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
->> @@ -110,8 +114,7 @@ static void devm_memremap_pages_release(void *data)
->>    __remove_pages(page_zone(pfn_to_page(pfn)), pfn,
->>    align_size >> PAGE_SHIFT, NULL);
->>    } else {
->> - arch_remove_memory(nid, align_start, align_size,
->> - pgmap->altmap_valid ? &pgmap->altmap : NULL);
->> + arch_remove_memory(nid, align_start, align_size, altmap);
->>    kasan_remove_zero_shadow(__va(align_start), align_size);
->>    }
->>    mem_hotplug_done();
->> 
-> I did try that first. I was not sure about that. From the memory add vs 
-> remove perspective.
->
-> devm_memremap_pages:
->
-> align_start = res->start & ~(SECTION_SIZE - 1);
-> align_size = ALIGN(res->start + resource_size(res), SECTION_SIZE)
-> 		- align_start;
-> align_end = align_start + align_size - 1;
->
-> error = arch_add_memory(nid, align_start, align_size, altmap,
-> 				false);
->
->
-> devm_memremap_pages_release:
->
-> /* pages are dead and unused, undo the arch mapping */
-> align_start = res->start & ~(SECTION_SIZE - 1);
-> align_size = ALIGN(res->start + resource_size(res), SECTION_SIZE)
-> 		- align_start;
->
-> arch_remove_memory(nid, align_start, align_size,
-> 		pgmap->altmap_valid ? &pgmap->altmap : NULL);
->
->
-> Now if we are fixing the memremap_pages_release, shouldn't we adjust 
-> alig_start w.r.t memremap_pages too? and I was not sure what that means 
-> w.r.t add/remove alignment requirements.
->
-> What is the intended usage of reserve area? I guess we want that part to 
-> be added? if so shouldn't we remove them?
+8<----
 
-We need to intialize the struct page backing the reserve area too right?
-Where should we do that?
 
--aneesh
+From 2df9b6401a69833fa709ab1ad83ac27b545aeb9e Mon Sep 17 00:00:00 2001
+From: Vishal Verma <vishal.l.verma@intel.com>
+Date: Wed, 22 May 2019 12:01:28 -0600
+Subject: [ndctl PATCH] fixup! libdaxctl: add interfaces to
+enable/disable
+ devices
+
+---
+ daxctl/lib/libdaxctl.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
+index 5c85328..9d23d12 100644
+--- a/daxctl/lib/libdaxctl.c
++++ b/daxctl/lib/libdaxctl.c
+@@ -393,12 +393,8 @@ static void *add_dax_dev(void *parent, int id,
+const char *daxdev_base)
+ 	/* older kernels may be lack the modalias attribute */
+ 	if (rc < 0 && rc != -ENOENT)
+ 		goto err_read;
+-	if (rc == 0) {
++	if (rc == 0)
+ 		dev->kmod_list = to_module_list(ctx, buf);
+-		if (dev->kmod_list == NULL)
+-			goto err_read;
+-	} else
+-		dbg(ctx, "%s: modalias attribute missing\n", devname);
+ 
+ 	sprintf(path, "%s/target_node", daxdev_base);
+ 	if (sysfs_read_attr(ctx, path, buf) == 0)
+-- 
+2.20.1
+
 
 _______________________________________________
 Linux-nvdimm mailing list
