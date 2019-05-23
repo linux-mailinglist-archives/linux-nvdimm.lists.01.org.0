@@ -2,39 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66F027C24
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 13:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7139127C76
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 14:10:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B789121276779;
-	Thu, 23 May 2019 04:51:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6FD4C2127677B;
+	Thu, 23 May 2019 05:10:11 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=rgoldwyn@suse.de;
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
  receiver=linux-nvdimm@lists.01.org 
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 50DC921276772
- for <linux-nvdimm@lists.01.org>; Thu, 23 May 2019 04:51:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 6585021276775
+ for <linux-nvdimm@lists.01.org>; Thu, 23 May 2019 05:10:10 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 851F9AD17;
- Thu, 23 May 2019 11:51:12 +0000 (UTC)
-Date: Thu, 23 May 2019 06:51:09 -0500
-From: Goldwyn Rodrigues <rgoldwyn@suse.de>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [PATCH 04/18] dax: Introduce IOMAP_DAX_COW to CoW edges during
- writes
-Message-ID: <20190523115109.2o4txdjq2ft7fzzc@fiona>
+ by mx1.suse.de (Postfix) with ESMTP id C9B79AF3E;
+ Thu, 23 May 2019 12:10:08 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 62FA31E3C4B; Thu, 23 May 2019 14:10:08 +0200 (CEST)
+Date: Thu, 23 May 2019 14:10:08 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Darrick J. Wong" <darrick.wong@oracle.com>
+Subject: Re: [PATCH 08/18] dax: memcpy page in case of IOMAP_DAX_COW for mmap
+ faults
+Message-ID: <20190523121008.GA2949@quack2.suse.cz>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-5-rgoldwyn@suse.de>
- <20190521165158.GB5125@magnolia>
- <1e9951c1-d320-e480-3130-dc1f4b81ef2c@cn.fujitsu.com>
+ <20190429172649.8288-9-rgoldwyn@suse.de>
+ <20190521174625.GF5125@magnolia>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <1e9951c1-d320-e480-3130-dc1f4b81ef2c@cn.fujitsu.com>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190521174625.GF5125@magnolia>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,201 +47,76 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, jack@suse.cz,
- "Darrick J. Wong" <darrick.wong@oracle.com>, nborisov@suse.com,
- linux-nvdimm@lists.01.org, david@fromorbit.com, dsterba@suse.cz,
- willy@infradead.org, linux-fsdevel@vger.kernel.org, hch@lst.de,
- linux-btrfs@vger.kernel.org
+Cc: kilobyte@angband.pl, jack@suse.cz, linux-nvdimm@lists.01.org,
+ nborisov@suse.com, Goldwyn Rodrigues <rgoldwyn@suse.de>, david@fromorbit.com,
+ dsterba@suse.cz, willy@infradead.org, Goldwyn Rodrigues <rgoldwyn@suse.com>,
+ linux-fsdevel@vger.kernel.org, hch@lst.de, linux-btrfs@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 17:05 23/05, Shiyang Ruan wrote:
+On Tue 21-05-19 10:46:25, Darrick J. Wong wrote:
+> On Mon, Apr 29, 2019 at 12:26:39PM -0500, Goldwyn Rodrigues wrote:
+> > From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+> > 
+> > Change dax_iomap_pfn to return the address as well in order to
+> > use it for performing a memcpy in case the type is IOMAP_DAX_COW.
+> > We don't handle PMD because btrfs does not support hugepages.
+> > 
+> > Question:
+> > The sequence of bdev_dax_pgoff() and dax_direct_access() is
+> > used multiple times to calculate address and pfn's. Would it make
+> > sense to call it while calculating address as well to reduce code?
+> > 
+> > Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+> > ---
+> >  fs/dax.c | 19 +++++++++++++++----
+> >  1 file changed, 15 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/fs/dax.c b/fs/dax.c
+> > index 610bfa861a28..718b1632a39d 100644
+> > --- a/fs/dax.c
+> > +++ b/fs/dax.c
+> > @@ -984,7 +984,7 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+> >  }
+> >  
+> >  static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+> > -			 pfn_t *pfnp)
+> > +			 pfn_t *pfnp, void **addr)
+> >  {
+> >  	const sector_t sector = dax_iomap_sector(iomap, pos);
+> >  	pgoff_t pgoff;
+> > @@ -996,7 +996,7 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+> >  		return rc;
+> >  	id = dax_read_lock();
+> >  	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
+> > -				   NULL, pfnp);
+> > +				   addr, pfnp);
+> >  	if (length < 0) {
+> >  		rc = length;
+> >  		goto out;
+> > @@ -1286,6 +1286,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+> >  	XA_STATE(xas, &mapping->i_pages, vmf->pgoff);
+> >  	struct inode *inode = mapping->host;
+> >  	unsigned long vaddr = vmf->address;
+> > +	void *addr;
+> >  	loff_t pos = (loff_t)vmf->pgoff << PAGE_SHIFT;
+> >  	struct iomap iomap = { 0 };
 > 
-> 
-> On 5/22/19 12:51 AM, Darrick J. Wong wrote:
-> > On Mon, Apr 29, 2019 at 12:26:35PM -0500, Goldwyn Rodrigues wrote:
-> > > From: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> > > 
-> > > The IOMAP_DAX_COW is a iomap type which performs copy of
-> > > edges of data while performing a write if start/end are
-> > > not page aligned. The source address is expected in
-> > > iomap->inline_data.
-> > > 
-> > > dax_copy_edges() is a helper functions performs a copy from
-> > > one part of the device to another for data not page aligned.
-> > > If iomap->inline_data is NULL, it memset's the area to zero.
-> > > 
-> > > Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> > > ---
-> > >   fs/dax.c              | 46 +++++++++++++++++++++++++++++++++++++++++++++-
-> > >   include/linux/iomap.h |  1 +
-> > >   2 files changed, 46 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/fs/dax.c b/fs/dax.c
-> > > index e5e54da1715f..610bfa861a28 100644
-> > > --- a/fs/dax.c
-> > > +++ b/fs/dax.c
-> > > @@ -1084,6 +1084,42 @@ int __dax_zero_page_range(struct block_device *bdev,
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(__dax_zero_page_range);
-> > > +/*
-> > > + * dax_copy_edges - Copies the part of the pages not included in
-> > > + * 		    the write, but required for CoW because
-> > > + * 		    offset/offset+length are not page aligned.
-> > > + */
-> > > +static int dax_copy_edges(struct inode *inode, loff_t pos, loff_t length,
-> > > +			   struct iomap *iomap, void *daddr)
-> > > +{
-> > > +	unsigned offset = pos & (PAGE_SIZE - 1);
-> > > +	loff_t end = pos + length;
-> > > +	loff_t pg_end = round_up(end, PAGE_SIZE);
-> > > +	void *saddr = iomap->inline_data;
-> > > +	int ret = 0;
-> > > +	/*
-> > > +	 * Copy the first part of the page
-> > > +	 * Note: we pass offset as length
-> > > +	 */
-> > > +	if (offset) {
-> > > +		if (saddr)
-> > > +			ret = memcpy_mcsafe(daddr, saddr, offset);
-> > > +		else
-> > > +			memset(daddr, 0, offset);
-> > > +	}
-> > > +
-> > > +	/* Copy the last part of the range */
-> > > +	if (end < pg_end) {
-> > > +		if (saddr)
-> > > +			ret = memcpy_mcsafe(daddr + offset + length,
-> > > +			       saddr + offset + length,	pg_end - end);
-> > > +		else
-> > > +			memset(daddr + offset + length, 0,
-> > > +					pg_end - end);
-> > > +	}
-> > > +	return ret;
-> > > +}
-> > > +
-> > >   static loff_t
-> > >   dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
-> > >   		struct iomap *iomap)
-> > > @@ -1105,9 +1141,11 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
-> > >   			return iov_iter_zero(min(length, end - pos), iter);
-> > >   	}
-> > > -	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED))
-> > > +	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED
-> > > +			 && iomap->type != IOMAP_DAX_COW))
-> > 
-> > I reiterate (from V3) that the && goes on the previous line...
-> > 
-> > 	if (WARN_ON_ONCE(iomap->type != IOMAP_MAPPED &&
-> > 			 iomap->type != IOMAP_DAX_COW))
-> > 
-> > >   		return -EIO;
-> > > +
-> > >   	/*
-> > >   	 * Write can allocate block for an area which has a hole page mapped
-> > >   	 * into page tables. We have to tear down these mappings so that data
-> > > @@ -1144,6 +1182,12 @@ dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
-> > >   			break;
-> > >   		}
-> > > +		if (iomap->type == IOMAP_DAX_COW) {
-> > > +			ret = dax_copy_edges(inode, pos, length, iomap, kaddr);
-> > > +			if (ret)
-> > > +				break;
-> > > +		}
-> > > +
-> > >   		map_len = PFN_PHYS(map_len);
-> > >   		kaddr += offset;
-> > >   		map_len -= offset;
-> > > diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-> > > index 0fefb5455bda..6e885c5a38a3 100644
-> > > --- a/include/linux/iomap.h
-> > > +++ b/include/linux/iomap.h
-> > > @@ -25,6 +25,7 @@ struct vm_fault;
-> > >   #define IOMAP_MAPPED	0x03	/* blocks allocated at @addr */
-> > >   #define IOMAP_UNWRITTEN	0x04	/* blocks allocated at @addr in unwritten state */
-> > >   #define IOMAP_INLINE	0x05	/* data inline in the inode */
-> > 
-> > > +#define IOMAP_DAX_COW	0x06
-> > 
-> > DAX isn't going to be the only scenario where we need a way to
-> > communicate to iomap actors the need to implement copy on write.
-> > 
-> > XFS also uses struct iomap to hand out file leases to clients.  The
-> > lease code /currently/ doesn't support files with shared blocks (because
-> > the only user is pNFS) but one could easily imagine a future where some
-> > client wants to lease a file with shared blocks, in which case XFS will
-> > want to convey the COW details to the lessee.
-> > 
-> > > +/* Copy data pointed by inline_data before write*/
-> > 
-> > A month ago during the V3 patchset review, I wrote (possibly in an other
-> > thread, sorry) about something that I'm putting my foot down about now
-> > for the V4 patchset, which is the {re,ab}use of @inline_data for the
-> > data source address.
-> > 
-> > We cannot use @inline_data to convey the source address.  @inline_data
-> > (so far) is used to point to the in-memory representation of the storage
-> > described by @addr.  For data writes, @addr is the location of the write
-> > on disk and @inline_data is the location of the write in memory.
-> > 
-> > Reusing @inline_data here to point to the location of the source data in
-> > memory is a totally different thing and will likely result in confusion.
-> > On a practical level, this also means that we cannot support the case of
-> > COW && INLINE because the type codes collide and so would the users of
-> > @inline_data.  This isn't required *right now*, but if you had a pmem
-> > filesystem that stages inode updates in memory and flips a pointer to
-> > commit changes then the ->iomap_begin function will need to convey two
-> > pointers at once.
-> > 
-> > So this brings us back to Dave's suggestion during the V1 patchset
-> > review that instead of adding more iomap flags/types and overloading
-> > fields, we simply pass two struct iomaps into ->iomap_begin:
-> > 
-> >   - Change iomap_apply() to "struct iomap iomap[2] = 0;" and pass
-> >     &iomap[0] into the ->iomap_begin and ->iomap_end functions.  The
-> >     first iomap will be filled in with the destination for the write (as
-> >     all implementations do now), and the second iomap can be filled in
-> >     with the source information for a COW operation.
-> > 
-> >   - If the ->iomap_begin implementation decides that COW is necessary for
-> >     the requested operation, then it should fill out that second iomap
-> >     with information about the extent that the actor must copied before
-> >     returning.  The second iomap's offset and length must match the
-> >     first.  If COW isn't necessary, the ->iomap_begin implementation
-> 
-> Hi,
-> 
-> I'm working on reflink & dax in XFS, here are some thoughts on this:
-> 
-> As mentioned above: the second iomap's offset and length must match the
-> first.  I thought so at the beginning, but later found that the only
-> difference between these two iomaps is @addr.  So, what about adding a
-> @saddr, which means the source address of COW extent, into the struct iomap.
-> The ->iomap_begin() fills @saddr if the extent is COW, and 0 if not.  Then
-> handle this @saddr in each ->actor().  No more modifications in other
-> functions.
+> Ugh, I had forgotten that fs/dax.c open-codes iomap_apply, probably
+> because the actor returns vm_fault_t, not bytes copied.  I guess that
+> makes it a tiny bit more complicated to pass in two (struct iomap *) to
+> the iomap_begin function...
 
-Yes, I started of with the exact idea before being recommended this by Dave.
-I used two fields instead of one namely cow_pos and cow_addr which defined
-the source details. I had put it as a iomap flag as opposed to a type
-which of course did not appeal well.
+Hum, right. We could actually reimplement dax_iomap_{pte|pmd}_fault() using
+iomap_apply(). We would just need to propagate error code out of our
+'actor' inside the structure pointed to by 'data'. But that's doable.
 
-We may want to use iomaps for cases where two inodes are involved.
-An example of the other scenario where offset may be different is file
-comparison for dedup: vfs_dedup_file_range_compare(). However, it would
-need two inodes in iomap as well.
-
-> 
-> My RFC patchset[1] is implemented in this way and works for me, though it is
-> far away from perfectness.
-> 
-> [1]: https://patchwork.kernel.org/cover/10904307/
-> 
-
+								Honza
 -- 
-Goldwyn
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
