@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7139127C76
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 14:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E29727E47
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 15:38:49 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6FD4C2127677B;
-	Thu, 23 May 2019 05:10:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 08C6F21276B86;
+	Thu, 23 May 2019 06:38:47 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,26 +15,24 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6585021276775
- for <linux-nvdimm@lists.01.org>; Thu, 23 May 2019 05:10:10 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 57CA4212532F0
+ for <linux-nvdimm@lists.01.org>; Thu, 23 May 2019 06:38:44 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id C9B79AF3E;
- Thu, 23 May 2019 12:10:08 +0000 (UTC)
+ by mx1.suse.de (Postfix) with ESMTP id 98947AD7F;
+ Thu, 23 May 2019 13:38:42 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 62FA31E3C4B; Thu, 23 May 2019 14:10:08 +0200 (CEST)
-Date: Thu, 23 May 2019 14:10:08 +0200
+ id E08A21E3C69; Thu, 23 May 2019 15:38:41 +0200 (CEST)
+Date: Thu, 23 May 2019 15:38:41 +0200
 From: Jan Kara <jack@suse.cz>
-To: "Darrick J. Wong" <darrick.wong@oracle.com>
-Subject: Re: [PATCH 08/18] dax: memcpy page in case of IOMAP_DAX_COW for mmap
- faults
-Message-ID: <20190523121008.GA2949@quack2.suse.cz>
+To: Goldwyn Rodrigues <rgoldwyn@suse.de>
+Subject: Re: [PATCH 10/18] dax: replace mmap entry in case of CoW
+Message-ID: <20190523133841.GB2949@quack2.suse.cz>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-9-rgoldwyn@suse.de>
- <20190521174625.GF5125@magnolia>
+ <20190429172649.8288-11-rgoldwyn@suse.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190521174625.GF5125@magnolia>
+In-Reply-To: <20190429172649.8288-11-rgoldwyn@suse.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -47,8 +45,8 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, jack@suse.cz, linux-nvdimm@lists.01.org,
- nborisov@suse.com, Goldwyn Rodrigues <rgoldwyn@suse.de>, david@fromorbit.com,
+Cc: kilobyte@angband.pl, jack@suse.cz, darrick.wong@oracle.com,
+ nborisov@suse.com, linux-nvdimm@lists.01.org, david@fromorbit.com,
  dsterba@suse.cz, willy@infradead.org, Goldwyn Rodrigues <rgoldwyn@suse.com>,
  linux-fsdevel@vger.kernel.org, hch@lst.de, linux-btrfs@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
@@ -56,62 +54,82 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue 21-05-19 10:46:25, Darrick J. Wong wrote:
-> On Mon, Apr 29, 2019 at 12:26:39PM -0500, Goldwyn Rodrigues wrote:
-> > From: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> > 
-> > Change dax_iomap_pfn to return the address as well in order to
-> > use it for performing a memcpy in case the type is IOMAP_DAX_COW.
-> > We don't handle PMD because btrfs does not support hugepages.
-> > 
-> > Question:
-> > The sequence of bdev_dax_pgoff() and dax_direct_access() is
-> > used multiple times to calculate address and pfn's. Would it make
-> > sense to call it while calculating address as well to reduce code?
-> > 
-> > Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
-> > ---
-> >  fs/dax.c | 19 +++++++++++++++----
-> >  1 file changed, 15 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/fs/dax.c b/fs/dax.c
-> > index 610bfa861a28..718b1632a39d 100644
-> > --- a/fs/dax.c
-> > +++ b/fs/dax.c
-> > @@ -984,7 +984,7 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
-> >  }
-> >  
-> >  static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
-> > -			 pfn_t *pfnp)
-> > +			 pfn_t *pfnp, void **addr)
-> >  {
-> >  	const sector_t sector = dax_iomap_sector(iomap, pos);
-> >  	pgoff_t pgoff;
-> > @@ -996,7 +996,7 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
-> >  		return rc;
-> >  	id = dax_read_lock();
-> >  	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
-> > -				   NULL, pfnp);
-> > +				   addr, pfnp);
-> >  	if (length < 0) {
-> >  		rc = length;
-> >  		goto out;
-> > @@ -1286,6 +1286,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
-> >  	XA_STATE(xas, &mapping->i_pages, vmf->pgoff);
-> >  	struct inode *inode = mapping->host;
-> >  	unsigned long vaddr = vmf->address;
-> > +	void *addr;
-> >  	loff_t pos = (loff_t)vmf->pgoff << PAGE_SHIFT;
-> >  	struct iomap iomap = { 0 };
+On Mon 29-04-19 12:26:41, Goldwyn Rodrigues wrote:
+> From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 > 
-> Ugh, I had forgotten that fs/dax.c open-codes iomap_apply, probably
-> because the actor returns vm_fault_t, not bytes copied.  I guess that
-> makes it a tiny bit more complicated to pass in two (struct iomap *) to
-> the iomap_begin function...
+> We replace the existing entry to the newly allocated one
+> in case of CoW. Also, we mark the entry as PAGECACHE_TAG_TOWRITE
+> so writeback marks this entry as writeprotected. This
+> helps us snapshots so new write pagefaults after snapshots
+> trigger a CoW.
 
-Hum, right. We could actually reimplement dax_iomap_{pte|pmd}_fault() using
-iomap_apply(). We would just need to propagate error code out of our
-'actor' inside the structure pointed to by 'data'. But that's doable.
+I don't understand why do you need to mark the new entry with
+PAGECACHE_TAG_TOWRITE. dax_insert_entry() will unmap the entry from all
+page tables so what's there left to writeprotect?
+
+>  /*
+>   * By this point grab_mapping_entry() has ensured that we have a locked entry
+>   * of the appropriate size so we don't have to worry about downgrading PMDs to
+> @@ -709,14 +712,17 @@ static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
+>   */
+>  static void *dax_insert_entry(struct xa_state *xas,
+>  		struct address_space *mapping, struct vm_fault *vmf,
+> -		void *entry, pfn_t pfn, unsigned long flags, bool dirty)
+> +		void *entry, pfn_t pfn, unsigned long flags,
+> +		unsigned long insert_flags)
+>  {
+>  	void *new_entry = dax_make_entry(pfn, flags);
+> +	bool dirty = insert_flags & DAX_IF_DIRTY;
+> +	bool cow = insert_flags & DAX_IF_COW;
+
+Does 'cow' really need to be a separate flag? dax_insert_entry() can just
+figure out the right thing to do on its own based on old entry value and
+new entry to be inserted...
+
+>  
+>  	if (dirty)
+>  		__mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
+>  
+> -	if (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE)) {
+> +	if (cow || (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE))) {
+
+E.g. here we need to unmap if old entry is not 'empty' and the pfns differ
+(well, the pfns differ check should better be done like I outline below to
+make pmd + pte match work correctly).
+
+>  		unsigned long index = xas->xa_index;
+>  		/* we are replacing a zero page with block mapping */
+>  		if (dax_is_pmd_entry(entry))
+> @@ -728,12 +734,12 @@ static void *dax_insert_entry(struct xa_state *xas,
+>  
+>  	xas_reset(xas);
+>  	xas_lock_irq(xas);
+> -	if (dax_entry_size(entry) != dax_entry_size(new_entry)) {
+> +	if (cow || (dax_entry_size(entry) != dax_entry_size(new_entry))) {
+
+This needs to be done if entries are different at all...
+
+>  		dax_disassociate_entry(entry, mapping, false);
+>  		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
+>  	}
+>  
+> -	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
+> +	if (cow || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
+
+This is the only place that will be a bit more subtle - you need to check
+whether the new entry is not a subset of the old one (i.e., a PTE inside a
+PMD) and skip setting in that case. So something like:
+
+	if (xa_to_value(new_entry) | DAX_LOCKED == xa_to_value(entry) ||
+	    (dax_is_pmd_entry(entry) && dax_is_pte_entry(new_entry) &&
+	     dax_to_pfn(entry) + (xas->xa_index & PG_PMD_COLOUR) ==
+	     dax_to_pfn(new_entry))) {
+		/* New entry is a subset of the current one? Skip update... */
+		xas_load(xas);
+	} else {
+		do work...
+	}
+
 
 								Honza
 -- 
