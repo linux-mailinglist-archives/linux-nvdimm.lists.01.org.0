@@ -2,48 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EA427447
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 04:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB73274E4
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 May 2019 06:02:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CEB442126D83F;
-	Wed, 22 May 2019 19:10:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id BFA7521273404;
+	Wed, 22 May 2019 21:02:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
- helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
- [211.29.132.249])
- by ml01.01.org (Postfix) with ESMTP id 5B35B2120ADD6
- for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 19:10:25 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-144-61.pa.nsw.optusnet.com.au
- [49.180.144.61])
- by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 94661105FF11;
- Thu, 23 May 2019 12:10:18 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hTdBR-0005cL-FL; Thu, 23 May 2019 12:10:17 +1000
-Date: Thu, 23 May 2019 12:10:17 +1000
-From: Dave Chinner <david@fromorbit.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=141.146.126.79; helo=aserp2130.oracle.com;
+ envelope-from=darrick.wong@oracle.com; receiver=linux-nvdimm@lists.01.org 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id BD49B2126D83F
+ for <linux-nvdimm@lists.01.org>; Wed, 22 May 2019 21:02:40 -0700 (PDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+ by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4N3sLwU086500;
+ Thu, 23 May 2019 04:02:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=SpnlCnP/O9ZkZqlUX+vUBOkfGqSOfQHrVg1yrZjTXDs=;
+ b=oTE2W0bRi34AyZgfWmQVQXAA9VcxLbzdRVkX62uTll9zZaiizxf3pTqA/8pLxO6Bvtm1
+ 5G8ay60GkxkeA1qKuLHSprf6I5n3tgxMFgPgo/29ornRWhXDrhhDFhuw2m21q/8zk8aV
+ jOwz2AcWjgaW5wsZMfKZcS2DsyTozukLooud+NA4zAaR/E/kBf/WKN4AHl3bM2H8fI8e
+ 4qa2CDDPJkrs/jWOUgZusfpcr/15TJjGuz1Bn00/R7PhQg8W3xFSuJ7s+DDwURpzNlgJ
+ 7K1ebwmAMxYGh317Cx0kswnL+dEzOwdZVP3lNYXU06Y9mvMCb0vn80xYwnM292TdCVTA Rg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by aserp2130.oracle.com with ESMTP id 2smsk5fnm1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 May 2019 04:02:15 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4N41YAS070556;
+ Thu, 23 May 2019 04:02:15 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+ by aserp3030.oracle.com with ESMTP id 2smsgt0ae9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 23 May 2019 04:02:15 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+ by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4N424Jj030507;
+ Thu, 23 May 2019 04:02:04 GMT
+Received: from localhost (/10.159.244.226)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Thu, 23 May 2019 04:02:03 +0000
+Date: Wed, 22 May 2019 21:02:02 -0700
+From: "Darrick J. Wong" <darrick.wong@oracle.com>
 To: Goldwyn Rodrigues <rgoldwyn@suse.de>
-Subject: Re: [PATCH 04/18] dax: Introduce IOMAP_DAX_COW to CoW edges during
- writes
-Message-ID: <20190523021017.GA16786@dread.disaster.area>
+Subject: Re: [PATCH 08/18] dax: memcpy page in case of IOMAP_DAX_COW for mmap
+ faults
+Message-ID: <20190523040202.GH5125@magnolia>
 References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-5-rgoldwyn@suse.de>
- <20190521165158.GB5125@magnolia>
- <20190522201446.tc4zbxdevjm5dofe@fiona>
+ <20190429172649.8288-9-rgoldwyn@suse.de>
+ <20190521174625.GF5125@magnolia>
+ <20190522191139.62v2rgby5ptjhzcd@fiona>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190522201446.tc4zbxdevjm5dofe@fiona>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0 cx=a_idp_d
- a=8RU0RCro9O0HS2ezTvitPg==:117 a=8RU0RCro9O0HS2ezTvitPg==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=E5NmQfObTbMA:10
- a=VwQbUJbxAAAA:8 a=7-415B0cAAAA:8 a=PiLuJtFBGQ_lXzUGpukA:9
- a=CjuIK1q_8ugA:10 a=igBNqPyMv6gA:10 a=AjGcO6oz07-iQ99wixmX:22
- a=biEYGPWJfzWAr4FL6Ov7:22
+In-Reply-To: <20190522191139.62v2rgby5ptjhzcd@fiona>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9265
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905230026
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9265
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905230026
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,54 +87,92 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, jack@suse.cz,
- "Darrick J. Wong" <darrick.wong@oracle.com>, nborisov@suse.com,
- linux-nvdimm@lists.01.org, dsterba@suse.cz, willy@infradead.org,
+Cc: kilobyte@angband.pl, jack@suse.cz, linux-nvdimm@lists.01.org,
+ nborisov@suse.com, david@fromorbit.com, dsterba@suse.cz, willy@infradead.org,
  linux-fsdevel@vger.kernel.org, hch@lst.de, linux-btrfs@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 22, 2019 at 03:14:47PM -0500, Goldwyn Rodrigues wrote:
-> On  9:51 21/05, Darrick J. Wong wrote:
-> > On Mon, Apr 29, 2019 at 12:26:35PM -0500, Goldwyn Rodrigues wrote:
-> > We cannot use @inline_data to convey the source address.  @inline_data
-> > (so far) is used to point to the in-memory representation of the storage
-> > described by @addr.  For data writes, @addr is the location of the write
-> > on disk and @inline_data is the location of the write in memory.
+On Wed, May 22, 2019 at 02:11:39PM -0500, Goldwyn Rodrigues wrote:
+> On 10:46 21/05, Darrick J. Wong wrote:
+> > On Mon, Apr 29, 2019 at 12:26:39PM -0500, Goldwyn Rodrigues wrote:
+> > > From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+> > > 
+> > > Change dax_iomap_pfn to return the address as well in order to
+> > > use it for performing a memcpy in case the type is IOMAP_DAX_COW.
+> > > We don't handle PMD because btrfs does not support hugepages.
+> > > 
+> > > Question:
+> > > The sequence of bdev_dax_pgoff() and dax_direct_access() is
+> > > used multiple times to calculate address and pfn's. Would it make
+> > > sense to call it while calculating address as well to reduce code?
+> > > 
+> > > Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+> > > ---
+> > >  fs/dax.c | 19 +++++++++++++++----
+> > >  1 file changed, 15 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/fs/dax.c b/fs/dax.c
+> > > index 610bfa861a28..718b1632a39d 100644
+> > > --- a/fs/dax.c
+> > > +++ b/fs/dax.c
+> > > @@ -984,7 +984,7 @@ static sector_t dax_iomap_sector(struct iomap *iomap, loff_t pos)
+> > >  }
+> > >  
+> > >  static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+> > > -			 pfn_t *pfnp)
+> > > +			 pfn_t *pfnp, void **addr)
+> > >  {
+> > >  	const sector_t sector = dax_iomap_sector(iomap, pos);
+> > >  	pgoff_t pgoff;
+> > > @@ -996,7 +996,7 @@ static int dax_iomap_pfn(struct iomap *iomap, loff_t pos, size_t size,
+> > >  		return rc;
+> > >  	id = dax_read_lock();
+> > >  	length = dax_direct_access(iomap->dax_dev, pgoff, PHYS_PFN(size),
+> > > -				   NULL, pfnp);
+> > > +				   addr, pfnp);
+> > >  	if (length < 0) {
+> > >  		rc = length;
+> > >  		goto out;
+> > > @@ -1286,6 +1286,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+> > >  	XA_STATE(xas, &mapping->i_pages, vmf->pgoff);
+> > >  	struct inode *inode = mapping->host;
+> > >  	unsigned long vaddr = vmf->address;
+> > > +	void *addr;
+> > >  	loff_t pos = (loff_t)vmf->pgoff << PAGE_SHIFT;
+> > >  	struct iomap iomap = { 0 };
 > > 
-> > Reusing @inline_data here to point to the location of the source data in
-> > memory is a totally different thing and will likely result in confusion.
-> > On a practical level, this also means that we cannot support the case of
-> > COW && INLINE because the type codes collide and so would the users of
-> > @inline_data.  This isn't required *right now*, but if you had a pmem
-> > filesystem that stages inode updates in memory and flips a pointer to
-> > commit changes then the ->iomap_begin function will need to convey two
-> > pointers at once.
-> > 
-> > So this brings us back to Dave's suggestion during the V1 patchset
-> > review that instead of adding more iomap flags/types and overloading
-> > fields, we simply pass two struct iomaps into ->iomap_begin:
+> > Ugh, I had forgotten that fs/dax.c open-codes iomap_apply, probably
+> > because the actor returns vm_fault_t, not bytes copied.  I guess that
+> > makes it a tiny bit more complicated to pass in two (struct iomap *) to
+> > the iomap_begin function...
 > 
-> Actually, Dave is the one who suggested to perform it this way.
-> https://patchwork.kernel.org/comment/22562195/
+> I am not sure I understand this. We do not use iomap_apply() in
+> the fault path: dax_iomap_pte_fault(). We just use iomap_begin()
+> and iomap_end(). So, why can we not implement your idea of using two
+> iomaps?
 
-My first suggestion was to use two iomaps. This suggestion came
-later, as a way of demonstrating that a different type could be used
-to redefine what ->inline_data was used for, if people considered
-that an acceptible solution.
+Oh, sorry, I wasn't trying to say that calling ->iomap_begin made it
+*impossible* to implement.  I was merely complaining about the increased
+maintenance burden that results from open coding -- now there are three
+places where we have to change a struct iomap declaration, not one
+(iomap_apply) as I had originally thought.
 
-What was apparent from other discussions in the thread you quote was
-that using two iomaps looked to be the better, more general approach
-to solving the iomap read-modify-write issue at hand.
+> What does open-coding iomap-apply mean?
 
-Cheers,
+Any function that calls (1) ->iomap_begin; (2) performs an action on the
+returned iomap; and (3) then calls calling ->iomap_end.  That's what
+iomap_apply() does.
 
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+Really I'm just being maintainer-cranky.  Ignore me for now. :)
+
+--D
+
+> 
+> -- 
+> Goldwyn
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
