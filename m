@@ -2,35 +2,35 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4505D2A75D
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 26 May 2019 01:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644F02A760
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 26 May 2019 01:17:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B5EA7212741F1;
-	Sat, 25 May 2019 16:16:39 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 120C121276B9D;
+	Sat, 25 May 2019 16:17:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.65; helo=mga03.intel.com;
+ client-ip=134.134.136.31; helo=mga06.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E17C42126CF81
- for <linux-nvdimm@lists.01.org>; Sat, 25 May 2019 16:16:37 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id AA23F2126CF81
+ for <linux-nvdimm@lists.01.org>; Sat, 25 May 2019 16:17:36 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 25 May 2019 16:16:36 -0700
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 25 May 2019 16:17:36 -0700
 X-ExtLoop1: 1
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga005.fm.intel.com with ESMTP; 25 May 2019 16:16:36 -0700
-Subject: [for-4.9.y PATCH] libnvdimm/namespace: Fix label tracking error
+ by orsmga008.jf.intel.com with ESMTP; 25 May 2019 16:17:36 -0700
+Subject: [for-4.14.y PATCH] libnvdimm/namespace: Fix label tracking error
 From: Dan Williams <dan.j.williams@intel.com>
 To: stable@vger.kernel.org
-Date: Sat, 25 May 2019 16:02:49 -0700
-Message-ID: <155882536896.2470998.15501697202623097741.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 25 May 2019 16:03:49 -0700
+Message-ID: <155882542900.2471091.11258089584930875450.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -101,11 +101,11 @@ Signed-off-by: Dan Williams <dan.j.williams@intel.com>
  3 files changed, 35 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 66a089d561cf..9108004a0d9b 100644
+index 184149a49b02..6a16017cc0d9 100644
 --- a/drivers/nvdimm/label.c
 +++ b/drivers/nvdimm/label.c
-@@ -490,15 +490,26 @@ static unsigned long nd_label_offset(struct nvdimm_drvdata *ndd,
- 		- (unsigned long) to_namespace_index(ndd, 0);
+@@ -614,6 +614,17 @@ static const guid_t *to_abstraction_guid(enum nvdimm_claim_class claim_class,
+ 		return &guid_null;
  }
  
 +static void reap_victim(struct nd_mapping *nd_mapping,
@@ -122,8 +122,9 @@ index 66a089d561cf..9108004a0d9b 100644
  static int __pmem_label_update(struct nd_region *nd_region,
  		struct nd_mapping *nd_mapping, struct nd_namespace_pmem *nspm,
  		int pos, unsigned long flags)
- {
- 	u64 cookie = nd_region_interleave_set_cookie(nd_region);
+@@ -621,9 +632,9 @@ static int __pmem_label_update(struct nd_region *nd_region,
+ 	struct nd_namespace_common *ndns = &nspm->nsio.common;
+ 	struct nd_interleave_set *nd_set = nd_region->nd_set;
  	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
 -	struct nd_label_ent *label_ent, *victim = NULL;
  	struct nd_namespace_label *nd_label;
@@ -132,7 +133,7 @@ index 66a089d561cf..9108004a0d9b 100644
  	struct nd_label_id label_id;
  	struct resource *res;
  	unsigned long *free;
-@@ -551,18 +562,10 @@ static int __pmem_label_update(struct nd_region *nd_region,
+@@ -692,18 +703,10 @@ static int __pmem_label_update(struct nd_region *nd_region,
  	list_for_each_entry(label_ent, &nd_mapping->labels, list) {
  		if (!label_ent->label)
  			continue;
@@ -156,10 +157,10 @@ index 66a089d561cf..9108004a0d9b 100644
  
  	/* update index */
 diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index cf4a90b50f8b..e83453e1b308 100644
+index e3f228af59d1..ace9958f2905 100644
 --- a/drivers/nvdimm/namespace_devs.c
 +++ b/drivers/nvdimm/namespace_devs.c
-@@ -1210,12 +1210,27 @@ static int namespace_update_uuid(struct nd_region *nd_region,
+@@ -1229,12 +1229,27 @@ static int namespace_update_uuid(struct nd_region *nd_region,
  	for (i = 0; i < nd_region->ndr_mappings; i++) {
  		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
  		struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
@@ -188,10 +189,10 @@ index cf4a90b50f8b..e83453e1b308 100644
  	kfree(*old_uuid);
   out:
 diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index d869236b474f..bd29e598bac1 100644
+index 156be00e1f76..e3f060f0b83e 100644
 --- a/drivers/nvdimm/nd.h
 +++ b/drivers/nvdimm/nd.h
-@@ -113,8 +113,12 @@ struct nd_percpu_lane {
+@@ -120,8 +120,12 @@ struct nd_percpu_lane {
  	spinlock_t lock;
  };
  
