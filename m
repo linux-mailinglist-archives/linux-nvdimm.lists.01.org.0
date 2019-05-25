@@ -1,61 +1,28 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045DF29CA5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 24 May 2019 19:02:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1082A2B6
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 25 May 2019 06:22:07 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5465C212777BC;
-	Fri, 24 May 2019 10:02:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9589F212794A1;
+	Fri, 24 May 2019 21:22:05 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EBBF22127779B
- for <linux-nvdimm@lists.01.org>; Fri, 24 May 2019 10:02:17 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id l25so9308451otp.8
- for <linux-nvdimm@lists.01.org>; Fri, 24 May 2019 10:02:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uxIEMvL9NPIZt76HNNKGot2fHQFb8ScQQVFnfVEGVdE=;
- b=J6E7gPFqhGjQkK6F3GbGp2bqy4JZqM2JGDp4Q4363sxZZKkY1eebXwTOzadjVyNxa/
- AwEmFnD2OnTGLyCOsb4EVByimH7YKeH+ofbH0xOkO83ECfI0kA1wzco1g7dCyhxMmqn1
- lAjQLIEU87kbYcXgUjMEft09EG/s78/uSMvtXR561r30xuSwzTQgeEs/f23iRNxDK0Oq
- iv1DfXdnUJiXSNllUJOnrj1nEQzbEEh613meCgyIzDBkPavcXHBSW8mDbIRUarQv5EPB
- dh51oEmUu1WNnPiJZf+vDq4g8Yp9QXZQJUaZzJ7lJ/aNehbHAk4st7jpd1AxQslcrFO3
- kCKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=uxIEMvL9NPIZt76HNNKGot2fHQFb8ScQQVFnfVEGVdE=;
- b=TLzVziso9FPrN1Y6Nbi/VG8r/vJHn4KUtgf//a/DaJ8/FTP0nkUJ1RNxWNWpz3khhe
- hIEEtNtfZUpDNSTJ5XEkDKm0lhewBDRYfYHsZVasRRVU/tu/b4GulZmc6UttoLKFu5TR
- jjn+MMS5bZqj7GqyydX3ldrHV2YfnFHuc4BTlSTaMNM40uU39qvm0U+bZxGhSLdEEzDl
- BeB+55psVGCk5tK8yvbLcNr3RdLifNEofd9J87/D+3OS2u3nc7nlPzArm3xee8DC/SqD
- rqk1zVqNKwnCfj66JYhr4iUIugxNbmem7U0vXvQs1iWbK5rL6Akci/KdCVbNKGkDBVY+
- SWxg==
-X-Gm-Message-State: APjAAAWQCerUEawLyoEUBoQMyLmJyRBB0QhIEUz/0rPbgPxhUdpIh4A2
- g3vN1kPuu9l7do4AzEBOUSA2i57iuz/6pKaUFXKtLA==
-X-Google-Smtp-Source: APXvYqxVRQpBpCep9TCI1kPQh1cOH82JFn3Gk+gMokzzTN7nj9KB6DFm/LKWbO3WZKAfI141c5e4MkYQ3VfCFR+tiNo=
-X-Received: by 2002:a9d:2963:: with SMTP id d90mr14793834otb.126.1558717336323; 
- Fri, 24 May 2019 10:02:16 -0700 (PDT)
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=88.230.75.166;
+ helo=88.230.75.166.dynamic.ttnet.com.tr;
+ envelope-from=linux-nvdimm@lists.01.org; receiver=linux-nvdimm@lists.01.org 
+Received: from 88.230.75.166.dynamic.ttnet.com.tr (unknown [88.230.75.166])
+ by ml01.01.org (Postfix) with ESMTP id 030952122DDCB
+ for <linux-nvdimm@lists.01.org>; Fri, 24 May 2019 21:22:02 -0700 (PDT)
+Message-ID: <93712D6407CF384EACF0B9DA12E59371@lists.01.org>
+From: <linux-nvdimm@lists.01.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: Threat to your security! linux-nvdimm@lists.01.org has been
+ compromised.
+Date: 25 May 2019 09:01:09 +0200
 MIME-Version: 1.0
-References: <1557417933-15701-1-git-send-email-larry.bassel@oracle.com>
- <1557417933-15701-3-git-send-email-larry.bassel@oracle.com>
- <20190514130147.2pk2xx32aiomm57b@box> <20190524160711.GF19025@ubuette>
-In-Reply-To: <20190524160711.GF19025@ubuette>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 24 May 2019 10:02:04 -0700
-Message-ID: <CAPcyv4hkocsPQLQ6sfF8SuwVoot_uXge_bTZtuM-6f4XxwFVhg@mail.gmail.com>
-Subject: Re: [PATCH, RFC 2/2] Implement sharing/unsharing of PMDs for FS/DAX
-To: Larry Bassel <larry.bassel@oracle.com>
+X-Mailer: Yrotulv xltfxqf 1.8
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,45 +34,41 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Linux MM <linux-mm@kvack.org>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Mike Kravetz <mike.kravetz@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 24, 2019 at 9:07 AM Larry Bassel <larry.bassel@oracle.com> wrote:
-> On 14 May 19 16:01, Kirill A. Shutemov wrote:
-> > On Thu, May 09, 2019 at 09:05:33AM -0700, Larry Bassel wrote:
-[..]
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index f7d962d..4c1814c 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -3845,6 +3845,109 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
-> > >     return 0;
-> > >  }
-> > >
-> > > +#ifdef CONFIG_MAY_SHARE_FSDAX_PMD
-> > > +static pmd_t *huge_pmd_offset(struct mm_struct *mm,
-> > > +                         unsigned long addr, unsigned long sz)
-> >
-> > Could you explain what this function suppose to do?
-> >
-> > As far as I can see vma_mmu_pagesize() is always PAGE_SIZE of DAX
-> > filesystem. So we have 'sz' == PAGE_SIZE here.
->
-> I thought so too, but in my testing I found that vma_mmu_pagesize() returns
-> 4KiB, which differs from the DAX filesystem's 2MiB pagesize.
+Hello!
 
-A given filesystem-dax vma is allowed to support both 4K and 2M
-mappings, so the vma_mmu_pagesize() is not granular enough to describe
-the capabilities of a filesystem-dax vma. In the device-dax case,
-where there are mapping guarantees, the implementation does arrange
-for vma_mmu_pagesize() to reflect the right page size.
+I'm a member of an international hacker group.
+
+As you could probably have guessed, your account linux-nvdimm@lists.01.org was hacked, because as I messaged you from your account.
+On moment of infection linux-nvdimm@lists.01.org was this password: 
+
+Within a period from November 24, 2018 to May 14, 2019, you were infected by the virus we've created, through an adult website you've visited.
+So far, we have access to your messages, social media accounts, and messengers.
+Moreover, we've gotten full dumps of these data.
+
+We are aware of your little and big secrets...yeah, you do have that. We saw and recorded your doings on porn websites.
+Your tastes are so weird, you know..
+
+But the key thing is that sometimes we recorded you with your webcam, syncing the recordings with what you watched!
+I think you are not interested show this video to your friends, relatives, and your intimate one...
+
+Transfer $773 to my Bitcoin wallet: 1DMnzmuVegUZhrWsEqxRZyw63u1vF5NXF5
+I guarantee that after that, we'll erase all your "data"!
+
+A timer will start once you read this message. You have 48 hours to pay the above-mentioned amount.
+
+Your data will be erased once the money are transferred.
+If you do not pay, all dumps of your messages and videos recorded will be automatically sent to all your contacts found on your devices for this moment.
+Also, the operating system of your device will be suspended.
+
+You should always think about your security. We hope this case will teach you to keep your secrets.
+
+Bye!
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
