@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D222D170
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 00:24:47 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A212D2D171
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 00:24:49 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7444F2128D889;
-	Tue, 28 May 2019 15:24:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id AEDE42128D893;
+	Tue, 28 May 2019 15:24:47 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,22 +15,25 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CFC332128D875
+ by ml01.01.org (Postfix) with ESMTPS id DF0CF2128D885
  for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 15:24:43 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 28 May 2019 15:24:42 -0700
+ 28 May 2019 15:24:43 -0700
 X-ExtLoop1: 1
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by fmsmga001.fm.intel.com with ESMTP; 28 May 2019 15:24:42 -0700
+ by fmsmga001.fm.intel.com with ESMTP; 28 May 2019 15:24:43 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v4 00/10] daxctl: add a new reconfigure-device command
-Date: Tue, 28 May 2019 16:24:30 -0600
-Message-Id: <20190528222440.30392-1-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH v4 01/10] libdaxctl: add interfaces in support of device
+ modes
+Date: Tue, 28 May 2019 16:24:31 -0600
+Message-Id: <20190528222440.30392-2-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190528222440.30392-1-vishal.l.verma@intel.com>
+References: <20190528222440.30392-1-vishal.l.verma@intel.com>
 MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -45,83 +48,97 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
  Pavel Tatashin <pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Q2hhbmdlcyBpbiB2NDoKIC0gRG9uJ3QgZmFpbCBhZGRfZGF4X2RldiBmb3Iga21vZCBmYWlsdXJl
-cy4gSW5zdGVhZCBmYWlsIG9ubHkgd2hlbiB0aGUga21vZAogICBsaXN0IGlzIGFjdHVhbGx5IHVz
-ZWQsIGkuZS4gZHVyaW5nIGRheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UKCkNoYW5nZXMgaW4gdjM6
-CiAtIEluIGRheGN0bF9kZXZfZ2V0X21vZGUoKSwgcmVtb3ZlIHRoZSBzdWJzeXN0ZW0gd2Fybmlu
-ZywgZGV0ZWN0IGRheC1jbGFzcwogICBhbmQgc2ltcGx5IG1ha2UgaXQgcmV0dXJuIGRldmRheAoK
-Q2hhbmdlcyBpbiB2MjoKIC0gQWRkIGV4YW1wbGVzIHRvIHRoZSBkb2N1bWVudGF0aW9uIHBhZ2Ug
-KERhdmUgSGFuc2VuKQogLSBDbGFyaWZ5IGRvY3VtZW50YXRpb24gcmVnYXJkaW5nIHRoZSBjb252
-ZXJzaW9uIGZyb20gc3lzdGVtLXJhbSB0byBkZXZkYXgKIC0gUmVtb3ZlIGFueSByZWZlcmVuY2Vz
-IHRvIGEgcGVyc2lzdGVudCBjb25maWcgZnJvbSB0aGUgZG9jdW1lbnRhdGlvbiAtCiAgIHRob3Nl
-IGNhbiBiZSBhZGRlZCB3aGVuIHRoZSBmZWF0dXJlIGlzIGFkZGVkLgogLSBkZXZpY2UuYzogdmFs
-aWRhdGUgb3B0aW9uIGNvbXBhdGliaWxpdHkKIC0gZGF4Y3RsLWxpc3Q6IGRpc3BsYXkgbnVtYV9u
-b2RlIGZvciBkZXZpY2UgbGlzdGluZ3MKIC0gZGF4Y3RsLWxpc3Q6IGRpc3BsYXkgbW9kZSBmb3Ig
-ZGV2aWNlIGxpc3RpbmdzCiAtIG1ha2UgdGhlIG9wdGlvbnMgbW9yZSBjb25zaXN0ZW50IGJ5IGFk
-ZGluZyBhICctTycgc2hvcnQgb3B0aW9uCiAgIGZvciAtLWF0dGVtcHQtb2ZmbGluZQoKQWRkIGEg
-bmV3IGRheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UgY29tbWFuZCB0aGF0IGxldHMgdXMgcmVjb25m
-aWd1cmUgREFYCmRldmljZXMgYmFjayBhbmQgZm9ydGggYmV0d2VlbiAnc3lzdGVtLXJhbScgYW5k
-ICdkZXZpY2UtZGF4JyBtb2Rlcy4gSXQKYWxzbyBpbmNsdWRlcyBmYWNpbGl0aWVzIHRvIG9ubGlu
-ZSBhbnkgbmV3bHkgaG90LXBsdWdnZWQgbWVtb3J5CihkZWZhdWx0KSwgYW5kIGF0dGVtcHQgdG8g
-b2ZmbGluZSBtZW1vcnkgYmVmb3JlIGNvbnZlcnRpbmcgYXdheSBmcm9tIHRoZQpzeXN0ZW0tcmFt
-IG1vZGUgKG5vdCBkZWZhdWx0LCByZXF1aXJlcyBhIC0tYXR0ZW1wdC1vZmZsaW5lIG9wdGlvbiku
-CgpDdXJyZW50bHkgbWlzc2luZyBmcm9tIHRoaXMgc2VyaWVzIGlzIGEgd2F5IHRvIHBlcnNpc3Rl
-bnRseSBzdG9yZSB3aGljaApkZXZpY2VzIGhhdmUgYmVlbiAnbWFya2VkJyBmb3IgdXNlIGFzIHN5
-c3RlbS1yYW0uIFRoaXMgZGVwZW5kcyBvbiBhCmNvbmZpZyBzeXN0ZW0gb3ZlcmhhdWwgaW4gbmRj
-dGwsIGFuZCBwYXRjaGVzIGZvciB0aG9zZSB3aWxsIGZvbGxvdwpzZXBhcmF0ZWx5IGFuZCBhcmUg
-aW5kZXBlbmRlbnQgb2YgdGhpcyB3b3JrLgoKRXhhbXBsZSBpbnZvY2F0aW9uczoKCjEuIFJlY29u
-ZmlndXJlIGRheDAuMCB0byBzeXN0ZW0tcmFtIG1vZGUsIGRvbuKAmXQgb25saW5lIHRoZSBtZW1v
-cnkKICAgICMgZGF4Y3RsIHJlY29uZmlndXJlLWRldmljZSAtLW1vZGU9c3lzdGVtLXJhbSAtLW5v
-LW9ubGluZSBkYXgwLjAKICAgIFsKICAgICAgewogICAgICAgICJjaGFyZGV2IjoiZGF4MC4wIiwK
-ICAgICAgICAic2l6ZSI6MTY3NzcyMTYwMDAsCiAgICAgICAgIm51bWFfbm9kZSI6MiwKICAgICAg
-ICAibW9kZSI6InN5c3RlbS1yYW0iCiAgICAgIH0KICAgIF0KCjIuIFJlY29uZmlndXJlIGRheDAu
-MCB0byBkZXZkYXggbW9kZSwgYXR0ZW1wdCB0byBvZmZsaW5lIHRoZSBtZW1vcnkKICAgICMgZGF4
-Y3RsIHJlY29uZmlndXJlLWRldmljZSAtLWh1bWFuIC0tbW9kZT1kZXZkYXggLS1hdHRlbXB0LW9m
-ZmxpbmUgZGF4MC4wCiAgICB7CiAgICAgICJjaGFyZGV2IjoiZGF4MC4wIiwKICAgICAgInNpemUi
-OiIxNS42MyBHaUIgKDE2Ljc4IEdCKSIsCiAgICAgICJudW1hX25vZGUiOjIsCiAgICAgICJtb2Rl
-IjoiZGV2ZGF4IgogICAgfQoKMy4gUmVjb25maWd1cmUgYWxsIGRheCBkZXZpY2VzIG9uIHJlZ2lv
-bjAgdG8gc3lzdGVtLXJhbSBtb2RlCiAgICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1t
-b2RlPXN5c3RlbS1yYW0gLS1yZWdpb249MCBhbGwKICAgIFsKICAgICAgewogICAgICAgICJjaGFy
-ZGV2IjoiZGF4MC4wIiwKICAgICAgICAic2l6ZSI6MTY3NzcyMTYwMDAsCiAgICAgICAgIm51bWFf
-bm9kZSI6MiwKICAgICAgICAibW9kZSI6InN5c3RlbS1yYW0iCiAgICAgIH0sCiAgICAgIHsKICAg
-ICAgICAiY2hhcmRldiI6ImRheDAuMSIsCiAgICAgICAgInNpemUiOjE2Nzc3MjE2MDAwLAogICAg
-ICAgICJudW1hX25vZGUiOjMsCiAgICAgICAgIm1vZGUiOiJzeXN0ZW0tcmFtIgogICAgICB9CiAg
-ICBdCgpUaGVzZSBwYXRjaGVzIGNhbiBhbHNvIGJlIGZvdW5kIGluIHRoZSAna21lbS1wZW5kaW5n
-JyBicmFuY2ggb24gZ2l0aHViOgpodHRwczovL2dpdGh1Yi5jb20vcG1lbS9uZGN0bC90cmVlL2tt
-ZW0tcGVuZGluZwoKQ2M6IERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPgpD
-YzogRGF2ZSBIYW5zZW4gPGRhdmUuaGFuc2VuQGxpbnV4LmludGVsLmNvbT4KQ2M6IFBhdmVsIFRh
-dGFzaGluIDxwYXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPgoKVmlzaGFsIFZlcm1hICgxMCk6CiAg
-bGliZGF4Y3RsOiBhZGQgaW50ZXJmYWNlcyBpbiBzdXBwb3J0IG9mIGRldmljZSBtb2RlcwogIGxp
-YmRheGN0bDogY2FjaGUgJ3N1YnN5c3RlbScgaW4gZGF4Y3RsX2N0eAogIGxpYmRheGN0bDogYWRk
-IGludGVyZmFjZXMgdG8gZW5hYmxlL2Rpc2FibGUgZGV2aWNlcwogIGxpYmRheGN0bDogYWRkIGlu
-dGVyZmFjZXMgdG8gZ2V0L3NldCB0aGUgb25saW5lIHN0YXRlIGZvciBhIG5vZGUKICBkYXhjdGwv
-bGlzdDogYWRkIG51bWFfbm9kZSBmb3IgZGV2aWNlIGxpc3RpbmdzCiAgbGliZGF4Y3RsOiBhZGQg
-YW4gaW50ZXJmYWNlIHRvIGdldCB0aGUgbW9kZSBmb3IgYSBkYXggZGV2aWNlCiAgZGF4Y3RsOiBh
-ZGQgYSBuZXcgcmVjb25maWd1cmUtZGV2aWNlIGNvbW1hbmQKICBEb2N1bWVudGF0aW9uL2RheGN0
-bDogYWRkIGEgbWFuIHBhZ2UgZm9yIGRheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UKICBjb250cmli
-L25kY3RsOiBmaXggcmVnaW9uLWlkIGNvbXBsZXRpb25zIGZvciBkYXhjdGwKICBjb250cmliL25k
-Y3RsOiBhZGQgYmFzaC1jb21wbGV0aW9uIGZvciBkYXhjdGwtcmVjb25maWd1cmUtZGV2aWNlCgog
-RG9jdW1lbnRhdGlvbi9kYXhjdGwvTWFrZWZpbGUuYW0gICAgICAgICAgICAgIHwgICAzICstCiAu
-Li4vZGF4Y3RsL2RheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UudHh0ICAgICAgfCAxMTggKysrKwog
-Y29udHJpYi9uZGN0bCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDM0ICstCiBk
-YXhjdGwvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKwogZGF4
-Y3RsL2J1aWx0aW4uaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsKIGRheGN0
-bC9kYXhjdGwuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArCiBkYXhjdGwv
-ZGV2aWNlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAyMzcgKysrKysrKysKIGRh
-eGN0bC9saWIvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAgICB8ICAgMyArLQogZGF4
-Y3RsL2xpYi9saWJkYXhjdGwtcHJpdmF0ZS5oICAgICAgICAgICAgICAgIHwgIDIxICsKIGRheGN0
-bC9saWIvbGliZGF4Y3RsLmMgICAgICAgICAgICAgICAgICAgICAgICB8IDU0OCArKysrKysrKysr
-KysrKysrKy0KIGRheGN0bC9saWIvbGliZGF4Y3RsLnN5bSAgICAgICAgICAgICAgICAgICAgICB8
-ICAxNCArCiBkYXhjdGwvbGliZGF4Y3RsLmggICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAg
-MTYgKwogdXRpbC9qc29uLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIy
-ICsKIDEzIGZpbGVzIGNoYW5nZWQsIDEwMDkgaW5zZXJ0aW9ucygrKSwgMTEgZGVsZXRpb25zKC0p
-CiBjcmVhdGUgbW9kZSAxMDA2NDQgRG9jdW1lbnRhdGlvbi9kYXhjdGwvZGF4Y3RsLXJlY29uZmln
-dXJlLWRldmljZS50eHQKIGNyZWF0ZSBtb2RlIDEwMDY0NCBkYXhjdGwvZGV2aWNlLmMKCi0tIAoy
-LjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
-bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczov
-L2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
+In preparation for libdaxctl and daxctl to grow operational modes for
+DAX devices, add the following supporting APIs:
+
+  daxctl_dev_get_ctx
+  daxctl_dev_is_enabled
+
+Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ daxctl/lib/libdaxctl.c   | 30 ++++++++++++++++++++++++++++++
+ daxctl/lib/libdaxctl.sym |  6 ++++++
+ daxctl/libdaxctl.h       |  2 ++
+ 3 files changed, 38 insertions(+)
+
+diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
+index c2e3a52..70f896b 100644
+--- a/daxctl/lib/libdaxctl.c
++++ b/daxctl/lib/libdaxctl.c
+@@ -559,6 +559,36 @@ static void dax_regions_init(struct daxctl_ctx *ctx)
+ 	}
+ }
+ 
++static int is_enabled(const char *drvpath)
++{
++	struct stat st;
++
++	if (lstat(drvpath, &st) < 0 || !S_ISLNK(st.st_mode))
++		return 0;
++	else
++		return 1;
++}
++
++DAXCTL_EXPORT int daxctl_dev_is_enabled(struct daxctl_dev *dev)
++{
++	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
++	char *path = dev->dev_buf;
++	int len = dev->buf_len;
++
++	if (snprintf(path, len, "%s/driver", dev->dev_path) >= len) {
++		err(ctx, "%s: buffer too small!\n",
++				daxctl_dev_get_devname(dev));
++		return 0;
++	}
++
++	return is_enabled(path);
++}
++
++DAXCTL_EXPORT struct daxctl_ctx *daxctl_dev_get_ctx(struct daxctl_dev *dev)
++{
++	return dev->region->ctx;
++}
++
+ DAXCTL_EXPORT struct daxctl_dev *daxctl_dev_get_first(struct daxctl_region *region)
+ {
+ 	dax_devices_init(region);
+diff --git a/daxctl/lib/libdaxctl.sym b/daxctl/lib/libdaxctl.sym
+index 84d3a69..c4af9a7 100644
+--- a/daxctl/lib/libdaxctl.sym
++++ b/daxctl/lib/libdaxctl.sym
+@@ -50,3 +50,9 @@ LIBDAXCTL_5 {
+ global:
+ 	daxctl_region_get_path;
+ } LIBDAXCTL_4;
++
++LIBDAXCTL_6 {
++global:
++	daxctl_dev_get_ctx;
++	daxctl_dev_is_enabled;
++} LIBDAXCTL_5;
+diff --git a/daxctl/libdaxctl.h b/daxctl/libdaxctl.h
+index 1d13ea2..e20ccb4 100644
+--- a/daxctl/libdaxctl.h
++++ b/daxctl/libdaxctl.h
+@@ -67,6 +67,8 @@ const char *daxctl_dev_get_devname(struct daxctl_dev *dev);
+ int daxctl_dev_get_major(struct daxctl_dev *dev);
+ int daxctl_dev_get_minor(struct daxctl_dev *dev);
+ unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev);
++struct daxctl_ctx *daxctl_dev_get_ctx(struct daxctl_dev *dev);
++int daxctl_dev_is_enabled(struct daxctl_dev *dev);
+ 
+ #define daxctl_dev_foreach(region, dev) \
+         for (dev = daxctl_dev_get_first(region); \
+-- 
+2.20.1
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
