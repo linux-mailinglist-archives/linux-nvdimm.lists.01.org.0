@@ -2,60 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410E42D42F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 05:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9EC2D464
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 06:02:49 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6F9D52128D897;
-	Tue, 28 May 2019 20:22:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E49F92128DD3C;
+	Tue, 28 May 2019 21:02:47 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9BA2A2128D6AB
- for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 20:22:36 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id i4so476349oih.4
- for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 20:22:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CmGsFYTByBfMv/I3+k36vNmiwVr/vGYKgWHgFC1df48=;
- b=CMhJCeRr+cZvwNip6QXNpdTl5pgx+OWYdppRfEzorY3VGAhDlCSdu+7XvkfsaXrxyZ
- ynvhlVopChe4o7CIx0DDi5TPzIV9Sl2+TawZOFPoww6tYkDZOqPAq+IP9JoVXXudf33I
- uZoZotAPOZ/bY8ASDUpzDUxzDPa/5QDj585E3EgirxsYVg5/vGTwjEyLqqH637AYDiyO
- PPGMQbhxi/MVBApovpX2gt/kqz3S6oCpySXUhaup6zrSqSJSKf4xP6mh3IL0no4+0HC2
- sc6hqQKzhSkbliiA+OtprQgfCXTC289xi100kHfxbW29FRKJe4YyaLrSdfc9W+dJKm5X
- BZTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CmGsFYTByBfMv/I3+k36vNmiwVr/vGYKgWHgFC1df48=;
- b=gmNzUn7TRp4d6gDYdiPhk2O/H9l8mWXAsjidxFZRgAoUxb+fkkz8FXpUtH5igTchTD
- +RY1IgE6HsHtMDVpTgcaqHrCe/NDOXA6CXZmROkCcmJZx5xriZySQi+UZJ+AwFyDN10h
- sG2A798pJkyvNZolbCPfXHHcrvBYClIXMdK3Q+SypijtVDdhC+eL7pvbyoWKCKSVFIMw
- gE4FECDPpqZkZ1Tjjnj6cPeI8x3vu+ueknhl0rQ78jS8acLaR2EZQynJEz3nt4wMyn6p
- X9se3kqvnCkxtBuqbdd8k9JFXj9xhsZai//8NAxGOSgUlZx1+y7Rts+Od4RYhLZTKkbb
- C7oQ==
-X-Gm-Message-State: APjAAAU2+5TaVkM9+ISJ+73b64wqwElbzHK9kRCGeZ/CHptc0aPunGht
- l8jGjO2kwfpMXYPuKZqMIcYUYNlBx2vGzh2Fev+UgQ==
-X-Google-Smtp-Source: APXvYqyYEJqz/oEXkdLsBpcjaEBkc+lHjx+nyVq0ABEdQ08ECkYEYQC8B1zP8seKp+RWxPhEJm4+SdXKv2E9OG/yVhM=
-X-Received: by 2002:aca:f512:: with SMTP id t18mr5016531oih.0.1559100155739;
- Tue, 28 May 2019 20:22:35 -0700 (PDT)
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.91.158.132;
+ helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+ by ml01.01.org (Postfix) with ESMTP id 6E7552128D883
+ for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 21:02:46 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="5.60,525,1549900800"; d="scan'208";a="65026033"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+ by heian.cn.fujitsu.com with ESMTP; 29 May 2019 12:02:44 +0800
+Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
+ by cn.fujitsu.com (Postfix) with ESMTP id 276F94CDC834;
+ Wed, 29 May 2019 12:02:43 +0800 (CST)
+Received: from [10.167.225.140] (10.167.225.140) by
+ G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
+ (TLS) id 14.3.439.0; Wed, 29 May 2019 12:02:52 +0800
+Subject: Re: [PATCH 04/18] dax: Introduce IOMAP_DAX_COW to CoW edges during
+ writes
+To: Dave Chinner <david@fromorbit.com>
+References: <20190429172649.8288-1-rgoldwyn@suse.de>
+ <20190429172649.8288-5-rgoldwyn@suse.de> <20190521165158.GB5125@magnolia>
+ <1e9951c1-d320-e480-3130-dc1f4b81ef2c@cn.fujitsu.com>
+ <20190523115109.2o4txdjq2ft7fzzc@fiona>
+ <1620c513-4ce2-84b0-33dc-2675246183ea@cn.fujitsu.com>
+ <20190528091729.GD9607@quack2.suse.cz>
+ <a3a919e6-ecad-bdf6-423c-fc01f9cfa661@cn.fujitsu.com>
+ <20190529024749.GC16786@dread.disaster.area>
+From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+Message-ID: <376256fd-dee4-5561-eb4e-546e227303cd@cn.fujitsu.com>
+Date: Wed, 29 May 2019 12:02:40 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-References: <20190528222440.30392-1-vishal.l.verma@intel.com>
- <20190528222440.30392-6-vishal.l.verma@intel.com>
-In-Reply-To: <20190528222440.30392-6-vishal.l.verma@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 28 May 2019 20:22:24 -0700
-Message-ID: <CAPcyv4hW-Gj5y+btKEsb1wOsKxd64hWY00NRDmeis3ZrkRo_pA@mail.gmail.com>
-Subject: Re: [ndctl PATCH v4 05/10] daxctl/list: add numa_node for device
- listings
-To: Vishal Verma <vishal.l.verma@intel.com>
+In-Reply-To: <20190529024749.GC16786@dread.disaster.area>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.140]
+X-yoursite-MailScanner-ID: 276F94CDC834.AA7BD
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,76 +59,108 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Cc: kilobyte@angband.pl, Jan Kara <jack@suse.cz>, "Darrick
+ J. Wong" <darrick.wong@oracle.com>, nborisov@suse.com,
+ Goldwyn Rodrigues <rgoldwyn@suse.de>, linux-nvdimm@lists.01.org,
+ dsterba@suse.cz, willy@infradead.org, linux-fsdevel@vger.kernel.org,
+ hch@lst.de, linux-btrfs@vger.kernel.org
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, May 28, 2019 at 3:24 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
->
-> The kernel provides a 'target_node' attribute for dax devices. When
-> converting a dax device to the system-ram mode, the memory is hotplugged
-> into this numa node. It would be helpful to print this in device
-> listings so that it is easy for applications to detect the numa node to
-> which the new memory belongs.
->
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  util/json.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/util/json.c b/util/json.c
-> index babdc8c..b7ce719 100644
-> --- a/util/json.c
-> +++ b/util/json.c
-> @@ -271,6 +271,7 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
->  {
->         const char *devname = daxctl_dev_get_devname(dev);
->         struct json_object *jdev, *jobj;
-> +       int node;
->
->         jdev = json_object_new_object();
->         if (!devname || !jdev)
-> @@ -284,6 +285,13 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
->         if (jobj)
->                 json_object_object_add(jdev, "size", jobj);
->
-> +       node = daxctl_dev_get_target_node(dev);
-> +       if (node >= 0) {
-> +               jobj = json_object_new_int(node);
-> +               if (jobj)
-> +                       json_object_object_add(jdev, "numa_node", jobj);
 
-I think this should be named 'target_node' to not be confused with the
-typical 'numa_node' attribute of a device that indicates closest cpu
-node. This also collides with the 'numa_node' attribute that is
-already emitted at the namespace level.
 
-  {
-    "dev":"namespace1.0",
-    "mode":"devdax",
-    "map":"dev",
-    "size":134232408064,
-    "uuid":"e6613922-80e9-49f9-ace8-961def867d32",
-    "raw_uuid":"b79ce059-e33d-4a90-90ec-06d6786b3644",
-    "daxregion":{
-      "id":1,
-      "size":134232408064,
-      "align":2097152,
-      "devices":[
-        {
-          "chardev":"dax1.0",
-          "size":134232408064
-        }
-      ]
-    },
-    "align":2097152,
-    "numa_node":0
+On 5/29/19 10:47 AM, Dave Chinner wrote:
+> On Wed, May 29, 2019 at 10:01:58AM +0800, Shiyang Ruan wrote:
+>>
+>> On 5/28/19 5:17 PM, Jan Kara wrote:
+>>> On Mon 27-05-19 16:25:41, Shiyang Ruan wrote:
+>>>> On 5/23/19 7:51 PM, Goldwyn Rodrigues wrote:
+>>>>>>
+>>>>>> Hi,
+>>>>>>
+>>>>>> I'm working on reflink & dax in XFS, here are some thoughts on this:
+>>>>>>
+>>>>>> As mentioned above: the second iomap's offset and length must match the
+>>>>>> first.  I thought so at the beginning, but later found that the only
+>>>>>> difference between these two iomaps is @addr.  So, what about adding a
+>>>>>> @saddr, which means the source address of COW extent, into the struct iomap.
+>>>>>> The ->iomap_begin() fills @saddr if the extent is COW, and 0 if not.  Then
+>>>>>> handle this @saddr in each ->actor().  No more modifications in other
+>>>>>> functions.
+>>>>>
+>>>>> Yes, I started of with the exact idea before being recommended this by Dave.
+>>>>> I used two fields instead of one namely cow_pos and cow_addr which defined
+>>>>> the source details. I had put it as a iomap flag as opposed to a type
+>>>>> which of course did not appeal well.
+>>>>>
+>>>>> We may want to use iomaps for cases where two inodes are involved.
+>>>>> An example of the other scenario where offset may be different is file
+>>>>> comparison for dedup: vfs_dedup_file_range_compare(). However, it would
+>>>>> need two inodes in iomap as well.
+>>>>>
+>>>> Yes, it is reasonable.  Thanks for your explanation.
+>>>>
+>>>> One more thing RFC:
+>>>> I'd like to add an end-io callback argument in ->dax_iomap_actor() to update
+>>>> the metadata after one whole COW operation is completed.  The end-io can
+>>>> also be called in ->iomap_end().  But one COW operation may call
+>>>> ->iomap_apply() many times, and so does the end-io.  Thus, I think it would
+>>>> be nice to move it to the bottom of ->dax_iomap_actor(), called just once in
+>>>> each COW operation.
+>>>
+>>> I'm sorry but I don't follow what you suggest. One COW operation is a call
+>>> to dax_iomap_rw(), isn't it? That may call iomap_apply() several times,
+>>> each invocation calls ->iomap_begin(), ->actor() (dax_iomap_actor()),
+>>> ->iomap_end() once. So I don't see a difference between doing something in
+>>> ->actor() and ->iomap_end() (besides the passed arguments but that does not
+>>> seem to be your concern). So what do you exactly want to do?
+>>
+>> Hi Jan,
+>>
+>> Thanks for pointing out, and I'm sorry for my mistake.  It's
+>> ->dax_iomap_rw(), not ->dax_iomap_actor().
+>>
+>> I want to call the callback function at the end of ->dax_iomap_rw().
+>>
+>> Like this:
+>> dax_iomap_rw(..., callback) {
+>>
+>>      ...
+>>      while (...) {
+>>          iomap_apply(...);
+>>      }
+>>
+>>      if (callback != null) {
+>>          callback();
+>>      }
+>>      return ...;
+>> }
+> 
+> Why does this need to be in dax_iomap_rw()?
+> 
+> We already do post-dax_iomap_rw() "io-end callbacks" directly in
+> xfs_file_dax_write() to update the file size....
+
+Yes, but we also need to call ->xfs_reflink_end_cow() after a COW 
+operation.  And an is-cow flag(from iomap) is also needed to determine 
+if we call it.  I think it would be better to put this into 
+->dax_iomap_rw() as a callback function.
+
+So sorry for my poor expression.
+
+> 
+> Cheers,
+> 
+> Dave.
+> 
+
+-- 
+Thanks,
+Shiyang Ruan.
+
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
