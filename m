@@ -1,52 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E6F2D3F9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 04:48:02 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC5A2D42D
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 May 2019 05:18:47 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B88812128DD32;
-	Tue, 28 May 2019 19:48:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id CA5902128DD36;
+	Tue, 28 May 2019 20:18:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
- helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
- [211.29.132.249])
- by ml01.01.org (Postfix) with ESMTP id F311E2128D88C
- for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 19:47:56 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-144-61.pa.nsw.optusnet.com.au
- [49.180.144.61])
- by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id BC575D1A1;
- Wed, 29 May 2019 12:47:51 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hVod3-0000Tb-MZ; Wed, 29 May 2019 12:47:49 +1000
-Date: Wed, 29 May 2019 12:47:49 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [PATCH 04/18] dax: Introduce IOMAP_DAX_COW to CoW edges during
- writes
-Message-ID: <20190529024749.GC16786@dread.disaster.area>
-References: <20190429172649.8288-1-rgoldwyn@suse.de>
- <20190429172649.8288-5-rgoldwyn@suse.de>
- <20190521165158.GB5125@magnolia>
- <1e9951c1-d320-e480-3130-dc1f4b81ef2c@cn.fujitsu.com>
- <20190523115109.2o4txdjq2ft7fzzc@fiona>
- <1620c513-4ce2-84b0-33dc-2675246183ea@cn.fujitsu.com>
- <20190528091729.GD9607@quack2.suse.cz>
- <a3a919e6-ecad-bdf6-423c-fc01f9cfa661@cn.fujitsu.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id DA2BE2128A65B
+ for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 20:18:43 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id l25so573401otp.8
+ for <linux-nvdimm@lists.01.org>; Tue, 28 May 2019 20:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=eKDVj5psfXZe43g8AEOwkF0HhonkUZa6sm4ltTmGgp4=;
+ b=XKnZrAxtWtBX1a/Egr9AuQ7WxzbHoE5ApUzdm8OFyPNV5+f8nAjZfjXPHR4oWR4XNb
+ iQHCtnoiiuBzOzAwnoAi/YwLBaM9aj6YikOxhO2e2NtDk+BPTpyb8vaT8VzCpXgoxbVS
+ h67QV6s9YbCgMPnYC58VCsq5onj8ooh6rN9WYbP+ee3aJmLJ7xQBhqoEHYI9smKx0sTV
+ GOytyAW+Q3xHuaqFTMaO0wrtg0te/fjSeI7wr7LSDOJq5DEvYyK2HABUvuaJtR4yuldX
+ uVmqTo+7Kn1dBYP6ssxrV/wK0NzZa2sSPDsrfcny8ttyYMGebFm3r7DLBzABSVdZtLVj
+ 2L2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=eKDVj5psfXZe43g8AEOwkF0HhonkUZa6sm4ltTmGgp4=;
+ b=Uux7/kDjuorDy7/n9kK4puB1TiE8IwYqAqRaIE3RronOiY7kl2XubA2khWWcAJ3MGa
+ cjp/LVNXiOZUlmWAdgfHXHBmFDWg+FO3vc0EooHPG/2WyV2q8V61mfvcGUuqu317Mfua
+ RNhyngsTZFBBgxtkjBKzQlen9FJ6ZKBB2GZqim8iIUilI3eh3OKlOPundfLKw3/NtQd5
+ iY2wZb2qiKB5tLiFLLobbjr3yDT5Tz2h5+6w8zJIO6MrLvJhpMYNpU+LQ+KjkTXFz+GE
+ Ba/8Xjq+81Zgga+npu2edvqy7sXgrqW2rfWgtccVUNeDEFRQRg17+VaVvXAAE5u60zuw
+ vZVA==
+X-Gm-Message-State: APjAAAUUCNK+mGs7qpK3bOiPYkmqyEW7dCXXkki1UaLHsrrZ1RheKkAk
+ aiiHrNcFxtlg38jwRZInWMg5k1+vAhWiSmuDajgTOA==
+X-Google-Smtp-Source: APXvYqxuXr5+YV6D4bSBJJBOkJRUYiY5oweBC6xtCWmhgiNhDg1Vh/FUfqniTostJnd1H0+HpgVEPBBK5PKWQWDeNv0=
+X-Received: by 2002:a9d:61ca:: with SMTP id h10mr14671444otk.247.1559099922475; 
+ Tue, 28 May 2019 20:18:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <a3a919e6-ecad-bdf6-423c-fc01f9cfa661@cn.fujitsu.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0 cx=a_idp_d
- a=8RU0RCro9O0HS2ezTvitPg==:117 a=8RU0RCro9O0HS2ezTvitPg==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=E5NmQfObTbMA:10
- a=7-415B0cAAAA:8 a=XyvwrCn6JVpaNVbEGqAA:9 a=vEUpTPDqILtuVklf:21
- a=ZaHK-JVdKnvBLsfL:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+References: <20190528222440.30392-1-vishal.l.verma@intel.com>
+ <20190528222440.30392-5-vishal.l.verma@intel.com>
+In-Reply-To: <20190528222440.30392-5-vishal.l.verma@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 28 May 2019 20:18:31 -0700
+Message-ID: <CAPcyv4jFOs5ASS+apB6LA3Jy_4BLYg+U76QYhkD=h__DKULXHw@mail.gmail.com>
+Subject: Re: [ndctl PATCH v4 04/10] libdaxctl: add interfaces to get/set the
+ online state for a node
+To: Vishal Verma <vishal.l.verma@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,93 +67,188 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, Jan Kara <jack@suse.cz>,
- "Darrick J. Wong" <darrick.wong@oracle.com>, nborisov@suse.com,
- Goldwyn Rodrigues <rgoldwyn@suse.de>, linux-nvdimm@lists.01.org,
- dsterba@suse.cz, willy@infradead.org, linux-fsdevel@vger.kernel.org,
- hch@lst.de, linux-btrfs@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 29, 2019 at 10:01:58AM +0800, Shiyang Ruan wrote:
-> 
-> On 5/28/19 5:17 PM, Jan Kara wrote:
-> > On Mon 27-05-19 16:25:41, Shiyang Ruan wrote:
-> > > On 5/23/19 7:51 PM, Goldwyn Rodrigues wrote:
-> > > > > 
-> > > > > Hi,
-> > > > > 
-> > > > > I'm working on reflink & dax in XFS, here are some thoughts on this:
-> > > > > 
-> > > > > As mentioned above: the second iomap's offset and length must match the
-> > > > > first.  I thought so at the beginning, but later found that the only
-> > > > > difference between these two iomaps is @addr.  So, what about adding a
-> > > > > @saddr, which means the source address of COW extent, into the struct iomap.
-> > > > > The ->iomap_begin() fills @saddr if the extent is COW, and 0 if not.  Then
-> > > > > handle this @saddr in each ->actor().  No more modifications in other
-> > > > > functions.
-> > > > 
-> > > > Yes, I started of with the exact idea before being recommended this by Dave.
-> > > > I used two fields instead of one namely cow_pos and cow_addr which defined
-> > > > the source details. I had put it as a iomap flag as opposed to a type
-> > > > which of course did not appeal well.
-> > > > 
-> > > > We may want to use iomaps for cases where two inodes are involved.
-> > > > An example of the other scenario where offset may be different is file
-> > > > comparison for dedup: vfs_dedup_file_range_compare(). However, it would
-> > > > need two inodes in iomap as well.
-> > > > 
-> > > Yes, it is reasonable.  Thanks for your explanation.
-> > > 
-> > > One more thing RFC:
-> > > I'd like to add an end-io callback argument in ->dax_iomap_actor() to update
-> > > the metadata after one whole COW operation is completed.  The end-io can
-> > > also be called in ->iomap_end().  But one COW operation may call
-> > > ->iomap_apply() many times, and so does the end-io.  Thus, I think it would
-> > > be nice to move it to the bottom of ->dax_iomap_actor(), called just once in
-> > > each COW operation.
-> > 
-> > I'm sorry but I don't follow what you suggest. One COW operation is a call
-> > to dax_iomap_rw(), isn't it? That may call iomap_apply() several times,
-> > each invocation calls ->iomap_begin(), ->actor() (dax_iomap_actor()),
-> > ->iomap_end() once. So I don't see a difference between doing something in
-> > ->actor() and ->iomap_end() (besides the passed arguments but that does not
-> > seem to be your concern). So what do you exactly want to do?
-> 
-> Hi Jan,
-> 
-> Thanks for pointing out, and I'm sorry for my mistake.  It's
-> ->dax_iomap_rw(), not ->dax_iomap_actor().
-> 
-> I want to call the callback function at the end of ->dax_iomap_rw().
-> 
-> Like this:
-> dax_iomap_rw(..., callback) {
-> 
->     ...
->     while (...) {
->         iomap_apply(...);
->     }
-> 
->     if (callback != null) {
->         callback();
->     }
->     return ...;
-> }
+On Tue, May 28, 2019 at 3:24 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+>
+> In preparation for converting DAX devices for use as system-ram via the
+> kernel's 'kmem' facility, add libndctl helpers to manipulate the sysfs
+> interfaces to get the target_node of a DAX device, and to online,
+> offline, and query the state of hotplugged memory sections associated
+> with a given node.
+>
+> This adds the following new interfaces:
+>
+>   daxctl_dev_get_target_node
+>   daxctl_dev_online_node
+>   daxctl_dev_offline_node
+>   daxctl_dev_node_is_online
 
-Why does this need to be in dax_iomap_rw()?
+I'm wondering if these should s/node/memory/, or even create a
+sub-object called 'memory' to start a new object-verb relationship.
+I.e. daxctl_dev_get_memory() +
+daxctl_memory_{online,offline,is_online}.
 
-We already do post-dax_iomap_rw() "io-end callbacks" directly in
-xfs_file_dax_write() to update the file size....
+Otherwise functionality looks good to me, just one note about asprintf below:
 
-Cheers,
+>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  daxctl/lib/libdaxctl-private.h |   6 +
+>  daxctl/lib/libdaxctl.c         | 228 +++++++++++++++++++++++++++++++++
+>  daxctl/lib/libdaxctl.sym       |   4 +
+>  daxctl/libdaxctl.h             |   4 +
+>  4 files changed, 242 insertions(+)
+>
+> diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-private.h
+> index e64d0a7..ef443aa 100644
+> --- a/daxctl/lib/libdaxctl-private.h
+> +++ b/daxctl/lib/libdaxctl-private.h
+> @@ -33,6 +33,11 @@ static const char *dax_modules[] = {
+>         [DAXCTL_DEV_MODE_RAM] = "kmem",
+>  };
+>
+> +enum node_state {
+> +       NODE_OFFLINE,
+> +       NODE_ONLINE,
+> +};
+> +
+>  /**
+>   * struct daxctl_region - container for dax_devices
+>   */
+> @@ -63,6 +68,7 @@ struct daxctl_dev {
+>         struct kmod_module *module;
+>         struct kmod_list *kmod_list;
+>         struct daxctl_region *region;
+> +       int target_node;
+>  };
+>
+>  static inline int check_kmod(struct kmod_ctx *kmod_ctx)
+> diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
+> index 2890f69..46dbd63 100644
+> --- a/daxctl/lib/libdaxctl.c
+> +++ b/daxctl/lib/libdaxctl.c
+> @@ -28,6 +28,7 @@
+>  #include "libdaxctl-private.h"
+>
+>  static const char *attrs = "dax_region";
+> +static const char *node_base = "/sys/devices/system/node";
+>
+>  static void free_region(struct daxctl_region *region, struct list_head *head);
+>
+> @@ -393,6 +394,12 @@ static void *add_dax_dev(void *parent, int id, const char *daxdev_base)
+>         if (rc == 0)
+>                 dev->kmod_list = to_module_list(ctx, buf);
+>
+> +       sprintf(path, "%s/target_node", daxdev_base);
+> +       if (sysfs_read_attr(ctx, path, buf) == 0)
+> +               dev->target_node = strtol(buf, NULL, 0);
+> +       else
+> +               dev->target_node = -1;
+> +
+>         daxctl_dev_foreach(region, dev_dup)
+>                 if (dev_dup->id == dev->id) {
+>                         free_dev(dev, NULL);
+> @@ -893,3 +900,224 @@ DAXCTL_EXPORT unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev)
+>  {
+>         return dev->size;
+>  }
+> +
+> +DAXCTL_EXPORT int daxctl_dev_get_target_node(struct daxctl_dev *dev)
+> +{
+> +       return dev->target_node;
+> +}
+> +
+> +static int online_one_memblock(struct daxctl_dev *dev, char *path)
+> +{
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       const char *mode = "online_movable";
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int rc;
+> +
+> +       rc = sysfs_read_attr(ctx, path, buf);
+> +       if (rc) {
+> +               err(ctx, "%s: Failed to read %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +               return rc;
+> +       }
+> +
+> +       /*
+> +        * if already online, possibly due to kernel config or a udev rule,
+> +        * there is nothing to do and we can skip over the memblock
+> +        */
+> +       if (strncmp(buf, "online", 6) == 0)
+> +               return 0;
+> +
+> +       rc = sysfs_write_attr_quiet(ctx, path, mode);
+> +       if (rc)
+> +               err(ctx, "%s: Failed to online %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +       return rc;
+> +}
+> +
+> +static int offline_one_memblock(struct daxctl_dev *dev, char *path)
+> +{
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       const char *mode = "offline";
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int rc;
+> +
+> +       rc = sysfs_read_attr(ctx, path, buf);
+> +       if (rc) {
+> +               err(ctx, "%s: Failed to read %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +               return rc;
+> +       }
+> +
+> +       /* if already offline, there is nothing to do */
+> +       if (strncmp(buf, "offline", 6) == 0)
+> +               return 0;
+> +
+> +       rc = sysfs_write_attr_quiet(ctx, path, mode);
+> +       if (rc)
+> +               err(ctx, "%s: Failed to offline %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +       return rc;
+> +}
+> +
+> +static int daxctl_dev_node_set_state(struct daxctl_dev *dev,
+> +               enum node_state state)
+> +{
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       int target_node, rc, changed = 0;
+> +       struct dirent *de;
+> +       char *node_path;
+> +       DIR *node_dir;
+> +
+> +       target_node = daxctl_dev_get_target_node(dev);
+> +       if (target_node < 0) {
+> +               err(ctx, "%s: Unable to get target node\n",
+> +                       daxctl_dev_get_devname(dev));
+> +               return -ENXIO;
+> +       }
+> +
+> +       rc = asprintf(&node_path, "%s/node%d", node_base, target_node);
+> +       if (rc < 0)
+> +               return -ENOMEM;
 
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+To date the only usage of asprintf for path names has been in object
+constructor / init paths. This tries to guarantee that all userspace
+-ENOMEM errors are bypassed once you have the object established. The
+thinking here is to simplify any future audit where we need to
+guarantee APIs that don't allocate memory, but also to make all
+allocate/free management symmetrical with object create/destroy.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
