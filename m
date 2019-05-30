@@ -1,54 +1,77 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5102E7E1
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 May 2019 00:14:55 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6832F86F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 May 2019 10:20:48 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A8EDB21281EC6;
-	Wed, 29 May 2019 15:14:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 811CB212794AD;
+	Thu, 30 May 2019 01:20:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
- helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
- [211.29.132.249])
- by ml01.01.org (Postfix) with ESMTP id 8EDDA21276751
- for <linux-nvdimm@lists.01.org>; Wed, 29 May 2019 15:14:51 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-144-61.pa.nsw.optusnet.com.au
- [49.180.144.61])
- by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 4F8A0105FCCE;
- Thu, 30 May 2019 08:14:47 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hW6qL-0007rJ-5A; Thu, 30 May 2019 08:14:45 +1000
-Date: Thu, 30 May 2019 08:14:45 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 04/18] dax: Introduce IOMAP_DAX_COW to CoW edges during
- writes
-Message-ID: <20190529221445.GE16786@dread.disaster.area>
-References: <1e9951c1-d320-e480-3130-dc1f4b81ef2c@cn.fujitsu.com>
- <20190523115109.2o4txdjq2ft7fzzc@fiona>
- <1620c513-4ce2-84b0-33dc-2675246183ea@cn.fujitsu.com>
- <20190528091729.GD9607@quack2.suse.cz>
- <a3a919e6-ecad-bdf6-423c-fc01f9cfa661@cn.fujitsu.com>
- <20190529024749.GC16786@dread.disaster.area>
- <376256fd-dee4-5561-eb4e-546e227303cd@cn.fujitsu.com>
- <20190529040719.GL5221@magnolia>
- <20190529044658.GD16786@dread.disaster.area>
- <20190529134629.GA32147@quack2.suse.cz>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 119A421276B8F
+ for <linux-nvdimm@lists.01.org>; Thu, 30 May 2019 01:20:44 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x4U8IXZC078522
+ for <linux-nvdimm@lists.01.org>; Thu, 30 May 2019 04:20:43 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2sta87kxpb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Thu, 30 May 2019 04:20:43 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Thu, 30 May 2019 09:20:40 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 30 May 2019 09:20:39 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x4U8KcMq43516110
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 May 2019 08:20:38 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB794A4060;
+ Thu, 30 May 2019 08:20:37 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1A2E6A405C;
+ Thu, 30 May 2019 08:20:37 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.124.31.115])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 30 May 2019 08:20:36 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>, vishal.l.verma@intel.com
+Subject: Re: Picking 0th namespace if it is idle
+In-Reply-To: <87a7f45qik.fsf@linux.ibm.com>
+References: <87a7f45qik.fsf@linux.ibm.com>
+Date: Thu, 30 May 2019 13:50:35 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190529134629.GA32147@quack2.suse.cz>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0 cx=a_idp_d
- a=8RU0RCro9O0HS2ezTvitPg==:117 a=8RU0RCro9O0HS2ezTvitPg==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=E5NmQfObTbMA:10
- a=7-415B0cAAAA:8 a=Hin1r9r9Sl89pDOfUGgA:9 a=CjuIK1q_8ugA:10
- a=biEYGPWJfzWAr4FL6Ov7:22
+X-TM-AS-GCONF: 00
+x-cbid: 19053008-0012-0000-0000-00000320E0A3
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19053008-0013-0000-0000-00002159AEFD
+Message-Id: <877ea85p64.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-05-30_04:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=998 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905300063
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,82 +83,150 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kilobyte@angband.pl, "Darrick J. Wong" <darrick.wong@oracle.com>,
- nborisov@suse.com, Goldwyn Rodrigues <rgoldwyn@suse.de>,
- linux-nvdimm@lists.01.org, dsterba@suse.cz, willy@infradead.org,
- linux-fsdevel@vger.kernel.org, hch@lst.de, linux-btrfs@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, May 29, 2019 at 03:46:29PM +0200, Jan Kara wrote:
-> On Wed 29-05-19 14:46:58, Dave Chinner wrote:
-> >  iomap_apply()
-> > 
-> >  	->iomap_begin()
-> > 		map old data extent that we copy from
-> > 
-> > 		allocate new data extent we copy to in data fork,
-> > 		immediately replacing old data extent
-> > 
-> > 		return transaction handle as private data
+aneesh.kumar@linux.ibm.com (Aneesh Kumar K.V) writes:
 
-This holds the inode block map locked exclusively across the IO,
-so....
+> Hi Dan,
+>
+> With the patch series to mark the namespace disabled if we have mismatch
+> in pfn superblock, we can endup with namespace0 marked idle/disabled.
+>
+> I am wondering why do do the below in ndctl.
+>
+>
+> static struct ndctl_namespace *region_get_namespace(struct ndctl_region *region)
+> {
+> 	struct ndctl_namespace *ndns;
+>
+> 	/* prefer the 0th namespace if it is idle */
+> 	ndctl_namespace_foreach(region, ndns)
+> 		if (ndctl_namespace_get_id(ndns) == 0
+> 				&& !is_namespace_active(ndns))
+> 			return ndns;
+> 	return ndctl_region_get_namespace_seed(region);
+> }
+>
+> I have a kernel patch that will create a namespace_seed even if we fail
+> to ename a pfn backing device. Something like below
+>  
+> @@ -747,12 +752,23 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
+>  		}
+>  	}
+>  	if (dev->parent && is_nd_region(dev->parent) && probe) {
+>  		nd_region = to_nd_region(dev->parent);
+>  		nvdimm_bus_lock(dev);
+>  		if (nd_region->ns_seed == dev)
+>  			nd_region_create_ns_seed(nd_region);
+>  		nvdimm_bus_unlock(dev);
+>  	}
+> +
+> +	if (dev->parent && is_nd_region(dev->parent) && !probe && (ret == -EOPNOTSUPP)) {
+> +		nd_region = to_nd_region(dev->parent);
+> +		nvdimm_bus_lock(dev);
+> +		if (nd_region->ns_seed == dev)
+> +			nd_region_create_ns_seed(nd_region);
+> +		nvdimm_bus_unlock(dev);
+> +	}
+> +
+>
+> With that we can end up with something like the below after boot.
+> :/sys/bus/nd/devices/region0$ sudo ndctl list -Ni        
+> [                                                                          
+>   {                                                                                                                                                    
+>     "dev":"namespace0.1",                                                  
+>     "mode":"fsdax",                                                        
+>     "map":"mem",                                                           
+>     "size":0,                                                              
+>     "uuid":"00000000-0000-0000-0000-000000000000",                                                                                                     
+>     "state":"disabled"                                                     
+>   },                                                                       
+>   {                                                                        
+>     "dev":"namespace0.0",                                                  
+>     "mode":"fsdax",                  
+>     "map":"mem",                                                           
+>     "size":2147483648,               
+>     "uuid":"094e703b-4bf8-4078-ad42-50bebc03e538",                                                                                                     
+>     "state":"disabled"                                                                                                                                 
+>   }                                                                        
+> ]                                             
+>
+> namespace0.0 is the one we failed to initialize due to PAGE_SIZE
+> mismatch. 
+>
+> We do have namespace_seed pointing to namespacece0.1 correct. But a ndtl
+> create-namespace will pick namespace0.0 even if we have seed file
+> pointing to namespacec0.1.
+>
+>
+> I am trying to resolve the issues related to creation of new namespaces
+> when we have some namespace marked disabled due to pfn_sb setting
+> mismatch.
+>
+> -aneesh
 
-> > 
-> > 	dax_iomap_actor()
-> > 		copies data from old extent to new extent
-> > 
-> > 	->iomap_end
-> > 		commits transaction now data has been copied, making
-> > 		the COW operation atomic with the data copy.
-> > 
-> > 
-> > This, in fact, should be how we do all DAX writes that require
-> > allocation, because then we get rid of the need to zero newly
-> > allocated or unwritten extents before we copy the data into it. i.e.
-> > we only need to write once to newly allocated storage rather than
-> > twice.
-> 
-> You need to be careful though. You need to synchronize with page faults so
-> that they cannot see and expose in page tables blocks you've allocated
-> before their contents is filled.
+With that ndctl namespace0.0 selection commented out, we do get pick the
+right idle namespace.
 
-... so the page fault will block trying to map the blocks because
-it can't get the xfs_inode->i_ilock until the allocation transaciton
-commits....
+#ndctl list -Ni
+[                         
+  {                
+    "dev":"namespace0.1",
+    "mode":"fsdax",                                                        
+    "map":"mem",      
+    "size":0,
+    "uuid":"00000000-0000-0000-0000-000000000000",
+    "state":"disabled"   
+  },               
+  {             
+    "dev":"namespace0.0",
+    "mode":"fsdax",                                                        
+    "map":"mem",  
+    "size":2147483648,   
+    "uuid":"0c31ae4b-b053-43c7-82ff-88574e2585b0",
+    "state":"disabled"
+  }  
+]   
 
-> This race was actually the strongest
-> motivation for pre-zeroing of blocks. OTOH copy_from_iter() in
-> dax_iomap_actor() needs to be able to fault pages to copy from (and these
-> pages may be from the same file you're writing to) so you cannot just block
-> faulting for the file through I_MMAP_LOCK.
+after ndctl create-namespace -s 2G -r region0                   
 
-Right, it doesn't take the I_MMAP_LOCK, but it would block further
-in. And, really, I'm not caring all this much about this corner
-case. i.e.  anyone using a "mmap()+write() zero copy" pattern on DAX
-within a file is unbeleivably naive - the data still gets copied by
-the CPU in the write() call. It's far simpler and more effcient to
-just mmap() both ranges of the file(s) and memcpy() in userspace....
 
-FWIW, it's to avoid problems with stupid userspace stuff that nobody
-really should be doing that I want range locks for the XFS inode
-locks.  If userspace overlaps the ranges and deadlocks in that case,
-they they get to keep all the broken bits because, IMO, they are
-doing something monumentally stupid. I'd probably be making it
-return EDEADLOCK back out to userspace in the case rather than
-deadlocking but, fundamentally, I think it's broken behaviour that
-we should be rejecting with an error rather than adding complexity
-trying to handle it.
+# ndctl list -Ni                                           
+[                     
+  {                    
+    "dev":"namespace0.2",
+    "mode":"fsdax",       
+    "map":"mem",   
+    "size":0,   
+    "uuid":"00000000-0000-0000-0000-000000000000",
+    "state":"disabled"
+  },
+  {
+    "dev":"namespace0.1",
+    "mode":"fsdax",
+    "map":"dev",
+    "size":2130706432,
+    "uuid":"60970059-9412-4eeb-9e7a-b314585a4da3",
+    "align":65536,
+    "blockdev":"pmem0.1",
+    "supported_alignments":[
+      65536
+    ]
+  },
+  {
+    "dev":"namespace0.0",
+    "mode":"fsdax",
+    "map":"mem",
+    "size":2147483648,
+    "uuid":"0c31ae4b-b053-43c7-82ff-88574e2585b0",
+    "state":"disabled"
+  }
+]
 
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
