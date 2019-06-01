@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0843C31BDD
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  1 Jun 2019 15:18:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA7731C2E
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  1 Jun 2019 15:20:39 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 037ED21290D21;
-	Sat,  1 Jun 2019 06:17:58 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 68FF621290D23;
+	Sat,  1 Jun 2019 06:20:37 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,30 +15,30 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1E66C21276769
- for <linux-nvdimm@lists.01.org>; Sat,  1 Jun 2019 06:17:55 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 229B5212794AB
+ for <linux-nvdimm@lists.01.org>; Sat,  1 Jun 2019 06:20:36 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9B57525BFE;
- Sat,  1 Jun 2019 13:17:54 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C0B3C272D8;
+ Sat,  1 Jun 2019 13:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559395075;
- bh=lJU+MwtdUqpxJ6U2Kw9WErA+m+fp8zQU34Yp9GSvqrI=;
+ s=default; t=1559395235;
+ bh=lERRBpbiWXcItU0VZZrHkshCFTxnimKBKwtoNIoSXbM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=AObX8iZg/Su+suBdAXD9IXNXEXvcSBUc0lMwl9UFMuXh7oPXdhx4Byy8LqUKDHzai
- A5pHlUeftn6koXFmfNpct2fQr3lOy9/f5/rT9DJ9pZSgQlsuHjObwVzDhOPoDIH8it
- qT6G84MoNQjWr3o3qAejJdZOsfZzl0r1SIouN1lo=
+ b=gmVdpg1IjEFC8PHYzXCJUfvfHvJ7ByU/9Nw3/Wp+CqKKQ8qeaL431Yp5IuUe2PgjZ
+ 8AVtzJRnpdFYipS9Hp/SdP/muuVHxqfGwSBKtS/M+Vp1s/71eMBiiKx8jHd86iHiK+
+ Sf24ts6tzhgj795p5ChcKj8uDGo/PWTyCgxLiuE4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 020/186] mm: page_mkclean vs MADV_DONTNEED race
-Date: Sat,  1 Jun 2019 09:13:56 -0400
-Message-Id: <20190601131653.24205-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.0 018/173] mm: page_mkclean vs MADV_DONTNEED race
+Date: Sat,  1 Jun 2019 09:16:50 -0400
+Message-Id: <20190601131934.25053-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190601131653.24205-1-sashal@kernel.org>
-References: <20190601131653.24205-1-sashal@kernel.org>
+In-Reply-To: <20190601131934.25053-1-sashal@kernel.org>
+References: <20190601131934.25053-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -113,7 +113,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/dax.c b/fs/dax.c
-index 83009875308c5..f74386293632d 100644
+index 8eb3e8c2b4bdc..163ebd6cc0d1c 100644
 --- a/fs/dax.c
 +++ b/fs/dax.c
 @@ -814,7 +814,7 @@ static void dax_entry_mkclean(struct address_space *mapping, pgoff_t index,
@@ -126,7 +126,7 @@ index 83009875308c5..f74386293632d 100644
  			pmd = pmd_mkclean(pmd);
  			set_pmd_at(vma->vm_mm, address, pmdp, pmd);
 diff --git a/mm/rmap.c b/mm/rmap.c
-index b30c7c71d1d92..76c8dfd3ae1cd 100644
+index 0454ecc29537a..e0710b258c417 100644
 --- a/mm/rmap.c
 +++ b/mm/rmap.c
 @@ -928,7 +928,7 @@ static bool page_mkclean_one(struct page *page, struct vm_area_struct *vma,
