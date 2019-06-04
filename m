@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3886635321
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Jun 2019 01:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A0735347
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Jun 2019 01:24:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 78F012128D698;
-	Tue,  4 Jun 2019 16:23:15 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C4F942128D6A2;
+	Tue,  4 Jun 2019 16:24:14 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,30 +15,31 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F17202128A62D
- for <linux-nvdimm@lists.01.org>; Tue,  4 Jun 2019 16:23:12 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 52D692128D685
+ for <linux-nvdimm@lists.01.org>; Tue,  4 Jun 2019 16:24:13 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id A6F072085A;
- Tue,  4 Jun 2019 23:23:11 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6D31321019;
+ Tue,  4 Jun 2019 23:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1559690592;
- bh=+uGVSRxiHr5o1FYiBVBJnVahe5gpBP6cGkhq0E5848w=;
+ s=default; t=1559690653;
+ bh=XYNc5pLq6HBOSZUG5F5nsaBXfnhLFeyvuxzs9N+iaYY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=azpzMoqs4Zbvc4GFAPmeRctAGJdoqHt5lVEz0hOZ5hN+pBm10/jlJ+zSt1Nyo6jUv
- LnNdtfhpbssXgJYBCkY48P9d4DZvHcWH03QvZY9MhW7e4PN8Uml7T5Ha8wm4e0rRyX
- PkICYTGLloAdKXS8kF7xQwFuhliNXtj6bBPTns1c=
+ b=M72waje/kn2IPFpwnaVJonUuR6bccA5jr2KcXQtNU7BpTTyvaIZC4Y3GtaxVj/6kV
+ 5EjKTnwCeEoFl/QmDzAR6icIh8WGiEFxO3CQganRuMUUe/swRh0XgfKxTDL0zAwpZJ
+ G2/nte2tl+0JGfz6vJ5uC3BQQgRZJVefnNYq2rBM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.1 39/60] libnvdimm: Fix compilation warnings with W=1
-Date: Tue,  4 Jun 2019 19:21:49 -0400
-Message-Id: <20190604232212.6753-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 25/36] libnvdimm: Fix compilation warnings with
+ W=1
+Date: Tue,  4 Jun 2019 19:23:20 -0400
+Message-Id: <20190604232333.7185-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190604232212.6753-1-sashal@kernel.org>
-References: <20190604232212.6753-1-sashal@kernel.org>
+In-Reply-To: <20190604232333.7185-1-sashal@kernel.org>
+References: <20190604232333.7185-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -93,10 +94,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 7bbff0af29b2..99d5892ea98a 100644
+index 9148015ed803..a3132a9eb91c 100644
 --- a/drivers/nvdimm/bus.c
 +++ b/drivers/nvdimm/bus.c
-@@ -642,7 +642,7 @@ static struct attribute *nd_device_attributes[] = {
+@@ -612,7 +612,7 @@ static struct attribute *nd_device_attributes[] = {
  	NULL,
  };
  
@@ -105,7 +106,7 @@ index 7bbff0af29b2..99d5892ea98a 100644
   * nd_device_attribute_group - generic attributes for all devices on an nd bus
   */
  struct attribute_group nd_device_attribute_group = {
-@@ -671,7 +671,7 @@ static umode_t nd_numa_attr_visible(struct kobject *kobj, struct attribute *a,
+@@ -641,7 +641,7 @@ static umode_t nd_numa_attr_visible(struct kobject *kobj, struct attribute *a,
  	return a->mode;
  }
  
@@ -115,7 +116,7 @@ index 7bbff0af29b2..99d5892ea98a 100644
   */
  struct attribute_group nd_numa_attribute_group = {
 diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
-index 2030805aa216..edf278067e72 100644
+index 452ad379ed70..9f1b7e3153f9 100644
 --- a/drivers/nvdimm/label.c
 +++ b/drivers/nvdimm/label.c
 @@ -25,6 +25,8 @@ static guid_t nvdimm_btt2_guid;
@@ -128,7 +129,7 @@ index 2030805aa216..edf278067e72 100644
  {
  	a &= NSINDEX_SEQ_MASK;
 diff --git a/drivers/nvdimm/label.h b/drivers/nvdimm/label.h
-index e9a2ad3c2150..4bb7add39580 100644
+index 18bbe183b3a9..52f9fcada00a 100644
 --- a/drivers/nvdimm/label.h
 +++ b/drivers/nvdimm/label.h
 @@ -38,8 +38,6 @@ enum {
