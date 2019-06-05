@@ -1,64 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A90D354C7
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Jun 2019 02:48:06 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE20535A83
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Jun 2019 12:36:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 43B622128D867;
-	Tue,  4 Jun 2019 17:48:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4C0662128D880;
+	Wed,  5 Jun 2019 03:36:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 770922128D6BA
- for <linux-nvdimm@lists.01.org>; Tue,  4 Jun 2019 17:48:02 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id t28so10394596lje.9
- for <linux-nvdimm@lists.01.org>; Tue, 04 Jun 2019 17:48:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=pv23Ci9XYYXbAvdmjUDu6QVKJnotvin7bH7iuxivMig=;
- b=bCfiN04tgowJLuApBvXwZWyNMtGb9FgYGJp5LkSEcg4PdHWnZmIBeM/cM9k5AbYodp
- rettTdhr1CO5CzRe80O5GNP151HRdnuXMuXParmN+k4ysLrvJ8T4FJPz5UBNGPIWWhDv
- jLzSs2o7zt6OpGXykmBbYrEGKSLH0DyvmhFwA2O4C1gJAlb4gCQQYVi8jqNR76aV2CAE
- B26xYkubYvYF6WWvFMWbUtKHUYW3SWHpux/uSw6Ty7qvZxcnWDlOTriysJ/qSBj39HJL
- iN8/XK32e67VWiHpnny1O7oiB03Lzd4/CGvnWXT8rNKGMQku64Dn87Rnbdfu/kl1KQN3
- xajg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=pv23Ci9XYYXbAvdmjUDu6QVKJnotvin7bH7iuxivMig=;
- b=F4vkLdgsIEGSWppuQoJs4UOBrgFEqvIErmlEzpHcHv9KFRFw6OhheR3wJzy4zPBFzE
- gr7MKCie0dGsvvQF0iZWWhmyV72xkqouoSiy1nK20qdr2DY9spXfeSXqUGUE+Qi8wYA6
- cfhppC7JVHshrAzoIIk3zLRs5FNiO5uYlaY35yzv++4oZAalJv0t3hg/LrOyHLwEGcTm
- rzP08wA8OWL8RbKNWksXuou5Y0WpifGRV1AnloNtG9BJH5BlCVE5UcmIeKB95AFyKbjz
- Eh8mmrvkt92HbUECrU2b9uVETN1ulZw43k+3DVJpLKWSg6WpYbJ9i3Izbiz+jdSCkiq6
- yU7w==
-X-Gm-Message-State: APjAAAU4DazaQAQyZ7wJ9nSbbVay/d4WsQ8u4FJEjlbhqCzw/uwxl9NS
- 1IClx4RK2AiyE5SRYJPbZcXhLp6n4Tm7DQPUCe+Nng==
-X-Google-Smtp-Source: APXvYqxvjJ99N3aai52FzW/2dSKhKjlCCwgFuNgdJiXvkROkaHK9M4UqMQad+SFwjoWlFMwgkqQd/uzHdaUnjHCnq4g=
-X-Received: by 2002:a2e:a318:: with SMTP id l24mr6685023lje.36.1559695679940; 
- Tue, 04 Jun 2019 17:47:59 -0700 (PDT)
+ client-ip=185.219.80.135; helo=sendnbc.kiev.ua;
+ envelope-from=info@sendnbc.kiev.ua; receiver=linux-nvdimm@lists.01.org 
+Received: from sendnbc.kiev.ua (sendnbc.kiev.ua [185.219.80.135])
+ by ml01.01.org (Postfix) with ESMTP id C9D7E2128D87B
+ for <linux-nvdimm@lists.01.org>; Wed,  5 Jun 2019 03:36:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=send; d=sendnbc.kiev.ua;
+ h=Message-ID:Date:Subject:From:Reply-To:To:MIME-Version:Content-Type:
+ List-Unsubscribe:List-Id; i=info@sendnbc.kiev.ua;
+ bh=Fh7BNNPjxVD9bpVNQIjjG12us6OS/Trq8a5sO6s+V1k=;
+ b=pUkwQlGd1DYltIGB3DzRU8Rze5TUXiH3EIlRnLN8vpTmhqanyxa2S+X0kIolqORbLNugc+kF0pjE
+ M1Wdgve7W3KDkoMbJd1iuG7XcmBnbJz5S1iUusvCsIbHsjn6WoLw68uqYiX/ZOvGSkLi28Jl1zZT
+ gMWV4gOL1fJNNZqTHEI=
+Message-ID: <d8011cceaddb71ffaf19781793c83c2d@sendnbc.kiev.ua>
+Date: Wed, 05 Jun 2019 10:36:38 +0000
+Subject: =?utf-8?Q?=D0=9E=D1=80=D0=B3=D0=B0=D0=BD=D0=B8=D0=B7=D0=B0?=
+ =?utf-8?Q?=D1=86=D0=B8=D1=8F_=D0=B7=D0=B0=D0=BA=D1=83?=
+ =?utf-8?Q?=D0=BF=D0=BE=D1=87=D0=BD=D0=BE=D0=B9_=D0=B4?=
+ =?utf-8?Q?=D0=B5=D1=8F=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE?=
+ =?utf-8?Q?=D1=81=D1=82=D0=B8?=
+From: Veronica <info@sendnbc.kiev.ua>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 MIME-Version: 1.0
-References: <20190514221711.248228-1-brendanhiggins@google.com>
- <20190514221711.248228-5-brendanhiggins@google.com>
- <20190517175841.F3396216FD@mail.kernel.org>
-In-Reply-To: <20190517175841.F3396216FD@mail.kernel.org>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Tue, 4 Jun 2019 17:47:48 -0700
-Message-ID: <CAFd5g456V4aQUSxxTAizun8ak4zogcAt4-YGgebX2L55Kb-xEg@mail.gmail.com>
-Subject: Re: [PATCH v4 04/18] kunit: test: add kunit_stream a std::stream like
- logger
-To: Stephen Boyd <sboyd@kernel.org>
+X-Sender: info@sendnbc.kiev.ua
+X-Report-Abuse: Please report abuse for this campaign here:
+ http://send.sendnbc.kiev.ua/campaigns/ce0301ydbo1b5/report-abuse/fd624v8pbxd78/yq291omza0416
+X-Receiver: linux-nvdimm@lists.01.org
+X-Bjyo-Tracking-Did: 1
+X-Bjyo-Subscriber-Uid: yq291omza0416
+X-Bjyo-Mailer: SwiftMailer - 5.4.x
+X-Bjyo-EBS: http://send.sendnbc.kiev.ua/lists/block-address
+X-Bjyo-Delivery-Sid: 2
+X-Bjyo-Customer-Uid: rm355dplh31be
+X-Bjyo-Customer-Gid: 1
+X-Bjyo-Campaign-Uid: ce0301ydbo1b5
+Precedence: bulk
+Feedback-ID: ce0301ydbo1b5:yq291omza0416:fd624v8pbxd78:rm355dplh31be
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
 List-Unsubscribe: <https://lists.01.org/mailman/options/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=unsubscribe>
@@ -67,275 +57,88 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
- Kevin Hilman <khilman@baylibre.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: Veronica <info@sendnbc.kiev.ua>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, May 17, 2019 at 10:58 AM Stephen Boyd <sboyd@kernel.org> wrote:
->
-> Quoting Brendan Higgins (2019-05-14 15:16:57)
-> > diff --git a/kunit/kunit-stream.c b/kunit/kunit-stream.c
-> > new file mode 100644
-> > index 0000000000000..1884f1b550888
-> > --- /dev/null
-> > +++ b/kunit/kunit-stream.c
-> > @@ -0,0 +1,152 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * C++ stream style string formatter and printer used in KUnit for outputting
-> > + * KUnit messages.
-> > + *
-> > + * Copyright (C) 2019, Google LLC.
-> > + * Author: Brendan Higgins <brendanhiggins@google.com>
-> > + */
-> > +
-> > +#include <kunit/test.h>
-> > +#include <kunit/kunit-stream.h>
-> > +#include <kunit/string-stream.h>
-> > +
-> > +static const char *kunit_stream_get_level(struct kunit_stream *this)
-> > +{
-> > +       unsigned long flags;
-> > +       const char *level;
-> > +
-> > +       spin_lock_irqsave(&this->lock, flags);
-> > +       level = this->level;
-> > +       spin_unlock_irqrestore(&this->lock, flags);
-> > +
-> > +       return level;
->
-> Please remove this whole function and inline it to the one call-site.
->
-> > +}
-> > +
-> > +void kunit_stream_set_level(struct kunit_stream *this, const char *level)
-> > +{
-> > +       unsigned long flags;
-> > +
-> > +       spin_lock_irqsave(&this->lock, flags);
-> > +       this->level = level;
-> > +       spin_unlock_irqrestore(&this->lock, flags);
->
-> I don't get the locking here. What are we protecting against? Are tests
-> running in parallel using the same kunit_stream? If so, why is the level
-> changeable in one call and then adding strings is done in a different
-> function call? It would make sense to combine the level setting and
-> string adding so that it's one atomic operation if it's truly a parallel
-> operation, or remove the locking entirely.
-
-I think you are right. I am not sure it makes sense for two separate
-threads to share a kunit_stream; even if locked properly, it would end
-up printing out corrupted text.
-
-In anycase, I think it makes sense to decide the level when the stream
-is allocated which would sidestep this issue entirely.
-
-> > +}
-> > +
-> > +void kunit_stream_add(struct kunit_stream *this, const char *fmt, ...)
-> > +{
-> > +       va_list args;
-> > +       struct string_stream *stream = this->internal_stream;
-> > +
-> > +       va_start(args, fmt);
-> > +
-> > +       if (string_stream_vadd(stream, fmt, args) < 0)
-> > +               kunit_err(this->test, "Failed to allocate fragment: %s\n", fmt);
-> > +
-> > +       va_end(args);
-> > +}
-> > +
-> > +void kunit_stream_append(struct kunit_stream *this,
-> > +                               struct kunit_stream *other)
-> > +{
-> > +       struct string_stream *other_stream = other->internal_stream;
-> > +       const char *other_content;
-> > +
-> > +       other_content = string_stream_get_string(other_stream);
-> > +
-> > +       if (!other_content) {
-> > +               kunit_err(this->test,
-> > +                         "Failed to get string from second argument for appending.\n");
-> > +               return;
-> > +       }
-> > +
-> > +       kunit_stream_add(this, other_content);
-> > +}
-> > +
-> > +void kunit_stream_clear(struct kunit_stream *this)
-> > +{
-> > +       string_stream_clear(this->internal_stream);
-> > +}
-> > +
-> > +void kunit_stream_commit(struct kunit_stream *this)
->
-> Should this be rather called kunit_stream_flush()?
-
-So the intention is that the string in the buffer will not get printed
-out until commit is called. In this way, you can build up a message
-and then decide not to print it. This is useful when you are parsing
-through a lot of data that would be useful in debugging a failing or
-broken test, but are not yet sure if it is going to pass or not.
-
-I think flush has the connotation, that you are just forcing the
-buffer to get written out now, but that it will happen regardless
-eventually, where commit has the correct connotation that you *must*
-call it in order to write out the data stored in the buffer.
-
-Seems as though I should probably add this distinction to the
-kernel-doc comment.
-
-> > +{
-> > +       struct string_stream *stream = this->internal_stream;
-> > +       struct string_stream_fragment *fragment;
-> > +       const char *level;
-> > +       char *buf;
-> > +
-> > +       level = kunit_stream_get_level(this);
-> > +       if (!level) {
-> > +               kunit_err(this->test,
-> > +                         "Stream was committed without a specified log level.\n");
->
-> Drop the full-stop?
-
-Whoops, nice catch. Will fix in next revision.
-
-> > +               level = KERN_ERR;
-> > +               kunit_stream_set_level(this, level);
-> > +       }
-> > +
-> > +       buf = string_stream_get_string(stream);
-> > +       if (!buf) {
-> > +               kunit_err(this->test,
->
-> Can you grow a local variable for 'this->test'? It's used many times.
-
-Sure, will fix in next revision.
-
-> Also, 'this' is not very kernel idiomatic. We usually name variables by
-> their type instead of 'this' which is a keyword in other languages.
-> Perhaps it could be named 'kstream'?
-
-Seems reasonable. Will fix in next revision.
-
-> > +                        "Could not allocate buffer, dumping stream:\n");
-> > +               list_for_each_entry(fragment, &stream->fragments, node) {
-> > +                       kunit_err(this->test, fragment->fragment);
-> > +               }
-> > +               kunit_err(this->test, "\n");
-> > +               goto cleanup;
-> > +       }
-> > +
-> > +       kunit_printk(level, this->test, buf);
-> > +       kfree(buf);
-> > +
-> > +cleanup:
-> > +       kunit_stream_clear(this);
-> > +}
-> > +
-> > +static int kunit_stream_init(struct kunit_resource *res, void *context)
-> > +{
-> > +       struct kunit *test = context;
-> > +       struct kunit_stream *stream;
-> > +
-> > +       stream = kzalloc(sizeof(*stream), GFP_KERNEL);
->
-> Of course, here it's called 'stream', so maybe it should be 'kstream'
-> here too.
-
-Will do.
-
->
-> > +       if (!stream)
-> > +               return -ENOMEM;
-> > +
-> > +       res->allocation = stream;
-> > +       stream->test = test;
-> > +       spin_lock_init(&stream->lock);
-> > +       stream->internal_stream = new_string_stream();
->
-> Can new_string_stream() be renamed to alloc_string_stream()? Sorry, I
-> just see so much C++ isms in here it's hard to read from the kernel
-> developer perspective.
-
-No problem. WIll fix in next revision.
-
-> > +
-> > +       if (!stream->internal_stream) {
->
-> Nitpick: Please join this to the "allocation" event above instead of
-> keeping it separated.
-
-Yeah, that's a lot cleaner. Will do.
-
-> > +               kfree(stream);
-> > +               return -ENOMEM;
-> > +       }
-> > +
-> > +       return 0;
-> > +}
-> > +
-> > +static void kunit_stream_free(struct kunit_resource *res)
-> > +{
-> > +       struct kunit_stream *stream = res->allocation;
-> > +
-> > +       if (!string_stream_is_empty(stream->internal_stream)) {
-> > +               kunit_err(stream->test,
-> > +                        "End of test case reached with uncommitted stream entries.\n");
-> > +               kunit_stream_commit(stream);
-> > +       }
-> > +
-> > +       destroy_string_stream(stream->internal_stream);
-> > +       kfree(stream);
-> > +}
-> > +
-> > +struct kunit_stream *kunit_new_stream(struct kunit *test)
-> > +{
-> > +       struct kunit_resource *res;
-> > +
-> > +       res = kunit_alloc_resource(test,
-> > +                                  kunit_stream_init,
-> > +                                  kunit_stream_free,
-> > +                                  test);
-> > +
-> > +       if (res)
-> > +               return res->allocation;
-> > +       else
-> > +               return NULL;
->
-> Don't have if (...) return ...; else return ..., just return instead of
-> else.
-
-Sorry. Will fix.
-
-Thanks!
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+0KbQtdC70Ywg0L/RgNC+0LPRgNCw0LzQvNGLOiDCoMKgwqAKKiDQn9C+0LLRi9GB0LjRgtGMINGN
+0YTRhNC10LrRgtC40LLQvdC+0YHRgtGMINGA0LDQsdC+0YLRiwrQvtGC0LTQtdC70LAg0LfQsNC6
+0YPQv9C+0Log0YfQtdGA0LXQtyDRhNC+0YDQvNC40YDQvtCy0LDQvdC40LUK0LjQtNC10L7Qu9C+
+0LPQuNC4INCb0JjQlNCV0KDQkCDQuCDQvtGB0LLQvtC10L3QuNGPCtC40L3RgdGC0YDRg9C80LXQ
+vdGC0L7QsiDRjdGE0YTQtdC60YLQuNCy0L3Ri9GFCtC/0LXRgNC10LPQvtCy0L7RgNC+0LIuCiog
+0J/QvtC90Y/RgtGMINCy0L3Rg9GC0YDQtdC90L3QuNC1INC/0YDQuNGH0LjQvdGLCtC90LXRhNGD
+0L3QutGG0LjQvtC90LDQu9GM0L3QvtCz0L4g0L/QvtCy0LXQtNC10L3QuNGPCijRgdCw0LzQvtGB
+0LDQsdC+0YLQsNC2KS4g0JTQsNGC0Ywg0L/QvtC90LjQvNCw0L3QuNC1INCy0LvQuNGP0L3QuNGP
+CtC90LXRhNGD0L3QutGG0LjQvtC90LDQu9GM0L3Ri9GFINGB0YLQtdGA0LXQvtGC0LjQv9C+0LIg
+0LgK0LvQuNGH0L3Ri9GFINGD0YHRgtCw0L3QvtCy0L7QuiDQvdCwINC60LDRh9C10YHRgtCy0L4g
+0YDQsNCx0L7RgtGLLArQvdCw0YPRh9C40YLRjNGB0Y8g0LLRi9GF0L7QtNC40YLRjCAi0LfQsCDR
+gNCw0LzQutC4IiwK0L/RgNC10L7QtNC+0LvQtdCy0LDRgtGMINCy0L3Rg9GC0YDQtdC90L3QtdC1
+CtGB0L7Qv9GA0L7RgtC40LLQu9C10L3QuNC1LgoqINCg0LDRgdGB0LzQvtGC0YDQtdGC0Ywg0YDQ
+sNC30LvQuNGH0L3Ri9C1INCy0LDRgNC40LDQvdGC0YsK0L7RgNCz0LDQvdC40LfQsNGG0LjQuCDQ
+uCDQstC10LTQtdC90LjRjyDQv9GA0L7RhtC10YHRgdCwCtC30LDQutGD0L/QvtC6LCDQsCDRgtCw
+0LrQttC1INC+0YHQvdC+0LLQvdGL0YUg0L/RgNC40L3RhtC40L/QvtCyCtGA0LDQsdC+0YLRiyDQ
+vtGC0LTQtdC70LAg0LfQsNC60YPQv9C+0LouCiog0JLRi9GA0LDQsdC+0YLQsNGC0Ywg0YHRgtGA
+0LDRgtC10LPQuNGOINC+0L/RgtC40LzQsNC70YzQvdC+0LPQvgrRgtC+0LLQsNGA0L3QvtCz0L4g
+0LfQsNC/0LDRgdCwICjQsNGB0YHQvtGA0YLQuNC80LXQvdGC0LAK0YDQtdGB0YPRgNGB0L7Qsikg
+0LTQu9GPINC/0YDQvtC00YPQutGC0LjQstC90L7Qs9C+CtC/0YDQvtC40LfQstC+0LTRgdGC0LLQ
+sCDQuCDRgNC10LDQu9C40LfQsNGG0LjQuCDQs9C+0YLQvtCy0L7QuQrQv9GA0L7QtNGD0LrRhtC4
+0LguCiog0JLRi9Cx0L7RgCDRgdGC0YDQsNGC0LXQs9C40Lgg0L/RgNC40LHRi9C70YzQvdC+0LPQ
+viDRgNC+0YHRgtCwCuKAkyDQutCw0Log0L7RgdC90L7QstC90L7QuSDQstC10LrRgtC+0YAg0YbQ
+tdC90L7QstC+0LkK0L/QvtC70LjRgtC40LrQuC4g0KDQsNC30YDQsNCx0L7RgtCw0YLRjCDRgdGC
+0YDQsNGC0LXQs9C40Y4K0LLQt9Cw0LjQvNC+0L7RgtC90L7RiNC10L3QuNC5INGBINC/0L7RgdGC
+0LDQstGJ0LjQutCw0LzQuCDQuArQvdCw0YPRh9C40YLRjNGB0Y8g0YDQsNC90LbQuNGA0L7QstCw
+0YLRjCDQuNGFINC/0L4g0YbQtdC90L3QvtGB0YLQuArQtNC70Y8g0LLQsNGI0LXQuSDQutC+0LzQ
+v9Cw0L3QuNC4LgoqINCe0LLQu9Cw0LTQtdC90LjQtSDRgtC10YXQvdC+0LvQvtCz0LjRj9C80LgK
+0LrQvtC90YHRgtGA0YPQutGC0LjQstC90YvRhSDQv9C10YDQtdCz0L7QstC+0YDQvtCyINC4CtC4
+0L3RgdGC0YDRg9C80LXQvdGC0LDQvNC4INGN0LrRgdC/0YDQtdGB0YEg4oCTINCw0L3QsNC70LjQ
+t9CwCtGB0LjRgtGD0LDRhtC40LgsINC70LjRh9C90L7RgdGC0Lgg0L7Qv9C/0L7QvdC10L3RgtCw
+LArRhtC10L3QvdC+0YHRgtC4INC/0YDQtdC00LvQvtC20LXQvdC40Y8g0LTQu9GPINC60L7QvNC/
+0LDQvdC40LguCiog0J/QvtC70YPRh9C10L3QuNC1INC40L3RgdGC0YDRg9C80LXQvdGC0L7QsiDQ
+tNC70Y8K0YPQu9GD0YfRiNC10L3QuNGPINC00LjQvdCw0LzQuNC60Lgg0YHQvdC40LbQtdC90LjR
+jyDRhtC10L0K0L/QvtGB0YLQsNCy0YnQuNC60LDQvNC4INC90LAg0YPRgdC70L7QstC40Y/RhQrQ
+tNC+0LvQs9C+0YHRgNC+0YfQvdC+0LPQviDRgdC+0YLRgNGD0LTQvdC40YfQtdGB0YLQstCwLgoq
+INCe0YLRgNCw0LHQvtGC0LDRgtGMINC00LDQvdC90YvQtSDQvdCw0LLRi9C60Lgg0LIg0YDQsNC8
+0LrQsNGFCtC/0YDQvtCy0LXQtNC10L3QuNGPINGA0L7Qu9C10LLRi9GFINC40LPRgCDQuCDQutC+
+0LzQsNC90LTQvdGL0YUK0YPQv9GA0LDQttC90LXQvdC40LkuCtCf0L7QstC10YHRgtC60LAg0LTQ
+vdGPOiDCoMKgwqAKKiDQn9GB0LjRhdC+0LvQvtCz0LjRh9C10YHQutC40LUg0YXQsNGA0LDQutGC
+0LXRgNC40YHRgtC40LrQuArQu9C40YfQvdC+0YHRgtC4INCc0LXQvdC10LTQttC10YDQsCDQv9C+
+INC30LDQutGD0L/QutCw0Lwg0YEK0YPRh9C10YLQvtC8INGB0L/QtdGG0LjRhNC40LrQuCDQt9Cw
+0LrRg9C/0L7Rh9C90L7QuQrQtNC10Y/RgtC10LvRjNC90L7RgdGC0LgKKiDQntGA0LPQsNC90LjQ
+t9Cw0YbQuNGPINC4INC60L7QvtGA0LTQuNC90LDRhtC40Y8K0LfQsNC60YPQv9C+0YfQvdC+0Lkg
+0LTQtdGP0YLQtdC70YzQvdC+0YHRgtGM0Y4KKiDQoNCw0LHQvtGC0LAg0YEg0L/QvtGB0YLQsNCy
+0YnQuNC60LDQvNC4Ciog0KHRgtGA0LDRgtC10LPQuNGH0LXRgdC60LjQtSDQv9C10YDQtdCz0L7Q
+stC+0YDRiyDRgQrQv9C+0YHRgtCw0LLRidC40LrQsNC80LgKLSDQn9C+0LTQs9C+0YLQvtCy0LrQ
+sCDQuiDQv9C10YDQtdCz0L7QstC+0YDQsNC8LiDQodGC0YDQsNGC0LXQs9C40LgK0L/QtdGA0LXQ
+s9C+0LLQvtGA0L7QsiDRgSDQv9C+0YHRgtCw0LLRidC40LrQvtC8Ci0g0J/QtdGA0LXQs9C+0LLQ
+vtGA0Ysg0YEg0L/QvtGB0YLQsNCy0YnQuNC60L7QvCDQv9C+CtGC0LXQu9C10YTQvtC90YMKKiDQ
+odGC0YDRg9C60YLRg9GA0LAg0L/RgNC+0LLQtdC00LXQvdC40LUg0L/QtdGA0LXQs9C+0LLQvtGA
+0L7Qsi4KLSDQo9GB0YLQsNC90L7QstC70LXQvdC40LUg0JrQvtC90YLQsNC60YLQsAotINCS0LXQ
+tNC10L3QuNC1INC4INGD0L/RgNCw0LLQu9C10L3QuNC1INC/0LXRgNC10LPQvtCy0L7RgNC90YvQ
+vArQv9GA0L7RhtC10YHRgdC+0LwKLSDQnNCw0L3QuNC/0YPQu9GP0YbQuNGPINC4INC00LDQstC7
+0LXQvdC40LUg4oCTINC30LDRiNC40YLQsCDQuArQv9GA0L7RgtC40LLQvtC00LXQudGB0YLQstC4
+0LUKLSDQn9C10YDQtdCz0L7QstC+0YDRiyDQvtCxINGD0YHQu9C+0LLQuNGP0YUK0YHQvtGC0YDR
+g9C00L3QuNGH0LXRgdGC0LLQsCDigJMg0LrQu9GO0YfQtdCy0L7QuSDRjdGC0LDQvwrQv9C10YDQ
+tdCz0L7QstC+0YDQvtCyCi0g0JfQsNCy0LXRgNGI0LXQvdC40LUg0L/QtdGA0LXQs9C+0LLQvtGA
+0L7QsgrQl9CwINC40L3RhNC+0YDQvNCw0YbQuNC10Lkg0L7QsdGA0LDRidCw0YLRjNGB0Y8KaHR0
+cDovL3NlbmQuc2VuZG5iYy5raWV2LnVhL2NhbXBhaWducy9jZTAzMDF5ZGJvMWI1L3RyYWNrLXVy
+bC95cTI5MW9temEwNDE2LzdhOGRmM2MwODE4YTk1YWFmMjgxYTRkYWQyN2EwMWFmODFhNWViZGMK
+wqDCoMKgCtCV0YHQu9C4INGDINCS0LDRgSDQstC+0LfQvdC40LrQvdGD0YIg0LTQvtC/0L7Qu9C9
+0LjRgtC10LvRjNC90YvQtQrQstC+0L/RgNC+0YHRiyAtINC+0LHRgNCw0YnQsNC50YLQtdGB0Yws
+INC80Ysg0LLRgdC10LPQtNCwINGA0LDQtNGLCtCS0LDQvCDQv9C+0LzQvtGH0YwhIMKgwqDCoArC
+oMKgwqAK0J3QsNGI0Lgg0LrQvtC90YLQsNC60YLRizogKDA0NCkgMjMz4parNDbilqs2OQrCoMKg
+wqAKLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQrQo9Cy0LDQttCw0LXQvNGL0Lkg0L/QvtC00L/Q
+uNGB0YfQuNC6LiDQlNCw0L3QvdC+0LUg0L/QuNGB0YzQvNC+INC90LUK0YLRgNC10LHRg9C10YIg
+0L7RgtCy0LXRgtCwLgrQoW9v0LHRidC10L3QuNC1INC/b9C00LNv0YJv0LLQu9C10L1vINC4IGHQ
+tNGA0LXRgW/QsmHQvW8g0L1hCtGN0LvQtdC60YLRgG/QvdC90YvQuSBh0LTRgNC10YEgbGludXgt
+bnZkaW1tQGxpc3RzLjAxLm9yZy4K0J3QsNC20LzQuNGC0LUg0L7RgtC60LDQtyDQvtGCINC/0L7Q
+tNC/0LjRgdC60LggTGlzdC1VbnN1YnNjcmliZQpodHRwOi8vc2VuZC5zZW5kbmJjLmtpZXYudWEv
+bGlzdHMvZmQ2MjR2OHBieGQ3OC91bnN1YnNjcmliZS95cTI5MW9temEwNDE2L2NlMDMwMXlkYm8x
+YjUK0LjQu9C4INC/0L7QttCw0LvQvtCy0LDRgtGM0YHRjyDQvdCwINCh0L/QsNC8Cmh0dHA6Ly9z
+ZW5kLnNlbmRuYmMua2lldi51YS9saXN0cy9mZDYyNHY4cGJ4ZDc4L3Vuc3Vic2NyaWJlL3lxMjkx
+b216YTA0MTYvY2UwMzAxeWRibzFiNSwK0LXRgdC70Lgg0L3QtSDRhdC+0YLQuNGC0LUg0L/QvtC7
+0YPRh9Cw0YLRjCDQvtGCINC90LDRgSDQv9C40YHRjNC80LAuCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGlu
+dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3Rp
+bmZvL2xpbnV4LW52ZGltbQo=
