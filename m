@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ABF836748
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Jun 2019 00:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF42536755
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Jun 2019 00:13:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5AFC7212909E3;
-	Wed,  5 Jun 2019 15:13:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9F72E212909C4;
+	Wed,  5 Jun 2019 15:13:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,22 +15,23 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5523C2128DD59
- for <linux-nvdimm@lists.01.org>; Wed,  5 Jun 2019 15:13:10 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id B9DE2212909C4
+ for <linux-nvdimm@lists.01.org>; Wed,  5 Jun 2019 15:13:15 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2019 15:13:10 -0700
+ 05 Jun 2019 15:13:15 -0700
 X-ExtLoop1: 1
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga006.fm.intel.com with ESMTP; 05 Jun 2019 15:13:09 -0700
-Subject: [PATCH v9 10/12] mm/devm_memremap_pages: Enable sub-section remap
+ by fmsmga005.fm.intel.com with ESMTP; 05 Jun 2019 15:13:15 -0700
+Subject: [PATCH v9 11/12] libnvdimm/pfn: Fix fsdax-mode namespace info-block
+ zero-fields
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Wed, 05 Jun 2019 14:58:53 -0700
-Message-ID: <155977193326.2443951.14201009973429527491.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Wed, 05 Jun 2019 14:58:58 -0700
+Message-ID: <155977193862.2443951.10284714500308539570.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -46,137 +47,126 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: mhocko@suse.com, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, osalvador@suse.de
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: mhocko@suse.com, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, linux-mm@kvack.org, osalvador@suse.de
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-VGVhY2ggZGV2bV9tZW1yZW1hcF9wYWdlcygpIGFib3V0IHRoZSBuZXcgc3ViLXNlY3Rpb24gY2Fw
-YWJpbGl0aWVzIG9mCmFyY2hfe2FkZCxyZW1vdmV9X21lbW9yeSgpLiBFZmZlY3RpdmVseSwganVz
-dCByZXBsYWNlIGFsbCB1c2FnZSBvZgphbGlnbl9zdGFydCwgYWxpZ25fZW5kLCBhbmQgYWxpZ25f
-c2l6ZSB3aXRoIHJlcy0+c3RhcnQsIHJlcy0+ZW5kLCBhbmQKcmVzb3VyY2Vfc2l6ZShyZXMpLiBU
-aGUgZXhpc3Rpbmcgc2FuaXR5IGNoZWNrIHdpbGwgc3RpbGwgbWFrZSBzdXJlIHRoYXQKdGhlIHR3
-byBzZXBhcmF0ZSByZW1hcCBhdHRlbXB0cyBkbyBub3QgY29sbGlkZSB3aXRoaW4gYSBzdWItc2Vj
-dGlvbiAoMk1CCm9uIHg4NikuCgpDYzogTWljaGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+CkNj
-OiBUb3NoaSBLYW5pIDx0b3NoaS5rYW5pQGhwZS5jb20+CkNjOiBKw6lyw7RtZSBHbGlzc2UgPGpn
-bGlzc2VAcmVkaGF0LmNvbT4KQ2M6IExvZ2FuIEd1bnRob3JwZSA8bG9nYW5nQGRlbHRhdGVlLmNv
-bT4KQ2M6IE9zY2FyIFNhbHZhZG9yIDxvc2FsdmFkb3JAc3VzZS5kZT4KQ2M6IFBhdmVsIFRhdGFz
-aGluIDxwYXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPgpTaWduZWQtb2ZmLWJ5OiBEYW4gV2lsbGlh
-bXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KLS0tCiBrZXJuZWwvbWVtcmVtYXAuYyB8ICAg
-NjEgKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
-IDEgZmlsZSBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAzNyBkZWxldGlvbnMoLSkKCmRpZmYg
-LS1naXQgYS9rZXJuZWwvbWVtcmVtYXAuYyBiL2tlcm5lbC9tZW1yZW1hcC5jCmluZGV4IDU3OTgw
-ZWQ0ZTU3MS4uYTBlNWY2YjkxYjA0IDEwMDY0NAotLS0gYS9rZXJuZWwvbWVtcmVtYXAuYworKysg
-Yi9rZXJuZWwvbWVtcmVtYXAuYwpAQCAtNTgsNyArNTgsNyBAQCBzdGF0aWMgdW5zaWduZWQgbG9u
-ZyBwZm5fZmlyc3Qoc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlzdHJ1Y3Qgdm1lbV9hbHRt
-YXAgKmFsdG1hcCA9ICZwZ21hcC0+YWx0bWFwOwogCXVuc2lnbmVkIGxvbmcgcGZuOwogCi0JcGZu
-ID0gcmVzLT5zdGFydCA+PiBQQUdFX1NISUZUOworCXBmbiA9IFBIWVNfUEZOKHJlcy0+c3RhcnQp
-OwogCWlmIChwZ21hcC0+YWx0bWFwX3ZhbGlkKQogCQlwZm4gKz0gdm1lbV9hbHRtYXBfb2Zmc2V0
-KGFsdG1hcCk7CiAJcmV0dXJuIHBmbjsKQEAgLTg2LDcgKzg2LDYgQEAgc3RhdGljIHZvaWQgZGV2
-bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZvaWQgKmRhdGEpCiAJc3RydWN0IGRldl9wYWdlbWFw
-ICpwZ21hcCA9IGRhdGE7CiAJc3RydWN0IGRldmljZSAqZGV2ID0gcGdtYXAtPmRldjsKIAlzdHJ1
-Y3QgcmVzb3VyY2UgKnJlcyA9ICZwZ21hcC0+cmVzOwotCXJlc291cmNlX3NpemVfdCBhbGlnbl9z
-dGFydCwgYWxpZ25fc2l6ZTsKIAl1bnNpZ25lZCBsb25nIHBmbjsKIAlpbnQgbmlkOwogCkBAIC05
-NiwyNSArOTUsMjEgQEAgc3RhdGljIHZvaWQgZGV2bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZv
-aWQgKmRhdGEpCiAJcGdtYXAtPmNsZWFudXAocGdtYXAtPnJlZik7CiAKIAkvKiBwYWdlcyBhcmUg
-ZGVhZCBhbmQgdW51c2VkLCB1bmRvIHRoZSBhcmNoIG1hcHBpbmcgKi8KLQlhbGlnbl9zdGFydCA9
-IHJlcy0+c3RhcnQgJiB+KFBBX1NFQ1RJT05fU0laRSAtIDEpOwotCWFsaWduX3NpemUgPSBBTElH
-TihyZXMtPnN0YXJ0ICsgcmVzb3VyY2Vfc2l6ZShyZXMpLCBQQV9TRUNUSU9OX1NJWkUpCi0JCS0g
-YWxpZ25fc3RhcnQ7Ci0KLQluaWQgPSBwYWdlX3RvX25pZChwZm5fdG9fcGFnZShhbGlnbl9zdGFy
-dCA+PiBQQUdFX1NISUZUKSk7CisJbmlkID0gcGFnZV90b19uaWQocGZuX3RvX3BhZ2UoUEhZU19Q
-Rk4ocmVzLT5zdGFydCkpKTsKIAogCW1lbV9ob3RwbHVnX2JlZ2luKCk7CiAJaWYgKHBnbWFwLT50
-eXBlID09IE1FTU9SWV9ERVZJQ0VfUFJJVkFURSkgewotCQlwZm4gPSBhbGlnbl9zdGFydCA+PiBQ
-QUdFX1NISUZUOworCQlwZm4gPSBQSFlTX1BGTihyZXMtPnN0YXJ0KTsKIAkJX19yZW1vdmVfcGFn
-ZXMocGFnZV96b25lKHBmbl90b19wYWdlKHBmbikpLCBwZm4sCi0JCQkJYWxpZ25fc2l6ZSA+PiBQ
-QUdFX1NISUZULCBOVUxMKTsKKwkJCQlQSFlTX1BGTihyZXNvdXJjZV9zaXplKHJlcykpLCBOVUxM
-KTsKIAl9IGVsc2UgewotCQlhcmNoX3JlbW92ZV9tZW1vcnkobmlkLCBhbGlnbl9zdGFydCwgYWxp
-Z25fc2l6ZSwKKwkJYXJjaF9yZW1vdmVfbWVtb3J5KG5pZCwgcmVzLT5zdGFydCwgcmVzb3VyY2Vf
-c2l6ZShyZXMpLAogCQkJCXBnbWFwLT5hbHRtYXBfdmFsaWQgPyAmcGdtYXAtPmFsdG1hcCA6IE5V
-TEwpOwotCQlrYXNhbl9yZW1vdmVfemVyb19zaGFkb3coX192YShhbGlnbl9zdGFydCksIGFsaWdu
-X3NpemUpOworCQlrYXNhbl9yZW1vdmVfemVyb19zaGFkb3coX192YShyZXMtPnN0YXJ0KSwgcmVz
-b3VyY2Vfc2l6ZShyZXMpKTsKIAl9CiAJbWVtX2hvdHBsdWdfZG9uZSgpOwogCi0JdW50cmFja19w
-Zm4oTlVMTCwgUEhZU19QRk4oYWxpZ25fc3RhcnQpLCBhbGlnbl9zaXplKTsKKwl1bnRyYWNrX3Bm
-bihOVUxMLCBQSFlTX1BGTihyZXMtPnN0YXJ0KSwgcmVzb3VyY2Vfc2l6ZShyZXMpKTsKIAlwZ21h
-cF9hcnJheV9kZWxldGUocmVzKTsKIAlkZXZfV0FSTl9PTkNFKGRldiwgcGdtYXAtPmFsdG1hcC5h
-bGxvYywKIAkJICAgICAgIiVzOiBmYWlsZWQgdG8gZnJlZSBhbGwgcmVzZXJ2ZWQgcGFnZXNcbiIs
-IF9fZnVuY19fKTsKQEAgLTE0MSwxNiArMTM2LDEzIEBAIHN0YXRpYyB2b2lkIGRldm1fbWVtcmVt
-YXBfcGFnZXNfcmVsZWFzZSh2b2lkICpkYXRhKQogICovCiB2b2lkICpkZXZtX21lbXJlbWFwX3Bh
-Z2VzKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIHsKLQly
-ZXNvdXJjZV9zaXplX3QgYWxpZ25fc3RhcnQsIGFsaWduX3NpemUsIGFsaWduX2VuZDsKLQlzdHJ1
-Y3Qgdm1lbV9hbHRtYXAgKmFsdG1hcCA9IHBnbWFwLT5hbHRtYXBfdmFsaWQgPwotCQkJJnBnbWFw
-LT5hbHRtYXAgOiBOVUxMOwogCXN0cnVjdCByZXNvdXJjZSAqcmVzID0gJnBnbWFwLT5yZXM7CiAJ
-c3RydWN0IGRldl9wYWdlbWFwICpjb25mbGljdF9wZ21hcDsKIAlzdHJ1Y3QgbWhwX3Jlc3RyaWN0
-aW9ucyByZXN0cmljdGlvbnMgPSB7CiAJCS8qCiAJCSAqIFdlIGRvIG5vdCB3YW50IGFueSBvcHRp
-b25hbCBmZWF0dXJlcyBvbmx5IG91ciBvd24gbWVtbWFwCiAJCSovCi0JCS5hbHRtYXAgPSBhbHRt
-YXAsCisJCS5hbHRtYXAgPSBwZ21hcC0+YWx0bWFwX3ZhbGlkID8gJnBnbWFwLT5hbHRtYXAgOiBO
-VUxMLAogCX07CiAJcGdwcm90X3QgcGdwcm90ID0gUEFHRV9LRVJORUw7CiAJaW50IGVycm9yLCBu
-aWQsIGlzX3JhbTsKQEAgLTE2MCwxMiArMTUyLDcgQEAgdm9pZCAqZGV2bV9tZW1yZW1hcF9wYWdl
-cyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZfcGFnZW1hcCAqcGdtYXApCiAJCXJldHVy
-biBFUlJfUFRSKC1FSU5WQUwpOwogCX0KIAotCWFsaWduX3N0YXJ0ID0gcmVzLT5zdGFydCAmIH4o
-UEFfU0VDVElPTl9TSVpFIC0gMSk7Ci0JYWxpZ25fc2l6ZSA9IEFMSUdOKHJlcy0+c3RhcnQgKyBy
-ZXNvdXJjZV9zaXplKHJlcyksIFBBX1NFQ1RJT05fU0laRSkKLQkJLSBhbGlnbl9zdGFydDsKLQlh
-bGlnbl9lbmQgPSBhbGlnbl9zdGFydCArIGFsaWduX3NpemUgLSAxOwotCi0JY29uZmxpY3RfcGdt
-YXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19QRk4oYWxpZ25fc3RhcnQpLCBOVUxMKTsKKwljb25m
-bGljdF9wZ21hcCA9IGdldF9kZXZfcGFnZW1hcChQSFlTX1BGTihyZXMtPnN0YXJ0KSwgTlVMTCk7
-CiAJaWYgKGNvbmZsaWN0X3BnbWFwKSB7CiAJCWRldl9XQVJOKGRldiwgIkNvbmZsaWN0aW5nIG1h
-cHBpbmcgaW4gc2FtZSBzZWN0aW9uXG4iKTsKIAkJcHV0X2Rldl9wYWdlbWFwKGNvbmZsaWN0X3Bn
-bWFwKTsKQEAgLTE3Myw3ICsxNjAsNyBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0cnVj
-dCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAkJZ290byBlcnJfYXJy
-YXk7CiAJfQogCi0JY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19QRk4oYWxp
-Z25fZW5kKSwgTlVMTCk7CisJY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19Q
-Rk4ocmVzLT5lbmQpLCBOVUxMKTsKIAlpZiAoY29uZmxpY3RfcGdtYXApIHsKIAkJZGV2X1dBUk4o
-ZGV2LCAiQ29uZmxpY3RpbmcgbWFwcGluZyBpbiBzYW1lIHNlY3Rpb25cbiIpOwogCQlwdXRfZGV2
-X3BhZ2VtYXAoY29uZmxpY3RfcGdtYXApOwpAQCAtMTgxLDcgKzE2OCw3IEBAIHZvaWQgKmRldm1f
-bWVtcmVtYXBfcGFnZXMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBn
-bWFwKQogCQlnb3RvIGVycl9hcnJheTsKIAl9CiAKLQlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0
-cyhhbGlnbl9zdGFydCwgYWxpZ25fc2l6ZSwKKwlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0cyhy
-ZXMtPnN0YXJ0LCByZXNvdXJjZV9zaXplKHJlcyksCiAJCUlPUkVTT1VSQ0VfU1lTVEVNX1JBTSwg
-SU9SRVNfREVTQ19OT05FKTsKIAogCWlmIChpc19yYW0gIT0gUkVHSU9OX0RJU0pPSU5UKSB7CkBA
-IC0yMDIsOCArMTg5LDggQEAgdm9pZCAqZGV2bV9tZW1yZW1hcF9wYWdlcyhzdHJ1Y3QgZGV2aWNl
-ICpkZXYsIHN0cnVjdCBkZXZfcGFnZW1hcCAqcGdtYXApCiAJaWYgKG5pZCA8IDApCiAJCW5pZCA9
-IG51bWFfbWVtX2lkKCk7CiAKLQllcnJvciA9IHRyYWNrX3Bmbl9yZW1hcChOVUxMLCAmcGdwcm90
-LCBQSFlTX1BGTihhbGlnbl9zdGFydCksIDAsCi0JCQlhbGlnbl9zaXplKTsKKwllcnJvciA9IHRy
-YWNrX3Bmbl9yZW1hcChOVUxMLCAmcGdwcm90LCBQSFlTX1BGTihyZXMtPnN0YXJ0KSwgMCwKKwkJ
-CXJlc291cmNlX3NpemUocmVzKSk7CiAJaWYgKGVycm9yKQogCQlnb3RvIGVycl9wZm5fcmVtYXA7
-CiAKQEAgLTIyMSwyNSArMjA4LDI1IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0
-IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIGFyY2hfYWRkX21l
-bW9yeSgpLgogCSAqLwogCWlmIChwZ21hcC0+dHlwZSA9PSBNRU1PUllfREVWSUNFX1BSSVZBVEUp
-IHsKLQkJZXJyb3IgPSBhZGRfcGFnZXMobmlkLCBhbGlnbl9zdGFydCA+PiBQQUdFX1NISUZULAot
-CQkJCWFsaWduX3NpemUgPj4gUEFHRV9TSElGVCwgJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0g
-YWRkX3BhZ2VzKG5pZCwgUEhZU19QRk4ocmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3Vy
-Y2Vfc2l6ZShyZXMpKSwgJnJlc3RyaWN0aW9ucyk7CiAJfSBlbHNlIHsKLQkJZXJyb3IgPSBrYXNh
-bl9hZGRfemVyb19zaGFkb3coX192YShhbGlnbl9zdGFydCksIGFsaWduX3NpemUpOworCQllcnJv
-ciA9IGthc2FuX2FkZF96ZXJvX3NoYWRvdyhfX3ZhKHJlcy0+c3RhcnQpLCByZXNvdXJjZV9zaXpl
-KHJlcykpOwogCQlpZiAoZXJyb3IpIHsKIAkJCW1lbV9ob3RwbHVnX2RvbmUoKTsKIAkJCWdvdG8g
-ZXJyX2thc2FuOwogCQl9CiAKLQkJZXJyb3IgPSBhcmNoX2FkZF9tZW1vcnkobmlkLCBhbGlnbl9z
-dGFydCwgYWxpZ25fc2l6ZSwKLQkJCQkJJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0gYXJjaF9h
-ZGRfbWVtb3J5KG5pZCwgcmVzLT5zdGFydCwgcmVzb3VyY2Vfc2l6ZShyZXMpLAorCQkJCSZyZXN0
-cmljdGlvbnMpOwogCX0KIAogCWlmICghZXJyb3IpIHsKIAkJc3RydWN0IHpvbmUgKnpvbmU7CiAK
-IAkJem9uZSA9ICZOT0RFX0RBVEEobmlkKS0+bm9kZV96b25lc1taT05FX0RFVklDRV07Ci0JCW1v
-dmVfcGZuX3JhbmdlX3RvX3pvbmUoem9uZSwgYWxpZ25fc3RhcnQgPj4gUEFHRV9TSElGVCwKLQkJ
-CQlhbGlnbl9zaXplID4+IFBBR0VfU0hJRlQsIGFsdG1hcCk7CisJCW1vdmVfcGZuX3JhbmdlX3Rv
-X3pvbmUoem9uZSwgUEhZU19QRk4ocmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3VyY2Vf
-c2l6ZShyZXMpKSwgcmVzdHJpY3Rpb25zLmFsdG1hcCk7CiAJfQogCiAJbWVtX2hvdHBsdWdfZG9u
-ZSgpOwpAQCAtMjUxLDggKzIzOCw4IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0
-IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIHRvIGFsbG93IHVz
-IHRvIGRvIHRoZSB3b3JrIHdoaWxlIG5vdCBob2xkaW5nIHRoZSBob3RwbHVnIGxvY2suCiAJICov
-CiAJbWVtbWFwX2luaXRfem9uZV9kZXZpY2UoJk5PREVfREFUQShuaWQpLT5ub2RlX3pvbmVzW1pP
-TkVfREVWSUNFXSwKLQkJCQlhbGlnbl9zdGFydCA+PiBQQUdFX1NISUZULAotCQkJCWFsaWduX3Np
-emUgPj4gUEFHRV9TSElGVCwgcGdtYXApOworCQkJCVBIWVNfUEZOKHJlcy0+c3RhcnQpLAorCQkJ
-CVBIWVNfUEZOKHJlc291cmNlX3NpemUocmVzKSksIHBnbWFwKTsKIAlwZXJjcHVfcmVmX2dldF9t
-YW55KHBnbWFwLT5yZWYsIHBmbl9lbmQocGdtYXApIC0gcGZuX2ZpcnN0KHBnbWFwKSk7CiAKIAll
-cnJvciA9IGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldChkZXYsIGRldm1fbWVtcmVtYXBfcGFnZXNf
-cmVsZWFzZSwKQEAgLTI2Myw5ICsyNTAsOSBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0
-cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlyZXR1cm4gX192
-YShyZXMtPnN0YXJ0KTsKIAogIGVycl9hZGRfbWVtb3J5OgotCWthc2FuX3JlbW92ZV96ZXJvX3No
-YWRvdyhfX3ZhKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7CisJa2FzYW5fcmVtb3ZlX3plcm9f
-c2hhZG93KF9fdmEocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUocmVzKSk7CiAgZXJyX2thc2Fu
-OgotCXVudHJhY2tfcGZuKE5VTEwsIFBIWVNfUEZOKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7
-CisJdW50cmFja19wZm4oTlVMTCwgUEhZU19QRk4ocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUo
-cmVzKSk7CiAgZXJyX3Bmbl9yZW1hcDoKIAlwZ21hcF9hcnJheV9kZWxldGUocmVzKTsKICBlcnJf
-YXJyYXk6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6
-Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
+At namespace creation time there is the potential for the "expected to
+be zero" fields of a 'pfn' info-block to be filled with indeterminate
+data. While the kernel buffer is zeroed on allocation it is immediately
+overwritten by nd_pfn_validate() filling it with the current contents of
+the on-media info-block location. For fields like, 'flags' and the
+'padding' it potentially means that future implementations can not rely
+on those fields being zero.
+
+In preparation to stop using the 'start_pad' and 'end_trunc' fields for
+section alignment, arrange for fields that are not explicitly
+initialized to be guaranteed zero. Bump the minor version to indicate it
+is safe to assume the 'padding' and 'flags' are zero. Otherwise, this
+corruption is expected to benign since all other critical fields are
+explicitly initialized.
+
+Fixes: 32ab0a3f5170 ("libnvdimm, pmem: 'struct page' for pmem")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/nvdimm/dax_devs.c |    2 +-
+ drivers/nvdimm/pfn.h      |    1 +
+ drivers/nvdimm/pfn_devs.c |   18 +++++++++++++++---
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
+index 0453f49dc708..326f02ffca81 100644
+--- a/drivers/nvdimm/dax_devs.c
++++ b/drivers/nvdimm/dax_devs.c
+@@ -126,7 +126,7 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!dax_dev)
+ 		return -ENOMEM;
+-	pfn_sb = devm_kzalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
+ 	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
+diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
+index dde9853453d3..e901e3a3b04c 100644
+--- a/drivers/nvdimm/pfn.h
++++ b/drivers/nvdimm/pfn.h
+@@ -36,6 +36,7 @@ struct nd_pfn_sb {
+ 	__le32 end_trunc;
+ 	/* minor-version-2 record the base alignment of the mapping */
+ 	__le32 align;
++	/* minor-version-3 guarantee the padding and flags are zero */
+ 	u8 padding[4000];
+ 	__le64 checksum;
+ };
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 01f40672507f..a2406253eb70 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -420,6 +420,15 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
+ 	return 0;
+ }
+ 
++/**
++ * nd_pfn_validate - read and validate info-block
++ * @nd_pfn: fsdax namespace runtime state / properties
++ * @sig: 'devdax' or 'fsdax' signature
++ *
++ * Upon return the info-block buffer contents (->pfn_sb) are
++ * indeterminate when validation fails, and a coherent info-block
++ * otherwise.
++ */
+ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+ {
+ 	u64 checksum, offset;
+@@ -565,7 +574,7 @@ int nd_pfn_probe(struct device *dev, struct nd_namespace_common *ndns)
+ 	nvdimm_bus_unlock(&ndns->dev);
+ 	if (!pfn_dev)
+ 		return -ENOMEM;
+-	pfn_sb = devm_kzalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
++	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
+ 	nd_pfn = to_nd_pfn(pfn_dev);
+ 	nd_pfn->pfn_sb = pfn_sb;
+ 	rc = nd_pfn_validate(nd_pfn, PFN_SIG);
+@@ -702,7 +711,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 	u64 checksum;
+ 	int rc;
+ 
+-	pfn_sb = devm_kzalloc(&nd_pfn->dev, sizeof(*pfn_sb), GFP_KERNEL);
++	pfn_sb = devm_kmalloc(&nd_pfn->dev, sizeof(*pfn_sb), GFP_KERNEL);
+ 	if (!pfn_sb)
+ 		return -ENOMEM;
+ 
+@@ -711,11 +720,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 		sig = DAX_SIG;
+ 	else
+ 		sig = PFN_SIG;
++
+ 	rc = nd_pfn_validate(nd_pfn, sig);
+ 	if (rc != -ENODEV)
+ 		return rc;
+ 
+ 	/* no info block, do init */;
++	memset(pfn_sb, 0, sizeof(*pfn_sb));
++
+ 	nd_region = to_nd_region(nd_pfn->dev.parent);
+ 	if (nd_region->ro) {
+ 		dev_info(&nd_pfn->dev,
+@@ -768,7 +780,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 	memcpy(pfn_sb->uuid, nd_pfn->uuid, 16);
+ 	memcpy(pfn_sb->parent_uuid, nd_dev_to_uuid(&ndns->dev), 16);
+ 	pfn_sb->version_major = cpu_to_le16(1);
+-	pfn_sb->version_minor = cpu_to_le16(2);
++	pfn_sb->version_minor = cpu_to_le16(3);
+ 	pfn_sb->start_pad = cpu_to_le32(start_pad);
+ 	pfn_sb->end_trunc = cpu_to_le32(end_trunc);
+ 	pfn_sb->align = cpu_to_le32(nd_pfn->align);
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
