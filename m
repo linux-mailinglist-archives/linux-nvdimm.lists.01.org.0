@@ -2,39 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C16C3886E
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 13:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 647AE38A49
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 14:29:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2717921290DCD;
-	Fri,  7 Jun 2019 04:04:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5A32B21290DD4;
+	Fri,  7 Jun 2019 05:29:28 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com;
+ envelope-from=ard.biesheuvel@linaro.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BCEF52194EB7D
- for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 04:04:28 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 0B6BFAE91;
- Fri,  7 Jun 2019 11:04:27 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id 41D0F1E3FCA; Fri,  7 Jun 2019 13:04:26 +0200 (CEST)
-Date: Fri, 7 Jun 2019 13:04:26 +0200
-From: Jan Kara <jack@suse.cz>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH RFC 00/10] RDMA/FS DAX truncate proposal
-Message-ID: <20190607110426.GB12765@quack2.suse.cz>
-References: <20190606014544.8339-1-ira.weiny@intel.com>
- <20190606104203.GF7433@quack2.suse.cz>
- <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id ACE1821290DD0
+ for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 05:29:26 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id n5so1251156ioc.7
+ for <linux-nvdimm@lists.01.org>; Fri, 07 Jun 2019 05:29:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ZAvCebdzLCcSo6NRDYnZ6+WboqvZJ6BWkvuu4gNcNRU=;
+ b=l4nQx5bFXnCKwqIlYU0J3gLgZ0wR2UHkkyD80ob8NWqEzmyQRyDonYA1xejed7SD7I
+ kl8UJmHVctl7fGkgf+4DP5y24neUBNA+zxlxJY3S4HVfsZwYCbLpbC5X/rnEuTmx0XXh
+ TM3xqj2bbhQ5K2+gr7mtqkPtJTeLrCTJIkyzfvXg394Cl7G+Ji9ZKHSnA1ZN2SUSoI8i
+ uwU2sOnfICyeKhaZfC07P/kXjxtmj4uZ0679dcT9GHa3muXEwPVuvI4jtVZZhHeErlrd
+ 8nBJksrkmuE8GCa9e4sgJfJqjQV2LI1VOgH3RQx135gNWHZBHKd/iVGw+7oY5dE1Bxte
+ Coew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ZAvCebdzLCcSo6NRDYnZ6+WboqvZJ6BWkvuu4gNcNRU=;
+ b=SHmwvHAKdQhU+r79JIO/SJy/o9ihmE0mKjOTEV4SETCltca2Lu6S9NQnpJqJWf/m94
+ iD5fkUubkuTzBrfgs/suINRvHBjNFcrtzpwBDxRULXl9bTTfgpAD3wNXswvSiiwY2KdI
+ 0KzKKKA+gLD4R4YS3TgeqpKcC0fGqZ/gXvAdDWX4TPo9lKiHTerQJW7hV+aD9fDmj9SP
+ jek6lndE1bLgMdzhq4SzCesa52lfCPJB01bh4Q/ywu918vZOGJsMuWSZwBacx90fvnB3
+ uPR9CBmdSGo8iyeNEN5fuMn9oRtfd8lISXPiaRlx8oRHT4JbiT4RkAo4idGicnO4TRJg
+ vM8g==
+X-Gm-Message-State: APjAAAVFI0FX1D816bTzlsBCzPNvcgAORhkdhDdGrI1bZwTdeHJfRouC
+ 84/bsHHHzJ3mx+IrPHMUPYuJL7noaZjVqAt9DluRxQ==
+X-Google-Smtp-Source: APXvYqwpgjUncM9YwGMeAEjGhHkH4kygINBHDj2ErQa4lBEYa0dUkEHo5JqszczMdAM7yNXhdyvGEegvK6pJJXoP2q8=
+X-Received: by 2002:a5d:9402:: with SMTP id v2mr15677145ion.128.1559910565141; 
+ Fri, 07 Jun 2019 05:29:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu-J3-66V7UhH3=AjN4sX7iydHNF7Fd+SMbezaVNrZQmGQ@mail.gmail.com>
+ <CAPcyv4g-GNe2vSYTn0a6ivQYxJdS5khE4AJbcxysoGPsTZwswg@mail.gmail.com>
+ <CAKv+Gu83QB6x8=LCaAcR0S65WELC-Y+Voxw6LzaVh4FSV3bxYA@mail.gmail.com>
+ <CAPcyv4hXBJBMrqoUr4qG5A3CUVgWzWK6bfBX29JnLCKDC7CiGA@mail.gmail.com>
+In-Reply-To: <CAPcyv4hXBJBMrqoUr4qG5A3CUVgWzWK6bfBX29JnLCKDC7CiGA@mail.gmail.com>
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date: Fri, 7 Jun 2019 14:29:12 +0200
+Message-ID: <CAKv+Gu_ZYpey0dWYebFgCaziyJ-_x+KbCmOegWqFjwC0U-5QaA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] x86, efi: Reserve UEFI 2.8 Specific Purpose Memory
+ for dax
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,100 +70,152 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- Dave Chinner <david@fromorbit.com>, Jeff Layton <jlayton@kernel.org>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- John Hubbard <jhubbard@nvidia.com>, linux-fsdevel@vger.kernel.org,
- Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-efi <linux-efi@vger.kernel.org>, kbuild test robot <lkp@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Linux-MM <linux-mm@kvack.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Darren Hart <dvhart@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andy@infradead.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu 06-06-19 15:03:30, Ira Weiny wrote:
-> On Thu, Jun 06, 2019 at 12:42:03PM +0200, Jan Kara wrote:
-> > On Wed 05-06-19 18:45:33, ira.weiny@intel.com wrote:
-> > > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > So I'd like to actually mandate that you *must* hold the file lease until
-> > you unpin all pages in the given range (not just that you have an option to
-> > hold a lease). And I believe the kernel should actually enforce this. That
-> > way we maintain a sane state that if someone uses a physical location of
-> > logical file offset on disk, he has a layout lease. Also once this is done,
-> > sysadmin has a reasonably easy way to discover run-away RDMA application
-> > and kill it if he wishes so.
-> 
-> Fair enough.
-> 
-> I was kind of heading that direction but had not thought this far forward.  I
-> was exploring how to have a lease remain on the file even after a "lease
-> break".  But that is incompatible with the current semantics of a "layout"
-> lease (as currently defined in the kernel).  [In the end I wanted to get an RFC
-> out to see what people think of this idea so I did not look at keeping the
-> lease.]
-> 
-> Also hitch is that currently a lease is forcefully broken after
-> <sysfs>/lease-break-time.  To do what you suggest I think we would need a new
-> lease type with the semantics you describe.
+On Sat, 1 Jun 2019 at 06:26, Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Fri, May 31, 2019 at 8:30 AM Ard Biesheuvel
+> <ard.biesheuvel@linaro.org> wrote:
+> >
+> > On Fri, 31 May 2019 at 17:28, Dan Williams <dan.j.williams@intel.com> wrote:
+> > >
+> > > On Fri, May 31, 2019 at 1:30 AM Ard Biesheuvel
+> > > <ard.biesheuvel@linaro.org> wrote:
+> > > >
+> > > > (cc Mike for memblock)
+> > > >
+> > > > On Fri, 31 May 2019 at 01:13, Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > >
+> > > > > UEFI 2.8 defines an EFI_MEMORY_SP attribute bit to augment the
+> > > > > interpretation of the EFI Memory Types as "reserved for a special
+> > > > > purpose".
+> > > > >
+> > > > > The proposed Linux behavior for specific purpose memory is that it is
+> > > > > reserved for direct-access (device-dax) by default and not available for
+> > > > > any kernel usage, not even as an OOM fallback. Later, through udev
+> > > > > scripts or another init mechanism, these device-dax claimed ranges can
+> > > > > be reconfigured and hot-added to the available System-RAM with a unique
+> > > > > node identifier.
+> > > > >
+> > > > > This patch introduces 3 new concepts at once given the entanglement
+> > > > > between early boot enumeration relative to memory that can optionally be
+> > > > > reserved from the kernel page allocator by default. The new concepts
+> > > > > are:
+> > > > >
+> > > > > - E820_TYPE_SPECIFIC: Upon detecting the EFI_MEMORY_SP attribute on
+> > > > >   EFI_CONVENTIONAL memory, update the E820 map with this new type. Only
+> > > > >   perform this classification if the CONFIG_EFI_SPECIFIC_DAX=y policy is
+> > > > >   enabled, otherwise treat it as typical ram.
+> > > > >
+> > > >
+> > > > OK, so now we have 'special purpose', 'specific' and 'app specific'
+> > > > [below]. Do they all mean the same thing?
+> > >
+> > > I struggled with separating the raw-EFI-type name from the name of the
+> > > Linux specific policy. Since the reservation behavior is optional I
+> > > was thinking there should be a distinct Linux kernel name for that
+> > > policy. I did try to go back and change all occurrences of "special"
+> > > to "specific" from the RFC to this v2, but seems I missed one.
+> > >
+> >
+> > OK
+>
+> I'll go ahead and use "application reserved" terminology consistently
+> throughout the code to distinguish that Linux translation from the raw
+> "EFI specific purpose" attribute.
+>
 
-I'd do what Dave suggested - add flag to mark lease as unbreakable by
-truncate and teach file locking core to handle that. There actually is
-support for locks that are not broken after given timeout so there
-shouldn't be too many changes need.
- 
-> Previously I had thought this would be a good idea (for other reasons).  But
-> what does everyone think about using a "longterm lease" similar to [1] which
-> has the semantics you proppose?  In [1] I was not sure "longterm" was a good
-> name but with your proposal I think it makes more sense.
+OK
 
-As I wrote elsewhere in this thread I think FL_LAYOUT name still makes
-sense and I'd add there FL_UNBREAKABLE to mark unusal behavior with
-truncate.
+> >
+> > > >
+> > > > > - IORES_DESC_APPLICATION_RESERVED: Add a new I/O resource descriptor for
+> > > > >   a device driver to search iomem resources for application specific
+> > > > >   memory. Teach the iomem code to identify such ranges as "Application
+> > > > >   Reserved".
+> > > > >
+> > > > > - MEMBLOCK_APP_SPECIFIC: Given the memory ranges can fallback to the
+> > > > >   traditional System RAM pool the expectation is that they will have
+> > > > >   typical SRAT entries. In order to support a policy of device-dax by
+> > > > >   default with the option to hotplug later, the numa initialization code
+> > > > >   is taught to avoid marking online MEMBLOCK_APP_SPECIFIC regions.
+> > > > >
+> > > >
+> > > > Can we move the generic memblock changes into a separate patch please?
+> > >
+> > > Yeah, that can move to a lead-in patch.
+> > >
+> > > [..]
+> > > > > diff --git a/include/linux/efi.h b/include/linux/efi.h
+> > > > > index 91368f5ce114..b57b123cbdf9 100644
+> > > > > --- a/include/linux/efi.h
+> > > > > +++ b/include/linux/efi.h
+> > > > > @@ -129,6 +129,19 @@ typedef struct {
+> > > > >         u64 attribute;
+> > > > >  } efi_memory_desc_t;
+> > > > >
+> > > > > +#ifdef CONFIG_EFI_SPECIFIC_DAX
+> > > > > +static inline bool is_efi_dax(efi_memory_desc_t *md)
+> > > > > +{
+> > > > > +       return md->type == EFI_CONVENTIONAL_MEMORY
+> > > > > +               && (md->attribute & EFI_MEMORY_SP);
+> > > > > +}
+> > > > > +#else
+> > > > > +static inline bool is_efi_dax(efi_memory_desc_t *md)
+> > > > > +{
+> > > > > +       return false;
+> > > > > +}
+> > > > > +#endif
+> > > > > +
+> > > > >  typedef struct {
+> > > > >         efi_guid_t guid;
+> > > > >         u32 headersize;
+> > > >
+> > > > I'd prefer it if we could avoid this DAX policy distinction leaking
+> > > > into the EFI layer.
+> > > >
+> > > > IOW, I am fine with having a 'is_efi_sp_memory()' helper here, but
+> > > > whether that is DAX memory or not should be decided in the DAX layer.
+> > >
+> > > Ok, how about is_efi_sp_ram()? Since EFI_MEMORY_SP might be applied to
+> > > things that aren't EFI_CONVENTIONAL_MEMORY.
+> >
+> > Yes, that is fine. As long as the #ifdef lives in the DAX code and not here.
+>
+> We still need some ifdef in the efi core because that is the central
+> location to make the policy distinction to identify identify
+> EFI_CONVENTIONAL_MEMORY differently depending on whether EFI_MEMORY_SP
+> is present. I agree with you that "dax" should be dropped from the
+> naming. So how about:
+>
+> #ifdef CONFIG_EFI_APPLICATION_RESERVED
+> static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> {
+>         return md->type == EFI_CONVENTIONAL_MEMORY
+>                 && (md->attribute & EFI_MEMORY_SP);
+> }
+> #else
+> static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> {
+>         return false;
+> }
+> #endif
 
-> > - probably I'd just transition all gup_longterm()
-> > users to a saner API similar to the one we have in mm/frame_vector.c where
-> > we don't hand out page pointers but an encapsulating structure that does
-> > all the necessary tracking.
-> 
-> I'll take a look at that code.  But that seems like a pretty big change.
-
-I was looking into that yesterday before proposing this and there aren't
-than many gup_longterm() users and most of them anyway just stick pages
-array into their tracking structure and then release them once done. So it
-shouldn't be that complex to convert to a new convention (and you have to
-touch all gup_longterm() users anyway to teach them track leases etc.).
-
-> > Removing a lease would need to block until all
-> > pins are released - this is probably the most hairy part since we need to
-> > handle a case if application just closes the file descriptor which would
-> > release the lease but OTOH we need to make sure task exit does not deadlock.
-> > Maybe we could block only on explicit lease unlock and just drop the layout
-> > lease on file close and if there are still pinned pages, send SIGKILL to an
-> > application as a reminder it did something stupid...
-> 
-> As presented at LSFmm I'm not opposed to killing a process which does not
-> "follow the rules".  But I'm concerned about how to handle this across a fork.
-> 
-> Limiting the open()/LEASE/GUP/close()/SIGKILL to a specific pid "leak"'s pins
-> to a child through the RDMA context.  This was the major issue Jason had with
-> the SIGBUS proposal.
-> 
-> Always sending a SIGKILL would prevent an RDMA process from doing something
-> like system("ls") (would kill the child unnecessarily).  Are we ok with that?
-
-I answered this in another email but system("ls") won't kill anybody.
-fork(2) just creates new file descriptor for the same file and possibly
-then closes it but since there is still another file descriptor for the
-same struct file, the "close" code won't trigger.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I think this policy decision should not live inside the EFI subsystem.
+EFI just gives you the memory map, and mangling that information
+depending on whether you think a certain memory attribute should be
+ignored is the job of the MM subsystem.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
