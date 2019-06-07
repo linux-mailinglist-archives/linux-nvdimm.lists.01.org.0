@@ -2,59 +2,87 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27013396E4
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 22:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9333976F
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 23:12:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3E3F321295B01;
-	Fri,  7 Jun 2019 13:37:22 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0486221295B01;
+	Fri,  7 Jun 2019 14:12:43 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=dave.hansen@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 48A202128DD57
- for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 13:37:19 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id z24so3080869oto.1
- for <linux-nvdimm@lists.01.org>; Fri, 07 Jun 2019 13:37:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=kwl/nkc+IszDeHT62sv1m6fGxfEAM5F5rJvu4oDhrCE=;
- b=iXoOHs0qLQeKL146DhnpQRL8fyunWXkNhiyrEGM4mBSemtorkbJ+Lf69iPFQOJa/Gu
- 97Z7Zj9tM2EZGj/tnqFMuHcRbrtcN2P9edSdTzjrI3sY9MOfgAKH9+e5MjoUxeF5F0Zc
- IX/4HIajFNa1uMMtHjO4jNtyaM9hw1AoHCA1upzHQMKDiK/kTjkfpyIOKdWYInDlC0xw
- DtqXeQoz30yH3g9Wn1/6c59zn+kx7FaVaBGhD/G9is+lvNesOwwpvLWj6HO8+Iu7xKKt
- UN3q3PaOMFG+sqdZ72Vns2NPyLuL+tkxywHgGlXD5VYzKAww7B5ovRTePAWDkz/oRYPV
- OXiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=kwl/nkc+IszDeHT62sv1m6fGxfEAM5F5rJvu4oDhrCE=;
- b=oWXBS/3L96OQOV8rJ9G6YwRwSxbIrYpjZc7hwaLddMUaZ7xHd1JEymnNU+J15KH8P9
- tg4QtvwrVa8LCd3SQQvajvE7KFZe+394/ouzPmtMuHUH3RtsYnr1RXYDfR3A4t4lrgQF
- a2Ws5APIsF2F0Qs/pTe3+TdeIlKQIPFNZIOZaMEZPRhLluxWatUUMo8isIhoIXe+W1gs
- FVdwdaAKvxy3BP6nZiukX0cs+JaaKm1b+VGM9Rg+wBnorNHpBpSI5JoJ33LoAW+WNuQe
- s0nWX/zGixnTa4zmiCnn3Hfa/Kg/Xk93u9Gl3AduandMzARVwDJP5v0yQT9W30nPT1zN
- b1LQ==
-X-Gm-Message-State: APjAAAWleca3QmU0Q15Hk2flRC0V5SkOoc3Ocal8Aub9B6WGlT5W/lQL
- 5BZzVZ0PHZ0wReio7iZsEVM0GplxRzMQQJ6jIpbFwg==
-X-Google-Smtp-Source: APXvYqxyknLc/KKZrXUegoVoEchoENiE3uDTtvta1M+m/gEOhSX8p64QD9se390P/E5smOxnDXWM2sESCdMzk/VkmBs=
-X-Received: by 2002:a9d:470d:: with SMTP id a13mr5538455otf.126.1559939839164; 
- Fri, 07 Jun 2019 13:37:19 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id 2F9A221290D4E
+ for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 14:12:40 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2019 14:12:40 -0700
+X-ExtLoop1: 1
+Received: from ray.jf.intel.com (HELO [10.7.198.156]) ([10.7.198.156])
+ by orsmga006.jf.intel.com with ESMTP; 07 Jun 2019 14:12:40 -0700
+Subject: Re: [PATCH v3 03/10] efi: Enumerate EFI_MEMORY_SP
+To: Dan Williams <dan.j.williams@intel.com>
 References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
- <86a49d1a-678e-5e86-180b-e48326d1bdb5@intel.com>
-In-Reply-To: <86a49d1a-678e-5e86-180b-e48326d1bdb5@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 7 Jun 2019 13:37:08 -0700
-Message-ID: <CAPcyv4gvToqPXSy5MKXOX=HvFP2R0F_6DY3qUiagQEKk84BKpg@mail.gmail.com>
-Subject: Re: [PATCH v3 00/10] EFI Specific Purpose Memory Support
-To: Dave Hansen <dave.hansen@intel.com>
+ <155993564854.3036719.3692507629721494555.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <f6c2d673-a202-4ad5-7055-5aaece9356e1@intel.com>
+ <CAPcyv4iFG3Z9xL9TSmqLVHxLZ6oiz-uWD6iKgJ8LF4f0n=m9=w@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+Message-ID: <c8b2048e-5e0f-fdbe-1347-4e36de6c0387@intel.com>
+Date: Fri, 7 Jun 2019 14:12:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4iFG3Z9xL9TSmqLVHxLZ6oiz-uWD6iKgJ8LF4f0n=m9=w@mail.gmail.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,61 +94,35 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-efi <linux-efi@vger.kernel.org>,
+Cc: X86 ML <x86@kernel.org>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
  Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- kbuild test robot <lkp@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- X86 ML <x86@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Darren Hart <dvhart@infradead.org>,
- Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Andy Shevchenko <andy@infradead.org>
+ linux-efi <linux-efi@vger.kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jun 7, 2019 at 12:57 PM Dave Hansen <dave.hansen@intel.com> wrote:
->
-> On 6/7/19 12:27 PM, Dan Williams wrote:
-> > In support of optionally allowing either application-exclusive and
-> > core-kernel-mm managed access to differentiated memory, claim
-> > EFI_MEMORY_SP ranges for exposure as device-dax instances by default.
-> > Such instances can be directly owned / mapped by a
-> > platform-topology-aware application. Alternatively, with the new kmem
-> > facility [4], the administrator has the option to instead designate that
-> > those memory ranges be hot-added to the core-kernel-mm as a unique
-> > memory numa-node. In short, allow for the decision about what software
-> > agent manages specific-purpose memory to be made at runtime.
->
-> It's probably worth noting that the reason the memory lands into the
-> state of being controlled by device-dax by default is that device-dax is
-> nice.  It's actually willing and able to give up ownership of the memory
-> when we ask.  If we added to the core-mm, we'd almost certainly not be
-> able to get it back reliably.
->
-> Anyway, thanks for doing these, and I really hope that the world's
-> BIOSes actually use this flag.
+On 6/7/19 1:03 PM, Dan Williams wrote:
+>> Separate from these patches, should we have a runtime file that dumps
+>> out the same info?  dmesg isn't always available, and hotplug could
+>> change this too, I'd imagine.
+> Perhaps, but I thought /proc/iomem was that runtime file. Given that
+> x86/Linux only seems to care about the the EFI to E820 translation of
+> the map and the E820 map is directly reflected in /proc/iomem, do we
+> need another file?
 
-It should be noted that the flag is necessary, but not sufficient to
-route this memory range to device-dax. The BIOS must also publish ACPI
-HMAT performance data for the range so the OS has a chance of knowing
-*why* the memory is "reserved for a specific purpose", and delineate
-the boundaries of multiple performance differentiated memory ranges
-that might be combined into one shared / contiguous EFI memory
-descriptor.
+Probably not.
 
-With no HMAT the memory will be reserved, but no dax-device will be
-surfaced. Perhaps this implementation also needs a WARN_TAINT(...,
-TAINT_FIRMWARE_WORKAROUND...) to scream about a BIOS that fails to
-publish the required HMAT entries, or perhaps even better a command
-line option to ignore the flag so that the core-mm can pick up the
-memory by default?
+I'm just trying to think of ways that we can debug systems where someone
+"loses" a bunch of memory, especially if they're moving from an old
+kernel to a new one with these patches.  From their perspective, they
+just lost a bunch of expensive memory.
+
+Do we owe a pr_info(), perhaps?  Or even a /proc/meminfo entry for how
+much memory these devices own?
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
