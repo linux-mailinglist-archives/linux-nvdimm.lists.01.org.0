@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 555703962F
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 21:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051E239630
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 21:52:50 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2E3CD21290DEE;
+	by ml01.01.org (Postfix) with ESMTP id 680AB21290DEF;
 	Fri,  7 Jun 2019 12:52:47 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,57 +15,60 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id AB5FA21290DE1
+ by ml01.01.org (Postfix) with ESMTPS id ADBA321290DE3
  for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 12:52:45 -0700 (PDT)
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57JiKEL098463;
- Fri, 7 Jun 2019 19:52:33 GMT
+ by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57Ji7Pf098374;
+ Fri, 7 Jun 2019 19:52:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
- subject : date : message-id; s=corp-2018-07-02;
- bh=2Hqgg1/dO7uDJAgCGo7yaezXbdAI6xjToJ1CY+fruaU=;
- b=O4Q4lH3bRZ7MwIrivSjLjEanSp/1BldkeSoNEhDGZB9H8i68MirSK5kT1G9vfxNC3u4G
- tobWGASbTP9Drb1g9Mp6AfG8qM1rx37y+y4jziC7fhhXc85/r1nyZdjc0AvVPgR6CHSx
- mIG1Ihxno+1jVFyxrLhM0kOMgrsCEXUfm8XfDOuuOU7vnXmbp6UA1fNJI3jhDUe7a+Kj
- 2hmnQAljFlUykUzJfFxc07Lcm1cms6sQ9cH5eVDN5A51sxAKeJHRt4ypV3oFix9CV0pf
- SvSI14XmrW8h5CL/zA1fBwxGuMoBQ9DLdBog4cttYZAO5Rx24YoPOe0lSjwY171+j0cH Eg== 
+ subject : date : message-id : in-reply-to : references; s=corp-2018-07-02;
+ bh=h20eNXbF2T9I6EYxoI8GMMkB1AYu7GLH9AgHVLr4/0A=;
+ b=WM1e31oaMITDOzHOc7spEYmLnA1r4jVcBXtMdHMDe75ySBEwQ/6nbVOESV9POrXXK2bp
+ jpjSJASp4VTSOk8CJs0zgNOUsDGHojKRIX0ng6VXuDt2pWW5YHSYo93BFCU/iyVc/4gU
+ s16gib10EfXfu9s56D1G+SYsb/Zs7wQXU9VK4nTqLzx1mS/PbFiqIBiIOpWXZAzMhXxn
+ EmcjWjZz+4jjDSYKcQvQI2vGDALk6FTqJ+hcR/LUQBvmWgr8Ahai5BXVoF5/kFPt80Si
+ sQten/L/iC/rFfB9RGGuv6FDb1KHKqp89rdkcDIhVvN4bl5uqDOyhQY4u60d8ZGTYgDc Uw== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by userp2120.oracle.com with ESMTP id 2suj0r05yx-1
+ by userp2120.oracle.com with ESMTP id 2suj0r05yu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 07 Jun 2019 19:52:33 +0000
+ Fri, 07 Jun 2019 19:52:32 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57JpA1j022963;
- Fri, 7 Jun 2019 19:52:33 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3030.oracle.com with ESMTP id 2swngn8kcn-1
+ by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57Jp7DQ022696;
+ Fri, 7 Jun 2019 19:52:32 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3030.oracle.com with ESMTP id 2swngn8kce-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 07 Jun 2019 19:52:32 +0000
 Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57JqRQt020424;
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57JqS5p019893;
  Fri, 7 Jun 2019 19:52:28 GMT
 Received: from oracle.com (/75.80.107.76)
  by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Fri, 07 Jun 2019 12:52:27 -0700
+ with ESMTP ; Fri, 07 Jun 2019 12:52:28 -0700
 From: Larry Bassel <larry.bassel@oracle.com>
 To: mike.kravetz@oracle.com, willy@infradead.org, dan.j.williams@intel.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
-Subject: [RFC PATCH v2 0/2] Share PMDs for FS/DAX on x86
-Date: Fri,  7 Jun 2019 12:51:01 -0700
-Message-Id: <1559937063-8323-1-git-send-email-larry.bassel@oracle.com>
+Subject: [RFC PATCH v2 1/2] Rename CONFIG_ARCH_WANT_HUGE_PMD_SHARE to
+ CONFIG_ARCH_HAS_HUGE_PMD_SHARE
+Date: Fri,  7 Jun 2019 12:51:02 -0700
+Message-Id: <1559937063-8323-2-git-send-email-larry.bassel@oracle.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1559937063-8323-1-git-send-email-larry.bassel@oracle.com>
+References: <1559937063-8323-1-git-send-email-larry.bassel@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281
  signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=641
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=974
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1810050000 definitions=main-1906070132
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281
  signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
  priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=682 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
  definitions=main-1906070132
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -85,68 +88,84 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Changes from v1 to v2:
-
-* Rebased on v5.2-rc3
-
-* An incorrect reference to "page table entries" was fixed (pointed
-out by Kirill Shutemov)
-
-* Renamed CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-to CONFIG_ARCH_HAS_HUGE_PMD_SHARE instead of introducing
-a new config option (suggested by Dan Williams)
-
-* Removed some unnecessary #ifdef stubs (suggested by Matt Wilcox)
-
-* A previously overlooked case involving mprotect() is now handled
-properly (pointed out by Mike Kravetz)
-
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
 ---
+ arch/arm64/Kconfig          | 2 +-
+ arch/arm64/mm/hugetlbpage.c | 2 +-
+ arch/x86/Kconfig            | 2 +-
+ mm/hugetlb.c                | 6 +++---
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-This patchset implements sharing of page tables pointing
-to 2MiB pages (PMDs) for FS/DAX on x86.
-
-Only shared mmapings of files (i.e. neither private mmapings nor
-anonymous pages) are eligible for PMD sharing.
-
-Due to the characteristics of DAX, this code is simpler and
-less intrusive than the general case would be.
-
-In our use case (high end Oracle database using DAX/XFS/PMEM/2MiB
-pages) there would be significant memory savings.
-
-A future system might have 6 TiB of PMEM on it and
-there might be 10000 processes each mapping all of this 6 TiB.
-Here the savings would be approximately
-(6 TiB / 2 MiB) * 8 bytes (page table size) * 10000 = 240 GiB
-(and these page tables themselves would probably be in
-non-PMEM (ordinary RAM)).
-
-There would also be a reduction in page faults because in
-some cases the page fault has already been satisfied and
-the page table entry has been filled in (and so the processes
-after the first would not take a fault).
-
-The code for detecting whether PMDs can be shared and
-the implementation of sharing and unsharing is based
-on, but somewhat different than that in mm/hugetlb.c,
-though some of the code from this file could be reused and
-thus was made non-static.
-
-Larry Bassel (2):
-  Rename CONFIG_ARCH_WANT_HUGE_PMD_SHARE to
-    CONFIG_ARCH_HAS_HUGE_PMD_SHARE
-  Implement sharing/unsharing of PMDs for FS/DAX
-
- arch/arm64/Kconfig          |   2 +-
- arch/arm64/mm/hugetlbpage.c |   2 +-
- arch/x86/Kconfig            |   2 +-
- include/linux/hugetlb.h     |   4 ++
- mm/huge_memory.c            |  37 +++++++++++++++
- mm/hugetlb.c                |  14 +++---
- mm/memory.c                 | 108 +++++++++++++++++++++++++++++++++++++++++++-
- 7 files changed, 158 insertions(+), 11 deletions(-)
-
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 697ea05..36d6189 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -901,7 +901,7 @@ config HW_PERF_EVENTS
+ config SYS_SUPPORTS_HUGETLBFS
+ 	def_bool y
+ 
+-config ARCH_WANT_HUGE_PMD_SHARE
++config ARCH_HAS_HUGE_PMD_SHARE
+ 	def_bool y if ARM64_4K_PAGES || (ARM64_16K_PAGES && !ARM64_VA_BITS_36)
+ 
+ config ARCH_HAS_CACHE_LINE_SIZE
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index f475e54..4f3cb3f 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -241,7 +241,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm,
+ 		 */
+ 		ptep = pte_alloc_map(mm, pmdp, addr);
+ 	} else if (sz == PMD_SIZE) {
+-		if (IS_ENABLED(CONFIG_ARCH_WANT_HUGE_PMD_SHARE) &&
++		if (IS_ENABLED(CONFIG_ARCH_HAS_HUGE_PMD_SHARE) &&
+ 		    pud_none(READ_ONCE(*pudp)))
+ 			ptep = huge_pmd_share(mm, addr, pudp);
+ 		else
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2bbbd4d..fdbddb9 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -301,7 +301,7 @@ config ARCH_HIBERNATION_POSSIBLE
+ config ARCH_SUSPEND_POSSIBLE
+ 	def_bool y
+ 
+-config ARCH_WANT_HUGE_PMD_SHARE
++config ARCH_HAS_HUGE_PMD_SHARE
+ 	def_bool y
+ 
+ config ARCH_WANT_GENERAL_HUGETLB
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index ac843d3..3a54c9d 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4652,7 +4652,7 @@ long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
+ 	return 0;
+ }
+ 
+-#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
++#ifdef CONFIG_ARCH_HAS_HUGE_PMD_SHARE
+ static unsigned long page_table_shareable(struct vm_area_struct *svma,
+ 				struct vm_area_struct *vma,
+ 				unsigned long addr, pgoff_t idx)
+@@ -4807,7 +4807,7 @@ int huge_pmd_unshare(struct mm_struct *mm, unsigned long *addr, pte_t *ptep)
+ 	return 1;
+ }
+ #define want_pmd_share()	(1)
+-#else /* !CONFIG_ARCH_WANT_HUGE_PMD_SHARE */
++#else /* !CONFIG_ARCH_HAS_HUGE_PMD_SHARE */
+ pte_t *huge_pmd_share(struct mm_struct *mm, unsigned long addr, pud_t *pud)
+ {
+ 	return NULL;
+@@ -4823,7 +4823,7 @@ void adjust_range_if_pmd_sharing_possible(struct vm_area_struct *vma,
+ {
+ }
+ #define want_pmd_share()	(0)
+-#endif /* CONFIG_ARCH_WANT_HUGE_PMD_SHARE */
++#endif /* CONFIG_ARCH_HAS_HUGE_PMD_SHARE */
+ 
+ #ifdef CONFIG_ARCH_WANT_GENERAL_HUGETLB
+ pte_t *huge_pte_alloc(struct mm_struct *mm,
 -- 
 1.8.3.1
 
