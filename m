@@ -1,34 +1,33 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C2FD3963E
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 21:54:48 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7980939647
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Jun 2019 21:57:53 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1842321290DEF;
-	Fri,  7 Jun 2019 12:54:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 91EA121290DF8;
+	Fri,  7 Jun 2019 12:57:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.126; helo=mga18.intel.com;
+ client-ip=134.134.136.65; helo=mga03.intel.com;
  envelope-from=dave.hansen@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 99053211CED9A
- for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 12:54:44 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id B303421290DE1
+ for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 12:57:50 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2019 12:54:44 -0700
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2019 12:57:50 -0700
 X-ExtLoop1: 1
 Received: from ray.jf.intel.com (HELO [10.7.198.156]) ([10.7.198.156])
- by orsmga005.jf.intel.com with ESMTP; 07 Jun 2019 12:54:44 -0700
-Subject: Re: [PATCH v3 08/10] device-dax: Add a driver for "hmem" devices
+ by orsmga005.jf.intel.com with ESMTP; 07 Jun 2019 12:57:49 -0700
+Subject: Re: [PATCH v3 00/10] EFI Specific Purpose Memory Support
 To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org
 References: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155993567538.3036719.16306480832003017141.stgit@dwillia2-desk3.amr.corp.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -74,12 +73,12 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-Message-ID: <e2fd563a-1be4-b4dc-09fa-886f0319be5b@intel.com>
-Date: Fri, 7 Jun 2019 12:54:44 -0700
+Message-ID: <86a49d1a-678e-5e86-180b-e48326d1bdb5@intel.com>
+Date: Fri, 7 Jun 2019 12:57:49 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <155993567538.3036719.16306480832003017141.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <155993563277.3036719.17400338098057706494.stgit@dwillia2-desk3.amr.corp.intel.com>
 Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -92,20 +91,42 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: x86@kernel.org, kbuild test robot <lkp@intel.com>,
- ard.biesheuvel@linaro.org, peterz@infradead.org, dave.hansen@linux.intel.com,
- linux-nvdimm@lists.01.org, linux-efi@vger.kernel.org
+Cc: linux-efi@vger.kernel.org, x86@kernel.org,
+ kbuild test robot <lkp@intel.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Peter Zijlstra <peterz@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ "Rafael J. Wysocki" <rjw@rjwysocki.net>, Matthew Wilcox <willy@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-nvdimm@lists.01.org,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Darren Hart <dvhart@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andy@infradead.org>, Len Brown <lenb@kernel.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 On 6/7/19 12:27 PM, Dan Williams wrote:
-> This consumes "hmem" devices the producer of "hmem" devices is saved for
-> a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
-> symbol to gate performing the enumeration work.
+> In support of optionally allowing either application-exclusive and
+> core-kernel-mm managed access to differentiated memory, claim
+> EFI_MEMORY_SP ranges for exposure as device-dax instances by default.
+> Such instances can be directly owned / mapped by a
+> platform-topology-aware application. Alternatively, with the new kmem
+> facility [4], the administrator has the option to instead designate that
+> those memory ranges be hot-added to the core-kernel-mm as a unique
+> memory numa-node. In short, allow for the decision about what software
+> agent manages specific-purpose memory to be made at runtime.
 
-Do these literally show up as /dev/hmemX?
+It's probably worth noting that the reason the memory lands into the
+state of being controlled by device-dax by default is that device-dax is
+nice.  It's actually willing and able to give up ownership of the memory
+when we ask.  If we added to the core-mm, we'd almost certainly not be
+able to get it back reliably.
+
+Anyway, thanks for doing these, and I really hope that the world's
+BIOSes actually use this flag.  For the series:
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
