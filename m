@@ -1,48 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABB1399D2
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Jun 2019 02:11:47 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1343D39B81
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Jun 2019 09:20:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E6C7B21295B14;
-	Fri,  7 Jun 2019 17:11:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DD3D821295B11;
+	Sat,  8 Jun 2019 00:20:28 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
- helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
- [211.29.132.246])
- by ml01.01.org (Postfix) with ESMTP id DCA7A21295B10
- for <linux-nvdimm@lists.01.org>; Fri,  7 Jun 2019 17:11:41 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-189-25.pa.nsw.optusnet.com.au
- [49.195.189.25])
- by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 946BC43E794;
- Sat,  8 Jun 2019 10:11:34 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hZOwO-0001iX-35; Sat, 08 Jun 2019 10:10:36 +1000
-Date: Sat, 8 Jun 2019 10:10:36 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH RFC 00/10] RDMA/FS DAX truncate proposal
-Message-ID: <20190608001036.GF14308@dread.disaster.area>
-References: <20190606014544.8339-1-ira.weiny@intel.com>
- <20190606104203.GF7433@quack2.suse.cz>
- <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
- <20190607110426.GB12765@quack2.suse.cz>
- <20190607182534.GC14559@iweiny-DESK2.sc.intel.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
+ envelope-from=ard.biesheuvel@linaro.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
+ [IPv6:2607:f8b0:4864:20::142])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 40D58212777BF
+ for <linux-nvdimm@lists.01.org>; Sat,  8 Jun 2019 00:20:26 -0700 (PDT)
+Received: by mail-it1-x142.google.com with SMTP id m3so6137337itl.1
+ for <linux-nvdimm@lists.01.org>; Sat, 08 Jun 2019 00:20:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=NRFU6E8aoY/NG8zu/5ScI8y9YPKuPdWK6EZGoPFt9Ck=;
+ b=NDyg19KRBwWKCsuIiFvg9iRfAOK0BFmH02/xvBLHZXW8TjkcbUXa07UNeCGFNRcVSQ
+ 8RbFmVpFH1UV2N+/j05HX8NIJQJMtjsgEKFE86KKcUhlfShKCx8Iz8dbQ9Vsx6tckJ5T
+ rS+m/g1NYezNDmc1RO4A3Sgo+UodJa8hGFvDUEImNfqv0n+QszCBKoGTKvUhISzRtwkA
+ Xb1wAh6WTP39KnlTRX4OirLbaYKQbvdRLkSl+jZyYeOtzDdqjdwK37E0w6E6cb4CmU/O
+ DCw//CheJdpE6T4DkIGFn5i6qQUWUaZYBqkDJxVbCvsO0AZmxviK0yDSf2JLaX3ABS1p
+ 82Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=NRFU6E8aoY/NG8zu/5ScI8y9YPKuPdWK6EZGoPFt9Ck=;
+ b=cJ5qGsKPVCtD+yAQMH8fYC5+g4Bj6Ag2AlREc/ySB8QYso5/Jznu3vMUXYH1E3NE48
+ djkDCVWjeCYC8oPbF65MRUeC2dlGj918AHFfr+ihLzAyou2QFuMy0QxwzeWAXZPOLYsM
+ fcskkpoTzOY/UegsKU5FzepchLkTdW9VOmxJ/10hACZ659pxDk4NN8sSc0fsrCERBX3v
+ 8DzUe3LYZXFMK+A2nDszb3QBLTd+Fa38zEENI75Mx7+ZEXvtAMabG45FO5mwu9TLdlGz
+ xYocWQlteMcvbBCBIzPyqQr+Cz0P6yAPe79hGx3wV/cLwmIlgsbuTT4MUljeKYwvoG0Q
+ 2bBw==
+X-Gm-Message-State: APjAAAXzt0q6B9OnHrizKBQgZiPMTnYxNrX/5uqlpHTatnb4SU9P74DA
+ poP9lcpXF6bTynAGX42ySYsPweU9UYztsCqWuHYfqA==
+X-Google-Smtp-Source: APXvYqwnMZ8z1ON6onK6aLjM8baTZPCff6UnkQu1+3vja3H65nm9+6f6XC126h9UoGCw6NSPIu5HIfQvokO9SnkaUhk=
+X-Received: by 2002:a24:4f88:: with SMTP id c130mr6512194itb.104.1559978425951; 
+ Sat, 08 Jun 2019 00:20:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190607182534.GC14559@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=P6RKvmIu c=1 sm=1 tr=0 cx=a_idp_d
- a=K5LJ/TdJMXINHCwnwvH1bQ==:117 a=K5LJ/TdJMXINHCwnwvH1bQ==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=dq6fvYVFJ5YA:10
- a=QyXUC8HyAAAA:8 a=7-415B0cAAAA:8 a=q-LccRbQMXva6PWEi7oA:9
- a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu-J3-66V7UhH3=AjN4sX7iydHNF7Fd+SMbezaVNrZQmGQ@mail.gmail.com>
+ <CAPcyv4g-GNe2vSYTn0a6ivQYxJdS5khE4AJbcxysoGPsTZwswg@mail.gmail.com>
+ <CAKv+Gu83QB6x8=LCaAcR0S65WELC-Y+Voxw6LzaVh4FSV3bxYA@mail.gmail.com>
+ <CAPcyv4hXBJBMrqoUr4qG5A3CUVgWzWK6bfBX29JnLCKDC7CiGA@mail.gmail.com>
+ <CAKv+Gu_ZYpey0dWYebFgCaziyJ-_x+KbCmOegWqFjwC0U-5QaA@mail.gmail.com>
+ <CAPcyv4jO5WhRJ-=Nz70Jc0mCHYBJ6NsHjJNk6AerwQXH43oemw@mail.gmail.com>
+ <CAPcyv4gzhr57xa2MbR1Jk8EDFw-WLdcw3mJnEX9PeAFwVEZbDA@mail.gmail.com>
+In-Reply-To: <CAPcyv4gzhr57xa2MbR1Jk8EDFw-WLdcw3mJnEX9PeAFwVEZbDA@mail.gmail.com>
+From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Date: Sat, 8 Jun 2019 09:20:13 +0200
+Message-ID: <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] x86, efi: Reserve UEFI 2.8 Specific Purpose Memory
+ for dax
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,82 +73,62 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Jeff Layton <jlayton@kernel.org>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-efi <linux-efi@vger.kernel.org>, kbuild test robot <lkp@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Linux-MM <linux-mm@kvack.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Darren Hart <dvhart@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andy@infradead.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jun 07, 2019 at 11:25:35AM -0700, Ira Weiny wrote:
-> On Fri, Jun 07, 2019 at 01:04:26PM +0200, Jan Kara wrote:
-> > On Thu 06-06-19 15:03:30, Ira Weiny wrote:
-> > > On Thu, Jun 06, 2019 at 12:42:03PM +0200, Jan Kara wrote:
-> > > > On Wed 05-06-19 18:45:33, ira.weiny@intel.com wrote:
-> > > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > > 
-> > > > So I'd like to actually mandate that you *must* hold the file lease until
-> > > > you unpin all pages in the given range (not just that you have an option to
-> > > > hold a lease). And I believe the kernel should actually enforce this. That
-> > > > way we maintain a sane state that if someone uses a physical location of
-> > > > logical file offset on disk, he has a layout lease. Also once this is done,
-> > > > sysadmin has a reasonably easy way to discover run-away RDMA application
-> > > > and kill it if he wishes so.
-> > > 
-> > > Fair enough.
-> > > 
-> > > I was kind of heading that direction but had not thought this far forward.  I
-> > > was exploring how to have a lease remain on the file even after a "lease
-> > > break".  But that is incompatible with the current semantics of a "layout"
-> > > lease (as currently defined in the kernel).  [In the end I wanted to get an RFC
-> > > out to see what people think of this idea so I did not look at keeping the
-> > > lease.]
-> > > 
-> > > Also hitch is that currently a lease is forcefully broken after
-> > > <sysfs>/lease-break-time.  To do what you suggest I think we would need a new
-> > > lease type with the semantics you describe.
-> > 
-> > I'd do what Dave suggested - add flag to mark lease as unbreakable by
-> > truncate and teach file locking core to handle that. There actually is
-> > support for locks that are not broken after given timeout so there
-> > shouldn't be too many changes need.
-> >  
-> > > Previously I had thought this would be a good idea (for other reasons).  But
-> > > what does everyone think about using a "longterm lease" similar to [1] which
-> > > has the semantics you proppose?  In [1] I was not sure "longterm" was a good
-> > > name but with your proposal I think it makes more sense.
-> > 
-> > As I wrote elsewhere in this thread I think FL_LAYOUT name still makes
-> > sense and I'd add there FL_UNBREAKABLE to mark unusal behavior with
-> > truncate.
-> 
-> Ok I want to make sure I understand what you and Dave are suggesting.
-> 
-> Are you suggesting that we have something like this from user space?
-> 
-> 	fcntl(fd, F_SETLEASE, F_LAYOUT | F_UNBREAKABLE);
+On Fri, 7 Jun 2019 at 19:34, Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Fri, Jun 7, 2019 at 8:23 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > On Fri, Jun 7, 2019 at 5:29 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+> [..]
+> > > > #ifdef CONFIG_EFI_APPLICATION_RESERVED
+> > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > {
+> > > >         return md->type == EFI_CONVENTIONAL_MEMORY
+> > > >                 && (md->attribute & EFI_MEMORY_SP);
+> > > > }
+> > > > #else
+> > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > {
+> > > >         return false;
+> > > > }
+> > > > #endif
+> > >
+> > > I think this policy decision should not live inside the EFI subsystem.
+> > > EFI just gives you the memory map, and mangling that information
+> > > depending on whether you think a certain memory attribute should be
+> > > ignored is the job of the MM subsystem.
+> >
+> > The problem is that we don't have an mm subsystem at the time a
+> > decision needs to be made. The reservation policy needs to be deployed
+> > before even memblock has been initialized in order to keep kernel
+> > allocations out of the reservation. I agree with the sentiment I just
+> > don't see how to practically achieve an optional "System RAM" vs
+> > "Application Reserved" routing decision without an early (before
+> > e820__memblock_setup()) conditional branch.
+>
+> I can at least move it out of include/linux/efi.h and move it to
+> arch/x86/include/asm/efi.h since it is an x86 specific policy decision
+> / implementation for now.
 
-Rather than "unbreakable", perhaps a clearer description of the
-policy it entails is "exclusive"?
+No, that doesn't make sense to me. If it must live in the EFI
+subsystem, I'd prefer it to be in the core code, not in x86 specific
+code, since there is nothing x86 specific about it.
 
-i.e. what we are talking about here is an exclusive lease that
-prevents other processes from changing the layout. i.e. the
-mechanism used to guarantee a lease is exclusive is that the layout
-becomes "unbreakable" at the filesystem level, but the policy we are
-actually presenting to uses is "exclusive access"...
-
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+Perhaps a efi=xxx command line option would be in order to influence
+the builtin default, but it can be a followup patch independent of
+this series.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
