@@ -1,50 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1343D39B81
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Jun 2019 09:20:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841B93A056
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Jun 2019 16:54:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DD3D821295B11;
-	Sat,  8 Jun 2019 00:20:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6EC6321295B18;
+	Sat,  8 Jun 2019 07:54:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::142; helo=mail-it1-x142.google.com;
- envelope-from=ard.biesheuvel@linaro.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-it1-x142.google.com (mail-it1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 40D58212777BF
- for <linux-nvdimm@lists.01.org>; Sat,  8 Jun 2019 00:20:26 -0700 (PDT)
-Received: by mail-it1-x142.google.com with SMTP id m3so6137337itl.1
- for <linux-nvdimm@lists.01.org>; Sat, 08 Jun 2019 00:20:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ by ml01.01.org (Postfix) with ESMTPS id 7EA1121295B11
+ for <linux-nvdimm@lists.01.org>; Sat,  8 Jun 2019 07:54:00 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id p4so1332181oti.0
+ for <linux-nvdimm@lists.01.org>; Sat, 08 Jun 2019 07:54:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NRFU6E8aoY/NG8zu/5ScI8y9YPKuPdWK6EZGoPFt9Ck=;
- b=NDyg19KRBwWKCsuIiFvg9iRfAOK0BFmH02/xvBLHZXW8TjkcbUXa07UNeCGFNRcVSQ
- 8RbFmVpFH1UV2N+/j05HX8NIJQJMtjsgEKFE86KKcUhlfShKCx8Iz8dbQ9Vsx6tckJ5T
- rS+m/g1NYezNDmc1RO4A3Sgo+UodJa8hGFvDUEImNfqv0n+QszCBKoGTKvUhISzRtwkA
- Xb1wAh6WTP39KnlTRX4OirLbaYKQbvdRLkSl+jZyYeOtzDdqjdwK37E0w6E6cb4CmU/O
- DCw//CheJdpE6T4DkIGFn5i6qQUWUaZYBqkDJxVbCvsO0AZmxviK0yDSf2JLaX3ABS1p
- 82Rw==
+ :cc; bh=Dk+u3XgaNOqXLaO68gyf05VnI7PTjpPeX2V5LZFBkJU=;
+ b=c7Pg+1Vu+CFzwWjTCMqA/7ILEjKHUJlK9K7TIBu56QFBG34LHWLdVkM7tbREx2Ey9p
+ TjCdQdfntrBDULEZ7N1HSxQg0s3DwVikz29ifn2VjQqccdLcAJ1KkySuifbxWyME5a7W
+ x4fOaxhygkWdkKYvJVh0JgypnwprJM5FHpdLFWTbR4b8W25GIpRqLlOkF/ugyfihZC+8
+ c7LrVjq4p2Hw1E72Dp2p511CMIYJdbrwSfhhEtnq2nr9rqDPBQg5MRZOyX6pvij6xYTr
+ nGmNhnS25l7cTno9P3Fo7izT+xPDuhI3LIcqoKUC7iNIdx3UljQ5OPalTto1Tp8OepSr
+ 0zOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=NRFU6E8aoY/NG8zu/5ScI8y9YPKuPdWK6EZGoPFt9Ck=;
- b=cJ5qGsKPVCtD+yAQMH8fYC5+g4Bj6Ag2AlREc/ySB8QYso5/Jznu3vMUXYH1E3NE48
- djkDCVWjeCYC8oPbF65MRUeC2dlGj918AHFfr+ihLzAyou2QFuMy0QxwzeWAXZPOLYsM
- fcskkpoTzOY/UegsKU5FzepchLkTdW9VOmxJ/10hACZ659pxDk4NN8sSc0fsrCERBX3v
- 8DzUe3LYZXFMK+A2nDszb3QBLTd+Fa38zEENI75Mx7+ZEXvtAMabG45FO5mwu9TLdlGz
- xYocWQlteMcvbBCBIzPyqQr+Cz0P6yAPe79hGx3wV/cLwmIlgsbuTT4MUljeKYwvoG0Q
- 2bBw==
-X-Gm-Message-State: APjAAAXzt0q6B9OnHrizKBQgZiPMTnYxNrX/5uqlpHTatnb4SU9P74DA
- poP9lcpXF6bTynAGX42ySYsPweU9UYztsCqWuHYfqA==
-X-Google-Smtp-Source: APXvYqwnMZ8z1ON6onK6aLjM8baTZPCff6UnkQu1+3vja3H65nm9+6f6XC126h9UoGCw6NSPIu5HIfQvokO9SnkaUhk=
-X-Received: by 2002:a24:4f88:: with SMTP id c130mr6512194itb.104.1559978425951; 
- Sat, 08 Jun 2019 00:20:25 -0700 (PDT)
+ bh=Dk+u3XgaNOqXLaO68gyf05VnI7PTjpPeX2V5LZFBkJU=;
+ b=joVdFMlU/hs+jEf8ROGlMjmPKZFgXRLFdhrxJ7weQYdGhYJ1u3Gymd23Ibcxc3oqgF
+ cEauwAGnaXQxYo0DRPWwB6p/sz7yKuGt5b4lf9CoGXliy8sC/uMMI9jE0DaHrmoislTy
+ NStANUOjzAc7BAkeplj32h6HqRSQB2p7Jo83CGPN0+1BkAQp66bgmnx1V7BE7geosWfU
+ ASipXtDJ3VEkt67bHowbm/SNM7DT0ffn3GnUFfUqcCyhRGkHokUkoXzki2aznfAYDdMV
+ 7sBQiJY/0slXE6148/aILfrNgNeMkwOt88m2LfFMbnmfKTmaAqY5w6hE4G+TYK/1AzbU
+ VTHw==
+X-Gm-Message-State: APjAAAWuVHjpgEjQSikA7E2arXSkIQDgyD4qj6uPYARFBoh+J7S2mXnJ
+ KtE8Kehn2Le/kdAPmsV0lW4wHQuL3SndMJkXRWK9Sw==
+X-Google-Smtp-Source: APXvYqypLm2j/J6SB8ZKAlfeHzcCYKwyThpmhhnmxpvXXR1jOg6wN0waBPRAcYcxiyvBbMj8vJDm0b8GB8DJsrFdTLI=
+X-Received: by 2002:a9d:470d:: with SMTP id a13mr8130580otf.126.1560005639908; 
+ Sat, 08 Jun 2019 07:53:59 -0700 (PDT)
 MIME-Version: 1.0
 References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.corp.intel.com>
  <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
@@ -55,13 +56,14 @@ References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.
  <CAKv+Gu_ZYpey0dWYebFgCaziyJ-_x+KbCmOegWqFjwC0U-5QaA@mail.gmail.com>
  <CAPcyv4jO5WhRJ-=Nz70Jc0mCHYBJ6NsHjJNk6AerwQXH43oemw@mail.gmail.com>
  <CAPcyv4gzhr57xa2MbR1Jk8EDFw-WLdcw3mJnEX9PeAFwVEZbDA@mail.gmail.com>
-In-Reply-To: <CAPcyv4gzhr57xa2MbR1Jk8EDFw-WLdcw3mJnEX9PeAFwVEZbDA@mail.gmail.com>
-From: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Date: Sat, 8 Jun 2019 09:20:13 +0200
-Message-ID: <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+ <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+In-Reply-To: <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sat, 8 Jun 2019 07:53:49 -0700
+Message-ID: <CAPcyv4i_ZaKKT2dHQTuHCWT9HhqCOm4kpy2YdK952GubwqbJDQ@mail.gmail.com>
 Subject: Re: [PATCH v2 4/8] x86, efi: Reserve UEFI 2.8 Specific Purpose Memory
  for dax
-To: Dan Williams <dan.j.williams@intel.com>
+To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,49 +88,61 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, 7 Jun 2019 at 19:34, Dan Williams <dan.j.williams@intel.com> wrote:
+On Sat, Jun 8, 2019 at 12:20 AM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
 >
-> On Fri, Jun 7, 2019 at 8:23 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> On Fri, 7 Jun 2019 at 19:34, Dan Williams <dan.j.williams@intel.com> wrote:
 > >
-> > On Fri, Jun 7, 2019 at 5:29 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
-> [..]
-> > > > #ifdef CONFIG_EFI_APPLICATION_RESERVED
-> > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
-> > > > {
-> > > >         return md->type == EFI_CONVENTIONAL_MEMORY
-> > > >                 && (md->attribute & EFI_MEMORY_SP);
-> > > > }
-> > > > #else
-> > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
-> > > > {
-> > > >         return false;
-> > > > }
-> > > > #endif
+> > On Fri, Jun 7, 2019 at 8:23 AM Dan Williams <dan.j.williams@intel.com> wrote:
 > > >
-> > > I think this policy decision should not live inside the EFI subsystem.
-> > > EFI just gives you the memory map, and mangling that information
-> > > depending on whether you think a certain memory attribute should be
-> > > ignored is the job of the MM subsystem.
+> > > On Fri, Jun 7, 2019 at 5:29 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+> > [..]
+> > > > > #ifdef CONFIG_EFI_APPLICATION_RESERVED
+> > > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > > {
+> > > > >         return md->type == EFI_CONVENTIONAL_MEMORY
+> > > > >                 && (md->attribute & EFI_MEMORY_SP);
+> > > > > }
+> > > > > #else
+> > > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > > {
+> > > > >         return false;
+> > > > > }
+> > > > > #endif
+> > > >
+> > > > I think this policy decision should not live inside the EFI subsystem.
+> > > > EFI just gives you the memory map, and mangling that information
+> > > > depending on whether you think a certain memory attribute should be
+> > > > ignored is the job of the MM subsystem.
+> > >
+> > > The problem is that we don't have an mm subsystem at the time a
+> > > decision needs to be made. The reservation policy needs to be deployed
+> > > before even memblock has been initialized in order to keep kernel
+> > > allocations out of the reservation. I agree with the sentiment I just
+> > > don't see how to practically achieve an optional "System RAM" vs
+> > > "Application Reserved" routing decision without an early (before
+> > > e820__memblock_setup()) conditional branch.
 > >
-> > The problem is that we don't have an mm subsystem at the time a
-> > decision needs to be made. The reservation policy needs to be deployed
-> > before even memblock has been initialized in order to keep kernel
-> > allocations out of the reservation. I agree with the sentiment I just
-> > don't see how to practically achieve an optional "System RAM" vs
-> > "Application Reserved" routing decision without an early (before
-> > e820__memblock_setup()) conditional branch.
+> > I can at least move it out of include/linux/efi.h and move it to
+> > arch/x86/include/asm/efi.h since it is an x86 specific policy decision
+> > / implementation for now.
 >
-> I can at least move it out of include/linux/efi.h and move it to
-> arch/x86/include/asm/efi.h since it is an x86 specific policy decision
-> / implementation for now.
+> No, that doesn't make sense to me. If it must live in the EFI
+> subsystem, I'd prefer it to be in the core code, not in x86 specific
+> code, since there is nothing x86 specific about it.
 
-No, that doesn't make sense to me. If it must live in the EFI
-subsystem, I'd prefer it to be in the core code, not in x86 specific
-code, since there is nothing x86 specific about it.
+Ok, but it's still not clear to me where you would accept an early
+detection of EFI_CONVENTIONAL_MEMORY + EFI_MEMORY_SP and route it away
+from the "System RAM" default. Please just recommend a place to land a
+conditional branch that translates between the base EFI type +
+attribute and E820_RAM and E820_APPLICATION_RESERVED.
 
-Perhaps a efi=xxx command line option would be in order to influence
-the builtin default, but it can be a followup patch independent of
-this series.
+> Perhaps a efi=xxx command line option would be in order to influence
+> the builtin default, but it can be a followup patch independent of
+> this series.
+
+Sure, but I expect the default polarity of the branch is a compile
+time option with an efi= override.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
