@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C723AE71
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 07:08:30 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37153B17E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 11:08:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 863EF2128A64D;
-	Sun,  9 Jun 2019 22:08:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B1FFB2128D698;
+	Mon, 10 Jun 2019 02:08:24 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,38 +15,31 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7717E21959CB2
- for <linux-nvdimm@lists.01.org>; Sun,  9 Jun 2019 22:08:24 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
+ by ml01.01.org (Postfix) with ESMTPS id E36992194EB70
+ for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 02:08:22 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 3A5623082E55;
- Mon, 10 Jun 2019 05:08:23 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E83C15B684;
- Mon, 10 Jun 2019 05:08:22 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 1D91C206D1;
- Mon, 10 Jun 2019 05:08:21 +0000 (UTC)
-Date: Mon, 10 Jun 2019 01:08:20 -0400 (EDT)
+ by mx1.redhat.com (Postfix) with ESMTPS id 7368330984D1;
+ Mon, 10 Jun 2019 09:08:07 +0000 (UTC)
+Received: from dhcp201-121.englab.pnq.redhat.com (ovpn-116-103.sin2.redhat.com
+ [10.67.116.103])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A9D5060BF1;
+ Mon, 10 Jun 2019 09:07:36 +0000 (UTC)
 From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <1533125860.33764157.1560143300908.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4iW-UeHBs+qSii2Pk7Q2Nki6imGBTEORuxEAWgEMMp=nA@mail.gmail.com>
-References: <20190521133713.31653-1-pagupta@redhat.com>
- <20190521133713.31653-5-pagupta@redhat.com>
- <CAPcyv4iW-UeHBs+qSii2Pk7Q2Nki6imGBTEORuxEAWgEMMp=nA@mail.gmail.com>
-Subject: Re: [PATCH v10 4/7] dm: enable synchronous dax
+To: dm-devel@redhat.com, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, qemu-devel@nongnu.org,
+ linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: [PATCH v11 0/7] virtio pmem driver 
+Date: Mon, 10 Jun 2019 14:37:23 +0530
+Message-Id: <20190610090730.8589-1-pagupta@redhat.com>
 MIME-Version: 1.0
-X-Originating-IP: [10.67.116.16, 10.4.195.3]
-Thread-Topic: enable synchronous dax
-Thread-Index: bfiNCXycvh8K7TR5aXllhHNvtwio0w==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.46]); Mon, 10 Jun 2019 05:08:24 +0000 (UTC)
+ (mx1.redhat.com [10.5.110.49]); Mon, 10 Jun 2019 09:08:21 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,93 +51,179 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: cohuck@redhat.com, Jan Kara <jack@suse.cz>, KVM list <kvm@vger.kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- david <david@fromorbit.com>, Qemu Developers <qemu-devel@nongnu.org>,
- virtualization@lists.linux-foundation.org,
- device-mapper development <dm-devel@redhat.com>,
- Andreas Dilger <adilger.kernel@dilger.ca>, Ross Zwisler <zwisler@kernel.org>,
- Andrea Arcangeli <aarcange@redhat.com>, jstaron@google.com,
- linux-nvdimm <linux-nvdimm@lists.01.org>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@infradead.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>,
- linux-ext4 <linux-ext4@vger.kernel.org>, Len Brown <lenb@kernel.org>,
- Adam Borowski <kilobyte@angband.pl>, Randy Dunlap <rdunlap@infradead.org>,
- Rik van Riel <riel@surriel.com>, yuval shaia <yuval.shaia@oracle.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- lcapitulino@redhat.com, Kevin Wolf <kwolf@redhat.com>,
- Nitesh Narayan Lal <nilal@redhat.com>, Theodore Ts'o <tytso@mit.edu>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Mike Snitzer <snitzer@redhat.com>, "Darrick J. Wong" <darrick.wong@oracle.com>,
- "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-xfs <linux-xfs@vger.kernel.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Igor Mammedov <imammedo@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: rdunlap@infradead.org, jack@suse.cz, snitzer@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, david@fromorbit.com, lcapitulino@redhat.com,
+ adilger.kernel@dilger.ca, zwisler@kernel.org, aarcange@redhat.com,
+ jstaron@google.com, darrick.wong@oracle.com, david@redhat.com,
+ willy@infradead.org, hch@infradead.org, nilal@redhat.com, lenb@kernel.org,
+ kilobyte@angband.pl, riel@surriel.com, yuval.shaia@oracle.com,
+ stefanha@redhat.com, pbonzini@redhat.com, kwolf@redhat.com, tytso@mit.edu,
+ xiaoguangrong.eric@gmail.com, cohuck@redhat.com, rjw@rjwysocki.net,
+ imammedo@redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-> On Tue, May 21, 2019 at 6:43 AM Pankaj Gupta <pagupta@redhat.com> wrote:
-> >
-> >  This patch sets dax device 'DAXDEV_SYNC' flag if all the target
-> >  devices of device mapper support synchrononous DAX. If device
-> >  mapper consists of both synchronous and asynchronous dax devices,
-> >  we don't set 'DAXDEV_SYNC' flag.
-> >
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> > ---
-> >  drivers/md/dm-table.c | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> >
-> > diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-> > index cde3b49b2a91..1cce626ff576 100644
-> > --- a/drivers/md/dm-table.c
-> > +++ b/drivers/md/dm-table.c
-> > @@ -886,10 +886,17 @@ static int device_supports_dax(struct dm_target *ti,
-> > struct dm_dev *dev,
-> >         return bdev_dax_supported(dev->bdev, PAGE_SIZE);
-> >  }
-> >
-> > +static int device_synchronous(struct dm_target *ti, struct dm_dev *dev,
-> > +                              sector_t start, sector_t len, void *data)
-> > +{
-> > +       return dax_synchronous(dev->dax_dev);
-> > +}
-> > +
-> >  static bool dm_table_supports_dax(struct dm_table *t)
-> >  {
-> >         struct dm_target *ti;
-> >         unsigned i;
-> > +       bool dax_sync = true;
-> >
-> >         /* Ensure that all targets support DAX. */
-> >         for (i = 0; i < dm_table_get_num_targets(t); i++) {
-> > @@ -901,7 +908,14 @@ static bool dm_table_supports_dax(struct dm_table *t)
-> >                 if (!ti->type->iterate_devices ||
-> >                     !ti->type->iterate_devices(ti, device_supports_dax,
-> >                     NULL))
-> >                         return false;
-> > +
-> > +               /* Check devices support synchronous DAX */
-> > +               if (dax_sync &&
-> > +                   !ti->type->iterate_devices(ti, device_synchronous,
-> > NULL))
-> > +                       dax_sync = false;
-> 
-> Looks like this needs to be rebased on the current state of v5.2-rc,
-> and then we can nudge Mike for an ack.
-
-Sorry! for late reply due to vacations. I will rebase the series on v5.2-rc4 and
-send a v11.
-
-Thanks,
-Pankaj
-Yes, 
-> 
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+IFRoaXMgcGF0Y2ggc2VyaWVzIGlzIHJlYWR5IHRvIGJlIG1lcmdlZCB2aWEgbnZkaW1tIHRyZWUK
+IGFzIGRpc2N1c3NlZCB3aXRoIERhbi4gV2UgaGF2ZSBhY2svcmV2aWV3IG9uIFhGUywgRVhUNCAm
+CiBWSVJUSU8gcGF0Y2hlcy4gTmVlZCBhbiBhY2sgb24gZGV2aWNlIG1hcHBlciBjaGFuZ2UgaW4K
+IHBhdGNoIDQuCgogTWlrZSwgQ2FuIHlvdSBwbGVhc2UgcmV2aWV3IGFuZCBhY2sgcGF0Y2g0LgoK
+IFRoaXMgdmVyc2lvbiBkb2VzIG5vdCBoYXMgYW55IGFkZGl0b25hbCBjb2RlIGNoYW5nZSBmcm9t
+IHYxMCAKIGFuZCBpcyBvbmx5IHJlYmFzZSBvZiB2MTAgb24gTGludXggNS4yLXJjNCB3aGljaCBp
+cyByZXF1aXJlZCAKIGZvciBwYXRjaDQuIEtlZXBpbmcgYWxsIHRoZSBleGlzdGluZyByLW8tYnMu
+IEpha29iIENDZWQgYWxzbwogdGVzdGVkIHRoZSBwYXRjaCBzZXJpZXMgYW5kIGNvbmZpcm1lZCB0
+aGUgd29ya2luZyBvZiB2OS4KIC0tLQoKIFRoaXMgcGF0Y2ggc2VyaWVzIGhhcyBpbXBsZW1lbnRh
+dGlvbiBmb3IgInZpcnRpbyBwbWVtIi4gCiAidmlydGlvIHBtZW0iIGlzIGZha2UgcGVyc2lzdGVu
+dCBtZW1vcnkobnZkaW1tKSBpbiBndWVzdCAKIHdoaWNoIGFsbG93cyB0byBieXBhc3MgdGhlIGd1
+ZXN0IHBhZ2UgY2FjaGUuIFRoaXMgYWxzbwogaW1wbGVtZW50cyBhIFZJUlRJTyBiYXNlZCBhc3lu
+Y2hyb25vdXMgZmx1c2ggbWVjaGFuaXNtLiAgCiAKIFNoYXJpbmcgZ3Vlc3Qga2VybmVsIGRyaXZl
+ciBpbiB0aGlzIHBhdGNoc2V0IHdpdGggdGhlIAogY2hhbmdlcyBzdWdnZXN0ZWQgaW4gdjQuIFRl
+c3RlZCB3aXRoIFFlbXUgc2lkZSBkZXZpY2UgCiBlbXVsYXRpb24gWzVdIGZvciB2aXJ0aW8tcG1l
+bS4gRG9jdW1lbnRlZCB0aGUgaW1wYWN0IG9mCiBwb3NzaWJsZSBwYWdlIGNhY2hlIHNpZGUgY2hh
+bm5lbCBhdHRhY2tzIHdpdGggc3VnZ2VzdGVkCiBjb3VudGVybWVhc3VyZXMuCgogRGV0YWlscyBv
+ZiBwcm9qZWN0IGlkZWEgZm9yICd2aXJ0aW8gcG1lbScgZmx1c2hpbmcgaW50ZXJmYWNlIAogaXMg
+c2hhcmVkIFszXSAmIFs0XS4KCiBJbXBsZW1lbnRhdGlvbiBpcyBkaXZpZGVkIGludG8gdHdvIHBh
+cnRzOgogTmV3IHZpcnRpbyBwbWVtIGd1ZXN0IGRyaXZlciBhbmQgcWVtdSBjb2RlIGNoYW5nZXMg
+Zm9yIG5ldyAKIHZpcnRpbyBwbWVtIHBhcmF2aXJ0dWFsaXplZCBkZXZpY2UuCgoxLiBHdWVzdCB2
+aXJ0aW8tcG1lbSBrZXJuZWwgZHJpdmVyCi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LQogICAtIFJlYWRzIHBlcnNpc3RlbnQgbWVtb3J5IHJhbmdlIGZyb20gcGFyYXZpcnQgZGV2aWNl
+IGFuZCAKICAgICByZWdpc3RlcnMgd2l0aCAnbnZkaW1tX2J1cycuICAKICAgLSAnbnZkaW1tL3Bt
+ZW0nIGRyaXZlciB1c2VzIHRoaXMgaW5mb3JtYXRpb24gdG8gYWxsb2NhdGUgCiAgICAgcGVyc2lz
+dGVudCBtZW1vcnkgcmVnaW9uIGFuZCBzZXR1cCBmaWxlc3lzdGVtIG9wZXJhdGlvbnMgCiAgICAg
+dG8gdGhlIGFsbG9jYXRlZCBtZW1vcnkuIAogICAtIHZpcnRpbyBwbWVtIGRyaXZlciBpbXBsZW1l
+bnRzIGFzeW5jaHJvbm91cyBmbHVzaGluZyAKICAgICBpbnRlcmZhY2UgdG8gZmx1c2ggZnJvbSBn
+dWVzdCB0byBob3N0LgoKMi4gUWVtdSB2aXJ0aW8tcG1lbSBkZXZpY2UKLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tCiAgIC0gQ3JlYXRlcyB2aXJ0aW8gcG1lbSBkZXZpY2UgYW5kIGV4
+cG9zZXMgYSBtZW1vcnkgcmFuZ2UgdG8gCiAgICAgS1ZNIGd1ZXN0LiAKICAgLSBBdCBob3N0IHNp
+ZGUgdGhpcyBpcyBmaWxlIGJhY2tlZCBtZW1vcnkgd2hpY2ggYWN0cyBhcyAKICAgICBwZXJzaXN0
+ZW50IG1lbW9yeS4gCiAgIC0gUWVtdSBzaWRlIGZsdXNoIHVzZXMgYWlvIHRocmVhZCBwb29sIEFQ
+SSdzIGFuZCB2aXJ0aW8gCiAgICAgZm9yIGFzeW5jaHJvbm91cyBndWVzdCBtdWx0aSByZXF1ZXN0
+IGhhbmRsaW5nLiAKCiBWaXJ0aW8tcG1lbSBzZWN1cml0eSBpbXBsaWNhdGlvbnMgYW5kIGNvdW50
+ZXJtZWFzdXJlczoKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tCgogSW4gcHJldmlvdXMgcG9zdGluZyBvZiBrZXJuZWwgZHJpdmVyLCB0aGVyZSB3
+YXMgZGlzY3Vzc2lvbiBbN10KIG9uIHBvc3NpYmxlIGltcGxpY2F0aW9ucyBvZiBwYWdlIGNhY2hl
+IHNpZGUgY2hhbm5lbCBhdHRhY2tzIHdpdGggCiB2aXJ0aW8gcG1lbS4gQWZ0ZXIgdGhvcm91Z2gg
+YW5hbHlzaXMgb2YgZGV0YWlscyBvZiBrbm93biBzaWRlIAogY2hhbm5lbCBhdHRhY2tzLCBiZWxv
+dyBhcmUgdGhlIHN1Z2dlc3Rpb25zOgoKIC0gRGVwZW5kcyBlbnRpcmVseSBvbiBob3cgaG9zdCBi
+YWNraW5nIGltYWdlIGZpbGUgaXMgbWFwcGVkIAogICBpbnRvIGd1ZXN0IGFkZHJlc3Mgc3BhY2Uu
+IAoKIC0gdmlydGlvLXBtZW0gZGV2aWNlIGVtdWxhdGlvbiwgYnkgZGVmYXVsdCBzaGFyZWQgbWFw
+cGluZyBpcyB1c2VkCiAgIHRvIG1hcCBob3N0IGJhY2tpbmcgZmlsZS4gSXQgaXMgcmVjb21tZW5k
+ZWQgdG8gdXNlIHNlcGFyYXRlCiAgIGJhY2tpbmcgZmlsZSBhdCBob3N0IHNpZGUgZm9yIGV2ZXJ5
+IGd1ZXN0LiBUaGlzIHdpbGwgcHJldmVudAogICBhbnkgcG9zc2liaWxpdHkgb2YgZXhlY3V0aW5n
+IGNvbW1vbiBjb2RlIGZyb20gbXVsdGlwbGUgZ3Vlc3RzCiAgIGFuZCBhbnkgY2hhbmNlIG9mIGlu
+ZmVycmluZyBndWVzdCBsb2NhbCBkYXRhIGJhc2VkIGJhc2VkIG9uIAogICBleGVjdXRpb24gdGlt
+ZS4KCiAtIElmIGJhY2tpbmcgZmlsZSBpcyByZXF1aXJlZCB0byBiZSBzaGFyZWQgYW1vbmcgbXVs
+dGlwbGUgZ3Vlc3RzIAogICBpdCBpcyByZWNvbW1lbmRlZCB0byBkb24ndCBzdXBwb3J0IGhvc3Qg
+cGFnZSBjYWNoZSBldmljdGlvbiAKICAgY29tbWFuZHMgZnJvbSB0aGUgZ3Vlc3QgZHJpdmVyLiBU
+aGlzIHdpbGwgYXZvaWQgYW55IHBvc3NpYmlsaXR5CiAgIG9mIGluZmVycmluZyBndWVzdCBsb2Nh
+bCBkYXRhIG9yIGhvc3QgZGF0YSBmcm9tIGFub3RoZXIgZ3Vlc3QuIAoKIC0gUHJvcG9zZWQgZGV2
+aWNlIHNwZWNpZmljYXRpb24gWzZdIGZvciB2aXJ0aW8tcG1lbSBkZXZpY2Ugd2l0aCAKICAgZGV0
+YWlscyBvZiBwb3NzaWJsZSBzZWN1cml0eSBpbXBsaWNhdGlvbnMgYW5kIHN1Z2dlc3RlZCAKICAg
+Y291bnRlcm1lYXN1cmVzIGZvciBkZXZpY2UgZW11bGF0aW9uLgoKIFZpcnRpby1wbWVtIGVycm9y
+cyBoYW5kbGluZzoKIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KICBD
+aGVja2VkIGJlaGF2aW91ciBvZiB2aXJ0aW8tcG1lbSBmb3IgYmVsb3cgdHlwZXMgb2YgZXJyb3Jz
+CiAgTmVlZCBzdWdnZXN0aW9ucyBvbiBleHBlY3RlZCBiZWhhdmlvdXIgZm9yIGhhbmRsaW5nIHRo
+ZXNlIGVycm9ycz8KCiAgLSBIYXJkd2FyZSBFcnJvcnM6IFVuY29ycmVjdGFibGUgcmVjb3ZlcmFi
+bGUgRXJyb3JzOiAKICBhXSB2aXJ0aW8tcG1lbTogCiAgICAtIEFzIHBlciBjdXJyZW50IGxvZ2lj
+IGlmIGVycm9yIHBhZ2UgYmVsb25ncyB0byBRZW11IHByb2Nlc3MsIAogICAgICBob3N0IE1DRSBo
+YW5kbGVyIGlzb2xhdGVzKGh3cG9pc29uKSB0aGF0IHBhZ2UgYW5kIHNlbmQgU0lHQlVTLiAKICAg
+ICAgUWVtdSBTSUdCVVMgaGFuZGxlciBpbmplY3RzIGV4Y2VwdGlvbiB0byBLVk0gZ3Vlc3QuIAog
+ICAgLSBLVk0gZ3Vlc3QgdGhlbiBpc29sYXRlcyB0aGUgcGFnZSBhbmQgc2VuZCBTSUdCVVMgdG8g
+Z3Vlc3QgCiAgICAgIHVzZXJzcGFjZSBwcm9jZXNzIHdoaWNoIGhhcyBtYXBwZWQgdGhlIHBhZ2Uu
+IAogIAogIGJdIEV4aXN0aW5nIGltcGxlbWVudGF0aW9uIGZvciBBQ1BJIHBtZW0gZHJpdmVyOiAK
+ICAgIC0gSGFuZGxlcyBzdWNoIGVycm9ycyB3aXRoIE1DRSBub3RpZmllciBhbmQgY3JlYXRlcyBh
+IGxpc3QgCiAgICAgIG9mIGJhZCBibG9ja3MuIFJlYWQvZGlyZWN0IGFjY2VzcyBEQVggb3BlcmF0
+aW9uIHJldHVybiBFSU8gCiAgICAgIGlmIGFjY2Vzc2VkIG1lbW9yeSBwYWdlIGZhbGwgaW4gYmFk
+IGJsb2NrIGxpc3QuCiAgICAtIEl0IGFsc28gc3RhcnRzIGJhY2tnb3VuZCBzY3J1YmJpbmcuICAK
+ICAgIC0gU2ltaWxhciBmdW5jdGlvbmFsaXR5IGNhbiBiZSByZXVzZWQgaW4gdmlydGlvLXBtZW0g
+d2l0aCBNQ0UgCiAgICAgIG5vdGlmaWVyIGJ1dCB3aXRob3V0IHNjcnViYmluZyhubyBBQ1BJL0FS
+Uyk/IE5lZWQgaW5wdXRzIHRvIAogICAgICBjb25maXJtIGlmIHRoaXMgYmVoYXZpb3VyIGlzIG9r
+IG9yIG5lZWRzIGFueSBjaGFuZ2U/CgpDaGFuZ2VzIGZyb20gUEFUQ0ggdjEwOiBbMV0gCiAtIFJl
+YmFzZWQgb24gTGludXgtNS4yLXJjNAoKQ2hhbmdlcyBmcm9tIFBBVENIIHY5OiBbMl0gCiAtIEtj
+b25maWcgaGVscCB0ZXh0IGFkZCB0d28gc3BhY2VzIC0gUmFuZHkKIC0gRml4ZWQgbGlibnZkaW1t
+ICdiaW8nIGluY2x1ZGUgd2FybmluZyAtIERhbgogLSB2aXJ0aW8tcG1lbSwgc2VwYXJhdGUgcmVx
+dWVzdC9yZXNwIHN0cnVjdCBhbmQgCiAgIG1vdmUgdG8gdWFwaSBmaWxlIHdpdGggdXBkYXRlZCBs
+aWNlbnNlIC0gRGF2aWRICiAtIFVzZSB2aXJ0aW8zMiogdHlwZSBmb3IgcmVxL3Jlc3AgZW5kaWFu
+ZXNzIC0gRGF2aWRICiAtIEFkZGVkIHRlc3RlZC1ieSAmIGFjay1ieSBvZiBKYWtvYgogLSBSZWJh
+c2VkIHRvIDUuMi1yYzEKCkNoYW5nZXMgZnJvbSBQQVRDSCB2ODoKIC0gU2V0IGRldmljZSBtYXBw
+ZXIgc3luY2hyb25vdXMgaWYgYWxsIHRhcmdldCBkZXZpY2VzIHN1cHBvcnQgLSBEYW4KIC0gTW92
+ZSB2aXJ0aW9fcG1lbS5oIHRvIG52ZGltbSBkaXJlY3RvcnkgIC0gRGFuCiAtIFN0eWxlLCBpbmRl
+bnRhdGlvbiAmIGJldHRlciBlcnJvciBtZXNzYWdlcyBpbiBwYXRjaCAyIC0gRGF2aWRICiAtIEFk
+ZGVkIE1TVCdzIGFjayBpbiBwYXRjaCAyLgoKQ2hhbmdlcyBmcm9tIFBBVENIIHY3OgogLSBDb3Jy
+ZWN0ZWQgcGVuZGluZyByZXF1ZXN0IHF1ZXVlIGxvZ2ljIChwYXRjaCAyKSAtIEpha3ViIFN0YXJv
+xYQKIC0gVXNlZCB1bnNpZ25lZCBsb25nIGZsYWdzIGZvciBwYXNzaW5nIERBWERFVl9GX1NZTkMg
+KHBhdGNoIDMpIC0gRGFuCiAtIEZpeGVkIHR5cG8gPT4gIHZtYSAnZmxhZycgdG8gJ3ZtX2ZsYWcn
+IChwYXRjaCA0KQogLSBBZGRlZCByb2IgaW4gcGF0Y2ggNiAmIHBhdGNoIDIKCkNoYW5nZXMgZnJv
+bSBQQVRDSCB2NjogCiAtIENvcnJlY3RlZCBjb21tZW50IGZvcm1hdCBpbiBwYXRjaCA1ICYgcGF0
+Y2ggNi4gW0RhdmVdCiAtIENoYW5nZWQgdmFyaWFibGUgZGVjbGFyYXRpb24gaW5kZW50YXRpb24g
+aW4gcGF0Y2ggNiBbRGFycmlja10KIC0gQWRkIFJldmlld2VkLWJ5IHRhZyBieSAnSmFuIEthcmEn
+IGluIHBhdGNoIDQgJiBwYXRjaCA1CgpDaGFuZ2VzIGZyb20gUEFUQ0ggdjU6IAogIENoYW5nZXMg
+c3VnZ2VzdGVkIGluIGJ5IC0gW0Nvcm5lbGlhLCBZdXZhbF0KLSBSZW1vdmUgYXNzaWdubWVudCBj
+aGFpbmluZyBpbiB2aXJ0aW8gZHJpdmVyCi0gQmV0dGVyIGVycm9yIG1lc3NhZ2UgYW5kIHJlbW92
+ZSBub3QgcmVxdWlyZWQgZnJlZQotIENoZWNrIG5kX3JlZ2lvbiBiZWZvcmUgdXNlCgogIENoYW5n
+ZXMgc3VnZ2VzdGVkIGJ5IC0gW0phbiBLYXJhXQotIGRheF9zeW5jaHJvbm91cygpIGZvciAhQ09O
+RklHX0RBWAotIENvcnJlY3QgJ2RheGRldl9tYXBwaW5nX3N1cHBvcnRlZCcgY29tbWVudCBhbmQg
+bm9uLWRheCBpbXBsZW1lbnRhdGlvbgoKICBDaGFuZ2VzIHN1Z2dlc3RlZCBieSAtIFtEYW4gV2ls
+bGlhbXNdCi0gUGFzcyBtZWFuaW5nZnVsIGZsYWcgJ0RBWERFVl9GX1NZTkMnIHRvIGFsbG9jX2Rh
+eAotIEdhdGUgbnZkaW1tX2ZsdXNoIGluc3RlYWQgb2YgYWRkaXRpb25hbCBhc3luYyBwYXJhbWV0
+ZXIKLSBNb3ZlIGJsb2NrIGNoYWluaW5nIGxvZ2ljIHRvIGZsdXNoIGNhbGxiYWNrIHRoYW4gY29t
+bW9uIG52ZGltbV9mbHVzaAotIFVzZSBOVUxMIGZsdXNoIGNhbGxiYWNrIGZvciBnZW5lcmljIGZs
+dXNoIGZvciBiZXR0ZXIgcmVhZGFiaWxpdHkgW0RhbiwgSmFuXQoKLSBVc2UgdmlydGlvIGRldmlj
+ZSBpZCAyNyBmcm9tIDI1KGFscmVhZHkgdXNlZCkgLSBbTVNUXQoKQ2hhbmdlcyBmcm9tIFBBVENI
+IHY0OgotIEZhY3RvciBvdXQgTUFQX1NZTkMgc3VwcG9ydGVkIGZ1bmN0aW9uYWxpdHkgdG8gYSBj
+b21tb24gaGVscGVyCgkJCQlbRGF2ZSwgRGFycmljaywgSmFuXQotIENvbW1lbnQsIGluZGVudGF0
+aW9uIGFuZCB2aXJ0cXVldWVfa2ljayBmYWlsdXJlIGhhbmRsZSAtIFl1dmFsIFNoYWlhCgpDaGFu
+Z2VzIGZyb20gUEFUQ0ggdjM6IAotIFVzZSBnZW5lcmljIGRheF9zeW5jaHJvbm91cygpIGhlbHBl
+ciB0byBjaGVjayBmb3IgREFYREVWX1NZTkMgCiAgZmxhZyAtIFtEYW4sIERhcnJpY2ssIEphbl0K
+LSBBZGQgJ2lzX252ZGltbV9hc3luYycgZnVuY3Rpb24KLSBEb2N1bWVudCBwYWdlIGNhY2hlIHNp
+ZGUgY2hhbm5lbCBhdHRhY2tzIGltcGxpY2F0aW9ucyAmIAogIGNvdW50ZXJtZWFzdXJlcyAtIFtE
+YXZlIENoaW5uZXIsIE1pY2hhZWxdCgpDaGFuZ2VzIGZyb20gUEFUQ0ggdjI6IAotIERpc2FibGUg
+TUFQX1NZTkMgZm9yIGV4dDQgJiBYRlMgZmlsZXN5c3RlbXMgLSBbRGFuXSAKLSBVc2UgbmFtZSAn
+dmlydGlvIHBtZW0nIGluIHBsYWNlIG9mICdmYWtlIGRheCcgCgpDaGFuZ2VzIGZyb20gUEFUQ0gg
+djE6IAotIDAtZGF5IGJ1aWxkIHRlc3QgZm9yIGJ1aWxkIGRlcGVuZGVuY3kgb24gbGlibnZkaW1t
+IAoKIENoYW5nZXMgc3VnZ2VzdGVkIGJ5IC0gW0RhbiBXaWxsaWFtc10KLSBTcGxpdCB0aGUgZHJp
+dmVyIGludG8gdHdvIHBhcnRzIHZpcnRpbyAmIHBtZW0gIAotIE1vdmUgcXVldWluZyBvZiBhc3lu
+YyBibG9jayByZXF1ZXN0IHRvIGJsb2NrIGxheWVyCi0gQWRkICJzeW5jIiBwYXJhbWV0ZXIgaW4g
+bnZkaW1tX2ZsdXNoIGZ1bmN0aW9uCi0gVXNlIGluZGlyZWN0IGNhbGwgZm9yIG52ZGltbV9mbHVz
+aAotIERvbuKAmXQgbW92ZSBkZWNsYXJhdGlvbnMgdG8gY29tbW9uIGdsb2JhbCBoZWFkZXIgZS5n
+IG5kLmgKLSBudmRpbW1fZmx1c2goKSByZXR1cm4gMCBvciAtRUlPIGlmIGl0IGZhaWxzCi0gVGVh
+Y2ggbnNpb19yd19ieXRlcygpIHRoYXQgdGhlIGZsdXNoIGNhbiBmYWlsCi0gUmVuYW1lIG52ZGlt
+bV9mbHVzaCgpIHRvIGdlbmVyaWNfbnZkaW1tX2ZsdXNoKCkKLSBVc2UgJ25kX3JlZ2lvbi0+cHJv
+dmlkZXJfZGF0YScgZm9yIGxvbmcgZGVyZWZlcmVuY2luZwotIFJlbW92ZSB2aXJ0aW9fcG1lbV9m
+cmVlemUvcmVzdG9yZSBmdW5jdGlvbnMKLSBSZW1vdmUgQlNEIGxpY2Vuc2UgdGV4dCB3aXRoIFNQ
+RFggbGljZW5zZSB0ZXh0CgotIEFkZCBtaWdodF9zbGVlcCgpIGluIHZpcnRpb19wbWVtX2ZsdXNo
+IC0gW0x1aXpdCi0gTWFrZSBzcGluX2xvY2tfaXJxc2F2ZSgpIG5hcnJvdwoKUGFua2FqIEd1cHRh
+ICg3KToKICAgbGlibnZkaW1tOiBuZF9yZWdpb24gZmx1c2ggY2FsbGJhY2sgc3VwcG9ydAogICB2
+aXJ0aW8tcG1lbTogQWRkIHZpcnRpby1wbWVtIGd1ZXN0IGRyaXZlcgogICBsaWJudmRpbW06IGFk
+ZCBuZF9yZWdpb24gYnVmZmVyZWQgZGF4X2RldiBmbGFnCiAgIGRheDogY2hlY2sgc3luY2hyb25v
+dXMgbWFwcGluZyBpcyBzdXBwb3J0ZWQKICAgZG06IGRtOiBFbmFibGUgc3luY2hyb25vdXMgZGF4
+CiAgIGV4dDQ6IGRpc2FibGUgbWFwX3N5bmMgZm9yIHZpcnRpbyBwbWVtCiAgIHhmczogZGlzYWJs
+ZSBtYXBfc3luYyBmb3IgdmlydGlvIHBtZW0KClsxXSBodHRwczovL2xrbWwub3JnL2xrbWwvMjAx
+OS81LzIxLzU2OQpbMl0gaHR0cHM6Ly9sa21sLm9yZy9sa21sLzIwMTkvNS8xNC80NjUKWzNdIGh0
+dHBzOi8vd3d3LnNwaW5pY3MubmV0L2xpc3RzL2t2bS9tc2cxNDk3NjEuaHRtbApbNF0gaHR0cHM6
+Ly93d3cuc3Bpbmljcy5uZXQvbGlzdHMva3ZtL21zZzE1MzA5NS5odG1sICAKWzVdIGh0dHBzOi8v
+bWFyYy5pbmZvLz9sPXFlbXUtZGV2ZWwmbT0xNTU4NjA3NTEyMDIyMDImdz0yCls2XSBodHRwczov
+L2xpc3RzLm9hc2lzLW9wZW4ub3JnL2FyY2hpdmVzL3ZpcnRpby1kZXYvMjAxOTAzL21zZzAwMDgz
+Lmh0bWwKWzddIGh0dHBzOi8vbGttbC5vcmcvbGttbC8yMDE5LzEvOS8xMTkxCgogZHJpdmVycy9h
+Y3BpL25maXQvY29yZS5jICAgICAgICAgfCAgICA0IC0KIGRyaXZlcnMvZGF4L2J1cy5jICAgICAg
+ICAgICAgICAgIHwgICAgMiAKIGRyaXZlcnMvZGF4L3N1cGVyLmMgICAgICAgICAgICAgIHwgICAx
+OSArKysrKwogZHJpdmVycy9tZC9kbS10YWJsZS5jICAgICAgICAgICAgfCAgIDE0ICsrKysKIGRy
+aXZlcnMvbWQvZG0uYyAgICAgICAgICAgICAgICAgIHwgICAgMyAKIGRyaXZlcnMvbnZkaW1tL01h
+a2VmaWxlICAgICAgICAgIHwgICAgMSAKIGRyaXZlcnMvbnZkaW1tL2NsYWltLmMgICAgICAgICAg
+IHwgICAgNiArCiBkcml2ZXJzL252ZGltbS9uZC5oICAgICAgICAgICAgICB8ICAgIDEgCiBkcml2
+ZXJzL252ZGltbS9uZF92aXJ0aW8uYyAgICAgICB8ICAxMjQgKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrCiBkcml2ZXJzL252ZGltbS9wbWVtLmMgICAgICAgICAgICB8ICAg
+MTggKysrLS0KIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMgICAgIHwgICAzMyArKysrKysr
+KystCiBkcml2ZXJzL252ZGltbS92aXJ0aW9fcG1lbS5jICAgICB8ICAxMjIgKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysKIGRyaXZlcnMvbnZkaW1tL3ZpcnRpb19wbWVtLmgg
+ICAgIHwgICA1NSArKysrKysrKysrKysrKysrKwogZHJpdmVycy92aXJ0aW8vS2NvbmZpZyAgICAg
+ICAgICAgfCAgIDExICsrKwogZnMvZXh0NC9maWxlLmMgICAgICAgICAgICAgICAgICAgfCAgIDEw
+ICstLQogZnMveGZzL3hmc19maWxlLmMgICAgICAgICAgICAgICAgfCAgICA5ICstCiBpbmNsdWRl
+L2xpbnV4L2RheC5oICAgICAgICAgICAgICB8ICAgMjYgKysrKysrKy0KIGluY2x1ZGUvbGludXgv
+bGlibnZkaW1tLmggICAgICAgIHwgICAxMCArKy0KIGluY2x1ZGUvdWFwaS9saW51eC92aXJ0aW9f
+aWRzLmggIHwgICAgMSAKIGluY2x1ZGUvdWFwaS9saW51eC92aXJ0aW9fcG1lbS5oIHwgICAzNSAr
+KysrKysrKysrKwogMjAgZmlsZXMgY2hhbmdlZCwgNDc5IGluc2VydGlvbnMoKyksIDI1IGRlbGV0
+aW9ucygtKQoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBz
+Oi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
