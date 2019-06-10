@@ -2,44 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4DC3BCD3
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 21:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EBF3BE04
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 23:06:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A694421962301;
-	Mon, 10 Jun 2019 12:28:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8F54C21962301;
+	Mon, 10 Jun 2019 14:06:37 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=msnitzer@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+Received-SPF: Permerror (SPF Permanent Error: Two or more type TXT spf records
+ found.) identity=mailfrom; client-ip=192.185.144.91;
+ helo=gateway31.websitewelcome.com; envelope-from=gustavo@embeddedor.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com
+ [192.185.144.91])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id ABA99211EB2B9
- for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 12:28:55 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id D9FFB120D7;
- Mon, 10 Jun 2019 19:28:23 +0000 (UTC)
-Received: from localhost (unknown [10.18.25.174])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A734160C47;
- Mon, 10 Jun 2019 19:28:04 +0000 (UTC)
-Date: Mon, 10 Jun 2019 15:28:03 -0400
-From: Mike Snitzer <snitzer@redhat.com>
-To: Pankaj Gupta <pagupta@redhat.com>
-Subject: Re: [PATCH v11 4/7] dm: enable synchronous dax
-Message-ID: <20190610192803.GA29002@redhat.com>
-References: <20190610090730.8589-1-pagupta@redhat.com>
- <20190610090730.8589-5-pagupta@redhat.com>
+ by ml01.01.org (Postfix) with ESMTPS id 6F4582127420E
+ for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 14:06:36 -0700 (PDT)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+ by gateway31.websitewelcome.com (Postfix) with ESMTP id 02F782176
+ for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 16:06:35 -0500 (CDT)
+Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
+ id aRUwhrwL7iQeraRUwhQA67; Mon, 10 Jun 2019 16:06:34 -0500
+X-Authority-Reason: nr=8
+Received: from [189.250.75.107] (port=48826 helo=embeddedor)
+ by gator4166.hostgator.com with esmtpa (Exim 4.92)
+ (envelope-from <gustavo@embeddedor.com>)
+ id 1haRUd-003eSZ-CB; Mon, 10 Jun 2019 16:06:33 -0500
+Date: Mon, 10 Jun 2019 16:06:13 -0500
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Keith Busch <keith.busch@intel.com>, Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH] libnvdimm, region: Use struct_size() in kzalloc()
+Message-ID: <20190610210613.GA21989@embeddedor>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190610090730.8589-5-pagupta@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.26]); Mon, 10 Jun 2019 19:28:48 +0000 (UTC)
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - lists.01.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 189.250.75.107
+X-Source-L: No
+X-Exim-ID: 1haRUd-003eSZ-CB
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (embeddedor) [189.250.75.107]:48826
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 6
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,96 +68,58 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: cohuck@redhat.com, jack@suse.cz, kvm@vger.kernel.org, mst@redhat.com,
- jasowang@redhat.com, david@fromorbit.com, qemu-devel@nongnu.org,
- virtualization@lists.linux-foundation.org, dm-devel@redhat.com,
- adilger.kernel@dilger.ca, zwisler@kernel.org, aarcange@redhat.com,
- jstaron@google.com, linux-nvdimm@lists.01.org, david@redhat.com,
- willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
- linux-ext4@vger.kernel.org, lenb@kernel.org, kilobyte@angband.pl,
- rdunlap@infradead.org, riel@surriel.com, yuval.shaia@oracle.com,
- stefanha@redhat.com, pbonzini@redhat.com, lcapitulino@redhat.com,
- kwolf@redhat.com, nilal@redhat.com, tytso@mit.edu,
- xiaoguangrong.eric@gmail.com, darrick.wong@oracle.com, rjw@rjwysocki.net,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, imammedo@redhat.com
+Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Jun 10 2019 at  5:07am -0400,
-Pankaj Gupta <pagupta@redhat.com> wrote:
+One of the more common cases of allocation size calculations is finding
+the size of a structure that has a zero-sized array at the end, along
+with memory for some number of elements for that array. For example:
 
->  This patch sets dax device 'DAXDEV_SYNC' flag if all the target
->  devices of device mapper support synchrononous DAX. If device
->  mapper consists of both synchronous and asynchronous dax devices,
->  we don't set 'DAXDEV_SYNC' flag.
-> 
-> Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> ---
->  drivers/md/dm-table.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-> index 350cf0451456..c5160d846fe6 100644
-> --- a/drivers/md/dm-table.c
-> +++ b/drivers/md/dm-table.c
-> @@ -890,10 +890,17 @@ static int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
->  			start, len);
->  }
->  
-> +static int device_synchronous(struct dm_target *ti, struct dm_dev *dev,
-> +				       sector_t start, sector_t len, void *data)
-> +{
-> +	return dax_synchronous(dev->dax_dev);
-> +}
-> +
->  bool dm_table_supports_dax(struct dm_table *t, int blocksize)
->  {
->  	struct dm_target *ti;
->  	unsigned i;
-> +	bool dax_sync = true;
->  
->  	/* Ensure that all targets support DAX. */
->  	for (i = 0; i < dm_table_get_num_targets(t); i++) {
-> @@ -906,7 +913,14 @@ bool dm_table_supports_dax(struct dm_table *t, int blocksize)
->  		    !ti->type->iterate_devices(ti, device_supports_dax,
->  			    &blocksize))
->  			return false;
-> +
-> +		/* Check devices support synchronous DAX */
-> +		if (dax_sync &&
-> +		    !ti->type->iterate_devices(ti, device_synchronous, NULL))
-> +			dax_sync = false;
->  	}
-> +	if (dax_sync)
-> +		set_dax_synchronous(t->md->dax_dev);
->  
->  	return true;
->  }
-> -- 
-> 2.20.1
-> 
+struct nd_region {
+	...
+        struct nd_mapping mapping[0];
+};
 
-dm_table_supports_dax() is called multiple times (from
-dm_table_set_restrictions and dm_table_determine_type).  It is strange
-to have a getter have a side-effect of being a setter too.  Overloading
-like this could get you in trouble in the future.
+instance = kzalloc(sizeof(struct nd_region) + sizeof(struct nd_mapping) *
+                          count, GFP_KERNEL);
 
-Are you certain this is what you want?
+Instead of leaving these open-coded and prone to type mistakes, we can
+now use the new struct_size() helper:
 
-Or would it be better to refactor dm_table_supports_dax() to take an
-iterate_devices_fn arg and have callers pass the appropriate function?
-Then have dm_table_set_restrictions() caller do:
+instance = kzalloc(struct_size(instance, mapping, count), GFP_KERNEL);
 
-     if (dm_table_supports_dax(t, device_synchronous, NULL))
-     	  set_dax_synchronous(t->md->dax_dev);
+This code was detected with the help of Coccinelle.
 
-(NULL arg implies dm_table_supports_dax() refactoring would take a int
-*data pointer rather than int type).
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+---
+ drivers/nvdimm/region_devs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Mike
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index b4ef7d9ff22e..88becc87e234 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -1027,10 +1027,9 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
+ 		}
+ 		region_buf = ndbr;
+ 	} else {
+-		nd_region = kzalloc(sizeof(struct nd_region)
+-				+ sizeof(struct nd_mapping)
+-				* ndr_desc->num_mappings,
+-				GFP_KERNEL);
++		nd_region = kzalloc(struct_size(nd_region, mapping,
++						ndr_desc->num_mappings),
++				    GFP_KERNEL);
+ 		region_buf = nd_region;
+ 	}
+ 
+-- 
+2.21.0
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
