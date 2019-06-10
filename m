@@ -1,56 +1,45 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73883BB7E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 20:00:48 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4DC3BCD3
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 10 Jun 2019 21:28:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E10F421962301;
-	Mon, 10 Jun 2019 11:00:46 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A694421962301;
+	Mon, 10 Jun 2019 12:28:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=msnitzer@redhat.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C74C2211F9D6B
- for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 11:00:44 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2019 11:00:43 -0700
-X-ExtLoop1: 1
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
- by FMSMGA003.fm.intel.com with ESMTP; 10 Jun 2019 11:00:43 -0700
-Received: from fmsmsx153.amr.corp.intel.com (10.18.125.6) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Mon, 10 Jun 2019 11:00:43 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.221]) by
- FMSMSX153.amr.corp.intel.com ([169.254.9.44]) with mapi id 14.03.0415.000;
- Mon, 10 Jun 2019 11:00:42 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "Williams, Dan
- J" <dan.j.williams@intel.com>
-Subject: =?utf-8?B?UmU6IFtQQVRDSF0gbW0vbnZkaW1tOiBGaXggZW5kaWFuIGNvbnZlcnNpb24g?=
- =?utf-8?B?aXNzdWVzwqA=?=
-Thread-Topic: =?utf-8?B?W1BBVENIXSBtbS9udmRpbW06IEZpeCBlbmRpYW4gY29udmVyc2lvbiBpc3N1?=
- =?utf-8?B?ZXPCoA==?=
-Thread-Index: AQHVHPzvNVRBYBN6b0uXWFFw88SJnqaVqDUA
-Date: Mon, 10 Jun 2019 18:00:42 +0000
-Message-ID: <1ec64d511af872df7b0597895622eb196ac4dbc9.camel@intel.com>
-References: <20190607064732.30384-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20190607064732.30384-1-aneesh.kumar@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <41D4EB0C81964E4BB929D8F7CE095E4A@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id ABA99211EB2B9
+ for <linux-nvdimm@lists.01.org>; Mon, 10 Jun 2019 12:28:55 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id D9FFB120D7;
+ Mon, 10 Jun 2019 19:28:23 +0000 (UTC)
+Received: from localhost (unknown [10.18.25.174])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A734160C47;
+ Mon, 10 Jun 2019 19:28:04 +0000 (UTC)
+Date: Mon, 10 Jun 2019 15:28:03 -0400
+From: Mike Snitzer <snitzer@redhat.com>
+To: Pankaj Gupta <pagupta@redhat.com>
+Subject: Re: [PATCH v11 4/7] dm: enable synchronous dax
+Message-ID: <20190610192803.GA29002@redhat.com>
+References: <20190610090730.8589-1-pagupta@redhat.com>
+ <20190610090730.8589-5-pagupta@redhat.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190610090730.8589-5-pagupta@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.26]); Mon, 10 Jun 2019 19:28:48 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,89 +51,96 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: cohuck@redhat.com, jack@suse.cz, kvm@vger.kernel.org, mst@redhat.com,
+ jasowang@redhat.com, david@fromorbit.com, qemu-devel@nongnu.org,
+ virtualization@lists.linux-foundation.org, dm-devel@redhat.com,
+ adilger.kernel@dilger.ca, zwisler@kernel.org, aarcange@redhat.com,
+ jstaron@google.com, linux-nvdimm@lists.01.org, david@redhat.com,
+ willy@infradead.org, hch@infradead.org, linux-acpi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, lenb@kernel.org, kilobyte@angband.pl,
+ rdunlap@infradead.org, riel@surriel.com, yuval.shaia@oracle.com,
+ stefanha@redhat.com, pbonzini@redhat.com, lcapitulino@redhat.com,
+ kwolf@redhat.com, nilal@redhat.com, tytso@mit.edu,
+ xiaoguangrong.eric@gmail.com, darrick.wong@oracle.com, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, imammedo@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, 2019-06-07 at 12:17 +0530, Aneesh Kumar K.V wrote:
-> nd_label->dpa issue was observed when trying to enable the namespace created
-> with little-endian kernel on a big-endian kernel. That made me run
-> `sparse` on the rest of the code and other changes are the result of that.
+On Mon, Jun 10 2019 at  5:07am -0400,
+Pankaj Gupta <pagupta@redhat.com> wrote:
+
+>  This patch sets dax device 'DAXDEV_SYNC' flag if all the target
+>  devices of device mapper support synchrononous DAX. If device
+>  mapper consists of both synchronous and asynchronous dax devices,
+>  we don't set 'DAXDEV_SYNC' flag.
 > 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
 > ---
->  drivers/nvdimm/btt.c            | 8 ++++----
->  drivers/nvdimm/namespace_devs.c | 7 ++++---
->  2 files changed, 8 insertions(+), 7 deletions(-)
-
-The two BTT fixes seem like they may apply to stable as well, the
-problematic code was introduced in relatively recent reworks/fixes.
-Perhaps -
-
-Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
-Fixes: 9dedc73a4658 ("libnvdimm/btt: Fix LBA masking during 'free list' population")
-
-Other than that, these look good to me.
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-
+>  drivers/md/dm-table.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> index 4671776f5623..4ac0f5dde467 100644
-> --- a/drivers/nvdimm/btt.c
-> +++ b/drivers/nvdimm/btt.c
-> @@ -400,9 +400,9 @@ static int btt_flog_write(struct arena_info *arena, u32 lane, u32 sub,
->  	arena->freelist[lane].sub = 1 - arena->freelist[lane].sub;
->  	if (++(arena->freelist[lane].seq) == 4)
->  		arena->freelist[lane].seq = 1;
-> -	if (ent_e_flag(ent->old_map))
-> +	if (ent_e_flag(le32_to_cpu(ent->old_map)))
->  		arena->freelist[lane].has_err = 1;
-> -	arena->freelist[lane].block = le32_to_cpu(ent_lba(ent->old_map));
-> +	arena->freelist[lane].block = ent_lba(le32_to_cpu(ent->old_map));
->  
->  	return ret;
+> diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> index 350cf0451456..c5160d846fe6 100644
+> --- a/drivers/md/dm-table.c
+> +++ b/drivers/md/dm-table.c
+> @@ -890,10 +890,17 @@ static int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
+>  			start, len);
 >  }
-> @@ -568,8 +568,8 @@ static int btt_freelist_init(struct arena_info *arena)
->  		 * FIXME: if error clearing fails during init, we want to make
->  		 * the BTT read-only
->  		 */
-> -		if (ent_e_flag(log_new.old_map) &&
-> -				!ent_normal(log_new.old_map)) {
-> +		if (ent_e_flag(le32_to_cpu(log_new.old_map)) &&
-> +		    !ent_normal(le32_to_cpu(log_new.old_map))) {
->  			arena->freelist[i].has_err = 1;
->  			ret = arena_clear_freelist_error(arena, i);
->  			if (ret)
-> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-> index c4c5a191b1d6..500c37db496a 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1995,7 +1995,7 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
->  		nd_mapping = &nd_region->mapping[i];
->  		label_ent = list_first_entry_or_null(&nd_mapping->labels,
->  				typeof(*label_ent), list);
-> -		label0 = label_ent ? label_ent->label : 0;
-> +		label0 = label_ent ? label_ent->label : NULL;
 >  
->  		if (!label0) {
->  			WARN_ON(1);
-> @@ -2330,8 +2330,9 @@ static struct device **scan_labels(struct nd_region *nd_region)
->  			continue;
+> +static int device_synchronous(struct dm_target *ti, struct dm_dev *dev,
+> +				       sector_t start, sector_t len, void *data)
+> +{
+> +	return dax_synchronous(dev->dax_dev);
+> +}
+> +
+>  bool dm_table_supports_dax(struct dm_table *t, int blocksize)
+>  {
+>  	struct dm_target *ti;
+>  	unsigned i;
+> +	bool dax_sync = true;
 >  
->  		/* skip labels that describe extents outside of the region */
-> -		if (nd_label->dpa < nd_mapping->start || nd_label->dpa > map_end)
-> -			continue;
-> +		if (__le64_to_cpu(nd_label->dpa) < nd_mapping->start ||
-> +		    __le64_to_cpu(nd_label->dpa) > map_end)
-> +				continue;
+>  	/* Ensure that all targets support DAX. */
+>  	for (i = 0; i < dm_table_get_num_targets(t); i++) {
+> @@ -906,7 +913,14 @@ bool dm_table_supports_dax(struct dm_table *t, int blocksize)
+>  		    !ti->type->iterate_devices(ti, device_supports_dax,
+>  			    &blocksize))
+>  			return false;
+> +
+> +		/* Check devices support synchronous DAX */
+> +		if (dax_sync &&
+> +		    !ti->type->iterate_devices(ti, device_synchronous, NULL))
+> +			dax_sync = false;
+>  	}
+> +	if (dax_sync)
+> +		set_dax_synchronous(t->md->dax_dev);
 >  
->  		i = add_namespace_resource(nd_region, nd_label, devs, count);
->  		if (i < 0)
+>  	return true;
+>  }
+> -- 
+> 2.20.1
+> 
 
+dm_table_supports_dax() is called multiple times (from
+dm_table_set_restrictions and dm_table_determine_type).  It is strange
+to have a getter have a side-effect of being a setter too.  Overloading
+like this could get you in trouble in the future.
+
+Are you certain this is what you want?
+
+Or would it be better to refactor dm_table_supports_dax() to take an
+iterate_devices_fn arg and have callers pass the appropriate function?
+Then have dm_table_set_restrictions() caller do:
+
+     if (dm_table_supports_dax(t, device_synchronous, NULL))
+     	  set_dax_synchronous(t->md->dax_dev);
+
+(NULL arg implies dm_table_supports_dax() refactoring would take a int
+*data pointer rather than int type).
+
+Mike
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
