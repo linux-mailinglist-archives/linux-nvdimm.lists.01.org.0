@@ -1,33 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0442149670
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Jun 2019 02:50:34 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911CC41902
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Jun 2019 01:40:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5A4B721295C9B;
-	Mon, 17 Jun 2019 17:50:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9286121962301;
+	Tue, 11 Jun 2019 16:40:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=87.229.48.134;
- helo=totalconsulting.hu; envelope-from=oroszi.gabor@kamionbonto.eu;
- receiver=linux-nvdimm@lists.01.org 
-Received: from totalconsulting.hu (unknown [87.229.48.134])
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BE1A421290DF6
- for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 17:50:27 -0700 (PDT)
-Received: (qmail 17413 invoked by uid 89); 12 Jun 2019 01:20:51 +0200
-Received: from ns6868.terres.net.br (HELO ?127.0.0.1?)
- (oroszi.gabor@kamionbonto.eu@177.87.68.68)
- by totalconsulting.hu with SMTP; 12 Jun 2019 01:20:51 +0200
-From: oroszi.gabor@kamionbonto.eu
-Mime-Version: 1.0 (1.0)
-Subject: Your account has been hacked! You need to unlock.
-Message-Id: <01C5BD29-9327-3F81-2E91-6F6FF8D0ED25@kamionbonto.eu>
-Date: Wed, 12 Jun 2019 02:18:52 +0300
+ by ml01.01.org (Postfix) with ESMTPS id E91FC2128A631
+ for <linux-nvdimm@lists.01.org>; Tue, 11 Jun 2019 16:40:01 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2019 16:40:00 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,363,1557212400"; d="scan'208";a="184035062"
+Received: from dwillia2-desk3.jf.intel.com (HELO
+ dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+ by fmsmga002.fm.intel.com with ESMTP; 11 Jun 2019 16:39:59 -0700
+Subject: [PATCH 0/6] libnvdimm: Fix async operations and locking
+From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-X-Mailer: iPhone Mail (13E238)
+Date: Tue, 11 Jun 2019 16:25:43 -0700
+Message-ID: <156029554317.419799.1324389595953183385.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-2-gc94f
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,47 +45,77 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Will Deacon <will.deacon@arm.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Erwin Tsaur <erwin.tsaur@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hello!
+The libnvdimm subsystem uses async operations to parallelize device
+probing operations and to allow sysfs to trigger device_unregister() on
+deleted namepsaces. A multithreaded stress test of the libnvdimm sysfs
+interface uncovered a case where device_unregister() is triggered
+multiple times, and the subsequent investigation uncovered a broken
+locking scenario.
 
-I am a hacker who has access to your operating system.
-I also have full access to your account.
+The lack of lockdep coverage for device_lock() stymied the debug. That
+is, until patch6 "driver-core, libnvdimm: Let device subsystems add
+local lockdep coverage" solved that with a shadow lock, with lockdep
+coverage, to mirror device_lock() operations. Given the time saved with
+shadow-lock debug-hack, patch6 attempts to generalize device_lock()
+debug facility that might be able to be carried upstream. Patch6 is
+staged at the end of this fix series in case it is contentious and needs
+to be dropped.
 
-I've been watching you for a few months now.
-The fact is that you were infected with malware through an adult site that you visited.
+Patch1 "drivers/base: Introduce kill_device()" could be achieved with
+local libnvdimm infrastructure. However, the existing 'dead' flag in
+'struct device_private' aims to solve similar async register/unregister
+races so the fix in patch2 "libnvdimm/bus: Prevent duplicate
+device_unregister() calls" can be implemented with existing driver-core
+infrastructure.
 
-If you are not familiar with this, I will explain.
-Trojan Virus gives me full access and control over a computer or other device.
-This means that I can see everything on your screen, turn on the camera and microphone, but you do not know about it.
+Patch3 is a rare lockdep warning that is intermittent based on
+namespaces racing ahead of the completion of probe of their parent
+region. It is not related to the other fixes, it just happened to
+trigger as a result of the async stress test.
 
-I also have access to all your contacts and all your correspondence.
+Patch4 and patch5 address an ABBA deadlock tripped by the stress test.
 
-Why your antivirus did not detect malware?
-Answer: My malware uses the driver, I update its signatures every 4 hours so that your antivirus is silent.
+These patches pass the failing stress test and the existing libnvdimm
+unit tests with CONFIG_PROVE_LOCKING=y and the new "dev->lockdep_mutex"
+shadow lock with no lockdep warnings.
 
-I made a video showing how you satisfy yourself in the left half of the screen, and in the right half you see the video that you watched.
-With one click of the mouse, I can send this video to all your emails and contacts on social networks.
-I can also post access to all your e-mail correspondence and messengers that you use.
+---
 
-If you want to prevent this,
-transfer the amount of $500 to my bitcoin address (if you do not know how to do this, write to Google: "Buy Bitcoin").
+Dan Williams (6):
+      drivers/base: Introduce kill_device()
+      libnvdimm/bus: Prevent duplicate device_unregister() calls
+      libnvdimm/region: Register badblocks before namespaces
+      libnvdimm/bus: Stop holding nvdimm_bus_list_mutex over __nd_ioctl()
+      libnvdimm/bus: Fix wait_nvdimm_bus_probe_idle() ABBA deadlock
+      driver-core, libnvdimm: Let device subsystems add local lockdep coverage
 
-My bitcoin address (BTC Wallet) is:  3M949U9WpDBwytGoMoGv3Fss9uqrFPXdkZ
 
-After receiving the payment, I will delete the video and you will never hear me again.
-I give you 50 hours (more than 2 days) to pay.
-I have a notice reading this letter, and the timer will work when you see this letter.
-
-Filing a complaint somewhere does not make sense because this email cannot be tracked like my bitcoin address.
-I do not make any mistakes.
-
-If I find that you have shared this message with someone else, the video will be immediately distributed.
-
-Best regards!
+ drivers/acpi/nfit/core.c        |   28 ++++---
+ drivers/acpi/nfit/nfit.h        |   24 ++++++
+ drivers/base/core.c             |   30 ++++++--
+ drivers/nvdimm/btt_devs.c       |   16 ++--
+ drivers/nvdimm/bus.c            |  154 +++++++++++++++++++++++++++------------
+ drivers/nvdimm/core.c           |   10 +--
+ drivers/nvdimm/dimm_devs.c      |    4 +
+ drivers/nvdimm/namespace_devs.c |   36 +++++----
+ drivers/nvdimm/nd-core.h        |   71 ++++++++++++++++++
+ drivers/nvdimm/pfn_devs.c       |   24 +++---
+ drivers/nvdimm/pmem.c           |    4 +
+ drivers/nvdimm/region.c         |   24 +++---
+ drivers/nvdimm/region_devs.c    |   12 ++-
+ include/linux/device.h          |    6 ++
+ 14 files changed, 308 insertions(+), 135 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
