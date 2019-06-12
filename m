@@ -1,46 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D60B4250B
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Jun 2019 14:09:16 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAC742608
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Jun 2019 14:38:02 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 174E121295CB5;
-	Wed, 12 Jun 2019 05:09:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A49F121295CB8;
+	Wed, 12 Jun 2019 05:38:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=linux-nvdimm@lists.01.org 
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 761702128A65C
- for <linux-nvdimm@lists.01.org>; Wed, 12 Jun 2019 05:09:12 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 83424AE27;
- Wed, 12 Jun 2019 12:09:09 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id A86331E4328; Wed, 12 Jun 2019 14:09:07 +0200 (CEST)
-Date: Wed, 12 Jun 2019 14:09:07 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jason Gunthorpe <jgg@ziepe.ca>
+ by ml01.01.org (Postfix) with ESMTPS id 6FB0F2194EB77
+ for <linux-nvdimm@lists.01.org>; Wed, 12 Jun 2019 05:37:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=l/g0KnT/EyAvMoDe4YYe+/hlvBi7vzZDEnk1KrMoaBA=; b=LcKAST6BxZ0yaOkpMIf7Enjfj
+ 6c1UeC9+DtFiAG+4D1XV7S0v/ELkcMzkURVHfKUblrSfnsOxjaT7amrayTl8QE7Smq9tJEjwDCWRd
+ cPbbPfreHmLvxItzPtzj01TyLpkUqy/kyuWCUwt7PAmxBBWhSBNFS/O2Q9nWYMpVJEIh8LvtVttjd
+ 3KNMNDefD5IFT6bWTwg5AiN9UAusMV0sJPpB8YYd7y3pqpMB8efSmNBLxM2eJ58kVJO5XNksaSM2O
+ FqwQN4iCqdirubzy0TOiW6r/sZA9NbDScogy2w/raTG/y8nZlf2j6YFQA1y/4Snew3ovKOI6jiSdf
+ lwADVwjOA==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
+ Hat Linux)) id 1hb2Vl-00060B-5I; Wed, 12 Jun 2019 12:37:53 +0000
+Date: Wed, 12 Jun 2019 05:37:53 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Dave Chinner <david@fromorbit.com>
 Subject: Re: [PATCH RFC 00/10] RDMA/FS DAX truncate proposal
-Message-ID: <20190612120907.GC14578@quack2.suse.cz>
+Message-ID: <20190612123751.GD32656@bombadil.infradead.org>
 References: <20190606014544.8339-1-ira.weiny@intel.com>
  <20190606104203.GF7433@quack2.suse.cz>
- <20190606195114.GA30714@ziepe.ca>
- <20190606222228.GB11698@iweiny-DESK2.sc.intel.com>
- <20190607103636.GA12765@quack2.suse.cz>
- <20190607121729.GA14802@ziepe.ca>
- <20190607145213.GB14559@iweiny-DESK2.sc.intel.com>
- <20190612102917.GB14578@quack2.suse.cz>
- <20190612114721.GB3876@ziepe.ca>
+ <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
+ <20190607110426.GB12765@quack2.suse.cz>
+ <20190607182534.GC14559@iweiny-DESK2.sc.intel.com>
+ <20190608001036.GF14308@dread.disaster.area>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190612114721.GB3876@ziepe.ca>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190608001036.GF14308@dread.disaster.area>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,56 +58,43 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm@lists.01.org,
- Dave Chinner <david@fromorbit.com>, Jeff Layton <jlayton@kernel.org>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Jan Kara <jack@suse.cz>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Jeff Layton <jlayton@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org,
  =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- John Hubbard <jhubbard@nvidia.com>, linux-fsdevel@vger.kernel.org,
- Theodore Ts'o <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed 12-06-19 08:47:21, Jason Gunthorpe wrote:
-> On Wed, Jun 12, 2019 at 12:29:17PM +0200, Jan Kara wrote:
-> 
-> > > > The main objection to the current ODP & DAX solution is that very
-> > > > little HW can actually implement it, having the alternative still
-> > > > require HW support doesn't seem like progress.
-> > > > 
-> > > > I think we will eventually start seein some HW be able to do this
-> > > > invalidation, but it won't be universal, and I'd rather leave it
-> > > > optional, for recovery from truely catastrophic errors (ie my DAX is
-> > > > on fire, I need to unplug it).
-> > > 
-> > > Agreed.  I think software wise there is not much some of the devices can do
-> > > with such an "invalidate".
+On Sat, Jun 08, 2019 at 10:10:36AM +1000, Dave Chinner wrote:
+> On Fri, Jun 07, 2019 at 11:25:35AM -0700, Ira Weiny wrote:
+> > Are you suggesting that we have something like this from user space?
 > > 
-> > So out of curiosity: What does RDMA driver do when userspace just closes
-> > the file pointing to RDMA object? It has to handle that somehow by aborting
-> > everything that's going on... And I wanted similar behavior here.
+> > 	fcntl(fd, F_SETLEASE, F_LAYOUT | F_UNBREAKABLE);
 > 
-> It aborts *everything* connected to that file descriptor. Destroying
-> everything avoids creating inconsistencies that destroying a subset
-> would create.
+> Rather than "unbreakable", perhaps a clearer description of the
+> policy it entails is "exclusive"?
 > 
-> What has been talked about for lease break is not destroying anything
-> but very selectively saying that one memory region linked to the GUP
-> is no longer functional.
+> i.e. what we are talking about here is an exclusive lease that
+> prevents other processes from changing the layout. i.e. the
+> mechanism used to guarantee a lease is exclusive is that the layout
+> becomes "unbreakable" at the filesystem level, but the policy we are
+> actually presenting to uses is "exclusive access"...
 
-OK, so what I had in mind was that if RDMA app doesn't play by the rules
-and closes the file with existing pins (and thus layout lease) we would
-force it to abort everything. Yes, it is disruptive but then the app didn't
-obey the rule that it has to maintain file lease while holding pins. Thus
-such situation should never happen unless the app is malicious / buggy.
+That's rather different from the normal meaning of 'exclusive' in the
+context of locks, which is "only one user can have access to this at
+a time".  As I understand it, this is rather more like a 'shared' or
+'read' lock.  The filesystem would be the one which wants an exclusive
+lock, so it can modify the mapping of logical to physical blocks.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+The complication being that by default the filesystem has an exclusive
+lock on the mapping, and what we're trying to add is the ability for
+readers to ask the filesystem to give up its exclusive lock.
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
