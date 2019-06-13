@@ -2,55 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F4143221
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 03:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E268543246
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 05:00:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0E7AA21296068;
-	Wed, 12 Jun 2019 18:57:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6E22A21296070;
+	Wed, 12 Jun 2019 20:00:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id AFC9721290DDC
- for <linux-nvdimm@lists.01.org>; Wed, 12 Jun 2019 18:57:08 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2019 18:57:08 -0700
-X-ExtLoop1: 1
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
- by orsmga001.jf.intel.com with ESMTP; 12 Jun 2019 18:57:08 -0700
-Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Wed, 12 Jun 2019 18:57:03 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.221]) by
- fmsmsx115.amr.corp.intel.com ([169.254.4.97]) with mapi id 14.03.0415.000;
- Wed, 12 Jun 2019 18:57:03 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Schofield, Alison" <alison.schofield@intel.com>
-Subject: Re: [ndctl PATCH] ndctl, test: handle backup_keys in security.sh
-Thread-Topic: [ndctl PATCH] ndctl, test: handle backup_keys in security.sh
-Thread-Index: AQHVIXNfwyDWrTUAjEa0IiecGmfp8aaZHTWAgAABsoCAACdlgIAAArwA
-Date: Thu, 13 Jun 2019 01:57:03 +0000
-Message-ID: <a5758bf2264ccbee42cbbb321f5376a31a349fb1.camel@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id E2B3121296068
+ for <linux-nvdimm@lists.01.org>; Wed, 12 Jun 2019 20:00:31 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id j184so151683oih.1
+ for <linux-nvdimm@lists.01.org>; Wed, 12 Jun 2019 20:00:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=YtjHKeXC4gIvWD7qIGCgLw3Y5rasSRSWMaIKFvsdDLo=;
+ b=Z8pBU4MM25/wj5R0MSgnE2EPofOlEtN2GXwgPgbMyok9GqUy7nHcXNH+xGB6LmT1ds
+ oFAlrCARwn+KZmiDGhZsORABHwyYYpgWGD2z0mYN4HCjMyw6IlFzjKsLRhAGX19bRgnB
+ jBYVkB9m7wd+GiGSDMD6A+OxtmgwTRLFxDzsXxx3SezFNwsiQ5JAvG5ZgiV7nRk3Cmuq
+ khirjSp+wF9zavgenYpPzxsu4hqI5rrTwvkIuGZqjdzmKJa3u+iiGyemwNXooWty8Fa3
+ Bv6VZE0RWMokXXovIf8jHh0nSRwZMF8x9nAaEz/29a7/iNnqdCPbA9Tuh3pqMIZkta0W
+ qgRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=YtjHKeXC4gIvWD7qIGCgLw3Y5rasSRSWMaIKFvsdDLo=;
+ b=rsrwqTbv4nK2GG/XMkwU1RrWcNomSp4qsLvPzR12mYpdBF/e57DTrtRZF8mpKMDn/n
+ 9umB2+D7kUgbJv77mx0Wcsdo7PYPVJeEJ00B/8kds+zN8jP9Fr72zXwS5EgLzDOAHd/6
+ ffFqCwnznxR+9XVZphJnOboRQIPNWAKDws8mHgN6lgFMcx6nk8zHdBMHV4lytr1iRcah
+ 0OHjr8OrXT6gvVxU+jTC7DOnDNmt3dQ9WDToYEe/j+i2KXUcb/iD39FN3WNBsMx7dPn3
+ HoBzFhJVKnopM3zzjyEy04uRZkE7y3urC3SD2HGXm0J5LbJI3+ns99oVSQ83TAn9taeX
+ F62g==
+X-Gm-Message-State: APjAAAW9o7iiilcb7g7ufndax47HTBHT9jH44HP18wr87VR/uABtrLF5
+ dBdie+mqpIHdcr48NaSvhZsbuXBFLpOXVEAWlAqhnA==
+X-Google-Smtp-Source: APXvYqxLQnntDWChlW5lUjbJdUNY/9pm0XYSXx35GpIfBrFOD5Lh4OxS2JEb0/NaJrEj5ME9HRrmcN4fRh+VmQGedXA=
+X-Received: by 2002:aca:ed4c:: with SMTP id l73mr1572723oih.149.1560394830393; 
+ Wed, 12 Jun 2019 20:00:30 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190612230845.GA13679@alison-desk.jf.intel.com>
  <CAPcyv4iF5cDoNB4e3GF0_HJRbxn+VWk=5QKuEk4wBWWn66AUvA@mail.gmail.com>
  <af2106d6b8f6380f59c6e26ba272abc8da5a7a73.camel@intel.com>
  <20190613014715.GA16728@alison-desk.jf.intel.com>
 In-Reply-To: <20190613014715.GA16728@alison-desk.jf.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <CC8DC32E1AFDB54789DF7CEE43411592@intel.com>
-MIME-Version: 1.0
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 12 Jun 2019 20:00:18 -0700
+Message-ID: <CAPcyv4gpVHv+dc4Uqe6SCyZ2du1mAAq4SC8cy+xX0RSzcf8j1Q@mail.gmail.com>
+Subject: Re: [ndctl PATCH] ndctl, test: handle backup_keys in security.sh
+To: Alison Schofield <alison.schofield@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,35 +74,37 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-On Wed, 2019-06-12 at 18:47 -0700, Alison Schofield wrote:
+On Wed, Jun 12, 2019 at 6:44 PM Alison Schofield
+<alison.schofield@intel.com> wrote:
+>
 > On Wed, Jun 12, 2019 at 04:26:16PM -0700, Verma, Vishal L wrote:
+> >
 > > On Wed, 2019-06-12 at 16:20 -0700, Dan Williams wrote:
 > > > On Wed, Jun 12, 2019 at 4:05 PM Alison Schofield
 > > > <alison.schofield@intel.com> wrote:
 > > > > Fix a typo in security.sh that causes a script failure
 > > > > when an nvdimm-master.blob already exists and needs to
 > > > > be backed up.
-> > > > 
+> > > >
 > > > > + setup_keys
 > > > > + '[' '!' -d /etc/ndctl/keys ']'
 > > > > + '[' -f /etc/ndctl/keys/nvdimm-master.blob ']'
 > > > > + mv /etc/ndctl/keys/nvdimm-master.blob /etc/ndctl/keys/nvdimm-master.blob.bak
 > > > > + 0=1
 > > > > ./security.sh: line 39: 0=1: command not found
-> > > > 
+> > > >
 > > > > Fixes: ba35642d3815 ("ndctl: add a load-keys test in the security unit test")
 > > > > Signed-off-by: Alison Schofield <alison.schofield@intel.com>
 > > > > ---
 > > > >  test/security.sh | 4 ++--
 > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > 
+> > > >
 > > > > diff --git a/test/security.sh b/test/security.sh
 > > > > index 8a36265..c86d2c6 100755
 > > > > --- a/test/security.sh
 > > > > +++ b/test/security.sh
 > > > > @@ -36,11 +36,11 @@ setup_keys()
-> > > > 
+> > > >
 > > > >         if [ -f "$masterpath" ]; then
 > > > >                 mv "$masterpath" "$masterpath.bak"
 > > > > -               $backup_key=1
@@ -107,39 +115,30 @@ On Wed, 2019-06-12 at 18:47 -0700, Alison Schofield wrote:
 > > > > -               $backup_handle=1
 > > > > +               backup_handle=1
 > > > >         fi
-> > > 
+> > >
 > > > Looks obviously correct to me.
-> > > 
+> > >
 > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> > > 
+> > >
 > > > ...but that said, why is this test even bothering with the host's
 > > > configuration? I think it should be using a test local directory that
 > > > does not disturb the rest of the system, especially because the test
 > > > is using nfit_test resources.
-> 
+>
 > At first glance, it appears that the keys need to be in the
 > {ndctl_keysdir}, aka, the official system location, for some
 > of the ndctl commands to run. So, it's not as simple as just
 > creating the key blob in a temp directory.
-> 
+
+Currently, yes, but the typical way to override a build time
+configuration is with an environment variable, similar to what we do
+with NDCTL_TIMEOUT.
+
 > And, I don't even think that's the nfit_test resource you are
 > referring to anyway. I'll keep a look out for how it can run
 > cleaner, and make it off the ENABLE_DESTRUCTIVE list in the future.
 
-Yes I think eventually we want the keys to be configurable on a more
-fine-grained bases, and that would allow for other locations.
-
-> 
-> > > There's no guarantee that the script successfully reaches the
-> > > post_cleanup() phase to restore the host configuration and could leave
-> > > it broken. Unless / until we can fix up this test to not touch /etc I
-> > > think it should be moved to the ENABLE_DESTRUCTIVE set of tests.
-> > 
-> > Hm, yes good point. I agree with moving it to destructive for now.
-> Vishal, Do you need a patch that moves it to the naughty list?
-
-I wouldn't say no to one!
-
+The test uses fake DIMMs from $NFIT_TEST_BUS0.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
