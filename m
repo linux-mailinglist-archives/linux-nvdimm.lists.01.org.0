@@ -2,47 +2,35 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DC944E26
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 23:12:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B5744E4F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 23:21:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 732A421296719;
-	Thu, 13 Jun 2019 14:12:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 36E912129671B;
+	Thu, 13 Jun 2019 14:21:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
+ helo=newverein.lst.de; envelope-from=hch@lst.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id ACA4721296711
- for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 14:12:01 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2019 14:12:01 -0700
-X-ExtLoop1: 1
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga006.jf.intel.com with ESMTP; 13 Jun 2019 14:12:00 -0700
-Date: Thu, 13 Jun 2019 14:13:21 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH RFC 00/10] RDMA/FS DAX truncate proposal
-Message-ID: <20190613211321.GC32404@iweiny-DESK2.sc.intel.com>
-References: <20190606014544.8339-1-ira.weiny@intel.com>
- <20190606104203.GF7433@quack2.suse.cz>
- <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
- <20190607110426.GB12765@quack2.suse.cz>
- <20190607182534.GC14559@iweiny-DESK2.sc.intel.com>
- <20190608001036.GF14308@dread.disaster.area>
- <20190612123751.GD32656@bombadil.infradead.org>
- <20190613002555.GH14363@dread.disaster.area>
- <20190613152755.GI32656@bombadil.infradead.org>
+ by ml01.01.org (Postfix) with ESMTPS id 4342A21237804
+ for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 14:21:31 -0700 (PDT)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id A375468B02; Thu, 13 Jun 2019 23:21:01 +0200 (CEST)
+Date: Thu, 13 Jun 2019 23:21:01 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Jason Gunthorpe <jgg@mellanox.com>
+Subject: Re: dev_pagemap related cleanups
+Message-ID: <20190613212101.GA27174@lst.de>
+References: <20190613094326.24093-1-hch@lst.de>
+ <CAPcyv4jBdwYaiVwkhy6kP78OBAs+vJme1UTm47dX4Eq_5=JgSg@mail.gmail.com>
+ <20190613204043.GD22062@mellanox.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190613152755.GI32656@bombadil.infradead.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20190613204043.GD22062@mellanox.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,46 +42,32 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Jan Kara <jack@suse.cz>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- Dave Chinner <david@fromorbit.com>, Jeff Layton <jlayton@kernel.org>,
- linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Linux MM <linux-mm@kvack.org>,
  =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- John Hubbard <jhubbard@nvidia.com>, linux-fsdevel@vger.kernel.org,
- Theodore Ts'o <tytso@mit.edu>, linux-ext4@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>
+ Ben Skeggs <bskeggs@redhat.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jun 13, 2019 at 08:27:55AM -0700, Matthew Wilcox wrote:
-> On Thu, Jun 13, 2019 at 10:25:55AM +1000, Dave Chinner wrote:
-> > e.g. Process A has an exclusive layout lease on file F. It does an
-> > IO to file F. The filesystem IO path checks that Process A owns the
-> > lease on the file and so skips straight through layout breaking
-> > because it owns the lease and is allowed to modify the layout. It
-> > then takes the inode metadata locks to allocate new space and write
-> > new data.
-> > 
-> > Process B now tries to write to file F. The FS checks whether
-> > Process B owns a layout lease on file F. It doesn't, so then it
-> > tries to break the layout lease so the IO can proceed. The layout
-> > breaking code sees that process A has an exclusive layout lease
-> > granted, and so returns -ETXTBSY to process B - it is not allowed to
-> > break the lease and so the IO fails with -ETXTBSY.
+On Thu, Jun 13, 2019 at 08:40:46PM +0000, Jason Gunthorpe wrote:
+> > Perhaps we should pull those out and resend them through hmm.git?
 > 
-> This description doesn't match the behaviour that RDMA wants either.
-> Even if Process A has a lease on the file, an IO from Process A which
-> results in blocks being freed from the file is going to result in the
-> RDMA device being able to write to blocks which are now freed (and
-> potentially reallocated to another file).
+> It could be done - but how bad is the conflict resolution?
 
-I don't understand why this would not work for RDMA?  As long as the layout
-does not change the page pins can remain in place.
+Trivial.  All but one patch just apply using git-am, and the other one
+just has a few lines of offsets.
 
-Ira
-
+I've also done a preliminary rebase of my series on top of those
+patches, and it really nicely helps making the drivers even simpler
+and allows using the internal refcount in p2pdma.c as well.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
