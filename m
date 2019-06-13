@@ -2,80 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF70944CCB
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 22:02:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B8144CD7
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 22:04:10 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 458DD21296703;
-	Thu, 13 Jun 2019 13:02:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 878EF21296704;
+	Thu, 13 Jun 2019 13:04:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=40.107.2.87; helo=eur02-ve1-obe.outbound.protection.outlook.com;
+ client-ip=40.107.2.66; helo=eur02-ve1-obe.outbound.protection.outlook.com;
  envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
 Received: from EUR02-VE1-obe.outbound.protection.outlook.com
- (mail-eopbgr20087.outbound.protection.outlook.com [40.107.2.87])
+ (mail-eopbgr20066.outbound.protection.outlook.com [40.107.2.66])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1C31E2129641B
- for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 13:01:58 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id C31E32129641B
+ for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 13:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2lmhrKuSV7GaCf2C9+fxP56+CLwg4sVHwuhk2+6yAoA=;
- b=nXHH6oTMdTMLmi/TtImBS/dCyHU78zPjEUjNSp4lnVViy2lTe4AGx/4SeMkZVFDBhoMNAia0JdmLifxdH4Lr98odLCuLVpxPcLYBuHFpOxbTMu3TvhAnWgTwwxsm+pF4izCRK+/ISDqaIWNIQj2rfgiibv/r9EJD1smDKgXN6eA=
+ bh=YnyCRHhq6our3JahOP7YUJnCatYmzhQnh3SEMqGi3dI=;
+ b=tDnFxoEoVdJBSN3ifgsVF1zVBJV+F7fIQFERH6l2SFzpul7cbtTkMS4MxC6YxRlST4jOSZUB3kCC8MnSqhwbNgP97LvBIHKqZn3DwjpIUiqGNULbal9I3/wQPE+1k7Qa4APNV7lQY7PyLFlmnfI34vV38Sl/Z5PjU8dXF8PeMCk=
 Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
  VI1PR05MB4381.eurprd05.prod.outlook.com (52.133.13.12) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.13; Thu, 13 Jun 2019 20:01:55 +0000
+ 15.20.1987.13; Thu, 13 Jun 2019 20:04:03 +0000
 Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
  ([fe80::c16d:129:4a40:9ba1]) by VI1PR05MB4141.eurprd05.prod.outlook.com
  ([fe80::c16d:129:4a40:9ba1%6]) with mapi id 15.20.1987.012; Thu, 13 Jun 2019
- 20:01:55 +0000
+ 20:04:03 +0000
 From: Jason Gunthorpe <jgg@mellanox.com>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 21/22] mm: remove the HMM config option
-Thread-Topic: [PATCH 21/22] mm: remove the HMM config option
-Thread-Index: AQHVIcybZ4YnmSc/ekSwqfkgyQT9faaaAhMA
-Date: Thu, 13 Jun 2019 20:01:55 +0000
-Message-ID: <20190613200150.GB22062@mellanox.com>
+Subject: Re: [PATCH 22/22] mm: don't select MIGRATE_VMA_HELPER from HMM_MIRROR
+Thread-Topic: [PATCH 22/22] mm: don't select MIGRATE_VMA_HELPER from HMM_MIRROR
+Thread-Index: AQHVIcyc3r2YZSS3CUapXwnP1XJouKaaAquA
+Date: Thu, 13 Jun 2019 20:04:03 +0000
+Message-ID: <20190613200357.GC22062@mellanox.com>
 References: <20190613094326.24093-1-hch@lst.de>
- <20190613094326.24093-22-hch@lst.de>
-In-Reply-To: <20190613094326.24093-22-hch@lst.de>
+ <20190613094326.24093-23-hch@lst.de>
+In-Reply-To: <20190613094326.24093-23-hch@lst.de>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-clientproxiedby: BL0PR02CA0082.namprd02.prod.outlook.com
- (2603:10b6:208:51::23) To VI1PR05MB4141.eurprd05.prod.outlook.com
+x-clientproxiedby: YQXPR01CA0086.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00:41::15) To VI1PR05MB4141.eurprd05.prod.outlook.com
  (2603:10a6:803:4d::16)
 authentication-results: spf=none (sender IP is )
  smtp.mailfrom=jgg@mellanox.com; 
 x-ms-exchange-messagesentrepresentingtype: 1
 x-originating-ip: [156.34.55.100]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c7d97d2a-4a43-492c-522b-08d6f039fbe4
+x-ms-office365-filtering-correlation-id: a348214a-681a-493b-a591-08d6f03a4842
 x-ms-office365-filtering-ht: Tenant
 x-microsoft-antispam: BCL:0; PCL:0;
  RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
  SRVR:VI1PR05MB4381; 
 x-ms-traffictypediagnostic: VI1PR05MB4381:
-x-microsoft-antispam-prvs: <VI1PR05MB4381BEEE04CCE0A53CD45D77CFEF0@VI1PR05MB4381.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-microsoft-antispam-prvs: <VI1PR05MB43813927D62479F9D88EF8ABCFEF0@VI1PR05MB4381.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:765;
 x-forefront-prvs: 0067A8BA2A
 x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(396003)(136003)(376002)(39860400002)(346002)(366004)(189003)(199004)(68736007)(52116002)(53936002)(2906002)(6246003)(71190400001)(71200400001)(26005)(66066001)(81156014)(81166006)(36756003)(54906003)(5660300002)(33656002)(6436002)(102836004)(1076003)(86362001)(99286004)(6486002)(6916009)(229853002)(6116002)(76176011)(3846002)(386003)(316002)(7416002)(6506007)(14454004)(446003)(476003)(7736002)(11346002)(6512007)(8936002)(2616005)(186003)(4326008)(478600001)(486006)(64756008)(66446008)(305945005)(66556008)(256004)(4744005)(8676002)(25786009)(73956011)(66946007)(66476007);
+ SFS:(10009020)(366004)(346002)(39860400002)(376002)(136003)(396003)(199004)(189003)(446003)(476003)(14454004)(8936002)(6512007)(186003)(2616005)(11346002)(7736002)(3846002)(386003)(6116002)(76176011)(6506007)(316002)(7416002)(8676002)(4744005)(256004)(66946007)(66476007)(25786009)(73956011)(478600001)(14444005)(4326008)(64756008)(66446008)(66556008)(305945005)(486006)(66066001)(81166006)(36756003)(81156014)(68736007)(53936002)(52116002)(71190400001)(26005)(71200400001)(6246003)(2906002)(6486002)(99286004)(86362001)(229853002)(6916009)(33656002)(54906003)(5660300002)(1076003)(102836004)(6436002);
  DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB4381;
  H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
+ PTR:InfoNoRecords; A:1; MX:1; 
 received-spf: None (protection.outlook.com: mellanox.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 7yWCsk29qZQJ4Hn9JUnWEfUTBD+kbukUw0AN3qXho23YT0zYsYge5E4RXgxJRsbaXi5No2o4BAdg3BW9u67HbUL/SigKNq9GtuqbhSWyCmUbByPx6Qh+tnSkwrr6J++SoZOFL38nzVkfKSB0Dg7VS7R2jtx055eoY7l/DcgRp8Rsm1zQ/FL0XElohyiIghL8gA6UoyT1JU0Du1rAA508vDb2CvlZv2hIGcs5AYYuKsqpDOJGlM7TjL3GJWbl8B8wNSh2iTlmyf2VDQoE4WlvPqhMKur+sHPzL0R7SZg257XZygcRGjOFIyJLnOyo1z6DalA94eYsFjveI0KR74DInxMg4ixWlprhTJ0l5J1ub+ASeoqTeP83paufq04i2gx1MODiqrVm82Fv2gIkrAqFm+kQZfckMDd0HKbfK308SNI=
-Content-ID: <4F4AB6FDDD24014F95455A97A0E953B7@eurprd05.prod.outlook.com>
+x-microsoft-antispam-message-info: wHlkn2ZfV9rDati83SasESQC5vPO5aAUc6haeZsc3mf5YMTqR0rvPOwQ/jmHjydNylEIBAbQSsIpA4xlWwWWmXVcbjuSbBG89xPpjgnzFAY9/pNQ0MevcNaLFvKVwmaofHBRX3U80+m+n/XNiTHFh4Dkr1Y8xUBqXH3Bm7kLAGqZNIa80R9+gfK1I/ojwlmseAk+31Z3tJJsHWoHjogYiG/BUrdnA2YRRv//z4Yoth+w2fzdP6j9E9OO8whiiJCjw7AHM2LJhRP1YU7SSXS5ASCcA0Aa7Ja/kHzVKJHzFIDfaLy7RBoiCbsIbgGKzVoRMwiljvO9aMLS2+LOzhiT2/5Ldlmi0pcEr629xNZ/eEkITnDNP+wcG4JcSreBI0wnIMLHZJIO86ajMA/D9QjQnb+9FjlgsHFbbVB1Rjgz34U=
+Content-ID: <DC6C94E2B8591541A7B0CC844A612312@eurprd05.prod.outlook.com>
 MIME-Version: 1.0
 X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7d97d2a-4a43-492c-522b-08d6f039fbe4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2019 20:01:55.3627 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a348214a-681a-493b-a591-08d6f03a4842
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2019 20:04:03.4038 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
@@ -105,18 +105,21 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jun 13, 2019 at 11:43:24AM +0200, Christoph Hellwig wrote:
-> All the mm/hmm.c code is better keyed off HMM_MIRROR.  Also let nouveau
-> depend on it instead of the mix of a dummy dependency symbol plus the
-> actually selected one.  Drop various odd dependencies, as the code is
-> pretty portable.
+On Thu, Jun 13, 2019 at 11:43:25AM +0200, Christoph Hellwig wrote:
+> The migrate_vma helper is only used by noveau to migrate device private
+> pages around.  Other HMM_MIRROR users like amdgpu or infiniband don't
+> need it.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/gpu/drm/nouveau/Kconfig | 1 +
+>  mm/Kconfig                      | 1 -
+>  2 files changed, 1 insertion(+), 1 deletion(-)
 
-I don't really know, but I thought this needed the arch restriction
-for the same reason get_user_pages has various unique arch specific
-implementations (it does seem to have some open coded GUP like thing)?
+Yes, the thing that calls migrate_vma() should be the thing that has
+the kconfig stuff.
 
-I was hoping we could do this after your common gup series? But sooner
-is better too.
+Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
 
 Jason
 _______________________________________________
