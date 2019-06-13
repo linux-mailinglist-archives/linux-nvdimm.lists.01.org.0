@@ -2,46 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D8D44DC3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 22:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DC944E26
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Jun 2019 23:12:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BDFC621296715;
-	Thu, 13 Jun 2019 13:48:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 732A421296719;
+	Thu, 13 Jun 2019 14:12:02 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=akpm@linux-foundation.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4FE4A21296705
- for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 13:48:33 -0700 (PDT)
-Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8B3942133D;
- Thu, 13 Jun 2019 20:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1560458913;
- bh=QBKFiYL+IE6QfIxDxWONJrMHcfZVbZUqMyER/iI/i+c=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=W8RFMGE2XEBfIMgZiJVLDJlgDCfrRRk8a5YMGm6NJWq3iOW7BFqDgEcE3jR3EzuxH
- 6mecnfow3Qth0X+c0FNOd8EU7Tgs7NtIzjtvm3fET+fi8GtnZHvccohCORja+Kjvbx
- qMyCzCY6jdHR6rPl/G9MUU/Sgsma/isYN3+x1ZvE=
-Date: Thu, 13 Jun 2019 13:48:31 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Logan Gunthorpe <logang@deltatee.com>
-Subject: Re: dev_pagemap related cleanups
-Message-Id: <20190613134831.a7ecb1b422a732bff156ec50@linux-foundation.org>
-In-Reply-To: <d0da4c86-ef52-b981-06af-b37e3e0515ee@deltatee.com>
-References: <20190613094326.24093-1-hch@lst.de>
- <CAPcyv4jBdwYaiVwkhy6kP78OBAs+vJme1UTm47dX4Eq_5=JgSg@mail.gmail.com>
- <283e87e8-20b6-0505-a19b-5d18e057f008@deltatee.com>
- <CAPcyv4hx=ng3SxzAWd8s_8VtAfoiiWhiA5kodi9KPc=jGmnejg@mail.gmail.com>
- <d0da4c86-ef52-b981-06af-b37e3e0515ee@deltatee.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id ACA4721296711
+ for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 14:12:01 -0700 (PDT)
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2019 14:12:01 -0700
+X-ExtLoop1: 1
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by orsmga006.jf.intel.com with ESMTP; 13 Jun 2019 14:12:00 -0700
+Date: Thu, 13 Jun 2019 14:13:21 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH RFC 00/10] RDMA/FS DAX truncate proposal
+Message-ID: <20190613211321.GC32404@iweiny-DESK2.sc.intel.com>
+References: <20190606014544.8339-1-ira.weiny@intel.com>
+ <20190606104203.GF7433@quack2.suse.cz>
+ <20190606220329.GA11698@iweiny-DESK2.sc.intel.com>
+ <20190607110426.GB12765@quack2.suse.cz>
+ <20190607182534.GC14559@iweiny-DESK2.sc.intel.com>
+ <20190608001036.GF14308@dread.disaster.area>
+ <20190612123751.GD32656@bombadil.infradead.org>
+ <20190613002555.GH14363@dread.disaster.area>
+ <20190613152755.GI32656@bombadil.infradead.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190613152755.GI32656@bombadil.infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,87 +54,45 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>,
- =?ISO-8859-1?Q?J=E9r=F4me?= Glisse <jglisse@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
- linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Jan Kara <jack@suse.cz>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ Dave Chinner <david@fromorbit.com>, Jeff Layton <jlayton@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ John Hubbard <jhubbard@nvidia.com>, linux-fsdevel@vger.kernel.org,
+ Theodore Ts'o <tytso@mit.edu>, linux-ext4@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, 13 Jun 2019 14:24:20 -0600 Logan Gunthorpe <logang@deltatee.com> wr=
-ote:
+On Thu, Jun 13, 2019 at 08:27:55AM -0700, Matthew Wilcox wrote:
+> On Thu, Jun 13, 2019 at 10:25:55AM +1000, Dave Chinner wrote:
+> > e.g. Process A has an exclusive layout lease on file F. It does an
+> > IO to file F. The filesystem IO path checks that Process A owns the
+> > lease on the file and so skips straight through layout breaking
+> > because it owns the lease and is allowed to modify the layout. It
+> > then takes the inode metadata locks to allocate new space and write
+> > new data.
+> > 
+> > Process B now tries to write to file F. The FS checks whether
+> > Process B owns a layout lease on file F. It doesn't, so then it
+> > tries to break the layout lease so the IO can proceed. The layout
+> > breaking code sees that process A has an exclusive layout lease
+> > granted, and so returns -ETXTBSY to process B - it is not allowed to
+> > break the lease and so the IO fails with -ETXTBSY.
+> 
+> This description doesn't match the behaviour that RDMA wants either.
+> Even if Process A has a lease on the file, an IO from Process A which
+> results in blocks being freed from the file is going to result in the
+> RDMA device being able to write to blocks which are now freed (and
+> potentially reallocated to another file).
 
-> =
+I don't understand why this would not work for RDMA?  As long as the layout
+does not change the page pins can remain in place.
 
-> =
-
-> On 2019-06-13 2:21 p.m., Dan Williams wrote:
-> > On Thu, Jun 13, 2019 at 1:18 PM Logan Gunthorpe <logang@deltatee.com> w=
-rote:
-> >>
-> >>
-> >>
-> >> On 2019-06-13 12:27 p.m., Dan Williams wrote:
-> >>> On Thu, Jun 13, 2019 at 2:43 AM Christoph Hellwig <hch@lst.de> wrote:
-> >>>>
-> >>>> Hi Dan, J=E9r=F4me and Jason,
-> >>>>
-> >>>> below is a series that cleans up the dev_pagemap interface so that
-> >>>> it is more easily usable, which removes the need to wrap it in hmm
-> >>>> and thus allowing to kill a lot of code
-> >>>>
-> >>>> Diffstat:
-> >>>>
-> >>>>  22 files changed, 245 insertions(+), 802 deletions(-)
-> >>>
-> >>> Hooray!
-> >>>
-> >>>> Git tree:
-> >>>>
-> >>>>     git://git.infradead.org/users/hch/misc.git hmm-devmem-cleanup
-> >>>
-> >>> I just realized this collides with the dev_pagemap release rework in
-> >>> Andrew's tree (commit ids below are from next.git and are not stable)
-> >>>
-> >>> 4422ee8476f0 mm/devm_memremap_pages: fix final page put race
-> >>> 771f0714d0dc PCI/P2PDMA: track pgmap references per resource, not glo=
-bally
-> >>> af37085de906 lib/genalloc: introduce chunk owners
-> >>> e0047ff8aa77 PCI/P2PDMA: fix the gen_pool_add_virt() failure path
-> >>> 0315d47d6ae9 mm/devm_memremap_pages: introduce devm_memunmap_pages
-> >>> 216475c7eaa8 drivers/base/devres: introduce devm_release_action()
-> >>>
-> >>> CONFLICT (content): Merge conflict in tools/testing/nvdimm/test/iomap=
-.c
-> >>> CONFLICT (content): Merge conflict in mm/hmm.c
-> >>> CONFLICT (content): Merge conflict in kernel/memremap.c
-> >>> CONFLICT (content): Merge conflict in include/linux/memremap.h
-> >>> CONFLICT (content): Merge conflict in drivers/pci/p2pdma.c
-> >>> CONFLICT (content): Merge conflict in drivers/nvdimm/pmem.c
-> >>> CONFLICT (content): Merge conflict in drivers/dax/device.c
-> >>> CONFLICT (content): Merge conflict in drivers/dax/dax-private.h
-> >>>
-> >>> Perhaps we should pull those out and resend them through hmm.git?
-> >>
-> >> Hmm, I've been waiting for those patches to get in for a little while =
-now ;(
-> > =
-
-> > Unless Andrew was going to submit as v5.2-rc fixes I think I should
-> > rebase / submit them on current hmm.git and then throw these cleanups
-> > from Christoph on top?
-> =
-
-> Whatever you feel is best. I'm just hoping they get in sooner rather
-> than later. They do fix a bug after all. Let me know if you want me to
-> retest the P2PDMA stuff after the rebase.
-
-I had them down for 5.3-rc1.  I'll send them along for 5.2-rc5 instead.
+Ira
 
 _______________________________________________
 Linux-nvdimm mailing list
