@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474E14549B
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 08:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE7F454A0
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 08:21:42 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D436421297079;
-	Thu, 13 Jun 2019 23:20:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0F7252129707C;
+	Thu, 13 Jun 2019 23:21:41 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
@@ -15,20 +15,20 @@ Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
 Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EE7F421297071
- for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 23:20:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0EFD821297078
+ for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 23:21:39 -0700 (PDT)
 Received: by newverein.lst.de (Postfix, from userid 2407)
- id 4C76A68B02; Fri, 14 Jun 2019 08:19:46 +0200 (CEST)
-Date: Fri, 14 Jun 2019 08:19:46 +0200
+ id 105CE68B02; Fri, 14 Jun 2019 08:21:11 +0200 (CEST)
+Date: Fri, 14 Jun 2019 08:21:10 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Jason Gunthorpe <jgg@mellanox.com>
-Subject: Re: [PATCH 03/22] mm: remove hmm_devmem_add_resource
-Message-ID: <20190614061946.GE7246@lst.de>
+Subject: Re: [PATCH 04/22] mm: don't clear ->mapping in hmm_devmem_free
+Message-ID: <20190614062110.GF7246@lst.de>
 References: <20190613094326.24093-1-hch@lst.de>
- <20190613094326.24093-4-hch@lst.de> <20190613185239.GP22062@mellanox.com>
+ <20190613094326.24093-5-hch@lst.de> <20190613190501.GQ22062@mellanox.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190613185239.GP22062@mellanox.com>
+In-Reply-To: <20190613190501.GQ22062@mellanox.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -55,30 +55,19 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jun 13, 2019 at 06:52:44PM +0000, Jason Gunthorpe wrote:
-> On Thu, Jun 13, 2019 at 11:43:06AM +0200, Christoph Hellwig wrote:
-> > This function has never been used since it was first added to the kernel
-> > more than a year and a half ago, and if we ever grow a consumer of the
-> > MEMORY_DEVICE_PUBLIC infrastructure it can easily use devm_memremap_pages
-> > directly now that we've simplified the API for it.
+On Thu, Jun 13, 2019 at 07:05:07PM +0000, Jason Gunthorpe wrote:
+> Hurm, is hmm following this comment from mm_types.h?
 > 
-> nit: Have we simplified the interface for devm_memremap_pages() at
-> this point, or are you talking about later patches in this series.
-
-After this series.  I've just droped that part of the sentence to
-avoid confusion.
-
-> I checked this and all the called functions are exported symbols, so
-> there is no blocker for a future driver to call devm_memremap_pages(),
-> maybe even with all this boiler plate, in future.
+>  * If you allocate the page using alloc_pages(), you can use some of the
+>  * space in struct page for your own purposes.  The five words in the main
+>  * union are available, except for bit 0 of the first word which must be
+>  * kept clear.  Many users use this word to store a pointer to an object
+>  * which is guaranteed to be aligned.  If you use the same storage as
+>  * page->mapping, you must restore it to NULL before freeing the page.
 > 
-> If we eventually get many users that need some simplified registration
-> then we should add a devm_memremap_pages_simplified() interface and
-> factor out that code when we can see the pattern.
+> Maybe the assumption was that a driver is using ->mapping ?
 
-After this series devm_memremap_pages already is simpler to use than
-hmm_device_add_resource was before, so I'm not worried at all.  The
-series actually net removes lines from noveau (if only a few).
+Maybe.  The union layou in struct page certainly doesn't help..
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
