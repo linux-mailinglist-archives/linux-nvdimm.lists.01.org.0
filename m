@@ -2,90 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EB75457C3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 10:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D554646451
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 18:36:47 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ECD442129DBA5;
-	Fri, 14 Jun 2019 01:39:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 630BC2129EBA0;
+	Fri, 14 Jun 2019 09:36:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4107821295B25
- for <linux-nvdimm@lists.01.org>; Fri, 14 Jun 2019 01:39:50 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 90AAE3082B15;
- Fri, 14 Jun 2019 08:39:44 +0000 (UTC)
-Received: from [10.36.116.252] (ovpn-116-252.ams2.redhat.com [10.36.116.252])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5265E2AA88;
- Fri, 14 Jun 2019 08:39:41 +0000 (UTC)
-Subject: Re: [PATCH v9 07/12] mm/sparsemem: Prepare for sub-section ranges
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-References: <155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155977191770.2443951.1506588644989416699.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <cb4b20ce-cd07-b274-7033-b2b7ca6df1dd@redhat.com>
-Date: Fri, 14 Jun 2019 10:39:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by ml01.01.org (Postfix) with ESMTPS id 74BC22129DB89
+ for <linux-nvdimm@lists.01.org>; Fri, 14 Jun 2019 09:36:45 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id j184so2432845oih.1
+ for <linux-nvdimm@lists.01.org>; Fri, 14 Jun 2019 09:36:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=EvAQexBEPL7nJ/QjTH44i3lQXyubE+6SE92rMt2TZnA=;
+ b=xQp7xtj36pghq2SegeVzV1Nb6Jx+8KWpSM1bivXSZruRDpGMoWRWchUkI0VOEoENxP
+ XrHss5QzoD3JdjLKm/7fhMkySRU7ZKwukK//Icf268cwemrp8asrCuCmjX4Icr7gPuyX
+ Q4RK0eY8EPnZdU8cWgEV/iGcuJKS6Ht5Yewp3ICmMddmKbsxCODaQZXWIFRjevkOZqeQ
+ p2CCFO0UtUlJPR13efKardTCBubi+djaxfZjklcwiNhGsemJilUwKnqh4jff1ZLVr89Y
+ I+5zddT/p6HMYozKqgwPkpeoH94ISqHDOGgnAKs+m9EoB/jWQAxr2nSwWuUfIq+6gQ32
+ e8pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=EvAQexBEPL7nJ/QjTH44i3lQXyubE+6SE92rMt2TZnA=;
+ b=rKlcAIL6+ryVfFTQz9413GcltcG1NXlSKdKsVN1PwBByHDP55fGKIPFdt6wD0lT5qG
+ 1nk2AQZ2z1g2vViX5kJo+4bUlxYpRpKZhs0K5q1hzi312Cpb1cuGeBdkdycncu1Os+jQ
+ e9IObMm4n0lEcGLXBy+jcutjJGipjRA2wrbBVnUD3FxZk90FojV4O4ddGvKBk7zlu/UB
+ rEbnEPlmNF1JQPUXJT+HkKMrKxCOTU4+cCeP/kfMoP11J0UtCZu4W4fGMWpOpVzupxc/
+ m1LgZ9yFJQLzCjVJgIkljK16i8w+x9ggl8AQRmTaNrbQfTvByL5x/vRBR4uSyv+GtBjv
+ 8QYA==
+X-Gm-Message-State: APjAAAWIjQUYbEtOXhxiAH2mpuxSLNquVITZUqi13wx+dHBVl1wwtaGX
+ 348g+MmfkFo51P7cVJ7wvb8F9kzd9cK133mRH6fIHg==
+X-Google-Smtp-Source: APXvYqyAFp/NcVwACgsoLfr51WnLFz4lRqOTM95kLcsTY/9X3NmHQmV8Cv5Yzn+oZgNE9ZWsnZXvHNBd8sB4Zn7N3lU=
+X-Received: by 2002:aca:ec82:: with SMTP id k124mr2315505oih.73.1560530204171; 
+ Fri, 14 Jun 2019 09:36:44 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <155977191770.2443951.1506588644989416699.stgit@dwillia2-desk3.amr.corp.intel.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.45]); Fri, 14 Jun 2019 08:39:49 +0000 (UTC)
+References: <1560366952-10660-1-git-send-email-cai@lca.pw>
+ <CAPcyv4hn0Vz24s5EWKr39roXORtBTevZf7dDutH+jwapgV3oSw@mail.gmail.com>
+ <CAPcyv4iuNYXmF0-EMP8GF5aiPsWF+pOFMYKCnr509WoAQ0VNUA@mail.gmail.com>
+ <1560376072.5154.6.camel@lca.pw> <87lfy4ilvj.fsf@linux.ibm.com>
+ <20190614153535.GA9900@linux>
+ <c3f2c05d-e42f-c942-1385-664f646ddd33@linux.ibm.com>
+ <CAPcyv4j_QQB8SrhTqL2mnEEHGYCg4H7kYanChiww35k0fwNv8Q@mail.gmail.com>
+ <24fcb721-5d50-2c34-f44b-69281c8dd760@linux.ibm.com>
+In-Reply-To: <24fcb721-5d50-2c34-f44b-69281c8dd760@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 14 Jun 2019 09:36:33 -0700
+Message-ID: <CAPcyv4ixq6aRQLdiMAUzQ-eDoA-hGbJQ6+_-K-nZzhXX70m1+g@mail.gmail.com>
+Subject: Re: [PATCH -next] mm/hotplug: skip bad PFNs from pfn_to_online_page()
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,235 +72,132 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux MM <linux-mm@kvack.org>, Qian Cai <cai@lca.pw>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 05.06.19 23:58, Dan Williams wrote:
-> Prepare the memory hot-{add,remove} paths for handling sub-section
-> ranges by plumbing the starting page frame and number of pages being
-> handled through arch_{add,remove}_memory() to
-> sparse_{add,remove}_one_section().
-> 
-> This is simply plumbing, small cleanups, and some identifier renames. No
-> intended functional changes.
-> 
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  include/linux/memory_hotplug.h |    5 +-
->  mm/memory_hotplug.c            |  114 +++++++++++++++++++++++++---------------
->  mm/sparse.c                    |   15 ++---
->  3 files changed, 81 insertions(+), 53 deletions(-)
-> 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 79e0add6a597..3ab0282b4fe5 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -348,9 +348,10 @@ extern int add_memory_resource(int nid, struct resource *resource);
->  extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  		unsigned long nr_pages, struct vmem_altmap *altmap);
->  extern bool is_memblock_offlined(struct memory_block *mem);
-> -extern int sparse_add_one_section(int nid, unsigned long start_pfn,
-> -				  struct vmem_altmap *altmap);
-> +extern int sparse_add_section(int nid, unsigned long pfn,
-> +		unsigned long nr_pages, struct vmem_altmap *altmap);
->  extern void sparse_remove_one_section(struct mem_section *ms,
-> +		unsigned long pfn, unsigned long nr_pages,
->  		unsigned long map_offset, struct vmem_altmap *altmap);
->  extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
->  					  unsigned long pnum);
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 4b882c57781a..399bf78bccc5 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -252,51 +252,84 @@ void __init register_page_bootmem_info_node(struct pglist_data *pgdat)
->  }
->  #endif /* CONFIG_HAVE_BOOTMEM_INFO_NODE */
->  
-> -static int __meminit __add_section(int nid, unsigned long phys_start_pfn,
-> -				   struct vmem_altmap *altmap)
-> +static int __meminit __add_section(int nid, unsigned long pfn,
-> +		unsigned long nr_pages,	struct vmem_altmap *altmap)
->  {
->  	int ret;
->  
-> -	if (pfn_valid(phys_start_pfn))
-> +	if (pfn_valid(pfn))
->  		return -EEXIST;
->  
-> -	ret = sparse_add_one_section(nid, phys_start_pfn, altmap);
-> +	ret = sparse_add_section(nid, pfn, nr_pages, altmap);
->  	return ret < 0 ? ret : 0;
->  }
->  
-> +static int check_pfn_span(unsigned long pfn, unsigned long nr_pages,
-> +		const char *reason)
-> +{
-> +	/*
-> +	 * Disallow all operations smaller than a sub-section and only
-> +	 * allow operations smaller than a section for
-> +	 * SPARSEMEM_VMEMMAP. Note that check_hotplug_memory_range()
-> +	 * enforces a larger memory_block_size_bytes() granularity for
-> +	 * memory that will be marked online, so this check should only
-> +	 * fire for direct arch_{add,remove}_memory() users outside of
-> +	 * add_memory_resource().
-> +	 */
-> +	unsigned long min_align;
-> +
-> +	if (IS_ENABLED(CONFIG_SPARSEMEM_VMEMMAP))
-> +		min_align = PAGES_PER_SUBSECTION;
-> +	else
-> +		min_align = PAGES_PER_SECTION;
-> +	if (!IS_ALIGNED(pfn, min_align)
-> +			|| !IS_ALIGNED(nr_pages, min_align)) {
-> +		WARN(1, "Misaligned __%s_pages start: %#lx end: #%lx\n",
-> +				reason, pfn, pfn + nr_pages - 1);
-> +		return -EINVAL;
-> +	}
-> +	return 0;
-> +}
-> +
->  /*
->   * Reasonably generic function for adding memory.  It is
->   * expected that archs that support memory hotplug will
->   * call this function after deciding the zone to which to
->   * add the new pages.
->   */
-> -int __ref __add_pages(int nid, unsigned long phys_start_pfn,
-> -		unsigned long nr_pages, struct mhp_restrictions *restrictions)
-> +int __ref __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
-> +		struct mhp_restrictions *restrictions)
->  {
->  	unsigned long i;
-> -	int err = 0;
-> -	int start_sec, end_sec;
-> +	int start_sec, end_sec, err;
->  	struct vmem_altmap *altmap = restrictions->altmap;
->  
-> -	/* during initialize mem_map, align hot-added range to section */
-> -	start_sec = pfn_to_section_nr(phys_start_pfn);
-> -	end_sec = pfn_to_section_nr(phys_start_pfn + nr_pages - 1);
-> -
->  	if (altmap) {
->  		/*
->  		 * Validate altmap is within bounds of the total request
->  		 */
-> -		if (altmap->base_pfn != phys_start_pfn
-> +		if (altmap->base_pfn != pfn
->  				|| vmem_altmap_offset(altmap) > nr_pages) {
->  			pr_warn_once("memory add fail, invalid altmap\n");
-> -			err = -EINVAL;
-> -			goto out;
-> +			return -EINVAL;
->  		}
->  		altmap->alloc = 0;
->  	}
->  
-> +	err = check_pfn_span(pfn, nr_pages, "add");
-> +	if (err)
-> +		return err;
-> +
-> +	start_sec = pfn_to_section_nr(pfn);
-> +	end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
->  	for (i = start_sec; i <= end_sec; i++) {
-> -		err = __add_section(nid, section_nr_to_pfn(i), altmap);
-> +		unsigned long pfns;
-> +
-> +		pfns = min(nr_pages, PAGES_PER_SECTION
-> +				- (pfn & ~PAGE_SECTION_MASK));
-> +		err = __add_section(nid, pfn, pfns, altmap);
-> +		pfn += pfns;
-> +		nr_pages -= pfns;
->  
->  		/*
->  		 * EEXIST is finally dealt with by ioresource collision
-> @@ -309,7 +342,6 @@ int __ref __add_pages(int nid, unsigned long phys_start_pfn,
->  		cond_resched();
->  	}
->  	vmemmap_populate_print_last();
-> -out:
->  	return err;
->  }
->  
-> @@ -487,10 +519,10 @@ static void shrink_pgdat_span(struct pglist_data *pgdat,
->  	pgdat->node_spanned_pages = 0;
->  }
->  
-> -static void __remove_zone(struct zone *zone, unsigned long start_pfn)
-> +static void __remove_zone(struct zone *zone, unsigned long start_pfn,
-> +		unsigned long nr_pages)
->  {
->  	struct pglist_data *pgdat = zone->zone_pgdat;
-> -	int nr_pages = PAGES_PER_SECTION;
->  	unsigned long flags;
->  
->  	pgdat_resize_lock(zone->zone_pgdat, &flags);
-> @@ -499,27 +531,23 @@ static void __remove_zone(struct zone *zone, unsigned long start_pfn)
->  	pgdat_resize_unlock(zone->zone_pgdat, &flags);
->  }
->  
-> -static void __remove_section(struct zone *zone, struct mem_section *ms,
-> -			     unsigned long map_offset,
-> -			     struct vmem_altmap *altmap)
-> +static void __remove_section(struct zone *zone, unsigned long pfn,
-> +		unsigned long nr_pages, unsigned long map_offset,
-> +		struct vmem_altmap *altmap)
->  {
-> -	unsigned long start_pfn;
-> -	int scn_nr;
-> +	struct mem_section *ms = __nr_to_section(pfn_to_section_nr(pfn));
->  
->  	if (WARN_ON_ONCE(!valid_section(ms)))
->  		return;
->  
-> -	scn_nr = __section_nr(ms);
-> -	start_pfn = section_nr_to_pfn((unsigned long)scn_nr);
-> -	__remove_zone(zone, start_pfn);
-> -
-> -	sparse_remove_one_section(ms, map_offset, altmap);
-> +	__remove_zone(zone, pfn, nr_pages);
-> +	sparse_remove_one_section(ms, pfn, nr_pages, map_offset, altmap);
->  }
->  
->  /**
->   * __remove_pages() - remove sections of pages from a zone
->   * @zone: zone from which pages need to be removed
-> - * @phys_start_pfn: starting pageframe (must be aligned to start of a section)
-> + * @pfn: starting pageframe (must be aligned to start of a section)
->   * @nr_pages: number of pages to remove (must be multiple of section size)
->   * @altmap: alternative device page map or %NULL if default memmap is used
->   *
-> @@ -528,31 +556,31 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
->   * sure that pages are marked reserved and zones are adjust properly by
->   * calling offline_pages().
->   */
-> -void __remove_pages(struct zone *zone, unsigned long phys_start_pfn,
-> +void __remove_pages(struct zone *zone, unsigned long pfn,
->  		    unsigned long nr_pages, struct vmem_altmap *altmap)
->  {
-> -	unsigned long i;
->  	unsigned long map_offset = 0;
-> -	int sections_to_remove;
-> +	int i, start_sec, end_sec;
+On Fri, Jun 14, 2019 at 9:26 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 6/14/19 9:52 PM, Dan Williams wrote:
+> > On Fri, Jun 14, 2019 at 9:18 AM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> On 6/14/19 9:05 PM, Oscar Salvador wrote:
+> >>> On Fri, Jun 14, 2019 at 02:28:40PM +0530, Aneesh Kumar K.V wrote:
+> >>>> Can you check with this change on ppc64.  I haven't reviewed this series yet.
+> >>>> I did limited testing with change . Before merging this I need to go
+> >>>> through the full series again. The vmemmap poplulate on ppc64 needs to
+> >>>> handle two translation mode (hash and radix). With respect to vmemap
+> >>>> hash doesn't setup a translation in the linux page table. Hence we need
+> >>>> to make sure we don't try to setup a mapping for a range which is
+> >>>> arleady convered by an existing mapping.
+> >>>>
+> >>>> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> >>>> index a4e17a979e45..15c342f0a543 100644
+> >>>> --- a/arch/powerpc/mm/init_64.c
+> >>>> +++ b/arch/powerpc/mm/init_64.c
+> >>>> @@ -88,16 +88,23 @@ static unsigned long __meminit vmemmap_section_start(unsigned long page)
+> >>>>     * which overlaps this vmemmap page is initialised then this page is
+> >>>>     * initialised already.
+> >>>>     */
+> >>>> -static int __meminit vmemmap_populated(unsigned long start, int page_size)
+> >>>> +static bool __meminit vmemmap_populated(unsigned long start, int page_size)
+> >>>>    {
+> >>>>       unsigned long end = start + page_size;
+> >>>>       start = (unsigned long)(pfn_to_page(vmemmap_section_start(start)));
+> >>>>
+> >>>> -    for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page)))
+> >>>> -            if (pfn_valid(page_to_pfn((struct page *)start)))
+> >>>> -                    return 1;
+> >>>> +    for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page))) {
+> >>>>
+> >>>> -    return 0;
+> >>>> +            struct mem_section *ms;
+> >>>> +            unsigned long pfn = page_to_pfn((struct page *)start);
+> >>>> +
+> >>>> +            if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+> >>>> +                    return 0;
+> >>>
+> >>> I might be missing something, but is this right?
+> >>> Having a section_nr above NR_MEM_SECTIONS is invalid, but if we return 0 here,
+> >>> vmemmap_populate will go on and populate it.
+> >>
+> >> I should drop that completely. We should not hit that condition at all.
+> >> I will send a final patch once I go through the full patch series making
+> >> sure we are not breaking any ppc64 details.
+> >>
+> >> Wondering why we did the below
+> >>
+> >> #if defined(ARCH_SUBSECTION_SHIFT)
+> >> #define SUBSECTION_SHIFT (ARCH_SUBSECTION_SHIFT)
+> >> #elif defined(PMD_SHIFT)
+> >> #define SUBSECTION_SHIFT (PMD_SHIFT)
+> >> #else
+> >> /*
+> >>    * Memory hotplug enabled platforms avoid this default because they
+> >>    * either define ARCH_SUBSECTION_SHIFT, or PMD_SHIFT is a constant, but
+> >>    * this is kept as a backstop to allow compilation on
+> >>    * !ARCH_ENABLE_MEMORY_HOTPLUG archs.
+> >>    */
+> >> #define SUBSECTION_SHIFT 21
+> >> #endif
+> >>
+> >> why not
+> >>
+> >> #if defined(ARCH_SUBSECTION_SHIFT)
+> >> #define SUBSECTION_SHIFT (ARCH_SUBSECTION_SHIFT)
+> >> #else
+> >> #define SUBSECTION_SHIFT  SECTION_SHIFT
+>
+> That should be SECTION_SIZE_SHIFT
+>
+> >> #endif
+> >>
+> >> ie, if SUBSECTION is not supported by arch we have one sub-section per
+> >> section?
+> >
+> > A couple comments:
+> >
+> > The only reason ARCH_SUBSECTION_SHIFT exists is because PMD_SHIFT on
+> > PowerPC was a non-constant value. However, I'm planning to remove the
+> > distinction in the next rev of the patches. Jeff rightly points out
+> > that having a variable subsection size per arch will lead to
+> > situations where persistent memory namespaces are not portable across
+> > archs. So I plan to just make SUBSECTION_SHIFT 21 everywhere.
+> >
+>
+>
+> persistent memory namespaces are not portable across archs because they
+> have PAGE_SIZE dependency.
 
-Can you convert these to unsigned longs? I'll be sending a clenup that
-will make this consistent tree-wide soon. Just making sure we won't miss
-this.
+We can fix that by reserving mem_map capacity assuming the smallest
+PAGE_SIZE across archs.
 
--- 
+> Then we have dependencies like the page size
+> with which we map the vmemmap area.
 
-Thanks,
+How does that lead to cross-arch incompatibility? Even on a single
+arch the vmemmap area will be mapped with 2MB pages for 128MB aligned
+spans of pmem address space and 4K pages for subsections.
 
-David / dhildenb
+> Why not let the arch
+> arch decide the SUBSECTION_SHIFT and default to one subsection per
+> section if arch is not enabled to work with subsection.
+
+Because that keeps the implementation from ever reaching a point where
+a namespace might be able to be moved from one arch to another. If we
+can squash these arch differences then we can have a common tool to
+initialize namespaces outside of the kernel. The one wrinkle is
+device-dax that wants to enforce the mapping size, but I think we can
+have a module-option compatibility override for that case for the
+admin to say "yes, I know this namespace is defined for 2MB x86 pages,
+but I want to force enable it with 64K pages on PowerPC"
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
