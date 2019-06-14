@@ -1,84 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36296465E8
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 19:40:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A5C3467DE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 20:52:37 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A30BD2129EBAE;
-	Fri, 14 Jun 2019 10:40:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8C9942129EBBC;
+	Fri, 14 Jun 2019 11:52:35 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 988922129EBA9
- for <linux-nvdimm@lists.01.org>; Fri, 14 Jun 2019 10:40:46 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5EHaflD045564; Fri, 14 Jun 2019 13:40:42 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t4ehrmetu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2019 13:40:42 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5EHdUO1029699;
- Fri, 14 Jun 2019 17:40:43 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma01wdc.us.ibm.com with ESMTP id 2t1qcty05s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 14 Jun 2019 17:40:43 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5EHeeTL17236386
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 14 Jun 2019 17:40:40 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7C4B16E04C;
- Fri, 14 Jun 2019 17:40:40 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D6FEA6E050;
- Fri, 14 Jun 2019 17:40:37 +0000 (GMT)
-Received: from [9.199.60.77] (unknown [9.199.60.77])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 14 Jun 2019 17:40:37 +0000 (GMT)
-Subject: Re: [PATCH -next] mm/hotplug: skip bad PFNs from pfn_to_online_page()
-To: Jeff Moyer <jmoyer@redhat.com>
-References: <1560366952-10660-1-git-send-email-cai@lca.pw>
- <CAPcyv4hn0Vz24s5EWKr39roXORtBTevZf7dDutH+jwapgV3oSw@mail.gmail.com>
- <CAPcyv4iuNYXmF0-EMP8GF5aiPsWF+pOFMYKCnr509WoAQ0VNUA@mail.gmail.com>
- <1560376072.5154.6.camel@lca.pw> <87lfy4ilvj.fsf@linux.ibm.com>
- <20190614153535.GA9900@linux>
- <c3f2c05d-e42f-c942-1385-664f646ddd33@linux.ibm.com>
- <CAPcyv4j_QQB8SrhTqL2mnEEHGYCg4H7kYanChiww35k0fwNv8Q@mail.gmail.com>
- <24fcb721-5d50-2c34-f44b-69281c8dd760@linux.ibm.com>
- <CAPcyv4ixq6aRQLdiMAUzQ-eDoA-hGbJQ6+_-K-nZzhXX70m1+g@mail.gmail.com>
- <16108dac-a4ca-aa87-e3b0-a79aebdcfafd@linux.ibm.com>
- <x49ef3wytzz.fsf@segfault.boston.devel.redhat.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <4e912883-4a85-6579-0779-6c366ccee407@linux.ibm.com>
-Date: Fri, 14 Jun 2019 23:10:36 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by ml01.01.org (Postfix) with ESMTPS id 1DA1F2129EBB8
+ for <linux-nvdimm@lists.01.org>; Fri, 14 Jun 2019 11:52:33 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 14 Jun 2019 11:52:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,373,1557212400"; d="scan'208";a="185051531"
+Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
+ by fmsmga002.fm.intel.com with ESMTP; 14 Jun 2019 11:52:32 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [ndctl PATCH] libndctl/inject: Refuse error injection for BTT
+ namespaces
+Date: Fri, 14 Jun 2019 12:52:22 -0600
+Message-Id: <20190614185222.30068-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <x49ef3wytzz.fsf@segfault.boston.devel.redhat.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-14_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=27 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906140142
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,51 +45,116 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Qian Cai <cai@lca.pw>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador <osalvador@suse.de>
+Cc: Marek de Rosier <marekx.de.rosier@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 6/14/19 10:38 PM, Jeff Moyer wrote:
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
-> 
->> On 6/14/19 10:06 PM, Dan Williams wrote:
->>> On Fri, Jun 14, 2019 at 9:26 AM Aneesh Kumar K.V
->>> <aneesh.kumar@linux.ibm.com> wrote:
->>
->>>> Why not let the arch
->>>> arch decide the SUBSECTION_SHIFT and default to one subsection per
->>>> section if arch is not enabled to work with subsection.
->>>
->>> Because that keeps the implementation from ever reaching a point where
->>> a namespace might be able to be moved from one arch to another. If we
->>> can squash these arch differences then we can have a common tool to
->>> initialize namespaces outside of the kernel. The one wrinkle is
->>> device-dax that wants to enforce the mapping size,
->>
->> The fsdax have a much bigger issue right? The file system block size
->> is the same as PAGE_SIZE and we can't make it portable across archs
->> that support different PAGE_SIZE?
-> 
-> File system blocks are not tied to page size.  They can't be *bigger*
-> than the page size currently, but they can be smaller.
-> 
+Error injection on a BTT namespace would treat the namespace as 'raw'
+for the purposes of the injection. This can be useful for development,
+but to a user this can be surprising, as injecting with --block=1 would
+corrupt the BTT info block, and the BTT would be lost.
 
+The unit tests do not rely on injecting errors directly into a BTT
+namespace - they convert the namespace to 'raw' mode before performing
+such an injection. For development and testing purposes, we will still
+retain this ability by enforcing that the BTT namespace be explicitly
+forced into raw mode before injection.
 
-ppc64 page size is 64K.
+Reported-by: Marek de Rosier <marekx.de.rosier@intel.com>
+Reported-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ ndctl/lib/inject.c | 33 ++++++++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 9 deletions(-)
 
-> Still, I don't see that as an arugment against trying to make the
-> namespaces work across architectures.  Consider a user who only has
-> sector mode namespaces.  We'd like that to work if at all possible.
-> 
-
-agreed. I was trying to list out the challenges here.
-
--aneesh
+diff --git a/ndctl/lib/inject.c b/ndctl/lib/inject.c
+index c35d0f3..815f254 100644
+--- a/ndctl/lib/inject.c
++++ b/ndctl/lib/inject.c
+@@ -34,28 +34,36 @@ NDCTL_EXPORT int ndctl_bus_has_error_injection(struct ndctl_bus *bus)
+ 	return 0;
+ }
+ 
+-static void ndctl_namespace_get_injection_bounds(
++static int ndctl_namespace_get_injection_bounds(
+ 		struct ndctl_namespace *ndns, unsigned long long *ns_offset,
+ 		unsigned long long *ns_size)
+ {
+ 	struct ndctl_pfn *pfn = ndctl_namespace_get_pfn(ndns);
+ 	struct ndctl_dax *dax = ndctl_namespace_get_dax(ndns);
++	struct ndctl_btt *btt = ndctl_namespace_get_btt(ndns);
+ 
+ 	if (!ns_offset || !ns_size)
+-		return;
++		return -ENXIO;
+ 
+ 	if (pfn) {
+ 		*ns_offset = ndctl_pfn_get_resource(pfn);
+ 		*ns_size = ndctl_pfn_get_size(pfn);
+-		return;
+-	} else if (dax) {
++		return 0;
++	}
++
++	if (dax) {
+ 		*ns_offset = ndctl_dax_get_resource(dax);
+ 		*ns_size = ndctl_dax_get_size(dax);
+-		return;
++		return 0;
+ 	}
+-	/* raw or btt */
++
++	if (btt)
++		return -EOPNOTSUPP;
++
++	/* raw */
+ 	*ns_offset = ndctl_namespace_get_resource(ndns);
+ 	*ns_size = ndctl_namespace_get_size(ndns);
++	return 0;
+ }
+ 
+ static int block_to_spa_offset(struct ndctl_namespace *ndns,
+@@ -64,8 +72,11 @@ static int block_to_spa_offset(struct ndctl_namespace *ndns,
+ {
+ 	struct ndctl_ctx *ctx = ndctl_namespace_get_ctx(ndns);
+ 	unsigned long long ns_offset, ns_size;
++	int rc;
+ 
+-	ndctl_namespace_get_injection_bounds(ndns, &ns_offset, &ns_size);
++	rc = ndctl_namespace_get_injection_bounds(ndns, &ns_offset, &ns_size);
++	if (rc)
++		return rc;
+ 	*offset = ns_offset + block * 512;
+ 	*length = count * 512;
+ 
+@@ -98,8 +109,10 @@ static int ndctl_namespace_get_clear_unit(struct ndctl_namespace *ndns)
+ 	struct ndctl_cmd *cmd;
+ 	int rc;
+ 
+-	ndctl_namespace_get_injection_bounds(ndns, &ns_offset,
++	rc = ndctl_namespace_get_injection_bounds(ndns, &ns_offset,
+ 		&ns_size);
++	if (rc)
++		return rc;
+ 	cmd = ndctl_bus_cmd_new_ars_cap(bus, ns_offset, ns_size);
+ 	rc = ndctl_cmd_submit(cmd);
+ 	if (rc < 0) {
+@@ -438,8 +451,10 @@ NDCTL_EXPORT int ndctl_namespace_injection_status(struct ndctl_namespace *ndns)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (ndctl_bus_has_nfit(bus)) {
+-		ndctl_namespace_get_injection_bounds(ndns, &ns_offset,
++		rc = ndctl_namespace_get_injection_bounds(ndns, &ns_offset,
+ 			&ns_size);
++		if (rc)
++			return rc;
+ 
+ 		cmd = ndctl_bus_cmd_new_ars_cap(bus, ns_offset, ns_size);
+ 		rc = ndctl_cmd_submit(cmd);
+-- 
+2.20.1
 
 _______________________________________________
 Linux-nvdimm mailing list
