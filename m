@@ -1,64 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B47664512D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 03:23:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBFE4514A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Jun 2019 03:46:36 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 24D0121296B20;
-	Thu, 13 Jun 2019 18:23:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id AF7EC21296B1C;
+	Thu, 13 Jun 2019 18:46:34 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=216.228.121.143; helo=hqemgate14.nvidia.com;
+ client-ip=216.228.121.65; helo=hqemgate16.nvidia.com;
  envelope-from=jhubbard@nvidia.com; receiver=linux-nvdimm@lists.01.org 
-Received: from hqemgate14.nvidia.com (hqemgate14.nvidia.com [216.228.121.143])
+Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 89DB121959CB2
- for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 18:23:08 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 85B7221260A75
+ for <linux-nvdimm@lists.01.org>; Thu, 13 Jun 2019 18:46:33 -0700 (PDT)
 Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate14.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d02f6fc0000>; Thu, 13 Jun 2019 18:23:08 -0700
+ hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5d02fc790000>; Thu, 13 Jun 2019 18:46:33 -0700
 Received: from hqmail.nvidia.com ([172.20.161.6])
  by hqpgpgate101.nvidia.com (PGP Universal service);
- Thu, 13 Jun 2019 18:23:08 -0700
+ Thu, 13 Jun 2019 18:46:33 -0700
 X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Thu, 13 Jun 2019 18:23:08 -0700
-Received: from [10.110.48.28] (10.124.1.5) by HQMAIL107.nvidia.com
+ by hqpgpgate101.nvidia.com on Thu, 13 Jun 2019 18:46:33 -0700
+Received: from [10.110.48.28] (172.20.13.39) by HQMAIL107.nvidia.com
  (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 14 Jun
- 2019 01:23:04 +0000
-Subject: Re: [PATCH 18/22] mm: mark DEVICE_PUBLIC as broken
-To: Ira Weiny <ira.weiny@intel.com>, Jason Gunthorpe <jgg@mellanox.com>
+ 2019 01:46:30 +0000
+Subject: Re: [PATCH 04/22] mm: don't clear ->mapping in hmm_devmem_free
+To: Christoph Hellwig <hch@lst.de>, Dan Williams <dan.j.williams@intel.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, Jason Gunthorpe
+ <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
 References: <20190613094326.24093-1-hch@lst.de>
- <20190613094326.24093-19-hch@lst.de> <20190613194430.GY22062@mellanox.com>
- <a27251ad-a152-f84d-139d-e1a3bf01c153@nvidia.com>
- <20190613195819.GA22062@mellanox.com>
- <20190614004314.GD783@iweiny-DESK2.sc.intel.com>
+ <20190613094326.24093-5-hch@lst.de>
 X-Nvconfidentiality: public
 From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <d2b77ea1-7b27-e37d-c248-267a57441374@nvidia.com>
-Date: Thu, 13 Jun 2019 18:23:04 -0700
+Message-ID: <b0584ac6-72e3-08d3-6b76-1ac5e5b3bb4f@nvidia.com>
+Date: Thu, 13 Jun 2019 18:46:29 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190614004314.GD783@iweiny-DESK2.sc.intel.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL108.nvidia.com (172.18.146.13) To
+In-Reply-To: <20190613094326.24093-5-hch@lst.de>
+X-Originating-IP: [172.20.13.39]
+X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
  HQMAIL107.nvidia.com (172.20.187.13)
 Content-Language: en-US
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1560475388; bh=NWiGQvc0UaQg06vGlx/KBoyQY7FTb90HKZp/7cWu1+4=;
+ t=1560476793; bh=aWY+o31YpTUXYNCWR/tUiybGk+oQfQT9Eqi8enXkBOQ=;
  h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
  Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
  X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
  Content-Transfer-Encoding;
- b=CCd8e2OpQNYk9MLkQj2SISKb1f8rHEt8owfBUnfdQ/EbQaEHFbssnQujsTCvu1hg/
- mR8Y3/sQ0FeoXBKw8x7EwSNeP0JirtlvLprjUK1BAmudORUfLC87dyxEeAk19INas5
- NI29MBs4mO8FUO+2r1avdCcLUMWD+OBag9RCJIoLc2O2dHRfWViTRDAYcfn3m6Wrf6
- udfy6sC0OFEAlHI5edqKIVUfELxR84G7Dkf+roQu6aKqp3E13WZ1IqDdG/Lffgeh/e
- nogIq4wl7uO95KxuzvD0ijZERk5Gr6SxTkWBIiWMnMYA0zmWut5Pf3opqWtrNeceNW
- Ua0w/eL4F+pAQ==
+ b=hZ/DTJ5kKqWdpCL12ZwwtnQNfLWFCFSPcl2k46LOsH4pNokmtsOInOl9+GJ8FKmKO
+ hXZGdDzxG+P+INltKZYs7MH3/UvgeCnHg5hunwwq2bHUiutlLY5os0Z0ZWt+qrOuk9
+ K1Cep9JhG5g0OourqoO6QLKWzZukRM6NdlGEbmjrnoEWvH3YVwufa/VDbhQJ2OHW1T
+ paLBoqcpz6yETgLWr50DBrY8lfihmvAJXfVj+3zCeNHjlAyMFyqJD9rLf7d5TUXr4L
+ SqhY59v6TJmTfzJl0WQ5JTwHaXZZRXMzmrFJGWFYPUDt0cJm6MdR4wx/+QlT3y9K7k
+ 1VdCdX4iXd9+w==
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,78 +69,52 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Ralph Campbell <rcampbell@nvidia.com>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
- "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Ben Skeggs <bskeggs@redhat.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 6/13/19 5:43 PM, Ira Weiny wrote:
-> On Thu, Jun 13, 2019 at 07:58:29PM +0000, Jason Gunthorpe wrote:
->> On Thu, Jun 13, 2019 at 12:53:02PM -0700, Ralph Campbell wrote:
->>>
-...
->> Hum, so the only thing this config does is short circuit here:
->>
->> static inline bool is_device_public_page(const struct page *page)
->> {
->>         return IS_ENABLED(CONFIG_DEV_PAGEMAP_OPS) &&
->>                 IS_ENABLED(CONFIG_DEVICE_PUBLIC) &&
->>                 is_zone_device_page(page) &&
->>                 page->pgmap->type == MEMORY_DEVICE_PUBLIC;
->> }
->>
->> Which is called all over the place.. 
+On 6/13/19 2:43 AM, Christoph Hellwig wrote:
+> ->mapping isn't even used by HMM users, and the field at the same offset
+> in the zone_device part of the union is declared as pad.  (Which btw is
+> rather confusing, as DAX uses ->pgmap and ->mapping from two different
+> sides of the union, but DAX doesn't use hmm_devmem_free).
 > 
-> <sigh>  yes but the earlier patch:
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  mm/hmm.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> [PATCH 03/22] mm: remove hmm_devmem_add_resource
+> diff --git a/mm/hmm.c b/mm/hmm.c
+> index 0c62426d1257..e1dc98407e7b 100644
+> --- a/mm/hmm.c
+> +++ b/mm/hmm.c
+> @@ -1347,8 +1347,6 @@ static void hmm_devmem_free(struct page *page, void *data)
+>  {
+>  	struct hmm_devmem *devmem = data;
+>  
+> -	page->mapping = NULL;
+> -
+>  	devmem->ops->free(devmem, page);
+>  }
+>  
 > 
-> Removes the only place type is set to MEMORY_DEVICE_PUBLIC.
-> 
-> So I think it is ok.  Frankly I was wondering if we should remove the public
-> type altogether but conceptually it seems ok.  But I don't see any users of it
-> so...  should we get rid of it in the code rather than turning the config off?
-> 
-> Ira
 
-That seems reasonable. I recall that the hope was for those IBM Power 9
-systems to use _PUBLIC, as they have hardware-based coherent device (GPU)
-memory, and so the memory really is visible to the CPU. And the IBM team
-was thinking of taking advantage of it. But I haven't seen anything on
-that front for a while.
+Yes, I think that line was unnecessary. I see from git history that it was
+originally being set to NULL from within __put_devmap_managed_page(), and then
+in commit 2fa147bdbf672c53386a8f5f2c7fe358004c3ef8, Dan moved it out of there,
+and stashed in specifically here. But it appears to have been unnecessary from
+the beginning.
 
-So maybe it will get re-added as part of a future patchset to use that
-kind of memory, but yes, we should not hesitate to clean house at this
-point, and delete unused code.
-
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> 
 
 thanks,
 -- 
 John Hubbard
 NVIDIA
-
-> 
->>
->> So, yes, we really don't want any distro or something to turn this on
->> until it has a use.
->>
->> Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
->>
->> Jason
->> _______________________________________________
->> Linux-nvdimm mailing list
->> Linux-nvdimm@lists.01.org
->> https://lists.01.org/mailman/listinfo/linux-nvdimm
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
