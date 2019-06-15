@@ -1,37 +1,35 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C014646F02
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Jun 2019 10:34:29 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B7246F57
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Jun 2019 11:47:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2772421296B2F;
-	Sat, 15 Jun 2019 01:34:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0C1D221296B14;
+	Sat, 15 Jun 2019 02:47:12 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
- helo=newverein.lst.de; envelope-from=hch@lst.de;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=105.157.191.196;
+ helo=[105.157.191.196]; envelope-from=tshswjp@lanperfect.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D181C2128D6A6
- for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 01:34:26 -0700 (PDT)
-Received: by newverein.lst.de (Postfix, from userid 2407)
- id 31A9C68AFE; Sat, 15 Jun 2019 10:33:57 +0200 (CEST)
-Date: Sat, 15 Jun 2019 10:33:56 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: dev_pagemap related cleanups
-Message-ID: <20190615083356.GB23406@lst.de>
-References: <20190613094326.24093-1-hch@lst.de>
- <CAPcyv4jBdwYaiVwkhy6kP78OBAs+vJme1UTm47dX4Eq_5=JgSg@mail.gmail.com>
- <20190614061333.GC7246@lst.de>
- <CAPcyv4jmk6OBpXkuwjMn0Ovtv__2LBNMyEOWx9j5LWvWnr8f_A@mail.gmail.com>
+Received: from [105.157.191.196] (unknown [105.157.191.196])
+ by ml01.01.org (Postfix) with ESMTP id 5399B212966F5
+ for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 02:47:09 -0700 (PDT)
+From: "wolfgang12" <tshswjp@lanperfect.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: You Should Not Blame Yourself For Anything
+Date: 15 Jun 2019 08:22:21 -0100
+Message-ID: <002d01d5235f$078b7aa1$c44806ab$@lanperfect.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jmk6OBpXkuwjMn0Ovtv__2LBNMyEOWx9j5LWvWnr8f_A@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Mailer: Microsoft Office Outlook 12.0
+Thread-Index: Acjncyuitpycba2ojncyuitpycba2o==
+Content-Language: en
+x-cr-hashedpuzzle: 2D4= wbj5 m9c2 4xsn qfwb j5m9 c24x snqf wbj5 m9c2 4xsn qfwb
+ j5m9 c24x snqf wbj5; 1; m9c24xsnqfwbj5m9c24xsnqfwbj5m9c24xsnqfua4wk0r99l;
+ Sosha1_v1; 7; \{FC50F123-D15D-8203-AF0E-AA81E7E465CC\};
+ ZQB3AGUAZgwbj5m9c24xsnqfwbj5m9c24xsnqfua4wk0r99l; 15 Jun 2019 08:22:21 -0100;
+ u6gqua4wk0r99lu6
+x-cr-puzzleid: \{FC50F123-D15D-8203-AF0E-AA81E7E465CC\}
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,40 +41,66 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
- linux-pci@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jun 14, 2019 at 06:14:45PM -0700, Dan Williams wrote:
-> On Thu, Jun 13, 2019 at 11:14 PM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > On Thu, Jun 13, 2019 at 11:27:39AM -0700, Dan Williams wrote:
-> > > It also turns out the nvdimm unit tests crash with this signature on
-> > > that branch where base v5.2-rc3 passes:
-> >
-> > How do you run that test?
-> 
-> This is the unit test suite that gets kicked off by running "make
-> check" from the ndctl source repository. In this case it requires the
-> nfit_test set of modules to create a fake nvdimm environment.
-> 
-> The setup instructions are in the README, but feel free to send me
-> branches and I can kick off a test. One of these we'll get around to
-> making it automated for patch submissions to the linux-nvdimm mailing
-> list.
+Hello!
 
-Oh, now I remember, and that was the bummer as anything requiring modules
-just does not fit at all into my normal test flows that just inject
-kernel images and use otherwise static images.
+I have very bad news for you.
+12/03/2019 - on this day I hacked your OS and got full access to your account linux-nvdimm@lists.01.org
+
+So, you can change the password, yes... But my malware intercepts it every time.
+
+How I made it:
+In the software of the router, through which you went online, was a vulnerability.
+I just hacked this router and placed my malicious code on it.
+When you went online, my trojan was installed on the OS of your device.
+
+After that, I made a full dump of your disk (I have all your address book, history of viewing sites, all files, phone numbers and addresses of all your contacts).
+
+A month ago, I wanted to lock your device and ask for a not big amount of btc to unlock.
+But I looked at the sites that you regularly visit, and I was shocked by what I saw!!!
+I'm talk you about sites for adults.
+
+I want to say - you are a BIG pervert. Your fantasy is shifted far away from the normal course!
+
+And I got an idea....
+I made a screenshot of the adult sites where you have fun (do you understand what it is about, huh?).
+After that, I made a screenshot of your joys (using the camera of your device) and glued them together.
+Turned out amazing! You are so spectacular!
+
+I'm know that you would not like to show these screenshots to your friends, relatives or colleagues.
+I think $529 is a very, very small amount for my silence.
+Besides, I have been spying on you for so long, having spent a lot of time!
+
+Pay ONLY in Bitcoins!
+My BTC wallet: 1DZs3Qng8jR5tnLRFbHz5AT9Go6SV25FR3
+
+You do not know how to use bitcoins?
+Enter a query in any search engine: "how to replenish btc wallet".
+It's extremely easy
+
+For this payment I give you two days (48 hours).
+As soon as this letter is opened, the timer will work.
+
+After payment, my virus and dirty screenshots with your enjoys will be self-destruct automatically.
+If I do not receive from you the specified amount, then your device will be locked, and all your contacts will receive a screenshots with your "enjoys".
+
+I hope you understand your situation.
+- Do not try to find and destroy my virus! (All your data, files and screenshots is already uploaded to a remote server)
+- Do not try to contact me (this is impossible, sender's address was randomly generated)
+- Various security services will not help you; formatting a disk or destroying a device will not help, since your data is already on a remote server.
+
+P.S. You are not my single victim. so, I guarantee you that I will not disturb you again after payment!
+ This is the word of honor hacker
+
+I also ask you to regularly update your antiviruses in the future. This way you will no longer fall into a similar situation.
+
+Do not hold evil! I just do my job.
+Have a nice day!
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
