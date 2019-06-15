@@ -1,35 +1,36 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054E946FC9
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Jun 2019 13:34:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058B947072
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Jun 2019 16:31:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 504FE2129DB8D;
-	Sat, 15 Jun 2019 04:34:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 693FC21296B22;
+	Sat, 15 Jun 2019 07:31:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=113.77.17.192;
- helo=bfte.com; envelope-from=sidq@bfte.com;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
+ helo=newverein.lst.de; envelope-from=hch@lst.de;
  receiver=linux-nvdimm@lists.01.org 
-Received: from bfte.com (unknown [113.77.17.192])
- by ml01.01.org (Postfix) with ESMTP id 96E7B21296712
- for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 04:34:17 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA;
- Sat, 15 Jun 2019 19:34:05 +0800
-Message-ID: 8d567366-4e6a-421c-9b5a-acf44ff326ad
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 7857321296706
+ for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 07:31:13 -0700 (PDT)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id 57B1468B02; Sat, 15 Jun 2019 16:30:44 +0200 (CEST)
+Date: Sat, 15 Jun 2019 16:30:43 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH 06/22] mm: factor out a devm_request_free_mem_region helper
+Message-ID: <20190615143043.GA27825@lst.de>
+References: <20190613094326.24093-1-hch@lst.de>
+ <20190613094326.24093-7-hch@lst.de>
+ <56c130b1-5ed9-7e75-41d9-c61e73874cb8@nvidia.com>
 MIME-Version: 1.0
-From: =?utf-8?Q?=E7=94=B5=E9=82=AE=E8=90=A5=E9=94=80=E5=A5=BD=E5=B8=AE?=
- =?utf-8?Q?=E6=89=8B=2D=2D=2D=E6=97=A5=E7=BE=A4=E5=8F=9130=E4=B8=87=E9?=
- =?utf-8?Q?=82=AE=E7=AE=B1=E5=8F=AA=E9=9C=80500=E5=85=83=E4=B8=80=E6?=
- =?utf-8?Q?=9C=88=2D=2D=2DQQ=E5=92=A8=E8=AF=A2=EF=BC=9A3351665625?=
- <cfumjh@bfte.com>
-To: linux-nvdimm@lists.01.org
-Date: 15 Jun 2019 19:34:05 +0800
-Subject: =?utf-8?B?55S16YKu6JCl6ZSA5aW95biu5omLLS0t5pel576k5Y+RMzDk?=
- =?utf-8?B?uIfpgq7nrrHlj6rpnIA1MDDlhYPkuIDmnIgtLS1RUeWSqOivou+8mjMz?=
- =?utf-8?B?NTE2NjU2MjU=?=
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+Content-Disposition: inline
+In-Reply-To: <56c130b1-5ed9-7e75-41d9-c61e73874cb8@nvidia.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,13 +42,36 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm@lists.01.org, nouveau@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
+ linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Jm5ic3A7DQrnlLXpgq7okKXplIDlpb3luK7miYstLS3ml6XnvqTlj5EzMOS4h+mCrueuseWPqumc
-gDUwMOWFg+S4gOaciA0KUVHlkqjor6LvvJozMzUxNjY1NjI1IApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0Ckxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0
-aW5mby9saW51eC1udmRpbW0K
+On Fri, Jun 14, 2019 at 07:21:54PM -0700, John Hubbard wrote:
+> On 6/13/19 2:43 AM, Christoph Hellwig wrote:
+> > Keep the physical address allocation that hmm_add_device does with the
+> > rest of the resource code, and allow future reuse of it without the hmm
+> > wrapper.
+> > 
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > ---
+> >  include/linux/ioport.h |  2 ++
+> >  kernel/resource.c      | 39 +++++++++++++++++++++++++++++++++++++++
+> >  mm/hmm.c               | 33 ++++-----------------------------
+> >  3 files changed, 45 insertions(+), 29 deletions(-)
+> 
+> Some trivial typos noted below, but this accurately moves the code
+> into a helper routine, looks good.
+
+Thanks for the typo spotting.  These two actually were copy and pasted
+from the original hmm code, but I'll gladly fix them for the next
+iteration.
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
