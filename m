@@ -1,63 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D742E47182
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Jun 2019 20:09:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E1B4735C
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 16 Jun 2019 08:07:17 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C4D6B212966F5;
-	Sat, 15 Jun 2019 11:09:22 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id CB78721297079;
+	Sat, 15 Jun 2019 23:07:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F140621289DB8
- for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 11:09:21 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id x21so5640487otq.12
- for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 11:09:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Cb0Hmo2zAZrYDyoCgAidl3UeL9kc8+XrLoGdt6CrXZE=;
- b=EY/IUPVbu+1KTXp5GI53vNwR2z9Nvu64XsQUizbEMMU+aGYsXWtd2lTzv6Rx3V/2OG
- ZCHaTlatz8Y6DgkD78CATBQ1yUSjk/05HpPEqetVEj/+F5+Kom/9e7XbdGpDgyQQCBnL
- yj7evXXPdyreGRqDjU90YAS5Z/xg/+W8t5onIf68LdBa/3dqW/rLtaWBvtaURMP28S5L
- ACzapU9ov4J0F0u3SlQrs+vm8YDjsJurYg/jGuJheOXTmxVlf3qQXGWQIp1J0v1wmtf3
- 4CKVxNLpNlkzY6vy0HsyUqk2Hkklo6bAEUB4ced5+znlBd2UCAgiXhA0LcanxooGfjdt
- jtDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Cb0Hmo2zAZrYDyoCgAidl3UeL9kc8+XrLoGdt6CrXZE=;
- b=msL1dmKK750NyUHZ2IjF7ibaw6jyTfK+vRO9xbocgpPKRcPzfOowD/umqRVLfDXqaE
- 9uEFsaab84/FUemgzlCjCXGBle+AVB54IKQvXDg54P3I3y+nYLdNON/972zMK18P846W
- 9hNVJ4uJBuMKoqLdnfGZRLnGlK9uZNujSY5n3hh4Ut+lsYV5+gNBKpsziTE5B//CIsQn
- g9kK6Mi3qLawl3XoGwtrsQOu7tnp3P2JMVQfeVHv/n6LymbieRwB80rbf3Ikj1gOv1us
- zIG9TZVu7aZE1Gu4WSjw33vdWSeu3tysbU68Xpsvygk4Q/lLoUCIzBk4S7DM+HF3/B1u
- neKg==
-X-Gm-Message-State: APjAAAW28U7bgcwl0fPOjk9BU3ZqmCudGHPAY/ECPMqUl3z/+ETE5Nyg
- mVeP3CqXUBBRAoDmlbVcU8c9tx6fkAP+ZH/B6+gw1g==
-X-Google-Smtp-Source: APXvYqxK2ja20GipaVbp7qq4Oaf290msf2s3XleRazQ4mdHqmcalk7o8VyutGF6B5iu+bOwCwwdJPEhdvYDhbnFupMs=
-X-Received: by 2002:a9d:7a9a:: with SMTP id l26mr44930666otn.71.1560622160642; 
- Sat, 15 Jun 2019 11:09:20 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 2324421295CA5
+ for <linux-nvdimm@lists.01.org>; Sat, 15 Jun 2019 23:07:13 -0700 (PDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5G678CD061411
+ for <linux-nvdimm@lists.01.org>; Sun, 16 Jun 2019 02:07:12 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t5dsq3h4y-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Sun, 16 Jun 2019 02:07:12 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Sun, 16 Jun 2019 07:06:56 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sun, 16 Jun 2019 07:06:53 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5G66qk146596116
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 16 Jun 2019 06:06:52 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6DDACAE04D;
+ Sun, 16 Jun 2019 06:06:52 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 12D30AE045;
+ Sun, 16 Jun 2019 06:06:50 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.86.48])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 16 Jun 2019 06:06:49 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
+Subject: Re: [PATCH v9 04/12] mm/sparsemem: Convert kmalloc_section_memmap()
+ to populate_section_memmap()
+In-Reply-To: <155977189139.2443951.460884430946346998.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155977189139.2443951.460884430946346998.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sun, 16 Jun 2019 11:36:47 +0530
 MIME-Version: 1.0
-References: <20190613094326.24093-1-hch@lst.de>
- <CAPcyv4jBdwYaiVwkhy6kP78OBAs+vJme1UTm47dX4Eq_5=JgSg@mail.gmail.com>
- <20190614061333.GC7246@lst.de>
- <CAPcyv4jmk6OBpXkuwjMn0Ovtv__2LBNMyEOWx9j5LWvWnr8f_A@mail.gmail.com>
- <20190615083356.GB23406@lst.de>
-In-Reply-To: <20190615083356.GB23406@lst.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 15 Jun 2019 11:09:09 -0700
-Message-ID: <CAPcyv4jkDC3hRt_pj1e8j_OmzJ-wdumy-o1bN0ab=JVE_gfKdg@mail.gmail.com>
-Subject: Re: dev_pagemap related cleanups
-To: Christoph Hellwig <hch@lst.de>
+X-TM-AS-GCONF: 00
+x-cbid: 19061606-0008-0000-0000-000002F42096
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19061606-0009-0000-0000-000022612EA1
+Message-Id: <8736kahxmw.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-16_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906160060
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,47 +85,58 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
- linux-pci@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Cc: mhocko@suse.com, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ David Hildenbrand <david@redhat.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, osalvador@suse.de
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Sat, Jun 15, 2019 at 1:34 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Fri, Jun 14, 2019 at 06:14:45PM -0700, Dan Williams wrote:
-> > On Thu, Jun 13, 2019 at 11:14 PM Christoph Hellwig <hch@lst.de> wrote:
-> > >
-> > > On Thu, Jun 13, 2019 at 11:27:39AM -0700, Dan Williams wrote:
-> > > > It also turns out the nvdimm unit tests crash with this signature on
-> > > > that branch where base v5.2-rc3 passes:
-> > >
-> > > How do you run that test?
-> >
-> > This is the unit test suite that gets kicked off by running "make
-> > check" from the ndctl source repository. In this case it requires the
-> > nfit_test set of modules to create a fake nvdimm environment.
-> >
-> > The setup instructions are in the README, but feel free to send me
-> > branches and I can kick off a test. One of these we'll get around to
-> > making it automated for patch submissions to the linux-nvdimm mailing
-> > list.
->
-> Oh, now I remember, and that was the bummer as anything requiring modules
-> just does not fit at all into my normal test flows that just inject
-> kernel images and use otherwise static images.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Yeah... although we do have some changes being proposed from non-x86
-devs to allow a subset of the tests to run without the nfit_test
-modules: https://patchwork.kernel.org/patch/10980779/
+> Allow sub-section sized ranges to be added to the memmap.
+> populate_section_memmap() takes an explict pfn range rather than
+> assuming a full section, and those parameters are plumbed all the way
+> through to vmmemap_populate(). There should be no sub-section usage in
+> current deployments. New warnings are added to clarify which memmap
+> allocation paths are sub-section capable.
+>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  arch/x86/mm/init_64.c |    4 ++-
+>  include/linux/mm.h    |    4 ++-
+>  mm/sparse-vmemmap.c   |   21 +++++++++++------
+>  mm/sparse.c           |   61 +++++++++++++++++++++++++++++++------------------
+>  4 files changed, 57 insertions(+), 33 deletions(-)
+>
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 8335ac6e1112..688fb0687e55 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1520,7 +1520,9 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+>  {
+>  	int err;
+>  
+> -	if (boot_cpu_has(X86_FEATURE_PSE))
+> +	if (end - start < PAGES_PER_SECTION * sizeof(struct page))
+> +		err = vmemmap_populate_basepages(start, end, node);
+> +	else if (boot_cpu_has(X86_FEATURE_PSE))
+>  		err = vmemmap_populate_hugepages(start, end, node, altmap);
+>  	else if (altmap) {
+>  		pr_err_once("%s: no cpu support for altmap allocations\n",
 
-...so this prompts me to go review that patch.
+Can we move this to another patch? I am wondering what the x86 behaviour
+here is? If the range is less that PAGES_PER_SECTION we don't allow to
+use pmem as the map device? We sliently use memory range?
+
+-aneesh
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
