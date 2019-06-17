@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DCB48213
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:27:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AE548215
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:28:00 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 84EAA2129DB98;
-	Mon, 17 Jun 2019 05:27:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A2D192129DBA4;
+	Mon, 17 Jun 2019 05:27:58 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,31 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B52B52128A65C
- for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:54 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id EDD752194EB76
+ for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=7nriQi4Fr0xgTBcFIe6nSbwkyrDmfJykC6ITRKjgmyg=; b=JPXmnOG9f1PEc61lrxbukBEJb8
- kAgyoN6nKfbqF4qgJGeYOSMsnUvVYOiNzN2ELCV9wb331fMUsuDPvIQ2S4r5iVE+JCOIpZVU/ZnK8
- dg10C3MHJYXdAZTmF4BLfxG2dc8Atvw1ja3PcRbuQK5uf0NGUrlWTjZjdUMm+LmT5KZ4mg6dcjzCf
- nA6thuAWoFivx6vFYF6vFwxSQarTAh5reeveHpRf2VHZpvQwxJ0Aubqtm9mIGcUV8G0EMnD/b/Kne
- SuK9ATrScvwfXwUfU3ZjCaF0NF0bDLbzwZtyWHxXaykWVpfZDLI0bYGBnUqh16os+uOXFeWvkX15s
- SRYUphpQ==;
+ bh=oE9zu8FnI80f0vIXdSsRJj3CowB8S40euLFZ8PS9IMM=; b=OFYLPou6TnJdcozuPN11iH/XmD
+ RXqmC2lmrDIc90Y8NVCjfx83nqCVoiH00luftBKkX1QDJ9uDCWGmyeDihR9euPlBZLFFLvJEN37Oo
+ IIGmTTp9s0JMz7OdQZzjJL8bCIoH3QG3msxcqq8GDVUPyrKek3uGmO1P50zrhewkvIMSsilKB9HGc
+ i4vW8MnTCxNbowvDwKJqKc0RrobmUyUT5HllZCeGgrgyTx/O9YaW+CGOhU3j1YYqPcXiTiC58Lsdi
+ v5jaT4YEYq+jrlR8fw59fAbQne0n1H6nJnvoV8aVZnyedTnbxgGT+xJd2gzeJqPQ1tUfzHY9lv2CT
+ M6eP8oLQ==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hcqjm-00004r-MH; Mon, 17 Jun 2019 12:27:51 +0000
+ id 1hcqjo-00006K-S6; Mon, 17 Jun 2019 12:27:53 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
-Subject: [PATCH 06/25] mm: factor out a devm_request_free_mem_region helper
-Date: Mon, 17 Jun 2019 14:27:14 +0200
-Message-Id: <20190617122733.22432-7-hch@lst.de>
+Subject: [PATCH 07/25] memremap: validate the pagemap type passed to
+ devm_memremap_pages
+Date: Mon, 17 Jun 2019 14:27:15 +0200
+Message-Id: <20190617122733.22432-8-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190617122733.22432-1-hch@lst.de>
 References: <20190617122733.22432-1-hch@lst.de>
@@ -58,149 +59,61 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: John Hubbard <jhubbard@nvidia.com>, linux-nvdimm@lists.01.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- nouveau@lists.freedesktop.org
+Cc: linux-nvdimm@lists.01.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Keep the physical address allocation that hmm_add_device does with the
-rest of the resource code, and allow future reuse of it without the hmm
-wrapper.
+Most pgmap types are only supported when certain config options are
+enabled.  Check for a type that is valid for the current configuration
+before setting up the pagemap.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 ---
- include/linux/ioport.h |  2 ++
- kernel/resource.c      | 39 +++++++++++++++++++++++++++++++++++++++
- mm/hmm.c               | 33 ++++-----------------------------
- 3 files changed, 45 insertions(+), 29 deletions(-)
+ kernel/memremap.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index da0ebaec25f0..76a33ae3bf6c 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -286,6 +286,8 @@ static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
-        return (r1->start <= r2->end && r1->end >= r2->start);
- }
+diff --git a/kernel/memremap.c b/kernel/memremap.c
+index 6e1970719dc2..6a2dd31a6250 100644
+--- a/kernel/memremap.c
++++ b/kernel/memremap.c
+@@ -157,6 +157,33 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 	pgprot_t pgprot = PAGE_KERNEL;
+ 	int error, nid, is_ram;
  
-+struct resource *devm_request_free_mem_region(struct device *dev,
-+		struct resource *base, unsigned long size);
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 158f04ec1d4f..d22423e85cf8 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1628,6 +1628,45 @@ void resource_list_free(struct list_head *head)
- }
- EXPORT_SYMBOL(resource_list_free);
- 
-+#ifdef CONFIG_DEVICE_PRIVATE
-+/**
-+ * devm_request_free_mem_region - find free region for device private memory
-+ *
-+ * @dev: device struct to bind the resource to
-+ * @size: size in bytes of the device memory to add
-+ * @base: resource tree to look in
-+ *
-+ * This function tries to find an empty range of physical address big enough to
-+ * contain the new resource, so that it can later be hotplugged as ZONE_DEVICE
-+ * memory, which in turn allocates struct pages.
-+ */
-+struct resource *devm_request_free_mem_region(struct device *dev,
-+		struct resource *base, unsigned long size)
-+{
-+	resource_size_t end, addr;
-+	struct resource *res;
-+
-+	size = ALIGN(size, 1UL << PA_SECTION_SHIFT);
-+	end = min_t(unsigned long, base->end, (1UL << MAX_PHYSMEM_BITS) - 1);
-+	addr = end - size + 1UL;
-+
-+	for (; addr > size && addr >= base->start; addr -= size) {
-+		if (region_intersects(addr, size, 0, IORES_DESC_NONE) !=
-+				REGION_DISJOINT)
-+			continue;
-+
-+		res = devm_request_mem_region(dev, addr, size, dev_name(dev));
-+		if (!res)
-+			return ERR_PTR(-ENOMEM);
-+		res->desc = IORES_DESC_DEVICE_PRIVATE_MEMORY;
-+		return res;
++	switch (pgmap->type) {
++	case MEMORY_DEVICE_PRIVATE:
++		if (!IS_ENABLED(CONFIG_DEVICE_PRIVATE)) {
++			WARN(1, "Device private memory not supported\n");
++			return ERR_PTR(-EINVAL);
++		}
++		break;
++	case MEMORY_DEVICE_PUBLIC:
++		if (!IS_ENABLED(CONFIG_DEVICE_PUBLIC)) {
++			WARN(1, "Device public memory not supported\n");
++			return ERR_PTR(-EINVAL);
++		}
++		break;
++	case MEMORY_DEVICE_FS_DAX:
++		if (!IS_ENABLED(CONFIG_ZONE_DEVICE) ||
++		    IS_ENABLED(CONFIG_FS_DAX_LIMITED)) {
++			WARN(1, "File system DAX not supported\n");
++			return ERR_PTR(-EINVAL);
++		}
++		break;
++	case MEMORY_DEVICE_PCI_P2PDMA:
++		break;
++	default:
++		WARN(1, "Invalid pgmap type %d\n", pgmap->type);
++		break;
 +	}
 +
-+	return ERR_PTR(-ERANGE);
-+}
-+EXPORT_SYMBOL_GPL(devm_request_free_mem_region);
-+#endif /* CONFIG_DEVICE_PRIVATE */
-+
- static int __init strict_iomem(char *str)
- {
- 	if (strstr(str, "relaxed"))
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 64e788bb1211..172d695dcb8b 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -25,8 +25,6 @@
- #include <linux/mmu_notifier.h>
- #include <linux/memory_hotplug.h>
- 
--#define PA_SECTION_SIZE (1UL << PA_SECTION_SHIFT)
--
- #if IS_ENABLED(CONFIG_HMM_MIRROR)
- static const struct mmu_notifier_ops hmm_mmu_notifier_ops;
- 
-@@ -1405,7 +1403,6 @@ struct hmm_devmem *hmm_devmem_add(const struct hmm_devmem_ops *ops,
- 				  unsigned long size)
- {
- 	struct hmm_devmem *devmem;
--	resource_size_t addr;
- 	void *result;
- 	int ret;
- 
-@@ -1427,32 +1424,10 @@ struct hmm_devmem *hmm_devmem_add(const struct hmm_devmem_ops *ops,
- 	if (ret)
- 		return ERR_PTR(ret);
- 
--	size = ALIGN(size, PA_SECTION_SIZE);
--	addr = min((unsigned long)iomem_resource.end,
--		   (1UL << MAX_PHYSMEM_BITS) - 1);
--	addr = addr - size + 1UL;
--
--	/*
--	 * FIXME add a new helper to quickly walk resource tree and find free
--	 * range
--	 *
--	 * FIXME what about ioport_resource resource ?
--	 */
--	for (; addr > size && addr >= iomem_resource.start; addr -= size) {
--		ret = region_intersects(addr, size, 0, IORES_DESC_NONE);
--		if (ret != REGION_DISJOINT)
--			continue;
--
--		devmem->resource = devm_request_mem_region(device, addr, size,
--							   dev_name(device));
--		if (!devmem->resource)
--			return ERR_PTR(-ENOMEM);
--		break;
--	}
--	if (!devmem->resource)
--		return ERR_PTR(-ERANGE);
--
--	devmem->resource->desc = IORES_DESC_DEVICE_PRIVATE_MEMORY;
-+	devmem->resource = devm_request_free_mem_region(device, &iomem_resource,
-+			size);
-+	if (IS_ERR(devmem->resource))
-+		return ERR_CAST(devmem->resource);
- 	devmem->pfn_first = devmem->resource->start >> PAGE_SHIFT;
- 	devmem->pfn_last = devmem->pfn_first +
- 			   (resource_size(devmem->resource) >> PAGE_SHIFT);
+ 	if (!pgmap->ref || !pgmap->kill || !pgmap->cleanup) {
+ 		WARN(1, "Missing reference count teardown definition\n");
+ 		return ERR_PTR(-EINVAL);
 -- 
 2.20.1
 
