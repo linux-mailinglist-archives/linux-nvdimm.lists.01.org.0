@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A604820F
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:27:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3373448210
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:27:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 510A621295CA4;
-	Mon, 17 Jun 2019 05:27:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6E3272129DB8F;
+	Mon, 17 Jun 2019 05:27:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,30 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BC21821295CA4
- for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:49 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0D09E2128A65C
+ for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=K9g0rbDWkkxSMGlYVgcFvd5xNggbvRNJSx9Dd0Ro7/M=; b=Bpx0/+YDXKRBCn8UCT2IVcE71B
- X2OqFR2P6cQnqBb88ElPZ9QzRIcJuB6fh/pwFQhL10fCq/BTxAcobe/zVEp/r2n7V0pP7sSWfY3vI
- grf6B5YyGDCZtvbTmqOmLHV4oQdCc5CWcHzwXul0Xks3Jy5S8OX2HaJLSwsERvlhqYUhbplZj+Hbe
- nGltq+FfZLW+kAOtOqlrJUw+V8Bf9yuRaWt+YX/y8HdJGvUzLzWUpFih1p8MBWWbxiSlX6mIpF/9f
- YI8qf3+O29zr6OMxqhKepaX1ADDNERghmpgXvc2+qF1AVzDFKhLXEhxF4xHhfGx1sWibYKtViGFl+
- Wp33jgyA==;
+ bh=0rpTHljYB087yEOOsZI9c9yqKYmTPhfVemezVGqcscg=; b=gQAEn4aBEmQ132Z0wP5I7jCauB
+ LBw2hOlfvCDQ7d5fQKNPO6djGCxEKQh4CVo9EuYbFLF4QJhOgBejZ8OlWo206WldjRYOfhT4AFXLE
+ 9L9qHayf35ChGEv7g6MIcpHnXhCiExQ4fiDCZ31LF2RdPao4FFTC2z3uorshZP+Aw61Hgacx5tekH
+ AsvC3ssCa68V+0zIIoesTfI1zxzVEaOuvsIAMGhuXyHQ3tSMzjWx14WKmPXgm3FDPe3h/HDsavVrv
+ jUYfnpdHPmfR+1OXsOoS+idioOXrQhBTR8rrL0J5g0GVZnduKQ9EwD/JKCrznGMn1BshcDxe2+90o
+ qyyv31zA==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hcqji-0008Q6-8H; Mon, 17 Jun 2019 12:27:46 +0000
+ id 1hcqjk-0008W5-FE; Mon, 17 Jun 2019 12:27:48 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
-Subject: [PATCH 04/25] mm: don't clear ->mapping in hmm_devmem_free
-Date: Mon, 17 Jun 2019 14:27:12 +0200
-Message-Id: <20190617122733.22432-5-hch@lst.de>
+Subject: [PATCH 05/25] mm: export alloc_pages_vma
+Date: Mon, 17 Jun 2019 14:27:13 +0200
+Message-Id: <20190617122733.22432-6-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190617122733.22432-1-hch@lst.de>
 References: <20190617122733.22432-1-hch@lst.de>
@@ -67,31 +67,27 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-->mapping isn't even used by HMM users, and the field at the same offset
-in the zone_device part of the union is declared as pad.  (Which btw is
-rather confusing, as DAX uses ->pgmap and ->mapping from two different
-sides of the union, but DAX doesn't use hmm_devmem_free).
+nouveau is currently using this through an odd hmm wrapper, and I plan
+to switch it to the real thing later in this series.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
 Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 ---
- mm/hmm.c | 2 --
- 1 file changed, 2 deletions(-)
+ mm/mempolicy.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index dc251c51803a..64e788bb1211 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -1380,8 +1380,6 @@ static void hmm_devmem_free(struct page *page, void *data)
- {
- 	struct hmm_devmem *devmem = data;
- 
--	page->mapping = NULL;
--
- 	devmem->ops->free(devmem, page);
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 01600d80ae01..f9023b5fba37 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -2098,6 +2098,7 @@ alloc_pages_vma(gfp_t gfp, int order, struct vm_area_struct *vma,
+ out:
+ 	return page;
  }
++EXPORT_SYMBOL_GPL(alloc_pages_vma);
  
+ /**
+  * 	alloc_pages_current - Allocate pages.
 -- 
 2.20.1
 
