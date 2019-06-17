@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873154820C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2484820E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 14:27:52 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 176392194EB70;
-	Mon, 17 Jun 2019 05:27:47 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 331312129DB89;
+	Mon, 17 Jun 2019 05:27:48 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,30 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B298B2128A65C
- for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:45 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id C7D8A21296B26
+ for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 05:27:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=GMyD4ZeUwEyX4TLbYH+teiOZCsmaS5so5bsDBHXs5VU=; b=nUM3O0j+v0YkuO+grtlLfHPwaH
- cV0WhQAmaitlmE6ROwsIKJCV/PlKqUn+0O2EWB1Hs1nEpKWW8txqk2fddXoiLre+dVvw9bHopOPj/
- gxJDRUoHl+//i7XrIMZT3FKhCTu/PdfOYJCLGgo7rTAcjPqy99/URAGv7WeM7qn8F0aLO8QPfe2cq
- 07WYX982utWhvOtWHTzi5gbbLN1LvS1/WFqavQ6hw3qVrjla8/wu9w23XyHgB/5OiA5nsWfl2v27L
- xDnS8fKvcYcw4DwESFtDIxH0HLpADpbP4XBoQFGVGvrc38bZlNIwtghm8E94lATBAXFDfzbvWHgJL
- wMPWcrTA==;
+ bh=7iZXhGqknpU44tD1MPjuSqDckdpKS/nLGoa4L7/1O94=; b=FbRn9tnxZ5wWW5q5U1pZRBVxXs
+ CxGwGMXKAq/9Ihv+awdUqjfKfebfLDdbVNObc0HyuE8WXKatstvj5dw/HK/igbfwoSFPnkwWo7ebj
+ rUGor0jqTaP/NW3YZeZfVSnvBwAlo3Lo8EiyGtMu2ND6pJBqRtA/O5D4bGF6fo8S0K5psWYBY5XxU
+ 2c+lcusAC9Bxse0Kr01AZ9/JkVgMHxvoDiwKVC1jNIBFfo+VKR+KrNeDEBaA0xzhkfYUvWAgWPrWC
+ Lfcmv9DujdDUWC5tNLBcO6Ok6TTvo8HvDhBnnc9rcvR5/dgumLg41lBugJqDsgZ6cxqqK5EVO2485
+ CgZI5zyQ==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hcqjd-0008Kg-IT; Mon, 17 Jun 2019 12:27:41 +0000
+ id 1hcqjf-0008Kt-OO; Mon, 17 Jun 2019 12:27:44 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
-Subject: [PATCH 02/25] mm: remove the struct hmm_device infrastructure
-Date: Mon, 17 Jun 2019 14:27:10 +0200
-Message-Id: <20190617122733.22432-3-hch@lst.de>
+Subject: [PATCH 03/25] mm: remove hmm_devmem_add_resource
+Date: Mon, 17 Jun 2019 14:27:11 +0200
+Message-Id: <20190617122733.22432-4-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190617122733.22432-1-hch@lst.de>
 References: <20190617122733.22432-1-hch@lst.de>
@@ -67,138 +67,91 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-This code is a trivial wrapper around device model helpers, which
-should have been integrated into the driver device model usage from
-the start.  Assuming it actually had users, which it never had since
-the code was added more than 1 1/2 years ago.
+This function has never been used since it was first added to the kernel
+more than a year and a half ago, and if we ever grow a consumer of the
+MEMORY_DEVICE_PUBLIC infrastructure it can easily use devm_memremap_pages
+directly.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
 Reviewed-by: John Hubbard <jhubbard@nvidia.com>
 ---
- include/linux/hmm.h | 20 ------------
- mm/hmm.c            | 80 ---------------------------------------------
- 2 files changed, 100 deletions(-)
+ include/linux/hmm.h |  3 ---
+ mm/hmm.c            | 50 ---------------------------------------------
+ 2 files changed, 53 deletions(-)
 
 diff --git a/include/linux/hmm.h b/include/linux/hmm.h
-index 7007123842ba..c92f353d701a 100644
+index c92f353d701a..31e1c5347331 100644
 --- a/include/linux/hmm.h
 +++ b/include/linux/hmm.h
-@@ -753,26 +753,6 @@ static inline unsigned long hmm_devmem_page_get_drvdata(const struct page *page)
- {
- 	return page->hmm_data;
- }
--
--
--/*
-- * struct hmm_device - fake device to hang device memory onto
-- *
-- * @device: device struct
-- * @minor: device minor number
-- */
--struct hmm_device {
--	struct device		device;
--	unsigned int		minor;
--};
--
--/*
-- * A device driver that wants to handle multiple devices memory through a
-- * single fake device can use hmm_device to do so. This is purely a helper and
-- * it is not strictly needed, in order to make use of any HMM functionality.
-- */
--struct hmm_device *hmm_device_new(void *drvdata);
--void hmm_device_put(struct hmm_device *hmm_device);
- #endif /* CONFIG_DEVICE_PRIVATE || CONFIG_DEVICE_PUBLIC */
- #else /* IS_ENABLED(CONFIG_HMM) */
- static inline void hmm_mm_destroy(struct mm_struct *mm) {}
+@@ -724,9 +724,6 @@ struct hmm_devmem {
+ struct hmm_devmem *hmm_devmem_add(const struct hmm_devmem_ops *ops,
+ 				  struct device *device,
+ 				  unsigned long size);
+-struct hmm_devmem *hmm_devmem_add_resource(const struct hmm_devmem_ops *ops,
+-					   struct device *device,
+-					   struct resource *res);
+ 
+ /*
+  * hmm_devmem_page_set_drvdata - set per-page driver data field
 diff --git a/mm/hmm.c b/mm/hmm.c
-index 4c770a734c0d..f3350fc567ab 100644
+index f3350fc567ab..dc251c51803a 100644
 --- a/mm/hmm.c
 +++ b/mm/hmm.c
-@@ -1525,84 +1525,4 @@ struct hmm_devmem *hmm_devmem_add_resource(const struct hmm_devmem_ops *ops,
+@@ -1475,54 +1475,4 @@ struct hmm_devmem *hmm_devmem_add(const struct hmm_devmem_ops *ops,
  	return devmem;
  }
- EXPORT_SYMBOL_GPL(hmm_devmem_add_resource);
+ EXPORT_SYMBOL_GPL(hmm_devmem_add);
 -
--/*
-- * A device driver that wants to handle multiple devices memory through a
-- * single fake device can use hmm_device to do so. This is purely a helper
-- * and it is not needed to make use of any HMM functionality.
-- */
--#define HMM_DEVICE_MAX 256
--
--static DECLARE_BITMAP(hmm_device_mask, HMM_DEVICE_MAX);
--static DEFINE_SPINLOCK(hmm_device_lock);
--static struct class *hmm_device_class;
--static dev_t hmm_device_devt;
--
--static void hmm_device_release(struct device *device)
+-struct hmm_devmem *hmm_devmem_add_resource(const struct hmm_devmem_ops *ops,
+-					   struct device *device,
+-					   struct resource *res)
 -{
--	struct hmm_device *hmm_device;
--
--	hmm_device = container_of(device, struct hmm_device, device);
--	spin_lock(&hmm_device_lock);
--	clear_bit(hmm_device->minor, hmm_device_mask);
--	spin_unlock(&hmm_device_lock);
--
--	kfree(hmm_device);
--}
--
--struct hmm_device *hmm_device_new(void *drvdata)
--{
--	struct hmm_device *hmm_device;
--
--	hmm_device = kzalloc(sizeof(*hmm_device), GFP_KERNEL);
--	if (!hmm_device)
--		return ERR_PTR(-ENOMEM);
--
--	spin_lock(&hmm_device_lock);
--	hmm_device->minor = find_first_zero_bit(hmm_device_mask, HMM_DEVICE_MAX);
--	if (hmm_device->minor >= HMM_DEVICE_MAX) {
--		spin_unlock(&hmm_device_lock);
--		kfree(hmm_device);
--		return ERR_PTR(-EBUSY);
--	}
--	set_bit(hmm_device->minor, hmm_device_mask);
--	spin_unlock(&hmm_device_lock);
--
--	dev_set_name(&hmm_device->device, "hmm_device%d", hmm_device->minor);
--	hmm_device->device.devt = MKDEV(MAJOR(hmm_device_devt),
--					hmm_device->minor);
--	hmm_device->device.release = hmm_device_release;
--	dev_set_drvdata(&hmm_device->device, drvdata);
--	hmm_device->device.class = hmm_device_class;
--	device_initialize(&hmm_device->device);
--
--	return hmm_device;
--}
--EXPORT_SYMBOL(hmm_device_new);
--
--void hmm_device_put(struct hmm_device *hmm_device)
--{
--	put_device(&hmm_device->device);
--}
--EXPORT_SYMBOL(hmm_device_put);
--
--static int __init hmm_init(void)
--{
+-	struct hmm_devmem *devmem;
+-	void *result;
 -	int ret;
 -
--	ret = alloc_chrdev_region(&hmm_device_devt, 0,
--				  HMM_DEVICE_MAX,
--				  "hmm_device");
+-	if (res->desc != IORES_DESC_DEVICE_PUBLIC_MEMORY)
+-		return ERR_PTR(-EINVAL);
+-
+-	dev_pagemap_get_ops();
+-
+-	devmem = devm_kzalloc(device, sizeof(*devmem), GFP_KERNEL);
+-	if (!devmem)
+-		return ERR_PTR(-ENOMEM);
+-
+-	init_completion(&devmem->completion);
+-	devmem->pfn_first = -1UL;
+-	devmem->pfn_last = -1UL;
+-	devmem->resource = res;
+-	devmem->device = device;
+-	devmem->ops = ops;
+-
+-	ret = percpu_ref_init(&devmem->ref, &hmm_devmem_ref_release,
+-			      0, GFP_KERNEL);
 -	if (ret)
--		return ret;
+-		return ERR_PTR(ret);
 -
--	hmm_device_class = class_create(THIS_MODULE, "hmm_device");
--	if (IS_ERR(hmm_device_class)) {
--		unregister_chrdev_region(hmm_device_devt, HMM_DEVICE_MAX);
--		return PTR_ERR(hmm_device_class);
--	}
--	return 0;
+-	devmem->pfn_first = devmem->resource->start >> PAGE_SHIFT;
+-	devmem->pfn_last = devmem->pfn_first +
+-			   (resource_size(devmem->resource) >> PAGE_SHIFT);
+-	devmem->page_fault = hmm_devmem_fault;
+-
+-	devmem->pagemap.type = MEMORY_DEVICE_PUBLIC;
+-	devmem->pagemap.res = *devmem->resource;
+-	devmem->pagemap.page_free = hmm_devmem_free;
+-	devmem->pagemap.altmap_valid = false;
+-	devmem->pagemap.ref = &devmem->ref;
+-	devmem->pagemap.data = devmem;
+-	devmem->pagemap.kill = hmm_devmem_ref_kill;
+-	devmem->pagemap.cleanup = hmm_devmem_ref_exit;
+-
+-	result = devm_memremap_pages(devmem->device, &devmem->pagemap);
+-	if (IS_ERR(result))
+-		return result;
+-	return devmem;
 -}
--
--device_initcall(hmm_init);
+-EXPORT_SYMBOL_GPL(hmm_devmem_add_resource);
  #endif /* CONFIG_DEVICE_PRIVATE || CONFIG_DEVICE_PUBLIC */
 -- 
 2.20.1
