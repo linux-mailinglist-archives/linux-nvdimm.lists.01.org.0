@@ -2,54 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AD6483A6
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 15:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D7948A4B
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Jun 2019 19:37:29 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E9CD921295CB9;
-	Mon, 17 Jun 2019 06:15:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DD7F321297054;
+	Mon, 17 Jun 2019 10:37:27 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=batv+a9ecd0bfb5b639be820a+5776+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id A414D2128D6A4
- for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 06:15:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=g2RSyr1LswKR5yVaExwwUghHr8GGOtj1VRSVsfBu1GQ=; b=Xt2zW3CsTdU+5dL1qgV7m+ZXj
- 9YyYU2Wk6Tm8jGRvrjoLS1or4I9L8Nqw0mQ0LRGN+KocsYE/05sPoA1/cTAa3zfdt8zIsocYAYBlg
- FgUkxfwPxd0lS5E5WSJY35W31PExqnu6CzwadtRyYO9xC9msAFx2RSs+tbpZQ6XgdZAH0kfP2ulXj
- nOcKt7dpG5G3pI6AqfqWoqte8gIMa4B6F0bH8LWDBzSBZ4CjeVlm38WCclwKZBMGauNqijnSWoqIs
- Lpk4LxEgpQUm/LviWC5Z98ShD4yCngQetj2o1PDPpTuhHsae5J9s4IXxMJyukLQ+kdkej905zEcu5
- MC33MfY3g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1hcrTP-00014F-MJ; Mon, 17 Jun 2019 13:14:59 +0000
-Date: Mon, 17 Jun 2019 06:14:59 -0700
-From: 'Christoph Hellwig' <hch@infradead.org>
-To: Alastair D'Silva <alastair@d-silva.org>
-Subject: Re: [PATCH 5/5] mm/hotplug: export try_online_node
-Message-ID: <20190617131459.GA639@infradead.org>
-References: <20190617043635.13201-1-alastair@au1.ibm.com>
- <20190617043635.13201-6-alastair@au1.ibm.com>
- <20190617065921.GV3436@hirez.programming.kicks-ass.net>
- <f1bad6f784efdd26508b858db46f0192a349c7a1.camel@d-silva.org>
- <20190617071527.GA14003@infradead.org>
- <068d01d524e2$aa6f3000$ff4d9000$@d-silva.org>
+ by ml01.01.org (Postfix) with ESMTPS id DCB8D21296049
+ for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 10:37:25 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id d17so10117557oth.5
+ for <linux-nvdimm@lists.01.org>; Mon, 17 Jun 2019 10:37:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=gBoBuo4G3FSgEhDC+FoktVJNloMg07m1kebASNjaow0=;
+ b=GEy6EGCLZL0UwYQ9PkUNByAPZFrQNOY55J4Isr3tPIqQ98XVq0fsFEiJHE9y337UnR
+ z0ckb3F0Q8bUBMwOxk3FMovLMeLeRhGzCH4bMfXl//v4SZneAiWL2E3nXGQ0kfcbkMQ5
+ r05Q0aOOGSCIoONjGAUc0NUdIqrqwt9uOKpttnI5/W0wpWZ0UjI/eMzHv96YMzDyw6ea
+ Iw2XLIDHbY2xAKMBDynID8VFE/XZYZnxY6Kobfxb5Ee621xVhNNWauS73uuIqKg8WlP8
+ DC4G2oI80ceWohUqqQoEpsB1uZSHUXQoqzfwbmLCxnomOs9Nh6gRUrBB4UmmNwcz2q++
+ zoow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=gBoBuo4G3FSgEhDC+FoktVJNloMg07m1kebASNjaow0=;
+ b=OYEh/4R8YvlrRS8HfhLK3B9m1+6/gPe7VUMWCv4cPBr/gGu7pHcRwpOWEIyG4yz0tK
+ RbPlNT+3N5KDo6Lja3IfbkWoKiHgkcbvLNhNwvtBhVottQal0j3mtl5sQ4k81ZXc9S4l
+ nwlcgBns8euJCnI3a1t7WlYlh2di7V9GBjt82/OT0DjxpS7ph52qwnr+7VlNtHuf2W7x
+ rMqTXHzkyxJc7kfokyxHVkivuK7AK+nzD/xE6QXa498qSOwD2aZbgjZEdudSogg2CjsD
+ oNn+Y8Xmt/hG1ZL+sZ1BQI51f+zBbXIEjG+7iHOzc5zPCK75tWwf5nXPZeXPr8t7FFqn
+ 5KOw==
+X-Gm-Message-State: APjAAAV+ZH0jHN3CWDHmQ3aPOv4pmxf+hkYhrEa+xghUKDE0PGqrUYsd
+ 1seqzS539HPjz6+JTb2bLekt3T5XGoMv+NaVdh9EXw==
+X-Google-Smtp-Source: APXvYqy6UHQ+8+yRan8DQxrtjWFO0AeHWuMCd0MZM6YFNNcDvh4g1h/fJSpQjjAZ+ZTnayEmtlW26P14xfxTxsyl170=
+X-Received: by 2002:a9d:470d:: with SMTP id a13mr25335686otf.126.1560793043776; 
+ Mon, 17 Jun 2019 10:37:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <068d01d524e2$aa6f3000$ff4d9000$@d-silva.org>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20190617122733.22432-1-hch@lst.de>
+ <20190617122733.22432-7-hch@lst.de>
+In-Reply-To: <20190617122733.22432-7-hch@lst.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 17 Jun 2019 10:37:12 -0700
+Message-ID: <CAPcyv4hoRR6gzTSkWnwMiUtX6jCKz2NMOhCUfXTji8f2H1v+rg@mail.gmail.com>
+Subject: Re: [PATCH 06/25] mm: factor out a devm_request_free_mem_region helper
+To: Christoph Hellwig <hch@lst.de>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,37 +66,51 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: 'Oscar Salvador' <osalvador@suse.com>, 'Michal Hocko' <mhocko@suse.com>,
- 'Pavel Tatashin' <pasha.tatashin@soleen.com>, 'Baoquan He' <bhe@redhat.com>,
- 'David Hildenbrand' <david@redhat.com>,
- 'Peter Zijlstra' <peterz@infradead.org>, 'Jiri Kosina' <jkosina@suse.cz>,
- 'Mukesh Ojha' <mojha@codeaurora.org>, 'Ingo Molnar' <mingo@kernel.org>,
- linux-kernel@vger.kernel.org, 'Wei Yang' <richard.weiyang@gmail.com>,
- 'Christoph Hellwig' <hch@infradead.org>, linux-mm@kvack.org,
- 'Mike Rapoport' <rppt@linux.vnet.ibm.com>, 'Arun KS' <arunks@codeaurora.org>,
- 'Josh Poimboeuf' <jpoimboe@redhat.com>, 'Qian Cai' <cai@lca.pw>,
- 'Andrew Morton' <akpm@linux-foundation.org>,
- 'Thomas Gleixner' <tglx@linutronix.de>, linux-nvdimm@lists.01.org
+Cc: John Hubbard <jhubbard@nvidia.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Linux MM <linux-mm@kvack.org>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
+ linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Jun 17, 2019 at 06:00:00PM +1000, Alastair D'Silva wrote:
-> > And all that should go through our pmem APIs, not not directly poke into
-> mm
-> > internals.  And if you still need core patches send them along with the
-> actual
-> > driver.
-> 
-> I tried that, but I was getting crashes as the NUMA data structures for that
-> node were not initialised.
-> 
-> Calling this was required to prevent uninitialized accesses in the pmem
-> library.
+On Mon, Jun 17, 2019 at 5:27 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Keep the physical address allocation that hmm_add_device does with the
+> rest of the resource code, and allow future reuse of it without the hmm
+> wrapper.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Jason Gunthorpe <jgg@mellanox.com>
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+> ---
+>  include/linux/ioport.h |  2 ++
+>  kernel/resource.c      | 39 +++++++++++++++++++++++++++++++++++++++
+>  mm/hmm.c               | 33 ++++-----------------------------
+>  3 files changed, 45 insertions(+), 29 deletions(-)
+>
+> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+> index da0ebaec25f0..76a33ae3bf6c 100644
+> --- a/include/linux/ioport.h
+> +++ b/include/linux/ioport.h
+> @@ -286,6 +286,8 @@ static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
+>         return (r1->start <= r2->end && r1->end >= r2->start);
+>  }
+>
+> +struct resource *devm_request_free_mem_region(struct device *dev,
+> +               struct resource *base, unsigned long size);
 
-Please send your driver to the linux-nvdimm and linux-mm lists so that
-it can be carefully reviewed.
+This appears to need a 'static inline' helper stub in the
+CONFIG_DEVICE_PRIVATE=n case, otherwise this compile error triggers:
+
+ld: mm/hmm.o: in function `hmm_devmem_add':
+/home/dwillia2/git/linux/mm/hmm.c:1427: undefined reference to
+`devm_request_free_mem_region'
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
