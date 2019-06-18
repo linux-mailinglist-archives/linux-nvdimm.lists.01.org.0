@@ -2,60 +2,78 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB6A4AD93
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Jun 2019 23:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA824ADAB
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 00:10:56 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0559B21962301;
-	Tue, 18 Jun 2019 14:56:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 157BD21962301;
+	Tue, 18 Jun 2019 15:10:54 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=jane.chu@oracle.com; receiver=linux-nvdimm@lists.01.org 
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id A310421260A75
- for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 14:56:22 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id e8so16128691otl.7
- for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 14:56:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=qtt1rZDPVuhTzJb0IIpSWujWs31YenUk5EJQ2S55LAQ=;
- b=o9IxJYZ8kwnBSB9PQOv7jn58lvvPn/adQGqPIytHTR0TqJoqUCra3YWwiCY4h3AlYH
- xiZVw6gaMWJJUNrNFzyv9a4lveZ5YBGgHA+j//loikNHE8IV1EjpOlRBLVY2vYvSogUU
- 0HRgDKcziETxicByU2DKj1YOyOdBmwys4mY9nB3vVUzv2wlkAnmWoPopS5DE1HODt0hE
- 5HVGkkpPJqTlus0NxOgdUJsZNLwRI5Ms+DrGaIK6OcLsA9l+7fwVwNt+8+nXzMaUjztq
- 4e50KhU65baxSh5uGc0V1VK+yxUUi7tMoUQttN0dHnsHn1Nd/1FiB0CnMXZ3aGU2Sbu1
- pGuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=qtt1rZDPVuhTzJb0IIpSWujWs31YenUk5EJQ2S55LAQ=;
- b=h5clq+OreiOIVGeRNwNkRwFwlO8nIXV0lAsoJpKD2IwucxyZOfoomysl7W5hMqPSB1
- XUEcISPjrI+dXsD46179e3rYrSoRwvTpqKbRqejPVSycuPyoB86WtCVANHBYHJ6vVRp2
- F4D72MnitreOE3Z+FQzlIdXigczv2yvw9ZXOS3W9vH5X+CWoCmbunfDWyuJk/4VAfGal
- LUj/CSaARvQHHzsoruvetngGwJC31ziaaZJUKUadL0Hehjdsa6cJFzoQPuY2HEZXHuTG
- ysRtxSiXw7DIOeLxs+2+t0Rhil2OW18FFoNpMaq1YmqMmcUNdvr657apLjsaeIvQQfF8
- EVTw==
-X-Gm-Message-State: APjAAAVgSudm14E2rT8PC9jOY8cziHuoDA2OOlmjmqqWw+rupSmx7aoW
- ioX/vr9BlEhKvkkt+A0ii2C+0ol9/doAoHGMsQD9rg==
-X-Google-Smtp-Source: APXvYqzKPs+IsgHm4GdmBY9YxJvdl69JbeHvSvRruLq+veyQ9aHjXa2JJYwL1cAEYPsSnqgORpvbEL1TnIVnaDe8a/c=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr1219251otn.247.1560894981583; 
- Tue, 18 Jun 2019 14:56:21 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9250C212963EF
+ for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 15:10:53 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IM9Wp6080715;
+ Tue, 18 Jun 2019 22:10:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=Zc2OUm1tnM3N2m7NXIMcwM3Hdgj3tqDikz5h/JZLlPw=;
+ b=pChkqb2/rjNMRDRJzKlMsm16PdLxVJCZ10fEz2t3p+DvZsTUNdQq+YZgzkFrJ3IqK9Hc
+ DM8cDMG7F0TCra0DDX+J3I5TU5qskXQD/1nbeA43TDZq7sVefljpljvMfxfi3IaaXI3U
+ iKiuEa+Mw3wPAE+sWYFsLAHnQatG2AbO9KcUdGJcWkk9IUKfqNwHhaOpj7nAjMcRpqHp
+ SdnJrlUV8wtS0g1X5ysVMy7UWs6Y4MopeiLMIyeeEUJkpTu3/IW+wJoPtiayxTxGtABm
+ wwe4axjpwLYzzebmfYEUwi1+YsHBQuGfpUgybKABBZN5OAXqsODj7VizdE9Gf2LZoQwK 2g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2130.oracle.com with ESMTP id 2t7809839u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Jun 2019 22:10:37 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IM983t057436;
+ Tue, 18 Jun 2019 22:10:37 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3020.oracle.com with ESMTP id 2t77ymrcde-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 18 Jun 2019 22:10:37 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5IMAZqp004922;
+ Tue, 18 Jun 2019 22:10:35 GMT
+Received: from [10.159.158.20] (/10.159.158.20)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 18 Jun 2019 15:10:35 -0700
+Subject: Re: [PATCH 0/6] libnvdimm: Fix async operations and locking
+To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+References: <156029554317.419799.1324389595953183385.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Jane Chu <jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <53fa618d-376f-2200-c8ba-e22ba004cdc0@oracle.com>
+Date: Tue, 18 Jun 2019 15:10:33 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-References: <155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com>
- <155977187407.2443951.16503493275720588454.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190616131123.fkjs4kyg32aryjq6@master>
-In-Reply-To: <20190616131123.fkjs4kyg32aryjq6@master>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 18 Jun 2019 14:56:09 -0700
-Message-ID: <CAPcyv4hw2W3=CkrUmWtvu3cAdo3GLRhG0=G_RO7xQBugNB2htA@mail.gmail.com>
-Subject: Re: [PATCH v9 01/12] mm/sparsemem: Introduce struct mem_section_usage
-To: Wei Yang <richard.weiyang@gmail.com>
+In-Reply-To: <156029554317.419799.1324389595953183385.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906180177
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906180177
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,156 +85,88 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>
-Content-Type: text/plain; charset="us-ascii"
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Will Deacon <will.deacon@arm.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Erwin Tsaur <erwin.tsaur@oracle.com>
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Sun, Jun 16, 2019 at 6:11 AM Wei Yang <richard.weiyang@gmail.com> wrote:
->
-> On Wed, Jun 05, 2019 at 02:57:54PM -0700, Dan Williams wrote:
-> >Towards enabling memory hotplug to track partial population of a
-> >section, introduce 'struct mem_section_usage'.
-> >
-> >A pointer to a 'struct mem_section_usage' instance replaces the existing
-> >pointer to a 'pageblock_flags' bitmap. Effectively it adds one more
-> >'unsigned long' beyond the 'pageblock_flags' (usemap) allocation to
-> >house a new 'subsection_map' bitmap.  The new bitmap enables the memory
-> >hot{plug,remove} implementation to act on incremental sub-divisions of a
-> >section.
-> >
-> >The default SUBSECTION_SHIFT is chosen to keep the 'subsection_map' no
-> >larger than a single 'unsigned long' on the major architectures.
-> >Alternatively an architecture can define ARCH_SUBSECTION_SHIFT to
-> >override the default PMD_SHIFT. Note that PowerPC needs to use
-> >ARCH_SUBSECTION_SHIFT to workaround PMD_SHIFT being a non-constant
-> >expression on PowerPC.
-> >
-> >The primary motivation for this functionality is to support platforms
-> >that mix "System RAM" and "Persistent Memory" within a single section,
-> >or multiple PMEM ranges with different mapping lifetimes within a single
-> >section. The section restriction for hotplug has caused an ongoing saga
-> >of hacks and bugs for devm_memremap_pages() users.
-> >
-> >Beyond the fixups to teach existing paths how to retrieve the 'usemap'
-> >from a section, and updates to usemap allocation path, there are no
-> >expected behavior changes.
-> >
-> >Cc: Michal Hocko <mhocko@suse.com>
-> >Cc: Vlastimil Babka <vbabka@suse.cz>
-> >Cc: Logan Gunthorpe <logang@deltatee.com>
-> >Cc: Oscar Salvador <osalvador@suse.de>
-> >Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> >Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> >Cc: Paul Mackerras <paulus@samba.org>
-> >Cc: Michael Ellerman <mpe@ellerman.id.au>
-> >Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> >---
-> > arch/powerpc/include/asm/sparsemem.h |    3 +
-> > include/linux/mmzone.h               |   48 +++++++++++++++++++-
-> > mm/memory_hotplug.c                  |   18 ++++----
-> > mm/page_alloc.c                      |    2 -
-> > mm/sparse.c                          |   81 +++++++++++++++++-----------------
-> > 5 files changed, 99 insertions(+), 53 deletions(-)
-> >
-> >diff --git a/arch/powerpc/include/asm/sparsemem.h b/arch/powerpc/include/asm/sparsemem.h
-> >index 3192d454a733..1aa3c9303bf8 100644
-> >--- a/arch/powerpc/include/asm/sparsemem.h
-> >+++ b/arch/powerpc/include/asm/sparsemem.h
-> >@@ -10,6 +10,9 @@
-> >  */
-> > #define SECTION_SIZE_BITS       24
-> >
-> >+/* Reflect the largest possible PMD-size as the subsection-size constant */
-> >+#define ARCH_SUBSECTION_SHIFT 24
-> >+
-> > #endif /* CONFIG_SPARSEMEM */
-> >
-> > #ifdef CONFIG_MEMORY_HOTPLUG
-> >diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> >index 427b79c39b3c..ac163f2f274f 100644
-> >--- a/include/linux/mmzone.h
-> >+++ b/include/linux/mmzone.h
-> >@@ -1161,6 +1161,44 @@ static inline unsigned long section_nr_to_pfn(unsigned long sec)
-> > #define SECTION_ALIGN_UP(pfn) (((pfn) + PAGES_PER_SECTION - 1) & PAGE_SECTION_MASK)
-> > #define SECTION_ALIGN_DOWN(pfn)       ((pfn) & PAGE_SECTION_MASK)
-> >
-> >+/*
-> >+ * SUBSECTION_SHIFT must be constant since it is used to declare
-> >+ * subsection_map and related bitmaps without triggering the generation
-> >+ * of variable-length arrays. The most natural size for a subsection is
-> >+ * a PMD-page. For architectures that do not have a constant PMD-size
-> >+ * ARCH_SUBSECTION_SHIFT can be set to a constant max size, or otherwise
-> >+ * fallback to 2MB.
-> >+ */
-> >+#if defined(ARCH_SUBSECTION_SHIFT)
-> >+#define SUBSECTION_SHIFT (ARCH_SUBSECTION_SHIFT)
-> >+#elif defined(PMD_SHIFT)
-> >+#define SUBSECTION_SHIFT (PMD_SHIFT)
-> >+#else
-> >+/*
-> >+ * Memory hotplug enabled platforms avoid this default because they
-> >+ * either define ARCH_SUBSECTION_SHIFT, or PMD_SHIFT is a constant, but
-> >+ * this is kept as a backstop to allow compilation on
-> >+ * !ARCH_ENABLE_MEMORY_HOTPLUG archs.
-> >+ */
-> >+#define SUBSECTION_SHIFT 21
-> >+#endif
-> >+
-> >+#define PFN_SUBSECTION_SHIFT (SUBSECTION_SHIFT - PAGE_SHIFT)
-> >+#define PAGES_PER_SUBSECTION (1UL << PFN_SUBSECTION_SHIFT)
-> >+#define PAGE_SUBSECTION_MASK ((~(PAGES_PER_SUBSECTION-1)))
->
-> One pair of brackets could be removed, IMHO.
+On 6/11/2019 4:25 PM, Dan Williams wrote:
+> The libnvdimm subsystem uses async operations to parallelize device
+> probing operations and to allow sysfs to trigger device_unregister() on
+> deleted namepsaces. A multithreaded stress test of the libnvdimm sysfs
+> interface uncovered a case where device_unregister() is triggered
+> multiple times, and the subsequent investigation uncovered a broken
+> locking scenario.
+> 
+> The lack of lockdep coverage for device_lock() stymied the debug. That
+> is, until patch6 "driver-core, libnvdimm: Let device subsystems add
+> local lockdep coverage" solved that with a shadow lock, with lockdep
+> coverage, to mirror device_lock() operations. Given the time saved with
+> shadow-lock debug-hack, patch6 attempts to generalize device_lock()
+> debug facility that might be able to be carried upstream. Patch6 is
+> staged at the end of this fix series in case it is contentious and needs
+> to be dropped.
+> 
+> Patch1 "drivers/base: Introduce kill_device()" could be achieved with
+> local libnvdimm infrastructure. However, the existing 'dead' flag in
+> 'struct device_private' aims to solve similar async register/unregister
+> races so the fix in patch2 "libnvdimm/bus: Prevent duplicate
+> device_unregister() calls" can be implemented with existing driver-core
+> infrastructure.
+> 
+> Patch3 is a rare lockdep warning that is intermittent based on
+> namespaces racing ahead of the completion of probe of their parent
+> region. It is not related to the other fixes, it just happened to
+> trigger as a result of the async stress test.
+> 
+> Patch4 and patch5 address an ABBA deadlock tripped by the stress test.
+> 
+> These patches pass the failing stress test and the existing libnvdimm
+> unit tests with CONFIG_PROVE_LOCKING=y and the new "dev->lockdep_mutex"
+> shadow lock with no lockdep warnings.
+> 
+> ---
+> 
+> Dan Williams (6):
+>        drivers/base: Introduce kill_device()
+>        libnvdimm/bus: Prevent duplicate device_unregister() calls
+>        libnvdimm/region: Register badblocks before namespaces
+>        libnvdimm/bus: Stop holding nvdimm_bus_list_mutex over __nd_ioctl()
+>        libnvdimm/bus: Fix wait_nvdimm_bus_probe_idle() ABBA deadlock
+>        driver-core, libnvdimm: Let device subsystems add local lockdep coverage
+> 
+> 
+>   drivers/acpi/nfit/core.c        |   28 ++++---
+>   drivers/acpi/nfit/nfit.h        |   24 ++++++
+>   drivers/base/core.c             |   30 ++++++--
+>   drivers/nvdimm/btt_devs.c       |   16 ++--
+>   drivers/nvdimm/bus.c            |  154 +++++++++++++++++++++++++++------------
+>   drivers/nvdimm/core.c           |   10 +--
+>   drivers/nvdimm/dimm_devs.c      |    4 +
+>   drivers/nvdimm/namespace_devs.c |   36 +++++----
+>   drivers/nvdimm/nd-core.h        |   71 ++++++++++++++++++
+>   drivers/nvdimm/pfn_devs.c       |   24 +++---
+>   drivers/nvdimm/pmem.c           |    4 +
+>   drivers/nvdimm/region.c         |   24 +++---
+>   drivers/nvdimm/region_devs.c    |   12 ++-
+>   include/linux/device.h          |    6 ++
+>   14 files changed, 308 insertions(+), 135 deletions(-)
+> 
 
-Sure.
+Tested-by: Jane Chu <jane.chu@oracle.com>
 
->
-> >+
-> >+#if SUBSECTION_SHIFT > SECTION_SIZE_BITS
-> >+#error Subsection size exceeds section size
-> >+#else
-> >+#define SUBSECTIONS_PER_SECTION (1UL << (SECTION_SIZE_BITS - SUBSECTION_SHIFT))
-> >+#endif
-> >+
-> >+struct mem_section_usage {
-> >+      DECLARE_BITMAP(subsection_map, SUBSECTIONS_PER_SECTION);
-> >+      /* See declaration of similar field in struct zone */
-> >+      unsigned long pageblock_flags[0];
-> >+};
-> >+
-> > struct page;
-> > struct page_ext;
-> > struct mem_section {
-> >@@ -1178,8 +1216,7 @@ struct mem_section {
-> >        */
-> >       unsigned long section_mem_map;
-> >
-> >-      /* See declaration of similar field in struct zone */
-> >-      unsigned long *pageblock_flags;
-> >+      struct mem_section_usage *usage;
-> > #ifdef CONFIG_PAGE_EXTENSION
-> >       /*
-> >        * If SPARSEMEM, pgdat doesn't have page_ext pointer. We use
-> >@@ -1210,6 +1247,11 @@ extern struct mem_section **mem_section;
-> > extern struct mem_section mem_section[NR_SECTION_ROOTS][SECTIONS_PER_ROOT];
-> > #endif
-> >
-> >+static inline unsigned long *section_to_usemap(struct mem_section *ms)
-> >+{
-> >+      return ms->usage->pageblock_flags;
->
-> Do we need to consider the case when ms->usage is NULL?
+Specifically, running parallel ndctls creating/destroying namespaces in 
+multiple processes concurrently led to system panic, that has been 
+verified fixed by this patch series.
 
-No, this routine safely assumes it is always set.
+Thanks!
+-jane
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
