@@ -1,37 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1574B1DF
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 08:06:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF114B1E3
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 08:06:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 103AD21959CB2;
-	Tue, 18 Jun 2019 23:06:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2A6DA21296711;
+	Tue, 18 Jun 2019 23:06:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.100; helo=mga07.intel.com;
+ client-ip=134.134.136.65; helo=mga03.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9EFA821296419
- for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 23:06:47 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 78BB921296419
+ for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 23:06:52 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2019 23:06:47 -0700
-X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; d="scan'208";a="181561933"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2019 23:06:52 -0700
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; d="scan'208";a="153706263"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2019 23:06:46 -0700
-Subject: [PATCH v10 10/13] mm: Document ZONE_DEVICE memory-model implications
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2019 23:06:52 -0700
+Subject: [PATCH v10 11/13] mm/devm_memremap_pages: Enable sub-section remap
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Tue, 18 Jun 2019 22:52:29 -0700
-Message-ID: <156092354985.979959.15763234410543451710.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Tue, 18 Jun 2019 22:52:35 -0700
+Message-ID: <156092355542.979959.10060071713397030576.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -47,73 +47,138 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linux-nvdimm@lists.01.org,
- Mike Rapoport <rppt@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+ Oscar Salvador <osalvador@suse.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Explain the general mechanisms of 'ZONE_DEVICE' pages and list the users
-of 'devm_memremap_pages()'.
-
-Cc: Jonathan Corbet <corbet@lwn.net>
-Reported-by: Mike Rapoport <rppt@linux.ibm.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/vm/memory-model.rst |   39 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
-
-diff --git a/Documentation/vm/memory-model.rst b/Documentation/vm/memory-model.rst
-index 382f72ace1fc..e0af47e02e78 100644
---- a/Documentation/vm/memory-model.rst
-+++ b/Documentation/vm/memory-model.rst
-@@ -181,3 +181,42 @@ that is eventually passed to vmemmap_populate() through a long chain
- of function calls. The vmemmap_populate() implementation may use the
- `vmem_altmap` along with :c:func:`altmap_alloc_block_buf` helper to
- allocate memory map on the persistent memory device.
-+
-+ZONE_DEVICE
-+===========
-+The `ZONE_DEVICE` facility builds upon `SPARSEMEM_VMEMMAP` to offer
-+`struct page` `mem_map` services for device driver identified physical
-+address ranges. The "device" aspect of `ZONE_DEVICE` relates to the fact
-+that the page objects for these address ranges are never marked online,
-+and that a reference must be taken against the device, not just the page
-+to keep the memory pinned for active use. `ZONE_DEVICE`, via
-+:c:func:`devm_memremap_pages`, performs just enough memory hotplug to
-+turn on :c:func:`pfn_to_page`, :c:func:`page_to_pfn`, and
-+:c:func:`get_user_pages` service for the given range of pfns. Since the
-+page reference count never drops below 1 the page is never tracked as
-+free memory and the page's `struct list_head lru` space is repurposed
-+for back referencing to the host device / driver that mapped the memory.
-+
-+While `SPARSEMEM` presents memory as a collection of sections,
-+optionally collected into memory blocks, `ZONE_DEVICE` users have a need
-+for smaller granularity of populating the `mem_map`. Given that
-+`ZONE_DEVICE` memory is never marked online it is subsequently never
-+subject to its memory ranges being exposed through the sysfs memory
-+hotplug api on memory block boundaries. The implementation relies on
-+this lack of user-api constraint to allow sub-section sized memory
-+ranges to be specified to :c:func:`arch_add_memory`, the top-half of
-+memory hotplug. Sub-section support allows for `PMD_SIZE` as the minimum
-+alignment granularity for :c:func:`devm_memremap_pages`.
-+
-+The users of `ZONE_DEVICE` are:
-+* pmem: Map platform persistent memory to be used as a direct-I/O target
-+  via DAX mappings.
-+
-+* hmm: Extend `ZONE_DEVICE` with `->page_fault()` and `->page_free()`
-+  event callbacks to allow a device-driver to coordinate memory management
-+  events related to device-memory, typically GPU memory. See
-+  Documentation/vm/hmm.rst.
-+
-+* p2pdma: Create `struct page` objects to allow peer devices in a
-+  PCI/-E topology to coordinate direct-DMA operations between themselves,
-+  i.e. bypass host memory.
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+VGVhY2ggZGV2bV9tZW1yZW1hcF9wYWdlcygpIGFib3V0IHRoZSBuZXcgc3ViLXNlY3Rpb24gY2Fw
+YWJpbGl0aWVzIG9mCmFyY2hfe2FkZCxyZW1vdmV9X21lbW9yeSgpLiBFZmZlY3RpdmVseSwganVz
+dCByZXBsYWNlIGFsbCB1c2FnZSBvZgphbGlnbl9zdGFydCwgYWxpZ25fZW5kLCBhbmQgYWxpZ25f
+c2l6ZSB3aXRoIHJlcy0+c3RhcnQsIHJlcy0+ZW5kLCBhbmQKcmVzb3VyY2Vfc2l6ZShyZXMpLiBU
+aGUgZXhpc3Rpbmcgc2FuaXR5IGNoZWNrIHdpbGwgc3RpbGwgbWFrZSBzdXJlIHRoYXQKdGhlIHR3
+byBzZXBhcmF0ZSByZW1hcCBhdHRlbXB0cyBkbyBub3QgY29sbGlkZSB3aXRoaW4gYSBzdWItc2Vj
+dGlvbiAoMk1CCm9uIHg4NikuCgpDYzogTWljaGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+CkNj
+OiBUb3NoaSBLYW5pIDx0b3NoaS5rYW5pQGhwZS5jb20+CkNjOiBKw6lyw7RtZSBHbGlzc2UgPGpn
+bGlzc2VAcmVkaGF0LmNvbT4KQ2M6IExvZ2FuIEd1bnRob3JwZSA8bG9nYW5nQGRlbHRhdGVlLmNv
+bT4KQ2M6IE9zY2FyIFNhbHZhZG9yIDxvc2FsdmFkb3JAc3VzZS5kZT4KQ2M6IFBhdmVsIFRhdGFz
+aGluIDxwYXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPgpTaWduZWQtb2ZmLWJ5OiBEYW4gV2lsbGlh
+bXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KLS0tCiBrZXJuZWwvbWVtcmVtYXAuYyB8ICAg
+NjEgKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0K
+IDEgZmlsZSBjaGFuZ2VkLCAyNCBpbnNlcnRpb25zKCspLCAzNyBkZWxldGlvbnMoLSkKCmRpZmYg
+LS1naXQgYS9rZXJuZWwvbWVtcmVtYXAuYyBiL2tlcm5lbC9tZW1yZW1hcC5jCmluZGV4IDU3OTgw
+ZWQ0ZTU3MS4uYTBlNWY2YjkxYjA0IDEwMDY0NAotLS0gYS9rZXJuZWwvbWVtcmVtYXAuYworKysg
+Yi9rZXJuZWwvbWVtcmVtYXAuYwpAQCAtNTgsNyArNTgsNyBAQCBzdGF0aWMgdW5zaWduZWQgbG9u
+ZyBwZm5fZmlyc3Qoc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlzdHJ1Y3Qgdm1lbV9hbHRt
+YXAgKmFsdG1hcCA9ICZwZ21hcC0+YWx0bWFwOwogCXVuc2lnbmVkIGxvbmcgcGZuOwogCi0JcGZu
+ID0gcmVzLT5zdGFydCA+PiBQQUdFX1NISUZUOworCXBmbiA9IFBIWVNfUEZOKHJlcy0+c3RhcnQp
+OwogCWlmIChwZ21hcC0+YWx0bWFwX3ZhbGlkKQogCQlwZm4gKz0gdm1lbV9hbHRtYXBfb2Zmc2V0
+KGFsdG1hcCk7CiAJcmV0dXJuIHBmbjsKQEAgLTg2LDcgKzg2LDYgQEAgc3RhdGljIHZvaWQgZGV2
+bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZvaWQgKmRhdGEpCiAJc3RydWN0IGRldl9wYWdlbWFw
+ICpwZ21hcCA9IGRhdGE7CiAJc3RydWN0IGRldmljZSAqZGV2ID0gcGdtYXAtPmRldjsKIAlzdHJ1
+Y3QgcmVzb3VyY2UgKnJlcyA9ICZwZ21hcC0+cmVzOwotCXJlc291cmNlX3NpemVfdCBhbGlnbl9z
+dGFydCwgYWxpZ25fc2l6ZTsKIAl1bnNpZ25lZCBsb25nIHBmbjsKIAlpbnQgbmlkOwogCkBAIC05
+NiwyNSArOTUsMjEgQEAgc3RhdGljIHZvaWQgZGV2bV9tZW1yZW1hcF9wYWdlc19yZWxlYXNlKHZv
+aWQgKmRhdGEpCiAJcGdtYXAtPmNsZWFudXAocGdtYXAtPnJlZik7CiAKIAkvKiBwYWdlcyBhcmUg
+ZGVhZCBhbmQgdW51c2VkLCB1bmRvIHRoZSBhcmNoIG1hcHBpbmcgKi8KLQlhbGlnbl9zdGFydCA9
+IHJlcy0+c3RhcnQgJiB+KFBBX1NFQ1RJT05fU0laRSAtIDEpOwotCWFsaWduX3NpemUgPSBBTElH
+TihyZXMtPnN0YXJ0ICsgcmVzb3VyY2Vfc2l6ZShyZXMpLCBQQV9TRUNUSU9OX1NJWkUpCi0JCS0g
+YWxpZ25fc3RhcnQ7Ci0KLQluaWQgPSBwYWdlX3RvX25pZChwZm5fdG9fcGFnZShhbGlnbl9zdGFy
+dCA+PiBQQUdFX1NISUZUKSk7CisJbmlkID0gcGFnZV90b19uaWQocGZuX3RvX3BhZ2UoUEhZU19Q
+Rk4ocmVzLT5zdGFydCkpKTsKIAogCW1lbV9ob3RwbHVnX2JlZ2luKCk7CiAJaWYgKHBnbWFwLT50
+eXBlID09IE1FTU9SWV9ERVZJQ0VfUFJJVkFURSkgewotCQlwZm4gPSBhbGlnbl9zdGFydCA+PiBQ
+QUdFX1NISUZUOworCQlwZm4gPSBQSFlTX1BGTihyZXMtPnN0YXJ0KTsKIAkJX19yZW1vdmVfcGFn
+ZXMocGFnZV96b25lKHBmbl90b19wYWdlKHBmbikpLCBwZm4sCi0JCQkJYWxpZ25fc2l6ZSA+PiBQ
+QUdFX1NISUZULCBOVUxMKTsKKwkJCQlQSFlTX1BGTihyZXNvdXJjZV9zaXplKHJlcykpLCBOVUxM
+KTsKIAl9IGVsc2UgewotCQlhcmNoX3JlbW92ZV9tZW1vcnkobmlkLCBhbGlnbl9zdGFydCwgYWxp
+Z25fc2l6ZSwKKwkJYXJjaF9yZW1vdmVfbWVtb3J5KG5pZCwgcmVzLT5zdGFydCwgcmVzb3VyY2Vf
+c2l6ZShyZXMpLAogCQkJCXBnbWFwLT5hbHRtYXBfdmFsaWQgPyAmcGdtYXAtPmFsdG1hcCA6IE5V
+TEwpOwotCQlrYXNhbl9yZW1vdmVfemVyb19zaGFkb3coX192YShhbGlnbl9zdGFydCksIGFsaWdu
+X3NpemUpOworCQlrYXNhbl9yZW1vdmVfemVyb19zaGFkb3coX192YShyZXMtPnN0YXJ0KSwgcmVz
+b3VyY2Vfc2l6ZShyZXMpKTsKIAl9CiAJbWVtX2hvdHBsdWdfZG9uZSgpOwogCi0JdW50cmFja19w
+Zm4oTlVMTCwgUEhZU19QRk4oYWxpZ25fc3RhcnQpLCBhbGlnbl9zaXplKTsKKwl1bnRyYWNrX3Bm
+bihOVUxMLCBQSFlTX1BGTihyZXMtPnN0YXJ0KSwgcmVzb3VyY2Vfc2l6ZShyZXMpKTsKIAlwZ21h
+cF9hcnJheV9kZWxldGUocmVzKTsKIAlkZXZfV0FSTl9PTkNFKGRldiwgcGdtYXAtPmFsdG1hcC5h
+bGxvYywKIAkJICAgICAgIiVzOiBmYWlsZWQgdG8gZnJlZSBhbGwgcmVzZXJ2ZWQgcGFnZXNcbiIs
+IF9fZnVuY19fKTsKQEAgLTE0MSwxNiArMTM2LDEzIEBAIHN0YXRpYyB2b2lkIGRldm1fbWVtcmVt
+YXBfcGFnZXNfcmVsZWFzZSh2b2lkICpkYXRhKQogICovCiB2b2lkICpkZXZtX21lbXJlbWFwX3Bh
+Z2VzKHN0cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIHsKLQly
+ZXNvdXJjZV9zaXplX3QgYWxpZ25fc3RhcnQsIGFsaWduX3NpemUsIGFsaWduX2VuZDsKLQlzdHJ1
+Y3Qgdm1lbV9hbHRtYXAgKmFsdG1hcCA9IHBnbWFwLT5hbHRtYXBfdmFsaWQgPwotCQkJJnBnbWFw
+LT5hbHRtYXAgOiBOVUxMOwogCXN0cnVjdCByZXNvdXJjZSAqcmVzID0gJnBnbWFwLT5yZXM7CiAJ
+c3RydWN0IGRldl9wYWdlbWFwICpjb25mbGljdF9wZ21hcDsKIAlzdHJ1Y3QgbWhwX3Jlc3RyaWN0
+aW9ucyByZXN0cmljdGlvbnMgPSB7CiAJCS8qCiAJCSAqIFdlIGRvIG5vdCB3YW50IGFueSBvcHRp
+b25hbCBmZWF0dXJlcyBvbmx5IG91ciBvd24gbWVtbWFwCiAJCSovCi0JCS5hbHRtYXAgPSBhbHRt
+YXAsCisJCS5hbHRtYXAgPSBwZ21hcC0+YWx0bWFwX3ZhbGlkID8gJnBnbWFwLT5hbHRtYXAgOiBO
+VUxMLAogCX07CiAJcGdwcm90X3QgcGdwcm90ID0gUEFHRV9LRVJORUw7CiAJaW50IGVycm9yLCBu
+aWQsIGlzX3JhbTsKQEAgLTE2MCwxMiArMTUyLDcgQEAgdm9pZCAqZGV2bV9tZW1yZW1hcF9wYWdl
+cyhzdHJ1Y3QgZGV2aWNlICpkZXYsIHN0cnVjdCBkZXZfcGFnZW1hcCAqcGdtYXApCiAJCXJldHVy
+biBFUlJfUFRSKC1FSU5WQUwpOwogCX0KIAotCWFsaWduX3N0YXJ0ID0gcmVzLT5zdGFydCAmIH4o
+UEFfU0VDVElPTl9TSVpFIC0gMSk7Ci0JYWxpZ25fc2l6ZSA9IEFMSUdOKHJlcy0+c3RhcnQgKyBy
+ZXNvdXJjZV9zaXplKHJlcyksIFBBX1NFQ1RJT05fU0laRSkKLQkJLSBhbGlnbl9zdGFydDsKLQlh
+bGlnbl9lbmQgPSBhbGlnbl9zdGFydCArIGFsaWduX3NpemUgLSAxOwotCi0JY29uZmxpY3RfcGdt
+YXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19QRk4oYWxpZ25fc3RhcnQpLCBOVUxMKTsKKwljb25m
+bGljdF9wZ21hcCA9IGdldF9kZXZfcGFnZW1hcChQSFlTX1BGTihyZXMtPnN0YXJ0KSwgTlVMTCk7
+CiAJaWYgKGNvbmZsaWN0X3BnbWFwKSB7CiAJCWRldl9XQVJOKGRldiwgIkNvbmZsaWN0aW5nIG1h
+cHBpbmcgaW4gc2FtZSBzZWN0aW9uXG4iKTsKIAkJcHV0X2Rldl9wYWdlbWFwKGNvbmZsaWN0X3Bn
+bWFwKTsKQEAgLTE3Myw3ICsxNjAsNyBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0cnVj
+dCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAkJZ290byBlcnJfYXJy
+YXk7CiAJfQogCi0JY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19QRk4oYWxp
+Z25fZW5kKSwgTlVMTCk7CisJY29uZmxpY3RfcGdtYXAgPSBnZXRfZGV2X3BhZ2VtYXAoUEhZU19Q
+Rk4ocmVzLT5lbmQpLCBOVUxMKTsKIAlpZiAoY29uZmxpY3RfcGdtYXApIHsKIAkJZGV2X1dBUk4o
+ZGV2LCAiQ29uZmxpY3RpbmcgbWFwcGluZyBpbiBzYW1lIHNlY3Rpb25cbiIpOwogCQlwdXRfZGV2
+X3BhZ2VtYXAoY29uZmxpY3RfcGdtYXApOwpAQCAtMTgxLDcgKzE2OCw3IEBAIHZvaWQgKmRldm1f
+bWVtcmVtYXBfcGFnZXMoc3RydWN0IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBn
+bWFwKQogCQlnb3RvIGVycl9hcnJheTsKIAl9CiAKLQlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0
+cyhhbGlnbl9zdGFydCwgYWxpZ25fc2l6ZSwKKwlpc19yYW0gPSByZWdpb25faW50ZXJzZWN0cyhy
+ZXMtPnN0YXJ0LCByZXNvdXJjZV9zaXplKHJlcyksCiAJCUlPUkVTT1VSQ0VfU1lTVEVNX1JBTSwg
+SU9SRVNfREVTQ19OT05FKTsKIAogCWlmIChpc19yYW0gIT0gUkVHSU9OX0RJU0pPSU5UKSB7CkBA
+IC0yMDIsOCArMTg5LDggQEAgdm9pZCAqZGV2bV9tZW1yZW1hcF9wYWdlcyhzdHJ1Y3QgZGV2aWNl
+ICpkZXYsIHN0cnVjdCBkZXZfcGFnZW1hcCAqcGdtYXApCiAJaWYgKG5pZCA8IDApCiAJCW5pZCA9
+IG51bWFfbWVtX2lkKCk7CiAKLQllcnJvciA9IHRyYWNrX3Bmbl9yZW1hcChOVUxMLCAmcGdwcm90
+LCBQSFlTX1BGTihhbGlnbl9zdGFydCksIDAsCi0JCQlhbGlnbl9zaXplKTsKKwllcnJvciA9IHRy
+YWNrX3Bmbl9yZW1hcChOVUxMLCAmcGdwcm90LCBQSFlTX1BGTihyZXMtPnN0YXJ0KSwgMCwKKwkJ
+CXJlc291cmNlX3NpemUocmVzKSk7CiAJaWYgKGVycm9yKQogCQlnb3RvIGVycl9wZm5fcmVtYXA7
+CiAKQEAgLTIyMSwyNSArMjA4LDI1IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0
+IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIGFyY2hfYWRkX21l
+bW9yeSgpLgogCSAqLwogCWlmIChwZ21hcC0+dHlwZSA9PSBNRU1PUllfREVWSUNFX1BSSVZBVEUp
+IHsKLQkJZXJyb3IgPSBhZGRfcGFnZXMobmlkLCBhbGlnbl9zdGFydCA+PiBQQUdFX1NISUZULAot
+CQkJCWFsaWduX3NpemUgPj4gUEFHRV9TSElGVCwgJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0g
+YWRkX3BhZ2VzKG5pZCwgUEhZU19QRk4ocmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3Vy
+Y2Vfc2l6ZShyZXMpKSwgJnJlc3RyaWN0aW9ucyk7CiAJfSBlbHNlIHsKLQkJZXJyb3IgPSBrYXNh
+bl9hZGRfemVyb19zaGFkb3coX192YShhbGlnbl9zdGFydCksIGFsaWduX3NpemUpOworCQllcnJv
+ciA9IGthc2FuX2FkZF96ZXJvX3NoYWRvdyhfX3ZhKHJlcy0+c3RhcnQpLCByZXNvdXJjZV9zaXpl
+KHJlcykpOwogCQlpZiAoZXJyb3IpIHsKIAkJCW1lbV9ob3RwbHVnX2RvbmUoKTsKIAkJCWdvdG8g
+ZXJyX2thc2FuOwogCQl9CiAKLQkJZXJyb3IgPSBhcmNoX2FkZF9tZW1vcnkobmlkLCBhbGlnbl9z
+dGFydCwgYWxpZ25fc2l6ZSwKLQkJCQkJJnJlc3RyaWN0aW9ucyk7CisJCWVycm9yID0gYXJjaF9h
+ZGRfbWVtb3J5KG5pZCwgcmVzLT5zdGFydCwgcmVzb3VyY2Vfc2l6ZShyZXMpLAorCQkJCSZyZXN0
+cmljdGlvbnMpOwogCX0KIAogCWlmICghZXJyb3IpIHsKIAkJc3RydWN0IHpvbmUgKnpvbmU7CiAK
+IAkJem9uZSA9ICZOT0RFX0RBVEEobmlkKS0+bm9kZV96b25lc1taT05FX0RFVklDRV07Ci0JCW1v
+dmVfcGZuX3JhbmdlX3RvX3pvbmUoem9uZSwgYWxpZ25fc3RhcnQgPj4gUEFHRV9TSElGVCwKLQkJ
+CQlhbGlnbl9zaXplID4+IFBBR0VfU0hJRlQsIGFsdG1hcCk7CisJCW1vdmVfcGZuX3JhbmdlX3Rv
+X3pvbmUoem9uZSwgUEhZU19QRk4ocmVzLT5zdGFydCksCisJCQkJUEhZU19QRk4ocmVzb3VyY2Vf
+c2l6ZShyZXMpKSwgcmVzdHJpY3Rpb25zLmFsdG1hcCk7CiAJfQogCiAJbWVtX2hvdHBsdWdfZG9u
+ZSgpOwpAQCAtMjUxLDggKzIzOCw4IEBAIHZvaWQgKmRldm1fbWVtcmVtYXBfcGFnZXMoc3RydWN0
+IGRldmljZSAqZGV2LCBzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQogCSAqIHRvIGFsbG93IHVz
+IHRvIGRvIHRoZSB3b3JrIHdoaWxlIG5vdCBob2xkaW5nIHRoZSBob3RwbHVnIGxvY2suCiAJICov
+CiAJbWVtbWFwX2luaXRfem9uZV9kZXZpY2UoJk5PREVfREFUQShuaWQpLT5ub2RlX3pvbmVzW1pP
+TkVfREVWSUNFXSwKLQkJCQlhbGlnbl9zdGFydCA+PiBQQUdFX1NISUZULAotCQkJCWFsaWduX3Np
+emUgPj4gUEFHRV9TSElGVCwgcGdtYXApOworCQkJCVBIWVNfUEZOKHJlcy0+c3RhcnQpLAorCQkJ
+CVBIWVNfUEZOKHJlc291cmNlX3NpemUocmVzKSksIHBnbWFwKTsKIAlwZXJjcHVfcmVmX2dldF9t
+YW55KHBnbWFwLT5yZWYsIHBmbl9lbmQocGdtYXApIC0gcGZuX2ZpcnN0KHBnbWFwKSk7CiAKIAll
+cnJvciA9IGRldm1fYWRkX2FjdGlvbl9vcl9yZXNldChkZXYsIGRldm1fbWVtcmVtYXBfcGFnZXNf
+cmVsZWFzZSwKQEAgLTI2Myw5ICsyNTAsOSBAQCB2b2lkICpkZXZtX21lbXJlbWFwX3BhZ2VzKHN0
+cnVjdCBkZXZpY2UgKmRldiwgc3RydWN0IGRldl9wYWdlbWFwICpwZ21hcCkKIAlyZXR1cm4gX192
+YShyZXMtPnN0YXJ0KTsKIAogIGVycl9hZGRfbWVtb3J5OgotCWthc2FuX3JlbW92ZV96ZXJvX3No
+YWRvdyhfX3ZhKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7CisJa2FzYW5fcmVtb3ZlX3plcm9f
+c2hhZG93KF9fdmEocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUocmVzKSk7CiAgZXJyX2thc2Fu
+OgotCXVudHJhY2tfcGZuKE5VTEwsIFBIWVNfUEZOKGFsaWduX3N0YXJ0KSwgYWxpZ25fc2l6ZSk7
+CisJdW50cmFja19wZm4oTlVMTCwgUEhZU19QRk4ocmVzLT5zdGFydCksIHJlc291cmNlX3NpemUo
+cmVzKSk7CiAgZXJyX3Bmbl9yZW1hcDoKIAlwZ21hcF9hcnJheV9kZWxldGUocmVzKTsKICBlcnJf
+YXJyYXk6CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
+aW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6
+Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
