@@ -1,37 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E014B1D1
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 08:06:02 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400F94B1D3
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 08:06:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CC074212966FB;
-	Tue, 18 Jun 2019 23:06:01 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E864B212966FE;
+	Tue, 18 Jun 2019 23:06:07 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.31; helo=mga06.intel.com;
+ client-ip=134.134.136.20; helo=mga02.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 667DF212966ED
- for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 23:06:00 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 427FE21296419
+ for <linux-nvdimm@lists.01.org>; Tue, 18 Jun 2019 23:06:07 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2019 23:06:00 -0700
-X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; d="scan'208";a="243216408"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2019 23:06:06 -0700
+X-IronPort-AV: E=Sophos;i="5.63,392,1557212400"; d="scan'208";a="160271014"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2019 23:06:00 -0700
-Subject: [PATCH v10 02/13] mm/sparsemem: Introduce a SECTION_IS_EARLY flag
+ by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2019 23:06:05 -0700
+Subject: [PATCH v10 03/13] mm/sparsemem: Add helpers track active portions
+ of a section at boot
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Tue, 18 Jun 2019 22:51:43 -0700
-Message-ID: <156092350358.979959.5817209875548072819.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Tue, 18 Jun 2019 22:51:48 -0700
+Message-ID: <156092350874.979959.18185938451405518285.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -48,139 +49,182 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- David Hildenbrand <david@redhat.com>, linux-nvdimm@lists.01.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Qian Cai <cai@lca.pw>,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Qian Cai <cai@lca.pw>, Vlastimil Babka <vbabka@suse.cz>,
  Oscar Salvador <osalvador@suse.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-In preparation for sub-section hotplug, track whether a given section
-was created during early memory initialization, or later via memory
-hotplug.  This distinction is needed to maintain the coarse expectation
-that pfn_valid() returns true for any pfn within a given section even if
-that section has pages that are reserved from the page allocator.
+Prepare for hot{plug,remove} of sub-ranges of a section by tracking a
+sub-section active bitmask, each bit representing a PMD_SIZE span of the
+architecture's memory hotplug section size.
 
-For example one of the of goals of subsection hotplug is to support
-cases where the system physical memory layout collides System RAM and
-PMEM within a section. Several pfn_valid() users expect to just check if
-a section is valid, but they are not careful to check if the given pfn
-is within a "System RAM" boundary and instead expect pgdat information
-to further validate the pfn.
+The implications of a partially populated section is that pfn_valid()
+needs to go beyond a valid_section() check and either determine that the
+section is an "early section", or read the sub-section active ranges
+from the bitmask. The expectation is that the bitmask (subsection_map)
+fits in the same cacheline as the valid_section() / early_section()
+data, so the incremental performance overhead to pfn_valid() should be
+negligible.
 
-Rather than unwind those paths to make their pfn_valid() queries more
-precise a follow on patch uses the SECTION_IS_EARLY flag to maintain the
-traditional expectation that pfn_valid() returns true for all early
-sections.
+The rationale for using early_section() to short-ciruit the
+subsection_map check is that there are legacy code paths that use
+pfn_valid() at section granularity before validating the pfn against
+pgdat data. So, the early_section() check allows those traditional
+assumptions to persist while also permitting subsection_map to tell the
+truth for purposes of populating the unused portions of early sections
+with PMEM and other ZONE_DEVICE mappings.
 
-Link: https://lore.kernel.org/lkml/1560366952-10660-1-git-send-email-cai@lca.pw/
-Reported-by: Qian Cai <cai@lca.pw>
 Cc: Michal Hocko <mhocko@suse.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: David Hildenbrand <david@redhat.com>
 Cc: Oscar Salvador <osalvador@suse.de>
 Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Reported-by: Qian Cai <cai@lca.pw>
+Tested-by: Jane Chu <jane.chu@oracle.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/mmzone.h |    8 +++++++-
- mm/sparse.c            |   20 +++++++++-----------
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ include/linux/mmzone.h |   33 ++++++++++++++++++++++++++++++++-
+ mm/page_alloc.c        |   10 ++++++++--
+ mm/sparse.c            |   35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 75 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 179680c94262..d081c9a1d25d 100644
+index d081c9a1d25d..c4e8843e283c 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -1261,7 +1261,8 @@ extern size_t mem_section_usage_size(void);
- #define	SECTION_MARKED_PRESENT	(1UL<<0)
- #define SECTION_HAS_MEM_MAP	(1UL<<1)
- #define SECTION_IS_ONLINE	(1UL<<2)
--#define SECTION_MAP_LAST_BIT	(1UL<<3)
-+#define SECTION_IS_EARLY	(1UL<<3)
-+#define SECTION_MAP_LAST_BIT	(1UL<<4)
- #define SECTION_MAP_MASK	(~(SECTION_MAP_LAST_BIT-1))
- #define SECTION_NID_SHIFT	3
+@@ -1179,6 +1179,8 @@ struct mem_section_usage {
+ 	unsigned long pageblock_flags[0];
+ };
  
-@@ -1287,6 +1288,11 @@ static inline int valid_section(struct mem_section *section)
- 	return (section && (section->section_mem_map & SECTION_HAS_MEM_MAP));
- }
++void subsection_map_init(unsigned long pfn, unsigned long nr_pages);
++
+ struct page;
+ struct page_ext;
+ struct mem_section {
+@@ -1322,12 +1324,40 @@ static inline struct mem_section *__pfn_to_section(unsigned long pfn)
  
-+static inline int early_section(struct mem_section *section)
+ extern int __highest_present_section_nr;
+ 
++static inline int subsection_map_index(unsigned long pfn)
 +{
-+	return (section && (section->section_mem_map & SECTION_IS_EARLY));
++	return (pfn & ~(PAGE_SECTION_MASK)) / PAGES_PER_SUBSECTION;
 +}
 +
- static inline int valid_section_nr(unsigned long nr)
++#ifdef CONFIG_SPARSEMEM_VMEMMAP
++static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
++{
++	int idx = subsection_map_index(pfn);
++
++	return test_bit(idx, ms->usage->subsection_map);
++}
++#else
++static inline int pfn_section_valid(struct mem_section *ms, unsigned long pfn)
++{
++	return 1;
++}
++#endif
++
+ #ifndef CONFIG_HAVE_ARCH_PFN_VALID
+ static inline int pfn_valid(unsigned long pfn)
  {
- 	return valid_section(__nr_to_section(nr));
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 71da15cc7432..2031a0694f35 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -288,11 +288,11 @@ struct page *sparse_decode_mem_map(unsigned long coded_mem_map, unsigned long pn
- 
- static void __meminit sparse_init_one_section(struct mem_section *ms,
- 		unsigned long pnum, struct page *mem_map,
--		struct mem_section_usage *usage)
-+		struct mem_section_usage *usage, unsigned long flags)
- {
- 	ms->section_mem_map &= ~SECTION_MAP_MASK;
--	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum) |
--							SECTION_HAS_MEM_MAP;
-+	ms->section_mem_map |= sparse_encode_mem_map(mem_map, pnum)
-+		| SECTION_HAS_MEM_MAP | flags;
- 	ms->usage = usage;
- }
- 
-@@ -497,7 +497,8 @@ static void __init sparse_init_nid(int nid, unsigned long pnum_begin,
- 			goto failed;
- 		}
- 		check_usemap_section_nr(nid, usage);
--		sparse_init_one_section(__nr_to_section(pnum), pnum, map, usage);
-+		sparse_init_one_section(__nr_to_section(pnum), pnum, map, usage,
-+				SECTION_IS_EARLY);
- 		usage = (void *) usage + mem_section_usage_size();
- 	}
- 	sparse_buffer_fini();
-@@ -731,7 +732,7 @@ int __meminit sparse_add_one_section(int nid, unsigned long start_pfn,
- 	page_init_poison(memmap, sizeof(struct page) * PAGES_PER_SECTION);
- 
- 	section_mark_present(ms);
--	sparse_init_one_section(ms, section_nr, memmap, usage);
-+	sparse_init_one_section(ms, section_nr, memmap, usage, 0);
- 
- out:
- 	if (ret < 0) {
-@@ -771,19 +772,16 @@ static inline void clear_hwpoisoned_pages(struct page *memmap, int nr_pages)
++	struct mem_section *ms;
++
+ 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
+ 		return 0;
+-	return valid_section(__nr_to_section(pfn_to_section_nr(pfn)));
++	ms = __nr_to_section(pfn_to_section_nr(pfn));
++	if (!valid_section(ms))
++		return 0;
++	/*
++	 * Traditionally early sections always returned pfn_valid() for
++	 * the entire section-sized span.
++	 */
++	return early_section(ms) || pfn_section_valid(ms, pfn);
  }
  #endif
  
--static void free_section_usage(struct page *memmap,
-+static void free_section_usage(struct mem_section *ms, struct page *memmap,
- 		struct mem_section_usage *usage, struct vmem_altmap *altmap)
- {
--	struct page *usage_page;
--
- 	if (!usage)
- 		return;
+@@ -1359,6 +1389,7 @@ void sparse_init(void);
+ #define sparse_init()	do {} while (0)
+ #define sparse_index_init(_sec, _nid)  do {} while (0)
+ #define pfn_present pfn_valid
++#define subsection_map_init(_pfn, _nr_pages) do {} while (0)
+ #endif /* CONFIG_SPARSEMEM */
  
--	usage_page = virt_to_page(usage);
- 	/*
- 	 * Check to see if allocation came from hot-plug-add
- 	 */
--	if (PageSlab(usage_page) || PageCompound(usage_page)) {
-+	if (!early_section(ms)) {
- 		kfree(usage);
- 		if (memmap)
- 			__kfree_section_memmap(memmap, altmap);
-@@ -815,6 +813,6 @@ void sparse_remove_one_section(struct mem_section *ms, unsigned long map_offset,
+ /*
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 8cc091e87200..8e7215fb6976 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7306,12 +7306,18 @@ void __init free_area_init_nodes(unsigned long *max_zone_pfn)
+ 			       (u64)zone_movable_pfn[i] << PAGE_SHIFT);
+ 	}
  
- 	clear_hwpoisoned_pages(memmap + map_offset,
- 			PAGES_PER_SECTION - map_offset);
--	free_section_usage(memmap, usage, altmap);
-+	free_section_usage(ms, memmap, usage, altmap);
+-	/* Print out the early node map */
++	/*
++	 * Print out the early node map, and initialize the
++	 * subsection-map relative to active online memory ranges to
++	 * enable future "sub-section" extensions of the memory map.
++	 */
+ 	pr_info("Early memory node ranges\n");
+-	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid)
++	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+ 		pr_info("  node %3d: [mem %#018Lx-%#018Lx]\n", nid,
+ 			(u64)start_pfn << PAGE_SHIFT,
+ 			((u64)end_pfn << PAGE_SHIFT) - 1);
++		subsection_map_init(start_pfn, end_pfn - start_pfn);
++	}
+ 
+ 	/* Initialise every node */
+ 	mminit_verify_pageflags_layout();
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 2031a0694f35..e9fec3c2f7ec 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -210,6 +210,41 @@ static inline unsigned long first_present_section_nr(void)
+ 	return next_present_section_nr(-1);
  }
- #endif /* CONFIG_MEMORY_HOTPLUG */
+ 
++void subsection_mask_set(unsigned long *map, unsigned long pfn,
++		unsigned long nr_pages)
++{
++	int idx = subsection_map_index(pfn);
++	int end = subsection_map_index(pfn + nr_pages - 1);
++
++	bitmap_set(map, idx, end - idx + 1);
++}
++
++void __init subsection_map_init(unsigned long pfn, unsigned long nr_pages)
++{
++	int end_sec = pfn_to_section_nr(pfn + nr_pages - 1);
++	int i, start_sec = pfn_to_section_nr(pfn);
++
++	if (!nr_pages)
++		return;
++
++	for (i = start_sec; i <= end_sec; i++) {
++		struct mem_section *ms;
++		unsigned long pfns;
++
++		pfns = min(nr_pages, PAGES_PER_SECTION
++				- (pfn & ~PAGE_SECTION_MASK));
++		ms = __nr_to_section(i);
++		subsection_mask_set(ms->usage->subsection_map, pfn, pfns);
++
++		pr_debug("%s: sec: %d pfns: %ld set(%d, %d)\n", __func__, i,
++				pfns, subsection_map_index(pfn),
++				subsection_map_index(pfn + pfns - 1));
++
++		pfn += pfns;
++		nr_pages -= pfns;
++	}
++}
++
+ /* Record a memory area against a node. */
+ void __init memory_present(int nid, unsigned long start, unsigned long end)
+ {
 
 _______________________________________________
 Linux-nvdimm mailing list
