@@ -2,78 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1414BE37
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 18:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5154BE90
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 18:46:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BB54C21296B09;
-	Wed, 19 Jun 2019 09:30:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E740321296B0A;
+	Wed, 19 Jun 2019 09:46:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BDCE5212963EF
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 09:30:29 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5JGSQnf058354
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 12:30:27 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t7qy7tacw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 12:30:27 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 19 Jun 2019 17:30:24 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 19 Jun 2019 17:30:22 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5JGULFb59965666
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 19 Jun 2019 16:30:21 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 14CA6A4067;
- Wed, 19 Jun 2019 16:30:21 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 97E78A405C;
- Wed, 19 Jun 2019 16:30:19 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.91.144])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 19 Jun 2019 16:30:19 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-Subject: Re: [PATCH v10 12/13] libnvdimm/pfn: Fix fsdax-mode namespace
- info-block zero-fields
-In-Reply-To: <156092356065.979959.6681003754765958296.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156092356065.979959.6681003754765958296.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Wed, 19 Jun 2019 22:00:18 +0530
+ by ml01.01.org (Postfix) with ESMTPS id 1828621289D93
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 09:46:36 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id 43so2857930otf.8
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 09:46:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=dAeca+NaeasgKg8wLjwxe/d8KFhZwiNtk4NpQn2oH10=;
+ b=eEIpXOcPgh/FQm8AcRovuq2bVonIAGIxG4O8hqog+t2sNo8lmrfYIpq/+3PFypMTty
+ siI4svCj0XFFk8DvueW2Zz7Zvoia5aS+WjHA2V9kjitsGk2Dr7OrDOGRxd+jgBEHrThr
+ EHGL3vlgHvvthlk8Gfj633B1vbDSWX+nCllo+CoYhKFeZWAJNLlFWMmdziVMMg2G+cne
+ 9LkPYCnW/ZVKV1OTMMtvp9jixEL4J8gu4orI34DCJ30mCCAblY3ezSDjxZuDDDsPUqbB
+ ZHR6EtInNGpbX74S1TmPO0TGeYVW9GToDYCY1yWZmGb6+1NQToWu8/vN0HJQG43y5Q4m
+ K3fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dAeca+NaeasgKg8wLjwxe/d8KFhZwiNtk4NpQn2oH10=;
+ b=Pf8shFaPi4U0ylQjs6WXvTbc4queWKptneRBhFG51aj11lEgaR+SgW0NZVy6MXow2d
+ CiKaJMvz5BvMQMPLlxct5FQdcJBmGT/TL9r+NeE5ZEMkvm5gShlgKNQFx3jxdrSgJOTZ
+ jWkmMmnVl30jOyxcLN7pKafHI18LJx1qeRkvwEEpd9PsuuE0kstTJzmjMGGqWmXeKKz+
+ tCrab7dbfRfAJOgyUKA4lC43SObPhyK7/eDfvR95Ukle3F8aVhw/vPLvqj40DexZXxvN
+ eO20h/c4i2Y2wE1gQLjkwCH2CaPUp2QBI1yEc4veVQcCunH5qW4uRJBYi+1OkaDgPHLX
+ uPGQ==
+X-Gm-Message-State: APjAAAUeT48yVHb3aGaQmM5m/8KaCTxIXDenGDrHvAvikh0WTLqFV64N
+ KkueNQSEdwzGYSiTvXz8zcVSciAVvIdYlNfX/eHCJg==
+X-Google-Smtp-Source: APXvYqxu7jzERtujGtRB1JUPTrrSRxaJnnRx7A59gFxSd7DNSrReLEw7sHQTmTBvokQEtVRT1Qlvl4tg5ll4Z2fBIRs=
+X-Received: by 2002:a9d:7b48:: with SMTP id f8mr9700022oto.207.1560962794186; 
+ Wed, 19 Jun 2019 09:46:34 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19061916-0008-0000-0000-000002F53C2B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061916-0009-0000-0000-0000226258B9
-Message-Id: <877e9hk06d.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-19_10:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906190133
+References: <20190617122733.22432-1-hch@lst.de>
+ <CAPcyv4hBUJB2RxkDqHkfEGCupDdXfQSrEJmAdhLFwnDOwt8Lig@mail.gmail.com>
+ <20190619094032.GA8928@lst.de> <20190619163655.GG9360@ziepe.ca>
+In-Reply-To: <20190619163655.GG9360@ziepe.ca>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 19 Jun 2019 09:46:23 -0700
+Message-ID: <CAPcyv4hYtQdg0DTYjrJxCNXNjadBSWQ5QaMJYsA-QSribKuwrQ@mail.gmail.com>
+Subject: Re: dev_pagemap related cleanups v2
+To: Jason Gunthorpe <jgg@ziepe.ca>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,167 +67,53 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- linux-nvdimm@lists.01.org
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Linux MM <linux-mm@kvack.org>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+ Ben Skeggs <bskeggs@redhat.com>, linux-pci@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> At namespace creation time there is the potential for the "expected to
-> be zero" fields of a 'pfn' info-block to be filled with indeterminate
-> data. While the kernel buffer is zeroed on allocation it is immediately
-> overwritten by nd_pfn_validate() filling it with the current contents of
-> the on-media info-block location. For fields like, 'flags' and the
-> 'padding' it potentially means that future implementations can not rely
-> on those fields being zero.
+On Wed, Jun 19, 2019 at 9:37 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
 >
-> In preparation to stop using the 'start_pad' and 'end_trunc' fields for
-> section alignment, arrange for fields that are not explicitly
-> initialized to be guaranteed zero. Bump the minor version to indicate it
-> is safe to assume the 'padding' and 'flags' are zero. Otherwise, this
-> corruption is expected to benign since all other critical fields are
-> explicitly initialized.
+> On Wed, Jun 19, 2019 at 11:40:32AM +0200, Christoph Hellwig wrote:
+> > On Tue, Jun 18, 2019 at 12:47:10PM -0700, Dan Williams wrote:
+> > > > Git tree:
+> > > >
+> > > >     git://git.infradead.org/users/hch/misc.git hmm-devmem-cleanup.2
+> > > >
+> > > > Gitweb:
+> > > >
+> > > >     http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/hmm-devmem-cleanup.2
+> >
+> > >
+> > > Attached is my incremental fixups on top of this series, with those
+> > > integrated you can add:
+> >
+> > I've folded your incremental bits in and pushed out a new
+> > hmm-devmem-cleanup.3 to the repo above.  Let me know if I didn't mess
+> > up anything else.  I'll wait for a few more comments and Jason's
+> > planned rebase of the hmm branch before reposting.
 >
-> Note The cc: stable is about spreading this new policy to as many
-> kernels as possible not fixing an issue in those kernels. It is not
-> until the change titled "libnvdimm/pfn: Stop padding pmem namespaces to
-> section alignment" where this improper initialization becomes a problem.
-> So if someone decides to backport "libnvdimm/pfn: Stop padding pmem
-> namespaces to section alignment" (which is not tagged for stable), make
-> sure this pre-requisite is flagged.
-
-Don't we need a change like below in this patch?
-
-modified   drivers/nvdimm/pfn_devs.c
-@@ -452,10 +452,11 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 	if (memcmp(pfn_sb->parent_uuid, parent_uuid, 16) != 0)
- 		return -ENODEV;
- 
--	if (__le16_to_cpu(pfn_sb->version_minor) < 1) {
--		pfn_sb->start_pad = 0;
--		pfn_sb->end_trunc = 0;
--	}
-+	if ((__le16_to_cpu(pfn_sb->version_minor) < 1) ||
-+	    (__le16_to_cpu(pfn_sb->version_minor) >= 3)) {
-+			pfn_sb->start_pad = 0;
-+			pfn_sb->end_trunc = 0;
-+		}
-
-
-IIUC we want to force the start_pad and end_truc to zero if the pfn_sb
-minor version number >= 3. So once we have this patch backported and
-older kernel finds a pfn_sb with minor version 3, it will ignore the
-start_pad read from the nvdimm and overwrite that with zero here.
-This patch doesn't enforce that right? After the next patch we can have
-values other than 0 in pfn_sb->start_pad?
-
-
+> I said I wouldn't rebase the hmm.git (as it needs to go to DRM, AMD
+> and RDMA git trees)..
 >
-> Fixes: 32ab0a3f5170 ("libnvdimm, pmem: 'struct page' for pmem")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/nvdimm/dax_devs.c |    2 +-
->  drivers/nvdimm/pfn.h      |    1 +
->  drivers/nvdimm/pfn_devs.c |   18 +++++++++++++++---
->  3 files changed, 17 insertions(+), 4 deletions(-)
+> Instead I will merge v5.2-rc5 to the tree before applying this series.
 >
-> diff --git a/drivers/nvdimm/dax_devs.c b/drivers/nvdimm/dax_devs.c
-> index 49fc18ee0565..6d22b0f83b3b 100644
-> --- a/drivers/nvdimm/dax_devs.c
-> +++ b/drivers/nvdimm/dax_devs.c
-> @@ -118,7 +118,7 @@ int nd_dax_probe(struct device *dev, struct nd_namespace_common *ndns)
->  	nvdimm_bus_unlock(&ndns->dev);
->  	if (!dax_dev)
->  		return -ENOMEM;
-> -	pfn_sb = devm_kzalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-> +	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
->  	nd_pfn->pfn_sb = pfn_sb;
->  	rc = nd_pfn_validate(nd_pfn, DAX_SIG);
->  	dev_dbg(dev, "dax: %s\n", rc == 0 ? dev_name(dax_dev) : "<none>");
-> diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
-> index f58b849e455b..dfb2bcda8f5a 100644
-> --- a/drivers/nvdimm/pfn.h
-> +++ b/drivers/nvdimm/pfn.h
-> @@ -28,6 +28,7 @@ struct nd_pfn_sb {
->  	__le32 end_trunc;
->  	/* minor-version-2 record the base alignment of the mapping */
->  	__le32 align;
-> +	/* minor-version-3 guarantee the padding and flags are zero */
->  	u8 padding[4000];
->  	__le64 checksum;
->  };
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index 0f81fc56bbfd..4977424693b0 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -412,6 +412,15 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
->  	return 0;
->  }
->  
-> +/**
-> + * nd_pfn_validate - read and validate info-block
-> + * @nd_pfn: fsdax namespace runtime state / properties
-> + * @sig: 'devdax' or 'fsdax' signature
-> + *
-> + * Upon return the info-block buffer contents (->pfn_sb) are
-> + * indeterminate when validation fails, and a coherent info-block
-> + * otherwise.
-> + */
->  int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
->  {
->  	u64 checksum, offset;
-> @@ -557,7 +566,7 @@ int nd_pfn_probe(struct device *dev, struct nd_namespace_common *ndns)
->  	nvdimm_bus_unlock(&ndns->dev);
->  	if (!pfn_dev)
->  		return -ENOMEM;
-> -	pfn_sb = devm_kzalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
-> +	pfn_sb = devm_kmalloc(dev, sizeof(*pfn_sb), GFP_KERNEL);
->  	nd_pfn = to_nd_pfn(pfn_dev);
->  	nd_pfn->pfn_sb = pfn_sb;
->  	rc = nd_pfn_validate(nd_pfn, PFN_SIG);
-> @@ -694,7 +703,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->  	u64 checksum;
->  	int rc;
->  
-> -	pfn_sb = devm_kzalloc(&nd_pfn->dev, sizeof(*pfn_sb), GFP_KERNEL);
-> +	pfn_sb = devm_kmalloc(&nd_pfn->dev, sizeof(*pfn_sb), GFP_KERNEL);
->  	if (!pfn_sb)
->  		return -ENOMEM;
->  
-> @@ -703,11 +712,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->  		sig = DAX_SIG;
->  	else
->  		sig = PFN_SIG;
-> +
->  	rc = nd_pfn_validate(nd_pfn, sig);
->  	if (rc != -ENODEV)
->  		return rc;
->  
->  	/* no info block, do init */;
-> +	memset(pfn_sb, 0, sizeof(*pfn_sb));
-> +
->  	nd_region = to_nd_region(nd_pfn->dev.parent);
->  	if (nd_region->ro) {
->  		dev_info(&nd_pfn->dev,
-> @@ -760,7 +772,7 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->  	memcpy(pfn_sb->uuid, nd_pfn->uuid, 16);
->  	memcpy(pfn_sb->parent_uuid, nd_dev_to_uuid(&ndns->dev), 16);
->  	pfn_sb->version_major = cpu_to_le16(1);
-> -	pfn_sb->version_minor = cpu_to_le16(2);
-> +	pfn_sb->version_minor = cpu_to_le16(3);
->  	pfn_sb->start_pad = cpu_to_le32(start_pad);
->  	pfn_sb->end_trunc = cpu_to_le32(end_trunc);
->  	pfn_sb->align = cpu_to_le32(nd_pfn->align);
+> I've understood this to be Linus's prefered workflow.
 >
-> _______________________________________________
-> Linux-nvdimm mailing list
-> Linux-nvdimm@lists.01.org
-> https://lists.01.org/mailman/listinfo/linux-nvdimm
+> So, please send the next iteration of this against either
+> plainv5.2-rc5 or v5.2-rc5 merged with hmm.git and I'll sort it out.
 
+Just make sure that when you backmerge v5.2-rc5 you have a clear
+reason in the merge commit message about why you needed to do it.
+While needless rebasing is top of the pet peeve list, second place, as
+I found out, is mystery merges without explanations.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
