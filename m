@@ -1,32 +1,35 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D90E4B50F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 11:38:50 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD3D4B51A
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 11:41:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D0E5721962301;
-	Wed, 19 Jun 2019 02:38:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2A1FB21296709;
+	Wed, 19 Jun 2019 02:41:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=122.190.106.25;
- helo=ylsls.com; envelope-from=avprtxjdf@ylsls.com;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
+ helo=newverein.lst.de; envelope-from=hch@lst.de;
  receiver=linux-nvdimm@lists.01.org 
-Received: from ylsls.com (unknown [122.190.106.25])
- by ml01.01.org (Postfix) with ESMTP id 4CFB921296073
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 02:38:44 -0700 (PDT)
-Message-ID: <9AE181587127F62BAA966ADFC5DA2C10@ylsls.com>
-From: =?utf-8?B?5rGf5oC7?= <avprtxjdf@ylsls.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5Zue5aSN77ya5pWPLuaNty7ova8u5Lu2LuW8gC7lj5EuNjY5MzU=?=
- =?utf-8?B?Mg==?=
-Date: Wed, 19 Jun 2019 17:38:37 +0800
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 2AE252129640A
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 02:41:04 -0700 (PDT)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id 5F43068B05; Wed, 19 Jun 2019 11:40:33 +0200 (CEST)
+Date: Wed, 19 Jun 2019 11:40:32 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: dev_pagemap related cleanups v2
+Message-ID: <20190619094032.GA8928@lst.de>
+References: <20190617122733.22432-1-hch@lst.de>
+ <CAPcyv4hBUJB2RxkDqHkfEGCupDdXfQSrEJmAdhLFwnDOwt8Lig@mail.gmail.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4hBUJB2RxkDqHkfEGCupDdXfQSrEJmAdhLFwnDOwt8Lig@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,13 +41,36 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Linux MM <linux-mm@kvack.org>,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
+ linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-5Y+R5Lu25Lq6OiAi5rGf5oC7Ijs8YXZwcnR4amRmQHlsc2xzLmNvbT47DQrlj5HpgIHml7bpl7Q6
-IDIwMTktNi0xOS8gMTc6Mzg6NDcNCuaUtuS7tuS6ujogImxpbnV4LW52ZGltbSI8bGludXgtbnZk
-aW1tQGxpc3RzLjAxLm9yZz47Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAx
-Lm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
+On Tue, Jun 18, 2019 at 12:47:10PM -0700, Dan Williams wrote:
+> > Git tree:
+> >
+> >     git://git.infradead.org/users/hch/misc.git hmm-devmem-cleanup.2
+> >
+> > Gitweb:
+> >
+> >     http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/hmm-devmem-cleanup.2
+
+> 
+> Attached is my incremental fixups on top of this series, with those
+> integrated you can add:
+
+I've folded your incremental bits in and pushed out a new
+hmm-devmem-cleanup.3 to the repo above.  Let me know if I didn't mess
+up anything else.  I'll wait for a few more comments and Jason's
+planned rebase of the hmm branch before reposting.
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
