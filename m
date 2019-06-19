@@ -2,38 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242AE4C198
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 21:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F6B4C19D
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Jun 2019 21:42:06 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E007821296B08;
-	Wed, 19 Jun 2019 12:39:06 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3A0BC21296B0A;
+	Wed, 19 Jun 2019 12:42:05 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ client-ip=40.107.15.84; helo=eur01-db5-obe.outbound.protection.outlook.com;
+ envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr150084.outbound.protection.outlook.com [40.107.15.84])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1E09B2194EB70
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 12:39:05 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2019 12:39:05 -0700
-X-IronPort-AV: E=Sophos;i="5.63,394,1557212400"; d="scan'208";a="162306711"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2019 12:39:05 -0700
-Subject: [PATCH v2] libnvdimm: Enable unit test infrastructure compile checks
-From: Dan Williams <dan.j.williams@intel.com>
-To: hch@lst.de
-Date: Wed, 19 Jun 2019 12:24:48 -0700
-Message-ID: <156097224232.1086847.9463861924683372741.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+ by ml01.01.org (Postfix) with ESMTPS id 3E8D22194EB70
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 12:42:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FSRKc0hpLpMPKshog4wha+zcC6Sxgq2cZ5PlvZB0qoM=;
+ b=ZSwtME/SMf2qmA+BpeVW3mHny8REA3FCMUxCHE8lRkkEMxElMjsQ1DX2cnJvGZGVJ8BbeL4b1n4axUNDLngO9Tr18RWshV7wZkZtMhndAHkT43IXAIrC7stLRS10BWy22PBb5aNUpDNdt5zSYXs70bV1ne5Av63H5Wf4DYzew6c=
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
+ VI1PR05MB5072.eurprd05.prod.outlook.com (20.177.52.85) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.15; Wed, 19 Jun 2019 19:27:25 +0000
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::c16d:129:4a40:9ba1]) by VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::c16d:129:4a40:9ba1%6]) with mapi id 15.20.1987.014; Wed, 19 Jun 2019
+ 19:27:25 +0000
+From: Jason Gunthorpe <jgg@mellanox.com>
+To: John Hubbard <jhubbard@nvidia.com>
+Subject: Re: [PATCH 18/22] mm: mark DEVICE_PUBLIC as broken
+Thread-Topic: [PATCH 18/22] mm: mark DEVICE_PUBLIC as broken
+Thread-Index: AQHVIcyVeqgMzBs0VkumwilsEzSkhqaZ/TwAgAACYgCAAAF6gIAAT5yAgAALIACACQqXgA==
+Date: Wed, 19 Jun 2019 19:27:25 +0000
+Message-ID: <20190619192719.GO9374@mellanox.com>
+References: <20190613094326.24093-1-hch@lst.de>
+ <20190613094326.24093-19-hch@lst.de> <20190613194430.GY22062@mellanox.com>
+ <a27251ad-a152-f84d-139d-e1a3bf01c153@nvidia.com>
+ <20190613195819.GA22062@mellanox.com>
+ <20190614004314.GD783@iweiny-DESK2.sc.intel.com>
+ <d2b77ea1-7b27-e37d-c248-267a57441374@nvidia.com>
+In-Reply-To: <d2b77ea1-7b27-e37d-c248-267a57441374@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: YQBPR0101CA0017.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00::30) To VI1PR05MB4141.eurprd05.prod.outlook.com
+ (2603:10a6:803:4d::16)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jgg@mellanox.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [156.34.55.100]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 900ad4f4-9a37-403d-9297-08d6f4ec28b2
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
+ SRVR:VI1PR05MB5072; 
+x-ms-traffictypediagnostic: VI1PR05MB5072:
+x-microsoft-antispam-prvs: <VI1PR05MB5072502328C7585990C51C52CFE50@VI1PR05MB5072.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 0073BFEF03
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(376002)(396003)(346002)(39860400002)(136003)(366004)(189003)(199004)(5660300002)(86362001)(6246003)(7736002)(73956011)(316002)(66476007)(71190400001)(7416002)(54906003)(486006)(1076003)(71200400001)(256004)(66556008)(2906002)(99286004)(26005)(11346002)(446003)(76176011)(476003)(52116002)(186003)(53546011)(6506007)(386003)(2616005)(36756003)(102836004)(25786009)(3846002)(8936002)(229853002)(6436002)(66946007)(6916009)(6486002)(68736007)(81166006)(53936002)(6116002)(66066001)(64756008)(81156014)(33656002)(66446008)(8676002)(4326008)(6512007)(478600001)(14454004)(305945005);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB5072;
+ H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; MX:1; A:1; 
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: s0JMiyaM6v59K9Eqvq++39Arx4aDM+CpGKjs2X6UorK6bcpv6l9Q4i9tauNvj0vSZSD3N4mIT8Hy0RczR7OULw46AWpykaDPGF1OEg+O77QdgkpDWOpv6EWjxe0pahP7ur+CMqTY53LiG+BxjnFFCp8JQJtmb5bwiHUJegB+WQ8YHQ6cIuwuXKtyqf0J+vptYI6jTembRhhk2NbSxqeJ3aICqHn6qKizFRKk258+72b4as+ZsMq8T+L+kqMZ2lscGlebcSehAcXWxlWBgFCEtm5ZQ88/WBly85cxXZAolyF8V22GdtISRlQRpn9VBCgqKpJ2hvdBxWvhVfx0QzufxBaFBAPjRVRMNsw/QVIsTpXD2aPXpIJzN7yy81iT9PhiwC6koEHGMSJpMlOvS+4N3ZFn54BqDa6OSepntXF0w00=
+Content-ID: <081C2DB7B7A13A4A93487CC051D6E961@eurprd05.prod.outlook.com>
 MIME-Version: 1.0
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 900ad4f4-9a37-403d-9297-08d6f4ec28b2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jun 2019 19:27:25.5442 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jgg@mellanox.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB5072
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,50 +96,62 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, linux-kernel@vger.kernel.org,
- linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Ralph Campbell <rcampbell@nvidia.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+ "nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ =?iso-8859-1?Q?J=E9r=F4me_Glisse?= <jglisse@redhat.com>,
+ Ben Skeggs <bskeggs@redhat.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-VGhlIGluZnJhc3RydWN0dXJlIHRvIG1vY2sgY29yZSBsaWJudmRpbW0gcm91dGluZXMgZm9yIHVu
-aXQgdGVzdGluZwpwdXJwb3NlcyBpcyBwcm9uZSB0byBiaXRyb3QgcmVsYXRpdmUgdG8gcmVmYWN0
-b3Jpbmcgb2YgdGhhdCBjb3JlLgpBcnJhbmdlIGZvciB0aGUgdW5pdCB0ZXN0IGNvcmUgdG8gYmUg
-YnVpbHQgd2hlbiBDT05GSUdfQ09NUElMRV9URVNUPXkuClRoaXMgZG9lcyBub3QgcmVzdWx0IGlu
-IGEgZnVuY3Rpb25hbCB1bml0IHRlc3QgZW52aXJvbm1lbnQsIGl0IGlzIG9ubHkgYQpoZWxwZXIg
-Zm9yIDBkYXkgdG8gY2F0Y2ggdW5pdCB0ZXN0IGJ1aWxkIHJlZ3Jlc3Npb25zLgoKTm90ZSB0aGF0
-IHRoZXJlIGFyZSBhIGZldyB4ODZpc21zIGluIHRoZSBpbXBsZW1lbnRhdGlvbiwgc28gdGhpcyBk
-b2VzCm5vdCBib3RoZXIgY29tcGlsZSB0ZXN0aW5nIHRoaXMgYXJjaGl0ZWN0dXJlcyBvdGhlciB0
-aGFuIDY0LWJpdCB4ODYuCgpDYzogSsOpcsO0bWUgR2xpc3NlIDxqZ2xpc3NlQHJlZGhhdC5jb20+
-CkNjOiBKYXNvbiBHdW50aG9ycGUgPGpnZ0BtZWxsYW5veC5jb20+ClJlcG9ydGVkLWJ5OiBDaHJp
-c3RvcGggSGVsbHdpZyA8aGNoQGxzdC5kZT4KU2lnbmVkLW9mZi1ieTogRGFuIFdpbGxpYW1zIDxk
-YW4uai53aWxsaWFtc0BpbnRlbC5jb20+Ci0tLQpDaGFuZ2VzIHNpbmNlIHYxOgotIDBkYXkgcmVw
-b3J0cyB0aGlzIGZhaWxzIHRvIGNvbXBpbGUgb24gIXg4NiB3aGljaCBpcyBub3Qgc3VycHJpc2lu
-Zy4KICBKdXN0IGRpc2FibGUgbm9uLXg4NiBidWlsZHMuCgogZHJpdmVycy9udmRpbW0vS2NvbmZp
-ZyAgfCAgIDExICsrKysrKysrKysrCiBkcml2ZXJzL252ZGltbS9NYWtlZmlsZSB8ICAgIDQgKysr
-KwogMiBmaWxlcyBjaGFuZ2VkLCAxNSBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvZHJpdmVy
-cy9udmRpbW0vS2NvbmZpZyBiL2RyaXZlcnMvbnZkaW1tL0tjb25maWcKaW5kZXggNTQ1MDA3OThm
-MjNhLi5mNjYyM2U4MDdmYjIgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvbnZkaW1tL0tjb25maWcKKysr
-IGIvZHJpdmVycy9udmRpbW0vS2NvbmZpZwpAQCAtMTE4LDQgKzExOCwxNSBAQCBjb25maWcgTlZE
-SU1NX0tFWVMKIAlkZXBlbmRzIG9uIEVOQ1JZUFRFRF9LRVlTCiAJZGVwZW5kcyBvbiAoTElCTlZE
-SU1NPUVOQ1JZUFRFRF9LRVlTKSB8fCBMSUJOVkRJTU09bQogCitjb25maWcgTlZESU1NX1RFU1Rf
-QlVJTEQKKwlib29sICJCdWlsZCB0aGUgdW5pdCB0ZXN0IGNvcmUiCisJZGVwZW5kcyBvbiBDT01Q
-SUxFX1RFU1QgJiYgWDg2XzY0CisJZGVmYXVsdCBDT01QSUxFX1RFU1QKKwloZWxwCisJICBCdWls
-ZCB0aGUgY29yZSBvZiB0aGUgdW5pdCB0ZXN0IGluZnJhc3RydWN0dXJlLiAgVGhlIHJlc3VsdCBv
-ZgorCSAgdGhpcyBidWlsZCBpcyBub24tZnVuY3Rpb25hbCBmb3IgdW5pdCB0ZXN0IGV4ZWN1dGlv
-biwgYnV0IGl0CisJICBvdGhlcndpc2UgaGVscHMgY2F0Y2ggYnVpbGQgZXJyb3JzIGluZHVjZWQg
-YnkgY2hhbmdlcyB0byB0aGUKKwkgIGNvcmUgZGV2bV9tZW1yZW1hcF9wYWdlcygpIGltcGxlbWVu
-dGF0aW9uIGFuZCBvdGhlcgorCSAgaW5mcmFzdHJ1Y3R1cmUuCisKIGVuZGlmCmRpZmYgLS1naXQg
-YS9kcml2ZXJzL252ZGltbS9NYWtlZmlsZSBiL2RyaXZlcnMvbnZkaW1tL01ha2VmaWxlCmluZGV4
-IDZmMmEwODhhZmFkNi4uNDAwODBjMTIwMzYzIDEwMDY0NAotLS0gYS9kcml2ZXJzL252ZGltbS9N
-YWtlZmlsZQorKysgYi9kcml2ZXJzL252ZGltbS9NYWtlZmlsZQpAQCAtMjgsMyArMjgsNyBAQCBs
-aWJudmRpbW0tJChDT05GSUdfQlRUKSArPSBidHRfZGV2cy5vCiBsaWJudmRpbW0tJChDT05GSUdf
-TlZESU1NX1BGTikgKz0gcGZuX2RldnMubwogbGlibnZkaW1tLSQoQ09ORklHX05WRElNTV9EQVgp
-ICs9IGRheF9kZXZzLm8KIGxpYm52ZGltbS0kKENPTkZJR19OVkRJTU1fS0VZUykgKz0gc2VjdXJp
-dHkubworCitUT09MUyA6PSAuLi8uLi90b29scworVEVTVF9TUkMgOj0gJChUT09MUykvdGVzdGlu
-Zy9udmRpbW0vdGVzdAorb2JqLSQoQ09ORklHX05WRElNTV9URVNUX0JVSUxEKSA6PSAkKFRFU1Rf
-U1JDKS9pb21hcC5vCgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcK
-aHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
+On Thu, Jun 13, 2019 at 06:23:04PM -0700, John Hubbard wrote:
+> On 6/13/19 5:43 PM, Ira Weiny wrote:
+> > On Thu, Jun 13, 2019 at 07:58:29PM +0000, Jason Gunthorpe wrote:
+> >> On Thu, Jun 13, 2019 at 12:53:02PM -0700, Ralph Campbell wrote:
+> >>>
+> ...
+> >> Hum, so the only thing this config does is short circuit here:
+> >>
+> >> static inline bool is_device_public_page(const struct page *page)
+> >> {
+> >>         return IS_ENABLED(CONFIG_DEV_PAGEMAP_OPS) &&
+> >>                 IS_ENABLED(CONFIG_DEVICE_PUBLIC) &&
+> >>                 is_zone_device_page(page) &&
+> >>                 page->pgmap->type == MEMORY_DEVICE_PUBLIC;
+> >> }
+> >>
+> >> Which is called all over the place.. 
+> > 
+> > <sigh>  yes but the earlier patch:
+> > 
+> > [PATCH 03/22] mm: remove hmm_devmem_add_resource
+> > 
+> > Removes the only place type is set to MEMORY_DEVICE_PUBLIC.
+> > 
+> > So I think it is ok.  Frankly I was wondering if we should remove the public
+> > type altogether but conceptually it seems ok.  But I don't see any users of it
+> > so...  should we get rid of it in the code rather than turning the config off?
+> > 
+> > Ira
+> 
+> That seems reasonable. I recall that the hope was for those IBM Power 9
+> systems to use _PUBLIC, as they have hardware-based coherent device (GPU)
+> memory, and so the memory really is visible to the CPU. And the IBM team
+> was thinking of taking advantage of it. But I haven't seen anything on
+> that front for a while.
+
+Does anyone know who those people are and can we encourage them to
+send some patches? :)
+
+Jason
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
