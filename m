@@ -1,38 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C314C991
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 10:36:35 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407084CA7A
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 11:17:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 729F721962301;
-	Thu, 20 Jun 2019 01:36:33 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 933A72129EB9A;
+	Thu, 20 Jun 2019 02:17:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 35B9E2129DBA8
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 01:36:30 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 0758CAC63;
- Thu, 20 Jun 2019 08:36:29 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id A8E141E434D; Thu, 20 Jun 2019 10:36:28 +0200 (CEST)
-Date: Thu, 20 Jun 2019 10:36:28 +0200
-From: Jan Kara <jack@suse.cz>
-To: Liu Bo <obuil.liubo@gmail.com>
-Subject: Re: a few questions about pagevc_lookup_entries
-Message-ID: <20190620083628.GH13630@quack2.suse.cz>
-References: <CANQeFDCCGED3BR0oTpzQ75gtGpdGCw8FLf+kspBYytw3YteXAw@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id 01BAC21959CB2
+ for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 02:17:14 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x5K98Wp9001235
+ for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 05:17:13 -0400
+Received: from e11.ny.us.ibm.com (e11.ny.us.ibm.com [129.33.205.201])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2t878bratg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 05:17:13 -0400
+Received: from localhost
+ by e11.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Thu, 20 Jun 2019 10:17:13 +0100
+Received: from b01cxnp22036.gho.pok.ibm.com (9.57.198.26)
+ by e11.ny.us.ibm.com (146.89.104.198) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 20 Jun 2019 10:17:10 +0100
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x5K9H9aw35389804
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 20 Jun 2019 09:17:09 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A4140AE05C;
+ Thu, 20 Jun 2019 09:17:09 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23904AE063;
+ Thu, 20 Jun 2019 09:17:08 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.124.35.143])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 20 Jun 2019 09:17:07 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [PATCH v4 0/6] Fixes related namespace alignment/page size/big endian
+Date: Thu, 20 Jun 2019 14:46:20 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CANQeFDCCGED3BR0oTpzQ75gtGpdGCw8FLf+kspBYytw3YteXAw@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19062009-2213-0000-0000-000003A20120
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011296; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000286; SDB=6.01220629; UDB=6.00642131; IPR=6.01001767; 
+ MB=3.00027390; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-20 09:17:12
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19062009-2214-0000-0000-00005EED0B0C
+Message-Id: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-06-20_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=894 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906200068
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,97 +85,49 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm@lists.01.org, willy@infradead.org,
- linux-fsdevel@vger.kernel.org, Fengguang Wu <fengguang.wu@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-[added some relevant lists to CC - this can safe some people debugging by
-being able to google this discussion]
-
-On Wed 19-06-19 15:57:38, Liu Bo wrote:
-> I found a weird dead loop within invalidate_inode_pages2_range, the
-> reason being that  pagevec_lookup_entries(index=1) returns an indices
-> array which has only one entry storing value 0, and this has led
-> invalidate_inode_pages2_range() to a dead loop, something like,
-> 
-> invalidate_inode_pages2_range()
->   -> while (pagevec_lookup_entries(index=1, indices))
->     ->  for (i = 0; i < pagevec_count(&pvec); i++) {
->       -> index = indices[0]; // index is set to 0
->       -> if (radix_tree_exceptional_entry(page)) {
->           -> if (!invalidate_exceptional_entry2()) //
->                   ->__dax_invalidate_mapping_entry // return 0
->                      -> // entry marked as PAGECACHE_TAG_DIRTY/TOWRITE
->                  ret = -EBUSY;
->           ->continue;
->           } // end of if (radix_tree_exceptional_entry(page))
->     -> index++; // index is set to 1
-> 
-> The following debug[1] proved the above analysis,  I was wondering if
-> this was a corner case that  pagevec_lookup_entries() allows or a
-> known bug that has been fixed upstream?
-> 
-> ps: the kernel in use is 4.19.30 (LTS).
-
-Hum, the above trace suggests you are using DAX. Are you really? Because the
-stacktrace below shows we are working on fuse inode so that shouldn't
-really be DAX inode...
-
-								Honza
-
-> [1]:
-> $git diff
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index 71b65aab8077..82bfeeb53135 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -692,6 +692,7 @@ int invalidate_inode_pages2_range(struct
-> address_space *mapping,
->                         struct page *page = pvec.pages[i];
-> 
->                         /* We rely upon deletion not changing page->index */
-> +                       WARN_ONCE(index > indices[i], "index = %d
-> indices[%d]=%d\n", index, i, indices[i]);
->                         index = indices[i];
->                         if (index > end)
->                                 break;
-> 
-> [  129.095383] ------------[ cut here ]------------
-> [  129.096164] index = 1 indices[0]=0
-> [  129.096786] WARNING: CPU: 0 PID: 3022 at mm/truncate.c:695
-> invalidate_inode_pages2_range+0x471/0x500
-> [  129.098234] Modules linked in:
-> [  129.098717] CPU: 0 PID: 3022 Comm: doio Not tainted 4.19.30+ #4
-> ...
-> [  129.101288] RIP: 0010:invalidate_inode_pages2_range+0x471/0x500
-> ...
-> [  129.114162] Call Trace:
-> [  129.114623]  ? __schedule+0x2ad/0x860
-> [  129.115214]  ? prepare_to_wait_event+0x80/0x140
-> [  129.115903]  ? finish_wait+0x3f/0x80
-> [  129.116452]  ? request_wait_answer+0x13d/0x210
-> [  129.117128]  ? remove_wait_queue+0x60/0x60
-> [  129.117757]  ? make_kgid+0x13/0x20
-> [  129.118277]  ? fuse_change_attributes_common+0x7d/0x130
-> [  129.119057]  ? fuse_change_attributes+0x8d/0x120
-> [  129.119754]  fuse_dentry_revalidate+0x2c5/0x300
-> [  129.120456]  lookup_fast+0x237/0x2b0
-> [  129.121018]  path_openat+0x15f/0x1380
-> [  129.121614]  ? generic_update_time+0x6b/0xd0
-> [  129.122316]  do_filp_open+0x91/0x100
-> [  129.122876]  do_sys_open+0x126/0x210
-> [  129.123453]  do_syscall_64+0x55/0x180
-> [  129.124036]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-> [  129.124820] RIP: 0033:0x7fbe0cd75e80
-> ...
-> [  129.134574] ---[ end trace c0fc0bbc5aebf0dc ]---
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+VGhpcyBzZXJpZXMgaGFuZGxlIGNvbmZpZ3Mgd2hlcmUgaHVnZXBhZ2Ugc3VwcG9ydCBpcyBub3Qg
+ZW5hYmxlZCBieSBkZWZhdWx0LgpBbHNvLCB3ZSB1cGRhdGUgc29tZSBvZiB0aGUgaW5mb3JtYXRp
+b24gbWVzc2FnZXMgdG8gbWFrZSBzdXJlIHdlIHVzZSBQQUdFX1NJWkUgaW5zdGVhZApvZiBTWl80
+Sy4gV2Ugbm93IHN0b3JlIHBhZ2Ugc2l6ZSBhbmQgc3RydWN0IHBhZ2Ugc2l6ZSBpbiBwZm5fc2Ig
+YW5kIGRvIGV4dHJhIGNoZWNrCmJlZm9yZSBlbmFibGluZyBuYW1lc3BhY2UuIFRoZXJlIGFsc28g
+YW4gZW5kaWFubmVzcyBmaXguCgpUaGUgcGF0Y2ggc2VyaWVzIGlzIG9uIHRvcCBvZiBzdWJzZWN0
+aW9uIHYxMCBwYXRjaHNldAoKaHR0cDovL2xvcmUua2VybmVsLm9yZy9saW51eC1tbS8xNTYwOTIz
+NDkzMDAuOTc5OTU5LjE3NjAzNzEwNzExOTU3NzM1MTM1LnN0Z2l0QGR3aWxsaWEyLWRlc2szLmFt
+ci5jb3JwLmludGVsLmNvbQoKQ2hhbmdlcyBmcm9tIFYzOgoqIERyb3BwZWQgdGhlIGNoYW5nZSBy
+ZWxhdGVkIFBGTl9NSU5fVkVSU0lPTgoqIGZvciBwZm5fc2IgbWlub3IgdmVyc2lvbiA8IDQsIHdl
+IGRlZmF1bHQgcGFnZV9zaXplIHRvIFBBR0VfU0laRSBpbnN0ZWFkIG9mIFNaXzRrLgoKQW5lZXNo
+IEt1bWFyIEsuViAoNik6CiAgbnZkaW1tOiBDb25zaWRlciBwcm9iZSByZXR1cm4gLUVPUE5PVFNV
+UFAgYXMgc3VjY2VzcwogIG1tL252ZGltbTogQWRkIHBhZ2Ugc2l6ZSBhbmQgc3RydWN0IHBhZ2Ug
+c2l6ZSB0byBwZm4gc3VwZXJibG9jawogIG1tL252ZGltbTogVXNlIGNvcnJlY3QgI2RlZmluZXMg
+aW5zdGVhZCBvZiBvcGVuIGNvZGluZwogIG1tL252ZGltbTogUGljayB0aGUgcmlnaHQgYWxpZ25t
+ZW50IGRlZmF1bHQgd2hlbiBjcmVhdGluZyBkYXggZGV2aWNlcwogIG1tL252ZGltbTogVXNlIGNv
+cnJlY3QgYWxpZ25tZW50IHdoZW4gbG9va2luZyBhdCBmaXJzdCBwZm4gZnJvbSBhCiAgICByZWdp
+b24KICBtbS9udmRpbW06IEZpeCBlbmRpYW4gY29udmVyc2lvbiBpc3N1ZXPCoAoKIGFyY2gvcG93
+ZXJwYy9pbmNsdWRlL2FzbS9saWJudmRpbW0uaCB8ICA5ICsrKysKIGFyY2gvcG93ZXJwYy9tbS9N
+YWtlZmlsZSAgICAgICAgICAgICB8ICAxICsKIGFyY2gvcG93ZXJwYy9tbS9udmRpbW0uYyAgICAg
+ICAgICAgICB8IDM0ICsrKysrKysrKysrKysrKwogYXJjaC94ODYvaW5jbHVkZS9hc20vbGlibnZk
+aW1tLmggICAgIHwgMTkgKysrKysrKysrCiBkcml2ZXJzL252ZGltbS9idHQuYyAgICAgICAgICAg
+ICAgICAgfCAgOCArKy0tCiBkcml2ZXJzL252ZGltbS9idXMuYyAgICAgICAgICAgICAgICAgfCAg
+NCArLQogZHJpdmVycy9udmRpbW0vbGFiZWwuYyAgICAgICAgICAgICAgIHwgIDIgKy0KIGRyaXZl
+cnMvbnZkaW1tL25hbWVzcGFjZV9kZXZzLmMgICAgICB8IDEzICsrKy0tLQogZHJpdmVycy9udmRp
+bW0vbmQtY29yZS5oICAgICAgICAgICAgIHwgIDMgKy0KIGRyaXZlcnMvbnZkaW1tL25kLmggICAg
+ICAgICAgICAgICAgICB8ICA2IC0tLQogZHJpdmVycy9udmRpbW0vcGZuLmggICAgICAgICAgICAg
+ICAgIHwgIDUgKystCiBkcml2ZXJzL252ZGltbS9wZm5fZGV2cy5jICAgICAgICAgICAgfCA2MiAr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0tCiBkcml2ZXJzL252ZGltbS9wbWVtLmMgICAgICAg
+ICAgICAgICAgfCAyNiArKysrKysrKysrLS0KIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMg
+ICAgICAgICB8IDI3ICsrKysrKysrLS0tLQogaW5jbHVkZS9saW51eC9odWdlX21tLmggICAgICAg
+ICAgICAgIHwgIDcgKysrLQoga2VybmVsL21lbXJlbWFwLmMgICAgICAgICAgICAgICAgICAgIHwg
+IDggKystLQogMTYgZmlsZXMgY2hhbmdlZCwgMTk0IGluc2VydGlvbnMoKyksIDQwIGRlbGV0aW9u
+cygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9saWJudmRp
+bW0uaAogY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvcG93ZXJwYy9tbS9udmRpbW0uYwogY3JlYXRl
+IG1vZGUgMTAwNjQ0IGFyY2gveDg2L2luY2x1ZGUvYXNtL2xpYm52ZGltbS5oCgotLSAKMi4yMS4w
+CgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0
+cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
