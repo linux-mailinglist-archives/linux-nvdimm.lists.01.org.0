@@ -2,76 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7293D4CDC1
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 14:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7E74CF2C
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 15:42:20 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 489BE2129F022;
-	Thu, 20 Jun 2019 05:30:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C39702194EB77;
+	Thu, 20 Jun 2019 06:42:18 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 247FD21250C93
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 05:30:39 -0700 (PDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x5KCJMGe093497
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 08:30:38 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2t89t8h4ys-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 08:30:38 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Thu, 20 Jun 2019 13:30:35 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 20 Jun 2019 13:30:29 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x5KCUSMK19595406
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 20 Jun 2019 12:30:29 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE50F4C04E;
- Thu, 20 Jun 2019 12:30:28 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A9FED4C052;
- Thu, 20 Jun 2019 12:30:24 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.52.129])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 20 Jun 2019 12:30:24 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-Subject: Re: [PATCH v10 00/13] mm: Sub-section memory hotplug support
-In-Reply-To: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Thu, 20 Jun 2019 18:00:23 +0530
+ by ml01.01.org (Postfix) with ESMTPS id C62A72194EB78
+ for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 06:42:16 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 3A5B43003097;
+ Thu, 20 Jun 2019 13:42:16 +0000 (UTC)
+Received: from colo-mx.corp.redhat.com
+ (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2DECE1001E61;
+ Thu, 20 Jun 2019 13:42:15 +0000 (UTC)
+Received: from zmail21.collab.prod.int.phx2.redhat.com
+ (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
+ by colo-mx.corp.redhat.com (Postfix) with ESMTP id 1508F1806B0E;
+ Thu, 20 Jun 2019 13:42:14 +0000 (UTC)
+Date: Thu, 20 Jun 2019 09:42:13 -0400 (EDT)
+From: Pankaj Gupta <pagupta@redhat.com>
+To: kbuild test robot <lkp@intel.com>
+Message-ID: <1924997913.36339287.1561038133965.JavaMail.zimbra@redhat.com>
+In-Reply-To: <201906201741.FD4FeYGb%lkp@intel.com>
+References: <201906201741.FD4FeYGb%lkp@intel.com>
+Subject: Re: [linux-nvdimm:libnvdimm-for-next 4/15]
+ drivers/nvdimm/virtio_pmem.c:61:9: sparse: sparse: incompatible types in
+ comparison expression (different base types):
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19062012-0008-0000-0000-000002F57E05
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062012-0009-0000-0000-000022629E8E
-Message-Id: <874l4kjv6o.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-06-20_08:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906200091
+X-Originating-IP: [10.67.116.136, 10.4.195.30]
+Thread-Topic: drivers/nvdimm/virtio_pmem.c:61:9: sparse: sparse: incompatible
+ types in comparison expression (different base types):
+Thread-Index: 6oaginVhgvbjb/o5Pi+cE/IQA+fSkg==
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.46]); Thu, 20 Jun 2019 13:42:16 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,190 +59,130 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
- David Hildenbrand <david@redhat.com>, stable@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
- =?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Qian Cai <cai@lca.pw>,
- linux-nvdimm@lists.01.org, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Yuval Shaia <yuval.shaia@oracle.com>, linux-nvdimm@lists.01.org,
+ kbuild-all@01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
 
-> Changes since v9 [1]:
-> - Fix multiple issues related to the fact that pfn_valid() has
->   traditionally returned true for any pfn in an 'early' (onlined at
->   boot) section regardless of whether that pfn represented 'System RAM'.
->   Teach pfn_valid() to maintain its traditional behavior in the presence
->   of subsections. Specifically, subsection precision for pfn_valid() is
->   only considered for non-early / hot-plugged sections. (Qian)
->
-> - Related to the first item introduce a SECTION_IS_EARLY
->   (->section_mem_map flag) to remove the existing hacks for determining
->   an early section by looking at whether the usemap was allocated from the
->   slab.
->
-> - Kill off the EEXIST hackery in __add_pages(). It breaks
->   (arch_add_memory() false-positive) the detection of subsection
->   collisions reported by section_activate(). It is also obviated by
->   David's recent reworks to move the 'System RAM' request_region() earlier
->   in the add_memory() sequence().
->
-> - Switch to an arch-independent / static subsection-size of 2MB.
->   Otherwise, a per-arch subsection-size is a roadblock on the path to
->   persistent memory namespace compatibility across archs. (Jeff)
->
-> - Update the changelog for "libnvdimm/pfn: Fix fsdax-mode namespace
->   info-block zero-fields" to clarify that the "Cc: stable" is only there
->   as safety measure for a distro that decides to backport "libnvdimm/pfn:
->   Stop padding pmem namespaces to section alignment", otherwise there is
->   no known bug exposure in older kernels. (Andrew)
->   
-> - Drop some redundant subsection checks (Oscar)
->
-> - Collect some reviewed-bys
->
-> [1]: https://lore.kernel.org/lkml/155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com/
+Hi,
 
+Thanks for the email. I will fix this warning with other build fixes found
+by test bot and send a v14.
 
-You can add Tested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-for ppc64.
+Best regards,
+Pankaj
 
-BTW even after this series we have the kernel crash mentioned in the
-below email on reconfigure. 
-
-https://lore.kernel.org/linux-mm/20190514025354.9108-1-aneesh.kumar@linux.ibm.com
-
-I guess we need to conclude how the reserve space struct page should be
-initialized ?
-
->
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git
+> libnvdimm-for-next
+> head:   3b6047778c09037615e7b919c922081ef1a37a7f
+> commit: 5990fce9c50eae1261a52df1488d04a47f4cfca7 [4/15] virtio-pmem: Add
+> virtio pmem driver
+> reproduce:
+>         # apt-get install sparse
+>         # sparse version: v0.6.1-rc1-7-g2b96cd8-dirty
+>         git checkout 5990fce9c50eae1261a52df1488d04a47f4cfca7
+>         make ARCH=x86_64 allmodconfig
+>         make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> 
+> sparse warnings: (new ones prefixed by >>)
+> 
+> >> drivers/nvdimm/virtio_pmem.c:61:9: sparse: sparse: incompatible types in
+> >> comparison expression (different base types):
+> >> drivers/nvdimm/virtio_pmem.c:61:9: sparse:    restricted __le64 *
+> >> drivers/nvdimm/virtio_pmem.c:61:9: sparse:    unsigned long long *
+>    drivers/nvdimm/virtio_pmem.c:63:9: sparse: sparse: incompatible types in
+>    comparison expression (different base types):
+>    drivers/nvdimm/virtio_pmem.c:63:9: sparse:    restricted __le64 *
+>    drivers/nvdimm/virtio_pmem.c:63:9: sparse:    unsigned long long *
+> 
+> vim +61 drivers/nvdimm/virtio_pmem.c
+> 
+>     31
+>     32	static int virtio_pmem_probe(struct virtio_device *vdev)
+>     33	{
+>     34		struct nd_region_desc ndr_desc = {};
+>     35		int nid = dev_to_node(&vdev->dev);
+>     36		struct nd_region *nd_region;
+>     37		struct virtio_pmem *vpmem;
+>     38		struct resource res;
+>     39		int err = 0;
+>     40
+>     41		if (!vdev->config->get) {
+>     42			dev_err(&vdev->dev, "%s failure: config access disabled\n",
+>     43				__func__);
+>     44			return -EINVAL;
+>     45		}
+>     46
+>     47		vpmem = devm_kzalloc(&vdev->dev, sizeof(*vpmem), GFP_KERNEL);
+>     48		if (!vpmem) {
+>     49			err = -ENOMEM;
+>     50			goto out_err;
+>     51		}
+>     52
+>     53		vpmem->vdev = vdev;
+>     54		vdev->priv = vpmem;
+>     55		err = init_vq(vpmem);
+>     56		if (err) {
+>     57			dev_err(&vdev->dev, "failed to initialize virtio pmem vq's\n");
+>     58			goto out_err;
+>     59		}
+>     60
+>   > 61		virtio_cread(vpmem->vdev, struct virtio_pmem_config,
+>     62				start, &vpmem->start);
+>     63		virtio_cread(vpmem->vdev, struct virtio_pmem_config,
+>     64				size, &vpmem->size);
+>     65
+>     66		res.start = vpmem->start;
+>     67		res.end   = vpmem->start + vpmem->size - 1;
+>     68		vpmem->nd_desc.provider_name = "virtio-pmem";
+>     69		vpmem->nd_desc.module = THIS_MODULE;
+>     70
+>     71		vpmem->nvdimm_bus = nvdimm_bus_register(&vdev->dev,
+>     72							&vpmem->nd_desc);
+>     73		if (!vpmem->nvdimm_bus) {
+>     74			dev_err(&vdev->dev, "failed to register device with nvdimm_bus\n");
+>     75			err = -ENXIO;
+>     76			goto out_vq;
+>     77		}
+>     78
+>     79		dev_set_drvdata(&vdev->dev, vpmem->nvdimm_bus);
+>     80
+>     81		ndr_desc.res = &res;
+>     82		ndr_desc.numa_node = nid;
+>     83		ndr_desc.flush = async_pmem_flush;
+>     84		set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
+>     85		set_bit(ND_REGION_ASYNC, &ndr_desc.flags);
+>     86		nd_region = nvdimm_pmem_region_create(vpmem->nvdimm_bus, &ndr_desc);
+>     87		if (!nd_region) {
+>     88			dev_err(&vdev->dev, "failed to create nvdimm region\n");
+>     89			err = -ENXIO;
+>     90			goto out_nd;
+>     91		}
+>     92		nd_region->provider_data =
+>     dev_to_virtio(nd_region->dev.parent->parent);
+>     93		return 0;
+>     94	out_nd:
+>     95		nvdimm_bus_unregister(vpmem->nvdimm_bus);
+>     96	out_vq:
+>     97		vdev->config->del_vqs(vdev);
+>     98	out_err:
+>     99		return err;
+>    100	}
+>    101
+> 
 > ---
->
-> The memory hotplug section is an arbitrary / convenient unit for memory
-> hotplug. 'Section-size' units have bled into the user interface
-> ('memblock' sysfs) and can not be changed without breaking existing
-> userspace. The section-size constraint, while mostly benign for typical
-> memory hotplug, has and continues to wreak havoc with 'device-memory'
-> use cases, persistent memory (pmem) in particular. Recall that pmem uses
-> devm_memremap_pages(), and subsequently arch_add_memory(), to allocate a
-> 'struct page' memmap for pmem. However, it does not use the 'bottom
-> half' of memory hotplug, i.e. never marks pmem pages online and never
-> exposes the userspace memblock interface for pmem. This leaves an
-> opening to redress the section-size constraint.
->
-> To date, the libnvdimm subsystem has attempted to inject padding to
-> satisfy the internal constraints of arch_add_memory(). Beyond
-> complicating the code, leading to bugs [2], wasting memory, and limiting
-> configuration flexibility, the padding hack is broken when the platform
-> changes this physical memory alignment of pmem from one boot to the
-> next. Device failure (intermittent or permanent) and physical
-> reconfiguration are events that can cause the platform firmware to
-> change the physical placement of pmem on a subsequent boot, and device
-> failure is an everyday event in a data-center.
->
-> It turns out that sections are only a hard requirement of the
-> user-facing interface for memory hotplug and with a bit more
-> infrastructure sub-section arch_add_memory() support can be added for
-> kernel internal usages like devm_memremap_pages(). Here is an analysis
-> of the current design assumptions in the current code and how they are
-> addressed in the new implementation:
->
-> Current design assumptions:
->
-> - Sections that describe boot memory (early sections) are never
->   unplugged / removed.
->
-> - pfn_valid(), in the CONFIG_SPARSEMEM_VMEMMAP=y, case devolves to a
->   valid_section() check
->
-> - __add_pages() and helper routines assume all operations occur in
->   PAGES_PER_SECTION units.
->
-> - The memblock sysfs interface only comprehends full sections
->
-> New design assumptions:
->
-> - Sections are instrumented with a sub-section bitmask to track (on x86)
->   individual 2MB sub-divisions of a 128MB section.
->
-> - Partially populated early sections can be extended with additional
->   sub-sections, and those sub-sections can be removed with
->   arch_remove_memory(). With this in place we no longer lose usable memory
->   capacity to padding.
->
-> - pfn_valid() is updated to look deeper than valid_section() to also check the
->   active-sub-section mask. This indication is in the same cacheline as
->   the valid_section() so the performance impact is expected to be
->   negligible. So far the lkp robot has not reported any regressions.
->
-> - Outside of the core vmemmap population routines which are replaced,
->   other helper routines like shrink_{zone,pgdat}_span() are updated to
->   handle the smaller granularity. Core memory hotplug routines that deal
->   with online memory are not touched.
->
-> - The existing memblock sysfs user api guarantees / assumptions are
->   not touched since this capability is limited to !online
->   !memblock-sysfs-accessible sections.
->
-> Meanwhile the issue reports continue to roll in from users that do not
-> understand when and how the 128MB constraint will bite them. The current
-> implementation relied on being able to support at least one misaligned
-> namespace, but that immediately falls over on any moderately complex
-> namespace creation attempt. Beyond the initial problem of 'System RAM'
-> colliding with pmem, and the unsolvable problem of physical alignment
-> changes, Linux is now being exposed to platforms that collide pmem
-> ranges with other pmem ranges by default [3]. In short,
-> devm_memremap_pages() has pushed the venerable section-size constraint
-> past the breaking point, and the simplicity of section-aligned
-> arch_add_memory() is no longer tenable.
->
-> These patches are exposed to the kbuild robot on a subsection-v10 branch
-> [4], and a preview of the unit test for this functionality is available
-> on the 'subsection-pending' branch of ndctl [5].
->
-> [2]: https://lore.kernel.org/r/155000671719.348031.2347363160141119237.stgit@dwillia2-desk3.amr.corp.intel.com
-> [3]: https://github.com/pmem/ndctl/issues/76
-> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/djbw/nvdimm.git/log/?h=subsection-v10
-> [5]: https://github.com/pmem/ndctl/commit/7c59b4867e1c
->
-> ---
->
-> Dan Williams (13):
->       mm/sparsemem: Introduce struct mem_section_usage
->       mm/sparsemem: Introduce a SECTION_IS_EARLY flag
->       mm/sparsemem: Add helpers track active portions of a section at boot
->       mm/hotplug: Prepare shrink_{zone,pgdat}_span for sub-section removal
->       mm/sparsemem: Convert kmalloc_section_memmap() to populate_section_memmap()
->       mm/hotplug: Kill is_dev_zone() usage in __remove_pages()
->       mm: Kill is_dev_zone() helper
->       mm/sparsemem: Prepare for sub-section ranges
->       mm/sparsemem: Support sub-section hotplug
->       mm: Document ZONE_DEVICE memory-model implications
->       mm/devm_memremap_pages: Enable sub-section remap
->       libnvdimm/pfn: Fix fsdax-mode namespace info-block zero-fields
->       libnvdimm/pfn: Stop padding pmem namespaces to section alignment
->
->
->  Documentation/vm/memory-model.rst |   39 ++++
->  arch/x86/mm/init_64.c             |    4 
->  drivers/nvdimm/dax_devs.c         |    2 
->  drivers/nvdimm/pfn.h              |   15 --
->  drivers/nvdimm/pfn_devs.c         |   95 +++-------
->  include/linux/memory_hotplug.h    |    7 -
->  include/linux/mm.h                |    4 
->  include/linux/mmzone.h            |   84 +++++++--
->  kernel/memremap.c                 |   61 +++----
->  mm/memory_hotplug.c               |  173 +++++++++----------
->  mm/page_alloc.c                   |   16 +-
->  mm/sparse-vmemmap.c               |   21 ++
->  mm/sparse.c                       |  335 ++++++++++++++++++++++++-------------
->  13 files changed, 494 insertions(+), 362 deletions(-)
-
+> 0-DAY kernel test infrastructure                Open Source Technology Center
+> https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
