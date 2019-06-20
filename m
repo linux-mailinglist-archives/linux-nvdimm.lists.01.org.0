@@ -1,60 +1,93 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F154D3C8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 18:30:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15CCB4D3DB
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 18:36:01 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 75BF22129F035;
-	Thu, 20 Jun 2019 09:30:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 817EE2129F03A;
+	Thu, 20 Jun 2019 09:35:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7A94F2129EB8F
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 09:30:22 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id i8so3306021oth.10
- for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 09:30:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=DApYrgtFGUX8hglw1AcOz6adgUtgKXSMo50u9kqGqWo=;
- b=IbYvmcN3FD1XsFJRWLBVeAh4cj+ztsE2rAJY2j9X45js8FuU/UPlkV5Z4mXnvi7Y7S
- A1GJpNUvJJbYn4ayjrn7/ANF+NiX7qKfqVlzDYpeflENEtIxLPu+qyys3bQLnsGfTQ1q
- nP6mTojxuOtLIWObuYkjJyA/1wtWC7fvvWuTmmiY8UwiqIT0/aeMmX6iPRbPwOg5iGPr
- uvfM5n2Dc7iiy1RvSAtGN0+PsX0kiVynUGI3ramtVIYzCGNtSNnR70SGPuHH87OdZOvD
- shvfqPmJ4PpbxFg34W9zwV3aCJNPq3GMuGB4dV59hH1kuK1Ja8KmFwrH/fL/dTGr3744
- /wLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=DApYrgtFGUX8hglw1AcOz6adgUtgKXSMo50u9kqGqWo=;
- b=DY8tz7piYs81PVnkSra0CenpSmLW19Ao++sOAey+ydji83vV6w1OTpmW+6IYezfA9R
- gZYu8rz/2FHjNKai9xURjsVV95B3HN2qoL0msw4kGuY+MC4UcfHli0gjSNJ9SC4YAOwV
- RfJ2VboeXwC5UMMLuVLYrOUA2Bn4sETFVKawz0IMttim/aX664fLKc0V9FDgcYroy1gr
- PawEadZidHrtyTlllVBdFMp2zpTBs70eXfaHxNWBW7RBgfpQC0OTpD+L3wCyf8jOOZf4
- EpmR8opu7lJKuuCRTms/4qgor1LPwGFl+h7n+K5gcOikd3ftSWr31R7nV5r2JPnidmwF
- QoAQ==
-X-Gm-Message-State: APjAAAWojfXMHqY+tl38+Knlq2QBgSvxQC5N0wj+rUa74Sk7xGS3nuUY
- OOYAHCX+2iFSMjsOALmlOQkJnf93RO27sWCI1YhiaQ==
-X-Google-Smtp-Source: APXvYqxIllarlavyR5g1oQ37eeWGGe9Qov4pSV/b7aFTtPwH8mY5U/JzeG/yRiJUeWSkE5MXZLJELq2eNsiljKeKmTU=
-X-Received: by 2002:a9d:7b48:: with SMTP id f8mr14032030oto.207.1561048221363; 
- Thu, 20 Jun 2019 09:30:21 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id AABC72129EB8F
+ for <linux-nvdimm@lists.01.org>; Thu, 20 Jun 2019 09:35:57 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 1024731628F5;
+ Thu, 20 Jun 2019 16:35:57 +0000 (UTC)
+Received: from [10.36.116.54] (ovpn-116-54.ams2.redhat.com [10.36.116.54])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E491D60BE0;
+ Thu, 20 Jun 2019 16:35:54 +0000 (UTC)
+Subject: Re: [PATCH v10 08/13] mm/sparsemem: Prepare for sub-section ranges
+To: Dan Williams <dan.j.williams@intel.com>
 References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
- <874l4kjv6o.fsf@linux.ibm.com>
-In-Reply-To: <874l4kjv6o.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 20 Jun 2019 09:30:10 -0700
-Message-ID: <CAPcyv4ioWRhU9AbyTHhf9PavL0GSs=6h3dGyaQPb7vLJ2+z23g@mail.gmail.com>
-Subject: Re: [PATCH v10 00/13] mm: Sub-section memory hotplug support
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+ <156092353780.979959.9713046515562743194.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <70f3559b-2832-67eb-0715-ed9f856f6ed9@redhat.com>
+ <CAPcyv4jzELzrf-p6ujUwdXN2FRe0WCNhpTziP2-z4-8uBSSp7A@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwX4EEwECACgFAljj9eoCGwMFCQlmAYAGCwkI
+ BwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEE3eEPcA/4Na5IIP/3T/FIQMxIfNzZshIq687qgG
+ 8UbspuE/YSUDdv7r5szYTK6KPTlqN8NAcSfheywbuYD9A4ZeSBWD3/NAVUdrCaRP2IvFyELj
+ xoMvfJccbq45BxzgEspg/bVahNbyuBpLBVjVWwRtFCUEXkyazksSv8pdTMAs9IucChvFmmq3
+ jJ2vlaz9lYt/lxN246fIVceckPMiUveimngvXZw21VOAhfQ+/sofXF8JCFv2mFcBDoa7eYob
+ s0FLpmqFaeNRHAlzMWgSsP80qx5nWWEvRLdKWi533N2vC/EyunN3HcBwVrXH4hxRBMco3jvM
+ m8VKLKao9wKj82qSivUnkPIwsAGNPdFoPbgghCQiBjBe6A75Z2xHFrzo7t1jg7nQfIyNC7ez
+ MZBJ59sqA9EDMEJPlLNIeJmqslXPjmMFnE7Mby/+335WJYDulsRybN+W5rLT5aMvhC6x6POK
+ z55fMNKrMASCzBJum2Fwjf/VnuGRYkhKCqqZ8gJ3OvmR50tInDV2jZ1DQgc3i550T5JDpToh
+ dPBxZocIhzg+MBSRDXcJmHOx/7nQm3iQ6iLuwmXsRC6f5FbFefk9EjuTKcLMvBsEx+2DEx0E
+ UnmJ4hVg7u1PQ+2Oy+Lh/opK/BDiqlQ8Pz2jiXv5xkECvr/3Sv59hlOCZMOaiLTTjtOIU7Tq
+ 7ut6OL64oAq+zsFNBFXLn5EBEADn1959INH2cwYJv0tsxf5MUCghCj/CA/lc/LMthqQ773ga
+ uB9mN+F1rE9cyyXb6jyOGn+GUjMbnq1o121Vm0+neKHUCBtHyseBfDXHA6m4B3mUTWo13nid
+ 0e4AM71r0DS8+KYh6zvweLX/LL5kQS9GQeT+QNroXcC1NzWbitts6TZ+IrPOwT1hfB4WNC+X
+ 2n4AzDqp3+ILiVST2DT4VBc11Gz6jijpC/KI5Al8ZDhRwG47LUiuQmt3yqrmN63V9wzaPhC+
+ xbwIsNZlLUvuRnmBPkTJwwrFRZvwu5GPHNndBjVpAfaSTOfppyKBTccu2AXJXWAE1Xjh6GOC
+ 8mlFjZwLxWFqdPHR1n2aPVgoiTLk34LR/bXO+e0GpzFXT7enwyvFFFyAS0Nk1q/7EChPcbRb
+ hJqEBpRNZemxmg55zC3GLvgLKd5A09MOM2BrMea+l0FUR+PuTenh2YmnmLRTro6eZ/qYwWkC
+ u8FFIw4pT0OUDMyLgi+GI1aMpVogTZJ70FgV0pUAlpmrzk/bLbRkF3TwgucpyPtcpmQtTkWS
+ gDS50QG9DR/1As3LLLcNkwJBZzBG6PWbvcOyrwMQUF1nl4SSPV0LLH63+BrrHasfJzxKXzqg
+ rW28CTAE2x8qi7e/6M/+XXhrsMYG+uaViM7n2je3qKe7ofum3s4vq7oFCPsOgwARAQABwsFl
+ BBgBAgAPBQJVy5+RAhsMBQkJZgGAAAoJEE3eEPcA/4NagOsP/jPoIBb/iXVbM+fmSHOjEshl
+ KMwEl/m5iLj3iHnHPVLBUWrXPdS7iQijJA/VLxjnFknhaS60hkUNWexDMxVVP/6lbOrs4bDZ
+ NEWDMktAeqJaFtxackPszlcpRVkAs6Msn9tu8hlvB517pyUgvuD7ZS9gGOMmYwFQDyytpepo
+ YApVV00P0u3AaE0Cj/o71STqGJKZxcVhPaZ+LR+UCBZOyKfEyq+ZN311VpOJZ1IvTExf+S/5
+ lqnciDtbO3I4Wq0ArLX1gs1q1XlXLaVaA3yVqeC8E7kOchDNinD3hJS4OX0e1gdsx/e6COvy
+ qNg5aL5n0Kl4fcVqM0LdIhsubVs4eiNCa5XMSYpXmVi3HAuFyg9dN+x8thSwI836FoMASwOl
+ C7tHsTjnSGufB+D7F7ZBT61BffNBBIm1KdMxcxqLUVXpBQHHlGkbwI+3Ye+nE6HmZH7IwLwV
+ W+Ajl7oYF+jeKaH4DZFtgLYGLtZ1LDwKPjX7VAsa4Yx7S5+EBAaZGxK510MjIx6SGrZWBrrV
+ TEvdV00F2MnQoeXKzD7O4WFbL55hhyGgfWTHwZ457iN9SgYi1JLPqWkZB0JRXIEtjd4JEQcx
+ +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
+ SE+xAvmumFBY
+Organization: Red Hat GmbH
+Message-ID: <d62e1f2f-70db-da84-5cc3-01fab779aeb7@redhat.com>
+Date: Thu, 20 Jun 2019 18:35:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4jzELzrf-p6ujUwdXN2FRe0WCNhpTziP2-z4-8uBSSp7A@mail.gmail.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.41]); Thu, 20 Jun 2019 16:35:57 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,75 +100,68 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- David Hildenbrand <david@redhat.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, stable <stable@vger.kernel.org>,
- Mike Rapoport <rppt@linux.ibm.com>, Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, Qian Cai <cai@lca.pw>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Vlastimil Babka <vbabka@suse.cz>,
- Oscar Salvador <osalvador@suse.de>
+ Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@suse.cz>, Oscar Salvador <osalvador@suse.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jun 20, 2019 at 5:31 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> Dan Williams <dan.j.williams@intel.com> writes:
->
-> > Changes since v9 [1]:
-> > - Fix multiple issues related to the fact that pfn_valid() has
-> >   traditionally returned true for any pfn in an 'early' (onlined at
-> >   boot) section regardless of whether that pfn represented 'System RAM'.
-> >   Teach pfn_valid() to maintain its traditional behavior in the presence
-> >   of subsections. Specifically, subsection precision for pfn_valid() is
-> >   only considered for non-early / hot-plugged sections. (Qian)
-> >
-> > - Related to the first item introduce a SECTION_IS_EARLY
-> >   (->section_mem_map flag) to remove the existing hacks for determining
-> >   an early section by looking at whether the usemap was allocated from the
-> >   slab.
-> >
-> > - Kill off the EEXIST hackery in __add_pages(). It breaks
-> >   (arch_add_memory() false-positive) the detection of subsection
-> >   collisions reported by section_activate(). It is also obviated by
-> >   David's recent reworks to move the 'System RAM' request_region() earlier
-> >   in the add_memory() sequence().
-> >
-> > - Switch to an arch-independent / static subsection-size of 2MB.
-> >   Otherwise, a per-arch subsection-size is a roadblock on the path to
-> >   persistent memory namespace compatibility across archs. (Jeff)
-> >
-> > - Update the changelog for "libnvdimm/pfn: Fix fsdax-mode namespace
-> >   info-block zero-fields" to clarify that the "Cc: stable" is only there
-> >   as safety measure for a distro that decides to backport "libnvdimm/pfn:
-> >   Stop padding pmem namespaces to section alignment", otherwise there is
-> >   no known bug exposure in older kernels. (Andrew)
-> >
-> > - Drop some redundant subsection checks (Oscar)
-> >
-> > - Collect some reviewed-bys
-> >
-> > [1]: https://lore.kernel.org/lkml/155977186863.2443951.9036044808311959913.stgit@dwillia2-desk3.amr.corp.intel.com/
->
->
-> You can add Tested-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> for ppc64.
+On 20.06.19 18:19, Dan Williams wrote:
+> On Thu, Jun 20, 2019 at 3:31 AM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 19.06.19 07:52, Dan Williams wrote:
+>>> Prepare the memory hot-{add,remove} paths for handling sub-section
+>>> ranges by plumbing the starting page frame and number of pages being
+>>> handled through arch_{add,remove}_memory() to
+>>> sparse_{add,remove}_one_section().
+>>>
+>>> This is simply plumbing, small cleanups, and some identifier renames. No
+>>> intended functional changes.
+>>>
+>>> Cc: Michal Hocko <mhocko@suse.com>
+>>> Cc: Vlastimil Babka <vbabka@suse.cz>
+>>> Cc: Logan Gunthorpe <logang@deltatee.com>
+>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>> Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
+>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>>> ---
+>>>  include/linux/memory_hotplug.h |    5 +-
+>>>  mm/memory_hotplug.c            |  114 +++++++++++++++++++++++++---------------
+>>>  mm/sparse.c                    |   16 ++----
+>>>  3 files changed, 81 insertions(+), 54 deletions(-)
+> [..]
+>>> @@ -528,31 +556,31 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
+>>>   * sure that pages are marked reserved and zones are adjust properly by
+>>>   * calling offline_pages().
+>>>   */
+>>> -void __remove_pages(struct zone *zone, unsigned long phys_start_pfn,
+>>> +void __remove_pages(struct zone *zone, unsigned long pfn,
+>>>                   unsigned long nr_pages, struct vmem_altmap *altmap)
+>>>  {
+>>> -     unsigned long i;
+>>>       unsigned long map_offset = 0;
+>>> -     int sections_to_remove;
+>>> +     int i, start_sec, end_sec;
+>>
+>> As mentioned in v9, use "unsigned long" for start_sec and end_sec please.
+> 
+> Honestly I saw you and Andrew going back and forth about "unsigned
+> long i" that I thought this would be handled by a follow on patchset
+> when that debate settled.
+> 
 
-Thank you!
+I'll send a fixup then, once this patch set is final - hoping I won't
+forget about it (that's why I asked about using these types in the first
+place).
 
-> BTW even after this series we have the kernel crash mentioned in the
-> below email on reconfigure.
->
-> https://lore.kernel.org/linux-mm/20190514025354.9108-1-aneesh.kumar@linux.ibm.com
->
-> I guess we need to conclude how the reserve space struct page should be
-> initialized ?
+-- 
 
-Yes, that issue is independent of the subsection changes. I'll take a
-closer look.
+Thanks,
+
+David / dhildenb
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
