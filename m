@@ -2,47 +2,46 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674634C789
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 08:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A3D74C78E
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 08:38:17 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF8F12129DB88;
-	Wed, 19 Jun 2019 23:34:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A8C272129DB91;
+	Wed, 19 Jun 2019 23:38:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=gregkh@linuxfoundation.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lkp@intel.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 284A22129DB83
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 23:34:10 -0700 (PDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 515C62070B;
- Thu, 20 Jun 2019 06:34:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561012450;
- bh=Ho986ZwEwN6lSqW02CRO5TRKTGH2igmUfY7a/ULtRRU=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=lFM3+3jhB60zvG/6yB5IE5B3Rx+VKwvPqzhLzTvAMHSgLqGN5c7UT/x7JJ1TuJGVF
- lVevF4s7TKlP8/Hj+yX54QMnBdPlf/MMKzNcCIdDbj9TeGMDC6DOu+5ILxmtYZrzRg
- godWZUUe0caVwlu6le/5vxZ5bW96eLKozu4FLnhk=
-Date: Thu, 20 Jun 2019 08:34:08 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 6/6] driver-core, libnvdimm: Let device subsystems add
- local lockdep coverage
-Message-ID: <20190620063408.GA4768@kroah.com>
-References: <156029554317.419799.1324389595953183385.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156029557585.419799.11741877483838451695.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAPcyv4h8QZBAC4kY3=mJVq0J8-W3aTLoT6h2b0WXFtymzToH-Q@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id 1FD8F212963F0
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 23:38:12 -0700 (PDT)
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 19 Jun 2019 23:38:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,395,1557212400"; 
+ d="gz'50?scan'50,208,50";a="162253281"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga007.fm.intel.com with ESMTP; 19 Jun 2019 23:38:10 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1hdqi1-000CKX-E0; Thu, 20 Jun 2019 14:38:09 +0800
+Date: Thu, 20 Jun 2019 14:37:29 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Pankaj Gupta <pagupta@redhat.com>
+Subject: [linux-nvdimm:libnvdimm-for-next 6/15] drivers/md/dm-table.c:897:9:
+ error: implicit declaration of function 'dax_synchronous'; did you mean
+ 'device_synchronous'?
+Message-ID: <201906201425.V6gEPOVJ%lkp@intel.com>
 MIME-Version: 1.0
+X-Patchwork-Hint: ignore
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Content-Disposition: inline
-In-Reply-To: <CAPcyv4h8QZBAC4kY3=mJVq0J8-W3aTLoT6h2b0WXFtymzToH-Q@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,52 +53,56 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Peter Zijlstra <peterz@infradead.org>, Will Deacon <will.deacon@arm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Ingo Molnar <mingo@redhat.com>
+Cc: kbuild-all@01.org, Mike Snitzer <snitzer@redhat.com>,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jun 19, 2019 at 03:21:58PM -0700, Dan Williams wrote:
-> On Tue, Jun 11, 2019 at 4:40 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > For good reason, the standard device_lock() is marked
-> > lockdep_set_novalidate_class() because there is simply no sane way to
-> > describe the myriad ways the device_lock() ordered with other locks.
-> > However, that leaves subsystems that know their own local device_lock()
-> > ordering rules to find lock ordering mistakes manually. Instead,
-> > introduce an optional / additional lockdep-enabled lock that a subsystem
-> > can acquire in all the same paths that the device_lock() is acquired.
-> >
-> > A conversion of the NFIT driver and NVDIMM subsystem to a
-> > lockdep-validate device_lock() scheme is included. The
-> > debug_nvdimm_lock() implementation implements the correct lock-class and
-> > stacking order for the libnvdimm device topology hierarchy.
-> 
-> Greg, Peter,
-> 
-> Any thoughts on carrying this debug hack upstream? The idea being that
-> it's impossible to enable lockdep for the device_lock() globally, but
-> a constrained usage of the proposed lockdep_mutex has proven enough to
-> flush out device_lock deadlocks from libnvdimm.
-> 
-> It appears one aspect that is missing from this patch proposal is a
-> mechanism / convention to make sure that lockdep_mutex has constrained
-> usage for a given kernel build, otherwise it's obviously just as
-> problematic as device_lock(). Other concerns?
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git libnvdimm-for-next
+head:   3b6047778c09037615e7b919c922081ef1a37a7f
+commit: 38887edec2472179cc79bb45034731f5f816f064 [6/15] dm: enable synchronous dax
+config: parisc-c3000_defconfig (attached as .config)
+compiler: hppa-linux-gcc (GCC) 7.4.0
+reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout 38887edec2472179cc79bb45034731f5f816f064
+        # save the attached .config to linux build tree
+        GCC_VERSION=7.4.0 make.cross ARCH=parisc 
 
-Yeah, it feels a bit hacky but it's really up to a subsystem to mess up
-using it as much as anything else, so user beware :)
+If you fix the issue, kindly add following tag
+Reported-by: kbuild test robot <lkp@intel.com>
 
-I don't object to it if it makes things easier for you to debug.
+All errors (new ones prefixed by >>):
 
-thanks,
+   drivers/md/dm-table.c: In function 'device_synchronous':
+>> drivers/md/dm-table.c:897:9: error: implicit declaration of function 'dax_synchronous'; did you mean 'device_synchronous'? [-Werror=implicit-function-declaration]
+     return dax_synchronous(dev->dax_dev);
+            ^~~~~~~~~~~~~~~
+            device_synchronous
+   drivers/md/dm-table.c: In function 'dm_table_set_restrictions':
+>> drivers/md/dm-table.c:1925:4: error: implicit declaration of function 'set_dax_synchronous'; did you mean 'device_synchronous'? [-Werror=implicit-function-declaration]
+       set_dax_synchronous(t->md->dax_dev);
+       ^~~~~~~~~~~~~~~~~~~
+       device_synchronous
+   cc1: some warnings being treated as errors
 
-greg k-h
+vim +897 drivers/md/dm-table.c
+
+   892	
+   893	/* Check devices support synchronous DAX */
+   894	static int device_synchronous(struct dm_target *ti, struct dm_dev *dev,
+   895					       sector_t start, sector_t len, void *data)
+   896	{
+ > 897		return dax_synchronous(dev->dax_dev);
+   898	}
+   899	
+
+---
+0-DAY kernel test infrastructure                Open Source Technology Center
+https://lists.01.org/pipermail/kbuild-all                   Intel Corporation
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
