@@ -1,31 +1,25 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB374C534
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 04:07:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D27784C4BC
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 03:04:12 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4F91C21962301;
-	Wed, 19 Jun 2019 19:07:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2D11021962301;
+	Wed, 19 Jun 2019 18:04:11 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=116.207.5.242;
- helo=fme.com; envelope-from=vcr@fme.com; receiver=linux-nvdimm@lists.01.org 
-Received: from fme.com (unknown [116.207.5.242])
- by ml01.01.org (Postfix) with ESMTP id 1B6182129707E
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 19:06:57 -0700 (PDT)
-Message-ID: <429F6A91C5301EE689150B2E32D75BA4@fme.com>
-From: =?utf-8?B?6Ie05LyB5Lia55qE5LiA5bCB5L+h?= <vcr@fme.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?OTkyMTEzKOS4muWKoeWRmOWmguS9leS4mue7qeaPkOWNhynlj4oo56CU?=
- =?utf-8?B?5Y+R5Lq65ZGY55qE6ICD5qC45LiO5r+A5YqxKQ==?=
-Date: Thu, 20 Jun 2019 10:06:46 +0800
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=138.68.6.123;
+ helo=mbi.co; envelope-from=mjohn@mbi.co; receiver=linux-nvdimm@lists.01.org 
+Received: from mbi.co (unknown [138.68.6.123])
+ by ml01.01.org (Postfix) with ESMTP id CE0BC21959CB2
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 18:04:08 -0700 (PDT)
+From: John M.<mjohn@mbi.co>
+To: linux-nvdimm@lists.01.org
+Subject: Hello
+Date: 20 Jun 2019 01:04:04 -0300
+Message-ID: <20190620010358.4245FE202B147ABA@mbi.co>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,14 +31,47 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Reply-To: "Mr. John Mobutu" <mrjohnmobutu@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-IDEwOjA2OjU2IA0KDQoNCi0tLS0g5Y6f6YKu5Lu25L+h5oGvIC0tLS0tDQrlj5Hku7bkuro66Ie0
-5LyB5Lia55qE5LiA5bCB5L+hPHZjckBmbWUuY29tPg0K5pS25Lu25Lq6OmxpbnV4LW52ZGltbSA8
-bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZz4NCuWPkemAgeaXtumXtDoyMDE5LTYtMjAgIDEwOjA2
-OjU2Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4
-LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczovL2xp
-c3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
+Good Day.
+
+I know reading my email, will be surprising to you and your 
+entire family, but please take whatever I am about to share with 
+you today seriously. 
+
+My name is John Mobutu, I am 22 years old, from Congo, my parents 
+were assassinated by opposition leaders many years ago, but thank 
+God the United Nations Peace Keeping, who came to rescue me and 
+my younger sister to Kenya, where we have been living presently. 
+
+My late father was into Gold and Diamond mining, while my late 
+mother was a Government worker. 
+
+My four consignment boxes containing 182 Million USD and 2,300 
+kilogram of gold was ship to the United Sates of America, three 
+weeks ago for delivery to Mr. Barry  Miller, in Atlanta Ga, by 
+the United Nations Head Office in Africa, which is in Kenya, but 
+up till now the agents haven't been able to reach my beneficiary 
+and they are threatening to return my money and gold back to 
+Kenya, I am very disappointed and confuse right now, this is pure 
+evil.
+
+Please I really need your assistance right now, if you are 
+willing to help us, kindly get back to us immediately for more 
+discussion.
+
+Please kindly tell us more about yourself when replying to our 
+email. Thanks
+
+God bless you
+
+Sincerely 
+John
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
