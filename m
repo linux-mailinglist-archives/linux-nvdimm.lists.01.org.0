@@ -2,37 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76224C785
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 08:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 674634C789
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Jun 2019 08:34:14 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3D4722129DB83;
-	Wed, 19 Jun 2019 23:33:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EF8F12129DB88;
+	Wed, 19 Jun 2019 23:34:12 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
- helo=newverein.lst.de; envelope-from=hch@lst.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EF1CE21290D4B
- for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 23:33:08 -0700 (PDT)
-Received: by newverein.lst.de (Postfix, from userid 2407)
- id 0877068B05; Thu, 20 Jun 2019 08:32:37 +0200 (CEST)
-Date: Thu, 20 Jun 2019 08:32:36 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: dev_pagemap related cleanups v2
-Message-ID: <20190620063236.GE20765@lst.de>
-References: <20190617122733.22432-1-hch@lst.de>
- <CAPcyv4hBUJB2RxkDqHkfEGCupDdXfQSrEJmAdhLFwnDOwt8Lig@mail.gmail.com>
- <20190619094032.GA8928@lst.de> <20190619163655.GG9360@ziepe.ca>
- <CAPcyv4hYtQdg0DTYjrJxCNXNjadBSWQ5QaMJYsA-QSribKuwrQ@mail.gmail.com>
- <20190619181923.GJ9360@ziepe.ca>
+ by ml01.01.org (Postfix) with ESMTPS id 284A22129DB83
+ for <linux-nvdimm@lists.01.org>; Wed, 19 Jun 2019 23:34:10 -0700 (PDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 515C62070B;
+ Thu, 20 Jun 2019 06:34:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1561012450;
+ bh=Ho986ZwEwN6lSqW02CRO5TRKTGH2igmUfY7a/ULtRRU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=lFM3+3jhB60zvG/6yB5IE5B3Rx+VKwvPqzhLzTvAMHSgLqGN5c7UT/x7JJ1TuJGVF
+ lVevF4s7TKlP8/Hj+yX54QMnBdPlf/MMKzNcCIdDbj9TeGMDC6DOu+5ILxmtYZrzRg
+ godWZUUe0caVwlu6le/5vxZ5bW96eLKozu4FLnhk=
+Date: Thu, 20 Jun 2019 08:34:08 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 6/6] driver-core, libnvdimm: Let device subsystems add
+ local lockdep coverage
+Message-ID: <20190620063408.GA4768@kroah.com>
+References: <156029554317.419799.1324389595953183385.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156029557585.419799.11741877483838451695.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAPcyv4h8QZBAC4kY3=mJVq0J8-W3aTLoT6h2b0WXFtymzToH-Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190619181923.GJ9360@ziepe.ca>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <CAPcyv4h8QZBAC4kY3=mJVq0J8-W3aTLoT6h2b0WXFtymzToH-Q@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,39 +54,52 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Peter Zijlstra <peterz@infradead.org>, Will Deacon <will.deacon@arm.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>,
- =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
- Ben Skeggs <bskeggs@redhat.com>, linux-pci@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>
+ Ingo Molnar <mingo@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jun 19, 2019 at 03:19:23PM -0300, Jason Gunthorpe wrote:
-> > Just make sure that when you backmerge v5.2-rc5 you have a clear
-> > reason in the merge commit message about why you needed to do it.
-> > While needless rebasing is top of the pet peeve list, second place, as
-> > I found out, is mystery merges without explanations.
+On Wed, Jun 19, 2019 at 03:21:58PM -0700, Dan Williams wrote:
+> On Tue, Jun 11, 2019 at 4:40 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > For good reason, the standard device_lock() is marked
+> > lockdep_set_novalidate_class() because there is simply no sane way to
+> > describe the myriad ways the device_lock() ordered with other locks.
+> > However, that leaves subsystems that know their own local device_lock()
+> > ordering rules to find lock ordering mistakes manually. Instead,
+> > introduce an optional / additional lockdep-enabled lock that a subsystem
+> > can acquire in all the same paths that the device_lock() is acquired.
+> >
+> > A conversion of the NFIT driver and NVDIMM subsystem to a
+> > lockdep-validate device_lock() scheme is included. The
+> > debug_nvdimm_lock() implementation implements the correct lock-class and
+> > stacking order for the libnvdimm device topology hierarchy.
 > 
-> Yes, I always describe the merge commits. Linus also particular about
-> having *good reasons* for merges.
+> Greg, Peter,
 > 
-> This is why I can't fix the hmm.git to have rc5 until I have patches
-> to apply..
+> Any thoughts on carrying this debug hack upstream? The idea being that
+> it's impossible to enable lockdep for the device_lock() globally, but
+> a constrained usage of the proposed lockdep_mutex has proven enough to
+> flush out device_lock deadlocks from libnvdimm.
 > 
-> Probbaly I will just put CH's series on rc5 and merge it with the
-> cover letter as the merge message. This avoid both rebasing and gives
-> purposeful merges.
+> It appears one aspect that is missing from this patch proposal is a
+> mechanism / convention to make sure that lockdep_mutex has constrained
+> usage for a given kernel build, otherwise it's obviously just as
+> problematic as device_lock(). Other concerns?
 
-Fine with me.  My series right now is on top of the rdma/hmm branch.
-There is a trivial conflict that is solved by doing so, as my series
-removes documentation that is fixed up there a bit.  There is another
-trivial conflict with your pending series as they remove code next to
-each other in hmm.git.
+Yeah, it feels a bit hacky but it's really up to a subsystem to mess up
+using it as much as anything else, so user beware :)
+
+I don't object to it if it makes things easier for you to debug.
+
+thanks,
+
+greg k-h
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
