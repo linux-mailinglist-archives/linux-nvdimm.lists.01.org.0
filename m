@@ -2,58 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E394EC8E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Jun 2019 17:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891DF4EE44
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Jun 2019 19:59:38 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BC8902129F113;
-	Fri, 21 Jun 2019 08:52:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id ECE3A2129F114;
+	Fri, 21 Jun 2019 10:59:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 10FDF2128D681
- for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 08:52:54 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id s20so6782869otp.4
- for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 08:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hwqOdM82Wo1LbISqbfrlEuypIslSLM17UE637RRvbw8=;
- b=SUa9qJqmUw8/97wTcjAtEu0c8O8rYc113LWn47+pi0EwFgnYlKQ1z0ZxoOkAF8GaBz
- CI8EGatu38vevaNJy4aAulu0TeQY2XBCwSsDQVd3yrlPq5EdRAZdIlfwtZ7SQPBjfZdv
- xlWhsraEMFPoOvMO+3dvX8CYj/co9++szi1UeVRPgS/N3fcNtIXlOA3n/UERMozZ4YTj
- udP8L6Ja0sJA8gCqPq1zXfRFRNOq4UI7lPB2mkcOk3+5gfqEYobvALSufLiEsVtzuu/l
- xzfTZf4sKDfpLLodPGKSrD3ZW9rudc45eBU6Une4RyhwaykYLTJMRNirDBr9guxl4wNN
- pfTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=hwqOdM82Wo1LbISqbfrlEuypIslSLM17UE637RRvbw8=;
- b=oSqJLo0B9793PeZAzMLeAqO7fs9HzzpYJLUk+y9IK+P4pKcoz1Kxl/TAwCUfBsbwLn
- OXQL5PskLroU81LzXfgXoV8GxgcbxdRdZlsGfkpccaHljoLPivs2OhDolS6geRPtF8/j
- IrA5vIN8tXM+KuwUU/UzL8/MxlQeFYMHYSm6DKJeb8kcJDbW3pFy8KhoKlOfaw8rXFMg
- 2KOJKxkJsFpRW7stX2Qj44y5plXVStOEEsv5dP1NtbqmPM4K1c6Ed+g17TmU1CevF1ER
- A7GWjO0iU3kZbpWrfFlYh0e0smXhu8BxqamaSGsLr386QgUu2QoOZtArfvy4WRhmRWYA
- Q4NA==
-X-Gm-Message-State: APjAAAU1o9U+MqBJWU3lVshuHxiZ6COn/mSbwuiknizGXHj3NzVScqao
- JrJDPq9n5wZTdWHsPHsUDf0tU3QncPYxz5o7jxh0pw==
-X-Google-Smtp-Source: APXvYqzz4LLcZrrOrjeYJq3IZMtx3xFuKyLY+v6Wc96BzzmVMslfTxTEKkzMDFWbxHG/xmFknenxwPz1P2pt3ztvzrU=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr4310909otn.247.1561132373730; 
- Fri, 21 Jun 2019 08:52:53 -0700 (PDT)
+Received-SPF: Softfail (domain owner discourages use of this host)
+ identity=mailfrom; client-ip=218.102.23.34; helo=yobosm01.netvigator.com;
+ envelope-from=wetzbx@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from yobosm01.netvigator.com (yobosm01.netvigator.com
+ [218.102.23.34]) by ml01.01.org (Postfix) with ESMTP id D1B482129F114
+ for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 10:59:31 -0700 (PDT)
+Received: from wironout4a.netvigator.com (wironout4a.netvigator.com
+ [219.76.94.38])
+ by yobosm01.netvigator.com (8.14.5/8.14.5) with ESMTP id x5LHxIqM024606
+ for <linux-nvdimm@lists.01.org>; Sat, 22 Jun 2019 01:59:30 +0800
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0D+/wAHGg1d/5cXxstkGgEBAQEBHwIBA?=
+ =?us-ascii?q?QEBAwEBAQGBRQQBAQEBAwEBgSwCAQEBAQEBAYEIXjQgEiiEFoh7jByJRYVcgzK?=
+ =?us-ascii?q?GAxOBZwkBAQETKAIBAYFLgSgGhCMnOgQNAQMBAQQEAQVtijcMQgEBAQECAQYEh?=
+ =?us-ascii?q?G4bGAgjDjgDAQc3AiMCDAEBDQEBHQEHCwgUAQSEIkkBAQIcBqB2h0mBFAUBFw2?=
+ =?us-ascii?q?DeQGBMBGBaQoZBAoZDWKBQ4EyAgEBAQEBAQEBAYtsgX+EIz6CGkcFgSsBEgGDK?=
+ =?us-ascii?q?YJYBIR4iB4CgS6EXYFWgxuBW49SPwkCO4FXgWyOB4NuG49NDhpNhwSNJYkajmu?=
+ =?us-ascii?q?BDAYYZ3FwFWyBHIEfghgBhiGIEwE7OjMBYxAEgSCBbINQhgOCQwEB?=
+X-IPAS-Result: =?us-ascii?q?A0D+/wAHGg1d/5cXxstkGgEBAQEBHwIBAQEBAwEBAQGBRQQ?=
+ =?us-ascii?q?BAQEBAwEBgSwCAQEBAQEBAYEIXjQgEiiEFoh7jByJRYVcgzKGAxOBZwkBAQETK?=
+ =?us-ascii?q?AIBAYFLgSgGhCMnOgQNAQMBAQQEAQVtijcMQgEBAQECAQYEhG4bGAgjDjgDAQc?=
+ =?us-ascii?q?3AiMCDAEBDQEBHQEHCwgUAQSEIkkBAQIcBqB2h0mBFAUBFw2DeQGBMBGBaQoZB?=
+ =?us-ascii?q?AoZDWKBQ4EyAgEBAQEBAQEBAYtsgX+EIz6CGkcFgSsBEgGDKYJYBIR4iB4CgS6?=
+ =?us-ascii?q?EXYFWgxuBW49SPwkCO4FXgWyOB4NuG49NDhpNhwSNJYkajmuBDAYYZ3FwFWyBH?=
+ =?us-ascii?q?IEfghgBhiGIEwE7OjMBYxAEgSCBbINQhgOCQwEB?=
+X-IronPort-AV: E=Sophos;i="5.63,401,1557158400"; 
+ d="scan'208,217";a="271723967"
+Received: from yckviprion01-02smtp.netvigator.com (HELO
+ yironoah01.netvigator.com) ([203.198.23.151])
+ by wironout4.netvigator.com with ESMTP; 22 Jun 2019 01:59:30 +0800
+Received: from localhost (HELO 5.101.65.69) ([27.76.88.171])
+ by yironoah01.netvigator.com with ESMTP; 22 Jun 2019 01:59:22 +0800
+Message-ID: <8cde9b090229fc0f2cd244171cc8f854779280ade2@gmail.com>
+From: "Theophil" <wetzbx@gmail.com>
+To: "ofono" <ofono@ofono.org>, "orienta" <orienta@crp-01.org.br>,
+ "linux-nvdimm" <linux-nvdimm@lists.01.org>, "mail" <mail@schouw.org>,
+ "natascha.vandenende" <natascha.vandenende@apsbb.com>,
+ "lkp" <lkp@lists.01.org>,
+ "recruitmentinhouse.tilburg" <recruitmentinhouse.tilburg@olympia.nl>,
+ "mbonckus" <mbonckus@hobij.nl>,
+ "intel-sgx-kernel-dev" <intel-sgx-kernel-dev@lists.01.org>,
+ "fol57.rigo" <fol57.rigo@gmail.com>, "linux-nfc" <linux-nfc@lists.01.org>,
+ "intel-vaapi-media" <intel-vaapi-media@lists.01.org>,
+ "crva" <crva@ligue54.org>, "tpm2" <tpm2@lists.01.org>,
+ "chipsec" <chipsec@lists.01.org>
+Subject: Re:(62)  Unique on-line business...
+Date: Fri, 21 Jun 2019 21:59:27 +0400
+Organization: Theophil
 MIME-Version: 1.0
-References: <20190621114518.56321-1-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20190621114518.56321-1-andriy.shevchenko@linux.intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 21 Jun 2019 08:52:42 -0700
-Message-ID: <CAPcyv4jtioTHQrSrZhopnKzPe81OYzBxpCeY1yCRLoxS8ULVzA@mail.gmail.com>
-Subject: Re: [PATCH v1] libnvdimm, namespace: Drop uuid_t implementation detail
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,19 +70,19 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
+Reply-To: Theophil <mcglnrvvz@gmail.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jun 21, 2019 at 4:45 AM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> There is no need for caller to know how uuid_t type is constructed. Thus,
-> whenever we use it the implementation details are not needed. Drop it for good.
-
-Looks good, tests ok, applied.
+To unsubscribe send us an email with the topic 'unsubscribe' [jzlxe]
+Selling a unique on-line business [unnrvyw] 
+Databases, software, training 3-4 days [huvxvgo] 
+Earnings from $3000 per month 7753191 [unlkprt] 
+Contact: email.business.group@gmail.com[niietu] 
+7753191 [oprvrx] 
+[pcolo]  
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
