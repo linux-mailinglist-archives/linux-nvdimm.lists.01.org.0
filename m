@@ -2,64 +2,68 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF9A4EF56
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Jun 2019 21:21:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFFD4EFCE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Jun 2019 22:06:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 65FE12129F117;
-	Fri, 21 Jun 2019 12:21:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0E8CD2129F117;
+	Fri, 21 Jun 2019 13:06:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=shuah@kernel.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 676962129F0E5
- for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 12:21:02 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net
- [24.9.64.241])
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6B5A92083B;
- Fri, 21 Jun 2019 19:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1561144861;
- bh=iSLE8vYN1CVyQpDZAjB5wUepW90aWW8GZV7fiOhOYLI=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=rOFoGcMjhktMurUdgbCbMpH3CuYbo8f6qv7k7t5ZU+gIRgWY3jvHjiKlvUH/4gtGc
- tkaS0EnLDQaBH4l1BqZoXz0YVlaxT1A7Gl2P40Psq6fLWLtfADeY2VcXqK9sRP2COc
- 9m3M+jF/ht6KFuEDIJyo7S5GsVZembQBcUNReF8I=
-Subject: Re: [PATCH v5 00/18] kunit: introduce KUnit, the Linux kernel unit
- testing framework
-To: Theodore Ts'o <tytso@mit.edu>, Frank Rowand <frowand.list@gmail.com>,
- Brendan Higgins <brendanhiggins@google.com>, gregkh@linuxfoundation.org,
- jpoimboe@redhat.com, keescook@google.com, kieran.bingham@ideasonboard.com,
- mcgrof@kernel.org, peterz@infradead.org, robh@kernel.org, sboyd@kernel.org,
- yamada.masahiro@socionext.com, devicetree@vger.kernel.org,
- dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
- linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org,
- linux-um@lists.infradead.org, Alexander.Levin@microsoft.com,
- Tim.Bird@sony.com, amir73il@gmail.com, dan.carpenter@oracle.com,
- daniel@ffwll.ch, jdike@addtoit.com, joel@jms.id.au, julia.lawall@lip6.fr,
- khilman@baylibre.com, knut.omang@oracle.com, logang@deltatee.com,
- mpe@ellerman.id.au, pmladek@suse.com, rdunlap@infradead.org, richard@nod.at,
- rientjes@google.com, rostedt@goodmis.org, wfg@linux.intel.com,
- shuah <shuah@kernel.org>
-References: <20190617082613.109131-1-brendanhiggins@google.com>
- <10feac3e-7621-65e5-fbf0-9c63fcbe09c9@gmail.com>
- <69809117-dcda-160a-ee0a-d1d3b4c5cd8a@kernel.org>
- <20190621181342.GA17166@mit.edu>
-From: shuah <shuah@kernel.org>
-Message-ID: <6f3f5184-d14e-1b46-17f1-391ee67e699c@kernel.org>
-Date: Fri, 21 Jun 2019 13:20:58 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ by ml01.01.org (Postfix) with ESMTPS id CABF82128A64D
+ for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 13:06:51 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id 43so2664185otf.8
+ for <linux-nvdimm@lists.01.org>; Fri, 21 Jun 2019 13:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=wuEmwyEDkLTTGNEaPaNn66uye06m7pMKJtU3WQzLuW4=;
+ b=yfbm0c70FRxPQvT9ttNxjjuYHrLEhwZtbnY9goMK/0Gx78N5J7QrZtLuREOupTptR5
+ Q6lMBj1OahoCaUeB5vb1WpR4k3yMCiTX9SiElfshDMd+oBYiR1iPaQpsP3rMRLV+fSfm
+ oj5j9y4v4Mg8Pe4WYVpkvn6QZ9nFF4tNNmw85cboZbNy52Hu9yzqSZDa8Jvf30gP6dUz
+ JQ0KfefwxJcxn6gxZ7nWCvnoUnPVLI04pktSbH5XZ1iNtk6tTUJzw9EBK2RHX7rELfXD
+ jI5SVdxRvya4HhOWrk1C1ZpVxSQVBFjWZ3gh2npuCk2Bn4G3E8FRKUDJN6SxlHpBOMm6
+ FRoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=wuEmwyEDkLTTGNEaPaNn66uye06m7pMKJtU3WQzLuW4=;
+ b=B66TmWT/xPymx2u+UE6owTDVXl6BfitjnRZ6Sy8o/mD5y3Wexu58TOq7ZmXuYLLn6k
+ ZVqSD9XBQyDq4q79V4OCJk7PxLbmk2jTkS/hFtNahOn/YqBtPPURFYMQ8J6oAJoXn0pQ
+ d9x1F3S/WpADicxEHQtRJLjqoJdzCuISJtostbQbFWI/njuS60PT1njLhc/Rt5b4kH8g
+ bi1H1OTpbg4IGIitTGuA4f1VBZ30nzia7fKBtRmfKDaaFN9NUyybOl48l7165JLUSEKv
+ IxWTY5nC5i1VchRjfp8PZ46vEEhKIiEv4CN9R+RX5ITcdj2ygRays5ksVSYMJjulFtvc
+ Qncg==
+X-Gm-Message-State: APjAAAWuiSTELRKvUIxtGwkGyV8ENPkrTovH3GbDOh5wCSGnbffb99hC
+ CTeCvNxooroeo760Mk3/vZ1JPV34+K+ileTvpt4z6Q==
+X-Google-Smtp-Source: APXvYqyQOOqbJLjW2BcOmlG77qXX9/WsYin5lYao1Mf2DKSbEZ6q1C3Ab3BvZSOCGLndw9OyPK8hja1kJE7joCwf+Qo=
+X-Received: by 2002:a9d:7248:: with SMTP id a8mr1671387otk.363.1561147610028; 
+ Fri, 21 Jun 2019 13:06:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190621181342.GA17166@mit.edu>
-Content-Language: en-US
+References: <155925716254.3775979.16716824941364738117.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <155925718351.3775979.13546720620952434175.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAKv+Gu-J3-66V7UhH3=AjN4sX7iydHNF7Fd+SMbezaVNrZQmGQ@mail.gmail.com>
+ <CAPcyv4g-GNe2vSYTn0a6ivQYxJdS5khE4AJbcxysoGPsTZwswg@mail.gmail.com>
+ <CAKv+Gu83QB6x8=LCaAcR0S65WELC-Y+Voxw6LzaVh4FSV3bxYA@mail.gmail.com>
+ <CAPcyv4hXBJBMrqoUr4qG5A3CUVgWzWK6bfBX29JnLCKDC7CiGA@mail.gmail.com>
+ <CAKv+Gu_ZYpey0dWYebFgCaziyJ-_x+KbCmOegWqFjwC0U-5QaA@mail.gmail.com>
+ <CAPcyv4jO5WhRJ-=Nz70Jc0mCHYBJ6NsHjJNk6AerwQXH43oemw@mail.gmail.com>
+ <CAPcyv4gzhr57xa2MbR1Jk8EDFw-WLdcw3mJnEX9PeAFwVEZbDA@mail.gmail.com>
+ <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+In-Reply-To: <CAKv+Gu_OcsWi5DqxOk-j6ovc0CMAZV37Od7zA5Bs4Ng5ATQxAA@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 21 Jun 2019 13:06:38 -0700
+Message-ID: <CAPcyv4hB7EbxkcDGc1j2vXwFcX5rHOYtRZcRa7Q36CVrAk1w+g@mail.gmail.com>
+Subject: Re: [PATCH v2 4/8] x86, efi: Reserve UEFI 2.8 Specific Purpose Memory
+ for dax
+To: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,68 +75,74 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: linux-efi <linux-efi@vger.kernel.org>, kbuild test robot <lkp@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Linux-MM <linux-mm@kvack.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>, Darren Hart <dvhart@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Andy Shevchenko <andy@infradead.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 6/21/19 12:13 PM, Theodore Ts'o wrote:
-> On Fri, Jun 21, 2019 at 08:59:48AM -0600, shuah wrote:
->>>> ### But wait! Doesn't kselftest support in kernel testing?!
->>>>
->>>> ....
->>
->> I think I commented on this before. I agree with the statement that
->> there is no overlap between Kselftest and KUnit. I would like see this
->> removed. Kselftest module support supports use-cases KUnit won't be able
->> to. I can build an kernel with Kselftest test modules and use it in the
->> filed to load and run tests if I need to debug a problem and get data
->> from a system. I can't do that with KUnit.
->>
->> In my mind, I am not viewing this as which is better. Kselftest and
->> KUnit both have their place in the kernel development process. It isn't
->> productive and/or necessary to comparing Kselftest and KUnit without a
->> good understanding of the problem spaces for each of these.
->>
->> I would strongly recommend not making reference to Kselftest and talk
->> about what KUnit offers.
-> 
-> Shuah,
-> 
-> Just to recall the history, this section of the FAQ was added to rebut
-> the ***very*** strong statements that Frank made that there was
-> overlap between Kselftest and Kunit, and that having too many ways for
-> kernel developers to do the identical thing was harmful (he said it
-> was too much of a burden on a kernel developer) --- and this was an
-> argument for not including Kunit in the upstream kernel.
-> 
-> If we're past that objection, then perhaps this section can be
-> dropped, but there's a very good reason why it was there.  I wouldn't
-> Brendan to be accused of ignoring feedback from those who reviewed his
-> patches.   :-)
-> 
+On Sat, Jun 8, 2019 at 12:20 AM Ard Biesheuvel
+<ard.biesheuvel@linaro.org> wrote:
+>
+> On Fri, 7 Jun 2019 at 19:34, Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > On Fri, Jun 7, 2019 at 8:23 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > >
+> > > On Fri, Jun 7, 2019 at 5:29 AM Ard Biesheuvel <ard.biesheuvel@linaro.org> wrote:
+> > [..]
+> > > > > #ifdef CONFIG_EFI_APPLICATION_RESERVED
+> > > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > > {
+> > > > >         return md->type == EFI_CONVENTIONAL_MEMORY
+> > > > >                 && (md->attribute & EFI_MEMORY_SP);
+> > > > > }
+> > > > > #else
+> > > > > static inline bool is_efi_application_reserved(efi_memory_desc_t *md)
+> > > > > {
+> > > > >         return false;
+> > > > > }
+> > > > > #endif
+> > > >
+> > > > I think this policy decision should not live inside the EFI subsystem.
+> > > > EFI just gives you the memory map, and mangling that information
+> > > > depending on whether you think a certain memory attribute should be
+> > > > ignored is the job of the MM subsystem.
+> > >
+> > > The problem is that we don't have an mm subsystem at the time a
+> > > decision needs to be made. The reservation policy needs to be deployed
+> > > before even memblock has been initialized in order to keep kernel
+> > > allocations out of the reservation. I agree with the sentiment I just
+> > > don't see how to practically achieve an optional "System RAM" vs
+> > > "Application Reserved" routing decision without an early (before
+> > > e820__memblock_setup()) conditional branch.
+> >
+> > I can at least move it out of include/linux/efi.h and move it to
+> > arch/x86/include/asm/efi.h since it is an x86 specific policy decision
+> > / implementation for now.
+>
+> No, that doesn't make sense to me. If it must live in the EFI
+> subsystem, I'd prefer it to be in the core code, not in x86 specific
+> code, since there is nothing x86 specific about it.
 
-Agreed. I understand that this FAQ probably was needed at one time and
-Brendan added it to address the concerns.
+The decision on whether / if to take any action on this hint is
+implementation specific, so I argue it does not belong in the EFI
+core. The spec does not mandate any action as it's just a hint.
+Instead x86 is making a policy decision in how it translates it to the
+x86-specific E820 representation. So, I as I go to release v3 of this
+patch set I do not see an argument to move the
+is_efi_application_reserved() definition out of
+arch/x86/include/asm/efi.h it's 100% tied to the e820 translation.
 
-I think at some point we do need to have a document that outlines when
-to KUnit and when to use Kselftest modules. I think one concern people
-have is that if KUnit is perceived as a  replacement for Ksefltest
-module, Kselftest module will be ignored leaving users without the
-ability to build and run with Kselftest modules and load them on a need
-basis to gather data on a systems that aren't dedicated strictly for
-testing.
-
-I am trying to move the conversation forward from KUnit vs. Kselftest
-modules discussion to which problem areas each one addresses keeping
-in mind that it is not about which is better. Kselftest and KUnit both
-have their place in the kernel development process. We just have to be
-clear on usage as we write tests for each.
-
-thanks,
--- Shuah
-
-
+Now, if some other EFI supporting architecture wanted to follow the
+x86 policy we could move it it to a shared location, but that's
+something for a follow-on patch set.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
