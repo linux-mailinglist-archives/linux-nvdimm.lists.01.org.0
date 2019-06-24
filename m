@@ -2,36 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E690F51AAC
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Jun 2019 20:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4E151AB0
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Jun 2019 20:34:27 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C23272129EB80;
-	Mon, 24 Jun 2019 11:34:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B72272129EB96;
+	Mon, 24 Jun 2019 11:34:26 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.136; helo=mga12.intel.com;
+ client-ip=192.55.52.93; helo=mga11.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0255521296704
- for <linux-nvdimm@lists.01.org>; Mon, 24 Jun 2019 11:34:18 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id DBCB32129EB96
+ for <linux-nvdimm@lists.01.org>; Mon, 24 Jun 2019 11:34:23 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2019 11:34:18 -0700
-X-IronPort-AV: E=Sophos;i="5.63,413,1557212400"; d="scan'208";a="155241140"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2019 11:34:23 -0700
+X-IronPort-AV: E=Sophos;i="5.63,413,1557212400"; d="scan'208";a="152030289"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2019 11:34:18 -0700
-Subject: [PATCH v4 06/10] x86, efi: Add efi_fake_mem support for EFI_MEMORY_SP
+ by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2019 11:34:23 -0700
+Subject: [PATCH v4 07/10] resource: Uplevel the pmem "region" ida to a
+ global allocator
 From: Dan Williams <dan.j.williams@intel.com>
 To: x86@kernel.org
-Date: Mon, 24 Jun 2019 11:20:01 -0700
-Message-ID: <156140040143.2951909.16322818756106417668.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 24 Jun 2019 11:20:06 -0700
+Message-ID: <156140040657.2951909.15384446634808002027.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -47,256 +48,196 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>, peterz@infradead.org,
- Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
- linux-acpi@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+Cc: ard.biesheuvel@linaro.org, peterz@infradead.org,
+ dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-acpi@vger.kernel.org,
  tglx@linutronix.de, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Given that EFI_MEMORY_SP is platform BIOS policy descision for marking
-memory ranges as "reserved for a specific purpose" there will inevitably
-be scenarios where the BIOS omits the attribute in situations where it
-is desired. Unlike other attributes if the OS wants to reserve this
-memory from the kernel the reservation needs to happen early in init. So
-early, in fact, that it needs to happen before e820__memblock_setup()
-which is a pre-requisite for efi_fake_memmap() that wants to allocate
-memory for the updated table.
+In preparation for handling platform differentiated memory types beyond
+persistent memory, uplevel the "region" identifier to a global number
+space. This enables a device-dax instance to be registered to any memory
+type with guaranteed unique names.
 
-Introduce an x86 specific efi_fake_memmap_early() that can search for
-attempts to set EFI_MEMORY_SP via efi_fake_mem and update the e820 table
-accordingly.
+Given this is a general identifier for persistent and
+performance-differentiated memory, and a standalone header / source file
+was NAK'd, house it with the rest of the general resource enumeration
+implementation.
 
-Cc: <x86@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Keith Busch <keith.busch@intel.com>
+Suggested-by: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- arch/x86/include/asm/efi.h          |    8 ++++
- arch/x86/kernel/setup.c             |    1 +
- drivers/firmware/efi/Makefile       |    5 ++-
- drivers/firmware/efi/fake_mem.c     |   24 ++++++------
- drivers/firmware/efi/fake_mem.h     |   10 +++++
- drivers/firmware/efi/x86-fake_mem.c |   69 +++++++++++++++++++++++++++++++++++
- 6 files changed, 103 insertions(+), 14 deletions(-)
- create mode 100644 drivers/firmware/efi/fake_mem.h
- create mode 100644 drivers/firmware/efi/x86-fake_mem.c
+ drivers/nvdimm/Kconfig       |    1 +
+ drivers/nvdimm/core.c        |    1 -
+ drivers/nvdimm/nd-core.h     |    1 -
+ drivers/nvdimm/region_devs.c |   12 +++---------
+ include/linux/ioport.h       |   27 +++++++++++++++++++++++++++
+ kernel/resource.c            |    6 ++++++
+ lib/Kconfig                  |    3 +++
+ 7 files changed, 40 insertions(+), 11 deletions(-)
 
-diff --git a/arch/x86/include/asm/efi.h b/arch/x86/include/asm/efi.h
-index 4f80254e0541..d6b18cedf0a8 100644
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -275,4 +275,12 @@ static inline void __init efi_find_application_reserved(void)
+diff --git a/drivers/nvdimm/Kconfig b/drivers/nvdimm/Kconfig
+index 54500798f23a..4b3e66fe61c1 100644
+--- a/drivers/nvdimm/Kconfig
++++ b/drivers/nvdimm/Kconfig
+@@ -4,6 +4,7 @@ menuconfig LIBNVDIMM
+ 	depends on PHYS_ADDR_T_64BIT
+ 	depends on HAS_IOMEM
+ 	depends on BLK_DEV
++	select MEMREGION
+ 	help
+ 	  Generic support for non-volatile memory devices including
+ 	  ACPI-6-NFIT defined resources.  On platforms that define an
+diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
+index acce050856a8..75fe651d327d 100644
+--- a/drivers/nvdimm/core.c
++++ b/drivers/nvdimm/core.c
+@@ -463,7 +463,6 @@ static __exit void libnvdimm_exit(void)
+ 	nd_region_exit();
+ 	nvdimm_exit();
+ 	nvdimm_bus_exit();
+-	nd_region_devs_exit();
+ 	nvdimm_devs_exit();
  }
- #endif /* CONFIG_EFI */
  
-+#ifdef CONFIG_EFI_FAKE_MEMMAP
-+extern void __init efi_fake_memmap_early(void);
+diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
+index e5ffd5733540..17561302dfec 100644
+--- a/drivers/nvdimm/nd-core.h
++++ b/drivers/nvdimm/nd-core.h
+@@ -133,7 +133,6 @@ struct nvdimm_bus *walk_to_nvdimm_bus(struct device *nd_dev);
+ int __init nvdimm_bus_init(void);
+ void nvdimm_bus_exit(void);
+ void nvdimm_devs_exit(void);
+-void nd_region_devs_exit(void);
+ void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev);
+ struct nd_region;
+ void nd_region_create_ns_seed(struct nd_region *nd_region);
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index b4ef7d9ff22e..576c390dabd6 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -27,7 +27,6 @@
+  */
+ #include <linux/io-64-nonatomic-hi-lo.h>
+ 
+-static DEFINE_IDA(region_ida);
+ static DEFINE_PER_CPU(int, flush_idx);
+ 
+ static int nvdimm_map_flush(struct device *dev, struct nvdimm *nvdimm, int dimm,
+@@ -141,7 +140,7 @@ static void nd_region_release(struct device *dev)
+ 		put_device(&nvdimm->dev);
+ 	}
+ 	free_percpu(nd_region->lane);
+-	ida_simple_remove(&region_ida, nd_region->id);
++	memregion_free(nd_region->id);
+ 	if (is_nd_blk(dev))
+ 		kfree(to_nd_blk_region(dev));
+ 	else
+@@ -1036,7 +1035,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
+ 
+ 	if (!region_buf)
+ 		return NULL;
+-	nd_region->id = ida_simple_get(&region_ida, 0, 0, GFP_KERNEL);
++	nd_region->id = memregion_alloc(GFP_KERNEL);
+ 	if (nd_region->id < 0)
+ 		goto err_id;
+ 
+@@ -1090,7 +1089,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
+ 	return nd_region;
+ 
+  err_percpu:
+-	ida_simple_remove(&region_ida, nd_region->id);
++	memregion_free(nd_region->id);
+  err_id:
+ 	kfree(region_buf);
+ 	return NULL;
+@@ -1237,8 +1236,3 @@ int nd_region_conflict(struct nd_region *nd_region, resource_size_t start,
+ 
+ 	return device_for_each_child(&nvdimm_bus->dev, &ctx, region_conflict);
+ }
+-
+-void __exit nd_region_devs_exit(void)
+-{
+-	ida_destroy(&region_ida);
+-}
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 2d79841ee9b9..72ea690b35a4 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -12,6 +12,12 @@
+ #ifndef __ASSEMBLY__
+ #include <linux/compiler.h>
+ #include <linux/types.h>
++#ifdef CONFIG_MEMREGION
++#include <linux/idr.h>
 +#else
-+static inline void efi_fake_memmap_early(void)
++#include <linux/errno.h>
++#endif
++
+ /*
+  * Resources are tree-like, allowing
+  * nesting etc..
+@@ -287,6 +293,27 @@ static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
+        return (r1->start <= r2->end && r1->end >= r2->start);
+ }
+ 
++#ifdef CONFIG_MEMREGION
++extern struct ida memregion_ids;
++static inline int memregion_alloc(gfp_t gfp)
++{
++	return ida_alloc(&memregion_ids, gfp);
++}
++
++static inline void memregion_free(int id)
++{
++	ida_free(&memregion_ids, id);
++}
++#else /* CONFIG_MEMREGION */
++static inline int memregion_alloc(gfp_t gfp)
++{
++	return -ENOMEM;
++}
++
++static inline void memregion_free(int id)
 +{
 +}
 +#endif
-+
- #endif /* _ASM_X86_EFI_H */
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 3b9001b7c951..3a7de6d6f106 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1105,6 +1105,7 @@ void __init setup_arch(char **cmdline_p)
- 	memblock_set_current_limit(ISA_END_ADDRESS);
  
- 	efi_find_application_reserved();
-+	efi_fake_memmap_early();
- 	e820__memblock_setup();
- 
- 	reserve_bios_regions();
-diff --git a/drivers/firmware/efi/Makefile b/drivers/firmware/efi/Makefile
-index d2d0d2030620..b06a9df6094c 100644
---- a/drivers/firmware/efi/Makefile
-+++ b/drivers/firmware/efi/Makefile
-@@ -20,12 +20,15 @@ obj-$(CONFIG_UEFI_CPER)			+= cper.o
- obj-$(CONFIG_EFI_RUNTIME_MAP)		+= runtime-map.o
- obj-$(CONFIG_EFI_RUNTIME_WRAPPERS)	+= runtime-wrappers.o
- obj-$(CONFIG_EFI_STUB)			+= libstub/
--obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_mem.o
-+obj-$(CONFIG_EFI_FAKE_MEMMAP)		+= fake_map.o
- obj-$(CONFIG_EFI_BOOTLOADER_CONTROL)	+= efibc.o
- obj-$(CONFIG_EFI_TEST)			+= test/
- obj-$(CONFIG_EFI_DEV_PATH_PARSER)	+= dev-path-parser.o
- obj-$(CONFIG_APPLE_PROPERTIES)		+= apple-properties.o
- 
-+fake_map-y				+= fake_mem.o
-+fake_map-$(CONFIG_X86)			+= x86-fake_mem.o
-+
- arm-obj-$(CONFIG_EFI)			:= arm-init.o arm-runtime.o
- obj-$(CONFIG_ARM)			+= $(arm-obj-y)
- obj-$(CONFIG_ARM64)			+= $(arm-obj-y)
-diff --git a/drivers/firmware/efi/fake_mem.c b/drivers/firmware/efi/fake_mem.c
-index 526b45331d96..bb9fc70d0cfa 100644
---- a/drivers/firmware/efi/fake_mem.c
-+++ b/drivers/firmware/efi/fake_mem.c
-@@ -17,12 +17,10 @@
- #include <linux/memblock.h>
- #include <linux/types.h>
- #include <linux/sort.h>
--#include <asm/efi.h>
-+#include "fake_mem.h"
- 
--#define EFI_MAX_FAKEMEM CONFIG_EFI_MAX_FAKE_MEM
--
--static struct efi_mem_range fake_mems[EFI_MAX_FAKEMEM];
--static int nr_fake_mem;
-+struct efi_mem_range efi_fake_mems[EFI_MAX_FAKEMEM];
-+int nr_fake_mem;
- 
- static int __init cmp_fake_mem(const void *x1, const void *x2)
- {
-@@ -50,7 +48,7 @@ void __init efi_fake_memmap(void)
- 	/* count up the number of EFI memory descriptor */
- 	for (i = 0; i < nr_fake_mem; i++) {
- 		for_each_efi_memory_desc(md) {
--			struct range *r = &fake_mems[i].range;
-+			struct range *r = &efi_fake_mems[i].range;
- 
- 			new_nr_map += efi_memmap_split_count(md, r);
- 		}
-@@ -70,7 +68,7 @@ void __init efi_fake_memmap(void)
- 	}
- 
- 	for (i = 0; i < nr_fake_mem; i++)
--		efi_memmap_insert(&efi.memmap, new_memmap, &fake_mems[i]);
-+		efi_memmap_insert(&efi.memmap, new_memmap, &efi_fake_mems[i]);
- 
- 	/* swap into new EFI memmap */
- 	early_memunmap(new_memmap, efi.memmap.desc_size * new_nr_map);
-@@ -104,22 +102,22 @@ static int __init setup_fake_mem(char *p)
- 		if (nr_fake_mem >= EFI_MAX_FAKEMEM)
- 			break;
- 
--		fake_mems[nr_fake_mem].range.start = start;
--		fake_mems[nr_fake_mem].range.end = start + mem_size - 1;
--		fake_mems[nr_fake_mem].attribute = attribute;
-+		efi_fake_mems[nr_fake_mem].range.start = start;
-+		efi_fake_mems[nr_fake_mem].range.end = start + mem_size - 1;
-+		efi_fake_mems[nr_fake_mem].attribute = attribute;
- 		nr_fake_mem++;
- 
- 		if (*p == ',')
- 			p++;
- 	}
- 
--	sort(fake_mems, nr_fake_mem, sizeof(struct efi_mem_range),
-+	sort(efi_fake_mems, nr_fake_mem, sizeof(struct efi_mem_range),
- 	     cmp_fake_mem, NULL);
- 
- 	for (i = 0; i < nr_fake_mem; i++)
- 		pr_info("efi_fake_mem: add attr=0x%016llx to [mem 0x%016llx-0x%016llx]",
--			fake_mems[i].attribute, fake_mems[i].range.start,
--			fake_mems[i].range.end);
-+			efi_fake_mems[i].attribute, efi_fake_mems[i].range.start,
-+			efi_fake_mems[i].range.end);
- 
- 	return *p == '\0' ? 0 : -EINVAL;
+ #endif /* __ASSEMBLY__ */
+ #endif	/* _LINUX_IOPORT_H */
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 158f04ec1d4f..82dbd9f28e91 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1637,4 +1637,10 @@ static int __init strict_iomem(char *str)
+ 	return 1;
  }
-diff --git a/drivers/firmware/efi/fake_mem.h b/drivers/firmware/efi/fake_mem.h
-new file mode 100644
-index 000000000000..0390be13df96
---- /dev/null
-+++ b/drivers/firmware/efi/fake_mem.h
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#ifndef __EFI_FAKE_MEM_H__
-+#define __EFI_FAKE_MEM_H__
-+#include <asm/efi.h>
+ 
++#ifdef CONFIG_MEMREGION
++/* identifiers for device memory regions */
++DEFINE_IDA(memregion_ids);
++EXPORT_SYMBOL(memregion_ids);
++#endif
 +
-+#define EFI_MAX_FAKEMEM CONFIG_EFI_MAX_FAKE_MEM
+ __setup("iomem=", strict_iomem);
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 90623a0e1942..89f7e4523799 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -602,6 +602,9 @@ config ARCH_NO_SG_CHAIN
+ config ARCH_HAS_PMEM_API
+ 	bool
+ 
++config MEMREGION
++	bool
 +
-+extern struct efi_mem_range efi_fake_mems[EFI_MAX_FAKEMEM];
-+extern int nr_fake_mem;
-+#endif /* __EFI_FAKE_MEM_H__ */
-diff --git a/drivers/firmware/efi/x86-fake_mem.c b/drivers/firmware/efi/x86-fake_mem.c
-new file mode 100644
-index 000000000000..3e9a80127562
---- /dev/null
-+++ b/drivers/firmware/efi/x86-fake_mem.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright(c) 2019 Intel Corporation. All rights reserved. */
-+#include <linux/efi.h>
-+#include <asm/e820/api.h>
-+#include "fake_mem.h"
-+
-+void __init efi_fake_memmap_early(void)
-+{
-+	int i;
-+
-+	/*
-+	 * efi_fake_mem() can handle all possibilities if EFI_MEMORY_SP
-+	 * is ignored.
-+	 */
-+	if (!IS_ENABLED(CONFIG_EFI_APPLICATION_RESERVED))
-+		return;
-+
-+	if (!efi_enabled(EFI_MEMMAP) || !nr_fake_mem)
-+		return;
-+
-+	/*
-+	 * Given that efi_fake_memmap() needs to perform memblock
-+	 * allocations it needs to run after e820__memblock_setup().
-+	 * However, if efi_fake_mem specifies EFI_MEMORY_SP for a given
-+	 * address range that potentially needs to mark the memory as
-+	 * reserved prior to e820__memblock_setup(). Update e820
-+	 * directly if EFI_MEMORY_SP is specified for an
-+	 * EFI_CONVENTIONAL_MEMORY descriptor.
-+	 */
-+	for (i = 0; i < nr_fake_mem; i++) {
-+		struct efi_mem_range *mem = &efi_fake_mems[i];
-+		efi_memory_desc_t *md;
-+		u64 m_start, m_end;
-+
-+		if ((mem->attribute & EFI_MEMORY_SP) == 0)
-+			continue;
-+
-+		m_start = mem->range.start;
-+		m_end = mem->range.end;
-+		for_each_efi_memory_desc(md) {
-+			u64 start, end;
-+
-+			if (md->type != EFI_CONVENTIONAL_MEMORY)
-+				continue;
-+
-+			start = md->phys_addr;
-+			end = md->phys_addr + (md->num_pages << EFI_PAGE_SHIFT) - 1;
-+
-+			if (m_start <= end && m_end >= start)
-+				/* fake range overlaps descriptor */;
-+			else
-+				continue;
-+
-+			/*
-+			 * Trim the boundary of the e820 update to the
-+			 * descriptor in case the fake range overlaps
-+			 * !EFI_CONVENTIONAL_MEMORY
-+			 */
-+			start = max(start, m_start);
-+			end = min(end, m_end);
-+
-+			if (end <= start)
-+				continue;
-+			e820__range_update(start, end - start + 1, E820_TYPE_RAM,
-+					E820_TYPE_APPLICATION_RESERVED);
-+			e820__update_table(e820_table);
-+		}
-+	}
-+}
+ # use memcpy to implement user copies for nommu architectures
+ config UACCESS_MEMCPY
+ 	bool
 
 _______________________________________________
 Linux-nvdimm mailing list
