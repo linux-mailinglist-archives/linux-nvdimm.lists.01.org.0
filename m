@@ -2,35 +2,35 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C30651C93
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Jun 2019 22:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DBC5244E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 09:23:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E76BC21296707;
-	Mon, 24 Jun 2019 13:45:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 06F8B2129F032;
+	Tue, 25 Jun 2019 00:23:52 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=osalvador@suse.de;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
+ helo=newverein.lst.de; envelope-from=hch@lst.de;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 73DF72126D808
- for <linux-nvdimm@lists.01.org>; Mon, 24 Jun 2019 13:45:33 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id CC8C4AE34;
- Mon, 24 Jun 2019 20:45:31 +0000 (UTC)
-Message-ID: <1561409129.3058.1.camel@suse.de>
-Subject: Re: [PATCH v10 09/13] mm/sparsemem: Support sub-section hotplug
-From: Oscar Salvador <osalvador@suse.de>
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-Date: Mon, 24 Jun 2019 22:45:29 +0200
-In-Reply-To: <156092354368.979959.6232443923440952359.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <156092349300.979959.17603710711957735135.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156092354368.979959.6232443923440952359.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-Mailer: Evolution 3.26.1 
-Mime-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id CE5AC21250CA2
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 00:23:50 -0700 (PDT)
+Received: by newverein.lst.de (Postfix, from userid 2407)
+ id EDBB068B02; Tue, 25 Jun 2019 09:23:17 +0200 (CEST)
+Date: Tue, 25 Jun 2019 09:23:17 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 05/22] mm: export alloc_pages_vma
+Message-ID: <20190625072317.GC30350@lst.de>
+References: <20190613094326.24093-1-hch@lst.de>
+ <20190613094326.24093-6-hch@lst.de> <20190620191733.GH12083@dhcp22.suse.cz>
+ <CAPcyv4h9+Ha4FVrvDAe-YAr1wBOjc4yi7CAzVuASv=JCxPcFaw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4h9+Ha4FVrvDAe-YAr1wBOjc4yi7CAzVuASv=JCxPcFaw@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,76 +42,37 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
+ Michal Hocko <mhocko@kernel.org>, Linux MM <linux-mm@kvack.org>,
+ =?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+ Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
+ linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, 2019-06-18 at 22:52 -0700, Dan Williams wrote:
-> The libnvdimm sub-system has suffered a series of hacks and broken
-> workarounds for the memory-hotplug implementation's awkward
-> section-aligned (128MB) granularity. For example the following
-> backtrace
-> is emitted when attempting arch_add_memory() with physical address
-> ranges that intersect 'System RAM' (RAM) with 'Persistent Memory'
-> (PMEM)
-> within a given section:
+On Mon, Jun 24, 2019 at 11:24:48AM -0700, Dan Williams wrote:
+> I asked for this simply because it was not exported historically. In
+> general I want to establish explicit export-type criteria so the
+> community can spend less time debating when to use EXPORT_SYMBOL_GPL
+> [1].
 > 
->     # cat /proc/iomem | grep -A1 -B1 Persistent\ Memory
->     100000000-1ffffffff : System RAM
->     200000000-303ffffff : Persistent Memory (legacy)
->     304000000-43fffffff : System RAM
->     440000000-23ffffffff : Persistent Memory
->     2400000000-43bfffffff : Persistent Memory
->       2400000000-43bfffffff : namespace2.0
+> The thought in this instance is that it is not historically exported
+> to modules and it is safer from a maintenance perspective to start
+> with GPL-only for new symbols in case we don't want to maintain that
+> interface long-term for out-of-tree modules.
 > 
->     WARNING: CPU: 38 PID: 928 at arch/x86/mm/init_64.c:850
-> add_pages+0x5c/0x60
->     [..]
->     RIP: 0010:add_pages+0x5c/0x60
->     [..]
->     Call Trace:
->      devm_memremap_pages+0x460/0x6e0
->      pmem_attach_disk+0x29e/0x680 [nd_pmem]
->      ? nd_dax_probe+0xfc/0x120 [libnvdimm]
->      nvdimm_bus_probe+0x66/0x160 [libnvdimm]
-> 
-> It was discovered that the problem goes beyond RAM vs PMEM collisions
-> as
-> some platform produce PMEM vs PMEM collisions within a given section.
-> The libnvdimm workaround for that case revealed that the libnvdimm
-> section-alignment-padding implementation has been broken for a long
-> while. A fix for that long-standing breakage introduces as many
-> problems
-> as it solves as it would require a backward-incompatible change to
-> the
-> namespace metadata interpretation. Instead of that dubious route [1],
-> address the root problem in the memory-hotplug implementation.
-> 
-> Note that EEXIST is no longer treated as success as that is how
-> sparse_add_section() reports subsection collisions, it was also
-> obviated
-> by recent changes to perform the request_region() for 'System RAM'
-> before arch_add_memory() in the add_memory() sequence.
-> 
-> [1]: https://lore.kernel.org/r/155000671719.348031.234736316014111923
-> 7.stgit@dwillia2-desk3.amr.corp.intel.com
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Yes, we always reserve the right to remove / change interfaces
+> regardless of the export type, but history has shown that external
+> pressure to keep an interface stable (contrary to
+> Documentation/process/stable-api-nonsense.rst) tends to be less for
+> GPL-only exports.
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-
-
--- 
-Oscar Salvador
-SUSE L3
+Fully agreed.  In the end the decision is with the MM maintainers,
+though, although I'd prefer to keep it as in this series.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
