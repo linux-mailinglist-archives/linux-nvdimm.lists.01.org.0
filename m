@@ -2,60 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2278E55B86
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 00:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5495A55BDC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 01:02:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 82C90212A36E7;
-	Tue, 25 Jun 2019 15:47:43 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id BC241212A36E5;
+	Tue, 25 Jun 2019 16:02:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
+ client-ip=209.85.210.195; helo=mail-pf1-f195.google.com;
+ envelope-from=mcgrof@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com
+ [209.85.210.195])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D0E1A212A36E0
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:41:41 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id a93so223423pla.7
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:41:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lZHzVm2a7c7UL6Qa6OAs8GEjMqpVhQyW6fXdYgD38tg=;
- b=WD+/u8ZZNxnSkIT8uW5k3AjwCTR/8Rul0p24/yrVxO5s2EytGRajAgq/3lh2tgJCoM
- vOOrZEi6S9bPRtEV0sQ50TTo+svFRl+vB4anHgBOhwDOhj/sKAavGpLkR9ZW/+8ZlccU
- UdMs6Z8Ga9hdSotzdUPEFVwI6IZ9G3K5novTFltGAZnxEjjToD6xbWblx/HifwrkfVwk
- hJ5e4XwNevJKRgf4O7t302ViaxWNKj1aXsprvBLH4sig979oKbLTzjrYSQpuQWmWeZ6j
- dP5tx4S2eAu98MeIeDuog/S9j0E1psO/k6tGCkOvr99nidb5QryIDQhLc5bRofLMt0FA
- FrzA==
+ by ml01.01.org (Postfix) with ESMTPS id 245622129F059
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 16:02:56 -0700 (PDT)
+Received: by mail-pf1-f195.google.com with SMTP id y15so189392pfn.5
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 16:02:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lZHzVm2a7c7UL6Qa6OAs8GEjMqpVhQyW6fXdYgD38tg=;
- b=HO9es1QNQMZQVF5nWpHnVUFRy420G2KyrsZZ4wQkuf3R9uU/sNtHf5ACpABW8kscon
- LlWE/iWvzVvW2TbPwA8gH0mhL0krhqHulgnqfZ1k5o8LcgMOapdQlbBh2UaTHxj2eIHx
- 5co7Fqmz6GNkWHFCUohttW9PHG9cCfbUeMvyFjol6FmxGvXy3BeoK0WaY5I2ZBmEysHn
- WF+bpCqiMd3YCsHyS55ZzYhdoBcv7ChqesKFC3xRn0vQFFgxONIBamh7TkFRUenVOFq2
- rHPneaF2dKW2CzKNOq0ADTQxiqlW/etPx9cYkHYzzudJRF1U1ObUyvypH2QpL95lYSCf
- NVmg==
-X-Gm-Message-State: APjAAAUvZdDtX75PZkaMwpBST1sqjyAUnUV9NT/GZfZf/fu8fY7upKLN
- KKvQx35u2b/qmov7rp8DELeIKUwbyM6y9vDEDIp3kg==
-X-Google-Smtp-Source: APXvYqy+cT1ZyNb5dbS97li+J3swfp3mEaFo87MllhiLnOnKUdNsGvjik4FBRsZ5dS4sFwdr9UIg/0trivOUWFuNZts=
-X-Received: by 2002:a17:902:1004:: with SMTP id
- b4mr1155831pla.325.1561502500720; 
- Tue, 25 Jun 2019 15:41:40 -0700 (PDT)
-MIME-Version: 1.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=IAVXlfOigyJbEa5HhE6BwBcpEncScOxFXJXYNv1k45k=;
+ b=MtNUGI4azwIJYKailv42VPuNFL/k5YZIHArbDctikpIwIq2RBmUr0ByNzUlohhJ8/l
+ fRv36xC4OFAYeTCoufH/whtjA4qqGIZRGQgZ43hGQs2jZD/I4COyANOyET3ERxC0AK27
+ l+BkfXu/KcucHdKStrxHdCH2cwqyIxFHNQ/W4jWm9OEfJoje9n+fA/Zx7i2clMpaeh5J
+ 4zRWpVgCCB7AmmCXnw90Uv3nZYbmaS6dPb+DPE//Ps8GFCpn/vDT8ySSV0DGa8GVCGMd
+ r/khlT0658M0f1fceRe+uAuYBE1LVDbyXqa8FBNU7KboIQEfzyEKZZOBl5Bcihcm/pEV
+ 1IKg==
+X-Gm-Message-State: APjAAAU7QOXjW8Y+hhxBiWPi3qeP90gk6eWtE6mFK6rEMQnNLYv9G/FH
+ 61I7m/bHvl/qTCf2UFyqeJI=
+X-Google-Smtp-Source: APXvYqzZBw/dqZhBTNHNMDfHye5/2eZRaAS1PSupftYRQhWIaCqeSFUapN9xTbqyZVwDxqRVbGqHHQ==
+X-Received: by 2002:a17:90a:ac13:: with SMTP id
+ o19mr354796pjq.143.1561503775428; 
+ Tue, 25 Jun 2019 16:02:55 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+ by smtp.gmail.com with ESMTPSA id r1sm92074pji.15.2019.06.25.16.02.53
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 25 Jun 2019 16:02:54 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+ id 64827401EB; Tue, 25 Jun 2019 23:02:53 +0000 (UTC)
+Date: Tue, 25 Jun 2019 23:02:53 +0000
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Brendan Higgins <brendanhiggins@google.com>
+Subject: Re: [PATCH v5 01/18] kunit: test: add KUnit test runner core
+Message-ID: <20190625230253.GQ19023@42.do-not-panic.com>
 References: <20190617082613.109131-1-brendanhiggins@google.com>
- <20190617082613.109131-7-brendanhiggins@google.com>
- <20190625221318.GO19023@42.do-not-panic.com>
-In-Reply-To: <20190625221318.GO19023@42.do-not-panic.com>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Tue, 25 Jun 2019 15:41:29 -0700
-Message-ID: <CAFd5g448rYqr3PHg0cfoddr70nktkWXcRfJoZHmuPJjTW53YYg@mail.gmail.com>
-Subject: Re: [PATCH v5 06/18] kbuild: enable building KUnit
-To: Luis Chamberlain <mcgrof@kernel.org>
+ <20190617082613.109131-2-brendanhiggins@google.com>
+ <20190620001526.93426218BE@mail.kernel.org>
+ <CAFd5g46Jhxsz6_VXHEVYvTeDRwwzgKpr=aUWLL5b3S4kUukb8g@mail.gmail.com>
+ <20190625214427.GN19023@42.do-not-panic.com>
+ <CAFd5g47OABqN127cPKqoCOA_Wr9w=LFh_0XkF7LXu2iY9sFkSw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAFd5g47OABqN127cPKqoCOA_Wr9w=LFh_0XkF7LXu2iY9sFkSw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,41 +99,37 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jun 25, 2019 at 3:13 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
->
-> On Mon, Jun 17, 2019 at 01:26:01AM -0700, Brendan Higgins wrote:
-> > diff --git a/Kconfig b/Kconfig
-> > index 48a80beab6853..10428501edb78 100644
-> > --- a/Kconfig
-> > +++ b/Kconfig
-> > @@ -30,3 +30,5 @@ source "crypto/Kconfig"
-> >  source "lib/Kconfig"
-> >
-> >  source "lib/Kconfig.debug"
-> > +
-> > +source "kunit/Kconfig"
->
-> This patch would break compilation as kunit/Kconfig is not introduced. This
-> would would also break bisectability on this commit. This change should
-> either be folded in to the next patch, or just be a separate patch after
-> the next one.
+On Tue, Jun 25, 2019 at 03:14:45PM -0700, Brendan Higgins wrote:
+> On Tue, Jun 25, 2019 at 2:44 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> > Since its a new architecture and since you seem to imply most tests
+> > don't require locking or even IRQs disabled, I think its worth to
+> > consider the impact of adding such extreme locking requirements for
+> > an initial ramp up.
+> 
+> Fair enough, I can see the point of not wanting to use irq disabled
+> until we get someone complaining about it, but I think making it
+> thread safe is reasonable. It means there is one less thing to confuse
+> a KUnit user and the only penalty paid is some very minor performance.
 
-Maybe my brain isn't working right now, but I am pretty darn sure that
-I introduce kunit/Kconfig in the very first patch of this series.
-Quoting from the change summary from the first commit:
+One reason I'm really excited about kunit is speed... so by all means I
+think we're at a good point to analyze performance optimizationsm if
+they do make sense.
 
->  include/kunit/test.h | 161 +++++++++++++++++++++++++++++++++
->  kunit/Kconfig        |  17 ++++
->  kunit/Makefile       |   1 +
->  kunit/test.c         | 210 +++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 389 insertions(+)
->  create mode 100644 include/kunit/test.h
->  create mode 100644 kunit/Kconfig
+While on the topic of parallization, what about support for running
+different test cases in parallel? Or at the very least different kunit
+modules in parallel.  Few questions come up based on this prospect:
 
-I am not crazy, right?
+  * Why not support parallelism from the start?
+  * Are you opposed to eventually having this added? For instance, there is
+    enough code on lib/test_kmod.c for batching tons of kthreads each
+    one running its own thing for testing purposes which could be used
+    as template.
+  * If we eventually *did* support it:
+    - Would logs be skewed?
+    - Could we have a way to query: give me log for only kunit module
+      named "foo"?
 
->  create mode 100644 kunit/Makefile
->  create mode 100644 kunit/test.c
+  Luis
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
