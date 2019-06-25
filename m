@@ -2,60 +2,57 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C967155A96
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 00:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 877A755ABB
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 00:13:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5515D212A36DA;
-	Tue, 25 Jun 2019 15:06:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1F6AB212A36DB;
+	Tue, 25 Jun 2019 15:13:24 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+ client-ip=209.85.215.193; helo=mail-pg1-f193.google.com;
+ envelope-from=mcgrof@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com
+ [209.85.215.193])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 128752194EB7B
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:06:54 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id w79so332816oif.10
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:06:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=0SSgftr/ed9a2ur0BNJEdl/g8gNmPKoK7P+UZ//XX04=;
- b=dIeGVI+zVJSB5PTRRyqIYjX49diS9jl1hq2u5TnPxYIgoHNhdIvu84c/tcgEpwbquf
- QRontitejWNAukyFwTC6zrTdtdAC1+1RYwdLj9KoIR+QAay2rIbArGcXe+M5gdT6/kk4
- 0YV70dEVDP0NZCD3YG94lbOIWZviJN540dk2/2dSFXcLQ23BUQWQhCMlh0Ze94oReQFi
- VLPod0VRRcRsE/PWGrHNPLORU60xXCvk1Csx9PvKYcobpNOtrI5gJ0nQWiIXeSOsaWKZ
- Z0Kd62RIY16QjdXnqf+JrlOoeECLTnbTVX8oJXZZagF0Agww5wqQUakO6gnyhCcHu31g
- +Edw==
+ by ml01.01.org (Postfix) with ESMTPS id D14F72129DB92
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:13:21 -0700 (PDT)
+Received: by mail-pg1-f193.google.com with SMTP id z19so108559pgl.12
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:13:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=0SSgftr/ed9a2ur0BNJEdl/g8gNmPKoK7P+UZ//XX04=;
- b=XXzvFseJxRD2Bect4KKtkBAqUUFNPJFSlfhAM0KWZ7eN49PAuvXUps2KPOKP3nQjBm
- mB8nTMbmvYBFFmwgAEbK8uYj0DT1kEuJhWyE7D8HpBGDJ058EXMaYK1WJnJpqvKQNe34
- N6u6lwE/fkMlUkhnFj/akCwqx79yeCiKoEQPdI07H/Dz9GfB0vwIV1wX9JFqmODFt0P1
- 9MBPaoXUOvNkC746Eccx9q+RWcAbsA/6bbze9Ttfits7gKoUQRmejv/4wX1I5lGyeen9
- CTYnV7aKhTXv5ZlubpQP4ar6glQ2iZUGfTstMTQoTCQWQyLs7GHtTE98cuZPIeERF8do
- 99uw==
-X-Gm-Message-State: APjAAAXl/dcmC6fzGtbYMupEHai56gFrzExb6G4bhHZuMn6aAT4XbHmP
- 9O7b/1K8Wl+4ahujqKy6wwUBUmUdIvDwkihor3xMzg==
-X-Google-Smtp-Source: APXvYqxljJeexEWm6aMZlwHgW23WBS4bUWiCwT1v520+eXVhCRHWUTb+RItq0rxxz0q3NpJGXvojtdkje6sgoMxHCD4=
-X-Received: by 2002:aca:1304:: with SMTP id e4mr15852332oii.149.1561500413881; 
- Tue, 25 Jun 2019 15:06:53 -0700 (PDT)
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=8gzPjoJjuhl8UL7VUOkU3jqXACXyJKi+qh78CzG1deI=;
+ b=NTuoEviQEugjnxOm0U13w3kiDpS3VM+axCvRxWHh3MmXPgpoJy3res3AgbksNAs/gK
+ FBC0IPB9aZyiOVeYlb3TiQdlCRDG2J6q0MAoepnmsaQCfOSGbbxe5nji/v95IVlJ2ZGV
+ BBQ+H/34tQY3cI+6XwhjzDELduauHzs6r2jTRX0wNfHxLTBk1lfpHpXBXZi64aVIWkE9
+ NmZaLCvZd4IYgPJ4T1m3K3g0MnRL0xbbVPnGwH/xq1kcYscYyU2qOY8nwiR7SGFTH5xB
+ frNKUG/1AGqrs/leLnzErOiwv+inxg1ALlYhT7ddpOg3iz30m8Bgx6l3XR02zXjNZbmV
+ cPNQ==
+X-Gm-Message-State: APjAAAW8Jmdh7vw5R385I+sdZOFzYXLQW4Nd/OEJ0dxEdK6ORJgjFQ89
+ HPgginkD4cfzIl9VxR2rYEk=
+X-Google-Smtp-Source: APXvYqxWuXRncraTED2jeacoTPyN1fvtJGk3Zc52FbqH3XACtitgQolZjqrTP/UYKEopxq0KXI3bTw==
+X-Received: by 2002:a63:480e:: with SMTP id v14mr1871131pga.182.1561500800857; 
+ Tue, 25 Jun 2019 15:13:20 -0700 (PDT)
+Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
+ by smtp.gmail.com with ESMTPSA id x3sm45355pja.7.2019.06.25.15.13.19
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 25 Jun 2019 15:13:19 -0700 (PDT)
+Received: by 42.do-not-panic.com (Postfix, from userid 1000)
+ id D102E401EB; Tue, 25 Jun 2019 22:13:18 +0000 (UTC)
+Date: Tue, 25 Jun 2019 22:13:18 +0000
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Brendan Higgins <brendanhiggins@google.com>
+Subject: Re: [PATCH v5 06/18] kbuild: enable building KUnit
+Message-ID: <20190625221318.GO19023@42.do-not-panic.com>
+References: <20190617082613.109131-1-brendanhiggins@google.com>
+ <20190617082613.109131-7-brendanhiggins@google.com>
 MIME-Version: 1.0
-References: <20190116065144.3499-1-richardw.yang@linux.intel.com>
- <20190604031041.GA27794@richard>
-In-Reply-To: <20190604031041.GA27794@richard>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 25 Jun 2019 15:06:42 -0700
-Message-ID: <CAPcyv4j4xGmM5BGqQu9Y2RFDa55Y0AMOn9Z0jXra334igBtwgA@mail.gmail.com>
-Subject: Re: [PATCH] libnvdimm, namespace: check nsblk->uuid immediately after
- its allocation
-To: Wei Yang <richardw.yang@linux.intel.com>
+Content-Disposition: inline
+In-Reply-To: <20190617082613.109131-7-brendanhiggins@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,29 +64,43 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Ross Zwisler <zwisler@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, peterz@infradead.org,
+ amir73il@gmail.com, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, yamada.masahiro@socionext.com,
+ mpe@ellerman.id.au, linux-kselftest@vger.kernel.org, shuah@kernel.org,
+ robh@kernel.org, linux-nvdimm@lists.01.org, frowand.list@gmail.com,
+ knut.omang@oracle.com, kieran.bingham@ideasonboard.com, wfg@linux.intel.com,
+ joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, jpoimboe@redhat.com,
+ kunit-dev@googlegroups.com, tytso@mit.edu, richard@nod.at, sboyd@kernel.org,
+ gregkh@linuxfoundation.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, daniel@ffwll.ch, keescook@google.com,
+ linux-fsdevel@vger.kernel.org, khilman@baylibre.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Jun 3, 2019 at 8:11 PM Wei Yang <richardw.yang@linux.intel.com> wrote:
->
-> Hi, Dan
->
-> Do you have some time on this?
->
-> On Wed, Jan 16, 2019 at 02:51:44PM +0800, Wei Yang wrote:
-> >When creating nd_namespace_blk, its uuid is copied from nd_label->uuid.
-> >In case the memory allocation fails, it goes to the error branch.
-> >
-> >This check is better to be done immediately after memory allocation,
-> >while current implementation does this after assigning claim_class.
-> >
-> >This patch moves the check immediately after uuid allocation.
+On Mon, Jun 17, 2019 at 01:26:01AM -0700, Brendan Higgins wrote:
+> diff --git a/Kconfig b/Kconfig
+> index 48a80beab6853..10428501edb78 100644
+> --- a/Kconfig
+> +++ b/Kconfig
+> @@ -30,3 +30,5 @@ source "crypto/Kconfig"
+>  source "lib/Kconfig"
+>  
+>  source "lib/Kconfig.debug"
+> +
+> +source "kunit/Kconfig"
 
-This looks ok, but the patch has no significant impact. I'm not
-particularly motivated to carry it forward.
+This patch would break compilation as kunit/Kconfig is not introduced. This
+would would also break bisectability on this commit. This change should
+either be folded in to the next patch, or just be a separate patch after
+the next one.
+
+  Luis
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
