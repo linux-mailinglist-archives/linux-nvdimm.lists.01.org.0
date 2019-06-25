@@ -2,59 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2383455A22
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 23:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C967155A96
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 00:06:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 79B22212A36D2;
-	Tue, 25 Jun 2019 14:44:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5515D212A36DA;
+	Tue, 25 Jun 2019 15:06:56 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.85.215.195; helo=mail-pg1-f195.google.com;
- envelope-from=mcgrof@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com
- [209.85.215.195])
+ client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5BD0021945DC7
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 14:44:30 -0700 (PDT)
-Received: by mail-pg1-f195.google.com with SMTP id f25so81859pgv.10
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 14:44:30 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 128752194EB7B
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:06:54 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id w79so332816oif.10
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 15:06:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=0SSgftr/ed9a2ur0BNJEdl/g8gNmPKoK7P+UZ//XX04=;
+ b=dIeGVI+zVJSB5PTRRyqIYjX49diS9jl1hq2u5TnPxYIgoHNhdIvu84c/tcgEpwbquf
+ QRontitejWNAukyFwTC6zrTdtdAC1+1RYwdLj9KoIR+QAay2rIbArGcXe+M5gdT6/kk4
+ 0YV70dEVDP0NZCD3YG94lbOIWZviJN540dk2/2dSFXcLQ23BUQWQhCMlh0Ze94oReQFi
+ VLPod0VRRcRsE/PWGrHNPLORU60xXCvk1Csx9PvKYcobpNOtrI5gJ0nQWiIXeSOsaWKZ
+ Z0Kd62RIY16QjdXnqf+JrlOoeECLTnbTVX8oJXZZagF0Agww5wqQUakO6gnyhCcHu31g
+ +Edw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=9dxyIPqcP8jDSy0GUtYumC+DRq05muFlYTTdqsbRigE=;
- b=CBgOJWoCd+Fc53ql2nDssO+3HsUmUHghSmATbhbDAMMpF6nnORQWVw+Hq1HTm1+4GK
- mQHsRsX5RNemJD6QxreHSxOT67tge5XWXzRCKnBwl0OZXWfGlr3Pe7RX4sofS7SjRnSm
- 7yHVDXmprq8VLN1k4mzmRvjNvPq0c/Nb8A+GhjnWqhtnJUul2oFGsjoqnU+cNe6JF9O7
- NjL+/6XycEZjIEg979rs9cYmNs0bx4zw6eCF9li0a3TMBmZHsTemfmOyNHn+yXWlMFGT
- ORuCdFNSbOJyYEaWEX3L2ksIVQMqlf0IBgjZvEa/k9UoEQisVHuHqG1h4ATB0Yqgx+PU
- JpuQ==
-X-Gm-Message-State: APjAAAXJA7NOL2xazfUf7isqWvkGQHC0jwlp4LXGT/NSAjq82Esbw80w
- MTsSF5EIzwzwn1glgP8SAYU=
-X-Google-Smtp-Source: APXvYqz8MfGhRhi/dlXuLkoaF1E80HXc/ju/CwZ7//TYZw6Vnsx8tuHl88GSOvVc/go3GBogDeg5Ig==
-X-Received: by 2002:a63:7d18:: with SMTP id y24mr36133502pgc.438.1561499069415; 
- Tue, 25 Jun 2019 14:44:29 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id a20sm13423142pgb.72.2019.06.25.14.44.27
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Tue, 25 Jun 2019 14:44:27 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 3C710401EB; Tue, 25 Jun 2019 21:44:27 +0000 (UTC)
-Date: Tue, 25 Jun 2019 21:44:27 +0000
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Brendan Higgins <brendanhiggins@google.com>
-Subject: Re: [PATCH v5 01/18] kunit: test: add KUnit test runner core
-Message-ID: <20190625214427.GN19023@42.do-not-panic.com>
-References: <20190617082613.109131-1-brendanhiggins@google.com>
- <20190617082613.109131-2-brendanhiggins@google.com>
- <20190620001526.93426218BE@mail.kernel.org>
- <CAFd5g46Jhxsz6_VXHEVYvTeDRwwzgKpr=aUWLL5b3S4kUukb8g@mail.gmail.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=0SSgftr/ed9a2ur0BNJEdl/g8gNmPKoK7P+UZ//XX04=;
+ b=XXzvFseJxRD2Bect4KKtkBAqUUFNPJFSlfhAM0KWZ7eN49PAuvXUps2KPOKP3nQjBm
+ mB8nTMbmvYBFFmwgAEbK8uYj0DT1kEuJhWyE7D8HpBGDJ058EXMaYK1WJnJpqvKQNe34
+ N6u6lwE/fkMlUkhnFj/akCwqx79yeCiKoEQPdI07H/Dz9GfB0vwIV1wX9JFqmODFt0P1
+ 9MBPaoXUOvNkC746Eccx9q+RWcAbsA/6bbze9Ttfits7gKoUQRmejv/4wX1I5lGyeen9
+ CTYnV7aKhTXv5ZlubpQP4ar6glQ2iZUGfTstMTQoTCQWQyLs7GHtTE98cuZPIeERF8do
+ 99uw==
+X-Gm-Message-State: APjAAAXl/dcmC6fzGtbYMupEHai56gFrzExb6G4bhHZuMn6aAT4XbHmP
+ 9O7b/1K8Wl+4ahujqKy6wwUBUmUdIvDwkihor3xMzg==
+X-Google-Smtp-Source: APXvYqxljJeexEWm6aMZlwHgW23WBS4bUWiCwT1v520+eXVhCRHWUTb+RItq0rxxz0q3NpJGXvojtdkje6sgoMxHCD4=
+X-Received: by 2002:aca:1304:: with SMTP id e4mr15852332oii.149.1561500413881; 
+ Tue, 25 Jun 2019 15:06:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAFd5g46Jhxsz6_VXHEVYvTeDRwwzgKpr=aUWLL5b3S4kUukb8g@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190116065144.3499-1-richardw.yang@linux.intel.com>
+ <20190604031041.GA27794@richard>
+In-Reply-To: <20190604031041.GA27794@richard>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 25 Jun 2019 15:06:42 -0700
+Message-ID: <CAPcyv4j4xGmM5BGqQu9Y2RFDa55Y0AMOn9Z0jXra334igBtwgA@mail.gmail.com>
+Subject: Re: [PATCH] libnvdimm, namespace: check nsblk->uuid immediately after
+ its allocation
+To: Wei Yang <richardw.yang@linux.intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,115 +67,29 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Kees Cook <keescook@google.com>,
- linux-fsdevel@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>
+Cc: Ross Zwisler <zwisler@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jun 25, 2019 at 01:28:25PM -0700, Brendan Higgins wrote:
-> On Wed, Jun 19, 2019 at 5:15 PM Stephen Boyd <sboyd@kernel.org> wrote:
+On Mon, Jun 3, 2019 at 8:11 PM Wei Yang <richardw.yang@linux.intel.com> wrote:
+>
+> Hi, Dan
+>
+> Do you have some time on this?
+>
+> On Wed, Jan 16, 2019 at 02:51:44PM +0800, Wei Yang wrote:
+> >When creating nd_namespace_blk, its uuid is copied from nd_label->uuid.
+> >In case the memory allocation fails, it goes to the error branch.
 > >
-> > Quoting Brendan Higgins (2019-06-17 01:25:56)
-> > > diff --git a/kunit/test.c b/kunit/test.c
-> > > new file mode 100644
-> > > index 0000000000000..d05d254f1521f
-> > > --- /dev/null
-> > > +++ b/kunit/test.c
-> > > @@ -0,0 +1,210 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * Base unit test (KUnit) API.
-> > > + *
-> > > + * Copyright (C) 2019, Google LLC.
-> > > + * Author: Brendan Higgins <brendanhiggins@google.com>
-> > > + */
-> > > +
-> > > +#include <linux/sched/debug.h>
-> > > +#include <kunit/test.h>
-> > > +
-> > > +static bool kunit_get_success(struct kunit *test)
-> > > +{
-> > > +       unsigned long flags;
-> > > +       bool success;
-> > > +
-> > > +       spin_lock_irqsave(&test->lock, flags);
-> > > +       success = test->success;
-> > > +       spin_unlock_irqrestore(&test->lock, flags);
+> >This check is better to be done immediately after memory allocation,
+> >while current implementation does this after assigning claim_class.
 > >
-> > I still don't understand the locking scheme in this code. Is the
-> > intention to make getter and setter APIs that are "safe" by adding in a
-> > spinlock that is held around getting and setting various members in the
-> > kunit structure?
-> 
-> Yes, your understanding is correct. It is possible for a user to write
-> a test such that certain elements may be updated in different threads;
-> this would most likely happen in the case where someone wants to make
-> an assertion or an expectation in a thread created by a piece of code
-> under test. Although this should generally be avoided, it is possible,
-> and there are occasionally good reasons to do so, so it is
-> functionality that we should support.
-> 
-> Do you think I should add a comment to this effect?
-> 
-> > In what situation is there more than one thread reading or writing the
-> > kunit struct? Isn't it only a single process that is going to be
-> 
-> As I said above, it is possible that the code under test may spawn a
-> new thread that may make an expectation or an assertion. It is not a
-> super common use case, but it is possible.
+> >This patch moves the check immediately after uuid allocation.
 
-I wonder if it is worth to have then different types of tests based on
-locking requirements. One with no locking, since it seems you imply
-most tests would fall under this category, then locking, and another
-with IRQ context.
-
-If no locking is done at all for all tests which do not require locking,
-is there any gains at run time? I'm sure it might be minimum but
-curious.
-
-> > operating on this structure? And why do we need to disable irqs? Are we
-> > expecting to be modifying the unit tests from irq contexts?
-> 
-> There are instances where someone may want to test a driver which has
-> an interrupt handler in it. I actually have (not the greatest) example
-> here. Now in these cases, I expect someone to use a mock irqchip or
-> some other fake mechanism to trigger the interrupt handler and not
-> actual hardware; technically speaking in this case, it is not going to
-> be accessed from a "real" irq context; however, the code under test
-> should think that it is in an irq context; given that, I figured it is
-> best to just treat it as a real irq context. Does that make sense?
-
-Since its a new architecture and since you seem to imply most tests
-don't require locking or even IRQs disabled, I think its worth to
-consider the impact of adding such extreme locking requirements for
-an initial ramp up.
-
-  Luis
+This looks ok, but the patch has no significant impact. I'm not
+particularly motivated to carry it forward.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
