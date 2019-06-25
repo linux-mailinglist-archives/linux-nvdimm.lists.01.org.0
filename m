@@ -2,60 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF30A55866
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 22:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5B7558CE
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 22:28:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5F2652129F0E3;
-	Tue, 25 Jun 2019 13:07:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7706F212A36D3;
+	Tue, 25 Jun 2019 13:28:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
+ client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 07E6321237ABE
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:07:55 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id s20so138581otp.4
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:07:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by ml01.01.org (Postfix) with ESMTPS id 86C2B2129F0E3
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:28:37 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id c85so18689pfc.1
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:28:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
- b=BHXCyOrnUPs1hcuNYqPdDyL0ToAMrbN9ViFj0sViQfWhcY+WaxbwLDLLsBRGcL1wDm
- t3lfMFeGwI46lg1cwGJBaRgZw9p8SiIFDItqnan8ooR9XhrpNLCW896m7GwEWcvFFA3N
- 8GgaFhN9kYqm55WMYhO68qiG0wGUHkhzji2N90zT0ZrSW2OKsc6z3usXybjA10lpy30q
- k5JO9cOEjomxiLzDLIsN9EolEnh8150XpLGrO0fDSV4cTg9oVMXRe2x8zmLVsbBe37CR
- KjVPHMd7cocz3AklmLtGfxY6jxfNOxEHMtxVWpvZLY0Y1/dGn4fCKSgodlr/FlqYJQky
- bcJA==
+ :cc; bh=qq39ykktkvFBpmzRtbgM4tstWpOedFNE8kr26lh/InM=;
+ b=ni94OwioZx/gzf2szVloCDZTFFpJCo2YKSFZ2X9qr6bxYnBeEpnnagfszyXnnz51L8
+ DkJXaethFUsoHnz8KOQVG2ZSAlP6R4YiehiVV+cY7fw97Xus3XNQzLPLdgQULmgYaWnL
+ GEAS55DRith5+cQIVd4nDD9PnOpK5SEC0mcAjXyMYNE83XKQ2Jfbx9GzYoD6pnR9q88y
+ VjAnVY+gy9KsY/4+Tbda/+4DRlDyvSks4s9chgBxuZrKHnC3t/s2Oqm9eCfJpWO+nPcJ
+ ixgXgEVA9P9D5QKdeUq3VIirHZ16lxLB0iDdlrfqM9fruDTYYR+l+8zODcodp3flRnlv
+ dArA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
- b=JvaJnFsI4v4APl76aG22hwxG/eGvoFJJkK50kXgp4MD86xCxQUY1F3fsMcwsEFvhq+
- 3vZHUqzi2LCUiWivk2qTCBhBovrkQhLw5jSHCCD2C/bhwGAQl1pq4pNSEIU+ZUKrwOxh
- qC3VsdKAOV0TzvO1lYvdeZZTVHFG21Lb8wwGe6AakjF9x0xPRmw9uouUlytwUqxa7X4a
- hvfV8hY7qeintp+SXoN3rFUL+/6rbagaipipwDQBLn+8DkN9OinUOfxeUksmOJjm9KaX
- ed7xSCuR7gbZzivdcyJvy/W4gL0FynUQgkoJ/fVATP7M1eEsCppAL88/fjnHxMMorn0R
- n5dA==
-X-Gm-Message-State: APjAAAUKwuK0g0Xv3qMdU5nG3e7QYHi1oDlg96AUnlqnifYTtCbioW3S
- HxY0qAMMvt6CxTBrN56JvXfWoKa/xyID4ddr4wHAsg==
-X-Google-Smtp-Source: APXvYqxJ+5tJ19ECFTc2Qxizf7PywDomA0IWMoGVRvLQnJR3/+gCpyn7LCQ8KtbmtVITTBei/TRQEvldm8pdmv5LAEQ=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr102089otn.247.1561493272423; 
- Tue, 25 Jun 2019 13:07:52 -0700 (PDT)
+ bh=qq39ykktkvFBpmzRtbgM4tstWpOedFNE8kr26lh/InM=;
+ b=agldTlx5KoYQ0soMrnGd1vUFVY2cNcQcUuaUz13VpuohLAXd3hWfWXh2IcPIEcQ05l
+ ygf6AaPRDiv8zx30VdZGnHvzmS03qGSnQJEwJJTSL5sS2dNdFnTICXbsdbsMPWUK2UOS
+ YTCM4m7zYVAWOaAp1lW0qrcMg2BK60fkYJP57p0ZNmdoQBemf1s7kNZYWiP7diPsJPeh
+ zeb7LCSEKXixUd/VP+/3TEJJKaMEuU6ss2REomIWvG9myX5bjk0VToDhebdM/SRqN14r
+ 9YJvxNdIW1ZXhabNmtVb1tSRVcPg4f0sXxzN/A+wgICHYXcQHSoZ8IZ+DOVB4Q8BvYAM
+ cckA==
+X-Gm-Message-State: APjAAAWRrKJBbfV5vHMfTzEkxAwlbAtl3QWNAn+rAX3sFnklrVV7D/2k
+ FhEEe87QM3gJkWFtS4XXF2Vr+CZRMF6jeSe6N+DQNA==
+X-Google-Smtp-Source: APXvYqzvk20XXdVFtm6zl0X1nrjaH0TttItfcdP9iwaQ+JKQIeNhKF1pa7VSVvlXNPpMAUzP/tv1oR2JBEXuSnWnLw4=
+X-Received: by 2002:a17:90b:f0e:: with SMTP id
+ br14mr754020pjb.117.1561494516332; 
+ Tue, 25 Jun 2019 13:28:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156140041177.2951909.8582567579750505172.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190625163756.00001a85@huawei.com>
-In-Reply-To: <20190625163756.00001a85@huawei.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 25 Jun 2019 13:07:41 -0700
-Message-ID: <CAPcyv4jXVroB3j6VQ2iCzjAhuL4wExHQvNqa4KMep2o2-2ihEQ@mail.gmail.com>
-Subject: Re: [PATCH v4 08/10] device-dax: Add a driver for "hmem" devices
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20190617082613.109131-1-brendanhiggins@google.com>
+ <20190617082613.109131-2-brendanhiggins@google.com>
+ <20190620001526.93426218BE@mail.kernel.org>
+In-Reply-To: <20190620001526.93426218BE@mail.kernel.org>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Tue, 25 Jun 2019 13:28:25 -0700
+Message-ID: <CAFd5g46Jhxsz6_VXHEVYvTeDRwwzgKpr=aUWLL5b3S4kUukb8g@mail.gmail.com>
+Subject: Re: [PATCH v5 01/18] kunit: test: add KUnit test runner core
+To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,171 +67,243 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- kbuild test robot <lkp@intel.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
- Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux ACPI <linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jun 25, 2019 at 8:39 AM Jonathan Cameron
-<jonathan.cameron@huawei.com> wrote:
+On Wed, Jun 19, 2019 at 5:15 PM Stephen Boyd <sboyd@kernel.org> wrote:
 >
-> On Mon, 24 Jun 2019 11:20:16 -0700
-> Dan Williams <dan.j.williams@intel.com> wrote:
->
-> > Platform firmware like EFI/ACPI may publish "hmem" platform devices.
-> > Such a device is a performance differentiated memory range likely
-> > reserved for an application specific use case. The driver gives access
-> > to 100% of the capacity via a device-dax mmap instance by default.
-> >
-> > However, if over-subscription and other kernel memory management is
-> > desired the resulting dax device can be assigned to the core-mm via the
-> > kmem driver.
-> >
-> > This consumes "hmem" devices the producer of "hmem" devices is saved for
-> > a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
-> > symbol to gate performing the enumeration work.
-> >
-> > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > Cc: Keith Busch <keith.busch@intel.com>
-> > Cc: Dave Jiang <dave.jiang@intel.com>
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> No need to have a remove function at all.  Otherwise this looks good to me.
->
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> > ---
-> >  drivers/dax/Kconfig    |   27 +++++++++++++++++++----
-> >  drivers/dax/Makefile   |    2 ++
-> >  drivers/dax/hmem.c     |   57 ++++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/linux/ioport.h |    4 +++
-> >  4 files changed, 85 insertions(+), 5 deletions(-)
-> >  create mode 100644 drivers/dax/hmem.c
-> >
-> > diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
-> > index f33c73e4af41..1a59ef86f148 100644
-> > --- a/drivers/dax/Kconfig
-> > +++ b/drivers/dax/Kconfig
-> > @@ -32,19 +32,36 @@ config DEV_DAX_PMEM
-> >
-> >         Say M if unsure
-> >
-> > +config DEV_DAX_HMEM
-> > +     tristate "HMEM DAX: direct access to 'specific purpose' memory"
-> > +     depends on EFI_APPLICATION_RESERVED
-> > +     default DEV_DAX
-> > +     help
-> > +       EFI 2.8 platforms, and others, may advertise 'specific purpose'
-> > +       memory.  For example, a high bandwidth memory pool. The
-> > +       indication from platform firmware is meant to reserve the
-> > +       memory from typical usage by default.  This driver creates
-> > +       device-dax instances for these memory ranges, and that also
-> > +       enables the possibility to assign them to the DEV_DAX_KMEM
-> > +       driver to override the reservation and add them to kernel
-> > +       "System RAM" pool.
-> > +
-> > +       Say M if unsure.
-> > +
-> >  config DEV_DAX_KMEM
-> >       tristate "KMEM DAX: volatile-use of persistent memory"
-> >       default DEV_DAX
-> >       depends on DEV_DAX
-> >       depends on MEMORY_HOTPLUG # for add_memory() and friends
-> >       help
-> > -       Support access to persistent memory as if it were RAM.  This
-> > -       allows easier use of persistent memory by unmodified
-> > -       applications.
-> > +       Support access to persistent, or other performance
-> > +       differentiated memory as if it were System RAM. This allows
-> > +       easier use of persistent memory by unmodified applications, or
-> > +       adds core kernel memory services to heterogeneous memory types
-> > +       (HMEM) marked "reserved" by platform firmware.
-> >
-> >         To use this feature, a DAX device must be unbound from the
-> > -       device_dax driver (PMEM DAX) and bound to this kmem driver
-> > -       on each boot.
-> > +       device_dax driver and bound to this kmem driver on each boot.
-> >
-> >         Say N if unsure.
-> >
-> > diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
-> > index 81f7d54dadfb..80065b38b3c4 100644
-> > --- a/drivers/dax/Makefile
-> > +++ b/drivers/dax/Makefile
-> > @@ -2,9 +2,11 @@
-> >  obj-$(CONFIG_DAX) += dax.o
-> >  obj-$(CONFIG_DEV_DAX) += device_dax.o
-> >  obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
-> > +obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
-> >
-> >  dax-y := super.o
-> >  dax-y += bus.o
-> >  device_dax-y := device.o
-> > +dax_hmem-y := hmem.o
-> >
-> >  obj-y += pmem/
-> > diff --git a/drivers/dax/hmem.c b/drivers/dax/hmem.c
+> Quoting Brendan Higgins (2019-06-17 01:25:56)
+> > diff --git a/kunit/test.c b/kunit/test.c
 > > new file mode 100644
-> > index 000000000000..62f9e3c80e21
+> > index 0000000000000..d05d254f1521f
 > > --- /dev/null
-> > +++ b/drivers/dax/hmem.c
-> > @@ -0,0 +1,57 @@
+> > +++ b/kunit/test.c
+> > @@ -0,0 +1,210 @@
 > > +// SPDX-License-Identifier: GPL-2.0
-> > +#include <linux/platform_device.h>
-> > +#include <linux/ioport.h>
-> > +#include <linux/module.h>
-> > +#include <linux/pfn_t.h>
-> > +#include "bus.h"
+> > +/*
+> > + * Base unit test (KUnit) API.
+> > + *
+> > + * Copyright (C) 2019, Google LLC.
+> > + * Author: Brendan Higgins <brendanhiggins@google.com>
+> > + */
 > > +
-> > +static int dax_hmem_probe(struct platform_device *pdev)
+> > +#include <linux/sched/debug.h>
+> > +#include <kunit/test.h>
+> > +
+> > +static bool kunit_get_success(struct kunit *test)
 > > +{
-> > +     struct dev_pagemap pgmap = { NULL };
-> > +     struct device *dev = &pdev->dev;
-> > +     struct dax_region *dax_region;
-> > +     struct memregion_info *mri;
-> > +     struct dev_dax *dev_dax;
-> > +     struct resource *res;
+> > +       unsigned long flags;
+> > +       bool success;
 > > +
-> > +     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > +     if (!res)
-> > +             return -ENOMEM;
+> > +       spin_lock_irqsave(&test->lock, flags);
+> > +       success = test->success;
+> > +       spin_unlock_irqrestore(&test->lock, flags);
+>
+> I still don't understand the locking scheme in this code. Is the
+> intention to make getter and setter APIs that are "safe" by adding in a
+> spinlock that is held around getting and setting various members in the
+> kunit structure?
+
+Yes, your understanding is correct. It is possible for a user to write
+a test such that certain elements may be updated in different threads;
+this would most likely happen in the case where someone wants to make
+an assertion or an expectation in a thread created by a piece of code
+under test. Although this should generally be avoided, it is possible,
+and there are occasionally good reasons to do so, so it is
+functionality that we should support.
+
+Do you think I should add a comment to this effect?
+
+> In what situation is there more than one thread reading or writing the
+> kunit struct? Isn't it only a single process that is going to be
+
+As I said above, it is possible that the code under test may spawn a
+new thread that may make an expectation or an assertion. It is not a
+super common use case, but it is possible.
+
+> operating on this structure? And why do we need to disable irqs? Are we
+> expecting to be modifying the unit tests from irq contexts?
+
+There are instances where someone may want to test a driver which has
+an interrupt handler in it. I actually have (not the greatest) example
+here. Now in these cases, I expect someone to use a mock irqchip or
+some other fake mechanism to trigger the interrupt handler and not
+actual hardware; technically speaking in this case, it is not going to
+be accessed from a "real" irq context; however, the code under test
+should think that it is in an irq context; given that, I figured it is
+best to just treat it as a real irq context. Does that make sense?
+
 > > +
-> > +     mri = dev->platform_data;
-> > +     pgmap.dev = dev;
-> > +     memcpy(&pgmap.res, res, sizeof(*res));
-> > +
-> > +     dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
-> > +                     PMD_SIZE, PFN_DEV|PFN_MAP);
-> > +     if (!dax_region)
-> > +             return -ENOMEM;
-> > +
-> > +     dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
-> > +     if (IS_ERR(dev_dax))
-> > +             return PTR_ERR(dev_dax);
-> > +
-> > +     /* child dev_dax instances now own the lifetime of the dax_region */
-> > +     dax_region_put(dax_region);
-> > +     return 0;
+> > +       return success;
 > > +}
 > > +
-> > +static int dax_hmem_remove(struct platform_device *pdev)
+> > +static void kunit_set_success(struct kunit *test, bool success)
 > > +{
-> > +     /* devm handles teardown */
-> > +     return 0;
+> > +       unsigned long flags;
+> > +
+> > +       spin_lock_irqsave(&test->lock, flags);
+> > +       test->success = success;
+> > +       spin_unlock_irqrestore(&test->lock, flags);
+> > +}
+> > +
+> > +static int kunit_vprintk_emit(int level, const char *fmt, va_list args)
+> > +{
+> > +       return vprintk_emit(0, level, NULL, 0, fmt, args);
+> > +}
+> > +
+> > +static int kunit_printk_emit(int level, const char *fmt, ...)
+> > +{
+> > +       va_list args;
+> > +       int ret;
+> > +
+> > +       va_start(args, fmt);
+> > +       ret = kunit_vprintk_emit(level, fmt, args);
+> > +       va_end(args);
+> > +
+> > +       return ret;
+> > +}
+> > +
+> > +static void kunit_vprintk(const struct kunit *test,
+> > +                         const char *level,
+> > +                         struct va_format *vaf)
+> > +{
+> > +       kunit_printk_emit(level[1] - '0', "\t# %s: %pV", test->name, vaf);
+> > +}
+> > +
+> > +static bool kunit_has_printed_tap_version;
 >
-> Why have a remove at all?  driver/base/platform.c has
-> the appropriate protections to allow you to not provide one.
-> If you want the comment, just put it after .probe =
-> below.
+> Can you please move this into function local scope in the function
+> below?
 
-True, that's a good cleanup.
+Sure, that makes sense.
+
+> > +
+> > +static void kunit_print_tap_version(void)
+> > +{
+> > +       if (!kunit_has_printed_tap_version) {
+> > +               kunit_printk_emit(LOGLEVEL_INFO, "TAP version 14\n");
+> > +               kunit_has_printed_tap_version = true;
+> > +       }
+> > +}
+> > +
+> [...]
+> > +
+> > +static bool kunit_module_has_succeeded(struct kunit_module *module)
+> > +{
+> > +       const struct kunit_case *test_case;
+> > +       bool success = true;
+> > +
+> > +       for (test_case = module->test_cases; test_case->run_case; test_case++)
+> > +               if (!test_case->success) {
+> > +                       success = false;
+> > +                       break;
+>
+> Why not 'return false'?
+
+Also a good point. Will fix.
+
+> > +               }
+> > +
+> > +       return success;
+>
+> And 'return true'?
+
+Will fix.
+
+> > +}
+> > +
+> > +static size_t kunit_module_counter = 1;
+> > +
+> > +static void kunit_print_subtest_end(struct kunit_module *module)
+> > +{
+> > +       kunit_print_ok_not_ok(false,
+> > +                             kunit_module_has_succeeded(module),
+> > +                             kunit_module_counter++,
+> > +                             module->name);
+> > +}
+> > +
+> > +static void kunit_print_test_case_ok_not_ok(struct kunit_case *test_case,
+> > +                                           size_t test_number)
+> > +{
+> > +       kunit_print_ok_not_ok(true,
+> > +                             test_case->success,
+> > +                             test_number,
+> > +                             test_case->name);
+> > +}
+> > +
+> > +void kunit_init_test(struct kunit *test, const char *name)
+> > +{
+> > +       spin_lock_init(&test->lock);
+> > +       test->name = name;
+> > +       test->success = true;
+> > +}
+> > +
+> > +/*
+> > + * Performs all logic to run a test case.
+> > + */
+> > +static void kunit_run_case(struct kunit_module *module,
+> > +                          struct kunit_case *test_case)
+> > +{
+> > +       struct kunit test;
+> > +       int ret = 0;
+> > +
+> > +       kunit_init_test(&test, test_case->name);
+> > +
+> > +       if (module->init) {
+> > +               ret = module->init(&test);
+> > +               if (ret) {
+> > +                       kunit_err(&test, "failed to initialize: %d\n", ret);
+> > +                       kunit_set_success(&test, false);
+> > +                       return;
+> > +               }
+> > +       }
+> > +
+> > +       if (!ret)
+> > +               test_case->run_case(&test);
+>
+> Do we need this if condition? ret can only be set to non-zero above but
+> then we'll exit the function early so it seems unnecessary. Given that,
+> ret should probably be moved into the module->init path.
+
+Whoops. Sorry, another instance of how it evolved over time and I
+forgot why I did the check. Will fix.
+
+> > +
+> > +       if (module->exit)
+> > +               module->exit(&test);
+> > +
+> > +       test_case->success = kunit_get_success(&test);
+> > +}
+> > +
+
+Thanks!
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
