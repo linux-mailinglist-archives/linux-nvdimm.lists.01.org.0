@@ -1,65 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA0D55829
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 21:52:33 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF30A55866
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Jun 2019 22:07:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C5E46212A36CD;
-	Tue, 25 Jun 2019 12:52:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5F2652129F0E3;
+	Tue, 25 Jun 2019 13:07:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CD85921295CB7
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 12:52:29 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id z23so38286ote.13
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 12:52:29 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 07E6321237ABE
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:07:55 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id s20so138581otp.4
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 13:07:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=w0iye/3d1d43WiqVq+yINWIQnPqAw8A16FUwAjTLITU=;
- b=cg40kmVDe098Yeal1OpwCn3OtKBjzRnBRkGsDiRkJlBZmoYI19FP8EGzmZENBKS9gc
- y85l2sQkHTXgqXraL4kaAGyPSS89BlMic0a5IYD4ijt8AaGI5dAMpm1LqTsvqtZ0PA18
- /sFXK4G4VbfJsBTSuI7jnUNqry2IT3CR4rWFZDFAIwwgF0wpO56iBYn1OrWh8zMn5H5U
- UiXxOJDTdDUZ1sp/qT4gDr5qxfq60VgObAV3QcEkH8aWy3k9rRcTQ+1xwDIMTbjb/rOl
- vLBtj451wwdwT3Iv/y3LeY44bWSWgm5KwxP2Hkh4f45wvrSWUrzPcQdtg3gHbAGRQLJ3
- R1iQ==
+ :cc; bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
+ b=BHXCyOrnUPs1hcuNYqPdDyL0ToAMrbN9ViFj0sViQfWhcY+WaxbwLDLLsBRGcL1wDm
+ t3lfMFeGwI46lg1cwGJBaRgZw9p8SiIFDItqnan8ooR9XhrpNLCW896m7GwEWcvFFA3N
+ 8GgaFhN9kYqm55WMYhO68qiG0wGUHkhzji2N90zT0ZrSW2OKsc6z3usXybjA10lpy30q
+ k5JO9cOEjomxiLzDLIsN9EolEnh8150XpLGrO0fDSV4cTg9oVMXRe2x8zmLVsbBe37CR
+ KjVPHMd7cocz3AklmLtGfxY6jxfNOxEHMtxVWpvZLY0Y1/dGn4fCKSgodlr/FlqYJQky
+ bcJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=w0iye/3d1d43WiqVq+yINWIQnPqAw8A16FUwAjTLITU=;
- b=CPECwU6Tx9ZFJkQIYfyyP9xQbVex27Imk3wdxBjgiu/aP0QeFefEP1ejDIqk5jrIUV
- K3K342s7Kvj9GvfbSCgZNDqrOn/12j64zHcwt8UMIZPxnHB5xJAHTTNLN9M/yCJzD8wC
- 3Z1GHz9PxPxvpgRi6llb1PK6dZcu7OjiPlsmQpgFD4Cb0Q2ERG8cE9Z5Wwj7LNV65enB
- xfy9XnnCnXJ5CtGKU2m77SeQhKocaSAf2GaegPgjPzCYJ3lesjQ9ft1rw8wfWa/lKrHw
- LefqhhyeLg9BCo7WmGoOENrmGy6/V+xm+CjTiF82vM2YHbbj93MUjnESA577GlVJcPx2
- 02lQ==
-X-Gm-Message-State: APjAAAWfQbyG/Dlfgxs/j/+9c3uSRF9iktBc/CPuHNDeVYMOru7zH/xb
- grbxBQ1QfokuuT/yZACI8GjYWAOOCx6xIVhmfko4CA==
-X-Google-Smtp-Source: APXvYqx9tkQWIJH6qfCTM4r93Fn0JkGxBFjGh9k1TjumYyf0PnXcUjYDBWeUS/klLXmbZuWZeGlEsSD0mVmlPe4JDBw=
-X-Received: by 2002:a9d:7b48:: with SMTP id f8mr50775oto.207.1561492348979;
- Tue, 25 Jun 2019 12:52:28 -0700 (PDT)
+ bh=7hz9yXC3QNEKUxR5NqsfjpYt0w2H6D1TiaLMOifo9FM=;
+ b=JvaJnFsI4v4APl76aG22hwxG/eGvoFJJkK50kXgp4MD86xCxQUY1F3fsMcwsEFvhq+
+ 3vZHUqzi2LCUiWivk2qTCBhBovrkQhLw5jSHCCD2C/bhwGAQl1pq4pNSEIU+ZUKrwOxh
+ qC3VsdKAOV0TzvO1lYvdeZZTVHFG21Lb8wwGe6AakjF9x0xPRmw9uouUlytwUqxa7X4a
+ hvfV8hY7qeintp+SXoN3rFUL+/6rbagaipipwDQBLn+8DkN9OinUOfxeUksmOJjm9KaX
+ ed7xSCuR7gbZzivdcyJvy/W4gL0FynUQgkoJ/fVATP7M1eEsCppAL88/fjnHxMMorn0R
+ n5dA==
+X-Gm-Message-State: APjAAAUKwuK0g0Xv3qMdU5nG3e7QYHi1oDlg96AUnlqnifYTtCbioW3S
+ HxY0qAMMvt6CxTBrN56JvXfWoKa/xyID4ddr4wHAsg==
+X-Google-Smtp-Source: APXvYqxJ+5tJ19ECFTc2Qxizf7PywDomA0IWMoGVRvLQnJR3/+gCpyn7LCQ8KtbmtVITTBei/TRQEvldm8pdmv5LAEQ=
+X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr102089otn.247.1561493272423; 
+ Tue, 25 Jun 2019 13:07:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190613094326.24093-1-hch@lst.de>
- <20190613094326.24093-6-hch@lst.de>
- <20190620191733.GH12083@dhcp22.suse.cz>
- <CAPcyv4h9+Ha4FVrvDAe-YAr1wBOjc4yi7CAzVuASv=JCxPcFaw@mail.gmail.com>
- <20190625072317.GC30350@lst.de> <20190625150053.GJ11400@dhcp22.suse.cz>
- <CAPcyv4j1e5dbBHnc+wmtsNUyFbMK_98WxHNwuD_Vxo4dX9Ce=Q@mail.gmail.com>
- <20190625190038.GK11400@dhcp22.suse.cz>
-In-Reply-To: <20190625190038.GK11400@dhcp22.suse.cz>
+References: <156140036490.2951909.1837804994781523185.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156140041177.2951909.8582567579750505172.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190625163756.00001a85@huawei.com>
+In-Reply-To: <20190625163756.00001a85@huawei.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 25 Jun 2019 12:52:18 -0700
-Message-ID: <CAPcyv4hU13v7dSQpF0WTQTxQM3L3UsHMUhsFMVz7i4UGLoM89g@mail.gmail.com>
-Subject: Re: [PATCH 05/22] mm: export alloc_pages_vma
-To: Michal Hocko <mhocko@kernel.org>
+Date: Tue, 25 Jun 2019 13:07:41 -0700
+Message-ID: <CAPcyv4jXVroB3j6VQ2iCzjAhuL4wExHQvNqa4KMep2o2-2ihEQ@mail.gmail.com>
+Subject: Re: [PATCH v4 08/10] device-dax: Add a driver for "hmem" devices
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,91 +67,171 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, nouveau@lists.freedesktop.org,
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ kbuild test robot <lkp@intel.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Peter Zijlstra <peterz@infradead.org>, X86 ML <x86@kernel.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
- Linux MM <linux-mm@kvack.org>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>,
- linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+ Linux ACPI <linux-acpi@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jun 25, 2019 at 12:01 PM Michal Hocko <mhocko@kernel.org> wrote:
+On Tue, Jun 25, 2019 at 8:39 AM Jonathan Cameron
+<jonathan.cameron@huawei.com> wrote:
 >
-> On Tue 25-06-19 11:03:53, Dan Williams wrote:
-> > On Tue, Jun 25, 2019 at 8:01 AM Michal Hocko <mhocko@kernel.org> wrote:
-> > >
-> > > On Tue 25-06-19 09:23:17, Christoph Hellwig wrote:
-> > > > On Mon, Jun 24, 2019 at 11:24:48AM -0700, Dan Williams wrote:
-> > > > > I asked for this simply because it was not exported historically. In
-> > > > > general I want to establish explicit export-type criteria so the
-> > > > > community can spend less time debating when to use EXPORT_SYMBOL_GPL
-> > > > > [1].
-> > > > >
-> > > > > The thought in this instance is that it is not historically exported
-> > > > > to modules and it is safer from a maintenance perspective to start
-> > > > > with GPL-only for new symbols in case we don't want to maintain that
-> > > > > interface long-term for out-of-tree modules.
-> > > > >
-> > > > > Yes, we always reserve the right to remove / change interfaces
-> > > > > regardless of the export type, but history has shown that external
-> > > > > pressure to keep an interface stable (contrary to
-> > > > > Documentation/process/stable-api-nonsense.rst) tends to be less for
-> > > > > GPL-only exports.
-> > > >
-> > > > Fully agreed.  In the end the decision is with the MM maintainers,
-> > > > though, although I'd prefer to keep it as in this series.
-> > >
-> > > I am sorry but I am not really convinced by the above reasoning wrt. to
-> > > the allocator API and it has been a subject of many changes over time. I
-> > > do not remember a single case where we would be bending the allocator
-> > > API because of external modules and I am pretty sure we will push back
-> > > heavily if that was the case in the future.
+> On Mon, 24 Jun 2019 11:20:16 -0700
+> Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> > Platform firmware like EFI/ACPI may publish "hmem" platform devices.
+> > Such a device is a performance differentiated memory range likely
+> > reserved for an application specific use case. The driver gives access
+> > to 100% of the capacity via a device-dax mmap instance by default.
 > >
-> > This seems to say that you have no direct experience of dealing with
-> > changing symbols that that a prominent out-of-tree module needs? GPU
-> > drivers and the core-mm are on a path to increase their cooperation on
-> > memory management mechanisms over time, and symbol export changes for
-> > out-of-tree GPU drivers have been a significant source of friction in
-> > the past.
->
-> I have an experience e.g. to rework semantic of some gfp flags and that is
-> something that users usualy get wrong and never heard that an out of
-> tree code would insist on an old semantic and pushing us to the corner.
->
-> > > So in this particular case I would go with consistency and export the
-> > > same way we do with other functions. Also we do not want people to
-> > > reinvent this API and screw that like we have seen in other cases when
-> > > external modules try reimplement core functionality themselves.
+> > However, if over-subscription and other kernel memory management is
+> > desired the resulting dax device can be assigned to the core-mm via the
+> > kmem driver.
 > >
-> > Consistency is a weak argument when the cost to the upstream community
-> > is negligible. If the same functionality was available via another /
-> > already exported interface *that* would be an argument to maintain the
-> > existing export policy. "Consistency" in and of itself is not a
-> > precedent we can use more widely in default export-type decisions.
+> > This consumes "hmem" devices the producer of "hmem" devices is saved for
+> > a follow-on patch so that it can reference the new CONFIG_DEV_DAX_HMEM
+> > symbol to gate performing the enumeration work.
 > >
-> > Effectively I'm arguing EXPORT_SYMBOL_GPL by default with a later
-> > decision to drop the _GPL. Similar to how we are careful to mark sysfs
-> > interfaces in Documentation/ABI/ that we are not fully committed to
-> > maintaining over time, or are otherwise so new that there is not yet a
-> > good read on whether they can be made permanent.
+> > Cc: Vishal Verma <vishal.l.verma@intel.com>
+> > Cc: Keith Busch <keith.busch@intel.com>
+> > Cc: Dave Jiang <dave.jiang@intel.com>
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> No need to have a remove function at all.  Otherwise this looks good to me.
 >
-> Documentation/process/stable-api-nonsense.rst
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> > ---
+> >  drivers/dax/Kconfig    |   27 +++++++++++++++++++----
+> >  drivers/dax/Makefile   |    2 ++
+> >  drivers/dax/hmem.c     |   57 ++++++++++++++++++++++++++++++++++++++++++++++++
+> >  include/linux/ioport.h |    4 +++
+> >  4 files changed, 85 insertions(+), 5 deletions(-)
+> >  create mode 100644 drivers/dax/hmem.c
+> >
+> > diff --git a/drivers/dax/Kconfig b/drivers/dax/Kconfig
+> > index f33c73e4af41..1a59ef86f148 100644
+> > --- a/drivers/dax/Kconfig
+> > +++ b/drivers/dax/Kconfig
+> > @@ -32,19 +32,36 @@ config DEV_DAX_PMEM
+> >
+> >         Say M if unsure
+> >
+> > +config DEV_DAX_HMEM
+> > +     tristate "HMEM DAX: direct access to 'specific purpose' memory"
+> > +     depends on EFI_APPLICATION_RESERVED
+> > +     default DEV_DAX
+> > +     help
+> > +       EFI 2.8 platforms, and others, may advertise 'specific purpose'
+> > +       memory.  For example, a high bandwidth memory pool. The
+> > +       indication from platform firmware is meant to reserve the
+> > +       memory from typical usage by default.  This driver creates
+> > +       device-dax instances for these memory ranges, and that also
+> > +       enables the possibility to assign them to the DEV_DAX_KMEM
+> > +       driver to override the reservation and add them to kernel
+> > +       "System RAM" pool.
+> > +
+> > +       Say M if unsure.
+> > +
+> >  config DEV_DAX_KMEM
+> >       tristate "KMEM DAX: volatile-use of persistent memory"
+> >       default DEV_DAX
+> >       depends on DEV_DAX
+> >       depends on MEMORY_HOTPLUG # for add_memory() and friends
+> >       help
+> > -       Support access to persistent memory as if it were RAM.  This
+> > -       allows easier use of persistent memory by unmodified
+> > -       applications.
+> > +       Support access to persistent, or other performance
+> > +       differentiated memory as if it were System RAM. This allows
+> > +       easier use of persistent memory by unmodified applications, or
+> > +       adds core kernel memory services to heterogeneous memory types
+> > +       (HMEM) marked "reserved" by platform firmware.
+> >
+> >         To use this feature, a DAX device must be unbound from the
+> > -       device_dax driver (PMEM DAX) and bound to this kmem driver
+> > -       on each boot.
+> > +       device_dax driver and bound to this kmem driver on each boot.
+> >
+> >         Say N if unsure.
+> >
+> > diff --git a/drivers/dax/Makefile b/drivers/dax/Makefile
+> > index 81f7d54dadfb..80065b38b3c4 100644
+> > --- a/drivers/dax/Makefile
+> > +++ b/drivers/dax/Makefile
+> > @@ -2,9 +2,11 @@
+> >  obj-$(CONFIG_DAX) += dax.o
+> >  obj-$(CONFIG_DEV_DAX) += device_dax.o
+> >  obj-$(CONFIG_DEV_DAX_KMEM) += kmem.o
+> > +obj-$(CONFIG_DEV_DAX_HMEM) += dax_hmem.o
+> >
+> >  dax-y := super.o
+> >  dax-y += bus.o
+> >  device_dax-y := device.o
+> > +dax_hmem-y := hmem.o
+> >
+> >  obj-y += pmem/
+> > diff --git a/drivers/dax/hmem.c b/drivers/dax/hmem.c
+> > new file mode 100644
+> > index 000000000000..62f9e3c80e21
+> > --- /dev/null
+> > +++ b/drivers/dax/hmem.c
+> > @@ -0,0 +1,57 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +#include <linux/platform_device.h>
+> > +#include <linux/ioport.h>
+> > +#include <linux/module.h>
+> > +#include <linux/pfn_t.h>
+> > +#include "bus.h"
+> > +
+> > +static int dax_hmem_probe(struct platform_device *pdev)
+> > +{
+> > +     struct dev_pagemap pgmap = { NULL };
+> > +     struct device *dev = &pdev->dev;
+> > +     struct dax_region *dax_region;
+> > +     struct memregion_info *mri;
+> > +     struct dev_dax *dev_dax;
+> > +     struct resource *res;
+> > +
+> > +     res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +     if (!res)
+> > +             return -ENOMEM;
+> > +
+> > +     mri = dev->platform_data;
+> > +     pgmap.dev = dev;
+> > +     memcpy(&pgmap.res, res, sizeof(*res));
+> > +
+> > +     dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
+> > +                     PMD_SIZE, PFN_DEV|PFN_MAP);
+> > +     if (!dax_region)
+> > +             return -ENOMEM;
+> > +
+> > +     dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
+> > +     if (IS_ERR(dev_dax))
+> > +             return PTR_ERR(dev_dax);
+> > +
+> > +     /* child dev_dax instances now own the lifetime of the dax_region */
+> > +     dax_region_put(dax_region);
+> > +     return 0;
+> > +}
+> > +
+> > +static int dax_hmem_remove(struct platform_device *pdev)
+> > +{
+> > +     /* devm handles teardown */
+> > +     return 0;
+>
+> Why have a remove at all?  driver/base/platform.c has
+> the appropriate protections to allow you to not provide one.
+> If you want the comment, just put it after .probe =
+> below.
 
-That document has failed to preclude symbol export fights in the past
-and there is a reasonable argument to try not to retract functionality
-that had been previously exported regardless of that document.
-
-> Really. If you want to play with GPL vs. EXPORT_SYMBOL else this is up
-> to you but I do not see any technical argument to make this particular
-> interface to the page allocator any different from all others that are
-> exported to modules.
-
-I'm failing to find any practical substance to your argument, but in
-the end I agree with Chrishoph, it's up to MM maintainers.
+True, that's a good cleanup.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
