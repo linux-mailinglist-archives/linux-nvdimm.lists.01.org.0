@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8267D568F7
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 14:28:17 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC68568F9
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 14:28:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EE459212AAFE9;
-	Wed, 26 Jun 2019 05:28:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 463AB212AAFEA;
+	Wed, 26 Jun 2019 05:28:18 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,30 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 8CDC8212AAB9F
- for <linux-nvdimm@lists.01.org>; Wed, 26 Jun 2019 05:28:13 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 5A67A212AAFEE
+ for <linux-nvdimm@lists.01.org>; Wed, 26 Jun 2019 05:28:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=YDLkJcbbU4N/zfzWVPo9ZgCQKX5AsR9fCDGQSDpCCD0=; b=eqf0zYAqZkZeG8aDStJr1BpZ1P
- ESvtZ/x6goy5uCLOi8uh5odrF/jDvEPUaqDs779fgL8qsCyiCG2Ery24ccFf7Y0roHYb5/v+BzjZd
- xvJYhdsaPbrOrKlFB9NzVbHgKqVz953pfvNGqyyv5cMEWoHLfF9YDaBYwCVVotAmsfAouontNfJIt
- pC/KsdDr1ehz4StOtp3FSfKb+O6soSwumbQYEJcyvsfr9PEr8MVPAAeAHs4HYu/6nrrbmT2tdJj4K
- nauKDKfBWnolN5vCPrT8Befr6TTsUp5glW5APuxKXXVhJiU6XtHj2xrRMVBIAKAAazFHBbPh/Dc4n
- j7M/oClg==;
+ bh=O8xTiSY5VJngyKM6+yEPSiv/sNrzxm4spoPZD5fr/FE=; b=uYRez3izVT1tTJ2inEjlr+sqzJ
+ mQ/FCU73nGQFwZr8hbyBONC+pRy4Y5zWmPKwE4e+/VnM1Wd54RXoko27P7OJdwYWEVZyOfhCpakZS
+ NceKKQi8BIED/6Zf1boEQOc2fhm7lXJtPKrQRbyudvIk9ok/2lsM7oKgHQmN0A0NUt1wauMOTrnNb
+ YztM4+JK3tURRAcVPdB2QDw04eLlKqyMRUZblAnCS+8D4s/P8NuKrPuYvEzOGKhpFIyCfq1gDkpSy
+ T+Z7xfSW0MFySDPpzpi2T3kL1+k8AT2+W9JX8ZK8GzydNUFd8VyzyqZ163oz2EZ+8MZT6vIfA9Trk
+ 2ljmFk6A==;
 Received: from clnet-p19-102.ikbnet.co.at ([83.175.77.102] helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hg721-0001X8-Jr; Wed, 26 Jun 2019 12:28:10 +0000
+ id 1hg724-0001YD-CI; Wed, 26 Jun 2019 12:28:12 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
-Subject: [PATCH 16/25] device-dax: use the dev_pagemap internal refcount
-Date: Wed, 26 Jun 2019 14:27:15 +0200
-Message-Id: <20190626122724.13313-17-hch@lst.de>
+Subject: [PATCH 17/25] PCI/P2PDMA: use the dev_pagemap internal refcount
+Date: Wed, 26 Jun 2019 14:27:16 +0200
+Message-Id: <20190626122724.13313-18-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190626122724.13313-1-hch@lst.de>
 References: <20190626122724.13313-1-hch@lst.de>
@@ -67,105 +67,130 @@ Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 The functionality is identical to the one currently open coded in
-device-dax.
+p2pdma.c.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/dax/dax-private.h |  4 ----
- drivers/dax/device.c      | 43 ---------------------------------------
- 2 files changed, 47 deletions(-)
+ drivers/pci/p2pdma.c | 57 ++++----------------------------------------
+ 1 file changed, 4 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-index b4177aafbbd1..c915889d1769 100644
---- a/drivers/dax/dax-private.h
-+++ b/drivers/dax/dax-private.h
-@@ -43,8 +43,6 @@ struct dax_region {
-  * @target_node: effective numa node if dev_dax memory range is onlined
-  * @dev - device core
-  * @pgmap - pgmap for memmap setup / lifetime (driver owned)
-- * @ref: pgmap reference count (driver owned)
-- * @cmp: @ref final put completion (driver owned)
-  */
- struct dev_dax {
- 	struct dax_region *region;
-@@ -52,8 +50,6 @@ struct dev_dax {
- 	int target_node;
- 	struct device dev;
- 	struct dev_pagemap pgmap;
--	struct percpu_ref ref;
--	struct completion cmp;
+diff --git a/drivers/pci/p2pdma.c b/drivers/pci/p2pdma.c
+index ebd8ce3bba2e..608f84df604a 100644
+--- a/drivers/pci/p2pdma.c
++++ b/drivers/pci/p2pdma.c
+@@ -24,12 +24,6 @@ struct pci_p2pdma {
+ 	bool p2pmem_published;
  };
  
- static inline struct dev_dax *to_dev_dax(struct device *dev)
-diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-index b5257038c188..1af823b2fe6b 100644
---- a/drivers/dax/device.c
-+++ b/drivers/dax/device.c
-@@ -14,36 +14,6 @@
- #include "dax-private.h"
- #include "bus.h"
+-struct p2pdma_pagemap {
+-	struct dev_pagemap pgmap;
+-	struct percpu_ref ref;
+-	struct completion ref_done;
+-};
+-
+ static ssize_t size_show(struct device *dev, struct device_attribute *attr,
+ 			 char *buf)
+ {
+@@ -78,32 +72,6 @@ static const struct attribute_group p2pmem_group = {
+ 	.name = "p2pmem",
+ };
  
--static struct dev_dax *ref_to_dev_dax(struct percpu_ref *ref)
+-static struct p2pdma_pagemap *to_p2p_pgmap(struct percpu_ref *ref)
 -{
--	return container_of(ref, struct dev_dax, ref);
+-	return container_of(ref, struct p2pdma_pagemap, ref);
 -}
 -
--static void dev_dax_percpu_release(struct percpu_ref *ref)
+-static void pci_p2pdma_percpu_release(struct percpu_ref *ref)
 -{
--	struct dev_dax *dev_dax = ref_to_dev_dax(ref);
+-	struct p2pdma_pagemap *p2p_pgmap = to_p2p_pgmap(ref);
 -
--	dev_dbg(&dev_dax->dev, "%s\n", __func__);
--	complete(&dev_dax->cmp);
+-	complete(&p2p_pgmap->ref_done);
 -}
 -
--static void dev_dax_percpu_exit(struct dev_pagemap *pgmap)
+-static void pci_p2pdma_percpu_kill(struct dev_pagemap *pgmap)
 -{
--	struct dev_dax *dev_dax = container_of(pgmap, struct dev_dax, pgmap);
--
--	dev_dbg(&dev_dax->dev, "%s\n", __func__);
--	wait_for_completion(&dev_dax->cmp);
--	percpu_ref_exit(pgmap->ref);
--}
--
--static void dev_dax_percpu_kill(struct dev_pagemap *pgmap)
--{
--	struct dev_dax *dev_dax = container_of(pgmap, struct dev_dax, pgmap);
--
--	dev_dbg(&dev_dax->dev, "%s\n", __func__);
 -	percpu_ref_kill(pgmap->ref);
 -}
 -
- static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
- 		const char *func)
+-static void pci_p2pdma_percpu_cleanup(struct dev_pagemap *pgmap)
+-{
+-	struct p2pdma_pagemap *p2p_pgmap =
+-		container_of(pgmap, struct p2pdma_pagemap, pgmap);
+-
+-	wait_for_completion(&p2p_pgmap->ref_done);
+-	percpu_ref_exit(&p2p_pgmap->ref);
+-}
+-
+ static void pci_p2pdma_release(void *data)
  {
-@@ -441,11 +411,6 @@ static void dev_dax_kill(void *dev_dax)
- 	kill_dev_dax(dev_dax);
+ 	struct pci_dev *pdev = data;
+@@ -153,11 +121,6 @@ static int pci_p2pdma_setup(struct pci_dev *pdev)
+ 	return error;
  }
  
--static const struct dev_pagemap_ops dev_dax_pagemap_ops = {
--	.kill		= dev_dax_percpu_kill,
--	.cleanup	= dev_dax_percpu_exit,
+-static const struct dev_pagemap_ops pci_p2pdma_pagemap_ops = {
+-	.kill		= pci_p2pdma_percpu_kill,
+-	.cleanup	= pci_p2pdma_percpu_cleanup,
 -};
 -
- int dev_dax_probe(struct device *dev)
+ /**
+  * pci_p2pdma_add_resource - add memory for use as p2p memory
+  * @pdev: the device to add the memory to
+@@ -171,7 +134,6 @@ static const struct dev_pagemap_ops pci_p2pdma_pagemap_ops = {
+ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 			    u64 offset)
  {
- 	struct dev_dax *dev_dax = to_dev_dax(dev);
-@@ -463,15 +428,7 @@ int dev_dax_probe(struct device *dev)
- 		return -EBUSY;
+-	struct p2pdma_pagemap *p2p_pgmap;
+ 	struct dev_pagemap *pgmap;
+ 	void *addr;
+ 	int error;
+@@ -194,26 +156,15 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 			return error;
  	}
  
--	init_completion(&dev_dax->cmp);
--	rc = percpu_ref_init(&dev_dax->ref, dev_dax_percpu_release, 0,
--			GFP_KERNEL);
--	if (rc)
--		return rc;
+-	p2p_pgmap = devm_kzalloc(&pdev->dev, sizeof(*p2p_pgmap), GFP_KERNEL);
+-	if (!p2p_pgmap)
++	pgmap = devm_kzalloc(&pdev->dev, sizeof(*pgmap), GFP_KERNEL);
++	if (!pgmap)
+ 		return -ENOMEM;
 -
--	dev_dax->pgmap.ref = &dev_dax->ref;
- 	dev_dax->pgmap.type = MEMORY_DEVICE_DEVDAX;
--	dev_dax->pgmap.ops = &dev_dax_pagemap_ops;
- 	addr = devm_memremap_pages(dev, &dev_dax->pgmap);
- 	if (IS_ERR(addr))
- 		return PTR_ERR(addr);
+-	init_completion(&p2p_pgmap->ref_done);
+-	error = percpu_ref_init(&p2p_pgmap->ref,
+-			pci_p2pdma_percpu_release, 0, GFP_KERNEL);
+-	if (error)
+-		goto pgmap_free;
+-
+-	pgmap = &p2p_pgmap->pgmap;
+-
+ 	pgmap->res.start = pci_resource_start(pdev, bar) + offset;
+ 	pgmap->res.end = pgmap->res.start + size - 1;
+ 	pgmap->res.flags = pci_resource_flags(pdev, bar);
+-	pgmap->ref = &p2p_pgmap->ref;
+ 	pgmap->type = MEMORY_DEVICE_PCI_P2PDMA;
+ 	pgmap->pci_p2pdma_bus_offset = pci_bus_address(pdev, bar) -
+ 		pci_resource_start(pdev, bar);
+-	pgmap->ops = &pci_p2pdma_pagemap_ops;
+ 
+ 	addr = devm_memremap_pages(&pdev->dev, pgmap);
+ 	if (IS_ERR(addr)) {
+@@ -224,7 +175,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ 	error = gen_pool_add_owner(pdev->p2pdma->pool, (unsigned long)addr,
+ 			pci_bus_address(pdev, bar) + offset,
+ 			resource_size(&pgmap->res), dev_to_node(&pdev->dev),
+-			&p2p_pgmap->ref);
++			pgmap->ref);
+ 	if (error)
+ 		goto pages_free;
+ 
+@@ -236,7 +187,7 @@ int pci_p2pdma_add_resource(struct pci_dev *pdev, int bar, size_t size,
+ pages_free:
+ 	devm_memunmap_pages(&pdev->dev, pgmap);
+ pgmap_free:
+-	devm_kfree(&pdev->dev, p2p_pgmap);
++	devm_kfree(&pdev->dev, pgmap);
+ 	return error;
+ }
+ EXPORT_SYMBOL_GPL(pci_p2pdma_add_resource);
 -- 
 2.20.1
 
