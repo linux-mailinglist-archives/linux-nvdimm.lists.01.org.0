@@ -2,54 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9623256209
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 08:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FDD05627E
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Jun 2019 08:42:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6AAE0212A36FE;
-	Tue, 25 Jun 2019 23:07:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id AF396212A36FF;
+	Tue, 25 Jun 2019 23:42:01 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=66.55.73.32; helo=ushosting.nmnhosting.com;
- envelope-from=alastair@d-silva.org; receiver=linux-nvdimm@lists.01.org 
-Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
- [66.55.73.32]) by ml01.01.org (Postfix) with ESMTP id 181EE212A36DD
- for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 23:07:51 -0700 (PDT)
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
- by ushosting.nmnhosting.com (Postfix) with ESMTPS id D98F52DC0076;
- Wed, 26 Jun 2019 02:07:50 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
- s=201810a; t=1561529271;
- bh=PnFeQBJrBN0kuPckvbbLTpCe2ZTzGtXQh9GKRCi7Ozs=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=BttHxzSaxRhW0isT2fne0Z55T1QSz5OBnpx9RWir+fLdNA2wE4jiPDVwjkyGHC9AF
- 0INk3Bu4w6G17+EreKMoSem+ZtX0p5Aa1MC5q6/pCEkQStrEkUsbMYXQAVTYFr4PrE
- 6Qz7U6ASgXZtL/VjI4RhWaWyfUbQKktaUKB6xCMFSoMkan678M1w9HpZveIoTc+qMv
- RROctM+3nYh7EO+7AHBf+aALlOXg2XAPhkPJVaPnEV9sl+d6zh6WuFQNwOmtzyIf/y
- hR1yrYRO2l1WDCNPtuokzg9JDeIho0VvN9ejxu62AyDFc5WS30gWXoOtxZLk1vTFEo
- rmlsAdFEgOBjEKBZswnFgpODUXjPZ4IAo97MmBqCPp2BfUCovjYCI7TC756PWXQnrA
- HvM628Ho1XwwCZwadX5fiAkjG/b5JyrKGVBNTMjEWAuMDP+U2bQLeJ63eA3kkPqEKr
- W9W07si6/D+GBdwsN/M+Asayo/L8E2stRQpFDHs7cAB/D/xHP51FZzDTzuNYeDNF9E
- nf+Et+4iuDgjP4q2popE29viGXt4sbnwPpSHQnoUkril4UQ2+NDQhIJkMH+8szo/9u
- /FJT7YzYhj6MlnN+arpU7Y8QanfNH3Fw5Jn8Mu1h5s36jprug5CMa7gm0C4JRMDP2x
- iBtIMbaHr+tfUiXskNLhSsZg=
-Received: from adsilva.ozlabs.ibm.com (static-82-10.transact.net.au
- [122.99.82.10] (may be forged)) (authenticated bits=0)
- by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x5Q67U6a031223
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 26 Jun 2019 16:07:46 +1000 (AEST)
- (envelope-from alastair@d-silva.org)
-Message-ID: <214e5c621bf101a92c7abdf815a7300f0dacf496.camel@d-silva.org>
-Subject: Re: [PATCH] nvdimm: remove prototypes for nonexistent functions
-From: "Alastair D'Silva" <alastair@d-silva.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 26 Jun 2019 16:07:29 +1000
-In-Reply-To: <20190626060350.15715-1-alastair@au1.ibm.com>
-References: <20190626060350.15715-1-alastair@au1.ibm.com>
-User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+ client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 15279212A36FC
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 23:41:59 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id a93so859612pla.7
+ for <linux-nvdimm@lists.01.org>; Tue, 25 Jun 2019 23:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=97fNQhRc8wq4ewqRwHUZivSXGNy3wo+DiktNt6BuM1o=;
+ b=m8w/QLFUOkV2r8nM4dXom4nB8yKJb7/7QTMOMQn0qijo9CexrHeK+bR0MPOk7K64RN
+ oMDOQhVkXnI4UYsxoZERTzMchuU8ZuSXQVbe7PD7GBq58swJ1B0wl9zg2T1jDJjIFcpW
+ O/5R7uaHiYc5vvAJDPHpVhmTpcBeCykDYFrlkLu92iDqXDEGHmkNFrPVme8ha3yeMa+9
+ SSjqnz+drMupIrIAA5p2oUG6JB/gHz+XdzOb+NPLguWQM152NiUsdJnj04d+wIazVHoY
+ RqDDXsDiktD7TWekl63ZaXNaVelF0ltlqznPeRmml4YQVzfq60nVLckHZybN7zV2zT1m
+ aBEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=97fNQhRc8wq4ewqRwHUZivSXGNy3wo+DiktNt6BuM1o=;
+ b=lfOh6ZFu8UkPeJH4R3QZSyYSc0QvrkW34K0eAKQTYMXZshD7/czSdYTrhf7nAG2A69
+ K9SRtlt7VzmuS5j0cSRcBxSlleQCV+Vsq39AM95jspA4yo5UD0bMKQ1/x/kSoJVUKqGp
+ U8aHu69ddJ9DsEmQCMOTrkq8J7OVdgRI/yXn0A3ujjD5c9C98mwnZKpDA9K5tUKhQe2f
+ 1oBVgTSgiMm4RHl5UIlwMIBgi5idjuVwrlTpdzVz3oBvGydylO5KXMSPi0T/f0HKKJat
+ AzFzXqjzhdRb7w5U6rtyE/wcOcDcsP6ok4X8CL09VDgFxUspan1Cth5KsdR/axZuiSvV
+ Sv9w==
+X-Gm-Message-State: APjAAAX6U0Jkuff7zaeMDoVdwb2M1OA3ieZFtX7yrUlnyWZiXmyl0GBH
+ wZcZ+aoyZwJeA66IjX85LKV3/qADAl9i0JcDqQUyXQ==
+X-Google-Smtp-Source: APXvYqybmTOAarjOR0jsvnzpNTD7C7S9tNEkokPreMksaC4ZkzPoppWa0LA/1WlZ/NQmXAUQqe9Hs4JcwK0nevbM4K4=
+X-Received: by 2002:a17:902:1004:: with SMTP id
+ b4mr3503891pla.325.1561531318934; 
+ Tue, 25 Jun 2019 23:41:58 -0700 (PDT)
 MIME-Version: 1.0
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2
- (mail2.nmnhosting.com [10.0.1.20]); Wed, 26 Jun 2019 16:07:46 +1000 (AEST)
+References: <20190617082613.109131-1-brendanhiggins@google.com>
+ <20190617082613.109131-2-brendanhiggins@google.com>
+ <20190620001526.93426218BE@mail.kernel.org>
+ <CAFd5g46Jhxsz6_VXHEVYvTeDRwwzgKpr=aUWLL5b3S4kUukb8g@mail.gmail.com>
+ <20190625214427.GN19023@42.do-not-panic.com>
+ <CAFd5g47OABqN127cPKqoCOA_Wr9w=LFh_0XkF7LXu2iY9sFkSw@mail.gmail.com>
+ <20190625230253.GQ19023@42.do-not-panic.com>
+In-Reply-To: <20190625230253.GQ19023@42.do-not-panic.com>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Tue, 25 Jun 2019 23:41:47 -0700
+Message-ID: <CAFd5g45fSdpytudDyD3Yo1ti=kU_JJ6S9yz53_L=pnZTjQFU9A@mail.gmail.com>
+Subject: Re: [PATCH v5 01/18] kunit: test: add KUnit test runner core
+To: Luis Chamberlain <mcgrof@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,51 +71,142 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Kees Cook <keescook@google.com>,
+ linux-fsdevel@vger.kernel.org, Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 2019-06-26 at 16:03 +1000, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> These functions don't exist, so remove the prototypes for them.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->  drivers/nvdimm/nd-core.h | 4 ----
->  1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-> index 391e88de3a29..57d162dbefaa 100644
-> --- a/drivers/nvdimm/nd-core.h
-> +++ b/drivers/nvdimm/nd-core.h
-> @@ -136,11 +136,7 @@ void nd_region_disable(struct nvdimm_bus
-> *nvdimm_bus, struct device *dev);
->  int nvdimm_bus_create_ndctl(struct nvdimm_bus *nvdimm_bus);
->  void nvdimm_bus_destroy_ndctl(struct nvdimm_bus *nvdimm_bus);
->  void nd_synchronize(void);
-> -int nvdimm_bus_register_dimms(struct nvdimm_bus *nvdimm_bus);
-> -int nvdimm_bus_register_regions(struct nvdimm_bus *nvdimm_bus);
-> -int nvdimm_bus_init_interleave_sets(struct nvdimm_bus *nvdimm_bus);
->  void __nd_device_register(struct device *dev);
-> -int nd_match_dimm(struct device *dev, void *data);
->  struct nd_label_id;
->  char *nd_label_gen_id(struct nd_label_id *label_id, u8 *uuid, u32
-> flags);
->  bool nd_is_uuid_unique(struct device *dev, u8 *uuid);
+On Tue, Jun 25, 2019 at 4:02 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+>
+> On Tue, Jun 25, 2019 at 03:14:45PM -0700, Brendan Higgins wrote:
+> > On Tue, Jun 25, 2019 at 2:44 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> > > Since its a new architecture and since you seem to imply most tests
+> > > don't require locking or even IRQs disabled, I think its worth to
+> > > consider the impact of adding such extreme locking requirements for
+> > > an initial ramp up.
+> >
+> > Fair enough, I can see the point of not wanting to use irq disabled
+> > until we get someone complaining about it, but I think making it
+> > thread safe is reasonable. It means there is one less thing to confuse
+> > a KUnit user and the only penalty paid is some very minor performance.
+>
+> One reason I'm really excited about kunit is speed... so by all means I
+> think we're at a good point to analyze performance optimizationsm if
+> they do make sense.
 
+Yeah, but I think there are much lower hanging fruit than this (as you
+point out below). I am all for making/keeping KUnit super fast, but I
+also don't want to waste time with premature optimizations and I think
+having thread safe expectations and non-thread safe expectations hurts
+usability.
 
-Whoops, fat-fingered this, nothing has changed.
+Still, I am on board with making this a mutex instead of a spinlock for now.
 
--- 
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva    
-Twitter: @EvilDeece
-blog: http://alastair.d-silva.org
+> While on the topic of parallization, what about support for running
+> different test cases in parallel? Or at the very least different kunit
+> modules in parallel.  Few questions come up based on this prospect:
+>
+>   * Why not support parallelism from the start?
 
+Just because it is more work and there isn't much to gain from it right now.
 
+Some numbers:
+I currently have a collection of 86 test cases in the branch that this
+patchset is from. I turned on PRINTK_TIME and looked at the first
+KUnit output and the last. On UML, start time was 0.090000, and end
+time was 0.090000. Looks like sched_clock is not very good on UML.
+
+Still it seems quite likely that all of these tests run around 0.01
+seconds or less on UML: I ran KUnit with only 2 test cases enabled
+three times and got an average runtime of 1.55867 seconds with a
+standard deviation of 0.0346747. I then ran it another three times
+with all test cases enabled and got an average runtime of 1.535
+seconds with a standard deviation of 0.0150997. The second average is
+less, but that doesn't really mean anything because it is well within
+one standard deviation with a very small sample size. Nevertheless, we
+can conclude that the actual runtime of those 84 test cases is most
+likely within one standard deviation, so on the order of 0.01 seconds.
+
+On x86 running on QEMU, first message from KUnit was printed at
+0.194251 and the last KUnit message was printed at 0.340915, meaning
+that all 86 test cases ran in about 0.146664 seconds.
+
+In any case, running KUnit tests in parallel is definitely something I
+plan on adding it eventually, but it just doesn't really seem worth it
+right now. I find the incremental build time of the kernel to
+typically be between 3 and 30 seconds, and a clean build to be between
+30 seconds to several minutes, depending on the number of available
+cores, so I don't think most users would even notice the amount of
+runtime contributed by the actual unit tests until we start getting
+into the 1000s of test cases. I don't suspect it will become an issue
+until we get into the 10,000s of test cases. I think we are a pretty
+long way off from that.
+
+>   * Are you opposed to eventually having this added? For instance, there is
+>     enough code on lib/test_kmod.c for batching tons of kthreads each
+>     one running its own thing for testing purposes which could be used
+>     as template.
+
+I am not opposed to adding it eventually at all. I actually plan on
+doing so, just not in this patchset. There are a lot of additional
+features, improvements, and sugar that I really want to add, so much
+so that most of it doesn't belong in this patchset; I just think this
+is one of those things that belongs in a follow up. I tried to boil
+down this patchset to as small as I could while still being useful;
+this is basically an MVP. Maybe after this patchset gets merged I
+should post a list of things I have ready for review, or would like to
+work on, and people can comment on what things they want to see next.
+
+>   * If we eventually *did* support it:
+>     - Would logs be skewed?
+
+Probably, before I went with the TAP approach, I was tagging each
+message with the test case it came from and I could have parsed it and
+assembled a coherent view of the logs using that; now that I am using
+TAP conforming output, that won't work. I haven't really thought too
+hard about how to address it, but there are ways. For the UML users, I
+am planning on adding a feature to guarantee hermeticity between tests
+running in different modules by adding a feature that allows a single
+kernel to be built with all tests included, and then determine which
+tests get run by passing in command line arguments or something. This
+way you can get the isolation from running tests in separate
+environments without increasing the build cost. We could also use this
+method to achieve parallelism by dispatching multiple kernels at once.
+That only works for UML, but I imagine you could do something similar
+for users running tests under qemu.
+
+>     - Could we have a way to query: give me log for only kunit module
+>       named "foo"?
+
+Yeah, I think that would make sense as part of the hermeticity thing I
+mentioned above.
+
+Hope that seems reasonable!
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
