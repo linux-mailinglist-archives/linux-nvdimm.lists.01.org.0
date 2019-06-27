@@ -2,51 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861E858B53
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Jun 2019 21:59:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8E558CF4
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Jun 2019 23:22:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12274212AB008;
-	Thu, 27 Jun 2019 12:59:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E6AB521297063;
+	Thu, 27 Jun 2019 14:22:55 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id ECC5D212A36C4
- for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 12:59:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=1zaJPISJ/EM3luyF1vz7G/5Xji346kDTt6heztPdAbM=; b=Opin+Qydyf8b8u+uTC3Ub0SNO
- bNiTRXwZJKK3vmcNgV3Q+9ZsiLEpy0Z/TptTzlqTB/at+xjh5msPBhEbfBZw2ume9YxOvHLAyj+mR
- vneJqGV8dfXGHd2fo6u2nzXrMquEyTDAhcs/rjOCT1tNz10efzK73Zc+asQMhIG2/TKghMpiHcCEt
- jQMbY9H3RIcg2UIxJBohct5anRwA9gw7fz+Rq2giBj3pqDhWPfqxDk3f6ts7XQjV6A5U21Aq3bcfP
- eqUCt08yZKTPer3mQ6Bg+Sly5ULCt7EJx5YiuALhtj6Cg2It6s4hByBpQujCnvyeNIeuWALavj14k
- pspOiFNAg==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
- Hat Linux)) id 1hgaYe-0007ij-P9; Thu, 27 Jun 2019 19:59:48 +0000
-Date: Thu, 27 Jun 2019 12:59:48 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] filesystem-dax: Disable PMD support
-Message-ID: <20190627195948.GB4286@bombadil.infradead.org>
-References: <156159454541.2964018.7466991316059381921.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190627123415.GA4286@bombadil.infradead.org>
- <CAPcyv4jQP-SFJGor-Q3VCRQ0xwt3MuVpH2qHx2wzyRA88DGQww@mail.gmail.com>
- <CAPcyv4jjqooboxivY=AsfEPhCvxdwU66GpwE9vM+cqrZWvtX3g@mail.gmail.com>
- <CAPcyv4h6HgNE38RF5TxO3C268ZvrxgcPNrPWOt94MnO5gP_pjw@mail.gmail.com>
- <CAPcyv4gwd1_VHk_MfHeNSxyH+N1=aatj9WkKXqYNPkSXe4bFDg@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id 1C31621290DE4
+ for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 14:22:53 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id u15so2563377oiv.0
+ for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 14:22:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=x3+/AfxLXuFdTRt+wVJ5N88Fn0d7Jt0QcG3rrM/CFYA=;
+ b=JtErswGhYDCrNfECuAxOCOEYWix8XG5/JXokcc4VzGBzvI/VkBg2osv2Vfd1YgD00G
+ zE3E2Ho8y5Rhx0feStd4vbr6fQAxsfG4Nv5BPQm7jBEqo8BCOCXIu/4vhxUCDR29BQ+U
+ OLa77XjjP0Pm69hLirNXv/ftJEeFm2u11Pr3wkRrdSGxl28uHh1lWjlkhkChxCFSzuQr
+ c5dumHc4sU+K0juZy4Sj6VXj/uQ6kLWl33HbWH9Y5TGQ7rw7vksCHAsfCxblpx1AkLnM
+ LPlF8cwYtS1Q06JBzBTUzKidcFSmV8BteXYxDnFcoAX+1FYM8DQl8UDccYpstyCu0Q6d
+ /OGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=x3+/AfxLXuFdTRt+wVJ5N88Fn0d7Jt0QcG3rrM/CFYA=;
+ b=g5E0doXHXhPiUDfP7MEhMciVSoNLTJv7UoYNgKucOBoyrj81y+A9Y4nttpZNHpR2v1
+ vuCiILqKqldCKhAHIKgG/xhu+NuYmWvZVi8scsXRD6p1zx5gMQ04tx34jLjJ45XhO9Hr
+ moojAkOPXGXGBHO9reNRY16wRrqOQrzQBqxmI/KEI1JyXwiADoGhw/CvTPEil426kxGz
+ ni7nuKCh9l3Tw0+E42VPDO4Lehdiy+A1eFs7PektAUV20V3wncwROLCq5kV5IyFYmHKg
+ q6LGqRVpNsV0nrL7QIuLkyEx+cNwoYFWf/ZuOmPfO+yAnQuq6oDVqc5sxAzEcqrw186O
+ 79ew==
+X-Gm-Message-State: APjAAAWdYU4UCmCoYR6Z7h6YorfoTTN1KggsYQSF0Dn0CZCtCdcGn4+f
+ 5Wt5J7QPMoC5YrkqJb0VJ6E5cgENzX9xo1AIhy6dfg==
+X-Google-Smtp-Source: APXvYqx7n5SoatNrD/f6URkFx2YC8fws4Ygfo/qo5bOAO4OD2enVvoI0R9bsVc0OVj1JFlqOFkvvecYbXNjpEzBEU1w=
+X-Received: by 2002:aca:fc50:: with SMTP id a77mr3511395oii.0.1561670572927;
+ Thu, 27 Jun 2019 14:22:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4gwd1_VHk_MfHeNSxyH+N1=aatj9WkKXqYNPkSXe4bFDg@mail.gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190627141953.GC3624@swarm07>
+In-Reply-To: <20190627141953.GC3624@swarm07>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 27 Jun 2019 14:22:42 -0700
+Message-ID: <CAPcyv4h=MoP4GSF8xRULy54K7Rt9g2pnF3Xw0BNPRyYf5fKs0A@mail.gmail.com>
+Subject: Re: A write error on converting dax0.0 to kmem
+To: heysid@ajou.ac.kr
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,50 +65,51 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Seema Pandit <seema.pandit@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, jsahn@ajou.ac.kr,
+ Linux MM <linux-mm@kvack.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jun 27, 2019 at 12:09:29PM -0700, Dan Williams wrote:
-> > This bug feels like we failed to unlock, or unlocked the wrong entry
-> > and this hunk in the bisected commit looks suspect to me. Why do we
-> > still need to drop the lock now that the radix_tree_preload() calls
-> > are gone?
-> 
-> Nevermind, unmapp_mapping_pages() takes a sleeping lock, but then I
-> wonder why we don't restart the lookup like the old implementation.
+[ this is on-topic for linux-nvdimm, but likely off-topic for
+linux-mm. I leave it cc'd for now ]
 
-We have the entry locked:
+On Thu, Jun 27, 2019 at 7:20 AM Won-Kyo Choe <heysid@ajou.ac.kr> wrote:
+>
+> Hi, Dave. I hope this message is sent appropriately in this time.
+>
+> We've recently got a new machine which contains Optane DC memory and
+> tried to use your patch set[1] in a recent kernel version(5.1.15).
+> Unfortunately, we've failed on the last step[2] that describes
+> converting device-dax driver as kmem. The main error is "echo: write error: No such device".
+> We are certain that there must be a device and it should be recognized
+> since we can see it in a path "/dev/dax0.0", however, somehow it keeps saying that error.
+>
+> We've followed all your steps in the first patch[1] except a step about qemu configuration
+> since we already have a persistent memory. We even checked that there is a region
+> mapped with persistent memory from a command, `dmesg | grep e820` described in below.
+>
+> BIOS-e820: [mem 0x0000000880000000-0x00000027ffffffff] persistent (type 7)
+>
+> As the address is shown above, the thing is that in the qemu, the region is set as
+> persistent (type 12) but in the native machine, it says persistent (type 7).
+> We've still tried to find what type means and we simply guess that this is one
+> of the reasons why we are not able to set the device as kmem.
+>
+> We'd like to know why this error comes up and how can we handle this problem.
+> We would really appreciate it if you are able to little bit help us.
 
-                /*
-                 * Make sure 'entry' remains valid while we drop
-                 * the i_pages lock.
-                 */
-                dax_lock_entry(xas, entry);
+Before digging deeper let's first verify that you have switched
+device-dax from using "class" devices to using "bus" devices. Yes,
+that step is not included in the changelog instructions. Here is a man
+page for a tool that can automate some of the steps for you:
 
-                /*
-                 * Besides huge zero pages the only other thing that gets
-                 * downgraded are empty entries which don't need to be
-                 * unmapped.
-                 */
-                if (dax_is_zero_entry(entry)) {
-                        xas_unlock_irq(xas);
-                        unmap_mapping_pages(mapping,
-                                        xas->xa_index & ~PG_PMD_COLOUR,
-                                        PG_PMD_NR, false);
-                        xas_reset(xas);
-                        xas_lock_irq(xas);
-                }
+http://pmem.io/ndctl/daxctl-migrate-device-model.html
 
-If something can remove a locked entry, then that would seem like the
-real bug.  Might be worth inserting a lookup there to make sure that it
-hasn't happened, I suppose?
+You can validate that you're in "bus" mode by making sure a "dax0.0"
+link appears under "/sys/bus/dax/devices".
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
