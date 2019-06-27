@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8718257EB0
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Jun 2019 10:51:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9952857EB5
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Jun 2019 10:52:10 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EEFD1212A36FF;
-	Thu, 27 Jun 2019 01:51:21 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 48872212AAB64;
+	Thu, 27 Jun 2019 01:52:09 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
@@ -15,22 +15,22 @@ Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
 Received: from newverein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 8DAB82129F0E1
- for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 01:51:20 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 4965D2129F0E1
+ for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 01:52:07 -0700 (PDT)
 Received: by newverein.lst.de (Postfix, from userid 2407)
- id 742B868B20; Thu, 27 Jun 2019 10:50:47 +0200 (CEST)
-Date: Thu, 27 Jun 2019 10:50:47 +0200
+ id B4FDB68B20; Thu, 27 Jun 2019 10:51:35 +0200 (CEST)
+Date: Thu, 27 Jun 2019 10:51:35 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH 11/25] memremap: lift the devmap_enable manipulation
- into devm_memremap_pages
-Message-ID: <20190627085047.GA11420@lst.de>
+Subject: Re: [PATCH 15/25] memremap: provide an optional internal refcount
+ in struct dev_pagemap
+Message-ID: <20190627085135.GB11420@lst.de>
 References: <20190626122724.13313-1-hch@lst.de>
- <20190626122724.13313-12-hch@lst.de>
- <20190626190445.GE4605@iweiny-DESK2.sc.intel.com>
+ <20190626122724.13313-16-hch@lst.de>
+ <20190626214750.GC8399@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190626190445.GE4605@iweiny-DESK2.sc.intel.com>
+In-Reply-To: <20190626214750.GC8399@iweiny-DESK2.sc.intel.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -53,18 +53,24 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jun 26, 2019 at 12:04:46PM -0700, Ira Weiny wrote:
-> > +static int devmap_managed_enable_get(struct device *dev, struct dev_pagemap *pgmap)
-> > +{
-> > +	if (!pgmap->ops->page_free) {
+On Wed, Jun 26, 2019 at 02:47:50PM -0700, Ira Weiny wrote:
+> > +
+> > +		init_completion(&pgmap->done);
+> > +		error = percpu_ref_init(&pgmap->internal_ref,
+> > +				dev_pagemap_percpu_release, 0, GFP_KERNEL);
+> > +		if (error)
+> > +			return ERR_PTR(error);
+> > +		pgmap->ref = &pgmap->internal_ref;
+> > +	} else {
+> > +		if (!pgmap->ops || !pgmap->ops->kill || !pgmap->ops->cleanup) {
+> > +			WARN(1, "Missing reference count teardown definition\n");
+> > +			return ERR_PTR(-EINVAL);
+> > +		}
 > 
-> NIT: later on you add the check for pgmap->ops...  it should probably be here.
-> 
-> But not sure that bisection will be an issue here.
+> After this series are there any users who continue to supply their own
+> reference object and these callbacks?
 
-At this point we do not allow a NULL ops pointer.  That only becomes
-a valid option one the internal refcount is added.  Until then a NULL
-->ops pointer leads to an error return from devm_memremap_pages.
+Yes, fsdax uses the block layer request_queue reference count.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
