@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDECC5A4E8
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Jun 2019 21:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E565A4E9
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Jun 2019 21:11:39 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3353E2193DFA8;
+	by ml01.01.org (Postfix) with ESMTP id 72F6021BB2520;
 	Fri, 28 Jun 2019 12:11:26 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,23 +15,23 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C7D712129EB9B
- for <linux-nvdimm@lists.01.org>; Fri, 28 Jun 2019 12:11:22 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 3A857212AB4FE
+ for <linux-nvdimm@lists.01.org>; Fri, 28 Jun 2019 12:11:23 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
  28 Jun 2019 12:11:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,428,1557212400"; d="scan'208";a="173564765"
+X-IronPort-AV: E=Sophos;i="5.63,428,1557212400"; d="scan'208";a="173564769"
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
  by orsmga002.jf.intel.com with ESMTP; 28 Jun 2019 12:11:22 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v5 12/13] contrib/ndctl: add bash-completion for the new
- daxctl commands
-Date: Fri, 28 Jun 2019 13:11:09 -0600
-Message-Id: <20190628191110.21428-13-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH v5 13/13] test: Add a unit test for
+ daxctl-reconfigure-device and friends
+Date: Fri, 28 Jun 2019 13:11:10 -0600
+Message-Id: <20190628191110.21428-14-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628191110.21428-1-vishal.l.verma@intel.com>
 References: <20190628191110.21428-1-vishal.l.verma@intel.com>
@@ -54,64 +54,154 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add bash completion helpers for the new daxctl-reconfigure-device,
-daxctl-online-memory, and daxctl-offline-memory commands.
+Add a new unit test to test dax device reconfiguration and memory
+operations. This teaches test/common about daxctl, and adds an ACPI.NFIT
+bus variable. Since we have to operate on the ACPI.NFIT bus, the test is
+marked as destructive.
 
 Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- contrib/ndctl | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ test/Makefile.am       |  3 +-
+ test/common            | 19 ++++++++--
+ test/daxctl-devices.sh | 81 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 99 insertions(+), 4 deletions(-)
+ create mode 100755 test/daxctl-devices.sh
 
-diff --git a/contrib/ndctl b/contrib/ndctl
-index cacee2d..680fe6a 100755
---- a/contrib/ndctl
-+++ b/contrib/ndctl
-@@ -547,7 +547,7 @@ __daxctlcomp()
+diff --git a/test/Makefile.am b/test/Makefile.am
+index 874c4bb..84474d0 100644
+--- a/test/Makefile.am
++++ b/test/Makefile.am
+@@ -49,7 +49,8 @@ TESTS +=\
+ 	dax.sh \
+ 	device-dax \
+ 	device-dax-fio.sh \
+-	mmap.sh
++	mmap.sh \
++	daxctl-devices.sh
  
- 	COMPREPLY=( $( compgen -W "$1" -- "$2" ) )
- 	for cword in "${COMPREPLY[@]}"; do
--		if [[ "$cword" == @(--region|--dev) ]]; then
-+		if [[ "$cword" == @(--region|--dev|--mode) ]]; then
- 			COMPREPLY[$i]="${cword}="
- 		else
- 			COMPREPLY[$i]="${cword} "
-@@ -572,6 +572,9 @@ __daxctl_comp_options()
- 		--dev)
- 			opts="$(__daxctl_get_devs -i)"
- 			;;
-+		--mode)
-+			opts="system-ram devdax"
-+			;;
- 		*)
- 			return
- 			;;
-@@ -582,8 +585,23 @@ __daxctl_comp_options()
+ if ENABLE_KEYUTILS
+ TESTS += security.sh
+diff --git a/test/common b/test/common
+index 1b9d3da..1814a0c 100644
+--- a/test/common
++++ b/test/common
+@@ -15,12 +15,25 @@ else
+ 	exit 1
+ fi
  
- __daxctl_comp_non_option_args()
- {
--	# there aren't any commands that accept non option arguments yet
--	return
-+	local subcmd=$1
-+	local cur=$2
-+	local opts
+-# NFIT_TEST_BUS[01]
++# DAXCTL
+ #
+-NFIT_TEST_BUS0=nfit_test.0
+-NFIT_TEST_BUS1=nfit_test.1
++if [ -f "../daxctl/daxctl" ] && [ -x "../daxctl/daxctl" ]; then
++	export DAXCTL=../daxctl/daxctl
++elif [ -f "./daxctl/daxctl" ] && [ -x "./daxctl/daxctl" ]; then
++	export DAXCTL=./daxctl/daxctl
++else
++	echo "Couldn't find an daxctl binary"
++	exit 1
++fi
+ 
+ 
++# NFIT_TEST_BUS[01]
++#
++NFIT_TEST_BUS0="nfit_test.0"
++NFIT_TEST_BUS1="nfit_test.1"
++ACPI_BUS="ACPI.NFIT"
++E820_BUS="e820"
 +
-+	case $subcmd in
-+	reconfigure-device)
-+		;&
-+	online-memory)
-+		;&
-+	offline-memory)
-+		opts="$(__daxctl_get_devs -i) all"
-+		;;
-+	*)
-+		return
-+		;;
-+	esac
-+	__daxctlcomp "$opts" "$cur"
- }
+ # Functions
  
- __daxctl_main()
+ # err
+diff --git a/test/daxctl-devices.sh b/test/daxctl-devices.sh
+new file mode 100755
+index 0000000..cfd9362
+--- /dev/null
++++ b/test/daxctl-devices.sh
+@@ -0,0 +1,81 @@
++#!/bin/bash -Ex
++# SPDX-License-Identifier: GPL-2.0
++# Copyright(c) 2019 Intel Corporation. All rights reserved.
++
++rc=77
++. ./common
++
++trap 'cleanup $LINENO' ERR
++
++cleanup()
++{
++	printf "Error at line %d\n" "$1"
++	[[ $testdev ]] && reset_dev
++	exit $rc
++}
++
++find_testdev()
++{
++	local rc=77
++
++	# find a victim device
++	testbus="$ACPI_BUS"
++	testdev=$("$NDCTL" list -b "$testbus" -Ni | jq -er '.[0].dev | .//""')
++	if [[ ! $testdev  ]]; then
++		printf "Unable to find a victim device\n"
++		exit "$rc"
++	fi
++	printf "Found victim dev: %s on bus: %s\n" "$testdev" "$testbus"
++}
++
++setup_dev()
++{
++	test -n "$testbus"
++	test -n "$testdev"
++
++	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
++	testdev=$("$NDCTL" create-namespace -b "$testbus" -m devdax -fe "$testdev" -s 256M | \
++		jq -er '.dev')
++	test -n "$testdev"
++}
++
++reset_dev()
++{
++	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
++}
++
++daxctl_get_dev()
++{
++	"$NDCTL" list -n "$1" -X | jq -er '.[].daxregion.devices[0].chardev'
++}
++
++daxctl_get_mode()
++{
++	"$DAXCTL" list -d "$1" | jq -er '.[].mode'
++}
++
++daxctl_test()
++{
++	local daxdev
++
++	daxdev=$(daxctl_get_dev "$testdev")
++	test -n "$daxdev"
++
++	"$DAXCTL" reconfigure-device -N -m system-ram "$daxdev"
++	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
++	"$DAXCTL" online-memory "$daxdev"
++	"$DAXCTL" offline-memory "$daxdev"
++	"$DAXCTL" reconfigure-device -m devdax "$daxdev"
++	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
++	"$DAXCTL" reconfigure-device -m system-ram "$daxdev"
++	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
++	"$DAXCTL" reconfigure-device -O -m devdax "$daxdev"
++	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
++}
++
++find_testdev
++setup_dev
++rc=1
++daxctl_test
++reset_dev
++exit 0
 -- 
 2.20.1
 
