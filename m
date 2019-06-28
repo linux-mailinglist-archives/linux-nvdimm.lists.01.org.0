@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB225A4E4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Jun 2019 21:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0E75A4E5
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Jun 2019 21:11:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12A11212ABA35;
+	by ml01.01.org (Postfix) with ESMTP id 665182129EB9B;
 	Fri, 28 Jun 2019 12:11:25 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,23 +15,23 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BAFA62129EBB7
- for <linux-nvdimm@lists.01.org>; Fri, 28 Jun 2019 12:11:20 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 4A2742129EBB7
+ for <linux-nvdimm@lists.01.org>; Fri, 28 Jun 2019 12:11:21 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
  28 Jun 2019 12:11:20 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,428,1557212400"; d="scan'208";a="173564748"
+X-IronPort-AV: E=Sophos;i="5.63,428,1557212400"; d="scan'208";a="173564751"
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
  by orsmga002.jf.intel.com with ESMTP; 28 Jun 2019 12:11:20 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v5 08/13] Documentation/daxctl: add a man page for
- daxctl-reconfigure-device
-Date: Fri, 28 Jun 2019 13:11:05 -0600
-Message-Id: <20190628191110.21428-9-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH v5 09/13] daxctl: add commands to online and offline
+ memory
+Date: Fri, 28 Jun 2019 13:11:06 -0600
+Message-Id: <20190628191110.21428-10-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190628191110.21428-1-vishal.l.verma@intel.com>
 References: <20190628191110.21428-1-vishal.l.verma@intel.com>
@@ -54,177 +54,246 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add a man page describing the new daxctl-reconfigure-device command.
+Add two new commands:
 
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
+  daxctl-online-memory
+  daxctl-offline-memory
+
+to manage the state of hot-plugged memory from the system-ram mode for
+dax devices. This provides a way for the user to online/offline the
+memory as a separate step from the reconfiguration. Without this, a user
+that reconfigures a device into the system-ram mode with the --no-online
+option, would have no way to later online the memory, and would have to
+resort to shell scripting to online them manually via sysfs.
+
 Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- Documentation/daxctl/Makefile.am              |   3 +-
- .../daxctl/daxctl-reconfigure-device.txt      | 139 ++++++++++++++++++
- 2 files changed, 141 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/daxctl/daxctl-reconfigure-device.txt
+ daxctl/builtin.h |   2 +
+ daxctl/daxctl.c  |   2 +
+ daxctl/device.c  | 138 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 141 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/daxctl/Makefile.am b/Documentation/daxctl/Makefile.am
-index 6aba035..715fbad 100644
---- a/Documentation/daxctl/Makefile.am
-+++ b/Documentation/daxctl/Makefile.am
-@@ -28,7 +28,8 @@ endif
- man1_MANS = \
- 	daxctl.1 \
- 	daxctl-list.1 \
--	daxctl-migrate-device-model.1
-+	daxctl-migrate-device-model.1 \
-+	daxctl-reconfigure-device.1
+diff --git a/daxctl/builtin.h b/daxctl/builtin.h
+index 756ba2a..f5a0147 100644
+--- a/daxctl/builtin.h
++++ b/daxctl/builtin.h
+@@ -7,4 +7,6 @@ struct daxctl_ctx;
+ int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_migrate(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx);
++int cmd_online_memory(int argc, const char **argv, struct daxctl_ctx *ctx);
++int cmd_offline_memory(int argc, const char **argv, struct daxctl_ctx *ctx);
+ #endif /* _DAXCTL_BUILTIN_H_ */
+diff --git a/daxctl/daxctl.c b/daxctl/daxctl.c
+index e1ba7b8..1ab0732 100644
+--- a/daxctl/daxctl.c
++++ b/daxctl/daxctl.c
+@@ -72,6 +72,8 @@ static struct cmd_struct commands[] = {
+ 	{ "help", .d_fn = cmd_help },
+ 	{ "migrate-device-model", .d_fn = cmd_migrate },
+ 	{ "reconfigure-device", .d_fn = cmd_reconfig_device },
++	{ "online-memory", .d_fn = cmd_online_memory },
++	{ "offline-memory", .d_fn = cmd_offline_memory },
+ };
  
- CLEANFILES = $(man1_MANS)
+ int main(int argc, const char **argv)
+diff --git a/daxctl/device.c b/daxctl/device.c
+index a1fb698..22cf0c8 100644
+--- a/daxctl/device.c
++++ b/daxctl/device.c
+@@ -30,6 +30,8 @@ static unsigned long flags;
  
-diff --git a/Documentation/daxctl/daxctl-reconfigure-device.txt b/Documentation/daxctl/daxctl-reconfigure-device.txt
-new file mode 100644
-index 0000000..fb2b36b
---- /dev/null
-+++ b/Documentation/daxctl/daxctl-reconfigure-device.txt
-@@ -0,0 +1,139 @@
-+// SPDX-License-Identifier: GPL-2.0
+ enum device_action {
+ 	ACTION_RECONFIG,
++	ACTION_ONLINE,
++	ACTION_OFFLINE,
+ };
+ 
+ #define BASE_OPTIONS() \
+@@ -50,6 +52,11 @@ static const struct option reconfig_options[] = {
+ 	OPT_END(),
+ };
+ 
++static const struct option memory_options[] = {
++	BASE_OPTIONS(),
++	OPT_END(),
++};
 +
-+daxctl-reconfigure-device(1)
-+============================
-+
-+NAME
-+----
-+daxctl-reconfigure-device - Reconfigure a dax device into a different mode
-+
-+SYNOPSIS
-+--------
-+[verse]
-+'daxctl reconfigure-device' <dax0.0> [<dax1.0>...<daxY.Z>] [<options>]
-+
-+EXAMPLES
-+--------
-+
-+* Reconfigure dax0.0 to system-ram mode, don't online the memory
-+----
-+# daxctl reconfigure-device --mode=system-ram --no-online dax0.0
-+[
-+  {
-+    "chardev":"dax0.0",
-+    "size":16777216000,
-+    "target_node":2,
-+    "mode":"system-ram"
-+  }
-+]
-+----
-+
-+* Reconfigure dax0.0 to devdax mode, attempt to offline the memory
-+----
-+# daxctl reconfigure-device --human --mode=devdax --attempt-offline dax0.0
+ static const char *parse_device_options(int argc, const char **argv,
+ 		enum device_action action, const struct option *options,
+ 		const char *usage, struct daxctl_ctx *ctx)
+@@ -70,6 +77,12 @@ static const char *parse_device_options(int argc, const char **argv,
+ 		case ACTION_RECONFIG:
+ 			action_string = "reconfigure";
+ 			break;
++		case ACTION_ONLINE:
++			action_string = "online memory for";
++			break;
++		case ACTION_OFFLINE:
++			action_string = "offline memory for";
++			break;
+ 		default:
+ 			action_string = "<>";
+ 			break;
+@@ -118,6 +131,10 @@ static const char *parse_device_options(int argc, const char **argv,
+ 			}
+ 		}
+ 		break;
++	case ACTION_ONLINE:
++	case ACTION_OFFLINE:
++		/* nothing special */
++		break;
+ 	}
+ 	if (rc) {
+ 		usage_with_options(u, options);
+@@ -287,10 +304,82 @@ static int do_reconfig(struct daxctl_dev *dev, enum daxctl_dev_mode mode,
+ 	return rc;
+ }
+ 
++static int do_xline(struct daxctl_dev *dev, enum device_action action)
 +{
-+  "chardev":"dax0.0",
-+  "size":"15.63 GiB (16.78 GB)",
-+  "target_node":2,
-+  "mode":"devdax"
++	struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
++	const char *devname = daxctl_dev_get_devname(dev);
++	enum daxctl_dev_mode mode;
++	int rc, num_online;
++
++	if (!daxctl_dev_is_enabled(dev)) {
++		fprintf(stderr,
++			"%s: memory operations not possible when disabled\n",
++			devname);
++		return -ENXIO;
++	}
++
++	mode = daxctl_dev_get_mode(dev);
++	if (mode < 0) {
++		fprintf(stderr, "%s: unable to determine current mode: %s\n",
++			devname, strerror(-mode));
++		return rc;
++	}
++	if (mode == DAXCTL_DEV_MODE_DEVDAX) {
++		fprintf(stderr,
++			"%s: memory operations are not applicable in devdax mode\n",
++			devname);
++		return -ENXIO;
++	}
++
++	/* We are enabled, and in the correct mode. Proceed. */
++	num_online = daxctl_memory_is_online(mem);
++	if (num_online < 0) {
++		fprintf(stderr, "%s: unable to determine online state: %s\n",
++			devname, strerror(-num_online));
++		return num_online;
++	}
++
++	switch (action) {
++	case ACTION_ONLINE:
++		if (num_online > 0)
++			fprintf(stderr, "%s: %d section%s already online\n",
++				devname, num_online,
++				num_online == 1 ? "" : "s");
++		rc = daxctl_memory_set_online(mem);
++		if (rc < 0) {
++			fprintf(stderr, "%s: unable to online memory: %s\n",
++				devname, strerror(-rc));
++			return rc;
++		}
++		fprintf(stderr, "%s: %d new section%s onlined\n", devname, rc,
++				rc == 1 ? "" : "s");
++		break;
++	case ACTION_OFFLINE:
++		if (num_online == 0) {
++			fprintf(stderr, "%s: all sections already offline\n",
++				devname);
++			return 0;
++		}
++		rc = daxctl_memory_set_offline(mem);
++		if (rc < 0) {
++			fprintf(stderr, "%s: unable to offline memory: %s\n",
++				devname, strerror(-rc));
++			return rc;
++		}
++		fprintf(stderr, "%s: %d section%s offlined\n", devname, rc,
++				rc == 1 ? "" : "s");
++		break;
++	default:
++		fprintf(stderr, "%s: invalid action: %d\n", devname, action);
++		return -EINVAL;
++	}
++	return 0;
 +}
-+----
 +
-+* Reconfigure all dax devices on region0 to system-ram mode
-+----
-+# daxctl reconfigure-device --mode=system-ram --region=0 all
-+[
-+  {
-+    "chardev":"dax0.0",
-+    "size":16777216000,
-+    "target_node":2,
-+    "mode":"system-ram"
-+  },
-+  {
-+    "chardev":"dax0.1",
-+    "size":16777216000,
-+    "target_node":3,
-+    "mode":"system-ram"
-+  }
-+]
-+----
+ static int do_xaction_device(const char *device, enum device_action action,
+ 		struct daxctl_ctx *ctx, int *processed)
+ {
+-	struct json_object *jdevs = json_object_new_array();
++	struct json_object *jdevs = NULL;
+ 	struct daxctl_region *region;
+ 	struct daxctl_dev *dev;
+ 	int rc = -ENXIO;
+@@ -308,10 +397,23 @@ static int do_xaction_device(const char *device, enum device_action action,
+ 
+ 			switch (action) {
+ 			case ACTION_RECONFIG:
++				/* reconfig needs jdevs, initialize it once */
++				if (!jdevs)
++					jdevs = json_object_new_array();
+ 				rc = do_reconfig(dev, reconfig_mode, jdevs);
+ 				if (rc == 0)
+ 					(*processed)++;
+ 				break;
++			case ACTION_ONLINE:
++				rc = do_xline(dev, action);
++				if (rc == 0)
++					(*processed)++;
++				break;
++			case ACTION_OFFLINE:
++				rc = do_xline(dev, action);
++				if (rc == 0)
++					(*processed)++;
++				break;
+ 			default:
+ 				rc = -EINVAL;
+ 				break;
+@@ -346,3 +448,37 @@ int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx)
+ 			processed == 1 ? "" : "s");
+ 	return rc;
+ }
 +
-+* Run a process called 'some-service' using numactl to restrict its cpu
-+nodes to '0' and '1', and  memory allocations to node 2 (determined using
-+daxctl_dev_get_target_node() or 'daxctl list')
-+----
-+# daxctl reconfigure-device --mode=system-ram --no-online dax0.0
-+[
-+  {
-+    "chardev":"dax0.0",
-+    "size":16777216000,
-+    "target_node":2,
-+    "mode":"system-ram"
-+  }
-+]
++int cmd_online_memory(int argc, const char **argv, struct daxctl_ctx *ctx)
++{
++	char *usage = "daxctl online-memory <device> [<options>]";
++	const char *device = parse_device_options(argc, argv, ACTION_ONLINE,
++			memory_options, usage, ctx);
++	int processed, rc;
 +
-+# numactl --cpunodebind=0-1 --membind=2 -- some-service --opt1 --opt2
-+----
++	rc = do_xaction_device(device, ACTION_ONLINE, ctx, &processed);
++	if (rc < 0)
++		fprintf(stderr, "error onlining memory: %s\n",
++				strerror(-rc));
 +
-+DESCRIPTION
-+-----------
++	fprintf(stderr, "onlined memory for %d device%s\n", processed,
++			processed == 1 ? "" : "s");
++	return rc;
++}
 +
-+Reconfigure the operational mode of a dax device. This can be used to convert
-+a regular 'devdax' mode device to the 'system-ram' mode which allows for the dax
-+range to be hot-plugged into the system as regular memory.
++int cmd_offline_memory(int argc, const char **argv, struct daxctl_ctx *ctx)
++{
++	char *usage = "daxctl offline-memory <device> [<options>]";
++	const char *device = parse_device_options(argc, argv, ACTION_OFFLINE,
++			memory_options, usage, ctx);
++	int processed, rc;
 +
-+NOTE: This is a destructive operation. Any data on the dax device *will* be
-+lost.
++	rc = do_xaction_device(device, ACTION_OFFLINE, ctx, &processed);
++	if (rc < 0)
++		fprintf(stderr, "error offlining memory: %s\n",
++				strerror(-rc));
 +
-+NOTE: Device reconfiguration depends on the dax-bus device model. If dax-class is
-+in use (via the dax_pmem_compat driver), the reconfiguration will fail. See
-+linkdaxctl:daxctl-migrate-device-model[1] for more information.
-+
-+OPTIONS
-+-------
-+-r::
-+--region=::
-+	Restrict the operation to devices belonging to the specified region(s).
-+	A device-dax region is a contiguous range of memory that hosts one or
-+	more /dev/daxX.Y devices, where X is the region id and Y is the device
-+	instance id.
-+
-+-m::
-+--mode=::
-+	Specify the mode to which the dax device(s) should be reconfigured.
-+	- "system-ram": hotplug the device into system memory.
-+
-+	- "devdax": switch to the normal "device dax" mode. This requires the
-+	  kernel to support hot-unplugging 'kmem' based memory. If this is not
-+	  available, a reboot is the only way to switch back to 'devdax' mode.
-+
-+-N::
-+--no-online::
-+	By default, memory sections provided by system-ram devices will be
-+	brought online automatically and immediately with the 'online_movable'
-+	policy. Use this option to disable the automatic onlining behavior.
-+
-+-O::
-+--attempt-offline::
-+	When converting from "system-ram" mode to "devdax", it is expected
-+	that all the memory sections are first made offline. By default,
-+	daxctl won't touch online memory. However with this option, attempt
-+	to offline the memory on the NUMA node associated with the dax device
-+	before converting it back to "devdax" mode.
-+
-+-u::
-+--human::
-+	By default the command will output machine-friendly raw-integer
-+	data. Instead, with this flag, numbers representing storage size
-+	will be formatted as human readable strings with units, other
-+	fields are converted to hexadecimal strings.
-+
-+-v::
-+--verbose::
-+	Emit more debug messages
-+
-+include::../copyright.txt[]
-+
-+SEE ALSO
-+--------
-+linkdaxctl:daxctl-list[1],daxctl-migrate-device-model[1]
++	fprintf(stderr, "offlined memory for %d device%s\n", processed,
++			processed == 1 ? "" : "s");
++	return rc;
++}
 -- 
 2.20.1
 
