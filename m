@@ -1,59 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8E558CF4
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Jun 2019 23:22:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F7059140
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Jun 2019 04:39:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E6AB521297063;
-	Thu, 27 Jun 2019 14:22:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 02D01212AB4C1;
+	Thu, 27 Jun 2019 19:39:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1C31621290DE4
- for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 14:22:53 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id u15so2563377oiv.0
- for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 14:22:53 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 1929A212AB010
+ for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 19:39:50 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id s20so4486631otp.4
+ for <linux-nvdimm@lists.01.org>; Thu, 27 Jun 2019 19:39:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=x3+/AfxLXuFdTRt+wVJ5N88Fn0d7Jt0QcG3rrM/CFYA=;
- b=JtErswGhYDCrNfECuAxOCOEYWix8XG5/JXokcc4VzGBzvI/VkBg2osv2Vfd1YgD00G
- zE3E2Ho8y5Rhx0feStd4vbr6fQAxsfG4Nv5BPQm7jBEqo8BCOCXIu/4vhxUCDR29BQ+U
- OLa77XjjP0Pm69hLirNXv/ftJEeFm2u11Pr3wkRrdSGxl28uHh1lWjlkhkChxCFSzuQr
- c5dumHc4sU+K0juZy4Sj6VXj/uQ6kLWl33HbWH9Y5TGQ7rw7vksCHAsfCxblpx1AkLnM
- LPlF8cwYtS1Q06JBzBTUzKidcFSmV8BteXYxDnFcoAX+1FYM8DQl8UDccYpstyCu0Q6d
- /OGQ==
+ :cc; bh=i+w5fn2Y32/L39vIbDWdR2CfVz49VqoI4F4CB/r+uKs=;
+ b=2BroReMxSyl7fumvZHFYCsXog9so/PwacI6uZo45fszzwoTUhDjTDVIC3dmDgkvhjI
+ 1vPIrM+hSnKeAwrkzbGzAjTEPTTgmqOwCVSZQUdIDrvAxKA2cMV8Dr6GunOjfoKKRYiR
+ i8n913ea5p94gaxe2NpjIpJwUJ2qhzkQ+wHLtf//YGUdDQeqhjuL7sHzp6EjAr//ec01
+ XTKGHBCDcdPjUSb8oFPiQDfaUdsVI1ufjKYoVyP6pZsvPych6kooqkVWEaGAH73GpfeW
+ Q64A9UAnw0STfqhTNC283nlq9ZOnnmCyzDAjw3roZzNRDyNGYbLpCBliRHdGmg3LI7kY
+ Wv/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=x3+/AfxLXuFdTRt+wVJ5N88Fn0d7Jt0QcG3rrM/CFYA=;
- b=g5E0doXHXhPiUDfP7MEhMciVSoNLTJv7UoYNgKucOBoyrj81y+A9Y4nttpZNHpR2v1
- vuCiILqKqldCKhAHIKgG/xhu+NuYmWvZVi8scsXRD6p1zx5gMQ04tx34jLjJ45XhO9Hr
- moojAkOPXGXGBHO9reNRY16wRrqOQrzQBqxmI/KEI1JyXwiADoGhw/CvTPEil426kxGz
- ni7nuKCh9l3Tw0+E42VPDO4Lehdiy+A1eFs7PektAUV20V3wncwROLCq5kV5IyFYmHKg
- q6LGqRVpNsV0nrL7QIuLkyEx+cNwoYFWf/ZuOmPfO+yAnQuq6oDVqc5sxAzEcqrw186O
- 79ew==
-X-Gm-Message-State: APjAAAWdYU4UCmCoYR6Z7h6YorfoTTN1KggsYQSF0Dn0CZCtCdcGn4+f
- 5Wt5J7QPMoC5YrkqJb0VJ6E5cgENzX9xo1AIhy6dfg==
-X-Google-Smtp-Source: APXvYqx7n5SoatNrD/f6URkFx2YC8fws4Ygfo/qo5bOAO4OD2enVvoI0R9bsVc0OVj1JFlqOFkvvecYbXNjpEzBEU1w=
-X-Received: by 2002:aca:fc50:: with SMTP id a77mr3511395oii.0.1561670572927;
- Thu, 27 Jun 2019 14:22:52 -0700 (PDT)
+ bh=i+w5fn2Y32/L39vIbDWdR2CfVz49VqoI4F4CB/r+uKs=;
+ b=ZIlA1Fv3mTCoMwUKsoKNd0r3XjyXsHFuSkUt/PrbDWf7SRRpgee+j0qjZGIsfc2clz
+ F1t0bSKViThJi/Q6qHy0VmLk0SBnGZKY4bGOoOvJk6BryxMO3fw6Ox6d0TZG56Rbe2qa
+ T4hxRK+WHPlDZfneVUDGzaisZsbMODtitayzJNCrGsj5pztvXTU7jFb261tgdVJkfKsB
+ ziQXc64IVbGKi9mYH/CJC+lO7u31Jr/Lo5RIkPlZuPmqK3QZqDrRIpiB+UqYX7wL7hkY
+ ihBS5ws+Tk8MkX99PNMhJ8YH7aH2UvWl2SDUTBgTVWwnYJxjN14Q7cfafDBJo3XGR+nW
+ oXsQ==
+X-Gm-Message-State: APjAAAVmCmtjlYaKPOYK/Rkd4nNFQwvoF9tp37SJFm5ejng7JswrFxsJ
+ g/xe9mS88+laHvGXIHFARi+MDvF0rE/B7hdU6BKiFA==
+X-Google-Smtp-Source: APXvYqwSf5cu88/vylJhhX2x15ji/SfzGkHLqjJ94ZW0+LXDsKMlI1/GoQT5qpbwxtU93udva3CYg32AyPTcsoNMv3U=
+X-Received: by 2002:a9d:7b48:: with SMTP id f8mr5967248oto.207.1561689589382; 
+ Thu, 27 Jun 2019 19:39:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190627141953.GC3624@swarm07>
-In-Reply-To: <20190627141953.GC3624@swarm07>
+References: <156159454541.2964018.7466991316059381921.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190627123415.GA4286@bombadil.infradead.org>
+ <CAPcyv4jQP-SFJGor-Q3VCRQ0xwt3MuVpH2qHx2wzyRA88DGQww@mail.gmail.com>
+ <CAPcyv4jjqooboxivY=AsfEPhCvxdwU66GpwE9vM+cqrZWvtX3g@mail.gmail.com>
+ <CAPcyv4h6HgNE38RF5TxO3C268ZvrxgcPNrPWOt94MnO5gP_pjw@mail.gmail.com>
+ <CAPcyv4gwd1_VHk_MfHeNSxyH+N1=aatj9WkKXqYNPkSXe4bFDg@mail.gmail.com>
+ <20190627195948.GB4286@bombadil.infradead.org>
+In-Reply-To: <20190627195948.GB4286@bombadil.infradead.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 27 Jun 2019 14:22:42 -0700
-Message-ID: <CAPcyv4h=MoP4GSF8xRULy54K7Rt9g2pnF3Xw0BNPRyYf5fKs0A@mail.gmail.com>
-Subject: Re: A write error on converting dax0.0 to kmem
-To: heysid@ajou.ac.kr
+Date: Thu, 27 Jun 2019 19:39:37 -0700
+Message-ID: <CAPcyv4iB3f1hDdCsw=Cy234dP-RXpxGyXDoTwEU8nt5qUDEVQg@mail.gmail.com>
+Subject: Re: [PATCH] filesystem-dax: Disable PMD support
+To: Matthew Wilcox <willy@infradead.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,51 +71,64 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, jsahn@ajou.ac.kr,
- Linux MM <linux-mm@kvack.org>
+Cc: Seema Pandit <seema.pandit@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-[ this is on-topic for linux-nvdimm, but likely off-topic for
-linux-mm. I leave it cc'd for now ]
+On Thu, Jun 27, 2019 at 12:59 PM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Thu, Jun 27, 2019 at 12:09:29PM -0700, Dan Williams wrote:
+> > > This bug feels like we failed to unlock, or unlocked the wrong entry
+> > > and this hunk in the bisected commit looks suspect to me. Why do we
+> > > still need to drop the lock now that the radix_tree_preload() calls
+> > > are gone?
+> >
+> > Nevermind, unmapp_mapping_pages() takes a sleeping lock, but then I
+> > wonder why we don't restart the lookup like the old implementation.
+>
+> We have the entry locked:
+>
+>                 /*
+>                  * Make sure 'entry' remains valid while we drop
+>                  * the i_pages lock.
+>                  */
+>                 dax_lock_entry(xas, entry);
+>
+>                 /*
+>                  * Besides huge zero pages the only other thing that gets
+>                  * downgraded are empty entries which don't need to be
+>                  * unmapped.
+>                  */
+>                 if (dax_is_zero_entry(entry)) {
+>                         xas_unlock_irq(xas);
+>                         unmap_mapping_pages(mapping,
+>                                         xas->xa_index & ~PG_PMD_COLOUR,
+>                                         PG_PMD_NR, false);
+>                         xas_reset(xas);
+>                         xas_lock_irq(xas);
+>                 }
+>
+> If something can remove a locked entry, then that would seem like the
+> real bug.  Might be worth inserting a lookup there to make sure that it
+> hasn't happened, I suppose?
 
-On Thu, Jun 27, 2019 at 7:20 AM Won-Kyo Choe <heysid@ajou.ac.kr> wrote:
->
-> Hi, Dave. I hope this message is sent appropriately in this time.
->
-> We've recently got a new machine which contains Optane DC memory and
-> tried to use your patch set[1] in a recent kernel version(5.1.15).
-> Unfortunately, we've failed on the last step[2] that describes
-> converting device-dax driver as kmem. The main error is "echo: write error: No such device".
-> We are certain that there must be a device and it should be recognized
-> since we can see it in a path "/dev/dax0.0", however, somehow it keeps saying that error.
->
-> We've followed all your steps in the first patch[1] except a step about qemu configuration
-> since we already have a persistent memory. We even checked that there is a region
-> mapped with persistent memory from a command, `dmesg | grep e820` described in below.
->
-> BIOS-e820: [mem 0x0000000880000000-0x00000027ffffffff] persistent (type 7)
->
-> As the address is shown above, the thing is that in the qemu, the region is set as
-> persistent (type 12) but in the native machine, it says persistent (type 7).
-> We've still tried to find what type means and we simply guess that this is one
-> of the reasons why we are not able to set the device as kmem.
->
-> We'd like to know why this error comes up and how can we handle this problem.
-> We would really appreciate it if you are able to little bit help us.
+Nope, added a check, we do in fact get the same locked entry back
+after dropping the lock.
 
-Before digging deeper let's first verify that you have switched
-device-dax from using "class" devices to using "bus" devices. Yes,
-that step is not included in the changelog instructions. Here is a man
-page for a tool that can automate some of the steps for you:
+The deadlock revolves around the mmap_sem. One thread holds it for
+read and then gets stuck indefinitely in get_unlocked_entry(). Once
+that happens another rocksdb thread tries to mmap and gets stuck
+trying to take the mmap_sem for write. Then all new readers, including
+ps and top that try to access a remote vma, then get queued behind
+that write.
 
-http://pmem.io/ndctl/daxctl-migrate-device-model.html
-
-You can validate that you're in "bus" mode by making sure a "dax0.0"
-link appears under "/sys/bus/dax/devices".
+It could also be the case that we're missing a wake up.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
