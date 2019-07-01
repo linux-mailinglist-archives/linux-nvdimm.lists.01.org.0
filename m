@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4CF5B4C4
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jul 2019 08:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF2C5B4C7
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jul 2019 08:21:06 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 13603212ABA49;
-	Sun, 30 Jun 2019 23:21:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5052E21959CB2;
+	Sun, 30 Jun 2019 23:21:04 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,31 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 27E71212AB4DD
- for <linux-nvdimm@lists.01.org>; Sun, 30 Jun 2019 23:21:01 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 32CC3212A36F7
+ for <linux-nvdimm@lists.01.org>; Sun, 30 Jun 2019 23:21:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
- To:From:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=K+5Y7Ez4pfTMCmPiyIGRChGh4O04+aapHsZzDHBkVJo=; b=PSbfEnpLRE8SG9bLML+fRlhf0
- HtVXUwpI1yGra8E8q+rwV6qJm4ONJSDzOZ753xm3ERQHmxUjdhHbZaiUebewXGu/ryXEdIqi7spGD
- Nlr6XlnU/i9TC0WMqh3qrx9cT7ITHZkOAeu54JXvWWQ2MaeC+xjlwX/7+GOXnST0/kVvSEpc1HmW/
- hO3augHviB0cDdLARWF6uP/j90BGjEpU45QJHn+ssAOFsyOrVWV8bsQFxpmwUu7D3kHoTQPtfD/+9
- h1Gpz4y5W71lm5fa5MIvKeZct6x0kCAYyPKLWFw3cLp1onhIVhjCvfTwvaeENThWQJ0FWVoyh0659
- oBUZxg5rA==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
+ :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=MFOQKdBekg4uOAbPxr4fTMLEjMHRTQOu8rr2EDfIjss=; b=almZJDAbXnBzGls3pOj8NvkNrg
+ EDtv5JCQhprtUoj3msL+8HdfB1SF/bGw3a7VYmwkTA3dICFI4cqC6GaUuZTpYn1JfQvs8543MUZQa
+ /cjCFY7Nb30zzkZ1LWtxW1UbEYJtXcLWKms8VR3iI42b3WG6HreqXzn/j+dgC92Bh3IT+9q76eFjs
+ HdoS+gFfVfgE0Ik93/RTa7Pft0ZeMVk5W+f1ouhTl61ym6nAg6Lq3hqUVshyyXXLoAgViMSi61syX
+ 4zsqcXeDSTjSDrYePaOl1SrEhHZHmGtM+ScRgoGqpBcAAWLJo17YUdU+msd/f6SA00fh++p5Z0Q+O
+ AKbcbwVQ==;
 Received: from [46.140.178.35] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hhpgO-00034k-I0; Mon, 01 Jul 2019 06:20:57 +0000
+ id 1hhpgQ-00036S-QO; Mon, 01 Jul 2019 06:20:59 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>,
  =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>,
  Jason Gunthorpe <jgg@mellanox.com>, Ben Skeggs <bskeggs@redhat.com>
-Subject: [PATCH 15/22] mm/hmm: Poison hmm_range during unregister
-Date: Mon,  1 Jul 2019 08:20:13 +0200
-Message-Id: <20190701062020.19239-16-hch@lst.de>
+Subject: [PATCH 16/22] mm/hmm: Remove confusing comment and logic from
+ hmm_release
+Date: Mon,  1 Jul 2019 08:20:14 +0200
+Message-Id: <20190701062020.19239-17-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190701062020.19239-1-hch@lst.de>
 References: <20190701062020.19239-1-hch@lst.de>
@@ -58,42 +59,97 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Philip Yang <Philip.Yang@amd.com>, Ralph Campbell <rcampbell@nvidia.com>,
- John Hubbard <jhubbard@nvidia.com>, linux-nvdimm@lists.01.org,
+Cc: Philip Yang <Philip.Yang@amd.com>, linux-nvdimm@lists.01.org,
  linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- Souptick Joarder <jrdr.linux@gmail.com>, nouveau@lists.freedesktop.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ nouveau@lists.freedesktop.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-RnJvbTogSmFzb24gR3VudGhvcnBlIDxqZ2dAbWVsbGFub3guY29tPgoKVHJ5aW5nIHRvIG1pc3Vz
-ZSBhIHJhbmdlIG91dHNpZGUgaXRzIGxpZmV0aW1lIGlzIGEga2VybmVsIGJ1Zy4gVXNlIHBvaXNv
-bgpieXRlcyB0byBoZWxwIGRldGVjdCB0aGlzIGNvbmRpdGlvbi4gRG91YmxlIHVucmVnaXN0ZXIg
-d2lsbCByZWxpYWJseSBjcmFzaC4KClNpZ25lZC1vZmYtYnk6IEphc29uIEd1bnRob3JwZSA8amdn
-QG1lbGxhbm94LmNvbT4KUmV2aWV3ZWQtYnk6IErDqXLDtG1lIEdsaXNzZSA8amdsaXNzZUByZWRo
-YXQuY29tPgpSZXZpZXdlZC1ieTogSm9obiBIdWJiYXJkIDxqaHViYmFyZEBudmlkaWEuY29tPgpB
-Y2tlZC1ieTogU291cHRpY2sgSm9hcmRlciA8anJkci5saW51eEBnbWFpbC5jb20+ClJldmlld2Vk
-LWJ5OiBSYWxwaCBDYW1wYmVsbCA8cmNhbXBiZWxsQG52aWRpYS5jb20+ClJldmlld2VkLWJ5OiBJ
-cmEgV2VpbnkgPGlyYS53ZWlueUBpbnRlbC5jb20+ClRlc3RlZC1ieTogUGhpbGlwIFlhbmcgPFBo
-aWxpcC5ZYW5nQGFtZC5jb20+Ci0tLQogbW0vaG1tLmMgfCAxNCArKysrKysrKy0tLS0tLQogMSBm
-aWxlIGNoYW5nZWQsIDggaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
-YS9tbS9obW0uYyBiL21tL2htbS5jCmluZGV4IDJlZjE0YjJiNTUwNS4uYzMwYWE5NDAzZGJlIDEw
-MDY0NAotLS0gYS9tbS9obW0uYworKysgYi9tbS9obW0uYwpAQCAtOTI1LDE5ICs5MjUsMjEgQEAg
-dm9pZCBobW1fcmFuZ2VfdW5yZWdpc3RlcihzdHJ1Y3QgaG1tX3JhbmdlICpyYW5nZSkKIHsKIAlz
-dHJ1Y3QgaG1tICpobW0gPSByYW5nZS0+aG1tOwogCi0JLyogU2FuaXR5IGNoZWNrIHRoaXMgcmVh
-bGx5IHNob3VsZCBub3QgaGFwcGVuLiAqLwotCWlmIChobW0gPT0gTlVMTCB8fCByYW5nZS0+ZW5k
-IDw9IHJhbmdlLT5zdGFydCkKLQkJcmV0dXJuOwotCiAJbXV0ZXhfbG9jaygmaG1tLT5sb2NrKTsK
-IAlsaXN0X2RlbF9pbml0KCZyYW5nZS0+bGlzdCk7CiAJbXV0ZXhfdW5sb2NrKCZobW0tPmxvY2sp
-OwogCiAJLyogRHJvcCByZWZlcmVuY2UgdGFrZW4gYnkgaG1tX3JhbmdlX3JlZ2lzdGVyKCkgKi8K
-LQlyYW5nZS0+dmFsaWQgPSBmYWxzZTsKIAltbXB1dChobW0tPm1tKTsKIAlobW1fcHV0KGhtbSk7
-Ci0JcmFuZ2UtPmhtbSA9IE5VTEw7CisKKwkvKgorCSAqIFRoZSByYW5nZSBpcyBub3cgaW52YWxp
-ZCBhbmQgdGhlIHJlZiBvbiB0aGUgaG1tIGlzIGRyb3BwZWQsIHNvCisJICogcG9pc29uIHRoZSBw
-b2ludGVyLiAgTGVhdmUgb3RoZXIgZmllbGRzIGluIHBsYWNlLCBmb3IgdGhlIGNhbGxlcidzCisJ
-ICogdXNlLgorCSAqLworCXJhbmdlLT52YWxpZCA9IGZhbHNlOworCW1lbXNldCgmcmFuZ2UtPmht
-bSwgUE9JU09OX0lOVVNFLCBzaXplb2YocmFuZ2UtPmhtbSkpOwogfQogRVhQT1JUX1NZTUJPTCho
-bW1fcmFuZ2VfdW5yZWdpc3Rlcik7CiAKLS0gCjIuMjAuMQoKX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGlu
-Zm8vbGludXgtbnZkaW1tCg==
+From: Jason Gunthorpe <jgg@mellanox.com>
+
+hmm_release() is called exactly once per hmm. ops->release() cannot
+accidentally trigger any action that would recurse back onto
+hmm->mirrors_sem.
+
+This fixes a use after-free race of the form:
+
+       CPU0                                   CPU1
+                                           hmm_release()
+                                             up_write(&hmm->mirrors_sem);
+ hmm_mirror_unregister(mirror)
+  down_write(&hmm->mirrors_sem);
+  up_write(&hmm->mirrors_sem);
+  kfree(mirror)
+                                             mirror->ops->release(mirror)
+
+The only user we have today for ops->release is an empty function, so this
+is unambiguously safe.
+
+As a consequence of plugging this race drivers are not allowed to
+register/unregister mirrors from within a release op.
+
+Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Tested-by: Philip Yang <Philip.Yang@amd.com>
+---
+ mm/hmm.c | 28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
+
+diff --git a/mm/hmm.c b/mm/hmm.c
+index c30aa9403dbe..b224ea635a77 100644
+--- a/mm/hmm.c
++++ b/mm/hmm.c
+@@ -130,26 +130,16 @@ static void hmm_release(struct mmu_notifier *mn, struct mm_struct *mm)
+ 	 */
+ 	WARN_ON(!list_empty_careful(&hmm->ranges));
+ 
+-	down_write(&hmm->mirrors_sem);
+-	mirror = list_first_entry_or_null(&hmm->mirrors, struct hmm_mirror,
+-					  list);
+-	while (mirror) {
+-		list_del_init(&mirror->list);
+-		if (mirror->ops->release) {
+-			/*
+-			 * Drop mirrors_sem so the release callback can wait
+-			 * on any pending work that might itself trigger a
+-			 * mmu_notifier callback and thus would deadlock with
+-			 * us.
+-			 */
+-			up_write(&hmm->mirrors_sem);
++	down_read(&hmm->mirrors_sem);
++	list_for_each_entry(mirror, &hmm->mirrors, list) {
++		/*
++		 * Note: The driver is not allowed to trigger
++		 * hmm_mirror_unregister() from this thread.
++		 */
++		if (mirror->ops->release)
+ 			mirror->ops->release(mirror);
+-			down_write(&hmm->mirrors_sem);
+-		}
+-		mirror = list_first_entry_or_null(&hmm->mirrors,
+-						  struct hmm_mirror, list);
+ 	}
+-	up_write(&hmm->mirrors_sem);
++	up_read(&hmm->mirrors_sem);
+ 
+ 	hmm_put(hmm);
+ }
+@@ -279,7 +269,7 @@ void hmm_mirror_unregister(struct hmm_mirror *mirror)
+ 	struct hmm *hmm = mirror->hmm;
+ 
+ 	down_write(&hmm->mirrors_sem);
+-	list_del_init(&mirror->list);
++	list_del(&mirror->list);
+ 	up_write(&hmm->mirrors_sem);
+ 	hmm_put(hmm);
+ }
+-- 
+2.20.1
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
