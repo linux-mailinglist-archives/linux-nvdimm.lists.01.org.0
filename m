@@ -1,79 +1,56 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 676E65C7D1
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Jul 2019 05:34:09 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5399B5C7D2
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  2 Jul 2019 05:34:14 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C6681212AAB89;
-	Mon,  1 Jul 2019 20:34:07 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 23479212AAFF1;
+	Mon,  1 Jul 2019 20:34:13 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=linux-nvdimm@lists.01.org 
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B26ED21A07094
- for <linux-nvdimm@lists.01.org>; Mon,  1 Jul 2019 20:34:05 -0700 (PDT)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x623X992060901
- for <linux-nvdimm@lists.01.org>; Mon, 1 Jul 2019 23:34:04 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tfug67yy6-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Mon, 01 Jul 2019 23:34:04 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Tue, 2 Jul 2019 04:34:02 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 2 Jul 2019 04:33:58 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x623Xk7G33030492
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jul 2019 03:33:46 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 763C64C046;
- Tue,  2 Jul 2019 03:33:57 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2857A4C044;
- Tue,  2 Jul 2019 03:33:56 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.91.212])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  2 Jul 2019 03:33:55 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm/nvdimm: Add is_ioremap_addr and use that to check
- ioremap address
-In-Reply-To: <20190701165152.7a55299eb670b0ca326f24dd@linux-foundation.org>
-References: <20190701134038.14165-1-aneesh.kumar@linux.ibm.com>
- <20190701165152.7a55299eb670b0ca326f24dd@linux-foundation.org>
-Date: Tue, 02 Jul 2019 09:03:54 +0530
+ by ml01.01.org (Postfix) with ESMTPS id EBDF521290D37
+ for <linux-nvdimm@lists.01.org>; Mon,  1 Jul 2019 20:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Rvg0fFhiVW2SSgiiyKRZ1dYBb2123d87t9/7oxE/t3s=; b=hPiTv9NcFQT+UCy+e+gooSaND
+ sN1+wbD/4vxONjqjO+zJCyR6e8DZkzG/PQft9f18todOUGe/vHEb+N0BKS6/qFoXtRJxu3A42+9MC
+ /AHlvyjEhP2Lde+VRKdHc0Vg3dVVJ76SftLB05vR0RWNiZYt8+lw/UGWf8lFOAoRkQkcopd3sYPVD
+ hJ62GN7gHpSF0ADfjsqqdKK8DjBOkSGEt+OZrZwWW3ZS7L508/tM/0kkY8ozLmnm2M1xOoKe5K9y1
+ cSBO3tQJcMnZOm2ARmAFW/nStl5qD455jTxWoWOuGkhCbO8GWejGio1Kbev1mZRYWrJgwPBTjnvPx
+ NBXZxZd2g==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
+ Hat Linux)) id 1hi9YY-0000SB-QV; Tue, 02 Jul 2019 03:34:10 +0000
+Date: Mon, 1 Jul 2019 20:34:10 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH] filesystem-dax: Disable PMD support
+Message-ID: <20190702033410.GB1729@bombadil.infradead.org>
+References: <CAPcyv4jjqooboxivY=AsfEPhCvxdwU66GpwE9vM+cqrZWvtX3g@mail.gmail.com>
+ <CAPcyv4h6HgNE38RF5TxO3C268ZvrxgcPNrPWOt94MnO5gP_pjw@mail.gmail.com>
+ <CAPcyv4gwd1_VHk_MfHeNSxyH+N1=aatj9WkKXqYNPkSXe4bFDg@mail.gmail.com>
+ <20190627195948.GB4286@bombadil.infradead.org>
+ <CAPcyv4iB3f1hDdCsw=Cy234dP-RXpxGyXDoTwEU8nt5qUDEVQg@mail.gmail.com>
+ <20190629160336.GB1180@bombadil.infradead.org>
+ <CAPcyv4ge3Ht1k_v=tSoVA6hCzKg1N3imhs_rTL3oTB+5_KC8_Q@mail.gmail.com>
+ <CAA9_cmcb-Prn6CnOx-mJfb9CRdf0uG9u4M1Vq1B1rKVemCD-Vw@mail.gmail.com>
+ <20190630152324.GA15900@bombadil.infradead.org>
+ <CAPcyv4j2NBPBEUU3UW1Q5OyOEuo9R5e90HpkowpeEkMsAKiUyQ@mail.gmail.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19070203-0008-0000-0000-000002F8F824
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19070203-0009-0000-0000-000022663F0B
-Message-Id: <87r2792jq5.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-02_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=714 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907020036
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4j2NBPBEUU3UW1Q5OyOEuo9R5e90HpkowpeEkMsAKiUyQ@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,32 +62,91 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
+Cc: Seema Pandit <seema.pandit@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Andrew Morton <akpm@linux-foundation.org> writes:
+On Sun, Jun 30, 2019 at 02:37:32PM -0700, Dan Williams wrote:
+> On Sun, Jun 30, 2019 at 8:23 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > I think my theory was slightly mistaken, but your fix has the effect of
+> > fixing the actual problem too.
+> >
+> > The xas->xa_index for a PMD is going to be PMD-aligned (ie a multiple of
+> > 512), but xas_find_conflict() does _not_ adjust xa_index (... which I
+> > really should have mentioned in the documentation).  So we go to sleep
+> > on the PMD-aligned index instead of the index of the PTE.  Your patch
+> > fixes this by using the PMD-aligned index for PTEs too.
+> >
+> > I'm trying to come up with a clean fix for this.  Clearly we
+> > shouldn't wait for a PTE entry if we're looking for a PMD entry.
+> > But what should get_unlocked_entry() return if it detects that case?
+> > We could have it return an error code encoded as an internal entry,
+> > like grab_mapping_entry() does.  Or we could have it return the _locked_
+> > PTE entry, and have callers interpret that.
+> >
+> > At least get_unlocked_entry() is static, but it's got quite a few callers.
+> > Trying to discern which ones might ask for a PMD entry is a bit tricky.
+> > So this seems like a large patch which might have bugs.
+> >
+> > Thoughts?
+> 
+> ...but if it was a problem of just mismatched waitqueue's I would have
+> expected it to trigger prior to commit b15cd800682f "dax: Convert page
+> fault handlers to XArray".
 
-> On Mon,  1 Jul 2019 19:10:38 +0530 "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> wrote:
->
->> Architectures like powerpc use different address range to map ioremap
->> and vmalloc range. The memunmap() check used by the nvdimm layer was
->> wrongly using is_vmalloc_addr() to check for ioremap range which fails for
->> ppc64. This result in ppc64 not freeing the ioremap mapping. The side effect
->> of this is an unbind failure during module unload with papr_scm nvdimm driver
->
-> The patch applies to 5.1.  Does it need a Fixes: and a Cc:stable?
+That commit converts grab_mapping_entry() (called by dax_iomap_pmd_fault())
+from calling get_unlocked_mapping_entry() to calling get_unlocked_entry().
+get_unlocked_mapping_entry() (eventually) called __radix_tree_lookup()
+instead of dax_find_conflict().
 
-Actually, we want it to be backported to an older kernel possibly one
-that added papr-scm driver, b5beae5e224f ("powerpc/pseries: Add driver
-for PAPR SCM regions"). But that doesn't apply easily. It does apply
-without conflicts to 5.0
+> This hunk, if I'm reading it correctly,
+> looks suspicious: @index in this case is coming directly from
+> vm->pgoff without pmd alignment adjustment whereas after the
+> conversion it's always pmd aligned from the xas->xa_index. So perhaps
+> the issue is that the lock happens at pte granularity. I expect it
+> would cause the old put_locked_mapping_entry() to WARN, but maybe that
+> avoids the lockup and was missed in the bisect.
 
--aneesh
+I don't think that hunk is the problem.  The __radix_tree_lookup()
+is going to return a 'slot' which points to the canonical slot, no
+matter which of the 512 indices corresponding to that slot is chosen.
+So I think it's going to do essentially the same thing.
 
+> @@ -884,21 +711,18 @@ static void *dax_insert_entry(struct
+> address_space *mapping,
+>                  * existing entry is a PMD, we will just leave the PMD in the
+>                  * tree and dirty it if necessary.
+>                  */
+> -               struct radix_tree_node *node;
+> -               void **slot;
+> -               void *ret;
+> -
+> -               ret = __radix_tree_lookup(pages, index, &node, &slot);
+> -               WARN_ON_ONCE(ret != entry);
+> -               __radix_tree_replace(pages, node, slot,
+> -                                    new_entry, NULL);
+> +               void *old = dax_lock_entry(xas, new_entry);
+> +               WARN_ON_ONCE(old != xa_mk_value(xa_to_value(entry) |
+> +                                       DAX_LOCKED));
+>                 entry = new_entry;
+> +       } else {
+> +               xas_load(xas);  /* Walk the xa_state */
+>         }
+> 
+>         if (dirty)
+> -               radix_tree_tag_set(pages, index, PAGECACHE_TAG_DIRTY);
+> +               xas_set_mark(xas, PAGECACHE_TAG_DIRTY);
+> 
+> -       xa_unlock_irq(pages);
+> +       xas_unlock_irq(xas);
+>         return entry;
+>  }
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
