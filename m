@@ -2,48 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4595ECFD
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Jul 2019 21:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B085EE82
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Jul 2019 23:28:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 25FFA212AD58A;
-	Wed,  3 Jul 2019 12:53:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 187B1212AD598;
+	Wed,  3 Jul 2019 14:28:56 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5331C21276BA6
- for <linux-nvdimm@lists.01.org>; Wed,  3 Jul 2019 12:53:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=vqmc8HmxSdsdZnmxVteLD7yTFn26ShwrILrKMFB1/Tc=; b=rbCs6946skmxDkFEn5TfgPylE
- laGOaLKGnO9S5VL454/xNsm3WwPwWIxPnLXto3FC4YWiMtUACCGPfVKtUUu7ZQEoCcvzVCPYexAVn
- j6GiW1iesIW/RVOjEEwWjG0FX6M/rb/g8ZbhSnfDEJTwS1Tui7BejMq18AjlomFkn364bPFv9jm2V
- DmW58ErGlBOZjRgk8n1ehE3LmaSBh6IVZ7624NgU0HPj5ow+CdVOVaf8EKci5a924fPxNz34M9wlr
- KZ4LJPC2P98XGM/fucAuOVB/0lObjFzajE9o4w2Jcca+TuXZFrFGFP4hUs7MhuGrqTADdnBUaR1PD
- FfDHBxtWQ==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red
- Hat Linux)) id 1hilJO-0006Fu-TK; Wed, 03 Jul 2019 19:53:02 +0000
-Date: Wed, 3 Jul 2019 12:53:02 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] dax: Fix missed PMD wakeups
-Message-ID: <20190703195302.GJ1729@bombadil.infradead.org>
+ by ml01.01.org (Postfix) with ESMTPS id 5F996212AD58A
+ for <linux-nvdimm@lists.01.org>; Wed,  3 Jul 2019 14:28:54 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id z23so3874993ote.13
+ for <linux-nvdimm@lists.01.org>; Wed, 03 Jul 2019 14:28:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8Oa5fyrgRSaS4/rlLU6Dg1I751HN6ZGGg3XuTeNEsyA=;
+ b=EVDV2i92j6Oc8X9cDYFxw3faBgrvRgokearOh6hTInPcfDEF/9Dw3KaF4Zq6F/M1Po
+ 7PhktLMJwFP6nTQp9RrenWueYOGk2EVUa/0Qx0+hUltXSvdhvIuEHI+qKgYeF3B1eFlS
+ 5Y3swajWUyLDnwgyIA3axCIg+XMQUJMGQtIBwCbx1V1d//Itvxh9xcx753a7zTQU7G7q
+ 9Zf9F4ew3jdtrywY3ZSbzOZTGZe1X8L9mb5LB87Kgaj4vPdRVLpEenwZhPzX+x7S/pLI
+ SKnQAFXjTLXqteyTAJ1slhEtrupPHQDbOkd7sNBcRXPLRfHg2/4qMUGQWkb8jOyatu6m
+ VoNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8Oa5fyrgRSaS4/rlLU6Dg1I751HN6ZGGg3XuTeNEsyA=;
+ b=nbbarHgbln9irPy/z9MXWGzkSfBRqkSkRlHTfuUugF9GsqaLgtoe8rHDWGMAcrINXw
+ TbHjV0dzLMnteMW5MXZkMAJPoRBVQQxhBvvx1ygdfrga16KfcAN3MGEHv2MxT8nP5dFP
+ CE/GkHN3re9QxR2ujhbFHSc7DQoP5ZPh+iYDQTTPelInc9Yk5lJxInK032PmOC0qgkma
+ xCW+7SNkDS80ORPQ+0SsZ0svoEQD+u6tUyXnioh0RfIcVW4CpKroFhZ5FjSHo4oqqobD
+ MEH85sxAXGVF9rwB0IgC255FQev3gQ1pX8ki87AnfDeSJ2QTtaqN6anFAuFkJf/RYgPA
+ Y1ew==
+X-Gm-Message-State: APjAAAViifDB1pTFTaOTr8t6PsrKMNl4ktREA0p7BkEEQSEmPT1VhEv4
+ dkL8D7/+IWLXiyrd2JezClvuXFVQSQQ2FUBXbVNB7g==
+X-Google-Smtp-Source: APXvYqx/eeik3ZxIiy7z87X0O8OLG62WiPNdXk3FcnhR2wJoQDPQ4BqLvO7rM7/LGIyRCPcHEmicv2tHJYa45mbHcK0=
+X-Received: by 2002:a9d:7248:: with SMTP id a8mr32385007otk.363.1562189332829; 
+ Wed, 03 Jul 2019 14:28:52 -0700 (PDT)
+MIME-Version: 1.0
 References: <156213869409.3910140.7715747316991468148.stgit@dwillia2-desk3.amr.corp.intel.com>
  <20190703121743.GH1729@bombadil.infradead.org>
  <CAPcyv4jgs5LTtTXR+2CyfbjJE85B_eoPFuXQsGBDnVMo41Jawg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jgs5LTtTXR+2CyfbjJE85B_eoPFuXQsGBDnVMo41Jawg@mail.gmail.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+ <20190703195302.GJ1729@bombadil.infradead.org>
+In-Reply-To: <20190703195302.GJ1729@bombadil.infradead.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 3 Jul 2019 14:28:41 -0700
+Message-ID: <CAPcyv4iPNz=oJyc_EoE-mC11=gyBzwMKbmj1ZY_Yna54=cC=Mg@mail.gmail.com>
+Subject: Re: [PATCH] dax: Fix missed PMD wakeups
+To: Matthew Wilcox <willy@infradead.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,126 +78,100 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jul 03, 2019 at 10:01:37AM -0700, Dan Williams wrote:
-> On Wed, Jul 3, 2019 at 5:17 AM Matthew Wilcox <willy@infradead.org> wrote:
+On Wed, Jul 3, 2019 at 12:53 PM Matthew Wilcox <willy@infradead.org> wrote:
+>
+> On Wed, Jul 03, 2019 at 10:01:37AM -0700, Dan Williams wrote:
+> > On Wed, Jul 3, 2019 at 5:17 AM Matthew Wilcox <willy@infradead.org> wrote:
+> > >
+> > > On Wed, Jul 03, 2019 at 12:24:54AM -0700, Dan Williams wrote:
+> > > > This fix may increase waitqueue contention, but a fix for that is saved
+> > > > for a larger rework. In the meantime this fix is suitable for -stable
+> > > > backports.
+> > >
+> > > I think this is too big for what it is; just the two-line patch to stop
+> > > incorporating the low bits of the PTE would be more appropriate.
 > >
-> > On Wed, Jul 03, 2019 at 12:24:54AM -0700, Dan Williams wrote:
-> > > This fix may increase waitqueue contention, but a fix for that is saved
-> > > for a larger rework. In the meantime this fix is suitable for -stable
-> > > backports.
-> >
-> > I think this is too big for what it is; just the two-line patch to stop
-> > incorporating the low bits of the PTE would be more appropriate.
-> 
-> Sufficient, yes, "appropriate", not so sure. All those comments about
-> pmd entry size are stale after this change.
+> > Sufficient, yes, "appropriate", not so sure. All those comments about
+> > pmd entry size are stale after this change.
+>
+> But then they'll have to be put back in again.  This seems to be working
+> for me, although I doubt I'm actually hitting the edge case that rocksdb
+> hits:
 
-But then they'll have to be put back in again.  This seems to be working
-for me, although I doubt I'm actually hitting the edge case that rocksdb
-hits:
+Seems to be holding up under testing here, a couple comments...
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 2e48c7ebb973..e77bd6aef10c 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -198,6 +198,10 @@ static void dax_wake_entry(struct xa_state *xas, void *entry, bool wake_all)
-  * if it did.
-  *
-  * Must be called with the i_pages lock held.
-+ *
-+ * If the xa_state refers to a larger entry, then it may return a locked
-+ * smaller entry (eg a PTE entry) without waiting for the smaller entry
-+ * to be unlocked.
-  */
- static void *get_unlocked_entry(struct xa_state *xas)
- {
-@@ -211,7 +215,8 @@ static void *get_unlocked_entry(struct xa_state *xas)
- 	for (;;) {
- 		entry = xas_find_conflict(xas);
- 		if (!entry || WARN_ON_ONCE(!xa_is_value(entry)) ||
--				!dax_is_locked(entry))
-+				!dax_is_locked(entry) ||
-+				dax_entry_order(entry) < xas_get_order(xas))
- 			return entry;
- 
- 		wq = dax_entry_waitqueue(xas, entry, &ewait.key);
-@@ -253,8 +258,12 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
- 
- static void put_unlocked_entry(struct xa_state *xas, void *entry)
- {
--	/* If we were the only waiter woken, wake the next one */
--	if (entry)
-+	/*
-+	 * If we were the only waiter woken, wake the next one.
-+	 * Do not wake anybody if the entry is locked; that indicates
-+	 * we weren't woken.
-+	 */
-+	if (entry && !dax_is_locked(entry))
- 		dax_wake_entry(xas, entry, false);
- }
- 
-diff --git a/include/linux/xarray.h b/include/linux/xarray.h
-index 052e06ff4c36..b17289d92af4 100644
---- a/include/linux/xarray.h
-+++ b/include/linux/xarray.h
-@@ -1529,6 +1529,27 @@ static inline void xas_set_order(struct xa_state *xas, unsigned long index,
- #endif
- }
- 
-+/**
-+ * xas_get_order() - Get the order of the entry being operated on.
-+ * @xas: XArray operation state.
-+ *
-+ * Return: The order of the entry.
-+ */
-+static inline unsigned int xas_get_order(const struct xa_state *xas)
-+{
-+	unsigned int order = xas->xa_shift;
-+
-+#ifdef CONFIG_XARRAY_MULTI
-+	unsigned int sibs = xas->xa_sibs;
-+
-+	while (sibs) {
-+		order++;
-+		sibs /= 2;
-+	}
-+#endif
-+	return order;
-+}
-+
- /**
-  * xas_set_update() - Set up XArray operation state for a callback.
-  * @xas: XArray operation state.
-diff --git a/lib/test_xarray.c b/lib/test_xarray.c
-index 7df4f7f395bf..af024477ec93 100644
---- a/lib/test_xarray.c
-+++ b/lib/test_xarray.c
-@@ -95,6 +95,17 @@ static noinline void check_xa_err(struct xarray *xa)
- //	XA_BUG_ON(xa, xa_err(xa_store(xa, 0, xa_mk_internal(0), 0)) != -EINVAL);
- }
- 
-+static noinline void check_xas_order(struct xarray *xa)
-+{
-+	XA_STATE(xas, xa, 0);
-+	unsigned int i;
-+
-+	for (i = 0; i < sizeof(long) * 8; i++) {
-+		xas_set_order(&xas, 0, i);
-+		XA_BUG_ON(xa, xas_get_order(&xas) != i);
-+	}
-+}
-+
- static noinline void check_xas_retry(struct xarray *xa)
- {
- 	XA_STATE(xas, xa, 0);
-@@ -1583,6 +1594,7 @@ static DEFINE_XARRAY(array);
- static int xarray_checks(void)
- {
- 	check_xa_err(&array);
-+	check_xas_order(&array);
- 	check_xas_retry(&array);
- 	check_xa_load(&array);
- 	check_xa_mark(&array);
+>
+> diff --git a/fs/dax.c b/fs/dax.c
+> index 2e48c7ebb973..e77bd6aef10c 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -198,6 +198,10 @@ static void dax_wake_entry(struct xa_state *xas, void *entry, bool wake_all)
+>   * if it did.
+>   *
+>   * Must be called with the i_pages lock held.
+> + *
+> + * If the xa_state refers to a larger entry, then it may return a locked
+> + * smaller entry (eg a PTE entry) without waiting for the smaller entry
+> + * to be unlocked.
+>   */
+>  static void *get_unlocked_entry(struct xa_state *xas)
+>  {
+> @@ -211,7 +215,8 @@ static void *get_unlocked_entry(struct xa_state *xas)
+>         for (;;) {
+>                 entry = xas_find_conflict(xas);
+>                 if (!entry || WARN_ON_ONCE(!xa_is_value(entry)) ||
+> -                               !dax_is_locked(entry))
+> +                               !dax_is_locked(entry) ||
+> +                               dax_entry_order(entry) < xas_get_order(xas))
+
+Doesn't this potentially allow a locked entry to be returned for a
+caller that expects all value entries are unlocked?
+
+>                         return entry;
+>
+>                 wq = dax_entry_waitqueue(xas, entry, &ewait.key);
+> @@ -253,8 +258,12 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
+>
+>  static void put_unlocked_entry(struct xa_state *xas, void *entry)
+>  {
+> -       /* If we were the only waiter woken, wake the next one */
+> -       if (entry)
+> +       /*
+> +        * If we were the only waiter woken, wake the next one.
+> +        * Do not wake anybody if the entry is locked; that indicates
+> +        * we weren't woken.
+> +        */
+> +       if (entry && !dax_is_locked(entry))
+>                 dax_wake_entry(xas, entry, false);
+>  }
+>
+> diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+> index 052e06ff4c36..b17289d92af4 100644
+> --- a/include/linux/xarray.h
+> +++ b/include/linux/xarray.h
+> @@ -1529,6 +1529,27 @@ static inline void xas_set_order(struct xa_state *xas, unsigned long index,
+>  #endif
+>  }
+>
+> +/**
+> + * xas_get_order() - Get the order of the entry being operated on.
+> + * @xas: XArray operation state.
+> + *
+> + * Return: The order of the entry.
+> + */
+> +static inline unsigned int xas_get_order(const struct xa_state *xas)
+> +{
+> +       unsigned int order = xas->xa_shift;
+> +
+> +#ifdef CONFIG_XARRAY_MULTI
+> +       unsigned int sibs = xas->xa_sibs;
+> +
+> +       while (sibs) {
+> +               order++;
+> +               sibs /= 2;
+> +       }
+
+Use ilog2() here?
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
