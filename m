@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AC760C92
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jul 2019 22:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E21EA60C9E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jul 2019 22:46:01 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3DC54212B2059;
-	Fri,  5 Jul 2019 13:45:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 84AE1212B205E;
+	Fri,  5 Jul 2019 13:46:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -16,42 +16,43 @@ Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com
  [209.85.210.193])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F306F2194EB7A
- for <linux-nvdimm@lists.01.org>; Fri,  5 Jul 2019 13:45:39 -0700 (PDT)
-Received: by mail-pf1-f193.google.com with SMTP id c73so99581pfb.13
- for <linux-nvdimm@lists.01.org>; Fri, 05 Jul 2019 13:45:39 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id DCAB5212B083F
+ for <linux-nvdimm@lists.01.org>; Fri,  5 Jul 2019 13:45:58 -0700 (PDT)
+Received: by mail-pf1-f193.google.com with SMTP id q10so4757476pff.9
+ for <linux-nvdimm@lists.01.org>; Fri, 05 Jul 2019 13:45:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=NINMgNCtdp9VxxGck6fqsoIqX8vCQf36P/6C5pYBqDM=;
- b=Cwi+1DhfpGa9u2QpFEZNqJMjIkIHeNWhSf2hYWNIYbB/XPe3KP+CXT5yusbOx91ceh
- RV0mJTv0d69LtqPNmalN9WFO4axEvKBCYNBdgoMIq01jM8ALRkgyqWEyFBSemw56a6wj
- VJz8AjeKbF9/KufiBo9tJbk1vk14LYCoQKbn59DeTmJsqwNGKMqRpIbMPWU+cCeVTJxD
- vjHFw3ecr1aYfUmplS87t6SBINC7NFfqeCjjJSOPkb3AZxRz/KG2mhM04pqUT8LakOaA
- jfVerkBtyzVH9SKtk1cNGziP2JCpHzIgWpu2ENnLnSFZFH3YQxyGeH3ProXMDXPayLdD
- esdg==
-X-Gm-Message-State: APjAAAUIVQ/1e0MRbPra8jT/Vj32avcvcVjeikPb+1iNHERG1HcRD72A
- EKTItjZbPVHAo8LinZu0sz8=
-X-Google-Smtp-Source: APXvYqzORz85r9dXJ+0VShptntCI2Ba5VbMOY6v1/mI3RdkuGvkVnROUEZV4rccMgxpa1+keGNumHQ==
-X-Received: by 2002:a17:90a:d58c:: with SMTP id v12mr89451pju.7.1562359539502; 
- Fri, 05 Jul 2019 13:45:39 -0700 (PDT)
+ bh=x4GIgI5QbQFYYHeADDS48yN0XwXbMzJsu3FTa+FaXcs=;
+ b=XrfxAVP7FrO+9nUBNdiQ1S36WrpwKSJWepKGCAtQ4TXDEB79kB829vGIBOqNVfr0nL
+ vmRJL7DF9BkSZnJzQqIQm4SVYMoPMgy2sRwsMlMHdnzXMvPSlshGCrM6lVlbiXQxa9f7
+ 1mnLIJDUOoy7F13eAvRVht8Feuk2cHQg130kcrim4O15XfapMYn8DtRKgpVp95Yeh2e+
+ s8PffMKD0uH8BNtUmMaKjwRYSW4czr/zO0fKimCXx+bMfg8F7BRwN4/SRSnn1Jrd10xU
+ yqgvVvaVM0F0zbBWledNs8musSj9COYbXIovn9B3tCe5MTpeZU7uS/+Q2zeY9ytZf9u2
+ kZxg==
+X-Gm-Message-State: APjAAAWUUjOm2Z7KKsNK4eTAufZEe0SA1QsHbRlPQkBEoefZqU3BzTUw
+ 4TIg6R4PAPb5Ojfqy63I0pA=
+X-Google-Smtp-Source: APXvYqzeFsCVF2ZvnbfqZHx8vhkEXe3aUADAaqpXImPQcsaBURcoZTbfCuqJiBja1aAbbmI4GIuc+A==
+X-Received: by 2002:a63:e018:: with SMTP id e24mr7383945pgh.361.1562359558392; 
+ Fri, 05 Jul 2019 13:45:58 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id b17sm14479029pgj.73.2019.07.05.13.45.38
+ by smtp.gmail.com with ESMTPSA id s66sm13955192pgs.39.2019.07.05.13.45.56
  (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Fri, 05 Jul 2019 13:45:38 -0700 (PDT)
+ Fri, 05 Jul 2019 13:45:57 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 9D53F40190; Fri,  5 Jul 2019 20:45:37 +0000 (UTC)
-Date: Fri, 5 Jul 2019 20:45:37 +0000
+ id 9151F40190; Fri,  5 Jul 2019 20:45:56 +0000 (UTC)
+Date: Fri, 5 Jul 2019 20:45:56 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: Brendan Higgins <brendanhiggins@google.com>
-Subject: Re: [PATCH v6 02/18] kunit: test: add test resource management API
-Message-ID: <20190705204537.GC19023@42.do-not-panic.com>
+Subject: Re: [PATCH v6 17/18] kernel/sysctl-test: Add null pointer test for
+ sysctl.c:proc_dointvec()
+Message-ID: <20190705204556.GD19023@42.do-not-panic.com>
 References: <20190704003615.204860-1-brendanhiggins@google.com>
- <20190704003615.204860-3-brendanhiggins@google.com>
+ <20190704003615.204860-18-brendanhiggins@google.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190704003615.204860-3-brendanhiggins@google.com>
+In-Reply-To: <20190704003615.204860-18-brendanhiggins@google.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -70,8 +71,8 @@ Cc: pmladek@suse.com, linux-doc@vger.kernel.org, peterz@infradead.org,
  mpe@ellerman.id.au, linux-kselftest@vger.kernel.org, shuah@kernel.org,
  robh@kernel.org, linux-nvdimm@lists.01.org, frowand.list@gmail.com,
  knut.omang@oracle.com, kieran.bingham@ideasonboard.com, wfg@linux.intel.com,
- joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
- dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ joel@jms.id.au, rientjes@google.com, Iurii Zaikin <yzaikin@google.com>,
+ jdike@addtoit.com, dan.carpenter@oracle.com, devicetree@vger.kernel.org,
  linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
  rostedt@goodmis.org, julia.lawall@lip6.fr, jpoimboe@redhat.com,
  kunit-dev@googlegroups.com, tytso@mit.edu, richard@nod.at, sboyd@kernel.org,
@@ -83,24 +84,19 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jul 03, 2019 at 05:35:59PM -0700, Brendan Higgins wrote:
-> diff --git a/kunit/test.c b/kunit/test.c
-> index c030ba5a43e40..a70fbe449e922 100644
-> --- a/kunit/test.c
-> +++ b/kunit/test.c
-> @@ -122,7 +122,8 @@ static void kunit_print_test_case_ok_not_ok(struct kunit_case *test_case,
->  
->  void kunit_init_test(struct kunit *test, const char *name)
->  {
-> -	spin_lock_init(&test->lock);
+On Wed, Jul 03, 2019 at 05:36:14PM -0700, Brendan Higgins wrote:
+> From: Iurii Zaikin <yzaikin@google.com>
+> 
+> KUnit tests for initialized data behavior of proc_dointvec that is
+> explicitly checked in the code. Includes basic parsing tests including
+> int min/max overflow.
+> 
+> Signed-off-by: Iurii Zaikin <yzaikin@google.com>
+> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 
-Once you re-spin, this above line should be removed.
-
-> +	mutex_init(&test->lock);
-> +	INIT_LIST_HEAD(&test->resources);
->  	test->name = name;
->  	test->success = true;
->  }
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
 
   Luis
 _______________________________________________
