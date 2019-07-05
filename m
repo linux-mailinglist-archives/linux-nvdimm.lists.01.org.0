@@ -2,65 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C985FEA0
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jul 2019 01:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56435FEF3
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jul 2019 02:11:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E70DD212B0FFD;
-	Thu,  4 Jul 2019 16:27:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3CB53212B2046;
+	Thu,  4 Jul 2019 17:11:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 8E44B212B0FF6
- for <linux-nvdimm@lists.01.org>; Thu,  4 Jul 2019 16:27:26 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id b7so7263005otl.11
- for <linux-nvdimm@lists.01.org>; Thu, 04 Jul 2019 16:27:26 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9AC07212B2042
+ for <linux-nvdimm@lists.01.org>; Thu,  4 Jul 2019 17:11:27 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id a127so5977496oii.2
+ for <linux-nvdimm@lists.01.org>; Thu, 04 Jul 2019 17:11:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=29vsGpTjh39zWXsI6Ik43Nv+EdiuWAOV6vxVTajp20k=;
- b=xPh6pbcmI7ZR83uwzt44/h5WZ1jKG98r+LQaDHsemaTjfAFmLK4NHwQNObxnmJM5M8
- kiKlk4co3uBSxHYbFY+WMMvf50uquNZyF0w7RVkb+wN9QHaDcveJWANUrWindaZdPjYX
- fRPefhjZL+h/GTwMBlPyo/7+/fOiU2/TzGWz4bA8jxIM0dAKYaLHEKDaVOkAQSEXS/JJ
- HntfFU+nDsisSL67tqCRY1E2FW29XVGHkHGY+9yi5XPwwkF8dUbKQwZFovjFinBx4P3H
- +CX76/THYqM9Ar2u/pO3kfTI759leI2eRYxgBjawd3DUVZuTF7q3s4H/zjBzZl96hbN0
- jkcQ==
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=+KUa/pKnTzDUY8iKea0h5ooJheLbdX4Z7I3oB9ImT1k=;
+ b=Csg0RK3gwejbtYn9Bb96veoScBvqb+LsOvHsMSjOVUfAQG6kL/HEasbVW03BPfrMDM
+ ZeuMYi7iMCiXFYjKO7NNNvzX383rUBtSgQ7jb3iBxp0V4Cn64eMPQKIQJKzoxBXC7f46
+ yq3qgX3oNi7KDe8mpw9URsinu3RdiHrxyNpf36txzLyNzX72aa5f/LyG71Vb4G3+ESVY
+ 3yFaL+JvV4wjgoWuBheorPaqmTVmjQj7WTkiaYl9yFoJInHv5PTAvYtbG+mrvIC1dO3T
+ 8UwG5AR2e7+7Lz/RRbqy9+ghEdHrOmb7R1lfER1Z2hAF8juynW3DZExwrjdWUIE5cTZd
+ 5pgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=29vsGpTjh39zWXsI6Ik43Nv+EdiuWAOV6vxVTajp20k=;
- b=DTD2fx3Elxa2S7iDX3VDr3hmfDbj5t0mQozNb4Ip49GPU1h9I9ez+JSPJULniLIgel
- iZEcpbpDAnMh9aRBqsgB0xzsH/kRPx4hcKmkfzBBm2S+Be1r9jt4XOlsrh3pxDmQHIPV
- aLsTE6UO4cRZN6TJdKET1GyJNardBFGDx5rVcMisogt52wBkki4AXfQK2uwsMhEaknjI
- hEPDBlOuBqCZlqaGLxN0ifDGOBO9b9hp3YJHtomkPLyMv0W0xIoH9NbMeKeSTqyZmm1O
- ibfPT5KkyOvWVDe+U1Cqei2LjjbhD9zGLz9H1oHDtDQR5SALorMO8TREFg/7r7BnAD57
- NPTg==
-X-Gm-Message-State: APjAAAXNv/hIKra/ykKez3sNQl+z05evS9W5xdgPlqkTmgvnAY2ee9iH
- nc+d1mD5a5KQj/5plOzqAMcsvxHGWxj+hnu38zSRQQ==
-X-Google-Smtp-Source: APXvYqzFfoPnlwPxd7HMRN1iiNSb0TD46BOhSl+i1LNcRaH8pGkExzmOgi5cRwt9v88JBevUo0Jwrlqmbeg2el1s4mY=
-X-Received: by 2002:a9d:7a9a:: with SMTP id l26mr386103otn.71.1562282845133;
- Thu, 04 Jul 2019 16:27:25 -0700 (PDT)
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=+KUa/pKnTzDUY8iKea0h5ooJheLbdX4Z7I3oB9ImT1k=;
+ b=E2p5SMI7y8p84Qa+5DZmVkTQ6eeyhtF2mg1DloR6yb49SRFBdquu65zt92/sYtW5sh
+ N2EXOCrgLSwiqMQ/rX3Ys4KHcUJ/jfX6lWfrrEAuIjbTiBN/hmkdSGQfNsqMPeIJC6Pk
+ LM4Df4UshG9xhPnK98Dxz15LPHbEUZ9A1FVagLdzExjEJmnsZ9kjy3AytbcEO/tJ07oj
+ 5gCm8nzUeCc7lRidxU5nUQ57OX5HXg6VakbAPkA/SoewlfctBW49A2FErMNA+4HDExQu
+ MaFqW8QYpT0D1Zu4L1kWHCLJvu/+xSBXflg5fbjPLLHJ+E/BbaMywTWzeJwZ6c6/O+Nh
+ r4yQ==
+X-Gm-Message-State: APjAAAVruIlxmsOskdsS3QbI7Gxrl92l3+Tk6vyVk13EDaZRjlbQ2a5r
+ Sr1eGkl2dLrugNwE1vedyCUM8dk08777btU+3oXB4g==
+X-Google-Smtp-Source: APXvYqzlFmpt61vIj6L8l0EpOJd4L4Dl2URxNXWw5ml57YfYsXHkMntq9TesGECcSO3CKqdxrpnlkYkyniCr9rxgMas=
+X-Received: by 2002:aca:ec82:: with SMTP id k124mr461198oih.73.1562285486732; 
+ Thu, 04 Jul 2019 17:11:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <156213869409.3910140.7715747316991468148.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190703121743.GH1729@bombadil.infradead.org>
- <CAPcyv4jgs5LTtTXR+2CyfbjJE85B_eoPFuXQsGBDnVMo41Jawg@mail.gmail.com>
- <20190703195302.GJ1729@bombadil.infradead.org>
- <CAPcyv4iPNz=oJyc_EoE-mC11=gyBzwMKbmj1ZY_Yna54=cC=Mg@mail.gmail.com>
- <20190704032728.GK1729@bombadil.infradead.org>
- <20190704165450.GH31037@quack2.suse.cz>
- <20190704191407.GM1729@bombadil.infradead.org>
-In-Reply-To: <20190704191407.GM1729@bombadil.infradead.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 4 Jul 2019 16:27:14 -0700
-Message-ID: <CAPcyv4gUiDw8Ma9mvbW5BamQtGZxWVuvBW7UrOLa2uijrXUWaw@mail.gmail.com>
-Subject: Re: [PATCH] dax: Fix missed PMD wakeups
-To: Matthew Wilcox <willy@infradead.org>
+Date: Thu, 4 Jul 2019 17:11:16 -0700
+Message-ID: <CAPcyv4hs6bncxc3_vOKYYc-XdL+-dv_dJkmV8EduRrshv3rBgQ@mail.gmail.com>
+Subject: [GIT PULL] dax fix for v5.2-rc8
+To: Linus Torvalds <torvalds@linux-foundation.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,48 +62,52 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Seema Pandit <seema.pandit@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Boaz Harrosh <openosd@gmail.com>,
+Cc: Jan Kara <jack@suse.cz>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, Jan Kara <jack@suse.cz>
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jul 4, 2019 at 12:14 PM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Thu, Jul 04, 2019 at 06:54:50PM +0200, Jan Kara wrote:
-> > On Wed 03-07-19 20:27:28, Matthew Wilcox wrote:
-> > > So I think we're good for all current users.
-> >
-> > Agreed but it is an ugly trap. As I already said, I'd rather pay the
-> > unnecessary cost of waiting for pte entry and have an easy to understand
-> > interface. If we ever have a real world use case that would care for this
-> > optimization, we will need to refactor functions to make this possible and
-> > still keep the interfaces sane. For example get_unlocked_entry() could
-> > return special "error code" indicating that there's no entry with matching
-> > order in xarray but there's a conflict with it. That would be much less
-> > error-prone interface.
->
-> This is an internal interface.  I think it's already a pretty gnarly
-> interface to use by definition -- it's going to sleep and might return
-> almost anything.  There's not much scope for returning an error indicator
-> either; value entries occupy half of the range (all odd numbers between 1
-> and ULONG_MAX inclusive), plus NULL.  We could use an internal entry, but
-> I don't think that makes the interface any easier to use than returning
-> a locked entry.
->
-> I think this iteration of the patch makes it a little clearer.  What do you
-> think?
->
+Hi Linus, please pull from:
 
-Not much clearer to me. get_unlocked_entry() is now misnamed and this
-arrangement allows for mismatches of @order argument vs @xas
-configuration. Can you describe, or even better demonstrate with
-numbers, why it's better to carry this complication than just
-converging the waitqueues between the types?
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/dax-fix-5.2-rc8
+
+...to receive a single dax fix that has been soaking awaiting other
+fixes under discussion to join it. As it is getting late in the cycle
+lets proceed with this fix and save follow-on changes for
+post-v5.3-rc1.
+
+---
+
+The following changes since commit f2c7c76c5d0a443053e94adb9f0918fa2fb85c3a:
+
+  Linux 5.2-rc3 (2019-06-02 13:55:33 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/dax-fix-5.2-rc8
+
+for you to fetch changes up to 1571c029a2ff289683ddb0a32253850363bcb8a7:
+
+  dax: Fix xarray entry association for mixed mappings (2019-06-06
+22:18:49 -0700)
+
+----------------------------------------------------------------
+dax fix v5.2-rc8
+
+- Ensure proper accounting page->index and page->mapping, needed for
+  memory error handling, when downgrading a PMD mapping/entry to PTE size.
+
+----------------------------------------------------------------
+Jan Kara (1):
+      dax: Fix xarray entry association for mixed mappings
+
+ fs/dax.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
