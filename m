@@ -2,58 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A056A62817
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Jul 2019 20:13:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD8E62A7F
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  8 Jul 2019 22:40:42 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2D428212AC484;
-	Mon,  8 Jul 2019 11:13:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6664C212AC48E;
+	Mon,  8 Jul 2019 13:40:41 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
+ client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
  envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3CF1321A134A1
- for <linux-nvdimm@lists.01.org>; Mon,  8 Jul 2019 11:13:08 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id t16so7970566pfe.11
- for <linux-nvdimm@lists.01.org>; Mon, 08 Jul 2019 11:13:08 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 59AD62194EB75
+ for <linux-nvdimm@lists.01.org>; Mon,  8 Jul 2019 13:40:39 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id g2so3368062pfq.0
+ for <linux-nvdimm@lists.01.org>; Mon, 08 Jul 2019 13:40:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=JCk1WdM0E6nhQWvL7vJ1kxAIGG56jCba8QRd4SGiDCA=;
- b=OgF8cL2jlYPassQya/5LPanMn4rdt4wOzgmrqwzZxEQPZIqKVwIc/cbAKjQaKs4FzI
- MO+lSWFVjE1BjbNrUM+omMAeEVXWMjykV41krvzt8AWSDOTa5viWTuQtJ9ep0X0LXNYj
- OdiZ626za04Q5e0ee0vw+VtEjSvuMHfSSgdE6F33EKsPb+2cKBbfbxgMScj9OazVWVAS
- RUi9fLCfATh+IjCkIXVEG9DerSHN7LKc7YsX4AxnaewNdUelqDZmIgeZ0zeSR0DCe4sE
- eOaHDJj5UB+8gGaq9GRuZY4qOho86pU0SRPsJdJUsDSn1VzYLTJqJx6RyW6gChbKWFWj
- 8y+g==
+ :cc; bh=/EH/dsB4RqvQOyHG8BqAIo5WKk7GQxacBNIaWqTFNQk=;
+ b=Cdb6f6dII91+peQ4OxFhgsypxNIcC8Z96r5C/ePNEUz85za5Vbi9Ob9WFL7Wp+O6qA
+ s2FU4elMc5PHawGRh4mEgei2UKYeL/Om110iQOt9EZjbTGZ35yhM+QknG6GV4EILqbGV
+ fSE/mjTDSVLrTvE9E8XjufRwxMYJiGpgmnm9Gj+28y8fI57C27MrUrxnEuTgssOH22rV
+ X2wra0aYtt04uPd5Nd5e58e/ejOR/kNGkFgfkF6uBhS0Gc+UnNjzMr5rpGuXODaRO3/6
+ S/LEDw4EBPf512R+tktyLb6BY2Kbd/uedF4s+xPbNcfpXnjQo8TaENBYjaBvCticdcKk
+ s+NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=JCk1WdM0E6nhQWvL7vJ1kxAIGG56jCba8QRd4SGiDCA=;
- b=MdArq5jlxngd0Fmm+28qDMGDR20K0Rj26Rn1oAhaoY47yDk8dP/XSqI0Hhh5HVzOF7
- wsf7Njk10eir4aeDrNrG7TP+eZWWwws29XoMzMUtP9ZypnEPEbDm6uz/LNjeHzHOoRav
- aBeYBFPiHCV3UBn2ZzKSoatstejkLFbtYilp+HuEvrVOhLsOSIcwBpH64pwixZAfBkLy
- 71VWLp3W6buXQG0K9cscqm/gUy+xKWxepAX0WdxSQmJG6aax+/HqK0W0k3M7AQ0NSvSu
- ZqKLRh9Any0lNoEAA4YGiYUVw4SCB/UsIK7HQh7P/x303i94Q78/hv2ObPq6/Q2vmJTA
- ijhw==
-X-Gm-Message-State: APjAAAUW8rYaIOGIHbA5WGMTujqKC2VYdyRDGz/a8x4Nrrg/z7aZhd4Q
- 52fxaMRcSYPZcTIq0pgYfV4YecSKRCGX5oYCavtz0A==
-X-Google-Smtp-Source: APXvYqwC0igtuHeVBLKgctH3AD+JJSF1DFvHIy3IKlb3b8t5WGygrYUkxCrtO7R9CSN2ItDaerVKeb0U4IrWm5FTm44=
-X-Received: by 2002:a17:90b:f0e:: with SMTP id
- br14mr27407161pjb.117.1562609586818; 
- Mon, 08 Jul 2019 11:13:06 -0700 (PDT)
+ bh=/EH/dsB4RqvQOyHG8BqAIo5WKk7GQxacBNIaWqTFNQk=;
+ b=UeiPCKji/0CypW3gF1dNwvC3C8pwvte9drd/t1tR9LWW2oAy8PjKJBgKFBsIdYsUdI
+ /8gpBiajM8O+EuOxSMaHSqdIbqsbbdp9sGA8ZZTs4EmndJhFxPkBXM+MshQexLMk3X/h
+ EevBF1Kc0quSWsUNv0qGoQn7ohKvE1xmPT0vGFkZl0yWXiP2kn5ILnddZhMdMrDI2Ltf
+ hMPjnavy2XpeL0ZqFexZDAGGBnKykV2brtn3svwJLkOm0O/ZRhN36NZqoXb8HIPcD9Lz
+ x2dO6jUQi62c+wIvfQcLFvLa/MPkshCq85KlP2y8ueWLUVn2F9SRxDlv5WrsKKDyue8g
+ 2e/Q==
+X-Gm-Message-State: APjAAAVlAdNVPyYZfZvPWgatGrbiokTPk1UBiAzddiDBWGkg2BVgqo0M
+ TKhJhWeTQhQO+57eDg1oi2DIzDqaNAVfXaoQHH5qLg==
+X-Google-Smtp-Source: APXvYqxcFK88vAm0YlECpUDpB3imcSno03RwL+0jyEa5ghv7TUPzQiwa16nbo1CO7XiLvpWqedp7ntBebsLNBqTl9bk=
+X-Received: by 2002:a63:205f:: with SMTP id r31mr26169271pgm.159.1562618438201; 
+ Mon, 08 Jul 2019 13:40:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190704003615.204860-1-brendanhiggins@google.com>
  <20190704003615.204860-2-brendanhiggins@google.com>
- <20190705202051.GB19023@42.do-not-panic.com>
-In-Reply-To: <20190705202051.GB19023@42.do-not-panic.com>
+ <20190705201505.GA19023@42.do-not-panic.com>
+ <CAFd5g45cF9rYc8YupnCgd=7xz_yW+_TMp_L+cSFUBW7d9njnVQ@mail.gmail.com>
+In-Reply-To: <CAFd5g45cF9rYc8YupnCgd=7xz_yW+_TMp_L+cSFUBW7d9njnVQ@mail.gmail.com>
 From: Brendan Higgins <brendanhiggins@google.com>
-Date: Mon, 8 Jul 2019 11:12:55 -0700
-Message-ID: <CAFd5g44_NoGHsMRfZJ-V42=8U6QYOYZV7zUmEdx-6V4xGarxHg@mail.gmail.com>
+Date: Mon, 8 Jul 2019 13:40:26 -0700
+Message-ID: <CAFd5g44XV0zDpNgyDPSFMq86kSvwGb_WjhxzK=AoDMjwXD5CgQ@mail.gmail.com>
 Subject: Re: [PATCH v6 01/18] kunit: test: add KUnit test runner core
 To: Luis Chamberlain <mcgrof@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -97,34 +97,91 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jul 5, 2019 at 1:20 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+On Mon, Jul 8, 2019 at 11:08 AM Brendan Higgins
+<brendanhiggins@google.com> wrote:
 >
-> On Wed, Jul 03, 2019 at 05:35:58PM -0700, Brendan Higgins wrote:
-> > +struct kunit {
-> > +     void *priv;
-> > +
-> > +     /* private: internal use only. */
-> > +     const char *name; /* Read only after initialization! */
-> > +     bool success; /* Read only after test_case finishes! */
-> > +};
+> On Fri, Jul 5, 2019 at 1:15 PM Luis Chamberlain <mcgrof@kernel.org> wrote:
+> >
+> > On Wed, Jul 03, 2019 at 05:35:58PM -0700, Brendan Higgins wrote:
+> > > Add core facilities for defining unit tests; this provides a common way
+> > > to define test cases, functions that execute code which is under test
+> > > and determine whether the code under test behaves as expected; this also
+> > > provides a way to group together related test cases in test suites (here
+> > > we call them test_modules).
+> > >
+> > > Just define test cases and how to execute them for now; setting
+> > > expectations on code will be defined later.
+> > >
+> > > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> > > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> >
+> > Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> >
+> > But a nitpick below, I think that can be fixed later with a follow up
+> > patch.
+> >
+> > > +/**
+> > > + * struct kunit - represents a running instance of a test.
+> > > + * @priv: for user to store arbitrary data. Commonly used to pass data created
+> > > + * in the init function (see &struct kunit_suite).
+> > > + *
+> > > + * Used to store information about the current context under which the test is
+> > > + * running. Most of this data is private and should only be accessed indirectly
+> > > + * via public functions; the one exception is @priv which can be used by the
+> > > + * test writer to store arbitrary data.
+> > > + *
+> > > + * A brief note on locking:
+> > > + *
+> > > + * First off, we need to lock because in certain cases a user may want to use an
+> > > + * expectation in a thread other than the thread that the test case is running
+> > > + * in.
+> >
+> > This as a prefix to the struct without a lock seems odd. It would be
+> > clearer I think if you'd explain here what locking mechanism we decided
+> > to use and why it suffices today.
 >
-> No lock attribute above.
->
-> > +void kunit_init_test(struct kunit *test, const char *name)
-> > +{
-> > +     spin_lock_init(&test->lock);
-> > +     test->name = name;
-> > +     test->success = true;
-> > +}
->
-> And yet here you initialize a spin lock... This won't compile. Seems
-> you forgot to remove this line. So I guess a re-spin is better.
+> Whoops, sorry this should have been in the next patch. Will fix.
 
-Oh crap, sorry about that. You can't compile these patches until the
-kbuild patch. I will fix this and make sure I didn't make any similar
-mistakes on these early patches.
+Err..no, this shouldn't be here at all. Sorry about that. I just need
+to rewrite the comment.
 
-Thanks!
+> > > +/**
+> > > + * suite_test() - used to register a &struct kunit_suite with KUnit.
+> >
+> > You mean kunit_test_suite()?
+>
+> Yep, sorry about that. Will fix.
+>
+> > > + * @suite: a statically allocated &struct kunit_suite.
+> > > + *
+> > > + * Registers @suite with the test framework. See &struct kunit_suite for more
+> > > + * information.
+> > > + *
+> > > + * NOTE: Currently KUnit tests are all run as late_initcalls; this means that
+> > > + * they cannot test anything where tests must run at a different init phase. One
+> > > + * significant restriction resulting from this is that KUnit cannot reliably
+> > > + * test anything that is initialize in the late_init phase.
+> >                             initialize prior to the late init phase.
+> >
+> >
+> > That is, this is useless to test things running early.
+>
+> Yeah, I can add that phrasing in.
+>
+> > > + *
+> > > + * TODO(brendanhiggins@google.com): Don't run all KUnit tests as late_initcalls.
+> > > + * I have some future work planned to dispatch all KUnit tests from the same
+> > > + * place, and at the very least to do so after everything else is definitely
+> > > + * initialized.
+> >
+> > TODOs are odd to be adding to documentation, this is just not common
+> > place practice. The NOTE should suffice for you.
+>
+> Because it is a kernel doc? Would you usually make a separate
+> non-kernel doc comment for a TODO? I guess that makes sense.
+>
+> Thanks!
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
