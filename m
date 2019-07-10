@@ -1,59 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D8E4641DB
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 09:15:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8CA641E3
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 09:15:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DB27D212B5EEB;
-	Wed, 10 Jul 2019 00:15:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4179A212B5EF2;
+	Wed, 10 Jul 2019 00:15:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::849; helo=mail-qt1-x849.google.com;
- envelope-from=3pzalxq4kdewp5s1ro1vwuuw16u22uzs.q20zw18b-19rw00zw676.ef.25u@flex--brendanhiggins.bounces.google.com;
+ client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com;
+ envelope-from=3qpalxq4kdfeuax6wt601zz16bz77z4x.v75416dg-6ew15541bcb.jk.7az@flex--brendanhiggins.bounces.google.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com
- [IPv6:2607:f8b0:4864:20::849])
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com
+ [IPv6:2607:f8b0:4864:20::449])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D277E212B2063
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:50 -0700 (PDT)
-Received: by mail-qt1-x849.google.com with SMTP id 97so1357679qtb.16
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:50 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 66233212AF0CE
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:55 -0700 (PDT)
+Received: by mail-pf1-x449.google.com with SMTP id 145so824484pfw.16
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=ef4x4rIYEjXAUsOwLGAl/ehMOJtbGdS1NNHHbtE3RYE=;
- b=cv0FhaBnT8sIOJX4UO7zyAd38+6SjIeDUMVqdusMiTVgkNsImibP4lJXYN/4Qex6jK
- VF+CiSBjt81zH7Dj8GQys9m5gAtrQYR0IfMqrReIrMG73CRRnf94McSae/SBAD+z3n2m
- fAPNVtZPuFY016upkbT03Klx17TvZgsbkRd2kiOJwJCzfJWerr4zA4UKaj06V/v4V2AU
- lovevOgS4jEUNgRpMjf4oEWfVzDcKUPKQNSDg+JHoKdrtFgHmkafF82uOtBzSpEeUsMw
- iXTCScpyTEQP72TaJPEeGXnBB+gMX+lhlz/srnTpYSajv4HcdVd/oZQ1eX5pt+8nl+RZ
- y61g==
+ :cc; bh=pTGx5akQJDhaSZySqpQ1nhnlCVlScw5xa33k0FhGOt8=;
+ b=IxWYHTc7US3jJEJlBSIfA0aESuzH+kXjaX3iXZsQmZUkvs/a6GPHCgR5DAWTzvMmYP
+ c+TMI1KeA4zZ7iaEMPsAAFRIht6hOk5jCHv/BWFH4eKSV8xr6hm0bP5aPUD9F8rGUWA7
+ 8HKl5pdYded1evW3M53CpAJZ/fjaP7cGED1BfcgZb6+mCP+iKfhmmVipH+M3EKYJdD4S
+ MeWYpYqnLXBR7H43JuPbe9JSYcZHocoNDQj4uH+Ds0oTb9srypQqpZ08fII6SfpypVOF
+ XErDAUVYJvMHbWC2A0KfVaSx+HvSEsxHKbyLa022CZWAjHEt+6cKDc4ELjcKxPkh6eIc
+ oiqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:in-reply-to:message-id:mime-version
  :references:subject:from:to:cc;
- bh=ef4x4rIYEjXAUsOwLGAl/ehMOJtbGdS1NNHHbtE3RYE=;
- b=ZHIHuzkL313BXNO3KxHPMupUZ8PD4QjmJRK3/2AJ8ePQeqy1Fwl/6cEq8qO5D6nx8m
- ie3oKxxKG8IsLVfGEr3KzTh94B9/I86JwotvIaNNaeOz8rRYhGmxvxXlVV0kFyxRvgq5
- G5Vds5rj55v4chi7zW3DFLq+lVgfOcr/0BbmMvieNUFTCt/UFjxP8bGJP3LNJorcmi6T
- RY0SZy+n0dc4HNNyYLbIez0noMZsSYy0F0vxJWOdBPeNFm3w4F/u868JBE0MjEoM/R3I
- iRJjeIxOPAogrYvNXn8dvzdGeZBdcbactwN2PLbWXpImtaDxNfOJcvpKoPO3XUssz7Me
- Npdg==
-X-Gm-Message-State: APjAAAWil9EXWu8Gct47mmNOd/YdcNIbSzLDDofop4NLsoW7iz8BkcwO
- 5O0rzVIimzczjiBySv+KXCTxHHLqzWrDAVFQyl7xPQ==
-X-Google-Smtp-Source: APXvYqyMobJXqnNbAj/cGM/+SnYBhfNoCPG06BYi23WGY/9Bxh6lHiR5/Badoa6Srvlzlc8icohrZ2WuZ/Gsr8+9jH6keQ==
-X-Received: by 2002:ac8:2d08:: with SMTP id n8mr21982152qta.383.1562742949599; 
- Wed, 10 Jul 2019 00:15:49 -0700 (PDT)
-Date: Wed, 10 Jul 2019 00:14:53 -0700
+ bh=pTGx5akQJDhaSZySqpQ1nhnlCVlScw5xa33k0FhGOt8=;
+ b=Fnz00/KhJK9/qUh7KHVIpvbyCatVtFkTBUxbuTwXgoB0Nx/Xr7MU3qp/U3LhJHbL0/
+ OzE6ltPyU6L/twf1d7Dyl6PC60SkRhBM+OAMiF1ft89Cw0B+W1l2aMhhCCC/WJGv1YJx
+ FvkMbLcqJ5NSUOLhUFxQTYkVhZNRnU47p0xlUZeRRYu8LkvayieCzjNYsOMdRkYC73vK
+ TQWlt9N8lvKFYhXm7UZBMtvMhgZ9SNNdWFED++rkj0zL00Lc5vXab+xuXx4VqONQ8Wox
+ mOaMKRQbbM6viEV7qb/PVUEQA1Mj5n8uuWqK2lidQCuiCzNhJuEJircn9V+LkRIc343F
+ fR+g==
+X-Gm-Message-State: APjAAAUjocPsf9thWEFEVFABIl3ZE0hqCR8I1nfiUSbZ+Wd3B1br8pa+
+ XrmPmwW4SIPxWr5Yb26z7DK02h7IJOpHDQxwW/aF+w==
+X-Google-Smtp-Source: APXvYqx8cA2dNLeA0C6Vho2SScOzHfHVox80Qha+6CSk6cStqQFHHqPA+g4yJ++kIRVzrA9LuPRlGLPzJ0rGnGICxSqX5Q==
+X-Received: by 2002:a63:f150:: with SMTP id o16mr35695224pgk.105.1562742954282; 
+ Wed, 10 Jul 2019 00:15:54 -0700 (PDT)
+Date: Wed, 10 Jul 2019 00:14:54 -0700
 In-Reply-To: <20190710071508.173491-1-brendanhiggins@google.com>
-Message-Id: <20190710071508.173491-4-brendanhiggins@google.com>
+Message-Id: <20190710071508.173491-5-brendanhiggins@google.com>
 Mime-Version: 1.0
 References: <20190710071508.173491-1-brendanhiggins@google.com>
 X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
-Subject: [PATCH v8 03/18] kunit: test: add string_stream a std::stream like
- string builder
+Subject: [PATCH v8 04/18] kunit: test: add kunit_stream a std::stream like
+ logger
 From: Brendan Higgins <brendanhiggins@google.com>
 To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
  keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
@@ -85,240 +85,286 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-A number of test features need to do pretty complicated string printing
-where it may not be possible to rely on a single preallocated string
-with parameters.
-
-So provide a library for constructing the string as you go similar to
-C++'s std::string.
+A lot of the expectation and assertion infrastructure prints out fairly
+complicated test failure messages, so add a C++ style log library for
+for logging test results.
 
 Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 ---
- include/kunit/string-stream.h |  49 ++++++++++++
- kunit/Makefile                |   3 +-
- kunit/string-stream.c         | 147 ++++++++++++++++++++++++++++++++++
- 3 files changed, 198 insertions(+), 1 deletion(-)
- create mode 100644 include/kunit/string-stream.h
- create mode 100644 kunit/string-stream.c
+ include/kunit/kunit-stream.h |  81 +++++++++++++++++++++++
+ include/kunit/test.h         |   3 +
+ kunit/Makefile               |   3 +-
+ kunit/kunit-stream.c         | 123 +++++++++++++++++++++++++++++++++++
+ kunit/test.c                 |   6 ++
+ 5 files changed, 215 insertions(+), 1 deletion(-)
+ create mode 100644 include/kunit/kunit-stream.h
+ create mode 100644 kunit/kunit-stream.c
 
-diff --git a/include/kunit/string-stream.h b/include/kunit/string-stream.h
+diff --git a/include/kunit/kunit-stream.h b/include/kunit/kunit-stream.h
 new file mode 100644
-index 0000000000000..0552a05781afe
+index 0000000000000..a7b53eabf6be4
 --- /dev/null
-+++ b/include/kunit/string-stream.h
-@@ -0,0 +1,49 @@
++++ b/include/kunit/kunit-stream.h
+@@ -0,0 +1,81 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
 +/*
-+ * C++ stream style string builder used in KUnit for building messages.
++ * C++ stream style string formatter and printer used in KUnit for outputting
++ * KUnit messages.
 + *
 + * Copyright (C) 2019, Google LLC.
 + * Author: Brendan Higgins <brendanhiggins@google.com>
 + */
 +
-+#ifndef _KUNIT_STRING_STREAM_H
-+#define _KUNIT_STRING_STREAM_H
++#ifndef _KUNIT_KUNIT_STREAM_H
++#define _KUNIT_KUNIT_STREAM_H
 +
 +#include <linux/types.h>
-+#include <linux/spinlock.h>
-+#include <linux/kref.h>
-+#include <stdarg.h>
-+
-+struct string_stream_fragment {
-+	struct list_head node;
-+	char *fragment;
-+};
-+
-+struct string_stream {
-+	size_t length;
-+	struct list_head fragments;
-+	/* length and fragments are protected by this lock */
-+	spinlock_t lock;
-+};
++#include <kunit/string-stream.h>
 +
 +struct kunit;
 +
-+struct string_stream *alloc_string_stream(struct kunit *test);
++/**
++ * struct kunit_stream - a std::stream style string builder.
++ *
++ * A std::stream style string builder. Allows messages to be built up and
++ * printed all at once.
++ */
++struct kunit_stream {
++	/* private: internal use only. */
++	struct kunit *test;
++	const char *level;
++	struct string_stream *internal_stream;
++};
 +
-+void string_stream_get(struct string_stream *stream);
++/**
++ * alloc_kunit_stream() - constructs a new &struct kunit_stream.
++ * @test: The test context object.
++ * @level: The log level at which to print out the message.
++ *
++ * Constructs a new test managed &struct kunit_stream.
++ */
++struct kunit_stream *alloc_kunit_stream(struct kunit *test, const char *level);
 +
-+int string_stream_put(struct string_stream *stream);
++/**
++ * kunit_stream_add(): adds the formatted input to the internal buffer.
++ * @kstream: the stream being operated on.
++ * @fmt: printf style format string to append to stream.
++ *
++ * Appends the formatted string, @fmt, to the internal buffer.
++ */
++void __printf(2, 3) kunit_stream_add(struct kunit_stream *kstream,
++				     const char *fmt, ...);
 +
-+int string_stream_add(struct string_stream *stream, const char *fmt, ...);
++/**
++ * kunit_stream_append(): appends the contents of @other to @kstream.
++ * @kstream: the stream to which @other is appended.
++ * @other: the stream whose contents are appended to @kstream.
++ *
++ * Appends the contents of @other to @kstream.
++ */
++void kunit_stream_append(struct kunit_stream *kstream,
++			 struct kunit_stream *other);
 +
-+int string_stream_vadd(struct string_stream *stream,
-+		       const char *fmt,
-+		       va_list args);
++/**
++ * kunit_stream_commit(): prints out the internal buffer to the user.
++ * @kstream: the stream being operated on.
++ *
++ * Outputs the contents of the internal buffer as a kunit_printk formatted
++ * output. KUNIT_STREAM ONLY OUTPUTS ITS BUFFER TO THE USER IF COMMIT IS
++ * CALLED!!! The reason for this is that it allows us to construct a message
++ * before we know whether we want to print it out; this can be extremely handy
++ * if there is information you might need for a failure message that is easiest
++ * to collect in the steps leading up to the actual check.
++ */
++void kunit_stream_commit(struct kunit_stream *kstream);
 +
-+char *string_stream_get_string(struct string_stream *stream);
++/**
++ * kunit_stream_clear(): clears the internal buffer.
++ * @kstream: the stream being operated on.
++ *
++ * Clears the contents of the internal buffer.
++ */
++void kunit_stream_clear(struct kunit_stream *kstream);
 +
-+void string_stream_clear(struct string_stream *stream);
++#endif /* _KUNIT_KUNIT_STREAM_H */
+diff --git a/include/kunit/test.h b/include/kunit/test.h
+index bdf41d31c343c..bc7dbdcf8abab 100644
+--- a/include/kunit/test.h
++++ b/include/kunit/test.h
+@@ -11,6 +11,7 @@
+ 
+ #include <linux/types.h>
+ #include <linux/slab.h>
++#include <kunit/kunit-stream.h>
+ 
+ struct kunit_resource;
+ 
+@@ -184,6 +185,8 @@ struct kunit {
+ 
+ void kunit_init_test(struct kunit *test, const char *name);
+ 
++void kunit_fail(struct kunit *test, struct kunit_stream *stream);
 +
-+bool string_stream_is_empty(struct string_stream *stream);
-+
-+#endif /* _KUNIT_STRING_STREAM_H */
+ int kunit_run_tests(struct kunit_suite *suite);
+ 
+ /**
 diff --git a/kunit/Makefile b/kunit/Makefile
-index 5efdc4dea2c08..275b565a0e81f 100644
+index 275b565a0e81f..6ddc622ee6b1c 100644
 --- a/kunit/Makefile
 +++ b/kunit/Makefile
-@@ -1 +1,2 @@
--obj-$(CONFIG_KUNIT) +=			test.o
-+obj-$(CONFIG_KUNIT) +=			test.o \
-+					string-stream.o
-diff --git a/kunit/string-stream.c b/kunit/string-stream.c
+@@ -1,2 +1,3 @@
+ obj-$(CONFIG_KUNIT) +=			test.o \
+-					string-stream.o
++					string-stream.o \
++					kunit-stream.o
+diff --git a/kunit/kunit-stream.c b/kunit/kunit-stream.c
 new file mode 100644
-index 0000000000000..0463a92dad74b
+index 0000000000000..8bea1f22eafb5
 --- /dev/null
-+++ b/kunit/string-stream.c
-@@ -0,0 +1,147 @@
++++ b/kunit/kunit-stream.c
+@@ -0,0 +1,123 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * C++ stream style string builder used in KUnit for building messages.
++ * C++ stream style string formatter and printer used in KUnit for outputting
++ * KUnit messages.
 + *
 + * Copyright (C) 2019, Google LLC.
 + * Author: Brendan Higgins <brendanhiggins@google.com>
 + */
 +
-+#include <linux/list.h>
-+#include <linux/slab.h>
-+#include <kunit/string-stream.h>
 +#include <kunit/test.h>
++#include <kunit/kunit-stream.h>
++#include <kunit/string-stream.h>
 +
-+int string_stream_vadd(struct string_stream *stream,
-+		       const char *fmt,
-+		       va_list args)
-+{
-+	struct string_stream_fragment *frag_container;
-+	int len;
-+	va_list args_for_counting;
-+	unsigned long flags;
-+
-+	/* Make a copy because `vsnprintf` could change it */
-+	va_copy(args_for_counting, args);
-+
-+	/* Need space for null byte. */
-+	len = vsnprintf(NULL, 0, fmt, args_for_counting) + 1;
-+
-+	va_end(args_for_counting);
-+
-+	frag_container = kmalloc(sizeof(*frag_container), GFP_KERNEL);
-+	if (!frag_container)
-+		return -ENOMEM;
-+
-+	frag_container->fragment = kmalloc(len, GFP_KERNEL);
-+	if (!frag_container->fragment) {
-+		kfree(frag_container);
-+		return -ENOMEM;
-+	}
-+
-+	len = vsnprintf(frag_container->fragment, len, fmt, args);
-+	spin_lock_irqsave(&stream->lock, flags);
-+	stream->length += len;
-+	list_add_tail(&frag_container->node, &stream->fragments);
-+	spin_unlock_irqrestore(&stream->lock, flags);
-+
-+	return 0;
-+}
-+
-+int string_stream_add(struct string_stream *stream, const char *fmt, ...)
++void kunit_stream_add(struct kunit_stream *kstream, const char *fmt, ...)
 +{
 +	va_list args;
-+	int result;
++	struct string_stream *stream = kstream->internal_stream;
 +
 +	va_start(args, fmt);
-+	result = string_stream_vadd(stream, fmt, args);
++
++	if (string_stream_vadd(stream, fmt, args) < 0)
++		kunit_err(kstream->test,
++			  "Failed to allocate fragment: %s\n",
++			  fmt);
++
 +	va_end(args);
-+
-+	return result;
 +}
 +
-+void string_stream_clear(struct string_stream *stream)
++void kunit_stream_append(struct kunit_stream *kstream,
++				struct kunit_stream *other)
 +{
-+	struct string_stream_fragment *frag_container, *frag_container_safe;
-+	unsigned long flags;
++	struct string_stream *other_stream = other->internal_stream;
++	const char *other_content;
 +
-+	spin_lock_irqsave(&stream->lock, flags);
-+	list_for_each_entry_safe(frag_container,
-+				 frag_container_safe,
-+				 &stream->fragments,
-+				 node) {
-+		list_del(&frag_container->node);
-+		kfree(frag_container->fragment);
-+		kfree(frag_container);
++	other_content = string_stream_get_string(other_stream);
++
++	if (!other_content) {
++		kunit_err(kstream->test,
++			  "Failed to get string from second argument for appending\n");
++		return;
 +	}
-+	stream->length = 0;
-+	spin_unlock_irqrestore(&stream->lock, flags);
++
++	kunit_stream_add(kstream, other_content);
 +}
 +
-+char *string_stream_get_string(struct string_stream *stream)
++void kunit_stream_clear(struct kunit_stream *kstream)
 +{
-+	struct string_stream_fragment *frag_container;
-+	size_t buf_len = stream->length + 1; /* +1 for null byte. */
++	string_stream_clear(kstream->internal_stream);
++}
++
++void kunit_stream_commit(struct kunit_stream *kstream)
++{
++	struct string_stream *stream = kstream->internal_stream;
++	struct string_stream_fragment *fragment;
++	struct kunit *test = kstream->test;
 +	char *buf;
-+	unsigned long flags;
 +
-+	buf = kzalloc(buf_len, GFP_KERNEL);
-+	if (!buf)
-+		return NULL;
++	buf = string_stream_get_string(stream);
++	if (!buf) {
++		kunit_err(test,
++			  "Could not allocate buffer, dumping stream:\n");
++		list_for_each_entry(fragment, &stream->fragments, node) {
++			kunit_err(test, fragment->fragment);
++		}
++		kunit_err(test, "\n");
++		goto cleanup;
++	}
 +
-+	spin_lock_irqsave(&stream->lock, flags);
-+	list_for_each_entry(frag_container, &stream->fragments, node)
-+		strlcat(buf, frag_container->fragment, buf_len);
-+	spin_unlock_irqrestore(&stream->lock, flags);
++	kunit_printk(kstream->level, test, buf);
++	kfree(buf);
 +
-+	return buf;
++cleanup:
++	kunit_stream_clear(kstream);
 +}
 +
-+bool string_stream_is_empty(struct string_stream *stream)
++static int kunit_stream_init(struct kunit_resource *res, void *context)
 +{
-+	bool is_empty;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&stream->lock, flags);
-+	is_empty = list_empty(&stream->fragments);
-+	spin_unlock_irqrestore(&stream->lock, flags);
-+
-+	return is_empty;
-+}
-+
-+static int string_stream_init(struct kunit_resource *res, void *context)
-+{
-+	struct string_stream *stream;
++	struct kunit *test = context;
++	struct kunit_stream *stream;
 +
 +	stream = kzalloc(sizeof(*stream), GFP_KERNEL);
 +	if (!stream)
 +		return -ENOMEM;
 +
 +	res->allocation = stream;
-+	INIT_LIST_HEAD(&stream->fragments);
-+	spin_lock_init(&stream->lock);
++	stream->test = test;
++	stream->internal_stream = alloc_string_stream(test);
++
++	if (!stream->internal_stream)
++		return -ENOMEM;
 +
 +	return 0;
 +}
 +
-+static void string_stream_free(struct kunit_resource *res)
++static void kunit_stream_free(struct kunit_resource *res)
 +{
-+	struct string_stream *stream = res->allocation;
++	struct kunit_stream *stream = res->allocation;
 +
-+	string_stream_clear(stream);
-+	kfree(stream);
++	if (!string_stream_is_empty(stream->internal_stream)) {
++		kunit_err(stream->test,
++			  "End of test case reached with uncommitted stream entries\n");
++		kunit_stream_commit(stream);
++	}
 +}
 +
-+struct string_stream *alloc_string_stream(struct kunit *test)
++struct kunit_stream *alloc_kunit_stream(struct kunit *test, const char *level)
 +{
++	struct kunit_stream *kstream;
 +	struct kunit_resource *res;
 +
 +	res = kunit_alloc_resource(test,
-+				   string_stream_init,
-+				   string_stream_free,
-+				   NULL);
++				   kunit_stream_init,
++				   kunit_stream_free,
++				   test);
 +
 +	if (!res)
 +		return NULL;
 +
-+	return res->allocation;
++	kstream = res->allocation;
++	kstream->level = level;
++
++	return kstream;
 +}
+diff --git a/kunit/test.c b/kunit/test.c
+index f165c9d8e10b0..29edf34a89a37 100644
+--- a/kunit/test.c
++++ b/kunit/test.c
+@@ -120,6 +120,12 @@ static void kunit_print_test_case_ok_not_ok(struct kunit_case *test_case,
+ 			      test_case->name);
+ }
+ 
++void kunit_fail(struct kunit *test, struct kunit_stream *stream)
++{
++	kunit_set_failure(test);
++	kunit_stream_commit(stream);
++}
++
+ void kunit_init_test(struct kunit *test, const char *name)
+ {
+ 	mutex_init(&test->lock);
 -- 
 2.22.0.410.gd8fdbe21b5-goog
 
