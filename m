@@ -1,61 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E70C64276
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 09:19:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025936431B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 09:50:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6A329212B5F0B;
-	Wed, 10 Jul 2019 00:19:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 63A28212B207C;
+	Wed, 10 Jul 2019 00:50:32 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received-SPF: Softfail (domain owner discourages use of this host)
+ identity=mailfrom; client-ip=210.131.2.81; helo=conssluserg-02.nifty.com;
+ envelope-from=yamada.masahiro@socionext.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from conssluserg-02.nifty.com (conssluserg-02.nifty.com
+ [210.131.2.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 74D1D212B5EF3
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:19:19 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id i8so761664pgm.13
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:19:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jfz7M1UfeMHHXZWoXYgXDdb2h4DdykfBMsEUwpNEPMQ=;
- b=l6WF16GVYe5eCc/5x8O8KdIpdGxyu4cFn2VT370ERVLkliFZoRrSfvp79LhBQiNSIN
- Fc3VEBYfnK22TfTFupWFCOy7wIIOmCBSmWzp151VVHjXiu08YEAd1cUyMwfMhn+dU/bF
- UHlZhZc0wk0wQTnNlXcS52uWXZ0GmfQuDPOS9e4OHx48QXa6/or/tZHQSVGwKXE40j8J
- tydITPKv4HnEgptGj8+2KN4wvn2CgD7bTL5YD2VkAUKcTMoyzgx29qn2jFdugUlBv9P8
- +GIsXjY1xdI2IPhRGGizyMRas0HBWbQ4T3n7MZP9ykXTcG22rpDfaxe6v7izwrk4jBVj
- l8OQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jfz7M1UfeMHHXZWoXYgXDdb2h4DdykfBMsEUwpNEPMQ=;
- b=SwwIg+uCMii645Ar8ZautCrhSY0mpNsoLrJy4GHKwDBKby0e3rQgY/OziWRZ/70dgN
- OCo0K7AkNuCHmQUJeWIYECmofM32bd4fiEMCxNFuh3rM5ehZBdtwKKg9ArTjZrdXsfKc
- zhR8wlBTBoLW+PFLWyPxe2rPDUoaepxpg+hTpEsTGGfMBlk/iAa4wbHZM5tF6UyBuI+k
- qEtLH0zpOZfDmXf/VL/HYZBBdmlnFO7YL8Yf0MIa8Hd3UJ0qhMmG8lKF2SykHmB/iJfw
- y87wkMknGJ0kCSjJ1RrqrVLgMtAKJWxC/540TSE3olwcV5iJbxlXGV4ZibQZNhfO4Ghd
- mFzA==
-X-Gm-Message-State: APjAAAVBHy3pwVWsLXD6k2meDfcs4vJr5goASrDM9nYulcelnC6xHh95
- COWbzbbuRpnCkdWxv7w0LfDNhurv1vA2deueVadhNg==
-X-Google-Smtp-Source: APXvYqxygjuZUTtP3o1i+spSO/ODX76iUOPUnBSEPfKtnKohaqyGP7q59QAPXICI+tZgCfUcyvNAo+y5G+f5zV4sog8=
-X-Received: by 2002:a17:90a:ab0d:: with SMTP id
- m13mr4975325pjq.84.1562743158492; 
- Wed, 10 Jul 2019 00:19:18 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 369F221959CB2
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:50:30 -0700 (PDT)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com
+ [209.85.217.51]) (authenticated)
+ by conssluserg-02.nifty.com with ESMTP id x6A7o7aT007106
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 16:50:08 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x6A7o7aT007106
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1562745008;
+ bh=PI9vAU5DZ4pm8uk/LZDalZiWfwOYBnqaRPHYLckDX4g=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=w5GILrEzqG9QlS6RZMKoQ+TxsVYj6AbqrRo9R4/qXciHnnGeEtP6k+w63dXtetcj/
+ Xn6NAKlf8heOTJuAUmEALG9Whwr46Y8aldwwTqaASxABPKyU4DzeaJFtd8vtz0jU/c
+ +jWBilSzUMoEElhEZGQd/JPFPEwiRPRfHYIjk4ajD0wWByqOPvBar9WY7dbCfcDdi4
+ Wjod5ApEpPIoKqPqNoJhXo484ulGXFa6J5zsl096hZmZIKS+2TfdDqJrByp/HtDa2D
+ lfX401sqMeHtu6CQ0Roycgg7O2PZ7+gKmQLTnMijt+3tvbOQKweRcnve6x1E1IhZhv
+ MVmVq54Wkjd4Q==
+X-Nifty-SrcIP: [209.85.217.51]
+Received: by mail-vs1-f51.google.com with SMTP id 190so888251vsf.9
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:50:08 -0700 (PDT)
+X-Gm-Message-State: APjAAAW/Q/sYrOMGTdhBFmeBqdCSIf4k/TjDC4q7g78Q8zwfH59ewc/m
+ PVBuKkwigSKz0VkssuUvkl7/wYR8uIUV+lDyIIU=
+X-Google-Smtp-Source: APXvYqw2lrh+5DK/jJwMNeRrzarB0aSECJBPOWsWFIa2/e5Dx+WrHYOuiqBpjnzOBa000Fw4cKQimfq9Auvs/nIayt0=
+X-Received: by 2002:a67:8e0a:: with SMTP id q10mr17019011vsd.215.1562745007249; 
+ Wed, 10 Jul 2019 00:50:07 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190709063023.251446-1-brendanhiggins@google.com>
- <20190709063023.251446-7-brendanhiggins@google.com>
- <CAK7LNATx30AhZ51xozde=nO06-8UzuC0M9nfZXrqkyfmEFdu5w@mail.gmail.com>
-In-Reply-To: <CAK7LNATx30AhZ51xozde=nO06-8UzuC0M9nfZXrqkyfmEFdu5w@mail.gmail.com>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Wed, 10 Jul 2019 00:19:06 -0700
-Message-ID: <CAFd5g479H3pS9preU6-oCnN5adwBPDe4zQkiFPatKPbxpT5r6w@mail.gmail.com>
-Subject: Re: [PATCH v7 06/18] kbuild: enable building KUnit
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
+References: <20190710071508.173491-1-brendanhiggins@google.com>
+ <20190710071508.173491-7-brendanhiggins@google.com>
+In-Reply-To: <20190710071508.173491-7-brendanhiggins@google.com>
+From: Masahiro Yamada <yamada.masahiro@socionext.com>
+Date: Wed, 10 Jul 2019 16:49:31 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASywq+RhEisuPbqOjFoBh7WNvMEgy55iacizrgNB-uBfA@mail.gmail.com>
+Message-ID: <CAK7LNASywq+RhEisuPbqOjFoBh7WNvMEgy55iacizrgNB-uBfA@mail.gmail.com>
+Subject: Re: [PATCH v8 06/18] kbuild: enable building KUnit
+To: Brendan Higgins <brendanhiggins@google.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,88 +95,30 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jul 9, 2019 at 9:00 PM Masahiro Yamada
-<yamada.masahiro@socionext.com> wrote:
+On Wed, Jul 10, 2019 at 4:16 PM Brendan Higgins
+<brendanhiggins@google.com> wrote:
 >
-> On Tue, Jul 9, 2019 at 3:34 PM Brendan Higgins
-> <brendanhiggins@google.com> wrote:
-> >
-> > KUnit is a new unit testing framework for the kernel and when used is
-> > built into the kernel as a part of it. Add KUnit to the root Kconfig and
-> > Makefile to allow it to be actually built.
-> >
-> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> > Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
-> > Cc: Michal Marek <michal.lkml@markovi.net>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> > ---
-> >  Kconfig  | 2 ++
-> >  Makefile | 2 +-
-> >  2 files changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Kconfig b/Kconfig
-> > index 48a80beab6853..10428501edb78 100644
-> > --- a/Kconfig
-> > +++ b/Kconfig
-> > @@ -30,3 +30,5 @@ source "crypto/Kconfig"
-> >  source "lib/Kconfig"
-> >
-> >  source "lib/Kconfig.debug"
-> > +
-> > +source "kunit/Kconfig"
-> > diff --git a/Makefile b/Makefile
-> > index 3e4868a6498b2..60cf4f0813e0d 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -991,7 +991,7 @@ endif
-> >  PHONY += prepare0
-> >
-> >  ifeq ($(KBUILD_EXTMOD),)
-> > -core-y         += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/
-> > +core-y         += kernel/ certs/ mm/ fs/ ipc/ security/ crypto/ block/ kunit/
-> >
-> >  vmlinux-dirs   := $(patsubst %/,%,$(filter %/, $(init-y) $(init-m) \
-> >                      $(core-y) $(core-m) $(drivers-y) $(drivers-m) \
-> > --
-> > 2.22.0.410.gd8fdbe21b5-goog
+> KUnit is a new unit testing framework for the kernel and when used is
+> built into the kernel as a part of it. Add KUnit to the root Kconfig and
+> Makefile to allow it to be actually built.
 >
->
-> This is so trivial, and do not need to get ack from me.
+> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Oh, sorry about that.
+Please feel free to replace this with:
 
-> Just a nit.
->
->
-> When CONFIG_KUNIT is disable, is there any point in descending into kunit/ ?
->
-> core-$(CONFIG_KUNIT) += kunit/
->
-> ... might be useful to skip kunit/ entirely.
+Acked-by: Masahiro Yamada <yamada.masahiro@socionext.com>
 
-Makes sense. I just sent out a new change that does this.
 
-Thanks!
+> Cc: Michal Marek <michal.lkml@markovi.net>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 
-> If you look at the top-level Makefile, some entries are doing this:
->
->
-> init-y          := init/
-> drivers-y       := drivers/ sound/
-> drivers-$(CONFIG_SAMPLES) += samples/
-> drivers-$(CONFIG_KERNEL_HEADER_TEST) += include/
-> net-y           := net/
-> libs-y          := lib/
-> core-y          := usr/
->
->
->
->
->
-> --
-> Best Regards
-> Masahiro Yamada
+
+
+-- 
+Best Regards
+Masahiro Yamada
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
