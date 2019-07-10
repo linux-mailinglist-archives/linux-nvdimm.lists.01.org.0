@@ -2,77 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983F764023
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 06:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AADB4641C2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 09:15:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 250AE212B5EE3;
-	Tue,  9 Jul 2019 21:50:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 05CFD212B205B;
+	Wed, 10 Jul 2019 00:15:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com;
+ envelope-from=3kzalxq4kddgvlyhxuhbcaachmaiiafy.wigfchor-hpxcggfcmnm.uv.ila@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com
+ [IPv6:2607:f8b0:4864:20::54a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9A0AB212B0FC8
- for <linux-nvdimm@lists.01.org>; Tue,  9 Jul 2019 21:50:33 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6A4l2uU066093
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:50:32 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2tn7ye2j0j-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:50:32 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 10 Jul 2019 05:50:30 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 10 Jul 2019 05:50:28 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x6A4oRhf49938626
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jul 2019 04:50:27 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 087C7A4051;
- Wed, 10 Jul 2019 04:50:27 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2F705A4040;
- Wed, 10 Jul 2019 04:50:26 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.124.35.64])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 10 Jul 2019 04:50:26 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: Re: [PATCH v4 0/6] Fixes related namespace alignment/page size/big
- endian
-In-Reply-To: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
-References: <20190620091626.31824-1-aneesh.kumar@linux.ibm.com>
-Date: Wed, 10 Jul 2019 10:20:24 +0530
-MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19071004-0012-0000-0000-00000330D993
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071004-0013-0000-0000-0000216A40BD
-Message-Id: <87o9221oj3.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-10_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=900 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907100058
+ by ml01.01.org (Postfix) with ESMTPS id 8DF17212AF0CE
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:31 -0700 (PDT)
+Received: by mail-pg1-x54a.google.com with SMTP id d187so919456pga.7
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 00:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=0pW1BcsjTPSHyEkMo96k/o71l5W8M51wh7ZyhpVzADM=;
+ b=mHi2l865KLWjgVk77JKmNtYGZe0xgmJqUcNAffie+cN+57XolMX3GDCpJ2ZH1ceLYR
+ MfFyvnNY0Qwe0x/ZOIiekj7NzIlsbUZDTxthSd/LJOgqPFNF5dEsFtGMwPVF/nYSdHyJ
+ 3VdZcCGqzormHX3dS/yuInQiUg9E6laAPfQmLbGCGEz4HepJhwqJgmDJF7yj1dr6aCix
+ Siqg+NV9jVwUY3x9AB0/e1BJUu0lC4cmATkNcO/Wd9E8nEXdmqgE1jZEc5mwC0ai37Am
+ Pbg5JO4uqte1qi5grtXQRrH7O14tsuFUMbYzcI0pjXuihXi7w4+aV03+iVTZpiuzAPq1
+ 67HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=0pW1BcsjTPSHyEkMo96k/o71l5W8M51wh7ZyhpVzADM=;
+ b=iw+rgOlPkEHu1QZq2cz8xYTvD2tK5rmLINauph0Ka43yfmqqz3SxOPF9w/dlTsRMIa
+ /GsOIA1oFrzuTK2yosHmOLNa3KClnt375fNYBfX6HBH1QC1/IQTSj2hpuI5Wu7Wo0vW8
+ 30y3EcVFIj17FXA8/MiL0WCAhM/dDm8Z8Egv5XXin5IjM+cgxamQLcyZjBwCmL/ult0L
+ bAqX1vgJP9M3t9lIJ5xW8VmtqW9a/IpA2e5krZZLTqYhMNEH2olLC8CmSRH9OVSa5t97
+ V6ITwGiqo8RcIDHvTSssCBmlfllk1kOTfKkNSaF3aMkoNpJ2vx0jBtdhnNOeizmrZc1z
+ SrRw==
+X-Gm-Message-State: APjAAAWq6mZYIEhwta7aAtqH3ZZpNaY82qPhWjTXO8qcCChATQJs+HP7
+ Sju9/KZGHlCEX91FjI/igRMGCQat4HsmTQ3kwgbhug==
+X-Google-Smtp-Source: APXvYqyb0LRYaKSRSGjVUbWvUV4R01ShtwO7/fsNXpVB/VnszhSBSXJqqHQquziMhALgKYKtHVI7t5pL3wpE0iRmNMtOpg==
+X-Received: by 2002:a63:1f56:: with SMTP id q22mr33295799pgm.315.1562742929971; 
+ Wed, 10 Jul 2019 00:15:29 -0700 (PDT)
+Date: Wed, 10 Jul 2019 00:14:50 -0700
+Message-Id: <20190710071508.173491-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.410.gd8fdbe21b5-goog
+Subject: [PATCH v8 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
+ keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
+ peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
+ tytso@mit.edu, yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,53 +67,96 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-nvdimm@lists.01.org,
+ khilman@baylibre.com, knut.omang@oracle.com, wfg@linux.intel.com,
+ joel@jms.id.au, rientjes@google.com, Iurii Zaikin <yzaikin@google.com>,
+ jdike@addtoit.com, dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ Michal Marek <michal.lkml@markovi.net>, richard@nod.at, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
+ linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-CkhpIERhbiwKCkNhbiB5b3UgbWVyZ2UgdGhpcyB0byB5b3VyIHRyZWU/CgotYW5lZXNoCiJBbmVl
-c2ggS3VtYXIgSy5WIiA8YW5lZXNoLmt1bWFyQGxpbnV4LmlibS5jb20+IHdyaXRlczoKCj4gVGhp
-cyBzZXJpZXMgaGFuZGxlIGNvbmZpZ3Mgd2hlcmUgaHVnZXBhZ2Ugc3VwcG9ydCBpcyBub3QgZW5h
-YmxlZCBieSBkZWZhdWx0Lgo+IEFsc28sIHdlIHVwZGF0ZSBzb21lIG9mIHRoZSBpbmZvcm1hdGlv
-biBtZXNzYWdlcyB0byBtYWtlIHN1cmUgd2UgdXNlIFBBR0VfU0laRSBpbnN0ZWFkCj4gb2YgU1pf
-NEsuIFdlIG5vdyBzdG9yZSBwYWdlIHNpemUgYW5kIHN0cnVjdCBwYWdlIHNpemUgaW4gcGZuX3Ni
-IGFuZCBkbyBleHRyYSBjaGVjawo+IGJlZm9yZSBlbmFibGluZyBuYW1lc3BhY2UuIFRoZXJlIGFs
-c28gYW4gZW5kaWFubmVzcyBmaXguCj4KPiBUaGUgcGF0Y2ggc2VyaWVzIGlzIG9uIHRvcCBvZiBz
-dWJzZWN0aW9uIHYxMCBwYXRjaHNldAo+Cj4gaHR0cDovL2xvcmUua2VybmVsLm9yZy9saW51eC1t
-bS8xNTYwOTIzNDkzMDAuOTc5OTU5LjE3NjAzNzEwNzExOTU3NzM1MTM1LnN0Z2l0QGR3aWxsaWEy
-LWRlc2szLmFtci5jb3JwLmludGVsLmNvbQo+Cj4gQ2hhbmdlcyBmcm9tIFYzOgo+ICogRHJvcHBl
-ZCB0aGUgY2hhbmdlIHJlbGF0ZWQgUEZOX01JTl9WRVJTSU9OCj4gKiBmb3IgcGZuX3NiIG1pbm9y
-IHZlcnNpb24gPCA0LCB3ZSBkZWZhdWx0IHBhZ2Vfc2l6ZSB0byBQQUdFX1NJWkUgaW5zdGVhZCBv
-ZiBTWl80ay4KPgo+IEFuZWVzaCBLdW1hciBLLlYgKDYpOgo+ICAgbnZkaW1tOiBDb25zaWRlciBw
-cm9iZSByZXR1cm4gLUVPUE5PVFNVUFAgYXMgc3VjY2Vzcwo+ICAgbW0vbnZkaW1tOiBBZGQgcGFn
-ZSBzaXplIGFuZCBzdHJ1Y3QgcGFnZSBzaXplIHRvIHBmbiBzdXBlcmJsb2NrCj4gICBtbS9udmRp
-bW06IFVzZSBjb3JyZWN0ICNkZWZpbmVzIGluc3RlYWQgb2Ygb3BlbiBjb2RpbmcKPiAgIG1tL252
-ZGltbTogUGljayB0aGUgcmlnaHQgYWxpZ25tZW50IGRlZmF1bHQgd2hlbiBjcmVhdGluZyBkYXgg
-ZGV2aWNlcwo+ICAgbW0vbnZkaW1tOiBVc2UgY29ycmVjdCBhbGlnbm1lbnQgd2hlbiBsb29raW5n
-IGF0IGZpcnN0IHBmbiBmcm9tIGEKPiAgICAgcmVnaW9uCj4gICBtbS9udmRpbW06IEZpeCBlbmRp
-YW4gY29udmVyc2lvbiBpc3N1ZXPCoAo+Cj4gIGFyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9saWJu
-dmRpbW0uaCB8ICA5ICsrKysKPiAgYXJjaC9wb3dlcnBjL21tL01ha2VmaWxlICAgICAgICAgICAg
-IHwgIDEgKwo+ICBhcmNoL3Bvd2VycGMvbW0vbnZkaW1tLmMgICAgICAgICAgICAgfCAzNCArKysr
-KysrKysrKysrKysKPiAgYXJjaC94ODYvaW5jbHVkZS9hc20vbGlibnZkaW1tLmggICAgIHwgMTkg
-KysrKysrKysrCj4gIGRyaXZlcnMvbnZkaW1tL2J0dC5jICAgICAgICAgICAgICAgICB8ICA4ICsr
-LS0KPiAgZHJpdmVycy9udmRpbW0vYnVzLmMgICAgICAgICAgICAgICAgIHwgIDQgKy0KPiAgZHJp
-dmVycy9udmRpbW0vbGFiZWwuYyAgICAgICAgICAgICAgIHwgIDIgKy0KPiAgZHJpdmVycy9udmRp
-bW0vbmFtZXNwYWNlX2RldnMuYyAgICAgIHwgMTMgKysrLS0tCj4gIGRyaXZlcnMvbnZkaW1tL25k
-LWNvcmUuaCAgICAgICAgICAgICB8ICAzICstCj4gIGRyaXZlcnMvbnZkaW1tL25kLmggICAgICAg
-ICAgICAgICAgICB8ICA2IC0tLQo+ICBkcml2ZXJzL252ZGltbS9wZm4uaCAgICAgICAgICAgICAg
-ICAgfCAgNSArKy0KPiAgZHJpdmVycy9udmRpbW0vcGZuX2RldnMuYyAgICAgICAgICAgIHwgNjIg
-KysrKysrKysrKysrKysrKysrKysrKysrKystLQo+ICBkcml2ZXJzL252ZGltbS9wbWVtLmMgICAg
-ICAgICAgICAgICAgfCAyNiArKysrKysrKysrLS0KPiAgZHJpdmVycy9udmRpbW0vcmVnaW9uX2Rl
-dnMuYyAgICAgICAgIHwgMjcgKysrKysrKystLS0tCj4gIGluY2x1ZGUvbGludXgvaHVnZV9tbS5o
-ICAgICAgICAgICAgICB8ICA3ICsrKy0KPiAga2VybmVsL21lbXJlbWFwLmMgICAgICAgICAgICAg
-ICAgICAgIHwgIDggKystLQo+ICAxNiBmaWxlcyBjaGFuZ2VkLCAxOTQgaW5zZXJ0aW9ucygrKSwg
-NDAgZGVsZXRpb25zKC0pCj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBhcmNoL3Bvd2VycGMvaW5jbHVk
-ZS9hc20vbGlibnZkaW1tLmgKPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gvcG93ZXJwYy9tbS9u
-dmRpbW0uYwo+ICBjcmVhdGUgbW9kZSAxMDA2NDQgYXJjaC94ODYvaW5jbHVkZS9hc20vbGlibnZk
-aW1tLmgKPgo+IC0tIAo+IDIuMjEuMAoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlz
-dHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZk
-aW1tCg==
+## TL;DR
+
+This new patch set only contains a very minor change suggested by
+Masahiro to [PATCH v7 06/18] and is otherwise identical to PATCH v7.
+
+Also, with Josh's ack on the preceding patch set, I think we now have
+all necessary reviews and acks from all interested parties.
+
+## Background
+
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
+
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want[1]) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in about a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
+
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+### What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+### Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+### More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[2].
+
+Additionally for convenience, I have applied these patches to a
+branch[3]. The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.2/v8 branch.
+
+## Changes Since Last Version
+
+Like I said in the TL;DR, there is only one minor change since the
+previous revision. That change only affects patch 06/18; it makes it so
+that make doesn't attempt to scan the kunit/ directory when CONFIG_KUNIT
+is not set as suggested by Masahiro.
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[2] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[3] https://kunit.googlesource.com/linux/+/kunit/rfc/v5.2/v8
+
+-- 
+2.22.0.410.gd8fdbe21b5-goog
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
