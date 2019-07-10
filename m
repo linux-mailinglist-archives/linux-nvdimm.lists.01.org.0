@@ -2,60 +2,71 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F158E63A67
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Jul 2019 20:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D94F63EDA
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 03:16:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 113E3212B0827;
-	Tue,  9 Jul 2019 11:01:50 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0C3D8212B0FFF;
+	Tue,  9 Jul 2019 18:16:52 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
+ envelope-from=pasha.tatashin@soleen.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 56BB12194EB78
- for <linux-nvdimm@lists.01.org>; Tue,  9 Jul 2019 11:01:48 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id u17so9352117pgi.6
- for <linux-nvdimm@lists.01.org>; Tue, 09 Jul 2019 11:01:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OUg57n/8w7Mlx4FSaThva6QRBMRQrC57aji70HqhlTs=;
- b=u9enlrUFhNo6CpHlrQV/HgMnM2prP/1x9AkLcEyZIZZ95VhPysZXNdVgTxFeHrQSyj
- D854QOHx1OOVg+bK1q0GL9M26yGnhrklGjHFU0YlePfBqyn8fol1vLU/0tJs5NO+XWNV
- 6Qg4G47Yz8EAu+oXnFu1Mzex0KXUQSkc3dP89G7ycpwdK6vtjyVs4n/CA1F66BOgluWi
- cGrmqcEgZcaKnQ36vda5DA3xHSSM91ST4LQMohLGersiVfBM4MAAfBua5GuHtjmb28bv
- cNHp7EXFv/Be9TyDKlfByNT+SveMU7rOne9AoLQN+azT38ic+R4kxi1lUa+FZPUqI2ob
- eorw==
+ by ml01.01.org (Postfix) with ESMTPS id EA435212B0FFA
+ for <linux-nvdimm@lists.01.org>; Tue,  9 Jul 2019 18:16:50 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id r4so600899qkm.13
+ for <linux-nvdimm@lists.01.org>; Tue, 09 Jul 2019 18:16:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=soleen.com; s=google;
+ h=from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PqeszyHnpa09JchLWcVjDqXY/gdBDHevYPDmL0qjCG8=;
+ b=NYgWnJLbG4IKERgDp8Mh8rchqpvIRzQaOzF4bWc2NXG+eqFvzv5WLLXJh22Y51w5Vz
+ o5hkqppdjfxAY+lffbn7o8xckUMuJcFpHvgEMfSqFSqpBj4swXlJYkJp+Qx1BZsFy3zx
+ NxitqsOKFA568E0jamBAdwfoc2KarmcCjYBRmq7tpXPZYM9UWel6pBB9e0RdCbN1G7lM
+ 6k84/FODP8iMFFaxMzdhUE2L/A725PpjkSamO8doAbClan8mRDNB97MBDEik0/8ocSNz
+ d+gQ2ptWEdcPoMakj2qwdSXqlVfZuL8x4wgGqvURqZy3xb4pceimmbiVvvVeNxBXFfps
+ bTIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=OUg57n/8w7Mlx4FSaThva6QRBMRQrC57aji70HqhlTs=;
- b=mZazhHLZupnHKJQsBjK+KLC3bN8Msz/7lx2NQWSg0sCd2dS6bKX4uGt8iuzq+jBmQW
- VXl7U6hDl8Szrr1pgRye2VhScZiW2LYyBubxyBYS1rvXNmWMvnFNkXuYDtGmiMZO6uD5
- 6oWHXcJ2GP71neZT0ki9SMnDJHcX+stj1LKGS3k7fz0P/5ajRQhktixd3Y0g3ryVD9cR
- KQqjAjhYTN8kyCJsf8mhtFqJmlckQ4bZto6lbJffB/nBSVyIxDuEzfYUnWCGGb6M9s7r
- mt1C2TE8fTWd1wEDH7bSTC0xuwNcinIfVe8oOZgauphrZYs8an+Hd0U+TIqJg2oFYuTo
- VIew==
-X-Gm-Message-State: APjAAAV8CnwfSu7bqMqxl5iiU8zTGmqAQswzXOtenLn1Z6rxVqiTCPsY
- d1TFe9NQdRHzLZpKDCqYYG49IFX8M/KtsdMkgue5pg==
-X-Google-Smtp-Source: APXvYqw4HCjsVl+Amh2Teet2qtkXvGz99b/JiD+OyiCx/6U5M9oVU+FrejKuChE3TPRj4OZE1ZrjIBxXffNmybu5Pvg=
-X-Received: by 2002:a63:205f:: with SMTP id r31mr32165059pgm.159.1562695307162; 
- Tue, 09 Jul 2019 11:01:47 -0700 (PDT)
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=PqeszyHnpa09JchLWcVjDqXY/gdBDHevYPDmL0qjCG8=;
+ b=DQA24TyTleQVVWkSWUCTadONy99/D7ObBF1pd4on7V26fH8fVByXVu/x2ds0SQGRY7
+ MNb0OY/MFCzemkX8jpjhJ7ULr5oWuE1UmOwlGP/yb8Pk9/4X+bpVro4fgCy51PkF2fyF
+ CekZZ6jAuxrG+0UyXhL1KRwC71jMzu6anF4gnGySndKViVSnSCpib2RhiSa5fBqpP49N
+ dLp6w8E4wGt/SCd2if4g7kjQcjtOo4bMjrTlWn137rEyq74C4TG8gz0u7uzB/SoDmbOH
+ c2cmsxLvxuZB3dXQQAdN9UG/S9IJGHCucXSpG0AbE6RI85u9jpms3upRrJpqSayV3wEv
+ UYcQ==
+X-Gm-Message-State: APjAAAX6l3UDFIorp2DlizEESVbP2xLK6cg3b5ww8rhqxx0V3vxuZ6o7
+ qC7ty5uSWAsTQ6Gv18BBtfKDPw==
+X-Google-Smtp-Source: APXvYqzHJ58xkPz/UnFmZw8DxydXmBaaklCvE3hDIpuyBcyWl2zdGdbL4YcSPkWWV6dS4LNlSnmtaw==
+X-Received: by 2002:a37:9481:: with SMTP id
+ w123mr20792761qkd.319.1562721409590; 
+ Tue, 09 Jul 2019 18:16:49 -0700 (PDT)
+Received: from localhost.localdomain (c-73-69-118-222.hsd1.nh.comcast.net.
+ [73.69.118.222])
+ by smtp.gmail.com with ESMTPSA id u7sm260057qta.82.2019.07.09.18.16.48
+ (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+ Tue, 09 Jul 2019 18:16:48 -0700 (PDT)
+From: Pavel Tatashin <pasha.tatashin@soleen.com>
+To: pasha.tatashin@soleen.com, jmorris@namei.org, sashal@kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvdimm@lists.01.org, akpm@linux-foundation.org, mhocko@suse.com,
+ dave.hansen@linux.intel.com, dan.j.williams@intel.com,
+ keith.busch@intel.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
+ zwisler@kernel.org, thomas.lendacky@amd.com, ying.huang@intel.com,
+ fengguang.wu@intel.com, bp@suse.de, bhelgaas@google.com,
+ baiyaowei@cmss.chinamobile.com, tiwai@suse.de, jglisse@redhat.com,
+ david@redhat.com
+Subject: [v7 0/3] "Hotremove" persistent memory
+Date: Tue,  9 Jul 2019 21:16:44 -0400
+Message-Id: <20190710011647.10944-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-References: <20190709063023.251446-1-brendanhiggins@google.com>
- <20190709063023.251446-17-brendanhiggins@google.com>
- <7cc417dd-036f-7dc1-6814-b1fdac810f03@kernel.org>
-In-Reply-To: <7cc417dd-036f-7dc1-6814-b1fdac810f03@kernel.org>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Tue, 9 Jul 2019 11:01:35 -0700
-Message-ID: <CAFd5g4595X8cM919mohQVaShs4dKWzZ_-2RVB=6SH3RdVMwuQw@mail.gmail.com>
-Subject: Re: [PATCH v7 16/18] MAINTAINERS: add entry for KUnit the unit
- testing framework
-To: shuah <shuah@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,89 +78,97 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jul 9, 2019 at 7:53 AM shuah <shuah@kernel.org> wrote:
->
-> On 7/9/19 12:30 AM, Brendan Higgins wrote:
-> > Add myself as maintainer of KUnit, the Linux kernel's unit testing
-> > framework.
-> >
-> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> > ---
-> >   MAINTAINERS | 11 +++++++++++
-> >   1 file changed, 11 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 677ef41cb012c..48d04d180a988 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -8599,6 +8599,17 @@ S:     Maintained
-> >   F:  tools/testing/selftests/
-> >   F:  Documentation/dev-tools/kselftest*
-> >
-> > +KERNEL UNIT TESTING FRAMEWORK (KUnit)
-> > +M:   Brendan Higgins <brendanhiggins@google.com>
-> > +L:   linux-kselftest@vger.kernel.org
-> > +L:   kunit-dev@googlegroups.com
-> > +W:   https://google.github.io/kunit-docs/third_party/kernel/docs/
-> > +S:   Maintained
-> > +F:   Documentation/dev-tools/kunit/
-> > +F:   include/kunit/
-> > +F:   kunit/
-> > +F:   tools/testing/kunit/
-> > +
-> >   KERNEL USERMODE HELPER
-> >   M:  Luis Chamberlain <mcgrof@kernel.org>
-> >   L:  linux-kernel@vger.kernel.org
-> >
->
-> Thanks Brendan.
->
-> I am good with this. I can take KUnit patches through kselftest
-> with your Ack.
+Changelog:
+v7
+- Added Dan Williams Reviewed-by to the last patch, and small change to
+  dev_err() otput format as was suggested by Dan.
 
-My acknowledgement? Sure! I thought we already agreed to that.
+v6
+- A few minor changes and added reviewed-by's.
+- Spent time studying lock ordering issue that was reported by Vishal
+  Verma, but that issue already exists in Linux, and can be reproduced
+  with exactly the same steps with ACPI memory hotplugging.
 
-Also, do we need an ack from Masahiro or Michal for the Kbuild patch
-[PATCH v7 06/18]? And an ack from Josh or Peter for the objtool patch
-[PATCH v7 08/18]?
+v5
+- Addressed comments from Dan Williams: made remove_memory() to return
+  an error code, and use this function from dax.
 
-Greg and Logan gave me a Reviewed-by for the Kbuild patch, so maybe
-that's fine, but I don't have any reviews or acks for the objtool
-patch.
+v4
+- Addressed comments from Dave Hansen
 
-Thanks!
+v3
+- Addressed comments from David Hildenbrand. Don't release
+  lock_device_hotplug after checking memory status, and rename
+  memblock_offlined_cb() to check_memblock_offlined_cb()
+
+v2
+- Dan Williams mentioned that drv->remove() return is ignored
+  by unbind. Unbind always succeeds. Because we cannot guarantee
+  that memory can be offlined from the driver, don't even
+  attempt to do so. Simply check that every section is offlined
+  beforehand and only then proceed with removing dax memory.
+
+---
+
+Recently, adding a persistent memory to be used like a regular RAM was
+added to Linux. This work extends this functionality to also allow hot
+removing persistent memory.
+
+We (Microsoft) have an important use case for this functionality.
+
+The requirement is for physical machines with small amount of RAM (~8G)
+to be able to reboot in a very short period of time (<1s). Yet, there is
+a userland state that is expensive to recreate (~2G).
+
+The solution is to boot machines with 2G preserved for persistent
+memory.
+
+Copy the state, and hotadd the persistent memory so machine still has
+all 8G available for runtime. Before reboot, offline and hotremove
+device-dax 2G, copy the memory that is needed to be preserved to pmem0
+device, and reboot.
+
+The series of operations look like this:
+
+1. After boot restore /dev/pmem0 to ramdisk to be consumed by apps.
+   and free ramdisk.
+2. Convert raw pmem0 to devdax
+   ndctl create-namespace --mode devdax --map mem -e namespace0.0 -f
+3. Hotadd to System RAM
+   echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
+   echo dax0.0 > /sys/bus/dax/drivers/kmem/new_id
+   echo online_movable > /sys/devices/system/memoryXXX/state
+4. Before reboot hotremove device-dax memory from System RAM
+   echo offline > /sys/devices/system/memoryXXX/state
+   echo dax0.0 > /sys/bus/dax/drivers/kmem/unbind
+5. Create raw pmem0 device
+   ndctl create-namespace --mode raw  -e namespace0.0 -f
+6. Copy the state that was stored by apps to ramdisk to pmem device
+7. Do kexec reboot or reboot through firmware if firmware does not
+   zero memory in pmem0 region (These machines have only regular
+   volatile memory). So to have pmem0 device either memmap kernel
+   parameter is used, or devices nodes in dtb are specified.
+
+
+Pavel Tatashin (3):
+  device-dax: fix memory and resource leak if hotplug fails
+  mm/hotplug: make remove_memory() interface useable
+  device-dax: "Hotremove" persistent memory that is used like normal RAM
+
+ drivers/dax/dax-private.h      |  2 ++
+ drivers/dax/kmem.c             | 46 +++++++++++++++++++++---
+ include/linux/memory_hotplug.h |  8 +++--
+ mm/memory_hotplug.c            | 64 +++++++++++++++++++++++-----------
+ 4 files changed, 92 insertions(+), 28 deletions(-)
+
+-- 
+2.22.0
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
