@@ -1,41 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A441E64854
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 16:27:22 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CEF864A18
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 10 Jul 2019 17:51:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 95AB1212B6D45;
-	Wed, 10 Jul 2019 07:27:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7B010212B6D58;
+	Wed, 10 Jul 2019 08:51:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=198.54.127.54; helo=new-01-4.privateemail.com;
+ envelope-from=scarlett.thomas@technologyusersinfo.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from NEW-01-4.privateemail.com (new-01-4.privateemail.com
+ [198.54.127.54])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 56065211A2DB2
- for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 07:27:18 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by ml01.01.org (Postfix) with ESMTPS id 609E9212B6D52
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 08:51:02 -0700 (PDT)
+Received: from NEW-01.privateemail.com (unknown [10.20.150.210])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 868C9307CDFC;
- Wed, 10 Jul 2019 14:27:17 +0000 (UTC)
-Received: from dhcp201-121.englab.pnq.redhat.com (ovpn-116-55.sin2.redhat.com
- [10.67.116.55])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6EA411711D;
- Wed, 10 Jul 2019 14:27:06 +0000 (UTC)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: virtualization@lists.linux-foundation.org,
-	dan.j.williams@intel.com
-Subject: [PATCH] virtio_pmem: fix sparse warning
-Date: Wed, 10 Jul 2019 19:57:00 +0530
-Message-Id: <20190710142700.10215-1-pagupta@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.49]); Wed, 10 Jul 2019 14:27:17 +0000 (UTC)
+ by NEW-01-4.privateemail.com (Postfix) with ESMTPS id F1AE080A13
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 15:51:00 +0000 (UTC)
+Received: from MTA-05-1.privateemail.com (unknown [10.20.147.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by NEW-01.privateemail.com (Postfix) with ESMTPS id EAAD960517
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 15:51:00 +0000 (UTC)
+Received: from MTA-05.privateemail.com (localhost [127.0.0.1])
+ by MTA-05.privateemail.com (Postfix) with ESMTP id D8F8860067
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 11:51:00 -0400 (EDT)
+Received: from DESKTOP9H8BFK9 (unknown [10.20.151.238])
+ by MTA-05.privateemail.com (Postfix) with ESMTPA id 10F236005C
+ for <linux-nvdimm@lists.01.org>; Wed, 10 Jul 2019 15:50:59 +0000 (UTC)
+From: "Scarlett Thomas" <scarlett.thomas@technologyusersinfo.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: JIRA Agile and Clarizen -Vendors List
+Date: Wed, 10 Jul 2019 11:50:59 -0400
+Message-ID: <!&!AAAAAAAAAAAYAAAAAAAAAHFmpjQclDVAqyek0hCuVW3CgAAAEAAAAEdHlBvz0iBFoO85olI6xiwBAAAAAA==@technologyusersinfo.com>
+MIME-Version: 1.0
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: AdU3N0RAnWOGg6fhSjWshNXoki6IoQ==
+Content-Language: en-us
+X-Virus-Scanned: ClamAV using ClamSMTP
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,56 +57,74 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: mst@redhat.com, cohuck@redhat.com, linux-kernel@vger.kernel.org,
- yuval.shaia@oracle.com, lcapitulino@redhat.com, linux-nvdimm@lists.01.org
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-This patch fixes below sparse warning related to __virtio 
-type in virtio pmem driver. This is reported by Intel test
-bot on linux-next tree.
+Hi,
 
-nd_virtio.c:56:28: warning: incorrect type in assignment (different base types)
-nd_virtio.c:56:28:    expected unsigned int [unsigned] [usertype] type
-nd_virtio.c:56:28:    got restricted __virtio32
-nd_virtio.c:93:59: warning: incorrect type in argument 2 (different base types)
-nd_virtio.c:93:59:    expected restricted __virtio32 [usertype] val
-nd_virtio.c:93:59:    got unsigned int [unsigned] [usertype] ret
+ 
 
-Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-Reported-by: kbuild test robot <lkp@intel.com>
----
+Hope today finds you well!
 
-This fixes a warning, so submitting it as a separate
-patch on top of virtio pmem series. 
  
- include/uapi/linux/virtio_pmem.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/virtio_pmem.h b/include/uapi/linux/virtio_pmem.h
-index efcd72f2d20d..f89129bf1f84 100644
---- a/include/uapi/linux/virtio_pmem.h
-+++ b/include/uapi/linux/virtio_pmem.h
-@@ -23,12 +23,12 @@ struct virtio_pmem_config {
+We are a global database firm and we assist companies in providing business
+contacts based on their target segment/audience. We can provide you with a
+customized list based on your needs.
+
  
- struct virtio_pmem_resp {
- 	/* Host return status corresponding to flush request */
--	__u32 ret;
-+	__virtio32 ret;
- };
+
+I am writing to you in regards to our recent list release, and check if you
+would be interested in acquiring our recently verified Project Collaboration
+Software Users list and other Software's user's database. 
+
  
- struct virtio_pmem_req {
- 	/* command type */
--	__u32 type;
-+	__virtio32 type;
- };
+
+We have user's information for below mentioned:              
+
  
- #endif
--- 
-2.20.1
+
+*	Basecamp  
+*	Atlassian Confluence
+*	Smartsheet 
+*	JIRA Agile 
+*	Redmine 
+*	FunctionFox  
+*	Clarizen  
+*	Wrike 
+*	ProjectManager.com and much more.
+
+ 
+
+This list comes with full contact details like: "Company name, contact first
+last name, title, verified email address, phone number, fax number, mailing
+address, city, state, zip code, country, revenue size, employee count,
+Industry specification and website URL".
+
+ 
+
+Kindly let me know the target geography and which software users list you
+wish to target. So that I can get back with counts and more information.
+
+ 
+
+Looking forward to your response.
+
+ 
+
+Warm Regards,
+
+Scarlett Thomas || Sr. Online Marketing Executive
+
+Dedicated to your success
+
+ 
+
+ 
+
+ 
 
 _______________________________________________
 Linux-nvdimm mailing list
