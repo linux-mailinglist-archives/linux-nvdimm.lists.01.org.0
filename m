@@ -2,61 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFA06A3F7
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Jul 2019 10:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A256A515
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 16 Jul 2019 11:43:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5D461212B7D83;
-	Tue, 16 Jul 2019 01:40:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C4BC7212B7DBF;
+	Tue, 16 Jul 2019 02:45:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ client-ip=2607:f8b0:4864:20::e49; helo=mail-vs1-xe49.google.com;
+ envelope-from=3ljwtxq4kdasm2pyolystrrty3rzzrwp.nzxwty58-y6otxxwt343.bc.z2r@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-vs1-xe49.google.com (mail-vs1-xe49.google.com
+ [IPv6:2607:f8b0:4864:20::e49])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E4690212B0836
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 01:40:14 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id r7so8763794pfl.3
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 01:37:46 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id CDC10212AF0B2
+ for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 02:45:38 -0700 (PDT)
+Received: by mail-vs1-xe49.google.com with SMTP id m186so4218250vsm.2
+ for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 02:43:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=d5YQlIKKkuDS08glaQtz+2CmlaQCbXhxEEG92fwEkgc=;
- b=CsxR848oXNv0SGx7lrrmlW/EFOw9d/A77U3g3HqLdnzQXz9W+0cxfMoa8bEYGoXURh
- m8GxLMkoHCYswLdtdnUJ+iBrvvcKKjZbcU1qvZqr2o95nWV31wYJsJz5Dh6UhD3jgfTf
- 5nivHOcKZtu6NiXtTp/wAzu9i/RSZAOEHLHz80kaXnhboxxZghbC+4Zr/y70MEqCyABV
- qn0BYsyJyIthL8JHY+XcetgGY+N2MuOwdMCbhswDZ+jUF5W/jWzTTHxbcIVuDRWHC7id
- KxQb7HGZt+O2zUduFDS/VkICES4vWtb0wGS9znIb2yrTGO5QGHPknE6OPaDWHe8cPkNv
- JSeQ==
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=pGdEsik+1M6jb/HINg07WI5yjzJ1jMxME0W4+2uDrMc=;
+ b=eAEOpY1OH/FnKVljQodIm2gUsxEwhjJezpJfsDh5+L9jGMf2prsNq4n5iGGl8lhFcy
+ 3GIJYBh3yNP4rG6hnKRTyj90mHYFk0BHKtIgiGVyRA9kF/uIcjPZdmXbW8ZEQW4EZ5IH
+ SXn4qORJzI5ksZoYb5wqvx7hlnvhT2sxT5FgtaGJr+HG+NjnhSJ69g9xxveqLaNBs89a
+ ktkggSKnDQEOXJdhLHX3eRSCy+Xqa76qSYaf55Id0NRKz4na4h3mnh2/MOGZbY4WN6E8
+ fCBR1frwWPhwmOtJudmJgXI/JrEuT7i8sdsJFK8HYCxGVYzU3slHOExwB171GfmM6DRJ
+ 5ZCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=d5YQlIKKkuDS08glaQtz+2CmlaQCbXhxEEG92fwEkgc=;
- b=A0QCtscn6CyQFNsWAPYGWrMNXoTjoSrwtz6ZvvmhhoZgmGL3lmdeLfcB1CUHs9V0X8
- iPNZYxKuNsviRpxbDxxg87edUX+LSqcFQ4Dhj8m7F3RnWPhV/GX4VAH5hITJa+B4UAF3
- w9nPhYmR/6kHaHn8mWEquoAny7VQpyv1FFMTxC7t4bV4g/+630wozFD4ZzTBmzFa6VbB
- wkexAGqTcqIC7dHMH8Rp033Y4Nu/KmAvgyH58NmP0BgTvnZioAqp1La+MbTqhkfNq6mi
- B5xoI9tuavYBuJr5iDTGYrSLFQssOVLd4fiGrPmOkhTi1fNAS2p3Xfm1C21iEnniUZlk
- ilvA==
-X-Gm-Message-State: APjAAAUi8D31nu30Jd8PbHgK9IqGH0b/0aOk9g6/KxuNtVvPwO7IQSRu
- lbHQ4vmHik2UOCbRcG093XzLHWVPUof5IXqoaeqkVA==
-X-Google-Smtp-Source: APXvYqw/pjkOVZaApgOgNLX2yiZ2DSfhsd3LaKVyfBf+7gS0zPt8gXh/9iP62Z9w8bWZyNakENvfhgJaHPTPzm3RyWM=
-X-Received: by 2002:a63:eb51:: with SMTP id b17mr31131916pgk.384.1563266265401; 
- Tue, 16 Jul 2019 01:37:45 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190712081744.87097-1-brendanhiggins@google.com>
- <20190712081744.87097-5-brendanhiggins@google.com>
- <20190715221554.8417320665@mail.kernel.org>
- <CAFd5g47ikJmA0uGoavAFsh+hQvDmgsOi26tyii0612R=rt7iiw@mail.gmail.com>
-In-Reply-To: <CAFd5g47ikJmA0uGoavAFsh+hQvDmgsOi26tyii0612R=rt7iiw@mail.gmail.com>
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=pGdEsik+1M6jb/HINg07WI5yjzJ1jMxME0W4+2uDrMc=;
+ b=FOuhcRS9DpR0PoOL2K80+QxoKuwH62ElaXIsIbRiGfG15eU+jc0M3xX+kJDCYIoWa0
+ JQp2/sicmh4cpABRp//DuaO4zupuuwPCKTbJ6xvuXbtTd0a9ZKwMhYaZVANUR8v1tMAl
+ /6l5F9+Z1w9i1XVNng1CxXht6Ii6UOpRVmfbasChVxSTGwQV0GI+0cbD4wWaxBL8oKPx
+ BWAch/QLY7Y8Oj9req9AQIKA9jvWY6Q0/KDumRhpmcc4E0DAnVQiDfrhHYJ8dO5wwOHd
+ PvqP6Xol13dkW3cxA2eUO2PbwXmg+nIBbTxBBkhzKR+kkky6cEg7AHJcKsl0S/C0rIUF
+ dNpg==
+X-Gm-Message-State: APjAAAWoI9VH6ArJDhXIWsH86WM7900iqPCMZjk8Bf6JOJntBl5SDAYI
+ Gl0wqV1rfH1jtaX35dsHWdPmjnQS3rftBnw3AAgeXg==
+X-Google-Smtp-Source: APXvYqw3wlXdIHgaqyGI3Fkb5EoQvIKrYD7PYJZvCXqueiq4LTaNvNX4mlOb1gL0HCxxqPqMgE7qX6kvoBg4NaGW2/1i8w==
+X-Received: by 2002:a9f:230c:: with SMTP id 12mr15226541uae.85.1563270188644; 
+ Tue, 16 Jul 2019 02:43:08 -0700 (PDT)
+Date: Tue, 16 Jul 2019 02:42:44 -0700
+Message-Id: <20190716094302.180360-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
+Subject: [PATCH v10 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
 From: Brendan Higgins <brendanhiggins@google.com>
-Date: Tue, 16 Jul 2019 01:37:34 -0700
-Message-ID: <CAFd5g44_axVHNMBzxSURQB_-R+Rif7cZcg7PyZ_SS+5hcy5jZA@mail.gmail.com>
-Subject: Re: [PATCH v9 04/18] kunit: test: add kunit_stream a std::stream like
- logger
-To: Stephen Boyd <sboyd@kernel.org>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
+ keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
+ peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
+ tytso@mit.edu, yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,297 +67,98 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
- Kevin Hilman <khilman@baylibre.com>
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-nvdimm@lists.01.org,
+ khilman@baylibre.com, knut.omang@oracle.com, wfg@linux.intel.com,
+ joel@jms.id.au, rientjes@google.com, Iurii Zaikin <yzaikin@google.com>,
+ jdike@addtoit.com, dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ Michal Marek <michal.lkml@markovi.net>, richard@nod.at, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
+ linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jul 16, 2019 at 12:57 AM Brendan Higgins
-<brendanhiggins@google.com> wrote:
->
-> On Mon, Jul 15, 2019 at 3:15 PM Stephen Boyd <sboyd@kernel.org> wrote:
-> >
-> > Quoting Brendan Higgins (2019-07-12 01:17:30)
-> > > diff --git a/include/kunit/kunit-stream.h b/include/kunit/kunit-stream.h
-> > > new file mode 100644
-> > > index 0000000000000..a7b53eabf6be4
-> > > --- /dev/null
-> > > +++ b/include/kunit/kunit-stream.h
-> > > @@ -0,0 +1,81 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0 */
-> > > +/*
-> > > + * C++ stream style string formatter and printer used in KUnit for outputting
-> > > + * KUnit messages.
-> > > + *
-> > > + * Copyright (C) 2019, Google LLC.
-> > > + * Author: Brendan Higgins <brendanhiggins@google.com>
-> > > + */
-> > > +
-> > > +#ifndef _KUNIT_KUNIT_STREAM_H
-> > > +#define _KUNIT_KUNIT_STREAM_H
-> > > +
-> > > +#include <linux/types.h>
-> > > +#include <kunit/string-stream.h>
-> > > +
-> > > +struct kunit;
-> > > +
-> > > +/**
-> > > + * struct kunit_stream - a std::stream style string builder.
-> > > + *
-> > > + * A std::stream style string builder. Allows messages to be built up and
-> > > + * printed all at once.
-> > > + */
-> > > +struct kunit_stream {
-> > > +       /* private: internal use only. */
-> > > +       struct kunit *test;
-> > > +       const char *level;
-> >
-> > Is the level changed? See my comment below, but I wonder if this whole
-> > struct can go away and the wrappers can just operate on 'struct
-> > string_stream' instead.
->
-> I was inclined to agree with you when I first read your comment, but
-> then I thought about the case that someone wants to add in a debug
-> message (of which I currently have none). I think under most
-> circumstances a user of kunit_stream would likely want to pick a
-> default verbosity that maybe I should provide, but may still want
-> different verbosity levels.
->
-> The main reason I want to keep the types separate, string_stream vs.
-> kunit_stream, is that they are intended to be used differently.
-> string_stream is just a generic string builder. If you are using that,
-> you are expecting to see someone building the string at some point and
-> then doing something interesting with it. kunit_stream really tells
-> you specifically that KUnit is putting together a message to
-> communicate something to a user of KUnit. It is really used in a very
-> specific way, and I wouldn't want to generalize its usage beyond how
-> it is currently used. I think in order to preserve the author's
-> intention it adds clarity to keep the types separate regardless of how
-> similar they might be in reality.
->
-> > > +       struct string_stream *internal_stream;
-> > > +};
-> > > diff --git a/kunit/kunit-stream.c b/kunit/kunit-stream.c
-> > > new file mode 100644
-> > > index 0000000000000..8bea1f22eafb5
-> > > --- /dev/null
-> > > +++ b/kunit/kunit-stream.c
-> > > @@ -0,0 +1,123 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +/*
-> > > + * C++ stream style string formatter and printer used in KUnit for outputting
-> > > + * KUnit messages.
-> > > + *
-> > > + * Copyright (C) 2019, Google LLC.
-> > > + * Author: Brendan Higgins <brendanhiggins@google.com>
-> > > + */
-> > > +
-> > > +#include <kunit/test.h>
-> > > +#include <kunit/kunit-stream.h>
-> > > +#include <kunit/string-stream.h>
-> > > +
-> > > +void kunit_stream_add(struct kunit_stream *kstream, const char *fmt, ...)
-> > > +{
-> > > +       va_list args;
-> > > +       struct string_stream *stream = kstream->internal_stream;
-> > > +
-> > > +       va_start(args, fmt);
-> > > +
-> > > +       if (string_stream_vadd(stream, fmt, args) < 0)
-> > > +               kunit_err(kstream->test,
-> > > +                         "Failed to allocate fragment: %s\n",
-> > > +                         fmt);
-> > > +
-> > > +       va_end(args);
-> > > +}
-> > > +
-> > > +void kunit_stream_append(struct kunit_stream *kstream,
-> > > +                               struct kunit_stream *other)
-> > > +{
-> > > +       struct string_stream *other_stream = other->internal_stream;
-> > > +       const char *other_content;
-> > > +
-> > > +       other_content = string_stream_get_string(other_stream);
-> > > +
-> > > +       if (!other_content) {
-> > > +               kunit_err(kstream->test,
-> > > +                         "Failed to get string from second argument for appending\n");
-> > > +               return;
-> > > +       }
-> > > +
-> > > +       kunit_stream_add(kstream, other_content);
-> > > +}
-> >
-> > Why can't this function be implemented in the string_stream API? Seems
-> > valid to want to append one stream to another and that isn't
-> > kunit_stream specific.
->
-> Fair point. Will do.
->
-> > > +
-> > > +void kunit_stream_clear(struct kunit_stream *kstream)
-> > > +{
-> > > +       string_stream_clear(kstream->internal_stream);
-> > > +}
-> > > +
-> > > +void kunit_stream_commit(struct kunit_stream *kstream)
-> > > +{
-> > > +       struct string_stream *stream = kstream->internal_stream;
-> > > +       struct string_stream_fragment *fragment;
-> > > +       struct kunit *test = kstream->test;
-> > > +       char *buf;
-> > > +
-> > > +       buf = string_stream_get_string(stream);
-> > > +       if (!buf) {
-> > > +               kunit_err(test,
-> > > +                         "Could not allocate buffer, dumping stream:\n");
-> > > +               list_for_each_entry(fragment, &stream->fragments, node) {
-> > > +                       kunit_err(test, fragment->fragment);
-> > > +               }
-> > > +               kunit_err(test, "\n");
-> > > +               goto cleanup;
-> > > +       }
-> > > +
-> > > +       kunit_printk(kstream->level, test, buf);
-> > > +       kfree(buf);
-> > > +
-> > > +cleanup:
-> >
-> > Drop the goto and use an 'else' please.
->
-> Will do.
->
-> > > +       kunit_stream_clear(kstream);
-> > > +}
-> > > +
-> > > +static int kunit_stream_init(struct kunit_resource *res, void *context)
-> > > +{
-> > > +       struct kunit *test = context;
-> > > +       struct kunit_stream *stream;
-> > > +
-> > > +       stream = kzalloc(sizeof(*stream), GFP_KERNEL);
-> > > +       if (!stream)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       res->allocation = stream;
-> > > +       stream->test = test;
-> > > +       stream->internal_stream = alloc_string_stream(test);
-> > > +
-> > > +       if (!stream->internal_stream)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       return 0;
-> > > +}
-> > > +
-> > > +static void kunit_stream_free(struct kunit_resource *res)
-> > > +{
-> > > +       struct kunit_stream *stream = res->allocation;
-> > > +
-> > > +       if (!string_stream_is_empty(stream->internal_stream)) {
-> > > +               kunit_err(stream->test,
-> > > +                         "End of test case reached with uncommitted stream entries\n");
-> > > +               kunit_stream_commit(stream);
-> > > +       }
-> > > +}
-> > > +
-> >
-> > Nitpick: Drop this extra newline.
->
-> Oops, nice catch.
+## TL;DR
 
-Not super important, but I don't want you to think that I am ignoring
-you. I think you must have unintentionally deleted the last function
-in this file, or maybe you are referring to something that I am just
-not seeing, but I don't see the extra newline here.
+This patchset addresses comments from Stephen Boyd. Most changes are
+pretty minor, but this does fix a couple of bugs pointed out by Stephen.
 
-> > > diff --git a/kunit/test.c b/kunit/test.c
-> > > index f165c9d8e10b0..29edf34a89a37 100644
-> > > --- a/kunit/test.c
-> > > +++ b/kunit/test.c
-> > > @@ -120,6 +120,12 @@ static void kunit_print_test_case_ok_not_ok(struct kunit_case *test_case,
-> > >                               test_case->name);
-> > >  }
-> > >
-> > > +void kunit_fail(struct kunit *test, struct kunit_stream *stream)
-> >
-> > Why doesn't 'struct kunit' have a 'struct kunit_stream' inside of it? It
-> > seems that the two are highly related, to the point that it might just
-> > make sense to have
->
-> A `struct kunit_stream` is usually associated with a message that is
-> being built up over time like maybe an expectation; it is meant to
-> capture the idea that we might want to send some information out to
-> the user pertaining to some thing 'X', but we aren't sure that we
-> actually want to send it until 'X' is complete, but do to the nature
-> of 'X' it is easier to start constructing the message before 'X' is
-> complete.
->
-> Consider a complicated expectation, there might be multiple conditions
-> that satisfy it and multiple conditions which could make it fail. As
-> we start exploring the input to the expectation we gain information
-> that we might want to share back with the user if the expectation were
-> to fail and we might get that information before we are actually sure
-> that the expectation does indeed fail.
->
-> When we first step into the expectation we immediately know the
-> function name, file name, and line number where we are called and
-> would want to put that information into any message we would send to
-> the user about this expectation. Next, we might want to check a
-> property of the input, it may or may not be enough information on its
-> own for the expectation to fail, but we want to share the result of
-> the property check with the user regardless, BUT only if the
-> expectation as a whole fails.
->
-> Hence, we can have multiple `struct kunit_stream`s associated with a
-> `struct kunit` active at any given time.
->
-> >         struct kunit {
-> >                 struct kunit_stream stream;
-> >                 ...
-> >         };
-> >
-> > > +{
-> > > +       kunit_set_failure(test);
-> > > +       kunit_stream_commit(stream);
-> >
-> > And then this function can just take a test and the stream can be
-> > associated with the test directly. Use container_of() to get to the test
-> > when the only pointer in hand is for the stream too.
->
-> Unfortunately that wouldn't work. See my above explanation.
->
-> > > +}
-> > > +
-> > >  void kunit_init_test(struct kunit *test, const char *name)
-> > >  {
-> > >         mutex_init(&test->lock);
->
-> Thanks!
+I imagine that Stephen will probably have some more comments, but I
+wanted to get this out for him to look at as soon as possible.
+
+## Background
+
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
+
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want[1]) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in about a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
+
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+### What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+### Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+### More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[2].
+
+Additionally for convenience, I have applied these patches to a
+branch[3]. The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.2/v10 branch.
+
+## Changes Since Last Version
+
+- Went back to using spinlock in `struct kunit`. Needed for resource
+  management API. Thanks to Stephen for this change.
+- Fixed bug where an init failure may not be recorded as a failure in
+  patch 01/18.
+- Added append method to string_stream as suggested by Stephen.
+- Mostly pretty minor changes after that, which mostly pertain to
+  string_stream and kunit_stream.
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[2] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[3] https://kunit.googlesource.com/linux/+/kunit/rfc/v5.2/v10
+
+-- 
+2.22.0.510.g264f2c817a-goog
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
