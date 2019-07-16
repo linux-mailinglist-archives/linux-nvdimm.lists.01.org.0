@@ -2,121 +2,117 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C85CA80C
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 19:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB3ECAE1F
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 20:26:11 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 524CA10FC58FE;
-	Thu,  3 Oct 2019 10:06:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7A2A100DC425
-	for <linux-nvdimm@lists.01.org>; Thu,  3 Oct 2019 10:06:35 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Oct 2019 10:05:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,253,1566889200";
-   d="scan'208";a="392014697"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by fmsmga005.fm.intel.com with ESMTP; 03 Oct 2019 10:05:23 -0700
-Date: Thu, 3 Oct 2019 10:05:23 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jan Kara <jack@suse.cz>
-Subject: Re: Lease semantic proposal
-Message-ID: <20191003170523.GC31174@iweiny-DESK2.sc.intel.com>
-References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
- <5d5a93637934867e1b3352763da8e3d9f9e6d683.camel@kernel.org>
- <20191001181659.GA5500@iweiny-DESK2.sc.intel.com>
- <20191003090110.GC17911@quack2.suse.cz>
+	by ml01.01.org (Postfix) with ESMTP id E33DB10FC58AA;
+	Thu,  3 Oct 2019 11:27:20 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=1.202.141.114; helo=rucdm.com; envelope-from=1xuezhe@rucdm.com; receiver=<UNKNOWN> 
+Received: from rucdm.com (unknown [1.202.141.114])
+	by ml01.01.org (Postfix) with ESMTP id EC7B310FC58A8
+	for <linux-nvdimm@lists.01.org>; Thu,  3 Oct 2019 11:27:16 -0700 (PDT)
+Received: from xz [111.76.175.109] by rucdm.com with ESMTP
+  (SMTPD32-8.02) id A2151DFC00B4; Tue, 16 Jul 2019 17:00:05 +0800
+Message-ID: <6EECA8FFE12510EBA85C7A923575B556@xz>
+From: "ufqymn" <1xuezhe@rucdm.com>
+To: <linp@21lanhai.com>,
+	<linqiang@hainu.edu.cn>,
+	<linszhang@nwsuaf.edu.cn>,
+	<lintianliu@hinabook.com>,
+	<pastorterry@plateautel.net>,
+	<linus@taomee.com>,
+	<linus@tvldyn.com>,
+	<linux-driver@qlogic.com>,
+	<sales-1@nbkingland.com>,
+	<linux-nvdimm@lists.01.org>,
+	<omqz@surini.com.cn>,
+	<linwang@ujs.edu.cn>,
+	<wjjun@nwpu.edu.cn>,
+	<support@liqpay.com>,
+	<hr@nxbyh.com>,
+	<sharad.joshi@icimod.org>,
+	<linxl@suntar.com>,
+	<icabc@cbees.net>,
+	<charleszhang@xmu.edu.cn>,
+	<linxy@nbport.com.cn>,
+	<zhuang@binbing.com>
+Subject: =?gb2312?B?1LzF2rjfuPrI4su/0NS40MjLxt6+tdfTx7DD5rnyzPK/2r27o6zArQ==?=
+	=?gb2312?B?v6q0sMGxttTXxc2js7WzobrzyOuy2bHG?=
+Date: Tue, 16 Jul 2019 17:03:38 +0800
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191003090110.GC17911@quack2.suse.cz>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: C6CMLVNY6DAXBNYCVBYF7L4YBN4A2XOZ
-X-Message-ID-Hash: C6CMLVNY6DAXBNYCVBYF7L4YBN4A2XOZ
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jeff Layton <jlayton@kernel.org>, linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Dave Chinner <david@fromorbit.com>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+Message-ID-Hash: 4H7M6EXOP34G267F5B4GPD7ZC4B3TKW4
+X-Message-ID-Hash: 4H7M6EXOP34G267F5B4GPD7ZC4B3TKW4
+X-MailFrom: 1xuezhe@rucdm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C6CMLVNY6DAXBNYCVBYF7L4YBN4A2XOZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4H7M6EXOP34G267F5B4GPD7ZC4B3TKW4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============7232174841313650143=="
+
+--===============7232174841313650143==
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
+MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
+ZW50PSJNU0hUTUwgMTAuMDAuOTIwMC4xNzU1NiI+PC9IRUFEPg0KPEJPRFk+DQo8UCBhbGlnbj1j
+ZW50ZXI+Jm5ic3A7PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxBIGhyZWY9Imh0dHA6Ly9jYnRvcmVn
+b24uY29tLyI+PFNUUk9ORz48Rk9OVCANCnN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBsaW1lIiAN
+CmNvbG9yPWRhcmtyZWQ+PEVNPmh0dHA6Ly9jYnRvcmVnb24uY29tLzwvRU0+PC9GT05UPjwvU1RS
+T05HPjwvQT48L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
+T1I6IGxpbWUiIGNvbG9yPWRhcmtyZWQgc2l6ZT02IA0KZmFjZT0iU2ltcGxpZmllZCBBcmFiaWMi
+PjxTVFJPTkc+PEVNPjxVPtS8xdq437j6yOLLv9DUuNDIy8bevrXX08eww+a58szyv9q9u6OswK2/
+qrSwwbG21NfFzaOztbOhuvPI67LZscY8L1U+PC9FTT48L1NUUk9ORz48L0ZPTlQ+PC9QPg0KPFAg
+YWxpZ249Y2VudGVyPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBsaW1lIiBjb2xvcj1k
+YXJrcmVkIHNpemU9NiANCmZhY2U9IlNpbXBsaWZpZWQgQXJhYmljIj48U1RST05HPjxFTT48VT48
+L1U+PC9FTT48L1NUUk9ORz48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxTVFJP
+Tkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDBmZjAwIiANCmNvbG9y
+PSM4YjAwMDAgc2l6ZT02IA0KZmFjZT0iU2ltcGxpZmllZCBBcmFiaWMiPjwvRk9OVD48L1U+PC9F
+TT48L1NUUk9ORz4mbmJzcDs8L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tH
+Uk9VTkQtQ09MT1I6IGxpbWUiIA0KZmFjZT0iU2ltcGxpZmllZCBBcmFiaWMiPjxTVFJPTkc+PEVN
+PjxGT05UIGNvbG9yPWRhcmtyZWQgDQpzaXplPTE+PFU+MDQ8QlI+PC9VPjwvRk9OVD48L0VNPjwv
+UD48L1NUUk9ORz48L0ZPTlQ+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
+TkQtQ09MT1I6IGxpbWUiIGNvbG9yPWRhcmtyZWQgc2l6ZT0xIA0KZmFjZT0iU2ltcGxpZmllZCBB
+cmFiaWMiPjxTVFJPTkc+PEVNPjxVPjE3OjAzOjQxPC9VPjwvRU0+PC9TVFJPTkc+PC9GT05UPjwv
+UD4NCjxQIGFsaWduPWNlbnRlcj48Rk9OVCBmYWNlPSJTaW1wbGlmaWVkIEFyYWJpYyI+PFNUUk9O
+Rz48Rk9OVCANCnN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgY29sb3I9ZGFya3JlZCAN
+CnNpemU9MT48RU0+PFU+MTEyMDIyJm5ic3A7Jm5ic3A7YyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyANCnVmcXltbjwvVT48L0VNPjwvRk9OVD48L1NUUk9ORz48L0ZPTlQ+PC9QPg0KPFAgYWxpZ249
+Y2VudGVyPjxGT05UIGZhY2U9IlNpbXBsaWZpZWQgQXJhYmljIj48U1RST05HPjxGT05UIA0KY29s
+b3I9ZGFya3JlZD48RU0+PFU+PEZPTlQgc2l6ZT0xPjxGT05UIA0Kc3R5bGU9IkJBQ0tHUk9VTkQt
+Q09MT1I6IGdyZWVuIj5saW5wQDIxbGFuaGFpLmNvbTwvRk9OVD4mbmJzcDs8L0ZPTlQ+PC9VPjwv
+RU0+PC9GT05UPjwvU1RST05HPjwvRk9OVD48L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc2l6
+ZT02IGZhY2U9IlNpbXBsaWZpZWQgQXJhYmljIj48U1RST05HPjxGT05UIA0KY29sb3I9ZGFya3Jl
+ZD48RU0+PFU+1LzF2rjfuPrI4su/0NS40MjLxt6+tdfTx7DD5rnyzPK/2r27o6zArb+qtLDBsbbU
+18XNo7O1s6G688jrstmxxjwvVT48L0VNPjwvRk9OVD48L1NUUk9ORz48L0ZPTlQ+PC9QPg0KPFAg
+YWxpZ249Y2VudGVyPjxGT05UIHNpemU9NiBmYWNlPSJTaW1wbGlmaWVkIEFyYWJpYyI+PFNUUk9O
+Rz48Rk9OVCANCnN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmF5IiANCmNvbG9yPWRhcmtyZWQ+
+PEVNPjxVPiZuYnNwO9S8xdq437j6yOLLv9DUuNDIy8bevrXX08eww+a58szyv9q9u6OswK2/qrSw
+wbG21NfFzaOztbOhuvPI67LZscY8L1U+PC9FTT48L0ZPTlQ+PC9TVFJPTkc+PC9GT05UPjwvUD48
+L0JPRFk+PC9IVE1MPg0K
+
+
+--===============7232174841313650143==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Thu, Oct 03, 2019 at 11:01:10AM +0200, Jan Kara wrote:
-> On Tue 01-10-19 11:17:00, Ira Weiny wrote:
-> > On Mon, Sep 23, 2019 at 04:17:59PM -0400, Jeff Layton wrote:
-> > > On Mon, 2019-09-23 at 12:08 -0700, Ira Weiny wrote:
-> > > 
-> > > Will userland require any special privileges in order to set an
-> > > F_UNBREAK lease? This seems like something that could be used for DoS. I
-> > > assume that these will never time out.
-> > 
-> > Dan and I discussed this some more and yes I think the uid of the process needs
-> > to be the owner of the file.  I think that is a reasonable mechanism.
-> 
-> Honestly, I'm not convinced anything more than open-for-write should be
-> required. Sure unbreakable lease may result in failing truncate and other
-> ops but as we discussed at LFS/MM, this is not hugely different from
-> executing a file resulting in ETXTBUSY for any truncate attempt (even from
-> root). So sufficiently priviledged user has to be able to easily find which
-> process(es) owns the lease so that he can kill it / take other
-> administrative action to release the lease. But that's about it.
-
-Well that was kind of what I was thinking.  However I wanted to be careful
-about requiring write permission when doing a F_RDLCK.  I think that it has to
-be clearly documented _why_ write permission is required.
-
->  
-> > > How will we deal with the case where something is is squatting on an
-> > > F_UNBREAK lease and isn't letting it go?
-> > 
-> > That is a good question.  I had not considered someone taking the UNBREAK
-> > without pinning the file.
-> 
-> IMHO the same answer as above - sufficiently priviledged user should be
-> able to easily find the process holding the lease and kill it. Given the
-> lease owner has to have write access to the file, he better should be from
-> the same "security domain"...
-> 
-> > > Leases are technically "owned" by the file description -- we can't
-> > > necessarily trace it back to a single task in a threaded program. The
-> > > kernel task that set the lease may have exited by the time we go
-> > > looking.
-> > > 
-> > > Will we be content trying to determine this using /proc/locks+lsof, etc,
-> > > or will we need something better?
-> > 
-> > I think using /proc/locks is our best bet.  Similar to my intention to report
-> > files being pinned.[1]
-> > 
-> > In fact should we consider files with F_UNBREAK leases "pinned" and just report
-> > them there?
-> 
-> As Jeff wrote later, /proc/locks is not enough. You need PID(s) which have
-> access to the lease and hold it alive. Your /proc/<pid>/ files you had in your
-> patches should do that, shouldn't they? Maybe they were not tied to the
-> right structure... They really need to be tied to the existence of a lease.
-
-Yes, sorry.  I misspoke above.
-
-Right now /proc/<pid>/file_pins indicates that the file is pinned by GUP.  I
-think it may be reasonable to extend that to any file which has F_UNBREAK
-specified.  'file_pins' may be the wrong name when we include F_UNBREAK'ed
-leased files, so I will think on the name.  But I think this is possible and
-desired.
-
-Ira
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7232174841313650143==--
