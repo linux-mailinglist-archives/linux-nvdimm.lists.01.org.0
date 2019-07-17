@@ -2,63 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FAF6B3E9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Jul 2019 03:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF896B4C9
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Jul 2019 05:02:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 17CE0212BF9A8;
-	Tue, 16 Jul 2019 18:59:13 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 30157212BF579;
+	Tue, 16 Jul 2019 20:04:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::44a; helo=mail-pf1-x44a.google.com;
- envelope-from=3w4auxq4kdayhxktjgtnommotymuumrk.iusrot03-t1jossroyzy.67.uxm@flex--brendanhiggins.bounces.google.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x44a.google.com (mail-pf1-x44a.google.com
- [IPv6:2607:f8b0:4864:20::44a])
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 52297212BF556
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 18:59:12 -0700 (PDT)
-Received: by mail-pf1-x44a.google.com with SMTP id g21so13484451pfb.13
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 18:56:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=z+RsQ5cMJRNJEspG7oJoFcFROmHPEJhG9JB06H11s3Q=;
- b=arQQpTGJERz+HpGPXFp2jlPN5FrwHz2WQgWAk2OJzhGjTvteOU1VI4pyg3Gluszw+4
- vjWiOIXlN3LE6Wmx+vW8ya52UlgsM6wNwD7n+F3tTlm0oU8wIAFq/wdLYE/uqwXxmQlX
- XH8Q+EuWSZgjc3pc2sIgMXZRv15qqL94qa0UO9XEjvbkfa9x4jqUS6XSlv6anCR5d/Qu
- TojpzGJ8KJngr73CNti9m0kYQQzcoyj/lkheRLPJEVpXYgERpvNTv8Z1n1LTd7t4E729
- ECeSIi3rVf+NrWYm31K34bfHpNTeBSIN8kh5bzP8sJs2A90bieFh3IVp2mMrPJo+7TpA
- I/fQ==
+ by ml01.01.org (Postfix) with ESMTPS id CDEFF2194EB75
+ for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 20:04:40 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id l15so23399564otn.9
+ for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 20:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=moIcfOwT7Q28xvMfB1s79vLckwsn6mLmtlt9P80VoSI=;
+ b=w7T5h8le8kar8GHbeuzqemVg7xntplejAU3LIpPoPxD5rDaA6mykcolHja7oxamFN+
+ fcNJhXd4DetJySCJdhmgJKwbVMDKSXOWyUXGidrtJe3PTgBeA2og6iz5nw8EfAKyCAy6
+ Zqj0eon0fp5aANLnzxF0AprfgdUTlPURq0NTh0A0VPAabeJKqJa0f82l0EF5e1m0pJmj
+ OQjFnWnmI/ku6kLWxgppPmqjdvamNgPd3JVshYU1hb4KWI+pOcaeI0O2G+kPJcIYRliq
+ M0SG+Nr6OPh0EAarDQanDv8ER7J0l7mWieCTBgxEmKozT8FVkUxiQXPrGbA2QGxio928
+ qWzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=z+RsQ5cMJRNJEspG7oJoFcFROmHPEJhG9JB06H11s3Q=;
- b=DH1bVr0avu5npbLgoVhaSJInWFofonjACPcy/nCwHZ0xdWdCRVr4r6by/DD86CgMCw
- pPpsvdv2Wpdf1eiM2xFEuphUVd6PR1yi5pB+NO0ihLFMV56dmc2pyH+zP3+EsLpcfHte
- XV3F+VCYsepCL5/t0/lJKES7dUwrWBG/N9yR6OoQLuT303l8LG7EAcezl6I0q+Up9h+c
- 0fpu/RNq5/gwFHPXmylkkfNOLuMpQKlAoCyPx7Pvr/Z4nlzi3yIQPU233g72afnh7trh
- qn7AV0f5fJHCWF6IG70AaWsFL8vtzvwTRFwtoNMzMwV+wzZXDK8yDfnMxAqeiy0V3y+s
- 9x+g==
-X-Gm-Message-State: APjAAAUGSfGuhYClEWBuwvFbi8j1Ww1wQxCxQQ4LSlH2m09dqJu6ETai
- QZWXH+H0c/m1I8LkIqBg82A38aQ/wbw6AdTCbAABnw==
-X-Google-Smtp-Source: APXvYqwCZQKnuVk17fjP8A6U6bIZkWGFvrucA1ktqKosKL/38OKDiYQRbphN4EY4EbgHhiCugGJd7KJEeLMjHEFzWtBqZg==
-X-Received: by 2002:a65:4505:: with SMTP id n5mr34106191pgq.301.1563328603229; 
- Tue, 16 Jul 2019 18:56:43 -0700 (PDT)
-Date: Tue, 16 Jul 2019 18:55:43 -0700
-In-Reply-To: <20190717015543.152251-1-brendanhiggins@google.com>
-Message-Id: <20190717015543.152251-19-brendanhiggins@google.com>
-Mime-Version: 1.0
-References: <20190717015543.152251-1-brendanhiggins@google.com>
-X-Mailer: git-send-email 2.22.0.510.g264f2c817a-goog
-Subject: [PATCH v11 18/18] MAINTAINERS: add proc sysctl KUnit test to PROC
- SYSCTL section
-From: Brendan Higgins <brendanhiggins@google.com>
-To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
- keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
- peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
- tytso@mit.edu, yamada.masahiro@socionext.com
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=moIcfOwT7Q28xvMfB1s79vLckwsn6mLmtlt9P80VoSI=;
+ b=HEI+7bE4sIbPKz9atSYvr0v425VES09ZAhBypwe2wHjSz+/nxmjYkUzmHMt3JNHU2X
+ s5u7L2bkWwwuV5lzsgZOp2TBHvdTlZqUlx51neCrX6bDrdBOyDnko5FRgibAutFJhci1
+ rbIwAsF3drbYh4cvDXrOtJh0XTKtAYC/hXougvT7RaSfosOyo9plckd2gR+lGj3OCCfE
+ hrzrVHKpUHHmjgJqGyJHNRxaVqY04e3QEWhyNy1uDSqQAMy2zLtkp2eJfe/EBpjA8/sc
+ iaZd5JvXThrX69nMQLpjRoJoKNVcOcsnwgAg3/Xa4//uFx/A8fxNUdHFp48kJHt9E8l/
+ baWQ==
+X-Gm-Message-State: APjAAAVNt45ae3FTXCjdJuwdPjTzZqDqYYfGQtJaL29SSMgJywvS33iL
+ Bp3J28HYwOmMwmP6jHS6kNoiDW0RBwoPLE7pCQDgQQ==
+X-Google-Smtp-Source: APXvYqzJ8IMG8VXWy0kEMM/37hXScWIxxaMIJc4srMPsvxzwSqtji4irKjrqrN/DKpO/rDeJRWuz85fCgkFPrES4iVg=
+X-Received: by 2002:a9d:470d:: with SMTP id a13mr26992706otf.126.1563332531714; 
+ Tue, 16 Jul 2019 20:02:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190712051610.15478-1-pagupta@redhat.com>
+ <20190712101021-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20190712101021-mutt-send-email-mst@kernel.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 16 Jul 2019 20:02:00 -0700
+Message-ID: <CAPcyv4joSgj7ok4DfW3tWQGavRDP8kp7oQRH8DgkG=0eWgNn1g@mail.gmail.com>
+Subject: Re: [PATCH v3] virtio_pmem: fix sparse warning
+To: "Michael S. Tsirkin" <mst@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,56 +66,39 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com,
- Iurii Zaikin <yzaikin@google.com>, jdike@addtoit.com, dan.carpenter@oracle.com,
- devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
- linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
- kunit-dev@googlegroups.com, richard@nod.at, rdunlap@infradead.org,
- linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
- linux-fsdevel@vger.kernel.org
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, Cornelia Huck <cohuck@redhat.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ yuval shaia <yuval.shaia@oracle.com>,
+ virtualization@lists.linux-foundation.org, lcapitulino@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add entry for the new proc sysctl KUnit test to the PROC SYSCTL section,
-and add Iurii as a maintainer.
+On Fri, Jul 12, 2019 at 7:11 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> On Fri, Jul 12, 2019 at 10:46:10AM +0530, Pankaj Gupta wrote:
+> > This patch fixes below sparse warning related to __virtio
+> > type in virtio pmem driver. This is reported by Intel test
+> > bot on linux-next tree.
+> >
+> > nd_virtio.c:56:28: warning: incorrect type in assignment
+> >                                 (different base types)
+> > nd_virtio.c:56:28:    expected unsigned int [unsigned] [usertype] type
+> > nd_virtio.c:56:28:    got restricted __virtio32
+> > nd_virtio.c:93:59: warning: incorrect type in argument 2
+> >                                 (different base types)
+> > nd_virtio.c:93:59:    expected restricted __virtio32 [usertype] val
+> > nd_virtio.c:93:59:    got unsigned int [unsigned] [usertype] ret
+> >
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
+>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+>
+> Pls merge - I assume nvdimm tree?
 
-Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-Cc: Iurii Zaikin <yzaikin@google.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 48d04d180a988..f8204c75114da 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12721,12 +12721,14 @@ F:	Documentation/filesystems/proc.txt
- PROC SYSCTL
- M:	Luis Chamberlain <mcgrof@kernel.org>
- M:	Kees Cook <keescook@chromium.org>
-+M:	Iurii Zaikin <yzaikin@google.com>
- L:	linux-kernel@vger.kernel.org
- L:	linux-fsdevel@vger.kernel.org
- S:	Maintained
- F:	fs/proc/proc_sysctl.c
- F:	include/linux/sysctl.h
- F:	kernel/sysctl.c
-+F:	kernel/sysctl-test.c
- F:	tools/testing/selftests/sysctl/
- 
- PS3 NETWORK SUPPORT
--- 
-2.22.0.510.g264f2c817a-goog
-
+Yes, I'll push this with the rest to Linus tomorrow morning.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
