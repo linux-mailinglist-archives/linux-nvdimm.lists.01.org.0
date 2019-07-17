@@ -2,78 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF2B96C05C
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Jul 2019 19:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B72B16C339
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 00:54:10 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 41FA9212BF9AC;
-	Wed, 17 Jul 2019 10:30:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EB9F7212BF9C1;
+	Wed, 17 Jul 2019 15:56:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=pasic@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1E6A72194EB75
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 10:30:07 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x6HHOpR0025144
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 13:27:38 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 2tt7pj12wv-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 13:27:38 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <pasic@linux.ibm.com>;
- Wed, 17 Jul 2019 18:27:34 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 17 Jul 2019 18:27:30 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id x6HHRFcj39846292
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 17 Jul 2019 17:27:15 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 39AB3A405C;
- Wed, 17 Jul 2019 17:27:29 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1850A4064;
- Wed, 17 Jul 2019 17:27:28 +0000 (GMT)
-Received: from oc2783563651 (unknown [9.152.224.219])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 17 Jul 2019 17:27:28 +0000 (GMT)
-Date: Wed, 17 Jul 2019 19:27:25 +0200
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH v2 18/30] virtio_fs, dax: Set up virtio_fs dax_device
-In-Reply-To: <20190515192715.18000-19-vgoyal@redhat.com>
-References: <20190515192715.18000-1-vgoyal@redhat.com>
- <20190515192715.18000-19-vgoyal@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
+ by ml01.01.org (Postfix) with ESMTPS id 35C43212ABA55
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 15:56:35 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2019 15:54:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,275,1559545200"; d="scan'208";a="191413543"
+Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
+ by fmsmga004.fm.intel.com with ESMTP; 17 Jul 2019 15:54:05 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [ndctl PATCH v6 00/13] daxctl: add a new reconfigure-device command
+Date: Wed, 17 Jul 2019 16:53:47 -0600
+Message-Id: <20190717225400.9494-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19071717-0012-0000-0000-00000333CFDF
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071717-0013-0000-0000-0000216D4F30
-Message-Id: <20190717192725.25c3d146.pasic@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-07-17_07:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907170201
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,229 +44,151 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Collin Walling <walling@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>,
- Sebastian Ott <sebott@linux.ibm.com>, kvm@vger.kernel.org, miklos@szeredi.hu,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, dgilbert@redhat.com,
- Christian Borntraeger <borntraeger@de.ibm.com>, stefanha@redhat.com,
- linux-fsdevel@vger.kernel.org, swhiteho@redhat.com
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 15 May 2019 15:27:03 -0400
-Vivek Goyal <vgoyal@redhat.com> wrote:
-
-> From: Stefan Hajnoczi <stefanha@redhat.com>
-> 
-> Setup a dax device.
-> 
-> Use the shm capability to find the cache entry and map it.
-> 
-> The DAX window is accessed by the fs/dax.c infrastructure and must have
-> struct pages (at least on x86).  Use devm_memremap_pages() to map the
-> DAX window PCI BAR and allocate struct page.
->
-
-Sorry for being this late. I don't see any more recent version so I will
-comment here.
-
-I'm trying to figure out how is this supposed to work on s390. My concern
-is, that on s390 PCI memory needs to be accessed by special
-instructions. This is taken care of by the stuff defined in
-arch/s390/include/asm/io.h. E.g. we 'override' __raw_writew so it uses
-the appropriate s390 instruction. However if the code does not use the
-linux abstractions for accessing PCI memory, but assumes it can be
-accessed like RAM, we have a problem.
-
-Looking at this patch, it seems to me, that we might end up with exactly
-the case described. For example AFAICT copy_to_iter() (3) resolves to
-the function in lib/iov_iter.c which does not seem to cater for s390
-oddities.
-
-I didn't have the time to investigate this properly, and since virtio-fs
-is virtual, we may be able to get around what is otherwise a
-limitation on s390. My understanding of these areas is admittedly
-shallow, and since I'm not sure I'll have much more time to
-invest in the near future I decided to raise concern.
-
-Any opinions?
-
-[CCing some s390 people who are probably more knowledgeable than my on
-these matters.]
-
-Regards,
-Halil
-
-
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
-> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> Signed-off-by: Sebastien Boeuf <sebastien.boeuf@intel.com>
-> Signed-off-by: Liu Bo <bo.liu@linux.alibaba.com>
-> ---
-
-[..]
-  
-> +/* Map a window offset to a page frame number.  The window offset will have
-> + * been produced by .iomap_begin(), which maps a file offset to a window
-> + * offset.
-> + */
-> +static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
-> +				    long nr_pages, void **kaddr, pfn_t *pfn)
-> +{
-> +	struct virtio_fs *fs = dax_get_private(dax_dev);
-> +	phys_addr_t offset = PFN_PHYS(pgoff);
-> +	size_t max_nr_pages = fs->window_len/PAGE_SIZE - pgoff;
-> +
-> +	if (kaddr)
-> +		*kaddr = fs->window_kaddr + offset;
-
-(2) Here we use fs->window_kaddr, basically directing the access to the
-virtio shared memory region.
-
-> +	if (pfn)
-> +		*pfn = phys_to_pfn_t(fs->window_phys_addr + offset,
-> +					PFN_DEV | PFN_MAP);
-> +	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
-> +}
-> +
-> +static size_t virtio_fs_copy_from_iter(struct dax_device *dax_dev,
-> +				       pgoff_t pgoff, void *addr,
-> +				       size_t bytes, struct iov_iter *i)
-> +{
-> +	return copy_from_iter(addr, bytes, i);
-> +}
-> +
-> +static size_t virtio_fs_copy_to_iter(struct dax_device *dax_dev,
-> +				       pgoff_t pgoff, void *addr,
-> +				       size_t bytes, struct iov_iter *i)
-> +{
-> +	return copy_to_iter(addr, bytes, i);
-
-(3) And this should be the access to it. Which does not seem to use.
-
-> +}
-> +
-> +static const struct dax_operations virtio_fs_dax_ops = {
-> +	.direct_access = virtio_fs_direct_access,
-> +	.copy_from_iter = virtio_fs_copy_from_iter,
-> +	.copy_to_iter = virtio_fs_copy_to_iter,
-> +};
-> +
-> +static void virtio_fs_percpu_release(struct percpu_ref *ref)
-> +{
-> +	struct virtio_fs_memremap_info *mi =
-> +		container_of(ref, struct virtio_fs_memremap_info, ref);
-> +
-> +	complete(&mi->completion);
-> +}
-> +
-> +static void virtio_fs_percpu_exit(void *data)
-> +{
-> +	struct virtio_fs_memremap_info *mi = data;
-> +
-> +	wait_for_completion(&mi->completion);
-> +	percpu_ref_exit(&mi->ref);
-> +}
-> +
-> +static void virtio_fs_percpu_kill(struct percpu_ref *ref)
-> +{
-> +	percpu_ref_kill(ref);
-> +}
-> +
-> +static void virtio_fs_cleanup_dax(void *data)
-> +{
-> +	struct virtio_fs *fs = data;
-> +
-> +	kill_dax(fs->dax_dev);
-> +	put_dax(fs->dax_dev);
-> +}
-> +
-> +static int virtio_fs_setup_dax(struct virtio_device *vdev, struct virtio_fs *fs)
-> +{
-> +	struct virtio_shm_region cache_reg;
-> +	struct virtio_fs_memremap_info *mi;
-> +	struct dev_pagemap *pgmap;
-> +	bool have_cache;
-> +	int ret;
-> +
-> +	if (!IS_ENABLED(CONFIG_DAX_DRIVER))
-> +		return 0;
-> +
-> +	/* Get cache region */
-> +	have_cache = virtio_get_shm_region(vdev,
-> +					   &cache_reg,
-> +					   (u8)VIRTIO_FS_SHMCAP_ID_CACHE);
-> +	if (!have_cache) {
-> +		dev_err(&vdev->dev, "%s: No cache capability\n", __func__);
-> +		return -ENXIO;
-> +	} else {
-> +		dev_notice(&vdev->dev, "Cache len: 0x%llx @ 0x%llx\n",
-> +			   cache_reg.len, cache_reg.addr);
-> +	}
-> +
-> +	mi = devm_kzalloc(&vdev->dev, sizeof(*mi), GFP_KERNEL);
-> +	if (!mi)
-> +		return -ENOMEM;
-> +
-> +	init_completion(&mi->completion);
-> +	ret = percpu_ref_init(&mi->ref, virtio_fs_percpu_release, 0,
-> +			      GFP_KERNEL);
-> +	if (ret < 0) {
-> +		dev_err(&vdev->dev, "%s: percpu_ref_init failed (%d)\n",
-> +			__func__, ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = devm_add_action(&vdev->dev, virtio_fs_percpu_exit, mi);
-> +	if (ret < 0) {
-> +		percpu_ref_exit(&mi->ref);
-> +		return ret;
-> +	}
-> +
-> +	pgmap = &mi->pgmap;
-> +	pgmap->altmap_valid = false;
-> +	pgmap->ref = &mi->ref;
-> +	pgmap->kill = virtio_fs_percpu_kill;
-> +	pgmap->type = MEMORY_DEVICE_FS_DAX;
-> +
-> +	/* Ideally we would directly use the PCI BAR resource but
-> +	 * devm_memremap_pages() wants its own copy in pgmap.  So
-> +	 * initialize a struct resource from scratch (only the start
-> +	 * and end fields will be used).
-> +	 */
-> +	pgmap->res = (struct resource){
-> +		.name = "virtio-fs dax window",
-> +		.start = (phys_addr_t) cache_reg.addr,
-> +		.end = (phys_addr_t) cache_reg.addr + cache_reg.len - 1,
-> +	};
-> +
-> +	fs->window_kaddr = devm_memremap_pages(&vdev->dev, pgmap);
-
-(1) Here we assign fs->window_kaddr basically from the virtio shm region.
-
-> +	if (IS_ERR(fs->window_kaddr))
-> +		return PTR_ERR(fs->window_kaddr);
-> +
-> +	fs->window_phys_addr = (phys_addr_t) cache_reg.addr;
-> +	fs->window_len = (phys_addr_t) cache_reg.len;
-> +
-> +	dev_dbg(&vdev->dev, "%s: window kaddr 0x%px phys_addr 0x%llx"
-> +		" len 0x%llx\n", __func__, fs->window_kaddr, cache_reg.addr,
-> +		cache_reg.len);
-> +
-> +	fs->dax_dev = alloc_dax(fs, NULL, &virtio_fs_dax_ops);
-> +	if (!fs->dax_dev)
-> +		return -ENOMEM;
-> +
-> +	return devm_add_action_or_reset(&vdev->dev, virtio_fs_cleanup_dax, fs);
-> +}
-> +
-
-[..]
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Q2hhbmdlcyBpbiB2NjoKLSBGb3IgbWVtb3J5IGJsb2NrIG9ubGluZS9vZmZsaW5lIG9wZXJhdGlv
+bnMsIHRoZSBrZXJuZWwgcmVzcG9uZHMgd2l0aAogIGFuIEVJTlZBTCBmb3IgYm90aCAncmVhbCcg
+ZXJyb3JzLCBhbmQgaWYgdGhlIG1lbW9yeSB3YXMgYWxyZWFkeSBpbiB0aGUKICByZXF1ZXN0ZWQg
+c3RhdGUuIFNpbmNlIHRoZXJlIGlzIGEgVE9DVE9VIGhvbGUgYmV0d2VlbiBjaGVja2luZyB0aGUK
+ICBzdGF0ZSBhbmQgc3RvcmluZyBpdCwganVzdCBwZXJmb3JtIGEgc2Vjb25kIGNoZWNrIGlmIHRo
+ZSBzdG9yZSByZXN1bHRzCiAgaW4gYW4gZXJyb3IuIElmIHRoZSBjaGVjayBzaG93cyB0aGUgc3Rh
+dGUgdG8gYmUgdGhlIHNhbWUgYXMgdGhlIG9uZQogIHdlJ3JlIGF0dGVtcHRpbmcsIGl0IG1lYW5z
+IHRoYXQgYW5vdGhlciBhZ2VudCAodXN1YWxseSB1ZGV2KSB3b24gdGhlCiAgcmFjZSwgYnV0IHdl
+IGRvbid0IGNhcmUgc28gbG9uZyBhcyB0aGUgc3RhdGUgY2hhbmdlIGhhcHBlbmVkLCBzbyBkb24n
+dAogIHJlcG9ydCBhbiBlcnJvci4gKEZhbiBEdSkKCkNoYW5nZXMgaW4gdjU6CiAtIGRldmljZS5j
+OiBjb3JyZWN0bHkgc2V0IGxvZ2xldmVsIGZvciBkYXhjdGxfY3R4IGZvciAtLXZlcmJvc2UKIC0g
+ZHJvcCB0aGUgc3Vic3lzIGNhY2hpbmcsIGl0cyBjb21wbGV4aXR5IHN0YXJ0ZWQgdG8gZXhjZWVk
+IGl0cwogICBiZW5lZml0LiBkYXgtY2xhc3MgZGV2aWNlIG1vZGVscyB3aWxsIHNpbXBseSBlcnJv
+ciBvdXQgZHVyaW5nCiAgIHJlY29uZmlndXJlLiAoRGFuKQogLSBBZGQgYSBub3RlIHRvIHRoZSBt
+YW4gcGFnZSBmb3IgdGhlIGFib3ZlLgogLSBDbGFyaWZ5IHRoZSBvbmxpbmluZyBwb2xpY3kgKG9u
+bGluZV9tb3ZhYmxlKSBpbiB0aGUgbWFuIHBhZ2UKIC0gcmVuYW1lICJudW1hX25vZGUiIHRvICJ0
+YXJnZXRfbm9kZSIgaW4gZGV2aWNlIGxpc3RpbmdzIChEYW4pCiAtIFdoZW4gcHJpbnRpbmcgYSBk
+ZXZpY2UgJ21vZGUnLCBhc3N1bWUgZGV2ZGF4IGlmICFzeXN0ZW0tcmFtLAogICBhdm9pZGluZyBh
+ICJtb2RlOiB1bmtub3duIiBzaXR1YXRpb24gd2hpY2ggY2FuIGJlIGNvbmZ1c2luZy4gKERhbikK
+IC0gQWRkIGEgInN0YXRlOiBkaXNhYmxlZCIgYXR0cmlidXRlIHRvIHRoZSBkZXZpY2UgbGlzdGlu
+ZyBpZiBhIGRyaXZlcgogICBpcyBub3QgYm91bmQuIFRoaXMgaXMgbW9yZSBhcHQgdGhhbiB0aGUg
+cHJldmlvdXMgIm1vZGU6IHVua25vd24iCiAgIGxpc3RpbmcuCiAtIGFkZCBhbiBhcGkgdG8gZ2V0
+ICdkZXYtPnJlc291cmNlJyBwYXJzaW5nIC9wcm9jL2lvbWVtIGFzIGEKICAgZmFsbGJhY2sgZm9y
+IHdoZW4gdGhlIGtlcm5lbCBkb2Vzbid0IHByb3ZpZGUgdGhlIGF0dHJpYnV0ZSAoRGFuKQogLSBj
+b252ZXJ0IG5vZGVfKiBhcGlzIHRvICdtZW1vcnlfKiBhcGlzIHRoYXQgYWN0IG9uIGEgbmV3IGRh
+eGN0bF9tZW1vcnkKICAgb2JqZWN0IChEYW4pCiAtIG9ubGluZSBvbmx5IG1lbW9yeSBzZWN0aW9u
+cyBiZWxvbmdpbmcgdG8gdGhlIGRldmljZSBpbiBxdWVzdGlvbiBieQogICBjcm9zcyByZWZlcmVu
+Y2luZyBibG9jayBpbmRpY2VzIHdpdGggdGhlIGRheCBkZXZpY2UgcmVzb3VyY2UgKERhbikKIC0g
+UmVmdXNlIHRvIHJlY29uZmlndXJlIGEgZGV2aWNlIHRoYXQgaXMgYWxyZWFkeSBpbiB0aGUgdGFy
+Z2V0IG1vZGUuCiAgIFVudGlsIG5vdywgcmVjb25maWd1cmluZyBhIHN5c3RlbS1yYW0gZGV2aWNl
+IGJhY2sgdG8gc3lzdGVtLXJhbSB3b3VsZAogICByZXN1bHQgaW4gYSAnb25saW5lIG1lbW9yeSBt
+YXkgbm90IGJlIGhvdC1yZW1vdmVkJyBrZXJuZWwgd2FybmluZy4KIC0gSWYgdGhlIGRldmljZSB3
+YXMgYWxyZWFkeSBpbiB0aGUgc3lzdGVtLXJhbSBtb2RlLCBza2lwCiAgIGRpc2FibGluZy9lbmFi
+bGluZywgYnV0IHN0aWxsIHRyeSB0byBvbmxpbmUgdGhlIG1lbW9yeSB1bmxlc3MgdGhlCiAgIC0t
+bm8tb25saW5lIG9wdGlvbiBpcyBpbiBlZmZlY3QuCiAtIEluIGRheGN0bF91bmJpbmQsIGFsc28g
+J3JlbW92ZV9pZCcgdG8gcHJldmVudCBkZXZpY2VzIGF1dG9tYXRpY2FsbHkKICAgYmluZGluZyB0
+byB0aGUga21lbSBkcml2ZXIgb24gYSBkaXNhYmxlICsgcmUtZW5hYmxlLCB3aGljaCBjYW4gYmUK
+ICAgc3VycHJpc2luZyAoRGFuKS4KIC0gUmV3cml0ZSB0aGUgdG9wIGhhbGYgb2YgZGF4Y3RsL2Rl
+dmljZS5jIHRvIGJvcnJvdyBlbGVtZW50cyBmcm9tCiAgIG5kY3RsL25hbWVzcGFjZS5jIHNvIHRo
+YXQgaXQgY2FuIHN1cHBvcnQgZ3Jvd2luZyBhZGRpdGlvbmFsIGNvbW1hbmRzCiAgIHRoYXQgb3Bl
+cmF0ZSBvbiBkZXZpY2VzIChvbmxpbmUtbWVtb3J5IGFuZCBvZmZsaW5lLW1lbW9yeSkKIC0gUmVm
+YWN0b3IgdGhlIGJvdHRvbSBoYWxmIG9mIGRheGN0bC9kZXZpY2UuYyBzbyB3ZSBvbmx5IGRvIHRo
+ZQogICBkaXNhYmxpbmcvb2ZmbGluaW5nIHN0ZXBzIGlmIHRoZSBkZXZpY2Ugd2FzIGVuYWJsZWQu
+CiAtIEFkZCBuZXcgY29tbWFuZHMgdG8gb25saW5lIGFuZCBvZmZsaW5lIG1lbW9yeSBzZWN0aW9u
+cyAoRGFuKQogICBhc3NvY2lhdGVkIHdpdGggYSBnaXZlbiBkYXggZGV2aWNlIChEYW4pCiAtIEFk
+ZCBhIG5ldyB0ZXN0IC0gZGF4Y3RsLWRldmljZS5zaCAtIHRvIHRlc3QgZGF4Y3RsIHJlY29uZmln
+dXJlLWRldmljZSwKICAgb25saW5lLW1lbW9yeSwgYW5kIG9mZmxpbmUtbWVtb3J5IGNvbW1hbmRz
+LgogLSBBZGQgYW4gZXhhbXBsZSBpbiBkb2N1bWVudGF0aW9uIGRlbW9uc3RyYXRpbmcgaG93IHRv
+IHVzZSBudW1hY3RsCiAgIHRvIGJpbmQgYSBwcm9jZXNzIHRvIGEgbm9kZSBzdXJmYWNlZCBmcm9t
+IGEgZGF4IGRldmljZSAoQW5keSBSdWRvZmYpCgpDaGFuZ2VzIGluIHY0OgogLSBEb24ndCBmYWls
+IGFkZF9kYXhfZGV2IGZvciBrbW9kIGZhaWx1cmVzLiBJbnN0ZWFkIGZhaWwgb25seSB3aGVuIHRo
+ZSBrbW9kCiAgIGxpc3QgaXMgYWN0dWFsbHkgdXNlZCwgaS5lLiBkdXJpbmcgZGF4Y3RsLXJlY29u
+ZmlndXJlLWRldmljZQoKQ2hhbmdlcyBpbiB2MzoKIC0gSW4gZGF4Y3RsX2Rldl9nZXRfbW9kZSgp
+LCByZW1vdmUgdGhlIHN1YnN5c3RlbSB3YXJuaW5nLCBkZXRlY3QgZGF4LWNsYXNzCiAgIGFuZCBz
+aW1wbHkgbWFrZSBpdCByZXR1cm4gZGV2ZGF4CgpDaGFuZ2VzIGluIHYyOgogLSBBZGQgZXhhbXBs
+ZXMgdG8gdGhlIGRvY3VtZW50YXRpb24gcGFnZSAoRGF2ZSBIYW5zZW4pCiAtIENsYXJpZnkgZG9j
+dW1lbnRhdGlvbiByZWdhcmRpbmcgdGhlIGNvbnZlcnNpb24gZnJvbSBzeXN0ZW0tcmFtIHRvIGRl
+dmRheAogLSBSZW1vdmUgYW55IHJlZmVyZW5jZXMgdG8gYSBwZXJzaXN0ZW50IGNvbmZpZyBmcm9t
+IHRoZSBkb2N1bWVudGF0aW9uIC0KICAgdGhvc2UgY2FuIGJlIGFkZGVkIHdoZW4gdGhlIGZlYXR1
+cmUgaXMgYWRkZWQuCiAtIGRldmljZS5jOiB2YWxpZGF0ZSBvcHRpb24gY29tcGF0aWJpbGl0eQog
+LSBkYXhjdGwtbGlzdDogZGlzcGxheSBudW1hX25vZGUgZm9yIGRldmljZSBsaXN0aW5ncwogLSBk
+YXhjdGwtbGlzdDogZGlzcGxheSBtb2RlIGZvciBkZXZpY2UgbGlzdGluZ3MKIC0gbWFrZSB0aGUg
+b3B0aW9ucyBtb3JlIGNvbnNpc3RlbnQgYnkgYWRkaW5nIGEgJy1PJyBzaG9ydCBvcHRpb24KICAg
+Zm9yIC0tYXR0ZW1wdC1vZmZsaW5lCgpBZGQgYSBuZXcgZGF4Y3RsLXJlY29uZmlndXJlLWRldmlj
+ZSBjb21tYW5kIHRoYXQgbGV0cyB1cyByZWNvbmZpZ3VyZSBEQVgKZGV2aWNlcyBiYWNrIGFuZCBm
+b3J0aCBiZXR3ZWVuICdzeXN0ZW0tcmFtJyBhbmQgJ2RldmljZS1kYXgnIG1vZGVzLiBJdAphbHNv
+IGluY2x1ZGVzIGZhY2lsaXRpZXMgdG8gb25saW5lIGFueSBuZXdseSBob3QtcGx1Z2dlZCBtZW1v
+cnkKKGRlZmF1bHQpLCBhbmQgYXR0ZW1wdCB0byBvZmZsaW5lIG1lbW9yeSBiZWZvcmUgY29udmVy
+dGluZyBhd2F5IGZyb20gdGhlCnN5c3RlbS1yYW0gbW9kZSAobm90IGRlZmF1bHQsIHJlcXVpcmVz
+IGEgLS1hdHRlbXB0LW9mZmxpbmUgb3B0aW9uKS4KCkN1cnJlbnRseSBtaXNzaW5nIGZyb20gdGhp
+cyBzZXJpZXMgaXMgYSB3YXkgdG8gcGVyc2lzdGVudGx5IHN0b3JlIHdoaWNoCmRldmljZXMgaGF2
+ZSBiZWVuICdtYXJrZWQnIGZvciB1c2UgYXMgc3lzdGVtLXJhbS4gVGhpcyBkZXBlbmRzIG9uIGEK
+Y29uZmlnIHN5c3RlbSBvdmVyaGF1bCBpbiBuZGN0bCwgYW5kIHBhdGNoZXMgZm9yIHRob3NlIHdp
+bGwgZm9sbG93CnNlcGFyYXRlbHkgYW5kIGFyZSBpbmRlcGVuZGVudCBvZiB0aGlzIHdvcmsuCgpF
+eGFtcGxlIGludm9jYXRpb25zOgoKMS4gUmVjb25maWd1cmUgZGF4MC4wIHRvIHN5c3RlbS1yYW0g
+bW9kZSwgZG9u4oCZdCBvbmxpbmUgdGhlIG1lbW9yeQogICAgIyBkYXhjdGwgcmVjb25maWd1cmUt
+ZGV2aWNlIC0tbW9kZT1zeXN0ZW0tcmFtIC0tbm8tb25saW5lIGRheDAuMAogICAgWwogICAgICB7
+CiAgICAgICAgImNoYXJkZXYiOiJkYXgwLjAiLAogICAgICAgICJzaXplIjoxNjc3NzIxNjAwMCwK
+ICAgICAgICAidGFyZ2V0X25vZGUiOjIsCiAgICAgICAgIm1vZGUiOiJzeXN0ZW0tcmFtIgogICAg
+ICB9CiAgICBdCgoyLiBSZWNvbmZpZ3VyZSBkYXgwLjAgdG8gZGV2ZGF4IG1vZGUsIGF0dGVtcHQg
+dG8gb2ZmbGluZSB0aGUgbWVtb3J5CiAgICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1o
+dW1hbiAtLW1vZGU9ZGV2ZGF4IC0tYXR0ZW1wdC1vZmZsaW5lIGRheDAuMAogICAgewogICAgICAi
+Y2hhcmRldiI6ImRheDAuMCIsCiAgICAgICJzaXplIjoiMTUuNjMgR2lCICgxNi43OCBHQikiLAog
+ICAgICAidGFyZ2V0X25vZGUiOjIsCiAgICAgICJtb2RlIjoiZGV2ZGF4IgogICAgfQoKMy4gUmVj
+b25maWd1cmUgYWxsIGRheCBkZXZpY2VzIG9uIHJlZ2lvbjAgdG8gc3lzdGVtLXJhbSBtb2RlCiAg
+ICAjIGRheGN0bCByZWNvbmZpZ3VyZS1kZXZpY2UgLS1tb2RlPXN5c3RlbS1yYW0gLS1yZWdpb249
+MCBhbGwKICAgIFsKICAgICAgewogICAgICAgICJjaGFyZGV2IjoiZGF4MC4wIiwKICAgICAgICAi
+c2l6ZSI6MTY3NzcyMTYwMDAsCiAgICAgICAgInRhcmdldF9ub2RlIjoyLAogICAgICAgICJtb2Rl
+Ijoic3lzdGVtLXJhbSIKICAgICAgfSwKICAgICAgewogICAgICAgICJjaGFyZGV2IjoiZGF4MC4x
+IiwKICAgICAgICAic2l6ZSI6MTY3NzcyMTYwMDAsCiAgICAgICAgInRhcmdldF9ub2RlIjozLAog
+ICAgICAgICJtb2RlIjoic3lzdGVtLXJhbSIKICAgICAgfQogICAgXQoKVGhlc2UgcGF0Y2hlcyBj
+YW4gYWxzbyBiZSBmb3VuZCBpbiB0aGUgJ2ttZW0tcGVuZGluZycgYnJhbmNoIG9uIGdpdGh1YjoK
+aHR0cHM6Ly9naXRodWIuY29tL3BtZW0vbmRjdGwvdHJlZS9rbWVtLXBlbmRpbmcKCkNjOiBEYW4g
+V2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4KQ2M6IERhdmUgSGFuc2VuIDxkYXZl
+LmhhbnNlbkBsaW51eC5pbnRlbC5jb20+CkNjOiBQYXZlbCBUYXRhc2hpbiA8cGFzaGEudGF0YXNo
+aW5Ac29sZWVuLmNvbT4KClZpc2hhbCBWZXJtYSAoMTMpOgogIGxpYmRheGN0bDogYWRkIGludGVy
+ZmFjZXMgdG8gZ2V0IGN0eCBhbmQgY2hlY2sgZGV2aWNlIHN0YXRlCiAgbGliZGF4Y3RsOiBhZGQg
+aW50ZXJmYWNlcyB0byBlbmFibGUvZGlzYWJsZSBkZXZpY2VzCiAgbGliZGF4Y3RsOiBhZGQgYW4g
+aW50ZXJmYWNlIHRvIHJldHJpZXZlIHRoZSBkZXZpY2UgcmVzb3VyY2UKICBsaWJkYXhjdGw6IGFk
+ZCBhICdkYXhjdGxfbWVtb3J5JyBvYmplY3QgZm9yIG1lbW9yeSBiYXNlZCBvcGVyYXRpb25zCiAg
+ZGF4Y3RsL2xpc3Q6IGFkZCB0YXJnZXRfbm9kZSBmb3IgZGV2aWNlIGxpc3RpbmdzCiAgbGliZGF4
+Y3RsOiBhZGQgYW4gaW50ZXJmYWNlIHRvIGdldCB0aGUgbW9kZSBmb3IgYSBkYXggZGV2aWNlCiAg
+ZGF4Y3RsOiBhZGQgYSBuZXcgcmVjb25maWd1cmUtZGV2aWNlIGNvbW1hbmQKICBEb2N1bWVudGF0
+aW9uL2RheGN0bDogYWRkIGEgbWFuIHBhZ2UgZm9yIGRheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UK
+ICBkYXhjdGw6IGFkZCBjb21tYW5kcyB0byBvbmxpbmUgYW5kIG9mZmxpbmUgbWVtb3J5CiAgRG9j
+dW1lbnRhdGlvbjogQWRkIG1hbiBwYWdlcyBmb3IgZGF4Y3RsLXtvbixvZmZ9bGluZS1tZW1vcnkK
+ICBjb250cmliL25kY3RsOiBmaXggcmVnaW9uLWlkIGNvbXBsZXRpb25zIGZvciBkYXhjdGwKICBj
+b250cmliL25kY3RsOiBhZGQgYmFzaC1jb21wbGV0aW9uIGZvciB0aGUgbmV3IGRheGN0bCBjb21t
+YW5kcwogIHRlc3Q6IEFkZCBhIHVuaXQgdGVzdCBmb3IgZGF4Y3RsLXJlY29uZmlndXJlLWRldmlj
+ZSBhbmQgZnJpZW5kcwoKIERvY3VtZW50YXRpb24vZGF4Y3RsL01ha2VmaWxlLmFtICAgICAgICAg
+ICAgICB8ICAgNSArLQogLi4uL2RheGN0bC9kYXhjdGwtb2ZmbGluZS1tZW1vcnkudHh0ICAgICAg
+ICAgIHwgIDcyICsrCiBEb2N1bWVudGF0aW9uL2RheGN0bC9kYXhjdGwtb25saW5lLW1lbW9yeS50
+eHQgfCAgODAgKysrCiAuLi4vZGF4Y3RsL2RheGN0bC1yZWNvbmZpZ3VyZS1kZXZpY2UudHh0ICAg
+ICAgfCAxMzkgKysrKwogTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIHwgICAzICstCiBjb250cmliL25kY3RsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgfCAgMzggKy0KIGRheGN0bC9NYWtlZmlsZS5hbSAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICB8ICAgMiArCiBkYXhjdGwvYnVpbHRpbi5oICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+fCAgIDMgKwogZGF4Y3RsL2RheGN0bC5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwg
+ICAzICsKIGRheGN0bC9kZXZpY2UuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDQ4
+NCArKysrKysrKysrKysrCiBkYXhjdGwvbGliL01ha2VmaWxlLmFtICAgICAgICAgICAgICAgICAg
+ICAgICAgfCAgIDUgKy0KIGRheGN0bC9saWIvbGliZGF4Y3RsLXByaXZhdGUuaCAgICAgICAgICAg
+ICAgICB8ICAzMCArCiBkYXhjdGwvbGliL2xpYmRheGN0bC5jICAgICAgICAgICAgICAgICAgICAg
+ICAgfCA2NjUgKysrKysrKysrKysrKysrKysrCiBkYXhjdGwvbGliL2xpYmRheGN0bC5zeW0gICAg
+ICAgICAgICAgICAgICAgICAgfCAgMTkgKwogZGF4Y3RsL2xpYmRheGN0bC5oICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHwgIDIzICsKIHRlc3QvTWFrZWZpbGUuYW0gICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICB8ICAgMyArLQogdGVzdC9jb21tb24gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHwgIDE5ICstCiB0ZXN0L2RheGN0bC1kZXZpY2VzLnNoICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgODEgKysrCiB1dGlsL2lvbWVtLmMgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgfCAgMzcgKwogdXRpbC9pb21lbS5oICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIHwgIDEyICsKIHV0aWwvanNvbi5jICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8ICAyNSArCiAyMSBmaWxlcyBjaGFuZ2VkLCAxNzM0IGluc2VydGlvbnMoKyksIDE0
+IGRlbGV0aW9ucygtKQogY3JlYXRlIG1vZGUgMTAwNjQ0IERvY3VtZW50YXRpb24vZGF4Y3RsL2Rh
+eGN0bC1vZmZsaW5lLW1lbW9yeS50eHQKIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1bWVudGF0aW9u
+L2RheGN0bC9kYXhjdGwtb25saW5lLW1lbW9yeS50eHQKIGNyZWF0ZSBtb2RlIDEwMDY0NCBEb2N1
+bWVudGF0aW9uL2RheGN0bC9kYXhjdGwtcmVjb25maWd1cmUtZGV2aWNlLnR4dAogY3JlYXRlIG1v
+ZGUgMTAwNjQ0IGRheGN0bC9kZXZpY2UuYwogY3JlYXRlIG1vZGUgMTAwNzU1IHRlc3QvZGF4Y3Rs
+LWRldmljZXMuc2gKIGNyZWF0ZSBtb2RlIDEwMDY0NCB1dGlsL2lvbWVtLmMKIGNyZWF0ZSBtb2Rl
+IDEwMDY0NCB1dGlsL2lvbWVtLmgKCi0tIAoyLjIwLjEKCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgt
+bnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZv
+L2xpbnV4LW52ZGltbQo=
