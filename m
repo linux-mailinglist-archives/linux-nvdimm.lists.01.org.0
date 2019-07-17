@@ -1,69 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508C76B511
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Jul 2019 05:40:01 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2B96C05C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 17 Jul 2019 19:27:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B18A212BF57B;
-	Tue, 16 Jul 2019 20:42:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 41FA9212BF9AC;
+	Wed, 17 Jul 2019 10:30:10 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=pasic@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 777282194EB75
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 20:42:26 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id z23so23448523ote.13
- for <linux-nvdimm@lists.01.org>; Tue, 16 Jul 2019 20:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=fQmhXD8ET32ay8TVgJJ0C1kgjcC1NnaxI9Qm/EBOdig=;
- b=bvRfaO1YBsDMsUlDUUMCtTlYZqLd5XT8jtz6vKXq315gt59VA4QSHyLm4vRek1Ici/
- AY4ddzg9xmO0luI6xy4JXvesSLxuVHyFkYTqcKR9/OdhpdsIsMaiGGU3/7lVa/vy8aLg
- kfYGzmdQR60nxqD7X3FbjO+NfJ64RCD51WgRxmylDsgk3CmzaWwX6nt1F4HPUDKfhx1k
- IIoIjuv/UQhkcLBM+SIckRYRt/4pign8uhZEjVFUzxza9WKueKXGxyqbalrddQ5b9CsL
- sd1Y5jJ/jwDL3722blXche5FL9YfuLLe0bWciMhd6k2CyFn1tExVqrp5PGNkLTbTwKyC
- fCjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=fQmhXD8ET32ay8TVgJJ0C1kgjcC1NnaxI9Qm/EBOdig=;
- b=R6qOP9G9GSBShtC1J9YTUeczCZQUv/a//3JxVA8erP4DurH6Q1oyJYZ9Xto6VjOBSy
- OeQZlBCxDT449L+4Fdk6We6qqsYtTZ8DGH6pPO2ETkQrjtO+Bu6JFinEsJKNZI4kJNfQ
- CPgUFj2Anx8e27eaVuQjDejgJ7mdRZ9WXf65biRkHGep+n/tdRtVYrOPCDj/S6HDwwvx
- 236sfvzZQHNoxPlURUbQ1VGIxx40BIFuta+AoxoU5dPAvEPYRjr05qJqIXguPiSmzoeK
- AVmuPMxaprGhBQpfFxeOy1avrpSka0RKPeGueTxZwcbzNJkxW4v66sGB8ToyRDn1nyhf
- +VSg==
-X-Gm-Message-State: APjAAAV66TW8akG+xVsNlZT0/wYtCPBdReg2KogX1Y7TYC54B3F6IWLE
- kj40nkuuAQOc/AxyAzYtXZvgYB5D67AGWzkfxWXF/Q==
-X-Google-Smtp-Source: APXvYqzfeOGf5vw9dfMRZyRJyKUlcfLJm3DVjzR9MkVP/uGpxjLNl3ZXQKG6aUWp8HK3mCMsfaZNDcsAPgzlEmORx3s=
-X-Received: by 2002:a9d:470d:: with SMTP id a13mr27103492otf.126.1563334797431; 
- Tue, 16 Jul 2019 20:39:57 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 1E6A72194EB75
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 10:30:07 -0700 (PDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6HHOpR0025144
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 13:27:38 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2tt7pj12wv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 13:27:38 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <pasic@linux.ibm.com>;
+ Wed, 17 Jul 2019 18:27:34 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 17 Jul 2019 18:27:30 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x6HHRFcj39846292
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Jul 2019 17:27:15 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 39AB3A405C;
+ Wed, 17 Jul 2019 17:27:29 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D1850A4064;
+ Wed, 17 Jul 2019 17:27:28 +0000 (GMT)
+Received: from oc2783563651 (unknown [9.152.224.219])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 17 Jul 2019 17:27:28 +0000 (GMT)
+Date: Wed, 17 Jul 2019 19:27:25 +0200
+From: Halil Pasic <pasic@linux.ibm.com>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [PATCH v2 18/30] virtio_fs, dax: Set up virtio_fs dax_device
+In-Reply-To: <20190515192715.18000-19-vgoyal@redhat.com>
+References: <20190515192715.18000-1-vgoyal@redhat.com>
+ <20190515192715.18000-19-vgoyal@redhat.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.11.1 (GTK+ 2.24.31; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20190704165450.GH31037@quack2.suse.cz>
- <20190704191407.GM1729@bombadil.infradead.org>
- <CAPcyv4gUiDw8Ma9mvbW5BamQtGZxWVuvBW7UrOLa2uijrXUWaw@mail.gmail.com>
- <20190705191004.GC32320@bombadil.infradead.org>
- <CAPcyv4jVARa38Qc4NjQ04wJ4ZKJ6On9BbJgoL95wQqU-p-Xp_w@mail.gmail.com>
- <20190710190204.GB14701@quack2.suse.cz>
- <20190710201539.GN32320@bombadil.infradead.org>
- <20190710202647.GA7269@quack2.suse.cz>
- <20190711141350.GS32320@bombadil.infradead.org>
- <20190711152550.GT32320@bombadil.infradead.org>
- <20190711154111.GA29284@quack2.suse.cz>
-In-Reply-To: <20190711154111.GA29284@quack2.suse.cz>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 16 Jul 2019 20:39:46 -0700
-Message-ID: <CAPcyv4hA+44EHpGN9F5eQD5Y_AuyPTKmovNWvccAFGhF_O2JMg@mail.gmail.com>
-Subject: Re: [PATCH] dax: Fix missed PMD wakeups
-To: Jan Kara <jack@suse.cz>
+X-TM-AS-GCONF: 00
+x-cbid: 19071717-0012-0000-0000-00000333CFDF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19071717-0013-0000-0000-0000216D4F30
+Message-Id: <20190717192725.25c3d146.pasic@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-17_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907170201
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,47 +85,228 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Seema Pandit <seema.pandit@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Boaz Harrosh <openosd@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
- Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Cc: Collin Walling <walling@linux.ibm.com>, Cornelia Huck <cohuck@redhat.com>,
+ Sebastian Ott <sebott@linux.ibm.com>, kvm@vger.kernel.org, miklos@szeredi.hu,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, dgilbert@redhat.com,
+ Christian Borntraeger <borntraeger@de.ibm.com>, stefanha@redhat.com,
+ linux-fsdevel@vger.kernel.org, swhiteho@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Jul 12, 2019 at 2:14 AM Jan Kara <jack@suse.cz> wrote:
->
-> On Thu 11-07-19 08:25:50, Matthew Wilcox wrote:
-> > On Thu, Jul 11, 2019 at 07:13:50AM -0700, Matthew Wilcox wrote:
-> > > However, the XA_RETRY_ENTRY might be a good choice.  It doesn't normally
-> > > appear in an XArray (it may appear if you're looking at a deleted node,
-> > > but since we're holding the lock, we can't see deleted nodes).
-> >
-> ...
->
-> > @@ -254,7 +267,7 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
-> >  static void put_unlocked_entry(struct xa_state *xas, void *entry)
-> >  {
-> >       /* If we were the only waiter woken, wake the next one */
-> > -     if (entry)
-> > +     if (entry && dax_is_conflict(entry))
->
-> This should be !dax_is_conflict(entry)...
->
-> >               dax_wake_entry(xas, entry, false);
-> >  }
->
-> Otherwise the patch looks good to me so feel free to add:
->
-> Reviewed-by: Jan Kara <jack@suse.cz>
+On Wed, 15 May 2019 15:27:03 -0400
+Vivek Goyal <vgoyal@redhat.com> wrote:
 
-Looks good, and passes the test case. Now pushed out to
-libnvdimm-for-next for v5.3 inclusion:
+> From: Stefan Hajnoczi <stefanha@redhat.com>
+> 
+> Setup a dax device.
+> 
+> Use the shm capability to find the cache entry and map it.
+> 
+> The DAX window is accessed by the fs/dax.c infrastructure and must have
+> struct pages (at least on x86).  Use devm_memremap_pages() to map the
+> DAX window PCI BAR and allocate struct page.
+>
 
-https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/commit/?h=libnvdimm-for-next&id=23c84eb7837514e16d79ed6d849b13745e0ce688
+Sorry for being this late. I don't see any more recent version so I will
+comment here.
+
+I'm trying to figure out how is this supposed to work on s390. My concern
+is, that on s390 PCI memory needs to be accessed by special
+instructions. This is taken care of by the stuff defined in
+arch/s390/include/asm/io.h. E.g. we 'override' __raw_writew so it uses
+the appropriate s390 instruction. However if the code does not use the
+linux abstractions for accessing PCI memory, but assumes it can be
+accessed like RAM, we have a problem.
+
+Looking at this patch, it seems to me, that we might end up with exactly
+the case described. For example AFAICT copy_to_iter() (3) resolves to
+the function in lib/iov_iter.c which does not seem to cater for s390
+oddities.
+
+I didn't have the time to investigate this properly, and since virtio-fs
+is virtual, we may be able to get around what is otherwise a
+limitation on s390. My understanding of these areas is admittedly
+shallow, and since I'm not sure I'll have much more time to
+invest in the near future I decided to raise concern.
+
+Any opinions?
+
+[CCing some s390 people who are probably more knowledgeable than my on
+these matters.]
+
+Regards,
+Halil
+
+
+> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> Signed-off-by: Sebastien Boeuf <sebastien.boeuf@intel.com>
+> Signed-off-by: Liu Bo <bo.liu@linux.alibaba.com>
+> ---
+
+[..]
+  
+> +/* Map a window offset to a page frame number.  The window offset will have
+> + * been produced by .iomap_begin(), which maps a file offset to a window
+> + * offset.
+> + */
+> +static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
+> +				    long nr_pages, void **kaddr, pfn_t *pfn)
+> +{
+> +	struct virtio_fs *fs = dax_get_private(dax_dev);
+> +	phys_addr_t offset = PFN_PHYS(pgoff);
+> +	size_t max_nr_pages = fs->window_len/PAGE_SIZE - pgoff;
+> +
+> +	if (kaddr)
+> +		*kaddr = fs->window_kaddr + offset;
+
+(2) Here we use fs->window_kaddr, basically directing the access to the
+virtio shared memory region.
+
+> +	if (pfn)
+> +		*pfn = phys_to_pfn_t(fs->window_phys_addr + offset,
+> +					PFN_DEV | PFN_MAP);
+> +	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
+> +}
+> +
+> +static size_t virtio_fs_copy_from_iter(struct dax_device *dax_dev,
+> +				       pgoff_t pgoff, void *addr,
+> +				       size_t bytes, struct iov_iter *i)
+> +{
+> +	return copy_from_iter(addr, bytes, i);
+> +}
+> +
+> +static size_t virtio_fs_copy_to_iter(struct dax_device *dax_dev,
+> +				       pgoff_t pgoff, void *addr,
+> +				       size_t bytes, struct iov_iter *i)
+> +{
+> +	return copy_to_iter(addr, bytes, i);
+
+(3) And this should be the access to it. Which does not seem to use.
+
+> +}
+> +
+> +static const struct dax_operations virtio_fs_dax_ops = {
+> +	.direct_access = virtio_fs_direct_access,
+> +	.copy_from_iter = virtio_fs_copy_from_iter,
+> +	.copy_to_iter = virtio_fs_copy_to_iter,
+> +};
+> +
+> +static void virtio_fs_percpu_release(struct percpu_ref *ref)
+> +{
+> +	struct virtio_fs_memremap_info *mi =
+> +		container_of(ref, struct virtio_fs_memremap_info, ref);
+> +
+> +	complete(&mi->completion);
+> +}
+> +
+> +static void virtio_fs_percpu_exit(void *data)
+> +{
+> +	struct virtio_fs_memremap_info *mi = data;
+> +
+> +	wait_for_completion(&mi->completion);
+> +	percpu_ref_exit(&mi->ref);
+> +}
+> +
+> +static void virtio_fs_percpu_kill(struct percpu_ref *ref)
+> +{
+> +	percpu_ref_kill(ref);
+> +}
+> +
+> +static void virtio_fs_cleanup_dax(void *data)
+> +{
+> +	struct virtio_fs *fs = data;
+> +
+> +	kill_dax(fs->dax_dev);
+> +	put_dax(fs->dax_dev);
+> +}
+> +
+> +static int virtio_fs_setup_dax(struct virtio_device *vdev, struct virtio_fs *fs)
+> +{
+> +	struct virtio_shm_region cache_reg;
+> +	struct virtio_fs_memremap_info *mi;
+> +	struct dev_pagemap *pgmap;
+> +	bool have_cache;
+> +	int ret;
+> +
+> +	if (!IS_ENABLED(CONFIG_DAX_DRIVER))
+> +		return 0;
+> +
+> +	/* Get cache region */
+> +	have_cache = virtio_get_shm_region(vdev,
+> +					   &cache_reg,
+> +					   (u8)VIRTIO_FS_SHMCAP_ID_CACHE);
+> +	if (!have_cache) {
+> +		dev_err(&vdev->dev, "%s: No cache capability\n", __func__);
+> +		return -ENXIO;
+> +	} else {
+> +		dev_notice(&vdev->dev, "Cache len: 0x%llx @ 0x%llx\n",
+> +			   cache_reg.len, cache_reg.addr);
+> +	}
+> +
+> +	mi = devm_kzalloc(&vdev->dev, sizeof(*mi), GFP_KERNEL);
+> +	if (!mi)
+> +		return -ENOMEM;
+> +
+> +	init_completion(&mi->completion);
+> +	ret = percpu_ref_init(&mi->ref, virtio_fs_percpu_release, 0,
+> +			      GFP_KERNEL);
+> +	if (ret < 0) {
+> +		dev_err(&vdev->dev, "%s: percpu_ref_init failed (%d)\n",
+> +			__func__, ret);
+> +		return ret;
+> +	}
+> +
+> +	ret = devm_add_action(&vdev->dev, virtio_fs_percpu_exit, mi);
+> +	if (ret < 0) {
+> +		percpu_ref_exit(&mi->ref);
+> +		return ret;
+> +	}
+> +
+> +	pgmap = &mi->pgmap;
+> +	pgmap->altmap_valid = false;
+> +	pgmap->ref = &mi->ref;
+> +	pgmap->kill = virtio_fs_percpu_kill;
+> +	pgmap->type = MEMORY_DEVICE_FS_DAX;
+> +
+> +	/* Ideally we would directly use the PCI BAR resource but
+> +	 * devm_memremap_pages() wants its own copy in pgmap.  So
+> +	 * initialize a struct resource from scratch (only the start
+> +	 * and end fields will be used).
+> +	 */
+> +	pgmap->res = (struct resource){
+> +		.name = "virtio-fs dax window",
+> +		.start = (phys_addr_t) cache_reg.addr,
+> +		.end = (phys_addr_t) cache_reg.addr + cache_reg.len - 1,
+> +	};
+> +
+> +	fs->window_kaddr = devm_memremap_pages(&vdev->dev, pgmap);
+
+(1) Here we assign fs->window_kaddr basically from the virtio shm region.
+
+> +	if (IS_ERR(fs->window_kaddr))
+> +		return PTR_ERR(fs->window_kaddr);
+> +
+> +	fs->window_phys_addr = (phys_addr_t) cache_reg.addr;
+> +	fs->window_len = (phys_addr_t) cache_reg.len;
+> +
+> +	dev_dbg(&vdev->dev, "%s: window kaddr 0x%px phys_addr 0x%llx"
+> +		" len 0x%llx\n", __func__, fs->window_kaddr, cache_reg.addr,
+> +		cache_reg.len);
+> +
+> +	fs->dax_dev = alloc_dax(fs, NULL, &virtio_fs_dax_ops);
+> +	if (!fs->dax_dev)
+> +		return -ENOMEM;
+> +
+> +	return devm_add_action_or_reset(&vdev->dev, virtio_fs_cleanup_dax, fs);
+> +}
+> +
+
+[..]
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
