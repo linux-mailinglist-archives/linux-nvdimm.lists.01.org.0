@@ -1,46 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8E16C4C9
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 04:04:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DD36C4F6
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 04:28:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 201C4212C01EB;
-	Wed, 17 Jul 2019 19:07:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9D666212C01EF;
+	Wed, 17 Jul 2019 19:30:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org;
- receiver=linux-nvdimm@lists.01.org 
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=gregkh@linuxfoundation.org; receiver=linux-nvdimm@lists.01.org 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4ADC4212C01E1
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 19:07:18 -0700 (PDT)
-Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+ by ml01.01.org (Postfix) with ESMTPS id C5DFF212C01E5
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 19:30:49 -0700 (PDT)
+Received: from localhost (115.42.148.210.bf.2iij.net [210.148.42.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 721E0205F4;
- Thu, 18 Jul 2019 02:04:49 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1AB6320665;
+ Thu, 18 Jul 2019 02:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1563415489;
- bh=IlFLXWD66Je93ddE8P2KBQiIDc6A3q7YUNHssh7SATw=;
+ s=default; t=1563416901;
+ bh=ARH8EQ0IsIwQgbUtuitrXQxkvZUjzgvXwHyXqAz7rHg=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=pfc80XueSJ3B4Cv4x9oiFuBr1Y3WWmpnMmsgvWgsdvGeyrK7W+gBi8hNZKM3vXNd6
- Mge8KjMGYEmWl7GTBEJ4Li9KRnFpxpd8iwYj92rK2p07xktkd9ReOfPA9/v4sEFdM7
- SNYhxes6eOfwi01dIvRYIePtDUNmm7SfAZ27gRec=
-Date: Wed, 17 Jul 2019 22:04:48 -0400
-From: Sasha Levin <sashal@kernel.org>
+ b=Pz+VlfMq7GcxdgJXU9N5Bt0VTh1JerW5UtHFzXt5vDZPDXN1vG0wz/+LmFWYVMv1n
+ WzKHK0dNDnVyEIhFY3jYcjdsMJQg7NpmuoYxqg/aaZGsACaXVTYWh7Zv4kjttDcW1h
+ no7J54cc9xiP6MpI2hGnquBvIwVHeYQn4usjVcuQ=
+Date: Thu, 18 Jul 2019 11:28:19 +0900
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 6/7] libnvdimm/bus: Fix wait_nvdimm_bus_probe_idle()
- ABBA deadlock
-Message-ID: <20190718020448.GE3079@sasha-vm>
+Subject: Re: [PATCH v2 7/7] driver-core, libnvdimm: Let device subsystems add
+ local lockdep coverage
+Message-ID: <20190718022819.GA15376@kroah.com>
 References: <156341206785.292348.1660822720191643298.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156341210094.292348.2384694131126767789.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156341210661.292348.7014034644265455704.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <156341210094.292348.2384694131126767789.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <156341210661.292348.7014034644265455704.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,89 +52,44 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, peterz@infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>, linux-nvdimm@lists.01.org,
+ Peter Zijlstra <peterz@infradead.org>, Will Deacon <will.deacon@arm.com>,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jul 17, 2019 at 06:08:21PM -0700, Dan Williams wrote:
->A multithreaded namespace creation/destruction stress test currently
->deadlocks with the following lockup signature:
->
->    INFO: task ndctl:2924 blocked for more than 122 seconds.
->          Tainted: G           OE     5.2.0-rc4+ #3382
->    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->    ndctl           D    0  2924   1176 0x00000000
->    Call Trace:
->     ? __schedule+0x27e/0x780
->     schedule+0x30/0xb0
->     wait_nvdimm_bus_probe_idle+0x8a/0xd0 [libnvdimm]
->     ? finish_wait+0x80/0x80
->     uuid_store+0xe6/0x2e0 [libnvdimm]
->     kernfs_fop_write+0xf0/0x1a0
->     vfs_write+0xb7/0x1b0
->     ksys_write+0x5c/0xd0
->     do_syscall_64+0x60/0x240
->
->     INFO: task ndctl:2923 blocked for more than 122 seconds.
->           Tainted: G           OE     5.2.0-rc4+ #3382
->     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->     ndctl           D    0  2923   1175 0x00000000
->     Call Trace:
->      ? __schedule+0x27e/0x780
->      ? __mutex_lock+0x489/0x910
->      schedule+0x30/0xb0
->      schedule_preempt_disabled+0x11/0x20
->      __mutex_lock+0x48e/0x910
->      ? nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
->      ? __lock_acquire+0x23f/0x1710
->      ? nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
->      nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
->      __dax_pmem_probe+0x5e/0x210 [dax_pmem_core]
->      ? nvdimm_bus_probe+0x1d0/0x2c0 [libnvdimm]
->      dax_pmem_probe+0xc/0x20 [dax_pmem]
->      nvdimm_bus_probe+0x90/0x2c0 [libnvdimm]
->      really_probe+0xef/0x390
->      driver_probe_device+0xb4/0x100
->
->In this sequence an 'nd_dax' device is being probed and trying to take
->the lock on its backing namespace to validate that the 'nd_dax' device
->indeed has exclusive access to the backing namespace. Meanwhile, another
->thread is trying to update the uuid property of that same backing
->namespace. So one thread is in the probe path trying to acquire the
->lock, and the other thread has acquired the lock and tries to flush the
->probe path.
->
->Fix this deadlock by not holding the namespace device_lock over the
->wait_nvdimm_bus_probe_idle() synchronization step. In turn this requires
->the device_lock to be held on entry to wait_nvdimm_bus_probe_idle() and
->subsequently dropped internally to wait_nvdimm_bus_probe_idle().
->
->Cc: <stable@vger.kernel.org>
->Fixes: bf9bccc14c05 ("libnvdimm: pmem label sets and namespace instantiation")
->Cc: Vishal Verma <vishal.l.verma@intel.com>
->Tested-by: Jane Chu <jane.chu@oracle.com>
->Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+On Wed, Jul 17, 2019 at 06:08:26PM -0700, Dan Williams wrote:
+> For good reason, the standard device_lock() is marked
+> lockdep_set_novalidate_class() because there is simply no sane way to
+> describe the myriad ways the device_lock() ordered with other locks.
+> However, that leaves subsystems that know their own local device_lock()
+> ordering rules to find lock ordering mistakes manually. Instead,
+> introduce an optional / additional lockdep-enabled lock that a subsystem
+> can acquire in all the same paths that the device_lock() is acquired.
+> 
+> A conversion of the NFIT driver and NVDIMM subsystem to a
+> lockdep-validate device_lock() scheme is included. The
+> debug_nvdimm_lock() implementation implements the correct lock-class and
+> stacking order for the libnvdimm device topology hierarchy.
+> 
+> Yes, this is a hack, but hopefully it is a useful hack for other
+> subsystems device_lock() debug sessions. Quoting Greg:
+> 
+>     "Yeah, it feels a bit hacky but it's really up to a subsystem to mess up
+>      using it as much as anything else, so user beware :)
+> 
+>      I don't object to it if it makes things easier for you to debug."
 
-Hi Dan,
+Sure, apeal to my vanity and quote me in the changelog, it's as if you
+are making it trivial for me to ack this...
 
-The way these patches are split, when we take them to stable this patch
-won't apply because it wants "libnvdimm/bus: Prepare the nd_ioctl() path
-to be re-entrant".
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-If you were to send another iteration of this patchset, could you please
-re-order the patches so they will apply cleanly to stable? this will
-help with reducing mail exchanges later on and possibly a mis-merge into
-stable.
+:)
 
-If not, this should serve as a reference for future us to double check
-the backport.
 
---
-Thanks,
-Sasha
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
