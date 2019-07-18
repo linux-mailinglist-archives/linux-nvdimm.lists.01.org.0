@@ -2,61 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F91C6C95A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 08:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715CA6CB73
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 11:04:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 50D9E212C01F8;
-	Wed, 17 Jul 2019 23:42:30 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8598E212CFEB4;
+	Thu, 18 Jul 2019 02:06:58 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=cohuck@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 2BB53212C01DB
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 23:42:27 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id j11so3593518otp.10
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 23:39:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=IyEgWa0WdxBWBa6CzxcMcVHbwCGtaOL4SMdcfx2LKzA=;
- b=OECf+WpeGSYLwM1UPTrEag6W4xZtDFGcdAV6czFUyazKwY7DxPaFLoJB9baFzMb4Rw
- zOnfjQ+5NEySGHin2V0JqgZc6DW8ADr9+tVIU/VdGrdQbyFXr0exIEYP7nYZqBIQb0kM
- FSUlnjqJcegqGdXL1KSR9TS+AWZFOBFVSoeY6YqNYDQ8SqGJQ6wh+Y4oRb0zyzKG4RXt
- viMY6DoKhRBk1JkSvdO+8uI35dPHHIBV41lj7kkHKHdzPKXzpgSWUe/lXj9CURFQYGFu
- 5nJ4JK08EzY3Ut+d06TzicyadD8Jb/qrZPlsSBJ0vpY5ODNeRcXG+6hSlw33Vx5JNlhV
- IUXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=IyEgWa0WdxBWBa6CzxcMcVHbwCGtaOL4SMdcfx2LKzA=;
- b=VXipFyKqMK3tBvylRJV17folQdkpfNZIFaL/cclFmyfEJPQRNfH/1vyrDdxZbRmq8/
- btecEApBbTi3fMlBfcaszN285Mg7hfSWP6n4/al9A9PWxzylKjU38j6grb6CJhxHR3qY
- 8Z1I6QkhyyudCTqPgQE1QcVlArdiD9BLDLWZo62bcBLRY56xR/vg4G14dmh8XYWYFLuu
- b6VWtb6n2tntDmFoBNKupCFdJecgVNfUWpB2am4DxhB7O/fxoGo29g2eILcEHejZE2yH
- JwR5QTQtE7hkF/dspdZinnKT/i1FRvJts8XKU/m3kSJmYXvyk1zXPBeiPgEoCh4R9Xz9
- pLMw==
-X-Gm-Message-State: APjAAAXANnERLPJLdehJqPmj7JfRUA0kDNMa6oetvHk0l1QD9nPXSsaa
- B+B1ENVExFeUxEwZPuBEGO2Mtjpl0dNPsyCxgsmUxA==
-X-Google-Smtp-Source: APXvYqxEZPirCKzLti2T8g/ZGZW8+7qImlrZqKYAXzSphnUUeZ01QoSasYDLyCIp6qmv7Xjbb+opoHhbofOs1T0uf1Q=
-X-Received: by 2002:a9d:470d:: with SMTP id a13mr32351754otf.126.1563431997958; 
- Wed, 17 Jul 2019 23:39:57 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 09EA3212CFEAD
+ for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 02:06:55 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 4492D3179157;
+ Thu, 18 Jul 2019 09:04:27 +0000 (UTC)
+Received: from gondolin (dhcp-192-232.str.redhat.com [10.33.192.232])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 48FA760C70;
+ Thu, 18 Jul 2019 09:04:20 +0000 (UTC)
+Date: Thu, 18 Jul 2019 11:04:17 +0200
+From: Cornelia Huck <cohuck@redhat.com>
+To: Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH v2 18/30] virtio_fs, dax: Set up virtio_fs dax_device
+Message-ID: <20190718110417.561f6475.cohuck@redhat.com>
+In-Reply-To: <20190717192725.25c3d146.pasic@linux.ibm.com>
+References: <20190515192715.18000-1-vgoyal@redhat.com>
+ <20190515192715.18000-19-vgoyal@redhat.com>
+ <20190717192725.25c3d146.pasic@linux.ibm.com>
+Organization: Red Hat GmbH
 MIME-Version: 1.0
-References: <156341206785.292348.1660822720191643298.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156341210094.292348.2384694131126767789.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190718020448.GE3079@sasha-vm>
-In-Reply-To: <20190718020448.GE3079@sasha-vm>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 17 Jul 2019 23:39:47 -0700
-Message-ID: <CAPcyv4gMKqxQ0WNeJ3p5XW2cDkNs0+tsViS5MXB+eDXeGcHPjA@mail.gmail.com>
-Subject: Re: [PATCH v2 6/7] libnvdimm/bus: Fix wait_nvdimm_bus_probe_idle()
- ABBA deadlock
-To: Sasha Levin <sashal@kernel.org>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.41]); Thu, 18 Jul 2019 09:04:27 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,92 +51,252 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>
+Cc: Collin Walling <walling@linux.ibm.com>,
+ Sebastian Ott <sebott@linux.ibm.com>, kvm@vger.kernel.org, miklos@szeredi.hu,
+ linux-nvdimm@lists.01.org, David Hildenbrand <david@redhat.com>,
+ linux-kernel@vger.kernel.org, dgilbert@redhat.com,
+ Christian Borntraeger <borntraeger@de.ibm.com>, stefanha@redhat.com,
+ linux-fsdevel@vger.kernel.org, swhiteho@redhat.com
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Jul 17, 2019 at 7:05 PM Sasha Levin <sashal@kernel.org> wrote:
->
-> On Wed, Jul 17, 2019 at 06:08:21PM -0700, Dan Williams wrote:
-> >A multithreaded namespace creation/destruction stress test currently
-> >deadlocks with the following lockup signature:
-> >
-> >    INFO: task ndctl:2924 blocked for more than 122 seconds.
-> >          Tainted: G           OE     5.2.0-rc4+ #3382
-> >    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> >    ndctl           D    0  2924   1176 0x00000000
-> >    Call Trace:
-> >     ? __schedule+0x27e/0x780
-> >     schedule+0x30/0xb0
-> >     wait_nvdimm_bus_probe_idle+0x8a/0xd0 [libnvdimm]
-> >     ? finish_wait+0x80/0x80
-> >     uuid_store+0xe6/0x2e0 [libnvdimm]
-> >     kernfs_fop_write+0xf0/0x1a0
-> >     vfs_write+0xb7/0x1b0
-> >     ksys_write+0x5c/0xd0
-> >     do_syscall_64+0x60/0x240
-> >
-> >     INFO: task ndctl:2923 blocked for more than 122 seconds.
-> >           Tainted: G           OE     5.2.0-rc4+ #3382
-> >     "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> >     ndctl           D    0  2923   1175 0x00000000
-> >     Call Trace:
-> >      ? __schedule+0x27e/0x780
-> >      ? __mutex_lock+0x489/0x910
-> >      schedule+0x30/0xb0
-> >      schedule_preempt_disabled+0x11/0x20
-> >      __mutex_lock+0x48e/0x910
-> >      ? nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
-> >      ? __lock_acquire+0x23f/0x1710
-> >      ? nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
-> >      nvdimm_namespace_common_probe+0x95/0x4d0 [libnvdimm]
-> >      __dax_pmem_probe+0x5e/0x210 [dax_pmem_core]
-> >      ? nvdimm_bus_probe+0x1d0/0x2c0 [libnvdimm]
-> >      dax_pmem_probe+0xc/0x20 [dax_pmem]
-> >      nvdimm_bus_probe+0x90/0x2c0 [libnvdimm]
-> >      really_probe+0xef/0x390
-> >      driver_probe_device+0xb4/0x100
-> >
-> >In this sequence an 'nd_dax' device is being probed and trying to take
-> >the lock on its backing namespace to validate that the 'nd_dax' device
-> >indeed has exclusive access to the backing namespace. Meanwhile, another
-> >thread is trying to update the uuid property of that same backing
-> >namespace. So one thread is in the probe path trying to acquire the
-> >lock, and the other thread has acquired the lock and tries to flush the
-> >probe path.
-> >
-> >Fix this deadlock by not holding the namespace device_lock over the
-> >wait_nvdimm_bus_probe_idle() synchronization step. In turn this requires
-> >the device_lock to be held on entry to wait_nvdimm_bus_probe_idle() and
-> >subsequently dropped internally to wait_nvdimm_bus_probe_idle().
-> >
-> >Cc: <stable@vger.kernel.org>
-> >Fixes: bf9bccc14c05 ("libnvdimm: pmem label sets and namespace instantiation")
-> >Cc: Vishal Verma <vishal.l.verma@intel.com>
-> >Tested-by: Jane Chu <jane.chu@oracle.com>
-> >Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->
-> Hi Dan,
->
-> The way these patches are split, when we take them to stable this patch
-> won't apply because it wants "libnvdimm/bus: Prepare the nd_ioctl() path
-> to be re-entrant".
->
-> If you were to send another iteration of this patchset, could you please
-> re-order the patches so they will apply cleanly to stable? this will
-> help with reducing mail exchanges later on and possibly a mis-merge into
-> stable.
->
-> If not, this should serve as a reference for future us to double check
-> the backport.
+On Wed, 17 Jul 2019 19:27:25 +0200
+Halil Pasic <pasic@linux.ibm.com> wrote:
 
-Oh we should backport all of them. I'll tag that one for -stable as
-well. It's a hard pre-requisite for the fix.
+> On Wed, 15 May 2019 15:27:03 -0400
+> Vivek Goyal <vgoyal@redhat.com> wrote:
+> 
+> > From: Stefan Hajnoczi <stefanha@redhat.com>
+> > 
+> > Setup a dax device.
+> > 
+> > Use the shm capability to find the cache entry and map it.
+> > 
+> > The DAX window is accessed by the fs/dax.c infrastructure and must have
+> > struct pages (at least on x86).  Use devm_memremap_pages() to map the
+> > DAX window PCI BAR and allocate struct page.
+> >  
+> 
+> Sorry for being this late. I don't see any more recent version so I will
+> comment here.
+
+[Yeah, this one has been sitting in my to-review queue far too long as
+well :(]
+
+> 
+> I'm trying to figure out how is this supposed to work on s390. My concern
+> is, that on s390 PCI memory needs to be accessed by special
+> instructions. This is taken care of by the stuff defined in
+> arch/s390/include/asm/io.h. E.g. we 'override' __raw_writew so it uses
+> the appropriate s390 instruction. However if the code does not use the
+> linux abstractions for accessing PCI memory, but assumes it can be
+> accessed like RAM, we have a problem.
+> 
+> Looking at this patch, it seems to me, that we might end up with exactly
+> the case described. For example AFAICT copy_to_iter() (3) resolves to
+> the function in lib/iov_iter.c which does not seem to cater for s390
+> oddities.
+
+What about the new pci instructions recently introduced? Not sure how
+they differ from the old ones (which are currently the only ones
+supported in QEMU...), but I'm pretty sure they are supposed to solve
+an issue :)
+
+> 
+> I didn't have the time to investigate this properly, and since virtio-fs
+> is virtual, we may be able to get around what is otherwise a
+> limitation on s390. My understanding of these areas is admittedly
+> shallow, and since I'm not sure I'll have much more time to
+> invest in the near future I decided to raise concern.
+> 
+> Any opinions?
+
+Let me point to the thread starting at
+https://marc.info/?l=linux-s390&m=155048406205221&w=2 as well. That
+memory region stuff is still unsolved for ccw, and I'm not sure if we
+need to do something for zpci as well.
+
+Does s390 work with DAX at all? ISTR that DAX evolved from XIP, so I
+thought it did?
+
+> 
+> [CCing some s390 people who are probably more knowledgeable than my on
+> these matters.]
+> 
+> Regards,
+> Halil
+> 
+> 
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> > Signed-off-by: Sebastien Boeuf <sebastien.boeuf@intel.com>
+> > Signed-off-by: Liu Bo <bo.liu@linux.alibaba.com>
+> > ---  
+> 
+> [..]
+>   
+> > +/* Map a window offset to a page frame number.  The window offset will have
+> > + * been produced by .iomap_begin(), which maps a file offset to a window
+> > + * offset.
+> > + */
+> > +static long virtio_fs_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
+> > +				    long nr_pages, void **kaddr, pfn_t *pfn)
+> > +{
+> > +	struct virtio_fs *fs = dax_get_private(dax_dev);
+> > +	phys_addr_t offset = PFN_PHYS(pgoff);
+> > +	size_t max_nr_pages = fs->window_len/PAGE_SIZE - pgoff;
+> > +
+> > +	if (kaddr)
+> > +		*kaddr = fs->window_kaddr + offset;  
+> 
+> (2) Here we use fs->window_kaddr, basically directing the access to the
+> virtio shared memory region.
+> 
+> > +	if (pfn)
+> > +		*pfn = phys_to_pfn_t(fs->window_phys_addr + offset,
+> > +					PFN_DEV | PFN_MAP);
+> > +	return nr_pages > max_nr_pages ? max_nr_pages : nr_pages;
+> > +}
+> > +
+> > +static size_t virtio_fs_copy_from_iter(struct dax_device *dax_dev,
+> > +				       pgoff_t pgoff, void *addr,
+> > +				       size_t bytes, struct iov_iter *i)
+> > +{
+> > +	return copy_from_iter(addr, bytes, i);
+> > +}
+> > +
+> > +static size_t virtio_fs_copy_to_iter(struct dax_device *dax_dev,
+> > +				       pgoff_t pgoff, void *addr,
+> > +				       size_t bytes, struct iov_iter *i)
+> > +{
+> > +	return copy_to_iter(addr, bytes, i);  
+> 
+> (3) And this should be the access to it. Which does not seem to use.
+> 
+> > +}
+> > +
+> > +static const struct dax_operations virtio_fs_dax_ops = {
+> > +	.direct_access = virtio_fs_direct_access,
+> > +	.copy_from_iter = virtio_fs_copy_from_iter,
+> > +	.copy_to_iter = virtio_fs_copy_to_iter,
+> > +};
+> > +
+> > +static void virtio_fs_percpu_release(struct percpu_ref *ref)
+> > +{
+> > +	struct virtio_fs_memremap_info *mi =
+> > +		container_of(ref, struct virtio_fs_memremap_info, ref);
+> > +
+> > +	complete(&mi->completion);
+> > +}
+> > +
+> > +static void virtio_fs_percpu_exit(void *data)
+> > +{
+> > +	struct virtio_fs_memremap_info *mi = data;
+> > +
+> > +	wait_for_completion(&mi->completion);
+> > +	percpu_ref_exit(&mi->ref);
+> > +}
+> > +
+> > +static void virtio_fs_percpu_kill(struct percpu_ref *ref)
+> > +{
+> > +	percpu_ref_kill(ref);
+> > +}
+> > +
+> > +static void virtio_fs_cleanup_dax(void *data)
+> > +{
+> > +	struct virtio_fs *fs = data;
+> > +
+> > +	kill_dax(fs->dax_dev);
+> > +	put_dax(fs->dax_dev);
+> > +}
+> > +
+> > +static int virtio_fs_setup_dax(struct virtio_device *vdev, struct virtio_fs *fs)
+> > +{
+> > +	struct virtio_shm_region cache_reg;
+> > +	struct virtio_fs_memremap_info *mi;
+> > +	struct dev_pagemap *pgmap;
+> > +	bool have_cache;
+> > +	int ret;
+> > +
+> > +	if (!IS_ENABLED(CONFIG_DAX_DRIVER))
+> > +		return 0;
+> > +
+> > +	/* Get cache region */
+> > +	have_cache = virtio_get_shm_region(vdev,
+> > +					   &cache_reg,
+> > +					   (u8)VIRTIO_FS_SHMCAP_ID_CACHE);
+> > +	if (!have_cache) {
+> > +		dev_err(&vdev->dev, "%s: No cache capability\n", __func__);
+> > +		return -ENXIO;
+> > +	} else {
+> > +		dev_notice(&vdev->dev, "Cache len: 0x%llx @ 0x%llx\n",
+> > +			   cache_reg.len, cache_reg.addr);
+> > +	}
+> > +
+> > +	mi = devm_kzalloc(&vdev->dev, sizeof(*mi), GFP_KERNEL);
+> > +	if (!mi)
+> > +		return -ENOMEM;
+> > +
+> > +	init_completion(&mi->completion);
+> > +	ret = percpu_ref_init(&mi->ref, virtio_fs_percpu_release, 0,
+> > +			      GFP_KERNEL);
+> > +	if (ret < 0) {
+> > +		dev_err(&vdev->dev, "%s: percpu_ref_init failed (%d)\n",
+> > +			__func__, ret);
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret = devm_add_action(&vdev->dev, virtio_fs_percpu_exit, mi);
+> > +	if (ret < 0) {
+> > +		percpu_ref_exit(&mi->ref);
+> > +		return ret;
+> > +	}
+> > +
+> > +	pgmap = &mi->pgmap;
+> > +	pgmap->altmap_valid = false;
+> > +	pgmap->ref = &mi->ref;
+> > +	pgmap->kill = virtio_fs_percpu_kill;
+> > +	pgmap->type = MEMORY_DEVICE_FS_DAX;
+> > +
+> > +	/* Ideally we would directly use the PCI BAR resource but
+> > +	 * devm_memremap_pages() wants its own copy in pgmap.  So
+> > +	 * initialize a struct resource from scratch (only the start
+> > +	 * and end fields will be used).
+> > +	 */
+> > +	pgmap->res = (struct resource){
+> > +		.name = "virtio-fs dax window",
+> > +		.start = (phys_addr_t) cache_reg.addr,
+> > +		.end = (phys_addr_t) cache_reg.addr + cache_reg.len - 1,
+> > +	};
+> > +
+> > +	fs->window_kaddr = devm_memremap_pages(&vdev->dev, pgmap);  
+> 
+> (1) Here we assign fs->window_kaddr basically from the virtio shm region.
+> 
+> > +	if (IS_ERR(fs->window_kaddr))
+> > +		return PTR_ERR(fs->window_kaddr);
+> > +
+> > +	fs->window_phys_addr = (phys_addr_t) cache_reg.addr;
+> > +	fs->window_len = (phys_addr_t) cache_reg.len;
+> > +
+> > +	dev_dbg(&vdev->dev, "%s: window kaddr 0x%px phys_addr 0x%llx"
+> > +		" len 0x%llx\n", __func__, fs->window_kaddr, cache_reg.addr,
+> > +		cache_reg.len);
+> > +
+> > +	fs->dax_dev = alloc_dax(fs, NULL, &virtio_fs_dax_ops);
+> > +	if (!fs->dax_dev)
+> > +		return -ENOMEM;
+> > +
+> > +	return devm_add_action_or_reset(&vdev->dev, virtio_fs_cleanup_dax, fs);
+> > +}
+> > +  
+> 
+> [..]
+> 
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
