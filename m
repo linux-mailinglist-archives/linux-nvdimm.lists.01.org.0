@@ -2,61 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DA16CFAF
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 16:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E7E6CFF5
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 16:37:23 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E7F1C212CFEC3;
-	Thu, 18 Jul 2019 07:32:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B14A6212CFEC5;
+	Thu, 18 Jul 2019 07:39:50 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
+ client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
+ [IPv6:2607:f8b0:4864:20::841])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D1B7F212CFEAD
- for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 07:32:44 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id a27so20607759qkk.5
- for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 07:30:16 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id D3486212C01FB
+ for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 07:39:47 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id d17so27356709qtj.8
+ for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 07:37:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jjmJCNJRGOhllI8UevhEezWy1jhS3nYRGQxeSWHjEqQ=;
- b=UTEKW/lQw1+YfnPZ90S0KbWWY8Wf+Rufpf+WlEgKiDHOHtf7HrKB83Bjoy8ag66hfO
- 6MEeXVjU8MnY7PYY4RwzoAQ3hb3OZLC5SmYHPlDFCJ9/XcnZV0V5s1UC+pDevIW9Du7u
- WmxuQm1ZgMKRAio5Ii5xne72QhjVM+oE+ZM646Z6YLs2vTQ5P/95rMA/07sWtgyUOw2h
- 1rm2g3x7RY3qk7h1uYXaihYrKv2/nw+UG8zP5AHcSOx8zX6gGJ1IkOVYET8QR92ep1B0
- oxQFc2EAkLrtehUI7WEnsZikIYEQNhggfHRYPQjfmT12HvL9xJN/58xty7YWcw3RsBbB
- m7sw==
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=P952fJXBLk5gGmwzQWc4AdTbQsUFnxHNQ/JjKtt4NKc=;
+ b=mGythxfugEaFvl0wyE39KZQUFGsK+FuHqI4IU0NimV+KcqB82JKwxtNkJYwrBATEBJ
+ c/Cd25vpiSXyQEREaH66Utgzdw+g4fYhB+0VYAuoTeM3N3qHyl6WbR75bH+NIKMeeV2e
+ cwh63Sl3S1aqo4pnm12YqKlEYwetRIANDF33tUMpoThDQmnV52nqKcKScBS+gkn1/NOg
+ Gh/63dvdIPrMahiYbuhKcWd/K40WXUA/XWKiL3WlKx43udHTGN0e8l7ez0zyLgGYXACv
+ 1frTvKYJdrQcaikMAbT7y6F/IaYIQGvG4gJZbmukAWqiNzL8aHkITUKWY+7kcYHXvu/g
+ wmNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jjmJCNJRGOhllI8UevhEezWy1jhS3nYRGQxeSWHjEqQ=;
- b=iSn/Xw8HNl5K9aqdpcl4EP9LGGWuQl1qZbyK1z6NJEwE8Nobj8PrU8A7Q7hZ3DqOr7
- IUFnPCfD9uyEQR3BKHDyT5T6h8VgGEPTLwNd4i6pi7vUiIyV+LRnLgrPUhBF1rVoRQYC
- Qfly+nOXMwPN2SOj5I+q5079/hUokIj8HObs3EarJn0B2A5jRJsLXp0hxUMfZ0gfr/8R
- 4AsH1NRi5fXGkPtmsFR9/VpMWsXb771GPqc/AqjEwdQmNYeDgRrMx3dOLek0XZcFWDs5
- YruJk0EhZquIaSBGcKGHAiRWWKVl8v5yj/P3QXYVLVy27V8oypmUMYQfECTX6U2J62H1
- 22SA==
-X-Gm-Message-State: APjAAAUgQhEI9EtNeAx9efKmiada6HYKzGZwt4Qz56o+7G7aIYwnPlSc
- pFQyud9lgt/avbbA9MXDMq8qlMuOWnaT4casRb6Vtw==
-X-Google-Smtp-Source: APXvYqyH3Tq2IZ4Y34U+Coq0W2cVWZFn0bZvr00HyTwOSwv4wauHuS/tecT7SIuKu7ysKawZSqDgTIAA4/cnpxUome4=
-X-Received: by 2002:a37:a742:: with SMTP id q63mr29771140qke.421.1563460215307; 
- Thu, 18 Jul 2019 07:30:15 -0700 (PDT)
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=P952fJXBLk5gGmwzQWc4AdTbQsUFnxHNQ/JjKtt4NKc=;
+ b=k6mWvSYLjzwAMxWKd3eUqxK3aDhk0+L5ZHigP8vL0ZBYOAWYC+Ld5QS2WetHJ9+B55
+ TZyfHVKP+dJfsnLbGgnpTzX027EmNxrpDYRIGVhFKcG3t0bdfEU/k5gzKxs03LfRGtqZ
+ beqbpRMteORN+l3St/O5ywwuucPAa0QDzVJuUkN2x4jnTlUMlbVatdkrFztDo0VZiYY5
+ 8WOZeB2fAO9Be3gwebdI6w2DLGzjr2RzNAGulQzxh/CBBEIg9NDVwol97tAHWTE37ql9
+ mRbO6raau9Y3U+KWTrRFWRVrhpuA7NufxEyxfHPJ36RpePyN+XTOHpV384mq4vshX2zF
+ VfEQ==
+X-Gm-Message-State: APjAAAVIDBinSrbEXdTkQxjVrZ5KwrF3F4CcTnFfc2LCf9uf17mtswLw
+ UK1LEL8Dxk2vOMmOBqoyUEFrtO3VRKmbNxoPPBpAQA==
+X-Google-Smtp-Source: APXvYqwlRBjp0w1syFaW3nPSBwwug0SrJnGWLAMIYDiIoIGHAU6aSAPrRGiIr53fvkPxLKi+KZvUIFrxm7qmxiv9rs8=
+X-Received: by 2002:ac8:1e8a:: with SMTP id c10mr31333075qtm.45.1563460638305; 
+ Thu, 18 Jul 2019 07:37:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190515192715.18000-1-vgoyal@redhat.com>
- <20190515192715.18000-19-vgoyal@redhat.com>
- <20190717192725.25c3d146.pasic@linux.ibm.com>
- <20190718131532.GA13883@redhat.com>
-In-Reply-To: <20190718131532.GA13883@redhat.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 18 Jul 2019 07:30:03 -0700
-Message-ID: <CAPcyv4i+2nKJYqkbrdm3hWcjaMYkCKUxqLBq96HOZe6xOZzGGg@mail.gmail.com>
-Subject: Re: [PATCH v2 18/30] virtio_fs, dax: Set up virtio_fs dax_device
-To: Vivek Goyal <vgoyal@redhat.com>
+Date: Thu, 18 Jul 2019 07:37:07 -0700
+Message-ID: <CAPcyv4jMjvPYTa00hbq=64LZ=Vcu-gi7hLcgDTnD9d4dF0t9ng@mail.gmail.com>
+Subject: [GIT PULL] dax for 5.3
+To: Linus Torvalds <torvalds@linux-foundation.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,78 +62,54 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Collin Walling <walling@linux.ibm.com>,
- Sebastian Ott <sebott@linux.ibm.com>, KVM list <kvm@vger.kernel.org>,
- Miklos Szeredi <miklos@szeredi.hu>, Steven Whitehouse <swhiteho@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>,
+Cc: Jan Kara <jack@suse.cz>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
- Halil Pasic <pasic@linux.ibm.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>
+ Matthew Wilcox <willy@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jul 18, 2019 at 6:15 AM Vivek Goyal <vgoyal@redhat.com> wrote:
->
-> On Wed, Jul 17, 2019 at 07:27:25PM +0200, Halil Pasic wrote:
-> > On Wed, 15 May 2019 15:27:03 -0400
-> > Vivek Goyal <vgoyal@redhat.com> wrote:
-> >
-> > > From: Stefan Hajnoczi <stefanha@redhat.com>
-> > >
-> > > Setup a dax device.
-> > >
-> > > Use the shm capability to find the cache entry and map it.
-> > >
-> > > The DAX window is accessed by the fs/dax.c infrastructure and must have
-> > > struct pages (at least on x86).  Use devm_memremap_pages() to map the
-> > > DAX window PCI BAR and allocate struct page.
-> > >
-> >
-> > Sorry for being this late. I don't see any more recent version so I will
-> > comment here.
-> >
-> > I'm trying to figure out how is this supposed to work on s390. My concern
-> > is, that on s390 PCI memory needs to be accessed by special
-> > instructions. This is taken care of by the stuff defined in
-> > arch/s390/include/asm/io.h. E.g. we 'override' __raw_writew so it uses
-> > the appropriate s390 instruction. However if the code does not use the
-> > linux abstractions for accessing PCI memory, but assumes it can be
-> > accessed like RAM, we have a problem.
-> >
-> > Looking at this patch, it seems to me, that we might end up with exactly
-> > the case described. For example AFAICT copy_to_iter() (3) resolves to
-> > the function in lib/iov_iter.c which does not seem to cater for s390
-> > oddities.
-> >
-> > I didn't have the time to investigate this properly, and since virtio-fs
-> > is virtual, we may be able to get around what is otherwise a
-> > limitation on s390. My understanding of these areas is admittedly
-> > shallow, and since I'm not sure I'll have much more time to
-> > invest in the near future I decided to raise concern.
-> >
-> > Any opinions?
->
-> Hi Halil,
->
-> I don't understand s390 and how PCI works there as well. Is there any
-> other transport we can use there to map IO memory directly and access
-> using DAX?
->
-> BTW, is DAX supported for s390.
->
-> I am also hoping somebody who knows better can chip in. Till that time,
-> we could still use virtio-fs on s390 without DAX.
+Hi Linus, please pull from:
 
-s390 has so-called "limited" dax support, see CONFIG_FS_DAX_LIMITED.
-In practice that means that support for PTE_DEVMAP is missing which
-means no get_user_pages() support for dax mappings. Effectively it's
-only useful for execute-in-place as operations like fork() and ptrace
-of dax mappings will fail.
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-for-5.3
+
+...to receive the fruits of a bug hunt in the fsdax implementation
+with Willy and a small feature update for device-dax. These have
+appeared in a -next release with no reported issues.
+
+---
+
+The following changes since commit 9e0babf2c06c73cda2c0cd37a1653d823adb40ec:
+
+  Linux 5.2-rc5 (2019-06-16 08:49:45 -1000)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/dax-for-5.3
+
+for you to fetch changes up to 23c84eb7837514e16d79ed6d849b13745e0ce688:
+
+  dax: Fix missed wakeup with PMD faults (2019-07-16 19:30:59 -0700)
+
+----------------------------------------------------------------
+- Fix a hang condition that started triggering after the Xarray
+  conversion of fsdax in the v4.20 kernel.
+
+- Add a 'resource' (root-only physical base address) sysfs attribute to
+  device-dax instances to correlate memory-blocks onlined via the kmem
+  driver with a given device instance.
+
+----------------------------------------------------------------
+Matthew Wilcox (Oracle) (1):
+      dax: Fix missed wakeup with PMD faults
+
+Vishal Verma (1):
+      device-dax: Add a 'resource' attribute
+
+ drivers/dax/bus.c | 19 +++++++++++++++++++
+ fs/dax.c          | 53 +++++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 52 insertions(+), 20 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
