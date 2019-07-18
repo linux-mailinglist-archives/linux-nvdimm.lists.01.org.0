@@ -1,67 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B9D6D4A0
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 21:22:50 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617E16D730
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 19 Jul 2019 01:19:56 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 35FAE212D2752;
-	Thu, 18 Jul 2019 12:25:17 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4AB81212D2756;
+	Thu, 18 Jul 2019 16:22:21 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D834F2194EB78
- for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 12:25:14 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id i70so2579791pgd.4
- for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 12:22:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ by ml01.01.org (Postfix) with ESMTPS id 24D1421959CB2
+ for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 16:22:19 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id l15so30866527otn.9
+ for <linux-nvdimm@lists.01.org>; Thu, 18 Jul 2019 16:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hBFy7EH0mw2SK7uI8qKF1fHgdf6f9ZNwoqzuqnBlZ8E=;
- b=oGY8omtQvGoYcD+e34Yt9qr3X14EjkzXByvA7RTwGiQJZnWtAqL1Qgc9RC1Ce18u1a
- RbnrZ+mwJ+Bd8LTzYPwSiYFHCs8WowxKvwQUvizOSSbKQR7rkEx4fLIQ3xMzqPziBnTB
- BOlPaD8daje4roDr7mPrXuRrfUOUe3Qy+FoHEEHzHmWCQHlcCWyX/ktBi+iFcu6AWcMO
- 6n009uLLGTzTGqdQJGOllwp42KObteDH+Y426amI5Qk8U7+eGVut6T5jhIZ7z0uwcv+G
- HL84r54w1Ns/ePAwAPEKi53cTkoAYcjquhAlYy4zKce3KZYEU04o3BUwIDhQJF9RtK/h
- UZ9g==
+ :cc; bh=h1Tv6G/QLhR7GemG290wVKzM4CQqfmSA0dkVPy7WEsE=;
+ b=ehbWRSGTRcIpSe3lT/JdQltJbIDXA0aGfpzyb4pLLP1S1DIWHOF5grd2pserOBjEAa
+ bFwv8mPG3HnLE5uMBwbLnI/jx846h/UQI39o8XlvctFOUFDLxQPQK5pV3+HYzjuvnbKY
+ XFDTIOEaCNf/YFWXaJ/v+e3rGl0eUJDVkQHkyHZZsvq50wuvqNiMWwa0QDFbrKAqa2mS
+ L6dU65EBA9h2S9PQ7UClJgA/z3at+iA1wDnqzdWyB2HVuz6KzDsBXTxhBeiZaAikw8bl
+ HXJab1cBqpBbRBpjnYF4pHt2qXPoYSq73/uB3rBXO1LNxFjOS2jfeRFowKtBQuctKr+l
+ gngw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=hBFy7EH0mw2SK7uI8qKF1fHgdf6f9ZNwoqzuqnBlZ8E=;
- b=UvUlwV+ewZjoO+fict5yRqDUbopU0VQenmcKUBh+dRKZ+o5vMEkQ0AUsZs3KT2xrdJ
- mJPqyxJpysfZ/8jGTHNrScUhe2392BI8vryZl74rPH74lokmRkJ3OjvBTKdAWoAGGD8H
- opY3ZBy3mkaoPam+F7411cV3mrFVGP6ViigVOOGTjeDxio/aq0Qd37TkeFCDFNGyj6NT
- 5MO4nby9/lev2nh5QwMAzyXs/mJYXK4pW60jlFTKjiVUnldt4fpCwSwG5qQf9CyDFvaq
- 63wp3zhfN/8ah+NxMqs+EtPZa1DQXyeuc1S6uEFBCy44cPE+8gbH5mjNftugn5RVfAGc
- jvaw==
-X-Gm-Message-State: APjAAAUETsY2IV0PDSL7FyAj23uzSokejv69Gkijv/7OgqMWg6V19nHT
- +Pf/uztjIKF7nTH/FKdUo2zI8qNicr6iYRqrbClo9A==
-X-Google-Smtp-Source: APXvYqwEX6bf+N7IshMHyf6Ka9VvTGGohf11maoUS2kqSaEKH7rjYoGxlweVxaB2rT0fUBlD3BQp3PamQk99u/yqGyM=
-X-Received: by 2002:a17:90a:ab0d:: with SMTP id
- m13mr50453432pjq.84.1563477765258; 
- Thu, 18 Jul 2019 12:22:45 -0700 (PDT)
+ bh=h1Tv6G/QLhR7GemG290wVKzM4CQqfmSA0dkVPy7WEsE=;
+ b=CfNWaZUegiIeahAp/kW0nYHIWeWGvIra1Q79BeLde1IKLfuO9c/aiusZmWC7yqhW9V
+ M1ojVBNSdUr374MIbhkGq8vXSBfOzgZT3562tmdqrRAJcyOq5ZiD1um+l73GJ+Y1eXgJ
+ 7c6pqtoMj5jGtYR1EUFq3R/x5tdD5Nr1U3lqojs13YSvdBH3pmoE5LWkvyPL3YO1mfhc
+ 67x63BWe2FFnPirbKZ+zTJyT+B6Jb21LrxBu8qI29wLcco39Rv4lVjS68iBGYpbcAtM5
+ TT6m34/dgw2RFyAk0BskRjHI94yhOFXM8x7ruQ8s7SZP74OXIAVbB3EvuElq/tbf+q7b
+ gHoQ==
+X-Gm-Message-State: APjAAAVC6kM/qexld/DnFRKgYp2QC0w/r4bDsK6uYGRDPeDekUm9LVfu
+ tR/gMW+3dp6yEXimWaznT+nI7LqGvx4C+O3n8iIztQ==
+X-Google-Smtp-Source: APXvYqwc7H2FQuxhrkoxUZd+dlRPzvBE+9No8qnwwP0+GMIbvsn1FeUYsiCs5V0mJfi/l9yUDfaxEH/7R1wkeVDgRFo=
+X-Received: by 2002:a9d:7b48:: with SMTP id f8mr10839598oto.207.1563491992210; 
+ Thu, 18 Jul 2019 16:19:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190712081744.87097-1-brendanhiggins@google.com>
- <20190712081744.87097-5-brendanhiggins@google.com>
- <20190715221554.8417320665@mail.kernel.org>
- <CAFd5g47ikJmA0uGoavAFsh+hQvDmgsOi26tyii0612R=rt7iiw@mail.gmail.com>
- <CAFd5g44_axVHNMBzxSURQB_-R+Rif7cZcg7PyZ_SS+5hcy5jZA@mail.gmail.com>
- <20190716175021.9CA412173C@mail.kernel.org>
- <CAFd5g453vXeSUCZenCk_CzJ-8a1ym9RaPo0NVF=FujF9ac-5Ag@mail.gmail.com>
- <20190718175024.C3EC421019@mail.kernel.org>
-In-Reply-To: <20190718175024.C3EC421019@mail.kernel.org>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Thu, 18 Jul 2019 12:22:33 -0700
-Message-ID: <CAFd5g46a7C1+R6ZcE_SkqaYqgrH5Rx3M=X7orFyaMgFLDbeYYA@mail.gmail.com>
-Subject: Re: [PATCH v9 04/18] kunit: test: add kunit_stream a std::stream like
- logger
-To: Stephen Boyd <sboyd@kernel.org>
+References: <20190717225400.9494-1-vishal.l.verma@intel.com>
+ <20190717225400.9494-5-vishal.l.verma@intel.com>
+In-Reply-To: <20190717225400.9494-5-vishal.l.verma@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 18 Jul 2019 16:19:40 -0700
+Message-ID: <CAPcyv4grJ6-UAUhY55WeTBdv1xtkTYe=xSL-ae_bKDXW8DY9zQ@mail.gmail.com>
+Subject: Re: [ndctl PATCH v6 04/13] libdaxctl: add a 'daxctl_memory' object
+ for memory based operations
+To: Vishal Verma <vishal.l.verma@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,275 +67,528 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
- Kevin Hilman <khilman@baylibre.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Jul 18, 2019 at 10:50 AM Stephen Boyd <sboyd@kernel.org> wrote:
+A couple minor comments...
+
+On Wed, Jul 17, 2019 at 3:54 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> Quoting Brendan Higgins (2019-07-16 11:52:01)
-> > On Tue, Jul 16, 2019 at 10:50 AM Stephen Boyd <sboyd@kernel.org> wrote:
-> > >
-> >
-> > > The only hypothetical case where this can't be done is a complicated
-> > > assertion or expectation that does more than one check and can't be
-> > > written as a function that dumps out what went wrong. Is this a real
-> > > problem? Maybe such an assertion should just open code that logic so we
-> > > don't have to build up a string for all the other simple cases.
-> >
-> > I have some expectations in follow up patchsets for which I created a
-> > set of composable matchers for matching structures and function calls
-> > that by their nature cannot be written as a single function. The
-> > matcher thing is a bit speculative, I know, but for any kind of
-> > function call matching, you need to store a record of functions you
-> > are expecting to have called and then each one needs to have a set of
-> > expectations defined by the user; I don't think there is a way to do
-> > that that doesn't involve having multiple separate functions each
-> > having some information useful to constructing the message.
-> >
-> > I know the code in question isn't in this patchset; the function
-> > matching code was in one of the earlier versions of the RFC, but I
-> > dropped it to make this patchset smaller and more manageable. So I get
-> > it if you would like me to drop it and add it back in when I try to
-> > get the function and structure matching stuff in, but I would really
-> > prefer to keep it as is if you don't care too much.
+> Introduce a new 'daxctl_memory' object, which will be used for
+> operations related to managing dax devices in 'system-memory' modes.
 >
-> Do you have a link to those earlier patches?
-
-This is the first patchset:
-
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788057.html
-
-In particular you can see the code for matching functions here:
-
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788073.html
-
-And parameter matching code here:
-
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788072.html
-
-https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788086.html
-
-My apologies in advance, but the code at this early stage had not
-adopted the kunit_* prefix and was still using the test_* and mock_*
-prefix. (Hence, struct kunit_stream was known as struct test_stream).
-
-> > > It seems far simpler to get rid of the string stream API and just have a
-> > > struct for this.
-> > >
-> > >         struct kunit_fail_msg {
-> > >                 const char *line;
-> > >                 const char *file;
-> > >                 const char *func;
-> > >                 const char *msg;
-> > >         };
-> > >
-> > > Then you can have the assertion macros create this on the stack (with
-> > > another macro?).
-> > >
-> > >         #define DEFINE_KUNIT_FAIL_MSG(name, _msg) \
-> > >                 struct kunit_fail_msg name = { \
-> > >                         .line =  __LINE__, \
-> > >                         .file = __FILE__, \
-> > >                         .func = __func__, \
-> > >                         .msg = _msg, \
-> > >                 }
-> > >
-> > > I don't want to derail this whole series on this topic, but it seems
-> > > like a bunch of code is there to construct this same set of information
-> > > over and over again into a buffer a little bit at a time and then throw
-> > > it away when nothing fails just because we may want to support the case
-> > > where we have some unstructured data to inform the user about.
-> >
-> > Yeah, that's fair. I think there are a number of improvements to be
-> > made with how the expectations are defined other than that, but I was
-> > hoping I could do that after this patchset is merged. I just figured
-> > with the kinds of things I would like to do, it would lead to a whole
-> > new round of discussion.
-> >
-> > In either case, I think I would still like to use the `struct
-> > kunit_stream` as part of the interface to share the failure message
-> > with the test case runner code in test.c, at least eventually, so that
-> > I only have to have one way to receive data from expectations, but I
-> > think I can do that and still do what you suggest by just constructing
-> > the kunit_stream at the end of expectations where it is feasible.
-> >
-> > All in all I agree with what you are saying, but I would rather do it
-> > as a follow up possibly once we have some more code on the table. I
-> > could just see this opening up a whole new can of worms where we
-> > debate about exactly how expectations and assertions work for another
-> > several months, only to rip it all out shortly there after. I know
-> > that's how these things go, but that's my preference.
-> >
-> > I can do what you suggest if you feel strongly about it, but I would
-> > prefer to hold off until later. It's your call.
-> >
+> Add libdaxctl APIs to get the target_node of a DAX device, and to
+> online, offline, and query the state of hotplugged memory sections
+> associated with a given device.
 >
-> The crux of my complaint is that the string stream API is too loosely
-> defined to be usable. It allows tests to build up a string of
-> unstructured information, but with certain calling constraints so we
-> have to tread carefully. If there was more structure to the data that's
-> being recorded then the test case runner could operate on the data
-> without having to do string/stream operations, allocations, etc. This
-> would make the assertion logic much more concrete and specific to kunit,
-> instead of this small kunit wrapper that's been placed on top of string
-> stream.
-
-Yeah, I can see the point of wanting something that provides more
-structure than the raw `struct kunit_stream` interface. In fact, it is
-something I had already started working on, when I had determined it
-would be a large effort to capture all the variations. I was further
-put off from the idea when I had been asked to convert the KUnit
-intermediate format from what I was using to TAP, because, as it is,
-the current data printed out by KUnit doesn't contain all the data I
-would like to put in it in a way that best takes advantage of the TAP
-specification. One problematic area in particular: TAP already
-provides a way to present a lot of the data I would like to export,
-but it involves JSON serialization which was an idea that some of the
-other reviewers understandably weren't too keen on. TAP also wants to
-report data some time after it is available, which is generally not a
-good idea for test debug information; you want to make it available as
-soon as you can or you risk crashing with the data still inside.
-
-Hence, I decided we could probably spend a good long while debating
-how I present the information. So the idea of having a loose
-definition seemed attractive to me in its own right since it would
-likely conform to whatever we ended up deciding in the long run. Also,
-all the better that it was what I already had and no one seemed to
-mind too much.
-
-The only constant I expect is that `struct kunit` will likely need to
-take an abstract object with a `commit` method, or a `format` method
-or whatever so it could control when data was going to be printed out
-to the user. We will probably also use a string builder in there
-somewhere.
-
-> TL;DR: If we can get rid of the string stream API I'd view that as an
-> improvement because building arbitrary strings in the kernel is complex,
-> error prone and has calling context concerns.
-
-True. No argument there.
-
-> Is the intention that other code besides unit tests will use this string
-> stream API to build up strings? Any targets in mind? This would be a
-> good way to get the API merged upstream given that its 2019 and we
-> haven't had such an API in the kernel so far.
-
-Someone, (was it you?) asked about code sharing with a string builder
-thingy that was used for creating structured human readable files, but
-that seemed like a pretty massive undertaking.
-
-Aside from that, no. I would kind of prefered that nobody used it for
-anything else because I the issues you described.
-
-Nevertheless, I think the debate over the usefulness of the
-string_stream and kunit_stream are separate topics. Even if we made
-kunit_stream more structured, I am pretty sure I would want to use
-string_stream or some variation for constructing the message.
-
-> An "object oriented" (strong quotes!) approach where kunit_fail_msg is
-> the innermost struct in some assertion specific structure might work
-> nicely and allow the test runner to call a generic 'format' function to
-> print out the message based on the type of assertion/expectation it is.
-> It probably would mean less code size too because the strings that are
-> common will be in the common printing function instead of created twice,
-> in the macros/code and then copied to the heap for the string stream.
+> This adds the following new interfaces:
 >
->         struct kunit_assert {
->                 const char *line;
->                 const char *file;
->                 const char *func;
->                 void (*format)(struct kunit_assert *assert);
->         };
+>   daxctl_dev_get_target_node
+>   daxctl_dev_get_memory;
+>   daxctl_memory_get_dev;
+>   daxctl_memory_get_node_path;
+>   daxctl_memory_get_block_size;
+>   daxctl_memory_set_online
+>   daxctl_memory_set_offline
+>   daxctl_memory_is_online
 >
->         struct kunit_comparison_assert {
->                 enum operator operator;
->                 const char *left;
->                 const char *right;
->                 struct kunit_assert assert;
->         };
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> [for the memblock-already-online TOCTOU hole]
+> Reported-by: Fan Du <fan.du@intel.com>
+> Tested-by: Fan Du <fan.du@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  daxctl/lib/libdaxctl-private.h |  14 ++
+>  daxctl/lib/libdaxctl.c         | 352 +++++++++++++++++++++++++++++++++
+>  daxctl/lib/libdaxctl.sym       |   8 +
+>  daxctl/libdaxctl.h             |  10 +
+>  4 files changed, 384 insertions(+)
 >
->         struct kunit_bool_assert {
->                 const char *truth;
->                 const char *statement;
->                 struct kunit_assert assert;
->         };
+> diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-private.h
+> index eb7c1ec..673be0f 100644
+> --- a/daxctl/lib/libdaxctl-private.h
+> +++ b/daxctl/lib/libdaxctl-private.h
+> @@ -33,6 +33,11 @@ static const char *dax_modules[] = {
+>         [DAXCTL_DEV_MODE_RAM] = "kmem",
+>  };
 >
->         void kunit_format_comparison(struct kunit_assert *assert)
->         {
->                 struct kunit_comparison_assert *comp = container_of(assert, ...)
+> +enum memory_state {
+> +       MEM_OFFLINE,
+> +       MEM_ONLINE,
+> +};
+> +
+>  /**
+>   * struct daxctl_region - container for dax_devices
+>   */
+> @@ -64,8 +69,17 @@ struct daxctl_dev {
+>         struct kmod_module *module;
+>         struct kmod_list *kmod_list;
+>         struct daxctl_region *region;
+> +       struct daxctl_memory *mem;
+> +       int target_node;
+>  };
 >
->                 kunit_printk(...)
->         }
+> +struct daxctl_memory {
+> +struct daxctl_dev *dev;
+> +       char *node_path;
+> +       unsigned long block_size;
+> +};
+> +
+> +
+>  static inline int check_kmod(struct kmod_ctx *kmod_ctx)
+>  {
+>         return kmod_ctx ? 0 : -ENXIO;
+> diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
+> index 5431063..4c1cbf3 100644
+> --- a/daxctl/lib/libdaxctl.c
+> +++ b/daxctl/lib/libdaxctl.c
+> @@ -200,6 +200,12 @@ DAXCTL_EXPORT void daxctl_region_get_uuid(struct daxctl_region *region, uuid_t u
+>         uuid_copy(uu, region->uuid);
+>  }
+>
+> +static void free_mem(struct daxctl_memory *mem)
+> +{
+> +       free(mem->node_path);
+> +       free(mem);
+> +}
+> +
+>  static void free_dev(struct daxctl_dev *dev, struct list_head *head)
+>  {
+>         if (head)
+> @@ -207,6 +213,7 @@ static void free_dev(struct daxctl_dev *dev, struct list_head *head)
+>         kmod_module_unref_list(dev->kmod_list);
+>         free(dev->dev_buf);
+>         free(dev->dev_path);
+> +       free_mem(dev->mem);
+>         free(dev);
+>  }
+>
+> @@ -343,6 +350,44 @@ static struct kmod_list *to_module_list(struct daxctl_ctx *ctx,
+>         return list;
+>  }
+>
+> +static struct daxctl_memory *daxctl_dev_init_mem(struct daxctl_dev *dev)
+> +{
+> +       const char *size_path = "/sys/devices/system/memory/block_size_bytes";
+> +       const char *node_base = "/sys/devices/system/node/node";
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       struct daxctl_memory *mem;
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int node_num;
+> +
+> +       mem = calloc(1, sizeof(*mem));
+> +       if (!mem)
+> +               return NULL;
+> +
+> +       mem->dev = dev;
+> +
+> +       /*
+> +        * Everything here is best-effort, we won't fail the device add
+> +        * for anything other than the ENOMEM case above.
+> +        */
+> +       if (sysfs_read_attr(ctx, size_path, buf) == 0) {
+> +               mem->block_size = strtoul(buf, NULL, 16);
+> +               if (mem->block_size == 0 || mem->block_size == ULONG_MAX) {
+> +                       err(ctx, "%s: Unable to determine memblock size: %s\n",
+> +                               devname, strerror(errno));
+> +                       mem->block_size = 0;
+> +               }
+> +       }
+> +
+> +       node_num = daxctl_dev_get_target_node(dev);
+> +       if (node_num >= 0) {
+> +               if (asprintf(&mem->node_path, "%s%d", node_base, node_num) < 0)
+> +                       err(ctx, "%s: Unable to set node_path\n", devname);
+> +       }
+> +
+> +       return mem;
+> +}
+> +
+>  static void *add_dax_dev(void *parent, int id, const char *daxdev_base)
+>  {
+>         const char *devname = devpath_to_devname(daxdev_base);
+> @@ -398,6 +443,16 @@ static void *add_dax_dev(void *parent, int id, const char *daxdev_base)
+>         if (rc == 0)
+>                 dev->kmod_list = to_module_list(ctx, buf);
+>
+> +       sprintf(path, "%s/target_node", daxdev_base);
+> +       if (sysfs_read_attr(ctx, path, buf) == 0)
+> +               dev->target_node = strtol(buf, NULL, 0);
+> +       else
+> +               dev->target_node = -1;
+> +
+> +       dev->mem = daxctl_dev_init_mem(dev);
+> +       if (!dev->mem)
+> +               goto err_read;
+> +
 
-I started working on something similarish, but by the time I ended up
-coming up with a parent object whose definition was loose enough to
-satisfy all the properties required by the child classes it ended up
-basically being the same as what I have now just with a more complex
-hierarchy of message manipulation logic.
+Should this initialization wait until the first
+daxctl_dev_get_memory() and validate the device is in "system-ram"
+mode at that point?
 
-On the other hand, I didn't have the idea of doing the parent object
-quite the way you did and that would clean up a lot of the duplicated
-first line logic.
+I'm otherwise wondering what it means for daxctl_dev_get_memory() to
+succeed on a device in "device-dax" mode. I think I would naturally
+use daxctl_dev_get_memory() as a mode check.
 
-I would like to give it a try, but I am afraid I am going to get
-sucked down a really deep rabbit hole.
 
-> Maybe other people have opinions here on if you should do it now or
-> later. Future coding is not a great argument because it's hard to
-> predict the future. On the other hand, this patchset is in good shape to
 
-Yeah, that's kind of why I am afraid to go down this road when I have
-something that works now and I know works with the mocking stuff I
-want to do.
+>         daxctl_dev_foreach(region, dev_dup)
+>                 if (dev_dup->id == dev->id) {
+>                         free_dev(dev, NULL);
+> @@ -894,3 +949,300 @@ DAXCTL_EXPORT unsigned long long daxctl_dev_get_size(struct daxctl_dev *dev)
+>  {
+>         return dev->size;
+>  }
+> +
+> +DAXCTL_EXPORT int daxctl_dev_get_target_node(struct daxctl_dev *dev)
+> +{
+> +       return dev->target_node;
+> +}
+> +
+> +DAXCTL_EXPORT struct daxctl_memory *daxctl_dev_get_memory(struct daxctl_dev *dev)
+> +{
+> +       return dev->mem;
+> +}
+> +
+> +DAXCTL_EXPORT struct daxctl_dev *daxctl_memory_get_dev(struct daxctl_memory *mem)
+> +{
+> +       return mem->dev;
+> +}
+> +
+> +DAXCTL_EXPORT const char *daxctl_memory_get_node_path(struct daxctl_memory *mem)
+> +{
+> +       return mem->node_path;
+> +}
+> +
+> +DAXCTL_EXPORT unsigned long daxctl_memory_get_block_size(struct daxctl_memory *mem)
+> +{
+> +       return mem->block_size;
+> +}
+> +
+> +static int online_one_memblock(struct daxctl_dev *dev, char *path)
+> +{
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       const char *mode = "online_movable";
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int rc;
+> +
+> +       rc = sysfs_read_attr(ctx, path, buf);
+> +       if (rc) {
+> +               err(ctx, "%s: Failed to read %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +               return rc;
+> +       }
+> +
+> +       /*
+> +        * if already online, possibly due to kernel config or a udev rule,
+> +        * there is nothing to do and we can skip over the memblock
+> +        */
+> +       if (strncmp(buf, "online", 6) == 0)
+> +               return 1;
+> +
+> +       rc = sysfs_write_attr_quiet(ctx, path, mode);
+> +       if (rc) {
+> +               /*
+> +                * While we performed an already-online check above, there
+> +                * is still a TOCTOU hole where someone (such as a udev rule)
+> +                * may have raced to online the memory. In such a case,
+> +                * the sysfs store will fail, however we can check for this
+> +                * by simply reading the state again. If it changed to the
+> +                * desired state, then we don't have to error out.
+> +                */
+> +               if(sysfs_read_attr(ctx, path, buf) == 0) {
+> +                       if (strncmp(buf, "online", 6) == 0)
+> +                               return 1;
+> +               }
+> +               err(ctx, "%s: Failed to online %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +       }
+> +       return rc;
+> +}
+> +
+> +static int offline_one_memblock(struct daxctl_dev *dev, char *path)
+> +{
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       const char *mode = "offline";
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int rc;
+> +
+> +       rc = sysfs_read_attr(ctx, path, buf);
+> +       if (rc) {
+> +               err(ctx, "%s: Failed to read %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +               return rc;
+> +       }
+> +
+> +       /* if already offline, there is nothing to do */
+> +       if (strncmp(buf, "offline", 7) == 0)
+> +               return 1;
+> +
+> +       rc = sysfs_write_attr_quiet(ctx, path, mode);
+> +       if (rc) {
+> +               /* Close the TOCTOU hole like in online_one_memblock() above */
+> +               if(sysfs_read_attr(ctx, path, buf) == 0) {
 
-I would like to try your suggestion, but I want to try to make it work
-with my mocking patches before I commit to it because otherwise I am
-just going to have to back it out in a follow up patchset.
+Ah, this also copied the missing space between 'if' and '(' my eyes
+didn't catch it the first time.
 
-> merge and I'd like to use it to write unit tests for code I maintain so
-> I don't want to see this stall out. Sorry if I'm opening the can of
-> worms you're talking about.
-
-Don't be sorry. I agree with you that the kunit_stream stuff is not very pretty.
-
-Shuah, have we missed the merge window for 5.3?
-
-I saw you only sent one PR out so far for this release, and there
-wasn't much in it; I imagine you are going to send at least one more?
-
-I figure, if we still got time to try out your suggestion, Stephen, no
-harm in trying.
-
-Also if we missed it, then I have another couple months to play around with it.
-
-What do you think?
+> +                       if (strncmp(buf, "offline", 7) == 0)
+> +                               return 1;
+> +               }
+> +               err(ctx, "%s: Failed to offline %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +       }
+> +       return rc;
+> +}
+> +
+> +static bool memblock_in_dev(struct daxctl_dev *dev, const char *memblock)
+> +{
+> +       struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
+> +       const char *mem_base = "/sys/devices/system/memory/";
+> +       unsigned long long memblock_res, dev_start, dev_end;
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       unsigned long memblock_size;
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       unsigned long phys_index;
+> +       char *index_path;
+> +
+> +       if (asprintf(&index_path, "%s/%s/phys_index", mem_base, memblock) < 0)
+> +               return false;
+> +
+> +       if (sysfs_read_attr(ctx, index_path, buf) == 0) {
+> +               phys_index = strtoul(buf, NULL, 16);
+> +               if (phys_index == 0 || phys_index == ULONG_MAX) {
+> +                       err(ctx, "%s: %s: Unable to determine phys_index: %s\n",
+> +                               devname, memblock, strerror(errno));
+> +                       goto out_err;
+> +               }
+> +       } else {
+> +               err(ctx, "%s: %s: Unable to determine phys_index: %s\n",
+> +                       devname, memblock, strerror(errno));
+> +               goto out_err;
+> +       }
+> +
+> +       dev_start = daxctl_dev_get_resource(dev);
+> +       if (!dev_start) {
+> +               err(ctx, "%s: Unable to determine resource\n", devname);
+> +               goto out_err;
+> +       }
+> +       dev_end = dev_start + daxctl_dev_get_size(dev);
+> +
+> +       memblock_size = daxctl_memory_get_block_size(mem);
+> +       if (!memblock_size) {
+> +               err(ctx, "%s: Unable to determine memory block size\n",
+> +                       devname);
+> +               goto out_err;
+> +       }
+> +       memblock_res = phys_index * memblock_size;
+> +
+> +       if (memblock_res >= dev_start && memblock_res <= dev_end) {
+> +               free(index_path);
+> +               return true;
+> +       }
+> +
+> +out_err:
+> +       free(index_path);
+> +       return false;
+> +}
+> +
+> +static int daxctl_memory_set_state(struct daxctl_memory *mem,
+> +               enum memory_state state)
+> +{
+> +       struct daxctl_dev *dev = daxctl_memory_get_dev(mem);
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       const char *node_path;
+> +       int rc, changed = 0;
+> +       struct dirent *de;
+> +       DIR *node_dir;
+> +
+> +       node_path = daxctl_memory_get_node_path(mem);
+> +       if (!node_path) {
+> +               err(ctx, "%s: Failed to get node_path\n", devname);
+> +               return -ENXIO;
+> +       }
+> +
+> +       node_dir = opendir(node_path);
+> +       if (!node_dir)
+> +               return -errno;
+> +
+> +       errno = 0;
+> +       while ((de = readdir(node_dir)) != NULL) {
+> +               char *mem_path;
+> +
+> +               if (strncmp(de->d_name, "memory", 6) == 0) {
+> +                       if (!memblock_in_dev(dev, de->d_name))
+> +                               continue;
+> +                       rc = asprintf(&mem_path, "%s/%s/state",
+> +                               node_path, de->d_name);
+> +                       if (rc < 0) {
+> +                               rc = -ENOMEM;
+> +                               goto out_dir;
+> +                       }
+> +                       if (state == MEM_ONLINE)
+> +                               rc = online_one_memblock(dev, mem_path);
+> +                       else if (state == MEM_OFFLINE)
+> +                               rc = offline_one_memblock(dev, mem_path);
+> +                       else
+> +                               rc = -EINVAL;
+> +                       free(mem_path);
+> +                       if (rc < 0)
+> +                               goto out_dir;
+> +                       if (rc == 0)
+> +                               changed++;
+> +               }
+> +               errno = 0;
+> +       }
+> +       if (errno) {
+> +               rc = -errno;
+> +               goto out_dir;
+> +       }
+> +       rc = changed;
+> +
+> +out_dir:
+> +       closedir(node_dir);
+> +       return rc;
+> +}
+> +
+> +DAXCTL_EXPORT int daxctl_memory_set_online(struct daxctl_memory *mem)
+> +{
+> +       return daxctl_memory_set_state(mem, MEM_ONLINE);
+> +}
+> +
+> +DAXCTL_EXPORT int daxctl_memory_set_offline(struct daxctl_memory *mem)
+> +{
+> +       return daxctl_memory_set_state(mem, MEM_OFFLINE);
+> +}
+> +
+> +static int memblock_is_online(struct daxctl_dev *dev, char *path)
+> +{
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       char buf[SYSFS_ATTR_SIZE];
+> +       int rc;
+> +
+> +       rc = sysfs_read_attr(ctx, path, buf);
+> +       if (rc) {
+> +               err(ctx, "%s: Failed to read %s: %s\n",
+> +                       devname, path, strerror(-rc));
+> +               return rc;
+> +       }
+> +
+> +       if (strncmp(buf, "online", 6) == 0)
+> +               return 1;
+> +
+> +       return 0;
+> +}
+> +
+> +DAXCTL_EXPORT int daxctl_memory_is_online(struct daxctl_memory *mem)
+> +{
+> +       struct daxctl_dev *dev = daxctl_memory_get_dev(mem);
+> +       const char *devname = daxctl_dev_get_devname(dev);
+> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
+> +       int rc, num_online = 0;
+> +       const char *node_path;
+> +       struct dirent *de;
+> +       DIR *node_dir;
+> +
+> +       node_path = daxctl_memory_get_node_path(mem);
+> +       if (!node_path) {
+> +               err(ctx, "%s: Failed to get node_path\n", devname);
+> +               return -ENXIO;
+> +       }
+> +
+> +       node_dir = opendir(node_path);
+> +       if (!node_dir)
+> +               return -errno;
+> +
+> +       errno = 0;
+> +       while ((de = readdir(node_dir)) != NULL) {
+> +               char *mem_path;
+> +
+> +               if (strncmp(de->d_name, "memory", 6) == 0) {
+> +                       if (!memblock_in_dev(dev, de->d_name))
+> +                               continue;
+> +                       rc = asprintf(&mem_path, "%s/%s/state",
+> +                               node_path, de->d_name);
+> +                       if (rc < 0) {
+> +                               rc = -ENOMEM;
+> +                               goto out_dir;
+> +                       }
+> +                       rc = memblock_is_online(dev, mem_path);
+> +                       if (rc < 0) {
+> +                               err(ctx, "%s: Unable to determine state: %s\n",
+> +                                       devname, mem_path);
+> +                               goto out_dir;
+> +                       }
+> +                       if (rc > 0)
+> +                               num_online++;
+> +                       free(mem_path);
+> +               }
+> +               errno = 0;
+> +       }
+> +       if (errno) {
+> +               rc = -errno;
+> +               goto out_dir;
+> +       }
+> +       rc = num_online;
+> +
+> +out_dir:
+> +       closedir(node_dir);
+> +       return rc;
+> +}
+> diff --git a/daxctl/lib/libdaxctl.sym b/daxctl/lib/libdaxctl.sym
+> index 1692624..53eb700 100644
+> --- a/daxctl/lib/libdaxctl.sym
+> +++ b/daxctl/lib/libdaxctl.sym
+> @@ -59,4 +59,12 @@ global:
+>         daxctl_dev_enable_devdax;
+>         daxctl_dev_enable_ram;
+>         daxctl_dev_get_resource;
+> +       daxctl_dev_get_target_node;
+> +       daxctl_dev_get_memory;
+> +       daxctl_memory_get_dev;
+> +       daxctl_memory_get_node_path;
+> +       daxctl_memory_get_block_size;
+> +       daxctl_memory_set_online;
+> +       daxctl_memory_set_offline;
+> +       daxctl_memory_is_online;
+>  } LIBDAXCTL_5;
+> diff --git a/daxctl/libdaxctl.h b/daxctl/libdaxctl.h
+> index 7214cd3..a5a2bab 100644
+> --- a/daxctl/libdaxctl.h
+> +++ b/daxctl/libdaxctl.h
+> @@ -73,6 +73,16 @@ int daxctl_dev_is_enabled(struct daxctl_dev *dev);
+>  int daxctl_dev_disable(struct daxctl_dev *dev);
+>  int daxctl_dev_enable_devdax(struct daxctl_dev *dev);
+>  int daxctl_dev_enable_ram(struct daxctl_dev *dev);
+> +int daxctl_dev_get_target_node(struct daxctl_dev *dev);
+> +
+> +struct daxctl_memory;
+> +struct daxctl_memory *daxctl_dev_get_memory(struct daxctl_dev *dev);
+> +struct daxctl_dev *daxctl_memory_get_dev(struct daxctl_memory *mem);
+> +const char *daxctl_memory_get_node_path(struct daxctl_memory *mem);
+> +unsigned long daxctl_memory_get_block_size(struct daxctl_memory *mem);
+> +int daxctl_memory_set_online(struct daxctl_memory *mem);
+> +int daxctl_memory_set_offline(struct daxctl_memory *mem);
+> +int daxctl_memory_is_online(struct daxctl_memory *mem);
+>
+>  #define daxctl_dev_foreach(region, dev) \
+>          for (dev = daxctl_dev_get_first(region); \
+> --
+> 2.20.1
+>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
