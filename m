@@ -2,36 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D356C41B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 03:22:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC346C41C
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 03:22:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 27F72212C01D5;
-	Wed, 17 Jul 2019 18:24:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A3F71212C01DB;
+	Wed, 17 Jul 2019 18:24:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.126; helo=mga18.intel.com;
+ client-ip=192.55.52.93; helo=mga11.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 22B28212C01D4
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:24:39 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id C1D60212C01CC
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:24:44 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2019 18:22:10 -0700
-X-IronPort-AV: E=Sophos;i="5.64,276,1559545200"; d="scan'208";a="179087622"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2019 18:22:15 -0700
+X-IronPort-AV: E=Sophos;i="5.64,276,1559545200"; d="scan'208";a="251660620"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2019 18:22:10 -0700
-Subject: [PATCH v2 1/7] drivers/base: Introduce kill_device()
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2019 18:22:15 -0700
+Subject: [PATCH v2 2/7] libnvdimm/bus: Prevent duplicate device_unregister()
+ calls
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Wed, 17 Jul 2019 18:07:53 -0700
-Message-ID: <156341207332.292348.14959761496009347574.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Wed, 17 Jul 2019 18:07:58 -0700
+Message-ID: <156341207846.292348.10435719262819764054.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156341206785.292348.1660822720191643298.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156341206785.292348.1660822720191643298.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -47,103 +48,96 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, peterz@infradead.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+Cc: peterz@infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Erwin Tsaur <erwin.tsaur@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-The libnvdimm subsystem arranges for devices to be destroyed as a result
-of a sysfs operation. Since device_unregister() cannot be called from
-an actively running sysfs attribute of the same device libnvdimm
-arranges for device_unregister() to be performed in an out-of-line async
-context.
+A multithreaded namespace creation/destruction stress test currently
+fails with signatures like the following:
 
-The driver core maintains a 'dead' state for coordinating its own racing
-async registration / de-registration requests. Rather than add local
-'dead' state tracking infrastructure to libnvdimm device objects, export
-the existing state tracking via a new kill_device() helper.
+    sysfs group 'power' not found for kobject 'dax1.1'
+    RIP: 0010:sysfs_remove_group+0x76/0x80
+    Call Trace:
+     device_del+0x73/0x370
+     device_unregister+0x16/0x50
+     nd_async_device_unregister+0x1e/0x30 [libnvdimm]
+     async_run_entry_fn+0x39/0x160
+     process_one_work+0x23c/0x5e0
+     worker_thread+0x3c/0x390
 
-The kill_device() helper simply marks the device as dead, i.e. that it
-is on its way to device_del(), or returns that the device was already
-dead. This can be used in advance of calling device_unregister() for
-subsystems like libnvdimm that might need to handle multiple user
-threads racing to delete a device.
+    BUG: kernel NULL pointer dereference, address: 0000000000000020
+    RIP: 0010:klist_put+0x1b/0x6c
+    Call Trace:
+     klist_del+0xe/0x10
+     device_del+0x8a/0x2c9
+     ? __switch_to_asm+0x34/0x70
+     ? __switch_to_asm+0x40/0x70
+     device_unregister+0x44/0x4f
+     nd_async_device_unregister+0x22/0x2d [libnvdimm]
+     async_run_entry_fn+0x47/0x15a
+     process_one_work+0x1a2/0x2eb
+     worker_thread+0x1b8/0x26e
 
-This refactoring does not change any behavior, but it is a pre-requisite
-for follow-on fixes and therefore marked for -stable.
+Use the kill_device() helper to atomically resolve the race of multiple
+threads issuing kill, device_unregister(), requests.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Reported-by: Jane Chu <jane.chu@oracle.com>
+Reported-by: Erwin Tsaur <erwin.tsaur@oracle.com>
 Fixes: 4d88a97aa9e8 ("libnvdimm, nvdimm: dimm driver and base libnvdimm device-driver...")
 Cc: <stable@vger.kernel.org>
-Tested-by: Jane Chu <jane.chu@oracle.com>
+Link: https://github.com/pmem/ndctl/issues/96
+Tested-by: Tested-by: Jane Chu <jane.chu@oracle.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/base/core.c    |   27 +++++++++++++++++++--------
- include/linux/device.h |    1 +
- 2 files changed, 20 insertions(+), 8 deletions(-)
+ drivers/nvdimm/bus.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index fd7511e04e62..eaf3aa0cb803 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2211,6 +2211,24 @@ void put_device(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(put_device);
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 2dca3034fee0..42713b210f51 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -547,13 +547,38 @@ EXPORT_SYMBOL(nd_device_register);
  
-+bool kill_device(struct device *dev)
-+{
-+	/*
-+	 * Require the device lock and set the "dead" flag to guarantee that
-+	 * the update behavior is consistent with the other bitfields near
-+	 * it and that we cannot have an asynchronous probe routine trying
-+	 * to run while we are tearing out the bus/class/sysfs from
-+	 * underneath the device.
-+	 */
-+	lockdep_assert_held(&dev->mutex);
+ void nd_device_unregister(struct device *dev, enum nd_async_mode mode)
+ {
++	bool killed;
 +
-+	if (dev->p->dead)
-+		return false;
-+	dev->p->dead = true;
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(kill_device);
+ 	switch (mode) {
+ 	case ND_ASYNC:
++		/*
++		 * In the async case this is being triggered with the
++		 * device lock held and the unregistration work needs to
++		 * be moved out of line iff this is thread has won the
++		 * race to schedule the deletion.
++		 */
++		if (!kill_device(dev))
++			return;
 +
- /**
-  * device_del - delete device from system.
-  * @dev: device.
-@@ -2230,15 +2248,8 @@ void device_del(struct device *dev)
- 	struct kobject *glue_dir = NULL;
- 	struct class_interface *class_intf;
- 
--	/*
--	 * Hold the device lock and set the "dead" flag to guarantee that
--	 * the update behavior is consistent with the other bitfields near
--	 * it and that we cannot have an asynchronous probe routine trying
--	 * to run while we are tearing out the bus/class/sysfs from
--	 * underneath the device.
--	 */
- 	device_lock(dev);
--	dev->p->dead = true;
-+	kill_device(dev);
- 	device_unlock(dev);
- 
- 	/* Notify clients of device removal.  This call must come
-diff --git a/include/linux/device.h b/include/linux/device.h
-index e85264fb6616..0da5c67f6be1 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1373,6 +1373,7 @@ extern int (*platform_notify_remove)(struct device *dev);
-  */
- extern struct device *get_device(struct device *dev);
- extern void put_device(struct device *dev);
-+extern bool kill_device(struct device *dev);
- 
- #ifdef CONFIG_DEVTMPFS
- extern int devtmpfs_create_node(struct device *dev);
+ 		get_device(dev);
+ 		async_schedule_domain(nd_async_device_unregister, dev,
+ 				&nd_async_domain);
+ 		break;
+ 	case ND_SYNC:
++		/*
++		 * In the sync case the device is being unregistered due
++		 * to a state change of the parent. Claim the kill state
++		 * to synchronize against other unregistration requests,
++		 * or otherwise let the async path handle it if the
++		 * unregistration was already queued.
++		 */
++		device_lock(dev);
++		killed = kill_device(dev);
++		device_unlock(dev);
++
++		if (!killed)
++			return;
++
+ 		nd_synchronize();
+ 		device_unregister(dev);
+ 		break;
 
 _______________________________________________
 Linux-nvdimm mailing list
