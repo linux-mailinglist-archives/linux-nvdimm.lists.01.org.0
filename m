@@ -1,60 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8166C43D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 03:32:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 402186C46D
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 18 Jul 2019 03:44:23 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 65C99212C01E5;
-	Wed, 17 Jul 2019 18:35:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id CB124212C01EB;
+	Wed, 17 Jul 2019 18:46:49 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 88B8B212C01DB
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:35:13 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id o101so27206537ota.8
- for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:32:45 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 19E5B212C01E4
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:46:47 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id t76so20216096oih.4
+ for <linux-nvdimm@lists.01.org>; Wed, 17 Jul 2019 18:44:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=1p856WhHfz+over8TZUWM7kXXLVxBosFAbw4pHLTbqo=;
- b=NZ/Cx7uwa+7cITmSB23Oj+SIJqKIYxe30wl5DspB0nodXEbGDncHk/PDtMyZlXJOQz
- KISE88EZD4od2gVEm1spztrXxj7sI3GEn0arjMBNrXeptJejRfQz+mDRSEnu+enUIOdZ
- dn2qXJ2uZXpT+4eLk0LVbXUODhq3N0xHJ34eQHU4cjHw2qZ/gnf/0LQyMXRiBJn/RYjB
- 7CVfI2i+9p1KhTjg24UT2u+odKNVDOXRyhTaOUEV+UnzCdkky6pEUzBebSB0AkA3tMKl
- nm4Trz+WnndnarL9yx+ANaVtSYDZd7POSY0BdvlsLbVY7+vXMuiVGnQg/hcxEpjp50Bq
- nkzQ==
+ :cc; bh=5py66yaGGH6o0S/awKZtwXrh4ZY1+RpaUyIuZz29wzM=;
+ b=spOFMKrdhH3Z47EmIojoI29YhELkzEVT5JhVwiUIqdjnbhNFw4jPZmnzwCKbS1IQLX
+ ZseUzxfcTomxaCFGNUe/gwyCfvwSijc6raiWld9JoyOl+RD/j6eJe4MGGTpoUG8rJ2PP
+ ukE6Bp0MH6EeMPYttALpHJg1qnFrAZPYIW94MW1+tPKkkam5oASlcat2QKDcDK8C2cMn
+ jDDe8/4ZM3eVOiJKDKQelxusjFYucCYVx505qWq/M1lBHp+QD7gjiBec3VBNiKErYu43
+ 0OmxqxGZV5aqI2WHn9Nwd+ULnHqebQz1gED7GGDBNARKNFpTaDiiFuYwQZWtYmiUEyk0
+ VJ0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=1p856WhHfz+over8TZUWM7kXXLVxBosFAbw4pHLTbqo=;
- b=HO+gO1A8z7LzDjifYqFOr0JWiBDDR3sJ3liqPB+DBCbIUqdQw+F4IEQuw0rVpl27ff
- eUQMl3/txIXtrYltBqJ5O+PcXYW4xjzFDbA0AFpR54WjFEucCzxa7PNT+oxVklqz7srS
- YMw37EU0pIeAVJYjaZDbCNhot5/cwXM4iV/cXdHWe+u4rjy/+y53PZG6okjsC3ZtJxWU
- kdTL5G+XS/nKC6qqftUmz3UlVkLeiMsl41X7R1gFTZgL7MnDZJO4OgjmxlUycqFFzezv
- AYjh6rqSoSTkmJ6NNsogAj0lc7vtCPP7kXaKe3ePcX1gpV5LnBjAL4ppQbb3juIiPAnU
- 1Pfg==
-X-Gm-Message-State: APjAAAUumOxKuHEG9XiZQbYM5xsdk2Bqp0XSwSicjDl1vIHygq7G0rpZ
- mcAAZ/2UVRT3X4bqU45LCYcAIlYAUDALBQrrUpdarg==
-X-Google-Smtp-Source: APXvYqwBcG/PpagqMNmz02mHEwRj/zOU50fkTh5+O/EiDo1oxd/dK6nUDJ5OXDzQoWVir/Nx8vHxZWIRB+JbIJCl2C4=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr23484889otn.247.1563413564107; 
- Wed, 17 Jul 2019 18:32:44 -0700 (PDT)
+ bh=5py66yaGGH6o0S/awKZtwXrh4ZY1+RpaUyIuZz29wzM=;
+ b=P1wRXLQx23r13avP4TvpYj8tAWfZ9qVBU0piwBKIKAt3wgAScLLATdPExqlVrgaM4D
+ 7OiSmlDCDN7tCQSCpswp62UaN7SD5ZdOtibfFQJEGc9egcAWkbnr8WiSXxj/82CX5h11
+ nVxrGXx3KgQNEBun3QSVikPQD1icJc5jjpEVknYces8SKSbFJTxoI3PXKoOgwUgojuky
+ pBgWQcPqXUCZRkcvrBRBLpaHdZY2GZaT+0v1/3VFqbKEGWz0s5IF09DScDypHWk7POWL
+ OT+Dz1eCpcsU1/x55XawFcPckp5W+Dm1a5Oqg0xhR2r5k3ZHXOeKcvBo7VUc3ldIxiK0
+ q72Q==
+X-Gm-Message-State: APjAAAVRTVaZrEhHQFeltTPUpXRlz5x+HpDFRZLmIjjU5wZ48udMo8Sa
+ kn7Zr+sF5Hai+JW55OgwoJ0sJgH5iCVs6UcY44qXlQ==
+X-Google-Smtp-Source: APXvYqyH1MjEYtPtUWw/kokA+ieFhYOmJhd/5gTxThEGNM3vt2Q2oAF+nOzm6kAXFY2FUjthqzLAcZ/kshDMM5SHoJ8=
+X-Received: by 2002:aca:ba02:: with SMTP id k2mr19473467oif.70.1563414258274; 
+ Wed, 17 Jul 2019 18:44:18 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190717225400.9494-1-vishal.l.verma@intel.com>
- <20190717225400.9494-2-vishal.l.verma@intel.com>
-In-Reply-To: <20190717225400.9494-2-vishal.l.verma@intel.com>
+ <20190717225400.9494-3-vishal.l.verma@intel.com>
+In-Reply-To: <20190717225400.9494-3-vishal.l.verma@intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 17 Jul 2019 18:32:32 -0700
-Message-ID: <CAPcyv4h333C36=G4F_yGwPi1mpvzH3rtwO15iffkWBr2yMNjVg@mail.gmail.com>
-Subject: Re: [ndctl PATCH v6 01/13] libdaxctl: add interfaces to get ctx and
- check device state
+Date: Wed, 17 Jul 2019 18:44:07 -0700
+Message-ID: <CAPcyv4ha=vK9fJRkwMzGFOnmnSsgo6HE=_yk_f_O9HawkbJ2DA@mail.gmail.com>
+Subject: Re: [ndctl PATCH v6 02/13] libdaxctl: add interfaces to
+ enable/disable devices
 To: Vishal Verma <vishal.l.verma@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -77,12 +77,19 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 On Wed, Jul 17, 2019 at 3:54 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> In preparation for libdaxctl and daxctl to grow operational modes for
-> DAX devices, add the following supporting APIs:
+> Add new libdaxctl interfaces to disable a device_dax based device, and
+> to enable it into the given mode. The modes available are 'devdax',
+> and 'system-ram', where devdax is the normal device DAX mode used
+> via a character device, and 'system-ram' uses the kernel's 'kmem'
+> facility to hotplug the device making it usable as normal memory.
 >
->   daxctl_dev_get_ctx
->   daxctl_dev_is_enabled
+> This adds the following new interfaces:
 >
+>   daxctl_dev_disable;
+>   daxctl_dev_enable_devdax;
+>   daxctl_dev_enable_ram;
+>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
 > Cc: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
