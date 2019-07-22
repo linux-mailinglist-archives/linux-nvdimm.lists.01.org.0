@@ -1,50 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6232A6FC62
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Jul 2019 11:41:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB6F6FCD7
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Jul 2019 11:50:52 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4C62E212BC470;
-	Mon, 22 Jul 2019 02:44:17 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 232A5212BC47D;
+	Mon, 22 Jul 2019 02:53:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=batv+8b691fc55bcfc6b3008b+5811+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E8E5C212B6D70
- for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 02:44:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=uuCke/m1jxxr5tTC/Z7FAkFIKWk99JBUnhxnHFx1S5k=; b=WXncvnAfRIhXiNhfTvFgzTSrF
- ZeDnrZaWqROY3q3TyF6+hGQSvWWIqJD7MeOQoMk2WZfLDNomf3R8pV6dpv5+mvmHXTpeI0UX4RNUb
- hkDTyr1coiXAyEeAdPb4CXbPQALKGS57XYw9PzDyGdU9Z+CS1erUFKlVunUphg5QtGfA11SuI7rsd
- ChVghFzuHlEUhYWDLVjXggS1uDOscMM3UYgK2ZtbOaIG4ZTTXfRKdD6YE+r6yOBrLNmlIcVbvsbhg
- 1PjGys38TyqD6c6dJsU1JVr/v3+VJT097jYWFnAFx4U9ZFuPcYA01JJmQi4DL3qInrz7U/mzTF/F+
- z7WiJCYBg==;
-Received: from 089144207240.atnat0016.highway.bob.at ([89.144.207.240]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hpUpF-0001Az-4X; Mon, 22 Jul 2019 09:41:45 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: dan.j.williams@intel.com,
-	akpm@linux-foundation.org
-Subject: [PATCH] memremap: move from kernel/ to mm/
-Date: Mon, 22 Jul 2019 11:41:43 +0200
-Message-Id: <20190722094143.18387-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by ml01.01.org (Postfix) with ESMTP id DAC0D21962301
+ for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 02:53:15 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB82128;
+ Mon, 22 Jul 2019 02:50:47 -0700 (PDT)
+Received: from [10.162.41.186] (p8cg001049571a15.blr.arm.com [10.162.41.186])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id
+ 4C5EB3F694; Mon, 22 Jul 2019 02:50:46 -0700 (PDT)
+Subject: Re: [PATCH] memremap: move from kernel/ to mm/
+To: Christoph Hellwig <hch@lst.de>, dan.j.williams@intel.com,
+ akpm@linux-foundation.org
+References: <20190722094143.18387-1-hch@lst.de>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <9cd09b82-ec86-b0c0-79d5-e26ed5ed0b23@arm.com>
+Date: Mon, 22 Jul 2019 15:21:23 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190722094143.18387-1-hch@lst.de>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,51 +50,19 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-memremap.c implements MM functionality for ZONE_DEVICE, so it really
-should be in the mm/ directory, not the kernel/ one.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
 
-Sending for applying just after -rc1 preferably to avoid conflicts
-later in the merge window
+On 07/22/2019 03:11 PM, Christoph Hellwig wrote:
+> memremap.c implements MM functionality for ZONE_DEVICE, so it really
+> should be in the mm/ directory, not the kernel/ one.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
- kernel/Makefile           | 1 -
- mm/Makefile               | 1 +
- {kernel => mm}/memremap.c | 0
- 3 files changed, 1 insertion(+), 1 deletion(-)
- rename {kernel => mm}/memremap.c (100%)
+This always made sense.
 
-diff --git a/kernel/Makefile b/kernel/Makefile
-index a8d923b5481b..ef0d95a190b4 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -111,7 +111,6 @@ obj-$(CONFIG_CONTEXT_TRACKING) += context_tracking.o
- obj-$(CONFIG_TORTURE_TEST) += torture.o
- 
- obj-$(CONFIG_HAS_IOMEM) += iomem.o
--obj-$(CONFIG_ZONE_DEVICE) += memremap.o
- obj-$(CONFIG_RSEQ) += rseq.o
- 
- obj-$(CONFIG_GCC_PLUGIN_STACKLEAK) += stackleak.o
-diff --git a/mm/Makefile b/mm/Makefile
-index 338e528ad436..d0b295c3b764 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -102,5 +102,6 @@ obj-$(CONFIG_FRAME_VECTOR) += frame_vector.o
- obj-$(CONFIG_DEBUG_PAGE_REF) += debug_page_ref.o
- obj-$(CONFIG_HARDENED_USERCOPY) += usercopy.o
- obj-$(CONFIG_PERCPU_STATS) += percpu-stats.o
-+obj-$(CONFIG_ZONE_DEVICE) += memremap.o
- obj-$(CONFIG_HMM_MIRROR) += hmm.o
- obj-$(CONFIG_MEMFD_CREATE) += memfd.o
-diff --git a/kernel/memremap.c b/mm/memremap.c
-similarity index 100%
-rename from kernel/memremap.c
-rename to mm/memremap.c
--- 
-2.20.1
+FWIW
 
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
