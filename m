@@ -2,99 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6656FF3A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Jul 2019 14:08:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5837970825
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 22 Jul 2019 20:10:20 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A158A21962301;
-	Mon, 22 Jul 2019 05:10:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 32476212BF579;
+	Mon, 22 Jul 2019 11:12:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=david@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EE6F6212BF542
- for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 05:10:35 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 58B74309B145;
- Mon, 22 Jul 2019 12:08:08 +0000 (UTC)
-Received: from [10.36.116.75] (ovpn-116-75.ams2.redhat.com [10.36.116.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 24F945C548;
- Mon, 22 Jul 2019 12:08:02 +0000 (UTC)
-Subject: Re: [PATCH v2 18/30] virtio_fs, dax: Set up virtio_fs dax_device
-To: Christian Borntraeger <borntraeger@de.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>
-References: <20190515192715.18000-1-vgoyal@redhat.com>
- <20190515192715.18000-19-vgoyal@redhat.com>
- <20190717192725.25c3d146.pasic@linux.ibm.com>
- <20190718131532.GA13883@redhat.com>
- <CAPcyv4i+2nKJYqkbrdm3hWcjaMYkCKUxqLBq96HOZe6xOZzGGg@mail.gmail.com>
- <c519011e-1df3-3f35-8582-2cb58367ff8a@de.ibm.com>
- <20190722105630.GC3035@work-vm>
- <cc96a4a7-ab24-ef2c-a210-dce0966e34c5@de.ibm.com>
- <20190722134317.39b148ce.cohuck@redhat.com>
- <b8239073-4c40-0ce6-2576-9d71ca0b1c18@de.ibm.com>
-From: David Hildenbrand <david@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- SE+xAvmumFBY
-Organization: Red Hat GmbH
-Message-ID: <f7426953-8892-9f02-3f85-9f97cd12100b@redhat.com>
-Date: Mon, 22 Jul 2019 14:08:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by ml01.01.org (Postfix) with ESMTPS id 6D2D62129641A
+ for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 11:12:43 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id u17so18037265pgi.6
+ for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 11:10:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=b+W0XQqNrOwX8HHgD79ZO6Z9bLGe1th8D8fBVw3P1Fk=;
+ b=rbpTKbgc0FMk2hgoONMByXQ1Ch6pGqjBCg3ZhPyP2MQ8Cm47NbamVv0+CpoFY88r+k
+ 5CbpC4qwuCOLNd1gbEUXEAvescKR4qqQJosAhq+DejBGH7IlnHFrAvUCaVYWCDov0Yk1
+ itkNCqjng55kPwvyGfUpc3w0vwK+TaEcQMNqbIkT6OvrL2+dJ7KLlHhQ0Es9XPSei8Hm
+ DKCz5CgUU+IP1/SRSM+xKG44DlySXeqB7vQI1taPoq9/357A+DT+JEYR9zygjUwE+gvI
+ RqTlMTgl9KaNffDENdLyENAvESMneoJNzZ2H0iydYKxDTQ5++zi/QBZdzn35JfSTrWoo
+ I/Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=b+W0XQqNrOwX8HHgD79ZO6Z9bLGe1th8D8fBVw3P1Fk=;
+ b=orv8bvA9JvDrHniMaw4E5grOUYlQDn9WphL1aqgiJTbMVsCsMn+g4PvxPLa7qvrUH8
+ hkwM+bA3LU8Y9EMsvcFr0SdYC+oobvH4qvIiCoxDUHl6ADbGALWqyfCux/0i1CMNwvHQ
+ WinXvdRDaRZgTKxj5U8CoOjyP+NtHWacDBHUZAxnMNz6EOk2k+yZBwD6xGGOk/38QF1p
+ R4MxLzGxCLhndC4Z8180nwqkwsBkpvDlVNrq92EMKvDBK2mCbvnmf1yUgaiHhndnr8nt
+ 3NOJK8eqmoTMHcSFCKoQjFQEh6RvNWutelsxmbz7u00N/rJ8SnmttWUpN8BocChKuD8h
+ 1r5g==
+X-Gm-Message-State: APjAAAXCma6IoNxh04kIL91d1MgUTzwJ2u+7+GPboz72LIQGoKaivhVb
+ BvFcCLwKcIuyBhpDdoKzOEqIvxS7xNxuPcJRP7z9Xw==
+X-Google-Smtp-Source: APXvYqykvm/pa4QTo3ETM2+FnJyohnnX2HCNMGz0OIhsmoc6Piguq3Z2NKFwBfgaooLWiJSlFcaI7ct6hZpaDYBtwzQ=
+X-Received: by 2002:aa7:81ca:: with SMTP id c10mr1504983pfn.185.1563819015446; 
+ Mon, 22 Jul 2019 11:10:15 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <b8239073-4c40-0ce6-2576-9d71ca0b1c18@de.ibm.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.49]); Mon, 22 Jul 2019 12:08:08 +0000 (UTC)
+References: <20190712081744.87097-1-brendanhiggins@google.com>
+ <20190712081744.87097-5-brendanhiggins@google.com>
+ <20190715221554.8417320665@mail.kernel.org>
+ <CAFd5g47ikJmA0uGoavAFsh+hQvDmgsOi26tyii0612R=rt7iiw@mail.gmail.com>
+ <CAFd5g44_axVHNMBzxSURQB_-R+Rif7cZcg7PyZ_SS+5hcy5jZA@mail.gmail.com>
+ <20190716175021.9CA412173C@mail.kernel.org>
+ <CAFd5g453vXeSUCZenCk_CzJ-8a1ym9RaPo0NVF=FujF9ac-5Ag@mail.gmail.com>
+ <20190718175024.C3EC421019@mail.kernel.org>
+ <CAFd5g46a7C1+R6ZcE_SkqaYqgrH5Rx3M=X7orFyaMgFLDbeYYA@mail.gmail.com>
+ <20190719000834.GA3228@google.com>
+In-Reply-To: <20190719000834.GA3228@google.com>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Mon, 22 Jul 2019 11:10:04 -0700
+Message-ID: <CAFd5g46L8wp6B985T2yipdU4ybKv6rcSO9pd9ouPj2XUNjBWag@mail.gmail.com>
+Subject: Re: [PATCH v9 04/18] kunit: test: add kunit_stream a std::stream like
+ logger
+To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,159 +74,658 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Collin Walling <walling@linux.ibm.com>, KVM list <kvm@vger.kernel.org>,
- Sebastian Ott <sebott@linux.ibm.com>, Miklos Szeredi <miklos@szeredi.hu>,
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
  linux-nvdimm <linux-nvdimm@lists.01.org>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Halil Pasic <pasic@linux.ibm.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Steven Whitehouse <swhiteho@redhat.com>
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 22.07.19 14:00, Christian Borntraeger wrote:
-> 
-> 
-> On 22.07.19 13:43, Cornelia Huck wrote:
->> On Mon, 22 Jul 2019 13:20:18 +0200
->> Christian Borntraeger <borntraeger@de.ibm.com> wrote:
->>
->>> On 22.07.19 12:56, Dr. David Alan Gilbert wrote:
->>>> * Christian Borntraeger (borntraeger@de.ibm.com) wrote:  
->>>>>
->>>>>
->>>>> On 18.07.19 16:30, Dan Williams wrote:  
->>>>>> On Thu, Jul 18, 2019 at 6:15 AM Vivek Goyal <vgoyal@redhat.com> wrote:  
->>>>>>>
->>>>>>> On Wed, Jul 17, 2019 at 07:27:25PM +0200, Halil Pasic wrote:  
->>>>>>>> On Wed, 15 May 2019 15:27:03 -0400
->>>>>>>> Vivek Goyal <vgoyal@redhat.com> wrote:
->>>>>>>>  
->>>>>>>>> From: Stefan Hajnoczi <stefanha@redhat.com>
->>>>>>>>>
->>>>>>>>> Setup a dax device.
->>>>>>>>>
->>>>>>>>> Use the shm capability to find the cache entry and map it.
->>>>>>>>>
->>>>>>>>> The DAX window is accessed by the fs/dax.c infrastructure and must have
->>>>>>>>> struct pages (at least on x86).  Use devm_memremap_pages() to map the
->>>>>>>>> DAX window PCI BAR and allocate struct page.
->>>>>>>>>  
->>>>>>>>
->>>>>>>> Sorry for being this late. I don't see any more recent version so I will
->>>>>>>> comment here.
->>>>>>>>
->>>>>>>> I'm trying to figure out how is this supposed to work on s390. My concern
->>>>>>>> is, that on s390 PCI memory needs to be accessed by special
->>>>>>>> instructions. This is taken care of by the stuff defined in
->>>>>>>> arch/s390/include/asm/io.h. E.g. we 'override' __raw_writew so it uses
->>>>>>>> the appropriate s390 instruction. However if the code does not use the
->>>>>>>> linux abstractions for accessing PCI memory, but assumes it can be
->>>>>>>> accessed like RAM, we have a problem.
->>>>>>>>
->>>>>>>> Looking at this patch, it seems to me, that we might end up with exactly
->>>>>>>> the case described. For example AFAICT copy_to_iter() (3) resolves to
->>>>>>>> the function in lib/iov_iter.c which does not seem to cater for s390
->>>>>>>> oddities.
->>>>>>>>
->>>>>>>> I didn't have the time to investigate this properly, and since virtio-fs
->>>>>>>> is virtual, we may be able to get around what is otherwise a
->>>>>>>> limitation on s390. My understanding of these areas is admittedly
->>>>>>>> shallow, and since I'm not sure I'll have much more time to
->>>>>>>> invest in the near future I decided to raise concern.
->>>>>>>>
->>>>>>>> Any opinions?  
->>>>>>>
->>>>>>> Hi Halil,
->>>>>>>
->>>>>>> I don't understand s390 and how PCI works there as well. Is there any
->>>>>>> other transport we can use there to map IO memory directly and access
->>>>>>> using DAX?
->>>>>>>
->>>>>>> BTW, is DAX supported for s390.
->>>>>>>
->>>>>>> I am also hoping somebody who knows better can chip in. Till that time,
->>>>>>> we could still use virtio-fs on s390 without DAX.  
->>>>>>
->>>>>> s390 has so-called "limited" dax support, see CONFIG_FS_DAX_LIMITED.
->>>>>> In practice that means that support for PTE_DEVMAP is missing which
->>>>>> means no get_user_pages() support for dax mappings. Effectively it's
->>>>>> only useful for execute-in-place as operations like fork() and ptrace
->>>>>> of dax mappings will fail.  
->>>>>
->>>>>
->>>>> This is only true for the dcssblk device driver (drivers/s390/block/dcssblk.c
->>>>> and arch/s390/mm/extmem.c). 
->>>>>
->>>>> For what its worth, the dcssblk looks to Linux like normal memory (just above the
->>>>> previously detected memory) that can be used like normal memory. In previous time
->>>>> we even had struct pages for this memory - this was removed long ago (when it was
->>>>> still xip) to reduce the memory footprint for large dcss blocks and small memory
->>>>> guests.
->>>>> Can the CONFIG_FS_DAX_LIMITED go away if we have struct pages for that memory?
->>>>>
->>>>> Now some observations: 
->>>>> - dcssblk is z/VM only (not KVM)
->>>>> - Setting CONFIG_FS_DAX_LIMITED globally as a Kconfig option depending on wether
->>>>>   a device driver is compiled in or not seems not flexible enough in case if you
->>>>>   have device driver that does have struct pages and another one that doesn't
->>>>> - I do not see a reason why we should not be able to map anything from QEMU
->>>>>   into the guest real memory via an additional KVM memory slot. 
->>>>>   We would need to handle that in the guest somehow (and not as a PCI bar),
->>>>>   register this with struct pages etc.
->>
->> You mean for ccw, right? I don't think we want pci to behave
->> differently than everywhere else.
-> 
-> Yes for virtio-ccw. We would need to have a look at how virtio-ccw can create a memory
-> mapping with struct pages, so that DAX will work.(Dan, it is just struct pages that 
-> you need, correct?)
-> 
-> 
->>
->>>>> - we must then look how we can create the link between the guest memory and the
->>>>>   virtio-fs driver. For virtio-ccw we might be able to add a new ccw command or
->>>>>   whatever. Maybe we could also piggy-back on some memory hotplug work from David
->>>>>   Hildenbrand (add cc).
->>>>>
->>>>> Regarding limitations on the platform:
->>>>> - while we do have PCI, the virtio devices are usually plugged via the ccw bus.
->>>>>   That implies no PCI bars. I assume you use those PCI bars only to implicitely 
->>>>>   have the location of the shared memory
->>>>>   Correct?  
->>>>
->>>> Right.  
->>>
->>> So in essence we just have to provide a vm_get_shm_region callback in the virtio-ccw
->>> guest code?
->>>
->>> How many regions do we have to support? One region per device? Or many?
->>> Even if we need more, this should be possible with a 2 new CCWs, e.g READ_SHM_BASE(id)
->>> and READ_SHM_SIZE(id)
->>
->> I'd just add a single CCW with a control block containing id and size.
->>
->> The main issue is where we put those regions, and what happens if we
->> use both virtio-pci and virtio-ccw on the same machine.
-> 
-> Then these 2 devices should get independent memory regions that are added in an
-> independent (but still exclusive) way.
+On Thu, Jul 18, 2019 at 5:08 PM Brendan Higgins
+<brendanhiggins@google.com> wrote:
+>
+> On Thu, Jul 18, 2019 at 12:22:33PM -0700, Brendan Higgins wrote:
+> > On Thu, Jul 18, 2019 at 10:50 AM Stephen Boyd <sboyd@kernel.org> wrote:
+> > >
+> > > Quoting Brendan Higgins (2019-07-16 11:52:01)
+> > > > On Tue, Jul 16, 2019 at 10:50 AM Stephen Boyd <sboyd@kernel.org> wrote:
+> [...]
+> > > Do you have a link to those earlier patches?
+> >
+> > This is the first patchset:
+> >
+> > https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788057.html
+> >
+> > In particular you can see the code for matching functions here:
+> >
+> > https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788073.html
+> >
+> > And parameter matching code here:
+> >
+> > https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788072.html
+> >
+> > https://www.mail-archive.com/linux-kernel@vger.kernel.org/msg1788086.html
+> >
+> > My apologies in advance, but the code at this early stage had not
+> > adopted the kunit_* prefix and was still using the test_* and mock_*
+> > prefix. (Hence, struct kunit_stream was known as struct test_stream).
+> [...]
+> > > The crux of my complaint is that the string stream API is too loosely
+> > > defined to be usable. It allows tests to build up a string of
+> > > unstructured information, but with certain calling constraints so we
+> > > have to tread carefully. If there was more structure to the data that's
+> > > being recorded then the test case runner could operate on the data
+> > > without having to do string/stream operations, allocations, etc. This
+> > > would make the assertion logic much more concrete and specific to kunit,
+> > > instead of this small kunit wrapper that's been placed on top of string
+> > > stream.
+> >
+> > Yeah, I can see the point of wanting something that provides more
+> > structure than the raw `struct kunit_stream` interface. In fact, it is
+> > something I had already started working on, when I had determined it
+> > would be a large effort to capture all the variations. I was further
+> > put off from the idea when I had been asked to convert the KUnit
+> > intermediate format from what I was using to TAP, because, as it is,
+> > the current data printed out by KUnit doesn't contain all the data I
+> > would like to put in it in a way that best takes advantage of the TAP
+> > specification. One problematic area in particular: TAP already
+> > provides a way to present a lot of the data I would like to export,
+> > but it involves JSON serialization which was an idea that some of the
+> > other reviewers understandably weren't too keen on. TAP also wants to
+> > report data some time after it is available, which is generally not a
+> > good idea for test debug information; you want to make it available as
+> > soon as you can or you risk crashing with the data still inside.
+> >
+> > Hence, I decided we could probably spend a good long while debating
+> > how I present the information. So the idea of having a loose
+> > definition seemed attractive to me in its own right since it would
+> > likely conform to whatever we ended up deciding in the long run. Also,
+> > all the better that it was what I already had and no one seemed to
+> > mind too much.
+> >
+> > The only constant I expect is that `struct kunit` will likely need to
+> > take an abstract object with a `commit` method, or a `format` method
+> > or whatever so it could control when data was going to be printed out
+> > to the user. We will probably also use a string builder in there
+> > somewhere.
+> >
+> > > TL;DR: If we can get rid of the string stream API I'd view that as an
+> > > improvement because building arbitrary strings in the kernel is complex,
+> > > error prone and has calling context concerns.
+> >
+> > True. No argument there.
+> >
+> > > Is the intention that other code besides unit tests will use this string
+> > > stream API to build up strings? Any targets in mind? This would be a
+> > > good way to get the API merged upstream given that its 2019 and we
+> > > haven't had such an API in the kernel so far.
+> >
+> > Someone, (was it you?) asked about code sharing with a string builder
+> > thingy that was used for creating structured human readable files, but
+> > that seemed like a pretty massive undertaking.
+> >
+> > Aside from that, no. I would kind of prefered that nobody used it for
+> > anything else because I the issues you described.
+> >
+> > Nevertheless, I think the debate over the usefulness of the
+> > string_stream and kunit_stream are separate topics. Even if we made
+> > kunit_stream more structured, I am pretty sure I would want to use
+> > string_stream or some variation for constructing the message.
+> >
+> > > An "object oriented" (strong quotes!) approach where kunit_fail_msg is
+> > > the innermost struct in some assertion specific structure might work
+> > > nicely and allow the test runner to call a generic 'format' function to
+> > > print out the message based on the type of assertion/expectation it is.
+> > > It probably would mean less code size too because the strings that are
+> > > common will be in the common printing function instead of created twice,
+> > > in the macros/code and then copied to the heap for the string stream.
+> > >
+> > >         struct kunit_assert {
+> > >                 const char *line;
+> > >                 const char *file;
+> > >                 const char *func;
+> > >                 void (*format)(struct kunit_assert *assert);
+> > >         };
+> > >
+> > >         struct kunit_comparison_assert {
+> > >                 enum operator operator;
+> > >                 const char *left;
+> > >                 const char *right;
+> > >                 struct kunit_assert assert;
+> > >         };
+> > >
+> > >         struct kunit_bool_assert {
+> > >                 const char *truth;
+> > >                 const char *statement;
+> > >                 struct kunit_assert assert;
+> > >         };
+> > >
+> > >         void kunit_format_comparison(struct kunit_assert *assert)
+> > >         {
+> > >                 struct kunit_comparison_assert *comp = container_of(assert, ...)
+> > >
+> > >                 kunit_printk(...)
+> > >         }
+>
+> I started poking around with your suggestion while we are waiting. A
+> couple early observations:
+>
+> 1) It is actually easier to do than I previously thought and will probably
+>    help with getting more of the planned TAP output stuff working.
+>
+>    That being said, this is still a pretty substantial undertaking and
+>    will likely take *at least* a week to implement and properly review.
+>    Assuming everything goes extremely well (no unexpected issues on my
+>    end, very responsive reviewers, etc).
+>
+> 2) It *will* eliminate the need for kunit_stream.
+>
+> 3) ...but, it *will not* eliminate the need for string_stream.
+>
+> Based on my early observations, I do think it is worth doing, but I
+> don't think it is worth trying to make it in this patchset (unless I
+> have already missed the window, or it is going to be open for a while):
+> I do think it will make things much cleaner, but I don't think it will
+> achieve your desired goal of getting rid of an unstructured
+> {kunit|string}_stream style interface; it just adds a layer on top of it
+> that makes it harder to misuse.
+>
+> I attached a patch of what I have so far at the end of this email so you
+> can see what I am talking about. And of course, if you agree with my
+> assessment, so we can start working on it as a future patch.
+>
+> A couple things in regard to the patch I attached:
+>
+> 1) I wrote it pretty quickly so there are almost definitely mistakes.
+>    You should consider it RFC. I did verify it compiles though.
+>
+> 2) Also, I did use kunit_stream in writing it: all occurences should be
+>    pretty easy to replace with string_stream; nevertheless, the reason
+>    for this is just to make it easier to play with the current APIs. I
+>    wanted to have something working before I went through a big tedious
+>    refactoring. So sorry if it causes any confusion.
+>
+> 3) I also based the patch on all the KUnit patches I have queued up
+>    (includes things like mocking and such) since I want to see how this
+>    serialization thing will work with mocks and matchers and things like
+>    that.
+>
+> > I started working on something similarish, but by the time I ended up
+> > coming up with a parent object whose definition was loose enough to
+> > satisfy all the properties required by the child classes it ended up
+> > basically being the same as what I have now just with a more complex
+> > hierarchy of message manipulation logic.
+> >
+> > On the other hand, I didn't have the idea of doing the parent object
+> > quite the way you did and that would clean up a lot of the duplicated
+> > first line logic.
+> >
+> > I would like to give it a try, but I am afraid I am going to get
+> > sucked down a really deep rabbit hole.
+> >
+> > > Maybe other people have opinions here on if you should do it now or
+> > > later. Future coding is not a great argument because it's hard to
+> > > predict the future. On the other hand, this patchset is in good shape to
+> >
+> > Yeah, that's kind of why I am afraid to go down this road when I have
+> > something that works now and I know works with the mocking stuff I
+> > want to do.
+> >
+> > I would like to try your suggestion, but I want to try to make it work
+> > with my mocking patches before I commit to it because otherwise I am
+> > just going to have to back it out in a follow up patchset.
+> >
+> > > merge and I'd like to use it to write unit tests for code I maintain so
+> > > I don't want to see this stall out. Sorry if I'm opening the can of
+> > > worms you're talking about.
+> >
+> > Don't be sorry. I agree with you that the kunit_stream stuff is not very pretty.
+> >
+> > Shuah, have we missed the merge window for 5.3?
+> >
+> > I saw you only sent one PR out so far for this release, and there
+> > wasn't much in it; I imagine you are going to send at least one more?
+> >
+> > I figure, if we still got time to try out your suggestion, Stephen, no
+> > harm in trying.
+> >
+> > Also if we missed it, then I have another couple months to play around with it.
+> >
+> > What do you think?
 
-I remember that one discussion was who dictates the physical address
-mapping. If I'm not wrong, PCI bars can be mapped freely by the guest
-intot he address space. So it would not just be querying the start+size.
-Unless we want a pre-determined mapping (which might make more sense for
-s390x).
+I talked to Shuah off thread, she would like us to resolve this
+discussion before accepting the patchset.
 
--- 
+She also said that this is probably going to have to wait until v5.4.
 
-Thanks,
+Nevertheless, Stephen, would you mind taking a look at the patch I
+posted below? I would like to get your thoughts on the sum of all the
+changes I am going to have to make before I try to integrate them into
+the existing patches.
 
-David / dhildenb
+Sorry for being lazy, but I suspect you won't like the first pass of
+how I am doing it, and I think it will probably be easier for you to
+give early feedback on it as its own change anyway.
+
+> I attached the patch mentioned above below. Let me know what you think!
+>
+> Cheers!
+>
+> From 53d475d3d56afcf92b452c6d347dbedfa1a17d34 Mon Sep 17 00:00:00 2001
+> From: Brendan Higgins <brendanhiggins@google.com>
+> Date: Thu, 18 Jul 2019 16:08:52 -0700
+> Subject: [PATCH v1] DO NOT MERGE: started playing around with the
+>  serialization api
+>
+> ---
+>  include/kunit/assert.h | 130 ++++++++++++++++++++++++++++++
+>  include/kunit/mock.h   |   4 +
+>  kunit/Makefile         |   3 +-
+>  kunit/assert.c         | 179 +++++++++++++++++++++++++++++++++++++++++
+>  kunit/mock.c           |   6 +-
+>  5 files changed, 318 insertions(+), 4 deletions(-)
+>  create mode 100644 include/kunit/assert.h
+>  create mode 100644 kunit/assert.c
+>
+> diff --git a/include/kunit/assert.h b/include/kunit/assert.h
+> new file mode 100644
+> index 0000000000000..e054fdff4642f
+> --- /dev/null
+> +++ b/include/kunit/assert.h
+> @@ -0,0 +1,130 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Assertion and expectation serialization API.
+> + *
+> + * Copyright (C) 2019, Google LLC.
+> + * Author: Brendan Higgins <brendanhiggins@google.com>
+> + */
+> +
+> +#ifndef _KUNIT_ASSERT_H
+> +#define _KUNIT_ASSERT_H
+> +
+> +#include <kunit/test.h>
+> +#include <kunit/mock.h>
+> +
+> +enum kunit_assert_type {
+> +       KUNIT_ASSERTION,
+> +       KUNIT_EXPECTATION,
+> +};
+> +
+> +struct kunit_assert {
+> +       enum kunit_assert_type type;
+> +       const char *line;
+> +       const char *file;
+> +       struct va_format message;
+> +       void (*format)(struct kunit_assert *assert,
+> +                      struct kunit_stream *stream);
+> +};
+> +
+> +void kunit_base_assert_format(struct kunit_assert *assert,
+> +                             struct kunit_stream *stream);
+> +
+> +void kunit_assert_print_msg(struct kunit_assert *assert,
+> +                           struct kunit_stream *stream);
+> +
+> +struct kunit_unary_assert {
+> +       struct kunit_assert assert;
+> +       const char *condition;
+> +       bool expected_true;
+> +};
+> +
+> +void kunit_unary_assert_format(struct kunit_assert *assert,
+> +                              struct kunit_stream *stream);
+> +
+> +struct kunit_ptr_not_err_assert {
+> +       struct kunit_assert assert;
+> +       const char *text;
+> +       void *value;
+> +};
+> +
+> +void kunit_ptr_not_err_assert_format(struct kunit_assert *assert,
+> +                                    struct kunit_stream *stream);
+> +
+> +struct kunit_binary_assert {
+> +       struct kunit_assert assert;
+> +       const char *operation;
+> +       const char *left_text;
+> +       long long left_value;
+> +       const char *right_text;
+> +       long long right_value;
+> +};
+> +
+> +void kunit_binary_assert_format(struct kunit_assert *assert,
+> +                               struct kunit_stream *stream);
+> +
+> +struct kunit_binary_ptr_assert {
+> +       struct kunit_assert assert;
+> +       const char *operation;
+> +       const char *left_text;
+> +       void *left_value;
+> +       const char *right_text;
+> +       void *right_value;
+> +};
+> +
+> +void kunit_binary_ptr_assert_format(struct kunit_assert *assert,
+> +                                   struct kunit_stream *stream);
+> +
+> +struct kunit_binary_str_assert {
+> +       struct kunit_assert assert;
+> +       const char *operation;
+> +       const char *left_text;
+> +       const char *left_value;
+> +       const char *right_text;
+> +       const char *right_value;
+> +};
+> +
+> +void kunit_binary_str_assert_format(struct kunit_assert *assert,
+> +                                   struct kunit_stream *stream);
+> +
+> +struct kunit_mock_assert {
+> +       struct kunit_assert assert;
+> +};
+> +
+> +struct kunit_mock_no_expectations {
+> +       struct kunit_mock_assert assert;
+> +};
+> +
+> +struct kunit_mock_declaration {
+> +       const char *function_name;
+> +       const char **type_names;
+> +       const void **params;
+> +       int len;
+> +};
+> +
+> +void kunit_mock_declaration_format(struct kunit_mock_declaration *declaration,
+> +                                  struct kunit_stream *stream);
+> +
+> +struct kunit_matcher_result {
+> +       struct kunit_assert assert;
+> +};
+> +
+> +struct kunit_mock_failed_match {
+> +       struct list_head node;
+> +       const char *expectation_text;
+> +       struct kunit_matcher_result *matcher_list;
+> +       size_t matcher_list_len;
+> +};
+> +
+> +void kunit_mock_failed_match_format(struct kunit_mock_failed_match *match,
+> +                                   struct kunit_stream *stream);
+> +
+> +struct kunit_mock_no_match {
+> +       struct kunit_mock_assert assert;
+> +       struct kunit_mock_declaration declaration;
+> +       struct list_head failed_match_list;
+> +};
+> +
+> +void kunit_mock_no_match_format(struct kunit_assert *assert,
+> +                               struct kunit_stream *stream);
+> +
+> +#endif /*  _KUNIT_ASSERT_H */
+> diff --git a/include/kunit/mock.h b/include/kunit/mock.h
+> index 001b96af62f1e..52c9e427c831b 100644
+> --- a/include/kunit/mock.h
+> +++ b/include/kunit/mock.h
+> @@ -144,6 +144,10 @@ void mock_register_formatter(struct mock_param_formatter *formatter);
+>
+>  void mock_unregister_formatter(struct mock_param_formatter *formatter);
+>
+> +void mock_format_param(struct kunit_stream *stream,
+> +                      const char *type_name,
+> +                      const void *param);
+> +
+>  struct mock *mock_get_global_mock(void);
+>
+>  #define MOCK(name) name##_mock
+> diff --git a/kunit/Makefile b/kunit/Makefile
+> index bbf43fcfb93a9..149d856a30f04 100644
+> --- a/kunit/Makefile
+> +++ b/kunit/Makefile
+> @@ -3,7 +3,8 @@ obj-$(CONFIG_KUNIT) +=                  test.o \
+>                                         common-mocks.o \
+>                                         string-stream.o \
+>                                         kunit-stream.o \
+> -                                       try-catch.o
+> +                                       try-catch.o \
+> +                                       assert.o
+>
+>  obj-$(CONFIG_KUNIT_TEST) +=            test-test.o \
+>                                         test-mock.o \
+> diff --git a/kunit/assert.c b/kunit/assert.c
+> new file mode 100644
+> index 0000000000000..75bb6922a994e
+> --- /dev/null
+> +++ b/kunit/assert.c
+> @@ -0,0 +1,179 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Assertion and expectation serialization API.
+> + *
+> + * Copyright (C) 2019, Google LLC.
+> + * Author: Brendan Higgins <brendanhiggins@google.com>
+> + */
+> +#include <kunit/assert.h>
+> +
+> +void kunit_base_assert_format(struct kunit_assert *assert,
+> +                             struct kunit_stream *stream)
+> +{
+> +       const char *expect_or_assert;
+> +
+> +       if (assert->type == KUNIT_EXPECTATION)
+> +               expect_or_assert = "EXPECTATION";
+> +       else
+> +               expect_or_assert = "ASSERTION";
+> +
+> +       kunit_stream_add(stream, "%s FAILED at %s:%s\n",
+> +                        expect_or_assert, assert->file, assert->line);
+> +}
+> +
+> +void kunit_assert_print_msg(struct kunit_assert *assert,
+> +                           struct kunit_stream *stream)
+> +{
+> +       if (assert->message.fmt)
+> +               kunit_stream_add(stream, "\n%pV", &assert->message);
+> +}
+> +
+> +void kunit_unary_assert_format(struct kunit_assert *assert,
+> +                              struct kunit_stream *stream)
+> +{
+> +       struct kunit_unary_assert *unary_assert = container_of(
+> +                       assert, struct kunit_unary_assert, assert);
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       if (unary_assert->expected_true)
+> +               kunit_stream_add(stream,
+> +                                "\tExpected %s to be true, but is false\n",
+> +                                unary_assert->condition);
+> +       else
+> +               kunit_stream_add(stream,
+> +                                "\tExpected %s to be false, but is true\n",
+> +                                unary_assert->condition);
+> +       kunit_assert_print_msg(assert, stream);
+> +}
+> +
+> +void kunit_ptr_not_err_assert_format(struct kunit_assert *assert,
+> +                                    struct kunit_stream *stream)
+> +{
+> +       struct kunit_ptr_not_err_assert *ptr_assert = container_of(
+> +                       assert, struct kunit_ptr_not_err_assert, assert);
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       if (!ptr_assert->value) {
+> +               kunit_stream_add(stream,
+> +                                "\tExpected %s is not null, but is\n",
+> +                                ptr_assert->text);
+> +       } else if (IS_ERR(ptr_assert->value)) {
+> +               kunit_stream_add(stream,
+> +                                "\tExpected %s is not error, but is: %ld\n",
+> +                                ptr_assert->text,
+> +                                PTR_ERR(ptr_assert->value));
+> +       }
+> +       kunit_assert_print_msg(assert, stream);
+> +}
+> +
+> +void kunit_binary_assert_format(struct kunit_assert *assert,
+> +                               struct kunit_stream *stream)
+> +{
+> +       struct kunit_binary_assert *binary_assert = container_of(
+> +                       assert, struct kunit_binary_assert, assert);
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       kunit_stream_add(stream,
+> +                        "\tExpected %s %s %s, but\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->operation,
+> +                        binary_assert->right_text);
+> +       kunit_stream_add(stream, "\t\t%s == %lld\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->left_value);
+> +       kunit_stream_add(stream, "\t\t%s == %lld",
+> +                        binary_assert->right_text,
+> +                        binary_assert->right_value);
+> +       kunit_assert_print_msg(assert, stream);
+> +}
+> +
+
+I could probably reduce some of the code duplication here by using a
+variable type struct for left_value and right_value, but that would
+actually increase the usage of {kunit|string}_stream; it is probably
+the right thing to do, but I wanted to get your thoughts on it first.
+
+> +void kunit_binary_ptr_assert_format(struct kunit_assert *assert,
+> +                                   struct kunit_stream *stream)
+> +{
+> +       struct kunit_binary_ptr_assert *binary_assert = container_of(
+> +                       assert, struct kunit_binary_ptr_assert, assert);
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       kunit_stream_add(stream,
+> +                        "\tExpected %s %s %s, but\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->operation,
+> +                        binary_assert->right_text);
+> +       kunit_stream_add(stream, "\t\t%s == %pK\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->left_value);
+> +       kunit_stream_add(stream, "\t\t%s == %pK",
+> +                        binary_assert->right_text,
+> +                        binary_assert->right_value);
+> +       kunit_assert_print_msg(assert, stream);
+> +}
+> +
+> +void kunit_binary_str_assert_format(struct kunit_assert *assert,
+> +                                   struct kunit_stream *stream)
+> +{
+> +       struct kunit_binary_str_assert *binary_assert = container_of(
+> +                       assert, struct kunit_binary_str_assert, assert);
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       kunit_stream_add(stream,
+> +                        "\tExpected %s %s %s, but\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->operation,
+> +                        binary_assert->right_text);
+> +       kunit_stream_add(stream, "\t\t%s == %s\n",
+> +                        binary_assert->left_text,
+> +                        binary_assert->left_value);
+> +       kunit_stream_add(stream, "\t\t%s == %s",
+> +                        binary_assert->right_text,
+> +                        binary_assert->right_value);
+> +       kunit_assert_print_msg(assert, stream);
+> +}
+> +
+> +void kunit_mock_declaration_format(struct kunit_mock_declaration *declaration,
+> +                                  struct kunit_stream *stream)
+> +{
+> +       int i;
+> +
+> +       kunit_stream_add(stream, "%s(", declaration->function_name);
+> +       for (i = 0; i < declaration->len; i++) {
+> +               mock_format_param(stream,
+> +                                 declaration->type_names[i],
+> +                                 declaration->params[i]);
+> +               if (i < declaration->len - 1)
+> +                       kunit_stream_add(stream, ", ");
+> +       }
+> +       kunit_stream_add(stream, ")\n");
+> +}
+> +
+> +void kunit_mock_failed_match_format(struct kunit_mock_failed_match *match,
+> +                                   struct kunit_stream *stream)
+> +{
+> +       struct kunit_matcher_result *result;
+> +       size_t i;
+> +
+> +       kunit_stream_add(stream,
+> +                        "Tried expectation: %s, but\n",
+> +                        match->expectation_text);
+> +       for (i = 0; i < match->matcher_list_len; i++) {
+> +               result = &match->matcher_list[i];
+> +               kunit_stream_add(stream, "\t");
+> +               result->assert.format(&result->assert, stream);
+> +               kunit_stream_add(stream, "\n");
+> +       }
+> +}
+> +
+> +void kunit_mock_no_match_format(struct kunit_assert *assert,
+> +                               struct kunit_stream *stream)
+> +{
+> +       struct kunit_mock_assert *mock_assert = container_of(
+> +                       assert, struct kunit_mock_assert, assert);
+> +       struct kunit_mock_no_match *no_match = container_of(
+> +                       mock_assert, struct kunit_mock_no_match, assert);
+> +       struct kunit_mock_failed_match *expectation;
+> +
+> +       kunit_base_assert_format(assert, stream);
+> +       kunit_mock_declaration_format(&no_match->declaration, stream);
+> +
+> +       list_for_each_entry(expectation, &no_match->failed_match_list, node)
+> +               kunit_mock_failed_match_format(expectation, stream);
+> +}
+> diff --git a/kunit/mock.c b/kunit/mock.c
+> index ccb0abe111402..ab441a58a918c 100644
+> --- a/kunit/mock.c
+> +++ b/kunit/mock.c
+> @@ -269,9 +269,9 @@ struct mock_param_formatter *mock_find_formatter(const char *type_name)
+>         return NULL;
+>  }
+>
+> -static void mock_format_param(struct kunit_stream *stream,
+> -                             const char *type_name,
+> -                             const void *param)
+> +void mock_format_param(struct kunit_stream *stream,
+> +                      const char *type_name,
+> +                      const void *param)
+>  {
+>         struct mock_param_formatter *formatter;
+>
+> --
+> 2.22.0.657.g960e92d24f-goog
+>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
