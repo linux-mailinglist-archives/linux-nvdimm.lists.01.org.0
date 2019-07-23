@@ -1,59 +1,74 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A12771139
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Jul 2019 07:32:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F005F71AF8
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Jul 2019 17:00:28 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 059E321A07094;
-	Mon, 22 Jul 2019 22:34:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DA415212C01DD;
+	Tue, 23 Jul 2019 08:02:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DFF5C21A07093
- for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 22:34:42 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id 60so3254697otr.7
- for <linux-nvdimm@lists.01.org>; Mon, 22 Jul 2019 22:32:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rfVOBTkGgWLnADqNb7WUL1YdExalu2RGHdRuN86uruA=;
- b=cCibAOf/Js0bFf/rOoWSrEyv9y1+LYPfRTwhuC16wpTr2xqyeheiY8joolznjwpFlP
- EbgrMxhMTsMUIefhUgH/OmAXMe6s+jzC0XdqdQeOkk1pUiz/pGhkFAjClaN8uIVhXPF3
- jkqht7TWonRqMhxwIj84p7o2qG7aDmnoSj33hNmiZPmSjKmXJivzBSIab1oXHzDJCYGq
- yUXZreSZ42kaDuP8Ikp/IDHhRmJfO+C47QlO7Af9mva8zDj5lJGj3eyQvC+zwjof36U+
- r9aYfq+OT3HnG5wU/ZC/A6jMWzVUD1dWXhrjMRMOkfkASGysOpiw7bpJIXU1mBVC7XJt
- Vcwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=rfVOBTkGgWLnADqNb7WUL1YdExalu2RGHdRuN86uruA=;
- b=SbUXo3KdvBopmbzDE7yh/9+MJOQaHSOwSXC61ouq+dn4NF5PEtVqKdTbcmjf0SvkEy
- TlkphFyUrVoc+yDPPJjSsL+6ufkRpdNWZ5lGrVs3YULWEAjwm1sHtqO6pcAONuy56s64
- qZnMNRViRpvriUupMer/yVMZdOdPSqflUQtRmFvpqP2hW8OCH/fQKk9/pb/DPSF5o166
- 1cgSio72aqvPSjV771lhXhf5ohdrTKHXnUcWbziV56R1eYrSRTlefcfPkld2n6RgFoQN
- E6euIIQa1qTapGKbJ/Pu+A3EPGsSL9qSV+rYgi3AS8zAelkeyQ3jiRJrQVfNtOs1LHqo
- j7eQ==
-X-Gm-Message-State: APjAAAW0Dnewgh4M/acjQpK2FqNYf8B6MufI5O9YQNG3W6VnPO652UFa
- mtB7EY4Nq2SrVM5I2rntwYvh5dWIa3sJpNkJ7y8uPA==
-X-Google-Smtp-Source: APXvYqyjt2ypLm0Iyn93tghYH78tRb7uLgwNWDeXJ9GGqsHKMUS9oIUtJUlcsPdUhpTaqHwb8X/qdw/MGcgyJyksvSU=
-X-Received: by 2002:a9d:7a8b:: with SMTP id l11mr21255488otn.247.1563859934961; 
- Mon, 22 Jul 2019 22:32:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 106AD2128D875
+ for <linux-nvdimm@lists.01.org>; Tue, 23 Jul 2019 08:02:51 -0700 (PDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x6NEsnXE133905
+ for <linux-nvdimm@lists.01.org>; Tue, 23 Jul 2019 11:00:24 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2tx2vdd1u5-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Tue, 23 Jul 2019 11:00:23 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Tue, 23 Jul 2019 16:00:16 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 23 Jul 2019 16:00:13 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x6NF0CRZ56885258
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 23 Jul 2019 15:00:12 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7C97D5204F;
+ Tue, 23 Jul 2019 15:00:12 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.199.42.63])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A0ED952079;
+ Tue, 23 Jul 2019 15:00:11 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>, vishal.l.verma@intel.com
+Subject: Re: Picking 0th namespace if it is idle
+In-Reply-To: <877ea85p64.fsf@linux.ibm.com>
+References: <87a7f45qik.fsf@linux.ibm.com> <877ea85p64.fsf@linux.ibm.com>
+Date: Tue, 23 Jul 2019 20:30:09 +0530
 MIME-Version: 1.0
-References: <20190722094143.18387-1-hch@lst.de>
-In-Reply-To: <20190722094143.18387-1-hch@lst.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 22 Jul 2019 22:32:03 -0700
-Message-ID: <CAPcyv4j7wPPBbcPDRGn=L8K-HQCZQbM0+HiXJX_F+1Uway+qXA@mail.gmail.com>
-Subject: Re: [PATCH] memremap: move from kernel/ to mm/
-To: Christoph Hellwig <hch@lst.de>
+X-TM-AS-GCONF: 00
+x-cbid: 19072315-0016-0000-0000-000002957231
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19072315-0017-0000-0000-000032F36306
+Message-Id: <8736iwkd8m.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-07-23_06:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=981 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907230149
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,22 +80,158 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Jul 22, 2019 at 2:42 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> memremap.c implements MM functionality for ZONE_DEVICE, so it really
-> should be in the mm/ directory, not the kernel/ one.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+Hi Dan,
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+Can you help with this question?
+
+-aneesh
+
+Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
+
+> aneesh.kumar@linux.ibm.com (Aneesh Kumar K.V) writes:
+>
+>> Hi Dan,
+>>
+>> With the patch series to mark the namespace disabled if we have mismatch
+>> in pfn superblock, we can endup with namespace0 marked idle/disabled.
+>>
+>> I am wondering why do do the below in ndctl.
+>>
+>>
+>> static struct ndctl_namespace *region_get_namespace(struct ndctl_region *region)
+>> {
+>> 	struct ndctl_namespace *ndns;
+>>
+>> 	/* prefer the 0th namespace if it is idle */
+>> 	ndctl_namespace_foreach(region, ndns)
+>> 		if (ndctl_namespace_get_id(ndns) == 0
+>> 				&& !is_namespace_active(ndns))
+>> 			return ndns;
+>> 	return ndctl_region_get_namespace_seed(region);
+>> }
+>>
+>> I have a kernel patch that will create a namespace_seed even if we fail
+>> to ename a pfn backing device. Something like below
+>>  
+>> @@ -747,12 +752,23 @@ static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
+>>  		}
+>>  	}
+>>  	if (dev->parent && is_nd_region(dev->parent) && probe) {
+>>  		nd_region = to_nd_region(dev->parent);
+>>  		nvdimm_bus_lock(dev);
+>>  		if (nd_region->ns_seed == dev)
+>>  			nd_region_create_ns_seed(nd_region);
+>>  		nvdimm_bus_unlock(dev);
+>>  	}
+>> +
+>> +	if (dev->parent && is_nd_region(dev->parent) && !probe && (ret == -EOPNOTSUPP)) {
+>> +		nd_region = to_nd_region(dev->parent);
+>> +		nvdimm_bus_lock(dev);
+>> +		if (nd_region->ns_seed == dev)
+>> +			nd_region_create_ns_seed(nd_region);
+>> +		nvdimm_bus_unlock(dev);
+>> +	}
+>> +
+>>
+>> With that we can end up with something like the below after boot.
+>> :/sys/bus/nd/devices/region0$ sudo ndctl list -Ni        
+>> [                                                                          
+>>   {                                                                                                                                                    
+>>     "dev":"namespace0.1",                                                  
+>>     "mode":"fsdax",                                                        
+>>     "map":"mem",                                                           
+>>     "size":0,                                                              
+>>     "uuid":"00000000-0000-0000-0000-000000000000",                                                                                                     
+>>     "state":"disabled"                                                     
+>>   },                                                                       
+>>   {                                                                        
+>>     "dev":"namespace0.0",                                                  
+>>     "mode":"fsdax",                  
+>>     "map":"mem",                                                           
+>>     "size":2147483648,               
+>>     "uuid":"094e703b-4bf8-4078-ad42-50bebc03e538",                                                                                                     
+>>     "state":"disabled"                                                                                                                                 
+>>   }                                                                        
+>> ]                                             
+>>
+>> namespace0.0 is the one we failed to initialize due to PAGE_SIZE
+>> mismatch. 
+>>
+>> We do have namespace_seed pointing to namespacece0.1 correct. But a ndtl
+>> create-namespace will pick namespace0.0 even if we have seed file
+>> pointing to namespacec0.1.
+>>
+>>
+>> I am trying to resolve the issues related to creation of new namespaces
+>> when we have some namespace marked disabled due to pfn_sb setting
+>> mismatch.
+>>
+>> -aneesh
+>
+> With that ndctl namespace0.0 selection commented out, we do get pick the
+> right idle namespace.
+>
+> #ndctl list -Ni
+> [                         
+>   {                
+>     "dev":"namespace0.1",
+>     "mode":"fsdax",                                                        
+>     "map":"mem",      
+>     "size":0,
+>     "uuid":"00000000-0000-0000-0000-000000000000",
+>     "state":"disabled"   
+>   },               
+>   {             
+>     "dev":"namespace0.0",
+>     "mode":"fsdax",                                                        
+>     "map":"mem",  
+>     "size":2147483648,   
+>     "uuid":"0c31ae4b-b053-43c7-82ff-88574e2585b0",
+>     "state":"disabled"
+>   }  
+> ]   
+>
+> after ndctl create-namespace -s 2G -r region0                   
+>
+>
+> # ndctl list -Ni                                           
+> [                     
+>   {                    
+>     "dev":"namespace0.2",
+>     "mode":"fsdax",       
+>     "map":"mem",   
+>     "size":0,   
+>     "uuid":"00000000-0000-0000-0000-000000000000",
+>     "state":"disabled"
+>   },
+>   {
+>     "dev":"namespace0.1",
+>     "mode":"fsdax",
+>     "map":"dev",
+>     "size":2130706432,
+>     "uuid":"60970059-9412-4eeb-9e7a-b314585a4da3",
+>     "align":65536,
+>     "blockdev":"pmem0.1",
+>     "supported_alignments":[
+>       65536
+>     ]
+>   },
+>   {
+>     "dev":"namespace0.0",
+>     "mode":"fsdax",
+>     "map":"mem",
+>     "size":2147483648,
+>     "uuid":"0c31ae4b-b053-43c7-82ff-88574e2585b0",
+>     "state":"disabled"
+>   }
+> ]
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
