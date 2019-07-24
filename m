@@ -2,57 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE947287E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Jul 2019 08:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9EC7290B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Jul 2019 09:31:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 426B3212D2776;
-	Tue, 23 Jul 2019 23:51:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2FE24212DA5D0;
+	Wed, 24 Jul 2019 00:33:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=114.179.232.162; helo=tyo162.gate.nec.co.jp;
- envelope-from=n-horiguchi@ah.jp.nec.com; receiver=linux-nvdimm@lists.01.org 
-Received: from tyo162.gate.nec.co.jp (tyo162.gate.nec.co.jp [114.179.232.162])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id A760621295B07
- for <linux-nvdimm@lists.01.org>; Tue, 23 Jul 2019 23:51:49 -0700 (PDT)
-Received: from mailgate02.nec.co.jp ([114.179.233.122])
- by tyo162.gate.nec.co.jp (8.15.1/8.15.1) with ESMTPS id x6O6nG5d021120
- (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Wed, 24 Jul 2019 15:49:16 +0900
-Received: from mailsv01.nec.co.jp (mailgate-v.nec.co.jp [10.204.236.94])
- by mailgate02.nec.co.jp (8.15.1/8.15.1) with ESMTP id x6O6nGFx009426;
- Wed, 24 Jul 2019 15:49:16 +0900
-Received: from mail03.kamome.nec.co.jp (mail03.kamome.nec.co.jp [10.25.43.7])
- by mailsv01.nec.co.jp (8.15.1/8.15.1) with ESMTP id x6O6dSsL017998; 
- Wed, 24 Jul 2019 15:49:16 +0900
-Received: from bpxc99gp.gisp.nec.co.jp ([10.38.151.150] [10.38.151.150]) by
- mail03.kamome.nec.co.jp with ESMTP id BT-MMP-2404595;
- Wed, 24 Jul 2019 15:48:55 +0900
-Received: from BPXM23GP.gisp.nec.co.jp ([10.38.151.215]) by
- BPXC22GP.gisp.nec.co.jp ([10.38.151.150]) with mapi id 14.03.0439.000; Wed,
- 24 Jul 2019 15:48:55 +0900
-From: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-To: Jane Chu <jane.chu@oracle.com>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] mm/memory-failure: Poison read receives SIGKILL instead
- of SIGBUS if mmaped more than once
-Thread-Topic: [PATCH] mm/memory-failure: Poison read receives SIGKILL
- instead of SIGBUS if mmaped more than once
-Thread-Index: AQHVQbAJYBnoCgkSO0yo1OfL2uazvqbYZaaAgABXyAA=
-Date: Wed, 24 Jul 2019 06:48:54 +0000
-Message-ID: <20190724064846.GA17567@hori.linux.bs1.fc.nec.co.jp>
-References: <1563925110-19359-1-git-send-email-jane.chu@oracle.com>
- <CAPcyv4hyvHFnSE4AUbXooxX_Ug-raxAJgzC7jzkHp_mSg_sCmg@mail.gmail.com>
-In-Reply-To: <CAPcyv4hyvHFnSE4AUbXooxX_Ug-raxAJgzC7jzkHp_mSg_sCmg@mail.gmail.com>
-Accept-Language: en-US, ja-JP
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.34.125.96]
-Content-ID: <A8D19D1E94905D479DFEEA8EADF01457@gisp.nec.co.jp>
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=pmladek@suse.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id DFB72212D277C
+ for <linux-nvdimm@lists.01.org>; Wed, 24 Jul 2019 00:33:57 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 12D7EAEF8;
+ Wed, 24 Jul 2019 07:31:28 +0000 (UTC)
+Date: Wed, 24 Jul 2019 09:31:25 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH v9 04/18] kunit: test: add kunit_stream a std::stream
+ like logger
+Message-ID: <20190724073125.xyzfywctrcvg6fmh@pathway.suse.cz>
+References: <CAFd5g47ikJmA0uGoavAFsh+hQvDmgsOi26tyii0612R=rt7iiw@mail.gmail.com>
+ <CAFd5g44_axVHNMBzxSURQB_-R+Rif7cZcg7PyZ_SS+5hcy5jZA@mail.gmail.com>
+ <20190716175021.9CA412173C@mail.kernel.org>
+ <CAFd5g453vXeSUCZenCk_CzJ-8a1ym9RaPo0NVF=FujF9ac-5Ag@mail.gmail.com>
+ <20190718175024.C3EC421019@mail.kernel.org>
+ <CAFd5g46a7C1+R6ZcE_SkqaYqgrH5Rx3M=X7orFyaMgFLDbeYYA@mail.gmail.com>
+ <20190719000834.GA3228@google.com>
+ <20190722200347.261D3218C9@mail.kernel.org>
+ <CAFd5g45hdCxEavSxirr0un_uLzo5Z-J4gHRA06qjzcQrTzmjVg@mail.gmail.com>
+ <20190722235411.06C1320840@mail.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-MML: disable
+Content-Disposition: inline
+In-Reply-To: <20190722235411.06C1320840@mail.kernel.org>
+User-Agent: NeoMutt/20170912 (1.9.0)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,165 +52,124 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>,
+Cc: "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ Brendan Higgins <brendanhiggins@google.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Kevin Hilman <khilman@baylibre.com>, David Rientjes <rientjes@google.com>,
+ Timothy Bird <Tim.Bird@sony.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ Joel Stanley <joel@jms.id.au>, devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, Jeff Dike <jdike@addtoit.com>,
+ linux-um@lists.infradead.org, Steven Rostedt <rostedt@goodmis.org>,
+ Julia Lawall <julia.lawall@lip6.fr>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ kunit-dev@googlegroups.com, Theodore Ts'o <tytso@mit.edu>,
+ Richard Weinberger <richard@nod.at>, Greg KH <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Jane, Dan,
-
-On Tue, Jul 23, 2019 at 06:34:35PM -0700, Dan Williams wrote:
-> On Tue, Jul 23, 2019 at 4:49 PM Jane Chu <jane.chu@oracle.com> wrote:
-> >
-> > Mmap /dev/dax more than once, then read the poison location using address
-> > from one of the mappings. The other mappings due to not having the page
-> > mapped in will cause SIGKILLs delivered to the process. SIGKILL succeeds
-> > over SIGBUS, so user process looses the opportunity to handle the UE.
-> >
-> > Although one may add MAP_POPULATE to mmap(2) to work around the issue,
-> > MAP_POPULATE makes mapping 128GB of pmem several magnitudes slower, so
-> > isn't always an option.
-> >
-> > Details -
-> >
-> > ndctl inject-error --block=10 --count=1 namespace6.0
-> >
-> > ./read_poison -x dax6.0 -o 5120 -m 2
-> > mmaped address 0x7f5bb6600000
-> > mmaped address 0x7f3cf3600000
-> > doing local read at address 0x7f3cf3601400
-> > Killed
-> >
-> > Console messages in instrumented kernel -
-> >
-> > mce: Uncorrected hardware memory error in user-access at edbe201400
-> > Memory failure: tk->addr = 7f5bb6601000
-> > Memory failure: address edbe201: call dev_pagemap_mapping_shift
-> > dev_pagemap_mapping_shift: page edbe201: no PUD
-> > Memory failure: tk->size_shift == 0
-> > Memory failure: Unable to find user space address edbe201 in read_poison
-> > Memory failure: tk->addr = 7f3cf3601000
-> > Memory failure: address edbe201: call dev_pagemap_mapping_shift
-> > Memory failure: tk->size_shift = 21
-> > Memory failure: 0xedbe201: forcibly killing read_poison:22434 because of failure to unmap corrupted page
-> >   => to deliver SIGKILL
-> > Memory failure: 0xedbe201: Killing read_poison:22434 due to hardware memory corruption
-> >   => to deliver SIGBUS
-> >
-> > Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> > ---
-> >  mm/memory-failure.c | 16 ++++++++++------
-> >  1 file changed, 10 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> > index d9cc660..7038abd 100644
-> > --- a/mm/memory-failure.c
-> > +++ b/mm/memory-failure.c
-> > @@ -315,7 +315,6 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
-> >
-> >         if (*tkc) {
-> >                 tk = *tkc;
-> > -               *tkc = NULL;
-> >         } else {
-> >                 tk = kmalloc(sizeof(struct to_kill), GFP_ATOMIC);
-> >                 if (!tk) {
-> > @@ -331,16 +330,21 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
-> >                 tk->size_shift = compound_order(compound_head(p)) + PAGE_SHIFT;
-> >
-> >         /*
-> > -        * In theory we don't have to kill when the page was
-> > -        * munmaped. But it could be also a mremap. Since that's
-> > -        * likely very rare kill anyways just out of paranoia, but use
-> > -        * a SIGKILL because the error is not contained anymore.
-> > +        * Indeed a page could be mmapped N times within a process. And it's possible
-> > +        * that not all of those N VMAs contain valid mapping for the page. In which
-> > +        * case we don't want to send SIGKILL to the process on behalf of the VMAs
-> > +        * that don't have the valid mapping, because doing so will eclipse the SIGBUS
-> > +        * delivered on behalf of the active VMA.
-> >          */
-> >         if (tk->addr == -EFAULT || tk->size_shift == 0) {
-> >                 pr_info("Memory failure: Unable to find user space address %lx in %s\n",
-> >                         page_to_pfn(p), tsk->comm);
-> > -               tk->addr_valid = 0;
-> > +               if (tk != *tkc)
-> > +                       kfree(tk);
-> > +               return;
-
-The immediate return bypasses list_add_tail() below, so we might lose
-the chance of sending SIGBUS to the process.
-
-tk->size_shift is always non-zero for !is_zone_device_page(), so
-"tk->size_shift == 0" effectively checks "no mapping on ZONE_DEVICE" now.
-As you mention above, "no mapping" doesn't means "invalid address"
-so we can drop "tk->size_shift == 0" check from this if-statement.
-Going forward in this direction, "tk->addr_valid == 0" is equivalent to
-"tk->addr == -EFAULT", so we seems to be able to remove ->addr_valid.
-This observation leads me to the following change, does it work for you?
-
-  --- a/mm/memory-failure.c
-  +++ b/mm/memory-failure.c
-  @@ -199,7 +199,6 @@ struct to_kill {
-   	struct task_struct *tsk;
-   	unsigned long addr;
-   	short size_shift;
-  -	char addr_valid;
-   };
-   
-   /*
-  @@ -324,7 +323,6 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
-   		}
-   	}
-   	tk->addr = page_address_in_vma(p, vma);
-  -	tk->addr_valid = 1;
-   	if (is_zone_device_page(p))
-   		tk->size_shift = dev_pagemap_mapping_shift(p, vma);
-   	else
-  @@ -336,11 +334,9 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
-   	 * likely very rare kill anyways just out of paranoia, but use
-   	 * a SIGKILL because the error is not contained anymore.
-   	 */
-  -	if (tk->addr == -EFAULT || tk->size_shift == 0) {
-  +	if (tk->addr == -EFAULT)
-   		pr_info("Memory failure: Unable to find user space address %lx in %s\n",
-   			page_to_pfn(p), tsk->comm);
-  -		tk->addr_valid = 0;
-  -	}
-   	get_task_struct(tsk);
-   	tk->tsk = tsk;
-   	list_add_tail(&tk->nd, to_kill);
-  @@ -366,7 +362,7 @@ static void kill_procs(struct list_head *to_kill, int forcekill, bool fail,
-   			 * make sure the process doesn't catch the
-   			 * signal and then access the memory. Just kill it.
-   			 */
-  -			if (fail || tk->addr_valid == 0) {
-  +			if (fail || tk->addr == -EFAULT) {
-   				pr_err("Memory failure: %#lx: forcibly killing %s:%d because of failure to unmap corrupted page\n",
-   				       pfn, tk->tsk->comm, tk->tsk->pid);
-   				do_send_sig_info(SIGKILL, SEND_SIG_PRIV,
-
-> >         }
-> > +       if (tk == *tkc)
-> > +               *tkc = NULL;
-> >         get_task_struct(tsk);
-> >         tk->tsk = tsk;
-> >         list_add_tail(&tk->nd, to_kill);
+On Mon 2019-07-22 16:54:10, Stephen Boyd wrote:
+> Quoting Brendan Higgins (2019-07-22 15:30:49)
+> > On Mon, Jul 22, 2019 at 1:03 PM Stephen Boyd <sboyd@kernel.org> wrote:
+> > >
+> > >
+> > > What's the calling context of the assertions and expectations? I still
+> > > don't like the fact that string stream needs to allocate buffers and
+> > > throw them into a list somewhere because the calling context matters
+> > > there.
+> > 
+> > The calling context is the same as before, which is anywhere.
 > 
+> Ok. That's concerning then.
 > 
-> Concept and policy looks good to me, and I never did understand what
-> the mremap() case was trying to protect against.
+> > 
+> > > I'd prefer we just wrote directly to the console/log via printk
+> > > instead. That way things are simple because we use the existing
+> > > buffering path of printk, but maybe there's some benefit to the string
+> > > stream that I don't see? Right now it looks like it builds a string and
+> > > then dumps it to printk so I'm sort of lost what the benefit is over
+> > > just writing directly with printk.
+> > 
+> > It's just buffering it so the whole string gets printed uninterrupted.
+> > If we were to print out piecemeal to printk, couldn't we have another
+> > call to printk come in causing it to garble the KUnit message we are
+> > in the middle of printing?
 > 
-> The patch is a bit difficult to read (not your fault) because of the
-> odd way that add_to_kill() expects the first 'tk' to be pre-allocated.
-> May I ask for a lead-in cleanup that moves all the allocation internal
-> to add_to_kill() and drops the **tk argument?
+> Yes, printing piecemeal by calling printk many times could lead to
+> interleaving of messages if something else comes in such as an interrupt
+> printing something. Printk has some support to hold "records" but I'm
+> not sure how that would work here because KERN_CONT talks about only
+> being used early on in boot code. I haven't looked at printk in detail
+> though so maybe I'm all wrong and KERN_CONT just works?
 
-I totally agree with this cleanup. Thanks for the comment.
+KERN_CONT does not guarantee that the message will get printed
+together. The pieces get interleaved with messages printed in
+parallel.
 
-Thanks,
-Naoya Horiguchi
+Note that KERN_CONT was originally really meant to be used only during
+boot. It was later used more widely and ended in the best effort category.
+
+There were several attempts to make it more reliable. But it was
+always either too complicated or error prone or both.
+
+You need to use your own buffering if you rely want perfect output.
+The question is if it is really worth the complexity. Also note that
+any buffering reduces the chance that the messages will reach
+the console.
+
+BTW: There is a work in progress on a lockless printk ring buffer.
+It will make printk() more secure regarding deadlocks. But it might
+make transparent handling of continuous lines even more tricky.
+
+I guess that local buffering, before calling printk(), will be
+even more important then. Well, it might really force us to create
+an API for it.
+
+
+> Can printk be called once with whatever is in the struct? Otherwise if
+> this is about making printk into a structured log then maybe printk
+> isn't the proper solution anyway. Maybe a dev interface should be used
+> instead that can handle starting and stopping tests (via ioctl) in
+> addition to reading test results, records, etc. with read() and a
+> clearing of the records. Then the seqfile API works naturally. All of
+> this is a bit premature, but it looks like you're going down the path of
+> making something akin to ftrace that stores binary formatted
+> assertion/expectation records in a lockless ring buffer that then
+> formats those records when the user asks for them.
+
+IMHO, ftrace postpones the text formatting primary because it does not
+not want to slow down the traced code more than necessary. It is yet
+another layer and there should be some strong reason for it.
+
+> I can imagine someone wanting to write unit tests that check conditions
+> from a simulated hardirq context via irq works (a driver mock
+> framework?), so this doesn't seem far off.
+
+Note that stroring the messages into the printk log is basically safe in any
+context. It uses temporary per-CPU buffers for recursive messages and
+in NMI. The only problem is panic() when some CPU gets stuck with the
+lock taken. This will get solved by the lockless ringbuffer. Also
+the temporary buffers will not be necessary any longer.
+
+Much bigger problems are with consoles. There are many of them. It
+means a lot of code and more locks involved, including scheduler
+locks. Note that console lock is a semaphore.
+
+Best Regards,
+Petr
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
