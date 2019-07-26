@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381D9774D1
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 01:14:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1358774D2
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 01:16:04 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 56F0F212E1597;
-	Fri, 26 Jul 2019 16:16:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id CB4CB212E1598;
+	Fri, 26 Jul 2019 16:18:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,43 +15,43 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 385DF212E158B
- for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:16:37 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id F12F4212E158B
+ for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:18:27 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Jul 2019 16:14:10 -0700
+ 26 Jul 2019 16:16:01 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,312,1559545200"; d="scan'208";a="194443004"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
- by fmsmga004.fm.intel.com with ESMTP; 26 Jul 2019 16:14:10 -0700
-Received: from fmsmsx114.amr.corp.intel.com (10.18.116.8) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 26 Jul 2019 16:14:10 -0700
+X-IronPort-AV: E=Sophos;i="5.64,312,1559545200"; d="scan'208";a="369690203"
+Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
+ by fmsmga005.fm.intel.com with ESMTP; 26 Jul 2019 16:16:01 -0700
+Received: from fmsmsx152.amr.corp.intel.com (10.18.125.5) by
+ FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 26 Jul 2019 16:16:01 -0700
 Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.100]) by
- FMSMSX114.amr.corp.intel.com ([169.254.6.168]) with mapi id 14.03.0439.000;
- Fri, 26 Jul 2019 16:14:09 -0700
+ FMSMSX152.amr.corp.intel.com ([169.254.6.42]) with mapi id 14.03.0439.000;
+ Fri, 26 Jul 2019 16:16:00 -0700
 From: "Verma, Vishal L" <vishal.l.verma@intel.com>
 To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [ndctl PATCH v7 08/13] Documentation/daxctl: add a man page for
- daxctl-reconfigure-device
-Thread-Topic: [ndctl PATCH v7 08/13] Documentation/daxctl: add a man page
- for daxctl-reconfigure-device
-Thread-Index: AQHVQmrbc0UkxV05Kk+1Ul93QvkUVqbcqRiAgAFXE4A=
-Date: Fri, 26 Jul 2019 23:14:09 +0000
-Message-ID: <23086b510a48eeb88fac4e71f334c94bb12dc174.camel@intel.com>
+Subject: Re: [ndctl PATCH v7 09/13] daxctl: add commands to online and
+ offline memory
+Thread-Topic: [ndctl PATCH v7 09/13] daxctl: add commands to online and
+ offline memory
+Thread-Index: AQHVQmrcX9ZOPbyV0kySRZRvvWvexqbcqoOAgAFWK4A=
+Date: Fri, 26 Jul 2019 23:15:59 +0000
+Message-ID: <f24ed879adf2bb7f114bf72b06eb01c9dd51a7fc.camel@intel.com>
 References: <20190724215741.18556-1-vishal.l.verma@intel.com>
- <20190724215741.18556-9-vishal.l.verma@intel.com>
- <CAPcyv4h=i_EJD425mRUzpCdppiwA6CN3FmC0u3thvkMy4aajWg@mail.gmail.com>
-In-Reply-To: <CAPcyv4h=i_EJD425mRUzpCdppiwA6CN3FmC0u3thvkMy4aajWg@mail.gmail.com>
+ <20190724215741.18556-10-vishal.l.verma@intel.com>
+ <CAPcyv4iEs533oD6X5G5-5cL2-br268FekXR8W=gTZOUbBPZBdQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4iEs533oD6X5G5-5cL2-br268FekXR8W=gTZOUbBPZBdQ@mail.gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 x-originating-ip: [10.232.112.185]
-Content-ID: <A1FA0CBAE918F040943927D02A7B537E@intel.com>
+Content-ID: <480FABC737E89441821CEABF98445E26@intel.com>
 MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -72,127 +72,138 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, 2019-07-25 at 19:46 -0700, Dan Williams wrote:
-> On Wed, Jul 24, 2019 at 2:57 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
-> > Add a man page describing the new daxctl-reconfigure-device command.
+
+On Thu, 2019-07-25 at 19:51 -0700, Dan Williams wrote:
+> On Wed, Jul 24, 2019 at 2:58 PM Vishal Verma <vishal.l.verma@intel.com
+> > wrote:
+> > Add two new commands:
 > > 
-> > Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> >   daxctl-online-memory
+> >   daxctl-offline-memory
+> > 
+> > to manage the state of hot-plugged memory from the system-ram mode
+> > for
+> > dax devices. This provides a way for the user to online/offline the
+> > memory as a separate step from the reconfiguration. Without this, a
+> > user
+> > that reconfigures a device into the system-ram mode with the --no-
+> > online
+> > option, would have no way to later online the memory, and would have
+> > to
+> > resort to shell scripting to online them manually via sysfs.
+> > 
 > > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
 > > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 > > ---
-> >  Documentation/daxctl/Makefile.am              |   3 +-
-> >  .../daxctl/daxctl-reconfigure-device.txt      | 139 ++++++++++++++++++
-> >  2 files changed, 141 insertions(+), 1 deletion(-)
-> >  create mode 100644 Documentation/daxctl/daxctl-reconfigure-device.txt
+> >  daxctl/builtin.h |   2 +
+> >  daxctl/daxctl.c  |   2 +
+> >  daxctl/device.c  | 131
+> > ++++++++++++++++++++++++++++++++++++++++++++++-
+> >  3 files changed, 134 insertions(+), 1 deletion(-)
 > > 
-[..]
-> > +* Run a process called 'some-service' using numactl to restrict its cpu
-> > +nodes to '0' and '1', and  memory allocations to node 2 (determined using
-> > +daxctl_dev_get_target_node() or 'daxctl list')
-> > +----
-> > +# daxctl reconfigure-device --mode=system-ram --no-online dax0.0
-> 
-> Any reason to use --no-online in this example? Presumably some-service
-> may not start if node2 has no online memory.
-> 
-Yep just a copy/paste typo, removing it.
-> 
-> > +[
-> > +  {
-> > +    "chardev":"dax0.0",
-> > +    "size":16777216000,
-> > +    "target_node":2,
-> > +    "mode":"system-ram"
-> > +  }
-> > +]
+> > diff --git a/daxctl/builtin.h b/daxctl/builtin.h
+> > index 756ba2a..f5a0147 100644
+> > --- a/daxctl/builtin.h
+> > +++ b/daxctl/builtin.h
+> > @@ -7,4 +7,6 @@ struct daxctl_ctx;
+> >  int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx);
+> >  int cmd_migrate(int argc, const char **argv, struct daxctl_ctx
+> > *ctx);
+> >  int cmd_reconfig_device(int argc, const char **argv, struct
+> > daxctl_ctx *ctx);
+> > +int cmd_online_memory(int argc, const char **argv, struct
+> > daxctl_ctx *ctx);
+> > +int cmd_offline_memory(int argc, const char **argv, struct
+> > daxctl_ctx *ctx);
+> >  #endif /* _DAXCTL_BUILTIN_H_ */
+> > diff --git a/daxctl/daxctl.c b/daxctl/daxctl.c
+> > index e1ba7b8..1ab0732 100644
+> > --- a/daxctl/daxctl.c
+> > +++ b/daxctl/daxctl.c
+> > @@ -72,6 +72,8 @@ static struct cmd_struct commands[] = {
+> >         { "help", .d_fn = cmd_help },
+> >         { "migrate-device-model", .d_fn = cmd_migrate },
+> >         { "reconfigure-device", .d_fn = cmd_reconfig_device },
+> > +       { "online-memory", .d_fn = cmd_online_memory },
+> > +       { "offline-memory", .d_fn = cmd_offline_memory },
+> >  };
+> > 
+> >  int main(int argc, const char **argv)
+> > diff --git a/daxctl/device.c b/daxctl/device.c
+> > index a71ebbe..64eff04 100644
+> > --- a/daxctl/device.c
+> > +++ b/daxctl/device.c
+> > @@ -36,6 +36,8 @@ static unsigned long flags;
+> > 
+> >  enum device_action {
+> >         ACTION_RECONFIG,
+> > +       ACTION_ONLINE,
+> > +       ACTION_OFFLINE,
+> >  };
+> > 
+> >  #define BASE_OPTIONS() \
+> > @@ -56,6 +58,11 @@ static const struct option reconfig_options[] = {
+> >         OPT_END(),
+> >  };
+> > 
+> > +static const struct option memory_options[] = {
+> > +       BASE_OPTIONS(),
+> > +       OPT_END(),
+> > +};
 > > +
-> > +# numactl --cpunodebind=0-1 --membind=2 -- some-service --opt1 --opt2
-> > +----
+> >  static const char *parse_device_options(int argc, const char
+> > **argv,
+> >                 enum device_action action, const struct option
+> > *options,
+> >                 const char *usage, struct daxctl_ctx *ctx)
+> > @@ -76,6 +83,12 @@ static const char *parse_device_options(int argc,
+> > const char **argv,
+> >                 case ACTION_RECONFIG:
+> >                         action_string = "reconfigure";
+> >                         break;
+> > +               case ACTION_ONLINE:
+> > +                       action_string = "online memory for";
+> > +                       break;
+> > +               case ACTION_OFFLINE:
+> > +                       action_string = "offline memory for";
+> > +                       break;
+> >                 default:
+> >                         action_string = "<>";
+> >                         break;
+> > @@ -124,6 +137,10 @@ static const char *parse_device_options(int
+> > argc, const char **argv,
+> >                         }
+> >                 }
+> >                 break;
+> > +       case ACTION_ONLINE:
+> > +       case ACTION_OFFLINE:
+> > +               /* nothing special */
+> > +               break;
+> >         }
+> >         if (rc) {
+> >                 usage_with_options(u, options);
+> > @@ -286,10 +303,75 @@ static int do_reconfig(struct daxctl_dev *dev,
+> > enum dev_mode mode,
+> >         return rc;
+> >  }
+> > 
+> > +static int do_xline(struct daxctl_dev *dev, enum device_action
+> > action)
+> > +{
+> > +       struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
+> > +       const char *devname = daxctl_dev_get_devname(dev);
+> > +       int rc, num_online;
 > > +
-> > +DESCRIPTION
-> > +-----------
-> > +
-> > +Reconfigure the operational mode of a dax device. This can be used to convert
-> > +a regular 'devdax' mode device to the 'system-ram' mode which allows for the dax
+> > +       if (!daxctl_dev_is_enabled(dev)) {
 > 
-> s/allows/arranges/
+> Can this fail if daxctl_dev_get_memory() succeeded?
+> 
+> Other than that potential code reduction looks good to me.
 
-ok.
-
-> 
-> > +range to be hot-plugged into the system as regular memory.
-> > +
-> > +NOTE: This is a destructive operation. Any data on the dax device *will* be
-> > +lost.
-> > +
-> > +NOTE: Device reconfiguration depends on the dax-bus device model. If dax-class is
-> > +in use (via the dax_pmem_compat driver), the reconfiguration will fail. See
-> > +linkdaxctl:daxctl-migrate-device-model[1] for more information.
-> 
-> Let's make sure that do_reconfig() bails with a common error message
-> for the compat case and quote that message here. You can check that by
-> comparing the device path 'subsystem' to /sys/class/dax. I.e.
-> 
-> # ls -l /dev/dax0.0
-> crw------- 1 root root 253, 4 Jul 25 12:22 /dev/dax0.0
-> 
-> # readlink -f /sys/dev/char/253\:4/subsystem
-> /sys/class/dax
-> 
-> ...it will be /sys/bus/dax otherwise.
-
-Hm,. currently the failure is just:
-libdaxctl: daxctl_dev_enable: dax3.0: failed to enable
-
-Should we check the subsystem as above programatically, and print a
-better error in daxctl-reconfigure-device?
-
-> 
-> > +
-> > +OPTIONS
-> > +-------
-> > +-r::
-> > +--region=::
-> > +       Restrict the operation to devices belonging to the specified region(s).
-> > +       A device-dax region is a contiguous range of memory that hosts one or
-> > +       more /dev/daxX.Y devices, where X is the region id and Y is the device
-> > +       instance id.
-> > +
-> > +-m::
-> > +--mode=::
-> > +       Specify the mode to which the dax device(s) should be reconfigured.
-> > +       - "system-ram": hotplug the device into system memory.
-> > +
-> > +       - "devdax": switch to the normal "device dax" mode. This requires the
-> > +         kernel to support hot-unplugging 'kmem' based memory. If this is not
-> > +         available, a reboot is the only way to switch back to 'devdax' mode.
-> > +
-> > +-N::
-> > +--no-online::
-> > +       By default, memory sections provided by system-ram devices will be
-> > +       brought online automatically and immediately with the 'online_movable'
-> > +       policy. Use this option to disable the automatic onlining behavior.
-> 
-> Probably need to mention that the system might online the memory even
-> if this is specified, or for extra credit, coordinate with that
-> auto-online facility to arrange for it to be skipped.
-
-Good point, added a note regarding this.
-
-> 
-> > +
-> > +-O::
-> > +--attempt-offline::
-> > +       When converting from "system-ram" mode to "devdax", it is expected
-> > +       that all the memory sections are first made offline. By default,
-> > +       daxctl won't touch online memory. However with this option, attempt
-> > +       to offline the memory on the NUMA node associated with the dax device
-> > +       before converting it back to "devdax" mode.
-> 
-> As mentioned in patch 7, this sounds like --force to me.
-
-Done.
+Nope, not needed. Removed, and got even more code
+reduction/consolidation as a result of adding the section count
+interface.
 
 _______________________________________________
 Linux-nvdimm mailing list
