@@ -2,55 +2,57 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4250774B8
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 00:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 381D9774D1
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 01:14:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A56D4212E1594;
-	Fri, 26 Jul 2019 15:56:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 56F0F212E1597;
+	Fri, 26 Jul 2019 16:16:40 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.136; helo=mga12.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EED2A212E13DB
- for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 15:56:26 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id r21so50865790otq.6
- for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 15:54:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:from:date:message-id:subject:to:cc;
- bh=9yHKSH2nyrMOIGNyd4CyMcnUdirfGb0YWEy2r0HnXdM=;
- b=m+fsM1k54XE4l7Y52Rhdx4f6VkwEeRHjELBA+I2opnzo8BChnkBi+nWCp1/u+0Zzq6
- ZvAue14znBPJb5hRMhgpvnah1jfLjorbivaiwWENClta8GSdohIK26jSG0LeaxCoyTbn
- I+I+bwIxe7kgCCti111wRuoG3MqDY5six9EKOl7pu0y9+pLG3g53Ew4MhVOADh65+/bB
- l3quZNvoqrVfTNtnOeIpMDAm2BQpee37zNSDx4caUe8n4X9Ah2NDfwxvh/IL0YTkBaAX
- 8KXqUQtQ8DEh6jkKXms/C83uYNLukuZb4fctkwhO2GyNZfajirB5HJZFAMChPsZcF/Al
- qlsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
- bh=9yHKSH2nyrMOIGNyd4CyMcnUdirfGb0YWEy2r0HnXdM=;
- b=DHZ0pGMa5CszlzMnN/WYm5MHXODh2LD8I8ZIQSMOWVEzX/cJxRGHePWVr0/lnqbfKc
- pD0/ZbxOBFgpideQDbIzgVbyUuDQkjatcmO2QxHVZ59P9GhfkF2YgwnRSbKCU3n61xEd
- fKEPntE6GBano0banzntpuHaPhzq5cPS40Vpj9cuS5Er+8vSGocj8AUAVKwbuhBY7SHl
- l+qrIqpUB/ZnQ48QxFqcFcA66z3tUoEQ4aZ3+Z5Vc0gWuW5sFSDVFRIHMy+kByaY4/0R
- fmld1TFSl67MyuOy65b7fmqDHEbtO8wwFErLBKQd5NjozF/Mu6xTiLMOGCQJ3RS36wQd
- rwpA==
-X-Gm-Message-State: APjAAAV9xYHhhY+0vI0G+P0DCiLUZ0xTo15+NNKsizu9852UKwMGO2xq
- 6dnV4MRHMAZeVPJdHxMXOYpPLL4NqSEJL2TfhCpSLA==
-X-Google-Smtp-Source: APXvYqz4Uvodp449SpQfppdw+t/cXgvDGwkwTvwh7UY4Ms1pF+6kuQ9VjwgbAYP1RwIe4MoqUCAC2Qf4MJiEBRYC6Kw=
-X-Received: by 2002:a9d:7a9a:: with SMTP id l26mr65596750otn.71.1564181639248; 
- Fri, 26 Jul 2019 15:53:59 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 385DF212E158B
+ for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:16:37 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2019 16:14:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,312,1559545200"; d="scan'208";a="194443004"
+Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
+ by fmsmga004.fm.intel.com with ESMTP; 26 Jul 2019 16:14:10 -0700
+Received: from fmsmsx114.amr.corp.intel.com (10.18.116.8) by
+ FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 26 Jul 2019 16:14:10 -0700
+Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.100]) by
+ FMSMSX114.amr.corp.intel.com ([169.254.6.168]) with mapi id 14.03.0439.000;
+ Fri, 26 Jul 2019 16:14:09 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [ndctl PATCH v7 08/13] Documentation/daxctl: add a man page for
+ daxctl-reconfigure-device
+Thread-Topic: [ndctl PATCH v7 08/13] Documentation/daxctl: add a man page
+ for daxctl-reconfigure-device
+Thread-Index: AQHVQmrbc0UkxV05Kk+1Ul93QvkUVqbcqRiAgAFXE4A=
+Date: Fri, 26 Jul 2019 23:14:09 +0000
+Message-ID: <23086b510a48eeb88fac4e71f334c94bb12dc174.camel@intel.com>
+References: <20190724215741.18556-1-vishal.l.verma@intel.com>
+ <20190724215741.18556-9-vishal.l.verma@intel.com>
+ <CAPcyv4h=i_EJD425mRUzpCdppiwA6CN3FmC0u3thvkMy4aajWg@mail.gmail.com>
+In-Reply-To: <CAPcyv4h=i_EJD425mRUzpCdppiwA6CN3FmC0u3thvkMy4aajWg@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.185]
+Content-ID: <A1FA0CBAE918F040943927D02A7B537E@intel.com>
 MIME-Version: 1.0
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 26 Jul 2019 15:53:47 -0700
-Message-ID: <CAPcyv4gqE6zOoSibTgjbWWHE3VVQ0wSJN-NxwF288nTe2Z3yzA@mail.gmail.com>
-Subject: [GIT PULL] libnvdimm fixes for 5.3-rc2
-To: Linus Torvalds <torvalds@linux-foundation.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,95 +64,136 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Linus, please pull from:
+On Thu, 2019-07-25 at 19:46 -0700, Dan Williams wrote:
+> On Wed, Jul 24, 2019 at 2:57 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+> > Add a man page describing the new daxctl-reconfigure-device command.
+> > 
+> > Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> > ---
+> >  Documentation/daxctl/Makefile.am              |   3 +-
+> >  .../daxctl/daxctl-reconfigure-device.txt      | 139 ++++++++++++++++++
+> >  2 files changed, 141 insertions(+), 1 deletion(-)
+> >  create mode 100644 Documentation/daxctl/daxctl-reconfigure-device.txt
+> > 
+[..]
+> > +* Run a process called 'some-service' using numactl to restrict its cpu
+> > +nodes to '0' and '1', and  memory allocations to node 2 (determined using
+> > +daxctl_dev_get_target_node() or 'daxctl list')
+> > +----
+> > +# daxctl reconfigure-device --mode=system-ram --no-online dax0.0
+> 
+> Any reason to use --no-online in this example? Presumably some-service
+> may not start if node2 has no online memory.
+> 
+Yep just a copy/paste typo, removing it.
+> 
+> > +[
+> > +  {
+> > +    "chardev":"dax0.0",
+> > +    "size":16777216000,
+> > +    "target_node":2,
+> > +    "mode":"system-ram"
+> > +  }
+> > +]
+> > +
+> > +# numactl --cpunodebind=0-1 --membind=2 -- some-service --opt1 --opt2
+> > +----
+> > +
+> > +DESCRIPTION
+> > +-----------
+> > +
+> > +Reconfigure the operational mode of a dax device. This can be used to convert
+> > +a regular 'devdax' mode device to the 'system-ram' mode which allows for the dax
+> 
+> s/allows/arranges/
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fixes-5.3-rc2
+ok.
 
-...to receive a collection of locking and async operations fixes for
-v5.3-rc2. These had been soaking in a branch targeting the merge
-window, but missed due to a regression hunt. This fixed up version has
-otherwise been in -next this past week with no reported issues.
+> 
+> > +range to be hot-plugged into the system as regular memory.
+> > +
+> > +NOTE: This is a destructive operation. Any data on the dax device *will* be
+> > +lost.
+> > +
+> > +NOTE: Device reconfiguration depends on the dax-bus device model. If dax-class is
+> > +in use (via the dax_pmem_compat driver), the reconfiguration will fail. See
+> > +linkdaxctl:daxctl-migrate-device-model[1] for more information.
+> 
+> Let's make sure that do_reconfig() bails with a common error message
+> for the compat case and quote that message here. You can check that by
+> comparing the device path 'subsystem' to /sys/class/dax. I.e.
+> 
+> # ls -l /dev/dax0.0
+> crw------- 1 root root 253, 4 Jul 25 12:22 /dev/dax0.0
+> 
+> # readlink -f /sys/dev/char/253\:4/subsystem
+> /sys/class/dax
+> 
+> ...it will be /sys/bus/dax otherwise.
 
-In order to gain confidence in the locking changes the pull also
-includes a debug / instrumentation patch to enable lockdep coverage
-for libnvdimm subsystem operations that depend on the device_lock for
-exclusion. As mentioned in the changelog it is a hack, but it works
-and documents the locking expectations of the sub-system in a way that
-others can use lockdep to verify. The driver core touches got an ack
-from Greg.
+Hm,. currently the failure is just:
+libdaxctl: daxctl_dev_enable: dax3.0: failed to enable
 
-Please pull, but I'll understand if you want a resend with the debug
-patch dropped.
+Should we check the subsystem as above programatically, and print a
+better error in daxctl-reconfigure-device?
 
----
+> 
+> > +
+> > +OPTIONS
+> > +-------
+> > +-r::
+> > +--region=::
+> > +       Restrict the operation to devices belonging to the specified region(s).
+> > +       A device-dax region is a contiguous range of memory that hosts one or
+> > +       more /dev/daxX.Y devices, where X is the region id and Y is the device
+> > +       instance id.
+> > +
+> > +-m::
+> > +--mode=::
+> > +       Specify the mode to which the dax device(s) should be reconfigured.
+> > +       - "system-ram": hotplug the device into system memory.
+> > +
+> > +       - "devdax": switch to the normal "device dax" mode. This requires the
+> > +         kernel to support hot-unplugging 'kmem' based memory. If this is not
+> > +         available, a reboot is the only way to switch back to 'devdax' mode.
+> > +
+> > +-N::
+> > +--no-online::
+> > +       By default, memory sections provided by system-ram devices will be
+> > +       brought online automatically and immediately with the 'online_movable'
+> > +       policy. Use this option to disable the automatic onlining behavior.
+> 
+> Probably need to mention that the system might online the memory even
+> if this is specified, or for extra credit, coordinate with that
+> auto-online facility to arrange for it to be skipped.
 
-The following changes since commit d1fdb6d8f6a4109a4263176c84b899076a5f8008:
+Good point, added a note regarding this.
 
-  Linux 5.2-rc4 (2019-06-08 20:24:46 -0700)
+> 
+> > +
+> > +-O::
+> > +--attempt-offline::
+> > +       When converting from "system-ram" mode to "devdax", it is expected
+> > +       that all the memory sections are first made offline. By default,
+> > +       daxctl won't touch online memory. However with this option, attempt
+> > +       to offline the memory on the NUMA node associated with the dax device
+> > +       before converting it back to "devdax" mode.
+> 
+> As mentioned in patch 7, this sounds like --force to me.
 
-are available in the Git repository at:
+Done.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fixes-5.3-rc2
-
-for you to fetch changes up to 87a30e1f05d73a34e6d1895065541369131aaf1c:
-
-  driver-core, libnvdimm: Let device subsystems add local lockdep
-coverage (2019-07-18 16:23:27 -0700)
-
-----------------------------------------------------------------
-libnvdimm fixes v5.3-rc2
-
-- Fix duplicate device_unregister() calls (multiple threads competing to
-  do unregister work when scheduling device removal from a sysfs attribute
-  of the self-same device).
-
-- Fix badblocks registration order bug. Ensure region badblocks are
-  initialized in advance of namespace registration.
-
-- Fix a deadlock between the bus lock and probe operations.
-
-- Export device-core infrastructure to coordinate async operations via
-  the device ->dead state.
-
-- Add device-core infrastructure to validate device_lock() usage with
-  lockdep.
-
-----------------------------------------------------------------
-Dan Williams (7):
-      drivers/base: Introduce kill_device()
-      libnvdimm/bus: Prevent duplicate device_unregister() calls
-      libnvdimm/region: Register badblocks before namespaces
-      libnvdimm/bus: Prepare the nd_ioctl() path to be re-entrant
-      libnvdimm/bus: Stop holding nvdimm_bus_list_mutex over __nd_ioctl()
-      libnvdimm/bus: Fix wait_nvdimm_bus_probe_idle() ABBA deadlock
-      driver-core, libnvdimm: Let device subsystems add local lockdep coverage
-
- drivers/acpi/nfit/core.c        |  28 +++---
- drivers/acpi/nfit/nfit.h        |  24 +++++
- drivers/base/core.c             |  30 ++++--
- drivers/nvdimm/btt_devs.c       |  16 +--
- drivers/nvdimm/bus.c            | 210 ++++++++++++++++++++++++++--------------
- drivers/nvdimm/core.c           |  10 +-
- drivers/nvdimm/dimm_devs.c      |   4 +-
- drivers/nvdimm/namespace_devs.c |  36 +++----
- drivers/nvdimm/nd-core.h        |  71 +++++++++++++-
- drivers/nvdimm/pfn_devs.c       |  24 ++---
- drivers/nvdimm/pmem.c           |   4 +-
- drivers/nvdimm/region.c         |  24 ++---
- drivers/nvdimm/region_devs.c    |  12 ++-
- drivers/nvdimm/region.c         |  24 ++---
- drivers/nvdimm/region_devs.c    |  12 ++-
- include/linux/device.h          |   6 ++
- 14 files changed, 343 insertions(+), 156 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
