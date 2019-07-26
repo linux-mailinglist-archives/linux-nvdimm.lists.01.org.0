@@ -1,55 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1A3774FC
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 01:30:56 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644E077544
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 01:45:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2BCB7212E159C;
-	Fri, 26 Jul 2019 16:33:21 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5C33E212E15A0;
+	Fri, 26 Jul 2019 16:47:40 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7726A212E1597
- for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:33:19 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Jul 2019 16:30:51 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,312,1559545200"; d="scan'208";a="322201289"
-Received: from fmsmsx104.amr.corp.intel.com ([10.18.124.202])
- by orsmga004.jf.intel.com with ESMTP; 26 Jul 2019 16:30:51 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.100]) by
- fmsmsx104.amr.corp.intel.com ([169.254.3.188]) with mapi id 14.03.0439.000;
- Fri, 26 Jul 2019 16:30:50 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [ndctl PATCH v7 11/13] contrib/ndctl: fix region-id completions
- for daxctl
-Thread-Topic: [ndctl PATCH v7 11/13] contrib/ndctl: fix region-id
- completions for daxctl
-Thread-Index: AQHVQmrdL6ii9tFlSUOXPFtnDD0T1abcq6aAgAFZLYA=
-Date: Fri, 26 Jul 2019 23:30:50 +0000
-Message-ID: <a6ca723887fab20429929217baa08ae26513eb26.camel@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 844FE212E159A
+ for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:47:38 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id u15so41456234oiv.0
+ for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 16:45:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=aHa1TimnnAfLiDfmcVi6ma2k6mpqPoOiWSMQBbuPj4g=;
+ b=f5hWgZyTZsnnQEdUJTBrBdb1OiDkh1oHem+vJZK+SfmpYnZHYQLlsJkvpAX7j1x9tY
+ w7HpUSkrZMJyZyjE6m7TlO3mSTCC0sKx8OXuYnSCitpzbiHttBaCO+hM3ZuPs92362yK
+ IxIX4HENPxZJNn3r7MlWV8GTxONBTFb9m06xvYwRv2l2zdnPEMGqDk1DIBfQfVkD8uj/
+ qL55x4nwOd/3C6ruf+uSsB8IBA+pgR2m8Oppm+FMuciQj+wlm8FbrcyFbLorcxtnhJLQ
+ zbz7zbH0m5w3iGfXtCfEm29r2KthD4aEnwXVg9XctBuqycME8bo1bVryrbV4h+xq1g00
+ pxiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=aHa1TimnnAfLiDfmcVi6ma2k6mpqPoOiWSMQBbuPj4g=;
+ b=Tb2qq0hzM9iULHM/6yS0MKzgWNO9qY4xHnnhKwbx9V5OSc+by5PbNidWmfykqbrFTp
+ gvsjVWq72aQrJ4JJc3YlZWesIqFA6QpUxJ9BqSeNxBW/xquSg+l14COtLMHH4kS9HJe+
+ BoDgJkkfcvknLeJMvGd2QsMY1L6R4rVfqwpKknVbtM3PN9LqiNQ+y4za5IR4Ef6fj4LX
+ O9PD9NgL9+kcsE1BefmnzXO3Ic6DE0hVK/2AhQsl+bHtiR0QVsHDUksCBKiZIxYKZeMl
+ hpa/LsvSTooH5iJHEazucb/Qtf1Om0EnjCmDeooDSDGU74mztIC87V6si9dfN2FgwtV+
+ SA4Q==
+X-Gm-Message-State: APjAAAU1E7Z8FJ302M03Y6ohNW0Mx0Q56QU/zGO6aPYH01uwJ42m5ZG8
+ s+k5bla20OGYzBg82eyJ5HCEPtuIUMkZ2CWeCnowQA==
+X-Google-Smtp-Source: APXvYqwbQzyosdkzD2INkUlYcAoImVOsQe0Ck8T39N/ERLlrxdL4rOCCDBzHixrPDgufYckgN1OeTfq2WVNBWqF1Vr0=
+X-Received: by 2002:aca:ec82:: with SMTP id k124mr43788527oih.73.1564184710685; 
+ Fri, 26 Jul 2019 16:45:10 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190724215741.18556-1-vishal.l.verma@intel.com>
  <20190724215741.18556-12-vishal.l.verma@intel.com>
  <CAPcyv4g82poaqSNZh+Q_QpdWVqjmz3C=BM74Guoe_Wj7bv6kwQ@mail.gmail.com>
-In-Reply-To: <CAPcyv4g82poaqSNZh+Q_QpdWVqjmz3C=BM74Guoe_Wj7bv6kwQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <A67E4798195B8347A92385AE07A174F8@intel.com>
-MIME-Version: 1.0
+ <a6ca723887fab20429929217baa08ae26513eb26.camel@intel.com>
+In-Reply-To: <a6ca723887fab20429929217baa08ae26513eb26.camel@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 26 Jul 2019 16:44:58 -0700
+Message-ID: <CAPcyv4gO=mOkW1b8_MLqs=AuYgopNA1njtaFikvKuNh1-uLb8Q@mail.gmail.com>
+Subject: Re: [ndctl PATCH v7 11/13] contrib/ndctl: fix region-id completions
+ for daxctl
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,24 +77,29 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+On Fri, Jul 26, 2019 at 4:30 PM Verma, Vishal L
+<vishal.l.verma@intel.com> wrote:
+>
+>
+> On Thu, 2019-07-25 at 19:55 -0700, Dan Williams wrote:
+> > On Wed, Jul 24, 2019 at 2:58 PM Vishal Verma <vishal.l.verma@intel.com
+> > > wrote:
+> > > The completion helpers for daxctl assumed the region arguments for
+> > > specifying daxctl regions were the same as ndctl regions, i.e.
+> > > "regionX". This is not true - daxctl region arguments are a simple
+> > > numeric 'id'.
+> >
+> > Oh, that's an unfortunate difference, but too late to change now I
+> > think, good find.
+> >
+> > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+>
+> Yep - though I think I like --region=0 better than --region=region0,
+> less redundancy.  But agreed, probably too late to change.
 
-On Thu, 2019-07-25 at 19:55 -0700, Dan Williams wrote:
-> On Wed, Jul 24, 2019 at 2:58 PM Vishal Verma <vishal.l.verma@intel.com
-> > wrote:
-> > The completion helpers for daxctl assumed the region arguments for
-> > specifying daxctl regions were the same as ndctl regions, i.e.
-> > "regionX". This is not true - daxctl region arguments are a simple
-> > numeric 'id'.
-> 
-> Oh, that's an unfortunate difference, but too late to change now I
-> think, good find.
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-Yep - though I think I like --region=0 better than --region=region0,
-less redundancy.  But agreed, probably too late to change.
-
-Thanks for reviewing these!
+We could teach it to allow both. Something for the backlog, but at
+least the kernel is using a common number allocator for pmem regions
+and hmem regions.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
