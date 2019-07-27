@@ -1,38 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B5D77C33
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2484C77C34
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 463AD212E25B5;
-	Sat, 27 Jul 2019 14:57:54 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 91D21212E46F8;
+	Sat, 27 Jul 2019 14:57:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.88; helo=mga01.intel.com;
+ client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4E39D212E259E
- for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:57:52 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 93C92212E259E
+ for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:57:57 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:55:25 -0700
-X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="322416440"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:55:30 -0700
+X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="173436463"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga004-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:55:25 -0700
-Subject: [ndctl PATCH v2 20/26] ndctl/namespace: Introduce mode-to-name and
- name-to-mode helpers
+ by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:55:30 -0700
+Subject: [ndctl PATCH v2 21/26] ndctl/namespace: Validate namespace size
+ within validate_namespace_options()
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Sat, 27 Jul 2019 14:41:08 -0700
-Message-ID: <156426366820.531577.12558755097769166345.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 27 Jul 2019 14:41:13 -0700
+Message-ID: <156426367330.531577.13173216611909512565.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -53,192 +53,99 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Before open coding yet another translation between modes and their text
-name, introduce a util_nsmode() and util_nsmode_name() helpers.
-
-Consolidate the existing mode_to_type() helper into the new common /
-public util.
+Currently validate_namespace_options() handles default option conversion
+for every namespace attribute except size. Move default size validation
+internal to that helper in advance of teaching ndctl to require
+namespace be at least 16M in size to host a metadata personality /
+address abstraction.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/namespace.c |   39 +++++++--------------------------------
- util/filter.c     |   42 +++++++++++++++++++++++++++---------------
- util/filter.h     |    3 +++
- 3 files changed, 37 insertions(+), 47 deletions(-)
+ ndctl/namespace.c |   50 +++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 17 deletions(-)
 
 diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index f958726a994d..43a5fccac491 100644
+index 43a5fccac491..69900c4e4e60 100644
 --- a/ndctl/namespace.c
 +++ b/ndctl/namespace.c
-@@ -205,21 +205,7 @@ static int set_defaults(enum device_action mode)
- 		param.type = "pmem";
- 
- 	if (param.mode) {
--		if (strcmp(param.mode, "safe") == 0)
--			/* pass */;
--		else if (strcmp(param.mode, "sector") == 0)
--		      param.mode = "safe"; /* pass */
--		else if (strcmp(param.mode, "memory") == 0)
--		      /* pass */;
--		else if (strcmp(param.mode, "fsdax") == 0)
--			param.mode = "memory"; /* pass */
--		else if (strcmp(param.mode, "raw") == 0)
--		      /* pass */;
--		else if (strcmp(param.mode, "dax") == 0)
--		      /* pass */;
--		else if (strcmp(param.mode, "devdax") == 0)
--			param.mode = "dax"; /* pass */
--		else {
-+		if (util_nsmode(param.mode) == NDCTL_NS_MODE_UNKNOWN) {
- 			error("invalid mode '%s'\n", param.mode);
- 			rc = -EINVAL;
- 		}
-@@ -285,7 +271,7 @@ static int set_defaults(enum device_action mode)
- 			rc = -EINVAL;
- 		}
- 	} else if (((param.type && strcmp(param.type, "blk") == 0)
--			|| (param.mode && strcmp(param.mode, "safe") == 0))) {
-+			|| util_nsmode(param.mode) == NDCTL_NS_MODE_SECTOR)) {
- 		/* default sector size for blk-type or safe-mode */
- 		param.sector_size = "4096";
- 	}
-@@ -559,23 +545,12 @@ static int validate_namespace_options(struct ndctl_region *region,
- 	}
- 
- 	if (param.mode) {
--		if (strcmp(param.mode, "memory") == 0)
--			p->mode = NDCTL_NS_MODE_FSDAX;
--		else if (strcmp(param.mode, "sector") == 0)
--			p->mode = NDCTL_NS_MODE_SECTOR;
--		else if (strcmp(param.mode, "safe") == 0)
--			p->mode = NDCTL_NS_MODE_SECTOR;
--		else if (strcmp(param.mode, "dax") == 0)
--			p->mode = NDCTL_NS_MODE_DEVDAX;
--		else
--			p->mode = NDCTL_NS_MODE_RAW;
--
-+		p->mode = util_nsmode(param.mode);
- 		if (ndctl_region_get_type(region) != ND_DEVICE_REGION_PMEM
- 				&& (p->mode == NDCTL_NS_MODE_FSDAX
- 					|| p->mode == NDCTL_NS_MODE_DEVDAX)) {
- 			debug("blk %s does not support %s mode\n", region_name,
--					p->mode == NDCTL_NS_MODE_FSDAX
--					? "fsdax" : "devdax");
-+					util_nsmode_name(p->mode));
- 			return -EAGAIN;
- 		}
- 	} else if (ndns)
-@@ -593,7 +568,8 @@ static int validate_namespace_options(struct ndctl_region *region,
- 	} else if (p->mode == NDCTL_NS_MODE_DEVDAX) {
- 		dax = ndctl_region_get_dax_seed(region);
- 		if (!dax) {
--			error("Kernel does not support devdax mode\n");
-+			error("Kernel does not support %s mode\n",
-+					util_nsmode_name(p->mode));
- 			return -ENODEV;
- 		}
- 	}
-@@ -617,8 +593,7 @@ static int validate_namespace_options(struct ndctl_region *region,
- 
- 		default:
- 			error("%s mode does not support setting an alignment\n",
--					p->mode == NDCTL_NS_MODE_SECTOR
--					? "sector" : "raw");
-+					util_nsmode_name(p->mode));
- 			return -ENXIO;
- 		}
- 
-diff --git a/util/filter.c b/util/filter.c
-index ce6239fbac3b..e4b1885b26f8 100644
---- a/util/filter.c
-+++ b/util/filter.c
-@@ -335,29 +335,41 @@ struct daxctl_dev *util_daxctl_dev_filter(struct daxctl_dev *dev,
- 	return NULL;
+@@ -489,6 +489,29 @@ static int is_namespace_active(struct ndctl_namespace *ndns)
+ 		|| ndctl_namespace_get_btt(ndns));
  }
  
--static enum ndctl_namespace_mode mode_to_type(const char *mode)
-+enum ndctl_namespace_mode util_nsmode(const char *mode)
- {
- 	if (!mode)
--		return -ENXIO;
--
-+		return NDCTL_NS_MODE_UNKNOWN;
- 	if (strcasecmp(mode, "memory") == 0)
--		return NDCTL_NS_MODE_MEMORY;
--	else if (strcasecmp(mode, "fsdax") == 0)
--		return NDCTL_NS_MODE_MEMORY;
--	else if (strcasecmp(mode, "sector") == 0)
-+		return NDCTL_NS_MODE_FSDAX;
-+	if (strcasecmp(mode, "fsdax") == 0)
-+		return NDCTL_NS_MODE_FSDAX;
-+	if (strcasecmp(mode, "sector") == 0)
- 		return NDCTL_NS_MODE_SECTOR;
--	else if (strcasecmp(mode, "safe") == 0)
-+	if (strcasecmp(mode, "safe") == 0)
- 		return NDCTL_NS_MODE_SECTOR;
--	else if (strcasecmp(mode, "dax") == 0)
--		return NDCTL_NS_MODE_DAX;
--	else if (strcasecmp(mode, "devdax") == 0)
--		return NDCTL_NS_MODE_DAX;
--	else if (strcasecmp(mode, "raw") == 0)
-+	if (strcasecmp(mode, "dax") == 0)
-+		return NDCTL_NS_MODE_DEVDAX;
-+	if (strcasecmp(mode, "devdax") == 0)
-+		return NDCTL_NS_MODE_DEVDAX;
-+	if (strcasecmp(mode, "raw") == 0)
- 		return NDCTL_NS_MODE_RAW;
- 
- 	return NDCTL_NS_MODE_UNKNOWN;
- }
- 
-+const char *util_nsmode_name(enum ndctl_namespace_mode mode)
++static int validate_available_capacity(struct ndctl_region *region,
++		struct parsed_parameters *p)
 +{
-+	static const char *modes[] = {
-+		[NDCTL_NS_MODE_FSDAX] = "fsdax",
-+		[NDCTL_NS_MODE_DEVDAX] = "devdax",
-+		[NDCTL_NS_MODE_RAW] = "raw",
-+		[NDCTL_NS_MODE_SECTOR] = "sector",
-+		[NDCTL_NS_MODE_UNKNOWN] = "unknown",
-+	};
++	unsigned long long available;
 +
-+	return modes[mode];
++	if (ndctl_region_get_nstype(region) == ND_DEVICE_NAMESPACE_IO)
++		available = ndctl_region_get_size(region);
++	else {
++		available = ndctl_region_get_max_available_extent(region);
++		if (available == ULLONG_MAX)
++			available = ndctl_region_get_available_size(region);
++	}
++	if (!available || p->size > available) {
++		debug("%s: insufficient capacity size: %llx avail: %llx\n",
++			ndctl_region_get_devname(region), p->size, available);
++		return -EAGAIN;
++	}
++
++	if (p->size == 0)
++		p->size = available;
++	return 0;
 +}
 +
- int util_filter_walk(struct ndctl_ctx *ctx, struct util_filter_ctx *fctx,
- 		struct util_filter_params *param)
- {
-@@ -380,7 +392,7 @@ int util_filter_walk(struct ndctl_ctx *ctx, struct util_filter_ctx *fctx,
- 			type = ND_DEVICE_REGION_BLK;
- 	}
+ /*
+  * validate_namespace_options - init parameters for setup_namespace
+  * @region: parent of the namespace to create / reconfigure
+@@ -526,6 +549,16 @@ static int validate_namespace_options(struct ndctl_region *region,
+ 	else if (ndns)
+ 		p->size = ndctl_namespace_get_size(ndns);
  
--	if (mode_to_type(param->mode) == NDCTL_NS_MODE_UNKNOWN) {
-+	if (param->mode && util_nsmode(param->mode) == NDCTL_NS_MODE_UNKNOWN) {
- 		error("invalid mode: '%s'\n", param->mode);
- 		return -EINVAL;
- 	}
-@@ -458,7 +470,7 @@ int util_filter_walk(struct ndctl_ctx *ctx, struct util_filter_ctx *fctx,
- 					continue;
- 
- 				mode = ndctl_namespace_get_mode(ndns);
--				if (param->mode && mode_to_type(param->mode) != mode)
-+				if (param->mode && util_nsmode(param->mode) != mode)
- 					continue;
- 
- 				fctx->filter_namespace(ndns, fctx);
-diff --git a/util/filter.h b/util/filter.h
-index c2cdddf5be54..55f78f2a4cf7 100644
---- a/util/filter.h
-+++ b/util/filter.h
-@@ -38,6 +38,9 @@ struct ndctl_region *util_region_filter_by_namespace(struct ndctl_region *region
- struct daxctl_dev *util_daxctl_dev_filter(struct daxctl_dev *dev,
- 		const char *ident);
- 
-+enum ndctl_namespace_mode util_nsmode(const char *mode);
-+const char *util_nsmode_name(enum ndctl_namespace_mode mode);
++	/*
++	 * Validate available capacity in the create case, in the
++	 * reconfigure case the capacity is already allocated.
++	 */
++	if (!ndns) {
++		rc = validate_available_capacity(region, p);
++		if (rc)
++			return rc;
++	}
 +
- struct json_object;
+ 	if (param.uuid) {
+ 		if (uuid_parse(param.uuid, p->uuid) != 0) {
+ 			debug("%s: invalid uuid\n", __func__);
+@@ -797,7 +830,6 @@ static struct ndctl_namespace *region_get_namespace(struct ndctl_region *region)
+ static int namespace_create(struct ndctl_region *region)
+ {
+ 	const char *devname = ndctl_region_get_devname(region);
+-	unsigned long long available;
+ 	struct ndctl_namespace *ndns;
+ 	struct parsed_parameters p;
+ 	int rc;
+@@ -812,22 +844,6 @@ static int namespace_create(struct ndctl_region *region)
+ 		return -EAGAIN;
+ 	}
  
- /* json object hierarchy for the util_filter_walk() performed by cmd_list() */
+-	if (ndctl_region_get_nstype(region) == ND_DEVICE_NAMESPACE_IO)
+-		available = ndctl_region_get_size(region);
+-	else {
+-		available = ndctl_region_get_max_available_extent(region);
+-		if (available == ULLONG_MAX)
+-			available = ndctl_region_get_available_size(region);
+-	}
+-	if (!available || p.size > available) {
+-		debug("%s: insufficient capacity size: %llx avail: %llx\n",
+-			devname, p.size, available);
+-		return -EAGAIN;
+-	}
+-
+-	if (p.size == 0)
+-		p.size = available;
+-
+ 	ndns = region_get_namespace(region);
+ 	if (!ndns || is_namespace_active(ndns)) {
+ 		debug("%s: no %s namespace seed\n", devname,
 
 _______________________________________________
 Linux-nvdimm mailing list
