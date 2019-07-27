@@ -1,38 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA9F77C28
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:54:29 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0765A77C29
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:54:35 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0FE92212E25A9;
-	Sat, 27 Jul 2019 14:56:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 517FB212E25AC;
+	Sat, 27 Jul 2019 14:57:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.100; helo=mga07.intel.com;
+ client-ip=134.134.136.126; helo=mga18.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0947B212E15A7
- for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:56:53 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id AEAB4212E15B4
+ for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:56:58 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:54:26 -0700
-X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="172675766"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:54:31 -0700
+X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="370587148"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga007-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:54:25 -0700
-Subject: [ndctl PATCH v2 09/26] ndctl/dimm: Minimize data-transfer for
- init-labels
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:54:31 -0700
+Subject: [ndctl PATCH v2 10/26] ndctl/dimm: Add offset and size options to
+ {read, write, zero}-labels
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Sat, 27 Jul 2019 14:40:08 -0700
-Message-ID: <156426360847.531577.7776763835929401977.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 27 Jul 2019 14:40:13 -0700
+Message-ID: <156426361393.531577.10073127425253098897.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -53,141 +53,326 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Currently init-labels implementation reads the entire namespace-label
-capacity, initializes just the namespace index, and then writes the
-entire label capacity. It turns out that DIMM label-area access methods
-can be exceedingly slow.
-
-For example, the time to read the entire label area on a single dimm:
-2s, but the time to just read the index block space: 45ms.
+Allow for more precision in label utilities, i.e. stop operating over
+the entire label area.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/dimm.c           |    2 +-
- ndctl/lib/dimm.c       |   53 +++++++++++++++++++++++++++++++++++++++++++++---
- ndctl/lib/libndctl.sym |    1 +
- ndctl/libndctl.h       |    1 +
- 4 files changed, 53 insertions(+), 4 deletions(-)
+ Documentation/ndctl/labels-options.txt |    9 ++++++
+ ndctl/dimm.c                           |   49 ++++++++++++++++++++++++--------
+ ndctl/lib/dimm.c                       |   36 ++++++++++++++++++++----
+ ndctl/lib/libndctl.sym                 |    2 +
+ ndctl/lib/private.h                    |    3 --
+ ndctl/libndctl.h                       |    4 +++
+ util/util.h                            |    4 +++
+ 7 files changed, 86 insertions(+), 21 deletions(-)
 
+diff --git a/Documentation/ndctl/labels-options.txt b/Documentation/ndctl/labels-options.txt
+index 539ace079557..4aee37969fd5 100644
+--- a/Documentation/ndctl/labels-options.txt
++++ b/Documentation/ndctl/labels-options.txt
+@@ -5,6 +5,15 @@
+ 	operate on every dimm in the system, optionally filtered by bus id (see
+         --bus= option).
+ 
++-s::
++--size=::
++	Limit the operation to the given number of bytes. A size of 0
++	indicates to operate over the entire label capacity.
++
++-O::
++--offset=::
++	Begin the operation at the given offset into the label area.
++
+ -b::
+ --bus=::
+ 	Limit operation to memory devices (dimms) that are on the given bus.
 diff --git a/ndctl/dimm.c b/ndctl/dimm.c
-index 5f05a75f00eb..be03d9b810bd 100644
+index be03d9b810bd..603e112f9568 100644
 --- a/ndctl/dimm.c
 +++ b/ndctl/dimm.c
-@@ -982,7 +982,7 @@ static int __action_init(struct ndctl_dimm *dimm,
- 	struct ndctl_cmd *cmd_read;
- 	int rc;
+@@ -47,6 +47,8 @@ static struct parameters {
+ 	const char *infile;
+ 	const char *labelversion;
+ 	const char *kek;
++	unsigned len;
++	unsigned offset;
+ 	bool crypto_erase;
+ 	bool overwrite;
+ 	bool zero_key;
+@@ -77,7 +79,7 @@ static int action_enable(struct ndctl_dimm *dimm, struct action_context *actx)
+ 
+ static int action_zero(struct ndctl_dimm *dimm, struct action_context *actx)
+ {
+-	return ndctl_dimm_zero_labels(dimm);
++	return ndctl_dimm_zero_label_extent(dimm, param.len, param.offset);
+ }
+ 
+ static struct json_object *dump_label_json(struct ndctl_dimm *dimm,
+@@ -299,15 +301,17 @@ static struct json_object *dump_json(struct ndctl_dimm *dimm,
+ 	return NULL;
+ }
+ 
+-static int rw_bin(FILE *f, struct ndctl_cmd *cmd, ssize_t size, int rw)
++static int rw_bin(FILE *f, struct ndctl_cmd *cmd, ssize_t size,
++		unsigned int start_offset, int rw)
+ {
+ 	char buf[4096];
+ 	ssize_t offset, write = 0;
+ 
+-	for (offset = 0; offset < size; offset += sizeof(buf)) {
++	for (offset = start_offset; offset < start_offset + size;
++			offset += sizeof(buf)) {
+ 		ssize_t len = min_t(ssize_t, sizeof(buf), size - offset), rc;
+ 
+-		if (rw) {
++		if (rw == WRITE) {
+ 			len = fread(buf, 1, len, f);
+ 			if (len == 0)
+ 				break;
+@@ -343,9 +347,9 @@ static int action_write(struct ndctl_dimm *dimm, struct action_context *actx)
+ 		return -EBUSY;
+ 	}
  
 -	cmd_read = ndctl_dimm_read_labels(dimm);
-+	cmd_read = ndctl_dimm_read_label_index(dimm);
++	cmd_read = ndctl_dimm_read_label_extent(dimm, param.len, param.offset);
  	if (!cmd_read)
- 		return -ENXIO;
+-		return -ENXIO;
++		return -EINVAL;
  
+ 	cmd_write = ndctl_dimm_cmd_new_cfg_write(cmd_read);
+ 	if (!cmd_write) {
+@@ -354,7 +358,7 @@ static int action_write(struct ndctl_dimm *dimm, struct action_context *actx)
+ 	}
+ 
+ 	size = ndctl_cmd_cfg_read_get_size(cmd_read);
+-	rc = rw_bin(actx->f_in, cmd_write, size, 1);
++	rc = rw_bin(actx->f_in, cmd_write, size, param.offset, WRITE);
+ 
+ 	/*
+ 	 * If the dimm is already disabled the kernel is not holding a cached
+@@ -381,9 +385,9 @@ static int action_read(struct ndctl_dimm *dimm, struct action_context *actx)
+ 	ssize_t size;
+ 	int rc = 0;
+ 
+-	cmd_read = ndctl_dimm_read_labels(dimm);
++	cmd_read = ndctl_dimm_read_label_extent(dimm, param.len, param.offset);
+ 	if (!cmd_read)
+-		return -ENXIO;
++		return -EINVAL;
+ 
+ 	size = ndctl_cmd_cfg_read_get_size(cmd_read);
+ 	if (actx->jdimms) {
+@@ -394,7 +398,7 @@ static int action_read(struct ndctl_dimm *dimm, struct action_context *actx)
+ 		else
+ 			rc = -ENOMEM;
+ 	} else
+-		rc = rw_bin(actx->f_out, cmd_read, size, 0);
++		rc = rw_bin(actx->f_out, cmd_read, size, param.offset, READ);
+ 
+ 	ndctl_cmd_unref(cmd_read);
+ 
+@@ -1082,18 +1086,31 @@ OPT_BOOLEAN('z', "zero-key", &param.zero_key, \
+ OPT_BOOLEAN('m', "master-passphrase", &param.master_pass, \
+ 		"use master passphrase")
+ 
++#define LABEL_OPTIONS() \
++OPT_UINTEGER('s', "size", &param.len, "number of label bytes to operate"), \
++OPT_UINTEGER('O', "offset", &param.offset, \
++	"offset into the label area to start operation")
++
+ static const struct option read_options[] = {
+ 	BASE_OPTIONS(),
++	LABEL_OPTIONS(),
+ 	READ_OPTIONS(),
+ 	OPT_END(),
+ };
+ 
+ static const struct option write_options[] = {
+ 	BASE_OPTIONS(),
++	LABEL_OPTIONS(),
+ 	WRITE_OPTIONS(),
+ 	OPT_END(),
+ };
+ 
++static const struct option zero_options[] = {
++	BASE_OPTIONS(),
++	LABEL_OPTIONS(),
++	OPT_END(),
++};
++
+ static const struct option update_options[] = {
+ 	BASE_OPTIONS(),
+ 	UPDATE_OPTIONS(),
+@@ -1136,6 +1153,7 @@ static int dimm_action(int argc, const char **argv, struct ndctl_ctx *ctx,
+ 		NULL
+ 	};
+ 	unsigned long id;
++	bool json = false;
+ 
+         argc = parse_options(argc, argv, options, u, 0);
+ 
+@@ -1160,7 +1178,14 @@ static int dimm_action(int argc, const char **argv, struct ndctl_ctx *ctx,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (param.json || param.human) {
++	json = param.json || param.human;
++	if (action == action_read && json && (param.len || param.offset)) {
++		fprintf(stderr, "--size and --offset are incompatible with --json\n");
++		usage_with_options(u, options);
++		return -EINVAL;
++	}
++
++	if (json) {
+ 		actx.jdimms = json_object_new_array();
+ 		if (!actx.jdimms)
+ 			return -ENOMEM;
+@@ -1294,7 +1319,7 @@ int cmd_read_labels(int argc, const char **argv, struct ndctl_ctx *ctx)
+ 
+ int cmd_zero_labels(int argc, const char **argv, struct ndctl_ctx *ctx)
+ {
+-	int count = dimm_action(argc, argv, ctx, action_zero, base_options,
++	int count = dimm_action(argc, argv, ctx, action_zero, zero_options,
+ 			"ndctl zero-labels <nmem0> [<nmem1>..<nmemN>] [<options>]");
+ 
+ 	fprintf(stderr, "zeroed %d nmem%s\n", count >= 0 ? count : 0,
 diff --git a/ndctl/lib/dimm.c b/ndctl/lib/dimm.c
-index 22cf4e10b56c..9c5a34e542c3 100644
+index 9c5a34e542c3..28b1dfb0bdfa 100644
 --- a/ndctl/lib/dimm.c
 +++ b/ndctl/lib/dimm.c
-@@ -370,14 +370,15 @@ static struct namespace_label *label_base(struct nvdimm_data *ndd)
- 	return (struct namespace_label *) base;
+@@ -537,7 +537,8 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_label_index(struct ndctl_dimm *di
+         return NULL;
  }
  
--static void init_ndd(struct nvdimm_data *ndd, struct ndctl_cmd *cmd_read)
-+static void init_ndd(struct nvdimm_data *ndd, struct ndctl_cmd *cmd_read,
-+		struct ndctl_cmd *cmd_size)
+-NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
++NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_label_extent(
++		struct ndctl_dimm *dimm, unsigned int len, unsigned int offset)
  {
- 	ndctl_cmd_unref(ndd->cmd_read);
- 	memset(ndd, 0, sizeof(*ndd));
- 	ndd->cmd_read = cmd_read;
- 	ndctl_cmd_ref(cmd_read);
- 	ndd->data = cmd_read->iter.total_buf;
--	ndd->config_size = cmd_read->iter.total_xfer;
-+	ndd->config_size = cmd_size->get_size->config_size;
- 	ndd->ns_current = -1;
- 	ndd->ns_next = -1;
- }
-@@ -490,6 +491,52 @@ NDCTL_EXPORT int ndctl_dimm_validate_labels(struct ndctl_dimm *dimm)
- 	return label_validate(&dimm->ndd);
- }
- 
-+NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_label_index(struct ndctl_dimm *dimm)
-+{
-+        struct ndctl_bus *bus = ndctl_dimm_get_bus(dimm);
-+        struct ndctl_cmd *cmd_size, *cmd_read;
-+	struct nvdimm_data *ndd = &dimm->ndd;
-+        int rc;
+         struct ndctl_bus *bus = ndctl_dimm_get_bus(dimm);
+         struct ndctl_cmd *cmd_size, *cmd_read;
+@@ -557,13 +558,25 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
+         cmd_read = ndctl_dimm_cmd_new_cfg_read(cmd_size);
+         if (!cmd_read)
+                 goto out_size;
 +
-+        rc = ndctl_bus_wait_probe(bus);
-+        if (rc < 0)
-+                return NULL;
-+
-+        cmd_size = ndctl_dimm_cmd_new_cfg_size(dimm);
-+        if (!cmd_size)
-+                return NULL;
-+        rc = ndctl_cmd_submit_xlat(cmd_size);
-+        if (rc < 0)
-+                goto out_size;
-+
-+        cmd_read = ndctl_dimm_cmd_new_cfg_read(cmd_size);
-+        if (!cmd_read)
-+                goto out_size;
 +	/*
-+	 * To calc the namespace index size use the minimum label
-+	 * size which corresponds to the maximum namespace index size.
++	 * For ndctl_read_labels() compat, enable subsequent calls that
++	 * will manipulate labels
 +	 */
-+	init_ndd(ndd, cmd_read, cmd_size);
-+	ndd->nslabel_size = 128;
-+	rc = ndctl_cmd_cfg_read_set_extent(cmd_read,
-+			sizeof_namespace_index(ndd) * 2, 0);
++	if (len == 0 && offset == 0)
++		init_ndd(&dimm->ndd, cmd_read, cmd_size);
++
++	if (len == 0)
++		len = cmd_size->get_size->config_size;
++	rc = ndctl_cmd_cfg_read_set_extent(cmd_read, len, offset);
 +	if (rc < 0)
 +		goto out_size;
 +
-+        rc = ndctl_cmd_submit_xlat(cmd_read);
-+        if (rc < 0)
-+                goto out_read;
-+	ndctl_cmd_unref(cmd_size);
-+
-+	return cmd_read;
-+
-+ out_read:
-+        ndctl_cmd_unref(cmd_read);
-+ out_size:
-+        ndctl_cmd_unref(cmd_size);
-+        return NULL;
-+}
-+
- NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
- {
-         struct ndctl_bus *bus = ndctl_dimm_get_bus(dimm);
-@@ -515,7 +562,7 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
+         rc = ndctl_cmd_submit_xlat(cmd_read);
+         if (rc < 0)
                  goto out_read;
  	ndctl_cmd_unref(cmd_size);
  
--	init_ndd(&dimm->ndd, cmd_read);
-+	init_ndd(&dimm->ndd, cmd_read, cmd_size);
- 
+-	init_ndd(&dimm->ndd, cmd_read, cmd_size);
+-
  	return cmd_read;
  
+  out_read:
+@@ -573,15 +586,21 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
+         return NULL;
+ }
+ 
+-NDCTL_EXPORT int ndctl_dimm_zero_labels(struct ndctl_dimm *dimm)
++NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm)
++{
++	return ndctl_dimm_read_label_extent(dimm, 0, 0);
++}
++
++NDCTL_EXPORT int ndctl_dimm_zero_label_extent(struct ndctl_dimm *dimm,
++		unsigned int len, unsigned int offset)
+ {
+ 	struct ndctl_ctx *ctx = ndctl_dimm_get_ctx(dimm);
+ 	struct ndctl_cmd *cmd_read, *cmd_write;
+ 	int rc;
+ 
+-	cmd_read = ndctl_dimm_read_labels(dimm);
++	cmd_read = ndctl_dimm_read_label_extent(dimm, len, offset);
+ 	if (!cmd_read)
+-		return -ENXIO;
++		return -EINVAL;
+ 
+ 	if (ndctl_dimm_is_active(dimm)) {
+ 		dbg(ctx, "%s: regions active, abort label write\n",
+@@ -623,6 +642,11 @@ NDCTL_EXPORT int ndctl_dimm_zero_labels(struct ndctl_dimm *dimm)
+ 	return rc;
+ }
+ 
++NDCTL_EXPORT int ndctl_dimm_zero_labels(struct ndctl_dimm *dimm)
++{
++	return ndctl_dimm_zero_label_extent(dimm, 0, 0);
++}
++
+ NDCTL_EXPORT unsigned long ndctl_dimm_get_available_labels(
+ 		struct ndctl_dimm *dimm)
+ {
 diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
-index e79b31c71ae6..3cd431a90e55 100644
+index 3cd431a90e55..895fb358c43a 100644
 --- a/ndctl/lib/libndctl.sym
 +++ b/ndctl/lib/libndctl.sym
-@@ -411,4 +411,5 @@ global:
- 	ndctl_bus_poll_scrub_completion;
+@@ -412,4 +412,6 @@ global:
  	ndctl_cmd_cfg_read_set_extent;
  	ndctl_cmd_cfg_write_set_extent;
-+	ndctl_dimm_read_label_index;
+ 	ndctl_dimm_read_label_index;
++	ndctl_dimm_read_label_extent;
++	ndctl_dimm_zero_label_extent;
  } LIBNDCTL_19;
+diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
+index 3fc0290ff6a7..1f6a01c55377 100644
+--- a/ndctl/lib/private.h
++++ b/ndctl/lib/private.h
+@@ -242,9 +242,6 @@ struct ndctl_namespace {
+  *
+  * A command may only specify one of @source, or @iter.total_buf, not both.
+  */
+-enum {
+-	READ, WRITE,
+-};
+ struct ndctl_cmd {
+ 	struct ndctl_dimm *dimm;
+ 	struct ndctl_bus *bus;
 diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
-index 310814fe924c..8aa4b8bbe6c2 100644
+index 8aa4b8bbe6c2..c9d0dc120d3b 100644
 --- a/ndctl/libndctl.h
 +++ b/ndctl/libndctl.h
-@@ -308,6 +308,7 @@ struct ndctl_cmd *ndctl_dimm_cmd_new_cfg_read(struct ndctl_cmd *cfg_size);
+@@ -307,8 +307,12 @@ struct ndctl_cmd *ndctl_dimm_cmd_new_cfg_size(struct ndctl_dimm *dimm);
+ struct ndctl_cmd *ndctl_dimm_cmd_new_cfg_read(struct ndctl_cmd *cfg_size);
  struct ndctl_cmd *ndctl_dimm_cmd_new_cfg_write(struct ndctl_cmd *cfg_read);
  int ndctl_dimm_zero_labels(struct ndctl_dimm *dimm);
++int ndctl_dimm_zero_label_extent(struct ndctl_dimm *dimm,
++		unsigned int len, unsigned int offset);
  struct ndctl_cmd *ndctl_dimm_read_labels(struct ndctl_dimm *dimm);
-+struct ndctl_cmd *ndctl_dimm_read_label_index(struct ndctl_dimm *dimm);
+ struct ndctl_cmd *ndctl_dimm_read_label_index(struct ndctl_dimm *dimm);
++struct ndctl_cmd *ndctl_dimm_read_label_extent(struct ndctl_dimm *dimm,
++		unsigned int len, unsigned int offset);
  int ndctl_dimm_validate_labels(struct ndctl_dimm *dimm);
  enum ndctl_namespace_version {
  	NDCTL_NS_VERSION_1_1,
+diff --git a/util/util.h b/util/util.h
+index 001707e8b159..54c6ef18b6d7 100644
+--- a/util/util.h
++++ b/util/util.h
+@@ -73,6 +73,10 @@
+ #define BUILD_BUG_ON_ZERO(e) (sizeof(struct { int:-!!(e); }))
+ #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+ 
++enum {
++	READ, WRITE,
++};
++
+ static inline const char *skip_prefix(const char *str, const char *prefix)
+ {
+         size_t len = strlen(prefix);
 
 _______________________________________________
 Linux-nvdimm mailing list
