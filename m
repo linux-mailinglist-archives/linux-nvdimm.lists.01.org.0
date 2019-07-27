@@ -1,41 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46DBA775C0
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 03:52:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378F977A97
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 18:35:21 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D5937212E2582;
-	Fri, 26 Jul 2019 18:54:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A3CE3212E1585;
+	Sat, 27 Jul 2019 09:37:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=pr-tracker-bot@kernel.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 04FAE2194EB75
- for <linux-nvdimm@lists.01.org>; Fri, 26 Jul 2019 18:54:47 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Jul 2019 18:52:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,313,1559545200"; d="scan'208";a="369715497"
-Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by fmsmga005.fm.intel.com with ESMTP; 26 Jul 2019 18:52:20 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v8 13/13] test: Add a unit test for
- daxctl-reconfigure-device and friends
-Date: Fri, 26 Jul 2019 19:52:12 -0600
-Message-Id: <20190727015212.27092-14-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190727015212.27092-1-vishal.l.verma@intel.com>
-References: <20190727015212.27092-1-vishal.l.verma@intel.com>
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id A0D7F212DD348
+ for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 09:37:43 -0700 (PDT)
+Subject: Re: [GIT PULL] libnvdimm fixes for 5.3-rc2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1564245316;
+ bh=kQHybOH+KZUF4RS9gJUshF+9AlizwSnN3pGz0hzMgFY=;
+ h=From:In-Reply-To:References:Date:To:Cc:From;
+ b=RyBVuIUKorBvWPcPemozSsOpVYjdAmxWUYTHE4SsoTIDXStCIS/RMZJ6fMmzHHyJv
+ wi+I4Y9Lggh/SZbGwKnzWpAVsVKIQixZeiE8RJCjP/IGh2waaC2IqbxyGfuHb8lETf
+ OAhgG2zg8GurZFsjR98PYknMNOZ/eeQ/OhEhwkX8=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAPcyv4gqE6zOoSibTgjbWWHE3VVQ0wSJN-NxwF288nTe2Z3yzA@mail.gmail.com>
+References: <CAPcyv4gqE6zOoSibTgjbWWHE3VVQ0wSJN-NxwF288nTe2Z3yzA@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAPcyv4gqE6zOoSibTgjbWWHE3VVQ0wSJN-NxwF288nTe2Z3yzA@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+ tags/libnvdimm-fixes-5.3-rc2
+X-PR-Tracked-Commit-Id: 87a30e1f05d73a34e6d1895065541369131aaf1c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 523634db145a22cd5562714d4c59ea74686afe38
+Message-Id: <156424531666.2399.2050042384173075795.pr-tracker-bot@kernel.org>
+Date: Sat, 27 Jul 2019 16:35:16 +0000
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,165 +50,27 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add a new unit test to test dax device reconfiguration and memory
-operations. This teaches test/common about daxctl, and adds an ACPI.NFIT
-bus variable. Since we have to operate on the ACPI.NFIT bus, the test is
-marked as destructive.
+The pull request you sent on Fri, 26 Jul 2019 15:53:47 -0700:
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- test/Makefile.am       |  3 +-
- test/common            | 19 ++++++++--
- test/daxctl-devices.sh | 81 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 99 insertions(+), 4 deletions(-)
- create mode 100755 test/daxctl-devices.sh
+> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-fixes-5.3-rc2
 
-diff --git a/test/Makefile.am b/test/Makefile.am
-index 874c4bb..84474d0 100644
---- a/test/Makefile.am
-+++ b/test/Makefile.am
-@@ -49,7 +49,8 @@ TESTS +=\
- 	dax.sh \
- 	device-dax \
- 	device-dax-fio.sh \
--	mmap.sh
-+	mmap.sh \
-+	daxctl-devices.sh
- 
- if ENABLE_KEYUTILS
- TESTS += security.sh
-diff --git a/test/common b/test/common
-index 1b9d3da..1814a0c 100644
---- a/test/common
-+++ b/test/common
-@@ -15,12 +15,25 @@ else
- 	exit 1
- fi
- 
--# NFIT_TEST_BUS[01]
-+# DAXCTL
- #
--NFIT_TEST_BUS0=nfit_test.0
--NFIT_TEST_BUS1=nfit_test.1
-+if [ -f "../daxctl/daxctl" ] && [ -x "../daxctl/daxctl" ]; then
-+	export DAXCTL=../daxctl/daxctl
-+elif [ -f "./daxctl/daxctl" ] && [ -x "./daxctl/daxctl" ]; then
-+	export DAXCTL=./daxctl/daxctl
-+else
-+	echo "Couldn't find an daxctl binary"
-+	exit 1
-+fi
- 
- 
-+# NFIT_TEST_BUS[01]
-+#
-+NFIT_TEST_BUS0="nfit_test.0"
-+NFIT_TEST_BUS1="nfit_test.1"
-+ACPI_BUS="ACPI.NFIT"
-+E820_BUS="e820"
-+
- # Functions
- 
- # err
-diff --git a/test/daxctl-devices.sh b/test/daxctl-devices.sh
-new file mode 100755
-index 0000000..04f53f7
---- /dev/null
-+++ b/test/daxctl-devices.sh
-@@ -0,0 +1,81 @@
-+#!/bin/bash -Ex
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright(c) 2019 Intel Corporation. All rights reserved.
-+
-+rc=77
-+. ./common
-+
-+trap 'cleanup $LINENO' ERR
-+
-+cleanup()
-+{
-+	printf "Error at line %d\n" "$1"
-+	[[ $testdev ]] && reset_dev
-+	exit $rc
-+}
-+
-+find_testdev()
-+{
-+	local rc=77
-+
-+	# find a victim device
-+	testbus="$ACPI_BUS"
-+	testdev=$("$NDCTL" list -b "$testbus" -Ni | jq -er '.[0].dev | .//""')
-+	if [[ ! $testdev  ]]; then
-+		printf "Unable to find a victim device\n"
-+		exit "$rc"
-+	fi
-+	printf "Found victim dev: %s on bus: %s\n" "$testdev" "$testbus"
-+}
-+
-+setup_dev()
-+{
-+	test -n "$testbus"
-+	test -n "$testdev"
-+
-+	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
-+	testdev=$("$NDCTL" create-namespace -b "$testbus" -m devdax -fe "$testdev" -s 256M | \
-+		jq -er '.dev')
-+	test -n "$testdev"
-+}
-+
-+reset_dev()
-+{
-+	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
-+}
-+
-+daxctl_get_dev()
-+{
-+	"$NDCTL" list -n "$1" -X | jq -er '.[].daxregion.devices[0].chardev'
-+}
-+
-+daxctl_get_mode()
-+{
-+	"$DAXCTL" list -d "$1" | jq -er '.[].mode'
-+}
-+
-+daxctl_test()
-+{
-+	local daxdev
-+
-+	daxdev=$(daxctl_get_dev "$testdev")
-+	test -n "$daxdev"
-+
-+	"$DAXCTL" reconfigure-device -N -m system-ram "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
-+	"$DAXCTL" online-memory "$daxdev"
-+	"$DAXCTL" offline-memory "$daxdev"
-+	"$DAXCTL" reconfigure-device -m devdax "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
-+	"$DAXCTL" reconfigure-device -m system-ram "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
-+	"$DAXCTL" reconfigure-device -f -m devdax "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
-+}
-+
-+find_testdev
-+setup_dev
-+rc=1
-+daxctl_test
-+reset_dev
-+exit 0
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/523634db145a22cd5562714d4c59ea74686afe38
+
+Thank you!
+
 -- 
-2.20.1
-
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
