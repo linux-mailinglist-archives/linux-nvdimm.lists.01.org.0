@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457A477C2E
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:03 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC5477C2F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:07 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AA2C0212E46E0;
-	Sat, 27 Jul 2019 14:57:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EED8E212E25AC;
+	Sat, 27 Jul 2019 14:57:32 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,23 +15,23 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 007D9212E259E
- for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:57:26 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 99B57212E46E7
+ for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:57:31 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:55:00 -0700
-X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="190061089"
+ 27 Jul 2019 14:55:04 -0700
+X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="164999484"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:54:59 -0700
-Subject: [ndctl PATCH v2 15/26] ndctl/dimm: Fix init-labels success reporting
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:55:04 -0700
+Subject: [ndctl PATCH v2 16/26] ndctl/test: Fix device-dax bus-model detection
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Sat, 27 Jul 2019 14:40:42 -0700
-Message-ID: <156426364243.531577.13465180915476535003.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 27 Jul 2019 14:40:47 -0700
+Message-ID: <156426364779.531577.16728668403285407838.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -52,57 +52,34 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-When a DIMM is disabled due to a label parsing issue "ndctl init-labels"
-mis-reports the status of the init-labels command:
-
-    # ndctl init-labels all -f
-    initialized 1 nmem
-    [root@dwillia2-dev ndctl]# ndctl list -Di
-    [
-      {
-        "dev":"nmem1",
-        "id":"8680-57341200",
-        "handle":2,
-        "phys_id":0,
-        "state":"disabled"
-      },
-      {
-        "dev":"nmem0",
-        "id":"8680-56341200",
-        "handle":1,
-        "phys_id":0
-      }
-    ]
-    # ndctl init-labels nmem1 -f
-    initialized 1020 nmems
-
-Catch any positive return from action_init() as success:
-
-    # ndctl init-labels all -f
-    initialized 2 nmems
-    # ndctl init-labels nmem1 -f
-    initialized 1 nmem
-
-Reported-by: Jane Chu <jane.chu@oracle.com>
+Don't look for bus-model patches on pre-v5.1 kernels.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/dimm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ test/core.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/ndctl/dimm.c b/ndctl/dimm.c
-index c7ad621367e9..5e6fa19bab15 100644
---- a/ndctl/dimm.c
-+++ b/ndctl/dimm.c
-@@ -1035,7 +1035,7 @@ static int __action_init(struct ndctl_dimm *dimm,
- 
-  out:
- 	ndctl_cmd_unref(cmd_read);
--	return rc;
-+	return rc >= 0 ? 0 : rc;
- }
- 
- static int action_init(struct ndctl_dimm *dimm, struct action_context *actx)
+diff --git a/test/core.c b/test/core.c
+index b9e3bbf7d7a9..888f5d8c0e42 100644
+--- a/test/core.c
++++ b/test/core.c
+@@ -168,6 +168,16 @@ int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
+ 				&& !ndctl_test_attempt(test,
+ 					KERNEL_VERSION(4, 7, 0)))
+ 			continue;
++
++		/*
++		 * Skip device-dax bus-model modules on pre-v5.1
++		 */
++		if ((strstr(name, "dax_pmem_core")
++				|| strstr(name, "dax_pmem_compat"))
++				&& !ndctl_test_attempt(test,
++					KERNEL_VERSION(5, 1, 0)))
++			continue;
++
+ retry:
+ 		rc = kmod_module_new_from_name(*ctx, name, mod);
+ 		if (rc) {
 
 _______________________________________________
 Linux-nvdimm mailing list
