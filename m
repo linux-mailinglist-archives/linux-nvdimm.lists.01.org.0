@@ -1,38 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EFB77C35
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:38 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D988177C36
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 27 Jul 2019 23:55:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C8411212E46FA;
-	Sat, 27 Jul 2019 14:58:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 31ADD212E4700;
+	Sat, 27 Jul 2019 14:58:09 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.151; helo=mga17.intel.com;
+ client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 95370212E259E
- for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:58:02 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id A9783212E25AC
+ for <linux-nvdimm@lists.01.org>; Sat, 27 Jul 2019 14:58:07 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:55:35 -0700
-X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="182272570"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:55:40 -0700
+X-IronPort-AV: E=Sophos;i="5.64,315,1559545200"; d="scan'208";a="254770174"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2019 14:55:35 -0700
-Subject: [ndctl PATCH v2 22/26] ndctl/namespace: Clarify 16M minimum size
- requirement
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2019 14:55:40 -0700
+Subject: [ndctl PATCH v2 23/26] ndctl/namespace: Report ENOSPC when regions
+ are full
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Sat, 27 Jul 2019 14:41:18 -0700
-Message-ID: <156426367840.531577.5216422482939398348.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 27 Jul 2019 14:41:23 -0700
+Message-ID: <156426368351.531577.5819409272263585965.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
@@ -53,66 +53,43 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-The kernel enforces a minimum size for any "claimed" namespace i.e. any
-namespace that is wrapped in an address abstraction like the btt or
-devdax. The "no such device or address" default print is confusing, so
-replace with an explicit error message.
+The create-namespace error message:
 
-Reported-by: Jane Chu <jane.chu@oracle.com>
+    failed to create namespace: Resource temporarily unavailable
+
+...is misleading because the lack of capacity is permanent until the
+user frees up space.
+
+Trap EAGAIN and translate to ENOSPC in case the region capacity search
+fails:
+
+    failed to create namespace: No space left on device
+
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/namespace.c |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ ndctl/namespace.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index 69900c4e4e60..75ea366574f8 100644
+index 75ea366574f8..f215f77a94e1 100644
 --- a/ndctl/namespace.c
 +++ b/ndctl/namespace.c
-@@ -534,6 +534,7 @@ static int validate_namespace_options(struct ndctl_region *region,
- 	unsigned long long size_align, units = 1, resource;
- 	struct ndctl_pfn *pfn = NULL;
- 	struct ndctl_dax *dax = NULL;
-+	bool default_size = false;
- 	unsigned int ways;
- 	int rc = 0;
+@@ -1806,6 +1806,15 @@ static int do_xaction_namespace(const char *namespace,
+ 	if (ri_ctx.f_out && ri_ctx.f_out != stdout)
+ 		fclose(ri_ctx.f_out);
  
-@@ -548,10 +549,13 @@ static int validate_namespace_options(struct ndctl_region *region,
- 		p->size = __parse_size64(param.size, &units);
- 	else if (ndns)
- 		p->size = ndctl_namespace_get_size(ndns);
-+	else
-+		default_size = true;
- 
- 	/*
- 	 * Validate available capacity in the create case, in the
--	 * reconfigure case the capacity is already allocated.
-+	 * reconfigure case the capacity is already allocated. A default
-+	 * size will be established from available capacity.
- 	 */
- 	if (!ndns) {
- 		rc = validate_available_capacity(region, p);
-@@ -719,6 +723,21 @@ static int validate_namespace_options(struct ndctl_region *region,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * Catch attempts to create sub-16M namespaces to match the
-+	 * kernel's restriction (see nd_namespace_store())
-+	 */
-+	if (p->size < SZ_16M && p->mode != NDCTL_NS_MODE_RAW) {
-+		if (default_size) {
-+			debug("%s: insufficient capacity for mode: %s\n",
-+					region_name, util_nsmode_name(p->mode));
-+			return -EAGAIN;
-+		}
-+		error("'--size=' must be >= 16MiB for '%s' mode\n",
-+				util_nsmode_name(p->mode));
-+		return -EINVAL;
++	if (action == ACTION_CREATE && rc == -EAGAIN) {
++		/*
++		 * Namespace creation searched through all candidate
++		 * regions and all of them said "nope, I don't have
++		 * enough capacity", so report -ENOSPC
++		 */
++		rc = -ENOSPC;
 +	}
 +
- 	if (param.sector_size) {
- 		struct ndctl_btt *btt;
- 		int num, i;
+ 	return rc;
+ }
+ 
 
 _______________________________________________
 Linux-nvdimm mailing list
