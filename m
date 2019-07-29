@@ -1,56 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7D2781BE
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 28 Jul 2019 23:20:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D48D782C0
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jul 2019 02:14:23 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1FEDD212DA5DD;
-	Sun, 28 Jul 2019 14:22:46 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A1EA9212E25B0;
+	Sun, 28 Jul 2019 17:16:52 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=91.232.21.100; helo=sendnbc.com.ua;
- envelope-from=info@sendnbc.com.ua; receiver=linux-nvdimm@lists.01.org 
-Received: from sendnbc.com.ua (mail.sendnbc.com.ua [91.232.21.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D6D4A212B0FD0
- for <linux-nvdimm@lists.01.org>; Sun, 28 Jul 2019 14:22:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=sendnbc.com.ua; s=dkim; h=List-Id:List-Unsubscribe:Content-Type:
- MIME-Version:To:Reply-To:From:Subject:Date:Message-ID:Sender:Cc:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
- References:List-Help:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=yA0brnbE4LCrJo4c/FA/16hQduMW/p/aghN5pzuqF3c=; b=wzAdjN/As9+/c3hC3WKxqAeuXG
- RrhpTp7zSLbY6KEQBP2uMllQ6rza5N3Nh764jYd+HgEUJlYIClH75qU7BDUcucPixQd68VYde6KsB
- qu3zjqZRclz+BvBej+Mkz3ZlRRA3aZPth52mUR/yHRSr+KBs5RZUxG/FjvNCkMRCu8ag=;
-Received: by sendnbc.com.ua with esmtpa (Exim 4.92)
- id 1hrqaQ-0003Dr-SI; Mon, 29 Jul 2019 00:20:10 +0300
-Message-ID: <f472364ab9c24ddcee7441281af97984@sendnbc.com.ua>
-Date: Sun, 28 Jul 2019 21:20:10 +0000
-Subject: =?utf-8?Q?=D0=9E=D1=86=D0=B5=D0=BD=D0=BA=D0=B0_=D0=BF=D0=BE?= KPI
-From: Helena <info@sendnbc.com.ua>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
+ helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
+ [211.29.132.246])
+ by ml01.01.org (Postfix) with ESMTP id 2FA1C212CFEC8
+ for <linux-nvdimm@lists.01.org>; Sun, 28 Jul 2019 17:16:48 -0700 (PDT)
+Received: from dread.disaster.area (pa49-195-139-63.pa.nsw.optusnet.com.au
+ [49.195.139.63])
+ by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 4D89E43DFA5;
+ Mon, 29 Jul 2019 10:14:15 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1hrtHo-0000Hv-BU; Mon, 29 Jul 2019 10:13:08 +1000
+Date: Mon, 29 Jul 2019 10:13:08 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Murphy Zhou <jencce.kernel@gmail.com>
+Subject: Re: xfs quota test xfs/050 fails with dax mount option and "-d
+ su=2m,sw=1" mkfs option
+Message-ID: <20190729001308.GX7689@dread.disaster.area>
+References: <20190724094317.4yjm4smk2z47cwmv@XZHOUW.usersys.redhat.com>
 MIME-Version: 1.0
-X-Sender: bounce@sendnbc.com.ua
-X-Report-Abuse: Please report abuse for this campaign here:
- http://stata.kpi4.in.ua/campaigns/ae67408eja1ea/report-abuse/xx572kqs3sa91/mc072o9kbl74a
-X-Receiver: linux-nvdimm@lists.01.org
-X-Bjyo-Tracking-Did: 0
-X-Bjyo-Subscriber-Uid: mc072o9kbl74a
-X-Bjyo-Mailer: SwiftMailer - 5.4.x
-X-Bjyo-EBS: http://stata.kpi4.in.ua/lists/block-address
-X-Bjyo-Delivery-Sid: 1
-X-Bjyo-Customer-Uid: rm355dplh31be
-X-Bjyo-Customer-Gid: 1
-X-Bjyo-Campaign-Uid: ae67408eja1ea
-Precedence: bulk
-Feedback-ID: ae67408eja1ea:mc072o9kbl74a:xx572kqs3sa91:rm355dplh31be
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+Content-Disposition: inline
+In-Reply-To: <20190724094317.4yjm4smk2z47cwmv@XZHOUW.usersys.redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=P6RKvmIu c=1 sm=1 tr=0 cx=a_idp_d
+ a=fNT+DnnR6FjB+3sUuX8HHA==:117 a=fNT+DnnR6FjB+3sUuX8HHA==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=0o9FgrsRnhwA:10
+ a=7-415B0cAAAA:8 a=btMhTgiUG6S1lTvPJdgA:9 a=CjuIK1q_8ugA:10
+ a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
 List-Unsubscribe: <https://lists.01.org/mailman/options/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=unsubscribe>
@@ -59,152 +51,58 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Reply-To: Helena <info@sendnbc.com.ua>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-0J7Qv9C70LDRgtCwINC/0L4g0YDQtdC30YPQu9GM0YLQsNGC0YMgS1BJIOKAkyDQvNC+0YLQuNCy
-0LDRhtC40Y8gNC4wCtCa0LDQuiDRgSDQvtCz0YDQsNC90LjRh9C10L3QvdGL0Lwg0LHRjtC00LbQ
-tdGC0L7QvCDQvdCwCtC/0LXRgNGB0L7QvdCw0Lsg0LTQvtCx0LjRgtGM0YHRjyDRgNC+0YHRgtCw
-CtGN0YTRhNC10LrRgtC40LLQvdC+0YHRgtC4INC/0LXRgNGB0L7QvdCw0LvQsCDQuCDQutC+0LzQ
-v9Cw0L3QuNC4CtCe0L/Qu9Cw0YLQsCDQv9C+INGA0LXQt9GD0LvRjNGC0LDRgtGDOiBLUEkt0LzQ
-vtGC0LjQstCw0YbQuNGPIOKAkwrRjdGC0L4g0L/RgNCw0LrRgtC40YfQvdCw0Y8g0Lgg0Y3RhNGE
-0LXQutGC0LjQstC90LDRjwrRgtC10YXQvdC+0LvQvtCz0LjRjywg0LrQvtGC0L7RgNCw0Y8g0L/Q
-vtC30LLQvtC70LjRgjoKLSDRgNCw0LfRgNCw0LHQvtGC0LDRgtGMINGB0LjRgdGC0LXQvNGDINC+
-0YbQtdC90LrQuArRgdC+0YLRgNGD0LTQvdC40LrQvtCyINGB0LHRi9GC0L7QstGL0YUg0Lgg0YHQ
-tdGA0LLQuNGB0L3Ri9GFCtC/0L7QtNGA0LDQt9C00LXQu9C10L3QuNC5Ci0g0YDQsNC30YDQsNCx
-0L7RgtCw0YLRjCDRgdC40YHRgtC10LzRgyDQvNCw0YLQtdGA0LjQsNC70YzQvdC+0LPQviDQuArQ
-vdC10LzQsNGC0LXRgNC40LDQu9GM0L3QvtCz0L4g0YHRgtC40LzRg9C70LjRgNC+0LLQsNC90LjR
-jyDCoMKgwqDCoAotINC/0L7RgdGC0YDQvtC40YLRjCDRgdC40YHRgtC10LzRgyDRgtCw0LosINGH
-0YLQvtCx0Ysg0L7Qv9C70LDRgtCwCtC/0YDQtdC80LjQuSDQuCDQsdC+0L3Rg9GB0L7QsiDRhNC+
-0YDQvNC40YDQvtCy0LDQu9Cw0YHRjCDQt9CwCtGB0YfQtdGCINC00L7Qv9C+0LvQvdC40YLQtdC7
-0YzQvdC+INC/0L7Qu9GD0YfQtdC90L3QvtC5CtC/0YDQuNCx0YvQu9C4INCy0L/Qu9C+0YLRjCDQ
-tNC+INC00L7Qu9C20L3QvtGB0YLQuCDQsCDRgtCw0Log0LbQtQrQv9C+INGE0LDQutGC0YMg0L/R
-gNCw0LrRgtC40LrRg9C80LAKLSDQo9GH0LDRgdGC0L3QuNC60Lgg0L/QvtC70YPRh9Cw0YIg0L/R
-gNC+0LXQutGC0Ysg0YHQuNGB0YLQtdC8CtC+0L/Qu9Cw0YLRiyDQuCDQv9GA0LXQvNC40YDQvtCy
-0LDQvdC40Y8g0LTQu9GPINGA0Y/QtNCwCtC00L7Qu9C20L3QvtGB0YLQtdC5LCDQsCDRgtCw0LrQ
-ttC1INC/0YDQuNC80LXRgNGLINC+0YIK0JDQstGC0L7RgNC+0LIuCsKgwqDCoMKgCtCU0LvRjyDQ
-utC+0LPQvjog0J/RgNC+0LPRgNCw0LzQvNCwINC/0YDQtdC00L3QsNC30L3QsNGH0LXQvdCwCtGA
-0YPQutC+0LLQvtC00LjRgtC10LvRj9C8INC4INGC0L7Qvy3QvNC10L3QtdC00LbQtdGA0LDQvArQ
-utC+0LzQv9Cw0L3QuNC5LCDRgNGD0LrQvtCy0L7QtNC40YLQtdC70Y/QvArQv9C+0LTRgNCw0LfQ
-tNC10LvQtdC90LjQuSDQuCBIUi3RgdC/0LXRhtC40LDQu9C40YHRgtCw0LwsCtC+0YLQstC10YLR
-gdGC0LLQtdC90L3Ri9C8INC30LAg0YDQsNC30YDQsNCx0L7RgtC60YMg0LgK0LLQvdC10LTRgNC1
-0L3QuNC1INGB0LjRgdGC0LXQvCDQvtGG0LXQvdC60Lgg0LgK0LzQsNGC0LXRgNC40LDQu9GM0L3Q
-vtCz0L4g0Lgg0L3QtdC80LDRgtC10YDQuNCw0LvRjNC90L7Qs9C+CtGB0YLQuNC80YPQu9C40YDQ
-vtCy0LDQvdC40Y8g0L/QtdGA0YHQvtC90LDQu9CwLiDCoMKgwqDCoArQkdC40LfQvdC10YEt0L/R
-gNC+0LPRgNCw0LzQvNCwOiDCoMKgwqDCoArQnNC+0LTRg9C70Ywg4oSWMS4g0JrQsNC6INC00L7Q
-sdC40LLQsNGC0YzRgdGPINC/0LjQutC+0LLQvtC5CtGN0YTRhNC10LrRgtC40LLQvdC+0YHRgtC4
-INGBINC/0L7QvNC+0YnRjNGOINC/0YDQsNCy0LjQu9GM0L3QvtC5CtGB0LjRgdGC0LXQvNGLIEtQ
-SS3QvNC+0YLQuNCy0LDRhtC40LgKLSDQmtCw0LrQuNC1INC/0L7QutCw0LfQsNGC0LXQu9C4INC0
-0LXQudGB0YLQstC40YLQtdC70YzQvdC+CtC40LzQtdGO0YIg0LfQvdCw0YfQtdC90LjQtQotINCa
-0LDQuiDQvtGG0LXQvdC40YLRjCDRgNCw0LHQvtGC0YMg0LrQsNC20LTQvtCz0L4K0YHQvtGC0YDR
-g9C00L3QuNC60LAKLSDQmtCw0Log0YDQsNC30LvQuNGH0LDRgtGMINC70YPRh9GI0LjRhSDRgdC+
-0YLRgNGD0LTQvdC40LrQvtCyCsKgwqDCoMKgCi0g0JrQsNC60L7QuSDRgNCw0LfQvNC10YAg0YTQ
-vtC90LTQsCDQvtC/0LvQsNGC0Ysg0YLRgNGD0LTQsArQtNC+0LvQttC10L0g0LHRi9GC0Ywg0LIg
-0LrQvtC80L/QsNC90LjQuArQn9C+0YDQvtCzINC4INC/0L7RgtC+0LvQvtC6INC/0YDQtdC80LjQ
-sNC70YzQvdC+0LPQviDRhNC+0L3QtNCwLArQn9GA0L7RhtC10L3RgtC+0LzQsNC90LjRjzog0L/Q
-u9GO0YHRiyDQuCDQvNC40L3Rg9GB0YsKLSDQn9GA0LjQvNC10YAg0YDQsNGB0L/RgNC10LTQtdC7
-0LXQvdC40Y8g0L/RgNC10LzQuNCw0LvRjNC90L7Qs9C+CtGE0L7QvdC00LAg0LIg0LfQsNCy0LjR
-gdC40LzQvtGB0YLQuCDQvtGCINGB0LXQt9C+0L3QvdC+0YHRgtC4CtC/0YDQvtC00LDQtgotINCh
-0LLRj9C30YwgS1BJINGBINCx0L7QvdGD0YHQsNC80LggwqDCoMKgwqAKLSDQmtCw0Log0LLQvdC1
-0LTRgNC40YLRjCDRgdC40YHRgtC10LzRgyBLUEkt0LzQvtGC0LjQstCw0YbQuNC4Ci0g0J7RiNC4
-0LHQutC4INCy0L3QtdC00YDQtdC90LjRjyBLUEkt0LzQvtGC0LjQstCw0YbQuNC4INC4INC60LDQ
-ugrQuNGFINC/0YDQtdC+0LTQvtC70LXRgtGMCi0g0J/RgNC40LzQtdGAINCf0LvQsNC90LAg0LLQ
-vdC10LTRgNC10L3QuNGPIEtQSS3QvNC+0YLQuNCy0LDRhtC40LgK0JzQvtC00YPQu9GMIOKEljIu
-IEtQSS3QnNCe0KLQmNCS0JDQptCY0K8g0JIg0J/QoNCe0JTQkNCW0JDQpSDQmArQnNCQ0KDQmtCV
-0KLQmNCd0JPQlQotINCa0LDQuiDQvtCx0LXRgdC/0LXRh9C40YLRjCDQn9Cg0J7Ql9Cg0JDQp9Cd
-0J7QodCi0Kwg0L7RgtC00LXQu9CwCtC/0YDQvtC00LDQtiDQuCDQutCw0LbQtNC+0LPQviDRgdC+
-0YLRgNGD0LTQvdC40LrQsD8KLSDQmtCw0LrQuNC1INC/0LvQsNC90Ysg0L/RgNC+0LTQsNC2INGD
-0YHRgtCw0L3QvtCy0LjRgtGMINC90LAK0YLQtdC60YPRidC40Lkg0LPQvtC0INC4INC80LXRgdGP
-0YYg0LTQu9GPINC60L7QvNC/0LDQvdC40Lgg0LgK0LrQsNC20LTQvtCz0L4g0YLQvtGA0LPQvtCy
-0L7Qs9C+INC/0YDQtdC00YHRgtCw0LLQuNGC0LXQu9GPPwotINCV0YHQu9C4INGDINCy0LDRgSDQ
-vdC10LTQvtGB0YLQsNGC0L7Rh9C90YvQuSDQv9GA0LjRgNC+0YHRggrQvdC+0LLRi9GFINC60LvQ
-uNC10L3RgtC+0LIsINC60LDQutC40LUg0L/QvtC60LDQt9Cw0YLQtdC70LgK0YPRgdGC0LDQvdC+
-0LLQuNGC0YwsINGH0YLQvtCx0Ysg0L7QsdC10YHQv9C10YfQuNGC0YwK0YHRg9GJ0LXRgdGC0LLQ
-tdC90L3Ri9C5INC/0YDQuNGA0L7RgdGCLgotINCa0LDQuiDQvNC+0YLQuNCy0LjRgNC+0LLQsNGC
-0Ywg0YPQvNC10L3RjNGI0LjRgtGMCtC/0YDQvtGB0YDQvtGH0LXQvdC90YPRjiDQtNC10LHQuNGC
-0L7RgNGB0LrRg9GOCtC30LDQtNC+0LvQttC10L3QvdC+0YHRgtGMINC4INC+0LHQvtGA0LDRh9C4
-0LLQsNC10LzQvtGB0YLRjCDQlNCXCi0g0JrQsNC6INC80L7RgtC40LLQuNGA0L7QstCw0YLRjCDQ
-vdCwINGB0L7RhdGA0LDQvdC10L3QuNC1LArRgNCw0YHRiNC40YDQtdC90LjQtSDQutC70LjQtdC9
-0YLRgdC60L7QuSDQsdCw0LfRiwotINCa0LDQuiDQvNC+0YLQuNCy0LjRgNC+0LLQsNGC0Ywg0L3Q
-sCDRgNC+0YHRggrQv9GA0LjQsdGL0LvRjNC90L7RgdGC0Lgg0LrQu9C40LXQvdGC0L7QsgotINCa
-0LDQuiDQvtCx0LXRgdC/0LXRh9C40YLRjCDQuCDQuNC30LzQtdGA0LjRgtGMCtGD0LTQvtCy0LvQ
-tdGC0LLQvtGA0LXQvdC90L7RgdGC0Ywg0YbQtdC70LXQstGL0YUg0LrQu9C40LXQvdGC0L7Qsgot
-INCj0L/RgNCw0LLQu9C10L3QuNC1INC30LDRgtGA0LDRgtCw0LzQuCDQvdCwINGB0LHRi9GCLgrQ
-l9Cw0YLRgNCw0YLRiyDQvdCwINC/0YDQuNGA0LDRidGR0L3QvdGL0Lkg0L7QsdGK0LXQvCDQv9GA
-0L7QtNCw0LYK0JzQvtC00YPQu9GMIOKEljMuIEtQSS3QnNCe0KLQmNCS0JDQptCY0K8g0JIg0KHQ
-ndCQ0JHQltCV0J3QmNCYINCYCtCf0KDQntCY0JfQktCe0JTQodCi0JLQlQotINCa0LDQuiDQvtGG
-0LXQvdC40YLRjCDRgNCw0LHQvtGC0YMg0L3QsNGH0LDQu9GM0L3QuNC60LAK0L7RgtC00LXQu9Cw
-INC/0YDQvtC40LfQstC+0LTRgdGC0LLQsCwg0LHRgNC40LPQsNC00LjRgNC+0LIsINCe0KLQmiwK
-0YHQu9GD0LbQsdGLINC/0L4g0L7RhdGA0LDQvdC1INGC0YDRg9C00LAsINC40L3QttC10L3QtdGA
-0L7QsiwK0LzQsNGB0YLQtdGA0L7QsiDRg9GH0LDRgdGC0LrQvtCyLCDQvdCw0YfQsNC70YzQvdC4
-0LrQsCDQvtGC0LTQtdC70LAK0YHQvdCw0LHQttC10L3QuNGPLCDQvNC10L3QtdC00LbQtdGA0L7Q
-siDQv9C+INGB0L3QsNCx0LbQtdC90LjRjgotINCa0LDQuiDQvtC/0YDQtdC00LXQu9C40YLRjCDQ
-utCw0YfQtdGB0YLQstC10L3QvdGL0LUK0L/QvtC60LDQt9Cw0YLQtdC70LggwqDCoMKgwqAKLSDQ
-odGF0LXQvNGLINGA0LDRgdGH0LXRgtCwINGE0L7QvdC00LAg0L7Qv9C70LDRgtGLINGC0YDRg9C0
-0LA6CtGB0YLQsNCy0LrQuCDQuCDQsdC+0L3Rg9GB0YsKLSDQmtCw0Log0YHRhNC+0YDQvNC40YDQ
-vtCy0LDRgtGMINCx0Y7QtNC20LXRggrQv9GA0L7QuNC30LLQvtC00YHRgtCy0LAgwqDCoMKgwqAK
-LSDQmtCw0Log0L/Qu9Cw0L3QuNGA0L7QstCw0YLRjCDQvtGB0YLQsNGC0LrQuCDQs9C+0YLQvtCy
-0L7QuQrQv9GA0L7QtNGD0LrRhtC40LggwqDCoMKgwqAK0JzQntCU0KPQm9CsIOKEljQuIEtQSS3Q
-nNCe0KLQmNCS0JDQptCY0K8g0JTQm9CvINCh0JrQm9CQ0JTQkCDQmArQotCg0JDQndCh0J/QntCg
-0KLQndCe0Jkg0KHQm9Cj0JbQkdCrLgotINCa0LDQuiDQvtGG0LXQvdC40YLRjCDRgNCw0LHQvtGC
-0YMg0YHQvtGC0YDRg9C00L3QuNC60L7QsgrRgdC60LvQsNC00LAg0Lgg0KLQrdChCi0g0JfQsCDQ
-tNC+0YHRgtC40LbQtdC90LjQtSDQutCw0LrQuNGFINC/0L7QutCw0LfQsNGC0LXQu9C10LkK0L/Q
-u9Cw0YLRj9GC0YHRjyDQsdC+0L3Rg9GB0YsKLSDQmtCw0Log0YHRhNC+0YDQvNC40YDQvtCy0LDR
-gtGMINCx0Y7QtNC20LXRggrRgdC60LvQsNC00LjRgNC+0LLQsNC90LjRjwotINCa0LDQuiDQv9C7
-0LDQvdC40YDQvtCy0LDRgtGMINGI0YLQsNGCINGB0LrQu9Cw0LTRgdC60LjRhQrRgNCw0LHQvtGC
-0L3QuNC60L7QsiDQuCDQotCt0KEKLSDQmtCw0Log0YHRhNC+0YDQvNC40YDQvtCy0LDRgtGMINCx
-0Y7QtNC20LXRgiDQotCt0KEgwqDCoMKgwqAK0JzQntCU0KPQm9CsIOKEljUuIEtQSS3QnNCe0KLQ
-mNCS0KbQmNCvINCh0J7QotCg0KPQlNCd0JjQmtCe0JIK0JHQrdCaLdCe0KTQmNCh0JA6INCR0KPQ
-pdCT0JDQm9Ci0JXQoNCY0JgsIEhSLdCh0JvQo9CW0JHQqywg0JjQoi4KLSDQmtCw0Log0L7RhtC1
-0L3QuNGC0Ywg0L7QsdGK0LXQvCDQstGL0L/QvtC70L3Rj9C10LzQvtC5CtGA0LDQsdC+0YLRiyDR
-gdC+0YLRgNGD0LTQvdC40LrQsNC80LgKLSDQmtCw0Log0L7RhtC10L3QuNGC0Ywg0LrQsNGH0LXR
-gdGC0LLQviDRgNCw0LHQvtGC0YsgwqDCoMKgwqAKLSDQmtCw0Log0YDQsNGB0YHRh9C40YLQsNGC
-0Ywg0L/QvtGC0YDQtdCx0L3QvtGB0YLRjCDQsgrQv9C10YDRgdC+0L3QsNC70LUg0L/QviDQvtGC
-0LTQtdC70LDQvAotINCa0LDQuiDRgdC+0LrRgNCw0YLQuNGC0Ywg0YTQvtC90LQg0L7Qv9C70LDR
-gtGLINGC0YDRg9C00LAsINC90LUK0YHQvdC40LbQsNGPINC80L7RgtC40LLQsNGG0LjQuCDRgdC+
-0YLRgNGD0LTQvdC40LrQvtCyPwrQnNCe0JTQo9Cb0Kwg4oSWNi4g0JrQkNCaINCX0JDQodCi0JDQ
-ktCY0KLQrCDQm9Cu0JTQldCZICLQk9Ce0KDQldCi0KwiCtCd0JAg0KDQkNCR0J7QotCVCtCa0LDQ
-uiDQv9GA0LXQstGA0LDRgtC40YLRjCDQu9C10L3QuNCy0YvRhSDQsdC10LfQtNC10LvRjNC90LjQ
-utC+0LIK0LIg0LDQvNCx0LjRhtC40L7Qt9C90YvRhSDRgtGA0YPQtNC+0LPQvtC70LjQutC+0LIu
-Ci0g0JrQsNC6INC40LfQvNC10YDQuNGC0Ywg0KHRh9Cw0YHRgtGM0LUg0L3QsCDRgNCw0LHQvtGC
-0LUg0Lgg0LrQsNC6CtCh0YfQsNGB0YLRjNC1INGB0L7RgtGA0YPQtNC90LjQutCwINCy0LvQuNGP
-0LXRgiDQvdCwINC10LPQvgrRgNC10LfRg9C70YzRgtCw0YLQuNCy0L3QvtGB0YLRjAotINCa0LDQ
-uiDQuNC30LzQtdC90LjRgtGMINC/0L7QstC10LTQtdC90LjQtSDRgdC+0YLRgNGD0LTQvdC40LrQ
-vtCyLgoi0J/RgNCw0LLQuNC70YzQvdGL0LUg0LvRjtC00Lgg0LIg0LrQvtC80LDQvdC00LUiLiDQ
-n9C+0LjRgdC6CtC70Y7QtNC10Lkg0YEg0LLRi9GB0L7QutC+0Lkg0LLQvdGD0YLRgNC10L3QvdC1
-0Lkg0LzQvtGC0LjQstCw0YbQuNC10LkKLSDQmtCw0Log0YbQtdC70Lgg0LfQsNC20LjQs9Cw0Y7R
-giDRgdC+0YLRgNGD0LTQvdC40LrQvtCyPyDCoMKgwqDCoAotINCi0LXRgdGC0LjRgNGD0LXQvCDQ
-vdCwINGB0LXQsdC1LiDQp9GC0L4g0JLQsNGBCtC80L7RgtC40LLQuNGA0YPQtdGCINC60YDQvtC8
-0LUg0LfQsNGA0L/Qu9Cw0YLRiwotINCS0LvQtdC50YLQtSDQsiDRgNCw0LHQvtGC0YMg0LTRg9GI
-0YMuINCd0LXQvNCw0YLQtdGA0LjQsNC70YzQvdC+0LUK0YHRgtC40LzRg9C70LjRgNC+0LLQsNC9
-0LjQtQrQlNCw0YLQsDogOCDQsNCy0LPRg9GB0YLQsArQl9Cw0L/QvtC70L3QuNGC0Ywg0LfQsNGP
-0LLQutGDINC00LvRjyDRg9GH0LDRgdGC0LjRjyA+Cmh0dHA6Ly9zdGF0YS5rcGk0LmluLnVhL2Nh
-bXBhaWducy9hZTY3NDA4ZWphMWVhL3RyYWNrLXVybC9tYzA3Mm85a2JsNzRhLzk3ZjA4YTA2NDE5
-MTFkZWJlNTc0OTRhNTk2NmMwNDk0ZTA3ZDExM2EKwqAK0JXRgdC70Lgg0YMg0JLQsNGBINCy0L7Q
-t9C90LjQutC90YPRgiDQtNC+0L/QvtC70L3QuNGC0LXQu9GM0L3Ri9C1CtCy0L7Qv9GA0L7RgdGL
-IC0K0LzRiyDQstGB0LXQs9C00LAg0L3QsCDRgdCy0Y/Qt9C4OgpodHRwOi8vc3RhdGEua3BpNC5p
-bi51YS9jYW1wYWlnbnMvYWU2NzQwOGVqYTFlYS90cmFjay11cmwvbWMwNzJvOWtibDc0YS9mMWFi
-ZGU1NzVmNTUxN2M3NjIxMDMxZjRkMTdjOTBhOTE1NWY1N2JhCmh0dHA6Ly9zdGF0YS5rcGk0Lmlu
-LnVhL2NhbXBhaWducy9hZTY3NDA4ZWphMWVhL3RyYWNrLXVybC9tYzA3Mm85a2JsNzRhL2U3NjIx
-MTQwYWViZjVhYTlkY2M0YWI2MTRjNTRjNjM4MGEyY2M4YzQKaHR0cDovL3N0YXRhLmtwaTQuaW4u
-dWEvY2FtcGFpZ25zL2FlNjc0MDhlamExZWEvdHJhY2stdXJsL21jMDcybzlrYmw3NGEvODM3YzZj
-ODVlMTBmNzVjNmE1NTg5MjU2YzhiNTdlYjk2MzY4YjQ5YgpodHRwOi8vc3RhdGEua3BpNC5pbi51
-YS9jYW1wYWlnbnMvYWU2NzQwOGVqYTFlYS90cmFjay11cmwvbWMwNzJvOWtibDc0YS80ZGY1NGU5
-Mzk5NzEzNDM5MjhmMjIyOGFiOGQ5YjI4ZjUwMDFhOTNhCmh0dHA6Ly9zdGF0YS5rcGk0LmluLnVh
-L2NhbXBhaWducy9hZTY3NDA4ZWphMWVhL3RyYWNrLXVybC9tYzA3Mm85a2JsNzRhLzI5NmI0NTkz
-ZmM5MjVlZTU4M2JkYjU2NWUxZDk4MGM4MzY3MmFhMWYK0KPQstCw0LbQsNC10LzRi9C5INC/0L7Q
-tNC/0LjRgdGH0LjQui4g0JTQsNC90L3QvtC1INC/0LjRgdGM0LzQviDQvdC1CtGC0YDQtdCx0YPQ
-tdGCINC+0YLQstC10YLQsC4K0KFvb9Cx0YnQtdC90LjQtSDQv2/QtNCzb9GCb9Cy0LvQtdC9byDQ
-uCBh0LTRgNC10YFv0LJh0L1vINC9YQrRjdC70LXQutGC0YBv0L3QvdGL0LkgYdC00YDQtdGBIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcuCtCU0LvRjyDQvtGC0LrQsNC30LAg0L7RgiDRgNCw0YHR
-gdGL0LvQutC4INGJ0ZHQu9C60L3QuNGC0LUg0L/QvgrRgdGB0YvQu9C60LUg0L7RgtC60LDQtyDQ
-vtGCINC/0L7Rh9GC0YsgTGlzdC1VbnN1YnNjcmliZQpodHRwOi8vc3RhdGEua3BpNC5pbi51YS9s
-aXN0cy94eDU3MmtxczNzYTkxL3Vuc3Vic2NyaWJlL21jMDcybzlrYmw3NGEvYWU2NzQwOGVqYTFl
-YQrQuNC70Lgg0L/QvtC20LDQu9C+0LLQsNGC0YzRgdGPINC90LAg0KHQv9Cw0LwKaHR0cDovL3N0
-YXRhLmtwaTQuaW4udWEvbGlzdHMveHg1NzJrcXMzc2E5MS91bnN1YnNjcmliZS9tYzA3Mm85a2Js
-NzRhL2FlNjc0MDhlamExZWEKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEu
-b3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+On Wed, Jul 24, 2019 at 05:43:17PM +0800, Murphy Zhou wrote:
+> Hi,
+> 
+> As subject.
+> 
+> -d su=2m,sw=1     && -o dax  fail
+> -d su=2m,sw=1     && NO dax  pass
+> no su mkfs option && -o dax  pass
+> no su mkfs option && NO dax  pass
+> 
+> On latest Linus tree. Reproduce every time.
+> 
+> Testing on older kernels are going on to see if it's a regression.
+> 
+> Is this failure expected ?
+
+I'm not sure it's actually a failure at all. DAX does not do delayed
+allocation, so if the write is aligned to sunit and at EOF it will
+round the allocation up to a full stripe unit. IOWs, for this test
+once the file size gets beyond sunit on DAX, writes will allocate in
+sunit chunks.
+
+And, well, xfs/050 has checks in it for extent size hints, and
+notruns if:
+
+        [ $extsize -ge 512000 ] && \
+                _notrun "Extent size hint is too large ($extsize bytes)"
+
+Because EDQUOT occurs when:
+
+>     + URK 99: 2097152 is out of range! [3481600,4096000]
+
+the file has less than 3.5MB or > 4MB allocated to it, and for a
+stripe unit of > 512k, EDQUOT will occur at  <3.5MB. That's what
+we are seeing here - a 2MB allocation at offset 2MB is > 4096000
+bytes, and so it gets EDQUOT at that point....
+
+IOWs, this looks like a test problem, not a code failure...
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
