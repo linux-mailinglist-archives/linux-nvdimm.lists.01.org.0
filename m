@@ -2,68 +2,31 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D7778EF7
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jul 2019 17:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E179A1A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jul 2019 22:38:08 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5B003212E470A;
-	Mon, 29 Jul 2019 08:21:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 85998212E471A;
+	Mon, 29 Jul 2019 13:40:37 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id ACAED212AB4D4
- for <linux-nvdimm@lists.01.org>; Mon, 29 Jul 2019 08:21:35 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id o101so62900366ota.8
- for <linux-nvdimm@lists.01.org>; Mon, 29 Jul 2019 08:19:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rCT6H9w7mRPFe9tLjSH6a/cwajZAI16F1Mz9k4S0jwo=;
- b=bw8SQC4b3IVQPpG8+lymx/5VvfWVb17DQbUIblaNzQ+DivE/9bZrLa1es+hytSIsb4
- st4IVP90+jBqEINN4yoCPm61vk9e/iayOi66FNlhn5dYMF3FkwdxXmRS9QBPg3jZ/EBI
- 1/zEryAVLcFGSYfWtnkGzTIacI0eDBEQI3LL2MJwDFGuXVFaoLNEvv7HU4DOrtwcyX3c
- 8BoKKJMt1wbDx1ZPmjpdztw6bJ+1/eFNc+39XbtVdYu3o5Zp2RLdaBT9RRza5m3Xo+CG
- XWE9Km4WBRApykf0CL9lWcPxOvhP4EisuNC6Ehj9bIcJ/nbDXkwpossXNQEbG2s8wOKw
- coIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=rCT6H9w7mRPFe9tLjSH6a/cwajZAI16F1Mz9k4S0jwo=;
- b=cJaRoqY8pNC8HXhW9v6yQfu60zZsnrs7kQ61TX50WC7IotPvup4CEmncOjz1gUiv54
- +YJ/ucLHCEBX5WmnXtbQgLj+PTPCrTcgEjrVFUTTuI0po5imDzQTzURCwoZd2p8Y8nI5
- 8JyJqWUF3LK6dDq1OKCopXYfcYC1sP+dRCboxj9a0y3nxR5tcTQjg7qFdAQ/O3l/39Cm
- F+cQU8NhSJFP7788av1CM2q9aakQDf23bkDKfRSIdIW7UFDOWVCnSsfqDQAwE4Ks5CR9
- KxZxyKuxMNilBq5EX7MiCiNeszEAOMlFmwiJg3p2oEHajiiFrNJUrB6Qu583b34jNJ2f
- vs7Q==
-X-Gm-Message-State: APjAAAV60UzP64tELq1n8L54DjFE1B7QVQazND6P+d5xhEbR3REbnZUL
- N1im40eEmbI2BNoA3dY74gRrJUXu3sU828kqTflXyg==
-X-Google-Smtp-Source: APXvYqxYWAjs7eLjr+8klpuvyVa2e+dzwHIBnTZXXBRs/ed3hhF2B01PvzuOFqm6GTJEk7S3DAaC0Ry44CTuealvMbg=
-X-Received: by 2002:a9d:470d:: with SMTP id a13mr80213537otf.126.1564413543911; 
- Mon, 29 Jul 2019 08:19:03 -0700 (PDT)
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=223.73.35.77;
+ helo=sntt.com; envelope-from=fkslft@sntt.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from sntt.com (unknown [223.73.35.77])
+ by ml01.01.org (Postfix) with ESMTP id 0760C212B9A64
+ for <linux-nvdimm@lists.01.org>; Mon, 29 Jul 2019 13:40:34 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA;
+ Tue, 30 Jul 2019 04:37:29 +0800
+Message-ID: aeb2317e-6594-4df4-a5a7-76e64169837c
 MIME-Version: 1.0
-References: <CAPcyv4gUiDw8Ma9mvbW5BamQtGZxWVuvBW7UrOLa2uijrXUWaw@mail.gmail.com>
- <20190705191004.GC32320@bombadil.infradead.org>
- <CAPcyv4jVARa38Qc4NjQ04wJ4ZKJ6On9BbJgoL95wQqU-p-Xp_w@mail.gmail.com>
- <20190710190204.GB14701@quack2.suse.cz>
- <20190710201539.GN32320@bombadil.infradead.org>
- <20190710202647.GA7269@quack2.suse.cz>
- <20190711141350.GS32320@bombadil.infradead.org>
- <20190711152550.GT32320@bombadil.infradead.org>
- <20190711154111.GA29284@quack2.suse.cz>
- <CAPcyv4hA+44EHpGN9F5eQD5Y_AuyPTKmovNWvccAFGhF_O2JMg@mail.gmail.com>
- <20190729120228.GC17833@quack2.suse.cz>
-In-Reply-To: <20190729120228.GC17833@quack2.suse.cz>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 29 Jul 2019 08:18:52 -0700
-Message-ID: <CAPcyv4hMJnMYAW=qcZWcadMoofgsnoQ66Xk5O6ZpxKCK4Yfr5g@mail.gmail.com>
-Subject: Re: [PATCH] dax: Fix missed PMD wakeups
-To: Jan Kara <jack@suse.cz>
+From: =?utf-8?Q?=E4=B8=93=E4=B8=9A=E5=8A=9E=E7=90=86=E9=A6=99=E6=B8=AF?=
+ =?utf-8?Q?=E6=89=8B=E6=9C=BA=E5=8D=A1=2D=2D=E6=9C=88=E7=A7=9F=E4=BD?=
+ =?utf-8?Q?=8E=E8=87=B36=E5=85=83=2F=E6=9C=88?= <hktel852@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 30 Jul 2019 04:37:29 +0800
+Subject: =?utf-8?B?5LiT5Lia5Yqe55CG6aaZ5riv5omL5py65Y2hLS3mnIjnp5/k?=
+ =?utf-8?B?vY7oh7M25YWDL+aciA==?=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,66 +38,22 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Seema Pandit <seema.pandit@intel.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Boaz Harrosh <openosd@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable <stable@vger.kernel.org>, Robert Barror <robert.barror@intel.com>,
- Matthew Wilcox <willy@infradead.org>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Jul 29, 2019 at 5:02 AM Jan Kara <jack@suse.cz> wrote:
->
-> On Tue 16-07-19 20:39:46, Dan Williams wrote:
-> > On Fri, Jul 12, 2019 at 2:14 AM Jan Kara <jack@suse.cz> wrote:
-> > >
-> > > On Thu 11-07-19 08:25:50, Matthew Wilcox wrote:
-> > > > On Thu, Jul 11, 2019 at 07:13:50AM -0700, Matthew Wilcox wrote:
-> > > > > However, the XA_RETRY_ENTRY might be a good choice.  It doesn't normally
-> > > > > appear in an XArray (it may appear if you're looking at a deleted node,
-> > > > > but since we're holding the lock, we can't see deleted nodes).
-> > > >
-> > > ...
-> > >
-> > > > @@ -254,7 +267,7 @@ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
-> > > >  static void put_unlocked_entry(struct xa_state *xas, void *entry)
-> > > >  {
-> > > >       /* If we were the only waiter woken, wake the next one */
-> > > > -     if (entry)
-> > > > +     if (entry && dax_is_conflict(entry))
-> > >
-> > > This should be !dax_is_conflict(entry)...
-> > >
-> > > >               dax_wake_entry(xas, entry, false);
-> > > >  }
-> > >
-> > > Otherwise the patch looks good to me so feel free to add:
-> > >
-> > > Reviewed-by: Jan Kara <jack@suse.cz>
-> >
-> > Looks good, and passes the test case. Now pushed out to
-> > libnvdimm-for-next for v5.3 inclusion:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/commit/?h=libnvdimm-for-next&id=23c84eb7837514e16d79ed6d849b13745e0ce688
->
-> Thanks for picking up the patch but you didn't apply the fix I've mentioned
-> above. So put_unlocked_entry() is not waking up anybody anymore... Since
-> this got already to Linus' tree, I guess a separate fixup patch is needed
-> (attached).
-
-Sigh, indeed. I think what happened is I applied the fixup locally,
-tested it, and then later reapplied the patch from the list as I was
-integrating the new automatic "Link:" generation script that has been
-proposed on the ksummit list.
-
-I'll get this pushed immediately.
-
-Lesson learned: no manual local fixups, ask for resends to always be
-able to pull the exact contents from the list.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Jm5ic3A7DQrkuJPkuJrlip7nkIbpppnmuK/miYvmnLrljaEtLeWcqOWkp+mZhuS6q+eUqOmmmea4
+r+S/oeWPtw0KJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+ICZuYnNwOyZuYnNwOyZuYnNwOyAmbmJzcDsmbmJzcDsg5LiT5Lia5Yqe55CG6aaZ5riv5omL5py6
+5Y2hJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IOWcqOWkp+mZhuS6q+eUqOmmmea4r+S/oeWP
+tyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyAmbmJzcDvmnIjnp5/kvY7o
+h7M25YWDL+aciCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyDlpKfpmYblu7rnq4vpppnmuK/omZrmi5/lip7lhazngrkNCiZuYnNwOyZu
+YnNwOyZuYnNwO1EgUSDlkqjor6LvvJo0ODM0NTY2NjUmbmJzcDsmbmJzcDsmbmJzcDtFLW1haWwg
+5ZKo6K+i77yaaGt0ZWw4NTJAaG90bWFpbC5jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRp
+bW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGlu
+dXgtbnZkaW1tCg==
