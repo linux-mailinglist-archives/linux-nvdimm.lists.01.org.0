@@ -1,61 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B833F7B51E
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 30 Jul 2019 23:38:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2EB7B568
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Jul 2019 00:01:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 008AE212E8426;
-	Tue, 30 Jul 2019 14:41:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8FFF0212E4B7F;
+	Tue, 30 Jul 2019 15:03:38 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=209.132.183.28; helo=mx1.redhat.com;
+ envelope-from=msnitzer@redhat.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D9D8921959CB2
- for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:41:06 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id m206so49055802oib.12
- for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:38:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+5JOOn7SBmn+BXEukedT9HDXQ6WS/r4bECASKDsfPTc=;
- b=wPargsCx1nCKwYgN+UmNJ+Ig2yIDukdOFYcafHAoe3HixxhzXwRMveW8WJbYjiLDVB
- XbzprVIA35u37LGeX54iP4ILaKrn2ZhsHJ7HWatfCu+Dy3AK04gYp0qsDNO5JINxbU66
- 793vBLMC/2q9GjCzIncgSDaS52sZ95bS4q3yUIBVFG0BqK7kBkiiL0rUkTy1gy785b/G
- HixoGYJN0KZsmAs7IKt+3EffEecPzG3ht9NV6iRwONmKHhzWMdcK5ojktOyBien+IE2z
- ZnpdPMHhrkvdWxeuLBaHFjco1kw0VqWIzURD3Kv3X0Zi1Xvi85u1GhDy0eXKzpdjXw/K
- RMow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+5JOOn7SBmn+BXEukedT9HDXQ6WS/r4bECASKDsfPTc=;
- b=sy+P1i3Ear0wRuurMsoD8pyf8KOc3lSd1IxOzz58LlDGFS3AMc77BO7qPHzvlaB/JP
- JZOGVROPvzr1C5rpRtHgjwOKjZZGUrwzoYQEhgTasLvDhl/TldcQrlXqwckYo6OIhWi5
- q0xnQ0KSckLsAjLoEOfGZgZmmVdkLUYP4H77lLSoJtFL1ae4YZjt+E6icfFasLaHFuvT
- Lq0coI3bS4lpjqTsrNn1nYpPTPN0TP7ZmIIyQ/hGNkhix3KVDiETAbkOrIw2dja00c3y
- GoFL4SR8wzOogWv1I6marSYV2S2hbRzIY7X+Vi9HSyFkVU/0ieRfMQh4UOqCFzZum09J
- x/7w==
-X-Gm-Message-State: APjAAAWiAcp1YXXx0ZFpNC228VaCSbM+3zqmDCvpCagfFy+9e1BE39hB
- VgqHTV4TpZZLUQPD18Ky+Wwd4Y74YS0vWDkDlcdTeA==
-X-Google-Smtp-Source: APXvYqz/vebOGKyx5iJtOjMRLpWnJO3JxlqPxCgJzVvyZc/nI/IYK9bwftHIvxiV8iym6ilmxvWFcSB3C9ypYO/5uNs=
-X-Received: by 2002:aca:d80a:: with SMTP id p10mr58049607oig.105.1564522715513; 
- Tue, 30 Jul 2019 14:38:35 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id F09AA212E13A9
+ for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 15:03:37 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 1E44D4E8AC;
+ Tue, 30 Jul 2019 22:01:06 +0000 (UTC)
+Received: from localhost (unknown [10.18.25.174])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 667E719724;
+ Tue, 30 Jul 2019 22:01:03 +0000 (UTC)
+Date: Tue, 30 Jul 2019 18:01:02 -0400
+From: Mike Snitzer <snitzer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: dm: fix dax_dev NULL dereference
+Message-ID: <20190730220102.GA15604@redhat.com>
 References: <20190730113708.14660-1-pagupta@redhat.com>
  <2030283543.5419072.1564486701158.JavaMail.zimbra@redhat.com>
  <20190730190737.GA14873@redhat.com>
-In-Reply-To: <20190730190737.GA14873@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 30 Jul 2019 14:38:24 -0700
-Message-ID: <CAPcyv4i10K3QdSwa3EF9t8pS-QrB9YcBEMy49N1PnYQzCkBJCw@mail.gmail.com>
-Subject: Re: dm: fix dax_dev NULL dereference
-To: Mike Snitzer <snitzer@redhat.com>
+ <CAPcyv4i10K3QdSwa3EF9t8pS-QrB9YcBEMy49N1PnYQzCkBJCw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4i10K3QdSwa3EF9t8pS-QrB9YcBEMy49N1PnYQzCkBJCw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.38]); Tue, 30 Jul 2019 22:01:06 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,14 +63,41 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Jul 30, 2019 at 12:07 PM Mike Snitzer <snitzer@redhat.com> wrote:
->
-> I staged the fix (which I tweaked) here:
-> https://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm.git/commit/?h=dm-5.3&id=95b9ebb78c4c733f8912a195fbd0bc19960e726e
+On Tue, Jul 30 2019 at  5:38pm -0400,
+Dan Williams <dan.j.williams@intel.com> wrote:
 
-Thanks for picking this up Mike, but I'd prefer to just teach
-dax_synchronous() to return false if the passed in dax_dev is NULL.
-Thoughts?
+> On Tue, Jul 30, 2019 at 12:07 PM Mike Snitzer <snitzer@redhat.com> wrote:
+> >
+> > I staged the fix (which I tweaked) here:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm.git/commit/?h=dm-5.3&id=95b9ebb78c4c733f8912a195fbd0bc19960e726e
+> 
+> Thanks for picking this up Mike, but I'd prefer to just teach
+> dax_synchronous() to return false if the passed in dax_dev is NULL.
+> Thoughts?
+
+I considered that too but I moved away from it because I'm so used to
+the various block interfaces requiring the caller pass a non-NULL
+pointer (e.g. request_queue):
+
+$ grep -ri return drivers/md/dm-table.c | grep \&\&
+drivers/md/dm-table.c:        return dev->dax_dev && dax_synchronous(dev->dax_dev);
+drivers/md/dm-table.c:        return q && blk_queue_zoned_model(q) == *zoned_model;
+drivers/md/dm-table.c:        return q && blk_queue_zone_sectors(q) == *zone_sectors;
+drivers/md/dm-table.c:        return q && (q->queue_flags & flush);
+drivers/md/dm-table.c:        return q && blk_queue_nonrot(q);
+drivers/md/dm-table.c:        return q && !blk_queue_add_random(q);
+drivers/md/dm-table.c:        return q && !q->limits.max_write_same_sectors;
+drivers/md/dm-table.c:        return q && !q->limits.max_write_zeroes_sectors;
+drivers/md/dm-table.c:        return q && !blk_queue_discard(q);
+drivers/md/dm-table.c:        return q && !blk_queue_secure_erase(q);
+drivers/md/dm-table.c:        return q && bdi_cap_stable_pages_required(q->backing_dev_info);
+
+I'm fine with however you'd like to skin this cat though.
+
+Just let me know and I'll keep/drop this patch accordingly.
+
+Thanks,
+Mike
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
