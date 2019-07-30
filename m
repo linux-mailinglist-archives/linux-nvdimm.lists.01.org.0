@@ -1,56 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B68F7B507
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 30 Jul 2019 23:32:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B833F7B51E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 30 Jul 2019 23:38:39 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 53B92212E4B7E;
-	Tue, 30 Jul 2019 14:35:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 008AE212E8426;
+	Tue, 30 Jul 2019 14:41:09 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com;
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6B998212E4B76
- for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:35:25 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id s184so49031126oie.9
- for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:32:54 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id D9D8921959CB2
+ for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:41:06 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id m206so49055802oib.12
+ for <linux-nvdimm@lists.01.org>; Tue, 30 Jul 2019 14:38:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:from:date:message-id:subject:to:cc;
- bh=l81RXxL6m1M+gQi+SuAd5R2wSnsgJIHKcsPpxRaT+zY=;
- b=kSraaR/B69E6goTJThqCvMC1ZhsMD0N0w5q1jMLfSN0GHoz9vXAU3m3AHpz+4wmTv9
- tZVIuOs+jj6t6MKaNVnGTZ2VTUi8L/JxKeE0owWWiPnLaW80y1l+DnNHx0apvNfSQYcn
- WmWRi1t5Fnl1S/v5DtX5uqZhbC1jM6F6MFn4Hylizm80YJWY73wGSkEw4N9/Sta7mnMq
- AZZChJkjeOlN5igrm3Ge5gAZg4nniJlq4pAJGB+P2nDXgZ4gduMWAX9ePkqXE2l3g9ry
- OdB63Wq+ER+sZeLgyUEkg7LddjpE89nFO+sdaVyCnc3IDz/7Y67x+Ketii1q7IPt3qHD
- 7rAA==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+5JOOn7SBmn+BXEukedT9HDXQ6WS/r4bECASKDsfPTc=;
+ b=wPargsCx1nCKwYgN+UmNJ+Ig2yIDukdOFYcafHAoe3HixxhzXwRMveW8WJbYjiLDVB
+ XbzprVIA35u37LGeX54iP4ILaKrn2ZhsHJ7HWatfCu+Dy3AK04gYp0qsDNO5JINxbU66
+ 793vBLMC/2q9GjCzIncgSDaS52sZ95bS4q3yUIBVFG0BqK7kBkiiL0rUkTy1gy785b/G
+ HixoGYJN0KZsmAs7IKt+3EffEecPzG3ht9NV6iRwONmKHhzWMdcK5ojktOyBien+IE2z
+ ZnpdPMHhrkvdWxeuLBaHFjco1kw0VqWIzURD3Kv3X0Zi1Xvi85u1GhDy0eXKzpdjXw/K
+ RMow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
- bh=l81RXxL6m1M+gQi+SuAd5R2wSnsgJIHKcsPpxRaT+zY=;
- b=obQSwVMjqmph1dmamlCcCtChjTXzlIwyyTnk46FCiRT2OKamre7o92WxKyOAvRp9/y
- n9wMSniuthMCQNDH/f4vFyII8rjKhWGKaQk+8zO8GrRJeIwZ+6b3ghCivCkki2xzhOPy
- IcbiGaceHcs+Hi+Kyzikn+YvqMHkL3Pq0kp8Onb5BhFxHjPFKNbzDSmHm8jLWERBFYts
- amved6SqlcnmZuNZEgCitsivf61rA3eD2OdANV48Uno0Tk042LSPgPStY9sF1DGcikDv
- /eMvLdYMvAM3/1Oi4mMZcnvWZMEeYZuWFjyEH5/bYgrnLROh/cz1HqQKRnf7gXCnv9QG
- y0Vw==
-X-Gm-Message-State: APjAAAUXtgcPhUAwBRiJWDppN6q18omYUTzd+DLPnndL6+c79gXhuZLF
- dSRUnkWK9XrQ9zoqWThPE/+biAyXOI1xHafGeyXG4w==
-X-Google-Smtp-Source: APXvYqxegpyFwvFejPXoYEYiHMinVR1/8uYTEPVTdMw6CR76L0x5Au3WV2IYjBoYTv7Ebh0VDCCNGBi0AhckDvlWDPg=
-X-Received: by 2002:aca:ba02:: with SMTP id k2mr1920323oif.70.1564522373532;
- Tue, 30 Jul 2019 14:32:53 -0700 (PDT)
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+5JOOn7SBmn+BXEukedT9HDXQ6WS/r4bECASKDsfPTc=;
+ b=sy+P1i3Ear0wRuurMsoD8pyf8KOc3lSd1IxOzz58LlDGFS3AMc77BO7qPHzvlaB/JP
+ JZOGVROPvzr1C5rpRtHgjwOKjZZGUrwzoYQEhgTasLvDhl/TldcQrlXqwckYo6OIhWi5
+ q0xnQ0KSckLsAjLoEOfGZgZmmVdkLUYP4H77lLSoJtFL1ae4YZjt+E6icfFasLaHFuvT
+ Lq0coI3bS4lpjqTsrNn1nYpPTPN0TP7ZmIIyQ/hGNkhix3KVDiETAbkOrIw2dja00c3y
+ GoFL4SR8wzOogWv1I6marSYV2S2hbRzIY7X+Vi9HSyFkVU/0ieRfMQh4UOqCFzZum09J
+ x/7w==
+X-Gm-Message-State: APjAAAWiAcp1YXXx0ZFpNC228VaCSbM+3zqmDCvpCagfFy+9e1BE39hB
+ VgqHTV4TpZZLUQPD18Ky+Wwd4Y74YS0vWDkDlcdTeA==
+X-Google-Smtp-Source: APXvYqz/vebOGKyx5iJtOjMRLpWnJO3JxlqPxCgJzVvyZc/nI/IYK9bwftHIvxiV8iym6ilmxvWFcSB3C9ypYO/5uNs=
+X-Received: by 2002:aca:d80a:: with SMTP id p10mr58049607oig.105.1564522715513; 
+ Tue, 30 Jul 2019 14:38:35 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190730113708.14660-1-pagupta@redhat.com>
+ <2030283543.5419072.1564486701158.JavaMail.zimbra@redhat.com>
+ <20190730190737.GA14873@redhat.com>
+In-Reply-To: <20190730190737.GA14873@redhat.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 30 Jul 2019 14:32:42 -0700
-Message-ID: <CAPcyv4hJcRY3aop4jgH8NLsz1A8HH7sH6gnGs02Wy8A=p5o=jg@mail.gmail.com>
-Subject: [GIT PULL] dax fix for v5.3-rc3
-To: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 30 Jul 2019 14:38:24 -0700
+Message-ID: <CAPcyv4i10K3QdSwa3EF9t8pS-QrB9YcBEMy49N1PnYQzCkBJCw@mail.gmail.com>
+Subject: Re: dm: fix dax_dev NULL dereference
+To: Mike Snitzer <snitzer@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,67 +67,24 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>,
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+ device-mapper development <dm-devel@redhat.com>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ Alasdair Kergon <agk@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Linus, please pull from:
+On Tue, Jul 30, 2019 at 12:07 PM Mike Snitzer <snitzer@redhat.com> wrote:
+>
+> I staged the fix (which I tweaked) here:
+> https://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm.git/commit/?h=dm-5.3&id=95b9ebb78c4c733f8912a195fbd0bc19960e726e
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm dax-fix-5.3-rc3
-
-...to receive a manual fixup I happened to drop. I re-fetched the
-patch from the mailing list after integrating the git message-id
-support to generate a "Link:" tag [1], but then did not re-apply the
-fixup. This now matches what I tested and went into yesterday's -next.
-
-[1]: https://lists.linuxfoundation.org/pipermail/ksummit-discuss/2019-July/006608.html
-
----
-
-The following changes since commit 609488bc979f99f805f34e9a32c1e3b71179d10b:
-
-  Linux 5.3-rc2 (2019-07-28 12:47:02 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm dax-fix-5.3-rc3
-
-for you to fetch changes up to 61c30c98ef17e5a330d7bb8494b78b3d6dffe9b8:
-
-  dax: Fix missed wakeup in put_unlocked_entry() (2019-07-29 09:24:22 -0700)
-
-----------------------------------------------------------------
-dax fix 5.3-rc3
-
-- Fix a botched manual patch update that got dropped between testing and
-  application.
-
-----------------------------------------------------------------
-Jan Kara (1):
-      dax: Fix missed wakeup in put_unlocked_entry()
-
- fs/dax.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
----
-
-diff --git a/fs/dax.c b/fs/dax.c
-index a237141d8787..b64964ef44f6 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -266,7 +266,7 @@ static void wait_entry_unlocked(struct xa_state
-*xas, void *entry)
- static void put_unlocked_entry(struct xa_state *xas, void *entry)
- {
-        /* If we were the only waiter woken, wake the next one */
--       if (entry && dax_is_conflict(entry))
-+       if (entry && !dax_is_conflict(entry))
-                dax_wake_entry(xas, entry, false);
- }
+Thanks for picking this up Mike, but I'd prefer to just teach
+dax_synchronous() to return false if the passed in dax_dev is NULL.
+Thoughts?
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
