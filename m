@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B377C063
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Jul 2019 13:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686D27C064
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Jul 2019 13:49:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1E0FC212E8456;
+	by ml01.01.org (Postfix) with ESMTP id 2FBF42194EB77;
 	Wed, 31 Jul 2019 04:52:25 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -13,29 +13,29 @@ Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.91.158.132;
  helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com;
  receiver=linux-nvdimm@lists.01.org 
 Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
- by ml01.01.org (Postfix) with ESMTP id 4536E212E844E
+ by ml01.01.org (Postfix) with ESMTP id 3E2D4212E8449
  for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 04:52:22 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.64,330,1559491200"; d="scan'208";a="72591480"
+X-IronPort-AV: E=Sophos;i="5.64,330,1559491200"; d="scan'208";a="72591481"
 Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
  by heian.cn.fujitsu.com with ESMTP; 31 Jul 2019 19:49:51 +0800
 Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
- by cn.fujitsu.com (Postfix) with ESMTP id BC0514CDDAEB;
- Wed, 31 Jul 2019 19:49:48 +0800 (CST)
+ by cn.fujitsu.com (Postfix) with ESMTP id 8B2C74CDE65E;
+ Wed, 31 Jul 2019 19:49:50 +0800 (CST)
 Received: from iridescent.g08.fujitsu.local (10.167.225.140) by
  G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.439.0; Wed, 31 Jul 2019 19:49:55 +0800
+ (TLS) id 14.3.439.0; Wed, 31 Jul 2019 19:49:57 +0800
 From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
 To: <linux-xfs@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
  <darrick.wong@oracle.com>
-Subject: [RFC PATCH 3/7] dax: replace mmap entry in case of CoW
-Date: Wed, 31 Jul 2019 19:49:31 +0800
-Message-ID: <20190731114935.11030-4-ruansy.fnst@cn.fujitsu.com>
+Subject: [RFC PATCH 4/7] fs: dedup file range to use a compare function
+Date: Wed, 31 Jul 2019 19:49:32 +0800
+Message-ID: <20190731114935.11030-5-ruansy.fnst@cn.fujitsu.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20190731114935.11030-1-ruansy.fnst@cn.fujitsu.com>
 References: <20190731114935.11030-1-ruansy.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.167.225.140]
-X-yoursite-MailScanner-ID: BC0514CDDAEB.AABCA
+X-yoursite-MailScanner-ID: 8B2C74CDE65E.A93E1
 X-yoursite-MailScanner: Found to be clean
 X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
 X-Spam-Status: No
@@ -60,155 +60,239 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 From: Goldwyn Rodrigues <rgoldwyn@suse.com>
 
-We replace the existing entry to the newly allocated one
-in case of CoW. Also, we mark the entry as PAGECACHE_TAG_TOWRITE
-so writeback marks this entry as writeprotected. This
-helps us snapshots so new write pagefaults after snapshots
-trigger a CoW.
+With dax we cannot deal with readpage() etc. So, we create a
+funciton callback to perform the file data comparison and pass
+it to generic_remap_file_range_prep() so it can use iomap-based
+functions.
 
-btrfs does not support hugepages so we don't handle PMD.
+This may not be the best way to solve this. Suggestions welcome.
 
 Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
 ---
- fs/dax.c | 36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ fs/btrfs/ioctl.c     | 11 ++++++--
+ fs/dax.c             | 65 ++++++++++++++++++++++++++++++++++++++++++++
+ fs/ocfs2/file.c      |  2 +-
+ fs/read_write.c      | 11 ++++----
+ fs/xfs/xfs_reflink.c |  2 +-
+ include/linux/dax.h  |  4 +++
+ include/linux/fs.h   |  8 +++++-
+ 7 files changed, 93 insertions(+), 10 deletions(-)
 
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index cd4e693406a0..8f9c749c4aa6 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3936,6 +3936,7 @@ static int btrfs_remap_file_range_prep(struct file *file_in, loff_t pos_in,
+ 	bool same_inode = inode_out == inode_in;
+ 	u64 wb_len;
+ 	int ret;
++	compare_range_t cmp;
+ 
+ 	if (!(remap_flags & REMAP_FILE_DEDUP)) {
+ 		struct btrfs_root *root_out = BTRFS_I(inode_out)->root;
+@@ -3997,8 +3998,14 @@ static int btrfs_remap_file_range_prep(struct file *file_in, loff_t pos_in,
+ 	if (ret < 0)
+ 		goto out_unlock;
+ 
+-	ret = generic_remap_file_range_prep(file_in, pos_in, file_out, pos_out,
+-					    len, remap_flags);
++	if (IS_DAX(file_inode(file_in)) && IS_DAX(file_inode(file_out)))
++		cmp = btrfs_dax_file_range_compare;
++	else
++		cmp = vfs_dedupe_file_range_compare;
++
++	ret = generic_remap_file_range_prep(file_in, pos_in, file_out,
++			pos_out, len, remap_flags, cmp);
++
+ 	if (ret < 0 || *len == 0)
+ 		goto out_unlock;
+ 
 diff --git a/fs/dax.c b/fs/dax.c
-index 084cc21d47a4..8eb065a1ec51 100644
+index 8eb065a1ec51..8111ba93f4d3 100644
 --- a/fs/dax.c
 +++ b/fs/dax.c
-@@ -700,6 +700,9 @@ static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
- 	return 0;
- }
+@@ -39,6 +39,8 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/fs_dax.h>
  
-+#define DAX_IF_DIRTY		(1ULL << 0)
-+#define DAX_IF_COW		(1ULL << 1)
++#define MIN(a, b) (((a) < (b)) ? (a) : (b))
 +
- /*
-  * By this point grab_mapping_entry() has ensured that we have a locked entry
-  * of the appropriate size so we don't have to worry about downgrading PMDs to
-@@ -709,14 +712,17 @@ static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
-  */
- static void *dax_insert_entry(struct xa_state *xas,
- 		struct address_space *mapping, struct vm_fault *vmf,
--		void *entry, pfn_t pfn, unsigned long flags, bool dirty)
-+		void *entry, pfn_t pfn, unsigned long flags,
-+		unsigned int insert_flags)
+ static inline unsigned int pe_order(enum page_entry_size pe_size)
  {
- 	void *new_entry = dax_make_entry(pfn, flags);
-+	bool dirty = insert_flags & DAX_IF_DIRTY;
-+	bool cow = insert_flags & DAX_IF_COW;
- 
- 	if (dirty)
- 		__mark_inode_dirty(mapping->host, I_DIRTY_PAGES);
- 
--	if (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE)) {
-+	if (cow || (dax_is_zero_entry(entry) && !(flags & DAX_ZERO_PAGE))) {
- 		unsigned long index = xas->xa_index;
- 		/* we are replacing a zero page with block mapping */
- 		if (dax_is_pmd_entry(entry))
-@@ -728,12 +734,12 @@ static void *dax_insert_entry(struct xa_state *xas,
- 
- 	xas_reset(xas);
- 	xas_lock_irq(xas);
--	if (dax_entry_size(entry) != dax_entry_size(new_entry)) {
-+	if (cow || (dax_entry_size(entry) != dax_entry_size(new_entry))) {
- 		dax_disassociate_entry(entry, mapping, false);
- 		dax_associate_entry(new_entry, mapping, vmf->vma, vmf->address);
- 	}
- 
--	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
-+	if (cow || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
- 		/*
- 		 * Only swap our new entry into the page cache if the current
- 		 * entry is a zero page or an empty entry.  If a normal PTE or
-@@ -753,6 +759,9 @@ static void *dax_insert_entry(struct xa_state *xas,
- 	if (dirty)
- 		xas_set_mark(xas, PAGECACHE_TAG_DIRTY);
- 
-+	if (cow)
-+		xas_set_mark(xas, PAGECACHE_TAG_TOWRITE);
-+
- 	xas_unlock_irq(xas);
- 	return entry;
+ 	if (pe_size == PE_SIZE_PTE)
+@@ -1817,3 +1819,66 @@ vm_fault_t dax_finish_sync_fault(struct vm_fault *vmf,
+ 	return dax_insert_pfn_mkwrite(vmf, pfn, order);
  }
-@@ -1040,7 +1049,7 @@ static vm_fault_t dax_load_hole(struct xa_state *xas,
- 	vm_fault_t ret;
- 
- 	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
--			DAX_ZERO_PAGE, false);
-+			DAX_ZERO_PAGE, 0);
- 
- 	ret = vmf_insert_mixed(vmf->vma, vaddr, pfn);
- 	trace_dax_load_hole(inode, vmf, ret);
-@@ -1310,6 +1319,7 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 	void *entry;
- 	pfn_t pfn;
- 	void *kaddr;
-+	unsigned long insert_flags = 0;
- 
- 	trace_dax_pte_fault(inode, vmf, ret);
- 	/*
-@@ -1371,6 +1381,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 			error = copy_user_dax(iomap.bdev, iomap.dax_dev,
- 					sector, PAGE_SIZE, vmf->cow_page, vaddr);
- 			break;
-+		case IOMAP_COW:
-+			/* Should not be setting this - fallthrough */
- 		default:
- 			WARN_ON_ONCE(1);
- 			error = -EIO;
-@@ -1391,6 +1403,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 
- 	switch (iomap.type) {
- 	case IOMAP_COW:
-+		insert_flags |= DAX_IF_COW;
-+		/* fallthrough */
- 	case IOMAP_MAPPED:
- 		if (iomap.flags & IOMAP_F_NEW) {
- 			count_vm_event(PGMAJFAULT);
-@@ -1401,8 +1415,10 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 		if (error < 0)
- 			goto error_finish_iomap;
- 
-+		if (write && !sync)
-+			insert_flags |= DAX_IF_DIRTY;
- 		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
--						 0, write && !sync);
-+						 0, insert_flags);
- 
- 		if (iomap.type == IOMAP_COW) {
- 			error = dax_copy_edges(inode, pos, PAGE_SIZE, &srcmap,
-@@ -1490,7 +1506,7 @@ static vm_fault_t dax_pmd_load_hole(struct xa_state *xas, struct vm_fault *vmf,
- 
- 	pfn = page_to_pfn_t(zero_page);
- 	*entry = dax_insert_entry(xas, mapping, vmf, *entry, pfn,
--			DAX_PMD | DAX_ZERO_PAGE, false);
-+			DAX_PMD | DAX_ZERO_PAGE, 0);
- 
- 	if (arch_needs_pgtable_deposit()) {
- 		pgtable = pte_alloc_one(vma->vm_mm);
-@@ -1542,6 +1558,7 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 	int error;
- 	pfn_t pfn;
- 	void *kaddr;
-+	unsigned long insert_flags = 0;
- 
- 	/*
- 	 * Check whether offset isn't beyond end of file now. Caller is
-@@ -1627,8 +1644,11 @@ static vm_fault_t dax_iomap_pmd_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 		if (error < 0)
- 			goto finish_iomap;
- 
-+		if (write && !sync)
-+			insert_flags |= DAX_IF_DIRTY;
+ EXPORT_SYMBOL_GPL(dax_finish_sync_fault);
 +
- 		entry = dax_insert_entry(&xas, mapping, vmf, entry, pfn,
--						DAX_PMD, write && !sync);
-+						DAX_PMD, insert_flags);
++static inline void *iomap_address(struct iomap *iomap, loff_t off, loff_t len)
++{
++	loff_t start;
++	void *addr;
++	start = (get_start_sect(iomap->bdev) << 9) + iomap->addr +
++		(off - iomap->offset);
++	dax_direct_access(iomap->dax_dev, PHYS_PFN(start), PHYS_PFN(len),
++			  &addr, NULL);
++	return addr;
++}
++
++int dax_file_range_compare(struct inode *src, loff_t srcoff, struct inode *dest,
++		loff_t destoff, loff_t len, bool *is_same, const struct iomap_ops *ops)
++{
++	void *saddr, *daddr;
++	struct iomap s_iomap = {0};
++	struct iomap d_iomap = {0};
++	bool same = true;
++	loff_t cmp_len;
++	int id, ret = 0;
++
++	id = dax_read_lock();
++	while (len) {
++		ret = ops->iomap_begin(src, srcoff, len, 0, &s_iomap, NULL);
++		if (ret < 0) {
++			if (ops->iomap_end)
++				ops->iomap_end(src, srcoff, len, ret, 0, &s_iomap);
++			return ret;
++		}
++		cmp_len = len;
++		cmp_len = MIN(len, s_iomap.offset + s_iomap.length - srcoff);
++
++		ret = ops->iomap_begin(dest, destoff, cmp_len, 0, &d_iomap, NULL);
++		if (ret < 0) {
++			if (ops->iomap_end) {
++				ops->iomap_end(src, srcoff, len, ret, 0, &s_iomap);
++				ops->iomap_end(dest, destoff, len, ret, 0, &d_iomap);
++			}
++			return ret;
++		}
++		cmp_len = MIN(cmp_len, d_iomap.offset + d_iomap.length - destoff);
++
++		saddr = iomap_address(&s_iomap, srcoff, cmp_len);
++		daddr = iomap_address(&d_iomap, destoff, cmp_len);
++
++		same = !memcmp(saddr, daddr, cmp_len);
++		if (!same)
++			break;
++		len -= cmp_len;
++		srcoff += cmp_len;
++		destoff += cmp_len;
++
++		if (ops->iomap_end) {
++			ret = ops->iomap_end(src, srcoff, len, 0, 0, &s_iomap);
++			ret = ops->iomap_end(dest, destoff, len, 0, 0, &d_iomap);
++		}
++	}
++	dax_read_unlock(id);
++	*is_same = same;
++	return ret;
++}
++EXPORT_SYMBOL_GPL(dax_file_range_compare);
+diff --git a/fs/ocfs2/file.c b/fs/ocfs2/file.c
+index d640c5f8a85d..9d470306cfc3 100644
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -2558,7 +2558,7 @@ static loff_t ocfs2_remap_file_range(struct file *file_in, loff_t pos_in,
+ 		goto out_unlock;
  
- 		if (iomap.type == IOMAP_COW) {
- 			error = dax_copy_edges(inode, pos, PMD_SIZE, &srcmap,
+ 	ret = generic_remap_file_range_prep(file_in, pos_in, file_out, pos_out,
+-			&len, remap_flags);
++			&len, remap_flags, vfs_dedupe_file_range_compare);
+ 	if (ret < 0 || len == 0)
+ 		goto out_unlock;
+ 
+diff --git a/fs/read_write.c b/fs/read_write.c
+index 61b43ad7608e..c6283802ef1c 100644
+--- a/fs/read_write.c
++++ b/fs/read_write.c
+@@ -1778,7 +1778,7 @@ static struct page *vfs_dedupe_get_page(struct inode *inode, loff_t offset)
+  * Compare extents of two files to see if they are the same.
+  * Caller must have locked both inodes to prevent write races.
+  */
+-static int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
++int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
+ 					 struct inode *dest, loff_t destoff,
+ 					 loff_t len, bool *is_same)
+ {
+@@ -1845,6 +1845,7 @@ static int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
+ out_error:
+ 	return error;
+ }
++EXPORT_SYMBOL_GPL(vfs_dedupe_file_range_compare);
+ 
+ /*
+  * Check that the two inodes are eligible for cloning, the ranges make
+@@ -1856,7 +1857,8 @@ static int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
+  */
+ int generic_remap_file_range_prep(struct file *file_in, loff_t pos_in,
+ 				  struct file *file_out, loff_t pos_out,
+-				  loff_t *len, unsigned int remap_flags)
++				  loff_t *len, unsigned int remap_flags,
++				  compare_range_t compare)
+ {
+ 	struct inode *inode_in = file_inode(file_in);
+ 	struct inode *inode_out = file_inode(file_out);
+@@ -1915,9 +1917,8 @@ int generic_remap_file_range_prep(struct file *file_in, loff_t pos_in,
+ 	 */
+ 	if (remap_flags & REMAP_FILE_DEDUP) {
+ 		bool		is_same = false;
+-
+-		ret = vfs_dedupe_file_range_compare(inode_in, pos_in,
+-				inode_out, pos_out, *len, &is_same);
++		ret = (*compare)(inode_in, pos_in,
++			inode_out, pos_out, *len, &is_same);
+ 		if (ret)
+ 			return ret;
+ 		if (!is_same)
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index 680ae7662a78..68e4257cebb0 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -1350,7 +1350,7 @@ xfs_reflink_remap_prep(
+ 		goto out_unlock;
+ 
+ 	ret = generic_remap_file_range_prep(file_in, pos_in, file_out, pos_out,
+-			len, remap_flags);
++			len, remap_flags, vfs_dedupe_file_range_compare);
+ 	if (ret < 0 || *len == 0)
+ 		goto out_unlock;
+ 
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index 0dd316a74a29..1370d39c91b6 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -157,6 +157,10 @@ vm_fault_t dax_finish_sync_fault(struct vm_fault *vmf,
+ int dax_delete_mapping_entry(struct address_space *mapping, pgoff_t index);
+ int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
+ 				      pgoff_t index);
++int dax_file_range_compare(struct inode *src, loff_t srcoff,
++			   struct inode *dest, loff_t destoff,
++			   loff_t len, bool *is_same,
++			   const struct iomap_ops *ops);
+ 
+ #ifdef CONFIG_FS_DAX
+ int __dax_zero_page_range(struct block_device *bdev,
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index dd28e7679089..0224503e42ce 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1883,10 +1883,16 @@ extern ssize_t vfs_readv(struct file *, const struct iovec __user *,
+ 		unsigned long, loff_t *, rwf_t);
+ extern ssize_t vfs_copy_file_range(struct file *, loff_t , struct file *,
+ 				   loff_t, size_t, unsigned int);
++extern int vfs_dedupe_file_range_compare(struct inode *src, loff_t srcoff,
++					 struct inode *dest, loff_t destoff,
++					 loff_t len, bool *is_same);
++typedef int (*compare_range_t)(struct inode *src, loff_t srcpos,
++			       struct inode *dest, loff_t destpos,
++			       loff_t len, bool *is_same);
+ extern int generic_remap_file_range_prep(struct file *file_in, loff_t pos_in,
+ 					 struct file *file_out, loff_t pos_out,
+ 					 loff_t *count,
+-					 unsigned int remap_flags);
++					 unsigned int remap_flags, compare_range_t cmp);
+ extern loff_t do_clone_file_range(struct file *file_in, loff_t pos_in,
+ 				  struct file *file_out, loff_t pos_out,
+ 				  loff_t len, unsigned int remap_flags);
 -- 
 2.17.0
 
