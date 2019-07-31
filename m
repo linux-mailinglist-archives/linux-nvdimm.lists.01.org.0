@@ -2,40 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDC87C067
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Jul 2019 13:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161FF7C065
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 31 Jul 2019 13:50:01 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 62D62212FD3E1;
-	Wed, 31 Jul 2019 04:52:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4E7DD212E845C;
+	Wed, 31 Jul 2019 04:52:30 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom; client-ip=183.91.158.132;
  helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com;
  receiver=linux-nvdimm@lists.01.org 
 Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
- by ml01.01.org (Postfix) with ESMTP id B00EB212DD348
- for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 04:52:29 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.64,330,1559491200"; d="scan'208";a="72591491"
+ by ml01.01.org (Postfix) with ESMTP id 05CCC212DD348
+ for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 04:52:28 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="5.64,330,1559491200"; d="scan'208";a="72591490"
 Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
  by heian.cn.fujitsu.com with ESMTP; 31 Jul 2019 19:49:57 +0800
 Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
- by cn.fujitsu.com (Postfix) with ESMTP id D54354B4041E;
- Wed, 31 Jul 2019 19:49:52 +0800 (CST)
+ by cn.fujitsu.com (Postfix) with ESMTP id 82DCA4CDE65E;
+ Wed, 31 Jul 2019 19:49:54 +0800 (CST)
 Received: from iridescent.g08.fujitsu.local (10.167.225.140) by
  G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.439.0; Wed, 31 Jul 2019 19:49:59 +0800
+ (TLS) id 14.3.439.0; Wed, 31 Jul 2019 19:50:01 +0800
 From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
 To: <linux-xfs@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
  <darrick.wong@oracle.com>
-Subject: [RFC PATCH 5/7] dax: memcpy before zeroing range
-Date: Wed, 31 Jul 2019 19:49:33 +0800
-Message-ID: <20190731114935.11030-6-ruansy.fnst@cn.fujitsu.com>
+Subject: [RFC PATCH 6/7] xfs: Add COW handle for fsdax.
+Date: Wed, 31 Jul 2019 19:49:34 +0800
+Message-ID: <20190731114935.11030-7-ruansy.fnst@cn.fujitsu.com>
 X-Mailer: git-send-email 2.17.0
 In-Reply-To: <20190731114935.11030-1-ruansy.fnst@cn.fujitsu.com>
 References: <20190731114935.11030-1-ruansy.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
 X-Originating-IP: [10.167.225.140]
-X-yoursite-MailScanner-ID: D54354B4041E.A54D3
+X-yoursite-MailScanner-ID: 82DCA4CDE65E.AAA93
 X-yoursite-MailScanner: Found to be clean
 X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
 X-Spam-Status: No
@@ -51,153 +51,141 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: qi.fuli@fujitsu.com, gujx@cn.fujitsu.com, rgoldwyn@suse.de,
- david@fromorbit.com, linux-kernel@vger.kernel.org,
- Goldwyn Rodrigues <rgoldwyn@suse.com>
+ david@fromorbit.com, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Goldwyn Rodrigues <rgoldwyn@suse.com>
+WRITE and ZERO on a shared extent need to perform COW.  For direct io in
+dax mode, it is handled like WRITE, but with block aligned.  So COW
+seems a bit redundant for it.
 
-However, this needed more iomap fields, so it was easier
-to pass iomap and compute inside the function rather
-than passing a log of arguments.
+Because of COW, new extent has been allocated.  The extent list needs to
+be updated at the end.
 
-Note, there is subtle difference between iomap_sector and
-dax_iomap_sector(). Can we replace dax_iomap_sector with
-iomap_sector()? It would need pos & PAGE_MASK though or else
-bdev_dax_pgoff() return -EINVAL.
-
-Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
 ---
- fs/dax.c              | 17 ++++++++++++-----
- fs/iomap.c            |  9 +--------
- include/linux/dax.h   | 11 +++++------
- include/linux/iomap.h |  6 ++++++
- 4 files changed, 24 insertions(+), 19 deletions(-)
+ fs/xfs/xfs_iomap.c   | 42 +++++++++++++++++++++++++-----------------
+ fs/xfs/xfs_reflink.c |  1 +
+ 2 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 8111ba93f4d3..c92111950612 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1071,11 +1071,16 @@ static bool dax_range_is_aligned(struct block_device *bdev,
- 	return true;
- }
- 
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int size)
-+int __dax_zero_page_range(struct iomap *iomap, loff_t pos,
-+			  unsigned int offset, unsigned int size)
+diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+index 6116a75f03da..ae3b9bf5d784 100644
+--- a/fs/xfs/xfs_iomap.c
++++ b/fs/xfs/xfs_iomap.c
+@@ -930,10 +930,10 @@ xfs_file_iomap_begin(
  {
--	if (dax_range_is_aligned(bdev, offset, size)) {
-+	sector_t sector = dax_iomap_sector(iomap, pos & PAGE_MASK);
-+	struct block_device *bdev = iomap->bdev;
-+	struct dax_device *dax_dev = iomap->dax_dev;
-+	int ret = 0;
+ 	struct xfs_inode	*ip = XFS_I(inode);
+ 	struct xfs_mount	*mp = ip->i_mount;
+-	struct xfs_bmbt_irec	imap;
++	struct xfs_bmbt_irec	imap = { 0 }, cmap = { 0 };
+ 	xfs_fileoff_t		offset_fsb, end_fsb;
+ 	int			nimaps = 1, error = 0;
+-	bool			shared = false;
++	bool			shared = false, need_cow = false;
+ 	unsigned		lockmode;
+ 
+ 	if (XFS_FORCED_SHUTDOWN(mp))
+@@ -967,6 +967,8 @@ xfs_file_iomap_begin(
+ 	if (error)
+ 		goto out_unlock;
+ 
++	cmap = imap;
 +
-+	if (!(iomap->type == IOMAP_COW) &&
-+	    dax_range_is_aligned(bdev, offset, size)) {
- 		sector_t start_sector = sector + (offset >> 9);
+ 	if (flags & IOMAP_REPORT) {
+ 		/* Trim the mapping to the nearest shared extent boundary. */
+ 		error = xfs_reflink_trim_around_shared(ip, &imap, &shared);
+@@ -983,8 +985,7 @@ xfs_file_iomap_begin(
+ 	 * been done up front, so we don't need to do them here.
+ 	 */
+ 	if (xfs_is_cow_inode(ip)) {
+-		struct xfs_bmbt_irec	cmap;
+-		bool			directio = (flags & IOMAP_DIRECT);
++		bool directio = flags & IOMAP_DIRECT;
  
- 		return blkdev_issue_zeroout(bdev, start_sector,
-@@ -1095,11 +1100,13 @@ int __dax_zero_page_range(struct block_device *bdev,
- 			dax_read_unlock(id);
- 			return rc;
- 		}
-+		if (iomap->type == IOMAP_COW)
-+			ret = memcpy_mcsafe(kaddr, iomap->inline_data, offset);
- 		memset(kaddr + offset, 0, size);
- 		dax_flush(dax_dev, kaddr + offset, size);
- 		dax_read_unlock(id);
- 	}
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(__dax_zero_page_range);
+ 		/* if zeroing doesn't need COW allocation, then we are done. */
+ 		if ((flags & IOMAP_ZERO) &&
+@@ -992,23 +993,21 @@ xfs_file_iomap_begin(
+ 			goto out_found;
  
-diff --git a/fs/iomap.c b/fs/iomap.c
-index 3377a7ec5b7d..b5662b5bac26 100644
---- a/fs/iomap.c
-+++ b/fs/iomap.c
-@@ -99,12 +99,6 @@ iomap_apply(struct inode *inode, loff_t pos, loff_t length, unsigned flags,
- 	return written ? written : ret;
- }
+ 		/* may drop and re-acquire the ilock */
+-		cmap = imap;
+ 		error = xfs_reflink_allocate_cow(ip, &cmap, &shared, &lockmode,
+-				directio);
++						 directio || IS_DAX(inode));
+ 		if (error)
+ 			goto out_unlock;
  
--static sector_t
--iomap_sector(struct iomap *iomap, loff_t pos)
--{
--	return (iomap->addr + pos - iomap->offset) >> SECTOR_SHIFT;
--}
--
- static struct iomap_page *
- iomap_page_create(struct inode *inode, struct page *page)
- {
-@@ -993,8 +987,7 @@ static int iomap_zero(struct inode *inode, loff_t pos, unsigned offset,
- static int iomap_dax_zero(loff_t pos, unsigned offset, unsigned bytes,
- 		struct iomap *iomap)
- {
--	return __dax_zero_page_range(iomap->bdev, iomap->dax_dev,
--			iomap_sector(iomap, pos & PAGE_MASK), offset, bytes);
-+	return __dax_zero_page_range(iomap, pos, offset, bytes);
- }
+ 		/*
+-		 * For buffered writes we need to report the address of the
+-		 * previous block (if there was any) so that the higher level
+-		 * write code can perform read-modify-write operations; we
+-		 * won't need the CoW fork mapping until writeback.  For direct
+-		 * I/O, which must be block aligned, we need to report the
+-		 * newly allocated address.  If the data fork has a hole, copy
+-		 * the COW fork mapping to avoid allocating to the data fork.
++		 * WRITE and ZERO on a shared extent under dax mode need to
++		 * perform COW, source address will be reported in srcmap.
+ 		 */
+-		if (directio || imap.br_startblock == HOLESTARTBLOCK)
++		if (imap.br_startblock != HOLESTARTBLOCK && IS_DAX(inode) &&
++		    shared) {
++			need_cow = true;
++		} else {
+ 			imap = cmap;
++		}
  
- static loff_t
-diff --git a/include/linux/dax.h b/include/linux/dax.h
-index 1370d39c91b6..c469d9ff54b4 100644
---- a/include/linux/dax.h
-+++ b/include/linux/dax.h
-@@ -9,6 +9,7 @@
+ 		end_fsb = imap.br_startoff + imap.br_blockcount;
+ 		length = XFS_FSB_TO_B(mp, end_fsb) - offset;
+@@ -1044,8 +1043,7 @@ xfs_file_iomap_begin(
+ 	 */
+ 	if (lockmode == XFS_ILOCK_EXCL)
+ 		xfs_ilock_demote(ip, lockmode);
+-	error = xfs_iomap_write_direct(ip, offset, length, &imap,
+-			nimaps);
++	error = xfs_iomap_write_direct(ip, offset, length, &imap, nimaps);
+ 	if (error)
+ 		return error;
  
- typedef unsigned long dax_entry_t;
+@@ -1053,7 +1051,15 @@ xfs_file_iomap_begin(
+ 	trace_xfs_iomap_alloc(ip, offset, length, XFS_DATA_FORK, &imap);
  
-+struct iomap;
- struct iomap_ops;
- struct dax_device;
- struct dax_operations {
-@@ -163,13 +164,11 @@ int dax_file_range_compare(struct inode *src, loff_t srcoff,
- 			   const struct iomap_ops *ops);
+ out_finish:
+-	return xfs_bmbt_to_iomap(ip, iomap, &imap, shared);
++	if (need_cow) {
++		error = xfs_bmbt_to_iomap(ip, iomap, &cmap, shared);
++		if (error)
++			return error;
++		iomap->flags |= IOMAP_F_NEW;
++		iomap->type = IOMAP_COW;
++		return xfs_bmbt_to_iomap(ip, srcmap, &imap, shared);
++	} else
++		return xfs_bmbt_to_iomap(ip, iomap, &imap, shared);
  
- #ifdef CONFIG_FS_DAX
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length);
-+int __dax_zero_page_range(struct iomap *iomap, loff_t pos,
-+		unsigned int offset, unsigned int size);
- #else
--static inline int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length)
-+static inline int __dax_zero_page_range(struct iomap *iomap, loff_t pos,
-+		unsigned int offset, unsigned int size)
- {
- 	return -ENXIO;
- }
-diff --git a/include/linux/iomap.h b/include/linux/iomap.h
-index 75b78dd91c3c..3628e57954c6 100644
---- a/include/linux/iomap.h
-+++ b/include/linux/iomap.h
-@@ -7,6 +7,7 @@
- #include <linux/mm.h>
- #include <linux/types.h>
- #include <linux/mm_types.h>
-+#include <linux/blkdev.h>
- 
- struct address_space;
- struct fiemap_extent_info;
-@@ -122,6 +123,11 @@ static inline struct iomap_page *to_iomap_page(struct page *page)
- 	return NULL;
+ out_found:
+ 	ASSERT(nimaps);
+@@ -1135,6 +1141,8 @@ xfs_file_iomap_end(
+ 	if ((flags & IOMAP_WRITE) && iomap->type == IOMAP_DELALLOC)
+ 		return xfs_file_iomap_end_delalloc(XFS_I(inode), offset,
+ 				length, written, iomap);
++	else if (iomap->type == IOMAP_COW && written)
++		return xfs_reflink_end_cow(XFS_I(inode), offset, length);
+ 	return 0;
  }
  
-+static inline sector_t iomap_sector(struct iomap *iomap, loff_t pos)
-+{
-+	return (iomap->addr + pos - iomap->offset) >> SECTOR_SHIFT;
-+}
-+
- ssize_t iomap_file_buffered_write(struct kiocb *iocb, struct iov_iter *from,
- 		const struct iomap_ops *ops);
- int iomap_readpage(struct page *page, const struct iomap_ops *ops);
+diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+index 68e4257cebb0..a1b000be3699 100644
+--- a/fs/xfs/xfs_reflink.c
++++ b/fs/xfs/xfs_reflink.c
+@@ -446,6 +446,7 @@ xfs_reflink_allocate_cow(
+ 	 */
+ 	if (!convert_now || imap->br_state == XFS_EXT_NORM)
+ 		return 0;
++	imap->br_state = XFS_EXT_NORM;
+ 	trace_xfs_reflink_convert_cow(ip, imap);
+ 	return xfs_reflink_convert_cow_locked(ip, offset_fsb, count_fsb);
+ 
 -- 
 2.17.0
 
