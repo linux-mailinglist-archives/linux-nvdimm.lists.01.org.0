@@ -1,44 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CED7D18D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 00:53:10 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEDB7D1A8
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 01:03:02 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E89DB212FD407;
-	Wed, 31 Jul 2019 15:55:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A0E20212FD40C;
+	Wed, 31 Jul 2019 16:05:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::742; helo=mail-qk1-x742.google.com;
+ envelope-from=obuil.liubo@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DC52B212E4B59
- for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 15:55:36 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2019 15:53:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,331,1559545200"; d="scan'208";a="166594533"
-Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by orsmga008.jf.intel.com with ESMTP; 31 Jul 2019 15:53:05 -0700
-Date: Wed, 31 Jul 2019 16:53:04 -0600
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-Subject: Re: [ndctl PATCH v8 07/13] daxctl: add a new reconfigure-device
- command
-Message-ID: <20190731225258.GA13147@vverma7-desk1.lm.intel.com>
-References: <20190727015212.27092-1-vishal.l.verma@intel.com>
- <20190727015212.27092-8-vishal.l.verma@intel.com>
- <3de8c0564d45eb4ef328a48e5ff47220335886b6.camel@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 5A9D9212FD3FA
+ for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 16:05:30 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id r6so50533124qkc.0
+ for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 16:02:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+wKIT3YRrcqVhbfbdny2s22b14TaGPW+a+toAVlLVl4=;
+ b=od5pwm0uGYVbBVSgrGjDmZGngmdQiZOP+dXDbe98KYUYwHlPQw8TFUMvic02CFg3oO
+ GKlYwD7BcTRcLQMWAeL2WZzcUikx1YccbovpZUTinUnu5CKXE5dKz+kiykBT0ovwyNYm
+ Yi9VxH9TFToVLaPWMNMEd0N9T7Vt4oovOVyrWI/S6Q7un9Xe+p9EHkZ5dB4ut6xSBeig
+ skJU6nZUEjx87Bm7JCXOOmOk1jCgw2y1mDNwDnqUXid0nWSmC39zzOvHTzW47gFiFOD5
+ fiOoCuOcz62IsV6jQWEwohoDeY9HAw/6EdolM8TDmdPE0afjPXf4T6cS5sbbgUAmW0lI
+ HZ5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+wKIT3YRrcqVhbfbdny2s22b14TaGPW+a+toAVlLVl4=;
+ b=Q5HcIIOtvChmd8rRKH1GYnJPCalfTio7kYHPe7mXowJlpNjbqnF0k1vHiUJFfZ4CgI
+ sl+oQ46Qfk61oigrGT51EUGd8T9fDDk0GKFrzE3GhwjAyW0iV+CDDwHsgq64kcgLiuYM
+ EEYGB8hd+/R7StglPNpdOLBTt3IIQhmmspmcBpZzmMZKLwTpK6EgPgs4/ymS8mr2Gqur
+ 5qLEcMeaB+RKCwgKsFZbkZk3sqDPd/Pk1uaOfdnphsuelS/Bb0+gu0Jfwh+C7BiSCC0j
+ h8eSbTLEUzVUlYnl+cB6jGQWTWdZWDxkDfgz9s7Rl4v/JGIi6Rzt3eh+XPS0KabBCcbF
+ cR2Q==
+X-Gm-Message-State: APjAAAUVdVqJ6fA+rE2wHCs6JJk9gLTwNLiVIxqsg+VSrgJ9Do01CDwy
+ VYKGCwa4EeydPevXXo5JmZP5mkK7lCUwGb03Aic=
+X-Google-Smtp-Source: APXvYqxsL35quDA+IfSiHHdwpBDFdrLVStWzPiBSgFE2/sl6KjeLDWmfVVYcA0dJO1rZpjpALRwpy3W706WeevtVmSc=
+X-Received: by 2002:a37:a013:: with SMTP id j19mr85668921qke.401.1564614178535; 
+ Wed, 31 Jul 2019 16:02:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3de8c0564d45eb4ef328a48e5ff47220335886b6.camel@intel.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+References: <152669369110.34337.14271778212195820353.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <152669371377.34337.10697370528066177062.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CANQeFDCHUMP5su8ckoekeOWjEVBb2kN4VfiHuq8xnz8o8hWXvw@mail.gmail.com>
+ <CAPcyv4h6Wgursr6rMV42EFzH-7DJscrBrCFPqhiJp6ocYS9qmw@mail.gmail.com>
+ <CANQeFDAh5WB5cDGLCYboQBXmi_nVsFgLyHJbNDHdG1u87iMJ+w@mail.gmail.com>
+ <CAPcyv4hfVhYVFszxJO3vDeDAtz_THZROgv8orFXfddEOaGjUBA@mail.gmail.com>
+In-Reply-To: <CAPcyv4hfVhYVFszxJO3vDeDAtz_THZROgv8orFXfddEOaGjUBA@mail.gmail.com>
+From: Liu Bo <obuil.liubo@gmail.com>
+Date: Wed, 31 Jul 2019 16:02:47 -0700
+Message-ID: <CANQeFDBAhjdsdjjKz_Qv6bgOQzquy9h+sAuxUunn2-Hs64bs-g@mail.gmail.com>
+Subject: Re: [PATCH v11 4/7] mm, fs,
+ dax: handle layout changes to pinned dax mappings
+To: Dan Williams <dan.j.williams@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,304 +70,118 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 07/30, Verma, Vishal L wrote:
-> On Fri, 2019-07-26 at 19:52 -0600, Vishal Verma wrote:
-> > Add a new command 'daxctl-reconfigure-device'. This is used to switch
-> > the mode of a dax device between regular 'device_dax' and
-> > 'system-memory'. The command also uses the memory hotplug sysfs
-> > interfaces to online the newly available memory when converting to
-> > 'system-ram', and to attempt to offline the memory when converting back
-> > to a DAX device.
-> > 
-> > Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> > Cc: Dan Williams <dan.j.williams@intel.com>
-> > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> > ---
-> >  daxctl/Makefile.am |   2 +
-> >  daxctl/builtin.h   |   1 +
-> >  daxctl/daxctl.c    |   1 +
-> >  daxctl/device.c    | 503 +++++++++++++++++++++++++++++++++++++++++++++
-> >  4 files changed, 507 insertions(+)
-> >  create mode 100644 daxctl/device.c
-> > 
-> > +static int verify_dax_bus_model(struct daxctl_dev *dev)
-> > +{
-> 
-> I suspect this check is screaming to be moved into the library, and be
-> invoked internally by the 'enable' and 'is_enabled' routines.
-> 
-> When in the dax-class model, a listing of the dax device will currently
-> show:
-> 
-> {
->   "chardev":"dax1.0",
->   "size":799063146496,
->   "target_node":3,
->   "mode":"devdax",
->   "state":"disabled"
-> }
-> 
-> Where the state: disabled is misleading.
+On Wed, Jul 31, 2019 at 12:16 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
+> On Tue, Jul 30, 2019 at 10:07 PM Liu Bo <obuil.liubo@gmail.com> wrote:
+> > On Tue, Jul 30, 2019 at 8:58 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> [..]
+> > > > > +/**
+> > > > > + * dax_layout_busy_page - find first pinned page in @mapping
+> > > > > + * @mapping: address space to scan for a page with ref count > 1
+> > > > > + *
+> > > > > + * DAX requires ZONE_DEVICE mapped pages. These pages are never
+> > > > > + * 'onlined' to the page allocator so they are considered idle when
+> > > > > + * page->count == 1. A filesystem uses this interface to determine if
+> > > > > + * any page in the mapping is busy, i.e. for DMA, or other
+> > > > > + * get_user_pages() usages.
+> > > > > + *
+> > > > > + * It is expected that the filesystem is holding locks to block the
+> > > > > + * establishment of new mappings in this address_space. I.e. it expects
+> > > > > + * to be able to run unmap_mapping_range() and subsequently not race
+> > > > > + * mapping_mapped() becoming true.
+> > > > > + */
+> > > > > +struct page *dax_layout_busy_page(struct address_space *mapping)
+> > > > > +{
+> > > > > +       pgoff_t indices[PAGEVEC_SIZE];
+> > > > > +       struct page *page = NULL;
+> > > > > +       struct pagevec pvec;
+> > > > > +       pgoff_t index, end;
+> > > > > +       unsigned i;
+> > > > > +
+> > > > > +       /*
+> > > > > +        * In the 'limited' case get_user_pages() for dax is disabled.
+> > > > > +        */
+> > > > > +       if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
+> > > > > +               return NULL;
+> > > > > +
+> > > > > +       if (!dax_mapping(mapping) || !mapping_mapped(mapping))
+> > > > > +               return NULL;
+> > > > > +
+> > > > > +       pagevec_init(&pvec);
+> > > > > +       index = 0;
+> > > > > +       end = -1;
+> > > > > +
+> > > > > +       /*
+> > > > > +        * If we race get_user_pages_fast() here either we'll see the
+> > > > > +        * elevated page count in the pagevec_lookup and wait, or
+> > > > > +        * get_user_pages_fast() will see that the page it took a reference
+> > > > > +        * against is no longer mapped in the page tables and bail to the
+> > > > > +        * get_user_pages() slow path.  The slow path is protected by
+> > > > > +        * pte_lock() and pmd_lock(). New references are not taken without
+> > > > > +        * holding those locks, and unmap_mapping_range() will not zero the
+> > > > > +        * pte or pmd without holding the respective lock, so we are
+> > > > > +        * guaranteed to either see new references or prevent new
+> > > > > +        * references from being established.
+> > > > > +        */
+> > > > > +       unmap_mapping_range(mapping, 0, 0, 1);
+> > > >
+> > > > Why do we have to unmap the whole address space prior to check busy pages?
+> > > > Can we have a variate of dax_layout_busy_page() to only unmap a sub
+> > > > set  of the whole address space?
+> > > >
+> > >
+> > > This is due to the location in xfs where layouts are broken vs where
+> > > the file range is mapped to physical blocks for the truncate
+> > > operation. I ultimately decided the reworks needed for that
+> > > optimization were large and that the relative performance gain was
+> > > small. Do you have performance numbers to the contrary? Feel free to
+> > > copy the linux-nvdimm list on future mails, no need for this to be a
+> > > private discussion.
+> >
+> > Thanks a lot for the prompt reply.
+> >
+> > For virtiofs[1]'s dax mode, it also suffers the same race problem
+> > between dax-DMA(mmap+directIO) and fs truncate/punch_hole, besides, it
+> > maintains a kind of resource named dax mapping range for IO
+> > operations, which is similar to the block concept in filesystem and
+> > sometimes we need to reclaim some dax mapping ranges in background.
+> > So it might end up the same race problem when this reclaim process and
+> > dax-dma(mmap+directIO) run concurrently, however, since reclaim is not
+> > a user-triggered operations as truncate, it might be triggered
+> > frequently on the fly by virtiofs itself, now if that happened, mmap
+> > workloads would be impacted significantly by the reclaim because of
+> > reclaim unmapping  the whole address space of inode.
+> >
+> > As every dax mapping range is 2M for now, a ideal solution is to have
+> > layout_checking unmap only that specific 2M range so that other areas
+> > in mmap ranges are good to go.
+>
+> There are larger problems with DAX-dma into a guest mapping. There is
+> no mechanism to coordinate a host-fs truncate with the completion of
+> guest-dma like what we do with the "layout break" implementation when
+> fs and dma are coordinated in the same kernel. The only way,
+> presently, to safely assign a dma-initiator device to a guest with DAX
+> mapped memory is to use device-dax on the host side where truncate /
+> hole punch just isn't supported. Maybe virtio-fs could invent some
+> paravirtualized side channel for this coordination, but it does not
+> exist today.
 
-I think I have all the dax-class oddness fixed with the attached
-incremental patch (on top of the series). I'll send a new set with these
-changes folded in.
+I might have mistaken you, this 'dax mapping range' concept is
+maintained by virtiofs _inside_ guest, it is corresponding to the
+qemu's mmio window that are used for virtiofs.
 
-From de16d2c286fac61f25ddfc37943161932cd72bd4 Mon Sep 17 00:00:00 2001
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Wed, 31 Jul 2019 16:47:53 -0600
-Subject: [ndctl PATCH] fixup
+It seems fine to me if we just unmap a range of the inode's address
+space and check busy dax entries against this range, but I'm not sure,
+could you please suggest?
 
----
- .../daxctl/daxctl-reconfigure-device.txt      |  5 +-
- daxctl/device.c                               | 56 +------------
- daxctl/lib/libdaxctl.c                        | 78 +++++++++++++++----
- 3 files changed, 70 insertions(+), 69 deletions(-)
-
-diff --git a/Documentation/daxctl/daxctl-reconfigure-device.txt b/Documentation/daxctl/daxctl-reconfigure-device.txt
-index fe87762..196d692 100644
---- a/Documentation/daxctl/daxctl-reconfigure-device.txt
-+++ b/Documentation/daxctl/daxctl-reconfigure-device.txt
-@@ -91,8 +91,9 @@ in use (via the dax_pmem_compat driver), the reconfiguration will fail with an
- error such as the following:
- ----
- # daxctl reconfigure-device --mode=system-ram --region=0 all
--dax3.0: dax-class device model unsupported
--error reconfiguring devices: No such device or address
-+libdaxctl: daxctl_dev_disable: dax3.0: error: device model is dax-class
-+dax3.0: disable failed: Operation not supported
-+error reconfiguring devices: Operation not supported
- reconfigured 0 devices
- ----
- 
-diff --git a/daxctl/device.c b/daxctl/device.c
-index 01d057e..4887ccf 100644
---- a/daxctl/device.c
-+++ b/daxctl/device.c
-@@ -378,51 +378,6 @@ static int reconfig_mode_devdax(struct daxctl_dev *dev)
- 	return 0;
- }
- 
--static int verify_dax_bus_model(struct daxctl_dev *dev)
--{
--	const char *devname = daxctl_dev_get_devname(dev);
--	char *dev_path, *subsys_path, *resolved;
--	struct stat sb;
--	int rc;
--
--	if (asprintf(&dev_path, "/dev/%s", devname) < 0)
--		return -ENOMEM;
--
--	rc = lstat(dev_path, &sb);
--	if (rc < 0) {
--		rc = -errno;
--		fprintf(stderr, "%s: stat for %s failed: %s\n",
--			devname, dev_path, strerror(-rc));
--		goto out_dev;;
--	}
--
--	if (asprintf(&subsys_path, "/sys/dev/char/%d:%d/subsystem",
--			major(sb.st_rdev), minor(sb.st_rdev)) < 0) {
--		rc = -ENOMEM;
--		goto out_dev;
--	}
--
--	resolved = realpath(subsys_path, NULL);
--	if (!resolved) {
--		rc = -errno;
--		fprintf(stderr, "%s:  unable to determine subsys: %s\n",
--			devname, strerror(errno));
--		goto out_subsys;
--	}
--
--	if (strcmp(resolved, "/sys/bus/dax") == 0)
--		rc = 0;
--	else
--		rc = -ENXIO;
--
--	free(resolved);
--out_subsys:
--	free(subsys_path);
--out_dev:
--	free(dev_path);
--	return rc;
--}
--
- static int do_reconfig(struct daxctl_dev *dev, enum dev_mode mode,
- 		struct json_object **jdevs)
- {
-@@ -430,12 +385,6 @@ static int do_reconfig(struct daxctl_dev *dev, enum dev_mode mode,
- 	struct json_object *jdev;
- 	int rc = 0;
- 
--	if (verify_dax_bus_model(dev) != 0) {
--		fprintf(stderr, "%s: dax-class device model unsupported\n",
--			devname);
--		return -ENXIO;
--	}
--
- 	switch (mode) {
- 	case DAXCTL_DEV_MODE_RAM:
- 		rc = reconfig_mode_system_ram(dev);
-@@ -449,6 +398,9 @@ static int do_reconfig(struct daxctl_dev *dev, enum dev_mode mode,
- 		rc = -EINVAL;
- 	}
- 
-+	if (rc)
-+		return rc;
-+
- 	*jdevs = json_object_new_array();
- 	if (*jdevs) {
- 		jdev = util_daxctl_dev_to_json(dev, flags);
-@@ -456,7 +408,7 @@ static int do_reconfig(struct daxctl_dev *dev, enum dev_mode mode,
- 			json_object_array_add(*jdevs, jdev);
- 	}
- 
--	return rc;
-+	return 0;
- }
- 
- static int do_xline(struct daxctl_dev *dev, enum device_action action)
-diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-index c2a2a50..066f718 100644
---- a/daxctl/lib/libdaxctl.c
-+++ b/daxctl/lib/libdaxctl.c
-@@ -355,39 +355,74 @@ static struct kmod_list *to_module_list(struct daxctl_ctx *ctx,
- 	return list;
- }
- 
--static int dev_is_system_ram_capable(struct daxctl_dev *dev)
-+static bool device_model_is_dax_bus(struct daxctl_dev *dev)
-+{
-+	const char *devname = daxctl_dev_get_devname(dev);
-+	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	char *path = dev->dev_buf, *resolved;
-+	size_t len = dev->buf_len;
-+	struct stat sb;
-+
-+	if (snprintf(path, len, "/dev/%s", devname) < 0)
-+		return false;
-+
-+	if (lstat(path, &sb) < 0) {
-+		err(ctx, "%s: stat for %s failed: %s\n",
-+			devname, path, strerror(errno));
-+		return false;
-+	}
-+
-+	if (snprintf(path, len, "/sys/dev/char/%d:%d/subsystem",
-+			major(sb.st_rdev), minor(sb.st_rdev)) < 0)
-+		return false;
-+
-+	resolved = realpath(path, NULL);
-+	if (!resolved) {
-+		err(ctx, "%s:  unable to determine subsys: %s\n",
-+			devname, strerror(errno));
-+		return false;
-+	}
-+
-+	if (strcmp(resolved, "/sys/bus/dax") == 0) {
-+		free(resolved);
-+		return true;
-+	}
-+
-+	free(resolved);
-+	return false;
-+}
-+
-+static bool dev_is_system_ram_capable(struct daxctl_dev *dev)
- {
- 	const char *devname = daxctl_dev_get_devname(dev);
- 	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
- 	char *mod_path, *mod_base;
- 	char path[200];
--	int rc = 0;
- 	const int len = sizeof(path);
- 
-+	if (!device_model_is_dax_bus(dev))
-+		return false;
-+
- 	if (!daxctl_dev_is_enabled(dev))
--		return rc;
-+		return false;
- 
- 	if (snprintf(path, len, "%s/driver/module", dev->dev_path) >= len) {
- 		err(ctx, "%s: buffer too small!\n", devname);
--		return -ENXIO;
-+		return false;
- 	}
- 
- 	mod_path = realpath(path, NULL);
--	if (!mod_path) {
--		rc = -errno;
--		err(ctx, "%s:  unable to determine module: %s\n", devname,
--			strerror(errno));
--		return rc;
--	}
-+	if (!mod_path)
-+		return false;
- 
- 	mod_base = basename(mod_path);
--	if (strcmp(mod_base, dax_modules[DAXCTL_DEV_MODE_RAM]) == 0)
--		rc = 1;
--	else if (strcmp(mod_base, dax_modules[DAXCTL_DEV_MODE_DEVDAX]) == 0)
--		rc = 0;
-+	if (strcmp(mod_base, dax_modules[DAXCTL_DEV_MODE_RAM]) == 0) {
-+		free(mod_path);
-+		return true;
-+	}
- 
- 	free(mod_path);
--	return rc;
-+	return false;
- }
- 
- /*
-@@ -821,6 +856,9 @@ DAXCTL_EXPORT int daxctl_dev_is_enabled(struct daxctl_dev *dev)
- 	char *path = dev->dev_buf;
- 	int len = dev->buf_len;
- 
-+	if (!device_model_is_dax_bus(dev))
-+		return 1;
-+
- 	if (snprintf(path, len, "%s/driver", dev->dev_path) >= len) {
- 		err(ctx, "%s: buffer too small!\n",
- 				daxctl_dev_get_devname(dev));
-@@ -877,6 +915,11 @@ static int daxctl_dev_enable(struct daxctl_dev *dev, enum daxctl_dev_mode mode)
- 	const char *mod_name = dax_modules[mode];
- 	int rc;
- 
-+	if (!device_model_is_dax_bus(dev)) {
-+		err(ctx, "%s: error: device model is dax-class\n", devname);
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (daxctl_dev_is_enabled(dev))
- 		return 0;
- 
-@@ -917,6 +960,11 @@ DAXCTL_EXPORT int daxctl_dev_disable(struct daxctl_dev *dev)
- 	const char *devname = daxctl_dev_get_devname(dev);
- 	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
- 
-+	if (!device_model_is_dax_bus(dev)) {
-+		err(ctx, "%s: error: device model is dax-class\n", devname);
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (!daxctl_dev_is_enabled(dev))
- 		return 0;
- 
--- 
-2.20.1
-
+thanks,
+liubo
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
