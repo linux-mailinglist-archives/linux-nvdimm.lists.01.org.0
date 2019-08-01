@@ -2,40 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD33F7D24F
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 02:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24EFE7D286
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 03:01:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B7B7E212FD4F8;
-	Wed, 31 Jul 2019 17:32:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 059A6212FD4E1;
+	Wed, 31 Jul 2019 18:03:32 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ client-ip=2001:41d0:602:dbe::8; helo=tartarus.angband.pl;
+ envelope-from=kilobyte@angband.pl; receiver=linux-nvdimm@lists.01.org 
+Received: from tartarus.angband.pl (tartarus.angband.pl
+ [IPv6:2001:41d0:602:dbe::8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 83CD6212FD4E1
- for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 17:32:17 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2019 17:29:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,332,1559545200"; d="scan'208";a="256388889"
-Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by orsmga001.jf.intel.com with ESMTP; 31 Jul 2019 17:29:46 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH v9 13/13] test: Add a unit test for
- daxctl-reconfigure-device and friends
-Date: Wed, 31 Jul 2019 18:29:32 -0600
-Message-Id: <20190801002932.26430-14-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190801002932.26430-1-vishal.l.verma@intel.com>
-References: <20190801002932.26430-1-vishal.l.verma@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 2E769212FD41A
+ for <linux-nvdimm@lists.01.org>; Wed, 31 Jul 2019 18:03:29 -0700 (PDT)
+Received: from [2a02:a31c:853f:a300::4] (helo=valinor.angband.pl)
+ by tartarus.angband.pl with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <kilobyte@angband.pl>)
+ id 1hszSf-0002Pq-Bg; Thu, 01 Aug 2019 03:00:55 +0200
+Received: from kilobyte by valinor.angband.pl with local (Exim 4.92)
+ (envelope-from <kilobyte@valinor.angband.pl>)
+ id 1hszSf-000Eou-4W; Thu, 01 Aug 2019 03:00:53 +0200
+From: Adam Borowski <kilobyte@angband.pl>
+To: linux-nvdimm@lists.01.org
+Date: Thu,  1 Aug 2019 03:00:44 +0200
+Message-Id: <20190801010044.56927-1-kilobyte@angband.pl>
+X-Mailer: git-send-email 2.23.0.rc0
 MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2a02:a31c:853f:a300::4
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on tartarus.angband.pl
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.1 required=8.0 tests=BAYES_00=-1.9, RDNS_NONE=0.793,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no languages=en
+Subject: [PATCH] daxctl: link against libndctl,
+ in case its use doesn't get pruned
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,164 +52,45 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Adam Borowski <kilobyte@angband.pl>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add a new unit test to test dax device reconfiguration and memory
-operations. This teaches test/common about daxctl, and adds an ACPI.NFIT
-bus variable. Since we have to operate on the ACPI.NFIT bus, the test is
-marked as destructive.
+util/json.c uses libndctl symbols, and is included by daxctl.  These
+functions should then get pruned as unused, but on some platforms the
+toolchain fails to do so.
 
-Cc: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+These platforms are ia64, hppa and 32-bit powerpc.  It's generally a
+waste of our time to build ndctl there, but as the lack of a
+build-dependency requires annoying workarounds higher in the stack,
+this has been requested in https://bugs.debian.org/914348 -- and is
+trivially fixable on the ndctl side.
+
+Thanks to -Wl,--as-needed there's no harm to architectures where the
+pruning works, thus let's not bother with detection.
+
+As daxctl and libdaxctl are separate, there's no circular dependency.
+
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 ---
- test/Makefile.am       |  3 +-
- test/common            | 19 ++++++++--
- test/daxctl-devices.sh | 81 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 99 insertions(+), 4 deletions(-)
- create mode 100755 test/daxctl-devices.sh
+ daxctl/Makefile.am | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/test/Makefile.am b/test/Makefile.am
-index 874c4bb..84474d0 100644
---- a/test/Makefile.am
-+++ b/test/Makefile.am
-@@ -49,7 +49,8 @@ TESTS +=\
- 	dax.sh \
- 	device-dax \
- 	device-dax-fio.sh \
--	mmap.sh
-+	mmap.sh \
-+	daxctl-devices.sh
- 
- if ENABLE_KEYUTILS
- TESTS += security.sh
-diff --git a/test/common b/test/common
-index 1b9d3da..1814a0c 100644
---- a/test/common
-+++ b/test/common
-@@ -15,12 +15,25 @@ else
- 	exit 1
- fi
- 
--# NFIT_TEST_BUS[01]
-+# DAXCTL
- #
--NFIT_TEST_BUS0=nfit_test.0
--NFIT_TEST_BUS1=nfit_test.1
-+if [ -f "../daxctl/daxctl" ] && [ -x "../daxctl/daxctl" ]; then
-+	export DAXCTL=../daxctl/daxctl
-+elif [ -f "./daxctl/daxctl" ] && [ -x "./daxctl/daxctl" ]; then
-+	export DAXCTL=./daxctl/daxctl
-+else
-+	echo "Couldn't find an daxctl binary"
-+	exit 1
-+fi
- 
- 
-+# NFIT_TEST_BUS[01]
-+#
-+NFIT_TEST_BUS0="nfit_test.0"
-+NFIT_TEST_BUS1="nfit_test.1"
-+ACPI_BUS="ACPI.NFIT"
-+E820_BUS="e820"
-+
- # Functions
- 
- # err
-diff --git a/test/daxctl-devices.sh b/test/daxctl-devices.sh
-new file mode 100755
-index 0000000..04f53f7
---- /dev/null
-+++ b/test/daxctl-devices.sh
-@@ -0,0 +1,81 @@
-+#!/bin/bash -Ex
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright(c) 2019 Intel Corporation. All rights reserved.
-+
-+rc=77
-+. ./common
-+
-+trap 'cleanup $LINENO' ERR
-+
-+cleanup()
-+{
-+	printf "Error at line %d\n" "$1"
-+	[[ $testdev ]] && reset_dev
-+	exit $rc
-+}
-+
-+find_testdev()
-+{
-+	local rc=77
-+
-+	# find a victim device
-+	testbus="$ACPI_BUS"
-+	testdev=$("$NDCTL" list -b "$testbus" -Ni | jq -er '.[0].dev | .//""')
-+	if [[ ! $testdev  ]]; then
-+		printf "Unable to find a victim device\n"
-+		exit "$rc"
-+	fi
-+	printf "Found victim dev: %s on bus: %s\n" "$testdev" "$testbus"
-+}
-+
-+setup_dev()
-+{
-+	test -n "$testbus"
-+	test -n "$testdev"
-+
-+	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
-+	testdev=$("$NDCTL" create-namespace -b "$testbus" -m devdax -fe "$testdev" -s 256M | \
-+		jq -er '.dev')
-+	test -n "$testdev"
-+}
-+
-+reset_dev()
-+{
-+	"$NDCTL" destroy-namespace -f -b "$testbus" "$testdev"
-+}
-+
-+daxctl_get_dev()
-+{
-+	"$NDCTL" list -n "$1" -X | jq -er '.[].daxregion.devices[0].chardev'
-+}
-+
-+daxctl_get_mode()
-+{
-+	"$DAXCTL" list -d "$1" | jq -er '.[].mode'
-+}
-+
-+daxctl_test()
-+{
-+	local daxdev
-+
-+	daxdev=$(daxctl_get_dev "$testdev")
-+	test -n "$daxdev"
-+
-+	"$DAXCTL" reconfigure-device -N -m system-ram "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
-+	"$DAXCTL" online-memory "$daxdev"
-+	"$DAXCTL" offline-memory "$daxdev"
-+	"$DAXCTL" reconfigure-device -m devdax "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
-+	"$DAXCTL" reconfigure-device -m system-ram "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "system-ram" ]]
-+	"$DAXCTL" reconfigure-device -f -m devdax "$daxdev"
-+	[[ $(daxctl_get_mode "$daxdev") == "devdax" ]]
-+}
-+
-+find_testdev
-+setup_dev
-+rc=1
-+daxctl_test
-+reset_dev
-+exit 0
+diff --git a/daxctl/Makefile.am b/daxctl/Makefile.am
+index 94f73f9..a5487d6 100644
+--- a/daxctl/Makefile.am
++++ b/daxctl/Makefile.am
+@@ -21,4 +21,5 @@ daxctl_LDADD =\
+ 	lib/libdaxctl.la \
+ 	../libutil.a \
+ 	$(UUID_LIBS) \
+-	$(JSON_LIBS)
++	$(JSON_LIBS) \
++	../ndctl/lib/libndctl.la
 -- 
-2.20.1
+2.23.0.rc0
 
 _______________________________________________
 Linux-nvdimm mailing list
