@@ -1,47 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DBA57D711
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 10:19:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A9C7D82E
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Aug 2019 11:04:06 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0CD7E212FD4F5;
-	Thu,  1 Aug 2019 01:21:50 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 60211212FD4FD;
+	Thu,  1 Aug 2019 02:06:35 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=114.179.232.161; helo=tyo161.gate.nec.co.jp;
+ client-ip=114.179.232.162; helo=tyo162.gate.nec.co.jp;
  envelope-from=n-horiguchi@ah.jp.nec.com; receiver=linux-nvdimm@lists.01.org 
-Received: from tyo161.gate.nec.co.jp (tyo161.gate.nec.co.jp [114.179.232.161])
+Received: from tyo162.gate.nec.co.jp (tyo162.gate.nec.co.jp [114.179.232.162])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
  bits)) (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7D709212AB4D0
- for <linux-nvdimm@lists.01.org>; Thu,  1 Aug 2019 01:21:47 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id A9C00212FD4E0
+ for <linux-nvdimm@lists.01.org>; Thu,  1 Aug 2019 02:06:34 -0700 (PDT)
 Received: from mailgate01.nec.co.jp ([114.179.233.122])
- by tyo161.gate.nec.co.jp (8.15.1/8.15.1) with ESMTPS id x718JDMC025230
+ by tyo162.gate.nec.co.jp (8.15.1/8.15.1) with ESMTPS id x71940SC015459
  (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 1 Aug 2019 17:19:13 +0900
+ Thu, 1 Aug 2019 18:04:00 +0900
 Received: from mailsv02.nec.co.jp (mailgate-v.nec.co.jp [10.204.236.94])
- by mailgate01.nec.co.jp (8.15.1/8.15.1) with ESMTP id x718JD2t023372;
- Thu, 1 Aug 2019 17:19:13 +0900
-Received: from mail01b.kamome.nec.co.jp (mail01b.kamome.nec.co.jp [10.25.43.2])
- by mailsv02.nec.co.jp (8.15.1/8.15.1) with ESMTP id x718Isjq021046;
- Thu, 1 Aug 2019 17:19:13 +0900
-Received: from bpxc99gp.gisp.nec.co.jp ([10.38.151.147] [10.38.151.147]) by
- mail02.kamome.nec.co.jp with ESMTP id BT-MMP-7316139;
- Thu, 1 Aug 2019 17:17:39 +0900
+ by mailgate01.nec.co.jp (8.15.1/8.15.1) with ESMTP id x71940LC010973;
+ Thu, 1 Aug 2019 18:04:00 +0900
+Received: from mail03.kamome.nec.co.jp (mail03.kamome.nec.co.jp [10.25.43.7])
+ by mailsv02.nec.co.jp (8.15.1/8.15.1) with ESMTP id x7193E3B027604; 
+ Thu, 1 Aug 2019 18:04:00 +0900
+Received: from bpxc99gp.gisp.nec.co.jp ([10.38.151.151] [10.38.151.151]) by
+ mail03.kamome.nec.co.jp with ESMTP id BT-MMP-2655495;
+ Thu, 1 Aug 2019 17:18:27 +0900
 Received: from BPXM23GP.gisp.nec.co.jp ([10.38.151.215]) by
- BPXC19GP.gisp.nec.co.jp ([10.38.151.147]) with mapi id 14.03.0439.000; Thu, 1
- Aug 2019 17:17:38 +0900
+ BPXC23GP.gisp.nec.co.jp ([10.38.151.151]) with mapi id 14.03.0439.000; Thu, 1
+ Aug 2019 17:18:27 +0900
 From: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
 To: Jane Chu <jane.chu@oracle.com>
 Subject: Re: [PATCH v3 2/2] mm/memory-failure: Poison read receives SIGKILL
  instead of SIGBUS if mmaped more than once
 Thread-Topic: [PATCH v3 2/2] mm/memory-failure: Poison read receives SIGKILL
  instead of SIGBUS if mmaped more than once
-Thread-Index: AQHVQzSPZWUqS0z8rU+q1hsF+rBObKblZd+A
-Date: Thu, 1 Aug 2019 08:17:37 +0000
-Message-ID: <20190801081737.GA31767@hori.linux.bs1.fc.nec.co.jp>
+Thread-Index: AQHVQzSPZWUqS0z8rU+q1hsF+rBObKblZhkA
+Date: Thu, 1 Aug 2019 08:18:26 +0000
+Message-ID: <20190801081826.GB31767@hori.linux.bs1.fc.nec.co.jp>
 References: <1564092101-3865-1-git-send-email-jane.chu@oracle.com>
  <1564092101-3865-3-git-send-email-jane.chu@oracle.com>
 In-Reply-To: <1564092101-3865-3-git-send-email-jane.chu@oracle.com>
@@ -50,7 +50,7 @@ Content-Language: ja-JP
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.34.125.150]
-Content-ID: <372749A4D6FFC14982F5FD30BC1E06A7@gisp.nec.co.jp>
+Content-ID: <3643947E1DEB764F9AEBCC8A0B8504B2@gisp.nec.co.jp>
 MIME-Version: 1.0
 X-TM-AS-MML: disable
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -110,76 +110,10 @@ On Thu, Jul 25, 2019 at 04:01:41PM -0600, Jane Chu wrote:
 > 
 > Signed-off-by: Jane Chu <jane.chu@oracle.com>
 > Suggested-by: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-> ---
->  mm/memory-failure.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 51d5b20..f668c88 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -199,7 +199,6 @@ struct to_kill {
->  	struct task_struct *tsk;
->  	unsigned long addr;
->  	short size_shift;
-> -	char addr_valid;
->  };
->  
->  /*
-> @@ -318,22 +317,27 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
->  	}
->  
->  	tk->addr = page_address_in_vma(p, vma);
-> -	tk->addr_valid = 1;
->  	if (is_zone_device_page(p))
->  		tk->size_shift = dev_pagemap_mapping_shift(p, vma);
->  	else
->  		tk->size_shift = compound_order(compound_head(p)) + PAGE_SHIFT;
->  
->  	/*
-> -	 * In theory we don't have to kill when the page was
-> -	 * munmaped. But it could be also a mremap. Since that's
-> -	 * likely very rare kill anyways just out of paranoia, but use
-> -	 * a SIGKILL because the error is not contained anymore.
-> +	 * Send SIGKILL if "tk->addr == -EFAULT". Also, as
-> +	 * "tk->size_shift" is always non-zero for !is_zone_device_page(),
-> +	 * so "tk->size_shift == 0" effectively checks no mapping on
-> +	 * ZONE_DEVICE. Indeed, when a devdax page is mmapped N times
-> +	 * to a process' address space, it's possible not all N VMAs
-> +	 * contain mappings for the page, but at least one VMA does.
-> +	 * Only deliver SIGBUS with payload derived from the VMA that
-> +	 * has a mapping for the page.
->  	 */
-> -	if (tk->addr == -EFAULT || tk->size_shift == 0) {
-> +	if (tk->addr == -EFAULT) { 
-                              ^
-(sorry nitpicking...) there's a trailing whitespace.
-Otherwise looks good to me.
+
+Thanks for the fix.
 
 Acked-by: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-
->  		pr_info("Memory failure: Unable to find user space address %lx in %s\n",
->  			page_to_pfn(p), tsk->comm);
-> -		tk->addr_valid = 0;
-> +	} else if (tk->size_shift == 0) {
-> +		kfree(tk);
-> +		return;
->  	}
->  
->  	get_task_struct(tsk);
-> @@ -361,7 +365,7 @@ static void kill_procs(struct list_head *to_kill, int forcekill, bool fail,
->  			 * make sure the process doesn't catch the
->  			 * signal and then access the memory. Just kill it.
->  			 */
-> -			if (fail || tk->addr_valid == 0) {
-> +			if (fail || tk->addr == -EFAULT) {
->  				pr_err("Memory failure: %#lx: forcibly killing %s:%d because of failure to unmap corrupted page\n",
->  				       pfn, tk->tsk->comm, tk->tsk->pid);
->  				do_send_sig_info(SIGKILL, SEND_SIG_PRIV,
-> -- 
-> 1.8.3.1
-> 
-> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
