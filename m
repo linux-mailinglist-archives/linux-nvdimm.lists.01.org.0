@@ -1,31 +1,30 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2688830FB
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Aug 2019 13:52:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693498341E
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Aug 2019 16:41:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A68022130A4FC;
-	Tue,  6 Aug 2019 04:54:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 191B42130A508;
+	Tue,  6 Aug 2019 07:43:54 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=181.224.236.222;
- helo=[181.224.236.222]; envelope-from=info@zimmereiludwig.de;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=45.174.101.40;
+ helo=45-174-101-40.sulrj.com.br; envelope-from=steven7001@sbcglobel.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from [181.224.236.222] (unknown [181.224.236.222])
- by ml01.01.org (Postfix) with ESMTP id B436C21303089
- for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 04:54:49 -0700 (PDT)
-Message-ID: <267846381C1806623C027C585C422678@HUPCJGH>
-From: <info@zimmereiludwig.de>
+Received: from 45-174-101-40.sulrj.com.br (unknown [45.174.101.40])
+ by ml01.01.org (Postfix) with ESMTP id 6162E21309D1B
+ for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 07:43:52 -0700 (PDT)
+Message-ID: <003e01d54c4b$05d01035$403d24b2@qoeqqv>
+From: <steven7001@sbcglobel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: I need someone who can love and appreciate me.
-Date: 6 Aug 2019 00:33:15 -0600
+Subject: The world is full of love, I want to know this feeling!
+Date: 6 Aug 2019 07:19:17 -0400
 MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
-Importance: Normal
-X-Mailer: Microsoft Windows Live Mail 16.4.3505.912
-X-MimeOLE: Produced By Microsoft MimeOLE V16.4.3505.912
+X-Mailer: Microsoft Outlook Express 6.00.2800.1106
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1106
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,7 +52,7 @@ I consider myself as a determined, honest, cheerful.
 Most importantly is the fact that my heart is open for love!
 In the next letter I will be able to tell you more about me and of course will send my photos.
 
-If you are interested, please write to my personal e-mail - prettyykz88@gmail.com
+If you are interested, please write to my personal e-mail - beautekitty88@gmail.com
 
 Lola.
 
