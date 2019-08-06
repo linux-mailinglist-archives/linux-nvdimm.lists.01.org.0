@@ -2,59 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FCC837DD
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Aug 2019 19:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B05B837D9
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Aug 2019 19:27:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3982221311C00;
-	Tue,  6 Aug 2019 10:30:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 196AC21311BFA;
+	Tue,  6 Aug 2019 10:29:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ client-ip=156.151.31.85; helo=userp2120.oracle.com;
  envelope-from=jane.chu@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B7D832130D7D0
- for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 10:30:26 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76H9w4u089314;
- Tue, 6 Aug 2019 17:27:53 GMT
+ by ml01.01.org (Postfix) with ESMTPS id C15092130D7D0
+ for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 10:29:42 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76H9EFo095481;
+ Tue, 6 Aug 2019 17:27:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2018-07-02;
- bh=APGgD2qTHotK94otaKMSFu+Fqn3rhhV5q78cD+VLKR8=;
- b=QnEK1uGVZXTycSp9FE6Ag63qxyOk1FWl0DfANEu1driBxn4Nty6leZahrJCPvQzTWw09
- /hIu5odh1DzcOd6j+f4bmMsFusyYdz73GAjYWtvjGRG6L9c8z2uYhcvh65hdZ0C1xIWC
- QLAdniVNlDORQb6b0rFBzzJgjVB4HzSpKvQyadTXsWYkj9Mo8DvHA5qDrKMCJj9Hl/N+
- mj0u4rNZHWrtTU8zNcMSla70HI+T+KPo9uPRhdPi4xI6MepsEyj1J8jn8PijVHmbCIyv
- QdeKkj6akVb0qj6WAOw3VTu7nZzxcS4Ob4VkB/9KNyDZAZK72HbkRJSJgeHlHKVsd12b uA== 
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=KBUngTRZprbO++Eb+szGpPG6NefHy8tBupTeXYUVbsM=;
+ b=Ppt8cSQNMuK0Cq/KrKDv4sBs6V+5euexG+kJuUAW2rZ7KE1SqIiiyZen2HOIhzNtXxBp
+ pqA01ddnGl2HWm/Ur+o9dovrqpeyz2bYPYz6MHnAuX/SHTUdwG3skheWxl3F45Yp+n0X
+ YQdLb3l9sliqNLCd4G1eAD0kjGxi2qxVLWDSW7vmR1QEdXD5D/qRvQkqMqHoORK6cKqY
+ x8Z2roijL6BTgtENjwGtPr5tncFhjidN7BjumSLgbQsj1ngea6xPSnMk228ZF7ndBOxb
+ D2MZJ4OWR2Cr5V2blscrfjrat6zEHeZmfVq/qQYf9U2iT7ohsao4TntqWImMPPdBCZ0m 4Q== 
 Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2130.oracle.com with ESMTP id 2u51ptyp8y-1
+ by userp2120.oracle.com with ESMTP id 2u52wr7jgk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 06 Aug 2019 17:27:53 +0000
+ Tue, 06 Aug 2019 17:27:08 +0000
 Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76H8OHC141125;
- Tue, 6 Aug 2019 17:25:52 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3020.oracle.com with ESMTP id 2u75776nhj-1
+ by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76H8NB6141112;
+ Tue, 6 Aug 2019 17:27:07 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3020.oracle.com with ESMTP id 2u75776pns-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 06 Aug 2019 17:25:52 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x76HPoNN018667;
- Tue, 6 Aug 2019 17:25:50 GMT
-Received: from brm-x32-03.us.oracle.com (/10.80.150.35)
+ Tue, 06 Aug 2019 17:27:07 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x76HR6K4005006;
+ Tue, 6 Aug 2019 17:27:06 GMT
+Received: from [10.159.248.227] (/10.159.248.227)
  by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 06 Aug 2019 10:25:50 -0700
+ with ESMTP ; Tue, 06 Aug 2019 10:27:06 -0700
+Subject: Re: [PATCH v3 1/2] mm/memory-failure.c clean up around tk
+ pre-allocation
+To: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+References: <1564092101-3865-1-git-send-email-jane.chu@oracle.com>
+ <1564092101-3865-2-git-send-email-jane.chu@oracle.com>
+ <20190801090651.GC31767@hori.linux.bs1.fc.nec.co.jp>
 From: Jane Chu <jane.chu@oracle.com>
-To: n-horiguchi@ah.jp.nec.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] mm/memory-failure: Poison read receives SIGKILL
- instead of SIGBUS if mmaped more than once
-Date: Tue,  6 Aug 2019 11:25:45 -0600
-Message-Id: <1565112345-28754-3-git-send-email-jane.chu@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1565112345-28754-1-git-send-email-jane.chu@oracle.com>
-References: <1565112345-28754-1-git-send-email-jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <cad86094-c9ce-7bc1-5342-2bb03b512e71@oracle.com>
+Date: Tue, 6 Aug 2019 10:26:49 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190801090651.GC31767@hori.linux.bs1.fc.nec.co.jp>
+Content-Language: en-US
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9341
  signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
@@ -81,113 +88,33 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Cc: "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"; DelSp="yes"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Mmap /dev/dax more than once, then read the poison location using address
-from one of the mappings. The other mappings due to not having the page
-mapped in will cause SIGKILLs delivered to the process. SIGKILL succeeds
-over SIGBUS, so user process looses the opportunity to handle the UE.
+Hi, Naoya,
 
-Although one may add MAP_POPULATE to mmap(2) to work around the issue,
-MAP_POPULATE makes mapping 128GB of pmem several magnitudes slower, so
-isn't always an option.
+Thanks a lot!  v4 on the way. :)
 
-Details -
+-jane
 
-ndctl inject-error --block=10 --count=1 namespace6.0
-
-./read_poison -x dax6.0 -o 5120 -m 2
-mmaped address 0x7f5bb6600000
-mmaped address 0x7f3cf3600000
-doing local read at address 0x7f3cf3601400
-Killed
-
-Console messages in instrumented kernel -
-
-mce: Uncorrected hardware memory error in user-access at edbe201400
-Memory failure: tk->addr = 7f5bb6601000
-Memory failure: address edbe201: call dev_pagemap_mapping_shift
-dev_pagemap_mapping_shift: page edbe201: no PUD
-Memory failure: tk->size_shift == 0
-Memory failure: Unable to find user space address edbe201 in read_poison
-Memory failure: tk->addr = 7f3cf3601000
-Memory failure: address edbe201: call dev_pagemap_mapping_shift
-Memory failure: tk->size_shift = 21
-Memory failure: 0xedbe201: forcibly killing read_poison:22434 because of failure to unmap corrupted page
-  => to deliver SIGKILL
-Memory failure: 0xedbe201: Killing read_poison:22434 due to hardware memory corruption
-  => to deliver SIGBUS
-
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Suggested-by: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
----
- mm/memory-failure.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 51d5b20..bd4db33 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -199,7 +199,6 @@ struct to_kill {
- 	struct task_struct *tsk;
- 	unsigned long addr;
- 	short size_shift;
--	char addr_valid;
- };
- 
- /*
-@@ -318,22 +317,27 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
- 	}
- 
- 	tk->addr = page_address_in_vma(p, vma);
--	tk->addr_valid = 1;
- 	if (is_zone_device_page(p))
- 		tk->size_shift = dev_pagemap_mapping_shift(p, vma);
- 	else
- 		tk->size_shift = compound_order(compound_head(p)) + PAGE_SHIFT;
- 
- 	/*
--	 * In theory we don't have to kill when the page was
--	 * munmaped. But it could be also a mremap. Since that's
--	 * likely very rare kill anyways just out of paranoia, but use
--	 * a SIGKILL because the error is not contained anymore.
-+	 * Send SIGKILL if "tk->addr == -EFAULT". Also, as
-+	 * "tk->size_shift" is always non-zero for !is_zone_device_page(),
-+	 * so "tk->size_shift == 0" effectively checks no mapping on
-+	 * ZONE_DEVICE. Indeed, when a devdax page is mmapped N times
-+	 * to a process' address space, it's possible not all N VMAs
-+	 * contain mappings for the page, but at least one VMA does.
-+	 * Only deliver SIGBUS with payload derived from the VMA that
-+	 * has a mapping for the page.
- 	 */
--	if (tk->addr == -EFAULT || tk->size_shift == 0) {
-+	if (tk->addr == -EFAULT) {
- 		pr_info("Memory failure: Unable to find user space address %lx in %s\n",
- 			page_to_pfn(p), tsk->comm);
--		tk->addr_valid = 0;
-+	} else if (tk->size_shift == 0) {
-+		kfree(tk);
-+		return;
- 	}
- 
- 	get_task_struct(tsk);
-@@ -361,7 +365,7 @@ static void kill_procs(struct list_head *to_kill, int forcekill, bool fail,
- 			 * make sure the process doesn't catch the
- 			 * signal and then access the memory. Just kill it.
- 			 */
--			if (fail || tk->addr_valid == 0) {
-+			if (fail || tk->addr == -EFAULT) {
- 				pr_err("Memory failure: %#lx: forcibly killing %s:%d because of failure to unmap corrupted page\n",
- 				       pfn, tk->tsk->comm, tk->tsk->pid);
- 				do_send_sig_info(SIGKILL, SEND_SIG_PRIV,
--- 
-1.8.3.1
-
+On 8/1/2019 2:06 AM, Naoya Horiguchi wrote:
+> On Thu, Jul 25, 2019 at 04:01:40PM -0600, Jane Chu wrote:
+>> add_to_kill() expects the first 'tk' to be pre-allocated, it makes
+>> subsequent allocations on need basis, this makes the code a bit
+>> difficult to read. Move all the allocation internal to add_to_kill()
+>> and drop the **tk argument.
+>>
+>> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> 
+> Acked-by: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+> 
+> # somehow I sent 2 acks to 2/2, sorry about the noise.
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
