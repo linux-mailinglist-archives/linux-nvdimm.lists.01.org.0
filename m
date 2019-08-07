@@ -1,63 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C99284FFA
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 17:34:40 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A598527C
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 19:57:14 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D6EAB21309D07;
-	Wed,  7 Aug 2019 08:37:08 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 86CE221309DA3;
+	Wed,  7 Aug 2019 10:59:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id A9A25212BF9A5
- for <linux-nvdimm@lists.01.org>; Wed,  7 Aug 2019 08:37:05 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id s20so40459144otp.4
- for <linux-nvdimm@lists.01.org>; Wed, 07 Aug 2019 08:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=eMp6naI/5i6xvsxMuAs1x+LPP6IFLEjtiCOqx/6LHjU=;
- b=QnguqvwkyXJaPxpW3TURIhDnAp2GHLL17roNAYkhOJpTC10cvAWQ+eyjBywV3DB65p
- 2APbGnyndl0GkHRNDSjKNGBFSFL4SNZq2z/Q3zqTOWTDEpA6Qrgj5SdBKeg/JkuSQmxQ
- 7+sRXu7cTmn6f4m+gMf52jOQvqhauz2WHvcHizBlCNoZlUBlS9xkHvOQ0bv/qsBxhPYH
- H6hmg46UMM5/Ar+cUow0KDVsUkkAxfsD0wNhHI6kQx0PHkgONC/LaQKqqvk/5To0clUX
- pmvH5ooKq4lHqckiXxYpBb5bt/uOEmGgNDviWpsCZTu/3mLNE5UVgww4nlv9pznhhazC
- XS1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=eMp6naI/5i6xvsxMuAs1x+LPP6IFLEjtiCOqx/6LHjU=;
- b=Cg2QAlWncjzB/4LzYBNt1Kg7ROpOdpYkPP7i8zjWvAMrQdUkiyIxCjSA8E1lNPUU+x
- /L3McE/TNGqKr+Q0+cZ4D2hrdHVzm3XVvM1XyWXq2iJH1tH6Tn3I9my971ZSVhWQD7dm
- wegOLE8XkLwzlfIoFaqjGu0picXfw/D/msCzUtO2gyuS0oNVyigQeAdBysdmPR5hzpKt
- 0mMy8RSXNkotC7KY+rcjWipF39BEesqRL3k62tdRVSL59FTzs+bdSMSPaj9ozr+vJvFV
- MBARawvcOEhPLUbHoVuKUcBqGvXUYG2KG1VtpzikguEbR7A8sETvuditq1piVStA9wCq
- bUCw==
-X-Gm-Message-State: APjAAAVSOqFYThAYuc0b8DqNU7t86ZjyAeAmTP+8/75TGUVcItSTA84C
- ITrYsjSHcLvUjBH0baR7NI9rrlmVOvJzY2vJmILWsw==
-X-Google-Smtp-Source: APXvYqzyRM2PGxfhgYgnNoIYPylSL4xSSHlO+QM9oFQKd/la5HJp2XCCKQOJGUHivsqtk8LOtH30FNTUOWKQQRYD3MA=
-X-Received: by 2002:a9d:7248:: with SMTP id a8mr8811423otk.363.1565192074005; 
- Wed, 07 Aug 2019 08:34:34 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 34F10212FD417
+ for <linux-nvdimm@lists.01.org>; Wed,  7 Aug 2019 10:59:41 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2019 10:57:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,358,1559545200"; d="scan'208";a="258440082"
+Received: from fmsmsx104.amr.corp.intel.com ([10.18.124.202])
+ by orsmga001.jf.intel.com with ESMTP; 07 Aug 2019 10:57:10 -0700
+Received: from fmsmsx118.amr.corp.intel.com (10.18.116.18) by
+ fmsmsx104.amr.corp.intel.com (10.18.124.202) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 7 Aug 2019 10:57:07 -0700
+Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.86]) by
+ fmsmsx118.amr.corp.intel.com ([169.254.1.160]) with mapi id 14.03.0439.000;
+ Wed, 7 Aug 2019 10:57:07 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Subject: [ANNOUNCE] ndctl v66
+Thread-Topic: [ANNOUNCE] ndctl v66
+Thread-Index: AQHVTUmH/EqgqpIuYE+O3kmhJuGB7w==
+Date: Wed, 7 Aug 2019 17:57:06 +0000
+Message-ID: <1453308d3f525269a42b6e070af712b6e4515c9c.camel@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.185]
+Content-ID: <FCC5837CB78DE04EB1C34377F5C1011C@intel.com>
 MIME-Version: 1.0
-References: <20190807040029.11344-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4haXOjn7K-HgPV_WLqbfqRQbbiq=LvLt5Ue=OPAaBWN6A@mail.gmail.com>
- <c99ecdad-e9de-cd76-1601-841de35602a0@linux.ibm.com>
- <CAPcyv4ia5F73Qd0FyOWkHAUGoXrPFFQwA-R3DNXb0mGyOS5fgQ@mail.gmail.com>
- <9c397eca-9152-9da7-fcde-8aa424c8fede@linux.ibm.com>
-In-Reply-To: <9c397eca-9152-9da7-fcde-8aa424c8fede@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 7 Aug 2019 08:34:23 -0700
-Message-ID: <CAPcyv4gEUQWXv7ROjmoxe715UBwBbJKoWoNeRQUgoN_=H=-p+w@mail.gmail.com>
-Subject: Re: [PATCH] nvdimm/of_pmem: Provide a unique name for bus provider
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,98 +58,66 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "Pathi, Pragyansri" <pragyansri.pathi@intel.com>, "Kasten,
+ Robert A" <robert.a.kasten@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Aug 6, 2019 at 11:00 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 8/7/19 10:22 AM, Dan Williams wrote:
-> > On Tue, Aug 6, 2019 at 9:17 PM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> On 8/7/19 9:43 AM, Dan Williams wrote:
-> >>> On Tue, Aug 6, 2019 at 9:00 PM Aneesh Kumar K.V
-> >>> <aneesh.kumar@linux.ibm.com> wrote:
-> >>>>
-> >>>> ndctl utility requires the ndbus to have unique names. If not while
-> >>>> enumerating the bus in userspace it drops bus with similar names.
-> >>>> This results in us not listing devices beneath the bus.
-> >>>
-> >>> It does?
-> >>>
-> >>>>
-> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> >>>> ---
-> >>>>    drivers/nvdimm/of_pmem.c | 2 +-
-> >>>>    1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>>
-> >>>> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-> >>>> index a0c8dcfa0bf9..97187d6c0bdb 100644
-> >>>> --- a/drivers/nvdimm/of_pmem.c
-> >>>> +++ b/drivers/nvdimm/of_pmem.c
-> >>>> @@ -42,7 +42,7 @@ static int of_pmem_region_probe(struct platform_device *pdev)
-> >>>>                   return -ENOMEM;
-> >>>>
-> >>>>           priv->bus_desc.attr_groups = bus_attr_groups;
-> >>>> -       priv->bus_desc.provider_name = "of_pmem";
-> >>>> +       priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
-> >>>
-> >>> This looks ok to me to address support for older ndctl binaries, but
-> >>> I'd like to also fix the ndctl bug that makes non-unique provider
-> >>> names fail.
-> >>>
-> >>
-> >> 0462269ab121d323a016874ebdd42217f2911ee7 (ndctl: provide a method to
-> >> invalidate the bus list)
-> >>
-> >> This hunk does the filtering.
-> >>
-> >> @@ -928,6 +929,14 @@ static int add_bus(void *parent, int id, const char
-> >> *ctl_base)
-> >>                  goto err_read;
-> >>          bus->buf_len = strlen(bus->bus_path) + 50;
-> >>
-> >> +       ndctl_bus_foreach(ctx, bus_dup)
-> >> +               if (strcmp(ndctl_bus_get_provider(bus_dup),
-> >> +                                       ndctl_bus_get_provider(bus)) == 0) {
-> >> +                       free_bus(bus, NULL);
-> >> +                       free(path);
-> >> +                       return 1;
-> >> +               }
-> >> +
-> >
-> > Yup, that's broken, does this incremental fix work?
-> >
-> > diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-> > index 4d9cc7e29c6b..6596f94edef8 100644
-> > --- a/ndctl/lib/libndctl.c
-> > +++ b/ndctl/lib/libndctl.c
-> > @@ -889,7 +889,9 @@ static void *add_bus(void *parent, int id, const
-> > char *ctl_base)
-> >
-> >          ndctl_bus_foreach(ctx, bus_dup)
-> >                  if (strcmp(ndctl_bus_get_provider(bus_dup),
-> > -                                       ndctl_bus_get_provider(bus)) == 0) {
-> > +                                       ndctl_bus_get_provider(bus)) == 0
-> > +                               && strcmp(ndctl_bus_get_devname(bus_dup),
-> > +                                       ndctl_bus_get_devname(bus)) == 0) {
-> >                          free_bus(bus, NULL);
-> >                          free(path);
-> >                          return bus_dup;
-> >
->
-> That worked.
+This release incorporates functionality up to the 5.3 kernel, and adds a
+number of bug fixes, and improvements.
 
-Great. I'll make a formal patch, and I'll amend the changelog of the
-proposed kernel change to say "older ndctl binaries mistakenly
-require"
->
-> -aneesh
+Highlights include a new command to reconfigure dax devices to
+different modes (devdax - default, and system-ram - to hotplug the dax
+device as system memory), improvements to ndctl-{read,write,init}-labels
+allowing smaller sized reads/writes, usability fixes to ndctl-monitor,
+and ndctl-create-namespace, and a fix to ndctl-check-namespace allowing
+it to be used on systems with different page sizes.
+
+Shortlog for this release:
+
+Alison Schofield (2):
+      ndctl, test: handle backup_keys in security.sh
+      ndctl, test: move security.sh to the destructive test list
+
+Dan Williams (14):
+      ndctl/dimm: Add 'flags' field to read-labels output
+      ndctl/dimm: Add --human support to read-labels
+      ndctl/build: Drop -Wpointer-arith
+      ndctl/namespace: Handle 'create-namespace' in label-less mode
+      ndctl/dimm: Fix init-labels success reporting
+      ndctl/test: Fix device-dax bus-model detection
+      ndctl/monitor: Allow monitor to be manually moved to the background
+      ndctl/dimm: Support small label reads/writes
+      ndctl/dimm: Minimize data-transfer for init-labels
+      ndctl/dimm: Add offset and size options to {read, write, zero}-labels
+      ndctl/dimm: Limit read-labels with --index option
+      ndctl/namespace: Minimize label data transfer for autolabel
+      ndctl/namespace: Continue region search on 'missing seed' event
+      ndctl/namespace: Report ENOSPC when regions are full
+
+Vaibhav Jain (1):
+      ndctl, check: Ensure mmap of BTT sections work with 64K page-sizes
+
+Vishal Verma (17):
+      libndctl/inject: Refuse error injection for BTT namespaces
+      Documentation/ndctl: fix a typo in ndctl(1)
+      ndctl/monitor: make the daemon exit message 'info' level
+      libdaxctl: add interfaces to get ctx and check device state
+      libdaxctl: add interfaces to enable/disable devices
+      libdaxctl: add an interface to retrieve the device resource
+      libdaxctl: add a 'daxctl_memory' object for memory based operations
+      daxctl/list: add target_node for device listings
+      daxctl/list: display the mode for a dax device
+      daxctl: add a new reconfigure-device command
+      Documentation/daxctl: add a man page for daxctl-reconfigure-device
+      daxctl: add commands to online and offline memory
+      Documentation: Add man pages for daxctl-{on,off}line-memory
+      contrib/ndctl: fix region-id completions for daxctl
+      contrib/ndctl: add bash-completion for the new daxctl commands
+      test: Add a unit test for daxctl-reconfigure-device and friends
+      ndctl: release v66
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
