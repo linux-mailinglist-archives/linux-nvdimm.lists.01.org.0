@@ -1,79 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557AA84315
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 06:00:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56AE84323
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 06:13:21 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 52B8B212FE8BD;
-	Tue,  6 Aug 2019 21:03:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4B6B8212FD4F2;
+	Tue,  6 Aug 2019 21:15:50 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id AEBE6212FD41E
- for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 21:03:18 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x773udT9065564
- for <linux-nvdimm@lists.01.org>; Wed, 7 Aug 2019 00:00:47 -0400
-Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u7nu72b2b-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Wed, 07 Aug 2019 00:00:46 -0400
-Received: from localhost
- by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Wed, 7 Aug 2019 05:00:46 +0100
-Received: from b03cxnp08025.gho.boulder.ibm.com (9.17.130.17)
- by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 7 Aug 2019 05:00:42 +0100
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7740fQ654984992
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 7 Aug 2019 04:00:41 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87DFABE056;
- Wed,  7 Aug 2019 04:00:41 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7CB20BE054;
- Wed,  7 Aug 2019 04:00:39 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.35.167])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  7 Aug 2019 04:00:39 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH] nvdimm/of_pmem: Provide a unique name for bus provider
-Date: Wed,  7 Aug 2019 09:30:29 +0530
-X-Mailer: git-send-email 2.21.0
+ by ml01.01.org (Postfix) with ESMTPS id 46F3B212FD404
+ for <linux-nvdimm@lists.01.org>; Tue,  6 Aug 2019 21:15:48 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id j11so41687154otp.10
+ for <linux-nvdimm@lists.01.org>; Tue, 06 Aug 2019 21:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=53CVu6nkMcwWcWethACyNRgLyQL3v5f91offjpqNJ2Y=;
+ b=Sos6KU0EByI+GdIj+zesAaN4T1xT+u5KZY3x1MZuvFnbDecWHCrxPBWzAMmRncYYiB
+ t0wR9Txjs90Hqk78b3/9UQW2y1mWsiuqJTzWDrrxFLz9ukseyaOnBLdzWq8n3M1txp8j
+ JXCyJd4TPKXXsqaEKix1njwuMq2tUDZR+pSQEQ+FHDQ2RJUzzUxRrHHW1cODRiyqqrZw
+ F+CInaxhlavYCALv/jyTHv47GT7hYk0A/Mo/iY8jgYJs4lFYuS+Bl6aS32V+MAS9Z8U9
+ KZX7cC3tPP3dLDepxHZbpDGO2KHhMeavs4d665Zem6KyiUDbHoMN62JmrAFf6wotSzOw
+ ImEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=53CVu6nkMcwWcWethACyNRgLyQL3v5f91offjpqNJ2Y=;
+ b=Ni+YD00sx3LZ9WpEOiH0gobl5HpJsRMZlpLO+OkNH4Cm1z0vD5C+LsyHCZg7g6NkWm
+ HvdhzXn9TLNdEhIfn7oB3HYka0sUsG0efkojUhmPMT2JAER/apHZTldFOp8wuK44zKVz
+ EYNLDkNBhpTNcV3x5cInMkI06ykkMWnQdc7eNc7UC1P/ozBAb4YpphW0/WGGR0+1b32Y
+ xCHMdEvFmDVpRRmDDDKwJ1mRpQwqAqky1r5EM8D/F4q376lo/wnTskCgSXx3LIHY4IZ5
+ ZjmU9DJffxu029QP0WEbHq7F4hoTaMpENeWo8pn11qcgHdcDEXvQmrPT589wkbhk4Y9h
+ lEfw==
+X-Gm-Message-State: APjAAAVjIixRE2kTxtBAA6asKglxvRWSRVHzcJGJ7D+qguAP1i4gv40Q
+ 2g5iypprCWpf+oygyEbyyGwFQPgj3MF3jEmK/EpTbQ==
+X-Google-Smtp-Source: APXvYqw2kdbG+cFiOIZegAx1eXDK/tUf/N7gRvYUA6TNNQFIGvh+9mEAG9J7TCpBWEvv/cr+etN0lMV78VVIsK/sqC4=
+X-Received: by 2002:a9d:7b48:: with SMTP id f8mr5762903oto.207.1565151197271; 
+ Tue, 06 Aug 2019 21:13:17 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19080704-0004-0000-0000-000015330282
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011563; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01243196; UDB=6.00655799; IPR=6.01024666; 
- MB=3.00028075; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-07 04:00:44
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19080704-0005-0000-0000-00008CC80DDE
-Message-Id: <20190807040029.11344-1-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-07_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908070039
+References: <20190807040029.11344-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190807040029.11344-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 6 Aug 2019 21:13:06 -0700
+Message-ID: <CAPcyv4haXOjn7K-HgPV_WLqbfqRQbbiq=LvLt5Ue=OPAaBWN6A@mail.gmail.com>
+Subject: Re: [PATCH] nvdimm/of_pmem: Provide a unique name for bus provider
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,38 +65,42 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-ndctl utility requires the ndbus to have unique names. If not while
-enumerating the bus in userspace it drops bus with similar names.
-This results in us not listing devices beneath the bus.
+On Tue, Aug 6, 2019 at 9:00 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> ndctl utility requires the ndbus to have unique names. If not while
+> enumerating the bus in userspace it drops bus with similar names.
+> This results in us not listing devices beneath the bus.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- drivers/nvdimm/of_pmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It does?
 
-diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-index a0c8dcfa0bf9..97187d6c0bdb 100644
---- a/drivers/nvdimm/of_pmem.c
-+++ b/drivers/nvdimm/of_pmem.c
-@@ -42,7 +42,7 @@ static int of_pmem_region_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	priv->bus_desc.attr_groups = bus_attr_groups;
--	priv->bus_desc.provider_name = "of_pmem";
-+	priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
- 	priv->bus_desc.module = THIS_MODULE;
- 	priv->bus_desc.of_node = np;
- 
--- 
-2.21.0
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  drivers/nvdimm/of_pmem.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+> index a0c8dcfa0bf9..97187d6c0bdb 100644
+> --- a/drivers/nvdimm/of_pmem.c
+> +++ b/drivers/nvdimm/of_pmem.c
+> @@ -42,7 +42,7 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+>                 return -ENOMEM;
+>
+>         priv->bus_desc.attr_groups = bus_attr_groups;
+> -       priv->bus_desc.provider_name = "of_pmem";
+> +       priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
 
+This looks ok to me to address support for older ndctl binaries, but
+I'd like to also fix the ndctl bug that makes non-unique provider
+names fail.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
