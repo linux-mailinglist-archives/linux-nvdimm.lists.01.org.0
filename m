@@ -1,39 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5BD85566
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 23:45:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A4485562
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Aug 2019 23:43:08 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9BF4621311BFD;
-	Wed,  7 Aug 2019 14:48:01 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 40BE62130D7F9;
+	Wed,  7 Aug 2019 14:45:37 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.115; helo=mga14.intel.com;
+ client-ip=2607:f8b0:4864:20::32a; helo=mail-ot1-x32a.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com
+ [IPv6:2607:f8b0:4864:20::32a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F36AC21BADAB6
- for <linux-nvdimm@lists.01.org>; Wed,  7 Aug 2019 14:47:59 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2019 14:45:29 -0700
-X-IronPort-AV: E=Sophos;i="5.64,358,1559545200"; d="scan'208";a="165482739"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2019 14:45:28 -0700
-Subject: [PATCH] tools/testing/nvdimm: Fix fallthrough warning
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 07 Aug 2019 14:31:11 -0700
-Message-ID: <156521347159.1442374.1381360879102718899.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+ by ml01.01.org (Postfix) with ESMTPS id 2762B2130D7C5
+ for <linux-nvdimm@lists.01.org>; Wed,  7 Aug 2019 14:39:32 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id o101so110274255ota.8
+ for <linux-nvdimm@lists.01.org>; Wed, 07 Aug 2019 14:37:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ui4rLo9gpVRZ78lcWW4F1q/0UPzN75Hp3TwiQD9KZlg=;
+ b=Jz9k6I2DJOx8WsCZqv6LFANwhAYfC1SdJF1xTVWL5V5TGDhpCX7uZh6SQ0OLk1ql0J
+ EYQVy7+JaleGvrIVJckrjydIDXMGBl1uvONiMjJ9ERV+q80As6pxMlpZd2+0U05Xvaml
+ L/NVnEN597yYDf7Xq2tJoBc5NifrxFH9Q/XmqYsFjwCKm6fhUPRcoC08WtQoen0tBoKK
+ vDSLBhuocv2AMV9Fc5p6Pf+uIqINvsjbnCUuWMzkgV/7smik3ss8db6d1bVrpH8ykAJW
+ NaN2u0ZZ4+0QA8TnT/vOiaUPcvfm46Y09cQkiHGeui/mWw1PZN4oz+yCv/DmK+jA9DIw
+ kPqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ui4rLo9gpVRZ78lcWW4F1q/0UPzN75Hp3TwiQD9KZlg=;
+ b=MMxpzkt6mFTgUphSl2XtQVBI+vVqvaRZGAoxCSz2eBoo6swx9U2GeZFqnf1rGLdoRU
+ ornmeXmtSqp5w7xBjnfkGbUsXB63dDR41VDk2O9QLHUuWxuhMyFTLbb1nTmNefj73jER
+ Pt0BKesvtqzpTlByk93Asjt5RsYud3p6AgwRR6LvqryWpTRW6Pqn8jrFiYFYeA4Typm+
+ jaZWdaQfWIlE6qscdh0Cvu5WaW8+mOUlV8bxfZBAOQaBpIEuazbdJ4k38OZfd7ZcdqzM
+ ll51eD2B3xloS1JDcWZ3dItiZvaY3xf1ch3Fm/LYJN/LpShX4nx8ZAdT+gzaml3RwQNW
+ pvTA==
+X-Gm-Message-State: APjAAAXLvcpKv78z0Sdgl25JaKyBcYmH/+hIbIzl6yl8tpyQIftj0sPK
+ xcRKwoflhLAINZD7T30SGJOtd38KUvTfjkaLHiARJg==
+X-Google-Smtp-Source: APXvYqyhOXnn9fM09GmNN9H+pkIkpEs1Xdb9ffmlgsUpy6GrG9yc6CVgab21CdQIMlPDEJBTal6pcL2TbclLGPBJYkE=
+X-Received: by 2002:aca:d80a:: with SMTP id p10mr163902oig.105.1565213821206; 
+ Wed, 07 Aug 2019 14:37:01 -0700 (PDT)
 MIME-Version: 1.0
+References: <x49k1bw7dqn.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x49k1bw7dqn.fsf@segfault.boston.devel.redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 7 Aug 2019 14:36:50 -0700
+Message-ID: <CAPcyv4js-dZWFyRM7=JgC31uJUyxVzuwrderFrWf5p=z82E+WA@mail.gmail.com>
+Subject: Re: [patch] nfit: report frozen security state
+To: Jeff Moyer <jmoyer@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,32 +65,26 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-VXNlIHRoZSBleHBlY3RlZCAnZmFsbCB0aHJvdWdoJyBkZXNpZ25hdGlvbiB0byBmaXg6CgogICAg
-dG9vbHMvdGVzdGluZy9udmRpbW0vdGVzdC9uZml0LmM6IEluIGZ1bmN0aW9uIOKAmG5kX2ludGVs
-X3Rlc3RfZmluaXNoX3F1ZXJ54oCZOgogICAgdG9vbHMvdGVzdGluZy9udmRpbW0vdGVzdC9uZml0
-LmM6NDMzOjEzOiB3YXJuaW5nOiB0aGlzIHN0YXRlbWVudCBtYXkgZmFsbCB0aHJvdWdoIFstV2lt
-cGxpY2l0LWZhbGx0aHJvdWdoPV0KICAgICAgIGZ3LT5zdGF0ZSA9IEZXX1NUQVRFX1VQREFURUQ7
-CiAgICAgICB+fn5+fn5+fn5+Xn5+fn5+fn5+fn5+fn5+fn5+CiAgICB0b29scy90ZXN0aW5nL252
-ZGltbS90ZXN0L25maXQuYzo0MzU6Mjogbm90ZTogaGVyZQogICAgICBjYXNlIEZXX1NUQVRFX1VQ
-REFURUQ6CiAgICAgIF5+fn4KClNpZ25lZC1vZmYtYnk6IERhbiBXaWxsaWFtcyA8ZGFuLmoud2ls
-bGlhbXNAaW50ZWwuY29tPgotLS0KIHRvb2xzL3Rlc3RpbmcvbnZkaW1tL3Rlc3QvbmZpdC5jIHwg
-ICAgMyArLS0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMiBkZWxldGlvbnMoLSkK
-CmRpZmYgLS1naXQgYS90b29scy90ZXN0aW5nL252ZGltbS90ZXN0L25maXQuYyBiL3Rvb2xzL3Rl
-c3RpbmcvbnZkaW1tL3Rlc3QvbmZpdC5jCmluZGV4IDUwN2U2ZjRjYmI1My4uYmY2NDIyYTZhZjdm
-IDEwMDY0NAotLS0gYS90b29scy90ZXN0aW5nL252ZGltbS90ZXN0L25maXQuYworKysgYi90b29s
-cy90ZXN0aW5nL252ZGltbS90ZXN0L25maXQuYwpAQCAtNDI4LDEwICs0MjgsOSBAQCBzdGF0aWMg
-aW50IG5kX2ludGVsX3Rlc3RfZmluaXNoX3F1ZXJ5KHN0cnVjdCBuZml0X3Rlc3QgKnQsCiAJCQlk
-ZXZfZGJnKGRldiwgIiVzOiBzdGlsbCB2ZXJpZnlpbmdcbiIsIF9fZnVuY19fKTsKIAkJCWJyZWFr
-OwogCQl9Ci0KIAkJZGV2X2RiZyhkZXYsICIlczogdHJhbnNpdGlvbiBvdXQgdmVyaWZ5XG4iLCBf
-X2Z1bmNfXyk7CiAJCWZ3LT5zdGF0ZSA9IEZXX1NUQVRFX1VQREFURUQ7Ci0JCS8qIHdlIGFyZSBn
-b2luZyB0byBmYWxsIHRocm91Z2ggaWYgaXQncyAiZG9uZSIgKi8KKwkJLyogZmFsbCB0aHJvdWdo
-ICovCiAJY2FzZSBGV19TVEFURV9VUERBVEVEOgogCQluZF9jbWQtPnN0YXR1cyA9IDA7CiAJCS8q
-IGJvZ3VzIHRlc3QgdmVyc2lvbiAqLwoKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlz
-dHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZk
-aW1tCg==
+On Thu, Aug 1, 2019 at 2:55 PM Jeff Moyer <jmoyer@redhat.com> wrote:
+>
+> If a dimm is frozen, it is currently reported as being "locked".  While
+> that's not technically wrong, it is misleading as the dimm can't be
+> unlocked.  Fix the confusion.
+
+This looks ok, but now I wonder about the case where the DIMM is
+unlocked, but frozen? I think it makes more sense to show "frozen"
+when the DIMM is frozen-locked, and show "unlocked" when
+frozen-unlocked. I.e. if the DIMM is frozen the user should assume
+it's disabled for general purpose operation, and if it's unlocked the
+fact that it will fail some security operations is a constrained error
+case. Thoughts?
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
