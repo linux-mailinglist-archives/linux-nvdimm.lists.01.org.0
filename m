@@ -1,50 +1,40 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D0886B53
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Aug 2019 22:21:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA92786CCE
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Aug 2019 23:58:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F1DBD2131BA4C;
-	Thu,  8 Aug 2019 13:23:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1CAB42131D566;
+	Thu,  8 Aug 2019 15:00:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C1BE5212E4B4C
- for <linux-nvdimm@lists.01.org>; Thu,  8 Aug 2019 13:23:28 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 72CF230A5414;
- Thu,  8 Aug 2019 20:20:57 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com
- (segfault.boston.devel.redhat.com [10.19.60.26])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1157A19C7F;
- Thu,  8 Aug 2019 20:20:56 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [patch] nfit: report frozen security state
-References: <x49k1bw7dqn.fsf@segfault.boston.devel.redhat.com>
- <CAPcyv4js-dZWFyRM7=JgC31uJUyxVzuwrderFrWf5p=z82E+WA@mail.gmail.com>
- <x49ef1whcjq.fsf@segfault.boston.devel.redhat.com>
- <CAPcyv4hUsbFP3=7RFLuHWWnZ+jkUfNFq9YRPKVGk22O7NuP8pA@mail.gmail.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Thu, 08 Aug 2019 16:20:56 -0400
-In-Reply-To: <CAPcyv4hUsbFP3=7RFLuHWWnZ+jkUfNFq9YRPKVGk22O7NuP8pA@mail.gmail.com>
- (Dan Williams's message of "Wed, 7 Aug 2019 15:27:35 -0700")
-Message-ID: <x498ss3cst3.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ by ml01.01.org (Postfix) with ESMTPS id 45A5B212FE8B4
+ for <linux-nvdimm@lists.01.org>; Thu,  8 Aug 2019 15:00:37 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2019 14:58:06 -0700
+X-IronPort-AV: E=Sophos;i="5.64,363,1559545200"; d="scan'208";a="169126521"
+Received: from dwillia2-desk3.jf.intel.com (HELO
+ dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+ by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2019 14:58:06 -0700
+Subject: [PATCH] mm/memremap: Fix reuse of pgmap instances with internal
+ references
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Thu, 08 Aug 2019 14:43:49 -0700
+Message-ID: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.42]); Thu, 08 Aug 2019 20:20:57 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,36 +46,65 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@mellanox.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
+Currently, attempts to shutdown and re-enable a device-dax instance
+trigger:
 
-> ...but ABIs are forever, and ndctl has shipped:
->
->         if (strcmp(buf, "disabled") == 0)
->                 return NDCTL_SECURITY_DISABLED;
->         else if (strcmp(buf, "unlocked") == 0)
->                 return NDCTL_SECURITY_UNLOCKED;
->         else if (strcmp(buf, "locked") == 0)
->                 return NDCTL_SECURITY_LOCKED;
->         else if (strcmp(buf, "frozen") == 0)
->                 return NDCTL_SECURITY_FROZEN;
->         else if (strcmp(buf, "overwrite") == 0)
->                 return NDCTL_SECURITY_OVERWRITE;
->         return NDCTL_SECURITY_INVALID;
->
->
-> I think we could break out the frozen state to its own new attribute
-> and leave security state to only show "locked" / "unlocked". Then go
-> teach new ndctl to go somewhere else to report frozen.
+    Missing reference count teardown definition
+    WARNING: CPU: 37 PID: 1608 at mm/memremap.c:211 devm_memremap_pages+0x234/0x850
+    [..]
+    RIP: 0010:devm_memremap_pages+0x234/0x850
+    [..]
+    Call Trace:
+     dev_dax_probe+0x66/0x190 [device_dax]
+     really_probe+0xef/0x390
+     driver_probe_device+0xb4/0x100
+     device_driver_attach+0x4f/0x60
 
-That works for me.
+Given that the setup path initializes pgmap->ref, arrange for it to be
+also torn down so devm_memremap_pages() is ready to be called again and
+not be mistaken for the 3rd-party per-cpu-ref case.
 
--Jeff
+Fixes: 24917f6b1041 ("memremap: provide an optional internal refcount in struct dev_pagemap")
+Reported-by: Fan Du <fan.du@intel.com>
+Tested-by: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+
+Andrew, I have another dax fix pending, so I'm ok to take this through
+the nvdimm tree, holler if you want it in -mm.
+
+ mm/memremap.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/memremap.c b/mm/memremap.c
+index 6ee03a816d67..86432650f829 100644
+--- a/mm/memremap.c
++++ b/mm/memremap.c
+@@ -91,6 +91,12 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+ 		wait_for_completion(&pgmap->done);
+ 		percpu_ref_exit(pgmap->ref);
+ 	}
++	/*
++	 * Undo the pgmap ref assignment for the internal case as the
++	 * caller may re-enable the same pgmap.
++	 */
++	if (pgmap->ref == &pgmap->internal_ref)
++		pgmap->ref = NULL;
+ }
+ 
+ static void devm_memremap_pages_release(void *data)
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
