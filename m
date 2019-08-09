@@ -1,37 +1,36 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1A688657
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Aug 2019 00:59:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712B888658
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Aug 2019 00:59:06 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 46C302131474B;
-	Fri,  9 Aug 2019 16:01:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 582D92131EC6B;
+	Fri,  9 Aug 2019 16:01:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.120; helo=mga04.intel.com;
+ client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DE3D621309DCA
- for <linux-nvdimm@lists.01.org>; Fri,  9 Aug 2019 16:01:42 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id A694C21309DCA
+ for <linux-nvdimm@lists.01.org>; Fri,  9 Aug 2019 16:01:44 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2019 15:59:01 -0700
-X-IronPort-AV: E=Sophos;i="5.64,367,1559545200"; d="scan'208";a="186799457"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2019 15:59:03 -0700
+X-IronPort-AV: E=Sophos;i="5.64,367,1559545200"; d="scan'208";a="259172583"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.157])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2019 15:59:00 -0700
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2019 15:59:01 -0700
 From: ira.weiny@intel.com
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [RFC PATCH v2 12/19] mm/gup: Prep put_user_pages() to take an
- vaddr_pin struct
-Date: Fri,  9 Aug 2019 15:58:26 -0700
-Message-Id: <20190809225833.6657-13-ira.weiny@intel.com>
+Subject: [RFC PATCH v2 13/19] {mm,file}: Add file_pins objects
+Date: Fri,  9 Aug 2019 15:58:27 -0700
+Message-Id: <20190809225833.6657-14-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190809225833.6657-1-ira.weiny@intel.com>
 References: <20190809225833.6657-1-ira.weiny@intel.com>
@@ -61,203 +60,169 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-Once callers start to use vaddr_pin the put_user_pages calls will need
-to have access to this data coming in.  Prep put_user_pages() for this
-data.
+User page pins (aka GUP) needs to track file information of files being
+pinned by those calls.  Depending on the needs of the caller this
+information is stored in 1 of 2 ways.
+
+1) Some subsystems like RDMA associate GUP pins with file descriptors
+   which can be passed around to other process'.  In this case a file
+   being pined must be associated with an owning file object (which can
+   then be resolved back to any of the processes which have a file
+   descriptor 'pointing' to that file object).
+
+2) Other subsystems do not have an owning file and can therefore
+   associate the file pin directly to the mm of the process which
+   created them.
+
+This patch introduces the new file pin structures and ensures struct
+file and struct mm_struct are prepared to store them.
+
+In subsequent patches the required information will be passed into new
+pin page calls and procfs is enhanced to show this information to the user.
 
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- include/linux/mm.h |  20 +-------
- mm/gup.c           | 122 ++++++++++++++++++++++++++++++++-------------
- 2 files changed, 88 insertions(+), 54 deletions(-)
+ fs/file_table.c          |  4 ++++
+ include/linux/file.h     | 49 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/fs.h       |  2 ++
+ include/linux/mm_types.h |  2 ++
+ kernel/fork.c            |  3 +++
+ 5 files changed, 60 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index befe150d17be..9d37cafbef9a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1064,25 +1064,7 @@ static inline void put_page(struct page *page)
- 		__put_page(page);
- }
- 
--/**
-- * put_user_page() - release a gup-pinned page
-- * @page:            pointer to page to be released
-- *
-- * Pages that were pinned via get_user_pages*() must be released via
-- * either put_user_page(), or one of the put_user_pages*() routines
-- * below. This is so that eventually, pages that are pinned via
-- * get_user_pages*() can be separately tracked and uniquely handled. In
-- * particular, interactions with RDMA and filesystems need special
-- * handling.
-- *
-- * put_user_page() and put_page() are not interchangeable, despite this early
-- * implementation that makes them look the same. put_user_page() calls must
-- * be perfectly matched up with get_user_page() calls.
-- */
--static inline void put_user_page(struct page *page)
--{
--	put_page(page);
--}
-+void put_user_page(struct page *page);
- 
- void put_user_pages_dirty_lock(struct page **pages, unsigned long npages,
- 			       bool make_dirty);
-diff --git a/mm/gup.c b/mm/gup.c
-index a7a9d2f5278c..10cfd30ff668 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -24,30 +24,41 @@
- 
- #include "internal.h"
- 
--/**
-- * put_user_pages_dirty_lock() - release and optionally dirty gup-pinned pages
-- * @pages:  array of pages to be maybe marked dirty, and definitely released.
-- * @npages: number of pages in the @pages array.
-- * @make_dirty: whether to mark the pages dirty
-- *
-- * "gup-pinned page" refers to a page that has had one of the get_user_pages()
-- * variants called on that page.
-- *
-- * For each page in the @pages array, make that page (or its head page, if a
-- * compound page) dirty, if @make_dirty is true, and if the page was previously
-- * listed as clean. In any case, releases all pages using put_user_page(),
-- * possibly via put_user_pages(), for the non-dirty case.
-- *
-- * Please see the put_user_page() documentation for details.
-- *
-- * set_page_dirty_lock() is used internally. If instead, set_page_dirty() is
-- * required, then the caller should a) verify that this is really correct,
-- * because _lock() is usually required, and b) hand code it:
-- * set_page_dirty_lock(), put_user_page().
-- *
-- */
--void put_user_pages_dirty_lock(struct page **pages, unsigned long npages,
--			       bool make_dirty)
-+static void __put_user_page(struct vaddr_pin *vaddr_pin, struct page *page)
-+{
-+	page = compound_head(page);
-+
-+	/*
-+	 * For devmap managed pages we need to catch refcount transition from
-+	 * GUP_PIN_COUNTING_BIAS to 1, when refcount reach one it means the
-+	 * page is free and we need to inform the device driver through
-+	 * callback. See include/linux/memremap.h and HMM for details.
-+	 */
-+	if (put_devmap_managed_page(page))
-+		return;
-+
-+	if (put_page_testzero(page))
-+		__put_page(page);
-+}
-+
-+static void __put_user_pages(struct vaddr_pin *vaddr_pin, struct page **pages,
-+			     unsigned long npages)
-+{
-+	unsigned long index;
-+
-+	/*
-+	 * TODO: this can be optimized for huge pages: if a series of pages is
-+	 * physically contiguous and part of the same compound page, then a
-+	 * single operation to the head page should suffice.
-+	 */
-+	for (index = 0; index < npages; index++)
-+		__put_user_page(vaddr_pin, pages[index]);
-+}
-+
-+static void __put_user_pages_dirty_lock(struct vaddr_pin *vaddr_pin,
-+					struct page **pages,
-+					unsigned long npages,
-+					bool make_dirty)
+diff --git a/fs/file_table.c b/fs/file_table.c
+index b07b53f24ff5..38947b9a4769 100644
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -46,6 +46,7 @@ static void file_free_rcu(struct rcu_head *head)
  {
- 	unsigned long index;
+ 	struct file *f = container_of(head, struct file, f_u.fu_rcuhead);
  
-@@ -58,7 +69,7 @@ void put_user_pages_dirty_lock(struct page **pages, unsigned long npages,
- 	 */
- 
- 	if (!make_dirty) {
--		put_user_pages(pages, npages);
-+		__put_user_pages(vaddr_pin, pages, npages);
- 		return;
- 	}
- 
-@@ -86,9 +97,58 @@ void put_user_pages_dirty_lock(struct page **pages, unsigned long npages,
- 		 */
- 		if (!PageDirty(page))
- 			set_page_dirty_lock(page);
--		put_user_page(page);
-+		__put_user_page(vaddr_pin, page);
- 	}
++	WARN_ON(!list_empty(&f->file_pins));
+ 	put_cred(f->f_cred);
+ 	kmem_cache_free(filp_cachep, f);
  }
-+
-+/**
-+ * put_user_page() - release a gup-pinned page
-+ * @page:            pointer to page to be released
-+ *
-+ * Pages that were pinned via get_user_pages*() must be released via
-+ * either put_user_page(), or one of the put_user_pages*() routines
-+ * below. This is so that eventually, pages that are pinned via
-+ * get_user_pages*() can be separately tracked and uniquely handled. In
-+ * particular, interactions with RDMA and filesystems need special
-+ * handling.
-+ *
-+ * put_user_page() and put_page() are not interchangeable, despite this early
-+ * implementation that makes them look the same. put_user_page() calls must
-+ * be perfectly matched up with get_user_page() calls.
-+ */
-+void put_user_page(struct page *page)
-+{
-+	__put_user_page(NULL, page);
-+}
-+EXPORT_SYMBOL(put_user_page);
-+
-+/**
-+ * put_user_pages_dirty_lock() - release and optionally dirty gup-pinned pages
-+ * @pages:  array of pages to be maybe marked dirty, and definitely released.
-+ * @npages: number of pages in the @pages array.
-+ * @make_dirty: whether to mark the pages dirty
-+ *
-+ * "gup-pinned page" refers to a page that has had one of the get_user_pages()
-+ * variants called on that page.
-+ *
-+ * For each page in the @pages array, make that page (or its head page, if a
-+ * compound page) dirty, if @make_dirty is true, and if the page was previously
-+ * listed as clean. In any case, releases all pages using put_user_page(),
-+ * possibly via put_user_pages(), for the non-dirty case.
-+ *
-+ * Please see the put_user_page() documentation for details.
-+ *
-+ * set_page_dirty_lock() is used internally. If instead, set_page_dirty() is
-+ * required, then the caller should a) verify that this is really correct,
-+ * because _lock() is usually required, and b) hand code it:
-+ * set_page_dirty_lock(), put_user_page().
-+ *
-+ */
-+void put_user_pages_dirty_lock(struct page **pages, unsigned long npages,
-+			       bool make_dirty)
-+{
-+	__put_user_pages_dirty_lock(NULL, pages, npages, make_dirty);
-+}
- EXPORT_SYMBOL(put_user_pages_dirty_lock);
+@@ -118,6 +119,9 @@ static struct file *__alloc_file(int flags, const struct cred *cred)
+ 	f->f_mode = OPEN_FMODE(flags);
+ 	/* f->f_version: 0 */
  
- /**
-@@ -102,15 +162,7 @@ EXPORT_SYMBOL(put_user_pages_dirty_lock);
-  */
- void put_user_pages(struct page **pages, unsigned long npages)
- {
--	unsigned long index;
--
--	/*
--	 * TODO: this can be optimized for huge pages: if a series of pages is
--	 * physically contiguous and part of the same compound page, then a
--	 * single operation to the head page should suffice.
--	 */
--	for (index = 0; index < npages; index++)
--		put_user_page(pages[index]);
-+	__put_user_pages(NULL, pages, npages);
++	INIT_LIST_HEAD(&f->file_pins);
++	spin_lock_init(&f->fp_lock);
++
+ 	return f;
  }
- EXPORT_SYMBOL(put_user_pages);
  
+diff --git a/include/linux/file.h b/include/linux/file.h
+index 3fcddff56bc4..cd79adad5b23 100644
+--- a/include/linux/file.h
++++ b/include/linux/file.h
+@@ -9,6 +9,7 @@
+ #include <linux/compiler.h>
+ #include <linux/types.h>
+ #include <linux/posix_types.h>
++#include <linux/kref.h>
+ 
+ struct file;
+ 
+@@ -91,4 +92,52 @@ extern void fd_install(unsigned int fd, struct file *file);
+ extern void flush_delayed_fput(void);
+ extern void __fput_sync(struct file *);
+ 
++/**
++ * struct file_file_pin
++ *
++ * Associate a pin'ed file with another file owner.
++ *
++ * Subsystems such as RDMA have the ability to pin memory which is associated
++ * with a file descriptor which can be passed to other processes without
++ * necessarily having that memory accessed in the remote processes address
++ * space.
++ *
++ * @file file backing memory which was pined by a GUP caller
++ * @f_owner the file representing the GUP owner
++ * @list of all file pins this owner has
++ *       (struct file *)->file_pins
++ * @ref number of times this pin was taken (roughly the number of pages pinned
++ *      in the file)
++ */
++struct file_file_pin {
++	struct file *file;
++	struct file *f_owner;
++	struct list_head list;
++	struct kref ref;
++};
++
++/*
++ * struct mm_file_pin
++ *
++ * Some GUP callers do not have an "owning" file.  Those pins are accounted for
++ * in the mm of the process that called GUP.
++ *
++ * The tuple {file, inode} is used to track this as a unique file pin and to
++ * track when this pin has been removed.
++ *
++ * @file file backing memory which was pined by a GUP caller
++ * @mm back point to owning mm
++ * @inode backing the file
++ * @list of all file pins this owner has
++ *       (struct mm_struct *)->file_pins
++ * @ref number of times this pin was taken
++ */
++struct mm_file_pin {
++	struct file *file;
++	struct mm_struct *mm;
++	struct inode *inode;
++	struct list_head list;
++	struct kref ref;
++};
++
+ #endif /* __LINUX_FILE_H */
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 2e41ce547913..d2e08feb9737 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -963,6 +963,8 @@ struct file {
+ #endif /* #ifdef CONFIG_EPOLL */
+ 	struct address_space	*f_mapping;
+ 	errseq_t		f_wb_err;
++	struct list_head        file_pins;
++	spinlock_t              fp_lock;
+ } __randomize_layout
+   __attribute__((aligned(4)));	/* lest something weird decides that 2 is OK */
+ 
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 6a7a1083b6fb..4f6ea4acddbd 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -516,6 +516,8 @@ struct mm_struct {
+ 		/* HMM needs to track a few things per mm */
+ 		struct hmm *hmm;
+ #endif
++		struct list_head file_pins;
++		spinlock_t fp_lock; /* lock file_pins */
+ 	} __randomize_layout;
+ 
+ 	/*
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 0e2f9a2c132c..093f2f2fce1a 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -675,6 +675,7 @@ void __mmdrop(struct mm_struct *mm)
+ 	BUG_ON(mm == &init_mm);
+ 	WARN_ON_ONCE(mm == current->mm);
+ 	WARN_ON_ONCE(mm == current->active_mm);
++	WARN_ON(!list_empty(&mm->file_pins));
+ 	mm_free_pgd(mm);
+ 	destroy_context(mm);
+ 	mmu_notifier_mm_destroy(mm);
+@@ -1013,6 +1014,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 	mm->pmd_huge_pte = NULL;
+ #endif
+ 	mm_init_uprobes_state(mm);
++	INIT_LIST_HEAD(&mm->file_pins);
++	spin_lock_init(&mm->fp_lock);
+ 
+ 	if (current->mm) {
+ 		mm->flags = current->mm->flags & MMF_INIT_MASK;
 -- 
 2.20.1
 
