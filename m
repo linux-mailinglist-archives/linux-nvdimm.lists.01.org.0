@@ -1,35 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1782D87CED
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Aug 2019 16:42:29 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFCB88645
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Aug 2019 00:58:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 212592130C493;
-	Fri,  9 Aug 2019 07:44:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2929321314721;
+	Fri,  9 Aug 2019 16:01:23 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
- helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7DB9021306CD5
- for <linux-nvdimm@lists.01.org>; Fri,  9 Aug 2019 07:44:54 -0700 (PDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 7386C68BFE; Fri,  9 Aug 2019 16:42:19 +0200 (CEST)
-Date: Fri, 9 Aug 2019 16:42:19 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] mm/memremap: Fix reuse of pgmap instances with
- internal references
-Message-ID: <20190809144219.GB10269@lst.de>
-References: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 4969221309D28
+ for <linux-nvdimm@lists.01.org>; Fri,  9 Aug 2019 16:01:22 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2019 15:58:40 -0700
+X-IronPort-AV: E=Sophos;i="5.64,367,1559545200"; d="scan'208";a="375343471"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.157])
+ by fmsmga006-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2019 15:58:39 -0700
+From: ira.weiny@intel.com
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002   ;-)
+Date: Fri,  9 Aug 2019 15:58:14 -0700
+Message-Id: <20190809225833.6657-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,17 +44,239 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-mm@kvack.org,
- Jason Gunthorpe <jgg@mellanox.com>, Andrew Morton <akpm@linux-foundation.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ linux-ext4@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Looks good:
+From: Ira Weiny <ira.weiny@intel.com>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Pre-requisites
+==============
+	Based on mmotm tree.
+
+Based on the feedback from LSFmm, the LWN article, the RFC series since
+then, and a ton of scenarios I've worked in my mind and/or tested...[1]
+
+Solution summary
+================
+
+The real issue is that there is no use case for a user to have RDMA pinn'ed
+memory which is then truncated.  So really any solution we present which:
+
+A) Prevents file system corruption or data leaks
+...and...
+B) Informs the user that they did something wrong
+
+Should be an acceptable solution.
+
+Because this is slightly new behavior.  And because this is going to be
+specific to DAX (because of the lack of a page cache) we have made the user
+"opt in" to this behavior.
+
+The following patches implement the following solution.
+
+0) Registrations to Device DAX char devs are not affected
+
+1) The user has to opt in to allowing page pins on a file with an exclusive
+   layout lease.  Both exclusive and layout lease flags are user visible now.
+
+2) page pins will fail if the lease is not active when the file back page is
+   encountered.
+
+3) Any truncate or hole punch operation on a pinned DAX page will fail.
+
+4) The user has the option of holding the lease or releasing it.  If they
+   release it no other pin calls will work on the file.
+
+5) Closing the file is ok.
+
+6) Unmapping the file is ok
+
+7) Pins against the files are tracked back to an owning file or an owning mm
+   depending on the internal subsystem needs.  With RDMA there is an owning
+   file which is related to the pined file.
+
+8) Only RDMA is currently supported
+
+9) Truncation of pages which are not actively pinned nor covered by a lease
+   will succeed.
+
+
+Reporting of pinned files in procfs
+===================================
+
+A number of alternatives were explored for how to report the file pins within
+procfs.  The following incorporates ideas from Jan Kara, Jason Gunthorpe, Dave
+Chinner, Dan Williams and myself.
+
+A new entry is added to procfs
+
+/proc/<pid>/file_pins
+
+For processes which have pinned DAX file memory file_pins reference come in 2
+flavors.  Those which are attached to another open file descriptor (For example
+what is done in the RDMA subsytem) and those which are attached to a process
+mm.
+
+For those which are attached to another open file descriptor (such as RDMA)
+the file pin references go through the 'struct file' associated with that pin.
+In RDMA this is the RDMA context struct file.
+
+The resulting output from proc fs is something like.
+
+$ cat /proc/<pid>/file_pins
+3: /dev/infiniband/uverbs0
+	/mnt/pmem/foo
+
+Where '3' is the file descriptor (and file path) of the rdma context within the
+process.  The paths of the files pinned using that context are then listed.
+
+RDMA contexts may have multiple MR each of which may have multiple files pinned
+within them.  So an output like the following is possible.
+
+$ cat /proc/<pid>/file_pins
+4: /dev/infiniband/uverbs0
+	/mnt/pmem/foo
+	/mnt/pmem/bar
+	/mnt/pmem/another
+	/mnt/pmem/one
+
+The actual memory regions associated with the file pins are not reported.
+
+For processes which are pinning memory which is not associated with a specific
+file descriptor memory pins are reported directly as paths to the file.
+
+$ cat /proc/<pid>/file_pins
+/mnt/pmem/foo
+
+Putting the above together if a process was using RDMA and another subsystem
+the output could be something like:
+
+
+$ cat /proc/<pid>/file_pins
+4: /dev/infiniband/uverbs0
+	/mnt/pmem/foo
+	/mnt/pmem/bar
+	/mnt/pmem/another
+	/mnt/pmem/one
+/mnt/pmem/foo
+/mnt/pmem/another
+/mnt/pmem/mm_mapped_file
+
+
+[1] https://lkml.org/lkml/2019/6/5/1046
+
+
+Background
+==========
+
+It should be noted that one solution for this problem is to use RDMA's On
+Demand Paging (ODP).  There are 2 big reasons this may not work.
+
+	1) The hardware being used for RDMA may not support ODP
+	2) ODP may be detrimental to the over all network (cluster or cloud)
+	   performance
+
+Therefore, in order to support RDMA to File system pages without On Demand
+Paging (ODP) a number of things need to be done.
+
+1) "longterm" GUP users need to inform other subsystems that they have taken a
+   pin on a page which may remain pinned for a very "long time".  The
+   definition of long time is debatable but it has been established that RDMAs
+   use of pages for, minutes, hours, or even days after the pin is the extreme
+   case which makes this problem most severe.
+
+2) Any page which is "controlled" by a file system needs to have special
+   handling.  The details of the handling depends on if the page is page cache
+   fronted or not.
+
+   2a) A page cache fronted page which has been pinned by GUP long term can use a
+   bounce buffer to allow the file system to write back snap shots of the page.
+   This is handled by the FS recognizing the GUP long term pin and making a copy
+   of the page to be written back.
+	NOTE: this patch set does not address this path.
+
+   2b) A FS "controlled" page which is not page cache fronted is either easier
+   to deal with or harder depending on the operation the filesystem is trying
+   to do.
+
+	2ba) [Hard case] If the FS operation _is_ a truncate or hole punch the
+	FS can no longer use the pages in question until the pin has been
+	removed.  This patch set presents a solution to this by introducing
+	some reasonable restrictions on user space applications.
+
+	2bb) [Easy case] If the FS operation is _not_ a truncate or hole punch
+	then there is nothing which need be done.  Data is Read or Written
+	directly to the page.  This is an easy case which would currently work
+	if not for GUP long term pins being disabled.  Therefore this patch set
+	need not change access to the file data but does allow for GUP pins
+	after 2ba above is dealt with.
+
+
+This patch series and presents a solution for problem 2ba)
+
+Ira Weiny (19):
+  fs/locks: Export F_LAYOUT lease to user space
+  fs/locks: Add Exclusive flag to user Layout lease
+  mm/gup: Pass flags down to __gup_device_huge* calls
+  mm/gup: Ensure F_LAYOUT lease is held prior to GUP'ing pages
+  fs/ext4: Teach ext4 to break layout leases
+  fs/ext4: Teach dax_layout_busy_page() to operate on a sub-range
+  fs/xfs: Teach xfs to use new dax_layout_busy_page()
+  fs/xfs: Fail truncate if page lease can't be broken
+  mm/gup: Introduce vaddr_pin structure
+  mm/gup: Pass a NULL vaddr_pin through GUP fast
+  mm/gup: Pass follow_page_context further down the call stack
+  mm/gup: Prep put_user_pages() to take an vaddr_pin struct
+  {mm,file}: Add file_pins objects
+  fs/locks: Associate file pins while performing GUP
+  mm/gup: Introduce vaddr_pin_pages()
+  RDMA/uverbs: Add back pointer to system file object
+  RDMA/umem: Convert to vaddr_[pin|unpin]* operations.
+  {mm,procfs}: Add display file_pins proc
+  mm/gup: Remove FOLL_LONGTERM DAX exclusion
+
+ drivers/infiniband/core/umem.c        |  26 +-
+ drivers/infiniband/core/umem_odp.c    |  16 +-
+ drivers/infiniband/core/uverbs.h      |   1 +
+ drivers/infiniband/core/uverbs_main.c |   1 +
+ fs/Kconfig                            |   1 +
+ fs/dax.c                              |  38 ++-
+ fs/ext4/ext4.h                        |   2 +-
+ fs/ext4/extents.c                     |   6 +-
+ fs/ext4/inode.c                       |  26 +-
+ fs/file_table.c                       |   4 +
+ fs/locks.c                            | 291 +++++++++++++++++-
+ fs/proc/base.c                        | 214 +++++++++++++
+ fs/xfs/xfs_file.c                     |  21 +-
+ fs/xfs/xfs_inode.h                    |   5 +-
+ fs/xfs/xfs_ioctl.c                    |  15 +-
+ fs/xfs/xfs_iops.c                     |  14 +-
+ include/linux/dax.h                   |  12 +-
+ include/linux/file.h                  |  49 +++
+ include/linux/fs.h                    |   5 +-
+ include/linux/huge_mm.h               |  17 --
+ include/linux/mm.h                    |  69 +++--
+ include/linux/mm_types.h              |   2 +
+ include/rdma/ib_umem.h                |   2 +-
+ include/uapi/asm-generic/fcntl.h      |   5 +
+ kernel/fork.c                         |   3 +
+ mm/gup.c                              | 418 ++++++++++++++++----------
+ mm/huge_memory.c                      |  18 +-
+ mm/internal.h                         |  28 ++
+ 28 files changed, 1048 insertions(+), 261 deletions(-)
+
+-- 
+2.20.1
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
