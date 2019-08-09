@@ -2,37 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA92786CCE
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Aug 2019 23:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0B986F67
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Aug 2019 03:35:45 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1CAB42131D566;
-	Thu,  8 Aug 2019 15:00:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 30B9821311C1B;
+	Thu,  8 Aug 2019 18:38:14 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.88; helo=mga01.intel.com;
+ client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 45A5B212FE8B4
- for <linux-nvdimm@lists.01.org>; Thu,  8 Aug 2019 15:00:37 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id B399B21309D22
+ for <linux-nvdimm@lists.01.org>; Thu,  8 Aug 2019 18:38:12 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2019 14:58:06 -0700
-X-IronPort-AV: E=Sophos;i="5.64,363,1559545200"; d="scan'208";a="169126521"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2019 18:35:38 -0700
+X-IronPort-AV: E=Sophos;i="5.64,363,1559545200"; d="scan'208";a="350362602"
 Received: from dwillia2-desk3.jf.intel.com (HELO
  dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2019 14:58:06 -0700
-Subject: [PATCH] mm/memremap: Fix reuse of pgmap instances with internal
- references
+ by orsmga005-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2019 18:35:38 -0700
+Subject: [ndctl PATCH] ndctl/test: Add xfs reflink dependency
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Thu, 08 Aug 2019 14:43:49 -0700
-Message-ID: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Thu, 08 Aug 2019 18:21:21 -0700
+Message-ID: <156531368129.2136155.4247732841095137080.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
@@ -46,64 +45,62 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@mellanox.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Currently, attempts to shutdown and re-enable a device-dax instance
-trigger:
+Starting with xfsprogs version 5.1.0 it will enable reflink by default.
+Any scripts, like ndctl unit tests, that were doing:
 
-    Missing reference count teardown definition
-    WARNING: CPU: 37 PID: 1608 at mm/memremap.c:211 devm_memremap_pages+0x234/0x850
-    [..]
-    RIP: 0010:devm_memremap_pages+0x234/0x850
-    [..]
-    Call Trace:
-     dev_dax_probe+0x66/0x190 [device_dax]
-     really_probe+0xef/0x390
-     driver_probe_device+0xb4/0x100
-     device_driver_attach+0x4f/0x60
+    mkfs.xfs $pmem; mount -o dax $pmem $mnt
 
-Given that the setup path initializes pgmap->ref, arrange for it to be
-also torn down so devm_memremap_pages() is ready to be called again and
-not be mistaken for the 3rd-party per-cpu-ref case.
+...must now do:
 
-Fixes: 24917f6b1041 ("memremap: provide an optional internal refcount in struct dev_pagemap")
-Reported-by: Fan Du <fan.du@intel.com>
-Tested-by: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
+    mkfs.xfs -m reflink=0 $pmem; mount -o dax $pmem $mnt
+
+Cc: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+ test/dax.sh  |    4 ++--
+ test/mmap.sh |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Andrew, I have another dax fix pending, so I'm ok to take this through
-the nvdimm tree, holler if you want it in -mm.
-
- mm/memremap.c |    6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 6ee03a816d67..86432650f829 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -91,6 +91,12 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
- 		wait_for_completion(&pgmap->done);
- 		percpu_ref_exit(pgmap->ref);
- 	}
-+	/*
-+	 * Undo the pgmap ref assignment for the internal case as the
-+	 * caller may re-enable the same pgmap.
-+	 */
-+	if (pgmap->ref == &pgmap->internal_ref)
-+		pgmap->ref = NULL;
- }
+diff --git a/test/dax.sh b/test/dax.sh
+index e703e1222dee..3bb44ac0a26c 100755
+--- a/test/dax.sh
++++ b/test/dax.sh
+@@ -69,7 +69,7 @@ json=$($NDCTL create-namespace -m raw -f -e $dev)
+ eval $(json2var <<< "$json")
+ [ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
  
- static void devm_memremap_pages_release(void *data)
+-mkfs.xfs -f /dev/$blockdev
++mkfs.xfs -f /dev/$blockdev -m reflink=0
+ mount /dev/$blockdev $MNT -o dax
+ fallocate -l 1GiB $MNT/$FILE
+ run_test
+@@ -80,7 +80,7 @@ json=$($NDCTL create-namespace -m fsdax -M dev -f -e $dev)
+ eval $(json2var <<< "$json")
+ [ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
+ 
+-mkfs.xfs -f /dev/$blockdev
++mkfs.xfs -f /dev/$blockdev -m reflink=0
+ mount /dev/$blockdev $MNT -o dax
+ fallocate -l 1GiB $MNT/$FILE
+ run_test
+diff --git a/test/mmap.sh b/test/mmap.sh
+index afe50fd2199b..d072ea289f31 100755
+--- a/test/mmap.sh
++++ b/test/mmap.sh
+@@ -70,7 +70,7 @@ fallocate -l 1GiB $MNT/$FILE
+ test_mmap
+ umount $MNT
+ 
+-mkfs.xfs -f $DEV
++mkfs.xfs -f $DEV -m reflink=0
+ mount $DEV $MNT -o dax
+ fallocate -l 1GiB $MNT/$FILE
+ test_mmap
 
 _______________________________________________
 Linux-nvdimm mailing list
