@@ -2,75 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A3F887EC
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Aug 2019 06:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 387CF89083
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 11 Aug 2019 10:13:00 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AD791212FD408;
-	Fri,  9 Aug 2019 21:24:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 44D84212E4B7E;
+	Sun, 11 Aug 2019 01:15:28 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=batv+ae155d32c5e98ef18dee+5831+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D7432212FD3EC
- for <linux-nvdimm@lists.01.org>; Fri,  9 Aug 2019 21:24:12 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7A4HDhk016204
- for <linux-nvdimm@lists.01.org>; Sat, 10 Aug 2019 00:21:32 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2u9p9ngty0-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Sat, 10 Aug 2019 00:21:31 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Sat, 10 Aug 2019 05:21:29 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 10 Aug 2019 05:21:28 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7A4LRST44498958
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 10 Aug 2019 04:21:27 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 80F1752054;
- Sat, 10 Aug 2019 04:21:27 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.46.182])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C26105204E;
- Sat, 10 Aug 2019 04:21:26 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: Re: [PATCH v5 2/4] mm/nvdimm: Add page size and struct page size to
- pfn superblock
-In-Reply-To: <20190809074520.27115-3-aneesh.kumar@linux.ibm.com>
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-3-aneesh.kumar@linux.ibm.com>
-Date: Sat, 10 Aug 2019 09:51:23 +0530
+ by ml01.01.org (Postfix) with ESMTPS id 577E3212CFEB9
+ for <linux-nvdimm@lists.01.org>; Sun, 11 Aug 2019 01:15:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=duSr/7/isMOllSiQdJtuYj1CP9drRkouK4Y/GwmPE9E=; b=jausoYlXofSB6fNPgltUVfKwO
+ 6u1d10UxCCDGkunYpexGn7ariKsfdVq5MMOrJ8+xUmsui3PRCPjLtcDqlhnk4H94uWAIfYVj0x0/X
+ Y47lQw1ooEct2Q6hG1lyiKwTD5jkeB5tOPONHD+F7gW4dvLBVGX1+Rzzo8DhyNMuTJtCZzP6fTNfM
+ 5wCEUVJlCUBIoil8nqLRnPv8KTxoARl3gE9o2JN9JHPLnljViWNtgoxbiu6A3xpj1FPzVWEzeO8dm
+ 0981hJotdh4htrXntHclw1A5T1UspEkzRJoBDqKXRL8Si6jPvLLBsSJw4Ggn3MeffzO5KR2hQ11y0
+ wanviGajg==;
+Received: from [2001:4bb8:180:1ec3:c70:4a89:bc61:2] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+ id 1hwiy9-0005CR-Q5; Sun, 11 Aug 2019 08:12:50 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@mellanox.com>
+Subject: add a not device managed memremap_pages
+Date: Sun, 11 Aug 2019 10:12:42 +0200
+Message-Id: <20190811081247.22111-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19081004-0028-0000-0000-0000038DF3D0
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081004-0029-0000-0000-0000244FFB55
-Message-Id: <8736i9r6po.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-10_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908100046
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,67 +54,24 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Hi Dan and Jason,
 
-  	case PFN_MODE_PMEM:
-> @@ -475,6 +484,20 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
->  		align = 1UL << ilog2(offset);
->  	mode = le32_to_cpu(pfn_sb->mode);
->  
-> +	if (le32_to_cpu(pfn_sb->page_size) != PAGE_SIZE) {
-> +		dev_err(&nd_pfn->dev,
-> +			"init failed, page size mismatch %d\n",
-> +			le32_to_cpu(pfn_sb->page_size));
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (le16_to_cpu(pfn_sb->page_struct_size) < sizeof(struct page)) {
-> +		dev_err(&nd_pfn->dev,
-> +			"init failed, struct page size mismatch %d\n",
-> +			le16_to_cpu(pfn_sb->page_struct_size));
-> +		return -EOPNOTSUPP;
-> +	}
-> +
+Bharata has been working on secure page management for kvmppc guests,
+and one I thing I noticed is that he had to fake up a struct device
+just so that it could be passed to the devm_memremap_pages
+instrastructure for device private memory.
 
-We need this here?
-
-From 9885b2f9ed81a2438fc81507cfcdbdb1aeab756c Mon Sep 17 00:00:00 2001
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Fri, 9 Aug 2019 22:10:08 +0530
-Subject: [PATCH] nvdimm: check struct page size only if pfn node is PMEM
-
-We should do the check only with PFN_MODE_PMEM. If we use
-memory for backing vmemmap, we should be able to enable
-the namespace even if struct page size change.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- drivers/nvdimm/pfn_devs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index f43d1baa6f33..f3e9a4b826da 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -509,7 +509,8 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 		return -EOPNOTSUPP;
- 	}
- 
--	if (le16_to_cpu(pfn_sb->page_struct_size) < sizeof(struct page)) {
-+	if ((le16_to_cpu(pfn_sb->page_struct_size) < sizeof(struct page)) &&
-+	     (mode == PFN_MODE_PMEM)) {
- 		dev_err(&nd_pfn->dev,
- 			"init failed, struct page size mismatch %d\n",
- 			le16_to_cpu(pfn_sb->page_struct_size));
--- 
-2.21.0
-
+This series adds non-device managed versions of the
+devm_request_free_mem_region and devm_memremap_pages functions for
+his use case.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
