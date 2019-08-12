@@ -1,44 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552C08A9A2
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Aug 2019 23:48:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA31D8AA2B
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 00:10:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1AA5A21314755;
-	Mon, 12 Aug 2019 14:51:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C301421309DD3;
+	Mon, 12 Aug 2019 15:12:50 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sboyd@kernel.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 81F562130A511
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 14:51:14 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2019 14:48:55 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,379,1559545200"; d="scan'208";a="375391550"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga005.fm.intel.com with ESMTP; 12 Aug 2019 14:48:55 -0700
-Date: Mon, 12 Aug 2019 14:48:55 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [RFC PATCH v2 15/19] mm/gup: Introduce vaddr_pin_pages()
-Message-ID: <20190812214854.GF20634@iweiny-DESK2.sc.intel.com>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-16-ira.weiny@intel.com>
- <20190812122814.GC24457@ziepe.ca>
+ by ml01.01.org (Postfix) with ESMTPS id 83165212E845A
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 15:12:49 -0700 (PDT)
+Received: from kernel.org (unknown [104.132.0.74])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 99B31206C2;
+ Mon, 12 Aug 2019 22:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1565647830;
+ bh=SPZRl5pSVopkTs0dY+BYgF4YdIC5weWXIEKe9ul/RDw=;
+ h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+ b=V3lZzoj5A/ZUJ82O/D6JOwCAESMHhjfhFsM/G+WlAQFOJn0eCYLeKxiUav3yhAWrc
+ 3bLOfvUeJqm5cu0JRjxhkYqU/qNE2mLaefdclg0BgxHvmqSh/kXGRMQIhxkerIgm9f
+ dbMpOgSRN5v/bzLnxQ4pQx6d7nMjpT4h51jSvW3c=
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190812122814.GC24457@ziepe.ca>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20190812182421.141150-3-brendanhiggins@google.com>
+References: <20190812182421.141150-1-brendanhiggins@google.com>
+ <20190812182421.141150-3-brendanhiggins@google.com>
+Subject: Re: [PATCH v12 02/18] kunit: test: add test resource management API
+From: Stephen Boyd <sboyd@kernel.org>
+To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
+ gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, peterz@infradead.org,
+ robh@kernel.org, shuah@kernel.org, tytso@mit.edu,
+ yamada.masahiro@socionext.com
+User-Agent: alot/0.8.1
+Date: Mon, 12 Aug 2019 15:10:29 -0700
+Message-Id: <20190812221030.99B31206C2@mail.kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,73 +54,36 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- linux-ext4@vger.kernel.org
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 12, 2019 at 09:28:14AM -0300, Jason Gunthorpe wrote:
-> On Fri, Aug 09, 2019 at 03:58:29PM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > The addition of FOLL_LONGTERM has taken on additional meaning for CMA
-> > pages.
-> > 
-> > In addition subsystems such as RDMA require new information to be passed
-> > to the GUP interface to track file owning information.  As such a simple
-> > FOLL_LONGTERM flag is no longer sufficient for these users to pin pages.
-> > 
-> > Introduce a new GUP like call which takes the newly introduced vaddr_pin
-> > information.  Failure to pass the vaddr_pin object back to a vaddr_put*
-> > call will result in a failure if pins were created on files during the
-> > pin operation.
+Quoting Brendan Higgins (2019-08-12 11:24:05)
+> Create a common API for test managed resources like memory and test
+> objects. A lot of times a test will want to set up infrastructure to be
+> used in test cases; this could be anything from just wanting to allocate
+> some memory to setting up a driver stack; this defines facilities for
+> creating "test resources" which are managed by the test infrastructure
+> and are automatically cleaned up at the conclusion of the test.
 > 
-> Is this a 'vaddr' in the traditional sense, ie does it work with
-> something returned by valloc?
+> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> ---
 
-...or malloc in user space, yes.  I think the idea is that it is a user virtual
-address.
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 
-> 
-> Maybe another name would be better?
-
-Maybe, the name I had was way worse...  So I'm not even going to admit to it...
-
-;-)
-
-So I'm open to suggestions.  Jan gave me this one, so I figured it was safer to
-suggest it...
-
-:-D
-
-> 
-> I also wish GUP like functions took in a 'void __user *' instead of
-> the unsigned long to make this clear :\
-
-Not a bad idea.  But I only see a couple of call sites who actually use a 'void
-__user *' to pass into GUP...  :-/
-
-For RDMA the address is _never_ a 'void __user *' AFAICS.
-
-For the new API, it may be tractable to force users to cast to 'void __user *'
-but it is not going to provide any type safety.
-
-But it is easy to change in this series.
-
-What do others think?
-
-Ira
-
-> 
-> Jason
-> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
