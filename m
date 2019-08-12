@@ -1,76 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB288A908
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Aug 2019 23:12:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B4A8A917
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Aug 2019 23:15:42 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9927821311BEB;
-	Mon, 12 Aug 2019 14:14:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EBF5921311BEF;
+	Mon, 12 Aug 2019 14:17:59 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 720912130D7FC
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 14:14:37 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id w26so5055410pfq.12
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 14:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=0DB9UTHIFldIFFOJr6TZo6jvfDPuMazUP8xd6Lz++AE=;
- b=W2RB/VxjLUJmLwI3i7t/ylV0SqzQU3whRIxHEZY174I3x1TcL09PB9YtE6qqnhZflm
- z3pCM04RE/MNye/FBbIDAB5xKcR9oafYqbRUwtvJ5DVwgm/qIOTG9moOVgz6nn305Uw8
- y1rvZ7JLdIi5MCunZk5glzIxTMD7YjkiHCRrw06dV0ogIAKmkhVB4UbxqOb6EpZcQ1wi
- wGQ82PLZxVN67F+ZL0Hb2WaV4YVS+zJxn6QuG86e5pJerUGaNMa0aoBwlfpRj2SW3tA6
- 95vJ3jyazBSzNbXYNRXUgmvtsvUzxz00iARrCQNdCkbULVj/yDPEmaeZdLcJ+wx2hxdN
- Re2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=0DB9UTHIFldIFFOJr6TZo6jvfDPuMazUP8xd6Lz++AE=;
- b=FffDUgB41oGAZlWlV3HnhtKPGEsyGy38+/+xJCS2dRH3V2ES5leNGSJbgO5cjvSXUJ
- z5uQ2txCY09gAD6h3Hh5HCkc/C3YBILZ3Ewf3z0OXrZQ7dqv0bOhNWJ20QUp/BHq2jfa
- PSnfz0QCJrkGoY7RqLHrzKsCc+DWjEqWORPcrw0qomirOwhmbJb+cnlAi4OXi8xySmIr
- kiUTEN5+URl2Q8Vu/nasEtWUu3zHlzqQekwJ4zh85siiE3ctgsGEKy9EuWQpIUCY9pon
- Kr3cxsbT79AfhhJR11+LgyBv69bjkcc33RiSj6W84j0VtFSLC2ca7vGOAMeAYVOm0GHO
- Jw0g==
-X-Gm-Message-State: APjAAAUhix3G492HUNdfLMrd1+tlZERYPhEAoL+bB2TY8DQNuRQ0hna5
- 2wgBLMI/Q1z4jJk2iY7yKUf3Jg==
-X-Google-Smtp-Source: APXvYqzaUYIImDWpVIC87+7U7jJ4yfPe7QcYdqiyIGP30vU+nD4zCAI11/ydfpsmLO3b3Hmyvs7bhw==
-X-Received: by 2002:a17:90a:a404:: with SMTP id
- y4mr1080068pjp.69.1565644337662; 
- Mon, 12 Aug 2019 14:12:17 -0700 (PDT)
-Received: from google.com ([2620:15c:2cb:1:e90c:8e54:c2b4:29e7])
- by smtp.gmail.com with ESMTPSA id x67sm111873022pfb.21.2019.08.12.14.12.15
- (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
- Mon, 12 Aug 2019 14:12:16 -0700 (PDT)
-Date: Mon, 12 Aug 2019 14:12:11 -0700
-From: Brendan Higgins <brendanhiggins@google.com>
-To: John Ogness <john.ogness@linutronix.de>
-Subject: Re: [PATCH v9 04/18] kunit: test: add kunit_stream a std::stream
- like logger
-Message-ID: <20190812211211.GA197038@google.com>
-References: <CAFd5g46a7C1+R6ZcE_SkqaYqgrH5Rx3M=X7orFyaMgFLDbeYYA@mail.gmail.com>
- <20190719000834.GA3228@google.com>
- <20190722200347.261D3218C9@mail.kernel.org>
- <CAFd5g45hdCxEavSxirr0un_uLzo5Z-J4gHRA06qjzcQrTzmjVg@mail.gmail.com>
- <20190722235411.06C1320840@mail.kernel.org>
- <20190724073125.xyzfywctrcvg6fmh@pathway.suse.cz>
- <CAFd5g47v3Mr4GEGOjqyYy9Jwwm+ow7ypbu9j88rxEN06QCzdxQ@mail.gmail.com>
- <20190726083148.d4gf57w2nt5k7t6n@pathway.suse.cz>
- <CAFd5g46iAhDZ5C_chi7oYLVOkwcoj6+0nw+kPWuXhqWwWKd9jA@mail.gmail.com>
- <871ry4yq3y.fsf@linutronix.de>
+ by ml01.01.org (Postfix) with ESMTPS id BB33F21309D0D
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 14:17:57 -0700 (PDT)
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2019 14:15:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,378,1559545200"; d="scan'208";a="376081222"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by fmsmga006.fm.intel.com with ESMTP; 12 Aug 2019 14:15:37 -0700
+Date: Mon, 12 Aug 2019 14:15:37 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [RFC PATCH v2 16/19] RDMA/uverbs: Add back pointer to system
+ file object
+Message-ID: <20190812211537.GE20634@iweiny-DESK2.sc.intel.com>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-17-ira.weiny@intel.com>
+ <20190812130039.GD24457@ziepe.ca>
+ <20190812172826.GA19746@iweiny-DESK2.sc.intel.com>
+ <20190812175615.GI24457@ziepe.ca>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <871ry4yq3y.fsf@linutronix.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190812175615.GI24457@ziepe.ca>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,218 +52,81 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: devicetree <devicetree@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Timothy Bird <Tim.Bird@sony.com>,
- Frank Rowand <frowand.list@gmail.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Kevin Hilman <khilman@baylibre.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- Petr Mladek <pmladek@suse.com>, linux-kbuild <linux-kbuild@vger.kernel.org>,
- Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 02, 2019 at 09:37:53AM +0200, John Ogness wrote:
-> On 2019-08-01, Brendan Higgins <brendanhiggins@google.com> wrote:
-> > On Fri, Jul 26, 2019 at 1:31 AM Petr Mladek <pmladek@suse.com> wrote:
-> >> On Thu 2019-07-25 13:21:12, Brendan Higgins wrote:
-> >>> On Wed, Jul 24, 2019 at 12:31 AM Petr Mladek <pmladek@suse.com> wrote:
-> >>>> On Mon 2019-07-22 16:54:10, Stephen Boyd wrote:
-> >>>>> Quoting Brendan Higgins (2019-07-22 15:30:49)
-> >>>>>> On Mon, Jul 22, 2019 at 1:03 PM Stephen Boyd <sboyd@kernel.org> wrote:
-> >>>>>>> What's the calling context of the assertions and expectations? I
-> >>>>>>> still don't like the fact that string stream needs to allocate
-> >>>>>>> buffers and throw them into a list somewhere because the calling
-> >>>>>>> context matters there.
-> >>>>>>
-> >>>>>> The calling context is the same as before, which is anywhere.
-> >>>>>
-> >>>>> Ok. That's concerning then.
-> >>>>>
-> >>>>>>> I'd prefer we just wrote directly to the console/log via printk
-> >>>>>>> instead. That way things are simple because we use the existing
-> >>>>>>> buffering path of printk, but maybe there's some benefit to the
-> >>>>>>> string stream that I don't see? Right now it looks like it
-> >>>>>>> builds a string and then dumps it to printk so I'm sort of lost
-> >>>>>>> what the benefit is over just writing directly with printk.
-> >>>>>>
-> >>>>>> It's just buffering it so the whole string gets printed
-> >>>>>> uninterrupted.  If we were to print out piecemeal to printk,
-> >>>>>> couldn't we have another call to printk come in causing it to
-> >>>>>> garble the KUnit message we are in the middle of printing?
-> >>>>>
-> >>>>> Yes, printing piecemeal by calling printk many times could lead to
-> >>>>> interleaving of messages if something else comes in such as an
-> >>>>> interrupt printing something. Printk has some support to hold
-> >>>>> "records" but I'm not sure how that would work here because
-> >>>>> KERN_CONT talks about only being used early on in boot code. I
-> >>>>> haven't looked at printk in detail though so maybe I'm all wrong
-> >>>>> and KERN_CONT just works?
-> >>>>
-> >>>> KERN_CONT does not guarantee that the message will get printed
-> >>>> together. The pieces get interleaved with messages printed in
-> >>>> parallel.
-> >>>>
-> >>>> Note that KERN_CONT was originally really meant to be used only
-> >>>> during boot. It was later used more widely and ended in the best
-> >>>> effort category.
-> >>>>
-> >>>> There were several attempts to make it more reliable. But it was
-> >>>> always either too complicated or error prone or both.
-> >>>>
-> >>>> You need to use your own buffering if you rely want perfect output.
-> >>>> The question is if it is really worth the complexity. Also note
-> >>>> that any buffering reduces the chance that the messages will reach
-> >>>> the console.
-> >>>
-> >>> Seems like that settles it then. Thanks!
-> >>>
-> >>>> BTW: There is a work in progress on a lockless printk ring buffer.
-> >>>> It will make printk() more secure regarding deadlocks. But it might
-> >>>> make transparent handling of continuous lines even more tricky.
-> >>>>
-> >>>> I guess that local buffering, before calling printk(), will be
-> >>>> even more important then. Well, it might really force us to create
-> >>>> an API for it.
-> >>>
-> >>> Cool! Can you CC me on that discussion?
-> >>
-> >> Adding John Oggness into CC.
-> >>
-> >> John, please CC Brendan Higgins on the patchsets eventually switching
-> >> printk() into the lockless buffer. The test framework is going to
-> >> do its own buffering to keep the related messages together.
-> >>
-> >> The lockless ringbuffer might make handling of related (partial)
-> >> lines worse or better. It might justify KUnit's extra buffering
-> >> or it might allow to get rid of it.
-> >
-> > Thanks for CC'ing me on the printk ringbuffer thread. It looks like it
-> > actually probably won't affect my needs for KUnit logging. The biggest
-> > reason I need some sort of buffering system is to be able to compose
-> > messages piece meal into a single message that will be printed out to
-> > the user as a single message with no messages from other printk
-> > callers printed out in the middle of mine.
+On Mon, Aug 12, 2019 at 02:56:15PM -0300, Jason Gunthorpe wrote:
+> On Mon, Aug 12, 2019 at 10:28:27AM -0700, Ira Weiny wrote:
+> > On Mon, Aug 12, 2019 at 10:00:40AM -0300, Jason Gunthorpe wrote:
+> > > On Fri, Aug 09, 2019 at 03:58:30PM -0700, ira.weiny@intel.com wrote:
+> > > > From: Ira Weiny <ira.weiny@intel.com>
+> > > > 
+> > > > In order for MRs to be tracked against the open verbs context the ufile
+> > > > needs to have a pointer to hand to the GUP code.
+> > > > 
+> > > > No references need to be taken as this should be valid for the lifetime
+> > > > of the context.
+> > > > 
+> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > > >  drivers/infiniband/core/uverbs.h      | 1 +
+> > > >  drivers/infiniband/core/uverbs_main.c | 1 +
+> > > >  2 files changed, 2 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
+> > > > index 1e5aeb39f774..e802ba8c67d6 100644
+> > > > +++ b/drivers/infiniband/core/uverbs.h
+> > > > @@ -163,6 +163,7 @@ struct ib_uverbs_file {
+> > > >  	struct page *disassociate_page;
+> > > >  
+> > > >  	struct xarray		idr;
+> > > > +	struct file             *sys_file; /* backpointer to system file object */
+> > > >  };
+> > > 
+> > > The 'struct file' has a lifetime strictly shorter than the
+> > > ib_uverbs_file, which is kref'd on its own lifetime. Having a back
+> > > pointer like this is confouding as it will be invalid for some of the
+> > > lifetime of the struct.
+> > 
+> > Ah...  ok.  I really thought it was the other way around.
+> > 
+> > __fput() should not call ib_uverbs_close() until the last reference on struct
+> > file is released...  What holds references to struct ib_uverbs_file past that?
 > 
-> printk has this same requirement for its CONT messages. You can read
-> about how I propose to implement that here[0], using a separate prb
-> ringbuffer for buffered storage until all the pieces are available.
+> Child fds hold onto the internal ib_uverbs_file until they are closed
+
+The FDs hold the struct file, don't they?
+
 > 
-> It is not my goal that multiple subsystems start making use of the prb
-> ringbuffer. However, its features can be attractive if you don't want to
-> worry about multiple writers/readers or context (including NMI). Before
-
-That sounds like it might be useful down the road, but not to replace
-the string_stream.
-
-> writing "yet another ringbuffer" [1] it might be worth the effort to at
-> least see if one of the existing implementations can work (or be
-> extended to work) for you.
-
-In regards to the conversation here about string_stream/kunit_stream, I
-think Petr already answered that question. As I said previously:
-> [I]t appears that to get the
-> semantics that I need, I would have to put my entire message in a
-> single data block and would consequently need to know the size of my
-> message a priori, which is problematic. Consequently, it seems as
-> though I will probably need to compose my entire message using my own
-> buffering system.
-
-I could potentially use my own set of prbs for that buffering; however,
-I think this use case is probably closer to seq_buf than your prb.
-Really, I just want some kind of string builder, not a message queue.
-
-The place where I think your prb is relevant here is once I have
-composed the message and I just want to print it, having a way to print
-it without worrying about context is nice, but I think that is a
-separate discussion from the main topic here which was just figuring out
-the right way to compose that message in the first place.
-
-Cheers
-
-> John Ogness
+> > Perhaps I need to add this (untested)?
+> > 
+> > diff --git a/drivers/infiniband/core/uverbs_main.c
+> > b/drivers/infiniband/core/uverbs_main.c
+> > index f628f9e4c09f..654e774d9cf2 100644
+> > +++ b/drivers/infiniband/core/uverbs_main.c
+> > @@ -1125,6 +1125,8 @@ static int ib_uverbs_close(struct inode *inode, struct file *filp)
+> >         list_del_init(&file->list);
+> >         mutex_unlock(&file->device->lists_mutex);
+> >  
+> > +       file->sys_file = NULL;
 > 
-> [0] https://lkml.kernel.org/r/87imt2bl0k.fsf@linutronix.de
-> [1] https://lwn.net/Articles/789603/
-> 
-> > The prb does look interesting; however, it appears that to get the
-> > semantics that I need, I would have to put my entire message in a
-> > single data block and would consequently need to know the size of my
-> > message a priori, which is problematic. Consequently, it seems as
-> > though I will probably need to compose my entire message using my own
-> > buffering system.
-> >
-> >>>> Note that stroring the messages into the printk log is basically
-> >>>> safe in any context. It uses temporary per-CPU buffers for
-> >>>> recursive messages and in NMI. The only problem is panic() when
-> >>>> some CPU gets stuck with the lock taken. This will get solved by
-> >>>> the lockless ringbuffer. Also the temporary buffers will not be
-> >>>> necessary any longer.
-> >>>
-> >>> Sure, I think Stephen's concern is all the supporting code that is
-> >>> involved. Not printk specifically. It just means a lot more of KUnit
-> >>> has to be IRQ safe.
-> >>
-> >> I see.
-> >>
-> >> BTW: I wonder if KUnit could reuse the existing seq_buf
-> >> implementation for buffering messages.
-> >>
-> >> I am sorry if it has already been proposed and rejected for some
-> >> reason. I might have missed it. Feel free to just point me to
-> >> same older mail.
-> >
-> > Yeah, we discussed it briefly here:
-> >
-> > https://lkml.org/lkml/2019/5/17/497
-> >
-> > Looks like I forgot to include my reasoning in the commit text, sorry
-> > about that.
-> >
-> >>>> Much bigger problems are with consoles. There are many of them. It
-> >>>> means a lot of code and more locks involved, including scheduler
-> >>>> locks. Note that console lock is a semaphore.
-> >>>
-> >>> That shouldn't affect us though, right? As long as we continue to
-> >>> use the printk interface?
-> >>
-> >> I guess that it should not affect KUnit.
-> >>
-> >> The only problem might be if the testing framework calls printk()
-> >> inside scheduler or console code. And only when the tested code
-> >> uses the same locks that will be used by the called printk().
-> >
-> > Yeah, well printk will not be our only problem in those instances.
-> >
-> >> To be honest I do not fully understand KUnit design. I am not
-> >> completely sure how the tested code is isolated from the running
-> >> system. Namely, I do not know if the tested code shares
-> >> the same locks with the system running the test.
-> >
-> > No worries, I don't expect printk to be the hang up in those cases. It
-> > sounds like KUnit has a long way to evolve before printk is going to
-> > be a limitation.
-> >
-> > Thanks!
+> Now this has unlocked updates to that data.. you'd need some lock and
+> get not zero pattern
+
+You can't call "get" here because I'm 99% sure we only get here when struct
+file has no references left...  I could be wrong.  It took me a while to work
+through the reference counting so I could have missed something.
+
+Ira
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
