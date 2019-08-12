@@ -2,47 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69C28A2A8
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Aug 2019 17:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 656828A3A3
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Aug 2019 18:44:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ACD4F2130308D;
-	Mon, 12 Aug 2019 08:53:36 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 12F5021309DDB;
+	Mon, 12 Aug 2019 09:46:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id DBD5F212AF0AA
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 08:53:35 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 6CFC24E93D;
- Mon, 12 Aug 2019 15:51:14 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com
- (segfault.boston.devel.redhat.com [10.19.60.26])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AFD0162671;
- Mon, 12 Aug 2019 15:51:13 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 0A96A21309DB1
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 09:46:42 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id r21so155320579otq.6
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 09:44:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yq4g4ecRC6yyVSOBidSNfdDYV3DpcZPTt6IYgshPZOs=;
+ b=uHWz7Lzg7LqLmFXUBQc2JywoOVW9IVEsmh/TkjzxUM6AHyWLM+LzIuqj6recJBuUbU
+ BlxxBqFXSRUx0jTdx+KNyI86wiK3Iz8az1t7zFdzRtcrb0Mfr/PXMprq0ZLs8F0DxoRN
+ DkcPiw+zyhzUXUz+FtAPm/4/WyrwQXD9XD4QwGsy6LmWel4C1WhSZeDOtD68zyZLiGLq
+ xZqkGOmWDL4N8a0Se2lbPo21tdJQ8nNJ4BibKjgNH4nObSnQaKEoWII2GDxM2aINo3/m
+ yZPtOY+BjgG55qLTj0lywtYipSVvEZ1acBSUB3GYVeoFySuiMbGXNGuPdNyavQ/khDyj
+ rAcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yq4g4ecRC6yyVSOBidSNfdDYV3DpcZPTt6IYgshPZOs=;
+ b=Wtq+UBBedofVbDOGWwRlW/mg3sf9oLo7RvLTS4Y54JWwyVJ9p74ZmESMvab7JZ+0zt
+ F84cfGZQr+S/dsnP+M7HLuiacBWJb3K2qduLQixXl4OehwllRYp+6hKZRcOeuwvPj3dA
+ khBfzkC+7a8I65OfO1ZJvDFG+fxEi05VWz1GxOioaaEkVAt4LP6Uj8cm9yb9gOSA39BL
+ 4gioFYgrqzFIUVaA0iOfPgvvtTrxUdodoHLSKwOZJOzg8CkDKpvxHwjzESg4WFRNKtLQ
+ 8fZyudSY5YtdBKNgsxeoAvFQwHPJAPH2rzLp36bpisN0SzVHb3FoPryv/WaZ/Ln95s15
+ DBDQ==
+X-Gm-Message-State: APjAAAXX/qkYLXXbkg2ekXFQ8wOSxmRonJF85u3AdeCy0LSXJ6G4xYNb
+ 4qgnx7TuIz0V8SBiuNz2ouHdNRdYeZSSIVHpgwFaJQ==
+X-Google-Smtp-Source: APXvYqxIc6P5BbOlspBIEJm2S3PD4YurhGQFQZsVfY1Gaxt4ekPGBxAkn2c7Af6apTI665emPRcRSGFJ1tiXWrZdjIE=
+X-Received: by 2002:a9d:5f13:: with SMTP id f19mr22476928oti.207.1565628261713; 
+ Mon, 12 Aug 2019 09:44:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x49blwuidqn.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x49blwuidqn.fsf@segfault.boston.devel.redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 12 Aug 2019 09:44:10 -0700
+Message-ID: <CAPcyv4jZWbBUrig3wnE+VGptMEv3fHeRJbRhmMncQwkjLUbvxg@mail.gmail.com>
 Subject: Re: [PATCH] mm/memremap: Fix reuse of pgmap instances with internal
  references
-References: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Mon, 12 Aug 2019 11:51:12 -0400
-In-Reply-To: <156530042781.2068700.8733813683117819799.stgit@dwillia2-desk3.amr.corp.intel.com>
- (Dan Williams's message of "Thu, 08 Aug 2019 14:43:49 -0700")
-Message-ID: <x49blwuidqn.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
-MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.38]); Mon, 12 Aug 2019 15:51:14 +0000 (UTC)
+To: Jeff Moyer <jmoyer@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,78 +67,37 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+Cc: Linux MM <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
  Jason Gunthorpe <jgg@mellanox.com>, Christoph Hellwig <hch@lst.de>,
- linux-nvdimm@lists.01.org
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Mon, Aug 12, 2019 at 8:51 AM Jeff Moyer <jmoyer@redhat.com> wrote:
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > Currently, attempts to shutdown and re-enable a device-dax instance
+> > trigger:
+>
+> What does "shutdown and re-enable" translate to?  If I disable and
+> re-enable a device-dax namespace, I don't see this behavior.
 
-> Currently, attempts to shutdown and re-enable a device-dax instance
-> trigger:
+I was not seeing this either until I made sure I was in 'bus" device model mode.
 
-What does "shutdown and re-enable" translate to?  If I disable and
-re-enable a device-dax namespace, I don't see this behavior.
+# cat /etc/modprobe.d/daxctl.conf
+blacklist dax_pmem_compat
+alias nd:t7* dax_pmem
 
--Jeff
+# make TESTS="daxctl-devices.sh" check -j 40 2>out
 
->
->     Missing reference count teardown definition
->     WARNING: CPU: 37 PID: 1608 at mm/memremap.c:211 devm_memremap_pages+0x234/0x850
->     [..]
->     RIP: 0010:devm_memremap_pages+0x234/0x850
->     [..]
->     Call Trace:
->      dev_dax_probe+0x66/0x190 [device_dax]
->      really_probe+0xef/0x390
->      driver_probe_device+0xb4/0x100
->      device_driver_attach+0x4f/0x60
->
-> Given that the setup path initializes pgmap->ref, arrange for it to be
-> also torn down so devm_memremap_pages() is ready to be called again and
-> not be mistaken for the 3rd-party per-cpu-ref case.
->
-> Fixes: 24917f6b1041 ("memremap: provide an optional internal refcount in struct dev_pagemap")
-> Reported-by: Fan Du <fan.du@intel.com>
-> Tested-by: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: Jason Gunthorpe <jgg@mellanox.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->
-> Andrew, I have another dax fix pending, so I'm ok to take this through
-> the nvdimm tree, holler if you want it in -mm.
->
->  mm/memremap.c |    6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 6ee03a816d67..86432650f829 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -91,6 +91,12 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
->  		wait_for_completion(&pgmap->done);
->  		percpu_ref_exit(pgmap->ref);
->  	}
-> +	/*
-> +	 * Undo the pgmap ref assignment for the internal case as the
-> +	 * caller may re-enable the same pgmap.
-> +	 */
-> +	if (pgmap->ref == &pgmap->internal_ref)
-> +		pgmap->ref = NULL;
->  }
->  
->  static void devm_memremap_pages_release(void *data)
->
-> _______________________________________________
-> Linux-nvdimm mailing list
-> Linux-nvdimm@lists.01.org
-> https://lists.01.org/mailman/listinfo/linux-nvdimm
+# dmesg | grep WARN.*devm
+[  225.588651] WARNING: CPU: 10 PID: 9103 at mm/memremap.c:211
+devm_memremap_pages+0x234/0x850
+[  225.679828] WARNING: CPU: 10 PID: 9103 at mm/memremap.c:211
+devm_memremap_pages+0x234/0x850
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
