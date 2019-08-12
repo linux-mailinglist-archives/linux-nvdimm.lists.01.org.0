@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2359B8ABBF
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 02:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AFC8ABC0
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 02:04:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 331DF2132996F;
+	by ml01.01.org (Postfix) with ESMTP id 533B121329974;
 	Mon, 12 Aug 2019 17:06:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,25 +15,25 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6EB152131D59A
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 16:59:19 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id A750F213281FF
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 17:01:19 -0700 (PDT)
 Received: from kernel.org (unknown [104.132.0.74])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 533E82063F;
- Mon, 12 Aug 2019 23:57:01 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 840E12063F;
+ Mon, 12 Aug 2019 23:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565654221;
- bh=Bqdkmnp6mwn7+uGtiuDRkW/S4L7BPoXk0yV/X+vBL54=;
+ s=default; t=1565654341;
+ bh=zzn9lbpyxN490bXyB8cKiTce2X8MTw3Mby9wg9F2ugo=;
  h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
- b=xH5Jr1y+zA4g2T4Lqz5yO5pV+3YI+m+g1R3ck6bSJoBiMnDkJSdrB5821koEnOM1x
- ozemBUqGL2ni/PA36r1U7ZN9xHwvK3C4GSABt23yhMwa/Dx7vomqnds0asZ6RIkXYl
- YOqHX4j25oAAbX9XJcyROx5ez17nbuRYexkCgIEQ=
+ b=WZKYRuDep7O6lflS1EH26iYEBV5nNu1FBB7PYFhxeQNKRmtXWh18TsjXm3v2pr8ps
+ B3CWnGpBy8WhGTbAlosDhJkJjHIB/pTKPpkz4vxgvpm/vmq1L3XnFoKSeVfwqAfZM3
+ qKTwMWJ90rM87DgnzVJHYlHDxJDWNHXBeMZYMf9E=
 MIME-Version: 1.0
-In-Reply-To: <20190812182421.141150-6-brendanhiggins@google.com>
+In-Reply-To: <20190812182421.141150-8-brendanhiggins@google.com>
 References: <20190812182421.141150-1-brendanhiggins@google.com>
- <20190812182421.141150-6-brendanhiggins@google.com>
-Subject: Re: [PATCH v12 05/18] kunit: test: add the concept of expectations
+ <20190812182421.141150-8-brendanhiggins@google.com>
+Subject: Re: [PATCH v12 07/18] kunit: test: add initial tests
 From: Stephen Boyd <sboyd@kernel.org>
 To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
  gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
@@ -41,8 +41,8 @@ To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
  robh@kernel.org, shuah@kernel.org, tytso@mit.edu,
  yamada.masahiro@socionext.com
 User-Agent: alot/0.8.1
-Date: Mon, 12 Aug 2019 16:57:00 -0700
-Message-Id: <20190812235701.533E82063F@mail.kernel.org>
+Date: Mon, 12 Aug 2019 16:59:00 -0700
+Message-Id: <20190812235901.840E12063F@mail.kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,75 +69,16 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Quoting Brendan Higgins (2019-08-12 11:24:08)
-> Add support for expectations, which allow properties to be specified and
-> then verified in tests.
+Quoting Brendan Higgins (2019-08-12 11:24:10)
+> Add a test for string stream along with a simpler example.
 > 
 > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
 > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+> ---
 
 Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 
-Just some minor nits again.
-
-> diff --git a/include/kunit/test.h b/include/kunit/test.h
-> index d0bf112910caf..2625bcfeb19ac 100644
-> --- a/include/kunit/test.h
-> +++ b/include/kunit/test.h
-> @@ -9,8 +9,10 @@
->  #ifndef _KUNIT_TEST_H
->  #define _KUNIT_TEST_H
->  
-> +#include <linux/kernel.h>
->  #include <linux/types.h>
->  #include <linux/slab.h>
-> +#include <kunit/assert.h>
-
-Can you alphabet sort these?
-
->  
->  struct kunit_resource;
->  
-> @@ -319,4 +321,845 @@ void __printf(3, 4) kunit_printk(const char *level,
->  #define kunit_err(test, fmt, ...) \
->                 kunit_printk(KERN_ERR, test, fmt, ##__VA_ARGS__)
->  
-> +/*
-> + * Generates a compile-time warning in case of comparing incompatible types.
-> + */
-> +#define __kunit_typecheck(lhs, rhs) \
-> +       ((void) __typecheck(lhs, rhs))
-
-Is there a reason why this can't be inlined and the __kunit_typecheck()
-macro can't be removed?
-
-> +
-> +/**
-> + * KUNIT_SUCCEED() - A no-op expectation. Only exists for code clarity.
-> + * @test: The test context object.
-[...]
-> + * @condition: an arbitrary boolean expression. The test fails when this does
-> + * not evaluate to true.
-> + *
-> + * This and expectations of the form `KUNIT_EXPECT_*` will cause the test case
-> + * to fail when the specified condition is not met; however, it will not prevent
-> + * the test case from continuing to run; this is otherwise known as an
-> + * *expectation failure*.
-> + */
-> +#define KUNIT_EXPECT_TRUE(test, condition) \
-> +               KUNIT_TRUE_ASSERTION(test, KUNIT_EXPECTATION, condition)
-
-A lot of these macros seem double indented.
-
-> +
-> +#define KUNIT_EXPECT_TRUE_MSG(test, condition, fmt, ...)                      \
-> +               KUNIT_TRUE_MSG_ASSERTION(test,                                 \
-> +                                        KUNIT_EXPECTATION,                    \
-> +                                        condition,                            \
-> +                                        fmt,                                  \
-> +                                        ##__VA_ARGS__)
-> +
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
