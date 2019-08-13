@@ -1,51 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FAC8C232
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 22:39:03 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A818C256
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 22:53:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A3F4B202E841D;
-	Tue, 13 Aug 2019 13:41:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id BEB34211F35FF;
+	Tue, 13 Aug 2019 13:55:12 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 12196202E841A
- for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 13:41:10 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2019 13:38:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,382,1559545200"; d="scan'208";a="376423872"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga006.fm.intel.com with ESMTP; 13 Aug 2019 13:38:59 -0700
-Date: Tue, 13 Aug 2019 13:38:59 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [RFC PATCH v2 16/19] RDMA/uverbs: Add back pointer to system
- file object
-Message-ID: <20190813203858.GA12695@iweiny-DESK2.sc.intel.com>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-17-ira.weiny@intel.com>
- <20190812130039.GD24457@ziepe.ca>
- <20190812172826.GA19746@iweiny-DESK2.sc.intel.com>
- <20190812175615.GI24457@ziepe.ca>
- <20190812211537.GE20634@iweiny-DESK2.sc.intel.com>
- <20190813114842.GB29508@ziepe.ca>
- <20190813174142.GB11882@iweiny-DESK2.sc.intel.com>
- <20190813180022.GF29508@ziepe.ca>
+ by ml01.01.org (Postfix) with ESMTPS id 3E6DA210F254F
+ for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 13:55:10 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 2592D3003A49;
+ Tue, 13 Aug 2019 20:52:59 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6C5CC3605;
+ Tue, 13 Aug 2019 20:52:58 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v3] ndctl,
+ check: Ensure mmap of BTT sections work with 64K page-sizes
+References: <20190806105012.15170-1-vaibhav@linux.ibm.com>
+ <x497e7igipm.fsf@segfault.boston.devel.redhat.com>
+ <87h86lzifz.fsf@vajain21.in.ibm.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Tue, 13 Aug 2019 16:52:57 -0400
+In-Reply-To: <87h86lzifz.fsf@vajain21.in.ibm.com> (Vaibhav Jain's message of
+ "Tue, 13 Aug 2019 11:59:52 +0530")
+Message-ID: <x49lfvw949i.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190813180022.GF29508@ziepe.ca>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.42]); Tue, 13 Aug 2019 20:52:59 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,89 +56,246 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- linux-ext4@vger.kernel.org
+Cc: Harish Sriram <harish@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Aug 13, 2019 at 03:00:22PM -0300, Jason Gunthorpe wrote:
-> On Tue, Aug 13, 2019 at 10:41:42AM -0700, Ira Weiny wrote:
-> 
-> > And I was pretty sure uverbs_destroy_ufile_hw() would take care of (or ensure
-> > that some other thread is) destroying all the MR's we have associated with this
-> > FD.
-> 
-> fd's can't be revoked, so destroy_ufile_hw() can't touch them. It
-> deletes any underlying HW resources, but the FD persists.
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-I misspoke.  I should have said associated with this "context".  And of course
-uverbs_destroy_ufile_hw() does not touch the FD.  What I mean is that the
-struct file which had file_pins hanging off of it would be getting its file
-pins destroyed by uverbs_destroy_ufile_hw().  Therefore we don't need the FD
-after uverbs_destroy_ufile_hw() is done.
+> Thanks for reviewing this patch Jeff.
+>
+> Jeff Moyer <jmoyer@redhat.com> writes:
+>
+>> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+>>
+>>> On PPC64 which uses a 64K page-size, ndtl-check command fails on a BTT
+>>> namespace with following error:
+>>>
+>>> $ sudo ndctl check-namespace namespace0.0 -vv
+>>>   namespace0.0: namespace_check: checking namespace0.0
+>>>   namespace0.0: btt_discover_arenas: found 1 BTT arena
+>>>   namespace0.0: btt_create_mappings: mmap arena[0].info [sz = 0x1000, off = 0x1000] failed: Invalid argument
+>>>   error checking namespaces: Invalid argument
+>>>   checked 0 namespaces
+>>>
+>>> An error happens when btt_create_mappings() tries to mmap the sections
+>>> of the BTT device which are usually 4K offset aligned. However the
+>>> mmap() syscall expects the 'offset' argument to be in multiples of
+>>> page-size, hence it returns EINVAL causing the btt_create_mappings()
+>>> to error out.
+>>>
+>>> As a fix for the issue this patch proposes addition of two new
+>>> functions to 'check.c' namely btt_mmap/btt_unmap that can be used to
+>>> map/unmap parts of BTT device to ndctl process address-space. The
+>>> functions tweaks the requested 'offset' argument to mmap() ensuring
+>>> that its page-size aligned and then fix-ups the returned pointer such
+>>> that it points to the requested offset within mmapped region.
+>>>
+>>> With these newly introduced functions the patch updates the call-sites
+>>> in 'check.c' to use these functions instead of mmap/unmap syscalls.
+>>> Also since btt_mmap returns NULL if mmap operation fails, the
+>>> error check call-sites can be made against NULL instead of MAP_FAILED.
+>>>
+>>> Reported-by: Harish Sriram <harish@linux.ibm.com>
+>>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>>> ---
+>>> Changelog:
+>>> v3:
+>>> * Fixed a log string that was splitted across multiple lines [Vishal]
+>>>
+>>> v2:
+>>> * Updated patch description to include canonical email address of bug
+>>>   reporter. [Vishal]
+>>> * Improved the comment describing function btt_mmap() in 'check.c'
+>>>   [Vishal]
+>>> * Simplified the argument list for btt_mmap() to just accept bttc,
+>>>   length and offset. Other arguments for mmap() are derived from these
+>>>   args. [Vishal]
+>>> * Renamed 'shift' variable in btt_mmap()/unmap() to 'page_offset'
+>>>   [Vishal]
+>>> * Improved the dbg() messages logged inside
+>>>   btt_mmap()/unmap(). [Vishal]
+>>> * Return NULL from btt_mmap() in case of an error. [Vishal]
+>>> * Changed the all sites to btt_mmap() to perform error check against
+>>>   NULL return value instead of MAP_FAILED. [Vishal]
+>>> ---
+>>>  ndctl/check.c | 93 +++++++++++++++++++++++++++++++++++++--------------
+>>>  1 file changed, 67 insertions(+), 26 deletions(-)
+>>>
+>>> diff --git a/ndctl/check.c b/ndctl/check.c
+>>> index 8a7125053865..5969012eba84 100644
+>>> --- a/ndctl/check.c
+>>> +++ b/ndctl/check.c
+>>> @@ -907,59 +907,100 @@ static int btt_discover_arenas(struct btt_chk *bttc)
+>>>  	return ret;
+>>>  }
+>>>  
+>>> -static int btt_create_mappings(struct btt_chk *bttc)
+>>> +/*
+>>> + * Wrap call to mmap(2) to work with btt device offsets that are not aligned
+>>> + * to system page boundary. It works by rounding down the requested offset
+>>> + * to sys_page_size when calling mmap(2) and then returning a fixed-up pointer
+>>> + * to the correct offset in the mmaped region.
+>>> + */
+>>> +static void *btt_mmap(struct btt_chk *bttc, size_t length, off_t offset)
+>>>  {
+>>> -	struct arena_info *a;
+>>> -	int mmap_flags;
+>>> -	int i;
+>>> +	off_t page_offset;
+>>> +	int prot_flags;
+>>> +	uint8_t *addr;
+>>>  
+>>>  	if (!bttc->opts->repair)
+>>> -		mmap_flags = PROT_READ;
+>>> +		prot_flags = PROT_READ;
+>>>  	else
+>>> -		mmap_flags = PROT_READ|PROT_WRITE;
+>>> +		prot_flags = PROT_READ|PROT_WRITE;
+>>> +
+>>> +	/* Calculate the page_offset from the system page boundary */
+>>> +	page_offset = offset - rounddown(offset, bttc->sys_page_size);
+>>> +
+>>> +	/* Update the offset and length with the page_offset calculated above */
+>>> +	offset -= page_offset;
+>>> +	length += page_offset;
+>>
+>> Don't you have to ensure that the length is also a multiple of the
+>> system page size?
+>>
+>> -Jeff
+>
+> No, as the BTT info header is 4K in size which isnt in multiple of page
+> size on PPC64 where PAGE_SIZE == 64K.
+>
+> Also I see 'do_mmap()' in kernel always rounding up the 'length' to
+> PAGE_SIZE. So any unaligned value for 'length' arg will be handled by the
+> kernel.
+>
+> Finally mmap(2) doesn't put any constraint on the 'length' argument to
+> mmap except it should > 0. The 'offset' arg on other hand has a
+> constraint which needs to be in multiple of PAGE_SIZE.
 
-But since it does not block it may be that the struct file is gone before the
-MR is actually destroyed.  Which means I think the GUP code would blow up in
-that case...  :-(
+Right, this is the part I forgot.  I'd probaby write the map and unmap
+routines a bit differently, but what you wrote works.
 
-I was thinking it was the other way around.  And in fact most of the time I
-think it is.  But we can't depend on that...
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 
->  
-> > > This is why having a back pointer like this is so ugly, it creates a
-> > > reference counting cycle
-> > 
-> > Yep...  I worked through this...  and it was giving me fits...
-> > 
-> > Anyway, the struct file is the only object in the core which was reasonable to
-> > store this information in since that is what is passed around to other
-> > processes...
-> 
-> It could be passed down in the uattr_bundle, once you are in file operations
 
-What is "It"?  The struct file?  Or the file pin information?
-
-> handle the file is guarenteed to exist, and we've now arranged things
-
-I don't understand what you mean by "... once you are in file operations handle... "?
-
-> so the uattr_bundle flows into the umem, as umems can only be
-> established under a system call.
-
-"uattr_bundle" == uverbs_attr_bundle right?
-
-The problem is that I don't think the core should be handling
-uverbs_attr_bundles directly.  So, I think you are driving at the same idea I
-had WRT callbacks into the driver.
-
-The drivers could provide some generic object (in RDMA this could be the
-uverbs_attr_bundle) which represents their "context".
-
-The GUP code calls back into the driver with file pin information as it
-encounters and pins pages.  The driver, RDMA in this case, associates this
-information with the "context".
-
-But for the procfs interface, that context then needs to be associated with any
-file which points to it...  For RDMA, or any other "FD based pin mechanism", it
-would be up to the driver to "install" a procfs handler into any struct file
-which _may_ point to this context.  (before _or_ after memory pins).
-
-Then the procfs code can walk the FD array and if this handler is installed it
-knows there is file pin information associated with that struct file and it can
-be printed...
-
-This is not impossible.  But I think is a lot harder for drivers to make
-right...
-
-Ira
-
+>>
+>>> +
+>>> +	addr = mmap(NULL, length, prot_flags, MAP_SHARED, bttc->fd, offset);
+>>> +
+>>> +	/* If needed fixup the return pointer to correct offset requested */
+>>> +	if (addr != MAP_FAILED)
+>>> +		addr += page_offset;
+>>> +
+>>> +	dbg(bttc, "addr = %p, length = %#lx, offset = %#lx, page_offset = %#lx\n",
+>>> +	    (void *) addr, length, offset, page_offset);
+>>> +
+>>> +	return addr == MAP_FAILED ? NULL : addr;
+>>> +}
+>>> +
+>>> +static void btt_unmap(struct btt_chk *bttc, void *ptr, size_t length)
+>>> +{
+>>> +	off_t page_offset;
+>>> +	uintptr_t addr = (uintptr_t) ptr;
+>>> +
+>>> +	/* Calculate the page_offset from system page boundary */
+>>> +	page_offset = addr - rounddown(addr, bttc->sys_page_size);
+>>> +
+>>> +	addr -= page_offset;
+>>> +	length += page_offset;
+>>> +
+>>> +	munmap((void *) addr, length);
+>>> +	dbg(bttc, "addr = %p, length = %#lx, page_offset = %#lx\n",
+>>> +	    (void *) addr, length, page_offset);
+>>> +}
+>>> +
+>>> +static int btt_create_mappings(struct btt_chk *bttc)
+>>> +{
+>>> +	struct arena_info *a;
+>>> +	int i;
+>>>  
+>>>  	for (i = 0; i < bttc->num_arenas; i++) {
+>>>  		a = &bttc->arena[i];
+>>>  		a->map.info_len = BTT_INFO_SIZE;
+>>> -		a->map.info = mmap(NULL, a->map.info_len, mmap_flags,
+>>> -			MAP_SHARED, bttc->fd, a->infooff);
+>>> -		if (a->map.info == MAP_FAILED) {
+>>> +		a->map.info = btt_mmap(bttc, a->map.info_len, a->infooff);
+>>> +		if (!a->map.info) {
+>>>  			err(bttc, "mmap arena[%d].info [sz = %#lx, off = %#lx] failed: %s\n",
+>>>  				i, a->map.info_len, a->infooff, strerror(errno));
+>>>  			return -errno;
+>>>  		}
+>>>  
+>>>  		a->map.data_len = a->mapoff - a->dataoff;
+>>> -		a->map.data = mmap(NULL, a->map.data_len, mmap_flags,
+>>> -			MAP_SHARED, bttc->fd, a->dataoff);
+>>> -		if (a->map.data == MAP_FAILED) {
+>>> +		a->map.data = btt_mmap(bttc, a->map.data_len, a->dataoff);
+>>> +		if (!a->map.data) {
+>>>  			err(bttc, "mmap arena[%d].data [sz = %#lx, off = %#lx] failed: %s\n",
+>>>  				i, a->map.data_len, a->dataoff, strerror(errno));
+>>>  			return -errno;
+>>>  		}
+>>>  
+>>>  		a->map.map_len = a->logoff - a->mapoff;
+>>> -		a->map.map = mmap(NULL, a->map.map_len, mmap_flags,
+>>> -			MAP_SHARED, bttc->fd, a->mapoff);
+>>> -		if (a->map.map == MAP_FAILED) {
+>>> +		a->map.map = btt_mmap(bttc, a->map.map_len, a->mapoff);
+>>> +		if (!a->map.map) {
+>>>  			err(bttc, "mmap arena[%d].map [sz = %#lx, off = %#lx] failed: %s\n",
+>>>  				i, a->map.map_len, a->mapoff, strerror(errno));
+>>>  			return -errno;
+>>>  		}
+>>>  
+>>>  		a->map.log_len = a->info2off - a->logoff;
+>>> -		a->map.log = mmap(NULL, a->map.log_len, mmap_flags,
+>>> -			MAP_SHARED, bttc->fd, a->logoff);
+>>> -		if (a->map.log == MAP_FAILED) {
+>>> +		a->map.log = btt_mmap(bttc, a->map.log_len, a->logoff);
+>>> +		if (!a->map.log) {
+>>>  			err(bttc, "mmap arena[%d].log [sz = %#lx, off = %#lx] failed: %s\n",
+>>>  				i, a->map.log_len, a->logoff, strerror(errno));
+>>>  			return -errno;
+>>>  		}
+>>>  
+>>>  		a->map.info2_len = BTT_INFO_SIZE;
+>>> -		a->map.info2 = mmap(NULL, a->map.info2_len, mmap_flags,
+>>> -			MAP_SHARED, bttc->fd, a->info2off);
+>>> -		if (a->map.info2 == MAP_FAILED) {
+>>> +		a->map.info2 = btt_mmap(bttc, a->map.info2_len, a->info2off);
+>>> +		if (!a->map.info2) {
+>>>  			err(bttc, "mmap arena[%d].info2 [sz = %#lx, off = %#lx] failed: %s\n",
+>>>  				i, a->map.info2_len, a->info2off, strerror(errno));
+>>>  			return -errno;
+>>> @@ -977,15 +1018,15 @@ static void btt_remove_mappings(struct btt_chk *bttc)
+>>>  	for (i = 0; i < bttc->num_arenas; i++) {
+>>>  		a = &bttc->arena[i];
+>>>  		if (a->map.info)
+>>> -			munmap(a->map.info, a->map.info_len);
+>>> +			btt_unmap(bttc, a->map.info, a->map.info_len);
+>>>  		if (a->map.data)
+>>> -			munmap(a->map.data, a->map.data_len);
+>>> +			btt_unmap(bttc, a->map.data, a->map.data_len);
+>>>  		if (a->map.map)
+>>> -			munmap(a->map.map, a->map.map_len);
+>>> +			btt_unmap(bttc, a->map.map, a->map.map_len);
+>>>  		if (a->map.log)
+>>> -			munmap(a->map.log, a->map.log_len);
+>>> +			btt_unmap(bttc, a->map.log, a->map.log_len);
+>>>  		if (a->map.info2)
+>>> -			munmap(a->map.info2, a->map.info2_len);
+>>> +			btt_unmap(bttc, a->map.info2, a->map.info2_len);
+>>>  	}
+>>>  }
+>>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
