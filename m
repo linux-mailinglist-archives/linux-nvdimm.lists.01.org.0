@@ -1,59 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513A88AE84
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 07:06:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258848AE90
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 07:09:42 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 304132131D579;
-	Mon, 12 Aug 2019 22:08:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8B7B521324680;
+	Mon, 12 Aug 2019 22:11:56 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com;
  envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6C6862131D569
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:08:32 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id w26so5613836pfq.12
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:06:16 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 17EBD2131D56F
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:11:54 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id d1so17798457pgp.4
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:09:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Abf3cK9D+gRrRGwQh2kwak/YzDDkHOqgDtvVTIo4q7A=;
- b=Y+dmDbanwPRKrcGCv4/WQS9jtPyx6cpYSiNcTCluUKOVyeyn7wl8RZe0u1cf6FlML6
- wfRe3v8dcFvKIShJjXRgh8cEGNhzCFLCfZTUSJEGO2Ea0/S9/l8EIDzT2hfdmu4vYl3/
- XIR90pnuI3K4kV1d5Bm11Pn57c+GfE4dVDOOxOsnLShgWMYlA1pJcJoF7sOPZtexCwYP
- ELhxZQwrFnEmjZhgXx2mjuE3HiLK9TadecMdLzAo0eHIWgo1V1G1uOa5P7ZTv3NrW55Q
- IwxyHJePJisriyJmWo1d+yNh53aHnfmOSYFZCbC26Ph2JuMFkmU8c4wQttP2Gfux7zEx
- HKsA==
+ :cc; bh=uLkfmiy/QyxG+42Kpd1Hh2gG09JBSRi1kuJ0irEOT+Q=;
+ b=blOJdc2kt55ZqQDvPUZbAMrG0e9V6Lpz+glDC3wqeZ0WFkpdzH+BHVuWLKpOnhb42G
+ g/4gIqAUYUWwrSZVnoWlA0+3BTuFFHTn4QIkPhZ/yY/qHdFseTm5A1T8f5E1IwOIGPkQ
+ NjL2X3JkoAgV9wX66vJ01slCy0p6rnZ7bkyjxanoLsFcwNNC9ezGHFtGPQthuBsXEPdD
+ Vzi/25vZpUBOV4gIKVVTs3IY9Dq9AiSUtfWFy0iWSPQYG787ViekPjFY+1C9grp4yxiQ
+ WMAj2QOcebo3fC3yliGOOPA8v9/MAYuJN9q8LYDdlO8ROvEqJbK4dyCfU63RlOwjE9t3
+ XXgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=Abf3cK9D+gRrRGwQh2kwak/YzDDkHOqgDtvVTIo4q7A=;
- b=P4AqipLhg7ois8vqE48C6C0Tm+3jaNv5Ej89FWAr3jYFhY0+xIahqAUCpfgKcLWz10
- vUkxPWhcauBuXOaSfHPBW7skalmg4DyL9N4AF+FzNAOjX61u+ApHbSwygEQ85bF37ivk
- LNEu/PFAaxFDHIY6hUIhOCZ++OTkpz/lghBtz1osMUuYR4fU/3+K6bpihewMhtAEV7Qr
- F7hB4AWTZaij68jVj9vln2FOObsxU7UTs65/6f6xEP2QaxxhVNKO7t7nBkFP8r0vaxCn
- fv2x83XwvBHhlG3aX99sRfZsZWD8qiMiP+l4b80hhTHyG6brB4HQ9IJCYjLxl7pXFCb0
- mX/w==
-X-Gm-Message-State: APjAAAWljAlyxyuJmAmDDAJcB/peLGpkY++sgHEXdX/2TRTKb7GmiRGT
- PrhoPHgUZ9e8SmkXe76nyADOxRC4gjf2G7dnw63naw==
-X-Google-Smtp-Source: APXvYqzlm/LZa7vLxmhuF4EQXYFyYKJYlrIat9BhnUUptmEmQR49KGysQZ4JhDoNNZWx7O5yEaH2e2yfA6hMO6s/qoE=
-X-Received: by 2002:a63:205f:: with SMTP id r31mr30781941pgm.159.1565672775425; 
- Mon, 12 Aug 2019 22:06:15 -0700 (PDT)
+ bh=uLkfmiy/QyxG+42Kpd1Hh2gG09JBSRi1kuJ0irEOT+Q=;
+ b=Bv4fdcgd1cm2nOc+VamitUWoqV8dyt8sQmlketv8N1bgQFcTRCgjB8TeoAJUUagwxB
+ Fske03TqEgT5m66Vy235tRnzGl5bw8C+wb1mNymf2wKiB+P3YPB4pZU5G6UGkUv/HSzM
+ v3MrMo+BGymFLZlHf4manKhl88BB40E65fYeh+ViQ5ro5KKGk4wkr2//kf6NwbPF24c4
+ BgUwwfpNWoGhRuBT6G/4JVP/2f/i2T8kFetH2KLkdlGHKU7Eeq1kOX2/l7RplAz7Le03
+ yXdJN9Xg3lNxbraEtnr6X5U1ZaqZBMUwRGBVcJzXuqvyEYfuOsRa2JAdFvmr3KudXGXv
+ OWrQ==
+X-Gm-Message-State: APjAAAVXF2J5uj4PHeZMzzxv/kww/VHELQSuy3xM+nsKUHpMPzCuqzVe
+ silTKQMk40etd17EYCw0PV+dWONTIg8ZxZ9eeHmvgw==
+X-Google-Smtp-Source: APXvYqwuRvdkQRBufOH1je8RsECuoe8PsScuGBBjY118Ufh882DHOjHaTVKhOCRIYEV6VNsZUpt68lWBTKVfNRYZXa8=
+X-Received: by 2002:a17:90a:c391:: with SMTP id
+ h17mr524990pjt.131.1565672978100; 
+ Mon, 12 Aug 2019 22:09:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190812182421.141150-1-brendanhiggins@google.com>
- <20190812182421.141150-11-brendanhiggins@google.com>
- <20190813042455.4A04320644@mail.kernel.org>
-In-Reply-To: <20190813042455.4A04320644@mail.kernel.org>
+ <20190812182421.141150-12-brendanhiggins@google.com>
+ <20190813045510.C1D6E206C2@mail.kernel.org>
+In-Reply-To: <20190813045510.C1D6E206C2@mail.kernel.org>
 From: Brendan Higgins <brendanhiggins@google.com>
-Date: Mon, 12 Aug 2019 22:06:04 -0700
-Message-ID: <CAFd5g46LHq1sQaio2Vj5jt54YN-Y2HuCT8FbALQhJoekkYJ-uQ@mail.gmail.com>
-Subject: Re: [PATCH v12 10/18] kunit: test: add tests for kunit test abort
+Date: Mon, 12 Aug 2019 22:09:26 -0700
+Message-ID: <CAFd5g47jrUd+ES4AaWsLDRCfsGiKDB-rOP6TR-NdymCeVAK3Kg@mail.gmail.com>
+Subject: Re: [PATCH v12 11/18] kunit: test: add the concept of assertions
 To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -96,25 +97,74 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 12, 2019 at 9:24 PM Stephen Boyd <sboyd@kernel.org> wrote:
+On Mon, Aug 12, 2019 at 9:55 PM Stephen Boyd <sboyd@kernel.org> wrote:
 >
-> Quoting Brendan Higgins (2019-08-12 11:24:13)
-> > +
-> > +static int kunit_try_catch_test_init(struct kunit *test)
-> > +{
-> > +       struct kunit_try_catch_test_context *ctx;
-> > +
-> > +       ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
+> Quoting Brendan Higgins (2019-08-12 11:24:14)
+> > Add support for assertions which are like expectations except the test
+> > terminates if the assertion is not satisfied.
+> >
+> > The idea with assertions is that you use them to state all the
+> > preconditions for your test. Logically speaking, these are the premises
+> > of the test case, so if a premise isn't true, there is no point in
+> > continuing the test case because there are no conclusions that can be
+> > drawn without the premises. Whereas, the expectation is the thing you
+> > are trying to prove. It is not used universally in x-unit style test
+> > frameworks, but I really like it as a convention.  You could still
+> > express the idea of a premise using the above idiom, but I think
+> > KUNIT_ASSERT_* states the intended idea perfectly.
+> >
+> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> > Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
 >
-> Can this fail? Should return -ENOMEM in that case?
-
-Yes, I should do that.
-
-> > +       test->priv = ctx;
+> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+>
+> > + * Sets an expectation that the values that @left and @right evaluate to are
+> > + * not equal. This is semantically equivalent to
+> > + * KUNIT_ASSERT_TRUE(@test, strcmp((@left), (@right))). See KUNIT_ASSERT_TRUE()
+> > + * for more information.
+> > + */
+> > +#define KUNIT_ASSERT_STRNEQ(test, left, right)                                \
+> > +               KUNIT_BINARY_STR_NE_ASSERTION(test,                            \
+> > +                                             KUNIT_ASSERTION,                 \
+> > +                                             left,                            \
+> > +                                             right)
 > > +
-> > +       ctx->try_catch = kunit_kmalloc(test,
-> > +                                      sizeof(*ctx->try_catch),
-> > +                                      GFP_KERNEL);
+> > +#define KUNIT_ASSERT_STRNEQ_MSG(test, left, right, fmt, ...)                  \
+> > +               KUNIT_BINARY_STR_NE_MSG_ASSERTION(test,                        \
+> > +                                                 KUNIT_ASSERTION,             \
+> > +                                                 left,                        \
+> > +                                                 right,                       \
+> > +                                                 fmt,                         \
+>
+> Same question about tabbing too.
+
+Yep. WIll fix.
+
+> > diff --git a/kunit/test-test.c b/kunit/test-test.c
+> > index 88f4cdf03db2a..058f3fb37458a 100644
+> > --- a/kunit/test-test.c
+> > +++ b/kunit/test-test.c
+> > @@ -78,11 +78,13 @@ static int kunit_try_catch_test_init(struct kunit *test)
+> >         struct kunit_try_catch_test_context *ctx;
+> >
+> >         ctx = kunit_kzalloc(test, sizeof(*ctx), GFP_KERNEL);
+> > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx);
+>
+> Ah ok. Question still stands if kunit_kzalloc() should just have the
+> assertion on failure.
+
+Right. In the previous patch KUNIT_ASSERT_* doesn't exist yet, so I
+can't use it. And rather than fall back to return -ENOMEM like I
+should have, I evidently forgot to do that.
+
+> >         test->priv = ctx;
+> >
+> >         ctx->try_catch = kunit_kmalloc(test,
+> >                                        sizeof(*ctx->try_catch),
+> >                                        GFP_KERNEL);
+> > +       KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ctx->try_catch);
+> >
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
