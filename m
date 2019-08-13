@@ -2,63 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F357B8AE64
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 07:03:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 222BD8AE6E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 07:03:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B20692131BA2C;
-	Mon, 12 Aug 2019 22:05:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D3F392131BA48;
+	Mon, 12 Aug 2019 22:06:12 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com;
+ client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com;
  envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 669222130A4E6
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:05:27 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id w2so63296pfi.3
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:03:11 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 044B72130A4E6
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:06:10 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id z3so1951745pln.6
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 22:03:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4cO9jrOGgF5wujsFXMHtoYNXvgUhydDYlF08f1pq39E=;
- b=IJDEFp+tZg956HdkEB/yKpoKHOFoi1PcVpOx5zPUJll5AJ5C8M+CFwUO+F8F8Q/rit
- 8HcowooFg6ntqkIFuj6R4k+GwmJgIitCqOV2QvGuxn7m9MQGXg9qvC85ytvNf5bcYus+
- EprLmHUXh9bThNArfUe3XOKZVbo/EBN6VgqZBcT95WmmKJTlRd528A9f6TQgIETjut1/
- wI8daRdYTmSq6wYQl4NTMhJ/qVqO63tEGOCbSOifsskf9GK6VMybLklO81hLBeB9tly/
- 80uCE+R8Iy4Fzfqk20iE8S9pCq3TNIClCmZ4T12ccP5rxSYxtRJSh6xSaDrQfj2wM6vG
- UTbw==
+ :cc; bh=aKOfFTV6VGP5BNUB1Vnarc/F0DL+26vq0829FAbZrqo=;
+ b=svgoSdNRxSLsCnnIOc7xbQg9GgF9oKMJ1Zy9kd11vWwaKXoOnKpb4m3E5VD5iVlgYD
+ +Q8GW61vmO7pSODND/EU3ySpZFU6zBm/nnzXrEdbXjYeyp0z5HZ4MlPGEFDVamV7AnNt
+ YxSzN7MGuqE5YtmeQLv8pM8cwjVoHM11Q7HgFuNs7NBSHTrEDEHtBfVlPMX1tM122Zoh
+ /lJWbiyvCy294xIaxGNy1x0QeVRdkekMXrwW6vrlb0zY+yiiNnJIqQVHv78TipzeF0fL
+ lbgrIbrBSmtQjgptdFMq0Sq8pSiArBm+sF/Wu+BeNyqHXo/vQXv7UP+JqfWMmgemFjSH
+ IU5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=4cO9jrOGgF5wujsFXMHtoYNXvgUhydDYlF08f1pq39E=;
- b=dxO08U3iLErigoEjKcD2a41yC9mIqyjOK2gezRrY+uzag0AQvEY5f7tBFQPT/ILpng
- kTVm0WKe88hNmuX9E3XgNJBPvRQ8eJ51KZ7AR/XUeT5ZIVWVfOcUoWfmDePBaqbqq0O4
- 1Ta/C69WJX278fppWX5g0HyNZcHiuuXMJGAfKoDfTylz40YPeLJmEXHrAMkZaJWTf1QQ
- IXiL4Y9MSiHi1qtYFUl81LoRLHWvY78u6paRlrDVDtdP4qbLZwl1V6ZVcLZ+2UPqd0Tj
- /CmbsdvWSWLCM7ROwl8QVaYYDFHb22FWvnZjQi+IxjCbMpgm622nKGbLFUKxVp5ZyLP8
- 5YXw==
-X-Gm-Message-State: APjAAAXmt96uBrXdieYnEz/ZXCjXVf/4+RHb+r6KWnZA8e683QNWzDXn
- ui6umPN7pp9vQTU4iaV/BoJkYgGZPLlomUb7wtx5pg==
-X-Google-Smtp-Source: APXvYqxe3Yuc1/IPYBDWpkhdxK9MrqBlpBCfUzv/UyMf8npsBcj76TlFOcJ9beMy4gx9z+/oMn0KOERMMEUsJXLW4tU=
-X-Received: by 2002:aa7:8f2e:: with SMTP id y14mr9786090pfr.113.1565672590442; 
- Mon, 12 Aug 2019 22:03:10 -0700 (PDT)
+ bh=aKOfFTV6VGP5BNUB1Vnarc/F0DL+26vq0829FAbZrqo=;
+ b=NAWfs9FHtLojPbi/0NrjdXR+iWSJ9IxOaqRbQY1WWogu8aUTmKvkc8I4di076LN7J7
+ wTb5OoFvzk9OzQPTYwvbKjvHDswZ1SdVEdcbUnRgXpXkl2dL95FcoZZRP14yRWqxLLwe
+ FeSiPooqDj5VkUPahUPb4rZqap3XBe6tUt6KnoWUm/30uwUhGU2d11nmGo7oFMdWSpOH
+ etH27jdrAMmLNwuqfwFC0U7UVyr2VThD6av1lbyTu15EdIv6t3/L39xnhyCx1EX9sbf2
+ 5zbav6sKkhvvESoxHf792PaamOI8PrnbdngaCl7fyB23WwoBUVd+0sBnOEgvB0UK4FLu
+ 8syQ==
+X-Gm-Message-State: APjAAAVe6qiuHv8zGy/kP4NWGxtwV+7uKchMLgxm76+RPpKj9QnTXFa2
+ tPXyopbK4XuWVGDeLt9fS/YJdatCNxVGBO0clEeQRg==
+X-Google-Smtp-Source: APXvYqwgOw9EQ70Umy0oEnQ5G5LCL6qyMyWjnNbSVpHRs20m04I8HxLTnoiIjpuTiP19er8DvO/pyE/cwQSXqDyWk+Y=
+X-Received: by 2002:a17:902:5983:: with SMTP id
+ p3mr26758654pli.232.1565672634067; 
+ Mon, 12 Aug 2019 22:03:54 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190812182421.141150-1-brendanhiggins@google.com>
- <20190812182421.141150-4-brendanhiggins@google.com>
- <20190812225520.5A67C206A2@mail.kernel.org>
- <20190812233336.GA224410@google.com>
- <20190812235940.100842063F@mail.kernel.org>
- <CAFd5g44xciLPBhH_J3zUcY3TedWTijdnWgF055qffF+dAguhPQ@mail.gmail.com>
- <20190813045623.F3D9520842@mail.kernel.org>
-In-Reply-To: <20190813045623.F3D9520842@mail.kernel.org>
+ <20190812182421.141150-5-brendanhiggins@google.com>
+ <20190812234644.E054D20679@mail.kernel.org>
+ <CAFd5g44huOiR9B0H1C2TtiPy63BDuwi_Qpb_exF3zmT3ttV8eg@mail.gmail.com>
+ <CAFd5g44GxE-p+Jk_46GYA-WWVHLW7w=yE+K_tbbdiniDfrk-2w@mail.gmail.com>
+ <20190813045747.3AF0A206C2@mail.kernel.org>
+In-Reply-To: <20190813045747.3AF0A206C2@mail.kernel.org>
 From: Brendan Higgins <brendanhiggins@google.com>
-Date: Mon, 12 Aug 2019 22:02:59 -0700
-Message-ID: <CAFd5g46PJNTOUAA4GOOrW==74Zy7u1sRESTanL_BXBn6QykscA@mail.gmail.com>
-Subject: Re: [PATCH v12 03/18] kunit: test: add string_stream a std::stream
- like string builder
+Date: Mon, 12 Aug 2019 22:03:42 -0700
+Message-ID: <CAFd5g47OUymztYcWngDUd10WswVOrO-PTmX+KNF_T=cg_OcJNg@mail.gmail.com>
+Subject: Re: [PATCH v12 04/18] kunit: test: add assertion printing library
 To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -101,30 +100,36 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 12, 2019 at 9:56 PM Stephen Boyd <sboyd@kernel.org> wrote:
+On Mon, Aug 12, 2019 at 9:57 PM Stephen Boyd <sboyd@kernel.org> wrote:
 >
-> Quoting Brendan Higgins (2019-08-12 17:41:05)
-> > On Mon, Aug 12, 2019 at 4:59 PM Stephen Boyd <sboyd@kernel.org> wrote:
+> Quoting Brendan Higgins (2019-08-12 21:27:05)
+> > On Mon, Aug 12, 2019 at 4:56 PM Brendan Higgins
+> > <brendanhiggins@google.com> wrote:
 > > >
-> > > > kunit_resource_destroy (respective equivalents to devm_kfree, and
-> > > > devres_destroy) and use kunit_kfree here?
+> > > On Mon, Aug 12, 2019 at 4:46 PM Stephen Boyd <sboyd@kernel.org> wrote:
 > > > >
+> > > > Quoting Brendan Higgins (2019-08-12 11:24:07)
+> > > > > +#define KUNIT_INIT_FAIL_ASSERT_STRUCT(test, type) {                           \
+> > > > > +               .assert = KUNIT_INIT_ASSERT_STRUCT(test,                       \
+> > > > > +                                                  type,                       \
+> > > > > +                                                  kunit_fail_assert_format)   \
+> > > >
+> > > > This one got indented one too many times?
 > > >
-> > > Yes, or drop the API entirely? Does anything need this functionality?
+> > > Not unless I have been using the wrong formatting for multiline
+> > > macros. You can see this commit applied here:
+> > > https://kunit.googlesource.com/linux/+/870964da2990920030990dd1ffb647ef408e52df/include/kunit/assert.h#59
+> > >
+> > > I have test, type, and kunit_fail_assert_format all column aligned (it
+> > > just doesn't render nicely in the patch format).
 > >
-> > Drop the kunit_resource API? I would strongly prefer not to.
+> > Disregard that last comment. I just looked at the line immediately
+> > above your comment and thought it looked correct. Sorry about that
+> > (you were pointing out that the .assert line looked wrong, correct?).
 >
-> No. I mean this API, string_stream_clear(). Does anything use it?
+> Yes. .assert is double tabbed?
 
-Oh, right. No.
-
-However, now that I added the kunit_resource_destroy, I thought it
-might be good to free the string_stream after I use it in each call to
-kunit_assert->format(...) in which case I will be using this logic.
-
-So I think the right thing to do is to expose string_stream_destroy so
-kunit_do_assert can clean up when it's done, and then demote
-string_stream_clear to static. Sound good?
+Yes it is. Sorry about the confusion. Will fix.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
