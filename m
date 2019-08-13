@@ -1,80 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3758C8AFEE
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 08:30:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677948B16B
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 09:52:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4F1C421324690;
-	Mon, 12 Aug 2019 23:32:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E67002132997F;
+	Tue, 13 Aug 2019 00:54:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=vaibhav@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::543; helo=mail-pg1-x543.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9B4652131BA52
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 23:32:17 -0700 (PDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7D6R5dk126909
- for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 02:30:00 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ubqms0sw5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 02:30:00 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <vaibhav@linux.ibm.com>;
- Tue, 13 Aug 2019 07:29:59 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 13 Aug 2019 07:29:57 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7D6Tt1i51052698
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 13 Aug 2019 06:29:55 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8AB4B4C044;
- Tue, 13 Aug 2019 06:29:55 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 371044C04A;
- Tue, 13 Aug 2019 06:29:53 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.109.195.201])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Tue, 13 Aug 2019 06:29:52 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
- Tue, 13 Aug 2019 11:59:52 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Jeff Moyer <jmoyer@redhat.com>
-Subject: Re: [PATCH v3] ndctl,
- check: Ensure mmap of BTT sections work with 64K page-sizes
-In-Reply-To: <x497e7igipm.fsf@segfault.boston.devel.redhat.com>
-References: <20190806105012.15170-1-vaibhav@linux.ibm.com>
- <x497e7igipm.fsf@segfault.boston.devel.redhat.com>
-Date: Tue, 13 Aug 2019 11:59:52 +0530
+ by ml01.01.org (Postfix) with ESMTPS id 9F7AB2131BA52
+ for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 00:54:30 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id e11so262820pga.5
+ for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 00:52:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=QRTz9Xji1GnKtiBfvHtH9s0qQk1TmYlPxSNoKQScUSU=;
+ b=d9yKr6zAnRu5DLLhnVYGTN713jhVE7qQb/8wlQF/PDbGT/kyDXdm8ubBG3qPavV6nZ
+ u8/FB1rvN8wMU0yFPzjHRFBN1hKKU7wA/8PY9ud7efhPQJtWF8cp3djkdljM/WA8V8gm
+ bqlhiw6x+7V27woDkusatGNHK7XmvCHrSVdLLnEw0A9+0fZm3mPG7SlHF0PJ/Lupaifz
+ L71DVEtMYTgQuS82s2biq6SM/r1tk7PeT+IKYJss0dEuDaiJyvwR70N87LLGLnE/iHvq
+ az6JJK9ulszSFJIw00Tx/0ArednhKrhXSaivVF1sQb8YUpZB4etPZYKA7SF43FRjwDOA
+ SQPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QRTz9Xji1GnKtiBfvHtH9s0qQk1TmYlPxSNoKQScUSU=;
+ b=BRygoVwTggMSYZP78zLdHobXQ+DioqWyIi/NiWvS9ZMcr4WczFTDPglM6l3BjwE73e
+ d3CsI0IGbeJTR4HIFU/BX12KMi4KLJPH6PE7m0Oe4xiHVvyOxa9voZuK43OeyGJdZVVO
+ w3N0cgjj5hQPYoPhFs3yBytHSpGJRbjEVxOriGzHcbyxo908qRgCvdtbZNo1AP0/QBVQ
+ zELf1B1Phx7RmcJvGXn5HTdUfCYtH6pUXfB0vT2vxDcQIsNBV8f/MW9/Ripu9yhirq0g
+ o4n0Gp+sRrHqQtyWf9U4UbhPgaI90sWif23z1x0GXKZ3GLNuZKcbbX97s0DpYZDZ4OIQ
+ dvzw==
+X-Gm-Message-State: APjAAAVO+9hng9WsbRqwa4NyVf3bBc0pxkWImjmRKOB5/X1I2lS2n6yI
+ FJ2RaH+yFsucUp5THZdkslYWnsIDSFZZ4BG+sCBoRA==
+X-Google-Smtp-Source: APXvYqyGp5FRBIbLsTLczd2XTjqdRRlw2nloNXwwo2pdocKRPV3RlOKTfDT9Lww7NrP1xso9VQHgOv3E8oAazxyso+4=
+X-Received: by 2002:aa7:8f2e:: with SMTP id y14mr10342747pfr.113.1565682734344; 
+ Tue, 13 Aug 2019 00:52:14 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19081306-0008-0000-0000-000003086A0E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081306-0009-0000-0000-00004A267B3B
-Message-Id: <87h86lzifz.fsf@vajain21.in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-13_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=11 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908130069
+References: <20190812182421.141150-1-brendanhiggins@google.com>
+ <20190812182421.141150-10-brendanhiggins@google.com>
+ <20190813042159.46814206C2@mail.kernel.org>
+ <CAFd5g44XyQi-oprPcdgx-EPboQYaHY6Ocz8Te6NX2SxV=mVhQA@mail.gmail.com>
+ <20190813055615.CA787206C2@mail.kernel.org>
+In-Reply-To: <20190813055615.CA787206C2@mail.kernel.org>
+From: Brendan Higgins <brendanhiggins@google.com>
+Date: Tue, 13 Aug 2019 00:52:03 -0700
+Message-ID: <CAFd5g4415URtJBKPhsEw98GxiExJr-fstW6SQ6nmV9ts9ggK-g@mail.gmail.com>
+Subject: Re: [PATCH v12 09/18] kunit: test: add support for test abort
+To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,243 +68,226 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Harish Sriram <harish@linux.ibm.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Thanks for reviewing this patch Jeff.
-
-Jeff Moyer <jmoyer@redhat.com> writes:
-
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+On Mon, Aug 12, 2019 at 10:56 PM Stephen Boyd <sboyd@kernel.org> wrote:
 >
->> On PPC64 which uses a 64K page-size, ndtl-check command fails on a BTT
->> namespace with following error:
->>
->> $ sudo ndctl check-namespace namespace0.0 -vv
->>   namespace0.0: namespace_check: checking namespace0.0
->>   namespace0.0: btt_discover_arenas: found 1 BTT arena
->>   namespace0.0: btt_create_mappings: mmap arena[0].info [sz = 0x1000, off = 0x1000] failed: Invalid argument
->>   error checking namespaces: Invalid argument
->>   checked 0 namespaces
->>
->> An error happens when btt_create_mappings() tries to mmap the sections
->> of the BTT device which are usually 4K offset aligned. However the
->> mmap() syscall expects the 'offset' argument to be in multiples of
->> page-size, hence it returns EINVAL causing the btt_create_mappings()
->> to error out.
->>
->> As a fix for the issue this patch proposes addition of two new
->> functions to 'check.c' namely btt_mmap/btt_unmap that can be used to
->> map/unmap parts of BTT device to ndctl process address-space. The
->> functions tweaks the requested 'offset' argument to mmap() ensuring
->> that its page-size aligned and then fix-ups the returned pointer such
->> that it points to the requested offset within mmapped region.
->>
->> With these newly introduced functions the patch updates the call-sites
->> in 'check.c' to use these functions instead of mmap/unmap syscalls.
->> Also since btt_mmap returns NULL if mmap operation fails, the
->> error check call-sites can be made against NULL instead of MAP_FAILED.
->>
->> Reported-by: Harish Sriram <harish@linux.ibm.com>
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->> Changelog:
->> v3:
->> * Fixed a log string that was splitted across multiple lines [Vishal]
->>
->> v2:
->> * Updated patch description to include canonical email address of bug
->>   reporter. [Vishal]
->> * Improved the comment describing function btt_mmap() in 'check.c'
->>   [Vishal]
->> * Simplified the argument list for btt_mmap() to just accept bttc,
->>   length and offset. Other arguments for mmap() are derived from these
->>   args. [Vishal]
->> * Renamed 'shift' variable in btt_mmap()/unmap() to 'page_offset'
->>   [Vishal]
->> * Improved the dbg() messages logged inside
->>   btt_mmap()/unmap(). [Vishal]
->> * Return NULL from btt_mmap() in case of an error. [Vishal]
->> * Changed the all sites to btt_mmap() to perform error check against
->>   NULL return value instead of MAP_FAILED. [Vishal]
->> ---
->>  ndctl/check.c | 93 +++++++++++++++++++++++++++++++++++++--------------
->>  1 file changed, 67 insertions(+), 26 deletions(-)
->>
->> diff --git a/ndctl/check.c b/ndctl/check.c
->> index 8a7125053865..5969012eba84 100644
->> --- a/ndctl/check.c
->> +++ b/ndctl/check.c
->> @@ -907,59 +907,100 @@ static int btt_discover_arenas(struct btt_chk *bttc)
->>  	return ret;
->>  }
->>  
->> -static int btt_create_mappings(struct btt_chk *bttc)
->> +/*
->> + * Wrap call to mmap(2) to work with btt device offsets that are not aligned
->> + * to system page boundary. It works by rounding down the requested offset
->> + * to sys_page_size when calling mmap(2) and then returning a fixed-up pointer
->> + * to the correct offset in the mmaped region.
->> + */
->> +static void *btt_mmap(struct btt_chk *bttc, size_t length, off_t offset)
->>  {
->> -	struct arena_info *a;
->> -	int mmap_flags;
->> -	int i;
->> +	off_t page_offset;
->> +	int prot_flags;
->> +	uint8_t *addr;
->>  
->>  	if (!bttc->opts->repair)
->> -		mmap_flags = PROT_READ;
->> +		prot_flags = PROT_READ;
->>  	else
->> -		mmap_flags = PROT_READ|PROT_WRITE;
->> +		prot_flags = PROT_READ|PROT_WRITE;
->> +
->> +	/* Calculate the page_offset from the system page boundary */
->> +	page_offset = offset - rounddown(offset, bttc->sys_page_size);
->> +
->> +	/* Update the offset and length with the page_offset calculated above */
->> +	offset -= page_offset;
->> +	length += page_offset;
+> Quoting Brendan Higgins (2019-08-12 21:57:55)
+> > On Mon, Aug 12, 2019 at 9:22 PM Stephen Boyd <sboyd@kernel.org> wrote:
+> > >
+> > > Quoting Brendan Higgins (2019-08-12 11:24:12)
+> > > > diff --git a/include/kunit/test.h b/include/kunit/test.h
+> > > > index 2625bcfeb19ac..93381f841e09f 100644
+> > > > --- a/include/kunit/test.h
+> > > > +++ b/include/kunit/test.h
+> > > > @@ -176,6 +178,11 @@ struct kunit {
+> > > >          */
+> > > >         bool success; /* Read only after test_case finishes! */
+> > > >         spinlock_t lock; /* Gaurds all mutable test state. */
+> > > > +       /*
+> > > > +        * death_test may be both set and unset from multiple threads in a test
+> > > > +        * case.
+> > > > +        */
+> > > > +       bool death_test; /* Protected by lock. */
+> > > >         /*
+> > > >          * Because resources is a list that may be updated multiple times (with
+> > > >          * new resources) from any thread associated with a test case, we must
+> > > > @@ -184,6 +191,13 @@ struct kunit {
+> > > >         struct list_head resources; /* Protected by lock. */
+> > > >  };
+> > > >
+> > > > +static inline void kunit_set_death_test(struct kunit *test, bool death_test)
+> > > > +{
+> > > > +       spin_lock(&test->lock);
+> > > > +       test->death_test = death_test;
+> > > > +       spin_unlock(&test->lock);
+> > > > +}
+> > >
+> > > These getters and setters are using spinlocks again. It doesn't make any
+> > > sense. It probably needs a rework like was done for the other bool
+> > > member, success.
+> >
+> > No, this is intentional. death_test can transition from false to true
+> > and then back to false within the same test. Maybe that deserves a
+> > comment?
 >
-> Don't you have to ensure that the length is also a multiple of the
-> system page size?
+> Yes. How does it transition from true to false again?
+
+The purpose is to tell try_catch that it was expected for the test to
+bail out. Given the default implementation there is no way for this to
+happen aside from abort() being called, but in some implementations it
+is possible to implement a fault catcher which allows a test suite to
+recover from an unexpected failure.
+
+Maybe it would be best to drop this until I add one of those
+alternative implementations.
+
+> Either way, having a spinlock around a read/write API doesn't make sense
+> because it just makes sure that two writes don't overlap, but otherwise
+> does nothing to keep things synchronized. For example a set to true
+> after a set to false when the two calls to set true or false aren't
+> synchronized means they can happen in any order. So I don't see how it
+> needs a spinlock. The lock needs to be one level higher.
+
+There shouldn't be any cases where one thread is trying to set it
+while another is trying to unset it. The thing I am worried about here
+is making sure all the cores see the write, and making sure no reads
+or writes get reordered before it. So I guess I just want a fence. So
+I take it I should probably have is a WRITE_ONCE here and READ_ONCE in
+the getter?
+
+> >
+> > > > +
+> > > >  void kunit_init_test(struct kunit *test, const char *name);
+> > > >
+> > > >  int kunit_run_tests(struct kunit_suite *suite);
+> > > > diff --git a/include/kunit/try-catch.h b/include/kunit/try-catch.h
+> > > > new file mode 100644
+> > > > index 0000000000000..8a414a9af0b64
+> > > > --- /dev/null
+> > > > +++ b/include/kunit/try-catch.h
+> [...]
+> > > > +
+> > > > +/*
+> > > > + * struct kunit_try_catch - provides a generic way to run code which might fail.
+> > > > + * @context: used to pass user data to the try and catch functions.
+> > > > + *
+> > > > + * kunit_try_catch provides a generic, architecture independent way to execute
+> > > > + * an arbitrary function of type kunit_try_catch_func_t which may bail out by
+> > > > + * calling kunit_try_catch_throw(). If kunit_try_catch_throw() is called, @try
+> > > > + * is stopped at the site of invocation and @catch is catch is called.
+> > > > + *
+> > > > + * struct kunit_try_catch provides a generic interface for the functionality
+> > > > + * needed to implement kunit->abort() which in turn is needed for implementing
+> > > > + * assertions. Assertions allow stating a precondition for a test simplifying
+> > > > + * how test cases are written and presented.
+> > > > + *
+> > > > + * Assertions are like expectations, except they abort (call
+> > > > + * kunit_try_catch_throw()) when the specified condition is not met. This is
+> > > > + * useful when you look at a test case as a logical statement about some piece
+> > > > + * of code, where assertions are the premises for the test case, and the
+> > > > + * conclusion is a set of predicates, rather expectations, that must all be
+> > > > + * true. If your premises are violated, it does not makes sense to continue.
+> > > > + */
+> > > > +struct kunit_try_catch {
+> > > > +       /* private: internal use only. */
+> > > > +       struct kunit *test;
+> > > > +       struct completion *try_completion;
+> > > > +       int try_result;
+> > > > +       kunit_try_catch_func_t try;
+> > > > +       kunit_try_catch_func_t catch;
+> > >
+> > > Can these other variables be documented in the kernel doc? And should
+> > > context be marked as 'public'?
+> >
+> > Sure, I can document them.
+> >
+> > But I don't think context should be public; it should only be accessed
+> > by kunit_try_catch_* functions. context should only be populated by
+> > *_init, and will be passed into *try and *catch when they are called
+> > internally.
 >
-> -Jeff
+> Ok. Then I guess just document them all but keep them all marked as
+> private.
 
-No, as the BTT info header is 4K in size which isnt in multiple of page
-size on PPC64 where PAGE_SIZE == 64K.
+Will do.
 
-Also I see 'do_mmap()' in kernel always rounding up the 'length' to
-PAGE_SIZE. So any unaligned value for 'length' arg will be handled by the
-kernel.
-
-Finally mmap(2) doesn't put any constraint on the 'length' argument to
-mmap except it should > 0. The 'offset' arg on other hand has a
-constraint which needs to be in multiple of PAGE_SIZE.
-
+> >
+> > > > + */
+> > > > +void kunit_generic_try_catch_init(struct kunit_try_catch *try_catch);
+> > > > +
+> > > > +#endif /* _KUNIT_TRY_CATCH_H */
+> > > > diff --git a/kunit/test.c b/kunit/test.c
+> > > > index e5080a2c6b29c..995cb53fe4ee9 100644
+> > > > --- a/kunit/test.c
+> > > > +++ b/kunit/test.c
+> > > > @@ -158,6 +171,21 @@ static void kunit_fail(struct kunit *test, struct kunit_assert *assert)
+> > > >         kunit_print_string_stream(test, stream);
+> > > >  }
+> > > >
+> > > > +void __noreturn kunit_abort(struct kunit *test)
+> > > > +{
+> > > > +       kunit_set_death_test(test, true);
+> > > > +
+> > > > +       kunit_try_catch_throw(&test->try_catch);
+> > > > +
+> > > > +       /*
+> > > > +        * Throw could not abort from test.
+> > > > +        *
+> > > > +        * XXX: we should never reach this line! As kunit_try_catch_throw is
+> > > > +        * marked __noreturn.
+> > > > +        */
+> > > > +       WARN_ONCE(true, "Throw could not abort from test!\n");
+> > >
+> > > Should this just be a BUG_ON? It's supposedly impossible.
+> >
+> > It should be impossible; it will only reach this line if there is a
+> > bug in kunit_try_catch_throw. The reason I didn't use BUG_ON was
+> > because I previously got yelled at for having BUG_ON in this code
+> > path.
+> >
+> > Nevertheless, I think BUG_ON is more correct, so if you will stand by
+> > it, then that's what I will do.
 >
->> +
->> +	addr = mmap(NULL, length, prot_flags, MAP_SHARED, bttc->fd, offset);
->> +
->> +	/* If needed fixup the return pointer to correct offset requested */
->> +	if (addr != MAP_FAILED)
->> +		addr += page_offset;
->> +
->> +	dbg(bttc, "addr = %p, length = %#lx, offset = %#lx, page_offset = %#lx\n",
->> +	    (void *) addr, length, offset, page_offset);
->> +
->> +	return addr == MAP_FAILED ? NULL : addr;
->> +}
->> +
->> +static void btt_unmap(struct btt_chk *bttc, void *ptr, size_t length)
->> +{
->> +	off_t page_offset;
->> +	uintptr_t addr = (uintptr_t) ptr;
->> +
->> +	/* Calculate the page_offset from system page boundary */
->> +	page_offset = addr - rounddown(addr, bttc->sys_page_size);
->> +
->> +	addr -= page_offset;
->> +	length += page_offset;
->> +
->> +	munmap((void *) addr, length);
->> +	dbg(bttc, "addr = %p, length = %#lx, page_offset = %#lx\n",
->> +	    (void *) addr, length, page_offset);
->> +}
->> +
->> +static int btt_create_mappings(struct btt_chk *bttc)
->> +{
->> +	struct arena_info *a;
->> +	int i;
->>  
->>  	for (i = 0; i < bttc->num_arenas; i++) {
->>  		a = &bttc->arena[i];
->>  		a->map.info_len = BTT_INFO_SIZE;
->> -		a->map.info = mmap(NULL, a->map.info_len, mmap_flags,
->> -			MAP_SHARED, bttc->fd, a->infooff);
->> -		if (a->map.info == MAP_FAILED) {
->> +		a->map.info = btt_mmap(bttc, a->map.info_len, a->infooff);
->> +		if (!a->map.info) {
->>  			err(bttc, "mmap arena[%d].info [sz = %#lx, off = %#lx] failed: %s\n",
->>  				i, a->map.info_len, a->infooff, strerror(errno));
->>  			return -errno;
->>  		}
->>  
->>  		a->map.data_len = a->mapoff - a->dataoff;
->> -		a->map.data = mmap(NULL, a->map.data_len, mmap_flags,
->> -			MAP_SHARED, bttc->fd, a->dataoff);
->> -		if (a->map.data == MAP_FAILED) {
->> +		a->map.data = btt_mmap(bttc, a->map.data_len, a->dataoff);
->> +		if (!a->map.data) {
->>  			err(bttc, "mmap arena[%d].data [sz = %#lx, off = %#lx] failed: %s\n",
->>  				i, a->map.data_len, a->dataoff, strerror(errno));
->>  			return -errno;
->>  		}
->>  
->>  		a->map.map_len = a->logoff - a->mapoff;
->> -		a->map.map = mmap(NULL, a->map.map_len, mmap_flags,
->> -			MAP_SHARED, bttc->fd, a->mapoff);
->> -		if (a->map.map == MAP_FAILED) {
->> +		a->map.map = btt_mmap(bttc, a->map.map_len, a->mapoff);
->> +		if (!a->map.map) {
->>  			err(bttc, "mmap arena[%d].map [sz = %#lx, off = %#lx] failed: %s\n",
->>  				i, a->map.map_len, a->mapoff, strerror(errno));
->>  			return -errno;
->>  		}
->>  
->>  		a->map.log_len = a->info2off - a->logoff;
->> -		a->map.log = mmap(NULL, a->map.log_len, mmap_flags,
->> -			MAP_SHARED, bttc->fd, a->logoff);
->> -		if (a->map.log == MAP_FAILED) {
->> +		a->map.log = btt_mmap(bttc, a->map.log_len, a->logoff);
->> +		if (!a->map.log) {
->>  			err(bttc, "mmap arena[%d].log [sz = %#lx, off = %#lx] failed: %s\n",
->>  				i, a->map.log_len, a->logoff, strerror(errno));
->>  			return -errno;
->>  		}
->>  
->>  		a->map.info2_len = BTT_INFO_SIZE;
->> -		a->map.info2 = mmap(NULL, a->map.info2_len, mmap_flags,
->> -			MAP_SHARED, bttc->fd, a->info2off);
->> -		if (a->map.info2 == MAP_FAILED) {
->> +		a->map.info2 = btt_mmap(bttc, a->map.info2_len, a->info2off);
->> +		if (!a->map.info2) {
->>  			err(bttc, "mmap arena[%d].info2 [sz = %#lx, off = %#lx] failed: %s\n",
->>  				i, a->map.info2_len, a->info2off, strerror(errno));
->>  			return -errno;
->> @@ -977,15 +1018,15 @@ static void btt_remove_mappings(struct btt_chk *bttc)
->>  	for (i = 0; i < bttc->num_arenas; i++) {
->>  		a = &bttc->arena[i];
->>  		if (a->map.info)
->> -			munmap(a->map.info, a->map.info_len);
->> +			btt_unmap(bttc, a->map.info, a->map.info_len);
->>  		if (a->map.data)
->> -			munmap(a->map.data, a->map.data_len);
->> +			btt_unmap(bttc, a->map.data, a->map.data_len);
->>  		if (a->map.map)
->> -			munmap(a->map.map, a->map.map_len);
->> +			btt_unmap(bttc, a->map.map, a->map.map_len);
->>  		if (a->map.log)
->> -			munmap(a->map.log, a->map.log_len);
->> +			btt_unmap(bttc, a->map.log, a->map.log_len);
->>  		if (a->map.info2)
->> -			munmap(a->map.info2, a->map.info2_len);
->> +			btt_unmap(bttc, a->map.info2, a->map.info2_len);
->>  	}
->>  }
+> Yeah BUG_ON is appropriate here and self documenting so please use it.
+
+Cool, will do.
+
+> >
+> > > > +               return;
+> > > > +       }
+> > > > +
+> > > > +       if (kunit_get_death_test(test)) {
+> > > > +               /*
+> > > > +                * EXPECTED DEATH: kunit_run_case_internal encountered
+> > > > +                * anticipated fatal error. Everything should be in a safe
+> > > > +                * state.
+> > > > +                */
+> > > > +               kunit_run_case_cleanup(test, suite);
+> > > > +       } else {
+> > > > +               /*
+> > > > +                * UNEXPECTED DEATH: kunit_run_case_internal encountered an
+> > > > +                * unanticipated fatal error. We have no idea what the state of
+> > > > +                * the test case is in.
+> > > > +                */
+> > > > +               kunit_handle_test_crash(test, suite, test_case);
+> > > > +               kunit_set_failure(test);
+> > >
+> > > Like was done here.
+> >
+> > Sorry, like what?
 >
+> Just saying this has braces for the if-else.
 
--- 
-Vaibhav Jain <vaibhav@linux.ibm.com>
-Linux Technology Center, IBM India Pvt. Ltd.
-
+Ah, gotcha.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
