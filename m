@@ -2,48 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2301D8AF11
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 08:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3758C8AFEE
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Aug 2019 08:30:05 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6A9E421329970;
-	Mon, 12 Aug 2019 23:04:18 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4F1C421324690;
+	Mon, 12 Aug 2019 23:32:19 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sboyd@kernel.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=vaibhav@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C9E4E2131BA22
- for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 23:04:17 -0700 (PDT)
-Received: from kernel.org (unknown [104.132.0.74])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9658A206C2;
- Tue, 13 Aug 2019 06:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565676121;
- bh=Ocx25N/xyUSoVrReUcdErcb1izwm3iTofQJuv3zSZN4=;
- h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
- b=ycidyXsDZ2b2yk2By5o4ZcAnHEUeEnTJRk810aiZRrmdvgpwi6IAyTsm6lLp0P5Qq
- lYNHCHb1ycTfLVST4OwEsrE6eAp4rQsG/ARqXSNx373v0QGki2WgeDepQWwi/kThha
- fXnzhNABL8hllvXEfm+NiLtzcRWsb6JmvTXlWWfY=
+ by ml01.01.org (Postfix) with ESMTPS id 9B4652131BA52
+ for <linux-nvdimm@lists.01.org>; Mon, 12 Aug 2019 23:32:17 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7D6R5dk126909
+ for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 02:30:00 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ubqms0sw5-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Tue, 13 Aug 2019 02:30:00 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <vaibhav@linux.ibm.com>;
+ Tue, 13 Aug 2019 07:29:59 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 13 Aug 2019 07:29:57 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7D6Tt1i51052698
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 13 Aug 2019 06:29:55 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8AB4B4C044;
+ Tue, 13 Aug 2019 06:29:55 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 371044C04A;
+ Tue, 13 Aug 2019 06:29:53 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.109.195.201])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 13 Aug 2019 06:29:52 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation);
+ Tue, 13 Aug 2019 11:59:52 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Jeff Moyer <jmoyer@redhat.com>
+Subject: Re: [PATCH v3] ndctl,
+ check: Ensure mmap of BTT sections work with 64K page-sizes
+In-Reply-To: <x497e7igipm.fsf@segfault.boston.devel.redhat.com>
+References: <20190806105012.15170-1-vaibhav@linux.ibm.com>
+ <x497e7igipm.fsf@segfault.boston.devel.redhat.com>
+Date: Tue, 13 Aug 2019 11:59:52 +0530
 MIME-Version: 1.0
-In-Reply-To: <20190812182421.141150-14-brendanhiggins@google.com>
-References: <20190812182421.141150-1-brendanhiggins@google.com>
- <20190812182421.141150-14-brendanhiggins@google.com>
-Subject: Re: [PATCH v12 13/18] kunit: tool: add Python wrappers for running
- KUnit tests
-From: Stephen Boyd <sboyd@kernel.org>
-To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
- gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
- kieran.bingham@ideasonboard.com, mcgrof@kernel.org, peterz@infradead.org,
- robh@kernel.org, shuah@kernel.org, tytso@mit.edu,
- yamada.masahiro@socionext.com
-User-Agent: alot/0.8.1
-Date: Mon, 12 Aug 2019 23:02:00 -0700
-Message-Id: <20190813060201.9658A206C2@mail.kernel.org>
+X-TM-AS-GCONF: 00
+x-cbid: 19081306-0008-0000-0000-000003086A0E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081306-0009-0000-0000-00004A267B3B
+Message-Id: <87h86lzifz.fsf@vajain21.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-13_02:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=11 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908130069
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,56 +86,242 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- Felix Guo <felixguoxiuping@gmail.com>, wfg@linux.intel.com, joel@jms.id.au,
- rientjes@google.com, jdike@addtoit.com, dan.carpenter@oracle.com,
- devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
- linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
- kunit-dev@googlegroups.com, richard@nod.at, rdunlap@infradead.org,
- linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
- linux-fsdevel@vger.kernel.org
+Cc: Harish Sriram <harish@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Quoting Brendan Higgins (2019-08-12 11:24:16)
-> From: Felix Guo <felixguoxiuping@gmail.com>
-> 
-> The ultimate goal is to create minimal isolated test binaries; in the
-> meantime we are using UML to provide the infrastructure to run tests, so
-> define an abstract way to configure and run tests that allow us to
-> change the context in which tests are built without affecting the user.
-> This also makes pretty and dynamic error reporting, and a lot of other
-> nice features easier.
-> 
-> kunit_config.py:
->   - parse .config and Kconfig files.
-> 
-> kunit_kernel.py: provides helper functions to:
->   - configure the kernel using kunitconfig.
->   - build the kernel with the appropriate configuration.
->   - provide function to invoke the kernel and stream the output back.
-> 
-> kunit_parser.py: parses raw logs returned out by kunit_kernel and
-> displays them in a user friendly way.
-> 
-> test_data/*: samples of test data for testing kunit.py, kunit_config.py,
-> etc.
-> 
-> Signed-off-by: Felix Guo <felixguoxiuping@gmail.com>
-> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> ---
+Thanks for reviewing this patch Jeff.
 
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Jeff Moyer <jmoyer@redhat.com> writes:
 
-I look forward to the single binary solution, but until then, we have
-this.
+> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+>
+>> On PPC64 which uses a 64K page-size, ndtl-check command fails on a BTT
+>> namespace with following error:
+>>
+>> $ sudo ndctl check-namespace namespace0.0 -vv
+>>   namespace0.0: namespace_check: checking namespace0.0
+>>   namespace0.0: btt_discover_arenas: found 1 BTT arena
+>>   namespace0.0: btt_create_mappings: mmap arena[0].info [sz = 0x1000, off = 0x1000] failed: Invalid argument
+>>   error checking namespaces: Invalid argument
+>>   checked 0 namespaces
+>>
+>> An error happens when btt_create_mappings() tries to mmap the sections
+>> of the BTT device which are usually 4K offset aligned. However the
+>> mmap() syscall expects the 'offset' argument to be in multiples of
+>> page-size, hence it returns EINVAL causing the btt_create_mappings()
+>> to error out.
+>>
+>> As a fix for the issue this patch proposes addition of two new
+>> functions to 'check.c' namely btt_mmap/btt_unmap that can be used to
+>> map/unmap parts of BTT device to ndctl process address-space. The
+>> functions tweaks the requested 'offset' argument to mmap() ensuring
+>> that its page-size aligned and then fix-ups the returned pointer such
+>> that it points to the requested offset within mmapped region.
+>>
+>> With these newly introduced functions the patch updates the call-sites
+>> in 'check.c' to use these functions instead of mmap/unmap syscalls.
+>> Also since btt_mmap returns NULL if mmap operation fails, the
+>> error check call-sites can be made against NULL instead of MAP_FAILED.
+>>
+>> Reported-by: Harish Sriram <harish@linux.ibm.com>
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> ---
+>> Changelog:
+>> v3:
+>> * Fixed a log string that was splitted across multiple lines [Vishal]
+>>
+>> v2:
+>> * Updated patch description to include canonical email address of bug
+>>   reporter. [Vishal]
+>> * Improved the comment describing function btt_mmap() in 'check.c'
+>>   [Vishal]
+>> * Simplified the argument list for btt_mmap() to just accept bttc,
+>>   length and offset. Other arguments for mmap() are derived from these
+>>   args. [Vishal]
+>> * Renamed 'shift' variable in btt_mmap()/unmap() to 'page_offset'
+>>   [Vishal]
+>> * Improved the dbg() messages logged inside
+>>   btt_mmap()/unmap(). [Vishal]
+>> * Return NULL from btt_mmap() in case of an error. [Vishal]
+>> * Changed the all sites to btt_mmap() to perform error check against
+>>   NULL return value instead of MAP_FAILED. [Vishal]
+>> ---
+>>  ndctl/check.c | 93 +++++++++++++++++++++++++++++++++++++--------------
+>>  1 file changed, 67 insertions(+), 26 deletions(-)
+>>
+>> diff --git a/ndctl/check.c b/ndctl/check.c
+>> index 8a7125053865..5969012eba84 100644
+>> --- a/ndctl/check.c
+>> +++ b/ndctl/check.c
+>> @@ -907,59 +907,100 @@ static int btt_discover_arenas(struct btt_chk *bttc)
+>>  	return ret;
+>>  }
+>>  
+>> -static int btt_create_mappings(struct btt_chk *bttc)
+>> +/*
+>> + * Wrap call to mmap(2) to work with btt device offsets that are not aligned
+>> + * to system page boundary. It works by rounding down the requested offset
+>> + * to sys_page_size when calling mmap(2) and then returning a fixed-up pointer
+>> + * to the correct offset in the mmaped region.
+>> + */
+>> +static void *btt_mmap(struct btt_chk *bttc, size_t length, off_t offset)
+>>  {
+>> -	struct arena_info *a;
+>> -	int mmap_flags;
+>> -	int i;
+>> +	off_t page_offset;
+>> +	int prot_flags;
+>> +	uint8_t *addr;
+>>  
+>>  	if (!bttc->opts->repair)
+>> -		mmap_flags = PROT_READ;
+>> +		prot_flags = PROT_READ;
+>>  	else
+>> -		mmap_flags = PROT_READ|PROT_WRITE;
+>> +		prot_flags = PROT_READ|PROT_WRITE;
+>> +
+>> +	/* Calculate the page_offset from the system page boundary */
+>> +	page_offset = offset - rounddown(offset, bttc->sys_page_size);
+>> +
+>> +	/* Update the offset and length with the page_offset calculated above */
+>> +	offset -= page_offset;
+>> +	length += page_offset;
+>
+> Don't you have to ensure that the length is also a multiple of the
+> system page size?
+>
+> -Jeff
+
+No, as the BTT info header is 4K in size which isnt in multiple of page
+size on PPC64 where PAGE_SIZE == 64K.
+
+Also I see 'do_mmap()' in kernel always rounding up the 'length' to
+PAGE_SIZE. So any unaligned value for 'length' arg will be handled by the
+kernel.
+
+Finally mmap(2) doesn't put any constraint on the 'length' argument to
+mmap except it should > 0. The 'offset' arg on other hand has a
+constraint which needs to be in multiple of PAGE_SIZE.
+
+>
+>> +
+>> +	addr = mmap(NULL, length, prot_flags, MAP_SHARED, bttc->fd, offset);
+>> +
+>> +	/* If needed fixup the return pointer to correct offset requested */
+>> +	if (addr != MAP_FAILED)
+>> +		addr += page_offset;
+>> +
+>> +	dbg(bttc, "addr = %p, length = %#lx, offset = %#lx, page_offset = %#lx\n",
+>> +	    (void *) addr, length, offset, page_offset);
+>> +
+>> +	return addr == MAP_FAILED ? NULL : addr;
+>> +}
+>> +
+>> +static void btt_unmap(struct btt_chk *bttc, void *ptr, size_t length)
+>> +{
+>> +	off_t page_offset;
+>> +	uintptr_t addr = (uintptr_t) ptr;
+>> +
+>> +	/* Calculate the page_offset from system page boundary */
+>> +	page_offset = addr - rounddown(addr, bttc->sys_page_size);
+>> +
+>> +	addr -= page_offset;
+>> +	length += page_offset;
+>> +
+>> +	munmap((void *) addr, length);
+>> +	dbg(bttc, "addr = %p, length = %#lx, page_offset = %#lx\n",
+>> +	    (void *) addr, length, page_offset);
+>> +}
+>> +
+>> +static int btt_create_mappings(struct btt_chk *bttc)
+>> +{
+>> +	struct arena_info *a;
+>> +	int i;
+>>  
+>>  	for (i = 0; i < bttc->num_arenas; i++) {
+>>  		a = &bttc->arena[i];
+>>  		a->map.info_len = BTT_INFO_SIZE;
+>> -		a->map.info = mmap(NULL, a->map.info_len, mmap_flags,
+>> -			MAP_SHARED, bttc->fd, a->infooff);
+>> -		if (a->map.info == MAP_FAILED) {
+>> +		a->map.info = btt_mmap(bttc, a->map.info_len, a->infooff);
+>> +		if (!a->map.info) {
+>>  			err(bttc, "mmap arena[%d].info [sz = %#lx, off = %#lx] failed: %s\n",
+>>  				i, a->map.info_len, a->infooff, strerror(errno));
+>>  			return -errno;
+>>  		}
+>>  
+>>  		a->map.data_len = a->mapoff - a->dataoff;
+>> -		a->map.data = mmap(NULL, a->map.data_len, mmap_flags,
+>> -			MAP_SHARED, bttc->fd, a->dataoff);
+>> -		if (a->map.data == MAP_FAILED) {
+>> +		a->map.data = btt_mmap(bttc, a->map.data_len, a->dataoff);
+>> +		if (!a->map.data) {
+>>  			err(bttc, "mmap arena[%d].data [sz = %#lx, off = %#lx] failed: %s\n",
+>>  				i, a->map.data_len, a->dataoff, strerror(errno));
+>>  			return -errno;
+>>  		}
+>>  
+>>  		a->map.map_len = a->logoff - a->mapoff;
+>> -		a->map.map = mmap(NULL, a->map.map_len, mmap_flags,
+>> -			MAP_SHARED, bttc->fd, a->mapoff);
+>> -		if (a->map.map == MAP_FAILED) {
+>> +		a->map.map = btt_mmap(bttc, a->map.map_len, a->mapoff);
+>> +		if (!a->map.map) {
+>>  			err(bttc, "mmap arena[%d].map [sz = %#lx, off = %#lx] failed: %s\n",
+>>  				i, a->map.map_len, a->mapoff, strerror(errno));
+>>  			return -errno;
+>>  		}
+>>  
+>>  		a->map.log_len = a->info2off - a->logoff;
+>> -		a->map.log = mmap(NULL, a->map.log_len, mmap_flags,
+>> -			MAP_SHARED, bttc->fd, a->logoff);
+>> -		if (a->map.log == MAP_FAILED) {
+>> +		a->map.log = btt_mmap(bttc, a->map.log_len, a->logoff);
+>> +		if (!a->map.log) {
+>>  			err(bttc, "mmap arena[%d].log [sz = %#lx, off = %#lx] failed: %s\n",
+>>  				i, a->map.log_len, a->logoff, strerror(errno));
+>>  			return -errno;
+>>  		}
+>>  
+>>  		a->map.info2_len = BTT_INFO_SIZE;
+>> -		a->map.info2 = mmap(NULL, a->map.info2_len, mmap_flags,
+>> -			MAP_SHARED, bttc->fd, a->info2off);
+>> -		if (a->map.info2 == MAP_FAILED) {
+>> +		a->map.info2 = btt_mmap(bttc, a->map.info2_len, a->info2off);
+>> +		if (!a->map.info2) {
+>>  			err(bttc, "mmap arena[%d].info2 [sz = %#lx, off = %#lx] failed: %s\n",
+>>  				i, a->map.info2_len, a->info2off, strerror(errno));
+>>  			return -errno;
+>> @@ -977,15 +1018,15 @@ static void btt_remove_mappings(struct btt_chk *bttc)
+>>  	for (i = 0; i < bttc->num_arenas; i++) {
+>>  		a = &bttc->arena[i];
+>>  		if (a->map.info)
+>> -			munmap(a->map.info, a->map.info_len);
+>> +			btt_unmap(bttc, a->map.info, a->map.info_len);
+>>  		if (a->map.data)
+>> -			munmap(a->map.data, a->map.data_len);
+>> +			btt_unmap(bttc, a->map.data, a->map.data_len);
+>>  		if (a->map.map)
+>> -			munmap(a->map.map, a->map.map_len);
+>> +			btt_unmap(bttc, a->map.map, a->map.map_len);
+>>  		if (a->map.log)
+>> -			munmap(a->map.log, a->map.log_len);
+>> +			btt_unmap(bttc, a->map.log, a->map.log_len);
+>>  		if (a->map.info2)
+>> -			munmap(a->map.info2, a->map.info2_len);
+>> +			btt_unmap(bttc, a->map.info2, a->map.info2_len);
+>>  	}
+>>  }
+>
+
+-- 
+Vaibhav Jain <vaibhav@linux.ibm.com>
+Linux Technology Center, IBM India Pvt. Ltd.
 
 _______________________________________________
 Linux-nvdimm mailing list
