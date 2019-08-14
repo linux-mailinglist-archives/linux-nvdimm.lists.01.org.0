@@ -2,46 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1391E8CD9E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 10:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BF48CEDE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 10:58:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0F3712031121B;
-	Wed, 14 Aug 2019 01:09:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9347820311214;
+	Wed, 14 Aug 2019 02:00:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
- helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
- [211.29.132.249])
- by ml01.01.org (Postfix) with ESMTP id 5D39320311205
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 01:09:02 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
- [49.195.190.67])
- by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 044DB2AD83C;
- Wed, 14 Aug 2019 18:06:53 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hxoHz-0000t6-39; Wed, 14 Aug 2019 18:05:47 +1000
-Date: Wed, 14 Aug 2019 18:05:47 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RFC PATCH v2 01/19] fs/locks: Export F_LAYOUT lease to user space
-Message-ID: <20190814080547.GJ6129@dread.disaster.area>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-2-ira.weiny@intel.com>
- <20190809235231.GC7777@dread.disaster.area>
- <20190812173626.GB19746@iweiny-DESK2.sc.intel.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bharata@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id D414D20311205
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 02:00:44 -0700 (PDT)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7E8v7MF060461
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 04:58:36 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2uccdaeu5w-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 04:58:36 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <bharata@linux.ibm.com>;
+ Wed, 14 Aug 2019 09:58:34 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 14 Aug 2019 09:58:31 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7E8wBnK29950288
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 14 Aug 2019 08:58:11 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5A1EE4C044;
+ Wed, 14 Aug 2019 08:58:30 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 07FE44C040;
+ Wed, 14 Aug 2019 08:58:29 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.124.35.250])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 14 Aug 2019 08:58:28 +0000 (GMT)
+Date: Wed, 14 Aug 2019 14:28:26 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 5/5] memremap: provide a not device managed memremap_pages
+References: <20190811081247.22111-1-hch@lst.de>
+ <20190811081247.22111-6-hch@lst.de>
+ <20190812145058.GA16950@in.ibm.com> <20190812150012.GA12700@lst.de>
+ <20190813045611.GB16950@in.ibm.com> <20190814061150.GA24835@lst.de>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190812173626.GB19746@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
- a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=QyXUC8HyAAAA:8 a=7-415B0cAAAA:8 a=368o0BqEERmTqRvZ4WsA:9
- a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+In-Reply-To: <20190814061150.GA24835@lst.de>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-TM-AS-GCONF: 00
+x-cbid: 19081408-0016-0000-0000-0000029EA913
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081408-0017-0000-0000-000032FEC1E3
+Message-Id: <20190814085826.GB8784@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-14_03:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=341 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908140090
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,77 +87,37 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Reply-To: bharata@linux.ibm.com
+Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Jason Gunthorpe <jgg@mellanox.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 12, 2019 at 10:36:26AM -0700, Ira Weiny wrote:
-> On Sat, Aug 10, 2019 at 09:52:31AM +1000, Dave Chinner wrote:
-> > On Fri, Aug 09, 2019 at 03:58:15PM -0700, ira.weiny@intel.com wrote:
-> > > +	/*
-> > > +	 * NOTE on F_LAYOUT lease
-> > > +	 *
-> > > +	 * LAYOUT lease types are taken on files which the user knows that
-> > > +	 * they will be pinning in memory for some indeterminate amount of
-> > > +	 * time.
-> > 
-> > Indeed, layout leases have nothing to do with pinning of memory.
+On Wed, Aug 14, 2019 at 08:11:50AM +0200, Christoph Hellwig wrote:
+> On Tue, Aug 13, 2019 at 10:26:11AM +0530, Bharata B Rao wrote:
+> > Yes, this patchset works non-modular and with kvm-hv as module, it
+> > works with devm_memremap_pages_release() and release_mem_region() in the
+> > cleanup path. The cleanup path will be required in the non-modular
+> > case too for proper recovery from failures.
 > 
-> Yep, Fair enough.  I'll rework the comment.
+> Can you check if the version here:
 > 
-> > That's something an application taht uses layout leases might do,
-> > but it largely irrelevant to the functionality layout leases
-> > provide. What needs to be done here is explain what the layout lease
-> > API actually guarantees w.r.t. the physical file layout, not what
-> > some application is going to do with a lease. e.g.
-> > 
-> > 	The layout lease F_RDLCK guarantees that the holder will be
-> > 	notified that the physical file layout is about to be
-> > 	changed, and that it needs to release any resources it has
-> > 	over the range of this lease, drop the lease and then
-> > 	request it again to wait for the kernel to finish whatever
-> > 	it is doing on that range.
-> > 
-> > 	The layout lease F_RDLCK also allows the holder to modify
-> > 	the physical layout of the file. If an operation from the
-> > 	lease holder occurs that would modify the layout, that lease
-> > 	holder does not get notification that a change will occur,
-> > 	but it will block until all other F_RDLCK leases have been
-> > 	released by their holders before going ahead.
-> > 
-> > 	If there is a F_WRLCK lease held on the file, then a F_RDLCK
-> > 	holder will fail any operation that may modify the physical
-> > 	layout of the file. F_WRLCK provides exclusive physical
-> > 	modification access to the holder, guaranteeing nothing else
-> > 	will change the layout of the file while it holds the lease.
-> > 
-> > 	The F_WRLCK holder can change the physical layout of the
-> > 	file if it so desires, this will block while F_RDLCK holders
-> > 	are notified and release their leases before the
-> > 	modification will take place.
-> > 
-> > We need to define the semantics we expose to userspace first.....
+>     git://git.infradead.org/users/hch/misc.git pgmap-remove-dev
 > 
-> Agreed.  I believe I have implemented the semantics you describe above.  Do I
-> have your permission to use your verbiage as part of reworking the comment and
-> commit message?
+> Gitweb:
+> 
+>     http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/pgmap-remove-dev
+> 
+> works for you fully before I resend?
 
-Of course. :)
+Yes, this works for us. This and migrate-vma-cleanup series helps to
+really simplify the kvmppc secure pages management code. Thanks.
 
-Cheers,
+Regards,
+Bharata.
 
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
