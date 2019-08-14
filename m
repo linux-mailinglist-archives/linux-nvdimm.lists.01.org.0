@@ -2,48 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549398CC88
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 09:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF268CD90
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 10:05:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B38E8202EA944;
-	Wed, 14 Aug 2019 00:21:08 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D763C20311219;
+	Wed, 14 Aug 2019 01:07:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sboyd@kernel.org;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
+ helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9F8EA202EA416
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 00:21:07 -0700 (PDT)
-Received: from kernel.org (unknown [104.132.0.74])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id EB2312084F;
- Wed, 14 Aug 2019 07:18:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1565767140;
- bh=CgAKQPDJ39jdFLM0nBvPd2yB9ynIfZDmD15ru0dJ7Os=;
- h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
- b=xaHZ0IYch7m/jbb9TEOjTqeFLiP9rjxW2XvyKLTklDuQ9VCWvHmVQLVD1vQiu2rnn
- cOw3uwlSbmBaV+/CauuBCa6G8Ycn0SjO7DHdkifs3BC5XJgnHS80jI2+9Un3NHt0B8
- RdlAMWFb7XoCTlu2ZRn/MyMMRRqi3LC5q4DnDaVA=
+Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
+ [211.29.132.249])
+ by ml01.01.org (Postfix) with ESMTP id CB74B202EDB8A
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 01:07:29 -0700 (PDT)
+Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
+ [49.195.190.67])
+ by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 2A6E62ADD91;
+ Wed, 14 Aug 2019 18:05:15 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1hxoGO-0000sh-7T; Wed, 14 Aug 2019 18:04:08 +1000
+Date: Wed, 14 Aug 2019 18:04:08 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RFC PATCH v2 07/19] fs/xfs: Teach xfs to use new
+ dax_layout_busy_page()
+Message-ID: <20190814080408.GI6129@dread.disaster.area>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-8-ira.weiny@intel.com>
+ <20190809233037.GB7777@dread.disaster.area>
+ <20190812180551.GC19746@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20190814055108.214253-15-brendanhiggins@google.com>
-References: <20190814055108.214253-1-brendanhiggins@google.com>
- <20190814055108.214253-15-brendanhiggins@google.com>
-Subject: Re: [PATCH v13 14/18] kunit: defconfig: add defconfigs for building
- KUnit tests
-From: Stephen Boyd <sboyd@kernel.org>
-To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
- gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
- kieran.bingham@ideasonboard.com, mcgrof@kernel.org, peterz@infradead.org,
- robh@kernel.org, shuah@kernel.org, tytso@mit.edu,
- yamada.masahiro@socionext.com
-User-Agent: alot/0.8.1
-Date: Wed, 14 Aug 2019 00:18:59 -0700
-Message-Id: <20190814071859.EB2312084F@mail.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20190812180551.GC19746@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=P6RKvmIu c=1 sm=1 tr=0
+ a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
+ a=QyXUC8HyAAAA:8 a=7-415B0cAAAA:8 a=HrHlqKvGs1hBEanXDooA:9
+ a=7KaysmK63p_gRbVv:21 a=sBCleACJziiZA8k5:21 a=CjuIK1q_8ugA:10
+ a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,33 +55,203 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
- dan.carpenter@oracle.com, devicetree@vger.kernel.org,
- linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
- rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
- richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
- daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Quoting Brendan Higgins (2019-08-13 22:51:04)
-> Add defconfig for UML and a fragment that can be used to configure other
-> architectures for building KUnit tests. Add option to kunit_tool to use
-> a defconfig to create the kunitconfig.
+On Mon, Aug 12, 2019 at 11:05:51AM -0700, Ira Weiny wrote:
+> On Sat, Aug 10, 2019 at 09:30:37AM +1000, Dave Chinner wrote:
+> > On Fri, Aug 09, 2019 at 03:58:21PM -0700, ira.weiny@intel.com wrote:
+> > > From: Ira Weiny <ira.weiny@intel.com>
+> > > 
+> > > dax_layout_busy_page() can now operate on a sub-range of the
+> > > address_space provided.
+> > > 
+> > > Have xfs specify the sub range to dax_layout_busy_page()
+> > 
+> > Hmmm. I've got patches that change all these XFS interfaces to
+> > support range locks. I'm not sure the way the ranges are passed here
+> > is the best way to do it, and I suspect they aren't correct in some
+> > cases, either....
+> > 
+> > > diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
+> > > index ff3c1fae5357..f0de5486f6c1 100644
+> > > --- a/fs/xfs/xfs_iops.c
+> > > +++ b/fs/xfs/xfs_iops.c
+> > > @@ -1042,10 +1042,16 @@ xfs_vn_setattr(
+> > >  		xfs_ilock(ip, XFS_MMAPLOCK_EXCL);
+> > >  		iolock = XFS_IOLOCK_EXCL | XFS_MMAPLOCK_EXCL;
+> > >  
+> > > -		error = xfs_break_layouts(inode, &iolock, BREAK_UNMAP);
+> > > -		if (error) {
+> > > -			xfs_iunlock(ip, XFS_MMAPLOCK_EXCL);
+> > > -			return error;
+> > > +		if (iattr->ia_size < inode->i_size) {
+> > > +			loff_t                  off = iattr->ia_size;
+> > > +			loff_t                  len = inode->i_size - iattr->ia_size;
+> > > +
+> > > +			error = xfs_break_layouts(inode, &iolock, off, len,
+> > > +						  BREAK_UNMAP);
+> > > +			if (error) {
+> > > +				xfs_iunlock(ip, XFS_MMAPLOCK_EXCL);
+> > > +				return error;
+> > > +			}
+> > 
+> > This isn't right - truncate up still needs to break the layout on
+> > the last filesystem block of the file,
 > 
-> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> ---
+> I'm not following this?  From a user perspective they can't have done anything
+> with the data beyond the EOF.  So isn't it safe to allow EOF to grow without
+> changing the layout of that last block?
 
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
 
+You're looking at this from the perspective of what RDMA page
+pinning, not what the guarantees a filesystem has to provide layout
+holders.
+
+For example, truncate up has to zero the portion of the block beyond
+EOF and that requires a data write. What happens if that block is a
+shared extent and hence we have do a copy on write and alter the
+file layout?
+
+Or perhaps that tail block still has dirty data over it that is
+marked for delayed allocation? Truncate up will have to write that
+data to zero the delayed allocation extent that spans EOF, and hence
+the truncate modifies the layout because it triggers allocation.
+
+i.e. just because an operation does not change user data, it does
+not mean that it will not change the file layout. There is a chance
+that truncate up will modify the layout and so we need to break the
+layout leases that span the range from the old size to the new
+size...
+
+> > and truncate down needs to
+> > extend to "maximum file offset" because we remove all extents beyond
+> > EOF on a truncate down.
+> 
+> Ok, I was trying to allow a user to extend the file without conflicts if they
+> were to have a pin on the 'beginning' of the original file.
+
+If we want to allow file extension under a layout lease, the lease
+has to extend beyond EOF, otherwise the new section of the file is
+not covered by a lease. If leases only extend to the existing
+EOF, then once the new data is written and the file is extended,
+then the lease owner needs to take a new lease on the range they
+just wrote. SO the application ends up having to do write - lease
+-write -lease - .... so that it has leases covering the range of the
+file it is extending into.
+
+Much better it to define a lease that extends to max file offset,
+such that it always covers they range past the existing EOF and
+extending writes will automatically be covered. What this then does
+is to trigger layout break notifications on file size change, either
+by write, truncate, fallocate, without having to actually know or
+track the exactly file size in the lease....
+
+> This sounds like
+> you are saying that a layout lease must be dropped to do that?  In some ways I
+> think I understand what you are driving at and I think I see how I may have
+> been playing "fast and loose" with the strictness of the layout lease.  But
+> from a user perspective if there is a part of the file which "does not exist"
+> (beyond EOF) does it matter that the layout there may change?
+
+Yes, it does, because userspace can directly manipulate the layout
+beyond EOF via fallocate(). e.g. we can preallocation beyond EOF
+without changing the file size, such that when we then do an
+extending write no layout change actually takes place. The only
+thing that happens from a layout point of view is that the file size
+changes.
+
+This becomes /interesting/ when you start doing things like
+
+	lseek(fd, offset, SEEK_END);
+	write(fd, buf, len);
+
+which will trigger a write way beyond EOF into allocated space.
+That will also trigger block zeroing at the old tail, and there may
+be block zeroing around the write() as well. We've effectively
+change the layout of the file at EOF,  We've effectively change the
+layout of the file at EOF, and potentially beyond EOF.
+
+Indeed, the app might be expecting the preallocation beyond EOF to
+remain, so it might register a layout over that range to be notified
+if the preallocation is removed or the EOF extends beyond it. It
+needs to be notified on truncate down (which removes that
+preallocated range the lease sits over) and EOF is moved beyond it
+(layout range state has changed from inaccessable to valid file
+data)....
+
+
+> > i.e. when we use preallocation, the extent map extends beyond EOF,
+> > and layout leases need to be able to extend beyond the current EOF
+> > to allow the lease owner to do extending writes, extending truncate,
+> > preallocation beyond EOF, etc safely without having to get a new
+> > lease to cover the new region in the extended file...
+> 
+> I'm not following this.  What determines when preallocation is done?
+
+The application can direct it via fallocate(FALLOC_FL_KEEPSIZE).
+It's typically used for workloads that do appending O_DSYNC or
+direct IO writes to minimise file fragmentation.
+
+The filesystem can ialso choose to do allocation beyond EOFi
+speculatively during writes. XFS does this extensively with delayed
+allocation. And the filesystem can also remove this speculative
+allocation beyond EOF, which it may do if there are no active pages
+dirties on the inode for a period, it is reclaimed, the filesystem
+is running low on space, the user/group is running low on quota
+space, etc.
+
+Again, just because user data does not change, it does not mean that
+the file layout will not change....
+
+> Forgive my ignorance on file systems but how can we have a layout for every
+> file which is "maximum file offset" for every file even if a file is only 1
+> page long?
+
+The layout lease doesn't care what the file size it. It doesn't even
+know what the file size is. The layout lease covers a range the
+logical file offset with the intend that any change to the file
+layout within that range will result in a notification. The layout
+lease is not bound to the range of valid data in the file at all -
+it doesn't matter if it points beyond EOF - if the file grows to
+the size the it overlaps the layout lease, then that layout lease
+needs to be notified by break_layouts....
+
+I've had a stinking headache all day, so I'm struggling to make
+sense right now. The best I can describe is that layout lease ranges
+do not imply or require valid file data to exist within the range
+they are taken over - they just cover a file offset range.
+
+FWIW, the fcntl() locking interface uses a length of 0 to
+indicate "to max file offset" rather than a specific length. e.g.
+SETLK and friends:
+
+	Specifying 0 for l_len has the special meaning: lock all
+	bytes starting at the location specified by l_whence and
+	l_start through to the end of file, no  matter
+	how large the file grows.
+
+That's exactly the semantics I'm talking about here - layout leases
+need to be able to specify an extent anywhere within the valid file
+offset range, and also to specify a nebulous "through to the end of
+the layout range" so taht file growth can be done without needing
+new leases to be taken as the file grows....
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
