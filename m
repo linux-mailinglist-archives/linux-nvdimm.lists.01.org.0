@@ -1,38 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD348D083
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 12:17:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83748D201
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 13:21:39 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0538820311217;
-	Wed, 14 Aug 2019 03:19:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 85E6E2031121C;
+	Wed, 14 Aug 2019 04:23:44 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jlayton@kernel.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9D74720311212
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 03:19:23 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 6A4C8AC8C;
- Wed, 14 Aug 2019 10:17:15 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
- id B08BB1E4200; Wed, 14 Aug 2019 12:17:14 +0200 (CEST)
-Date: Wed, 14 Aug 2019 12:17:14 +0200
-From: Jan Kara <jack@suse.cz>
-To: ira.weiny@intel.com
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190814101714.GA26273@quack2.suse.cz>
+ by ml01.01.org (Postfix) with ESMTPS id F3452203042FC
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 04:23:43 -0700 (PDT)
+Received: from tleilax.poochiereds.net
+ (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id EBA7C2083B;
+ Wed, 14 Aug 2019 11:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1565781697;
+ bh=lKWyQhJZrTeR2mP8gMp1Sv43C4kaU0ItcD8UjHsGR64=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=GoyIEeuy2aBMsczZxEjc418vIh6+C2Y2j1zEoa7vlM8xwuZ9K4Lx8mUTo+P3ENh3z
+ i4MieExVH35FpkJHKYrGnkalqrRJH19Pu0e79zbx70z//5lRJAjmuuStGEMPll9gj8
+ tcxu2X2I5qV6B/uj35CVsKOn4wUIaS2xvX5qVcac=
+Message-ID: <1ba29bfa22f82e6d880ab31c3835047f3353f05a.camel@kernel.org>
+Subject: Re: [RFC PATCH v2 01/19] fs/locks: Export F_LAYOUT lease to user space
+From: Jeff Layton <jlayton@kernel.org>
+To: Dave Chinner <david@fromorbit.com>, Ira Weiny <ira.weiny@intel.com>
+Date: Wed, 14 Aug 2019 07:21:34 -0400
+In-Reply-To: <20190814080547.GJ6129@dread.disaster.area>
 References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-2-ira.weiny@intel.com>
+ <20190809235231.GC7777@dread.disaster.area>
+ <20190812173626.GB19746@iweiny-DESK2.sc.intel.com>
+ <20190814080547.GJ6129@dread.disaster.area>
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190809225833.6657-1-ira.weiny@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,9 +56,9 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
  linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
  linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
@@ -56,84 +66,82 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hello!
+On Wed, 2019-08-14 at 18:05 +1000, Dave Chinner wrote:
+> On Mon, Aug 12, 2019 at 10:36:26AM -0700, Ira Weiny wrote:
+> > On Sat, Aug 10, 2019 at 09:52:31AM +1000, Dave Chinner wrote:
+> > > On Fri, Aug 09, 2019 at 03:58:15PM -0700, ira.weiny@intel.com wrote:
+> > > > +	/*
+> > > > +	 * NOTE on F_LAYOUT lease
+> > > > +	 *
+> > > > +	 * LAYOUT lease types are taken on files which the user knows that
+> > > > +	 * they will be pinning in memory for some indeterminate amount of
+> > > > +	 * time.
+> > > 
+> > > Indeed, layout leases have nothing to do with pinning of memory.
+> > 
+> > Yep, Fair enough.  I'll rework the comment.
+> > 
+> > > That's something an application taht uses layout leases might do,
+> > > but it largely irrelevant to the functionality layout leases
+> > > provide. What needs to be done here is explain what the layout lease
+> > > API actually guarantees w.r.t. the physical file layout, not what
+> > > some application is going to do with a lease. e.g.
+> > > 
+> > > 	The layout lease F_RDLCK guarantees that the holder will be
+> > > 	notified that the physical file layout is about to be
+> > > 	changed, and that it needs to release any resources it has
+> > > 	over the range of this lease, drop the lease and then
+> > > 	request it again to wait for the kernel to finish whatever
+> > > 	it is doing on that range.
+> > > 
+> > > 	The layout lease F_RDLCK also allows the holder to modify
+> > > 	the physical layout of the file. If an operation from the
+> > > 	lease holder occurs that would modify the layout, that lease
+> > > 	holder does not get notification that a change will occur,
+> > > 	but it will block until all other F_RDLCK leases have been
+> > > 	released by their holders before going ahead.
+> > > 
+> > > 	If there is a F_WRLCK lease held on the file, then a F_RDLCK
+> > > 	holder will fail any operation that may modify the physical
+> > > 	layout of the file. F_WRLCK provides exclusive physical
+> > > 	modification access to the holder, guaranteeing nothing else
+> > > 	will change the layout of the file while it holds the lease.
+> > > 
+> > > 	The F_WRLCK holder can change the physical layout of the
+> > > 	file if it so desires, this will block while F_RDLCK holders
+> > > 	are notified and release their leases before the
+> > > 	modification will take place.
+> > > 
+> > > We need to define the semantics we expose to userspace first.....
 
-On Fri 09-08-19 15:58:14, ira.weiny@intel.com wrote:
-> Pre-requisites
-> ==============
-> 	Based on mmotm tree.
-> 
-> Based on the feedback from LSFmm, the LWN article, the RFC series since
-> then, and a ton of scenarios I've worked in my mind and/or tested...[1]
-> 
-> Solution summary
-> ================
-> 
-> The real issue is that there is no use case for a user to have RDMA pinn'ed
-> memory which is then truncated.  So really any solution we present which:
-> 
-> A) Prevents file system corruption or data leaks
-> ...and...
-> B) Informs the user that they did something wrong
-> 
-> Should be an acceptable solution.
-> 
-> Because this is slightly new behavior.  And because this is going to be
-> specific to DAX (because of the lack of a page cache) we have made the user
-> "opt in" to this behavior.
-> 
-> The following patches implement the following solution.
-> 
-> 0) Registrations to Device DAX char devs are not affected
-> 
-> 1) The user has to opt in to allowing page pins on a file with an exclusive
->    layout lease.  Both exclusive and layout lease flags are user visible now.
-> 
-> 2) page pins will fail if the lease is not active when the file back page is
->    encountered.
-> 
-> 3) Any truncate or hole punch operation on a pinned DAX page will fail.
+Absolutely.
 
-So I didn't fully grok the patch set yet but by "pinned DAX page" do you
-mean a page which has corresponding file_pin covering it? Or do you mean a
-page which has pincount increased? If the first then I'd rephrase this to
-be less ambiguous, if the second then I think it is wrong. 
-
-> 4) The user has the option of holding the lease or releasing it.  If they
->    release it no other pin calls will work on the file.
-
-Last time we spoke the plan was that the lease is kept while the pages are
-pinned (and an attempt to release the lease would block until the pages are
-unpinned). That also makes it clear that the *lease* is what is making
-truncate and hole punch fail with ETXTBUSY and the file_pin structure is
-just an implementation detail how the existence is efficiently tracked (and
-what keeps the backing file for the pages open so that the lease does not
-get auto-destroyed). Why did you change this?
-
-> 5) Closing the file is ok.
+> > 
+> > Agreed.  I believe I have implemented the semantics you describe above.  Do I
+> > have your permission to use your verbiage as part of reworking the comment and
+> > commit message?
 > 
-> 6) Unmapping the file is ok
+> Of course. :)
 > 
-> 7) Pins against the files are tracked back to an owning file or an owning mm
->    depending on the internal subsystem needs.  With RDMA there is an owning
->    file which is related to the pined file.
+> Cheers,
 > 
-> 8) Only RDMA is currently supported
 
-If you currently only need "owning file" variant in your patch set, then
-I'd just implement that and leave "owning mm" variant for later if it
-proves to be necessary. The things are complex enough as is...
+I'll review this in more detail soon, but subsequent postings of the set
+should probably also go to linux-api mailing list. This is a significant
+API change. It might not also hurt to get the glibc folks involved here
+too since you'll probably want to add the constants to the headers there
+as well.
 
-> 9) Truncation of pages which are not actively pinned nor covered by a lease
->    will succeed.
-
-Otherwise I like the design.
-
-								Honza
+Finally, consider going ahead and drafting a patch to the fcntl(2)
+manpage if you think you have the API mostly nailed down. This API is a
+little counterintuitive (i.e. you can change the layout with an F_RDLCK
+lease), so it will need to be very clearly documented. I've also found
+that when creating a new API, documenting it tends to help highlight its
+warts and areas where the behavior is not clearly defined.
 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Jeff Layton <jlayton@kernel.org>
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
