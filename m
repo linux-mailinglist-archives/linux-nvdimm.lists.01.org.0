@@ -2,124 +2,116 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2ADEB55F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 17:51:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E094EB5CF
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 18:08:31 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B54AA100DC409;
-	Thu, 31 Oct 2019 09:52:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E76B8100DC407
-	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 09:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1572540713;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Eg9oWuOPqo1L+W4rD3h5PNuEgEsQhGB7UKbPvjWbL1s=;
-	b=MluCu6y6bVul00sat6EIE3zMZ6v1WIwQUL/zTTxQAoSjgibjPQJe0pKpC5Nr+Q/HZDKHYJ
-	Hs/ydTGUh47hbW43Hz5Mqo3VmFFIOEsBopPHB6A7ql4/MtWeupssFfhzi9L+I0ZQ8gbJ8e
-	Yvp6bzlSzFF0Wq2+aR2bpUcGLZ84D3I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-24-SFOVO5HhMI-DJYYvgzKgZA-1; Thu, 31 Oct 2019 12:51:49 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5AD8D107ACC0;
-	Thu, 31 Oct 2019 16:51:47 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 3AC541001B07;
-	Thu, 31 Oct 2019 16:51:46 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Subject: Re: [PATCH 4/4] modpost: do not set ->preloaded for symbols from Module.symvers
-References: <20191003102915.28301-1-yamada.masahiro@socionext.com>
-	<20191003102915.28301-4-yamada.masahiro@socionext.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Thu, 31 Oct 2019 12:51:45 -0400
-In-Reply-To: <20191003102915.28301-4-yamada.masahiro@socionext.com> (Masahiro
-	Yamada's message of "Thu, 3 Oct 2019 19:29:15 +0900")
-Message-ID: <x497e4kluxq.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+	by ml01.01.org (Postfix) with ESMTP id 12DA1100DC40A;
+	Thu, 31 Oct 2019 10:08:56 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=36.7.142.210; helo=mail.baizgroup.com; envelope-from=wangas@baizgroup.com; receiver=<UNKNOWN> 
+Received: from mail.baizgroup.com (unknown [36.7.142.210])
+	by ml01.01.org (Postfix) with SMTP id 754D9100DC407
+	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 10:08:51 -0700 (PDT)
+Received: from 111.76.157.17 (HELO XJUF); Wed, 14 Aug 2019 23:44:06 +0800
+Message-ID: <0B8E97F30333B18E0CCFF79AE1118212@xjuf>
+From: "txmzon" <wangas@baizgroup.com>
+To: <drmmr@optonlone.net>,
+	<sue.westbrook@nicholls.edu>,
+	<linux-nvdimm@lists.01.org>,
+	<bslater@swva.net>,
+	<goldie@cajunnet.com>,
+	<ewiggins@maxwell.com>,
+	<pmon@tjc.edu>,
+	<xujun@yingchuang.com>,
+	<wanglj@dgut.edu.cn>,
+	<adminmanager@bviports.org>,
+	<ggore7038@shtc.net>,
+	<lixu@ever-union.net>,
+	<training@csrcind.com>,
+	<pxioop@joyc.com>,
+	<hr@copton.com.cn>,
+	<gvavov@sliven.net>,
+	<vzhu@gsig.com>,
+	<zhaopin@longda.cn>,
+	<info@bulamu.net>,
+	<sales@imagga.com>,
+	<moskowitz@brefnet.org>
+Subject: =?gb2312?B?vNLNpcnjz/HNt8bGveLHv7+q0KG38sbey73D3Mn6u+6x5Myss6TDqw==?=
+	=?gb2312?B?xNDxsbrDzNjK4rGn18XFrtPRxqi5ycfXzsfN0bni0sK3/r/ay67I8w==?=
+	=?gb2312?B?u6y7pbjjw8PX08TM19O6w7Tz?=
+Date: Wed, 14 Aug 2019 23:44:01 +0800
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: SFOVO5HhMI-DJYYvgzKgZA-1
-X-Mimecast-Spam-Score: 0
-Message-ID-Hash: CV64EIWQNOUVN3T7G2EIK4MP24IRQMYZ
-X-Message-ID-Hash: CV64EIWQNOUVN3T7G2EIK4MP24IRQMYZ
-X-MailFrom: jmoyer@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kbuild@vger.kernel.org, Sam Ravnborg <sam@ravnborg.org>, Michal Marek <michal.lkml@markovi.net>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+Message-ID-Hash: ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N
+X-Message-ID-Hash: ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N
+X-MailFrom: wangas@baizgroup.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CV64EIWQNOUVN3T7G2EIK4MP24IRQMYZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============5681334748908155807=="
+
+--===============5681334748908155807==
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
+MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
+ZW50PSJNU0hUTUwgMTAuMDAuOTIwMC4xNzU1NiI+PC9IRUFEPg0KPEJPRFk+DQo8UD48QSBocmVm
+PSJodHRwOi8vc2p6eGluZXJMaWNoZW0uY29tLyI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
+T1I6IGdyYXkiIA0KY29sb3I9bGltZSBzaXplPTYgDQpmYWNlPVZlcmRhbmE+PFNUUk9ORz48RU0+
+aHR0cDovL3NqenhpbmVyTGljaGVtLmNvbS88L0VNPjwvU1RST05HPjwvRk9OVD48L0E+PC9QPg0K
+PFA+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyYXkiIHNpemU9NiANCmZhY2U9VmVy
+ZGFuYT48RU0+PC9FTT48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFA+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
+TkQtQ09MT1I6IGdyYXkiIGNvbG9yPXllbGxvdyBzaXplPTYgDQpmYWNlPVZlcmRhbmE+PEVNPrzS
+zaXJ48/xzbfGxr3ix7+/qtCht/LG3su9w9zJ+rvuseTMrLOkw6vE0PGxusPM2MrisafXxcWu09HG
+qLnJx9fOx83RueLSwrf+v9rLrsjzu6y7pbjjw8PX08TM19O6w7TzPC9FTT48L0ZPTlQ+PC9QPg0K
+PFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNv
+bG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9
+IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9Q
+Pg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiAN
+CmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5
+bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7
+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZl
+IiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQg
+c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5i
+c3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9s
+aXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZP
+TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+
+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
+IHB1cnBsZSIgDQpjb2xvcj1zaWx2ZXI+PEVNPjxTVFJPTkc+MjAxOS84LzE0Jm5ic3A7Jm5ic3A7
+IDwvU1RST05HPjwvRU0+PC9GT05UPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxGT05UIHN0eWxlPSJC
+QUNLR1JPVU5ELUNPTE9SOiBwdXJwbGUiIGNvbG9yPXNpbHZlciANCnNpemU9MT48VT48RU0+PFNU
+Uk9ORz4yMDE5LzgvMTQ8L1NUUk9ORz48L0VNPjwvVT48L0ZPTlQ+PC9QPg0KPFAgYWxpZ249cmln
+aHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IHB1cnBsZSIgY29sb3I9c2lsdmVyIA0K
+c2l6ZT0xPjxVPjxFTT48U1RST05HPjk5MzM8L1NUUk9ORz48L0VNPjwvVT48L0ZPTlQ+PC9QPg0K
+PFA+PFU+PEZPTlQgDQpzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogcHVycGxlIj48RU0+PFNUUk9O
+Rz48L1NUUk9ORz48L0VNPjwvRk9OVD48L1U+Jm5ic3A7PC9QPg0KPFA+PEZPTlQgDQpzdHlsZT0i
+QkFDS0dST1VORC1DT0xPUjogcHVycGxlIj48RU0+PFNUUk9ORz680s2lyePP8c23xsa94se/v6rQ
+obfyxt7LvcPcyfq77rHkzKyzpMOrxNDxsbrDzNjK4rGn18XFrtPRxqi5ycfXzsfN0bni0sK3/r/a
+y67I87usu6W448PD19PEzNfTusO08zwvU1RST05HPjwvRU0+PC9GT05UPjwvUD48L0JPRFk+PC9I
+VE1MPg0K
+
+
+--===============5681334748908155807==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-
-> Now that there is no overwrap between symbols from ELF files and
-> ones from Module.symvers.
->
-> So, the 'exported twice' warning should be reported irrespective
-> of where the symbol in question came from. Only the exceptional case
-> is when __crc_<sym> symbol appears before __ksymtab_<sym>. This
-> typically occurs for EXPORT_SYMBOL in .S files.
-
-Hi, Masahiro,
-
-After apply this patch, I get the following modpost warnings when doing:
-
-$ make M=tools/tesing/nvdimm
-...
-  Building modules, stage 2.
-  MODPOST 12 modules
-WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_lock' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_unlock' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'is_nvdimm_bus_locked' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'devm_nvdimm_memremap' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'nd_fletcher64' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'to_nd_desc' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-WARNING: tools/testing/nvdimm/libnvdimm: 'to_nvdimm_bus_dev' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-...
-
-There are a lot of these warnings.  :)  If I revert this patch, no
-complaints.
-
-Cheers,
-Jeff
-
-
->
-> Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-> ---
->
->  scripts/mod/modpost.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-> index 5234555cf550..6ca38d10efc5 100644
-> --- a/scripts/mod/modpost.c
-> +++ b/scripts/mod/modpost.c
-> @@ -2457,7 +2457,6 @@ static void read_dump(const char *fname, unsigned int kernel)
->  		s = sym_add_exported(symname, namespace, mod,
->  				     export_no(export));
->  		s->kernel    = kernel;
-> -		s->preloaded = 1;
->  		s->is_static = 0;
->  		sym_update_crc(symname, mod, crc, export_no(export));
->  	}
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============5681334748908155807==--
