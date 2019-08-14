@@ -2,48 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 389628D255
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 13:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFBD8D5B7
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 16:15:12 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D89B320311223;
-	Wed, 14 Aug 2019 04:41:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4DAF52031121B;
+	Wed, 14 Aug 2019 07:17:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
- helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
- [211.29.132.246])
- by ml01.01.org (Postfix) with ESMTP id 55FC720311204
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 04:41:27 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
- [49.195.190.67])
- by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 4D35443D5DD;
- Wed, 14 Aug 2019 21:39:17 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hxrbW-0002CL-QK; Wed, 14 Aug 2019 21:38:10 +1000
-Date: Wed, 14 Aug 2019 21:38:10 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Jeff Layton <jlayton@kernel.org>
-Subject: Re: [RFC PATCH v2 01/19] fs/locks: Export F_LAYOUT lease to user space
-Message-ID: <20190814113810.GJ7777@dread.disaster.area>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jlayton@kernel.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id B9411202EF285
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 07:17:14 -0700 (PDT)
+Received: from tleilax.poochiereds.net
+ (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id F11AF2133F;
+ Wed, 14 Aug 2019 14:15:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1565792109;
+ bh=kburXRh82xHoH2ULBf4qbUaBruG20vqIvfvEbFcltJY=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=YmMNPxPAWp25eQhuqgZ4ltWhMxF28BvGB5vskr14XqYVCQZZ96TVxfUdULrpt9Fg0
+ 60trd+Jkb520pjcYaqrosDqW5ftToo6hZAXtZVmiRfDVvso+e6i9CkZS/dVjFp3R2p
+ sxNd0hLUe0BkrhCT6Rwkhd2HlJfkAotXSoeuAaW0=
+Message-ID: <fde2959db776616008fc5d31df700f5d7d899433.camel@kernel.org>
+Subject: Re: [RFC PATCH v2 02/19] fs/locks: Add Exclusive flag to user
+ Layout lease
+From: Jeff Layton <jlayton@kernel.org>
+To: ira.weiny@intel.com, Andrew Morton <akpm@linux-foundation.org>
+Date: Wed, 14 Aug 2019 10:15:06 -0400
+In-Reply-To: <20190809225833.6657-3-ira.weiny@intel.com>
 References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-2-ira.weiny@intel.com>
- <20190809235231.GC7777@dread.disaster.area>
- <20190812173626.GB19746@iweiny-DESK2.sc.intel.com>
- <20190814080547.GJ6129@dread.disaster.area>
- <1ba29bfa22f82e6d880ab31c3835047f3353f05a.camel@kernel.org>
+ <20190809225833.6657-3-ira.weiny@intel.com>
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1ba29bfa22f82e6d880ab31c3835047f3353f05a.camel@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
- a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=QyXUC8HyAAAA:8 a=7-415B0cAAAA:8 a=ZoWuoDdl_XJqS1jHo3MA:9
- a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,106 +54,143 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
  linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+ linux-ext4@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 14, 2019 at 07:21:34AM -0400, Jeff Layton wrote:
-> On Wed, 2019-08-14 at 18:05 +1000, Dave Chinner wrote:
-> > On Mon, Aug 12, 2019 at 10:36:26AM -0700, Ira Weiny wrote:
-> > > On Sat, Aug 10, 2019 at 09:52:31AM +1000, Dave Chinner wrote:
-> > > > On Fri, Aug 09, 2019 at 03:58:15PM -0700, ira.weiny@intel.com wrote:
-> > > > > +	/*
-> > > > > +	 * NOTE on F_LAYOUT lease
-> > > > > +	 *
-> > > > > +	 * LAYOUT lease types are taken on files which the user knows that
-> > > > > +	 * they will be pinning in memory for some indeterminate amount of
-> > > > > +	 * time.
-> > > > 
-> > > > Indeed, layout leases have nothing to do with pinning of memory.
-> > > 
-> > > Yep, Fair enough.  I'll rework the comment.
-> > > 
-> > > > That's something an application taht uses layout leases might do,
-> > > > but it largely irrelevant to the functionality layout leases
-> > > > provide. What needs to be done here is explain what the layout lease
-> > > > API actually guarantees w.r.t. the physical file layout, not what
-> > > > some application is going to do with a lease. e.g.
-> > > > 
-> > > > 	The layout lease F_RDLCK guarantees that the holder will be
-> > > > 	notified that the physical file layout is about to be
-> > > > 	changed, and that it needs to release any resources it has
-> > > > 	over the range of this lease, drop the lease and then
-> > > > 	request it again to wait for the kernel to finish whatever
-> > > > 	it is doing on that range.
-> > > > 
-> > > > 	The layout lease F_RDLCK also allows the holder to modify
-> > > > 	the physical layout of the file. If an operation from the
-> > > > 	lease holder occurs that would modify the layout, that lease
-> > > > 	holder does not get notification that a change will occur,
-> > > > 	but it will block until all other F_RDLCK leases have been
-> > > > 	released by their holders before going ahead.
-> > > > 
-> > > > 	If there is a F_WRLCK lease held on the file, then a F_RDLCK
-> > > > 	holder will fail any operation that may modify the physical
-> > > > 	layout of the file. F_WRLCK provides exclusive physical
-> > > > 	modification access to the holder, guaranteeing nothing else
-> > > > 	will change the layout of the file while it holds the lease.
-> > > > 
-> > > > 	The F_WRLCK holder can change the physical layout of the
-> > > > 	file if it so desires, this will block while F_RDLCK holders
-> > > > 	are notified and release their leases before the
-> > > > 	modification will take place.
-> > > > 
-> > > > We need to define the semantics we expose to userspace first.....
+On Fri, 2019-08-09 at 15:58 -0700, ira.weiny@intel.com wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
 > 
-> Absolutely.
+> Add an exclusive lease flag which indicates that the layout mechanism
+> can not be broken.
 > 
-> > > 
-> > > Agreed.  I believe I have implemented the semantics you describe above.  Do I
-> > > have your permission to use your verbiage as part of reworking the comment and
-> > > commit message?
-> > 
-> > Of course. :)
-> > 
-> > Cheers,
-> > 
+> Exclusive layout leases allow the file system to know that pages may be
+> GUP pined and that attempts to change the layout, ie truncate, should be
+> failed.
 > 
-> I'll review this in more detail soon, but subsequent postings of the set
-> should probably also go to linux-api mailing list. This is a significant
-> API change. It might not also hurt to get the glibc folks involved here
-> too since you'll probably want to add the constants to the headers there
-> as well.
+> A process which attempts to break it's own exclusive lease gets an
+> EDEADLOCK return to help determine that this is likely a programming bug
+> vs someone else holding a resource.
+> 
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> ---
+>  fs/locks.c                       | 23 +++++++++++++++++++++--
+>  include/linux/fs.h               |  1 +
+>  include/uapi/asm-generic/fcntl.h |  2 ++
+>  3 files changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/locks.c b/fs/locks.c
+> index ad17c6ffca06..0c7359cdab92 100644
+> --- a/fs/locks.c
+> +++ b/fs/locks.c
+> @@ -626,6 +626,8 @@ static int lease_init(struct file *filp, long type, unsigned int flags,
+>  	fl->fl_flags = FL_LEASE;
+>  	if (flags & FL_LAYOUT)
+>  		fl->fl_flags |= FL_LAYOUT;
+> +	if (flags & FL_EXCLUSIVE)
+> +		fl->fl_flags |= FL_EXCLUSIVE;
+>  	fl->fl_start = 0;
+>  	fl->fl_end = OFFSET_MAX;
+>  	fl->fl_ops = NULL;
+> @@ -1619,6 +1621,14 @@ int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+>  	list_for_each_entry_safe(fl, tmp, &ctx->flc_lease, fl_list) {
+>  		if (!leases_conflict(fl, new_fl))
+>  			continue;
+> +		if (fl->fl_flags & FL_EXCLUSIVE) {
+> +			error = -ETXTBSY;
+> +			if (new_fl->fl_pid == fl->fl_pid) {
+> +				error = -EDEADLOCK;
+> +				goto out;
+> +			}
+> +			continue;
+> +		}
+>  		if (want_write) {
+>  			if (fl->fl_flags & FL_UNLOCK_PENDING)
+>  				continue;
+> @@ -1634,6 +1644,13 @@ int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+>  			locks_delete_lock_ctx(fl, &dispose);
+>  	}
+>  
+> +	/* We differentiate between -EDEADLOCK and -ETXTBSY so the above loop
+> +	 * continues with -ETXTBSY looking for a potential deadlock instead.
+> +	 * If deadlock is not found go ahead and return -ETXTBSY.
+> +	 */
+> +	if (error == -ETXTBSY)
+> +		goto out;
+> +
+>  	if (list_empty(&ctx->flc_lease))
+>  		goto out;
+>  
+> @@ -2044,9 +2061,11 @@ static int do_fcntl_add_lease(unsigned int fd, struct file *filp, long arg)
+>  	 * to revoke the lease in break_layout()  And this is done by using
+>  	 * F_WRLCK in the break code.
+>  	 */
+> -	if (arg == F_LAYOUT) {
+> +	if ((arg & F_LAYOUT) == F_LAYOUT) {
+> +		if ((arg & F_EXCLUSIVE) == F_EXCLUSIVE)
+> +			flags |= FL_EXCLUSIVE;
+>  		arg = F_RDLCK;
+> -		flags = FL_LAYOUT;
+> +		flags |= FL_LAYOUT;
+>  	}
+>  
+>  	fl = lease_alloc(filp, arg, flags);
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index dd60d5be9886..2e41ce547913 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -1005,6 +1005,7 @@ static inline struct file *get_file(struct file *f)
+>  #define FL_UNLOCK_PENDING	512 /* Lease is being broken */
+>  #define FL_OFDLCK	1024	/* lock is "owned" by struct file */
+>  #define FL_LAYOUT	2048	/* outstanding pNFS layout or user held pin */
+> +#define FL_EXCLUSIVE	4096	/* Layout lease is exclusive */
+>  
+>  #define FL_CLOSE_POSIX (FL_POSIX | FL_CLOSE)
+>  
+> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> index baddd54f3031..88b175ceccbc 100644
+> --- a/include/uapi/asm-generic/fcntl.h
+> +++ b/include/uapi/asm-generic/fcntl.h
+> @@ -176,6 +176,8 @@ struct f_owner_ex {
+>  
+>  #define F_LAYOUT	16      /* layout lease to allow longterm pins such as
+>  				   RDMA */
+> +#define F_EXCLUSIVE	32      /* layout lease is exclusive */
+> +				/* FIXME or shoudl this be F_EXLCK??? */
+>  
+>  /* operations for bsd flock(), also used by the kernel implementation */
+>  #define LOCK_SH		1	/* shared lock */
 
-Sure, but lets first get it to the point where we have something
-that is actually workable, much more complete and somewhat validated
-with unit tests before we start involving too many people. Wide
-review of prototype code isn't really a good use of resources given
-how much it's probably going to change from here...
+This interface just seems weird to me. The existing F_*LCK values aren't
+really set up to be flags, but are enumerated values (even if there are
+some gaps on some arches). For instance, on parisc and sparc:
 
-> Finally, consider going ahead and drafting a patch to the fcntl(2)
-> manpage if you think you have the API mostly nailed down. This API is a
-> little counterintuitive (i.e. you can change the layout with an F_RDLCK
-> lease), so it will need to be very clearly documented. I've also found
-> that when creating a new API, documenting it tends to help highlight its
-> warts and areas where the behavior is not clearly defined.
+/* for posix fcntl() and lockf() */
+#define F_RDLCK         01
+#define F_WRLCK         02
+#define F_UNLCK         03
 
-I find writing unit tests for xfstests to validate the new APIs work
-as intended finds far more problems with the API than writing the
-documentation. :)
+While your new flag values are well above these values, it's still a bit
+sketchy to do what you're proposing from a cross-platform interface
+standpoint.
 
-Cheers,
+I think this would be a lot cleaner if you weren't overloading the
+F_SETLEASE command with new flags, and instead added new
+F_SETLAYOUT/F_GETLAYOUT cmd values.
 
-Dave.
+You'd then be free to define a new set of "arg" values for use with
+layouts, and there's be a clear distinction interface-wise between
+setting a layout and a lease.
+
 -- 
-Dave Chinner
-david@fromorbit.com
+Jeff Layton <jlayton@kernel.org>
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
