@@ -1,63 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14FE8DF9D
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 23:06:40 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C807C8E037
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 23:57:45 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8FBDD202B75E0;
-	Wed, 14 Aug 2019 14:08:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id F03FB20216B77;
+	Wed, 14 Aug 2019 14:59:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6075D202B75DB
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 14:08:40 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id t24so35750oij.13
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 14:06:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5zDBwvpLyFVSkpJn8WQbGXXGIeiLWE8u296DugBnVIM=;
- b=qx+Jm3ca+9U4p9pb39tK1gJ0waXX8b+VFuCeaflTZELVIi06SA4fEE8Q8c8cDSM3/K
- lU0ElyrjHGF1vXrGFMp1kBfJ9SFlzmZxFldO2OmoUeU6t3NYYeSSDb1SmUw9nOKfoGTO
- 8IHIboBhdEPAo9QKP+HdD+gDuLvCLXUDOAqSednRksqyzZb5+BH+Keuy4z8zEw9Jdu5F
- tkct6AZ5mKheTo+kCLkgx+8FSy/USdS1seX9NeADhP12yTqK6mY7aReOJSb8N1vO/IuF
- 0X7ortNtNF2sgb6oTMuN94oUiSsrWqMx0igWRxtET58OAvd+L/A7vLwebyd1w4eDMJOb
- G+HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5zDBwvpLyFVSkpJn8WQbGXXGIeiLWE8u296DugBnVIM=;
- b=iPi4NIOkwFfmeoGefBpn6cesL2f8sIbVKS3o9v4AaZF+keSX5uOKIY6eiu3lUJxmky
- ru5BuyGL/7MLzBnAmOtZU8YmjJZY6qF0DIx8WkPl8WfvAqdC6qtnJPq4T+D1Fr4f3qxs
- 2bnFbdW2C8pbIWcRWS8bw8AV/+J8Jgjmr25qLRHCtr5yn/br70C/bF2RsnrCMjZsHBUF
- 1RSgmo06eqt0AtnybEmXvgBHjpoq2nN4pQ/oHMLFZzIkehvKhi0ZoG1YVz91NQdUsMNS
- U/qSpQKkI/hxPvLmN7rLUYN/gOc6uuCLQl+uy0HohEn7dkSQZpx/kofqv0YgZZ0xt6NR
- Is3Q==
-X-Gm-Message-State: APjAAAXYETye2LA6y5fF52P2juZQQT7ZRR6xbJR7BVLWDwLMrO71Rfna
- sTCLUfSSUQp7hN6QnmOSFZscL7R+GVyW7DhmK/pSdQ==
-X-Google-Smtp-Source: APXvYqyRjddj0M4/z6rqv1Q6XdbswhzEEmpUUUwmnRazEyo7/hX6/nr7dXCmtJrH+7ZuwIRE5B7wvUUvm+H+WvGFpL0=
-X-Received: by 2002:a05:6808:914:: with SMTP id
- w20mr1224601oih.73.1565816795758; 
- Wed, 14 Aug 2019 14:06:35 -0700 (PDT)
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
+ helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
+ [211.29.132.246])
+ by ml01.01.org (Postfix) with ESMTP id C516A20215F7A
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 14:59:44 -0700 (PDT)
+Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
+ [49.195.190.67])
+ by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 800D843DB39;
+ Thu, 15 Aug 2019 07:57:37 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1hy1Fu-0006Ca-2B; Thu, 15 Aug 2019 07:56:30 +1000
+Date: Thu, 15 Aug 2019 07:56:30 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Jeff Layton <jlayton@kernel.org>
+Subject: Re: [RFC PATCH v2 02/19] fs/locks: Add Exclusive flag to user Layout
+ lease
+Message-ID: <20190814215630.GQ6129@dread.disaster.area>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-3-ira.weiny@intel.com>
+ <fde2959db776616008fc5d31df700f5d7d899433.camel@kernel.org>
 MIME-Version: 1.0
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-3-aneesh.kumar@linux.ibm.com>
- <8736i9r6po.fsf@linux.ibm.com>
-In-Reply-To: <8736i9r6po.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 14 Aug 2019 14:06:24 -0700
-Message-ID: <CAPcyv4h+xY9hmb6bznp4ciJdrtDc_p7HLQhOz1JLqzLf+BVUug@mail.gmail.com>
-Subject: Re: [PATCH v5 2/4] mm/nvdimm: Add page size and struct page size to
- pfn superblock
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Disposition: inline
+In-Reply-To: <fde2959db776616008fc5d31df700f5d7d899433.camel@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
+ a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
+ a=QyXUC8HyAAAA:8 a=7-415B0cAAAA:8 a=qa3ElbQomqnm_qv8Y-cA:9
+ a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,62 +53,68 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 9, 2019 at 9:21 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->
->         case PFN_MODE_PMEM:
-> > @@ -475,6 +484,20 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
-> >               align = 1UL << ilog2(offset);
-> >       mode = le32_to_cpu(pfn_sb->mode);
-> >
-> > +     if (le32_to_cpu(pfn_sb->page_size) != PAGE_SIZE) {
+On Wed, Aug 14, 2019 at 10:15:06AM -0400, Jeff Layton wrote:
+> On Fri, 2019-08-09 at 15:58 -0700, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > Add an exclusive lease flag which indicates that the layout mechanism
+> > can not be broken.
+> > 
+> > Exclusive layout leases allow the file system to know that pages may be
+> > GUP pined and that attempts to change the layout, ie truncate, should be
+> > failed.
+> > 
+> > A process which attempts to break it's own exclusive lease gets an
+> > EDEADLOCK return to help determine that this is likely a programming bug
+> > vs someone else holding a resource.
+.....
+> > diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> > index baddd54f3031..88b175ceccbc 100644
+> > --- a/include/uapi/asm-generic/fcntl.h
+> > +++ b/include/uapi/asm-generic/fcntl.h
+> > @@ -176,6 +176,8 @@ struct f_owner_ex {
+> >  
+> >  #define F_LAYOUT	16      /* layout lease to allow longterm pins such as
+> >  				   RDMA */
+> > +#define F_EXCLUSIVE	32      /* layout lease is exclusive */
+> > +				/* FIXME or shoudl this be F_EXLCK??? */
+> >  
+> >  /* operations for bsd flock(), also used by the kernel implementation */
+> >  #define LOCK_SH		1	/* shared lock */
+> 
+> This interface just seems weird to me. The existing F_*LCK values aren't
+> really set up to be flags, but are enumerated values (even if there are
+> some gaps on some arches). For instance, on parisc and sparc:
 
-I think this is too strict. It's only a potential problem in the
-"pfn_sb->page_size > PAGE_SIZE" case, because only then might the
-existing reservation for the memmap be too small. Otherwise, unless
-I'm missing something, there should be no ill effects for
-under-utilizing the reservation.
+I don't think we need to worry about this - the F_WRLCK version of
+the layout lease should have these exclusive access semantics (i.e
+other ops fail rather than block waiting for lease recall) and hence
+the API shouldn't need a new flag to specify them.
 
-> > +             dev_err(&nd_pfn->dev,
-> > +                     "init failed, page size mismatch %d\n",
-> > +                     le32_to_cpu(pfn_sb->page_size));
-> > +             return -EOPNOTSUPP;
-> > +     }
-> > +
-> > +     if (le16_to_cpu(pfn_sb->page_struct_size) < sizeof(struct page)) {
-> > +             dev_err(&nd_pfn->dev,
-> > +                     "init failed, struct page size mismatch %d\n",
-> > +                     le16_to_cpu(pfn_sb->page_struct_size));
-> > +             return -EOPNOTSUPP;
-> > +     }
-> > +
->
-> We need this here?
+i.e. the primary difference between F_RDLCK and F_WRLCK layout
+leases is that the F_RDLCK is a shared, co-operative lease model
+where only delays in operations will be seen, while F_WRLCK is a
+"guarantee exclusive access and I don't care what it breaks"
+model... :)
 
-Yes, both ->page_struct_size and ->page_size are only relevant in the
-PFN_MODE_PMEM case because PFN_MODE_RAM assumes all pages are
-allocated dynamically and the size does not matter.
+Cheers,
 
-
->
-> From 9885b2f9ed81a2438fc81507cfcdbdb1aeab756c Mon Sep 17 00:00:00 2001
-> From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-> Date: Fri, 9 Aug 2019 22:10:08 +0530
-> Subject: [PATCH] nvdimm: check struct page size only if pfn node is PMEM
->
-> We should do the check only with PFN_MODE_PMEM. If we use
-> memory for backing vmemmap, we should be able to enable
-> the namespace even if struct page size change.
-
-Same as the other patches please drop the usage of "we" in the changelog.
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
