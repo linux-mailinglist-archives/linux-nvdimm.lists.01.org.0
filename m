@@ -2,65 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1578D03A
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 12:04:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD348D083
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 14 Aug 2019 12:17:20 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 086B720311212;
-	Wed, 14 Aug 2019 03:06:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0538820311217;
+	Wed, 14 Aug 2019 03:19:26 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id AFB8B2031120A
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 03:06:07 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id x15so42496291pgg.8
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 03:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=A8hpxCTzvYAcZn9UvY3kAbimH8cB/wVPQT2NUqi4FTg=;
- b=mX9zQWTJ21YVDsg/IO/lw3vK/5gRG1WKeYfq5hAVfRdrbxBQb/LOP7585An8TcS5uX
- tQfD//4o9HuUJa0OuyeBf0yYOxvzPAaOMjQC0e2XsG/XzCmrU1JU4X/cHR16Fl4JFHLe
- Zi0Tt+GUrI9Wq+kCxNmISk1ZO0HC18yrn6Nwe48kfT9CiA+xyYq2zY+VKjPraHI0VO+y
- z/s0hx02KzWhdnSkkt85Mam6mmVNYQ/kS61kWPXi/v/57imnYMdAPEqFsVlbDExrl+Ld
- 2hdI8g4c1e8Cjj/bm8uvF1dfC8bBYtWFJT7eA1eUTgYFQ5SiQc/BI8jH+SCjQE2t4VrR
- 5trQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=A8hpxCTzvYAcZn9UvY3kAbimH8cB/wVPQT2NUqi4FTg=;
- b=n9YAcbLKqtwqL6cmA9KO5qaAFxPT7wln+/YtxdLJjDghe0wZD33UYB45GnwC9P6Eo7
- Zf56GkIjREhozRyBBO9Qdwhvz7w2WeJUJ2Ioq83QYvWfAjl/s7MTPZayAUfxwxE3Ldm/
- ZHjnl7d2+mtTyQGaZuCp6GZ8ghvBojbO5uAUrM3DpPZqXiOsI5wPRpG09aeUqXICE/g1
- lEHur2MJrvMDOMuhkHEKN6sRoVGKJGaBHLYRpO8NSsFW5k68UbXq5AgPBjCE8HDrv1g1
- xIYw7lfeqm4bXKZ8KsACpeAxUaNxTZnnGgCXYYgyLAtls5MUwW3G4u1/oxBqqnni63rP
- i9sQ==
-X-Gm-Message-State: APjAAAX/n/uU5aXTVbNuFzkt7X16Am4ddaZ9Bdz/zpBdFPIrISYa6lB9
- N8grjI41oNF5rg5/IwGx/9hjBeDiR0pxxPjxMCrYbA==
-X-Google-Smtp-Source: APXvYqxyXqiNwjdTK3oFKny5yM7CmoKjVDpDDnZBrvH4fSE28h1/JfZ1mGpG1xfSCFWK+kgS1gJNI6SNjgBRmNUJeQM=
-X-Received: by 2002:a63:205f:: with SMTP id r31mr36074127pgm.159.1565777039574; 
- Wed, 14 Aug 2019 03:03:59 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9D74720311212
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 03:19:23 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 6A4C8AC8C;
+ Wed, 14 Aug 2019 10:17:15 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id B08BB1E4200; Wed, 14 Aug 2019 12:17:14 +0200 (CEST)
+Date: Wed, 14 Aug 2019 12:17:14 +0200
+From: Jan Kara <jack@suse.cz>
+To: ira.weiny@intel.com
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190814101714.GA26273@quack2.suse.cz>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-References: <20190814055108.214253-1-brendanhiggins@google.com>
-In-Reply-To: <20190814055108.214253-1-brendanhiggins@google.com>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Wed, 14 Aug 2019 03:03:47 -0700
-Message-ID: <CAFd5g45NdQEcP0JQpZc3HYYgNZfsBsHL+ByXRK+OupWObwMuqg@mail.gmail.com>
-Subject: Re: [PATCH v13 00/18] kunit: introduce KUnit, the Linux kernel unit
- testing framework
-To: Frank Rowand <frowand.list@gmail.com>, Greg KH <gregkh@linuxfoundation.org>,
- Josh Poimboeuf <jpoimboe@redhat.com>, Kees Cook <keescook@google.com>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Luis Chamberlain <mcgrof@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Rob Herring <robh@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, 
- shuah <shuah@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>, 
- Masahiro Yamada <yamada.masahiro@socionext.com>
+Content-Disposition: inline
+In-Reply-To: <20190809225833.6657-1-ira.weiny@intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,53 +44,96 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Knut Omang <knut.omang@oracle.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Bjorn Helgaas <bhelgaas@google.com>, kunit-dev@googlegroups.com,
- Richard Weinberger <richard@nod.at>, Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Michael Ellerman <mpe@ellerman.id.au>,
- linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Aug 13, 2019 at 10:52 PM Brendan Higgins
-<brendanhiggins@google.com> wrote:
->
-> ## TL;DR
->
-> This revision addresses comments from Stephen and Bjorn Helgaas. Most
-> changes are pretty minor stuff that doesn't affect the API in anyway.
-> One significant change, however, is that I added support for freeing
-> kunit_resource managed resources before the test case is finished via
-> kunit_resource_destroy(). Additionally, Bjorn pointed out that I broke
-> KUnit on certain configurations (like the default one for x86, whoops).
->
-> Based on Stephen's feedback on the previous change, I think we are
-> pretty close. I am not expecting any significant changes from here on
-> out.
+Hello!
 
-Stephen, it looks like you have just replied with "Reviewed-bys" on
-all the remaining emails that you looked at. Is there anything else
-that we are missing? Or is this ready for Shuah to apply?
+On Fri 09-08-19 15:58:14, ira.weiny@intel.com wrote:
+> Pre-requisites
+> ==============
+> 	Based on mmotm tree.
+> 
+> Based on the feedback from LSFmm, the LWN article, the RFC series since
+> then, and a ton of scenarios I've worked in my mind and/or tested...[1]
+> 
+> Solution summary
+> ================
+> 
+> The real issue is that there is no use case for a user to have RDMA pinn'ed
+> memory which is then truncated.  So really any solution we present which:
+> 
+> A) Prevents file system corruption or data leaks
+> ...and...
+> B) Informs the user that they did something wrong
+> 
+> Should be an acceptable solution.
+> 
+> Because this is slightly new behavior.  And because this is going to be
+> specific to DAX (because of the lack of a page cache) we have made the user
+> "opt in" to this behavior.
+> 
+> The following patches implement the following solution.
+> 
+> 0) Registrations to Device DAX char devs are not affected
+> 
+> 1) The user has to opt in to allowing page pins on a file with an exclusive
+>    layout lease.  Both exclusive and layout lease flags are user visible now.
+> 
+> 2) page pins will fail if the lease is not active when the file back page is
+>    encountered.
+> 
+> 3) Any truncate or hole punch operation on a pinned DAX page will fail.
 
-[...]
+So I didn't fully grok the patch set yet but by "pinned DAX page" do you
+mean a page which has corresponding file_pin covering it? Or do you mean a
+page which has pincount increased? If the first then I'd rephrase this to
+be less ambiguous, if the second then I think it is wrong. 
 
-Cheers!
+> 4) The user has the option of holding the lease or releasing it.  If they
+>    release it no other pin calls will work on the file.
+
+Last time we spoke the plan was that the lease is kept while the pages are
+pinned (and an attempt to release the lease would block until the pages are
+unpinned). That also makes it clear that the *lease* is what is making
+truncate and hole punch fail with ETXTBUSY and the file_pin structure is
+just an implementation detail how the existence is efficiently tracked (and
+what keeps the backing file for the pages open so that the lease does not
+get auto-destroyed). Why did you change this?
+
+> 5) Closing the file is ok.
+> 
+> 6) Unmapping the file is ok
+> 
+> 7) Pins against the files are tracked back to an owning file or an owning mm
+>    depending on the internal subsystem needs.  With RDMA there is an owning
+>    file which is related to the pined file.
+> 
+> 8) Only RDMA is currently supported
+
+If you currently only need "owning file" variant in your patch set, then
+I'd just implement that and leave "owning mm" variant for later if it
+proves to be necessary. The things are complex enough as is...
+
+> 9) Truncation of pages which are not actively pinned nor covered by a lease
+>    will succeed.
+
+Otherwise I like the design.
+
+								Honza
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
