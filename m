@@ -1,40 +1,36 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2BD8E270
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 15 Aug 2019 03:37:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95EED8E281
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 15 Aug 2019 03:48:17 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DA17E2031121A;
-	Wed, 14 Aug 2019 18:39:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A6A2920317BD7;
+	Wed, 14 Aug 2019 18:50:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ client-ip=62.76.47.155; helo=trening24.info; envelope-from=info@trening24.info;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from trening24.info (trening24.info [62.76.47.155])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 824EA202EDB8B
- for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 18:39:31 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2019 18:37:29 -0700
-X-IronPort-AV: E=Sophos;i="5.64,387,1559545200"; d="scan'208";a="176740878"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2019 18:37:29 -0700
-Subject: [ndctl PATCH] ndctl/dimm: Add support for separate security-frozen
- attribute
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 14 Aug 2019 18:23:11 -0700
-Message-ID: <156583219134.2816070.2537582454969393648.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+ by ml01.01.org (Postfix) with ESMTPS id A8F132031121A
+ for <linux-nvdimm@lists.01.org>; Wed, 14 Aug 2019 18:50:14 -0700 (PDT)
+Message-ID: <04dc1457a375a67251bb7d2e25f1cca0834f6b27b4@trening24.info>
+From: "Violet" <info@trening24.info>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?windows-1251?B?x+Dq8+/u9+3g/yDx8OXk4A==?=
+Date: Thu, 15 Aug 2019 04:48:09 +0300
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; d=trening24.info; s=mail;
+ c=relaxed/relaxed; t=1565833689;
+ h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+ bh=yz9xwbbCIH+10VLsrjk3+ALcNUGuicFbZzBjHXUtks8=;
+ b=ex5eMvbUXSfDvHA21jnMrhOxGVv+j3Y2qPz8SDKZ4XEI01H9QP/US8q95IHHJV
+ Usk1SVuhoHcAeRw2alXtDzqMZB4Gs+DgySakbeIPlrHvvMGv+KAg13rBfA0fXPFG
+ yHpTU0GZmXKnNBiYegQnZui5pEhcLVT5xqT4LvL6WsvdE=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,201 +42,79 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: Violet <info@trening24.info>
+Content-Type: text/plain; charset="cp1251"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Given the discovery that the original libnvdimm-security implementation
-is unable to communicate both the 'freeze' status and the 'lock' status
-simultaneously, newer kernels deploy a new 'frozen' attribute for this
-purpose.
-
-Add a new api and update the tests for this new capability. The old test
-will fail on newer kernels, but hopefully there were no other
-applications depending on the 'security' attribute to communicate the
-'freeze' status. It was likely only ever a debug / enumeration aid, not
-an application dependency.
-
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Reported-by: Jeff Moyer <jmoyer@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/ndctl/ndctl-freeze-security.txt |    8 +++++---
- ndctl/dimm.c                                  |    2 +-
- ndctl/lib/dimm.c                              |   25 +++++++++++++++++++++++++
- ndctl/lib/libndctl.sym                        |    4 ++++
- ndctl/libndctl.h                              |    1 +
- test/security.sh                              |   18 ++++++++++++------
- util/json.c                                   |    6 ++++++
- 7 files changed, 54 insertions(+), 10 deletions(-)
-
-diff --git a/Documentation/ndctl/ndctl-freeze-security.txt b/Documentation/ndctl/ndctl-freeze-security.txt
-index 573577194183..dbb94e7989af 100644
---- a/Documentation/ndctl/ndctl-freeze-security.txt
-+++ b/Documentation/ndctl/ndctl-freeze-security.txt
-@@ -35,7 +35,7 @@ $ ndctl list -d nmem0
- ]
- 
- $ ndctl freeze-security  nmem0
--security freezed 1 nmem.
-+security froze 1 nmem.
- 
- $ ndctl list -d nmem0
- [
-@@ -44,9 +44,11 @@ $ ndctl list -d nmem0
-     "id":"cdab-0a-07e0-ffffffff",
-     "handle":0,
-     "phys_id":0,
--    "security":"frozen"
--  }
-+    "security":"unlocked",
-+    "security_frozen":true
-+  },
- ]
-+
- ----
- 
- OPTIONS
-diff --git a/ndctl/dimm.c b/ndctl/dimm.c
-index 5e6fa19bab15..c8821d6110e8 100644
---- a/ndctl/dimm.c
-+++ b/ndctl/dimm.c
-@@ -1426,7 +1426,7 @@ int cmd_freeze_security(int argc, const char **argv, void *ctx)
- 	int count = dimm_action(argc, argv, ctx, action_security_freeze, base_options,
- 			"ndctl freeze-security <nmem0> [<nmem1>..<nmemN>] [<options>]");
- 
--	fprintf(stderr, "security freezed %d nmem%s.\n", count >= 0 ? count : 0,
-+	fprintf(stderr, "security froze %d nmem%s.\n", count >= 0 ? count : 0,
- 			count > 1 ? "s" : "");
- 	return count >= 0 ? 0 : EXIT_FAILURE;
- }
-diff --git a/ndctl/lib/dimm.c b/ndctl/lib/dimm.c
-index 37db5570102a..2f145be520fd 100644
---- a/ndctl/lib/dimm.c
-+++ b/ndctl/lib/dimm.c
-@@ -704,6 +704,31 @@ NDCTL_EXPORT enum ndctl_security_state ndctl_dimm_get_security(
- 	return NDCTL_SECURITY_INVALID;
- }
- 
-+NDCTL_EXPORT bool ndctl_dimm_security_is_frozen(struct ndctl_dimm *dimm)
-+{
-+	struct ndctl_ctx *ctx = ndctl_dimm_get_ctx(dimm);
-+	char *path = dimm->dimm_buf;
-+	char buf[SYSFS_ATTR_SIZE];
-+	int len = dimm->buf_len;
-+	int rc;
-+
-+
-+	if (ndctl_dimm_get_security(dimm) == NDCTL_SECURITY_FROZEN)
-+		return true;
-+
-+	if (snprintf(path, len, "%s/frozen", dimm->dimm_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				ndctl_dimm_get_devname(dimm));
-+		return false;
-+	}
-+
-+	rc = sysfs_read_attr(ctx, path, buf);
-+	if (rc < 0)
-+		return false;
-+
-+	return !!strtoul(buf, NULL, 0);
-+}
-+
- static int write_security(struct ndctl_dimm *dimm, const char *cmd)
- {
- 	struct ndctl_ctx *ctx = ndctl_dimm_get_ctx(dimm);
-diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
-index fef2907aa47d..c93c1ee7274c 100644
---- a/ndctl/lib/libndctl.sym
-+++ b/ndctl/lib/libndctl.sym
-@@ -419,3 +419,7 @@ LIBNDCTL_21 {
- 	ndctl_dimm_read_label_extent;
- 	ndctl_dimm_zero_label_extent;
- } LIBNDCTL_20;
-+
-+LIBNDCTL_22 {
-+	ndctl_dimm_security_is_frozen;
-+} LIBNDCTL_21;
-diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
-index f3f2ef66c5a8..d720a98ead1e 100644
---- a/ndctl/libndctl.h
-+++ b/ndctl/libndctl.h
-@@ -714,6 +714,7 @@ enum ndctl_security_state {
- };
- 
- enum ndctl_security_state ndctl_dimm_get_security(struct ndctl_dimm *dimm);
-+bool ndctl_dimm_security_is_frozen(struct ndctl_dimm *dimm);
- int ndctl_dimm_update_passphrase(struct ndctl_dimm *dimm,
- 		long ckey, long nkey);
- int ndctl_dimm_disable_passphrase(struct ndctl_dimm *dimm, long key);
-diff --git a/test/security.sh b/test/security.sh
-index c86d2c6591a6..942831c901fa 100755
---- a/test/security.sh
-+++ b/test/security.sh
-@@ -105,6 +105,11 @@ lock_dimm()
- 	fi
- }
- 
-+get_frozen_state()
-+{
-+	$NDCTL list -i -b "$NFIT_TEST_BUS0" -d "$dev" | jq -r .[].dimms[0].security_frozen
-+}
-+
- get_security_state()
- {
- 	$NDCTL list -i -b "$NFIT_TEST_BUS0" -d "$dev" | jq -r .[].dimms[0].security
-@@ -195,15 +200,15 @@ test_5_security_freeze()
- 	setup_passphrase
- 	freeze_security
- 	sstate="$(get_security_state)"
--	if [ "$sstate" != "frozen" ]; then
--		echo "Incorrect security state: $sstate expected: frozen"
-+	fstate="$(get_frozen_state)"
-+	if [ "$fstate" != "true" ]; then
-+		echo "Incorrect security state: expected: frozen"
- 		err "$LINENO"
- 	fi
- 	$NDCTL remove-passphrase "$dev" && { echo "remove succeed after frozen"; }
--	sstate="$(get_security_state)"
--	echo "$sstate"
--	if [ "$sstate" != "frozen" ]; then
--		echo "Incorrect security state: $sstate expected: frozen"
-+	sstate2="$(get_security_state)"
-+	if [ "$sstate" != "$sstate2" ]; then
-+		echo "Incorrect security state: $sstate2 expected: $sstate"
- 		err "$LINENO"
- 	fi
- }
-@@ -262,6 +267,7 @@ test_4_security_unlock
- # not impact any key management testing via libkeyctl.
- echo "Test 5, freeze security"
- test_5_security_freeze
-+exit 1
- 
- # Load-keys is independent of actual nvdimm security and is part of key
- # mangement testing.
-diff --git a/util/json.c b/util/json.c
-index ac834b33d108..524b64fae9a5 100644
---- a/util/json.c
-+++ b/util/json.c
-@@ -260,6 +260,12 @@ struct json_object *util_dimm_to_json(struct ndctl_dimm *dimm,
- 	if (jobj)
- 		json_object_object_add(jdimm, "security", jobj);
- 
-+	if (ndctl_dimm_security_is_frozen(dimm)) {
-+		jobj = json_object_new_boolean(true);
-+		if (jobj)
-+			json_object_object_add(jdimm, "security_frozen", jobj);
-+	}
-+
- 	return jdimm;
-  err:
- 	json_object_put(jdimm);
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+OiDR6ujk6ugg5O4gNTAlIO3gIOTo4uDt+ywg8fLu6/sg6CDq8OXx6+AKCtPi4Obg5ez76SDq6+jl
+7fIhCgrQ4OT7IO7h+v/i6PL8IO4g5+Dv8/Hq5SDt7uLu4+4g8nBl7ejt42EgIs7w4+Dt6Ofg9uj/
+IO/w7vbl8fHgIOfg6vPv6ugg6CDv6+Dt6PDu4uDt6OUg5+Dv4PHu4iIKCs/w7uPw4Ozs4CDt4O/w
+4OLr5e3gIO3gIO/w5eTu8fLg4uvl7ejlIOru7O/r5erx7fv1IOft4O3o6SDv7iDu8OPg7ejn4Pbo
+6CDz7/Dg4uvl7ej/IOfg7+Dx4OzoLCDy5fXt6Pfl8ero7Ogg6CDu8OPg7ejn4Pbo7u3t++zoIODx
+7+Xq8uDs6CDn4Orz7+7qLiDR6/P44PLl6+gg7+7r8/fg8iDt4OL76ugg4O3g6+jn4CDo8fLu8Oj3
+5fHq6PUg5ODt7fv1LCDoIOIg7vDj4O3o5+D26Ogg8ejx8uXs+yDu4eXx7+X35e3o/yDn4O/g8eDs
+6CDt4CDu8e3u4uUg4+jh6uj1IO/u8fLg4u7qIOjr6CDw5efl8OLt+/Ug5+Dv4PHu4i4goKCgoKAK
+CsTu6uvg5DogoKCgoKAKCsHr7uogMS4gx+Dq8+/u9+3g/yDx8OXk4DogoKCgoKAKlSDK7u3q8/Dl
+7fLt4P8g0fDl5OAg4iDw++3q5SDH4Orz7+roOyCgoKCgoAqVIDUg8ejrIM/u8uXw4CDk6/8g8ODn
+8ODh7vLq6CDx8vDg8uXj6Oggx+Dq8+/q6CDt4CDq7u3q8OXy7e7sIPD77erlOwqVIMfg6vPv7vft
+4P8g8ejr4CDi4Pjl6SDq7uzv4O3o6CDt4CDw++3q4PU7IKCgoKCgCpUgU1dPVCDg7eDr6Ocg5+Dq
+8+/u9+3u6SDv7ufo9ujoIOLg+OXpIOru7O/g7ejoOwqVINTu8Ozo8O7i4O3o5SDR8vDg8uXj6Pfl
+8eru6SDv7ufo9ujoIOru7O/g7ejoIO3gIOru7erw5fLt7uwg8Pvt6uU7CsHr7uogMi4g0+/w4OLr
+5e3o5SDi5+Do7O7u8u3u+OXt6P/s6CDxIO/u8fLg4vno6uDs6DoKlSDS6O8g8Pvt6u7iIMfg6vPv
+6ugg6CDv7uLl5OXt6OUg7/Du5ODi9u7iIO3gIPLg6uj1IPD77erg9TsKlSDT7/Dg4uvl7ejlIOLn
+4Ojs7u7y7e745e3o/+zoIPEg7+7x8uDi+ejq4OzoOiDo5yD35ePuIO7t6CDx7vHy7v/yIOgg4iD3
+5ewg6PUgIu/r/vH7IiDk6/8g6u7s7+Dt6Og7CpUg1O7w7Ojw7uLg7ej/IOLg+Oj1ICLk6OLo5OXt
+5O7iIiDu8iDi5+Do7O7u8u3u+OXt6P8g8SDP7vHy4OL56Org7Og7CpUg0fLw4PLl4+j/IPPv8ODi
+6+Xt6P8g4ufg6Ozu7vLt7vjl7ej/7Ogg8SDP7vHy4OL56Org7OgKwevu6iAzLiDQ5eny6O3j6CDv
+7vHy4OL56Oru4iDiIPDg7Org9SDu5O3u4+4g8Pvt6uAgx+Dq8+/q6DoKlSDH4Pfl7CDs+yDx7ufk
+4OXsIPDl6fLo7ePoIOgg9/LuIO7t6CDt4Owg5OD+8iDxIPLu9+roIOfw5e3o/yDz7/Dg4uvl7ej/
+IOIgx+Dq8+/q4PUKlSDI7fHy8PPs5e3y+yDu9uXt6ugKwevu6iA0LiDE7uPu4u7w4CDH4Orz7+ro
+ICj38u4g7eXu4fXu5Ojs7iDz9+jy++Lg8vwg6CDy8OXh7uLg8vwpOgqVIM7h+eD/IPHy8PPq8vPw
+4CDE7uPu4u7w4DsKlSDI7eru8uXw7PEtMjAxMCDoIOHg5+jx+yDv7vHy4OLu6iDiIMTu4+7i7vDg
+9S4g1/LuIOL74fDg8vwg6CDq4Oog7vLu4fDg5+jy/DsKlSDP8ODi7iDv5fDl9e7k4CDx7uHx8uLl
+7e3u8fLoIOgg7+Xw5fXu5CDw6PHq7uIuIM3+4O3x+ywg7vHu4eXt7e7x8ugg6CDu8u7h8ODm5e3o
+5SDiIOTu4+7i7vDg9S4KlSDC7fPy8OXt7ejlIOTu4+7i7vDgCpUgxO7j7uLu8OAgwt3EIOgg6uDq
+6OUg7vHu4eXt7e7x8ugg7eXu4fXu5Ojs7iDz9+Xx8vwKwevu6iA1LiDP6+Dt6PDu4uDt6OUg5+Dy
+8ODyIO3gIPLg7O7m5e3t++Ug7/Du9uXk8/D7OgqVINHl4eXx8u7o7O7x8vwgRERQLWPq6+DkIOgg
+5eUg7+vg7ejw7uLg7ejlOwqVINLg7O7m5e3t4P8g8fLu6Ozu8fL8ICjS0Skg6uDqIOHg5+Ag7eD3
+6PHr5e3o/yDy4Ozu5uXt7fv1IO/r4PLl5uXpOwqVINLw4O3x7+7w8u375SDoIO/w7vfo5SDn4PLw
+4PL7LiDO8e7h5e3t7vHy6CDi6uv+9+Xt6P8g4iDS0TsKlSDP7vjr6O3gIOgg4Or26Oc6IOrg6iDu
+7/Dl5OXr6PL8IOTr/yDy7uLg8OAgKOru5CDSzcLdxCkKlSDR8vDg7eAg7/Du6PH17ubk5e3o/yDo
+IO3+4O3x+ywg4u7n7ejq4P756OUg8SDt5ek7CpUg0+/r4PLgIM3E0SDoIO/w7vfo5SDv6+Dy5ebo
+L/Hh7vD7OwqVIM/r4O3o8O7i4O3o/yDk4PIg7+vg8uXm5ekuINLu4uDw+ywg7+7v4OTg/vno5SDv
+7uQgz/Dl5OLg8Ojy5ev87e7lOyDE5err4PDo8O7i4O3o5Swg6CDw4OHu8uAg8SDv6+Dy5ebg7Ogg
+7+4g7ejsOwqVIM/w7uHr5ez7IPEg8u7i4PDg7OgsIOru8u7w++Ug7O7j8/Ig7/Do4uXx8ugg6iDv
+8O7h6+Xs4Owg7/DoIPLg7O7m5e3t7ukg7vfo8fLq5S4gz/Du9uXk8/D7IO/l8OXkIPLg7O7m5e3t
+++wg7vTu8Ozr5e3o5ewsIPfy7uH7IO746OHq6CDt5SDv8Oji5evoIOogz/Du8u7q7uvg7DsKlSDE
+5enx8uLo/ywg5fHr6CDi+yDu+Ojh6+jx/CDv8Ogg7eD36PHr5e3o6CDy4Ozu5uXt7fv1IO/r4PLl
+5uXpLCDoIPbl7eAg4eXn5OXp8fLi6P87CpUg1/LuIOz7IOTu6+bt+yDi6uv+9+jy/CDiIO/z7ery
++yDk7uPu4u7w4CDC3cQsIPfy7uH7IOz7IO/w7vjr6CDy4Ozu5u3+ICLj6+Dk6u4iLgrB6+7qIDYu
+INLl7eTl8O375SDv8O725eTz8Ps6CpUg0uXt5OXwOiAi7+v+8fsiIOggIuzo7fPx+yI7CpUgwujk
++yDy5e3k5fDu4iDoIOj1IPbl7eAg5Ov/IOru7O/g7ejoOwqVINfy7iDy4Oru5SDz8e/l+O376SDy
+5e3k5fA/CpUg0uXt5OXw7fvlIO/w7vbl5PPw+yDoIO3g8eru6/zq7iDu7egg8e7n5OD+IOru7erz
+8OXt8u3z/iDx8OXk8zsKlSDX4PHy7vLgIO/w7uLl5OXt6P8g8uXt5OXw7uI/CpUg0OXn8+v88uDy
+IPLl7eTl8OA6IO/l8OLg/yD25e3gIOjr6CDr8/f46OUg6u7s7OXw9+Xx6ujlIPPx6+7i6P8g5Ov/
+IOru7O/g7ejoOwqVINHy7ujs7vHy/CDq4O/o8uDr4CDoIOXj7iDz9+XyIO/w6CDi++Hu8OUg7+7h
+5eTo8uXr/yDy5e3k5fDgOwqVINTu8Ozo8O7i4O3o/yDr7vLgIOfg6vPv6ugg6CDu4frl7OAg5+Dq
+8+/q6CAo4vvh7vAg6PH17uT/IOjnIP3q7u3u7Ojq6CDoIPDo8eru4ikKlSDP8ODi6OvgIPDg4e7y
++yDiIPLl7eTl8OD1IPEg7+vg4uD++ejs6CD04Ory7vDg7OggKOrz8PEg4uDr/vL7LCDy7u/r6OLt
+++kg6u799PTo9ujl7fIg6CDv8C4pCpUgz/Dg4ujr4CDn4Orw+/Lo/yDy5e3k5fDu4iDoIPDg4e7y
+4CDxIPDo8erg7OguCsHr7uogNy4g0vDg7fHv7vDy7fvlIPH15ez7IO7h5fHv5ffl7ej/IOfg6vPv
+7uouIMfg6vPv6ugg8vDg7fHv7vDy7fv1IPPx6/PjOgqVIMHg5+jxIO/u8fLg4uroIOIg5O7j7uLu
+8OUg6CDi6OQg7+Xw5eLu5+roLCD3/P8g7uH/5+Dt7e7x8vwg7+4g7/Dl5O7x8uDi6+Xt6P4g8vDg
+7fHv7vDy4AqVIMTu4+7i7vDgIO/l8OXi7ufq6Dog7vHu4eXt7e7x8ugg4u3z8vDl7e3o9SDv5fDl
+4u7n7uog6CDs5ebk8+3g8O7k7fv1CpUgz/Dl5O7x8uDi6+Xt6P8g7vHu4fv1IO/w4OIgIuLg+Ojs
+IiDv5fDl4u7n9+jq4OwuINfl6i3r6PHyIOfg4/Dz5+roCpUgzvLi5fLx8uLl7e3u8fL8IO/l8OXi
+7uf36Oru4iCgoKCgoAoKxODy4CDoIOzl8fLuIO/w7uLl5OXt6P86IDQtNSDx5e3y/+Hw/yCgoKCg
+oAoKx+Dw5ePo8fLw6PDu4uDy/PH/PiBodHRwOi8vb3RkZWxzYWxlcy5pbi51YS90cmFpbmluZy8x
+NDYvb3JnYW5pemFjaXlhLXByb2Nlc3NhLXpha3Vwa2ktaS1wbGFuaXJvdmFuaWUtemFwYXNvdi5o
+dG0KCsXx6+gg8yDC4PEg4u7n7ejq7fPyIOTu7+7r7ejy5ev87fvlIOLu7/Du8fsgLSDu4fDg+eDp
+8uXx/Cwg7Psg4vHl4+TgIPDg5PsgwuDsIO/u7O73/CEgoKCgoKAKCi0tCtEg0+Lg5uXt6OXsLCDi
+4PggriBOYXRpb25hbCBCdXNpbmVzcyBDZW50ZXIKCtfy7uH7IO7y7+jx4PL88f8g7vIg8ODx8fvr
+6ugsIO/w7unk6PLlIO/uIP3y7ukg8fH76+rlIM7y7+jx4PL88f8g7vIg7+738vsuCkxpc3QtVW5z
+dWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciDuciBjb21wbGFpbiDgYu51dCBTUMDMLgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
+bWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5v
+cmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
