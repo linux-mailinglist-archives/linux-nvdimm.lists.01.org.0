@@ -1,97 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B73A901CF
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 14:40:36 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504659080C
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 21:05:34 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2B9A0202E2D4A;
-	Fri, 16 Aug 2019 05:42:25 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 0A327202E840C;
+	Fri, 16 Aug 2019 12:07:20 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=40.107.6.41; helo=eur04-db3-obe.outbound.protection.outlook.com;
- envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
-Received: from EUR04-DB3-obe.outbound.protection.outlook.com
- (mail-eopbgr60041.outbound.protection.outlook.com [40.107.6.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 1AF23202C80AC
- for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 05:42:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YESYB6AXN4CeudgldfnpVuQqQSa8FubEo/bpOzfOB44FymI85b2jUJMczO9KTC8unPLpavdyWq66hN2gZ+JLb73oWigVD3MmSQC5xDXZlVkgumcZHwV2RtNsozfo9KpTcGUgOCkImAxiB21NGjBolPdFCOeyL33hd6e8Y7ZBYcItKw6vih22LhS119PhX7xu2yCVjYpABjRWEd5UU8kCnK2I8vgjh/eXIxxDo4PiehoQ58DghzRet1Z44EZXJLUx8a8fjixL6Y44nQRUmBm2+mRMeBb5JO92gWdvj2M8HOLtQ0g1bsrFGMHayEu8Fs+WyLFxeOTk76Sg83tpp1flqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6MQHQ34g+2H1b0ZoReFLzIEtb4+bD/IlYOfpioqTric=;
- b=FEH3SRojDEP1GOBJwnRq/L04DyWCScX4qVmlph4jXK3Jfg0VVHkyjsx76u3TFOt2mjBWyj+Kl9DNkdf6VJQbRcR4z7cW046RyQJlSglc3WsTgP+FxJEKU6ADTQRMrtj4oIQII/x+1kKFMvZpQTSxEytoa3+e6JTuzBYWhBNFgf+RXmqFocImFRwKSU7ebYfgTgJ74tRK/ZdAwn/bi0m2nxWb9IomViIgjRTFMni7uyDxbsJmRdy6mfvqp9cMttDn8cGubXtHTDe8VsQh2+XHC0Ic9w7SdDxEdF7kpvcGWoR4+87Iqn0qxgaaXfp1gz4LlNS9TR9TNXr55KlRv98zyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6MQHQ34g+2H1b0ZoReFLzIEtb4+bD/IlYOfpioqTric=;
- b=r+Yk4hh/zE9TGLK+2z/i2eX1rsGQoj9Rx0XoHLOEXModJH6Ql8BKsVwJwlzhIffbj5PBhfqBfNM/3L5PiytTmIyX17arbBiFc2c0DYZo+Fr6sLmfeC9rnIsTcdJ8MQw/omxNhkvwkJ78BzF1K0N39di8H159XDe5VDcjnt5CCw0=
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
- VI1PR05MB4272.eurprd05.prod.outlook.com (52.133.12.25) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Fri, 16 Aug 2019 12:40:30 +0000
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::1d6:9c67:ea2d:38a7]) by VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::1d6:9c67:ea2d:38a7%6]) with mapi id 15.20.2178.016; Fri, 16 Aug 2019
- 12:40:30 +0000
-From: Jason Gunthorpe <jgg@mellanox.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: add a not device managed memremap_pages v2
-Thread-Topic: add a not device managed memremap_pages v2
-Thread-Index: AQHVU/97vsv9UEZaeUmMAUjVp5ftIKb9tb4AgAAAnICAAAEzAA==
-Date: Fri, 16 Aug 2019 12:40:30 +0000
-Message-ID: <20190816124024.GF5412@mellanox.com>
-References: <20190816065434.2129-1-hch@lst.de>
- <20190816123356.GE5412@mellanox.com> <20190816123607.GA22681@lst.de>
-In-Reply-To: <20190816123607.GA22681@lst.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: YQBPR0101CA0016.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00::29) To VI1PR05MB4141.eurprd05.prod.outlook.com
- (2603:10a6:803:4d::16)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=jgg@mellanox.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [156.34.55.100]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ff118e16-0ef1-4aa3-a43f-08d72246ec1a
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);
- SRVR:VI1PR05MB4272; 
-x-ms-traffictypediagnostic: VI1PR05MB4272:
-x-microsoft-antispam-prvs: <VI1PR05MB42722C7BFF7B7A49010D6F9CCFAF0@VI1PR05MB4272.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0131D22242
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(366004)(376002)(39850400004)(396003)(346002)(136003)(189003)(199004)(5660300002)(11346002)(8936002)(81166006)(81156014)(4744005)(8676002)(26005)(86362001)(66066001)(229853002)(1076003)(14454004)(186003)(54906003)(6916009)(478600001)(386003)(33656002)(102836004)(6506007)(52116002)(76176011)(446003)(486006)(476003)(2616005)(316002)(99286004)(4326008)(3846002)(6436002)(256004)(6512007)(25786009)(14444005)(66446008)(71200400001)(66476007)(6246003)(64756008)(53936002)(6486002)(66556008)(7736002)(71190400001)(36756003)(305945005)(6116002)(2906002)(66946007);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB4272;
- H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; MX:1; A:1; 
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: I2etAiXoz1Q0bO4szsQ9ZyGopxORIB8Zai6kmODFx+LptCh1xZJlz001Xfys434s18LcskeJkxfrsn2jmBZe8VEihJovMKOaEcQ31d701uFNki0guN0tgahkEfkjhxvJQL3715IuZrObazTpTPz/p3bHafRfDWxfysmDKG3vKL8bM0GeJT1qJb1sbtVkI2VPwSEj+EhG8YdSXDF2rUct1ly+vplAsOJ8KaZtCuFF/A/+zkQpL1bzA0QOeWaRfw+dmUfDabSylxZIC7jM1GG73oUxxYP4IpzeIRCh9CxproQDLpKX0O0SX27FCIzR3mwSrgYv7aSRkDkyC4eDodeoKP7Ed++efWO/BpkufuwfPXKuCOcqXhvtrLULuJXcaBa9tm91hGQy36KFBvpkplMN7Yeiy+1yZ3YpGbwrF7OTr5M=
-x-ms-exchange-transport-forked: True
-Content-ID: <49CFD18A4DCBF442B6C7AF0837F23DC5@eurprd05.prod.outlook.com>
+ by ml01.01.org (Postfix) with ESMTPS id B0CA5202C80B8
+ for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 12:07:18 -0700 (PDT)
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 16 Aug 2019 12:05:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,394,1559545200"; d="scan'208";a="201624636"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by fmsmga004.fm.intel.com with ESMTP; 16 Aug 2019 12:05:28 -0700
+Date: Fri, 16 Aug 2019 12:05:28 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jan Kara <jack@suse.cz>
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190816190528.GB371@iweiny-DESK2.sc.intel.com>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190814101714.GA26273@quack2.suse.cz>
+ <20190814180848.GB31490@iweiny-DESK2.sc.intel.com>
+ <20190815130558.GF14313@quack2.suse.cz>
 MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff118e16-0ef1-4aa3-a43f-08d72246ec1a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Aug 2019 12:40:30.2337 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O3V86azQkC5uno8w8R0FgXibF7U7UEHD3Bw9sdhW2d79/vC9P5P6mGbjUslksa1nFTxgfrBtpGXlTJVGXi+iHA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB4272
+Content-Disposition: inline
+In-Reply-To: <20190815130558.GF14313@quack2.suse.cz>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,31 +50,180 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Bharata B Rao <bharata@linux.ibm.com>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 16, 2019 at 02:36:07PM +0200, Christoph Hellwig wrote:
-> > > Changes since v1:
-> > >  - don't overload devm_request_free_mem_region
-> > >  - export the memremap_pages and munmap_pages as kvmppc can be a module
+On Thu, Aug 15, 2019 at 03:05:58PM +0200, Jan Kara wrote:
+> On Wed 14-08-19 11:08:49, Ira Weiny wrote:
+> > On Wed, Aug 14, 2019 at 12:17:14PM +0200, Jan Kara wrote:
+> > > Hello!
+> > > 
+> > > On Fri 09-08-19 15:58:14, ira.weiny@intel.com wrote:
+> > > > Pre-requisites
+> > > > ==============
+> > > > 	Based on mmotm tree.
+> > > > 
+> > > > Based on the feedback from LSFmm, the LWN article, the RFC series since
+> > > > then, and a ton of scenarios I've worked in my mind and/or tested...[1]
+> > > > 
+> > > > Solution summary
+> > > > ================
+> > > > 
+> > > > The real issue is that there is no use case for a user to have RDMA pinn'ed
+> > > > memory which is then truncated.  So really any solution we present which:
+> > > > 
+> > > > A) Prevents file system corruption or data leaks
+> > > > ...and...
+> > > > B) Informs the user that they did something wrong
+> > > > 
+> > > > Should be an acceptable solution.
+> > > > 
+> > > > Because this is slightly new behavior.  And because this is going to be
+> > > > specific to DAX (because of the lack of a page cache) we have made the user
+> > > > "opt in" to this behavior.
+> > > > 
+> > > > The following patches implement the following solution.
+> > > > 
+> > > > 0) Registrations to Device DAX char devs are not affected
+> > > > 
+> > > > 1) The user has to opt in to allowing page pins on a file with an exclusive
+> > > >    layout lease.  Both exclusive and layout lease flags are user visible now.
+> > > > 
+> > > > 2) page pins will fail if the lease is not active when the file back page is
+> > > >    encountered.
+> > > > 
+> > > > 3) Any truncate or hole punch operation on a pinned DAX page will fail.
+> > > 
+> > > So I didn't fully grok the patch set yet but by "pinned DAX page" do you
+> > > mean a page which has corresponding file_pin covering it? Or do you mean a
+> > > page which has pincount increased? If the first then I'd rephrase this to
+> > > be less ambiguous, if the second then I think it is wrong. 
 > > 
-> > What tree do we want this to go through? Dan are you running a pgmap
-> > tree still? Do we know of any conflicts?
+> > I mean the second.  but by "fail" I mean hang.  Right now the "normal" page
+> > pincount processing will hang the truncate.  Given the discussion with John H
+> > we can make this a bit better if we use something like FOLL_PIN and the page
+> > count bias to indicate this type of pin.  Then I could fail the truncate
+> > outright.  but that is not done yet.
+> > 
+> > so... I used the word "fail" to be a bit more vague as the final implementation
+> > may return ETXTBUSY or hang as noted.
 > 
-> The last changes in this area went through the hmm tree.  There are
-> now known conflicts, and the kvmppc drivers that needs this already
-> has a dependency on the hmm tree for the migrate_vma_* changes.
+> Ah, OK. Hanging is fine in principle but with longterm pins, your work
+> makes sure they actually fail with ETXTBUSY, doesn't it? The thing is that
+> e.g. DIO will use page pins as well for its buffers and we must wait there
+> until the pin is released. So please just clarify your 'fail' here a bit
+> :).
 
-OK by me, Dan can you ack or review? Thanks
+It will fail with ETXTBSY.  I've fixed a bug...  See below.
 
-Jason
+> 
+> > > > 4) The user has the option of holding the lease or releasing it.  If they
+> > > >    release it no other pin calls will work on the file.
+> > > 
+> > > Last time we spoke the plan was that the lease is kept while the pages are
+> > > pinned (and an attempt to release the lease would block until the pages are
+> > > unpinned). That also makes it clear that the *lease* is what is making
+> > > truncate and hole punch fail with ETXTBUSY and the file_pin structure is
+> > > just an implementation detail how the existence is efficiently tracked (and
+> > > what keeps the backing file for the pages open so that the lease does not
+> > > get auto-destroyed). Why did you change this?
+> > 
+> > closing the file _and_ unmaping it will cause the lease to be released
+> > regardless of if we allow this or not.
+> > 
+> > As we discussed preventing the close seemed intractable.
+> 
+> Yes, preventing the application from closing the file is difficult. But
+> from a quick look at your patches it seemed to me that you actually hold a
+> backing file reference from the file_pin structure thus even though the
+> application closes its file descriptor, the struct file (and thus the
+> lease) lives further until the file_pin gets released. And that should last
+> as long as the pages are pinned. Am I missing something?
+> 
+> > I thought about failing the munmap but that seemed wrong as well.  But more
+> > importantly AFAIK RDMA can pass its memory pins to other processes via FD
+> > passing...  This means that one could pin this memory, pass it to another
+> > process and exit.  The file lease on the pin'ed file is lost.
+> 
+> Not if file_pin grabs struct file reference as I mentioned above...
+>  
+> > The file lease is just a key to get the memory pin.  Once unlocked the procfs
+> > tracking keeps track of where that pin goes and which processes need to be
+> > killed to get rid of it.
+> 
+> I think having file lease being just a key to get the pin is conceptually
+> wrong. The lease is what expresses: "I'm accessing these blocks directly,
+> don't touch them without coordinating with me." So it would be only natural
+> if we maintained the lease while we are accessing blocks instead of
+> transferring this protection responsibility to another structure - namely
+> file_pin - and letting the lease go.
+
+We do transfer that protection to the file_pin but we don't have to "let the
+lease" go.  We just keep the lease with the file_pin as you said.  See below...
+
+> But maybe I miss some technical reason
+> why maintaining file lease is difficult. If that's the case, I'd like to hear
+> what...
+
+Ok, I've thought a bit about what you said and indeed it should work that way.
+The reason I had to think a bit is that I was not sure why I thought we needed
+to hang...  Turns out there were a couple of reasons...  1 not so good and 1 ok
+but still not good enough to allow this...
+
+1) I had a bug in the XFS code which should have failed rather than hanging...
+   So this was not a good reason...  And I was able to find/fix it...  Thanks!
+
+2) Second reason is that I thought I did not have a good way to tell if the
+   lease was actually in use.  What I mean is that letting the lease go should
+   be ok IFF we don't have any pins...  I was thinking that without John's code
+   we don't have a way to know if there are any pins...  But that is wrong...
+   All we have to do is check
+
+	!list_empty(file->file_pins)
+
+So now with this detail I think you are right, we should be able to hold the
+lease through the struct file even if the process no longer has any
+"references" to it (ie closes and munmaps the file).
+
+I'm going to add a patch to fail releasing the lease and remove this (item 4)
+as part of the overall solution.
+
+>  
+> > > > 5) Closing the file is ok.
+> > > > 
+> > > > 6) Unmapping the file is ok
+> > > > 
+> > > > 7) Pins against the files are tracked back to an owning file or an owning mm
+> > > >    depending on the internal subsystem needs.  With RDMA there is an owning
+> > > >    file which is related to the pined file.
+> > > > 
+> > > > 8) Only RDMA is currently supported
+> > > 
+> > > If you currently only need "owning file" variant in your patch set, then
+> > > I'd just implement that and leave "owning mm" variant for later if it
+> > > proves to be necessary. The things are complex enough as is...
+> > 
+> > I can do that...  I was trying to get io_uring working as well with the
+> > owning_mm but I should save that for later.
+> 
+> Ah, OK. Yes, I guess io_uring can be next step.
+
+FWIW I have split the mm_struct stuff out.  I can keep it as a follow on series
+for other users later.  At this point I have to solve the issue Jason brought
+up WRT the RDMA file reference counting.
+
+Thanks!
+Ira
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
