@@ -2,32 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1FA9009E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 13:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43577900A0
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 13:19:02 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 32E12202E292C;
-	Fri, 16 Aug 2019 04:20:49 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4CD56202E2D65;
+	Fri, 16 Aug 2019 04:20:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
  client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=justin.he@arm.com;
  receiver=linux-nvdimm@lists.01.org 
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by ml01.01.org (Postfix) with ESMTP id 00AB5202E292C
- for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 04:20:47 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTP id E5C5E202E2D61
+ for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 04:20:49 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C706C360;
- Fri, 16 Aug 2019 04:18:56 -0700 (PDT)
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DAA4D28;
+ Fri, 16 Aug 2019 04:18:58 -0700 (PDT)
 Received: from localhost.localdomain (unknown [10.169.40.54])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 09FE13F706;
- Fri, 16 Aug 2019 04:18:54 -0700 (PDT)
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 2D3143F706;
+ Fri, 16 Aug 2019 04:18:56 -0700 (PDT)
 From: Jia He <justin.he@arm.com>
 To: Dan Williams <dan.j.williams@intel.com>,
  Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH 1/2] drivers/dax/kmem: use default numa_mem_id if target_node
- is invalid
-Date: Fri, 16 Aug 2019 19:18:43 +0800
-Message-Id: <20190816111844.87442-2-justin.he@arm.com>
+Subject: [PATCH 2/2] drivers/dax/kmem: give a warning if
+ CONFIG_DEV_DAX_PMEM_COMPAT is enabled
+Date: Fri, 16 Aug 2019 19:18:44 +0800
+Message-Id: <20190816111844.87442-3-justin.he@arm.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20190816111844.87442-1-justin.he@arm.com>
 References: <20190816111844.87442-1-justin.he@arm.com>
@@ -50,35 +50,49 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-In some platforms(e.g arm64 guest), the NFIT info might not be ready.
-Then target_node might be -1. But if there is a default numa_mem_id(),
-we can use it to avoid unnecessary fatal EINVL error.
+commit c221c0b0308f ("device-dax: "Hotplug" persistent memory for use
+like normal RAM") helps to add persistent memory as normal RAM blocks.
+But this driver doesn't work if CONFIG_DEV_DAX_PMEM_COMPAT is enabled.
 
-devm_memremap_pages() also uses this logic if nid is invalid, we can
-keep the same page with it.
+Here is the debugging call trace when CONFIG_DEV_DAX_PMEM_COMPAT is
+enabled.
+[    4.443730]  devm_memremap_pages+0x4b9/0x540
+[    4.443733]  dev_dax_probe+0x112/0x220 [device_dax]
+[    4.443735]  dax_pmem_compat_probe+0x58/0x92 [dax_pmem_compat]
+[    4.443737]  nvdimm_bus_probe+0x6b/0x150
+[    4.443739]  really_probe+0xf5/0x3d0
+[    4.443740]  driver_probe_device+0x11b/0x130
+[    4.443741]  device_driver_attach+0x58/0x60
+[    4.443742]  __driver_attach+0xa3/0x140
+
+Then the dax0.0 device will be registered as "nd" bus instead of
+"dax" bus. This causes the error as follows:
+root@ubuntu:~# echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
+-bash: echo: write error: No such device
+
+This gives a warning to notify the user.
 
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
- drivers/dax/kmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/dax/kmem.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index a02318c6d28a..ad62d551d94e 100644
+index ad62d551d94e..b77f0e880598 100644
 --- a/drivers/dax/kmem.c
 +++ b/drivers/dax/kmem.c
-@@ -33,9 +33,9 @@ int dev_dax_kmem_probe(struct device *dev)
- 	 */
- 	numa_node = dev_dax->target_node;
- 	if (numa_node < 0) {
--		dev_warn(dev, "rejecting DAX region %pR with invalid node: %d\n",
--			 res, numa_node);
--		return -EINVAL;
-+		dev_warn(dev, "DAX %pR with invalid node, assume it as %d\n",
-+				res, numa_node, numa_mem_id());
-+		numa_node = numa_mem_id();
- 	}
+@@ -93,6 +93,11 @@ static struct dax_device_driver device_dax_kmem_driver = {
  
- 	/* Hotplug starting at the beginning of the next block: */
+ static int __init dax_kmem_init(void)
+ {
++	if (IS_ENABLED(CONFIG_DEV_DAX_PMEM_COMPAT)) {
++		pr_warn("CONFIG_DEV_DAX_PMEM_COMPAT is not compatible\n");
++		pr_warn("kmem dax driver might not be workable\n");
++	}
++
+ 	return dax_driver_register(&device_dax_kmem_driver);
+ }
+ 
 -- 
 2.17.1
 
