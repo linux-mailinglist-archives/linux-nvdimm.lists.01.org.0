@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E85B18FB7F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 08:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A248FB80
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 08:54:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1A9B5202E292C;
-	Thu, 15 Aug 2019 23:56:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2DBA3202E2D52;
+	Thu, 15 Aug 2019 23:56:49 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,29 +17,28 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 119A9202E291C
- for <linux-nvdimm@lists.01.org>; Thu, 15 Aug 2019 23:56:44 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id D3EAC202BB9AB
+ for <linux-nvdimm@lists.01.org>; Thu, 15 Aug 2019 23:56:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=tXcE1XGfAjBldp4qZPqG6onLgHm1jEyfgSiznWOouFY=; b=I3T8QraOQoXLX7b/3Lnh/DGNnY
- 0Lo8ks5Flw6fLn8VtJSnb6371a63J3dg/ngEtGCdAP3hO3S2xSjjMgjCApwx5dU0AoitlgMZ8BcN1
- TNz8sL2XwZ7ZWL6X86A2rGJbcWyOx3OfM5lu4tXtuYa/jgA+rAJcM1oSD2Fpv7cksDCgUJC/fn9Kq
- nTAiST3Dnx0BeidJNl39SLSRug9Wcm6I4KcVLRaKNMWlFNVLoynlTpYBVLH114vG62z0+eRGKTfvN
- biBEvbSMgMzXSstGo8fHxOrdnwa/1RwqGz+5oEpCIvgTw0FvnwHhrfWzzmrI3E17qFXjN1l8el6bE
- tD/zuFow==;
+ bh=YFr/r1WuSTNnE+OoNkjNf7rF5XlC5mR260Fl41QkQtk=; b=ScVOhPczdoQh3syfKvqiHDyb1v
+ jJtMUtelYGfsTjCkQb5HfKS7wb8XT5N8KY02z4QsvqIZp3TgnLkUeK32IAudoaO0d61J/gnViDM1b
+ RIxKBXUiB4iRMEEPX6+D2bcTFUxDVKzWIhRZjEMKygaAgix7Wofw1xEtKYoGrTlBlNlYQ2U/gb8vP
+ +sxPK6xFJKYg8eN9u4lhUVpy4B0dljq0CnHFu+KAR71lqOhmxuq8N14XGj2WK58Gh8/P+QJezepP8
+ qcUqfw13++G/pqXpLKkeYWyNgAVLsmU1lX3QxQQB4PQdJIko51aWFCQzqtwBoSQX1dyZQ7KyDUK/Y
+ HhJZEzkw==;
 Received: from [2001:4bb8:18c:28b5:44f9:d544:957f:32cb] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hyW8O-0008Hc-Qe; Fri, 16 Aug 2019 06:54:49 +0000
+ id 1hyW8R-0008I8-TD; Fri, 16 Aug 2019 06:54:52 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@mellanox.com>
-Subject: [PATCH 3/4] memremap: don't use a separate devm action for
- devmap_managed_enable_get
-Date: Fri, 16 Aug 2019 08:54:33 +0200
-Message-Id: <20190816065434.2129-4-hch@lst.de>
+Subject: [PATCH 4/4] memremap: provide a not device managed memremap_pages
+Date: Fri, 16 Aug 2019 08:54:34 +0200
+Message-Id: <20190816065434.2129-5-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190816065434.2129-1-hch@lst.de>
 References: <20190816065434.2129-1-hch@lst.de>
@@ -65,79 +64,184 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Just clean up for early failures and then piggy back on
-devm_memremap_pages_release.  This helps with a pending not device
-managed version of devm_memremap_pages.
+The kvmppc ultravisor code wants a device private memory pool that is
+system wide and not attached to a device.  Instead of faking up one
+provide a low-level memremap_pages for it.  Note that this function is
+not exported, and doesn't have a cleanup routine associated with it to
+discourage use from more driver like users.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- mm/memremap.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ include/linux/memremap.h |  2 +
+ mm/memremap.c            | 84 +++++++++++++++++++++++++---------------
+ 2 files changed, 54 insertions(+), 32 deletions(-)
 
+diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+index 8f0013e18e14..fb2a0bd826b9 100644
+--- a/include/linux/memremap.h
++++ b/include/linux/memremap.h
+@@ -123,6 +123,8 @@ static inline struct vmem_altmap *pgmap_altmap(struct dev_pagemap *pgmap)
+ }
+ 
+ #ifdef CONFIG_ZONE_DEVICE
++void *memremap_pages(struct dev_pagemap *pgmap, int nid);
++void memunmap_pages(struct dev_pagemap *pgmap);
+ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap);
+ void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap);
+ struct dev_pagemap *get_dev_pagemap(unsigned long pfn,
 diff --git a/mm/memremap.c b/mm/memremap.c
-index 416b4129acbb..4e11da4ecab9 100644
+index 4e11da4ecab9..9e163fe367ae 100644
 --- a/mm/memremap.c
 +++ b/mm/memremap.c
-@@ -21,13 +21,13 @@ DEFINE_STATIC_KEY_FALSE(devmap_managed_key);
- EXPORT_SYMBOL(devmap_managed_key);
- static atomic_t devmap_managed_enable;
- 
--static void devmap_managed_enable_put(void *data)
-+static void devmap_managed_enable_put(void)
- {
- 	if (atomic_dec_and_test(&devmap_managed_enable))
- 		static_branch_disable(&devmap_managed_key);
+@@ -102,9 +102,8 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+ 		pgmap->ref = NULL;
  }
  
--static int devmap_managed_enable_get(struct device *dev, struct dev_pagemap *pgmap)
-+static int devmap_managed_enable_get(struct dev_pagemap *pgmap)
+-static void devm_memremap_pages_release(void *data)
++void memunmap_pages(struct dev_pagemap *pgmap)
  {
- 	if (!pgmap->ops || !pgmap->ops->page_free) {
- 		WARN(1, "Missing page_free method\n");
-@@ -36,13 +36,16 @@ static int devmap_managed_enable_get(struct device *dev, struct dev_pagemap *pgm
- 
- 	if (atomic_inc_return(&devmap_managed_enable) == 1)
- 		static_branch_enable(&devmap_managed_key);
--	return devm_add_action_or_reset(dev, devmap_managed_enable_put, NULL);
-+	return 0;
- }
- #else
--static int devmap_managed_enable_get(struct device *dev, struct dev_pagemap *pgmap)
-+static int devmap_managed_enable_get(struct dev_pagemap *pgmap)
- {
- 	return -EINVAL;
- }
-+static void devmap_managed_enable_put(void)
-+{
-+}
- #endif /* CONFIG_DEV_PAGEMAP_OPS */
- 
- static void pgmap_array_delete(struct resource *res)
-@@ -129,6 +132,7 @@ static void devm_memremap_pages_release(void *data)
- 	untrack_pfn(NULL, PHYS_PFN(res->start), resource_size(res));
- 	pgmap_array_delete(res);
+-	struct dev_pagemap *pgmap = data;
+ 	struct resource *res = &pgmap->res;
+ 	unsigned long pfn;
+ 	int nid;
+@@ -134,6 +133,12 @@ static void devm_memremap_pages_release(void *data)
  	WARN_ONCE(pgmap->altmap.alloc, "failed to free all reserved pages\n");
-+	devmap_managed_enable_put();
+ 	devmap_managed_enable_put();
  }
++EXPORT_SYMBOL_GPL(memunmap_pages);
++
++static void devm_memremap_pages_release(void *data)
++{
++	memunmap_pages(data);
++}
  
  static void dev_pagemap_percpu_release(struct percpu_ref *ref)
-@@ -218,7 +222,7 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
- 	}
+ {
+@@ -143,27 +148,12 @@ static void dev_pagemap_percpu_release(struct percpu_ref *ref)
+ 	complete(&pgmap->done);
+ }
  
- 	if (need_devmap_managed) {
--		error = devmap_managed_enable_get(dev, pgmap);
-+		error = devmap_managed_enable_get(pgmap);
- 		if (error)
- 			return ERR_PTR(error);
- 	}
-@@ -327,6 +331,7 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
-  err_array:
- 	dev_pagemap_kill(pgmap);
- 	dev_pagemap_cleanup(pgmap);
-+	devmap_managed_enable_put();
+-/**
+- * devm_memremap_pages - remap and provide memmap backing for the given resource
+- * @dev: hosting device for @res
+- * @pgmap: pointer to a struct dev_pagemap
+- *
+- * Notes:
+- * 1/ At a minimum the res and type members of @pgmap must be initialized
+- *    by the caller before passing it to this function
+- *
+- * 2/ The altmap field may optionally be initialized, in which case
+- *    PGMAP_ALTMAP_VALID must be set in pgmap->flags.
+- *
+- * 3/ The ref field may optionally be provided, in which pgmap->ref must be
+- *    'live' on entry and will be killed and reaped at
+- *    devm_memremap_pages_release() time, or if this routine fails.
+- *
+- * 4/ res is expected to be a host memory range that could feasibly be
+- *    treated as a "System RAM" range, i.e. not a device mmio range, but
+- *    this is not enforced.
++/*
++ * Not device managed version of dev_memremap_pages, undone by
++ * memunmap_pages().  Please use dev_memremap_pages if you have a struct
++ * device available.
+  */
+-void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
++void *memremap_pages(struct dev_pagemap *pgmap, int nid)
+ {
+ 	struct resource *res = &pgmap->res;
+ 	struct dev_pagemap *conflict_pgmap;
+@@ -174,7 +164,7 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 		.altmap = pgmap_altmap(pgmap),
+ 	};
+ 	pgprot_t pgprot = PAGE_KERNEL;
+-	int error, nid, is_ram;
++	int error, is_ram;
+ 	bool need_devmap_managed = true;
+ 
+ 	switch (pgmap->type) {
+@@ -229,7 +219,7 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 
+ 	conflict_pgmap = get_dev_pagemap(PHYS_PFN(res->start), NULL);
+ 	if (conflict_pgmap) {
+-		dev_WARN(dev, "Conflicting mapping in same section\n");
++		WARN(1, "Conflicting mapping in same section\n");
+ 		put_dev_pagemap(conflict_pgmap);
+ 		error = -ENOMEM;
+ 		goto err_array;
+@@ -237,7 +227,7 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 
+ 	conflict_pgmap = get_dev_pagemap(PHYS_PFN(res->end), NULL);
+ 	if (conflict_pgmap) {
+-		dev_WARN(dev, "Conflicting mapping in same section\n");
++		WARN(1, "Conflicting mapping in same section\n");
+ 		put_dev_pagemap(conflict_pgmap);
+ 		error = -ENOMEM;
+ 		goto err_array;
+@@ -258,7 +248,6 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 	if (error)
+ 		goto err_array;
+ 
+-	nid = dev_to_node(dev);
+ 	if (nid < 0)
+ 		nid = numa_mem_id();
+ 
+@@ -314,12 +303,6 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 				PHYS_PFN(res->start),
+ 				PHYS_PFN(resource_size(res)), pgmap);
+ 	percpu_ref_get_many(pgmap->ref, pfn_end(pgmap) - pfn_first(pgmap));
+-
+-	error = devm_add_action_or_reset(dev, devm_memremap_pages_release,
+-			pgmap);
+-	if (error)
+-		return ERR_PTR(error);
+-
+ 	return __va(res->start);
+ 
+  err_add_memory:
+@@ -334,6 +317,43 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 	devmap_managed_enable_put();
  	return ERR_PTR(error);
  }
++EXPORT_SYMBOL_GPL(memremap_pages);
++
++/**
++ * devm_memremap_pages - remap and provide memmap backing for the given resource
++ * @dev: hosting device for @res
++ * @pgmap: pointer to a struct dev_pagemap
++ *
++ * Notes:
++ * 1/ At a minimum the res and type members of @pgmap must be initialized
++ *    by the caller before passing it to this function
++ *
++ * 2/ The altmap field may optionally be initialized, in which case
++ *    PGMAP_ALTMAP_VALID must be set in pgmap->flags.
++ *
++ * 3/ The ref field may optionally be provided, in which pgmap->ref must be
++ *    'live' on entry and will be killed and reaped at
++ *    devm_memremap_pages_release() time, or if this routine fails.
++ *
++ * 4/ res is expected to be a host memory range that could feasibly be
++ *    treated as a "System RAM" range, i.e. not a device mmio range, but
++ *    this is not enforced.
++ */
++void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
++{
++	int error;
++	void *ret;
++
++	ret = memremap_pages(pgmap, dev_to_node(dev));
++	if (IS_ERR(ret))
++		return ret;
++
++	error = devm_add_action_or_reset(dev, devm_memremap_pages_release,
++			pgmap);
++	if (error)
++		return ERR_PTR(error);
++	return ret;
++}
  EXPORT_SYMBOL_GPL(devm_memremap_pages);
+ 
+ void devm_memunmap_pages(struct device *dev, struct dev_pagemap *pgmap)
 -- 
 2.20.1
 
