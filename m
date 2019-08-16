@@ -1,51 +1,75 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7908FC6E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 09:36:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BE390049
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Aug 2019 12:52:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2A583202E292C;
-	Fri, 16 Aug 2019 00:38:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 3C01B202E2937;
+	Fri, 16 Aug 2019 03:54:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=bharata@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 21BFA202C80AD
- for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 00:38:08 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 833BC369D3;
- Fri, 16 Aug 2019 07:36:15 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7302F19C6A;
- Fri, 16 Aug 2019 07:36:15 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id 5E8582551B;
- Fri, 16 Aug 2019 07:36:15 +0000 (UTC)
-Date: Fri, 16 Aug 2019 03:36:14 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <1526809439.8842269.1565940974952.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4gLqd43CLDuGYrDdx4xR1_oc3D0hzdETz8uQmV1C2Dp_Q@mail.gmail.com>
-References: <20190731111207.12836-1-pagupta@redhat.com>
- <CAPcyv4gLqd43CLDuGYrDdx4xR1_oc3D0hzdETz8uQmV1C2Dp_Q@mail.gmail.com>
-Subject: Re: [PATCH] libnvdimm: change disk name of virtio pmem disk
+ by ml01.01.org (Postfix) with ESMTPS id 3BC43202C80B8
+ for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 03:54:14 -0700 (PDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7GAqIli026094
+ for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 06:52:22 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uds5ym317-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 06:52:20 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <bharata@linux.ibm.com>;
+ Fri, 16 Aug 2019 11:48:15 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 16 Aug 2019 11:48:12 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7GAmBEo53674058
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 16 Aug 2019 10:48:11 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 02F145204E;
+ Fri, 16 Aug 2019 10:48:11 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.62.132])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 360AC52050;
+ Fri, 16 Aug 2019 10:48:09 +0000 (GMT)
+Date: Fri, 16 Aug 2019 16:18:06 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: add a not device managed memremap_pages v2
+References: <20190816065434.2129-1-hch@lst.de>
 MIME-Version: 1.0
-X-Originating-IP: [10.67.116.204, 10.4.195.21]
-Thread-Topic: libnvdimm: change disk name of virtio pmem disk
-Thread-Index: 9nluNaz18R3eUqbznRETd5vqCIb7PA==
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.30]); Fri, 16 Aug 2019 07:36:15 +0000 (UTC)
+Content-Disposition: inline
+In-Reply-To: <20190816065434.2129-1-hch@lst.de>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-TM-AS-GCONF: 00
+x-cbid: 19081610-0012-0000-0000-0000033F5BFD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081610-0013-0000-0000-00002179757D
+Message-Id: <20190816104806.GC8784@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-16_05:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=659 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908160113
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,69 +81,34 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Reply-To: bharata@linux.ibm.com
+Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Jason Gunthorpe <jgg@mellanox.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-> >
-> > This patch adds prefix 'v' in disk name for virtio pmem.
-> > This differentiates virtio-pmem disks from the pmem disks.
+On Fri, Aug 16, 2019 at 08:54:30AM +0200, Christoph Hellwig wrote:
+> Hi Dan and Jason,
 > 
-> I don't think the small matter that this device does not support
-> MAP_SYNC warrants a separate naming scheme.  That said I do think we
-> need to export this attribute in sysfs, likely at the region level,
-> and then display that information in ndctl. This is distinct from the
-> btt case where it is operating a different data consistency contract
-> than baseline pmem.
-
-o.k. I will look to add the information in sysfs and display using ndctl.
-
-Thanks,
-Pankaj
-
-> >
-> > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> > ---
-> >  drivers/nvdimm/namespace_devs.c | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/nvdimm/namespace_devs.c
-> > b/drivers/nvdimm/namespace_devs.c
-> > index a16e52251a30..8e5d29266fb0 100644
-> > --- a/drivers/nvdimm/namespace_devs.c
-> > +++ b/drivers/nvdimm/namespace_devs.c
-> > @@ -182,8 +182,12 @@ const char *nvdimm_namespace_disk_name(struct
-> > nd_namespace_common *ndns,
-> >                 char *name)
-> >  {
-> >         struct nd_region *nd_region = to_nd_region(ndns->dev.parent);
-> > +       const char *prefix = "";
-> >         const char *suffix = NULL;
-> >
-> > +       if (!is_nvdimm_sync(nd_region))
-> > +               prefix = "v";
-> > +
-> >         if (ndns->claim && is_nd_btt(ndns->claim))
-> >                 suffix = "s";
-> >
-> > @@ -201,7 +205,7 @@ const char *nvdimm_namespace_disk_name(struct
-> > nd_namespace_common *ndns,
-> >                         sprintf(name, "pmem%d.%d%s", nd_region->id, nsidx,
-> >                                         suffix ? suffix : "");
-> >                 else
-> > -                       sprintf(name, "pmem%d%s", nd_region->id,
-> > +                       sprintf(name, "%spmem%d%s", prefix, nd_region->id,
-> >                                         suffix ? suffix : "");
-> >         } else if (is_namespace_blk(&ndns->dev)) {
-> >                 struct nd_namespace_blk *nsblk;
-> > --
-> > 2.20.1
-> >
+> Bharata has been working on secure page management for kvmppc guests,
+> and one I thing I noticed is that he had to fake up a struct device
+> just so that it could be passed to the devm_memremap_pages
+> instrastructure for device private memory.
 > 
+> This series adds non-device managed versions of the
+> devm_request_free_mem_region and devm_memremap_pages functions for
+> his use case.
+
+Tested this series with my patches that add secure page management
+for kvmppc guests. These patches along with migrate_vma-cleanup
+series are good-to-have to support secure guests on ultravisor enabled
+POWER platforms.
+
+Regards,
+Bharata.
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
