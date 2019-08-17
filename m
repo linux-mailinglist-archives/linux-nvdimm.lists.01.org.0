@@ -2,61 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D0C90C9C
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 17 Aug 2019 05:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E889102F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 17 Aug 2019 13:12:50 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A4D0B202E8431;
-	Fri, 16 Aug 2019 20:59:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 286EE202B75E9;
+	Sat, 17 Aug 2019 04:14:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+ client-ip=2607:f8b0:4864:20::742; helo=mail-qk1-x742.google.com;
+ envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
+ [IPv6:2607:f8b0:4864:20::742])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 20966202B75FA
- for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 20:59:41 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id q20so10647274otl.0
- for <linux-nvdimm@lists.01.org>; Fri, 16 Aug 2019 20:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5JkAhLV4VoRnu2crZGL/J2yHThD4/hsSp7D/mpQ+b1s=;
- b=PLgTwvnO1F/glwSZqKSngpyzUq0vFd7nv9qzk0tkt39wZ4ihb11tnzHU/LqfTd0yVJ
- axw13Ep9GpgY89HHCRMt5qUEKZjV9fpXHekdl9moJRSsSmy+onoBfwnsmjsxfxgdFpuF
- UY5cJrgDOiWiNiT1c8BfhSIr6K4z3xB0kAEVeYHl0c6rrXqpT4vxHNa+wRXkaONde3aK
- cq2b6g1enF0XB8LwfJxyibCWbp16a+UJXk+Gury67BoYPTB3sy04w+RGXID/OjvfkmYd
- JEcGSzTjVP1+Q5GvY+6ZYPwGiUpU8/wluREQDwHDBdiY/jgkdG85+6s3b2IvImiQK0uj
- u4Uw==
+ by ml01.01.org (Postfix) with ESMTPS id DE67E20294F31
+ for <linux-nvdimm@lists.01.org>; Sat, 17 Aug 2019 04:14:29 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id r21so6935053qke.2
+ for <linux-nvdimm@lists.01.org>; Sat, 17 Aug 2019 04:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=hnyyRW//9ToVhTEfhUiVXZ2Yyj1FvnMmcd3JbCX3+aQ=;
+ b=qSx2IaXwKkkJqUZtdP4/4hGRUvZuLmGzJrYSfyHP+BQVI9iOXx6sSWDiQfSrKSbq6N
+ qGdTkuHrmmeCqp9HQT8H3oWfMn5wP2DSJC9bnhJ0+xfKaYpuhX3Jph0U9GL1kg3cssLL
+ WdkqE9tPlgjvMu1uGES1PHvZxkq43kngKdySieo/p805oqWBDK/sBFlYjYhJCzjD3M3p
+ t6w9+W0Cg8Qhw4wdE68A3ugfDEvvT8CuYSsStILA9kTP6lWx/megpx3NmcWHsJiTImRr
+ jnoRinq51vUTVHqxfGKtsOBq6M2XsP69RWHfYY9UwhKkjSblW6GqxYHb01883zAUNjuI
+ 0vpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5JkAhLV4VoRnu2crZGL/J2yHThD4/hsSp7D/mpQ+b1s=;
- b=BQOHFuHaoHOVFAm73ppoIBoXkv5Vh5MW/arya/HKLFE/mcSCrcAPIfCWurRUi6FOYd
- ZZvTQjFK16s+RZS/Xvj6flwH//1svRUg4n8DKLPk4s/MUNCzLuP6szcjeYvTUkjSNFIk
- O71SSGhmtfjY7d/KWjZuMuxK39JKjYP57/ZDXBTRwbBq2kTua8NWKVCawpLduqSlZHHy
- 0D4mo0nqJbEjkRB9uUYyTUTO6oLs0KBXd/qOvNhzwDSFmZ7mR/dVlSKaqwtyB46xW3Rk
- C4zoHeR64TmTWoD5gfjEd5T0upkEB9ULfsUAXAaGX1jpXkRVMh+IqnecrVTrpUPpTeBF
- HScg==
-X-Gm-Message-State: APjAAAVmmis3QtJVlr3E8+GUjrRw07yuOcY/zLt5eumKOSYKvvu279d0
- QiG2geoNi4+8q5VqkzpJ5r7CqlduISe1q63h8hf7TQ==
-X-Google-Smtp-Source: APXvYqz/7KefU1PepmrlXbJuNHdv1LcskjRo2dk3pgYqgdNtUmZnRstkYW16mDX9ocpLJMiCLBg7bb1GGPv5FPxEOVQ=
-X-Received: by 2002:a05:6830:1e05:: with SMTP id
- s5mr9263489otr.247.1566014275232; 
- Fri, 16 Aug 2019 20:57:55 -0700 (PDT)
-MIME-Version: 1.0
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=hnyyRW//9ToVhTEfhUiVXZ2Yyj1FvnMmcd3JbCX3+aQ=;
+ b=turDbPrjyTpY7M/NPz2uvBZPCR0hHIetnfjKkuFTdGRxArW7PD1rMZNa/BigrCXRy5
+ cMYTRemYAcIimlbiagT3GBzN6Hshhn8Oq8M/00oUiJFGhKVhZn5JdgT2ai2I2hQuO3Lc
+ sGZrOwBjS+EDVvGCQ8b8wjkzokhJ7CiiQ60sXrjYPXHYS2ba4+xiGocFsj6/7fKLFEwR
+ xudG7KiVbI5WKwV5zH4aQgyolvYsBMv5GXOceNeSn6pdmISLEF15h/CAf7PjWODiTsHs
+ C7T8zD5j84vEgw5p0KV+4N06yDakEwMnRtkUOPka0vv3C3a6zhUal+XxYibOM1G+UPL2
+ lZqw==
+X-Gm-Message-State: APjAAAWPxuirIYTs4NnHNvkxUVICBEgkfrX1k2iJhZMHjAPf2TJ7qnsA
+ uOUPH64T5V6TZTHFzU9AlpSsZg==
+X-Google-Smtp-Source: APXvYqyP1n6fzmK5Pi+fG/jVsWvFqk8Nk1ND3552uBk0xHltRjB/H7Sl53O0p4ngqNDVcYI95hSINg==
+X-Received: by 2002:a37:8607:: with SMTP id i7mr3251078qkd.455.1566040365423; 
+ Sat, 17 Aug 2019 04:12:45 -0700 (PDT)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id s3sm1906595qkc.57.2019.08.17.04.12.44
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Sat, 17 Aug 2019 04:12:44 -0700 (PDT)
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: devm_memremap_pages() triggers a kasan_add_zero_shadow() warning
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
+Date: Sat, 17 Aug 2019 07:12:43 -0400
+Message-Id: <E7A04694-504D-4FB3-9864-03C2CBA3898E@lca.pw>
 References: <1565991345.8572.28.camel@lca.pw>
  <CAPcyv4i9VFLSrU75U0gQH6K2sz8AZttqvYidPdDcS7sU2SFaCA@mail.gmail.com>
  <0FB85A78-C2EE-4135-9E0F-D5623CE6EA47@lca.pw>
-In-Reply-To: <0FB85A78-C2EE-4135-9E0F-D5623CE6EA47@lca.pw>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 16 Aug 2019 20:57:40 -0700
-Message-ID: <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
-Subject: Re: devm_memremap_pages() triggers a kasan_add_zero_shadow() warning
-To: Qian Cai <cai@lca.pw>
+ <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
+To: Dan Williams <dan.j.williams@intel.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,57 +77,85 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
 Cc: Linux MM <linux-mm@kvack.org>, Andrey Ryabinin <aryabinin@virtuozzo.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
  kasan-dev@googlegroups.com, linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 16, 2019 at 8:34 PM Qian Cai <cai@lca.pw> wrote:
->
->
->
-> > On Aug 16, 2019, at 5:48 PM, Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > On Fri, Aug 16, 2019 at 2:36 PM Qian Cai <cai@lca.pw> wrote:
-> >>
-> >> Every so often recently, booting Intel CPU server on linux-next triggers this
-> >> warning. Trying to figure out if  the commit 7cc7867fb061
-> >> ("mm/devm_memremap_pages: enable sub-section remap") is the culprit here.
-> >>
-> >> # ./scripts/faddr2line vmlinux devm_memremap_pages+0x894/0xc70
-> >> devm_memremap_pages+0x894/0xc70:
-> >> devm_memremap_pages at mm/memremap.c:307
-> >
-> > Previously the forced section alignment in devm_memremap_pages() would
-> > cause the implementation to never violate the KASAN_SHADOW_SCALE_SIZE
-> > (12K on x86) constraint.
-> >
-> > Can you provide a dump of /proc/iomem? I'm curious what resource is
-> > triggering such a small alignment granularity.
->
-> This is with memmap=4G!4G ,
->
-> # cat /proc/iomem
-[..]
-> 100000000-155dfffff : Persistent Memory (legacy)
->   100000000-155dfffff : namespace0.0
-> 155e00000-15982bfff : System RAM
->   155e00000-156a00fa0 : Kernel code
->   156a00fa1-15765d67f : Kernel data
->   157837000-1597fffff : Kernel bss
-> 15982c000-1ffffffff : Persistent Memory (legacy)
-> 200000000-87fffffff : System RAM
-
-Ok, looks like 4G is bad choice to land the pmem emulation on this
-system because it collides with where the kernel is deployed and gets
-broken into tiny pieces that violate kasan's. This is a known problem
-with memmap=. You need to pick an memory range that does not collide
-with anything else. See:
-
-    https://nvdimm.wiki.kernel.org/how_to_choose_the_correct_memmap_kernel_parameter_for_pmem_on_your_system
-
-...for more info.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Cgo+IE9uIEF1ZyAxNiwgMjAxOSwgYXQgMTE6NTcgUE0sIERhbiBXaWxsaWFtcyA8ZGFuLmoud2ls
+bGlhbXNAaW50ZWwuY29tPiB3cm90ZToKPiAKPiBPbiBGcmksIEF1ZyAxNiwgMjAxOSBhdCA4OjM0
+IFBNIFFpYW4gQ2FpIDxjYWlAbGNhLnB3PiB3cm90ZToKPj4gCj4+IAo+PiAKPj4+IE9uIEF1ZyAx
+NiwgMjAxOSwgYXQgNTo0OCBQTSwgRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5j
+b20+IHdyb3RlOgo+Pj4gCj4+PiBPbiBGcmksIEF1ZyAxNiwgMjAxOSBhdCAyOjM2IFBNIFFpYW4g
+Q2FpIDxjYWlAbGNhLnB3PiB3cm90ZToKPj4+PiAKPj4+PiBFdmVyeSBzbyBvZnRlbiByZWNlbnRs
+eSwgYm9vdGluZyBJbnRlbCBDUFUgc2VydmVyIG9uIGxpbnV4LW5leHQgdHJpZ2dlcnMgdGhpcwo+
+Pj4+IHdhcm5pbmcuIFRyeWluZyB0byBmaWd1cmUgb3V0IGlmICB0aGUgY29tbWl0IDdjYzc4Njdm
+YjA2MQo+Pj4+ICgibW0vZGV2bV9tZW1yZW1hcF9wYWdlczogZW5hYmxlIHN1Yi1zZWN0aW9uIHJl
+bWFwIikgaXMgdGhlIGN1bHByaXQgaGVyZS4KPj4+PiAKPj4+PiAjIC4vc2NyaXB0cy9mYWRkcjJs
+aW5lIHZtbGludXggZGV2bV9tZW1yZW1hcF9wYWdlcysweDg5NC8weGM3MAo+Pj4+IGRldm1fbWVt
+cmVtYXBfcGFnZXMrMHg4OTQvMHhjNzA6Cj4+Pj4gZGV2bV9tZW1yZW1hcF9wYWdlcyBhdCBtbS9t
+ZW1yZW1hcC5jOjMwNwo+Pj4gCj4+PiBQcmV2aW91c2x5IHRoZSBmb3JjZWQgc2VjdGlvbiBhbGln
+bm1lbnQgaW4gZGV2bV9tZW1yZW1hcF9wYWdlcygpIHdvdWxkCj4+PiBjYXVzZSB0aGUgaW1wbGVt
+ZW50YXRpb24gdG8gbmV2ZXIgdmlvbGF0ZSB0aGUgS0FTQU5fU0hBRE9XX1NDQUxFX1NJWkUKPj4+
+ICgxMksgb24geDg2KSBjb25zdHJhaW50Lgo+Pj4gCj4+PiBDYW4geW91IHByb3ZpZGUgYSBkdW1w
+IG9mIC9wcm9jL2lvbWVtPyBJJ20gY3VyaW91cyB3aGF0IHJlc291cmNlIGlzCj4+PiB0cmlnZ2Vy
+aW5nIHN1Y2ggYSBzbWFsbCBhbGlnbm1lbnQgZ3JhbnVsYXJpdHkuCj4+IAo+PiBUaGlzIGlzIHdp
+dGggbWVtbWFwPTRHITRHICwKPj4gCj4+ICMgY2F0IC9wcm9jL2lvbWVtCj4gWy4uXQo+PiAxMDAw
+MDAwMDAtMTU1ZGZmZmZmIDogUGVyc2lzdGVudCBNZW1vcnkgKGxlZ2FjeSkKPj4gIDEwMDAwMDAw
+MC0xNTVkZmZmZmYgOiBuYW1lc3BhY2UwLjAKPj4gMTU1ZTAwMDAwLTE1OTgyYmZmZiA6IFN5c3Rl
+bSBSQU0KPj4gIDE1NWUwMDAwMC0xNTZhMDBmYTAgOiBLZXJuZWwgY29kZQo+PiAgMTU2YTAwZmEx
+LTE1NzY1ZDY3ZiA6IEtlcm5lbCBkYXRhCj4+ICAxNTc4MzcwMDAtMTU5N2ZmZmZmIDogS2VybmVs
+IGJzcwo+PiAxNTk4MmMwMDAtMWZmZmZmZmZmIDogUGVyc2lzdGVudCBNZW1vcnkgKGxlZ2FjeSkK
+Pj4gMjAwMDAwMDAwLTg3ZmZmZmZmZiA6IFN5c3RlbSBSQU0KPiAKPiBPaywgbG9va3MgbGlrZSA0
+RyBpcyBiYWQgY2hvaWNlIHRvIGxhbmQgdGhlIHBtZW0gZW11bGF0aW9uIG9uIHRoaXMKPiBzeXN0
+ZW0gYmVjYXVzZSBpdCBjb2xsaWRlcyB3aXRoIHdoZXJlIHRoZSBrZXJuZWwgaXMgZGVwbG95ZWQg
+YW5kIGdldHMKPiBicm9rZW4gaW50byB0aW55IHBpZWNlcyB0aGF0IHZpb2xhdGUga2FzYW4ncy4g
+VGhpcyBpcyBhIGtub3duIHByb2JsZW0KPiB3aXRoIG1lbW1hcD0uIFlvdSBuZWVkIHRvIHBpY2sg
+YW4gbWVtb3J5IHJhbmdlIHRoYXQgZG9lcyBub3QgY29sbGlkZQo+IHdpdGggYW55dGhpbmcgZWxz
+ZS4gU2VlOgo+IAo+ICAgIGh0dHBzOi8vbnZkaW1tLndpa2kua2VybmVsLm9yZy9ob3dfdG9fY2hv
+b3NlX3RoZV9jb3JyZWN0X21lbW1hcF9rZXJuZWxfcGFyYW1ldGVyX2Zvcl9wbWVtX29uX3lvdXJf
+c3lzdGVtCj4gCj4gLi4uZm9yIG1vcmUgaW5mby4KCldlbGwsIGl0IHNlZW1zIEkgZGlkIGV4YWN0
+bHkgZm9sbG93IHRoZSBpbmZvcm1hdGlvbiBpbiB0aGF0IGxpbmssCgpbICAgIDAuMDAwMDAwXSBC
+SU9TLXByb3ZpZGVkIHBoeXNpY2FsIFJBTSBtYXA6ClsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDog
+W21lbSAweDAwMDAwMDAwMDAwMDAwMDAtMHgwMDAwMDAwMDAwMDkzZmZmXSB1c2FibGUKWyAgICAw
+LjAwMDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDAwMDA5NDAwMC0weDAwMDAwMDAwMDAw
+OWZmZmZdIHJlc2VydmVkClsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAw
+MDAwZTAwMDAtMHgwMDAwMDAwMDAwMGZmZmZmXSByZXNlcnZlZApbICAgIDAuMDAwMDAwXSBCSU9T
+LWU4MjA6IFttZW0gMHgwMDAwMDAwMDAwMTAwMDAwLTB4MDAwMDAwMDA1YTdhMGZmZl0gdXNhYmxl
+ClsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwNWE3YTEwMDAtMHgwMDAw
+MDAwMDViNWUwZmZmXSByZXNlcnZlZApbICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgw
+MDAwMDAwMDViNWUxMDAwLTB4MDAwMDAwMDA3OTBmZWZmZl0gdXNhYmxlClsgICAgMC4wMDAwMDBd
+IEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwNzkwZmYwMDAtMHgwMDAwMDAwMDc5MWZlZmZmXSBy
+ZXNlcnZlZApbICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDc5MWZmMDAw
+LTB4MDAwMDAwMDA3YjVmZWZmZl0gQUNQSSBOVlMKWyAgICAwLjAwMDAwMF0gQklPUy1lODIwOiBb
+bWVtIDB4MDAwMDAwMDA3YjVmZjAwMC0weDAwMDAwMDAwN2I3ZmVmZmZdIEFDUEkgZGF0YQpbICAg
+IDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDdiN2ZmMDAwLTB4MDAwMDAwMDA3
+YjdmZmZmZl0gdXNhYmxlClsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAw
+N2I4MDAwMDAtMHgwMDAwMDAwMDhmZmZmZmZmXSByZXNlcnZlZApbICAgIDAuMDAwMDAwXSBCSU9T
+LWU4MjA6IFttZW0gMHgwMDAwMDAwMGZmODAwMDAwLTB4MDAwMDAwMDBmZmZmZmZmZl0gcmVzZXJ2
+ZWQKWyAgICAwLjAwMDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDEwMDAwMDAwMC0weDAw
+MDAwMDA4N2ZmZmZmZmZdIHVzYWJsZQoKV2hlcmUgNEcgaXMgZ29vZC4gVGhlbiwKClsgICAgMC4w
+MDAwMDBdIHVzZXItZGVmaW5lZCBwaHlzaWNhbCBSQU0gbWFwOgpbICAgIDAuMDAwMDAwXSB1c2Vy
+OiBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAwMDAwOTNmZmZdIHVzYWJsZQpbICAg
+IDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDAwMDA5NDAwMC0weDAwMDAwMDAwMDAwOWZm
+ZmZdIHJlc2VydmVkClsgICAgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMDAwMGUwMDAw
+LTB4MDAwMDAwMDAwMDBmZmZmZl0gcmVzZXJ2ZWQKWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAw
+eDAwMDAwMDAwMDAxMDAwMDAtMHgwMDAwMDAwMDVhN2EwZmZmXSB1c2FibGUKWyAgICAwLjAwMDAw
+MF0gdXNlcjogW21lbSAweDAwMDAwMDAwNWE3YTEwMDAtMHgwMDAwMDAwMDViNWUwZmZmXSByZXNl
+cnZlZApbICAgIDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDA1YjVlMTAwMC0weDAwMDAw
+MDAwNzkwZmVmZmZdIHVzYWJsZQpbICAgIDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDA3
+OTBmZjAwMC0weDAwMDAwMDAwNzkxZmVmZmZdIHJlc2VydmVkClsgICAgMC4wMDAwMDBdIHVzZXI6
+IFttZW0gMHgwMDAwMDAwMDc5MWZmMDAwLTB4MDAwMDAwMDA3YjVmZWZmZl0gQUNQSSBOVlMKWyAg
+ICAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwN2I1ZmYwMDAtMHgwMDAwMDAwMDdiN2Zl
+ZmZmXSBBQ1BJIGRhdGEKWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwN2I3ZmYw
+MDAtMHgwMDAwMDAwMDdiN2ZmZmZmXSB1c2FibGUKWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAw
+eDAwMDAwMDAwN2I4MDAwMDAtMHgwMDAwMDAwMDhmZmZmZmZmXSByZXNlcnZlZApbICAgIDAuMDAw
+MDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDBmZjgwMDAwMC0weDAwMDAwMDAwZmZmZmZmZmZdIHJl
+c2VydmVkClsgICAgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMTAwMDAwMDAwLTB4MDAw
+MDAwMDFmZmZmZmZmZl0gcGVyc2lzdGVudCAodHlwZSAxMikKWyAgICAwLjAwMDAwMF0gdXNlcjog
+W21lbSAweDAwMDAwMDAyMDAwMDAwMDAtMHgwMDAwMDAwODdmZmZmZmZmXSB1c2FibGUKClRoZSBk
+b2MgZGlkIG1lbnRpb24gdGhhdCDigJxUaGVyZSBzZWVtcyB0byBiZSBhbiBpc3N1ZSB3aXRoIENP
+TkZJR19LU0FOIGF0IHRoZSBtb21lbnQgaG93ZXZlci7igJ0Kd2l0aG91dCBtb3JlIGRldGFpbCB0
+aG91Z2guCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
+bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRwczov
+L2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
