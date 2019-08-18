@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DB9915C3
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Aug 2019 11:10:30 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA51A915CE
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Aug 2019 11:12:42 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C983A20260CCA;
-	Sun, 18 Aug 2019 02:12:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 105DE20260CEA;
+	Sun, 18 Aug 2019 02:14:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: None (no SPF record) identity=mailfrom;
@@ -17,30 +17,29 @@ Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3DF3B2021EBCB
- for <linux-nvdimm@lists.01.org>; Sun, 18 Aug 2019 02:12:04 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id AFC822021D300
+ for <linux-nvdimm@lists.01.org>; Sun, 18 Aug 2019 02:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
  :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=MphDKR16rmuINKbbfuGgsPxlH9912jWufK/S5NE9ukw=; b=nRfc65NdyjJ1PhbhTIl5UZYUBS
- bKySSGUBNKUyeCZ+kSieoTIMoHgmtFzIivwwhRbjS7AEvuqOvqYeARuAJkQfaq0tgNXjf9cMFkhvU
- hiVaW5xM2yUQ5g1uNDc5nxwBXbZ42jm0wRBJMHZ18GfbV9WP+TbOkL51BFswG9d4+YIEq63b+zjLr
- WRyhNPgFSD3K9Nq32PfU1ETICEsWZ9soG7OXenoXTo7RPH1hKIXsvDoeg8zFSQCwlpw2vWKJEraCS
- k2vYnnKsSk4wrCBBsJctRW2SHUJt8Q2R++jZ1agOOFAIdJMSc/I+IITn90/cEsLvudxE0EgtQaGEn
- FQkpDrZw==;
+ bh=Ybl6KWkI9r5RiELOPQNVwBgBcMfR1YS4dX2AUNxc4u0=; b=AzgRNbcmu8a6MZwuoiTuScTGjo
+ re7HmmJo0FyV4s7q+yx3NU78IRkpJbcuzl4lC3iaUMeyGKOHEX+eP9aunnP04z8WMn+zmL9R0Ts/D
+ vFHqGdCf6pKfcUkjEzAbb17peu97HD76/EQk1BjGuuOM3vtJy3Nqe8bp6YsdZKICTAvyzDvXzm+TQ
+ HtFyvU61DDFMNBtepPkuICsVgx5PCp/XZe7qXXhajE1vWCw8gJgsF5leIDeMlGD1OHK3aJ8C2Rus4
+ QbE+O6EgCfpHWOHUgDOqwYxXz+y1RD5Z3FN6DU37ZCy0IRkz8f3rFieIoHQVr5+nG6I8eRQgPVEKp
+ ATdz2K2w==;
 Received: from 213-225-6-198.nat.highway.a1.net ([213.225.6.198]
  helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
- id 1hzHCg-0007Yk-L8; Sun, 18 Aug 2019 09:10:23 +0000
+ id 1hzHEp-00018U-8I; Sun, 18 Aug 2019 09:12:35 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@mellanox.com>
-Subject: [PATCH 1/4] resource: add a not device managed
- request_free_mem_region variant
-Date: Sun, 18 Aug 2019 11:05:54 +0200
-Message-Id: <20190818090557.17853-2-hch@lst.de>
+Subject: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
+Date: Sun, 18 Aug 2019 11:05:55 +0200
+Message-Id: <20190818090557.17853-3-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190818090557.17853-1-hch@lst.de>
 References: <20190818090557.17853-1-hch@lst.de>
@@ -66,101 +65,74 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Factor out the guts of devm_request_free_mem_region so that we can
-implement both a device managed and a manually release version as
-tiny wrappers around it.
+The dev field in struct dev_pagemap is only used to print dev_name in
+two places, which are at best nice to have.  Just remove the field
+and thus the name in those two messages.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 ---
- include/linux/ioport.h |  2 ++
- kernel/resource.c      | 45 +++++++++++++++++++++++++++++-------------
- 2 files changed, 33 insertions(+), 14 deletions(-)
+ include/linux/memremap.h | 1 -
+ kernel/memremap.c        | 6 +-----
+ mm/page_alloc.c          | 2 +-
+ 3 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 5b6a7121c9f0..7bddddfc76d6 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -297,6 +297,8 @@ static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
- 
- struct resource *devm_request_free_mem_region(struct device *dev,
- 		struct resource *base, unsigned long size);
-+struct resource *request_free_mem_region(struct resource *base,
-+		unsigned long size, const char *name);
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 7ea4306503c5..74877e9d90ca 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1644,19 +1644,8 @@ void resource_list_free(struct list_head *head)
- EXPORT_SYMBOL(resource_list_free);
- 
- #ifdef CONFIG_DEVICE_PRIVATE
--/**
-- * devm_request_free_mem_region - find free region for device private memory
-- *
-- * @dev: device struct to bind the resource to
-- * @size: size in bytes of the device memory to add
-- * @base: resource tree to look in
-- *
-- * This function tries to find an empty range of physical address big enough to
-- * contain the new resource, so that it can later be hotplugged as ZONE_DEVICE
-- * memory, which in turn allocates struct pages.
-- */
--struct resource *devm_request_free_mem_region(struct device *dev,
--		struct resource *base, unsigned long size)
-+static struct resource *__request_free_mem_region(struct device *dev,
-+		struct resource *base, unsigned long size, const char *name)
+diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+index f8a5b2a19945..8f0013e18e14 100644
+--- a/include/linux/memremap.h
++++ b/include/linux/memremap.h
+@@ -109,7 +109,6 @@ struct dev_pagemap {
+ 	struct percpu_ref *ref;
+ 	struct percpu_ref internal_ref;
+ 	struct completion done;
+-	struct device *dev;
+ 	enum memory_type type;
+ 	unsigned int flags;
+ 	u64 pci_p2pdma_bus_offset;
+diff --git a/kernel/memremap.c b/kernel/memremap.c
+index 6ee03a816d67..600a14cbe663 100644
+--- a/kernel/memremap.c
++++ b/kernel/memremap.c
+@@ -96,7 +96,6 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
+ static void devm_memremap_pages_release(void *data)
  {
- 	resource_size_t end, addr;
- 	struct resource *res;
-@@ -1670,7 +1659,10 @@ struct resource *devm_request_free_mem_region(struct device *dev,
- 				REGION_DISJOINT)
- 			continue;
+ 	struct dev_pagemap *pgmap = data;
+-	struct device *dev = pgmap->dev;
+ 	struct resource *res = &pgmap->res;
+ 	unsigned long pfn;
+ 	int nid;
+@@ -123,8 +122,7 @@ static void devm_memremap_pages_release(void *data)
  
--		res = devm_request_mem_region(dev, addr, size, dev_name(dev));
-+		if (dev)
-+			res = devm_request_mem_region(dev, addr, size, name);
-+		else
-+			res = request_mem_region(addr, size, name);
- 		if (!res)
- 			return ERR_PTR(-ENOMEM);
- 		res->desc = IORES_DESC_DEVICE_PRIVATE_MEMORY;
-@@ -1679,7 +1671,32 @@ struct resource *devm_request_free_mem_region(struct device *dev,
- 
- 	return ERR_PTR(-ERANGE);
+ 	untrack_pfn(NULL, PHYS_PFN(res->start), resource_size(res));
+ 	pgmap_array_delete(res);
+-	dev_WARN_ONCE(dev, pgmap->altmap.alloc,
+-		      "%s: failed to free all reserved pages\n", __func__);
++	WARN_ONCE(pgmap->altmap.alloc, "failed to free all reserved pages\n");
  }
-+
-+/**
-+ * devm_request_free_mem_region - find free region for device private memory
-+ *
-+ * @dev: device struct to bind the resource to
-+ * @size: size in bytes of the device memory to add
-+ * @base: resource tree to look in
-+ *
-+ * This function tries to find an empty range of physical address big enough to
-+ * contain the new resource, so that it can later be hotplugged as ZONE_DEVICE
-+ * memory, which in turn allocates struct pages.
-+ */
-+struct resource *devm_request_free_mem_region(struct device *dev,
-+		struct resource *base, unsigned long size)
-+{
-+	return __request_free_mem_region(dev, base, size, dev_name(dev));
-+}
- EXPORT_SYMBOL_GPL(devm_request_free_mem_region);
-+
-+struct resource *request_free_mem_region(struct resource *base,
-+		unsigned long size, const char *name)
-+{
-+	return __request_free_mem_region(NULL, base, size, name);
-+}
-+EXPORT_SYMBOL_GPL(request_free_mem_region);
-+
- #endif /* CONFIG_DEVICE_PRIVATE */
  
- static int __init strict_iomem(char *str)
+ static void dev_pagemap_percpu_release(struct percpu_ref *ref)
+@@ -245,8 +243,6 @@ void *devm_memremap_pages(struct device *dev, struct dev_pagemap *pgmap)
+ 		goto err_array;
+ 	}
+ 
+-	pgmap->dev = dev;
+-
+ 	error = xa_err(xa_store_range(&pgmap_array, PHYS_PFN(res->start),
+ 				PHYS_PFN(res->end), pgmap, GFP_KERNEL));
+ 	if (error)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 272c6de1bf4e..b39baa2b1faf 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5982,7 +5982,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+ 		}
+ 	}
+ 
+-	pr_info("%s initialised, %lu pages in %ums\n", dev_name(pgmap->dev),
++	pr_info("%s initialised %lu pages in %ums\n", __func__,
+ 		size, jiffies_to_msecs(jiffies - start));
+ }
+ 
 -- 
 2.20.1
 
