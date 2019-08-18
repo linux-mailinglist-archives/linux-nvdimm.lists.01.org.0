@@ -1,70 +1,37 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1CB291451
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Aug 2019 05:25:36 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096BA915AB
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Aug 2019 11:03:44 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F4229202216E1;
-	Sat, 17 Aug 2019 20:27:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1E5AA2021D2FB;
+	Sun, 18 Aug 2019 02:05:18 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
- envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=213.95.11.211;
+ helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3D25A2021EBF2
- for <linux-nvdimm@lists.01.org>; Sat, 17 Aug 2019 20:27:10 -0700 (PDT)
-Received: by mail-qt1-x843.google.com with SMTP id z4so10549904qtc.3
- for <linux-nvdimm@lists.01.org>; Sat, 17 Aug 2019 20:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=r3b3h8odkiIqkmQj2ElqAUg66aCs14UyDf1MJRMWwp8=;
- b=dY9He6fmctVtWY64cTT1RY/Z3qp0ZFJntzWCqjuhgq8Fp3NMhZ7xlPF6Kijr0mjdEa
- PR/dMG6iicUMKxO6E0Ha4pAS4l6LXYoxwxiUBgmbD2pmTUQwUzxpEUQbifIva2SCS2M2
- ztkxNWxiizUmT8WPEpNOzQAHShq8ZpXqcfOzFHfprkB9lwspeMps1mMre4IcuMAxeLyD
- efo6YuA4FHyPqZGQsq4dk3CIPau8b7JlYKJwIJXw3XsOt/di/C/2COkYtYxc/vEJtLJi
- rb66ynHcmrpe0Q9sug8IYgg3Rtloid65FEdEAZ4jQAwoC+PseKGkPUrvWkMPCPllznkg
- ncXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=r3b3h8odkiIqkmQj2ElqAUg66aCs14UyDf1MJRMWwp8=;
- b=LqmBodXUXsp7//xXEqS2vF/K/ue1jBqtFt537L4zgP3B6dOKMHVk7fQKSEN9m38Qbv
- 55VJkMFRW4DJdXruM1Tbo33Ly9RtjXXgKNukFSMDzlXhpDCukWbH9eba1N/59kaOqY3R
- eG9Xm8tlo/LIl/AukE9g7pqdfziCpUsbiS5sVi2mQ60LkafQo1POoKYIF8wiohp15SoT
- k7zsFAJ26zv7DhKUrIVKN4y1yubA2Mr8MrBDujztOV+UsfRlnzHHvDVj6LaTHXDBANLS
- 6iIiyKKqQCxkyvegPP5eWjl7pO9jzG9TaTnq/XTodGTTSYmgGw7pj1UYUPRGs1lk4hVS
- tfKw==
-X-Gm-Message-State: APjAAAXdSb4+DAWJ2Jl13UBJc4se1fHTe0ryuXcePpWKdCV99JRfHPcr
- Pb08+9sfMN2gPocgwOH357pC5Q==
-X-Google-Smtp-Source: APXvYqyAGvZQ2KIYulQCr8XmqdCw3d99xwkzFzAflWlDRBLNgjIOX2QVBp2vn4E4vyZEYE6O0f7q8Q==
-X-Received: by 2002:ac8:289b:: with SMTP id i27mr15581485qti.67.1566098731470; 
- Sat, 17 Aug 2019 20:25:31 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id f20sm7094444qtf.68.2019.08.17.20.25.29
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 17 Aug 2019 20:25:30 -0700 (PDT)
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: devm_memremap_pages() triggers a kasan_add_zero_shadow() warning
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <CAPcyv4gofF-Xf0KTLH4EUkxuXdRO3ha-w+GoxgmiW7gOdS2nXQ@mail.gmail.com>
-Date: Sat, 17 Aug 2019 23:25:28 -0400
-Message-Id: <0AC959D7-5BCB-4A81-BBDC-990E9826EB45@lca.pw>
-References: <1565991345.8572.28.camel@lca.pw>
- <CAPcyv4i9VFLSrU75U0gQH6K2sz8AZttqvYidPdDcS7sU2SFaCA@mail.gmail.com>
- <0FB85A78-C2EE-4135-9E0F-D5623CE6EA47@lca.pw>
- <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
- <E7A04694-504D-4FB3-9864-03C2CBA3898E@lca.pw>
- <CAPcyv4gofF-Xf0KTLH4EUkxuXdRO3ha-w+GoxgmiW7gOdS2nXQ@mail.gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>
-X-Mailer: Apple Mail (2.3445.104.11)
+ by ml01.01.org (Postfix) with ESMTPS id EB1F52021C1B7
+ for <linux-nvdimm@lists.01.org>; Sun, 18 Aug 2019 02:05:15 -0700 (PDT)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 175DB227A81; Sun, 18 Aug 2019 11:03:35 +0200 (CEST)
+Date: Sun, 18 Aug 2019 11:03:34 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 1/4] resource: add a not device managed
+ request_free_mem_region variant
+Message-ID: <20190818090334.GA20462@lst.de>
+References: <20190816065434.2129-1-hch@lst.de>
+ <20190816065434.2129-2-hch@lst.de>
+ <20190816140134.1f3225bed9bf2734c03341b1@linux-foundation.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190816140134.1f3225bed9bf2734c03341b1@linux-foundation.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,106 +43,30 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- kasan-dev@googlegroups.com, Linux MM <linux-mm@kvack.org>,
- Andrey Ryabinin <aryabinin@virtuozzo.com>,
- Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
+ Bharata B Rao <bharata@linux.ibm.com>, linux-mm@kvack.org,
+ Jason Gunthorpe <jgg@mellanox.com>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Cgo+IE9uIEF1ZyAxNywgMjAxOSwgYXQgMTI6NTkgUE0sIERhbiBXaWxsaWFtcyA8ZGFuLmoud2ls
-bGlhbXNAaW50ZWwuY29tPiB3cm90ZToKPiAKPiBPbiBTYXQsIEF1ZyAxNywgMjAxOSBhdCA0OjEz
-IEFNIFFpYW4gQ2FpIDxjYWlAbGNhLnB3PiB3cm90ZToKPj4gCj4+IAo+PiAKPj4+IE9uIEF1ZyAx
-NiwgMjAxOSwgYXQgMTE6NTcgUE0sIERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwu
-Y29tPiB3cm90ZToKPj4+IAo+Pj4gT24gRnJpLCBBdWcgMTYsIDIwMTkgYXQgODozNCBQTSBRaWFu
-IENhaSA8Y2FpQGxjYS5wdz4gd3JvdGU6Cj4+Pj4gCj4+Pj4gCj4+Pj4gCj4+Pj4+IE9uIEF1ZyAx
-NiwgMjAxOSwgYXQgNTo0OCBQTSwgRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5j
-b20+IHdyb3RlOgo+Pj4+PiAKPj4+Pj4gT24gRnJpLCBBdWcgMTYsIDIwMTkgYXQgMjozNiBQTSBR
-aWFuIENhaSA8Y2FpQGxjYS5wdz4gd3JvdGU6Cj4+Pj4+PiAKPj4+Pj4+IEV2ZXJ5IHNvIG9mdGVu
-IHJlY2VudGx5LCBib290aW5nIEludGVsIENQVSBzZXJ2ZXIgb24gbGludXgtbmV4dCB0cmlnZ2Vy
-cyB0aGlzCj4+Pj4+PiB3YXJuaW5nLiBUcnlpbmcgdG8gZmlndXJlIG91dCBpZiAgdGhlIGNvbW1p
-dCA3Y2M3ODY3ZmIwNjEKPj4+Pj4+ICgibW0vZGV2bV9tZW1yZW1hcF9wYWdlczogZW5hYmxlIHN1
-Yi1zZWN0aW9uIHJlbWFwIikgaXMgdGhlIGN1bHByaXQgaGVyZS4KPj4+Pj4+IAo+Pj4+Pj4gIyAu
-L3NjcmlwdHMvZmFkZHIybGluZSB2bWxpbnV4IGRldm1fbWVtcmVtYXBfcGFnZXMrMHg4OTQvMHhj
-NzAKPj4+Pj4+IGRldm1fbWVtcmVtYXBfcGFnZXMrMHg4OTQvMHhjNzA6Cj4+Pj4+PiBkZXZtX21l
-bXJlbWFwX3BhZ2VzIGF0IG1tL21lbXJlbWFwLmM6MzA3Cj4+Pj4+IAo+Pj4+PiBQcmV2aW91c2x5
-IHRoZSBmb3JjZWQgc2VjdGlvbiBhbGlnbm1lbnQgaW4gZGV2bV9tZW1yZW1hcF9wYWdlcygpIHdv
-dWxkCj4+Pj4+IGNhdXNlIHRoZSBpbXBsZW1lbnRhdGlvbiB0byBuZXZlciB2aW9sYXRlIHRoZSBL
-QVNBTl9TSEFET1dfU0NBTEVfU0laRQo+Pj4+PiAoMTJLIG9uIHg4NikgY29uc3RyYWludC4KPj4+
-Pj4gCj4+Pj4+IENhbiB5b3UgcHJvdmlkZSBhIGR1bXAgb2YgL3Byb2MvaW9tZW0/IEknbSBjdXJp
-b3VzIHdoYXQgcmVzb3VyY2UgaXMKPj4+Pj4gdHJpZ2dlcmluZyBzdWNoIGEgc21hbGwgYWxpZ25t
-ZW50IGdyYW51bGFyaXR5Lgo+Pj4+IAo+Pj4+IFRoaXMgaXMgd2l0aCBtZW1tYXA9NEchNEcgLAo+
-Pj4+IAo+Pj4+ICMgY2F0IC9wcm9jL2lvbWVtCj4+PiBbLi5dCj4+Pj4gMTAwMDAwMDAwLTE1NWRm
-ZmZmZiA6IFBlcnNpc3RlbnQgTWVtb3J5IChsZWdhY3kpCj4+Pj4gMTAwMDAwMDAwLTE1NWRmZmZm
-ZiA6IG5hbWVzcGFjZTAuMAo+Pj4+IDE1NWUwMDAwMC0xNTk4MmJmZmYgOiBTeXN0ZW0gUkFNCj4+
-Pj4gMTU1ZTAwMDAwLTE1NmEwMGZhMCA6IEtlcm5lbCBjb2RlCj4+Pj4gMTU2YTAwZmExLTE1NzY1
-ZDY3ZiA6IEtlcm5lbCBkYXRhCj4+Pj4gMTU3ODM3MDAwLTE1OTdmZmZmZiA6IEtlcm5lbCBic3MK
-Pj4+PiAxNTk4MmMwMDAtMWZmZmZmZmZmIDogUGVyc2lzdGVudCBNZW1vcnkgKGxlZ2FjeSkKPj4+
-PiAyMDAwMDAwMDAtODdmZmZmZmZmIDogU3lzdGVtIFJBTQo+Pj4gCj4+PiBPaywgbG9va3MgbGlr
-ZSA0RyBpcyBiYWQgY2hvaWNlIHRvIGxhbmQgdGhlIHBtZW0gZW11bGF0aW9uIG9uIHRoaXMKPj4+
-IHN5c3RlbSBiZWNhdXNlIGl0IGNvbGxpZGVzIHdpdGggd2hlcmUgdGhlIGtlcm5lbCBpcyBkZXBs
-b3llZCBhbmQgZ2V0cwo+Pj4gYnJva2VuIGludG8gdGlueSBwaWVjZXMgdGhhdCB2aW9sYXRlIGth
-c2FuJ3MuIFRoaXMgaXMgYSBrbm93biBwcm9ibGVtCj4+PiB3aXRoIG1lbW1hcD0uIFlvdSBuZWVk
-IHRvIHBpY2sgYW4gbWVtb3J5IHJhbmdlIHRoYXQgZG9lcyBub3QgY29sbGlkZQo+Pj4gd2l0aCBh
-bnl0aGluZyBlbHNlLiBTZWU6Cj4+PiAKPj4+ICAgaHR0cHM6Ly9udmRpbW0ud2lraS5rZXJuZWwu
-b3JnL2hvd190b19jaG9vc2VfdGhlX2NvcnJlY3RfbWVtbWFwX2tlcm5lbF9wYXJhbWV0ZXJfZm9y
-X3BtZW1fb25feW91cl9zeXN0ZW0KPj4+IAo+Pj4gLi4uZm9yIG1vcmUgaW5mby4KPj4gCj4+IFdl
-bGwsIGl0IHNlZW1zIEkgZGlkIGV4YWN0bHkgZm9sbG93IHRoZSBpbmZvcm1hdGlvbiBpbiB0aGF0
-IGxpbmssCj4+IAo+PiBbICAgIDAuMDAwMDAwXSBCSU9TLXByb3ZpZGVkIHBoeXNpY2FsIFJBTSBt
-YXA6Cj4+IFsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwMDAwMDAwMDAt
-MHgwMDAwMDAwMDAwMDkzZmZmXSB1c2FibGUKPj4gWyAgICAwLjAwMDAwMF0gQklPUy1lODIwOiBb
-bWVtIDB4MDAwMDAwMDAwMDA5NDAwMC0weDAwMDAwMDAwMDAwOWZmZmZdIHJlc2VydmVkCj4+IFsg
-ICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwMDAwZTAwMDAtMHgwMDAwMDAw
-MDAwMGZmZmZmXSByZXNlcnZlZAo+PiBbICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgw
-MDAwMDAwMDAwMTAwMDAwLTB4MDAwMDAwMDA1YTdhMGZmZl0gdXNhYmxlCj4+IFsgICAgMC4wMDAw
-MDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwNWE3YTEwMDAtMHgwMDAwMDAwMDViNWUwZmZm
-XSByZXNlcnZlZAo+PiBbICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDVi
-NWUxMDAwLTB4MDAwMDAwMDA3OTBmZWZmZl0gdXNhYmxlCj4+IFsgICAgMC4wMDAwMDBdIEJJT1Mt
-ZTgyMDogW21lbSAweDAwMDAwMDAwNzkwZmYwMDAtMHgwMDAwMDAwMDc5MWZlZmZmXSByZXNlcnZl
-ZAo+PiBbICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDc5MWZmMDAwLTB4
-MDAwMDAwMDA3YjVmZWZmZl0gQUNQSSBOVlMKPj4gWyAgICAwLjAwMDAwMF0gQklPUy1lODIwOiBb
-bWVtIDB4MDAwMDAwMDA3YjVmZjAwMC0weDAwMDAwMDAwN2I3ZmVmZmZdIEFDUEkgZGF0YQo+PiBb
-ICAgIDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDdiN2ZmMDAwLTB4MDAwMDAw
-MDA3YjdmZmZmZl0gdXNhYmxlCj4+IFsgICAgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAw
-MDAwMDAwN2I4MDAwMDAtMHgwMDAwMDAwMDhmZmZmZmZmXSByZXNlcnZlZAo+PiBbICAgIDAuMDAw
-MDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMGZmODAwMDAwLTB4MDAwMDAwMDBmZmZmZmZm
-Zl0gcmVzZXJ2ZWQKPj4gWyAgICAwLjAwMDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDEw
-MDAwMDAwMC0weDAwMDAwMDA4N2ZmZmZmZmZdIHVzYWJsZQo+PiAKPj4gV2hlcmUgNEcgaXMgZ29v
-ZC4gVGhlbiwKPj4gCj4+IFsgICAgMC4wMDAwMDBdIHVzZXItZGVmaW5lZCBwaHlzaWNhbCBSQU0g
-bWFwOgo+PiBbICAgIDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAw
-MDAwMDAwMDAwOTNmZmZdIHVzYWJsZQo+PiBbICAgIDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAw
-MDAwMDAwMDA5NDAwMC0weDAwMDAwMDAwMDAwOWZmZmZdIHJlc2VydmVkCj4+IFsgICAgMC4wMDAw
-MDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMDAwMGUwMDAwLTB4MDAwMDAwMDAwMDBmZmZmZl0gcmVz
-ZXJ2ZWQKPj4gWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwMDAxMDAwMDAtMHgw
-MDAwMDAwMDVhN2EwZmZmXSB1c2FibGUKPj4gWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAw
-MDAwMDAwNWE3YTEwMDAtMHgwMDAwMDAwMDViNWUwZmZmXSByZXNlcnZlZAo+PiBbICAgIDAuMDAw
-MDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDA1YjVlMTAwMC0weDAwMDAwMDAwNzkwZmVmZmZdIHVz
-YWJsZQo+PiBbICAgIDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDA3OTBmZjAwMC0weDAw
-MDAwMDAwNzkxZmVmZmZdIHJlc2VydmVkCj4+IFsgICAgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgw
-MDAwMDAwMDc5MWZmMDAwLTB4MDAwMDAwMDA3YjVmZWZmZl0gQUNQSSBOVlMKPj4gWyAgICAwLjAw
-MDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwN2I1ZmYwMDAtMHgwMDAwMDAwMDdiN2ZlZmZmXSBB
-Q1BJIGRhdGEKPj4gWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwN2I3ZmYwMDAt
-MHgwMDAwMDAwMDdiN2ZmZmZmXSB1c2FibGUKPj4gWyAgICAwLjAwMDAwMF0gdXNlcjogW21lbSAw
-eDAwMDAwMDAwN2I4MDAwMDAtMHgwMDAwMDAwMDhmZmZmZmZmXSByZXNlcnZlZAo+PiBbICAgIDAu
-MDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDBmZjgwMDAwMC0weDAwMDAwMDAwZmZmZmZmZmZd
-IHJlc2VydmVkCj4+IFsgICAgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMTAwMDAwMDAw
-LTB4MDAwMDAwMDFmZmZmZmZmZl0gcGVyc2lzdGVudCAodHlwZSAxMikKPj4gWyAgICAwLjAwMDAw
-MF0gdXNlcjogW21lbSAweDAwMDAwMDAyMDAwMDAwMDAtMHgwMDAwMDAwODdmZmZmZmZmXSB1c2Fi
-bGUKPj4gCj4+IFRoZSBkb2MgZGlkIG1lbnRpb24gdGhhdCDigJxUaGVyZSBzZWVtcyB0byBiZSBh
-biBpc3N1ZSB3aXRoIENPTkZJR19LU0FOIGF0IHRoZSBtb21lbnQgaG93ZXZlci7igJ0KPj4gd2l0
-aG91dCBtb3JlIGRldGFpbCB0aG91Z2guCj4gCj4gRG9lcyBkaXNhYmxpbmcgQ09ORklHX1JBTkRP
-TUlaRV9CQVNFIGhlbHA/IE1heWJlIHRoYXQgd29ya2Fyb3VuZCBoYXMKPiByZWdyZXNzZWQuIEVm
-ZmVjdGl2ZWx5IHdlIG5lZWQgdG8gZmluZCB3aGF0IGlzIGNhdXNpbmcgdGhlIGtlcm5lbCB0bwo+
-IHNvbWV0aW1lcyBiZSBwbGFjZWQgaW4gdGhlIG1pZGRsZSBvZiBhIGN1c3RvbSByZXNlcnZlZCBt
-ZW1tYXA9IHJhbmdlLgoKWWVzLCBkaXNhYmxpbmcgS0FTTFIgd29ya3MgZ29vZCBzbyBmYXIuIEFz
-c3VtaW5nIHRoZSB3b3JrYXJvdW5kLCBpLmUuLCBmMjg0NDI0OTdiNWMKKOKAnHg4Ni9ib290OiBG
-aXggS0FTTFIgYW5kIG1lbW1hcD0gY29sbGlzaW9u4oCdKSBpcyBjb3JyZWN0LgoKVGhlIG9ubHkg
-b3RoZXIgY29tbWl0IHRoYXQgbWlnaHQgcmVncmVzcyBpdCBmcm9tIG15IHJlc2VhcmNoIHNvIGZh
-ciBpcywKCmQ1MmU3ZDVhOTUyYyAoIng4Ni9LQVNMUjogUGFyc2UgYWxsICdtZW1tYXA9JyBib290
-IG9wdGlvbiBlbnRyaWVz4oCdKQoKCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3Rz
-LjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGlt
-bQo=
+On Fri, Aug 16, 2019 at 02:01:34PM -0700, Andrew Morton wrote:
+> On Fri, 16 Aug 2019 08:54:31 +0200 Christoph Hellwig <hch@lst.de> wrote:
+> 
+> > Just add a simple macro that passes a NULL dev argument to
+> > dev_request_free_mem_region, and call request_mem_region in the
+> > function for that particular case.
+> 
+> Nit:
+> 
+> > +struct resource *request_free_mem_region(struct resource *base,
+> > +		unsigned long size, const char *name);
+> 
+> This isn't a macro ;)
+
+Oops, the changelog needs updating vs the first version of course.
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
