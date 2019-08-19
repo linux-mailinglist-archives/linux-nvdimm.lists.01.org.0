@@ -1,82 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B6D92521
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 15:35:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B50926C3
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 16:32:27 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B10FC20216B9C;
-	Mon, 19 Aug 2019 06:36:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E0C0E20216B78;
+	Mon, 19 Aug 2019 07:33:51 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C9AE720216B77
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 06:36:44 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7JDXbCX003863
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:35:18 -0400
-Received: from e35.co.us.ibm.com (e35.co.us.ibm.com [32.97.110.153])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ufu5tmdj5-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:35:17 -0400
-Received: from localhost
- by e35.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Mon, 19 Aug 2019 14:35:16 +0100
-Received: from b03cxnp08027.gho.boulder.ibm.com (9.17.130.19)
- by e35.co.us.ibm.com (192.168.1.135) with IBM ESMTP SMTP Gateway: Authorized
- Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 19 Aug 2019 14:35:15 +0100
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7JDZEt231195432
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Aug 2019 13:35:14 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 07DD36E052;
- Mon, 19 Aug 2019 13:35:14 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6F8C76E04E;
- Mon, 19 Aug 2019 13:35:12 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.41.175])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 19 Aug 2019 13:35:12 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH v6 7/7] libnvdimm/dax: Pick the right alignment default when
- creating dax devices
-Date: Mon, 19 Aug 2019 19:04:51 +0530
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190819133451.19737-1-aneesh.kumar@linux.ibm.com>
-References: <20190819133451.19737-1-aneesh.kumar@linux.ibm.com>
+ by ml01.01.org (Postfix) with ESMTPS id 853E920214B3A
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 07:33:50 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 4804A300413D;
+ Mon, 19 Aug 2019 14:32:23 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C58AB1C930;
+ Mon, 19 Aug 2019 14:32:22 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 2/3] libnvdimm/security: Tighten scope of nvdimm->busy vs
+ security operations
+References: <156583201347.2815870.4687949334637966672.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156583202386.2815870.16611751329252858110.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x49zhk8bzuh.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4iPBO9atdr_LdHNt=tCgjh-j_HyKXaCdUkWxb_J7OCcxg@mail.gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Mon, 19 Aug 2019 10:32:22 -0400
+In-Reply-To: <CAPcyv4iPBO9atdr_LdHNt=tCgjh-j_HyKXaCdUkWxb_J7OCcxg@mail.gmail.com>
+ (Dan Williams's message of "Fri, 16 Aug 2019 14:02:19 -0700")
+Message-ID: <x49d0h1usy1.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19081913-0012-0000-0000-0000175D09AD
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011617; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01249081; UDB=6.00659355; IPR=6.01030608; 
- MB=3.00028231; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-19 13:35:16
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081913-0013-0000-0000-0000588A7159
-Message-Id: <20190819133451.19737-8-aneesh.kumar@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-19_03:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908190154
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.46]); Mon, 19 Aug 2019 14:32:23 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,296 +57,44 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Allow arch to provide the supported alignments and use hugepage alignment only
-if we support hugepage. Right now we depend on compile time configs whereas this
-patch switch this to runtime discovery.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Architectures like ppc64 can have THP enabled in code, but then can have
-hugepage size disabled by the hypervisor. This allows us to create dax devices
-with PAGE_SIZE alignment in this case.
+> On Fri, Aug 16, 2019 at 1:49 PM Jeff Moyer <jmoyer@redhat.com> wrote:
+>>
+>> Dan Williams <dan.j.williams@intel.com> writes:
+>>
+>> > The blanket blocking of all security operations while the DIMM is in
+>> > active use in a region is too restrictive. The only security operations
+>> > that need to be aware of the ->busy state are those that mutate the
+>> > state of data, i.e. erase and overwrite.
+>> >
+>> > Refactor the ->busy checks to be applied at the entry common entry point
+>> > in __security_store() rather than each of the helper routines.
+>>
+>> I'm not sure this buys you much.  Did you test this on actual hardware
+>> to make sure your assumptions are correct?  I guess the worst case is we
+>> get an "invalid security state" error back from the firmware....
+>>
+>> Still, what's the motivation for this?
+>
+> The motivation was when I went to test setting the frozen state and
+> found that it complained about the DIMM being active. There's nothing
+> wrong with freezing security while the DIMM is mapped. ...but then I
+> somehow managed to write this generalized commit message that left out
+> the explicit failure I was worried about. Yes, moved too fast, but the
+> motivation is "allow freeze while active" and centralize the ->busy
+> check so it's just one function to review that common constraint.
 
-Existing dax namespace with alignment larger than PAGE_SIZE will fail to
-initialize in this specific case. We still allow fsdax namespace initialization.
+OK, thanks for the info.
 
-With respect to identifying whether to enable hugepage fault for a dax device,
-if THP is enabled during compile, we default to taking hugepage fault and in dax
-fault handler if we find the fault size > alignment we retry with PAGE_SIZE
-fault size.
-
-This also addresses the below failure scenario on ppc64
-
-ndctl create-namespace --mode=devdax  | grep align
- "align":16777216,
- "align":16777216
-
-cat /sys/devices/ndbus0/region0/dax0.0/supported_alignments
- 65536 16777216
-
-daxio.static-debug  -z -o /dev/dax0.0
-  Bus error (core dumped)
-
-  $ dmesg | tail
-   lpar: Failed hash pte insert with error -4
-   hash-mmu: mm: Hashing failure ! EA=0x7fff17000000 access=0x8000000000000006 current=daxio
-   hash-mmu:     trap=0x300 vsid=0x22cb7a3 ssize=1 base psize=2 psize 10 pte=0xc000000501002b86
-   daxio[3860]: bus error (7) at 7fff17000000 nip 7fff973c007c lr 7fff973bff34 code 2 in libpmem.so.1.0.0[7fff973b0000+20000]
-   daxio[3860]: code: 792945e4 7d494b78 e95f0098 7d494b78 f93f00a0 4800012c e93f0088 f93f0120
-   daxio[3860]: code: e93f00a0 f93f0128 e93f0120 e95f0128 <f9490000> e93f0088 39290008 f93f0110
-
-The failure was due to guest kernel using wrong page size.
-
-The namespaces created with 16M alignment will appear as below on a config with
-16M page size disabled.
-
-$ ndctl list -Ni
-[
-  {
-    "dev":"namespace0.1",
-    "mode":"fsdax",
-    "map":"dev",
-    "size":5351931904,
-    "uuid":"fc6e9667-461a-4718-82b4-69b24570bddb",
-    "align":16777216,
-    "blockdev":"pmem0.1",
-    "supported_alignments":[
-      65536
-    ]
-  },
-  {
-    "dev":"namespace0.0",
-    "mode":"fsdax",    <==== devdax 16M alignment marked disabled.
-    "map":"mem",
-    "size":5368709120,
-    "uuid":"a4bdf81a-f2ee-4bc6-91db-7b87eddd0484",
-    "state":"disabled"
-  }
-]
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/libnvdimm.h |  9 ++++++++
- arch/powerpc/mm/Makefile             |  1 +
- arch/powerpc/mm/nvdimm.c             | 34 ++++++++++++++++++++++++++++
- arch/x86/include/asm/libnvdimm.h     | 19 ++++++++++++++++
- drivers/nvdimm/nd.h                  |  6 -----
- drivers/nvdimm/pfn_devs.c            | 32 +++++++++++++++++++++++++-
- include/linux/huge_mm.h              |  7 +++++-
- 7 files changed, 100 insertions(+), 8 deletions(-)
- create mode 100644 arch/powerpc/include/asm/libnvdimm.h
- create mode 100644 arch/powerpc/mm/nvdimm.c
- create mode 100644 arch/x86/include/asm/libnvdimm.h
-
-diff --git a/arch/powerpc/include/asm/libnvdimm.h b/arch/powerpc/include/asm/libnvdimm.h
-new file mode 100644
-index 000000000000..d35fd7f48603
---- /dev/null
-+++ b/arch/powerpc/include/asm/libnvdimm.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_POWERPC_LIBNVDIMM_H
-+#define _ASM_POWERPC_LIBNVDIMM_H
-+
-+#define nd_pfn_supported_alignments nd_pfn_supported_alignments
-+extern unsigned long *nd_pfn_supported_alignments(void);
-+extern unsigned long nd_pfn_default_alignment(void);
-+
-+#endif
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 0f499db315d6..42e4a399ba5d 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -20,3 +20,4 @@ obj-$(CONFIG_HIGHMEM)		+= highmem.o
- obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
- obj-$(CONFIG_PPC_PTDUMP)	+= ptdump/
- obj-$(CONFIG_KASAN)		+= kasan/
-+obj-$(CONFIG_NVDIMM_PFN)		+= nvdimm.o
-diff --git a/arch/powerpc/mm/nvdimm.c b/arch/powerpc/mm/nvdimm.c
-new file mode 100644
-index 000000000000..a29a4510715e
---- /dev/null
-+++ b/arch/powerpc/mm/nvdimm.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <asm/pgtable.h>
-+#include <asm/page.h>
-+
-+#include <linux/mm.h>
-+/*
-+ * We support only pte and pmd mappings for now.
-+ */
-+const unsigned long *nd_pfn_supported_alignments(void)
-+{
-+	static unsigned long supported_alignments[3];
-+
-+	supported_alignments[0] = PAGE_SIZE;
-+
-+	if (has_transparent_hugepage())
-+		supported_alignments[1] = HPAGE_PMD_SIZE;
-+	else
-+		supported_alignments[1] = 0;
-+
-+	supported_alignments[2] = 0;
-+	return supported_alignments;
-+}
-+
-+/*
-+ * Use pmd mapping if supported as default alignment
-+ */
-+unsigned long nd_pfn_default_alignment(void)
-+{
-+
-+	if (has_transparent_hugepage())
-+		return HPAGE_PMD_SIZE;
-+	return PAGE_SIZE;
-+}
-diff --git a/arch/x86/include/asm/libnvdimm.h b/arch/x86/include/asm/libnvdimm.h
-new file mode 100644
-index 000000000000..3d5361db9164
---- /dev/null
-+++ b/arch/x86/include/asm/libnvdimm.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_X86_LIBNVDIMM_H
-+#define _ASM_X86_LIBNVDIMM_H
-+
-+static inline unsigned long nd_pfn_default_alignment(void)
-+{
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	return HPAGE_PMD_SIZE;
-+#else
-+	return PAGE_SIZE;
-+#endif
-+}
-+
-+static inline unsigned long nd_altmap_align_size(unsigned long nd_align)
-+{
-+	return PMD_SIZE;
-+}
-+
-+#endif
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index e89af4b2d8e9..401a78b02116 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -289,12 +289,6 @@ static inline struct device *nd_btt_create(struct nd_region *nd_region)
- struct nd_pfn *to_nd_pfn(struct device *dev);
- #if IS_ENABLED(CONFIG_NVDIMM_PFN)
- 
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--#define PFN_DEFAULT_ALIGNMENT HPAGE_PMD_SIZE
--#else
--#define PFN_DEFAULT_ALIGNMENT PAGE_SIZE
--#endif
--
- int nd_pfn_probe(struct device *dev, struct nd_namespace_common *ndns);
- bool is_nd_pfn(struct device *dev);
- struct device *nd_pfn_create(struct nd_region *nd_region);
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 22db77ac3d0e..7dc0b5da4c6b 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -10,6 +10,7 @@
- #include <linux/slab.h>
- #include <linux/fs.h>
- #include <linux/mm.h>
-+#include <asm/libnvdimm.h>
- #include "nd-core.h"
- #include "pfn.h"
- #include "nd.h"
-@@ -103,6 +104,8 @@ static ssize_t align_show(struct device *dev,
- 	return sprintf(buf, "%ld\n", nd_pfn->align);
- }
- 
-+#ifndef nd_pfn_supported_alignments
-+#define nd_pfn_supported_alignments nd_pfn_supported_alignments
- static const unsigned long *nd_pfn_supported_alignments(void)
- {
- 	/*
-@@ -125,6 +128,7 @@ static const unsigned long *nd_pfn_supported_alignments(void)
- 
- 	return data;
- }
-+#endif
- 
- static ssize_t align_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t len)
-@@ -302,7 +306,7 @@ struct device *nd_pfn_devinit(struct nd_pfn *nd_pfn,
- 		return NULL;
- 
- 	nd_pfn->mode = PFN_MODE_NONE;
--	nd_pfn->align = PFN_DEFAULT_ALIGNMENT;
-+	nd_pfn->align = nd_pfn_default_alignment();
- 	dev = &nd_pfn->dev;
- 	device_initialize(&nd_pfn->dev);
- 	if (ndns && !__nd_attach_ndns(&nd_pfn->dev, ndns, &nd_pfn->ndns)) {
-@@ -412,6 +416,20 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
- 	return 0;
- }
- 
-+static bool nd_supported_alignment(unsigned long align)
-+{
-+	int i;
-+	const unsigned long *supported = nd_pfn_supported_alignments();
-+
-+	if (align == 0)
-+		return false;
-+
-+	for (i = 0; supported[i]; i++)
-+		if (align == supported[i])
-+			return true;
-+	return false;
-+}
-+
- /**
-  * nd_pfn_validate - read and validate info-block
-  * @nd_pfn: fsdax namespace runtime state / properties
-@@ -496,6 +514,18 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 		return -EOPNOTSUPP;
- 	}
- 
-+	/*
-+	 * Check whether the we support the alignment. For Dax if the
-+	 * superblock alignment is not matching, we won't initialize
-+	 * the device.
-+	 */
-+	if (!nd_supported_alignment(align) &&
-+	    !memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN)) {
-+		dev_err(&nd_pfn->dev, "init failed, alignment mismatch: "
-+			"%ld:%ld\n", nd_pfn->align, align);
-+		return -EOPNOTSUPP;
-+	}
-+
- 	if (!nd_pfn->uuid) {
- 		/*
- 		 * When probing a namepace via nd_pfn_probe() the uuid
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 45ede62aa85b..4fa91f9bd0da 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -108,7 +108,12 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
- 
- 	if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
- 		return true;
--
-+	/*
-+	 * For dax let's try to do hugepage fault always. If we don't support
-+	 * hugepages we will not have enabled namespaces with hugepage alignment.
-+	 * This also means we try to handle hugepage fault on device with
-+	 * smaller alignment. But for then we will return with VM_FAULT_FALLBACK
-+	 */
- 	if (vma_is_dax(vma))
- 		return true;
- 
--- 
-2.21.0
-
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
