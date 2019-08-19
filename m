@@ -2,50 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B50926C3
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 16:32:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE51C94B08
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 18:57:33 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E0C0E20216B78;
-	Mon, 19 Aug 2019 07:33:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DF06820218C4B;
+	Mon, 19 Aug 2019 09:58:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 853E920214B3A
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 07:33:50 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 4804A300413D;
- Mon, 19 Aug 2019 14:32:23 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com
- (segfault.boston.devel.redhat.com [10.19.60.26])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C58AB1C930;
- Mon, 19 Aug 2019 14:32:22 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/3] libnvdimm/security: Tighten scope of nvdimm->busy vs
- security operations
-References: <156583201347.2815870.4687949334637966672.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156583202386.2815870.16611751329252858110.stgit@dwillia2-desk3.amr.corp.intel.com>
- <x49zhk8bzuh.fsf@segfault.boston.devel.redhat.com>
- <CAPcyv4iPBO9atdr_LdHNt=tCgjh-j_HyKXaCdUkWxb_J7OCcxg@mail.gmail.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Mon, 19 Aug 2019 10:32:22 -0400
-In-Reply-To: <CAPcyv4iPBO9atdr_LdHNt=tCgjh-j_HyKXaCdUkWxb_J7OCcxg@mail.gmail.com>
- (Dan Williams's message of "Fri, 16 Aug 2019 14:02:19 -0700")
-Message-ID: <x49d0h1usy1.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ by ml01.01.org (Postfix) with ESMTPS id C21E820216B73
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:58:56 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id w4so2297834ote.11
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:57:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=pJz5TWO3HqyvAXE4n+BERy8lXD9ov5MYFtm7ShaG7iE=;
+ b=W8kT6Fr/sEKxeSab1zBTk5JmxeNrMn3Y1y9/NC6skSJLvVLBpW2ELhqcqg2h/if0uo
+ 0e8cjTy1LAF1Gp91oUKURmAqKMUXzQV99WjzHQAckRWlWwZydwlX4OAE7w5BXV4Gck6w
+ GiAIVZOWzO9pzIRCQsQGroFmdMWbCV+OXwt4Dr3D/b8p/Qgjbg1z1NnBqPE5Th27Iwbb
+ i338YQEJW6ag0i7lkkgY8YnQ7DkrhkfUCVp03brb7sfSpLA7e1XuEBndRU1OztKXhSBQ
+ fsd5RglSvHSgc9joGVk9HozoM7cGL+u/Hfjrw8aAZuNaWmcC4QRxznSAAWCjivAlSDZc
+ DXLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pJz5TWO3HqyvAXE4n+BERy8lXD9ov5MYFtm7ShaG7iE=;
+ b=fZhirVQ+H8SFBX/ciCyjtc/yrvvhH/x5UAitenxbnPByvCotK+Wr4o16h2VcDbABFG
+ BsxpngvWIItsp4xq2qqVbfqU+fzOp1u9y51W3kQHBBwtrolhAEvDG22jjTnPBxCZj5En
+ i9tr6qUnqnCnojMdq7w9T/s4lzx6YIjY6+ZQ5A43T9znVexxe0ujLLx/52wkQZMFO3+5
+ w6ib+7ObFLAg8AGxaHVfY4NgH8dY+NzlGyO4tS9H0lFmXUEj9GAkGw/SW0fiYPepwAVM
+ 5B0kDr7cnnMOITYYMTaKeL9KRVnnxnj+dER6frUs31f+RjqHa9M/TqWsUkITjIvEYhub
+ iFkw==
+X-Gm-Message-State: APjAAAViRPz7d/e17VnCnonZr+PxYR0vg6CwLDsnLMcC/HVhalHDQ5OU
+ pplSEp2mI2260SB8+5433IlwRGSssfmBNc6qiggvdA==
+X-Google-Smtp-Source: APXvYqxvT1ZhKsDRbIwEX3IPiYRXr1CqtbSoNIsXLF0FOsAY+MiDfaUIE2LkS31VaEmcuGd2KBhyxsoTwTJiAVryN6M=
+X-Received: by 2002:a9d:6b96:: with SMTP id b22mr19649081otq.363.1566233849670; 
+ Mon, 19 Aug 2019 09:57:29 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.46]); Mon, 19 Aug 2019 14:32:23 +0000 (UTC)
+References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
+ <20190809074520.27115-2-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4jmxKPkTh0_Bbu2tRXm4vcBHonZJ6UcKrOBnPGCG2_i1A@mail.gmail.com>
+ <CAPcyv4hxo4HvtqZ-B6JG5iATo_vEAKPzO5EU5Lugs2_edEbW7Q@mail.gmail.com>
+ <87y2zp1vph.fsf@linux.ibm.com>
+In-Reply-To: <87y2zp1vph.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 19 Aug 2019 09:57:17 -0700
+Message-ID: <CAPcyv4hWpFs6Q8VM35ip+DQ4thhzu6gaGxpdtkkMvj=xYb+eag@mail.gmail.com>
+Subject: Re: [PATCH v5 1/4] nvdimm: Consider probe return -EOPNOTSUPP as
+ success
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,44 +70,128 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
  linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Fri, Aug 16, 2019 at 1:49 PM Jeff Moyer <jmoyer@redhat.com> wrote:
->>
->> Dan Williams <dan.j.williams@intel.com> writes:
->>
->> > The blanket blocking of all security operations while the DIMM is in
->> > active use in a region is too restrictive. The only security operations
->> > that need to be aware of the ->busy state are those that mutate the
->> > state of data, i.e. erase and overwrite.
->> >
->> > Refactor the ->busy checks to be applied at the entry common entry point
->> > in __security_store() rather than each of the helper routines.
->>
->> I'm not sure this buys you much.  Did you test this on actual hardware
->> to make sure your assumptions are correct?  I guess the worst case is we
->> get an "invalid security state" error back from the firmware....
->>
->> Still, what's the motivation for this?
+On Mon, Aug 19, 2019 at 12:07 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> The motivation was when I went to test setting the frozen state and
-> found that it complained about the DIMM being active. There's nothing
-> wrong with freezing security while the DIMM is mapped. ...but then I
-> somehow managed to write this generalized commit message that left out
-> the explicit failure I was worried about. Yes, moved too fast, but the
-> motivation is "allow freeze while active" and centralize the ->busy
-> check so it's just one function to review that common constraint.
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Tue, Aug 13, 2019 at 9:22 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >>
+> >> Hi Aneesh, logic looks correct but there are some cleanups I'd like to
+> >> see and a lead-in patch that I attached.
+> >>
+> >> I've started prefixing nvdimm patches with:
+> >>
+> >>     libnvdimm/$component:
+> >>
+> >> ...since this patch mostly impacts the pmem driver lets prefix it
+> >> "libnvdimm/pmem: "
+> >>
+> >> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
+> >> <aneesh.kumar@linux.ibm.com> wrote:
+> >> >
+> >> > This patch add -EOPNOTSUPP as return from probe callback to
+> >>
+> >> s/This patch add/Add/
+> >>
+> >> No need to say "this patch" it's obviously a patch.
+> >>
+> >> > indicate we were not able to initialize a namespace due to pfn superblock
+> >> > feature/version mismatch. We want to consider this a probe success so that
+> >> > we can create new namesapce seed and there by avoid marking the failed
+> >> > namespace as the seed namespace.
+> >>
+> >> Please replace usage of "we" with the exact agent involved as which
+> >> "we" is being referred to gets confusing for the reader.
+> >>
+> >> i.e. "indicate that the pmem driver was not..." "The nvdimm core wants
+> >> to consider this...".
+> >>
+> >> >
+> >> > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> > ---
+> >> >  drivers/nvdimm/bus.c  |  2 +-
+> >> >  drivers/nvdimm/pmem.c | 26 ++++++++++++++++++++++----
+> >> >  2 files changed, 23 insertions(+), 5 deletions(-)
+> >> >
+> >> > diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+> >> > index 798c5c4aea9c..16c35e6446a7 100644
+> >> > --- a/drivers/nvdimm/bus.c
+> >> > +++ b/drivers/nvdimm/bus.c
+> >> > @@ -95,7 +95,7 @@ static int nvdimm_bus_probe(struct device *dev)
+> >> >         rc = nd_drv->probe(dev);
+> >> >         debug_nvdimm_unlock(dev);
+> >> >
+> >> > -       if (rc == 0)
+> >> > +       if (rc == 0 || rc == -EOPNOTSUPP)
+> >> >                 nd_region_probe_success(nvdimm_bus, dev);
+> >>
+> >> This now makes the nd_region_probe_success() helper obviously misnamed
+> >> since it now wants to take actions on non-probe success. I attached a
+> >> lead-in cleanup that you can pull into your series that renames that
+> >> routine to nd_region_advance_seeds().
+> >>
+> >> When you rebase this needs a comment about why EOPNOTSUPP has special handling.
+> >>
+> >> >         else
+> >> >                 nd_region_disable(nvdimm_bus, dev);
+> >> > diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> >> > index 4c121dd03dd9..3f498881dd28 100644
+> >> > --- a/drivers/nvdimm/pmem.c
+> >> > +++ b/drivers/nvdimm/pmem.c
+> >> > @@ -490,6 +490,7 @@ static int pmem_attach_disk(struct device *dev,
+> >> >
+> >> >  static int nd_pmem_probe(struct device *dev)
+> >> >  {
+> >> > +       int ret;
+> >> >         struct nd_namespace_common *ndns;
+> >> >
+> >> >         ndns = nvdimm_namespace_common_probe(dev);
+> >> > @@ -505,12 +506,29 @@ static int nd_pmem_probe(struct device *dev)
+> >> >         if (is_nd_pfn(dev))
+> >> >                 return pmem_attach_disk(dev, ndns);
+> >> >
+> >> > -       /* if we find a valid info-block we'll come back as that personality */
+> >> > -       if (nd_btt_probe(dev, ndns) == 0 || nd_pfn_probe(dev, ndns) == 0
+> >> > -                       || nd_dax_probe(dev, ndns) == 0)
+> >>
+> >> Similar need for an updated comment here to explain the special
+> >> translation of error codes.
+> >>
+> >> > +       ret = nd_btt_probe(dev, ndns);
+> >> > +       if (ret == 0)
+> >> >                 return -ENXIO;
+> >> > +       else if (ret == -EOPNOTSUPP)
+> >>
+> >> Are there cases where the btt driver needs to return EOPNOTSUPP? I'd
+> >> otherwise like to keep this special casing constrained to the pfn /
+> >> dax info block cases.
+> >
+> > In fact I think EOPNOTSUPP is only something that the device-dax case
+> > would be concerned with because that's the only interface that
+> > attempts to guarantee a given mapping granularity.
+>
+> We need to do similar error handling w.r.t fsdax when the pfn superblock
+> indicates different PAGE_SIZE and struct page size?
 
-OK, thanks for the info.
+Only in the case where PAGE_SIZE is less than the pfn superblock page
+size, the memmap is stored on pmem, and the reservation is too small.
+Otherwise the PAGE_SIZE difference does not matter in practice for the
+fsdax case... unless I'm overlooking another failure case?
 
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+> I don't think btt
+> needs to support EOPNOTSUPP. But we can keep it for consistency?
+
+That's not a sufficient argument in my mind. The comment about why
+EOPNOTSUPP is treated specially should have a note about the known
+usages, and since there is no BTT case for it lets leave it out.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
