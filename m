@@ -2,78 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C0A91D93
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 09:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71ABC92039
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 11:25:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0DD2820214B48;
-	Mon, 19 Aug 2019 00:13:30 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D031720216B92;
+	Mon, 19 Aug 2019 02:26:52 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C864C20214B39
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 00:13:28 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7J78P58144417
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 03:11:59 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ufm44xdqh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 03:11:59 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Mon, 19 Aug 2019 08:11:57 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 19 Aug 2019 08:11:55 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7J7Bs4049283074
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Aug 2019 07:11:55 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE3784204C;
- Mon, 19 Aug 2019 07:11:54 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2E6F42042;
- Mon, 19 Aug 2019 07:11:53 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.124.35.64])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 19 Aug 2019 07:11:53 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
- coding
-In-Reply-To: <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
-References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
- <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
-Date: Mon, 19 Aug 2019 12:41:52 +0530
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
+ helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
+ [211.29.132.246])
+ by ml01.01.org (Postfix) with ESMTP id DD76020216B84
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 02:26:51 -0700 (PDT)
+Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
+ [49.195.190.67])
+ by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id C3A4743DB5F;
+ Mon, 19 Aug 2019 19:25:16 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1hzdtZ-0003uw-KP; Mon, 19 Aug 2019 19:24:09 +1000
+Date: Mon, 19 Aug 2019 19:24:09 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Jan Kara <jack@suse.cz>
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190819092409.GM7777@dread.disaster.area>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190814101714.GA26273@quack2.suse.cz>
+ <20190814180848.GB31490@iweiny-DESK2.sc.intel.com>
+ <20190815130558.GF14313@quack2.suse.cz>
+ <20190816190528.GB371@iweiny-DESK2.sc.intel.com>
+ <20190817022603.GW6129@dread.disaster.area>
+ <20190819063412.GA20455@quack2.suse.cz>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19081907-0012-0000-0000-00000340421B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19081907-0013-0000-0000-0000217A60CE
-Message-Id: <87v9ut1vev.fsf@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-08-19_02:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908190082
+Content-Disposition: inline
+In-Reply-To: <20190819063412.GA20455@quack2.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=P6RKvmIu c=1 sm=1 tr=0
+ a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=FmdZ9Uzk2mMA:10
+ a=7-415B0cAAAA:8 a=uRkhnK3tQF7xzalHlfoA:9 a=qxnrrwIs3tiBhskk:21
+ a=zvn5vesPaJoFCDyj:21 a=QEXdDO2ut3YA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,131 +56,133 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-ext4@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> Use PAGE_SIZE instead of SZ_4K and sizeof(struct page) instead of 64.
->> If we have a kernel built with different struct page size the previous
->> patch should handle marking the namespace disabled.
->
-> Each of these changes carry independent non-overlapping regression
-> risk, so lets split them into separate patches. Others might
->
->> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->> ---
->>  drivers/nvdimm/label.c          | 2 +-
->>  drivers/nvdimm/namespace_devs.c | 6 +++---
->>  drivers/nvdimm/pfn_devs.c       | 3 ++-
->>  drivers/nvdimm/region_devs.c    | 8 ++++----
->>  4 files changed, 10 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/nvdimm/label.c b/drivers/nvdimm/label.c
->> index 73e197babc2f..7ee037063be7 100644
->> --- a/drivers/nvdimm/label.c
->> +++ b/drivers/nvdimm/label.c
->> @@ -355,7 +355,7 @@ static bool slot_valid(struct nvdimm_drvdata *ndd,
->>
->>         /* check that DPA allocations are page aligned */
->>         if ((__le64_to_cpu(nd_label->dpa)
->> -                               | __le64_to_cpu(nd_label->rawsize)) % SZ_4K)
->> +                               | __le64_to_cpu(nd_label->rawsize)) % PAGE_SIZE)
->
-> The UEFI label specification has no concept of PAGE_SIZE, so this
-> check is a pure Linux-ism. There's no strict requirement why
-> slot_valid() needs to check for page alignment and it would seem to
-> actively hurt cross-page-size compatibility, so let's delete the check
-> and rely on checksum validation.
-
-
-Will do a separate patch to drop that check.
-
->
->>                 return false;
->>
->>         /* check checksum */
->> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
->> index a16e52251a30..a9c76df12cb9 100644
->> --- a/drivers/nvdimm/namespace_devs.c
->> +++ b/drivers/nvdimm/namespace_devs.c
->> @@ -1006,10 +1006,10 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
->>                 return -ENXIO;
->>         }
->>
->> -       div_u64_rem(val, SZ_4K * nd_region->ndr_mappings, &remainder);
->> +       div_u64_rem(val, PAGE_SIZE * nd_region->ndr_mappings, &remainder);
->>         if (remainder) {
->> -               dev_dbg(dev, "%llu is not %dK aligned\n", val,
->> -                               (SZ_4K * nd_region->ndr_mappings) / SZ_1K);
->> +               dev_dbg(dev, "%llu is not %ldK aligned\n", val,
->> +                               (PAGE_SIZE * nd_region->ndr_mappings) / SZ_1K);
->>                 return -EINVAL;
->
-> Yes, looks good, but this deserves its own independent patch.
->
->>         }
->>
->> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
->> index 37e96811c2fc..c1d9be609322 100644
->> --- a/drivers/nvdimm/pfn_devs.c
->> +++ b/drivers/nvdimm/pfn_devs.c
->> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
->>                  * when populating the vmemmap. This *should* be equal to
->>                  * PMD_SIZE for most architectures.
->>                  */
->> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
->> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
->
-> I'd prefer if this was not dynamic and was instead set to the maximum
-> size of 'struct page' across all archs just to enhance cross-arch
-> compatibility. I think that answer is '64'.
-
-
-That still doesn't take care of the case where we add new elements to
-struct page later. If we have struct page size changing across
-architectures, we should still be ok as long as new size is less than what is
-stored in pfn superblock? I understand the desire to keep it
-non-dynamic. But we also need to make sure we don't reserve less space
-when creating a new namespace on a config that got struct page size >
-64? 
-
-
->> +                              align) - start;
->>         } else if (nd_pfn->mode == PFN_MODE_RAM)
->>                 offset = ALIGN(start + SZ_8K, align) - start;
->>         else
->> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
->> index af30cbe7a8ea..20e265a534f8 100644
->> --- a/drivers/nvdimm/region_devs.c
->> +++ b/drivers/nvdimm/region_devs.c
->> @@ -992,10 +992,10 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
->>                 struct nd_mapping_desc *mapping = &ndr_desc->mapping[i];
->>                 struct nvdimm *nvdimm = mapping->nvdimm;
->>
->> -               if ((mapping->start | mapping->size) % SZ_4K) {
->> -                       dev_err(&nvdimm_bus->dev, "%s: %s mapping%d is not 4K aligned\n",
->> -                                       caller, dev_name(&nvdimm->dev), i);
->> -
->> +               if ((mapping->start | mapping->size) % PAGE_SIZE) {
->> +                       dev_err(&nvdimm_bus->dev,
->> +                               "%s: %s mapping%d is not %ld aligned\n",
->> +                               caller, dev_name(&nvdimm->dev), i, PAGE_SIZE);
->>                         return NULL;
->>                 }
->>
->> --
->> 2.21.0
->>
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gTW9uLCBBdWcgMTksIDIwMTkgYXQgMDg6MzQ6MTJBTSArMDIwMCwgSmFuIEthcmEgd3JvdGU6
+Cj4gT24gU2F0IDE3LTA4LTE5IDEyOjI2OjAzLCBEYXZlIENoaW5uZXIgd3JvdGU6Cj4gPiBPbiBG
+cmksIEF1ZyAxNiwgMjAxOSBhdCAxMjowNToyOFBNIC0wNzAwLCBJcmEgV2Vpbnkgd3JvdGU6Cj4g
+PiA+IE9uIFRodSwgQXVnIDE1LCAyMDE5IGF0IDAzOjA1OjU4UE0gKzAyMDAsIEphbiBLYXJhIHdy
+b3RlOgo+ID4gPiA+IE9uIFdlZCAxNC0wOC0xOSAxMTowODo0OSwgSXJhIFdlaW55IHdyb3RlOgo+
+ID4gPiA+ID4gT24gV2VkLCBBdWcgMTQsIDIwMTkgYXQgMTI6MTc6MTRQTSArMDIwMCwgSmFuIEth
+cmEgd3JvdGU6Cj4gPiA+IDIpIFNlY29uZCByZWFzb24gaXMgdGhhdCBJIHRob3VnaHQgSSBkaWQg
+bm90IGhhdmUgYSBnb29kIHdheSB0byB0ZWxsIGlmIHRoZQo+ID4gPiAgICBsZWFzZSB3YXMgYWN0
+dWFsbHkgaW4gdXNlLiAgV2hhdCBJIG1lYW4gaXMgdGhhdCBsZXR0aW5nIHRoZSBsZWFzZSBnbyBz
+aG91bGQKPiA+ID4gICAgYmUgb2sgSUZGIHdlIGRvbid0IGhhdmUgYW55IHBpbnMuLi4gIEkgd2Fz
+IHRoaW5raW5nIHRoYXQgd2l0aG91dCBKb2huJ3MgY29kZQo+ID4gPiAgICB3ZSBkb24ndCBoYXZl
+IGEgd2F5IHRvIGtub3cgaWYgdGhlcmUgYXJlIGFueSBwaW5zLi4uICBCdXQgdGhhdCBpcyB3cm9u
+Zy4uLgo+ID4gPiAgICBBbGwgd2UgaGF2ZSB0byBkbyBpcyBjaGVjawo+ID4gPiAKPiA+ID4gCSFs
+aXN0X2VtcHR5KGZpbGUtPmZpbGVfcGlucykKPiA+ID4gCj4gPiA+IFNvIG5vdyB3aXRoIHRoaXMg
+ZGV0YWlsIEkgdGhpbmsgeW91IGFyZSByaWdodCwgd2Ugc2hvdWxkIGJlIGFibGUgdG8gaG9sZCB0
+aGUKPiA+ID4gbGVhc2UgdGhyb3VnaCB0aGUgc3RydWN0IGZpbGUgZXZlbiBpZiB0aGUgcHJvY2Vz
+cyBubyBsb25nZXIgaGFzIGFueQo+ID4gPiAicmVmZXJlbmNlcyIgdG8gaXQgKGllIGNsb3NlcyBh
+bmQgbXVubWFwcyB0aGUgZmlsZSkuCj4gPiAKPiA+IEkgcmVhbGx5LCByZWFsbHkgZGlzbGlrZSB0
+aGUgaWRlYSBvZiB6b21iaWUgbGF5b3V0IGxlYXNlcy4gSXQncyBhCj4gPiBuYXN0eSBoYWNrIGZv
+ciBwb29yIGFwcGxpY2F0aW9uIGJlaGF2aW91ci4gVGhpcyBpcyBhICJ3ZSBhbGxvdyB1c2UKPiA+
+IGFmdGVyIGxheW91dCBsZWFzZSByZWxlYXNlIiBBUEksIGFuZCBJIHRoaW5rIGVuY29kaW5nIGxh
+cmdlbHkKPiA+IHVudHJhY2VhYmxlIHpvbWJpZSBvYmplY3RzIGludG8gYW4gQVBJIGlzIHZlcnkg
+cG9vciBkZXNpZ24uCj4gPiAKPiA+IEZyb20gdGhlIGZjbnRsIG1hbiBwYWdlOgo+ID4gCj4gPiBM
+RUFTRVMKPiA+IAlMZWFzZXMgYXJlIGFzc29jaWF0ZWQgd2l0aCBhbiBvcGVuIGZpbGUgZGVzY3Jp
+cHRpb24gKHNlZQo+ID4gCW9wZW4oMikpLiAgVGhpcyBtZWFucyB0aGF0IGR1cGxpY2F0ZSBmaWxl
+IGRlc2NyaXB0b3JzCj4gPiAJKGNyZWF0ZWQgYnksIGZvciBleGFtcGxlLCBmb3JrKDIpIG9yIGR1
+cCgyKSkgIHJl4oCQIGZlciAgdG8KPiA+IAl0aGUgIHNhbWUgIGxlYXNlLCAgYW5kIHRoaXMgbGVh
+c2UgbWF5IGJlIG1vZGlmaWVkIG9yCj4gPiAJcmVsZWFzZWQgdXNpbmcgYW55IG9mIHRoZXNlIGRl
+c2NyaXB0b3JzLiAgRnVydGhlcm1vcmUsIHRoZQo+ID4gCWxlYXNlIGlzIHJlbGVhc2VkIGJ5IGVp
+dGhlciBhbiBleHBsaWNpdCBGX1VOTENLIG9wZXJhdGlvbiBvbgo+ID4gCWFueSBvZiB0aGVzZSBk
+dXBsaWNhdGUgZmlsZSBkZXNjcmlwdG9ycywgb3Igd2hlbiBhbGwgc3VjaAo+ID4gCWZpbGUgZGVz
+Y3JpcHRvcnMgaGF2ZSBiZWVuIGNsb3NlZC4KPiA+IAo+ID4gTGVhc2VzIGFyZSBhc3NvY2lhdGVk
+IHdpdGggKm9wZW4qIGZpbGUgZGVzY3JpcHRvcnMsIG5vdCB0aGUKPiA+IGxpZmV0aW1lIG9mIHRo
+ZSBzdHJ1Y3QgZmlsZSBpbiB0aGUga2VybmVsLiBJZiB0aGUgYXBwbGljYXRpb24gY2xvc2VzCj4g
+PiB0aGUgb3BlbiBmZHMgdGhhdCByZWZlciB0byB0aGUgbGVhc2UsIHRoZW4gdGhlIGtlcm5lbCBk
+b2VzIG5vdAo+ID4gZ3VhcmFudGVlLCBhbmQgdGhlIGFwcGxpY2F0aW9uIGhhcyBubyByaWdodCB0
+byBleHBlY3QsIHRoYXQgdGhlCj4gPiBsZWFzZSByZW1haW5zIGFjdGl2ZSBpbiBhbnkgd2F5IG9u
+Y2UgdGhlIGFwcGxpY2F0aW9uIGNsb3NlcyBhbGwKPiA+IGRpcmVjdCByZWZlcmVuY2VzIHRvIHRo
+ZSBsZWFzZS4KPiA+IAo+ID4gSU9XcywgYXBwbGljYXRpb25zIHVzaW5nIGxheW91dCBsZWFzZXMg
+bmVlZCB0byBob2xkIHRoZSBsZWFzZSBmZAo+ID4gb3BlbiBmb3IgYXMgbG9uZyBhcyB0aGUgd2Fu
+dCBhY2Nlc3MgdG8gdGhlIHBoeXNpY2FsIGZpbGUgbGF5b3V0LiBJdAo+ID4gaXMgYSBhbHNvIGEg
+cmVxdWlyZW1lbnQgb2YgdGhlIGxheW91dCBsZWFzZSB0aGF0IHRoZSBob2xkZXIgcmVsZWFzZXMK
+PiA+IHRoZSByZXNvdXJjZXMgaXQgaG9sZHMgb24gdGhlIGxheW91dCBiZWZvcmUgaXQgcmVsZWFz
+ZXMgdGhlIGxheW91dAo+ID4gbGVhc2UsIGV4Y2x1c2l2ZSBsZWFzZSBvciBub3QuIENsb3Npbmcg
+dGhlIGZkIGluZGljYXRlcyB0aGV5IGRvIG5vdAo+ID4gbmVlZCBhY2Nlc3MgdG8gdGhlIGZpbGUg
+YW55IG1vcmUsIGFuZCBzbyB0aGUgbGVhc2Ugc2hvdWxkIGJlCj4gPiByZWNsYWltZWQgYXQgdGhh
+dCBwb2ludC4KPiA+IAo+ID4gSSdtIG9mIGEgbWluZCB0byBtYWtlIHRoZSBsYXN0IGNsb3NlKCkg
+b24gYSBmaWxlIGJsb2NrIGlmIHRoZXJlJ3MgYW4KPiA+IGFjdGl2ZSBsYXlvdXQgbGVhc2UgdG8g
+cHJldmVudCBwcm9jZXNzZXMgZnJvbSB6b21iaWUtaW5nIGxheW91dAo+ID4gbGVhc2VzIGxpa2Ug
+dGhpcy4gaS5lLiB5b3UgY2FuJ3QgY2xvc2UgdGhlIGZkIHVudGlsIHJlc291cmNlcyB0aGF0Cj4g
+PiBwaW4gdGhlIGxlYXNlIGhhdmUgYmVlbiByZWxlYXNlZC4KPiAKPiBZZWFoLCBzbyB0aGlzIHdh
+cyBteSBpbml0aWFsIHRob3VnaCBhcyB3ZWxsIFsxXS4gQnV0IGFzIHRoZSBkaXNjdXNzaW9uIGlu
+Cj4gdGhhdCB0aHJlYWQgcmV2ZWFsZWQsIHRoZSBwcm9ibGVtIHdpdGggYmxvY2tpbmcgbGFzdCBj
+bG9zZSBpcyB0aGF0IGtlcm5lbAo+IGRvZXMgbm90IHJlYWxseSBleHBlY3QgY2xvc2UgdG8gYmxv
+Y2suIFlvdSBjb3VsZCBlYXNpbHkgZGVhZGxvY2sgZS5nLiBpZgo+IHRoZSBwcm9jZXNzIGdldHMg
+U0lHS0lMTCwgZmlsZSB3aXRoIGxlYXNlIGhhcyBmZCAxMCwgYW5kIHRoZSBSRE1BIGNvbnRleHQK
+PiBob2xkaW5nIHBhZ2VzIHBpbm5lZCBoYXMgZmQgMTUuCgpTdXJlLCBJIGRpZCB0aGluayBhYm91
+dCB0aGlzIGEgYml0IGFib3V0IGl0IGJlZm9yZSBzdWdnZXN0aW5nIGl0IDopCgpUaGUgbGFzdCBj
+bG9zZSBpcyBhbiBpbnRlcmVzdGluZyBjYXNlIGJlY2F1c2UgdGhlIF9fZnB1dCgpIGNhbGwKYWN0
+dWFsbHkgcnVucyBmcm9tIHRhc2tfd29yaygpIGNvbnRleHQsIG5vdCB3aGVyZSB0aGUgbGFzdCBy
+ZWZlcmVuY2UKaXMgYWN0dWFsbHkgZHJvcHBlZC4gU28gaXQgYWxyZWFkeSBoYXMgY2VydGFpbiBz
+cGVjaWZpYyBpbnRlcmFjdGlvbnMKd2l0aCBzaWduYWxzIGFuZCB0YXNrIGV4aXQgcHJvY2Vzc2lu
+ZyB2aWEgdGFza19hZGRfd29yaygpIGFuZAp0YXNrX3dvcmtfcnVuKCkuCgp0YXNrX2FkZF93b3Jr
+KCkgY2FsbHMgc2V0X25vdGlmeV9yZXN1bWUodGFzayksIHNvIGlmIG5vdGhpbmcgZWxzZQp0cmln
+Z2VycyB3aGVuIHJldHVybmluZyB0byB1c2Vyc3BhY2Ugd2UgcnVuIHRoaXMgcGF0aDoKCmV4aXRf
+dG9fdXNlcm1vZGVfbG9vcCgpCiAgdHJhY2Vob29rX25vdGlmeV9yZXN1bWUoKQogICAgdGFza193
+b3JrX3J1bigpCiAgICAgIF9fZnB1dCgpCglsb2Nrc19yZW1vdmVfZmlsZSgpCgkgIGxvY2tzX3Jl
+bW92ZV9sZWFzZSgpCgkgICAgLi4uLgoKSXQncyB3b3J0aCBub3RpbmcgdGhhdCBsb2Nrc19yZW1v
+dmVfbGVhc2UoKSBkb2VzIGEKcGVyY3B1X2Rvd25fcmVhZCgpIHdoaWNoIG1lYW5zIHdlIGNhbiBh
+bHJlYWR5IGJsb2NrIGluIHRoaXMgY29udGV4dApyZW1vdmluZyBsZWFzZXMuLi4uCgpJZiB0aGVy
+ZSBpcyBhIHNpZ25hbCBwZW5kaW5nLCB0aGUgdGFzayB3b3JrIGlzIHJ1biB0aGlzIHdheSAoYmVm
+b3JlCnRoZSBhYm92ZSBub3RpZnkgcGF0aCk6CgpleGl0X3RvX3VzZXJtb2RlX2xvb3AoKQogIGRv
+X3NpZ25hbCgpCiAgICBnZXRfc2lnbmFsKCkKICAgICAgdGFza193b3JrX3J1bigpCiAgICAgICAg
+X19mcHV0KCkKCldlIGNhbiBkZXRlY3QgdGhpcyBjYXNlIHZpYSBzaWduYWxfcGVuZGluZygpIGFu
+ZCBldmVuIFNJR0tJTEwgdmlhCmZhdGFsX3NpZ25hbF9wZW5kaW5nKCksIGFuZCBzbyB3ZSBjYW4g
+ZGVjaWRlIG5vdCB0byBibG9jayBiYXNlZCBvbgp0aGUgZmFjdCB0aGUgcHJvY2VzcyBpcyBhYm91
+dCB0byBiZSByZWFwZWQgYW5kIHNvIHRoZSBsZWFzZSBsYXJnZWx5CmRvZXNuJ3QgbWF0dGVyIGFu
+eW1vcmUuIEknZCBhcmd1ZSB0aGF0IGl0IGlzIGNsb3NlIGFuZCB3ZSBjYW4ndAplYXNpbHkgYmFj
+ayBvdXQsIHNvIHdlJ2Qgb25seSBicmVhayB0aGUgYmxvY2sgb24gYSBmYXRhbCBzaWduYWwuLi4u
+CgpBbmQgdGhlbiwgb2YgY291cnNlLCBpcyB0aGUgY2FsbCBwYXRoIHRocm91Z2ggZG9fZXhpdCgp
+LCB3aGljaCBoYXMKdGhlIFBGX0VYSVRJTkcgdGFzayBmbGFnIHNldDoKCmRvX2V4aXQoKQogIGV4
+aXRfdGFza193b3JrKCkKICAgIHRhc2tfd29ya19ydW4oKQogICAgICBfX2ZwdXQoKQoKYW5kIHNv
+IGl0J3MgZWFzeSB0byBhdm9pZCBibG9ja2luZyBpbiB0aGlzIGNhc2UsIHRvby4KClNvIHRoYXQg
+bGVhdmVzIGp1c3QgdGhlIG5vcm1hbCBjbG9zZSgpIHN5c2NhbGwgZXhpdCBjYXNlLCB3aGVyZSB0
+aGUKYXBwbGljYXRpb24gaGFzIGZ1bGwgY29udHJvbCBvZiB0aGUgb3JkZXIgaW4gd2hpY2ggcmVz
+b3VyY2VzIGFyZQpyZWxlYXNlZC4gV2UndmUgYWxyZWFkeSBlc3RhYmxpc2hlZCB0aGF0IHdlIGNh
+biBibG9jayBpbiB0aGlzCmNvbnRleHQuICBCbG9ja2luZyBpbiBhbiBpbnRlcnJ1cHRpYmxlIHN0
+YXRlIHdpbGwgYWxsb3cgZmF0YWwgc2lnbmFsCmRlbGl2ZXJ5IHRvIHdha2UgdXMsIGFuZCB0aGVu
+IHdlIGZhbGwgaW50byB0aGUKZmF0YWxfc2lnbmFsX3BlbmRpbmcoKSBjYXNlIGlmIHdlIGdldCBh
+IFNJR0tJTEwgd2hpbGUgYmxvY2tpbmcuCgpIZW5jZSBJIHRoaW5rIGJsb2NraW5nIGluIHRoaXMg
+Y2FzZSB3b3VsZCBiZSBPSyAtIGl0IGluZGljYXRlcyBhbgphcHBsaWNhdGlvbiBidWcgKHJlbGVh
+c2luZyBhIGxlYXNlIGJlZm9yZSByZWxlYXNpbmcgdGhlIHJlc291cmNlcykKYnV0IGxlYXZlcyBT
+SUdLSUxMIGF2YWlsYWJsZSB0byBhZG1pbmlzdHJhdG9ycyB0byByZXNvbHZlIHNpdHVhdGlvbnMK
+aW52b2x2aW5nIGJ1Z2d5IGFwcGxpY2F0aW9ucy4KClRoaXMgcmVxdWlyZXMgYXBwbGljYXRpb25z
+IHRvIGZvbGxvdyB0aGUgcnVsZXM6IGFueSBwcm9jZXNzCnRoYXQgcGlucyBwaHlzaWNhbCByZXNv
+dXJjZXMgbXVzdCBoYXZlIGFuIGFjdGl2ZSByZWZlcmVuY2UgdG8gYQpsYXlvdXQgbGVhc2UsIGVp
+dGhlciB2aWEgYSBkdXBsaWNhdGVkIGZkIG9yIGl0J3Mgb3duIHByaXZhdGUgbGVhc2UuCklmIHRo
+ZSBhcHAgZG9lc24ndCBwbGF5IGJ5IHRoZSBydWxlcywgaXQgaGFuZ3MgaW4gY2xvc2UoKSB1bnRp
+bCBpdAppcyBraWxsZWQuCgo+IE9yIHlvdSBjb3VsZCB3YWl0IGZvciBhbm90aGVyIHByb2Nlc3Mg
+dG8KPiByZWxlYXNlIHBhZ2UgcGlucyBhbmQgYmxvY2tpbmcgU0lHS0lMTCBvbiB0aGF0IGlzIGFs
+c28gYmFkLgoKQWdhaW4sIGVhY2ggaW5kaXZpZHVhbCBwcm9jZXNzIHRoYXQgcGlucyBwYWdlcyBm
+cm9tIHRoZSBsYXlvdXQgbXVzdApoYXZlIGl0J3Mgb3duIGFjdGl2ZSBsYXlvdXQgbGVhc2UgcmVm
+ZXJlbmNlLgoKPiBTbyBpbiB0aGUgZW5kCj4gdGhlIGxlYXN0IGJhZCBzb2x1dGlvbiB3ZSd2ZSBj
+b21lIHVwIHdpdGggd2VyZSB0aGVzZSAiem9tYmllIiBsZWFzZXMgYXMgeW91Cj4gY2FsbCB0aGVt
+IGFuZCB0cmFja2luZyB0aGVtIGluIC9wcm9jIHNvIHRoYXQgdXNlcnNwYWNlIGF0IGxlYXN0IGhh
+cyBhIHdheQo+IG9mIHNlZWluZyB0aGVtLiBCdXQgaWYgeW91IGNhbiBjb21lIHVwIHdpdGggYSBk
+aWZmZXJlbnQgc29sdXRpb24sIEknbQo+IGNlcnRhaW5seSBub3QgYXR0YWNoZWQgdG8gdGhlIGN1
+cnJlbnQgb25lLi4uCgpJdCBtaWdodCBiZSB0aGUgImxlYXN0IGJhZCIgc29sdXRpb24sIGJ1dCBp
+dCdzIHN0aWxsIGEgcHJldHR5IGJhZApvbmUuIEFuZCBvbmUgdGhhdCBJIGRvbid0IHRoaW5rIGlz
+IG5lY2Vzc2FyeSBpZiB3ZSBzaW1wbHkgZW5mb3JjZQp0aGUgInByb2Nlc3MgbXVzdCBoYXZlIGFj
+dGl2ZSByZWZlcmVuY2VzIGZvciB0aGUgZW50aXJlIHRpbWUgdGhlCnByb2Nlc3MgdXNlcyB0aGUg
+cmVzb3VyY2UiIHJ1bGUuIFRoYXQncyB0aGUgd2F5IGZpbGUgYWNjZXNzIGhhcwphbHdheXMgd29y
+a2VkLCBJIGRvbid0IHNlZSB3aHkgd2Ugc2hvdWxkIGJlIGRvaW5nIGFueXRoaW5nIGRpZmZlcmVu
+dApmb3IgYWNjZXNzIHRvIHRoZSBwaHlzaWNhbCBsYXlvdXQgb2YgZmlsZXMuLi4KCkNoZWVycywK
+CkRhdmUuCi0tIApEYXZlIENoaW5uZXIKZGF2aWRAZnJvbW9yYml0LmNvbQpfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1h
+bi9saXN0aW5mby9saW51eC1udmRpbW0K
