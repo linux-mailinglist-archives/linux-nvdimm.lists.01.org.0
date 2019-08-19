@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062119251B
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 15:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1189251D
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 15:35:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D8A4220216B8B;
-	Mon, 19 Aug 2019 06:36:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 14A162194EB70;
+	Mon, 19 Aug 2019 06:36:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -16,55 +16,64 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id AE46C20215F76
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 06:36:32 -0700 (PDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by ml01.01.org (Postfix) with ESMTPS id E13D720216B81
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 06:36:33 -0700 (PDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x7JDXkV7004669; Mon, 19 Aug 2019 09:35:04 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ufu5tmd7c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 09:35:04 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x7JDUFKm005855;
- Mon, 19 Aug 2019 13:35:03 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma02dal.us.ibm.com with ESMTP id 2ue9761vxh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 19 Aug 2019 13:35:03 +0000
+ x7JDXa2t003912
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:35:07 -0400
+Received: from e34.co.us.ibm.com (e34.co.us.ibm.com [32.97.110.152])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ufuyw27tb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 09:35:06 -0400
+Received: from localhost
+ by e34.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Mon, 19 Aug 2019 14:35:06 +0100
+Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
+ by e34.co.us.ibm.com (192.168.1.134) with IBM ESMTP SMTP Gateway: Authorized
+ Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 19 Aug 2019 14:35:05 +0100
 Received: from b03ledav001.gho.boulder.ibm.com
  (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x7JDZ1B944171588
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x7JDZ3un66126086
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 19 Aug 2019 13:35:01 GMT
+ Mon, 19 Aug 2019 13:35:03 GMT
 Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7205A6E04E;
+ by IMSVA (Postfix) with ESMTP id 8572F6E04C;
+ Mon, 19 Aug 2019 13:35:03 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F0CE56E04E;
  Mon, 19 Aug 2019 13:35:01 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F30EE6E04C;
- Mon, 19 Aug 2019 13:34:59 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.41.175])
  by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 19 Aug 2019 13:34:59 +0000 (GMT)
+ Mon, 19 Aug 2019 13:35:01 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com
-Subject: [PATCH v6 1/7] libnvdimm/region: Rewrite _probe_success() to
- _advance_seeds()
-Date: Mon, 19 Aug 2019 19:04:45 +0530
-Message-Id: <20190819133451.19737-2-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v6 2/7] libnvdimm/pmem: Advance namespace seed for specific
+ probe errors
+Date: Mon, 19 Aug 2019 19:04:46 +0530
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190819133451.19737-1-aneesh.kumar@linux.ibm.com>
 References: <20190819133451.19737-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
+x-cbid: 19081913-0016-0000-0000-000009DD21E6
+X-IBM-SpamModules-Scores: 
+X-IBM-SpamModules-Versions: BY=3.00011618; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01249081; UDB=6.00659355; IPR=6.01030608; 
+ MB=3.00028231; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-19 13:35:06
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19081913-0017-0000-0000-0000447C8B6F
+Message-Id: <20190819133451.19737-3-aneesh.kumar@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
  definitions=2019-08-19_03:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.0.1-1906280000 definitions=main-1908190154
@@ -85,227 +94,83 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Dan Williams <dan.j.williams@intel.com>
+In order to support marking namespaces with unsupported feature/versions
+disabled, nvdimm core should advance the namespace seed on these
+probe failures. Otherwise, these failed namespaces will be considered a
+seed namespace and will be wrongly used while creating new namespaces.
 
-The nd_region_probe_success() helper collides seed management with
-nvdimm->busy tracking. Given the 'busy' increment is handled internal to the
-nd_region driver 'probe' path move the decrement to the 'remove' path.
-With that cleanup the routine can be renamed to the more descriptive
-nd_region_advance_seeds().
+Add -EOPNOTSUPP as return from pmem probe callback to indicate a namespace
+initialization failures due to pfn superblock feature/version mismatch.
 
-The change is prompted by an incoming need to optionally advance the
-seeds on other events besides 'probe' success.
-
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- drivers/nvdimm/bus.c            |  7 +---
- drivers/nvdimm/namespace_devs.c | 34 ++++++++++++++---
- drivers/nvdimm/nd-core.h        |  3 +-
- drivers/nvdimm/region_devs.c    | 68 +++++----------------------------
- 4 files changed, 41 insertions(+), 71 deletions(-)
+ drivers/nvdimm/bus.c  |  3 ++-
+ drivers/nvdimm/pmem.c | 29 +++++++++++++++++++++++++----
+ 2 files changed, 27 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 798c5c4aea9c..9b64e68a20b8 100644
+index 9b64e68a20b8..69f784bf9744 100644
 --- a/drivers/nvdimm/bus.c
 +++ b/drivers/nvdimm/bus.c
-@@ -95,10 +95,8 @@ static int nvdimm_bus_probe(struct device *dev)
+@@ -95,7 +95,8 @@ static int nvdimm_bus_probe(struct device *dev)
  	rc = nd_drv->probe(dev);
  	debug_nvdimm_unlock(dev);
  
--	if (rc == 0)
--		nd_region_probe_success(nvdimm_bus, dev);
--	else
--		nd_region_disable(nvdimm_bus, dev);
-+	if (rc == 0 && dev->parent && is_nd_region(dev->parent))
-+		nd_region_advance_seeds(to_nd_region(dev->parent), dev);
+-	if (rc == 0 && dev->parent && is_nd_region(dev->parent))
++	if ((rc == 0 || rc == -EOPNOTSUPP) &&
++	    dev->parent && is_nd_region(dev->parent))
+ 		nd_region_advance_seeds(to_nd_region(dev->parent), dev);
  	nvdimm_bus_probe_end(nvdimm_bus);
  
- 	dev_dbg(&nvdimm_bus->dev, "END: %s.probe(%s) = %d\n", dev->driver->name,
-@@ -121,7 +119,6 @@ static int nvdimm_bus_remove(struct device *dev)
- 		rc = nd_drv->remove(dev);
- 		debug_nvdimm_unlock(dev);
- 	}
--	nd_region_disable(nvdimm_bus, dev);
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 4c121dd03dd9..f9f76f6ba07b 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -490,6 +490,7 @@ static int pmem_attach_disk(struct device *dev,
  
- 	dev_dbg(&nvdimm_bus->dev, "%s.remove(%s) = %d\n", dev->driver->name,
- 			dev_name(dev), rc);
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index a16e52251a30..3be81f7b9ed3 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -2462,6 +2462,27 @@ static struct device **create_namespaces(struct nd_region *nd_region)
- 	return devs;
- }
- 
-+static void deactivate_labels(void *region)
-+{
-+	struct nd_region *nd_region = region;
-+	int i;
-+
-+	for (i = 0; i < nd_region->ndr_mappings; i++) {
-+		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-+		struct nvdimm_drvdata *ndd = nd_mapping->ndd;
-+		struct nvdimm *nvdimm = nd_mapping->nvdimm;
-+
-+		mutex_lock(&nd_mapping->lock);
-+		nd_mapping_free_labels(nd_mapping);
-+		mutex_unlock(&nd_mapping->lock);
-+
-+		put_ndd(ndd);
-+		nd_mapping->ndd = NULL;
-+		if (ndd)
-+			atomic_dec(&nvdimm->busy);
-+	}
-+}
-+
- static int init_active_labels(struct nd_region *nd_region)
+ static int nd_pmem_probe(struct device *dev)
  {
- 	int i;
-@@ -2519,16 +2540,17 @@ static int init_active_labels(struct nd_region *nd_region)
- 			mutex_unlock(&nd_mapping->lock);
- 		}
++	int ret;
+ 	struct nd_namespace_common *ndns;
  
--		if (j >= count)
--			continue;
-+		if (j < count)
-+			break;
-+	}
+ 	ndns = nvdimm_namespace_common_probe(dev);
+@@ -505,12 +506,32 @@ static int nd_pmem_probe(struct device *dev)
+ 	if (is_nd_pfn(dev))
+ 		return pmem_attach_disk(dev, ndns);
  
--		mutex_lock(&nd_mapping->lock);
--		nd_mapping_free_labels(nd_mapping);
--		mutex_unlock(&nd_mapping->lock);
-+	if (i < nd_region->ndr_mappings) {
-+		deactivate_labels(nd_region);
- 		return -ENOMEM;
- 	}
+-	/* if we find a valid info-block we'll come back as that personality */
+-	if (nd_btt_probe(dev, ndns) == 0 || nd_pfn_probe(dev, ndns) == 0
+-			|| nd_dax_probe(dev, ndns) == 0)
++	ret = nd_btt_probe(dev, ndns);
++	if (ret == 0)
+ 		return -ENXIO;
  
--	return 0;
-+	return devm_add_action_or_reset(&nd_region->dev, deactivate_labels,
-+			nd_region);
+-	/* ...otherwise we're just a raw pmem device */
++	/*
++	 * We have two failure conditions here, there is no
++	 * info reserver block or we found a valid info reserve block
++	 * but failed to initialize the pfn superblock.
++	 *
++	 * For the first case consider namespace as a raw pmem namespace
++	 * and attach a disk.
++	 *
++	 * For the latter, consider this a success and advance the namespace
++	 * seed.
++	 */
++	ret = nd_pfn_probe(dev, ndns);
++	if (ret == 0)
++		return -ENXIO;
++	else if (ret == -EOPNOTSUPP)
++		return ret;
++
++	ret = nd_dax_probe(dev, ndns);
++	if (ret == 0)
++		return -ENXIO;
++	else if (ret == -EOPNOTSUPP)
++		return ret;
+ 	return pmem_attach_disk(dev, ndns);
  }
  
- int nd_region_register_namespaces(struct nd_region *nd_region, int *err)
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index 0ac52b6eb00e..945658cc32ec 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -128,13 +128,12 @@ int __init nvdimm_bus_init(void);
- void nvdimm_bus_exit(void);
- void nvdimm_devs_exit(void);
- void nd_region_devs_exit(void);
--void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev);
- struct nd_region;
-+void nd_region_advance_seeds(struct nd_region *nd_region, struct device *dev);
- void nd_region_create_ns_seed(struct nd_region *nd_region);
- void nd_region_create_btt_seed(struct nd_region *nd_region);
- void nd_region_create_pfn_seed(struct nd_region *nd_region);
- void nd_region_create_dax_seed(struct nd_region *nd_region);
--void nd_region_disable(struct nvdimm_bus *nvdimm_bus, struct device *dev);
- int nvdimm_bus_create_ndctl(struct nvdimm_bus *nvdimm_bus);
- void nvdimm_bus_destroy_ndctl(struct nvdimm_bus *nvdimm_bus);
- void nd_synchronize(void);
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index af30cbe7a8ea..57de49b79d7d 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -715,85 +715,37 @@ void nd_mapping_free_labels(struct nd_mapping *nd_mapping)
- }
- 
- /*
-- * Upon successful probe/remove, take/release a reference on the
-- * associated interleave set (if present), and plant new btt + namespace
-- * seeds.  Also, on the removal of a BLK region, notify the provider to
-- * disable the region.
-+ * When a namespace is activated create new seeds for the next
-+ * namespace, or namespace-personality to be configured.
-  */
--static void nd_region_notify_driver_action(struct nvdimm_bus *nvdimm_bus,
--		struct device *dev, bool probe)
-+void nd_region_advance_seeds(struct nd_region *nd_region, struct device *dev)
- {
--	struct nd_region *nd_region;
--
--	if (!probe && is_nd_region(dev)) {
--		int i;
--
--		nd_region = to_nd_region(dev);
--		for (i = 0; i < nd_region->ndr_mappings; i++) {
--			struct nd_mapping *nd_mapping = &nd_region->mapping[i];
--			struct nvdimm_drvdata *ndd = nd_mapping->ndd;
--			struct nvdimm *nvdimm = nd_mapping->nvdimm;
--
--			mutex_lock(&nd_mapping->lock);
--			nd_mapping_free_labels(nd_mapping);
--			mutex_unlock(&nd_mapping->lock);
--
--			put_ndd(ndd);
--			nd_mapping->ndd = NULL;
--			if (ndd)
--				atomic_dec(&nvdimm->busy);
--		}
--	}
--	if (dev->parent && is_nd_region(dev->parent) && probe) {
--		nd_region = to_nd_region(dev->parent);
--		nvdimm_bus_lock(dev);
--		if (nd_region->ns_seed == dev)
--			nd_region_create_ns_seed(nd_region);
--		nvdimm_bus_unlock(dev);
--	}
--	if (is_nd_btt(dev) && probe) {
-+	nvdimm_bus_lock(dev);
-+	if (nd_region->ns_seed == dev) {
-+		nd_region_create_ns_seed(nd_region);
-+	} else if (is_nd_btt(dev)) {
- 		struct nd_btt *nd_btt = to_nd_btt(dev);
- 
--		nd_region = to_nd_region(dev->parent);
--		nvdimm_bus_lock(dev);
- 		if (nd_region->btt_seed == dev)
- 			nd_region_create_btt_seed(nd_region);
- 		if (nd_region->ns_seed == &nd_btt->ndns->dev)
- 			nd_region_create_ns_seed(nd_region);
--		nvdimm_bus_unlock(dev);
--	}
--	if (is_nd_pfn(dev) && probe) {
-+	} else if (is_nd_pfn(dev)) {
- 		struct nd_pfn *nd_pfn = to_nd_pfn(dev);
- 
--		nd_region = to_nd_region(dev->parent);
--		nvdimm_bus_lock(dev);
- 		if (nd_region->pfn_seed == dev)
- 			nd_region_create_pfn_seed(nd_region);
- 		if (nd_region->ns_seed == &nd_pfn->ndns->dev)
- 			nd_region_create_ns_seed(nd_region);
--		nvdimm_bus_unlock(dev);
--	}
--	if (is_nd_dax(dev) && probe) {
-+	} else if (is_nd_dax(dev)) {
- 		struct nd_dax *nd_dax = to_nd_dax(dev);
- 
--		nd_region = to_nd_region(dev->parent);
--		nvdimm_bus_lock(dev);
- 		if (nd_region->dax_seed == dev)
- 			nd_region_create_dax_seed(nd_region);
- 		if (nd_region->ns_seed == &nd_dax->nd_pfn.ndns->dev)
- 			nd_region_create_ns_seed(nd_region);
--		nvdimm_bus_unlock(dev);
- 	}
--}
--
--void nd_region_probe_success(struct nvdimm_bus *nvdimm_bus, struct device *dev)
--{
--	nd_region_notify_driver_action(nvdimm_bus, dev, true);
--}
--
--void nd_region_disable(struct nvdimm_bus *nvdimm_bus, struct device *dev)
--{
--	nd_region_notify_driver_action(nvdimm_bus, dev, false);
-+	nvdimm_bus_unlock(dev);
- }
- 
- static ssize_t mappingN(struct device *dev, char *buf, int n)
 -- 
 2.21.0
 
