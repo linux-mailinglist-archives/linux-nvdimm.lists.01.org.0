@@ -2,56 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF27894EEC
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 22:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 959FB94F11
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 19 Aug 2019 22:33:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 90DD320216B81;
-	Mon, 19 Aug 2019 13:28:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 45C8820213F30;
+	Mon, 19 Aug 2019 13:35:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 43B8320214B26
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 13:28:10 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2019 13:26:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,406,1559545200"; d="scan'208";a="202438693"
-Received: from fmsmsx104.amr.corp.intel.com ([10.18.124.202])
- by fmsmga004.fm.intel.com with ESMTP; 19 Aug 2019 13:26:45 -0700
-Received: from fmsmsx118.amr.corp.intel.com (10.18.116.18) by
- fmsmsx104.amr.corp.intel.com (10.18.124.202) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 19 Aug 2019 13:26:44 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.127]) by
- fmsmsx118.amr.corp.intel.com ([169.254.1.57]) with mapi id 14.03.0439.000;
- Mon, 19 Aug 2019 13:26:43 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, "linux-nvdimm@lists.01.org"
- <linux-nvdimm@lists.01.org>
-Subject: Re: [ndctl PATCH] ndctl/dimm: Add support for separate
- security-frozen attribute
-Thread-Topic: [ndctl PATCH] ndctl/dimm: Add support for separate
- security-frozen attribute
-Thread-Index: AQHVUwoBatbmCFqOjE61ZIfRiy1qCacDaBIA
-Date: Mon, 19 Aug 2019 20:26:43 +0000
-Message-ID: <84f53b69683feec6d0cca8003522a51d22a53fbd.camel@intel.com>
-References: <156583219134.2816070.2537582454969393648.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <156583219134.2816070.2537582454969393648.stgit@dwillia2-desk3.amr.corp.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <9C9B37EAB23C6D43B4B56A961DEBA574@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 9B90F202110B0
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 13:35:02 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id e12so2923481otp.10
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 13:33:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
+ b=psHWRrKd3x75XaBq4Qa+LS1cLPahMqjrX1Wn9mxcApv8yxQqSht7/8v5RuDSONcTl0
+ ehqF6W3K8BdBMNPmHEpQENl+LP9kj1ttVSPpJsNMgb4CFrSpSHeTXJfrbNIlcP/4P2ax
+ v/WYGq8gB4lM4fAbHXnXRH5vG+D6KqARROwqYsqvxa0BEXVHuSqlzyvY4cBCrpe0qGoz
+ SPOArGDUJmF04uROBncNRtZ5jVqMijWggZ1TrKwCut/1onZ9d8tQoJx1S9Oj2RYVRSO9
+ UDY9LRaj95qDLjn1TjoKhMj94FU49Cs6G2ne+/7PDV66Ps0ReP7phOU9Vmk0BhC4KDNz
+ 5niQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=B0w/srl7CvMR3sGmFMfU5XCGV1/r89NViS9qVVWCBSI=;
+ b=R5CQRl/sp9J/KxWXuMip0CfPBRS43iJdsdwkI3MbYHE8rdHaa4FiFz4oM85kt3OOhq
+ QvtoAlSCVFcw4kzYlCTRqO39qXzragj5zrACQi2aiU+9fiHBaNB8If1vWak85r5D6p6+
+ WuiTq+qt3JLwL6mUwih0/yC154n1UyCxtOr9ApDPNMELE5poWn48kS8ongW4vc8Ns/Wb
+ ieW1+21Nl5N+4KG4dDTGNCaceKU8bkgGs67ihYdGA4o+hTkdaaY8Yh3W/+EzJB9lOH0N
+ JHYRRxf55fASYbcRnNu13hFxKNAfa6WL/2zYBI+7FqC2N1+CXtnlGaOiZoT7WViR2ZTg
+ W/0Q==
+X-Gm-Message-State: APjAAAVpQz+KJSNkCbuZxJ1iDu02fQX+HfXjwM2CiIdJO10OCAkGaziy
+ Ictoa5LKHK6qA5OymvNxoDaogg/zBoeOf0mBlNUzahQE
+X-Google-Smtp-Source: APXvYqy9tHBQADa1qvVeSsghOJr6TWr+3Lup/KNrD2wljjZJ0t87Se7fCmBqBKSv6ZJkJN9H9FM27wQ23v9EoryQYPc=
+X-Received: by 2002:a05:6830:458:: with SMTP id
+ d24mr19105752otc.126.1566246817595; 
+ Mon, 19 Aug 2019 13:33:37 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190809074520.27115-1-aneesh.kumar@linux.ibm.com>
+ <20190809074520.27115-4-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4hc_-oGMp6jGVknnYs+rmj4W1A_gFCbmAX2LFw0hsfL5g@mail.gmail.com>
+ <87v9ut1vev.fsf@linux.ibm.com> <87mug5biyg.fsf@linux.ibm.com>
+In-Reply-To: <87mug5biyg.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 19 Aug 2019 13:33:26 -0700
+Message-ID: <CAPcyv4hTQ8iVPbOmQNHEeT9-Z6-52k4dxexq5mTr-A4cru0OkQ@mail.gmail.com>
+Subject: Re: [PATCH v5 3/4] mm/nvdimm: Use correct #defines instead of open
+ coding
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,48 +70,90 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: Linux MM <linux-mm@kvack.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 2019-08-14 at 18:23 -0700, Dan Williams wrote:
-> Given the discovery that the original libnvdimm-security implementation
-> is unable to communicate both the 'freeze' status and the 'lock' status
-> simultaneously, newer kernels deploy a new 'frozen' attribute for this
-> purpose.
-> 
-> Add a new api and update the tests for this new capability. The old test
-> will fail on newer kernels, but hopefully there were no other
-> applications depending on the 'security' attribute to communicate the
-> 'freeze' status. It was likely only ever a debug / enumeration aid, not
-> an application dependency.
-> 
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  Documentation/ndctl/ndctl-freeze-security.txt |    8 +++++---
->  ndctl/dimm.c                                  |    2 +-
->  ndctl/lib/dimm.c                              |   25 +++++++++++++++++++++++++
->  ndctl/lib/libndctl.sym                        |    4 ++++
->  ndctl/libndctl.h                              |    1 +
->  test/security.sh                              |   18 ++++++++++++------
->  util/json.c                                   |    6 ++++++
->  7 files changed, 54 insertions(+), 10 deletions(-)
-> 
-[..]
+On Mon, Aug 19, 2019 at 2:32 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com> writes:
+>
+> > Dan Williams <dan.j.williams@intel.com> writes:
+> >
+> >> On Fri, Aug 9, 2019 at 12:45 AM Aneesh Kumar K.V
+> >> <aneesh.kumar@linux.ibm.com> wrote:
+> >>>
+> >>
+>
+> ...
+>
+> >>> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> >>> index 37e96811c2fc..c1d9be609322 100644
+> >>> --- a/drivers/nvdimm/pfn_devs.c
+> >>> +++ b/drivers/nvdimm/pfn_devs.c
+> >>> @@ -725,7 +725,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+> >>>                  * when populating the vmemmap. This *should* be equal to
+> >>>                  * PMD_SIZE for most architectures.
+> >>>                  */
+> >>> -               offset = ALIGN(start + SZ_8K + 64 * npfns, align) - start;
+> >>> +               offset = ALIGN(start + SZ_8K + sizeof(struct page) * npfns,
+> >>
+> >> I'd prefer if this was not dynamic and was instead set to the maximum
+> >> size of 'struct page' across all archs just to enhance cross-arch
+> >> compatibility. I think that answer is '64'.
+> >
+> >
+> > That still doesn't take care of the case where we add new elements to
+> > struct page later. If we have struct page size changing across
+> > architectures, we should still be ok as long as new size is less than what is
+> > stored in pfn superblock? I understand the desire to keep it
+> > non-dynamic. But we also need to make sure we don't reserve less space
+> > when creating a new namespace on a config that got struct page size >
+> > 64?
+>
+>
+> How about
+>
+> libnvdimm/pfn_dev: Add a build check to make sure we notice when struct page size change
+>
+> When namespace is created with map device as pmem device, struct page is stored in the
+> reserve block area. We need to make sure we account for the right struct page
+> size while doing this. Instead of directly depending on sizeof(struct page)
+> which can change based on different kernel config option, use the max struct
+> page size (64) while calculating the reserve block area. This makes sure pmem
+> device can be used across kernels built with different configs.
+>
+> If the above assumption of max struct page size change, we need to update the
+> reserve block allocation space for new namespaces created.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>
+> 1 file changed, 7 insertions(+)
+> drivers/nvdimm/pfn_devs.c | 7 +++++++
+>
+> modified   drivers/nvdimm/pfn_devs.c
+> @@ -722,7 +722,14 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+>                  * The altmap should be padded out to the block size used
+>                  * when populating the vmemmap. This *should* be equal to
+>                  * PMD_SIZE for most architectures.
+> +                *
+> +                * Also make sure size of struct page is less than 64. We
+> +                * want to make sure we use large enough size here so that
+> +                * we don't have a dynamic reserve space depending on
+> +                * struct page size. But we also want to make sure we notice
+> +                * if we end up adding new elements to struct page.
+>                  */
+> +               BUILD_BUG_ON(64 < sizeof(struct page));
 
-> @@ -262,6 +267,7 @@ test_4_security_unlock
->  # not impact any key management testing via libkeyctl.
->  echo "Test 5, freeze security"
->  test_5_security_freeze
-> +exit 1
-
-Is this a leftover from local development/testing?
-Otherwise the patch looks good to me.
-
+Looks ok to me. There are ongoing heroic efforts to make sure 'struct
+page' does not grown beyond the size of cacheline. The fact that
+'struct page_ext' is allocated out of line makes it safe to assume
+that 'struct page' will not be growing larger in the foreseeable
+future.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
