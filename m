@@ -1,64 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB449562A
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 06:38:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8044B959DA
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 10:41:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 62C9E21962301;
-	Mon, 19 Aug 2019 21:40:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EF01C2020F932;
+	Tue, 20 Aug 2019 01:42:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+ client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
+ envelope-from=oohall@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7693D2020D31E
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 21:40:01 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id b25so3115861oib.4
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 21:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by ml01.01.org (Postfix) with ESMTPS id D524D21A1349F
+ for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 01:42:41 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id j5so10472503ioj.8
+ for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 01:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=pTsJc2XB2ULhT5btNfz5YqFDZzAMX4YrlKJzpdakKHA=;
- b=haCfRM1mdP3nfX7azXTUWTkX4VYJbjwY4jc+E3ak3zb/Q1+VOGqLgRgEbsy3pyWICB
- zvAYiCgBRK+8dAkVv4krDHbFmnRdtaPjhz4cpLHCAE65/wVsfPUFMFMcixGZheTPXPms
- aafV2W8tyjSi4gBburO/Opb1eLDzEo0j/90LUSBXS17sLm1C/53R+92S1YUt8vUBzN+/
- U4+YUiQZEu4DVvSOKNCDAYmdydy1ywzQLQF1LZnqZ2ysxAuQMGigKwXhAw4JExvC1809
- LC3e0idPYuahq4WIZQeLES2Pzu3+u4NlHkHZDkmoTlbB8qQQWmc7sgdaCXV41prJKu5+
- po5g==
+ :cc; bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
+ b=Fud3MqWVJzIcbSDdvAgLseOwaSEiZ/+3odadDhcdApXZYMppL8Um2VXLTEjaJ43tZO
+ tfS2PDfXZXBYMGxRgz0ar6cY7E1yUB6Jx19ULyNsKy3msVQ+iE4YBtKBid7wlE7L7Dtq
+ IYXZwUHZ/csV2+2m6xIsLdoFfjImUWiBLB0NnlAIJWSRmoOYg0y6uBlh0AttsBvnlRTj
+ of27H2vEXrYOi+Z0YIWb9U1RK5coV7o09yVMehIXJQfEMS5CsDDTKcIYK4cdsoBR1i2O
+ AvDzaTgeVwTu01n8zgfJZkNsFyLXhmGfIavBU5+Skq3rU+HwSpF5e2S1UPJlxDhdAI/h
+ q6Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=pTsJc2XB2ULhT5btNfz5YqFDZzAMX4YrlKJzpdakKHA=;
- b=iIo8tzP+tFv8EKA90Zv1780YYH6iAA0d/+PV6jubptJF9hjQteyHdF9QdL/KJ6rfe3
- RLg0s8KkxE+opI1QWMFTu2xFVWVRnxy3g3AL9/qEhA4fA6fG//nYT3BInbY+fGa2Uykh
- 3eS3fXCn2oog47pgwRH1r7KRwzz6wmeHPmMopOSptt4JFHznep7RwZPgvaxQlQiMUKs/
- vlpnHo4bfVqaHpNGm4tgCBrHLDHTPomC3MzUhK95nWt6reylsPqJR7mMpQax0b8F0cuL
- NP5hZpjx0Q4+3G4mjIzAMpqEWj8zFnmTlMmAruEjJxYCt5JvJk9JF8Bvixx8v3e4Z0CI
- +P4A==
-X-Gm-Message-State: APjAAAW8kIklUKeC0cgWs6c/dDWxdDNVhxVSmDvkrbp24pEdTuaNIRYF
- 5ueFSor1nkFQCOAYZ9rwzOCIO818SjFIFArcpLaOfw==
-X-Google-Smtp-Source: APXvYqwNAdmv8U/MMocqDHerUy4sI8jbpH839Mf4eiVmaYDc08GdXYIAOnJ1qD656K+Q7iTrImqncBEbLElGaGG5fV0=
-X-Received: by 2002:a05:6808:914:: with SMTP id
- w20mr15019903oih.73.1566275919132; 
- Mon, 19 Aug 2019 21:38:39 -0700 (PDT)
+ bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
+ b=b+QJHMZX3FnVXzeFU2KTyagdYogquMiIrZ4ZCylRiEUPO/SdYgfI56yu7/8DlhoVmB
+ OQZ1qR4HJVW10krldhHt+sCfbw9E4DaxDHqdmHeL3C5bectpFf+9aY12eaTFAK40HSnJ
+ HIaYMtUI9NrBIOml/AKL3FjDHKhuypF23+FN6AXfmEBvmGE+GKIYhZ6RIjitvFVSCh1y
+ VCXLrh9oJPFNZSY/MnuOla7L33mAIXIz9BMp4tD7CF6n3Y4HAgM73pUz06FrS35IR96U
+ 3FEl8R9WnQqaluftklm/avloLTgxe2JLIFNoCwAPW1030VhVf3EfQ3tdmV4UGYZaM5M8
+ u3Ig==
+X-Gm-Message-State: APjAAAXFOMP5T4IeqYiUxx83u6fO/bYjIYpl1vXttfOwCSyluN6xh5lB
+ MBmQi1GRd4+Bo8lBtzPoBULGVNrfAf5+af+oIGM=
+X-Google-Smtp-Source: APXvYqzRaJ7XDDJD1NW0/Nvdeg4AhNIo8VinQ7yGHcODmufB0O9qxvneOP6SzcAbn8IEqU8+L2jfE4gUjBfvokmzFgY=
+X-Received: by 2002:a6b:fb10:: with SMTP id h16mr29478708iog.195.1566290479829; 
+ Tue, 20 Aug 2019 01:41:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190818090557.17853-1-hch@lst.de>
- <20190818090557.17853-2-hch@lst.de>
- <CAPcyv4iaNtmvU5e8_8SV9XsmVCfnv8e7_YfMi46LfOF4W155zg@mail.gmail.com>
- <20190820022619.GA23225@lst.de>
-In-Reply-To: <20190820022619.GA23225@lst.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 19 Aug 2019 21:38:25 -0700
-Message-ID: <CAPcyv4hUC5ReY9v=Lt0M=jPtg3V05suOgt4fVdT4niO_k4hN8Q@mail.gmail.com>
-Subject: Re: [PATCH 1/4] resource: add a not device managed
- request_free_mem_region variant
-To: Christoph Hellwig <hch@lst.de>
+References: <20190820023030.18232-1-santosh@fossix.org>
+ <20190820023030.18232-3-santosh@fossix.org>
+In-Reply-To: <20190820023030.18232-3-santosh@fossix.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Tue, 20 Aug 2019 18:41:08 +1000
+Message-ID: <CAOSf1CEYqY5O2RUmvh-nJwouhVZP0A3EW+_kQcz6h9d7cM8UYg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] of_pmem: Add memory ranges which took a mce to bad
+ range
+To: Santosh Sivaraj <santosh@fossix.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,25 +67,250 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Bharata B Rao <bharata@linux.ibm.com>, Linux MM <linux-mm@kvack.org>,
- Jason Gunthorpe <jgg@mellanox.com>, Andrew Morton <akpm@linux-foundation.org>
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Chandan Rajendra <chandan@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 19, 2019 at 7:26 PM Christoph Hellwig <hch@lst.de> wrote:
+On Tue, Aug 20, 2019 at 12:30 PM Santosh Sivaraj <santosh@fossix.org> wrote:
 >
-> On Mon, Aug 19, 2019 at 06:28:30PM -0700, Dan Williams wrote:
-> >
-> > Previously we would loudly crash if someone passed NULL to
-> > devm_request_free_mem_region(), but now it will silently work and the
-> > result will leak. Perhaps this wants a:
->
-> We'd still instantly crash due to the dev_name dereference, right?
+> Subscribe to the MCE notification and add the physical address which
+> generated a memory error to nvdimm bad range.
 
-Whoops, yes.
+Uh... I should have looked a bit closer at this on v1.
+
+a) of_pmem.c isn't part of the powerpc tree. You should have CCed this
+to the nvdimm list since you'll need an Ack from Dan Williams.
+b) of_pmem isn't powerpc specific. Adding a pile of powerpc specific
+machine check parsing means it's not going to compile on other DT
+platforms.
+c) all this appears to be copied and pasted from the papr_scm version of this.
+
+Considering this is pretty similar in spirit to what's done on x86
+today (drivers/acpi/nfit/mce.c) I think you would get more milage out
+of moving the address matching into libnvdimm itself. Machine check
+handling is always going to be arch specific, but memory errors could
+be re-emitted by the arch code into a more generic notifier chain that
+libnvdimm use. There's probably other uses in mm/ for such a chain
+too.
+
+Oliver
+
+
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  drivers/nvdimm/of_pmem.c | 151 +++++++++++++++++++++++++++++++++------
+>  1 file changed, 131 insertions(+), 20 deletions(-)
+>
+> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+> index a0c8dcfa0bf9..155e56862fdf 100644
+> --- a/drivers/nvdimm/of_pmem.c
+> +++ b/drivers/nvdimm/of_pmem.c
+> @@ -8,6 +8,9 @@
+>  #include <linux/module.h>
+>  #include <linux/ioport.h>
+>  #include <linux/slab.h>
+> +#include <linux/string.h>
+> +#include <linux/nd.h>
+> +#include <asm/mce.h>
+>
+>  static const struct attribute_group *region_attr_groups[] = {
+>         &nd_region_attribute_group,
+> @@ -25,11 +28,77 @@ struct of_pmem_private {
+>         struct nvdimm_bus *bus;
+>  };
+>
+> +struct of_pmem_region {
+> +       struct of_pmem_private *priv;
+> +       struct nd_region_desc *region_desc;
+> +       struct nd_region *region;
+> +       struct list_head region_list;
+> +};
+> +
+> +LIST_HEAD(pmem_regions);
+> +DEFINE_MUTEX(pmem_region_lock);
+> +
+> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
+> +                        void *data)
+> +{
+> +       struct machine_check_event *evt = data;
+> +       struct of_pmem_region *pmem_region;
+> +       u64 aligned_addr, phys_addr;
+> +       bool found = false;
+> +
+> +       if (evt->error_type != MCE_ERROR_TYPE_UE)
+> +               return NOTIFY_DONE;
+> +
+> +       if (list_empty(&pmem_regions))
+> +               return NOTIFY_DONE;
+> +
+> +       phys_addr = evt->u.ue_error.physical_address +
+> +               (evt->u.ue_error.effective_address & ~PAGE_MASK);
+> +
+> +       if (!evt->u.ue_error.physical_address_provided ||
+> +           !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
+> +               return NOTIFY_DONE;
+> +
+> +       mutex_lock(&pmem_region_lock);
+> +       list_for_each_entry(pmem_region, &pmem_regions, region_list) {
+> +               struct resource *res = pmem_region->region_desc->res;
+> +
+> +               if (phys_addr >= res->start && phys_addr <= res->end) {
+> +                       found = true;
+> +                       break;
+> +               }
+> +       }
+> +       mutex_unlock(&pmem_region_lock);
+> +
+> +       if (!found)
+> +               return NOTIFY_DONE;
+> +
+> +       aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
+> +
+> +       if (nvdimm_bus_add_badrange(pmem_region->priv->bus, aligned_addr,
+> +                                   L1_CACHE_BYTES))
+> +               return NOTIFY_DONE;
+> +
+> +       pr_debug("Add memory range (0x%llx -- 0x%llx) as bad range\n",
+> +                aligned_addr, aligned_addr + L1_CACHE_BYTES);
+> +
+> +
+> +       nvdimm_region_notify(pmem_region->region, NVDIMM_REVALIDATE_POISON);
+> +
+> +       return NOTIFY_OK;
+> +}
+> +
+> +static struct notifier_block mce_ue_nb = {
+> +       .notifier_call = handle_mce_ue
+> +};
+> +
+>  static int of_pmem_region_probe(struct platform_device *pdev)
+>  {
+>         struct of_pmem_private *priv;
+>         struct device_node *np;
+>         struct nvdimm_bus *bus;
+> +       struct of_pmem_region *pmem_region;
+> +       struct nd_region_desc *ndr_desc;
+>         bool is_volatile;
+>         int i;
+>
+> @@ -58,32 +127,49 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+>                         is_volatile ? "volatile" : "non-volatile",  np);
+>
+>         for (i = 0; i < pdev->num_resources; i++) {
+> -               struct nd_region_desc ndr_desc;
+>                 struct nd_region *region;
+>
+> -               /*
+> -                * NB: libnvdimm copies the data from ndr_desc into it's own
+> -                * structures so passing a stack pointer is fine.
+> -                */
+> -               memset(&ndr_desc, 0, sizeof(ndr_desc));
+> -               ndr_desc.attr_groups = region_attr_groups;
+> -               ndr_desc.numa_node = dev_to_node(&pdev->dev);
+> -               ndr_desc.target_node = ndr_desc.numa_node;
+> -               ndr_desc.res = &pdev->resource[i];
+> -               ndr_desc.of_node = np;
+> -               set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
+> +               ndr_desc = kzalloc(sizeof(struct nd_region_desc), GFP_KERNEL);
+> +               if (!ndr_desc) {
+> +                       nvdimm_bus_unregister(priv->bus);
+> +                       kfree(priv);
+> +                       return -ENOMEM;
+> +               }
+> +
+> +               ndr_desc->attr_groups = region_attr_groups;
+> +               ndr_desc->numa_node = dev_to_node(&pdev->dev);
+> +               ndr_desc->target_node = ndr_desc->numa_node;
+> +               ndr_desc->res = &pdev->resource[i];
+> +               ndr_desc->of_node = np;
+> +               set_bit(ND_REGION_PAGEMAP, &ndr_desc->flags);
+>
+>                 if (is_volatile)
+> -                       region = nvdimm_volatile_region_create(bus, &ndr_desc);
+> +                       region = nvdimm_volatile_region_create(bus, ndr_desc);
+>                 else
+> -                       region = nvdimm_pmem_region_create(bus, &ndr_desc);
+> +                       region = nvdimm_pmem_region_create(bus, ndr_desc);
+>
+> -               if (!region)
+> +               if (!region) {
+>                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
+> -                                       ndr_desc.res, np);
+> -               else
+> -                       dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
+> -                                       ndr_desc.res, np);
+> +                                       ndr_desc->res, np);
+> +                       continue;
+> +               }
+> +
+> +               dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
+> +                       ndr_desc->res, np);
+> +
+> +               pmem_region = kzalloc(sizeof(struct of_pmem_region),
+> +                                     GFP_KERNEL);
+> +               if (!pmem_region)
+> +                       continue;
+> +
+> +               pmem_region->region_desc = ndr_desc;
+> +               pmem_region->region = region;
+> +               pmem_region->priv = priv;
+> +
+> +               /* Save regions registered for use by the notification code */
+> +               mutex_lock(&pmem_region_lock);
+> +               list_add_tail(&pmem_region->region_list, &pmem_regions);
+> +               mutex_unlock(&pmem_region_lock);
+>         }
+>
+>         return 0;
+> @@ -92,6 +178,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+>  static int of_pmem_region_remove(struct platform_device *pdev)
+>  {
+>         struct of_pmem_private *priv = platform_get_drvdata(pdev);
+> +       struct of_pmem_region *r, *t;
+> +
+> +       list_for_each_entry_safe(r, t, &pmem_regions, region_list) {
+> +               list_del(&(r->region_list));
+> +               kfree(r->region_desc);
+> +               kfree(r);
+> +       }
+>
+>         nvdimm_bus_unregister(priv->bus);
+>         kfree(priv);
+> @@ -113,7 +206,25 @@ static struct platform_driver of_pmem_region_driver = {
+>         },
+>  };
+>
+> -module_platform_driver(of_pmem_region_driver);
+> +static int __init of_pmem_init(void)
+> +{
+> +       int ret;
+> +
+> +       ret = platform_driver_register(&of_pmem_region_driver);
+> +       if (!ret)
+> +               mce_register_notifier(&mce_ue_nb);
+> +
+> +       return ret;
+> +}
+> +module_init(of_pmem_init);
+> +
+> +static void __exit of_pmem_exit(void)
+> +{
+> +       mce_unregister_notifier(&mce_ue_nb);
+> +       platform_driver_unregister(&of_pmem_region_driver);
+> +}
+> +module_exit(of_pmem_exit);
+> +
+>  MODULE_DEVICE_TABLE(of, of_pmem_region_match);
+>  MODULE_LICENSE("GPL");
+>  MODULE_AUTHOR("IBM Corporation");
+> --
+> 2.21.0
+>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
