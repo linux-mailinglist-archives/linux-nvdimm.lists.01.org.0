@@ -2,58 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932A1953A3
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 03:44:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C2A95447
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 04:22:55 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AD2512020D33C;
-	Mon, 19 Aug 2019 18:45:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 86B5F21962301;
+	Mon, 19 Aug 2019 19:24:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 6FFCD2020D338
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 18:45:36 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id k22so2871856oiw.11
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 18:44:14 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 5A3892020D32A
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 19:24:15 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id g17so3629301otl.2
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 19:22:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hiy2qLGFsI5yCOQjtGw2FlRnrKh/058pTpkwHbYjWn4=;
- b=Ez1qSTYyLQaCZn2QMhz67IzLc8/urEfYaskSA3mavaP51YH8ju0nHD9GTDngUpbjbP
- 1AiLAnxbvNCGyrPXwBVEu36Q3uaEuDEqiP2VJkxKTCexg2w+ZjewRqlRgykjbOFRlbTH
- 2fLPm9B7vaGcBl10TazsQUg322pErV5Xk4X538qIO8M5JcXIZvaCsR4gzqy01slpxyax
- 4G8CymZh5RFI/0K2keiFQUFWjyvgpPwfdc90TOWyfBZs4Eyt8GPcrfEYWBqURbl8VN06
- FBPr/5UyLCA35gk26Ovlht9WPFWzb00trqxgpQVrfYqYIqgKxH+fYUvZyy+4n4tgykEC
- 7HdQ==
+ :cc; bh=dGaKAdU7Kzz4IRqMPbeMcHc/uvSVrliEnlndetCK0L4=;
+ b=zKdVom0NZGDuaHrgxklgUVhp5ExnznDDaFFfOxYdgCUPF9H/QOmK2okCnSBv7TG1iD
+ 8VgVkvB+roi1O3wId/DNGT8ohuOBrvtAfFus1UIgy09kWcIHqe6sdGmcCfrddDiGjVfQ
+ Afc6z9YQXk8loHn3UQOdSWjNKRrrWri2tNd/Ct3340IOvPhfEVjetCZPcUMPwssOPcPh
+ gcT9UtKBwAP+mwb+m6SX2ozuyxus2NlfyohT9yJ4NcRTRyeoKama6VEntAVh0vYxR8l2
+ sRgjoQgP2IKMeZVgEwTLIZ62YZ8rqzp3S2/EPPh3bvEnEXheYWNfsqDls665h3cp2/Xk
+ liEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=hiy2qLGFsI5yCOQjtGw2FlRnrKh/058pTpkwHbYjWn4=;
- b=tjcIO9gqWMOpNEX6dgdjol/TygkbkTUiN27rH1BTpvM9FBhkMjTfIQq1Hsw9k/NmKp
- t5ja23skpQSnmSTcLohUlzQdmznYLl/ndTekBP43SfR6qu1DzaZ9MselGO2/YVrMnp7M
- LXksoAi4Mt9I0jZpoj5wv02D14SzylTMAGfPXizuG+AXBkhi1vTZorTW1VUE6lDDgvcf
- 3dH4reZrKEo1NeuqsOnNFFcW5TybgEda4jRPv1sOo9jbDUZdQY9w46sdTF+XTGMePwUW
- /0BCXLlGfYHEyMdiEpwaY/DaAzTtpiEp3HjaigoADVlQI/vVKnkIi/dFfM6nsZHGx1wH
- zzoA==
-X-Gm-Message-State: APjAAAUaGzoiL3hgsl9xQx6KKa2xEhMmoa7u8GkbDZ+JoP+4pNIi/zjH
- vyj8k2sYo2v5U6Z9I5Bz725vOx4G4PRy7JtAyIRZXg==
-X-Google-Smtp-Source: APXvYqxaNpMRYLbfGIBxgJOZMZpvJzzYO44wJfPyyGnlz73jF7wI7dbsRvMZy5tGKZb+Q0OELWHnimWe8R9UTMynpps=
-X-Received: by 2002:aca:be43:: with SMTP id o64mr15940919oif.149.1566265453559; 
- Mon, 19 Aug 2019 18:44:13 -0700 (PDT)
+ bh=dGaKAdU7Kzz4IRqMPbeMcHc/uvSVrliEnlndetCK0L4=;
+ b=FfhaVndsqpwj3AOfQKEXHxip1E/4YMkcnyvl8sOJIUtK3NtRINqPoS18mQui9KsBnb
+ glJPnbqjPIXXNyNr32Bex9w6LzTESO8FaTOJNzgZtmfWjtEY9jUi+ji5F5J7ozIdifiw
+ A4JpOvCmbwvaUiByiW82OFA01KUKQWa9dv9Xjyr66TzeElOaSeoEnFZVNVSWwijgQTiw
+ NNgF3/gfbQjxkotXM3O7lJR7yeOI0j+klryjqj9X30e6QnIWG/tHE4Wb39ZzrC0SgAOa
+ eO0mYeV4I09YYaf2Df6UoXvoJJrugQdsEBfyTQwhoIGOQGtjPCVR83FJxIAz+lh2R1Jj
+ +Iig==
+X-Gm-Message-State: APjAAAX7AbGEno8rSKxr1Cfc2Bw2X5DTY6i1cK4P3GTSgUZtIXn9gGB7
+ VRu5sRICDD9D0RIG3ObHr1hb/8sVGLxgPQlnV0Jf8g==
+X-Google-Smtp-Source: APXvYqxMJSoi3xcOuG4kdSjiGcLdWTp8DOPjIJI3WHkmC8gPmnKQsuPiwRsZyF/AEjqfvhoUMKVUtbKpNU6WT1lmw68=
+X-Received: by 2002:a05:6830:458:: with SMTP id
+ d24mr19986229otc.126.1566267772164; 
+ Mon, 19 Aug 2019 19:22:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20190818090557.17853-1-hch@lst.de>
- <20190818090557.17853-3-hch@lst.de>
-In-Reply-To: <20190818090557.17853-3-hch@lst.de>
+ <20190818090557.17853-4-hch@lst.de>
+In-Reply-To: <20190818090557.17853-4-hch@lst.de>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 19 Aug 2019 18:44:02 -0700
-Message-ID: <CAPcyv4iYytOoX3QMRmvNLbroxD0szrVLauXFjnQMvtQOH3as_w@mail.gmail.com>
-Subject: Re: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
+Date: Mon, 19 Aug 2019 19:22:41 -0700
+Message-ID: <CAPcyv4h9Bp=D4oHEb-v9U7-aZE3VazmsTK3Ou3iC3s3FTYc4Dg@mail.gmail.com>
+Subject: Re: [PATCH 3/4] memremap: don't use a separate devm action for
+ devmap_managed_enable_get
 To: Christoph Hellwig <hch@lst.de>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -77,41 +79,16 @@ Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 On Sun, Aug 18, 2019 at 2:12 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> The dev field in struct dev_pagemap is only used to print dev_name in
-> two places, which are at best nice to have.  Just remove the field
-> and thus the name in those two messages.
+> Just clean up for early failures and then piggy back on
+> devm_memremap_pages_release.  This helps with a pending not device
+> managed version of devm_memremap_pages.
 >
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Needs the below as well.
-
-/me goes to check if he ever merged the fix to make the unit test
-stuff get built by default with COMPILE_TEST [1]. Argh! Nope, didn't
-submit it for 5.3-rc1, sorry for the thrash.
-
-You can otherwise add:
+Looks good,
 
 Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-
-[1]: https://lore.kernel.org/lkml/156097224232.1086847.9463861924683372741.stgit@dwillia2-desk3.amr.corp.intel.com/
-
----
-
-diff --git a/tools/testing/nvdimm/test/iomap.c
-b/tools/testing/nvdimm/test/iomap.c
-index cd040b5abffe..3f55f2f99112 100644
---- a/tools/testing/nvdimm/test/iomap.c
-+++ b/tools/testing/nvdimm/test/iomap.c
-@@ -132,7 +132,6 @@ void *__wrap_devm_memremap_pages(struct device
-*dev, struct dev_pagemap *pgmap)
-        if (!nfit_res)
-                return devm_memremap_pages(dev, pgmap);
-
--       pgmap->dev = dev;
-        if (!pgmap->ref) {
-                if (pgmap->ops && (pgmap->ops->kill || pgmap->ops->cleanup))
-                        return ERR_PTR(-EINVAL);
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
