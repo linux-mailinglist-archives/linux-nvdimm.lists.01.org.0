@@ -1,31 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2F5963CD
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 17:10:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32DA9675D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 19:24:51 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A17E121962301;
-	Tue, 20 Aug 2019 08:11:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9E7AD21962301;
+	Tue, 20 Aug 2019 10:26:07 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=122.190.107.23;
- helo=tbgx.com; envelope-from=beqvp@tbgx.com;
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=shuah@kernel.org;
  receiver=linux-nvdimm@lists.01.org 
-Received: from tbgx.com (unknown [122.190.107.23])
- by ml01.01.org (Postfix) with ESMTP id 924042020D32A
- for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 08:11:56 -0700 (PDT)
-Message-ID: <8D35EFB3607E715401252F1C1C111328@tbgx.com>
-From: =?utf-8?B?6LC35p2c?= <beqvp@tbgx.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?UmU65Zu65a6a6LWE5Lqn5aaC5L2V5o6l5Y+X5ZKM5bqU5a+55paw55qE55uR566h6KeE6IyD?=
-Date: Tue, 20 Aug 2019 23:10:34 +0800
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 1B692202110A5
+ for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 10:26:06 -0700 (PDT)
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net
+ [24.9.64.241])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4D3702054F;
+ Tue, 20 Aug 2019 17:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566321889;
+ bh=32bftUSKN3Wtl2ZUSwOigociAvrqIpLWLd4sbLVVuNs=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=mNf7pt3nluqjn7wPRl9oxtXsVnuSZaSCBUZomyCyPzzn86pMm1C66eV2ovN537fzs
+ twDIX2TwIIhksR2hUFeG2rerO7ZyNg5kILiIjocQMh8JrJt3TqkiQ7ehTmVji22V5G
+ ZtcCI3OBDRsHFfQ2uCdN2ixEmqYcj9rmuODIJfnw=
+Subject: Re: [PATCH v13 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+To: Brendan Higgins <brendanhiggins@google.com>, frowand.list@gmail.com,
+ gregkh@linuxfoundation.org, jpoimboe@redhat.com, keescook@google.com,
+ kieran.bingham@ideasonboard.com, mcgrof@kernel.org, peterz@infradead.org,
+ robh@kernel.org, sboyd@kernel.org, tytso@mit.edu,
+ yamada.masahiro@socionext.com
+References: <20190814055108.214253-1-brendanhiggins@google.com>
+From: shuah <shuah@kernel.org>
+Message-ID: <5b880f49-0213-1a6e-9c9f-153e6ab91eeb@kernel.org>
+Date: Tue, 20 Aug 2019 11:24:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+In-Reply-To: <20190814055108.214253-1-brendanhiggins@google.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,12 +57,45 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ dri-devel@lists.freedesktop.org, Alexander.Levin@microsoft.com,
+ linux-kselftest@vger.kernel.org, shuah <shuah@kernel.org>,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, Bjorn Helgaas <bhelgaas@google.com>,
+ kunit-dev@googlegroups.com, richard@nod.at, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
+ linux-fsdevel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-bGludXgtbnZkaW1tDQrpmYQgIOS7tiAgIA0KICAgICAgICAg5LqyICDlkK8KX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcg
-bGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxt
-YW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
+On 8/13/19 11:50 PM, Brendan Higgins wrote:
+> ## TL;DR
+> 
+> This revision addresses comments from Stephen and Bjorn Helgaas. Most
+> changes are pretty minor stuff that doesn't affect the API in anyway.
+> One significant change, however, is that I added support for freeing
+> kunit_resource managed resources before the test case is finished via
+> kunit_resource_destroy(). Additionally, Bjorn pointed out that I broke
+> KUnit on certain configurations (like the default one for x86, whoops).
+> 
+> Based on Stephen's feedback on the previous change, I think we are
+> pretty close. I am not expecting any significant changes from here on
+> out.
+> 
+
+Hi Brendan,
+
+I found checkpatch errors in one or two patches. Can you fix those and
+send v14.
+
+thanks,
+-- Shuah
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
