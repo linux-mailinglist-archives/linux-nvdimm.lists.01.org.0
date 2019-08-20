@@ -1,60 +1,96 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8044B959DA
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 10:41:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B2695FF9
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 15:26:36 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF01C2020F932;
-	Tue, 20 Aug 2019 01:42:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9CF4821962301;
+	Tue, 20 Aug 2019 06:27:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com;
- envelope-from=oohall@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=40.107.0.53; helo=eur02-am5-obe.outbound.protection.outlook.com;
+ envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com
+ (mail-eopbgr00053.outbound.protection.outlook.com [40.107.0.53])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D524D21A1349F
- for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 01:42:41 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id j5so10472503ioj.8
- for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 01:41:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
- b=Fud3MqWVJzIcbSDdvAgLseOwaSEiZ/+3odadDhcdApXZYMppL8Um2VXLTEjaJ43tZO
- tfS2PDfXZXBYMGxRgz0ar6cY7E1yUB6Jx19ULyNsKy3msVQ+iE4YBtKBid7wlE7L7Dtq
- IYXZwUHZ/csV2+2m6xIsLdoFfjImUWiBLB0NnlAIJWSRmoOYg0y6uBlh0AttsBvnlRTj
- of27H2vEXrYOi+Z0YIWb9U1RK5coV7o09yVMehIXJQfEMS5CsDDTKcIYK4cdsoBR1i2O
- AvDzaTgeVwTu01n8zgfJZkNsFyLXhmGfIavBU5+Skq3rU+HwSpF5e2S1UPJlxDhdAI/h
- q6Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zdfPVCpQKbOB6BWB1KnP3j6I+X4+4oR2rukvo6YVs7E=;
- b=b+QJHMZX3FnVXzeFU2KTyagdYogquMiIrZ4ZCylRiEUPO/SdYgfI56yu7/8DlhoVmB
- OQZ1qR4HJVW10krldhHt+sCfbw9E4DaxDHqdmHeL3C5bectpFf+9aY12eaTFAK40HSnJ
- HIaYMtUI9NrBIOml/AKL3FjDHKhuypF23+FN6AXfmEBvmGE+GKIYhZ6RIjitvFVSCh1y
- VCXLrh9oJPFNZSY/MnuOla7L33mAIXIz9BMp4tD7CF6n3Y4HAgM73pUz06FrS35IR96U
- 3FEl8R9WnQqaluftklm/avloLTgxe2JLIFNoCwAPW1030VhVf3EfQ3tdmV4UGYZaM5M8
- u3Ig==
-X-Gm-Message-State: APjAAAXFOMP5T4IeqYiUxx83u6fO/bYjIYpl1vXttfOwCSyluN6xh5lB
- MBmQi1GRd4+Bo8lBtzPoBULGVNrfAf5+af+oIGM=
-X-Google-Smtp-Source: APXvYqzRaJ7XDDJD1NW0/Nvdeg4AhNIo8VinQ7yGHcODmufB0O9qxvneOP6SzcAbn8IEqU8+L2jfE4gUjBfvokmzFgY=
-X-Received: by 2002:a6b:fb10:: with SMTP id h16mr29478708iog.195.1566290479829; 
- Tue, 20 Aug 2019 01:41:19 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 91E352020D30D
+ for <linux-nvdimm@lists.01.org>; Tue, 20 Aug 2019 06:27:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CAsnVhtmw+MBIxeMXra9Ty1DoNAfr4GJWNBPlUc70Zuau6mPGh+SRp9MYEjapsniysHnxXDLa6BnSZtxtYxaUUk0FWOZB8dJqUhGQW/NrgPQfzeiddbLjFJ3hvlnVjZGgP5Qgei/ClzHcL8H4XraZVEMS9UssfwQK9L9Tgn2yuykVtIhF3iHp/GMxBicprceB6ErMMBsIlxa/O63Lwwr1v+9d4D8ohdaFGG4j6wFLO4CySOBsVFXq8A2MtpnY7/j7oQIG3TzqUn9n3y+zZQr5pfXrONvAk85hr9RIRMDSU0L7D++XgRNZynlYJX7W/KfkilbtTg/v6WYQm5K0yXPZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yM/yg4H+CNyOZASWU61u/O47Fjy0hAn2A/Rl+Bhb2VI=;
+ b=Sn4Bd/gl+z6aje9jYakqkz6OPsf8RVeWVLHf7Jtpeqm4W7dfdobNrGnXqXhEFx0GeEtJk/9AVmLubfW1YINECAAQZPrSCpDzcnD8wOIRq4xWptrpA81H4Eo68WshjBMdxWTX3JQ4cAwtDo2ByCp5q2xp2b212M2g3LGLf/KFRdhS0kVniCfpHNhI8aAJci6qfXfz0l404kOdlcmk4MEwOL9sRcctZ70evJg24+M37W9tyWwiBVCXvb8rP2kLNTxtyMSEaXuI+WtWFVtdbQHmIHJLcudC54RQtn/TkdyNFEzkXIM8R3C5xD56Hw1JNad1LqiWVTKTdYGvjneTJHjBQA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yM/yg4H+CNyOZASWU61u/O47Fjy0hAn2A/Rl+Bhb2VI=;
+ b=D1ie3cVooZY7Xlk16/Y1cI275q0Rm2AzThZv6yZIobLSrX6hxarUkKcscCS5DnfWWuFvfffTiJ8qHt6lBI5QyzQqofB6ul8dVcS0svtwmYAhpXE2JG6+qsxvb9X2B4JVweq2SOHYqTNlEukn0CIvzbOQnwcs/f+hqaYPd5IDLMM=
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
+ VI1PR05MB4832.eurprd05.prod.outlook.com (20.177.50.217) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Tue, 20 Aug 2019 13:26:29 +0000
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::1d6:9c67:ea2d:38a7]) by VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::1d6:9c67:ea2d:38a7%6]) with mapi id 15.20.2178.018; Tue, 20 Aug 2019
+ 13:26:29 +0000
+From: Jason Gunthorpe <jgg@mellanox.com>
+To: Christoph Hellwig <hch@lst.de>
+Subject: Re: add a not device managed memremap_pages v3
+Thread-Topic: add a not device managed memremap_pages v3
+Thread-Index: AQHVVaR5OJ5/f8ILRkKWPl6fjF7s4qcECm4A
+Date: Tue, 20 Aug 2019 13:26:29 +0000
+Message-ID: <20190820132622.GC29225@mellanox.com>
+References: <20190818090557.17853-1-hch@lst.de>
+In-Reply-To: <20190818090557.17853-1-hch@lst.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: YQXPR01CA0104.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00:41::33) To VI1PR05MB4141.eurprd05.prod.outlook.com
+ (2603:10a6:803:4d::16)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jgg@mellanox.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [156.34.55.100]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 62df5a3f-d7ac-420e-79e5-08d725720241
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
+ SRVR:VI1PR05MB4832; 
+x-ms-traffictypediagnostic: VI1PR05MB4832:
+x-microsoft-antispam-prvs: <VI1PR05MB4832CDDEDBE44DBFF0962BA4CFAB0@VI1PR05MB4832.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4941;
+x-forefront-prvs: 013568035E
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(4636009)(366004)(39860400002)(346002)(396003)(136003)(376002)(54534003)(199004)(189003)(86362001)(99286004)(478600001)(25786009)(66066001)(11346002)(102836004)(71200400001)(6506007)(386003)(446003)(476003)(33656002)(4326008)(2616005)(186003)(256004)(6246003)(14454004)(71190400001)(76176011)(14444005)(305945005)(53936002)(486006)(7736002)(1076003)(66946007)(66446008)(66476007)(64756008)(4744005)(26005)(2906002)(52116002)(229853002)(8676002)(6486002)(81166006)(81156014)(66556008)(8936002)(54906003)(36756003)(6916009)(316002)(6436002)(5660300002)(6116002)(3846002)(6512007);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB4832;
+ H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: PLxb9jzB+NrrG3NcZNztvgSRAFSmyWycpiI4wHlMAtqFgCMUD1OS+HAzDc4+jgg3CIkjOutw2wUJWrpv8rRgJ4rmfhH02V/8WnK+XEXB0t3LJNTCvBTVvV28pdRaXXtIG99qLFvzELwyCPWwCiHoCaVRZkCorF80AfG+k2jc62OWrmisIxNn1QR9xMatUZ8E0OWWW/DSkUzSAsHn+DzK8VvtCQ7T/GA4pn7T+2+iNXJBthQtMHNqgDbCHMzsYhg1dMAqHrgRTNbGPt9Sh+pw73Sc2lX/RFyVbUPWglBkUXtUWLkUKOakBQQQJJykE4xDIyfHSdmHj4LRPuLOJtH780Cl0Luk+LXkVm8uZVqm8118Vk8/ZbnM1crzjKqsk4sHuMg4m4Mb93CoihXBqb+3u157BZfrfG/PalgazVAZHew=
+x-ms-exchange-transport-forked: True
+Content-ID: <76D56E88DFAB2E4AA34C7F681118F0D2@eurprd05.prod.outlook.com>
 MIME-Version: 1.0
-References: <20190820023030.18232-1-santosh@fossix.org>
- <20190820023030.18232-3-santosh@fossix.org>
-In-Reply-To: <20190820023030.18232-3-santosh@fossix.org>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Tue, 20 Aug 2019 18:41:08 +1000
-Message-ID: <CAOSf1CEYqY5O2RUmvh-nJwouhVZP0A3EW+_kQcz6h9d7cM8UYg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] of_pmem: Add memory ranges which took a mce to bad
- range
-To: Santosh Sivaraj <santosh@fossix.org>
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 62df5a3f-d7ac-420e-79e5-08d725720241
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Aug 2019 13:26:29.2368 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CTIRnFwaRThv874lgZ2tPWFiZjUYNtgSFTy/ezzGVU/Xe4U8k/K8gLoQTLD7AiMzooug1siugFUFIkv7lidfgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB4832
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,251 +102,42 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Chandan Rajendra <chandan@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Bharata B Rao <bharata@linux.ibm.com>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Aug 20, 2019 at 12:30 PM Santosh Sivaraj <santosh@fossix.org> wrote:
->
-> Subscribe to the MCE notification and add the physical address which
-> generated a memory error to nvdimm bad range.
+On Sun, Aug 18, 2019 at 11:05:53AM +0200, Christoph Hellwig wrote:
+> Hi Dan and Jason,
+> 
+> Bharata has been working on secure page management for kvmppc guests,
+> and one I thing I noticed is that he had to fake up a struct device
+> just so that it could be passed to the devm_memremap_pages
+> instrastructure for device private memory.
+> 
+> This series adds non-device managed versions of the
+> devm_request_free_mem_region and devm_memremap_pages functions for
+> his use case.
+> 
+> Changes since v2:
+>  - improved changelogs that the the v2 changes into account
+> 
+> Changes since v1:
+>  - don't overload devm_request_free_mem_region
+>  - export the memremap_pages and munmap_pages as kvmppc can be a module
 
-Uh... I should have looked a bit closer at this on v1.
+Looks good, I fixed up the patch with Dan's note and reviewed them as
+well.
 
-a) of_pmem.c isn't part of the powerpc tree. You should have CCed this
-to the nvdimm list since you'll need an Ack from Dan Williams.
-b) of_pmem isn't powerpc specific. Adding a pile of powerpc specific
-machine check parsing means it's not going to compile on other DT
-platforms.
-c) all this appears to be copied and pasted from the papr_scm version of this.
+Applied to hmm.git as requested
 
-Considering this is pretty similar in spirit to what's done on x86
-today (drivers/acpi/nfit/mce.c) I think you would get more milage out
-of moving the address matching into libnvdimm itself. Machine check
-handling is always going to be arch specific, but memory errors could
-be re-emitted by the arch code into a more generic notifier chain that
-libnvdimm use. There's probably other uses in mm/ for such a chain
-too.
-
-Oliver
-
-
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->  drivers/nvdimm/of_pmem.c | 151 +++++++++++++++++++++++++++++++++------
->  1 file changed, 131 insertions(+), 20 deletions(-)
->
-> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-> index a0c8dcfa0bf9..155e56862fdf 100644
-> --- a/drivers/nvdimm/of_pmem.c
-> +++ b/drivers/nvdimm/of_pmem.c
-> @@ -8,6 +8,9 @@
->  #include <linux/module.h>
->  #include <linux/ioport.h>
->  #include <linux/slab.h>
-> +#include <linux/string.h>
-> +#include <linux/nd.h>
-> +#include <asm/mce.h>
->
->  static const struct attribute_group *region_attr_groups[] = {
->         &nd_region_attribute_group,
-> @@ -25,11 +28,77 @@ struct of_pmem_private {
->         struct nvdimm_bus *bus;
->  };
->
-> +struct of_pmem_region {
-> +       struct of_pmem_private *priv;
-> +       struct nd_region_desc *region_desc;
-> +       struct nd_region *region;
-> +       struct list_head region_list;
-> +};
-> +
-> +LIST_HEAD(pmem_regions);
-> +DEFINE_MUTEX(pmem_region_lock);
-> +
-> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
-> +                        void *data)
-> +{
-> +       struct machine_check_event *evt = data;
-> +       struct of_pmem_region *pmem_region;
-> +       u64 aligned_addr, phys_addr;
-> +       bool found = false;
-> +
-> +       if (evt->error_type != MCE_ERROR_TYPE_UE)
-> +               return NOTIFY_DONE;
-> +
-> +       if (list_empty(&pmem_regions))
-> +               return NOTIFY_DONE;
-> +
-> +       phys_addr = evt->u.ue_error.physical_address +
-> +               (evt->u.ue_error.effective_address & ~PAGE_MASK);
-> +
-> +       if (!evt->u.ue_error.physical_address_provided ||
-> +           !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
-> +               return NOTIFY_DONE;
-> +
-> +       mutex_lock(&pmem_region_lock);
-> +       list_for_each_entry(pmem_region, &pmem_regions, region_list) {
-> +               struct resource *res = pmem_region->region_desc->res;
-> +
-> +               if (phys_addr >= res->start && phys_addr <= res->end) {
-> +                       found = true;
-> +                       break;
-> +               }
-> +       }
-> +       mutex_unlock(&pmem_region_lock);
-> +
-> +       if (!found)
-> +               return NOTIFY_DONE;
-> +
-> +       aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
-> +
-> +       if (nvdimm_bus_add_badrange(pmem_region->priv->bus, aligned_addr,
-> +                                   L1_CACHE_BYTES))
-> +               return NOTIFY_DONE;
-> +
-> +       pr_debug("Add memory range (0x%llx -- 0x%llx) as bad range\n",
-> +                aligned_addr, aligned_addr + L1_CACHE_BYTES);
-> +
-> +
-> +       nvdimm_region_notify(pmem_region->region, NVDIMM_REVALIDATE_POISON);
-> +
-> +       return NOTIFY_OK;
-> +}
-> +
-> +static struct notifier_block mce_ue_nb = {
-> +       .notifier_call = handle_mce_ue
-> +};
-> +
->  static int of_pmem_region_probe(struct platform_device *pdev)
->  {
->         struct of_pmem_private *priv;
->         struct device_node *np;
->         struct nvdimm_bus *bus;
-> +       struct of_pmem_region *pmem_region;
-> +       struct nd_region_desc *ndr_desc;
->         bool is_volatile;
->         int i;
->
-> @@ -58,32 +127,49 @@ static int of_pmem_region_probe(struct platform_device *pdev)
->                         is_volatile ? "volatile" : "non-volatile",  np);
->
->         for (i = 0; i < pdev->num_resources; i++) {
-> -               struct nd_region_desc ndr_desc;
->                 struct nd_region *region;
->
-> -               /*
-> -                * NB: libnvdimm copies the data from ndr_desc into it's own
-> -                * structures so passing a stack pointer is fine.
-> -                */
-> -               memset(&ndr_desc, 0, sizeof(ndr_desc));
-> -               ndr_desc.attr_groups = region_attr_groups;
-> -               ndr_desc.numa_node = dev_to_node(&pdev->dev);
-> -               ndr_desc.target_node = ndr_desc.numa_node;
-> -               ndr_desc.res = &pdev->resource[i];
-> -               ndr_desc.of_node = np;
-> -               set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
-> +               ndr_desc = kzalloc(sizeof(struct nd_region_desc), GFP_KERNEL);
-> +               if (!ndr_desc) {
-> +                       nvdimm_bus_unregister(priv->bus);
-> +                       kfree(priv);
-> +                       return -ENOMEM;
-> +               }
-> +
-> +               ndr_desc->attr_groups = region_attr_groups;
-> +               ndr_desc->numa_node = dev_to_node(&pdev->dev);
-> +               ndr_desc->target_node = ndr_desc->numa_node;
-> +               ndr_desc->res = &pdev->resource[i];
-> +               ndr_desc->of_node = np;
-> +               set_bit(ND_REGION_PAGEMAP, &ndr_desc->flags);
->
->                 if (is_volatile)
-> -                       region = nvdimm_volatile_region_create(bus, &ndr_desc);
-> +                       region = nvdimm_volatile_region_create(bus, ndr_desc);
->                 else
-> -                       region = nvdimm_pmem_region_create(bus, &ndr_desc);
-> +                       region = nvdimm_pmem_region_create(bus, ndr_desc);
->
-> -               if (!region)
-> +               if (!region) {
->                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
-> -                                       ndr_desc.res, np);
-> -               else
-> -                       dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
-> -                                       ndr_desc.res, np);
-> +                                       ndr_desc->res, np);
-> +                       continue;
-> +               }
-> +
-> +               dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
-> +                       ndr_desc->res, np);
-> +
-> +               pmem_region = kzalloc(sizeof(struct of_pmem_region),
-> +                                     GFP_KERNEL);
-> +               if (!pmem_region)
-> +                       continue;
-> +
-> +               pmem_region->region_desc = ndr_desc;
-> +               pmem_region->region = region;
-> +               pmem_region->priv = priv;
-> +
-> +               /* Save regions registered for use by the notification code */
-> +               mutex_lock(&pmem_region_lock);
-> +               list_add_tail(&pmem_region->region_list, &pmem_regions);
-> +               mutex_unlock(&pmem_region_lock);
->         }
->
->         return 0;
-> @@ -92,6 +178,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
->  static int of_pmem_region_remove(struct platform_device *pdev)
->  {
->         struct of_pmem_private *priv = platform_get_drvdata(pdev);
-> +       struct of_pmem_region *r, *t;
-> +
-> +       list_for_each_entry_safe(r, t, &pmem_regions, region_list) {
-> +               list_del(&(r->region_list));
-> +               kfree(r->region_desc);
-> +               kfree(r);
-> +       }
->
->         nvdimm_bus_unregister(priv->bus);
->         kfree(priv);
-> @@ -113,7 +206,25 @@ static struct platform_driver of_pmem_region_driver = {
->         },
->  };
->
-> -module_platform_driver(of_pmem_region_driver);
-> +static int __init of_pmem_init(void)
-> +{
-> +       int ret;
-> +
-> +       ret = platform_driver_register(&of_pmem_region_driver);
-> +       if (!ret)
-> +               mce_register_notifier(&mce_ue_nb);
-> +
-> +       return ret;
-> +}
-> +module_init(of_pmem_init);
-> +
-> +static void __exit of_pmem_exit(void)
-> +{
-> +       mce_unregister_notifier(&mce_ue_nb);
-> +       platform_driver_unregister(&of_pmem_region_driver);
-> +}
-> +module_exit(of_pmem_exit);
-> +
->  MODULE_DEVICE_TABLE(of, of_pmem_region_match);
->  MODULE_LICENSE("GPL");
->  MODULE_AUTHOR("IBM Corporation");
-> --
-> 2.21.0
->
+Thanks,
+Jason
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
