@@ -2,51 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409459534B
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 03:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 597FC95360
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 20 Aug 2019 03:28:46 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 60BEC2020D336;
-	Mon, 19 Aug 2019 18:22:58 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6C23121962301;
+	Mon, 19 Aug 2019 18:30:07 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
- helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
- [211.29.132.249])
- by ml01.01.org (Postfix) with ESMTP id EE7972020D329
- for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 18:22:56 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-190-67.pa.nsw.optusnet.com.au
- [49.195.190.67])
- by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 484EE362204;
- Tue, 20 Aug 2019 11:21:31 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1hzsov-0001Ym-Er; Tue, 20 Aug 2019 11:20:21 +1000
-Date: Tue, 20 Aug 2019 11:20:21 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190820012021.GQ7777@dread.disaster.area>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190814101714.GA26273@quack2.suse.cz>
- <20190814180848.GB31490@iweiny-DESK2.sc.intel.com>
- <20190815130558.GF14313@quack2.suse.cz>
- <20190816190528.GB371@iweiny-DESK2.sc.intel.com>
- <20190817022603.GW6129@dread.disaster.area>
- <20190819063412.GA20455@quack2.suse.cz>
- <20190819092409.GM7777@dread.disaster.area>
- <ae64491b-85f8-eeca-14e8-2f09caf8abd2@nvidia.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 988DB2020D333
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 18:30:05 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id g17so3536811otl.2
+ for <linux-nvdimm@lists.01.org>; Mon, 19 Aug 2019 18:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=bpCrccGQA8l7BTcc8eWw96H6pS6MQIOOzUEqeqPrzKU=;
+ b=lZbsZt+/6d5yJAVD8m/RWxrbst/pw6mXm9sXy042kGJEQR9cu7lYZjLiBf6dwe8kdd
+ x073MY1NIze1gOonl8UPKw/Tk5EF1OpFoPQGBl5XHSPHM3FU1oVNtDcJqg89FstWApDZ
+ fcibc6V2UzCg8TM7EzkiczR5EkpxjjjuQLLKPRPQJq02SSicgxK0jB80zPnLkyusZNYE
+ Slg72DBH/UYm3UkD6+qsNs8SVJRkNhZMpJr+9jeb1ioXRRn/PjlKF0yV+Nm9dfMO3FUR
+ eIYBUiC3kTdhj84CPutziyMUYtE+g4LnP3j8x3sgoJ+m+Ui16TzkRosrQJJTFUJX8F4e
+ dqxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=bpCrccGQA8l7BTcc8eWw96H6pS6MQIOOzUEqeqPrzKU=;
+ b=r6CPwO3Z/Xdnd8tJB8z2PKlKXKtoYpPhUdKFREqpm9LBEjYkMZI83XusnjipvY02TU
+ UWoP0s0/2VrF96uWODpcUNKRUFe89oST7fgInDmPpKwh7VCtq+1HBRpPTsPAYXAQxtpK
+ 56r4wuPPI205v0dO1zf1jaHzKQh7HKbHWCptNRqWbbgYVR4v7TaBM1Qclb2TE0x0f+eo
+ hAaj3CI8WXZkWX76Jp5xt+vl3G6+BW2TVZqVLp9Gvt22t1AHvSPOcRJKztpFoLattCvS
+ ptRoluCL7rzaw6i4M+GF8uY+iL409cky+Q+E7P7bKTrXaDVIOgckTKh8b05GLBxi1LWg
+ btaQ==
+X-Gm-Message-State: APjAAAWphH8igMy56fX8aSSSU7fDqYZ6iszd5sEsdoEVat0ttnyGtQbk
+ C2RHJd5ESMhYSMb3L2tLARlwJUFql252mrbtXAc37w==
+X-Google-Smtp-Source: APXvYqzHphAQuA/iOiJkSZOef8tOpXSCYjbbUJRyOK3xnSM7rIdYobKMnaOjdx9wCeE+nGliVWangEXZTLwnNbJUfas=
+X-Received: by 2002:a05:6830:458:: with SMTP id
+ d24mr19871635otc.126.1566264521208; 
+ Mon, 19 Aug 2019 18:28:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ae64491b-85f8-eeca-14e8-2f09caf8abd2@nvidia.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
- a=TR82T6zjGmBjdfWdGgpkDw==:117 a=TR82T6zjGmBjdfWdGgpkDw==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=7-415B0cAAAA:8 a=rV-TrcAmjTgZ-WCYr6sA:9 a=T_cMid2Q6N9PW1nF:21
- a=ZVtkOv0JeXpnhdDN:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+References: <20190818090557.17853-1-hch@lst.de>
+ <20190818090557.17853-2-hch@lst.de>
+In-Reply-To: <20190818090557.17853-2-hch@lst.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 19 Aug 2019 18:28:30 -0700
+Message-ID: <CAPcyv4iaNtmvU5e8_8SV9XsmVCfnv8e7_YfMi46LfOF4W155zg@mail.gmail.com>
+Subject: Re: [PATCH 1/4] resource: add a not device managed
+ request_free_mem_region variant
+To: Christoph Hellwig <hch@lst.de>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,96 +68,111 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Bharata B Rao <bharata@linux.ibm.com>, Linux MM <linux-mm@kvack.org>,
+ Jason Gunthorpe <jgg@mellanox.com>, Andrew Morton <akpm@linux-foundation.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 19, 2019 at 05:05:53PM -0700, John Hubbard wrote:
-> On 8/19/19 2:24 AM, Dave Chinner wrote:
-> > On Mon, Aug 19, 2019 at 08:34:12AM +0200, Jan Kara wrote:
-> > > On Sat 17-08-19 12:26:03, Dave Chinner wrote:
-> > > > On Fri, Aug 16, 2019 at 12:05:28PM -0700, Ira Weiny wrote:
-> > > > > On Thu, Aug 15, 2019 at 03:05:58PM +0200, Jan Kara wrote:
-> > > > > > On Wed 14-08-19 11:08:49, Ira Weiny wrote:
-> > > > > > > On Wed, Aug 14, 2019 at 12:17:14PM +0200, Jan Kara wrote:
-> ...
-> > The last close is an interesting case because the __fput() call
-> > actually runs from task_work() context, not where the last reference
-> > is actually dropped. So it already has certain specific interactions
-> > with signals and task exit processing via task_add_work() and
-> > task_work_run().
-> > 
-> > task_add_work() calls set_notify_resume(task), so if nothing else
-> > triggers when returning to userspace we run this path:
-> > 
-> > exit_to_usermode_loop()
-> >    tracehook_notify_resume()
-> >      task_work_run()
-> >        __fput()
-> > 	locks_remove_file()
-> > 	  locks_remove_lease()
-> > 	    ....
-> > 
-> > It's worth noting that locks_remove_lease() does a
-> > percpu_down_read() which means we can already block in this context
-> > removing leases....
-> > 
-> > If there is a signal pending, the task work is run this way (before
-> > the above notify path):
-> > 
-> > exit_to_usermode_loop()
-> >    do_signal()
-> >      get_signal()
-> >        task_work_run()
-> >          __fput()
-> > 
-> > We can detect this case via signal_pending() and even SIGKILL via
-> > fatal_signal_pending(), and so we can decide not to block based on
-> > the fact the process is about to be reaped and so the lease largely
-> > doesn't matter anymore. I'd argue that it is close and we can't
-> > easily back out, so we'd only break the block on a fatal signal....
-> > 
-> > And then, of course, is the call path through do_exit(), which has
-> > the PF_EXITING task flag set:
-> > 
-> > do_exit()
-> >    exit_task_work()
-> >      task_work_run()
-> >        __fput()
-> > 
-> > and so it's easy to avoid blocking in this case, too.
-> 
-> Any thoughts about sockets? I'm looking at net/xdp/xdp_umem.c which pins
-> memory with FOLL_LONGTERM, and wondering how to make that work here.
+On Sun, Aug 18, 2019 at 2:10 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Factor out the guts of devm_request_free_mem_region so that we can
+> implement both a device managed and a manually release version as
+> tiny wrappers around it.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> ---
+>  include/linux/ioport.h |  2 ++
+>  kernel/resource.c      | 45 +++++++++++++++++++++++++++++-------------
+>  2 files changed, 33 insertions(+), 14 deletions(-)
+>
+> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+> index 5b6a7121c9f0..7bddddfc76d6 100644
+> --- a/include/linux/ioport.h
+> +++ b/include/linux/ioport.h
+> @@ -297,6 +297,8 @@ static inline bool resource_overlaps(struct resource *r1, struct resource *r2)
+>
+>  struct resource *devm_request_free_mem_region(struct device *dev,
+>                 struct resource *base, unsigned long size);
+> +struct resource *request_free_mem_region(struct resource *base,
+> +               unsigned long size, const char *name);
+>
+>  #endif /* __ASSEMBLY__ */
+>  #endif /* _LINUX_IOPORT_H */
+> diff --git a/kernel/resource.c b/kernel/resource.c
+> index 7ea4306503c5..74877e9d90ca 100644
+> --- a/kernel/resource.c
+> +++ b/kernel/resource.c
+> @@ -1644,19 +1644,8 @@ void resource_list_free(struct list_head *head)
+>  EXPORT_SYMBOL(resource_list_free);
+>
+>  #ifdef CONFIG_DEVICE_PRIVATE
+> -/**
+> - * devm_request_free_mem_region - find free region for device private memory
+> - *
+> - * @dev: device struct to bind the resource to
+> - * @size: size in bytes of the device memory to add
+> - * @base: resource tree to look in
+> - *
+> - * This function tries to find an empty range of physical address big enough to
+> - * contain the new resource, so that it can later be hotplugged as ZONE_DEVICE
+> - * memory, which in turn allocates struct pages.
+> - */
+> -struct resource *devm_request_free_mem_region(struct device *dev,
+> -               struct resource *base, unsigned long size)
+> +static struct resource *__request_free_mem_region(struct device *dev,
+> +               struct resource *base, unsigned long size, const char *name)
+>  {
+>         resource_size_t end, addr;
+>         struct resource *res;
+> @@ -1670,7 +1659,10 @@ struct resource *devm_request_free_mem_region(struct device *dev,
+>                                 REGION_DISJOINT)
+>                         continue;
+>
+> -               res = devm_request_mem_region(dev, addr, size, dev_name(dev));
+> +               if (dev)
+> +                       res = devm_request_mem_region(dev, addr, size, name);
+> +               else
+> +                       res = request_mem_region(addr, size, name);
+>                 if (!res)
+>                         return ERR_PTR(-ENOMEM);
+>                 res->desc = IORES_DESC_DEVICE_PRIVATE_MEMORY;
+> @@ -1679,7 +1671,32 @@ struct resource *devm_request_free_mem_region(struct device *dev,
+>
+>         return ERR_PTR(-ERANGE);
+>  }
+> +
+> +/**
+> + * devm_request_free_mem_region - find free region for device private memory
+> + *
+> + * @dev: device struct to bind the resource to
+> + * @size: size in bytes of the device memory to add
+> + * @base: resource tree to look in
+> + *
+> + * This function tries to find an empty range of physical address big enough to
+> + * contain the new resource, so that it can later be hotplugged as ZONE_DEVICE
+> + * memory, which in turn allocates struct pages.
+> + */
+> +struct resource *devm_request_free_mem_region(struct device *dev,
+> +               struct resource *base, unsigned long size)
+> +{
 
-I'm not sure how this interacts with file mappings? I mean, this
-is just pinning anonymous pages for direct data placement into
-userspace, right?
+Previously we would loudly crash if someone passed NULL to
+devm_request_free_mem_region(), but now it will silently work and the
+result will leak. Perhaps this wants a:
 
-Are you asking "what if this pinned memory was a file mapping?",
-or something else?
+if (!dev)
+    return NULL;
 
-> These are close to files, in how they're handled, but just different
-> enough that it's not clear to me how to make work with this system.
+...to head off those mistakes?
 
-I'm guessing that if they are pinning a file backed mapping, they
-are trying to dma direct to the file (zero copy into page cache?)
-and so they'll need to either play by ODP rules or take layout
-leases, too....
+No major heartburn if you keep it as is, you can add:
 
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
