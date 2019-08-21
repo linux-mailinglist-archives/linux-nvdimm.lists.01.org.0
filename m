@@ -2,57 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8219823D
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Aug 2019 20:03:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 970A89829A
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Aug 2019 20:19:49 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 460F920213F0C;
-	Wed, 21 Aug 2019 11:04:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 70D7720213F14;
+	Wed, 21 Aug 2019 11:20:57 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B02C720212C93
- for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 11:04:29 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
- by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2019 11:03:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,412,1559545200"; d="scan'208";a="169495620"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
- by orsmga007.jf.intel.com with ESMTP; 21 Aug 2019 11:03:19 -0700
-Received: from fmsmsx112.amr.corp.intel.com (10.18.116.6) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 21 Aug 2019 11:03:19 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.127]) by
- FMSMSX112.amr.corp.intel.com ([169.254.5.162]) with mapi id 14.03.0439.000;
- Wed, 21 Aug 2019 11:03:19 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, "msuchanek@suse.de"
- <msuchanek@suse.de>
+ by ml01.01.org (Postfix) with ESMTPS id 9CBDE20212CBC
+ for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 11:20:55 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx1.suse.de (Postfix) with ESMTP id 6D97AAEFC;
+ Wed, 21 Aug 2019 18:19:44 +0000 (UTC)
+Date: Wed, 21 Aug 2019 20:19:43 +0200
+From: Michal =?UTF-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
 Subject: Re: [ndctl PATCH v2 14/26] ndctl/namespace: Handle
  'create-namespace' in label-less mode
-Thread-Topic: [ndctl PATCH v2 14/26] ndctl/namespace: Handle
- 'create-namespace' in label-less mode
-Thread-Index: AQHVRMXsk8OMgntO9UCLVvFdfEUjSKcGK2KAgABV1gA=
-Date: Wed, 21 Aug 2019 18:03:18 +0000
-Message-ID: <c92890eae097e27edb65afd4fc969f032fb9a18d.camel@intel.com>
+Message-ID: <20190821201943.5d24eb9e@kitsune.suse.cz>
+In-Reply-To: <c92890eae097e27edb65afd4fc969f032fb9a18d.camel@intel.com>
 References: <156426356088.531577.14828880045306313118.stgit@dwillia2-desk3.amr.corp.intel.com>
  <156426363655.531577.4504452379578995249.stgit@dwillia2-desk3.amr.corp.intel.com>
  <20190821145605.206372a0@kitsune.suse.cz>
-In-Reply-To: <20190821145605.206372a0@kitsune.suse.cz>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.185]
-Content-ID: <B5285B74E1F6AB458ACD98F55C0AE4A0@intel.com>
+ <c92890eae097e27edb65afd4fc969f032fb9a18d.camel@intel.com>
+Organization: SUSE Linux
+X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.32; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
@@ -71,13 +52,16 @@ Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-T24gV2VkLCAyMDE5LTA4LTIxIGF0IDE0OjU2ICswMjAwLCBNaWNoYWwgU3VjaMOhbmVrIHdyb3Rl
-Og0KPiBIZWxsbywNCj4gDQo+IHRoaXMgcGF0Y2ggaXMgbWFya2VkIGFzIHN1cGVyc2VkZWQgaW4g
-dGhlIHBhdGNod29yay4NCj4gDQo+IFdoYXQgaXMgdGhlIGludGVuZGVkIHJlcGxhY2VtZW50Pw0K
-PiANCg0KSGkgTWljaGFsLA0KDQpUaGUgcGF0Y2ggd2FzIHN1cGVyc2VkZWQgYnkgdjMgb2YgdGhl
-IHNlcmllcywgYW5kIGlzIHByZXNlbnQgaW4gdGhlDQpsYXRlc3QgcmVsZWFzZSAodjY2KToNCg0K
-Nzk2NmM5MiBuZGN0bC9uYW1lc3BhY2U6IEhhbmRsZSAnY3JlYXRlLW5hbWVzcGFjZScgaW4gbGFi
-ZWwtbGVzcyBtb2RlDQoNCgktVmlzaGFsDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBs
-aXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1u
-dmRpbW0K
+T24gV2VkLCAyMSBBdWcgMjAxOSAxODowMzoxOCArMDAwMAoiVmVybWEsIFZpc2hhbCBMIiA8dmlz
+aGFsLmwudmVybWFAaW50ZWwuY29tPiB3cm90ZToKCj4gT24gV2VkLCAyMDE5LTA4LTIxIGF0IDE0
+OjU2ICswMjAwLCBNaWNoYWwgU3VjaMOhbmVrIHdyb3RlOgo+ID4gSGVsbG8sCj4gPiAKPiA+IHRo
+aXMgcGF0Y2ggaXMgbWFya2VkIGFzIHN1cGVyc2VkZWQgaW4gdGhlIHBhdGNod29yay4KPiA+IAo+
+ID4gV2hhdCBpcyB0aGUgaW50ZW5kZWQgcmVwbGFjZW1lbnQ/Cj4gPiAgIAo+IAo+IEhpIE1pY2hh
+bCwKPiAKPiBUaGUgcGF0Y2ggd2FzIHN1cGVyc2VkZWQgYnkgdjMgb2YgdGhlIHNlcmllcywgYW5k
+IGlzIHByZXNlbnQgaW4gdGhlCj4gbGF0ZXN0IHJlbGVhc2UgKHY2Nik6Cj4gCj4gNzk2NmM5MiBu
+ZGN0bC9uYW1lc3BhY2U6IEhhbmRsZSAnY3JlYXRlLW5hbWVzcGFjZScgaW4gbGFiZWwtbGVzcyBt
+b2RlCj4gCj4gCS1WaXNoYWwKCkkgc2VlLCBpdCB3YXMgYWxyZWFkeSBtZXJnZWQgYXMgcGFydCBv
+ZiB1cGRhdGVkIHNlcmllcy4gTWlzc2VkIHRoYXQuCgpUaGFua3MKCk1pY2hhbApfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGlu
+ZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFp
+bG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
