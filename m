@@ -1,40 +1,102 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04C698670
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Aug 2019 23:17:13 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22FF98818
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Aug 2019 01:51:07 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF45720213F05;
-	Wed, 21 Aug 2019 14:18:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A766920213F25;
+	Wed, 21 Aug 2019 16:52:13 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=91.232.21.11; helo=mail.nell.com.ua; envelope-from=info@nell.com.ua;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail.nell.com.ua (mail.nell.com.ua [91.232.21.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=40.107.15.73; helo=eur01-db5-obe.outbound.protection.outlook.com;
+ envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
+Received: from EUR01-DB5-obe.outbound.protection.outlook.com
+ (mail-eopbgr150073.outbound.protection.outlook.com [40.107.15.73])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D7631202110A3
- for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 14:18:17 -0700 (PDT)
-Message-ID: <077a278b7d50a2ae9f6adc8f7bb8f2feea724af6@nell.com.ua>
-From: "Nelly" <info@nell.com.ua>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?windows-1251?B?z+Xw5ePu4u7w+yDxIPLu8OPu4vvs6CDx5fL/?=
- =?windows-1251?B?7Og=?=
-Date: Thu, 22 Aug 2019 00:17:05 +0300
+ by ml01.01.org (Postfix) with ESMTPS id 7D55920213F13
+ for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 16:52:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EaGTxjEj+CwSG/XNx0WVf6F7/XvgOywqnqprTk+X54g+n7yml1T/WTHVMWQtTsoh5lET1IHys7yS2VQNA/9m6kG8shtOcjnpnpU/0iqodpBd0+8wrnPv1p7IvD5PUgOzw+5Fw1PH6vK+vi/in8OiHRki1hH8CrZADsI6W15d32oYem2rdDLXU+b4wcYbDx9YSL/ljpxHU2FRAjn4SN5jztpg1HWb0lLCzIhhP3Lir6k+eIm0GSkynXTEtm7DP0M6cnRhk6AHPrikTuYH5mP6O5tL1cFhbDsSQFK+AdlSdiuxWCf3oN1H1NvfRwdRQvlizqtGMIVgU/sit40PYgC5+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BD99CBVwfWfplQFNyhx/dmJLkrR1Rdt/Q/30tc6QT8o=;
+ b=BS4cZNVfKE06QXqVVG/MCeuydoH78OlWOF/X/X9JybWHcCP+V2stnYz440lHN+8YhRP1nanzJQTK66bzIdbm+4uhPw9cNNF/lxgcG/p8mrMIqQFT8ZfGXm2x2HAD2ZNQErW8mBuOJge2VcCi7yM8tAFyCHOSjyBFiak55a+r/xcX8yw9ERsr+lsqsSiJRdIgw++tk9j6f2wmPpUaPnAZRroY5HRE5y5Dsuaaa5XgkmkHNIeEbTxDBKVg/iswM7OU6bL/2DsuVCYD+Cf6afjBy8nBv1Nv8m88aE67Gfw8hCj6LFy5x9ET+v75r+wUgluTYgIYaIiLLSeScn6WpplQBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BD99CBVwfWfplQFNyhx/dmJLkrR1Rdt/Q/30tc6QT8o=;
+ b=D+HMEZzbkKXskCwej8+htiGn6+Gajl9dCXTDoe+m3ZQXNat5BUweS+Gni3IVmyzCMAnQbRJi2uyqBP75wGzxjzCmN6EHgI9LFifDG9ucBOXIwxAMmBRjGkg/2clAOoXHAHQaaBx+3onZr5Oy3ZIWnAxJlBfKnAqGDKRyYa5m8gI=
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
+ VI1PR05MB3405.eurprd05.prod.outlook.com (10.170.238.158) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Wed, 21 Aug 2019 23:51:01 +0000
+Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::1d6:9c67:ea2d:38a7]) by VI1PR05MB4141.eurprd05.prod.outlook.com
+ ([fe80::1d6:9c67:ea2d:38a7%6]) with mapi id 15.20.2178.020; Wed, 21 Aug 2019
+ 23:51:01 +0000
+From: Jason Gunthorpe <jgg@mellanox.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
+Thread-Topic: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
+Thread-Index: AQHVVaUUhGk4jDl8B02XMFt421bWy6cDRjIAgADEW4CAAOK+AIAA4TAAgAB8xoA=
+Date: Wed, 21 Aug 2019 23:51:01 +0000
+Message-ID: <20190821235055.GQ8667@mellanox.com>
+References: <20190818090557.17853-1-hch@lst.de>
+ <20190818090557.17853-3-hch@lst.de>
+ <CAPcyv4iYytOoX3QMRmvNLbroxD0szrVLauXFjnQMvtQOH3as_w@mail.gmail.com>
+ <20190820132649.GD29225@mellanox.com>
+ <CAPcyv4hfowyD4L0W3eTJrrPK5rfrmU6G29_vBVV+ea54eoJenA@mail.gmail.com>
+ <20190821162420.GI8667@mellanox.com>
+In-Reply-To: <20190821162420.GI8667@mellanox.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: YQBPR0101CA0011.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c00::24) To VI1PR05MB4141.eurprd05.prod.outlook.com
+ (2603:10a6:803:4d::16)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=jgg@mellanox.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [156.34.55.100]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: ff7de4e9-222d-439a-2e07-08d726926be3
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0; PCL:0;
+ RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
+ SRVR:VI1PR05MB3405; 
+x-ms-traffictypediagnostic: VI1PR05MB3405:
+x-ms-exchange-purlcount: 1
+x-microsoft-antispam-prvs: <VI1PR05MB3405C0BEDAE45C180F2B0520CFAA0@VI1PR05MB3405.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 0136C1DDA4
+x-forefront-antispam-report: SFV:NSPM;
+ SFS:(10009020)(979002)(4636009)(136003)(346002)(366004)(396003)(376002)(39860400002)(199004)(189003)(8676002)(81156014)(99286004)(81166006)(316002)(229853002)(66446008)(54906003)(66946007)(64756008)(66556008)(66476007)(7736002)(305945005)(52116002)(36756003)(26005)(66066001)(6116002)(3846002)(76176011)(2906002)(53546011)(6506007)(386003)(6486002)(8936002)(53936002)(102836004)(6916009)(71190400001)(966005)(71200400001)(14444005)(33656002)(256004)(4326008)(14454004)(6246003)(25786009)(6436002)(186003)(11346002)(446003)(478600001)(1076003)(86362001)(486006)(6306002)(5660300002)(476003)(2616005)(6512007)(969003)(989001)(999001)(1009001)(1019001);
+ DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB3405;
+ H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
+ PTR:InfoNoRecords; A:1; MX:1; 
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: slGrQeYkySAxa73xEYqN4ELA/jv+A3z+GlBl0VtF+hmNWnPZztSuW1C49EPLKPdwUphLosHoVkD335T3BNKVRLTHUJ3BdZORtQWzgfNPWw7Qn3N0nB/dd7YG/eyLw3RSzwt9FKeLBtSsLMyDSI6VeWbVfglU3GMSonGgQr5bwfeNhbhj37aaoJNRMW2pm94yHYjRuwNSvg9ZZWP2p5Qn+2fUqp3iC5wT554nR3W+oCn3juxV0wZmL7c4RSUL0wHMbiyxFGb18Caxpooqns6RZCiZMZCLDT8CWiTOwiHqduGp9SGVcAItGtbqUcDr0QIeL2y30ArKjQh4iHYdKmGshX8Vq6xCYnTrSCK4VoYMM8EOnwM44eAuaw48cEkCIT/h3EcppX88pc//0n7c0ECnDqZP+KVizyPUeEdjUGz/8J0=
+x-ms-exchange-transport-forked: True
+Content-ID: <BA840F552473C345840D4DC31B1DBDC6@eurprd05.prod.outlook.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=nell.com.ua; s=mail;
- c=relaxed/relaxed; t=1566422225;
- h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
- bh=D8QxZ4wJr4Sk6G1XaxpxKzN/KiuEn/iim/om/v/Sh8E=;
- b=c5X56469bFWsgEDQg8DI/M/7dqzGGC0DTdqDTnIpqwBBLaxifWXS3pwJFKQ52p
- CZq7h0FwCYoHMywJHkWMpG0uIP1XXZ9ekZB9Ml0PoE5mbq900ZB5HRmWbIUwgz4Z
- L4Jze0UQKg5OeVqd/6DtlhBuxzlxwwsLyVq1yuJPgvPf+RC/eAqVijom3yZ4lWWS
- mqyCi2qcwNHGZU4gAoO4ZHdCS16kimYOot6N3sRCGxqX9lWTCvDSjI9vOPz+/FRx
- uS2dCpYZaCvjZrxqx1vwpbCGIoNxcvkmw8PQqh5ly2Byemuw/OjwyPCgiZjyirty
- FhUujPQBI5V+1UyC6xEQUvNw==
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ff7de4e9-222d-439a-2e07-08d726926be3
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2019 23:51:01.5744 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: OG0Q51siNn889gtpqWijjlXqfQEuaoX+J5YF1xxqvnEZWPVwJ2e5q3hcJxqvfIswSZxjYs3kVbHIsXo64hjjCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB3405
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,65 +108,58 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Reply-To: Nelly <info@nell.com.ua>
-Content-Type: text/plain; charset="cp1251"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Bharata B Rao <bharata@linux.ibm.com>, Linux MM <linux-mm@kvack.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-0+Lg5uDl7PvpIOrr6OXt8iEKCiLP5fDl4+7i7vD7IPEg8u7w4+7i++zoIPHl8v/s6Dog4u7p7eAg
-6OvoIO/g8PLt5fDx8uLuIgoK1/LuIOzu5uXyIOH78vwg4e7r5eUg4vvs4PL74uD++ejsLCDh5fHv
-5fDx7+Xq8uji7fvsIOgg7fPk7fvsLCD35ewg7+Xw5ePu4u7w+ywg5+D45eT46OUg4iDy8+/o6j8K
-wCDl8evoIO7yIP3y6PUg7+Xw5ePu4u7w7uIg5+Di6PHo8iDi4PjlIPTo7eDt8e7i7uUg4evg4+7v
-7uvz9+jlIOgg4evg4+7v7uvz9+jlIOLg+OXj7iDh6Oft5fHgPwrC+yDu4f/n4PLl6/zt7iDi++jj
-8ODl8uUsIOXx6+gg4fPk5fLlIOTl6fHy4u7i4PL8IOLn4uX45e3t7iwg8OX46PLl6/zt7iDoLCDv
-8Ogg/fLu7Cwg4vHl4+TgIJYg8ODn8+zt7i4KCtbl6+gg7/Du4/Dg7Oz7OgqgLSDO7/Dl5OXr6PL8
-IPbl6+gg8ODh7vL7IPEg0tE7CqAtIM7v8OXk5evo8vwg6uv+9+Xi++Ug7+7q4Ofg8uXr6CD99PTl
-6vLo4u3u8fLoIOIg8ODh7vLlINLROwqgLSDN4PP36PL88f8g6uD35fHy4uXt7e4g4+7y7uLo8vzx
-/yDqIO/l8OXj7uLu8ODsOwqgLSDN4PP36PL88f8g7O7k5evo8O7i4PL8IO/l8OXj7uLu8O375SDx
-8vDg8uXj6Ogg4iDn4OLo8ejs7vHy6CDu8iDw4Oft+/Ug9ODq8u7w7uI7CqAtIM3g8/fo8vzx/yDq
-7u3y8O7r6PDu4uDy/CD17uQg7+Xw5ePu4u7w7uIsIO/w7vLo4u7x8u7/8vwg5ODi6+Xt6P4g6CDs
-4O3o7/Pr//bo/+w7CqAtIM3g8/fo8vzx/yD06Orx6PDu4uDy/CDw5efz6/zy4PL7IO/l8OXj7uLu
-8O7iIOgg7u/w5eTl6//y/CDk4Ov87eXp+OjlIPjg4+guIKCgoKAKCs7x7e7i7fvlIOLu7/Du8fs6
-IKCgoKAKCjAuIM3z6+Xi7ukg9ujq6wqgLSDH4Pfl7CDw4OHu8uDy/CDxIPLu8OPu4vvs6CDx5fL/
-7Ogg6CDiIOrg6uj1IPHr8/fg//Ug6/P3+OUg/fLu4+4g6Ofh5ebg8vw/CqAtIM725e3q4CDx6PLz
-4Pbo6Dog4+TlIOz7IPHl6ffg8T8KoC0gz+vg7SDk5enx8uLo6Tog9/LuIOz7IPXu8ujsIO/u6/P3
-6PL8IO7yIPDg4e7y+yDxINLRPwoKMS4gz+7k4+7y7uLq4CDqIO/l8OXj7uLu8ODsCqAtINfy7iDy
-4Oru5SDv5fDl4+7i7vD7IOgg5+D35ewg7u3oIO3z5u37PwqgLSDA7eDr6Ocg6O3y5fDl8e7iIO/u
-8fLg4vno6uAg6CDS0TsKoC0gzu/w5eTl6+Xt6OUg5+7tIOLu5+zu5u379SDk7uPu4u7w5e3t7vHy
-5ek7CqAtIM7v8OXk5evl7ejlIO/g8ODs5fLw7uIg7+Xw5ePu4u7w7uIg6CD25evl6SDv7iDq4Obk
-7uzzIO/g8ODs5fLw8zsKoC0g1O7w7Ojw7uLg7ejlIOzg8vDo9vsg8/Hy8+/u6jsKoC0g1O7w7Ojw
-7uLg7ejlIOLg8Ojg7fLu4iDk7uPu4u7w5e3t7vHy5ek7CqAtIM/u5OPu8u7i6uAg6O307vDs4Pbo
-7u3t+/Ug7ODy5fDo4Ovu4jog7/Dl5+Xt8uD26OgsIO7y9+Xy+ywg7/Du8u7q7uv7OwqgLSDC++Hu
-8CDu7/Lo7ODr/O3u6SDx8vDg8uXj6Ogg4uXk5e3o/yDv5fDl4+7i7vDu4i4KCjIuIM/l8OXj7uLu
-8O375SDx8vDg8uXj6OgKoC0gzvHt7uLt++Ug8fLw4PLl4+joIOgg8fLo6+gg7+7i5eTl7ej/IOIg
-7+Xw5ePu4u7w4PU7CqAtIM/u5+j26Ogg7+Xw5ePu4u7w+ejq7uI7CqAtINDg4e7y4CDiIO/l8OXj
-7uLu8O3u6SDq7uzg7eTlOiDw7uvl4vvlIPH25e3g8OjoIOIg7+Xw5ePu4u7w4PU7CqAtINHy8ODy
-5ePo/yDv5fDl4+7i7vDu4iBXaW4tV2luOiDs6PT7IOjr6CDw5eDr/O3u8fL8LiDK4Oog/fLgIPHy
-8ODy5ePo/yDw4OHu8uDl8iDiIPDl4Ov87e7pIObo5+3oOwqgLSDP5fDl4+7i7vDt++Ug8fLw4PLl
-4+joIOfg6vPv+ejq7uIg6CDq4Oog6Owg4/Dg7O7y7e4g7/Du8uji7vHy7v/y/C4KCjMuIM/l8OXj
-7uLu8O3g/yDy4Ory6OrgCqAtIN3y4O/7IOLl5OXt6P8g7+Xw5ePu4u7w7uI7CqAtIM3l4uXw4eDr
-/O375SDv7uLl5OXt9+Xx6ujlIO/w6Oft4OroIOIg7+Xw5ePu4u7w4PU7CqAtIMrg6iDv7u3/8vwg
-9uXr6CDoIOjt8uXw5fH7IPHi7uj1IO7v7+7t5e3y7uI7CqAtIMru7fLw7uv87fvlIPLu9+roIOIg
-7+Xw5ePu4u7w4PUuCgo0LiDS5fXt6OroIOLr6P/t6P8g6CDz4eXm5OXt6P8KoC0gzODt6O/z6//2
-6Ogg4iDv5fDl4+7i7vDg9TsKoC0gz/Du8uji7uTl6fHy4ujlIOzg7ejv8+v/8u7w4OwsIO/x6PXu
-6+7j6Pfl8eru7PMg5ODi6+Xt6P47CqAtINLl9e3o6ugg/fT05ery6OLt7ukg4PDj8+zl7fLg9ujo
-IOgg8+Hl5uTl7ej/LgoKNS4gx+Di5fD45e3o5SDv5fDl4+7i7vDu4gqgLSDH4Orr/vfo8uXr/O37
-6SD98uDvIOLl5OXt6P8g7+Xw5ePu4u7w7uI7CqAtIMrg6iDu8vHr5eTo8vwg4+7y7uLt7vHy/CDu
-7+/u7eXt8uAg6iDn4OLl8Pjl7ej+IO/l8OXj7uLu8O7iOwqgLSDP8Ojt9ujvICLN5SDn4OLl8Pjg
-5ewg4vHy8OX38ywg7+7q4CDt5SDk7uPu4u7w6Ovo8fwiOwqgLSDU6Orx4Pbo/yDk7vHy6OPt8/L7
-9SDk7uPu4u7w5e3t7vHy5ekuCgo2LiDX8u4g7fPm7e4g8eTl6+Dy/CDv7vHr5SDv5fDl4+7i7vDu
-4j8KoC0gwO3g6+jnIO/l8OXj7uLu8O7iOwqgLSDI8e/u6+3l7ejlIOTu8fLo4+3z8vv1IOTu4+7i
-7vDl7e3u8fLl6TsKLSDX8u4g5OXr4PL8LCDl8evoIPfy7i3y7iDv7vjr7iDt5SDy4OosIOrg6iDi
-+yDk7uPu4u7w6Ovo8fw/Cgo3LiDBzs3T0Tog0OXq7uzl7eTg9ujoIO/uIPDg5+Lo8uj+IO/l8OXj
-7uLu8Pno6u7iOgqgLSDK7ejj6CDoIPTo6/zs+6AKCs/w7unk5fI6IDYg8eXt8v/h8P8goKCgoAoK
-x+D/4urgIO3gIPP34PHy6OU+IGh0dHA6Ly9vdGRlbHNhbGVzLmluLnVhL3RyYWluaW5nLzE0Ni9w
-ZXJlZ292b3JpLXMtdG9yZ292aW1pLXNldHlhbWktdm95bmEtaWxpLXBhcnRuZXJzdHZvLmh0bQoK
-xfHr6CDzIMLg8SDi7uft6Ort8/Ig5O7v7uvt6PLl6/zt++Ug4u7v8O7x+yAtIO7h8OD54Ony5fH8
-LCDs+yDi8eXj5OAg8ODk+yDC4Owg7+7s7vf8ISCgoKCgCgotLQrRINPi4Obl7ejl7Cwg4uD4IMHo
-5+3l8S3W5e3y8CAizeD26O7t4Ov87fvpIgoK1/Lu4fsg7vLv6PHg8vzx/yDu8iDw4PHx++vq6Cwg
-7/Du6eTo8uUg7+4g/fLu6SDx8fvr6uUgzeUg7+7r8/fg8vwg8ODx8fvr6uguCkxpc3QtVW5zdWJz
-Y3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciDuciBjb21wbGFpbiDgYu51dCBTUMDMLgpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFp
-bGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcv
-bWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
+On Wed, Aug 21, 2019 at 01:24:20PM -0300, Jason Gunthorpe wrote:
+> On Tue, Aug 20, 2019 at 07:58:22PM -0700, Dan Williams wrote:
+> > On Tue, Aug 20, 2019 at 6:27 AM Jason Gunthorpe <jgg@mellanox.com> wrote:
+> > >
+> > > On Mon, Aug 19, 2019 at 06:44:02PM -0700, Dan Williams wrote:
+> > > > On Sun, Aug 18, 2019 at 2:12 AM Christoph Hellwig <hch@lst.de> wrote:
+> > > > >
+> > > > > The dev field in struct dev_pagemap is only used to print dev_name in
+> > > > > two places, which are at best nice to have.  Just remove the field
+> > > > > and thus the name in those two messages.
+> > > > >
+> > > > > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > > > > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+> > > >
+> > > > Needs the below as well.
+> > > >
+> > > > /me goes to check if he ever merged the fix to make the unit test
+> > > > stuff get built by default with COMPILE_TEST [1]. Argh! Nope, didn't
+> > > > submit it for 5.3-rc1, sorry for the thrash.
+> > > >
+> > > > You can otherwise add:
+> > > >
+> > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> > > >
+> > > > [1]: https://lore.kernel.org/lkml/156097224232.1086847.9463861924683372741.stgit@dwillia2-desk3.amr.corp.intel.com/
+> > >
+> > > Can you get this merged? Do you want it to go with this series?
+> > 
+> > Yeah, makes some sense to let you merge it so that you can get
+> > kbuild-robot reports about any follow-on memremap_pages() work that
+> > may trip up the build. Otherwise let me know and I'll get it queued
+> > with the other v5.4 libnvdimm pending bits.
+> 
+> Done, I used it already to test build the last series from CH..
+
+It failed 0-day, I'm guessing some missing kconfig stuff
+
+For now I dropped it, but, if you send a v2 I can forward it toward
+0-day again!
+
+Thanks,
+Jason
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
