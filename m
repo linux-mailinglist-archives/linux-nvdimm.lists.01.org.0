@@ -2,49 +2,70 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798FC985DB
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Aug 2019 22:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E8698650
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 21 Aug 2019 23:12:14 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9529120213F14;
-	Wed, 21 Aug 2019 13:45:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 82BD620212CB9;
+	Wed, 21 Aug 2019 14:13:21 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
+ envelope-from=cai@lca.pw; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 2DDFD202110D0
- for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 13:45:31 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2019 13:44:22 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,412,1559545200"; d="scan'208";a="196076495"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga001.fm.intel.com with ESMTP; 21 Aug 2019 13:44:21 -0700
-Date: Wed, 21 Aug 2019 13:44:21 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
-References: <20190817022603.GW6129@dread.disaster.area>
- <20190819063412.GA20455@quack2.suse.cz>
- <20190819092409.GM7777@dread.disaster.area>
- <20190819123841.GC5058@ziepe.ca>
- <20190820011210.GP7777@dread.disaster.area>
- <20190820115515.GA29246@ziepe.ca>
- <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190821194810.GI8653@ziepe.ca>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+ by ml01.01.org (Postfix) with ESMTPS id 21D532020D334
+ for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 14:13:19 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id p13so3157002qkg.13
+ for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 14:12:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=message-id:subject:from:to:cc:date:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=wKfoGD8n1EExPN/R416sVnt2YzIc0+Wi95CWXfv+Qwc=;
+ b=jWiovE0WVWyuoSRn6Q6NcWiLlhDCr9SDx17bU42gfmxyhc87oSxHk+qHbYQygjSfT+
+ tH6VXnvSQoPDO+HDRApqHP4MObAmzQzTMzR6FKHuYJC0tiQ5dn1Zjbc24IAQyM6CaIAW
+ YQLNp62YoI8b/iy9qxXFMbmXwdZGaGuNw3hvqWAqz8kcU+qZ6Q9q/f83Gr+jG/Exj/S3
+ AGV4XoW0HaHZ3fJZj349TaO5HvUvu1Mfqtyf+s54/WqqEJkysXIDIXTeOLSb2nMSMuDQ
+ gLY6v4P4ZNk/rp6JLor6rfPfkfOcLrPtuvUqTzN1BpVfGlgGoChwtv4vh3mihM+QR7f+
+ 8vvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=wKfoGD8n1EExPN/R416sVnt2YzIc0+Wi95CWXfv+Qwc=;
+ b=nmfDPI+AC5wQUx/kjoK4p+hzQ79WePQ3rklEZCpq7Vf4KKkI6Xqijtl1ghVjJBZJEe
+ clAWzBAItPGuc8oZ9lA4DL4RlyiCPQTq48w/a0G8QZBulAA3uf1rTc5oKRJo62YVShDV
+ LlP9iRenbqqEjiHDDtEw1InGdo3Y9/IumNyjTIHrSq2y1iha0KWlrMuJKitqR6leqnmk
+ MPVjE6JlVFV4GwxLNKs82yz9nh2fvy3TgnFJ8fVE/vVa/F5/XtGKgRidRoFHsRGlY+DV
+ b64qn1g98z5OMfVuuLBRoII3mDSU109GEBWl2mm7/PWrHIGnvS7IjEmMJSGbTQluc1ck
+ aIgg==
+X-Gm-Message-State: APjAAAWWIa2Jz9L1mdatnLHDL4lIhIsHWhcO2/Oj2hyfJW9mO2idm7Dq
+ zawGFKlEd/fwZ2nMz4WLOhhOrw==
+X-Google-Smtp-Source: APXvYqwZ/bY1z3XLINRGQysL7fa2x5zQOYp0Z/0iOTKQ6+P8g3Nz+pt9/o+NHkYuXYYVlhIkIK4F5A==
+X-Received: by 2002:ae9:ef06:: with SMTP id d6mr33003385qkg.157.1566421930297; 
+ Wed, 21 Aug 2019 14:12:10 -0700 (PDT)
+Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com.
+ [66.187.233.206])
+ by smtp.gmail.com with ESMTPSA id z22sm5710821qti.1.2019.08.21.14.12.08
+ (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 21 Aug 2019 14:12:09 -0700 (PDT)
+Message-ID: <1566421927.5576.3.camel@lca.pw>
+Subject: Re: devm_memremap_pages() triggers a kasan_add_zero_shadow() warning
+From: Qian Cai <cai@lca.pw>
+To: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 21 Aug 2019 17:12:07 -0400
+In-Reply-To: <0AC959D7-5BCB-4A81-BBDC-990E9826EB45@lca.pw>
+References: <1565991345.8572.28.camel@lca.pw>
+ <CAPcyv4i9VFLSrU75U0gQH6K2sz8AZttqvYidPdDcS7sU2SFaCA@mail.gmail.com>
+ <0FB85A78-C2EE-4135-9E0F-D5623CE6EA47@lca.pw>
+ <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
+ <E7A04694-504D-4FB3-9864-03C2CBA3898E@lca.pw>
+ <CAPcyv4gofF-Xf0KTLH4EUkxuXdRO3ha-w+GoxgmiW7gOdS2nXQ@mail.gmail.com>
+ <0AC959D7-5BCB-4A81-BBDC-990E9826EB45@lca.pw>
+X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
+Mime-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,81 +77,126 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
- linux-ext4@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Baoquan He <bhe@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ kasan-dev@googlegroups.com, Linux MM <linux-mm@kvack.org>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 21, 2019 at 04:48:10PM -0300, Jason Gunthorpe wrote:
-> On Wed, Aug 21, 2019 at 11:57:03AM -0700, Ira Weiny wrote:
-> 
-> > > Oh, I didn't think we were talking about that. Hanging the close of
-> > > the datafile fd contingent on some other FD's closure is a recipe for
-> > > deadlock..
-> > 
-> > The discussion between Jan and Dave was concerning what happens when a user
-> > calls
-> > 
-> > fd = open()
-> > fnctl(...getlease...)
-> > addr = mmap(fd...)
-> > ib_reg_mr() <pin>
-> > munmap(addr...)
-> > close(fd)
-> 
-> I don't see how blocking close(fd) could work.
-
-Well Dave was saying this _could_ work.  FWIW I'm not 100% sure it will but I
-can't prove it won't..  Maybe we are all just touching a different part of this
-elephant[1] but the above scenario or one without munmap is very reasonably
-something a user would do.  So we can either allow the close to complete (my
-current patches) or try to make it block like Dave is suggesting.
-
-I don't disagree with Dave with the semantics being nice and clean for the
-filesystem.  But the fact that RDMA, and potentially others, can "pass the
-pins" to other processes is something I spent a lot of time trying to work out.
-
->
-> Write it like this:
-> 
->  fd = open()
->  uverbs = open(/dev/uverbs)
->  fnctl(...getlease...)
->  addr = mmap(fd...)
->  ib_reg_mr() <pin>
->  munmap(addr...)
->   <sigkill>
-> 
-> The order FD's are closed during sigkill is not deterministic, so when
-> all the fputs happen during a kill'd exit we could end up blocking in
-> close(fd) as close(uverbs) will come after in the close
-> list. close(uverbs) is the thing that does the dereg_mr and releases
-> the pin.
-
-Of course, that is a different scenario which needs to be fixed in my patch
-set.  Now that my servers are back up I can hopefully make progress.  (Power
-was down for them yesterday).
-
-> 
-> We don't need complexity with dup to create problems.
-
-No but that complexity _will_ come unless we "zombie" layout leases.
-
-Ira
-
-[1] https://en.wikipedia.org/wiki/Blind_men_and_an_elephant
-
-> 
-> Jason
-> 
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gU2F0LCAyMDE5LTA4LTE3IGF0IDIzOjI1IC0wNDAwLCBRaWFuIENhaSB3cm90ZToKPiA+IE9u
+IEF1ZyAxNywgMjAxOSwgYXQgMTI6NTkgUE0sIERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNA
+aW50ZWwuY29tPiB3cm90ZToKPiA+IAo+ID4gT24gU2F0LCBBdWcgMTcsIDIwMTkgYXQgNDoxMyBB
+TSBRaWFuIENhaSA8Y2FpQGxjYS5wdz4gd3JvdGU6Cj4gPiA+IAo+ID4gPiAKPiA+ID4gCj4gPiA+
+ID4gT24gQXVnIDE2LCAyMDE5LCBhdCAxMTo1NyBQTSwgRGFuIFdpbGxpYW1zIDxkYW4uai53aWxs
+aWFtc0BpbnRlbC5jb20+Cj4gPiA+ID4gd3JvdGU6Cj4gPiA+ID4gCj4gPiA+ID4gT24gRnJpLCBB
+dWcgMTYsIDIwMTkgYXQgODozNCBQTSBRaWFuIENhaSA8Y2FpQGxjYS5wdz4gd3JvdGU6Cj4gPiA+
+ID4gPiAKPiA+ID4gPiA+IAo+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IE9uIEF1ZyAxNiwgMjAxOSwg
+YXQgNTo0OCBQTSwgRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+Cj4gPiA+
+ID4gPiA+IHdyb3RlOgo+ID4gPiA+ID4gPiAKPiA+ID4gPiA+ID4gT24gRnJpLCBBdWcgMTYsIDIw
+MTkgYXQgMjozNiBQTSBRaWFuIENhaSA8Y2FpQGxjYS5wdz4gd3JvdGU6Cj4gPiA+ID4gPiA+ID4g
+Cj4gPiA+ID4gPiA+ID4gRXZlcnkgc28gb2Z0ZW4gcmVjZW50bHksIGJvb3RpbmcgSW50ZWwgQ1BV
+IHNlcnZlciBvbiBsaW51eC1uZXh0Cj4gPiA+ID4gPiA+ID4gdHJpZ2dlcnMgdGhpcwo+ID4gPiA+
+ID4gPiA+IHdhcm5pbmcuIFRyeWluZyB0byBmaWd1cmUgb3V0IGlmwqDCoHRoZSBjb21taXQgN2Nj
+Nzg2N2ZiMDYxCj4gPiA+ID4gPiA+ID4gKCJtbS9kZXZtX21lbXJlbWFwX3BhZ2VzOiBlbmFibGUg
+c3ViLXNlY3Rpb24gcmVtYXAiKSBpcyB0aGUKPiA+ID4gPiA+ID4gPiBjdWxwcml0IGhlcmUuCj4g
+PiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+ID4gIyAuL3NjcmlwdHMvZmFkZHIybGluZSB2bWxpbnV4
+IGRldm1fbWVtcmVtYXBfcGFnZXMrMHg4OTQvMHhjNzAKPiA+ID4gPiA+ID4gPiBkZXZtX21lbXJl
+bWFwX3BhZ2VzKzB4ODk0LzB4YzcwOgo+ID4gPiA+ID4gPiA+IGRldm1fbWVtcmVtYXBfcGFnZXMg
+YXQgbW0vbWVtcmVtYXAuYzozMDcKPiA+ID4gPiA+ID4gCj4gPiA+ID4gPiA+IFByZXZpb3VzbHkg
+dGhlIGZvcmNlZCBzZWN0aW9uIGFsaWdubWVudCBpbiBkZXZtX21lbXJlbWFwX3BhZ2VzKCkKPiA+
+ID4gPiA+ID4gd291bGQKPiA+ID4gPiA+ID4gY2F1c2UgdGhlIGltcGxlbWVudGF0aW9uIHRvIG5l
+dmVyIHZpb2xhdGUgdGhlCj4gPiA+ID4gPiA+IEtBU0FOX1NIQURPV19TQ0FMRV9TSVpFCj4gPiA+
+ID4gPiA+ICgxMksgb24geDg2KSBjb25zdHJhaW50Lgo+ID4gPiA+ID4gPiAKPiA+ID4gPiA+ID4g
+Q2FuIHlvdSBwcm92aWRlIGEgZHVtcCBvZiAvcHJvYy9pb21lbT8gSSdtIGN1cmlvdXMgd2hhdCBy
+ZXNvdXJjZSBpcwo+ID4gPiA+ID4gPiB0cmlnZ2VyaW5nIHN1Y2ggYSBzbWFsbCBhbGlnbm1lbnQg
+Z3JhbnVsYXJpdHkuCj4gPiA+ID4gPiAKPiA+ID4gPiA+IFRoaXMgaXMgd2l0aCBtZW1tYXA9NEch
+NEcgLAo+ID4gPiA+ID4gCj4gPiA+ID4gPiAjIGNhdCAvcHJvYy9pb21lbQo+ID4gPiA+IAo+ID4g
+PiA+IFsuLl0KPiA+ID4gPiA+IDEwMDAwMDAwMC0xNTVkZmZmZmYgOiBQZXJzaXN0ZW50IE1lbW9y
+eSAobGVnYWN5KQo+ID4gPiA+ID4gMTAwMDAwMDAwLTE1NWRmZmZmZiA6IG5hbWVzcGFjZTAuMAo+
+ID4gPiA+ID4gMTU1ZTAwMDAwLTE1OTgyYmZmZiA6IFN5c3RlbSBSQU0KPiA+ID4gPiA+IDE1NWUw
+MDAwMC0xNTZhMDBmYTAgOiBLZXJuZWwgY29kZQo+ID4gPiA+ID4gMTU2YTAwZmExLTE1NzY1ZDY3
+ZiA6IEtlcm5lbCBkYXRhCj4gPiA+ID4gPiAxNTc4MzcwMDAtMTU5N2ZmZmZmIDogS2VybmVsIGJz
+cwo+ID4gPiA+ID4gMTU5ODJjMDAwLTFmZmZmZmZmZiA6IFBlcnNpc3RlbnQgTWVtb3J5IChsZWdh
+Y3kpCj4gPiA+ID4gPiAyMDAwMDAwMDAtODdmZmZmZmZmIDogU3lzdGVtIFJBTQo+ID4gPiA+IAo+
+ID4gPiA+IE9rLCBsb29rcyBsaWtlIDRHIGlzIGJhZCBjaG9pY2UgdG8gbGFuZCB0aGUgcG1lbSBl
+bXVsYXRpb24gb24gdGhpcwo+ID4gPiA+IHN5c3RlbSBiZWNhdXNlIGl0IGNvbGxpZGVzIHdpdGgg
+d2hlcmUgdGhlIGtlcm5lbCBpcyBkZXBsb3llZCBhbmQgZ2V0cwo+ID4gPiA+IGJyb2tlbiBpbnRv
+IHRpbnkgcGllY2VzIHRoYXQgdmlvbGF0ZSBrYXNhbidzLiBUaGlzIGlzIGEga25vd24gcHJvYmxl
+bQo+ID4gPiA+IHdpdGggbWVtbWFwPS4gWW91IG5lZWQgdG8gcGljayBhbiBtZW1vcnkgcmFuZ2Ug
+dGhhdCBkb2VzIG5vdCBjb2xsaWRlCj4gPiA+ID4gd2l0aCBhbnl0aGluZyBlbHNlLiBTZWU6Cj4g
+PiA+ID4gCj4gPiA+ID4gwqAgaHR0cHM6Ly9udmRpbW0ud2lraS5rZXJuZWwub3JnL2hvd190b19j
+aG9vc2VfdGhlX2NvcnJlY3RfbWVtbWFwX2tlcm5lbAo+ID4gPiA+IF9wYXJhbWV0ZXJfZm9yX3Bt
+ZW1fb25feW91cl9zeXN0ZW0KPiA+ID4gPiAKPiA+ID4gPiAuLi5mb3IgbW9yZSBpbmZvLgo+ID4g
+PiAKPiA+ID4gV2VsbCwgaXQgc2VlbXMgSSBkaWQgZXhhY3RseSBmb2xsb3cgdGhlIGluZm9ybWF0
+aW9uIGluIHRoYXQgbGluaywKPiA+ID4gCj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSBCSU9TLXBy
+b3ZpZGVkIHBoeXNpY2FsIFJBTSBtYXA6Cj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSBCSU9TLWU4
+MjA6IFttZW0gMHgwMDAwMDAwMDAwMDAwMDAwLTB4MDAwMDAwMDAwMDA5M2ZmZl0KPiA+ID4gdXNh
+YmxlCj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDAw
+MDk0MDAwLTB4MDAwMDAwMDAwMDA5ZmZmZl0KPiA+ID4gcmVzZXJ2ZWQKPiA+ID4gW8KgwqDCoMKg
+MC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwMDAwZTAwMDAtMHgwMDAwMDAwMDAw
+MGZmZmZmXQo+ID4gPiByZXNlcnZlZAo+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gQklPUy1lODIw
+OiBbbWVtIDB4MDAwMDAwMDAwMDEwMDAwMC0weDAwMDAwMDAwNWE3YTBmZmZdCj4gPiA+IHVzYWJs
+ZQo+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDA1YTdh
+MTAwMC0weDAwMDAwMDAwNWI1ZTBmZmZdCj4gPiA+IHJlc2VydmVkCj4gPiA+IFvCoMKgwqDCoDAu
+MDAwMDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMDViNWUxMDAwLTB4MDAwMDAwMDA3OTBm
+ZWZmZl0KPiA+ID4gdXNhYmxlCj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSBCSU9TLWU4MjA6IFtt
+ZW0gMHgwMDAwMDAwMDc5MGZmMDAwLTB4MDAwMDAwMDA3OTFmZWZmZl0KPiA+ID4gcmVzZXJ2ZWQK
+PiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21lbSAweDAwMDAwMDAwNzkxZmYw
+MDAtMHgwMDAwMDAwMDdiNWZlZmZmXSBBQ1BJCj4gPiA+IE5WUwo+ID4gPiBbwqDCoMKgwqAwLjAw
+MDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDA3YjVmZjAwMC0weDAwMDAwMDAwN2I3ZmVm
+ZmZdIEFDUEkKPiA+ID4gZGF0YQo+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gQklPUy1lODIwOiBb
+bWVtIDB4MDAwMDAwMDA3YjdmZjAwMC0weDAwMDAwMDAwN2I3ZmZmZmZdCj4gPiA+IHVzYWJsZQo+
+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gQklPUy1lODIwOiBbbWVtIDB4MDAwMDAwMDA3YjgwMDAw
+MC0weDAwMDAwMDAwOGZmZmZmZmZdCj4gPiA+IHJlc2VydmVkCj4gPiA+IFvCoMKgwqDCoDAuMDAw
+MDAwXSBCSU9TLWU4MjA6IFttZW0gMHgwMDAwMDAwMGZmODAwMDAwLTB4MDAwMDAwMDBmZmZmZmZm
+Zl0KPiA+ID4gcmVzZXJ2ZWQKPiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIEJJT1MtZTgyMDogW21l
+bSAweDAwMDAwMDAxMDAwMDAwMDAtMHgwMDAwMDAwODdmZmZmZmZmXQo+ID4gPiB1c2FibGUKPiA+
+ID4gCj4gPiA+IFdoZXJlIDRHIGlzIGdvb2QuIFRoZW4sCj4gPiA+IAo+ID4gPiBbwqDCoMKgwqAw
+LjAwMDAwMF0gdXNlci1kZWZpbmVkIHBoeXNpY2FsIFJBTSBtYXA6Cj4gPiA+IFvCoMKgwqDCoDAu
+MDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDAwMDAwMDAwMC0weDAwMDAwMDAwMDAwOTNmZmZd
+IHVzYWJsZQo+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwMDAw
+OTQwMDAtMHgwMDAwMDAwMDAwMDlmZmZmXSByZXNlcnZlZAo+ID4gPiBbwqDCoMKgwqAwLjAwMDAw
+MF0gdXNlcjogW21lbSAweDAwMDAwMDAwMDAwZTAwMDAtMHgwMDAwMDAwMDAwMGZmZmZmXSByZXNl
+cnZlZAo+ID4gPiBbwqDCoMKgwqAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwMDAxMDAw
+MDAtMHgwMDAwMDAwMDVhN2EwZmZmXSB1c2FibGUKPiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIHVz
+ZXI6IFttZW0gMHgwMDAwMDAwMDVhN2ExMDAwLTB4MDAwMDAwMDA1YjVlMGZmZl0gcmVzZXJ2ZWQK
+PiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMDViNWUxMDAwLTB4
+MDAwMDAwMDA3OTBmZWZmZl0gdXNhYmxlCj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSB1c2VyOiBb
+bWVtIDB4MDAwMDAwMDA3OTBmZjAwMC0weDAwMDAwMDAwNzkxZmVmZmZdIHJlc2VydmVkCj4gPiA+
+IFvCoMKgwqDCoDAuMDAwMDAwXSB1c2VyOiBbbWVtIDB4MDAwMDAwMDA3OTFmZjAwMC0weDAwMDAw
+MDAwN2I1ZmVmZmZdIEFDUEkgTlZTCj4gPiA+IFvCoMKgwqDCoDAuMDAwMDAwXSB1c2VyOiBbbWVt
+IDB4MDAwMDAwMDA3YjVmZjAwMC0weDAwMDAwMDAwN2I3ZmVmZmZdIEFDUEkgZGF0YQo+ID4gPiBb
+wqDCoMKgwqAwLjAwMDAwMF0gdXNlcjogW21lbSAweDAwMDAwMDAwN2I3ZmYwMDAtMHgwMDAwMDAw
+MDdiN2ZmZmZmXSB1c2FibGUKPiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgw
+MDAwMDAwMDdiODAwMDAwLTB4MDAwMDAwMDA4ZmZmZmZmZl0gcmVzZXJ2ZWQKPiA+ID4gW8KgwqDC
+oMKgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMGZmODAwMDAwLTB4MDAwMDAwMDBmZmZm
+ZmZmZl0gcmVzZXJ2ZWQKPiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAw
+MDAwMTAwMDAwMDAwLTB4MDAwMDAwMDFmZmZmZmZmZl0KPiA+ID4gcGVyc2lzdGVudCAodHlwZSAx
+MikKPiA+ID4gW8KgwqDCoMKgMC4wMDAwMDBdIHVzZXI6IFttZW0gMHgwMDAwMDAwMjAwMDAwMDAw
+LTB4MDAwMDAwMDg3ZmZmZmZmZl0gdXNhYmxlCj4gPiA+IAo+ID4gPiBUaGUgZG9jIGRpZCBtZW50
+aW9uIHRoYXQg4oCcVGhlcmUgc2VlbXMgdG8gYmUgYW4gaXNzdWUgd2l0aCBDT05GSUdfS1NBTiBh
+dAo+ID4gPiB0aGUgbW9tZW50IGhvd2V2ZXIu4oCdCj4gPiA+IHdpdGhvdXQgbW9yZSBkZXRhaWwg
+dGhvdWdoLgo+ID4gCj4gPiBEb2VzIGRpc2FibGluZyBDT05GSUdfUkFORE9NSVpFX0JBU0UgaGVs
+cD8gTWF5YmUgdGhhdCB3b3JrYXJvdW5kIGhhcwo+ID4gcmVncmVzc2VkLiBFZmZlY3RpdmVseSB3
+ZSBuZWVkIHRvIGZpbmQgd2hhdCBpcyBjYXVzaW5nIHRoZSBrZXJuZWwgdG8KPiA+IHNvbWV0aW1l
+cyBiZSBwbGFjZWQgaW4gdGhlIG1pZGRsZSBvZiBhIGN1c3RvbSByZXNlcnZlZCBtZW1tYXA9IHJh
+bmdlLgo+IAo+IFllcywgZGlzYWJsaW5nIEtBU0xSIHdvcmtzIGdvb2Qgc28gZmFyLiBBc3N1bWlu
+ZyB0aGUgd29ya2Fyb3VuZCwgaS5lLiwKPiBmMjg0NDI0OTdiNWMKPiAo4oCceDg2L2Jvb3Q6IEZp
+eCBLQVNMUiBhbmQgbWVtbWFwPSBjb2xsaXNpb27igJ0pIGlzIGNvcnJlY3QuCj4gCj4gVGhlIG9u
+bHkgb3RoZXIgY29tbWl0IHRoYXQgbWlnaHQgcmVncmVzcyBpdCBmcm9tIG15IHJlc2VhcmNoIHNv
+IGZhciBpcywKPiAKPiBkNTJlN2Q1YTk1MmMgKCJ4ODYvS0FTTFI6IFBhcnNlIGFsbCAnbWVtbWFw
+PScgYm9vdCBvcHRpb24gZW50cmllc+KAnSkKPiAKCkl0IHR1cm5zIG91dCB0aGF0IHRoZSBvcmln
+aW4gY29tbWl0IGYyODQ0MjQ5N2I1YyAo4oCceDg2L2Jvb3Q6IEZpeCBLQVNMUiBhbmQKbWVtbWFw
+PSBjb2xsaXNpb27igJ0pIGhhcyBhIGJ1ZyB0aGF0IGlzIHVuYWJsZSB0byBoYW5kbGUgIm1lbW1h
+cD0iIGluCkNPTkZJR19DTURMSU5FIGluc3RlYWQgb2YgYSBwYXJhbWV0ZXIgaW4gYm9vdGxvYWRl
+ciBiZWNhdXNlIHdoZW4gaXQgKGFzIHdlbGwgYXMKdGhlIGNvbW1pdCBkNTJlN2Q1YTk1MmMpIGNh
+bGxzIGdldF9jbWRfbGluZV9wdHIoKSBpbiBvcmRlciB0byBydW4KbWVtX2F2b2lkX21lbW1hcCgp
+LCAiYm9vdF9wYXJhbXMiIGhhcyBubyBrbm93bGVkZ2Ugb2YgQ09ORklHX0NNRExJTkUuIE9ubHkg
+bGF0ZXIKaW4gc2V0dXBfYXJjaCgpLCB0aGUga2VybmVsIHdpbGwgZGVhbCB3aXRoIHBhcmFtZXRl
+cnMgb3ZlciB0aGVyZS4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
+Cmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
