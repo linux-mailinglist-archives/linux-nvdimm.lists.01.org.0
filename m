@@ -1,102 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A22FF98818
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Aug 2019 01:51:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF45988FF
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Aug 2019 03:31:08 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A766920213F25;
-	Wed, 21 Aug 2019 16:52:13 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 47E8920213F24;
+	Wed, 21 Aug 2019 18:32:14 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=40.107.15.73; helo=eur01-db5-obe.outbound.protection.outlook.com;
- envelope-from=jgg@mellanox.com; receiver=linux-nvdimm@lists.01.org 
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com
- (mail-eopbgr150073.outbound.protection.outlook.com [40.107.15.73])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=bhe@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7D55920213F13
- for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 16:52:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EaGTxjEj+CwSG/XNx0WVf6F7/XvgOywqnqprTk+X54g+n7yml1T/WTHVMWQtTsoh5lET1IHys7yS2VQNA/9m6kG8shtOcjnpnpU/0iqodpBd0+8wrnPv1p7IvD5PUgOzw+5Fw1PH6vK+vi/in8OiHRki1hH8CrZADsI6W15d32oYem2rdDLXU+b4wcYbDx9YSL/ljpxHU2FRAjn4SN5jztpg1HWb0lLCzIhhP3Lir6k+eIm0GSkynXTEtm7DP0M6cnRhk6AHPrikTuYH5mP6O5tL1cFhbDsSQFK+AdlSdiuxWCf3oN1H1NvfRwdRQvlizqtGMIVgU/sit40PYgC5+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BD99CBVwfWfplQFNyhx/dmJLkrR1Rdt/Q/30tc6QT8o=;
- b=BS4cZNVfKE06QXqVVG/MCeuydoH78OlWOF/X/X9JybWHcCP+V2stnYz440lHN+8YhRP1nanzJQTK66bzIdbm+4uhPw9cNNF/lxgcG/p8mrMIqQFT8ZfGXm2x2HAD2ZNQErW8mBuOJge2VcCi7yM8tAFyCHOSjyBFiak55a+r/xcX8yw9ERsr+lsqsSiJRdIgw++tk9j6f2wmPpUaPnAZRroY5HRE5y5Dsuaaa5XgkmkHNIeEbTxDBKVg/iswM7OU6bL/2DsuVCYD+Cf6afjBy8nBv1Nv8m88aE67Gfw8hCj6LFy5x9ET+v75r+wUgluTYgIYaIiLLSeScn6WpplQBg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BD99CBVwfWfplQFNyhx/dmJLkrR1Rdt/Q/30tc6QT8o=;
- b=D+HMEZzbkKXskCwej8+htiGn6+Gajl9dCXTDoe+m3ZQXNat5BUweS+Gni3IVmyzCMAnQbRJi2uyqBP75wGzxjzCmN6EHgI9LFifDG9ucBOXIwxAMmBRjGkg/2clAOoXHAHQaaBx+3onZr5Oy3ZIWnAxJlBfKnAqGDKRyYa5m8gI=
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com (10.171.182.144) by
- VI1PR05MB3405.eurprd05.prod.outlook.com (10.170.238.158) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2178.16; Wed, 21 Aug 2019 23:51:01 +0000
-Received: from VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::1d6:9c67:ea2d:38a7]) by VI1PR05MB4141.eurprd05.prod.outlook.com
- ([fe80::1d6:9c67:ea2d:38a7%6]) with mapi id 15.20.2178.020; Wed, 21 Aug 2019
- 23:51:01 +0000
-From: Jason Gunthorpe <jgg@mellanox.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
-Thread-Topic: [PATCH 2/4] memremap: remove the dev field in struct dev_pagemap
-Thread-Index: AQHVVaUUhGk4jDl8B02XMFt421bWy6cDRjIAgADEW4CAAOK+AIAA4TAAgAB8xoA=
-Date: Wed, 21 Aug 2019 23:51:01 +0000
-Message-ID: <20190821235055.GQ8667@mellanox.com>
-References: <20190818090557.17853-1-hch@lst.de>
- <20190818090557.17853-3-hch@lst.de>
- <CAPcyv4iYytOoX3QMRmvNLbroxD0szrVLauXFjnQMvtQOH3as_w@mail.gmail.com>
- <20190820132649.GD29225@mellanox.com>
- <CAPcyv4hfowyD4L0W3eTJrrPK5rfrmU6G29_vBVV+ea54eoJenA@mail.gmail.com>
- <20190821162420.GI8667@mellanox.com>
-In-Reply-To: <20190821162420.GI8667@mellanox.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: YQBPR0101CA0011.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c00::24) To VI1PR05MB4141.eurprd05.prod.outlook.com
- (2603:10a6:803:4d::16)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=jgg@mellanox.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [156.34.55.100]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ff7de4e9-222d-439a-2e07-08d726926be3
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0; PCL:0;
- RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);
- SRVR:VI1PR05MB3405; 
-x-ms-traffictypediagnostic: VI1PR05MB3405:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <VI1PR05MB3405C0BEDAE45C180F2B0520CFAA0@VI1PR05MB3405.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 0136C1DDA4
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(979002)(4636009)(136003)(346002)(366004)(396003)(376002)(39860400002)(199004)(189003)(8676002)(81156014)(99286004)(81166006)(316002)(229853002)(66446008)(54906003)(66946007)(64756008)(66556008)(66476007)(7736002)(305945005)(52116002)(36756003)(26005)(66066001)(6116002)(3846002)(76176011)(2906002)(53546011)(6506007)(386003)(6486002)(8936002)(53936002)(102836004)(6916009)(71190400001)(966005)(71200400001)(14444005)(33656002)(256004)(4326008)(14454004)(6246003)(25786009)(6436002)(186003)(11346002)(446003)(478600001)(1076003)(86362001)(486006)(6306002)(5660300002)(476003)(2616005)(6512007)(969003)(989001)(999001)(1009001)(1019001);
- DIR:OUT; SFP:1101; SCL:1; SRVR:VI1PR05MB3405;
- H:VI1PR05MB4141.eurprd05.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; A:1; MX:1; 
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: slGrQeYkySAxa73xEYqN4ELA/jv+A3z+GlBl0VtF+hmNWnPZztSuW1C49EPLKPdwUphLosHoVkD335T3BNKVRLTHUJ3BdZORtQWzgfNPWw7Qn3N0nB/dd7YG/eyLw3RSzwt9FKeLBtSsLMyDSI6VeWbVfglU3GMSonGgQr5bwfeNhbhj37aaoJNRMW2pm94yHYjRuwNSvg9ZZWP2p5Qn+2fUqp3iC5wT554nR3W+oCn3juxV0wZmL7c4RSUL0wHMbiyxFGb18Caxpooqns6RZCiZMZCLDT8CWiTOwiHqduGp9SGVcAItGtbqUcDr0QIeL2y30ArKjQh4iHYdKmGshX8Vq6xCYnTrSCK4VoYMM8EOnwM44eAuaw48cEkCIT/h3EcppX88pc//0n7c0ECnDqZP+KVizyPUeEdjUGz/8J0=
-x-ms-exchange-transport-forked: True
-Content-ID: <BA840F552473C345840D4DC31B1DBDC6@eurprd05.prod.outlook.com>
+ by ml01.01.org (Postfix) with ESMTPS id E3AB420212CA7
+ for <linux-nvdimm@lists.01.org>; Wed, 21 Aug 2019 18:32:12 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id A3BE710F23EC;
+ Thu, 22 Aug 2019 01:31:04 +0000 (UTC)
+Received: from localhost (ovpn-12-48.pek2.redhat.com [10.72.12.48])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C02EA3DB3;
+ Thu, 22 Aug 2019 01:31:03 +0000 (UTC)
+Date: Thu, 22 Aug 2019 09:31:00 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: devm_memremap_pages() triggers a kasan_add_zero_shadow() warning
+Message-ID: <20190822013100.GC2588@MiWiFi-R3L-srv>
+References: <1565991345.8572.28.camel@lca.pw>
+ <CAPcyv4i9VFLSrU75U0gQH6K2sz8AZttqvYidPdDcS7sU2SFaCA@mail.gmail.com>
+ <0FB85A78-C2EE-4135-9E0F-D5623CE6EA47@lca.pw>
+ <CAPcyv4h9Y7wSdF+jnNzLDRobnjzLfkGLpJsML2XYLUZZZUPsQA@mail.gmail.com>
+ <E7A04694-504D-4FB3-9864-03C2CBA3898E@lca.pw>
+ <CAPcyv4gofF-Xf0KTLH4EUkxuXdRO3ha-w+GoxgmiW7gOdS2nXQ@mail.gmail.com>
+ <0AC959D7-5BCB-4A81-BBDC-990E9826EB45@lca.pw>
+ <1566421927.5576.3.camel@lca.pw>
 MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff7de4e9-222d-439a-2e07-08d726926be3
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2019 23:51:01.5744 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: OG0Q51siNn889gtpqWijjlXqfQEuaoX+J5YF1xxqvnEZWPVwJ2e5q3hcJxqvfIswSZxjYs3kVbHIsXo64hjjCg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR05MB3405
+Content-Disposition: inline
+In-Reply-To: <1566421927.5576.3.camel@lca.pw>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
+ (mx1.redhat.com [10.5.110.66]); Thu, 22 Aug 2019 01:31:04 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,56 +59,38 @@ List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Bharata B Rao <bharata@linux.ibm.com>, Linux MM <linux-mm@kvack.org>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+ kasan-dev@googlegroups.com, Linux MM <linux-mm@kvack.org>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 21, 2019 at 01:24:20PM -0300, Jason Gunthorpe wrote:
-> On Tue, Aug 20, 2019 at 07:58:22PM -0700, Dan Williams wrote:
-> > On Tue, Aug 20, 2019 at 6:27 AM Jason Gunthorpe <jgg@mellanox.com> wrote:
-> > >
-> > > On Mon, Aug 19, 2019 at 06:44:02PM -0700, Dan Williams wrote:
-> > > > On Sun, Aug 18, 2019 at 2:12 AM Christoph Hellwig <hch@lst.de> wrote:
-> > > > >
-> > > > > The dev field in struct dev_pagemap is only used to print dev_name in
-> > > > > two places, which are at best nice to have.  Just remove the field
-> > > > > and thus the name in those two messages.
-> > > > >
-> > > > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > > > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-> > > >
-> > > > Needs the below as well.
-> > > >
-> > > > /me goes to check if he ever merged the fix to make the unit test
-> > > > stuff get built by default with COMPILE_TEST [1]. Argh! Nope, didn't
-> > > > submit it for 5.3-rc1, sorry for the thrash.
-> > > >
-> > > > You can otherwise add:
-> > > >
-> > > > Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> > > >
-> > > > [1]: https://lore.kernel.org/lkml/156097224232.1086847.9463861924683372741.stgit@dwillia2-desk3.amr.corp.intel.com/
-> > >
-> > > Can you get this merged? Do you want it to go with this series?
-> > 
-> > Yeah, makes some sense to let you merge it so that you can get
-> > kbuild-robot reports about any follow-on memremap_pages() work that
-> > may trip up the build. Otherwise let me know and I'll get it queued
-> > with the other v5.4 libnvdimm pending bits.
-> 
-> Done, I used it already to test build the last series from CH..
-
-It failed 0-day, I'm guessing some missing kconfig stuff
-
-For now I dropped it, but, if you send a v2 I can forward it toward
-0-day again!
-
-Thanks,
-Jason
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gMDgvMjEvMTkgYXQgMDU6MTJwbSwgUWlhbiBDYWkgd3JvdGU6Cj4gPiA+IERvZXMgZGlzYWJs
+aW5nIENPTkZJR19SQU5ET01JWkVfQkFTRSBoZWxwPyBNYXliZSB0aGF0IHdvcmthcm91bmQgaGFz
+Cj4gPiA+IHJlZ3Jlc3NlZC4gRWZmZWN0aXZlbHkgd2UgbmVlZCB0byBmaW5kIHdoYXQgaXMgY2F1
+c2luZyB0aGUga2VybmVsIHRvCj4gPiA+IHNvbWV0aW1lcyBiZSBwbGFjZWQgaW4gdGhlIG1pZGRs
+ZSBvZiBhIGN1c3RvbSByZXNlcnZlZCBtZW1tYXA9IHJhbmdlLgo+ID4gCj4gPiBZZXMsIGRpc2Fi
+bGluZyBLQVNMUiB3b3JrcyBnb29kIHNvIGZhci4gQXNzdW1pbmcgdGhlIHdvcmthcm91bmQsIGku
+ZS4sCj4gPiBmMjg0NDI0OTdiNWMKPiA+ICjigJx4ODYvYm9vdDogRml4IEtBU0xSIGFuZCBtZW1t
+YXA9IGNvbGxpc2lvbuKAnSkgaXMgY29ycmVjdC4KPiA+IAo+ID4gVGhlIG9ubHkgb3RoZXIgY29t
+bWl0IHRoYXQgbWlnaHQgcmVncmVzcyBpdCBmcm9tIG15IHJlc2VhcmNoIHNvIGZhciBpcywKPiA+
+IAo+ID4gZDUyZTdkNWE5NTJjICgieDg2L0tBU0xSOiBQYXJzZSBhbGwgJ21lbW1hcD0nIGJvb3Qg
+b3B0aW9uIGVudHJpZXPigJ0pCj4gPiAKPiAKPiBJdCB0dXJucyBvdXQgdGhhdCB0aGUgb3JpZ2lu
+IGNvbW1pdCBmMjg0NDI0OTdiNWMgKOKAnHg4Ni9ib290OiBGaXggS0FTTFIgYW5kCj4gbWVtbWFw
+PSBjb2xsaXNpb27igJ0pIGhhcyBhIGJ1ZyB0aGF0IGlzIHVuYWJsZSB0byBoYW5kbGUgIm1lbW1h
+cD0iIGluCj4gQ09ORklHX0NNRExJTkUgaW5zdGVhZCBvZiBhIHBhcmFtZXRlciBpbiBib290bG9h
+ZGVyIGJlY2F1c2Ugd2hlbiBpdCAoYXMgd2VsbCBhcwo+IHRoZSBjb21taXQgZDUyZTdkNWE5NTJj
+KSBjYWxscyBnZXRfY21kX2xpbmVfcHRyKCkgaW4gb3JkZXIgdG8gcnVuCj4gbWVtX2F2b2lkX21l
+bW1hcCgpLCAiYm9vdF9wYXJhbXMiIGhhcyBubyBrbm93bGVkZ2Ugb2YgQ09ORklHX0NNRExJTkUu
+IE9ubHkgbGF0ZXIKPiBpbiBzZXR1cF9hcmNoKCksIHRoZSBrZXJuZWwgd2lsbCBkZWFsIHdpdGgg
+cGFyYW1ldGVycyBvdmVyIHRoZXJlLgoKWWVzLCB3ZSBkaWRuJ3QgY29uc2lkZXIgQ09ORklHX0NN
+RExJTkUgZHVyaW5nIGJvb3QgY29tcHJlc3Npbmcgc3RhZ2UuIEl0CnNob3VsZCBiZSBhIGdlbmVy
+aWMgaXNzdWUgc2luY2Ugb3RoZXIgcGFyYW1ldGVycyBmcm9tIENPTkZJR19DTURMSU5FIGNvdWxk
+CmJlIGlnbm9yZWQgdG9vLCBub3Qgb25seSBLQVNMUiBoYW5kbGluZy4gV291bGQgeW91IGxpa2Ug
+dG8gY2FzdCBhIHBhdGNoCnRvIGZpeCBpdD8gT3IgSSBjYW4gZml4IGl0IGxhdGVyLCBtYXliZSBu
+ZXh0IHdlZWsuCgpUaGFua3MKQmFvcXVhbgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBs
+aXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1u
+dmRpbW0K
