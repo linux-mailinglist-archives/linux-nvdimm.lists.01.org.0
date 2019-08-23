@@ -2,64 +2,77 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F2E9B5E6
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 19:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D339B619
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 20:12:00 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A910B20215F61;
-	Fri, 23 Aug 2019 10:57:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id EF11E20215F62;
+	Fri, 23 Aug 2019 11:14:38 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=dave.jiang@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0ECA0202110B2
- for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 10:57:37 -0700 (PDT)
-Received: by mail-pl1-x641.google.com with SMTP id d3so5983829plr.1
- for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 10:54:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=oJQHuXj2JCkei+LzAqMmfF5WMmItYkgIBLOwd3YKHHU=;
- b=as2GbJLzdqzNAqUgSmnXIDF1BcuLfKjwEE5SaTHa85bpup0x7bBuqdmB7IRu03SJDz
- nsDrxkoHtWSWpl7uIoO7NyJj76X9H64lUkSOjFsdY1vPpDl+eet3/ZFBRM1Sa6vt6eso
- HTz9NYjovjbTCW5bLG0zYUva7Q9yFgciUc0oGfxZz/cy0RqOxu9aS6hjEfqo45dh24Dj
- 3gcFcVQ6EgJ04xhPIBJBgrCoNkltfn6KR1UYG6CIyHIFUJV4f9W4CoQ44fM4fN8qEZM/
- bRfq3X2rU6JvVsQHun+//ZzfW8TJNIav72tq/bizAme2saJI6aLbnDG9CUIemeJ7k2Qh
- XjPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=oJQHuXj2JCkei+LzAqMmfF5WMmItYkgIBLOwd3YKHHU=;
- b=TzBEkGb/5CuPA26QjtB8rLuqRb9hierJ1xXD4Plw3Cr2cqPrjIYWJXED3tI4cW1abd
- /4ZZux9n5FMsBdRIunaQBIfAOoBbmKbhBqB7BjyDiMzwdLMiTvAo7eBeB/jXbN5cwhW/
- J9hrePgW9z5JuRTf7vcOQyTeXBcZCo0XHoe4gJlIBM9OQSSanUi2x1f5qbMIOY1AMxU5
- TfYejDJtlHl2VPNUb/GvumuI7kGO08nby6XXq28PKs6Ioeq4AZ0otXdoL/5oGtTsPTr3
- /5hckbEIvf414DCdOSyySRw6s3jKHviVOn2D3gh3Vz61GgXKPuY1xZPcn3xLJz8yWuSU
- u68Q==
-X-Gm-Message-State: APjAAAX2n72txGutDp3w+UOpjz6JA43UP6NMV7B2d9gqb8kQY2/qNL8C
- q0lGDV5TiiTC7kvJfX3eNHl/MxCOFvii3EzAG8Qk5A==
-X-Google-Smtp-Source: APXvYqxZfWf8P8ZD/n5mEOu+RCReFOO4xhsyegaOP88QwWfVPD5J2QmymWkv+AZPBrXPJum0X3tIaDoZOA+apSk6SOI=
-X-Received: by 2002:a17:902:7049:: with SMTP id
- h9mr6316654plt.232.1566582897042; 
- Fri, 23 Aug 2019 10:54:57 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 3B2FF21959CB2
+ for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 11:14:37 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2019 11:11:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,422,1559545200"; d="scan'208";a="379832334"
+Received: from djiang5-desk3.ch.intel.com ([143.182.136.137])
+ by fmsmga006.fm.intel.com with ESMTP; 23 Aug 2019 11:11:56 -0700
+Subject: Re: [PATCH 0/3] libnvdimm/security: Enumerate the frozen state and
+ other cleanups
+To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+References: <156583201347.2815870.4687949334637966672.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=dave.jiang@intel.com; prefer-encrypt=mutual; keydata=
+ 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
+ o6nmKbYpUAltQObU2w==
+Message-ID: <20fe41f4-80d7-521b-0517-267e3754c372@intel.com>
+Date: Fri, 23 Aug 2019 11:11:56 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190820232046.50175-1-brendanhiggins@google.com>
- <20190820232046.50175-2-brendanhiggins@google.com>
- <7f2c8908-75f6-b793-7113-ad57c51777ce@kernel.org>
- <CAFd5g44mRK9t4f58i_YMEt=e9RTxwrrhFY_V2LW_E7bUwR3cdg@mail.gmail.com>
- <4513d9f3-a69b-a9a4-768b-86c2962b62e0@kernel.org>
- <CAFd5g446J=cVW4QW+QeZMLDi+ANqshAW6KTrFFBTusPcdr6-GA@mail.gmail.com>
- <42c6235c-c586-8de1-1913-7cf1962c6066@kernel.org>
-In-Reply-To: <42c6235c-c586-8de1-1913-7cf1962c6066@kernel.org>
-From: Brendan Higgins <brendanhiggins@google.com>
-Date: Fri, 23 Aug 2019 10:54:45 -0700
-Message-ID: <CAFd5g44hLgeqPtNw1zQ5k_+apBm=ri_6=wAgHk=oPOvQs6xgNg@mail.gmail.com>
-Subject: Re: [PATCH v14 01/18] kunit: test: add KUnit test runner core
-To: shuah <shuah@kernel.org>
+In-Reply-To: <156583201347.2815870.4687949334637966672.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,175 +84,48 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 23, 2019 at 10:34 AM shuah <shuah@kernel.org> wrote:
->
-> On 8/23/19 11:27 AM, Brendan Higgins wrote:
-> > On Fri, Aug 23, 2019 at 10:05 AM shuah <shuah@kernel.org> wrote:
-> >>
-> >> On 8/23/19 10:48 AM, Brendan Higgins wrote:
-> >>> On Fri, Aug 23, 2019 at 8:33 AM shuah <shuah@kernel.org> wrote:
-> >>>>
-> >>>> Hi Brendan,
-> >>>>
-> >>>> On 8/20/19 5:20 PM, Brendan Higgins wrote:
-> >>>>> Add core facilities for defining unit tests; this provides a common way
-> >>>>> to define test cases, functions that execute code which is under test
-> >>>>> and determine whether the code under test behaves as expected; this also
-> >>>>> provides a way to group together related test cases in test suites (here
-> >>>>> we call them test_modules).
-> >>>>>
-> >>>>> Just define test cases and how to execute them for now; setting
-> >>>>> expectations on code will be defined later.
-> >>>>>
-> >>>>> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-> >>>>> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >>>>> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-> >>>>> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-> >>>>> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-> >>>>> ---
-> >>>>>     include/kunit/test.h | 179 ++++++++++++++++++++++++++++++++++++++++
-> >>>>>     kunit/Kconfig        |  17 ++++
-> >>>>>     kunit/Makefile       |   1 +
-> >>>>>     kunit/test.c         | 191 +++++++++++++++++++++++++++++++++++++++++++
-> >>>>>     4 files changed, 388 insertions(+)
-> >>>>>     create mode 100644 include/kunit/test.h
-> >>>>>     create mode 100644 kunit/Kconfig
-> >>>>>     create mode 100644 kunit/Makefile
-> >>>>>     create mode 100644 kunit/test.c
-> >>>>>
-> >>>>> diff --git a/include/kunit/test.h b/include/kunit/test.h
-> >>>>> new file mode 100644
-> >>>>> index 0000000000000..e0b34acb9ee4e
-> >>>>> --- /dev/null
-> >>>>> +++ b/include/kunit/test.h
-> >>>>> @@ -0,0 +1,179 @@
-> >>>>> +/* SPDX-License-Identifier: GPL-2.0 */
-> >>>>> +/*
-> >>>>> + * Base unit test (KUnit) API.
-> >>>>> + *
-> >>>>> + * Copyright (C) 2019, Google LLC.
-> >>>>> + * Author: Brendan Higgins <brendanhiggins@google.com>
-> >>>>> + */
-> >>>>> +
-> >>>>> +#ifndef _KUNIT_TEST_H
-> >>>>> +#define _KUNIT_TEST_H
-> >>>>> +
-> >>>>> +#include <linux/types.h>
-> >>>>> +
-> >>>>> +struct kunit;
-> >>>>> +
-> >>>>> +/**
-> >>>>> + * struct kunit_case - represents an individual test case.
-> >>>>> + * @run_case: the function representing the actual test case.
-> >>>>> + * @name: the name of the test case.
-> >>>>> + *
-> >>>>> + * A test case is a function with the signature, ``void (*)(struct kunit *)``
-> >>>>> + * that makes expectations (see KUNIT_EXPECT_TRUE()) about code under test. Each
-> >>>>> + * test case is associated with a &struct kunit_suite and will be run after the
-> >>>>> + * suite's init function and followed by the suite's exit function.
-> >>>>> + *
-> >>>>> + * A test case should be static and should only be created with the KUNIT_CASE()
-> >>>>> + * macro; additionally, every array of test cases should be terminated with an
-> >>>>> + * empty test case.
-> >>>>> + *
-> >>>>> + * Example:
-> >>>>
-> >>>> Can you fix these line continuations. It makes it very hard to read.
-> >>>> Sorry for this late comment. These comments lines are longer than 80
-> >>>> and wrap.
-> >>>
-> >>> None of the lines in this commit are over 80 characters in column
-> >>> width. Some are exactly 80 characters (like above).
-> >>>
-> >>> My guess is that you are seeing the diff added text (+ ), which when
-> >>> you add that to a line which is exactly 80 char in length ends up
-> >>> being over 80 char in email. If you apply the patch you will see that
-> >>> they are only 80 chars.
-> >>>
-> >>>>
-> >>>> There are several comment lines in the file that are way too long.
-> >>>
-> >>> Note that checkpatch also does not complain about any over 80 char
-> >>> lines in this file.
-> >>>
-> >>> Sorry if I am misunderstanding what you are trying to tell me. Please
-> >>> confirm either way.
-> >>>
-> >>
-> >> WARNING: Avoid unnecessary line continuations
-> >> #258: FILE: include/kunit/test.h:137:
-> >> +                */                                                            \
-> >>
-> >> total: 0 errors, 2 warnings, 388 lines checked
-> >
-> > Ah, okay so you don't like the warning about the line continuation.
-> > That's not because it is over 80 char, but because there is a line
-> > continuation after a comment. I don't really see a way to get rid of
-> > it without removing the comment from inside the macro.
-> >
-> > I put this TODO there in the first place a Luis' request, and I put it
-> > in the body of the macro because this macro already had a kernel-doc
-> > comment and I didn't think that an implementation detail TODO belonged
-> > in the user documentation.
-> >
-> >> Go ahead fix these. It appears there are few lines that either longer
-> >> than 80. In general, I keep them around 75, so it is easier read.
-> >
-> > Sorry, the above is the only checkpatch warning other than the
-> > reminder to update the MAINTAINERS file.
-> >
-> > Are you saying you want me to go through and make all the lines fit in
-> > 75 char column width? I hope not because that is going to be a pretty
-> > substantial change to make.
-> >
->
-> There are two things with these comment lines. One is checkpatch
-> complaining and the other is general readability.
 
-So for the checkpatch warning, do you want me to move the comment out
-of the macro body into the kernel-doc comment? I don't really think it
-is the right place for a comment of this nature, but I think it is
-probably better than dropping it entirely (I don't see how else to do
-it without just removing the comment entirely).
 
-As for general readability, are you asking me to readjust all my code
-in all 18 patches to fit in 75 chars? Sorry for the confusion, I am
-just really surprised by this request. I thought the policy is 80
-char, and reflowing all of my code in this patchset to 75 chars is not
-a quick and easy thing to do. Additionally, there are some other short
-term and long term issues about enforcing a 75 char limit on the KUnit
-code.
+On 8/14/19 6:20 PM, Dan Williams wrote:
+> Jeff reported a scenario where ndctl was failing to unlock DIMMs [1].
+> Through the course of debug it was discovered that the security
+> interface on the DIMMs was in the 'frozen' state disallowing unlock, or
+> any security operation.  Unfortunately the kernel only showed that the
+> DIMMs were 'locked', not 'locked' and 'frozen'.
+> 
+> Introduce a new sysfs 'frozen' attribute so that ndctl can reflect the
+> "security-operations-allowed" state independently of the lock status.
+> Then, followup with cleanups related to replacing a security-state-enum
+> with a set of flags.
+> 
+> [1]: https://lists.01.org/pipermail/linux-nvdimm/2019-August/022856.html
+> ---
+> 
+> Dan Williams (3):
+>       libnvdimm/security: Introduce a 'frozen' attribute
+>       libnvdimm/security: Tighten scope of nvdimm->busy vs security operations
+>       libnvdimm/security: Consolidate 'security' operations
+> 
+> 
+>  drivers/acpi/nfit/intel.c        |   65 +++++++-----
+>  drivers/nvdimm/bus.c             |    2 
+>  drivers/nvdimm/dimm_devs.c       |  134 ++++++--------------------
+>  drivers/nvdimm/nd-core.h         |   51 ++++------
+>  drivers/nvdimm/security.c        |  199 +++++++++++++++++++++++++-------------
+>  include/linux/libnvdimm.h        |    9 +-
+>  tools/testing/nvdimm/dimm_devs.c |   19 +---
+>  7 files changed, 231 insertions(+), 248 deletions(-)
+> 
 
-Sorry, maybe I am just not understanding what you are asking me.
+For the series
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Thanks.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
