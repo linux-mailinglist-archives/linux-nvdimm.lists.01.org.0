@@ -2,48 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205ED9A143
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 22 Aug 2019 22:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDCE9A475
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 03:00:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6FDE320214B23;
-	Thu, 22 Aug 2019 13:42:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A336D202110CC;
+	Thu, 22 Aug 2019 18:01:28 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
+ helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 170F020213F07
- for <linux-nvdimm@lists.01.org>; Thu, 22 Aug 2019 13:42:26 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 56600C010897;
- Thu, 22 Aug 2019 20:41:25 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com
- (segfault.boston.devel.redhat.com [10.19.60.26])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CAD00100194E;
- Thu, 22 Aug 2019 20:41:24 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Subject: Re: [ndctl PATCH 2/2] libdaxctl: point to migrate-device-model for
- dax-class errors
-References: <20190822203635.17926-1-vishal.l.verma@intel.com>
- <20190822203635.17926-2-vishal.l.verma@intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Thu, 22 Aug 2019 16:41:23 -0400
-In-Reply-To: <20190822203635.17926-2-vishal.l.verma@intel.com> (Vishal Verma's
- message of "Thu, 22 Aug 2019 14:36:35 -0600")
-Message-ID: <x49pnkxndak.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
+ [211.29.132.249])
+ by ml01.01.org (Postfix) with ESMTP id 2B84B21A00AE6
+ for <linux-nvdimm@lists.01.org>; Thu, 22 Aug 2019 18:01:26 -0700 (PDT)
+Received: from dread.disaster.area (pa49-181-142-13.pa.nsw.optusnet.com.au
+ [49.181.142.13])
+ by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id B22C8362588;
+ Fri, 23 Aug 2019 11:00:22 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1i0xv8-0007PG-K9; Fri, 23 Aug 2019 10:59:14 +1000
+Date: Fri, 23 Aug 2019 10:59:14 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190823005914.GF1119@dread.disaster.area>
+References: <20190814180848.GB31490@iweiny-DESK2.sc.intel.com>
+ <20190815130558.GF14313@quack2.suse.cz>
+ <20190816190528.GB371@iweiny-DESK2.sc.intel.com>
+ <20190817022603.GW6129@dread.disaster.area>
+ <20190819063412.GA20455@quack2.suse.cz>
+ <20190819092409.GM7777@dread.disaster.area>
+ <20190819123841.GC5058@ziepe.ca>
+ <20190820011210.GP7777@dread.disaster.area>
+ <20190820115515.GA29246@ziepe.ca>
+ <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
- (mx1.redhat.com [10.5.110.31]); Thu, 22 Aug 2019 20:41:25 +0000 (UTC)
+Content-Disposition: inline
+In-Reply-To: <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
+ a=pdRIKMFd4+xhzJrg6WzXNA==:117 a=pdRIKMFd4+xhzJrg6WzXNA==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
+ a=7-415B0cAAAA:8 a=lzGJWfNdbh4cDx3VhMgA:9 a=CjuIK1q_8ugA:10
+ a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,49 +59,94 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-nvdimm@lists.01.org
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Vishal Verma <vishal.l.verma@intel.com> writes:
+On Wed, Aug 21, 2019 at 11:02:00AM -0700, Ira Weiny wrote:
+> On Tue, Aug 20, 2019 at 08:55:15AM -0300, Jason Gunthorpe wrote:
+> > On Tue, Aug 20, 2019 at 11:12:10AM +1000, Dave Chinner wrote:
+> > > On Mon, Aug 19, 2019 at 09:38:41AM -0300, Jason Gunthorpe wrote:
+> > > > On Mon, Aug 19, 2019 at 07:24:09PM +1000, Dave Chinner wrote:
+> > > > 
+> > > > > So that leaves just the normal close() syscall exit case, where the
+> > > > > application has full control of the order in which resources are
+> > > > > released. We've already established that we can block in this
+> > > > > context.  Blocking in an interruptible state will allow fatal signal
+> > > > > delivery to wake us, and then we fall into the
+> > > > > fatal_signal_pending() case if we get a SIGKILL while blocking.
+> > > > 
+> > > > The major problem with RDMA is that it doesn't always wait on close() for the
+> > > > MR holding the page pins to be destoyed. This is done to avoid a
+> > > > deadlock of the form:
+> > > > 
+> > > >    uverbs_destroy_ufile_hw()
+> > > >       mutex_lock()
+> > > >        [..]
+> > > >         mmput()
+> > > >          exit_mmap()
+> > > >           remove_vma()
+> > > >            fput();
+> > > >             file_operations->release()
+> > > 
+> > > I think this is wrong, and I'm pretty sure it's an example of why
+> > > the final __fput() call is moved out of line.
+> > 
+> > Yes, I think so too, all I can say is this *used* to happen, as we
+> > have special code avoiding it, which is the code that is messing up
+> > Ira's lifetime model.
+> > 
+> > Ira, you could try unraveling the special locking, that solves your
+> > lifetime issues?
+> 
+> Yes I will try to prove this out...  But I'm still not sure this fully solves
+> the problem.
+> 
+> This only ensures that the process which has the RDMA context (RDMA FD) is safe
+> with regard to hanging the close for the "data file FD" (the file which has
+> pinned pages) in that _same_ process.  But what about the scenario.
+> 
+> Process A has the RDMA context FD and data file FD (with lease) open.
+> 
+> Process A uses SCM_RIGHTS to pass the RDMA context FD to Process B.
 
-> When a dax-bus vs. dax-class expectation causes a failure, such as when
-> reconfiguring device modes, print an error message directly pointing the
-> user to the daxctl-migrate-device-model command.
->
-> Reported-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  daxctl/lib/libdaxctl.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-> index 44842b9..c0a859c 100644
-> --- a/daxctl/lib/libdaxctl.c
-> +++ b/daxctl/lib/libdaxctl.c
-> @@ -917,6 +917,7 @@ static int daxctl_dev_enable(struct daxctl_dev *dev, enum daxctl_dev_mode mode)
->  
->  	if (!device_model_is_dax_bus(dev)) {
->  		err(ctx, "%s: error: device model is dax-class\n", devname);
-> +		err(ctx, "%s: see man daxctl-migrate-device-model\n", devname);
->  		return -EOPNOTSUPP;
->  	}
->  
-> @@ -962,6 +963,7 @@ DAXCTL_EXPORT int daxctl_dev_disable(struct daxctl_dev *dev)
->  
->  	if (!device_model_is_dax_bus(dev)) {
->  		err(ctx, "%s: error: device model is dax-class\n", devname);
-> +		err(ctx, "%s: see man daxctl-migrate-device-model\n", devname);
->  		return -EOPNOTSUPP;
->  	}
+Passing the RDMA context dependent on a file layout lease to another
+process that doesn't have a file layout lease or a reference to the
+original lease should be considered a violation of the layout lease.
+Process B does not have an active layout lease, and so by the rules
+of layout leases, it is not allowed to pin the layout of the file.
 
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+> Process A attempts to exit (hangs because data file FD is pinned).
+> 
+> Admin kills process A.  kill works because we have allowed for it...
+> 
+> Process B _still_ has the RDMA context FD open _and_ therefore still holds the
+> file pins.
+> 
+> Truncation still fails.
+> 
+> Admin does not know which process is holding the pin.
+> 
+> What am I missing?
 
-Thanks, Vishal!
+Application does not hold the correct file layout lease references.
+Passing the fd via SCM_RIGHTS to a process without a layout lease
+is equivalent to not using layout leases in the first place.
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
