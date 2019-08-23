@@ -1,53 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52B29A604
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 05:25:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45A69B32A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 17:18:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D62BE20214B48;
-	Thu, 22 Aug 2019 20:26:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 16A6E20214B5D;
+	Fri, 23 Aug 2019 08:19:24 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
- helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=vgoyal@redhat.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
- [211.29.132.246])
- by ml01.01.org (Postfix) with ESMTP id 2AC1F20213F18
- for <linux-nvdimm@lists.01.org>; Thu, 22 Aug 2019 20:25:58 -0700 (PDT)
-Received: from dread.disaster.area (pa49-181-142-13.pa.nsw.optusnet.com.au
- [49.181.142.13])
- by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 5B63B43D0B5;
- Fri, 23 Aug 2019 13:24:53 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1i10Az-0008A6-UL; Fri, 23 Aug 2019 13:23:45 +1000
-Date: Fri, 23 Aug 2019 13:23:45 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190823032345.GG1119@dread.disaster.area>
-References: <20190819063412.GA20455@quack2.suse.cz>
- <20190819092409.GM7777@dread.disaster.area>
- <20190819123841.GC5058@ziepe.ca>
- <20190820011210.GP7777@dread.disaster.area>
- <20190820115515.GA29246@ziepe.ca>
- <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 427D520213F3A
+ for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 08:19:22 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 2AB713090FD6;
+ Fri, 23 Aug 2019 15:18:27 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.158])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E2CAF6A50D;
+ Fri, 23 Aug 2019 15:18:26 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+ id 72B0C223CFC; Fri, 23 Aug 2019 11:18:26 -0400 (EDT)
+Date: Fri, 23 Aug 2019 11:18:26 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: ira.weiny@intel.com
+Subject: Re: [RFC PATCH v2 06/19] fs/ext4: Teach dax_layout_busy_page() to
+ operate on a sub-range
+Message-ID: <20190823151826.GB11009@redhat.com>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-7-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
- a=pdRIKMFd4+xhzJrg6WzXNA==:117 a=pdRIKMFd4+xhzJrg6WzXNA==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=7-415B0cAAAA:8 a=rm80kFlqY6Er904cOY0A:9 a=56S7X8Id4VG2n9yJ:21
- a=ImN9Ga2Z1gCvYqWp:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+In-Reply-To: <20190809225833.6657-7-ira.weiny@intel.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.43]); Fri, 23 Aug 2019 15:18:27 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,161 +54,96 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org,
+ linux-mm@kvack.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 21, 2019 at 01:44:21PM -0700, Ira Weiny wrote:
-> On Wed, Aug 21, 2019 at 04:48:10PM -0300, Jason Gunthorpe wrote:
-> > On Wed, Aug 21, 2019 at 11:57:03AM -0700, Ira Weiny wrote:
-> > 
-> > > > Oh, I didn't think we were talking about that. Hanging the close of
-> > > > the datafile fd contingent on some other FD's closure is a recipe for
-> > > > deadlock..
-> > > 
-> > > The discussion between Jan and Dave was concerning what happens when a user
-> > > calls
-> > > 
-> > > fd = open()
-> > > fnctl(...getlease...)
-> > > addr = mmap(fd...)
-> > > ib_reg_mr() <pin>
-> > > munmap(addr...)
-> > > close(fd)
-> > 
-> > I don't see how blocking close(fd) could work.
+On Fri, Aug 09, 2019 at 03:58:20PM -0700, ira.weiny@intel.com wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
 > 
-> Well Dave was saying this _could_ work. FWIW I'm not 100% sure it will but I
-> can't prove it won't..
-
-Right, I proposed it as a possible way of making sure application
-developers don't do this. It _could_ be made to work (e.g. recording
-longterm page pins on the vma->file), but this is tangential to 
-the discussion of requiring active references to all resources
-covered by the layout lease.
-
-I think allowing applications to behave like the above is simply
-poor system level design, regardless of the interaction with
-filesystems and layout leases.
-
-> Maybe we are all just touching a different part of this
-> elephant[1] but the above scenario or one without munmap is very reasonably
-> something a user would do.  So we can either allow the close to complete (my
-> current patches) or try to make it block like Dave is suggesting.
+> Callers of dax_layout_busy_page() are only rarely operating on the
+> entire file of concern.
 > 
-> I don't disagree with Dave with the semantics being nice and clean for the
-> filesystem.
+> Teach dax_layout_busy_page() to operate on a sub-range of the
+> address_space provided.  Specifying 0 - ULONG_MAX however, will continue
+> to operate on the "entire file" and XFS is split out to a separate patch
+> by this method.
+> 
+> This could potentially speed up dax_layout_busy_page() as well.
 
-I'm not trying to make it "nice and clean for the filesystem".
+I need this functionality as well for virtio_fs and posted a patch for
+this.
 
-The problem is not just RDMA/DAX - anything that is directly
-accessing the block device under the filesystem has the same set of
-issues. That is, the filesystem controls the life cycle of the
-blocks in the block device, so direct access to the blocks by any
-means needs to be co-ordinated with the filesystem. Pinning direct
-access to a file via page pins attached to a hardware context that
-the filesystem knows nothing about is not an access model that the
-filesystems can support.
+https://lkml.org/lkml/2019/8/21/825
 
-IOWs, anyone looking at this problem just from the RDMA POV of page
-pins is not seeing all the other direct storage access mechainsms
-that we need to support in the filesystems. RDMA on DAX is just one
-of them.  pNFS is another. Remote acces via NVMeOF is another. XDP
--> DAX (direct file data placement from the network hardware) is
-another. There are /lots/ of different direct storage access
-mechanisms that filesystems need to support and we sure as hell do
-not want to have to support special case semantics for every single
-one of them.
+Given this is an optimization which existing users can benefit from already,
+this patch could probably be pushed upstream independently.
 
-Hence if we don't start with a sane model for arbitrating direct
-access to the storage at the filesystem level we'll never get this
-stuff to work reliably, let alone work together coherently.  An
-application that wants a direct data path to storage should have a
-single API that enables then to safely access the storage,
-regardless of how they are accessing the storage.
+> 
+> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> 
+> ---
+> Changes from RFC v1
+> 	Fix 0-day build errors
+> 
+>  fs/dax.c            | 15 +++++++++++----
+>  fs/ext4/ext4.h      |  2 +-
+>  fs/ext4/extents.c   |  6 +++---
+>  fs/ext4/inode.c     | 19 ++++++++++++-------
+>  fs/xfs/xfs_file.c   |  3 ++-
+>  include/linux/dax.h |  6 ++++--
+>  6 files changed, 33 insertions(+), 18 deletions(-)
+> 
+> diff --git a/fs/dax.c b/fs/dax.c
+> index a14ec32255d8..3ad19c384454 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -573,8 +573,11 @@ bool dax_mapping_is_dax(struct address_space *mapping)
+>  EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
+>  
+>  /**
+> - * dax_layout_busy_page - find first pinned page in @mapping
+> + * dax_layout_busy_page - find first pinned page in @mapping within
+> + *                        the range @off - @off + @len
+>   * @mapping: address space to scan for a page with ref count > 1
+> + * @off: offset to start at
+> + * @len: length to scan through
+>   *
+>   * DAX requires ZONE_DEVICE mapped pages. These pages are never
+>   * 'onlined' to the page allocator so they are considered idle when
+> @@ -587,9 +590,13 @@ EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
+>   * to be able to run unmap_mapping_range() and subsequently not race
+>   * mapping_mapped() becoming true.
+>   */
+> -struct page *dax_layout_busy_page(struct address_space *mapping)
+> +struct page *dax_layout_busy_page(struct address_space *mapping,
+> +				  loff_t off, loff_t len)
+>  {
+> -	XA_STATE(xas, &mapping->i_pages, 0);
+> +	unsigned long start_idx = off >> PAGE_SHIFT;
+> +	unsigned long end_idx = (len == ULONG_MAX) ? ULONG_MAX
+> +				: start_idx + (len >> PAGE_SHIFT);
+> +	XA_STATE(xas, &mapping->i_pages, start_idx);
+>  	void *entry;
+>  	unsigned int scanned = 0;
+>  	struct page *page = NULL;
+> @@ -612,7 +619,7 @@ struct page *dax_layout_busy_page(struct address_space *mapping)
+>  	unmap_mapping_range(mapping, 0, 0, 1);
 
-From that perspective, what we are talking about here with RDMA
-doing "mmap, page pin, unmap, close" and "pass page pins via
-SCM_RIGHTS" are fundamentally unworkable from the filesystem
-perspective. They are use-after-free situations from the filesystem
-perspective - they do not hold direct references to anything in the
-filesystem, and so the filesytem is completely unaware of them.
+Should we unmap only those pages which fall in the range specified by caller.
+Unmapping whole file seems to be less efficient.
 
-The filesystem needs to be aware of /all users/ of it's resources if
-it's going to manage them sanely.  It needs to be able to corectly
-coordinate modifications to ownership of the underlying storage with
-all the users directly accessing that physical storage regardless of
-the mechanism being used to access the storage.  IOWs, access
-control must be independent of the mechanism used to gain access to
-the storage hardware.
-
-That's what file layout leases are defining - the filesystem support
-model for allowing direct storage access from userspace. It's not
-defining "RDMA/FSDAX" access rules, it's defining a generic direct
-access model. And one of the rules in this model is "if you don't
-have an active reference to the file layout, you are not allowed to
-directly access the layout.".
-
-Anything else is unsupportable from the filesystem perspective -
-designing an access mechanism that allows userspace to retain access
-indefinitely by relying on hidden details of kernel subsystem
-implementations is a terrible architecture.  Not only does it bleed
-kernel implementation into the API and the behavioural model, it
-means we can't ever change that internal kernel behaviour because
-userspace may be dependent on it. I shouldn't be having to point out
-how bad this is from a system design perspective.
-
-That's where the "nice and clean" semantics come from - starting
-from "what can we actually support?", "what exactly do all the
-different direct access mechanisms actually require?", "does it work
-for future technologies not yet on our radar?" and working from
-there.  So I'm not just looking at what we are doing right now, I'm
-looking at 15 years down the track when we still have to support
-layout leases and we've got hardware we haven't dreamed of yet.  If
-the model is clean, simple, robust, implementation independent and
-has well defined semantics, then it should stand the test of time.
-i.e. the "nice and clean" semantics have nothign to do with the
-filesystem per se, but everything to do with ensuring the mechanism
-is generic and workable for direct storage access for a long time
-into the future.
-
-We can't force people to use layout leases - at all, let alone
-correctly - but if you want filesystems and enterprise distros to
-support direct access to filesystem controlled storage, then direct
-access applications need to follow a sane set of rules that are
-supportable at the filesystem level.
-
-> But the fact that RDMA, and potentially others, can "pass the
-> pins" to other processes is something I spent a lot of time trying to work out.
-
-There's nothing in file layout lease architecture that says you
-can't "pass the pins" to another process.  All the file layout lease
-requirements say is that if you are going to pass a resource for
-which the layout lease guarantees access for to another process,
-then the destination process already have a valid, active layout
-lease that covers the range of the pins being passed to it via the
-RDMA handle.
-
-i.e. as the pins pass from one process to another, they pass from
-the protection of the lease process A holds to the protection that
-the lease process B holds. This can probably even be done by
-duplicating the lease fd and passing it by SCM_RIGHTS first.....
-
-Cheers,
-
-Dave.
-
--- 
-Dave Chinner
-david@fromorbit.com
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
