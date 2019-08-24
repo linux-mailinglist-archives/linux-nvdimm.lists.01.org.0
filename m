@@ -2,49 +2,29 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D889BBE7
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Aug 2019 07:08:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 916E99BCC4
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Aug 2019 11:27:31 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8126220216B7E;
-	Fri, 23 Aug 2019 22:11:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A49AA20215F7B;
+	Sat, 24 Aug 2019 02:30:04 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 483A120216B6C
- for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 22:11:13 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2019 22:08:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,424,1559545200"; d="scan'208";a="191147429"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga002.jf.intel.com with ESMTP; 23 Aug 2019 22:08:36 -0700
-Date: Fri, 23 Aug 2019 22:08:36 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
-References: <20190820011210.GP7777@dread.disaster.area>
- <20190820115515.GA29246@ziepe.ca>
- <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area>
- <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=120.228.160.79;
+ helo=pnbv.com; envelope-from=usbwk@vyxf.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from pnbv.com (unknown [120.228.160.79])
+ by ml01.01.org (Postfix) with ESMTP id 52EB920215F48
+ for <linux-nvdimm@lists.01.org>; Sat, 24 Aug 2019 02:30:02 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA;
+ Sat, 24 Aug 2019 16:55:08 +0800
+Message-ID: 7683871f-c71e-4723-8387-81ba508192de
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190824001124.GI1119@dread.disaster.area>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+From: =?utf-8?Q?=E9=A6=99=E6=B8=AF=E5=B1=95=E6=AB=83=E8=A3=BD=E4=BD=9C?=
+ =?utf-8?Q?=E5=8F=8A=E7=A7=9F=E8=B3=83?= <kzstudioltd@gmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 24 Aug 2019 16:55:08 +0800
+Subject: =?utf-8?B?6aaZ5riv5bGV5quD6KO95L2c5Y+K56ef6LOD?=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,104 +36,34 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
-> On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-> > On Fri, Aug 23, 2019 at 01:23:45PM +1000, Dave Chinner wrote:
-> > 
-> > > > But the fact that RDMA, and potentially others, can "pass the
-> > > > pins" to other processes is something I spent a lot of time trying to work out.
-> > > 
-> > > There's nothing in file layout lease architecture that says you
-> > > can't "pass the pins" to another process.  All the file layout lease
-> > > requirements say is that if you are going to pass a resource for
-> > > which the layout lease guarantees access for to another process,
-> > > then the destination process already have a valid, active layout
-> > > lease that covers the range of the pins being passed to it via the
-> > > RDMA handle.
-> > 
-> > How would the kernel detect and enforce this? There are many ways to
-> > pass a FD.
-> 
-> AFAIC, that's not really a kernel problem. It's more of an
-> application design constraint than anything else. i.e. if the app
-> passes the IB context to another process without a lease, then the
-> original process is still responsible for recalling the lease and
-> has to tell that other process to release the IB handle and it's
-> resources.
-> 
-> > IMHO it is wrong to try and create a model where the file lease exists
-> > independently from the kernel object relying on it. In other words the
-> > IB MR object itself should hold a reference to the lease it relies
-> > upon to function properly.
-> 
-> That still doesn't work. Leases are not individually trackable or
-> reference counted objects objects - they are attached to a struct
-> file bUt, in reality, they are far more restricted than a struct
-> file.
-> 
-> That is, a lease specifically tracks the pid and the _open fd_ it
-> was obtained for, so it is essentially owned by a specific process
-> context.  Hence a lease is not able to be passed to a separate
-> process context and have it still work correctly for lease break
-> notifications.  i.e. the layout break signal gets delivered to
-> original process that created the struct file, if it still exists
-> and has the original fd still open. It does not get sent to the
-> process that currently holds a reference to the IB context.
->
-
-The fcntl man page says:
-
-"Leases are associated with an open file description (see open(2)).  This means
-that duplicate file descriptors (created by, for example, fork(2) or dup(2))
-refer to the same lease, and this lease may be modified or released using any
-of these descriptors.  Furthermore,  the lease is released by either an
-explicit F_UNLCK operation on any of these duplicate file descriptors, or when
-all such file descriptors have been closed."
-
-From this I took it that the child process FD would have the lease as well
-_and_ could release it.  I _assumed_ that applied to SCM_RIGHTS but it does not
-seem to work the same way as dup() so I'm not so sure.
-
-Ira
-
-> 
-> So while a struct file passed to another process might still have
-> an active lease, and you can change the owner of the struct file
-> via fcntl(F_SETOWN), you can't associate the existing lease with a
-> the new fd in the new process and so layout break signals can't be
-> directed at the lease fd....
-> 
-> This really means that a lease can only be owned by a single process
-> context - it can't be shared across multiple processes (so I was
-> wrong about dup/pass as being a possible way of passing them)
-> because there's only one process that can "own" a struct file, and
-> that where signals are sent when the lease needs to be broken.
-> 
-> So, fundamentally, if you want to pass a resource that pins a file
-> layout between processes, both processes need to hold a layout lease
-> on that file range. And that means exclusive leases and passing
-> layouts between processes are fundamentally incompatible because you
-> can't hold two exclusive leases on the same file range....
-> 
-> Cheers,
-> 
-> Dave.
-> -- 
-> Dave Chinner
-> david@fromorbit.com
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Jm5ic3A7DQombmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsg
+6aaZ5riv5aWH5oCd5bel5L2c5a6k5piv6aaZ5riv5bGV5quD6KO95L2c5Y+K56ef6LOD5L6b5oeJ
+5ZWG44CC55uu5YmN77yM5YWs5Y+45bey5pOB5pyJ5LiA5pSv6auY5rC05rqW55qE56eR56CU55Si
+5ZOB6ZaL55m86ZqK5LyN77yM5buj5rOb5oeJ55So5LiJ57at6LyU5Yqp6Kit6KiI77yM5Lim5a+m
+6KGM5LqG5qiZ5rqW5YyW55Si5ZOB6LOq6YeP566h55CG44CC55Si5ZOB6KaP5qC86b2K5YWo44CB
+57WQ5qeL5paw56mO44CB5bel6Jed57K+5rmb44CB5qqi5ris5a6M5YKZ44CB6LOq6YeP5LiK5LmY
+44CC5aSa5bm05L6G77yM5om/6JKZ56eR56CU5Zau5L2N5ZKM55So5oi255qE5aSn5Yqb5pSv5oyB
+77yM5YWs5Y+45bey55m85bGV5oiQ54K66ZuG55Sf55Si44CB56eR56CU44CB6Yq35ZSu44CB5pyN
+5YuZ54K65LiA6auU55qE5bCI5qWt5YyW5aSn5Z6L5bGV5p6255Sf55Si5LyB5qWt44CCJm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A75qWt5YuZ56+E5ZyNJm5ic3A75bCI5qWt5b6e5LqL5bGV
+6Ka95bGV56S65bel56iL44CB5pyD6K2w562W5YqD5L2I572u77yM5bGV56S65quD44CB55Si5ZOB
+5bGV56S65buz5Lul5Y+K5bCI6ZaA5bqX6Kit6KiI44CB5Ye656ef5bGV5quD44CB6KO95L2c5LiA
+5qKd6b6N55qE5bCI5qWt5YyW5LyB5qWt44CCJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A75Li754ef
+55Si5ZOB5bGV5quD44CB5quD5Y+w44CB5bGV56S65p6244CB55+u6Lqr546755KD5quD44CB6auY
+6Lqr546755KD5quD44CB6Zmz5YiX5a6k44CB5a2U5p2/5Z2R5p2/562J55Si5ZOBJm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A75aaC6ZyA5pu05aSa6Kmz5oOF77yM6KuL55m76Zm45oiR5Y+457ay56uZ
+5p+l6Zax77yaaHR0cHM6Ly9rei1zdHVkaW8uaGsvDQombmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDvpppnmuK/lpYfmgJ3lt6XkvZzlrqTmnInpmZDlhazlj7gm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDvoga/nuavkurrvvJrpoY/l
+hYjnlJ8mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDvpm7voqbHvvJrvvIg4NTLv
+vIkyMjQzIDMzMDMmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDvpm7vpg7XvvJom
+bmJzcDtpbmZvQGt6LXN0dWRpby5oayZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+O1doYXRzQXBwIDombmJzcDsgKDg1MikgOTY3NyAyMjA1DQombmJzcDsNCiZuYnNwOwpfX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFp
+bGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcv
+bWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
