@@ -1,53 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51529B97B
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Aug 2019 02:19:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F3B9BA1B
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Aug 2019 03:34:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CD51520215F7A;
-	Fri, 23 Aug 2019 17:22:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 64C6F20215F7E;
+	Fri, 23 Aug 2019 18:37:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
- helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::e4a; helo=mail-vs1-xe4a.google.com;
+ envelope-from=3k5rgxq4kdmyn3qzpmztussuz4s00sxq.o0yxuz69-z7puyyxu454.cd.03s@flex--brendanhiggins.bounces.google.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
- [211.29.132.246])
- by ml01.01.org (Postfix) with ESMTP id 35C9120215F56
- for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 17:22:27 -0700 (PDT)
-Received: from dread.disaster.area (pa49-181-255-194.pa.nsw.optusnet.com.au
- [49.181.255.194])
- by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id A5FD843E73B;
- Sat, 24 Aug 2019 10:19:46 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1i1JlP-0007eP-Cg; Sat, 24 Aug 2019 10:18:39 +1000
-Date: Sat, 24 Aug 2019 10:18:39 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190824001839.GJ1119@dread.disaster.area>
-References: <20190816190528.GB371@iweiny-DESK2.sc.intel.com>
- <20190817022603.GW6129@dread.disaster.area>
- <20190819063412.GA20455@quack2.suse.cz>
- <20190819092409.GM7777@dread.disaster.area>
- <20190819123841.GC5058@ziepe.ca>
- <20190820011210.GP7777@dread.disaster.area>
- <20190820115515.GA29246@ziepe.ca>
- <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190823005914.GF1119@dread.disaster.area>
- <20190823171504.GA1092@iweiny-DESK2.sc.intel.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190823171504.GA1092@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
- a=YO9NNpcXwc8z/SaoS+iAiA==:117 a=YO9NNpcXwc8z/SaoS+iAiA==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=7-415B0cAAAA:8 a=QZy_m0AoVJ59bLp0kawA:9 a=CjuIK1q_8ugA:10
- a=biEYGPWJfzWAr4FL6Ov7:22
+Received: from mail-vs1-xe4a.google.com (mail-vs1-xe4a.google.com
+ [IPv6:2607:f8b0:4864:20::e4a])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id C056E20215F56
+ for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 18:37:14 -0700 (PDT)
+Received: by mail-vs1-xe4a.google.com with SMTP id k1so3185958vsq.8
+ for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 18:34:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=u6vmmnwRUzLKD5y/rsoe3hBquEKZMDYQLdEtGhcWv3g=;
+ b=HVklJPxbqbRBtpBK3hdl+VswNRV4P2EWUoTQ6/jzlla/43tMUYx52ieNsrWja1cMAd
+ aJXK63eT0AeMDFxYtZyBESJGuF52uPkRIRazyPmUFSSpZlHx/sV1I2pC8wcJoG/Jy+z7
+ 0ebrqRvPPaqx+epAoYNiv2Z6F0OPXUrzfluIz3B0PZsRxGAjoAWPYO3kBtG4yhrHecAA
+ fwkXjbrqFMOaTYkIzZof+8WI+OZNq8YRk4OSEiBdVc0hDOjOiYENTJZIZIQpFAlgeRT6
+ 5UwDu9vDrX9VEXJMCDM32wr6kC4xm78SHY7UBAnZUT4L8JjxDdyUQ0eJ2Gew4CMdHuAQ
+ esXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=u6vmmnwRUzLKD5y/rsoe3hBquEKZMDYQLdEtGhcWv3g=;
+ b=qipG+J4cqZ/ykEKgxPXlsCmiENKgisuRtv3WFhZyrZh67ZA8vFWi4DqsSfQVPM/tmB
+ GnpkNzMTrFOlrqTNzDQ2CW3zKsCJVcZaqJ+x5U6k/M2HuDBRWLCUfBWcN1lJxXUr+GgK
+ e1WhsHfyFnnMV8Y4RV9I0L+gk7U6QAk0PpENZOz/1D5GDQbXSo/4V8QzG11TA3OA/d93
+ lu98P38AisSxJDdu+ngJxxd2iFk/hZnsx/N1HZnF2pUdwuask5BjBh64/NDED3+RBidg
+ 3TzZvfbWqxUocMqiuyYjGKHbpXp1337j1XwSMSMqFizpxqVcrTi45ofNDwfcNKnGgWHe
+ D5wQ==
+X-Gm-Message-State: APjAAAW9j0qZL7Ky4qA36UsbCAByV4EYtHeoTWGRp8aqITr/u/mRzLxi
+ kDz0tHmpfE/IoykVVpdiTx6AZyg9h+6/etq31yRe1w==
+X-Google-Smtp-Source: APXvYqwBNX0MXCogqcD2ZWv4/PeYSKyopYGJC89lxHpR6CjYFzzu83jqcycsHbnwRnQxtUoBH+I61TfjBVcTRyxmbsVxMw==
+X-Received: by 2002:a67:dd91:: with SMTP id i17mr4328220vsk.21.1566610475582; 
+ Fri, 23 Aug 2019 18:34:35 -0700 (PDT)
+Date: Fri, 23 Aug 2019 18:34:07 -0700
+Message-Id: <20190824013425.175645-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.23.0.187.g17f5b7556c-goog
+Subject: [PATCH v15 00/18] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
+ keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
+ peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
+ tytso@mit.edu, yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,119 +67,91 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+ daniel@ffwll.ch, mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 23, 2019 at 10:15:04AM -0700, Ira Weiny wrote:
-> On Fri, Aug 23, 2019 at 10:59:14AM +1000, Dave Chinner wrote:
-> > On Wed, Aug 21, 2019 at 11:02:00AM -0700, Ira Weiny wrote:
-> > > On Tue, Aug 20, 2019 at 08:55:15AM -0300, Jason Gunthorpe wrote:
-> > > > On Tue, Aug 20, 2019 at 11:12:10AM +1000, Dave Chinner wrote:
-> > > > > On Mon, Aug 19, 2019 at 09:38:41AM -0300, Jason Gunthorpe wrote:
-> > > > > > On Mon, Aug 19, 2019 at 07:24:09PM +1000, Dave Chinner wrote:
-> > > > > > 
-> > > > > > > So that leaves just the normal close() syscall exit case, where the
-> > > > > > > application has full control of the order in which resources are
-> > > > > > > released. We've already established that we can block in this
-> > > > > > > context.  Blocking in an interruptible state will allow fatal signal
-> > > > > > > delivery to wake us, and then we fall into the
-> > > > > > > fatal_signal_pending() case if we get a SIGKILL while blocking.
-> > > > > > 
-> > > > > > The major problem with RDMA is that it doesn't always wait on close() for the
-> > > > > > MR holding the page pins to be destoyed. This is done to avoid a
-> > > > > > deadlock of the form:
-> > > > > > 
-> > > > > >    uverbs_destroy_ufile_hw()
-> > > > > >       mutex_lock()
-> > > > > >        [..]
-> > > > > >         mmput()
-> > > > > >          exit_mmap()
-> > > > > >           remove_vma()
-> > > > > >            fput();
-> > > > > >             file_operations->release()
-> > > > > 
-> > > > > I think this is wrong, and I'm pretty sure it's an example of why
-> > > > > the final __fput() call is moved out of line.
-> > > > 
-> > > > Yes, I think so too, all I can say is this *used* to happen, as we
-> > > > have special code avoiding it, which is the code that is messing up
-> > > > Ira's lifetime model.
-> > > > 
-> > > > Ira, you could try unraveling the special locking, that solves your
-> > > > lifetime issues?
-> > > 
-> > > Yes I will try to prove this out...  But I'm still not sure this fully solves
-> > > the problem.
-> > > 
-> > > This only ensures that the process which has the RDMA context (RDMA FD) is safe
-> > > with regard to hanging the close for the "data file FD" (the file which has
-> > > pinned pages) in that _same_ process.  But what about the scenario.
-> > > 
-> > > Process A has the RDMA context FD and data file FD (with lease) open.
-> > > 
-> > > Process A uses SCM_RIGHTS to pass the RDMA context FD to Process B.
-> > 
-> > Passing the RDMA context dependent on a file layout lease to another
-> > process that doesn't have a file layout lease or a reference to the
-> > original lease should be considered a violation of the layout lease.
-> > Process B does not have an active layout lease, and so by the rules
-> > of layout leases, it is not allowed to pin the layout of the file.
-> > 
-> 
-> I don't disagree with the semantics of this.  I just don't know how to enforce
-> it.
-> 
-> > > Process A attempts to exit (hangs because data file FD is pinned).
-> > > 
-> > > Admin kills process A.  kill works because we have allowed for it...
-> > > 
-> > > Process B _still_ has the RDMA context FD open _and_ therefore still holds the
-> > > file pins.
-> > > 
-> > > Truncation still fails.
-> > > 
-> > > Admin does not know which process is holding the pin.
-> > > 
-> > > What am I missing?
-> > 
-> > Application does not hold the correct file layout lease references.
-> > Passing the fd via SCM_RIGHTS to a process without a layout lease
-> > is equivalent to not using layout leases in the first place.
-> 
-> Ok, So If I understand you correctly you would support a failure of SCM_RIGHTS
-> in this case?  I'm ok with that but not sure how to implement it right now.
-> 
-> To that end, I would like to simplify this slightly because I'm not convinced
-> that SCM_RIGHTS is a problem we need to solve right now.  ie I don't know of a
-> user who wants to do this.
+## TL;DR
 
-I don't think we can support it, let alone want to. SCM_RIGHTS was a
-mistake made years ago that has been causing bugs and complexity to
-try and avoid those bugs ever since.  I'm only taking about it
-because someone else raised it and I asummed they raised it because
-they want it to "work".
+This revision addresses comments from Shuah by fixing a couple
+checkpatch warnings and fixing some comment readability issues. No API
+or major structual changes have been made since v13.
 
-> Right now duplication via SCM_RIGHTS could fail if _any_ file pins (and by
-> definition leases) exist underneath the "RDMA FD" (or other direct access FD,
-> like XDP etc) being duplicated.
+## Background
 
-Sounds like a fine idea to me.
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
 
-Cheers,
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want[1]) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in about a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
 
-Dave.
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+### What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+### Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+### More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[2].
+
+Additionally for convenience, I have applied these patches to a
+branch[3]. The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/rfc/v5.3/v15 branch.
+
+## Changes Since Last Version
+
+- Moved comment from inline in macro to kernel-doc to address checkpatch
+  warning.
+- Demoted BUG() to WARN_ON.
+- Formatted some kernel-doc comments to make them more readible.
+
+[1] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[2] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[3] https://kunit.googlesource.com/linux/+/kunit/rfc/v5.3/v15
+
 -- 
-Dave Chinner
-david@fromorbit.com
+2.23.0.187.g17f5b7556c-goog
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
