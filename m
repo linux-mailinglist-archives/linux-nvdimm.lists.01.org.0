@@ -1,57 +1,53 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD6F9B72E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 23 Aug 2019 21:43:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1649B966
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 24 Aug 2019 02:12:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2A65020215F72;
-	Fri, 23 Aug 2019 12:45:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 464BD20215F78;
+	Fri, 23 Aug 2019 17:15:17 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=shuah@kernel.org;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.249;
+ helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id EBC6620214B5B
- for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 12:45:54 -0700 (PDT)
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net
- [24.9.64.241])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 98F41204EC;
- Fri, 23 Aug 2019 19:43:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1566589395;
- bh=A5eeAEPetBRLMvoXmWpeJWVupdyZjGQb5uqPUxSopRE=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=Lp0kgTaL2ER1ikXu9l5+TknQpBRLVfc4BleH5oF+NdBkxB+c5LFY/2x7o82/KSivI
- T2zrEDSyzyNekmuNL6JiduReArBzQm9I4NzNK3pfgxz77LI6LzJ40njjfbD25tI8Sf
- 8bH3aLvOlHHgvixhW1XFYsbJ5xt34UdIwlMptUtI=
-Subject: Re: [PATCH v14 01/18] kunit: test: add KUnit test runner core
-To: Brendan Higgins <brendanhiggins@google.com>
-References: <20190820232046.50175-1-brendanhiggins@google.com>
- <20190820232046.50175-2-brendanhiggins@google.com>
- <7f2c8908-75f6-b793-7113-ad57c51777ce@kernel.org>
- <CAFd5g44mRK9t4f58i_YMEt=e9RTxwrrhFY_V2LW_E7bUwR3cdg@mail.gmail.com>
- <4513d9f3-a69b-a9a4-768b-86c2962b62e0@kernel.org>
- <CAFd5g446J=cVW4QW+QeZMLDi+ANqshAW6KTrFFBTusPcdr6-GA@mail.gmail.com>
- <42c6235c-c586-8de1-1913-7cf1962c6066@kernel.org>
- <CAFd5g44hLgeqPtNw1zQ5k_+apBm=ri_6=wAgHk=oPOvQs6xgNg@mail.gmail.com>
- <54f3c011-d666-e828-5e77-359b7a7374e7@kernel.org>
- <CAFd5g44NAs6KK0_sG9itgT5qxujpyx36XV6tT8=zMynG-ZyVhQ@mail.gmail.com>
- <bb9384cd-bd62-2190-e0da-ed3537aff171@kernel.org>
- <CAFd5g47bJjp94bbCRmho8yUXNWx3PpQ4Cu6Y1UnErKVKWuedNw@mail.gmail.com>
-From: shuah <shuah@kernel.org>
-Message-ID: <6cb3a6b5-8570-07b2-dffb-eeca5a1c663b@kernel.org>
-Date: Fri, 23 Aug 2019 13:43:11 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au
+ [211.29.132.249])
+ by ml01.01.org (Postfix) with ESMTP id A95E720215F56
+ for <linux-nvdimm@lists.01.org>; Fri, 23 Aug 2019 17:15:15 -0700 (PDT)
+Received: from dread.disaster.area (pa49-181-255-194.pa.nsw.optusnet.com.au
+ [49.181.255.194])
+ by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id EF9B9361F93;
+ Sat, 24 Aug 2019 10:12:31 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1i1JeO-0007di-F2; Sat, 24 Aug 2019 10:11:24 +1000
+Date: Sat, 24 Aug 2019 10:11:24 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190824001124.GI1119@dread.disaster.area>
+References: <20190819123841.GC5058@ziepe.ca>
+ <20190820011210.GP7777@dread.disaster.area>
+ <20190820115515.GA29246@ziepe.ca>
+ <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
+ <20190821181343.GH8653@ziepe.ca>
+ <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
+ <20190821194810.GI8653@ziepe.ca>
+ <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
+ <20190823032345.GG1119@dread.disaster.area>
+ <20190823120428.GA12968@ziepe.ca>
 MIME-Version: 1.0
-In-Reply-To: <CAFd5g47bJjp94bbCRmho8yUXNWx3PpQ4Cu6Y1UnErKVKWuedNw@mail.gmail.com>
-Content-Language: en-US
+Content-Disposition: inline
+In-Reply-To: <20190823120428.GA12968@ziepe.ca>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
+ a=YO9NNpcXwc8z/SaoS+iAiA==:117 a=YO9NNpcXwc8z/SaoS+iAiA==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
+ a=7-415B0cAAAA:8 a=G1NtteZr6bW4K8DtrmYA:9 a=CjuIK1q_8ugA:10
+ a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,223 +59,84 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Petr Mladek <pmladek@suse.com>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
- dri-devel <dri-devel@lists.freedesktop.org>,
- Sasha Levin <Alexander.Levin@microsoft.com>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- Frank Rowand <frowand.list@gmail.com>, Rob Herring <robh@kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Kevin Hilman <khilman@baylibre.com>,
- Knut Omang <knut.omang@oracle.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>, wfg@linux.intel.com,
- Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
- Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- devicetree <devicetree@vger.kernel.org>, shuah <shuah@kernel.org>,
- linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
- Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
- Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
- Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
- Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
- Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
- Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 8/23/19 1:20 PM, Brendan Higgins wrote:
-> On Fri, Aug 23, 2019 at 12:04 PM shuah <shuah@kernel.org> wrote:
->>
->> On 8/23/19 12:56 PM, Brendan Higgins wrote:
->>> On Fri, Aug 23, 2019 at 11:32 AM shuah <shuah@kernel.org> wrote:
->>>>
->>>> On 8/23/19 11:54 AM, Brendan Higgins wrote:
->>>>> On Fri, Aug 23, 2019 at 10:34 AM shuah <shuah@kernel.org> wrote:
->>>>>>
->>>>>> On 8/23/19 11:27 AM, Brendan Higgins wrote:
->>>>>>> On Fri, Aug 23, 2019 at 10:05 AM shuah <shuah@kernel.org> wrote:
->>>>>>>>
->>>>>>>> On 8/23/19 10:48 AM, Brendan Higgins wrote:
->>>>>>>>> On Fri, Aug 23, 2019 at 8:33 AM shuah <shuah@kernel.org> wrote:
->>>>>>>>>>
->>>>>>>>>> Hi Brendan,
->>>>>>>>>>
->>>>>>>>>> On 8/20/19 5:20 PM, Brendan Higgins wrote:
->>>>>>>>>>> Add core facilities for defining unit tests; this provides a common way
->>>>>>>>>>> to define test cases, functions that execute code which is under test
->>>>>>>>>>> and determine whether the code under test behaves as expected; this also
->>>>>>>>>>> provides a way to group together related test cases in test suites (here
->>>>>>>>>>> we call them test_modules).
->>>>>>>>>>>
->>>>>>>>>>> Just define test cases and how to execute them for now; setting
->>>>>>>>>>> expectations on code will be defined later.
->>>>>>>>>>>
->>>>>>>>>>> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
->>>>>>>>>>> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>>>>>>>>>> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
->>>>>>>>>>> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
->>>>>>>>>>> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
->>>>>>>>>>> ---
->>>>>>>>>>>        include/kunit/test.h | 179 ++++++++++++++++++++++++++++++++++++++++
->>>>>>>>>>>        kunit/Kconfig        |  17 ++++
->>>>>>>>>>>        kunit/Makefile       |   1 +
->>>>>>>>>>>        kunit/test.c         | 191 +++++++++++++++++++++++++++++++++++++++++++
->>>>>>>>>>>        4 files changed, 388 insertions(+)
->>>>>>>>>>>        create mode 100644 include/kunit/test.h
->>>>>>>>>>>        create mode 100644 kunit/Kconfig
->>>>>>>>>>>        create mode 100644 kunit/Makefile
->>>>>>>>>>>        create mode 100644 kunit/test.c
->>>>>>>>>>>
->>>>>>>>>>> diff --git a/include/kunit/test.h b/include/kunit/test.h
->>>>>>>>>>> new file mode 100644
->>>>>>>>>>> index 0000000000000..e0b34acb9ee4e
->>>>>>>>>>> --- /dev/null
->>>>>>>>>>> +++ b/include/kunit/test.h
->>>>>>>>>>> @@ -0,0 +1,179 @@
->>>>>>>>>>> +/* SPDX-License-Identifier: GPL-2.0 */
->>>>>>>>>>> +/*
->>>>>>>>>>> + * Base unit test (KUnit) API.
->>>>>>>>>>> + *
->>>>>>>>>>> + * Copyright (C) 2019, Google LLC.
->>>>>>>>>>> + * Author: Brendan Higgins <brendanhiggins@google.com>
->>>>>>>>>>> + */
->>>>>>>>>>> +
->>>>>>>>>>> +#ifndef _KUNIT_TEST_H
->>>>>>>>>>> +#define _KUNIT_TEST_H
->>>>>>>>>>> +
->>>>>>>>>>> +#include <linux/types.h>
->>>>>>>>>>> +
->>>>>>>>>>> +struct kunit;
->>>>>>>>>>> +
->>>>>>>>>>> +/**
->>>>>>>>>>> + * struct kunit_case - represents an individual test case.
->>>>>>>>>>> + * @run_case: the function representing the actual test case.
->>>>>>>>>>> + * @name: the name of the test case.
->>>>>>>>>>> + *
->>>>>>>>>>> + * A test case is a function with the signature, ``void (*)(struct kunit *)``
->>>>>>>>>>> + * that makes expectations (see KUNIT_EXPECT_TRUE()) about code under test. Each
->>>>>>>>>>> + * test case is associated with a &struct kunit_suite and will be run after the
->>>>>>>>>>> + * suite's init function and followed by the suite's exit function.
->>>>>>>>>>> + *
->>>>>>>>>>> + * A test case should be static and should only be created with the KUNIT_CASE()
->>>>>>>>>>> + * macro; additionally, every array of test cases should be terminated with an
->>>>>>>>>>> + * empty test case.
->>>>>>>>>>> + *
->>>>>>>>>>> + * Example:
->>>>>>>>>>
->>>>>>>>>> Can you fix these line continuations. It makes it very hard to read.
->>>>>>>>>> Sorry for this late comment. These comments lines are longer than 80
->>>>>>>>>> and wrap.
->>>>>>>>>
->>>>>>>>> None of the lines in this commit are over 80 characters in column
->>>>>>>>> width. Some are exactly 80 characters (like above).
->>>>>>>>>
->>>>>>>>> My guess is that you are seeing the diff added text (+ ), which when
->>>>>>>>> you add that to a line which is exactly 80 char in length ends up
->>>>>>>>> being over 80 char in email. If you apply the patch you will see that
->>>>>>>>> they are only 80 chars.
->>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> There are several comment lines in the file that are way too long.
->>>>>>>>>
->>>>>>>>> Note that checkpatch also does not complain about any over 80 char
->>>>>>>>> lines in this file.
->>>>>>>>>
->>>>>>>>> Sorry if I am misunderstanding what you are trying to tell me. Please
->>>>>>>>> confirm either way.
->>>>>>>>>
->>>>>>>>
->>>>>>>> WARNING: Avoid unnecessary line continuations
->>>>>>>> #258: FILE: include/kunit/test.h:137:
->>>>>>>> +                */                                                            \
->>>>>>>>
->>>>>>>> total: 0 errors, 2 warnings, 388 lines checked
->>>>>>>
->>>>>>> Ah, okay so you don't like the warning about the line continuation.
->>>>>>> That's not because it is over 80 char, but because there is a line
->>>>>>> continuation after a comment. I don't really see a way to get rid of
->>>>>>> it without removing the comment from inside the macro.
->>>>>>>
->>>>>>> I put this TODO there in the first place a Luis' request, and I put it
->>>>>>> in the body of the macro because this macro already had a kernel-doc
->>>>>>> comment and I didn't think that an implementation detail TODO belonged
->>>>>>> in the user documentation.
->>>>>>>
->>>>>>>> Go ahead fix these. It appears there are few lines that either longer
->>>>>>>> than 80. In general, I keep them around 75, so it is easier read.
->>>>>>>
->>>>>>> Sorry, the above is the only checkpatch warning other than the
->>>>>>> reminder to update the MAINTAINERS file.
->>>>>>>
->>>>>>> Are you saying you want me to go through and make all the lines fit in
->>>>>>> 75 char column width? I hope not because that is going to be a pretty
->>>>>>> substantial change to make.
->>>>>>>
->>>>>>
->>>>>> There are two things with these comment lines. One is checkpatch
->>>>>> complaining and the other is general readability.
->>>>>
->>>>> So for the checkpatch warning, do you want me to move the comment out
->>>>> of the macro body into the kernel-doc comment? I don't really think it
->>>>> is the right place for a comment of this nature, but I think it is
->>>>> probably better than dropping it entirely (I don't see how else to do
->>>>> it without just removing the comment entirely).
->>>>>
->>>>
->>>> Don't drop the comments. It makes perfect sense to turn this into a
->>>> kernel-doc comment.
->>>
->>> I am fine with that. I will do that in a subsequent revision once we
->>> figure out the column limit issue.
->>>
->>>> We are going back forth on this a lot. I see several lines 81+ in
->>>> this file. I am at 5.3-rc5 and my commit hooks aren't happy. I am
->>>> fine with it if you want to convert these to kernel-doc comments.
->>>> I think it makes perfect sense.
->>>
->>> Okay, so this is interesting. When I look at the applied patches in my
->>> local repo, I don't see any 81+ lines. So it seems that something
->>> interesting is going on here.
->>>
->>> To be clear (sorry for the stupid question) you are seeing the issue
->>> after you applied the patch, and not in the patch file itself?
->>>
->>
->> I am using my normal workflow. My pre-commit check is catching this.
->> Just this patch.
+On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
+> On Fri, Aug 23, 2019 at 01:23:45PM +1000, Dave Chinner wrote:
 > 
-> Okay, *that* is super strange!
+> > > But the fact that RDMA, and potentially others, can "pass the
+> > > pins" to other processes is something I spent a lot of time trying to work out.
+> > 
+> > There's nothing in file layout lease architecture that says you
+> > can't "pass the pins" to another process.  All the file layout lease
+> > requirements say is that if you are going to pass a resource for
+> > which the layout lease guarantees access for to another process,
+> > then the destination process already have a valid, active layout
+> > lease that covers the range of the pins being passed to it via the
+> > RDMA handle.
 > 
-> So I have lines in this patch (01/18) that are exactly 80 char wide
-> and I was thinking that it might be an off by one issue on either my
-> workflow or your workflow, but I have lines in other patches that are
-> exactly 80 char wide and our setups agree that they are fine, so I
-> really am not sure what's going on here.
-> 
-> It sounds like you are only seeing the issue in only a couple places,
-> do you mind calling out the specific lines that are problematic?
+> How would the kernel detect and enforce this? There are many ways to
+> pass a FD.
 
-Take a look at the comment blocks. That is where the problem are.
+AFAIC, that's not really a kernel problem. It's more of an
+application design constraint than anything else. i.e. if the app
+passes the IB context to another process without a lease, then the
+original process is still responsible for recalling the lease and
+has to tell that other process to release the IB handle and it's
+resources.
 
-> 
->> All others are good other than the 9/18 BUG() issue.
->>> Since we are still at OSS, would you mind if we meet up this afternoon
->>> so I can see this issue you are seeing? I imagine we should get this
->>> figured out pretty quickly.
->>>
->>
->> Yeah. Would have been nice. I am not at oss today.
-> 
-> Dang.
-> 
+> IMHO it is wrong to try and create a model where the file lease exists
+> independently from the kernel object relying on it. In other words the
+> IB MR object itself should hold a reference to the lease it relies
+> upon to function properly.
 
-thanks,
--- Shuah
+That still doesn't work. Leases are not individually trackable or
+reference counted objects objects - they are attached to a struct
+file bUt, in reality, they are far more restricted than a struct
+file.
+
+That is, a lease specifically tracks the pid and the _open fd_ it
+was obtained for, so it is essentially owned by a specific process
+context. Hence a lease is not able to be passed to a separate
+process context and have it still work correctly for lease break
+notifications.  i.e. the layout break signal gets delivered to
+original process that created the struct file, if it still exists
+and has the original fd still open. It does not get sent to the
+process that currently holds a reference to the IB context.
+
+So while a struct file passed to another process might still have
+an active lease, and you can change the owner of the struct file
+via fcntl(F_SETOWN), you can't associate the existing lease with a
+the new fd in the new process and so layout break signals can't be
+directed at the lease fd....
+
+This really means that a lease can only be owned by a single process
+context - it can't be shared across multiple processes (so I was
+wrong about dup/pass as being a possible way of passing them)
+because there's only one process that can "own" a struct file, and
+that where signals are sent when the lease needs to be broken.
+
+So, fundamentally, if you want to pass a resource that pins a file
+layout between processes, both processes need to hold a layout lease
+on that file range. And that means exclusive leases and passing
+layouts between processes are fundamentally incompatible because you
+can't hold two exclusive leases on the same file range....
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
