@@ -1,51 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A909CE9C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Aug 2019 13:53:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2249D007
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Aug 2019 15:06:14 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4E93A20213F22;
-	Mon, 26 Aug 2019 04:55:36 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5048120214B36;
+	Mon, 26 Aug 2019 06:08:30 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=batv+64c9f4a429f346f2dac5+5846+infradead.org+hch@bombadil.srs.infradead.org;
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=vgoyal@redhat.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 899F72020D33A
- for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 04:55:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lZnBdyi3U2JinlfRXPGTK6Ot4IAtObs74Nrk19Et59I=; b=h4nljASh9KzABQmHDW5KPiI5y
- rYfaQ9ckmtTLidzXqdVCp0kF98xjf4iYIvzChMQ+kZPX5dFnceTCsbzUIUgXzefxzhTIey+QON6E3
- HdKAyQOYx2zGew4MWxorz2O/U4UXjDKU8vLrNzb/YCEO23oqRpsSvaQ+xzPFCXiGigwnO51UQU8Ng
- c2nipNf141NY7vJYW1pgnwmI3CJ2N2UQXsUkB8/CWGoqHPEmwsC99YcpjCUNrRkng2qqYkxwezrRV
- bdEm2DiIK+AbKnMruJeHndTGfb4h0UTWaRATbqcGJPhWonnBXPiaTIWTzgA5TCnXYX7nZzgLDuvGR
- A5CXgO69w==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
- Linux)) id 1i2DYi-0008I5-1i; Mon, 26 Aug 2019 11:53:16 +0000
-Date: Mon, 26 Aug 2019 04:53:16 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH 02/19] dax: Pass dax_dev to dax_writeback_mapping_range()
-Message-ID: <20190826115316.GB21051@infradead.org>
+ by ml01.01.org (Postfix) with ESMTPS id DCE0D20212C96
+ for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 06:08:28 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id BD1C6307CDD1;
+ Mon, 26 Aug 2019 13:06:10 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.158])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3993C4524;
+ Mon, 26 Aug 2019 13:06:08 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+ id C1B7C22017B; Mon, 26 Aug 2019 09:06:07 -0400 (EDT)
+Date: Mon, 26 Aug 2019 09:06:07 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: piaojun <piaojun@huawei.com>
+Subject: Re: [Virtio-fs] [PATCH 04/19] virtio: Implement get_shm_region for
+ PCI transport
+Message-ID: <20190826130607.GB3561@redhat.com>
 References: <20190821175720.25901-1-vgoyal@redhat.com>
- <20190821175720.25901-3-vgoyal@redhat.com>
+ <20190821175720.25901-5-vgoyal@redhat.com>
+ <5D63392C.3030404@huawei.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190821175720.25901-3-vgoyal@redhat.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <5D63392C.3030404@huawei.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.49]); Mon, 26 Aug 2019 13:06:10 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,25 +55,38 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: miklos@szeredi.hu, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- dgilbert@redhat.com, virtio-fs@redhat.com, stefanha@redhat.com,
- linux-fsdevel@vger.kernel.org
+Cc: kbuild test robot <lkp@intel.com>, kvm@vger.kernel.org, miklos@szeredi.hu,
+ linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, virtio-fs@redhat.com,
+ Sebastien Boeuf <sebastien.boeuf@intel.com>, linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 21, 2019 at 01:57:03PM -0400, Vivek Goyal wrote:
-> Right now dax_writeback_mapping_range() is passed a bdev and dax_dev
-> is searched from that bdev name.
-> 
-> virtio-fs does not have a bdev. So pass in dax_dev also to
-> dax_writeback_mapping_range(). If dax_dev is passed in, bdev is not
-> used otherwise dax_dev is searched using bdev.
+On Mon, Aug 26, 2019 at 09:43:08AM +0800, piaojun wrote:
 
-Please just pass in only the dax_device and get rid of the block device.
-The callers should have one at hand easily, e.g. for XFS just call
-xfs_find_daxdev_for_inode instead of xfs_find_bdev_for_inode.
+[..]
+> > +static bool vp_get_shm_region(struct virtio_device *vdev,
+> > +			      struct virtio_shm_region *region, u8 id)
+> > +{
+> > +	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
+> > +	struct pci_dev *pci_dev = vp_dev->pci_dev;
+> > +	u8 bar;
+> > +	u64 offset, len;
+> > +	phys_addr_t phys_addr;
+> > +	size_t bar_len;
+> > +	char *bar_name;
+> 
+> 'char *bar_name' should be cleaned up to avoid compiling warning. And I
+> wonder if you mix tab and blankspace for code indent? Or it's just my
+> email display problem?
+
+Will get rid of now unused bar_name. 
+
+Generally git flags if there are tab/space issues. I did not see any. So
+if you see something, point it out and I will fix it.
+
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
