@@ -2,52 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE0C9C8CE
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Aug 2019 07:55:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05BF9CD6D
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 26 Aug 2019 12:41:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A63221962301;
-	Sun, 25 Aug 2019 22:57:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6753C20212C9F;
+	Mon, 26 Aug 2019 03:43:30 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
- helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
- [211.29.132.246])
- by ml01.01.org (Postfix) with ESMTP id 2E1E22020F958
- for <linux-nvdimm@lists.01.org>; Sun, 25 Aug 2019 22:57:38 -0700 (PDT)
-Received: from dread.disaster.area (pa49-181-255-194.pa.nsw.optusnet.com.au
- [49.181.255.194])
- by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 1199A43F692;
- Mon, 26 Aug 2019 15:55:12 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92)
- (envelope-from <david@fromorbit.com>)
- id 1i27yA-0002Rg-EJ; Mon, 26 Aug 2019 15:55:10 +1000
-Date: Mon, 26 Aug 2019 15:55:10 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190826055510.GL1119@dread.disaster.area>
-References: <20190820115515.GA29246@ziepe.ca>
- <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area>
- <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
- <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=jlayton@kernel.org; receiver=linux-nvdimm@lists.01.org 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 252262020D33A
+ for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 03:43:29 -0700 (PDT)
+Received: from tleilax.poochiereds.net
+ (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1E32920828;
+ Mon, 26 Aug 2019 10:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1566816070;
+ bh=8ziD+meEXqXL5pLNd7FdOcpozYaNgK5kwHaeo4uhx28=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=It43Y4jhI4WRMT7EOX/lr7UQrAHGcp7abrKi/dW/O0Kd9egEDPpQrb9qKy1oWb9pe
+ lnOftVy2OCBwYNxuaPQUMNRvYTlPGOmE5p+KJsXKHIySHdTnGKve5YDOmGidGBo/29
+ cnTh0m+X3A/MuYbOjoz90Mp0uG6r73lbyIxhL/QI=
+Message-ID: <e6f4f619967f4551adb5003d0364770fde2b8110.camel@kernel.org>
+Subject: Re: [RFC PATCH v2 02/19] fs/locks: Add Exclusive flag to user
+ Layout lease
+From: Jeff Layton <jlayton@kernel.org>
+To: Dave Chinner <david@fromorbit.com>
+Date: Mon, 26 Aug 2019 06:41:07 -0400
+In-Reply-To: <20190814215630.GQ6129@dread.disaster.area>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-3-ira.weiny@intel.com>
+ <fde2959db776616008fc5d31df700f5d7d899433.camel@kernel.org>
+ <20190814215630.GQ6129@dread.disaster.area>
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
- a=YO9NNpcXwc8z/SaoS+iAiA==:117 a=YO9NNpcXwc8z/SaoS+iAiA==:17
- a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
- a=7-415B0cAAAA:8 a=l-5HZ6ThFU8XlB48y_YA:9 a=qRlaua0cGjGJrKa9:21
- a=OEwtXWmnxFRK9C0v:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,132 +54,81 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
  linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
  John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
  Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
  Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
  Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
-> On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
-> > On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-> > > On Fri, Aug 23, 2019 at 01:23:45PM +1000, Dave Chinner wrote:
+On Thu, 2019-08-15 at 07:56 +1000, Dave Chinner wrote:
+> On Wed, Aug 14, 2019 at 10:15:06AM -0400, Jeff Layton wrote:
+> > On Fri, 2019-08-09 at 15:58 -0700, ira.weiny@intel.com wrote:
+> > > From: Ira Weiny <ira.weiny@intel.com>
 > > > 
-> > > > > But the fact that RDMA, and potentially others, can "pass the
-> > > > > pins" to other processes is something I spent a lot of time trying to work out.
-> > > > 
-> > > > There's nothing in file layout lease architecture that says you
-> > > > can't "pass the pins" to another process.  All the file layout lease
-> > > > requirements say is that if you are going to pass a resource for
-> > > > which the layout lease guarantees access for to another process,
-> > > > then the destination process already have a valid, active layout
-> > > > lease that covers the range of the pins being passed to it via the
-> > > > RDMA handle.
+> > > Add an exclusive lease flag which indicates that the layout mechanism
+> > > can not be broken.
 > > > 
-> > > How would the kernel detect and enforce this? There are many ways to
-> > > pass a FD.
+> > > Exclusive layout leases allow the file system to know that pages may be
+> > > GUP pined and that attempts to change the layout, ie truncate, should be
+> > > failed.
+> > > 
+> > > A process which attempts to break it's own exclusive lease gets an
+> > > EDEADLOCK return to help determine that this is likely a programming bug
+> > > vs someone else holding a resource.
+> .....
+> > > diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> > > index baddd54f3031..88b175ceccbc 100644
+> > > --- a/include/uapi/asm-generic/fcntl.h
+> > > +++ b/include/uapi/asm-generic/fcntl.h
+> > > @@ -176,6 +176,8 @@ struct f_owner_ex {
+> > >  
+> > >  #define F_LAYOUT	16      /* layout lease to allow longterm pins such as
+> > >  				   RDMA */
+> > > +#define F_EXCLUSIVE	32      /* layout lease is exclusive */
+> > > +				/* FIXME or shoudl this be F_EXLCK??? */
+> > >  
+> > >  /* operations for bsd flock(), also used by the kernel implementation */
+> > >  #define LOCK_SH		1	/* shared lock */
 > > 
-> > AFAIC, that's not really a kernel problem. It's more of an
-> > application design constraint than anything else. i.e. if the app
-> > passes the IB context to another process without a lease, then the
-> > original process is still responsible for recalling the lease and
-> > has to tell that other process to release the IB handle and it's
-> > resources.
-> > 
-> > > IMHO it is wrong to try and create a model where the file lease exists
-> > > independently from the kernel object relying on it. In other words the
-> > > IB MR object itself should hold a reference to the lease it relies
-> > > upon to function properly.
-> > 
-> > That still doesn't work. Leases are not individually trackable or
-> > reference counted objects objects - they are attached to a struct
-> > file bUt, in reality, they are far more restricted than a struct
-> > file.
-> > 
-> > That is, a lease specifically tracks the pid and the _open fd_ it
-> > was obtained for, so it is essentially owned by a specific process
-> > context.  Hence a lease is not able to be passed to a separate
-> > process context and have it still work correctly for lease break
-> > notifications.  i.e. the layout break signal gets delivered to
-> > original process that created the struct file, if it still exists
-> > and has the original fd still open. It does not get sent to the
-> > process that currently holds a reference to the IB context.
-> >
+> > This interface just seems weird to me. The existing F_*LCK values aren't
+> > really set up to be flags, but are enumerated values (even if there are
+> > some gaps on some arches). For instance, on parisc and sparc:
 > 
-> The fcntl man page says:
+> I don't think we need to worry about this - the F_WRLCK version of
+> the layout lease should have these exclusive access semantics (i.e
+> other ops fail rather than block waiting for lease recall) and hence
+> the API shouldn't need a new flag to specify them.
 > 
-> "Leases are associated with an open file description (see open(2)).  This means
-> that duplicate file descriptors (created by, for example, fork(2) or dup(2))
-> refer to the same lease, and this lease may be modified or released using any
-> of these descriptors.  Furthermore,  the lease is released by either an
-> explicit F_UNLCK operation on any of these duplicate file descriptors, or when
-> all such file descriptors have been closed."
+> i.e. the primary difference between F_RDLCK and F_WRLCK layout
+> leases is that the F_RDLCK is a shared, co-operative lease model
+> where only delays in operations will be seen, while F_WRLCK is a
+> "guarantee exclusive access and I don't care what it breaks"
+> model... :)
+> 
 
-Right, the lease is attached to the struct file, so it follows
-where-ever the struct file goes. That doesn't mean it's actually
-useful when the struct file is duplicated and/or passed to another
-process. :/
+Not exactly...
 
-AFAICT, the problem is that when we take another reference to the
-struct file, or when the struct file is passed to a different
-process, nothing updates the lease or lease state attached to that
-struct file.
+F_WRLCK and F_RDLCK leases can both be broken, and will eventually time
+out if there is conflicting access. The F_EXCLUSIVE flag on the other
+hand is there to prevent any sort of lease break from 
 
-> From this I took it that the child process FD would have the lease as well
-> _and_ could release it.  I _assumed_ that applied to SCM_RIGHTS but it does not
-> seem to work the same way as dup() so I'm not so sure.
+I'm guessing what Ira really wants with the F_EXCLUSIVE flag is
+something akin to what happens when we set fl_break_time to 0 in the
+nfsd code. nfsd never wants the locks code to time out a lease of any
+sort, since it handles that timeout itself.
 
-Sure, that part works because the struct file is passed. It doesn't
-end up with the same fd number in the other process, though.
-
-The issue is that layout leases need to notify userspace when they
-are broken by the kernel, so a lease stores the owner pid/tid in the
-file->f_owner field via __f_setown(). It also keeps a struct fasync
-attached to the file_lock that records the fd that the lease was
-created on.  When a signal needs to be sent to userspace for that
-lease, we call kill_fasync() and that walks the list of fasync
-structures on the lease and calls:
-
-	send_sigio(fown, fa->fa_fd, band);
-
-And it does for every fasync struct attached to a lease. Yes, a
-lease can track multiple fds, but it can only track them in a single
-process context. The moment the struct file is shared with another
-process, the lease is no longer capable of sending notifications to
-all the lease holders.
-
-Yes, you can change the owning process via F_SETOWNER, but that's
-still only a single process context, and you can't change the fd in
-the fasync list. You can add new fd to an existing lease by calling
-F_SETLEASE on the new fd, but you still only have a single process
-owner context for signal delivery.
-
-As such, leases that require callbacks to userspace are currently
-only valid within the process context the lease was taken in.
-Indeed, even closing the fd the lease was taken on without
-F_UNLCKing it first doesn't mean the lease has been torn down if
-there is some other reference to the struct file. That means the
-original lease owner will still get SIGIO delivered to that fd on a
-lease break regardless of whether it is open or not. ANd if we
-implement "layout lease not released within SIGIO response timeout"
-then that process will get killed, despite the fact it may not even
-have a reference to that file anymore.
-
-So, AFAICT, leases that require userspace callbacks only work within
-their original process context while they original fd is still open.
-
-Cheers,
-
-Dave.
+If you're going to add this functionality, it'd be good to also convert
+knfsd to use it as well, so we don't end up with multiple ways to deal
+with that situation.
 -- 
-Dave Chinner
-david@fromorbit.com
+Jeff Layton <jlayton@kernel.org>
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
