@@ -2,40 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 685BC9DAF3
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 27 Aug 2019 03:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6A19DAFD
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 27 Aug 2019 03:22:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D53EE20215F55;
-	Mon, 26 Aug 2019 18:11:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D426520215F41;
+	Mon, 26 Aug 2019 18:25:10 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.43; helo=mga05.intel.com;
+ client-ip=2607:f8b0:4864:20::331; helo=mail-ot1-x331.google.com;
  envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com
+ [IPv6:2607:f8b0:4864:20::331])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4679920213F05
- for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 18:11:37 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2019 18:09:23 -0700
-X-IronPort-AV: E=Sophos;i="5.64,435,1559545200"; d="scan'208";a="355610735"
-Received: from dwillia2-desk3.jf.intel.com (HELO
- dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2019 18:09:22 -0700
-Subject: [PATCH v2 3/3] libnvdimm/security: Consolidate 'security' operations
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Mon, 26 Aug 2019 17:55:05 -0700
-Message-ID: <156686730515.184120.10522747907309996674.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <156686728950.184120.5188743631586996901.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <156686728950.184120.5188743631586996901.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+ by ml01.01.org (Postfix) with ESMTPS id BC3C620213F05
+ for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 18:25:09 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id w4so17077955ote.11
+ for <linux-nvdimm@lists.01.org>; Mon, 26 Aug 2019 18:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=cthHw04i6S3cdZGMorj+KG6fhZrdavh1ItN5j6LDz6s=;
+ b=cmYihnGBqwKlCQG5vvti9Rm7M6/bGuJt3jAB81YPZxsF3Ejvm3io0LL6JmHxTd36lY
+ oG5/SJwY3iR1Zf0aR3/I1oLMK1Ri27qUV+sytVTzc6WF58o5SMOb7uNZMwohnG9t7g9B
+ j1A4yMepdh7msqFXOJz45fN9ucKNoAIUQ41rJ1dUH3+0GO9qNeEmaaKc9IB+Pzgk1d+n
+ LR8yNmUOmbaBNQJI0pXZy2PaRTszc9oEEdPzOGW5Glpqi12m0w6hPLepQP/3qkxhR1ah
+ JJXjlIBm/P6tQ6ogG0IYtmXqttVGt2Bmd1w38KiI4RcOExItiR/TSWKEAHd8gcXGhuK9
+ beeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=cthHw04i6S3cdZGMorj+KG6fhZrdavh1ItN5j6LDz6s=;
+ b=jpciwKGONgs14edwAVo+NkftVQ4puVTgAYkTndoi7YsPOJcJ5R/e/cTJwIS/jM/EPN
+ jMFqMuS/zTRYRPSvZLwDlxKsis7LmBFsKYHpn1ZiV2ZoAWSqNcE6G8bzdu9Dr2vKRKzV
+ jGJE3UX4Kh6Dp5DsDozvrK8Xp6978fpyBFvi74Y+yMHMIOILc34od5gM3Ej8ZS23FND4
+ sKc1Nh5cuv7apMcQN+I5kO58SaX+K1J9F+GVNfhl03hMaHStCfgekjEnleebA6sGeoSE
+ GLa52ZEdRDvJp72mjXFX8WmcA7uThKN+KPuGRwY68CCD7rvomPdOlD6plHucPNjTGjyA
+ KXRg==
+X-Gm-Message-State: APjAAAU2pEgHD72NyUwmZYmdQD4BUs+MXHemaPjC2ByDhGY+3cNDx/b+
+ 5U7LSlu3CyjmpCXyVsjXhwtH8YXjaPt4mUtg7P0eTg==
+X-Google-Smtp-Source: APXvYqy58RonQUu7tSDf4oLxAHbEH/Vncd93vznxBhV0vDUjYrMBJmZqMzv1P00ZJmgD7sJNn+a8kaSc0Hrzcg0Tmdw=
+X-Received: by 2002:a9d:6b96:: with SMTP id b22mr1249651otq.363.1566868975049; 
+ Mon, 26 Aug 2019 18:22:55 -0700 (PDT)
 MIME-Version: 1.0
+References: <1254901996.3735926.1564533684889.JavaMail.zimbra@redhat.com>
+ <x498srsdhrs.fsf@segfault.boston.devel.redhat.com>
+ <x49y2zfudej.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x49y2zfudej.fsf@segfault.boston.devel.redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 26 Aug 2019 18:22:43 -0700
+Message-ID: <CAPcyv4hu+ShtryhDOaKUOHpw2LrHcqwB69oT10uVS4aORaJ66A@mail.gmail.com>
+Subject: Re: create devdax with "-a 1g" failed from 5.3.0-rc1
+To: Jeff Moyer <jmoyer@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,300 +67,19 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: Yi Zhang <yi.zhang@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-The security operations are exported from libnvdimm/security.c to
-libnvdimm/dimm_devs.c, and libnvdimm/security.c is optionally compiled
-based on the CONFIG_NVDIMM_KEYS config symbol.
+On Mon, Aug 26, 2019 at 8:58 AM Jeff Moyer <jmoyer@redhat.com> wrote:
+>
+> Dan, we should probably fix this before 5.3 ships.  Do you have any
+> concerns with the patch I attached?  If not, I'll submit a proper one.
 
-Rather than export the operations across compile objects, just move the
-__security_store() entry point to live with the helpers.
-
-Acked-by: Jeff Moyer <jmoyer@redhat.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/nvdimm/dimm_devs.c |   84 -----------------------------------------
- drivers/nvdimm/nd-core.h   |   30 +--------------
- drivers/nvdimm/security.c  |   90 ++++++++++++++++++++++++++++++++++++++++++--
- 3 files changed, 90 insertions(+), 114 deletions(-)
-
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index d837cb9be83d..196aa44c4936 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -393,88 +393,6 @@ static ssize_t frozen_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(frozen);
- 
--#define OPS							\
--	C( OP_FREEZE,		"freeze",		1),	\
--	C( OP_DISABLE,		"disable",		2),	\
--	C( OP_UPDATE,		"update",		3),	\
--	C( OP_ERASE,		"erase",		2),	\
--	C( OP_OVERWRITE,	"overwrite",		2),	\
--	C( OP_MASTER_UPDATE,	"master_update",	3),	\
--	C( OP_MASTER_ERASE,	"master_erase",		2)
--#undef C
--#define C(a, b, c) a
--enum nvdimmsec_op_ids { OPS };
--#undef C
--#define C(a, b, c) { b, c }
--static struct {
--	const char *name;
--	int args;
--} ops[] = { OPS };
--#undef C
--
--#define SEC_CMD_SIZE 32
--#define KEY_ID_SIZE 10
--
--static ssize_t __security_store(struct device *dev, const char *buf, size_t len)
--{
--	struct nvdimm *nvdimm = to_nvdimm(dev);
--	ssize_t rc;
--	char cmd[SEC_CMD_SIZE+1], keystr[KEY_ID_SIZE+1],
--		nkeystr[KEY_ID_SIZE+1];
--	unsigned int key, newkey;
--	int i;
--
--	rc = sscanf(buf, "%"__stringify(SEC_CMD_SIZE)"s"
--			" %"__stringify(KEY_ID_SIZE)"s"
--			" %"__stringify(KEY_ID_SIZE)"s",
--			cmd, keystr, nkeystr);
--	if (rc < 1)
--		return -EINVAL;
--	for (i = 0; i < ARRAY_SIZE(ops); i++)
--		if (sysfs_streq(cmd, ops[i].name))
--			break;
--	if (i >= ARRAY_SIZE(ops))
--		return -EINVAL;
--	if (ops[i].args > 1)
--		rc = kstrtouint(keystr, 0, &key);
--	if (rc >= 0 && ops[i].args > 2)
--		rc = kstrtouint(nkeystr, 0, &newkey);
--	if (rc < 0)
--		return rc;
--
--	if (i == OP_FREEZE) {
--		dev_dbg(dev, "freeze\n");
--		rc = nvdimm_security_freeze(nvdimm);
--	} else if (i == OP_DISABLE) {
--		dev_dbg(dev, "disable %u\n", key);
--		rc = nvdimm_security_disable(nvdimm, key);
--	} else if (i == OP_UPDATE || i == OP_MASTER_UPDATE) {
--		dev_dbg(dev, "%s %u %u\n", ops[i].name, key, newkey);
--		rc = nvdimm_security_update(nvdimm, key, newkey, i == OP_UPDATE
--				? NVDIMM_USER : NVDIMM_MASTER);
--	} else if (i == OP_ERASE || i == OP_MASTER_ERASE) {
--		dev_dbg(dev, "%s %u\n", ops[i].name, key);
--		if (atomic_read(&nvdimm->busy)) {
--			dev_dbg(dev, "Unable to secure erase while DIMM active.\n");
--			return -EBUSY;
--		}
--		rc = nvdimm_security_erase(nvdimm, key, i == OP_ERASE
--				? NVDIMM_USER : NVDIMM_MASTER);
--	} else if (i == OP_OVERWRITE) {
--		dev_dbg(dev, "overwrite %u\n", key);
--		if (atomic_read(&nvdimm->busy)) {
--			dev_dbg(dev, "Unable to overwrite while DIMM active.\n");
--			return -EBUSY;
--		}
--		rc = nvdimm_security_overwrite(nvdimm, key);
--	} else
--		return -EINVAL;
--
--	if (rc == 0)
--		rc = len;
--	return rc;
--}
--
- static ssize_t security_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t len)
- 
-@@ -489,7 +407,7 @@ static ssize_t security_store(struct device *dev,
- 	nd_device_lock(dev);
- 	nvdimm_bus_lock(dev);
- 	wait_nvdimm_bus_probe_idle(dev);
--	rc = __security_store(dev, buf, len);
-+	rc = nvdimm_security_store(dev, buf, len);
- 	nvdimm_bus_unlock(dev);
- 	nd_device_unlock(dev);
- 
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index da2bbfd56d9f..454454ba1738 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -68,35 +68,11 @@ static inline unsigned long nvdimm_security_flags(
- }
- int nvdimm_security_freeze(struct nvdimm *nvdimm);
- #if IS_ENABLED(CONFIG_NVDIMM_KEYS)
--int nvdimm_security_disable(struct nvdimm *nvdimm, unsigned int keyid);
--int nvdimm_security_update(struct nvdimm *nvdimm, unsigned int keyid,
--		unsigned int new_keyid,
--		enum nvdimm_passphrase_type pass_type);
--int nvdimm_security_erase(struct nvdimm *nvdimm, unsigned int keyid,
--		enum nvdimm_passphrase_type pass_type);
--int nvdimm_security_overwrite(struct nvdimm *nvdimm, unsigned int keyid);
-+ssize_t nvdimm_security_store(struct device *dev, const char *buf, size_t len);
- void nvdimm_security_overwrite_query(struct work_struct *work);
- #else
--static inline int nvdimm_security_disable(struct nvdimm *nvdimm,
--		unsigned int keyid)
--{
--	return -EOPNOTSUPP;
--}
--static inline int nvdimm_security_update(struct nvdimm *nvdimm,
--		unsigned int keyid,
--		unsigned int new_keyid,
--		enum nvdimm_passphrase_type pass_type)
--{
--	return -EOPNOTSUPP;
--}
--static inline int nvdimm_security_erase(struct nvdimm *nvdimm,
--		unsigned int keyid,
--		enum nvdimm_passphrase_type pass_type)
--{
--	return -EOPNOTSUPP;
--}
--static inline int nvdimm_security_overwrite(struct nvdimm *nvdimm,
--		unsigned int keyid)
-+static inline ssize_t nvdimm_security_store(struct device *dev,
-+		const char *buf, size_t len)
- {
- 	return -EOPNOTSUPP;
- }
-diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
-index 2166e627383a..9e45b207ff01 100644
---- a/drivers/nvdimm/security.c
-+++ b/drivers/nvdimm/security.c
-@@ -235,7 +235,7 @@ static int check_security_state(struct nvdimm *nvdimm)
- 	return 0;
- }
- 
--int nvdimm_security_disable(struct nvdimm *nvdimm, unsigned int keyid)
-+static int security_disable(struct nvdimm *nvdimm, unsigned int keyid)
- {
- 	struct device *dev = &nvdimm->dev;
- 	struct nvdimm_bus *nvdimm_bus = walk_to_nvdimm_bus(dev);
-@@ -268,7 +268,7 @@ int nvdimm_security_disable(struct nvdimm *nvdimm, unsigned int keyid)
- 	return rc;
- }
- 
--int nvdimm_security_update(struct nvdimm *nvdimm, unsigned int keyid,
-+static int security_update(struct nvdimm *nvdimm, unsigned int keyid,
- 		unsigned int new_keyid,
- 		enum nvdimm_passphrase_type pass_type)
- {
-@@ -318,7 +318,7 @@ int nvdimm_security_update(struct nvdimm *nvdimm, unsigned int keyid,
- 	return rc;
- }
- 
--int nvdimm_security_erase(struct nvdimm *nvdimm, unsigned int keyid,
-+static int security_erase(struct nvdimm *nvdimm, unsigned int keyid,
- 		enum nvdimm_passphrase_type pass_type)
- {
- 	struct device *dev = &nvdimm->dev;
-@@ -360,7 +360,7 @@ int nvdimm_security_erase(struct nvdimm *nvdimm, unsigned int keyid,
- 	return rc;
- }
- 
--int nvdimm_security_overwrite(struct nvdimm *nvdimm, unsigned int keyid)
-+static int security_overwrite(struct nvdimm *nvdimm, unsigned int keyid)
- {
- 	struct device *dev = &nvdimm->dev;
- 	struct nvdimm_bus *nvdimm_bus = walk_to_nvdimm_bus(dev);
-@@ -465,3 +465,85 @@ void nvdimm_security_overwrite_query(struct work_struct *work)
- 	__nvdimm_security_overwrite_query(nvdimm);
- 	nvdimm_bus_unlock(&nvdimm->dev);
- }
-+
-+#define OPS							\
-+	C( OP_FREEZE,		"freeze",		1),	\
-+	C( OP_DISABLE,		"disable",		2),	\
-+	C( OP_UPDATE,		"update",		3),	\
-+	C( OP_ERASE,		"erase",		2),	\
-+	C( OP_OVERWRITE,	"overwrite",		2),	\
-+	C( OP_MASTER_UPDATE,	"master_update",	3),	\
-+	C( OP_MASTER_ERASE,	"master_erase",		2)
-+#undef C
-+#define C(a, b, c) a
-+enum nvdimmsec_op_ids { OPS };
-+#undef C
-+#define C(a, b, c) { b, c }
-+static struct {
-+	const char *name;
-+	int args;
-+} ops[] = { OPS };
-+#undef C
-+
-+#define SEC_CMD_SIZE 32
-+#define KEY_ID_SIZE 10
-+
-+ssize_t nvdimm_security_store(struct device *dev, const char *buf, size_t len)
-+{
-+	struct nvdimm *nvdimm = to_nvdimm(dev);
-+	ssize_t rc;
-+	char cmd[SEC_CMD_SIZE+1], keystr[KEY_ID_SIZE+1],
-+		nkeystr[KEY_ID_SIZE+1];
-+	unsigned int key, newkey;
-+	int i;
-+
-+	rc = sscanf(buf, "%"__stringify(SEC_CMD_SIZE)"s"
-+			" %"__stringify(KEY_ID_SIZE)"s"
-+			" %"__stringify(KEY_ID_SIZE)"s",
-+			cmd, keystr, nkeystr);
-+	if (rc < 1)
-+		return -EINVAL;
-+	for (i = 0; i < ARRAY_SIZE(ops); i++)
-+		if (sysfs_streq(cmd, ops[i].name))
-+			break;
-+	if (i >= ARRAY_SIZE(ops))
-+		return -EINVAL;
-+	if (ops[i].args > 1)
-+		rc = kstrtouint(keystr, 0, &key);
-+	if (rc >= 0 && ops[i].args > 2)
-+		rc = kstrtouint(nkeystr, 0, &newkey);
-+	if (rc < 0)
-+		return rc;
-+
-+	if (i == OP_FREEZE) {
-+		dev_dbg(dev, "freeze\n");
-+		rc = nvdimm_security_freeze(nvdimm);
-+	} else if (i == OP_DISABLE) {
-+		dev_dbg(dev, "disable %u\n", key);
-+		rc = security_disable(nvdimm, key);
-+	} else if (i == OP_UPDATE || i == OP_MASTER_UPDATE) {
-+		dev_dbg(dev, "%s %u %u\n", ops[i].name, key, newkey);
-+		rc = security_update(nvdimm, key, newkey, i == OP_UPDATE
-+				? NVDIMM_USER : NVDIMM_MASTER);
-+	} else if (i == OP_ERASE || i == OP_MASTER_ERASE) {
-+		dev_dbg(dev, "%s %u\n", ops[i].name, key);
-+		if (atomic_read(&nvdimm->busy)) {
-+			dev_dbg(dev, "Unable to secure erase while DIMM active.\n");
-+			return -EBUSY;
-+		}
-+		rc = security_erase(nvdimm, key, i == OP_ERASE
-+				? NVDIMM_USER : NVDIMM_MASTER);
-+	} else if (i == OP_OVERWRITE) {
-+		dev_dbg(dev, "overwrite %u\n", key);
-+		if (atomic_read(&nvdimm->busy)) {
-+			dev_dbg(dev, "Unable to overwrite while DIMM active.\n");
-+			return -EBUSY;
-+		}
-+		rc = security_overwrite(nvdimm, key);
-+	} else
-+		return -EINVAL;
-+
-+	if (rc == 0)
-+		rc = len;
-+	return rc;
-+}
-
+I took a look. No concerns from me. Yeah, send a proper one and I'll
+get it queued for v5.3.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
