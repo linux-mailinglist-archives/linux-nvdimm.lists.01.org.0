@@ -2,43 +2,77 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982AF9E2C4
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 27 Aug 2019 10:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE61A9E2D6
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 27 Aug 2019 10:39:29 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1A83020215F77;
-	Tue, 27 Aug 2019 01:37:23 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7BC0E20216B61;
+	Tue, 27 Aug 2019 01:41:39 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=cohuck@redhat.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9D35D2020D33F
- for <linux-nvdimm@lists.01.org>; Tue, 27 Aug 2019 01:37:21 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 7A1B610C0315;
- Tue, 27 Aug 2019 08:35:09 +0000 (UTC)
-Received: from gondolin (dhcp-192-222.str.redhat.com [10.33.192.222])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 00F935D6B7;
- Tue, 27 Aug 2019 08:34:59 +0000 (UTC)
-Date: Tue, 27 Aug 2019 10:34:57 +0200
-From: Cornelia Huck <cohuck@redhat.com>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH 04/19] virtio: Implement get_shm_region for PCI transport
-Message-ID: <20190827103457.35927d9d.cohuck@redhat.com>
-In-Reply-To: <20190821175720.25901-5-vgoyal@redhat.com>
-References: <20190821175720.25901-1-vgoyal@redhat.com>
- <20190821175720.25901-5-vgoyal@redhat.com>
-Organization: Red Hat GmbH
+ by ml01.01.org (Postfix) with ESMTPS id B5C2C20215F75
+ for <linux-nvdimm@lists.01.org>; Tue, 27 Aug 2019 01:41:38 -0700 (PDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x7R8YCUd076604
+ for <linux-nvdimm@lists.01.org>; Tue, 27 Aug 2019 04:39:26 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2umxkvw6tx-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linux-nvdimm@lists.01.org>; Tue, 27 Aug 2019 04:39:26 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
+ Tue, 27 Aug 2019 09:39:24 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 27 Aug 2019 09:39:21 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id x7R8dKxq43712880
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 27 Aug 2019 08:39:20 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05A204C040;
+ Tue, 27 Aug 2019 08:39:20 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 47BCE4C04A;
+ Tue, 27 Aug 2019 08:39:19 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.124.35.114])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 27 Aug 2019 08:39:19 +0000 (GMT)
+X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com, vishal.l.verma@intel.com
+Subject: Re: [PATCH] ndctl: Use the same align value as original namespace on
+ reconfigure
+In-Reply-To: <20190807044416.30799-1-aneesh.kumar@linux.ibm.com>
+References: <20190807044416.30799-1-aneesh.kumar@linux.ibm.com>
+Date: Tue, 27 Aug 2019 14:09:18 +0530
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mx1.redhat.com [10.5.110.65]); Tue, 27 Aug 2019 08:35:09 +0000 (UTC)
+X-TM-AS-GCONF: 00
+x-cbid: 19082708-0020-0000-0000-000003646781
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19082708-0021-0000-0000-000021B9B31C
+Message-Id: <87ftlnm289.fsf@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-08-27_01:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1908270096
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,181 +84,61 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: kbuild test robot <lkp@intel.com>, kvm@vger.kernel.org, miklos@szeredi.hu,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, dgilbert@redhat.com,
- virtio-fs@redhat.com, Sebastien Boeuf <sebastien.boeuf@intel.com>,
- stefanha@redhat.com, linux-fsdevel@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 21 Aug 2019 13:57:05 -0400
-Vivek Goyal <vgoyal@redhat.com> wrote:
 
-> From: Sebastien Boeuf <sebastien.boeuf@intel.com>
-> 
-> On PCI the shm regions are found using capability entries;
-> find a region by searching for the capability.
-> 
-> Cc: kvm@vger.kernel.org
-> Signed-off-by: Sebastien Boeuf <sebastien.boeuf@intel.com>
-> Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
-> Signed-off-by: kbuild test robot <lkp@intel.com>
+Hi Dan/Vishal,
 
-An s-o-b by a test robot looks a bit odd.
+Any update on this?
 
+-aneesh
+
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+
+> When using reconfigure command to add a `name` to the namespace we end
+> up updating the align attribute. Avoid this by using the value from
+> the original namespace. Do this only if we are keeping the namespace mode
+> same.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  drivers/virtio/virtio_pci_modern.c | 108 +++++++++++++++++++++++++++++
->  include/uapi/linux/virtio_pci.h    |  11 ++-
->  2 files changed, 118 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-> index 7abcc50838b8..1cdedd93f42a 100644
-> --- a/drivers/virtio/virtio_pci_modern.c
-> +++ b/drivers/virtio/virtio_pci_modern.c
-> @@ -443,6 +443,112 @@ static void del_vq(struct virtio_pci_vq_info *info)
->  	vring_del_virtqueue(vq);
->  }
->  
-> +static int virtio_pci_find_shm_cap(struct pci_dev *dev,
-> +                                   u8 required_id,
-> +                                   u8 *bar, u64 *offset, u64 *len)
-> +{
-> +	int pos;
+>  ndctl/namespace.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+>
+> diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+> index 1f212a2b3a9b..24e51bb35ae1 100644
+> --- a/ndctl/namespace.c
+> +++ b/ndctl/namespace.c
+> @@ -596,6 +596,22 @@ static int validate_namespace_options(struct ndctl_region *region,
+>  			return -ENXIO;
+>  		}
+>  	} else {
 > +
-> +        for (pos = pci_find_capability(dev, PCI_CAP_ID_VNDR);
+> +		/*
+> +		 * If we are tryint to reconfigure with the same namespace mode
+> +		 * Use the align details from the origin namespace. Otherwise
+> +		 * pick the align details from seed namespace
+> +		 */
+> +		if (ndns && p->mode == ndctl_namespace_get_mode(ndns)) {
+> +			struct ndctl_pfn *ns_pfn = ndctl_namespace_get_pfn(ndns);
+> +			struct ndctl_dax *ns_dax = ndctl_namespace_get_dax(ndns);
+> +			if (ns_pfn)
+> +				p->align = ndctl_pfn_get_align(ns_pfn);
+> +			else if (ns_dax)
+> +				p->align = ndctl_dax_get_align(ns_dax);
+> +			else
+> +				p->align = sysconf(_SC_PAGE_SIZE);
+> +		} else
+>  		/*
+>  		 * Use the seed namespace alignment as the default if we need
+>  		 * one. If we don't then use PAGE_SIZE so the size_align
+> -- 
+> 2.21.0
 
-Indentation looks a bit off here.
-
-> +             pos > 0;
-> +             pos = pci_find_next_capability(dev, pos, PCI_CAP_ID_VNDR)) {
-> +		u8 type, cap_len, id;
-> +                u32 tmp32;
-
-Here as well.
-
-> +                u64 res_offset, res_length;
-> +
-> +		pci_read_config_byte(dev, pos + offsetof(struct virtio_pci_cap,
-> +                                                         cfg_type),
-> +                                     &type);
-> +                if (type != VIRTIO_PCI_CAP_SHARED_MEMORY_CFG)
-
-And here.
-
-> +                        continue;
-> +
-> +		pci_read_config_byte(dev, pos + offsetof(struct virtio_pci_cap,
-> +                                                         cap_len),
-> +                                     &cap_len);
-> +		if (cap_len != sizeof(struct virtio_pci_cap64)) {
-> +		        printk(KERN_ERR "%s: shm cap with bad size offset: %d size: %d\n",
-> +                               __func__, pos, cap_len);
-
-Probably better to use dev_warn() instead of printk.
-
-> +                        continue;
-> +                }
-
-Indentation looks off again (might be a space vs tabs issue; maybe
-check the whole patch for indentation problems?)
-
-> +
-> +		pci_read_config_byte(dev, pos + offsetof(struct virtio_pci_cap,
-> +                                                         id),
-> +                                     &id);
-> +                if (id != required_id)
-> +                        continue;
-> +
-> +                /* Type, and ID match, looks good */
-> +                pci_read_config_byte(dev, pos + offsetof(struct virtio_pci_cap,
-> +                                                         bar),
-> +                                     bar);
-> +
-> +                /* Read the lower 32bit of length and offset */
-> +                pci_read_config_dword(dev, pos + offsetof(struct virtio_pci_cap, offset),
-> +                                      &tmp32);
-> +                res_offset = tmp32;
-> +                pci_read_config_dword(dev, pos + offsetof(struct virtio_pci_cap, length),
-> +                                      &tmp32);
-> +                res_length = tmp32;
-> +
-> +                /* and now the top half */
-> +                pci_read_config_dword(dev,
-> +                                      pos + offsetof(struct virtio_pci_cap64,
-> +                                                     offset_hi),
-> +                                      &tmp32);
-> +                res_offset |= ((u64)tmp32) << 32;
-> +                pci_read_config_dword(dev,
-> +                                      pos + offsetof(struct virtio_pci_cap64,
-> +                                                     length_hi),
-> +                                      &tmp32);
-> +                res_length |= ((u64)tmp32) << 32;
-> +
-> +                *offset = res_offset;
-> +                *len = res_length;
-> +
-> +                return pos;
-> +        }
-> +        return 0;
-> +}
-> +
-> +static bool vp_get_shm_region(struct virtio_device *vdev,
-> +			      struct virtio_shm_region *region, u8 id)
-> +{
-> +	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
-
-This whole function looks like it is indented incorrectly.
-
-> +	struct pci_dev *pci_dev = vp_dev->pci_dev;
-> +	u8 bar;
-> +	u64 offset, len;
-> +	phys_addr_t phys_addr;
-> +	size_t bar_len;
-> +	char *bar_name;
-> +	int ret;
-> +
-> +	if (!virtio_pci_find_shm_cap(pci_dev, id, &bar, &offset, &len)) {
-> +		return false;
-> +	}
-
-You can drop the curly braces.
-
-> +
-> +	ret = pci_request_region(pci_dev, bar, "virtio-pci-shm");
-> +	if (ret < 0) {
-> +		dev_err(&pci_dev->dev, "%s: failed to request BAR\n",
-> +			__func__);
-> +		return false;
-> +	}
-> +
-> +	phys_addr = pci_resource_start(pci_dev, bar);
-> +	bar_len = pci_resource_len(pci_dev, bar);
-> +
-> +        if (offset + len > bar_len) {
-> +                dev_err(&pci_dev->dev,
-> +                        "%s: bar shorter than cap offset+len\n",
-> +                        __func__);
-> +                return false;
-> +        }
-> +
-> +	region->len = len;
-> +	region->addr = (u64) phys_addr + offset;
-> +
-> +	return true;
-> +}
-> +
->  static const struct virtio_config_ops virtio_pci_config_nodev_ops = {
->  	.get		= NULL,
->  	.set		= NULL,
-
-Apart from the coding style nits, the logic of the patch looks sane to
-me.
-
-(...)
-
-As does the rest of the patch.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
