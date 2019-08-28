@@ -1,62 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7565AA0B55
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Aug 2019 22:25:35 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8B4A0BCB
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Aug 2019 22:47:47 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 67A2220215F61;
-	Wed, 28 Aug 2019 13:27:33 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1D38820215F65;
+	Wed, 28 Aug 2019 13:49:45 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com;
- envelope-from=keescook@chromium.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=steve.scargall@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CE5EF20212CBF
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 13:27:32 -0700 (PDT)
-Received: by mail-pf1-x444.google.com with SMTP id b24so525256pfp.1
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 13:25:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=m9K6geHQslN19tGBbmOQDx2FY+2m9BB3O5M0ryJqK9c=;
- b=bx1zz6Bghmx2cAm/3B3M1XQ5TzD9T6Shao6YQ/kAskDAzddvVphm3y/VszXyU8cVxt
- GmrZL8kV6W5wHbTkcTKkqgx5rPnKlOZTZtpFqe0b87i6tjcwzIPvhnmQatdzfwt755AQ
- /TbGEuYOWia2rpi1xfmsUoZAgfgNRQN8izYhI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=m9K6geHQslN19tGBbmOQDx2FY+2m9BB3O5M0ryJqK9c=;
- b=c/5LxDcCRVLlx5FfGJfgWjrI+z94UTmgJdrRqobw/hZhLGg34kprRpUQIBhkpZe/2l
- 1kEemYPj6PD4jxfiU8rzwuBw3aW0FlyeQ7t4DzOiMkbyUlnJ5vTV0CBJl9jprGHi17ld
- 7RjSsGuyFECE8WO3Dopyvv3NzBNvKGekhgR+TytWH3UwEUTOd27ZAu+cn+Nc4WU08xLX
- ALkhifH9kKg07OrBeF2CJ617ZJhxP8zoWxa6Uq9tybKAessKEg8cYrqOt8vtG92ujtbT
- BFm6JZtLnnY7WWRnYt6wasRPre0aeXZfLiT0itOqldrcS+zKaIi6oQ4xhIy61Ptglx18
- UmaQ==
-X-Gm-Message-State: APjAAAVOSIJNX86423mOqeOTzjZNESpdthZrOJ4Wl1yztDDWLFYgNsdL
- bZyuk6pDZgIqvTdgp33ptCEBog==
-X-Google-Smtp-Source: APXvYqxQAENVpZgVbOZciL3QGjuq0yBD38cfywqNfv+zc8DilopsyfnAC3fYr1sECkiUbk2gzmgRoA==
-X-Received: by 2002:a63:5a0a:: with SMTP id o10mr5112466pgb.282.1567023932990; 
- Wed, 28 Aug 2019 13:25:32 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id h17sm232891pfo.24.2019.08.28.13.25.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Aug 2019 13:25:32 -0700 (PDT)
-Date: Wed, 28 Aug 2019 13:25:31 -0700
-From: Kees Cook <keescook@chromium.org>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Subject: Re: [PATCH] libnvdimm, region: Use struct_size() in kzalloc()
-Message-ID: <201908281325.1E7C2A9@keescook>
-References: <20190610210613.GA21989@embeddedor>
- <3abfb317-76cc-f9a0-243f-9b493a524a98@embeddedor.com>
+ by ml01.01.org (Postfix) with ESMTPS id 730C8202110B9
+ for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 13:49:44 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2019 13:47:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="380537319"
+Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
+ by fmsmga005.fm.intel.com with ESMTP; 28 Aug 2019 13:47:41 -0700
+Received: from orsmsx154.amr.corp.intel.com (10.22.226.12) by
+ ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 28 Aug 2019 13:47:40 -0700
+Received: from orsmsx111.amr.corp.intel.com ([169.254.12.153]) by
+ ORSMSX154.amr.corp.intel.com ([169.254.11.172]) with mapi id 14.03.0439.000;
+ Wed, 28 Aug 2019 13:47:40 -0700
+From: "Scargall, Steve" <steve.scargall@intel.com>
+To: Jeff Moyer <jmoyer@redhat.com>, "Verma, Vishal L"
+ <vishal.l.verma@intel.com>
+Subject: RE: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
+Thread-Topic: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
+Thread-Index: AQHVXduA+N8yR/vBCUmibT87zCoH+acQ/oGBgAAGVUA=
+Date: Wed, 28 Aug 2019 20:47:39 +0000
+Message-ID: <507921D13093A64EAF066075F3F6ED13076E485E@ORSMSX111.amr.corp.intel.com>
+References: <20190828200204.21750-1-vishal.l.verma@intel.com>
+ <x49y2zd6obc.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x49y2zd6obc.fsf@segfault.boston.devel.redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMzkxZWY5OWEtNTdiNi00ZGVhLTgxY2UtMThjZjdhNjM4YWViIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoicDRVZlZYTFwvMGVxUkpaTW5qUXlDRWNsaVNWb2NzYXVNUDNzQllqc2dsWmFXbGpWcDdxMXp5T1hFN25peHhzNXIifQ==
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3abfb317-76cc-f9a0-243f-9b493a524a98@embeddedor.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,79 +65,108 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+Cc: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 28, 2019 at 01:30:24PM -0500, Gustavo A. R. Silva wrote:
-> Hi all,
-> 
-> Friendly ping:
-> 
-> Who can take this, please?
-> 
-> Thanks
-> --
-> Gustavo
-> 
-> On 6/10/19 4:06 PM, Gustavo A. R. Silva wrote:
-> > One of the more common cases of allocation size calculations is finding
-> > the size of a structure that has a zero-sized array at the end, along
-> > with memory for some number of elements for that array. For example:
-> > 
-> > struct nd_region {
-> > 	...
-> >         struct nd_mapping mapping[0];
-> > };
-> > 
-> > instance = kzalloc(sizeof(struct nd_region) + sizeof(struct nd_mapping) *
-> >                           count, GFP_KERNEL);
-> > 
-> > Instead of leaving these open-coded and prone to type mistakes, we can
-> > now use the new struct_size() helper:
-> > 
-> > instance = kzalloc(struct_size(instance, mapping, count), GFP_KERNEL);
-> > 
-> > This code was detected with the help of Coccinelle.
-> > 
-> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Hi Jeff,
 
-FWIW,
+The issue is more of repetition.   On an 8-socket system,  should a user really be expected to type 'ndctl create-namespace' eight times vs. running 'ndctl create-namespace --region=all' once?   SAP HANA is an example app the requires one namespace per region.  Scripting is a viable solution, but that requires somebody to write the script and do all the error checking & handling.  Each OEM/ISV/SysAdmin would have their own script.  Pushing the logic to ndctl seems to be a reasonable approach and let the user handle any errors returned by ndctl.
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
+The ndctl-man-page implies the 'ndctl create-namespace --region=all' feature exists today:
 
--Kees
+       -r, --region=
 
-> > ---
-> >  drivers/nvdimm/region_devs.c | 7 +++----
-> >  1 file changed, 3 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> > index b4ef7d9ff22e..88becc87e234 100644
-> > --- a/drivers/nvdimm/region_devs.c
-> > +++ b/drivers/nvdimm/region_devs.c
-> > @@ -1027,10 +1027,9 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
-> >  		}
-> >  		region_buf = ndbr;
-> >  	} else {
-> > -		nd_region = kzalloc(sizeof(struct nd_region)
-> > -				+ sizeof(struct nd_mapping)
-> > -				* ndr_desc->num_mappings,
-> > -				GFP_KERNEL);
-> > +		nd_region = kzalloc(struct_size(nd_region, mapping,
-> > +						ndr_desc->num_mappings),
-> > +				    GFP_KERNEL);
-> >  		region_buf = nd_region;
-> >  	}
-> >  
-> > 
+           A regionX device name, or a region id number. The keyword all can be specified to carry out the operation on every region in the system, optionally filtered by bus id (see --bus=  option).
 
--- 
-Kees Cook
+-Steve
 
+-----Original Message-----
+From: Jeff Moyer [mailto:jmoyer@redhat.com] 
+Sent: Wednesday, August 28, 2019 2:13 PM
+To: Verma, Vishal L <vishal.l.verma@intel.com>
+Cc: linux-nvdimm@lists.01.org; Scargall, Steve <steve.scargall@intel.com>; Williams, Dan J <dan.j.williams@intel.com>
+Subject: Re: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
 
+Vishal Verma <vishal.l.verma@intel.com> writes:
+
+> When a --region=all option is supplied to ndctl-create-namespace, it 
+> happily ignores it, since create-namespace has historically only 
+> created one namespace per invocation.
+>
+> This can be cumbersome, so change create-namespace to create 
+> namespaces greedily. When --region=all is specified, or if a --region 
+> option is absent (same as 'all' from a filtering standpoint), create 
+> namespaces on all regions.
+
+Cumbersome?  Like, in the same way partitioning a disk is cumbersome?  I don't understand what the problem is, I guess.  If you want N namespaces of the same type/size/align, then script it.  Why does there have to be a command for that?  I definitely think that changing the behavior of create-namespace is a non-starter.
+
+Cheers,
+Jeff
+
+>
+> Note that this does has two important implications:
+>
+> 1. The user-facing behavior of create-namespace changes in a 
+> potentially surprising way. It may be undesirable for an unadorned 
+> 'ndctl create-namespace' command to suddenly start creating lots of namespaces.
+>
+> 2. Error handling becomes a bit inconsistent. As with all commands 
+> accepting an 'all' option, error reporting becomes a bit tenuous. With 
+> this change, we will continue to create namespaces so long as we don't 
+> hit an error, but if we do, we bail and exit. Because of the special 
+> ENOSPC detection and handling around this, it can be easy to construct 
+> a scenario where en existing namespace on the last region in the scan 
+> list happens to report an error exit, but if the existing namespace 
+> was in a region at the start of the scan list, it gets passed over as 
+> a "just try the next region"
+>
+> RFC comment: Maybe the solution is to keep the create-namespace 
+> semantics unchanged, and introduce a new command - 'create-namespaces'
+> or 'create-names-ace-greedy' with the new behavior. I'm not sure if 
+> users will care deeply about either of the two points above, hence 
+> sending this as an RFC.
+>
+> Link: https://github.com/pmem/ndctl/issues/106
+> Reported-by: Steve Scargal <steve.scargall@intel.com>
+> Cc: Jeff Moyer <jmoyer@redhat.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  ndctl/namespace.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+>
+> diff --git a/ndctl/namespace.c b/ndctl/namespace.c index 
+> af20a42..856ad82 100644
+> --- a/ndctl/namespace.c
+> +++ b/ndctl/namespace.c
+> @@ -1365,9 +1365,12 @@ static int do_xaction_namespace(const char *namespace,
+>  				rc = namespace_create(region);
+>  				if (rc == -EAGAIN)
+>  					continue;
+> -				if (rc == 0)
+> -					*processed = 1;
+> -				return rc;
+> +				if (rc == 0) {
+> +					(*processed)++;
+> +					continue;
+> +				} else {
+> +					return rc;
+> +				}
+>  			}
+>  			ndctl_namespace_foreach_safe(region, ndns, _n) {
+>  				ndns_name = ndctl_namespace_get_devname(ndns);
+> @@ -1487,6 +1490,8 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+>  		rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+>  	}
+>  
+> +	fprintf(stderr, "created %d namespace%s\n", created,
+> +			created == 1 ? "" : "s");
+>  	if (rc < 0 || (!namespace && created < 1)) {
+>  		fprintf(stderr, "failed to %s namespace: %s\n", namespace
+>  				? "reconfigure" : "create", strerror(-rc));
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
