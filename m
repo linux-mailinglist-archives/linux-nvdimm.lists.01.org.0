@@ -2,59 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36980A0DA8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 00:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D43A0DCB
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 00:53:32 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4A55C2021B703;
-	Wed, 28 Aug 2019 15:40:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5F6902021B704;
+	Wed, 28 Aug 2019 15:55:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=steve.scargall@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F241620215F65
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 15:40:02 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2019 15:38:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="188367003"
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
- by FMSMGA003.fm.intel.com with ESMTP; 28 Aug 2019 15:38:03 -0700
-Received: from orsmsx111.amr.corp.intel.com ([169.254.12.153]) by
- ORSMSX103.amr.corp.intel.com ([169.254.5.221]) with mapi id 14.03.0439.000;
- Wed, 28 Aug 2019 15:38:03 -0700
-From: "Scargall, Steve" <steve.scargall@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, "Verma, Vishal L"
- <vishal.l.verma@intel.com>
-Subject: RE: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
-Thread-Topic: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
-Thread-Index: AQHVXduA+N8yR/vBCUmibT87zCoH+acQ/oGBgAAGVUCAAIBtgIAAAboAgAACwAD//4t24A==
-Date: Wed, 28 Aug 2019 22:38:02 +0000
-Message-ID: <507921D13093A64EAF066075F3F6ED13076E4922@ORSMSX111.amr.corp.intel.com>
-References: <20190828200204.21750-1-vishal.l.verma@intel.com>
- <x49y2zd6obc.fsf@segfault.boston.devel.redhat.com>
- <507921D13093A64EAF066075F3F6ED13076E485E@ORSMSX111.amr.corp.intel.com>
- <1ac1bafeaf3253fb9396c22db334b51deb653f0a.camel@intel.com>
- <ce15fdbdee2135a1b1d698f46d3cc7c9856bb381.camel@intel.com>
- <CAPcyv4gnfRv3uKAFj7gctLpZHphCc_3gPc7MzjbYmndK0aZE_w@mail.gmail.com>
-In-Reply-To: <CAPcyv4gnfRv3uKAFj7gctLpZHphCc_3gPc7MzjbYmndK0aZE_w@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ctpclassification: CTP_NT
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMTViZjI5NDItMmUxYy00YjAwLTgzZDUtNTM3MDA2YTdhNDJhIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiMmpldmNpTDNMN3VwRUpneW9KdHRCV1R3RldNeHlLVkRUK3dWVVN4dXJQVjRhdzUzbURLT0R5OEFMK054ZW9LMiJ9
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.139]
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=211.29.132.246;
+ helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au
+ [211.29.132.246])
+ by ml01.01.org (Postfix) with ESMTP id 04C1021A07A80
+ for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 15:55:26 -0700 (PDT)
+Received: from dread.disaster.area (pa49-181-255-194.pa.nsw.optusnet.com.au
+ [49.181.255.194])
+ by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id CA12A43CCB6;
+ Thu, 29 Aug 2019 08:53:23 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92)
+ (envelope-from <david@fromorbit.com>)
+ id 1i36oc-000593-22; Thu, 29 Aug 2019 08:53:22 +1000
+Date: Thu, 29 Aug 2019 08:53:22 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [PATCH 01/19] dax: remove block device dependencies
+Message-ID: <20190828225322.GA7777@dread.disaster.area>
+References: <20190821175720.25901-1-vgoyal@redhat.com>
+ <20190821175720.25901-2-vgoyal@redhat.com>
+ <20190826115152.GA21051@infradead.org>
+ <20190827163828.GA6859@redhat.com>
+ <20190828065809.GA27426@infradead.org>
+ <20190828175843.GB912@redhat.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190828175843.GB912@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
+ a=YO9NNpcXwc8z/SaoS+iAiA==:117 a=YO9NNpcXwc8z/SaoS+iAiA==:17
+ a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=FmdZ9Uzk2mMA:10
+ a=7-415B0cAAAA:8 a=9z1Z1eSXHuCprvNSzKUA:9 a=1iKJgKlgsSbnEZhc:21
+ a=ky3KFAHSX3wxvuwk:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,94 +55,85 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: virtio-fs@redhat.com, linux-nvdimm@lists.01.org, miklos@szeredi.hu,
+ linux-kernel@vger.kernel.org, dgilbert@redhat.com,
+ Christoph Hellwig <hch@infradead.org>, stefanha@redhat.com,
+ linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Thanks for the clarification.  I have a much better understanding now. 
+On Wed, Aug 28, 2019 at 01:58:43PM -0400, Vivek Goyal wrote:
+> On Tue, Aug 27, 2019 at 11:58:09PM -0700, Christoph Hellwig wrote:
+> > On Tue, Aug 27, 2019 at 12:38:28PM -0400, Vivek Goyal wrote:
+> > > > For bdev_dax_pgoff
+> > > > I'd much rather have the partition offset if there is on in the daxdev
+> > > > somehow so that we can get rid of the block device entirely.
+> > > 
+> > > IIUC, there is one block_device per partition while there is only one
+> > > dax_device for the whole disk. So we can't directly move bdev logical
+> > > offset into dax_device.
+> > 
+> > Well, then we need to find a way to get partitions for dax devices,
+> > as we really should not expect a block device hiding behind a dax
+> > dev.  That is just a weird legacy assumption - block device need to
+> > layer on top of the dax device optionally.
+> > 
+> > > 
+> > > We probably could put this in "iomap" and leave it to filesystems to
+> > > report offset into dax_dev in iomap that way dax generic code does not
+> > > have to deal with it. But that probably will be a bigger change.
+> > 
+> > And where would the file system get that information from?
+> 
+> File system knows about block device, can it just call get_start_sect()
+> while filling iomap->addr. And this means we don't have to have
+> parition information in dax device. Will something like following work?
+> (Just a proof of concept patch).
+> 
+> 
+> ---
+>  drivers/dax/super.c |   11 +++++++++++
+>  fs/dax.c            |    6 +++---
+>  fs/ext4/inode.c     |    6 +++++-
+>  include/linux/dax.h |    1 +
+>  4 files changed, 20 insertions(+), 4 deletions(-)
+> 
+> Index: rhvgoyal-linux/fs/ext4/inode.c
+> ===================================================================
+> --- rhvgoyal-linux.orig/fs/ext4/inode.c	2019-08-28 13:51:16.051937204 -0400
+> +++ rhvgoyal-linux/fs/ext4/inode.c	2019-08-28 13:51:44.453937204 -0400
+> @@ -3589,7 +3589,11 @@ retry:
+>  			WARN_ON_ONCE(1);
+>  			return -EIO;
+>  		}
+> -		iomap->addr = (u64)map.m_pblk << blkbits;
+> +		if (IS_DAX(inode))
+> +			iomap->addr = ((u64)map.m_pblk << blkbits) +
+> +				      (get_start_sect(iomap->bdev) * 512);
+> +		else
+> +			iomap->addr = (u64)map.m_pblk << blkbits;
 
-Updating the ndctl-create-namespace man page to clarify what '--region=all' does and does not do in combination with other arguments and options would be beneficial.   This would actually provide a more immediate solution to the problem.  It sounds like the general statement used in the other man pages can remain?  Or are there other exceptions?
+I'm not a fan of returning a physical device sector address from an
+interface where ever other user/caller expects this address to be a
+logical block address into the block device. It creates a landmine
+in the iomap API that callers may not be aware of and that's going
+to cause bugs. We're trying really hard to keep special case hacks
+like this out of the iomap infrastructure, so on those grounds alone
+I'd suggest this is a dead end approach.
 
-With the proposed implementation that bails out on first error, `--continue` seems reasonable vs. `--greedy`.  What do you think about `--all-regions` instead?  It is more meaningful towards its intended action or use-case, but would it cause confusion with `--regions=all`?   Documentation could provide the solution here.  We would have to choose an arbitrary short option since `-a` and `-r` are already taken.  
+Hence I think that if the dax device needs a physical offset from
+the start of the block device the filesystem sits on, it should be
+set up at dax device instantiation time and so the filesystem/bdev
+never needs to be queried again for this information.
 
-Whatever the final decision, we should test for and return a usage error for a mutually exclusive set of inputs, i.e. `ndctl create-namespace --all-regions --region=region0` doesn't make sense - either you want to perform the create operation on all regions or only in region0.
+Cheers,
 
-- Steve
-
------Original Message-----
-From: Dan Williams [mailto:dan.j.williams@intel.com] 
-Sent: Wednesday, August 28, 2019 3:32 PM
-To: Verma, Vishal L <vishal.l.verma@intel.com>
-Cc: Scargall, Steve <steve.scargall@intel.com>; jmoyer@redhat.com; linux-nvdimm@lists.01.org
-Subject: Re: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
-
-On Wed, Aug 28, 2019 at 2:22 PM Verma, Vishal L <vishal.l.verma@intel.com> wrote:
->
-> On Wed, 2019-08-28 at 21:16 +0000, Verma, Vishal L wrote:
-> > On Wed, 2019-08-28 at 13:47 -0700, Scargall, Steve wrote:
-> > > Hi Jeff,
-> > >
-> > > The issue is more of repetition.   On an 8-socket system,  should a
-> > > user really be expected to type 'ndctl create-namespace' eight times
-> > > vs. running 'ndctl create-namespace --region=all' once?   SAP HANA is
-> > > an example app the requires one namespace per region.  Scripting 
-> > > is a viable solution, but that requires somebody to write the 
-> > > script and do all the error checking & handling.  Each 
-> > > OEM/ISV/SysAdmin would have their own script.  Pushing the logic 
-> > > to ndctl seems to be a reasonable approach and let the user handle any errors returned by ndctl.
-> >
-> > A scripted solution can indeed be really simple - e.g.:
-> >
-> > # while read -r region; do  ndctl create-namespace 
-> > --region="$region"; done < <(ndctl list --bus=nfit_test.0 -R  | jq 
-> > -r '.[].dev')
-> >
-> > {
-> >   "dev":"namespace5.0",
-> >   "mode":"fsdax",
-> >   "map":"dev",
-> >   "size":"62.00 MiB (65.01 MB)",
-> >   "uuid":"c8014457-c268-4f22-8eae-6386fbf08ceb",
-> >   "sector_size":512,
-> >   "align":2097152,
-> >   "blockdev":"pmem5"
-> > }
-> > {
-> >   "dev":"namespace4.0",
-> >   "mode":"fsdax",
-> >   "map":"dev",
-> >   "size":"30.00 MiB (31.46 MB)",
-> >   "uuid":"f9498ef6-cdd6-46c7-95f1-86469546ecb9",
-> >   "sector_size":512,
-> >   "align":2097152,
-> >   "blockdev":"pmem4"
-> > }
-> >
-> > > The ndctl-man-page implies the 'ndctl create-namespace --region=all'
-> > > feature exists today:
-> > >
-> > >        -r, --region=
-> > >
-> > >            A regionX device name, or a region id number. The 
-> > > keyword all can be specified to carry out the operation on every 
-> > > region in the system, optionally filtered by bus id (see --bus=  option).
-> > >
-> >
-> > This is true, but unfortunately, the implementation has treated 
-> > create- namespace as an exception to this since the start, and I 
-> > agree with Jeff that changing its behavior now can cause other 
-> > Hyrum's law-esqe [1] breakage.
-> >
-> > I think however it should be easy to make a compromise, and retain 
-> > the legacy behavior of create-namespace, while creating a new 
-> > create- namespace-greedy command with the new semantics.
-> >
-> .. And it doesn't even need to be a new command, a simple --greedy 
-> option to create-namespace should be sufficient.
-
-Perhaps "--continue" to proceed with creating namespace after the first successful invocation. I agree with Jeff that changing the default semantics would be surprising. The man page can also be fixed up to make it clear that it's the "singleton region capacity search", not "all possible namespaces" that "-r all" implies.
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
