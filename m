@@ -2,122 +2,37 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D66A0A88
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Aug 2019 21:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39821A0B14
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 28 Aug 2019 22:06:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8860F20213F25;
-	Wed, 28 Aug 2019 12:39:06 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C4DB42194EB7D;
+	Wed, 28 Aug 2019 13:08:22 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.185.59.4; helo=gateway20.websitewelcome.com;
- envelope-from=gustavo@embeddedor.com; receiver=linux-nvdimm@lists.01.org 
-Received: from gateway20.websitewelcome.com (gateway20.websitewelcome.com
- [192.185.59.4])
+ client-ip=134.134.136.126; helo=mga18.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 617622020F95D
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 12:39:05 -0700 (PDT)
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
- by gateway20.websitewelcome.com (Postfix) with ESMTP id CD61B400D4A78
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 13:32:03 -0500 (CDT)
-Received: from gator4166.hostgator.com ([108.167.133.22]) by cmsmtp with SMTP
- id 33keiANwt3Qi033keipfAW; Wed, 28 Aug 2019 14:37:04 -0500
-X-Authority-Reason: nr=8
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
- In-Reply-To:MIME-Version:Date:Message-ID:Subject:From:References:Cc:To:Sender
- :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=y9Y4u6PMnvkO2bkJKn2LaoZEbskbiHYMmROX18FXaTw=; b=ehoWpItYDnc3uoSl6iu/G0BFQC
- uXZcvP3s38BAFM3XVbkqo3HOZGDiES0BuVBPfOBFGRpT9o3teLyYyi0pCeiiWoNcmudaJjoCeaeRe
- 4EePmCF7R0u+Tt4czVTmL/phMR/DTxOqeT5wPoZtIyX6knQAmJmeXmY64Lgu37GN3mwxzdUsOi3gB
- /WXxO5B5LAPA40d/qgMeZ6CRpT2BvQU52HAmK3/a7MkFd2R2jWGgw2o4DjyDkkqj1LS7Aacc1SEPu
- dQ8A1QDjePsD7/qBY54L3wYcHICo0cEeRfeWhaCcwCENqv4I+lUl11KSjBcbiSJ7nqiuWPRSkTugz
- I7wSGyPA==;
-Received: from [189.152.216.116] (port=52198 helo=[192.168.43.131])
- by gator4166.hostgator.com with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128) (Exim 4.92)
- (envelope-from <gustavo@embeddedor.com>)
- id 1i33kc-001KPW-3i; Wed, 28 Aug 2019 14:37:02 -0500
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "Williams, Dan J" <dan.j.williams@intel.com>,
- "Jiang, Dave" <dave.jiang@intel.com>, "Busch, Keith"
- <keith.busch@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>
-References: <20190610210613.GA21989@embeddedor>
- <3e80b36c86942278ee66aebdd5ea2632f104083a.camel@intel.com>
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=gustavo@embeddedor.com; keydata=
- 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
- VtSixD1uOgytAP7RWS474w==
-Subject: Re: [PATCH] libnvdimm, region: Use struct_size() in kzalloc()
-Message-ID: <d940183a-c00d-3a96-37bb-9553583f160a@embeddedor.com>
-Date: Wed, 28 Aug 2019 14:36:59 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ml01.01.org (Postfix) with ESMTPS id 9ADC62020F956
+ for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 13:04:12 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2019 13:02:12 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="192711346"
+Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
+ by orsmga002.jf.intel.com with ESMTP; 28 Aug 2019 13:02:12 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [ndctl RFC PATCH] ndctl/namespace: create namespaces greedily
+Date: Wed, 28 Aug 2019 14:02:04 -0600
+Message-Id: <20190828200204.21750-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <3e80b36c86942278ee66aebdd5ea2632f104083a.camel@intel.com>
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 189.152.216.116
-X-Source-L: No
-X-Exim-ID: 1i33kc-001KPW-3i
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.43.131]) [189.152.216.116]:52198
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 7
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -129,80 +44,83 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: Steve Scargal <steve.scargall@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Vishal,
+When a --region=all option is supplied to ndctl-create-namespace, it
+happily ignores it, since create-namespace has historically only created
+one namespace per invocation.
 
-On 8/28/19 1:51 PM, Verma, Vishal L wrote:
+This can be cumbersome, so change create-namespace to create namespaces
+greedily. When --region=all is specified, or if a --region option is
+absent (same as 'all' from a filtering standpoint), create namespaces on
+all regions.
 
-[..]
+Note that this does has two important implications:
 
-> 
-> Hi Gustavo,
-> 
-> The patch looks good to me, however it looks like it might've missed
-> some instances where this replacement can be performed?
-> 
+1. The user-facing behavior of create-namespace changes in a potentially
+surprising way. It may be undesirable for an unadorned 'ndctl
+create-namespace' command to suddenly start creating lots of namespaces.
 
-struct_size() does not apply to those scenarios. See below...
+2. Error handling becomes a bit inconsistent. As with all commands
+accepting an 'all' option, error reporting becomes a bit tenuous. With
+this change, we will continue to create namespaces so long as we don't
+hit an error, but if we do, we bail and exit. Because of the special
+ENOSPC detection and handling around this, it can be easy to construct a
+scenario where en existing namespace on the last region in the scan list
+happens to report an error exit, but if the existing namespace was in a
+region at the start of the scan list, it gets passed over as a "just try
+the next region"
 
-> 
-> [1]: https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/tree/drivers/nvdimm/region_devs.c#n1030
+RFC comment: Maybe the solution is to keep the create-namespace
+semantics unchanged, and introduce a new command - 'create-namespaces'
+or 'create-names-ace-greedy' with the new behavior. I'm not sure if
+users will care deeply about either of the two points above, hence
+sending this as an RFC.
 
-struct_size() only applies to structures of the following kind:
+Link: https://github.com/pmem/ndctl/issues/106
+Reported-by: Steve Scargal <steve.scargall@intel.com>
+Cc: Jeff Moyer <jmoyer@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ ndctl/namespace.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-struct foo {
-   int stuff;
-   struct boo entry[];
-};
-
-and this scenario includes two different structures:
-
-struct nd_region {
-
-	...
-
-        struct nd_mapping mapping[0];
-};
-
-struct nd_blk_region {
-
-	...
-
-        struct nd_region nd_region;
-};
-
-> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/tree/drivers/nvdimm/region_devs.c#n96
-> 
-
-In this scenario struct_size() does not apply directly because of the following
-logic before the call to devm_kzalloc():
-
- 	size_t flush_data_size = sizeof(void *);
-	
-	[..]
-
-        for (i = 0; i < nd_region->ndr_mappings; i++) {
-
-		[..]
-
-                /* at least one null hint slot per-dimm for the "no-hint" case */
-                flush_data_size += sizeof(void *);
-		
-		[..]
-
-                flush_data_size += nvdimm->num_flush * sizeof(void *);
-        }
-
-Thanks
---
-Gustavo
-
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index af20a42..856ad82 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -1365,9 +1365,12 @@ static int do_xaction_namespace(const char *namespace,
+ 				rc = namespace_create(region);
+ 				if (rc == -EAGAIN)
+ 					continue;
+-				if (rc == 0)
+-					*processed = 1;
+-				return rc;
++				if (rc == 0) {
++					(*processed)++;
++					continue;
++				} else {
++					return rc;
++				}
+ 			}
+ 			ndctl_namespace_foreach_safe(region, ndns, _n) {
+ 				ndns_name = ndctl_namespace_get_devname(ndns);
+@@ -1487,6 +1490,8 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+ 		rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+ 	}
+ 
++	fprintf(stderr, "created %d namespace%s\n", created,
++			created == 1 ? "" : "s");
+ 	if (rc < 0 || (!namespace && created < 1)) {
+ 		fprintf(stderr, "failed to %s namespace: %s\n", namespace
+ 				? "reconfigure" : "create", strerror(-rc));
+-- 
+2.20.1
 
 _______________________________________________
 Linux-nvdimm mailing list
