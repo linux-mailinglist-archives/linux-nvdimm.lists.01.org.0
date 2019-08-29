@@ -1,64 +1,45 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02CD3A251D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 20:28:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F439A2676
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 20:52:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4C3772021DD4B;
-	Thu, 29 Aug 2019 11:30:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E55432021DD4C;
+	Thu, 29 Aug 2019 11:54:09 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::332; helo=mail-ot1-x332.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com
- [IPv6:2607:f8b0:4864:20::332])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 420C32021DD44
- for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 11:30:33 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id g111so1343385otg.9
- for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 11:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=jxF3eA6ldWHYL0OkKgPfyOFk47VuOmL/V+bqcE/AEwM=;
- b=G1kaTs/9mp2r7K+A7rRCg9adfq5y6JU/iOj7CBijpQNzvnfklDmBA7wT5Xrb+vDwph
- 1nUp/BWLBA32suO/pLQly2l29D905LahgmSqN3giiLI+9xcQ1zeFUsvrbofnT9eHPYdV
- UoRsQNkR+bLQc9CkUq2hXZjf/rrBwXKxHMGDpIc8sAImlXdUx/S1gz6XpbzEDbT54IlM
- N/4kodTLbutoAVE1lgMHJO8bgkCSM63DzMmvw49+y5ztzR7ik26/QwB6BeHmizvRVKMY
- yJgDndAEtyCjzGVAeBURUIw0TDe9De+d4OCA/VnKN1zrmiLpMakqebtNiuLVwbINIcBQ
- XWAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=jxF3eA6ldWHYL0OkKgPfyOFk47VuOmL/V+bqcE/AEwM=;
- b=IT0EcyCR8Cge/n2Uad6es7Vlmr84JIXRiBJ2qF8po8UvYFEjF2nSVqumG/qC4+m5yr
- F9sCGgB++p1GTsem7I/IHWWxkOvSUEtKwlAnLD5hq/GxsTxEo2MeAtNJhNx6LCfpleTX
- AETHKqL6tjD6/8ptET8Yzc9nPf/DYWYsMuVpRVSx/x+VKOQHv5+d5Aw7YZRAPmAYu6sX
- 1wQbVyzQTmN82s4ZstUSMAaZY34NqhyjG9yGCpAPkPf9qfUO+2XZNWfI3LBTbVEF6yac
- X1SFwDVMj0iiNo2CAjrS2zEoH9B3eYVhV26T1aOfB4uk0U89zcit9H2GK63ymlhhsX8q
- Jq7Q==
-X-Gm-Message-State: APjAAAVOfBp21HyjVWq1AFHkuMN5a5EO5uV0eWjHW0Bnd4rykcJOCyft
- ZiTJ9vHuMMVeZUW53vQsBzlk/3/1wrZsKSOONKtTFw==
-X-Google-Smtp-Source: APXvYqxKZEmiMJv2wTJ5nOo6bct/L8dVyPO9vGQsWE/pi5/9dwLYw2DCrfkvM3Sj64Kpii8dpzWTwziAW7x5+ETnuDM=
-X-Received: by 2002:a05:6830:458:: with SMTP id
- d24mr8796080otc.126.1567103320992; 
- Thu, 29 Aug 2019 11:28:40 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 9D14D2021B705
+ for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 11:54:08 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2019 11:52:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,444,1559545200"; d="scan'208";a="180965850"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by fmsmga008.fm.intel.com with ESMTP; 29 Aug 2019 11:52:15 -0700
+Date: Thu, 29 Aug 2019 11:52:15 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [RFC PATCH v2 06/19] fs/ext4: Teach dax_layout_busy_page() to
+ operate on a sub-range
+Message-ID: <20190829185215.GC18249@iweiny-DESK2.sc.intel.com>
+References: <20190809225833.6657-1-ira.weiny@intel.com>
+ <20190809225833.6657-7-ira.weiny@intel.com>
+ <20190823151826.GB11009@redhat.com>
 MIME-Version: 1.0
-References: <20190829001735.30289-1-vishal.l.verma@intel.com>
- <20190829001735.30289-4-vishal.l.verma@intel.com>
- <179261bd-9812-6bba-6710-19a77cf3acc6@oracle.com>
- <e343ace46d7243632eec594f679759fac78814ba.camel@intel.com>
-In-Reply-To: <e343ace46d7243632eec594f679759fac78814ba.camel@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 29 Aug 2019 11:28:29 -0700
-Message-ID: <CAPcyv4iQ8=yLGA0E2=puqV+mC7HxNW-RP-0EtVeU2hN6HsNxKQ@mail.gmail.com>
-Subject: Re: [ndctl PATCH 3/3] ndctl/namespace: add a --continue option to
- create namespaces greedily
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+Content-Disposition: inline
+In-Reply-To: <20190823151826.GB11009@redhat.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,43 +51,124 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Scargall, Steve" <steve.scargall@intel.com>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+ linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
+ John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+ linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org,
+ linux-mm@kvack.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Aug 29, 2019 at 11:08 AM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
->
-> On Thu, 2019-08-29 at 10:38 -0700, jane.chu@oracle.com wrote:
-> > Hi, Vishal,
-> >
-> >
-> > On 8/28/19 5:17 PM, Vishal Verma wrote:
-> > > Add a --continue option to ndctl-create-namespaces to allow the creation
-> > > of as many namespaces as possible, that meet the given filter
-> > > restrictions.
-> > >
-> > > The creation loop will be aborted if a failure is encountered at any
-> > > point.
-> >
-> > Just wondering what is the motivation behind providing this option?
->
-> Hi Jane,
->
-> See Steve's email here:
-> https://lists.01.org/pipermail/linux-nvdimm/2019-August/023390.html
->
-> Essentially it lets sysadmins create a simple, maximal configuration
-> without everyone having to script it.
+On Fri, Aug 23, 2019 at 11:18:26AM -0400, Vivek Goyal wrote:
+> On Fri, Aug 09, 2019 at 03:58:20PM -0700, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > Callers of dax_layout_busy_page() are only rarely operating on the
+> > entire file of concern.
+> > 
+> > Teach dax_layout_busy_page() to operate on a sub-range of the
+> > address_space provided.  Specifying 0 - ULONG_MAX however, will continue
+> > to operate on the "entire file" and XFS is split out to a separate patch
+> > by this method.
+> > 
+> > This could potentially speed up dax_layout_busy_page() as well.
+> 
+> I need this functionality as well for virtio_fs and posted a patch for
+> this.
+> 
+> https://lkml.org/lkml/2019/8/21/825
+> 
+> Given this is an optimization which existing users can benefit from already,
+> this patch could probably be pushed upstream independently.
 
-It also gives a touch point to start thinking about parallel namespace
-creation. The large advancements in boot time that Alex achieved were
-mainly from parallelizing namespace init. With --continue we could
-batch the namespace enable calls and kick off a bind thread per
-namespace.
+I'm ok with that.
+
+However, this patch does not apply cleanly to head as I had some other
+additions to dax.h.
+
+> 
+> > 
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > ---
+> > Changes from RFC v1
+> > 	Fix 0-day build errors
+> > 
+> >  fs/dax.c            | 15 +++++++++++----
+> >  fs/ext4/ext4.h      |  2 +-
+> >  fs/ext4/extents.c   |  6 +++---
+> >  fs/ext4/inode.c     | 19 ++++++++++++-------
+> >  fs/xfs/xfs_file.c   |  3 ++-
+> >  include/linux/dax.h |  6 ++++--
+> >  6 files changed, 33 insertions(+), 18 deletions(-)
+> > 
+> > diff --git a/fs/dax.c b/fs/dax.c
+> > index a14ec32255d8..3ad19c384454 100644
+> > --- a/fs/dax.c
+> > +++ b/fs/dax.c
+> > @@ -573,8 +573,11 @@ bool dax_mapping_is_dax(struct address_space *mapping)
+> >  EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
+> >  
+> >  /**
+> > - * dax_layout_busy_page - find first pinned page in @mapping
+> > + * dax_layout_busy_page - find first pinned page in @mapping within
+> > + *                        the range @off - @off + @len
+> >   * @mapping: address space to scan for a page with ref count > 1
+> > + * @off: offset to start at
+> > + * @len: length to scan through
+> >   *
+> >   * DAX requires ZONE_DEVICE mapped pages. These pages are never
+> >   * 'onlined' to the page allocator so they are considered idle when
+> > @@ -587,9 +590,13 @@ EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
+> >   * to be able to run unmap_mapping_range() and subsequently not race
+> >   * mapping_mapped() becoming true.
+> >   */
+> > -struct page *dax_layout_busy_page(struct address_space *mapping)
+> > +struct page *dax_layout_busy_page(struct address_space *mapping,
+> > +				  loff_t off, loff_t len)
+> >  {
+> > -	XA_STATE(xas, &mapping->i_pages, 0);
+> > +	unsigned long start_idx = off >> PAGE_SHIFT;
+> > +	unsigned long end_idx = (len == ULONG_MAX) ? ULONG_MAX
+> > +				: start_idx + (len >> PAGE_SHIFT);
+> > +	XA_STATE(xas, &mapping->i_pages, start_idx);
+> >  	void *entry;
+> >  	unsigned int scanned = 0;
+> >  	struct page *page = NULL;
+> > @@ -612,7 +619,7 @@ struct page *dax_layout_busy_page(struct address_space *mapping)
+> >  	unmap_mapping_range(mapping, 0, 0, 1);
+> 
+> Should we unmap only those pages which fall in the range specified by caller.
+> Unmapping whole file seems to be less efficient.
+
+Seems reasonable to me.  I was focused on getting pages which were busy not
+necessarily on what got unmapped.  So I did not consider this.  Thanks for the
+suggestion.
+
+However, I don't understand the math you do for length?  Is this comment/code
+correct?
+
++  /* length is being calculated from lstart and not start.
++   * This is due to behavior of unmap_mapping_range(). If
++   * start is say 4094 and end is on 4093 then want to
++   * unamp two pages, idx 0 and 1. But unmap_mapping_range()
++   * will unmap only page at idx 0. If we calculate len
++   * from the rounded down start, this problem should not
++   * happen.
++   */
++  len = end - lstart + 1;
+
+
+How can end (4093) be < start (4094)?  Is that valid?  And why would a start of
+4094 unmap idx 0?
+
+Ira
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
