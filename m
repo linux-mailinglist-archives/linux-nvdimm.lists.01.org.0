@@ -1,45 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F439A2676
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 20:52:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27194A2704
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 21:08:56 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E55432021DD4C;
-	Thu, 29 Aug 2019 11:54:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4C3D52021DD50;
+	Thu, 29 Aug 2019 12:10:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ client-ip=192.55.52.151; helo=mga17.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9D14D2021B705
- for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 11:54:08 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id F0A242021DD4B
+ for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 12:10:44 -0700 (PDT)
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
- by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2019 11:52:15 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2019 12:08:52 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,444,1559545200"; d="scan'208";a="180965850"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga008.fm.intel.com with ESMTP; 29 Aug 2019 11:52:15 -0700
-Date: Thu, 29 Aug 2019 11:52:15 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [RFC PATCH v2 06/19] fs/ext4: Teach dax_layout_busy_page() to
- operate on a sub-range
-Message-ID: <20190829185215.GC18249@iweiny-DESK2.sc.intel.com>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-7-ira.weiny@intel.com>
- <20190823151826.GB11009@redhat.com>
+X-IronPort-AV: E=Sophos;i="5.64,444,1559545200"; d="scan'208";a="197866910"
+Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
+ by fmsmga001.fm.intel.com with ESMTP; 29 Aug 2019 12:08:52 -0700
+Date: Thu, 29 Aug 2019 13:08:52 -0600
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [ndctl PATCH 3/3] ndctl/namespace: add a --continue option to
+ create namespaces greedily
+Message-ID: <20190829190852.GA14129@vverma7-desk1.lm.intel.com>
+References: <20190829001735.30289-1-vishal.l.verma@intel.com>
+ <20190829001735.30289-4-vishal.l.verma@intel.com>
+ <CAPcyv4gB-2hkPM=zKCigpDAUxQbzWFVRmZ=UnTF0wsBW3-nmsQ@mail.gmail.com>
+ <44b020035e3245084b2310cfdfe496853e2cf18d.camel@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20190823151826.GB11009@redhat.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <44b020035e3245084b2310cfdfe496853e2cf18d.camel@intel.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,123 +52,174 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org,
- linux-mm@kvack.org
+Cc: "Scargall, Steve" <steve.scargall@intel.com>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Fri, Aug 23, 2019 at 11:18:26AM -0400, Vivek Goyal wrote:
-> On Fri, Aug 09, 2019 at 03:58:20PM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
+On 08/29, Verma, Vishal L wrote:
+> On Wed, 2019-08-28 at 19:34 -0700, Dan Williams wrote:
 > > 
-> > Callers of dax_layout_busy_page() are only rarely operating on the
-> > entire file of concern.
-> > 
-> > Teach dax_layout_busy_page() to operate on a sub-range of the
-> > address_space provided.  Specifying 0 - ULONG_MAX however, will continue
-> > to operate on the "entire file" and XFS is split out to a separate patch
-> > by this method.
-> > 
-> > This could potentially speed up dax_layout_busy_page() as well.
+> > Hmm, should "--continue --force" override that policy?
 > 
-> I need this functionality as well for virtio_fs and posted a patch for
-> this.
-> 
-> https://lkml.org/lkml/2019/8/21/825
-> 
-> Given this is an optimization which existing users can benefit from already,
-> this patch could probably be pushed upstream independently.
-
-I'm ok with that.
-
-However, this patch does not apply cleanly to head as I had some other
-additions to dax.h.
-
+> Yep that's a good idea, with a big note in the man page that errors
+> could be lost/meaningless in that case.
 > 
 > > 
-> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > ---
-> > Changes from RFC v1
-> > 	Fix 0-day build errors
-> > 
-> >  fs/dax.c            | 15 +++++++++++----
-> >  fs/ext4/ext4.h      |  2 +-
-> >  fs/ext4/extents.c   |  6 +++---
-> >  fs/ext4/inode.c     | 19 ++++++++++++-------
-> >  fs/xfs/xfs_file.c   |  3 ++-
-> >  include/linux/dax.h |  6 ++++--
-> >  6 files changed, 33 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/fs/dax.c b/fs/dax.c
-> > index a14ec32255d8..3ad19c384454 100644
-> > --- a/fs/dax.c
-> > +++ b/fs/dax.c
-> > @@ -573,8 +573,11 @@ bool dax_mapping_is_dax(struct address_space *mapping)
-> >  EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
-> >  
-> >  /**
-> > - * dax_layout_busy_page - find first pinned page in @mapping
-> > + * dax_layout_busy_page - find first pinned page in @mapping within
-> > + *                        the range @off - @off + @len
-> >   * @mapping: address space to scan for a page with ref count > 1
-> > + * @off: offset to start at
-> > + * @len: length to scan through
-> >   *
-> >   * DAX requires ZONE_DEVICE mapped pages. These pages are never
-> >   * 'onlined' to the page allocator so they are considered idle when
-> > @@ -587,9 +590,13 @@ EXPORT_SYMBOL_GPL(dax_mapping_is_dax);
-> >   * to be able to run unmap_mapping_range() and subsequently not race
-> >   * mapping_mapped() becoming true.
-> >   */
-> > -struct page *dax_layout_busy_page(struct address_space *mapping)
-> > +struct page *dax_layout_busy_page(struct address_space *mapping,
-> > +				  loff_t off, loff_t len)
-> >  {
-> > -	XA_STATE(xas, &mapping->i_pages, 0);
-> > +	unsigned long start_idx = off >> PAGE_SHIFT;
-> > +	unsigned long end_idx = (len == ULONG_MAX) ? ULONG_MAX
-> > +				: start_idx + (len >> PAGE_SHIFT);
-> > +	XA_STATE(xas, &mapping->i_pages, start_idx);
-> >  	void *entry;
-> >  	unsigned int scanned = 0;
-> >  	struct page *page = NULL;
-> > @@ -612,7 +619,7 @@ struct page *dax_layout_busy_page(struct address_space *mapping)
-> >  	unmap_mapping_range(mapping, 0, 0, 1);
+> > Otherwise this looks good to me.
 > 
-> Should we unmap only those pages which fall in the range specified by caller.
-> Unmapping whole file seems to be less efficient.
+> Thanks, I'll send a new version with the above.
+> _______________________________________________
 
-Seems reasonable to me.  I was focused on getting pages which were busy not
-necessarily on what got unmapped.  So I did not consider this.  Thanks for the
-suggestion.
+Here is v2 with the --force change:
 
-However, I don't understand the math you do for length?  Is this comment/code
-correct?
-
-+  /* length is being calculated from lstart and not start.
-+   * This is due to behavior of unmap_mapping_range(). If
-+   * start is say 4094 and end is on 4093 then want to
-+   * unamp two pages, idx 0 and 1. But unmap_mapping_range()
-+   * will unmap only page at idx 0. If we calculate len
-+   * from the rounded down start, this problem should not
-+   * happen.
-+   */
-+  len = end - lstart + 1;
+3<----
 
 
-How can end (4093) be < start (4094)?  Is that valid?  And why would a start of
-4094 unmap idx 0?
+From a91425beabae750227931594f77fe3db72b4cfff Mon Sep 17 00:00:00 2001
+From: Vishal Verma <vishal.l.verma@intel.com>
+Date: Wed, 28 Aug 2019 18:01:38 -0600
+Subject: [ndctl PATCH v2] ndctl/namespace: add a --continue option to create
+ namespaces greedily
 
-Ira
+Add a --continue option to ndctl-create-namespaces to allow the creation
+of as many namespaces as possible, that meet the given filter
+restrictions.
+
+The creation loop will be aborted if a failure is encountered at any
+point, unless --force is also specified.
+
+Link: https://github.com/pmem/ndctl/issues/106
+Reported-by: Steve Scargal <steve.scargall@intel.com>
+Cc: Jeff Moyer <jmoyer@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+
+v2: Allow --force to continue in spite of errors (Dan)
+
+ .../ndctl/ndctl-create-namespace.txt          | 11 +++++-
+ ndctl/namespace.c                             | 34 +++++++++++++++----
+ 2 files changed, 38 insertions(+), 7 deletions(-)
+
+diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+index c9ae27c..e29a5e7 100644
+--- a/Documentation/ndctl/ndctl-create-namespace.txt
++++ b/Documentation/ndctl/ndctl-create-namespace.txt
+@@ -152,6 +152,13 @@ OPTIONS
+ 	namespace directly ("--map=dev"). The overhead is 64-bytes per
+ 	4K (16GB per 1TB) on x86.
+ 
++-c::
++--continue::
++	Do not stop after creating one namespace. Instead, greedily create as
++	many namespaces as possible within the given --bus and --region filter
++	restrictions. This will abort if any creation attempt results in an
++	error unless --force is also supplied.
++
+ -f::
+ --force::
+ 	Unless this option is specified the 'reconfigure namespace'
+@@ -160,7 +167,9 @@ OPTIONS
+ 	the operation is attempted. However, if the namespace is
+ 	mounted then the 'disable namespace' and 'reconfigure
+ 	namespace' operations will be aborted.  The namespace must be
+-	unmounted before being reconfigured.
++	unmounted before being reconfigured. When used in conjunction
++	with --continue, continue the namespace creation loop even
++	if an error is encountered for intermediate namespaces.
+ 
+ -L::
+ --autolabel::
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index af20a42..67768f3 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -41,6 +41,7 @@ static struct parameters {
+ 	bool do_scan;
+ 	bool mode_default;
+ 	bool autolabel;
++	bool greedy;
+ 	const char *bus;
+ 	const char *map;
+ 	const char *type;
+@@ -114,7 +115,9 @@ OPT_STRING('t', "type", &param.type, "type", \
+ OPT_STRING('a', "align", &param.align, "align", \
+ 	"specify the namespace alignment in bytes (default: 2M)"), \
+ OPT_BOOLEAN('f', "force", &force, "reconfigure namespace even if currently active"), \
+-OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels")
++OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels"), \
++OPT_BOOLEAN('c', "continue", &param.greedy, \
++	"continue creating namespaces as long as the filter criteria are met")
+ 
+ #define CHECK_OPTIONS() \
+ OPT_BOOLEAN('R', "repair", &repair, "perform metadata repairs"), \
+@@ -1322,10 +1325,10 @@ static int do_xaction_namespace(const char *namespace,
+ 		int *processed)
+ {
+ 	struct ndctl_namespace *ndns, *_n;
++	int rc = -ENXIO, saved_rc = 0;
+ 	struct ndctl_region *region;
+ 	const char *ndns_name;
+ 	struct ndctl_bus *bus;
+-	int rc = -ENXIO;
+ 
+ 	*processed = 0;
+ 
+@@ -1365,8 +1368,16 @@ static int do_xaction_namespace(const char *namespace,
+ 				rc = namespace_create(region);
+ 				if (rc == -EAGAIN)
+ 					continue;
+-				if (rc == 0)
+-					*processed = 1;
++				if (rc == 0) {
++					(*processed)++;
++					if (param.greedy)
++						continue;
++				}
++				if (force) {
++					if (rc)
++						saved_rc = rc;
++					continue;
++				}
+ 				return rc;
+ 			}
+ 			ndctl_namespace_foreach_safe(region, ndns, _n) {
+@@ -1427,10 +1438,18 @@ static int do_xaction_namespace(const char *namespace,
+ 		/*
+ 		 * Namespace creation searched through all candidate
+ 		 * regions and all of them said "nope, I don't have
+-		 * enough capacity", so report -ENOSPC
++		 * enough capacity", so report -ENOSPC. Except during
++		 * greedy namespace creation using --continue as we
++		 * may have created some namespaces already, and the
++		 * last one in the region search may preexist.
+ 		 */
+-		rc = -ENOSPC;
++		if (param.greedy && (*processed) > 0)
++			rc = 0;
++		else
++			rc = -ENOSPC;
+ 	}
++	if (saved_rc)
++		rc = saved_rc;
+ 
+ 	return rc;
+ }
+@@ -1487,6 +1506,9 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+ 		rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+ 	}
+ 
++	if (param.greedy)
++		fprintf(stderr, "created %d namespace%s\n", created,
++			created == 1 ? "" : "s");
+ 	if (rc < 0 || (!namespace && created < 1)) {
+ 		fprintf(stderr, "failed to %s namespace: %s\n", namespace
+ 				? "reconfigure" : "create", strerror(-rc));
+-- 
+2.20.1
 
 _______________________________________________
 Linux-nvdimm mailing list
