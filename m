@@ -1,69 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6F4A0FF1
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 05:29:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C09FA1503
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 11:32:46 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C920D20216B93;
-	Wed, 28 Aug 2019 20:31:21 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 353172021B71C;
+	Thu, 29 Aug 2019 02:34:38 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=216.228.121.64; helo=hqemgate15.nvidia.com;
- envelope-from=jhubbard@nvidia.com; receiver=linux-nvdimm@lists.01.org 
-Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3A59B20215F65
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 20:31:21 -0700 (PDT)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5d6746950001>; Wed, 28 Aug 2019 20:29:25 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Wed, 28 Aug 2019 20:29:23 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Wed, 28 Aug 2019 20:29:23 -0700
-Received: from [10.2.174.243] (172.20.13.39) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 29 Aug
- 2019 03:29:22 +0000
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-To: Ira Weiny <ira.weiny@intel.com>, Dave Chinner <david@fromorbit.com>
-References: <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area> <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
- <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
- <20190826055510.GL1119@dread.disaster.area>
- <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
-X-Nvconfidentiality: public
-From: John Hubbard <jhubbard@nvidia.com>
-Message-ID: <3e5c5053-a74a-509c-660c-a6075ed87f11@nvidia.com>
-Date: Wed, 28 Aug 2019 20:27:23 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=batv+c7f673d4bdabd04d2ac5+5849+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id E1E592021B700
+ for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 02:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=jXWv6rxcD/Ytdxuw9oCBSvjHqSotwy8H8FiFgT6NRRg=; b=eNdor4/fygoZH6Xvs2bMeOvXp
+ tLJNYDfk1cimf7+kbTn2BtXDWxLqRI4BEoxvkM59QMQwbcBMvCELCNq/zJkLCXbTBzuB4qK60s7R/
+ haWdRVRaEqnJlYuCV4UwO8CFnpN8keiifEYRocm9hSV7hdJbuhyANoVbu4fvGSZZTtQWctl+4PkEQ
+ /oN+phe7MFMf78kAF3jl7VDQ4vwdv93FRJN87qRsxSrA+o2vNKwsWkTPjLWfJ6jdO987prP1KZI6Z
+ 19zNadIV1LWue77KVSIM1O13lgtmraWBA1EkdjuK6SDKTpSqH94t7Ag5Ad+KKj2s3isfBEvJQ6hgD
+ xAZ0rNRsA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat
+ Linux)) id 1i3GnG-0007NX-Pm; Thu, 29 Aug 2019 09:32:38 +0000
+Date: Thu, 29 Aug 2019 02:32:38 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 01/19] dax: remove block device dependencies
+Message-ID: <20190829093238.GA23102@infradead.org>
+References: <20190821175720.25901-1-vgoyal@redhat.com>
+ <20190821175720.25901-2-vgoyal@redhat.com>
+ <20190826115152.GA21051@infradead.org>
+ <20190827163828.GA6859@redhat.com>
+ <20190828065809.GA27426@infradead.org>
+ <20190828175843.GB912@redhat.com>
+ <20190828225322.GA7777@dread.disaster.area>
+ <CAPcyv4jGEAbYSJef2zLzgg6Arozsuz7eN_vZL1iTcd1XQuNT4Q@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
-X-Originating-IP: [172.20.13.39]
-X-ClientProxiedBy: HQMAIL107.nvidia.com (172.20.187.13) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Language: en-US
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1567049365; bh=U2zxSkDmfFQFUW8ITCuFuqzogPoHzY3eUcatrjlA5a8=;
- h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=br5k4UQ1c3ttyAEINc727xSgtnH39dAWjWSCaXGTLwro1CU1YneuoppDXhLMmA4uD
- aDQ3MTA6HOZLsrWjeRsmclmc+9VuPFDc3mjUYq5LVFTaiCoeFJ5fy4G3b324J/gsUa
- 1/2Te/7AfanbM290SQcF7x/TWeee+3u45vwvCyED11F/dogTN4V6SByz3yIloOJ3jT
- cLvs8UFo3vWu0RzGtWuxTuxbTth7a/DwXWriVQxLCn7BVTFeq34iQK1UkdryZj/+oB
- pVGut1zha9UABjnIclmX/RBYsT1gxtKg14OYbEVTjMUr+uzTVtNuUOwSxrEb1ZPXtX
- CMDU/9O7s997Q==
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jGEAbYSJef2zLzgg6Arozsuz7eN_vZL1iTcd1XQuNT4Q@mail.gmail.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,67 +63,30 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Cc: virtio-fs@redhat.com, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Miklos Szeredi <miklos@szeredi.hu>, Dave Chinner <david@fromorbit.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+ Christoph Hellwig <hch@infradead.org>, Stefan Hajnoczi <stefanha@redhat.com>,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 8/28/19 7:02 PM, Ira Weiny wrote:
-> On Mon, Aug 26, 2019 at 03:55:10PM +1000, Dave Chinner wrote:
->> On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
->>> On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
->>>> On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-...
->>
->> Sure, that part works because the struct file is passed. It doesn't
->> end up with the same fd number in the other process, though.
->>
->> The issue is that layout leases need to notify userspace when they
->> are broken by the kernel, so a lease stores the owner pid/tid in the
->> file->f_owner field via __f_setown(). It also keeps a struct fasync
->> attached to the file_lock that records the fd that the lease was
->> created on.  When a signal needs to be sent to userspace for that
->> lease, we call kill_fasync() and that walks the list of fasync
->> structures on the lease and calls:
->>
->> 	send_sigio(fown, fa->fa_fd, band);
->>
->> And it does for every fasync struct attached to a lease. Yes, a
->> lease can track multiple fds, but it can only track them in a single
->> process context. The moment the struct file is shared with another
->> process, the lease is no longer capable of sending notifications to
->> all the lease holders.
->>
->> Yes, you can change the owning process via F_SETOWNER, but that's
->> still only a single process context, and you can't change the fd in
->> the fasync list. You can add new fd to an existing lease by calling
->> F_SETLEASE on the new fd, but you still only have a single process
->> owner context for signal delivery.
->>
->> As such, leases that require callbacks to userspace are currently
->> only valid within the process context the lease was taken in.
+On Wed, Aug 28, 2019 at 05:04:11PM -0700, Dan Williams wrote:
+> Agree. In retrospect it was my laziness in the dax-device
+> implementation to expect the block-device to be available.
 > 
-> But for long term pins we are not requiring callbacks.
-> 
+> It looks like fs_dax_get_by_bdev() is an intercept point where a
+> dax_device could be dynamically created to represent the subset range
+> indicated by the block-device partition. That would open up more
+> cleanup opportunities.
 
-Hi Ira,
-
-If "require callbacks to userspace" means sending SIGIO, then actually
-FOLL_LONGTERM *does* require those callbacks. Because we've been, so
-far, equating FOLL_LONGTERM with the vaddr_pin struct and with a lease.
-
-What am I missing here?
-
-thanks,
--- 
-John Hubbard
-NVIDIA
+That seems like a decent short-term plan.  But in the long I'd just let
+dax call into the partition table parser directly, as we might want to
+support partitions without first having to create a block device on top
+of the dax device.  Same for the badblocks handling story.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
