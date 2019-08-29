@@ -2,10 +2,10 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4ACA0E98
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 02:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1918BA0E99
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 02:17:50 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 760862194EB7F;
+	by ml01.01.org (Postfix) with ESMTP id 8AFE32194D3B8;
 	Wed, 28 Aug 2019 17:19:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
@@ -15,7 +15,7 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 20F5A2021B711
+ by ml01.01.org (Postfix) with ESMTPS id 47D522021B6F9
  for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 17:19:41 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
@@ -23,14 +23,15 @@ Received: from orsmga005.jf.intel.com ([10.7.209.41])
  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
  28 Aug 2019 17:17:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="356285454"
+X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="356285457"
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.185])
- by orsmga005.jf.intel.com with ESMTP; 28 Aug 2019 17:17:41 -0700
+ by orsmga005.jf.intel.com with ESMTP; 28 Aug 2019 17:17:42 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH 2/3] Documentation: clarify bus/dimm/region filtering
-Date: Wed, 28 Aug 2019 18:17:34 -0600
-Message-Id: <20190829001735.30289-3-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH 3/3] ndctl/namespace: add a --continue option to create
+ namespaces greedily
+Date: Wed, 28 Aug 2019 18:17:35 -0600
+Message-Id: <20190829001735.30289-4-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190829001735.30289-1-vishal.l.verma@intel.com>
 References: <20190829001735.30289-1-vishal.l.verma@intel.com>
@@ -52,61 +53,106 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Reword the option descriptions in xable-{bus,dimm,region}-options.txt to
-clarify that the options are a filtering restriction rather than a
-directive to perform an action on the supplied objects, especially in
-case of the 'all' keyword.
+Add a --continue option to ndctl-create-namespaces to allow the creation
+of as many namespaces as possible, that meet the given filter
+restrictions.
+
+The creation loop will be aborted if a failure is encountered at any
+point.
 
 Link: https://github.com/pmem/ndctl/issues/106
-Cc: Jeff Moyer <jmoyer@redhat.com>
 Reported-by: Steve Scargal <steve.scargall@intel.com>
-Reported-by: Dan Williams <dan.j.williams@intel.com>
+Cc: Jeff Moyer <jmoyer@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- Documentation/ndctl/xable-bus-options.txt    | 7 ++++---
- Documentation/ndctl/xable-dimm-options.txt   | 7 ++++---
- Documentation/ndctl/xable-region-options.txt | 7 ++++---
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ .../ndctl/ndctl-create-namespace.txt          |  7 ++++++
+ ndctl/namespace.c                             | 25 +++++++++++++++----
+ 2 files changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/ndctl/xable-bus-options.txt b/Documentation/ndctl/xable-bus-options.txt
-index 8813113..6e0435a 100644
---- a/Documentation/ndctl/xable-bus-options.txt
-+++ b/Documentation/ndctl/xable-bus-options.txt
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--Enforce that the operation only be carried on devices that are
--attached to the given bus. Where 'bus' can be a provider name or a bus
--id number.
-+A bus id number, or a provider string (e.g. "ACPI.NFIT"). Restrict the
-+operation to the specified bus(es). The keyword 'all' can be specified
-+to indicate the lack of any restriction, however this is the same as
-+not supplying a --bus option at all.
-diff --git a/Documentation/ndctl/xable-dimm-options.txt b/Documentation/ndctl/xable-dimm-options.txt
-index 8826c2b..c5b9c8c 100644
---- a/Documentation/ndctl/xable-dimm-options.txt
-+++ b/Documentation/ndctl/xable-dimm-options.txt
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--A 'nmemX' device name, or a dimm id number. The keyword 'all' can
--be specified to carry out the operation on every dimm in the system,
--optionally filtered by bus id (see --bus= option).
-+A 'nmemX' device name, or a dimm id number. Restrict the operation to
-+the specified dimm(s). The keyword 'all' can be specified to indicate
-+the lack of any restriction, however this is the same as not supplying
-+a --dimm option at all.
-diff --git a/Documentation/ndctl/xable-region-options.txt b/Documentation/ndctl/xable-region-options.txt
-index d5198f5..e098684 100644
---- a/Documentation/ndctl/xable-region-options.txt
-+++ b/Documentation/ndctl/xable-region-options.txt
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
--A 'regionX' device name, or a region id number. The keyword 'all' can
--be specified to carry out the operation on every region in the system,
--optionally filtered by bus id (see --bus= option).
-+A 'regionX' device name, or a region id number. Restrict the operation to
-+the specified region(s). The keyword 'all' can be specified to indicate
-+the lack of any restriction, however this is the same as not supplying a
-+--region option at all.
+diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+index c9ae27c..55a8581 100644
+--- a/Documentation/ndctl/ndctl-create-namespace.txt
++++ b/Documentation/ndctl/ndctl-create-namespace.txt
+@@ -215,6 +215,13 @@ include::xable-region-options.txt[]
+ --bus=::
+ include::xable-bus-options.txt[]
+ 
++-c::
++--continue::
++	Do not stop after creating one namespace. Instead, greedily create as
++	many namespaces as possible within the given --bus and --region filter
++	restrictions. This will abort if any creation attempt results in an
++	error.
++
+ include::../copyright.txt[]
+ 
+ SEE ALSO
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index af20a42..8d6b249 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -41,6 +41,7 @@ static struct parameters {
+ 	bool do_scan;
+ 	bool mode_default;
+ 	bool autolabel;
++	bool greedy;
+ 	const char *bus;
+ 	const char *map;
+ 	const char *type;
+@@ -114,7 +115,9 @@ OPT_STRING('t', "type", &param.type, "type", \
+ OPT_STRING('a', "align", &param.align, "align", \
+ 	"specify the namespace alignment in bytes (default: 2M)"), \
+ OPT_BOOLEAN('f', "force", &force, "reconfigure namespace even if currently active"), \
+-OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels")
++OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels"), \
++OPT_BOOLEAN('c', "continue", &param.greedy, \
++	"continue creating namespaces as long as the filter criteria are met")
+ 
+ #define CHECK_OPTIONS() \
+ OPT_BOOLEAN('R', "repair", &repair, "perform metadata repairs"), \
+@@ -1365,8 +1368,11 @@ static int do_xaction_namespace(const char *namespace,
+ 				rc = namespace_create(region);
+ 				if (rc == -EAGAIN)
+ 					continue;
+-				if (rc == 0)
+-					*processed = 1;
++				if (rc == 0) {
++					(*processed)++;
++					if (param.greedy)
++						continue;
++				}
+ 				return rc;
+ 			}
+ 			ndctl_namespace_foreach_safe(region, ndns, _n) {
+@@ -1427,9 +1433,15 @@ static int do_xaction_namespace(const char *namespace,
+ 		/*
+ 		 * Namespace creation searched through all candidate
+ 		 * regions and all of them said "nope, I don't have
+-		 * enough capacity", so report -ENOSPC
++		 * enough capacity", so report -ENOSPC. Except during
++		 * greedy namespace creation using --continue as we
++		 * may have created some namespaces already, and the
++		 * last one in the region search may preexist.
+ 		 */
+-		rc = -ENOSPC;
++		if (param.greedy && (*processed) > 0)
++			rc = 0;
++		else
++			rc = -ENOSPC;
+ 	}
+ 
+ 	return rc;
+@@ -1487,6 +1499,9 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+ 		rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+ 	}
+ 
++	if (param.greedy)
++		fprintf(stderr, "created %d namespace%s\n", created,
++			created == 1 ? "" : "s");
+ 	if (rc < 0 || (!namespace && created < 1)) {
+ 		fprintf(stderr, "failed to %s namespace: %s\n", namespace
+ 				? "reconfigure" : "create", strerror(-rc));
 -- 
 2.20.1
 
