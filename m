@@ -1,51 +1,81 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A7DA208C
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 18:16:34 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A89A227E
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 19:38:47 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 48EF72021DD3C;
-	Thu, 29 Aug 2019 09:18:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8DDC92021DD42;
+	Thu, 29 Aug 2019 10:40:38 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.151; helo=mga17.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+ client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=jane.chu@oracle.com; receiver=linux-nvdimm@lists.01.org 
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E55AC2021DD36
- for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 09:18:22 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2019 09:16:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,444,1559545200"; d="scan'208";a="183523268"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga003.jf.intel.com with ESMTP; 29 Aug 2019 09:16:28 -0700
-Date: Thu, 29 Aug 2019 09:16:28 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: John Hubbard <jhubbard@nvidia.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190829161627.GB18249@iweiny-DESK2.sc.intel.com>
-References: <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area>
- <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
- <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
- <20190826055510.GL1119@dread.disaster.area>
- <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
- <3e5c5053-a74a-509c-660c-a6075ed87f11@nvidia.com>
+ by ml01.01.org (Postfix) with ESMTPS id E6CB92021B701
+ for <linux-nvdimm@lists.01.org>; Thu, 29 Aug 2019 10:40:36 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7THYE4K125929;
+ Thu, 29 Aug 2019 17:38:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2019-08-05;
+ bh=qbXiEXHYRoSXRpZWGfIp8DXD6YL1dzTwP19l7H8djVc=;
+ b=qGvMgX3b2ypd7Xf5QIUYRuGsov7IfnIIimkKRI/f+R3Lwj7xJVX3AOpPaPGRbib/4fST
+ 8OueF+st++fQY6IU+xECXV7QNjehk4H5g8WCdP0dlvsVp78H8/FD8KNBLj41zsdVhXTe
+ FDwerqTuKFvGA4KX6ENp2b8ldRNneojGsLV/nh1lM2Jam6QNXPQRPkc+2Qhe/2t055z5
+ Y94pt8TT4cI1Nqhx+L0iYBmefq8/VjfWLkgXrRqf7Vv4N2LJwOttLXwp//GD2qps6r2K
+ c576KvYJALdPlegqS8ltGVherX01GuMZpxLIJDvxG6pj4/tf+3WmrDXFyqFJIYgNZnKT fg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2130.oracle.com with ESMTP id 2upk56r2qv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Aug 2019 17:38:43 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7THWaBt180560;
+ Thu, 29 Aug 2019 17:38:42 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by userp3020.oracle.com with ESMTP id 2untevcxn0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 29 Aug 2019 17:38:42 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7THcfdo025735;
+ Thu, 29 Aug 2019 17:38:42 GMT
+Received: from [10.132.92.146] (/10.132.92.146)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Thu, 29 Aug 2019 10:38:41 -0700
+Subject: Re: [ndctl PATCH 3/3] ndctl/namespace: add a --continue option to
+ create namespaces greedily
+To: Vishal Verma <vishal.l.verma@intel.com>, linux-nvdimm@lists.01.org
+References: <20190829001735.30289-1-vishal.l.verma@intel.com>
+ <20190829001735.30289-4-vishal.l.verma@intel.com>
+From: jane.chu@oracle.com
+Organization: Oracle Corporation
+Message-ID: <179261bd-9812-6bba-6710-19a77cf3acc6@oracle.com>
+Date: Thu, 29 Aug 2019 10:38:40 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <3e5c5053-a74a-509c-660c-a6075ed87f11@nvidia.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20190829001735.30289-4-vishal.l.verma@intel.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9364
+ signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908290186
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9364
+ signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908290186
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,85 +87,123 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- Dave Chinner <david@fromorbit.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+Cc: Steve Scargall <steve.scargall@intel.com>
 Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Aug 28, 2019 at 08:27:23PM -0700, John Hubbard wrote:
-> On 8/28/19 7:02 PM, Ira Weiny wrote:
-> > On Mon, Aug 26, 2019 at 03:55:10PM +1000, Dave Chinner wrote:
-> > > On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
-> > > > On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
-> > > > > On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-> ...
-> > > 
-> > > Sure, that part works because the struct file is passed. It doesn't
-> > > end up with the same fd number in the other process, though.
-> > > 
-> > > The issue is that layout leases need to notify userspace when they
-> > > are broken by the kernel, so a lease stores the owner pid/tid in the
-> > > file->f_owner field via __f_setown(). It also keeps a struct fasync
-> > > attached to the file_lock that records the fd that the lease was
-> > > created on.  When a signal needs to be sent to userspace for that
-> > > lease, we call kill_fasync() and that walks the list of fasync
-> > > structures on the lease and calls:
-> > > 
-> > > 	send_sigio(fown, fa->fa_fd, band);
-> > > 
-> > > And it does for every fasync struct attached to a lease. Yes, a
-> > > lease can track multiple fds, but it can only track them in a single
-> > > process context. The moment the struct file is shared with another
-> > > process, the lease is no longer capable of sending notifications to
-> > > all the lease holders.
-> > > 
-> > > Yes, you can change the owning process via F_SETOWNER, but that's
-> > > still only a single process context, and you can't change the fd in
-> > > the fasync list. You can add new fd to an existing lease by calling
-> > > F_SETLEASE on the new fd, but you still only have a single process
-> > > owner context for signal delivery.
-> > > 
-> > > As such, leases that require callbacks to userspace are currently
-> > > only valid within the process context the lease was taken in.
-> > 
-> > But for long term pins we are not requiring callbacks.
-> > 
+Hi, Vishal,
+
+
+On 8/28/19 5:17 PM, Vishal Verma wrote:
+> Add a --continue option to ndctl-create-namespaces to allow the creation
+> of as many namespaces as possible, that meet the given filter
+> restrictions.
 > 
-> Hi Ira,
+> The creation loop will be aborted if a failure is encountered at any
+> point.
+
+Just wondering what is the motivation behind providing this option?
+
+thanks!
+-jane
+
 > 
-> If "require callbacks to userspace" means sending SIGIO, then actually
-> FOLL_LONGTERM *does* require those callbacks. Because we've been, so
-> far, equating FOLL_LONGTERM with the vaddr_pin struct and with a lease.
+> Link: https://github.com/pmem/ndctl/issues/106
+> Reported-by: Steve Scargal <steve.scargall@intel.com>
+> Cc: Jeff Moyer <jmoyer@redhat.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>   .../ndctl/ndctl-create-namespace.txt          |  7 ++++++
+>   ndctl/namespace.c                             | 25 +++++++++++++++----
+>   2 files changed, 27 insertions(+), 5 deletions(-)
 > 
-> What am I missing here?
-
-We agreed back in June that the layout lease would have 2 "levels".  The
-"normal" layout lease would cause SIGIO and could be broken and another
-"exclusive" level which could _not_ be broken.
-
-Because we _can't_ _trust_ user space to react to the SIGIO properly the
-"exclusive" lease is required to take the longterm pins.  Also this is the
-lease which causes the truncate to fail (return ETXTBSY) because the kernel
-can't break the lease.
-
-The vaddr_pin struct in the current RFC is there for a couple of reasons.
-
-1) To ensure that we have a way to correlate the long term pin user with the
-   file if the data file FD's are closed.  (ie the application has zombie'd the
-   lease).
-
-2) And more importantly as a token the vaddr_pin*() callers use to be able to
-   properly ref count the file itself while in use.
-
-Ira
-
+> diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+> index c9ae27c..55a8581 100644
+> --- a/Documentation/ndctl/ndctl-create-namespace.txt
+> +++ b/Documentation/ndctl/ndctl-create-namespace.txt
+> @@ -215,6 +215,13 @@ include::xable-region-options.txt[]
+>   --bus=::
+>   include::xable-bus-options.txt[]
+>   
+> +-c::
+> +--continue::
+> +	Do not stop after creating one namespace. Instead, greedily create as
+> +	many namespaces as possible within the given --bus and --region filter
+> +	restrictions. This will abort if any creation attempt results in an
+> +	error.
+> +
+>   include::../copyright.txt[]
+>   
+>   SEE ALSO
+> diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+> index af20a42..8d6b249 100644
+> --- a/ndctl/namespace.c
+> +++ b/ndctl/namespace.c
+> @@ -41,6 +41,7 @@ static struct parameters {
+>   	bool do_scan;
+>   	bool mode_default;
+>   	bool autolabel;
+> +	bool greedy;
+>   	const char *bus;
+>   	const char *map;
+>   	const char *type;
+> @@ -114,7 +115,9 @@ OPT_STRING('t', "type", &param.type, "type", \
+>   OPT_STRING('a', "align", &param.align, "align", \
+>   	"specify the namespace alignment in bytes (default: 2M)"), \
+>   OPT_BOOLEAN('f', "force", &force, "reconfigure namespace even if currently active"), \
+> -OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels")
+> +OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels"), \
+> +OPT_BOOLEAN('c', "continue", &param.greedy, \
+> +	"continue creating namespaces as long as the filter criteria are met")
+>   
+>   #define CHECK_OPTIONS() \
+>   OPT_BOOLEAN('R', "repair", &repair, "perform metadata repairs"), \
+> @@ -1365,8 +1368,11 @@ static int do_xaction_namespace(const char *namespace,
+>   				rc = namespace_create(region);
+>   				if (rc == -EAGAIN)
+>   					continue;
+> -				if (rc == 0)
+> -					*processed = 1;
+> +				if (rc == 0) {
+> +					(*processed)++;
+> +					if (param.greedy)
+> +						continue;
+> +				}
+>   				return rc;
+>   			}
+>   			ndctl_namespace_foreach_safe(region, ndns, _n) {
+> @@ -1427,9 +1433,15 @@ static int do_xaction_namespace(const char *namespace,
+>   		/*
+>   		 * Namespace creation searched through all candidate
+>   		 * regions and all of them said "nope, I don't have
+> -		 * enough capacity", so report -ENOSPC
+> +		 * enough capacity", so report -ENOSPC. Except during
+> +		 * greedy namespace creation using --continue as we
+> +		 * may have created some namespaces already, and the
+> +		 * last one in the region search may preexist.
+>   		 */
+> -		rc = -ENOSPC;
+> +		if (param.greedy && (*processed) > 0)
+> +			rc = 0;
+> +		else
+> +			rc = -ENOSPC;
+>   	}
+>   
+>   	return rc;
+> @@ -1487,6 +1499,9 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+>   		rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+>   	}
+>   
+> +	if (param.greedy)
+> +		fprintf(stderr, "created %d namespace%s\n", created,
+> +			created == 1 ? "" : "s");
+>   	if (rc < 0 || (!namespace && created < 1)) {
+>   		fprintf(stderr, "failed to %s namespace: %s\n", namespace
+>   				? "reconfigure" : "create", strerror(-rc));
+> 
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
