@@ -2,49 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCBDA0F54
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 04:02:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781ABA0F9B
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 29 Aug 2019 04:35:02 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 123EB20216B96;
-	Wed, 28 Aug 2019 19:04:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4662720215F7A;
+	Wed, 28 Aug 2019 19:36:58 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
+ [IPv6:2607:f8b0:4864:20::343])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BC4F120215F76
- for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 19:04:30 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2019 19:02:32 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,442,1559545200"; d="scan'208";a="175115578"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga008.jf.intel.com with ESMTP; 28 Aug 2019 19:02:31 -0700
-Date: Wed, 28 Aug 2019 19:02:31 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
-References: <20190821180200.GA5965@iweiny-DESK2.sc.intel.com>
- <20190821181343.GH8653@ziepe.ca>
- <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area>
- <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
- <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
- <20190826055510.GL1119@dread.disaster.area>
+ by ml01.01.org (Postfix) with ESMTPS id 360642020D30B
+ for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 19:36:56 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id c7so1953762otp.1
+ for <linux-nvdimm@lists.01.org>; Wed, 28 Aug 2019 19:34:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=wfTV1sStBn+3oJvyocwXxVuTvDK+XrmYeaZM0ov1ANE=;
+ b=AxgH+OVR/WaFlGKGUPxkMnMhT44LFQW/ZcGpGMajOeqxY7i/xNVV37R6yvPksB2fJn
+ Nqqk/JCfIukyClCP+4XWBMijaSrrvBP6xQw6KoXp9koeeqOx0F1TU8T+vJHg5PobhAIy
+ a012S87QOuYlQJynV4JwXNcvQqu7yq/0HKmLXCRU5ztyPzRgxyThVATWCdDot2bR70x4
+ pTR+GuU+AHoRhblbGvD/vdYL2wwI/bDsQcaHdmiquE+X6I6kzY3du+f6MzfVbBOaDsMs
+ wX1/eXR/7LJ3weSFj7gST0aZ1j/VpftLytiK2jRio3N2yD8ljpujUt64vJEE53o3kX9k
+ FHrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=wfTV1sStBn+3oJvyocwXxVuTvDK+XrmYeaZM0ov1ANE=;
+ b=YZbnh6Zt+UWzyRt4MOaMlazhEpdMtWO+NUxLQZ07yyh79JskzBnBVuxnnVlUZ6OH8Q
+ +ysS4vujZgXGDaf1OmtB/T6YkO5+feyAy3xM+Fg2w7THwfebmSmwGRrLmXMxXQ0bYqCe
+ r0chdGoiJge4gDisBdXR5DhjS32Q3NTPl912BGQ1aNqSHYu4rj1LIxBkeIbeyEgHFHDy
+ NRFJTbonbvozDS1Wb64rs71ekREKNvcedSfNS5tOvPCkleZcGXcdXAH4JtzDzBghGomP
+ riBiBKOOuFjfvDXoUuU5uGU+cGIIjkVRszzdHqtsM84bvFuFUr2oT8027up6lXpb+MhX
+ un9g==
+X-Gm-Message-State: APjAAAV6x1H8Y309YPlFhMlMTqK2VdqOCZiYV2a+1Wi8M6mqueM4vOnj
+ Pa0OlJg5NCBkZPu8X3gvoLBOiepU1o4IwezXHp4n9Q==
+X-Google-Smtp-Source: APXvYqyTMdRPw4kdO2NiXD2MWNyfWOEhoTR+okN4Y1uhyisUm5rhgF4xYh9ck/9pZWkRGJTLLUeJaoE42WZfIPUQEYA=
+X-Received: by 2002:a05:6830:1e05:: with SMTP id
+ s5mr5449141otr.247.1567046098114; 
+ Wed, 28 Aug 2019 19:34:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190826055510.GL1119@dread.disaster.area>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+References: <20190829001735.30289-1-vishal.l.verma@intel.com>
+ <20190829001735.30289-4-vishal.l.verma@intel.com>
+In-Reply-To: <20190829001735.30289-4-vishal.l.verma@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 28 Aug 2019 19:34:47 -0700
+Message-ID: <CAPcyv4gB-2hkPM=zKCigpDAUxQbzWFVRmZ=UnTF0wsBW3-nmsQ@mail.gmail.com>
+Subject: Re: [ndctl PATCH 3/3] ndctl/namespace: add a --continue option to
+ create namespaces greedily
+To: Vishal Verma <vishal.l.verma@intel.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,150 +68,127 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
+Cc: Steve Scargall <steve.scargall@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Mon, Aug 26, 2019 at 03:55:10PM +1000, Dave Chinner wrote:
-> On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
-> > On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
-> > > On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-> > >
-> > > > IMHO it is wrong to try and create a model where the file lease exists
-> > > > independently from the kernel object relying on it. In other words the
-> > > > IB MR object itself should hold a reference to the lease it relies
-> > > > upon to function properly.
-> > > 
-> > > That still doesn't work. Leases are not individually trackable or
-> > > reference counted objects objects - they are attached to a struct
-> > > file bUt, in reality, they are far more restricted than a struct
-> > > file.
-> > > 
-> > > That is, a lease specifically tracks the pid and the _open fd_ it
-> > > was obtained for, so it is essentially owned by a specific process
-> > > context.  Hence a lease is not able to be passed to a separate
-> > > process context and have it still work correctly for lease break
-> > > notifications.  i.e. the layout break signal gets delivered to
-> > > original process that created the struct file, if it still exists
-> > > and has the original fd still open. It does not get sent to the
-> > > process that currently holds a reference to the IB context.
+On Wed, Aug 28, 2019 at 5:17 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+>
+> Add a --continue option to ndctl-create-namespaces to allow the creation
+> of as many namespaces as possible, that meet the given filter
+> restrictions.
+>
+> The creation loop will be aborted if a failure is encountered at any
+> point.
+>
+> Link: https://github.com/pmem/ndctl/issues/106
+> Reported-by: Steve Scargal <steve.scargall@intel.com>
+> Cc: Jeff Moyer <jmoyer@redhat.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  .../ndctl/ndctl-create-namespace.txt          |  7 ++++++
+>  ndctl/namespace.c                             | 25 +++++++++++++++----
+>  2 files changed, 27 insertions(+), 5 deletions(-)
+>
+> diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+> index c9ae27c..55a8581 100644
+> --- a/Documentation/ndctl/ndctl-create-namespace.txt
+> +++ b/Documentation/ndctl/ndctl-create-namespace.txt
+> @@ -215,6 +215,13 @@ include::xable-region-options.txt[]
+>  --bus=::
+>  include::xable-bus-options.txt[]
+>
+> +-c::
+> +--continue::
+> +       Do not stop after creating one namespace. Instead, greedily create as
 
-But this is an exclusive layout lease which does not send a signal.  There is
-no way to break it.
+I like the "greedy" terminology here because it makes the option seem
+a bit off-putting. "Do you really want to be greedy?"
 
-> > >
-> > 
-> > The fcntl man page says:
-> > 
-> > "Leases are associated with an open file description (see open(2)).  This means
-> > that duplicate file descriptors (created by, for example, fork(2) or dup(2))
-> > refer to the same lease, and this lease may be modified or released using any
-> > of these descriptors.  Furthermore,  the lease is released by either an
-> > explicit F_UNLCK operation on any of these duplicate file descriptors, or when
-> > all such file descriptors have been closed."
-> 
-> Right, the lease is attached to the struct file, so it follows
-> where-ever the struct file goes. That doesn't mean it's actually
-> useful when the struct file is duplicated and/or passed to another
-> process. :/
-> 
-> AFAICT, the problem is that when we take another reference to the
-> struct file, or when the struct file is passed to a different
-> process, nothing updates the lease or lease state attached to that
-> struct file.
+> +       many namespaces as possible within the given --bus and --region filter
+> +       restrictions. This will abort if any creation attempt results in an
+> +       error.
 
-Ok, I probably should have made this more clear in the cover letter but _only_
-the process which took the lease can actually pin memory.
+Hmm, should "--continue --force" override that policy?
 
-That pinned memory _can_ be passed to another process but those sub-process' can
-_not_ use the original lease to pin _more_ of the file.  They would need to
-take their own lease to do that.
+Otherwise this looks good to me.
 
-Sorry for not being clear on that.
-
-> 
-> > From this I took it that the child process FD would have the lease as well
-> > _and_ could release it.  I _assumed_ that applied to SCM_RIGHTS but it does not
-> > seem to work the same way as dup() so I'm not so sure.
-> 
-> Sure, that part works because the struct file is passed. It doesn't
-> end up with the same fd number in the other process, though.
-> 
-> The issue is that layout leases need to notify userspace when they
-> are broken by the kernel, so a lease stores the owner pid/tid in the
-> file->f_owner field via __f_setown(). It also keeps a struct fasync
-> attached to the file_lock that records the fd that the lease was
-> created on.  When a signal needs to be sent to userspace for that
-> lease, we call kill_fasync() and that walks the list of fasync
-> structures on the lease and calls:
-> 
-> 	send_sigio(fown, fa->fa_fd, band);
-> 
-> And it does for every fasync struct attached to a lease. Yes, a
-> lease can track multiple fds, but it can only track them in a single
-> process context. The moment the struct file is shared with another
-> process, the lease is no longer capable of sending notifications to
-> all the lease holders.
-> 
-> Yes, you can change the owning process via F_SETOWNER, but that's
-> still only a single process context, and you can't change the fd in
-> the fasync list. You can add new fd to an existing lease by calling
-> F_SETLEASE on the new fd, but you still only have a single process
-> owner context for signal delivery.
-> 
-> As such, leases that require callbacks to userspace are currently
-> only valid within the process context the lease was taken in.
-
-But for long term pins we are not requiring callbacks.
-
-> Indeed, even closing the fd the lease was taken on without
-> F_UNLCKing it first doesn't mean the lease has been torn down if
-> there is some other reference to the struct file. That means the
-> original lease owner will still get SIGIO delivered to that fd on a
-> lease break regardless of whether it is open or not. ANd if we
-> implement "layout lease not released within SIGIO response timeout"
-> then that process will get killed, despite the fact it may not even
-> have a reference to that file anymore.
-
-I'm not seeing that as a problem.  This is all a result of the application
-failing to do the right thing.  The code here is simply keeping the kernel
-consistent and safe so that an admin or the user themselves can unwind the
-badness without damage to the file system.
-
-> 
-> So, AFAICT, leases that require userspace callbacks only work within
-> their original process context while they original fd is still open.
-
-But they _work_ IFF the application actually expects to do something with the
-SIGIO.  The application could just as well chose to ignore the SIGIO without
-closing the FD which would do the same thing.
-
-If the application expected to do something with the SIGIO but closed the FD
-then it's really just the applications fault.
-
-So after thinking on this for a day I don't think we have a serious issue.
-
-Even the "zombie" lease is just an application error and it is already possible
-to get something like this.  If the application passes the FD to another
-process and closes their FD then SIGIO's don't get delivered but there is a
-lease hanging off the struct file until it is destroyed.  No harm, no foul.
-
-In the case of close it is _not_ true that users don't have a way to release
-the lease.  It is just that they can't call F_UNLCK to do so.  Once they have
-"zombie'ed" the lease (again an application error) the only recourse is to
-unpin the file through the subsystem which pinned the page.  Probably through
-killing the process.
-
-Ira
-
+> +
+>  include::../copyright.txt[]
+>
+>  SEE ALSO
+> diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+> index af20a42..8d6b249 100644
+> --- a/ndctl/namespace.c
+> +++ b/ndctl/namespace.c
+> @@ -41,6 +41,7 @@ static struct parameters {
+>         bool do_scan;
+>         bool mode_default;
+>         bool autolabel;
+> +       bool greedy;
+>         const char *bus;
+>         const char *map;
+>         const char *type;
+> @@ -114,7 +115,9 @@ OPT_STRING('t', "type", &param.type, "type", \
+>  OPT_STRING('a', "align", &param.align, "align", \
+>         "specify the namespace alignment in bytes (default: 2M)"), \
+>  OPT_BOOLEAN('f', "force", &force, "reconfigure namespace even if currently active"), \
+> -OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels")
+> +OPT_BOOLEAN('L', "autolabel", &param.autolabel, "automatically initialize labels"), \
+> +OPT_BOOLEAN('c', "continue", &param.greedy, \
+> +       "continue creating namespaces as long as the filter criteria are met")
+>
+>  #define CHECK_OPTIONS() \
+>  OPT_BOOLEAN('R', "repair", &repair, "perform metadata repairs"), \
+> @@ -1365,8 +1368,11 @@ static int do_xaction_namespace(const char *namespace,
+>                                 rc = namespace_create(region);
+>                                 if (rc == -EAGAIN)
+>                                         continue;
+> -                               if (rc == 0)
+> -                                       *processed = 1;
+> +                               if (rc == 0) {
+> +                                       (*processed)++;
+> +                                       if (param.greedy)
+> +                                               continue;
+> +                               }
+>                                 return rc;
+>                         }
+>                         ndctl_namespace_foreach_safe(region, ndns, _n) {
+> @@ -1427,9 +1433,15 @@ static int do_xaction_namespace(const char *namespace,
+>                 /*
+>                  * Namespace creation searched through all candidate
+>                  * regions and all of them said "nope, I don't have
+> -                * enough capacity", so report -ENOSPC
+> +                * enough capacity", so report -ENOSPC. Except during
+> +                * greedy namespace creation using --continue as we
+> +                * may have created some namespaces already, and the
+> +                * last one in the region search may preexist.
+>                  */
+> -               rc = -ENOSPC;
+> +               if (param.greedy && (*processed) > 0)
+> +                       rc = 0;
+> +               else
+> +                       rc = -ENOSPC;
+>         }
+>
+>         return rc;
+> @@ -1487,6 +1499,9 @@ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx)
+>                 rc = do_xaction_namespace(NULL, ACTION_CREATE, ctx, &created);
+>         }
+>
+> +       if (param.greedy)
+> +               fprintf(stderr, "created %d namespace%s\n", created,
+> +                       created == 1 ? "" : "s");
+>         if (rc < 0 || (!namespace && created < 1)) {
+>                 fprintf(stderr, "failed to %s namespace: %s\n", namespace
+>                                 ? "reconfigure" : "create", strerror(-rc));
+> --
+> 2.20.1
+>
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
