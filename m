@@ -2,63 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B7FA3962
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 30 Aug 2019 16:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B97D7A4160
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 31 Aug 2019 02:38:43 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 18AEA2021EBF6;
-	Fri, 30 Aug 2019 07:42:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6A00F20251A21;
+	Fri, 30 Aug 2019 17:40:23 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
+ client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com;
+ envelope-from=tdteoenming@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com
+ [IPv6:2607:f8b0:4864:20::b31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 74F4920214B20
- for <linux-nvdimm@lists.01.org>; Fri, 30 Aug 2019 07:42:00 -0700 (PDT)
-Received: by mail-ot1-x342.google.com with SMTP id v5so540058oto.7
- for <linux-nvdimm@lists.01.org>; Fri, 30 Aug 2019 07:40:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=bBkYI9Z4pJQVIRg2Bg7vT4zGigNC/ANgQ2HVLNUrzxY=;
- b=Jp5unDdMDtfyf+c+NrNzR1/84CzMi8rSsidjn/0WGQ0lZLrPov66s9J6WLqYjdfQrE
- 9ZHLsmdr5mUotbjFoJXSOlMGL/sdHrDpUIequnZCapdP2TOEKR1TmgpcUb3TPJYMqvd7
- yarbDbcRMCxKmXhjktClizKDZXewsXYdGUyu+4gW7N5OO6B1hwkeL5+jcI96hFNG2n8e
- qPHS+35OVjhhW7TrlBldWmI56dYlDMpzdUjhl+5ZS9pLpqL2ylD1tvIF+zwY4PxeQebs
- JJzYjDR9k2cIPU314jtQ4wq20rcFPhFQj7sHkixip1oBNte6LFGGQxqEDzs/sBzof1UF
- w0Bw==
+ by ml01.01.org (Postfix) with ESMTPS id 75C4D20216B6A
+ for <linux-nvdimm@lists.01.org>; Fri, 30 Aug 2019 17:40:21 -0700 (PDT)
+Received: by mail-yb1-xb31.google.com with SMTP id c9so3121381ybf.2
+ for <linux-nvdimm@lists.01.org>; Fri, 30 Aug 2019 17:38:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:from:date:message-id:subject:to:cc;
+ bh=IxBgIg4l69kyi9Pn+Z2YxWfpUanE7M6BW+hzJyfmhqM=;
+ b=dunp+TSHsitYtx83NaiYgwojBQM0Hzhkg0usUNIL9Dp7+rtA5tcqXKc9BkG3b+CZ/l
+ 8ZMqXSIfwg8PoG9g4POs7s45f9w288sXmDfQyydogVWDHbzXkBRReBhynn2Esguj6JHm
+ Yvsrjh9WRxfZ23T8BkzWuAFNsSEtjw6myPtdujqfJuwOzu5wBSPAL2Po1elLOPLInPvA
+ AqvLJEP/zChKHbZ90H37N4YSLFP9I6pVFZGzJz42CYSPXcQHFjHEM2bAVbjXn25O1sNW
+ qmOk+FUSkpAmQlP24iZPpHsU6ZKqjf/emy7Tp0VrcqZF1o8h0WrNRuZ5PvgSnpUFcYYd
+ nQyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=bBkYI9Z4pJQVIRg2Bg7vT4zGigNC/ANgQ2HVLNUrzxY=;
- b=dZiWfUF8jB2p9QUWoH9PLswuzyqUeifMCz22zHCg8lhRcKbTeKXiDlPx5NUwlyWW5g
- GeeoindCdy6MiZXixcHOjHKGXrMwJpFRpLbfNC9QWCIxHcQZ/y6ZVEIRv4nBElEBkksa
- pe2PCQUCRbQwmexXodxtLJfEHmhA0w+YReuK6mqHTJ5cCygOhjKxSiPgOw941tBomVYD
- LLQKxqwrRo/qklqQ7HFXe/W7R5tzUs/3U7BVnkpEt6/iadi3ElTOhbgCW7fxW740R9Eo
- AHvNsOEjfL2NywX3LAgh1ssVXw8AZE6KcuSmsj2M7vJKOZW41BQwOH84a4FgVcor5q2z
- ZUJg==
-X-Gm-Message-State: APjAAAVUtOmpifrIAMPcoCeyJJUzQTf+JhYnwC5w2azv85+fgYBcI4SU
- II3nhLuF+qt0hbgeGbUDG2SZxhxqNYVUMF8876++rg==
-X-Google-Smtp-Source: APXvYqygzsuhuHQodIv+jqIvbD4JxHgP7Mv1w1lBtuumSwEzdAArruSfKfJ/9Xq2QF1qF9X7yVXFEuef7loIpwyQmPA=
-X-Received: by 2002:a05:6830:14d:: with SMTP id
- j13mr4716310otp.71.1567176013761; 
- Fri, 30 Aug 2019 07:40:13 -0700 (PDT)
+ h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+ bh=IxBgIg4l69kyi9Pn+Z2YxWfpUanE7M6BW+hzJyfmhqM=;
+ b=knBBhcACTlIrP6+qQJ22Q11VCEwYbN/yf8kxUQWTLw4mG7qjwDKS7laRdIQQMxK5Z8
+ be7vcwV8utfJNvLY57ehyy5HLNwFHz4cd2NB2UogO9RTxqyMrz8GVB3DKP7CnIVqybfB
+ /VDVpD/6BMPcWQnFUT/KdgOjm2hETCMFUHiNd6pcE/Cz0vP40aqtd67ok9IljJvxUScD
+ XsnFldgoYwQgq876w/JG+C3EnJm/hgDE50HzHI0O2wAByLhcsHHJIKnx6ifyGVPTWTCl
+ 0MmihBfULplLRGQqQ00ZyoI8/A43uRYEqKQGuG7JS9gqGzlrLKVwJfprx0XFHFIUjs6g
+ oknA==
+X-Gm-Message-State: APjAAAWCk83Nhcnz7ywYYtQtM8mmjNaljK5KVuiE9kUEYDCEKldsJmpH
+ WvXSUUqnq5YjLJvLdL1HbU/NEx1xaJ6PWE4W3gLlLKk=
+X-Google-Smtp-Source: APXvYqwFW89yb/3jfcCzzAUddYigYt3ppad4TUZixWueHN4yCDF9e0pbA2eDsy2s4xGuZVU0sE3VyO1oQ7fP7MhDuU4=
+X-Received: by 2002:a25:1c6:: with SMTP id 189mr13005755ybb.200.1567211918194; 
+ Fri, 30 Aug 2019 17:38:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190807040029.11344-1-aneesh.kumar@linux.ibm.com>
- <156711523501.12658.8795324273505326478.git-patchwork-notify@kernel.org>
- <87lfvbnujk.fsf@linux.ibm.com>
- <CAPcyv4g7nQ201DV6r1-2Jq2vyHWzstHD2txwZvR5z6NMY_mqiw@mail.gmail.com>
- <ccf23b5e-4dc8-14c6-31db-cef3bfdf7269@linux.ibm.com>
-In-Reply-To: <ccf23b5e-4dc8-14c6-31db-cef3bfdf7269@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 30 Aug 2019 07:40:02 -0700
-Message-ID: <CAPcyv4jaz2ZOGSSWov9gHn2FgBpX=RzeQy7_ZpL35tt3MQAANA@mail.gmail.com>
-Subject: Re: [PATCH] nvdimm/of_pmem: Provide a unique name for bus provider
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+From: Turritopsis Dohrnii Teo En Ming <tdteoenming@gmail.com>
+Date: Sat, 31 Aug 2019 08:38:24 +0800
+Message-ID: <CANnei0GD25YJC2tGZ91svsP4n5HAggMcHPheKowKQrQUjB5GTg@mail.gmail.com>
+Subject: Singaporean Mr. Teo En Ming's Refugee Seeking Attempts, In The Search
+ of a Substantially Better Life
+To: linux-nvdimm@lists.01.org
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,55 +62,88 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Aug 29, 2019 at 9:45 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 8/30/19 10:10 AM, Dan Williams wrote:
-> > On Thu, Aug 29, 2019 at 9:31 PM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> patchwork-bot+linux-nvdimm@kernel.org writes:
-> >>
-> >>> Hello:
-> >>>
-> >>> This patch was applied to nvdimm/nvdimm.git (refs/heads/libnvdimm-for-next).
-> >>>
-> >>> On Wed,  7 Aug 2019 09:30:29 +0530 you wrote:
-> >>>> ndctl utility requires the ndbus to have unique names. If not while
-> >>>> enumerating the bus in userspace it drops bus with similar names.
-> >>>> This results in us not listing devices beneath the bus.
-> >>>>
-> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> >>>> ---
-> >>>>   drivers/nvdimm/of_pmem.c | 2 +-
-> >>>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>>
-> >>> Here is a summary with links:
-> >>>    - nvdimm/of_pmem: Provide a unique name for bus provider
-> >>>      https://git.kernel.org/nvdimm/nvdimm/c/49bddc73d15c25a68e4294d76fc74519fda984cd
-> >>>
-> >>> You are awesome, thank you!
-> >>
-> >> We decided to fix this in ndctl tool? If we go with ndctl fix, we
-> >> can drop the kernel change.
-> >
-> > Oh, I was planning to do both any concerns if I keep the kernel
-> > change, otherwise I'll need to rebase the branch.
-> >
->
-> I guess rebasing is not going to be nice. So we can keep the patch and
-> if we are really need to move the provider name to indicate backend
-> driver, I will fixup both of_pmem and papr_scm together.
+Subject: Singaporean Mr. Teo En Ming's Refugee Seeking Attempts, In
+The Search of a Substantially Better Life
 
-Another reason to make the kernel change is to improve compatibility
-with older ndctl releases.
+In reverse chronological order:
+
+[1] Petition to the Government of Taiwan for Refugee Status, 5th
+August 2019 Monday
+
+Photo #1: At the building of the National Immigration Agency, Ministry
+of the Interior, Taipei, Taiwan, 5th August 2019
+
+Photo #2: Queue ticket no. 515 at the National Immigration Agency,
+Ministry of the Interior, Taipei, Taiwan, 5th August 2019
+
+Photo #3: Submission of documents/petition to the National Immigration
+Agency, Ministry of the Interior, Taipei, Taiwan, 5th August 2019
+
+Photos #4 and #5: Acknowledgement of Receipt (no. 03142) for the
+submission of documents/petition from the National Immigration Agency,
+Ministry of the Interior, Taipei, Taiwan, 5th August 2019, 10:00 AM
+
+References:
+
+(a) Petition to the Government of Taiwan for Refugee Status, 5th
+August 2019 Monday (Blogspot blog)
+
+Link: https://tdtemcerts.blogspot.sg/2019/08/petition-to-government-of-taiwan-for.html
+
+(b) Petition to the Government of Taiwan for Refugee Status, 5th
+August 2019 Monday (Wordpress blog)
+
+Link: https://tdtemcerts.wordpress.com/2019/08/23/petition-to-the-government-of-taiwan-for-refugee-status/
+
+[2] Application for Refugee Status at the United Nations Refugee
+Agency, Bangkok, Thailand, 21st March 2017 Tuesday
+
+References:
+
+(a) [YOUTUBE] Vlog: The Road to Application for Refugee Status at the
+United Nations High Commissioner for Refugees, Bangkok
+
+Link: https://www.youtube.com/watch?v=utpuAa1eUNI
+
+YouTube video Published on March 22nd, 2017
+
+Views as at 31st August 2019: 593
+
+YouTube Channel: Turritopsis Dohrnii Teo En Ming
+Subscribers as at 31st August 2019: 2815
+Link: https://www.youtube.com/channel/UC__F2hzlqNEEGx-IXxQi3hA
+
+
+
+
+
+
+-----BEGIN EMAIL SIGNATURE-----
+
+The Gospel for all Targeted Individuals (TIs):
+
+[The New York Times] Microwave Weapons Are Prime Suspect in Ills of
+U.S. Embassy Workers
+
+Link: https://www.nytimes.com/2018/09/01/science/sonic-attack-cuba-microwave.html
+
+********************************************************************************************
+
+Singaporean Mr. Turritopsis Dohrnii Teo En Ming's Academic
+Qualifications as at 14 Feb 2019
+
+[1] https://tdtemcerts.wordpress.com/
+
+[2] https://tdtemcerts.blogspot.sg/
+
+[3] https://www.scribd.com/user/270125049/Teo-En-Ming
+
+-----END EMAIL SIGNATURE-----
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
