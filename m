@@ -1,50 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C8EA833B
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 14:52:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BABDDA86BA
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 18:54:30 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 89FA021962301;
-	Wed,  4 Sep 2019 05:53:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 00A5F21962301;
+	Wed,  4 Sep 2019 09:55:34 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jlayton@kernel.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 44F2020212CA8
- for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 05:53:56 -0700 (PDT)
-Received: from tleilax.poochiereds.net
- (68-20-15-154.lightspeed.rlghnc.sbcglobal.net [68.20.15.154])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8B30F21883;
- Wed,  4 Sep 2019 12:52:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1567601569;
- bh=XG+z6BHhOmv9W2OyuDcqw63mHyObz78oeswsmfEdF1U=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=QOvybiJzp85IlBNCfwgLsBnLV9DR4UQ+d3iO+92iuV9rSa0S6OBqWysT1ufEq9jPg
- Uc8pw3mW3WhdRGHShvIhIShiLbWPqR1oIpH89892Mb1phi9Lqta58kkyAJU+pCa6lo
- XwT3v0mpqc9uUS8Hbn+5AeFK7k62BlqLx2/zGjmo=
-Message-ID: <2227b44d9e36f9bd129c73ee77c03b35d023236a.camel@kernel.org>
-Subject: Re: [RFC PATCH v2 02/19] fs/locks: Add Exclusive flag to user
- Layout lease
-From: Jeff Layton <jlayton@kernel.org>
-To: Ira Weiny <ira.weiny@intel.com>
-Date: Wed, 04 Sep 2019 08:52:47 -0400
-In-Reply-To: <20190829233408.GD18249@iweiny-DESK2.sc.intel.com>
-References: <20190809225833.6657-1-ira.weiny@intel.com>
- <20190809225833.6657-3-ira.weiny@intel.com>
- <fde2959db776616008fc5d31df700f5d7d899433.camel@kernel.org>
- <20190814215630.GQ6129@dread.disaster.area>
- <e6f4f619967f4551adb5003d0364770fde2b8110.camel@kernel.org>
- <20190829233408.GD18249@iweiny-DESK2.sc.intel.com>
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+ by ml01.01.org (Postfix) with ESMTPS id 28A562021DD29
+ for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 09:55:31 -0700 (PDT)
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2019 09:54:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,467,1559545200"; d="scan'208";a="185171841"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by orsmga003.jf.intel.com with ESMTP; 04 Sep 2019 09:54:25 -0700
+Date: Wed, 4 Sep 2019 09:54:25 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dave Chinner <david@fromorbit.com>
+Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
+Message-ID: <20190904165425.GB31319@iweiny-DESK2.sc.intel.com>
+References: <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
+ <20190821194810.GI8653@ziepe.ca>
+ <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
+ <20190823032345.GG1119@dread.disaster.area>
+ <20190823120428.GA12968@ziepe.ca>
+ <20190824001124.GI1119@dread.disaster.area>
+ <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
+ <20190826055510.GL1119@dread.disaster.area>
+ <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
+ <20190902222618.GR1119@dread.disaster.area>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20190902222618.GR1119@dread.disaster.area>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,103 +56,140 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
  linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, Dave Chinner <david@fromorbit.com>,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
- linux-xfs@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
+ John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
+ Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
+ Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
  Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, 2019-08-29 at 16:34 -0700, Ira Weiny wrote:
-> Missed this.  sorry.
-> 
-> On Mon, Aug 26, 2019 at 06:41:07AM -0400, Jeff Layton wrote:
-> > On Thu, 2019-08-15 at 07:56 +1000, Dave Chinner wrote:
-> > > On Wed, Aug 14, 2019 at 10:15:06AM -0400, Jeff Layton wrote:
-> > > > On Fri, 2019-08-09 at 15:58 -0700, ira.weiny@intel.com wrote:
-> > > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > > > 
-> > > > > Add an exclusive lease flag which indicates that the layout mechanism
-> > > > > can not be broken.
-> > > > > 
-> > > > > Exclusive layout leases allow the file system to know that pages may be
-> > > > > GUP pined and that attempts to change the layout, ie truncate, should be
-> > > > > failed.
-> > > > > 
-> > > > > A process which attempts to break it's own exclusive lease gets an
-> > > > > EDEADLOCK return to help determine that this is likely a programming bug
-> > > > > vs someone else holding a resource.
-> > > .....
-> > > > > diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
-> > > > > index baddd54f3031..88b175ceccbc 100644
-> > > > > --- a/include/uapi/asm-generic/fcntl.h
-> > > > > +++ b/include/uapi/asm-generic/fcntl.h
-> > > > > @@ -176,6 +176,8 @@ struct f_owner_ex {
-> > > > >  
-> > > > >  #define F_LAYOUT	16      /* layout lease to allow longterm pins such as
-> > > > >  				   RDMA */
-> > > > > +#define F_EXCLUSIVE	32      /* layout lease is exclusive */
-> > > > > +				/* FIXME or shoudl this be F_EXLCK??? */
-> > > > >  
-> > > > >  /* operations for bsd flock(), also used by the kernel implementation */
-> > > > >  #define LOCK_SH		1	/* shared lock */
-> > > > 
-> > > > This interface just seems weird to me. The existing F_*LCK values aren't
-> > > > really set up to be flags, but are enumerated values (even if there are
-> > > > some gaps on some arches). For instance, on parisc and sparc:
+On Tue, Sep 03, 2019 at 08:26:18AM +1000, Dave Chinner wrote:
+> On Wed, Aug 28, 2019 at 07:02:31PM -0700, Ira Weiny wrote:
+> > On Mon, Aug 26, 2019 at 03:55:10PM +1000, Dave Chinner wrote:
+> > > On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
+> > > > On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
+> > > > > On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
+> > > > "Leases are associated with an open file description (see open(2)).  This means
+> > > > that duplicate file descriptors (created by, for example, fork(2) or dup(2))
+> > > > refer to the same lease, and this lease may be modified or released using any
+> > > > of these descriptors.  Furthermore,  the lease is released by either an
+> > > > explicit F_UNLCK operation on any of these duplicate file descriptors, or when
+> > > > all such file descriptors have been closed."
 > > > 
-> > > I don't think we need to worry about this - the F_WRLCK version of
-> > > the layout lease should have these exclusive access semantics (i.e
-> > > other ops fail rather than block waiting for lease recall) and hence
-> > > the API shouldn't need a new flag to specify them.
+> > > Right, the lease is attached to the struct file, so it follows
+> > > where-ever the struct file goes. That doesn't mean it's actually
+> > > useful when the struct file is duplicated and/or passed to another
+> > > process. :/
 > > > 
-> > > i.e. the primary difference between F_RDLCK and F_WRLCK layout
-> > > leases is that the F_RDLCK is a shared, co-operative lease model
-> > > where only delays in operations will be seen, while F_WRLCK is a
-> > > "guarantee exclusive access and I don't care what it breaks"
-> > > model... :)
-> > > 
+> > > AFAICT, the problem is that when we take another reference to the
+> > > struct file, or when the struct file is passed to a different
+> > > process, nothing updates the lease or lease state attached to that
+> > > struct file.
 > > 
-> > Not exactly...
-> > 
-> > F_WRLCK and F_RDLCK leases can both be broken, and will eventually time
-> > out if there is conflicting access. The F_EXCLUSIVE flag on the other
-> > hand is there to prevent any sort of lease break from 
+> > Ok, I probably should have made this more clear in the cover letter but _only_
+> > the process which took the lease can actually pin memory.
 > 
-> Right EXCLUSIVE will not break for any reason.  It will fail truncate and hole
-> punch as we discussed back in June.  This is for the use case where the user
-> has handed this file/pages off to some hardware for which removing the lease
-> would be impossible.  _And_ we don't anticipate any valid use case that someone
-> will need to truncate short of killing the process to free up file system
-> space.
+> Sure, no question about that.
 > 
-> > I'm guessing what Ira really wants with the F_EXCLUSIVE flag is
-> > something akin to what happens when we set fl_break_time to 0 in the
-> > nfsd code. nfsd never wants the locks code to time out a lease of any
-> > sort, since it handles that timeout itself.
-> > 
-> > If you're going to add this functionality, it'd be good to also convert
-> > knfsd to use it as well, so we don't end up with multiple ways to deal
-> > with that situation.
+> > That pinned memory _can_ be passed to another process but those sub-process' can
+> > _not_ use the original lease to pin _more_ of the file.  They would need to
+> > take their own lease to do that.
 > 
-> Could you point me at the source for knfsd?  I looked in 
-> 
-> git://git.linux-nfs.org/projects/steved/nfs-utils.git
-> 
-> but I don't see anywhere leases are used in that source?
-> 
+> Yes, they would need a new lease to extend it. But that ignores the
+> fact they don't have a lease on the existing pins they are using and
+> have no control over the lease those pins originated under.  e.g.
+> the originating process dies (for whatever reason) and now we have
+> pins without a valid lease holder.
 
-Ahh sorry that wasn't clear. It's the fs/nfsd directory in the Linux
-kernel sources. See nfsd4_layout_lm_break and nfsd_break_deleg_cb in
-particular.
+Define "valid lease holder"?
 
--- 
-Jeff Layton <jlayton@kernel.org>
+> 
+> If something else now takes an exclusive lease on the file (because
+> the original exclusive lease no longer exists), it's not going to
+> work correctly because of the zombied page pins caused by closing
+> the exclusive lease they were gained under. IOWs, pages pinned under
+> an exclusive lease are no longer "exclusive" the moment the original
+> exclusive lease is dropped, and pins passed to another process are
+> no longer covered by the original lease they were created under.
+
+The page pins are not zombied the lease is.  The lease still exists, it can't
+be dropped while the pins are in place.  I need to double check the
+implementation but that was the intent.
+
+Yep just did a quick check, I have a test for that.  If the page pins exist
+then the lease can _not_ be released.  Closing the FD will "zombie" the lease
+but it and the struct file will still exist until the pins go away.
+
+Furthermore, a "zombie" lease is _not_ sufficient to pin more pages.  (I have a
+test for this too.)  I apologize that I don't have something to submit to
+xfstests.  I'm new to that code base.
+
+I'm happy to share the code I have which I've been using to test...  But it is
+pretty rough as it has undergone a number of changes.  I think it would be
+better to convert my test series to xfstests.
+
+However, I don't know if it is ok to require RDMA within those tests.  Right
+now that is the only sub-system I have allowed to create these page pins.  So
+I'm not sure what to do at this time.  I'm open to suggestions.
+
+> 
+> > Sorry for not being clear on that.
+> 
+> I know exactly what you are saying. What I'm failing to get across
+> is that file layout leases don't actually allow the behaviour you
+> want to have.
+
+Not currently, no.  But we are discussing the semantics to allow them _to_ have
+the behavior needed.
+
+> 
+> > > As such, leases that require callbacks to userspace are currently
+> > > only valid within the process context the lease was taken in.
+> > 
+> > But for long term pins we are not requiring callbacks.
+> 
+> Regardless, we still require an active lease for long term pins so
+> that other lease holders fail operations appropriately. And that
+> exclusive lease must follow the process that pins the pages so that
+> the life cycle is the same...
+
+I disagree.  See below.
+
+> 
+> > > Indeed, even closing the fd the lease was taken on without
+> > > F_UNLCKing it first doesn't mean the lease has been torn down if
+> > > there is some other reference to the struct file. That means the
+> > > original lease owner will still get SIGIO delivered to that fd on a
+> > > lease break regardless of whether it is open or not. ANd if we
+> > > implement "layout lease not released within SIGIO response timeout"
+> > > then that process will get killed, despite the fact it may not even
+> > > have a reference to that file anymore.
+> > 
+> > I'm not seeing that as a problem.  This is all a result of the application
+> > failing to do the right thing.
+> 
+> How is that not a problem?
+
+The application has taken an exclusive lease and they don't have to let it go.
+
+IOW, there is little difference between the application closing the FD and
+creating a zombie lease vs keeping the FD open with a real lease.  Because no
+SIGIO is sent and there is no need to react to it anyway as the intention is to
+keep the lease active and the layout pinned "indefinitely".
+
+Furthermore, in both cases the admin must kill the application to change the
+layout forcibly.  Basically applications don't _have_ to do the right thing but
+the kernel and the filesystem is still protected while the admin has a way to
+correct the situation given a bad application.
+
+Therefore, from the POV of the kernel and file system I don't see a problem.
+
+Ira
 
 _______________________________________________
 Linux-nvdimm mailing list
