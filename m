@@ -2,83 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFF7A8704
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 19:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0555FA8730
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 20:10:22 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 637DF21962301;
-	Wed,  4 Sep 2019 10:31:22 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C557B20260CE4;
+	Wed,  4 Sep 2019 11:11:24 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.134.164.83; helo=mail2-relais-roc.national.inria.fr;
- envelope-from=brice.goglin@inria.fr; receiver=linux-nvdimm@lists.01.org 
-Received: from mail2-relais-roc.national.inria.fr
- (mail2-relais-roc.national.inria.fr [192.134.164.83])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B452820216B8B
- for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 10:31:19 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.64,467,1559512800"; d="scan'208";a="400286747"
-Received: from 91-160-5-165.subs.proxad.net (HELO [192.168.44.23])
- ([91.160.5.165])
- by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA;
- 04 Sep 2019 19:30:13 +0200
-Subject: Re: [ndctl PATCH 2/2] libdaxctl: fix device reconfiguration with
- builtin drivers
-To: Vishal Verma <vishal.l.verma@intel.com>, linux-nvdimm@lists.01.org
-References: <20190904010819.11012-1-vishal.l.verma@intel.com>
- <20190904010819.11012-2-vishal.l.verma@intel.com>
-From: Brice Goglin <Brice.Goglin@inria.fr>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Brice.Goglin@inria.fr; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <544e35d2-8600-0f93-79f3-642a0b851710@inria.fr>
-Date: Wed, 4 Sep 2019 19:30:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ml01.01.org (Postfix) with ESMTPS id 0296121959CB2
+ for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 11:11:23 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id o101so21516071ota.8
+ for <linux-nvdimm@lists.01.org>; Wed, 04 Sep 2019 11:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ZxMiuYGR/UjpCHON3t+9Accsd7ZKo3sL+EDYIv5KF78=;
+ b=ML070llmy9AnwVOAeIxHlFYkadkN73t6D6Q44q4u2/O4uigQNX0lBe7sICmgeIhfTj
+ i7tpkzR4XdGGeJbWmBja4y1KnFMiCksrVoxpmENaOHAKPwwfptH9DtZzxtpDFLxb/NHI
+ 8DoMQXPcPx9eFNvks7MaRs53/IkPNPMB+fBf6pDIZaKjDMbuviG9y9VX5g/xEFfjxkRY
+ Fi0NA3H2+uog+UUoBvqz7pOVld0LNluO+Pf81+NoU1WlUNWBY9yENdXZglYvSFzIadQm
+ ACfN0eCYRlB0OHT54e3hcDFGXAJVyBwrPMp1arqQ6ubAyfv+kge/HUJb+o3Yr7i6EtB9
+ U6Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ZxMiuYGR/UjpCHON3t+9Accsd7ZKo3sL+EDYIv5KF78=;
+ b=Bn/Mchh8sfGh04tNqktU5qDrGKVTGfmqnFd/FuCnHe1ETjoGnLCpPfsuif+FHuqBs6
+ JL11MoiDrPHv9xOrSrWLNDWHs9qb34vdGRYBuPXpsubTO3PqOK0WPNb6zwXHwSgK37ej
+ Y4XS52z8DuHGBRk08ROEdPjR+8tWidBRVAOasC41/udaxp01l6MbE/yM/P7E3dmsbMgy
+ r5WYkQmSSRsHsa6+ZOlwUhV6hBQq73k+yYHyh2dYwz0Yg7A1P8FAJftbs9UGK5nqyzCF
+ fMrne33NbxcL/rgvP1GsacExmPumdinjD0GUjaWBKSNZMSnBs7LSn9V2vH4X9es6DcKr
+ PdcA==
+X-Gm-Message-State: APjAAAUVE080MTreag/Tvr7/xdCIgIGG8Imxb5+2bVRust4/OExBMz2o
+ 3mAN9C5SN4b+qsQYN+x/kD7Lf0C1kzGNoV1Xj4K8gQ==
+X-Google-Smtp-Source: APXvYqy9j0aOjrvwQASxeHr6Npe9ALFyX8WilKXpO5XM70pt07YB4FEOCKY0/yhjeKd2/UKk619d+6XHGLBx/7JAkGQ=
+X-Received: by 2002:a9d:5ccc:: with SMTP id r12mr3454891oti.71.1567620618408; 
+ Wed, 04 Sep 2019 11:10:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190904010819.11012-2-vishal.l.verma@intel.com>
-Content-Language: en-US
+References: <20190819133451.19737-1-aneesh.kumar@linux.ibm.com>
+ <20190819133451.19737-8-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4gzb73mUCz7yJV8cxArVydBFHAHJqJ3jV2JRhVNFyvyWA@mail.gmail.com>
+ <ae11dcb0-beaf-a6cf-9456-ac6a7ec84743@linux.ibm.com>
+In-Reply-To: <ae11dcb0-beaf-a6cf-9456-ac6a7ec84743@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 4 Sep 2019 11:10:07 -0700
+Message-ID: <CAPcyv4jDd2NFhW7gPZFA=H5C60pKQ7Dh80Q6SwHCaozUV4pTkQ@mail.gmail.com>
+Subject: Re: [PATCH v6 7/7] libnvdimm/dax: Pick the right alignment default
+ when creating dax devices
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,57 +69,399 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-VGhhbmtzLCB0aGlzIHdvcmtzIGhlcmUgKG9uIGEgRGViaWFuIHRlc3Rpbmcgd2l0aCB2YW5pbGxh
-IDUuMi4xMSBhbmQKNS4zLXJjNykuCgpCcmljZQoKCkxlIDA0LzA5LzIwMTkgw6AgMDM6MDgsIFZp
-c2hhbCBWZXJtYSBhIMOpY3JpdMKgOgo+IFdoZW4gdGhlIGRyaXZlciBvZiBhIGdpdmVuIHJlY29u
-ZmlndXJhdGlvbiBtb2RlIGlzIGJ1aWx0aW4sIGxpYmRheGN0bAo+IGlzbid0IGFibGUgdG8gYnVp
-bGQgYSBtb2R1bGUgbG9va3VwIGxpc3QgdXNpbmcga21vZC4gSG93ZXZlciwgaXQgZG9lc24ndAo+
-IG5lZWQgdG8gZmFpbCBpbiB0aGlzIGNhc2UsIGFzIGl0IGlzIGFjY2VwdGFibGUgZm9yIGEgZHJp
-dmVyIHRvIGJlCj4gYnVpbHRpbi4KPgo+IFVzZSB0aGUga21vZCAnaW5pdHN0YXRlJyB0byBkZXRl
-cm1pbmUgd2hldGhlciB0aGUgdGFyZ2V0IGRyaXZlciBtYXkgYmUKPiBidWlsdGluLCBhbmQgZW5z
-dXJlIGl0IGlzIGF2YWlsYWJsZSBieSBwcm9iaW5nIGl0IHZpYSBhIG5hbWVkIGxvb2t1cC4KPiBJ
-ZiBpdCBpcyBhdmFpbGFibGUsIHNraXAgdGhlIG1vZGFsaWFzIGJhc2VkIGxpc3Qgd2FsaywgYW5k
-IGJpbmQgdG8gaXQKPiBkaXJlY3RseS4KPgo+IExpbms6IGh0dHBzOi8vZ2l0aHViLmNvbS9wbWVt
-L25kY3RsL2lzc3Vlcy8xMDgKPiBDYzogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRl
-bC5jb20+Cj4gUmVwb3J0ZWQtYnk6IEJyaWNlIEdvZ2xpbiA8QnJpY2UuR29nbGluQGlucmlhLmZy
-Pgo+IFJlcG9ydGVkLWJ5OiBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29t
-Pgo+IFNpZ25lZC1vZmYtYnk6IFZpc2hhbCBWZXJtYSA8dmlzaGFsLmwudmVybWFAaW50ZWwuY29t
-Pgo+IC0tLQo+ICBkYXhjdGwvbGliL2xpYmRheGN0bC5jIHwgMzMgKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrCj4gIDEgZmlsZSBjaGFuZ2VkLCAzMyBpbnNlcnRpb25zKCspCj4KPiBk
-aWZmIC0tZ2l0IGEvZGF4Y3RsL2xpYi9saWJkYXhjdGwuYyBiL2RheGN0bC9saWIvbGliZGF4Y3Rs
-LmMKPiBpbmRleCBkOWYyYzMzLi43YTY1YmVkIDEwMDY0NAo+IC0tLSBhL2RheGN0bC9saWIvbGli
-ZGF4Y3RsLmMKPiArKysgYi9kYXhjdGwvbGliL2xpYmRheGN0bC5jCj4gQEAgLTg2OCw2ICs4Njgs
-MzcgQEAgREFYQ1RMX0VYUE9SVCBpbnQgZGF4Y3RsX2Rldl9pc19lbmFibGVkKHN0cnVjdCBkYXhj
-dGxfZGV2ICpkZXYpCj4gIAlyZXR1cm4gaXNfZW5hYmxlZChwYXRoKTsKPiAgfQo+ICAKPiArc3Rh
-dGljIGludCB0cnlfa21vZF9idWlsdGluKHN0cnVjdCBkYXhjdGxfZGV2ICpkZXYsIGNvbnN0IGNo
-YXIgKm1vZF9uYW1lKQo+ICt7Cj4gKwljb25zdCBjaGFyICpkZXZuYW1lID0gZGF4Y3RsX2Rldl9n
-ZXRfZGV2bmFtZShkZXYpOwo+ICsJc3RydWN0IGRheGN0bF9jdHggKmN0eCA9IGRheGN0bF9kZXZf
-Z2V0X2N0eChkZXYpOwo+ICsJc3RydWN0IGttb2RfbW9kdWxlICprbW9kOwo+ICsJaW50IHJjID0g
-LUVOWElPOwo+ICsKPiArCXJjID0ga21vZF9tb2R1bGVfbmV3X2Zyb21fbmFtZShjdHgtPmttb2Rf
-Y3R4LCBtb2RfbmFtZSwgJmttb2QpOwo+ICsJaWYgKHJjIDwgMCkgewo+ICsJCWVycihjdHgsICIl
-czogZmFpbGVkIGdldHRpbmcgbW9kdWxlIGZvcjogJXM6ICVzXG4iLAo+ICsJCQlkZXZuYW1lLCBt
-b2RfbmFtZSwgc3RyZXJyb3IoLXJjKSk7Cj4gKwkJcmV0dXJuIHJjOwo+ICsJfQo+ICsKPiArCWlm
-IChrbW9kX21vZHVsZV9nZXRfaW5pdHN0YXRlKGttb2QpICE9IEtNT0RfTU9EVUxFX0JVSUxUSU4p
-Cj4gKwkJcmV0dXJuIC1FTlhJTzsKPiArCj4gKwlkYmcoY3R4LCAiJXMgaW5zZXJ0aW5nIG1vZHVs
-ZTogJXNcbiIsIGRldm5hbWUsCj4gKwkJa21vZF9tb2R1bGVfZ2V0X25hbWUoa21vZCkpOwo+ICsJ
-cmMgPSBrbW9kX21vZHVsZV9wcm9iZV9pbnNlcnRfbW9kdWxlKGttb2QsCj4gKwkJCUtNT0RfUFJP
-QkVfQVBQTFlfQkxBQ0tMSVNULAo+ICsJCQlOVUxMLCBOVUxMLCBOVUxMLCBOVUxMKTsKPiArCWlm
-IChyYyA8IDApIHsKPiArCQllcnIoY3R4LCAiJXM6IGluc2VydCBmYWlsdXJlOiAlZFxuIiwgZGV2
-bmFtZSwgcmMpOwo+ICsJCXJldHVybiByYzsKPiArCX0KPiArCWRldi0+bW9kdWxlID0ga21vZDsK
-PiArCj4gKwlyZXR1cm4gMDsKPiArfQo+ICsKPiAgc3RhdGljIGludCBkYXhjdGxfaW5zZXJ0X2tt
-b2RfZm9yX21vZGUoc3RydWN0IGRheGN0bF9kZXYgKmRldiwKPiAgCQljb25zdCBjaGFyICptb2Rf
-bmFtZSkKPiAgewo+IEBAIC04NzcsNiArOTA4LDggQEAgc3RhdGljIGludCBkYXhjdGxfaW5zZXJ0
-X2ttb2RfZm9yX21vZGUoc3RydWN0IGRheGN0bF9kZXYgKmRldiwKPiAgCWludCByYyA9IC1FTlhJ
-TzsKPiAgCj4gIAlpZiAoZGV2LT5rbW9kX2xpc3QgPT0gTlVMTCkgewo+ICsJCWlmICh0cnlfa21v
-ZF9idWlsdGluKGRldiwgbW9kX25hbWUpID09IDApCj4gKwkJCXJldHVybiAwOwo+ICAJCWVycihj
-dHgsICIlczogYSBtb2RhbGlhcyBsb29rdXAgbGlzdCB3YXMgbm90IGNyZWF0ZWRcbiIsCj4gIAkJ
-CQlkZXZuYW1lKTsKPiAgCQlyZXR1cm4gcmM7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1t
-QGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4
-LW52ZGltbQo=
+On Tue, Sep 3, 2019 at 10:18 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 9/4/19 5:48 AM, Dan Williams wrote:
+> > Hi Aneesh,
+> >
+> > Patches 1 through 6 look ok, but I feel compelled to point out that
+> > the patches deploy a different indentation style than the surrounding
+> > code. I rely on the vim "=" operator to indent 2 tabs when for
+> > multi-line if statements, i.e. this:
+> >
+> >          if (!nd_supported_alignment(align) &&
+> >                          !memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN)) {
+> >                  dev_err(&nd_pfn->dev, "init failed, alignment mismatch: "
+> >                                  "%ld:%ld\n", nd_pfn->align, align);
+> >                  return -EOPNOTSUPP;
+> >          }
+> >
+> > ...instead of this:
+> >
+> >          if (!nd_supported_alignment(align) &&
+> >              !memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN)) {
+> >                  dev_err(&nd_pfn->dev, "init failed, alignment mismatch: "
+> >                          "%ld:%ld\n", nd_pfn->align, align);
+> >                  return -EOPNOTSUPP;
+> >          }
+> >
+> > Could you reflow / resend for v7 after addressing the below comments?
+> > To be clear I don't mind the lined up style, but mixed style within
+> > the same file is distracting.
+> >
+>
+>
+> I sent a v7 and then realized there are more feedback below. Let me
+> reply here and then possibly send only this patch updated if needed
+
+Ok.
+
+> > On Mon, Aug 19, 2019 at 6:35 AM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> Allow arch to provide the supported alignments and use hugepage alignment only
+> >> if we support hugepage. Right now we depend on compile time configs whereas this
+> >> patch switch this to runtime discovery.
+> >>
+> >> Architectures like ppc64 can have THP enabled in code, but then can have
+> >> hugepage size disabled by the hypervisor. This allows us to create dax devices
+> >> with PAGE_SIZE alignment in this case.
+> >>
+> >> Existing dax namespace with alignment larger than PAGE_SIZE will fail to
+> >> initialize in this specific case. We still allow fsdax namespace initialization.
+> >>
+> >> With respect to identifying whether to enable hugepage fault for a dax device,
+> >> if THP is enabled during compile, we default to taking hugepage fault and in dax
+> >> fault handler if we find the fault size > alignment we retry with PAGE_SIZE
+> >> fault size.
+> >>
+> >> This also addresses the below failure scenario on ppc64
+> >>
+> >> ndctl create-namespace --mode=devdax  | grep align
+> >>   "align":16777216,
+> >>   "align":16777216
+> >>
+> >> cat /sys/devices/ndbus0/region0/dax0.0/supported_alignments
+> >>   65536 16777216
+> >>
+> >> daxio.static-debug  -z -o /dev/dax0.0
+> >>    Bus error (core dumped)
+> >>
+> >>    $ dmesg | tail
+> >>     lpar: Failed hash pte insert with error -4
+> >>     hash-mmu: mm: Hashing failure ! EA=0x7fff17000000 access=0x8000000000000006 current=daxio
+> >>     hash-mmu:     trap=0x300 vsid=0x22cb7a3 ssize=1 base psize=2 psize 10 pte=0xc000000501002b86
+> >>     daxio[3860]: bus error (7) at 7fff17000000 nip 7fff973c007c lr 7fff973bff34 code 2 in libpmem.so.1.0.0[7fff973b0000+20000]
+> >>     daxio[3860]: code: 792945e4 7d494b78 e95f0098 7d494b78 f93f00a0 4800012c e93f0088 f93f0120
+> >>     daxio[3860]: code: e93f00a0 f93f0128 e93f0120 e95f0128 <f9490000> e93f0088 39290008 f93f0110
+> >>
+> >> The failure was due to guest kernel using wrong page size.
+> >>
+> >> The namespaces created with 16M alignment will appear as below on a config with
+> >> 16M page size disabled.
+> >>
+> >> $ ndctl list -Ni
+> >> [
+> >>    {
+> >>      "dev":"namespace0.1",
+> >>      "mode":"fsdax",
+> >>      "map":"dev",
+> >>      "size":5351931904,
+> >>      "uuid":"fc6e9667-461a-4718-82b4-69b24570bddb",
+> >>      "align":16777216,
+> >>      "blockdev":"pmem0.1",
+> >>      "supported_alignments":[
+> >>        65536
+> >>      ]
+> >>    },
+> >>    {
+> >>      "dev":"namespace0.0",
+> >>      "mode":"fsdax",    <==== devdax 16M alignment marked disabled.
+> >
+> > Why is fsdax disabled? It's fine for the fsdax case to fall back to
+> > smaller faults. Or, this running into the case where the stored page
+> > size is larger than the currently running PAGE_SIZE?
+> >
+> >>      "map":"mem",
+> >>      "size":5368709120,
+> >>      "uuid":"a4bdf81a-f2ee-4bc6-91db-7b87eddd0484",
+> >>      "state":"disabled"
+> >>    }
+> >> ]
+> >>
+>
+>
+> That is how ndctl print the output. It is actually the devdax namespace
+> which is marked disabled. That is why I added this as a comment next to
+> that "mode": line
+
+Oh, thanks for the clarification. That is indeed confusing. I suspect
+this is due to the fact that of_pmem sets ND_REGION_PAGEMAP, so the
+default state is "fsdax" instead of "raw" like other namespace types.
+
+I wonder if we should hide "mode" by default when the namespace is
+disabled? Otherwise just might need to document that "mode" is
+unreliable when the namespace is disabled.
+
+>
+>
+> >> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> ---
+> >>   arch/powerpc/include/asm/libnvdimm.h |  9 ++++++++
+> >>   arch/powerpc/mm/Makefile             |  1 +
+> >>   arch/powerpc/mm/nvdimm.c             | 34 ++++++++++++++++++++++++++++
+> >>   arch/x86/include/asm/libnvdimm.h     | 19 ++++++++++++++++
+> >>   drivers/nvdimm/nd.h                  |  6 -----
+> >>   drivers/nvdimm/pfn_devs.c            | 32 +++++++++++++++++++++++++-
+> >>   include/linux/huge_mm.h              |  7 +++++-
+> >>   7 files changed, 100 insertions(+), 8 deletions(-)
+> >>   create mode 100644 arch/powerpc/include/asm/libnvdimm.h
+> >>   create mode 100644 arch/powerpc/mm/nvdimm.c
+> >>   create mode 100644 arch/x86/include/asm/libnvdimm.h
+> >>
+> >> diff --git a/arch/powerpc/include/asm/libnvdimm.h b/arch/powerpc/include/asm/libnvdimm.h
+> >> new file mode 100644
+> >> index 000000000000..d35fd7f48603
+> >> --- /dev/null
+> >> +++ b/arch/powerpc/include/asm/libnvdimm.h
+> >> @@ -0,0 +1,9 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +#ifndef _ASM_POWERPC_LIBNVDIMM_H
+> >> +#define _ASM_POWERPC_LIBNVDIMM_H
+> >> +
+> >> +#define nd_pfn_supported_alignments nd_pfn_supported_alignments
+> >> +extern unsigned long *nd_pfn_supported_alignments(void);
+> >> +extern unsigned long nd_pfn_default_alignment(void);
+> >> +
+> >> +#endif
+> >> diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
+> >> index 0f499db315d6..42e4a399ba5d 100644
+> >> --- a/arch/powerpc/mm/Makefile
+> >> +++ b/arch/powerpc/mm/Makefile
+> >> @@ -20,3 +20,4 @@ obj-$(CONFIG_HIGHMEM)         += highmem.o
+> >>   obj-$(CONFIG_PPC_COPRO_BASE)   += copro_fault.o
+> >>   obj-$(CONFIG_PPC_PTDUMP)       += ptdump/
+> >>   obj-$(CONFIG_KASAN)            += kasan/
+> >> +obj-$(CONFIG_NVDIMM_PFN)               += nvdimm.o
+> >> diff --git a/arch/powerpc/mm/nvdimm.c b/arch/powerpc/mm/nvdimm.c
+> >> new file mode 100644
+> >> index 000000000000..a29a4510715e
+> >> --- /dev/null
+> >> +++ b/arch/powerpc/mm/nvdimm.c
+> >> @@ -0,0 +1,34 @@
+> >> +// SPDX-License-Identifier: GPL-2.0
+> >> +
+> >> +#include <asm/pgtable.h>
+> >> +#include <asm/page.h>
+> >> +
+> >> +#include <linux/mm.h>
+> >> +/*
+> >> + * We support only pte and pmd mappings for now.
+> >> + */
+> >> +const unsigned long *nd_pfn_supported_alignments(void)
+> >> +{
+> >> +       static unsigned long supported_alignments[3];
+> >> +
+> >> +       supported_alignments[0] = PAGE_SIZE;
+> >> +
+> >> +       if (has_transparent_hugepage())
+> >> +               supported_alignments[1] = HPAGE_PMD_SIZE;
+> >> +       else
+> >> +               supported_alignments[1] = 0;
+> >> +
+> >> +       supported_alignments[2] = 0;
+> >> +       return supported_alignments;
+> >> +}
+> >
+> > I'd prefer to not create a powerpc specific object file especially
+> > because nothing in the above looks powerpc specific. Anything that
+> > prevents just making this the common implementation?
+> >
+>
+>
+> Support for PUD size alignment. The alignment details of what can be
+> supported is largely a arch specific details. We could do that with
+>
+> #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>                 HPAGE_PUD_SIZE,
+> #endif
+>
+> But I was looking at arch specific functions rather than having all
+> those #ifdef there.
+
+The ifdefs could still move to a header with a:
+
+    static const unsigned long supported_alignments[3];
+
+...definition.
+
+>
+> >> +
+> >> +/*
+> >> + * Use pmd mapping if supported as default alignment
+> >> + */
+> >> +unsigned long nd_pfn_default_alignment(void)
+> >> +{
+> >> +
+> >> +       if (has_transparent_hugepage())
+> >> +               return HPAGE_PMD_SIZE;
+> >> +       return PAGE_SIZE;
+> >> +}
+> >> diff --git a/arch/x86/include/asm/libnvdimm.h b/arch/x86/include/asm/libnvdimm.h
+> >> new file mode 100644
+> >> index 000000000000..3d5361db9164
+> >> --- /dev/null
+> >> +++ b/arch/x86/include/asm/libnvdimm.h
+> >> @@ -0,0 +1,19 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +#ifndef _ASM_X86_LIBNVDIMM_H
+> >> +#define _ASM_X86_LIBNVDIMM_H
+> >> +
+> >> +static inline unsigned long nd_pfn_default_alignment(void)
+> >> +{
+> >> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >> +       return HPAGE_PMD_SIZE;
+> >> +#else
+> >> +       return PAGE_SIZE;
+> >> +#endif
+> >> +}
+> >> +
+> >> +static inline unsigned long nd_altmap_align_size(unsigned long nd_align)
+> >> +{
+> >> +       return PMD_SIZE;
+> >> +}
+> >> +
+> >> +#endif
+> >> diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+> >> index e89af4b2d8e9..401a78b02116 100644
+> >> --- a/drivers/nvdimm/nd.h
+> >> +++ b/drivers/nvdimm/nd.h
+> >> @@ -289,12 +289,6 @@ static inline struct device *nd_btt_create(struct nd_region *nd_region)
+> >>   struct nd_pfn *to_nd_pfn(struct device *dev);
+> >>   #if IS_ENABLED(CONFIG_NVDIMM_PFN)
+> >>
+> >> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> >> -#define PFN_DEFAULT_ALIGNMENT HPAGE_PMD_SIZE
+> >> -#else
+> >> -#define PFN_DEFAULT_ALIGNMENT PAGE_SIZE
+> >> -#endif
+> >> -
+> >>   int nd_pfn_probe(struct device *dev, struct nd_namespace_common *ndns);
+> >>   bool is_nd_pfn(struct device *dev);
+> >>   struct device *nd_pfn_create(struct nd_region *nd_region);
+> >> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> >> index 22db77ac3d0e..7dc0b5da4c6b 100644
+> >> --- a/drivers/nvdimm/pfn_devs.c
+> >> +++ b/drivers/nvdimm/pfn_devs.c
+> >> @@ -10,6 +10,7 @@
+> >>   #include <linux/slab.h>
+> >>   #include <linux/fs.h>
+> >>   #include <linux/mm.h>
+> >> +#include <asm/libnvdimm.h>
+> >>   #include "nd-core.h"
+> >>   #include "pfn.h"
+> >>   #include "nd.h"
+> >> @@ -103,6 +104,8 @@ static ssize_t align_show(struct device *dev,
+> >>          return sprintf(buf, "%ld\n", nd_pfn->align);
+> >>   }
+> >>
+> >> +#ifndef nd_pfn_supported_alignments
+> >> +#define nd_pfn_supported_alignments nd_pfn_supported_alignments
+> >>   static const unsigned long *nd_pfn_supported_alignments(void)
+> >>   {
+> >>          /*
+> >> @@ -125,6 +128,7 @@ static const unsigned long *nd_pfn_supported_alignments(void)
+> >>
+> >>          return data;
+> >>   }
+> >> +#endif
+> >>
+> >>   static ssize_t align_store(struct device *dev,
+> >>                  struct device_attribute *attr, const char *buf, size_t len)
+> >> @@ -302,7 +306,7 @@ struct device *nd_pfn_devinit(struct nd_pfn *nd_pfn,
+> >>                  return NULL;
+> >>
+> >>          nd_pfn->mode = PFN_MODE_NONE;
+> >> -       nd_pfn->align = PFN_DEFAULT_ALIGNMENT;
+> >> +       nd_pfn->align = nd_pfn_default_alignment();
+> >>          dev = &nd_pfn->dev;
+> >>          device_initialize(&nd_pfn->dev);
+> >>          if (ndns && !__nd_attach_ndns(&nd_pfn->dev, ndns, &nd_pfn->ndns)) {
+> >> @@ -412,6 +416,20 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
+> >>          return 0;
+> >>   }
+> >>
+> >> +static bool nd_supported_alignment(unsigned long align)
+> >> +{
+> >> +       int i;
+> >> +       const unsigned long *supported = nd_pfn_supported_alignments();
+> >> +
+> >> +       if (align == 0)
+> >> +               return false;
+> >> +
+> >> +       for (i = 0; supported[i]; i++)
+> >> +               if (align == supported[i])
+> >> +                       return true;
+> >> +       return false;
+> >> +}
+> >> +
+> >>   /**
+> >>    * nd_pfn_validate - read and validate info-block
+> >>    * @nd_pfn: fsdax namespace runtime state / properties
+> >> @@ -496,6 +514,18 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+> >>                  return -EOPNOTSUPP;
+> >>          }
+> >>
+> >> +       /*
+> >> +        * Check whether the we support the alignment. For Dax if the
+> >> +        * superblock alignment is not matching, we won't initialize
+> >> +        * the device.
+> >> +        */
+> >> +       if (!nd_supported_alignment(align) &&
+> >> +           !memcmp(pfn_sb->signature, DAX_SIG, PFN_SIG_LEN)) {
+> >
+> > ^^^ more indentation reflow.
+> >
+>
+> Both .clang-format and earlier emacs customization recommendation used
+> the above style. I sent a  v7 with this fixup alone.
+
+Thanks for that I appreciate the fix up on something that's a
+reasonable choice either way.
+
+>
+>
+> >> +               dev_err(&nd_pfn->dev, "init failed, alignment mismatch: "
+> >> +                       "%ld:%ld\n", nd_pfn->align, align);
+> >> +               return -EOPNOTSUPP;
+> >> +       }
+> >> +
+> >>          if (!nd_pfn->uuid) {
+> >>                  /*
+> >>                   * When probing a namepace via nd_pfn_probe() the uuid
+> >> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+> >> index 45ede62aa85b..4fa91f9bd0da 100644
+> >> --- a/include/linux/huge_mm.h
+> >> +++ b/include/linux/huge_mm.h
+> >> @@ -108,7 +108,12 @@ static inline bool __transparent_hugepage_enabled(struct vm_area_struct *vma)
+> >>
+> >>          if (transparent_hugepage_flags & (1 << TRANSPARENT_HUGEPAGE_FLAG))
+> >>                  return true;
+> >> -
+> >> +       /*
+> >> +        * For dax let's try to do hugepage fault always. If we don't support
+> >> +        * hugepages we will not have enabled namespaces with hugepage alignment.
+> >> +        * This also means we try to handle hugepage fault on device with
+> >> +        * smaller alignment. But for then we will return with VM_FAULT_FALLBACK
+> >> +        */
+> >
+> > Please fix this comment up to not use the word "we". This should also
+> > get an ack from linux-mm folks. "We" in the above alternately means
+> > "we: the runtime/compile-tims platform setting", or "we: the kernel
+> > implementation".
+> >
+>
+> I can update the comment to indicate runtime part.
+
+Thanks!
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
