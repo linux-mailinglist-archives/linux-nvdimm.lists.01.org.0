@@ -2,49 +2,83 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABDDA86BA
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 18:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFF7A8704
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Sep 2019 19:30:19 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 00A5F21962301;
-	Wed,  4 Sep 2019 09:55:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 637DF21962301;
+	Wed,  4 Sep 2019 10:31:22 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ client-ip=192.134.164.83; helo=mail2-relais-roc.national.inria.fr;
+ envelope-from=brice.goglin@inria.fr; receiver=linux-nvdimm@lists.01.org 
+Received: from mail2-relais-roc.national.inria.fr
+ (mail2-relais-roc.national.inria.fr [192.134.164.83])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 28A562021DD29
- for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 09:55:31 -0700 (PDT)
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2019 09:54:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,467,1559545200"; d="scan'208";a="185171841"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by orsmga003.jf.intel.com with ESMTP; 04 Sep 2019 09:54:25 -0700
-Date: Wed, 4 Sep 2019 09:54:25 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [RFC PATCH v2 00/19] RDMA/FS DAX truncate proposal V1,000,002 ; -)
-Message-ID: <20190904165425.GB31319@iweiny-DESK2.sc.intel.com>
-References: <20190821185703.GB5965@iweiny-DESK2.sc.intel.com>
- <20190821194810.GI8653@ziepe.ca>
- <20190821204421.GE5965@iweiny-DESK2.sc.intel.com>
- <20190823032345.GG1119@dread.disaster.area>
- <20190823120428.GA12968@ziepe.ca>
- <20190824001124.GI1119@dread.disaster.area>
- <20190824050836.GC1092@iweiny-DESK2.sc.intel.com>
- <20190826055510.GL1119@dread.disaster.area>
- <20190829020230.GA18249@iweiny-DESK2.sc.intel.com>
- <20190902222618.GR1119@dread.disaster.area>
+ by ml01.01.org (Postfix) with ESMTPS id B452820216B8B
+ for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 10:31:19 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="5.64,467,1559512800"; d="scan'208";a="400286747"
+Received: from 91-160-5-165.subs.proxad.net (HELO [192.168.44.23])
+ ([91.160.5.165])
+ by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA;
+ 04 Sep 2019 19:30:13 +0200
+Subject: Re: [ndctl PATCH 2/2] libdaxctl: fix device reconfiguration with
+ builtin drivers
+To: Vishal Verma <vishal.l.verma@intel.com>, linux-nvdimm@lists.01.org
+References: <20190904010819.11012-1-vishal.l.verma@intel.com>
+ <20190904010819.11012-2-vishal.l.verma@intel.com>
+From: Brice Goglin <Brice.Goglin@inria.fr>
+Openpgp: preference=signencrypt
+Autocrypt: addr=Brice.Goglin@inria.fr; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <544e35d2-8600-0f93-79f3-642a0b851710@inria.fr>
+Date: Wed, 4 Sep 2019 19:30:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190902222618.GR1119@dread.disaster.area>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20190904010819.11012-2-vishal.l.verma@intel.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,142 +90,57 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Theodore Ts'o <tytso@mit.edu>,
- linux-nvdimm@lists.01.org, linux-rdma@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Matthew Wilcox <willy@infradead.org>, linux-xfs@vger.kernel.org,
- Jason Gunthorpe <jgg@ziepe.ca>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, linux-ext4@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Sep 03, 2019 at 08:26:18AM +1000, Dave Chinner wrote:
-> On Wed, Aug 28, 2019 at 07:02:31PM -0700, Ira Weiny wrote:
-> > On Mon, Aug 26, 2019 at 03:55:10PM +1000, Dave Chinner wrote:
-> > > On Fri, Aug 23, 2019 at 10:08:36PM -0700, Ira Weiny wrote:
-> > > > On Sat, Aug 24, 2019 at 10:11:24AM +1000, Dave Chinner wrote:
-> > > > > On Fri, Aug 23, 2019 at 09:04:29AM -0300, Jason Gunthorpe wrote:
-> > > > "Leases are associated with an open file description (see open(2)).  This means
-> > > > that duplicate file descriptors (created by, for example, fork(2) or dup(2))
-> > > > refer to the same lease, and this lease may be modified or released using any
-> > > > of these descriptors.  Furthermore,  the lease is released by either an
-> > > > explicit F_UNLCK operation on any of these duplicate file descriptors, or when
-> > > > all such file descriptors have been closed."
-> > > 
-> > > Right, the lease is attached to the struct file, so it follows
-> > > where-ever the struct file goes. That doesn't mean it's actually
-> > > useful when the struct file is duplicated and/or passed to another
-> > > process. :/
-> > > 
-> > > AFAICT, the problem is that when we take another reference to the
-> > > struct file, or when the struct file is passed to a different
-> > > process, nothing updates the lease or lease state attached to that
-> > > struct file.
-> > 
-> > Ok, I probably should have made this more clear in the cover letter but _only_
-> > the process which took the lease can actually pin memory.
-> 
-> Sure, no question about that.
-> 
-> > That pinned memory _can_ be passed to another process but those sub-process' can
-> > _not_ use the original lease to pin _more_ of the file.  They would need to
-> > take their own lease to do that.
-> 
-> Yes, they would need a new lease to extend it. But that ignores the
-> fact they don't have a lease on the existing pins they are using and
-> have no control over the lease those pins originated under.  e.g.
-> the originating process dies (for whatever reason) and now we have
-> pins without a valid lease holder.
-
-Define "valid lease holder"?
-
-> 
-> If something else now takes an exclusive lease on the file (because
-> the original exclusive lease no longer exists), it's not going to
-> work correctly because of the zombied page pins caused by closing
-> the exclusive lease they were gained under. IOWs, pages pinned under
-> an exclusive lease are no longer "exclusive" the moment the original
-> exclusive lease is dropped, and pins passed to another process are
-> no longer covered by the original lease they were created under.
-
-The page pins are not zombied the lease is.  The lease still exists, it can't
-be dropped while the pins are in place.  I need to double check the
-implementation but that was the intent.
-
-Yep just did a quick check, I have a test for that.  If the page pins exist
-then the lease can _not_ be released.  Closing the FD will "zombie" the lease
-but it and the struct file will still exist until the pins go away.
-
-Furthermore, a "zombie" lease is _not_ sufficient to pin more pages.  (I have a
-test for this too.)  I apologize that I don't have something to submit to
-xfstests.  I'm new to that code base.
-
-I'm happy to share the code I have which I've been using to test...  But it is
-pretty rough as it has undergone a number of changes.  I think it would be
-better to convert my test series to xfstests.
-
-However, I don't know if it is ok to require RDMA within those tests.  Right
-now that is the only sub-system I have allowed to create these page pins.  So
-I'm not sure what to do at this time.  I'm open to suggestions.
-
-> 
-> > Sorry for not being clear on that.
-> 
-> I know exactly what you are saying. What I'm failing to get across
-> is that file layout leases don't actually allow the behaviour you
-> want to have.
-
-Not currently, no.  But we are discussing the semantics to allow them _to_ have
-the behavior needed.
-
-> 
-> > > As such, leases that require callbacks to userspace are currently
-> > > only valid within the process context the lease was taken in.
-> > 
-> > But for long term pins we are not requiring callbacks.
-> 
-> Regardless, we still require an active lease for long term pins so
-> that other lease holders fail operations appropriately. And that
-> exclusive lease must follow the process that pins the pages so that
-> the life cycle is the same...
-
-I disagree.  See below.
-
-> 
-> > > Indeed, even closing the fd the lease was taken on without
-> > > F_UNLCKing it first doesn't mean the lease has been torn down if
-> > > there is some other reference to the struct file. That means the
-> > > original lease owner will still get SIGIO delivered to that fd on a
-> > > lease break regardless of whether it is open or not. ANd if we
-> > > implement "layout lease not released within SIGIO response timeout"
-> > > then that process will get killed, despite the fact it may not even
-> > > have a reference to that file anymore.
-> > 
-> > I'm not seeing that as a problem.  This is all a result of the application
-> > failing to do the right thing.
-> 
-> How is that not a problem?
-
-The application has taken an exclusive lease and they don't have to let it go.
-
-IOW, there is little difference between the application closing the FD and
-creating a zombie lease vs keeping the FD open with a real lease.  Because no
-SIGIO is sent and there is no need to react to it anyway as the intention is to
-keep the lease active and the layout pinned "indefinitely".
-
-Furthermore, in both cases the admin must kill the application to change the
-layout forcibly.  Basically applications don't _have_ to do the right thing but
-the kernel and the filesystem is still protected while the admin has a way to
-correct the situation given a bad application.
-
-Therefore, from the POV of the kernel and file system I don't see a problem.
-
-Ira
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+VGhhbmtzLCB0aGlzIHdvcmtzIGhlcmUgKG9uIGEgRGViaWFuIHRlc3Rpbmcgd2l0aCB2YW5pbGxh
+IDUuMi4xMSBhbmQKNS4zLXJjNykuCgpCcmljZQoKCkxlIDA0LzA5LzIwMTkgw6AgMDM6MDgsIFZp
+c2hhbCBWZXJtYSBhIMOpY3JpdMKgOgo+IFdoZW4gdGhlIGRyaXZlciBvZiBhIGdpdmVuIHJlY29u
+ZmlndXJhdGlvbiBtb2RlIGlzIGJ1aWx0aW4sIGxpYmRheGN0bAo+IGlzbid0IGFibGUgdG8gYnVp
+bGQgYSBtb2R1bGUgbG9va3VwIGxpc3QgdXNpbmcga21vZC4gSG93ZXZlciwgaXQgZG9lc24ndAo+
+IG5lZWQgdG8gZmFpbCBpbiB0aGlzIGNhc2UsIGFzIGl0IGlzIGFjY2VwdGFibGUgZm9yIGEgZHJp
+dmVyIHRvIGJlCj4gYnVpbHRpbi4KPgo+IFVzZSB0aGUga21vZCAnaW5pdHN0YXRlJyB0byBkZXRl
+cm1pbmUgd2hldGhlciB0aGUgdGFyZ2V0IGRyaXZlciBtYXkgYmUKPiBidWlsdGluLCBhbmQgZW5z
+dXJlIGl0IGlzIGF2YWlsYWJsZSBieSBwcm9iaW5nIGl0IHZpYSBhIG5hbWVkIGxvb2t1cC4KPiBJ
+ZiBpdCBpcyBhdmFpbGFibGUsIHNraXAgdGhlIG1vZGFsaWFzIGJhc2VkIGxpc3Qgd2FsaywgYW5k
+IGJpbmQgdG8gaXQKPiBkaXJlY3RseS4KPgo+IExpbms6IGh0dHBzOi8vZ2l0aHViLmNvbS9wbWVt
+L25kY3RsL2lzc3Vlcy8xMDgKPiBDYzogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRl
+bC5jb20+Cj4gUmVwb3J0ZWQtYnk6IEJyaWNlIEdvZ2xpbiA8QnJpY2UuR29nbGluQGlucmlhLmZy
+Pgo+IFJlcG9ydGVkLWJ5OiBEYXZlIEhhbnNlbiA8ZGF2ZS5oYW5zZW5AbGludXguaW50ZWwuY29t
+Pgo+IFNpZ25lZC1vZmYtYnk6IFZpc2hhbCBWZXJtYSA8dmlzaGFsLmwudmVybWFAaW50ZWwuY29t
+Pgo+IC0tLQo+ICBkYXhjdGwvbGliL2xpYmRheGN0bC5jIHwgMzMgKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrCj4gIDEgZmlsZSBjaGFuZ2VkLCAzMyBpbnNlcnRpb25zKCspCj4KPiBk
+aWZmIC0tZ2l0IGEvZGF4Y3RsL2xpYi9saWJkYXhjdGwuYyBiL2RheGN0bC9saWIvbGliZGF4Y3Rs
+LmMKPiBpbmRleCBkOWYyYzMzLi43YTY1YmVkIDEwMDY0NAo+IC0tLSBhL2RheGN0bC9saWIvbGli
+ZGF4Y3RsLmMKPiArKysgYi9kYXhjdGwvbGliL2xpYmRheGN0bC5jCj4gQEAgLTg2OCw2ICs4Njgs
+MzcgQEAgREFYQ1RMX0VYUE9SVCBpbnQgZGF4Y3RsX2Rldl9pc19lbmFibGVkKHN0cnVjdCBkYXhj
+dGxfZGV2ICpkZXYpCj4gIAlyZXR1cm4gaXNfZW5hYmxlZChwYXRoKTsKPiAgfQo+ICAKPiArc3Rh
+dGljIGludCB0cnlfa21vZF9idWlsdGluKHN0cnVjdCBkYXhjdGxfZGV2ICpkZXYsIGNvbnN0IGNo
+YXIgKm1vZF9uYW1lKQo+ICt7Cj4gKwljb25zdCBjaGFyICpkZXZuYW1lID0gZGF4Y3RsX2Rldl9n
+ZXRfZGV2bmFtZShkZXYpOwo+ICsJc3RydWN0IGRheGN0bF9jdHggKmN0eCA9IGRheGN0bF9kZXZf
+Z2V0X2N0eChkZXYpOwo+ICsJc3RydWN0IGttb2RfbW9kdWxlICprbW9kOwo+ICsJaW50IHJjID0g
+LUVOWElPOwo+ICsKPiArCXJjID0ga21vZF9tb2R1bGVfbmV3X2Zyb21fbmFtZShjdHgtPmttb2Rf
+Y3R4LCBtb2RfbmFtZSwgJmttb2QpOwo+ICsJaWYgKHJjIDwgMCkgewo+ICsJCWVycihjdHgsICIl
+czogZmFpbGVkIGdldHRpbmcgbW9kdWxlIGZvcjogJXM6ICVzXG4iLAo+ICsJCQlkZXZuYW1lLCBt
+b2RfbmFtZSwgc3RyZXJyb3IoLXJjKSk7Cj4gKwkJcmV0dXJuIHJjOwo+ICsJfQo+ICsKPiArCWlm
+IChrbW9kX21vZHVsZV9nZXRfaW5pdHN0YXRlKGttb2QpICE9IEtNT0RfTU9EVUxFX0JVSUxUSU4p
+Cj4gKwkJcmV0dXJuIC1FTlhJTzsKPiArCj4gKwlkYmcoY3R4LCAiJXMgaW5zZXJ0aW5nIG1vZHVs
+ZTogJXNcbiIsIGRldm5hbWUsCj4gKwkJa21vZF9tb2R1bGVfZ2V0X25hbWUoa21vZCkpOwo+ICsJ
+cmMgPSBrbW9kX21vZHVsZV9wcm9iZV9pbnNlcnRfbW9kdWxlKGttb2QsCj4gKwkJCUtNT0RfUFJP
+QkVfQVBQTFlfQkxBQ0tMSVNULAo+ICsJCQlOVUxMLCBOVUxMLCBOVUxMLCBOVUxMKTsKPiArCWlm
+IChyYyA8IDApIHsKPiArCQllcnIoY3R4LCAiJXM6IGluc2VydCBmYWlsdXJlOiAlZFxuIiwgZGV2
+bmFtZSwgcmMpOwo+ICsJCXJldHVybiByYzsKPiArCX0KPiArCWRldi0+bW9kdWxlID0ga21vZDsK
+PiArCj4gKwlyZXR1cm4gMDsKPiArfQo+ICsKPiAgc3RhdGljIGludCBkYXhjdGxfaW5zZXJ0X2tt
+b2RfZm9yX21vZGUoc3RydWN0IGRheGN0bF9kZXYgKmRldiwKPiAgCQljb25zdCBjaGFyICptb2Rf
+bmFtZSkKPiAgewo+IEBAIC04NzcsNiArOTA4LDggQEAgc3RhdGljIGludCBkYXhjdGxfaW5zZXJ0
+X2ttb2RfZm9yX21vZGUoc3RydWN0IGRheGN0bF9kZXYgKmRldiwKPiAgCWludCByYyA9IC1FTlhJ
+TzsKPiAgCj4gIAlpZiAoZGV2LT5rbW9kX2xpc3QgPT0gTlVMTCkgewo+ICsJCWlmICh0cnlfa21v
+ZF9idWlsdGluKGRldiwgbW9kX25hbWUpID09IDApCj4gKwkJCXJldHVybiAwOwo+ICAJCWVycihj
+dHgsICIlczogYSBtb2RhbGlhcyBsb29rdXAgbGlzdCB3YXMgbm90IGNyZWF0ZWRcbiIsCj4gIAkJ
+CQlkZXZuYW1lKTsKPiAgCQlyZXR1cm4gcmM7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1t
+QGxpc3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4
+LW52ZGltbQo=
