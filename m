@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D07A9A2B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Sep 2019 07:48:54 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0730CAA79B
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Sep 2019 17:46:24 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DBF282194EB78;
-	Wed,  4 Sep 2019 22:49:49 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 27FF821962301;
+	Thu,  5 Sep 2019 08:47:19 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -16,64 +16,55 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C2AFD2027722D
- for <linux-nvdimm@lists.01.org>; Wed,  4 Sep 2019 22:46:11 -0700 (PDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by ml01.01.org (Postfix) with ESMTPS id 68E0720260CF7
+ for <linux-nvdimm@lists.01.org>; Thu,  5 Sep 2019 08:47:17 -0700 (PDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x855ghFU003471; Thu, 5 Sep 2019 01:45:08 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2utvcnrb31-1
+ x85FbZZv084881; Thu, 5 Sep 2019 11:46:18 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2uu3uwmb1r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Sep 2019 01:45:07 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x855dQGO022698;
- Thu, 5 Sep 2019 05:45:04 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma02dal.us.ibm.com with ESMTP id 2uqgh7ea66-1
+ Thu, 05 Sep 2019 11:46:18 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x85FjiUB003408;
+ Thu, 5 Sep 2019 15:46:17 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04dal.us.ibm.com with ESMTP id 2uqgh7axnw-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Sep 2019 05:45:04 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x855j3a551839376
+ Thu, 05 Sep 2019 15:46:17 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x85FkFXk40829306
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Sep 2019 05:45:03 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B260BB2068;
- Thu,  5 Sep 2019 05:45:03 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7DA86B2064;
- Thu,  5 Sep 2019 05:45:02 +0000 (GMT)
-Received: from [9.199.35.243] (unknown [9.199.35.243])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  5 Sep 2019 05:45:02 +0000 (GMT)
-Subject: Re: [PATCH v8] libnvdimm/dax: Pick the right alignment default when
- creating dax devices
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20190904065320.6005-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4hD8SAFNNAWBP9q55wdPf-HYTEjpS4m+rT0VPoGodZULw@mail.gmail.com>
- <33b377ac-86ea-b195-fd83-90c01df604cc@linux.ibm.com>
- <CAPcyv4hBHjrTSHRkwU8CQcXF4EHoz0rzu6L-U-QxRpWkPSAhUQ@mail.gmail.com>
- <d46212fb-7bbb-3db8-5a65-2c8799021fd6@linux.ibm.com>
- <CAPcyv4impX2OEd3ZATz_4_UjOvC4N78uU+PBPRK+id3Nh0EPCw@mail.gmail.com>
+ Thu, 5 Sep 2019 15:46:15 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FA31136051;
+ Thu,  5 Sep 2019 15:46:15 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3D07913604F;
+ Thu,  5 Sep 2019 15:46:14 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.35.243])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  5 Sep 2019 15:46:13 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <3c5e4fe3-7cc7-3e55-6616-da084f10f9fd@linux.ibm.com>
-Date: Thu, 5 Sep 2019 11:15:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+To: dan.j.williams@intel.com
+Subject: [PATCH v9 0/7] Mark the namespace disabled on pfn superblock mismatch
+Date: Thu,  5 Sep 2019 21:15:56 +0530
+Message-Id: <20190905154603.10349-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4impX2OEd3ZATz_4_UjOvC4N78uU+PBPRK+id3Nh0EPCw@mail.gmail.com>
-Content-Language: en-US
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-05_01:, , signatures=0
+ definitions=2019-09-05_05:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909050058
+ mlxlogscore=897 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909050147
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,89 +76,62 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux MM <linux-mm@kvack.org>, "Kirill A . Shutemov" <kirill@shutemov.name>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"; Format="flowed"
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 9/5/19 10:45 AM, Dan Williams wrote:
-> On Wed, Sep 4, 2019 at 9:10 PM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> On 9/5/19 8:29 AM, Dan Williams wrote:
->>>>> Keep this 'static' there's no usage of this routine outside of pfn_devs.c
->>>>>
->>>>>>     {
->>>>>> -       /*
->>>>>> -        * This needs to be a non-static variable because the *_SIZE
->>>>>> -        * macros aren't always constants.
->>>>>> -        */
->>>>>> -       const unsigned long supported_alignments[] = {
->>>>>> -               PAGE_SIZE,
->>>>>> -#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>>>>> -               HPAGE_PMD_SIZE,
->>>>>> +       static unsigned long supported_alignments[3];
->>>>>
->>>>> Why is marked static? It's being dynamically populated each invocation
->>>>> so static is just wasting space in the .data section.
->>>>>
->>>>
->>>> The return of that function is address and that would require me to use
->>>> a global variable. I could add a check
->>>>
->>>> /* Check if initialized */
->>>>     if (supported_alignment[1])
->>>>           return supported_alignment;
->>>>
->>>> in the function to updating that array every time called.
->>>
->>> Oh true, my mistake. I was thrown off by the constant
->>> re-initialization. Another option is to pass in the storage since the
->>> array needs to be populated at run time. Otherwise I would consider it
->>> a layering violation for libnvdimm to assume that
->>> has_transparent_hugepage() gives a constant result. I.e. put this
->>>
->>>           unsigned long aligns[4] = { [0] = 0, };
->>>
->>> ...in align_store() and supported_alignments_show() then
->>> nd_pfn_supported_alignments() does not need to worry about
->>> zero-initializing the fields it does not set.
->>
->> That requires callers to track the size of aligns array. If we add
->> different alignment support later, we will end up updating all the call
->> site?
-> 
-> 2 sites for something that gets updated maybe once a decade?
-> 
->>
->> How about?
->>
->> static const unsigned long *nd_pfn_supported_alignments(void)
->> {
->>          static unsigned long supported_alignments[4];
->>
->>          if (supported_alignments[0])
->>                  return supported_alignments;
->>
->>          supported_alignments[0] = PAGE_SIZE;
->>
->>          if (has_transparent_hugepage()) {
->>                  supported_alignments[1] = HPAGE_PMD_SIZE;
->>                  if (IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
->>                          supported_alignments[2] = HPAGE_PUD_SIZE;
->>          }
-> 
-> Again, this makes assumptions that has_transparent_hugepage() always
-> returns the same result every time it is called.
-> 
+We add new members to pfn superblock (PAGE_SIZE and struct page size) in this series.
+This is now checked while initializing the namespace. If we find a mismatch we mark
+the namespace disabled.
 
-That assuming is true right? For architectures supporting THP we don't 
-support changing that during runtime. Allowing to change that during 
-runtime would have other impacts.
+This series also handle configs where hugepage support is not enabled by default.
+This can result in different align restrictions for dax namespace. We mark the
+dax namespace disabled if we find the alignment not supported.
 
--aneesh
+Changes from v8:
+* updated patch 7 for addressing review feedback
+
+Changes from v6:
+* Formatting changes
+
+Changes from v5:
+* Split patch 3
+* Update commit message
+* Add MAX_STRUCT_PAGE_SIZE with value 64 and use that when allocating reserve block
+* Add BUILD_BUG_ON if we find sizeof(struct page) > 64
+
+
+
+Aneesh Kumar K.V (6):
+  libnvdimm/pmem: Advance namespace seed for specific probe errors
+  libnvdimm/pfn_dev: Add a build check to make sure we notice when
+    struct page size change
+  libnvdimm/pfn_dev: Add page size and struct page size to pfn
+    superblock
+  libnvdimm/label: Remove the dpa align check
+  libnvdimm: Use PAGE_SIZE instead of SZ_4K for align check
+  libnvdimm/dax: Pick the right alignment default when creating dax
+    devices
+
+Dan Williams (1):
+  libnvdimm/region: Rewrite _probe_success() to _advance_seeds()
+
+ drivers/nvdimm/bus.c            |   8 +--
+ drivers/nvdimm/label.c          |   5 --
+ drivers/nvdimm/namespace_devs.c |  40 +++++++++---
+ drivers/nvdimm/nd-core.h        |   3 +-
+ drivers/nvdimm/nd.h             |  10 +--
+ drivers/nvdimm/pfn.h            |   5 +-
+ drivers/nvdimm/pfn_devs.c       | 110 +++++++++++++++++++++++++-------
+ drivers/nvdimm/pmem.c           |  29 +++++++--
+ drivers/nvdimm/region_devs.c    |  76 ++++------------------
+ include/linux/huge_mm.h         |   7 +-
+ 10 files changed, 176 insertions(+), 117 deletions(-)
+
+-- 
+2.21.0
 
 _______________________________________________
 Linux-nvdimm mailing list
