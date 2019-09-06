@@ -1,27 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3FDAB700
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Sep 2019 13:18:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D387ABEF9
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Sep 2019 19:49:21 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B610A20294F10;
-	Fri,  6 Sep 2019 04:19:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 274C420294F27;
+	Fri,  6 Sep 2019 10:50:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=85.115.248.39;
- helo=[85.115.248.39]; envelope-from=linux-nvdimm@lists.01.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from [85.115.248.39] (unknown [85.115.248.39])
- by ml01.01.org (Postfix) with ESMTP id 0FA1D2021B6E2
- for <linux-nvdimm@lists.01.org>; Fri,  6 Sep 2019 04:18:58 -0700 (PDT)
-Date: 6 Sep 2019 16:09:03 +0200
-From: <linux-nvdimm@lists.01.org>
-X-Priority: 3
-Message-ID: <004384063.201909061618@lists.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: Change your password immediately. Your account has been hacked.
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
+ [IPv6:2607:f8b0:4864:20::244])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 475392027725A
+ for <linux-nvdimm@lists.01.org>; Fri,  6 Sep 2019 10:50:06 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id w144so5646316oia.6
+ for <linux-nvdimm@lists.01.org>; Fri, 06 Sep 2019 10:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=v0nCUWfBIIke8wwI1KyHL3YbLuJIie4lZRF4o2QAa+U=;
+ b=w9mvMZHjPsWt2wobT50t3BacTw+r6JWhWrAAMCRxMT+y42StYak3JdhEstaeezDbFz
+ 5D+YAGD+9uImohq67WH2J/CCRTTDaLzmW3aNN6J7gNEjIxb/NbFK3ai/+neHxUqopRe4
+ kwsDljl0uMkWijhJj75ACoOmliGJkq7BSg7xt6ISm1/RLeM3M2PJoekNx81oC5NEVz+U
+ q5X8Pjw8AQHAe23Y/lrlV6Irn3yIkAqh3WfO3/UG2TYLISTsg4SjnPmY8YMHNd0qtjJh
+ h58yw39L+8CplWLYKSlBhz00s7ahXrBPqQEze/WZpes6LUMY9+gsrvQxgoXgbBV4sUp/
+ ro5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=v0nCUWfBIIke8wwI1KyHL3YbLuJIie4lZRF4o2QAa+U=;
+ b=ew7dpDKpqyNcSJVB022u1hYdORdsWd7JTQBSS5UlX0d3RvVp7sgY3ElXPdJVGxziAm
+ FSIx6WyGx3aPCSOv+YE3upsjbMo0FeMxmrTNmZ1gwgYqc725wxErNbDtKULoH6jeKdKF
+ D/cI5ywGFUA1pjxhnjVGjIkqlXUDE3yuUmRjOozeF+iWLxgGa/nAtRyre2xdgRvIQ3LS
+ krVrXr7mxMl8XcbIwjhCD6dMOaaQep/hDRj5nTh9dpOPpPxpoXiSaOwE0D4zkjzwrO9J
+ 2IeL+5iyc9pROVa3QlLYkhKm6PEzwCEXTYdyfk0wWcVpXCSQWiMF4SiBtWVaxNYGTSuG
+ 2gdw==
+X-Gm-Message-State: APjAAAW6KmXtVICe5t7v4iLPgXyERrW4O0ugxz+SLeWZtI85xZe1WjXo
+ eOc8V7kReHagfH+OHjpYosZoNfy7rgRLGCJEHBy+Gg==
+X-Google-Smtp-Source: APXvYqwIjRdKvXtSKs1CFHbh7noAzQrZn7gaPwXlKUXyVYYMR0KgmWTElXrbpBWGx+83AIEG1btt+VsAOolhNr1yLns=
+X-Received: by 2002:aca:4b05:: with SMTP id y5mr7790208oia.70.1567792156564;
+ Fri, 06 Sep 2019 10:49:16 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190905154603.10349-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190905154603.10349-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 6 Sep 2019 10:49:05 -0700
+Message-ID: <CAPcyv4jsDeZ27cfCQbeNtwxWhaUb-nT-U=mQnMM18GL7yxc7RQ@mail.gmail.com>
+Subject: Re: [PATCH v9 0/7] Mark the namespace disabled on pfn superblock
+ mismatch
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -33,65 +66,66 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-I greet you!
+On Thu, Sep 5, 2019 at 8:46 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> We add new members to pfn superblock (PAGE_SIZE and struct page size) in this series.
+> This is now checked while initializing the namespace. If we find a mismatch we mark
+> the namespace disabled.
+>
+> This series also handle configs where hugepage support is not enabled by default.
+> This can result in different align restrictions for dax namespace. We mark the
+> dax namespace disabled if we find the alignment not supported.
+>
+> Changes from v8:
+> * updated patch 7 for addressing review feedback
+>
+> Changes from v6:
+> * Formatting changes
+>
+> Changes from v5:
+> * Split patch 3
+> * Update commit message
+> * Add MAX_STRUCT_PAGE_SIZE with value 64 and use that when allocating reserve block
+> * Add BUILD_BUG_ON if we find sizeof(struct page) > 64
+>
+>
+>
+> Aneesh Kumar K.V (6):
+>   libnvdimm/pmem: Advance namespace seed for specific probe errors
+>   libnvdimm/pfn_dev: Add a build check to make sure we notice when
+>     struct page size change
+>   libnvdimm/pfn_dev: Add page size and struct page size to pfn
+>     superblock
+>   libnvdimm/label: Remove the dpa align check
+>   libnvdimm: Use PAGE_SIZE instead of SZ_4K for align check
+>   libnvdimm/dax: Pick the right alignment default when creating dax
+>     devices
+>
+> Dan Williams (1):
+>   libnvdimm/region: Rewrite _probe_success() to _advance_seeds()
+>
+>  drivers/nvdimm/bus.c            |   8 +--
+>  drivers/nvdimm/label.c          |   5 --
+>  drivers/nvdimm/namespace_devs.c |  40 +++++++++---
+>  drivers/nvdimm/nd-core.h        |   3 +-
+>  drivers/nvdimm/nd.h             |  10 +--
+>  drivers/nvdimm/pfn.h            |   5 +-
+>  drivers/nvdimm/pfn_devs.c       | 110 +++++++++++++++++++++++++-------
+>  drivers/nvdimm/pmem.c           |  29 +++++++--
+>  drivers/nvdimm/region_devs.c    |  76 ++++------------------
+>  include/linux/huge_mm.h         |   7 +-
+>  10 files changed, 176 insertions(+), 117 deletions(-)
 
-I have bad news for you.
-11/06/2019 - on this day I hacked your operating system and got full access to your account linux-nvdimm@lists.01.org
-
-It is useless to change the password, my malware intercepts it every time.
-
-How it was:
-In the software of the router to which you were connected that day, there was a vulnerability.
-I first hacked this router and placed my malicious code on it.
-When you entered in the Internet, my trojan was installed on the operating system of your device.
-
-After that, I made a full dump of your disk (I have all your address book, history of viewing sites, all files, phone numbers and addresses of all your contacts).
-
-A month ago, I wanted to lock your device and ask for a small amount of money to unlock.
-But I looked at the sites that you regularly visit, and came to the big delight of your favorite resources.
-I'm talking about sites for adults.
-
-I want to say - you are a big pervert. You have unbridled fantasy!
-
-After that, an idea came to my mind.
-I made a screenshot of the intimate website where you have fun (you know what it is about, right?).
-After that, I took off your joys (using the camera of your device). It turned out beautifully, do not hesitate.
-
-I am strongly belive that you would not like to show these pictures to your relatives, friends or colleagues.
-I think $700 is a very small amount for my silence.
-Besides, I spent a lot of time on you!
-
-I accept money only in Bitcoins.
-My BTC wallet: 1PKQvF9qK3zuB8KVwmDVDUxtpUVfE1P6fp
-
-You do not know how to replenish a Bitcoin wallet?
-In any search engine write "how to send money to btc wallet".
-It's easier than send money to a credit card!
-
-For payment you have a little more than two days (exactly 50 hours).
-Do not worry, the timer will start at the moment when you open this letter. Yes, yes .. it has already started!
-
-After payment, my virus and dirty photos with you self-destruct automatically.
-Narrative, if I do not receive the specified amount from you, then your device will be blocked, and all your contacts will receive a photos with your "joys".
-
-I want you to be prudent.
-- Do not try to find and destroy my virus! (All your data is already uploaded to a remote server)
-- Do not try to contact me (this is not feasible, I sent you an email from your account)
-- Various security services will not help you; formatting a disk or destroying a device will not help either, since your data is already on a remote server.
-
-P.S. I guarantee you that I will not disturb you again after payment, as you are not my single victim.
- This is a hacker code of honor.
-
-From now on, I advise you to use good antiviruses and update them regularly (several times a day)!
-
-Don't be mad at me, everyone has their own work.
-Farewell.
-
+Looks good, 0day has no complaints and this passes all the current
+unit tests. I'll get it pushed out for v5.4 consideration. Thanks
+Aneesh!
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
