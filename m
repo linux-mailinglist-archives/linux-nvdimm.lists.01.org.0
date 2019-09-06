@@ -2,43 +2,26 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 140ECAB247
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Sep 2019 08:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3FDAB700
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Sep 2019 13:18:11 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A8B0E21962301;
-	Thu,  5 Sep 2019 23:16:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B610A20294F10;
+	Fri,  6 Sep 2019 04:19:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Permerror (SPF Permanent Error: Too many DNS lookups)
- identity=mailfrom; client-ip=106.12.150.83; helo=bhd3.sosung.net;
- envelope-from=zhan.bixia@ed.swmail.top; receiver=linux-nvdimm@lists.01.org 
-Received: from bhd3.sosung.net (bhd3.sosung.net [106.12.150.83])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D0B892027725A
- for <linux-nvdimm@lists.01.org>; Thu,  5 Sep 2019 23:16:51 -0700 (PDT)
-Received: from edm01.bossedm.com (edm01.chinaemail.cn [180.76.132.54])
- by bhd3.sosung.net (Postfix) with ESMTPS id D90D0107C54
- for <linux-nvdimm@lists.01.org>; Tue,  3 Sep 2019 17:04:25 +0800 (CST)
-Received: from unknown (unknown [127.0.0.1])
- by edm01.bossedm.com (Bossedm) with SMTP id C701B12134C
- for <linux-nvdimm@lists.01.org>; Tue,  3 Sep 2019 17:03:41 +0800 (CST)
-Date: Tue,  3 Sep 2019 17:03:41 +0800 (CST)
-From: "=?utf-8?B?WXVtaSA=?=" <yumi@hardfindtronics.com>
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=85.115.248.39;
+ helo=[85.115.248.39]; envelope-from=linux-nvdimm@lists.01.org;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from [85.115.248.39] (unknown [85.115.248.39])
+ by ml01.01.org (Postfix) with ESMTP id 0FA1D2021B6E2
+ for <linux-nvdimm@lists.01.org>; Fri,  6 Sep 2019 04:18:58 -0700 (PDT)
+Date: 6 Sep 2019 16:09:03 +0200
+From: <linux-nvdimm@lists.01.org>
+X-Priority: 3
+Message-ID: <004384063.201909061618@lists.01.org>
 To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?UmU6IFJGUSBNQ1AyNTE1VC1JL1NUIDUwMHBjcw==?=
-Mime-Version: 1.0
-X-Notify-Mail: No
-Message-ID: <1883#47401#linux-nvdimm@lists.01.org#e358f98847f1ee53ccc515b2fd0679bf#1567501421606>
-X-Iszbb: Yes
-X-ZZY-MESSAGE-ID: FA163E85126B5A250000000000006D2C6E5D000000000C00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ed.swmail.top; s=s9527; 
- t=1567501421; bh=0G8wYkyQvIdrlRW1tjPNneDw49aNukGi6Q9nyB8elWs=; 
- h=Date:From:Subject:Message-ID;
- b=W84GeDUPOky2o4Ghpz7ggD3IZZEjzBaKBJYGZG+ojSi5r0hooV6BQ7txvQIG/W1cj
- WHrNQpp9Nnv05QLv0ISsnJGTrJrWXnKD8inWpvl+QdvBZyPr6KY0jlY/7SukJ30v+a
- t3Za7rqHd+CX6tx1pIQAmkrbQ+WZLAaupmEm/oW0=
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
+Subject: Change your password immediately. Your account has been hacked.
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,43 +33,66 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Reply-To: yumi@hardfindtronics.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-DQoNCg0KDQoNCg0KCQ0KCQkmbmJzcDsmbmJzcDtIYXJkJm5ic3A7RmluZCZuYnNwO0VsZWN0cm9u
-aWNzIEx0ZC4NCnNvdXJjaW5nIGhhcmQgZmluZCBlbGVjdHJvbmljIGNvbXBvbmVudHMgDQoJDQoJ
-DQoJCSZuYnNwOyANCgkNCgkNCgkJRGVhciBDdXN0b21lciwgDQoJDQoJDQoJCU5pY2UgZGF5IQ0K
-VGhpcyBpcyBZdW1pIGZyb20gSGFyZCBGaW5kIEVsZWN0cm9uaWNzIEx0ZCh3d3cuaGFyZGZpbmRl
-bGVjdHJvbmljcy5jb20pJm5ic3A7d2hpY2ggaXMgYSBwcm9mZXNzaW9uYWwgZWxlY3Ryb25pY3Mg
-ZGlzdHJpYnV0b3Igd2l0aCAxMCB5ZWFycyBvZiBleHBlcmllbmNlcy4mbmJzcDsNCldlIGFyZSBn
-b29kIGF0Jm5ic3A7SGFyZCBGaW5kJm5ic3A7ZWxlY3Ryb25pYyBjb21wb25lbnRz77yaDQoNCklD
-OiBYaWxpbngsIEFsdGVyYSwgVEksIExULCBBRCxNaWNyb24uLg0KTUxDQyBDYXBhY2l0b3I6IE11
-cmF0YSwgU2Ftc3VuZywgWWFnZW8sIEFWWCwgS2VtZXQuLg0KRGlvZGUmYW1wO1RyYW5zaXN0b3I6
-IFZpc2hheSxUSSxTVC4uDQoNCklmIHlvdSZuYnNwO25lZWQmbmJzcDtzYW1wbGUsIHBscyBmZWVs
-IGZyZWUgdG8gY29udGFjdCBtZS4mbmJzcDsNClBscyBjaGVjayBvdXIgaG90IG9mZmVyLHdhaXQg
-Zm9yIHlvdXIga2luZGx5IFJGUTogDQoJDQoJDQoJCSZuYnNwOyANCgkNCgkNCgkJTUNQMTUyNVQt
-SS9UVCZuYnNwOyBNSUNST0NISVAgMjAxOCsgMC4yMnVzZCZuYnNwOyBTT1QtMjMmbmJzcDsgIA0K
-TUNQMTU0MVQtSS9UVCBNSUNST0NISVAgMjAxOCsgMC4yNXVzZCZuYnNwOyBTT1QyMy0zIA0KTUNQ
-MjUxNVQtSS9TVCBNSUNST0NISVAgMjAxOCsgMC42dXNkIDIwVFNTT1AgDQpNQ1A5NzAwVC1FL1RU
-IE1JQ1JPQ0hJUCAyMDE4KyAwLjE0NHVzZCBTT1QyMy0zICANCk1DUDYwNFQtSS9TTCZuYnNwOyBN
-SUNST0NISVAgMjAxOSsgMC4zMXVzZCAxNFNPSUMgDQoyNUxDMTAyNC1JL1NNIE1JQ1JPQ0hJUCAy
-MDE4KyAxdXNkIDhTT0lDIA0KOTNMQzU2QlQtSS9PVCZuYnNwOyBNSUNST0NISVAgMjAxOCsgMC4x
-NjJ1c2QgU09UMjMtNiANCjI0TEM2NC1JL1NOJm5ic3A7IE1JQ1JPQ0hJUCAyMDE4KyZuYnNwOyAw
-LjEzdXNkIDhTT0lDIA0KDQogDQoJDQoJDQoJCUtlZXAgc21pbGluZyBldmVyeSBkYXkmbmJzcDso
-Ku+/oynvv6MpIA0KCQ0KCQ0KCQlZdW1pJm5ic3A7KFByb2R1Y3QmbmJzcDtNYW5hZ2VyKSANCgkN
-CgkNCgkJSGFyZCZuYnNwO0ZpbmQmbmJzcDtFbGVjdHJvbmljcyBMdGQuDQpzb3VyY2luZyBoYXJk
-IGZpbmQgZWxlY3Ryb25pYyBjb21wb25lbnRzDQoNCjMxNSwgU2hhaGUgUm9kLCBMb25nIEdhbmcg
-RGlzdHJpY3QsIFNoZW56aGVuLCBDTiwgNTE4MDAwDQpUZWw6ICs4Ni03NTUtODQxOCA4MTAzJm5i
-c3A7Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7DQpTa3lwZSAmYW1wOyBFbWFpbDombmJzcDt5
-dW1pQGhhcmRmaW5kZWxlY3Ryb25pY3MuY29tDQpMaW5rZWRsbjp3d3cubGlua2VkaW4uY29tL2lu
-L3l1bWktZ2FvDQpGYWNlYm9vazombmJzcDtmYWNlYm9vay5jb20vWXVtaWhhcmRmaW5kDQombmJz
-cDsgDQoJDQoJDQoJCUlmIHlvdSBkb24ndCB3YW50IHRvIHJlY2VpdmUgdGhpcyBtYWlsLCBwbHMg
-cmV0dXJuIHdpdGggInJlbW92ZSIgb24gdGhlIHN1YmplY3QgbGluZS4gDQoJDQoJDQoJCSZuYnNw
-OyANCgkNCg0KDQoNCg0KCeaho+mTuue9keKAlOKAlOWcqOe6v+aWh+aho+WFjei0ueWkhOeQhiAN
-CuWmguaenOS9oOS4jeaDs+WGjeaUtuWIsOivpeS6p+WTgeeahOaOqOiNkOmCruS7tu+8jOivt+eC
-ueWHu+i/memHjOmAgOiuogpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
-cmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
+I greet you!
+
+I have bad news for you.
+11/06/2019 - on this day I hacked your operating system and got full access to your account linux-nvdimm@lists.01.org
+
+It is useless to change the password, my malware intercepts it every time.
+
+How it was:
+In the software of the router to which you were connected that day, there was a vulnerability.
+I first hacked this router and placed my malicious code on it.
+When you entered in the Internet, my trojan was installed on the operating system of your device.
+
+After that, I made a full dump of your disk (I have all your address book, history of viewing sites, all files, phone numbers and addresses of all your contacts).
+
+A month ago, I wanted to lock your device and ask for a small amount of money to unlock.
+But I looked at the sites that you regularly visit, and came to the big delight of your favorite resources.
+I'm talking about sites for adults.
+
+I want to say - you are a big pervert. You have unbridled fantasy!
+
+After that, an idea came to my mind.
+I made a screenshot of the intimate website where you have fun (you know what it is about, right?).
+After that, I took off your joys (using the camera of your device). It turned out beautifully, do not hesitate.
+
+I am strongly belive that you would not like to show these pictures to your relatives, friends or colleagues.
+I think $700 is a very small amount for my silence.
+Besides, I spent a lot of time on you!
+
+I accept money only in Bitcoins.
+My BTC wallet: 1PKQvF9qK3zuB8KVwmDVDUxtpUVfE1P6fp
+
+You do not know how to replenish a Bitcoin wallet?
+In any search engine write "how to send money to btc wallet".
+It's easier than send money to a credit card!
+
+For payment you have a little more than two days (exactly 50 hours).
+Do not worry, the timer will start at the moment when you open this letter. Yes, yes .. it has already started!
+
+After payment, my virus and dirty photos with you self-destruct automatically.
+Narrative, if I do not receive the specified amount from you, then your device will be blocked, and all your contacts will receive a photos with your "joys".
+
+I want you to be prudent.
+- Do not try to find and destroy my virus! (All your data is already uploaded to a remote server)
+- Do not try to contact me (this is not feasible, I sent you an email from your account)
+- Various security services will not help you; formatting a disk or destroying a device will not help either, since your data is already on a remote server.
+
+P.S. I guarantee you that I will not disturb you again after payment, as you are not my single victim.
+ This is a hacker code of honor.
+
+From now on, I advise you to use good antiviruses and update them regularly (several times a day)!
+
+Don't be mad at me, everyone has their own work.
+Farewell.
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
