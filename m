@@ -2,55 +2,30 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFADAC122
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Sep 2019 22:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8616BAC253
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Sep 2019 00:07:48 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6BE0920294F2F;
-	Fri,  6 Sep 2019 13:01:01 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D7DDF20294F32;
+	Fri,  6 Sep 2019 15:08:33 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F18CF20216B71
- for <linux-nvdimm@lists.01.org>; Fri,  6 Sep 2019 13:01:00 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id b2so6855583otq.10
- for <linux-nvdimm@lists.01.org>; Fri, 06 Sep 2019 13:00:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:from:date:message-id:subject:to:cc;
- bh=a797GSlScu7TceDm8JT9sMdOWrDRiCOoWgKbIGvEAOE=;
- b=ivjq879MyPjXeuWLQbzp6PpkI+gFVrJF92I5JYQYSOI7wweZURIWNxqsrewFxIlMjl
- YWKsMn04ooxcUoTEoyfzZg6SR3Aq0v8gQo+aZA8xLWmZaxq73KIaJg9LwlKONx3AW1we
- mG2Y6UFWVxanzI+wywN8oQndM4KFLqAuxL4DIJCVrnqvPuq+NVj7Op69hqa+CvdR20ko
- Weyv5tkeJ3jU88p17+WpZqAGcDQo0/aSzZuymFCRk7RhW7VXHcbZ6zfozPz8JukXPI8t
- +r3h58TsR9m5aFf1qMlPJ8+9FsNEWK3id0TM/FzBlZbnb7bzujkLIAVOiAh0nhH242/t
- Wx+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
- bh=a797GSlScu7TceDm8JT9sMdOWrDRiCOoWgKbIGvEAOE=;
- b=TN9TmjNP2LHN+PujxcTxtozhsL7hW3V27Is9VZkhYi9Xhgn3HxdpiJx7ngno1Fgjw7
- 7OvZ8YB4PzxPWeGCN+ip35IyF4b0D0KOYNJXtdnpvtHa9KacKVjYTjwNAym0dIGaWEoM
- r7jBRpFPth3wwBOTdUfT+0GEVHMTeWckdu0z2HOnWWcUmhxsv73tgJ4Xi1y7ol5hldMH
- DuSvA6vBFbkHhXGxok4Ga/g5ZPG2DsJAH0gn+BNWh7Xs7TimEAk3eHlf1k889xwwvuCN
- iLHyp2TRwvkrjLx5/hkXzknz6pJopPM1N2krfBuT0PQDshCvC3ALB+qPDy1QUd0fRAgG
- F++g==
-X-Gm-Message-State: APjAAAULTJuxejUqCGJ9dalB3F37q0oa73wFJQSk/ieUVcG1TDTkmIPX
- I5mb2IlZ1sjzmkxIbMYjEvEPMLjVNXD5dLc0Y9Lnew==
-X-Google-Smtp-Source: APXvYqwwyf89TmMvDL8rpbSvr9eAas+QJDsbwLJoO4zMfL6iQ4m63v0JMuzagoFlmJsftEQgCE1iprUTYWm3zoEVJcU=
-X-Received: by 2002:a9d:6d15:: with SMTP id o21mr9234698otp.363.1567800011694; 
- Fri, 06 Sep 2019 13:00:11 -0700 (PDT)
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=120.229.105.45;
+ helo=bqqk.com; envelope-from=icbm@sjoy.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from bqqk.com (unknown [120.229.105.45])
+ by ml01.01.org (Postfix) with ESMTP id 48A5320216B95
+ for <linux-nvdimm@lists.01.org>; Fri,  6 Sep 2019 15:08:30 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA;
+ Sat, 07 Sep 2019 02:43:01 +0800
+Message-ID: 8c35d372-fd79-4514-8953-119a43a77afb
 MIME-Version: 1.0
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 6 Sep 2019 13:00:00 -0700
-Message-ID: <CAPcyv4jDWgZDJTAgghrFX1MQXPJX_6jiqsmx9sQUOL7ZaWtk+w@mail.gmail.com>
-Subject: [GIT PULL] libnvdimm fix for v5.3-rc8
-To: Linus Torvalds <torvalds@linux-foundation.org>
+From: =?utf-8?Q?=E7=B2=BE=E5=87=86=E6=89=BE=E5=AE=A2=E6=88=B7=2D=2D=2D?=
+ =?utf-8?Q?=E4=B8=9A=E5=8A=A1=E5=A5=BD=E5=B8=AE=E6=89=8B?=
+ <salestrade86@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 7 Sep 2019 02:43:01 +0800
+Subject: =?utf-8?B?57K+5YeG5om+5a6i5oi3LS0t5Lia5Yqh5aW95biu5omL?=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,50 +37,30 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Hi Linus, please pull from:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fix-5.3-rc8
-
-...to receive a fix for a regression introduced in v5.3-rc1. The
-latest version has shipped in -next with no reported issues.
-
----
-
-The following changes since commit a55aa89aab90fae7c815b0551b07be37db359d76:
-
-  Linux 5.3-rc6 (2019-08-25 12:01:23 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
-tags/libnvdimm-fix-5.3-rc8
-
-for you to fetch changes up to 274b924088e93593c76fb122d24bc0ef18d0ddf4:
-
-  libnvdimm/pfn: Fix namespace creation on misaligned addresses
-(2019-08-28 10:33:13 -0700)
-
-----------------------------------------------------------------
-libnvdimm fix v5.3-rc8
-
-- Restore support for 1GB alignment namespaces, truncate the end of
-  misaligned namespaces.
-
-----------------------------------------------------------------
-Jeff Moyer (1):
-      libnvdimm/pfn: Fix namespace creation on misaligned addresses
-
- drivers/nvdimm/pfn_devs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Jm5ic3A7DQrkvaDlpb0NCmxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNCuW+iOmrmOWFtOiupOiv
+huS9oO+8jOS9oOiDveaUtuWIsOaIkeeahOeUtemCru+8jOivtOaYjuS9oOeahOmCrueuseWcqOaf
+kOS6m+W5s+WPsOacieWFrOW4g++8jCZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwO+avlOWmgu+8mui0teWFrOWPuOe9keermeS4iu+8jEZhY2Vib29r77yM6K665Z2b5LiK
+77yM5bGV5Lya5LiK77yMVHdpdHRlcu+8jOmihuiLse+8jOaLm+iBmOe9keetiQ0K5oiR5Lus6YCa
+6L+H6L2v5Lu277yM5oqK5L2g55qE6YKu566x5pWw5o2u5o+Q5Y+W5Ye65p2l77yM54S25ZCO6YCa
+6L+H6YKu5Lu25oqK5oiR5Lus55qE5pyN5Yqh5o6o6YCB5Yiw5L2g6YKu566x55qEJm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A75L2g6IO9
+5pS25Yiw5oiR5Lus55qE55S16YKu77yM6YKj5L2g5Lmf5Y+v5Lul6YCa6L+H5oiR5Lus55qE6L2v
+5Lu25o6o5bm/5L2g55qE5Lqn5ZOBDQrlhY3otLnluK7kvaDmn6Xmib7mvZzlnKjlrqLmiLfotJ/o
+tKPkurrpgq7nrrHvvIzmj5DkvpvmvZzlnKjlrqLmiLfpgq7nrrHmiJbogIXnvZHlnYDljbPlj68N
+CiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyDmj5DkvpvlvIDlj5Hlm73lpJbl
+rqLmiLfova/ku7bvvIzovpPlhaXkuqflk4HlkI3mkJzntKLvvIzlhajnkIPlhazlj7jlsL3mlLbn
+nLzlupXjgILlpoLmnInpkojlr7nmgKflhazlj7jvvIzml6Dms5Xmib7liLDotJ/otKPkurrnmoTv
+vIzpgJrov4fmiJHnmoTlpJbotLjova/ku7bvvIzovpPlhaXlhazlj7jlkI3vvIwxMOenkumSn+WG
+heW4ruS9oOaMluaOmOWIsOi0n+i0o+S6uumCrueuse+8jOS5n+iuuOS9oOS8mui0qOeWke+8jOac
+iei/meS5iOelnuWlh+WQl++8n+WPr+S7pee7meWHoOS4quWFrOWPuOWQjeaIkeW4ruS9oOWFjei0
+ueafpeaJvuOAgg0KJm5ic3A7DQombmJzcDsmbmJzcDvogZTns7vmiJHku6zvvJombmJzcDsgRS1t
+YWls77yac2FsZXN0cmFkZTg2QGhvdG1haWwuY29tJm5ic3A7IFEmbmJzcDsgUTogMjIzNDM0MDgy
+MwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0
+cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
