@@ -2,11 +2,11 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009BDADBFD
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  9 Sep 2019 17:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 299D9AE3B6
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Sep 2019 08:29:48 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DEC6C21A070B6;
-	Mon,  9 Sep 2019 08:18:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 20E3F21962301;
+	Mon,  9 Sep 2019 23:30:07 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -16,63 +16,62 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 414B021A07094
- for <linux-nvdimm@lists.01.org>; Mon,  9 Sep 2019 08:18:37 -0700 (PDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x89FG9wF041819
- for <linux-nvdimm@lists.01.org>; Mon, 9 Sep 2019 11:18:11 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2uws7w02tw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linux-nvdimm@lists.01.org>; Mon, 09 Sep 2019 11:18:10 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
- Mon, 9 Sep 2019 16:18:09 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 9 Sep 2019 16:18:06 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x89FI5se29163688
+ by ml01.01.org (Postfix) with ESMTPS id 3756A2020F946
+ for <linux-nvdimm@lists.01.org>; Mon,  9 Sep 2019 23:30:06 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8A6TZt8145120; Tue, 10 Sep 2019 02:29:41 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ux5hthmwr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Sep 2019 02:29:40 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x8A6TaX4145196;
+ Tue, 10 Sep 2019 02:29:36 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 2ux5hthmdw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Sep 2019 02:29:36 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8A6RIEO027725;
+ Tue, 10 Sep 2019 06:28:40 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma03dal.us.ibm.com with ESMTP id 2uv4686r1x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 10 Sep 2019 06:28:40 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8A6SdZX34996544
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Sep 2019 15:18:05 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0C77711C04A;
- Mon,  9 Sep 2019 15:18:05 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 243E611C050;
- Mon,  9 Sep 2019 15:18:04 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.41.57])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  9 Sep 2019 15:18:03 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
+ Tue, 10 Sep 2019 06:28:39 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1071BBE053;
+ Tue, 10 Sep 2019 06:28:39 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5DA6DBE05A;
+ Tue, 10 Sep 2019 06:28:36 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.41.80])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 10 Sep 2019 06:28:35 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: Re: [PATCH v5] mm/nvdimm: Fix endian conversion =?utf-8?Q?issues?=
- =?utf-8?Q?=C2=A0?=
-In-Reply-To: <20190809074726.27815-1-aneesh.kumar@linux.ibm.com>
-References: <20190809074726.27815-1-aneesh.kumar@linux.ibm.com>
-Date: Mon, 09 Sep 2019 20:48:02 +0530
+To: dan.j.williams@intel.com, mpe@ellerman.id.au, oohall@gmail.com
+Subject: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
+Date: Tue, 10 Sep 2019 11:58:25 +0530
+Message-Id: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-x-cbid: 19090915-0020-0000-0000-00000369D8BC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19090915-0021-0000-0000-000021BF5A85
-Message-Id: <871rwp1ot1.fsf@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-09_06:, , signatures=0
+ definitions=2019-09-10_06:, , signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
  mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1909090155
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909100063
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,91 +83,126 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+With PFN_MODE_PMEM namespace, the memmap area is allocated from the device
+area. Some architectures map the memmap area with large page size. On
+architectures like ppc64, 16MB page for memap mapping can map 262144 pfns.
+This maps a namespace size of 16G.
 
-> nd_label->dpa issue was observed when trying to enable the namespace created
-> with little-endian kernel on a big-endian kernel. That made me run
-> `sparse` on the rest of the code and other changes are the result of that.
->
-> Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
-> Fixes: 9dedc73a4658 ("libnvdimm/btt: Fix LBA masking during 'free list' population")
->
-> Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
-> Changes from V4:
-> * Rebase to latest kernel
->
->  drivers/nvdimm/btt.c            | 8 ++++----
->  drivers/nvdimm/namespace_devs.c | 7 ++++---
->  2 files changed, 8 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> index a8d56887ec88..3e9f45aec8d1 100644
-> --- a/drivers/nvdimm/btt.c
-> +++ b/drivers/nvdimm/btt.c
-> @@ -392,9 +392,9 @@ static int btt_flog_write(struct arena_info *arena, u32 lane, u32 sub,
->  	arena->freelist[lane].sub = 1 - arena->freelist[lane].sub;
->  	if (++(arena->freelist[lane].seq) == 4)
->  		arena->freelist[lane].seq = 1;
-> -	if (ent_e_flag(ent->old_map))
-> +	if (ent_e_flag(le32_to_cpu(ent->old_map)))
->  		arena->freelist[lane].has_err = 1;
-> -	arena->freelist[lane].block = le32_to_cpu(ent_lba(ent->old_map));
-> +	arena->freelist[lane].block = ent_lba(le32_to_cpu(ent->old_map));
->  
->  	return ret;
->  }
-> @@ -560,8 +560,8 @@ static int btt_freelist_init(struct arena_info *arena)
->  		 * FIXME: if error clearing fails during init, we want to make
->  		 * the BTT read-only
->  		 */
-> -		if (ent_e_flag(log_new.old_map) &&
-> -				!ent_normal(log_new.old_map)) {
-> +		if (ent_e_flag(le32_to_cpu(log_new.old_map)) &&
-> +		    !ent_normal(le32_to_cpu(log_new.old_map))) {
->  			arena->freelist[i].has_err = 1;
->  			ret = arena_clear_freelist_error(arena, i);
->  			if (ret)
-> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-> index a9c76df12cb9..f779cb2b0c69 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1987,7 +1987,7 @@ static struct device *create_namespace_pmem(struct nd_region *nd_region,
->  		nd_mapping = &nd_region->mapping[i];
->  		label_ent = list_first_entry_or_null(&nd_mapping->labels,
->  				typeof(*label_ent), list);
-> -		label0 = label_ent ? label_ent->label : 0;
-> +		label0 = label_ent ? label_ent->label : NULL;
->  
->  		if (!label0) {
->  			WARN_ON(1);
-> @@ -2322,8 +2322,9 @@ static struct device **scan_labels(struct nd_region *nd_region)
->  			continue;
->  
->  		/* skip labels that describe extents outside of the region */
-> -		if (nd_label->dpa < nd_mapping->start || nd_label->dpa > map_end)
-> -			continue;
-> +		if (__le64_to_cpu(nd_label->dpa) < nd_mapping->start ||
-> +		    __le64_to_cpu(nd_label->dpa) > map_end)
-> +				continue;
->  
->  		i = add_namespace_resource(nd_region, nd_label, devs, count);
->  		if (i < 0)
-> -- 
-> 2.21.0
+When populating memmap region with 16MB page from the device area,
+make sure the allocated space is not used to map resources outside this
+namespace. Such usage of device area will prevent a namespace destroy.
 
-Gentle reminder.
+Add resource end pnf in altmap and use that to check if the memmap area
+allocation can map pfn outside the namespace. On ppc64 in such case we fallback
+to allocation from memory.
 
-Dan - any update on this?
+This fix kernel crash reported below:
 
--aneesh
+[  132.034989] WARNING: CPU: 13 PID: 13719 at mm/memremap.c:133 devm_memremap_pages_release+0x2d8/0x2e0
+[  133.464754] BUG: Unable to handle kernel data access at 0xc00c00010b204000
+[  133.464760] Faulting instruction address: 0xc00000000007580c
+[  133.464766] Oops: Kernel access of bad area, sig: 11 [#1]
+[  133.464771] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+.....
+[  133.464901] NIP [c00000000007580c] vmemmap_free+0x2ac/0x3d0
+[  133.464906] LR [c0000000000757f8] vmemmap_free+0x298/0x3d0
+[  133.464910] Call Trace:
+[  133.464914] [c000007cbfd0f7b0] [c0000000000757f8] vmemmap_free+0x298/0x3d0 (unreliable)
+[  133.464921] [c000007cbfd0f8d0] [c000000000370a44] section_deactivate+0x1a4/0x240
+[  133.464928] [c000007cbfd0f980] [c000000000386270] __remove_pages+0x3a0/0x590
+[  133.464935] [c000007cbfd0fa50] [c000000000074158] arch_remove_memory+0x88/0x160
+[  133.464942] [c000007cbfd0fae0] [c0000000003be8c0] devm_memremap_pages_release+0x150/0x2e0
+[  133.464949] [c000007cbfd0fb70] [c000000000738ea0] devm_action_release+0x30/0x50
+[  133.464955] [c000007cbfd0fb90] [c00000000073a5a4] release_nodes+0x344/0x400
+[  133.464961] [c000007cbfd0fc40] [c00000000073378c] device_release_driver_internal+0x15c/0x250
+[  133.464968] [c000007cbfd0fc80] [c00000000072fd14] unbind_store+0x104/0x110
+[  133.464973] [c000007cbfd0fcd0] [c00000000072ee24] drv_attr_store+0x44/0x70
+[  133.464981] [c000007cbfd0fcf0] [c0000000004a32bc] sysfs_kf_write+0x6c/0xa0
+[  133.464987] [c000007cbfd0fd10] [c0000000004a1dfc] kernfs_fop_write+0x17c/0x250
+[  133.464993] [c000007cbfd0fd60] [c0000000003c348c] __vfs_write+0x3c/0x70
+[  133.464999] [c000007cbfd0fd80] [c0000000003c75d0] vfs_write+0xd0/0x250
+
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/mm/init_64.c | 17 ++++++++++++++++-
+ drivers/nvdimm/pfn_devs.c |  2 ++
+ include/linux/memremap.h  |  1 +
+ 3 files changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+index a44f6281ca3a..4e08246acd79 100644
+--- a/arch/powerpc/mm/init_64.c
++++ b/arch/powerpc/mm/init_64.c
+@@ -172,6 +172,21 @@ static __meminit void vmemmap_list_populate(unsigned long phys,
+ 	vmemmap_list = vmem_back;
+ }
+ 
++static bool altmap_cross_boundary(struct vmem_altmap *altmap, unsigned long start,
++				unsigned long page_size)
++{
++	unsigned long nr_pfn = page_size / sizeof(struct page);
++	unsigned long start_pfn = page_to_pfn((struct page *)start);
++
++	if ((start_pfn + nr_pfn) > altmap->end_pfn)
++		return true;
++
++	if (start_pfn < altmap->base_pfn)
++		return true;
++
++	return false;
++}
++
+ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		struct vmem_altmap *altmap)
+ {
+@@ -194,7 +209,7 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
+ 		 * fail due to alignment issues when using 16MB hugepages, so
+ 		 * fall back to system memory if the altmap allocation fail.
+ 		 */
+-		if (altmap) {
++		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
+ 			p = altmap_alloc_block_buf(page_size, altmap);
+ 			if (!p)
+ 				pr_debug("altmap block allocation failed, falling back to system memory");
+diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+index 3e7b11cf1aae..a616d69c8224 100644
+--- a/drivers/nvdimm/pfn_devs.c
++++ b/drivers/nvdimm/pfn_devs.c
+@@ -618,9 +618,11 @@ static int __nvdimm_setup_pfn(struct nd_pfn *nd_pfn, struct dev_pagemap *pgmap)
+ 	struct nd_namespace_common *ndns = nd_pfn->ndns;
+ 	struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
+ 	resource_size_t base = nsio->res.start + start_pad;
++	resource_size_t end = nsio->res.end - end_trunc;
+ 	struct vmem_altmap __altmap = {
+ 		.base_pfn = init_altmap_base(base),
+ 		.reserve = init_altmap_reserve(base),
++		.end_pfn = PHYS_PFN(end),
+ 	};
+ 
+ 	memcpy(res, &nsio->res, sizeof(*res));
+diff --git a/include/linux/memremap.h b/include/linux/memremap.h
+index f8a5b2a19945..c70996fe48c8 100644
+--- a/include/linux/memremap.h
++++ b/include/linux/memremap.h
+@@ -17,6 +17,7 @@ struct device;
+  */
+ struct vmem_altmap {
+ 	const unsigned long base_pfn;
++	const unsigned long end_pfn;
+ 	const unsigned long reserve;
+ 	unsigned long free;
+ 	unsigned long align;
+-- 
+2.21.0
 
 _______________________________________________
 Linux-nvdimm mailing list
