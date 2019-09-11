@@ -1,94 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFDDAFC19
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Sep 2019 14:03:51 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E70FDB00C2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Sep 2019 18:03:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D396021962301;
-	Wed, 11 Sep 2019 05:03:58 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 89C7521962301;
+	Wed, 11 Sep 2019 09:03:11 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jthumshirn@suse.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+ client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 51FB4202BCBB7
- for <linux-nvdimm@lists.01.org>; Wed, 11 Sep 2019 05:03:56 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id DD00AAC16;
- Wed, 11 Sep 2019 12:03:44 +0000 (UTC)
-Subject: Re: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- dan.j.williams@intel.com, mpe@ellerman.id.au, oohall@gmail.com
-References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
-From: Johannes Thumshirn <jthumshirn@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=jthumshirn@suse.de; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <26b12cb9-3062-2769-74f4-c5fce70d45a7@suse.de>
-Date: Wed, 11 Sep 2019 14:03:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ml01.01.org (Postfix) with ESMTPS id BB61421962301
+ for <linux-nvdimm@lists.01.org>; Wed, 11 Sep 2019 09:03:10 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2019 09:03:00 -0700
+X-IronPort-AV: E=Sophos;i="5.64,492,1559545200"; d="scan'208";a="268788464"
+Received: from dwillia2-desk3.jf.intel.com (HELO
+ dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+ by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2019 09:03:00 -0700
+Subject: [PATCH v2 0/3] Maintainer Entry Profiles
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-kernel@vger.kernel.org
+Date: Wed, 11 Sep 2019 08:48:42 -0700
+Message-ID: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
-In-Reply-To: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
-Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,20 +45,80 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ ksummit-discuss@lists.linuxfoundation.org, Jonathan Corbet <corbet@lwn.net>,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, linux-nvdimm@lists.01.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Olof Johansson <olof@lixom.net>, Steve French <stfrench@microsoft.com>,
+ Joe Perches <joe@perches.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Dmitry Vyukov <dvyukov@google.com>, "Tobin C. Harding" <me@tobin.cc>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-TG9va3MgZ29vZCwKUmV2aWV3ZWQtYnk6IEpvaGFubmVzIFRodW1zaGlybiA8anRodW1zaGlybkBz
-dXNlLmRlPgoKLS0gCkpvaGFubmVzIFRodW1zaGlybiAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICBTVVNFIExhYnMgRmlsZXN5c3RlbXMKanRodW1zaGlybkBzdXNlLmRlICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICArNDkgOTExIDc0MDUzIDY4OQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9u
-cyBHZXJtYW55IEdtYkgKTWF4ZmVsZHN0ci4gNQo5MDQwOSBOw7xybmJlcmcKR2VybWFueQooSFJC
-IDI0NzE2NSwgQUcgTcO8bmNoZW4pCktleSBmaW5nZXJwcmludCA9IEVDMzggOUNBQiBDMkM0IEYy
-NUQgODYwMCBEMEQwIDAzOTMgOTY5RCAyRDc2IDA4NTAKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1u
-dmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8v
-bGludXgtbnZkaW1tCg==
+Changes since v1 [1]:
+- Simplify the profile to a hopefully non-controversial set of
+  attributes that address the most common sources of contributor
+  confusion, or maintainer frustration.
+- Rename "Subsystem Profile" to "Maintainer Entry Profile". Not every
+  entry in MAINTAINERS represents a full subsystem. There may be driver
+  local considerations to communicate to a submitter in addition to wider
+  subsystem guidelines. 
+- Delete the old P: tag in MAINTAINERS rather than convert to a new E:
+  tag (Joe Perches).
+[1]:  http://lore.kernel.org/r/154225759358.2499188.15268218778137905050.stgit@dwillia2-desk3.amr.corp.intel.com
+
+---
+
+At last years Plumbers Conference I proposed the Maintainer Entry
+Profile as a document that a maintainer can provide to set contributor
+expectations and provide fodder for a discussion between maintainers
+about the merits of different maintainer policies.
+
+For those that did not attend, the goal of the Maintainer Entry Profile,
+and the Maintainer Handbook more generally, is to provide a desk
+reference for maintainers both new and experienced. The session
+introduction was:
+
+    The first rule of kernel maintenance is that there are no hard and
+    fast rules. That state of affairs is both a blessing and a curse. It
+    has served the community well to be adaptable to the different
+    people and different problem spaces that inhabit the kernel
+    community. However, that variability also leads to inconsistent
+    experiences for contributors, little to no guidance for new
+    contributors, and unnecessary stress on current maintainers. There
+    are quite a few of people who have been around long enough to make
+    enough mistakes that they have gained some hard earned proficiency.
+    However if the kernel community expects to keep growing it needs to
+    be able both scale the maintainers it has and ramp new ones without
+    necessarily let them make a decades worth of mistakes to learn the
+    ropes. 
+
+To be clear, the proposed document does not impose or suggest new
+rules. Instead it provides an outlet to document the unwritten rules
+and policies in effect for each subsystem, and that each subsystem
+might decide differently for whatever reason.
+
+
+---
+
+Dan Williams (3):
+      MAINTAINERS: Reclaim the P: tag for Maintainer Entry Profile
+      Maintainer Handbook: Maintainer Entry Profile
+      libnvdimm, MAINTAINERS: Maintainer Entry Profile
+
+
+ Documentation/maintainer/index.rst                 |    1 
+ .../maintainer/maintainer-entry-profile.rst        |   99 ++++++++++++++++++++
+ Documentation/nvdimm/maintainer-entry-profile.rst  |   64 +++++++++++++
+ MAINTAINERS                                        |   20 ++--
+ 4 files changed, 175 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/maintainer/maintainer-entry-profile.rst
+ create mode 100644 Documentation/nvdimm/maintainer-entry-profile.rst
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
