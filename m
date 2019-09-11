@@ -2,60 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C52AE651
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Sep 2019 11:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 975E7AF3EC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Sep 2019 03:23:10 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 35255202BB9B5;
-	Tue, 10 Sep 2019 02:09:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2F68521962301;
+	Tue, 10 Sep 2019 18:23:23 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=62.76.41.185; helo=gp-card.space; envelope-from=info@gp-card.space;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from gp-card.space (gp-card.space [62.76.41.185])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 66E7220294F07
- for <linux-nvdimm@lists.01.org>; Tue, 10 Sep 2019 02:09:26 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id y39so17383931ota.7
- for <linux-nvdimm@lists.01.org>; Tue, 10 Sep 2019 02:09:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=gzySq2KgU23Lz62leK1/JYGc7N1eDn8ko0/2bOX2/jA=;
- b=QYcl9tvm/E8Bmj+3/7A3sDwjTV1JrxFts8PHtnSfl9Bfcoq69qypc9U89qKqe0f2EQ
- uuEh2GnVcws7kS/Fagzex3PDMNhSLBJJCrY3T2z0ANeyE9jsY53teLqUKwYt/vtafWQS
- ysom1jPbg2ko8BjpXumMqfTLNJTH0iIqMIwLTQwxodyLaz6ozOgvmz7k5fQWUl4L1Uwa
- E27aXddAqDmNOG76TH4rj5U6zOgHz1WW1SaIE8IBJmKVYCoxKXGd42J82Q8Mf9ArWfjr
- CwkuOzAYgnlLdBClYwWOtChPPBl0xkoXSCdbGM6HGLduIhfJo7j1t4egYJ+EuC0QN7yn
- n19Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=gzySq2KgU23Lz62leK1/JYGc7N1eDn8ko0/2bOX2/jA=;
- b=J6D7a3721aCNi349tWu3PeKiL3CntCpc/PFVaUinKKWwOujVBekthOq4Y3iG1eYtan
- M06kKxFOBeQ1gmAMwnSsPZqpfPGFFyPdwNcGialW4C5p8qe+YI8sNxdmnmirqEgSCMtt
- 9BiX/vJMhrLtgiI9kGfS/edoYknEwW2ocaH0WOaFYVA1REMktHC2OxmJTBdpJfT2Sg87
- 8bGoz7a9/MgxdqKuKvRFgnDZK1hFn+v9QS9ufbqucdcSoiwC7Y1OCnbZ0W1U3T/PuWbG
- Q4wwv9/DEFemEOc7s0YOx0mw5N/MeESExG44CNuOIcgiG7Y6G4fAaNtDqHmpMsAW3NFK
- QP/A==
-X-Gm-Message-State: APjAAAVG57MtdzbFcPUJCo9nHZZwugofZo+MSboTfgv5dxzZ1/MzBVI2
- nrXKqLC9RJ0hb0u/QYIgn5KCVgSe3bzhqoeMPGcHxg==
-X-Google-Smtp-Source: APXvYqxwLshjInXu0oU2m4xsjP474lcUaazRBBAqlBtfF7xR3iJNA8yJ0eNDpzK0DGmThD+e5HZt29ol1d8Q4WS4GVY=
-X-Received: by 2002:a9d:6d15:: with SMTP id o21mr25318322otp.363.1568106545407; 
- Tue, 10 Sep 2019 02:09:05 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id BC9102020F925
+ for <linux-nvdimm@lists.01.org>; Tue, 10 Sep 2019 18:23:21 -0700 (PDT)
+Message-ID: <2878319db71c36297570c66a8eaa80b28a5f30@gp-card.space>
+From: "Nina" <info@gp-card.space>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?windows-1251?B?wuLu5CDu4frl6vLu4iDiIP3q8e/r8+Dy4Pbo?=
+ =?windows-1251?B?/g==?=
+Date: Wed, 11 Sep 2019 04:22:49 +0300
 MIME-Version: 1.0
-References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4jmO381oLTHBM80jNy6uNNkXvsOyGTjqSY4zzaS6-4_nQ@mail.gmail.com>
- <14129b58-37a5-56f5-9e90-8740400d07f6@linux.ibm.com>
-In-Reply-To: <14129b58-37a5-56f5-9e90-8740400d07f6@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 10 Sep 2019 02:08:53 -0700
-Message-ID: <CAPcyv4iYjz-v23eHkhnJqE4wnvoE2uvJ5HE9xrwPCnOCVZ3G2Q@mail.gmail.com>
-Subject: Re: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+DKIM-Signature: v=1; a=rsa-sha256; d=gp-card.space; s=mail;
+ c=relaxed/relaxed; t=1568164969;
+ h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+ bh=4gNvBbm5ie2+HWq6MgEI4VJXIbU4jr0GKVgoVVeOH0s=;
+ b=fygJNr9uu+1efB7Mw/0DLqKNbKVeZ1We6Sz4KMcqrqA02AqNbRy06jN+e3m+NS
+ OMp9HbWcO6+Erhu7k4cEvuOEJJbCSbxUveElsP6Xw0TysW63S4E20g65H4HK1/o+
+ jflq8sDgscO86QsfyvDS7cPoSX0zClpVutBnS0qEfj89w=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,59 +43,40 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="cp1251"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Sep 10, 2019 at 1:31 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 9/10/19 1:40 PM, Dan Williams wrote:
-> > On Mon, Sep 9, 2019 at 11:29 PM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> With PFN_MODE_PMEM namespace, the memmap area is allocated from the device
-> >> area. Some architectures map the memmap area with large page size. On
-> >> architectures like ppc64, 16MB page for memap mapping can map 262144 pfns.
-> >> This maps a namespace size of 16G.
-> >>
-> >> When populating memmap region with 16MB page from the device area,
-> >> make sure the allocated space is not used to map resources outside this
-> >> namespace. Such usage of device area will prevent a namespace destroy.
-> >>
-> >> Add resource end pnf in altmap and use that to check if the memmap area
-> >> allocation can map pfn outside the namespace. On ppc64 in such case we fallback
-> >> to allocation from memory.
-> >
-> > Shouldn't this instead be comprehended by nd_pfn_init() to increase
-> > the reservation size so that it fits in the alignment? It may not
-> > always be possible to fall back to allocation from memory for
-> > extremely large pmem devices. I.e. at 64GB of memmap per 1TB of pmem
-> > there may not be enough DRAM to store the memmap.
-> >
->
-> We do switch between DRAM and device for memmap allocation. ppc64
-> vmemmap_populate  does
->
-> if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
->         p = altmap_alloc_block_buf(page_size, altmap);
->         if (!p)
->                 pr_debug("altmap block allocation failed, falling back to system memory");
->         }
->         if (!p)
->                 p = vmemmap_alloc_block_buf(page_size, node);
->
->
-> With that we should be using DRAM for the first and the last mapping,
-> rest of the memmap should be backed by device.
-
-Ah, ok, makes sense.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+0fLw7ujy5ev87eD/IOTl//Ll6/zt7vHy/CDiINPq8ODo7eUgMjAxOS0gMjAyMCDjLgoKze7i++Ug
+8fLw7ujy5ev87fvlIO3u8Oz7ICjEwc0pIOgg6PUg7/Do7OXt5e3o5SDiIO/w7uXq8ujw7uLg7ejo
+IOgg8fLw7ujy5ev88fLi5S4gze7i++kgxMHNIMEuMi4yIDEyOiAyMDE4ICLP6+Dt6PDu4urgIOgg
+5+Dx8vDu6ergIPLl8PDo8u7w6OkiLiDI5+zl7eXt6P8g4iDv8O7l6vLo8O7i4O3o6Cwg/erx7+Xw
+8ujn5Swg/erx7+vz4PLg9ujoLiDQ4Ofw5fjo8uXr/O3g/yDv8O725eTz8OAg4iDx8vDu6PLl6/zx
+8uLlLgoKz+7i5fHy6uAg5O3/OiCgoKAKLSDI5+zl7eXt6P8g4iDn4Oru7e7k4PLl6/zx8uLlIO/u
+IOLu7/Du8eDsIOPw4OTu8fLw7uXt6P8uIM3u4vvlIPHy8O7o8uXr/O375SDt7vDs+yAoxMHNKSDo
+IOj1IO/w6Ozl7eXt6OUuIKCgoAotIM7v8OXk5evl7ejlIOrr4PHx4CDv7vHr5eTx8uLo6SCgoKAK
+LSDI5+zl7eXt6P8g4iDv7vD/5OrlIPDg5/Dg4e7y6ugg6CDz8uLl8Obk5e3o/yDv8O7l6vLt7ukg
+5O7q8+zl7fLg9ujoCi0g3erx7+Xw8ujn4CDiIPHy8O7o8uXr/PHy4uUgoKCgCi0g0ODn8OX46PLl
+6/zt++Ug5O7q8+zl7fL7IOIg8fLw7ujy5ev88fLi5SCgoKAKLSDC4u7kIO7h+uXq8u7iIOIg/erx
+7+vz4PLg9uj+IKCgoAotIMfg6uv+9+Xt6OUg7uEg7vbl7erlIOLu5+Tl6fHy4uj/IO3gIO7q8PPm
+4P758/4g8fDl5PM6IO/u8P/k7uog7+7r8/fl7ej/LgotIMvo9uXt5+jw7uLg7ejlIOIg8fLw7ujy
+5ev88fLi5S4gze7i++Ug9O7w7Psg5O7q8+zl7fLu4i4KLSDH5ezl6/zt++Ug4u7v8O7x+yDiIPHy
+8O7o8uXr/PHy4uUgoKCgCi0g0evz5uHgIOfg6uDn9+jq4C4gze7i++Ug6Ofs5e3l7ej/LiDP8Oji
+6+X35e3o5SDr6Pbl7efo8O7i4O3t+/Ug6CDx5fDy6PTo9ujw7uLg7e379SDo8e/u6+3o8uXr5eku
+IKCgoAotIMDi8u7w8ero6SDoIPLl9e3o9+Xx6ujpIO3g5Ofu8CDiIO3u4vv1IPPx6+7i6P/1IKCg
+oAotIMru7fLw7uv8IOgg7eDk5+7wIOIg8fLw7ujy5ev88fLi5S4gz+7r7e7s7vfo/yDEwMGyLiDQ
+4Ofw5fjo8uXr/O375SDk7urz7OXt8u77LiDP7vD/5O7qIO/u6/P35e3o/yDw4Ofw5fjo8uXr/O37
+9SDk7urz7OXt8u7iIOTr/yDq4Obk7ukg4/Dz7+/7IO7h+uXq8u7iLgotINLl9e3o9+Xx6ujpIO/g
+8e/u8PIuIM/w7uLl5OXt6OUg8uX17ej35fHq7ukg6O3i5e3y4PDo5+D26Ogg7e7i++Ug5+Dq7u3u
+5ODy5ev87fvlIOjn7OXt5e3o/y4KLSDR4Ozu4u7r/O3u5SDx8vDu6PLl6/zx8uLuLiDP8O7h6+Xs
+7fvlIO7h+uXq8vsg7eXk4ujm6Ozu8fLoIOgg8fDl5PHy4uAg6PUg4vvi5eTl7ej/IOIg7/Dg4u7i
+7uUg7+7r5S4gz+7x6+Xk7f//IPHz5OXh7eD/IO/w4Ory6OrgIO/uIO/w6O3/8uj+IO7h+uXq8u7i
+IOIg/erx7+vz4PLg9uj+LgoKz/Do7f/y/CDz9+Dx8ujlID4gaHR0cDovL3NkdS5pbi51YS90cmFp
+bmluZy8xNDYvc3Ryb2l0ZWxuYXlhLWRleWF0ZWxub3N0LXYtdWtyYWluZS0yMDE5LS0yMDIwLWcu
+aHRtCgrM5e3l5Obs5e3yIArI7fLl8O3l8iAKzeXk4ujm6Ozu8fL8CgrN5SDv7uvz9+Dy/CDv7vfy
+8y4KTGlzdC1VbnN1YnNjcmliZSBMaXN0LVVuc3Vic2NyaWJlIOjr6CDv7ubg6+7i4PL88f8g7eAg
+U3BhbQoKqSAyMDA0LTIwMTkgwvHlIO/w4OLgIOfg+ej55e37LgpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0Ckxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0cy4wMS5vcmcvbWFpbG1hbi9saXN0
+aW5mby9saW51eC1udmRpbW0K
