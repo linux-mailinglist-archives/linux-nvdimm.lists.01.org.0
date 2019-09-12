@@ -2,66 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FF6B10EB
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E56B1107
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:21:54 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2C38A202E2936;
-	Thu, 12 Sep 2019 07:18:08 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8AB49202E293D;
+	Thu, 12 Sep 2019 07:21:54 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+ client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com;
+ envelope-from=miguel.ojeda.sandonis@gmail.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
+ [IPv6:2a00:1450:4864:20::242])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 79BE7202E292C
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:18:07 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id s28so26220697otd.4
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:18:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
+ by ml01.01.org (Postfix) with ESMTPS id 2FECB202E2938
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:21:53 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id j16so23810712ljg.6
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:21:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=as20/K/wrQh0VcPp2JWZkYWpNUtTzdFQp/D51GEnJ2A=;
- b=VsK63YxZZ74Soq7i8sbb6fh8HuUwyRP41aJpm+IyEEVxbFiT+L+HI7tHr2Vtr0PsHQ
- fDXFh2WJkHcBM2sQqx1nz4YhINjpIBCvGC9TrFffsfvAIt4gr3yYNVISifAiKggfChWB
- 2eA96VKb6o3jBW1xy3BW5dlaSz0jNJM08lR86GYMPhTh3k+K1N87uSTRdNbiDRyiowpt
- ZwXe3nzkYOIn1ZNixxsiuJTCR4BF0L25n4IU8DzNBCsoClLT/Gf5jHWOcunpLH27oWeT
- r5TNuXp8viQJvL/EuRe9CAFlXbBTqM99aMDd+dlIzc3ACil8+YLF6nLcaSfVseT69/36
- Ivxg==
+ :cc; bh=YFMQkxTl4u1uDIPdWtzBBws4tnK81QKk4aIpoP8Wl4M=;
+ b=ier1/HQ9wGA5OvIpZxEX/nq1XaK93pORQit51CSERGbvPQVVMZxU2LE7dq1kUbWZBK
+ DZfxDgXDt06m2hz0f6EQdEhzZKMpsmTQCUvegCbnLkvE2n7UQGCYY4DrKmkWTbUQ3gU9
+ rCWK7Mq7e9XB65nDGKTG8Vd3f177H0sXWfhuIaNyg+GIPMGcrfGD8Bv37JTuO5xCw/4e
+ UKNfok63Ewt6nLhV/05ot7ZN+yiBQymDEPmeOwtJboDaF2ilZnZvS0RFoiG73MjLh/6J
+ utc7GvSpVntuPNbjtmYK/01BWw8VLzIUfkPBWS8WHS8QG+rmkOHDp/MgYvuaqArEivi0
+ uTXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=as20/K/wrQh0VcPp2JWZkYWpNUtTzdFQp/D51GEnJ2A=;
- b=sU0VJQt0oZMLeVKEl/A7wsuq4ZPcgX/WqwwbCMnIltpOqah8fRFHeXniUki32pMfrm
- 6nql4Yr88kpNPmanXFrBVlTRvJLcQyCKkdVB/N8ZjdX1oId/1MSaKiqh6BXDzR4npGM8
- g/JVipnr7p1G9LYa7IoJF7XkjWOQmpR9NcYaoz0Wd2Q1wahsvXhh4FjyuNrpXlST81IM
- Q5zSgUUl24CLVEax/8M75D4ypom+vl1hSRZvAHPDZIo7FXN3NJel57fWtNeVIq6f0ccH
- 4CC8aNh0DIFXk4ZYKmYzd2CeaC1IhJAwDePKbYMecius9lEiicyoqEScRyzh5r9+c9io
- opew==
-X-Gm-Message-State: APjAAAX9WstJKsKBG+2VpxUjte/oVh5FmuAF/EfKqed7KE9ynzcLN+77
- Wa3fFdhKFKpmMCCrEkUQhkiUF8oX4rJEXy+DDv8vAg==
-X-Google-Smtp-Source: APXvYqww7bFfGwyc5qF49rVm8WTD42K5tWa0xz3KchY2iJm2zV03eJqbCs0F8Uc+E8PPkm5kQfSl9zD6BO6JdIqdc4I=
-X-Received: by 2002:a9d:6d15:: with SMTP id o21mr10806424otp.363.1568297884741; 
- Thu, 12 Sep 2019 07:18:04 -0700 (PDT)
+ bh=YFMQkxTl4u1uDIPdWtzBBws4tnK81QKk4aIpoP8Wl4M=;
+ b=nkA6+HcupENQRsm2CtMn/QbHjO2oPv5lSI5ArZL3o+gYQSDJDRfCoWVmQUaZSNNzGV
+ y0yXqFe7UthHFAqBNKvVzpht8BhczsCY9PlhpF8F8pgC1KhS8kcQ7i6qtPbCMg5PMZks
+ s8c0kQNS2ZLym768sn54e4tE6mAXnk1eEHA9/uhgOTuNbnQa1h6HxvXMQWZtcAdGheed
+ /BuvpCm7kdnRZwsLopWfOXKhJfppPsYWRerJWZ1x/pZhifVIaN1crrb4t4tEEpYwR05D
+ pZUZzQqSILUm+OtOVNRY7gUIesBr0EABxqDyV1hDBToHFFhbudzBWswM3fYmIJpkVIGE
+ nX2A==
+X-Gm-Message-State: APjAAAWgejpEwIoagzzGDLspxmealCELvz53ImFHRLfzk0mocz1gGIGC
+ 6PYc5SyRg6d3C9Nr+BLwHelxEb/eFhSgA6c280s=
+X-Google-Smtp-Source: APXvYqxc7Jor+XgK0qvsYhR5IbweDk6SR2yQ1TSzQPa7eM1/62+Oel69slNeS0cXOPPeiOS4CWyEidK9RBjUHSY+Zgg=
+X-Received: by 2002:a2e:87d6:: with SMTP id v22mr2778028ljj.195.1568298109407; 
+ Thu, 12 Sep 2019 07:21:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190911184332.GL20699@kadam>
- <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
- <CAPcyv4ij3s+9uO0f9aLHGj3=ACG7hAjZ0Rf=tyFmpt3+uQyymw@mail.gmail.com>
- <CANiq72k2so3ZcqA3iRziGY=Shd_B1=qGoXXROeAF7Y3+pDmqyA@mail.gmail.com>
- <e9cb9bc8bd7fe38a5bb6ff7b7222b512acc7b018.camel@perches.com>
- <5eebafcb85a23a59f01681e73c83b387c59f4a4b.camel@perches.com>
-In-Reply-To: <5eebafcb85a23a59f01681e73c83b387c59f4a4b.camel@perches.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 12 Sep 2019 07:17:51 -0700
-Message-ID: <CAPcyv4iu13D5P+ExdeW8OGMV8g49fMUy52xbYZM+bewwVSwhjg@mail.gmail.com>
-Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
- Maintainer Entry Profile
-To: Joe Perches <joe@perches.com>
+References: <cover.1568256705.git.joe@perches.com>
+ <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
+In-Reply-To: <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 12 Sep 2019 16:21:38 +0200
+Message-ID: <CANiq72kTsf=0rEufDMo7BzMNv1dqc5=ws7fSd=H_e=cpHR24Kg@mail.gmail.com>
+Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
+To: Jeff Moyer <jmoyer@redhat.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,8 +66,7 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Cc: Joe Perches <joe@perches.com>, linux-kernel <linux-kernel@vger.kernel.org>,
  Dan Carpenter <dan.carpenter@oracle.com>,
  linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
@@ -82,72 +74,29 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 12, 2019 at 4:02 AM Joe Perches <joe@perches.com> wrote:
+On Thu, Sep 12, 2019 at 4:00 PM Jeff Moyer <jmoyer@redhat.com> wrote:
 >
-> (cut down the cc-list)
+> Joe Perches <joe@perches.com> writes:
 >
-> On Thu, 2019-09-12 at 03:18 -0700, Joe Perches wrote:
-> > On Thu, 2019-09-12 at 10:24 +0200, Miguel Ojeda wrote:
-> > > On Thu, Sep 12, 2019 at 9:43 AM Dan Williams <dan.j.williams@intel.com> wrote:
-> > > > Now I come to find that CodingStyle has settled on clang-format (in
-> > > > the last 15 months) as the new standard which is a much better answer
-> > > > to me than a manually specified style open to interpretation. I'll
-> > > > take a look at getting libnvdimm converted over.
-> > >
-> > > Note that clang-format cannot do everything as we want within the
-> > > kernel just yet, but it is a close enough approximation -- it is near
-> > > the point where we could simply agree to use it and stop worrying
-> > > about styling issues. However, that would mean everyone needs to have
-> > > a recent clang-format available, which I think is the biggest obstacle
-> > > at the moment.
-> >
-> > I don't think that's close to true yet for clang-format.
-> >
-> > For instance: clang-format does not do anything with
-> > missing braces, or coalescing multi-part strings,
-> > or any number of other nominal coding style defects
-> > like all the for_each macros, aligning or not aligning
-> > columnar contents appropriately, etc...
-> >
-> > clang-format as yet has no taste.
+> > Rather than have a local coding style, use the typical kernel style.
+>
+> The coding style isn't that different from the core kernel, and it's
+> still quite readable.  I'd rather avoid the churn and the risk of
+> introducing regressions.  This will also make backports to stable more
+> of a pain, so it isn't without cost.  Dan, is this really something you
+> want to do?
 
-Ok, good to confirm that we do not yet have an objective standard for
-coding style. This means it's not yet something process documentation
-can better standardize for contributors and will be subject to ongoing
-taste debates. Lets reclaim the time to talk about objective items
-that *can* clarified across maintainers.
++1 As soon as you get accustomed to have formatting done and enforced
+automatically, it is great. Other major projects have done so for
+quite a while now.
 
-> >
-> > I believe it'll take a lot of work to improve it to a point
-> > where its formatting is acceptable and appropriate.
-> .
->
-> Just fyi:
->
-> Here's the difference that clang-format produces from the current
-> nvdimm sources to the patch series I posted.
->
-> clang-format does some OK, some not OK, some really bad.
-> (e.g.: __stringify)
->
-> My git branch for my patches is 20190911_nvdimm, and
-> using Stephen Rothwell's git tree for -next:
->
-> $ git checkout next-20190904
-> $ clang-format -i drivers/nvdimm/*.[ch]
-> $ git diff --stat -p 20190911_nvdimm -- drivers/nvdimm/ > nvdimm.clang-diff
-> ---
-[..]
->  25 files changed, 895 insertions(+), 936 deletions(-)
+If doesn't think it is good enough, please let us know and, if it is
+close enough, we can look at going for a newer LLVM to match the style
+a bit more. Also note that one can disable formatting for some
+sections of code if really needed.
 
-So, I'm lamenting the damage either of these mass conversions is going
-to do git blame flows. To be honest I regret broaching Coding Style
-standardization because it's taking the air out of the room for the
-wider discussion of the maintainer/contributor topics we might be able
-to agree.
-
-As for libnvdimm at this point I'd rather start with objective
-checkpatch error cleanups and defer the personal taste items.
+Cheers,
+Miguel
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
