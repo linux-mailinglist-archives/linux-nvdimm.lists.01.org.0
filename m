@@ -2,59 +2,46 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A19B1000
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 15:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 438C2B1089
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:00:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BAAD621962301;
-	Thu, 12 Sep 2019 06:31:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B1643202E292F;
+	Thu, 12 Sep 2019 07:00:15 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.85.214.196; helo=mail-pl1-f196.google.com;
- envelope-from=bart.vanassche@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com
- [209.85.214.196])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=209.132.183.28; helo=mx1.redhat.com; envelope-from=jmoyer@redhat.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id D3A5D2020F948
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 06:31:57 -0700 (PDT)
-Received: by mail-pl1-f196.google.com with SMTP id k1so11803259pls.11
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 06:31:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=YbzzOwLPVFiyZazgwx4oK1haet1LCDg9IL0AWwLCITc=;
- b=RuiWEM/sCwjxkcnaLqEbXCn8KKYUtDL3KBOmH6LpnPuJMzdRUE91L+TsJaw+7FsaBM
- KWi3qxGgY4z+Iu59YACD4QFg10+1aFw2kSQJzPz+QtzqB0fsFa1x2BReKsMLaFeKfEIQ
- yAnunM3Gx60YCqJa6Sfsn0CjydGj3DJsJV8A2xCYEwaGObfgu39VhA8LWSWpuR3sIhWe
- S8z+jENMvv0O7Th81Yc3xrp7dXawVkR6iai+vrq6Dub0kzmcm7glW5dKc2WWULjA+2p4
- W9Ox6bBMqEzbRIehE+gpv3iYePsQmeKFpl/b0kIG0G/K30buKGanV8eNOFxxHR8M4YXd
- /rTA==
-X-Gm-Message-State: APjAAAVzs7OVuVIPj9s5iKXljZ77H0N1yMUFHraXQWt5vyHN60FD5//f
- JI0pVQABjQ1cXCSuH2KP0JI=
-X-Google-Smtp-Source: APXvYqyA9LmsIt46UYXRB/qnJg8y7VckXgkY1MT7b0npn/YciW4Pp1oR+XE+tg5ecGsQCpqqGjw73Q==
-X-Received: by 2002:a17:902:b710:: with SMTP id
- d16mr12261985pls.55.1568295115090; 
- Thu, 12 Sep 2019 06:31:55 -0700 (PDT)
-Received: from [172.19.249.100] ([38.98.37.138])
- by smtp.gmail.com with ESMTPSA id c125sm31524292pfa.107.2019.09.12.06.31.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 12 Sep 2019 06:31:54 -0700 (PDT)
-Subject: Re: [Ksummit-discuss] [PATCH v2 0/3] Maintainer Entry Profiles
-To: "Martin K. Petersen" <martin.petersen@oracle.com>,
- Dan Williams <dan.j.williams@intel.com>
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <yq1o8zqeqhb.fsf@oracle.com>
-From: Bart Van Assche <bvanassche@acm.org>
-Message-ID: <6fe45562-9493-25cf-afdb-6c0e702a49b4@acm.org>
-Date: Thu, 12 Sep 2019 14:31:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ml01.01.org (Postfix) with ESMTPS id 43B03202E2917
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:00:15 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mx1.redhat.com (Postfix) with ESMTPS id 4C1363082D9E;
+ Thu, 12 Sep 2019 14:00:12 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9365760872;
+ Thu, 12 Sep 2019 14:00:11 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Joe Perches <joe@perches.com>
+Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
+References: <cover.1568256705.git.joe@perches.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Thu, 12 Sep 2019 10:00:10 -0400
+In-Reply-To: <cover.1568256705.git.joe@perches.com> (Joe Perches's message of
+ "Wed, 11 Sep 2019 19:54:30 -0700")
+Message-ID: <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <yq1o8zqeqhb.fsf@oracle.com>
-Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.46]); Thu, 12 Sep 2019 14:00:12 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,52 +53,68 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: ksummit-discuss@lists.linuxfoundation.org, linux-nvdimm@lists.01.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Dmitry Vyukov <dvyukov@google.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Steve French <stfrench@microsoft.com>, "Tobin C. Harding" <me@tobin.cc>
+Cc: linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@oracle.com>,
+ linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On 9/11/19 5:40 PM, Martin K. Petersen wrote:
-> * Do not use custom To: and Cc: for individual patches. We want to see the
->   whole series, even patches that potentially need to go through a different
->   subsystem tree.
+Joe Perches <joe@perches.com> writes:
 
-Hi Martin,
+> Rather than have a local coding style, use the typical kernel style.
 
-Thanks for having written this summary. This is very helpful. For the
-above paragraph, should it be clarified whether that requirement applies
-to mailing list e-mail addresses only or also to individual e-mail
-addresses? When using git send-email it is easy to end up with different
-cc-lists per patch.
+The coding style isn't that different from the core kernel, and it's
+still quite readable.  I'd rather avoid the churn and the risk of
+introducing regressions.  This will also make backports to stable more
+of a pain, so it isn't without cost.  Dan, is this really something you
+want to do?
 
-> * The patch must compile without warnings (make C=1 CF="-D__CHECK_ENDIAN__")
->   and does not incur any zeroday test robot complaints.
+-Jeff
 
-How about adding W=1 to that make command?
-
-How about existing drivers that trigger tons of endianness warnings,
-e.g. qla2xxx? How about requiring that no new warnings are introduced?
-
-> * The patch must have a commit message that describes, comprehensively and in
->   plain English, what the patch does.
-
-How about making this requirement more detailed and requiring that not
-only what has been changed is document but also why that change has been
-made?
-
-> * Patches which have been obsoleted by a later version will be set to
->   "Superceded" status.
-
-Did you perhaps mean "Superseded"?
-
-Thanks,
-
-Bart.
-
+>
+> Joe Perches (13):
+>   nvdimm: Use more typical whitespace
+>   nvdimm: Move logical continuations to previous line
+>   nvdimm: Use octal permissions
+>   nvdimm: Use a more common kernel spacing style
+>   nvdimm: Use "unsigned int" in preference to "unsigned"
+>   nvdimm: Add and remove blank lines
+>   nvdimm: Use typical kernel brace styles
+>   nvdimm: Use typical kernel style indentation
+>   nvdimm: btt.h: Neaten #defines to improve readability
+>   nvdimm: namespace_devs: Move assignment operators
+>   nvdimm: Use more common logic testing styles and bare ; positions
+>   nvdimm: namespace_devs: Change progess typo to progress
+>   nvdimm: Miscellaneous neatening
+>
+>  drivers/nvdimm/badrange.c       |  22 +-
+>  drivers/nvdimm/blk.c            |  39 ++--
+>  drivers/nvdimm/btt.c            | 249 +++++++++++----------
+>  drivers/nvdimm/btt.h            |  56 ++---
+>  drivers/nvdimm/btt_devs.c       |  68 +++---
+>  drivers/nvdimm/bus.c            | 138 ++++++------
+>  drivers/nvdimm/claim.c          |  50 ++---
+>  drivers/nvdimm/core.c           |  42 ++--
+>  drivers/nvdimm/dax_devs.c       |   3 +-
+>  drivers/nvdimm/dimm.c           |   3 +-
+>  drivers/nvdimm/dimm_devs.c      | 107 ++++-----
+>  drivers/nvdimm/e820.c           |   2 +-
+>  drivers/nvdimm/label.c          | 213 +++++++++---------
+>  drivers/nvdimm/label.h          |   6 +-
+>  drivers/nvdimm/namespace_devs.c | 472 +++++++++++++++++++++-------------------
+>  drivers/nvdimm/nd-core.h        |  31 +--
+>  drivers/nvdimm/nd.h             |  94 ++++----
+>  drivers/nvdimm/nd_virtio.c      |  20 +-
+>  drivers/nvdimm/of_pmem.c        |   6 +-
+>  drivers/nvdimm/pfn_devs.c       | 136 ++++++------
+>  drivers/nvdimm/pmem.c           |  57 ++---
+>  drivers/nvdimm/pmem.h           |   2 +-
+>  drivers/nvdimm/region.c         |  20 +-
+>  drivers/nvdimm/region_devs.c    | 160 +++++++-------
+>  drivers/nvdimm/security.c       | 138 ++++++------
+>  drivers/nvdimm/virtio_pmem.c    |  10 +-
+>  26 files changed, 1115 insertions(+), 1029 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
