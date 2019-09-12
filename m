@@ -2,61 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C4EB1683
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Sep 2019 00:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A463B1687
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Sep 2019 01:01:08 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5AC03202E6E11;
-	Thu, 12 Sep 2019 15:58:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A505D202E6E16;
+	Thu, 12 Sep 2019 16:01:05 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::542; helo=mail-pg1-x542.google.com;
+ client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com;
  envelope-from=ndesaulniers@google.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5CDDB202E6E0C
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 15:58:28 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id x15so14228482pgg.8
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 15:58:29 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id B1B69202E6E11
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 16:01:04 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id d15so16862265pfo.10
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 16:01:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QtcuvnqG4r2YqI4zyIzKkMUs7uL0jyuefwghC3YKW8k=;
- b=lQCZxf2wWj/TD7i+zM4x52/vcGK5ifsJjrjavtQIbd5PmjztGeExGDQxomnWHrphOB
- D/b/4Xm2CTnyaPHy4dZUJ3v7HBtU4EwyETt2D2kuo5QIp0uH52f7JYTDWDsLOI/ra7wo
- y2ug9CJE1vVyWHHyERvCW1WG/VwSFT0QTlVjDmHRrNl6zJ84sUCcXEkrKgWQpbt3/vtH
- bap3kGRCKwkycQUg8DMdT2aCQwUuPvJc7KvoQGGxEbD1nusDY2UowCwEy8SjbrSV+l8Y
- 38Yy7ebxD1Kjv9rfsY98KICrdYKwehq1d+xx++tGhXaZog4YEDqokAuJ6C+q3tyKeHmw
- V66w==
+ :cc; bh=D9dYUr5fMgUHKFTaUbiggMwqfm0d4ExFNXTKQwvsDKQ=;
+ b=tPvXqEzHwKpENKEwHi+Skg0ISMB7ZFeB0yn6fEGDuRS61LxsjWdYrvLH7BObaVO3QB
+ HsxMdXR+4aWWSfV+ANxcz0Bo0o3+m1Wv1IeRZJ5ymFd5GGiMrSTqBjgZv9EPPdkoVJoE
+ nsaxTy4G3QnB9ClFNIRybTH9QlrNg8MIH4HJi8Gn1ORBp28GWQy/T1ZOBztKGGQNSQSA
+ ZBmziZ1luIwLyXBh+aJj+Tq+k2YA2w1JufIQ425tRqxHmpOft3Fbk/nIN7Prdjv2GtT2
+ eUCpew0OAlYYRdqQ9LTbf1aHAnRjHKtThgj8M46igFVG7H7c4gheoHjP36DfQhsOIKgA
+ 1F3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=QtcuvnqG4r2YqI4zyIzKkMUs7uL0jyuefwghC3YKW8k=;
- b=NB+BfSWXZK1hfeIuCaYp36BSAhLdOmFaokUZG5+rJYnuCg21NhHoplvf2QPSMa+eA6
- cagKpPaLSakm2ZUv/M7YNFm7Q0N2sXo3bpYW8gtSxwOoSJGL79jH3Xb4pGJMfOeSYiFb
- kDPyIDZcB1SMAYWGnFzSYcYGaDTd05qVE+iC60yb3DBEFFR77rAchwf5am5IcUjtlFBU
- VC/5zLZKrQgXdn+yE0Z7prcJ6b5mxoiXxdpGaUIWtRE6Iia7U4SQ16sloDZQr5aNO5LP
- 7XSQU5OUBJg1R6WbVqCJZjLaX6hIaAsAbsqaePPa51t5wuLRF4g+DCUnKq/jkFI2ArOP
- wRGA==
-X-Gm-Message-State: APjAAAU+q9rcluybFBOwNEMPbunYgcGAnb9r25rsnycLK4WfoQ2v4cOq
- Tb2I4PM1+o85iYWHgW1C+NbkccuPUAwpaCUbIevwGQ==
-X-Google-Smtp-Source: APXvYqz6gVZGXvJhjhSW8JaLlu8jIhADm3zroXYMALeDqhcHJ4OAuXRJ56yt3mguafQUipBgMbVaMEZ3Jt2n9yKXuPE=
-X-Received: by 2002:a62:5fc1:: with SMTP id t184mr19502919pfb.84.1568329108004; 
- Thu, 12 Sep 2019 15:58:28 -0700 (PDT)
+ bh=D9dYUr5fMgUHKFTaUbiggMwqfm0d4ExFNXTKQwvsDKQ=;
+ b=mXfe0iNUDmjNVhu/TG7EstzDT7O6xGAEY5rBeeuhi4+TetdcQmk8AD8S5Q93Qxe1gH
+ niKKOWgz104j3sdA4W7QWlG8iLGNKniFWlF0FfV48wv1ssaub+nNxts2/gtef2IE1uXQ
+ W85+96bTWZjYbuf/mXu/+AUJG9DnR4+BXwBgap/9mV9Eu4tjqzfHVqq0UzbZgAd27YBl
+ 43iah8fib83Mk75aQQ9Y2kO/0dRP/aIeFknmrS/0Bvs/Z7M4NLgWeAdh5WWdS+qa8Bup
+ 08mi95YtuyVpcE7nDAr8atKjGbe8NpY9rorc48F3gReTtAtiW9SC5FOcyJPEfUxYXchS
+ MzvA==
+X-Gm-Message-State: APjAAAVVPBHr0IJ3fs9Sl1u/m+/V0CTNvKcqdL9Rrxhm0/slkhvK2am7
+ 0UTD8FBKyb5ATgLV/gWWubNuelf7JGo81gj/sT53Ag==
+X-Google-Smtp-Source: APXvYqxKPqcf3nesXiRdlItW9fzTGtoWDpjNQ9SjjFM/YxRP0tFmd4/ksEvcvMhaZFyTL+zMR5XBadhwoqkrNWZwEyE=
+X-Received: by 2002:a63:6193:: with SMTP id
+ v141mr41159638pgb.263.1568329264856; 
+ Thu, 12 Sep 2019 16:01:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1568256705.git.joe@perches.com>
  <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
  <CANiq72kTsf=0rEufDMo7BzMNv1dqc5=ws7fSd=H_e=cpHR24Kg@mail.gmail.com>
  <4df0a07ec8f1391acfa987ecef184a50e7831000.camel@perches.com>
  <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
-In-Reply-To: <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
+ <4f759f8c4f4d59fd60008e833334e29b0da0869c.camel@perches.com>
+In-Reply-To: <4f759f8c4f4d59fd60008e833334e29b0da0869c.camel@perches.com>
 From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Thu, 12 Sep 2019 15:58:16 -0700
-Message-ID: <CAKwvOd=OrAzUb0+c0jkR1OLCcjXh+QnrCHhk39+p3Fv2unBxjQ@mail.gmail.com>
+Date: Thu, 12 Sep 2019 16:00:53 -0700
+Message-ID: <CAKwvOd=S911qkQtN31JkusS==NXZMnEwrUOGN3Gp6B7GTzYe2A@mail.gmail.com>
 Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+To: Joe Perches <joe@perches.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,55 +71,38 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm <linux-nvdimm@lists.01.org>,
- linux-kernel <linux-kernel@vger.kernel.org>, Joe Perches <joe@perches.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
  Dan Carpenter <dan.carpenter@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 12, 2019 at 2:58 PM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Sep 12, 2019 at 3:38 PM Joe Perches <joe@perches.com> wrote:
 >
-> On Thu, Sep 12, 2019 at 11:08 PM Joe Perches <joe@perches.com> wrote:
+> On Thu, 2019-09-12 at 23:58 +0200, Miguel Ojeda wrote:
+> > On Thu, Sep 12, 2019 at 11:08 PM Joe Perches <joe@perches.com> wrote:
+> > > Please name the major projects and then point to their
+> > > .clang-format equivalents.
+> > >
+> > > Also note the size/scope/complexity of the major projects.
 > >
-> > Please name the major projects and then point to their
-> > .clang-format equivalents.
-> >
-> > Also note the size/scope/complexity of the major projects.
+> > Mozilla, WebKit, LLVM and Microsoft. They have their style distributed
+> > with the official clang-format, not sure if they enforce it.
 >
-> Mozilla, WebKit, LLVM and Microsoft. They have their style distributed
-> with the official clang-format, not sure if they enforce it.
->
-> Same for Chromium/Chrome, but it looks like they indeed enforce it:
->
->   "A checkout should give you clang-format to automatically format C++
-> code. By policy, Clang's formatting of code should always be accepted
-> in code reviews."
->
-> I would bet other Google projects do so as well (since Chandler
-> Carruth has been giving talks about clang-format for 7+ years). Nick?
+> At least for LLVM, it appears not.
 
-So Google3 (the internal monorepo that Android, Chromium, ChromiumOS,
-Fuchsia are not a part of) is pretty sweet.  You cannot even post code
-unless the linter has been run on it (presubmit hook), which for our
-~350 millions LoC of C++ is clang-format.  If you bypass local
-presubmit hooks, our code review tool ("critique") won't let you
-submit code that fails lint presubmit checks.  I suspect the initial
-conversion was probably committed by bots.
+I acknowledge the irony you present, but that's because there's no
+enforcement on the LLVM side.  I frequently forget to run:
+$ git-clang-format HEAD~
 
->
-> I hope those are major enough. There is also precedent in other
-> languages (e.g. Java, C#, Rust).
+If you have automated systems that help encourage (ie. force) the use
+of the formatter, this helps.
 
-Yep! Other people coming to C/C++ from these languages find the
-discussion about tabs vs spaces to be highly entertaining!  When you
-have an automated code formatter and an agreed upon coding style (and
-hopefully enforcement), you save so much time from avoided bikesheds!
-Don't like the codebase's coding style?  Then write the code how you
-like and just run the formatter when you're done (might not help with
-conventions though, maybe that's where checkpatch.pl can shine).
-Done! No more wasted time on what color to paint the bikeshed!
+Consider the fact that not all kernel developers run checkpatch.pl.
+Is that a deficiency in checkpatch.pl, or the lack of enforcement in
+kernel developers' workflows?
 -- 
 Thanks,
 ~Nick Desaulniers
