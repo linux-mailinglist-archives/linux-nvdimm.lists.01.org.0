@@ -1,59 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A26B0756
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 05:53:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F04B0999
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 09:41:40 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C36C921962301;
-	Wed, 11 Sep 2019 20:53:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E37D9202E2908;
+	Thu, 12 Sep 2019 00:41:42 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4D34A202C80B7
- for <linux-nvdimm@lists.01.org>; Wed, 11 Sep 2019 20:53:26 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2019 20:53:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,492,1559545200"; d="scan'208";a="268958277"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
- by orsmga001.jf.intel.com with ESMTP; 11 Sep 2019 20:53:20 -0700
-Received: from fmsmsx117.amr.corp.intel.com (10.18.116.17) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 11 Sep 2019 20:52:50 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.68]) by
- fmsmsx117.amr.corp.intel.com ([169.254.3.133]) with mapi id 14.03.0439.000;
- Wed, 11 Sep 2019 20:52:50 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "joe@perches.com" <joe@perches.com>, "Williams, Dan J"
- <dan.j.williams@intel.com>, "Jiang, Dave" <dave.jiang@intel.com>, "Busch,
- Keith" <keith.busch@intel.com>, "Weiny, Ira" <ira.weiny@intel.com>
-Subject: Re: [PATCH 11/13] nvdimm: Use more common logic testing styles and
- bare ; positions
-Thread-Topic: [PATCH 11/13] nvdimm: Use more common logic testing styles and
- bare ; positions
-Thread-Index: AQHVaRWKbif/DxojQEGXHgNOmHirzacn3kSA
-Date: Thu, 12 Sep 2019 03:52:49 +0000
-Message-ID: <706f6af6a6571a3bb2d35ec332fa572a990cbc48.camel@intel.com>
-References: <cover.1568256705.git.joe@perches.com>
- <d6aa5b66936f2e0f132e893e10494aae6b74e886.1568256708.git.joe@perches.com>
-In-Reply-To: <d6aa5b66936f2e0f132e893e10494aae6b74e886.1568256708.git.joe@perches.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.254.21.217]
-Content-ID: <9B343DDA310A65479EFFA2A81A767489@intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 061AD202C80A0
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 00:41:41 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id k20so16345947oih.3
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 00:41:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=o8LTeC4govd1fNBJO0ioJqcSmCWQfNIKLUUZIaiAhHg=;
+ b=r5iciw4g8aqTCdevxlX7Yl1qKRDD/phXv4v2oTTELHQGit1wxhO/OmSHjpMCzaPPrC
+ Vr8pfrqAPKZP/QRditALJa3T7m3utIzI7knIH43NmnrLOYeWwUlpJTX+V+qEIHPXtDWk
+ i+S3TBIunng9amNi6owpSMAwGYmTOzTOg39UCXWUFCAs9mW/cRdQ9TrieNsVwozqYGMY
+ ud38gNVy7hASRzjURWmOVrK8Lm1bGKmNLt/QqIPlK0Zbi79sDGl94Y4HvgRcvzJv2owV
+ GO/6yFDyIZBlsfIr5xvExb4PHDGHZscKuenTgOys/I73OMjRL8cbQsLrUCTP+Fo1/Uy7
+ k13A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=o8LTeC4govd1fNBJO0ioJqcSmCWQfNIKLUUZIaiAhHg=;
+ b=N3bTKJL1Q0UZK8oJhyFi/v0dn6Mvnedf9n23gJRVqPTxjXk2zOCN9bwoWO8/x0FjA7
+ chLcr19Kh9gwwj0oHh1X6r0WljLr5bg1n7cL89d4Sk3ZZHgMUwc6jXmNe5gNH4yVcDdb
+ f1nAn1P4cG3yC5EHWNS+Hawcbrwr79LMrl07ie2AANLxpi1HFxSSaOO94dRj4qgSzPZO
+ PVWhYL2aTIQ+X0ZSHfiBDO3cpJmEKzOImkkp8wbCn0OMGh6Uzyk75mUd77Nm264sSuNn
+ 1Oz6oEZjNTAwNwpnnRsAM/LRy79/dDyd/YIVhz2S/JyRIbmdWDqdiqZ/IDCdeGEsfpE4
+ 2ylw==
+X-Gm-Message-State: APjAAAUzzsvketryK3Sp7LzalWqUrf3+CacPEAmU4OVDwzRpB7deHXAP
+ wONZxC34/utDxRsAV/AS55TB+iFkFxLfrCEczX8L9w==
+X-Google-Smtp-Source: APXvYqw0A8Lqk6qX7CD0ZjUAfqaCMtvOeZCnyqiVzGAx3LVFCio/Y9Fb+8rbJ3TzTxR704q9l8iceiToxbjJgcESn2g=
+X-Received: by 2002:aca:eb09:: with SMTP id j9mr7724558oih.105.1568274096350; 
+ Thu, 12 Sep 2019 00:41:36 -0700 (PDT)
 MIME-Version: 1.0
+References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190911184332.GL20699@kadam>
+ <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
+In-Reply-To: <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 12 Sep 2019 00:41:24 -0700
+Message-ID: <CAPcyv4ij3s+9uO0f9aLHGj3=ACG7hAjZ0Rf=tyFmpt3+uQyymw@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
+ Maintainer Entry Profile
+To: Jens Axboe <axboe@kernel.dk>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,71 +69,68 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Cc: ksummit <ksummit-discuss@lists.linuxfoundation.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, bpf@vger.kernel.org,
+ Dan Carpenter <dan.carpenter@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, 2019-09-11 at 19:54 -0700, Joe Perches wrote:
-> Avoid using uncommon logic testing styles to make the code a
-> bit more like other kernel code.
-> 
-> e.g.:
-> 	if (foo) {
-> 		;
-> 	} else {
-> 		<code>
-> 	}
-> 
-> is typically written
-> 
-> 	if (!foo) {
-> 		<code>
-> 	}
-> 
+On Wed, Sep 11, 2019 at 3:11 PM Jens Axboe <axboe@kernel.dk> wrote:
+>
+> On 9/11/19 12:43 PM, Dan Carpenter wrote:
+> > On Wed, Sep 11, 2019 at 08:48:59AM -0700, Dan Williams wrote:
+> >> +Coding Style Addendum
+> >> +---------------------
+> >> +libnvdimm expects multi-line statements to be double indented. I.e.
+> >> +
+> >> +        if (x...
+> >> +                        && ...y) {
+> >
+> > That looks horrible and it causes a checkpatch warning.  :(  Why not
+> > do it the same way that everyone else does it.
+> >
+> >       if (blah_blah_x && <-- && has to be on the first line for checkpatch
+> >           blah_blah_y) { <-- [tab][space][space][space][space]blah
+> >
+> > Now all the conditions are aligned visually which makes it readable.
+> > They aren't aligned with the indent block so it's easy to tell the
+> > inside from the if condition.
+> >
+> > I kind of hate all this extra documentation because now everyone thinks
+> > they can invent new hoops to jump through.
+>
+> FWIW, I completely agree with Dan (Carpenter) here. I absolutely
+> dislike having these kinds of files, and with subsystems imposing weird
+> restrictions on style (like the quoted example, yuck).
+>
+> Additionally, it would seem saner to standardize rules around when
+> code is expected to hit the maintainers hands for kernel releases. Both
+> yours and Martins deals with that, there really shouldn't be the need
+> to have this specified in detail per sub-system.
 
-A lot of times the excessive inversions seem to result in a net loss of
-readability - e.g.:
+So this is *the* point of the exercise.
 
-<snip>
+I picked up this indentation habit a long while back in response to
+review feedback on a patch to a subsystem that formatted code this
+way. At the time CodingStyle did not contradict the maintainer's
+preference, so I adopted it across the board.
 
-> diff --git a/drivers/nvdimm/region_devs.c
-> b/drivers/nvdimm/region_devs.c
-> index 65df07481909..6861e0997d21 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -320,9 +320,7 @@ static ssize_t set_cookie_show(struct device *dev,
->  	struct nd_interleave_set *nd_set = nd_region->nd_set;
->  	ssize_t rc = 0;
->  
-> -	if (is_memory(dev) && nd_set)
-> -		/* pass, should be precluded by region_visible */;
+Now I come to find that CodingStyle has settled on clang-format (in
+the last 15 months) as the new standard which is a much better answer
+to me than a manually specified style open to interpretation. I'll
+take a look at getting libnvdimm converted over.
 
-For one, the comment is lost
+If we can take that further and standardize all of the places where
+contributors see variations across subsystems on the fundamental
+questions of style, timing, follow-up, and unit test invocation the
+Maintainer Entry Profile can be superseded with common guidelines.
 
-> -	else
-> +	if (!(is_memory(dev) && nd_set))
-
-And it takes a moment to resolve between things such as:
-
-	if (!(A && B))
-	  vs.
-	if (!(A) && B)
-
-And this is especially true if 'A' and 'B' are longer function calls,
-split over multiple lines, or are themselves compound 'sections'.
-
-I'm not opposed to /all/ such transformations -- for example, the ones
-where the logical inversion can be 'consumed' by toggling a comparision
-operator, as you have a few times in this patch, don't sacrifice any
-readibility, and perhaps even improve it. 
-
->  		return -ENXIO;
->  
->  	/*
+Otherwise, yes I completely agree with you that a "Maintainer Entry
+Profile" is a sad comment on the state of what contributors need to
+navigate, but that's today's reality that needs to be addressed.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
