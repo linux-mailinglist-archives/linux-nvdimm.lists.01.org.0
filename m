@@ -2,50 +2,56 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D48FB0EBA
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 14:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6D1B0F9A
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 15:10:27 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E6F8121962301;
-	Thu, 12 Sep 2019 05:17:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B0384202E2929;
+	Thu, 12 Sep 2019 06:10:27 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=batv+925f5eb4b30b3cab9222+5863+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=209.85.210.194; helo=mail-pf1-f194.google.com;
+ envelope-from=bart.vanassche@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com
+ [209.85.210.194])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id B8AA2202E291C
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 05:17:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=Hc4pr/JgOy8jge1sULbZMWg1OXydBU1WsUPv7831t4U=; b=asDt2qezyg+T7KO3RqFIU5Nr8
- HAh9g7yO3V9DqeenDcb1NJOtekvqnlAUigcLmAZHgHCxv6ywixvMIVuSoDFxY5JnSQ6TpXdreb5BB
- Tx9wqCcvzXgxhDmyCW0XW2ZE77irAHhbW93bViqYhBe+Cw03/MYqVLQRdtHFwaevhEFCkr6sOh3pm
- 5EPTIlU4AflqwXpAt9RfZMqqh64FDzFJnBe/GVZ1mppcdVydHn7AkdOd3GhEYMz4w85J1hwDFIVWv
- aSuoFTcEPICHlG7QLLXtWwY2kxCl6WIYk1j5MFzRYaqKdmtbf4MZRSmn9w1HtXz7N5gI7fZlah+Xn
- BJNhWlCfA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.2 #3 (Red
- Hat Linux)) id 1i8O27-0004Uq-Gs; Thu, 12 Sep 2019 12:17:07 +0000
-Date: Thu, 12 Sep 2019 05:17:07 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH 01/13] nvdimm: Use more typical whitespace
-Message-ID: <20190912121707.GA16029@infradead.org>
-References: <cover.1568256705.git.joe@perches.com>
- <7a5598bda6a3d18d75c3e76ab89d9d95e8952500.1568256705.git.joe@perches.com>
+ by ml01.01.org (Postfix) with ESMTPS id A7842202E291C
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 06:10:26 -0700 (PDT)
+Received: by mail-pf1-f194.google.com with SMTP id y22so16020390pfr.3
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 06:10:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=o85hg2uRViTBTOdRLoeY1KBtWVrAtpQuUFP49tE28+E=;
+ b=hfHsaht8NQr4NueUaAAeGjA+RUxwXrMYid0nyCB+IpKKdKs7xT62GCfyZlVC7iHs1p
+ 1LuqVCqyowuDNNetpa29JE65teucZZRl+FOtdzrRwU/VP3K7SNnaDzl1sEbB08Qc3Vva
+ E3kvpfHejCNQFnNVuwUMhMigTIy+9CuTk6KiRtRxchTdsmRl4ja4tL/ug6HLmdIf1dl0
+ LUErVwR2DpddD2bY2zeWXcxsGGWpPIPqS5ZBBcABohhOE9fYymAzba4s1yqWO2PfvKnl
+ i3WiPYv5dx4qXNSNb7V2cXJzxO8DlFYPqY4hkHyNGJ3UskBcY10BZxfw6tRK6A8ugJJp
+ 6IPA==
+X-Gm-Message-State: APjAAAXq4WagdyDLp6bNZrY5j1JWcmWpaE9zSGM//ooV6owNfy+V/8qA
+ 7kNne0VOm8Bk40zLepLA64o=
+X-Google-Smtp-Source: APXvYqzrRMGtNABoRFUEmvlswO8y/ZbF7TMze/iCEdYvrjifxzi3YYQpajJ4r+D8tdbIIPZ/7cqrJA==
+X-Received: by 2002:a63:460c:: with SMTP id t12mr37672408pga.69.1568293823578; 
+ Thu, 12 Sep 2019 06:10:23 -0700 (PDT)
+Received: from [172.19.249.100] ([38.98.37.138])
+ by smtp.gmail.com with ESMTPSA id u65sm28133705pfu.104.2019.09.12.06.10.10
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 12 Sep 2019 06:10:22 -0700 (PDT)
+Subject: Re: [Ksummit-discuss] [PATCH v2 0/3] Maintainer Entry Profiles
+To: Dan Williams <dan.j.williams@intel.com>, linux-kernel@vger.kernel.org
+References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Bart Van Assche <bvanassche@acm.org>
+Message-ID: <92fb4141-8e2d-1139-2f55-b7100be8a2fd@acm.org>
+Date: Thu, 12 Sep 2019 14:10:02 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <7a5598bda6a3d18d75c3e76ab89d9d95e8952500.1568256705.git.joe@perches.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,26 +63,57 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org,
- Dan Carpenter <dan.carpenter@oracle.com>
+Cc: ksummit-discuss@lists.linuxfoundation.org, linux-nvdimm@lists.01.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dmitry Vyukov <dvyukov@google.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Steve French <stfrench@microsoft.com>, "Tobin C. Harding" <me@tobin.cc>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
->  static void append_badrange_entry(struct badrange *badrange,
-> -		struct badrange_entry *bre, u64 addr, u64 length)
-> +				  struct badrange_entry *bre, u64 addr, u64 length)
+On 9/11/19 4:48 PM, Dan Williams wrote:
+> At last years Plumbers Conference I proposed the Maintainer Entry
+> Profile as a document that a maintainer can provide to set contributor
+> expectations and provide fodder for a discussion between maintainers
+> about the merits of different maintainer policies.
+> 
+> For those that did not attend, the goal of the Maintainer Entry Profile,
+> and the Maintainer Handbook more generally, is to provide a desk
+> reference for maintainers both new and experienced. The session
+> introduction was:
+> 
+>     The first rule of kernel maintenance is that there are no hard and
+>     fast rules. That state of affairs is both a blessing and a curse. It
+>     has served the community well to be adaptable to the different
+>     people and different problem spaces that inhabit the kernel
+>     community. However, that variability also leads to inconsistent
+>     experiences for contributors, little to no guidance for new
+>     contributors, and unnecessary stress on current maintainers. There
+>     are quite a few of people who have been around long enough to make
+>     enough mistakes that they have gained some hard earned proficiency.
+>     However if the kernel community expects to keep growing it needs to
+>     be able both scale the maintainers it has and ramp new ones without
+>     necessarily let them make a decades worth of mistakes to learn the
+>     ropes. 
+> 
+> To be clear, the proposed document does not impose or suggest new
+> rules. Instead it provides an outlet to document the unwritten rules
+> and policies in effect for each subsystem, and that each subsystem
+> might decide differently for whatever reason.
 
-Please stop sending this kind of crap.  Two tabs are a very common
-style used in a lot of the kernel, and some people actually prefer it.
+Any maintainer who reads this might interpret this as an encouragement
+to establish custom policies. I think one of the conclusions of the
+Linux Plumbers 2019 edition is that too much diversity is bad and that
+we need more uniformity across kernel subsystems with regard what is
+expected from patch contributors. I would appreciate if a summary of
+https://linuxplumbersconf.org/event/4/contributions/554/attachments/353/584/Reflections__Kernel_Summit_2019.pdf
+would be integrated in the maintainer handbook.
 
-Instead of arguing what is better just stick to what the surrounding
-code does.
+Thanks,
 
-Or in other words:  Feel free to be a codingstyle nazi for your code
-(I am for some of mine), but leave others peoples code alone with
-"cleanup" patches.
+Bart.
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
