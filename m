@@ -2,93 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10001B10A6
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FF6B10EB
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:18:08 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 31B84202E2931;
-	Thu, 12 Sep 2019 07:06:15 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2C38A202E2936;
+	Thu, 12 Sep 2019 07:18:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jthumshirn@suse.de;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 89E34202E2917
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:06:13 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx1.suse.de (Postfix) with ESMTP id 812E3B03B;
- Thu, 12 Sep 2019 14:06:09 +0000 (UTC)
-Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
-To: Jeff Moyer <jmoyer@redhat.com>, Joe Perches <joe@perches.com>
-References: <cover.1568256705.git.joe@perches.com>
- <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
-From: Johannes Thumshirn <jthumshirn@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=jthumshirn@suse.de; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <16d91aa0-e353-843b-2e94-efd5a26e145d@suse.de>
-Date: Thu, 12 Sep 2019 16:06:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ by ml01.01.org (Postfix) with ESMTPS id 79BE7202E292C
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:18:07 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id s28so26220697otd.4
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:18:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=as20/K/wrQh0VcPp2JWZkYWpNUtTzdFQp/D51GEnJ2A=;
+ b=VsK63YxZZ74Soq7i8sbb6fh8HuUwyRP41aJpm+IyEEVxbFiT+L+HI7tHr2Vtr0PsHQ
+ fDXFh2WJkHcBM2sQqx1nz4YhINjpIBCvGC9TrFffsfvAIt4gr3yYNVISifAiKggfChWB
+ 2eA96VKb6o3jBW1xy3BW5dlaSz0jNJM08lR86GYMPhTh3k+K1N87uSTRdNbiDRyiowpt
+ ZwXe3nzkYOIn1ZNixxsiuJTCR4BF0L25n4IU8DzNBCsoClLT/Gf5jHWOcunpLH27oWeT
+ r5TNuXp8viQJvL/EuRe9CAFlXbBTqM99aMDd+dlIzc3ACil8+YLF6nLcaSfVseT69/36
+ Ivxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=as20/K/wrQh0VcPp2JWZkYWpNUtTzdFQp/D51GEnJ2A=;
+ b=sU0VJQt0oZMLeVKEl/A7wsuq4ZPcgX/WqwwbCMnIltpOqah8fRFHeXniUki32pMfrm
+ 6nql4Yr88kpNPmanXFrBVlTRvJLcQyCKkdVB/N8ZjdX1oId/1MSaKiqh6BXDzR4npGM8
+ g/JVipnr7p1G9LYa7IoJF7XkjWOQmpR9NcYaoz0Wd2Q1wahsvXhh4FjyuNrpXlST81IM
+ Q5zSgUUl24CLVEax/8M75D4ypom+vl1hSRZvAHPDZIo7FXN3NJel57fWtNeVIq6f0ccH
+ 4CC8aNh0DIFXk4ZYKmYzd2CeaC1IhJAwDePKbYMecius9lEiicyoqEScRyzh5r9+c9io
+ opew==
+X-Gm-Message-State: APjAAAX9WstJKsKBG+2VpxUjte/oVh5FmuAF/EfKqed7KE9ynzcLN+77
+ Wa3fFdhKFKpmMCCrEkUQhkiUF8oX4rJEXy+DDv8vAg==
+X-Google-Smtp-Source: APXvYqww7bFfGwyc5qF49rVm8WTD42K5tWa0xz3KchY2iJm2zV03eJqbCs0F8Uc+E8PPkm5kQfSl9zD6BO6JdIqdc4I=
+X-Received: by 2002:a9d:6d15:: with SMTP id o21mr10806424otp.363.1568297884741; 
+ Thu, 12 Sep 2019 07:18:04 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
-Content-Language: en-US
+References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190911184332.GL20699@kadam>
+ <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
+ <CAPcyv4ij3s+9uO0f9aLHGj3=ACG7hAjZ0Rf=tyFmpt3+uQyymw@mail.gmail.com>
+ <CANiq72k2so3ZcqA3iRziGY=Shd_B1=qGoXXROeAF7Y3+pDmqyA@mail.gmail.com>
+ <e9cb9bc8bd7fe38a5bb6ff7b7222b512acc7b018.camel@perches.com>
+ <5eebafcb85a23a59f01681e73c83b387c59f4a4b.camel@perches.com>
+In-Reply-To: <5eebafcb85a23a59f01681e73c83b387c59f4a4b.camel@perches.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 12 Sep 2019 07:17:51 -0700
+Message-ID: <CAPcyv4iu13D5P+ExdeW8OGMV8g49fMUy52xbYZM+bewwVSwhjg@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
+ Maintainer Entry Profile
+To: Joe Perches <joe@perches.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -100,23 +73,82 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@oracle.com>,
- linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-T24gMTIvMDkvMjAxOSAxNjowMCwgSmVmZiBNb3llciB3cm90ZToKPiBJJ2QgcmF0aGVyIGF2b2lk
-IHRoZSBjaHVybiBhbmQgdGhlIHJpc2sgb2YKPiBpbnRyb2R1Y2luZyByZWdyZXNzaW9ucy4gIFRo
-aXMgd2lsbCBhbHNvIG1ha2UgYmFja3BvcnRzIHRvIHN0YWJsZSBtb3JlCj4gb2YgYSBwYWluLCBz
-byBpdCBpc24ndCB3aXRob3V0IGNvc3QuICBEYW4sIGlzIHRoaXMgcmVhbGx5IHNvbWV0aGluZyB5
-b3UKPiB3YW50IHRvIGRvPwoKSSdtIGEgMTAwJSB3aXRoIEplZmYgb24gdGhpcyEKCi0tIApKb2hh
-bm5lcyBUaHVtc2hpcm4gICAgICAgICAgICAgICAgICAgICAgICAgICAgU1VTRSBMYWJzIEZpbGVz
-eXN0ZW1zCmp0aHVtc2hpcm5Ac3VzZS5kZSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-KzQ5IDkxMSA3NDA1MyA2ODkKU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMgR2VybWFueSBHbWJICk1h
-eGZlbGRzdHIuIDUKOTA0MDkgTsO8cm5iZXJnCkdlcm1hbnkKKEhSQiAyNDcxNjUsIEFHIE3DvG5j
-aGVuKQpLZXkgZmluZ2VycHJpbnQgPSBFQzM4IDlDQUIgQzJDNCBGMjVEIDg2MDAgRDBEMCAwMzkz
-IDk2OUQgMkQ3NiAwODUwCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9y
-ZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
+On Thu, Sep 12, 2019 at 4:02 AM Joe Perches <joe@perches.com> wrote:
+>
+> (cut down the cc-list)
+>
+> On Thu, 2019-09-12 at 03:18 -0700, Joe Perches wrote:
+> > On Thu, 2019-09-12 at 10:24 +0200, Miguel Ojeda wrote:
+> > > On Thu, Sep 12, 2019 at 9:43 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > > Now I come to find that CodingStyle has settled on clang-format (in
+> > > > the last 15 months) as the new standard which is a much better answer
+> > > > to me than a manually specified style open to interpretation. I'll
+> > > > take a look at getting libnvdimm converted over.
+> > >
+> > > Note that clang-format cannot do everything as we want within the
+> > > kernel just yet, but it is a close enough approximation -- it is near
+> > > the point where we could simply agree to use it and stop worrying
+> > > about styling issues. However, that would mean everyone needs to have
+> > > a recent clang-format available, which I think is the biggest obstacle
+> > > at the moment.
+> >
+> > I don't think that's close to true yet for clang-format.
+> >
+> > For instance: clang-format does not do anything with
+> > missing braces, or coalescing multi-part strings,
+> > or any number of other nominal coding style defects
+> > like all the for_each macros, aligning or not aligning
+> > columnar contents appropriately, etc...
+> >
+> > clang-format as yet has no taste.
+
+Ok, good to confirm that we do not yet have an objective standard for
+coding style. This means it's not yet something process documentation
+can better standardize for contributors and will be subject to ongoing
+taste debates. Lets reclaim the time to talk about objective items
+that *can* clarified across maintainers.
+
+> >
+> > I believe it'll take a lot of work to improve it to a point
+> > where its formatting is acceptable and appropriate.
+> .
+>
+> Just fyi:
+>
+> Here's the difference that clang-format produces from the current
+> nvdimm sources to the patch series I posted.
+>
+> clang-format does some OK, some not OK, some really bad.
+> (e.g.: __stringify)
+>
+> My git branch for my patches is 20190911_nvdimm, and
+> using Stephen Rothwell's git tree for -next:
+>
+> $ git checkout next-20190904
+> $ clang-format -i drivers/nvdimm/*.[ch]
+> $ git diff --stat -p 20190911_nvdimm -- drivers/nvdimm/ > nvdimm.clang-diff
+> ---
+[..]
+>  25 files changed, 895 insertions(+), 936 deletions(-)
+
+So, I'm lamenting the damage either of these mass conversions is going
+to do git blame flows. To be honest I regret broaching Coding Style
+standardization because it's taking the air out of the room for the
+wider discussion of the maintainer/contributor topics we might be able
+to agree.
+
+As for libnvdimm at this point I'd rather start with objective
+checkpatch error cleanups and defer the personal taste items.
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
