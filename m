@@ -2,51 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC343B114E
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F48FB1173
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 16:51:46 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 19B22202E6DE3;
-	Thu, 12 Sep 2019 07:42:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C8A6F202E6DE4;
+	Thu, 12 Sep 2019 07:51:46 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::144; helo=mail-lf1-x144.google.com;
- envelope-from=miguel.ojeda.sandonis@gmail.com;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=216.40.44.216;
+ helo=smtprelay.hostedemail.com; envelope-from=joe@perches.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
- [IPv6:2a00:1450:4864:20::144])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtprelay.hostedemail.com (smtprelay0216.hostedemail.com
+ [216.40.44.216])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 5DA61202E2938
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:42:18 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id r22so8274799lfm.1
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:42:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=5YVmroOmWsfbPZww9PGat/bavCeNmvQGcimrBhWBuy4=;
- b=K76FKy6ESnqOvkBCMCo6qwFBykl2HdgaTHRY3YvD94OEdMgn9uYrY/t3Kmifp0e0uD
- LKnNGAwBNrnpdLtTq9Y4/2qsIRatfXp4eGFn0qSiJZTHqhBN8a91HDkxHp/U7w44lQq9
- v1ggR0KcIzhSI+0MbaLJSfH2FWbpjSsGKPCyd2dAWcg9hKLHNSh5LIzcI74Gjc+/Ldyq
- saKzYeh0F20mLAZa06YrBLvngFBnrnuKNU7eq7UERSVLSk9yPQ6sz5lNpPe55yuHx61l
- ffgqplJqtREYfZa6YR5FZdkdKY3CFo9akYzMw+XUp0ASe2YSHqJL0Hitx9EuJrKhvtlr
- reVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=5YVmroOmWsfbPZww9PGat/bavCeNmvQGcimrBhWBuy4=;
- b=b5efSO9gN0UvtD4q+VyAaGEh1nAl4kgGpCiAtK2M2WdQXzAyKKr1pnJIMDbQCHZbZ7
- 01epDki3N51Edvjzel9gccNP45wcmWQ8n/ofieD4bUOHZzvobhOiE5M+LpRgxJEosPR1
- 67oEl0/HkKKhqdi2ttN5Y0SfVMVtb47k1CKDw22DLuGk19GjatFBqvl1iTaiIuTdTl21
- iLOwtz3ljS5uJYkUWN3pGca8jJWZtkZXw0xGuT9ga/ldN6N/kmjGc8wz5fRgVJQzVe1G
- 8Up88lsn93Jy56wVRBc6mP+UF3GbZkbApi/lIrJRaiTAnOx5NBQp8je8DH/KkvU8o0vJ
- xYWw==
-X-Gm-Message-State: APjAAAX3fNAJMEi3Q3NiPr0qwT7zfnJPgVx0blYGpcW6o3SZ7d3y3h4W
- YseLBWA51tbs4EIij/yHCfpn9nR3w+RIQni1uyM=
-X-Google-Smtp-Source: APXvYqy5v3NkZEjEMM7AwjSVopo8j9FGoJxzUq1NdqYhh5e1x0kmCJH4LPdki4NmHpjeLat+4zGNy30KUDyElmgw5l0=
-X-Received: by 2002:ac2:4351:: with SMTP id o17mr2286425lfl.131.1568299334764; 
- Thu, 12 Sep 2019 07:42:14 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id EB8CE202E2938
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 07:51:44 -0700 (PDT)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay03.hostedemail.com (Postfix) with ESMTP id 92CC1831D72C;
+ Thu, 12 Sep 2019 14:51:41 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::::,
+ RULES_HIT:41:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2693:2828:2909:2917:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:5007:7903:7904:8957:10004:10400:10450:10455:10562:10848:11232:11658:11914:12297:12740:12760:12895:13069:13255:13311:13357:13439:14096:14097:14659:14721:19904:19999:21080:21433:21451:21627:21740:30016:30054:30060:30091,
+ 0,
+ RBL:47.151.152.152:@perches.com:.lbl8.mailshell.net-62.14.0.100 64.201.201.201,
+ CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
+ MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:38,
+ LUA_SUMMARY:none
+X-HE-Tag: yard89_8305e22eeb808
+X-Filterd-Recvd-Size: 2937
+Received: from XPS-9350.home (unknown [47.151.152.152])
+ (Authenticated sender: joe@perches.com)
+ by omf12.hostedemail.com (Postfix) with ESMTPA;
+ Thu, 12 Sep 2019 14:51:40 +0000 (UTC)
+Message-ID: <9d4633cf0bbf531393ce170444d607eb2e915f48.camel@perches.com>
+Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
+ Maintainer Entry Profile
+From: Joe Perches <joe@perches.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 12 Sep 2019 07:51:39 -0700
+In-Reply-To: <CAPcyv4iu13D5P+ExdeW8OGMV8g49fMUy52xbYZM+bewwVSwhjg@mail.gmail.com>
 References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
  <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
  <20190911184332.GL20699@kadam>
@@ -54,13 +50,10 @@ References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.
  <CAPcyv4ij3s+9uO0f9aLHGj3=ACG7hAjZ0Rf=tyFmpt3+uQyymw@mail.gmail.com>
  <CANiq72k2so3ZcqA3iRziGY=Shd_B1=qGoXXROeAF7Y3+pDmqyA@mail.gmail.com>
  <e9cb9bc8bd7fe38a5bb6ff7b7222b512acc7b018.camel@perches.com>
-In-Reply-To: <e9cb9bc8bd7fe38a5bb6ff7b7222b512acc7b018.camel@perches.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 12 Sep 2019 16:42:03 +0200
-Message-ID: <CANiq72ntjDRyMBdVXLMV9h=3_jU47UA06LaGvR2Jw9aMZM3V3w@mail.gmail.com>
-Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
- Maintainer Entry Profile
-To: Joe Perches <joe@perches.com>
+ <5eebafcb85a23a59f01681e73c83b387c59f4a4b.camel@perches.com>
+ <CAPcyv4iu13D5P+ExdeW8OGMV8g49fMUy52xbYZM+bewwVSwhjg@mail.gmail.com>
+User-Agent: Evolution 3.32.1-2 
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,60 +65,59 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>,
- ksummit <ksummit-discuss@lists.linuxfoundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, bpf@vger.kernel.org,
- Dan Carpenter <dan.carpenter@oracle.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 12, 2019 at 12:18 PM Joe Perches <joe@perches.com> wrote:
->
-> I don't think that's close to true yet for clang-format.
+On Thu, 2019-09-12 at 07:17 -0700, Dan Williams wrote:
 
-I don't expect clang-format to match perfectly our current code style.
+> Ok, good to confirm that we do not yet have an objective standard for
+> coding style. This means it's not yet something process documentation
+> can better standardize for contributors and will be subject to ongoing
+> taste debates. Lets reclaim the time to talk about objective items
+> that *can* clarified across maintainers.
 
-However, if core maintainers agree that it is "close enough now"
-(specially with newer LLVMs, like 9), then there is a great benefit on
-moving to automatically-styled code. The "con" is having to change a
-bit our style wherever clang-format does not support exactly our
-current style.
+No, let's not and just clarify whether or not whitespace
+style patches are acceptable patch submissions.
 
-> For instance: clang-format does not do anything with
-> missing braces, or coalescing multi-part strings,
-> or any number of other nominal coding style defects
-> like all the for_each macros, aligning or not aligning
-> columnar contents appropriately, etc...
+Coding style fragmentation is not otherwise acceptable to me.
 
-Some of these may or may not be fixable tweaking the options. Note
-that there are conflicting styles within the kernel at the moment,
-e.g. how to indent arguments to function calls. Therefore, some of the
-differences do not apply as soon as we decide on a given style.
+nvdimm mandating 2 tab indentation when nvdimm itself is not
+at all consistent in that regard is also whitespace noise.
 
-Furthermore, with automatic formatting we have also the chance to
-review some options that we couldn't easily change before.
+> As for libnvdimm at this point I'd rather start with objective
+> checkpatch error cleanups and defer the personal taste items.
 
-> clang-format as yet has no taste.
->
-> I believe it'll take a lot of work to improve it to a point
-> where its formatting is acceptable and appropriate.
->
-> An AI rather than a table based system like clang-format is
-> more likely to be a real solution, but training that AI
-> isn't a thing that I want to do.
+Fine by me.
 
-I don't think we need taste (or AI-like solutions), because
-consistency has a lot of value too. Not just for our brains, but for
-patches as well.
+I do want to avoid documenting per-subsystem coding styles.
 
-Note that clang-format is a tool used by major projects successfully,
-it is not like we are experimenting too much here :-)
+How about adding something to MAINTAINERS like:
 
-Cheers,
-Miguel
+A:	Accepting patches by newbies or CodingStyle strict
+
+and checkpatch could be changed turn off a bunch of
+whitespace rules on a subsystem basis when run with
+-f for files or without -f for a patch.
+
+Most of this comes down to whitespace like
+
+	a = b + c
+
+where it hardly matters if the CodingStyle mandated
+space around + is used or
+
+	foo = bar(baz,
+			qux)
+
+where qux position is not really important.
+
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
