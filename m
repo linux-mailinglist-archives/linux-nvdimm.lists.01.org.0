@@ -1,63 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4ADAB160C
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Sep 2019 23:58:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE82B1633
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Sep 2019 00:15:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1BBBC202E6E06;
-	Thu, 12 Sep 2019 14:58:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 497C0202E6E09;
+	Thu, 12 Sep 2019 15:15:11 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com;
- envelope-from=miguel.ojeda.sandonis@gmail.com;
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=216.40.44.161;
+ helo=smtprelay.hostedemail.com; envelope-from=joe@perches.com;
  receiver=linux-nvdimm@lists.01.org 
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtprelay.hostedemail.com (smtprelay0161.hostedemail.com
+ [216.40.44.161])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E5DA5202E2919
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 14:58:39 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id t8so20533159lfc.13
- for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 14:58:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=yN64USJBHKxsfREIuBd8D01a5UImJnKtWKpzPkFiizg=;
- b=PGW6zE4wNxxbjukTtRMTx8QNmVGcBEm2hLEbRkWw3oXK9nosmOY/buL4Xg57qP7S6J
- hRKk5uMe62EFQnvCvGdpsQIO5VfARhpFMvQBS9xjkfCFbqRsSvDw8KqqDB15n+yYeLBn
- zPxoy5clxY4UDz73h1hZC/niCSMsEOmI6A5RJaept57woKtYBCfsKB5hBWKo4ZbgQrWw
- EB20B8PyGGMZr6eYzQkz5kJ9NI6NBrd1D9O0D29B1H94HFsPeO14NBzRgYFMpa8+6fXq
- zJk3j/7eXO93uB2VhFrcsr0AwzLy+U0ZI1QJ6qUYEUcccgf0rmiNtji2b9kK7Sq1AnvZ
- jG/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=yN64USJBHKxsfREIuBd8D01a5UImJnKtWKpzPkFiizg=;
- b=GvTNRvQuy3IBtGrsQi/HEjbYw6ix5tpKbWbPhth1PDbgChOambZe1vcovsXsTqjIbF
- obeABcV4E/ahNEgVSoTIsVVt7FxME5c4qCqJmUh799SO9zh3PqDXlA23PvYtqlOm0ze6
- 47ssr0bS9u/JzqSHrMx6BOyFuR2kgtt5glCM/sxtGLnEdV/RZylzMN74z5CmbWn7kwCe
- BFq9XmqrCxPsp03U5t3MqonrSCZe47HZOLIhwvpHeHhRj0FGvJO9Vfd+QIH5GxH5FkjP
- zWrsUmhP94tnUbKVpfATFmxxTt6l5ASw2bxz7XozJ2yr3NwIWk2Bel49HTyGSCBTDAS6
- 2SrQ==
-X-Gm-Message-State: APjAAAXZmj7YUGiXiiCoglJZE0q4tTXNrvS90zsjsm2QYWThP7TZovR3
- QqL536mGUlZGLUOnjVBDjquF5WEgDCIafu7m57k=
-X-Google-Smtp-Source: APXvYqx/qjsJazNB675gWGR/Z07snhq12vp75Kg6Qq3NQ2rBGj/WnqBglk8w5SZZbbo9fLzY24rbLzt+aQGVznyXfUU=
-X-Received: by 2002:a19:428f:: with SMTP id
- p137mr29623982lfa.149.1568325518795; 
- Thu, 12 Sep 2019 14:58:38 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id 33581202B75E6
+ for <linux-nvdimm@lists.01.org>; Thu, 12 Sep 2019 15:15:09 -0700 (PDT)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net
+ [216.40.38.60])
+ by smtprelay07.hostedemail.com (Postfix) with ESMTP id 58571181D3368;
+ Thu, 12 Sep 2019 22:15:09 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2, 0, 0, , d41d8cd98f00b204, joe@perches.com, :::::::::::::,
+ RULES_HIT:41:355:379:599:800:960:967:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1542:1593:1594:1711:1730:1747:1777:1792:2110:2393:2525:2553:2559:2563:2682:2685:2687:2693:2828:2859:2895:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3354:3622:3653:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4043:4321:4362:4470:5007:6117:6119:6691:7688:7903:8603:8957:9010:9025:10004:10400:10848:11026:11232:11658:11914:12043:12050:12297:12438:12555:12663:12679:12740:12760:12895:12986:13161:13229:13439:14096:14097:14181:14659:14721:21080:21365:21433:21451:21627:21939:30029:30054:30090:30091,
+ 0,
+ RBL:47.151.152.152:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,
+ CacheIP:none, Bayesian:0.5, 0.5, 0.5, Netcheck:none, DomainCache:0,
+ MSF:not bulk, SPF:fn, MSBL:0, DNSBL:neutral, Custom_rules:0:0:0, LFtime:30,
+ LUA_SUMMARY:none
+X-HE-Tag: pin05_49dff1f532f1d
+X-Filterd-Recvd-Size: 3395
+Received: from XPS-9350.home (unknown [47.151.152.152])
+ (Authenticated sender: joe@perches.com)
+ by omf08.hostedemail.com (Postfix) with ESMTPA;
+ Thu, 12 Sep 2019 22:15:07 +0000 (UTC)
+Message-ID: <2e3b15aea8645f38cea9442a4b6eb95f5b33eec6.camel@perches.com>
+Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
+From: Joe Perches <joe@perches.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Nick Desaulniers
+ <ndesaulniers@google.com>
+Date: Thu, 12 Sep 2019 15:15:06 -0700
+In-Reply-To: <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
 References: <cover.1568256705.git.joe@perches.com>
  <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
  <CANiq72kTsf=0rEufDMo7BzMNv1dqc5=ws7fSd=H_e=cpHR24Kg@mail.gmail.com>
  <4df0a07ec8f1391acfa987ecef184a50e7831000.camel@perches.com>
-In-Reply-To: <4df0a07ec8f1391acfa987ecef184a50e7831000.camel@perches.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 12 Sep 2019 23:58:27 +0200
-Message-ID: <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
-Subject: Re: [PATCH 00/13] nvdimm: Use more common kernel coding style
-To: Joe Perches <joe@perches.com>, Nick Desaulniers <ndesaulniers@google.com>
+ <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
+User-Agent: Evolution 3.32.1-2 
+MIME-Version: 1.0
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,52 +69,66 @@ Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 12, 2019 at 11:08 PM Joe Perches <joe@perches.com> wrote:
->
-> Please name the major projects and then point to their
-> .clang-format equivalents.
->
-> Also note the size/scope/complexity of the major projects.
+On Thu, 2019-09-12 at 23:58 +0200, Miguel Ojeda wrote:
+> On Thu, Sep 12, 2019 at 11:08 PM Joe Perches <joe@perches.com> wrote:
+> > Please name the major projects and then point to their
+> > .clang-format equivalents.
+> > 
+> > Also note the size/scope/complexity of the major projects.
+> 
+> Mozilla, WebKit, LLVM and Microsoft. They have their style distributed
+> with the official clang-format, not sure if they enforce it.
+> 
+> Same for Chromium/Chrome, but it looks like they indeed enforce it:
 
-Mozilla, WebKit, LLVM and Microsoft. They have their style distributed
-with the official clang-format, not sure if they enforce it.
+thanks for that list.
 
-Same for Chromium/Chrome, but it looks like they indeed enforce it:
+> > I used the latest one, and quite a bit of the conversion
+> > was unpleasant to read.
+> 
+> It would be good to see particularly bad snippets to see if we can do
+> something about them (and, if needed, try to improve clang-format to
+> support whatever we need).
 
-  "A checkout should give you clang-format to automatically format C++
-code. By policy, Clang's formatting of code should always be accepted
-in code reviews."
+As I mentioned earlier, look at the __stringify conversion.
+Also the C() blocks.
 
-I would bet other Google projects do so as well (since Chandler
-Carruth has been giving talks about clang-format for 7+ years). Nick?
+btw: emacs 'mark-whole-buffer indent-region',
+the tool I used for each file in patch 1, also
+made a mess of the C() block.
 
-I hope those are major enough. There is also precedent in other
-languages (e.g. Java, C#, Rust).
+> Did you tweak the parameters with the new ones?
 
-> I used the latest one, and quite a bit of the conversion
-> was unpleasant to read.
+No.  I used
 
-It would be good to see particularly bad snippets to see if we can do
-something about them (and, if needed, try to improve clang-format to
-support whatever we need).
+$ clang-format --version
+clang-format version 10.0.0 (git://github.com/llvm/llvm-project.git 305b961f64b75e73110e309341535f6d5a48ed72)
 
-Did you tweak the parameters with the new ones? I am preparing an RFC
-patch for an updated .clang-format configuration that improves quite a
-bit the results w.r.t. to the current one (and allows for some leeway
-on the developer's side, which helps prevent some cases too).
+and the existing .clang_format from
+next-20190904 35394d031b710e832849fca60d0f53b513f0c390
 
-> Marking sections _no_auto_format_ isn't really a
-> good solution is it?
+> I am preparing an RFC
+> patch for an updated .clang-format configuration that improves quite a
+> bit the results w.r.t. to the current one (and allows for some leeway
+> on the developer's side, which helps prevent some cases too).
 
-I am thinking about special tables that are hand-crafted or very
-complex macros. For those, yes, I think it is a fine solution. That is
-why clang-format has that feature to begin with, and you can see an
-example in Mozilla's style guide which points here:
+Well, one day no doubt an automated tool will be
+more useful for the kernel.  Hope you keep at it
+and good luck.
 
-  https://github.com/mozilla/gecko-dev/blob/master/xpcom/io/nsEscape.cpp#L22
+> > Marking sections _no_auto_format_ isn't really a
+> > good solution is it?
+> 
+> I am thinking about special tables that are hand-crafted or very
+> complex macros. For those, yes, I think it is a fine solution. That is
+> why clang-format has that feature to begin with, and you can see an
+> example in Mozilla's style guide which points here:
+> 
+>   https://github.com/mozilla/gecko-dev/blob/master/xpcom/io/nsEscape.cpp#L22
+> 
+> Cheers,
+> Miguel
 
-Cheers,
-Miguel
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
