@@ -2,54 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F295B25F5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Sep 2019 21:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7A8B2620
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Sep 2019 21:33:09 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2D904202EA40A;
-	Fri, 13 Sep 2019 12:17:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 59213202EA40E;
+	Fri, 13 Sep 2019 12:33:00 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Permerror (SPF Permanent Error: Void lookup limit of 2 exceeded)
- identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=mchehab@kernel.org; receiver=linux-nvdimm@lists.01.org 
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::c43; helo=mail-yw1-xc43.google.com;
+ envelope-from=robherring2@gmail.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-yw1-xc43.google.com (mail-yw1-xc43.google.com
+ [IPv6:2607:f8b0:4864:20::c43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 9E3E8202E8428
- for <linux-nvdimm@lists.01.org>; Fri, 13 Sep 2019 12:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
- From:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=rlRJRtbWGqF5qJn2FgghKNYZdCECrxLGGuNAvdpBnhE=; b=soQppz2sjZ542l4x8+d2PrSGd
- JUy0I/+m3xaGNL+3TaQdmws2k+87EdwqozCJbNQoNkOdYssAzSQft6aYDAKIOS6S+ZIbjO0ujXi4U
- Z8tWDGTXggK7USMOULInO7NZgGXRQvg83VfEBJiD3nE28UFgdO0JDMb8qcdJwfHetcRB/NBAgJObA
- Ie+2H2YULowfnE+GM/bw+v48uAfTloz7RO4/9G94UX2N4vuUNNy9xZUD796Bo6JJbJ6iWYK5QILFF
- 7WuNSj1MHoyTRMQ1c3suXpO0RgUhE+F2F6et9sk6WaTHgecOGqrygNc2HRphWdHBmlKmHZcau7Qu5
- slqT0cpBg==;
-Received: from 177.96.232.144.dynamic.adsl.gvt.net.br ([177.96.232.144]
- helo=coco.lan)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
- id 1i8r4b-0000J3-2S; Fri, 13 Sep 2019 19:17:37 +0000
-Date: Fri, 13 Sep 2019 16:17:31 -0300
-From: Mauro Carvalho Chehab <mchehab@kernel.org>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [Ksummit-discuss] [PATCH v2 0/3] Maintainer Entry Profiles
-Message-ID: <20190913161731.6e3405a3@coco.lan>
-In-Reply-To: <78f67ee934f167b433517da81c6a0d3f35c4b123.camel@perches.com>
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <yq1o8zqeqhb.fsf@oracle.com>
- <6fe45562-9493-25cf-afdb-6c0e702a49b4@acm.org>
- <44c08faf43fa77fb271f8dbb579079fb09007716.camel@perches.com>
- <74984dc0-d5e4-f272-34b9-9a78619d5a83@acm.org>
- <4299c79e33f22e237e42515ea436f187d8beb32e.camel@perches.com>
- <CAL_JsqJju36BZPK6DJab28Ne-ORpEyPpxH0H4DuymxFMabpMRQ@mail.gmail.com>
- <78f67ee934f167b433517da81c6a0d3f35c4b123.camel@perches.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ by ml01.01.org (Postfix) with ESMTPS id 8C0C0202EA40A
+ for <linux-nvdimm@lists.01.org>; Fri, 13 Sep 2019 12:32:58 -0700 (PDT)
+Received: by mail-yw1-xc43.google.com with SMTP id u187so10801304ywa.11
+ for <linux-nvdimm@lists.01.org>; Fri, 13 Sep 2019 12:33:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=u15qLOoIkxp7cEiegHHFsMr736/3RxJj/WpvpjNuB/w=;
+ b=q4dk0LhsoDsIEBV4EyhB9244sene9/mxhEF+KQV4YKoKPHE7SK7jkZFRbWgUQxR1fB
+ yOE/YcUNteeeI3lU1PU9VBugQ+9OUWfGYuD++yg30ZEG4nGnzy5YgkSDAuryxrvfGslY
+ m/m4CPUYI/Z5PdoIMxNaDoNyKIEX2zHa7aIf4Yrl7kJGDVDRHoGkujUbm4Q9yjFfh4RG
+ FTsL8M2++sRCEMxWENJkGzYqQZywmdwLrDmLkkQZxRgyhGoBw7L6gjDcqrnPTHGdeJJL
+ Lc6uQCZg8/11s0MbsSl1Kry0emON3LcNoRIzhfrf2BX0LNuU5YWF7MvHjZoU63S0X9jD
+ xdTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=u15qLOoIkxp7cEiegHHFsMr736/3RxJj/WpvpjNuB/w=;
+ b=S0P10duy9QmQ+umPqB7oq5gTAa/xrGWmuWR2IBWctLZmn0yaRQWYXAupvl7chTeINk
+ SuQCxWaznib9qYc1URAGfFK2XL6RbDxQj5+bFfe9dMCn5PF5usAvNX/DtqQAB0b54o2Y
+ am8sxJUrXOFSRH9lCbgMvAfFaFPNGFJu/BmBaFNe4rfyVmLBlcLL+0no2WynvvOlRhsF
+ 1ARRR55jEdUF1wHeiYzEu4+Rp+VT9HLwE5n0LRglw6rkRCwEHMqogmBxXylAbaS7g/h2
+ JI9cc/xgIX+nbSv5Im9vQ/9uTPw957paIKwaUT4y6DmEMZH2SILnktPCa03GnSnP1L38
+ RKQw==
+X-Gm-Message-State: APjAAAU4rM1DB8Po+MfXKTTGKEEpeozke70IvJXJHWSEXVSKaW+5yVSu
+ eHoT7O+Y3gdpxM5gGJVJzcC6hFXvL8dy51tA4A==
+X-Google-Smtp-Source: APXvYqzl9Gmz00Dm5vFdc8rEO+frJ4ZNkwLJ1YEPQUO83/7IjTjFzgLFJ+QiOPrUAgRD1X21OU3A4ibVOH9g531GgIE=
+X-Received: by 2002:a81:9182:: with SMTP id
+ i124mr31070145ywg.279.1568403185288; 
+ Fri, 13 Sep 2019 12:33:05 -0700 (PDT)
 MIME-Version: 1.0
+References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20190911184332.GL20699@kadam>
+ <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
+ <20190913010937.7fc20d93@lwn.net> <20190913114849.GP20699@kadam>
+ <b579153b-3f6d-722c-aea8-abc0d026fa0d@infradead.org>
+ <CAL_JsqLo9-zQYGj2vaEWppbioO0rXu-QNbHhydYdMgrZo0_ESg@mail.gmail.com>
+ <f0ad46a34078a2c1eaa013f9b1a5a52becbcd1c5.camel@perches.com>
+In-Reply-To: <f0ad46a34078a2c1eaa013f9b1a5a52becbcd1c5.camel@perches.com>
+From: Rob Herring <robherring2@gmail.com>
+Date: Fri, 13 Sep 2019 14:32:53 -0500
+Message-ID: <CAL_JsqKOyLefjdW3a7m8fmqSGXAo4CCx2mZzi-JPf5qKD1NWxA@mail.gmail.com>
+Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm, MAINTAINERS:
+ Maintainer Entry Profile
+To: Joe Perches <joe@perches.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,88 +73,62 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Bart Van Assche <bvanassche@acm.org>,
- ksummit <ksummit-discuss@lists.linuxfoundation.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: ksummit <ksummit-discuss@lists.linuxfoundation.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, Randy Dunlap <rdunlap@infradead.org>,
  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Rob Herring <robherring2@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
- Steve French <stfrench@microsoft.com>, "Tobin C. Harding" <me@tobin.cc>
+ bpf@vger.kernel.org, Dan Carpenter <dan.carpenter@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Em Fri, 13 Sep 2019 11:42:38 -0700
-Joe Perches <joe@perches.com> escreveu:
+On Fri, Sep 13, 2019 at 11:42 AM Joe Perches <joe@perches.com> wrote:
+>
+> On Fri, 2019-09-13 at 16:46 +0100, Rob Herring wrote:
+> > On Fri, Sep 13, 2019 at 4:00 PM Randy Dunlap <rdunlap@infradead.org> wrote:
+> > > On 9/13/19 4:48 AM, Dan Carpenter wrote:
+> > >
+> > > > > So I'm expecting to take this kind of stuff into Documentation/.  My own
+> > > > > personal hope is that it can maybe serve to shame some of these "local
+> > > > > quirks" out of existence.  The evidence from this brief discussion suggests
+> > > > > that this might indeed happen.
+> > > >
+> > > > I don't think it's shaming, I think it's validating.  Everyone just
+> > > > insists that since it's written in the Book of Rules then it's our fault
+> > > > for not reading it.  It's like those EULA things where there is more
+> > > > text than anyone can physically read in a life time.
+> > >
+> > > Yes, agreed.
+> > >
+> > > > And the documentation doesn't help.  For example, I knew people's rules
+> > > > about capitalizing the subject but I'd just forget.  I say that if you
+> > > > can't be bothered to add it to checkpatch then it means you don't really
+> > > > care that strongly.
+> > >
+> > > If a subsystem requires a certain spelling/capitalization in patch email
+> > > subjects, it should be added to MAINTAINERS IMO.  E.g.,
+> > > E:      NuBus
+> >
+> > +1
+> >
+> > Better make this a regex to deal with (net|net-next).
+> >
+> > We could probably script populating MAINTAINERS with this using how it
+> > is done manually: git log --oneline <dir>
+>
+> I made a similar proposal nearly a decade ago to add a grammar
+> to MAINTAINERS sections for patch subject prefixes.
+>
+> https://lore.kernel.org/lkml/1289919077.28741.50.camel@Joe-Laptop/
 
-> On Fri, 2019-09-13 at 15:26 +0100, Rob Herring wrote:
-> > On Fri, Sep 13, 2019 at 3:12 PM Joe Perches <joe@perches.com> wrote:  
-> > > On Thu, 2019-09-12 at 13:01 -0700, Bart Van Assche wrote:
-> > >   
-> > > > Another argument in favor of W=1 is that the formatting of kernel-doc
-> > > > headers is checked only if W=1 is passed to make.  
-> > > 
-> > > Actually, but for the fact there are far too many
-> > > to generally enable that warning right now,
-> > > (an x86-64 defconfig has more than 1000)
-> > > that sounds pretty reasonable to me.  
-> 
-> > It's in the 1000s on arm because W=1 turns on more checks in building
-> > .dts files. There are lots of duplicates as most of the dts content is
-> > as an include file (e.g. board dts includes soc dts).  
-> 
-> Yeah, dts[i] files in arm compilations are very noisy at W=1
-> so moving those message types to W=2 seems sensible.
-> 
-> $ { opt="ARCH=arm CROSS_COMPILE=arm-unknown-linux-gnueabi-" ; make $opt clean ; make $opt defconfig ; make $opt W=1 -j4 ; } > arm_make.log 2>&1
-> 
-> $ grep -i -P 'dtsi?:.*warning' arm_make.log | wc -l
-> 69164
+Perhaps there's more support for it now. I didn't get through all the
+thread, but the positions seemed to range from "who cares, subjects
+are easy to edit" to "seems like a good idea and doesn't hurt". I
+probably would have implemented something, but perl (tacking on to
+checkpatch and having you tell me everything wrong is about all I can
+do :)).
 
-Yeah, makes sense moving them to W=2, or to make them somehow produce
-less noise.
-
-> Just fyi:  for an x86-64 defconfig with gcc 8.3
-> 
-> $ { make clean ; make defconfig ; make -j4 W=1 ; } > make.log 2>&1
-> 
-> There are ~300 W=1 for non kernel-doc -W<foo> warnings.
-> 
-> $ grep -i -P -oh '\[\-W[\w\-]+\]' make.log |sort | uniq -c | sort -rn
->     163 [-Wmissing-prototypes]
->      69 [-Wunused-but-set-variable]
->      16 [-Wempty-body]
->      10 [-Wtype-limits]
->       6 [-Woverride-init]
->       2 [-Wstringop-truncation]
->       2 [-Wcast-function-type]
->       1 [-Wunused-but-set-parameter]
-
-On my eyes, it doesn't sound too much. I suspect that, 
-with gcc-9, it should produce more warnings, though.
-
-Perhaps we could "promote" most of those to W=0.
-
-> 
-> And there are ~1000 kernel-doc only messages in various files
-
-A significant amount of those warnings appear with "make htmldocs".
-
-Not having the kernel-doc warning as part of W=0 helps to make
-very hard to have them cleared.
-
-IMHO, those should be enabled by default with W=0, at least for the
-files that are included on some kernel-doc tag.
-
-I mean, perhaps, when W=0, Kernel build could run:
-
-	$ ./scripts/kernel-doc -none $(git grep kernel-doc:: Documentation/|cut -d: -f4-|sort|uniq|grep -vE "\bsource\b")
-
-That produces 165 warnings (against v5.3-rc4 + media -next patches).
-
-Thanks,
-Mauro
+Rob
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
