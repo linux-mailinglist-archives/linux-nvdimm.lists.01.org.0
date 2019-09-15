@@ -2,79 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C243B27DE
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 14 Sep 2019 00:04:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F34FB3157
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Sep 2019 20:25:58 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D660E202EA416;
-	Fri, 13 Sep 2019 15:04:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 8DC8A21A00AE6;
+	Sun, 15 Sep 2019 11:25:31 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com;
+ envelope-from=miguel.ojeda.sandonis@gmail.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com
+ [IPv6:2a00:1450:4864:20::133])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 0382B202E8428
- for <linux-nvdimm@lists.01.org>; Fri, 13 Sep 2019 15:04:26 -0700 (PDT)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8DM4FJG147041;
- Fri, 13 Sep 2019 22:04:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=cEmR1N7x+6nwpU4cpXCvEKl6j72A2b33JZR7hUchDTA=;
- b=KZdnhezRSz81h0NoDSiiyY3bSl/k6ofmBb2GPHi7B3lUCDeFHu37nnJFmwOCfU35uwbS
- 5F3Bp57lbhxm6y/VCNab/Z8DVv39sSSf/4duU+f0BDVGq6TILMlPtzFEKBtS4gMt6XPp
- WF/nI+OHbNvbFZCUeNw22Fu37hEsRBpAjvShP1livRXAfQezyGIXnd+/I4u4f1a/aCfM
- vG3BQNvlcXf/VRRb4QgqzpCzFn9yxTPiexQhXF+V9F/3QS5MU8Sf0vFV/AtJ6YocsbSX
- YT6+K1udvqEeKgVA+YGbfe/osXluxufmPWIN3PJWIf6bn5aseY23M6BjZdo/Kt7skhth OQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by aserp2120.oracle.com with ESMTP id 2uytd378q1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2019 22:04:23 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8DM4Esd012615;
- Fri, 13 Sep 2019 22:04:22 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3020.oracle.com with ESMTP id 2uytdju7a0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 13 Sep 2019 22:04:22 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8DM3xGr008423;
- Fri, 13 Sep 2019 22:03:59 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Fri, 13 Sep 2019 15:03:59 -0700
-To: Bart Van Assche <bvanassche@acm.org>
-Subject: Re: [Ksummit-discuss] [PATCH v2 0/3] Maintainer Entry Profiles
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <yq1o8zqeqhb.fsf@oracle.com>
- <6fe45562-9493-25cf-afdb-6c0e702a49b4@acm.org>
-Date: Fri, 13 Sep 2019 18:03:56 -0400
-In-Reply-To: <6fe45562-9493-25cf-afdb-6c0e702a49b4@acm.org> (Bart Van Assche's
- message of "Thu, 12 Sep 2019 14:31:35 +0100")
-Message-ID: <yq1tv9fdfar.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+ by ml01.01.org (Postfix) with ESMTPS id 3A9E620277236
+ for <linux-nvdimm@lists.01.org>; Sun, 15 Sep 2019 11:25:31 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id c195so10814786lfg.9
+ for <linux-nvdimm@lists.01.org>; Sun, 15 Sep 2019 11:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=dbnIhtM2BKG6IYVDdOCp6G8vpQKdSMQTGQ4f3pGk7vs=;
+ b=rd8EsNf9yf0dbuq9g/TOSPhliI7d5mEgLIU6opvAUyXGQMgiDsdhhlM5NPYE4fx4fV
+ 1oIdwGiYWhlCrYOTnrtb9KqomL1oZuScESRZ2MCh/0i4A9dsY3NTv4oKmBhcBEZf9oYn
+ l2awC19NQnKyP2X4nyreahL+qcvbxKzIwPPwfurn4sgESw4OpLCUT9SZowM4Ys9RChKO
+ FeK/6/MJ+iT9QD3ZFQ85VXaXXp5wbMSQU9sKjCI//9gHJVJwONQlxeBuTzDLAUdIjfbq
+ 5Nu8HSKS1g6PT01zTy6vWgPv6BYBOI4cZnO+nLVNgPNTjeubShzLmv1gaAmvN2Rk7xWl
+ IqyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dbnIhtM2BKG6IYVDdOCp6G8vpQKdSMQTGQ4f3pGk7vs=;
+ b=nOE0wjNRbzmbOdsj8DowgZXC0cvo8a4pRH+2lO1PKLuSrpfABZ9iTdS7Ve5YqFdF60
+ uWCGM/nb/DLHbRy3eloEQHGKV7ZBnfQEVxkOp/NHjzhC4Fc66oLVcuf0kCGCYujD27rx
+ rGiHxDd5YBcLv+QTohqDEwDlROZZiUKkYl+trxG8h3VtorZ4SrRt7N2surrSU5X7WP3w
+ s09tsK4KumaF0f9/Wq1zWWIdGD0ChmnFnmqFAa5g+mur3wvQ5v73HOez31DDGaZDZ0UK
+ 4v0rXYPV0yuZnuUDOX1+ynLFXmRZ1AuKF1cYSrfNBphLQJAUHKsw4k6hc5ZgVpkN4Xii
+ tqWg==
+X-Gm-Message-State: APjAAAWwF82OSCCoUkILz6BEqnEh4AuCcIjlp/AMaWmjAJNfVDxfSpE1
+ PZdlrloFUlHvcb4DSi83epNewE1f/GSC39ShCtM=
+X-Google-Smtp-Source: APXvYqxt2+mQ3NuxseYtTtkITEVZZpuRJghHl2BxfXJUF7jA0peoLYvGXe4n93Y8vVqBjwX5kP69Ez9EJwBWCgqQPdI=
+X-Received: by 2002:ac2:4902:: with SMTP id n2mr37085890lfi.0.1568571952132;
+ Sun, 15 Sep 2019 11:25:52 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9379
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909130218
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9379
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909130218
+References: <cover.1568256705.git.joe@perches.com>
+ <x498sqtvclx.fsf@segfault.boston.devel.redhat.com>
+ <CANiq72kTsf=0rEufDMo7BzMNv1dqc5=ws7fSd=H_e=cpHR24Kg@mail.gmail.com>
+ <4df0a07ec8f1391acfa987ecef184a50e7831000.camel@perches.com>
+ <CANiq72mgbepmw=G5pM7iSRf-Eob7AHFzLw=76uFivpNGtccyKw@mail.gmail.com>
+ <fdd69f54908d90cd0c93af7b5d80a6c3ca3b5817.camel@perches.com>
+In-Reply-To: <fdd69f54908d90cd0c93af7b5d80a6c3ca3b5817.camel@perches.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Sep 2019 20:25:41 +0200
+Message-ID: <CANiq72=H+1HGur2vJUxZmpZPbqbm5s8C1CTFwHgciTPeNFTFTA@mail.gmail.com>
+Subject: Re: clang-format and 'clang-format on' and 'clang-format off'
+To: Joe Perches <joe@perches.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,61 +70,28 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: ksummit-discuss@lists.linuxfoundation.org, linux-nvdimm@lists.01.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Dmitry Vyukov <dvyukov@google.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- Steve French <stfrench@microsoft.com>, "Tobin C. Harding" <me@tobin.cc>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, llvm-dev@lists.llvm.org,
+ Nick Desaulniers <ndesaulniers@google.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-Hi Bart,
-
-> On 9/11/19 5:40 PM, Martin K. Petersen wrote:
->> * Do not use custom To: and Cc: for individual patches. We want to see the
->>   whole series, even patches that potentially need to go through a different
->>   subsystem tree.
+On Fri, Sep 13, 2019 at 1:26 AM Joe Perches <joe@perches.com> wrote:
 >
-> Thanks for having written this summary. This is very helpful. For the
-> above paragraph, should it be clarified whether that requirement
-> applies to mailing list e-mail addresses only or also to individual
-> e-mail addresses? When using git send-email it is easy to end up with
-> different cc-lists per patch.
+> Not every project is going to use only the clang-format tool.
 
-I prefer to have the entire series sent to linux-scsi or
-target-devel. It wouldn't be so bad if discussions about the merits of a
-tree-wide change consistently happened in responses to the cover
-letter. But more often than not discussion happens in response to a
-patch touching a different subsystem and therefore in a mail exchange
-that doesn't end up on linux-scsi.
+Why? The end goal would be to enforce all code to be running under the
+same formatting rules (which, in practice, means the same tool at the
+moment).
 
->> * The patch must compile without warnings (make C=1 CF="-D__CHECK_ENDIAN__")
->>   and does not incur any zeroday test robot complaints.
->
-> How about adding W=1 to that make command?
->
-> How about existing drivers that trigger tons of endianness warnings,
-> e.g. qla2xxx? How about requiring that no new warnings are introduced?
+Note that you can use clang-format with most editors (including vim,
+emacs, VS, VSCode, XCode, Sublime, Atom...).
 
-This was in response to a driver submission (for a different driver)
-around the time this doc was written. The problem is that it's sometimes
-hard to distinguish new warnings from old ones. I'm all for requiring
-that no new warnings are introduced.
-
->> * The patch must have a commit message that describes,
->> comprehensively and in plain English, what the patch does.
->
-> How about making this requirement more detailed and requiring that not
-> only what has been changed is document but also why that change has
-> been made?
-
-I'd really like all this patch submission guideline material to live in
-Documentation/process. But yes.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Cheers,
+Miguel
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
