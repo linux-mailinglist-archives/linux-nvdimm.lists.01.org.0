@@ -2,82 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B85B3F6D
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Sep 2019 19:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 116E8B3FB8
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Sep 2019 19:46:26 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0C1F3202BDC98;
-	Mon, 16 Sep 2019 10:08:26 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1352821962301;
+	Mon, 16 Sep 2019 10:45:53 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=linux-nvdimm@lists.01.org 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
+ [IPv6:2607:f8b0:4864:20::344])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 379F021A07094
- for <linux-nvdimm@lists.01.org>; Mon, 16 Sep 2019 10:08:25 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8GH4P1W001292;
- Mon, 16 Sep 2019 17:08:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=+CZoGIQCmtw4Dmg5SfXe3o0NnRs6559XxydCd+jVXQ8=;
- b=rMOFMhClnL2bIb+8Nz8OOxOVySEHQDVF7v5WrTP6O4DOPNid6vSs20yqRmykr5Gz5S6r
- kEQ5I/e5q2a4124rN0SL0FLm7yDDepFxrRU5MeEjRmyTvMjBM3shn8py2/utRNjBM04Q
- QeEE+SNMHy4EAv9/Di9znLR20SBcE56LvHiTeEyHCODmUGR8tEUUVaP0zsRWHlTbV+gu
- Lz9yFjcsQfR1LsSgw1fOIqsIxFKcLEhKZLwHYZdhrW7OkRyqO27JQWpZB9oAS5pFCM04
- X1akAgK9WEOHgAUqMW4IfDbFQBSvsi0g60nm6MJvt/dq09kWrKwqQzSp7DxhKqVSvqTa xg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by userp2120.oracle.com with ESMTP id 2v0ruqgv7h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Sep 2019 17:08:54 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8GH4QLn087910;
- Mon, 16 Sep 2019 17:08:54 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by userp3030.oracle.com with ESMTP id 2v0nb51tta-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 16 Sep 2019 17:08:54 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8GH8qL5007286;
- Mon, 16 Sep 2019 17:08:53 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Mon, 16 Sep 2019 10:08:52 -0700
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [Ksummit-discuss] [PATCH v2 3/3] libnvdimm,
- MAINTAINERS: Maintainer Entry Profile
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156821693963.2951081.11214256396118531359.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20190911184332.GL20699@kadam>
- <9132e214-9b57-07dc-7ee2-f6bc52e960c5@kernel.dk>
- <yq1y2yrdg6w.fsf@oracle.com> <20190916070101.GE18977@kadam>
-Date: Mon, 16 Sep 2019 13:08:45 -0400
-In-Reply-To: <20190916070101.GE18977@kadam> (Dan Carpenter's message of "Mon, 
- 16 Sep 2019 10:01:01 +0300")
-Message-ID: <yq1blvkb23m.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+ by ml01.01.org (Postfix) with ESMTPS id 1BA1F202BB9AC
+ for <linux-nvdimm@lists.01.org>; Mon, 16 Sep 2019 10:45:50 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id g19so565825otg.13
+ for <linux-nvdimm@lists.01.org>; Mon, 16 Sep 2019 10:46:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=QMOOvJcCOxvJGsQgO09ry9PIYgCnyHRaKHcmKjPMZDE=;
+ b=sGHgEALCuEWB5ciy5vD0LBEP7OLBzMNFaPlQpilKVRzFeMz5JJHbuFQLj4PpNzUxPp
+ FPdyG5nmqrAHieCHI3kNe4+51PPvluEc2panvSJRp/Vr78fXeOMN9J9AO8MNb2YDHmNY
+ /B/x8b6XVp+VTZMNTlc4LHA6oWdGlrcPKrTrl0BLRV0W+5L1oFNWOqLJX5YXtM0en7/r
+ orWUlsrnBAdgXUkqvm50ASXBbVpsUCnJMXSFFyNz3g675XJaH9ifvjpIjcc7Zpnm2tHU
+ AHRzvUC/EUHEfUhb6CDI+p2UWpvUDtd/dXlfR4skq7vfp6oCyOXgqn9GU1VDcWJKaHL5
+ 3piQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QMOOvJcCOxvJGsQgO09ry9PIYgCnyHRaKHcmKjPMZDE=;
+ b=uZCvv955shzEfYDSIt1dCNP5hlc6KToIjpP/PW4qMfbFJvs9q2uj9d1uiYmxYpDvp/
+ 6lxgnk+FT6kuJpy7HBzLpnpnbOCsXk3hWUvbMEVcMf56cQoUzwE7538tYtGUsBNnZokG
+ /EB/szvEHQ/cF/pndvz21vEvdfcYbCyY9br657jdBSKsvjYaanG+iqmv/LVdAMYoH+Ix
+ cTVxtap0p74mc60jygenutVsTNAYwVyitSvh26CN8MMrELMxvX2ti/lyEu5BkbnnJ9nk
+ H3WJ5LyyvuEjs/j5qco+3I52bfEFVeuvwERl4vwwlI5eNA2JbAnwd9bbEEUIn05WyMKT
+ aCow==
+X-Gm-Message-State: APjAAAVKN2de5bzAF3PxlFGoe1A7HyEuOwLPygjPm5Ww5GE28vMc8G1u
+ JPslv7Mg+wV+8/lwOsSx9VD59Il6tg2hIun1PJ31+Q==
+X-Google-Smtp-Source: APXvYqz8wwo7dB4Y3wRdLSUJkJjWQZmRljho5XvoU+unxbG7cxvDpcHYJWPfu6CFzQU4tdjicuiHDUtxjbkXi176AnU=
+X-Received: by 2002:a9d:3a6:: with SMTP id f35mr263028otf.363.1568655981118;
+ Mon, 16 Sep 2019 10:46:21 -0700 (PDT)
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9382
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909160169
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9382
- signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909160169
+References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
+ <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190910062826.10041-2-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 16 Sep 2019 10:46:10 -0700
+Message-ID: <CAPcyv4ia0_GUu+=j-ecCuJkqaE5dVENNQxK_S-mO_KBmuA=9hw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] powerpc/nvdimm: Update vmemmap_populated to check
+ sub-section range
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,45 +67,94 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, ksummit-discuss@lists.linuxfoundation.org,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-Dan,
-
->> One pet peeve I have is that people are pretty bad at indicating the
->> intended target tree. I often ask for it in private mail but the
->> practice doesn't seem to stick. I spend a ton of time guessing whether a
->> patch is a fix for a new feature in the x+1 queue or a fix for the
->> current release. It is not always obvious.
+On Mon, Sep 9, 2019 at 11:29 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> The Fixes tag doesn't help?
+> With commit: 7cc7867fb061 ("mm/devm_memremap_pages: enable sub-section remap")
+> pmem namespaces are remapped in 2M chunks. On architectures like ppc64 we
+> can map the memmap area using 16MB hugepage size and that can cover
+> a memory range of 16G.
+>
+> While enabling new pmem namespaces, since memory is added in sub-section chunks,
+> before creating a new memmap mapping, kernel should check whether there is an
+> existing memmap mapping covering the new pmem namespace. Currently, this is
+> validated by checking whether the section covering the range is already
+> initialized or not. Considering there can be multiple namespaces in the same
+> section this can result in wrong validation. Update this to check for
+> sub-sections in the range. This is done by checking for all pfns in the range we
+> are mapping.
+>
+> We could optimize this by checking only just one pfn in each sub-section. But
+> since this is not fast-path we keep this simple.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/init_64.c | 45 ++++++++++++++++++++-------------------
+>  1 file changed, 23 insertions(+), 22 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+> index 4e08246acd79..7710ccdc19a2 100644
+> --- a/arch/powerpc/mm/init_64.c
+> +++ b/arch/powerpc/mm/init_64.c
+> @@ -70,30 +70,24 @@ EXPORT_SYMBOL_GPL(kernstart_addr);
+>
+>  #ifdef CONFIG_SPARSEMEM_VMEMMAP
+>  /*
+> - * Given an address within the vmemmap, determine the pfn of the page that
+> - * represents the start of the section it is within.  Note that we have to
+> - * do this by hand as the proffered address may not be correctly aligned.
+> - * Subtraction of non-aligned pointers produces undefined results.
+> - */
+> -static unsigned long __meminit vmemmap_section_start(unsigned long page)
+> -{
+> -       unsigned long offset = page - ((unsigned long)(vmemmap));
+> -
+> -       /* Return the pfn of the start of the section. */
+> -       return (offset / sizeof(struct page)) & PAGE_SECTION_MASK;
+> -}
+> -
+> -/*
+> - * Check if this vmemmap page is already initialised.  If any section
+> + * Check if this vmemmap page is already initialised.  If any sub section
+>   * which overlaps this vmemmap page is initialised then this page is
+>   * initialised already.
+>   */
+> -static int __meminit vmemmap_populated(unsigned long start, int page_size)
+> +
+> +static int __meminit vmemmap_populated(unsigned long start, int size)
+>  {
+> -       unsigned long end = start + page_size;
+> -       start = (unsigned long)(pfn_to_page(vmemmap_section_start(start)));
+> +       unsigned long end = start + size;
+>
+> -       for (; start < end; start += (PAGES_PER_SECTION * sizeof(struct page)))
+> +       /* start is size aligned and it is always > sizeof(struct page) */
+> +       VM_BUG_ON(start & sizeof(struct page));
 
-Always.
+If start is size aligned why not include that assumption in the VM_BUG_ON()?
 
-> Of course, you've never asked me or anyone on kernel-newbies that
-> question.  We don't normally know the answer either.  I do always try
-> to figure it out for networking, but it's kind of a pain in the butt
-> and I mess up surpisingly often for how much effort I put into getting
-> it right.
+Otherwise it seems this patch could be reduced simply by:
 
-It's not a big issue for your patches. These are inevitably fixes and
-I'll pick an appropriate tree depending on where we are in the cycle,
-how likely one is to hit the issue, whether the driver is widely used,
-etc.
+s/PAGE_SECTION_MASK/PAGE_SUBSECTION_MASK/
+s/PAGES_PER_SECTION/PAGES_PER_SUBSECTION/
 
-Vendor driver submissions, however, are generally huge. Sometimes 50+
-patches per submission window. And during this window I often get on the
-order of 10 to 20 patches for the same driver in the fixes tree. It is
-not always easy to determine whether a bug fix series is for one tree or
-the other.
+...and leave the vmemmap_section_start() function in place? In other
+words this path used to guarantee that 'start' was aligned to the
+minimum mem-hotplug granularity, the change looks ok on the surface,
+but it seems a subtle change in semantics.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Can you get an ack from a powerpc maintainer, or maybe this patch
+should route through the powerpc tree?
+
+I'll take patch1 through the nvdimm tree.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
