@@ -1,61 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DA8B504C
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 17 Sep 2019 16:25:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11356B516F
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 17 Sep 2019 17:25:57 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 89DA2202E2927;
-	Tue, 17 Sep 2019 07:24:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D725021962301;
+	Tue, 17 Sep 2019 08:25:16 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
- [IPv6:2607:f8b0:4864:20::341])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 7414B2021B703
- for <linux-nvdimm@lists.01.org>; Tue, 17 Sep 2019 07:24:34 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id z6so3230342otb.2
- for <linux-nvdimm@lists.01.org>; Tue, 17 Sep 2019 07:25:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4KYgCoihQtHpObs6KwiRjY2Y2fiuMxgk3xzU6sph3Lg=;
- b=etm9OSEbo9YQ8P8RZtR9HZEQ098klnBTG4PUlJY5tTEArq/1Sp1jFMAQ8gt/PT7FRy
- lm8jEzNQClotg3vr5I2lBHv9FzggDp/3uXOPNrQEqAOHPLxgCNA+qTM2+W6Z3XlnICan
- QFCrxI8FglNZF8JlaTBpBO3kEsMWb6bej3yKcY4I1RqtLJjDUZtEDBuEiPBGci0FW/Gt
- BzWg1FZzhUH7nbW0V6D1yz0dDuyNyzD2kP8Gu8Mthplml8T/xjjdKaZ+gD8AYdDifsfy
- rOYw/rVdlbQnq3SUWVY3C1Ru9zYXplgqBuZ7db1df3/jI3m7uu9FujHgram6fbLcAQ6K
- VqcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4KYgCoihQtHpObs6KwiRjY2Y2fiuMxgk3xzU6sph3Lg=;
- b=h+Y0NAUlu3I3DT4ArE0yqIsqkV2ZtLp0ruPokTf1fCdQFd+TQbk5H7vW+SGBkZ+11l
- T2QJAPgAzx8FZ1w1Equhjlz3geKzVIff1nbv8R7pYjIg9LEpFjZpotKyDqMGNDFtqGX/
- +FPTwoccc4TQXgD9rxYs4/OrL3frTG08zMcfx22tK6KsondLK4sgqVjQJT6HEGzpKzLY
- D+7oFd9OZmhQCWoahPu7f8m/S2doKP9XlM4xf6/W4S7iqtpxeTYg2pP6+PUIGRYthsxl
- V45JurG3AkohYqImtf0Q/oB/uW/hHg2hPRpH0cpHr+qGHAjbo1knOczj5YY0VGuukA0b
- snww==
-X-Gm-Message-State: APjAAAWeiD2gCJSA5zNWTStJCTDPfyuSB8opD2FP+UpjUE+3Qx+X05q1
- YBt0UgP4c+lZxkdfFved2sk/Jjmw/sKbqzrvkED+4g==
-X-Google-Smtp-Source: APXvYqyh1dxWBp9hrX3NuNgioFNleHOrVodwlLmsbqnqyq3vaXajMZrNNKPRuNFUBp/dq8PWpu8mMeWeZ2BMzj6P+ck=
-X-Received: by 2002:a9d:2642:: with SMTP id a60mr2737784otb.247.1568730311407; 
- Tue, 17 Sep 2019 07:25:11 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0C3792020F93E
+ for <linux-nvdimm@lists.01.org>; Tue, 17 Sep 2019 08:25:14 -0700 (PDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
+ x8HFMfrj096905; Tue, 17 Sep 2019 11:25:51 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2v2yw1ggw9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 11:25:51 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8HFPg6R020042;
+ Tue, 17 Sep 2019 15:25:50 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma04dal.us.ibm.com with ESMTP id 2v0swj032u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 17 Sep 2019 15:25:50 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ x8HFPm7o46596528
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 17 Sep 2019 15:25:48 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2F4F3136053;
+ Tue, 17 Sep 2019 15:25:48 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFFB5136059;
+ Tue, 17 Sep 2019 15:25:46 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.41.201])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 17 Sep 2019 15:25:46 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [PATCH v2] libnvdimm/region: Initialize bad block for volatile
+ namespaces
+Date: Tue, 17 Sep 2019 20:55:44 +0530
+Message-Id: <20190917152544.11216-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190910062826.10041-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4g2jAGzQ3fxpZRTV16hoPfyXqzvB7Zny6D5g5JyAQ1Dkw@mail.gmail.com>
- <94cff17c-bdf7-0395-bf5a-e2d72ca61893@linux.ibm.com>
-In-Reply-To: <94cff17c-bdf7-0395-bf5a-e2d72ca61893@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 17 Sep 2019 07:24:58 -0700
-Message-ID: <CAPcyv4iWaKj_+5L7GY32DEmBB-77yvimZG_r8TCc1AETQc68vg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] libnvdimm/altmap: Track namespace boundaries in altmap
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
+ definitions=2019-09-17_07:, , signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1909170149
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,76 +77,94 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm@lists.01.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Tue, Sep 17, 2019 at 12:40 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 9/16/19 11:28 PM, Dan Williams wrote:
-> > On Mon, Sep 9, 2019 at 11:29 PM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
-> >>
-> >> With PFN_MODE_PMEM namespace, the memmap area is allocated from the device
-> >> area. Some architectures map the memmap area with large page size. On
-> >> architectures like ppc64, 16MB page for memap mapping can map 262144 pfns.
-> >> This maps a namespace size of 16G.
-> >>
-> >> When populating memmap region with 16MB page from the device area,
-> >> make sure the allocated space is not used to map resources outside this
-> >> namespace. Such usage of device area will prevent a namespace destroy.
-> >>
-> >> Add resource end pnf in altmap and use that to check if the memmap area
-> >> allocation can map pfn outside the namespace. On ppc64 in such case we fallback
-> >> to allocation from memory.
-> >>
-> >> This fix kernel crash reported below:
-> >>
-> >> [  132.034989] WARNING: CPU: 13 PID: 13719 at mm/memremap.c:133 devm_memremap_pages_release+0x2d8/0x2e0
-> >> [  133.464754] BUG: Unable to handle kernel data access at 0xc00c00010b204000
-> >> [  133.464760] Faulting instruction address: 0xc00000000007580c
-> >> [  133.464766] Oops: Kernel access of bad area, sig: 11 [#1]
-> >> [  133.464771] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> >> .....
-> >> [  133.464901] NIP [c00000000007580c] vmemmap_free+0x2ac/0x3d0
-> >> [  133.464906] LR [c0000000000757f8] vmemmap_free+0x298/0x3d0
-> >> [  133.464910] Call Trace:
-> >> [  133.464914] [c000007cbfd0f7b0] [c0000000000757f8] vmemmap_free+0x298/0x3d0 (unreliable)
-> >> [  133.464921] [c000007cbfd0f8d0] [c000000000370a44] section_deactivate+0x1a4/0x240
-> >> [  133.464928] [c000007cbfd0f980] [c000000000386270] __remove_pages+0x3a0/0x590
-> >> [  133.464935] [c000007cbfd0fa50] [c000000000074158] arch_remove_memory+0x88/0x160
-> >> [  133.464942] [c000007cbfd0fae0] [c0000000003be8c0] devm_memremap_pages_release+0x150/0x2e0
-> >> [  133.464949] [c000007cbfd0fb70] [c000000000738ea0] devm_action_release+0x30/0x50
-> >> [  133.464955] [c000007cbfd0fb90] [c00000000073a5a4] release_nodes+0x344/0x400
-> >> [  133.464961] [c000007cbfd0fc40] [c00000000073378c] device_release_driver_internal+0x15c/0x250
-> >> [  133.464968] [c000007cbfd0fc80] [c00000000072fd14] unbind_store+0x104/0x110
-> >> [  133.464973] [c000007cbfd0fcd0] [c00000000072ee24] drv_attr_store+0x44/0x70
-> >> [  133.464981] [c000007cbfd0fcf0] [c0000000004a32bc] sysfs_kf_write+0x6c/0xa0
-> >> [  133.464987] [c000007cbfd0fd10] [c0000000004a1dfc] kernfs_fop_write+0x17c/0x250
-> >> [  133.464993] [c000007cbfd0fd60] [c0000000003c348c] __vfs_write+0x3c/0x70
-> >> [  133.464999] [c000007cbfd0fd80] [c0000000003c75d0] vfs_write+0xd0/0x250
-> >
-> > Question, does this crash only happen when the namespace is not 16MB
-> > aligned? In other words was this bug exposed by the subsection-hotplug
-> > changes and should it contain Fixes: tag for those commits?
-> >
->
-> We are able to hit this crash even with older kernels. This happens when
-> we have multiple namespaces from the same region of size 26G. In that
-> case we need to make sure we don't end up using altmap from one
-> namespace for mapping vmemmap of the adjacent namespace.
->
-> Considering this impacts ppc64 and we got the ppc64 SCM support in 4.20.
-> may be  we can do just
-> Cc: <stable@vger.kernel.org> # 4.20+
+We do check for a bad block during namespace init and that use
+region bad block list. We need to initialize the bad block
+for volatile regions for this to work. We also observe a lockdep
+warning as below because the lock is not initialized correctly
+since we skip bad block init for volatile regions.
 
-Ok, thanks!
+ INFO: trying to register non-static key.
+ the code is fine but needs lockdep annotation.
+ turning off the locking correctness validator.
+ CPU: 2 PID: 1 Comm: swapper/0 Not tainted 5.3.0-rc1-15699-g3dee241c937e #149
+ Call Trace:
+ [c0000000f95cb250] [c00000000147dd84] dump_stack+0xe8/0x164 (unreliable)
+ [c0000000f95cb2a0] [c00000000022ccd8] register_lock_class+0x308/0xa60
+ [c0000000f95cb3a0] [c000000000229cc0] __lock_acquire+0x170/0x1ff0
+ [c0000000f95cb4c0] [c00000000022c740] lock_acquire+0x220/0x270
+ [c0000000f95cb580] [c000000000a93230] badblocks_check+0xc0/0x290
+ [c0000000f95cb5f0] [c000000000d97540] nd_pfn_validate+0x5c0/0x7f0
+ [c0000000f95cb6d0] [c000000000d98300] nd_dax_probe+0xd0/0x1f0
+ [c0000000f95cb760] [c000000000d9b66c] nd_pmem_probe+0x10c/0x160
+ [c0000000f95cb790] [c000000000d7f5ec] nvdimm_bus_probe+0x10c/0x240
+ [c0000000f95cb820] [c000000000d0f844] really_probe+0x254/0x4e0
+ [c0000000f95cb8b0] [c000000000d0fdfc] driver_probe_device+0x16c/0x1e0
+ [c0000000f95cb930] [c000000000d10238] device_driver_attach+0x68/0xa0
+ [c0000000f95cb970] [c000000000d1040c] __driver_attach+0x19c/0x1c0
+ [c0000000f95cb9f0] [c000000000d0c4c4] bus_for_each_dev+0x94/0x130
+ [c0000000f95cba50] [c000000000d0f014] driver_attach+0x34/0x50
+ [c0000000f95cba70] [c000000000d0e208] bus_add_driver+0x178/0x2f0
+ [c0000000f95cbb00] [c000000000d117c8] driver_register+0x108/0x170
+ [c0000000f95cbb70] [c000000000d7edb0] __nd_driver_register+0xe0/0x100
+ [c0000000f95cbbd0] [c000000001a6baa4] nd_pmem_driver_init+0x34/0x48
+ [c0000000f95cbbf0] [c0000000000106f4] do_one_initcall+0x1d4/0x4b0
+ [c0000000f95cbcd0] [c0000000019f499c] kernel_init_freeable+0x544/0x65c
+ [c0000000f95cbdb0] [c000000000010d6c] kernel_init+0x2c/0x180
+ [c0000000f95cbe20] [c00000000000b954] ret_from_kernel_thread+0x5c/0x68
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+Changes from V1:
+* update commit subject
+
+ drivers/nvdimm/region.c      | 4 ++--
+ drivers/nvdimm/region_devs.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/nvdimm/region.c b/drivers/nvdimm/region.c
+index 37bf8719a2a4..0f6978e72e7c 100644
+--- a/drivers/nvdimm/region.c
++++ b/drivers/nvdimm/region.c
+@@ -34,7 +34,7 @@ static int nd_region_probe(struct device *dev)
+ 	if (rc)
+ 		return rc;
+ 
+-	if (is_nd_pmem(&nd_region->dev)) {
++	if (is_memory(&nd_region->dev)) {
+ 		struct resource ndr_res;
+ 
+ 		if (devm_init_badblocks(dev, &nd_region->bb))
+@@ -123,7 +123,7 @@ static void nd_region_notify(struct device *dev, enum nvdimm_event event)
+ 		struct nd_region *nd_region = to_nd_region(dev);
+ 		struct resource res;
+ 
+-		if (is_nd_pmem(&nd_region->dev)) {
++		if (is_memory(&nd_region->dev)) {
+ 			res.start = nd_region->ndr_start;
+ 			res.end = nd_region->ndr_start +
+ 				nd_region->ndr_size - 1;
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index 9550202aa7be..f462b1354ab5 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -632,7 +632,7 @@ static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
+ 	if (!is_memory(dev) && a == &dev_attr_dax_seed.attr)
+ 		return 0;
+ 
+-	if (!is_nd_pmem(dev) && a == &dev_attr_badblocks.attr)
++	if (!is_memory(dev) && a == &dev_attr_badblocks.attr)
+ 		return 0;
+ 
+ 	if (a == &dev_attr_resource.attr) {
+-- 
+2.21.0
+
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
