@@ -2,60 +2,41 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60D6B7E8A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Sep 2019 17:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA04B7E8B
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Sep 2019 17:50:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6F37721962301;
-	Thu, 19 Sep 2019 08:50:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 85DB4202EBECC;
+	Thu, 19 Sep 2019 08:50:03 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::32b; helo=mail-ot1-x32b.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com
- [IPv6:2607:f8b0:4864:20::32b])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=2001:41d0:602:dbe::8; helo=tartarus.angband.pl;
+ envelope-from=kilobyte@angband.pl; receiver=linux-nvdimm@lists.01.org 
+Received: from tartarus.angband.pl (tartarus.angband.pl
+ [IPv6:2001:41d0:602:dbe::8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 92831202EA947
- for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:49:58 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id f21so3467663otl.13
- for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:50:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=hAQpuJV2hc6p1LNIlIb8VyFvKUvCMS8PN0tBtt6FY8g=;
- b=seKkheH9L6Q5ybmuPNvk0Wrw9yH85ozvkGL+Vx5sStO/GzFxmhUhVbVu5u93AeNf4n
- ruwGq3yRZJg7vOcCJi28Vba0DtMV1LAZcolcSN8o5oNIgZDhNRqelzkU9j3OiQRfEmbZ
- ODjuryRpyEpQykJrMhuWHxE1HPVZghaJNl12u5nxbHyhrcNIDrxfZcnkR8BDAA1+OqcX
- 32LNkJnarbkNMRXOjuY5wno9BbTaj8tyQitAIaRAQ23CkCYtY5X57PPFRuVIe3xYKIs6
- 2OatHxmMcR1M8jf6CzUWtjkzYSijFVfkG0+nJE+4FTZBF6UhCRflmcRlBLJYvon5Cn37
- fm2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=hAQpuJV2hc6p1LNIlIb8VyFvKUvCMS8PN0tBtt6FY8g=;
- b=uWAUGnigoLwEhLUIH79GPY9I4HM6GQAeYff/yensNIQCHPYTUaN8u/4h3p8mSBu0bL
- e9bH4s5WJX6mWGnuRKkVmGFY5TqvM8M9p+EXRunM1obYPlrDN5fcWY1exiQdTyzH6kOH
- SHHJDduunh2nOiNkt+omPEbSz9Zemj6wsNWGdT80E7t2yqONHg1UNTFaOtY5ag3hz0l5
- nfS3ne/ifu7xMnWXq62I7C22/xaWf60/XLb2zutCLJ5qy6yiMLyjEQoYwaOMJCHaFeWa
- RfZWeivb5k5NxnbC6Ro86rOwO1LK4DyetdN4Gc5qzzQxTyjNyyLrfwcTbz6zDZ56Cuy3
- Bkhg==
-X-Gm-Message-State: APjAAAXj3QMbwVEiJ3HyyIjKwe41yEGgSV7ajKl1BMN0PWNEVVnAoHTE
- YkBC/mfd3WQ3gAoI7vdXBj7eZ2wVjD5RxO0E4Lh0FcNU
-X-Google-Smtp-Source: APXvYqx5jRV6+eDsdrEQJLAz5sycwrIvMIJ1uWjq02VHOxeqzSZDpoE7ObPl/6L7NiDjqOSXGR8tePwtERt6emMydc8=
-X-Received: by 2002:a9d:5ccc:: with SMTP id r12mr6690380oti.71.1568908252238; 
- Thu, 19 Sep 2019 08:50:52 -0700 (PDT)
-MIME-Version: 1.0
+ by ml01.01.org (Postfix) with ESMTPS id A6ECB202EA94D
+ for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:50:01 -0700 (PDT)
+Received: from kilobyte by tartarus.angband.pl with local (Exim 4.92)
+ (envelope-from <kilobyte@angband.pl>)
+ id 1iAyhq-0006cK-KL; Thu, 19 Sep 2019 17:50:54 +0200
+Date: Thu, 19 Sep 2019 17:50:54 +0200
+From: Adam Borowski <kilobyte@angband.pl>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: hang in dax_pmem_compat_release on changing namespace mode
+Message-ID: <20190919155054.GB24650@angband.pl>
 References: <20190919115547.GA17963@angband.pl>
  <CAPcyv4jYE_vmEqe+m7spaXV4FDgHLJpE9cp3Ry2e8vU0JZEFCA@mail.gmail.com>
  <20190919154708.GA24650@angband.pl>
+MIME-Version: 1.0
+Content-Disposition: inline
 In-Reply-To: <20190919154708.GA24650@angband.pl>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 19 Sep 2019 08:50:41 -0700
-Message-ID: <CAPcyv4gmg4eKV-OmtOAX3f19Xe4eoWXX3bJodRGjAwT69Jwn4Q@mail.gmail.com>
-Subject: Re: hang in dax_pmem_compat_release on changing namespace mode
-To: Adam Borowski <kilobyte@angband.pl>
+X-Junkbait: aaron@angband.pl, zzyx@angband.pl
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,49 +49,34 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 19, 2019 at 8:47 AM Adam Borowski <kilobyte@angband.pl> wrote:
->
-> On Thu, Sep 19, 2019 at 08:10:47AM -0700, Dan Williams wrote:
-> > On Thu, Sep 19, 2019 at 4:56 AM Adam Borowski <kilobyte@angband.pl> wrote:
-> > > Hi!
-> > > If I try to change the mode of a devdax namespace that's in use (mapped by
-> > > some process), ndctl hangs:
-> >
-> > Is it merely mapped, or might the pages be actively pinned / in use by
-> > another part of the kernel? The kernel has no choice but to wait for
-> > active page pins to drain. Can you get a stack trace of the process
-> > with the dev-dax instance mapped?
->
-> Looks like the behaviour is different depending on what the other process
-> is:
-> * with qemu, the hang is 100% reproducible, the guest continues to work and
->   cleanly exits -- qemu does not exit on its own (unlike normal case) but
->   SIGTERM terminates it correctly.  Thus, qemu is not stuck, only ndctl is.
-> * with mere mmap() (I've used vmemcache) ndctl allows
->   reconfiguring the namespace.  No hang.
->
-> My way to start qemu is:
-> .----
-> #!/bin/sh
-> NET="-net bridge -net nic"
-> DISK=eoan-devdax.disk
->
-> exec qemu-system-x86_64 -enable-kvm -m 4096,slots=2,maxmem=16G -smp 8 $NET \
->  -drive if=none,id=hd,file="$DISK",format=raw,cache=unsafe,discard=on \
->  -device virtio-scsi-pci,id=scsi -device scsi-hd,drive=hd \
->  -M pc,nvdimm,nvdimm-persistence=mem-ctrl \
->  -object memory-backend-file,id=mem1,share=on,mem-path=/dev/dax0.0,size=4225761280,align=2M,pmem=on \
->  -device nvdimm,id=nvdimm1,memdev=mem1,label-size=256K \
->  -vnc :5
-
-Ok, I'll take a look. At first glance nothing in that config should be
-holding an indefinite page pin, so it does smell like a kernel bug.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gVGh1LCBTZXAgMTksIDIwMTkgYXQgMDU6NDc6MDhQTSArMDIwMCwgQWRhbSBCb3Jvd3NraSB3
+cm90ZToKPiBPbiBUaHUsIFNlcCAxOSwgMjAxOSBhdCAwODoxMDo0N0FNIC0wNzAwLCBEYW4gV2ls
+bGlhbXMgd3JvdGU6Cj4gPiBPbiBUaHUsIFNlcCAxOSwgMjAxOSBhdCA0OjU2IEFNIEFkYW0gQm9y
+b3dza2kgPGtpbG9ieXRlQGFuZ2JhbmQucGw+IHdyb3RlOgo+ID4gPiBJZiBJIHRyeSB0byBjaGFu
+Z2UgdGhlIG1vZGUgb2YgYSBkZXZkYXggbmFtZXNwYWNlIHRoYXQncyBpbiB1c2UgKG1hcHBlZCBi
+eQo+ID4gPiBzb21lIHByb2Nlc3MpLCBuZGN0bCBoYW5nczoKPiA+IAo+ID4gSXMgaXQgbWVyZWx5
+IG1hcHBlZCwgb3IgbWlnaHQgdGhlIHBhZ2VzIGJlIGFjdGl2ZWx5IHBpbm5lZCAvIGluIHVzZSBi
+eQo+ID4gYW5vdGhlciBwYXJ0IG9mIHRoZSBrZXJuZWw/IFRoZSBrZXJuZWwgaGFzIG5vIGNob2lj
+ZSBidXQgdG8gd2FpdCBmb3IKPiA+IGFjdGl2ZSBwYWdlIHBpbnMgdG8gZHJhaW4uIENhbiB5b3Ug
+Z2V0IGEgc3RhY2sgdHJhY2Ugb2YgdGhlIHByb2Nlc3MKPiA+IHdpdGggdGhlIGRldi1kYXggaW5z
+dGFuY2UgbWFwcGVkPwo+IAo+IExvb2tzIGxpa2UgdGhlIGJlaGF2aW91ciBpcyBkaWZmZXJlbnQg
+ZGVwZW5kaW5nIG9uIHdoYXQgdGhlIG90aGVyIHByb2Nlc3MKPiBpczoKPiAqIHdpdGggcWVtdSwg
+dGhlIGhhbmcgaXMgMTAwJSByZXByb2R1Y2libGUsIHRoZSBndWVzdCBjb250aW51ZXMgdG8gd29y
+ayBhbmQKPiAgIGNsZWFubHkgZXhpdHMgLS0gcWVtdSBkb2VzIG5vdCBleGl0IG9uIGl0cyBvd24g
+KHVubGlrZSBub3JtYWwgY2FzZSkgYnV0Cj4gICBTSUdURVJNIHRlcm1pbmF0ZXMgaXQgY29ycmVj
+dGx5LiAgVGh1cywgcWVtdSBpcyBub3Qgc3R1Y2ssIG9ubHkgbmRjdGwgaXMuCgpDb3JyZWN0aW9u
+OiBub3QgMTAwJS4gIEkganVzdCBoYWQgcWVtdSBkaWUgd2l0aCBTSUdCVVMgaW5zdGVhZC4KCgpN
+ZW93IQotLSAK4qKA4qO04qC+4qC74qK24qOm4qCAIEEgTUFQMDcgKERlYWQgU2ltcGxlKSByYXNw
+YmVycnkgdGluY3R1cmUgcmVjaXBlOiAwLjVsIDk1JSBhbGNvaG9sLArio77ioIHioqDioJLioIDi
+o7/ioYEgMWtnIHJhc3BiZXJyaWVzLCAwLjRrZyBzdWdhcjsgcHV0IGludG8gYSBiaWcgamFyIGZv
+ciAxIG1vbnRoLgrior/ioYTioJjioLfioJrioIvioIAgRmlsdGVyIG91dCBhbmQgdGhyb3cgYXdh
+eSB0aGUgZnJ1aXRzIChjYW4gZHVtcCB0aGVtIGludG8gYSBjYWtlLArioIjioLPio4TioIDioIDi
+oIDioIAgZXRjKSwgbGV0IHRoZSBkcmluayBhZ2UgYXQgbGVhc3QgMy02IG1vbnRocy4KX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
+aWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3Jn
+L21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
