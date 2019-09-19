@@ -2,58 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AECB7DBF
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Sep 2019 17:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C816CB7E76
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Sep 2019 17:47:16 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 478A321962301;
-	Thu, 19 Sep 2019 08:10:07 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1BE8A202EBEC9;
+	Thu, 19 Sep 2019 08:46:21 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::334; helo=mail-ot1-x334.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com
- [IPv6:2607:f8b0:4864:20::334])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ client-ip=2001:41d0:602:dbe::8; helo=tartarus.angband.pl;
+ envelope-from=kilobyte@angband.pl; receiver=linux-nvdimm@lists.01.org 
+Received: from tartarus.angband.pl (tartarus.angband.pl
+ [IPv6:2001:41d0:602:dbe::8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 2D36C2194EB70
- for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:10:05 -0700 (PDT)
-Received: by mail-ot1-x334.google.com with SMTP id g13so3372558otp.8
- for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:10:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=rbAvn/fLEtrrbaQbOBPcQV2Gd+t+4OCja+ZvjJ+cvBY=;
- b=1tUJ1PV5mp5IFCPouteKt3ZHHGTdt7tsLvMkNNjDewW8VoSvN+XLXF75M/Is74D3NX
- /Ts89zWuG0b9DurQK4RyN4w8Dv8lRCU6F8V0Wne64w8HLeOLHnXv2k7FjjsHhiDDm2Cu
- xd6XrQM0bhxGG0sUbUsKjwsQZeG/w4f/dO+t2bkNV9cyzFQDvoyEQOTIAckAwse0IgVt
- Fejzt6tKAecO1Hgp6jQz2laXGISoch4eR/B32uZdyP6TJf30C8fNhDuU5CrWSewLD2W7
- GX7nPKU8SPLS8wrwiCj/b5t8qUwMhxGgW3Y5c6fEeUIlHBlMcF7nMhnmkwzm30nztZQk
- onTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=rbAvn/fLEtrrbaQbOBPcQV2Gd+t+4OCja+ZvjJ+cvBY=;
- b=cDDgCGH+8/V7xYNHRWSuvGvHqKgCsN9WVU7AU7doEnurxv42/W9jY9RuVhfT0dT9Qs
- zGMOAGA2s53UtouRC/+rBoJqMAxqek2jbRcEl9sBVOfTNN5V5OeZEykOg4Vpl6mBUiK7
- w5DZIl3WAAVZ/fzC9pewHQVizGlEAgqDanU1YQhHT+3Us/r613RXr1u5tCsj3NorL1V0
- PdqvUw8sq1Heg6oynNE+wdc6jdj/JGEZAVOxS+UKJL0yMJrJtIpg5tkgT4SwamB3iLg9
- rHmE0fa0Fdf4boTBoE8FvcJhhEuuApf+6di0g3A7OR+9YY7otAxZDgy/yFJ4zQvGoFrq
- 4poQ==
-X-Gm-Message-State: APjAAAWL1OLREK9f8wBlr107LKj85K0IZe1YWzDn5K1JkrP0mgMIKAna
- j9F2lXEiHygctqfY/XYga+pYqTEITDEtXQrxJcRkPQ==
-X-Google-Smtp-Source: APXvYqx2S5k+z4ZGv2dic61Adqm9i+k8xPppFEEZfMjADh6MmXT7takWWFxweMitbxwXrHeLHzlFZr+Ek6IOIK/zQss=
-X-Received: by 2002:a9d:6014:: with SMTP id h20mr6930613otj.207.1568905858399; 
- Thu, 19 Sep 2019 08:10:58 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190919115547.GA17963@angband.pl>
-In-Reply-To: <20190919115547.GA17963@angband.pl>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 19 Sep 2019 08:10:47 -0700
-Message-ID: <CAPcyv4jYE_vmEqe+m7spaXV4FDgHLJpE9cp3Ry2e8vU0JZEFCA@mail.gmail.com>
+ by ml01.01.org (Postfix) with ESMTPS id 0D1ED21959CB2
+ for <linux-nvdimm@lists.01.org>; Thu, 19 Sep 2019 08:46:18 -0700 (PDT)
+Received: from kilobyte by tartarus.angband.pl with local (Exim 4.92)
+ (envelope-from <kilobyte@angband.pl>)
+ id 1iAyeC-0006aV-P0; Thu, 19 Sep 2019 17:47:08 +0200
+Date: Thu, 19 Sep 2019 17:47:08 +0200
+From: Adam Borowski <kilobyte@angband.pl>
+To: Dan Williams <dan.j.williams@intel.com>
 Subject: Re: hang in dax_pmem_compat_release on changing namespace mode
-To: Adam Borowski <kilobyte@angband.pl>
+Message-ID: <20190919154708.GA24650@angband.pl>
+References: <20190919115547.GA17963@angband.pl>
+ <CAPcyv4jYE_vmEqe+m7spaXV4FDgHLJpE9cp3Ry2e8vU0JZEFCA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jYE_vmEqe+m7spaXV4FDgHLJpE9cp3Ry2e8vU0JZEFCA@mail.gmail.com>
+X-Junkbait: aaron@angband.pl, zzyx@angband.pl
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-SA-Exim-Scanned: No (on tartarus.angband.pl); SAEximRunCond expanded to false
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,22 +48,42 @@ List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
 Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Thu, Sep 19, 2019 at 4:56 AM Adam Borowski <kilobyte@angband.pl> wrote:
->
-> Hi!
-> If I try to change the mode of a devdax namespace that's in use (mapped by
-> some process), ndctl hangs:
-
-Is it merely mapped, or might the pages be actively pinned / in use by
-another part of the kernel? The kernel has no choice but to wait for
-active page pins to drain. Can you get a stack trace of the process
-with the dev-dax instance mapped?
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+T24gVGh1LCBTZXAgMTksIDIwMTkgYXQgMDg6MTA6NDdBTSAtMDcwMCwgRGFuIFdpbGxpYW1zIHdy
+b3RlOgo+IE9uIFRodSwgU2VwIDE5LCAyMDE5IGF0IDQ6NTYgQU0gQWRhbSBCb3Jvd3NraSA8a2ls
+b2J5dGVAYW5nYmFuZC5wbD4gd3JvdGU6Cj4gPiBIaSEKPiA+IElmIEkgdHJ5IHRvIGNoYW5nZSB0
+aGUgbW9kZSBvZiBhIGRldmRheCBuYW1lc3BhY2UgdGhhdCdzIGluIHVzZSAobWFwcGVkIGJ5Cj4g
+PiBzb21lIHByb2Nlc3MpLCBuZGN0bCBoYW5nczoKPiAKPiBJcyBpdCBtZXJlbHkgbWFwcGVkLCBv
+ciBtaWdodCB0aGUgcGFnZXMgYmUgYWN0aXZlbHkgcGlubmVkIC8gaW4gdXNlIGJ5Cj4gYW5vdGhl
+ciBwYXJ0IG9mIHRoZSBrZXJuZWw/IFRoZSBrZXJuZWwgaGFzIG5vIGNob2ljZSBidXQgdG8gd2Fp
+dCBmb3IKPiBhY3RpdmUgcGFnZSBwaW5zIHRvIGRyYWluLiBDYW4geW91IGdldCBhIHN0YWNrIHRy
+YWNlIG9mIHRoZSBwcm9jZXNzCj4gd2l0aCB0aGUgZGV2LWRheCBpbnN0YW5jZSBtYXBwZWQ/CgpM
+b29rcyBsaWtlIHRoZSBiZWhhdmlvdXIgaXMgZGlmZmVyZW50IGRlcGVuZGluZyBvbiB3aGF0IHRo
+ZSBvdGhlciBwcm9jZXNzCmlzOgoqIHdpdGggcWVtdSwgdGhlIGhhbmcgaXMgMTAwJSByZXByb2R1
+Y2libGUsIHRoZSBndWVzdCBjb250aW51ZXMgdG8gd29yayBhbmQKICBjbGVhbmx5IGV4aXRzIC0t
+IHFlbXUgZG9lcyBub3QgZXhpdCBvbiBpdHMgb3duICh1bmxpa2Ugbm9ybWFsIGNhc2UpIGJ1dAog
+IFNJR1RFUk0gdGVybWluYXRlcyBpdCBjb3JyZWN0bHkuICBUaHVzLCBxZW11IGlzIG5vdCBzdHVj
+aywgb25seSBuZGN0bCBpcy4KKiB3aXRoIG1lcmUgbW1hcCgpIChJJ3ZlIHVzZWQgdm1lbWNhY2hl
+KSBuZGN0bCBhbGxvd3MKICByZWNvbmZpZ3VyaW5nIHRoZSBuYW1lc3BhY2UuICBObyBoYW5nLgoK
+TXkgd2F5IHRvIHN0YXJ0IHFlbXUgaXM6Ci4tLS0tCiMhL2Jpbi9zaApORVQ9Ii1uZXQgYnJpZGdl
+IC1uZXQgbmljIgpESVNLPWVvYW4tZGV2ZGF4LmRpc2sKCmV4ZWMgcWVtdS1zeXN0ZW0teDg2XzY0
+IC1lbmFibGUta3ZtIC1tIDQwOTYsc2xvdHM9MixtYXhtZW09MTZHIC1zbXAgOCAkTkVUIFwKIC1k
+cml2ZSBpZj1ub25lLGlkPWhkLGZpbGU9IiRESVNLIixmb3JtYXQ9cmF3LGNhY2hlPXVuc2FmZSxk
+aXNjYXJkPW9uIFwKIC1kZXZpY2UgdmlydGlvLXNjc2ktcGNpLGlkPXNjc2kgLWRldmljZSBzY3Np
+LWhkLGRyaXZlPWhkIFwKIC1NIHBjLG52ZGltbSxudmRpbW0tcGVyc2lzdGVuY2U9bWVtLWN0cmwg
+XAogLW9iamVjdCBtZW1vcnktYmFja2VuZC1maWxlLGlkPW1lbTEsc2hhcmU9b24sbWVtLXBhdGg9
+L2Rldi9kYXgwLjAsc2l6ZT00MjI1NzYxMjgwLGFsaWduPTJNLHBtZW09b24gXAogLWRldmljZSBu
+dmRpbW0saWQ9bnZkaW1tMSxtZW1kZXY9bWVtMSxsYWJlbC1zaXplPTI1NksgXAogLXZuYyA6NQpg
+LS0tLQoKCk1lb3chCi0tIAriooDio7TioL7ioLviorbio6bioIAgQSBNQVAwNyAoRGVhZCBTaW1w
+bGUpIHJhc3BiZXJyeSB0aW5jdHVyZSByZWNpcGU6IDAuNWwgOTUlIGFsY29ob2wsCuKjvuKggeKi
+oOKgkuKggOKjv+KhgSAxa2cgcmFzcGJlcnJpZXMsIDAuNGtnIHN1Z2FyOyBwdXQgaW50byBhIGJp
+ZyBqYXIgZm9yIDEgbW9udGguCuKiv+KhhOKgmOKgt+KgmuKgi+KggCBGaWx0ZXIgb3V0IGFuZCB0
+aHJvdyBhd2F5IHRoZSBmcnVpdHMgKGNhbiBkdW1wIHRoZW0gaW50byBhIGNha2UsCuKgiOKgs+Kj
+hOKggOKggOKggOKggCBldGMpLCBsZXQgdGhlIGRyaW5rIGFnZSBhdCBsZWFzdCAzLTYgbW9udGhz
+LgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0CkxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKaHR0cHM6Ly9saXN0
+cy4wMS5vcmcvbWFpbG1hbi9saXN0aW5mby9saW51eC1udmRpbW0K
