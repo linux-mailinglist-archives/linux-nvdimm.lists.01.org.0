@@ -2,63 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC65B9AED
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 21 Sep 2019 01:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F299EB9AF9
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 21 Sep 2019 01:54:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B835121962301;
-	Fri, 20 Sep 2019 16:51:07 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 593F0202EDB86;
+	Fri, 20 Sep 2019 16:53:09 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::849; helo=mail-qt1-x849.google.com;
- envelope-from=3vf6fxq4kdiegwjsifsmnllnsxlttlqj.htrqnsz2-s0inrrqnxyx.56.twl@flex--brendanhiggins.bounces.google.com;
- receiver=linux-nvdimm@lists.01.org 
-Received: from mail-qt1-x849.google.com (mail-qt1-x849.google.com
- [IPv6:2607:f8b0:4864:20::849])
+ client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
+ envelope-from=brendanhiggins@google.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id CD61F202ECFBD
- for <linux-nvdimm@lists.01.org>; Fri, 20 Sep 2019 16:51:06 -0700 (PDT)
-Received: by mail-qt1-x849.google.com with SMTP id c8so10036868qtd.20
- for <linux-nvdimm@lists.01.org>; Fri, 20 Sep 2019 16:52:11 -0700 (PDT)
+ by ml01.01.org (Postfix) with ESMTPS id 0CE20202ECFD5
+ for <linux-nvdimm@lists.01.org>; Fri, 20 Sep 2019 16:53:08 -0700 (PDT)
+Received: by mail-pl1-x641.google.com with SMTP id b10so3932110plr.4
+ for <linux-nvdimm@lists.01.org>; Fri, 20 Sep 2019 16:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:to
- :cc; bh=GL8bIr8dLG5/Kc/Y8WKLabBIaZO7WJH2uwuCEH7n76U=;
- b=CzgTCJo8a03qtDkryi8S7GqE3WBkXpTH7h8KPPyCJ/R7yPOdQC+gbMLhhZO+qiGjtk
- 54sY/XHjJn4GHW/KCNJea84VmG0gPWw0E7BExnqcKWyg3Kz/ZtYTaMSh+TwGbp9qsgIk
- s7KtsGrN1A86XI0MRInVo2n83P+LNe6ZOMKostCkOJP2PnvWM3cxmYY7Tx+N2B+zejw+
- nTowY3+Pk1lGifYnmfpFWAzDCYnjgqGhu3ohRMdCvw11WlX2ydoXxkQ4zZtinpNk32nk
- /kaVxxucPBvWZLeXCPZndsCjhhXXVaNBJ+OattQtQm5izw7LOib7R5p257wQQqk2kihb
- P5Gw==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=lqDIHj9lZasR/zDtsnve221vNIVF3/3BuxETCeMHCc4=;
+ b=XSaBvr71r6CXxRkl47+im5CtQOOiRKY/iuu1X/oF7O0195aBtQdo4E6H31j2DRdwMB
+ s+h2SbgX6KwCSKPN/vksW+oTjyn/PocXCe2Kbp7D50FyleyNJKKiDms9wE4+010NuDGz
+ Tq75Lq2/Of0H+EgT6rh/B7HmjzNMrYZDTILOvyQjFxsnvmyOoLNZmh4oqM1yuhhFP8pe
+ sRZaN6hX2UO3lPWFmdzLQbJnBe69O1mU2qIHiv3K3roTU3fxgbwZK3OKCga8hxSzWAhk
+ hBJHVhNvM+mzWFILJB/Im3xuyQ/V1FTP6vSQ4wkxN1OHoJdGyrC0V7kg/MssknjtxoVt
+ FgJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:to:cc;
- bh=GL8bIr8dLG5/Kc/Y8WKLabBIaZO7WJH2uwuCEH7n76U=;
- b=HraK2VQ6ldgBxu18B3f5wyfZrrbeRdQY4sZRY9yt76Cnl/MyeFAmnaTLoJ3Zo4/uwD
- af/lOZQHJ1ElOYO+nCRwvZF9GkIMIeA5VVNBPfA6AO2yIHGcMv8ecrzJCgKeTnSf3XyM
- ZeyLidoijNO49tU6T/omPobB3bLy/LxKxBvbkGWHsYQHygdumCCfEGZwdfBL+baNLoNY
- dUZ2XDphhYC38iqW7o6B+I9cQiEsG5AmOJEX8hEzbnE0gt/pxHewcyRXD21qqidiqy5X
- plo1T38nBrvJ+qezyPu2Z/6YMMMia2edGCm/SMJytVlqj4ckFlXnIClCdq/9a6hLmvhA
- uL2g==
-X-Gm-Message-State: APjAAAW/XlVlBRI2JUfSbcVSR0DhUVV/CcmKBMGckrnCas7sGAi0UkW7
- pFmHfy/Icc9EuP8L6/3oQR16JIBoMxo+xm/sWUDqiw==
-X-Google-Smtp-Source: APXvYqys3CVY+ZJk3HZQ+2n1DealAsHrwQI2guSNKDoKj0PZfd4ijUtGVuBrwdz736i08AAJsEhXYd5CBLACuWNBY3hfvA==
-X-Received: by 2002:a65:608e:: with SMTP id t14mr17679666pgu.373.1569021628859; 
- Fri, 20 Sep 2019 16:20:28 -0700 (PDT)
-Date: Fri, 20 Sep 2019 16:19:22 -0700
-In-Reply-To: <20190920231923.141900-1-brendanhiggins@google.com>
-Message-Id: <20190920231923.141900-19-brendanhiggins@google.com>
-Mime-Version: 1.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=lqDIHj9lZasR/zDtsnve221vNIVF3/3BuxETCeMHCc4=;
+ b=Yb2GIxfwiGOTt9BhFKqTXQ+nplV8ykq2N82n75EShBanuivT+PcrlzNDpcL1mYONp0
+ jbzucYB1IcLVB35jNRUVnSqPzWxH6BxyKVjhZ5pWbVwfDN7gD47iXHiLxE1x++qLtJIg
+ kitYSVzE7ycd471KyuVa79xc7PvWEp9rADpAIlEKjNxg6V+5OnYahR8rOGD9TRDc/khI
+ zYaZyIOI6j0WF7ESQ2g0c4Zc9IHAj47Lgp4l2vIn311OGO6QtZYgBSoJpZkBAkSxD/2U
+ pO21dDCDRFP5K3u27bXI50PCeAI6ZFtOKUMtk/txEa2MugFx/19Vep+7Vye+/t2Jggb3
+ G56A==
+X-Gm-Message-State: APjAAAXL8DazEA37yGjFN7Z8kA9GvuOfDcS3arMA05qAlNoq5i+jQZIu
+ EIee4xDsXQt0C2gFue3FTFrzLJZtexJiLRYRvo3eHw==
+X-Google-Smtp-Source: APXvYqyNiRlbO6R3uG9HEH5vDFWKxf6oFNbwaLwTM4FngoMH0rrK0KW2vni8a9ARb9jmWGlDeibYyIhP8RN53cwInWk=
+X-Received: by 2002:a17:902:ff0e:: with SMTP id
+ f14mr19947847plj.325.1569023089386; 
+ Fri, 20 Sep 2019 16:44:49 -0700 (PDT)
+MIME-Version: 1.0
 References: <20190920231923.141900-1-brendanhiggins@google.com>
-X-Mailer: git-send-email 2.23.0.351.gc4317032e6-goog
-Subject: [PATCH v16 18/19] MAINTAINERS: add proc sysctl KUnit test to PROC
- SYSCTL section
+ <20190920231923.141900-7-brendanhiggins@google.com>
+ <20190920233600.48BBA20644@mail.kernel.org>
+In-Reply-To: <20190920233600.48BBA20644@mail.kernel.org>
 From: Brendan Higgins <brendanhiggins@google.com>
-To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
- keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
- peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
- tytso@mit.edu, yamada.masahiro@socionext.com
+Date: Fri, 20 Sep 2019 16:44:38 -0700
+Message-ID: <CAFd5g46pndA_gOD9i8M5e5fb8x4mSL9mcgMDujN7XufeFs8bmQ@mail.gmail.com>
+Subject: Re: [PATCH v16 06/19] lib: enable building KUnit in lib/
+To: Stephen Boyd <sboyd@kernel.org>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,56 +67,70 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
- Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
- Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
- linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
- wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com,
- Iurii Zaikin <yzaikin@google.com>, jdike@addtoit.com, dan.carpenter@oracle.com,
- devicetree@vger.kernel.org, linux-kbuild@vger.kernel.org, Tim.Bird@sony.com,
- linux-um@lists.infradead.org, rostedt@goodmis.org, julia.lawall@lip6.fr,
- kunit-dev@googlegroups.com, richard@nod.at, torvalds@linux-foundation.org,
- rdunlap@infradead.org, linux-kernel@vger.kernel.org, daniel@ffwll.ch,
- mpe@ellerman.id.au, linux-fsdevel@vger.kernel.org
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Greg KH <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-Add entry for the new proc sysctl KUnit test to the PROC SYSCTL section,
-and add Iurii as a maintainer.
+On Fri, Sep 20, 2019 at 4:36 PM Stephen Boyd <sboyd@kernel.org> wrote:
+>
+> Quoting Brendan Higgins (2019-09-20 16:19:10)
+> > KUnit is a new unit testing framework for the kernel and when used is
+> > built into the kernel as a part of it. Add KUnit to the lib Kconfig and
+> > Makefile to allow it to be actually built.
+> >
+> > Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+> > Cc: Randy Dunlap <rdunlap@infradead.org>
+> > Cc: Andrew Morton <akpm@linux-foundation.org>
+> > Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > Cc: Kees Cook <keescook@chromium.org>
+> > ---
+> >  lib/Kconfig.debug | 2 ++
+> >  lib/Makefile      | 2 ++
+> >  2 files changed, 4 insertions(+)
+> >
+> > diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> > index 5960e2980a8a..5870fbe11e9b 100644
+> > --- a/lib/Kconfig.debug
+> > +++ b/lib/Kconfig.debug
+> > @@ -2144,4 +2144,6 @@ config IO_STRICT_DEVMEM
+> >
+> >  source "arch/$(SRCARCH)/Kconfig.debug"
+> >
+> > +source "lib/kunit/Kconfig"
+> > +
+>
+> Perhaps this should go by the "Runtime Testing" part? Before or after.
 
-Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
-Cc: Iurii Zaikin <yzaikin@google.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
----
- MAINTAINERS | 2 ++
- 1 file changed, 2 insertions(+)
+Yeah, that probably makes sense.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e3d0d184ae4e..6663d4accd36 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12983,12 +12983,14 @@ F:	Documentation/filesystems/proc.txt
- PROC SYSCTL
- M:	Luis Chamberlain <mcgrof@kernel.org>
- M:	Kees Cook <keescook@chromium.org>
-+M:	Iurii Zaikin <yzaikin@google.com>
- L:	linux-kernel@vger.kernel.org
- L:	linux-fsdevel@vger.kernel.org
- S:	Maintained
- F:	fs/proc/proc_sysctl.c
- F:	include/linux/sysctl.h
- F:	kernel/sysctl.c
-+F:	kernel/sysctl-test.c
- F:	tools/testing/selftests/sysctl/
- 
- PS3 NETWORK SUPPORT
--- 
-2.23.0.351.gc4317032e6-goog
-
+> >  endmenu # Kernel hacking
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
