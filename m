@@ -2,41 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8B3BBC04
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Sep 2019 21:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F09BBC73
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Sep 2019 21:50:41 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7B4AF21962301;
-	Mon, 23 Sep 2019 12:11:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 6A1B121962301;
+	Mon, 23 Sep 2019 12:53:08 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+Received-SPF: None (no SPF record) identity=mailfrom;
+ client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=rdunlap@infradead.org; receiver=linux-nvdimm@lists.01.org 
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 4AD50202ECFB6
- for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 12:11:22 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2019 12:08:53 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,541,1559545200"; d="scan'208";a="213426723"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
- by fmsmga004.fm.intel.com with ESMTP; 23 Sep 2019 12:08:53 -0700
-Date: Mon, 23 Sep 2019 12:08:53 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org,
- linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
-Subject: Lease semantic proposal
-Message-ID: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
+ by ml01.01.org (Postfix) with ESMTPS id 22EC1202EC07D
+ for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 12:53:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=eUUUPJp8Q+5PlAv7/AOGceOtoVnI1K3PZLVv987cVRU=; b=IWsVG8Im3Z8uUrSD/S3h+TdHQ
+ xHv1A9gVSzgMJ+kavZxPZT1xVWv/jjm2sfWSXfFzdZXciz5sTxLQIXQbckhIgFNYBWXOW56MeYtce
+ RDRk8PXLYa9JQjzqNAneuoj1DvrREkcaGQzDzLU/3LMcEVdSMIHU76lE/eq38yRXFCg081K4ExSo1
+ 3FzbuLuNzJemUVQmfTaqi81/oFTUI+Th3OPTWOS6vX+oxZcGfA5LtBulYnbTXPP5bCHavi6YOqx9z
+ e56+yGYscXzBmfqZYNNhNJZMvVMvRWVJ5BD1Js8eMwTSDhc/tN/DGap0FCPAVWCU6SvBatYXJP2Hz
+ KnM7z0gbQ==;
+Received: from [2601:1c0:6280:3f0::9a1f]
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
+ id 1iCULM-0004hv-CB; Mon, 23 Sep 2019 19:49:56 +0000
+Subject: Re: [PATCH v18 15/19] Documentation: kunit: add documentation for
+ KUnit
+To: Brendan Higgins <brendanhiggins@google.com>
+References: <20190923090249.127984-1-brendanhiggins@google.com>
+ <20190923090249.127984-16-brendanhiggins@google.com>
+ <d87eba35-ae09-0c53-bbbe-51ee9dc9531f@infradead.org>
+ <CAFd5g45y-NWzbn8E8hUg=n4U5E+N6_4D8eCXhQ74Y0N4zqVW=w@mail.gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <d7a61045-8fe6-a104-ece9-67b69c379425@infradead.org>
+Date: Mon, 23 Sep 2019 12:49:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Disposition: inline
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <CAFd5g45y-NWzbn8E8hUg=n4U5E+N6_4D8eCXhQ74Y0N4zqVW=w@mail.gmail.com>
+Content-Language: en-US
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,101 +59,171 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>,
- Dave Chinner <david@fromorbit.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Theodore Ts'o <tytso@mit.edu>
+Cc: Petr Mladek <pmladek@suse.com>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Amir Goldstein <amir73il@gmail.com>,
+ dri-devel <dri-devel@lists.freedesktop.org>,
+ Sasha Levin <Alexander.Levin@microsoft.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ shuah <shuah@kernel.org>, Rob Herring <robh@kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Frank Rowand <frowand.list@gmail.com>, Knut Omang <knut.omang@oracle.com>,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Felix Guo <felixguoxiuping@gmail.com>, wfg@linux.intel.com,
+ Joel Stanley <joel@jms.id.au>, David Rientjes <rientjes@google.com>,
+ Jeff Dike <jdike@addtoit.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ devicetree <devicetree@vger.kernel.org>,
+ linux-kbuild <linux-kbuild@vger.kernel.org>, "Bird,
+ Timothy" <Tim.Bird@sony.com>, linux-um@lists.infradead.org,
+ Steven Rostedt <rostedt@goodmis.org>, Julia Lawall <julia.lawall@lip6.fr>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, kunit-dev@googlegroups.com,
+ Theodore Ts'o <tytso@mit.edu>, Richard Weinberger <richard@nod.at>,
+ Stephen Boyd <sboyd@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Kees Cook <keescook@google.com>, linux-fsdevel@vger.kernel.org,
+ Kevin Hilman <khilman@baylibre.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
+On 9/23/19 11:06 AM, Brendan Higgins wrote:
+> On Mon, Sep 23, 2019 at 8:48 AM Randy Dunlap <rdunlap@infradead.org> wrote:
+>>
+>> On 9/23/19 2:02 AM, Brendan Higgins wrote:
+>>> Add documentation for KUnit, the Linux kernel unit testing framework.
+>>> - Add intro and usage guide for KUnit
+>>> - Add API reference
+>>>
+>>> Signed-off-by: Felix Guo <felixguoxiuping@gmail.com>
+>>> Signed-off-by: Brendan Higgins <brendanhiggins@google.com>
+>>> Cc: Jonathan Corbet <corbet@lwn.net>
+>>> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>> Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+>>> Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+>>> ---
+>>>  Documentation/dev-tools/index.rst           |   1 +
+>>>  Documentation/dev-tools/kunit/api/index.rst |  16 +
+>>>  Documentation/dev-tools/kunit/api/test.rst  |  11 +
+>>>  Documentation/dev-tools/kunit/faq.rst       |  62 +++
+>>>  Documentation/dev-tools/kunit/index.rst     |  79 +++
+>>>  Documentation/dev-tools/kunit/start.rst     | 180 ++++++
+>>>  Documentation/dev-tools/kunit/usage.rst     | 576 ++++++++++++++++++++
+>>>  7 files changed, 925 insertions(+)
+>>>  create mode 100644 Documentation/dev-tools/kunit/api/index.rst
+>>>  create mode 100644 Documentation/dev-tools/kunit/api/test.rst
+>>>  create mode 100644 Documentation/dev-tools/kunit/faq.rst
+>>>  create mode 100644 Documentation/dev-tools/kunit/index.rst
+>>>  create mode 100644 Documentation/dev-tools/kunit/start.rst
+>>>  create mode 100644 Documentation/dev-tools/kunit/usage.rst
+>>
+>>
+>>> diff --git a/Documentation/dev-tools/kunit/start.rst b/Documentation/dev-tools/kunit/start.rst
+>>> new file mode 100644
+>>> index 000000000000..6dc229e46bb3
+>>> --- /dev/null
+>>> +++ b/Documentation/dev-tools/kunit/start.rst
+>>> @@ -0,0 +1,180 @@
+>>> +.. SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +===============
+>>> +Getting Started
+>>> +===============
+>>> +
+>>> +Installing dependencies
+>>> +=======================
+>>> +KUnit has the same dependencies as the Linux kernel. As long as you can build
+>>> +the kernel, you can run KUnit.
+>>> +
+>>> +KUnit Wrapper
+>>> +=============
+>>> +Included with KUnit is a simple Python wrapper that helps format the output to
+>>> +easily use and read KUnit output. It handles building and running the kernel, as
+>>> +well as formatting the output.
+>>> +
+>>> +The wrapper can be run with:
+>>> +
+>>> +.. code-block:: bash
+>>> +
+>>> +   ./tools/testing/kunit/kunit.py run
+>>> +
+>>> +Creating a kunitconfig
+>>> +======================
+>>> +The Python script is a thin wrapper around Kbuild as such, it needs to be
+>>
+>>                                        around Kbuild. As such,
+> 
+> Thanks for pointing this out.
+> 
+>>
+>>> +configured with a ``kunitconfig`` file. This file essentially contains the
+>>> +regular Kernel config, with the specific test targets as well.
+>>> +
+>>> +.. code-block:: bash
+>>> +
+>>> +     git clone -b master https://kunit.googlesource.com/kunitconfig $PATH_TO_KUNITCONFIG_REPO
+>>> +     cd $PATH_TO_LINUX_REPO
+>>> +     ln -s $PATH_TO_KUNIT_CONFIG_REPO/kunitconfig kunitconfig
+>>> +
+>>> +You may want to add kunitconfig to your local gitignore.
+>>> +
+>>> +Verifying KUnit Works
+>>> +---------------------
+>>> +
+>>> +To make sure that everything is set up correctly, simply invoke the Python
+>>> +wrapper from your kernel repo:
+>>> +
+>>> +.. code-block:: bash
+>>> +
+>>> +     ./tools/testing/kunit/kunit.py
+>>> +
+>>> +.. note::
+>>> +   You may want to run ``make mrproper`` first.
+>>
+>> I normally use O=builddir when building kernels.
+>> Does this support using O=builddir ?
+> 
+> Yep, it supports specifying a separate build directory.
+> 
+>>> +
+>>> +If everything worked correctly, you should see the following:
+>>> +
+>>> +.. code-block:: bash
+>>> +
+>>> +     Generating .config ...
+>>> +     Building KUnit Kernel ...
+>>> +     Starting KUnit Kernel ...
+>>> +
+>>> +followed by a list of tests that are run. All of them should be passing.
+>>> +
+>>> +.. note::
+>>> +   Because it is building a lot of sources for the first time, the ``Building
+>>> +   kunit kernel`` step may take a while.
+>>> +
+>>> +Writing your first test
+>>> +=======================
+>>
+>> [snip]
+>>
+>>> diff --git a/Documentation/dev-tools/kunit/usage.rst b/Documentation/dev-tools/kunit/usage.rst
+>>> new file mode 100644
+>>> index 000000000000..c6e69634e274
+>>> --- /dev/null
+>>> +++ b/Documentation/dev-tools/kunit/usage.rst
+>>
+>> TBD...
+> 
+> What did you mean by this comment?
 
-Since the last RFC patch set[1] much of the discussion of supporting RDMA with
-FS DAX has been around the semantics of the lease mechanism.[2]  Within that
-thread it was suggested I try and write some documentation and/or tests for the
-new mechanism being proposed.  I have created a foundation to test lease
-functionality within xfstests.[3] This should be close to being accepted.
-Before writing additional lease tests, or changing lots of kernel code, this
-email presents documentation for the new proposed "layout lease" semantic.
+I plan to review usage.rst soon... (To Be Done :)
 
-At Linux Plumbers[4] just over a week ago, I presented the current state of the
-patch set and the outstanding issues.  Based on the discussion there, well as
-follow up emails, I propose the following addition to the fcntl() man page.
-
-Thank you,
-Ira
-
-[1] https://lkml.org/lkml/2019/8/9/1043
-[2] https://lkml.org/lkml/2019/8/9/1062
-[3] https://www.spinics.net/lists/fstests/msg12620.html
-[4] https://linuxplumbersconf.org/event/4/contributions/368/
-
-
-<fcntl man page addition>
-Layout Leases
--------------
-
-Layout (F_LAYOUT) leases are special leases which can be used to control and/or
-be informed about the manipulation of the underlying layout of a file.
-
-A layout is defined as the logical file block -> physical file block mapping
-including the file size and sharing of physical blocks among files.  Note that
-the unwritten state of a block is not considered part of file layout.
-
-**Read layout lease F_RDLCK | F_LAYOUT**
-
-Read layout leases can be used to be informed of layout changes by the
-system or other users.  This lease is similar to the standard read (F_RDLCK)
-lease in that any attempt to change the _layout_ of the file will be reported to
-the process through the lease break process.  But this lease is different
-because the file can be opened for write and data can be read and/or written to
-the file as long as the underlying layout of the file does not change.
-Therefore, the lease is not broken if the file is simply open for write, but
-_may_ be broken if an operation such as, truncate(), fallocate() or write()
-results in changing the underlying layout.
-
-**Write layout lease (F_WRLCK | F_LAYOUT)**
-
-Write Layout leases can be used to break read layout leases to indicate that
-the process intends to change the underlying layout lease of the file.
-
-A process which has taken a write layout lease has exclusive ownership of the
-file layout and can modify that layout as long as the lease is held.
-Operations which change the layout are allowed by that process.  But operations
-from other file descriptors which attempt to change the layout will break the
-lease through the standard lease break process.  The F_LAYOUT flag is used to
-indicate a difference between a regular F_WRLCK and F_WRLCK with F_LAYOUT.  In
-the F_LAYOUT case opens for write do not break the lease.  But some operations,
-if they change the underlying layout, may.
-
-The distinction between read layout leases and write layout leases is that
-write layout leases can change the layout without breaking the lease within the
-owning process.  This is useful to guarantee a layout prior to specifying the
-unbreakable flag described below.
-
-
-**Unbreakable Layout Leases (F_UNBREAK)**
-
-In order to support pinning of file pages by direct user space users an
-unbreakable flag (F_UNBREAK) can be used to modify the read and write layout
-lease.  When specified, F_UNBREAK indicates that any user attempting to break
-the lease will fail with ETXTBUSY rather than follow the normal breaking
-procedure.
-
-Both read and write layout leases can have the unbreakable flag (F_UNBREAK)
-specified.  The difference between an unbreakable read layout lease and an
-unbreakable write layout lease are that an unbreakable read layout lease is
-_not_ exclusive.  This means that once a layout is established on a file,
-multiple unbreakable read layout leases can be taken by multiple processes and
-used to pin the underlying pages of that file.
-
-Care must therefore be taken to ensure that the layout of the file is as the
-user wants prior to using the unbreakable read layout lease.  A safe mechanism
-to do this would be to take a write layout lease and use fallocate() to set the
-layout of the file.  The layout lease can then be "downgraded" to unbreakable
-read layout as long as no other user broke the write layout lease.
-
-</fcntl man page addition>
+-- 
+~Randy
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
