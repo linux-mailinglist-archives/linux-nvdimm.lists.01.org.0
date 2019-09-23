@@ -1,67 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B42BACDE
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Sep 2019 05:30:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C31BB022
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Sep 2019 11:02:59 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 47EA7202EF28C;
-	Sun, 22 Sep 2019 20:33:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B2A7721962301;
+	Mon, 23 Sep 2019 02:05:29 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=santosh@fossix.org; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=2607:f8b0:4864:20::549; helo=mail-pg1-x549.google.com;
+ envelope-from=3p4qixq4kdgghxktjgtnommotymuumrk.iusrotad-tbjossroyzy.gh.uxm@flex--brendanhiggins.bounces.google.com;
+ receiver=linux-nvdimm@lists.01.org 
+Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com
+ [IPv6:2607:f8b0:4864:20::549])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 37EBD202ECFB2
- for <linux-nvdimm@lists.01.org>; Sun, 22 Sep 2019 20:32:59 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id c17so7205304pgg.4
- for <linux-nvdimm@lists.01.org>; Sun, 22 Sep 2019 20:30:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=sywvno9oH6C2x7JbbNTuKFc1cVwyreXcpG9Pmze4Bmg=;
- b=XsiDZzS9Mw2A+1DlYsO5UXdfdymh05336cO/Tgk8VrqHsocnL6VKYPDQlR37mAyF0w
- fnX8FLe4KPkQdTvbPAetfYbt3MygY9ZJT8mRoRXZ9NE1eI7VI1gTj8GWPrh91Kdx9kni
- G8MOw+HcHQn+AWI+qSqrHC8j44WHVQovHuAcaixkSsDOMQEpCDBQ0oASPmeI93q99bf0
- +iSVD8IHYE2uRK5/vLI0KdcyKiDjTk872aYlbgLjuYoIs+U3OyGdOzg1yE0TPaO8zBEt
- SYq3J58ipPI1UMo5Fa3bUuw6SmTUnONRSbLNoGUlIdYGpSFHTjdkDseSfKOTPD6vebcS
- djkQ==
+ by ml01.01.org (Postfix) with ESMTPS id 4938A202ECFC3
+ for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 02:05:28 -0700 (PDT)
+Received: by mail-pg1-x549.google.com with SMTP id t19so8916803pgh.6
+ for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 02:02:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:message-id:mime-version:subject:from:to:cc;
+ bh=+//vbVEMytWRwDD1N32OMbhHMumt9Xl/FOLbXSEK5is=;
+ b=Wo7ehhiSQ+WIaAzvJJIRhAtBle0DOtoQcRTc6cN8yWkyMcIxO/qRPi3lis8moobXcP
+ CWq6T7egEucWpE3o0mcg1Fim8i0wua01qVVyk1p7x23lzN65yKj38xSG2yAGPACDtY/L
+ k9b99co46gj6eFnAa2vIAd61Da+0JD7DfgXlo4z5vnS+OMaWkl9BWS2aWH3clklOe5AY
+ MpNL2/72iPL2TQrXaW8zvZdPF1qmUxROiXG3LY7iDmZwzCSmlaSB1lFKSe2m7LbgkMlL
+ VPJoEmp/UWp8QZCppZh0FRuDte3wmphK5vqQCfTTZGbcCjKasCbUH3v+pqeoJin62QBc
+ KNmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=sywvno9oH6C2x7JbbNTuKFc1cVwyreXcpG9Pmze4Bmg=;
- b=mVevP8Y8JmQY9T18IpRrcvDYile3UgXyRoQN+6FpQxuujNk0+tPw62z6buuCZYKs1Z
- ZIjc90uOLdd6jvAFtqbqD03RVu2xNbMkUK0upBOmy9M1IOqIC8OSlPWGBu0ZcSXPaCko
- NgMJgJoAi7SV9TF6m6+qnUe6Fz4WVb3WtKIvAkVEKR+Gi2KcnvluyQmulre3l3bI6JAq
- S+0drfCbATR00kXg5n72yTw9P14jvZPOzkszbI4WkmNK9v9Ybx1pcMWS8KSdfpeEWbC6
- oLilYfGOPZDfulb1q9ClPCKavqX4r8J19pE2fNNDoIvOOTapaX+2gXZPVznGjqFLPu25
- KyTw==
-X-Gm-Message-State: APjAAAWxgbR8e7OgDOR0rLfP0JN732gkuDT9RKllMZIroOYy9W62ZkVU
- DBa750SYsTLp0wBSJEVvCGFep94Fu2Y=
-X-Google-Smtp-Source: APXvYqyLQNHUr8VS/qzdxQlGgvLcrzOc1ZUKAo9lN41iIEGM/3Ok0QtessYVRHvwTrazMuKAO++P3A==
-X-Received: by 2002:a17:90a:9306:: with SMTP id
- p6mr17831475pjo.3.1569209424830; 
- Sun, 22 Sep 2019 20:30:24 -0700 (PDT)
-Received: from santosiv.in.ibm.com ([129.41.84.73])
- by smtp.gmail.com with ESMTPSA id s1sm15338873pjs.31.2019.09.22.20.30.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 22 Sep 2019 20:30:24 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: linux-nvdimm@lists.01.org,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 2/2] Enable ndctl tests for emulated pmem devices
-Date: Mon, 23 Sep 2019 09:00:15 +0530
-Message-Id: <20190923033015.26732-2-santosh@fossix.org>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190923033015.26732-1-santosh@fossix.org>
-References: <20190923033015.26732-1-santosh@fossix.org>
-MIME-Version: 1.0
+ h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+ bh=+//vbVEMytWRwDD1N32OMbhHMumt9Xl/FOLbXSEK5is=;
+ b=lEhkfilhWmFZYa/C2k/VJqT55B4sGd1cF3j6rnqXRgY0N0GHI/QVqYWJrqIHu0rNo3
+ AKuJBFqoFaSog7Rshg4faugg0UYD8AjV/TkSrsQZ7gZxabd77WjQFHqkoLwD1F2gsL5N
+ T05So6/LahB/M1MDUzruSHqiiTMDkRS4XKiaKRc8Qq53rLb5qUKtCHPlyIDHNLN0bzxy
+ jHgFudT1xAG8sVqajl5d6MPbVOCzyC7FHSkaY8ExPe+j98k9t6OOexC7hrSM+YdbopMX
+ KtOI/jTn8UTHMI+oIUB9HR0IwbUz6zksI2ArpnEOk/9K3L5zXEb4mbkB7HY0hnCe4i7M
+ Bxjg==
+X-Gm-Message-State: APjAAAUat9eF7qQOGQBHN9HrDXrbNOq8ozPI0m9efVGRQvbuecZqNbYu
+ bnomuyEm+aCq2702Os/dWZ+IHPZB7XlS7TL0fU1pFQ==
+X-Google-Smtp-Source: APXvYqwTDC2q3PPtmYSRUk/N+oqZsXyU/gpa64/Ucwnxxx5rMGjxbO9ch8qc4bPavftsq7Zb9hWXi4lrxe+MOJuGjhr0WA==
+X-Received: by 2002:a63:1b66:: with SMTP id b38mr28254193pgm.54.1569229375372; 
+ Mon, 23 Sep 2019 02:02:55 -0700 (PDT)
+Date: Mon, 23 Sep 2019 02:02:30 -0700
+Message-Id: <20190923090249.127984-1-brendanhiggins@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.23.0.351.gc4317032e6-goog
+Subject: [PATCH v18 00/19] kunit: introduce KUnit, the Linux kernel unit
+ testing framework
+From: Brendan Higgins <brendanhiggins@google.com>
+To: frowand.list@gmail.com, gregkh@linuxfoundation.org, jpoimboe@redhat.com, 
+ keescook@google.com, kieran.bingham@ideasonboard.com, mcgrof@kernel.org, 
+ peterz@infradead.org, robh@kernel.org, sboyd@kernel.org, shuah@kernel.org, 
+ tytso@mit.edu, yamada.masahiro@socionext.com
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,344 +67,216 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: harish@linux.ibm.com
+Cc: pmladek@suse.com, linux-doc@vger.kernel.org, amir73il@gmail.com,
+ Brendan Higgins <brendanhiggins@google.com>, dri-devel@lists.freedesktop.org,
+ Alexander.Levin@microsoft.com, linux-kselftest@vger.kernel.org,
+ linux-nvdimm@lists.01.org, khilman@baylibre.com, knut.omang@oracle.com,
+ wfg@linux.intel.com, joel@jms.id.au, rientjes@google.com, jdike@addtoit.com,
+ dan.carpenter@oracle.com, devicetree@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Tim.Bird@sony.com, linux-um@lists.infradead.org,
+ rostedt@goodmis.org, julia.lawall@lip6.fr, kunit-dev@googlegroups.com,
+ richard@nod.at, torvalds@linux-foundation.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, daniel@ffwll.ch, mpe@ellerman.id.au,
+ linux-fsdevel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-For QEMU emulated devices and other platforms, nfit drivers are not needed.
-This patch achieves that by relying upon the environment variable called
-'WITHOUT_NFIT'. If 'WITHOUT_NFIT=y', nfit drivers (nfit_test and
-libnvdimm_test) are not loaded.
+## TL;DR
 
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+This revision addresses comments from Linus[1] and Randy[2], by moving
+top level `kunit/` directory to `lib/kunit/` and likewise moves top
+level Kconfig entry under lib/Kconfig.debug, so the KUnit submenu now
+shows up under the "Kernel Hacking" menu.
+
+As a consequence of this, I rewrote patch 06/18 (kbuild: enable building
+KUnit) - now 06/19 (lib: enable building KUnit in lib/), and now needs
+to be re-acked/reviewed.
+
+## Background
+
+This patch set proposes KUnit, a lightweight unit testing and mocking
+framework for the Linux kernel.
+
+Unlike Autotest and kselftest, KUnit is a true unit testing framework;
+it does not require installing the kernel on a test machine or in a VM
+(however, KUnit still allows you to run tests on test machines or in VMs
+if you want[3]) and does not require tests to be written in userspace
+running on a host kernel. Additionally, KUnit is fast: From invocation
+to completion KUnit can run several dozen tests in about a second.
+Currently, the entire KUnit test suite for KUnit runs in under a second
+from the initial invocation (build time excluded).
+
+KUnit is heavily inspired by JUnit, Python's unittest.mock, and
+Googletest/Googlemock for C++. KUnit provides facilities for defining
+unit test cases, grouping related test cases into test suites, providing
+common infrastructure for running tests, mocking, spying, and much more.
+
+### What's so special about unit testing?
+
+A unit test is supposed to test a single unit of code in isolation,
+hence the name. There should be no dependencies outside the control of
+the test; this means no external dependencies, which makes tests orders
+of magnitudes faster. Likewise, since there are no external dependencies,
+there are no hoops to jump through to run the tests. Additionally, this
+makes unit tests deterministic: a failing unit test always indicates a
+problem. Finally, because unit tests necessarily have finer granularity,
+they are able to test all code paths easily solving the classic problem
+of difficulty in exercising error handling code.
+
+### Is KUnit trying to replace other testing frameworks for the kernel?
+
+No. Most existing tests for the Linux kernel are end-to-end tests, which
+have their place. A well tested system has lots of unit tests, a
+reasonable number of integration tests, and some end-to-end tests. KUnit
+is just trying to address the unit test space which is currently not
+being addressed.
+
+### More information on KUnit
+
+There is a bunch of documentation near the end of this patch set that
+describes how to use KUnit and best practices for writing unit tests.
+For convenience I am hosting the compiled docs here[4].
+
+Additionally for convenience, I have applied these patches to a
+branch[5]. The repo may be cloned with:
+git clone https://kunit.googlesource.com/linux
+This patchset is on the kunit/initial/v5.3/v18 branch.
+
+## History since v15
+
+### v18
+
+ - Addrssed comments on 07/19 (kunit: test: add initial tests) from
+   Randy Dunlap by removing redundant dependencies from Kconfig entries.
+
+### v17
+
+ - Addressed comments on 06/19 (lib: enable building KUnit in lib/) from
+   Stephen Boyd by moving KUnit submenu ahead of Runtime Testing
+   submenu.
+
+### v16
+
+ - Addressed comments from Linus Torvalds by moving all kunit/ paths to
+   lib/kunit/.
+ - Addressed comments by Randy Dunlap by moving KUnit Kconfig under
+   lib/Kconfig.debug so the KUnit submenu shows up under the "Kernel
+   Hacking" menu.
+
+[1] https://www.lkml.org/lkml/2019/9/20/696
+[2] https://www.lkml.org/lkml/2019/9/20/738
+[3] https://google.github.io/kunit-docs/third_party/kernel/docs/usage.html#kunit-on-non-uml-architectures
+[4] https://google.github.io/kunit-docs/third_party/kernel/docs/
+[5] https://kunit.googlesource.com/linux/+/kunit/initial/v5.3/v18
+
 ---
- configure.ac           |  8 ++++++++
- test/btt-pad-compat.sh |  5 ++++-
- test/clear.sh          |  5 ++++-
- test/common            | 19 ++++++++++++++-----
- test/core.c            |  6 ++++++
- test/create.sh         |  5 ++++-
- test/daxdev-errors.c   | 14 ++++++++++----
- test/daxdev-errors.sh  |  5 ++++-
- test/dpa-alloc.c       | 17 +++++++++++++----
- test/libndctl.c        | 21 +++++++++++++++++----
- 10 files changed, 84 insertions(+), 21 deletions(-)
+Avinash Kondareddy (1):
+  kunit: test: add tests for KUnit managed resources
 
-diff --git a/configure.ac b/configure.ac
-index 4737cff..33fbd0b 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -145,6 +145,14 @@ if test "x$with_bash" = "xyes"; then
- 		[BASH_COMPLETION_DIR=$($PKG_CONFIG --variable=completionsdir bash-completion)], [])
- fi
- 
-+AC_CANONICAL_HOST
-+AS_CASE([$host_cpu],
-+  [x86_64|arm*],
-+  [
-+	AC_DEFINE([ACPI], [1], ["Build for ACPI NFIT"])
-+  ]
-+)
-+
- AC_SUBST([BASH_COMPLETION_DIR])
- AM_CONDITIONAL([ENABLE_BASH_COMPLETION], [test "x$with_bash" = "xyes"])
- 
-diff --git a/test/btt-pad-compat.sh b/test/btt-pad-compat.sh
-index a5fc796..1e5ce48 100755
---- a/test/btt-pad-compat.sh
-+++ b/test/btt-pad-compat.sh
-@@ -187,7 +187,10 @@ do_tests()
- 	ns_info_wipe
- }
- 
--modprobe nfit_test
-+if [ -z "$WITHOUT_NFIT" ]; then
-+    modprobe nfit_test
-+fi
-+
- check_prereq xxd
- rc=1
- reset
-diff --git a/test/clear.sh b/test/clear.sh
-index f0b4a9b..e0b1f84 100755
---- a/test/clear.sh
-+++ b/test/clear.sh
-@@ -22,7 +22,10 @@ check_min_kver "4.6" || do_skip "lacks clear poison support"
- trap 'err $LINENO' ERR
- 
- # setup (reset nfit_test dimms)
--modprobe nfit_test
-+if [ -z "$WITHOUT_NFIT" ]; then
-+    modprobe nfit_test
-+fi
-+
- $NDCTL disable-region -b $TEST_BUS0 all
- $NDCTL zero-labels -b $TEST_BUS0 all
- $NDCTL enable-region -b $TEST_BUS0 all
-diff --git a/test/common b/test/common
-index 54085ae..1251ba5 100644
---- a/test/common
-+++ b/test/common
-@@ -29,10 +29,17 @@ fi
- 
- # TEST_BUS[01]
- #
--TEST_BUS0="nfit_test.0"
--TEST_BUS1="nfit_test.1"
--ACPI_BUS="ACPI.NFIT"
--E820_BUS="e820"
-+echo $WITHOUT_NFIT
-+if [ -n "$WITHOUT_NFIT" ]; then
-+    echo $BUS_PROVIDER0
-+    TEST_BUS0="$BUS_PROVIDER0"
-+    TEST_BUS1="$BUS_PROVIDER1"
-+else
-+    TEST_BUS0="nfit_test.0"
-+    TEST_BUS1="nfit_test.1"
-+    ACPI_BUS="ACPI.NFIT"
-+    E820_BUS="e820"
-+fi
- 
- # Functions
- 
-@@ -84,7 +91,9 @@ _cleanup()
- {
- 	$NDCTL disable-region -b $TEST_BUS0 all
- 	$NDCTL disable-region -b $TEST_BUS1 all
--	modprobe -r nfit_test
-+	if [ -z "$WITHOUT_NFIT" ]; then
-+	    modprobe -r nfit_test
-+	fi
- }
- 
- # json2var
-diff --git a/test/core.c b/test/core.c
-index 888f5d8..1f0c215 100644
---- a/test/core.c
-+++ b/test/core.c
-@@ -126,7 +126,9 @@ int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
- 	struct ndctl_bus *bus;
- 	struct log_ctx log_ctx;
- 	const char *list[] = {
-+#ifdef ACPI
- 		"nfit",
-+#endif
- 		"device_dax",
- 		"dax_pmem",
- 		"dax_pmem_core",
-@@ -134,7 +136,9 @@ int nfit_test_init(struct kmod_ctx **ctx, struct kmod_module **mod,
- 		"libnvdimm",
- 		"nd_blk",
- 		"nd_btt",
-+#ifdef ACPI
- 		"nd_e820",
-+#endif
- 		"nd_pmem",
- 	};
- 
-@@ -239,9 +243,11 @@ retry:
- 		ndctl_bus_foreach(nd_ctx, bus) {
- 			struct ndctl_region *region;
- 
-+#ifdef ACPI
- 			if (strncmp(ndctl_bus_get_provider(bus),
- 						"nfit_test", 9) != 0)
- 				continue;
-+#endif
- 			ndctl_region_foreach(bus, region)
- 				ndctl_region_disable_invalidate(region);
- 		}
-diff --git a/test/create.sh b/test/create.sh
-index 1398c79..afc34ac 100755
---- a/test/create.sh
-+++ b/test/create.sh
-@@ -23,7 +23,10 @@ check_min_kver "4.5" || do_skip "may lack namespace mode attribute"
- trap 'err $LINENO' ERR
- 
- # setup (reset nfit_test dimms)
--modprobe nfit_test
-+if [ -z "$WITHOUT_NFIT" ]; then
-+    modprobe nfit_test
-+fi
-+
- $NDCTL disable-region -b $TEST_BUS0 all
- $NDCTL zero-labels -b $TEST_BUS0 all
- $NDCTL enable-region -b $TEST_BUS0 all
-diff --git a/test/daxdev-errors.c b/test/daxdev-errors.c
-index 29de16b..1022047 100644
---- a/test/daxdev-errors.c
-+++ b/test/daxdev-errors.c
-@@ -45,7 +45,6 @@ struct check_cmd {
- static sigjmp_buf sj_env;
- static int sig_count;
- 
--static const char *NFIT_PROVIDER0 = "nfit_test.0";
- static struct check_cmd *check_cmds;
- 
- static void sigbus_hdl(int sig, siginfo_t *siginfo, void *ptr)
-@@ -245,7 +244,7 @@ static struct ndctl_dax * get_dax_region(struct ndctl_region *region)
- static int test_daxdev_clear_error(const char *bus_name,
- 		const char *region_name)
- {
--	int rc = 0, i;
-+	int rc = 0, i, with_nfit;
- 	struct ndctl_ctx *ctx;
- 	struct ndctl_bus *bus;
- 	struct ndctl_region *region;
-@@ -259,6 +258,7 @@ static int test_daxdev_clear_error(const char *bus_name,
-         };
- 	char path[256];
- 	char buf[SYSFS_ATTR_SIZE];
-+	char *bus_provider;
- 	struct log_ctx log_ctx;
- 
- 	log_init(&log_ctx, "test/init", "NDCTL_DAXDEV_TEST");
-@@ -266,7 +266,13 @@ static int test_daxdev_clear_error(const char *bus_name,
- 	if (rc)
- 		return rc;
- 
--	bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER0);
-+	with_nfit = strlen(getenv("WITHOUT_NFIT")) == 0;
-+	if (with_nfit)
-+		bus_provider = "nfit_test.0";
-+	else
-+		bus_provider = getenv("BUS_PROVIDER0");
-+
-+	bus = ndctl_bus_get_by_provider(ctx, bus_provider);
- 	if (!bus) {
- 		rc = -ENODEV;
- 		goto cleanup;
-@@ -289,7 +295,7 @@ static int test_daxdev_clear_error(const char *bus_name,
- 	/* get badblocks */
- 	if (snprintf(path, 256,
- 			"/sys/devices/platform/%s/%s/%s/badblocks",
--			NFIT_PROVIDER0,
-+			bus_provider,
- 			bus_name,
- 			ndctl_region_get_devname(region)) >= 256) {
- 		fprintf(stderr, "%s: buffer too small!\n",
-diff --git a/test/daxdev-errors.sh b/test/daxdev-errors.sh
-index c877874..7678a9b 100755
---- a/test/daxdev-errors.sh
-+++ b/test/daxdev-errors.sh
-@@ -22,7 +22,10 @@ check_min_kver "4.12" || do_skip "lacks dax dev error handling"
- trap 'err $LINENO' ERR
- 
- # setup (reset nfit_test dimms)
--modprobe nfit_test
-+if [ -z "$WITHOUT_NFIT" ]; then
-+    modprobe nfit_test
-+fi
-+
- $NDCTL disable-region -b $TEST_BUS0 all
- $NDCTL zero-labels -b $TEST_BUS0 all
- $NDCTL enable-region -b $TEST_BUS0 all
-diff --git a/test/dpa-alloc.c b/test/dpa-alloc.c
-index 9a9c6b6..25bbe0e 100644
---- a/test/dpa-alloc.c
-+++ b/test/dpa-alloc.c
-@@ -30,8 +30,6 @@
- #include <ndctl/libndctl.h>
- #include <ccan/array_size/array_size.h>
- 
--static const char *NFIT_PROVIDER0 = "nfit_test.0";
--static const char *NFIT_PROVIDER1 = "nfit_test.1";
- #define NUM_NAMESPACES 4
- 
- struct test_dpa_namespace {
-@@ -46,23 +44,34 @@ static int do_test(struct ndctl_ctx *ctx, struct ndctl_test *test)
- {
- 	unsigned int default_available_slots, available_slots, i;
- 	struct ndctl_region *region, *blk_region = NULL;
-+	char *bus_provider0, *bus_provider1;
- 	struct ndctl_namespace *ndns;
- 	struct ndctl_dimm *dimm;
- 	unsigned long size;
-+	bool with_nfit;
- 	struct ndctl_bus *bus;
- 	char uuid_str[40];
- 	int round;
- 	int rc;
- 
-+	with_nfit = strlen(getenv("WITHOUT_NFIT")) == 0;
-+	if (with_nfit) {
-+		bus_provider0 = "nfit_test.0";
-+		bus_provider1 = "nfit_test.1";
-+	} else {
-+		bus_provider0 = getenv("BUS_PROVIDER0");
-+		bus_provider1 = getenv("BUS_PROVIDER1");
-+	}
-+
- 	/* disable nfit_test.1, not used in this test */
--	bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
-+	bus = ndctl_bus_get_by_provider(ctx, bus_provider1);
- 	if (!bus)
- 		return -ENXIO;
- 	ndctl_region_foreach(bus, region)
- 		ndctl_region_disable_invalidate(region);
- 
- 	/* init nfit_test.0 */
--	bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER0);
-+	bus = ndctl_bus_get_by_provider(ctx, bus_provider0);
- 	if (!bus)
- 		return -ENXIO;
- 	ndctl_region_foreach(bus, region)
-diff --git a/test/libndctl.c b/test/libndctl.c
-index 02bb9cc..e6fa053 100644
---- a/test/libndctl.c
-+++ b/test/libndctl.c
-@@ -94,8 +94,6 @@
-  *    dimm.
-  */
- 
--static const char *NFIT_PROVIDER0 = "nfit_test.0";
--static const char *NFIT_PROVIDER1 = "nfit_test.1";
- #define SZ_4K   0x00001000
- #define SZ_128K 0x00020000
- #define SZ_7M   0x00700000
-@@ -2594,11 +2592,18 @@ static void reset_bus(struct ndctl_bus *bus)
- 
- static int do_test0(struct ndctl_ctx *ctx, struct ndctl_test *test)
- {
--	struct ndctl_bus *bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER0);
-+	struct ndctl_bus *bus;
- 	struct ndctl_region *region;
- 	struct ndctl_dimm *dimm;
-+	bool with_nfit;
- 	int rc;
- 
-+	with_nfit = strlen(getenv("WITHOUT_NFIT")) == 0;
-+	if (with_nfit)
-+		bus = ndctl_bus_get_by_provider(ctx, "nfit_test.0");
-+	else
-+		bus = ndctl_bus_get_by_provider(ctx, getenv("BUS_PROVIDER0"));
-+
- 	if (!bus)
- 		return -ENXIO;
- 
-@@ -2646,9 +2651,17 @@ static int do_test0(struct ndctl_ctx *ctx, struct ndctl_test *test)
- 
- static int do_test1(struct ndctl_ctx *ctx, struct ndctl_test *test)
- {
--	struct ndctl_bus *bus = ndctl_bus_get_by_provider(ctx, NFIT_PROVIDER1);
-+	struct ndctl_bus *bus;
-+	bool with_nfit;
- 	int rc;
- 
-+	with_nfit = strlen(getenv("WITHOUT_NFIT")) == 0;
-+	if (with_nfit)
-+		bus = ndctl_bus_get_by_provider(ctx, "nfit_test.1");
-+	else
-+		bus = ndctl_bus_get_by_provider(ctx, getenv("BUS_PROVIDER1"));
-+
-+
- 	if (!bus)
- 		return -ENXIO;
- 
+Brendan Higgins (16):
+  kunit: test: add KUnit test runner core
+  kunit: test: add test resource management API
+  kunit: test: add string_stream a std::stream like string builder
+  kunit: test: add assertion printing library
+  kunit: test: add the concept of expectations
+  lib: enable building KUnit in lib/
+  kunit: test: add initial tests
+  objtool: add kunit_try_catch_throw to the noreturn list
+  kunit: test: add support for test abort
+  kunit: test: add tests for kunit test abort
+  kunit: test: add the concept of assertions
+  kunit: defconfig: add defconfigs for building KUnit tests
+  Documentation: kunit: add documentation for KUnit
+  MAINTAINERS: add entry for KUnit the unit testing framework
+  MAINTAINERS: add proc sysctl KUnit test to PROC SYSCTL section
+  kunit: fix failure to build without printk
+
+Felix Guo (1):
+  kunit: tool: add Python wrappers for running KUnit tests
+
+Iurii Zaikin (1):
+  kernel/sysctl-test: Add null pointer test for sysctl.c:proc_dointvec()
+
+ Documentation/dev-tools/index.rst             |    1 +
+ Documentation/dev-tools/kunit/api/index.rst   |   16 +
+ Documentation/dev-tools/kunit/api/test.rst    |   11 +
+ Documentation/dev-tools/kunit/faq.rst         |   62 +
+ Documentation/dev-tools/kunit/index.rst       |   79 +
+ Documentation/dev-tools/kunit/start.rst       |  180 ++
+ Documentation/dev-tools/kunit/usage.rst       |  576 +++++++
+ MAINTAINERS                                   |   13 +
+ arch/um/configs/kunit_defconfig               |    3 +
+ include/kunit/assert.h                        |  356 ++++
+ include/kunit/string-stream.h                 |   51 +
+ include/kunit/test.h                          | 1490 +++++++++++++++++
+ include/kunit/try-catch.h                     |   75 +
+ kernel/Makefile                               |    2 +
+ kernel/sysctl-test.c                          |  392 +++++
+ lib/Kconfig.debug                             |   13 +
+ lib/Makefile                                  |    2 +
+ lib/kunit/Kconfig                             |   36 +
+ lib/kunit/Makefile                            |    9 +
+ lib/kunit/assert.c                            |  141 ++
+ lib/kunit/example-test.c                      |   88 +
+ lib/kunit/string-stream-test.c                |   52 +
+ lib/kunit/string-stream.c                     |  217 +++
+ lib/kunit/test-test.c                         |  331 ++++
+ lib/kunit/test.c                              |  478 ++++++
+ lib/kunit/try-catch.c                         |  118 ++
+ tools/objtool/check.c                         |    1 +
+ tools/testing/kunit/.gitignore                |    3 +
+ tools/testing/kunit/configs/all_tests.config  |    3 +
+ tools/testing/kunit/kunit.py                  |  136 ++
+ tools/testing/kunit/kunit_config.py           |   66 +
+ tools/testing/kunit/kunit_kernel.py           |  149 ++
+ tools/testing/kunit/kunit_parser.py           |  310 ++++
+ tools/testing/kunit/kunit_tool_test.py        |  206 +++
+ .../test_is_test_passed-all_passed.log        |   32 +
+ .../test_data/test_is_test_passed-crash.log   |   69 +
+ .../test_data/test_is_test_passed-failure.log |   36 +
+ .../test_is_test_passed-no_tests_run.log      |   75 +
+ .../test_output_isolated_correctly.log        |  106 ++
+ .../test_data/test_read_from_file.kconfig     |   17 +
+ 40 files changed, 6001 insertions(+)
+ create mode 100644 Documentation/dev-tools/kunit/api/index.rst
+ create mode 100644 Documentation/dev-tools/kunit/api/test.rst
+ create mode 100644 Documentation/dev-tools/kunit/faq.rst
+ create mode 100644 Documentation/dev-tools/kunit/index.rst
+ create mode 100644 Documentation/dev-tools/kunit/start.rst
+ create mode 100644 Documentation/dev-tools/kunit/usage.rst
+ create mode 100644 arch/um/configs/kunit_defconfig
+ create mode 100644 include/kunit/assert.h
+ create mode 100644 include/kunit/string-stream.h
+ create mode 100644 include/kunit/test.h
+ create mode 100644 include/kunit/try-catch.h
+ create mode 100644 kernel/sysctl-test.c
+ create mode 100644 lib/kunit/Kconfig
+ create mode 100644 lib/kunit/Makefile
+ create mode 100644 lib/kunit/assert.c
+ create mode 100644 lib/kunit/example-test.c
+ create mode 100644 lib/kunit/string-stream-test.c
+ create mode 100644 lib/kunit/string-stream.c
+ create mode 100644 lib/kunit/test-test.c
+ create mode 100644 lib/kunit/test.c
+ create mode 100644 lib/kunit/try-catch.c
+ create mode 100644 tools/testing/kunit/.gitignore
+ create mode 100644 tools/testing/kunit/configs/all_tests.config
+ create mode 100755 tools/testing/kunit/kunit.py
+ create mode 100644 tools/testing/kunit/kunit_config.py
+ create mode 100644 tools/testing/kunit/kunit_kernel.py
+ create mode 100644 tools/testing/kunit/kunit_parser.py
+ create mode 100755 tools/testing/kunit/kunit_tool_test.py
+ create mode 100644 tools/testing/kunit/test_data/test_is_test_passed-all_passed.log
+ create mode 100644 tools/testing/kunit/test_data/test_is_test_passed-crash.log
+ create mode 100644 tools/testing/kunit/test_data/test_is_test_passed-failure.log
+ create mode 100644 tools/testing/kunit/test_data/test_is_test_passed-no_tests_run.log
+ create mode 100644 tools/testing/kunit/test_data/test_output_isolated_correctly.log
+ create mode 100644 tools/testing/kunit/test_data/test_read_from_file.kconfig
+
 -- 
-2.21.0
+2.23.0.351.gc4317032e6-goog
 
 _______________________________________________
 Linux-nvdimm mailing list
