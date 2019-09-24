@@ -2,70 +2,28 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DDDBC10D
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Sep 2019 06:25:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAC2BC1BE
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Sep 2019 08:30:03 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9591C21962301;
-	Mon, 23 Sep 2019 21:27:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5D94321A07096;
+	Mon, 23 Sep 2019 23:32:26 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
- envelope-from=aneesh.kumar@linux.ibm.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received-SPF: Softfail (domain owner discourages use of this host)
+ identity=mailfrom; client-ip=95.68.252.104; helo=115-191.static.spheral.ru;
+ envelope-from=jpbghxc@msn.com; receiver=linux-nvdimm@lists.01.org 
+Received: from 115-191.static.spheral.ru (unknown [95.68.252.104])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id E625C202EDBB8
- for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 21:27:33 -0700 (PDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id
- x8O4MEH0128436; Tue, 24 Sep 2019 00:25:04 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2v782f82ea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 00:25:04 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x8O4Opkq006325;
- Tue, 24 Sep 2019 04:25:03 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04wdc.us.ibm.com with ESMTP id 2v5bg71cwc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 24 Sep 2019 04:25:03 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- x8O4P2Kd56295892
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 24 Sep 2019 04:25:02 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 303EE6E050;
- Tue, 24 Sep 2019 04:25:02 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6C4E86E04C;
- Tue, 24 Sep 2019 04:25:00 +0000 (GMT)
-Received: from skywalker.in.ibm.com (unknown [9.124.35.207])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 24 Sep 2019 04:25:00 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH] powerpc/book3s64: Export has_transparent_hugepage() related
- functions.
-Date: Tue, 24 Sep 2019 09:54:40 +0530
-Message-Id: <20190924042440.27946-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.21.0
+ by ml01.01.org (Postfix) with ESMTPS id EF6942021B6F4
+ for <linux-nvdimm@lists.01.org>; Mon, 23 Sep 2019 23:32:22 -0700 (PDT)
+Message-ID: <05d1369a6e64313d0a3f89da2eea303c593bdcb0@msn.com>
+From: "Jana" <jpbghxc@msn.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?windows-1251?B?1O7t5CDu7+vg8vsg8vDz5OA=?=
+Date: Tue, 24 Sep 2019 09:29:43 +0300
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:, ,
- definitions=2019-09-24_01:, , signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1909240043
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,79 +35,112 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
- linux-nvdimm@lists.01.org
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Reply-To: Jana <jpbghxc@msn.com>
+Content-Type: text/plain; charset="cp1251"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-In later patch, we want to use hash_transparent_hugepage() in a kernel module.
-Export two related functions.
-
-Acked-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/book3s/64/radix.h | 8 +++++++-
- arch/powerpc/mm/book3s64/hash_pgtable.c    | 2 ++
- arch/powerpc/mm/book3s64/radix_pgtable.c   | 7 -------
- 3 files changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/radix.h b/arch/powerpc/include/asm/book3s/64/radix.h
-index 574eca33f893..d97db3ad9aae 100644
---- a/arch/powerpc/include/asm/book3s/64/radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/radix.h
-@@ -254,7 +254,13 @@ extern void radix__pgtable_trans_huge_deposit(struct mm_struct *mm, pmd_t *pmdp,
- extern pgtable_t radix__pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
- extern pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 				      unsigned long addr, pmd_t *pmdp);
--extern int radix__has_transparent_hugepage(void);
-+static inline int radix__has_transparent_hugepage(void)
-+{
-+	/* For radix 2M at PMD level means thp */
-+	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
-+		return 1;
-+	return 0;
-+}
- #endif
- 
- extern int __meminit radix__vmemmap_create_mapping(unsigned long start,
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index d1f390ac9cdb..64733b9cb20a 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -406,6 +406,8 @@ int hash__has_transparent_hugepage(void)
- 
- 	return 1;
- }
-+EXPORT_SYMBOL_GPL(hash__has_transparent_hugepage);
-+
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- #ifdef CONFIG_STRICT_KERNEL_RWX
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 3a1fbf9cb8f8..6ee17d09649c 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1027,13 +1027,6 @@ pmd_t radix__pmdp_huge_get_and_clear(struct mm_struct *mm,
- 	return old_pmd;
- }
- 
--int radix__has_transparent_hugepage(void)
--{
--	/* For radix 2M at PMD level means thp */
--	if (mmu_psize_defs[MMU_PAGE_2M].shift == PMD_SHIFT)
--		return 1;
--	return 0;
--}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- void radix__ptep_set_access_flags(struct vm_area_struct *vma, pte_t *ptep,
--- 
-2.21.0
-
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+z+7x8vDu5e3o5SDx6PHy5ez7IO7v6+Dy+yDv7iDw5efz6/zy4PLzIEtQSS3M7vLo4uD26P8uCgrE
+ztHAxM3OLCDX0s4gwsDYwCDKzszPwM3I3yDNxSDHwNDAwcDS28LAxdIK1c7QztjT3iDP0MjB28vc
+IJYg0s7L3MrOIM/O0s7M0ywg19LOCsLA2Mgg0c7S0NPEzcjKyCDNxSDEztHSwNLO183OIMzO0sjC
+yNDOwsDN2wroIO3lIOTu8fLg8u737e4g/fT05ery6OLt+y4KCtLl7OAsIOru8u7w8/4g7Psg5+Dy
+8ODj6OLg5ewg7eUg6Ocg7/Du8fL79S4gzeD44CDy5ezgOiDK4Oogz8vA0sjS3CDSzsvcys4g5+Ag
+0MXH08vc0sDSLCDq4OogzM7SyMLI0M7CwNLcLCDq4Oog6Ofs5fD/8vwg/fT05ery6OLt7vHy/CDw
+4OHu8vsgysDGxM7DziDx7vLw8+Tt6OrgLgoK1/LuIOTu6+bl7SDn7eDy/CDKwMbE28kg8PPq7uLu
+5Ojy5ev8IIUu7iDMztLIwsDWyMgg8eLu6PUg8e7y8PPk7ejq7uIg6CDuIPLu7Cwg6uDqIO/u4vvx
+6PL8IN3U1MXK0sjCzc7R0twg6PUg8ODh7vL7PwoKz+4g8fLg8ujx8ujq5Swg8u7r/OruIOrg5uT7
+6SA1IPHu8vDz5O3o6iDw4OHu8uDl8iD99PTl6vLo4u3uLiDX8u4g8eTl6+Dy/CDw8+ru4u7k6PLl
+6/4sIPfy7uH7IOgg7vHy4Ov87fvlIDgwJSDv5fDx7u3g6+Ag8ODh7vLg6+gg7eAg7+jq5SDx4u7o
+9SDi7ufs7ubt7vHy5ek/IMXx6+gg6/7k6CDv7vHy7v/t7e4g8ODh7vLg/vIg7eUg/fT05ery6OLt
+7iwg8u4g7/Du4evl7OAg7eUg4iDr/uT/9Swgz/Du4evl7OAg4iDRyNHSxczFLiDC+/Hy8O7l7e3g
+/yDR6PHy5ezgIO/u5+Lu6+jyIMLg7CDv7uL78ejy/CD99PTl6vLo4u3u8fL8IO/l8PHu7eDr4CDs
+6O3o7ODr/O3uIO3gIDIwJS4gyOcg9+Xj7iDm5SDx7vHy7ujyIP3y4CDR6PHy5ezgLCDq7vLu8OD/
+IO/u5+Lu6//l8iDx5OXr4PL8IO/w7vD74iDiIP309OXq8uji7e7x8ugg6CDs7vLo4uD26Ogg6/7k
+5ek/CgrK4Oog4vvx8vDu6PL8INHo8fLl7PMg6CDl+eUgwvsg8+ft4OXy5SCFLjoKCjEuIMrg6iDP
+zsLb0cjS3CDd1NTFytLIws3O0dLcIOLg+Oj1IOv+5OXpIO3lIOzl7eXlLCD35ewg7eAgMjAlIOIg
+8uX35e3o6CDh6+jm4On45ePuIOri4PDy4OvgOwoyLiDT8fLg7eDi6+ji4PL8IPHi7ujsIPHu8vDz
+5O3o6uDsIOgg5O7x8ujj4PL8IPbl6+g7CjMuIMrg6iDo5+zl8P/y/CD99PTl6vLo4u3u8fL8IPHi
+7uj1IPHu8vDz5O3o6u7iIPEg7+7s7vn8/iBLUEksCjQuIMrg6iDi+/Hy8ODo4uDy/CDiIOru7O/g
+7ejoIP309OXq8uji7fP+IPHo8fLl7PMg7O7y6OLg9ujoIOgg7+7r8/fg8vwg7ODq8ejs4Ov87fP+
+IO7y5OD38yDu8iDq4Obk7uPuIPHu8vDz5O3o6uAuCjUuIMrg6iDw4Ofw4OHg8vvi4PL8IPHo8fLl
+7PMg7u/r4PL7IO/uIPDl5/Pr/PLg8vM7CjYuIN309OXq8uji7e4g8+/w4OLr//L8IPHu8vDz5O3o
+6uDs6Cwg7+7i+/jg/yDo9SD99PTl6vLo4u3u8fL8IOgg4u7i6+X35e3t7vHy/Cwg7O7y6OLo8O7i
+4O3o/yDt4CDk7vHy6Obl7ejlIOHu6/z45ePuOwo3LiDN5ezg8uXw6ODr/O3u7PMg8fLo7PPr6PDu
+4uDt6P4sIPHv7vHu4eDsIO/w6Oft4O3o/yDoIOLu5+3g4/Dg5uTl7ej/Owo4LiDN7uL75SDo5OXo
+LCDq7vLu8PvlIO/u5+Lu6//yIOL76OPw4PL8IOIg8/Hr7uLo//Ug6u7t6vPw5e326Og7CjkuIM/w
+4Ory6Pfl8ero5SDt4OL76ugsIOru8u7w++Ug8ezu5uXy5SDx8ODn8yDm5SDv8Ojs5e3o8vwg4iDx
+4u7l6SDw4OHu8uU7CgrR7uTl8Obg7ejlOiCgCszu5PPr/CAxLiDRIPfl4+4g7eD36O3g5fLx/yDs
+7vLo4uD26P8gLSD25evoIOru7O/g7ejoIOgg7vHt7uLt++Ug7+7q4Ofg8uXr6CD99PTl6vLo4u3u
+8fLoCgrRIPfl4+4g7eD36O3g5fLx/yDs7vLo4uD26P8gLSD25evoIOru7O/g7ejoIOgg7vHt7uLt
+++Ug7+7q4Ofg8uXr6CD99PTl6vLo4u3u8fLoLgotIMDq8vPg6/zt7vHy/CDv8O7h6+XsICLs7vLo
+4uD26P8iLCAi7vbl7ergIP309OXq8uji7e7x8ugiIOggIvHy6Ozz6+jw7uLg7ejlIiDk6/8g7vDj
+4O3o5+D26OkKLSDK4Oog8+Tu4uvl8uLu8OXt7e7x8vwg7+Xw8e7t4OvgIOLr6P/l8iDt4CDw7vHy
+IO/w6OH76+gKLSDH4CDq4Oro5SDv7urg5+Dy5evoIO/r4PL/8iDh7u3z8fsKLSBLUEkt7O7y6OLg
+9uj/IOTu6+bt7vHy/CDo6+gg9+Xr7uLl6goKzO7k8+v8IDIuIDNEIM7Wxc3KwCDRztLQ08TNyMrO
+wgoKyvLuIOgg9/LuIOjnIPHu8vDz5O3o6u7iIOTl6+Dl8j8gyuDqIP3y7iDo5+zl8Ojy/CDoIO72
+5e3o8vw/Ci0gyuDq6OUg7+7q4Ofg8uXr6CDk5enx8uLo8uXr/O3uIOjs5f7yIOft4Pfl7ejlCi0g
+yuDqIPDg5/Dg4e7y4PL8IO/u6uDn4PLl6+gg5O717uTu7uHw4Ofz/vno9SDv7uTw4Ofk5evl7ejl
+Ci0gyuDqIPDg5/Dg4e7y4PL8IO/u6uDn4PLl6+gg8eXw4ujx7fv1IPHr8+bhCi0gyuDqIO725e3o
+8vwg8ODh7vLzIOrg5uTu4+4g8e7y8PPk7ejq4DoKLSDO9uXt6uAg7+4g9Ojt4O3x7uL77CBLUEkg
+8u7vLezl7eXk5uXw7uIsIOvo7eXp7fv1IOzl7eXk5uXw7uIsIPD/5O7i+/Ug8e7y8PPk7ejq7uIK
+LSDO9uXt6uAg8OXn8+v88uDy7uIg7+4g7eX06O3g7fHu4vvsIEtQSS4gIszo7fPx+yIg6CAi7Ojt
+8/H7IiD06O3g7fHu4vv1IO/u6uDn4PLl6+XpCi0gzvbl7ergIPDl5/Pr/PLg8u7iIPD/5O7i+/Ug
+8e7y8PPk7ejq7uIKLSDK7uvo9+Xx8uLl7e375Swg6uD35fHy4uXt7fvlIO/u6uDn4PLl6+gsIPHy
+4O3k4PDy+yDw4OHu8vssIO/w7uXq8vsKLSDK7uvo9+Xx8uLuIO/u6uDn4PLl6+XpIOgg7/Do7vDo
+8uXy+wotIMrg6iDw4Ofr6Pfg8vwg6/P3+Oj1IPHu8vDz5O3o6u7iOiDu9uXt6uAg8OXn8+v88uDy
+6OLt7vHy6C4KCszu5PPr/CAzLiDQ4PH35fIg5O7v7uvt6PLl6/zt7ukg7/Do4fvr6CDoIOfu7fsg
+7vLi5fLx8uLl7e3u8fLoCgrK4Oog8ODh7vLgIOrg5uTu4+4g8e7y8PPk7ejq4CDi6+j/5fIg7eAg
+7/Do4fvr/D8gyuDqIO/u8fLw7ujy/CDs7vLo4uD26P4sIPfy7uH7IO/r4PLo8vwg6Ocg5O7v7uvt
+6PLl6/zt7iDn4PDg4e7y4O3t7ukg7/Do4fvr6Cwg4CDt5SDz4uXr6Pfo4uDy/CDn4PLw4PL7Ci0g
+1uXr6CDh6Oft5fHgIOgg9uXr6CDw4OHu8vsg8fLw8+ry8/Dt+/Ug7+7k8ODn5OXr5e3o6S4gxOXw
+5eLuIPbl6+XpCi0gyuDqIO/w7uLl8fLoIOrg8erg5CD25evl6SDk7iDq4Obk7uPuIPHu8vDz5O3o
+6uAg7vIg9uXr5ekg4ejn7eXx4AotIM/u6uDn4PLl6+gg5Ov/IOrg5uTu4+4g8/Du4u3/IO7w4+Dt
+6Ofg9ujoCi0gwvvk5evl7ejlIEtQSSDoIO7v8OXk5evl7ejlIPbl7fLw7uIg7vLi5fLx8uLl7e3u
+8fLoIOfgIO/u6uDn4PLl6+gg6u7s7+Dt6OguIM/u8fLw7uXt6OUg7ODy8Oj2+yD06O3g7fHu4u7p
+IO7y4uXy8fLi5e3t7vHy6AotIM/u8fLw7uXt6OUg7O7y6OLg9uju7e379SDr6PHy7u7iCi0gzu/w
+5eTl6+Xt6OUg5+3g9+Xt6Okg6u799PTo9ujl7fLu4iBLUEksIO/u8fLw7uXt6OUg9Ojt4O3x7uLu
+6SDs7uTl6+ggIsvu4+7r5erxIgoKzO7k8+v8IDQuIMrAyiDw4PHx9+jy4PL8IPTu7eQg7u/r4PL7
+IPLw8+TgIOgg+PLg8iDk6/8g6u7s7+Dt6OgsIO/u5PDg5+Tl6+Xt6P8KCsfgIPH35fIg9+Xj7iDv
+6+Dy6PL8IOfg8O/r4PLzIOgg7/Dl7OjoPyDK4Oog8ODx8ffo8uDy/Cwg6u7s8yDoIPHq7uv86u4g
+7+vg8ujy/D8KLSDK4Oru6SDw4Ofs5fAg9O7t5OAg7u/r4PL7IPLw8+TgIOTu6+bl7SDh+/L8IOIg
+6u7s7+Dt6Og6IDIg7vHt7uLt+/Ug7+7k9e7k4AotIMrg6iDz8uLl8OTo8vwg8O7x8iD07u3k4CDu
+7+vg8vsg8vDz5OAuIM/w6Ozl8CDw4PH35fIg+PLg8uAg6CD07u3k4CDu7+vg8vsg8vDz5OAuCi0g
+ItHv8/Hq7uLu6SDq8P737uoiIO/w5ezo4Ov87e7j7iD07u3k4C4KLSDP8Ojs5fAg8ODx9+Xy4CDo
+IO7v8OXk5evl7ej/ICLx7/Px6u7i7uPuIOrw/vfq4CIuIM/w6Ozl8CDw4PH35fLgIPTu7eTgIO7v
+6+Dy+yDy8PPk4AotIM/u8O7jIOgg7+7y7uvu6iDv8OXs6ODr/O3u4+4g9O7t5OAKLSDP8O725e3y
+7uzg7ej/OiDv6/7x+yDoIOzo7fPx+wotIM7v8OXk5evl7ejlIPHy8PPq8vPw+yDv7vHy7v/t7e7p
+IOgg7+Xw5ezl7e3u6SD34PHy6Dog8PPq7uLu5Ojy5evl6SDoIPD/5O7i+/Ug8e7y8PPk7ejq7uIK
+LSDP8Ojs5fAg4u7n7O7m7e7j7iDu7/Dl5OXr5e3o/yDx8vDz6vLz8Psg7+7x8u7/7e3u6SDoIO/l
+8OXs5e3t7ukg9+Dx8ugKLSDP5fDo7uTo9+3u8fL8IPHo8fLl7Psg4u7n7eDj8ODm5OXt6OkuCi0g
+z/Do7OXwIPDg8e/w5eTl6+Xt6P8g7/Dl7Ojg6/zt7uPuIPTu7eTgIOIg5+Di6PHo7O7x8ugg7vIg
+8eXn7u3t7vHy6CDv8O7k4OYKLSDR4v/n/CBLUEkg8SDh7u3z8eDs6AotIMHu7fPx+yDn4CDk7vHy
+6Obl7ejlIOru6+vl6vLo4u379SDoIOvo9+379SBLUEkuCi0gz/Do7OXwIPDg8e/w5eTl6+Xt6P8g
+4e7t8/HgIO3gIOru6+vl6vLo4u376SDoIOjt5Oji6OTz4Ov87fvpLgotIML77+vg9+ji4PL8IOvo
+IOjt5Oji6OTz4Ov87fvpIOHu7fPxLCDl8evoIOru7O/g7ej/IO3lIOTu8fLo4+vgIO3z5u379SD2
+5evl6T8KLSDO9O7w7Ovl7ejlIOTu6vPs5e3y4CAi7O7y6OLg9uju7e3g/yDx9eXs4CDx7vLw8+Tt
+6OrgIgoKzO7k8+v8IDUuIMrg6iDs7vLo4ujw7uLg8vwg6/7k5ekg7eAg5O7x8ujm5e3o5SD25evl
+6QoKyuDqIPHy8OXs6PLl6/zt7iDv7uTt6Ozg8vwg7O7w4Ov87fvpIOTz9SDv7uT36O3l7e379SDo
+IO/u5OTl8Obo4uDy/CDv8O7o5+Lu5Ojy5ev87e7x8vwsIOzu8uji4Pbo/iDv8Ogg7Ojt6Ozg6/zt
++/Ug5+Dy8ODy4PUuCi0gyuDqIOjn7OXt6PL8IO/u4uXk5e3o5SDx7vLw8+Tt6Oru4i4KLSDK4Oro
+5SD04Ory7vD7IO7v8OXk5ev//vIsIOHz5OXyIOvoIPfl6+7i5eog8ODh7vLg8vwg7eDkIOTu8fLo
+5uXt6OXsIPbl6+XpIOggS1BJIOru7O/g7ejoPwotIMrg6iD25evoIOfg5ujj4P7yIPHu8vDz5O3o
+6u7iPyDK4Oog7+7k5OXw5uji4PL8IO7j7u38IOIg4+vg5+D1PyAzIOro8uAg4vvx7uru6SDs7vLo
+4uD26OgKLSDQ4OHu8uAg7+7x6+Ug8ODh7vL7LCDq7uPk4CD17vfl8vH/IPDg4e7y4PL8IOrw8+Pr
+++Ug8fPy6uguINHu8fLu/+3o5SAi7+7y7urgIi4KLSDK4Oog4fvy/CDxIPHu8vDz5O3o6uDs6Cwg
+6u7y7vD75SDt5SDx7/Dg4uv//vLx/wotIMLr5eny5SDiIPDg4e7y8yDk8/jzLiDN5ezg8uXw6ODr
+/O3u5SDx8ujs8+vo8O7i4O3o5QotIMrg6iDi7eXk8Ojy/CDx6PHy5ezzIOzu8uji4Pbo6CDiIOru
+7O/g7ejoCmEuINbl7fLw+yDu8uLl8vHy4uXt7e7x8ugg4iDu8OPg7ejn4Pbo6Cwg5+Do7fLl8OXx
+7uLg7e375SDiIPDg5/Dg4e7y6uUg6CDu7/Lo7Ojn4Pbo6CDx6PHy5ez7IOLu5+3g4/Dg5uTl7ej/
+IOgg7+7q4Ofg8uXr5ekg7vbl7eroIP309OXq8uji7e7x8uggKEtQSSkuCmIuIMrg6iDw4PHv8OXk
+5evo8vwg7vLi5fLx8uLl7e3u8fL8IOgg8O7r6C4g0O7r/CDu8uTl6+Ag7+Xw8e7t4OvgCmMuIM/x
+6PXu6+7j6Pfl8ero5SDu8e7h5e3t7vHy6CDi7eXk8OXt6P8g8ejx8uXs+yDs7vLo4uD26Ogg4iDq
+7uzv4O3o6ApkLiDO8e3u4u375SDu+Ojh6ugg6CDy8PPk7e7x8ugsIOrg6iDo9SDs6O3o7Ojn6PDu
+4uDy/C4KCsTu7+7r7ejy5ev87e4gPiBodHRwOi8vaW52ZXN0bWVudHMuaW4udWEvdHJhaW5pbmcv
+MTQ3L3Bvc3Ryb2VuaWUtc2lzdGVtaS1vcGxhdGktcG8tcmV6dWx0YXR1LWtwaS1tb3RpdmFjaXlh
+Lmh0bQoKzOXt5eTm7OXt8iAKyO3y5fDt5fIgCs3l5OLo5ujs7vHy/AoKzeUg7+7r8/fg8vwg8ODx
+8fvr6vMuCkxpc3QtVW5zdWJzY3JpYmUg6OvoIO/u5uDr7uLg8vzx/yDt4CBTcGFtCgqpIDIwMDQt
+MjAxOSDC8eUg7/Dg4uAg5+D56Pnl7fsuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxp
+c3RzLjAxLm9yZwpodHRwczovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52
+ZGltbQo=
