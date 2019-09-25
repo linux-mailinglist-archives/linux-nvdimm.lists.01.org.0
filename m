@@ -1,32 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7411ABE070
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Sep 2019 16:44:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F143BBE355
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Sep 2019 19:24:15 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B0CFB202F8B9F;
-	Wed, 25 Sep 2019 07:46:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C01DE202F8BA8;
+	Wed, 25 Sep 2019 10:26:26 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: None (no SPF record) identity=mailfrom; client-ip=111.176.69.110;
- helo=gvm.org; envelope-from=mkldiau@gvm.org;
- receiver=linux-nvdimm@lists.01.org 
-Received: from gvm.org (unknown [111.176.69.110])
- by ml01.01.org (Postfix) with ESMTP id 791FB202BB9C2
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 07:46:29 -0700 (PDT)
-Message-ID: <B2163A5BF82CC50C50E0A3B154D5A41B@gvm.org>
-From: =?utf-8?B?6YKx5YWI55Sf?= <mkldiau@gvm.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5Zue5aSN77ya5rWB56iL44CB5pa55rOV44CB5bel6Im644CB5p2Q5paZ44CB6KOF6YWN44CB5Zu+57q4?=
- =?utf-8?B?5YWo5pa55L2N5oqA5pyv5o+Q5Y2H?=
-Date: Wed, 25 Sep 2019 22:44:07 +0800
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
+ client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=vishal.l.verma@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ml01.01.org (Postfix) with ESMTPS id 4A453202E2917
+ for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 10:26:24 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2019 10:24:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,548,1559545200"; d="scan'208";a="188838288"
+Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
+ by fmsmga008.fm.intel.com with ESMTP; 25 Sep 2019 10:24:10 -0700
+Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.68]) by
+ FMSMSX103.amr.corp.intel.com ([169.254.2.82]) with mapi id 14.03.0439.000;
+ Wed, 25 Sep 2019 10:24:09 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>, "dan.carpenter@oracle.com"
+ <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] libnvdimm/namespace: Fix a signedness bug in
+ __holder_class_store()
+Thread-Topic: [PATCH] libnvdimm/namespace: Fix a signedness bug in
+ __holder_class_store()
+Thread-Index: AQHVc5B5rM1ZYUSIHUSOStf/1XoAG6c9GkyA
+Date: Wed, 25 Sep 2019 17:24:09 +0000
+Message-ID: <71808ca30f4e367931bf58fa3e1798371c2a5044.camel@intel.com>
+References: <20190925110008.GK3264@mwanda>
+In-Reply-To: <20190925110008.GK3264@mwanda>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.164]
+Content-ID: <CCF587D42594D44D9B798B21BC52A6BD@intel.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,122 +60,42 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-5Y+R5Lu25Lq6OiAi6YKx5YWI55SfIjs8bWtsZGlhdUBndm0ub3JnPg0K5Y+R6YCB5pe26Ze0OiAy
-MDE5LTktMjUvIDIyOjQ0OjE3DQrmlLbku7bkuro6ICJsaW51eC1udmRpbW0iPGxpbnV4LW52ZGlt
-bUBsaXN0cy4wMS5vcmc+DQrkuqflk4Hnu5PmnoTorr7orqENCi0t5rWB56iL44CB5pa55rOV44CB
-5bel6Im644CB5p2Q5paZ44CB6KOF6YWN44CB5Zu+57q45YWo5pa55L2N5oqA5pyv5o+Q5Y2HDQog
-DQrln7norq3ml7bpl7TvvJogMjAxOeW5tDEw5pyIMTItMTPml6Xmt7HlnLMgICAgICAxMeaciDE1
-LTE25pel5bm/5beeICAgICAgMTLmnIgxMy0xNOaXpea3seWcsw0K5Z+56K6t6LS555So77yaIDM4
-MDDlhYMv5Lq677yI5ZCr6LWE5paZ6LS544CB5Y2I6aSQ6LS544CB5LiT5a625ryU6K6y6LS544CB
-5Lya5Yqh6LS577yJDQrln7norq3lr7nosaHvvJrmioDmnK/mgLvnm5HjgIHpobnnm67nu4/nkIbv
-vIznu5PmnoTlt6XnqIvluIjjgIHmnLrmorDlt6XnqIvluIjjgIHotKjph4/lt6XnqIvluIjvvIzl
-t6XoibrlkozliLbpgKDlt6XnqIvluIgNCuWFt+Wkh+WfuuacrOeahOacuuaisOefpeivhuWfuueh
-gOW5tuWcqOWunumZheW3peS9nOS4reacieWfuuacrOeahOacuuaisOebuOWFs+W3peS9nOe7j+mq
-jO+8jOS7peWPiuWfuuacrOeahOS6p+WTgeeUn+S6p+i/h+eoi+efpeivhg0K5ZKo6K+i55S16K+d
-77yaIDE4ODkwNzAwNjAw77yI5ZCM5b6u5L+h77yJIOi1teWFiOeUnyAgICANCuKIteOAluivvueo
-i+iDjOaZr+OAlw0K5Lqn5ZOB57uT5p6E6K6+6K6h5peg5aSE5LiN5Zyo77yM5aW955qE6K6+6K6h
-77yM5oSP5ZGz5aW955qE6LSo6YeP77yM5L2O55qE5oiQ5pys44CCIOeUseS6jue7k+aehOiuvuiu
-oea2ieWPiueahOefpeivhumdoumdnuW4uOW5v++8jOeJtea2ieWIsOeahOWItuS9nOW3peiJuuWk
-jeadguWkmuagt+OAguaJgOS7peS4gOS4quWlveeahOe7k+aehOW3peeoi+W4iOeahOWfueWFu+WS
-jOaIkOmVv+S4jeaYr+S7tuWuueaYk+eahOS6i+aDheOAguWQjOaXtue7k+aehOiuvuiuoee7n+mi
-huWFrOWPuOS8l+WkmumDqOmXqO+8jOS7juWkluinguiuvuiuoemDqOmXqO+8jOi0qOmHj+mDqOmX
-qO+8jOa1i+ivlemDqOmXqO+8jOWItumAoOmDqOmXqO+8jOijhemFjee6v++8jOeUmuiHs+mHh+i0
-re+8jOmUgOWUrumDqOmXqOOAguaXoOS4jeS4jue7k+aehOiuvuiuoemDqOmXqOaciemdnuW4uOeb
-tOaOpeeahOWFs+iBlOOAguaJgOS7peacieW/heimgeWvuee7k+aehOiuvuiuoeefpeivhuacieS4
-gOS6m+WfuuacrOeahOS6huino+OAguS4uuatpO+8jOaIkeS7rOeglOWPkeivpeivvueoi+WOu+a7
-oei2s+WQhOS4qumDqOmXqOaIluiBjOS9je+8jOWvuee7k+aehOiuvuiuoeefpeivhueahOS6huin
-o+S4juW6lOeUqOOAgg0K4oi144CW6K++56iL54m56Imy44CXDQrmoLnmja7lrqLmiLfmj5Dkvpvl
-j4rnu4/lhbjmoYjkvovvvIzku4vnu43nu5PmnoTorr7orqHnmoTlhbfkvZPlhoXlrrnlkozopoHm
-sYLvvIzku6Xlj4rlnKjorr7orqHvvIznlJ/kuqfkuK3nmoTlrp7pmYXlupTnlKjvvIzlubbmj5Dk
-vpvnjrDlnLrnmoTovoXlr7zvvIzljIXmi6zorr7orqHjgIHliLbpgKDjgIHmo4DmtYvlj4rnu7zl
-kIjliIbmnpDnrYnjgIINCuKIteOAluivvueoi+ivreiogOOAlw0K5pmu6YCa6K+d77yM6L6F5Lul
-6Iux5paH5ZCN6K+NDQriiLXjgJbor77nqIvlpKfnurLjgJcNCiANCuesrOS4gOevhyAg6K6k6K+G
-5Lqn5ZOB55qE57uT5p6E6K6+6K6hDQrkuIDjgIEg5LuA5LmI5piv5Lqn5ZOB57uT5p6E6K6+6K6h
-IA0K5LqM44CBIOS6p+WTgee7k+aehOiuvuiuoeeahOmHjeimgeaApw0K5LiJ44CBIOWvueS6p+WT
-gee7k+aehOiuvuiuoeW4iOeahOimgeaxgg0K5Zub44CBIOS6p+WTgee7k+aehOiuvuiuoeiupOiv
-hueahOivr+WMuiANCuesrOS6jOevhyAg5aGR5paZ5Lu255qE6K6+6K6hDQrkuIDjgIEg5aGR5paZ
-5p2Q5paZ5oCn6IO9DQrkuozjgIEg5bi46KeB5aGR5paZ5p2Q5paZ6YCJ5oupDQrkuInjgIEg5aOB
-5Y6a55qE6K6+6K6hIA0K5Zub44CBIOeti+eahOiuvuiuoQ0K5LqU44CBIOWHuOWPsOOAgeieuuS4
-neafseeahOiuvuiuoQ0K5YWt44CBIOinkuadv+eahOiuvuiuoQ0K5LiD44CBIOWwluinkueahOiu
-vuiuoQ0K5YWr44CBICDmi5TmqKHop5LluqYNCuS5neOAgSDlrZTmtJ7nmoTorr7orqENCuWNgeOA
-gSDlgJLmiaPnmoTorr7orqENCuWNgeS4gOOAgSAgICAgICAgICAgICAg5qih5aGR6J6657q555qE
-6K6+6K6hDQrljYHkuozjgIEgICAgICAgICAgICAgIOaooeWhkeaWh+Wtlw0K5Y2B5LiJ44CBICAg
-ICAgICAgICAgICDmtLvliqjpk7Dpk74g55qE6K6+6K6hDQrljYHlm5vjgIEgICAgICAgICAgICAg
-IOmHkeWxnumVtuS7tg0K5Y2B5LqU44CBICAgICAgICAgICAgICDloZHmlpnovbTmib/nmoTorr7o
-rqENCuWNgeWFreOAgSAgICAgICAgICAgICAg5aGR5paZ6b2/6L2u55qE6K6+6K6hDQrljYHkuIPj
-gIEgICAgICAgICAgICAgIOWhkeaWmeS7tuWFrOW3rg0K5Y2B5YWr44CBICAgICAgICAgICAgICDl
-oZHmlpnmqKHlhbfnu5PmnoQNCuesrOS4ieevhyAgIOmSo+mHkeS7tueahOiuvuiuoQ0K5LiA44CB
-IOWGsuijgeW3peiJuuWPiuWGsuijgeaooeWFtw0K5LqM44CBIOW8r+absuW3peiJuuS4juW8r+ab
-suaooeWFtw0K5LiJ44CBIOaLiea3seW3peiJuuS4juaLiea3seaooeWFtw0K5Zub44CBIOWFtuS7
-luaIkOW9ouW3peiJuuS4juaooeWFtw0K5LqU44CBIOWkjeWQiOaooeS4juWkmuW3peS9jee6p+i/
-m+aooeWFtw0K5YWt44CBIOW4uOeUqOWGsuWOi+adv+adkOeahOmAieaLqQ0K5LiD44CBIOWGsuW6
-ig0K5YWr44CBIOe7k+aehOmbtuS7tuiuvuiuoeaMh+WvvA0K5Lmd44CBIOWwuuWvuOWFrOW3rg0K
-56ys5Zub56+HICAg5Y6L6ZO45Lu255qE6K6+6K6hDQrkuIDjgIEg5Y6L6ZO45qih5YW377yI54Ot
-5a6k44CB5Ya35a6k77yJDQrkuozjgIEg5Y6L6ZO45bel6Im65Y+C5pWwDQrkuInjgIEg5L+u6L65
-5qih5YW3DQrlm5vjgIEg5Y6L6ZO46Zu25Lu26K6+6K6hDQox44CBICDlo4HljpoNCjLjgIEgIOWK
-oOW8uueti+WPiuWchuinkg0KM+OAgSAg6ISx5qih5pac5bqmDQo044CBICDlrZTnmoTorr7orqEN
-CjXjgIEgIOa7keWdlw0KIDbjgIEgIOieuue6ueeahOWkhOeQhg0KN+OAgSAg6YeR5bGe6ZW25Lu2
-DQo444CBICDljovpk7jku7bnmoTmnLrmorDliqDlt6UNCjnjgIEgIOaooeWhkeaWh+Wtlw0KMTDj
-gIEgICAgICAgICAg56CC5a2U5Y+K5rCU5a+G5oCn6KaB5rGCDQoxMeOAgSAgICAgICAgICDlsLrl
-r7jkuI7lhazlt64NCjEy44CBICAgICAgICAgIOW+ruWei+WOi+mTuOS7tg0K5LqU44CBIOWOi+mT
-uOWQiOmHkeacuuaisOaAp+iDveWPiuWOi+mTuOaAp+iDvQ0K77yI6ZOd5ZCI6YeR44CB6ZSM5ZCI
-6YeR44CB6ZWB5ZCI6YeR44CB6ZOc5ZCI6YeR77yJDQrnrKzkupTnr4cgIOmdouWQkeijhemFjeea
-hOiuvuiuoSANCuS4gOOAgSDoo4XphY3nmoTlrprkuYkNCjHjgIEgIERGQSDpnaLlkJHoo4XphY3n
-moTorr7orqHku4vnu40NCjLjgIEg5pyA5aW95ZKM5pyA5beu55qE6KOF6YWN5bel5bqPDQoz44CB
-IOmdouWQkeijhemFjeeahOiuvuiuoeeahOebrueahA0K5LqM44CBIOiuvuiuoeaMh+WNlw0KMeOA
-gSDlh4/lsJHpm7bku7bmlbDph48NCjLjgIEg5YeP5bCR57Sn5Zu65Lu255qE5pWw6YeP5ZKM57G7
-5Z6LDQoz44CBIOmbtuS7tuagh+WHhuWMlg0KNOOAgSDmqKHlnZfljJbkuqflk4Horr7orqENCjXj
-gIEg6K6+6K6h5LiA5Liq56iz5a6a55qE5Z+65bqnDQo244CBIOiuvuiuoembtuS7tuWuueaYk+ii
-q+aKk+WPlg0KN+OAgSDpgb/lhY3pm7bku7bnvKDnu5UNCjjjgIEg5YeP5bCR6Zu25Lu26KOF6YWN
-5pa55ZCRDQo544CBIOiuvuiuoeWvvOWQkeeJueW+gQ0KMTDjgIEgICAgICDlhYjlrprkvY3lkI7l
-m7rlrpoNCjEx44CBICAgICAg6YG/5YWN6KOF6YWN5bmy5raJDQoxMuOAgSAgICAgIOS4uui+heWK
-qeW3peWFt+aPkOS+m+epuumXtA0KMTPjgIEgICAgICDkuLrph43opoHpm7bku7borr7orqHoo4Xp
-hY3mraLkvY3nibnlvoENCjE044CBICAgICAg6Ziy5q2i6Zu25Lu25qyg57qm5p2f5ZKM6L+H57qm
-5p2fDQoxNeOAgSAgICAgIOWuveadvueahOmbtuS7tuWFrOW3ruimgeaxgg0KMTbjgIEgICAgICDp
-mLLplJnnmoTorr7orqENCjE344CBICAgICAg6KOF6YWN5Lit55qE5Lq65py65bel56iL5a2mDQox
-OOOAgSAgICAgIOe6v+e8hueahOW4g+WxgA0K5LiJ44CBIOagh+WHhuS7tueahOijhemFjeiuvuiu
-oeWOn+WImQ0K56ys5YWt56+HICAg6YeR5bGe5p2Q5paZ5bi46K+G5Y+K6YCJ5oupDQrkuIDjgIEg
-6ZKi6ZOB5p2Q5paZ5Y+K54Ot5aSE55CGDQrkuozjgIEg5pyJ6Imy6YeR5bGe5p2Q5paZ5Y+K54Ot
-5aSE55CGDQrnrKzkuIPnr4cgICDlm77nurjkuI7lhazlt64gDQrkuIDjgIEg5LuA5LmI5piv5aW9
-55qE5Zu+57q4DQrkuozjgIEg5bC65a+45LiO5YWs5beuDQrkuInjgIEg5YWs5beu6KeE5YiZ5Y+K
-5Y6f5YiZDQrlm5vjgIEg5Z+65YeGDQrkupTjgIEg5Yeg5L2V5YWs5beu55qE5bqU55SoDQrlha3j
-gIEg5Zu+57q45a6e5L6LDQogDQoNCiANCuKIteOAluiusuW4iOS7i+e7jeOAlw0K5p2O6ICB5biI
-DQrljY7ljZfnkIblt6XlpKflrabmnLrmorDorr7orqHlj4rnkIborrrnoZXlo6vvvJsNCummluW4
-reWhkeiDtuS7tuiuvuiuoeS4juazqOWhkeWfueiureW4iO+8mw0K6aaW5bitR0QmVOW9ouS9jeWF
-rOW3ruS4juWwuuWvuOmTvuWfueiureW4iO+8mw0K6aaW5bit5Lqn5ZOB57uT5p6E6K6+6K6h5Z+5
-6K6t5biI77ybDQrmnLrmorDliLbpgKDlj4rlhbboh6rliqjljJbkuJPkuJrpq5jnuqflt6XnqIvl
-uIgNCuWkmuWutuWbveWGheWkluefpeWQjeS8geS4mumhvumXru+8mw0K5Z+56K6t5py65p6E56CU
-5Y+R5oqA5pyv57G76K++56iL5oyH5a6a6ICB5biI77ybDQrjgJDog4zmma/nu4/ljobjgJENCuWc
-qOasp+e+juS7quWZqOOAgeiuvuWkh+ihjOS4muWPiuWbveWGheWutueUte+8jOeUteWtkOihjOS4
-mu+8jOS7juS6i+eglOWPkeOAgeWItumAoOW3peS9nDEz5bm044CC5aSa5bm055qE6auY57qn5bel
-56iL5biI77yM56CU5Y+R57uP55CG6IGM5Lia57uP5Y6G44CC5YW35pyJ5Liw5a+M55qE5py65qKw
-57uT5p6E5LiO5py65qKw5Lyg5Yqo6K6+6K6h57uP6aqM77yM5bm25Zyo5rW35aSW56CU5Y+R5bel
-5L2c5aSa5bm077yM54af5oKJ6KGM5YaF55qE5pyA5paw5Yqo5ZCR5Y+K5oqA5pyv5pu05paw77yM
-5LqG6Kej5aSn6YeP55qE5Zu95aSW5Lqn5ZOB6K6+6K6h5qGI5L6L44CCDQrlnKjln7norq3mlrnp
-naLvvIzmnInkuLDlr4znmoTmjojor77nu4/pqozvvJrlpJrlrrbln7norq3lhazlj7jlrprmnJ/l
-hazlvIDor77nmoTmjIflrprorrLluIjvvIzojrflvpflrablkZjlkozmnLrmnoTnmoTkuIDoh7Tl
-pb3or4TvvJvlpJrlrrblpKflnovkvIHkuJrlhoXorq3mjIflrprorrLluIjvvIzlrprmnJ/liLDk
-vIHkuJrlhoXpg6jlvIDlsZXln7norq3lkozovoXlr7zvvIzlpb3or4Q5NiXku6XkuIrjgIINCuWP
-r+agueaNruWuouaIt+eJueWumumcgOaxguadpeiwg+aVtOivvue6su+8jOe8luaSsOivvuS7tuOA
-guaOiOivvuWGheWuueabtOi0tOi/keWuouaIt+mcgOaxgu+8jOabtOWlveacjeWKoeWuouaIt+OA
-gg0K5Y+v5bCx546w5Zy66Zeu6aKY5YGa5YiG5p6Q5LiO5ZKo6K+i77yM6L6F5a+85a6i5oi377yM
-5a6M5oiQ6aG555uu44CCDQrjgJDln7norq3nibnoibLjgJENCuaThemVv+e7k+WQiOWuouaIt+ea
-hOS6p+WTgeWSjOahiOS+i+iusuino++8jOa/gOWPkeWtpuWRmOWFtOi2o++8jOi+vuWIsOecn+at
-o+aOjOaPoeW5tueBtea0u+i/kOeUqOOAgg0K5Z+56K6t5Lul6K6y6Kej5ZKM5a6e6ZmF5Lqn5ZOB
-57uD5Lmg55u457uT5ZCI55qE5pa55byP77yM5rOo6YeN5LiO5a2m5ZGY5LmL6Ze055qE5LqS5Yqo
-44CCDQrpgJrov4flpKfph4/mrKfnvo7mnLrmorDorr7orqHkuqflk4HkvJjnp4DmoYjkvovjgIHn
-lJ/liqjnmoTor63oqIDvvIzlsIbkuJPkuJrnn6Xor4borrLop6PlvpforqnlrablkZjmg7PlkKzj
-gIHmmJPmh4LvvIzmnInmlLbojrfjgIINCuW3peS9nOivreiogOS4uuiLseivreWSjOaxieivreaZ
-rumAmuivneOAgg0K44CQ5Li76K6y6K++56iL44CRDQrjgIrloZHog7bvvIjmlpnvvInku7bnmoTo
-rr7orqHkuI7ms6jloZHjgIsgMiAtIDMg5aSp77ybDQrjgIrloZHog7bkuqflk4Horr7orqHjgIsx
-LTLlpKnvvJsNCuOAikdEJlTlvaLkvY3lhazlt67kuI7lsLrlr7jpk77orqHnrpfjgIsgMSAtIDLl
-pKnvvJsNCuOAiuacuuaisOWbvue6uOeahOWwuuWvuOWFrOW3rueahOWQiOeQhuagh+azqOOAizEt
-MuWkqQ0K44CK5Lqn5ZOB57uT5p6E6K6+6K6h44CLMi0z5aSp77ybDQrjgIrph5HlsZ7mnZDmlpnj
-gIsy5aSp77ybCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QKTGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpodHRw
-czovL2xpc3RzLjAxLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LW52ZGltbQo=
+On Wed, 2019-09-25 at 14:00 +0300, Dan Carpenter wrote:
+> The "ndns->claim_class" variable is an enum but in this case GCC will
+> treat it as an unsigned int so the error handling is never triggered.
+> 
+> Fixes: 14e494542636 ("libnvdimm, btt: BTT updates for UEFI 2.7 format")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/nvdimm/namespace_devs.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+> index cca0a3ba1d2c..669985527716 100644
+> --- a/drivers/nvdimm/namespace_devs.c
+> +++ b/drivers/nvdimm/namespace_devs.c
+> @@ -1529,7 +1529,7 @@ static ssize_t __holder_class_store(struct device *dev, const char *buf)
+>  		return -EINVAL;
+>  
+>  	/* btt_claim_class() could've returned an error */
+> -	if (ndns->claim_class < 0)
+> +	if ((int)ndns->claim_class < 0)
+>  		return ndns->claim_class;
+>  
+>  	return 0;
+
+Looks straightforward, and a good catch.
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+
+
+_______________________________________________
+Linux-nvdimm mailing list
+Linux-nvdimm@lists.01.org
+https://lists.01.org/mailman/listinfo/linux-nvdimm
