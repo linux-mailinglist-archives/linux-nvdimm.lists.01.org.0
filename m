@@ -2,38 +2,42 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E136BE6EE
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Sep 2019 23:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03810BE6F1
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 25 Sep 2019 23:15:25 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 32BB2200C6C8E;
-	Wed, 25 Sep 2019 14:16:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5AB2321967BC5;
+	Wed, 25 Sep 2019 14:17:35 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=192.55.52.93; helo=mga11.intel.com;
+ client-ip=192.55.52.136; helo=mga12.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id C157E200C6C8B
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 14:16:07 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
+ by ml01.01.org (Postfix) with ESMTPS id E4DE4200C6C8B
+ for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 14:17:33 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2019 14:13:55 -0700
-X-IronPort-AV: E=Sophos;i="5.64,549,1559545200"; d="scan'208";a="183386359"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.157])
- by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2019 14:13:54 -0700
-From: ira.weiny@intel.com
-To: Dan Williams <dan.j.williams@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH V3] libnvdimm/namsepace: Don't set claim_class on error
-Date: Wed, 25 Sep 2019 14:13:48 -0700
-Message-Id: <20190925211348.14082-1-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.20.1
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2019 14:15:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,549,1559545200"; d="scan'208";a="193907300"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+ by orsmga006.jf.intel.com with ESMTP; 25 Sep 2019 14:15:20 -0700
+Date: Wed, 25 Sep 2019 14:15:20 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH V2] bnvdimm/namsepace: Don't set claim_class on error
+Message-ID: <20190925211520.GA12748@iweiny-DESK2.sc.intel.com>
+References: <20190925184852.11707-1-ira.weiny@intel.com>
+ <CAPcyv4jtYxggf-+ZvO5PN3KTMjiqqJrpj_V39_9axJZNpG_EQg@mail.gmail.com>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jtYxggf-+ZvO5PN3KTMjiqqJrpj_V39_9axJZNpG_EQg@mail.gmail.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,98 +49,51 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: Dan Carpenter <dan.carpenter@oracle.com>, linux-nvdimm@lists.01.org
+Cc: kernel-janitors@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-From: Ira Weiny <ira.weiny@intel.com>
+On Wed, Sep 25, 2019 at 12:36:35PM -0700, Dan Williams wrote:
+> On Wed, Sep 25, 2019 at 11:49 AM <ira.weiny@intel.com> wrote:
+> >
 
-Don't leave claim_class set to an invalid value if an error occurs in
-btt_claim_class().
+[snip]
 
-While we are here change the return type of __holder_class_store() to be
-clear about the values it is returning.
+> >
+> > ---
+> > V1->V2
+> >         Add space after variable declaration...
+> 
+> Oh, was also hoping this would address s/bnvdimm/libnvdimm/ in the
+> patch subject.
 
-This was found via code inspection.
+Yea...
 
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> 
+> Note, kernel-janitors is for minor spelling fixes and trivial changes
+> with no runtime side-effects that might otherwise fall through the
+> cracks. This has functional implications so is not a janitorial
+> change.
 
----
-V1->V2
-	Add space after variable declaration...
+Ah yea I just thought it was ok to let that list know what was going on...
+I've removed them from V3.  Sorry.
 
-V2->V3
-	Fix oneliner
-	Rebase without Dan Carpenter's patch and give him Reported-by
-		credit
+> 
+> One more comment below...
+> 
 
- drivers/nvdimm/namespace_devs.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+[snip]
 
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index a16e52251a30..eef885c59f47 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -1510,16 +1510,20 @@ static ssize_t holder_show(struct device *dev,
- }
- static DEVICE_ATTR_RO(holder);
- 
--static ssize_t __holder_class_store(struct device *dev, const char *buf)
-+static int __holder_class_store(struct device *dev, const char *buf)
- {
- 	struct nd_namespace_common *ndns = to_ndns(dev);
- 
- 	if (dev->driver || ndns->claim)
- 		return -EBUSY;
- 
--	if (sysfs_streq(buf, "btt"))
--		ndns->claim_class = btt_claim_class(dev);
--	else if (sysfs_streq(buf, "pfn"))
-+	if (sysfs_streq(buf, "btt")) {
-+		int rc = btt_claim_class(dev);
-+
-+		if (rc < NVDIMM_CCLASS_NONE)
-+			return rc;
-+		ndns->claim_class = rc;
-+	} else if (sysfs_streq(buf, "pfn"))
- 		ndns->claim_class = NVDIMM_CCLASS_PFN;
- 	else if (sysfs_streq(buf, "dax"))
- 		ndns->claim_class = NVDIMM_CCLASS_DAX;
-@@ -1528,10 +1532,6 @@ static ssize_t __holder_class_store(struct device *dev, const char *buf)
- 	else
- 		return -EINVAL;
- 
--	/* btt_claim_class() could've returned an error */
--	if (ndns->claim_class < 0)
--		return ndns->claim_class;
--
- 	return 0;
- }
- 
-@@ -1539,7 +1539,7 @@ static ssize_t holder_class_store(struct device *dev,
- 		struct device_attribute *attr, const char *buf, size_t len)
- {
- 	struct nd_region *nd_region = to_nd_region(dev->parent);
--	ssize_t rc;
-+	int rc;
- 
- 	nd_device_lock(dev);
- 	nvdimm_bus_lock(dev);
-@@ -1547,7 +1547,7 @@ static ssize_t holder_class_store(struct device *dev,
- 	rc = __holder_class_store(dev, buf);
- 	if (rc >= 0)
- 		rc = nd_namespace_label_update(nd_region, dev);
--	dev_dbg(dev, "%s(%zd)\n", rc < 0 ? "fail " : "", rc);
-+	dev_dbg(dev, "%s(%d)\n", rc < 0 ? "fail " : "", rc);
- 	nvdimm_bus_unlock(dev);
- 	nd_device_unlock(dev);
- 
--- 
-2.20.1
+> > -
+> 
+> Since this effectively replaces Dan's patch can you respin without
+> that baseline, and just give Dan credit with a Reported-by?
+
+V3 sent.
+
+Ira
 
 _______________________________________________
 Linux-nvdimm mailing list
