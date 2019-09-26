@@ -2,52 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE46BF42D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 15:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634F0BF668
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 18:05:32 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 993C821967BC5;
-	Thu, 26 Sep 2019 06:40:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 318C221967BC5;
+	Thu, 26 Sep 2019 09:07:36 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=209.132.183.28; helo=mx1.redhat.com;
- envelope-from=pagupta@redhat.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
+ client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id BD6892010BCA5
- for <linux-nvdimm@lists.01.org>; Thu, 26 Sep 2019 06:40:30 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 0613C10DCC82;
- Thu, 26 Sep 2019 13:38:24 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com
- (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EEB4960933;
- Thu, 26 Sep 2019 13:38:23 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com
- (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
- by colo-mx.corp.redhat.com (Postfix) with ESMTP id E098C18089C8;
- Thu, 26 Sep 2019 13:38:23 +0000 (UTC)
-Date: Thu, 26 Sep 2019 09:38:23 -0400 (EDT)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <193523014.3320073.1569505103872.JavaMail.zimbra@redhat.com>
-In-Reply-To: <20190926122552.17905-2-aneesh.kumar@linux.ibm.com>
-References: <20190830091428.18399-1-david@redhat.com>
- <20190926122552.17905-1-aneesh.kumar@linux.ibm.com>
- <20190926122552.17905-2-aneesh.kumar@linux.ibm.com>
-Subject: Re: [PATCH 2/2] mm/memmap_init: Update variable name in
- memmap_init_zone
+ by ml01.01.org (Postfix) with ESMTPS id 97B312010BCCF
+ for <linux-nvdimm@lists.01.org>; Thu, 26 Sep 2019 09:07:34 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2019 09:05:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; d="scan'208";a="219449975"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+ by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2019 09:05:27 -0700
+Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
+Received: from crsmsx152.amr.corp.intel.com (172.18.7.35) by
+ fmsmsx115.amr.corp.intel.com (10.18.116.19) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
+Received: from crsmsx101.amr.corp.intel.com ([169.254.1.249]) by
+ CRSMSX152.amr.corp.intel.com ([169.254.5.223]) with mapi id 14.03.0439.000;
+ Thu, 26 Sep 2019 10:05:24 -0600
+From: "Weiny, Ira" <ira.weiny@intel.com>
+To: Johannes Thumshirn <jthumshirn@suse.de>, "Verma, Vishal L"
+ <vishal.l.verma@intel.com>
+Subject: RE: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
+Thread-Topic: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
+Thread-Index: AQHVc8ygy0t9taFML0a+mKhnV0JE/Kc9HU2A//+OToCAAUO0AIAAMVwQ
+Date: Thu, 26 Sep 2019 16:05:24 +0000
+Message-ID: <2807E5FD2F6FDA4886F6618EAC48510E89924636@CRSMSX101.amr.corp.intel.com>
+References: <20190925181056.11097-1-ira.weiny@intel.com>
+ <ff7ff4f5b4289d189a7c347591a5c35876ea804f.camel@intel.com>
+ <20190925184939.GA11669@iweiny-DESK2.sc.intel.com>
+ <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
+In-Reply-To: <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNmJmYzc1MWYtZWE2NC00MmRiLWI0NWQtOWRlZTMzNDI1Y2VlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidzE4RUtjK3FvbGZrTnVndUwwUEppWTc0ZXJcL0FUUXVFd3pWQmpxNmtmRTFNVFA2elBSU24ybXJcL2lzRDh3V1dTIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [172.18.205.10]
 MIME-Version: 1.0
-X-Originating-IP: [10.67.117.36, 10.4.195.4]
-Thread-Topic: mm/memmap_init: Update variable name in memmap_init_zone
-Thread-Index: y3EnjbYa8cm00jnkkNb2efXWw9841Q==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mx1.redhat.com [10.5.110.64]); Thu, 26 Sep 2019 13:38:24 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,71 +70,29 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-mm@kvack.org, linux-nvdimm@lists.01.org, akpm@linux-foundation.org,
- David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Cc: "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+ "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-
-
-> 
-> The third argument is actually number of pages. Changes the variable name
-> from size to nr_pages to indicate this better.
-> 
-> No functional change in this patch.
-> 
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  mm/page_alloc.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 3334a769eb91..df9e09a5359f 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5914,10 +5914,10 @@ void __meminit memmap_init_zone(unsigned long size,
-> int nid, unsigned long zone,
->  #ifdef CONFIG_ZONE_DEVICE
->  void __ref memmap_init_zone_device(struct zone *zone,
->  				   unsigned long start_pfn,
-> -				   unsigned long size,
-> +				   unsigned long nr_pages,
->  				   struct dev_pagemap *pgmap)
->  {
-> -	unsigned long pfn, end_pfn = start_pfn + size;
-> +	unsigned long pfn, end_pfn = start_pfn + nr_pages;
->  	struct pglist_data *pgdat = zone->zone_pgdat;
->  	struct vmem_altmap *altmap = pgmap_altmap(pgmap);
->  	unsigned long zone_idx = zone_idx(zone);
-> @@ -5934,7 +5934,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->  	 */
->  	if (altmap) {
->  		start_pfn = altmap->base_pfn + vmem_altmap_offset(altmap);
-> -		size = end_pfn - start_pfn;
-> +		nr_pages = end_pfn - start_pfn;
->  	}
->  
->  	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
-> @@ -5981,7 +5981,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
->  	}
->  
->  	pr_info("%s initialised %lu pages in %ums\n", __func__,
-> -		size, jiffies_to_msecs(jiffies - start));
-> +		nr_pages, jiffies_to_msecs(jiffies - start));
->  }
->  
->  #endif
-> --
-> 2.21.0
-
-Reviewed-by: Pankaj Gupta <pagupta@redhat.com>
-
-> 
-> 
-> 
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+PiBPbiAyNS8wOS8yMDE5IDIwOjQ5LCBJcmEgV2Vpbnkgd3JvdGU6DQo+ID4+Pg0KPiA+Pj4gU2ln
+bmVkLW9mZi1ieTogSXJhIFdlaW55IDxpcmEud2VpbnlAaW50ZWwuY29tPg0KPiA+Pj4gLS0tDQo+
+ID4+PiAgZHJpdmVycy9udmRpbW0vbmFtZXNwYWNlX2RldnMuYyB8IDE5ICsrKysrKysrKy0tLS0t
+LS0tLS0NCj4gPj4+ICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlv
+bnMoLSkNCj4gPj4NCj4gPj4gT25lIG1pbm9yIG5pdCBiZWxvdywgYnV0IG90aGVyd2lzZSBpdCBs
+b29rcyBnb29kIHRvIG1lOg0KPiA+PiBSZXZpZXdlZC1ieTogVmlzaGFsIFZlcm1hIDx2aXNoYWwu
+bC52ZXJtYUBpbnRlbC5jb20+DQo+IA0KPiBBbm90aGVyIG1pbm9yIG5pdCwgdGhlIFN1YmplY3Qg
+c2F5czoNCj4gImJudmRpbW0vbmFtc2VwYWNlOiBEb24ndCBzZXQgY2xhaW1fY2xhc3Mgb24gZXJy
+b3IiDQo+IA0KPiBhLmsuYSBtaXNzaW5nIHRoZSAnbGknIHBhcnQgb2YgbGlibnZkaW1tDQoNClll
+YS4uLiAgSSB3YXMganVzdCBydXNoaW5nLiAgVjMgaGFzIHRoaXMgZml4Lg0KDQpUaGFua3MsDQpJ
+cmENCg0KPiANCj4gLS0NCj4gSm9oYW5uZXMgVGh1bXNoaXJuICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIFNVU0UgTGFicyBGaWxlc3lzdGVtcw0KPiBqdGh1bXNoaXJuQHN1c2UuZGUgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg5DQo+IFNVU0UgU29mdHdh
+cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KPiBNYXhmZWxkc3RyLiA1DQo+IDkwNDA5IE7DvHJu
+YmVyZw0KPiBHZXJtYW55DQo+IChIUkIgMjQ3MTY1LCBBRyBNw7xuY2hlbikNCj4gS2V5IGZpbmdl
+cnByaW50ID0gRUMzOCA5Q0FCIEMyQzQgRjI1RCA4NjAwIEQwRDAgMDM5MyA5NjlEIDJENzYgMDg1
+MA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
+bnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlzdHMuMDEub3JnCmh0dHBzOi8vbGlz
+dHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZkaW1tCg==
