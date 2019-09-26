@@ -1,59 +1,32 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C6BBEB0A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 05:58:24 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3F4BEB97
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 07:18:13 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 35B2021967BF7;
-	Wed, 25 Sep 2019 21:00:32 -0700 (PDT)
-X-Original-To: linux-nvdimm@lists.01.org
-Delivered-To: linux-nvdimm@lists.01.org
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com;
- envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 56D8E2010B845
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 21:00:30 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id k25so841956oiw.13
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 20:58:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=C8aRMEzAG1LFBDuyUnWLMaUc+oAx+uYjzJmVSQYv6To=;
- b=LFfuBtJAEBUsZeRf1zdsm6cWTKyLFr7jAIs0jPe+xoxXgrK/agnjfR5/lyLfIVSXln
- ZXGebmDKI/KIMvOyc8ZdOvvxWOXS7Wo9XZHINmrxmj9EzbIZfPp5B2TGB/Ri54DezE6B
- ybj9fJqy5v/QEHUCLbdCwOLr9S81+fok+3pt2Y+1dvv38ydDTaVbx6d5uje+zJCrdGaT
- ot/vrKN6R//zYjKoEOS8ts7XwtCqTRWeUE1LkACmk8m5FKBPQy5XV9t3pYeQl560Zm5e
- WMAGJ0fWuq6pZT6mioGcYix5VyvGvRsX7WaICxT27PvwzTgJJuqmD5SW1MnNaL1sTgks
- uWPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=C8aRMEzAG1LFBDuyUnWLMaUc+oAx+uYjzJmVSQYv6To=;
- b=FW3Npy4G/CxaJPOJxI5npuOOBvjQp8JPy4d6ZmkKI7xDeLkBxnJqmKhUaWzpDzTp2e
- zeanAaX95vLWw5mOVF6y5UIwlbQV92Ml6SHTCZkTZ0Tp0lis1oy33fsB0ESl/u9Dei/F
- UABJi9KXz9wxR7Tdg08zS+B68iHPMVtF2tLx9s5MALf9jlgn8SxsWqW4m0nqlAo185jG
- lKOx5ldu8tKqsNLbRZzK/nNWPRJjXEhb55J0uPCYfojhXxnhOOVLO1JYcr1AmDAYM3qI
- x8F+D65ps2ZLZxeYbYHjeZ0jhMM/pS289fi77WEKW1+3w+6p+OreZBmPxE6+YvOAWFSk
- NOkA==
-X-Gm-Message-State: APjAAAXRnF5pwO5NwBpi2fBeGGDuBmAkxuWaEX4c48NX4ReFX2o8q3Hq
- ezv2LDkVCaaD4EBl9ncrSpEUANnt9vgoEbo3yHsnZMcw
-X-Google-Smtp-Source: APXvYqxPDAajEUH+9cKV/YSF2NefKPIh2j6gtC+zIYGjVGSbXxQqoYCDgxrUsalD7GC/LEfXJJoKo51e+Cr65WREd+k=
-X-Received: by 2002:a54:4f13:: with SMTP id e19mr1083652oiy.149.1569470300494; 
- Wed, 25 Sep 2019 20:58:20 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 5A39D2010B85B;
+	Wed, 25 Sep 2019 22:20:21 -0700 (PDT)
+X-Original-To: linux-nvdimm@ml01.01.org
+Delivered-To: linux-nvdimm@ml01.01.org
+Received-SPF: None (no SPF record) identity=mailfrom; client-ip=223.73.35.76;
+ helo=qtou.com; envelope-from=hrks@qtou.com; receiver=linux-nvdimm@ml01.01.org 
+Received: from qtou.com (unknown [223.73.35.76])
+ by ml01.01.org (Postfix) with ESMTP id 95C5C21A10977
+ for <linux-nvdimm@ml01.01.org>; Wed, 25 Sep 2019 22:20:04 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA;
+ Thu, 26 Sep 2019 13:16:59 +0800
+Message-ID: d8eafac1-fc94-4b87-b78e-00b13047762f
 MIME-Version: 1.0
-References: <1569468653-3489-1-git-send-email-taeho1224@gmail.com>
-In-Reply-To: <1569468653-3489-1-git-send-email-taeho1224@gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 25 Sep 2019 20:58:09 -0700
-Message-ID: <CAPcyv4ia511-iZDu7czMvOViKyxNDKGbYBT3cL90R+X-dDLVsA@mail.gmail.com>
-Subject: Re: [PATCH] pmem: emulating usable memory as persistent memory
-To: Taeho Hwang <taeho1224@gmail.com>
+From: =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E5=87=BA=E5=8F=A3?=
+ =?utf-8?Q?=E9=A6=99=E6=B8=AF=E6=95=A3=E8=B4=A7=E6=8B=BC=E8=BD=A6=EF?=
+ =?utf-8?Q?=BC=8C=E6=95=B4=E6=9F=9C=E8=BF=90=E8=BE=93?=
+ <wuliu56sales01@hotmail.com>
+To: linux-nvdimm@ml01.01.org
+Date: 26 Sep 2019 13:16:59 +0800
+Subject: =?utf-8?B?5YWo5Zu95ZCE5Zyw5Ye65Y+j6aaZ5riv5pWj6LSn5ou86L2m?=
+ =?utf-8?B?77yM5pW05p+c6L+Q6L6T?=
+X-Content-Filtered-By: Mailman/MimeDel 2.1.29
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,31 +38,24 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-On Wed, Sep 25, 2019 at 8:31 PM Taeho Hwang <taeho1224@gmail.com> wrote:
->
-> This patch checks whether the specified memory (memmap) is
-> userable or not. This patch prevents non-existing memory
-> from being emulated as persistent memory.
-> If non-existing memory is specified by memmap without
-> this patch, struct nd_namespace_io and struct pmem_device
-> will have invalid values.
-
-The whole point of the memmap= option is that the person specifying it
-knows more about the memory map than either the kernel or the platform
-BIOS. Validating the memmap= parameter against the very same memory
-map that is trying to be overridden violates that assumption. So
-memmap= is a dangerous interface on purpose. Now, if you want to
-define a new option that requires the base type to be E820_RAM that
-might be defensible, but at this point given the age of the
-memmap=ss!nn option and the wikis available to picking a valid value,
-I'd advocate leaving it as is.
-_______________________________________________
-Linux-nvdimm mailing list
-Linux-nvdimm@lists.01.org
-https://lists.01.org/mailman/listinfo/linux-nvdimm
+Jm5ic3A7DQrlhajlm73lkITlnLDlh7rlj6PpppnmuK/ov5DovpPvvIzlronlhajlv6vmjbfvvIzm
+k43kvZznroDljZXvvIzku7fmoLzlhazpgZPlhaXku5PkuqTmlLbjgIHotKfmn5zovaboo4Xmi4bj
+gIHlpKfpmYbovaboo4Xmi4bjgIHmnLrlnLrkuqTmlLbjgIHku6PmiqXlhbMNCuKWoCZuYnNwO+ac
+rOWFrOWPuOS4k+iQpeWkp+mZhuWHuuWPo+mmmea4r+aVo+i0p+aLvOi9pu+8jOaVtOafnOi/kOi+
+kw0K4pagJm5ic3A75Luj5a6i5Lmw5Y2V5oql5YWz77yM5Y2V6K+B5oql5YWz77yM5ZWG5qOA562J
+5LiA5p2h6b6Z5pyN5YqhDQrilqAmbmJzcDvkuK3lm73lhoXlnLDlhajljLrlj6/ku6XkuIrpl6jm
+j5DotKfvvIzku6PlrqLpqozotKfnrYnmnI3liqENCuKWoCZuYnNwO+mmmea4r+S7o+WuoumAgeac
+uuWcuu+8jOeggeWktO+8jOWGmeWtl+alvO+8jOW3peS4muWkp+WOpuetiQ0K4pagJm5ic3A75YWN
+6LS5562+5Zue5Y2V77yM5Luj5a6i5a+E6YCB6LSn5Y2V77yM5bC+57q477yM5pS25o2u562J562J
+DQombmJzcDsNCuS4rea4r+eJqea1geaciemZkOWFrOWPuA0K6IGU57O75Lq677yaSmFjaw0K5aSn
+6ZmG5omL5py6Jm5ic3A777yaKzg2LTEzNjQyOTgwOTM16aaZ5riv55S16K+dJm5ic3A777yaKzg1
+MiA1MTAxIDU1NTANClEmbmJzcDtRIDombmJzcDsmbmJzcDsgMjkwNTY1MDc3OUUtbWFpbCA6d3Vs
+aXU1NnNhbGVzMDFAaG90bWFpbC5jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdApMaW51eC1udmRpbW1AbGlz
+dHMuMDEub3JnCmh0dHBzOi8vbGlzdHMuMDEub3JnL21haWxtYW4vbGlzdGluZm8vbGludXgtbnZk
+aW1tCg==
