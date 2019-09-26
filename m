@@ -1,12 +1,12 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5F0BF335
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 14:43:12 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA152BF389
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 14:56:18 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AC0FE21967BC5;
-	Thu, 26 Sep 2019 05:45:17 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9D94821967BC5;
+	Thu, 26 Sep 2019 05:58:23 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
@@ -15,23 +15,24 @@ Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
 Received: from mx1.redhat.com (mx1.redhat.com [209.132.183.28])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id 3976521967BC5
- for <linux-nvdimm@lists.01.org>; Thu, 26 Sep 2019 05:45:16 -0700 (PDT)
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
+ by ml01.01.org (Postfix) with ESMTPS id 2458C2010BCA0
+ for <linux-nvdimm@lists.01.org>; Thu, 26 Sep 2019 05:58:22 -0700 (PDT)
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mx1.redhat.com (Postfix) with ESMTPS id 654628980FB;
- Thu, 26 Sep 2019 12:43:09 +0000 (UTC)
+ by mx1.redhat.com (Postfix) with ESMTPS id CA3A63082E03;
+ Thu, 26 Sep 2019 12:56:14 +0000 (UTC)
 Received: from [10.36.116.65] (ovpn-116-65.ams2.redhat.com [10.36.116.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2842C60605;
- Thu, 26 Sep 2019 12:43:07 +0000 (UTC)
-Subject: Re: [PATCH 1/2] mm/memunmap: Use the correct start and end pfn when
- removing pages from zone
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 881DF60C80;
+ Thu, 26 Sep 2019 12:56:13 +0000 (UTC)
+Subject: Re: [PATCH 2/2] mm/memmap_init: Update variable name in
+ memmap_init_zone
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  dan.j.williams@intel.com, akpm@linux-foundation.org
 References: <20190830091428.18399-1-david@redhat.com>
  <20190926122552.17905-1-aneesh.kumar@linux.ibm.com>
+ <20190926122552.17905-2-aneesh.kumar@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
@@ -78,16 +79,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  +8Umfre0Xt4713VxMygW0PnQt5aSQdMD58jHFxTk092mU+yIHj5LeYgvwSgZN4airXk5yRXl
  SE+xAvmumFBY
 Organization: Red Hat GmbH
-Message-ID: <a9aaf327-2e36-618b-9ded-9800f3e6b73f@redhat.com>
-Date: Thu, 26 Sep 2019 14:43:07 +0200
+Message-ID: <d4399c30-1b5d-d94a-5e03-05b36898b6be@redhat.com>
+Date: Thu, 26 Sep 2019 14:56:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190926122552.17905-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20190926122552.17905-2-aneesh.kumar@linux.ibm.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mx1.redhat.com [10.5.110.67]); Thu, 26 Sep 2019 12:43:09 +0000 (UTC)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16
+ (mx1.redhat.com [10.5.110.46]); Thu, 26 Sep 2019 12:56:14 +0000 (UTC)
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,74 +107,54 @@ Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
 On 26.09.19 14:25, Aneesh Kumar K.V wrote:
-> With altmap, all the resource pfns are not initialized. While initializing
-> pfn, altmap reserve space is skipped. Hence when removing pfn from zone skip
-> pfns that were never initialized.
+> The third argument is actually number of pages. Changes the variable name
+> from size to nr_pages to indicate this better.
 > 
-> Update memunmap_pages to calculate start and end pfn based on altmap
-> values. This fixes a kernel crash that is observed when destroying namespace.
-> 
-> [   74.745056] BUG: Unable to handle kernel data access at 0xc00c000001400000
-> [   74.745256] Faulting instruction address: 0xc0000000000b58b0
-> cpu 0x2: Vector: 300 (Data Access) at [c00000026ea93580]
->     pc: c0000000000b58b0: memset+0x68/0x104
->     lr: c0000000003eb008: page_init_poison+0x38/0x50
->     ...
->   current = 0xc000000271c67d80
->   paca    = 0xc00000003fffd680   irqmask: 0x03   irq_happened: 0x01
->     pid   = 3665, comm = ndctl
-> [link register   ] c0000000003eb008 page_init_poison+0x38/0x50
-> [c00000026ea93830] c0000000004754d4 remove_pfn_range_from_zone+0x64/0x3e0
-> [c00000026ea938a0] c0000000004b8a60 memunmap_pages+0x300/0x400
-> [c00000026ea93930] c0000000009e32a0 devm_action_release+0x30/0x50
-> ...
+> No functional change in this patch.
 > 
 > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  mm/memremap.c | 15 ++++++++++-----
->  1 file changed, 10 insertions(+), 5 deletions(-)
+>  mm/page_alloc.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 390bb3544589..76b98110031e 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -113,7 +113,8 @@ static void dev_pagemap_cleanup(struct dev_pagemap *pgmap)
->  void memunmap_pages(struct dev_pagemap *pgmap)
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 3334a769eb91..df9e09a5359f 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5914,10 +5914,10 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+>  #ifdef CONFIG_ZONE_DEVICE
+>  void __ref memmap_init_zone_device(struct zone *zone,
+>  				   unsigned long start_pfn,
+> -				   unsigned long size,
+> +				   unsigned long nr_pages,
+>  				   struct dev_pagemap *pgmap)
 >  {
->  	struct resource *res = &pgmap->res;
-> -	unsigned long pfn = PHYS_PFN(res->start);
-> +	unsigned long start_pfn, end_pfn;
-> +	unsigned long pfn, nr_pages;
->  	int nid;
+> -	unsigned long pfn, end_pfn = start_pfn + size;
+> +	unsigned long pfn, end_pfn = start_pfn + nr_pages;
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	struct vmem_altmap *altmap = pgmap_altmap(pgmap);
+>  	unsigned long zone_idx = zone_idx(zone);
+> @@ -5934,7 +5934,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	 */
+>  	if (altmap) {
+>  		start_pfn = altmap->base_pfn + vmem_altmap_offset(altmap);
+> -		size = end_pfn - start_pfn;
+> +		nr_pages = end_pfn - start_pfn;
+>  	}
 >  
->  	dev_pagemap_kill(pgmap);
-> @@ -121,14 +122,18 @@ void memunmap_pages(struct dev_pagemap *pgmap)
->  		put_page(pfn_to_page(pfn));
->  	dev_pagemap_cleanup(pgmap);
+>  	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+> @@ -5981,7 +5981,7 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>  	}
 >  
-> +	start_pfn = pfn_first(pgmap);
-> +	end_pfn = pfn_end(pgmap);
-> +	nr_pages = end_pfn - start_pfn;
-> +
->  	/* pages are dead and unused, undo the arch mapping */
-> -	nid = page_to_nid(pfn_to_page(pfn));
-> +	nid = page_to_nid(pfn_to_page(start_pfn));
+>  	pr_info("%s initialised %lu pages in %ums\n", __func__,
+> -		size, jiffies_to_msecs(jiffies - start));
+> +		nr_pages, jiffies_to_msecs(jiffies - start));
+>  }
 >  
->  	mem_hotplug_begin();
-> -	remove_pfn_range_from_zone(page_zone(pfn_to_page(pfn)), pfn,
-> -				   PHYS_PFN(resource_size(res)));
-> +	remove_pfn_range_from_zone(page_zone(pfn_to_page(start_pfn)),
-> +				   start_pfn, nr_pages);
->  	if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
-> -		__remove_pages(pfn, PHYS_PFN(resource_size(res)), NULL);
-> +		__remove_pages(start_pfn, nr_pages, NULL);
->  	} else {
->  		arch_remove_memory(nid, res->start, resource_size(res),
->  				pgmap_altmap(pgmap));
+>  #endif
 > 
 
-Just to make sure, my patches did not break that, right (IOW, broken
-upstream)?
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
 -- 
 
