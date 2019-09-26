@@ -1,59 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A40BEAE2
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 05:31:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C6BBEB0A
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Sep 2019 05:58:24 +0200 (CEST)
 Received: from [127.0.0.1] (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 40E0F21967BC5;
-	Wed, 25 Sep 2019 20:33:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 35B2021967BF7;
+	Wed, 25 Sep 2019 21:00:32 -0700 (PDT)
 X-Original-To: linux-nvdimm@lists.01.org
 Delivered-To: linux-nvdimm@lists.01.org
 Received-SPF: Pass (sender SPF authorized) identity=mailfrom;
- client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
- envelope-from=taeho1224@gmail.com; receiver=linux-nvdimm@lists.01.org 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com;
+ envelope-from=dan.j.williams@intel.com; receiver=linux-nvdimm@lists.01.org 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by ml01.01.org (Postfix) with ESMTPS id F13322010B848
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 20:33:09 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id z12so655830pgp.9
- for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 20:31:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=6ZAkreEHB/lqlL9aDOyiHcVgk+KB9MY8IQI5aLNve74=;
- b=tbR/W/kwYXbJoypDoQTRZSgSwbGpwKAnFDJcjsyzR9Kc+PpZmidxLtezMCeUdiZdTT
- C9KfviPoEHpQBqU4KZMraWUM+0c1aQiMnMdoCMUpCkQewBhlSplUKHTFHu7dnm1Za59J
- iXQLQz4JhDlzzq54MxvK1QQloB08u5TkcT8RQUD95Ze+FhmH/ek9cFk3yWDAh4O2fy2B
- x/6Q8QOr8bzLVrJtrTHEFzaEYtdFirYmVa1MVVcrMi86K5nzPmg1GQoze+jxqyrOpJUj
- uzoHDzbVS71LoOzva68zTzENvv3Z44mjkTPQz41764zYGsl5c5mQJW6jXJ4rJ+sXpjqW
- /90g==
+ by ml01.01.org (Postfix) with ESMTPS id 56D8E2010B845
+ for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 21:00:30 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id k25so841956oiw.13
+ for <linux-nvdimm@lists.01.org>; Wed, 25 Sep 2019 20:58:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=C8aRMEzAG1LFBDuyUnWLMaUc+oAx+uYjzJmVSQYv6To=;
+ b=LFfuBtJAEBUsZeRf1zdsm6cWTKyLFr7jAIs0jPe+xoxXgrK/agnjfR5/lyLfIVSXln
+ ZXGebmDKI/KIMvOyc8ZdOvvxWOXS7Wo9XZHINmrxmj9EzbIZfPp5B2TGB/Ri54DezE6B
+ ybj9fJqy5v/QEHUCLbdCwOLr9S81+fok+3pt2Y+1dvv38ydDTaVbx6d5uje+zJCrdGaT
+ ot/vrKN6R//zYjKoEOS8ts7XwtCqTRWeUE1LkACmk8m5FKBPQy5XV9t3pYeQl560Zm5e
+ WMAGJ0fWuq6pZT6mioGcYix5VyvGvRsX7WaICxT27PvwzTgJJuqmD5SW1MnNaL1sTgks
+ uWPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=6ZAkreEHB/lqlL9aDOyiHcVgk+KB9MY8IQI5aLNve74=;
- b=igON/GPy8m+JB+RJCknSlWOetz9e2wfdTV8IfLnizsF22Vzm7jc0x4rBVaWP9Chx92
- 2Nb2A3xlRr6hjPg/Dwbj86Xqmyn4WE5Kq0tDbbPb6UPwHImcQ6M9M5U4W72ja0IOavS1
- JlYH5+Utyq5w1QF5zytqonSGODMM9XWhJtY/OS8159RC3EI5+qoQbocw3tGFS+jYUzp1
- elb61be2o3ww0e36riZPM2FWzP7L3fJZ4vCBaS5ADiyGIh1SfCMIcASOhZe6vdvzp7hE
- 9fI3WDtmjARG4ew+ngmxjyil756D21Rqee/C0rUlBB8DQOLi3OJq09QARMYF54GmClXM
- xFzg==
-X-Gm-Message-State: APjAAAWTOuMKLlHrj6XC3J26j/3S0gvm/jwZIX/COgvWM2up1fEntVPm
- 32XqRAbwn+md+itX/i9dltPMMwNN
-X-Google-Smtp-Source: APXvYqy+BcgkIjb9R5sYpPi5zzDF76Tg8Q+uBKVq7TUpzF4hadb8ULOOacODyR4ag709y5UoJS92bA==
-X-Received: by 2002:a63:f342:: with SMTP id t2mr1226449pgj.194.1569468659330; 
- Wed, 25 Sep 2019 20:30:59 -0700 (PDT)
-Received: from localhost.localdomain ([143.248.231.190])
- by smtp.gmail.com with ESMTPSA id 193sm495381pfc.59.2019.09.25.20.30.57
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
- Wed, 25 Sep 2019 20:30:58 -0700 (PDT)
-From: Taeho Hwang <taeho1224@gmail.com>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] pmem: emulating usable memory as persistent memory
-Date: Thu, 26 Sep 2019 12:30:53 +0900
-Message-Id: <1569468653-3489-1-git-send-email-taeho1224@gmail.com>
-X-Mailer: git-send-email 2.7.4
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=C8aRMEzAG1LFBDuyUnWLMaUc+oAx+uYjzJmVSQYv6To=;
+ b=FW3Npy4G/CxaJPOJxI5npuOOBvjQp8JPy4d6ZmkKI7xDeLkBxnJqmKhUaWzpDzTp2e
+ zeanAaX95vLWw5mOVF6y5UIwlbQV92Ml6SHTCZkTZ0Tp0lis1oy33fsB0ESl/u9Dei/F
+ UABJi9KXz9wxR7Tdg08zS+B68iHPMVtF2tLx9s5MALf9jlgn8SxsWqW4m0nqlAo185jG
+ lKOx5ldu8tKqsNLbRZzK/nNWPRJjXEhb55J0uPCYfojhXxnhOOVLO1JYcr1AmDAYM3qI
+ x8F+D65ps2ZLZxeYbYHjeZ0jhMM/pS289fi77WEKW1+3w+6p+OreZBmPxE6+YvOAWFSk
+ NOkA==
+X-Gm-Message-State: APjAAAXRnF5pwO5NwBpi2fBeGGDuBmAkxuWaEX4c48NX4ReFX2o8q3Hq
+ ezv2LDkVCaaD4EBl9ncrSpEUANnt9vgoEbo3yHsnZMcw
+X-Google-Smtp-Source: APXvYqxPDAajEUH+9cKV/YSF2NefKPIh2j6gtC+zIYGjVGSbXxQqoYCDgxrUsalD7GC/LEfXJJoKo51e+Cr65WREd+k=
+X-Received: by 2002:a54:4f13:: with SMTP id e19mr1083652oiy.149.1569470300494; 
+ Wed, 25 Sep 2019 20:58:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <1569468653-3489-1-git-send-email-taeho1224@gmail.com>
+In-Reply-To: <1569468653-3489-1-git-send-email-taeho1224@gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 25 Sep 2019 20:58:09 -0700
+Message-ID: <CAPcyv4ia511-iZDu7czMvOViKyxNDKGbYBT3cL90R+X-dDLVsA@mail.gmail.com>
+Subject: Re: [PATCH] pmem: emulating usable memory as persistent memory
+To: Taeho Hwang <taeho1224@gmail.com>
 X-BeenThere: linux-nvdimm@lists.01.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,96 +65,30 @@ List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Subscribe: <https://lists.01.org/mailman/listinfo/linux-nvdimm>,
  <mailto:linux-nvdimm-request@lists.01.org?subject=subscribe>
-MIME-Version: 1.0
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Errors-To: linux-nvdimm-bounces@lists.01.org
 Sender: "Linux-nvdimm" <linux-nvdimm-bounces@lists.01.org>
 
-This patch checks whether the specified memory (memmap) is
-userable or not. This patch prevents non-existing memory
-from being emulated as persistent memory.
-If non-existing memory is specified by memmap without
-this patch, struct nd_namespace_io and struct pmem_device
-will have invalid values.
+On Wed, Sep 25, 2019 at 8:31 PM Taeho Hwang <taeho1224@gmail.com> wrote:
+>
+> This patch checks whether the specified memory (memmap) is
+> userable or not. This patch prevents non-existing memory
+> from being emulated as persistent memory.
+> If non-existing memory is specified by memmap without
+> this patch, struct nd_namespace_io and struct pmem_device
+> will have invalid values.
 
-Signed-off-by: Taeho Hwang <taeho1224@gmail.com>
----
- arch/x86/kernel/e820.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 55 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 76dd605..ba9115d 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -178,9 +178,63 @@ static void __init __e820__range_add(struct e820_table *table, u64 start, u64 si
- 	table->nr_entries++;
- }
- 
-+static void __init __e820__range_add_pram(struct e820_table *table, u64 start,
-+					  u64 size)
-+{
-+	int nr_entries = table->nr_entries;
-+	int new_nr_entries = nr_entries;
-+	u64 range_start, range_end;
-+	u64 end = start + size;
-+	bool flag;
-+	int i;
-+
-+	if (nr_entries >= ARRAY_SIZE(table->entries)) {
-+		pr_err("too many entries; ignoring [mem %#010llx-%#010llx]\n",
-+		       start, start + size - 1);
-+		return;
-+	}
-+
-+	for (i = 0; i < nr_entries; i++) {
-+		if (table->entries[i].type != E820_TYPE_RESERVED_KERN &&
-+				table->entries[i].type != E820_TYPE_RAM)
-+			continue;
-+
-+		range_start = table->entries[i].addr;
-+		range_end = table->entries[i].addr + table->entries[i].size;
-+		flag = false;
-+		if (range_start <= start && start < range_end) {
-+			table->entries[new_nr_entries].addr = start;
-+			if (end <= range_end)
-+				table->entries[new_nr_entries].size = size;
-+			else
-+				table->entries[new_nr_entries].size =
-+					range_end - start;
-+			flag = true;
-+		} else if (range_start < end && end <= range_end) {
-+			table->entries[new_nr_entries].addr = range_start;
-+			table->entries[new_nr_entries].size = end - range_end;
-+			flag = true;
-+		} else if (start <= range_start && range_end <= end) {
-+			table->entries[new_nr_entries].addr = range_start;
-+			table->entries[new_nr_entries].size =
-+				range_end - range_start;
-+			flag = true;
-+		}
-+		if (flag) {
-+			table->entries[new_nr_entries].type = E820_TYPE_PRAM;
-+			if (++new_nr_entries >= ARRAY_SIZE(table->entries))
-+				break;
-+		}
-+	}
-+	table->nr_entries = new_nr_entries;
-+}
-+
- void __init e820__range_add(u64 start, u64 size, enum e820_type type)
- {
--	__e820__range_add(e820_table, start, size, type);
-+	if (type == E820_TYPE_PRAM || type == E820_TYPE_PMEM)
-+		__e820__range_add_pram(e820_table, start, size);
-+	else
-+		__e820__range_add(e820_table, start, size, type);
- }
- 
- static void __init e820_print_type(enum e820_type type)
--- 
-2.7.4
-
+The whole point of the memmap= option is that the person specifying it
+knows more about the memory map than either the kernel or the platform
+BIOS. Validating the memmap= parameter against the very same memory
+map that is trying to be overridden violates that assumption. So
+memmap= is a dangerous interface on purpose. Now, if you want to
+define a new option that requires the base type to be E820_RAM that
+might be defensible, but at this point given the age of the
+memmap=ss!nn option and the wikis available to picking a valid value,
+I'd advocate leaving it as is.
 _______________________________________________
 Linux-nvdimm mailing list
 Linux-nvdimm@lists.01.org
