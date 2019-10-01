@@ -2,79 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77841C3FAE
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Oct 2019 20:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5EEC423E
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Oct 2019 23:02:02 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 046A110FC71F6;
-	Tue,  1 Oct 2019 11:19:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	by ml01.01.org (Postfix) with ESMTP id 0810410FC7205;
+	Tue,  1 Oct 2019 14:03:27 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2787E10FC71F3
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Oct 2019 11:19:36 -0700 (PDT)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91IDC6I090361;
-	Tue, 1 Oct 2019 18:17:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=wq9wrgNUITTrwjzKGMvvggax4gHnlKlrBnSxXFjscBc=;
- b=WRt6b4jK4tblC9ReI2WzrIthKeVlpi8iJwvLXInQ1AYW2AHlgT5SbD/pn/C/fwBRyQtl
- HpQgbfYX+Fz3e1PQ6Kb6WDnXsDabD5nPsj7J8wBd0441MBllnoNcGFZY4A55qGs4bY2o
- 1ue6yg+Ucs4gAD/0ohwViaryUrUKa9TDT1axhJSUcrfqa+JJU8S5wDxEQVjRmyLAG8iU
- pRBPBrslzJW/gnLzSmvrkLpkLALi4tnu27RyCekoFrN1dByfhHc8fjU0ntliufe4WbjO
- BmMI5it+w+KwyhMqMyoOsxuqiPp9eqEPNrNiOjzjlpI+vKrpAN352CG+MBn96ove1qni mw==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by aserp2120.oracle.com with ESMTP id 2v9yfq7xv5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 01 Oct 2019 18:17:53 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91I8H3l079821;
-	Tue, 1 Oct 2019 18:17:52 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by aserp3020.oracle.com with ESMTP id 2vbqd1a86x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 01 Oct 2019 18:17:52 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x91IHhs8012803;
-	Tue, 1 Oct 2019 18:17:43 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 01 Oct 2019 11:17:43 -0700
-To: Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v2 2/3] Maintainer Handbook: Maintainer Entry Profile
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
-	<156821693396.2951081.7340292149329436920.stgit@dwillia2-desk3.amr.corp.intel.com>
-	<20191001075559.629eb059@lwn.net>
-Date: Tue, 01 Oct 2019 14:17:39 -0400
-In-Reply-To: <20191001075559.629eb059@lwn.net> (Jonathan Corbet's message of
-	"Tue, 1 Oct 2019 07:55:59 -0600")
-Message-ID: <yq1y2y4tjng.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+	by ml01.01.org (Postfix) with ESMTPS id 4A25A10FC7204
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Oct 2019 14:03:25 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 14:01:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,572,1559545200";
+   d="scan'208";a="343108957"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga004.jf.intel.com with ESMTP; 01 Oct 2019 14:01:57 -0700
+Date: Tue, 1 Oct 2019 14:01:57 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dave Chinner <david@fromorbit.com>
+Subject: Re: Lease semantic proposal
+Message-ID: <20191001210156.GB5500@iweiny-DESK2.sc.intel.com>
+References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
+ <20190923222620.GC16973@dread.disaster.area>
+ <20190925234602.GB12748@iweiny-DESK2.sc.intel.com>
+ <20190930084233.GO16973@dread.disaster.area>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=866
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910010147
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=943 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910010147
-Message-ID-Hash: XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2
-X-Message-ID-Hash: XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2
-X-MailFrom: martin.petersen@oracle.com
+Content-Disposition: inline
+In-Reply-To: <20190930084233.GO16973@dread.disaster.area>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: C5SPOSKPFD77OE4DEGCP4B5ULZG4HVEX
+X-Message-ID-Hash: C5SPOSKPFD77OE4DEGCP4B5ULZG4HVEX
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Steve French <stfrench@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, "Tobin C. Harding" <me@tobin.cc>, Olof Johansson <olof@lixom.net>, Daniel Vetter <daniel.vetter@ffwll.ch>, Joe Perches <joe@perches.com>, Dmitry Vyukov <dvyukov@google.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-nvdimm@lists.01.org, ksummit-discuss@lists.linuxfoundation.org
+CC: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C5SPOSKPFD77OE4DEGCP4B5ULZG4HVEX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -83,25 +53,82 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Mon, Sep 30, 2019 at 06:42:33PM +1000, Dave Chinner wrote:
+> On Wed, Sep 25, 2019 at 04:46:03PM -0700, Ira Weiny wrote:
+> > On Tue, Sep 24, 2019 at 08:26:20AM +1000, Dave Chinner wrote:
+> > > Hence, AFIACT, the above definition of a F_RDLCK|F_LAYOUT lease
+> > > doesn't appear to be compatible with the semantics required by
+> > > existing users of layout leases.
+> > 
+> > I disagree.  Other than the addition of F_UNBREAK, I think this is consistent
+> > with what is currently implemented.  Also, by exporting all this to user space
+> > we can now write tests for it independent of the RDMA pinning.
+> 
+> The current usage of F_RDLCK | F_LAYOUT by the pNFS code allows
+> layout changes to occur to the file while the layout lease is held.
 
-Jonathan,
+This was not my understanding.
 
-> Thus far, the maintainer guide is focused on how to *be* a maintainer.
-> This document, instead, is more about how to deal with specific
-> maintainers.  So I suspect that Documentation/maintainer might be the
-> wrong place for it.
+> IOWs, your definition of F_RDLCK | F_LAYOUT not being allowed
+> to change the is in direct contradition to existing users.
+> 
+> I've said this several times over the past few months now: shared
+> layout leases must allow layout modifications to be made.
+
+I don't understand what the point of having a layout lease is then?
+
 >
-> Should we maybe place it instead under Documentation/process, or even
-> create a new top-level "book" for this information?
+> Only
+> allowing an exclusive layout lease to modify the layout rules out
+> many potential use cases for direct data placement and p2p DMA
+> applications,
 
-I think Documentation/process is the right place for all the common
-practices and guidelines for code submission. Documentation is already
-pretty big. And based on the discussions in this thread, I think we're
-better off enhancing the existing process documents instead of
-introducing more places for people to look.
+How?  I think that having a typical design pattern of multiple readers
+and only a single writer would actually make all these use cases easier.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> not to mention conflicts with the existing pNFS usage.
+
+I apologize for not understanding this.  My reading of the code is that layout
+changes require the read layout to be broken prior to proceeding.
+
+The break layout code does this by creating a F_WRLCK of type FL_LAYOUT which
+conflicts with the F_RDLCK of type FL_LAYOUT...
+
+int __break_lease(struct inode *inode, unsigned int mode, unsigned int type)
+{
+...
+        struct file_lock *new_fl, *fl, *tmp;
+...
+
+        new_fl = lease_alloc(NULL, want_write ? F_WRLCK : F_RDLCK, 0);
+        if (IS_ERR(new_fl))
+                return PTR_ERR(new_fl);
+        new_fl->fl_flags = type;
+...
+        list_for_each_entry_safe(fl, tmp, &ctx->flc_lease, fl_list) {
+                if (!leases_conflict(fl, new_fl))
+                        continue;
+...
+}
+
+type == FL_LAYOUT from the call here.
+
+static inline int break_layout(struct inode *inode, bool wait)
+{
+        smp_mb();
+        if (inode->i_flctx && !list_empty_careful(&inode->i_flctx->flc_lease))
+                return __break_lease(inode,
+                                wait ? O_WRONLY : O_WRONLY | O_NONBLOCK,
+                                FL_LAYOUT);
+        return 0;
+}       
+
+Also, I don't see any code which limits the number of read layout holders which
+can be present and all of them will be revoked by the above code.
+
+What am I missing?
+
+Ira
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
