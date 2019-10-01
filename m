@@ -1,48 +1,80 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8852C3F8F
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Oct 2019 20:17:06 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77841C3FAE
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Oct 2019 20:18:13 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D68A210FC71F6;
-	Tue,  1 Oct 2019 11:18:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id 046A110FC71F6;
+	Tue,  1 Oct 2019 11:19:39 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9771510FC71F3
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Oct 2019 11:18:29 -0700 (PDT)
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 11:17:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,571,1559545200";
-   d="scan'208";a="181776328"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by orsmga007.jf.intel.com with ESMTP; 01 Oct 2019 11:17:00 -0700
-Date: Tue, 1 Oct 2019 11:17:00 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jeff Layton <jlayton@kernel.org>
-Subject: Re: Lease semantic proposal
-Message-ID: <20191001181659.GA5500@iweiny-DESK2.sc.intel.com>
-References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
- <5d5a93637934867e1b3352763da8e3d9f9e6d683.camel@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 2787E10FC71F3
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Oct 2019 11:19:36 -0700 (PDT)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+	by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91IDC6I090361;
+	Tue, 1 Oct 2019 18:17:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=wq9wrgNUITTrwjzKGMvvggax4gHnlKlrBnSxXFjscBc=;
+ b=WRt6b4jK4tblC9ReI2WzrIthKeVlpi8iJwvLXInQ1AYW2AHlgT5SbD/pn/C/fwBRyQtl
+ HpQgbfYX+Fz3e1PQ6Kb6WDnXsDabD5nPsj7J8wBd0441MBllnoNcGFZY4A55qGs4bY2o
+ 1ue6yg+Ucs4gAD/0ohwViaryUrUKa9TDT1axhJSUcrfqa+JJU8S5wDxEQVjRmyLAG8iU
+ pRBPBrslzJW/gnLzSmvrkLpkLALi4tnu27RyCekoFrN1dByfhHc8fjU0ntliufe4WbjO
+ BmMI5it+w+KwyhMqMyoOsxuqiPp9eqEPNrNiOjzjlpI+vKrpAN352CG+MBn96ove1qni mw==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by aserp2120.oracle.com with ESMTP id 2v9yfq7xv5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 01 Oct 2019 18:17:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91I8H3l079821;
+	Tue, 1 Oct 2019 18:17:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by aserp3020.oracle.com with ESMTP id 2vbqd1a86x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 01 Oct 2019 18:17:52 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x91IHhs8012803;
+	Tue, 1 Oct 2019 18:17:43 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Tue, 01 Oct 2019 11:17:43 -0700
+To: Jonathan Corbet <corbet@lwn.net>
+Subject: Re: [PATCH v2 2/3] Maintainer Handbook: Maintainer Entry Profile
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
+	<156821693396.2951081.7340292149329436920.stgit@dwillia2-desk3.amr.corp.intel.com>
+	<20191001075559.629eb059@lwn.net>
+Date: Tue, 01 Oct 2019 14:17:39 -0400
+In-Reply-To: <20191001075559.629eb059@lwn.net> (Jonathan Corbet's message of
+	"Tue, 1 Oct 2019 07:55:59 -0600")
+Message-ID: <yq1y2y4tjng.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <5d5a93637934867e1b3352763da8e3d9f9e6d683.camel@kernel.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: NXC6AMCCA4XOOH36CQFYSSBFF5T5NRVZ
-X-Message-ID-Hash: NXC6AMCCA4XOOH36CQFYSSBFF5T5NRVZ
-X-MailFrom: ira.weiny@intel.com
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=866
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910010147
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=943 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910010147
+Message-ID-Hash: XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2
+X-Message-ID-Hash: XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2
+X-MailFrom: martin.petersen@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
+CC: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Steve French <stfrench@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, "Tobin C. Harding" <me@tobin.cc>, Olof Johansson <olof@lixom.net>, Daniel Vetter <daniel.vetter@ffwll.ch>, Joe Perches <joe@perches.com>, Dmitry Vyukov <dvyukov@google.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-nvdimm@lists.01.org, ksummit-discuss@lists.linuxfoundation.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NXC6AMCCA4XOOH36CQFYSSBFF5T5NRVZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XVZHWBIQU3CIQGIRNSHI566VGDAKFGC2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -51,176 +83,25 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 23, 2019 at 04:17:59PM -0400, Jeff Layton wrote:
-> On Mon, 2019-09-23 at 12:08 -0700, Ira Weiny wrote:
-> > Since the last RFC patch set[1] much of the discussion of supporting RDMA with
-> > FS DAX has been around the semantics of the lease mechanism.[2]  Within that
-> > thread it was suggested I try and write some documentation and/or tests for the
-> > new mechanism being proposed.  I have created a foundation to test lease
-> > functionality within xfstests.[3] This should be close to being accepted.
-> > Before writing additional lease tests, or changing lots of kernel code, this
-> > email presents documentation for the new proposed "layout lease" semantic.
-> > 
-> > At Linux Plumbers[4] just over a week ago, I presented the current state of the
-> > patch set and the outstanding issues.  Based on the discussion there, well as
-> > follow up emails, I propose the following addition to the fcntl() man page.
-> > 
-> > Thank you,
-> > Ira
-> > 
-> > [1] https://lkml.org/lkml/2019/8/9/1043
-> > [2] https://lkml.org/lkml/2019/8/9/1062
-> > [3] https://www.spinics.net/lists/fstests/msg12620.html
-> > [4] https://linuxplumbersconf.org/event/4/contributions/368/
-> > 
-> > 
-> 
-> Thank you so much for doing this, Ira. This allows us to debate the
-> user-visible behavior semantics without getting bogged down in the
-> implementation details. More comments below:
 
-Thanks.  Sorry for the delay in response.  Turns out this email was in my
-spam...  :-/  I'll need to work out why.
+Jonathan,
 
-> 
-> > <fcntl man page addition>
-> > Layout Leases
-> > -------------
-> > 
-> > Layout (F_LAYOUT) leases are special leases which can be used to control and/or
-> > be informed about the manipulation of the underlying layout of a file.
-> > 
-> > A layout is defined as the logical file block -> physical file block mapping
-> > including the file size and sharing of physical blocks among files.  Note that
-> > the unwritten state of a block is not considered part of file layout.
-> > 
-> > **Read layout lease F_RDLCK | F_LAYOUT**
-> > 
-> > Read layout leases can be used to be informed of layout changes by the
-> > system or other users.  This lease is similar to the standard read (F_RDLCK)
-> > lease in that any attempt to change the _layout_ of the file will be reported to
-> > the process through the lease break process.  But this lease is different
-> > because the file can be opened for write and data can be read and/or written to
-> > the file as long as the underlying layout of the file does not change.
-> > Therefore, the lease is not broken if the file is simply open for write, but
-> > _may_ be broken if an operation such as, truncate(), fallocate() or write()
-> > results in changing the underlying layout.
-> > 
-> > **Write layout lease (F_WRLCK | F_LAYOUT)**
-> > 
-> > Write Layout leases can be used to break read layout leases to indicate that
-> > the process intends to change the underlying layout lease of the file.
-> > 
-> > A process which has taken a write layout lease has exclusive ownership of the
-> > file layout and can modify that layout as long as the lease is held.
-> > Operations which change the layout are allowed by that process.  But operations
-> > from other file descriptors which attempt to change the layout will break the
-> > lease through the standard lease break process.  The F_LAYOUT flag is used to
-> > indicate a difference between a regular F_WRLCK and F_WRLCK with F_LAYOUT.  In
-> > the F_LAYOUT case opens for write do not break the lease.  But some operations,
-> > if they change the underlying layout, may.
-> > 
-> > The distinction between read layout leases and write layout leases is that
-> > write layout leases can change the layout without breaking the lease within the
-> > owning process.  This is useful to guarantee a layout prior to specifying the
-> > unbreakable flag described below.
-> > 
-> > 
-> 
-> The above sounds totally reasonable. You're essentially exposing the
-> behavior of nfsd's layout leases to userland. To be clear, will F_LAYOUT
-> leases work the same way as "normal" leases, wrt signals and timeouts?
+> Thus far, the maintainer guide is focused on how to *be* a maintainer.
+> This document, instead, is more about how to deal with specific
+> maintainers.  So I suspect that Documentation/maintainer might be the
+> wrong place for it.
+>
+> Should we maybe place it instead under Documentation/process, or even
+> create a new top-level "book" for this information?
 
-That was my intention, yes.
+I think Documentation/process is the right place for all the common
+practices and guidelines for code submission. Documentation is already
+pretty big. And based on the discussions in this thread, I think we're
+better off enhancing the existing process documents instead of
+introducing more places for people to look.
 
-> 
-> I do wonder if we're better off not trying to "or" in flags for this,
-> and instead have a separate set of commands (maybe F_RDLAYOUT,
-> F_WRLAYOUT, F_UNLAYOUT). Maybe I'm just bikeshedding though -- I don't
-> feel terribly strongly about it.
-
-I'm leaning that was as well.  To make these even more distinct from
-F_SETLEASE.
-
-> 
-> Also, at least in NFSv4, layouts are handed out for a particular byte
-> range in a file. Should we consider doing this with an API that allows
-> for that in the future? Is this something that would be desirable for
-> your RDMA+DAX use-cases?
-
-I don't see this.  I've thought it would be a nice thing to have but I don't
-know of any hard use case.  But first I'd like to understand how this works for
-NFS.
-
-> 
-> We could add a new F_SETLEASE variant that takes a struct with a byte
-> range (something like struct flock).
-
-I think this would be another reason to introduce F_[RD|WR|UN]LAYOUT as a
-command.  Perhaps supporting smaller byte ranges could be added later?
-
-> 
-> > **Unbreakable Layout Leases (F_UNBREAK)**
-> > 
-> > In order to support pinning of file pages by direct user space users an
-> > unbreakable flag (F_UNBREAK) can be used to modify the read and write layout
-> > lease.  When specified, F_UNBREAK indicates that any user attempting to break
-> > the lease will fail with ETXTBUSY rather than follow the normal breaking
-> > procedure.
-> > 
-> > Both read and write layout leases can have the unbreakable flag (F_UNBREAK)
-> > specified.  The difference between an unbreakable read layout lease and an
-> > unbreakable write layout lease are that an unbreakable read layout lease is
-> > _not_ exclusive.  This means that once a layout is established on a file,
-> > multiple unbreakable read layout leases can be taken by multiple processes and
-> > used to pin the underlying pages of that file.
-> > 
-> > Care must therefore be taken to ensure that the layout of the file is as the
-> > user wants prior to using the unbreakable read layout lease.  A safe mechanism
-> > to do this would be to take a write layout lease and use fallocate() to set the
-> > layout of the file.  The layout lease can then be "downgraded" to unbreakable
-> > read layout as long as no other user broke the write layout lease.
-> > 
-> 
-> Will userland require any special privileges in order to set an
-> F_UNBREAK lease? This seems like something that could be used for DoS. I
-> assume that these will never time out.
-
-Dan and I discussed this some more and yes I think the uid of the process needs
-to be the owner of the file.  I think that is a reasonable mechanism.
-
-> 
-> How will we deal with the case where something is is squatting on an
-> F_UNBREAK lease and isn't letting it go?
-
-That is a good question.  I had not considered someone taking the UNBREAK
-without pinning the file.
-
-> 
-> Leases are technically "owned" by the file description -- we can't
-> necessarily trace it back to a single task in a threaded program. The
-> kernel task that set the lease may have exited by the time we go
-> looking.
-> 
-> Will we be content trying to determine this using /proc/locks+lsof, etc,
-> or will we need something better?
-
-I think using /proc/locks is our best bet.  Similar to my intention to report
-files being pinned.[1]
-
-In fact should we consider files with F_UNBREAK leases "pinned" and just report
-them there?
-
-Ira
-
-[1] https://lkml.org/lkml/2019/8/9/1043
-
-> 
-> > </fcntl man page addition>
-> 
-> -- 
-> Jeff Layton <jlayton@kernel.org>
-> 
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
