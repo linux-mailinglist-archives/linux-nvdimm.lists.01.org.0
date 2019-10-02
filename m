@@ -2,44 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393FEC9535
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 01:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9FCC9536
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 01:49:46 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D2D8410FC720A;
-	Wed,  2 Oct 2019 16:50:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id E4A8A100DC41E;
+	Wed,  2 Oct 2019 16:50:56 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id ABE18100DC430
-	for <linux-nvdimm@lists.01.org>; Wed,  2 Oct 2019 16:50:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 41FB3100DC42F
+	for <linux-nvdimm@lists.01.org>; Wed,  2 Oct 2019 16:50:54 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
   by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Oct 2019 16:49:36 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.67,250,1566889200";
-   d="scan'208";a="195032112"
+   d="scan'208";a="195032115"
 Received: from vverma7-desk1.lm.intel.com ([10.232.112.164])
-  by orsmga003.jf.intel.com with ESMTP; 02 Oct 2019 16:49:35 -0700
+  by orsmga003.jf.intel.com with ESMTP; 02 Oct 2019 16:49:36 -0700
 From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: [ndctl PATCH 05/10] libdaxctl: allow memblock_in_dev() to return an error
-Date: Wed,  2 Oct 2019 17:49:20 -0600
-Message-Id: <20191002234925.9190-6-vishal.l.verma@intel.com>
+Subject: [ndctl PATCH 06/10] daxctl: show a 'movable' attribute in device listings
+Date: Wed,  2 Oct 2019 17:49:21 -0600
+Message-Id: <20191002234925.9190-7-vishal.l.verma@intel.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191002234925.9190-1-vishal.l.verma@intel.com>
 References: <20191002234925.9190-1-vishal.l.verma@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: C3YST2VTQQBBKREHJNV6KXNF24Z2WED3
-X-Message-ID-Hash: C3YST2VTQQBBKREHJNV6KXNF24Z2WED3
+Message-ID-Hash: Z4CATRZNFRJXBCBPXTFWWCCM5B2D32MK
+X-Message-ID-Hash: Z4CATRZNFRJXBCBPXTFWWCCM5B2D32MK
 X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Dave Hansen <dave.hansen@linux.intel.com>, Ben Olson <ben.olson@intel.com>, Michal Biesek <michal.biesek@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C3YST2VTQQBBKREHJNV6KXNF24Z2WED3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z4CATRZNFRJXBCBPXTFWWCCM5B2D32MK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,111 +48,50 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-With the MEM_FIND_ZONE operation, and the expectation that it will be
-called from 'daxctl list' listings, it is possible that memblock_in_dev()
-gets called without sufficient privileges. If this happens, currently,
-the above simply returns a 'false'. This was acceptable when the only
-operations were onlining/offlining (as there would be an actual failure
-later). However, it is not acceptable in the MEM_FIND_ZONE case, as it
-could yeild a different answer based on the privilege level.
+For dax devices in 'system-ram' mode, display a 'movable' attribute in
+device listings. This helps a user easily determine if memory was not
+onlined in the expected way for any reason.
 
-Change memblock_in_dev() to return an 'int' instead of a 'bool' so that
-error cases can be distinguished from actual address range test.
-
+Link: https://github.com/pmem/ndctl/issues/110
+Reported-by: Ben Olson <ben.olson@intel.com>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
- daxctl/lib/libdaxctl.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ util/json.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-index 4460174..617887c 100644
---- a/daxctl/lib/libdaxctl.c
-+++ b/daxctl/lib/libdaxctl.c
-@@ -1211,40 +1211,42 @@ static int memblock_find_zone(struct daxctl_memory *mem, char *memblock,
- 	return 0;
- }
- 
--static bool memblock_in_dev(struct daxctl_memory *mem, const char *memblock)
-+static int memblock_in_dev(struct daxctl_memory *mem, const char *memblock)
- {
- 	const char *mem_base = "/sys/devices/system/memory/";
- 	struct daxctl_dev *dev = daxctl_memory_get_dev(mem);
- 	unsigned long long memblock_res, dev_start, dev_end;
+diff --git a/util/json.c b/util/json.c
+index 5e6a32a..497c52b 100644
+--- a/util/json.c
++++ b/util/json.c
+@@ -278,7 +278,7 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
+ 	struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
  	const char *devname = daxctl_dev_get_devname(dev);
- 	struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-+	int rc, path_len = mem->buf_len;
- 	unsigned long memblock_size;
--	int path_len = mem->buf_len;
- 	char buf[SYSFS_ATTR_SIZE];
- 	unsigned long phys_index;
- 	char *path = mem->mem_buf;
+ 	struct json_object *jdev, *jobj;
+-	int node;
++	int node, movable;
  
- 	if (snprintf(path, path_len, "%s/%s/phys_index",
- 			mem_base, memblock) < 0)
--		return false;
-+		return -ENXIO;
+ 	jdev = json_object_new_object();
+ 	if (!devname || !jdev)
+@@ -306,6 +306,18 @@ struct json_object *util_daxctl_dev_to_json(struct daxctl_dev *dev,
+ 	if (jobj)
+ 		json_object_object_add(jdev, "mode", jobj);
  
--	if (sysfs_read_attr(ctx, path, buf) == 0) {
-+	rc = sysfs_read_attr(ctx, path, buf);
-+	if (rc == 0) {
- 		phys_index = strtoul(buf, NULL, 16);
- 		if (phys_index == 0 || phys_index == ULONG_MAX) {
-+			rc = -errno;
- 			err(ctx, "%s: %s: Unable to determine phys_index: %s\n",
--				devname, memblock, strerror(errno));
--			return false;
-+				devname, memblock, strerror(-rc));
-+			return rc;
- 		}
- 	} else {
- 		err(ctx, "%s: %s: Unable to determine phys_index: %s\n",
--			devname, memblock, strerror(errno));
--		return false;
-+			devname, memblock, strerror(-rc));
-+		return rc;
- 	}
- 
- 	dev_start = daxctl_dev_get_resource(dev);
- 	if (!dev_start) {
- 		err(ctx, "%s: Unable to determine resource\n", devname);
--		return false;
-+		return -EACCES;
- 	}
- 	dev_end = dev_start + daxctl_dev_get_size(dev);
- 
-@@ -1252,14 +1254,14 @@ static bool memblock_in_dev(struct daxctl_memory *mem, const char *memblock)
- 	if (!memblock_size) {
- 		err(ctx, "%s: Unable to determine memory block size\n",
- 			devname);
--		return false;
-+		return -ENXIO;
- 	}
- 	memblock_res = phys_index * memblock_size;
- 
- 	if (memblock_res >= dev_start && memblock_res <= dev_end)
--		return true;
-+		return 1;
- 
--	return false;
-+	return 0;
- }
- 
- static int op_for_one_memblock(struct daxctl_memory *mem, char *memblock,
-@@ -1317,8 +1319,12 @@ static int daxctl_memory_op(struct daxctl_memory *mem, enum memory_op op)
- 	errno = 0;
- 	while ((de = readdir(node_dir)) != NULL) {
- 		if (strncmp(de->d_name, "memory", 6) == 0) {
--			if (!memblock_in_dev(mem, de->d_name))
-+			rc = memblock_in_dev(mem, de->d_name);
-+			if (rc < 0)
-+				goto out_dir;
-+			if (rc == 0) /* memblock not in dev */
- 				continue;
-+			/* memblock is in dev, perform op */
- 			rc = op_for_one_memblock(mem, de->d_name, op,
- 					&status_flags);
- 			if (rc < 0)
++	if (mem) {
++		movable = daxctl_memory_is_movable(mem);
++		if (movable == 1)
++			jobj = json_object_new_boolean(true);
++		else if (movable == 0)
++			jobj = json_object_new_boolean(false);
++		else
++			jobj = NULL;
++		if (jobj)
++			json_object_object_add(jdev, "movable", jobj);
++	}
++
+ 	if (!daxctl_dev_is_enabled(dev)) {
+ 		jobj = json_object_new_string("disabled");
+ 		if (jobj)
 -- 
 2.20.1
 _______________________________________________
