@@ -2,61 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942BDC954B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 02:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DA9C9A2A
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Oct 2019 10:43:45 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 48DB8100DC432;
-	Wed,  2 Oct 2019 17:02:46 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id 6122110FC4133;
+	Thu,  3 Oct 2019 01:44:58 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CEEED100DC430
-	for <linux-nvdimm@lists.01.org>; Wed,  2 Oct 2019 17:02:43 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Oct 2019 17:01:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,250,1566889200";
-   d="scan'208";a="343491742"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by orsmga004.jf.intel.com with ESMTP; 02 Oct 2019 17:01:26 -0700
-Received: from fmsmsx117.amr.corp.intel.com (10.18.116.17) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 2 Oct 2019 17:01:25 -0700
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.68]) by
- fmsmsx117.amr.corp.intel.com ([169.254.3.133]) with mapi id 14.03.0439.000;
- Wed, 2 Oct 2019 17:01:25 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Weiny, Ira" <ira.weiny@intel.com>
-Subject: Re: [ndctl PATCH] libdaxctl: fix memory leaks with daxctl_memory
- objects
-Thread-Topic: [ndctl PATCH] libdaxctl: fix memory leaks with daxctl_memory
- objects
-Thread-Index: AQHVeH7olHKI9xaoIESF1uYlX3Snm6dG4ZuAgAGeIwA=
-Date: Thu, 3 Oct 2019 00:01:24 +0000
-Message-ID: <796dc27db614dfd931b2568162f5f885195ba408.camel@intel.com>
-References: <20191001173726.21846-1-vishal.l.verma@intel.com>
-	 <20191001231909.GA11607@iweiny-DESK2.sc.intel.com>
-In-Reply-To: <20191001231909.GA11607@iweiny-DESK2.sc.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <A6F518FC1DC55C4F924FDBA1F4F09D5F@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 2C2D710FC4131
+	for <linux-nvdimm@lists.01.org>; Thu,  3 Oct 2019 01:44:55 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx1.suse.de (Postfix) with ESMTP id 094CDB144;
+	Thu,  3 Oct 2019 08:43:39 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 3588D1E4810; Thu,  3 Oct 2019 10:43:59 +0200 (CEST)
+Date: Thu, 3 Oct 2019 10:43:59 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jeff Layton <jlayton@kernel.org>
+Subject: Re: Lease semantic proposal
+Message-ID: <20191003084359.GB17911@quack2.suse.cz>
+References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
+ <5d5a93637934867e1b3352763da8e3d9f9e6d683.camel@kernel.org>
+ <20191001181659.GA5500@iweiny-DESK2.sc.intel.com>
+ <2b42cf4ae669cedd061c937103674babad758712.camel@kernel.org>
+ <20191002192711.GA21386@fieldses.org>
+ <df9022f0f5d18d71f37ed494a05eaa4509cf0a68.camel@kernel.org>
 MIME-Version: 1.0
-Message-ID-Hash: LFSQBUAHV7VKJKVPKELY3WF7KF4SAVTL
-X-Message-ID-Hash: LFSQBUAHV7VKJKVPKELY3WF7KF4SAVTL
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Biesek, Michal" <michal.biesek@intel.com>
+Content-Disposition: inline
+In-Reply-To: <df9022f0f5d18d71f37ed494a05eaa4509cf0a68.camel@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: KVNQ5WDMHNAKHYVDH6X3GPEN3OJJF5E7
+X-Message-ID-Hash: KVNQ5WDMHNAKHYVDH6X3GPEN3OJJF5E7
+X-MailFrom: jack@suse.cz
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "J. Bruce Fields" <bfields@fieldses.org>, linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Dave Chinner <david@fromorbit.com>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LFSQBUAHV7VKJKVPKELY3WF7KF4SAVTL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KVNQ5WDMHNAKHYVDH6X3GPEN3OJJF5E7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,34 +52,183 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, 2019-10-01 at 16:19 -0700, Ira Weiny wrote:
+On Wed 02-10-19 16:35:55, Jeff Layton wrote:
+> On Wed, 2019-10-02 at 15:27 -0400, J. Bruce Fields wrote:
+> > On Wed, Oct 02, 2019 at 08:28:40AM -0400, Jeff Layton wrote:
+> > > On Tue, 2019-10-01 at 11:17 -0700, Ira Weiny wrote:
+> > > > On Mon, Sep 23, 2019 at 04:17:59PM -0400, Jeff Layton wrote:
+> > > > > On Mon, 2019-09-23 at 12:08 -0700, Ira Weiny wrote:
+> > > > > > Since the last RFC patch set[1] much of the discussion of supporting RDMA with
+> > > > > > FS DAX has been around the semantics of the lease mechanism.[2]  Within that
+> > > > > > thread it was suggested I try and write some documentation and/or tests for the
+> > > > > > new mechanism being proposed.  I have created a foundation to test lease
+> > > > > > functionality within xfstests.[3] This should be close to being accepted.
+> > > > > > Before writing additional lease tests, or changing lots of kernel code, this
+> > > > > > email presents documentation for the new proposed "layout lease" semantic.
+> > > > > > 
+> > > > > > At Linux Plumbers[4] just over a week ago, I presented the current state of the
+> > > > > > patch set and the outstanding issues.  Based on the discussion there, well as
+> > > > > > follow up emails, I propose the following addition to the fcntl() man page.
+> > > > > > 
+> > > > > > Thank you,
+> > > > > > Ira
+> > > > > > 
+> > > > > > [1] https://lkml.org/lkml/2019/8/9/1043
+> > > > > > [2] https://lkml.org/lkml/2019/8/9/1062
+> > > > > > [3] https://www.spinics.net/lists/fstests/msg12620.html
+> > > > > > [4] https://linuxplumbersconf.org/event/4/contributions/368/
+> > > > > > 
+> > > > > > 
+> > > > > 
+> > > > > Thank you so much for doing this, Ira. This allows us to debate the
+> > > > > user-visible behavior semantics without getting bogged down in the
+> > > > > implementation details. More comments below:
+> > > > 
+> > > > Thanks.  Sorry for the delay in response.  Turns out this email was in my
+> > > > spam...  :-/  I'll need to work out why.
+> > > > 
+> > > > > > <fcntl man page addition>
+> > > > > > Layout Leases
+> > > > > > -------------
+> > > > > > 
+> > > > > > Layout (F_LAYOUT) leases are special leases which can be used to control and/or
+> > > > > > be informed about the manipulation of the underlying layout of a file.
+> > > > > > 
+> > > > > > A layout is defined as the logical file block -> physical file block mapping
+> > > > > > including the file size and sharing of physical blocks among files.  Note that
+> > > > > > the unwritten state of a block is not considered part of file layout.
+> > > > > > 
+> > > > > > **Read layout lease F_RDLCK | F_LAYOUT**
+> > > > > > 
+> > > > > > Read layout leases can be used to be informed of layout changes by the
+> > > > > > system or other users.  This lease is similar to the standard read (F_RDLCK)
+> > > > > > lease in that any attempt to change the _layout_ of the file will be reported to
+> > > > > > the process through the lease break process.  But this lease is different
+> > > > > > because the file can be opened for write and data can be read and/or written to
+> > > > > > the file as long as the underlying layout of the file does not change.
+> > > > > > Therefore, the lease is not broken if the file is simply open for write, but
+> > > > > > _may_ be broken if an operation such as, truncate(), fallocate() or write()
+> > > > > > results in changing the underlying layout.
+> > > > > > 
+> > > > > > **Write layout lease (F_WRLCK | F_LAYOUT)**
+> > > > > > 
+> > > > > > Write Layout leases can be used to break read layout leases to indicate that
+> > > > > > the process intends to change the underlying layout lease of the file.
+> > > > > > 
+> > > > > > A process which has taken a write layout lease has exclusive ownership of the
+> > > > > > file layout and can modify that layout as long as the lease is held.
+> > > > > > Operations which change the layout are allowed by that process.  But operations
+> > > > > > from other file descriptors which attempt to change the layout will break the
+> > > > > > lease through the standard lease break process.  The F_LAYOUT flag is used to
+> > > > > > indicate a difference between a regular F_WRLCK and F_WRLCK with F_LAYOUT.  In
+> > > > > > the F_LAYOUT case opens for write do not break the lease.  But some operations,
+> > > > > > if they change the underlying layout, may.
+> > > > > > 
+> > > > > > The distinction between read layout leases and write layout leases is that
+> > > > > > write layout leases can change the layout without breaking the lease within the
+> > > > > > owning process.  This is useful to guarantee a layout prior to specifying the
+> > > > > > unbreakable flag described below.
+> > > > > > 
+> > > > > > 
+> > > > > 
+> > > > > The above sounds totally reasonable. You're essentially exposing the
+> > > > > behavior of nfsd's layout leases to userland. To be clear, will F_LAYOUT
+> > > > > leases work the same way as "normal" leases, wrt signals and timeouts?
+> > > > 
+> > > > That was my intention, yes.
+> > > > 
+> > > > > I do wonder if we're better off not trying to "or" in flags for this,
+> > > > > and instead have a separate set of commands (maybe F_RDLAYOUT,
+> > > > > F_WRLAYOUT, F_UNLAYOUT). Maybe I'm just bikeshedding though -- I don't
+> > > > > feel terribly strongly about it.
+> > > > 
+> > > > I'm leaning that was as well.  To make these even more distinct from
+> > > > F_SETLEASE.
+> > > > 
+> > > > > Also, at least in NFSv4, layouts are handed out for a particular byte
+> > > > > range in a file. Should we consider doing this with an API that allows
+> > > > > for that in the future? Is this something that would be desirable for
+> > > > > your RDMA+DAX use-cases?
+> > > > 
+> > > > I don't see this.  I've thought it would be a nice thing to have but I don't
+> > > > know of any hard use case.  But first I'd like to understand how this works for
+> > > > NFS.
+> > > > 
+> > > 
+> > > The NFSv4.1 spec allows the client to request the layouts for a
+> > > particular range in the file:
+> > > 
+> > > https://tools.ietf.org/html/rfc5661#page-538
+> > > 
+> > > The knfsd only hands out whole-file layouts at present. Eventually we
+> > > may want to make better use of segmented layouts, at which point we'd
+> > > need something like a byte-range lease.
+> > > 
+> > > > > We could add a new F_SETLEASE variant that takes a struct with a byte
+> > > > > range (something like struct flock).
+> > > > 
+> > > > I think this would be another reason to introduce F_[RD|WR|UN]LAYOUT as a
+> > > > command.  Perhaps supporting smaller byte ranges could be added later?
+> > > > 
+> > > 
+> > > I'd definitely not multiplex this over F_SETLEASE. An F_SETLAYOUT cmd
+> > > would probably be sufficient, and maybe just reuse
+> > > F_RDLCK/F_WRLCK/F_UNLCK for the iomode?
+> > > 
+> > > For the byte ranges, the catch there is that extending the userland
+> > > interface for that later will be difficult.
+> > 
+> > Why would it be difficult?
+> > 
 > 
-> > diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-> > index 8abfd64..639224c 100644
-> > --- a/daxctl/lib/libdaxctl.c
-> > +++ b/daxctl/lib/libdaxctl.c
-> > @@ -204,8 +204,9 @@ DAXCTL_EXPORT void daxctl_region_get_uuid(struct daxctl_region *region, uuid_t u
-> >  
-> >  static void free_mem(struct daxctl_dev *dev)
-> >  {
-> > -	if (dev && dev->mem) {
-> > +	if (dev->mem) {
-> 
-> There is a comment in daxctl_dev_disable() which says:
-> 
->         /* If there is a memory object, first free that */
-> 
-> I'm 100% sure that dev can't be NULL there.  So that comment no longer applies.
-> 
-> May want to remove that comment.
-> 
-Hm, I'm not sure I follow.
+> Legacy userland code that wanted to use byte range enabled layouts would
+> have to be rebuilt to take advantage of them. If we require a range from
+> the get-go, then they will get the benefit of them once they're
+> available.
 
-Yes, dev can't be null there, but 'mem' can me. Hence the comment saying
-if /mem/ is present, free it.
+I don't think this is true. Because current implementation of locking the
+whole file may hide implementation bugs in userspace. So the new
+range lock handling may break userspace and history shows such
+problems with APIs are actually rather common. So I think switching to
+range locking *must* be conscious decision of the application and as
+such having separate API for that is the most natural thing to do.
 
-The check in free_mem() only checks for non-NULL mem too.
+> > > What I'd probably suggest
+> > > (and what would jive with the way pNFS works) would be to go ahead and
+> > > add an offset and length to the arguments and result (maybe also
+> > > whence?).
+> > 
+> > Why not add new commands with range arguments later if it turns out to
+> > be necessary?
+> 
+> We could do that. It'd be a little ugly, IMO, simply because then we'd
+> end up with two interfaces that do almost the exact same thing.
+> 
+> Should byte-range layouts at that point conflict with non-byte range
+> layouts, or should they be in different "spaces" (a'la POSIX and flock
+> locks)? When it's all one interface, those sorts of questions sort of
+> answer themselves. When they aren't we'll have to document them clearly
+> and I think the result will be more confusing for userland programmers.
+> 
+> If you felt strongly about leaving those out for now, you could just do
+> something similar to what Aleksa is planning for openat2 -- have a
+> struct pointer and length as arguments for this cmd, and only have a
+> single iomode member in there for now.
+> 
+> The kernel would have to know how to deal with "legacy" and byte-range-
+> enabled variants if we ever extend it, but that's not too hard to
+> handle.
 
+Yeah, so we can discuss how to make possible future extension towards
+range locking the least confusing to userspace. E.g. we can just put the
+ranges in the API and require that start is always 0 and end is always
+ULONG_MAX or whatever. But switching to smaller ranges must be the decision
+in the application after the kernel supports it.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
