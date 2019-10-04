@@ -2,43 +2,41 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E2BCB922
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Oct 2019 13:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CD1CBEE3
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Oct 2019 17:18:03 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8FFB5101134F4;
-	Fri,  4 Oct 2019 04:32:37 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=196.179.252.18; helo=[196.179.252.18]; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
-Received: from [196.179.252.18] (unknown [196.179.252.18])
-	by ml01.01.org (Postfix) with ESMTP id B4708101134F3
-	for <linux-nvdimm@lists.01.org>; Fri,  4 Oct 2019 04:32:35 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 2AE2210113217;
+	Fri,  4 Oct 2019 08:19:06 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=221.135.136.10; helo=221-135-136-10.sify.net; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
+Received: from 221-135-136-10.sify.net (unknown [221.135.136.10])
+	by ml01.01.org (Postfix) with ESMTP id 0747610113215
+	for <linux-nvdimm@lists.01.org>; Fri,  4 Oct 2019 08:19:02 -0700 (PDT)
 From: <linux-nvdimm@lists.01.org>
 To: <linux-nvdimm@lists.01.org>
-Subject: Security Alert. Your accounts was hacked by criminal group.
-Date: 4 Oct 2019 12:10:25 +0000
-Message-ID: <003901d57aaf$015f2777$f9da87bd$@lists.01.org>
+Subject: High danger. Your account was attacked.
+Date: 5 Oct 2019 00:31:01 +0400
+Message-ID: <003101d57af5$06f91e83$f38997be$@lists.01.org>
 MIME-Version: 1.0
-X-Mailer: Microsoft Office Outlook 12.0
-Thread-Index: Aciehcxnchjw88tciehcxnchjw88tc==
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: Acibxekoa7ekdqccibxekoa7ekdqcc==
 Content-Language: en
-x-cr-hashedpuzzle: 2D4= hcxn chjw 88tc iehc xnch jw88 tcie hcxn 37cv uffw ikh0 5n37 cvuf fwik h05n;1;37cvuffwikh05n37cvuffwikh05n37cvuffwikh05n37cvuf;Sosha1_v1;7;\{54144D21-6D0D-7801-4118-7438582D5414\};ZQB3AGUAZgh05n37cvuffwikh05n37cvuffwikh05n37cvuf;4 Oct 2019 12:10:25 +0000;fwikh05n37cvuffw
-x-cr-puzzleid: \{54144D21-6D0D-7801-4118-7438582D5414\}
-Message-ID-Hash: DLPKN33QAFKSDBIRYWKZSIAC2AXYYOTW
-X-Message-ID-Hash: DLPKN33QAFKSDBIRYWKZSIAC2AXYYOTW
+Message-ID-Hash: RIHTS2FDRCR64GETHPKZXR4I3RYE75U7
+X-Message-ID-Hash: RIHTS2FDRCR64GETHPKZXR4I3RYE75U7
 X-MailFrom: linux-nvdimm@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DLPKN33QAFKSDBIRYWKZSIAC2AXYYOTW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RIHTS2FDRCR64GETHPKZXR4I3RYE75U7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6932130596217014073=="
+Content-Type: multipart/mixed; boundary="===============6864760245207112924=="
 
---===============6932130596217014073==
+--===============6864760245207112924==
 Content-Type: text/plain;
 	charset="cp-850"
 Content-Language: en
@@ -73,7 +71,7 @@ I can also post access to all your e-mail correspondence and messengers t=
 hat you use.
 
 If you want to prevent this,
-transfer the amount of $777 to my bitcoin address (if you do not know how=
+transfer the amount of $797 to my bitcoin address (if you do not know how=
  to do this, write to Google: "Buy Bitcoin").
 
 My bitcoin address (BTC Wallet) is: 14wJMVaw6GuMo64RB4HwfuhSraX8UmUxEU
@@ -93,7 +91,7 @@ will be immediately distributed.
 
 Best regards!
 
---===============6932130596217014073==
+--===============6864760245207112924==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -103,4 +101,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============6932130596217014073==--
+--===============6864760245207112924==--
