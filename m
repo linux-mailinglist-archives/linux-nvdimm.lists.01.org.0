@@ -1,50 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF34D21A5
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Oct 2019 09:30:30 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25326D274F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Oct 2019 12:40:01 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3561F10FC60EB;
-	Thu, 10 Oct 2019 00:32:47 -0700 (PDT)
-Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.246; helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au [211.29.132.246])
-	by ml01.01.org (Postfix) with ESMTP id A8FB210FC60E9
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Oct 2019 00:32:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 561DC100DC40E;
+	Thu, 10 Oct 2019 03:42:16 -0700 (PDT)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.249; helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au [211.29.132.249])
+	by ml01.01.org (Postfix) with ESMTP id 04291100DC40D
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Oct 2019 03:42:12 -0700 (PDT)
 Received: from dread.disaster.area (pa49-195-199-207.pa.nsw.optusnet.com.au [49.195.199.207])
-	by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id F270743E930;
-	Thu, 10 Oct 2019 18:30:21 +1100 (AEDT)
+	by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 8EAC7363939;
+	Thu, 10 Oct 2019 21:39:50 +1100 (AEDT)
 Received: from dave by dread.disaster.area with local (Exim 4.92.2)
 	(envelope-from <david@fromorbit.com>)
-	id 1iIStw-0001K4-Iw; Thu, 10 Oct 2019 18:30:20 +1100
-Date: Thu, 10 Oct 2019 18:30:20 +1100
+	id 1iIVrJ-0002Pu-Fz; Thu, 10 Oct 2019 21:39:49 +1100
+Date: Thu, 10 Oct 2019 21:39:49 +1100
 From: Dave Chinner <david@fromorbit.com>
-To: "Darrick J. Wong" <darrick.wong@oracle.com>
-Subject: Re: [RFC PATCH 0/7] xfs: add reflink & dedupe support for fsdax.
-Message-ID: <20191010073020.GI16973@dread.disaster.area>
-References: <20190731114935.11030-1-ruansy.fnst@cn.fujitsu.com>
- <20191009063144.GA4300@infradead.org>
- <20191009171152.GF13108@magnolia>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: Lease semantic proposal
+Message-ID: <20191010103949.GJ16973@dread.disaster.area>
+References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
+ <20190923222620.GC16973@dread.disaster.area>
+ <20190925234602.GB12748@iweiny-DESK2.sc.intel.com>
+ <20190930084233.GO16973@dread.disaster.area>
+ <20191001210156.GB5500@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20191009171152.GF13108@magnolia>
+In-Reply-To: <20191001210156.GB5500@iweiny-DESK2.sc.intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=FNpr/6gs c=1 sm=1 tr=0
+X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
 	a=U3CgBz6+VuTzJ8lMfNbwVQ==:117 a=U3CgBz6+VuTzJ8lMfNbwVQ==:17
 	a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=XobE76Q3jBoA:10
-	a=7-415B0cAAAA:8 a=KLqftw6RVRZ3hi40DLEA:9 a=oZXh2kF1ifLAk1_0:21
-	a=fGh-JakunK8VnCng:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
-Message-ID-Hash: QRVVZBEV6XTMW6IHIU4AQWVBS7JTNJKO
-X-Message-ID-Hash: QRVVZBEV6XTMW6IHIU4AQWVBS7JTNJKO
+	a=7-415B0cAAAA:8 a=ggloQwHdSGxR348sj_4A:9 a=jAk1Iep39hKxJieh:21
+	a=cqC_HWLn8bbLdgcc:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L
+X-Message-ID-Hash: WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L
 X-MailFrom: david@fromorbit.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Christoph Hellwig <hch@infradead.org>, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, rgoldwyn@suse.de, gujx@cn.fujitsu.com, qi.fuli@fujitsu.com
+CC: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QRVVZBEV6XTMW6IHIU4AQWVBS7JTNJKO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,82 +55,169 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 09, 2019 at 10:11:52AM -0700, Darrick J. Wong wrote:
-> On Tue, Oct 08, 2019 at 11:31:44PM -0700, Christoph Hellwig wrote:
-> > Btw, I just had a chat with Dan last week on this.  And he pointed out
-> > that while this series deals with the read/write path issues of 
-> > reflink on DAX it doesn't deal with the mmap side issue that
-> > page->mapping and page->index can point back to exactly one file.
+On Tue, Oct 01, 2019 at 02:01:57PM -0700, Ira Weiny wrote:
+> On Mon, Sep 30, 2019 at 06:42:33PM +1000, Dave Chinner wrote:
+> > On Wed, Sep 25, 2019 at 04:46:03PM -0700, Ira Weiny wrote:
+> > > On Tue, Sep 24, 2019 at 08:26:20AM +1000, Dave Chinner wrote:
+> > > > Hence, AFIACT, the above definition of a F_RDLCK|F_LAYOUT lease
+> > > > doesn't appear to be compatible with the semantics required by
+> > > > existing users of layout leases.
+> > > 
+> > > I disagree.  Other than the addition of F_UNBREAK, I think this is consistent
+> > > with what is currently implemented.  Also, by exporting all this to user space
+> > > we can now write tests for it independent of the RDMA pinning.
 > > 
-> > I think we want a few xfstests that reflink a file and then use the
-> > different links using mmap, as that should blow up pretty reliably.
+> > The current usage of F_RDLCK | F_LAYOUT by the pNFS code allows
+> > layout changes to occur to the file while the layout lease is held.
 > 
-> Hmm, you're right, we don't actually have a test that checks the
-> behavior of mwriting all copies of a shared block.  Ok, I'll go write
-> one.
+> This was not my understanding.
 
-I've pointed this problem out to everyone who has asked me "what do
-we need to do to support reflink on DAX". I've even walked a couple
-of people right through the problem that needs to be solved and
-discussed the potential solutions to it.
+These are the remote procerdeure calls that the pNFS client uses to
+map and/or allocate space in the file it has a lease on:
 
-Problems that I think need addressing:
+struct export_operations {
+....
+        int (*map_blocks)(struct inode *inode, loff_t offset,
+                          u64 len, struct iomap *iomap,
+                          bool write, u32 *device_generation);
+        int (*commit_blocks)(struct inode *inode, struct iomap *iomaps,
+                             int nr_iomaps, struct iattr *iattr);
+};
 
-	- device dax and filesystem dax have fundamentally different
-	  needs in this space, so they need to be separated and not
-	  try to use the same solution.
-	- dax_lock_entry() being used as a substitute for
-	  page_lock() but it not being held on the page itself means
-	  it can't be extended to serialise access to the page
-	  across multiple mappings that are unaware of each other
-	- dax_lock_page/dax_unlock_page interface for hardware
-	  memory errors needs to report to the
-	  filesystem for processing and repair, not assume the page
-	  is user data and killing processes is the only possible
-	  recovery mechanism.
-	- dax_associate_entry/dax_disassociate_entry can only work
-	  for a 1:1 page:mapping,index relationship. It needs to go
-	  away and be replaced by a mechanism that allows
-	  tracking multiple page mapping/index/state tuples. This
-	  has much wider use than DAX (e.g. sharing page cache pages
-	  between reflinked files)
+.map_blocks() allows the pnfs client to allocate blocks in the
+storage.  .commit_blocks() is called once the write is complete to
+do things like unwritten extent conversion on extents that it
+allocated. In the XFS implementation of these methods, they call
+directly into the XFS same block mapping code that the
+read/write/mmap IO paths call into.
 
-I've proposed shadow pages (based on a concept from Matethw Wilcox)
-for each read-only reflink mapping with the real physical page being
-owned by the filesystem and indexed by LBA in the filesystem buffer
-cache. This would be based on whether the extent in the file the
-page is mapped from has multiple references to it.
+A typical pNFS use case is a HPC clusters, where thousands of nodes
+might all be writing to separate parts of a huge sparse file (e.g.
+out of core sparse matrix solver) and are reading/writing direct to
+the storage via iSER or some other low level IB/RDMA storage
+protocol.  Every write on every pNFS client needs space allocation,
+so the pNFS server is basically just providing a remote interface to
+the XFS space allocation interfaces for direct IO on the pNFS
+clients.
 
-i.e. When a new page mapping occurs in a shared extent, we add the
-page to the buffer cache (i.e. point a struct xfs_buf at it)i if it
-isn't already present, then allocate a shadow page, point it at the
-master, set it up with the new mapping,index tuple and add it to the
-mapping tree. Then we can treat it as a unique page even though it
-points to the read-only master page.
+IOWs, there can be thousands of concurrent pNFS layout leases on a
+single inode at any given time and they can all be allocating space,
+too.
 
-When the page get's COWed, we toss away the shadow page and the
-master can be reclaimed with the reference count goes to zero or the
-extent is no longer shared.  Think of it kind of like the way we
-multiply reference the zero page for holes in mmap()d dax regions,
-except we can have millions of them and they are found by physical
-buffer cache index lookups. 
+> > IOWs, your definition of F_RDLCK | F_LAYOUT not being allowed
+> > to change the is in direct contradition to existing users.
+> > 
+> > I've said this several times over the past few months now: shared
+> > layout leases must allow layout modifications to be made.
+> 
+> I don't understand what the point of having a layout lease is then?
 
-This works for both DAX and non-DAX sharing of read-only shared
-filesytsem pages. i.e. it would form the basis of single-copy
-read-only page cache pages for reflinked files.
+It's a *notification* mechanism.
 
-There was quite a bit of talk at LSFMM 2018 about having a linked
-list of mapping structures hanging off a struct page, one for each
-mapping that references the page. Operations would then have to walk
-all mappings that reference the page. This was useful to other
-subsystems (HMM?) for some purpose I forget, but I'm not sure it's
-particularly useful by itself for non-dax reflink purposes - I
-suspect the filesystem would still need to track such pages itself
-in it's buffer cache so it can find the cached page to link new
-reflink copies to the same page...
+Multiple processes can modify the file layout at the same time -
+XFs was designed as a multi-write filesystem from the ground up and
+we make use of that with shared IO locks for direct IO writes. 
 
-ISTR a couple of other solutions were thrown around, but I don't
-think anyone came up with a simple solution...
+The read layout lease model we've used for pNFS is essentially the
+same concurrent writer model that direct IO in XFS uses. And to
+enable concurrent writers, we use shared locking for the the layout
+leases.
+
+IOWs, the pNFS client IO model is very similar to local direct IO,
+except for the fact they can remotely cache layout mappings.  Hence
+if you do a server-side local buffered write (delayed allocation),
+truncate, punch a hole, etc, (or a remote operation through the NFS
+server that ends up in these same paths) the mappings those pNFS
+clients hold are no longer guaranteed to cover valid data and/or
+have correct physical mappings for valid data held on the server.
+
+At this point, the layouts need to be invalidated, and so the layout
+lease is broken by the filesystem operations that may cause an
+issue. The pNFS server reacts to the lease break by recalling the
+client layout(s) and the pNFS client has to request a new layout
+from the server to be able to directly access the storage again.
+
+i.e. the layout lease is primarily a *notification* mechanism to
+allow safe interop between application level direct access
+mechanisms and local filesystem access.
+
+What you are trying to do is turn this multi-writer layout lease
+notification mechanism into a single writer access control
+mechanism. i.e. F_UNBREAK is all about /control/ of the layout and
+who can and can't modify it, regardless of whether they write
+permissions have been granted or not.
+
+It seems I have been unable to get this point across despite trying
+for months now: access control is not a function provided by layout
+leases. If you need to guarantee exclusive access to a file so
+nobody else can modify it, direct access or through the filesystem,
+then that is what permission bits, ACLs, file locks, LSMs, etc are
+for. Don't try to overload a layout change notification mechanism
+with data access controls.
+
+> I apologize for not understanding this.  My reading of the code is that layout
+> changes require the read layout to be broken prior to proceeding.
+
+There's a difference between additive layout changes (such as
+allocating unwritten extents over a hole before a write) that don't
+pose any risk of uninitialised data exposure or use-after free.
+These sorts of layout changes are allowed while holding a layout
+lease.
+
+pNFS clients can only do additive changes to the layout via the
+export ops above. Further, technically speaking (because we don't
+currently implement this), local direct IO read/write is allowed
+without breaking layout leases as DIO writes can only trigger
+additive changes to the layout.
+
+The layout changes we need notification about (i.e. lease breaks)
+are subtractive layout changes (truncate, hole punch, copy-on-write)
+and ethereal layout changes (e.g. delayed allocation, where data is
+in memory but has no physical space allocated). Those are the ones
+that lead to problems with direct access, either in terms of
+in-correct in-memory state (pages mapped into RDMA hardware that no
+longer have backing store) or the file mapping the application has
+cached (e.g. via fiemap or pNFS file layouts) is no longer valid.
+
+These subtractive/ethereal layout changes are the ones that need to
+break _all_ outstanding layout leases, because nobody knows ahead of
+time which applications might be impacted by the layout modification
+that is about to occur.
+
+IOWs, layout leases are not intended to directly control who can and
+who can't modify the layout of a file, they are for issuing
+notifications to parties using direct storage access that a
+potentially dangerous layout change is about to be made to a file
+they are directly accessing....
+
+> The break layout code does this by creating a F_WRLCK of type FL_LAYOUT which
+> conflicts with the F_RDLCK of type FL_LAYOUT...
+
+Yes, but that's an internal implementation detail of how leases are
+broken. __break_lease(O_WRONLY) means "break all leases", and it
+does that by creating a temporary exclusive lease and then breaking
+all the leases on the inode that conflict with that lease. Which, by
+definition, is all of the leases of the same type. It never attaches
+that temporary lease to the inode - it is only used for comparison
+and is discarded once the lease break is done.
+
+That doesn't mean this behaviour is intended to be part of the
+visible layout lease user API, nor that it means F_WRLCK layout
+leases are something that is supposed to provide exlusive
+modification access to the file layout. It's just an implementation
+mechanism that simplifies breaking existing leases.
+
+> Also, I don't see any code which limits the number of read layout holders which
+> can be present
+
+There is no limit on the number of holders that can have read
+layouts...
+
+> and all of them will be revoked by the above code.
+
+Yup, that's what breaking leases does right now - it notifies all
+lease holders that a potentially problematic layout change is about
+to be made.
 
 Cheers,
 
