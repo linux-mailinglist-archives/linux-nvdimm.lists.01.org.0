@@ -2,31 +2,42 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E78D3F80
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Oct 2019 14:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E83D43D9
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Oct 2019 17:10:04 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2F63510FCB474;
-	Fri, 11 Oct 2019 05:30:20 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=217.76.122.254; helo=data.com; envelope-from=toyota-motors@data.com; receiver=<UNKNOWN> 
-Received: from data.com (unknown [217.76.122.254])
-	by ml01.01.org (Postfix) with ESMTP id 90F6510FCB471
-	for <linux-nvdimm@lists.01.org>; Fri, 11 Oct 2019 05:30:18 -0700 (PDT)
-From: "TOYOTA LOTTERY ORGANIZATION" <toyota-motors@data.com>
-To: linux-nvdimm@lists.01.org
-Subject: Re: GOODNEWS YOU HAVE WON A CAR & CASH PRIZE. CHECK EMAIL
-Date: 11 Oct 2019 14:28:08 +0200
-Message-ID: <20191011142808.2938B94CE13FB4EF@data.com>
+	by ml01.01.org (Postfix) with ESMTP id C9D1211043C4F;
+	Fri, 11 Oct 2019 08:12:09 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=42.231.162.228; helo=gmail.com; envelope-from=smithdiana157mhowa@gmail.com; receiver=<UNKNOWN> 
+Received: from gmail.com (unknown [42.231.162.228])
+	by ml01.01.org (Postfix) with SMTP id 6FF1D11043C45;
+	Fri, 11 Oct 2019 08:12:03 -0700 (PDT)
+Received: from asx121.turbo-inline.com ([Fri, 11 Oct 2019 18:00:30 +0300])
+	by nntp.pinxodet.net with NNFMP; Fri, 11 Oct 2019 18:00:30 +0300
+Received: from m1.gns.snv.thisdomainl.com [29.121.92.230] by mtu67.syds.piswix.net with LOCAL; Fri, 11 Oct 2019 17:57:34 +0300
+Received: from unknown (5.244.15.19)
+	by mailout.endmonthnow.com with ESMTP; Fri, 11 Oct 2019 17:46:15 +0300
+Received: from nntp.pinxodet.net ([68.222.33.202]) by smtp.mixedthings.net with SMTP; Fri, 11 Oct 2019 17:41:42 +0300
+Received: from mailout.endmonthnow.com ([Fri, 11 Oct 2019 17:31:25 +0300])
+	by mail.webhostings4u.com with QMQP; Fri, 11 Oct 2019 17:31:25 +0300
+Message-ID: <B4C5A2A1.E145E629@gmail.com>
+Date: Fri, 11 Oct 2019 17:24:21 +0300
+From: "Mitchell Sievers" <smithdiana157mhowa@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; nl; rv:1.8.1.12) Gecko/20080213 Thunderbird/2.0.0.12
 MIME-Version: 1.0
-Message-ID-Hash: YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6
-X-Message-ID-Hash: YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6
-X-MailFrom: toyota-motors@data.com
+To: <linux-nvdimm-owner@lists.01.org>
+Subject: fw: fast SEO
+Message-ID-Hash: NPLT74IPOPDLPHNHKIO2ZWNU2VCMKQ44
+X-Message-ID-Hash: NPLT74IPOPDLPHNHKIO2ZWNU2VCMKQ44
+X-MailFrom: smithdiana157mhowa@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm@lists.01.org, linux-thermal-daemon-owner@lists.01.org, linux-thermal-daemon@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: toyotalotterypro@aol.com
+Reply-To: Mitchell Sievers <smithdiana157mhowa@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NPLT74IPOPDLPHNHKIO2ZWNU2VCMKQ44/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -35,45 +46,22 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Toyota Lottery Organization.
-Email: toyotalotterypro@aol.com
- 
-Dear Winner,
- 
-EMAIL WINNING NUMBER: TYT-0077-981-19
- 
-We are glad to inform you that your E-mail Address has won you 
-the cash prize of USD$800,000,00 (Eight Hundred Thousand USD) 
-including a TOYOTA HIGHLANDER. NO TICKETS WERE SOLD.
+Grab fast ranks boost in just a matter of days
+http://blackhatseoservices.tk/
 
-Email Winning Details: TYT-0077-981-19
-Batch Number: 079/20/TT46 
-Category: 3rd category
 
-To file for your claim you are to contact claims agent 
-immediately at email below in order to match up your winning 
-email address:
- 
-FULL NAME:
-CONTACT ADDRESS:
-COUNTRY:
-AGE:
-MAN/WOMAN:
-YOUR OCCUPATION:
-MOBILE NUMBER:
- 
-You must not reveal winning information to anyone or persons. 
-This is to avoid double claiming of your winning prize.
- 
-Congratulations!!!
- 
-Yours Faithfully,
- 
-Online Coordinators
-Toyota Lottery Organization.
-E-mail: toyotalotterypro@aol.com
-Joan; 0081 800-331-4331
-Lily; 0086 571-8502-2044
+
+
+
+
+
+
+
+
+http://blackhatseoservices.tk/unsubscribe/
+
+
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
