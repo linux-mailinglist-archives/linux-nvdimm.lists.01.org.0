@@ -1,52 +1,32 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25326D274F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Oct 2019 12:40:01 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E78D3F80
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Oct 2019 14:28:14 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 561DC100DC40E;
-	Thu, 10 Oct 2019 03:42:16 -0700 (PDT)
-Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.249; helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au [211.29.132.249])
-	by ml01.01.org (Postfix) with ESMTP id 04291100DC40D
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Oct 2019 03:42:12 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-199-207.pa.nsw.optusnet.com.au [49.195.199.207])
-	by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 8EAC7363939;
-	Thu, 10 Oct 2019 21:39:50 +1100 (AEDT)
-Received: from dave by dread.disaster.area with local (Exim 4.92.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1iIVrJ-0002Pu-Fz; Thu, 10 Oct 2019 21:39:49 +1100
-Date: Thu, 10 Oct 2019 21:39:49 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: Lease semantic proposal
-Message-ID: <20191010103949.GJ16973@dread.disaster.area>
-References: <20190923190853.GA3781@iweiny-DESK2.sc.intel.com>
- <20190923222620.GC16973@dread.disaster.area>
- <20190925234602.GB12748@iweiny-DESK2.sc.intel.com>
- <20190930084233.GO16973@dread.disaster.area>
- <20191001210156.GB5500@iweiny-DESK2.sc.intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 2F63510FCB474;
+	Fri, 11 Oct 2019 05:30:20 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=217.76.122.254; helo=data.com; envelope-from=toyota-motors@data.com; receiver=<UNKNOWN> 
+Received: from data.com (unknown [217.76.122.254])
+	by ml01.01.org (Postfix) with ESMTP id 90F6510FCB471
+	for <linux-nvdimm@lists.01.org>; Fri, 11 Oct 2019 05:30:18 -0700 (PDT)
+From: "TOYOTA LOTTERY ORGANIZATION" <toyota-motors@data.com>
+To: linux-nvdimm@lists.01.org
+Subject: Re: GOODNEWS YOU HAVE WON A CAR & CASH PRIZE. CHECK EMAIL
+Date: 11 Oct 2019 14:28:08 +0200
+Message-ID: <20191011142808.2938B94CE13FB4EF@data.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20191001210156.GB5500@iweiny-DESK2.sc.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.2 cv=D+Q3ErZj c=1 sm=1 tr=0
-	a=U3CgBz6+VuTzJ8lMfNbwVQ==:117 a=U3CgBz6+VuTzJ8lMfNbwVQ==:17
-	a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=XobE76Q3jBoA:10
-	a=7-415B0cAAAA:8 a=ggloQwHdSGxR348sj_4A:9 a=jAk1Iep39hKxJieh:21
-	a=cqC_HWLn8bbLdgcc:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
-Message-ID-Hash: WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L
-X-Message-ID-Hash: WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L
-X-MailFrom: david@fromorbit.com
+Message-ID-Hash: YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6
+X-Message-ID-Hash: YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6
+X-MailFrom: toyota-motors@data.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-ext4@vger.kernel.org, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, John Hubbard <jhubbard@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: toyotalotterypro@aol.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WRMOUVBUZXQECXKHWY2IZKCBGH25VU7L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YTI2TEM5LRDRQ7BZWXDQ4QHZ3UWKEUF6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,176 +35,45 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 01, 2019 at 02:01:57PM -0700, Ira Weiny wrote:
-> On Mon, Sep 30, 2019 at 06:42:33PM +1000, Dave Chinner wrote:
-> > On Wed, Sep 25, 2019 at 04:46:03PM -0700, Ira Weiny wrote:
-> > > On Tue, Sep 24, 2019 at 08:26:20AM +1000, Dave Chinner wrote:
-> > > > Hence, AFIACT, the above definition of a F_RDLCK|F_LAYOUT lease
-> > > > doesn't appear to be compatible with the semantics required by
-> > > > existing users of layout leases.
-> > > 
-> > > I disagree.  Other than the addition of F_UNBREAK, I think this is consistent
-> > > with what is currently implemented.  Also, by exporting all this to user space
-> > > we can now write tests for it independent of the RDMA pinning.
-> > 
-> > The current usage of F_RDLCK | F_LAYOUT by the pNFS code allows
-> > layout changes to occur to the file while the layout lease is held.
-> 
-> This was not my understanding.
+Toyota Lottery Organization.
+Email: toyotalotterypro@aol.com
+ 
+Dear Winner,
+ 
+EMAIL WINNING NUMBER: TYT-0077-981-19
+ 
+We are glad to inform you that your E-mail Address has won you 
+the cash prize of USD$800,000,00 (Eight Hundred Thousand USD) 
+including a TOYOTA HIGHLANDER. NO TICKETS WERE SOLD.
 
-These are the remote procerdeure calls that the pNFS client uses to
-map and/or allocate space in the file it has a lease on:
+Email Winning Details: TYT-0077-981-19
+Batch Number: 079/20/TT46 
+Category: 3rd category
 
-struct export_operations {
-....
-        int (*map_blocks)(struct inode *inode, loff_t offset,
-                          u64 len, struct iomap *iomap,
-                          bool write, u32 *device_generation);
-        int (*commit_blocks)(struct inode *inode, struct iomap *iomaps,
-                             int nr_iomaps, struct iattr *iattr);
-};
-
-.map_blocks() allows the pnfs client to allocate blocks in the
-storage.  .commit_blocks() is called once the write is complete to
-do things like unwritten extent conversion on extents that it
-allocated. In the XFS implementation of these methods, they call
-directly into the XFS same block mapping code that the
-read/write/mmap IO paths call into.
-
-A typical pNFS use case is a HPC clusters, where thousands of nodes
-might all be writing to separate parts of a huge sparse file (e.g.
-out of core sparse matrix solver) and are reading/writing direct to
-the storage via iSER or some other low level IB/RDMA storage
-protocol.  Every write on every pNFS client needs space allocation,
-so the pNFS server is basically just providing a remote interface to
-the XFS space allocation interfaces for direct IO on the pNFS
-clients.
-
-IOWs, there can be thousands of concurrent pNFS layout leases on a
-single inode at any given time and they can all be allocating space,
-too.
-
-> > IOWs, your definition of F_RDLCK | F_LAYOUT not being allowed
-> > to change the is in direct contradition to existing users.
-> > 
-> > I've said this several times over the past few months now: shared
-> > layout leases must allow layout modifications to be made.
-> 
-> I don't understand what the point of having a layout lease is then?
-
-It's a *notification* mechanism.
-
-Multiple processes can modify the file layout at the same time -
-XFs was designed as a multi-write filesystem from the ground up and
-we make use of that with shared IO locks for direct IO writes. 
-
-The read layout lease model we've used for pNFS is essentially the
-same concurrent writer model that direct IO in XFS uses. And to
-enable concurrent writers, we use shared locking for the the layout
-leases.
-
-IOWs, the pNFS client IO model is very similar to local direct IO,
-except for the fact they can remotely cache layout mappings.  Hence
-if you do a server-side local buffered write (delayed allocation),
-truncate, punch a hole, etc, (or a remote operation through the NFS
-server that ends up in these same paths) the mappings those pNFS
-clients hold are no longer guaranteed to cover valid data and/or
-have correct physical mappings for valid data held on the server.
-
-At this point, the layouts need to be invalidated, and so the layout
-lease is broken by the filesystem operations that may cause an
-issue. The pNFS server reacts to the lease break by recalling the
-client layout(s) and the pNFS client has to request a new layout
-from the server to be able to directly access the storage again.
-
-i.e. the layout lease is primarily a *notification* mechanism to
-allow safe interop between application level direct access
-mechanisms and local filesystem access.
-
-What you are trying to do is turn this multi-writer layout lease
-notification mechanism into a single writer access control
-mechanism. i.e. F_UNBREAK is all about /control/ of the layout and
-who can and can't modify it, regardless of whether they write
-permissions have been granted or not.
-
-It seems I have been unable to get this point across despite trying
-for months now: access control is not a function provided by layout
-leases. If you need to guarantee exclusive access to a file so
-nobody else can modify it, direct access or through the filesystem,
-then that is what permission bits, ACLs, file locks, LSMs, etc are
-for. Don't try to overload a layout change notification mechanism
-with data access controls.
-
-> I apologize for not understanding this.  My reading of the code is that layout
-> changes require the read layout to be broken prior to proceeding.
-
-There's a difference between additive layout changes (such as
-allocating unwritten extents over a hole before a write) that don't
-pose any risk of uninitialised data exposure or use-after free.
-These sorts of layout changes are allowed while holding a layout
-lease.
-
-pNFS clients can only do additive changes to the layout via the
-export ops above. Further, technically speaking (because we don't
-currently implement this), local direct IO read/write is allowed
-without breaking layout leases as DIO writes can only trigger
-additive changes to the layout.
-
-The layout changes we need notification about (i.e. lease breaks)
-are subtractive layout changes (truncate, hole punch, copy-on-write)
-and ethereal layout changes (e.g. delayed allocation, where data is
-in memory but has no physical space allocated). Those are the ones
-that lead to problems with direct access, either in terms of
-in-correct in-memory state (pages mapped into RDMA hardware that no
-longer have backing store) or the file mapping the application has
-cached (e.g. via fiemap or pNFS file layouts) is no longer valid.
-
-These subtractive/ethereal layout changes are the ones that need to
-break _all_ outstanding layout leases, because nobody knows ahead of
-time which applications might be impacted by the layout modification
-that is about to occur.
-
-IOWs, layout leases are not intended to directly control who can and
-who can't modify the layout of a file, they are for issuing
-notifications to parties using direct storage access that a
-potentially dangerous layout change is about to be made to a file
-they are directly accessing....
-
-> The break layout code does this by creating a F_WRLCK of type FL_LAYOUT which
-> conflicts with the F_RDLCK of type FL_LAYOUT...
-
-Yes, but that's an internal implementation detail of how leases are
-broken. __break_lease(O_WRONLY) means "break all leases", and it
-does that by creating a temporary exclusive lease and then breaking
-all the leases on the inode that conflict with that lease. Which, by
-definition, is all of the leases of the same type. It never attaches
-that temporary lease to the inode - it is only used for comparison
-and is discarded once the lease break is done.
-
-That doesn't mean this behaviour is intended to be part of the
-visible layout lease user API, nor that it means F_WRLCK layout
-leases are something that is supposed to provide exlusive
-modification access to the file layout. It's just an implementation
-mechanism that simplifies breaking existing leases.
-
-> Also, I don't see any code which limits the number of read layout holders which
-> can be present
-
-There is no limit on the number of holders that can have read
-layouts...
-
-> and all of them will be revoked by the above code.
-
-Yup, that's what breaking leases does right now - it notifies all
-lease holders that a potentially problematic layout change is about
-to be made.
-
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+To file for your claim you are to contact claims agent 
+immediately at email below in order to match up your winning 
+email address:
+ 
+FULL NAME:
+CONTACT ADDRESS:
+COUNTRY:
+AGE:
+MAN/WOMAN:
+YOUR OCCUPATION:
+MOBILE NUMBER:
+ 
+You must not reveal winning information to anyone or persons. 
+This is to avoid double claiming of your winning prize.
+ 
+Congratulations!!!
+ 
+Yours Faithfully,
+ 
+Online Coordinators
+Toyota Lottery Organization.
+E-mail: toyotalotterypro@aol.com
+Joan; 0081 800-331-4331
+Lily; 0086 571-8502-2044
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
