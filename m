@@ -1,36 +1,36 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB35D5A02
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 14 Oct 2019 05:36:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D13A1D5F51
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 14 Oct 2019 11:50:24 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ABB6610FC548D;
-	Sun, 13 Oct 2019 20:39:28 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=122.191.125.166; helo=lynxfl.org; envelope-from=zsu@lynxfl.org; receiver=<UNKNOWN> 
-Received: from lynxfl.org (unknown [122.191.125.166])
-	by ml01.01.org (Postfix) with ESMTP id 6FD3610FC548B
-	for <linux-nvdimm@lists.01.org>; Sun, 13 Oct 2019 20:39:25 -0700 (PDT)
-Message-ID: <1D823CD775DC578781CCEC075259C5BB@lynxfl.org>
-From: =?utf-8?B?5byg5YWI55Sf?= <zsu@lynxfl.org>
+	by ml01.01.org (Postfix) with ESMTP id D103C10FC6CD1;
+	Mon, 14 Oct 2019 02:53:20 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=111.176.72.10; helo=helqlp.com; envelope-from=wa@helqlp.com; receiver=<UNKNOWN> 
+Received: from helqlp.com (unknown [111.176.72.10])
+	by ml01.01.org (Postfix) with ESMTP id 618A510FC6CCF
+	for <linux-nvdimm@lists.01.org>; Mon, 14 Oct 2019 02:53:18 -0700 (PDT)
+Message-ID: <A81D8E1688C6CD53EFDE351EB05DA0A1@helqlp.com>
+From: =?utf-8?B?5L2V57uP55CG?= <wa@helqlp.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5byg5YWI55Sf77ya5oKo55qE5L+h5Lu2?=
-Date: Mon, 14 Oct 2019 11:36:17 +0800
+Subject: =?utf-8?B?NDAyODU3562U5aSN77ya?=
+Date: Mon, 14 Oct 2019 17:50:16 +0800
 MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.5512
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: UNV2SEBEJMVWLPOCHQBC66NH6O7HPDI2
-X-Message-ID-Hash: UNV2SEBEJMVWLPOCHQBC66NH6O7HPDI2
-X-MailFrom: zsu@lynxfl.org
+Message-ID-Hash: TDXNSORBGC2JNAIHEXWJQSIVG2QWXUEY
+X-Message-ID-Hash: TDXNSORBGC2JNAIHEXWJQSIVG2QWXUEY
+X-MailFrom: wa@helqlp.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UNV2SEBEJMVWLPOCHQBC66NH6O7HPDI2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TDXNSORBGC2JNAIHEXWJQSIVG2QWXUEY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -39,7 +39,9 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-5p2l6IeqIHpzdUBseW54Zmwub3JnIOeahOS/oeS7tu+8mg0KIApfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0t
-IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0
-byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+6L2sICDlj5EuLi4uLi4NCuWPkeS7tuS6ujogIuS9lee7j+eQhiI7PHdhQGhlbHFscC5jb20+DQrl
+j5HpgIHml7bpl7Q6IDIwMTktMTAtMTQvIDE3OjUwOjIyDQrmlLbku7bkuro6ICJsaW51eC1udmRp
+bW0iPGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmc+DQogCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
+dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
+bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
