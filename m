@@ -1,30 +1,41 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8BF10F7A8
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 07:08:42 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F7710F873
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 08:13:03 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E523A1011367A;
-	Mon,  2 Dec 2019 22:12:02 -0800 (PST)
-Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8A63710113677
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Dec 2019 22:12:00 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 6131C1011367A;
+	Mon,  2 Dec 2019 23:16:24 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=41.215.235.242; helo=dedi-017-dc2.rsaweb.co.za; envelope-from=capitalalmal@gmail.com; receiver=<UNKNOWN> 
+Received: from dedi-017-dc2.rsaweb.co.za (unknown [41.215.235.242])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 0DD1B10113639;
+	Mon,  2 Dec 2019 23:16:21 -0800 (PST)
+Received: from [192.168.1.1] (unknown [201.232.31.140])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: support)
+	by dedi-017-dc2.rsaweb.co.za (Postfix) with ESMTPSA id 97F5064033F;
+	Mon, 14 Oct 2019 13:43:40 +0200 (SAST)
 MIME-Version: 1.0
-Subject: top mba colleges in bangalore
-From: abbsedu123@gmail.com
-To: linux-nvdimm@lists.01.org
-Date: Tue, 03 Dec 2019 06:12:00 -0000
-Message-ID: <20191203061200.2967.38101@new-ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.01.org/
-Message-ID-Hash: SJ6WEYI4JTHXUV2O5S26XRR3FJ2D5E7P
-X-Message-ID-Hash: SJ6WEYI4JTHXUV2O5S26XRR3FJ2D5E7P
-X-MailFrom: abbsedu123@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Content-Description: Mail message body
+Subject: Independent Financial Consultant., 242
+To: Recipients <capitalalmal@gmail.com>
+From: "Mr. Ryan Roger" <capitalalmal@gmail.com>
+Date: Mon, 14 Oct 2019 12:28:33 -0500
+Message-Id: <20191014114341.97F5064033F@dedi-017-dc2.rsaweb.co.za>
+Message-ID-Hash: KLCQEWPA2JXWKW5AZIZVQFEELMCPFVMU
+X-Message-ID-Hash: KLCQEWPA2JXWKW5AZIZVQFEELMCPFVMU
+X-MailFrom: capitalalmal@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: rr7035707@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SJ6WEYI4JTHXUV2O5S26XRR3FJ2D5E7P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KLCQEWPA2JXWKW5AZIZVQFEELMCPFVMU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -33,8 +44,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-ABBS is NBA Accredited (MBA Department), accredited with NAAC (National Assessment and Accreditation Council) and IACBE (International Assembly of Collegiate Business Education) for excellence in its performance in higher education. The award recognizes our best practices in imparting knowledge, student support systems and placements. The value added curriculum practiced at our campus has been effective in creating professional expertise and leadership qualities among our graduates. These programs include industrial visits, internships in industries, exposure to international arena, projects, soft skill lessons, augmentation, community development and entrepreneurship training.The institution is also proud for having been acclaimed as one of the top ranked B Schools in India.
-https://abbs.edu.in/
+Good Day ,
+
+My name is Mr. Ryan Rogers the Independent Financial Consultant. We are contacting you concerning funding of your business project. We are interested to partnership with you as we are seeking to diversify our financial portfolio into viable and lucrative business projects that worth it,
+
+We are most interested in partnerships business ventures in Medical and Health care projects, Real estate projects, mining projects, agricultural projects renewable energy projects, Oil and Gas, start-up projects and business expansions / Loan with lower rate,
+
+Your swift response is highly needed.
+
+Best Regard,
+Ryan Roger
+ 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
