@@ -1,65 +1,35 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC741D8320
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Oct 2019 00:02:16 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E8AD85C6
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Oct 2019 04:15:25 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9B67110FCC42D;
-	Tue, 15 Oct 2019 15:05:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3DE8810FCC42C
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Oct 2019 15:05:10 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id 60so18364622otu.0
-        for <linux-nvdimm@lists.01.org>; Tue, 15 Oct 2019 15:02:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jtOZCetYUsXhpNpVA58OlhfbLjdY11Hx60Lh2ugc+08=;
-        b=wDV1hamYv5KqJhN1ecA5M2SKVTYix6I/LJbkd9CSz//JQoHHkr64tBohIY0rCJHp9w
-         CZFmhCav8aPUXZP9e8jsWj0gfWEwXTOkIuAOnWssbKDCXcU8xFK9SjjEp3Q5xZpHRRpP
-         kH4lNr/DQ/EPR5KKZhs+aQcrW0mL8fMqCf7eYSwLfPA3abNJBqpxxo+F1lpOdCchdNhu
-         0lvo28mVYk4JSL63RxcWubwy5dYaOzY6JrdFrk5vB2T8XwEfMjaJFQsQNBNGIZ0pCKLh
-         IbntGpEUNq/jEOIaSkhAT2p8f3O2137D4ueHPX2JHIDoXW60Ulcs2+fuL33+SXSWSPim
-         Mcsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jtOZCetYUsXhpNpVA58OlhfbLjdY11Hx60Lh2ugc+08=;
-        b=njPsrA3MYurs6bEzHYk2XKvC7e4Nagz9gklQX0pIRW5JUaFcv9iLECQrtwM6ycEZPJ
-         YL/dJDve0zuhRUfQ+tZ2MWTt4ON6xV5m2o+F8OUu5OdBNApnXJPwoqbBRBdXGVrjsc1Z
-         WQ8cHwFZmR6xwTXnWn3XQVeDZ1SNC/kMweVugucvVWpg84f2kiTjZwp8BAAXqynPmUQt
-         tTCuTuQ0TzGsKZoGXY+d3nrx2LIu9vSFuVolPj/NKYgAMsoiLbrgkmXVpzLZt8jzNSEY
-         XRKppgOXCIRuPqWEu+sfsTJ/foMk/aS4vr4g8uOUCDJaMCSuBoCng/Z4eov/t43UB/Ui
-         spqA==
-X-Gm-Message-State: APjAAAVkQ0Bc7il0gkCeL2fXsxGH0TepMcR4w2uo6mYUMgQx2/mcXGnP
-	ESKSwKPHbeRgBFFOCuDAD2MX2Rt4NOjCCR0uX1HrTA==
-X-Google-Smtp-Source: APXvYqzPzSUdQX9cSGFEHru4nlzetdTS1vpg3FVAzQxZ+QSebAzzX9ly7t79ddu+5rbI5+/JKBdzyPmlLUFz/mtUpWY=
-X-Received: by 2002:a9d:5f11:: with SMTP id f17mr4011356oti.207.1571176931026;
- Tue, 15 Oct 2019 15:02:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id C783210FCC62D;
+	Tue, 15 Oct 2019 19:18:21 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=190.25.234.130; helo=static-190-25-234-130.static.etb.net.co; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
+Received: from static-190-25-234-130.static.etb.net.co (static-190-25-234-130.static.etb.net.co [190.25.234.130])
+	by ml01.01.org (Postfix) with ESMTP id 1770110FCC62C
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Oct 2019 19:18:14 -0700 (PDT)
+From: <linux-nvdimm@lists.01.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: linux-nvdimm@lists.01.org =?utf-8?B?6KKr6buR5LqG77yBIOeri+WNs+abtOaUueWvhuegge+8gQ==?=
+Date: 15 Oct 2019 15:03:11 -0600
+Message-ID: <001701d5839d$0587f8d4$6c21e480$@lists.01.org>
 MIME-Version: 1.0
-References: <20191015153302.15750-1-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20191015153302.15750-1-aneesh.kumar@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 15 Oct 2019 15:02:00 -0700
-Message-ID: <CAPcyv4ihjGGAOF0NK_23yuOpsdBY7M=UZWNt1KN3WnP_e9WZOg@mail.gmail.com>
-Subject: Re: [PATCH V1 1/2] libnvdimm/nsio: differentiate between probe
- mapping and runtime mapping
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: WDGW2RLSCM6XBPDZHRLQNTC33P2PJKLJ
-X-Message-ID-Hash: WDGW2RLSCM6XBPDZHRLQNTC33P2PJKLJ
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: Acv39b6uv59icudev39b6uv59icude==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
+Message-ID-Hash: DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4
+X-Message-ID-Hash: DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4
+X-MailFrom: linux-nvdimm@lists.01.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WDGW2RLSCM6XBPDZHRLQNTC33P2PJKLJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,29 +38,58 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 15, 2019 at 8:33 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> nvdimm core currently maps the full namespace to an ioremap range
-> while probing the namespace mode. This can result in probe failures
-> on architectures that have limited ioremap space.
+&#25105;&#38382;&#20505;&#20320;&#65281;
 
-Is there a #define for that limit?
+&#25105;&#26377;&#20010;&#22351;&#28040;&#24687;&#12290;
+15/06/2019 - &#22312;&#36825;&#19968;&#22825;&#65292;&#25105;&#25915;&#20987;&#20102;&#24744;&#30340;&#25805;&#20316;&#31995;&#32479;&#24182;&#23436;&#20840;&#35775;&#38382;&#20102;&#24744;&#30340;&#24080;&#25143; linux-nvdimm@lists.01.org&#12290;
 
-> nvdimm core can avoid this failure by only mapping the reserver block area to
-> check for pfn superblock type and map the full namespace resource only before
-> using the namespace. nvdimm core use ioremap range only for the raw and btt
-> namespace and we can limit the max namespace size for these two modes. For
-> both fsdax and devdax this change enables nvdimm to map namespace larger
-> that ioremap limit.
+&#23601;&#26159;&#36825;&#26679;&#12290;
+&#22312;&#24744;&#24403;&#22825;&#36830;&#25509;&#30340;&#36335;&#30001;&#22120;&#30340;&#36719;&#20214;&#20013;&#65292;&#23384;&#22312;&#19968;&#20010;&#28431;&#27934;&#12290;
+&#25105;&#39318;&#20808;&#25915;&#20987;&#20102;&#36825;&#20010;&#36335;&#30001;&#22120;&#24182;&#23558;&#24694;&#24847;&#20195;&#30721;&#25918;&#22312;&#19978;&#38754;&#12290;
+&#24403;&#24744;&#36890;&#36807;Internet&#36755;&#20837;&#26102;&#65292;&#25105;&#30340;&#26408;&#39532;&#23433;&#35013;&#22312;&#24744;&#35774;&#22791;&#30340;&#25805;&#20316;&#31995;&#32479;&#19978;&#12290;
 
-If the direct map has more space I think it would be better to add a
-way to use that to map for all namespaces rather than introduce
-arbitrary failures based on the mode.
+&#20043;&#21518;&#65292;&#25105;&#23436;&#25104;&#20102;&#20320;&#30340;&#30913;&#30424;&#36716;&#20648;&#65288;&#25105;&#26377;&#20320;&#25152;&#26377;&#30340;&#22320;&#22336;&#31807;&#65292;&#26597;&#30475;&#32593;&#31449;&#30340;&#21382;&#21490;&#35760;&#24405;&#65292;&#25152;&#26377;&#25991;&#20214;&#65292;&#30005;&#35805;&#21495;&#30721;&#21644;&#25152;&#26377;&#32852;&#31995;&#20154;&#30340;&#22320;&#22336;&#65289;&#12290;
 
-I would buy a performance argument to avoid overmapping, but for
-namespace access compatibility where an alternate mapping method would
-succeed I think we should aim for that to be used instead. Thoughts?
+&#19968;&#20010;&#26376;&#21069;&#65292;&#25105;&#24819;&#38145;&#23450;&#20320;&#30340;&#35774;&#22791;&#24182;&#35201;&#27714;&#23569;&#37327;&#36164;&#37329;&#35299;&#38145;&#12290;
+&#20294;&#25105;&#26597;&#30475;&#20102;&#24744;&#32463;&#24120;&#35775;&#38382;&#30340;&#32593;&#31449;&#12290; &#20320;&#26368;&#21916;&#27426;&#30340;&#36164;&#28304;&#20196;&#25105;&#38663;&#24778;&#12290;
+&#25105;&#35828;&#30340;&#26159;&#25104;&#20154;&#32593;&#31449;&#12290;
+
+&#25105;&#24819;&#35828; - &#20320;&#26159;&#20010;&#22823;&#21464;&#24577;&#32773;&#12290;&#20320;&#26377;&#19968;&#20010;&#20196;&#20154;&#30524;&#33457;&#32557;&#20081;&#30340;&#24187;&#24819;&#65281;
+
+&#22312;&#37027;&#20043;&#21518;&#65292;&#25105;&#24819;&#21040;&#20102;&#19968;&#20010;&#24819;&#27861;&#12290;
+&#25105;&#21046;&#20316;&#20102;&#20320;&#21916;&#27426;&#30340;&#25104;&#20154;&#32593;&#31449;&#30340;&#25130;&#22270;&#65288;&#20320;&#30693;&#36947;&#25105;&#30340;&#24847;&#24605;&#65292;&#26159;&#21527;&#65311;&#65289;&#12290;
+&#20043;&#21518;&#65292;&#25105;&#22312;&#27983;&#35272;&#26412;&#32593;&#31449;&#26102;&#25293;&#25668;&#20102;&#20320;&#21644;&#20320;&#30340;&#23089;&#20048;&#29031;&#29255;&#65288;&#25105;&#20351;&#29992;&#20102;&#20320;&#35774;&#22791;&#30340;&#30456;&#26426;&#65289;&#12290;
+&#32467;&#26524;&#24456;&#26834;&#65281; &#19981;&#35201;&#29369;&#35947;&#65281;
+
+&#25105;&#28145;&#20449;&#24744;&#19981;&#24819;&#21521;&#24744;&#30340;&#20146;&#25114;&#65292;&#26379;&#21451;&#25110;&#21516;&#20107;&#23637;&#31034;&#36825;&#20123;&#29031;&#29255;&#12290;
+&#25105;&#35748;&#20026;786&#32654;&#20803;&#23545;&#20110;&#25105;&#30340;&#27785;&#40664;&#26159;&#23569;&#37327;&#30340;&#12290;
+&#27492;&#22806;&#65292;&#25105;&#33457;&#20102;&#24456;&#22810;&#26102;&#38388;&#22312;&#20320;&#36523;&#19978;&#65281;
+
+&#25105;&#22312;&#27604;&#29305;&#24065;&#25509;&#21463;&#38065;&#12290;
+&#25105;&#30340;BTC&#38065;&#21253;&#65306; 1FM76fWQ6rGyCvjWojshgsbbCK6R8rLWJS
+
+&#24744;&#19981;&#30693;&#36947;&#22914;&#20309;&#34917;&#20805;&#27604;&#29305;&#24065;&#38065;&#21253;&#65311;
+&#22312;&#20219;&#20309;&#25628;&#32034;&#24341;&#25806;&#20013;&#20889;&#8220;&#22914;&#20309;&#34917;&#20805;btc&#38065;&#21253;&#8221;&#12290;
+&#36825;&#24456;&#31616;&#21333;&#12290;
+
+&#23545;&#20110;&#20184;&#27454;&#65292;&#20320;&#26377;&#20004;&#22825;&#22810;&#19968;&#28857;&#65288;&#24688;&#22909;50&#23567;&#26102;&#65289;&#12290;
+&#21035;&#25285;&#24515;&#65292;&#35745;&#26102;&#22120;&#23558;&#22312;&#24744;&#25171;&#24320;&#27492;&#20449;&#20214;&#26102;&#24320;&#22987;&#12290;&#26159;&#30340;&#65292;&#26159;&#30340;..&#23427;&#24050;&#32463;&#24320;&#22987;&#20102;&#65281;
+
+&#20184;&#27454;&#21518;&#65292;&#25105;&#30340;&#30149;&#27602;&#21644;&#20320;&#30340;&#22949;&#21327;&#33258;&#21160;&#27585;&#28781;&#12290;
+&#22914;&#26524;&#25105;&#27809;&#26377;&#25910;&#21040;&#24744;&#25351;&#23450;&#30340;&#37329;&#39069;&#65292;&#24744;&#30340;&#35774;&#22791;&#23558;&#34987;&#23631;&#34109;&#65292;&#24744;&#30340;&#25152;&#26377;&#32852;&#31995;&#20154;&#37117;&#20250;&#25910;&#21040;&#24744;&#23089;&#20048;&#30340;&#29031;&#29255;&#12290;
+
+&#35201;&#35880;&#24910;&#65281;
+- &#19981;&#35201;&#35797;&#22270;&#25214;&#21040;&#24182;&#25703;&#27585;&#25105;&#30340;&#30149;&#27602;&#65281; &#65288;&#24744;&#30340;&#25152;&#26377;&#25968;&#25454;&#37117;&#24050;&#19978;&#20256;&#21040;&#36828;&#31243;&#26381;&#21153;&#22120;&#65289;
+- &#19981;&#35201;&#35797;&#22270;&#32852;&#31995;&#25105;&#65288;&#36825;&#26159;&#19981;&#21487;&#33021;&#30340;&#65292;&#25105;&#36890;&#36807;&#24744;&#30340;&#24080;&#25143;&#21521;&#24744;&#21457;&#36865;&#20102;&#27492;&#30005;&#23376;&#37038;&#20214;&#65289;
+- &#21508;&#31181;&#23433;&#20840;&#26381;&#21153;&#23545;&#24744;&#27809;&#26377;&#24110;&#21161;;&#26684;&#24335;&#21270;&#30913;&#30424;&#25110;&#38144;&#27585;&#35774;&#22791;&#20063;&#26080;&#27982;&#20110;&#20107;&#65292;&#22240;&#20026;&#24744;&#30340;&#25968;&#25454;&#24050;&#32463;&#22312;&#36828;&#31243;&#26381;&#21153;&#22120;&#19978;&#12290;
+
+&#38468;&#65306;&#25105;&#20445;&#35777;&#65292;&#20184;&#27454;&#21518;&#25105;&#19981;&#20250;&#25171;&#25200;&#20320;&#65292;&#22240;&#20026;&#20320;&#19981;&#26159;&#25105;&#21807;&#19968;&#30340;&#23458;&#25143;&#12290;
+&#36825;&#26159;&#19968;&#20010;&#40657;&#23458;&#30340;&#33635;&#35465;&#20934;&#21017;&#12290;
+
+&#20174;&#29616;&#22312;&#24320;&#22987;&#65292;&#25105;&#24314;&#35758;&#20320;&#20351;&#29992;&#22909;&#30340;&#38450;&#30149;&#27602;&#36719;&#20214;&#24182;&#23450;&#26399;&#26356;&#26032;&#65288;&#27599;&#22825;&#20960;&#27425;&#65289;&#65281;
+
+&#19981;&#35201;&#29983;&#25105;&#30340;&#27668;&#65292;&#27599;&#20010;&#20154;&#37117;&#26377;&#33258;&#24049;&#30340;&#24037;&#20316;&#12290;
+&#20877;&#35265;&#12290;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
