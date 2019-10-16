@@ -2,94 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E8AD85C6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Oct 2019 04:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5209D85C7
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Oct 2019 04:16:16 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C783210FCC62D;
-	Tue, 15 Oct 2019 19:18:21 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=190.25.234.130; helo=static-190-25-234-130.static.etb.net.co; envelope-from=linux-nvdimm@lists.01.org; receiver=<UNKNOWN> 
-Received: from static-190-25-234-130.static.etb.net.co (static-190-25-234-130.static.etb.net.co [190.25.234.130])
-	by ml01.01.org (Postfix) with ESMTP id 1770110FCC62C
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Oct 2019 19:18:14 -0700 (PDT)
-From: <linux-nvdimm@lists.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: linux-nvdimm@lists.01.org =?utf-8?B?6KKr6buR5LqG77yBIOeri+WNs+abtOaUueWvhuegge+8gQ==?=
-Date: 15 Oct 2019 15:03:11 -0600
-Message-ID: <001701d5839d$0587f8d4$6c21e480$@lists.01.org>
-MIME-Version: 1.0
-X-Mailer: Microsoft Office Outlook 11
-Thread-Index: Acv39b6uv59icudev39b6uv59icude==
-X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
-Message-ID-Hash: DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4
-X-Message-ID-Hash: DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4
-X-MailFrom: linux-nvdimm@lists.01.org
+	by ml01.01.org (Postfix) with ESMTP id F169C10FCC630;
+	Tue, 15 Oct 2019 19:19:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.42; helo=out30-42.freemail.mail.aliyun.com; envelope-from=zhangliguang@linux.alibaba.com; receiver=<UNKNOWN> 
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id BB27710FCB783
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Oct 2019 19:19:09 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=zhangliguang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0TfBKlGn_1571192160;
+Received: from localhost(mailfrom:zhangliguang@linux.alibaba.com fp:SMTPD_---0TfBKlGn_1571192160)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Wed, 16 Oct 2019 10:16:08 +0800
+From: luanshi <zhangliguang@linux.alibaba.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Keith Busch <keith.busch@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH] libnvdimm: fix kernel-doc notation
+Date: Wed, 16 Oct 2019 10:16:00 +0800
+Message-Id: <1571192160-54202-1-git-send-email-zhangliguang@linux.alibaba.com>
+X-Mailer: git-send-email 1.8.3.1
+Message-ID-Hash: TVSLKKKTCFNSQYWZCYRAIRSWUEVLJHMS
+X-Message-ID-Hash: TVSLKKKTCFNSQYWZCYRAIRSWUEVLJHMS
+X-MailFrom: zhangliguang@linux.alibaba.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DC6BLFN2KZNDXK4L5TIHCCPB7ZJFPGX4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TVSLKKKTCFNSQYWZCYRAIRSWUEVLJHMS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-&#25105;&#38382;&#20505;&#20320;&#65281;
+Fix kernel-doc notation in drivers/nvdimm/namespace_devs.c.
 
-&#25105;&#26377;&#20010;&#22351;&#28040;&#24687;&#12290;
-15/06/2019 - &#22312;&#36825;&#19968;&#22825;&#65292;&#25105;&#25915;&#20987;&#20102;&#24744;&#30340;&#25805;&#20316;&#31995;&#32479;&#24182;&#23436;&#20840;&#35775;&#38382;&#20102;&#24744;&#30340;&#24080;&#25143; linux-nvdimm@lists.01.org&#12290;
+Fixes: bf9bccc14c05 ("libnvdimm: pmem label sets and namespace instantiation.")
+Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
+---
+ drivers/nvdimm/namespace_devs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-&#23601;&#26159;&#36825;&#26679;&#12290;
-&#22312;&#24744;&#24403;&#22825;&#36830;&#25509;&#30340;&#36335;&#30001;&#22120;&#30340;&#36719;&#20214;&#20013;&#65292;&#23384;&#22312;&#19968;&#20010;&#28431;&#27934;&#12290;
-&#25105;&#39318;&#20808;&#25915;&#20987;&#20102;&#36825;&#20010;&#36335;&#30001;&#22120;&#24182;&#23558;&#24694;&#24847;&#20195;&#30721;&#25918;&#22312;&#19978;&#38754;&#12290;
-&#24403;&#24744;&#36890;&#36807;Internet&#36755;&#20837;&#26102;&#65292;&#25105;&#30340;&#26408;&#39532;&#23433;&#35013;&#22312;&#24744;&#35774;&#22791;&#30340;&#25805;&#20316;&#31995;&#32479;&#19978;&#12290;
-
-&#20043;&#21518;&#65292;&#25105;&#23436;&#25104;&#20102;&#20320;&#30340;&#30913;&#30424;&#36716;&#20648;&#65288;&#25105;&#26377;&#20320;&#25152;&#26377;&#30340;&#22320;&#22336;&#31807;&#65292;&#26597;&#30475;&#32593;&#31449;&#30340;&#21382;&#21490;&#35760;&#24405;&#65292;&#25152;&#26377;&#25991;&#20214;&#65292;&#30005;&#35805;&#21495;&#30721;&#21644;&#25152;&#26377;&#32852;&#31995;&#20154;&#30340;&#22320;&#22336;&#65289;&#12290;
-
-&#19968;&#20010;&#26376;&#21069;&#65292;&#25105;&#24819;&#38145;&#23450;&#20320;&#30340;&#35774;&#22791;&#24182;&#35201;&#27714;&#23569;&#37327;&#36164;&#37329;&#35299;&#38145;&#12290;
-&#20294;&#25105;&#26597;&#30475;&#20102;&#24744;&#32463;&#24120;&#35775;&#38382;&#30340;&#32593;&#31449;&#12290; &#20320;&#26368;&#21916;&#27426;&#30340;&#36164;&#28304;&#20196;&#25105;&#38663;&#24778;&#12290;
-&#25105;&#35828;&#30340;&#26159;&#25104;&#20154;&#32593;&#31449;&#12290;
-
-&#25105;&#24819;&#35828; - &#20320;&#26159;&#20010;&#22823;&#21464;&#24577;&#32773;&#12290;&#20320;&#26377;&#19968;&#20010;&#20196;&#20154;&#30524;&#33457;&#32557;&#20081;&#30340;&#24187;&#24819;&#65281;
-
-&#22312;&#37027;&#20043;&#21518;&#65292;&#25105;&#24819;&#21040;&#20102;&#19968;&#20010;&#24819;&#27861;&#12290;
-&#25105;&#21046;&#20316;&#20102;&#20320;&#21916;&#27426;&#30340;&#25104;&#20154;&#32593;&#31449;&#30340;&#25130;&#22270;&#65288;&#20320;&#30693;&#36947;&#25105;&#30340;&#24847;&#24605;&#65292;&#26159;&#21527;&#65311;&#65289;&#12290;
-&#20043;&#21518;&#65292;&#25105;&#22312;&#27983;&#35272;&#26412;&#32593;&#31449;&#26102;&#25293;&#25668;&#20102;&#20320;&#21644;&#20320;&#30340;&#23089;&#20048;&#29031;&#29255;&#65288;&#25105;&#20351;&#29992;&#20102;&#20320;&#35774;&#22791;&#30340;&#30456;&#26426;&#65289;&#12290;
-&#32467;&#26524;&#24456;&#26834;&#65281; &#19981;&#35201;&#29369;&#35947;&#65281;
-
-&#25105;&#28145;&#20449;&#24744;&#19981;&#24819;&#21521;&#24744;&#30340;&#20146;&#25114;&#65292;&#26379;&#21451;&#25110;&#21516;&#20107;&#23637;&#31034;&#36825;&#20123;&#29031;&#29255;&#12290;
-&#25105;&#35748;&#20026;786&#32654;&#20803;&#23545;&#20110;&#25105;&#30340;&#27785;&#40664;&#26159;&#23569;&#37327;&#30340;&#12290;
-&#27492;&#22806;&#65292;&#25105;&#33457;&#20102;&#24456;&#22810;&#26102;&#38388;&#22312;&#20320;&#36523;&#19978;&#65281;
-
-&#25105;&#22312;&#27604;&#29305;&#24065;&#25509;&#21463;&#38065;&#12290;
-&#25105;&#30340;BTC&#38065;&#21253;&#65306; 1FM76fWQ6rGyCvjWojshgsbbCK6R8rLWJS
-
-&#24744;&#19981;&#30693;&#36947;&#22914;&#20309;&#34917;&#20805;&#27604;&#29305;&#24065;&#38065;&#21253;&#65311;
-&#22312;&#20219;&#20309;&#25628;&#32034;&#24341;&#25806;&#20013;&#20889;&#8220;&#22914;&#20309;&#34917;&#20805;btc&#38065;&#21253;&#8221;&#12290;
-&#36825;&#24456;&#31616;&#21333;&#12290;
-
-&#23545;&#20110;&#20184;&#27454;&#65292;&#20320;&#26377;&#20004;&#22825;&#22810;&#19968;&#28857;&#65288;&#24688;&#22909;50&#23567;&#26102;&#65289;&#12290;
-&#21035;&#25285;&#24515;&#65292;&#35745;&#26102;&#22120;&#23558;&#22312;&#24744;&#25171;&#24320;&#27492;&#20449;&#20214;&#26102;&#24320;&#22987;&#12290;&#26159;&#30340;&#65292;&#26159;&#30340;..&#23427;&#24050;&#32463;&#24320;&#22987;&#20102;&#65281;
-
-&#20184;&#27454;&#21518;&#65292;&#25105;&#30340;&#30149;&#27602;&#21644;&#20320;&#30340;&#22949;&#21327;&#33258;&#21160;&#27585;&#28781;&#12290;
-&#22914;&#26524;&#25105;&#27809;&#26377;&#25910;&#21040;&#24744;&#25351;&#23450;&#30340;&#37329;&#39069;&#65292;&#24744;&#30340;&#35774;&#22791;&#23558;&#34987;&#23631;&#34109;&#65292;&#24744;&#30340;&#25152;&#26377;&#32852;&#31995;&#20154;&#37117;&#20250;&#25910;&#21040;&#24744;&#23089;&#20048;&#30340;&#29031;&#29255;&#12290;
-
-&#35201;&#35880;&#24910;&#65281;
-- &#19981;&#35201;&#35797;&#22270;&#25214;&#21040;&#24182;&#25703;&#27585;&#25105;&#30340;&#30149;&#27602;&#65281; &#65288;&#24744;&#30340;&#25152;&#26377;&#25968;&#25454;&#37117;&#24050;&#19978;&#20256;&#21040;&#36828;&#31243;&#26381;&#21153;&#22120;&#65289;
-- &#19981;&#35201;&#35797;&#22270;&#32852;&#31995;&#25105;&#65288;&#36825;&#26159;&#19981;&#21487;&#33021;&#30340;&#65292;&#25105;&#36890;&#36807;&#24744;&#30340;&#24080;&#25143;&#21521;&#24744;&#21457;&#36865;&#20102;&#27492;&#30005;&#23376;&#37038;&#20214;&#65289;
-- &#21508;&#31181;&#23433;&#20840;&#26381;&#21153;&#23545;&#24744;&#27809;&#26377;&#24110;&#21161;;&#26684;&#24335;&#21270;&#30913;&#30424;&#25110;&#38144;&#27585;&#35774;&#22791;&#20063;&#26080;&#27982;&#20110;&#20107;&#65292;&#22240;&#20026;&#24744;&#30340;&#25968;&#25454;&#24050;&#32463;&#22312;&#36828;&#31243;&#26381;&#21153;&#22120;&#19978;&#12290;
-
-&#38468;&#65306;&#25105;&#20445;&#35777;&#65292;&#20184;&#27454;&#21518;&#25105;&#19981;&#20250;&#25171;&#25200;&#20320;&#65292;&#22240;&#20026;&#20320;&#19981;&#26159;&#25105;&#21807;&#19968;&#30340;&#23458;&#25143;&#12290;
-&#36825;&#26159;&#19968;&#20010;&#40657;&#23458;&#30340;&#33635;&#35465;&#20934;&#21017;&#12290;
-
-&#20174;&#29616;&#22312;&#24320;&#22987;&#65292;&#25105;&#24314;&#35758;&#20320;&#20351;&#29992;&#22909;&#30340;&#38450;&#30149;&#27602;&#36719;&#20214;&#24182;&#23450;&#26399;&#26356;&#26032;&#65288;&#27599;&#22825;&#20960;&#27425;&#65289;&#65281;
-
-&#19981;&#35201;&#29983;&#25105;&#30340;&#27668;&#65292;&#27599;&#20010;&#20154;&#37117;&#26377;&#33258;&#24049;&#30340;&#24037;&#20316;&#12290;
-&#20877;&#35265;&#12290;
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index cca0a3b..5cfb1e9 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1900,7 +1900,7 @@ static int select_pmem_id(struct nd_region *nd_region, u8 *pmem_id)
+ /**
+  * create_namespace_pmem - validate interleave set labelling, retrieve label0
+  * @nd_region: region with mappings to validate
+- * @nspm: target namespace to create
++ * @ndindex: target namespace index to create
+  * @nd_label: target pmem namespace label to evaluate
+  */
+ static struct device *create_namespace_pmem(struct nd_region *nd_region,
+-- 
+1.8.3.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
