@@ -1,50 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E4CDA672
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Oct 2019 09:29:02 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C2B1DA682
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Oct 2019 09:33:24 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BBC2110FD2228;
-	Thu, 17 Oct 2019 00:31:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id 25A0610FD222A;
+	Thu, 17 Oct 2019 00:36:21 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B4A2210FD2228
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Oct 2019 00:31:47 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9H7OLJ7121137;
-	Thu, 17 Oct 2019 03:28:46 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2vpk3ehp5k-1
+	by ml01.01.org (Postfix) with ESMTPS id B4C2910FCD20F
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Oct 2019 00:36:14 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9H7VaMj128561;
+	Thu, 17 Oct 2019 03:33:14 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2vpjyfa2de-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2019 03:28:46 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9H7QIXu021201;
-	Thu, 17 Oct 2019 07:28:45 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com [9.57.198.28])
-	by ppma01dal.us.ibm.com with ESMTP id 2vk6f7xc17-1
+	Thu, 17 Oct 2019 03:33:14 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+	by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9H7Vf00007943;
+	Thu, 17 Oct 2019 07:33:13 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com [9.57.198.26])
+	by ppma02wdc.us.ibm.com with ESMTP id 2vk6f7khrh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2019 07:28:45 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-	by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9H7Sii553543422
+	Thu, 17 Oct 2019 07:33:13 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
+	by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9H7XCSt13435590
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Oct 2019 07:28:44 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26AFF112063;
-	Thu, 17 Oct 2019 07:28:44 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD35C112061;
-	Thu, 17 Oct 2019 07:28:42 +0000 (GMT)
+	Thu, 17 Oct 2019 07:33:12 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B1604AE05F;
+	Thu, 17 Oct 2019 07:33:12 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36F43AE062;
+	Thu, 17 Oct 2019 07:33:11 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.35.94])
-	by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu, 17 Oct 2019 07:28:42 +0000 (GMT)
+	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+	Thu, 17 Oct 2019 07:33:10 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com
-Subject: [PATCH v2] libnvdimm/nsio: differentiate between probe mapping and runtime mapping
-Date: Thu, 17 Oct 2019 12:58:39 +0530
-Message-Id: <20191017072839.31766-1-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3] libnvdimm/nsio: differentiate between probe mapping and runtime mapping
+Date: Thu, 17 Oct 2019 13:03:08 +0530
+Message-Id: <20191017073308.32645-1-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
@@ -53,10 +53,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
  malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
  clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=652 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910170064
-Message-ID-Hash: QX6X7LFPBMRNFTRMGZTQYFKCFOR2JJVB
-X-Message-ID-Hash: QX6X7LFPBMRNFTRMGZTQYFKCFOR2JJVB
+ mlxlogscore=654 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910170065
+Message-ID-Hash: KBDZZXCJWJSIO3JJXPWDXWXQGE5BDA7F
+X-Message-ID-Hash: KBDZZXCJWJSIO3JJXPWDXWXQGE5BDA7F
 X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -64,7 +64,7 @@ CC: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QX6X7LFPBMRNFTRMGZTQYFKCFOR2JJVB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KBDZZXCJWJSIO3JJXPWDXWXQGE5BDA7F/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -78,9 +78,9 @@ while probing the namespace mode. This can result in probe failures
 on architectures that have limited ioremap space.
 
 For example, with a large btt namespace that consumes most of I/O remap
-range, depending on the sequence of namespace initialization, we can find
+range, depending on the sequence of namespace initialization, the user can find
 a pfn namespace initialization failure due to unavailable I/O remap space
-which we use for temporary mapping.
+which nvdimm core uses for temporary mapping.
 
 nvdimm core can avoid this failure by only mapping the reserver block area to
 check for pfn superblock type and map the full namespace resource only before
@@ -88,6 +88,9 @@ using the namespace.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
+Changes from v2:
+* update changelog
+
 Changes from V1:
 * update changelog
 * update patch based on review feedback.
