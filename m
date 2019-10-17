@@ -2,106 +2,108 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE85DB123
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Oct 2019 17:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 899F2DB682
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Oct 2019 20:46:52 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1DDD5100DC3D0;
-	Thu, 17 Oct 2019 08:34:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	by ml01.01.org (Postfix) with ESMTP id 65128100DC3CD;
+	Thu, 17 Oct 2019 11:49:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.5.102; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=ucheok@hotmail.com; receiver=<UNKNOWN> 
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-oln040092005102.outbound.protection.outlook.com [40.92.5.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E07AA100DC3C9
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Oct 2019 08:34:27 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 Oct 2019 08:31:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,308,1566889200";
-   d="scan'208";a="226202626"
-Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
-  by fmsmga002.fm.intel.com with ESMTP; 17 Oct 2019 08:31:28 -0700
-Received: from fmsmsx151.amr.corp.intel.com (10.18.125.4) by
- FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 17 Oct 2019 08:31:28 -0700
-Received: from crsmsx101.amr.corp.intel.com (172.18.63.136) by
- FMSMSX151.amr.corp.intel.com (10.18.125.4) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 17 Oct 2019 08:31:27 -0700
-Received: from crsmsx102.amr.corp.intel.com ([169.254.2.18]) by
- CRSMSX101.amr.corp.intel.com ([169.254.1.128]) with mapi id 14.03.0439.000;
- Thu, 17 Oct 2019 09:31:25 -0600
-From: "Weiny, Ira" <ira.weiny@intel.com>
-To: luanshi <zhangliguang@linux.alibaba.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>, "Busch, Keith" <keith.busch@intel.com>
-Subject: RE: [PATCH v1] libnvdimm: fix kernel-doc notation
-Thread-Topic: [PATCH v1] libnvdimm: fix kernel-doc notation
-Thread-Index: AQHVhIl0HtXbMJbt5Uu8f+JzaDzlzKde9oyw
-Date: Thu, 17 Oct 2019 15:31:24 +0000
-Message-ID: <2807E5FD2F6FDA4886F6618EAC48510E92B4F88E@CRSMSX102.amr.corp.intel.com>
-References: <1571275380-28209-1-git-send-email-zhangliguang@linux.alibaba.com>
-In-Reply-To: <1571275380-28209-1-git-send-email-zhangliguang@linux.alibaba.com>
+	by ml01.01.org (Postfix) with ESMTPS id 0FD37100DC3CB
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Oct 2019 11:49:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZI3WnmJADt/XwBAImIyH58kLPa1dKLHMFTIH/euVSAteQCNe0vX1dOJxw04aNlGfcBsTLabdNkI6FknV74UXzFF7LNPTZubE3DuLqvOFaE8YYXs0GCXjCqZlj+mUz75nroXdbeRyOG0dQinpejg3qF0vkbjICAgc5tSRyjIelVkAAXreBD+7O0DeTdcDpzETFnO1EqOLRDlhzcdnP5HtXg4a5h5XTM6Jrcb7Xu0kAkvObdOWTBFYSaQQy+2NWiAJvuULyfOhLm/HZS8WIxshzZL5AR3OkG3I6SOeEViNwpAuznGegCfYxxKmd6ETyqb8QEg0MOUp340JC77qwjA5zA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cTjzulFiltOVQqiRcxEgDNboEgSa4jskgSdgaJfnCnI=;
+ b=TFPKQODL/WvzcPdeX2iQguRFUt25WtXjnhwD6YkPM0XY7+6SjZI3MoxvufI4MEr0eWibu1I7uxFJ9G5qd0SOy1ZmAQpvP5nd/67/rLnRPqMXH+uNY+GL/j0M5qc9S59i1i5aEfXsHdYEI60ouok3WCoLeyWc9y9zvEJiDOWMhXJzc1DVjySxRCYZmF9bm4+TL0tvCjUA4wwnuO962cR2Eg9X7qI//I7CdqQXcgKZ9hQiv7vkMKax37IiUtJzra198WiAxhNcE9TZ7IAGEn8WwgTXY3g4OYYF02EtdCPR3A6FZuGyUAykz4Caxlt3bl/OE4onp9y2IQbqV/Xs0CJiKA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cTjzulFiltOVQqiRcxEgDNboEgSa4jskgSdgaJfnCnI=;
+ b=eYH5lsJHT4LMieMyHv0hXrFRCDlrCSsVlldCnzeaYCYanvC6V1VeZA8ExRuSD/TqRLbgiE2uCrEH5hsQk5B10zxQjzGnnReclBfU9OZCzp0PcFB3zM/7JCSlLMt5B+orN5fGc7+jelGwGk7jCAqmKlMYV70p20zppioGzUa12ZjP9xPH7wo4A5G6s3KiiKC9Q6owJYWnegxmws+hiVfK1Ur9q+2V3QKKvIzMfflWKYaZ9JXEcgMd5bL/giKDWbAzWS/kJWK/qylfhwkoP7ydyoIxhopWbTpGqHIjCtwAt2gp3yjqcwpiMWgCdzRkeQfyo6nx3FwhpdFfRiDw4L8ALQ==
+Received: from BL2NAM02FT061.eop-nam02.prod.protection.outlook.com
+ (10.152.76.56) by BL2NAM02HT019.eop-nam02.prod.protection.outlook.com
+ (10.152.76.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2367.14; Thu, 17 Oct
+ 2019 18:46:45 +0000
+Received: from BN7PR06MB3986.namprd06.prod.outlook.com (10.152.76.51) by
+ BL2NAM02FT061.mail.protection.outlook.com (10.152.77.7) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2367.14 via Frontend Transport; Thu, 17 Oct 2019 18:46:45 +0000
+Received: from BN7PR06MB3986.namprd06.prod.outlook.com
+ ([fe80::b07f:358e:6025:a7a8]) by BN7PR06MB3986.namprd06.prod.outlook.com
+ ([fe80::b07f:358e:6025:a7a8%7]) with mapi id 15.20.2347.023; Thu, 17 Oct 2019
+ 18:46:45 +0000
+From: Elizabeth prosser <ucheok@hotmail.com>
+To: "alexander.levin@microsoft.com" <alexander.levin@microsoft.com>,
+	"dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+	"vishal.l.verma@intel.com" <vishal.l.verma@intel.com>, "ira.weiny@intel.com"
+	<ira.weiny@intel.com>, "linux-nvdimm@lists.01.org"
+	<linux-nvdimm@lists.01.org>, "mb@lightnvm.io" <mb@lightnvm.io>,
+	"mpe@ellerman.id.au" <mpe@ellerman.id.au>, "agust@denx.de" <agust@denx.de>,
+	"alistair@popple.id.au" <alistair@popple.id.au>, "oss@buserror.net"
+	<oss@buserror.net>
+Subject: wish you all the best.
+Thread-Topic: wish you all the best.
+Thread-Index: AQHVhRsolmsRhCIG50i3+QortTIqLg==
+Date: Thu, 17 Oct 2019 18:46:45 +0000
+Message-ID: 
+ <BN7PR06MB3986BDB74C60B7A996A60919D06D0@BN7PR06MB3986.namprd06.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMDExODNjZDctNmJmYi00YThkLTkwYjgtNjE3NDQ0Y2Q2NDJjIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidTNmTjd1Y3J3UFdVWTE5RGFLckNlWFRxV3VDMUJhbFNQakZXVXp1Nzl3WTJnY0hNK0ZWaE5jNW5cL1NsTWRpTEQifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [172.18.205.10]
-Content-Type: text/plain; charset="us-ascii"
+x-incomingtopheadermarker: 
+ OriginalChecksum:6F030215F8925230F3709F4AA0D52D936D27498DCCC74DD700BA9B06CD49DFFA;UpperCasedChecksum:171BC0CBD0BE2878E9191F289E232F2F6404F1B5482CAC45DED49C71F7F10097;SizeAsReceived:7010;Count:41
+x-tmn: [/HxXlZLDRQUi4kA3U9hUGjN95jE4yn1P]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 41
+x-eopattributedmessage: 0
+x-ms-traffictypediagnostic: BL2NAM02HT019:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ lM/mHudpmxvAMcz/k2L1oH7Y0NDt5IUGkHJ0mCLHdfLpLBpBlODi3R7UkgQzKRVdfrPI9P/o4gR3MliA58qJTbrOIbV24CjyQLG3OyXCnco2uPzL3J/77nhf0us45+t+apALfkdCcmmBqGC1XB3+VcaLYUSDSTIxsNqsJGbWnFe4fRNxGQuLb9CebXUWkHKO
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-Message-ID-Hash: AX7UCGTVRHERMTTG2QMGKTQZXRNUIV77
-X-Message-ID-Hash: AX7UCGTVRHERMTTG2QMGKTQZXRNUIV77
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+X-OriginatorOrg: hotmail.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: f75b0966-a51f-4139-8a20-08d753325c1c
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Oct 2019 18:46:45.4389
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL2NAM02HT019
+Message-ID-Hash: DJFCOHM74CORW2N3SWLBTUCNJN5AA5XY
+X-Message-ID-Hash: DJFCOHM74CORW2N3SWLBTUCNJN5AA5XY
+X-MailFrom: ucheok@hotmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AX7UCGTVRHERMTTG2QMGKTQZXRNUIV77/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PS3JYM64UK6VKDSZJQEBWJFPLUTD7EL4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> Subject: [PATCH v1] libnvdimm: fix kernel-doc notation
-> 
-> Fix kernel-doc notation in drivers/nvdimm/namespace_devs.c.
-> 
-> Fixes: bf9bccc14c05 ("libnvdimm: pmem label sets and namespace
-> instantiation.")
-> Signed-off-by: Liguang Zhang <zhangliguang@linux.alibaba.com>
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-
-> ---
->  drivers/nvdimm/namespace_devs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/nvdimm/namespace_devs.c
-> b/drivers/nvdimm/namespace_devs.c index cca0a3b..3851245 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1900,7 +1900,7 @@ static int select_pmem_id(struct nd_region
-> *nd_region, u8 *pmem_id)
->  /**
->   * create_namespace_pmem - validate interleave set labelling, retrieve
-> label0
->   * @nd_region: region with mappings to validate
-> - * @nspm: target namespace to create
-> + * @nsindex: target namespace index to create
->   * @nd_label: target pmem namespace label to evaluate
->   */
->  static struct device *create_namespace_pmem(struct nd_region
-> *nd_region,
-> --
-> 1.8.3.1
+ I hope this email finds you.
+I want to know if you received the last message I sent you?
+I really want to hear from you.
+wish you all the best.
+Elizabeth prosser
+I look forward to your response.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
