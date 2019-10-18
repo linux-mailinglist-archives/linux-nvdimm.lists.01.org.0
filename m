@@ -2,63 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294A6DCE84
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 20:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C5FDCE87
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 20:46:07 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AB67B10FC6E5E;
-	Fri, 18 Oct 2019 11:45:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DDAB710FCB384;
+	Fri, 18 Oct 2019 11:48:11 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
 Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9A1D210FC6E5D
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:45:54 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id 89so5778029oth.13
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:43:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id A2C1A10FCB383
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:48:09 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id m19so5842993otp.1
+        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:46:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=W7hSdgPfvwT/ILyoHXl6EmXRqHLkcBjnuGBU3J0Zak4=;
-        b=fqt3ha2AQZkvJo41yJwLXY5DKPAUxF5iQvYKJtNY1HdiE8v5EBX4cuuKe34wgpoZ9G
-         AeDj5waISeN0Ci5wnD+m0lZt6oWJ+JWnkI31jlugBT76aN8r1QFU4Y4d5TJ4uT74wzch
-         3+GvR6ishoaym2QyB4dEoS1SJJQ5YlY3Xqjw0k6uF9TqsvDViuir+Aum0nK40w7QMFiA
-         xPGUIs/0Eqdagt7M4lJQzgxsxEL8oSsvrnhjnGD8haqbG4Suv5ALmh7IXRdakaxGS9XJ
-         fFgGtEugX4ImZ7JhY77F9RaonMulcCNSscHikIElrQz1glo5ETMe4AdfC3x6RTUVBCZ/
-         iRtQ==
+        bh=Q9ffWUce4+kObRVvhJ6n/yINSZCparJV/3JVrntUOpA=;
+        b=Yod/43l32W8c1sclBov8FbkvsBKc9C0W0nlmkHkMIHOtAOiEf+PAce8Wr8WRQ3+0l4
+         tGvUnoRPvX2HymjsygojoNwUe2d+lL9dNwKgerK6no+8B9+sgig932prScMCg+za6lUE
+         4UBXWXk58vSV32f0QDcnl4cDou4sLhKDGQTzh5aN4h93Dg5929DQgMCKxz4HQgfHZtEn
+         h2dsHmlxuzlMJ8311w43P8BUPwDUlG2yLVSJaVNPfFaKcXv/tv2x0EkdllpPfIBIew6x
+         yr7jfGraUjdhp9s/0qhTGXxa0ZeiWsaJawdgOgXH1MkS+g+bukJEIh3k7JVvlCp+GDTX
+         9vkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=W7hSdgPfvwT/ILyoHXl6EmXRqHLkcBjnuGBU3J0Zak4=;
-        b=bpzHNkxhWMbLuNDuXoe9ilKRBScatOfplw07f1VxZMWthLPGJhzXUH5NIJgGh/PV9E
-         f3jrLLW/abrs8jIr9Ok2n+fiLPhs9gwG6m5xKUKpBdEcx1iXcrg46+Z1vmErULkCSf1P
-         +EXJLWBJv2jCvz3yyAHguIBXQMJFWeYM86oJaR6+oTeM7YcDp1pqfEon7Hivhqz7Zikl
-         xz6W9DC6migJJ6B+2jfhSckIzQG3x3k9kT7NT3Jtz6PGQ/qfmNXNeZhgSwklik3NJqL7
-         gGBGLImvLMVp5phFOedvPI6uGqMNw7JWr07iTG8zTE0B6H7HfwRg2ZhCew42owLIKlPl
-         TeZA==
-X-Gm-Message-State: APjAAAWjspp5mtC9X0uE3yknjXNJhOOKdEUEyQ2vCRC29M7cXTsGO+R3
-	igCwssXk5NapHENRzgSR7xSRvunVuXZ9T1t+U9dvwA==
-X-Google-Smtp-Source: APXvYqw0R8WcBTJ+WQckxwd2QbhKiOtTnFs0z4BzcCMRmclhqiudO7gP8j2I8Si9NG3BnOx9PmVKuodRR9xJBbE+kh4=
-X-Received: by 2002:a9d:7843:: with SMTP id c3mr8256796otm.71.1571424227725;
- Fri, 18 Oct 2019 11:43:47 -0700 (PDT)
+        bh=Q9ffWUce4+kObRVvhJ6n/yINSZCparJV/3JVrntUOpA=;
+        b=I4JlfWG0aI11/+UVgn6NnGZkooVlEcoW6IjbJ44G5c97Iv7uBGuQwVXFM5jJi/NMMX
+         13Uzlj6luMFhmW+J6QiTM2wgRNJJsnWq02Gh72SwF2GMI1i5tDJlyrfVmAym0ARxJ6Dh
+         SS5JiKjXKjkVuKstky23KbVXMzsdeWpevgUeTbBeBtlDoZvnyjk5yEhHkfWGZL11mzFE
+         33a8wKW1EBQ/8+fprC+FZU8/4DYNKCUrxwa9TOkWAiaLxvGI6nyIAm/o0DbnF/oNUIV0
+         vJSg33GkZ9v2HBqNi2kyvRZepcZmxvX6AoDs5FEqF/+DKjIzWaVNMOJ4Xr35ILUzZDi/
+         XtPg==
+X-Gm-Message-State: APjAAAWRRGIIVq6vMKsYuCbYBCuVtgrjep/mUPj09JN/vwm/EAa3XXEJ
+	bSzBJ8Av4UeVJZZWdXHsoTQyrfEkkjgbkZ+e8+nxYQ==
+X-Google-Smtp-Source: APXvYqzxqaCFBIN7eLzv5tqNGCQKb+7za6q/H731j1JNbC8UIIPX++/bcVEKN0XOd9apYGwgyZ++ZZ+38b+4E+OjrfY=
+X-Received: by 2002:a05:6830:15ca:: with SMTP id j10mr1289027otr.247.1571424362927;
+ Fri, 18 Oct 2019 11:46:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191002234925.9190-1-vishal.l.verma@intel.com> <20191002234925.9190-2-vishal.l.verma@intel.com>
-In-Reply-To: <20191002234925.9190-2-vishal.l.verma@intel.com>
+References: <20191002234925.9190-1-vishal.l.verma@intel.com> <20191002234925.9190-3-vishal.l.verma@intel.com>
+In-Reply-To: <20191002234925.9190-3-vishal.l.verma@intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 18 Oct 2019 11:43:36 -0700
-Message-ID: <CAPcyv4j0-fkCu-8fR254yK7caw1Sv+YZe+LXP9v=TYpGKXwECQ@mail.gmail.com>
-Subject: Re: [ndctl PATCH 01/10] libdaxctl: refactor path construction in op_for_one_memblock()
+Date: Fri, 18 Oct 2019 11:45:51 -0700
+Message-ID: <CAPcyv4hjBsjR-vx2OJ6J1u51_jvhZYVe89u-6kjQVHANWiNaDQ@mail.gmail.com>
+Subject: Re: [ndctl PATCH 02/10] libdaxctl: refactor memblock_is_online() checks
 To: Vishal Verma <vishal.l.verma@intel.com>
-Message-ID-Hash: CDULU3CMJKKH4JYQOLTKZOFSTL5DYYZY
-X-Message-ID-Hash: CDULU3CMJKKH4JYQOLTKZOFSTL5DYYZY
+Message-ID-Hash: ZWD2WZJZ5VMOUXNGQM5QRFFORU2MO2PN
+X-Message-ID-Hash: ZWD2WZJZ5VMOUXNGQM5QRFFORU2MO2PN
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ben Olson <ben.olson@intel.com>, Michal Biesek <michal.biesek@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CDULU3CMJKKH4JYQOLTKZOFSTL5DYYZY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZWD2WZJZ5VMOUXNGQM5QRFFORU2MO2PN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,19 +69,20 @@ Content-Transfer-Encoding: 7bit
 
 On Wed, Oct 2, 2019 at 4:49 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> In preparation for memblock operations to check additional sysfs
-> attributes in the memoryXXX block, 'path' can't be prematurely set
-> to the memoryXXX/state file.
->
-> Push down path construction into each memory op helper, so that each
-> helper gets an opportunity to reconstruct and act upon multiple paths.
+> The {online,offline}_one_memblock() helpers both open-coded the check
+> for whether a block is online. There is already a function to perform
+> this check - memblock_is_online(). Consolidate the checking using this
+> helper everywhere it is applicable.
 >
 > Cc: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> ---
+>  daxctl/lib/libdaxctl.c | 90 +++++++++++++++++-------------------------
+>  1 file changed, 37 insertions(+), 53 deletions(-)
 
-Makes sense:
+Looks good,
 
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
