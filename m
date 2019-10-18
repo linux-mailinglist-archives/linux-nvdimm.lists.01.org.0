@@ -1,76 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE19DC51D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 14:37:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333EFDCAC2
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 18:16:49 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D65F710FC66D8;
-	Fri, 18 Oct 2019 05:40:05 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4CE05100DC1EC;
+	Fri, 18 Oct 2019 09:18:54 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 870BB10FC66D7
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 05:40:02 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9ICY1Te041516;
-	Fri, 18 Oct 2019 12:37:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=jjxfyzdJ1DBzufbew6BAqGAiJy4K7X6iQAV3wpA/e8Q=;
- b=cxa/ORzpbTVYnDdbYC6MD5SKE3vjaqqgIwwL3n82CIp1PBpzp2Rd0IPa2nLBUToR/YJ0
- gFnqF63JkHJCZSDlg951JFzqO7eRPDZ0EVR7Uk81oKshMGSiIqzi+CUcPPmY7WjtmE9O
- mfrBnBtY8YFPDCrutVSKZVi0qOdnieLPXhqz80jHG4eKoWJYo198POj2YSQ3Z9SD8yuI
- zjo5oVAy+6eqKhOpfQn2BW2WRhC9Nj1OK62RJXUH6/aHP+R0FQxM8ftbFf3DhEJsMlvi
- 38dXJqMOc9mdPHbeP36IDxBDOgqBibo0o0LPo4NqXt86UchqnR8tbAXEC6mYEdV7rGY6 3A==
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-	by userp2130.oracle.com with ESMTP id 2vq0q4bnr0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Oct 2019 12:37:47 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-	by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9ICX7vw133010;
-	Fri, 18 Oct 2019 12:35:46 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by userp3030.oracle.com with ESMTP id 2vq0dxfwr5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Oct 2019 12:35:46 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9ICZiws009665;
-	Fri, 18 Oct 2019 12:35:44 GMT
-Received: from mwanda (/41.57.98.10)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Fri, 18 Oct 2019 12:35:44 +0000
-Date: Fri, 18 Oct 2019 15:35:34 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH] acpi/nfit: unlock on error in scrub_show()
-Message-ID: <20191018123534.GA6549@mwanda>
+	by ml01.01.org (Postfix) with ESMTPS id D8B21100DC1EB
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 09:18:52 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id g13so5414773otp.8
+        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 09:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5yvne9gR5NX8diVvQ4owtsBgM2mX2Xb63EAQlH8HuKk=;
+        b=pgtBz1yNdYHNJjI2qaamNbVambOK9yJQgeULnvuFlYsPJ9Rjw1N2d9H+8UMr9eWj3b
+         9liGZz4th/SqPt1msrv5ZhJ9X9azJiH5HNasIcgScD598JWlRWnzuFGS5AXysqgA6HLk
+         gwKe5zRem+TLue5OOjkQh/IQhuxj1AIg1HfVEcb//hOpoKtgw5H/2dP9kiqZLYOx1QBF
+         SrL6WQzrY22NyTxaL8lcVppjuosDDGcqNgrGBBEmn5Oh8WYlAZ4hC7itFji5GF+ZbDMS
+         QAID4k1OHaUbZNUNfqTZiKItV2l49Gld9cwb/kfcjD69FsTkXtRptAEHg/UKD/mgPmFj
+         rfLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5yvne9gR5NX8diVvQ4owtsBgM2mX2Xb63EAQlH8HuKk=;
+        b=Ycyfk7Fpg2Ef5eU3FT4vTWkiI3XaH+KXl0eVGRaxH5yyLM/RkBHq9uep0WSdL7YUlc
+         oIVdB1bc133I2PtSEywMqGg/hdXSsRIhDcfbumg4S6hFxiDxa/6y2pznkewMUqo415ov
+         tMS39UA6clVDGQzEtUcnJta50U4OmY1Vre8agbOueM+KWChun57rwJ+td3uG6yvkvkSI
+         kVBlq9N1ChIVI0y8J5Z/Odd6TxQBMJ3exUYbhTCTEMbTchK7zhqmDnGc5zy2Jj876C57
+         d1yy5pY3ujig0fRUMdo1GVu/LHiB8QzRz+UXj70hWpt+eYI6yymbx55JUh6l1/NF5nhk
+         O6rA==
+X-Gm-Message-State: APjAAAWvACd7umAcBJ3BYpvT6pw+EZTdn9zTABZ7BZobAcflStW0SSRi
+	bmGyH8Q1j+AUkacsiVF9bFImnss5Jc+eaajv8oVixA==
+X-Google-Smtp-Source: APXvYqyblv3J/xJHeQdDv4C30Sjo0Fd3shSE2mry0JpF/Y+67xf+0kg0irQ3y+5bIupfWe2BJ5cEte7rGplRl+cUL8w=
+X-Received: by 2002:a9d:7c92:: with SMTP id q18mr8454155otn.363.1571415404227;
+ Fri, 18 Oct 2019 09:16:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910180118
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910180118
-Message-ID-Hash: NNM5L3E4VFJOTFXBJEHB6F6VGX6L3365
-X-Message-ID-Hash: NNM5L3E4VFJOTFXBJEHB6F6VGX6L3365
-X-MailFrom: dan.carpenter@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20191018123534.GA6549@mwanda>
+In-Reply-To: <20191018123534.GA6549@mwanda>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 18 Oct 2019 09:16:33 -0700
+Message-ID: <CAPcyv4jm7kiayfHnBcm7mNW2NeJ81LeUVphMYG0Tq50is-tQ0A@mail.gmail.com>
+Subject: Re: [PATCH] acpi/nfit: unlock on error in scrub_show()
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Message-ID-Hash: HHK6RCYTHIW424AMZGVGRZPKBGFXCB3N
+X-Message-ID-Hash: HHK6RCYTHIW424AMZGVGRZPKBGFXCB3N
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NNM5L3E4VFJOTFXBJEHB6F6VGX6L3365/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HHK6RCYTHIW424AMZGVGRZPKBGFXCB3N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -79,30 +67,15 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-We change the locking in this function and forgot to update this error
-path so we are accidentally still holding the "dev->lockdep_mutex".
+On Fri, Oct 18, 2019 at 5:37 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> We change the locking in this function and forgot to update this error
+> path so we are accidentally still holding the "dev->lockdep_mutex".
+>
+> Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/acpi/nfit/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index 1413324982f0..14e68f202f81 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -1322,7 +1322,7 @@ static ssize_t scrub_show(struct device *dev,
- 	nfit_device_lock(dev);
- 	nd_desc = dev_get_drvdata(dev);
- 	if (!nd_desc) {
--		device_unlock(dev);
-+		nfit_device_unlock(dev);
- 		return rc;
- 	}
- 	acpi_desc = to_acpi_desc(nd_desc);
--- 
-2.20.1
+Looks good to me, thanks Dan.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
