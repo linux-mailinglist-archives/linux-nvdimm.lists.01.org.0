@@ -1,65 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84EADCEC3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 20:55:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1389ADCF23
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 21:12:20 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B45F910FCB38A;
-	Fri, 18 Oct 2019 11:57:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2130810FCB394;
+	Fri, 18 Oct 2019 12:14:24 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5FE0F10FCB389
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:57:02 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id z6so5849609otb.2
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 11:54:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uvsx2AvcKxSbMaNB833x80IF/Z9NSQilfUtBUVNFIcs=;
-        b=E4cZ4PIOwIZLkMnJuOhVyyZ0dGJlTJ279vUZEhH2uJuY0vTXxHP2gasMI379SUQaNK
-         Kxo0OGozRCVt1PdoxBFn9s+0LE3wGyN2v7PJQILahcxfMe4Sls129fWAJEqu0VOFyHlI
-         ZAR1/ZTpzUgkaE2fG6MxTuamgZ0KtTc6aruFkiv2s4HpU8Sphs3MY11l6OYYUJPcMNKk
-         Y6Ns6VK4udVMwBA1uPLXowzqIgABYe9F47rxFrY1VIvkfsfkL9Y9FSZe2uNw8iVthDwf
-         jA2dG49Sj98pJz/RDSs9X59tUfCqV160pMAcgfijlp9OaHa9sHwJYUyTa5ICa0bryvSj
-         Fj1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uvsx2AvcKxSbMaNB833x80IF/Z9NSQilfUtBUVNFIcs=;
-        b=eh1RCXN+MAXmaL9rGA2i+CT2aOZsoqZ/ze1ZlFuTedCM18EFVmjD1oqmTp8EWkDgR4
-         JC34NUMAQ2mN9D8q3RT4MXtvnOBPQnk68We8aNWFh2QeOQ7QwC5VxZR3jx8PaHv8/fK4
-         gNnG8VTe8fpFzrISUj1XoX9CuSEkUKfwMF5Y+IGP70c20I4UcHKxiiXQTdkCO4VWMWvX
-         QdABcY3vksbG4/iGxgugLIyxHzv4HSn2fK5mk0JGJh2BsKvHLHslUKZ0cxIDKySe4Yt+
-         FkA+d32CLptz7UjFYBjweoHXzEiM22/94VH0dwzoRVfGLn27VoDySk6Q7RLzoTGOt2cz
-         UC4w==
-X-Gm-Message-State: APjAAAWqzvpv1EqlY/V56/QqoWoWaQzW6r0TO5QtBUAcdYFlPV5Gfv8I
-	vyBTnN70n1+2Z/Byy+znD7ZEweoE/Ngyo8ovMhJArg==
-X-Google-Smtp-Source: APXvYqy7Fm6fwdYWEVRidG+NA27sHCDjR55NXqL6wrKXc0OVyzE5LPA+dNurK1E+EzsP6oAfp7wO4kJ+DaiUDBLwEz4=
-X-Received: by 2002:a9d:3ee:: with SMTP id f101mr8713176otf.126.1571424895548;
- Fri, 18 Oct 2019 11:54:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4E2B710FCB393
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 12:14:22 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Oct 2019 12:12:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,312,1566889200";
+   d="scan'208";a="200798058"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga006.jf.intel.com with ESMTP; 18 Oct 2019 12:12:15 -0700
+Date: Fri, 18 Oct 2019 12:12:14 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] acpi/nfit: unlock on error in scrub_show()
+Message-ID: <20191018191214.GB10455@iweiny-DESK2.sc.intel.com>
+References: <20191018123534.GA6549@mwanda>
 MIME-Version: 1.0
-References: <20191002234925.9190-1-vishal.l.verma@intel.com> <20191002234925.9190-5-vishal.l.verma@intel.com>
-In-Reply-To: <20191002234925.9190-5-vishal.l.verma@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 18 Oct 2019 11:54:44 -0700
-Message-ID: <CAPcyv4hb7vPbWhb3R5fyJH0H5OqRmhtVr=_D0tiYrkc_r8HpaQ@mail.gmail.com>
-Subject: Re: [ndctl PATCH 04/10] libdaxctl: add an API to determine if memory
- is movable
-To: Vishal Verma <vishal.l.verma@intel.com>
-Message-ID-Hash: DWXZHWDPMLCU3NW4M22TRPJBVFRNWTWL
-X-Message-ID-Hash: DWXZHWDPMLCU3NW4M22TRPJBVFRNWTWL
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <20191018123534.GA6549@mwanda>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: 4O2JCG22CQSFL7HBASPHDEM55STELJCH
+X-Message-ID-Hash: 4O2JCG22CQSFL7HBASPHDEM55STELJCH
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ben Olson <ben.olson@intel.com>, Michal Biesek <michal.biesek@intel.com>
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DWXZHWDPMLCU3NW4M22TRPJBVFRNWTWL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4O2JCG22CQSFL7HBASPHDEM55STELJCH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,45 +50,35 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 2, 2019 at 4:49 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
->
-> By default, daxctl always attempts to online new memory sections as
-> 'movable' so that routine kernel allocations aren't serviced from this
-> memory, and the memory is later removable via hot-unplug.
->
-> System configuration, or other agents (such as udev rules) may race
-> 'daxctl' to online memory, and this may result in the memory not being
-> 'movable'. Add an interface to query the movability of a memory object
-> associated with a dax device.
->
-> This is in preparation to both display a 'movable' attribute in device
-> listings, as well as optionally allowing memory to be onlined as
-> non-movable.
->
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reported-by: Ben Olson <ben.olson@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  daxctl/lib/libdaxctl-private.h | 20 +++++++++
->  daxctl/lib/libdaxctl.c         | 77 ++++++++++++++++++++++++++++++++--
->  daxctl/lib/libdaxctl.sym       |  5 +++
->  daxctl/libdaxctl.h             |  1 +
->  4 files changed, 100 insertions(+), 3 deletions(-)
->
-> diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-private.h
-> index 7ba3c46..82939bb 100644
-> --- a/daxctl/lib/libdaxctl-private.h
-> +++ b/daxctl/lib/libdaxctl-private.h
-> @@ -44,6 +44,25 @@ enum memory_op {
->         MEM_SET_ONLINE,
->         MEM_IS_ONLINE,
->         MEM_COUNT,
-> +       MEM_FIND_ZONE,
+On Fri, Oct 18, 2019 at 03:35:34PM +0300, Dan Carpenter wrote:
+> We change the locking in this function and forgot to update this error
+> path so we are accidentally still holding the "dev->lockdep_mutex".
+> 
+> Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This is private so the naming is not too big a concern, but isn't this
-a MEM_GET_ZONE? A find operation to me is something that can succeed
-to find nothing, whereas a get operation fail assumes the association
-can always be retrieved barring exceptional conditions.
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+
+> ---
+>  drivers/acpi/nfit/core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index 1413324982f0..14e68f202f81 100644
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1322,7 +1322,7 @@ static ssize_t scrub_show(struct device *dev,
+>  	nfit_device_lock(dev);
+>  	nd_desc = dev_get_drvdata(dev);
+>  	if (!nd_desc) {
+> -		device_unlock(dev);
+> +		nfit_device_unlock(dev);
+>  		return rc;
+>  	}
+>  	acpi_desc = to_acpi_desc(nd_desc);
+> -- 
+> 2.20.1
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
