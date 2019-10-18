@@ -1,64 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D6CDCF3F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 21:26:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504D1DCFA6
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 21:57:13 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 456E910FCB39E;
-	Fri, 18 Oct 2019 12:28:25 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5802310FCB3B2;
+	Fri, 18 Oct 2019 12:59:17 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1CC9710FCB39E
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 12:28:22 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id t84so6124640oih.10
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 12:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3f40XLA0PVJw/iy/X9b99HrOPJO309mF75KF41ViMEE=;
-        b=nvGFvANdexx1g6xglNvfhCKM9MRblUwKydVvUVPRUcy07vQeUPU+GzI6m+2BFsFwrd
-         DchBJ66cyDIuwsjnX+4iIMWOgp5bcBFlh6nZvA6k1BhM9tNNYvy5Y114n4lRnwZgE57X
-         hCeIhiY6ENJ31RC3R0sLC6eaqeNHS0ZOvZRttcZ/Fry9ND1aPozBmhzHYbhmSxhAaQ22
-         mIn33GlFlAkOuK6cwG5C7GsYFetP512ccQgPYNssuOsgbGn5JmWouQ0Rcyca6QZ1QWOC
-         F+H+VpKq4qSizYsrpczVfDUPVMi74m8blTApAG7/btJbjoGcHMIwkbKPzJh7PDWwZKwq
-         u3Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3f40XLA0PVJw/iy/X9b99HrOPJO309mF75KF41ViMEE=;
-        b=k1TwA6m/zmlLwfFYgNmb3tnz7JhJSdeDzDER0cBZzOF0IZQq1+uxxkBQbwISrrgn6R
-         F/6B6OIpGUeIkO3HcZ8cBe7kCxrrcnUaDp/5cDOhpInyQ4XTNoFgR3uRwV/H/Jkf7W+9
-         KdblpY7KiLOnke6ROhsQhQTrXpqoUU61bZnwiJ99rEGxNdUm1DyX5BXoawFEGq/GnUr/
-         xD2Gx9Ef73nTPLNwes/5+LtkEh3LGnPplvA3mQyD6wDJyifnpG7NOZsYbytaNoJKc1ur
-         MP/G6iJN75NQ/FAr+4PZXCSSy25hM6RvTUr4tCLHJr1HGuprcQ1ae0RaOjeW7p4qcm1c
-         j0Gg==
-X-Gm-Message-State: APjAAAWOoMZY0+cb6mpJScfcs2z6EDa9FBu0cTyVY3Ugl3RRSTdQ1fch
-	NOZ34An6MmBlD76+gApAgn3/af20ktv6ckaaopDGNKBA
-X-Google-Smtp-Source: APXvYqwr3sJ7AE4ZB54v90/WCNFTbLdALUzGOQoNmOT78A7qhwOxDjn72hODWaBxeI5SIqwcGEhBtZ00b/9hsbXCmI0=
-X-Received: by 2002:aca:6087:: with SMTP id u129mr9678870oib.149.1571426776309;
- Fri, 18 Oct 2019 12:26:16 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 564FF10FCB3B0
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 12:59:15 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Oct 2019 12:57:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,312,1566889200";
+   d="scan'208";a="195558049"
+Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
+  by fmsmga008.fm.intel.com with ESMTP; 18 Oct 2019 12:57:08 -0700
+Received: from fmsmsx101.amr.corp.intel.com (10.18.124.199) by
+ FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 18 Oct 2019 12:57:08 -0700
+Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
+ fmsmsx101.amr.corp.intel.com ([169.254.1.3]) with mapi id 14.03.0439.000;
+ Fri, 18 Oct 2019 12:57:08 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [ndctl PATCH 04/10] libdaxctl: add an API to determine if
+ memory is movable
+Thread-Topic: [ndctl PATCH 04/10] libdaxctl: add an API to determine if
+ memory is movable
+Thread-Index: AQHVeXwMRByFSAdfLkeOo/W+0xFvyqdhTWMAgAARboA=
+Date: Fri, 18 Oct 2019 19:57:07 +0000
+Message-ID: <dfd1bdbaa41c3f6e97834d592b32bb10ba562c6a.camel@intel.com>
+References: <20191002234925.9190-1-vishal.l.verma@intel.com>
+	 <20191002234925.9190-5-vishal.l.verma@intel.com>
+	 <CAPcyv4hb7vPbWhb3R5fyJH0H5OqRmhtVr=_D0tiYrkc_r8HpaQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4hb7vPbWhb3R5fyJH0H5OqRmhtVr=_D0tiYrkc_r8HpaQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.164]
+Content-ID: <71D88043E3CE0247ABB3216CF87B3641@intel.com>
 MIME-Version: 1.0
-References: <20191002234925.9190-1-vishal.l.verma@intel.com> <20191002234925.9190-8-vishal.l.verma@intel.com>
-In-Reply-To: <20191002234925.9190-8-vishal.l.verma@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 18 Oct 2019 12:26:05 -0700
-Message-ID: <CAPcyv4jDwRkm7XigA1VKWt-OSd_jOmLqhiBXw2T1JRStOMNzqA@mail.gmail.com>
-Subject: Re: [ndctl PATCH 07/10] daxctl: detect races when onlining memory blocks
-To: Vishal Verma <vishal.l.verma@intel.com>
-Message-ID-Hash: YYR2SIMURJLTXNB42KHAIGCE4QWJFC2S
-X-Message-ID-Hash: YYR2SIMURJLTXNB42KHAIGCE4QWJFC2S
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: XRDAIDTQCSWF2HMDE2Y3Q2JR2TK7MKMG
+X-Message-ID-Hash: XRDAIDTQCSWF2HMDE2Y3Q2JR2TK7MKMG
+X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ben Olson <ben.olson@intel.com>, Michal Biesek <michal.biesek@intel.com>
+CC: "Olson, Ben" <ben.olson@intel.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Biesek, Michal" <michal.biesek@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YYR2SIMURJLTXNB42KHAIGCE4QWJFC2S/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XRDAIDTQCSWF2HMDE2Y3Q2JR2TK7MKMG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,168 +66,56 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Oct 2, 2019 at 4:49 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
->
-> Sometimes, system configuration can result in new memory blocks getting
-> onlined automatically. Often, these auto-onlining mechanisms don't
-> provide a choice or configurability in the matter of which zone is used
-> for these new blocks, and they just end up in ZONE_NORMAL.
->
-> Usually, for hot-plugged memory, ZONE_NORMAL is undesirable because:
->  - An application might want total control over this memory
->  - ZONE_NORMAL precludes hot-removal of this memory
->  - Having kernel data structures in this memory, especially performance
->    sensitive ones, such as page tables, may be undesirable.
->
-> Thus report if a race condition is encountered while onlining memory,
-> and provide the user options to remedy it.
->
-> Clarify the default zone expectations, and the race detection behavior
-> in the daxctl-reconfigure-device man page, and move the relevant section
-> under the 'Description' header, instead of hidden away under the
-> '--no-online' option.
->
-> Cc: Ben Olson <ben.olson@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
-> ---
->  daxctl/device.c        |  9 ++++++
->  daxctl/lib/libdaxctl.c | 62 +++++++++++++++++++++++++++++-------------
->  2 files changed, 52 insertions(+), 19 deletions(-)
->
-> diff --git a/daxctl/device.c b/daxctl/device.c
-> index 920efc6..28698bf 100644
-> --- a/daxctl/device.c
-> +++ b/daxctl/device.c
-> @@ -174,6 +174,15 @@ static int dev_online_memory(struct daxctl_dev *dev)
->                         devname, strerror(-num_on));
->                 return num_on;
->         }
-> +       if (num_on)
-> +               fprintf(stderr,
-> +                   "%s:\n  WARNING: detected a race while onlining memory\n"
-> +                   "  Some memory may not be in the expected zone. It is\n"
-> +                   "  recommended to disable any other onlining mechanisms,\n"
-> +                   "  and retry. If onlining is to be left to other agents,\n"
-> +                   "  use the --no-online option to suppress this warning\n",
-> +                   devname);
-> +
->         if (num_on == num_sections) {
->                 fprintf(stderr, "%s: all memory sections (%d) already online\n",
->                         devname, num_on);
-> diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
-> index 617887c..5a7e37c 100644
-> --- a/daxctl/lib/libdaxctl.c
-> +++ b/daxctl/lib/libdaxctl.c
-> @@ -1079,10 +1079,10 @@ static int memblock_is_online(struct daxctl_memory *mem, char *memblock)
->         return 0;
->  }
->
-> -static int online_one_memblock(struct daxctl_memory *mem, char *memblock)
-> +static int online_one_memblock(struct daxctl_memory *mem, char *memblock,
-> +               int *status)
->  {
->         struct daxctl_dev *dev = daxctl_memory_get_dev(mem);
-> -       const char *devname = daxctl_dev_get_devname(dev);
->         struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
->         const char *mode = "online_movable";
->         int len = mem->buf_len, rc;
-> @@ -1097,10 +1097,6 @@ static int online_one_memblock(struct daxctl_memory *mem, char *memblock)
->         if (rc < 0)
->                 return -ENOMEM;
->
-> -       /*
-> -        * if already online, possibly due to kernel config or a udev rule,
-> -        * there is nothing to do and we can skip over the memblock
-> -        */
->         rc = memblock_is_online(mem, memblock);
->         if (rc)
->                 return rc;
-> @@ -1108,18 +1104,14 @@ static int online_one_memblock(struct daxctl_memory *mem, char *memblock)
->         rc = sysfs_write_attr_quiet(ctx, path, mode);
->         if (rc) {
->                 /*
-> -                * While we performed an already-online check above, there
-> -                * is still a TOCTOU hole where someone (such as a udev rule)
-> -                * may have raced to online the memory. In such a case,
-> -                * the sysfs store will fail, however we can check for this
-> -                * by simply reading the state again. If it changed to the
-> -                * desired state, then we don't have to error out.
-> +                * If the block got onlined, potentially by some other agent,
-> +                * do nothing for now. There will be a full scan for zone
-> +                * correctness later.
->                  */
-> -               if (memblock_is_online(mem, memblock))
-> -                       return 1;
-> -               err(ctx, "%s: Failed to online %s: %s\n",
-> -                       devname, path, strerror(-rc));
-> +               if (memblock_is_online(mem, memblock) == 1)
-> +                       return 0;
->         }
-> +
->         return rc;
->  }
->
-> @@ -1150,7 +1142,7 @@ static int offline_one_memblock(struct daxctl_memory *mem, char *memblock)
->
->         rc = sysfs_write_attr_quiet(ctx, path, mode);
->         if (rc) {
-> -               /* Close the TOCTOU hole like in online_one_memblock() above */
-> +               /* check if something raced us to offline (unlikely) */
->                 if (!memblock_is_online(mem, memblock))
->                         return 1;
->                 err(ctx, "%s: Failed to offline %s: %s\n",
-> @@ -1274,7 +1266,7 @@ static int op_for_one_memblock(struct daxctl_memory *mem, char *memblock,
->
->         switch (op) {
->         case MEM_SET_ONLINE:
-> -               return online_one_memblock(mem, memblock);
-> +               return online_one_memblock(mem, memblock, status);
->         case MEM_SET_OFFLINE:
->                 return offline_one_memblock(mem, memblock);
->         case MEM_IS_ONLINE:
-> @@ -1349,9 +1341,41 @@ out_dir:
->         return rc;
->  }
->
-> +/*
-> + * daxctl_memory_online() will online to ZONE_MOVABLE by default
-> + */
->  DAXCTL_EXPORT int daxctl_memory_online(struct daxctl_memory *mem)
->  {
-> -       return daxctl_memory_op(mem, MEM_SET_ONLINE);
-> +       struct daxctl_dev *dev = daxctl_memory_get_dev(mem);
-> +       const char *devname = daxctl_dev_get_devname(dev);
-> +       struct daxctl_ctx *ctx = daxctl_dev_get_ctx(dev);
-> +       int rc;
-> +
-> +       rc = daxctl_memory_op(mem, MEM_SET_ONLINE);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /*
-> +        * Detect any potential races when blocks were being brought online by
-> +        * checking the zone in which the memory blocks are at this point. If
-> +        * any of the blocks are not in ZONE_MOVABLE, emit a warning.
-> +        */
-> +       mem->zone = 0;
-> +       rc = daxctl_memory_op(mem, MEM_FIND_ZONE);
-> +       if (rc)
-> +               return rc;
-> +       if (mem->zone != MEM_ZONE_MOVABLE) {
-> +               err(ctx,
-> +                   "%s:\n  WARNING: detected a race while onlining memory\n"
-> +                   "  Some memory may not be in the expected zone. It is\n"
-> +                   "  recommended to disable any other onlining mechanisms,\n"
-> +                   "  and retry. If onlining is to be left to other agents,\n"
-> +                   "  use the --no-online option to suppress this warning\n",
-> +                   devname);
 
-Rather than duplicate this largish warning message what about a
-smaller one that references the man page about remediation
-possibilities. Then you can also name distro udev rule as one of the
-usual suspects that causes this.
+On Fri, 2019-10-18 at 11:54 -0700, Dan Williams wrote:
+> On Wed, Oct 2, 2019 at 4:49 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+> > By default, daxctl always attempts to online new memory sections as
+> > 'movable' so that routine kernel allocations aren't serviced from this
+> > memory, and the memory is later removable via hot-unplug.
+> > 
+> > System configuration, or other agents (such as udev rules) may race
+> > 'daxctl' to online memory, and this may result in the memory not being
+> > 'movable'. Add an interface to query the movability of a memory object
+> > associated with a dax device.
+> > 
+> > This is in preparation to both display a 'movable' attribute in device
+> > listings, as well as optionally allowing memory to be onlined as
+> > non-movable.
+> > 
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Reported-by: Ben Olson <ben.olson@intel.com>
+> > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> > ---
+> >  daxctl/lib/libdaxctl-private.h | 20 +++++++++
+> >  daxctl/lib/libdaxctl.c         | 77 ++++++++++++++++++++++++++++++++--
+> >  daxctl/lib/libdaxctl.sym       |  5 +++
+> >  daxctl/libdaxctl.h             |  1 +
+> >  4 files changed, 100 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-private.h
+> > index 7ba3c46..82939bb 100644
+> > --- a/daxctl/lib/libdaxctl-private.h
+> > +++ b/daxctl/lib/libdaxctl-private.h
+> > @@ -44,6 +44,25 @@ enum memory_op {
+> >         MEM_SET_ONLINE,
+> >         MEM_IS_ONLINE,
+> >         MEM_COUNT,
+> > +       MEM_FIND_ZONE,
+> 
+> This is private so the naming is not too big a concern, but isn't this
+> a MEM_GET_ZONE? A find operation to me is something that can succeed
+> to find nothing, whereas a get operation fail assumes the association
+> can always be retrieved barring exceptional conditions.
+
+Hm, my personal view of find vs. get was that 'get' grabs a reference
+(or similar) to something which we know how to get to (have a pointer
+directly) etc. 'Find' is more of a 'go searching for' something - and it
+may involve walking and looping over data structures.
+
+But I'm not too opposed to this, and can change to 'get' if that follows
+convention better.
+
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
