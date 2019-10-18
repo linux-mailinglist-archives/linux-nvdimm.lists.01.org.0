@@ -1,63 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C2FDD09F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 22:50:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532C0DD0AB
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 22:54:23 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9028210FCB91F;
-	Fri, 18 Oct 2019 13:52:24 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id DE13610FCB923;
+	Fri, 18 Oct 2019 13:56:26 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0046510FCB91D
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 13:52:21 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Oct 2019 13:50:16 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,313,1566889200";
-   d="scan'208";a="208985818"
-Received: from fmsmsx104.amr.corp.intel.com ([10.18.124.202])
-  by fmsmga001.fm.intel.com with ESMTP; 18 Oct 2019 13:50:16 -0700
-Received: from FMSMSX109.amr.corp.intel.com (10.18.116.9) by
- fmsmsx104.amr.corp.intel.com (10.18.124.202) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 18 Oct 2019 13:50:16 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- FMSMSX109.amr.corp.intel.com ([169.254.15.66]) with mapi id 14.03.0439.000;
- Fri, 18 Oct 2019 13:50:15 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [ndctl PATCH 08/10] Documentation: clarify memory movablity for
- reconfigure-device
-Thread-Topic: [ndctl PATCH 08/10] Documentation: clarify memory movablity
- for reconfigure-device
-Thread-Index: AQHVeXwNJqXMUbYruUm0ajWxHeyxPKdhbLkAgAAA7wA=
-Date: Fri, 18 Oct 2019 20:50:14 +0000
-Message-ID: <9960b57e259cca31715326bbe8b4da5ec3cae100.camel@intel.com>
-References: <20191002234925.9190-1-vishal.l.verma@intel.com>
-	 <20191002234925.9190-9-vishal.l.verma@intel.com>
-	 <CAPcyv4hHT1fjPirPE8Ex5NZ8_4SjoTj-GNaXP+0+14jNBCHTig@mail.gmail.com>
-In-Reply-To: <CAPcyv4hHT1fjPirPE8Ex5NZ8_4SjoTj-GNaXP+0+14jNBCHTig@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <3036BA1FBE1F0D4F8FFF0058CAD8EDB3@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 0FC4A10FCB921
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 13:56:24 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id m19so6130798otp.1
+        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 13:54:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=nuLnk9TLuVHwPdx7gV0JSwDVxrkSk5xzOveB4VptdNw=;
+        b=y2WAtntc21ydcDLVCF5OpRsHmZ/vwBDdMFoTXdLxPBeqrPKoG8POWeXJakzfWiECYU
+         QDsFIB1wdaQcaoqjnUT6pq9/GohDgugCirJz5VaGvPr/47CMp9zJAS1KwkcxYxot1ftn
+         yu2RDnjqbj6CHZoH4CejuxrXkPlOZ1VRR5rn8Fh/xyFaG5mQ34ErUcfDm2zMlBuOxQsF
+         rsoNg6xb7INys7S6rnyKC9Nv0Gv9Jv4ZHNqlojMepjT7UF0nGBc+zew+2ZD0GPNeKXd5
+         kuU94ZA80xKcx3zxcGr7HwOIJH7L/u8xEd1LTomjV4toYuv0R51Gj62eE3hMfVyNhcJz
+         Rkhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=nuLnk9TLuVHwPdx7gV0JSwDVxrkSk5xzOveB4VptdNw=;
+        b=tFD9Pdbbf7O4XkQrufsouIqSM9ZMeMIpARi8ZbDORfyLkSM3zOz5LoImC+/tjztwqT
+         4Sytzq1FaTpPGUsE36r0CITrS4OPDC7soQopXXVCzfLNyUCGd0O56OeszofMtAenO5W7
+         oJfvqoM0r1ZPUCA2TxUWswiWlvsIChVIW35399FZ7qMPiZ7Qh6zGLBLdvrD+X+zHE3q8
+         1Ul9LwG+ycbnCM/Z+I2VZN8bJN7uVkV0g63kATcEsg3nZxaGQYFjsBIj9LNZUjmXvV3W
+         7WsTZx/EwQk1Xd3TtOoasid5qbwnZBYqj4+iiW/UzQ20kq4ffbuDhEs4rr8zhorQgKQ0
+         eGRQ==
+X-Gm-Message-State: APjAAAXEVupHgLxqWw+AKZJvTTgcFfXdMCgF0t/c9PF3gFA6rpo2DfQ4
+	ACPBfFP0y0MX+SOShh8F4Yb/eE1rWTiDU8HNgk2g9g==
+X-Google-Smtp-Source: APXvYqwdRU+YNjlpX1/QNAr5hJK2QqZ1ghmlQ4VlIx1peblM67EsZBkElgIWMsYt9ld9L90OKheN5uJcFNh2ghWotIY=
+X-Received: by 2002:a9d:7843:: with SMTP id c3mr8613884otm.71.1571432058047;
+ Fri, 18 Oct 2019 13:54:18 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: QKPP6YJGO2W3PQJF6MRZ6PWN6JKIWZG6
-X-Message-ID-Hash: QKPP6YJGO2W3PQJF6MRZ6PWN6JKIWZG6
-X-MailFrom: vishal.l.verma@intel.com
+References: <20191002234925.9190-1-vishal.l.verma@intel.com> <20191002234925.9190-10-vishal.l.verma@intel.com>
+In-Reply-To: <20191002234925.9190-10-vishal.l.verma@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 18 Oct 2019 13:54:07 -0700
+Message-ID: <CAPcyv4j3dTA9DYLtQ_O0zaeujvuWuc_+zPJeK2dvue6WsT2H=g@mail.gmail.com>
+Subject: Re: [ndctl PATCH 09/10] libdaxctl: add an API to online memory in a
+ non-movable state
+To: Vishal Verma <vishal.l.verma@intel.com>
+Message-ID-Hash: OROM33E462IPSFUDJJXEHQRDAXQC5K5Z
+X-Message-ID-Hash: OROM33E462IPSFUDJJXEHQRDAXQC5K5Z
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Olson, Ben" <ben.olson@intel.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Biesek, Michal" <michal.biesek@intel.com>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ben Olson <ben.olson@intel.com>, Michal Biesek <michal.biesek@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QKPP6YJGO2W3PQJF6MRZ6PWN6JKIWZG6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OROM33E462IPSFUDJJXEHQRDAXQC5K5Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,28 +68,24 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, 2019-10-18 at 13:46 -0700, Dan Williams wrote:
+On Wed, Oct 2, 2019 at 4:49 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
 >
-> > +'daxctl-reconfigure-device' nominally expects that it will online new memory
-> > +blocks as 'movable', so that kernel data doesn't make it into this memory.
-> > +However, there are other potential agents that may be configured to
-> > +automatically online new hot-plugged memory as it appears. Most notably,
-> > +these are the '/sys/devices/system/memory/auto_online_blocks' configuration,
-> > +or system udev rules. If such an agent races to online memory sections, daxctl
-> > +checks if the blocks were onlined as 'movable' memory. If this was not the
-> > +case, and the memory blocks are found to be in a different zone, then a
-> > +warning is displayed. If it is desired that a different agent control the
-> > +onlining of memory blocks, and the associated memory zone, then it is
-> > +recommended to use the --no-online option described below. This will abridge
-> > +the device reconfiguration operation to just hotplugging the memory, and
-> > +refrain from then onlining it.
-> 
-> Oh here's that full description that calls out udev.
-> 
-> I think just "See daxctl reconfigure-device --help" is sufficient for
-> those warnings in the previous patch.
+> Some users may want additional control over the state in which memory
+> gets onlined - specifically, controlling the 'movable' aspect of the
+> resulting memory blocks.
+>
+> Until now, libdaxctl only brought up memory in the 'movable' state. Add
+> a new interface to online memory in the non-movable state.
+>
+> Link: https://github.com/pmem/ndctl/issues/110
+> Cc: Ben Olson <ben.olson@intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 
-Yep I've truncated the runtime warning down to point here.
+Looks good to me.
+
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
