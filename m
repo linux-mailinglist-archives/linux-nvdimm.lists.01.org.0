@@ -2,65 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5376BDD12A
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Oct 2019 23:25:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70D63DD511
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 19 Oct 2019 00:49:24 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AEABB1007B985;
-	Fri, 18 Oct 2019 14:27:48 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 648B81007B9B6;
+	Fri, 18 Oct 2019 15:51:27 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A44831007B984
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 14:27:46 -0700 (PDT)
-Received: by mail-oi1-x242.google.com with SMTP id i185so6397489oif.9
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 14:25:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KwIHNgX/2ReCzBnXecUyKisKy+6r38CsMatM1qjPGBg=;
-        b=GqAhHxgxH7wfmM/XTsFjzAteyRDmsjzt4rIPS27elKBV/3H4ntPZfplWRTcTWN/B9L
-         9c4RAco/ETnZBmckN+7a5ziBNvnps5KjYCAUGE4erCjuTPSm7Fc0y0GR13BrHKhkFtLw
-         umM6GVZw5Rtl0nTZ41QshqVk4XiripbJTm3peDLT+HLcjnTzSHiy3GvBQiPPq67qrtsj
-         OmERCD8TfSV6b/pzONHEaD8D7mSh7gEukiuqvGNCjX5zFlbbfijw1LSVJwLiHLTNvK6X
-         o4iItcl+ro5qcLIPl4tKgBNAbgYUladVhXFqJgN/CEe8uxjv8HiGdBAiEMPewp36s4W9
-         qCOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KwIHNgX/2ReCzBnXecUyKisKy+6r38CsMatM1qjPGBg=;
-        b=qMltlNiOs1IVLEtgDYw5nChXXp0F4aZYonEbQniJFC8KXXYAWfNsUQ5CBfMLRsAZPq
-         FDJFgKtoIVyb0N3aJMGIYGCZrVYrnVrAnkMTwIKP+FBdtAx/nfMW7SQ7VzxOsKGaHqmw
-         12ETeN6B2mbXlk0hNFE7xVOjNPBXDPwI/UiCNzdGm8/cefPyuxpQFdg4ZMc+XKt8MzdQ
-         T12dfC2phPzNXjcqPKkD7U3uS6F0Pe454FSbCd6BYypP2fMiE8rbzs5J9PTQVLnY2Zem
-         +lh3NZhqyQzZZ1z04ivDyHsXlZtjtXoj7svuEZXS6P5aeSEoQPRh/O/vZgV0X4S1ZEL5
-         cv6g==
-X-Gm-Message-State: APjAAAU3Fd2VhN//WVdOZDB4WhRcfiT3v7Ip+jDug7HRq607BCN/si04
-	QyWyZW7nsdnszyTHYmebM2cJE1zW/qQvsTKIkDjvgw==
-X-Google-Smtp-Source: APXvYqz5t7anP0uAMllZmKIQRqeV64ZG2Xryw4xVwtfrRDN6WxkJyDrH9QGh1oHOX5RWxTQT44mFwkz48SNTPdBmzdo=
-X-Received: by 2002:a05:6808:7cd:: with SMTP id f13mr9156408oij.70.1571433940333;
- Fri, 18 Oct 2019 14:25:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 64C951007B9B5
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Oct 2019 15:51:24 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Oct 2019 15:49:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,313,1566889200";
+   d="scan'208";a="190502863"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga008.jf.intel.com with ESMTP; 18 Oct 2019 15:49:19 -0700
+Date: Fri, 18 Oct 2019 15:49:18 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Jeff Moyer <jmoyer@redhat.com>
+Subject: Re: [ndctl patch 3/4] query_fw_finish_status: get rid of redundant
+ variable
+Message-ID: <20191018224918.GB12995@iweiny-DESK2.sc.intel.com>
+References: <20191018202302.8122-1-jmoyer@redhat.com>
+ <20191018202302.8122-4-jmoyer@redhat.com>
+ <20191018205424.GA12760@iweiny-DESK2.sc.intel.com>
+ <x49sgnp7ohp.fsf@segfault.boston.devel.redhat.com>
 MIME-Version: 1.0
-References: <20191002234925.9190-1-vishal.l.verma@intel.com>
- <20191002234925.9190-11-vishal.l.verma@intel.com> <CAPcyv4hrxMFFK1wvCPkE1hMC8dyVFj3WUAzS4wgCBiuh0noa8w@mail.gmail.com>
- <8b50ca67ffcd36bbc7fd0b23ad4f2e4607e56cbb.camel@intel.com>
-In-Reply-To: <8b50ca67ffcd36bbc7fd0b23ad4f2e4607e56cbb.camel@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 18 Oct 2019 14:25:28 -0700
-Message-ID: <CAPcyv4idM2A3dj0dz4G9bh=Q8C8OX+vTy2qZxkQzH2sW1i7RSA@mail.gmail.com>
-Subject: Re: [ndctl PATCH 10/10] daxctl: add --no-movable option for onlining memory
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
-Message-ID-Hash: CDY3STYDSCJVZPZ6WMK3H3TA3TK6VIWP
-X-Message-ID-Hash: CDY3STYDSCJVZPZ6WMK3H3TA3TK6VIWP
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <x49sgnp7ohp.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: LNV6EWKNDYYB42KWBGEFPFC6QJA4VCS6
+X-Message-ID-Hash: LNV6EWKNDYYB42KWBGEFPFC6QJA4VCS6
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Olson, Ben" <ben.olson@intel.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "Biesek, Michal" <michal.biesek@intel.com>
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CDY3STYDSCJVZPZ6WMK3H3TA3TK6VIWP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LNV6EWKNDYYB42KWBGEFPFC6QJA4VCS6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,28 +54,35 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 18, 2019 at 2:04 PM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
->
-> On Fri, 2019-10-18 at 13:58 -0700, Dan Williams wrote:
+On Fri, Oct 18, 2019 at 05:06:10PM -0400, Jeff Moyer wrote:
+> Ira Weiny <ira.weiny@intel.com> writes:
+> 
+> > On Fri, Oct 18, 2019 at 04:23:01PM -0400, Jeff Moyer wrote:
+> >> The 'done' variable only adds confusion.
+> >> 
+> >>  			goto out;
+> >>  		}
+> >> -	} while (!done);
+> >> +	} while (true);
 > >
-> > > +++ b/Documentation/daxctl/movable-options.txt
-> > > @@ -0,0 +1,10 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +-M::
-> > > +--no-movable::
-> >
-> > If --movable is the default I would expect -M to be associated with
-> > --movable. Don't we otherwise get the --no-<option> handling for free
-> > with boolean options? I otherwise don't think we need a short option
-> > for the "no" case.
->
-> Yep we get the inverse options for booleans for free, but we can define
-> them either way - i.e. define it as --no-movable, and --movable is
-> implied, or the other way round.
+> > I'm not a fan of "while (true)".  But I'm not the maintainer.  The Logic seems
+> > fine otherwise.
+> 
+> The way things stand today is a mashup of goto vs. break.  I'll
+> follow-up with fixed up patch next week if there is consensus on the
+> change.  If you have a suggestion for a better way, that's welcome as
+> well.
 
-Ah, I missed that we get the inverse flag option either way its defined, cool!
+Yea that is the reason I did not object strongly.  I don't have a good idea of
+how to clean the loop up without a pretty big refactoring.  Which I'm not
+prepared to do.  :-/  So if Vishal is ok with it, I am.
+
+Ira
+
+> 
+> Thanks for looking, Ira!
+> 
+> -Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
