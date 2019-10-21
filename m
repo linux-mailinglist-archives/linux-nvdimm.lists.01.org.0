@@ -1,35 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 709D9DF58B
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Oct 2019 21:02:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3011BDF58E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Oct 2019 21:03:08 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AFD191007B506;
-	Mon, 21 Oct 2019 12:03:59 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=42.231.162.221; helo=gmail.com; envelope-from=smithejoseph18virk@gmail.com; receiver=<UNKNOWN> 
-Received: from gmail.com (unknown [42.231.162.221])
-	by ml01.01.org (Postfix) with SMTP id CCC3010079A63
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Oct 2019 00:55:12 -0700 (PDT)
-Received: from [170.93.91.131] by m1.gns.snv.thisdomainl.com with SMTP; Mon, 21 Oct 2019 11:47:04 +0400
-Message-ID: <B3B37EC8.08C05EE2@gmail.com>
-Date: Mon, 21 Oct 2019 11:26:37 +0400
-From: "Jayne Warrington" <smithejoseph18virk@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.10) Gecko/20100621 Fedora/3.0.5-1.fc13 Lightning/1.0b2pre Thunderbird/3.0.5
+	by ml01.01.org (Postfix) with ESMTP id 9E36A1007B824;
+	Mon, 21 Oct 2019 12:04:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx1.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx1.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 370FC1007988B
+	for <linux-nvdimm@lists.01.org>; Mon, 21 Oct 2019 01:49:27 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx1.suse.de (Postfix) with ESMTP id D3542B730;
+	Mon, 21 Oct 2019 08:47:38 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 18AF91E4AA0; Mon, 21 Oct 2019 10:47:38 +0200 (CEST)
+Date: Mon, 21 Oct 2019 10:47:38 +0200
+From: Jan Kara <jack@suse.cz>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH] fs/dax: Fix pmd vs pte conflict detection
+Message-ID: <20191021084738.GA17810@quack2.suse.cz>
+References: <157150237973.3940076.12626102230619807187.stgit@dwillia2-desk3.amr.corp.intel.com>
 MIME-Version: 1.0
-To: <linux-nvdimm@lists.01.org>
-Subject: re: just checked lists.01.org
-X-Priority: 1
-Message-ID-Hash: 5FMP3SBVEQFIWZR6JHS5AM2GFDCZ5GXH
-X-Message-ID-Hash: 5FMP3SBVEQFIWZR6JHS5AM2GFDCZ5GXH
-X-MailFrom: smithejoseph18virk@gmail.com
+Content-Disposition: inline
+In-Reply-To: <157150237973.3940076.12626102230619807187.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: THKJFRLCUSGUBRKIYEHQZ5TR4RBMKT33
+X-Message-ID-Hash: THKJFRLCUSGUBRKIYEHQZ5TR4RBMKT33
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-fsdevel@vger.kernel.org, Jeff Smits <jeff.smits@intel.com>, Doug Nelson <doug.nelson@intel.com>, stable@vger.kernel.org, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Jayne Warrington <smithejoseph18virk@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5FMP3SBVEQFIWZR6JHS5AM2GFDCZ5GXH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/THKJFRLCUSGUBRKIYEHQZ5TR4RBMKT33/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -38,31 +47,52 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-hi
+On Sat 19-10-19 09:26:19, Dan Williams wrote:
+> Check for NULL entries before checking the entry order, otherwise NULL
+> is misinterpreted as a present pte conflict. The 'order' check needs to
+> happen before the locked check as an unlocked entry at the wrong order
+> must fallback to lookup the correct order.
+> 
+> Reported-by: Jeff Smits <jeff.smits@intel.com>
+> Reported-by: Doug Nelson <doug.nelson@intel.com>
+> Cc: <stable@vger.kernel.org>
+> Fixes: 23c84eb78375 ("dax: Fix missed wakeup with PMD faults")
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-After checking lists.01.org we`ve seen that you lack DA and TF proper
-values
+Good catch! The patch looks good to me. You can add:
 
-We can take care of that with any of our plans here
-http://www.liftmyrank.co/affordable-seo-services-small-businesses/
+Reviewed-by: Jan Kara <jack@suse.cz>
 
+								Honza
 
-Regards
-Jayne Warrington
-
-
-
-
-
-
-
-
-
-
-
-http://www.liftmyrank.co/unsubscribe/
-
-
+> ---
+>  fs/dax.c |    5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/dax.c b/fs/dax.c
+> index a71881e77204..08160011d94c 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -221,10 +221,11 @@ static void *get_unlocked_entry(struct xa_state *xas, unsigned int order)
+>  
+>  	for (;;) {
+>  		entry = xas_find_conflict(xas);
+> +		if (!entry || WARN_ON_ONCE(!xa_is_value(entry)))
+> +			return entry;
+>  		if (dax_entry_order(entry) < order)
+>  			return XA_RETRY_ENTRY;
+> -		if (!entry || WARN_ON_ONCE(!xa_is_value(entry)) ||
+> -				!dax_is_locked(entry))
+> +		if (!dax_is_locked(entry))
+>  			return entry;
+>  
+>  		wq = dax_entry_waitqueue(xas, entry, &ewait.key);
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
