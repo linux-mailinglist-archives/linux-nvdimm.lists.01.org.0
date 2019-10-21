@@ -2,62 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD34DF595
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Oct 2019 21:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3526DF596
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Oct 2019 21:04:08 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C2B291007B1F5;
-	Mon, 21 Oct 2019 12:04:12 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EEFFE1007A2F3;
+	Mon, 21 Oct 2019 12:04:17 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 31E2D100792EA
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Oct 2019 05:09:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1571659665;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZW2w85TwEDR7o6SJHU50uEOcHT5Iw+gP89ZUiYLiLY=;
-	b=VPFLCqVKXG8ryyFxNxlnPORr0JlIJNViViCFzDv37GpQsfm6u2b14Mu74w+Mp3Yo3Tyxqd
-	IB6TIMXo0yvznjnIXbyY8XjtSwNZDNZcaLFD4o+YyYaEHNeoihvIoN0l1pqPXb4d029Gzt
-	Fw5YNRpffwxHOVQobhhADpkGi0K0QYA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-258-tqajfzzvNaaD0mZxWWnBcg-1; Mon, 21 Oct 2019 08:07:41 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1C8EF800D41;
-	Mon, 21 Oct 2019 12:07:40 +0000 (UTC)
-Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CAC25D9E2;
-	Mon, 21 Oct 2019 12:07:38 +0000 (UTC)
-From: Jeff Moyer <jmoyer@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] fs/dax: Fix pmd vs pte conflict detection
-References: <157150237973.3940076.12626102230619807187.stgit@dwillia2-desk3.amr.corp.intel.com>
-X-PGP-KeyID: 1F78E1B4
-X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
-Date: Mon, 21 Oct 2019 08:07:38 -0400
-In-Reply-To: <157150237973.3940076.12626102230619807187.stgit@dwillia2-desk3.amr.corp.intel.com>
-	(Dan Williams's message of "Sat, 19 Oct 2019 09:26:19 -0700")
-Message-ID: <x495zkii9o5.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+	by ml01.01.org (Postfix) with ESMTPS id 7D70D10077F8D
+	for <linux-nvdimm@lists.01.org>; Mon, 21 Oct 2019 07:45:05 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id 21so11162445otj.11
+        for <linux-nvdimm@lists.01.org>; Mon, 21 Oct 2019 07:43:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FxMjjLmCV5wu1SmNNdDes4wpF04tbh7UfnzG8agpR2I=;
+        b=SMM8mEPV5eIu4/MGnm96tEXoZP/uFIWNabBj+JlhE1PpBLziaE6xkdwXDD3R7SFApE
+         b7CBRP/aIKTqteGouH/nWWkMGLuNkDsJ+38UcnHH9GKzx8ufmkHQ9ndW3044/R5QIWm+
+         b3oXY6yHKbCMLYaxpGMu50UbVsFyaYeOSPMu6TKt+7IZ9AW907IT8hQhpmtibI7k7IgL
+         hJb/YKf5bOtScYctW3xRu7BheXgJQL90Nl4L8SP5hSkBj6Pw1eFda14kOt4G2Yyk2azO
+         EaNGeuETqvNrnBF6glEtn2nBIA3ykxMyD0bp7KHDqiI83KemtUQhIxRwtFAQcsB5WHXz
+         4k4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FxMjjLmCV5wu1SmNNdDes4wpF04tbh7UfnzG8agpR2I=;
+        b=INcVau/BOt5sVNaOndcwPc7kwhDfVDkSuhQqLt3Jq9ksB3Y+8o0EF0mlhrDcd+4HoK
+         tazv7yRM2b8BR005A2oJ36NzsElOh1r9Xnl3wJwZF520hhonaJdnyQh22Rtokl8b4Nz/
+         QAqSCi9DTQGD+nsrX9dRAvgn2/xhR6m5I2KXX2C0QAovznvvNmTFCtOZRFwDvuhXxCHh
+         Z3gOC70SmGqfqV26Z+VfUX/Hsj3+5Ryfk7XMh9spl2usKDk4FJ25B1h1zFX0hvK68ZXM
+         AFRA9UyKiLpq8Ax1kLz0TmRm8g3g8Q0ECwTD04czfoYA9r4ixaltH22oDbhfyG5nJFYP
+         vLkg==
+X-Gm-Message-State: APjAAAVubECHAD7YdX1o471zvnkQYkCFy+/uIwaZ3589q/1YwfSG0Jwd
+	s6VjzjmA7gk7Rd4I40+wu4/0dOXasnwk4dfPJJ8lfw==
+X-Google-Smtp-Source: APXvYqwnfS9nd3wLOGs0D0OfKHD+SBxl97XKF9D56iGQIcLGlwPyed8/yOfLu8En+dOBF5iJpDt1gOXwywtP/o3xkzA=
+X-Received: by 2002:a9d:7c92:: with SMTP id q18mr19200169otn.363.1571668999984;
+ Mon, 21 Oct 2019 07:43:19 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-MC-Unique: tqajfzzvNaaD0mZxWWnBcg-1
-X-Mimecast-Spam-Score: 0
-Message-ID-Hash: 2RINEA6VRU3QELET7LFPTAMG7VJB2JWN
-X-Message-ID-Hash: 2RINEA6VRU3QELET7LFPTAMG7VJB2JWN
-X-MailFrom: jmoyer@redhat.com
+References: <20191018123534.GA6549@mwanda> <CAJZ5v0jeoJrrn56VqRSoY-Mc9rp04tWYbTCsQugZV=vXQk0nNg@mail.gmail.com>
+In-Reply-To: <CAJZ5v0jeoJrrn56VqRSoY-Mc9rp04tWYbTCsQugZV=vXQk0nNg@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 21 Oct 2019 07:43:10 -0700
+Message-ID: <CAPcyv4jL=7WFjxK1UmWRoxup0gDzjapLdt7GxwOsg1xYEPr4ew@mail.gmail.com>
+Subject: Re: [PATCH] acpi/nfit: unlock on error in scrub_show()
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: F2QATVUEZCUIBBZ65YRGWU7N4DFZBTSU
+X-Message-ID-Hash: F2QATVUEZCUIBBZ65YRGWU7N4DFZBTSU
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, Jeff Smits <jeff.smits@intel.com>, Doug Nelson <doug.nelson@intel.com>, stable@vger.kernel.org, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: Dan Carpenter <dan.carpenter@oracle.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2RINEA6VRU3QELET7LFPTAMG7VJB2JWN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F2QATVUEZCUIBBZ65YRGWU7N4DFZBTSU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,48 +67,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> Check for NULL entries before checking the entry order, otherwise NULL
-> is misinterpreted as a present pte conflict. The 'order' check needs to
-> happen before the locked check as an unlocked entry at the wrong order
-> must fallback to lookup the correct order.
-
-Please include the user-visible effects of the problem in the changelog.
-
-Thanks,
-Jeff
-
+On Sun, Oct 20, 2019 at 4:35 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Reported-by: Jeff Smits <jeff.smits@intel.com>
-> Reported-by: Doug Nelson <doug.nelson@intel.com>
-> Cc: <stable@vger.kernel.org>
-> Fixes: 23c84eb78375 ("dax: Fix missed wakeup with PMD faults")
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  fs/dax.c |    5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> On Fri, Oct 18, 2019 at 2:38 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > We change the locking in this function and forgot to update this error
+> > path so we are accidentally still holding the "dev->lockdep_mutex".
+> >
+> > Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/acpi/nfit/core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > index 1413324982f0..14e68f202f81 100644
+> > --- a/drivers/acpi/nfit/core.c
+> > +++ b/drivers/acpi/nfit/core.c
+> > @@ -1322,7 +1322,7 @@ static ssize_t scrub_show(struct device *dev,
+> >         nfit_device_lock(dev);
+> >         nd_desc = dev_get_drvdata(dev);
+> >         if (!nd_desc) {
+> > -               device_unlock(dev);
+> > +               nfit_device_unlock(dev);
+> >                 return rc;
+> >         }
+> >         acpi_desc = to_acpi_desc(nd_desc);
+> > --
 >
-> diff --git a/fs/dax.c b/fs/dax.c
-> index a71881e77204..08160011d94c 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -221,10 +221,11 @@ static void *get_unlocked_entry(struct xa_state *xas, unsigned int order)
->  
->  	for (;;) {
->  		entry = xas_find_conflict(xas);
-> +		if (!entry || WARN_ON_ONCE(!xa_is_value(entry)))
-> +			return entry;
->  		if (dax_entry_order(entry) < order)
->  			return XA_RETRY_ENTRY;
-> -		if (!entry || WARN_ON_ONCE(!xa_is_value(entry)) ||
-> -				!dax_is_locked(entry))
-> +		if (!dax_is_locked(entry))
->  			return entry;
->  
->  		wq = dax_entry_waitqueue(xas, entry, &ewait.key);
+> Applying as a fix for 5.4, thanks!
+>
+> @Dan W: Please let me know if you'd rather take it yourself.
+
+If you already have it applied, I have no concerns.
+
+Acked-by: Dan Williams <dan.j.williams@intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
