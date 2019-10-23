@@ -1,57 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3CCE2353
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Oct 2019 21:33:16 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A47E235A
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Oct 2019 21:41:20 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 99798100EEB8E;
-	Wed, 23 Oct 2019 12:34:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	by ml01.01.org (Postfix) with ESMTP id 32895100EEB8E;
+	Wed, 23 Oct 2019 12:42:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3CBF2100EEB8C
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Oct 2019 12:34:39 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 0C66D100EEB8C
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Oct 2019 12:42:43 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 12:33:12 -0700
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 12:41:16 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.68,222,1569308400";
-   d="scan'208";a="196878938"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by fmsmga008.fm.intel.com with ESMTP; 23 Oct 2019 12:33:12 -0700
+   d="scan'208";a="188354486"
+Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
+  by orsmga007.jf.intel.com with ESMTP; 23 Oct 2019 12:41:16 -0700
+Received: from fmsmsx121.amr.corp.intel.com (10.18.125.36) by
+ FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 23 Oct 2019 12:41:15 -0700
 Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- FMSMSX103.amr.corp.intel.com ([169.254.2.173]) with mapi id 14.03.0439.000;
- Wed, 23 Oct 2019 12:33:11 -0700
+ fmsmsx121.amr.corp.intel.com ([169.254.6.22]) with mapi id 14.03.0439.000;
+ Wed, 23 Oct 2019 12:41:15 -0700
 From: "Verma, Vishal L" <vishal.l.verma@intel.com>
 To: "Williams, Dan J" <dan.j.williams@intel.com>, "linux-nvdimm@lists.01.org"
 	<linux-nvdimm@lists.01.org>
 Subject: Re: [ndctl PATCH 3/4] test/dax.sh: Validate huge page mappings
 Thread-Topic: [ndctl PATCH 3/4] test/dax.sh: Validate huge page mappings
-Thread-Index: AQHVhp3YA9l1C9N+nECXG4rwhhlK3qdpGYQA
-Date: Wed, 23 Oct 2019 19:33:10 +0000
-Message-ID: <77f96d5eade3b83e1ef847fd2b5533f3eb0a9cea.camel@intel.com>
+Thread-Index: AQHVhp3YA9l1C9N+nECXG4rwhhlK3qdpGYQAgAACQIA=
+Date: Wed, 23 Oct 2019 19:41:14 +0000
+Message-ID: <5e6086c2a48bce222aaedb8bb121bc64bd7fa445.camel@intel.com>
 References: <157150317870.3940762.5638079137146963300.stgit@dwillia2-desk3.amr.corp.intel.com>
 	 <157150319417.3940762.12887432367621574807.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157150319417.3940762.12887432367621574807.stgit@dwillia2-desk3.amr.corp.intel.com>
+	 <77f96d5eade3b83e1ef847fd2b5533f3eb0a9cea.camel@intel.com>
+In-Reply-To: <77f96d5eade3b83e1ef847fd2b5533f3eb0a9cea.camel@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 x-originating-ip: [10.232.112.164]
-Content-ID: <DD3A706C870B574FA951E48E18AEA2D1@intel.com>
+Content-ID: <D9BD11D7DEF4054BA691F42E897F509D@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: W5CGLNDKZPPWR7URY4XWH7MZNDO5ZO7C
-X-Message-ID-Hash: W5CGLNDKZPPWR7URY4XWH7MZNDO5ZO7C
+Message-ID-Hash: HSZTGPX454SVHAPZF56PCVQTQJO46JCH
+X-Message-ID-Hash: HSZTGPX454SVHAPZF56PCVQTQJO46JCH
 X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/W5CGLNDKZPPWR7URY4XWH7MZNDO5ZO7C/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HSZTGPX454SVHAPZF56PCVQTQJO46JCH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,90 +64,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-
-On Sat, 2019-10-19 at 09:39 -0700, Dan Williams wrote:
-> Using trace-cmd to validate the expectations of the huge page faults
-> generated by the dax-pmd.c test.
+On Wed, 2019-10-23 at 19:33 +0000, Verma, Vishal L wrote:
 > 
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  test/dax.sh |   24 ++++++++++++++++++++++--
->  1 file changed, 22 insertions(+), 2 deletions(-)
+> > @@ -91,4 +111,4 @@ json=$($NDCTL create-namespace -m raw -f -e $dev)
+> >  eval $(json2var <<< "$json")
+> >  [ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
 > 
-> diff --git a/test/dax.sh b/test/dax.sh
-> index 59d5eafadae8..e5945fc3e335 100755
-> --- a/test/dax.sh
-> +++ b/test/dax.sh
-> @@ -30,12 +30,32 @@ cleanup() {
->  
->  run_test() {
->  	rc=0
-> -	if ! ./dax-pmd $MNT/$FILE; then
-> +	if ! trace-cmd record -e fs_dax:dax_pmd_fault_done ./dax-pmd $MNT/$FILE; then
->  		rc=$?
->  		if [ $rc -ne 77 -a $rc -ne 0 ]; then
->  			cleanup $1
->  		fi
->  	fi
-> +
-> +	# Fragile hack to double check the kernel services this test
-> +	# with successful pmd faults. If dax-pmd.c ever changes the
-> +	# number of times the dax_pmd_fault_done trace point fires the
-> +	# hack needs to be updated from 10 expected firings and the
-> +	# result of success (NOPAGE).
-> +	count=0
-> +	rc=1
-> +	for p in $(trace-cmd report | awk '{ print $21 }')
-> +	do
-> +		if [ $count -lt 10 ]; then
-> +			if [ $p != "0x100" -a $p != "NOPAGE" ]; then
-> +				cleanup $1
-> +			fi
-> +		fi
-> +		count=$((count + 1))
-> +	done
+> same comment about quoting "$mode". If 'mode' happens to be empty for
+> soem reason, we want to fail with the error message - instead the above
+> will fail with a syntax error.
 
-We shouldn't read lines with 'for' - if the command in $() happens to
-spit out any glob metacharacters, we can get unexpected iterations.
-
-It should instead be:
-
-   while read -r p; do
-
-   ...
-
-   done < <(trace-cmd report | awk '{ print $21 }')
-
-
-> +	if [ $count -lt 10 ]; then
-
-within [ ], any $variables should be quoted. Generally true for just
-about all variables. If [[ ]] is used (bash-specific), then the quoting
-may be omitted, but since it is a math comparison, the easiest might be:
-
-   if ((count < 10)); then
-   ...
-   fi
-
-> +		cleanup $1
-> +	fi
->  }
->  
->  set -e
-> @@ -91,4 +111,4 @@ json=$($NDCTL create-namespace -m raw -f -e $dev)
->  eval $(json2var <<< "$json")
->  [ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-
-same comment about quoting "$mode". If 'mode' happens to be empty for
-soem reason, we want to fail with the error message - instead the above
-will fail with a syntax error.
-
->  
-> -exit $rc
-> +exit 0
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Sorry ignore this - that was a context line..
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
