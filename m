@@ -1,66 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C7AE269E
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Oct 2019 00:51:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7F2E27F9
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Oct 2019 04:06:22 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E1A0100EEB8F;
-	Wed, 23 Oct 2019 15:52:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 93C72100EEB8F;
+	Wed, 23 Oct 2019 19:07:44 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 806EB100EEB8E
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Oct 2019 15:52:50 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Oct 2019 15:51:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,222,1569308400";
-   d="scan'208";a="210184609"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by orsmga002.jf.intel.com with ESMTP; 23 Oct 2019 15:51:22 -0700
-Received: from fmsmsx102.amr.corp.intel.com (10.18.124.200) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 23 Oct 2019 15:51:22 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- FMSMSX102.amr.corp.intel.com ([169.254.10.231]) with mapi id 14.03.0439.000;
- Wed, 23 Oct 2019 15:51:22 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "jmoyer@redhat.com" <jmoyer@redhat.com>, "Weiny, Ira"
-	<ira.weiny@intel.com>
-Subject: Re: [ndctl patch 3/4] query_fw_finish_status: get rid of redundant
- variable
-Thread-Topic: [ndctl patch 3/4] query_fw_finish_status: get rid of redundant
- variable
-Thread-Index: AQHVhffdKVQAtmMLOEqII07S9c0vNKdpS+GAgAAGTQA=
-Date: Wed, 23 Oct 2019 22:51:21 +0000
-Message-ID: <7187044f4f6dca57f43879cd2d493949735f63a2.camel@intel.com>
-References: <20191018202302.8122-1-jmoyer@redhat.com>
-	 <20191018202302.8122-4-jmoyer@redhat.com>
-	 <20191018205424.GA12760@iweiny-DESK2.sc.intel.com>
-	 <x49sgnp7ohp.fsf@segfault.boston.devel.redhat.com>
-	 <49b7cb5dae88ada6945b15eb1cf2e5e798173861.camel@intel.com>
-In-Reply-To: <49b7cb5dae88ada6945b15eb1cf2e5e798173861.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <8C094CBE4DE17F4F9433D4A1A2950519@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 1C5CA100EEB8E
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Oct 2019 19:07:42 -0700 (PDT)
+Received: by mail-oi1-x243.google.com with SMTP id x3so19248893oig.2
+        for <linux-nvdimm@lists.01.org>; Wed, 23 Oct 2019 19:06:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wyQt9qS7x8UywZSRcIfVGbteAhYRxjBFqgoKMXx1aUg=;
+        b=QUFVlXswZJtKDJ98hP42sQ/G4KgR8pSJILG8Ky81YwZ0Gv5zRw0Gy1STlQaiHqdCOj
+         XX13Ehrt6Qk+dnsTHpKyLyoqZldwQjGVdTUtJbfxN29M+7CGm8d/FNbdZA+67zDD3pqI
+         kQjcP86eS4oZaSn+vgrKnZL6lf/9iAxHJJwmKtU2Mbwkn9yYbK43R+auuqfG9QYE+tus
+         qUmvrIIn6ANWBmgkGrm/oXqNseG0vsJs2YXiikTiHqHhQh9QvsTg8m/ezgl1+l9RhGwg
+         yC/CP3AvJucoNb30O8dRFYbiXC9d4Qojcyh5qcwnJaI9x7AiC5EyIThvc8YPcdYXA1hB
+         0J6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=wyQt9qS7x8UywZSRcIfVGbteAhYRxjBFqgoKMXx1aUg=;
+        b=NW24dQ/E7GkemTpArxymo3dE4PmPuY53JhQICIpBHKyV3aQ/MABmhrEYYPaKXYVyZ6
+         31ij+hcwRiI0zzwZhlKfz7kbmPBK54yfIwxWppKBCCEPtPcIyGDaDK0PPLrl5stY6gJG
+         bV86fBpmfpcieezFmkvrTCCIiyOdqpbbGIoS5TJBHof9or+6ZT92x9G9EA2ra0jb+GeO
+         5vab5OO6B8Mbr+pbOs73Fgg3C82+gaVrlYGFZkRHZCdsqg/QYl4QGPuJVN+6mjKwNx4i
+         5CI3YZ9PS+Z0i6JLxRl1mtWxfdUur6yvNsIKZGmRl5y1vVj7kAiT4F+6NI9hQuaFDLj8
+         QASg==
+X-Gm-Message-State: APjAAAUnJ+a5JNggBUtrMAy4NZ3l+v2H+AajmR7OtHXayEIQrLxz65nR
+	a7gNbaaM/LJIyLV8Wsk1J9Z9QwiB12vGHFDK0xIfbp6zqvE=
+X-Google-Smtp-Source: APXvYqySHm/Vr4qxp3lZimn8xtzB/Zr3NTsS77jVPkCEm84IfsPTfICePF+dAIMNC7VeM+3H/Y5wxxSokTNN6mXEFvw=
+X-Received: by 2002:aca:620a:: with SMTP id w10mr2683806oib.0.1571882776521;
+ Wed, 23 Oct 2019 19:06:16 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: S56G7SDVG33SYTW6XRRQQPIJ3YTP3AK3
-X-Message-ID-Hash: S56G7SDVG33SYTW6XRRQQPIJ3YTP3AK3
-X-MailFrom: vishal.l.verma@intel.com
+References: <20191017073308.32645-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20191017073308.32645-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 23 Oct 2019 19:06:05 -0700
+Message-ID: <CAPcyv4ix9Ld6NgN=6u3yBJc1A81U-nkY3EFHjBUTMNoxAxth1g@mail.gmail.com>
+Subject: Re: [PATCH v3] libnvdimm/nsio: differentiate between probe mapping
+ and runtime mapping
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: RPO7257Y5LLOKSXSLDCXPBZAKKZGHGUM
+X-Message-ID-Hash: RPO7257Y5LLOKSXSLDCXPBZAKKZGHGUM
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/S56G7SDVG33SYTW6XRRQQPIJ3YTP3AK3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RPO7257Y5LLOKSXSLDCXPBZAKKZGHGUM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,49 +68,192 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2019-10-23 at 22:28 +0000, Verma, Vishal L wrote:
-> On Fri, 2019-10-18 at 17:06 -0400, Jeff Moyer wrote:
-> > Ira Weiny <ira.weiny@intel.com> writes:
-> > > On Fri, Oct 18, 2019 at 04:23:01PM -0400, Jeff Moyer wrote:
-> > > > The 'done' variable only adds confusion.
-> > > > 
-> > > > Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
-> > > > ---
-> > > >  ndctl/dimm.c | 7 +------
-> > > >  1 file changed, 1 insertion(+), 6 deletions(-)
-> > > > 
-> > > > diff --git a/ndctl/dimm.c b/ndctl/dimm.c
-> > > > index c8821d6..f28b9c1 100644
-> > > > --- a/ndctl/dimm.c
-> > > > +++ b/ndctl/dimm.c
-> > > > @@ -682,7 +682,6 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
-> > > >  	struct ndctl_cmd *cmd;
-> > > >  	int rc;
-> > > >  	enum ND_FW_STATUS status;
-> > > > -	bool done = false;
-> > > >  	struct timespec now, before, after;
-> > > >  	uint64_t ver;
-> > > >  
-> > > > @@ -716,7 +715,6 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
-> > > >  					ndctl_dimm_get_devname(dimm));
-> > > >  			printf("Firmware version %#lx.\n", ver);
-> > > >  			printf("Cold reboot to activate.\n");
-> > > > -			done = true;
-> > > >  			rc = 0;
-> > > 
-> > > Do we need "goto out" here?
-> > 
-> > Yes, I missed that one.  Thanks.
-> 
-> This actually looks fine, since there is a 'break' down below.
-> 
-> > > >  			break;
-> > > >  		case FW_EBUSY:
+On Thu, Oct 17, 2019 at 12:33 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> nvdimm core currently maps the full namespace to an ioremap range
+> while probing the namespace mode. This can result in probe failures
+> on architectures that have limited ioremap space.
+>
+> For example, with a large btt namespace that consumes most of I/O remap
+> range, depending on the sequence of namespace initialization, the user can find
+> a pfn namespace initialization failure due to unavailable I/O remap space
+> which nvdimm core uses for temporary mapping.
+>
+> nvdimm core can avoid this failure by only mapping the reserver block area to
 
-(Watching the unit test run fall into an infinite loop..) Nope, the
-break is in the switch scope, the while loop needs the 'goto out'.
+s/reserver/reserved/
 
-Yes this bit definitely needs to be refactored :)
+> check for pfn superblock type and map the full namespace resource only before
+> using the namespace.
+
+Are you going to follow up with the BTT patch that uses this new facility?
+
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+> Changes from v2:
+> * update changelog
+>
+> Changes from V1:
+> * update changelog
+> * update patch based on review feedback.
+>
+>  drivers/dax/pmem/core.c   |  2 +-
+>  drivers/nvdimm/claim.c    |  7 +++----
+>  drivers/nvdimm/nd.h       |  4 ++--
+>  drivers/nvdimm/pfn.h      |  6 ++++++
+>  drivers/nvdimm/pfn_devs.c |  5 -----
+>  drivers/nvdimm/pmem.c     | 15 ++++++++++++---
+>  6 files changed, 24 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/dax/pmem/core.c b/drivers/dax/pmem/core.c
+> index 6eb6dfdf19bf..f174dbfbe1c4 100644
+> --- a/drivers/dax/pmem/core.c
+> +++ b/drivers/dax/pmem/core.c
+> @@ -28,7 +28,7 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
+>         nsio = to_nd_namespace_io(&ndns->dev);
+>
+>         /* parse the 'pfn' info block via ->rw_bytes */
+> -       rc = devm_nsio_enable(dev, nsio);
+> +       rc = devm_nsio_enable(dev, nsio, info_block_reserve());
+>         if (rc)
+>                 return ERR_PTR(rc);
+>         rc = nvdimm_setup_pfn(nd_pfn, &pgmap);
+> diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
+> index 2985ca949912..d89d2c039e25 100644
+> --- a/drivers/nvdimm/claim.c
+> +++ b/drivers/nvdimm/claim.c
+> @@ -300,12 +300,12 @@ static int nsio_rw_bytes(struct nd_namespace_common *ndns,
+>         return rc;
+>  }
+>
+> -int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio)
+> +int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio, unsigned long size)
+>  {
+>         struct resource *res = &nsio->res;
+>         struct nd_namespace_common *ndns = &nsio->common;
+>
+> -       nsio->size = resource_size(res);
+> +       nsio->size = size;
+
+This needs a:
+
+if (nsio->size)
+   devm_memunmap(dev, nsio->addr);
+
+
+>         if (!devm_request_mem_region(dev, res->start, resource_size(res),
+>                                 dev_name(&ndns->dev))) {
+
+Also don't repeat the devm_request_mem_region() if one was already done.
+
+Another thing to check is if nsio->size gets cleared when the
+namespace is disabled, if not that well need to be added in the
+shutdown path.
+
+
+>                 dev_warn(dev, "could not reserve region %pR\n", res);
+> @@ -318,8 +318,7 @@ int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio)
+>         nvdimm_badblocks_populate(to_nd_region(ndns->dev.parent), &nsio->bb,
+>                         &nsio->res);
+>
+> -       nsio->addr = devm_memremap(dev, res->start, resource_size(res),
+> -                       ARCH_MEMREMAP_PMEM);
+> +       nsio->addr = devm_memremap(dev, res->start, size, ARCH_MEMREMAP_PMEM);
+>
+>         return PTR_ERR_OR_ZERO(nsio->addr);
+>  }
+> diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+> index ee5c04070ef9..93d3c760c0f3 100644
+> --- a/drivers/nvdimm/nd.h
+> +++ b/drivers/nvdimm/nd.h
+> @@ -376,7 +376,7 @@ void nvdimm_badblocks_populate(struct nd_region *nd_region,
+>  #define MAX_STRUCT_PAGE_SIZE 64
+>
+>  int nvdimm_setup_pfn(struct nd_pfn *nd_pfn, struct dev_pagemap *pgmap);
+> -int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio);
+> +int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio, unsigned long size);
+>  void devm_nsio_disable(struct device *dev, struct nd_namespace_io *nsio);
+>  #else
+>  static inline int nvdimm_setup_pfn(struct nd_pfn *nd_pfn,
+> @@ -385,7 +385,7 @@ static inline int nvdimm_setup_pfn(struct nd_pfn *nd_pfn,
+>         return -ENXIO;
+>  }
+>  static inline int devm_nsio_enable(struct device *dev,
+> -               struct nd_namespace_io *nsio)
+> +               struct nd_namespace_io *nsio, unsigned long size)
+>  {
+>         return -ENXIO;
+>  }
+> diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
+> index acb19517f678..f4856c87d01c 100644
+> --- a/drivers/nvdimm/pfn.h
+> +++ b/drivers/nvdimm/pfn.h
+> @@ -36,4 +36,10 @@ struct nd_pfn_sb {
+>         __le64 checksum;
+>  };
+>
+> +static inline u32 info_block_reserve(void)
+> +{
+> +       return ALIGN(SZ_8K, PAGE_SIZE);
+> +}
+> +
+> +
+>  #endif /* __NVDIMM_PFN_H */
+> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> index 60d81fae06ee..e49aa9a0fd04 100644
+> --- a/drivers/nvdimm/pfn_devs.c
+> +++ b/drivers/nvdimm/pfn_devs.c
+> @@ -635,11 +635,6 @@ int nd_pfn_probe(struct device *dev, struct nd_namespace_common *ndns)
+>  }
+>  EXPORT_SYMBOL(nd_pfn_probe);
+>
+> -static u32 info_block_reserve(void)
+> -{
+> -       return ALIGN(SZ_8K, PAGE_SIZE);
+> -}
+> -
+>  /*
+>   * We hotplug memory at sub-section granularity, pad the reserved area
+>   * from the previous section base to the namespace base address.
+> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> index f9f76f6ba07b..3c188ffeff11 100644
+> --- a/drivers/nvdimm/pmem.c
+> +++ b/drivers/nvdimm/pmem.c
+> @@ -491,17 +491,26 @@ static int pmem_attach_disk(struct device *dev,
+>  static int nd_pmem_probe(struct device *dev)
+>  {
+>         int ret;
+> +       struct nd_namespace_io *nsio;
+>         struct nd_namespace_common *ndns;
+>
+>         ndns = nvdimm_namespace_common_probe(dev);
+>         if (IS_ERR(ndns))
+>                 return PTR_ERR(ndns);
+>
+> -       if (devm_nsio_enable(dev, to_nd_namespace_io(&ndns->dev)))
+> -               return -ENXIO;
+> +       nsio = to_nd_namespace_io(&ndns->dev);
+>
+> -       if (is_nd_btt(dev))
+> +       if (is_nd_btt(dev)) {
+> +               /*
+> +                * Map with resource size
+> +                */
+> +               if (devm_nsio_enable(dev, nsio, resource_size(&nsio->res)))
+> +                       return -ENXIO;
+>                 return nvdimm_namespace_attach_btt(ndns);
+> +       }
+> +
+> +       if (devm_nsio_enable(dev, nsio, info_block_reserve()))
+> +               return -ENXIO;
+>
+>         if (is_nd_pfn(dev))
+>                 return pmem_attach_disk(dev, ndns);
+> --
+> 2.21.0
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
