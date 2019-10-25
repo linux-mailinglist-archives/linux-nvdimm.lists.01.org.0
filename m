@@ -1,146 +1,301 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A755E5626
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Oct 2019 23:52:30 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31C89E566F
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Oct 2019 00:21:21 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B04F2100EEBBA;
-	Fri, 25 Oct 2019 14:53:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.130.135; helo=apc01-hk2-obe.outbound.protection.outlook.com; envelope-from=decui@microsoft.com; receiver=<UNKNOWN> 
-Received: from APC01-HK2-obe.outbound.protection.outlook.com (mail-eopbgr1300135.outbound.protection.outlook.com [40.107.130.135])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id B1B58100EEBBE;
+	Fri, 25 Oct 2019 15:22:30 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EDDBB100EEBB6
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 14:53:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nR+lVvnZeD6OPFeOOr6oOJjCgD07rFzmDK/TmVfjC4xtX9Fdf6nnu41uchMiuYMawKWQjxOa5bXD1GH/gcuBAV3rLdGrWQxhk0sS/0LiAva1eNQkLxfhLffkU8HdHTrNqPJ3q7X8TXfSfBmrxzj+PdPoV+FDid4z3YQ16H/belm58XJj6gutrizQbtKZI57ZdSHf9lsiehdvBtjBm/stYUsnWGQOMgI23YuhAXErfV4BGplSg7LUpZo4SqJE+mhpKRpXnT4oSMq1ZKRcKL/bh/qz8RXJ5l5oknX0FDMqLLGOQZcgLdUe/3fhNz02NwVTgfChDfwHa5Twikc+xNtlHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a2YkTlNHjrUM0tNcfPKiDRKZEqFrkHlJG4nbc+ydIjY=;
- b=EdjQEAW1vJKTJkQ3fgr3govBJpOOxDvoWSeoiRe/t4ESrDiB+pMwOXdXsCIhgy2OpbIexq+leC37rIqJKQRt2jQ12yE+zD+YsJIPYpHxDlWq2vBK2ghCRTVRK137nMatQ0l7MDcquv1E2pwmdgysxxUtfrpCYhXSfLaQw/iNzvCaKS4c/1GlPALpgxwX2rL8ywcTfJX0x8m6E8uNEwz5AJBEXovz6onkvCl4K7FExDwWWH2D258SLSc20ZSsTVnyQPD13BrA3ePjL/+QJTL+92O67EeNA62UkLiqRdmnVzkjwpIh6Z2O7kv1b39ifjSGInw/cd7GukeQps18LufLhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a2YkTlNHjrUM0tNcfPKiDRKZEqFrkHlJG4nbc+ydIjY=;
- b=Nqz1vrOfzHlwdyg+QSWH2RdMBZ2kINgvUm2pt9au01P7KFfF/LWOCSUuvh+JlaOkzQL6TX57ucvcLQ2RjD3WAW/0HyUHZBhWMHrkGLt4Zoecy2cRmYnHOxPkOk064dcub6TE8C2ERVyPud7czNH6z65tgcCBP5D7mgxyvgWnRjw=
-Received: from PU1P153MB0169.APCP153.PROD.OUTLOOK.COM (10.170.189.13) by
- PU1P153MB0123.APCP153.PROD.OUTLOOK.COM (10.170.188.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2408.9; Fri, 25 Oct 2019 21:52:16 +0000
-Received: from PU1P153MB0169.APCP153.PROD.OUTLOOK.COM
- ([fe80::69f1:c9:209a:1809]) by PU1P153MB0169.APCP153.PROD.OUTLOOK.COM
- ([fe80::69f1:c9:209a:1809%2]) with mapi id 15.20.2408.008; Fri, 25 Oct 2019
- 21:52:16 +0000
-From: Dexuan Cui <decui@microsoft.com>
-To: D Scott Phillips <d.scott.phillips@intel.com>, Dan Williams
-	<dan.j.williams@intel.com>, David Howells <dhowells@redhat.com>, Jerry
- Hoemann <jerry.hoemann@hpe.com>, stuart hayes <stuart.w.hayes@gmail.com>,
-	Toshi Kani <toshi.kani@hpe.com>, Vishal Verma <vishal.l.verma@intel.com>,
-	"linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-Subject: RE: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
-Thread-Topic: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
-Thread-Index: AQHVi112Ij26P7t3F0qnvWOXEr+vYKdr5XIg
-Date: Fri, 25 Oct 2019 21:52:16 +0000
-Message-ID: 
- <PU1P153MB0169DBCFF86599EEE2938A22BF650@PU1P153MB0169.APCP153.PROD.OUTLOOK.COM>
-References: <20191025175553.63271-1-d.scott.phillips@intel.com>
-In-Reply-To: <20191025175553.63271-1-d.scott.phillips@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=True;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Owner=decui@microsoft.com;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2019-10-25T21:52:14.8429239Z;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=General;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Application=Microsoft Azure
- Information Protection;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=622db8f2-e53b-4511-bcd8-c76260883bbb;
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Extended_MSFT_Method=Automatic
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=decui@microsoft.com;
-x-originating-ip: [2601:600:a280:7f70:f5b6:b399:241c:9e4]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: c6810aa6-489a-42e5-9833-08d759959a36
-x-ms-traffictypediagnostic: PU1P153MB0123:
-x-microsoft-antispam-prvs: 
- <PU1P153MB0123C44927B7E9346C8E287DBF650@PU1P153MB0123.APCP153.PROD.OUTLOOK.COM>
-x-ms-oob-tlc-oobclassifiers: OLM:8882;
-x-forefront-prvs: 02015246A9
-x-forefront-antispam-report: 
- SFV:NSPM;SFS:(10019020)(4636009)(366004)(136003)(376002)(39860400002)(396003)(346002)(189003)(199004)(86362001)(25786009)(6246003)(7736002)(305945005)(476003)(81156014)(229853002)(8676002)(4326008)(14454004)(71200400001)(81166006)(110136005)(74316002)(71190400001)(33656002)(2906002)(6116002)(5660300002)(102836004)(66446008)(64756008)(66556008)(66476007)(66946007)(8936002)(76116006)(52536014)(478600001)(55016002)(10090500001)(256004)(53546011)(186003)(46003)(9686003)(76176011)(2501003)(6436002)(22452003)(446003)(316002)(486006)(11346002)(10290500003)(7696005)(6506007)(8990500004)(99286004);DIR:OUT;SFP:1102;SCL:1;SRVR:PU1P153MB0123;H:PU1P153MB0169.APCP153.PROD.OUTLOOK.COM;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: microsoft.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- 0lKhZRkAZbn9NYl6KdG30bx7Al3/3yi91qhV+Ztr1nSbkSCrPs/P+JeZzUcHn5rjkwa4iNN5/a3vetTaOANr2PAJ7XAckER8FnHIb/nTRL12RXLCxWz6SaDJnmn+rvCZ6V3WQgT82Uvn2HPgifvkA+lT1zTmA5p2QdkRiVdel+43C5oANOJXCSQtBZJ3WigjSqoRP+iHDCPC3P1EcWg1bE+3GF3qGG5MvULfVqOoSaxn6FFHnUZeFf7rJ06vA81+Pvpfcakwccv1E/MaTKKd458QKC5OOiWu+K7Gj9tDjlRD7ovubQqyrLTP6H9CKABgNC1abL1/gkF5r5Gc4+p/eLxJqLp/LSZ7tfWYPXReW1qNq42lI9WzZq655v+L312yn4cCHmcc1j2gourP+rvxBxaAG/XVK8j+tCO8sITawtxkPty8FItheIGcz5hQIeb4
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
+	by ml01.01.org (Postfix) with ESMTPS id 61E52100EEBBA
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 15:22:28 -0700 (PDT)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 15:21:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,230,1569308400";
+   d="scan'208";a="201941997"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
+  by orsmga003.jf.intel.com with ESMTP; 25 Oct 2019 15:21:16 -0700
+Date: Fri, 25 Oct 2019 15:21:16 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+Subject: Re: [ndctl patch 3/4] query_fw_finish_status: get rid of redundant
+ variable
+Message-ID: <20191025222115.GA6536@iweiny-DESK2.sc.intel.com>
+References: <20191018202302.8122-1-jmoyer@redhat.com>
+ <20191018202302.8122-4-jmoyer@redhat.com>
+ <20191018205424.GA12760@iweiny-DESK2.sc.intel.com>
+ <x49sgnp7ohp.fsf@segfault.boston.devel.redhat.com>
+ <49b7cb5dae88ada6945b15eb1cf2e5e798173861.camel@intel.com>
+ <7187044f4f6dca57f43879cd2d493949735f63a2.camel@intel.com>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6810aa6-489a-42e5-9833-08d759959a36
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2019 21:52:16.4784
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lDlhOMl5xFad251j6s76NLzV72Mc+iipcDriGoiuNCTJAVzHaE8I00bfcN0oO8QntzBRRofwIF3fHRGy8S93bQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PU1P153MB0123
-Message-ID-Hash: DF7TTBLNRYCGSSYBBJRBHTXN7VM6OZ4A
-X-Message-ID-Hash: DF7TTBLNRYCGSSYBBJRBHTXN7VM6OZ4A
-X-MailFrom: decui@microsoft.com
+Content-Disposition: inline
+In-Reply-To: <7187044f4f6dca57f43879cd2d493949735f63a2.camel@intel.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: I6DU2MO4WZ7IINHINHQVU763NYLPUYB2
+X-Message-ID-Hash: I6DU2MO4WZ7IINHINHQVU763NYLPUYB2
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5WBUNK6G5ZRBA4DBFUEYME76RJKSDLDE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I6DU2MO4WZ7IINHINHQVU763NYLPUYB2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> From: D Scott Phillips <d.scott.phillips@intel.com>
-> Sent: Friday, October 25, 2019 10:56 AM
-> To: Dan Williams <dan.j.williams@intel.com>; David Howells
-> <dhowells@redhat.com>; Dexuan Cui <decui@microsoft.com>; Jerry
-> Hoemann <jerry.hoemann@hpe.com>; stuart hayes
-> <stuart.w.hayes@gmail.com>; Toshi Kani <toshi.kani@hpe.com>; Vishal Verma
-> <vishal.l.verma@intel.com>; linux-nvdimm@lists.01.org
-> Cc: linux-kernel@vger.kernel.org
-> Subject: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
+On Wed, Oct 23, 2019 at 03:51:21PM -0700, 'Vishal Verma' wrote:
+> On Wed, 2019-10-23 at 22:28 +0000, Verma, Vishal L wrote:
+> > On Fri, 2019-10-18 at 17:06 -0400, Jeff Moyer wrote:
+> > > Ira Weiny <ira.weiny@intel.com> writes:
+> > > > On Fri, Oct 18, 2019 at 04:23:01PM -0400, Jeff Moyer wrote:
+> > > > > The 'done' variable only adds confusion.
+> > > > > 
+> > > > > Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
+> > > > > ---
+> > > > >  ndctl/dimm.c | 7 +------
+> > > > >  1 file changed, 1 insertion(+), 6 deletions(-)
+> > > > > 
+> > > > > diff --git a/ndctl/dimm.c b/ndctl/dimm.c
+> > > > > index c8821d6..f28b9c1 100644
+> > > > > --- a/ndctl/dimm.c
+> > > > > +++ b/ndctl/dimm.c
+> > > > > @@ -682,7 +682,6 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+> > > > >  	struct ndctl_cmd *cmd;
+> > > > >  	int rc;
+> > > > >  	enum ND_FW_STATUS status;
+> > > > > -	bool done = false;
+> > > > >  	struct timespec now, before, after;
+> > > > >  	uint64_t ver;
+> > > > >  
+> > > > > @@ -716,7 +715,6 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+> > > > >  					ndctl_dimm_get_devname(dimm));
+> > > > >  			printf("Firmware version %#lx.\n", ver);
+> > > > >  			printf("Cold reboot to activate.\n");
+> > > > > -			done = true;
+> > > > >  			rc = 0;
+> > > > 
+> > > > Do we need "goto out" here?
+> > > 
+> > > Yes, I missed that one.  Thanks.
+> > 
+> > This actually looks fine, since there is a 'break' down below.
+> > 
+> > > > >  			break;
+> > > > >  		case FW_EBUSY:
 > 
-> Allow ndctl.h to be licensed with BSD-2-Clause so that other
-> operating systems can provide the same user level interface.
-> ---
+> (Watching the unit test run fall into an infinite loop..) Nope, the
+> break is in the switch scope, the while loop needs the 'goto out'.
 > 
-> I've been working on nvdimm support in FreeBSD and would like to
-> offer the same ndctl API there to ease porting of application
-> code. Here I'm proposing to add the BSD-2-Clause license to this
-> header file, so that it can later be copied into FreeBSD.
-> 
-> I believe that all the authors of changes to this file (in the To:
-> list) would need to agree to this change before it could be
-> accepted, so any signed-off-by is intentionally ommited for now.
-> Thanks,
-> 
-> Scott
+> Yes this bit definitely needs to be refactored :)
 
-Hi Scott,
-I agree to make the change if Dan and Vishal also agree. :-)
+How about this patch instead?  Untested.
 
-Thanks,
--- Dexuan
+Ira
+
+From 24511b6a9f1b5e5c9e36c70ef6a03da5100cf4c7 Mon Sep 17 00:00:00 2001
+From: Ira Weiny <ira.weiny@intel.com>
+Date: Fri, 25 Oct 2019 15:16:13 -0700
+Subject: [PATCH] ndctl: Clean up loop logic in query_fw_finish_status
+
+This gets rid of a redundant variable as originally pointed out by Jeff
+Moyer[1]
+
+Also, while we are here change the printf's to fprintf(stderr, ...)
+
+[1] https://patchwork.kernel.org/patch/11199557/
+
+Suggested-by: Jeff Moyer <jmoyer@redhat.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+ ndctl/dimm.c | 142 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 70 insertions(+), 72 deletions(-)
+
+diff --git a/ndctl/dimm.c b/ndctl/dimm.c
+index 5e6fa19bab15..84de014e93d6 100644
+--- a/ndctl/dimm.c
++++ b/ndctl/dimm.c
+@@ -682,7 +682,6 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 	struct ndctl_cmd *cmd;
+ 	int rc;
+ 	enum ND_FW_STATUS status;
+-	bool done = false;
+ 	struct timespec now, before, after;
+ 	uint64_t ver;
+ 
+@@ -692,88 +691,87 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 
+ 	rc = clock_gettime(CLOCK_MONOTONIC, &before);
+ 	if (rc < 0)
+-		goto out;
++		goto unref;
+ 
+ 	now.tv_nsec = fw->query_interval / 1000;
+ 	now.tv_sec = 0;
+ 
+-	do {
+-		rc = ndctl_cmd_submit(cmd);
+-		if (rc < 0)
+-			break;
++again:
++	rc = ndctl_cmd_submit(cmd);
++	if (rc < 0)
++		goto unref;
+ 
+-		status = ndctl_cmd_fw_xlat_firmware_status(cmd);
+-		switch (status) {
+-		case FW_SUCCESS:
+-			ver = ndctl_cmd_fw_fquery_get_fw_rev(cmd);
+-			if (ver == 0) {
+-				fprintf(stderr, "No firmware updated.\n");
+-				rc = -ENXIO;
+-				goto out;
+-			}
++	status = ndctl_cmd_fw_xlat_firmware_status(cmd);
++	if (status == FW_EBUSY) {
++		/* Still on going, continue */
++		rc = clock_gettime(CLOCK_MONOTONIC, &after);
++		if (rc < 0) {
++			rc = -errno;
++			goto unref;
++		}
+ 
+-			printf("Image updated successfully to DIMM %s.\n",
+-					ndctl_dimm_get_devname(dimm));
+-			printf("Firmware version %#lx.\n", ver);
+-			printf("Cold reboot to activate.\n");
+-			done = true;
+-			rc = 0;
+-			break;
+-		case FW_EBUSY:
+-			/* Still on going, continue */
+-			rc = clock_gettime(CLOCK_MONOTONIC, &after);
+-			if (rc < 0) {
+-				rc = -errno;
+-				goto out;
+-			}
++		/*
++		 * If we expire max query time,
++		 * we timed out
++		 */
++		if (after.tv_sec - before.tv_sec >
++				fw->max_query / 1000000) {
++			rc = -ETIMEDOUT;
++			goto unref;
++		}
+ 
+-			/*
+-			 * If we expire max query time,
+-			 * we timed out
+-			 */
+-			if (after.tv_sec - before.tv_sec >
+-					fw->max_query / 1000000) {
+-				rc = -ETIMEDOUT;
+-				goto out;
+-			}
++		/*
++		 * Sleep the interval dictated by firmware
++		 * before query again.
++		 */
++		rc = nanosleep(&now, NULL);
++		if (rc < 0) {
++			rc = -errno;
++			goto unref;
++		}
++		goto again;
++	}
+ 
+-			/*
+-			 * Sleep the interval dictated by firmware
+-			 * before query again.
+-			 */
+-			rc = nanosleep(&now, NULL);
+-			if (rc < 0) {
+-				rc = -errno;
+-				goto out;
+-			}
+-			break;
+-		case FW_EBADFW:
+-			fprintf(stderr,
+-				"Firmware failed to verify by DIMM %s.\n",
+-				ndctl_dimm_get_devname(dimm));
+-		case FW_EINVAL_CTX:
+-		case FW_ESEQUENCE:
+-			done = true;
++	/* We are done determine error code */
++	switch (status) {
++	case FW_SUCCESS:
++		ver = ndctl_cmd_fw_fquery_get_fw_rev(cmd);
++		if (ver == 0) {
++			fprintf(stderr, "No firmware updated.\n");
+ 			rc = -ENXIO;
+-			goto out;
+-		case FW_ENORES:
+-			fprintf(stderr,
+-				"Firmware update sequence timed out: %s\n",
+-				ndctl_dimm_get_devname(dimm));
+-			rc = -ETIMEDOUT;
+-			done = true;
+-			goto out;
+-		default:
+-			fprintf(stderr,
+-				"Unknown update status: %#x on DIMM %s\n",
+-				status, ndctl_dimm_get_devname(dimm));
+-			rc = -EINVAL;
+-			done = true;
+-			goto out;
++			goto unref;
+ 		}
+-	} while (!done);
+ 
+-out:
++		fprintf(stderr, "Image updated successfully to DIMM %s.\n",
++			ndctl_dimm_get_devname(dimm));
++		fprintf(stderr, "Firmware version %#lx.\n", ver);
++		fprintf(stderr, "Cold reboot to activate.\n");
++		rc = 0;
++		break;
++	case FW_EBADFW:
++		fprintf(stderr,
++			"Firmware failed to verify by DIMM %s.\n",
++			ndctl_dimm_get_devname(dimm));
++		/* FALLTHROUGH */
++	case FW_EINVAL_CTX:
++	case FW_ESEQUENCE:
++		rc = -ENXIO;
++		break;
++	case FW_ENORES:
++		fprintf(stderr,
++			"Firmware update sequence timed out: %s\n",
++			ndctl_dimm_get_devname(dimm));
++		rc = -ETIMEDOUT;
++		break;
++	default:
++		fprintf(stderr,
++			"Unknown update status: %#x on DIMM %s\n",
++			status, ndctl_dimm_get_devname(dimm));
++		rc = -EINVAL;
++		break;
++	}
++
++unref:
+ 	ndctl_cmd_unref(cmd);
+ 	return rc;
+ }
+-- 
+2.20.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
