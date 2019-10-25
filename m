@@ -2,61 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BC3E568F
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Oct 2019 00:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA32EE5693
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Oct 2019 00:45:49 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 67F48100EA600;
-	Fri, 25 Oct 2019 15:45:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 913E0100EA600;
+	Fri, 25 Oct 2019 15:46:59 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2D5E5100EEBBA
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 15:45:39 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 15:44:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,230,1569308400";
-   d="scan'208";a="210863888"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
-  by orsmga002.jf.intel.com with ESMTP; 25 Oct 2019 15:44:28 -0700
-Received: from FMSMSX109.amr.corp.intel.com (10.18.116.9) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 25 Oct 2019 15:44:28 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- FMSMSX109.amr.corp.intel.com ([169.254.15.66]) with mapi id 14.03.0439.000;
- Fri, 25 Oct 2019 15:44:27 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, "linux-nvdimm@lists.01.org"
-	<linux-nvdimm@lists.01.org>
-Subject: Re: [ndctl PATCH 3/4] test/dax.sh: Validate huge page mappings
-Thread-Topic: [ndctl PATCH 3/4] test/dax.sh: Validate huge page mappings
-Thread-Index: AQHVhp3YA9l1C9N+nECXG4rwhhlK3qdpGYQAgAACQICAA1fbgA==
-Date: Fri, 25 Oct 2019 22:44:27 +0000
-Message-ID: <690e59a9ba44cefe73c8b6ce70a92c53af471364.camel@intel.com>
-References: <157150317870.3940762.5638079137146963300.stgit@dwillia2-desk3.amr.corp.intel.com>
-	 <157150319417.3940762.12887432367621574807.stgit@dwillia2-desk3.amr.corp.intel.com>
-	 <77f96d5eade3b83e1ef847fd2b5533f3eb0a9cea.camel@intel.com>
-	 <5e6086c2a48bce222aaedb8bb121bc64bd7fa445.camel@intel.com>
-In-Reply-To: <5e6086c2a48bce222aaedb8bb121bc64bd7fa445.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <29FA4C5CF4563D4CB4B373F6062A68CB@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 30DCA100EEBBA
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 15:46:57 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id y39so308674qty.0
+        for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 15:45:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4DYywa8gONdexolDcaR4V0aX/JK63D5OgCkX4AmxYjM=;
+        b=I0aloD8xas/075MWzchVZHS0wcDNzZnYmgSqnSVwoh6XglP1H5IIloMzB6c/VVfkjt
+         I9b0mN0tuuXtua87BfCpt4l7cJlJAurRikm7ONSk9LwLkEgHrhCONdV/QRZ6TYqlBC7b
+         KqvfixMs3DBdd8K6qZoRwBnzYgGbgeI8eo7iSPTL1wJJ+Z7kNfkQ+dJhuARHYvaEreQH
+         b8g3REB4sn2z5R5HaMXvW2dQZOadlP9Ia/TLFBYOW3KhW4tYQcclDurwovbWhJVe/VJT
+         mN4kfjK/D0jLvg1P19r91OJWmnlpXMc6LGqdDzto59BK/TZpsltWYDq57ksdJmhmsE/q
+         y4Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4DYywa8gONdexolDcaR4V0aX/JK63D5OgCkX4AmxYjM=;
+        b=meQqTSzWZwWvvoRuWjzl4dsFm7DKZy7URwHUFwO7df3AmaTsq2H+zdhKlCb+zQeSBX
+         Ql0nF3U9JBAEcS0NWZnzFer+BTGrebGnu1GsYJxfEaOxBz7UTxoCMYvKfr3r2jaMOAuv
+         NChvYntprXuhdWqZErdTAwTrc/wnBy6NUX59aHPs2ngu6C+fuf3uuR6eBrmkvyVB8YLD
+         vhJDEEo07qcaKib+jpcvRAzlO025IYteJ5572Vi2rrCoMbjQdpPBnzoC9MhbG4qc1e/k
+         PuT/XZuhfmt2IgfPwl9gD7z8KH5HFWIYR7G07QuXx4CWPL6H9Iq08ItSHYTWBWZFFBx2
+         WDIw==
+X-Gm-Message-State: APjAAAUhhLdyisw0HoGwEfN0yt41OVRgyqk4jBigG/M3jfpn7keBti8V
+	P+/6zrR1EW4CjMyN3ZkzZhKXQdmV7p1JfkRh/4Ef9g==
+X-Google-Smtp-Source: APXvYqzy7VtFTfrpPLjnQlO6ySEwY9RkrlXI8yizPrLMlhzT28dBaqq8uErfsoVFeBdn1EAHmE3bhLbMtWcD/J+SLo0=
+X-Received: by 2002:ac8:4241:: with SMTP id r1mr5773124qtm.111.1572043544756;
+ Fri, 25 Oct 2019 15:45:44 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: 3IGTFZRNVMM57ERO6I43DLSZ6KCL6LDJ
-X-Message-ID-Hash: 3IGTFZRNVMM57ERO6I43DLSZ6KCL6LDJ
-X-MailFrom: vishal.l.verma@intel.com
+References: <20191025175553.63271-1-d.scott.phillips@intel.com>
+In-Reply-To: <20191025175553.63271-1-d.scott.phillips@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 25 Oct 2019 15:45:33 -0700
+Message-ID: <CAPcyv4iQpO+JF8b7NUJUZ3fQFU=PWFeiWrXSd47QGnQPeRsrTg@mail.gmail.com>
+Subject: Re: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
+To: D Scott Phillips <d.scott.phillips@intel.com>
+Message-ID-Hash: NKTR4N5NVXFVDIJ2IK2D4QDT3D5WPELX
+X-Message-ID-Hash: NKTR4N5NVXFVDIJ2IK2D4QDT3D5WPELX
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: David Howells <dhowells@redhat.com>, stuart hayes <stuart.w.hayes@gmail.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3IGTFZRNVMM57ERO6I43DLSZ6KCL6LDJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NKTR4N5NVXFVDIJ2IK2D4QDT3D5WPELX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,79 +67,25 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> On Wed, 2019-10-23 at 19:33 +0000, Verma, Vishal L wrote:
-> > > @@ -91,4 +111,4 @@ json=$($NDCTL create-namespace -m raw -f -e $dev)
-> > >  eval $(json2var <<< "$json")
-> > >  [ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-> > 
-> > same comment about quoting "$mode". If 'mode' happens to be empty for
-> > soem reason, we want to fail with the error message - instead the above
-> > will fail with a syntax error.
-> 
-> Sorry ignore this - that was a context line..
-> 
+On Fri, Oct 25, 2019 at 10:55 AM D Scott Phillips
+<d.scott.phillips@intel.com> wrote:
+>
+> Allow ndctl.h to be licensed with BSD-2-Clause so that other
+> operating systems can provide the same user level interface.
+> ---
+>
+> I've been working on nvdimm support in FreeBSD and would like to
+> offer the same ndctl API there to ease porting of application
+> code. Here I'm proposing to add the BSD-2-Clause license to this
+> header file, so that it can later be copied into FreeBSD.
+>
+> I believe that all the authors of changes to this file (in the To:
+> list) would need to agree to this change before it could be
+> accepted, so any signed-off-by is intentionally ommited for now.
+> Thanks,
 
-Hey Dan,
-
-I've applied patches 1-3, with the following fixup to patch 3.
-Patch 4 didn't apply cleanly, if you can resend that I'll queue it up too.
-
---8<--
-
-From 9d6c43d5240ddb18b5540b3064f2f90c25dcf574 Mon Sep 17 00:00:00 2001
-From: Vishal Verma <vishal.l.verma@intel.com>
-Date: Fri, 25 Oct 2019 16:41:22 -0600
-Subject: [ndctl PATCH] fixup! test/dax.sh: Validate huge page mappings
-
----
- test/dax.sh | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/test/dax.sh b/test/dax.sh
-index 157b398..45c2027 100755
---- a/test/dax.sh
-+++ b/test/dax.sh
-@@ -32,8 +32,8 @@ run_test() {
- 	rc=0
- 	if ! trace-cmd record -e fs_dax:dax_pmd_fault_done ./dax-pmd $MNT/$FILE; then
- 		rc=$?
--		if [ $rc -ne 77 -a $rc -ne 0 ]; then
--			cleanup $1
-+		if [ "$rc" -ne 77 ] && [ "$rc" -ne 0 ]; then
-+			cleanup "$1"
- 		fi
- 	fi
- 
-@@ -44,17 +44,18 @@ run_test() {
- 	# result of success (NOPAGE).
- 	count=0
- 	rc=1
--	for p in $(trace-cmd report | awk '{ print $21 }')
--	do
--		if [ $count -lt 10 ]; then
--			if [ $p != "0x100" -a $p != "NOPAGE" ]; then
--				cleanup $1
-+	while read -r p; do
-+		[[ $p ]] || continue
-+		if [ "$count" -lt 10 ]; then
-+			if [ "$p" != "0x100" ] && [ "$p" != "NOPAGE" ]; then
-+				cleanup "$1"
- 			fi
- 		fi
- 		count=$((count + 1))
--	done
-+	done < <(trace-cmd report | awk '{ print $21 }')
-+
- 	if [ $count -lt 10 ]; then
--		cleanup $1
-+		cleanup "$1"
- 	fi
- }
- 
--- 
-2.20.1
-
-
+I have no problem with this change, but let's take the opportunity to
+let SPDX do its job and drop the full license text.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
