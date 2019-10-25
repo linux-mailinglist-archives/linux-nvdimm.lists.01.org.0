@@ -1,89 +1,132 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BF6E44F8
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Oct 2019 09:57:50 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A546E505B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Oct 2019 17:46:56 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 51EA8100EEBAC;
-	Fri, 25 Oct 2019 00:59:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.194; helo=mail-oi1-f194.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com [209.85.167.194])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 69BFE100EEBA9
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 00:59:02 -0700 (PDT)
-Received: by mail-oi1-f194.google.com with SMTP id v138so952799oif.6
-        for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 00:57:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=A4Obnzy7VbllcsBWAG1yWv4o6m8aHs6PeND33uMddFQ=;
-        b=E96J+nYlrzMLsBqjR3odKLTkZ7GVJRtl66zLYJwfVuD2qYB0QCgxEX93K+Sc+AOilX
-         l4qFvY2ySyekYG87153LyfATe9U6K+5Ke5w7zE/XCHsI2MxRKl/AR1mletzL/aqmEf2t
-         Ujgo94JMexiHulf1lABW3+U0od9LcGJvHXrgOj3ACpK9vHTlVcoleWmWg645+jqg2upi
-         ZsrhNQt+dZHkiPUDjhHQHEi94M2nFcqR7+A2VPYW8aQ1TVpGTK4tmdQNUG2OSZDLbwlH
-         KTI1iLxlkDpPJdTPjAN0O/sp/KRjaRYRyp0nvUD/A49qQXJ2dvlOFdtwMQ4HMCEJQNmH
-         U/Fg==
-X-Gm-Message-State: APjAAAWwLoMwjsnqugS9Z1gy+iLeIUezantRwfzEYpoFpjNroSXJw+/5
-	xgbrCX2CiJCVqdzx91CrRnhB/xf5E6YgkEmuUr8=
-X-Google-Smtp-Source: APXvYqyfnJ+dy4wBkvd4/tg8hxR0xQoQa82GCOzKvlEF+4HiTRrSEXgg68lJoNd3q+IHUF3QAJjVi6QqyPRctI5LUaA=
-X-Received: by 2002:a05:6808:3b4:: with SMTP id n20mr1723311oie.131.1571990265293;
- Fri, 25 Oct 2019 00:57:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DEFFD100EEBB4;
+	Fri, 25 Oct 2019 08:48:07 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=133.18.9.210; helo=o4022-121.kagoya.net; envelope-from=zzzsmz3@kagoya.net; receiver=<UNKNOWN> 
+Received: from o4022-121.kagoya.net (o4022-121.kagoya.net [133.18.9.210])
+	by ml01.01.org (Postfix) with ESMTP id 68846100EEBB1
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 08:48:05 -0700 (PDT)
+Received: by o4022-121.kagoya.net (Postfix, from userid 499206)
+	id DA4FD34164B; Sat, 26 Oct 2019 00:07:40 +0900 (JST)
+Date: Fri, 25 Oct 2019 15:07:40 +0000
+To: linux-nvdimm@lists.01.org
+From: DHL DELIVERY SERVICE <dhldeliveryservice5@nk-bbw.net>
+Subject: =?utf-8?Q?=44=48=4c=20=50=41=43=4b=41=47=45=20=44=45=4c=49=56=45=52=59?=
+Message-ID: <8e69ea5c472762c1ed27e1cb60849b62@nk-bbw.net>
+X-Priority: 1
 MIME-Version: 1.0
-References: <20191025044721.16617-1-alastair@au1.ibm.com>
-In-Reply-To: <20191025044721.16617-1-alastair@au1.ibm.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 25 Oct 2019 09:57:34 +0200
-Message-ID: <CAMuHMdUXVy1AYcqquJ2UHdG=2Own=HA3sAGzL_4M+nYd-xh+Dg@mail.gmail.com>
-Subject: Re: [PATCH 00/10] Add support for OpenCAPI SCM devices
-To: "Alastair D'Silva" <alastair@au1.ibm.com>
-Message-ID-Hash: IMXQQ6B7BEU2A6R7RBMTZSX2PVO7AXBW
-X-Message-ID-Hash: IMXQQ6B7BEU2A6R7RBMTZSX2PVO7AXBW
-X-MailFrom: geert.uytterhoeven@gmail.com
+Message-ID-Hash: 4CCW3OYKFUKG34OW4OHQ67USKN2CQQOK
+X-Message-ID-Hash: 4CCW3OYKFUKG34OW4OHQ67USKN2CQQOK
+X-MailFrom: zzzsmz3@kagoya.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: alastair@d-silva.org, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Masahiro Yamada <yamada.masahiro@socionext.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Oscar Salvador <osalvador@suse.c
- om>, Michal Hocko <mhocko@suse.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Wei Yang <richard.weiyang@gmail.com>, Qian Cai <cai@lca.pw>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IMXQQ6B7BEU2A6R7RBMTZSX2PVO7AXBW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4CCW3OYKFUKG34OW4OHQ67USKN2CQQOK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6622073373288053467=="
+
+--===============6622073373288053467==
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<SPAN style=3D'FONT-SIZE: 116px; FONT-FAMILY: "times new roman","new york=
+",times,serif; BORDER-RIGHT-WIDTH: 1px; BORDER-TOP-COLOR: rgb(48,121,237)=
+; WHITE-SPACE: normal; BORDER-BOTTOM-WIDTH: 1px; WORD-SPACING: 0px; TEXT-=
+TRANSFORM: none; FONT-WEIGHT: bold; COLOR: rgb(188,9,19); FONT-STYLE: nor=
+mal; BORDER-BOTTOM-COLOR: rgb(48,121,237); TEXT-ALIGN: center; PADDING-LE=
+FT: 8px; MIN-HEIGHT: 49px; ORPHANS: 2; WIDOWS: 2; BORDER-RIGHT-COLOR: rgb=
+(48,121,237); LETTER-SPACING: normal; LINE-HEIGHT: 49px; PADDING-RIGHT: 8=
+px; BORDER-TOP-WIDTH: 1px; BACKGROUND-COLOR: rgb(255,182,4); TEXT-INDENT:=
+ 0px'><SPAN style=3D"FONT-SIZE: large; FONT-FAMILY: Georgia" size=3D"4"><=
+B><I>=3DD H L=3D</I></B></SPAN></SPAN><SPAN style=3D'FONT-SIZE: 14px; FON=
+T-FAMILY: Helvetica,"Microsoft Yahei",verdana; WHITE-SPACE: normal; WORD-=
+SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR:=
+ rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !=
+important; LETTER-SPACING: normal; TEXT-INDENT: 0px'>
+<P style=3D'FONT-SIZE: 16px; FONT-FAMILY: "times new roman","new york",ti=
+mes,serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; =
+FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-STYLE: normal; MARGIN: 0px; ORP=
+HANS: 2; WIDOWS: 2; LETTER-SPACING: normal; LINE-HEIGHT: 27px; TEXT-INDEN=
+T: 0px'><BR><SPAN style=3D"FONT-SIZE: small; FONT-FAMILY: Arial,Helvetica=
+,sans-serif; COLOR: rgb(34,34,34)"><SPAN style=3D"FONT-FAMILY: verdana,sa=
+ns-serif; COLOR: rgb(0,0,0)" face=3D"verdana, sans-serif">Dear Linux-nvdi=
+mm,</SPAN><BR><BR>Your business partner sent you a package sent to you vi=
+a our courier service=E3=80=82<BR><BR>Before we start the final delivery =
+to your address, we need to confirm that you are the actual recipient.=E3=
+=80=82<BR><BR></SPAN><SPAN style=3D"FONT-SIZE: medium; FONT-FAMILY: verda=
+na,sans-serif" size=3D"3" face=3D"verdana, sans-serif">Please click below=
+ to confirm your shipping address with us to ensure smooth and fast deliv=
+ery=E3=80=82</SPAN></P><SPAN style=3D"FONT-SIZE: medium; FONT-FAMILY: ver=
+da
+ na,sans-serif" size=3D"3" face=3D"verdana, sans-serif"></SPAN>
+<P style=3D'FONT-SIZE: 16px; FONT-FAMILY: "times new roman","new york",ti=
+mes,serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; =
+FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-STYLE: normal; MARGIN: 0px; ORP=
+HANS: 2; WIDOWS: 2; LETTER-SPACING: normal; LINE-HEIGHT: 27px; TEXT-INDEN=
+T: 0px'><BR style=3D"FONT-SIZE: small; FONT-FAMILY: Arial,Helvetica,sans-=
+serif; COLOR: rgb(34,34,34)"><SPAN style=3D'FONT-SIZE: 16px; FONT-FAMILY:=
+ "times new roman","new york",times,serif; BORDER-RIGHT-WIDTH: 1px; BORDE=
+R-TOP-COLOR: rgb(48,121,237); WHITE-SPACE: normal; BORDER-BOTTOM-WIDTH: 1=
+px; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: bold; COLOR: rg=
+b(188,9,19); FONT-STYLE: normal; BORDER-BOTTOM-COLOR: rgb(48,121,237); TE=
+XT-ALIGN: center; PADDING-LEFT: 8px; MIN-HEIGHT: 49px; ORPHANS: 2; WIDOWS=
+: 2; BORDER-RIGHT-COLOR: rgb(48,121,237); LETTER-SPACING: normal; LINE-HE=
+IGHT: 49px; PADDING-RIGHT: 8px; BORDER-TOP-WIDTH: 1px; BACKGROUND-COLOR: =
+rgb(255,182,4); TEXT-INDENT: 0px'><SPAN style=3D"
+ FONT-SIZE: large; FONT-FAMILY: Georgia" size=3D"4"><U><A href=3D"https:/=
+/canzzz.burrow.io/newrr1/?lists.01.org
+=3DLinux-nvdimm&raven=3DLinux-nvdimm@lists.01.org
+&ggggggggghtytytyjjitytjhtyryyggfyyhg">Tracking Your DHL Package</A></U><=
+EM>=C2=A0=C2=A0=C2=A0=C2=A0</EM></SPAN></SPAN><SPAN style=3D'FONT-SIZE: 1=
+4px; FONT-FAMILY: Helvetica,"Microsoft Yahei",verdana; WHITE-SPACE: norma=
+l; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400=
+; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: =
+inline !important; LETTER-SPACING: normal; TEXT-INDENT: 0px'><SPAN>=C2=A0=
+</SPAN></SPAN></P>
+<P style=3D'FONT-SIZE: 16px; FONT-FAMILY: "times new roman","new york",ti=
+mes,serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; =
+FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-STYLE: normal; MARGIN: 0px; ORP=
+HANS: 2; WIDOWS: 2; LETTER-SPACING: normal; LINE-HEIGHT: 27px; TEXT-INDEN=
+T: 0px'><SPAN style=3D'FONT-SIZE: 14px; FONT-FAMILY: Helvetica,"Microsoft=
+ Yahei",verdana; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: =
+none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-STYLE: norma=
+l; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: nor=
+mal; TEXT-INDENT: 0px'><SPAN></SPAN></SPAN><BR style=3D"FONT-SIZE: small;=
+ FONT-FAMILY: Arial,Helvetica,sans-serif; COLOR: rgb(34,34,34)"><SPAN sty=
+le=3D"FONT-SIZE: small; FONT-FAMILY: verdana,sans-serif" face=3D"verdana,=
+ sans-serif">if you can't verify your address can result in delayed deliv=
+ery or loss of important file=E3=80=82</SPAN><BR style=3D"FONT-SIZE: smal=
+l; FONT-FAMILY: Arial,Helvetica,sans-serif; COLOR: rgb(34,3
+ 4,34)"><BR style=3D"FONT-SIZE: small; FONT-FAMILY: Arial,Helvetica,sans-=
+serif; COLOR: rgb(34,34,34)"></P>
+<DIV style=3D"FONT-SIZE: small; FONT-FAMILY: Arial,Helvetica,sans-serif; =
+WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT=
+: 400; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; L=
+ETTER-SPACING: normal; TEXT-INDENT: 0px" dir=3Dltr>heartfelt,</DIV>
+<DIV style=3D"FONT-SIZE: small; FONT-FAMILY: Arial,Helvetica,sans-serif; =
+WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT=
+: 400; COLOR: rgb(34,34,34); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; L=
+ETTER-SPACING: normal; TEXT-INDENT: 0px" dir=3Dltr>DHL Worldwide Delivery=
+</DIV>
+--===============6622073373288053467==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Hi Alastair,
-
-On Fri, Oct 25, 2019 at 6:48 AM Alastair D'Silva <alastair@au1.ibm.com> wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
->
-> This series adds support for OpenCAPI SCM devices, exposing
-> them as nvdimms so that we can make use of the existing
-> infrastructure.
-
-Thanks for your series!
-
-The long CC list is a sign of get_maintainter.pl-considered-harmful.
-Please trim it (by removing me, a.o. ;-) for next submission.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6622073373288053467==--
