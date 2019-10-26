@@ -1,44 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D18CE57C1
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Oct 2019 03:20:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 520BAE58DC
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Oct 2019 08:44:10 +0200 (CEST)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6307F100EA606;
-	Fri, 25 Oct 2019 18:21:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2D11C100EA602;
+	Fri, 25 Oct 2019 23:45:16 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+332c21a18e206945ff7a+5907+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A9E67100EA605
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 18:21:55 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 18:20:44 -0700
-X-IronPort-AV: E=Sophos;i="5.68,230,1569308400";
-   d="scan'208";a="373709682"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 18:20:44 -0700
-Subject: [ndctl PATCH 2/2] test/dax.sh: Split into ext4 and xfs tests
-From: Dan Williams <dan.j.williams@intel.com>
-To: vishal.l.verma@intel.com
-Date: Fri, 25 Oct 2019 18:06:27 -0700
-Message-ID: <157205198738.4128114.5465698718258048294.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157205197710.4128114.10329643056047769577.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157205197710.4128114.10329643056047769577.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+	by ml01.01.org (Postfix) with ESMTPS id 0434E100EA601
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Oct 2019 23:45:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	 bh=aiPSd/BZaq8mZvPjuhE4XI65j8OE7xLRgVlrgYKV6X8=; b=F/jZojJuWlmtYwiabWSCN61UA
+	DJTL0DKDCRX7BN+qAIbWIW+jalp4XIg7RqqpMFKWAIL/mWu2jghSkj2qPCYYZZVTynp1AhxZlzMEC
+	5CEaqn3UkS8suk+1IHtm1KeugWS7ohi18uMi3TB0S0K3ZNPNhjoJ1Gm4ryl+MZGrz8gt2FoEI0OSM
+	nCEY4LXt4xg21LC0vJk1U/1WBysEfj1A2GnytuxvgI++Gagou1GrLIdA1ILFw5rHWoVVLkycXCmiN
+	V8HiJ0HsLPFP6ZVtquvpFwy1vmdAy8v/83zH4KWCrK7ER1LJoSDlG2R/9bTULsTpS2qWJ6BCIFVtn
+	CDN4nubow==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1iOFnR-0007qU-Gs; Sat, 26 Oct 2019 06:43:33 +0000
+Date: Fri, 25 Oct 2019 23:43:33 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Alastair D'Silva <alastair@au1.ibm.com>
+Subject: Re: [PATCH 10/10] ocxl: Conditionally bind SCM devices to the
+ generic OCXL driver
+Message-ID: <20191026064333.GA24422@infradead.org>
+References: <20191025044721.16617-1-alastair@au1.ibm.com>
+ <20191025044721.16617-11-alastair@au1.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: ARTI3LHFT3ZQBIBIQ623HC5RO5M6BVRU
-X-Message-ID-Hash: ARTI3LHFT3ZQBIBIQ623HC5RO5M6BVRU
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <20191025044721.16617-11-alastair@au1.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: YDXOEHORZGXHGIUX3BHX7KRSBKYRXXDL
+X-Message-ID-Hash: YDXOEHORZGXHGIUX3BHX7KRSBKYRXXDL
+X-MailFrom: BATV+332c21a18e206945ff7a+5907+infradead.org+hch@bombadil.srs.infradead.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org
+CC: alastair@d-silva.org, Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>, Geert Uytterhoeven <geert+renesas@glider.be>, David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Wei Yang <richard.weiyang@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>, Pavel Tatashin <pasha.tatashin@soleen.com>, linux-nvdimm@lists.01.org, Krzysztof Kozlowski <krzk@kernel.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Qian Cai <cai@lca.pw>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Allison Randal <allison@lohutok.net>, David Gibson <david@gibson.dropbear.id.au>, linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kern
+ el.org, Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ARTI3LHFT3ZQBIBIQ623HC5RO5M6BVRU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YDXOEHORZGXHGIUX3BHX7KRSBKYRXXDL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -47,167 +58,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Given the test can fail based on the fs make it a passed in parameter
-and split the tests.
+On Fri, Oct 25, 2019 at 03:47:05PM +1100, Alastair D'Silva wrote:
+> From: Alastair D'Silva <alastair@d-silva.org>
+> 
+> This patch allows the user to bind OpenCAPI SCM devices to the generic OCXL
+> driver.
 
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- test/Makefile.am |    3 +-
- test/dax-ext4.sh |    1 +
- test/dax-xfs.sh  |    1 +
- test/dax.sh      |  101 +++++++++++++++++++++++++++++++-----------------------
- 4 files changed, 62 insertions(+), 44 deletions(-)
- create mode 120000 test/dax-ext4.sh
- create mode 120000 test/dax-xfs.sh
+This completely misses any explanation of why you'd want that.  The
+what is rather obvious from the patch.
 
-diff --git a/test/Makefile.am b/test/Makefile.am
-index 84474d080252..829146d5da74 100644
---- a/test/Makefile.am
-+++ b/test/Makefile.am
-@@ -46,7 +46,8 @@ TESTS +=\
- 	blk-ns \
- 	pmem-ns \
- 	dax-dev \
--	dax.sh \
-+	dax-ext4.sh \
-+	dax-xfs.sh \
- 	device-dax \
- 	device-dax-fio.sh \
- 	mmap.sh \
-diff --git a/test/dax-ext4.sh b/test/dax-ext4.sh
-new file mode 120000
-index 000000000000..da4ec437a92a
---- /dev/null
-+++ b/test/dax-ext4.sh
-@@ -0,0 +1 @@
-+dax.sh
-\ No newline at end of file
-diff --git a/test/dax-xfs.sh b/test/dax-xfs.sh
-new file mode 120000
-index 000000000000..da4ec437a92a
---- /dev/null
-+++ b/test/dax-xfs.sh
-@@ -0,0 +1 @@
-+dax.sh
-\ No newline at end of file
-diff --git a/test/dax.sh b/test/dax.sh
-index 44bc6436a4a9..3933107920a9 100755
---- a/test/dax.sh
-+++ b/test/dax.sh
-@@ -59,6 +59,56 @@ run_test() {
- 	fi
- }
- 
-+run_ext4() {
-+	mkfs.ext4 -b 4096 /dev/$blockdev
-+	mount /dev/$blockdev $MNT -o dax
-+	fallocate -l 1GiB $MNT/$FILE
-+	run_test $LINENO
-+	umount $MNT
-+
-+	# convert pmem to put the memmap on the device
-+	json=$($NDCTL create-namespace -m fsdax -M dev -f -e $dev)
-+	eval $(json2var <<< "$json")
-+	[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-+	#note the blockdev returned from ndctl create-namespace lacks the /dev prefix
-+
-+	mkfs.ext4 -b 4096 /dev/$blockdev
-+	mount /dev/$blockdev $MNT -o dax
-+	fallocate -l 1GiB $MNT/$FILE
-+	run_test $LINENO
-+	umount $MNT
-+	json=$($NDCTL create-namespace -m raw -f -e $dev)
-+
-+	eval $(json2var <<< "$json")
-+	[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-+	true
-+}
-+
-+run_xfs() {
-+	mkfs.xfs -f -d su=2m,sw=1,agcount=2 -m reflink=0 /dev/$blockdev
-+	mount /dev/$blockdev $MNT -o dax
-+	fallocate -l 1GiB $MNT/$FILE
-+	run_test $LINENO
-+	umount $MNT
-+
-+	# convert pmem to put the memmap on the device
-+	json=$($NDCTL create-namespace -m fsdax -M dev -f -e $dev)
-+	eval $(json2var <<< "$json")
-+	[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-+	mkfs.xfs -f -d su=2m,sw=1,agcount=2 -m reflink=0 /dev/$blockdev
-+
-+	mount /dev/$blockdev $MNT -o dax
-+	fallocate -l 1GiB $MNT/$FILE
-+	run_test $LINENO
-+	umount $MNT
-+	# revert namespace to raw mode
-+
-+	json=$($NDCTL create-namespace -m raw -f -e $dev)
-+	eval $(json2var <<< "$json")
-+	[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-+	true
-+}
-+
- set -e
- mkdir -p $MNT
- trap 'err $LINENO cleanup' ERR
-@@ -68,48 +118,13 @@ json=$($NDCTL list -N -n $dev)
- eval $(json2var <<< "$json")
- rc=1
- 
--mkfs.ext4 -b 4096 /dev/$blockdev
--mount /dev/$blockdev $MNT -o dax
--fallocate -l 1GiB $MNT/$FILE
--run_test $LINENO
--umount $MNT
--
--# convert pmem to put the memmap on the device
--json=$($NDCTL create-namespace -m fsdax -M dev -f -e $dev)
--eval $(json2var <<< "$json")
--[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
--
--#note the blockdev returned from ndctl create-namespace lacks the /dev prefix
--mkfs.ext4 -b 4096 /dev/$blockdev
--mount /dev/$blockdev $MNT -o dax
--fallocate -l 1GiB $MNT/$FILE
--run_test $LINENO
--umount $MNT
--
--json=$($NDCTL create-namespace -m raw -f -e $dev)
--eval $(json2var <<< "$json")
--[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
--
--mkfs.xfs -f -d su=2m,sw=1,agcount=2 -m reflink=0 /dev/$blockdev
--mount /dev/$blockdev $MNT -o dax
--fallocate -l 1GiB $MNT/$FILE
--run_test $LINENO
--umount $MNT
--
--# convert pmem to put the memmap on the device
--json=$($NDCTL create-namespace -m fsdax -M dev -f -e $dev)
--eval $(json2var <<< "$json")
--[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
--
--mkfs.xfs -f -d su=2m,sw=1,agcount=2 -m reflink=0 /dev/$blockdev
--mount /dev/$blockdev $MNT -o dax
--fallocate -l 1GiB $MNT/$FILE
--run_test $LINENO
--umount $MNT
--
--# revert namespace to raw mode
--json=$($NDCTL create-namespace -m raw -f -e $dev)
--eval $(json2var <<< "$json")
--[ $mode != "fsdax" ] && echo "fail: $LINENO" &&  exit 1
-+if [ $(basename $0) = "dax-ext4.sh" ]; then
-+	run_ext4
-+elif [ $(basename $0) = "dax-xfs.sh" ]; then
-+	run_xfs
-+else
-+	run_ext4
-+	run_xfs
-+fi
- 
- exit 0
+> +config OCXL_SCM_GENERIC
+> +	bool "Treat OpenCAPI Storage Class Memory as a generic OpenCAPI device"
+> +	default n
+
+n is the default default.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
