@@ -2,42 +2,42 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF7EE67DF
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 27 Oct 2019 22:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A25CCE69D2
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 27 Oct 2019 23:00:23 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CB9EE100EA614;
-	Sun, 27 Oct 2019 14:26:12 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	by ml01.01.org (Postfix) with ESMTP id 4CFC3100EA615;
+	Sun, 27 Oct 2019 15:01:17 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3A6CD100EA611;
-	Sun, 27 Oct 2019 14:26:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id F4160100EA612;
+	Sun, 27 Oct 2019 15:01:14 -0700 (PDT)
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Oct 2019 14:25:14 -0700
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Oct 2019 15:00:18 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.68,237,1569308400";
-   d="gz'50?scan'50,208,50";a="211264013"
+   d="gz'50?scan'50,208,50";a="350533566"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 27 Oct 2019 14:25:07 -0700
+  by orsmga004.jf.intel.com with ESMTP; 27 Oct 2019 15:00:09 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
 	(envelope-from <lkp@intel.com>)
-	id 1iOq27-00089l-2U; Mon, 28 Oct 2019 05:25:07 +0800
-Date: Mon, 28 Oct 2019 05:24:51 +0800
+	id 1iOqa0-0000tN-DP; Mon, 28 Oct 2019 06:00:08 +0800
+Date: Mon, 28 Oct 2019 05:59:30 +0800
 From: kbuild test robot <lkp@intel.com>
 To: Alastair D'Silva <alastair@au1.ibm.com>
 Subject: Re: [PATCH 04/10] powerpc: Map & release OpenCAPI LPC memory
-Message-ID: <201910280525.oZQFx3jR%lkp@intel.com>
+Message-ID: <201910280512.tu9fd51p%lkp@intel.com>
 References: <20191025044721.16617-5-alastair@au1.ibm.com>
 MIME-Version: 1.0
 In-Reply-To: <20191025044721.16617-5-alastair@au1.ibm.com>
 X-Patchwork-Hint: ignore
 User-Agent: NeoMutt/20170113 (1.7.2)
-Message-ID-Hash: SF2S2C2IWRPVGEPQ3N4M5KOT4A763DO5
-X-Message-ID-Hash: SF2S2C2IWRPVGEPQ3N4M5KOT4A763DO5
+Message-ID-Hash: P2HNUXXSO6IYFCXJYEPXVYPJQTYBXAD5
+X-Message-ID-Hash: P2HNUXXSO6IYFCXJYEPXVYPJQTYBXAD5
 X-MailFrom: lkp@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -48,7 +48,7 @@ CC: kbuild-all@lists.01.org, alastair@d-silva.org, Benjamin Herrenschmidt <benh@
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SF2S2C2IWRPVGEPQ3N4M5KOT4A763DO5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P2HNUXXSO6IYFCXJYEPXVYPJQTYBXAD5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,48 +59,44 @@ Content-Transfer-Encoding: 7bit
 
 Hi Alastair,
 
-Thank you for the patch! Perhaps something to improve:
+Thank you for the patch! Yet something to improve:
 
-[auto build test WARNING on char-misc/char-misc-testing]
-[also build test WARNING on v5.4-rc5]
-[cannot apply to next-20191025]
+[auto build test ERROR on char-misc/char-misc-testing]
+[cannot apply to v5.4-rc5 next-20191025]
 [if your patch is applied to the wrong git tree, please drop us a note to help
 improve the system. BTW, we also suggest to use '--base' option to specify the
 base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 
 url:    https://github.com/0day-ci/linux/commits/Alastair-D-Silva/Add-support-for-OpenCAPI-SCM-devices/20191028-043750
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git da80d2e516eb858eb5bcca7fa5f5a13ed86930e4
-config: i386-tinyconfig (attached as .config)
-compiler: gcc-7 (Debian 7.4.0-14) 7.4.0
+config: mips-allmodconfig (attached as .config)
+compiler: mips-linux-gcc (GCC) 7.4.0
 reproduce:
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
         # save the attached .config to linux build tree
-        make ARCH=i386 
+        GCC_VERSION=7.4.0 make.cross ARCH=mips 
 
 If you fix the issue, kindly add following tag
 Reported-by: kbuild test robot <lkp@intel.com>
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
    In file included from include/linux/mmzone.h:811:0,
                     from include/linux/gfp.h:6,
-                    from include/linux/mm.h:10,
-                    from include/linux/pid_namespace.h:7,
-                    from include/linux/ptrace.h:10,
-                    from include/linux/audit.h:13,
-                    from security/commoncap.c:6:
->> include/linux/memory_hotplug.h:342:5: warning: "CONFIG_MEMORY_HOTPLUG_SPARSE" is not defined, evaluates to 0 [-Wundef]
+                    from include/linux/xarray.h:14,
+                    from include/linux/radix-tree.h:18,
+                    from include/linux/idr.h:15,
+                    from include/linux/kernfs.h:13,
+                    from include/linux/sysfs.h:16,
+                    from include/linux/kobject.h:20,
+                    from include/linux/of.h:17,
+                    from include/linux/clk-provider.h:9,
+                    from arch/mips/generic/init.c:8:
+>> include/linux/memory_hotplug.h:342:5: error: "CONFIG_MEMORY_HOTPLUG_SPARSE" is not defined, evaluates to 0 [-Werror=undef]
     #if CONFIG_MEMORY_HOTPLUG_SPARSE
         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
---
-   In file included from include/linux/mmzone.h:811:0,
-                    from include/linux/gfp.h:6,
-                    from include/linux/slab.h:15,
-                    from include/linux/crypto.h:19,
-                    from arch/x86/kernel/asm-offsets.c:9:
->> include/linux/memory_hotplug.h:342:5: warning: "CONFIG_MEMORY_HOTPLUG_SPARSE" is not defined, evaluates to 0 [-Wundef]
-    #if CONFIG_MEMORY_HOTPLUG_SPARSE
-        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7 real  4 user  3 sys  112.50% cpu 	make prepare
+   cc1: all warnings being treated as errors
 
 vim +/CONFIG_MEMORY_HOTPLUG_SPARSE +342 include/linux/memory_hotplug.h
 
