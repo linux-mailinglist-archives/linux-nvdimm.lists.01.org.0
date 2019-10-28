@@ -1,57 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781A8E77CF
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 18:47:25 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B708CE792A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 20:23:51 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 40FCC100EA633;
-	Mon, 28 Oct 2019 10:48:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	by ml01.01.org (Postfix) with ESMTP id D27DF100EA637;
+	Mon, 28 Oct 2019 12:24:38 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.147.86; helo=mx0a-002e3701.pphosted.com; envelope-from=prvs=0204705f9d=jerry.hoemann@hpe.com; receiver=<UNKNOWN> 
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 07A96100EA630
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Oct 2019 10:48:10 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 28 Oct 2019 10:47:20 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,240,1569308400";
-   d="scan'208";a="203334479"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by orsmga006.jf.intel.com with ESMTP; 28 Oct 2019 10:47:20 -0700
-Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 28 Oct 2019 10:47:20 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- fmsmsx115.amr.corp.intel.com ([169.254.4.204]) with mapi id 14.03.0439.000;
- Mon, 28 Oct 2019 10:47:19 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-CC: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: [ANNOUNCE] ndctl v67
-Thread-Topic: [ANNOUNCE] ndctl v67
-Thread-Index: AQHVjbe+lf8w2AHoCUG2rtXeyj+ILw==
-Date: Mon, 28 Oct 2019 17:47:18 +0000
-Message-ID: <6936962a6a0dcf8af1b7a53f6b334464ea6c27c1.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <16405D32E803444FA29B40EEBE21B729@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id CB1BB100EA636
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Oct 2019 12:24:35 -0700 (PDT)
+Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9SJKpQ8014662;
+	Mon, 28 Oct 2019 19:23:44 GMT
+Received: from g2t2354.austin.hpe.com (g2t2354.austin.hpe.com [15.233.44.27])
+	by mx0a-002e3701.pphosted.com with ESMTP id 2vx43wsm98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Oct 2019 19:23:44 +0000
+Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
+	by g2t2354.austin.hpe.com (Postfix) with ESMTP id D2544AC;
+	Mon, 28 Oct 2019 19:23:43 +0000 (UTC)
+Received: from anatevka.americas.hpqcorp.net (anatevka.americas.hpqcorp.net [10.34.81.61])
+	by g2t2360.austin.hpecorp.net (Postfix) with ESMTP id 52AD936;
+	Mon, 28 Oct 2019 19:23:43 +0000 (UTC)
+Date: Mon, 28 Oct 2019 13:23:43 -0600
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
+To: "Kani, Toshi" <toshi.kani@hpe.com>
+Subject: Re: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
+Message-ID: <20191028192343.GA6342@anatevka.americas.hpqcorp.net>
+References: <20191025175553.63271-1-d.scott.phillips@intel.com>
+ <CAPcyv4iQpO+JF8b7NUJUZ3fQFU=PWFeiWrXSd47QGnQPeRsrTg@mail.gmail.com>
+ <38f7f4852ad1cc76c7c7473a6fda85cb9acae14c.camel@intel.com>
+ <76ca7b4effada2c7219f66c211946a8178994d1c.camel@hpe.com>
 MIME-Version: 1.0
-Message-ID-Hash: TSLLVZVEGX74FZTKGXERF3DH2ZKDFGCX
-X-Message-ID-Hash: TSLLVZVEGX74FZTKGXERF3DH2ZKDFGCX
-X-MailFrom: vishal.l.verma@intel.com
+Content-Disposition: inline
+In-Reply-To: <76ca7b4effada2c7219f66c211946a8178994d1c.camel@hpe.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
+ definitions=2019-10-28_07:2019-10-28,2019-10-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=974
+ clxscore=1011 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1908290000 definitions=main-1910280185
+Message-ID-Hash: 66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y
+X-Message-ID-Hash: 66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y
+X-MailFrom: prvs=0204705f9d=jerry.hoemann@hpe.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "d.scott.phillips@intel.com" <d.scott.phillips@intel.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "stuart.w.hayes@gmail.com" <stuart.w.hayes@gmail.com>, "dhowells@redhat.com" <dhowells@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Jerry.Hoemann@hpe.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TSLLVZVEGX74FZTKGXERF3DH2ZKDFGCX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,66 +65,40 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-This release incorporates functionality up to the 5.4 kernel, and adds a
-number of bug fixes, and improvements.
+On Mon, Oct 28, 2019 at 08:54:35AM -0600, Kani, Toshi wrote:
+> On Fri, 2019-10-25 at 22:56 +0000, Verma, Vishal L wrote:
+> > On Fri, 2019-10-25 at 15:45 -0700, Dan Williams wrote:
+> > > On Fri, Oct 25, 2019 at 10:55 AM D Scott Phillips
+> > > <d.scott.phillips@intel.com> wrote:
+> > > > Allow ndctl.h to be licensed with BSD-2-Clause so that other
+> > > > operating systems can provide the same user level interface.
+> > > > ---
+> > > > 
+> > > > I've been working on nvdimm support in FreeBSD and would like to
+> > > > offer the same ndctl API there to ease porting of application
+> > > > code. Here I'm proposing to add the BSD-2-Clause license to this
+> > > > header file, so that it can later be copied into FreeBSD.
+> > > > 
+> > > > I believe that all the authors of changes to this file (in the To:
+> > > > list) would need to agree to this change before it could be
+> > > > accepted, so any signed-off-by is intentionally ommited for now.
+> > > > Thanks,
+> > > 
+> > > I have no problem with this change, but let's take the opportunity to
+> > > let SPDX do its job and drop the full license text.
+> > 
+> > This is fine by me too, barring the full license text vs. SPDX caveat
+> > Dan mentions.
+> 
+> I agree with the plan.
+> 
+I agree also.
 
-Highlights include small changes for PowerPC compatibility, improvements
-to the dax.sh unit test to detect failures in mapping huge pages,
-support for the 'security frozen' attribute, user experience
-improvements for the daxctl-reconfigure-device command, including an
-option to specify movable vs. non-movable state for onlining memory, and
-an option to allow create-namespaces to create a maximal configuration
-until it exhausts all available region capacity.
+-- 
 
-The shortlog for this release is appended below.
-
-
-Aneesh Kumar K.V (1):
-      ndctl: Reuse the align value from the original namespace on reconfiguration
-
-Dan Williams (10):
-      ndctl/lib: Fix duplicate bus detection
-      ndctl/test: Add xfs reflink dependency
-      daxctl/test: Skip daxctl-devices.sh on older kernels
-      ndctl/dimm: Add support for separate security-frozen attribute
-      ndctl/namespace: Fix 'clear-error -s' excessive scrubbing
-      test/dax.sh: Fix failure reporting / handling
-      test/dax.sh: Fix xfs 2M alignment
-      test/dax.sh: Validate huge page mappings
-      test/dax.sh: Make dax.sh more robust vs small namespaces
-      test/dax.sh: Split into ext4 and xfs tests
-
-Jeff Moyer (4):
-      util/abspath: cleanup prefix_filename
-      fix building of tags tables
-      query_fw_finish_status: get rid of redundant variable
-      load-keys: get rid of duplicate assignment
-
-Naoya Horiguchi (1):
-      Documentation/ndctl: fix typo in ndctl-clear-errors.txt
-
-Vishal Verma (21):
-      Documentation/namespace-description: Clarify label-less restrictions
-      ndctl/check-namespace: improve error message in absence of a BTT
-      libdaxctl: point to migrate-device-model for dax-class errors
-      Documentation: refactor 'bus options' into its own include
-      Documentation: clarify bus/dimm/region filtering
-      ndctl/namespace: add a --continue option to create namespaces greedily
-      libdaxctl: fix the system-ram capability check
-      libdaxctl: fix device reconfiguration with builtin drivers
-      libndctl: Fix a potentially non NUL-terminated string operation
-      libdaxctl: fix memory leaks with daxctl_memory objects
-      libdaxctl: refactor path construction in op_for_one_memblock()
-      libdaxctl: refactor memblock_is_online() checks
-      daxctl/device.c: fix json output omission for reconfigure-device
-      libdaxctl: add an API to determine if memory is movable
-      libdaxctl: allow memblock_in_dev() to return an error
-      daxctl: show a 'movable' attribute in device listings
-      daxctl: detect races when onlining memory blocks
-      Documentation: clarify memory movablity for reconfigure-device
-      libdaxctl: add an API to online memory in a non-movable state
-      daxctl: add --no-movable option for onlining memory
-      ndctl: release v67
+-----------------------------------------------------------------------------
+Jerry Hoemann                  Software Engineer   Hewlett Packard Enterprise
+-----------------------------------------------------------------------------
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
