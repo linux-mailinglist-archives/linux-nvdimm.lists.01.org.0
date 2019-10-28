@@ -2,78 +2,207 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 721BBE6BF3
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 06:26:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD628E6F56
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 10:48:46 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B33B100EA61C;
-	Sun, 27 Oct 2019 22:27:51 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=216.15.213.112; helo=hosting.dogriverdesign.com; envelope-from=collection.request@dhl.com; receiver=<UNKNOWN> 
-Received: from hosting.dogriverdesign.com (hosting.dogriverdesign.com [216.15.213.112])
+	by ml01.01.org (Postfix) with ESMTP id DA8A9100EA61F;
+	Mon, 28 Oct 2019 02:49:36 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7584F100EA615
-	for <linux-nvdimm@lists.01.org>; Sun, 27 Oct 2019 22:27:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=dynamicmaritime.net; s=default; h=Message-ID:Reply-To:Subject:To:From:Date:
-	Content-Type:MIME-Version:Sender:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hladGqSOAO3OdCNMsOB0OpIL/+7diow+ZeBldiraPOI=; b=dRsRagJmLNvOVdv5aplvs6GgTT
-	ASfDaQJ0GCxaYEmmFnbnslo8RMoH0Y3tthQZe026hHRHcQvmG+P0DgJzmSfI1tt8aA5HFzlmXLx4o
-	u33/UVf+8rZc0ZKohHF1tfnJb1V0tUVcBfL4BOlLOq/0iy5Yo1FQ7M3GyWrobpNKOIXxUlp3EncXW
-	9I/WzH9Xc/pt6hj7aBTfYrkCYwaVc+6cWEzvgy05aim7O0S5Pb3wmYG6HdhuHsseAIijGf8W/6TKi
-	LM+QBdqf1uNa3TvmHA1zu1ZFU9zLxmp8p5xm3ycXjIMDLPg/fe1+ltYyhjFGapPFjWC+znv+rFbmF
-	JqTLmpNw==;
-Received: from [::1] (port=58190 helo=hosting.dogriverdesign.com)
-	by hosting.dogriverdesign.com with esmtpa (Exim 4.92)
-	(envelope-from <collection.request@dhl.com>)
-	id 1iOxXK-00GOVA-8D; Mon, 28 Oct 2019 01:25:50 -0400
+	by ml01.01.org (Postfix) with ESMTPS id BCC8D100EA615
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Oct 2019 02:49:34 -0700 (PDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9S9lVHZ013375;
+	Mon, 28 Oct 2019 05:48:35 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2vwtk1dqqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Oct 2019 05:48:34 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+	by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9S9jCVk023698;
+	Mon, 28 Oct 2019 09:48:33 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+	by ppma02dal.us.ibm.com with ESMTP id 2vvds850kp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Oct 2019 09:48:33 +0000
+Received: from b03ledav006.gho.boulder.ibm.com (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9S9mWKj55443944
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 28 Oct 2019 09:48:32 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 642FEC6059;
+	Mon, 28 Oct 2019 09:48:32 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 821D3C6055;
+	Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.43.125])
+	by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Mon, 28 Oct 2019 09:48:30 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com, mpe@ellerman.id.au
+Subject: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size validation arch dependent
+Date: Mon, 28 Oct 2019 15:18:22 +0530
+Message-Id: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="=_d3e6389d07a69d318311a04524fc2988"
-Date: Mon, 28 Oct 2019 01:25:49 -0400
-From: DHL | Express Shipping <collection.request@dhl.com>
-To: undisclosed-recipients:;
-Subject: Re: Shipping Documents,  Invoice and AWB
-Mail-Reply-To: DHL | Express <customerupdat013489@gmail.com>
-Message-ID: <ec35caee03c0d9113abfb1ede4bfd101@dhl.com>
-X-Sender: collection.request@dhl.com
-User-Agent: Roundcube Webmail/1.3.8
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - hosting.dogriverdesign.com
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - dhl.com
-X-Get-Message-Sender-Via: hosting.dogriverdesign.com: authenticated_id: eshaft@dynamicmaritime.net
-X-Authenticated-Sender: hosting.dogriverdesign.com: eshaft@dynamicmaritime.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Message-ID-Hash: HCTQTOO4AAAJGPUSQHMWPFKZE5CZOSTL
-X-Message-ID-Hash: HCTQTOO4AAAJGPUSQHMWPFKZE5CZOSTL
-X-MailFrom: collection.request@dhl.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-28_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=961 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910280098
+Message-ID-Hash: RUMOULEHCOSHYLEXZPJUUD4UWRJJNQM3
+X-Message-ID-Hash: RUMOULEHCOSHYLEXZPJUUD4UWRJJNQM3
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, linuxppc-dev@lists.ozlabs.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: DHL | Express <customerupdat013489@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HCTQTOO4AAAJGPUSQHMWPFKZE5CZOSTL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUMOULEHCOSHYLEXZPJUUD4UWRJJNQM3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-
---=_d3e6389d07a69d318311a04524fc2988
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+The page size used to map the namespace is arch dependent. For example
+architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
+size is not aligned to the mapping page size, we can observe kernel crash
+during namespace init and destroy.
+
+This is due to kernel doing partial map/unmap of the resource range
+
+BUG: Unable to handle kernel data access at 0xc001000406000000
+Faulting instruction address: 0xc000000000090790
+NIP [c000000000090790] arch_add_memory+0xc0/0x130
+LR [c000000000090744] arch_add_memory+0x74/0x130
+Call Trace:
+ arch_add_memory+0x74/0x130 (unreliable)
+ memremap_pages+0x74c/0xa30
+ devm_memremap_pages+0x3c/0xa0
+ pmem_attach_disk+0x188/0x770
+ nvdimm_bus_probe+0xd8/0x470
+ really_probe+0x148/0x570
+ driver_probe_device+0x19c/0x1d0
+ device_driver_attach+0xcc/0x100
+ bind_store+0x134/0x1c0
+ drv_attr_store+0x44/0x60
+ sysfs_kf_write+0x74/0xc0
+ kernfs_fop_write+0x1b4/0x290
+ __vfs_write+0x3c/0x70
+ vfs_write+0xd0/0x260
+ ksys_write+0xdc/0x130
+ system_call+0x5c/0x68
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/arm64/mm/flush.c     | 11 +++++++++++
+ arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
+ arch/x86/mm/pageattr.c    | 12 ++++++++++++
+ include/linux/libnvdimm.h |  1 +
+ 4 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
+index ac485163a4a7..90c54c600023 100644
+--- a/arch/arm64/mm/flush.c
++++ b/arch/arm64/mm/flush.c
+@@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
+ 	__inval_dcache_area(addr, size);
+ }
+ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
++
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++
++	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
++	if (remainder)
++		return PAGE_SIZE * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+ #endif
+diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+index 377712e85605..2e661a08dae5 100644
+--- a/arch/powerpc/lib/pmem.c
++++ b/arch/powerpc/lib/pmem.c
+@@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
+ }
+-EXPORT_SYMBOL(arch_wb_cache_pmem);
++EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+ 
+ void arch_invalidate_pmem(void *addr, size_t size)
+ {
+ 	unsigned long start = (unsigned long) addr;
+ 	flush_dcache_range(start, start + size);
+ }
+-EXPORT_SYMBOL(arch_invalidate_pmem);
++EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
++
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++	unsigned long linear_map_size;
++
++	if (radix_enabled())
++		linear_map_size = PAGE_SIZE;
++	else
++		linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
++
++	div_u64_rem(size, linear_map_size * ndr_mappings, &remainder);
++	if (remainder)
++		return linear_map_size * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+ 
+ /*
+  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
+diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
+index 0d09cc5aad61..023329d7dfac 100644
+--- a/arch/x86/mm/pageattr.c
++++ b/arch/x86/mm/pageattr.c
+@@ -310,6 +310,18 @@ void arch_invalidate_pmem(void *addr, size_t size)
+ }
+ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+ 
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
++{
++	u32 remainder;
++
++	div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
++	if (remainder)
++		return PAGE_SIZE * ndr_mappings;
++	return 0;
++}
++EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
++
++
+ static void __cpa_flush_all(void *arg)
+ {
+ 	unsigned long cache = (unsigned long)arg;
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index b6eddf912568..e2f8387d9ef4 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -291,4 +291,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
+ }
+ #endif
+ 
++unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size);
+ #endif /* __LIBNVDIMM_H__ */
+-- 
+2.21.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---=_d3e6389d07a69d318311a04524fc2988--
