@@ -1,62 +1,69 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B708CE792A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 20:23:51 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C5DE7950
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Oct 2019 20:38:04 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D27DF100EA637;
-	Mon, 28 Oct 2019 12:24:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.147.86; helo=mx0a-002e3701.pphosted.com; envelope-from=prvs=0204705f9d=jerry.hoemann@hpe.com; receiver=<UNKNOWN> 
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id CFE43100EA639;
+	Mon, 28 Oct 2019 12:38:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CB1BB100EA636
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Oct 2019 12:24:35 -0700 (PDT)
-Received: from pps.filterd (m0150242.ppops.net [127.0.0.1])
-	by mx0a-002e3701.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x9SJKpQ8014662;
-	Mon, 28 Oct 2019 19:23:44 GMT
-Received: from g2t2354.austin.hpe.com (g2t2354.austin.hpe.com [15.233.44.27])
-	by mx0a-002e3701.pphosted.com with ESMTP id 2vx43wsm98-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Oct 2019 19:23:44 +0000
-Received: from g2t2360.austin.hpecorp.net (g2t2360.austin.hpecorp.net [16.196.225.135])
-	by g2t2354.austin.hpe.com (Postfix) with ESMTP id D2544AC;
-	Mon, 28 Oct 2019 19:23:43 +0000 (UTC)
-Received: from anatevka.americas.hpqcorp.net (anatevka.americas.hpqcorp.net [10.34.81.61])
-	by g2t2360.austin.hpecorp.net (Postfix) with ESMTP id 52AD936;
-	Mon, 28 Oct 2019 19:23:43 +0000 (UTC)
-Date: Mon, 28 Oct 2019 13:23:43 -0600
-From: Jerry Hoemann <jerry.hoemann@hpe.com>
-To: "Kani, Toshi" <toshi.kani@hpe.com>
-Subject: Re: [PATCH] uapi: Add the BSD-2-Clause license to ndctl.h
-Message-ID: <20191028192343.GA6342@anatevka.americas.hpqcorp.net>
-References: <20191025175553.63271-1-d.scott.phillips@intel.com>
- <CAPcyv4iQpO+JF8b7NUJUZ3fQFU=PWFeiWrXSd47QGnQPeRsrTg@mail.gmail.com>
- <38f7f4852ad1cc76c7c7473a6fda85cb9acae14c.camel@intel.com>
- <76ca7b4effada2c7219f66c211946a8178994d1c.camel@hpe.com>
+	by ml01.01.org (Postfix) with ESMTPS id 18952100EA638
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Oct 2019 12:38:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1572291478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NhwFbZwQP6F32OrsrGJ+GaYk1XCAwoPe9jyDswQ7N2A=;
+	b=HE0MTpgTRRYv0t08E6Y8k8h8A11DrSdisrkSwboCa6tUnaaZmXgySEYVUclAEHHj+0Bm/O
+	2BKuTkAZKiXT2js/HL4p6rQNOQDMV/LruXCA79OOJKP/0dQrTEDVg1DG/UH4dYJ+zstnR7
+	gs0aT7OflIjB+ko1/yY1upg9TeI+jgI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-70-r8orKcQ0NUC32wT6wqXxqg-1; Mon, 28 Oct 2019 15:37:51 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7CE105E6;
+	Mon, 28 Oct 2019 19:37:50 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id ECE1B600C9;
+	Mon, 28 Oct 2019 19:37:49 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [ndctl patch 3/4] query_fw_finish_status: get rid of redundant variable
+References: <20191018202302.8122-1-jmoyer@redhat.com>
+	<20191018202302.8122-4-jmoyer@redhat.com>
+	<20191018205424.GA12760@iweiny-DESK2.sc.intel.com>
+	<x49sgnp7ohp.fsf@segfault.boston.devel.redhat.com>
+	<49b7cb5dae88ada6945b15eb1cf2e5e798173861.camel@intel.com>
+	<7187044f4f6dca57f43879cd2d493949735f63a2.camel@intel.com>
+	<20191025222115.GA6536@iweiny-DESK2.sc.intel.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Mon, 28 Oct 2019 15:37:48 -0400
+In-Reply-To: <20191025222115.GA6536@iweiny-DESK2.sc.intel.com> (Ira Weiny's
+	message of "Fri, 25 Oct 2019 15:21:16 -0700")
+Message-ID: <x49v9s8veyb.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <76ca7b4effada2c7219f66c211946a8178994d1c.camel@hpe.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,1.0.8
- definitions=2019-10-28_07:2019-10-28,2019-10-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=974
- clxscore=1011 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1908290000 definitions=main-1910280185
-Message-ID-Hash: 66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y
-X-Message-ID-Hash: 66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y
-X-MailFrom: prvs=0204705f9d=jerry.hoemann@hpe.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: r8orKcQ0NUC32wT6wqXxqg-1
+X-Mimecast-Spam-Score: 0
+Message-ID-Hash: 6EVUZPLKPC3NXE3T7NXMQO6WZJ3EFTUR
+X-Message-ID-Hash: 6EVUZPLKPC3NXE3T7NXMQO6WZJ3EFTUR
+X-MailFrom: jmoyer@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "d.scott.phillips@intel.com" <d.scott.phillips@intel.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "stuart.w.hayes@gmail.com" <stuart.w.hayes@gmail.com>, "dhowells@redhat.com" <dhowells@redhat.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Jerry.Hoemann@hpe.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66A5MVJP3VQCB73ID3OIKB7SG65T4L3Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6EVUZPLKPC3NXE3T7NXMQO6WZJ3EFTUR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,40 +72,223 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 28, 2019 at 08:54:35AM -0600, Kani, Toshi wrote:
-> On Fri, 2019-10-25 at 22:56 +0000, Verma, Vishal L wrote:
-> > On Fri, 2019-10-25 at 15:45 -0700, Dan Williams wrote:
-> > > On Fri, Oct 25, 2019 at 10:55 AM D Scott Phillips
-> > > <d.scott.phillips@intel.com> wrote:
-> > > > Allow ndctl.h to be licensed with BSD-2-Clause so that other
-> > > > operating systems can provide the same user level interface.
-> > > > ---
-> > > > 
-> > > > I've been working on nvdimm support in FreeBSD and would like to
-> > > > offer the same ndctl API there to ease porting of application
-> > > > code. Here I'm proposing to add the BSD-2-Clause license to this
-> > > > header file, so that it can later be copied into FreeBSD.
-> > > > 
-> > > > I believe that all the authors of changes to this file (in the To:
-> > > > list) would need to agree to this change before it could be
-> > > > accepted, so any signed-off-by is intentionally ommited for now.
-> > > > Thanks,
-> > > 
-> > > I have no problem with this change, but let's take the opportunity to
-> > > let SPDX do its job and drop the full license text.
-> > 
-> > This is fine by me too, barring the full license text vs. SPDX caveat
-> > Dan mentions.
-> 
-> I agree with the plan.
-> 
-I agree also.
+Ira Weiny <ira.weiny@intel.com> writes:
 
--- 
+>> (Watching the unit test run fall into an infinite loop..) Nope, the
+>> break is in the switch scope, the while loop needs the 'goto out'.
+>> 
+>> Yes this bit definitely needs to be refactored :)
+>
+> How about this patch instead?  Untested.
 
------------------------------------------------------------------------------
-Jerry Hoemann                  Software Engineer   Hewlett Packard Enterprise
------------------------------------------------------------------------------
+I'm not a fan of the looping with gotos.  I think separating out the
+waiting for busy to its own function would make this more clear.
+Looking more closely, there are other issues.  The timeout code looks at
+the seconds, but ignores the fractions, so you could be off by almost an
+entire second, there.  It also doens't retry the sleep if interrupted.
+Finally, I find the variables names to be highly confusing.
+
+I've decided not to fix those last two bugs just yet, but here's a patch
+that shows the dirction I think it should go.  Compile-tested only for
+now.  Let me know what you think.
+
+Ira, I used the same base as you.  If you updated ndctl, you'll have to
+revert 9e0391e057b36 to apply this patch.
+
+Cheers,
+Jeff
+
+diff --git a/ndctl/dimm.c b/ndctl/dimm.c
+index c8821d6..701f58b 100644
+--- a/ndctl/dimm.c
++++ b/ndctl/dimm.c
+@@ -674,6 +674,41 @@ out:
+ 	return rc;
+ }
+ 
++static void wait_for_cmd_completion(struct ndctl_cmd *cmd, struct fw_info *fw,
++				    struct timespec *start)
++{
++	enum ND_FW_STATUS status;
++	struct timespec sleeptime, now;
++	int rc;
++
++	sleeptime.tv_nsec = fw->query_interval / 1000;
++	sleeptime.tv_sec = 0;
++
++	while ((status = ndctl_cmd_fw_xlat_firmware_status(cmd)) == FW_EBUSY) {
++
++		rc = clock_gettime(CLOCK_MONOTONIC, &now);
++		if (rc < 0)
++			break;
++
++		/*
++		 * If we expire max query time, we timed out
++		 */
++		if (now.tv_sec - start->tv_sec > fw->max_query / 1000000)
++			break;
++
++		/*
++		 * Sleep the interval dictated by firmware before
++		 * query again.
++		 */
++		rc = nanosleep(&sleeptime, NULL);
++		if (rc < 0)
++			break;
++
++	}
++
++	return;
++}
++
+ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 		struct action_context *actx)
+ {
+@@ -682,98 +717,65 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 	struct ndctl_cmd *cmd;
+ 	int rc;
+ 	enum ND_FW_STATUS status;
+-	bool done = false;
+-	struct timespec now, before, after;
++	struct timespec start;
+ 	uint64_t ver;
+ 
+ 	cmd = ndctl_dimm_cmd_new_fw_finish_query(uctx->start);
+ 	if (!cmd)
+ 		return -ENXIO;
+ 
+-	rc = clock_gettime(CLOCK_MONOTONIC, &before);
++	rc = clock_gettime(CLOCK_MONOTONIC, &start);
+ 	if (rc < 0)
+-		goto out;
+-
+-	now.tv_nsec = fw->query_interval / 1000;
+-	now.tv_sec = 0;
+-
+-	do {
+-		rc = ndctl_cmd_submit(cmd);
+-		if (rc < 0)
+-			break;
++		goto unref;
+ 
+-		status = ndctl_cmd_fw_xlat_firmware_status(cmd);
+-		switch (status) {
+-		case FW_SUCCESS:
+-			ver = ndctl_cmd_fw_fquery_get_fw_rev(cmd);
+-			if (ver == 0) {
+-				fprintf(stderr, "No firmware updated.\n");
+-				rc = -ENXIO;
+-				goto out;
+-			}
+-
+-			printf("Image updated successfully to DIMM %s.\n",
+-					ndctl_dimm_get_devname(dimm));
+-			printf("Firmware version %#lx.\n", ver);
+-			printf("Cold reboot to activate.\n");
+-			done = true;
+-			rc = 0;
+-			break;
+-		case FW_EBUSY:
+-			/* Still on going, continue */
+-			rc = clock_gettime(CLOCK_MONOTONIC, &after);
+-			if (rc < 0) {
+-				rc = -errno;
+-				goto out;
+-			}
++	rc = ndctl_cmd_submit(cmd);
++	if (rc < 0)
++		goto unref;
+ 
+-			/*
+-			 * If we expire max query time,
+-			 * we timed out
+-			 */
+-			if (after.tv_sec - before.tv_sec >
+-					fw->max_query / 1000000) {
+-				rc = -ETIMEDOUT;
+-				goto out;
+-			}
++	wait_for_cmd_completion(cmd, fw, &start);
+ 
+-			/*
+-			 * Sleep the interval dictated by firmware
+-			 * before query again.
+-			 */
+-			rc = nanosleep(&now, NULL);
+-			if (rc < 0) {
+-				rc = -errno;
+-				goto out;
+-			}
+-			break;
+-		case FW_EBADFW:
+-			fprintf(stderr,
+-				"Firmware failed to verify by DIMM %s.\n",
+-				ndctl_dimm_get_devname(dimm));
+-		case FW_EINVAL_CTX:
+-		case FW_ESEQUENCE:
+-			done = true;
++	/* We are done determine error code */
++	status = ndctl_cmd_fw_xlat_firmware_status(cmd);
++	switch (status) {
++	case FW_SUCCESS:
++		ver = ndctl_cmd_fw_fquery_get_fw_rev(cmd);
++		if (ver == 0) {
++			fprintf(stderr, "No firmware updated.\n");
+ 			rc = -ENXIO;
+-			goto out;
+-		case FW_ENORES:
+-			fprintf(stderr,
+-				"Firmware update sequence timed out: %s\n",
+-				ndctl_dimm_get_devname(dimm));
+-			rc = -ETIMEDOUT;
+-			done = true;
+-			goto out;
+-		default:
+-			fprintf(stderr,
+-				"Unknown update status: %#x on DIMM %s\n",
+-				status, ndctl_dimm_get_devname(dimm));
+-			rc = -EINVAL;
+-			done = true;
+-			goto out;
++			break;
+ 		}
+-	} while (!done);
+ 
+-out:
++		fprintf(stderr, "Image updated successfully to DIMM %s.\n",
++			ndctl_dimm_get_devname(dimm));
++		fprintf(stderr, "Firmware version %#lx.\n", ver);
++		fprintf(stderr, "Cold reboot to activate.\n");
++		rc = 0;
++		break;
++	case FW_EBADFW:
++		fprintf(stderr,
++			"Firmware failed to verify by DIMM %s.\n",
++			ndctl_dimm_get_devname(dimm));
++		/* FALLTHROUGH */
++	case FW_EINVAL_CTX:
++	case FW_ESEQUENCE:
++		rc = -ENXIO;
++		break;
++	case FW_EBUSY:
++	case FW_ENORES:
++		fprintf(stderr,
++			"Firmware update sequence timed out: %s\n",
++			ndctl_dimm_get_devname(dimm));
++		rc = -ETIMEDOUT;
++		break;
++	default:
++		fprintf(stderr,
++			"Unknown update status: %#x on DIMM %s\n",
++			status, ndctl_dimm_get_devname(dimm));
++		rc = -EINVAL;
++		break;
++	}
++
++unref:
+ 	ndctl_cmd_unref(cmd);
+ 	return rc;
+ }
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
