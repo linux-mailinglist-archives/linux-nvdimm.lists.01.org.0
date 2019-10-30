@@ -1,59 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F95EA59A
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Oct 2019 22:38:17 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0104EA5CC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Oct 2019 22:54:12 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7E8B8100EA55A;
-	Wed, 30 Oct 2019 14:38:48 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C53AE100EA55C;
+	Wed, 30 Oct 2019 14:54:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com; envelope-from=cai@lca.pw; receiver=<UNKNOWN> 
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 64BA0100EA554
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 14:38:47 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 30 Oct 2019 14:38:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,248,1569308400";
-   d="scan'208";a="194103599"
-Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
-  by orsmga008.jf.intel.com with ESMTP; 30 Oct 2019 14:38:12 -0700
-Received: from fmsmsx117.amr.corp.intel.com (10.18.116.17) by
- FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 30 Oct 2019 14:38:11 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- fmsmsx117.amr.corp.intel.com ([169.254.3.136]) with mapi id 14.03.0439.000;
- Wed, 30 Oct 2019 14:38:11 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "cai@lca.pw" <cai@lca.pw>, "Williams, Dan J" <dan.j.williams@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id C48CF100EA55A
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 14:54:41 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id d13so4557477qko.3
+        for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 14:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lca.pw; s=google;
+        h=content-transfer-encoding:from:mime-version:subject:date:message-id
+         :references:cc:in-reply-to:to;
+        bh=41dVk3HlaKb/dFjB8UnWPeItSsHUeTbp2B9Q6WI0tdI=;
+        b=jbIvggOIeT93+HYPaTBumtry7oeGFtRGRR/RJZ//h55U0bXJOWNKOfcHnZsH8nOSWl
+         ijjgihsoEFCZxaBjB/0RnqYBI1yXeuE4KsNREA7rDgbLcUukvlHQ7BiuLh8SnlAIY1Zj
+         2teTt4r/7ljvLvpSxEbw21SmAMMe7xfYuqcf+z+bLbkEaCoF5KcFLv+vipKztqVqk2UR
+         Fi0fMP14X7hf0Gl/7+UWABKMNrv18W5BFb/b9DVRJLD0CPzz44FiXlPDuwKMfz7KUOZg
+         uGZIN1nJUZM0Wxck74k4CocTGv72D/HSth4B9ilouuvO2SdGzq1j3ykuB6nPpkCaeT/l
+         n6UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:content-transfer-encoding:from:mime-version
+         :subject:date:message-id:references:cc:in-reply-to:to;
+        bh=41dVk3HlaKb/dFjB8UnWPeItSsHUeTbp2B9Q6WI0tdI=;
+        b=A8jbM5/5MrmbNDVl5dS/63b2RxgoFLCEo8IS7TfoA02Qg+O4NyLGmlIjEaC41Er6ff
+         MhFxeAJIXcCiIPLSIFsRyJappi4CGpZsxfCI1RR01SeWeagtnnn78v+Ry8yF6ZIst9Co
+         7SNG9wAeg2BBrD/SBJ7o3+Utt9TjyOXWrYIQxCNVcC8Jv54dQIsvean0E7+Tt5dLX4MP
+         nbjK48YgF50574y9AXOouOE7gyVKPd93C3qjCWlJuGvsRn79JeLYmD4QMfESBUpeI83b
+         bD0HVudqVdyZj4sA0o2uoSpWVwP/YgyJcFc7uw4kqZF66/BbCQCNbUrZT8gkvWrPP1xm
+         vCqg==
+X-Gm-Message-State: APjAAAU6uSxNhUozuU5LilNnuYQO/ZhwdGkytLzr5/4NShyv8fyKA8xe
+	DD+SDEad3yVJefyyL+Ntc8bBaBz2giTGpVKT
+X-Google-Smtp-Source: APXvYqwrQ09V/5pkR6XSIY1CNfD1/GGL1Zz/FvP/T6FEFfnzt1OotLdGJngFwNtEvyKl0Z4cQVy96Q==
+X-Received: by 2002:a37:4cd5:: with SMTP id z204mr2102084qka.153.1572472447368;
+        Wed, 30 Oct 2019 14:54:07 -0700 (PDT)
+Received: from ?IPv6:2600:1000:b063:e143:9455:99a5:c2db:fc9c? ([2600:1000:b063:e143:9455:99a5:c2db:fc9c])
+        by smtp.gmail.com with ESMTPSA id n62sm769982qkn.47.2019.10.30.14.54.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2019 14:54:06 -0700 (PDT)
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
 Subject: Re: [PATCH v2] nvdimm/btt: fix variable 'rc' set but not used
-Thread-Topic: [PATCH v2] nvdimm/btt: fix variable 'rc' set but not used
-Thread-Index: AQHVj2j5N04bKZ3YrkGatkzY9Yk1Sad0KywA
-Date: Wed, 30 Oct 2019 21:38:10 +0000
-Message-ID: <03cacc16f2fcd7cc74cf15c57070c78e73206e68.camel@intel.com>
-References: <1572470889-28754-1-git-send-email-cai@lca.pw>
-In-Reply-To: <1572470889-28754-1-git-send-email-cai@lca.pw>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <26DA713DD43F4744895098BA3049F01E@intel.com>
-MIME-Version: 1.0
-Message-ID-Hash: B6U4XJTI6XFJY7W5JJYFLWUDRLYBHBL3
-X-Message-ID-Hash: B6U4XJTI6XFJY7W5JJYFLWUDRLYBHBL3
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Date: Wed, 30 Oct 2019 17:54:05 -0400
+Message-Id: <5E00893B-D36C-446F-9E71-54FB32772DA0@lca.pw>
+References: <03cacc16f2fcd7cc74cf15c57070c78e73206e68.camel@intel.com>
+In-Reply-To: <03cacc16f2fcd7cc74cf15c57070c78e73206e68.camel@intel.com>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+X-Mailer: iPhone Mail (17A878)
+Message-ID-Hash: A7NFA2S3BSCEQNP4HTBCQMLHFVAPKV2G
+X-Message-ID-Hash: A7NFA2S3BSCEQNP4HTBCQMLHFVAPKV2G
+X-MailFrom: cai@lca.pw
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B6U4XJTI6XFJY7W5JJYFLWUDRLYBHBL3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A7NFA2S3BSCEQNP4HTBCQMLHFVAPKV2G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,49 +74,17 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 
-On Wed, 2019-10-30 at 17:28 -0400, Qian Cai wrote:
-> drivers/nvdimm/btt.c: In function 'btt_read_pg':
-> drivers/nvdimm/btt.c:1264:8: warning: variable 'rc' set but not used
-> [-Wunused-but-set-variable]
->     int rc;
->         ^~
-> 
-> Add a ratelimited message in case a storm of errors is encountered.
-> 
-> Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> 
-> v2: include the block address that is returning an error per Dan.
-> 
->  drivers/nvdimm/btt.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> index 3e9f45aec8d1..10313be78221 100644
-> --- a/drivers/nvdimm/btt.c
-> +++ b/drivers/nvdimm/btt.c
-> @@ -1266,6 +1266,12 @@ static int btt_read_pg(struct btt *btt, struct bio_integrity_payload *bip,
->  			/* Media error - set the e_flag */
->  			rc = btt_map_write(arena, premap, postmap, 0, 1,
->  				NVDIMM_IO_ATOMIC);
-> +
-> +			if (rc)
-> +				dev_warn_ratelimited(to_dev(arena),
-> +					"Error persistently tracking bad blocks at %#x\n",
-> +					premap);
-> +
->  			goto out_rtt;
->  		}
 
-Good find! Since we're not really using rc later, we should just
-simplify this to:
+> On Oct 30, 2019, at 5:38 PM, Verma, Vishal L <vishal.l.verma@intel.com> wrote:
+> 
+> Good find! Since we're not really using rc later, we should just
+> simplify this to:
+> 
+>    if (btt_map_write(...))
+>        dev_warn_ratelimited(...)
+>    goto out_rtt;
 
-	if (btt_map_write(...))
-		dev_warn_ratelimited(...)
-	goto out_rtt;
-
-
+Ah, I thought about printing the rc as well at first, but it seems only return -EIO for errors, so I agree with you.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
