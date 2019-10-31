@@ -2,116 +2,106 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E094EB5CF
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 18:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE71EB5F5
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 18:17:22 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12DA1100DC40A;
-	Thu, 31 Oct 2019 10:08:56 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=36.7.142.210; helo=mail.baizgroup.com; envelope-from=wangas@baizgroup.com; receiver=<UNKNOWN> 
-Received: from mail.baizgroup.com (unknown [36.7.142.210])
-	by ml01.01.org (Postfix) with SMTP id 754D9100DC407
-	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 10:08:51 -0700 (PDT)
-Received: from 111.76.157.17 (HELO XJUF); Wed, 14 Aug 2019 23:44:06 +0800
-Message-ID: <0B8E97F30333B18E0CCFF79AE1118212@xjuf>
-From: "txmzon" <wangas@baizgroup.com>
-To: <drmmr@optonlone.net>,
-	<sue.westbrook@nicholls.edu>,
-	<linux-nvdimm@lists.01.org>,
-	<bslater@swva.net>,
-	<goldie@cajunnet.com>,
-	<ewiggins@maxwell.com>,
-	<pmon@tjc.edu>,
-	<xujun@yingchuang.com>,
-	<wanglj@dgut.edu.cn>,
-	<adminmanager@bviports.org>,
-	<ggore7038@shtc.net>,
-	<lixu@ever-union.net>,
-	<training@csrcind.com>,
-	<pxioop@joyc.com>,
-	<hr@copton.com.cn>,
-	<gvavov@sliven.net>,
-	<vzhu@gsig.com>,
-	<zhaopin@longda.cn>,
-	<info@bulamu.net>,
-	<sales@imagga.com>,
-	<moskowitz@brefnet.org>
-Subject: =?gb2312?B?vNLNpcnjz/HNt8bGveLHv7+q0KG38sbey73D3Mn6u+6x5Myss6TDqw==?=
-	=?gb2312?B?xNDxsbrDzNjK4rGn18XFrtPRxqi5ycfXzsfN0bni0sK3/r/ay67I8w==?=
-	=?gb2312?B?u6y7pbjjw8PX08TM19O6w7Tz?=
-Date: Wed, 14 Aug 2019 23:44:01 +0800
+	by ml01.01.org (Postfix) with ESMTP id ADA14100DC409;
+	Thu, 31 Oct 2019 10:17:47 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 721A3100DC407
+	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 10:17:46 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Oct 2019 10:17:19 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,252,1569308400";
+   d="scan'208";a="211608055"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by fmsmga001.fm.intel.com with ESMTP; 31 Oct 2019 10:17:19 -0700
+Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
+ fmsmsx107.amr.corp.intel.com ([169.254.6.52]) with mapi id 14.03.0439.000;
+ Thu, 31 Oct 2019 10:17:18 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "cai@lca.pw" <cai@lca.pw>, "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [PATCH v3] nvdimm/btt: fix variable 'rc' set but not used
+Thread-Topic: [PATCH v3] nvdimm/btt: fix variable 'rc' set but not used
+Thread-Index: AQHVj/RKt9JEPUybdkSDhqnJiJ6bv6d1c4eA
+Date: Thu, 31 Oct 2019 17:17:18 +0000
+Message-ID: <ab127750fc543ec236dc241255c70dd30abc6f21.camel@intel.com>
+References: <1572530719-32161-1-git-send-email-cai@lca.pw>
+In-Reply-To: <1572530719-32161-1-git-send-email-cai@lca.pw>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.164]
+Content-ID: <DDB80CDF46CFFA46B59DDCF5A958C2D1@intel.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N
-X-Message-ID-Hash: ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N
-X-MailFrom: wangas@baizgroup.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ
+X-Message-ID-Hash: P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESTJAAX6QAR4KX6HLJZHMS2QCWXM6I2N/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5681334748908155807=="
-
---===============5681334748908155807==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTAuMDAuOTIwMC4xNzU1NiI+PC9IRUFEPg0KPEJPRFk+DQo8UD48QSBocmVm
-PSJodHRwOi8vc2p6eGluZXJMaWNoZW0uY29tLyI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
-T1I6IGdyYXkiIA0KY29sb3I9bGltZSBzaXplPTYgDQpmYWNlPVZlcmRhbmE+PFNUUk9ORz48RU0+
-aHR0cDovL3NqenhpbmVyTGljaGVtLmNvbS88L0VNPjwvU1RST05HPjwvRk9OVD48L0E+PC9QPg0K
-PFA+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyYXkiIHNpemU9NiANCmZhY2U9VmVy
-ZGFuYT48RU0+PC9FTT48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFA+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
-TkQtQ09MT1I6IGdyYXkiIGNvbG9yPXllbGxvdyBzaXplPTYgDQpmYWNlPVZlcmRhbmE+PEVNPrzS
-zaXJ48/xzbfGxr3ix7+/qtCht/LG3su9w9zJ+rvuseTMrLOkw6vE0PGxusPM2MrisafXxcWu09HG
-qLnJx9fOx83RueLSwrf+v9rLrsjzu6y7pbjjw8PX08TM19O6w7TzPC9FTT48L0ZPTlQ+PC9QPg0K
-PFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNv
-bG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9
-IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9Q
-Pg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiAN
-CmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5
-bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7
-PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZl
-IiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQg
-c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5i
-c3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9s
-aXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZP
-TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiANCmNvbG9yPXNpbHZlcj48L0ZPTlQ+
-Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
-IHB1cnBsZSIgDQpjb2xvcj1zaWx2ZXI+PEVNPjxTVFJPTkc+MjAxOS84LzE0Jm5ic3A7Jm5ic3A7
-IDwvU1RST05HPjwvRU0+PC9GT05UPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxGT05UIHN0eWxlPSJC
-QUNLR1JPVU5ELUNPTE9SOiBwdXJwbGUiIGNvbG9yPXNpbHZlciANCnNpemU9MT48VT48RU0+PFNU
-Uk9ORz4yMDE5LzgvMTQ8L1NUUk9ORz48L0VNPjwvVT48L0ZPTlQ+PC9QPg0KPFAgYWxpZ249cmln
-aHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IHB1cnBsZSIgY29sb3I9c2lsdmVyIA0K
-c2l6ZT0xPjxVPjxFTT48U1RST05HPjk5MzM8L1NUUk9ORz48L0VNPjwvVT48L0ZPTlQ+PC9QPg0K
-PFA+PFU+PEZPTlQgDQpzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogcHVycGxlIj48RU0+PFNUUk9O
-Rz48L1NUUk9ORz48L0VNPjwvRk9OVD48L1U+Jm5ic3A7PC9QPg0KPFA+PEZPTlQgDQpzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogcHVycGxlIj48RU0+PFNUUk9ORz680s2lyePP8c23xsa94se/v6rQ
-obfyxt7LvcPcyfq77rHkzKyzpMOrxNDxsbrDzNjK4rGn18XFrtPRxqi5ycfXzsfN0bni0sK3/r/a
-y67I87usu6W448PD19PEzNfTusO08zwvU1RST05HPjwvRU0+PC9GT05UPjwvUD48L0JPRFk+PC9I
-VE1MPg0K
-
-
---===============5681334748908155807==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+On Thu, 2019-10-31 at 10:05 -0400, Qian Cai wrote:
+> drivers/nvdimm/btt.c: In function 'btt_read_pg':
+> drivers/nvdimm/btt.c:1264:8: warning: variable 'rc' set but not used
+> [-Wunused-but-set-variable]
+>     int rc;
+>         ^~
+> 
+> Add a ratelimited message in case a storm of errors is encountered.
+> 
+> Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
+> Signed-off-by: Qian Cai <cai@lca.pw>
+> ---
+> v3: remove the unused "rc" per Vishal.
+> v2: include the block address that is returning an error per Dan.
+> 
+>  drivers/nvdimm/btt.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+
+Looks good,
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+
+> 
+> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
+> index 3e9f45aec8d1..5129543a0473 100644
+> --- a/drivers/nvdimm/btt.c
+> +++ b/drivers/nvdimm/btt.c
+> @@ -1261,11 +1261,11 @@ static int btt_read_pg(struct btt *btt, struct bio_integrity_payload *bip,
+>  
+>  		ret = btt_data_read(arena, page, off, postmap, cur_len);
+>  		if (ret) {
+> -			int rc;
+> -
+>  			/* Media error - set the e_flag */
+> -			rc = btt_map_write(arena, premap, postmap, 0, 1,
+> -				NVDIMM_IO_ATOMIC);
+> +			if (btt_map_write(arena, premap, postmap, 0, 1, NVDIMM_IO_ATOMIC))
+> +				dev_warn_ratelimited(to_dev(arena),
+> +					"Error persistently tracking bad blocks at %#x\n",
+> +					premap);
+>  			goto out_rtt;
+>  		}
+>  
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5681334748908155807==--
