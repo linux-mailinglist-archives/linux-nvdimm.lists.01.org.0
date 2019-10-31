@@ -1,56 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE71EB5F5
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 18:17:22 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E05EB6A3
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 19:10:36 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ADA14100DC409;
-	Thu, 31 Oct 2019 10:17:47 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5D489100DC40A;
+	Thu, 31 Oct 2019 11:11:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 721A3100DC407
-	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 10:17:46 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Oct 2019 10:17:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,252,1569308400";
-   d="scan'208";a="211608055"
-Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
-  by fmsmga001.fm.intel.com with ESMTP; 31 Oct 2019 10:17:19 -0700
-Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
- fmsmsx107.amr.corp.intel.com ([169.254.6.52]) with mapi id 14.03.0439.000;
- Thu, 31 Oct 2019 10:17:18 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "cai@lca.pw" <cai@lca.pw>, "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3] nvdimm/btt: fix variable 'rc' set but not used
-Thread-Topic: [PATCH v3] nvdimm/btt: fix variable 'rc' set but not used
-Thread-Index: AQHVj/RKt9JEPUybdkSDhqnJiJ6bv6d1c4eA
-Date: Thu, 31 Oct 2019 17:17:18 +0000
-Message-ID: <ab127750fc543ec236dc241255c70dd30abc6f21.camel@intel.com>
-References: <1572530719-32161-1-git-send-email-cai@lca.pw>
-In-Reply-To: <1572530719-32161-1-git-send-email-cai@lca.pw>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
-x-originating-ip: [10.232.112.164]
-Content-ID: <DDB80CDF46CFFA46B59DDCF5A958C2D1@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 35F08100DC409
+	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 11:10:58 -0700 (PDT)
+Received: by mail-oi1-x241.google.com with SMTP id j7so6017425oib.3
+        for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 11:10:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EVdtcBRZCD2vENykWCS+6pWx1ip+EghwbnD+9MtcvjQ=;
+        b=FvVmb/fSHKImaafJ9elIRSzRmrMYZhJcyUbXEJufmuVrq9cnQKBddyy7CD/zaP3HKv
+         rQumhPkiOp3RAsBwrfbYKlhKjFPOh0RpBbkAnEhWArmuiyVcUamJam6n8BIZlt0ADdK0
+         tiY+UfkG9DYINaxpuhGnApOWpirr9w+pBp45uUVyNvIsNg/54imgslL6wj8XuLHtN7/i
+         KL6bu+5+3Z4Ilj2dtHZ9Vh9ppJLaZHPiqcTyeHXfCMFG2BwWMkZ0ve7k+wGu2XNdvtOR
+         4PL0e6pESwEyv458yuY/nRSh6Q4hsxjZG5XzeBnnwYGP0w/EEu3+CSj4NQPxwSBX069u
+         I4tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EVdtcBRZCD2vENykWCS+6pWx1ip+EghwbnD+9MtcvjQ=;
+        b=TW3OXZaFFLIyY72URGAZNsDulyHtFglUBH+K54w+MpyGNpaR5UfhPPIucCGzeJJj0Y
+         xtY9e92465E2ShrySOrMiFjvTJNs3Epu218u7nflJp86uVBxHUrxUBiHd3TFL5UJNSNh
+         V2x25tCfETq9OoCPzQ6MuR7Mlvy824NQq9+VqhIgnNhFeldAAJ9ZqdPE96hPV+RmqMe5
+         xo2rAU3JglhM2L9flJ+Il9zcOkmYUw6nsZOpAtDkujCczKDvQcANzsU/YggppPje6cY1
+         eGHnxEv1bpfk+U6RX2DUoANpjHAISND0jmpLKjFaXwJYZy/gJ/IDO0q+06nUa8xv/CPn
+         J+dw==
+X-Gm-Message-State: APjAAAU3cOiaLkCG3ZMNmsarBk+8W04O5CLcAGhe0hHcHwL6MgNJdo3O
+	Gp6OTDc/iH3ZHqalj6KzlqSS3yKHyrN5g+H0Rxfzpg==
+X-Google-Smtp-Source: APXvYqyrxR+CetGwVTtHCGbPoaHFfTxy1l5R0oZtyNANw9n+amQaf0An8efFhqdBpQPlshcTcx8d8RcTUv6xjlzqHGo=
+X-Received: by 2002:aca:ad52:: with SMTP id w79mr703151oie.149.1572545430720;
+ Thu, 31 Oct 2019 11:10:30 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ
-X-Message-ID-Hash: P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ
-X-MailFrom: vishal.l.verma@intel.com
+References: <20190807043915.30239-1-aneesh.kumar@linux.ibm.com>
+ <73abe6519435d3c0cfab32633c969b5efe16c0e4.camel@intel.com>
+ <269a4c1c-f1c5-6b18-3482-a9640d0a816b@linux.ibm.com> <211de3f5c7eafcdd64301954db2382888b7e9982.camel@intel.com>
+In-Reply-To: <211de3f5c7eafcdd64301954db2382888b7e9982.camel@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 31 Oct 2019 11:10:19 -0700
+Message-ID: <CAPcyv4g01PKnRHn8uv_GKVGg=-ww89tkoEXqE0W0x5PdiCteGw@mail.gmail.com>
+Subject: Re: [PATCH] Consider namespace with size as active namespace
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+Message-ID-Hash: 57X6NX6HOASUNAXUKEIWUKYX742RQ22C
+X-Message-ID-Hash: 57X6NX6HOASUNAXUKEIWUKYX742RQ22C
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P27YVC7NP2JB75UVIMB6H3WYKNDWE2AQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/57X6NX6HOASUNAXUKEIWUKYX742RQ22C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,49 +69,81 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, 2019-10-31 at 10:05 -0400, Qian Cai wrote:
-> drivers/nvdimm/btt.c: In function 'btt_read_pg':
-> drivers/nvdimm/btt.c:1264:8: warning: variable 'rc' set but not used
-> [-Wunused-but-set-variable]
->     int rc;
->         ^~
-> 
-> Add a ratelimited message in case a storm of errors is encountered.
-> 
-> Fixes: d9b83c756953 ("libnvdimm, btt: rework error clearing")
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
-> v3: remove the unused "rc" per Vishal.
-> v2: include the block address that is returning an error per Dan.
-> 
->  drivers/nvdimm/btt.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Oct 30, 2019 at 4:39 PM Verma, Vishal L
+<vishal.l.verma@intel.com> wrote:
+>
+> On Thu, 2019-10-17 at 08:35 +0530, Aneesh Kumar K.V wrote:
+> >
+> > > > ---
+> > > >   ndctl/namespace.c | 3 ++-
+> > > >   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > >
+> > > > diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+> > > > index 58a9e3c53474..1f212a2b3a9b 100644
+> > > > --- a/ndctl/namespace.c
+> > > > +++ b/ndctl/namespace.c
+> > > > @@ -455,7 +455,8 @@ static int is_namespace_active(struct ndctl_namespace *ndns)
+> > > >           return ndns && (ndctl_namespace_is_enabled(ndns)
+> > > >                   || ndctl_namespace_get_pfn(ndns)
+> > > >                   || ndctl_namespace_get_dax(ndns)
+> > > > -         || ndctl_namespace_get_btt(ndns));
+> > > > +         || ndctl_namespace_get_btt(ndns)
+> > > > +         || ndctl_namespace_get_size(ndns));
+> > > >   }
+> > > >
+> > > >   /*
+> [..]
+> >
+> > > The failing unit tests are sector-mode.sh and dax.sh
+> > >
+> >
+> > I will see if i can run them on ppc64. We still had issues in getting
+> > ndctl check to be running on ppc64.
+> >
+>
+> I dug into this a bit more.
+>
+> The failure happens on 'legacy' namespaces (ND_DEVICE_NAMESPACE_IO).
+>
+> There is an assumption that legacy namespaces cannot be fully deleted,
+> so as part of a reconfigure, when it comes time to delete the namespace
+> (ndctl_namespace_delete()), we refuse to do that, and bail, before
+> setting the size to zero.
+>
+> libndctl.c:4467
+>
+>         case ND_DEVICE_NAMESPACE_BLK:
+>                 break;
+>         default:
+>                 dbg(ctx, "%s: nstype: %d not deletable\n",
+>                                 ndctl_namespace_get_devname(ndns),
+>                                 ndctl_namespace_get_type(ndns));
+>                 return 0;
+>         }
+>
+>         rc = namespace_set_size(ndns, 0);
+> ...
+>
+> Indeed, destroy namespace wouldn't even get to that point, because that
+> assumption is repeated in namespace_destroy(), where we switch on
+> namespace type, and potentially skip over the ndctl_namespace_destroy
+> call entirely.
+>
+> If setting the size to zero is now significant we'd need to rework both
+> of these sites. In destroy_namespace(), delay the did_zero checking
+> until after ndctl_namespace_delete(), and in ndctl_namespace_delete(),
+> set the size to zero before the type check.
+>
+> Dan, does the above make sense - was there reason to refrain from
+> touching the size on legacy namespaces?
 
-Looks good,
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+It's because the size is read-only on legacy namespaces, so writes
+will always fail so the assumption is that ndctl_namespace_delete() is
+a nop. Hmm, but that makes me think that size == read-only might be a
+good gate for this idle check, i.e.:
 
-> 
-> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-> index 3e9f45aec8d1..5129543a0473 100644
-> --- a/drivers/nvdimm/btt.c
-> +++ b/drivers/nvdimm/btt.c
-> @@ -1261,11 +1261,11 @@ static int btt_read_pg(struct btt *btt, struct bio_integrity_payload *bip,
->  
->  		ret = btt_data_read(arena, page, off, postmap, cur_len);
->  		if (ret) {
-> -			int rc;
-> -
->  			/* Media error - set the e_flag */
-> -			rc = btt_map_write(arena, premap, postmap, 0, 1,
-> -				NVDIMM_IO_ATOMIC);
-> +			if (btt_map_write(arena, premap, postmap, 0, 1, NVDIMM_IO_ATOMIC))
-> +				dev_warn_ratelimited(to_dev(arena),
-> +					"Error persistently tracking bad blocks at %#x\n",
-> +					premap);
->  			goto out_rtt;
->  		}
->  
-
+if (size_is_writable(ndns) && size(ndns) != 0)
+    return not_idle;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
