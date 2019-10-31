@@ -2,52 +2,77 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037DFEAA01
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 05:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C776FEAA5D
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 06:35:34 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7769D100EA55F;
-	Wed, 30 Oct 2019 21:55:31 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id 852DF100EA554
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 21:55:29 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.68,250,1569254400";
-   d="scan'208";a="77722261"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 31 Oct 2019 12:54:57 +0800
-Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
-	by cn.fujitsu.com (Postfix) with ESMTP id 7B345486A852;
-	Thu, 31 Oct 2019 12:46:58 +0800 (CST)
-Received: from [10.167.225.140] (10.167.225.140) by
- G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.439.0; Thu, 31 Oct 2019 12:55:08 +0800
-Subject: Re: [RFC PATCH v2 0/7] xfs: reflink & dedupe for fsdax (read/write
- path).
-To: Goldwyn Rodrigues <rgoldwyn@suse.de>
-References: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com>
- <20191030114818.emvmgfgqadiqintw@fiona>
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <2737c6f6-5cca-2b92-edff-fb9227ccc6d1@cn.fujitsu.com>
-Date: Thu, 31 Oct 2019 12:54:54 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+	by ml01.01.org (Postfix) with ESMTP id 305F2100DC400;
+	Wed, 30 Oct 2019 22:36:03 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D68D7100EA55F
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 22:36:00 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9V5Ya8Q083730;
+	Thu, 31 Oct 2019 01:35:24 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2vyrjthvey-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 31 Oct 2019 01:35:24 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+	by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9V5ZNLF028354;
+	Thu, 31 Oct 2019 05:35:23 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+	by ppma03dal.us.ibm.com with ESMTP id 2vxwh67jvp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 31 Oct 2019 05:35:23 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9V5ZMDt41812396
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 31 Oct 2019 05:35:22 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 692DD124054;
+	Thu, 31 Oct 2019 05:35:22 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 20AD1124058;
+	Thu, 31 Oct 2019 05:35:21 +0000 (GMT)
+Received: from [9.199.35.193] (unknown [9.199.35.193])
+	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+	Thu, 31 Oct 2019 05:35:20 +0000 (GMT)
+Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
+ <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
+ <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID: <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+Date: Thu, 31 Oct 2019 11:05:19 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191030114818.emvmgfgqadiqintw@fiona>
+In-Reply-To: <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
 Content-Language: en-US
-X-Originating-IP: [10.167.225.140]
-X-yoursite-MailScanner-ID: 7B345486A852.A9538
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: HUJSSJVQMG2HNRO5UTMOKPZU4JHRS4LD
-X-Message-ID-Hash: HUJSSJVQMG2HNRO5UTMOKPZU4JHRS4LD
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, darrick.wong@oracle.com, hch@infradead.org, david@fromorbit.com, linux-kernel@vger.kernel.org, gujx@cn.fujitsu.com, qi.fuli@fujitsu.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-31_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1910310055
+Message-ID-Hash: 7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2
+X-Message-ID-Hash: 7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2
+X-MailFrom: aneesh.kumar@linux.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HUJSSJVQMG2HNRO5UTMOKPZU4JHRS4LD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,39 +81,124 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-
-
-On 10/30/19 7:48 PM, Goldwyn Rodrigues wrote:
-> On 12:13 30/10, Shiyang Ruan wrote:
->> This patchset aims to take care of this issue to make reflink and dedupe
->> work correctly (actually in read/write path, there still has some problems,
->> such as the page->mapping and page->index issue, in mmap path) in XFS under
->> fsdax mode.
+On 10/29/19 11:00 AM, Dan Williams wrote:
+> On Mon, Oct 28, 2019 at 9:35 PM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> On 10/29/19 4:38 AM, Dan Williams wrote:
+>>> On Mon, Oct 28, 2019 at 2:48 AM Aneesh Kumar K.V
+>>> <aneesh.kumar@linux.ibm.com> wrote:
+>>>>
+>>>> The page size used to map the namespace is arch dependent. For example
+>>>> architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
+>>>> size is not aligned to the mapping page size, we can observe kernel crash
+>>>> during namespace init and destroy.
+>>>>
+>>>> This is due to kernel doing partial map/unmap of the resource range
+>>>>
+>>>> BUG: Unable to handle kernel data access at 0xc001000406000000
+>>>> Faulting instruction address: 0xc000000000090790
+>>>> NIP [c000000000090790] arch_add_memory+0xc0/0x130
+>>>> LR [c000000000090744] arch_add_memory+0x74/0x130
+>>>> Call Trace:
+>>>>    arch_add_memory+0x74/0x130 (unreliable)
+>>>>    memremap_pages+0x74c/0xa30
+>>>>    devm_memremap_pages+0x3c/0xa0
+>>>>    pmem_attach_disk+0x188/0x770
+>>>>    nvdimm_bus_probe+0xd8/0x470
+>>>>    really_probe+0x148/0x570
+>>>>    driver_probe_device+0x19c/0x1d0
+>>>>    device_driver_attach+0xcc/0x100
+>>>>    bind_store+0x134/0x1c0
+>>>>    drv_attr_store+0x44/0x60
+>>>>    sysfs_kf_write+0x74/0xc0
+>>>>    kernfs_fop_write+0x1b4/0x290
+>>>>    __vfs_write+0x3c/0x70
+>>>>    vfs_write+0xd0/0x260
+>>>>    ksys_write+0xdc/0x130
+>>>>    system_call+0x5c/0x68
+>>>>
+>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>>>> ---
+>>>>    arch/arm64/mm/flush.c     | 11 +++++++++++
+>>>>    arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
+>>>>    arch/x86/mm/pageattr.c    | 12 ++++++++++++
+>>>>    include/linux/libnvdimm.h |  1 +
+>>>>    4 files changed, 43 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
+>>>> index ac485163a4a7..90c54c600023 100644
+>>>> --- a/arch/arm64/mm/flush.c
+>>>> +++ b/arch/arm64/mm/flush.c
+>>>> @@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
+>>>>           __inval_dcache_area(addr, size);
+>>>>    }
+>>>>    EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+>>>> +
+>>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
+>>>> +{
+>>>> +       u32 remainder;
+>>>> +
+>>>> +       div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
+>>>> +       if (remainder)
+>>>> +               return PAGE_SIZE * ndr_mappings;
+>>>> +       return 0;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
+>>>>    #endif
+>>>> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
+>>>> index 377712e85605..2e661a08dae5 100644
+>>>> --- a/arch/powerpc/lib/pmem.c
+>>>> +++ b/arch/powerpc/lib/pmem.c
+>>>> @@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
+>>>>           unsigned long start = (unsigned long) addr;
+>>>>           flush_dcache_range(start, start + size);
+>>>>    }
+>>>> -EXPORT_SYMBOL(arch_wb_cache_pmem);
+>>>> +EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+>>>>
+>>>>    void arch_invalidate_pmem(void *addr, size_t size)
+>>>>    {
+>>>>           unsigned long start = (unsigned long) addr;
+>>>>           flush_dcache_range(start, start + size);
+>>>>    }
+>>>> -EXPORT_SYMBOL(arch_invalidate_pmem);
+>>>> +EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+>>>> +
+>>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
+>>>> +{
+>>>> +       u32 remainder;
+>>>> +       unsigned long linear_map_size;
+>>>> +
+>>>> +       if (radix_enabled())
+>>>> +               linear_map_size = PAGE_SIZE;
+>>>> +       else
+>>>> +               linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
+>>>
+>>> This seems more a "supported_alignments" problem, and less a namespace
+>>> size or PAGE_SIZE problem, because if the starting address is
+>>> misaligned this size validation can still succeed when it shouldn't.
+>>>
+>>
+>>
+>> Isn't supported_alignments an indication of how user want the namespace
+>> to be mapped to applications?  Ie, with the above restrictions we can
+>> still do both 64K and 16M mapping of the namespace to userspace.
 > 
-> Have you managed to solve the problem of multi-mapped pages? I don't
-> think we can include this until we solve that problem. This is the
-> problem I faced when I was doing the btrfs dax support.
-
-That problem still exists, didn't be solved in this patchset.  But I am 
-also looking into it.  As you know, it's a bit difficult.
-
-Since the iomap for cow is merged in for-next tree, I think it's time to 
-update this in order to get some comments.
-
-> 
-> Suppose there is an extent shared with multiple files. You map data for
-> both files. Which inode should page->mapping->host (precisely
-> page->mapping) point to? As Dave pointed out, this needs to be fixed at
-> the mm level, and will not only benefit dax with CoW but other
-> areas such as overlayfs and possibly containers.
-
-Yes, I will try to figure out a solution.
+> True, for the pfn device and the device-dax mapping size, but I'm
+> suggesting adding another instance of alignment control at the raw
+> namespace level. That would need to be disconnected from the
+> device-dax page mapping granularity.
 > 
 
--- 
-Thanks,
-Shiyang Ruan.
+Can you explain what you mean by raw namespace level ? We don't have 
+multiple values against which we need to check the alignment of 
+namespace start and namespace size.
 
+If you can outline how and where you would like to enforce that check I 
+can start working on it.
+
+-aneesh
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
