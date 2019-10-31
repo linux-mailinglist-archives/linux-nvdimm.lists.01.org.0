@@ -1,204 +1,122 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C776FEAA5D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 06:35:34 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F22EAA9F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 31 Oct 2019 07:30:34 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 305F2100DC400;
-	Wed, 30 Oct 2019 22:36:03 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id DB494100DC401;
+	Wed, 30 Oct 2019 23:31:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D68D7100EA55F
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 22:36:00 -0700 (PDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x9V5Ya8Q083730;
-	Thu, 31 Oct 2019 01:35:24 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2vyrjthvey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 31 Oct 2019 01:35:24 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-	by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x9V5ZNLF028354;
-	Thu, 31 Oct 2019 05:35:23 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma03dal.us.ibm.com with ESMTP id 2vxwh67jvp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 31 Oct 2019 05:35:23 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x9V5ZMDt41812396
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Oct 2019 05:35:22 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 692DD124054;
-	Thu, 31 Oct 2019 05:35:22 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20AD1124058;
-	Thu, 31 Oct 2019 05:35:21 +0000 (GMT)
-Received: from [9.199.35.193] (unknown [9.199.35.193])
-	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
-	Thu, 31 Oct 2019 05:35:20 +0000 (GMT)
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: Dan Williams <dan.j.williams@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 24871100EA55F
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 23:31:00 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id u13so4441495ote.0
+        for <linux-nvdimm@lists.01.org>; Wed, 30 Oct 2019 23:30:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/qgpzQ0JhjLVnJIOjjWL6Mowx327SPlx5pn1SoNDC+c=;
+        b=1iqBC0jzqdA13DrnN43K3m1+K1ZNqhq6x3w5m8hY9nmbnUHOC0YmFxMimWdsAHYbnI
+         Ft3Rhnr8sPfxIofC44Z/7Qrj4UgcXvACmnJp8eml2arLILt+rcSesmzbCxOvC50+LHHO
+         DRsbi1+URJb3jRF4UQ489hhz9yx/vlAHsDk1NJuVPeke2fBxAofoORk7sCTY86yK9iov
+         oI+I2WxAr10EvAm4jP5oXZzbFKSp1ClKqT3PJvht0xi7G3Ah9qNlEuxnXG/frHYS0Rzn
+         nBdTpaYB4akqfyViaE/3xWJe1VWVmWbjSHsDKvUMpr5f1CosZc8fd527iFHZbuXM/3Mi
+         1cMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/qgpzQ0JhjLVnJIOjjWL6Mowx327SPlx5pn1SoNDC+c=;
+        b=RCsb2tWCCgQKqROpotU0KcIjZcSb14VZMrDo5e1aNQ1lGN+t6QQr8pjskAdDXlHJ+7
+         HilHrqTS8fi4a15VVaDtlwkAr9MJAUh0aPA2JAAs7bA7Yulhwo7lpIXAke9lHSBfz+mY
+         jWyHM7TQfVdiu52PYTZf6ugdW8oPD7uVKxDLr2zQGOxRFM9denCS7FefRIQpWUTkZ/RI
+         piO39s3G9TukfcDtGtt5zXZzYvvNuivAo5PeHdPrm3deAFAlD4p/WzQHMoKCOT5tMrf7
+         5gfGhMWbrBf1InQ7AgSToCswFjskc+c4lTM9hWvrEgO6+91Q/FomRnGC5uU9jBmibNrV
+         lJbg==
+X-Gm-Message-State: APjAAAVyo8adxa+DZumawWBI03dt2Hfd73ZpkPn72pr/TDJd4eezimgU
+	4xR67LX+7q1ZUo+95AjTKVTGd5g3R9gB3ezrBBcxyw==
+X-Google-Smtp-Source: APXvYqwsCcmEYbccy1+yhmtPx5o8k4Qn3ow1DuGI5ZSJal+v+fE3sTW9IHilS6kah7NkRLnkK2a0NND6knXg87rdbe4=
+X-Received: by 2002:a05:6830:18d1:: with SMTP id v17mr2928239ote.71.1572503430036;
+ Wed, 30 Oct 2019 23:30:30 -0700 (PDT)
+MIME-Version: 1.0
 References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
  <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
- <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com>
- <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
-Date: Thu, 31 Oct 2019 11:05:19 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-31_02:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1910310055
-Message-ID-Hash: 7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2
-X-Message-ID-Hash: 7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+ <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com> <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
+ <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+In-Reply-To: <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 30 Oct 2019 23:30:19 -0700
+Message-ID: <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
+ validation arch dependent
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: MM3RYADNPUK4RGGV3JZXA43LFIDJWNS3
+X-Message-ID-Hash: MM3RYADNPUK4RGGV3JZXA43LFIDJWNS3
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7TFPYXDXOXHFKPK3JIWGWSOS4ZEAHYH2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MM3RYADNPUK4RGGV3JZXA43LFIDJWNS3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 10/29/19 11:00 AM, Dan Williams wrote:
-> On Mon, Oct 28, 2019 at 9:35 PM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> On 10/29/19 4:38 AM, Dan Williams wrote:
->>> On Mon, Oct 28, 2019 at 2:48 AM Aneesh Kumar K.V
->>> <aneesh.kumar@linux.ibm.com> wrote:
->>>>
->>>> The page size used to map the namespace is arch dependent. For example
->>>> architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
->>>> size is not aligned to the mapping page size, we can observe kernel crash
->>>> during namespace init and destroy.
->>>>
->>>> This is due to kernel doing partial map/unmap of the resource range
->>>>
->>>> BUG: Unable to handle kernel data access at 0xc001000406000000
->>>> Faulting instruction address: 0xc000000000090790
->>>> NIP [c000000000090790] arch_add_memory+0xc0/0x130
->>>> LR [c000000000090744] arch_add_memory+0x74/0x130
->>>> Call Trace:
->>>>    arch_add_memory+0x74/0x130 (unreliable)
->>>>    memremap_pages+0x74c/0xa30
->>>>    devm_memremap_pages+0x3c/0xa0
->>>>    pmem_attach_disk+0x188/0x770
->>>>    nvdimm_bus_probe+0xd8/0x470
->>>>    really_probe+0x148/0x570
->>>>    driver_probe_device+0x19c/0x1d0
->>>>    device_driver_attach+0xcc/0x100
->>>>    bind_store+0x134/0x1c0
->>>>    drv_attr_store+0x44/0x60
->>>>    sysfs_kf_write+0x74/0xc0
->>>>    kernfs_fop_write+0x1b4/0x290
->>>>    __vfs_write+0x3c/0x70
->>>>    vfs_write+0xd0/0x260
->>>>    ksys_write+0xdc/0x130
->>>>    system_call+0x5c/0x68
->>>>
->>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> ---
->>>>    arch/arm64/mm/flush.c     | 11 +++++++++++
->>>>    arch/powerpc/lib/pmem.c   | 21 +++++++++++++++++++--
->>>>    arch/x86/mm/pageattr.c    | 12 ++++++++++++
->>>>    include/linux/libnvdimm.h |  1 +
->>>>    4 files changed, 43 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
->>>> index ac485163a4a7..90c54c600023 100644
->>>> --- a/arch/arm64/mm/flush.c
->>>> +++ b/arch/arm64/mm/flush.c
->>>> @@ -91,4 +91,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
->>>>           __inval_dcache_area(addr, size);
->>>>    }
->>>>    EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
->>>> +
->>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
->>>> +{
->>>> +       u32 remainder;
->>>> +
->>>> +       div_u64_rem(size, PAGE_SIZE * ndr_mappings, &remainder);
->>>> +       if (remainder)
->>>> +               return PAGE_SIZE * ndr_mappings;
->>>> +       return 0;
->>>> +}
->>>> +EXPORT_SYMBOL_GPL(arch_validate_namespace_size);
->>>>    #endif
->>>> diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
->>>> index 377712e85605..2e661a08dae5 100644
->>>> --- a/arch/powerpc/lib/pmem.c
->>>> +++ b/arch/powerpc/lib/pmem.c
->>>> @@ -17,14 +17,31 @@ void arch_wb_cache_pmem(void *addr, size_t size)
->>>>           unsigned long start = (unsigned long) addr;
->>>>           flush_dcache_range(start, start + size);
->>>>    }
->>>> -EXPORT_SYMBOL(arch_wb_cache_pmem);
->>>> +EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
->>>>
->>>>    void arch_invalidate_pmem(void *addr, size_t size)
->>>>    {
->>>>           unsigned long start = (unsigned long) addr;
->>>>           flush_dcache_range(start, start + size);
->>>>    }
->>>> -EXPORT_SYMBOL(arch_invalidate_pmem);
->>>> +EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
->>>> +
->>>> +unsigned long arch_validate_namespace_size(unsigned int ndr_mappings, unsigned long size)
->>>> +{
->>>> +       u32 remainder;
->>>> +       unsigned long linear_map_size;
->>>> +
->>>> +       if (radix_enabled())
->>>> +               linear_map_size = PAGE_SIZE;
->>>> +       else
->>>> +               linear_map_size = (1UL << mmu_psize_defs[mmu_linear_psize].shift);
->>>
->>> This seems more a "supported_alignments" problem, and less a namespace
->>> size or PAGE_SIZE problem, because if the starting address is
->>> misaligned this size validation can still succeed when it shouldn't.
->>>
->>
->>
->> Isn't supported_alignments an indication of how user want the namespace
->> to be mapped to applications?  Ie, with the above restrictions we can
->> still do both 64K and 16M mapping of the namespace to userspace.
-> 
-> True, for the pfn device and the device-dax mapping size, but I'm
-> suggesting adding another instance of alignment control at the raw
-> namespace level. That would need to be disconnected from the
-> device-dax page mapping granularity.
-> 
+On Wed, Oct 30, 2019 at 10:35 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+[..]
+> > True, for the pfn device and the device-dax mapping size, but I'm
+> > suggesting adding another instance of alignment control at the raw
+> > namespace level. That would need to be disconnected from the
+> > device-dax page mapping granularity.
+> >
+>
+> Can you explain what you mean by raw namespace level ? We don't have
+> multiple values against which we need to check the alignment of
+> namespace start and namespace size.
+>
+> If you can outline how and where you would like to enforce that check I
+> can start working on it.
+>
 
-Can you explain what you mean by raw namespace level ? We don't have 
-multiple values against which we need to check the alignment of 
-namespace start and namespace size.
+What I mean is that the process of setting up a pfn namespace goes
+something like this in shell script form:
 
-If you can outline how and where you would like to enforce that check I 
-can start working on it.
+1/ echo $size > /sys/bus/nd/devices/$namespace/size
+2/ echo $namespace > /sys/bus/nd/devices/$pfn/namespace
+3/ echo $pfn_align > /sys/bus/nd/devices/$pfn/align
 
--aneesh
+What I'm suggesting is add an optional 0th step that does:
+
+echo $raw_align > /sys/bus/nd/devices/$namespace/align
+
+Where the raw align needs to be needs to be max($pfn_align,
+arch_mapping_granulariy).
+
+So on powerpc where PAGE_SIZE < arch_mapping_granulariy, the following:
+
+cat /sys/bus/nd/devices/$namespace/supported_aligns
+
+...would show the same output as:
+
+cat /sys/bus/nd/devices/$pfn/align
+
+...but with any alignment choice less than arch_mapping_granulariy removed.
+
+
+
+All that said, the x86 vmemmap_populate() falls back to use small
+pages in some case to get around this constraint. Can't powerpc do the
+same? It would seem to be less work than the above proposal.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
