@@ -1,70 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6518BEBC5B
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Nov 2019 04:27:42 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64808EC617
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Nov 2019 16:56:14 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3FFC2100DC410;
-	Thu, 31 Oct 2019 20:28:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 936EE100DC415;
+	Fri,  1 Nov 2019 08:56:31 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com; envelope-from=info.zennitbankplcnigerian@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EBDC0100DC40F
-	for <linux-nvdimm@lists.01.org>; Thu, 31 Oct 2019 20:28:01 -0700 (PDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA13Gogt047193;
-	Thu, 31 Oct 2019 23:27:35 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2w0c9u0uh5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 31 Oct 2019 23:27:35 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
-	by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xA13CD5L027408;
-	Fri, 1 Nov 2019 03:27:38 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
-	by ppma01wdc.us.ibm.com with ESMTP id 2vxwh5vve9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Nov 2019 03:27:38 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
-	by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA13RXE144892428
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Nov 2019 03:27:34 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2DFCAC05B;
-	Fri,  1 Nov 2019 03:27:33 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1905BAC059;
-	Fri,  1 Nov 2019 03:27:32 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.34.169])
-	by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Nov 2019 03:27:31 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: dan.j.williams@intel.com
-Subject: [PATCH v5] libnvdimm/pfn_dev: Don't clear device memmap area during generic namespace probe
-Date: Fri,  1 Nov 2019 08:57:28 +0530
-Message-Id: <20191101032728.113001-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.23.0
+	by ml01.01.org (Postfix) with ESMTPS id BC2B5100DC414
+	for <linux-nvdimm@lists.01.org>; Fri,  1 Nov 2019 08:56:29 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id t9so6805696ils.4
+        for <linux-nvdimm@lists.01.org>; Fri, 01 Nov 2019 08:56:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
+         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
+         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
+         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
+         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
+         lYoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
+        b=t0wy8fF7CAQGCcygI6iSnn53prtiU80+qm9FyRJFzt/ptMMJKA7QXwMPeKvrg9loeg
+         ayy5ZL/sPsU6jWLEQ/kf7ShDmr30p+QPxEe9m+hlMhY0Uul3CEvs+YLdP/hMmjSdgTNO
+         2uA4To+lWmcrv7r6ET79YGm0B2TLJF47fJG89o6Gey46ME8qVM3Sbc7ZK60dfQanZlaF
+         Hj5w4kESamXsPsZtjutX6bBOmh//DcXmC5Vb7xms2JrWqL3Y6JCe3thOsk9wjesE7kZb
+         V0nJ+mT0a6JWzsbFyKzE3Zr+HOTi/c7Q+TYWfM9mUuuzB3qw1RJEzVwEiupXZDcLFyma
+         2poA==
+X-Gm-Message-State: APjAAAWNN10FDHeMyHjC1OBCPOcSDM3Qgf6iSlUJ9UEAzOiXxOYm7P4Y
+	74WkEGIPH2gAm8SRgUKMECd1p9nT/5+RK01cvnUdoDQ=
+X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
+X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
+ Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-10-31_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1908290000 definitions=main-1911010031
-Message-ID-Hash: HQS54BCHMMMKHYYJU6CONVMRLEIV7PLO
-X-Message-ID-Hash: HQS54BCHMMMKHYYJU6CONVMRLEIV7PLO
-X-MailFrom: aneesh.kumar@linux.ibm.com
+Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
+From: "Mary Coster, I.M.F director-Benin" <info.zennitbankplcnigerian@gmail.com>
+Date: Fri, 1 Nov 2019 16:56:08 +0100
+Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
+Subject: Contact Money Gram international service-Benin to receive your
+ payment funds US$2.500,000 Million
+To: undisclosed-recipients:;
+Message-ID-Hash: 7REYQ7J6OEH37XASD4XH2WYRLRXPAESB
+X-Message-ID-Hash: 7REYQ7J6OEH37XASD4XH2WYRLRXPAESB
+X-MailFrom: info.zennitbankplcnigerian@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: moneygram.1820@outlook.fr
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HQS54BCHMMMKHYYJU6CONVMRLEIV7PLO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7REYQ7J6OEH37XASD4XH2WYRLRXPAESB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -73,58 +67,24 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-nvdimm core use nd_pfn_validate when looking for devdax or fsdax namespace. In this
-case device resources are allocated against nd_namespace_io dev. In-order to
-allow remap of range in nd_pfn_clear_memmap_error(), move the device memmap
-area clearing while initializing pfn namespace. With this device
-resource are allocated against nd_pfn and we can use nd_pfn->dev for remapping.
-
-This also avoids calling nd_pfn_clear_mmap_errors twice. Once while probing the
-namespace and second while initializing a pfn namespace.
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
-Changes from v4:
-* Make code changes suggested by Dan
-
- drivers/nvdimm/pfn_devs.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 60d81fae06ee..96727fd493f7 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -591,7 +591,7 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 		return -ENXIO;
- 	}
- 
--	return nd_pfn_clear_memmap_errors(nd_pfn);
-+	return 0;
- }
- EXPORT_SYMBOL(nd_pfn_validate);
- 
-@@ -729,6 +729,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 		sig = PFN_SIG;
- 
- 	rc = nd_pfn_validate(nd_pfn, sig);
-+	if (rc == 0)
-+		return nd_pfn_clear_memmap_errors(nd_pfn);
- 	if (rc != -ENODEV)
- 		return rc;
- 
-@@ -796,6 +798,10 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 	checksum = nd_sb_checksum((struct nd_gen_sb *) pfn_sb);
- 	pfn_sb->checksum = cpu_to_le64(checksum);
- 
-+	rc = nd_pfn_clear_memmap_errors(nd_pfn);
-+	if (rc)
-+		return rc;
-+
- 	return nvdimm_write_bytes(ndns, SZ_4K, pfn_sb, sizeof(*pfn_sb), 0);
- }
- 
--- 
-2.23.0
+Attn Dear,Funds Beneficiary.
+Contact Money Gram international service-Benin to receive your payment
+funds US$2.500,000 Million approved this morning through the UN
+payment settlement organization.
+Contact Person, Mr. John Dave.
+Official Director.Money Gram-Benin
+Email: moneygram.1820@outlook.fr
+Telephone +229 62619517
+Once you get intouch with Mr. John Dave, Money Gram Director, send to
+him your address including your phone numbers. He will be sending the
+transfer to you  $5000.00 USD daily until you received your complete
+payment $2.5m from the office.
+Note,I have paid the whole service fees for you but only small money
+you been required to send to this office is $23.00 only via Money Gram
+transfer.
+God bless
+Mary Coster, I.M.F director-Benin
+m.coster@aol.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
