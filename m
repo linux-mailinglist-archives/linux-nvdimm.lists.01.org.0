@@ -2,63 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64808EC617
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Nov 2019 16:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6AEEC8AA
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 Nov 2019 19:52:40 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 936EE100DC415;
-	Fri,  1 Nov 2019 08:56:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com; envelope-from=info.zennitbankplcnigerian@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C15DB100DC415;
+	Fri,  1 Nov 2019 11:52:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BC2B5100DC414
-	for <linux-nvdimm@lists.01.org>; Fri,  1 Nov 2019 08:56:29 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id t9so6805696ils.4
-        for <linux-nvdimm@lists.01.org>; Fri, 01 Nov 2019 08:56:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=jkikiuxKNQxBjumG32R/xAOzBpTQzIQOGlQ9PlZMzROUxuROhIRW7LOTcmmKqgHbY3
-         GOAi1JnMWEnE/cHrGKrepuphWKFno/pbedjX9XbUWfuIb71+aWSjlL5ZBdl2tkqhPPKE
-         upGJ5iT/1C19qe7FISRldhXG8lpP7RchXgCPpOby1LewLJ9oB1SrBH33yMLjEi7ivjNF
-         o703S5ww1Ql1WeM1aVK41ldtWwBkirNy1eGYI9RnsPVvXaYfqhEH77U0dn8RQUxe2Nnp
-         f+7QOSjXXt7VdhDDkepSvRzDGCUBO3iHq8K6k3uKK4gkq+wr+4nHyD89dMwGRy4pl6Pa
-         lYoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KqYLJklOErTzrVm5Bzbb6HQh9gI4PrbbORQE30GcC5Y=;
-        b=t0wy8fF7CAQGCcygI6iSnn53prtiU80+qm9FyRJFzt/ptMMJKA7QXwMPeKvrg9loeg
-         ayy5ZL/sPsU6jWLEQ/kf7ShDmr30p+QPxEe9m+hlMhY0Uul3CEvs+YLdP/hMmjSdgTNO
-         2uA4To+lWmcrv7r6ET79YGm0B2TLJF47fJG89o6Gey46ME8qVM3Sbc7ZK60dfQanZlaF
-         Hj5w4kESamXsPsZtjutX6bBOmh//DcXmC5Vb7xms2JrWqL3Y6JCe3thOsk9wjesE7kZb
-         V0nJ+mT0a6JWzsbFyKzE3Zr+HOTi/c7Q+TYWfM9mUuuzB3qw1RJEzVwEiupXZDcLFyma
-         2poA==
-X-Gm-Message-State: APjAAAWNN10FDHeMyHjC1OBCPOcSDM3Qgf6iSlUJ9UEAzOiXxOYm7P4Y
-	74WkEGIPH2gAm8SRgUKMECd1p9nT/5+RK01cvnUdoDQ=
-X-Google-Smtp-Source: APXvYqykJV+0/JwFtVH+nsMp7ykNvWlhcV0rRy9Az9oSoBx/tmbFcQXrrs+n9sPNEOpMU4VQknLk5nY+7hLQNduMfzM=
-X-Received: by 2002:a92:9ac2:: with SMTP id c63mr13404416ill.8.1572623769676;
- Fri, 01 Nov 2019 08:56:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id BBA76100DC414
+	for <linux-nvdimm@lists.01.org>; Fri,  1 Nov 2019 11:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1572634354;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7vllCCVrOpmYyfvb9Xg8yUmypgDAYnIAfaIkWG13YkI=;
+	b=BLlFl4qx6Ixre0EKnfeNJIBu7wsJSZKr2kIFaIsoec54sa4jerr8MEs5BYYLQmz5CnJxK4
+	6+56IIMdGIDyKrpT0QsywLeCeZc/h/Ebrs3xpVIjRtSBCtZyOjqIqkT5xq/lpAibo0OrG7
+	MZewOSTBMMVy+cIWFkIGYX0o5j20dK8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-133-5oo6zwAIOUexO0zYswBGLw-1; Fri, 01 Nov 2019 14:52:31 -0400
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D04681005500;
+	Fri,  1 Nov 2019 18:52:29 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 9E9F4600D1;
+	Fri,  1 Nov 2019 18:52:28 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Masahiro Yamada <yamada.masahiro@socionext.com>
+Subject: Re: [PATCH 4/4] modpost: do not set ->preloaded for symbols from Module.symvers
+References: <20191003102915.28301-1-yamada.masahiro@socionext.com>
+	<20191003102915.28301-4-yamada.masahiro@socionext.com>
+	<x497e4kluxq.fsf@segfault.boston.devel.redhat.com>
+	<CAK7LNASmpO6Dn2M1DtoCDs=RM+jwW7_tRhq7nqDU1YZWdRafuw@mail.gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Fri, 01 Nov 2019 14:52:27 -0400
+In-Reply-To: <CAK7LNASmpO6Dn2M1DtoCDs=RM+jwW7_tRhq7nqDU1YZWdRafuw@mail.gmail.com>
+	(Masahiro Yamada's message of "Fri, 1 Nov 2019 10:13:10 +0900")
+Message-ID: <x494kznctuc.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 1 Nov 2019 08:56:08 -0700 (PDT)
-From: "Mary Coster, I.M.F director-Benin" <info.zennitbankplcnigerian@gmail.com>
-Date: Fri, 1 Nov 2019 16:56:08 +0100
-Message-ID: <CABHzvrmbRd3tt-E2+9AO2XvrMQFKQcn+kao_7DN4rb=grxZAcA@mail.gmail.com>
-Subject: Contact Money Gram international service-Benin to receive your
- payment funds US$2.500,000 Million
-To: undisclosed-recipients:;
-Message-ID-Hash: 7REYQ7J6OEH37XASD4XH2WYRLRXPAESB
-X-Message-ID-Hash: 7REYQ7J6OEH37XASD4XH2WYRLRXPAESB
-X-MailFrom: info.zennitbankplcnigerian@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: 5oo6zwAIOUexO0zYswBGLw-1
+X-Mimecast-Spam-Score: 0
+Message-ID-Hash: 2WQXEBXQHLBRAK6SRJAHKSGPSNM4A5OU
+X-Message-ID-Hash: 2WQXEBXQHLBRAK6SRJAHKSGPSNM4A5OU
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Sam Ravnborg <sam@ravnborg.org>, Michal Marek <michal.lkml@markovi.net>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: moneygram.1820@outlook.fr
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7REYQ7J6OEH37XASD4XH2WYRLRXPAESB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2WQXEBXQHLBRAK6SRJAHKSGPSNM4A5OU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,24 +69,52 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Attn Dear,Funds Beneficiary.
-Contact Money Gram international service-Benin to receive your payment
-funds US$2.500,000 Million approved this morning through the UN
-payment settlement organization.
-Contact Person, Mr. John Dave.
-Official Director.Money Gram-Benin
-Email: moneygram.1820@outlook.fr
-Telephone +229 62619517
-Once you get intouch with Mr. John Dave, Money Gram Director, send to
-him your address including your phone numbers. He will be sending the
-transfer to you  $5000.00 USD daily until you received your complete
-payment $2.5m from the office.
-Note,I have paid the whole service fees for you but only small money
-you been required to send to this office is $23.00 only via Money Gram
-transfer.
-God bless
-Mary Coster, I.M.F director-Benin
-m.coster@aol.com
+Masahiro Yamada <yamada.masahiro@socionext.com> writes:
+
+> On Fri, Nov 1, 2019 at 1:51 AM Jeff Moyer <jmoyer@redhat.com> wrote:
+>>
+>> Masahiro Yamada <yamada.masahiro@socionext.com> writes:
+>>
+>> > Now that there is no overwrap between symbols from ELF files and
+>> > ones from Module.symvers.
+>> >
+>> > So, the 'exported twice' warning should be reported irrespective
+>> > of where the symbol in question came from. Only the exceptional case
+>> > is when __crc_<sym> symbol appears before __ksymtab_<sym>. This
+>> > typically occurs for EXPORT_SYMBOL in .S files.
+>>
+>> Hi, Masahiro,
+>>
+>> After apply this patch, I get the following modpost warnings when doing:
+>>
+>> $ make M=tools/tesing/nvdimm
+>> ...
+>>   Building modules, stage 2.
+>>   MODPOST 12 modules
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_lock' exported
+>> twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_unlock'
+>> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'is_nvdimm_bus_locked'
+>> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'devm_nvdimm_memremap'
+>> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'nd_fletcher64' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'to_nd_desc' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> WARNING: tools/testing/nvdimm/libnvdimm: 'to_nvdimm_bus_dev'
+>> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
+>> ...
+>>
+>> There are a lot of these warnings.  :)
+>
+> These warnings are correct since
+> drivers/nvdimm/Makefile and
+> tools/testing/nvdimm/Kbuild
+> compile the same files.
+
+Yeah, but that's by design.  Is there a way to silence these warnings?
+
+-Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
