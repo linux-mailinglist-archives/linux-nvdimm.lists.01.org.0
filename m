@@ -1,68 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8888AEE7A0
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Nov 2019 19:47:49 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F10EE7A2
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Nov 2019 19:48:11 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 908F8100EA536;
-	Mon,  4 Nov 2019 10:50:35 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id A93B2100EA53E;
+	Mon,  4 Nov 2019 10:50:58 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 78218100EEBAC
-	for <linux-nvdimm@lists.01.org>; Mon,  4 Nov 2019 10:50:33 -0800 (PST)
-Received: by mail-ot1-x341.google.com with SMTP id d5so3277439otp.4
-        for <linux-nvdimm@lists.01.org>; Mon, 04 Nov 2019 10:47:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MAScZrMfcRjQQzWjos/ItVtsj2/Z80jqafi9Q8Gdat4=;
-        b=jMQA21nktp7RKopIBS9wqFi6i1U/MgPY5om64JS4h+GGqMA1oI7IlIGbqbfdfrqdIA
-         saCXi155JGBspLMG3er88AVUNsSmcsmIrx3Rav1KuF7BAVQDk1/UtICpwtaJeNyn9lpN
-         zv7tUe2iDUpaiQ/lqfsdmsnlFBr2CFbMzBl+xVYpZUv4idw/1LM1jFM8OFJEqOKzAJHY
-         LQ0Td6Y4IYI6qCqDnpk/+1znuoijhf3k3Umd2uq7wjPCm6RcGCgZXjVOYnmE7u/3h7WO
-         bI1st2WpH0q9W/DyZwwx/RNqbWoMWwui8IsU8NhzYfZxOmVl9QynvfalKGl80BKpI4Vj
-         x6yQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MAScZrMfcRjQQzWjos/ItVtsj2/Z80jqafi9Q8Gdat4=;
-        b=PJgXYKJdlA07ZcfsUH2E3V+iL13e2kAX+IiBxms6JcswGjEYvrXssKbktoYyrnMHT6
-         P3ayRIWsJedVrMsme775uHmWRRpeuq+Vb4G2l/jLt1DGOcx9L904erfadB7LN7XRpAmz
-         so+Rbgi6PQ5QQNSl5AVTlr2slI2okafvGmLAeKz5bj+2oOpqpkAbuWSliBNxMa9lGMir
-         XnoUhXtwGdKQTYi6BGXwp0cq1AJChOhxanXiu6el6Wwr79r9qgWlt37SGuE7ZjpfQBNK
-         xXyYnJZ+oW0mKWSI6wq+TLOBMmEM5PhWCebLy2TJKL3+piNPRhyrrJrwbfwn9JYkBl8A
-         jYMQ==
-X-Gm-Message-State: APjAAAVw7eXEy43qSmyKhBlBLDs5NnnOeys2ypW+tbQ18t3e9BD9D8HC
-	6/CytAhgHMENJGnAAxTWA0XZVmaTUMAYFwSRrk7lLlIRHKg=
-X-Google-Smtp-Source: APXvYqxMRWfUR8/8l4v/V1zDDPZJXYUW0sZlQfmt7b99qT10zFVdxsT5JqBY5W/7oDGnO9lc4SylLnvGzYiFdEHrW8M=
-X-Received: by 2002:a05:6830:1e5a:: with SMTP id e26mr3118340otj.71.1572893263132;
- Mon, 04 Nov 2019 10:47:43 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id AFD8C100EA536
+	for <linux-nvdimm@lists.01.org>; Mon,  4 Nov 2019 10:50:57 -0800 (PST)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Nov 2019 10:48:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,267,1569308400";
+   d="scan'208";a="205254517"
+Received: from fmsmsx104.amr.corp.intel.com ([10.18.124.202])
+  by orsmga006.jf.intel.com with ESMTP; 04 Nov 2019 10:48:08 -0800
+Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
+ fmsmsx104.amr.corp.intel.com (10.18.124.202) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 4 Nov 2019 10:48:07 -0800
+Received: from fmsmsx114.amr.corp.intel.com ([169.254.6.30]) by
+ fmsmsx115.amr.corp.intel.com ([169.254.4.204]) with mapi id 14.03.0439.000;
+ Mon, 4 Nov 2019 10:48:07 -0800
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: Re: [ndctl PATCH 2/2] ndctl/namespace: introduce
+ ndctl_namespace_is_configurable()
+Thread-Topic: [ndctl PATCH 2/2] ndctl/namespace: introduce
+ ndctl_namespace_is_configurable()
+Thread-Index: AQHVkPLFw8SdTlCdHE6Rdq8zm5J/NKd7v+sAgAAlFQA=
+Date: Mon, 4 Nov 2019 18:48:06 +0000
+Message-ID: <4e09051006f7714344c1d230061de0cfcb5377a9.camel@intel.com>
+References: <20191101202713.5111-1-vishal.l.verma@intel.com>
+	 <20191101202713.5111-2-vishal.l.verma@intel.com>
+	 <CAPcyv4jWXXUgjd-_hsP+sUjBRfwQZQQOSUHUqSrdEYzfz3oS-g@mail.gmail.com>
+In-Reply-To: <CAPcyv4jWXXUgjd-_hsP+sUjBRfwQZQQOSUHUqSrdEYzfz3oS-g@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+x-originating-ip: [10.232.112.164]
+Content-ID: <EC15411052738547878BC5181DFC2C5A@intel.com>
 MIME-Version: 1.0
-References: <20191003102915.28301-1-yamada.masahiro@socionext.com>
- <20191003102915.28301-4-yamada.masahiro@socionext.com> <x497e4kluxq.fsf@segfault.boston.devel.redhat.com>
- <CAK7LNASmpO6Dn2M1DtoCDs=RM+jwW7_tRhq7nqDU1YZWdRafuw@mail.gmail.com>
- <x494kznctuc.fsf@segfault.boston.devel.redhat.com> <CAK7LNAQnaBCkRCsRPjK9m6wLaDvTsgkiFgMEiObnfuncxOHZOg@mail.gmail.com>
- <CAPcyv4gFO=4EmObucuYyPNCS91y1H7d-M=0LebBK72YuD=ekNQ@mail.gmail.com>
-In-Reply-To: <CAPcyv4gFO=4EmObucuYyPNCS91y1H7d-M=0LebBK72YuD=ekNQ@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 4 Nov 2019 10:47:30 -0800
-Message-ID: <CAPcyv4iWifdYsrrcs0TQ0Fd0Eoa5uXwe3CP-VzGCWAL6yKT3WA@mail.gmail.com>
-Subject: Re: [PATCH 4/4] modpost: do not set ->preloaded for symbols from Module.symvers
-To: Masahiro Yamada <yamada.masahiro@socionext.com>
-Message-ID-Hash: 6FX2UQFKPXGVF6BRS5Y642H3IX2ZDYPA
-X-Message-ID-Hash: 6FX2UQFKPXGVF6BRS5Y642H3IX2ZDYPA
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: 4BKOA2MP7GA726EM43Q75WRJR5JW43XH
+X-Message-ID-Hash: 4BKOA2MP7GA726EM43Q75WRJR5JW43XH
+X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, Sam Ravnborg <sam@ravnborg.org>, Michal Marek <michal.lkml@markovi.net>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6FX2UQFKPXGVF6BRS5Y642H3IX2ZDYPA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4BKOA2MP7GA726EM43Q75WRJR5JW43XH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,77 +66,45 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sun, Nov 3, 2019 at 10:43 PM Dan Williams <dan.j.williams@intel.com> wrote:
->
-> On Sun, Nov 3, 2019 at 7:12 PM Masahiro Yamada
-> <yamada.masahiro@socionext.com> wrote:
-> >
-> > On Sat, Nov 2, 2019 at 3:52 AM Jeff Moyer <jmoyer@redhat.com> wrote:
-> > >
-> > > Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-> > >
-> > > > On Fri, Nov 1, 2019 at 1:51 AM Jeff Moyer <jmoyer@redhat.com> wrote:
-> > > >>
-> > > >> Masahiro Yamada <yamada.masahiro@socionext.com> writes:
-> > > >>
-> > > >> > Now that there is no overwrap between symbols from ELF files and
-> > > >> > ones from Module.symvers.
-> > > >> >
-> > > >> > So, the 'exported twice' warning should be reported irrespective
-> > > >> > of where the symbol in question came from. Only the exceptional case
-> > > >> > is when __crc_<sym> symbol appears before __ksymtab_<sym>. This
-> > > >> > typically occurs for EXPORT_SYMBOL in .S files.
-> > > >>
-> > > >> Hi, Masahiro,
-> > > >>
-> > > >> After apply this patch, I get the following modpost warnings when doing:
-> > > >>
-> > > >> $ make M=tools/tesing/nvdimm
-> > > >> ...
-> > > >>   Building modules, stage 2.
-> > > >>   MODPOST 12 modules
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_lock' exported
-> > > >> twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'nvdimm_bus_unlock'
-> > > >> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'is_nvdimm_bus_locked'
-> > > >> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'devm_nvdimm_memremap'
-> > > >> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'nd_fletcher64' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'to_nd_desc' exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> WARNING: tools/testing/nvdimm/libnvdimm: 'to_nvdimm_bus_dev'
-> > > >> exported twice. Previous export was in drivers/nvdimm/libnvdimm.ko
-> > > >> ...
-> > > >>
-> > > >> There are a lot of these warnings.  :)
-> > > >
-> > > > These warnings are correct since
-> > > > drivers/nvdimm/Makefile and
-> > > > tools/testing/nvdimm/Kbuild
-> > > > compile the same files.
-> > >
-> > > Yeah, but that's by design.  Is there a way to silence these warnings?
-> > >
-> > > -Jeff
-> > >
-> >
-> > "rm -f Module.symvers; make M=tools/testing/nvdimm" ?
-> >
-> > I'd like the _design_ fixed though.
->
-> This design is deliberate. The goal is to re-build the typical nvdimm
-> modules, but link them against mocked version of core kernel symbols.
-> This enables the nvdimm unit tests which have been there for years and
-> pre-date Kunit. That said, deleting Module.symvers seems a simple
-> enough workaround.
+On Mon, 2019-11-04 at 08:35 -0800, Dan Williams wrote:
+> On Fri, Nov 1, 2019 at 1:27 PM Vishal Verma <vishal.l.verma@intel.com> wrote:
+> > The motivation for this change is that we want to refrain from
+> > (re)configuring what appear to be partially configured namespaces.
+> > Namespaces may end up in a state that looks partially configured when
+> > the kernel isn't able to enable a namespace due to mismatched
+> > PAGE_SIZE expectations. In such cases, ndctl should not treat those
+> > as unconfigured 'seed' namespaces, and reuse them.
+> > 
+> > Add a new ndctl_namespace_is_configurable API, whish tests whether a
+> > namespaces is active, and whether it is partially configured. If neither
+> > are true, then it can be used for (re)configuration. Additionally, deal
+> > with the corner case of ND_DEVICE_NAMESPACE_IO (legacy PMEM) namespaces
+> > by testing whether the size attribute is read-only (which indicates such
+> > a namespace). Legacy namespaces always appear as configured, since their
+> > size cannot be changed, but they are also always re-configurable.
+> > 
+> > Use this API in namespace_reconfig() and namespace_create() to enable
+> > this partial configuration detection.
+> 
+> A couple comments.... I think it's probably sufficient to just check
+> for ND_DEVICE_NAMESPACE_IO as I don't anticipate we'll ever have more
+> than one namespace type with a read-only size attribute.
 
-This workaround triggers:
+Yep I did notice I could do that, but I decided to go to the source of
+it instead of adding another ND_DEVICE_NAMESPACE_IO assumption. Also I
+had already written sysfs_attr_writable() before I noticed that :)
+But there are already assumptions around ND_DEVICE_NAMESPACE_IO, so
+adding another one here is fine.
 
-  WARNING: Symbol version dump ./Module.symvers
-           is missing; modules will have no dependencies and modversions.
+> Also, how about s/ndctl_namespace_is_configurable/ndctl_namespace_is_configuration_idle/?
+> Because to me all namespaces are always "configurable", but some may
+> have active non-default properties set.
 
-Which is a regression from the previous working state.
+Sounds reasonable, but how about ndctl_namespace_has_partial_config(),
+which I think describes the situation better, and makes it
+straightforward for a potential future --really-force (or -ff) option
+where we might still want to blow away anything on this namespace and
+reclaim it.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
