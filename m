@@ -2,125 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04979ED42E
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  3 Nov 2019 19:28:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC667ED7E7
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 Nov 2019 03:58:38 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BAF5E100EA63A;
-	Sun,  3 Nov 2019 10:31:52 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=203.133.181.12; helo=mail-smail-vm54.hanmail.net; envelope-from=manami1234@daum.net; receiver=<UNKNOWN> 
-Received: from mail-smail-vm54.hanmail.net (mail-smail-vm54.daum.net [203.133.181.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6B9EC100EA520;
+	Sun,  3 Nov 2019 19:01:30 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=62.76.44.215; helo=zapasi.com.ua; envelope-from=info@zapasi.com.ua; receiver=<UNKNOWN> 
+Received: from zapasi.com.ua (zapasi.com.ua [62.76.44.215])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F0F46100EA637
-	for <linux-nvdimm@lists.01.org>; Sun,  3 Nov 2019 10:31:50 -0800 (PST)
-Received: from mail-hmail-was1 ([10.197.6.172])
-        by mail-smail-vm54.hanmail.net (8.13.8/8.9.1) with SMTP id xA3ISNUq004738
-        for <linux-nvdimm@lists.01.org>; Mon, 4 Nov 2019 03:28:23 +0900
-X-Hermes-Message-Id: nA43PpUr7147900201
-Date: Mon, 4 Nov 2019 03:25:50 +0900 (KST)
-From: ACCOUNTING OFFICER <manami1234@daum.net>
-To: info.20187777777@gmail.com
-Message-ID: <20191104032550.rsjc5fSBSA67LUjz9JO7OA@manami1234.hanmail.net>
-Subject: FROM THE ATTORNEY GENERAL FEDERAL REPUBLIC OF NIGERIA.
- E-mail:info.20187777777@gmail.com
+	by ml01.01.org (Postfix) with ESMTPS id 05772100EA63E
+	for <linux-nvdimm@lists.01.org>; Sun,  3 Nov 2019 19:01:27 -0800 (PST)
+Message-ID: <2a8cc569c40d27371b1ea804dbdff5a5da238b@zapasi.com.ua>
+From: Tatiana <info@zapasi.com.ua>
+To: linux-nvdimm@lists.01.org
+Subject: =?windows-1251?B?xOXq6+Dw6PDu4uDt6OUg8u7i4PDu4g==?=
+Date: Mon, 4 Nov 2019 04:58:26 +0200
 MIME-Version: 1.0
-X-Mailer: Daum Mint Web 1.0
-X-Originating-IP: [197.210.44.21]
-X-HM-UT: F2wJHMKgMswEvVPGmBsJa+OyvwRqoW6DrgWMVLVAkXo=
-Received: from mail-hammer-was6.s2.krane.9rum.cc ([10.197.10.39]) by hermes of mail-hmail-was4 (10.197.10.46) with ESMTP id nA43PpUr7147900201 for <linux-nvdimm@lists.01.org>; Mon, 04 Nov 2019 03:25:51 +0900 (KST)
-Message-ID-Hash: DAUOYBZCMU56VOOG255ZK5CLIM3RU7T7
-X-Message-ID-Hash: DAUOYBZCMU56VOOG255ZK5CLIM3RU7T7
-X-MailFrom: manami1234@daum.net
+DKIM-Signature: v=1; a=rsa-sha256; d=zapasi.com.ua; s=mail;
+	c=relaxed/relaxed; t=1572836306;
+	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+	bh=4mIDyKfkHgZJ0CUdu+GHpcXbrRdPSUQAHBSIW4V7PT4=;
+	b=PpCRnwx4/L5FPiFxICq+q4HuNVqHnrzy06lTMppceRmQAS/itqG1pz8+lEFqOk
+	GIjuDBEzMsXVtzaDKtdv54pS66sEcwraQ+Ja/s5bIsmyI9hoYtC6f06xw9gBKTP9
+	OO5U+9f2sKfE9ZkeYXTaTxt6cCuTq27cOdEWmcg7PSmYA=
+Message-ID-Hash: SMVKT7TFGUGUDJJPNHKU3X2A6L6GAPM4
+X-Message-ID-Hash: SMVKT7TFGUGUDJJPNHKU3X2A6L6GAPM4
+X-MailFrom: info@zapasi.com.ua
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Tatiana <info@zapasi.com.ua>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DAUOYBZCMU56VOOG255ZK5CLIM3RU7T7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMVKT7TFGUGUDJJPNHKU3X2A6L6GAPM4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2268228004077541691=="
-
---===============2268228004077541691==
-Content-Type: text/html; charset=utf-8
 Content-Transfer-Encoding: base64
 
-PGh0bWw+CjxoZWFkPgogICAgPHN0eWxlPgogICAgICAgIHB7bWFyZ2luLXRvcDowO21hcmdpbi1i
-b3R0b206MH0KICAgIDwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CiAgICA8dGFibGUgY2xhc3M9InR4
-Yy13cmFwcGVyIiBib3JkZXI9IjAiIGNlbGxzcGFjaW5nPSIwIiBjZWxscGFkZGluZz0iMCIgd2lk
-dGg9IjEwMCUiPjx0cj48dGQgY2xhc3M9InR4Yy13cmFwcGVyLXRkIj48ZGl2IGNsYXNzPSJ0eGMt
-Y29udGVudC13cmFwcGVyIiBzdHlsZT0iY29sb3I6IzExMTtmb250LWZhbWlseTpBcHBsZSBTRCBH
-b3RoaWMgTmVvLE1hbGd1biBHb3RoaWMsJ+unkeydgCDqs6DrlJUnLHNhbnMtc2VyaWY7Zm9udC1z
-aXplOjEwcHQ7bGluZS1oZWlnaHQ6MS41OyI+PHA+PGI+RlJPTSBUSEUgQVRUT1JORVkgR0VORVJB
-TCBGRURFUkFMIFJFUFVCTElDIE9GIE5JR0VSSUEuIDxiPkUtbWFpbDo8L2I+aW5mby4yMDE4Nzc3
-Nzc3N0BnbWFpbC5jb208YnI+PGJyPlN1cHJlbWUgQ291cnQgb2YgTmlnZXJpYTxicj5BZGRyZXNz
-OiBGZWRlcmFsIE1pbmlzdHJ5IG9mIEp1c3RpY2UgSFE8YnI+UGxvdCA3MUIgU2hlaHUgU2hhZ2Fy
-aSBXYXksTWFpdGFtYSBBYnVqYSw8YnI+RS1tYWlsOiBhYnViYWthcm1hbmFtaUByZWRpZmZtYWls
-LmNvbTxicj5pbmZvLjIwMTg3Nzc3Nzc3QGdtYWlsLmNvbTxicj5EZWFyOiBVbnBhaWQgQmVuZWZp
-Y2lhcnksPGJyPjxicj5UaGlzCiBpcyB0byBpbmZvcm0geW91IHRoYXQgaW4gdGhlIGNvdXJzZSBv
-ZiBteSBpbnZlc3RpZ2F0aW9uIGFzIGRpcmVjdG9yIG9mIApwYXltZW50IHZlcmlmaWNhdGlvbiAv
-IGltcGxlbWVudGF0aW9uIGNvbW1pdHRlZSBJIGNhbWUgYWNyb3NzJm5ic3A7IHlvdXIgbmFtZQog
-YXMgdW5wYWlkIGZ1bmQgYmVuZWZpY2lhcnkgaW4gdGhlIHJlY29yZCBvZiB0aGUgY2VudHJhbCBi
-YW5rIG9mIE5pZ2VyaWEKIGFuZCBvdGhlciBiYW5rcyB0aGF0IGFyZSBzdXBwb3NlIHRvIGdldCB5
-b3VyIGZ1bmRzJm5ic3A7IHJlbGVhc2VkIHRvIHlvdS4gTXkKIGNvbW1pdHRlZSB3YXMgc2V0IHVw
-IGJ5IHRoZSBwYXltZW50IHJlY29uY2lsaWF0aW9uIGNvbW1pdHRlZSB0byB2ZXJpZnkgCmFuZCBz
-Y3J1dGluaXplIGFsbCZuYnNwOyZuYnNwOyZuYnNwOyBvdXRzdGFuZGluZyBkZWJ0cyBvd2VkIHRv
-Jm5ic3A7Jm5ic3A7IG91ciBmb3JlaWduIApiZW5lZmljaWFyaWVzIGluIGFjY29yZGFuY2UgdG8g
-dGhlIGluZm9ybWF0aW9uIHJlY2VpdmVkIGZyb20gdGhlIFVuaXRlZCAKU3RhdGVzIGdvdmVybm1l
-bnQgYW5kIG90aGVyIGNvdW50cmllcyBvdmVyIHVucGFpZCAmbmJzcDs8YnI+aHVnZSBkZWJ0cyBv
-d2VkIHRvIEZvcmVpZ25lcnMuPGJyPjxicj5IYXZpbmcKIHNlZW4geW91ciBmaWxlIGFuZCBteSBm
-dXJ0aGVyIHF1ZXN0aW9uaW5nIHRvIHRoZSBvZmZpY2lhbHMgb2YgdGhlIApjZW50cmFsIG9mIE5p
-Z2VyaWEgYmFuayBhbmQgbWluaXN0cnkgb2YgZmluYW5jZSBhcyB0byB3aHkgeW91ciZuYnNwOyZu
-YnNwOyBwYXltZW50CiBpcyBzdGlsbCBwZW5kaW5nIHJldmVhbHMgdGhlIHJvdCBhbmQgY29ycnVw
-dGlvbiBpbiB0aGUmbmJzcDsmbmJzcDsgc3lzdGVtLiBUaGUgCmJhbmsgb2ZmaWNpYWxzIHRvbGQg
-bWUgdGhhdCB0aGUgcmVhc29uIHdoeSB5b3UgaGF2ZW4ndCZuYnNwOyZuYnNwOyByZWNlaXZlZCB5
-b3VyIApwYXltZW50IGlzIGR1ZSB0byB5b3VyIGluYWJpbGl0eSB0byBwYXkgZm9yIHRoZSByZXF1
-aXJlZCBjaGFyZ2VzIGZvciAKdHJhbnNmZXIgb2YgZnVuZHMgdG8geW91ciBhY2NvdW50LiBXaGVu
-IEkgYXNrZWQgdGhlbSZuYnNwOyZuYnNwOyB3aHkgdGhleSBkaWRuJ3QgCmRlZHVjdCB0aGUgc2Fp
-ZCBjaGFyZ2VzIGZyb20geW91ciBwcmluY2lwYWwgc3VtLCBJIHdhcyBnaXZlbiB0aGUgZmxpbXN5
-IApleGN1c2UgdGhhdCB5b3UgbmV2ZXIgYXV0aG9yaXplZCB0aGVtIHRvIGRvIHNvLiZuYnNwOyZu
-YnNwOyBXaGVuIEkgcHV0IHRoZSAKcXVlc3Rpb24gYWNyb3NzIHRvIHRoZW0gaWYgdGhleSBldmVy
-IGFkdmlzZWQgeW91IHRoYXQgc3VjaCBjaGFyZ2VzIGNvdWxkCiBiZSBkZWR1Y3RlZCBmcm9tIHlv
-dXIgcHJpbmNpcGFsIGZ1bmQsdGhlIGFuc3dlciBJJm5ic3A7IGdvdCB3YXMgbm8uIE5vdywgaWYg
-CnlvdSBkbyBub3QgdGVsbCB0aGlzIGJlbmVmaWNpYXJ5IHRoYXQmbmJzcDsmbmJzcDsmbmJzcDsg
-c3VjaCBjaGFyZ2VzIGNvdWxkIGJlIGRlZHVjdGVkIApmcm9tIGhpcyBvciBoZXIgcHJpbmNpcGFs
-IGZ1bmQsIGhvdyB3aWxsIGhlIG9yJm5ic3A7Jm5ic3A7IHNoZSBrbm93IHRoYXQgc3VjaCAKb3B0
-aW9ucyBhcmUgYXZhaWxhYmxlIGZvciBzdWNoIGJlbmVmaWNpYXJpZXMuIEZyb20gbXkgaW52ZXN0
-aWdhdGlvbiBJIApkaXNjb3ZlcmVkIHRoYXQgdGhlc2UgYmFuayZuYnNwOyZuYnNwOyZuYnNwOyBv
-ZmZpY2lhbHMmbmJzcDsgZGVsaWJlcmF0ZWx5IHJlZnVzZWQgdG8gbGV0IHRoZQogY2hhcmdlcyBi
-ZSBkZWR1Y3RlZCBmcm9tIHlvdXIgcHJpbmNpcGFsIGZ1bmQmbmJzcDsgYmVjYXVzZSB0aGV5IHdh
-bnQgeW91ciAKZnVuZCB0byByZW1haW4gdHJhcHBlZCBpbiB0aGUgYmFuaywgPGJyPjxicj53aGls
-ZSB0aGV5IGNvbnRpbnVlIHRvIApleHRvcnQgbW9uZXkgZnJvbSBiZW5lZmljaWFyaWVzIHVuZGVy
-IHNvbWUgZmxpbXN5Jm5ic3A7IGV4Y3VzZS4gWW91IGRvIG5vdCAKbmVlZCB0byBwYXkgYW55IG1v
-bmV5IHRvIGFueSBvZmZpY2lhbCwgYWxsJm5ic3A7IHlvdSBhcmUgcmVxdWlyZWQgdG8gZG8gaXMg
-CnN3ZWFyIHRvIGFuIGFmZmlkYXZpdCBhdCB0aGUgZmVkZXJhbCZuYnNwOyZuYnNwOyBoaWdoIGNv
-dXJ0Jm5ic3A7IG9mIE5pZ2VyaWEsIAphdXRob3JpemluZyB0aGUgYmFuayB0byBkZWR1Y3QgYWxs
-IGNoYXJnZXMgZnJvbSZuYnNwOyB5b3VyIHByaW5jaXBhbCBmdW5kIGFuZAogdHJhbnNmZXIgdGhl
-IGJhbGFuY2Ugb2YgZnVuZHMgYWZ0ZXIgZGVkdWN0aW9uIHRvIHlvdXImbmJzcDsgYmFuayBhY2Nv
-dW50LiBJZgogeW91IGhhdmUgc3BlbnQgYW55IG1vbmV5IGluJm5ic3A7Jm5ic3A7IHRoZSBwYXN0
-IGluIHlvdXIgcXVlc3QgZm9yIHBheW1lbnQsIApraW5kbHkgbGV0IG1lIGtub3cgc28gdGhhdCBJ
-IGNhbiBmb2xsb3cgdGhpcyB1cC4gWW91IGNhbiZuYnNwOyZuYnNwOyByZWFjaCBtZSBvbiAKbXkg
-cGhvbmUgb3IgZW1haWwgZm9yIGRpcmVjdGl2ZSBvbiBob3cgeW91Jm5ic3A7IGNhbiBnZXQgdGhl
-IGRlZHVjdGlvbiBkb25lIAphcyBzb29uIGFzIHBvc3NpYmxlJm5ic3A7IGFuZCBnZXQgeW91ciBw
-YXltZW50IGFsc28uPGJyPjxicj5Zb3VycyBzaW5jZXJlbHksPGJyPjxicj5CYXJyLiBBYnViYWth
-ciBNYWxhbWkgKFNBTik8YnI+RS1tYWlsOiBhYnViYWthcm1hbmFtaUByZWRpZmZtYWlsLmNvbTxi
-cj5BVFRPUk5FWSBHRU5FUkFMIEZFREVSQUw8YnI+UkVQVUJMSUMgT0YgTklHRVJJQS48L2I+PC9w
-Pgo8cD48Yj48YnI+PC9iPjwvcD48L2Rpdj48L3RkPjwvdHI+PC90YWJsZT4KPC9ib2R5Pgo8L2h0
-bWw+CjxpbWcgc3JjPSJodHRwczovL2NvbmZpcm0ubWFpbC5kYXVtLm5ldC9jb25maXJtYXBpL3Yx
-L3VzZXJzL21hbmFtaTEyMzQlNDBoYW5tYWlsJTJFbmV0L2NtYWlscy8yMDE5MTEwNDAzMjU1MCUy
-RXJzamM1ZlNCU0E2N0xVano5Sk83T0ElNDBtYW5hbWkxMjM0JTJFaGFubWFpbCUyRW5ldC9yZWNp
-cGllbnRzL2xpbnV4LW52ZGltbSU0MGxpc3RzJTJFMDElMkVvcmciPg==
---===============2268228004077541691==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============2268228004077541691==--
+0uDs7ubl7e375SDw6PHq6C4gyuDqIOjn4eXm4PL8ICLv8O7h6+XsIO3gIPLg7O7m7eUiDQoNCsTg
+8uAg7/Du4uXk5e3o/zogMTMtMTQg7e7/4fD/Lg0KDQrP7vHl8ujiIOTg7e3z/iDv8O7j8ODs7PMs
+IML7IO/u6/P36PLlIO3l7uH17uTo7PvlIOft4O3o/yDk6/8g/fT05ery6OLt7uPuIOLn4Ojs7uTl
+6fHy4uj/IPEg8uDs7ubl7e3u6SDx6/Pm4e7pINPq8ODo7fsuIM/u5+3g6u7s6PLl8fwg8SDo5+zl
+7eXt6P/s6CDi7iDC3cQg7+7x6+Ug7/Du4uXk5e3o/yDy4Ozu5uXt7e7pIPDl9O7w7PssIPPn7eDl
+8uUg7OXx8u4g8uDs7ubl7e379SDu8OPg7e7iIOIg8ejx8uXs5SDU0dMg6CDv5fDx7+Xq8uji+yDw
+4Ofi6PLo/yDy4Ozu5uXt7e7j7iDk5evgLCDx7uPr4Pjl7ejlIO/w7iDg8fHu9ujg9uj+IOzl5uTz
+INPq8ODo7e7pIOggxdEgLSDv5fDx7+Xq8uji+yDk6/8g4ejn7eXx4CDoIO/w4Ory6Pfl8ero5SDz
+8evu4uj/IO/w6Ozl7eXt6P8g7e7w7CDx7uPr4Pjl7ej/LiDP7uL78ejy5SD99PTl6vLo4u3u8fL8
+IPDg4e7y+yDi4Pjl4+4g7/Dl5O/w6P/y6P8sIO/w6Ozl7ejiIO/u6/P35e3t8/4g6O307vDs4Pbo
+/iDt4CDv8ODq8ujq5S4goA0KDQrO9O7w7Ojy/CDn4P/i6vM+DQoNCs7x7e7i7fvlIOLu7/Du8fs6
+IKANCg0KMS4g0uDs7ubl7e375SDu8OPg7fsg4iDx6PHy5ezlIOPu8fPk4PDx8uLl7e3u6SDU6PHq
+4Ov87e7pIPHr8+bh+yDT6vDg6O37IKANCjIuIM/u8P/k7uog7vTu8Ozr5e3o/yDy7uLg8O7iIOgg
+8/Hr7uLo/yDi++/u6+3l7ej/IPLg7O7m5e3t+/Ug9O7w7ODr/O3u8fLl6SCgDQozLiDC7eX47eX9
+6u7t7uzo9+Xx6uD/IOTl//Ll6/zt7vHy/C4g0uDw6PTt++Ug7OXy7uT7IPDl4/Pr6PDu4uDt6P8g
+wt3EIKANCjQuIMLt5fjt5f3q7u3u7Oj35fHq4P8g5OX/8uXr/O3u8fL8LiDN5fLg8Oj07fvlIOzl
+8u7k+yDw5ePz6+jw7uLg7ej/IMLdxCCgDQo1LiDR7uPr4Pjl7ejlIO/w7iDA8fHu9ujg9uj+IOzl
+5uTzINPq8ODo7e7pIOggxdEuIM3u4vvlIOLu5+zu5u3u8fLoIOTr/yDh6Oft5fHgIKANCjYuINHy
+8ODt4CDv8O7o8fXu5uTl7ej/IPLu4uDw7uIuIM/w4Ory6Pfl8ero5SDz8evu4uj/IO/w6Ozl7eXt
+6P8g7e7w7CDx7uPr4Pjl7ej/IO7hIMDx8e726OD26Ogg7OXm5PMg0+rw4Ojt7ukg6CDF0SCgDQo3
+LiDR6PHy5ezgINLg7O7m5e3t+/Ug0Ojx6u7iICjA0cDT0CkuINLg7O7m5e3t++kgz87R0i3A08TI
+IKANCjguINfy7iDh8+Tl8iDt4CDy4Ozu5u3lIOfg4vLw4C4gyuDqIOH78vwg4+7y7uL77CDqIO3u
+4u7i4uXk5e3o/+wuIM/r/vH7IOgg7Ojt8/H7IKANCg0Kze7i7vHy6A0KDQrX6PLg8vwuLi4NCg0K
+ze7i7vHy6CDy8/Do5+zgDQoNCtfo8uDy/C4uLg0KDQrI7fLl8O3l8g0KDQrX6PLg8vwuLi4NCg0K
+LS0NCtEg8+Lg5uXt6OXsLCCgDQrM4PDj4PDo8uAgwujq8u7w7uLt4A0KZW1haWwt7ODw6uXy7uvu
+4w0KV2ViOiBodHRwOi8vdWFjb250cm9sLmluLnVhLw0KDQrC+yDv7uvz9+jr6CDk4O3t7uUg7+jx
+/OzuLCDy4Oog6uDqIO/u5O/o8eDt+yDt4CDw4PHx++vq8y4gxfHr6CDv6PH87O4g7+7v4OvuIOog
+wuDsIO/uIO746OHq5Swgwvsg7O7m5fLlDQrO8u/o8eDy/PH/IO7yIO/u5O/o8eroLiDo6+gg7+7m
+4Ovu4uDy/PH/IO3gIFNwYW0NCkxpc3QtVW5zdWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciBv
+ciBjb21wbGFpbiBhYm91dCBTcGFtIQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
+LWxlYXZlQGxpc3RzLjAxLm9yZwo=
