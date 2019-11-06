@@ -2,29 +2,43 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A3BF19BC
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  6 Nov 2019 16:18:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD333F1DC9
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  6 Nov 2019 19:50:59 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 35AB9100DC3DE;
-	Wed,  6 Nov 2019 07:20:58 -0800 (PST)
-Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B4859100DC3DC
-	for <linux-nvdimm@lists.01.org>; Wed,  6 Nov 2019 07:20:55 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id A8F02100DC3E7;
+	Wed,  6 Nov 2019 10:53:30 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id DA953100DC3E6
+	for <linux-nvdimm@lists.01.org>; Wed,  6 Nov 2019 10:53:28 -0800 (PST)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 10:50:55 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,275,1569308400";
+   d="scan'208";a="232977899"
+Received: from vverma7-desk1.amr.corp.intel.com (HELO vverma7-desk1.lm.intel.com) ([10.232.112.164])
+  by fmsmga002.fm.intel.com with ESMTP; 06 Nov 2019 10:50:54 -0800
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Cc: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>
+Subject: [ndctl PATCH] ndctl/README: Update kernel documentation URL
+Date: Wed,  6 Nov 2019 11:50:52 -0700
+Message-Id: <20191106185052.11889-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Subject: freelance marketplace
-From: fieldengineer77@gmail.com
-To: linux-nvdimm@lists.01.org
-Date: Wed, 06 Nov 2019 15:20:55 -0000
-Message-ID: <20191106152055.2696.56486@new-ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.syncevolution.org/
-Message-ID-Hash: S7TJ4OS4YF2FWSWXZSOA5T6GPOSF4YLZ
-X-Message-ID-Hash: S7TJ4OS4YF2FWSWXZSOA5T6GPOSF4YLZ
-X-MailFrom: fieldengineer77@gmail.com
+Message-ID-Hash: WCA42BWPPVD6WXW4RR3RDOIQXOUPD45O
+X-Message-ID-Hash: WCA42BWPPVD6WXW4RR3RDOIQXOUPD45O
+X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/S7TJ4OS4YF2FWSWXZSOA5T6GPOSF4YLZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WCA42BWPPVD6WXW4RR3RDOIQXOUPD45O/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -33,11 +47,33 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-FieldEngineer is a global on-demand workforce for the telecom & system support industry. The platform enables businesses to hire engineers beyond their reach on-demand, on-budget. FE is a powerful platform designed to eliminate the hurdles of finding the qualified talent on-demand worldwide. FE is proving to be an indispensable global marketplace.
+Commit ae4a05027e2f ("docs: nvdimm: add it to the driver-api book") in
+the kernel changes the location of the NVDIMM documentation. Use
+this chance to update the documentation link in ndctl to the Sphinx
+rendered HTML documentation hosted on kernel.org.
 
-With the rising demand of engineers into telecom sector for remote & freelance projects, FieldEngineer is paving the path towards technology that enables businesses to connect with the specific engineers. FieldEngineer, an acclaimed freelance marketplace platform is built to minimize the gap between third parties & engineers globally with rapid matching and real-time engineer tracking. 
+Link: https://github.com/pmem/ndctl/issues/120
+Cc: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ README.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-More info : https://www.fieldengineer.com/skills/field-support-engineer
+diff --git a/README.md b/README.md
+index 690d152..d296c6b 100644
+--- a/README.md
++++ b/README.md
+@@ -26,7 +26,7 @@ Documentation
+ =============
+ See the latest documentation for the NVDIMM kernel sub-system here:
+   
+-https://git.kernel.org/cgit/linux/kernel/git/nvdimm/nvdimm.git/tree/Documentation/nvdimm/nvdimm.txt?h=libnvdimm-for-next
++https://www.kernel.org/doc/html/latest/driver-api/nvdimm/index.html
+ 
+ A getting started guide is also available on the kernel.org nvdimm wiki:
+ 
+-- 
+2.20.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
