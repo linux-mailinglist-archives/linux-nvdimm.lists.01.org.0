@@ -1,45 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17187F265A
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Nov 2019 05:12:02 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7511F265B
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Nov 2019 05:12:07 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 42E45100DC2A7;
-	Wed,  6 Nov 2019 20:14:30 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	by ml01.01.org (Postfix) with ESMTP id 5A4B0100DC2B8;
+	Wed,  6 Nov 2019 20:14:36 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 70FFA100DC2A6
-	for <linux-nvdimm@lists.01.org>; Wed,  6 Nov 2019 20:14:28 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 84874100DC2A7
+	for <linux-nvdimm@lists.01.org>; Wed,  6 Nov 2019 20:14:34 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:11:58 -0800
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:12:04 -0800
 X-IronPort-AV: E=Sophos;i="5.68,276,1569308400";
-   d="scan'208";a="229453323"
+   d="scan'208";a="233120929"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:11:58 -0800
-Subject: [PATCH 12/16] dax: Add numa_node to the default device-dax
- attributes
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:12:03 -0800
+Subject: [PATCH 13/16] acpi/mm: Up-level "map to online node" functionality
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Wed, 06 Nov 2019 19:57:41 -0800
-Message-ID: <157309906102.1582359.4262088001244476001.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Wed, 06 Nov 2019 19:57:47 -0800
+Message-ID: <157309906694.1582359.4777838043061104635.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-2-gc94f
 MIME-Version: 1.0
-Message-ID-Hash: 36FXQZI6WZSAOFHUUZKEFGOZ4JUPVGCI
-X-Message-ID-Hash: 36FXQZI6WZSAOFHUUZKEFGOZ4JUPVGCI
+Message-ID-Hash: JEMEYJ4IGJHKEHR6WUFSGPFYEJGLFIBY
+X-Message-ID-Hash: JEMEYJ4IGJHKEHR6WUFSGPFYEJGLFIBY
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: peterz@infradead.org, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+CC: Michal Hocko <mhocko@suse.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, peterz@infradead.org, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/36FXQZI6WZSAOFHUUZKEFGOZ4JUPVGCI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JEMEYJ4IGJHKEHR6WUFSGPFYEJGLFIBY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,55 +47,167 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-It is confusing that device-dax instances publish a 'target_node'
-attribute, but not a 'numa_node'. The 'numa_node' information is
-available elsewhere in the sysfs device hierarchy, but it is not obvious
-and not reliable from one device-dax instance-type (e.g. child devices
-of nvdimm namespaces) to the next (e.g. 'hmem' devices defined by EFI
-Specific Purpose Memory and the ACPI HMAT).
+The acpi_map_pxm_to_online_node() helper is used to find the closest
+online node to a given proximity domain. This is used to map devices in
+a proximity domain with no online memory or cpus to the closest online
+node and populate a device's 'numa_node' property. The numa_node
+property allows applications to be migrated "close" to a resource.
 
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
+In preparation for providing a generic facility to optionally map an
+address range to its closest online node, or the node the range would
+represent were it to be onlined (target_node), up-level the core of
+acpi_map_pxm_to_online_node() to a generic mm/numa helper.
+
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/bus.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/acpi/numa.c  |   41 -----------------------------------------
+ include/linux/acpi.h |   23 ++++++++++++++++++++++-
+ include/linux/numa.h |    2 ++
+ mm/mempolicy.c       |   30 ++++++++++++++++++++++++++++++
+ 4 files changed, 54 insertions(+), 42 deletions(-)
 
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index ce6d648d7670..0879b9663eb7 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -322,6 +322,13 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
+diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa.c
+index eadbf90e65d1..47b4969d9b93 100644
+--- a/drivers/acpi/numa.c
++++ b/drivers/acpi/numa.c
+@@ -72,47 +72,6 @@ int acpi_map_pxm_to_node(int pxm)
  }
- static DEVICE_ATTR_RO(modalias);
+ EXPORT_SYMBOL(acpi_map_pxm_to_node);
  
-+static ssize_t numa_node_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	return sprintf(buf, "%d\n", dev_to_node(dev));
-+}
-+static DEVICE_ATTR_RO(numa_node);
-+
- static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+-/**
+- * acpi_map_pxm_to_online_node - Map proximity ID to online node
+- * @pxm: ACPI proximity ID
+- *
+- * This is similar to acpi_map_pxm_to_node(), but always returns an online
+- * node.  When the mapped node from a given proximity ID is offline, it
+- * looks up the node distance table and returns the nearest online node.
+- *
+- * ACPI device drivers, which are called after the NUMA initialization has
+- * completed in the kernel, can call this interface to obtain their device
+- * NUMA topology from ACPI tables.  Such drivers do not have to deal with
+- * offline nodes.  A node may be offline when a device proximity ID is
+- * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
+- * "numa=off" on x86.
+- */
+-int acpi_map_pxm_to_online_node(int pxm)
+-{
+-	int node, min_node;
+-
+-	node = acpi_map_pxm_to_node(pxm);
+-
+-	if (node == NUMA_NO_NODE)
+-		node = 0;
+-
+-	min_node = node;
+-	if (!node_online(node)) {
+-		int min_dist = INT_MAX, dist, n;
+-
+-		for_each_online_node(n) {
+-			dist = node_distance(node, n);
+-			if (dist < min_dist) {
+-				min_dist = dist;
+-				min_node = n;
+-			}
+-		}
+-	}
+-
+-	return min_node;
+-}
+-EXPORT_SYMBOL(acpi_map_pxm_to_online_node);
+-
+ static void __init
+ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
  {
- 	struct device *dev = container_of(kobj, struct device, kobj);
-@@ -329,6 +336,8 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 8b4e516bac00..aeedd09f2f71 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -401,9 +401,30 @@ extern void acpi_osi_setup(char *str);
+ extern bool acpi_osi_is_win8(void);
  
- 	if (a == &dev_attr_target_node.attr && dev_dax_target_node(dev_dax) < 0)
- 		return 0;
-+	if (a == &dev_attr_numa_node.attr && !IS_ENABLED(CONFIG_NUMA))
-+		return 0;
- 	return a->mode;
- }
+ #ifdef CONFIG_ACPI_NUMA
+-int acpi_map_pxm_to_online_node(int pxm);
+ int acpi_map_pxm_to_node(int pxm);
+ int acpi_get_node(acpi_handle handle);
++
++/**
++ * acpi_map_pxm_to_online_node - Map proximity ID to online node
++ * @pxm: ACPI proximity ID
++ *
++ * This is similar to acpi_map_pxm_to_node(), but always returns an online
++ * node.  When the mapped node from a given proximity ID is offline, it
++ * looks up the node distance table and returns the nearest online node.
++ *
++ * ACPI device drivers, which are called after the NUMA initialization has
++ * completed in the kernel, can call this interface to obtain their device
++ * NUMA topology from ACPI tables.  Such drivers do not have to deal with
++ * offline nodes.  A node may be offline when a device proximity ID is
++ * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
++ * "numa=off" on x86.
++ */
++static inline int acpi_map_pxm_to_online_node(int pxm)
++{
++	int node = acpi_map_pxm_to_node(pxm);
++
++	return numa_map_to_online_node(node);
++}
+ #else
+ static inline int acpi_map_pxm_to_online_node(int pxm)
+ {
+diff --git a/include/linux/numa.h b/include/linux/numa.h
+index 110b0e5d0fb0..4fd80f42be43 100644
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -13,4 +13,6 @@
  
-@@ -337,6 +346,7 @@ static struct attribute *dev_dax_attributes[] = {
- 	&dev_attr_size.attr,
- 	&dev_attr_target_node.attr,
- 	&dev_attr_resource.attr,
-+	&dev_attr_numa_node.attr,
- 	NULL,
- };
+ #define	NUMA_NO_NODE	(-1)
  
++int numa_map_to_online_node(int node);
++
+ #endif /* _LINUX_NUMA_H */
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 4ae967bcf954..e2d8dd21ce9d 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -127,6 +127,36 @@ static struct mempolicy default_policy = {
+ 
+ static struct mempolicy preferred_node_policy[MAX_NUMNODES];
+ 
++/**
++ * numa_map_to_online_node - Find closest online node
++ * @nid: Node id to start the search
++ *
++ * Lookup the next closest node by distance if @nid is not online.
++ */
++int numa_map_to_online_node(int node)
++{
++	int min_node;
++
++	if (node == NUMA_NO_NODE)
++		node = 0;
++
++	min_node = node;
++	if (!node_online(node)) {
++		int min_dist = INT_MAX, dist, n;
++
++		for_each_online_node(n) {
++			dist = node_distance(node, n);
++			if (dist < min_dist) {
++				min_dist = dist;
++				min_node = n;
++			}
++		}
++	}
++
++	return min_node;
++}
++EXPORT_SYMBOL_GPL(numa_map_to_online_node);
++
+ struct mempolicy *get_task_policy(struct task_struct *p)
+ {
+ 	struct mempolicy *pol = p->mempolicy;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
