@@ -1,45 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C268BF266B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Nov 2019 05:12:25 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6A9F2E66
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 Nov 2019 13:47:13 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A702B100DC2AE;
-	Wed,  6 Nov 2019 20:14:53 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 481DF100DC3F9;
+	Thu,  7 Nov 2019 04:49:38 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.193; helo=mail-oi1-f193.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com [209.85.167.193])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A7177100DC2AA
-	for <linux-nvdimm@lists.01.org>; Wed,  6 Nov 2019 20:14:51 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:12:19 -0800
-X-IronPort-AV: E=Sophos;i="5.68,276,1569308400";
-   d="scan'208";a="206041327"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Nov 2019 20:12:19 -0800
-Subject: [PATCH 16/16] libnvdimm/e820: Retrieve and populate correct
- 'target_node' info
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 06 Nov 2019 19:58:03 -0800
-Message-ID: <157309908326.1582359.13665017314935413372.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-2-gc94f
+	by ml01.01.org (Postfix) with ESMTPS id D2B0B100EA61D
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 04:49:35 -0800 (PST)
+Received: by mail-oi1-f193.google.com with SMTP id j7so1838455oib.3
+        for <linux-nvdimm@lists.01.org>; Thu, 07 Nov 2019 04:47:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MJ+XM7e35yl7YewLYP0iJjwmpEainWYQoTZVXoXrUd0=;
+        b=dZ6mEJky1BtTMluAnkfvhnJKGwmLDe928bVI9EbU2fnhq4iaX/6anp8togN5c5ERlF
+         vUEyTLaAZ66q7lhKnddrYAvDNoA5pX+tEbjA1b+I53F9SCc74aCeFB9vqg+yvs6NcxO0
+         1/xykLbSts589RgwV+q0XPVEi2JLUVK0kM9zsTBYSaG6HZ4E0e0FV0YUlhFKzY4U1sma
+         7S9xo9esO5LoxfgzRlSpehpndDq50U41DV1Po/iusxMK32IL1Gqn/s2I94wYtNMIGVI7
+         t54J00QgIf3M0MfNG3JNWbVYKZm9krHRQVaM4lt4jdSniKCyM/Dqyrw8wBDjxaFOcv4K
+         D0Hw==
+X-Gm-Message-State: APjAAAXvTKJzdfMgafNq+sYiNFHxM+mbSCEQoOoZARSt1+stxJGKRX1b
+	Ka3A5HU7h6b2lDSxU4SdLuR/ThkqC5C9RCiXOeo=
+X-Google-Smtp-Source: APXvYqzlr7almGaTB4dbuD39z3gB6B3WnVS7o80LQ8cjmDZcFRCmiHdFTDSP/fLzfS2WS0wlNj1lXp3k4W0jsLB7Yc8=
+X-Received: by 2002:aca:1101:: with SMTP id 1mr3414464oir.103.1573130827691;
+ Thu, 07 Nov 2019 04:47:07 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: NQJWQ27QA42D2JIJLWLNMYZNWEHETX5Y
-X-Message-ID-Hash: NQJWQ27QA42D2JIJLWLNMYZNWEHETX5Y
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <157309097008.1579826.12818463304589384434.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <157309097008.1579826.12818463304589384434.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 7 Nov 2019 13:46:54 +0100
+Message-ID: <CAJZ5v0hDaxcPBwwx2FaxKKJGNOvY_+JuvF7CJ0tbX1TjEisvUQ@mail.gmail.com>
+Subject: Re: [PATCH v8 00/12] EFI Specific Purpose Memory Support
+To: Dan Williams <dan.j.williams@intel.com>, Ingo Molnar <mingo@redhat.com>
+Message-ID-Hash: 2YEZVJKOHBBJELA5CKPDDKTKHH3SPH56
+X-Message-ID-Hash: 2YEZVJKOHBBJELA5CKPDDKTKHH3SPH56
+X-MailFrom: rjwysocki@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andy Shevchenko <andy@infradead.org>, Borislav Petkov <bp@alien8.de>, Keith Busch <kbusch@kernel.org>, Len Brown <lenb@kernel.org>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Darren Hart <dvhart@infradead.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, kbuild test robot <lkp@intel.com>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, the arch/x86 maintainers <x86@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Andy Lutomirski <luto@kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, linux-efi <linux-efi@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NQJWQ27QA42D2JIJLWLNMYZNWEHETX5Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2YEZVJKOHBBJELA5CKPDDKTKHH3SPH56/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,163 +57,46 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Use the new memory_add_physaddr_to_target_node() and
-numa_map_to_online_node() helpers to retrieve the correct id for
-the 'numa_node' (online initiator) and 'target_node' (offline target
-memory node) sysfs attributes.
+On Thu, Nov 7, 2019 at 2:57 AM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> Changes since v7:
+> - This is mostly a resend to get it refreshed in Ingo's inbox for v5.5
+>   consideration. It picks up a Reviewed-by on patch4 from Ard, has a
+>   minor cosmetic rebase on v5.4-rc6 with no other changes, it merges
+>   cleanly with tip/master, and is still passing the test case described in
+>   the final patch, but development is otherwise idle over the past 3
+>   weeks.
+>
+> [1]: https://lkml.kernel.org/r/157118756627.2063440.9878062995925617180.stgit@dwillia2-desk3.amr.corp.intel.com/
+>
+> ---
+> Merge notes:
+>
+> Hi Ingo,
+>
+> This is ready to go as far as I'm concerned. Please consider merging, or
+> acking for Rafael to take, or of course naking if something looks off.
+> Rafael had threatened to start taking the standalone ACPI bits through
+> his tree, but I have yet to any movement on that in his 'linux-next' or
+> 'bleeding-edge' tree.
 
-Below is an example from a 4 numa node system where all the memory on
-node2 is pmem / reserved. It should be noted that with the arrival of
-the ACPI HMAT table and EFI Specific Purpose Memory the kernel will
-start to see more platforms with reserved / performance differentiated
-memory in its own numa node. Hence all the stakeholders on the Cc for
-what is ostensibly a libnvdimm local patch.
+Indeed.
 
-=== Before ===
+I have waited for comments on x86 bits from Thomas, but since they are
+not coming, I have just decided to take patch [1/12] from this series,
+which should be totally non-controversial,  as keeping it out of the
+tree has become increasingly painful (material depending on it has
+been piling up already for some time).
 
-/* Notice no online memory on node2 at start */
+If need be, I can expose that commit in an immutable branch, so please
+let me know if that's necessary.
 
-# numactl --hardware
-available: 3 nodes (0-1,3)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-node 0 size: 3958 MB
-node 0 free: 3708 MB
-node 1 cpus: 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39
-node 1 size: 4027 MB
-node 1 free: 3871 MB
-node 3 cpus:
-node 3 size: 3994 MB
-node 3 free: 3971 MB
-node distances:
-node   0   1   3
-  0:  10  21  21
-  1:  21  10  21
-  3:  21  21  10
+BTW, Dan, I think that it was a mistake to make the rest of your
+series depend on that patch.  The new directory could have been
+created at any convenient time later.
 
-/*
- * Put the pmem namespace into devdax mode so it can be assigned to the
- * kmem driver
- */
-
-# ndctl create-namespace -e namespace0.0 -m devdax -f
-{
-  "dev":"namespace0.0",
-  "mode":"devdax",
-  "map":"dev",
-  "size":"3.94 GiB (4.23 GB)",
-  "uuid":"1650af9b-9ba3-4704-acd6-10178399d9a3",
-  [..]
-}
-
-/* Online Persistent Memory as System RAM */
-
-# daxctl reconfigure-device --mode=system-ram dax0.0
-libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-[
-  {
-    "chardev":"dax0.0",
-    "size":4225761280,
-    "target_node":0,
-    "mode":"system-ram"
-  }
-]
-reconfigured 1 device
-
-/* Note that the memory is onlined by default to the wrong node, node0 */
-
-# numactl --hardware
-available: 3 nodes (0-1,3)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-node 0 size: 7926 MB
-node 0 free: 7655 MB
-node 1 cpus: 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39
-node 1 size: 4027 MB
-node 1 free: 3871 MB
-node 3 cpus:
-node 3 size: 3994 MB
-node 3 free: 3971 MB
-node distances:
-node   0   1   3
-  0:  10  21  21
-  1:  21  10  21
-  3:  21  21  10
-
-
-=== After ===
-
-/* Notice that the "phys_index" error messages are gone */
-
-# daxctl reconfigure-device --mode=system-ram dax0.0
-[
-  {
-    "chardev":"dax0.0",
-    "size":4225761280,
-    "target_node":2,
-    "mode":"system-ram"
-  }
-]
-reconfigured 1 device
-
-/* Notice that node2 is now correctly populated */
-
-# numactl --hardware
-available: 4 nodes (0-3)
-node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-node 0 size: 3958 MB
-node 0 free: 3793 MB
-node 1 cpus: 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39
-node 1 size: 4027 MB
-node 1 free: 3851 MB
-node 2 cpus:
-node 2 size: 3968 MB
-node 2 free: 3968 MB
-node 3 cpus:
-node 3 size: 3994 MB
-node 3 free: 3908 MB
-node distances:
-node   0   1   2   3
-  0:  10  21  21  21
-  1:  21  10  21  21
-  2:  21  21  10  21
-  3:  21  21  21  10
-
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/nvdimm/e820.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/nvdimm/e820.c b/drivers/nvdimm/e820.c
-index b802291bcde1..23121dd6e494 100644
---- a/drivers/nvdimm/e820.c
-+++ b/drivers/nvdimm/e820.c
-@@ -20,11 +20,12 @@ static int e820_register_one(struct resource *res, void *data)
- {
- 	struct nd_region_desc ndr_desc;
- 	struct nvdimm_bus *nvdimm_bus = data;
-+	int nid = memory_add_physaddr_to_target_node(res->start);
- 
- 	memset(&ndr_desc, 0, sizeof(ndr_desc));
- 	ndr_desc.res = res;
--	ndr_desc.numa_node = memory_add_physaddr_to_nid(res->start);
--	ndr_desc.target_node = ndr_desc.numa_node;
-+	ndr_desc.numa_node = numa_map_to_online_node(nid);
-+	ndr_desc.target_node = nid;
- 	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
- 	if (!nvdimm_pmem_region_create(nvdimm_bus, &ndr_desc))
- 		return -ENXIO;
+Cheers,
+Rafael
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
