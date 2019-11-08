@@ -2,115 +2,81 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5120CF3E4F
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 04:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB070F3E6B
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 04:30:47 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 97E26100EA622;
-	Thu,  7 Nov 2019 19:13:40 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
-Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
-	by ml01.01.org (Postfix) with ESMTP id A08C8100EEB95
-	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 19:13:38 -0800 (PST)
-X-IronPort-AV: E=Sophos;i="5.68,280,1569254400";
-   d="scan'208";a="78040346"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 08 Nov 2019 11:10:57 +0800
-Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
-	by cn.fujitsu.com (Postfix) with ESMTP id A9B984B6AE15;
-	Fri,  8 Nov 2019 11:02:52 +0800 (CST)
-Received: from [10.167.225.140] (10.167.225.140) by
- G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
- (TLS) id 14.3.439.0; Fri, 8 Nov 2019 11:11:05 +0800
-Subject: Re: [RFC PATCH v2 0/7] xfs: reflink & dedupe for fsdax (read/write
- path).
-To: <linux-xfs@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
-	<darrick.wong@oracle.com>, <rgoldwyn@suse.de>, <hch@infradead.org>,
-	<david@fromorbit.com>
-References: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com>
-From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Message-ID: <e33532a2-a9e5-1578-bdd8-a83d4710a151@cn.fujitsu.com>
-Date: Fri, 8 Nov 2019 11:10:56 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+	by ml01.01.org (Postfix) with ESMTP id EDE3F100EA622;
+	Thu,  7 Nov 2019 19:33:07 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 742EA100EEB95
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 19:33:06 -0800 (PST)
+Received: by mail-oi1-x241.google.com with SMTP id a14so4044721oid.5
+        for <linux-nvdimm@lists.01.org>; Thu, 07 Nov 2019 19:30:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NtB37+Q8xvWyEYnhovPvzQrhxqS2lBLxSLUijnwj9JI=;
+        b=FRfas5SPxBMSC4DVisx8MORabFwIgq5lwySDwgKd1CXjN2fmnInTfTzfd/12Zf4kwd
+         7s723mPTXcsbd4eONjrHEs1ExgPXRwpD2so5jW/aA0M1j/Mdd21FWzvKz0NNmR8g45UJ
+         TSQvt/gLwuJ6jvkLvIFFG99T33Yk9Cuk+48m9VmhXMIrFyIZ5Bs2VqKW3s5qR18L4Zss
+         vtb2BBZfNNSJTS8qKcpJnHqR4TdOcX/rVLqIsKfr3LD0e2zcHemW+nGkBXnGKpTnunJz
+         GhcE+cPH7t8F31zni88ZgcGawamvuyZxMQMOgqg9KFlYwMrlRm/u/3PmtnsGgfNQZAV+
+         TqKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NtB37+Q8xvWyEYnhovPvzQrhxqS2lBLxSLUijnwj9JI=;
+        b=p6OvnrFS6syvVf4aLTiEjOQ6EXGU+0VpSUJX844RufsSe5iY/fGJ1yGwVxhvhYVyzQ
+         hS2IeB5Nyqc75hjn80ltjTxjrNJpHL23U+25YXKwyGFNUcKlPl7k5ve6chGNFWoZc0iM
+         pnMky0bxgseTGrmVd+Bel0fFKOMIXEIOHXShjoXcJ7zXNYgpTzn5Owu5J5RxUoGrpEp/
+         jzLuA+2rIOqpgx+l6Z1HZB4aCshnQoBgpibrZ92RO9rinvloos0s/qaRkhhmUBUld33d
+         Lz5WkaUOFPpbXdQyiJOhpchTpuQ93/DOsrLf+YeyLGvk1xxVplRSg1cjEB+U6qnJGUmt
+         Z/DA==
+X-Gm-Message-State: APjAAAV75s/qxXtGkN1Et1egF1gAoH6/5fIUxV/CKULwhFU08kq8BhGX
+	rinvUEijtcvIluh3JmmttQ9MMPwPq5cE7ubZN1ji3A==
+X-Google-Smtp-Source: APXvYqzkdkYe4VeO2i7N7ZYvtM3Hm00GKsbQ7o4949RHdq20XH0TD40W5eXI5rdUew808QiCN7vktLt6WHrVYh8m+0A=
+X-Received: by 2002:aca:3d84:: with SMTP id k126mr6733699oia.70.1573183843511;
+ Thu, 07 Nov 2019 19:30:43 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com>
-Content-Language: en-US
-X-Originating-IP: [10.167.225.140]
-X-yoursite-MailScanner-ID: A9B984B6AE15.AC5F9
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
-X-Spam-Status: No
-Message-ID-Hash: ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ
-X-Message-ID-Hash: ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ
-X-MailFrom: ruansy.fnst@cn.fujitsu.com
+References: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com> <e33532a2-a9e5-1578-bdd8-a83d4710a151@cn.fujitsu.com>
+In-Reply-To: <e33532a2-a9e5-1578-bdd8-a83d4710a151@cn.fujitsu.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 7 Nov 2019 19:30:32 -0800
+Message-ID: <CAPcyv4ivOgMNdvWTtpXw2aaR0o7MEQZ=cDiy=_P9qhVb3QVWdQ@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/7] xfs: reflink & dedupe for fsdax (read/write path).
+To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+Message-ID-Hash: E4PJI5OZLHSIS23EKRSQNSRL54KLKIUG
+X-Message-ID-Hash: E4PJI5OZLHSIS23EKRSQNSRL54KLKIUG
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, gujx@cn.fujitsu.com, qi.fuli@fujitsu.com
+CC: linux-xfs <linux-xfs@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, Goldwyn Rodrigues <rgoldwyn@suse.de>, Christoph Hellwig <hch@infradead.org>, david <david@fromorbit.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, gujx@cn.fujitsu.com, qi.fuli@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E4PJI5OZLHSIS23EKRSQNSRL54KLKIUG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Darrick, Dave,
+On Thu, Nov 7, 2019 at 7:11 PM Shiyang Ruan <ruansy.fnst@cn.fujitsu.com> wrote:
+>
+> Hi Darrick, Dave,
+>
+> Do you have any comment on this?
 
-Do you have any comment on this?
-
-On 10/30/19 12:13 PM, Shiyang Ruan wrote:
-> This patchset aims to take care of this issue to make reflink and dedupe
-> work correctly (actually in read/write path, there still has some problems,
-> such as the page->mapping and page->index issue, in mmap path) in XFS under
-> fsdax mode.
-> 
-> It is based on Goldwyn's patchsets: "v4 Btrfs dax support" and the latest
-> iomap.  I borrowed some patches related and made a few fix to make it
-> basically works fine.
-> 
-> For dax framework:
->    1. adapt to the latest change in iomap (two iomaps).
-> 
-> For XFS:
->    1. distinguish dax write/zero from normal write/zero.
->    2. remap extents after COW.
->    3. add file contents comparison function based on dax framework.
->    4. use xfs_break_layouts() instead of break_layout to support dax.
-> 
-> 
-> Goldwyn Rodrigues (3):
->    dax: replace mmap entry in case of CoW
->    fs: dedup file range to use a compare function
->    dax: memcpy before zeroing range
-> 
-> Shiyang Ruan (4):
->    dax: Introduce dax_copy_edges() for COW.
->    dax: copy data before write.
->    xfs: handle copy-on-write in fsdax write() path.
->    xfs: support dedupe for fsdax.
-> 
->   fs/btrfs/ioctl.c       |   3 +-
->   fs/dax.c               | 211 +++++++++++++++++++++++++++++++++++++----
->   fs/iomap/buffered-io.c |   8 +-
->   fs/ocfs2/file.c        |   2 +-
->   fs/read_write.c        |  11 ++-
->   fs/xfs/xfs_bmap_util.c |   6 +-
->   fs/xfs/xfs_file.c      |  10 +-
->   fs/xfs/xfs_iomap.c     |   3 +-
->   fs/xfs/xfs_iops.c      |  11 ++-
->   fs/xfs/xfs_reflink.c   |  79 ++++++++-------
->   include/linux/dax.h    |  16 ++--
->   include/linux/fs.h     |   9 +-
->   12 files changed, 291 insertions(+), 78 deletions(-)
-> 
-
--- 
-Thanks,
-Shiyang Ruan.
-
+Christoph pointed out at ALPSS that this problem has significant
+overlap with the shared page-cache for reflink problem. So I think we
+need to solve that first and then circle back to dax reflink support.
+I'm starting to take a look at that.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
