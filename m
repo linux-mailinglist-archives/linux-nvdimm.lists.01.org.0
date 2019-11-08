@@ -2,85 +2,103 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3A5F3EE1
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 05:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DDEF40FD
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 08:11:17 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D1896100EA622;
-	Thu,  7 Nov 2019 20:29:25 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=wkyo.choe@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 320F5100EA625;
+	Thu,  7 Nov 2019 23:13:36 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 96435100EEB95
-	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 20:29:23 -0800 (PST)
-Received: by mail-pf1-x430.google.com with SMTP id q26so3789045pfn.11
-        for <linux-nvdimm@lists.01.org>; Thu, 07 Nov 2019 20:27:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=tyMVv16J7OCslpOoR5c4iVdcJ28OFKyLHyBYXfuikGA=;
-        b=c/rQqyN/gctVlESHX84EWbPSYYdnIV0tJ6sIPc2/8oYgN4jKBcPZCLeCwsMUXTsQp+
-         +XHmX3o2FJmIYGvojLbe185mV5FqgJ5KJALkfQxGbMOM/lW8GNKNz8+rcMYFID3Y5OlS
-         OyP1GahtmUvfCpxrfR6ZZ+gXQIg2lmW9xJRKyABs+2TvL0KLqHE30ygpVN5l2Hj60qMK
-         3llg4q5ztIX7PdM7iFdRebvkXxmyZU3W/DbmwYdvn3eGCRzJNbvrgyz3j7TGq1gKrSjl
-         zy3CeTPmXNArbCxa3v2zeaADiKEvlmGRD0YW0ZUmoseFredXjG1BUIdZ52V90tEJ3m/U
-         i9WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=tyMVv16J7OCslpOoR5c4iVdcJ28OFKyLHyBYXfuikGA=;
-        b=QahPIgUP+yQzYgV3UobrldZdR9eHUOutJ58PJ81SEwfb8LgftyRDPiIUTuxO7g0oos
-         o/kk8RD34K9+YZ/DVPOPzKLpASMZ3yR18TnucHgvEp84V/b6E0LXL+LhzauJvYZ9Ucp5
-         pDW2GVuPZRmw7ELsrqMY0GBrZUBforI4xTPlv0epmSWgbPH00gOww3EW/tuDm2eiurBV
-         TTmNrkZ1909lYXfM3h3Z2eyL24s4gGf3PimYdwhaKIEd38R+oagGQcTmJ146fDKbUkZR
-         +1u8aoOVCOeyHYtNVbLOsjvbEkQMJpWSaxRaNesWXpKZPcXyFr3exos0ZcwN44xbTHR7
-         DSIQ==
-X-Gm-Message-State: APjAAAXtazSNDyHD69kgE1OA9iOllAV7yRIAjhF9Qjc36ddoBuqKKlGY
-	wyKTB45EiwpR0BBbrT1OeY4=
-X-Google-Smtp-Source: APXvYqwo/k50XXnKj8hxh/SVe5O2eizQHcLnmh7kCKkUr/upborP9chvzJ7nv9EX/OLRcXuyg3vx0w==
-X-Received: by 2002:a62:7796:: with SMTP id s144mr8753754pfc.37.1573187221491;
-        Thu, 07 Nov 2019 20:27:01 -0800 (PST)
-Received: from swarm07 ([210.107.197.31])
-        by smtp.gmail.com with ESMTPSA id b21sm4349675pfd.74.2019.11.07.20.26.59
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 07 Nov 2019 20:27:00 -0800 (PST)
-Date: Fri, 8 Nov 2019 13:26:57 +0900
-From: Won-Kyo Choe <wkyo.choe@gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [QUESTION] Error on initializing dax by using different struct
- page size
-Message-ID: <20191108042656.GA4175@swarm07>
-References: <20191107152952.GA2053@swarm07>
- <CAPcyv4j-rSy-T5Qv6GbcDcmUerhQQYsMKbUY7EaGHz-GecKDtQ@mail.gmail.com>
- <20191107190018.GB1912@swarm07>
- <CAPcyv4hNYZvXP+Cg+sHtes6qisrkxoMAf=oi0x3NqOHxWNG53w@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 74351100EEB95
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 23:13:33 -0800 (PST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA878SH8193459
+	for <linux-nvdimm@lists.01.org>; Fri, 8 Nov 2019 02:11:09 -0500
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2w41w7um2s-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Fri, 08 Nov 2019 02:11:09 -0500
+Received: from localhost
+	by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <fbarrat@linux.ibm.com>;
+	Fri, 8 Nov 2019 07:11:06 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+	by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Fri, 8 Nov 2019 07:10:59 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA87Avda37749040
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Nov 2019 07:10:58 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E5B77A404D;
+	Fri,  8 Nov 2019 07:10:57 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F003AA4055;
+	Fri,  8 Nov 2019 07:10:56 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.165.93])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Nov 2019 07:10:56 +0000 (GMT)
+Subject: Re: [PATCH 09/10] powerpc: Enable OpenCAPI Storage Class Memory
+ driver on bare metal
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20191025044721.16617-1-alastair@au1.ibm.com>
+ <20191025044721.16617-10-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Fri, 8 Nov 2019 08:10:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4hNYZvXP+Cg+sHtes6qisrkxoMAf=oi0x3NqOHxWNG53w@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Message-ID-Hash: 4CGY3CZL27L3RKNC2FHS2OPPMJOBF2HH
-X-Message-ID-Hash: 4CGY3CZL27L3RKNC2FHS2OPPMJOBF2HH
-X-MailFrom: wkyo.choe@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org
+In-Reply-To: <20191025044721.16617-10-alastair@au1.ibm.com>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 19110807-0016-0000-0000-000002C1D1E8
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110807-0017-0000-0000-0000332357B5
+Message-Id: <3ba57ce6-9135-0d83-b99d-1c5b0c744855@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-08_01:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=914 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1910280000 definitions=main-1911080070
+Message-ID-Hash: LEUEOJQ53IS2AZ3LXFDFLS7PHJG6Q6BL
+X-Message-ID-Hash: LEUEOJQ53IS2AZ3LXFDFLS7PHJG6Q6BL
+X-MailFrom: fbarrat@linux.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Oscar Salvador <osalvador@suse.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, Geert Uytterhoeven <geert+renesas@glider.be>, David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org, Michal Hocko <mhocko@suse.com>, Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>, Pavel Tatashin <pasha.tatashin@soleen.com>, linux-nvdimm@lists.01.org, Krzysztof Kozlowski <krzk@kernel.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>, Qian Cai <cai@lca.pw>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Hari Bathini <hbathini@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, Vasant Hegde <hegdevasant@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4CGY3CZL27L3RKNC2FHS2OPPMJOBF2HH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LEUEOJQ53IS2AZ3LXFDFLS7PHJG6Q6BL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-Thanks for the information. This is actually what I've been looking for!
-
-Regards,
-Won-Kyo
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCkxlIDI1LzEwLzIwMTkgw6AgMDY6NDcsIEFsYXN0YWlyIEQnU2lsdmEgYSDDqWNyaXTCoDoN
+Cj4gRnJvbTogQWxhc3RhaXIgRCdTaWx2YSA8YWxhc3RhaXJAZC1zaWx2YS5vcmc+DQo+IA0KPiBF
+bmFibGUgT3BlbkNBUEkgU3RvcmFnZSBDbGFzcyBNZW1vcnkgZHJpdmVyIG9uIGJhcmUgbWV0YWwN
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEFsYXN0YWlyIEQnU2lsdmEgPGFsYXN0YWlyQGQtc2lsdmEu
+b3JnPg0KPiAtLS0NCj4gICBhcmNoL3Bvd2VycGMvY29uZmlncy9wb3dlcm52X2RlZmNvbmZpZyB8
+IDQgKysrKw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKykNCj4gDQo+IGRpZmYg
+LS1naXQgYS9hcmNoL3Bvd2VycGMvY29uZmlncy9wb3dlcm52X2RlZmNvbmZpZyBiL2FyY2gvcG93
+ZXJwYy9jb25maWdzL3Bvd2VybnZfZGVmY29uZmlnDQo+IGluZGV4IDY2NThjY2ViOTI4Yy4uNDVj
+MGVmZjk0OTY0IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvY29uZmlncy9wb3dlcm52X2Rl
+ZmNvbmZpZw0KPiArKysgYi9hcmNoL3Bvd2VycGMvY29uZmlncy9wb3dlcm52X2RlZmNvbmZpZw0K
+PiBAQCAtMzUyLDMgKzM1Miw3IEBAIENPTkZJR19LVk1fQk9PSzNTXzY0PW0NCj4gICBDT05GSUdf
+S1ZNX0JPT0szU182NF9IVj1tDQo+ICAgQ09ORklHX1ZIT1NUX05FVD1tDQo+ICAgQ09ORklHX1BS
+SU5US19USU1FPXkNCj4gK0NPTkZJR19PQ1hMX1NDTT1tDQo+ICtDT05GSUdfREVWX0RBWD15DQo+
+ICtDT05GSUdfREVWX0RBWF9QTUVNPXkNCj4gK0NPTkZJR19GU19EQVg9eQ0KDQoNCklmIHRoaXMg
+cmVhbGx5IHRoZSBpbnRlbnQgb3IgZG8gd2Ugd2FudCB0byBhY3RpdmF0ZSBEQVggb25seSBpZiAN
+CkNPTkZJR19PQ1hMX1NDTSBpcyBlbmFibGVkPw0KDQogICBGcmVkDQpfX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0
+IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFp
+bCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
