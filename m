@@ -2,103 +2,115 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39CCF3E25
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 03:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5120CF3E4F
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 Nov 2019 04:11:20 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A4301100EA625;
-	Thu,  7 Nov 2019 18:44:27 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 80697100EEB95
-	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 18:44:24 -0800 (PST)
-Received: by mail-ot1-x342.google.com with SMTP id r24so3908967otk.12
-        for <linux-nvdimm@lists.01.org>; Thu, 07 Nov 2019 18:42:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=toJ5uCNFjWzAJBR7ewaPVlC4vkW0KDP/L41X/HMgzgw=;
-        b=lPy/NPVDDKD+ljwMBp5nM3NVDpwEfFYxmWpm5I2XkGmYtaHYtOtuieVIpZ11xSy5D5
-         zDu67m4cQNjGUQr+N3ov/20jQetm+yuZmeWgycWda/4Z8WWX2JqYr0ibGqm+PQBYhfTV
-         FFphYJWpn0ZVinfKUyrxMsb4yNcnrqag9h3ss+ouB+Qxgf9FSOwCEPszXFWHay7/a2BR
-         yjqh5G92uY/ZvsjM9xQgsg/0csXrSv+O2AK0wqeAnjVXS+9wHONM/o1DGmTvOyI7CTcH
-         WUtxubP94Xixp79t2VSY3o1w4ZEoj+7uxOTBvwEg2KSaIXv2OhS/bUyYcuKs4AzwOoXS
-         8w0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=toJ5uCNFjWzAJBR7ewaPVlC4vkW0KDP/L41X/HMgzgw=;
-        b=tZ8ck/UQELYRAhVWmdgRwXL3TskUpG/i5nb2sZ/jF7AhD/RYIhk+IZ6u4MBsEz/SXu
-         UsVUKTlibZquVFTb8v1x68e2OXwkVs1veN7Y2eFpTos0zpLJwUL1gYEBl9Mt0ibchNXj
-         MeYRbs5xytMBiHzbFFHZGNwMTB+x60AYbYvOwLLjvYGjp3YeLyiQKZN6f/LGFtCg99K0
-         S7nXRlCIv3n761F52xS4CNTs1VIPAM7rb3MAimGGcEa+LP24roSIlBxtuzge9/u6xmR8
-         pyTynk1zlF6i/pqPtQxa08z4r7+w66QS9bVMgbEzHt4JUlBPWZpj9wtPq+2HflBimqni
-         RUwg==
-X-Gm-Message-State: APjAAAVpq6VxpjjYK+d6FOFy6W17puJr8aWFj1LaJCmszc/ZRdOYTa2O
-	aSbk9iQWw+RvZxQNT4vmTkXNbZWliEK+R3nQoLnRkQ==
-X-Google-Smtp-Source: APXvYqxiarfUJuzJ/cdOES1XRvlOh8CKmQ30F2dBwib+G2RYBXD1qCju76LJ23t8FPP3e6cmQLgaXAwfB5jE1+JkAmg=
-X-Received: by 2002:a05:6830:1af7:: with SMTP id c23mr5849948otd.247.1573180918867;
- Thu, 07 Nov 2019 18:41:58 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 97E26100EA622;
+	Thu,  7 Nov 2019 19:13:40 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=ruansy.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id A08C8100EEB95
+	for <linux-nvdimm@lists.01.org>; Thu,  7 Nov 2019 19:13:38 -0800 (PST)
+X-IronPort-AV: E=Sophos;i="5.68,280,1569254400";
+   d="scan'208";a="78040346"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 08 Nov 2019 11:10:57 +0800
+Received: from G08CNEXCHPEKD01.g08.fujitsu.local (unknown [10.167.33.80])
+	by cn.fujitsu.com (Postfix) with ESMTP id A9B984B6AE15;
+	Fri,  8 Nov 2019 11:02:52 +0800 (CST)
+Received: from [10.167.225.140] (10.167.225.140) by
+ G08CNEXCHPEKD01.g08.fujitsu.local (10.167.33.89) with Microsoft SMTP Server
+ (TLS) id 14.3.439.0; Fri, 8 Nov 2019 11:11:05 +0800
+Subject: Re: [RFC PATCH v2 0/7] xfs: reflink & dedupe for fsdax (read/write
+ path).
+To: <linux-xfs@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
+	<darrick.wong@oracle.com>, <rgoldwyn@suse.de>, <hch@infradead.org>,
+	<david@fromorbit.com>
+References: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com>
+From: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+Message-ID: <e33532a2-a9e5-1578-bdd8-a83d4710a151@cn.fujitsu.com>
+Date: Fri, 8 Nov 2019 11:10:56 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-References: <156821692280.2951081.18036584954940423225.stgit@dwillia2-desk3.amr.corp.intel.com>
- <156821693396.2951081.7340292149329436920.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20191001075559.629eb059@lwn.net> <20191107131313.26b2d2cc@lwn.net>
-In-Reply-To: <20191107131313.26b2d2cc@lwn.net>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 7 Nov 2019 18:41:46 -0800
-Message-ID: <CAPcyv4ihn9kgO-VDOK=Jyj8RrG2RVXUvu8Y66zR7JYZm9-rWPA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] Maintainer Handbook: Maintainer Entry Profile
-To: Jonathan Corbet <corbet@lwn.net>
-Message-ID-Hash: 4NRMIHYXQEKVGCR3N54XCCKAYXL6PF76
-X-Message-ID-Hash: 4NRMIHYXQEKVGCR3N54XCCKAYXL6PF76
-X-MailFrom: dan.j.williams@intel.com
+In-Reply-To: <20191030041358.14450-1-ruansy.fnst@cn.fujitsu.com>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.140]
+X-yoursite-MailScanner-ID: A9B984B6AE15.AC5F9
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: ruansy.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ
+X-Message-ID-Hash: ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ
+X-MailFrom: ruansy.fnst@cn.fujitsu.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, Steve French <stfrench@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linus Torvalds <torvalds@linux-foundation.org>, "Tobin C. Harding" <me@tobin.cc>, Olof Johansson <olof@lixom.net>, Daniel Vetter <daniel.vetter@ffwll.ch>, Joe Perches <joe@perches.com>, Dmitry Vyukov <dvyukov@google.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, ksummit <ksummit-discuss@lists.linuxfoundation.org>
+CC: linux-kernel@vger.kernel.org, gujx@cn.fujitsu.com, qi.fuli@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4NRMIHYXQEKVGCR3N54XCCKAYXL6PF76/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZORPBCBGU6SILWCINN3EB3HCWWOPVPMZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 7, 2019 at 12:13 PM Jonathan Corbet <corbet@lwn.net> wrote:
->
-> Hi, Dan,
->
-> A month or so ago I wrote...
->
-> > > See Documentation/maintainer/maintainer-entry-profile.rst for more details,
-> > > and a follow-on example profile for the libnvdimm subsystem.
-> >
-> > Thus far, the maintainer guide is focused on how to *be* a maintainer.
-> > This document, instead, is more about how to deal with specific
-> > maintainers.  So I suspect that Documentation/maintainer might be the
-> > wrong place for it.
-> >
-> > Should we maybe place it instead under Documentation/process, or even
-> > create a new top-level "book" for this information?
->
-> Unless I missed it, I've not heard back from you on this.  I'd like to get
-> this stuff pulled in for 5.5 if possible...  would you object if I were to
-> apply your patches, then tack on a move over to the process guide?
+Hi Darrick, Dave,
 
-Sorry for the delay.
+Do you have any comment on this?
 
-Yes, the process book is a better location now that this information
-is focused on being supplemental guidelines for submitters rather than
-a "how to maintain X subsystem" guide.
+On 10/30/19 12:13 PM, Shiyang Ruan wrote:
+> This patchset aims to take care of this issue to make reflink and dedupe
+> work correctly (actually in read/write path, there still has some problems,
+> such as the page->mapping and page->index issue, in mmap path) in XFS under
+> fsdax mode.
+> 
+> It is based on Goldwyn's patchsets: "v4 Btrfs dax support" and the latest
+> iomap.  I borrowed some patches related and made a few fix to make it
+> basically works fine.
+> 
+> For dax framework:
+>    1. adapt to the latest change in iomap (two iomaps).
+> 
+> For XFS:
+>    1. distinguish dax write/zero from normal write/zero.
+>    2. remap extents after COW.
+>    3. add file contents comparison function based on dax framework.
+>    4. use xfs_break_layouts() instead of break_layout to support dax.
+> 
+> 
+> Goldwyn Rodrigues (3):
+>    dax: replace mmap entry in case of CoW
+>    fs: dedup file range to use a compare function
+>    dax: memcpy before zeroing range
+> 
+> Shiyang Ruan (4):
+>    dax: Introduce dax_copy_edges() for COW.
+>    dax: copy data before write.
+>    xfs: handle copy-on-write in fsdax write() path.
+>    xfs: support dedupe for fsdax.
+> 
+>   fs/btrfs/ioctl.c       |   3 +-
+>   fs/dax.c               | 211 +++++++++++++++++++++++++++++++++++++----
+>   fs/iomap/buffered-io.c |   8 +-
+>   fs/ocfs2/file.c        |   2 +-
+>   fs/read_write.c        |  11 ++-
+>   fs/xfs/xfs_bmap_util.c |   6 +-
+>   fs/xfs/xfs_file.c      |  10 +-
+>   fs/xfs/xfs_iomap.c     |   3 +-
+>   fs/xfs/xfs_iops.c      |  11 ++-
+>   fs/xfs/xfs_reflink.c   |  79 ++++++++-------
+>   include/linux/dax.h    |  16 ++--
+>   include/linux/fs.h     |   9 +-
+>   12 files changed, 291 insertions(+), 78 deletions(-)
+> 
 
-I do want to respin this without the Coding Style addendum to address
-the specific feedback there, but other than that I'm happy to see this
-move forward.
+-- 
+Thanks,
+Shiyang Ruan.
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
