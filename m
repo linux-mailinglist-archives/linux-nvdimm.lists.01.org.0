@@ -2,71 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D7DF8EF1
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Nov 2019 12:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2921F96D6
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 Nov 2019 18:15:33 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6E44E100DC418;
-	Tue, 12 Nov 2019 03:52:52 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2A1C4100DC418;
+	Tue, 12 Nov 2019 09:17:17 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 075D8100DC415
-	for <linux-nvdimm@lists.01.org>; Tue, 12 Nov 2019 03:52:49 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xACBlhJu141110;
-	Tue, 12 Nov 2019 06:50:55 -0500
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2w7qdbrgfj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2019 06:50:51 -0500
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-	by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xACBoRui011350;
-	Tue, 12 Nov 2019 11:50:34 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-	by ppma04wdc.us.ibm.com with ESMTP id 2w5n35x8b2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Nov 2019 11:50:34 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xACBoX0B58458540
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Nov 2019 11:50:33 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 23AD17805F;
-	Tue, 12 Nov 2019 11:50:33 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 150547805C;
-	Tue, 12 Nov 2019 11:50:29 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.45.124])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Nov 2019 11:50:28 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
-Subject: Re: [PATCH 11/16] libnvdimm: Simplify root read-only definition for the 'resource' attribute
-In-Reply-To: <157309905534.1582359.13927459228885931097.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157309899529.1582359.15358067933360719580.stgit@dwillia2-desk3.amr.corp.intel.com> <157309905534.1582359.13927459228885931097.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Tue, 12 Nov 2019 17:20:26 +0530
-Message-ID: <87ftits48t.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 100A2100DC415
+	for <linux-nvdimm@lists.01.org>; Tue, 12 Nov 2019 09:17:14 -0800 (PST)
+Received: by mail-ot1-x341.google.com with SMTP id d5so14989573otp.4
+        for <linux-nvdimm@lists.01.org>; Tue, 12 Nov 2019 09:15:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JVzIXHrO764GfG4Qiqm8/IBriT7RsdH75hTLmp9BmRA=;
+        b=BV3xxOHWbIQpFI5CB7uozaEEkwDC3lyWKTSTyPa4TC3Rd1nV/7MnrtvXeaQ1Zn/abG
+         nhzwgNg+HMP/zc7thH3+NozpyQbz1ePQ/ASz5y+YgICE0CRqSZzdHbEDliWn//CnYMRu
+         vHRCY+Y8CVfx8lHiYzbdQMlPFcMr0aCT+stJMsIb3zLNuQGMY/pTwW26u1A1i3C9XOW+
+         nw+Nq64NnYGla6dF2P9v2y4kMFTef25LsJwSzbFUjnSsxuStNJXwc4PC154fjf3VfdPF
+         5LsksQleIaBa3iFOcbqYVbhweUIDtdGWopLOAv0G/rosJkOeTyOR/j9fGyVuxi7E4yrJ
+         BsoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JVzIXHrO764GfG4Qiqm8/IBriT7RsdH75hTLmp9BmRA=;
+        b=umLgjJWwwLpFvT+2Jt99+q/+ghZJ2jWlVaqLqyjM3pcNXexQEfG9lTE0WI9di8ZWmC
+         lNTMYa1wK1cy+D7dmysLu9g51EhzF4wzdeV2/a0fRFp0N8Zt2ecEWc1NdalqqfYcVwVM
+         2vg/wRG/sSTZ/xkScN8WeACZ7DQPmHuwFlH0iA9Nm6LyqPEdbivfcI2O2NrF39OaUqs/
+         G6s/+kpj7SEuzChWY6QaluP4Hy3n+idUs3BQ3Dj6gekhvZ1iLjHlatD3Y60wE48QqKVs
+         Vox65w8hYctaKGfn3ONF7mSEiIxfg43FYGBxipg8eN0kRHdTt/odlzXx93VqBZb4Jw7B
+         t2eA==
+X-Gm-Message-State: APjAAAV0ioOd7QLZ0dDVBfdlrzmcaE3RR7y+4QbE/39kwazWioqn0tE3
+	xX6h4e2Dnfgklb7T77jOug37GOMDlRxdxgz0TgHJLA==
+X-Google-Smtp-Source: APXvYqxBWRXUbhgUeJAvflllA99xOkq97GoI6xicPLh5pWfFwhtbLObGxHb1Ub62atqTxWhI8Bsq8hQNoxBqMIRsSJw=
+X-Received: by 2002:a9d:5f11:: with SMTP id f17mr4555105oti.207.1573578928797;
+ Tue, 12 Nov 2019 09:15:28 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-12_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911120107
-Message-ID-Hash: NDA5T6KCWWFRJCICFN4IBWDGXWEN7TVA
-X-Message-ID-Hash: NDA5T6KCWWFRJCICFN4IBWDGXWEN7TVA
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: peterz@infradead.org, dave.hansen@linux.intel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <MN2PR02MB63362F7B019844D94D243CE2A5770@MN2PR02MB6336.namprd02.prod.outlook.com>
+In-Reply-To: <MN2PR02MB63362F7B019844D94D243CE2A5770@MN2PR02MB6336.namprd02.prod.outlook.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 12 Nov 2019 09:15:18 -0800
+Message-ID: <CAPcyv4j75cQ4dSqyKGuioyyf0O9r0BG0TjFgv+w=64gLah5z6w@mail.gmail.com>
+Subject: Re: DAX filesystem support on ARMv8
+To: Bharat Kumar Gogada <bharatku@xilinx.com>
+Message-ID-Hash: H447JEAUYWIRGF7GOXRELXKRS2UNLEV7
+X-Message-ID-Hash: H447JEAUYWIRGF7GOXRELXKRS2UNLEV7
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "willy@infradead.org" <willy@infradead.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "jack@suse.cz" <jack@suse.cz>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NDA5T6KCWWFRJCICFN4IBWDGXWEN7TVA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/H447JEAUYWIRGF7GOXRELXKRS2UNLEV7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -75,110 +67,23 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> Rather than update the permission in ->is_visible() set the permission
-> directly at declaration time.
+On Mon, Nov 11, 2019 at 6:12 PM Bharat Kumar Gogada <bharatku@xilinx.com> wrote:
 >
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/nvdimm/namespace_devs.c |    9 +++------
->  drivers/nvdimm/pfn_devs.c       |   10 +---------
->  drivers/nvdimm/region_devs.c    |   10 +++-------
->  3 files changed, 7 insertions(+), 22 deletions(-)
+> Hi All,
 >
-> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-> index 37471a272c1a..85b553094d19 100644
-> --- a/drivers/nvdimm/namespace_devs.c
-> +++ b/drivers/nvdimm/namespace_devs.c
-> @@ -1303,7 +1303,7 @@ static ssize_t resource_show(struct device *dev,
->  		return -ENXIO;
->  	return sprintf(buf, "%#llx\n", (unsigned long long) res->start);
->  }
-> -static DEVICE_ATTR_RO(resource);
-> +static DEVICE_ATTR(resource, 0400, resource_show, NULL);
->  
->  static const unsigned long blk_lbasize_supported[] = { 512, 520, 528,
->  	4096, 4104, 4160, 4224, 0 };
-> @@ -1619,11 +1619,8 @@ static umode_t namespace_visible(struct kobject *kobj,
->  {
->  	struct device *dev = container_of(kobj, struct device, kobj);
->  
-> -	if (a == &dev_attr_resource.attr) {
-> -		if (is_namespace_blk(dev))
-> -			return 0;
-> -		return 0400;
-> -	}
-> +	if (a == &dev_attr_resource.attr && is_namespace_blk(dev))
-> +		return 0;
->  
->  	if (is_namespace_pmem(dev) || is_namespace_blk(dev)) {
->  		if (a == &dev_attr_size.attr)
-> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-> index e809961e2b6f..9f9cb51301e7 100644
-> --- a/drivers/nvdimm/pfn_devs.c
-> +++ b/drivers/nvdimm/pfn_devs.c
-> @@ -218,7 +218,7 @@ static ssize_t resource_show(struct device *dev,
->  
->  	return rc;
->  }
-> -static DEVICE_ATTR_RO(resource);
-> +static DEVICE_ATTR(resource, 0400, resource_show, NULL);
->  
->  static ssize_t size_show(struct device *dev,
->  		struct device_attribute *attr, char *buf)
-> @@ -269,16 +269,8 @@ static struct attribute *nd_pfn_attributes[] = {
->  	NULL,
->  };
->  
-> -static umode_t pfn_visible(struct kobject *kobj, struct attribute *a, int n)
-> -{
-> -	if (a == &dev_attr_resource.attr)
-> -		return 0400;
-> -	return a->mode;
-> -}
-> -
->  static struct attribute_group nd_pfn_attribute_group = {
->  	.attrs = nd_pfn_attributes,
-> -	.is_visible = pfn_visible,
->  };
->  
->  const struct attribute_group *nd_pfn_attribute_groups[] = {
-> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> index 0afc1973e938..be3e429e86af 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -553,7 +553,7 @@ static ssize_t resource_show(struct device *dev,
->  
->  	return sprintf(buf, "%#llx\n", nd_region->ndr_start);
->  }
-> -static DEVICE_ATTR_RO(resource);
-> +static DEVICE_ATTR(resource, 0400, resource_show, NULL);
->  
->  static ssize_t persistence_domain_show(struct device *dev,
->  		struct device_attribute *attr, char *buf)
-> @@ -605,12 +605,8 @@ static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
->  	if (!is_memory(dev) && a == &dev_attr_badblocks.attr)
->  		return 0;
->  
-> -	if (a == &dev_attr_resource.attr) {
-> -		if (is_memory(dev))
-> -			return 0400;
-> -		else
-> -			return 0;
-> -	}
-> +	if (a == &dev_attr_resource.attr && !is_memory(dev))
-> +		return 0;
->  
->  	if (a == &dev_attr_deep_flush.attr) {
->  		int has_flush = nvdimm_has_flush(nd_region);
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+> As per Documentation/filesystems/dax.txt
+>
+> The DAX code does not work correctly on architectures which have virtually
+> mapped caches such as ARM, MIPS and SPARC.
+>
+> Can anyone please shed light on dax filesystem issue w.r.t ARM architecture ?
+
+The concern is VIVT caches since the kernel will want to flush pmem
+addresses with different virtual addresses than what userspace is
+using. As far as I know, ARMv8 has VIPT caches, so should not have an
+issue. Willy initially wrote those restrictions, but I am assuming
+that the concern was managing the caches in the presence of virtual
+aliases.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
