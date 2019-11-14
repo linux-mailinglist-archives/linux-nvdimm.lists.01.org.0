@@ -2,89 +2,120 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C941CFBD18
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 01:36:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8527FBD21
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 01:42:07 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3FD34100DC436;
-	Wed, 13 Nov 2019 16:38:01 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	by ml01.01.org (Postfix) with ESMTP id AD4C5100DC437;
+	Wed, 13 Nov 2019 16:43:40 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.64; helo=hqemgate15.nvidia.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN> 
+Received: from hqemgate15.nvidia.com (hqemgate15.nvidia.com [216.228.121.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 96891100DC434
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 16:37:58 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:36:23 -0800
-X-IronPort-AV: E=Sophos;i="5.68,302,1569308400";
-   d="scan'208";a="207625341"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:36:22 -0800
-Subject: [PATCH] tools/testing/nvdimm: Fix mock support for ioremap
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Wed, 13 Nov 2019 16:22:06 -0800
-Message-ID: <157369090817.2974548.10148423996292973088.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id B2AB0100DC436
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 16:43:38 -0800 (PST)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by hqemgate15.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+	id <B5dcca2da0000>; Wed, 13 Nov 2019 16:42:02 -0800
+Received: from hqmail.nvidia.com ([172.20.161.6])
+  by hqpgpgate101.nvidia.com (PGP Universal service);
+  Wed, 13 Nov 2019 16:42:03 -0800
+X-PGP-Universal: processed;
+	by hqpgpgate101.nvidia.com on Wed, 13 Nov 2019 16:42:03 -0800
+Received: from [10.2.160.107] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Thu, 14 Nov
+ 2019 00:42:02 +0000
+Subject: Re: [PATCH] mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+To: Dan Williams <dan.j.williams@intel.com>
+References: <157368992671.2974225.13512647385398246617.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-Nvconfidentiality: public
+From: John Hubbard <jhubbard@nvidia.com>
+Message-ID: <913133b7-58d8-9645-fc89-c2819825e1ee@nvidia.com>
+Date: Wed, 13 Nov 2019 16:39:17 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Message-ID-Hash: CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35
-X-Message-ID-Hash: CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+In-Reply-To: <157368992671.2974225.13512647385398246617.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Language: en-US
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+	t=1573692122; bh=nHBqKFuyS3Jqi47A+b+7bCsdLPkBjyfHLHVyQVlH5s4=;
+	h=X-PGP-Universal:Subject:To:CC:References:X-Nvconfidentiality:From:
+	 Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+	 X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+	 Content-Transfer-Encoding;
+	b=mfj+mls9Md6loxbYBg0RKUGTHWE83J7r/HTza4FSYS/5NJpTEpg2CWpo40dqRX44+
+	 ajl43OHTFYsQowjpTzBH7ZG1pTO8SEok2b2z6W9HC0AEQFF5y+7ki4ZiCjuAmJhSUr
+	 9145t48pXQ16RpzNBRlEsbqImCl8QHDCSXJVmguYGxAxx7q3iSEy9ByUVyfDVBNq71
+	 aqkHuqQyRRpBigl9VkMvUrwWr/3fmaRqMIns6aKSWPne9X5LHUJKn05kH8ejTwpgaC
+	 UQKKSqa3O0YFIGHAms67s2H1FHY6cwFQ/zBsA72LKnaD5bDaMSzkNvOJRvU456t2A+
+	 JWCL34W+vVxBA==
+Message-ID-Hash: NGI5NMGLCDYV2ZLUHMUB4JDLOMSUOQXV
+X-Message-ID-Hash: NGI5NMGLCDYV2ZLUHMUB4JDLOMSUOQXV
+X-MailFrom: jhubbard@nvidia.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NGI5NMGLCDYV2ZLUHMUB4JDLOMSUOQXV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-After commit d092a8707326 "arch: rely on asm-generic/io.h for default
-ioremap_* definitions" the ioremap_nocache() symbol has been replaced
-with ioremap(). Update the mocked symbol list for nvdimm testing.
-
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
-Noticed this while trying the nvdimm tests on latest linux-next.
-
- tools/testing/nvdimm/Kbuild       |    1 +
- tools/testing/nvdimm/test/iomap.c |    6 ++++++
- 2 files changed, 7 insertions(+)
-
-diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
-index c4a9196d794c..6aca8d5be159 100644
---- a/tools/testing/nvdimm/Kbuild
-+++ b/tools/testing/nvdimm/Kbuild
-@@ -5,6 +5,7 @@ ldflags-y += --wrap=devm_ioremap_nocache
- ldflags-y += --wrap=devm_memremap
- ldflags-y += --wrap=devm_memunmap
- ldflags-y += --wrap=ioremap_nocache
-+ldflags-y += --wrap=ioremap
- ldflags-y += --wrap=iounmap
- ldflags-y += --wrap=memunmap
- ldflags-y += --wrap=__devm_request_region
-diff --git a/tools/testing/nvdimm/test/iomap.c b/tools/testing/nvdimm/test/iomap.c
-index 3f55f2f99112..6271ac757a4b 100644
---- a/tools/testing/nvdimm/test/iomap.c
-+++ b/tools/testing/nvdimm/test/iomap.c
-@@ -193,6 +193,12 @@ void __iomem *__wrap_ioremap_nocache(resource_size_t offset, unsigned long size)
- }
- EXPORT_SYMBOL(__wrap_ioremap_nocache);
- 
-+void __iomem *__wrap_ioremap(resource_size_t offset, unsigned long size)
-+{
-+	return __nfit_test_ioremap(offset, size, ioremap);
-+}
-+EXPORT_SYMBOL(__wrap_ioremap);
-+
- void __iomem *__wrap_ioremap_wc(resource_size_t offset, unsigned long size)
- {
- 	return __nfit_test_ioremap(offset, size, ioremap_wc);
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gMTEvMTMvMTkgNDowNyBQTSwgRGFuIFdpbGxpYW1zIHdyb3RlOg0KPiBBZnRlciB0aGUgcmVt
+b3ZhbCBvZiB0aGUgZGV2aWNlLXB1YmxpYyBpbmZyYXN0cnVjdHVyZSB0aGVyZSBhcmUgb25seSAy
+DQo+IC0+cGFnZV9mcmVlKCkgY2FsbCBiYWNrcyBpbiB0aGUga2VybmVsLiBPbmUgb2YgdGhvc2Ug
+aXMgYSBkZXZpY2UtcHJpdmF0ZQ0KPiBjYWxsYmFjayBpbiB0aGUgbm91dmVhdSBkcml2ZXIsIHRo
+ZSBvdGhlciBpcyBhIGdlbmVyaWMgd2FrZXVwIG5lZWRlZCBpbg0KPiB0aGUgREFYIGNhc2UuIElu
+IHRoZSBob3BlcyB0aGF0IGFsbCAtPnBhZ2VfZnJlZSgpIGNhbGxiYWNrcyBjYW4gYmUNCj4gbWln
+cmF0ZWQgdG8gY29tbW9uIGNvcmUga2VybmVsIGZ1bmN0aW9uYWxpdHksIG1vdmUgdGhlIGRldmlj
+ZS1wcml2YXRlDQo+IHNwZWNpZmljIGFjdGlvbnMgaW4gX19wdXRfZGV2bWFwX21hbmFnZWRfcGFn
+ZSgpIHVuZGVyIHRoZQ0KPiBpc19kZXZpY2VfcHJpdmF0ZV9wYWdlKCkgY29uZGl0aW9uYWwsIGlu
+Y2x1ZGluZyB0aGUgLT5wYWdlX2ZyZWUoKQ0KPiBjYWxsYmFjay4gRm9yIHRoZSBvdGhlciBwYWdl
+IHR5cGVzIGp1c3Qgb3Blbi1jb2RlIHRoZSBnZW5lcmljIHdha2V1cC4NCj4gDQo+IFllcywgdGhl
+IHdha2V1cCBpcyBvbmx5IG5lZWRlZCBpbiB0aGUgTUVNT1JZX0RFVklDRV9GU0RBWCBjYXNlLCBi
+dXQgaXQNCj4gZG9lcyBubyBoYXJtIGluIHRoZSBNRU1PUllfREVWSUNFX0RFVkRBWCBhbmQgTUVN
+T1JZX0RFVklDRV9QQ0lfUDJQRE1BDQo+IGNhc2UuDQo+IA0KPiBDYzogSmFuIEthcmEgPGphY2tA
+c3VzZS5jej4NCj4gQ2M6IENocmlzdG9waCBIZWxsd2lnIDxoY2hAbHN0LmRlPg0KPiBDYzogSXJh
+IFdlaW55IDxpcmEud2VpbnlAaW50ZWwuY29tPg0KPiBDYzogSsOpcsO0bWUgR2xpc3NlIDxqZ2xp
+c3NlQHJlZGhhdC5jb20+DQo+IENjOiBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52aWRpYS5jb20+
+DQo+IFNpZ25lZC1vZmYtYnk6IERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29t
+Pg0KPiAtLS0NCj4gSGkgSm9obiwNCj4gDQo+IFRoaXMgYXBwbGllcyBvbiB0b3Agb2YgdG9kYXkn
+cyBsaW51eC1uZXh0IGFuZCBwYXNzZXMgbXkgbnZkaW1tIHVuaXQNCj4gdGVzdHMuIFRoYXQgdGVz
+dGluZyBub3RpY2VkIHRoYXQgZGV2bWFwX21hbmFnZWRfZW5hYmxlX2dldCgpIG5lZWRlZCBhDQo+
+IHNtYWxsIGZpeHVwIGFzIHdlbGwuDQoNCkdvdCBpdC4gVGhpcyB3aWxsIGFwcGVhciBpbiB0aGUg
+bmV4dCBwb3N0ZWQgdmVyc2lvbiBvZiBteSAibW0vZ3VwOiB0cmFjaw0KZG1hLXBpbm5lZCBwYWdl
+czogRk9MTF9QSU4sIEZPTExfTE9OR1RFUk0iIHBhdGNoc2V0Lg0KDQoNCj4gDQo+ICAgZHJpdmVy
+cy9udmRpbW0vcG1lbS5jIHwgICAgNiAtLS0tLS0NCj4gICBtbS9tZW1yZW1hcC5jICAgICAgICAg
+fCAgIDIyICsrKysrKysrKysrKy0tLS0tLS0tLS0NCj4gICAyIGZpbGVzIGNoYW5nZWQsIDEyIGlu
+c2VydGlvbnMoKyksIDE2IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bnZkaW1tL3BtZW0uYyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KPiBpbmRleCBmOWY3NmY2YmEw
+N2IuLjIxZGIxY2U4YzBhZSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9udmRpbW0vcG1lbS5jDQo+
+ICsrKyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KPiBAQCAtMzM4LDEzICszMzgsNyBAQCBzdGF0
+aWMgdm9pZCBwbWVtX3JlbGVhc2VfZGlzayh2b2lkICpfX3BtZW0pDQo+ICAgCXB1dF9kaXNrKHBt
+ZW0tPmRpc2spOw0KPiAgIH0NCj4gICANCj4gLXN0YXRpYyB2b2lkIHBtZW1fcGFnZW1hcF9wYWdl
+X2ZyZWUoc3RydWN0IHBhZ2UgKnBhZ2UpDQo+IC17DQo+IC0Jd2FrZV91cF92YXIoJnBhZ2UtPl9y
+ZWZjb3VudCk7DQo+IC19DQo+IC0NCj4gICBzdGF0aWMgY29uc3Qgc3RydWN0IGRldl9wYWdlbWFw
+X29wcyBmc2RheF9wYWdlbWFwX29wcyA9IHsNCj4gLQkucGFnZV9mcmVlCQk9IHBtZW1fcGFnZW1h
+cF9wYWdlX2ZyZWUsDQo+ICAgCS5raWxsCQkJPSBwbWVtX3BhZ2VtYXBfa2lsbCwNCj4gICAJLmNs
+ZWFudXAJCT0gcG1lbV9wYWdlbWFwX2NsZWFudXAsDQo+ICAgfTsNCj4gZGlmZiAtLWdpdCBhL21t
+L21lbXJlbWFwLmMgYi9tbS9tZW1yZW1hcC5jDQo+IGluZGV4IDAyMmU3OGU2OGVhMC4uNmU2ZjNk
+NmZkYjczIDEwMDY0NA0KPiAtLS0gYS9tbS9tZW1yZW1hcC5jDQo+ICsrKyBiL21tL21lbXJlbWFw
+LmMNCj4gQEAgLTI3LDcgKzI3LDggQEAgc3RhdGljIHZvaWQgZGV2bWFwX21hbmFnZWRfZW5hYmxl
+X3B1dCh2b2lkKQ0KPiAgIA0KPiAgIHN0YXRpYyBpbnQgZGV2bWFwX21hbmFnZWRfZW5hYmxlX2dl
+dChzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQ0KPiAgIHsNCj4gLQlpZiAoIXBnbWFwLT5vcHMg
+fHwgIXBnbWFwLT5vcHMtPnBhZ2VfZnJlZSkgew0KPiArCWlmICghcGdtYXAtPm9wcyB8fCAocGdt
+YXAtPnR5cGUgPT0gTUVNT1JZX0RFVklDRV9QUklWQVRFDQo+ICsJCQkJJiYgIXBnbWFwLT5vcHMt
+PnBhZ2VfZnJlZSkpIHsNCg0KDQpPSywgc28gb25seSBNRU1PUllfREVWSUNFX1BSSVZBVEUgaGFz
+IC5wYWdlX2ZyZWUgb3BzLiBUaGF0IGxvb2tzDQpjb3JyZWN0IHRvIG1lLCBiYXNlZCBvbiBsb29r
+aW5nIGF0IHRoZSAucGFnZV9mcmVlIHNldHRlcnMtLUkNCm9ubHkgc2VlIE5vdXZlYXUgc2V0dGlu
+ZyBpdC4NCg0KDQp0aGFua3MsDQotLSANCkpvaG4gSHViYmFyZA0KTlZJRElBCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5n
+IGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFu
+IGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
