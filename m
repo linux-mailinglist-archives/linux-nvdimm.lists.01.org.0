@@ -2,109 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16523FBCFA
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 01:21:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C941CFBD18
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 01:36:28 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3819E100DC437;
-	Wed, 13 Nov 2019 16:23:15 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	by ml01.01.org (Postfix) with ESMTP id 3FD34100DC436;
+	Wed, 13 Nov 2019 16:38:01 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 015AA100DC436
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 16:23:13 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 96891100DC434
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 16:37:58 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:21:38 -0800
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:36:23 -0800
 X-IronPort-AV: E=Sophos;i="5.68,302,1569308400";
-   d="scan'208";a="198632833"
+   d="scan'208";a="207625341"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:21:38 -0800
-Subject: [PATCH] mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Nov 2019 16:36:22 -0800
+Subject: [PATCH] tools/testing/nvdimm: Fix mock support for ioremap
 From: Dan Williams <dan.j.williams@intel.com>
-To: jhubbard@nvidia.com
-Date: Wed, 13 Nov 2019 16:07:22 -0800
-Message-ID: <157368992671.2974225.13512647385398246617.stgit@dwillia2-desk3.amr.corp.intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Wed, 13 Nov 2019 16:22:06 -0800
+Message-ID: <157369090817.2974548.10148423996292973088.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-ID-Hash: MPR4AB7TK4O5GFWBNCC5YN5CBEWVJH5G
-X-Message-ID-Hash: MPR4AB7TK4O5GFWBNCC5YN5CBEWVJH5G
+Message-ID-Hash: CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35
+X-Message-ID-Hash: CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MPR4AB7TK4O5GFWBNCC5YN5CBEWVJH5G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CLIDKNQ6RPMIZZHB57RFHMB3NSNNRI35/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QWZ0ZXIgdGhlIHJlbW92YWwgb2YgdGhlIGRldmljZS1wdWJsaWMgaW5mcmFzdHJ1Y3R1cmUgdGhl
-cmUgYXJlIG9ubHkgMg0KLT5wYWdlX2ZyZWUoKSBjYWxsIGJhY2tzIGluIHRoZSBrZXJuZWwuIE9u
-ZSBvZiB0aG9zZSBpcyBhIGRldmljZS1wcml2YXRlDQpjYWxsYmFjayBpbiB0aGUgbm91dmVhdSBk
-cml2ZXIsIHRoZSBvdGhlciBpcyBhIGdlbmVyaWMgd2FrZXVwIG5lZWRlZCBpbg0KdGhlIERBWCBj
-YXNlLiBJbiB0aGUgaG9wZXMgdGhhdCBhbGwgLT5wYWdlX2ZyZWUoKSBjYWxsYmFja3MgY2FuIGJl
-DQptaWdyYXRlZCB0byBjb21tb24gY29yZSBrZXJuZWwgZnVuY3Rpb25hbGl0eSwgbW92ZSB0aGUg
-ZGV2aWNlLXByaXZhdGUNCnNwZWNpZmljIGFjdGlvbnMgaW4gX19wdXRfZGV2bWFwX21hbmFnZWRf
-cGFnZSgpIHVuZGVyIHRoZQ0KaXNfZGV2aWNlX3ByaXZhdGVfcGFnZSgpIGNvbmRpdGlvbmFsLCBp
-bmNsdWRpbmcgdGhlIC0+cGFnZV9mcmVlKCkNCmNhbGxiYWNrLiBGb3IgdGhlIG90aGVyIHBhZ2Ug
-dHlwZXMganVzdCBvcGVuLWNvZGUgdGhlIGdlbmVyaWMgd2FrZXVwLg0KDQpZZXMsIHRoZSB3YWtl
-dXAgaXMgb25seSBuZWVkZWQgaW4gdGhlIE1FTU9SWV9ERVZJQ0VfRlNEQVggY2FzZSwgYnV0IGl0
-DQpkb2VzIG5vIGhhcm0gaW4gdGhlIE1FTU9SWV9ERVZJQ0VfREVWREFYIGFuZCBNRU1PUllfREVW
-SUNFX1BDSV9QMlBETUENCmNhc2UuDQoNCkNjOiBKYW4gS2FyYSA8amFja0BzdXNlLmN6Pg0KQ2M6
-IENocmlzdG9waCBIZWxsd2lnIDxoY2hAbHN0LmRlPg0KQ2M6IElyYSBXZWlueSA8aXJhLndlaW55
-QGludGVsLmNvbT4NCkNjOiBKw6lyw7RtZSBHbGlzc2UgPGpnbGlzc2VAcmVkaGF0LmNvbT4NCkNj
-OiBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52aWRpYS5jb20+DQpTaWduZWQtb2ZmLWJ5OiBEYW4g
-V2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NCi0tLQ0KSGkgSm9obiwNCg0KVGhp
-cyBhcHBsaWVzIG9uIHRvcCBvZiB0b2RheSdzIGxpbnV4LW5leHQgYW5kIHBhc3NlcyBteSBudmRp
-bW0gdW5pdA0KdGVzdHMuIFRoYXQgdGVzdGluZyBub3RpY2VkIHRoYXQgZGV2bWFwX21hbmFnZWRf
-ZW5hYmxlX2dldCgpIG5lZWRlZCBhDQpzbWFsbCBmaXh1cCBhcyB3ZWxsLg0KDQogZHJpdmVycy9u
-dmRpbW0vcG1lbS5jIHwgICAgNiAtLS0tLS0NCiBtbS9tZW1yZW1hcC5jICAgICAgICAgfCAgIDIy
-ICsrKysrKysrKysrKy0tLS0tLS0tLS0NCiAyIGZpbGVzIGNoYW5nZWQsIDEyIGluc2VydGlvbnMo
-KyksIDE2IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9udmRpbW0vcG1lbS5j
-IGIvZHJpdmVycy9udmRpbW0vcG1lbS5jDQppbmRleCBmOWY3NmY2YmEwN2IuLjIxZGIxY2U4YzBh
-ZSAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KKysrIGIvZHJpdmVycy9udmRp
-bW0vcG1lbS5jDQpAQCAtMzM4LDEzICszMzgsNyBAQCBzdGF0aWMgdm9pZCBwbWVtX3JlbGVhc2Vf
-ZGlzayh2b2lkICpfX3BtZW0pDQogCXB1dF9kaXNrKHBtZW0tPmRpc2spOw0KIH0NCiANCi1zdGF0
-aWMgdm9pZCBwbWVtX3BhZ2VtYXBfcGFnZV9mcmVlKHN0cnVjdCBwYWdlICpwYWdlKQ0KLXsNCi0J
-d2FrZV91cF92YXIoJnBhZ2UtPl9yZWZjb3VudCk7DQotfQ0KLQ0KIHN0YXRpYyBjb25zdCBzdHJ1
-Y3QgZGV2X3BhZ2VtYXBfb3BzIGZzZGF4X3BhZ2VtYXBfb3BzID0gew0KLQkucGFnZV9mcmVlCQk9
-IHBtZW1fcGFnZW1hcF9wYWdlX2ZyZWUsDQogCS5raWxsCQkJPSBwbWVtX3BhZ2VtYXBfa2lsbCwN
-CiAJLmNsZWFudXAJCT0gcG1lbV9wYWdlbWFwX2NsZWFudXAsDQogfTsNCmRpZmYgLS1naXQgYS9t
-bS9tZW1yZW1hcC5jIGIvbW0vbWVtcmVtYXAuYw0KaW5kZXggMDIyZTc4ZTY4ZWEwLi42ZTZmM2Q2
-ZmRiNzMgMTAwNjQ0DQotLS0gYS9tbS9tZW1yZW1hcC5jDQorKysgYi9tbS9tZW1yZW1hcC5jDQpA
-QCAtMjcsNyArMjcsOCBAQCBzdGF0aWMgdm9pZCBkZXZtYXBfbWFuYWdlZF9lbmFibGVfcHV0KHZv
-aWQpDQogDQogc3RhdGljIGludCBkZXZtYXBfbWFuYWdlZF9lbmFibGVfZ2V0KHN0cnVjdCBkZXZf
-cGFnZW1hcCAqcGdtYXApDQogew0KLQlpZiAoIXBnbWFwLT5vcHMgfHwgIXBnbWFwLT5vcHMtPnBh
-Z2VfZnJlZSkgew0KKwlpZiAoIXBnbWFwLT5vcHMgfHwgKHBnbWFwLT50eXBlID09IE1FTU9SWV9E
-RVZJQ0VfUFJJVkFURQ0KKwkJCQkmJiAhcGdtYXAtPm9wcy0+cGFnZV9mcmVlKSkgew0KIAkJV0FS
-TigxLCAiTWlzc2luZyBwYWdlX2ZyZWUgbWV0aG9kXG4iKTsNCiAJCXJldHVybiAtRUlOVkFMOw0K
-IAl9DQpAQCAtNDQ5LDEyICs0NTAsNiBAQCB2b2lkIF9fcHV0X2Rldm1hcF9tYW5hZ2VkX3BhZ2Uo
-c3RydWN0IHBhZ2UgKnBhZ2UpDQogCSAqIGhvbGRzIGEgcmVmZXJlbmNlIG9uIHRoZSBwYWdlLg0K
-IAkgKi8NCiAJaWYgKGNvdW50ID09IDEpIHsNCi0JCS8qIENsZWFyIEFjdGl2ZSBiaXQgaW4gY2Fz
-ZSBvZiBwYXJhbGxlbCBtYXJrX3BhZ2VfYWNjZXNzZWQgKi8NCi0JCV9fQ2xlYXJQYWdlQWN0aXZl
-KHBhZ2UpOw0KLQkJX19DbGVhclBhZ2VXYWl0ZXJzKHBhZ2UpOw0KLQ0KLQkJbWVtX2Nncm91cF91
-bmNoYXJnZShwYWdlKTsNCi0NCiAJCS8qDQogCQkgKiBXaGVuIGEgZGV2aWNlX3ByaXZhdGUgcGFn
-ZSBpcyBmcmVlZCwgdGhlIHBhZ2UtPm1hcHBpbmcgZmllbGQNCiAJCSAqIG1heSBzdGlsbCBjb250
-YWluIGEgKHN0YWxlKSBtYXBwaW5nIHZhbHVlLiBGb3IgZXhhbXBsZSwgdGhlDQpAQCAtNDc2LDEw
-ICs0NzEsMTcgQEAgdm9pZCBfX3B1dF9kZXZtYXBfbWFuYWdlZF9wYWdlKHN0cnVjdCBwYWdlICpw
-YWdlKQ0KIAkJICogaGFuZGxlZCBkaWZmZXJlbnRseSBvciBub3QgZG9uZSBhdCBhbGwsIHNvIHRo
-ZXJlIGlzIG5vIG5lZWQNCiAJCSAqIHRvIGNsZWFyIHBhZ2UtPm1hcHBpbmcuDQogCQkgKi8NCi0J
-CWlmIChpc19kZXZpY2VfcHJpdmF0ZV9wYWdlKHBhZ2UpKQ0KLQkJCXBhZ2UtPm1hcHBpbmcgPSBO
-VUxMOw0KKwkJaWYgKGlzX2RldmljZV9wcml2YXRlX3BhZ2UocGFnZSkpIHsNCisJCQkvKiBDbGVh
-ciBBY3RpdmUgYml0IGluIGNhc2Ugb2YgcGFyYWxsZWwgbWFya19wYWdlX2FjY2Vzc2VkICovDQor
-CQkJX19DbGVhclBhZ2VBY3RpdmUocGFnZSk7DQorCQkJX19DbGVhclBhZ2VXYWl0ZXJzKHBhZ2Up
-Ow0KIA0KLQkJcGFnZS0+cGdtYXAtPm9wcy0+cGFnZV9mcmVlKHBhZ2UpOw0KKwkJCW1lbV9jZ3Jv
-dXBfdW5jaGFyZ2UocGFnZSk7DQorDQorCQkJcGFnZS0+bWFwcGluZyA9IE5VTEw7DQorCQkJcGFn
-ZS0+cGdtYXAtPm9wcy0+cGFnZV9mcmVlKHBhZ2UpOw0KKwkJfSBlbHNlDQorCQkJd2FrZV91cF92
-YXIoJnBhZ2UtPl9yZWZjb3VudCk7DQogCX0gZWxzZSBpZiAoIWNvdW50KQ0KIAkJX19wdXRfcGFn
-ZShwYWdlKTsNCiB9DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
-cmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlz
-dHMuMDEub3JnCg==
+After commit d092a8707326 "arch: rely on asm-generic/io.h for default
+ioremap_* definitions" the ioremap_nocache() symbol has been replaced
+with ioremap(). Update the mocked symbol list for nvdimm testing.
+
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+Noticed this while trying the nvdimm tests on latest linux-next.
+
+ tools/testing/nvdimm/Kbuild       |    1 +
+ tools/testing/nvdimm/test/iomap.c |    6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
+index c4a9196d794c..6aca8d5be159 100644
+--- a/tools/testing/nvdimm/Kbuild
++++ b/tools/testing/nvdimm/Kbuild
+@@ -5,6 +5,7 @@ ldflags-y += --wrap=devm_ioremap_nocache
+ ldflags-y += --wrap=devm_memremap
+ ldflags-y += --wrap=devm_memunmap
+ ldflags-y += --wrap=ioremap_nocache
++ldflags-y += --wrap=ioremap
+ ldflags-y += --wrap=iounmap
+ ldflags-y += --wrap=memunmap
+ ldflags-y += --wrap=__devm_request_region
+diff --git a/tools/testing/nvdimm/test/iomap.c b/tools/testing/nvdimm/test/iomap.c
+index 3f55f2f99112..6271ac757a4b 100644
+--- a/tools/testing/nvdimm/test/iomap.c
++++ b/tools/testing/nvdimm/test/iomap.c
+@@ -193,6 +193,12 @@ void __iomem *__wrap_ioremap_nocache(resource_size_t offset, unsigned long size)
+ }
+ EXPORT_SYMBOL(__wrap_ioremap_nocache);
+ 
++void __iomem *__wrap_ioremap(resource_size_t offset, unsigned long size)
++{
++	return __nfit_test_ioremap(offset, size, ioremap);
++}
++EXPORT_SYMBOL(__wrap_ioremap);
++
+ void __iomem *__wrap_ioremap_wc(resource_size_t offset, unsigned long size)
+ {
+ 	return __nfit_test_ioremap(offset, size, ioremap_wc);
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
