@@ -1,174 +1,141 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C759FBD6A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 02:24:54 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD30FC05F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 07:54:51 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DF9D2100DC436;
-	Wed, 13 Nov 2019 17:26:26 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=jglisse@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 63B64100DC43D;
+	Wed, 13 Nov 2019 22:56:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.72.41; helo=nam05-co1-obe.outbound.protection.outlook.com; envelope-from=bharatku@xilinx.com; receiver=<UNKNOWN> 
+Received: from NAM05-CO1-obe.outbound.protection.outlook.com (mail-eopbgr720041.outbound.protection.outlook.com [40.107.72.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 39DF8100DC434
-	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 17:26:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1573694689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=m7jXRzyKCm+mM5iPsPq5U8675eMVocuhlR6RXezXlIM=;
-	b=cA/WvmN27aGK7XRQqwgnTWw7DcR35apWGGYwu55cW5fuxRCvgja6lWnSWmXXd1Oa7PbCbO
-	5aURkakPfwCm1s11hMFTPjEZ5wo/YcgY2CPrgXlPMfVI36SHU3dMEBxjQsyQRDljkAzI6A
-	FdOOkZHZuGvfgjd/YKoKhvloEWKCXNA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-258-qQt2hxAlNM2VwrcHmZ_fzg-1; Wed, 13 Nov 2019 20:24:45 -0500
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CC5341802CE2;
-	Thu, 14 Nov 2019 01:24:43 +0000 (UTC)
-Received: from redhat.com (ovpn-121-71.rdu2.redhat.com [10.10.121.71])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id C8A791084196;
-	Thu, 14 Nov 2019 01:24:42 +0000 (UTC)
-Date: Wed, 13 Nov 2019 20:24:41 -0500
-From: Jerome Glisse <jglisse@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] mm: Cleanup __put_devmap_managed_page() vs ->page_free()
-Message-ID: <20191114012441.GA6395@redhat.com>
-References: <157368992671.2974225.13512647385398246617.stgit@dwillia2-desk3.amr.corp.intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 8F989100DC43B
+	for <linux-nvdimm@lists.01.org>; Wed, 13 Nov 2019 22:56:19 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PDQbAqXzR6Q9ZFojuhxPQeNDIJ5gSTKICV+zo510C9f8zRAsdbpirPP1AVtxcyYWrH3d5PMnsuPQB7JIkF9mW8MXSki31kH5BnOANKlW84mKZSWY5gbboj4X7UxQ8689f7lY/JRiA1SBHbbXIuZbRdHPVa0tiVFUHZc6GPSUTDdrOJIg/F/SuZYXSUjIH55Nm0AkMpk9bKAzHWS1s6/95crdkayXk3pwWB1p2ixPMSKu0ilTbBJ7GPaeswzpBxqGWwCannsXvayV1fllpae+tia7pYL4Ou55B20Yvji64bm1+4iPJvot8gGfdZvLfavgwyMkS3SbTsVO06X7n+Gecg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fGKeFAMcknn48QUJqQNKn1KH4DRhXv5+uarvQnjRSAM=;
+ b=LOpcWvlfULYgGKorRzUYVDu7H672m2PEYACS15JeTD76pminA9+naIkALqDwf8E4dUIFollAmjeBVUEN77qza2qkx1ayUF3b7afkmzKHCd7NeLp2HMnsNkH5trDT5Qx80XaqXMTEM7OHhJ0dNKjpQMcox+kF8nJRHmGw75aAgoPfGYGdY5mOHC3RHInjHrVRZac2o3MN9lW6L4X1yZ1WYt4Y97wUsUBwOQbcYHm1/RpxEjh1P6lt2q4o9bqbNnQzB32cqRtje9dDC47FEDz4TDYt3vC/r27+YM1HAOHqysePYVP3uh9XE2VLz3HPbTiwgmNe/1PqX2CQVr8bGcNAWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fGKeFAMcknn48QUJqQNKn1KH4DRhXv5+uarvQnjRSAM=;
+ b=oy4eXRZBXyrcS66I1ZQ4kovet61guxhqoGeqUAqDJYIte/+PKeV1K56RF/LjQTrLMQ0GWOCvgJ6AxWSzg4tYdyaNOpFaFYWAhh51EpdHPDkQHw763VHoeRfFrGiXApdZdc4M7ZWqLXlknaPfc213Imc5ouLF68uH5x97rCV/ARM=
+Received: from MN2PR02MB6336.namprd02.prod.outlook.com (52.132.172.222) by
+ MN2PR02MB7085.namprd02.prod.outlook.com (20.180.26.203) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2451.23; Thu, 14 Nov 2019 06:54:44 +0000
+Received: from MN2PR02MB6336.namprd02.prod.outlook.com
+ ([fe80::58bc:3b1e:12cf:675e]) by MN2PR02MB6336.namprd02.prod.outlook.com
+ ([fe80::58bc:3b1e:12cf:675e%7]) with mapi id 15.20.2451.023; Thu, 14 Nov 2019
+ 06:54:44 +0000
+From: Bharat Kumar Gogada <bharatku@xilinx.com>
+To: Matthew Wilcox <willy@infradead.org>, Dan Williams
+	<dan.j.williams@intel.com>
+Subject: RE: DAX filesystem support on ARMv8
+Thread-Topic: DAX filesystem support on ARMv8
+Thread-Index: AdWY/Oy6C0M7BvSlQD+OiC0acLTSOwAf9TYAAAoFFgAARMFHMA==
+Date: Thu, 14 Nov 2019 06:54:43 +0000
+Message-ID: 
+ <MN2PR02MB6336070627E66ED8AE646BACA5710@MN2PR02MB6336.namprd02.prod.outlook.com>
+References: 
+ <MN2PR02MB63362F7B019844D94D243CE2A5770@MN2PR02MB6336.namprd02.prod.outlook.com>
+ <CAPcyv4j75cQ4dSqyKGuioyyf0O9r0BG0TjFgv+w=64gLah5z6w@mail.gmail.com>
+ <20191112220212.GC7934@bombadil.infradead.org>
+In-Reply-To: <20191112220212.GC7934@bombadil.infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=bharatku@xilinx.com;
+x-originating-ip: [149.199.50.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 767c3825-b691-47a1-ac19-08d768cf87c6
+x-ms-traffictypediagnostic: MN2PR02MB7085:
+x-microsoft-antispam-prvs: 
+ <MN2PR02MB7085D64462E585F946286B15A5710@MN2PR02MB7085.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 02213C82F8
+x-forefront-antispam-report: 
+ SFV:NSPM;SFS:(10009020)(4636009)(376002)(366004)(39850400004)(136003)(346002)(396003)(189003)(53754006)(199004)(478600001)(25786009)(14454004)(53546011)(102836004)(256004)(14444005)(6246003)(6116002)(99286004)(305945005)(74316002)(7736002)(2906002)(3846002)(33656002)(76116006)(446003)(11346002)(71200400001)(71190400001)(7696005)(26005)(76176011)(186003)(486006)(476003)(6506007)(52536014)(5660300002)(316002)(81156014)(6436002)(4326008)(66066001)(66446008)(86362001)(66946007)(229853002)(66476007)(9686003)(66556008)(8676002)(64756008)(110136005)(81166006)(8936002)(54906003)(55016002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR02MB7085;H:MN2PR02MB6336.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ eV6g+BWUTl6iiTthaAgrnySGAbuZCXcli1t/7yMXZeK5P5sQSuMR/m88H7Pi6zVadPtrpVud7ApL6Fby8LhVvEAmSWBQdud5j3G8sUuSZ/tE7t+tuLCaZdrtmmlhfM53xb9zHET6Bp3aq4xNasbWEmfxVQL9xFzlMghhm+r3NVLvjhEflqC7iStSz5KNyRcwZ9AlIbDcPCR7D73iy6pcUVbaApajd/QhtotwPkmrwceXY9x7gQnsKmPaefDhX4D4aNE35jXGVSBeKjgqu9n61fPOlt72Pz13m3YWtI+srarBpphkumXkRWjBnc/l1CnfjDR3q7Wr7l7ordiBZL7Sdycz/VHPv+VHN5kv658dnlNiqZD79omGJoic2z5qjjMlH46o5gle3V94iKZTAUjzvKw1d/EV6Qnvz7MWSmOEtbCb6uUCvJwEhkVxSDXhlZIT
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
-In-Reply-To: <157368992671.2974225.13512647385398246617.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-MC-Unique: qQt2hxAlNM2VwrcHmZ_fzg-1
-X-Mimecast-Spam-Score: 0
-Content-Disposition: inline
-Message-ID-Hash: 26BOWOHU34JDFA2S3IBNKHYWKX7ZTZMD
-X-Message-ID-Hash: 26BOWOHU34JDFA2S3IBNKHYWKX7ZTZMD
-X-MailFrom: jglisse@redhat.com
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 767c3825-b691-47a1-ac19-08d768cf87c6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Nov 2019 06:54:44.0488
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 3F5Xlbo4mrKYLgQP92KMHnvrFya1J1Eo+N0Zl59HZjTngsDZ3lQb/rxJ68RnM7PJrcLJOg7mCsU6PawoalhReA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR02MB7085
+Message-ID-Hash: JBIRZOGGXSKRKVFBL2CVQWO27NSLP6WI
+X-Message-ID-Hash: JBIRZOGGXSKRKVFBL2CVQWO27NSLP6WI
+X-MailFrom: bharatku@xilinx.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: jhubbard@nvidia.com, Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "jack@suse.cz" <jack@suse.cz>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/26BOWOHU34JDFA2S3IBNKHYWKX7ZTZMD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGV5IEXJLJ2SMLSNPUXI254ZKV7FBU5V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-On Wed, Nov 13, 2019 at 04:07:22PM -0800, Dan Williams wrote:
-> After the removal of the device-public infrastructure there are only 2
-> ->page_free() call backs in the kernel. One of those is a device-private
-> callback in the nouveau driver, the other is a generic wakeup needed in
-> the DAX case. In the hopes that all ->page_free() callbacks can be
-> migrated to common core kernel functionality, move the device-private
-> specific actions in __put_devmap_managed_page() under the
-> is_device_private_page() conditional, including the ->page_free()
-> callback. For the other page types just open-code the generic wakeup.
->=20
-> Yes, the wakeup is only needed in the MEMORY_DEVICE_FSDAX case, but it
-> does no harm in the MEMORY_DEVICE_DEVDAX and MEMORY_DEVICE_PCI_P2PDMA
-> case.
->=20
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: J=E9r=F4me Glisse <jglisse@redhat.com>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> 
+> On Tue, Nov 12, 2019 at 09:15:18AM -0800, Dan Williams wrote:
+> > On Mon, Nov 11, 2019 at 6:12 PM Bharat Kumar Gogada
+> <bharatku@xilinx.com> wrote:
+> > >
+> > > Hi All,
+> > >
+> > > As per Documentation/filesystems/dax.txt
+> > >
+> > > The DAX code does not work correctly on architectures which have
+> > > virtually mapped caches such as ARM, MIPS and SPARC.
+> > >
+> > > Can anyone please shed light on dax filesystem issue w.r.t ARM architecture
+> ?
+> >
+> > The concern is VIVT caches since the kernel will want to flush pmem
+> > addresses with different virtual addresses than what userspace is
+> > using. As far as I know, ARMv8 has VIPT caches, so should not have an
+> > issue. Willy initially wrote those restrictions, but I am assuming
+> > that the concern was managing the caches in the presence of virtual
+> > aliases.
+> 
+> The kernel will also access data at different virtual addresses from userspace.
+> So VIVT CPUs will be mmap/read/write incoherent, as well as being flush
+> incoherent.
 
-All looks good to me.
+Thanks a lot Wilcox and Dan for clarification. 
+So the above restriction only applies to ARM architectures with VIVT caches and not 
+for VIPT caches. 
 
-Reviewed-by: J=E9r=F4me Glisse <jglisse@redhat.com>
 
-
-> ---
-> Hi John,
->=20
-> This applies on top of today's linux-next and passes my nvdimm unit
-> tests. That testing noticed that devmap_managed_enable_get() needed a
-> small fixup as well.
->=20
->  drivers/nvdimm/pmem.c |    6 ------
->  mm/memremap.c         |   22 ++++++++++++----------
->  2 files changed, 12 insertions(+), 16 deletions(-)
->=20
-> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> index f9f76f6ba07b..21db1ce8c0ae 100644
-> --- a/drivers/nvdimm/pmem.c
-> +++ b/drivers/nvdimm/pmem.c
-> @@ -338,13 +338,7 @@ static void pmem_release_disk(void *__pmem)
->  	put_disk(pmem->disk);
->  }
-> =20
-> -static void pmem_pagemap_page_free(struct page *page)
-> -{
-> -	wake_up_var(&page->_refcount);
-> -}
-> -
->  static const struct dev_pagemap_ops fsdax_pagemap_ops =3D {
-> -	.page_free		=3D pmem_pagemap_page_free,
->  	.kill			=3D pmem_pagemap_kill,
->  	.cleanup		=3D pmem_pagemap_cleanup,
->  };
-> diff --git a/mm/memremap.c b/mm/memremap.c
-> index 022e78e68ea0..6e6f3d6fdb73 100644
-> --- a/mm/memremap.c
-> +++ b/mm/memremap.c
-> @@ -27,7 +27,8 @@ static void devmap_managed_enable_put(void)
-> =20
->  static int devmap_managed_enable_get(struct dev_pagemap *pgmap)
->  {
-> -	if (!pgmap->ops || !pgmap->ops->page_free) {
-> +	if (!pgmap->ops || (pgmap->type =3D=3D MEMORY_DEVICE_PRIVATE
-> +				&& !pgmap->ops->page_free)) {
->  		WARN(1, "Missing page_free method\n");
->  		return -EINVAL;
->  	}
-> @@ -449,12 +450,6 @@ void __put_devmap_managed_page(struct page *page)
->  	 * holds a reference on the page.
->  	 */
->  	if (count =3D=3D 1) {
-> -		/* Clear Active bit in case of parallel mark_page_accessed */
-> -		__ClearPageActive(page);
-> -		__ClearPageWaiters(page);
-> -
-> -		mem_cgroup_uncharge(page);
-> -
->  		/*
->  		 * When a device_private page is freed, the page->mapping field
->  		 * may still contain a (stale) mapping value. For example, the
-> @@ -476,10 +471,17 @@ void __put_devmap_managed_page(struct page *page)
->  		 * handled differently or not done at all, so there is no need
->  		 * to clear page->mapping.
->  		 */
-> -		if (is_device_private_page(page))
-> -			page->mapping =3D NULL;
-> +		if (is_device_private_page(page)) {
-> +			/* Clear Active bit in case of parallel mark_page_accessed */
-> +			__ClearPageActive(page);
-> +			__ClearPageWaiters(page);
-> =20
-> -		page->pgmap->ops->page_free(page);
-> +			mem_cgroup_uncharge(page);
-> +
-> +			page->mapping =3D NULL;
-> +			page->pgmap->ops->page_free(page);
-> +		} else
-> +			wake_up_var(&page->_refcount);
->  	} else if (!count)
->  		__put_page(page);
->  }
->=20
+Regards,
+Bharat 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
