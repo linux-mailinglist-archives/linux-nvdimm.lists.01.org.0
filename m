@@ -1,142 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F29FCAB3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 17:25:38 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6DEFCACD
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 Nov 2019 17:35:21 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 94839100EE8CE;
-	Thu, 14 Nov 2019 08:27:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6B64F100EE8CE;
+	Thu, 14 Nov 2019 08:36:49 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 76B06100EE8CD
-	for <linux-nvdimm@lists.01.org>; Thu, 14 Nov 2019 08:27:04 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Nov 2019 08:25:34 -0800
-X-IronPort-AV: E=Sophos;i="5.68,304,1569308400";
-   d="scan'208";a="195085651"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Nov 2019 08:25:33 -0800
-Subject: [PATCH v3] mm: Cleanup __put_devmap_managed_page() vs ->page_free()
-From: Dan Williams <dan.j.williams@intel.com>
-To: jhubbard@nvidia.com
-Date: Thu, 14 Nov 2019 08:11:17 -0800
-Message-ID: <157374781485.3069020.2978764869460940502.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 46C4C100EE8CD
+	for <linux-nvdimm@lists.01.org>; Thu, 14 Nov 2019 08:36:47 -0800 (PST)
+Received: by mail-ot1-x344.google.com with SMTP id l14so5371206oti.10
+        for <linux-nvdimm@lists.01.org>; Thu, 14 Nov 2019 08:35:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=UNGw4TfqpfUCJ1fFVpttb7yfMciDUeoomP1skmq9jqo=;
+        b=wzDdYVXqT4Ey6M67cJpE2V9RW05xslTchPTS/hgQLgzS1Adyn/SSVZe8h+/FV3+OEr
+         52aw9+G2ykaRfJ+mRf/qS93DqP/b1+Z7BIrrOLGGb96L9dS13FR/cQ5cJs76bWWlrK6W
+         fqNBszqmuQdRuM/2GYczu5lSzGyKaI9xXrl4V/ZNMXYZfWwpYAi0lOB/oV28HZ7TjStS
+         Zqfj2Avr6iBAu3jFnq7z/TQ870HCPlT3y93YEl4aHjCjK+JNpENeUdIZtSkOrBX6im9e
+         w+lAIM11QP6vdr3x7EMoEeyf6fIy5ZiIpMHQUXkqsZwsodfqmPUjwrQgkGmNxSc/hft5
+         YFfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=UNGw4TfqpfUCJ1fFVpttb7yfMciDUeoomP1skmq9jqo=;
+        b=l0z9Ew2RRh3UR6GGyjzQiObewojzSQdxYvtMcXuoiUOg2kwjtA2iokghguWu20oIOV
+         Qmhjtog3oH4Nr4C9ooFzaqR0WiZfV24WkJ1Yj3e27TsSIbVOQMVMVwbrWCPzsKMYIR1l
+         xmCBSnB0g0J3Ox0o+tGkU09jJSCGL1txRqc7p/a+qmFZi1rfeRUvfvwK/HekV3nlvqAi
+         bj+1n6jyC+CVkLlMMHEecav1VCV226dvpNiJXb0rD4lSnD9TewRFFIOjgsYtlp7i+cEc
+         5RNKH2RgFicBqcbR2xy37QYnhJxMmsttPKxVUixdLvNKTIKaHadksFZHgWKk8NobMP2z
+         /Hvg==
+X-Gm-Message-State: APjAAAXFUI9iD1e+Q1VaTqKjjTaOjCVh4okhSGmPLv6i/5e2xI8ahQS2
+	s23mStJtcvEAtcvjcQSsthVZeKjLq7tsW3uUeU6+Og==
+X-Google-Smtp-Source: APXvYqwhlbMIqVoDMtemn28FjHxtHG8v5mkLAQT8X9GpCHUizz0JFqeybR7UBBP0zJO9mCY12klfr97VHx+i97m3uhU=
+X-Received: by 2002:a9d:2d89:: with SMTP id g9mr7713217otb.126.1573749316381;
+ Thu, 14 Nov 2019 08:35:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-ID-Hash: ZWK2UHFUTUATK5XLTACBT2EBWG5MKD24
-X-Message-ID-Hash: ZWK2UHFUTUATK5XLTACBT2EBWG5MKD24
+References: <20191025044721.16617-1-alastair@au1.ibm.com> <20191025044721.16617-9-alastair@au1.ibm.com>
+ <8232c1a6-d52a-6c32-6178-de082174a92a@linux.ibm.com>
+In-Reply-To: <8232c1a6-d52a-6c32-6178-de082174a92a@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 14 Nov 2019 08:35:04 -0800
+Message-ID: <CAPcyv4g9b6PyREurH9NcQf4BO2YcRGJPBZDqGKy-Vz91mBKjew@mail.gmail.com>
+Subject: Re: [PATCH 08/10] nvdimm: Add driver for OpenCAPI Storage Class Memory
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID-Hash: U5CRDAG2YMT7XY4B5A7P7XCWSXXGLBY3
+X-Message-ID-Hash: U5CRDAG2YMT7XY4B5A7P7XCWSXXGLBY3
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>, =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+CC: Alastair D'Silva <alastair@au1.ibm.com>, alastair@d-silva.org, Oscar Salvador <osalvador@suse.com>, Michal Hocko <mhocko@suse.com>, David Hildenbrand <david@redhat.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, Wei Yang <richard.weiyang@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>, Pavel Tatashin <pasha.tatashin@soleen.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Qian Cai <cai@lca.pw>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, Hari Bathini <hbathini@linux.ibm.com>, David Gibson <david@gibson.dropbear.id.au>, Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-
+ foundation.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZWK2UHFUTUATK5XLTACBT2EBWG5MKD24/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U5CRDAG2YMT7XY4B5A7P7XCWSXXGLBY3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QWZ0ZXIgdGhlIHJlbW92YWwgb2YgdGhlIGRldmljZS1wdWJsaWMgaW5mcmFzdHJ1Y3R1cmUgdGhl
-cmUgYXJlIG9ubHkgMg0KLT5wYWdlX2ZyZWUoKSBjYWxsIGJhY2tzIGluIHRoZSBrZXJuZWwuIE9u
-ZSBvZiB0aG9zZSBpcyBhIGRldmljZS1wcml2YXRlDQpjYWxsYmFjayBpbiB0aGUgbm91dmVhdSBk
-cml2ZXIsIHRoZSBvdGhlciBpcyBhIGdlbmVyaWMgd2FrZXVwIG5lZWRlZCBpbg0KdGhlIERBWCBj
-YXNlLiBJbiB0aGUgaG9wZXMgdGhhdCBhbGwgLT5wYWdlX2ZyZWUoKSBjYWxsYmFja3MgY2FuIGJl
-DQptaWdyYXRlZCB0byBjb21tb24gY29yZSBrZXJuZWwgZnVuY3Rpb25hbGl0eSwgbW92ZSB0aGUg
-ZGV2aWNlLXByaXZhdGUNCnNwZWNpZmljIGFjdGlvbnMgaW4gX19wdXRfZGV2bWFwX21hbmFnZWRf
-cGFnZSgpIHVuZGVyIHRoZQ0KaXNfZGV2aWNlX3ByaXZhdGVfcGFnZSgpIGNvbmRpdGlvbmFsLCBp
-bmNsdWRpbmcgdGhlIC0+cGFnZV9mcmVlKCkNCmNhbGxiYWNrLiBGb3IgdGhlIG90aGVyIHBhZ2Ug
-dHlwZXMganVzdCBvcGVuLWNvZGUgdGhlIGdlbmVyaWMgd2FrZXVwLg0KDQpZZXMsIHRoZSB3YWtl
-dXAgaXMgb25seSBuZWVkZWQgaW4gdGhlIE1FTU9SWV9ERVZJQ0VfRlNEQVggY2FzZSwgYnV0IGl0
-DQpkb2VzIG5vIGhhcm0gaW4gdGhlIE1FTU9SWV9ERVZJQ0VfREVWREFYIGFuZCBNRU1PUllfREVW
-SUNFX1BDSV9QMlBETUENCmNhc2UuDQoNCkNjOiBKYW4gS2FyYSA8amFja0BzdXNlLmN6Pg0KQ2M6
-IENocmlzdG9waCBIZWxsd2lnIDxoY2hAbHN0LmRlPg0KQ2M6IElyYSBXZWlueSA8aXJhLndlaW55
-QGludGVsLmNvbT4NCkNjOiBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52aWRpYS5jb20+DQpSZXZp
-ZXdlZC1ieTogSsOpcsO0bWUgR2xpc3NlIDxqZ2xpc3NlQHJlZGhhdC5jb20+DQpTaWduZWQtb2Zm
-LWJ5OiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NCi0tLQ0KQ2hhbmdl
-cyBzaW5jZSB2MjoNCi0gRHJvcCAnZWxzZScgYWZ0ZXIgcmV0dXJuLiAoQ2hyaXN0b3BoKQ0KDQog
-ZHJpdmVycy9udmRpbW0vcG1lbS5jIHwgICAgNiAtLS0tDQogbW0vbWVtcmVtYXAuYyAgICAgICAg
-IHwgICA4MCArKysrKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-DQogMiBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCA0MiBkZWxldGlvbnMoLSkNCg0K
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL3BtZW0uYyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0u
-Yw0KaW5kZXggZjlmNzZmNmJhMDdiLi4yMWRiMWNlOGMwYWUgMTAwNjQ0DQotLS0gYS9kcml2ZXJz
-L252ZGltbS9wbWVtLmMNCisrKyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KQEAgLTMzOCwxMyAr
-MzM4LDcgQEAgc3RhdGljIHZvaWQgcG1lbV9yZWxlYXNlX2Rpc2sodm9pZCAqX19wbWVtKQ0KIAlw
-dXRfZGlzayhwbWVtLT5kaXNrKTsNCiB9DQogDQotc3RhdGljIHZvaWQgcG1lbV9wYWdlbWFwX3Bh
-Z2VfZnJlZShzdHJ1Y3QgcGFnZSAqcGFnZSkNCi17DQotCXdha2VfdXBfdmFyKCZwYWdlLT5fcmVm
-Y291bnQpOw0KLX0NCi0NCiBzdGF0aWMgY29uc3Qgc3RydWN0IGRldl9wYWdlbWFwX29wcyBmc2Rh
-eF9wYWdlbWFwX29wcyA9IHsNCi0JLnBhZ2VfZnJlZQkJPSBwbWVtX3BhZ2VtYXBfcGFnZV9mcmVl
-LA0KIAkua2lsbAkJCT0gcG1lbV9wYWdlbWFwX2tpbGwsDQogCS5jbGVhbnVwCQk9IHBtZW1fcGFn
-ZW1hcF9jbGVhbnVwLA0KIH07DQpkaWZmIC0tZ2l0IGEvbW0vbWVtcmVtYXAuYyBiL21tL21lbXJl
-bWFwLmMNCmluZGV4IDAyMmU3OGU2OGVhMC4uZTE2NzhlNTc1ZDlmIDEwMDY0NA0KLS0tIGEvbW0v
-bWVtcmVtYXAuYw0KKysrIGIvbW0vbWVtcmVtYXAuYw0KQEAgLTI3LDcgKzI3LDggQEAgc3RhdGlj
-IHZvaWQgZGV2bWFwX21hbmFnZWRfZW5hYmxlX3B1dCh2b2lkKQ0KIA0KIHN0YXRpYyBpbnQgZGV2
-bWFwX21hbmFnZWRfZW5hYmxlX2dldChzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQ0KIHsNCi0J
-aWYgKCFwZ21hcC0+b3BzIHx8ICFwZ21hcC0+b3BzLT5wYWdlX2ZyZWUpIHsNCisJaWYgKHBnbWFw
-LT50eXBlID09IE1FTU9SWV9ERVZJQ0VfUFJJVkFURSAmJg0KKwkgICAgKCFwZ21hcC0+b3BzIHx8
-ICFwZ21hcC0+b3BzLT5wYWdlX2ZyZWUpKSB7DQogCQlXQVJOKDEsICJNaXNzaW5nIHBhZ2VfZnJl
-ZSBtZXRob2RcbiIpOw0KIAkJcmV0dXJuIC1FSU5WQUw7DQogCX0NCkBAIC00NDQsNDQgKzQ0NSw1
-MSBAQCB2b2lkIF9fcHV0X2Rldm1hcF9tYW5hZ2VkX3BhZ2Uoc3RydWN0IHBhZ2UgKnBhZ2UpDQog
-ew0KIAlpbnQgY291bnQgPSBwYWdlX3JlZl9kZWNfcmV0dXJuKHBhZ2UpOw0KIA0KLQkvKg0KLQkg
-KiBJZiByZWZjb3VudCBpcyAxIHRoZW4gcGFnZSBpcyBmcmVlZCBhbmQgcmVmY291bnQgaXMgc3Rh
-YmxlIGFzIG5vYm9keQ0KLQkgKiBob2xkcyBhIHJlZmVyZW5jZSBvbiB0aGUgcGFnZS4NCi0JICov
-DQotCWlmIChjb3VudCA9PSAxKSB7DQotCQkvKiBDbGVhciBBY3RpdmUgYml0IGluIGNhc2Ugb2Yg
-cGFyYWxsZWwgbWFya19wYWdlX2FjY2Vzc2VkICovDQotCQlfX0NsZWFyUGFnZUFjdGl2ZShwYWdl
-KTsNCi0JCV9fQ2xlYXJQYWdlV2FpdGVycyhwYWdlKTsNCisJLyogc3RpbGwgYnVzeSAqLw0KKwlp
-ZiAoY291bnQgPiAxKQ0KKwkJcmV0dXJuOw0KIA0KLQkJbWVtX2Nncm91cF91bmNoYXJnZShwYWdl
-KTsNCisJLyogb25seSB0cmlnZ2VyZWQgYnkgdGhlIGRldl9wYWdlbWFwIHNodXRkb3duIHBhdGgg
-Ki8NCisJaWYgKGNvdW50ID09IDApIHsNCisJCV9fcHV0X3BhZ2UocGFnZSk7DQorCQlyZXR1cm47
-DQorCX0NCiANCi0JCS8qDQotCQkgKiBXaGVuIGEgZGV2aWNlX3ByaXZhdGUgcGFnZSBpcyBmcmVl
-ZCwgdGhlIHBhZ2UtPm1hcHBpbmcgZmllbGQNCi0JCSAqIG1heSBzdGlsbCBjb250YWluIGEgKHN0
-YWxlKSBtYXBwaW5nIHZhbHVlLiBGb3IgZXhhbXBsZSwgdGhlDQotCQkgKiBsb3dlciBiaXRzIG9m
-IHBhZ2UtPm1hcHBpbmcgbWF5IHN0aWxsIGlkZW50aWZ5IHRoZSBwYWdlIGFzDQotCQkgKiBhbiBh
-bm9ueW1vdXMgcGFnZS4gVWx0aW1hdGVseSwgdGhpcyBlbnRpcmUgZmllbGQgaXMganVzdA0KLQkJ
-ICogc3RhbGUgYW5kIHdyb25nLCBhbmQgaXQgd2lsbCBjYXVzZSBlcnJvcnMgaWYgbm90IGNsZWFy
-ZWQuDQotCQkgKiBPbmUgZXhhbXBsZSBpczoNCi0JCSAqDQotCQkgKiAgbWlncmF0ZV92bWFfcGFn
-ZXMoKQ0KLQkJICogICAgbWlncmF0ZV92bWFfaW5zZXJ0X3BhZ2UoKQ0KLQkJICogICAgICBwYWdl
-X2FkZF9uZXdfYW5vbl9ybWFwKCkNCi0JCSAqICAgICAgICBfX3BhZ2Vfc2V0X2Fub25fcm1hcCgp
-DQotCQkgKiAgICAgICAgICAuLi5jaGVja3MgcGFnZS0+bWFwcGluZywgdmlhIFBhZ2VBbm9uKHBh
-Z2UpIGNhbGwsDQotCQkgKiAgICAgICAgICAgIGFuZCBpbmNvcnJlY3RseSBjb25jbHVkZXMgdGhh
-dCB0aGUgcGFnZSBpcyBhbg0KLQkJICogICAgICAgICAgICBhbm9ueW1vdXMgcGFnZS4gVGhlcmVm
-b3JlLCBpdCBpbmNvcnJlY3RseSwNCi0JCSAqICAgICAgICAgICAgc2lsZW50bHkgZmFpbHMgdG8g
-c2V0IHVwIHRoZSBuZXcgYW5vbiBybWFwLg0KLQkJICoNCi0JCSAqIEZvciBvdGhlciB0eXBlcyBv
-ZiBaT05FX0RFVklDRSBwYWdlcywgbWlncmF0aW9uIGlzIGVpdGhlcg0KLQkJICogaGFuZGxlZCBk
-aWZmZXJlbnRseSBvciBub3QgZG9uZSBhdCBhbGwsIHNvIHRoZXJlIGlzIG5vIG5lZWQNCi0JCSAq
-IHRvIGNsZWFyIHBhZ2UtPm1hcHBpbmcuDQotCQkgKi8NCi0JCWlmIChpc19kZXZpY2VfcHJpdmF0
-ZV9wYWdlKHBhZ2UpKQ0KLQkJCXBhZ2UtPm1hcHBpbmcgPSBOVUxMOw0KKwkvKiBub3RpZnkgcGFn
-ZSBpZGxlIGZvciBkYXggKi8NCisJaWYgKCFpc19kZXZpY2VfcHJpdmF0ZV9wYWdlKHBhZ2UpKSB7
-DQorCQl3YWtlX3VwX3ZhcigmcGFnZS0+X3JlZmNvdW50KTsNCisJCXJldHVybjsNCisJfQ0KIA0K
-LQkJcGFnZS0+cGdtYXAtPm9wcy0+cGFnZV9mcmVlKHBhZ2UpOw0KLQl9IGVsc2UgaWYgKCFjb3Vu
-dCkNCi0JCV9fcHV0X3BhZ2UocGFnZSk7DQorCS8qIENsZWFyIEFjdGl2ZSBiaXQgaW4gY2FzZSBv
-ZiBwYXJhbGxlbCBtYXJrX3BhZ2VfYWNjZXNzZWQgKi8NCisJX19DbGVhclBhZ2VBY3RpdmUocGFn
-ZSk7DQorCV9fQ2xlYXJQYWdlV2FpdGVycyhwYWdlKTsNCisNCisJbWVtX2Nncm91cF91bmNoYXJn
-ZShwYWdlKTsNCisNCisJLyoNCisJICogV2hlbiBhIGRldmljZV9wcml2YXRlIHBhZ2UgaXMgZnJl
-ZWQsIHRoZSBwYWdlLT5tYXBwaW5nIGZpZWxkDQorCSAqIG1heSBzdGlsbCBjb250YWluIGEgKHN0
-YWxlKSBtYXBwaW5nIHZhbHVlLiBGb3IgZXhhbXBsZSwgdGhlDQorCSAqIGxvd2VyIGJpdHMgb2Yg
-cGFnZS0+bWFwcGluZyBtYXkgc3RpbGwgaWRlbnRpZnkgdGhlIHBhZ2UgYXMgYW4NCisJICogYW5v
-bnltb3VzIHBhZ2UuIFVsdGltYXRlbHksIHRoaXMgZW50aXJlIGZpZWxkIGlzIGp1c3Qgc3RhbGUN
-CisJICogYW5kIHdyb25nLCBhbmQgaXQgd2lsbCBjYXVzZSBlcnJvcnMgaWYgbm90IGNsZWFyZWQu
-ICBPbmUNCisJICogZXhhbXBsZSBpczoNCisJICoNCisJICogIG1pZ3JhdGVfdm1hX3BhZ2VzKCkN
-CisJICogICAgbWlncmF0ZV92bWFfaW5zZXJ0X3BhZ2UoKQ0KKwkgKiAgICAgIHBhZ2VfYWRkX25l
-d19hbm9uX3JtYXAoKQ0KKwkgKiAgICAgICAgX19wYWdlX3NldF9hbm9uX3JtYXAoKQ0KKwkgKiAg
-ICAgICAgICAuLi5jaGVja3MgcGFnZS0+bWFwcGluZywgdmlhIFBhZ2VBbm9uKHBhZ2UpIGNhbGws
-DQorCSAqICAgICAgICAgICAgYW5kIGluY29ycmVjdGx5IGNvbmNsdWRlcyB0aGF0IHRoZSBwYWdl
-IGlzIGFuDQorCSAqICAgICAgICAgICAgYW5vbnltb3VzIHBhZ2UuIFRoZXJlZm9yZSwgaXQgaW5j
-b3JyZWN0bHksDQorCSAqICAgICAgICAgICAgc2lsZW50bHkgZmFpbHMgdG8gc2V0IHVwIHRoZSBu
-ZXcgYW5vbiBybWFwLg0KKwkgKg0KKwkgKiBGb3Igb3RoZXIgdHlwZXMgb2YgWk9ORV9ERVZJQ0Ug
-cGFnZXMsIG1pZ3JhdGlvbiBpcyBlaXRoZXINCisJICogaGFuZGxlZCBkaWZmZXJlbnRseSBvciBu
-b3QgZG9uZSBhdCBhbGwsIHNvIHRoZXJlIGlzIG5vIG5lZWQNCisJICogdG8gY2xlYXIgcGFnZS0+
-bWFwcGluZy4NCisJICovDQorCXBhZ2UtPm1hcHBpbmcgPSBOVUxMOw0KKwlwYWdlLT5wZ21hcC0+
-b3BzLT5wYWdlX2ZyZWUocGFnZSk7DQogfQ0KIEVYUE9SVF9TWU1CT0woX19wdXRfZGV2bWFwX21h
-bmFnZWRfcGFnZSk7DQogI2VuZGlmIC8qIENPTkZJR19ERVZfUEFHRU1BUF9PUFMgKi8NCl9fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBt
-YWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBz
-ZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Some quick feedback on your intro concerns...
+
+On Thu, Nov 14, 2019 at 5:41 AM Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+>
+> Hi Alastair,
+>
+> The patch is huge and could/should probably be split in smaller pieces
+
+Yeah, it's a must. Split the minimum viable infrastructure by topic
+and then follow on with per-feature topic patches.
+
+> to ease the review. However, having sinned on that same topic in the
+> past, I made a first pass anyway. I haven't covered everything but tried
+> to focus on the general setup of the driver for now.
+> Since the patch is very long, I'm writing all the comments in one chunk
+> here instead of spreading them over a few thousand lines, where some
+> would be easy to miss.
+>
+>
+> Update MAINTAINERS for the new files
+>
+> Have you discussed with the directory owner if it's ok to split the
+> driver over several files?
+
+My thought is to establish drivers/opencapi/ and move this and the
+existing drivers/misc/ocxl/ bits there.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
