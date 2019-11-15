@@ -1,108 +1,164 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0876FD1DB
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 15 Nov 2019 01:11:41 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E672CFD1DD
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 15 Nov 2019 01:11:43 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DF03E100EEBB6;
-	Thu, 14 Nov 2019 16:13:05 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 0CB28100DC3D6;
+	Thu, 14 Nov 2019 16:13:06 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.65; helo=hqemgate16.nvidia.com; envelope-from=jhubbard@nvidia.com; receiver=<UNKNOWN> 
 Received: from hqemgate16.nvidia.com (hqemgate16.nvidia.com [216.228.121.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A05F8100EEBB6
+	by ml01.01.org (Postfix) with ESMTPS id A1E3A100DC3CF
 	for <linux-nvdimm@lists.01.org>; Thu, 14 Nov 2019 16:13:03 -0800 (PST)
 Received: from hqpgpgate102.nvidia.com (Not Verified[216.228.121.13]) by hqemgate16.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
-	id <B5dcded000003>; Thu, 14 Nov 2019 16:10:40 -0800
+	id <B5dcded000001>; Thu, 14 Nov 2019 16:10:40 -0800
 Received: from hqmail.nvidia.com ([172.20.161.6])
   by hqpgpgate102.nvidia.com (PGP Universal service);
-  Thu, 14 Nov 2019 16:11:36 -0800
+  Thu, 14 Nov 2019 16:11:35 -0800
 X-PGP-Universal: processed;
-	by hqpgpgate102.nvidia.com on Thu, 14 Nov 2019 16:11:36 -0800
-Received: from HQMAIL109.nvidia.com (172.20.187.15) by HQMAIL105.nvidia.com
+	by hqpgpgate102.nvidia.com on Thu, 14 Nov 2019 16:11:35 -0800
+Received: from HQMAIL107.nvidia.com (172.20.187.13) by HQMAIL105.nvidia.com
  (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 15 Nov
  2019 00:11:35 +0000
-Received: from HQMAIL101.nvidia.com (172.20.187.10) by HQMAIL109.nvidia.com
- (172.20.187.15) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 15 Nov
- 2019 00:11:35 +0000
-Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL101.nvidia.com
- (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
- Transport; Fri, 15 Nov 2019 00:11:36 +0000
+Received: from hqnvemgw03.nvidia.com (10.124.88.68) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3 via Frontend
+ Transport; Fri, 15 Nov 2019 00:11:35 +0000
 Received: from blueforge.nvidia.com (Not Verified[10.110.48.28]) by hqnvemgw03.nvidia.com with Trustwave SEG (v7,5,8,10121)
-	id <B5dcded370000>; Thu, 14 Nov 2019 16:11:35 -0800
+	id <B5dcded370001>; Thu, 14 Nov 2019 16:11:35 -0800
 From: John Hubbard <jhubbard@nvidia.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 0/2] mm: devmap: page-freeing related cleanups
-Date: Thu, 14 Nov 2019 16:11:32 -0800
-Message-ID: <20191115001134.2489505-1-jhubbard@nvidia.com>
+Subject: [PATCH 1/2] mm: Cleanup __put_devmap_managed_page() vs ->page_free()
+Date: Thu, 14 Nov 2019 16:11:33 -0800
+Message-ID: <20191115001134.2489505-2-jhubbard@nvidia.com>
 X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191115001134.2489505-1-jhubbard@nvidia.com>
+References: <20191115001134.2489505-1-jhubbard@nvidia.com>
 MIME-Version: 1.0
 X-NVConfidentiality: public
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-	t=1573776640; bh=Mrh+2x3rLyg/1Ohx9ZbAHZm/a7AggeIHJioHTmLGuI0=;
+	t=1573776640; bh=AC3B+bSuSOhCIQMFfknGmFthqUy5L4DGDhYzXP1+5TU=;
 	h=X-PGP-Universal:From:To:CC:Subject:Date:Message-ID:X-Mailer:
-	 MIME-Version:X-NVConfidentiality:Content-Type:
-	 Content-Transfer-Encoding;
-	b=DZcZ0SoDzKuC008CDMbWmWtK8o3RU+gyRqoH79kkT0C1ay6qRmo2hejSoX2HpGy/B
-	 +5FabwWpsUQUGv8HHmkIYTnL1y/2+GbIHQOf+mFA6oxSXk1bk7grxs6uzcJca/E1Xm
-	 8esnQQdLhoMkpKRgjCX2BSCBt9xhr2xYmv9nMeg5OCxdVG2RRQbp1v01apcLfL/nM+
-	 luqycv7RgfjPWuNN9EFxR38gL8JzhKV5dkzHP42ybDarrmwsm+ioY9m1fJDa4Hb+h1
-	 L5/C7iLg1GLeumAXkNYMa/UajJH9HNrt+MaBA2vR328TSNs2V0wznLS3wVBllnpxX1
-	 kU7XWzoQehkGw==
-Message-ID-Hash: LU6IAQKEMTOIHRO2WVNBXWA3AMKBMOJY
-X-Message-ID-Hash: LU6IAQKEMTOIHRO2WVNBXWA3AMKBMOJY
+	 In-Reply-To:References:MIME-Version:X-NVConfidentiality:
+	 Content-Type:Content-Transfer-Encoding;
+	b=OIRUY7DckagIctnCbr5saMRKOLq4oBXmH571qAP08JP5JvrUEggWHPNeOvnQfV+XV
+	 1VLFVB36gtVHUzkM8kjfLhq/+ZzoqK6x1V9ydseZyhI3M1DPjKjXrKECEMGmejxHMY
+	 XSU9FkEnWj3E4kvEtRdM8W4N4qGDHm0dY3xAMZtvEzonvJPg1Kzf50G9ecdeZGWKdT
+	 RA9l8ZtEnKpkXe2+yWriRpIHV4hVouGVWmXv94uHkZ0QzqAUv8pgXumOCF4YVVEzLl
+	 SZFkBKEqhBOJ4x6e/MkH5fLxVCuIlrJBd2w1OP1O2kpvohTDWqrSkJiCnw7WSr3Ln2
+	 YLbig7kOqQN7w==
+Message-ID-Hash: NHMCLDJC2TDDXJB72EIX7TWPS4X2FGGS
+X-Message-ID-Hash: NHMCLDJC2TDDXJB72EIX7TWPS4X2FGGS
 X-MailFrom: jhubbard@nvidia.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>, linux-nvdimm@lists.01.org, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>, John Hubbard <jhubbard@nvidia.com>
+CC: Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, =?UTF-8?q?J=C3=A9r=C3=B4me=20Glisse?= <jglisse@redhat.com>, linux-nvdimm@lists.01.org, linux-mm@kvack.org, LKML <linux-kernel@vger.kernel.org>, John Hubbard <jhubbard@nvidia.com>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LU6IAQKEMTOIHRO2WVNBXWA3AMKBMOJY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NHMCLDJC2TDDXJB72EIX7TWPS4X2FGGS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hi,
-
-Here are the small devmap page-freeing cleanups as requested, so that
-they can be reviewed separately from the larger "track dma-pinned pages
-series" [1] that they were originally part of.
-
-I did not add Jan Kara's and Jerome Glisse's reviewed-by tags, because those
-were for patch 2 but as part of [1], which is different enough from this
-series that I couldn't treat it as "close enough".
-
-Testing: Dan notes that his patch (1) has passed nvdimm unit tests. However,
-I have not yet done much testing of the two patches together. What
-I've done so far is to boot up a system that has CONFIG_DEV_PAGEMAP_OPS=y
-and run LTP tests on it, but none of those tests are exercising
-free_devmap_managed_page().
-
-Dan, if you could run this combined set through your unit tests, I'd feel
-a lot better about it. I'll also work on getting my HMM test setup revived.
-
-
-[1] https://lore.kernel.org/r/20191113042710.3997854-1-jhubbard@nvidia.com
-
-Dan Williams (1):
-  mm: Cleanup __put_devmap_managed_page() vs ->page_free()
-
-John Hubbard (1):
-  mm: devmap: refactor 1-based refcounting for ZONE_DEVICE pages
-
- drivers/nvdimm/pmem.c |  6 ----
- include/linux/mm.h    | 27 +++++++++++++--
- mm/memremap.c         | 76 ++++++++++++++++++++-----------------------
- 3 files changed, 60 insertions(+), 49 deletions(-)
-
--- 
-2.24.0
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+RnJvbTogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+DQoNCkFmdGVyIHRo
+ZSByZW1vdmFsIG9mIHRoZSBkZXZpY2UtcHVibGljIGluZnJhc3RydWN0dXJlIHRoZXJlIGFyZSBv
+bmx5IDINCi0+cGFnZV9mcmVlKCkgY2FsbCBiYWNrcyBpbiB0aGUga2VybmVsLiBPbmUgb2YgdGhv
+c2UgaXMgYSBkZXZpY2UtcHJpdmF0ZQ0KY2FsbGJhY2sgaW4gdGhlIG5vdXZlYXUgZHJpdmVyLCB0
+aGUgb3RoZXIgaXMgYSBnZW5lcmljIHdha2V1cCBuZWVkZWQgaW4NCnRoZSBEQVggY2FzZS4gSW4g
+dGhlIGhvcGVzIHRoYXQgYWxsIC0+cGFnZV9mcmVlKCkgY2FsbGJhY2tzIGNhbiBiZQ0KbWlncmF0
+ZWQgdG8gY29tbW9uIGNvcmUga2VybmVsIGZ1bmN0aW9uYWxpdHksIG1vdmUgdGhlIGRldmljZS1w
+cml2YXRlDQpzcGVjaWZpYyBhY3Rpb25zIGluIF9fcHV0X2Rldm1hcF9tYW5hZ2VkX3BhZ2UoKSB1
+bmRlciB0aGUNCmlzX2RldmljZV9wcml2YXRlX3BhZ2UoKSBjb25kaXRpb25hbCwgaW5jbHVkaW5n
+IHRoZSAtPnBhZ2VfZnJlZSgpDQpjYWxsYmFjay4gRm9yIHRoZSBvdGhlciBwYWdlIHR5cGVzIGp1
+c3Qgb3Blbi1jb2RlIHRoZSBnZW5lcmljIHdha2V1cC4NCg0KWWVzLCB0aGUgd2FrZXVwIGlzIG9u
+bHkgbmVlZGVkIGluIHRoZSBNRU1PUllfREVWSUNFX0ZTREFYIGNhc2UsIGJ1dCBpdA0KZG9lcyBu
+byBoYXJtIGluIHRoZSBNRU1PUllfREVWSUNFX0RFVkRBWCBhbmQgTUVNT1JZX0RFVklDRV9QQ0lf
+UDJQRE1BDQpjYXNlLg0KDQpDYzogSmFuIEthcmEgPGphY2tAc3VzZS5jej4NCkNjOiBDaHJpc3Rv
+cGggSGVsbHdpZyA8aGNoQGxzdC5kZT4NCkNjOiBJcmEgV2VpbnkgPGlyYS53ZWlueUBpbnRlbC5j
+b20+DQpSZXZpZXdlZC1ieTogSsOpcsO0bWUgR2xpc3NlIDxqZ2xpc3NlQHJlZGhhdC5jb20+DQpT
+aWduZWQtb2ZmLWJ5OiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NClNp
+Z25lZC1vZmYtYnk6IEpvaG4gSHViYmFyZCA8amh1YmJhcmRAbnZpZGlhLmNvbT4NCi0tLQ0KIGRy
+aXZlcnMvbnZkaW1tL3BtZW0uYyB8ICA2IC0tLS0NCiBtbS9tZW1yZW1hcC5jICAgICAgICAgfCA4
+MCArKysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0tLS0tDQogMiBmaWxlcyBj
+aGFuZ2VkLCA0NCBpbnNlcnRpb25zKCspLCA0MiBkZWxldGlvbnMoLSkNCg0KZGlmZiAtLWdpdCBh
+L2RyaXZlcnMvbnZkaW1tL3BtZW0uYyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KaW5kZXggZjlm
+NzZmNmJhMDdiLi4yMWRiMWNlOGMwYWUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL252ZGltbS9wbWVt
+LmMNCisrKyBiL2RyaXZlcnMvbnZkaW1tL3BtZW0uYw0KQEAgLTMzOCwxMyArMzM4LDcgQEAgc3Rh
+dGljIHZvaWQgcG1lbV9yZWxlYXNlX2Rpc2sodm9pZCAqX19wbWVtKQ0KIAlwdXRfZGlzayhwbWVt
+LT5kaXNrKTsNCiB9DQogDQotc3RhdGljIHZvaWQgcG1lbV9wYWdlbWFwX3BhZ2VfZnJlZShzdHJ1
+Y3QgcGFnZSAqcGFnZSkNCi17DQotCXdha2VfdXBfdmFyKCZwYWdlLT5fcmVmY291bnQpOw0KLX0N
+Ci0NCiBzdGF0aWMgY29uc3Qgc3RydWN0IGRldl9wYWdlbWFwX29wcyBmc2RheF9wYWdlbWFwX29w
+cyA9IHsNCi0JLnBhZ2VfZnJlZQkJPSBwbWVtX3BhZ2VtYXBfcGFnZV9mcmVlLA0KIAkua2lsbAkJ
+CT0gcG1lbV9wYWdlbWFwX2tpbGwsDQogCS5jbGVhbnVwCQk9IHBtZW1fcGFnZW1hcF9jbGVhbnVw
+LA0KIH07DQpkaWZmIC0tZ2l0IGEvbW0vbWVtcmVtYXAuYyBiL21tL21lbXJlbWFwLmMNCmluZGV4
+IDAzY2NiZGZlYjY5Ny4uZTg5OWZhODc2YTYyIDEwMDY0NA0KLS0tIGEvbW0vbWVtcmVtYXAuYw0K
+KysrIGIvbW0vbWVtcmVtYXAuYw0KQEAgLTI3LDcgKzI3LDggQEAgc3RhdGljIHZvaWQgZGV2bWFw
+X21hbmFnZWRfZW5hYmxlX3B1dCh2b2lkKQ0KIA0KIHN0YXRpYyBpbnQgZGV2bWFwX21hbmFnZWRf
+ZW5hYmxlX2dldChzdHJ1Y3QgZGV2X3BhZ2VtYXAgKnBnbWFwKQ0KIHsNCi0JaWYgKCFwZ21hcC0+
+b3BzIHx8ICFwZ21hcC0+b3BzLT5wYWdlX2ZyZWUpIHsNCisJaWYgKHBnbWFwLT50eXBlID09IE1F
+TU9SWV9ERVZJQ0VfUFJJVkFURSAmJg0KKwkgICAgKCFwZ21hcC0+b3BzIHx8ICFwZ21hcC0+b3Bz
+LT5wYWdlX2ZyZWUpKSB7DQogCQlXQVJOKDEsICJNaXNzaW5nIHBhZ2VfZnJlZSBtZXRob2RcbiIp
+Ow0KIAkJcmV0dXJuIC1FSU5WQUw7DQogCX0NCkBAIC00MTQsNDQgKzQxNSw1MSBAQCB2b2lkIF9f
+cHV0X2Rldm1hcF9tYW5hZ2VkX3BhZ2Uoc3RydWN0IHBhZ2UgKnBhZ2UpDQogew0KIAlpbnQgY291
+bnQgPSBwYWdlX3JlZl9kZWNfcmV0dXJuKHBhZ2UpOw0KIA0KLQkvKg0KLQkgKiBJZiByZWZjb3Vu
+dCBpcyAxIHRoZW4gcGFnZSBpcyBmcmVlZCBhbmQgcmVmY291bnQgaXMgc3RhYmxlIGFzIG5vYm9k
+eQ0KLQkgKiBob2xkcyBhIHJlZmVyZW5jZSBvbiB0aGUgcGFnZS4NCi0JICovDQotCWlmIChjb3Vu
+dCA9PSAxKSB7DQotCQkvKiBDbGVhciBBY3RpdmUgYml0IGluIGNhc2Ugb2YgcGFyYWxsZWwgbWFy
+a19wYWdlX2FjY2Vzc2VkICovDQotCQlfX0NsZWFyUGFnZUFjdGl2ZShwYWdlKTsNCi0JCV9fQ2xl
+YXJQYWdlV2FpdGVycyhwYWdlKTsNCisJLyogc3RpbGwgYnVzeSAqLw0KKwlpZiAoY291bnQgPiAx
+KQ0KKwkJcmV0dXJuOw0KIA0KLQkJbWVtX2Nncm91cF91bmNoYXJnZShwYWdlKTsNCisJLyogb25s
+eSB0cmlnZ2VyZWQgYnkgdGhlIGRldl9wYWdlbWFwIHNodXRkb3duIHBhdGggKi8NCisJaWYgKGNv
+dW50ID09IDApIHsNCisJCV9fcHV0X3BhZ2UocGFnZSk7DQorCQlyZXR1cm47DQorCX0NCiANCi0J
+CS8qDQotCQkgKiBXaGVuIGEgZGV2aWNlX3ByaXZhdGUgcGFnZSBpcyBmcmVlZCwgdGhlIHBhZ2Ut
+Pm1hcHBpbmcgZmllbGQNCi0JCSAqIG1heSBzdGlsbCBjb250YWluIGEgKHN0YWxlKSBtYXBwaW5n
+IHZhbHVlLiBGb3IgZXhhbXBsZSwgdGhlDQotCQkgKiBsb3dlciBiaXRzIG9mIHBhZ2UtPm1hcHBp
+bmcgbWF5IHN0aWxsIGlkZW50aWZ5IHRoZSBwYWdlIGFzDQotCQkgKiBhbiBhbm9ueW1vdXMgcGFn
+ZS4gVWx0aW1hdGVseSwgdGhpcyBlbnRpcmUgZmllbGQgaXMganVzdA0KLQkJICogc3RhbGUgYW5k
+IHdyb25nLCBhbmQgaXQgd2lsbCBjYXVzZSBlcnJvcnMgaWYgbm90IGNsZWFyZWQuDQotCQkgKiBP
+bmUgZXhhbXBsZSBpczoNCi0JCSAqDQotCQkgKiAgbWlncmF0ZV92bWFfcGFnZXMoKQ0KLQkJICog
+ICAgbWlncmF0ZV92bWFfaW5zZXJ0X3BhZ2UoKQ0KLQkJICogICAgICBwYWdlX2FkZF9uZXdfYW5v
+bl9ybWFwKCkNCi0JCSAqICAgICAgICBfX3BhZ2Vfc2V0X2Fub25fcm1hcCgpDQotCQkgKiAgICAg
+ICAgICAuLi5jaGVja3MgcGFnZS0+bWFwcGluZywgdmlhIFBhZ2VBbm9uKHBhZ2UpIGNhbGwsDQot
+CQkgKiAgICAgICAgICAgIGFuZCBpbmNvcnJlY3RseSBjb25jbHVkZXMgdGhhdCB0aGUgcGFnZSBp
+cyBhbg0KLQkJICogICAgICAgICAgICBhbm9ueW1vdXMgcGFnZS4gVGhlcmVmb3JlLCBpdCBpbmNv
+cnJlY3RseSwNCi0JCSAqICAgICAgICAgICAgc2lsZW50bHkgZmFpbHMgdG8gc2V0IHVwIHRoZSBu
+ZXcgYW5vbiBybWFwLg0KLQkJICoNCi0JCSAqIEZvciBvdGhlciB0eXBlcyBvZiBaT05FX0RFVklD
+RSBwYWdlcywgbWlncmF0aW9uIGlzIGVpdGhlcg0KLQkJICogaGFuZGxlZCBkaWZmZXJlbnRseSBv
+ciBub3QgZG9uZSBhdCBhbGwsIHNvIHRoZXJlIGlzIG5vIG5lZWQNCi0JCSAqIHRvIGNsZWFyIHBh
+Z2UtPm1hcHBpbmcuDQotCQkgKi8NCi0JCWlmIChpc19kZXZpY2VfcHJpdmF0ZV9wYWdlKHBhZ2Up
+KQ0KLQkJCXBhZ2UtPm1hcHBpbmcgPSBOVUxMOw0KKwkvKiBub3RpZnkgcGFnZSBpZGxlIGZvciBk
+YXggKi8NCisJaWYgKCFpc19kZXZpY2VfcHJpdmF0ZV9wYWdlKHBhZ2UpKSB7DQorCQl3YWtlX3Vw
+X3ZhcigmcGFnZS0+X3JlZmNvdW50KTsNCisJCXJldHVybjsNCisJfQ0KIA0KLQkJcGFnZS0+cGdt
+YXAtPm9wcy0+cGFnZV9mcmVlKHBhZ2UpOw0KLQl9IGVsc2UgaWYgKCFjb3VudCkNCi0JCV9fcHV0
+X3BhZ2UocGFnZSk7DQorCS8qIENsZWFyIEFjdGl2ZSBiaXQgaW4gY2FzZSBvZiBwYXJhbGxlbCBt
+YXJrX3BhZ2VfYWNjZXNzZWQgKi8NCisJX19DbGVhclBhZ2VBY3RpdmUocGFnZSk7DQorCV9fQ2xl
+YXJQYWdlV2FpdGVycyhwYWdlKTsNCisNCisJbWVtX2Nncm91cF91bmNoYXJnZShwYWdlKTsNCisN
+CisJLyoNCisJICogV2hlbiBhIGRldmljZV9wcml2YXRlIHBhZ2UgaXMgZnJlZWQsIHRoZSBwYWdl
+LT5tYXBwaW5nIGZpZWxkDQorCSAqIG1heSBzdGlsbCBjb250YWluIGEgKHN0YWxlKSBtYXBwaW5n
+IHZhbHVlLiBGb3IgZXhhbXBsZSwgdGhlDQorCSAqIGxvd2VyIGJpdHMgb2YgcGFnZS0+bWFwcGlu
+ZyBtYXkgc3RpbGwgaWRlbnRpZnkgdGhlIHBhZ2UgYXMgYW4NCisJICogYW5vbnltb3VzIHBhZ2Uu
+IFVsdGltYXRlbHksIHRoaXMgZW50aXJlIGZpZWxkIGlzIGp1c3Qgc3RhbGUNCisJICogYW5kIHdy
+b25nLCBhbmQgaXQgd2lsbCBjYXVzZSBlcnJvcnMgaWYgbm90IGNsZWFyZWQuICBPbmUNCisJICog
+ZXhhbXBsZSBpczoNCisJICoNCisJICogIG1pZ3JhdGVfdm1hX3BhZ2VzKCkNCisJICogICAgbWln
+cmF0ZV92bWFfaW5zZXJ0X3BhZ2UoKQ0KKwkgKiAgICAgIHBhZ2VfYWRkX25ld19hbm9uX3JtYXAo
+KQ0KKwkgKiAgICAgICAgX19wYWdlX3NldF9hbm9uX3JtYXAoKQ0KKwkgKiAgICAgICAgICAuLi5j
+aGVja3MgcGFnZS0+bWFwcGluZywgdmlhIFBhZ2VBbm9uKHBhZ2UpIGNhbGwsDQorCSAqICAgICAg
+ICAgICAgYW5kIGluY29ycmVjdGx5IGNvbmNsdWRlcyB0aGF0IHRoZSBwYWdlIGlzIGFuDQorCSAq
+ICAgICAgICAgICAgYW5vbnltb3VzIHBhZ2UuIFRoZXJlZm9yZSwgaXQgaW5jb3JyZWN0bHksDQor
+CSAqICAgICAgICAgICAgc2lsZW50bHkgZmFpbHMgdG8gc2V0IHVwIHRoZSBuZXcgYW5vbiBybWFw
+Lg0KKwkgKg0KKwkgKiBGb3Igb3RoZXIgdHlwZXMgb2YgWk9ORV9ERVZJQ0UgcGFnZXMsIG1pZ3Jh
+dGlvbiBpcyBlaXRoZXINCisJICogaGFuZGxlZCBkaWZmZXJlbnRseSBvciBub3QgZG9uZSBhdCBh
+bGwsIHNvIHRoZXJlIGlzIG5vIG5lZWQNCisJICogdG8gY2xlYXIgcGFnZS0+bWFwcGluZy4NCisJ
+ICovDQorCXBhZ2UtPm1hcHBpbmcgPSBOVUxMOw0KKwlwYWdlLT5wZ21hcC0+b3BzLT5wYWdlX2Zy
+ZWUocGFnZSk7DQogfQ0KIEVYUE9SVF9TWU1CT0woX19wdXRfZGV2bWFwX21hbmFnZWRfcGFnZSk7
+DQogI2VuZGlmIC8qIENPTkZJR19ERVZfUEFHRU1BUF9PUFMgKi8NCi0tIA0KMi4yNC4wDQpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
+bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
+c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
