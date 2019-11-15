@@ -1,103 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725B4FE1D5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 15 Nov 2019 16:49:47 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743B5FE2FF
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 15 Nov 2019 17:42:12 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 68EB7100DC3D2;
-	Fri, 15 Nov 2019 07:51:07 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com; envelope-from=info.zennitbankplcnigerian@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+	by ml01.01.org (Postfix) with ESMTP id 0F6CE100DC3D2;
+	Fri, 15 Nov 2019 08:43:32 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C88F2100DC3D0
-	for <linux-nvdimm@lists.01.org>; Fri, 15 Nov 2019 07:51:04 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id x21so10946994ior.2
-        for <linux-nvdimm@lists.01.org>; Fri, 15 Nov 2019 07:49:43 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 9BF7E100DC3D0
+	for <linux-nvdimm@lists.01.org>; Fri, 15 Nov 2019 08:43:28 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id j7so9157989oib.3
+        for <linux-nvdimm@lists.01.org>; Fri, 15 Nov 2019 08:42:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=T96mBsWswYjsm0w7ecYkWpV509ib/ulk9bHbI0Xwo0rzkePegh7rSfOcmzGbyf8vTc
-         lns/HOXyf4/6jOYDVIgZ/CZyIfN2m2y88qVdmXSABhNsP0MXDIRsHGSOOd7wWkwuGiQx
-         ehcoBpFXp6INIFq3jwmveina1L3fsWjpzHRhMvlhwo8OJ8Dy4xuFXwCrYZiL/Ja/dmiU
-         sEvBblBcC09ww5H/W1Li3rJXBc1TYjMn46kjeboNwYGUiqFeNnjz46iJxarBlBzUTpau
-         7EU4w1MkRxjhgPFrJ2/ipVqnuE4IawmENFYcW1JVUg9OFLrEKZvfb77T8+3XayPV4Zd+
-         KrHA==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=UZSpFkKNVNV5BKs7QN+kq39SLlJrWMnwXj2a0zo8qnE=;
+        b=poDEPVm+GRR+otLxrdSAZ6RsFhwEqAB1QsJkDuE4KbprEHKb80CHLXH6PlYDj+gCJV
+         aHoGJ3u18gqjviqy7N0LoTBLO0V2sac4WD6sUmk1cxf7Sedhny0n6g52TAzu+xTL5zcX
+         tqsterSsgoqkXQTAK3rkgi24Qnqpvpccy1d9oiLUq5Jl0AXoSygIvE9v68gz5rB1E11H
+         AQNZMSqmOY8G/6aXzE1okGyyRJT0rVFrhEFiY+ce5br0jvhm2hC5K3JKJVYJ547eYn4a
+         fbU3FL4L9qINKtj5J6n+64VjPU/E93yKhOQa2y2aFvCUxcwPs94f7rvsImulrlR+aYaS
+         u5Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=X5NAAOrJ3bS32ihsXavVCESX6DNfXdWEE7aVqtLVIHM=;
-        b=RJHUBx5SuJ8wfTMMCAsbQAd/sSnece13PQfS8qy4sxnSDvrxGSM2mhmGs7Q6zz6uu9
-         wGizLheGfKuGBH0Aha+5GG0AtbHRFCHeWmR365wKc48kG7Gh+Cj9VFQvsggQfs1UcSbO
-         raEV9R0jvdYqwfT6IfoGvevBq+YzCgfRIDimbllZKBFeMnKY17FHyPJAEwcQ3sYogKU5
-         0xtlYMo1KXVOyP0RY/ao2K0WqLLYh3IJaD/I097EWyX5iRVwdaK0OexdO4BvPL3LzHeu
-         M95nHU+zx0yXpsyVGZTnn3kn66JPNF6JcxMa/BWxlt50hnvnlA+QXRwTsPewnhf2kOY4
-         LIcg==
-X-Gm-Message-State: APjAAAWnHNK3xyWcVVZAB4PqfvbgTyAEc/hJCEn+Y+ur1W9kmsXImznk
-	kq+pFGkf8nSk3QM3X6kWqPIBC10X0e9U2E0JvA==
-X-Google-Smtp-Source: APXvYqxEj1beLI6zhjihT/lmX2Dk324PGcIr8veC5c+0F/PFQKT7AeNYgljOGh72OwNqCMMZvqGkvMbSAqCkDjgGkjg=
-X-Received: by 2002:a5e:8e02:: with SMTP id a2mr1343031ion.269.1573832982053;
- Fri, 15 Nov 2019 07:49:42 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=UZSpFkKNVNV5BKs7QN+kq39SLlJrWMnwXj2a0zo8qnE=;
+        b=hqF1338GKJ6LFx18V+XwJxjpfvqXzbRsHbIiQAuWZmQUYj5upPqp54eA4nfQjB2MCe
+         M7N7Sk45ePMCi+H5LMNTR5aHcOQxE/qu/Qt9Jn8pcuttL2MA2TqTGzMjgj2E6/OxoR0x
+         abqywh7Ma5u1oZNF9Dap/ZLJYpy3R/suPOFyObT3ZM37e7fT+Rj6Y08X9IiLV1cM9SO5
+         aCl3Ha4GCzkuHs0ajf1r+ECKmxIvQZJTsOef28YYac8ab8fdFj2lFmM4IgwQRxCoS+uK
+         9pqFIYtorbpG+zV4kbhxcBBoEKCVM1jodMtSErWJn2ZyUXyPZyNDaEhjXCzzXJ8FPsY1
+         /MGw==
+X-Gm-Message-State: APjAAAWlyUgetFC7tZOLRqSuICZ5c0TgFAw/ZdfjEiTDqn6pjwCagCGa
+	VdHdySmpXNOX+qqFH/nrQaTV0HmNOHpN6kTk+g3B0Q==
+X-Google-Smtp-Source: APXvYqwos7WvYIQqqWWqUogHfETfT35eaGRAWlExs8ZOoMOJeR3E1BLLqRkliqxSdDz2iG5PlZ1EhrthGVA+LQklxHU=
+X-Received: by 2002:aca:55c1:: with SMTP id j184mr9249378oib.105.1573836126000;
+ Fri, 15 Nov 2019 08:42:06 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a02:7749:0:0:0:0:0 with HTTP; Fri, 15 Nov 2019 07:49:41
- -0800 (PST)
-From: "Ms.Mary Coster" <info.zennitbankplcnigerian@gmail.com>
-Date: Fri, 15 Nov 2019 16:49:41 +0100
-Message-ID: <CABHzvrkUQbbmg0Gr7foD3OjAJiY7Fd37=SW3mU=fnOPOcOyNdQ@mail.gmail.com>
-Subject: Goodnews, I have deposited your transfer total amount US$4.8million
- Dollars with Money Gram this morning. we agreed you will be receiving it
- $5000.00 daily.
-To: undisclosed-recipients:;
-Message-ID-Hash: VOBHPCU6BKRFCBC6KD4DFCRDNYKFLVAW
-X-Message-ID-Hash: VOBHPCU6BKRFCBC6KD4DFCRDNYKFLVAW
-X-MailFrom: info.zennitbankplcnigerian@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20191115001134.2489505-1-jhubbard@nvidia.com> <20191115001134.2489505-3-jhubbard@nvidia.com>
+In-Reply-To: <20191115001134.2489505-3-jhubbard@nvidia.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 15 Nov 2019 08:41:55 -0800
+Message-ID: <CAPcyv4hWksbxM5h4b4hCfs_MSggDoEDoxiu4sw2uj1N=z+mOcg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm: devmap: refactor 1-based refcounting for
+ ZONE_DEVICE pages
+To: John Hubbard <jhubbard@nvidia.com>
+Message-ID-Hash: LMVBNON37QWBOATRLLXUBJXTDSHBXHXP
+X-Message-ID-Hash: LMVBNON37QWBOATRLLXUBJXTDSHBXHXP
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@infradead.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: moneygram.1820@outlook.fr
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VOBHPCU6BKRFCBC6KD4DFCRDNYKFLVAW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LMVBNON37QWBOATRLLXUBJXTDSHBXHXP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Attn, Dear
-Goodnews, I have deposited your transfer total amount US$4.8million
-Dollars with Money Gram this morning. we agreed you will be receiving
-it $5000.00 daily.
-Contact Mr. John Dave Director, Money Gram to pick up your first Money
-Gram payment $5000.00 today.
-Contact Person; Mr. John Dave Director, Money Gram,International
-Remittance-Benin
-Email; moneygram.1820@outlook.fr
-Telephone; +229 62619517
-Please re-confirm your address to him once again such as listed below.
-1.Your Full Name..............................
-2.Address.........................
-3.Country....................
-4.Sex.........................................
-5.Your telephone numbers..........................
-6. Copy of your ID...........................
-This is to avoid sending your funds to wrong person, He is waiting to
-hear from you urgent today.
-Let me know once you pick up your transfer $5000.00 today.
-Finally, Note I have paid for the service fees, but only money will
-send to him is $90.00 transfer fee before you can pick up the transfer
-today.
-Ask, Mr. John Dave Director, Money Gram to give you direction where to
-send your transfer fee $90.00 only to Him Immediately so that you can
-pick up $5000.00 us dollars today.
-Thanks for undrstanding.
-Mary Coster
-m.coster@aol.com
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gVGh1LCBOb3YgMTQsIDIwMTkgYXQgNDoxMSBQTSBKb2huIEh1YmJhcmQgPGpodWJiYXJkQG52
+aWRpYS5jb20+IHdyb3RlOg0KPg0KPiBBbiB1cGNvbWluZyBwYXRjaCBjaGFuZ2VzIGFuZCBjb21w
+bGljYXRlcyB0aGUgcmVmY291bnRpbmcgYW5kDQo+IGVzcGVjaWFsbHkgdGhlICJwdXQgcGFnZSIg
+YXNwZWN0cyBvZiBpdC4gSW4gb3JkZXIgdG8ga2VlcA0KPiBldmVyeXRoaW5nIGNsZWFuLCByZWZh
+Y3RvciB0aGUgZGV2bWFwIHBhZ2UgcmVsZWFzZSByb3V0aW5lczoNCj4NCj4gKiBSZW5hbWUgcHV0
+X2Rldm1hcF9tYW5hZ2VkX3BhZ2UoKSB0byBwYWdlX2lzX2Rldm1hcF9tYW5hZ2VkKCksDQo+ICAg
+YW5kIGxpbWl0IHRoZSBmdW5jdGlvbmFsaXR5IHRvICJyZWFkIG9ubHkiOiByZXR1cm4gYSBib29s
+LA0KPiAgIHdpdGggbm8gc2lkZSBlZmZlY3RzLg0KPg0KPiAqIEFkZCBhIG5ldyByb3V0aW5lLCBw
+dXRfZGV2bWFwX21hbmFnZWRfcGFnZSgpLCB0byBoYW5kbGUgY2hlY2tpbmcNCj4gICB3aGF0IGtp
+bmQgb2YgcGFnZSBpdCBpcywgYW5kIHdoYXQga2luZCBvZiByZWZjb3VudCBoYW5kbGluZyBpdA0K
+PiAgIHJlcXVpcmVzLg0KPg0KPiAqIFJlbmFtZSBfX3B1dF9kZXZtYXBfbWFuYWdlZF9wYWdlKCkg
+dG8gZnJlZV9kZXZtYXBfbWFuYWdlZF9wYWdlKCksDQo+ICAgYW5kIGxpbWl0IHRoZSBmdW5jdGlv
+bmFsaXR5IHRvIHVuY29uZGl0aW9uYWxseSBmcmVlaW5nIGEgZGV2bWFwDQo+ICAgcGFnZS4NCj4N
+Cj4gVGhpcyBpcyBvcmlnaW5hbGx5IGJhc2VkIG9uIGEgc2VwYXJhdGUgcGF0Y2ggYnkgSXJhIFdl
+aW55LCB3aGljaA0KPiBhcHBsaWVkIHRvIGFuIGVhcmx5IHZlcnNpb24gb2YgdGhlIHB1dF91c2Vy
+X3BhZ2UoKSBleHBlcmltZW50cy4NCj4gU2luY2UgdGhlbiwgSsOpcsO0bWUgR2xpc3NlIHN1Z2dl
+c3RlZCB0aGUgcmVmYWN0b3JpbmcgZGVzY3JpYmVkIGFib3ZlLg0KPg0KPiBDYzogSmFuIEthcmEg
+PGphY2tAc3VzZS5jej4NCj4gQ2M6IErDqXLDtG1lIEdsaXNzZSA8amdsaXNzZUByZWRoYXQuY29t
+Pg0KPiBDYzogQ2hyaXN0b3BoIEhlbGx3aWcgPGhjaEBsc3QuZGU+DQo+IENjOiBEYW4gV2lsbGlh
+bXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NCj4gU3VnZ2VzdGVkLWJ5OiBKw6lyw7RtZSBH
+bGlzc2UgPGpnbGlzc2VAcmVkaGF0LmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogSXJhIFdlaW55IDxp
+cmEud2VpbnlAaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBKb2huIEh1YmJhcmQgPGpodWJi
+YXJkQG52aWRpYS5jb20+DQo+IC0tLQ0KPiAgaW5jbHVkZS9saW51eC9tbS5oIHwgMjcgKysrKysr
+KysrKysrKysrKysrKysrKysrLS0tDQo+ICBtbS9tZW1yZW1hcC5jICAgICAgfCAxNiArKy0tLS0t
+LS0tLS0tLS0tDQo+ICAyIGZpbGVzIGNoYW5nZWQsIDI2IGluc2VydGlvbnMoKyksIDE3IGRlbGV0
+aW9ucygtKQ0KDQpMb29rcyBnb29kLA0KDQpSZXZpZXdlZC1ieTogRGFuIFdpbGxpYW1zIDxkYW4u
+ai53aWxsaWFtc0BpbnRlbC5jb20+Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
+c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
+ZWF2ZUBsaXN0cy4wMS5vcmcK
