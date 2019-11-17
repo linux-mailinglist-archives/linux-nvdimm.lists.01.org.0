@@ -2,184 +2,88 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE66FF4C7
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 16 Nov 2019 19:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27899FFAD2
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 17 Nov 2019 18:02:29 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AFCF7100EA529;
-	Sat, 16 Nov 2019 10:51:57 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4AC70100DC408;
+	Sun, 17 Nov 2019 09:03:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=62.76.43.240; helo=mail.gelbeseiten.site; envelope-from=info@gelbeseiten.site; receiver=<UNKNOWN> 
+Received: from mail.gelbeseiten.site (gelbeseiten.site [62.76.43.240])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 107E0100EA63E
-	for <linux-nvdimm@lists.01.org>; Sat, 16 Nov 2019 10:51:54 -0800 (PST)
-Received: by mail-ot1-x342.google.com with SMTP id 94so10927430oty.8
-        for <linux-nvdimm@lists.01.org>; Sat, 16 Nov 2019 10:50:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QoYFZW9R1d8a2jA7OF9LL6qxm9ECdf9uJSjSEMDuhDQ=;
-        b=npL0W9KgorQAYQRc87V3l+lkInNdHmoUmlKoaS30Qz8h1kbbszoWt+depF0Asu7mxl
-         aqcsnvAYqLcf7/ASn7KEcz1nvZT+6EhXPwSFHVsh4UhMXGm/NbCH/WT5iF83p1KwmVdU
-         mQcUOdNWqu8v8GtDHZmjwOL8D9F+qoBq5eXZ7HRjT5UEiVHxHnVa+vNAWpy7kswffPO1
-         bwgXM6UixEyqVPlL2Wom470LfwdUXvvP6QVfk3q/t0wJGgMcqDuZt8bh6oc9k6L3q9t2
-         yW/ZV4PTuSEdqXMed4ig6v5vfF9zhU+7WSjTNI2tIeOu7n7O2Y5HJYZ4/BpCKFv8jFDa
-         ni4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QoYFZW9R1d8a2jA7OF9LL6qxm9ECdf9uJSjSEMDuhDQ=;
-        b=J0nvbsdA86GvrSrG5fcqRqjtBZTHHSVctj/JwKUSYvVM0xahiJgBNJuDFUiNfb0MYv
-         jEe7MUJkOb7U55RMIY/hq2MxJInB0uj71FBePi/HyGXORtThMmDOCONSg15k8tGvmOPl
-         Vtr+m99Nt45oC2uZjkBQLuOSPVsvbCn8sHOsz72te60kmDaUrpMgP/joJEUdRWdZgU/G
-         GN8zI1OqGgmPVVWEf99KxSUEQ3keA/+e2dHzfK2HaAMQacqs0Nz+yAj1Djaob3qi05lU
-         AVKJGTbuSVJX4GdwgWMfaq90oo3ruS7oLQO4Nl2oQzBWRsO45zAnRWhE/m5+PxMoJhoo
-         cvXg==
-X-Gm-Message-State: APjAAAXIri76x1mELpRrnGpuDQ6Z7ggZPfpZwAdL0bV8bleFYcaeKyTT
-	xpEdb3IBvQU59O/5frSkEt7UHdhz4K4y9oiXPAtbJQ==
-X-Google-Smtp-Source: APXvYqyV/cgXxJSpVo+ep5Esuuu5uBbs9hzmhs5nbRzcUIbnZl99SOr9AdH9+7qoOn5QBj9jKBAQfldWgdn4Wt7pPjc=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr2604806otb.126.1573930240792;
- Sat, 16 Nov 2019 10:50:40 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id BE821100DC404
+	for <linux-nvdimm@lists.01.org>; Sun, 17 Nov 2019 09:03:27 -0800 (PST)
+Message-ID: <8c1d2f2fdb0f7993b057510209ddd84467ffac2e64@gelbeseiten.site>
+From: Bronislaw <info@gelbeseiten.site>
+To: linux-nvdimm@lists.01.org
+Subject: =?windows-1251?B?0fLw4PLl4+j/IO/w7uTg5iDCMsI=?=
+Date: Sun, 17 Nov 2019 19:02:13 +0200
 MIME-Version: 1.0
-References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com>
- <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com>
- <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com> <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com>
- <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com> <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com>
- <87o8xp5lo9.fsf@linux.ibm.com> <8736eohva1.fsf@linux.ibm.com>
-In-Reply-To: <8736eohva1.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 16 Nov 2019 10:50:29 -0800
-Message-ID: <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: G2GOOB7SC47SB7HAUGRKQKDEHTDNPD2X
-X-Message-ID-Hash: G2GOOB7SC47SB7HAUGRKQKDEHTDNPD2X
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+DKIM-Signature: v=1; a=rsa-sha256; d=gelbeseiten.site; s=mail;
+	c=relaxed/relaxed; t=1574010133;
+	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+	bh=VBpFozYF57pOV9Mhic46o9txMse6GJoTeHVIuS273Gg=;
+	b=ye9D1TkwmojCOU1dGHJI5xe5upKVKBP4yqCOB45VCuelyvUI+6DCT8RUgxZSJe
+	w5V1qlw5XlVlDRX7Sz0nvWyyAbJoEEJHIfwp5/3dE424hYTJJXI8BILgfysNE716
+	QcN972PQtcZHIcm583okYUuk3GVXFclUpruOflhcbP63w=
+Message-ID-Hash: KSOVTJSOGX6IVOG5NUWG2Y7ZALVUJVEE
+X-Message-ID-Hash: KSOVTJSOGX6IVOG5NUWG2Y7ZALVUJVEE
+X-MailFrom: info@gelbeseiten.site
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/G2GOOB7SC47SB7HAUGRKQKDEHTDNPD2X/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KSOVTJSOGX6IVOG5NUWG2Y7ZALVUJVEE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-On Sat, Nov 16, 2019 at 4:15 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
->
-> Hi Dan,
->
-> "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
->
-> > Dan Williams <dan.j.williams@intel.com> writes:
-> >
-> >> On Wed, Oct 30, 2019 at 10:35 PM Aneesh Kumar K.V
-> >> <aneesh.kumar@linux.ibm.com> wrote:
-> >> [..]
-> >>> > True, for the pfn device and the device-dax mapping size, but I'm
-> >>> > suggesting adding another instance of alignment control at the raw
-> >>> > namespace level. That would need to be disconnected from the
-> >>> > device-dax page mapping granularity.
-> >>> >
-> >>>
-> >>> Can you explain what you mean by raw namespace level ? We don't have
-> >>> multiple values against which we need to check the alignment of
-> >>> namespace start and namespace size.
-> >>>
-> >>> If you can outline how and where you would like to enforce that check I
-> >>> can start working on it.
-> >>>
-> >>
-> >> What I mean is that the process of setting up a pfn namespace goes
-> >> something like this in shell script form:
-> >>
-> >> 1/ echo $size > /sys/bus/nd/devices/$namespace/size
-> >> 2/ echo $namespace > /sys/bus/nd/devices/$pfn/namespace
-> >> 3/ echo $pfn_align > /sys/bus/nd/devices/$pfn/align
-> >>
-> >> What I'm suggesting is add an optional 0th step that does:
-> >>
-> >> echo $raw_align > /sys/bus/nd/devices/$namespace/align
-> >>
-> >> Where the raw align needs to be needs to be max($pfn_align,
-> >> arch_mapping_granulariy).
-> >
-> >
-> > I started looking at this and was wondering about userspace being aware
-> > of the direct-map mapping size. We can figure that out by parsing kernel
-> > log
-> >
-> > [    0.000000] Page orders: linear mapping = 24, virtual = 16, io = 16, vmemmap = 24
-> >
-> >
-> > But I am not sure we want to do that. There is not set of raw_align
-> > value to select. What we need to make sure is the below.
-> >
-> > 1) While creating a namespace we need to make sure that namespace size
-> > is multiple of direct-map mapping size. If we ensure that
-> > size is aligned, we should also get the namespace start to be aligned?
-> >
-> > 2) While initialzing a namespace by scanning label area, we need to make
-> > sure every namespace in the region satisfy the above requirement. If not
-> > we should mark the region disabled.
-> >
-> >
-> >>
-> >> So on powerpc where PAGE_SIZE < arch_mapping_granulariy, the following:
-> >>
-> >> cat /sys/bus/nd/devices/$namespace/supported_aligns
-> >>
-> >> ...would show the same output as:
-> >>
-> >> cat /sys/bus/nd/devices/$pfn/align
-> >>
-> >> ...but with any alignment choice less than arch_mapping_granulariy removed.
-> >>
-> >
-> > I am not sure why we need to do that. For example: even if we have
-> > direct-map mapping size as PAGE_SIZE (64K), we still should allow an user
-> > mapping with hugepage size (16M)?
-> >
->
->
-> Considering the direct-map map size is not going to be user selectable,
-> do you agree that we can skip the above step 0 configuration you
-> suggested.
->
-> The changes proposed in the patch series essentially does the rest.
->
-> 1) It validate the size against the arch specific limit during
-> namespace creation. (part of step 1)
-
-This validation is a surprise failure to ndctl.
-
-> 2) It also disable initializing a region if it find the size not
-> correctly aligned as per the platform requirement.
-
-There needs to be a way for the user to discover the correct alignment
-that the kernel will accept.
-
-> 3) Direct map  mapping size is different from supported_alignment for a
-> namespace. The supported alignment controls what possible PAGE SIZE user want the
-> namespace to be mapped to user space.
-
-No, the namespace alignment is different than the page mapping size.
-The alignment is only interpreted as a mapping size at the device-dax
-level, otherwise at the raw namespace level it's just an arbitrary
-alignment.
-
-> With the above do you think the current patch series is good?
-
-I don't think we've quite converged on a solution.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+z/Du9OXx8eju7eDr/O375SDv8O7k4OboIMIywg0KDQrP8O7p5OXyOiAyOCDt7v/h8P8sIMro5eIu
+DQoNCtbl6/wg7/Du4/Dg7Oz7OiCgoKCgoA0KDQotIOL78fLw7ujy/CDg5ODv8ujw7uLg7e3z/iDv
+7uQg8e/l9uj06OrzIOHo5+3l8eAg8fLw4PLl4+j+IO/w6OLr5ffl7ej/IOgg8e7v8O7i7ubk5e3o
+/yDq6+jl7fLgOw0KLSDv7u3/8vwg6u7t9uXv9uj+ICLi7vDu7eroIO/w7uTg5iIsIO3g8/fo8vzx
+/yDx6PHy5ezt7iDu7/Dl5OXr//L8IO/u8uXt9ujg6yDq6+jl7fLgLCDi6OTl8vwg6CDw4Ofw4OHg
+8vvi4PL8IOLu5+zu5u3u8fLoIOTr/yDx5OXr6ugsIO7w6OXt8ujw7uLg8vzx/yDt4CDv8O7w4OHu
+8urzIOLx5ekg6uvo5e3y8eru6SDh4Of7LCDgIO3lIPLu6/zq7iAi6+Xj6uj1IiDq6+jl7fLu4iwg
+7+vg7ejw7uLg8vwg5O7r4+7x8O737fvlIPbl6+gg8ODh7vL7IPEg6uvo5e3y4OzoOw0KLSDi7eXk
+8Ojy/CDv8ODq8ujq8yDv7vHy7v/t7e7j7iDq7uzv6+Xq8e3u4+4g6u7t8uDq8uAg8SDq6+jl7fLu
+7Cwg7+7n4u7r//755ePuIPDl4Ovo5+7i++Lg8vwg7+7y5e326ODrLCDi7ufs7ubt7vHy6CDk6/8g
+8eTl6+roIOgg8fLw7ujy/CDk7uvj7vHw7vft++Ug7vLt7vjl7ej/IPEg6uvo5e3y7uw7DQotIP30
+9OXq8uji7e4g8e7h6PDg8vwg6O307vDs4Pbo/iDoIPPx8uDt4OLr6OLg8vwg6u7t8uDq8iDxIO/u
+8uXt9ujg6/zt++zoIOrr6OXt8uDs6DsNCi0g8u737e4g4vv/4uv/8vwg6O3y5fDl8fssIO/u8vDl
+4e3u8fLoIOgg4vvj7uT7IPDg5+vo9+379SAi4OPl7fLu4iDi6+j/7ej/IiDiIMru7O/g7ejoLcfg
+6uDn9+jq4DsNCi0g9O7w7Ojw7uLg8vwg7+Xw8e7t4Ovo5+jw7uLg7e375SDq7uzs5fD35fHq6OUg
+7/Dl5Ovu5uXt6P87DQotIPPx7+X47e4g4uXx8ugg7+Xw5ePu4u7w+yDv7iDy5evl9O7t8yDoIO/w
+6CDi8fLw5fflOyCgoKCgoA0KLSDo8e/u6/zn7uLg8vwg4u7n8ODm5e3o/yDoIPHu7O3l7ej/IOrr
+6OXt8uAsIOrg6iDi7ufs7ubt7vHy/CDk6/8g7/Du5ODm6DsNCi0g7/Du4u7k6PL8IP309OXq8uji
+7fvlIO/w5efl7fLg9ujoIO/w7uTz6vLgL/Px6/Pj6CDiIOfg4ujx6Ozu8fLoIO7yIPXg8ODq8uXw
+6PHy6Oog8u7i4PDgIOgg7/Ho9e7r7uPo9+Xx6u7j7iDy6O/gIOrr6OXt8uA7DQotIO/u4fPm5ODy
+/CDq6+jl7fLgIOog8e7i5fD45e3o/iDv7urz7+roIOgg5O7i7uTo8vwg6uvo5e3y4CDk7iDn4OLl
+8Pjl7ej/IO/w7uTg5ugv5+Dq6/735e3o/yDx5OXr6ug7DQotIO/u7ejs4PL8IOLg5u3u8fL8IO/u
+8evl7/Du5ODm7e7j7iDx5fDi6PHgIOgg7+7i8u7w7e7pIO/w7uTg5uguIKCgoKCgDQoNCs7n7eDq
+7uzo8vzx/yDxIO/w7uPw4Ozs7uk+DQoNCsfg7f/y6P8g7/Du4u7k6PI6IKCgoKCgDQrE5ePy//Dl
+4uAgzeDy4Ov8/yAtIPEg7u/78u7sIO/z4evo9+379SDi+/Hy8+/r5e3o6Swg7uHz9+Xt6P8g6CDw
+4Ofi6PLo/yDj8PPv7y4g0fDl5Ogg6uvo5e3y7uI6IMjn5ODy5ev88fLi7iAi0fLg7eTg8PIiLCAi
+T3JpZmxhbWUiLCAiR2lsbGV0dGUgVWtyYWluZSBMTEMiLCAize7i++Ug7urt4CIsICJEYWV3b28g
+ZWxlY3Ryb25pY3MiLCAiweXr6+At0vDl6eQiLCAiyuDw6uDxIiwgIsrw5eTo8u/w7uzh4O3qIiwg
+IkZhYmVybGljIiwgItDg6fT04Onn5e3h4O3qIiwgIk1hcnkgS2F5IiwgIsvg7ejyIiwgIsru7Ozz
+7eru7O/r5erxIiwgIszg4+3g8iIsICIyMSDi5eoiLCAixOjr4CIsICLN4On18O7sIiwgItTu8PPs
+IiwgItHu5PDz5uXx8uLuIiDoIOTwLiCgoKCgoA0KDQrR8u7o7O7x8vwg8/fg8fLo/zogoKCgoKAN
+CjMsMDAwLjAwIOPw7S4gLSDn4CDu5O3u4+4g8/fg8fLt6OrgLiCgoKCgoA0KxOv/IOLy7vDu4+4g
+6CDy8OXy/OXj7iDz9+Dx8u3o6uAg8ero5OroIDUlIOggNyUg8e7u8uLl8vHy4uXt7e4goKCgoKAN
+Cg0Kzuft4Oru7Ojy/PH/IPEg7/Du4/Dg7Ozu6T4gaHR0cDovL3NhbGVzLWIyYi5pbi51YS90cmFp
+bmluZy8xNDgvcHJvZmVzc2lvbmFsbmllLXByb2RhemhpLXYydi1vdC1wZXJ2b2dvLWtvbnRha3Rh
+LWRvLXBvdnRvcm5veS1wcm9kYXpoaS5odG0NCg0KxfHr6CDzIMLg8SDi7uft6Ort8/Ig5O7v7uvt
+6PLl6/zt++Ug4u7v8O7x+yAtIO7h8OD54Ony5fH8LCDs+yDi8eXj5OAg8ODk+yDC4Owg7+7s7vf8
+ISCgoKCgoA0KDQotLSCgoKCgoA0K0SDz4uDm5e3o5ewsIKCgoKCgDQpCcm9uaXNsYXcgoKCgoKAN
+CmVtYWlsLezg8Orl8u7r7uMgoKCgoKANCg0Kwe7r/PjlIO3lIO/u6/P34PL8Lg0KTGlzdC1VbnN1
+YnNjcmliZSBmcm9tIHRoZSBuZXdzbGV0dGVyIO5yIGNvbXBsYWluIOBi7nV0IFNQwMwuDQpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
+bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
+c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
