@@ -1,140 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D9831001C9
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Nov 2019 10:52:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DF11009D6
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 Nov 2019 17:57:17 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BC73E100DC3FA;
-	Mon, 18 Nov 2019 01:53:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 27B07100DC2A2;
+	Mon, 18 Nov 2019 08:58:13 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1FB41100DC3F9
-	for <linux-nvdimm@lists.01.org>; Mon, 18 Nov 2019 01:53:14 -0800 (PST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xAI9ppF0069021;
-	Mon, 18 Nov 2019 04:52:09 -0500
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2wayf4xwg7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2019 04:52:08 -0500
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id xAI9o4s1006441;
-	Mon, 18 Nov 2019 09:52:07 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
-	by ppma02wdc.us.ibm.com with ESMTP id 2wa8r61676-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2019 09:52:07 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xAI9q7mZ61014302
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Nov 2019 09:52:07 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E537478060;
-	Mon, 18 Nov 2019 09:52:06 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB5F078069;
-	Mon, 18 Nov 2019 09:52:00 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.34.246])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon, 18 Nov 2019 09:52:00 +0000 (GMT)
-X-Mailer: emacs 26.2 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [RFC PATCH 1/4] libnvdimm/namespace: Make namespace size validation arch dependent
-In-Reply-To: <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
-References: <20191028094825.21448-1-aneesh.kumar@linux.ibm.com> <CAPcyv4gZ=wKzwscu_nch8VUtNTHusKzjmMhYZWo+Se=BPO9q8g@mail.gmail.com> <6f85f4af-788d-aaef-db64-ab8d3faf6b1b@linux.ibm.com> <CAPcyv4gMnSe26QfSBABx0zj3XuFqy=K1XaGnmE3h3sP3Y76nRw@mail.gmail.com> <4c6e5743-663e-853b-2203-15c809965965@linux.ibm.com> <CAPcyv4h42_1deZDaaW1RqX0Ls+maiFO_1e=6xJuHTa3wdWvVvA@mail.gmail.com> <87o8xp5lo9.fsf@linux.ibm.com> <8736eohva1.fsf@linux.ibm.com> <CAPcyv4hroohsrXT1YHQB-L8ZFa2kUW+bKy03We4Mt7afeJgu3Q@mail.gmail.com>
-Date: Mon, 18 Nov 2019 15:21:57 +0530
-Message-ID: <87o8x9h5qa.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id EEBF2100DC3FD
+	for <linux-nvdimm@lists.01.org>; Mon, 18 Nov 2019 08:58:10 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id o12so5826055oic.9
+        for <linux-nvdimm@lists.01.org>; Mon, 18 Nov 2019 08:57:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=F2QoGBxbqxKaHdAJPvrt4O/5DoqHAWLSusSXIabi09g=;
+        b=ZZs8QLgb0DGoI+4Ohq8LM3IGXjtQSC4kxA1QwWcD4Za3EBZf+BE3wP72aWJb9897Re
+         l8EwHdLUGZfYNmmFhUr1dT7/l5C75vFfJMR3be0zpoR9seynFhm64osd4ClQ6chd7YGk
+         6a8ixbDjDsWRVMiY50w+KObtQpOTxJ/kLYNOgA1Xc/kxL0bihi9PSMWhoKFRAIXkTWhj
+         uV7YSXY3fWllNgIyQEy1sJC/Ne2NO2c9Lcddcu2Nx543vj/8d1QqBq+BmppqX2r+QGu0
+         ySlU18Hbsf2Zg0yhbJ0WcaIFmHOlEL+cXMYMu/ynuLKdzVpMoIcbRbbr/g++sg5n6/Rp
+         IfBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=F2QoGBxbqxKaHdAJPvrt4O/5DoqHAWLSusSXIabi09g=;
+        b=ORjee9Sp9Tf9IE9tyUIld5BXmi/PcY7LMo8YqPzbIbJsWOMKoLFh9bCY3JPG/RwxoH
+         /5azYcWEwnsePszGi51ezMBlmpgGAkUuXybM4ACWOXQhIKN95cR5YeJbF/EBzX0RMuXw
+         S8Y2zmQo4dCLlZrXRD44Oc8rU9axXfwJHFDk9FSqZjTYgj7hao+mVHY0V38bWjkond8d
+         Hg3WMP+xiQavhxMq2VtTt6Ga6nsyM2RFxDGsiS05vc4nFCf7/N0BoM/x1IiQQfzAvofD
+         ofxeMrx1RW+hWs/2gxN8QcxO1oAnO7zI3E2vGukRIXO/ufb6Ies5uhNBYOdFAjgf5uW1
+         k+0Q==
+X-Gm-Message-State: APjAAAWxdK1/NPTmuWq0ilXHfmw/4PmvTrRo7sm3pO7XLnQFzJn+fH3k
+	Bt3ewfmkyw9pGABzYlHtyzaypk5t8nSeHk5AeS0k6w==
+X-Google-Smtp-Source: APXvYqzxVz2ITPsmL7BIllg6yzJCnkn09mUhU51YguSZB4HFRO8vRYA3KeNXnspk2IZU9U52ryt0kS3aQ71VvEQofWA=
+X-Received: by 2002:aca:55c1:: with SMTP id j184mr22494640oib.105.1574096232626;
+ Mon, 18 Nov 2019 08:57:12 -0800 (PST)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-11-18_01:2019-11-15,2019-11-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- mlxscore=0 malwarescore=0 impostorscore=0 phishscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 spamscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-1911180088
-Message-ID-Hash: NUKDJCWIIXMIBLQVGUULOBT3OXM263EG
-X-Message-ID-Hash: NUKDJCWIIXMIBLQVGUULOBT3OXM263EG
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <20191115001134.2489505-1-jhubbard@nvidia.com> <20191115001134.2489505-3-jhubbard@nvidia.com>
+ <20191118070826.GB3099@infradead.org>
+In-Reply-To: <20191118070826.GB3099@infradead.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 18 Nov 2019 08:57:01 -0800
+Message-ID: <CAPcyv4ganBBR61ZEwGHOoA+FeAdSY8rWzTCNM=zhnfn27KOafw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm: devmap: refactor 1-based refcounting for
+ ZONE_DEVICE pages
+To: Christoph Hellwig <hch@infradead.org>
+Message-ID-Hash: KTPYTRYX6HWGYVUZEKVCHASHC5DZLV3I
+X-Message-ID-Hash: KTPYTRYX6HWGYVUZEKVCHASHC5DZLV3I
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>, Jens Axboe <axboe@kernel.dk>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NUKDJCWIIXMIBLQVGUULOBT3OXM263EG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KTPYTRYX6HWGYVUZEKVCHASHC5DZLV3I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Sat, Nov 16, 2019 at 4:15 AM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
-
-....
-
-
->>
->> Considering the direct-map map size is not going to be user selectable,
->> do you agree that we can skip the above step 0 configuration you
->> suggested.
->>
->> The changes proposed in the patch series essentially does the rest.
->>
->> 1) It validate the size against the arch specific limit during
->> namespace creation. (part of step 1)
->
-> This validation is a surprise failure to ndctl.
->
->> 2) It also disable initializing a region if it find the size not
->> correctly aligned as per the platform requirement.
->
-> There needs to be a way for the user to discover the correct alignment
-> that the kernel will accept.
->
->> 3) Direct map  mapping size is different from supported_alignment for a
->> namespace. The supported alignment controls what possible PAGE SIZE user want the
->> namespace to be mapped to user space.
->
-> No, the namespace alignment is different than the page mapping size.
-> The alignment is only interpreted as a mapping size at the device-dax
-> level, otherwise at the raw namespace level it's just an arbitrary
-> alignment.
->
->> With the above do you think the current patch series is good?
->
-> I don't think we've quite converged on a solution.
-
-How about we make it a property of seed device. ie,
-we add `supported_size_align` RO attribute to the seed device. ndctl can
-use this to validate the size value. So this now becomes step0
-
-sys/bus/nd/devices/region0> cat btt0.0/supported_size_align 
-16777216
-/sys/bus/nd/devices/region0> cat pfn0.0/supported_size_align 
-16777216
-/sys/bus/nd/devices/region0> cat dax0.0/supported_size_align 
-16777216
-/sys/bus/nd/devices/region0>
-
-We follow that up with validating the size value written to size
-attribute(step 1).
-
-While initializing the namespaces already present in a region we again
-validate the size and if not properly aligned we mark the region
-disabled.
-
--aneesh
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gU3VuLCBOb3YgMTcsIDIwMTkgYXQgMTE6MDkgUE0gQ2hyaXN0b3BoIEhlbGx3aWcgPGhjaEBp
+bmZyYWRlYWQub3JnPiB3cm90ZToNCj4NCj4gT24gVGh1LCBOb3YgMTQsIDIwMTkgYXQgMDQ6MTE6
+MzRQTSAtMDgwMCwgSm9obiBIdWJiYXJkIHdyb3RlOg0KPiA+IEFuIHVwY29taW5nIHBhdGNoIGNo
+YW5nZXMgYW5kIGNvbXBsaWNhdGVzIHRoZSByZWZjb3VudGluZyBhbmQNCj4gPiBlc3BlY2lhbGx5
+IHRoZSAicHV0IHBhZ2UiIGFzcGVjdHMgb2YgaXQuIEluIG9yZGVyIHRvIGtlZXANCj4gPiBldmVy
+eXRoaW5nIGNsZWFuLCByZWZhY3RvciB0aGUgZGV2bWFwIHBhZ2UgcmVsZWFzZSByb3V0aW5lczoN
+Cj4gPg0KPiA+ICogUmVuYW1lIHB1dF9kZXZtYXBfbWFuYWdlZF9wYWdlKCkgdG8gcGFnZV9pc19k
+ZXZtYXBfbWFuYWdlZCgpLA0KPiA+ICAgYW5kIGxpbWl0IHRoZSBmdW5jdGlvbmFsaXR5IHRvICJy
+ZWFkIG9ubHkiOiByZXR1cm4gYSBib29sLA0KPiA+ICAgd2l0aCBubyBzaWRlIGVmZmVjdHMuDQo+
+ID4NCj4gPiAqIEFkZCBhIG5ldyByb3V0aW5lLCBwdXRfZGV2bWFwX21hbmFnZWRfcGFnZSgpLCB0
+byBoYW5kbGUgY2hlY2tpbmcNCj4gPiAgIHdoYXQga2luZCBvZiBwYWdlIGl0IGlzLCBhbmQgd2hh
+dCBraW5kIG9mIHJlZmNvdW50IGhhbmRsaW5nIGl0DQo+ID4gICByZXF1aXJlcy4NCj4gPg0KPiA+
+ICogUmVuYW1lIF9fcHV0X2Rldm1hcF9tYW5hZ2VkX3BhZ2UoKSB0byBmcmVlX2Rldm1hcF9tYW5h
+Z2VkX3BhZ2UoKSwNCj4gPiAgIGFuZCBsaW1pdCB0aGUgZnVuY3Rpb25hbGl0eSB0byB1bmNvbmRp
+dGlvbmFsbHkgZnJlZWluZyBhIGRldm1hcA0KPiA+ICAgcGFnZS4NCj4gPg0KPiA+IFRoaXMgaXMg
+b3JpZ2luYWxseSBiYXNlZCBvbiBhIHNlcGFyYXRlIHBhdGNoIGJ5IElyYSBXZWlueSwgd2hpY2gN
+Cj4gPiBhcHBsaWVkIHRvIGFuIGVhcmx5IHZlcnNpb24gb2YgdGhlIHB1dF91c2VyX3BhZ2UoKSBl
+eHBlcmltZW50cy4NCj4gPiBTaW5jZSB0aGVuLCBKw6lyw7RtZSBHbGlzc2Ugc3VnZ2VzdGVkIHRo
+ZSByZWZhY3RvcmluZyBkZXNjcmliZWQgYWJvdmUuDQo+DQo+IEkgY2FuJ3Qgc2F5IEknbSBhIGJp
+ZyBmYW4gb2YgdGhpcyBhcyBpdCBhZGRzIGEgbG90IG1vcmUgaW5saW5lZA0KPiBjb2RlIHRvIHB1
+dF9wYWdlLCB3aGljaCBoYXMgYSBsb3Qgb2YgY2FsbHNpdGVzLiAgQ2FuJ3Qgd2UgaW5zdGVhZA0K
+PiB0cnkgdG8gZmlndXJlIG91dCBhIHdheSB0byBtb3ZlIGF3YXkgZnJvbSB0aGUgb2ZmIGJ5IG9u
+ZSByZWZjb3VudGluZz8NCg0KVGhhdCBtaWdodCBiZSBwb3NzaWJsZS4gRGF2aWQgYW5kIEkgYXJl
+IGRpc2N1c3NpbmcgYSBwZm5fb25saW5lKCkNCmhlbHBlciB0aGF0IG1pZ2h0IGJlIGEgcmVwbGFj
+ZW1lbnQgZm9yIGtlZXBpbmcgWk9ORV9ERVZJQ0UgcGFnZXMgb3V0DQpvZiB0aGUgcGFnZSBhbGxv
+Y2F0b3IgcmF0aGVyIHRoYW4ga2VlcGluZyB0aGVpciByZWZlcmVuY2UgY291bnQNCmVsZXZhdGVk
+LgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJz
+Y3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
