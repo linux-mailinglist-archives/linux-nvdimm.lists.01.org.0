@@ -1,111 +1,81 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB96F104D1D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Nov 2019 09:02:20 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C42104F0C
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 Nov 2019 10:18:33 +0100 (CET)
 Received: from new-ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B6F14100DC2BF;
-	Thu, 21 Nov 2019 00:02:55 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=pagupta@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EED04100DC3D5;
+	Thu, 21 Nov 2019 01:19:07 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=redhairer.li@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6C05A100DC2BF
-	for <linux-nvdimm@lists.01.org>; Thu, 21 Nov 2019 00:02:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1574323322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mG0FHW0fig4Cx/LxAaJLR6J3VqDT9J+mhAWOfYVykWs=;
-	b=M/BxHV9MEmk+gkhq8PlUSFXybhegVDOwzS6YMLHmbbxGpTLlNaX2b/P8YOkXHJaiseT6Nw
-	PqiAltKhhfmZA+ltywuW0U4hovVizkkYUZrVED+8/XTE2b1nx6L14I142IKt5dj5kEWcg+
-	NfrXnjS1px0UtRCO8cHHdEtzaOtWMd4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-380-g80Ev-2mMmmrw3oAT5So1Q-1; Thu, 21 Nov 2019 03:01:58 -0500
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C6273801E5D;
-	Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B7AEC692BE;
-	Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Received: from zmail21.collab.prod.int.phx2.redhat.com (zmail21.collab.prod.int.phx2.redhat.com [10.5.83.24])
-	by colo-mx.corp.redhat.com (Postfix) with ESMTP id 8F4591809563;
-	Thu, 21 Nov 2019 08:01:56 +0000 (UTC)
-Date: Thu, 21 Nov 2019 03:01:56 -0500 (EST)
-From: Pankaj Gupta <pagupta@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <2089367516.35808121.1574323316486.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
-References: <20191120092831.6198-1-pagupta@redhat.com> <x49d0dmihmu.fsf@segfault.boston.devel.redhat.com> <CAPcyv4gCe8k1GdatAWn1991pm3QZq2WBFAGEFsZ2PXpyo2=wMw@mail.gmail.com>
-Subject: Re: [PATCH] virtio pmem: fix async flush ordering
+	by ml01.01.org (Postfix) with ESMTPS id D17F7100DC3D4
+	for <linux-nvdimm@lists.01.org>; Thu, 21 Nov 2019 01:19:05 -0800 (PST)
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Nov 2019 01:18:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,224,1571727600";
+   d="scan'208,217,223";a="290260013"
+Received: from pgsmsx108.gar.corp.intel.com ([10.221.44.103])
+  by orsmga001.jf.intel.com with ESMTP; 21 Nov 2019 01:18:26 -0800
+Received: from pgsmsx114.gar.corp.intel.com ([169.254.4.197]) by
+ PGSMSX108.gar.corp.intel.com ([10.221.44.103]) with mapi id 14.03.0439.000;
+ Thu, 21 Nov 2019 17:18:26 +0800
+From: "Li, Redhairer" <redhairer.li@intel.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: "Williams, Dan J" <dan.j.williams@intel.com>
+Subject: daxctl: Change region input type from INTEGER to STRING.
+Thread-Topic: daxctl: Change region input type from INTEGER to STRING.
+Thread-Index: AdWgS+HioQKQhQkFRMaZk8EtSuhX4g==
+Date: Thu, 21 Nov 2019 09:18:25 +0000
+Message-ID: <2369E669066F8E42A79A3DF0E43B9E643AC95A81@pgsmsx114.gar.corp.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMzY3NmJiYmYtYjM2OC00NDM1LWExNWMtMTUzZDFiY2JjYmEwIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiUmMrNDVpdUV6WTV6Y3pHRlNNYytzOUdScEN1SFdHVXFyc2JDRkdUbEFtVFF0TzhaYjFETkd1NkVjcVlUeHd5TiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [172.30.20.206]
 MIME-Version: 1.0
-X-Originating-IP: [10.67.116.169, 10.4.195.1]
-Thread-Topic: virtio pmem: fix async flush ordering
-Thread-Index: n73vjZWQN2B3un3TvjjmhkQyzbgvzg==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-MC-Unique: g80Ev-2mMmmrw3oAT5So1Q-1
-X-Mimecast-Spam-Score: 0
-Message-ID-Hash: MFLE4B4K5QA6XEWOF6R3ZHT4T765YYZW
-X-Message-ID-Hash: MFLE4B4K5QA6XEWOF6R3ZHT4T765YYZW
-X-MailFrom: pagupta@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>
+Message-ID-Hash: AUKMB3I7IEGZDMBI7BM7HK2W5R4W5OOI
+X-Message-ID-Hash: AUKMB3I7IEGZDMBI7BM7HK2W5R4W5OOI
+X-MailFrom: redhairer.li@intel.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Type: text/plain; charset="us-ascii"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MFLE4B4K5QA6XEWOF6R3ZHT4T765YYZW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AUKMB3I7IEGZDMBI7BM7HK2W5R4W5OOI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 
+SHA-1: 66f34cdc26c58143fb8f11813dae98257b19ddc5
 
-> >
-> > >  Remove logic to create child bio in the async flush function which
-> > >  causes child bio to get executed after parent bio 'pmem_make_request'
-> > >  completes. This resulted in wrong ordering of REQ_PREFLUSH with the
-> > >  data write request.
-> > >
-> > >  Instead we are performing flush from the parent bio to maintain the
-> > >  correct order. Also, returning from function 'pmem_make_request' if
-> > >  REQ_PREFLUSH returns an error.
-> > >
-> > > Reported-by: Jeff Moyer <jmoyer@redhat.com>
-> > > Signed-off-by: Pankaj Gupta <pagupta@redhat.com>
-> >
-> > There's a slight change in behavior for the error path in the
-> > virtio_pmem driver.  Previously, all errors from virtio_pmem_flush were
-> > converted to -EIO.  Now, they are reported as-is.  I think this is
-> > actually an improvement.
-> >
-> > I'll also note that the current behavior can result in data corruption,
-> > so this should be tagged for stable.
-> 
-> I added that and was about to push this out, but what about the fact
-> that now the guest will synchronously wait for flushing to occur. The
-> goal of the child bio was to allow that to be an I/O wait with
-> overlapping I/O, or at least not blocking the submission thread. Does
-> the block layer synchronously wait for PREFLUSH requests? If not I
-> think a synchronous wait is going to be a significant performance
-> regression. Are there any numbers to accompany this change?
+* daxctl: Change region input type from INTEGER to STRING.
 
-My bad, I missed this point completely.
+daxctl use STRING to be region input type. It makes daxctl can accept both <region-id> and region name as region parameter
+eg.
+daxctl list -r region5
+daxctl list -r 5
 
-Thanks,
-Pankaj
+Link: https://github.com/pmem/ndctl/issues/109
+Signed-off-by: Redhairer Li <redhairer.li@intel.com>
 
-> 
-> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
