@@ -2,46 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921781075C0
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Nov 2019 17:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93AA6107655
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 Nov 2019 18:22:10 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DE8E710113300;
-	Fri, 22 Nov 2019 08:27:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=kbusch@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1DEA910113300;
+	Fri, 22 Nov 2019 09:22:34 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 12B4F100DC407
-	for <linux-nvdimm@lists.01.org>; Fri, 22 Nov 2019 08:27:15 -0800 (PST)
-Received: from redsun51.ssa.fujisawa.hgst.com (unknown [199.255.47.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 4225120714;
-	Fri, 22 Nov 2019 16:26:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1574440009;
-	bh=DIxdwg3Q5937m62sq6bdtmPqNpGSKduCcyt14x3ZejI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WFu9VFNEBUyw++fPmfe99RwthqQluul39Ie48FhPg7+Dd1/FppjZ77CUKP0/7FjpR
-	 bxONmnSuEWjbS3QhXl6n4M0WAZwL53AUF/tRIRbYppTcCIQqxT05jonuvMGV6GFnxy
-	 FI5dF0rndwSfdJcs0RcLZAAK46EqLlei6T0vvfa8=
-From: Keith Busch <kbusch@kernel.org>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] MAINTAINERS: Remove Keith from NVDIMM maintainers
-Date: Sat, 23 Nov 2019 01:26:44 +0900
-Message-Id: <20191122162644.27078-1-kbusch@kernel.org>
-X-Mailer: git-send-email 2.21.0
+	by ml01.01.org (Postfix) with ESMTPS id 37D54100DC406
+	for <linux-nvdimm@lists.01.org>; Fri, 22 Nov 2019 09:22:30 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id v138so7151317oif.6
+        for <linux-nvdimm@lists.01.org>; Fri, 22 Nov 2019 09:22:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qpMumZh7hM/zRz5ImXsEU+Ekdm/GLWPGQ1iWkQqoBnI=;
+        b=YkJrzs10Gt6V4yg1U01XTMx1xWgO54rfvRl5krEkDhjzwcLHLqwyXaEBvomS7Oi0FK
+         yp5EnLK9hwtbZo1i3bB7e4o565qkBVUi2tidnmK8Tiif/B6NGPVkixZR1P/SQLkmmYDA
+         Wu7ufZp33oAspBZy+0QH+Pay4PxQrScM/26QK2Qh2N2gjRYjRL04mvYxw9Q0+vOl0MV0
+         Wm/iv7zZIbQRZZa015zu/C8P2KFeQ3H9TTZnnHHnZkScKQK/51YXlTX/7TJiF+UZox+J
+         3XTu7sd9aJPFsz+gR8Q9AKMrAsvGFxTE32FOicihGdiGUTU8hz1ywCCOjRB0+FdLX5K0
+         HYig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qpMumZh7hM/zRz5ImXsEU+Ekdm/GLWPGQ1iWkQqoBnI=;
+        b=KzZ2W/83ed7tGG7EuQ/BQSwBbSswVTt3YAJxgNfV64G2H/+qCSpMho/k+p/O+X/S6o
+         4oGixnAYJI6ExUNt/SIlc1L978vJ6kcUnqqdxqMCUkal6FCeW0sO68lIZokWpge6LuxP
+         D/Hd7z55ohaNUY9kP5+99nQs1wc12rtFdw6BAh8mJbFWSG7WjVFTp0RymhXOAYX8a9R4
+         KtcLKVhpI840tjDXXXS/+uFh3s1FGA4WBiIm1K8cOlIibPHXcrSkPJzKgDYN3OZPMlPf
+         PnH/JCvghtZDwviLZc+gOlt5O8ah8c4J3UNDAQFXw9ljyb78SYMz0D8UjFj9Hd6gPyj5
+         yDCA==
+X-Gm-Message-State: APjAAAXgkAZUDcGPMVInbEeCioC2+qGOhAJBtbZzVhPNALheauP/sn2C
+	EcbdkbTVYhnuA+nEz8uvRxxyT+tNstGLC5WikwVi0g==
+X-Google-Smtp-Source: APXvYqwWzGTwo+k6GgV3qlbcGeYf/M3xynFpOZeAoDaWkvgp8kanJJWV5vV5Sr0B2ka7zWnNIiixEP7Yc2ypwvCrT9Q=
+X-Received: by 2002:aca:ea57:: with SMTP id i84mr12679377oih.73.1574443324487;
+ Fri, 22 Nov 2019 09:22:04 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: NYUIC4JFQFKE4RXAP6KYYDGQP3U334IJ
-X-Message-ID-Hash: NYUIC4JFQFKE4RXAP6KYYDGQP3U334IJ
-X-MailFrom: kbusch@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Keith Busch <kbusch@kernel.org>
+References: <20191122162644.27078-1-kbusch@kernel.org>
+In-Reply-To: <20191122162644.27078-1-kbusch@kernel.org>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 22 Nov 2019 09:21:53 -0800
+Message-ID: <CAPcyv4jvEJXwyGDRoK0tdRcbawVSPWB-4_=6MTohfM4OJwCK9g@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: Remove Keith from NVDIMM maintainers
+To: Keith Busch <kbusch@kernel.org>
+Message-ID-Hash: OXF2NFTTKIDXB2U2SNGTTZKBSCSGADQH
+X-Message-ID-Hash: OXF2NFTTKIDXB2U2SNGTTZKBSCSGADQH
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NYUIC4JFQFKE4RXAP6KYYDGQP3U334IJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OXF2NFTTKIDXB2U2SNGTTZKBSCSGADQH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,35 +67,11 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-I no longer work in this capacity for the NVDIMM or DAX subsystems.
+On Fri, Nov 22, 2019 at 8:26 AM Keith Busch <kbusch@kernel.org> wrote:
+>
+> I no longer work in this capacity for the NVDIMM or DAX subsystems.
 
-Signed-off-by: Keith Busch <kbusch@kernel.org>
----
- MAINTAINERS | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 064333607feb..b6ab2f9d977e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4878,7 +4878,6 @@ F:	include/trace/events/fs_dax.h
- DEVICE DIRECT ACCESS (DAX)
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
--M:	Keith Busch <keith.busch@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
- L:	linux-nvdimm@lists.01.org
- S:	Supported
-@@ -9338,7 +9337,6 @@ LIBNVDIMM: NON-VOLATILE MEMORY DEVICE SUBSYSTEM
- M:	Dan Williams <dan.j.williams@intel.com>
- M:	Vishal Verma <vishal.l.verma@intel.com>
- M:	Dave Jiang <dave.jiang@intel.com>
--M:	Keith Busch <keith.busch@intel.com>
- M:	Ira Weiny <ira.weiny@intel.com>
- L:	linux-nvdimm@lists.01.org
- Q:	https://patchwork.kernel.org/project/linux-nvdimm/list/
--- 
-2.21.0
+Thanks Keith, in more ways than one.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
