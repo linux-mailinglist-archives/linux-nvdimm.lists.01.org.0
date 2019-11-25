@@ -1,42 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812D510914B
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 Nov 2019 16:50:58 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08D2109170
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 Nov 2019 16:59:37 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BF9F110113306;
-	Mon, 25 Nov 2019 07:54:19 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net; receiver=<UNKNOWN> 
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7264810113308;
+	Mon, 25 Nov 2019 08:02:58 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2001:41d0:602:dbe::8; helo=tartarus.angband.pl; envelope-from=kilobyte@angband.pl; receiver=<UNKNOWN> 
+Received: from tartarus.angband.pl (tartarus.angband.pl [IPv6:2001:41d0:602:dbe::8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6B0F4100EA52D
-	for <linux-nvdimm@lists.01.org>; Mon, 25 Nov 2019 07:54:17 -0800 (PST)
-Received: from lwn.net (localhost [127.0.0.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 0E7202E7;
-	Mon, 25 Nov 2019 15:50:53 +0000 (UTC)
-Date: Mon, 25 Nov 2019 08:50:52 -0700
-From: Jonathan Corbet <corbet@lwn.net>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3 0/3] Maintainer Entry Profiles
-Message-ID: <20191125085052.05cfe063@lwn.net>
-In-Reply-To: <157462918268.1729495.10257190766638995699.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157462918268.1729495.10257190766638995699.stgit@dwillia2-desk3.amr.corp.intel.com>
-Organization: LWN.net
+	by ml01.01.org (Postfix) with ESMTPS id 6516E10113307
+	for <linux-nvdimm@lists.01.org>; Mon, 25 Nov 2019 08:02:54 -0800 (PST)
+Received: from [2a02:a31c:853f:a300::4] (helo=valinor.angband.pl)
+	by tartarus.angband.pl with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <kilobyte@angband.pl>)
+	id 1iZGlo-00075q-RC; Mon, 25 Nov 2019 16:59:26 +0100
+Received: from kilobyte by valinor.angband.pl with local (Exim 4.93-RC4)
+	(envelope-from <kilobyte@valinor.angband.pl>)
+	id 1iZGlo-000M37-1Z; Mon, 25 Nov 2019 16:59:24 +0100
+From: Adam Borowski <kilobyte@angband.pl>
+To: linux-nvdimm@lists.01.org,
+	"Verma, Vishal L" <vishal.l.verma@intel.com>
+Cc: Adam Borowski <kilobyte@angband.pl>
+Date: Mon, 25 Nov 2019 16:59:19 +0100
+Message-Id: <20191125155919.84706-1-kilobyte@angband.pl>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Message-ID-Hash: NZR6P4F5OG34HWB56N2JGGG3AUTNBMVQ
-X-Message-ID-Hash: NZR6P4F5OG34HWB56N2JGGG3AUTNBMVQ
-X-MailFrom: corbet@lwn.net
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mauro Carvalho Chehab <mchehab@kernel.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, Linus Torvalds <torvalds@linux-foundation.org>, Dmitry Vyukov <dvyukov@google.com>, Thomas Gleixner <tglx@linutronix.de>, Joe Perches <joe@perches.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steve French <stfrench@microsoft.com>, Olof Johansson <olof@lixom.net>, Paul Walmsley <paul.walmsley@sifive.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-doc@vger.kernel.org
+X-SA-Exim-Connect-IP: 2a02:a31c:853f:a300::4
+X-SA-Exim-Mail-From: kilobyte@angband.pl
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on tartarus.angband.pl
+X-Spam-Level: *
+X-Spam-Status: No, score=1.6 required=8.0 tests=BAYES_50=0.8,RDNS_NONE=0.793,
+	SPF_PASS=-0.001 autolearn=no autolearn_force=no languages=en
+Subject: [ndctl PATCH] Documentation: fix a typo in the ndctl-create-namespace man page
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on tartarus.angband.pl)
+Message-ID-Hash: VOUQJDOSMOVGGV47ELLW72SBBL2MHV4G
+X-Message-ID-Hash: VOUQJDOSMOVGGV47ELLW72SBBL2MHV4G
+X-MailFrom: kilobyte@angband.pl
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NZR6P4F5OG34HWB56N2JGGG3AUTNBMVQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VOUQJDOSMOVGGV47ELLW72SBBL2MHV4G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -45,118 +54,28 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sun, 24 Nov 2019 12:59:42 -0800
-Dan Williams <dan.j.williams@intel.com> wrote:
+"namepsace".
 
-> Changes since v2 [1]:
-> - Drop any consideration for coding style concerns in the profile. It
->   was a minor aspect of the proposal that generated the bulk of the
->   feedback on v2. Lets make progress on the rest.
-> 
-> - Clarify that the "Submit Checklist Addendum" can also include details
->   that submitters need to take into account before even beginning to
->   craft a patch. This is in response to the RISC-V use case of
->   declaring specification readiness as a patch gate, and is now also used
->   by the libnvdimm subsystem to clarify details about ACPI NVDIMM Device
->   Specific Method specifications. (Paul)
-> 
-> - Non-change from v2: Kees had asked for a common directory for all
->   profiles to live, but Mauro noted that this could be handled later
->   with some scripting to post-process the MAINTAINERS file, or otherwise
->   converting MAINTAINERS to ReST.
-> 
-> - Clarify the cover letter to focus on the contributor focused
->   Maintainer Entry Profiles, and defer discussion of a maintainer
->   focused Handbook.
-
-OK, some notes...
-
-I wish you'd done this against docs-next, that would have saved me
-resolving a few conflicts on the MAINTAINERS file.
-
-I thought we'd agreed to move this to the process book?  That said, I now
-wonder about that...today I read the document as information for
-maintainers on how to create their profile, so its location in the
-maintainers manual is appropriate.
-
-There were a number RST issues and warnings that I fixed up with the
-following add-on patch; it was mostly a matter of adding blank lines where
-needed.
-
-One other warning resulted from the nvdimm profile document not being
-linked into the TOC tree.  I've added a TOC section to the new document to
-bring these things together for now.  This is almost certainly not what we
-want in the longer term.
-
-It was tempting to ask for this stuff to be fixed up, but I didn't want to
-delay this work any longer.  So it's applied to docs-next; unless something
-explodes in the very near future, I intend to push this for 5.5.
-
-Thanks,
-
-jon
-
-From 0bfa52a43ec085c2f5eb2c35fcc6cf73bb802eae Mon Sep 17 00:00:00 2001
-From: Jonathan Corbet <corbet@lwn.net>
-Date: Mon, 25 Nov 2019 08:42:12 -0700
-Subject: [PATCH 2/2] docs: fix up the maintainer profile document
-
-Add blank lines where needed to get the document to render properly.  Also
-add a TOC of existing profiles just so that the nvdimm profile is linked
-into the toctree, is discoverable, and doesn't generate a warning.
-
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
 ---
- .../maintainer/maintainer-entry-profile.rst       | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ Documentation/ndctl/ndctl-create-namespace.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/maintainer/maintainer-entry-profile.rst b/Documentation/maintainer/maintainer-entry-profile.rst
-index 51de3b9e606d..3eaddc8ac56d 100644
---- a/Documentation/maintainer/maintainer-entry-profile.rst
-+++ b/Documentation/maintainer/maintainer-entry-profile.rst
-@@ -18,7 +18,9 @@ Provide an introduction to how the subsystem operates. While MAINTAINERS
- tells the contributor where to send patches for which files, it does not
- convey other subsystem-local infrastructure and mechanisms that aid
- development.
-+
- Example questions to consider:
-+
- - Are there notifications when patches are applied to the local tree, or
-   merged upstream?
- - Does the subsystem have a patchwork instance? Are patchwork state
-@@ -55,6 +57,7 @@ be settled in soaking in linux-next in advance of the merge window
- opening. Clarify for the submitter the key dates (in terms rc release
- week) that patches might considered for merging and when patches need to
- wait for the next -rc. At a minimum:
-+
- - Last -rc for new feature submissions:
-   New feature submissions targeting the next merge window should have
-   their first posting for consideration before this point. Patches that
-@@ -72,6 +75,7 @@ wait for the next -rc. At a minimum:
-   resubmit for the following merge window.
+diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+index e29a5e7..bf7486b 100644
+--- a/Documentation/ndctl/ndctl-create-namespace.txt
++++ b/Documentation/ndctl/ndctl-create-namespace.txt
+@@ -97,7 +97,7 @@ OPTIONS
+ 	suffixes "k" or "K" for KiB, "m" or "M" for MiB, "g" or "G" for
+ 	GiB and "t" or "T" for TiB.
  
- Optional:
-+
- - First -rc at which the development baseline branch, listed in the
-   overview section, should be considered ready for new submissions.
+-	For pmem namepsaces the size must be a multiple of the
++	For pmem namespaces the size must be a multiple of the
+ 	interleave-width and the namespace alignment (see
+ 	below).
  
-@@ -85,3 +89,14 @@ section can also indicate a preferred style of update like, resend the
- full series, or privately send a reminder email. This section might also
- list how review works for this code area and methods to get feedback
- that are not directly from the maintainer.
-+
-+Existing profiles
-+-----------------
-+
-+For now, existing maintainer profiles are listed here; we will likely want
-+to do something different in the near future.
-+
-+.. toctree::
-+   :maxdepth: 1
-+
-+   ../nvdimm/maintainer-entry-profile
 -- 
-2.21.0
+2.24.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
