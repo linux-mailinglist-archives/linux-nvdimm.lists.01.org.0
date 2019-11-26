@@ -1,270 +1,390 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4860D109E6C
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Nov 2019 13:59:30 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 645B710A469
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 Nov 2019 20:21:34 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5CCFF10113323;
-	Tue, 26 Nov 2019 05:02:51 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.181; helo=mail-oi1-f181.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	by ml01.01.org (Postfix) with ESMTP id 67C0F1011330F;
+	Tue, 26 Nov 2019 11:24:55 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A827110113322
-	for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 05:02:48 -0800 (PST)
-Received: by mail-oi1-f181.google.com with SMTP id a14so16529447oid.5
-        for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 04:59:25 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 474B110113301
+	for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 11:24:53 -0800 (PST)
+Received: by mail-oi1-x241.google.com with SMTP id a14so17729763oid.5
+        for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 11:21:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ar9quJ1XFVehdYmDc78e8n1YJ0rc11Rbvty0jNHXp7Y=;
+        b=PFSp+wRxo+gZ8OeXprjZQoBOshlsPmd4ogOr3D+byRs4jvEMVPetTX6bo3JQdPkkuz
+         hcuPo8PEb+M2+UcWpYalZ+QLS00ItEf0U4z4odML9A2zOOvVq3i4CRsiwexgzlLFjElY
+         1WRHjaSNwl+jObuTbqBAzT2BgzrDuEmn6qKHeJCd+WLKF66+lCMNKTX84DyW1l7lOrjL
+         c3LojdaQft1DPwyvIC7I07u0ETJ8RL2rorTjKuhT6UFBkaj6WBBnX/uQhqI3PYFexNfK
+         mqAqQjw9iKsPiZVXknDHLYelfLL73CzP2IW3+0MHa5BF24/fCjRIhUF9EMRpOIt/aqOH
+         WrrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=0ZxJNOH7rMuReB8KSU0yjpLDZzbiOFLbBxle+ihuJvE=;
-        b=CsvK7YYREnmRHW2EanQ6BeDExvQn+vIHzACcPGjjyyXLI43jB7e0vZVXz6wdq+7pQS
-         usS3NiazY1VTcWtNiO+gYTnChlsQY/BGm4wPxI7OGiWngLrSqe0I6IWjUsMTWPLuQb9H
-         ZshMU5BzI/KjdlRnXKyj5lcfQqTTe/90X7COz8Ek4qIyxQTbzSs4vsUarZyNHiiQOzWe
-         pL9ZSMD6WjPW21XiNKjjQpzCqp970iCtzToKgXYfn0fIgAIlacIg9bBta3tyxjUFZw1H
-         IKZ7Qq5J+2zaqYVrCEucEwB4N2YxamIEY3JU67qMPxXz19+XBg4FH8y3aVUo2ZVh2ATE
-         Bfig==
-X-Gm-Message-State: APjAAAVGPNDp7Rm52hFXgLuLReVwywi5m5bC11QTUMbLy4/lqoYputly
-	l9kIb/GZwvd9u+vwa+Y1n86LcREdI6BM4K5SBqo=
-X-Google-Smtp-Source: APXvYqwtJ/RGFbnBA2yw6xZZbA56o0qTy3cdM2jiPmmnD1HW/u0hnmY/Yx5cCGDC+jNy3+UjR9JtSlAn2i4YhmLTwRg=
-X-Received: by 2002:aca:c753:: with SMTP id x80mr3280624oif.115.1574773164747;
- Tue, 26 Nov 2019 04:59:24 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ar9quJ1XFVehdYmDc78e8n1YJ0rc11Rbvty0jNHXp7Y=;
+        b=e0sglfj0aTONQyVsZRbzJEnmVBEgGuwEUZRRBRyca0W5KBrlqTKvuyfBUcECAkKHGB
+         gAv5EQGZx5RWBrNrZUS8/4tryoFEuiwTwtlQ2LDP8uCW07fND/2/ZotRL6Y7DQ3AvGw7
+         9WKTY9mLtT1AWPYjB4j+IDYRo9vnqTV1NkNhN/3LIc1uNhIv03E7TBDe03Op2xqE7PAA
+         PX+CtdqxFSaX7UR1Cc3Z45Bn25LXe9eI16qWjDkiw0YzJ8RvO5lWCEiEV1hdJyOWp7IA
+         q5Wymp+/Y2gC9WvBzub47VzGNU6+8pqd/urimzZNKODGBSsRWmMi05qU7oMcX22f5eTU
+         Plrw==
+X-Gm-Message-State: APjAAAUA6WxChA6aUX4m+JEZWx0k3pS6xWBZXKiq3c3/C0AbLLAK0Zsn
+	Ack/o78kBweDDqm+clWEAXvuHuodyGYHmvlF8gLRRw==
+X-Google-Smtp-Source: APXvYqwifL8CCrzvcQn2Ldw23d/pjpBzHbMSD6fgLCSCA1rMkv3pUfA4Xe8EPKG11SMpwG5xSynV6lrrXVf940ST3OQ=
+X-Received: by 2002:aca:3c1:: with SMTP id 184mr522832oid.70.1574796089358;
+ Tue, 26 Nov 2019 11:21:29 -0800 (PST)
 MIME-Version: 1.0
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 26 Nov 2019 13:59:13 +0100
-Message-ID: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
-Subject: [GIT PULL] ACPI updates for v5.5-rc1
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID-Hash: 3UUSA6DD2V6QJA5ZBGG5X6CHUSTO6SRL
-X-Message-ID-Hash: 3UUSA6DD2V6QJA5ZBGG5X6CHUSTO6SRL
-X-MailFrom: rjwysocki@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: ACPI Devel Maling List <linux-acpi@vger.kernel.org>, the arch/x86 maintainers <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+References: <2369E669066F8E42A79A3DF0E43B9E643AC95A81@pgsmsx114.gar.corp.intel.com>
+In-Reply-To: <2369E669066F8E42A79A3DF0E43B9E643AC95A81@pgsmsx114.gar.corp.intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 26 Nov 2019 11:21:18 -0800
+Message-ID: <CAPcyv4gvih=YwGcuDs8M168kAq3Skp8khq6QDRq8ju-S_sL_Nw@mail.gmail.com>
+Subject: Re: daxctl: Change region input type from INTEGER to STRING.
+To: "Li, Redhairer" <redhairer.li@intel.com>
+Message-ID-Hash: X67ZWA55WNV46EDQR6WYS2KCFUA7K4JQ
+X-Message-ID-Hash: X67ZWA55WNV46EDQR6WYS2KCFUA7K4JQ
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3UUSA6DD2V6QJA5ZBGG5X6CHUSTO6SRL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X67ZWA55WNV46EDQR6WYS2KCFUA7K4JQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-SGkgTGludXMsDQoNClBsZWFzZSBwdWxsIGZyb20gdGhlIHRhZw0KDQogZ2l0Oi8vZ2l0Lmtlcm5l
-bC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3JhZmFlbC9saW51eC1wbS5naXQgXA0KIGFj
-cGktNS41LXJjMQ0KDQp3aXRoIHRvcC1tb3N0IGNvbW1pdCA3ODJiNTk3MTFlMTU2MWVlMGRhMDZi
-YzQ3OGNhNWU4MjQ5YWE4ZDA5DQoNCiBNZXJnZSBicmFuY2ggJ2FjcGktbW0nDQoNCm9uIHRvcCBv
-ZiBjb21taXQgMzFmNGY1YjQ5NWE2MmM5YThiMTViMWMzNTgxYWNkNWVmZWI5YWY4Yw0KDQogTGlu
-dXggNS40LXJjNw0KDQp0byByZWNlaXZlIEFDUEkgdXBkYXRlIGZvciA1LjUtcmMxLg0KDQpUaGVz
-ZSB1cGRhdGUgdGhlIEFDUElDQSBjb2RlIGluIHRoZSBrZXJuZWwgdG8gdXBzdHJlYW0gcmV2aXNp
-b24NCjIwMTkxMDE4LCBhZGQgc3VwcG9ydCBmb3IgRUZJIHNwZWNpZmljIHB1cnBvc2UgbWVtb3J5
-LCB1cGRhdGUgdGhlDQpBQ1BJIEVDIGRyaXZlciB0byBtYWtlIGl0IHdvcmsgb24gc3lzdGVtcyB3
-aXRoIGhhcmR3YXJlLXJlZHVjZWQgQUNQSSwNCmltcHJvdmUgQUNQSS1iYXNlZCBkZXZpY2UgZW51
-bWVyYXRpb24gZm9yIHNvbWUgcGxhdGZvcm1zLCByZXdvcmsgdGhlDQpsaWQgYmxhY2tsaXN0IGhh
-bmRsaW5nIGluIHRoZSBidXR0b24gZHJpdmVyIGFuZCBhZGQgbW9yZSBsaWQgcXVpcmtzDQp0byBp
-dCwgdW5pZnkgQUNQSSBfSElEL19VSUQgbWF0Y2hpbmcsIGZpeCBhc3NvcnRlZCBpc3N1ZXMgYW5k
-IGNsZWFuDQp1cCB0aGUgY29kZSBhbmQgZG9jdW1lbnRhdGlvbi4NCg0KU3BlY2lmaWNzOg0KDQog
-LSBVcGRhdGUgdGhlIEFDUElDQSBjb2RlIGluIHRoZSBrZXJuZWwgdG8gdXBzdHJlYW0gcmV2aXNp
-b24gMjAxOTEwMTgNCiAgIGluY2x1ZGluZzoNCg0KICAgKiBGaXhlcyBmb3IgQ2xhbmcgd2Fybmlu
-Z3MgKEJvYiBNb29yZSkuDQoNCiAgICogRml4IGZvciBwb3NzaWJsZSBvdmVyZmxvdyBpbiBnZXRf
-dGlja19jb3VudCgpIChCb2IgTW9vcmUpLg0KDQogICAqIEludHJvZHVjdGlvbiBvZiBhY3BpX3Vu
-bG9hZF90YWJsZSgpIChCb2IgTW9vcmUpLg0KDQogICAqIERlYnVnZ2VyIGFuZCB1dGlsaXRpZXMg
-dXBkYXRlcyAoRXJpayBTY2htYXVzcykuDQoNCiAgICogRml4IGZvciB1bmxvYWRpbmcgdGFibGVz
-IGxvYWRlZCB2aWEgY29uZmlnZnMgKE5pa29sYXVzIFZvc3MpLg0KDQogLSBBZGQgc3VwcG9ydCBm
-b3IgRUZJIHNwZWNpZmljIHB1cnBvc2UgbWVtb3J5IHRvIG9wdGlvbmFsbHkgYWxsb3cNCiAgIGVp
-dGhlciBhcHBsaWNhdGlvbi1leGNsdXNpdmUgb3IgY29yZS1rZXJuZWwtbW0gbWFuYWdlZCBhY2Nl
-c3MgdG8NCiAgIGRpZmZlcmVudGlhdGVkIG1lbW9yeSAoRGFuIFdpbGxpYW1zKS4NCg0KIC0gRml4
-IGFuZCBjbGVhbiB1cCBwcm9jZXNzaW5nIG9mIHRoZSBITUFUIHRhYmxlIChCcmljZSBHb2dsaW4s
-DQogICBRaWFuIENhaSwgVGFvIFh1KS4NCg0KIC0gVXBkYXRlIHRoZSBBQ1BJIEVDIGRyaXZlciB0
-byBtYWtlIGl0IHdvcmsgb24gc3lzdGVtcyB3aXRoDQogICBoYXJkd2FyZS1yZWR1Y2VkIEFDUEkg
-KERhbmllbCBEcmFrZSkuDQoNCiAtIEFsd2F5cyBidWlsZCBpbiBzdXBwb3J0IGZvciB0aGUgR2Vu
-ZXJpYyBFdmVudCBEZXZpY2UgKEdFRCkgdG8NCiAgIGFsbG93IG9uZSBrZXJuZWwgYmluYXJ5IHRv
-IHdvcmsgYm90aCBvbiBzeXN0ZW1zIHdpdGggZnVsbA0KICAgaGFyZHdhcmUgQUNQSSBhbmQgaGFy
-ZHdhcmUtcmVkdWNlZCBBQ1BJIChBcmphbiB2YW4gZGUgVmVuKS4NCg0KIC0gRml4IHRoZSB0YWJs
-ZSB1bmxvYWQgbWVjaGFuaXNtIHRvIHVucmVnaXN0ZXIgcGxhdGZvcm0gZGV2aWNlcw0KICAgY3Jl
-YXRlZCB3aGVuIHRoZSBnaXZlbiB0YWJsZSB3YXMgbG9hZGVkIChBbmR5IFNoZXZjaGVua28pLg0K
-DQogLSBSZXdvcmsgdGhlIGxpZCBibGFja2xpc3QgaGFuZGxpbmcgaW4gdGhlIGJ1dHRvbiBkcml2
-ZXIgYW5kIGFkZA0KICAgbW9yZSBsaWQgcXVpcmtzIHRvIGl0IChIYW5zIGRlIEdvZWRlKS4NCg0K
-IC0gSW1wcm92ZSBBQ1BJLWJhc2VkIGRldmljZSBlbnVtZXJhdGlvbiBmb3Igc29tZSBwbGF0Zm9y
-bXMgYmFzZWQNCiAgIG9uIEludGVsIEJheVRyYWlsIFNvQ3MgKEhhbnMgZGUgR29lZGUpLg0KDQog
-LSBBZGQgYW4gT3BSZWdpb24gZHJpdmVyIGZvciB0aGUgQ2hlcnJ5IFRyYWlsIENyeXN0YWwgQ292
-ZSBQTUlDDQogICBhbmQgcHJldmVudCBoYW5kbGVycyBmcm9tIGJlaW5nIHJlZ2lzdGVyZWQgZm9y
-IHVuaGFuZGxlZCBQTUlDDQogICBPcFJlZ2lvbnMgKEhhbnMgZGUgR29lZGUpLg0KDQogLSBVbmlm
-eSBBQ1BJIF9ISUQvX1VJRCBtYXRjaGluZyAoQW5keSBTaGV2Y2hlbmtvKS4NCg0KIC0gQ2xlYW4g
-dXAgZG9jdW1lbnRhdGlvbiBhbmQgY29tbWVudHMgKENhbyBqaW4sIEphbWVzIFBhY2ssIEthY3Bl
-cg0KICAgUGl3acWEc2tpKS4NCg0KVGhhbmtzIQ0KDQoNCi0tLS0tLS0tLS0tLS0tLQ0KDQpBbmR5
-IFNoZXZjaGVua28gKDcpOg0KICAgICAgQUNQSSAvIHV0aWxzOiBEZXNjcmliZSBmdW5jdGlvbiBw
-YXJhbWV0ZXJzIGluIGtlcm5lbC1kb2MNCiAgICAgIEFDUEkgLyB1dGlsczogTW92ZSBhY3BpX2Rl
-dl9nZXRfZmlyc3RfbWF0Y2hfZGV2KCkgdW5kZXIgQ09ORklHX0FDUEkNCiAgICAgIEFDUEkgLyB1
-dGlsczogSW50cm9kdWNlIGFjcGlfZGV2X2hpZF91aWRfbWF0Y2goKSBoZWxwZXINCiAgICAgIEFD
-UEkgLyBMUFNTOiBTd2l0Y2ggdG8gdXNlIGFjcGlfZGV2X2hpZF91aWRfbWF0Y2goKQ0KICAgICAg
-bW1jOiBzZGhjaS1hY3BpOiBTd2l0Y2ggdG8gdXNlIGFjcGlfZGV2X2hpZF91aWRfbWF0Y2goKQ0K
-ICAgICAgaW9tbXUvYW1kOiBTd2l0Y2ggdG8gdXNlIGFjcGlfZGV2X2hpZF91aWRfbWF0Y2goKQ0K
-ICAgICAgQUNQSTogcGxhdGZvcm06IFVucmVnaXN0ZXIgc3RhbGUgcGxhdGZvcm0gZGV2aWNlcw0K
-DQpBcmphbiB2YW4gZGUgVmVuICgxKToNCiAgICAgIEFDUEk6IEFsd2F5cyBidWlsZCBldmdlZCBp
-bg0KDQpCb2IgTW9vcmUgKDUpOg0KICAgICAgQUNQSUNBOiBSZXN1bHRzIGZyb20gQ2xhbmcNCiAg
-ICAgIEFDUElDQTogV2luIE9TTDogUmVwbGFjZSBnZXRfdGlja19jb3VudCB3aXRoIGdldF90aWNr
-X2NvdW50NjQNCiAgICAgIEFDUElDQTogTW9yZSBDbGFuZyBjaGFuZ2VzDQogICAgICBBQ1BJQ0E6
-IEFkZCBuZXcgZXh0ZXJuYWwgaW50ZXJmYWNlLCBhY3BpX3VubG9hZF90YWJsZSgpDQogICAgICBB
-Q1BJQ0E6IFVwZGF0ZSB2ZXJzaW9uIHRvIDIwMTkxMDE4DQoNCkJyaWNlIEdvZ2xpbiAoMSk6DQog
-ICAgICBBQ1BJOiBITUFUOiBkb24ndCBtaXggcHhtIGFuZCBuaWQgd2hlbiBzZXR0aW5nIG1lbW9y
-eSB0YXJnZXQgcHJvY2Vzc29yX3B4bQ0KDQpDYW8gamluICgxKToNCiAgICAgIEFDUEk6IE9TSTog
-U2hvb3QgZHVwbGljYXRlIHdvcmQNCg0KRGFuIFdpbGxpYW1zICgxMik6DQogICAgICBBQ1BJOiBO
-VU1BOiBFc3RhYmxpc2ggYSBuZXcgZHJpdmVycy9hY3BpL251bWEvIGRpcmVjdG9yeQ0KICAgICAg
-ZWZpOiBFbnVtZXJhdGUgRUZJX01FTU9SWV9TUA0KICAgICAgeDg2L2VmaTogUHVzaCBFRklfTUVN
-TUFQIGNoZWNrIGludG8gbGVhZiByb3V0aW5lcw0KICAgICAgZWZpOiBDb21tb24gZW5hYmxlL2Rp
-c2FibGUgaW5mcmFzdHJ1Y3R1cmUgZm9yIEVGSSBzb2Z0IHJlc2VydmF0aW9uDQogICAgICB4ODYv
-ZWZpOiBFRkkgc29mdCByZXNlcnZhdGlvbiB0byBFODIwIGVudW1lcmF0aW9uDQogICAgICBhcm0v
-ZWZpOiBFRkkgc29mdCByZXNlcnZhdGlvbiB0byBtZW1ibG9jaw0KICAgICAgeDg2L2VmaTogQWRk
-IGVmaV9mYWtlX21lbSBzdXBwb3J0IGZvciBFRklfTUVNT1JZX1NQDQogICAgICBsaWI6IFVwbGV2
-ZWwgdGhlIHBtZW0gInJlZ2lvbiIgaWRhIHRvIGEgZ2xvYmFsIGFsbG9jYXRvcg0KICAgICAgZGF4
-OiBGaXggYWxsb2NfZGF4X3JlZ2lvbigpIGNvbXBpbGUgd2FybmluZw0KICAgICAgZGV2aWNlLWRh
-eDogQWRkIGEgZHJpdmVyIGZvciAiaG1lbSIgZGV2aWNlcw0KICAgICAgQUNQSTogTlVNQTogSE1B
-VDogUmVnaXN0ZXIgSE1BVCBhdCBkZXZpY2VfaW5pdGNhbGwgbGV2ZWwNCiAgICAgIEFDUEk6IE5V
-TUE6IEhNQVQ6IFJlZ2lzdGVyICJzb2Z0IHJlc2VydmVkIiBtZW1vcnkgYXMgYW4gImhtZW0iIGRl
-dmljZQ0KDQpEYW5pZWwgRHJha2UgKDIpOg0KICAgICAgQUNQSTogRUM6IHR3ZWFrIG5hbWluZyBp
-biBwcmVwYXJhdGlvbiBmb3IgR3Bpb0ludCBzdXBwb3J0DQogICAgICBBQ1BJOiBFQzogYWRkIHN1
-cHBvcnQgZm9yIGhhcmR3YXJlLXJlZHVjZWQgc3lzdGVtcw0KDQpFcmlrIFNjaG1hdXNzICg2KToN
-CiAgICAgIEFDUElDQTogdXRpbGl0aWVzOiBhZGQgZmxhZyB0byBvbmx5IGRpc3BsYXkgZGF0YSB3
-aGVuIGR1bXBpbmcgYnVmZmVycw0KICAgICAgQUNQSUNBOiBkZWJ1Z2dlcjogYWRkIGNvbW1hbmQg
-dG8gZHVtcCBhbGwgZmllbGRzIG9mIHBhcnRpY3VsYXIgc3VidHlwZQ0KICAgICAgQUNQSUNBOiBk
-ZWJ1Z2dlcjogc3Vycm91bmQgZmllbGQgdW5pdCBvdXRwdXQgd2l0aCBicmFjZXMgJ3snDQogICAg
-ICBBQ1BJQ0E6IGRlYnVnZ2VyOiBhZGQgZmllbGQgdW5pdCBzdXBwb3J0IGZvciBhY3BpX2RiX2dl
-dF9uZXh0X3Rva2VuDQogICAgICBBQ1BJQ0E6IGFjcGlleGVjOiBpbml0aWFsaXplIGFsbCBzaW1w
-bGUgdHlwZXMgYW5kIGZpZWxkIHVuaXRzDQpmcm9tIHVzZXIgaW5wdXQNCiAgICAgIEFDUElDQTog
-ZGVidWdnZXI6IHJlbW92ZSBsZWFkaW5nIHdoaXRlc3BhY2VzIHdoZW4gY29udmVydGluZyBhDQpz
-dHJpbmcgdG8gYSBidWZmZXINCg0KSGFucyBkZSBHb2VkZSAoMTIpOg0KICAgICAgQUNQSSAvIFBN
-SUM6IERvIG5vdCByZWdpc3RlciBoYW5kbGVycyBmb3IgdW5oYW5kbGVkIE9wUmVnaW9ucw0KICAg
-ICAgQUNQSSAvIFBNSUM6IEFkZCBieXQgcHJlZml4IHRvIENyeXN0YWwgQ292ZSBQTUlDIE9wUmVn
-aW9uIGRyaXZlcg0KICAgICAgQUNQSSAvIFBNSUM6IEFkZCBDaGVycnkgVHJhaWwgQ3J5c3RhbCBD
-b3ZlIFBNSUMgT3BSZWdpb24gZHJpdmVyDQogICAgICBBQ1BJOiBMUFNTOiBBZGQgTE5YVklERU8g
-LT4gQllUIEkyQzcgdG8gbHBzc19kZXZpY2VfbGlua3MNCiAgICAgIEFDUEk6IExQU1M6IEFkZCBM
-TlhWSURFTyAtPiBCWVQgSTJDMSB0byBscHNzX2RldmljZV9saW5rcw0KICAgICAgQUNQSTogTFBT
-UzogQWRkIGRtaSBxdWlyayBmb3Igc2tpcHBpbmcgX0RFUCBjaGVjayBmb3Igc29tZSBkZXZpY2Ut
-bGlua3MNCiAgICAgIEFDUEk6IGJ1dHRvbjogUmVmYWN0b3IgbGlkX2luaXRfc3RhdGUgbW9kdWxl
-IHBhcnNpbmcgY29kZQ0KICAgICAgQUNQSTogYnV0dG9uOiBBbGxvdyBkaXNhYmxpbmcgTElEIHN1
-cHBvcnQgd2l0aCB0aGUNCmxpZF9pbml0X3N0YXRlIG1vZHVsZSBvcHRpb24NCiAgICAgIEFDUEk6
-IGJ1dHRvbjogVHVybiBsaWRfYmxhY2tsc3QgRE1JIHRhYmxlIGludG8gYSBnZW5lcmljIHF1aXJr
-IHRhYmxlDQogICAgICBBQ1BJOiBidXR0b246IEFkZCBETUkgcXVpcmsgZm9yIE1lZGlvbiBBa295
-YSBFMjIxNVQNCiAgICAgIEFDUEk6IGJ1dHRvbjogQWRkIERNSSBxdWlyayBmb3IgQXN1cyBUMjAw
-VEENCiAgICAgIEFDUEk6IGJ1dHRvbjogUmVtb3ZlIHVudXNlZCBhY3BpX2xpZF9ub3RpZmllcl9b
-dW5dcmVnaXN0ZXIoKSBmdW5jdGlvbnMNCg0KSmFtZXMgUGFjayAoMSk6DQogICAgICBBQ1BJOiBE
-b2N1bWVudGF0aW9uOiBNaW5vciBzcGVsbGluZyBmaXggaW4gbmFtZXNwYWNlLnJzdA0KDQpLYWNw
-ZXIgUGl3acWEc2tpICgxKToNCiAgICAgIEFDUEk6IHZpZGVvOiB1cGRhdGUgZG9jIGZvciBhY3Bp
-X3ZpZGVvX2J1c19ET1MoKQ0KDQpOaWtvbGF1cyBWb3NzICgxKToNCiAgICAgIEFDUElDQTogbWFr
-ZSBhY3BpX2xvYWRfdGFibGUoKSByZXR1cm4gdGFibGUgaW5kZXgNCg0KUWlhbiBDYWkgKDEpOg0K
-ICAgICAgQUNQSTogTlVNQTogSE1BVDogZml4IGEgc2VjdGlvbiBtaXNtYXRjaA0KDQpUYW8gWHUg
-KDEpOg0KICAgICAgQUNQSTogSE1BVDogdXNlICV1IGluc3RlYWQgb2YgJWQgdG8gcHJpbnQgdTMy
-IHZhbHVlcw0KDQotLS0tLS0tLS0tLS0tLS0NCg0KIERvY3VtZW50YXRpb24vYWRtaW4tZ3VpZGUv
-a2VybmVsLXBhcmFtZXRlcnMudHh0ICAgIHwgIDE5ICstDQogRG9jdW1lbnRhdGlvbi9maXJtd2Fy
-ZS1ndWlkZS9hY3BpL25hbWVzcGFjZS5yc3QgICAgfCAgIDIgKy0NCiBhcmNoL2FybTY0L21tL21t
-dS5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiArDQogYXJjaC94ODYvYm9v
-dC9jb21wcmVzc2VkL2Vib290LmMgICAgICAgICAgICAgICAgICAgfCAgIDYgKy0NCiBhcmNoL3g4
-Ni9ib290L2NvbXByZXNzZWQva2FzbHIuYyAgICAgICAgICAgICAgICAgICB8ICA0NiArKysrLQ0K
-IGFyY2gveDg2L2luY2x1ZGUvYXNtL2U4MjAvdHlwZXMuaCAgICAgICAgICAgICAgICAgIHwgICA4
-ICsNCiBhcmNoL3g4Ni9pbmNsdWRlL2FzbS9lZmkuaCAgICAgICAgICAgICAgICAgICAgICAgICB8
-ICAxNyArLQ0KIGFyY2gveDg2L2tlcm5lbC9lODIwLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwgIDEyICstDQogYXJjaC94ODYva2VybmVsL3NldHVwLmMgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCAgMTggKy0NCiBhcmNoL3g4Ni9wbGF0Zm9ybS9lZmkvZWZpLmMgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICA1NCArKysrKy0NCiBhcmNoL3g4Ni9wbGF0Zm9ybS9lZmkvcXVpcmtz
-LmMgICAgICAgICAgICAgICAgICAgICB8ICAgMyArDQogZHJpdmVycy9hY3BpL0tjb25maWcgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMjMgKy0tDQogZHJpdmVycy9hY3BpL01ha2Vm
-aWxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKy0NCiBkcml2ZXJzL2FjcGkv
-YWNwaV9jb25maWdmcy5jICAgICAgICAgICAgICAgICAgICAgICB8ICAgNCArLQ0KIGRyaXZlcnMv
-YWNwaS9hY3BpX2xwc3MuYyAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQ4ICsrLS0tDQog
-ZHJpdmVycy9hY3BpL2FjcGlfcGxhdGZvcm0uYyAgICAgICAgICAgICAgICAgICAgICAgfCAgNDMg
-KysrKysNCiBkcml2ZXJzL2FjcGkvYWNwaV92aWRlby5jICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAgOCArLQ0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvYWNkZWJ1Zy5oICAgICAgICAgICAgICAg
-ICAgICAgIHwgICAyICsNCiBkcml2ZXJzL2FjcGkvYWNwaWNhL2Fjc3RydWN0LmggICAgICAgICAg
-ICAgICAgICAgICB8ICAxMCArKw0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvYWN1dGlscy5oICAgICAg
-ICAgICAgICAgICAgICAgIHwgICA5ICstDQogZHJpdmVycy9hY3BpL2FjcGljYS9kYmNvbnZlcnQu
-YyAgICAgICAgICAgICAgICAgICAgfCAgIDQgKw0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvZGJkaXNw
-bHkuYyAgICAgICAgICAgICAgICAgICAgIHwgICAyIC0NCiBkcml2ZXJzL2FjcGkvYWNwaWNhL2Ri
-ZmlsZWlvLmMgICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQ0KIGRyaXZlcnMvYWNwaS9hY3Bp
-Y2EvZGJpbnB1dC5jICAgICAgICAgICAgICAgICAgICAgIHwgIDM2ICsrKy0NCiBkcml2ZXJzL2Fj
-cGkvYWNwaWNhL2RibWV0aG9kLmMgICAgICAgICAgICAgICAgICAgICB8ICAgNCArDQogZHJpdmVy
-cy9hY3BpL2FjcGljYS9kYm5hbWVzLmMgICAgICAgICAgICAgICAgICAgICAgfCAxMTQgKysrKysr
-KysrKysrDQogZHJpdmVycy9hY3BpL2FjcGljYS9kYm9iamVjdC5jICAgICAgICAgICAgICAgICAg
-ICAgfCAgIDEgLQ0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvZHNjb250cm9sLmMgICAgICAgICAgICAg
-ICAgICAgIHwgICAyICstDQogZHJpdmVycy9hY3BpL2FjcGljYS9kc2ZpZWxkLmMgICAgICAgICAg
-ICAgICAgICAgICAgfCAgMTIgKy0NCiBkcml2ZXJzL2FjcGkvYWNwaWNhL2V2Z3BlYmxrLmMgICAg
-ICAgICAgICAgICAgICAgICB8ICAxMSArLQ0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvZXZncGVpbml0
-LmMgICAgICAgICAgICAgICAgICAgIHwgICAzIC0NCiBkcml2ZXJzL2FjcGkvYWNwaWNhL2V2bWlz
-Yy5jICAgICAgICAgICAgICAgICAgICAgICB8ICAxMiArLQ0KIGRyaXZlcnMvYWNwaS9hY3BpY2Ev
-ZXZyZWdpb24uYyAgICAgICAgICAgICAgICAgICAgIHwgICA0ICstDQogZHJpdmVycy9hY3BpL2Fj
-cGljYS9ldnJnbmluaS5jICAgICAgICAgICAgICAgICAgICAgfCAgIDEgLQ0KIGRyaXZlcnMvYWNw
-aS9hY3BpY2EvaHd4ZnNsZWVwLmMgICAgICAgICAgICAgICAgICAgIHwgICAzICsNCiBkcml2ZXJz
-L2FjcGkvYWNwaWNhL25zY29udmVydC5jICAgICAgICAgICAgICAgICAgICB8ICAgMiArLQ0KIGRy
-aXZlcnMvYWNwaS9hY3BpY2EvbnNkdW1wLmMgICAgICAgICAgICAgICAgICAgICAgIHwgICA2ICst
-DQogZHJpdmVycy9hY3BpL2FjcGljYS9uc3hmbmFtZS5jICAgICAgICAgICAgICAgICAgICAgfCAg
-IDQgKy0NCiBkcml2ZXJzL2FjcGkvYWNwaWNhL3Bzb2JqZWN0LmMgICAgICAgICAgICAgICAgICAg
-ICB8ICAgNyArLQ0KIGRyaXZlcnMvYWNwaS9hY3BpY2EvcnNjcmVhdGUuYyAgICAgICAgICAgICAg
-ICAgICAgIHwgICAzICsNCiBkcml2ZXJzL2FjcGkvYWNwaWNhL3RiZGF0YS5jICAgICAgICAgICAg
-ICAgICAgICAgICB8ICAgMyArDQogZHJpdmVycy9hY3BpL2FjcGljYS90YnhmbG9hZC5jICAgICAg
-ICAgICAgICAgICAgICAgfCAgNDAgKysrKy0NCiBkcml2ZXJzL2FjcGkvYWNwaWNhL3V0YnVmZmVy
-LmMgICAgICAgICAgICAgICAgICAgICB8ICA1MiArKystLS0NCiBkcml2ZXJzL2FjcGkvYWNwaWNh
-L3V0aWRzLmMgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtDQogZHJpdmVycy9hY3BpL2Fj
-cGljYS91dHRyYWNrLmMgICAgICAgICAgICAgICAgICAgICAgfCAgIDIgKy0NCiBkcml2ZXJzL2Fj
-cGkvYnV0dG9uLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8IDEzOSArKysrKysrKy0t
-LS0tLS0NCiBkcml2ZXJzL2FjcGkvZWMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8IDE5NSArKysrKysrKysrKysrKystLS0tLS0NCiBkcml2ZXJzL2FjcGkvaG1hdC9NYWtlZmls
-ZSAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMiAtDQogZHJpdmVycy9hY3BpL2ludGVybmFs
-LmggICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKy0NCiBkcml2ZXJzL2FjcGkve2ht
-YXQgPT4gbnVtYX0vS2NvbmZpZyAgICAgICAgICAgICAgICB8ICAgNyArDQogZHJpdmVycy9hY3Bp
-L251bWEvTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDMgKw0KIGRyaXZlcnMv
-YWNwaS97aG1hdCA9PiBudW1hfS9obWF0LmMgICAgICAgICAgICAgICAgIHwgMTU4ICsrKysrKysr
-KysrKysrLS0tDQogZHJpdmVycy9hY3BpL3tudW1hLmMgPT4gbnVtYS9zcmF0LmN9ICAgICAgICAg
-ICAgICAgfCAgIDANCiBkcml2ZXJzL2FjcGkvb3NpLmMgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICB8ICAgNiArLQ0KIGRyaXZlcnMvYWNwaS9wbWljL2ludGVsX3BtaWMuYyAgICAgICAg
-ICAgICAgICAgICAgIHwgIDIwICsrLQ0KIC4uLi9wbWljL3tpbnRlbF9wbWljX2NyYy5jID0+IGlu
-dGVsX3BtaWNfYnl0Y3JjLmN9IHwgICA0ICstDQogZHJpdmVycy9hY3BpL3BtaWMvaW50ZWxfcG1p
-Y19jaHRjcmMuYyAgICAgICAgICAgICAgfCAgNDQgKysrKysNCiBkcml2ZXJzL2FjcGkvc2Nhbi5j
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArDQogZHJpdmVycy9hY3BpL3V0
-aWxzLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMzIgKysrKw0KIGRyaXZlcnMv
-ZGF4L0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDI3ICsrLQ0KIGRy
-aXZlcnMvZGF4L01ha2VmaWxlICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAyICsN
-CiBkcml2ZXJzL2RheC9idXMuYyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-MiArLQ0KIGRyaXZlcnMvZGF4L2J1cy5oICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHwgICAyICstDQogZHJpdmVycy9kYXgvZGF4LXByaXZhdGUuaCAgICAgICAgICAgICAgICAgICAg
-ICAgICAgfCAgIDIgKy0NCiBkcml2ZXJzL2RheC9obWVtLmMgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICB8ICA1NiArKysrKysNCiBkcml2ZXJzL2Zpcm13YXJlL2VmaS9LY29uZmlnICAg
-ICAgICAgICAgICAgICAgICAgICB8ICAyMSArKysNCiBkcml2ZXJzL2Zpcm13YXJlL2VmaS9NYWtl
-ZmlsZSAgICAgICAgICAgICAgICAgICAgICB8ICAgNSArLQ0KIGRyaXZlcnMvZmlybXdhcmUvZWZp
-L2FybS1pbml0LmMgICAgICAgICAgICAgICAgICAgIHwgICA5ICsNCiBkcml2ZXJzL2Zpcm13YXJl
-L2VmaS9hcm0tcnVudGltZS5jICAgICAgICAgICAgICAgICB8ICAyNCArKysNCiBkcml2ZXJzL2Zp
-cm13YXJlL2VmaS9lZmkuYyAgICAgICAgICAgICAgICAgICAgICAgICB8ICAxNSArLQ0KIGRyaXZl
-cnMvZmlybXdhcmUvZWZpL2VzcnQuYyAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICsNCiBk
-cml2ZXJzL2Zpcm13YXJlL2VmaS9mYWtlX21lbS5jICAgICAgICAgICAgICAgICAgICB8ICAyNiAr
-Ky0NCiBkcml2ZXJzL2Zpcm13YXJlL2VmaS9mYWtlX21lbS5oICAgICAgICAgICAgICAgICAgICB8
-ICAxMCArKw0KIGRyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvYXJtMzItc3R1Yi5jICAgICAg
-ICAgIHwgICA1ICsNCiBkcml2ZXJzL2Zpcm13YXJlL2VmaS9saWJzdHViL2VmaS1zdHViLWhlbHBl
-ci5jICAgICB8ICAxOSArKw0KIGRyaXZlcnMvZmlybXdhcmUvZWZpL2xpYnN0dWIvcmFuZG9tLmMg
-ICAgICAgICAgICAgIHwgICA0ICsNCiBkcml2ZXJzL2Zpcm13YXJlL2VmaS94ODZfZmFrZV9tZW0u
-YyAgICAgICAgICAgICAgICB8ICA2OSArKysrKysrKw0KIGRyaXZlcnMvaW9tbXUvYW1kX2lvbW11
-LmMgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDMwICstLS0NCiBkcml2ZXJzL21mZC9pbnRl
-bF9zb2NfcG1pY19jcmMuYyAgICAgICAgICAgICAgICAgICB8ICAgMiArLQ0KIGRyaXZlcnMvbW1j
-L2hvc3Qvc2RoY2ktYWNwaS5jICAgICAgICAgICAgICAgICAgICAgIHwgIDQ5ICsrLS0tLQ0KIGRy
-aXZlcnMvbnZkaW1tL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAxICsN
-CiBkcml2ZXJzL252ZGltbS9jb3JlLmMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAg
-MSAtDQogZHJpdmVycy9udmRpbW0vbmQtY29yZS5oICAgICAgICAgICAgICAgICAgICAgICAgICAg
-fCAgIDEgLQ0KIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMgICAgICAgICAgICAgICAgICAg
-ICAgIHwgIDEzICstDQogaW5jbHVkZS9hY3BpL2FjcGlfYnVzLmggICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgfCAgIDggKy0NCiBpbmNsdWRlL2FjcGkvYWNwaXhmLmggICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICB8ICAgOCArLQ0KIGluY2x1ZGUvYWNwaS9idXR0b24uaCAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHwgIDEyIC0tDQogaW5jbHVkZS9saW51eC9hY3BpLmggICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDggKw0KIGluY2x1ZGUvbGludXgvZWZpLmggICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDE2ICstDQogaW5jbHVkZS9saW51eC9pb3Bv
-cnQuaCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKw0KIGluY2x1ZGUvbGludXgv
-bWVtcmVnaW9uLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDIzICsrKw0KIGxpYi9LY29u
-ZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAzICsNCiBsaWIv
-TWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICAgMSArDQog
-bGliL21lbXJlZ2lvbi5jICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgMTgg
-KysNCiA5NCBmaWxlcyBjaGFuZ2VkLCAxMzc0IGluc2VydGlvbnMoKyksIDQxMCBkZWxldGlvbnMo
-LSkKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Hi Redhairer,
+
+Thanks for submitting this first patch! Some feedback for submitting
+patches by email. The first is to make sure you are sending the patch
+in plain text, this one was in html format. The patch also needs to be
+included in the mail directly so the review can be done inline. This
+is what tools like "git send-email" or "stg mail" will do for you.
+Some more comments below where I pasted the patch manually:
+
+On Thu, Nov 21, 2019 at 1:18 AM Li, Redhairer <redhairer.li@intel.com> wrote:
+>
+>
+>
+> SHA-1: 66f34cdc26c58143fb8f11813dae98257b19ddc5
+>
+>
+>
+> * daxctl: Change region input type from INTEGER to STRING.
+>
+>
+>
+> daxctl use STRING to be region input type. It makes daxctl can accept both <region-id> and region name as region parameter
+>
+> eg.
+>
+> daxctl list -r region5
+>
+> daxctl list -r 5
+>
+>
+>
+> Link: https://github.com/pmem/ndctl/issues/109
+>
+> Signed-off-by: Redhairer Li <redhairer.li@intel.com>
+>
+>
+
+My mail reader has line wrapped this quotation below, "git send-email"
+and "stg mail" will help with that problem:
+
+From 66f34cdc26c58143fb8f11813dae98257b19ddc5 Mon Sep 17 00:00:00
+> 2001
+> From: redhairer <redhairer.li@intel.com>
+> Date: Thu, 21 Nov 2019 17:10:21 +0800
+> Subject: [PATCH] daxctl: Change region input type from INTEGER to
+> STRING.
+>
+> daxctl use STRING to be region input type. It makes daxctl can accept
+> both <region-id> and region name as region parameter
+
+This line went past 80 columns. You can set your text editor to wrap
+at 80 lines.
+
+> eg.
+> daxctl list -r region5
+> daxctl list -r 5
+>
+> Link: https://github.com/pmem/ndctl/issues/109
+> Signed-off-by: Redhairer Li <redhairer.li@intel.com>
+> ---
+>  daxctl/device.c                | 11 ++++-------
+>  daxctl/lib/libdaxctl-private.h |  1 +
+>  daxctl/lib/libdaxctl.c         |  6 ++++++
+>  daxctl/lib/libdaxctl.sym       |  1 +
+>  daxctl/libdaxctl.h             |  1 +
+>  daxctl/list.c                  | 14 ++++++--------
+>  util/filter.c                  | 20 ++++++++++++++++++++
+>  util/filter.h                  |  2 ++
+>  util/sysfs.h                   |  6 ++++++
+>  9 files changed, 47 insertions(+), 15 deletions(-)
+>
+> diff --git a/daxctl/device.c b/daxctl/device.c
+> index 72e506e..d9db2f9 100644
+> --- a/daxctl/device.c
+> +++ b/daxctl/device.c
+> @@ -19,15 +19,13 @@
+>  static struct {
+>   const char *dev;
+>   const char *mode;
+> - int region_id;
+> + const char *region;
+>   bool no_online;
+>   bool no_movable;
+>   bool force;
+>   bool human;
+>   bool verbose;
+> -} param = {
+> - .region_id = -1,
+> -};
+> +} param;
+>
+>  enum dev_mode {
+>   DAXCTL_DEV_MODE_UNKNOWN,
+> @@ -51,7 +49,7 @@ enum device_action {
+>  };
+>
+>  #define BASE_OPTIONS() \
+> -OPT_INTEGER('r', "region", &param.region_id, "restrict to the given
+> region"), \
+> +OPT_STRING('r', "region", &param.region, "region-id", "filter by
+> region"), \
+>  OPT_BOOLEAN('u', "human", &param.human, "use human friendly number
+> formats"), \
+>  OPT_BOOLEAN('v', "verbose", &param.verbose, "emit more debug
+> messages")
+>
+> @@ -484,8 +482,7 @@ static int do_xaction_device(const char *device,
+> enum device_action action,
+>   *processed = 0;
+>
+>   daxctl_region_foreach(ctx, region) {
+> - if (param.region_id >= 0 && param.region_id
+> - != daxctl_region_get_id(region))
+> + if (!util_daxctl_region_filter(region, device))
+>   continue;
+>
+>   daxctl_dev_foreach(region, dev) {
+> diff --git a/daxctl/lib/libdaxctl-private.h b/daxctl/lib/libdaxctl-
+> private.h
+> index 9f9c70d..169a8b8 100644
+> --- a/daxctl/lib/libdaxctl-private.h
+> +++ b/daxctl/lib/libdaxctl-private.h
+> @@ -80,6 +80,7 @@ struct daxctl_region {
+>   uuid_t uuid;
+>   int refcount;
+>   char *devname;
+> + char *regionname;
+
+So I don't think that "regionname" should be a property of 'struct
+daxctl_region' because there is no kernel device with that name for
+daxctl regions. I think this region name should only exist as a
+special case for "daxctl list".
+
+>   size_t buf_len;
+>   void *region_buf;
+>   int devices_init;
+> diff --git a/daxctl/lib/libdaxctl.c b/daxctl/lib/libdaxctl.c
+> index ee4a069..59697cd 100644
+> --- a/daxctl/lib/libdaxctl.c
+> +++ b/daxctl/lib/libdaxctl.c
+> @@ -287,6 +287,7 @@ static struct daxctl_region *add_dax_region(void
+> *parent, int id,
+>   region->refcount = 1;
+>   list_head_init(&region->devices);
+>   region->devname = strdup(devpath_to_devname(base));
+> + region->regionname = strdup(devpath_to_regionname(base));
+>
+>   sprintf(path, "%s/%s/size", base, attrs);
+>   if (sysfs_read_attr(ctx, path, buf) == 0)
+> @@ -553,6 +554,11 @@ DAXCTL_EXPORT const char
+> *daxctl_region_get_devname(struct daxctl_region *region
+>   return region->devname;
+>  }
+>
+> +DAXCTL_EXPORT const char *daxctl_region_get_regionname(struct
+> daxctl_region *region)
+> +{
+> + return region->regionname;
+> +}
+> +
+>  DAXCTL_EXPORT const char *daxctl_region_get_path(struct
+> daxctl_region *region)
+>  {
+
+API users should be aware that the region identifier is just a number,
+so I don't think we need these additions.
+
+>   return region->region_path;
+> diff --git a/daxctl/lib/libdaxctl.sym b/daxctl/lib/libdaxctl.sym
+> index 87d0236..13e5aec 100644
+> --- a/daxctl/lib/libdaxctl.sym
+> +++ b/daxctl/lib/libdaxctl.sym
+> @@ -35,6 +35,7 @@ LIBDAXCTL_3 {
+>  global:
+>   daxctl_region_get_available_size;
+>   daxctl_region_get_devname;
+> + daxctl_region_get_regionname;
+>   daxctl_region_get_dev_seed;
+>  } LIBDAXCTL_2;
+>
+> diff --git a/daxctl/libdaxctl.h b/daxctl/libdaxctl.h
+> index 6c545e1..1592c2f 100644
+> --- a/daxctl/libdaxctl.h
+> +++ b/daxctl/libdaxctl.h
+> @@ -54,6 +54,7 @@ unsigned long long
+> daxctl_region_get_available_size(
+>  unsigned long long daxctl_region_get_size(struct daxctl_region
+> *region);
+>  unsigned long daxctl_region_get_align(struct daxctl_region *region);
+>  const char *daxctl_region_get_devname(struct daxctl_region *region);
+> +const char *daxctl_region_get_regionname(struct daxctl_region
+> *region);
+>  const char *daxctl_region_get_path(struct daxctl_region *region);
+>
+>  struct daxctl_dev *daxctl_region_get_dev_seed(struct daxctl_region
+> *region);
+> diff --git a/daxctl/list.c b/daxctl/list.c
+> index e56300d..6c6251b 100644
+> --- a/daxctl/list.c
+> +++ b/daxctl/list.c
+> @@ -44,10 +44,8 @@ static unsigned long listopts_to_flags(void)
+>
+>  static struct {
+>   const char *dev;
+> - int region_id;
+> -} param = {
+> - .region_id = -1,
+> -};
+> + const char *region;
+> +} param;
+>
+>  static int did_fail;
+>
+> @@ -66,7 +64,8 @@ static int num_list_flags(void)
+>  int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx)
+>  {
+>   const struct option options[] = {
+> - OPT_INTEGER('r', "region", &param.region_id, "filter by
+> region"),
+> + OPT_STRING('r', "region", &param.region, "region-id",
+> + "filter by region"),
+>   OPT_STRING('d', "dev", &param.dev, "dev-id",
+>   "filter by dax device instance name"),
+>   OPT_BOOLEAN('D', "devices", &list.devs, "include dax
+> device info"),
+> @@ -94,7 +93,7 @@ int cmd_list(int argc, const char **argv, struct
+> daxctl_ctx *ctx)
+>   usage_with_options(u, options);
+>
+>   if (num_list_flags() == 0) {
+> - list.regions = param.region_id >= 0;
+> + list.regions = !!param.region;
+>   list.devs = !!param.dev;
+>   }
+>
+> @@ -106,8 +105,7 @@ int cmd_list(int argc, const char **argv, struct
+> daxctl_ctx *ctx)
+>   daxctl_region_foreach(ctx, region) {
+>   struct json_object *jregion = NULL;
+>
+> - if (param.region_id >= 0 && param.region_id
+> - != daxctl_region_get_id(region))
+> + if (!util_daxctl_region_filter(region, param.region))
+>   continue;
+>
+>   if (list.regions) {
+> diff --git a/util/filter.c b/util/filter.c
+> index 1734bce..da647a8 100644
+> --- a/util/filter.c
+> +++ b/util/filter.c
+> @@ -335,6 +335,26 @@ struct daxctl_dev *util_daxctl_dev_filter(struct
+> daxctl_dev *dev,
+>   return NULL;
+>  }
+>
+> +struct daxctl_region *util_daxctl_region_filter(struct daxctl_region
+> *region,
+> + const char *ident)
+> +{
+> + int region_id;
+> + const char *region_name;
+> +
+> + if (!ident || strcmp(ident, "all") == 0)
+> + return region;
+> +
+> + if (sscanf(ident, "%d", &region_id) == 1
+> + && daxctl_region_get_id(region) == region_id)
+> + return region;
+
+Let's just add a "sscanf(ident, "region%d", &region_id)" in the case
+the above ident does not match.
+
+> +
+> + region_name = daxctl_region_get_regionname(region);
+> + if (strcmp(region_name, ident)==0)
+> + return region;
+
+...with the above new sscanf then daxctl_region_get_regionname() is not needed.
+
+> +
+> + return NULL;
+> +}
+> +
+>  static enum ndctl_namespace_mode mode_to_type(const char *mode)
+>  {
+>   if (!mode)
+> diff --git a/util/filter.h b/util/filter.h
+> index c2cdddf..0c12b94 100644
+> --- a/util/filter.h
+> +++ b/util/filter.h
+> @@ -37,6 +37,8 @@ struct ndctl_region
+> *util_region_filter_by_namespace(struct ndctl_region *region
+>   const char *ident);
+>  struct daxctl_dev *util_daxctl_dev_filter(struct daxctl_dev *dev,
+>   const char *ident);
+> +struct daxctl_region *util_daxctl_region_filter(struct daxctl_region
+> *region,
+> + const char *ident);
+>
+>  struct json_object;
+>
+> diff --git a/util/sysfs.h b/util/sysfs.h
+> index fb169c6..84c0965 100644
+> --- a/util/sysfs.h
+> +++ b/util/sysfs.h
+> @@ -37,4 +37,10 @@ static inline const char *devpath_to_devname(const
+> char *devpath)
+>  {
+>   return strrchr(devpath, '/') + 1;
+>  }
+> +
+> +static inline const char *devpath_to_regionname(const char *devpath)
+> +{
+> + char* tmp_devpath = strdup(devpath);
+> + return strtok(strstr(tmp_devpath, "region"), "/");
+
+Another reason to not create "daxctl_region_get_regionname" is that
+not all daxctl devices will have "region" in the devpath.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
