@@ -1,205 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF15910A7B0
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 Nov 2019 01:56:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5EF10A95B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 Nov 2019 05:20:18 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D177110113330;
-	Tue, 26 Nov 2019 16:59:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	by ml01.01.org (Postfix) with ESMTP id 261E410113331;
+	Tue, 26 Nov 2019 20:23:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 831CD1011332F
-	for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 16:59:48 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 16:56:25 -0800
-X-IronPort-AV: E=Sophos;i="5.69,247,1571727600";
-   d="scan'208";a="199010102"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Nov 2019 16:56:24 -0800
-Subject: [ndctl PATCH] ndctl/list: Drop named list objects from verbose
- listing
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Tue, 26 Nov 2019 16:42:07 -0800
-Message-ID: <157481532698.2805671.8095763752180655226.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
-MIME-Version: 1.0
-Message-ID-Hash: QBJL2XU4KVFLLJPO4VOC65S5WZA3SK6L
-X-Message-ID-Hash: QBJL2XU4KVFLLJPO4VOC65S5WZA3SK6L
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+	by ml01.01.org (Postfix) with ESMTPS id 503A0100DC2CE
+	for <linux-nvdimm@lists.01.org>; Tue, 26 Nov 2019 20:23:37 -0800 (PST)
+Subject: Re: [GIT PULL] ACPI updates for v5.5-rc1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1574828414;
+	bh=7U5QvbOcu2GrhmPv65Z5K1XMND22gyJT+/bvOU+tXtM=;
+	h=From:In-Reply-To:References:Date:To:Cc:From;
+	b=JqILwvzR1BsJxoAyrFiYdqGkCOKo2kTaSk7aJj/tnQq/wh942VjyvBbocQsgTNXlu
+	 QK6fedUdzir4oTXS7t7Aj73kKtbJzAO6Pth+yfM0ND99yiDXVC+jo4QG45R4ZQMMpD
+	 3hJWrD8p3bYncFROQ73w3Ytg8Ryl1Rt3t/eT82Nw=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
+References: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAJZ5v0g944ZbCaoCvGcT7EFJVKW5efSMgf9oi_d3iP_3+iwbNg@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git
+ acpi-5.5-rc1
+X-PR-Tracked-Commit-Id: 782b59711e1561ee0da06bc478ca5e8249aa8d09
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6e9f879684b46331f51d0c76ebee981c788417db
+Message-Id: <157482841395.9403.2315371254751175937.pr-tracker-bot@kernel.org>
+Date: Wed, 27 Nov 2019 04:20:13 +0000
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: FKY5ZNDFCYCFZH7VN2ZB47OITU6SJ5VH
+X-Message-ID-Hash: FKY5ZNDFCYCFZH7VN2ZB47OITU6SJ5VH
+X-MailFrom: pr-tracker-bot@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Linus Torvalds <torvalds@linux-foundation.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, the arch/x86 maintainers <x86@kernel.org>, linux-efi <linux-efi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QBJL2XU4KVFLLJPO4VOC65S5WZA3SK6L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FKY5ZNDFCYCFZH7VN2ZB47OITU6SJ5VH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The only expected difference between "ndctl list -R" and "ndctl list
--Rv" is some additional output fields. Instead it currently results in
-the region array being contained in a named "regions" list object.
+The pull request you sent on Tue, 26 Nov 2019 13:59:13 +0100:
 
-# ndctl list -R -r 0
-[
-  {
-    "dev":"region0",
-    "size":4294967296,
-    "available_size":0,
-    "max_available_extent":0,
-    "type":"pmem",
-    "persistence_domain":"unknown"
-  }
-]
+> git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git acpi-5.5-rc1
 
-# ndctl list -Rv -r 0
-{
-  "regions":[
-    {
-      "dev":"region0",
-      "size":4294967296,
-      "available_size":0,
-      "max_available_extent":0,
-      "type":"pmem",
-      "numa_node":0,
-      "target_node":2,
-      "persistence_domain":"unknown",
-      "namespaces":[
-        {
-          "dev":"namespace0.0",
-          "mode":"fsdax",
-          "map":"mem",
-          "size":4294967296,
-          "sector_size":512,
-          "blockdev":"pmem0",
-          "numa_node":0,
-          "target_node":2
-        }
-      ]
-    }
-  ]
-}
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6e9f879684b46331f51d0c76ebee981c788417db
 
-Drop the named list, by not including namespaces in the listing. Extra
-objects only appear at the -vv level. "ndctl list -v" and "ndctl list
--Nv" are synonyms and behave as expected.
+Thank you!
 
-# ndctl list -Rv -r 0
-[
-  {
-    "dev":"region0",
-    "size":4294967296,
-    "available_size":0,
-    "max_available_extent":0,
-    "type":"pmem",
-    "numa_node":0,
-    "target_node":2,
-    "persistence_domain":"unknown"
-  }
-]
-
-Another side effect of this change is that it allows for:
-
-    ndctl list -Rvvv
-
-...to only show the verbose region details vs assuming that namespaces
-and dimms etc also need to be added.
-
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- Documentation/ndctl/ndctl-list.txt |   46 ++++++++++++++++++++++++++++++++++++
- ndctl/list.c                       |   10 +++++---
- 2 files changed, 52 insertions(+), 4 deletions(-)
-
-diff --git a/Documentation/ndctl/ndctl-list.txt b/Documentation/ndctl/ndctl-list.txt
-index f9c7434d3b0b..75fd11876395 100644
---- a/Documentation/ndctl/ndctl-list.txt
-+++ b/Documentation/ndctl/ndctl-list.txt
-@@ -234,6 +234,52 @@ include::xable-bus-options.txt[]
- 	- *-vvv*
- 	  Everything '-vv' provides, plus --health, --capabilities,
- 	  --idle, and --firmware.
-+::
-+	The verbosity can also be scoped by the object type. For example
-+	to just list regions with capabilities and media error info.
-+----
-+# ndctl list -Ru -vvv -r 0
-+{
-+  "dev":"region0",
-+  "size":"4.00 GiB (4.29 GB)",
-+  "available_size":0,
-+  "max_available_extent":0,
-+  "type":"pmem",
-+  "numa_node":0,
-+  "target_node":2,
-+  "capabilities":[
-+    {
-+      "mode":"sector",
-+      "sector_sizes":[
-+        512,
-+        520,
-+        528,
-+        4096,
-+        4104,
-+        4160,
-+        4224
-+      ]
-+    },
-+    {
-+      "mode":"fsdax",
-+      "alignments":[
-+        4096,
-+        2097152,
-+        1073741824
-+      ]
-+    },
-+    {
-+      "mode":"devdax",
-+      "alignments":[
-+        4096,
-+        2097152,
-+        1073741824
-+      ]
-+    }
-+  ],
-+  "persistence_domain":"unknown"
-+}
-+----
- 
- include::human-option.txt[]
- 
-diff --git a/ndctl/list.c b/ndctl/list.c
-index 607996a85784..125a9fe34cb8 100644
---- a/ndctl/list.c
-+++ b/ndctl/list.c
-@@ -507,12 +507,14 @@ int cmd_list(int argc, const char **argv, struct ndctl_ctx *ctx)
- 		list.health = true;
- 		list.capabilities = true;
- 	case 2:
--		list.dimms = true;
--		list.buses = true;
--		list.regions = true;
-+		if (num_list_flags() == 0) {
-+			list.dimms = true;
-+			list.buses = true;
-+			list.regions = true;
-+			list.namespaces = true;
-+		}
- 	case 1:
- 		list.media_errors = true;
--		list.namespaces = true;
- 		list.dax = true;
- 	case 0:
- 		break;
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
