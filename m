@@ -1,92 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A5710CF57
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 Nov 2019 21:42:39 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F42810D204
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Nov 2019 08:48:17 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C6ECF101134F7;
-	Thu, 28 Nov 2019 12:46:00 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=92.53.97.137; helo=mail.nbc1.info; envelope-from=info@nbc1.info; receiver=<UNKNOWN> 
-Received: from mail.nbc1.info (nbc1.info [92.53.97.137])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5140E101134F6
-	for <linux-nvdimm@lists.01.org>; Thu, 28 Nov 2019 12:45:58 -0800 (PST)
-Message-ID: <86128a4cb86caef6d531b7e4ef3b204c6ff32bcc7e@nbc1.info>
-From: Dominica <info@nbc1.info>
-To: linux-nvdimm@lists.01.org
-Subject: =?utf-8?B?0JDRgNC10L3QtNCwINCz0L7RgdGD0LTQsNGA0YHRgtCy?=
-	=?utf-8?B?0LXQvdC90L7QuSDQvdC10LTQstC40LbQuNC80L7RgdGC?=
-	=?utf-8?B?0Lg=?=
-Date: Thu, 28 Nov 2019 22:42:29 +0200
+	by ml01.01.org (Postfix) with ESMTP id 4E63C10113509;
+	Thu, 28 Nov 2019 23:51:37 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=122.238.17.104; helo=chey.com; envelope-from=qeuiw@chey.com; receiver=<UNKNOWN> 
+Received: from chey.com (unknown [122.238.17.104])
+	by ml01.01.org (Postfix) with ESMTP id DE24310113508
+	for <linux-nvdimm@lists.01.org>; Thu, 28 Nov 2019 23:51:33 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Fri, 29 Nov 2019 15:48:10 +0800
+Message-ID: 1fcfb040-72af-4e25-aeed-7e337b039a23
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=nbc1.info; s=mail;
-	c=relaxed/relaxed; t=1574973749;
-	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
-	bh=CpoGuMsY6gdflM+kZGLxURp0BhT/OlQg1d/3Tsr7RVY=;
-	b=ixsN6L7vLS4txV5iv0atiYNVtQq9ZpzSKEQO6HDUCjKcJwfJjo+3aUSa1/7Q7B
-	P+aZjP2OWt3QIMkDHw759UyKP+gnKb3CaXaRfUUevgI3UmOz4XJhJ3NcYSje4lKR
-	UPPI5+0R6lG+Z3Tz689wH77IEL1kl2qBvQWqP0GwalZaI=
-Message-ID-Hash: IE5JZJL66QXYLPAJB67DSRJSLWFMUILE
-X-Message-ID-Hash: IE5JZJL66QXYLPAJB67DSRJSLWFMUILE
-X-MailFrom: info@nbc1.info
+Sender: "Linda Yu" <qeuiw@chey.com>
+From: "Linda Yu" <linda@lonatarp.com>
+To: linux-nvdimm@lists.01.org
+Date: 29 Nov 2019 15:48:10 +0800
+Subject: PVC Tarpaulin
+Message-ID-Hash: KJ3SWMILDS2BZQ76PCRMAMTELVCUI55O
+X-Message-ID-Hash: KJ3SWMILDS2BZQ76PCRMAMTELVCUI55O
+X-MailFrom: qeuiw@chey.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="utf-8"
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IE5JZJL66QXYLPAJB67DSRJSLWFMUILE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KJ3SWMILDS2BZQ76PCRMAMTELVCUI55O/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-0JTQsNGC0LAg0L/RgNC+0LLQtdC00LXQvdC40Y86IDUg0LTQtdC60LDQsdGA0Y8NCg0K0JPQvtGB
-0YPQtNCw0YDRgdGC0LLQtdC90L3QvtC1IOKAkyDQp9Cw0YHRgtC90L7QtSDQv9Cw0YDRgtC90LXR
-gNGB0YLQstC+INCyINCj0LrRgNCw0LjQvdC1DQoNCtCe0LHQt9C+0YA6IMKgwqDCoMKgDQoNCjEu
-INCe0LHRitC10LrRgtGLINCz0L7RgdGD0LTQsNGA0YHRgtCy0LXQvdC90L7QuSDRgdC+0LHRgdGC
-0LLQtdC90L3QvtGB0YLQuDog0L/RgNCw0LLQvtCy0L7QuSDRgNC10LbQuNC8LCDQtNC+0L/Rg9GB
-0YLQuNC80YvQtSDQvtC/0LXRgNCw0YbQuNC4DQoyLiDQk9C+0YHRg9C00LDRgNGB0YLQstC10L3Q
-vdC+0LUgLdGH0LDRgdGC0L3QvtC1INC/0LDRgNGC0L3QtdGA0YHRgtCy0L46INGB0YTQtdGA0LAg
-0Lgg0L/RgNCw0LrRgtC40LrQsCDQv9GA0LjQvNC10L3QtdC90LjRjw0KMy4g0JrQu9GO0YfQtdCy
-0YvQtSDRgNC40YHQutC4LCDQstC+0LfQvdC40LrQsNGO0YnQuNC1INC/0YDQuCDRgdC+0YLRgNGD
-0LTQvdC40YfQtdGB0YLQstC1INGBINCz0L7RgdGD0LTQsNGA0YHRgtCy0LXQvdC90YvQvNC4L9C6
-0L7QvNC80YPQvdCw0LvRjNC90YvQvNC4INGB0YPQsdGK0LXQutGC0LDQvNC4DQo0LiDQodC+0LLQ
-vNC10YHRgtC90LDRjyDQtNC10Y/RgtC10LvRjNC90L7RgdGC0Ywg0YEg0LPQvtGB0YPQtNCw0YDR
-gdGC0LLQtdC90L3Ri9C8L9C60L7QvNC80YPQvdCw0LvRjNC90YvQvCDQv9GA0LXQtNC/0YDQuNGP
-0YLQuNC10LwNCjUuINCY0L3QstC10YHRgtC40YbQuNC+0L3QvdCw0Y8g0LTQtdGP0YLQtdC70YzQ
-vdC+0YHRgtGMINGBINCz0L7RgdGD0LTQsNGA0YHRgtCy0LXQvdC90YvQvCDQv9GA0LXQtNC/0YDQ
-uNGP0YLQuNC10LwNCjYuINCa0L7QvdGB0L7RgNGG0LjRg9C8INC60LDQuiDQvtGA0LPQsNC90LjQ
-t9Cw0YbQuNC+0L3QvdC+0LUg0L7QsdGK0LXQtNC40L3QtdC90LjQtSDQs9C+0YHRg9C00LDRgNGB
-0YLQstC10L3QvdC+0LPQvi/QutC+0LzQvNGD0L3QsNC70YzQvdC+0LPQviDQv9GA0LXQtNC/0YDQ
-uNGP0YLQuNGPINC4INGH0LDRgdGC0L3QvtCz0L4g0LjQvdCy0LXRgdGC0L7RgNCwOiDQsNC90LDQ
-u9C40Lcg0L/RgNCw0LLQvtCy0L7QuSDRg9GB0YLQvtC50YfQuNCy0L7RgdGC0LgNCjcuINCe0YLR
-h9GD0LbQtNC10L3QuNC1INCz0L7RgdGD0LTQsNGA0YHRgtCy0LXQvdC90L7Qs9C+INC40LzRg9GJ
-0LXRgdGC0LLQsA0KOC4g0JDRgNC10L3QtNCwINCz0L7RgdGD0LTQsNGA0YHRgtCy0LXQvdC90L7Q
-s9C+L9C60L7QvNC80YPQvdCw0LvRjNC90L7Qs9C+INC90LXQtNCy0LjQttC40LzQvtCz0L4g0LjQ
-vNGD0YnQtdGB0YLQstCwDQo5LiDQmtC+0L3RhtC10YHRgdC40Lgg0L3QsCDRgdGC0YDQvtC40YLQ
-tdC70YzRgdGC0LLQviDQuNC90YTRgNCw0YHRgtGA0YPQutGC0YPRgNC90YvRhSDQvtCx0YrQtdC6
-0YLQvtCyOiDRgdC60YDRi9GC0YvQtSDQuNC90LLQtdGB0YLQuNGG0LjQvtC90L3Ri9C1INCy0L7Q
-t9C80L7QttC90L7RgdGC0LguINCSINC+0LbQuNC00LDQvdC40LUg0L3QvtCy0L7Qs9C+INC30LDQ
-utC+0L3QsCAi0J4g0LrQvtC90YbQtdGB0YHQuNGP0YUiDQoxMC4g0J7Qv9C10YDQsNGG0LjQuCDQ
-s9C+0YHRg9C00LDRgNGB0YLQstC10L3QvdGL0YUg0YHRg9Cx0YrQtdC60YLQvtCyINGBINC30LXQ
-vNC10LvRjNC90YvQvNC4INGD0YfQsNGB0YLQutCw0LzQuA0KMTEuINCg0LXQsNC70LjQt9Cw0YbQ
-uNGPINC/0YDQvtC10LrRgtC+0LIg0LbQuNC70LjRidC90L7Qs9C+INGB0YLRgNC+0LjRgtC10LvR
-jNGB0YLQstCwINC/0YDQuCDRg9GH0LDRgdGC0LjQuCDQs9C+0YHRg9C00LDRgNGB0YLQstC10L3Q
-vdC+0LPQviDRgdGD0LHRitC10LrRgtCwDQoNCtCf0YDQuNC90Y/RgtGMINGD0YfQsNGB0YLQuNC1
-PiBodHRwOi8vcGFydG5lcnN0dm8uaW4udWEvdHJhaW5pbmcvMTQ5L2dvc3VkYXJzdHZlbm5vZS1j
-aGFzdG5vZS1wYXJ0bmVyc3R2by12LXVrcmFpbmUtb2ItZWZmZWt0aXZuaWgtc3RyYXRlZ2l5YWgt
-dmxvemhlbml5YS1zcmVkc3R2LXYtZ29zdWRhcnN0dmVubmllLW11bmljaXBhbG5pZS1wcm9la3Rp
-Lmh0bQ0KDQotLSDCoMKgwqDCoA0K0KEg0YPQstCw0LbQtdC90LjQtdC8LCDCoMKgwqDCoA0K0JzQ
-sNGA0LjQvdCwINCi0LjQvNGD0YDQvtCy0L3QsCDCoMKgwqDCoA0KZW1haWwt0LzQsNGA0LrQtdGC
-0L7Qu9C+0LMgwqDCoMKgwqANCtCd0LUg0L/QvtC70YPRh9Cw0YLRjCDQv9C+0YfRgtGDLg0KTGlz
-dC1VbnN1YnNjcmliZSBmcm9tIHRoZSBuZXdzbGV0dGVyINC+ciBjb21wbGFpbiDQsGLQvnV0IFNQ
-0JDQnC4NCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
-bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
-bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
-cmcK
+Dear Manager
+How are you!&nbsp;
+This is Linda from HAINING LONA COATED MATERIAL CO.,LTD.
+We&nbsp;manufacture&nbsp;and&nbsp;export&nbsp; coated&nbsp;tarpaulin &amp; PU coated Fabric
+Our&nbsp;products&nbsp;are&nbsp;widely&nbsp;used&nbsp;to&nbsp;as
+1. tent&nbsp;/ Truck Cover / Trial cover
+2.&nbsp;Shelters&nbsp;/ Shade curtain
+3, Pool Cover /&nbsp; Pool liner
+4. Clothes / Swimming cap
+&nbsp;
+www.pvctarpaulin.com 
+&nbsp;
+Hope you could contact with us when you have free time.&nbsp;
+Thanks so much.
+Regard
+Linda
+&nbsp;
+-----------------------------------------------------------------------------HAINING LONA COATED MATERIAL CO.,LTDAdd: ,Xingmin Road,Haining Warp Knitting Scientfic-Technical Ind.Zone ZheJiang, China.Post.Code.314419Phone: 13484109305
+Website:&nbsp;www.lonatarp.com &nbsp;&nbsp; &amp; www.pvctarpaulin.com Email:&nbsp;linda@lonatarp.com 
+Contact: Linda Yu
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
