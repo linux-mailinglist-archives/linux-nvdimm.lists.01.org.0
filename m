@@ -2,225 +2,164 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DA210D545
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Nov 2019 12:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE6010D9C9
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 Nov 2019 19:56:38 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6F1911011350C;
-	Fri, 29 Nov 2019 04:00:14 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=79.96.170.134; helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN> 
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1EE0F100DC2D7;
+	Fri, 29 Nov 2019 10:59:59 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 04ECB1011350B
-	for <linux-nvdimm@lists.01.org>; Fri, 29 Nov 2019 04:00:11 -0800 (PST)
-Received: from 79.184.255.242.ipv4.supernova.orange.pl (79.184.255.242) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
- id fd5d8e3d9f99383b; Fri, 29 Nov 2019 12:56:46 +0100
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 14/18] acpi/numa: Up-level "map to online node" functionality
-Date: Fri, 29 Nov 2019 12:56:45 +0100
-Message-ID: <1753949.6LdYI5zB43@kreacher>
-In-Reply-To: <157401275104.43284.15865121806241743141.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157401267421.43284.2135775608523385279.stgit@dwillia2-desk3.amr.corp.intel.com> <157401275104.43284.15865121806241743141.stgit@dwillia2-desk3.amr.corp.intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id C5674100DC3EC
+	for <linux-nvdimm@lists.01.org>; Fri, 29 Nov 2019 10:59:57 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id 14so26800757oir.12
+        for <linux-nvdimm@lists.01.org>; Fri, 29 Nov 2019 10:56:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=xboj7F00bLbKnatedgQze9i2APMnPtQy1LrQNkM7FYQ=;
+        b=Q1+qt9qmF/rLkAGqDYkEHYeW6EPQtxzZ+8NtolvjMgoSovWm13CTHenqOgKWRP4D4f
+         aKXtgJD3mrzRgeFkX4xXtZZU7Tdp+RyHrJh2Cs5RgQvLZ4qveq/M2BTUPg1q7EfeQAVw
+         lVGygT+Pwk34HBtkoZLFR+TF2OmaHYuV/8l+eJJCQwlE3ZOt6U/fTUUIwPhaZU5STa0e
+         quHtjFQJVApCTJ9Cl5pvi3VW+Ts1WpNYNTuKfsnptFQciYz3CLt+VGAkAr5hxfFJ07W4
+         S906t//NGSvk1EVk2cIcfrb2jweYPzanpDN9XPOBJVtzBuizrtYc+UHNa+DFFutxL+j5
+         Lb8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=xboj7F00bLbKnatedgQze9i2APMnPtQy1LrQNkM7FYQ=;
+        b=diyLj7SDk9UPt1DSVOYuDypunf4IHGlK9gaxjgJYU/TeadaUOTkZ3k82z+nz9VoTLi
+         N98BgnzqZsULdN+kkDppyynOgUmg9avwLcw0Si+bqrh9ubtNZrd2tMVCS79UyQx15UGp
+         j0C0kRfH01ga4qWwXOljOsKniv9sLRvzJ6YLv02ITPIZsV7na56yrobcUfQr0rZwBraV
+         kcA0Mpt8JtTeKmT5OTUZom9UqFDfm/zRkk+t6F1E50wYYl+rVOMvSnJb0MbyifuPXCUn
+         90hQFXCp4PrQIqT02/zJm69rlREV2rtlGUuLzfEUf9CFi6pJd+MypKjxlSFPaKxmBGjQ
+         nwMQ==
+X-Gm-Message-State: APjAAAXPeUHZ9u31W3m1FgnZtwZK+fRmpx7gKcAy17TapF3MndIrhO9G
+	i6fZVoeMF+P/zUH9e/NjLCNAvIEZ4e/wx4wY5hP7+g==
+X-Google-Smtp-Source: APXvYqzd57f2wxECF4fesi3hhXmvOo40o4Zq2olC+h0RWJ9X7eKDf4fWTmQ75AQmTV7EkFg6r5iSKXRdJRJrI8ZfR34=
+X-Received: by 2002:a54:468e:: with SMTP id k14mr1852547oic.105.1575053793229;
+ Fri, 29 Nov 2019 10:56:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Message-ID-Hash: TKJQAYK7CDFXBQB5QFRIITN2G7E3L4MZ
-X-Message-ID-Hash: TKJQAYK7CDFXBQB5QFRIITN2G7E3L4MZ
-X-MailFrom: rjw@rjwysocki.net
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, Michal Hocko <mhocko@suse.com>, peterz@infradead.org, dave.hansen@linux.intel.com, hch@lst.de, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-acpi@vger.kernel.org
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 29 Nov 2019 10:56:22 -0800
+Message-ID: <CAPcyv4jftz7mN=4zNPo1tGZfcXxfKunTUF4Owof6pJ108GYk=g@mail.gmail.com>
+Subject: [GIT PULL] libnvdimm for v5.5
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Message-ID-Hash: OVDVFGUCTAQSOAP3SM6UZDTZH2DN5AEK
+X-Message-ID-Hash: OVDVFGUCTAQSOAP3SM6UZDTZH2DN5AEK
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TKJQAYK7CDFXBQB5QFRIITN2G7E3L4MZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OVDVFGUCTAQSOAP3SM6UZDTZH2DN5AEK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sunday, November 17, 2019 6:45:51 PM CET Dan Williams wrote:
-> The acpi_map_pxm_to_online_node() helper is used to find the closest
-> online node to a given proximity domain. This is used to map devices in
-> a proximity domain with no online memory or cpus to the closest online
-> node and populate a device's 'numa_node' property. The numa_node
-> property allows applications to be migrated "close" to a resource.
-> 
-> In preparation for providing a generic facility to optionally map an
-> address range to its closest online node, or the node the range would
-> represent were it to be onlined (target_node), up-level the core of
-> acpi_map_pxm_to_online_node() to a generic mm/numa helper.
-> 
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Hi Linus, please pull from:
 
-It looks like this is the only patch in the series needing my attention and
-it is fine by me, so
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-for-5.5
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+...to receive the libnvdimm update for this cycle. The highlight this
+cycle is continuing integration fixes for PowerPC and some resulting
+optimizations. These commits have appeared in -next with no reported
+issues.
 
-> ---
->  drivers/acpi/numa.c  |   41 -----------------------------------------
->  include/linux/acpi.h |   23 ++++++++++++++++++++++-
->  include/linux/numa.h |    9 +++++++++
->  mm/mempolicy.c       |   30 ++++++++++++++++++++++++++++++
->  4 files changed, 61 insertions(+), 42 deletions(-)
-> 
-> diff --git a/drivers/acpi/numa.c b/drivers/acpi/numa.c
-> index eadbf90e65d1..47b4969d9b93 100644
-> --- a/drivers/acpi/numa.c
-> +++ b/drivers/acpi/numa.c
-> @@ -72,47 +72,6 @@ int acpi_map_pxm_to_node(int pxm)
->  }
->  EXPORT_SYMBOL(acpi_map_pxm_to_node);
->  
-> -/**
-> - * acpi_map_pxm_to_online_node - Map proximity ID to online node
-> - * @pxm: ACPI proximity ID
-> - *
-> - * This is similar to acpi_map_pxm_to_node(), but always returns an online
-> - * node.  When the mapped node from a given proximity ID is offline, it
-> - * looks up the node distance table and returns the nearest online node.
-> - *
-> - * ACPI device drivers, which are called after the NUMA initialization has
-> - * completed in the kernel, can call this interface to obtain their device
-> - * NUMA topology from ACPI tables.  Such drivers do not have to deal with
-> - * offline nodes.  A node may be offline when a device proximity ID is
-> - * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
-> - * "numa=off" on x86.
-> - */
-> -int acpi_map_pxm_to_online_node(int pxm)
-> -{
-> -	int node, min_node;
-> -
-> -	node = acpi_map_pxm_to_node(pxm);
-> -
-> -	if (node == NUMA_NO_NODE)
-> -		node = 0;
-> -
-> -	min_node = node;
-> -	if (!node_online(node)) {
-> -		int min_dist = INT_MAX, dist, n;
-> -
-> -		for_each_online_node(n) {
-> -			dist = node_distance(node, n);
-> -			if (dist < min_dist) {
-> -				min_dist = dist;
-> -				min_node = n;
-> -			}
-> -		}
-> -	}
-> -
-> -	return min_node;
-> -}
-> -EXPORT_SYMBOL(acpi_map_pxm_to_online_node);
-> -
->  static void __init
->  acpi_table_print_srat_entry(struct acpi_subtable_header *header)
->  {
-> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-> index 8b4e516bac00..aeedd09f2f71 100644
-> --- a/include/linux/acpi.h
-> +++ b/include/linux/acpi.h
-> @@ -401,9 +401,30 @@ extern void acpi_osi_setup(char *str);
->  extern bool acpi_osi_is_win8(void);
->  
->  #ifdef CONFIG_ACPI_NUMA
-> -int acpi_map_pxm_to_online_node(int pxm);
->  int acpi_map_pxm_to_node(int pxm);
->  int acpi_get_node(acpi_handle handle);
-> +
-> +/**
-> + * acpi_map_pxm_to_online_node - Map proximity ID to online node
-> + * @pxm: ACPI proximity ID
-> + *
-> + * This is similar to acpi_map_pxm_to_node(), but always returns an online
-> + * node.  When the mapped node from a given proximity ID is offline, it
-> + * looks up the node distance table and returns the nearest online node.
-> + *
-> + * ACPI device drivers, which are called after the NUMA initialization has
-> + * completed in the kernel, can call this interface to obtain their device
-> + * NUMA topology from ACPI tables.  Such drivers do not have to deal with
-> + * offline nodes.  A node may be offline when a device proximity ID is
-> + * unique, SRAT memory entry does not exist, or NUMA is disabled, ex.
-> + * "numa=off" on x86.
-> + */
-> +static inline int acpi_map_pxm_to_online_node(int pxm)
-> +{
-> +	int node = acpi_map_pxm_to_node(pxm);
-> +
-> +	return numa_map_to_online_node(node);
-> +}
->  #else
->  static inline int acpi_map_pxm_to_online_node(int pxm)
->  {
-> diff --git a/include/linux/numa.h b/include/linux/numa.h
-> index 110b0e5d0fb0..20f4e44b186c 100644
-> --- a/include/linux/numa.h
-> +++ b/include/linux/numa.h
-> @@ -13,4 +13,13 @@
->  
->  #define	NUMA_NO_NODE	(-1)
->  
-> +#ifdef CONFIG_NUMA
-> +int numa_map_to_online_node(int node);
-> +#else
-> +static inline int numa_map_to_online_node(int node)
-> +{
-> +	return NUMA_NO_NODE;
-> +}
-> +#endif
-> +
->  #endif /* _LINUX_NUMA_H */
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 4ae967bcf954..e2d8dd21ce9d 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -127,6 +127,36 @@ static struct mempolicy default_policy = {
->  
->  static struct mempolicy preferred_node_policy[MAX_NUMNODES];
->  
-> +/**
-> + * numa_map_to_online_node - Find closest online node
-> + * @nid: Node id to start the search
-> + *
-> + * Lookup the next closest node by distance if @nid is not online.
-> + */
-> +int numa_map_to_online_node(int node)
-> +{
-> +	int min_node;
-> +
-> +	if (node == NUMA_NO_NODE)
-> +		node = 0;
-> +
-> +	min_node = node;
-> +	if (!node_online(node)) {
-> +		int min_dist = INT_MAX, dist, n;
-> +
-> +		for_each_online_node(n) {
-> +			dist = node_distance(node, n);
-> +			if (dist < min_dist) {
-> +				min_dist = dist;
-> +				min_node = n;
-> +			}
-> +		}
-> +	}
-> +
-> +	return min_node;
-> +}
-> +EXPORT_SYMBOL_GPL(numa_map_to_online_node);
-> +
->  struct mempolicy *get_task_policy(struct task_struct *p)
->  {
->  	struct mempolicy *pol = p->mempolicy;
-> 
+---
 
+The following changes since commit d6d5df1db6e9d7f8f76d2911707f7d5877251b02:
 
+  Linux 5.4-rc5 (2019-10-27 13:19:19 -0400)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+tags/libnvdimm-for-5.5
+
+for you to fetch changes up to 0dfbb932bb67dc76646e579ec5cd21a12125a458:
+
+  MAINTAINERS: Remove Keith from NVDIMM maintainers (2019-11-25 15:45:08 -0800)
+
+----------------------------------------------------------------
+libnvdimm for 5.5
+
+- Updates to better support vmalloc space restrictions on PowerPC platforms.
+
+- Cleanups to move common sysfs attributes to core 'struct device_type'
+  objects.
+
+- Export the 'target_node' attribute (the effective numa node if pmem is
+  marked online) for regions and namespaces.
+
+- Miscellaneous fixups and optimizations.
+
+----------------------------------------------------------------
+Alastair D'Silva (1):
+      libnvdimm: Remove prototypes for nonexistent functions
+
+Aneesh Kumar K.V (2):
+      libnvdimm/pfn_dev: Don't clear device memmap area during generic
+namespace probe
+      libnvdimm/namespace: Differentiate between probe mapping and
+runtime mapping
+
+Dan Williams (14):
+      libnvdimm/pmem: Delete include of nd-core.h
+      libnvdimm: Move attribute groups to device type
+      libnvdimm: Move region attribute group definition
+      libnvdimm: Move nd_device_attribute_group to device_type
+      libnvdimm: Move nd_numa_attribute_group to device_type
+      libnvdimm: Move nd_region_attribute_group to device_type
+      libnvdimm: Move nd_mapping_attribute_group to device_type
+      libnvdimm: Move nvdimm_attribute_group to device_type
+      libnvdimm: Move nvdimm_bus_attribute_group to device_type
+      dax: Create a dax device_type
+      dax: Simplify root read-only definition for the 'resource' attribute
+      libnvdimm: Simplify root read-only definition for the 'resource' attribute
+      dax: Add numa_node to the default device-dax attributes
+      libnvdimm: Export the target_node attribute for regions and namespaces
+
+Ira Weiny (2):
+      libnvdimm/namsepace: Don't set claim_class on error
+      libnvdimm: Trivial comment fix
+
+Keith Busch (1):
+      MAINTAINERS: Remove Keith from NVDIMM maintainers
+
+Qian Cai (1):
+      libnvdimm/btt: fix variable 'rc' set but not used
+
+ MAINTAINERS                               |   2 -
+ arch/powerpc/platforms/pseries/papr_scm.c |  25 +---
+ drivers/acpi/nfit/core.c                  |   7 -
+ drivers/dax/bus.c                         |  22 ++-
+ drivers/dax/pmem/core.c                   |   6 +-
+ drivers/nvdimm/btt.c                      |  18 ++-
+ drivers/nvdimm/btt_devs.c                 |  24 +--
+ drivers/nvdimm/bus.c                      |  44 +++++-
+ drivers/nvdimm/claim.c                    |  14 +-
+ drivers/nvdimm/core.c                     |   8 +-
+ drivers/nvdimm/dax_devs.c                 |  27 ++--
+ drivers/nvdimm/dimm_devs.c                |  30 ++--
+ drivers/nvdimm/e820.c                     |  13 --
+ drivers/nvdimm/namespace_devs.c           | 114 +++++++++------
+ drivers/nvdimm/nd-core.h                  |  21 ++-
+ drivers/nvdimm/nd.h                       |  27 ++--
+ drivers/nvdimm/of_pmem.c                  |  13 --
+ drivers/nvdimm/pfn_devs.c                 |  64 ++++----
+ drivers/nvdimm/pmem.c                     |  18 ++-
+ drivers/nvdimm/region_devs.c              | 235 +++++++++++++++---------------
+ include/linux/libnvdimm.h                 |   7 -
+ include/linux/nd.h                        |   2 +-
+ 22 files changed, 387 insertions(+), 354 deletions(-)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
