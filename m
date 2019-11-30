@@ -1,68 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F31113B9B
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Dec 2019 07:15:26 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAF91147D1
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Dec 2019 20:46:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 148D910113301;
-	Wed,  4 Dec 2019 22:18:47 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=1.85.42.195; helo=root.domain; envelope-from=wujing@snupg.com; receiver=<UNKNOWN> 
-Received: from root.domain (unknown [1.85.42.195])
-	by ml01.01.org (Postfix) with ESMTP id 27100100DC2D7
-	for <linux-nvdimm@lists.01.org>; Wed,  4 Dec 2019 22:18:43 -0800 (PST)
-Received: by root.domain (CSmail for UNIX, from userid 503)
-	id 95732AB23; Thu,  5 Dec 2019 13:04:57 +0800 (CST)
-Received: from lx (unknown [182.110.236.32])
-	by root.domain (CSmail for UNIX) with ESMTPA id A1250A707;
-	Thu,  5 Dec 2019 13:04:56 +0800 (CST)
-Message-ID: <7E7FC68D34EE32AF0079BF6A998870DC@lx>
-From: "jhb" <wujing@snupg.com>
-To: <hr@zuo-chuang.com>,
-	<wonghin.lee@aia.com>,
-	<xxl@dongri.com>,
-	<monty@monty.com.cn>,
-	<info@batonsoft.com>,
+	by ml01.01.org (Postfix) with ESMTP id 926C610113507;
+	Thu,  5 Dec 2019 11:50:07 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=36.7.142.210; helo=mail.baizgroup.com; envelope-from=jb@baizgroup.com; receiver=<UNKNOWN> 
+Received: from mail.baizgroup.com (unknown [36.7.142.210])
+	by ml01.01.org (Postfix) with SMTP id 1DEBD10113504
+	for <linux-nvdimm@lists.01.org>; Thu,  5 Dec 2019 11:50:04 -0800 (PST)
+Received: from 182.110.236.32 (HELO HDN); Sat, 30 Nov 2019 18:49:28 +0800
+Message-ID: <460F9530B8D034A3414E5E58CE493A63@hdn>
+From: "mw" <jb@baizgroup.com>
+To: <gofast@machv.com>,
+	<peteryin@baoshilei.com>,
+	<fhwyhr@fhwy.com.cn>,
+	<melbourne@grace.edu.np>,
+	<muwuma@irev.com>,
+	<smokey@viagrafix.com>,
 	<linux-nvdimm@lists.01.org>,
-	<zunliang.ding@hspharm.cn>,
-	<jay@toky.com>,
-	<perkinja@udmercy.edu>,
-	<preston@ukec.net>,
-	<info@pulsar-inc.com>,
-	<service@be-tech.com.cn>,
-	<mumbai@halarship.com>,
-	<slgs@hawaii.edu>,
-	<admissions@scsu.edu>,
-	<nituzu@eged.com>,
-	<smsgcx@imu.edu.cn>,
-	<sales-manager@feellife.com>,
-	<srp336@optimum.com>,
-	<hr@ichido.com.cn>
-Subject: =?gb2312?B?tv7Krsvqv7TXxbfHs6PE27fbxMy320LLq8LtzrLDyMPD19PJs7ei?=
-	=?gb2312?B?yc/Iq8Lj19TD/rrcysfT1bvzsrvSqrTtuf3DwMWux/PIxMfzx/PE4w==?=
-Date: Thu, 5 Dec 2019 13:11:50 +0800
+	<6y5mm@toj.com>,
+	<yizhimei02@yizhimei.com>,
+	<sales@willedodge.com>,
+	<johnnie@softowner.com>,
+	<dcorbett@raritanval.edu>,
+	<cs@honhesns.com>,
+	<service@time100.cn>,
+	<edward@azettler.com>,
+	<manager@adslight.com>,
+	<win@merlefm.com>,
+	<gpc@gpcenter.com>,
+	<hello@burocratik.com>,
+	<shanxitousu@csrc.gov.cn>,
+	<darrindelange@ckt.net>
+Subject: =?gb2312?B?t/DSr9S8vaHJ7be/0MLIz8q2tcTG+NbKw8DJ2bi+xq/BwcPA5qTE8g==?=
+	=?gb2312?B?xPK4/NLCw8DNyL160m3E29GouN/H5VDKrs7l?=
+Date: Sat, 30 Nov 2019 18:47:08 +0800
 MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.5512
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: EGC55DMUH4Z4PEZEWXONOXZF5UQDC5HJ
-X-Message-ID-Hash: EGC55DMUH4Z4PEZEWXONOXZF5UQDC5HJ
-X-MailFrom: wujing@snupg.com
+Message-ID-Hash: KC3CTLEVOZBYBPDP43KDRFEN4YTCESJI
+X-Message-ID-Hash: KC3CTLEVOZBYBPDP43KDRFEN4YTCESJI
+X-MailFrom: jb@baizgroup.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EGC55DMUH4Z4PEZEWXONOXZF5UQDC5HJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KC3CTLEVOZBYBPDP43KDRFEN4YTCESJI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0749674337615551782=="
+Content-Type: multipart/mixed; boundary="===============1590082497079209511=="
 
---===============0749674337615551782==
+--===============1590082497079209511==
 Content-Type: text/html;
 	charset="gb2312"
 Content-Transfer-Encoding: base64
@@ -72,12 +69,12 @@ L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
 MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
 ZW50PSJNU0hUTUwgMTAuMDAuOTIwMC4xNzU1NiI+PC9IRUFEPg0KPEJPRFk+DQo8UD48QSBocmVm
 PSJodHRwOi8vaGFkMjAxNS5jb20vIj5odHRwOi8vaGFkMjAxNS5jb20vPC9BPjwvUD4NCjxQPiZu
-YnNwOzwvUD4NCjxQPrb+yq7L6r+018W3x7OjxNu328TMt9tCy6vC7c6yw8jDw9fTybO3osnPyKvC
-49fUw/663MrH09W787K70qq07bn9Jm5ic3A7IDwvUD4NCjxQPsPAxa7H88jEx/PH88TjPC9QPjwv
-Qk9EWT48L0hUTUw+DQo=
+YnNwOzwvUD4NCjxQPrfw0q/UvL2hye23v9DCyM/KtrXExvjWysPAydm4viZuYnNwOyA8L1A+DQo8
+UD7Gr8HBw8DmpMTyxPK4/NLCw8DNyL160m3E29GouN/H5VDKrs7lPC9QPjwvQk9EWT48L0hUTUw+
+DQo=
 
 
---===============0749674337615551782==
+--===============1590082497079209511==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -87,4 +84,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============0749674337615551782==--
+--===============1590082497079209511==--
