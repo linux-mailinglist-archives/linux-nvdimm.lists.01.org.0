@@ -2,98 +2,70 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BD310E411
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Dec 2019 01:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A74610E4A7
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Dec 2019 03:50:22 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DE75C1011362A;
-	Sun,  1 Dec 2019 16:26:59 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=188.225.18.70; helo=mail.nbc2.info; envelope-from=info@nbc2.info; receiver=<UNKNOWN> 
-Received: from mail.nbc2.info (nbc2.info [188.225.18.70])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 06E0810113317;
+	Sun,  1 Dec 2019 18:53:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4C77810113304
-	for <linux-nvdimm@lists.01.org>; Sun,  1 Dec 2019 16:26:57 -0800 (PST)
-Message-ID: <02cc852b22def4e79b9e288460446e0e840c40@nbc2.info>
-From: Eve <info@nbc2.info>
-To: linux-nvdimm@lists.01.org
-Subject: =?utf-8?B?0JjQvdCy0LXQvdGC0LDRgNC90YvQuSDRg9GH0LXRgiDQ?=
-	=?utf-8?B?vdCwINGB0LrQu9Cw0LTQtQ==?=
-Date: Mon, 2 Dec 2019 02:23:25 +0200
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=nbc2.info; s=mail;
-	c=relaxed/relaxed; t=1575246205;
-	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
-	bh=+lXo23OH58Q0P8aiT9iQl9unET7FBZAap9b5zdDONAU=;
-	b=YcWNfXf7YummVKJibZN9iKS1vEOEGr52/gchgYWucWyWYP4J9EJtPLjdid65py
-	etJH88jxll46eyjqI+lh9UQVMTohLSpeOoet1xly5IvteyKrDl6b5jwjB/W36rDn
-	W2aNibtnJxbU2LAIt8xWGS14wbsCKcJjXXic+tMtxM66I=
-Message-ID-Hash: 66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW
-X-Message-ID-Hash: 66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW
-X-MailFrom: info@nbc2.info
+	by ml01.01.org (Postfix) with ESMTPS id 3BEAB1011330F
+	for <linux-nvdimm@lists.01.org>; Sun,  1 Dec 2019 18:53:41 -0800 (PST)
+Subject: Re: [GIT PULL] libnvdimm for v5.5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1575255018;
+	bh=RO+fehXn7xEYNLzjW5d/2mdfvqStG6MwQCJzoZuVGaw=;
+	h=From:In-Reply-To:References:Date:To:Cc:From;
+	b=A8j3ICw2f8erBGN80bUB7I3sP0+B1g/ulo4rnRy1ZSraBXH1ZZ7xh+FqCcLv8ToZv
+	 Sx+l0EOx9ZCUTgVx9RGvhnp5+iX2nPzU++Sc9PCmCAP6Fd62Tg4fpJIrrq9u/CaLcW
+	 ywq/NIwU3SvKSBhFIHMMS6fgoCSRHsx/jZR9A2bo=
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <CAPcyv4jftz7mN=4zNPo1tGZfcXxfKunTUF4Owof6pJ108GYk=g@mail.gmail.com>
+References: <CAPcyv4jftz7mN=4zNPo1tGZfcXxfKunTUF4Owof6pJ108GYk=g@mail.gmail.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <CAPcyv4jftz7mN=4zNPo1tGZfcXxfKunTUF4Owof6pJ108GYk=g@mail.gmail.com>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
+ tags/libnvdimm-for-5.5
+X-PR-Tracked-Commit-Id: 0dfbb932bb67dc76646e579ec5cd21a12125a458
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: d10032dd539c93dbff016f5667e5627c6c2a4467
+Message-Id: <157525501843.1709.13111514700340254733.pr-tracker-bot@kernel.org>
+Date: Mon, 02 Dec 2019 02:50:18 +0000
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: LD6SNVXJIDI5SPRAOVEVLBZIZLI2DRM5
+X-Message-ID-Hash: LD6SNVXJIDI5SPRAOVEVLBZIZLI2DRM5
+X-MailFrom: pr-tracker-bot@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="utf-8"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Linus Torvalds <torvalds@linux-foundation.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LD6SNVXJIDI5SPRAOVEVLBZIZLI2DRM5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-0KHQutC+0LvRjNC60L4g0YLQvtGH0LXQuiDQstC+0LfQvNC+0LbQvdGL0YUg0L/QvtGC0LXRgNGM
-INCy0Ysg0LzQvtC20LXRgtC1INC90LDRgdGH0LjRgtCw0YLRjCDQvdCwINGB0LrQu9Cw0LTQtSDR
-gdCy0L7QtdC5INC60L7QvNC/0LDQvdC40Lg/INCU0LDQstCw0LnRgtC1INC/0LXRgNC10YHRh9C4
-0YLQsNC10Lwg0LLRgdC1ISDQmCDQvdCw0LnQtNC10Lwg0LTQtdC50YHRgtCy0LXQvdC90YvQtSDQ
-uNC90YHRgtGA0YPQvNC10L3RgtGLINC/0L4g0LjRhSDRg9GB0YLRgNCw0L3QtdC90LjRji4g0JLQ
-vdGD0YLRgNC4INGB0LrQu9Cw0LTQsCwg0L/RgNC4INGA0LDQsdC+0YLQtSDRgSDQv9C10YDRgdC+
-0L3QsNC70L7QvCwg0L/RgNC4INC/0YDQvtCy0LXQtNC10L3QuNC4INGC0LXQvdC00LXRgNC+0LIg
-0Lgg0L/RgC4g0KHQtNC10LvQsNC50YLQtSDRgdCy0L7RjiDRgdC40YHRgtC10LzRgyDQt9Cw0LrR
-g9C/0L7QuiDQuCDRgdC60LvQsNC00LAg0LzQsNC60YHQuNC80LDQu9GM0L3QviDRjdGE0YTQtdC6
-0YLQuNCy0L3QvtC5IQ0KMTAwJSDQv9GA0LDQutGC0LjRh9C90YvRhSDRgNC10YjQtdC90LjQuSDi
-gJMg0LfQsCAyINC00L3RjyDQuNC90YLQtdC90YHQuNCy0LAuDQoNCtCR0LjQt9C90LXRgS3Qv9GA
-0L7Qs9GA0LDQvNC80LA6DQrQrdC60L7QvdC+0LzQuNGH0LXRgdC60LDRjyDQsdC10LfQvtC/0LDR
-gdC90L7RgdGC0Ywg0L3QsCDRgdC+0LHRgdGC0LLQtdC90L3Ri9GFINGB0LrQu9Cw0LTQsNGFDQot
-INCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GH0LXRgtC90LDRjyDRgdC4
-0YHRgtC10LzQsCDQutC+0LzQv9Cw0L3QuNC4DQotINCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQ
-u9Cw0YHRgtGMOiDQn9GA0LXRgtC10L3Qt9C40Lgg0L7RgiDQutC70LjQtdC90YLQsCAo0LIg0YIu
-0YcuINC4INCy0L3Rg9GC0YDQtdC90L3QtdCz0L4pwqANCi0g0J/RgNC+0LHQu9C10LzQvdCw0Y8g
-0L7QsdC70LDRgdGC0Yw6INCf0L7RgtC10YDQuCDQstC90YPRgtGA0Lgg0YHQutC70LDQtNCwDQot
-INCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQoNCw0LHQvtGC0LAg0YEg0L/Q
-tdGA0YHQvtC90LDQu9C+0LwNCi0g0J/RgNC+0LHQu9C10LzQvdCw0Y8g0L7QsdC70LDRgdGC0Yw6
-INCh0L/QuNGB0LDQvdC40LUg0L/RgNC+0YHRgNC+0YfQutC4INC4INCx0YDQsNC60LANCi0g0J/R
-gNC+0LHQu9C10LzQvdCw0Y8g0L7QsdC70LDRgdGC0Yw6INCi0LDRgNCwINC4INGD0L/QsNC60L7Q
-stC60LAsINC80LDQu9C+0YbQtdC90LrQsA0KDQrQrdC60L7QvdC+0LzQuNGH0LXRgdC60LDRjyDQ
-sdC10LfQvtC/0LDRgdC90L7RgdGC0Ywg0LIg0JfQsNC60YPQv9C60LDRhQ0KLSDQn9GA0L7QsdC7
-0LXQvNC90LDRjyDQvtCx0LvQsNGB0YLRjDog0JjQs9GA0Ysg0YEg0YbQtdC90L7QuQ0KLSDQn9GA
-0L7QsdC70LXQvNC90LDRjyDQvtCx0LvQsNGB0YLRjDog0JfQu9C+0YPQv9C+0YLRgNC10LHQu9C1
-0L3QuNGPINC/0YDQuCDQv9GA0L7QstC10LTQtdC90LjQuCDRgtC10L3QtNC10YDQvtCyDQotINCf
-0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GB0LvRg9Cz0Lgg0YLRgNCw0L3R
-gdC/0L7RgNGC0LAg0Lgg0YHRhdC10LzRiyDQtNC+0L8uINC30LDRgNCw0LHQvtGC0LrQsCDQsiDQ
-vdC40YU6DQotINCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GB0LvRg9Cz
-0Lgg0YEg0L3QtdC/0YDQvtC30YDQsNGH0L3Ri9C80Lgg0L7QsdGK0LXQvNCw0LzQuCAo0YIu0LUu
-INGC0LDQvCwg0LPQtNC1INC10YHRgtGMINGD0YHQu9C+0LLQvdC+INC/0L7RgdGC0L7Rj9C90L3R
-i9C1INC30LDRgtGA0LDRgtGLKSDQuCDQutCw0Log0YLQsNC8INC80L7QttC90L4gwqvQv9C+0LTQ
-t9Cw0YDQsNCx0L7RgtCw0YLRjMK7ICjQvdCwINC/0YDQuNC80LXRgNC1INGD0YHQu9GD0LMg0YHQ
-utC70LDQtNGB0LrQvtC5INC70L7Qs9C40YHRgtC40LrQuCkNCi0g0J/RgNC+0LHQu9C10LzQvdCw
-0Y8g0L7QsdC70LDRgdGC0Yw6INCh0YXQtdC80Ysg0LTQvtC/LiDQt9Cw0YDQsNCx0L7RgtC60LAg
-0L/RgNC4INC30LDQutGD0L/QutCw0YUg0LfQsNC/0YfQsNGB0YLQtdC5INC00LvRjyDRgdC+0LHR
-gdGC0LLQtdC90L3Ri9GFINC90YPQttC0ICjQtNC70Y8g0YHQvtCx0YHRgtCy0LXQvdC90L7Qs9C+
-INCw0LLRgtC+0L/QsNGA0LrQsCwg0LTQu9GPINGB0YLQsNC90L7Rh9C90L7Qs9C+INC/0LDRgNC6
-0LAg0Lgg0YIu0LQuKQ0K0J3RjtCw0L3RgdGLINCyINC00L7Qs9C+0LLQvtGA0LDRhS/QutC+0L3R
-gtGA0LDQutGC0LDRhSwg0LLQtdC00YPRidC40LUg0Log0L/QvtGC0LXRgNGP0LwgwqDCoMKgwqAN
-Cg0K0JXRgdC70Lgg0YMg0JLQsNGBINCy0L7Qt9C90LjQutC90YPRgiDQtNC+0L/QvtC70L3QuNGC
-0LXQu9GM0L3Ri9C1INCy0L7Qv9GA0L7RgdGLIC0g0L7QsdGA0LDRidCw0LnRgtC10YHRjCwg0LzR
-iyDQstGB0LXQs9C00LAg0YDQsNC00Ysg0JLQsNC8INC/0L7QvNC+0YfRjCENCg0KLS0NCg0K0KEg
-0KPQstCw0LbQtdC90LjQtdC8LA0K0JXQstCz0LXQvdC40Y8g0J/QsNCy0LvQvtCy0L3QsA0KDQrQ
-p9GC0L7QsdGLINC+0YLQv9C40YHQsNGC0YzRgdGPINC+0YIg0YDQsNGB0YHRi9C70LrQuCwg0L/R
-gNC+0LnQtNC40YLQtSDQv9C+INGN0YLQvtC5INGB0YHRi9C70LrQtSDQntGC0L/QuNGB0LDRgtGM
-0YHRjyDQvtGCINC/0L7Rh9GC0YsuDQoNCkxpc3QtVW5zdWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xl
-dHRlciDQvnIgY29tcGxhaW4g0LBi0L51dCBTUNCQ0JwuDQpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
-aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+The pull request you sent on Fri, 29 Nov 2019 10:56:22 -0800:
+
+> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-for-5.5
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/d10032dd539c93dbff016f5667e5627c6c2a4467
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
