@@ -2,124 +2,98 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64E810E3BF
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  1 Dec 2019 22:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BD310E411
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Dec 2019 01:23:39 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6246A1011362A;
-	Sun,  1 Dec 2019 14:01:54 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::742; helo=mail-qk1-x742.google.com; envelope-from=jcm@jonmasters.org; receiver=<UNKNOWN> 
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id DE75C1011362A;
+	Sun,  1 Dec 2019 16:26:59 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=188.225.18.70; helo=mail.nbc2.info; envelope-from=info@nbc2.info; receiver=<UNKNOWN> 
+Received: from mail.nbc2.info (nbc2.info [188.225.18.70])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AF34C10113628
-	for <linux-nvdimm@lists.01.org>; Sun,  1 Dec 2019 14:01:51 -0800 (PST)
-Received: by mail-qk1-x742.google.com with SMTP id x1so15923888qkl.12
-        for <linux-nvdimm@lists.01.org>; Sun, 01 Dec 2019 13:58:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jonmasters-org.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=wGf8SOslmQtXKi1QI9BMUXk6iVKg26mOeGKK2Ks7MYE=;
-        b=haC2yWerrh/EPaAEWE30LtPPVcYglspCRi6YH2nLwTymB5BM0YVdLfcoNnZKG3q3Bp
-         nOSJ41/CKSvenze+4GkAAoq9bgeuRouOnCj/Es44/V2bwrq26knTKVbWMzAGr0r749mb
-         l9l7id8p4zBh9Bje3/MjsdxqHSo5evu/yTNVQi8BvsDS+18ao29L2rZrywVaBAa5E+Bn
-         x0RXh5ocXSXB2kcnHvuNdkfBFp74hGdBEPxb3dVc9RanQywc+6L9xpOsFqptvfDXXicS
-         mFu5VCz81jgRJ+DlsgqYbP8yL+YXeDjRXyJey+9AqIWUJ9fl43km/G+rUxio59oiON8g
-         B+JA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=wGf8SOslmQtXKi1QI9BMUXk6iVKg26mOeGKK2Ks7MYE=;
-        b=OE5OPpiSiE6URdoFFGhRRKzGxhOU0THQKrn5XnSXssezt7EE+3imHVPHwuQmzv/ijq
-         U+QLXuM9xYkHeBw3pXjTjtyDGDeCH2fPogNVbeVmMrBNKkkMs9O/nn17v6yx9FqAv7iy
-         ZComhZxkX2XCEqonyx30+6HxYgiI0GG+Wa6O/3t9V/f81scf8rSHMu9EiUQpTRMEnxOX
-         c7UKer5+5x5vVUutdL1YI9PX2NWrFnbhqqMs3cLKP+B7P0PD6GgVkIkFbH9FzgO9JLSm
-         KshF6DYkbOOdC1Cx5Qay3VZUb3uc8kx3SoaAl4gbrnvT7ShtSEiDuwz/yNPViABlvXsz
-         SLGw==
-X-Gm-Message-State: APjAAAVorNTp+sUfyVLelm7SPeodD0BAhFcIWIdbP7Q9w6iS37oIfr5e
-	gu1yrGvVcHHmxFm9zwo5rOrxDQ==
-X-Google-Smtp-Source: APXvYqyneloIKBeXc5AlpZqXq7qebSG4Sm7XfSawnJmWBKgRDS3WvxrB+RD3J2nDCv0D3KoFXS2jaA==
-X-Received: by 2002:a37:434d:: with SMTP id q74mr28864727qka.187.1575237507536;
-        Sun, 01 Dec 2019 13:58:27 -0800 (PST)
-Received: from independence.bos.jonmasters.org (24-148-33-89.s2391.c3-0.grn-cbr1.chi-grn.il.cable.rcncustomer.com. [24.148.33.89])
-        by smtp.gmail.com with ESMTPSA id t38sm4905845qta.78.2019.12.01.13.58.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Dec 2019 13:58:27 -0800 (PST)
-Subject: Re: DAX filesystem support on ARMv8
-To: Bharat Kumar Gogada <bharatku@xilinx.com>,
- Matthew Wilcox <willy@infradead.org>, Dan Williams <dan.j.williams@intel.com>
-References: <MN2PR02MB63362F7B019844D94D243CE2A5770@MN2PR02MB6336.namprd02.prod.outlook.com>
- <CAPcyv4j75cQ4dSqyKGuioyyf0O9r0BG0TjFgv+w=64gLah5z6w@mail.gmail.com>
- <20191112220212.GC7934@bombadil.infradead.org>
- <MN2PR02MB6336070627E66ED8AE646BACA5710@MN2PR02MB6336.namprd02.prod.outlook.com>
-From: Jon Masters <jcm@jonmasters.org>
-Organization: World Organi{s,z}ation of Broken Dreams
-Message-ID: <e01ee855-cb11-d059-6c46-836283b9e251@jonmasters.org>
-Date: Sun, 1 Dec 2019 13:54:45 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+	by ml01.01.org (Postfix) with ESMTPS id 4C77810113304
+	for <linux-nvdimm@lists.01.org>; Sun,  1 Dec 2019 16:26:57 -0800 (PST)
+Message-ID: <02cc852b22def4e79b9e288460446e0e840c40@nbc2.info>
+From: Eve <info@nbc2.info>
+To: linux-nvdimm@lists.01.org
+Subject: =?utf-8?B?0JjQvdCy0LXQvdGC0LDRgNC90YvQuSDRg9GH0LXRgiDQ?=
+	=?utf-8?B?vdCwINGB0LrQu9Cw0LTQtQ==?=
+Date: Mon, 2 Dec 2019 02:23:25 +0200
 MIME-Version: 1.0
-In-Reply-To: <MN2PR02MB6336070627E66ED8AE646BACA5710@MN2PR02MB6336.namprd02.prod.outlook.com>
-Content-Language: en-US
-Message-ID-Hash: YJ4XDZAYXVWHA7KNLREKMT2VJZ2CLUHA
-X-Message-ID-Hash: YJ4XDZAYXVWHA7KNLREKMT2VJZ2CLUHA
-X-MailFrom: jcm@jonmasters.org
+DKIM-Signature: v=1; a=rsa-sha256; d=nbc2.info; s=mail;
+	c=relaxed/relaxed; t=1575246205;
+	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+	bh=+lXo23OH58Q0P8aiT9iQl9unET7FBZAap9b5zdDONAU=;
+	b=YcWNfXf7YummVKJibZN9iKS1vEOEGr52/gchgYWucWyWYP4J9EJtPLjdid65py
+	etJH88jxll46eyjqI+lh9UQVMTohLSpeOoet1xly5IvteyKrDl6b5jwjB/W36rDn
+	W2aNibtnJxbU2LAIt8xWGS14wbsCKcJjXXic+tMtxM66I=
+Message-ID-Hash: 66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW
+X-Message-ID-Hash: 66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW
+X-MailFrom: info@nbc2.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "jack@suse.cz" <jack@suse.cz>
+Content-Type: text/plain; charset="utf-8"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YJ4XDZAYXVWHA7KNLREKMT2VJZ2CLUHA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/66HW5SDDD4M4IXYXNBPRRGMEEXE62NLW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-On 11/14/19 1:54 AM, Bharat Kumar Gogada wrote:
->>
->> On Tue, Nov 12, 2019 at 09:15:18AM -0800, Dan Williams wrote:
->>> On Mon, Nov 11, 2019 at 6:12 PM Bharat Kumar Gogada
->> <bharatku@xilinx.com> wrote:
->>>>
->>>> Hi All,
->>>>
->>>> As per Documentation/filesystems/dax.txt
->>>>
->>>> The DAX code does not work correctly on architectures which have
->>>> virtually mapped caches such as ARM, MIPS and SPARC.
->>>>
->>>> Can anyone please shed light on dax filesystem issue w.r.t ARM architecture
->> ?
->>>
->>> The concern is VIVT caches since the kernel will want to flush pmem
->>> addresses with different virtual addresses than what userspace is
->>> using. As far as I know, ARMv8 has VIPT caches, so should not have an
->>> issue. Willy initially wrote those restrictions, but I am assuming
->>> that the concern was managing the caches in the presence of virtual
->>> aliases.
->>
->> The kernel will also access data at different virtual addresses from userspace.
->> So VIVT CPUs will be mmap/read/write incoherent, as well as being flush
->> incoherent.
-> 
-> Thanks a lot Wilcox and Dan for clarification.
-> So the above restriction only applies to ARM architectures with VIVT caches and not
-> for VIPT caches.
-
-VMSAv8-64 (Armv8) requires that data caches behave as if they were PIPT. 
-Meaning there is not a situation as described above.
-
-Jon.
-
--- 
-Computer Architect
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+0KHQutC+0LvRjNC60L4g0YLQvtGH0LXQuiDQstC+0LfQvNC+0LbQvdGL0YUg0L/QvtGC0LXRgNGM
+INCy0Ysg0LzQvtC20LXRgtC1INC90LDRgdGH0LjRgtCw0YLRjCDQvdCwINGB0LrQu9Cw0LTQtSDR
+gdCy0L7QtdC5INC60L7QvNC/0LDQvdC40Lg/INCU0LDQstCw0LnRgtC1INC/0LXRgNC10YHRh9C4
+0YLQsNC10Lwg0LLRgdC1ISDQmCDQvdCw0LnQtNC10Lwg0LTQtdC50YHRgtCy0LXQvdC90YvQtSDQ
+uNC90YHRgtGA0YPQvNC10L3RgtGLINC/0L4g0LjRhSDRg9GB0YLRgNCw0L3QtdC90LjRji4g0JLQ
+vdGD0YLRgNC4INGB0LrQu9Cw0LTQsCwg0L/RgNC4INGA0LDQsdC+0YLQtSDRgSDQv9C10YDRgdC+
+0L3QsNC70L7QvCwg0L/RgNC4INC/0YDQvtCy0LXQtNC10L3QuNC4INGC0LXQvdC00LXRgNC+0LIg
+0Lgg0L/RgC4g0KHQtNC10LvQsNC50YLQtSDRgdCy0L7RjiDRgdC40YHRgtC10LzRgyDQt9Cw0LrR
+g9C/0L7QuiDQuCDRgdC60LvQsNC00LAg0LzQsNC60YHQuNC80LDQu9GM0L3QviDRjdGE0YTQtdC6
+0YLQuNCy0L3QvtC5IQ0KMTAwJSDQv9GA0LDQutGC0LjRh9C90YvRhSDRgNC10YjQtdC90LjQuSDi
+gJMg0LfQsCAyINC00L3RjyDQuNC90YLQtdC90YHQuNCy0LAuDQoNCtCR0LjQt9C90LXRgS3Qv9GA
+0L7Qs9GA0LDQvNC80LA6DQrQrdC60L7QvdC+0LzQuNGH0LXRgdC60LDRjyDQsdC10LfQvtC/0LDR
+gdC90L7RgdGC0Ywg0L3QsCDRgdC+0LHRgdGC0LLQtdC90L3Ri9GFINGB0LrQu9Cw0LTQsNGFDQot
+INCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GH0LXRgtC90LDRjyDRgdC4
+0YHRgtC10LzQsCDQutC+0LzQv9Cw0L3QuNC4DQotINCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQ
+u9Cw0YHRgtGMOiDQn9GA0LXRgtC10L3Qt9C40Lgg0L7RgiDQutC70LjQtdC90YLQsCAo0LIg0YIu
+0YcuINC4INCy0L3Rg9GC0YDQtdC90L3QtdCz0L4pwqANCi0g0J/RgNC+0LHQu9C10LzQvdCw0Y8g
+0L7QsdC70LDRgdGC0Yw6INCf0L7RgtC10YDQuCDQstC90YPRgtGA0Lgg0YHQutC70LDQtNCwDQot
+INCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQoNCw0LHQvtGC0LAg0YEg0L/Q
+tdGA0YHQvtC90LDQu9C+0LwNCi0g0J/RgNC+0LHQu9C10LzQvdCw0Y8g0L7QsdC70LDRgdGC0Yw6
+INCh0L/QuNGB0LDQvdC40LUg0L/RgNC+0YHRgNC+0YfQutC4INC4INCx0YDQsNC60LANCi0g0J/R
+gNC+0LHQu9C10LzQvdCw0Y8g0L7QsdC70LDRgdGC0Yw6INCi0LDRgNCwINC4INGD0L/QsNC60L7Q
+stC60LAsINC80LDQu9C+0YbQtdC90LrQsA0KDQrQrdC60L7QvdC+0LzQuNGH0LXRgdC60LDRjyDQ
+sdC10LfQvtC/0LDRgdC90L7RgdGC0Ywg0LIg0JfQsNC60YPQv9C60LDRhQ0KLSDQn9GA0L7QsdC7
+0LXQvNC90LDRjyDQvtCx0LvQsNGB0YLRjDog0JjQs9GA0Ysg0YEg0YbQtdC90L7QuQ0KLSDQn9GA
+0L7QsdC70LXQvNC90LDRjyDQvtCx0LvQsNGB0YLRjDog0JfQu9C+0YPQv9C+0YLRgNC10LHQu9C1
+0L3QuNGPINC/0YDQuCDQv9GA0L7QstC10LTQtdC90LjQuCDRgtC10L3QtNC10YDQvtCyDQotINCf
+0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GB0LvRg9Cz0Lgg0YLRgNCw0L3R
+gdC/0L7RgNGC0LAg0Lgg0YHRhdC10LzRiyDQtNC+0L8uINC30LDRgNCw0LHQvtGC0LrQsCDQsiDQ
+vdC40YU6DQotINCf0YDQvtCx0LvQtdC80L3QsNGPINC+0LHQu9Cw0YHRgtGMOiDQo9GB0LvRg9Cz
+0Lgg0YEg0L3QtdC/0YDQvtC30YDQsNGH0L3Ri9C80Lgg0L7QsdGK0LXQvNCw0LzQuCAo0YIu0LUu
+INGC0LDQvCwg0LPQtNC1INC10YHRgtGMINGD0YHQu9C+0LLQvdC+INC/0L7RgdGC0L7Rj9C90L3R
+i9C1INC30LDRgtGA0LDRgtGLKSDQuCDQutCw0Log0YLQsNC8INC80L7QttC90L4gwqvQv9C+0LTQ
+t9Cw0YDQsNCx0L7RgtCw0YLRjMK7ICjQvdCwINC/0YDQuNC80LXRgNC1INGD0YHQu9GD0LMg0YHQ
+utC70LDQtNGB0LrQvtC5INC70L7Qs9C40YHRgtC40LrQuCkNCi0g0J/RgNC+0LHQu9C10LzQvdCw
+0Y8g0L7QsdC70LDRgdGC0Yw6INCh0YXQtdC80Ysg0LTQvtC/LiDQt9Cw0YDQsNCx0L7RgtC60LAg
+0L/RgNC4INC30LDQutGD0L/QutCw0YUg0LfQsNC/0YfQsNGB0YLQtdC5INC00LvRjyDRgdC+0LHR
+gdGC0LLQtdC90L3Ri9GFINC90YPQttC0ICjQtNC70Y8g0YHQvtCx0YHRgtCy0LXQvdC90L7Qs9C+
+INCw0LLRgtC+0L/QsNGA0LrQsCwg0LTQu9GPINGB0YLQsNC90L7Rh9C90L7Qs9C+INC/0LDRgNC6
+0LAg0Lgg0YIu0LQuKQ0K0J3RjtCw0L3RgdGLINCyINC00L7Qs9C+0LLQvtGA0LDRhS/QutC+0L3R
+gtGA0LDQutGC0LDRhSwg0LLQtdC00YPRidC40LUg0Log0L/QvtGC0LXRgNGP0LwgwqDCoMKgwqAN
+Cg0K0JXRgdC70Lgg0YMg0JLQsNGBINCy0L7Qt9C90LjQutC90YPRgiDQtNC+0L/QvtC70L3QuNGC
+0LXQu9GM0L3Ri9C1INCy0L7Qv9GA0L7RgdGLIC0g0L7QsdGA0LDRidCw0LnRgtC10YHRjCwg0LzR
+iyDQstGB0LXQs9C00LAg0YDQsNC00Ysg0JLQsNC8INC/0L7QvNC+0YfRjCENCg0KLS0NCg0K0KEg
+0KPQstCw0LbQtdC90LjQtdC8LA0K0JXQstCz0LXQvdC40Y8g0J/QsNCy0LvQvtCy0L3QsA0KDQrQ
+p9GC0L7QsdGLINC+0YLQv9C40YHQsNGC0YzRgdGPINC+0YIg0YDQsNGB0YHRi9C70LrQuCwg0L/R
+gNC+0LnQtNC40YLQtSDQv9C+INGN0YLQvtC5INGB0YHRi9C70LrQtSDQntGC0L/QuNGB0LDRgtGM
+0YHRjyDQvtGCINC/0L7Rh9GC0YsuDQoNCkxpc3QtVW5zdWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xl
+dHRlciDQvnIgY29tcGxhaW4g0LBi0L51dCBTUNCQ0JwuDQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
+aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
