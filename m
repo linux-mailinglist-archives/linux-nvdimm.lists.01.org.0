@@ -1,84 +1,122 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C892310FDEB
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 13:43:07 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF68810FE2F
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 13:56:00 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9363F101134ED;
-	Tue,  3 Dec 2019 04:46:28 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 54FC0101134EA
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Dec 2019 04:46:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	 bh=y32EyG9QTIAAfBfEpUvYlhT+mcWXafYYc7fjM/sPObM=; b=m8Z9EA16p0cdhP5aXa2cDeouD
-	8v18exxvbDL2VZ+g12YOFJL8h4D64m1aUWCjUztX9coGysKzDNmS82ECczmiSSugoSgZ9I8fL9733
-	yByR1W4OgWm9Ji+79sSU19wUMIbaL9vhWILbJzqBWIYJTITSALTfX8PQqTR6ncq9isowfjM5tK81V
-	DhgMGFKKI5B5HnMtJhJFcrzkzezv2TLmE+jL2cmZiZL0voqrqklRcOy//ON418iZSdT3QArUEvbuM
-	ATlvjkn6wfb7OXS8n+w6/tzVdX7N06vOEiLtYT8y+Qz025I88HodvPHRaxMl+zkd3oThPgqxf9AOL
-	VUr5RTx1g==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1ic7Vo-0007i6-VW; Tue, 03 Dec 2019 12:42:40 +0000
-Date: Tue, 3 Dec 2019 04:42:40 -0800
-From: Matthew Wilcox <willy@infradead.org>
-To: Alastair D'Silva <alastair@au1.ibm.com>
-Subject: Re: [PATCH v2 00/27] Add support for OpenCAPI SCM devices
-Message-ID: <20191203124240.GT20752@bombadil.infradead.org>
-References: <20191203034655.51561-1-alastair@au1.ibm.com>
- <20191203035057.GR20752@bombadil.infradead.org>
- <1e3892815b9684e3fb4f84bd1935ea7e68cd07d8.camel@au1.ibm.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1e3892815b9684e3fb4f84bd1935ea7e68cd07d8.camel@au1.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-Message-ID-Hash: 5557RBDJ35KZBAJWSG4GX7OQLBQ3ELDM
-X-Message-ID-Hash: 5557RBDJ35KZBAJWSG4GX7OQLBQ3ELDM
-X-MailFrom: willy@infradead.org
+	by ml01.01.org (Postfix) with ESMTP id 933B0101134ED;
+	Tue,  3 Dec 2019 04:59:21 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=111.77.254.197; helo=thunderbeastarms.com; envelope-from=gxraurlxpwnpsko@thunderbeastarms.com; receiver=<UNKNOWN> 
+Received: from thunderbeastarms.com (unknown [111.77.254.197])
+	by ml01.01.org (Postfix) with SMTP id 2DE0A101134EC
+	for <linux-nvdimm@lists.01.org>; Tue,  3 Dec 2019 04:59:17 -0800 (PST)
+Received: from localhost ([127.0.0.1]) by localhost via TCP with ESMTPA ;Tue, 03 Dec 2019 20:55:44 +0800 (CST)
+X-Priority: 3
+X-Mailer: nlceYWBZN 0
+From: "=?utf-8?B?5ZaE6YCS?=" <gxraurlxpwnpsko@thunderbeastarms.com>
+Sender: "=?utf-8?B?5ZaE6YCS?=" <gxraurlxpwnpsko@thunderbeastarms.com>
+To: "linux-nvdimm" <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?U3VwcGx5IGF1ZGlvIGNvbm5lY3RvcnMgIFNwZWFrb24gY29u?=
+	=?utf-8?B?bmVjdG9ycyAgQmFuYW5hIHBsdWdzICBSRiBhc3NlbWJsZSBj?=
+	=?utf-8?B?YWJsZStjb25uZWN0b3JzICBSQ0EgcGx1Z3M=?=
+Message-ID: <bb95d5ad2eaffb5849e9a0e719f043ed@thunderbeastarms.com>
+Date: Tue, 03 Dec 2019 20:55:44 +0800
+Message-ID-Hash: VNPCBOYUCNTPUS3FQ5GCWW3PG2J2XSDL
+X-Message-ID-Hash: VNPCBOYUCNTPUS3FQ5GCWW3PG2J2XSDL
+X-MailFrom: gxraurlxpwnpsko@thunderbeastarms.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.
- ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: kokogorf@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5557RBDJ35KZBAJWSG4GX7OQLBQ3ELDM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VNPCBOYUCNTPUS3FQ5GCWW3PG2J2XSDL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============7910169762918282140=="
+
+--===============7910169762918282140==
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD></HEAD>
+<BODY>
+<DIV>
+<DIV>
+<DIV>
+<DIV>
+<DIV>
+<DIV><FONT style=3D"BACKGROUND-COLOR: white" =
+color=3Dwhite></FONT></DIV><FONT=20
+style=3D"BACKGROUND-COLOR: white" color=3Dwhite></FONT></DIV><FONT=20
+style=3D"BACKGROUND-COLOR: white" color=3Dwhite></FONT></DIV><FONT=20
+style=3D"BACKGROUND-COLOR: white" color=3Dwhite></FONT></DIV><FONT=20
+style=3D"BACKGROUND-COLOR: white" color=3Dwhite></FONT></DIV><FONT=20
+style=3D"BACKGROUND-COLOR: white"=20
+color=3Dwhite><BR></DIV></FONT></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></=
+SPAN></SPAN>
+<DIV style=3D"LINE-HEIGHT: 18px; COLOR: #b5b9bd; FONT-SIZE: =
+12px"><SPAN><FONT=20
+color=3D#000000 size=3D3>
+<DIV><FONT color=3Dwhite></FONT>&nbsp;</DIV>
+<DIV>
+<DIV>
+<DIV>
+<DIV>Hi purchasing manager</DIV>
+<DIV>
+<DIV><FONT color=3Dwhite><BR></FONT>How are you? Hope this email finds you =
+well</DIV>
+<DIV>
+<DIV><FONT color=3Dwhite><BR></FONT>We are a professional factory for  =
+Speakon connectors, Banana plugs, CCTV camera connectors, audio =
+connectors, RCA plugs, RF assemble cable+connectors, XLR connectors,  =
+products. Hope we will build a great cooperation soon, and glad to tell =
+you that samples will be offered.</DIV>
+<DIV>
+<DIV><FONT color=3Dwhite><BR></FONT>
+<DIV><IMG =
+src=3D"https://ae01.alicdn.com/kf/HTB1oX05XBGE3KVjSZFhq6AkaFXaV/YsJvhyBc.jp=
+g"></DIV></DIV>
+<DIV>
+<DIV><FONT style=3D"BACKGROUND-COLOR: white"=20
+color=3Dwhite><BR></FONT>If any product meet your demand, please contact =
+us. We are sure any your question will get our prompt reply.=C2=A0</DIV>
+<DIV>
+<DIV><FONT color=3Dwhite><BR></FONT>Your friends,</DIV>
+<DIV>&nbsp;</DIV>
+<DIV>www.koko-go(dot)com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&lt;=20
+change (dot)&nbsp; to . &gt;</DIV>
+<DIV>
+<DIV><FONT style=3D"BACKGROUND-COLOR: white" color=3Dwhite>
+<DIV=20
+style=3D"LINE-HEIGHT: 1.5; WIDOWS: 2; TEXT-TRANSFORM: none; FONT-STYLE: =
+normal; TEXT-INDENT: 0px; LETTER-SPACING: normal; FONT-FAMILY: Verdana; =
+WHITE-SPACE: normal; ORPHANS: 2; COLOR: rgb(0,0,0); FONT-SIZE: 14px; =
+FONT-WEIGHT: normal; WORD-SPACING: 0px; font-variant-ligatures: normal; =
+font-variant-caps: normal; -webkit-text-stroke-width: 0px"><FONT=20
+color=3D#ffffff></FONT></DIV><BR></DIV></DIV></DIV></DIV></DIV></DIV></FONT=
+></DIV></SPAN></SPAN></SPAN></DIV></SPAN></SPAN></DIV></SPAN></SPAN></DIV><=
+/SPAN></FONT></SPAN></DIV>
+<DIV></DIV><IMG border=3D0 hspace=3D0 alt=3D"" align=3Dbaseline=20
+src=3D"http://www.koko-go.cn/return/stat.asp?p=3Dold2019-12-03?linux-nvdimm=
+@lists.01.org"> 
+<P></P></BODY></HTML>
+
+--===============7910169762918282140==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Tue, Dec 03, 2019 at 03:01:17PM +1100, Alastair D'Silva wrote:
-> On Mon, 2019-12-02 at 19:50 -0800, Matthew Wilcox wrote:
-> > On Tue, Dec 03, 2019 at 02:46:28PM +1100, Alastair D'Silva wrote:
-> > > This series adds support for OpenCAPI SCM devices, exposing
-> > 
-> > Could we _not_ introduce yet another term for persistent memory?
-> > 
-> 
-> "Storage Class Memory" is an industry wide term, and is used repeatedly
-> in the device specifications. It's not something that has been pulled
-> out of thin air.
-
-"Somebody else also wrote down Storage Class Memory".  Don't care.
-Google gets 750k hits for Persistent Memory and 150k hits for
-Storage Class Memory.  This term lost.
-
-> The term is also already in use within the 'papr_scm' driver.
-
-The acronym "SCM" is already in use.  Socket Control Messages go back
-to early Unix (SCM_RIGHTS, SCM_CREDENTIALS, etc).  Really, you're just
-making the case that IBM already uses the term SCM.  You should stop.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7910169762918282140==--
