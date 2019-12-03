@@ -2,72 +2,69 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCB510F5A8
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 04:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0570B10F5B4
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 04:48:40 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 158871011363E;
-	Mon,  2 Dec 2019 19:51:52 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id D56B110113676;
+	Mon,  2 Dec 2019 19:51:55 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 702DB1011363B
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Dec 2019 19:51:50 -0800 (PST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB33kksL006780
-	for <linux-nvdimm@lists.01.org>; Mon, 2 Dec 2019 22:48:26 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2wm6cy9sbj-1
+	by ml01.01.org (Postfix) with ESMTPS id 22AEB10113660
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Dec 2019 19:51:52 -0800 (PST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB33kljd093288
+	for <linux-nvdimm@lists.01.org>; Mon, 2 Dec 2019 22:48:28 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 2wm6g99bmw-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Mon, 02 Dec 2019 22:48:26 -0500
+	for <linux-nvdimm@lists.01.org>; Mon, 02 Dec 2019 22:48:28 -0500
 Received: from localhost
-	by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
 	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Tue, 3 Dec 2019 03:48:23 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-	by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	Tue, 3 Dec 2019 03:48:25 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Tue, 3 Dec 2019 03:48:16 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB33mFXj45088900
+	Tue, 3 Dec 2019 03:48:17 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB33mGhc35586160
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Dec 2019 03:48:15 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AAA6142041;
-	Tue,  3 Dec 2019 03:48:15 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 537F042042;
+	Tue, 3 Dec 2019 03:48:16 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB13852057;
 	Tue,  3 Dec 2019 03:48:15 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 4998B5205A;
 	Tue,  3 Dec 2019 03:48:15 +0000 (GMT)
 Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 44DE2A03C7;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 4D7DAA03CB;
 	Tue,  3 Dec 2019 14:48:12 +1100 (AEDT)
 From: "Alastair D'Silva" <alastair@au1.ibm.com>
 To: alastair@d-silva.org
-Subject: [PATCH v2 02/27] nvdimm: remove prototypes for nonexistent functions
-Date: Tue,  3 Dec 2019 14:46:30 +1100
+Subject: [PATCH v2 03/27] powerpc: Add OPAL calls for LPC memory alloc/release
+Date: Tue,  3 Dec 2019 14:46:31 +1100
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191203034655.51561-1-alastair@au1.ibm.com>
 References: <20191203034655.51561-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-x-cbid: 19120303-0020-0000-0000-00000392CC59
+x-cbid: 19120303-4275-0000-0000-0000038A31DB
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120303-0021-0000-0000-000021E9EAA8
-Message-Id: <20191203034655.51561-3-alastair@au1.ibm.com>
+x-cbparentid: 19120303-4276-0000-0000-0000389DCDD7
+Message-Id: <20191203034655.51561-4-alastair@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-02_06:2019-11-29,2019-12-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 priorityscore=1501 suspectscore=1 bulkscore=0 phishscore=0
- mlxlogscore=709 adultscore=0 spamscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ impostorscore=0 suspectscore=1 spamscore=0 mlxscore=0 adultscore=0
+ mlxlogscore=818 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-1912030032
-Message-ID-Hash: LXH3YFYF3R7CL2I7X6W2TWJDK47GQN22
-X-Message-ID-Hash: LXH3YFYF3R7CL2I7X6W2TWJDK47GQN22
+Message-ID-Hash: QXYPLQSYQB65P4ECLNI7GWYAVX73CHWK
+X-Message-ID-Hash: QXYPLQSYQB65P4ECLNI7GWYAVX73CHWK
 X-MailFrom: alastair@au1.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -76,7 +73,7 @@ CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@sa
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LXH3YFYF3R7CL2I7X6W2TWJDK47GQN22/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QXYPLQSYQB65P4ECLNI7GWYAVX73CHWK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -87,30 +84,57 @@ Content-Transfer-Encoding: 7bit
 
 From: Alastair D'Silva <alastair@d-silva.org>
 
-These functions don't exist, so remove the prototypes for them.
+Add OPAL calls for LPC memory alloc/release
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-Reviewed-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 ---
- drivers/nvdimm/nd-core.h | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/include/asm/opal-api.h        | 2 ++
+ arch/powerpc/include/asm/opal.h            | 3 +++
+ arch/powerpc/platforms/powernv/opal-call.c | 2 ++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index 25fa121104d0..9f121a6aeb02 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -124,11 +124,7 @@ void nd_region_create_dax_seed(struct nd_region *nd_region);
- int nvdimm_bus_create_ndctl(struct nvdimm_bus *nvdimm_bus);
- void nvdimm_bus_destroy_ndctl(struct nvdimm_bus *nvdimm_bus);
- void nd_synchronize(void);
--int nvdimm_bus_register_dimms(struct nvdimm_bus *nvdimm_bus);
--int nvdimm_bus_register_regions(struct nvdimm_bus *nvdimm_bus);
--int nvdimm_bus_init_interleave_sets(struct nvdimm_bus *nvdimm_bus);
- void __nd_device_register(struct device *dev);
--int nd_match_dimm(struct device *dev, void *data);
- struct nd_label_id;
- char *nd_label_gen_id(struct nd_label_id *label_id, u8 *uuid, u32 flags);
- bool nd_is_uuid_unique(struct device *dev, u8 *uuid);
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index 378e3997845a..2c88c02e69ed 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -208,6 +208,8 @@
+ #define OPAL_HANDLE_HMI2			166
+ #define	OPAL_NX_COPROC_INIT			167
+ #define OPAL_XIVE_GET_VP_STATE			170
++#define OPAL_NPU_MEM_ALLOC			171
++#define OPAL_NPU_MEM_RELEASE			172
+ #define OPAL_MPIPL_UPDATE			173
+ #define OPAL_MPIPL_REGISTER_TAG			174
+ #define OPAL_MPIPL_QUERY_TAG			175
+diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+index a0cf8fba4d12..4db135fb54ab 100644
+--- a/arch/powerpc/include/asm/opal.h
++++ b/arch/powerpc/include/asm/opal.h
+@@ -39,6 +39,9 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id, uint32_t bdfn,
+ 				uint64_t PE_handle);
+ int64_t opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
+ 			uint64_t rate_phys, uint32_t size);
++int64_t opal_npu_mem_alloc(uint64_t phb_id, uint32_t bdfn,
++			uint64_t size, uint64_t *bar);
++int64_t opal_npu_mem_release(uint64_t phb_id, uint32_t bdfn);
+ 
+ int64_t opal_console_write(int64_t term_number, __be64 *length,
+ 			   const uint8_t *buffer);
+diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
+index a2aa5e433ac8..27c4b93c774c 100644
+--- a/arch/powerpc/platforms/powernv/opal-call.c
++++ b/arch/powerpc/platforms/powernv/opal-call.c
+@@ -287,6 +287,8 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,		OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
+ OPAL_CALL(opal_sensor_read_u64,			OPAL_SENSOR_READ_U64);
+ OPAL_CALL(opal_sensor_group_enable,		OPAL_SENSOR_GROUP_ENABLE);
+ OPAL_CALL(opal_nx_coproc_init,			OPAL_NX_COPROC_INIT);
++OPAL_CALL(opal_npu_mem_alloc,			OPAL_NPU_MEM_ALLOC);
++OPAL_CALL(opal_npu_mem_release,			OPAL_NPU_MEM_RELEASE);
+ OPAL_CALL(opal_mpipl_update,			OPAL_MPIPL_UPDATE);
+ OPAL_CALL(opal_mpipl_register_tag,		OPAL_MPIPL_REGISTER_TAG);
+ OPAL_CALL(opal_mpipl_query_tag,			OPAL_MPIPL_QUERY_TAG);
 -- 
 2.23.0
 _______________________________________________
