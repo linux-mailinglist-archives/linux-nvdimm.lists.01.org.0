@@ -2,72 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2513B10F5CE
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 04:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC64C10F5CD
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  3 Dec 2019 04:49:06 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 774A810097F12;
+	by ml01.01.org (Postfix) with ESMTP id 5219B10097F0E;
 	Mon,  2 Dec 2019 19:52:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 75EF610113688
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Dec 2019 19:51:58 -0800 (PST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB33kc7C087993
-	for <linux-nvdimm@lists.01.org>; Mon, 2 Dec 2019 22:48:35 -0500
+	by ml01.01.org (Postfix) with ESMTPS id 4264410113673
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Dec 2019 19:51:55 -0800 (PST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB33kkw9021117
+	for <linux-nvdimm@lists.01.org>; Mon, 2 Dec 2019 22:48:32 -0500
 Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2wkm47b7vv-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2wnehxj6um-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Mon, 02 Dec 2019 22:48:34 -0500
+	for <linux-nvdimm@lists.01.org>; Mon, 02 Dec 2019 22:48:32 -0500
 Received: from localhost
 	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
 	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Tue, 3 Dec 2019 03:48:26 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+	Tue, 3 Dec 2019 03:48:28 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
 	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Tue, 3 Dec 2019 03:48:19 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB33mIc063111208
+	Tue, 3 Dec 2019 03:48:20 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB33mJeB45023540
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Dec 2019 03:48:18 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 97C144C04E;
+	Tue, 3 Dec 2019 03:48:19 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DBB64204F;
+	Tue,  3 Dec 2019 03:48:19 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 873FC42041;
 	Tue,  3 Dec 2019 03:48:18 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0002A4C044;
-	Tue,  3 Dec 2019 03:48:17 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Dec 2019 03:48:17 +0000 (GMT)
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Dec 2019 03:48:18 +0000 (GMT)
 Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8DC01A03EB;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 96F42A03EE;
 	Tue,  3 Dec 2019 14:48:13 +1100 (AEDT)
 From: "Alastair D'Silva" <alastair@au1.ibm.com>
 To: alastair@d-silva.org
-Subject: [PATCH v2 23/27] nvdimm/ocxl: Add debug IOCTLs
-Date: Tue,  3 Dec 2019 14:46:51 +1100
+Subject: [PATCH v2 24/27] nvdimm/ocxl: Implement Overwrite
+Date: Tue,  3 Dec 2019 14:46:52 +1100
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191203034655.51561-1-alastair@au1.ibm.com>
 References: <20191203034655.51561-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-x-cbid: 19120303-4275-0000-0000-0000038A31DF
+x-cbid: 19120303-4275-0000-0000-0000038A31E1
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19120303-4276-0000-0000-0000389DCDDA
-Message-Id: <20191203034655.51561-24-alastair@au1.ibm.com>
+x-cbparentid: 19120303-4276-0000-0000-0000389DCDDC
+Message-Id: <20191203034655.51561-25-alastair@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
  definitions=2019-12-02_06:2019-11-29,2019-12-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
- spamscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- impostorscore=0 adultscore=0 suspectscore=1 mlxlogscore=999 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 adultscore=0 malwarescore=0 bulkscore=0
+ suspectscore=1 impostorscore=0 mlxlogscore=999 priorityscore=1501
+ mlxscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-1910280000 definitions=main-1912030032
-Message-ID-Hash: GJJJJFYI357YFAAC6HARQY54MFN2MJXN
-X-Message-ID-Hash: GJJJJFYI357YFAAC6HARQY54MFN2MJXN
+Message-ID-Hash: E6CFGWA4QFSIB4RPU4BM6D5AGZ47NK2A
+X-Message-ID-Hash: E6CFGWA4QFSIB4RPU4BM6D5AGZ47NK2A
 X-MailFrom: alastair@au1.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -76,7 +76,7 @@ CC: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@sa
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GJJJJFYI357YFAAC6HARQY54MFN2MJXN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E6CFGWA4QFSIB4RPU4BM6D5AGZ47NK2A/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -87,353 +87,270 @@ Content-Transfer-Encoding: 7bit
 
 From: Alastair D'Silva <alastair@d-silva.org>
 
-These IOCTLs provide low level access to the card to aid in debugging
-controller/FPGA firmware.
+The near storage command 'Secure Erase' overwrites all data on the
+media.
+
+This patch hooks it up to the security function 'overwrite'.
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 ---
- drivers/nvdimm/ocxl/Kconfig    |   6 +
- drivers/nvdimm/ocxl/scm.c      | 249 +++++++++++++++++++++++++++++++++
- include/uapi/nvdimm/ocxl-scm.h |  32 +++++
- 3 files changed, 287 insertions(+)
+ drivers/nvdimm/ocxl/scm.c          | 164 ++++++++++++++++++++++++++++-
+ drivers/nvdimm/ocxl/scm_internal.c |   1 +
+ drivers/nvdimm/ocxl/scm_internal.h |  17 +++
+ 3 files changed, 180 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvdimm/ocxl/Kconfig b/drivers/nvdimm/ocxl/Kconfig
-index 24099b300f5e..1df030cdd958 100644
---- a/drivers/nvdimm/ocxl/Kconfig
-+++ b/drivers/nvdimm/ocxl/Kconfig
-@@ -12,4 +12,10 @@ config OCXL_SCM
- 
- 	  Select N if unsure.
- 
-+config OCXL_SCM_DEBUG
-+	bool "OpenCAPI Storage Class Memory debugging"
-+	depends on OCXL_SCM
-+	help
-+	  Enables low level IOCTLs for OpenCAPI SCM firmware development
-+
- endif
 diff --git a/drivers/nvdimm/ocxl/scm.c b/drivers/nvdimm/ocxl/scm.c
-index e8b34262f397..a81eb5916eb3 100644
+index a81eb5916eb3..8deb7862793c 100644
 --- a/drivers/nvdimm/ocxl/scm.c
 +++ b/drivers/nvdimm/ocxl/scm.c
-@@ -1098,6 +1098,235 @@ int scm_req_controller_health_perf(struct scm_data *scm_data)
- 				      GLOBAL_MMIO_HCI_REQ_HEALTH_PERF);
+@@ -169,6 +169,86 @@ static int scm_reserve_metadata(struct scm_data *scm_data,
+ 	return 0;
  }
  
-+#ifdef CONFIG_OCXL_SCM_DEBUG
 +/**
-+ * scm_enable_fwdebug() - Enable FW debug on the controller
-+ * @scm_data: a pointer to the SCM device data
-+ * Return: 0 on success, negative on failure
++ * scm_overwrite() - Overwrite all data on the card
++ * @scm_data: The SCM device data
++ * Return: 0 on success
 + */
-+static int scm_enable_fwdebug(const struct scm_data *scm_data)
++int scm_overwrite(struct scm_data *scm_data)
 +{
-+	return ocxl_global_mmio_set64(scm_data->ocxl_afu, GLOBAL_MMIO_HCI,
-+				      OCXL_LITTLE_ENDIAN,
-+				      GLOBAL_MMIO_HCI_FW_DEBUG);
-+}
-+
-+/**
-+ * scm_disable_fwdebug() - Disable FW debug on the controller
-+ * @scm_data: a pointer to the SCM device data
-+ * Return: 0 on success, negative on failure
-+ */
-+static int scm_disable_fwdebug(const struct scm_data *scm_data)
-+{
-+	return ocxl_global_mmio_set64(scm_data->ocxl_afu, GLOBAL_MMIO_HCIC,
-+				      OCXL_LITTLE_ENDIAN,
-+				      GLOBAL_MMIO_HCI_FW_DEBUG);
-+}
-+
-+static int scm_ioctl_fwdebug(struct scm_data *scm_data,
-+			     struct scm_ioctl_fwdebug __user *uarg)
-+{
-+	struct scm_ioctl_fwdebug args;
-+	u64 val;
-+	int i;
 +	int rc;
 +
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
++	mutex_lock(&scm_data->ns_command.lock);
 +
-+	// Buffer size must be a multiple of 8
-+	if ((args.buf_size & 0x07))
-+		return -EINVAL;
-+
-+	if (args.buf_size > scm_data->admin_command.data_size)
-+		return -EINVAL;
-+
-+	mutex_lock(&scm_data->admin_command.lock);
-+
-+	rc = scm_enable_fwdebug(scm_data);
++	rc = scm_ns_command_request(scm_data, NS_COMMAND_SECURE_ERASE);
 +	if (rc)
 +		goto out;
 +
-+	rc = scm_admin_command_request(scm_data, ADMIN_COMMAND_FW_DEBUG);
++	rc = scm_ns_command_execute(scm_data);
 +	if (rc)
 +		goto out;
 +
-+	// Write DebugAction & FunctionCode
-+	val = ((u64)args.debug_action << 56) | ((u64)args.function_code << 40);
++	scm_data->overwrite_state = SCM_OVERWRITE_BUSY;
 +
-+	rc = ocxl_global_mmio_write64(scm_data->ocxl_afu,
-+				      scm_data->admin_command.request_offset + 0x08,
-+				      OCXL_LITTLE_ENDIAN, val);
-+	if (rc)
-+		goto out;
-+
-+	rc = ocxl_global_mmio_write64(scm_data->ocxl_afu,
-+				      scm_data->admin_command.request_offset + 0x10,
-+				      OCXL_LITTLE_ENDIAN, args.debug_parameter_1);
-+	if (rc)
-+		goto out;
-+
-+	rc = ocxl_global_mmio_write64(scm_data->ocxl_afu,
-+				      scm_data->admin_command.request_offset + 0x18,
-+				      OCXL_LITTLE_ENDIAN, args.debug_parameter_2);
-+	if (rc)
-+		goto out;
-+
-+	for (i = 0x20; i < 0x38; i += 0x08)
-+		rc = ocxl_global_mmio_write64(scm_data->ocxl_afu,
-+					      scm_data->admin_command.request_offset + i,
-+					      OCXL_LITTLE_ENDIAN, 0);
-+	if (rc)
-+		goto out;
-+
-+
-+	// Populate admin command buffer
-+	if (args.buf_size) {
-+		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-+			u64 val;
-+
-+			if (copy_from_user(&val, &args.buf[i], sizeof(u64)))
-+				return -EFAULT;
-+
-+			rc = ocxl_global_mmio_write64(scm_data->ocxl_afu,
-+						      scm_data->admin_command.data_offset + i,
-+						      OCXL_HOST_ENDIAN, val);
-+			if (rc)
-+				goto out;
-+		}
-+	}
-+
-+	rc = scm_admin_command_execute(scm_data);
-+	if (rc)
-+		goto out;
-+
-+	rc = scm_admin_command_complete_timeout(scm_data,
-+						scm_data->timeouts[ADMIN_COMMAND_FW_DEBUG]);
-+	if (rc < 0)
-+		goto out;
-+
-+	rc = scm_admin_response(scm_data);
-+	if (rc < 0)
-+		goto out;
-+	if (rc != STATUS_SUCCESS) {
-+		scm_warn_status(scm_data, "Unexpected status from FW Debug", rc);
-+		goto out;
-+	}
-+
-+	if (args.buf_size) {
-+		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-+			u64 val;
-+
-+			rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
-+						     scm_data->admin_command.data_offset + i,
-+						     OCXL_HOST_ENDIAN, &val);
-+			if (rc)
-+				goto out;
-+
-+			if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
-+				rc = -EFAULT;
-+				goto out;
-+			}
-+		}
-+	}
-+
-+	rc = scm_admin_response_handled(scm_data);
-+	if (rc)
-+		goto out;
-+
-+	rc = scm_disable_fwdebug(scm_data);
-+	if (rc)
-+		goto out;
++	return 0;
 +
 +out:
-+	mutex_unlock(&scm_data->admin_command.lock);
++	mutex_unlock(&scm_data->ns_command.lock);
 +	return rc;
 +}
 +
-+static int scm_ioctl_shutdown(struct scm_data *scm_data)
++/**
++ * scm_secop_overwrite() - Overwrite all data on the card
++ * @nvdimm: The nvdimm representation of the SCM device to start the overwrite on
++ * @key_data: Unused (no security key implementation)
++ * Return: 0 on success
++ */
++static int scm_secop_overwrite(struct nvdimm *nvdimm,
++			       const struct nvdimm_key_data *key_data)
 +{
-+	int rc;
++	struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
 +
-+	mutex_lock(&scm_data->admin_command.lock);
-+
-+	rc = scm_admin_command_request(scm_data, ADMIN_COMMAND_SHUTDOWN);
-+	if (rc)
-+		goto out;
-+
-+	rc = scm_admin_command_execute(scm_data);
-+	if (rc)
-+		goto out;
-+
-+	rc = scm_admin_command_complete_timeout(scm_data, ADMIN_COMMAND_SHUTDOWN);
-+	if (rc < 0) {
-+		dev_warn(&scm_data->dev, "Shutdown timed out\n");
-+		goto out;
-+	}
-+
-+	rc = 0;
-+	goto out;
-+
-+out:
-+	mutex_unlock(&scm_data->admin_command.lock);
-+	return rc;
++	return scm_overwrite(scm_data);
 +}
 +
-+static int scm_ioctl_mmio_write(struct scm_data *scm_data,
-+				struct scm_ioctl_mmio __user *uarg)
++/**
++ * scm_secop_query_overwrite() - Get the current overwrite state
++ * @nvdimm: The nvdimm representation of the SCM device to start the overwrite on
++ * Return: 0 if successful or idle, -EBUSY if busy, -EFAULT if failed
++ */
++static int scm_secop_query_overwrite(struct nvdimm *nvdimm)
 +{
-+	struct scm_ioctl_mmio args;
++	struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
 +
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
++	if (scm_data->overwrite_state == SCM_OVERWRITE_BUSY)
++		return -EBUSY;
 +
-+	return ocxl_global_mmio_write64(scm_data->ocxl_afu, args.address,
-+					OCXL_LITTLE_ENDIAN, args.val);
-+}
-+
-+static int scm_ioctl_mmio_read(struct scm_data *scm_data,
-+			       struct scm_ioctl_mmio __user *uarg)
-+{
-+	struct scm_ioctl_mmio args;
-+	int rc;
-+
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
-+
-+	rc = ocxl_global_mmio_read64(scm_data->ocxl_afu, args.address,
-+				     OCXL_LITTLE_ENDIAN, &args.val);
-+	if (rc)
-+		return rc;
-+
-+	if (copy_to_user(uarg, &args, sizeof(args)))
++	if (scm_data->overwrite_state == SCM_OVERWRITE_FAILED)
 +		return -EFAULT;
 +
 +	return 0;
 +}
-+#else /* CONFIG_OCXL_SCM_DEBUG */
-+static int scm_ioctl_fwdebug(struct scm_data *scm_data,
-+			     struct scm_ioctl_fwdebug __user *uarg)
++
++/**
++ * scm_secop_get_flags() - return the security flags for the SCM device
++ */
++static unsigned long scm_secop_get_flags(struct nvdimm *nvdimm,
++		enum nvdimm_passphrase_type ptype)
 +{
-+	return -EPERM;
++	struct scm_data *scm_data = nvdimm_provider_data(nvdimm);
++
++	if (scm_data->overwrite_state == SCM_OVERWRITE_BUSY)
++		return BIT(NVDIMM_SECURITY_OVERWRITE);
++
++	return BIT(NVDIMM_SECURITY_DISABLED);
 +}
 +
-+static int scm_ioctl_shutdown(struct scm_data *scm_data)
++static const struct nvdimm_security_ops sec_ops  = {
++	.get_flags = scm_secop_get_flags,
++	.overwrite = scm_secop_overwrite,
++	.query_overwrite = scm_secop_query_overwrite,
++};
++
+ /**
+  * scm_register_lpc_mem() - Discover persistent memory on a device and register it with the NVDIMM subsystem
+  * @scm_data: The SCM device data
+@@ -224,10 +304,10 @@ static int scm_register_lpc_mem(struct scm_data *scm_data)
+ 	set_bit(NDD_ALIASING, &nvdimm_flags);
+ 
+ 	snprintf(serial, sizeof(serial), "%llx", fn_config->serial);
+-	nd_mapping_desc.nvdimm = nvdimm_create(scm_data->nvdimm_bus, scm_data,
++	nd_mapping_desc.nvdimm = __nvdimm_create(scm_data->nvdimm_bus, scm_data,
+ 				 scm_dimm_attribute_groups,
+ 				 nvdimm_flags, nvdimm_cmd_mask,
+-				 0, NULL);
++				 0, NULL, serial, &sec_ops);
+ 	if (!nd_mapping_desc.nvdimm)
+ 		return -ENOMEM;
+ 
+@@ -1530,6 +1610,83 @@ static void scm_dump_error_log(struct scm_data *scm_data)
+ 	kfree(buf);
+ }
+ 
++static void scm_handle_nscra_doorbell(struct scm_data *scm_data)
 +{
-+	return -EPERM;
++	int rc;
++
++	if (scm_data->ns_command.op_code == NS_COMMAND_SECURE_ERASE) {
++		u64 success, attempted;
++
++
++		rc = scm_ns_response(scm_data);
++		if (rc < 0) {
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++			mutex_unlock(&scm_data->ns_command.lock);
++			return;
++		}
++		if (rc != STATUS_SUCCESS)
++			scm_warn_status(scm_data, "Unexpected status from overwrite", rc);
++
++		rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
++					     scm_data->ns_command.response_offset +
++					     NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_SUCCESS,
++					     OCXL_HOST_ENDIAN, &success);
++		if (rc) {
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++			mutex_unlock(&scm_data->ns_command.lock);
++			return;
++		}
++
++		rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
++					     scm_data->ns_command.response_offset +
++					     NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_ATTEMPTED,
++					     OCXL_HOST_ENDIAN, &attempted);
++		if (rc) {
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++			mutex_unlock(&scm_data->ns_command.lock);
++			return;
++		}
++
++		scm_data->overwrite_state = SCM_OVERWRITE_SUCCESS;
++		if (success != attempted)
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++
++		dev_info(&scm_data->dev,
++			 "Overwritten %llu/%llu accessible pages", success, attempted);
++
++		rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
++					     scm_data->ns_command.response_offset +
++					     NS_RESPONSE_SECURE_ERASE_DEFECTIVE_SUCCESS,
++					     OCXL_HOST_ENDIAN, &success);
++		if (rc) {
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++			mutex_unlock(&scm_data->ns_command.lock);
++			return;
++		}
++
++		rc = ocxl_global_mmio_read64(scm_data->ocxl_afu,
++					     scm_data->ns_command.response_offset +
++					     NS_RESPONSE_SECURE_ERASE_DEFECTIVE_ATTEMPTED,
++					     OCXL_HOST_ENDIAN, &attempted);
++		if (rc) {
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++			mutex_unlock(&scm_data->ns_command.lock);
++			return;
++		}
++
++		if (success != attempted)
++			scm_data->overwrite_state = SCM_OVERWRITE_FAILED;
++
++		dev_info(&scm_data->dev,
++			 "Overwritten %llu/%llu defective pages", success, attempted);
++
++		scm_ns_response_handled(scm_data);
++
++		mutex_unlock(&scm_data->ns_command.lock);
++		return;
++	}
 +}
 +
-+static int scm_ioctl_mmio_write(struct scm_data *scm_data,
-+				struct scm_ioctl_mmio __user *uarg)
-+{
-+	return -EPERM;
-+}
-+
-+static int scm_ioctl_mmio_read(struct scm_data *scm_data,
-+			       struct scm_ioctl_mmio __user *uarg)
-+{
-+	return -EPERM;
-+}
-+#endif /* CONFIG_OCXL_SCM_DEBUG */
-+
- static long scm_file_ioctl(struct file *file, unsigned int cmd,
- 			   unsigned long args)
+ static irqreturn_t scm_imn0_handler(void *private)
  {
-@@ -1140,6 +1369,26 @@ static long scm_file_ioctl(struct file *file, unsigned int cmd,
- 	case SCM_IOCTL_REQUEST_HEALTH:
- 		rc = scm_req_controller_health_perf(scm_data);
- 		break;
-+
-+	case SCM_IOCTL_FWDEBUG:
-+		rc = scm_ioctl_fwdebug(scm_data,
-+				       (struct scm_ioctl_fwdebug __user *)args);
-+		break;
-+
-+	case SCM_IOCTL_SHUTDOWN:
-+		rc = scm_ioctl_shutdown(scm_data);
-+		break;
-+
-+	case SCM_IOCTL_MMIO_WRITE:
-+		rc = scm_ioctl_mmio_write(scm_data,
-+					  (struct scm_ioctl_mmio __user *)args);
-+		break;
-+
-+	case SCM_IOCTL_MMIO_READ:
-+		rc = scm_ioctl_mmio_read(scm_data,
-+					 (struct scm_ioctl_mmio __user *)args);
-+		break;
-+
- 	}
+ 	struct scm_data *scm_data = private;
+@@ -1537,6 +1694,9 @@ static irqreturn_t scm_imn0_handler(void *private)
  
- 	return rc;
-diff --git a/include/uapi/nvdimm/ocxl-scm.h b/include/uapi/nvdimm/ocxl-scm.h
-index 55a7ad59d614..6e0f25c5f9f3 100644
---- a/include/uapi/nvdimm/ocxl-scm.h
-+++ b/include/uapi/nvdimm/ocxl-scm.h
-@@ -6,6 +6,28 @@
- #include <linux/types.h>
- #include <linux/ioctl.h>
+ 	(void)scm_chi(scm_data, &chi);
  
-+enum scm_fwdebug_action {
-+	SCM_FWDEBUG_READ_CONTROLLER_MEMORY = 0x01,
-+	SCM_FWDEBUG_WRITE_CONTROLLER_MEMORY = 0x02,
-+	SCM_FWDEBUG_ENABLE_FUNCTION = 0x03,
-+	SCM_FWDEBUG_DISABLE_FUNCTION = 0x04,
-+	SCM_FWDEBUG_GET_PEL = 0x05, // Retrieve Persistent Error Log
-+};
++	if (chi & GLOBAL_MMIO_CHI_NSCRA)
++		scm_handle_nscra_doorbell(scm_data);
 +
-+struct scm_ioctl_buffer_info {
-+	__u32	admin_command_buffer_size; // out
-+	__u32	near_storage_buffer_size; // out
-+};
+ 	if (chi & GLOBAL_MMIO_CHI_ELA) {
+ 		dev_warn(&scm_data->dev, "Error log is available\n");
+ 
+diff --git a/drivers/nvdimm/ocxl/scm_internal.c b/drivers/nvdimm/ocxl/scm_internal.c
+index 8fc849610eaa..db919a23c69b 100644
+--- a/drivers/nvdimm/ocxl/scm_internal.c
++++ b/drivers/nvdimm/ocxl/scm_internal.c
+@@ -173,6 +173,7 @@ int scm_ns_response_handled(const struct scm_data *scm_data)
+ 				      OCXL_LITTLE_ENDIAN, GLOBAL_MMIO_CHI_NSCRA);
+ }
+ 
 +
-+struct scm_ioctl_fwdebug { // All args are inputs
-+	enum scm_fwdebug_action debug_action;
-+	__u16 function_code;
-+	__u16 buf_size; // Size of optional data buffer
-+	__u64 debug_parameter_1;
-+	__u64 debug_parameter_2;
-+	__u8 *buf; // Pointer to optional in/out data buffer
-+};
+ void scm_warn_status(const struct scm_data *scm_data, const char *message,
+ 		     u8 status)
+ {
+diff --git a/drivers/nvdimm/ocxl/scm_internal.h b/drivers/nvdimm/ocxl/scm_internal.h
+index af19813a7f75..4a29088612a9 100644
+--- a/drivers/nvdimm/ocxl/scm_internal.h
++++ b/drivers/nvdimm/ocxl/scm_internal.h
+@@ -70,6 +70,15 @@
+ #define ADMIN_COMMAND_CMD_CAPS		0x08u
+ #define ADMIN_COMMAND_MAX		0x08u
+ 
++#define NS_COMMAND_SECURE_ERASE	0x20ull
 +
- #define SCM_ERROR_LOG_ACTION_RESET	(1 << (32-32))
- #define SCM_ERROR_LOG_ACTION_CHKFW	(1 << (53-32))
- #define SCM_ERROR_LOG_ACTION_REPLACE	(1 << (54-32))
-@@ -66,6 +88,11 @@ struct scm_ioctl_controller_stats {
- 	__u64 cache_write_latency; // nanoseconds
++#define NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_SUCCESS 0x20
++#define NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_ATTEMPTED 0x28
++#define NS_RESPONSE_SECURE_ERASE_DEFECTIVE_SUCCESS 0x30
++#define NS_RESPONSE_SECURE_ERASE_DEFECTIVE_ATTEMPTED 0x38
++
++
++
+ #define STATUS_SUCCESS		0x00
+ #define STATUS_MEM_UNAVAILABLE	0x20
+ #define STATUS_BAD_OPCODE	0x50
+@@ -99,6 +108,13 @@ struct scm_function_0 {
+ 	struct ocxl_fn *ocxl_fn;
  };
  
-+struct scm_ioctl_mmio {
-+	__u64 address; // Offset in global MMIO space
-+	__u64 val; // value to write/was read
++enum overwrite_state {
++	SCM_OVERWRITE_IDLE = 0,
++	SCM_OVERWRITE_BUSY,
++	SCM_OVERWRITE_SUCCESS,
++	SCM_OVERWRITE_FAILED
 +};
 +
- struct scm_ioctl_eventfd {
- 	__s32 eventfd;
- 	__u32 reserved;
-@@ -92,4 +119,9 @@ struct scm_ioctl_eventfd {
- #define SCM_IOCTL_EVENT_CHECK	_IOR(SCM_MAGIC, 0x07, __u64)
- #define SCM_IOCTL_REQUEST_HEALTH _IO(SCM_MAGIC, 0x08)
- 
-+#define SCM_IOCTL_FWDEBUG	_IOWR(SCM_MAGIC, 0xf0, struct scm_ioctl_fwdebug)
-+#define SCM_IOCTL_MMIO_WRITE	_IOW(SCM_MAGIC, 0xf1, struct scm_ioctl_mmio)
-+#define SCM_IOCTL_MMIO_READ	_IOWR(SCM_MAGIC, 0xf2, struct scm_ioctl_mmio)
-+#define SCM_IOCTL_SHUTDOWN	_IO(SCM_MAGIC, 0xf3)
-+
- #endif /* _UAPI_OCXL_SCM_H */
+ struct scm_data {
+ 	struct device dev;
+ 	struct pci_dev *pdev;
+@@ -116,6 +132,7 @@ struct scm_data {
+ 	void *metadata_addr;
+ 	struct command_metadata admin_command;
+ 	struct command_metadata ns_command;
++	enum overwrite_state overwrite_state;
+ 	struct resource scm_res;
+ 	struct nd_region *nd_region;
+ 	struct eventfd_ctx *ev_ctx;
 -- 
 2.23.0
 _______________________________________________
