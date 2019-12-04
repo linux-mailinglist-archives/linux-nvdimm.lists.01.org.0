@@ -1,64 +1,69 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF8C112183
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Dec 2019 03:42:57 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A9A51128AB
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Dec 2019 10:56:10 +0100 (CET)
 Received: from ml01.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 17C7D100DC2D9;
-	Tue,  3 Dec 2019 18:46:18 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	by ml01.01.org (Postfix) with ESMTP id DD60310113322;
+	Wed,  4 Dec 2019 01:59:30 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 42127100DC2C3
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Dec 2019 18:46:16 -0800 (PST)
-Received: by mail-ot1-x344.google.com with SMTP id x3so4952968oto.11
-        for <linux-nvdimm@lists.01.org>; Tue, 03 Dec 2019 18:42:53 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id B4CF710113320
+	for <linux-nvdimm@lists.01.org>; Wed,  4 Dec 2019 01:59:27 -0800 (PST)
+Received: by mail-pf1-x444.google.com with SMTP id l22so3384363pff.9
+        for <linux-nvdimm@lists.01.org>; Wed, 04 Dec 2019 01:56:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=v1MjoCyCAlz0t78xzRKiUK+wIFXtJ0bmt73Su/pMHfc=;
-        b=igJxuQeSjDtUWTR8gpXe6sEtWh93F0RSs1EIyYB9HjXh81fqEVRv+rnlvLTfGxIG15
-         MMLnf9/fBVwH/P3dRoYMyr5K7FrNFh+9Xwhda2dtTmzR3iMJxHBq5Jk6oqfMxagttbvY
-         TO+QzROzhYIi2rg/c2QSzsbXUA48L+8zxiwLQfA03YOQXzp8HvzQwpploDrHBRTELQir
-         UKYpBxV/4jATSIGX0dWx0zLBZDgEBxO1G/1r2APzYiHU23/htOrWkxke0i1tbqnnI+lf
-         IHthj4LuFsZPSJNGuFAt2/vCjavpENHInklXOWY+LbylCZ4CcG4nQWT9RZlJw4tFfQVV
-         xTQg==
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zqIFvknQVVWjCMELbETkLgBAyF0ovBu36Fa6DQI5rv8=;
+        b=TjCCFwfqaqpqxq5WNbCAmNGWEv9afEJfHr1LHZdFI+mMxlwk4zcuLPx+t/D8nB2gtj
+         jKO6ZMS0bkNgTtBtg02LT1LsF7+QzTq3gn90bw3qkhAI0IStot9Og/T27dsNoHLEe2T+
+         VfCxKN4eMUyOG9CWz8SLx5wA+RpayXrUD8x+Ya99AdF+3zUpTKkDmogpMAHymm2Z+kAb
+         q55ucbXjJoW9hIGRdnzpoCpOun/9S180I1Z0PaIIJyGRN7oGV+wrWQitkVCNR5BG6xuv
+         d5VfJREzXxemWd+whmJjPodEGHtTHPPRnfcPVdgVSclojAxyWQZX1MHgqYVrPSj387tS
+         ZsKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=v1MjoCyCAlz0t78xzRKiUK+wIFXtJ0bmt73Su/pMHfc=;
-        b=ieWSZZE1rHEM32tdHCF6VZTOULOgBGUqIjxU3NaXOF3qbXqGNEk6cQn6kHBaaroBkV
-         /WUKv7Rh7kg7QVNWr2hkwQS9V6aENV/9AIUsHQBmuZoQztRoJ/fs/mTV/o1+NSbSOisM
-         uxqSqyfuPNGDA3TAWLp6uzK/ftwg/PPw1g38aBUn6s6qkYPM35mGvk3UFwdj8b1Li5Hc
-         2Vqt6kbNILEvpJZbKDvMidxa8zNY3c9ChmMk/9SE6Do6t5V0KaPHHkgcAAJHpAzo0MHD
-         qQVC5ZM9k/Y2H+XnY716mm/iBW8Y54HieZ/6cZyDnI+iLwsH0pLnbnc4pNBOzqPZLNay
-         lz5A==
-X-Gm-Message-State: APjAAAVczEqBNUV+VWaI8G/iAcPm8rh0Tt+9Lc7JNBc4SRHLoUohYLDk
-	YYAk6/0FP8GDSKMg/GciLqq9wNGEEHCmt6NRgM7SQg==
-X-Google-Smtp-Source: APXvYqw0clJQD5/G5PJhTm8ostU/80iIvyseSLNS3CE4iTEo1Si9pGS3AtIKBc0arheZED7RlG/PM71x85G010FwQVU=
-X-Received: by 2002:a9d:24c1:: with SMTP id z59mr661726ota.207.1575427373010;
- Tue, 03 Dec 2019 18:42:53 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=zqIFvknQVVWjCMELbETkLgBAyF0ovBu36Fa6DQI5rv8=;
+        b=dgaAxF7xx3swDU8clp1IlUhWQSjQOh0qKyN8h7oSKv8YP0k4ECosPvfrFTokPYAvJK
+         CzHVFvNxhEf3Tp5fWNI1NwMw1AMytQ40XFAT5zVk1SnQJIcDC1pMZ6ypG/t3m9C2T+Ab
+         7ejNJfQno7ILIrGAIqsCTF6Kmvu0vZi/8SDvIKyVYdeYhSAhslVaY6ger4eXs75ZJ8QQ
+         6FAJ8rmvVMU9cC5yAsQKeHd50od9fC97StTH5lNBEgIjS3yc4N6fZbydDQR3TQMqnjQ7
+         JXQ10TU8JlzUw9abMJcXOZUOHZ7oYIEwYXYKhm8xCYOoode0PbVlabmfZ2karbNK+Kyy
+         dRiw==
+X-Gm-Message-State: APjAAAUYLdrJ8ofdjhQn8DZqXe9P7DC1f3570WJ71OzTGwewKxmC+npt
+	UJq+slDbSJ0xrEydRphMswLa4rRysWY=
+X-Google-Smtp-Source: APXvYqwiPQaXOGiV61b7TmqUCSVpcgcCxdJFCDbEnie7P2ecQHMkvykuG8Pt0ofTNKwUO2HUoRbgWA==
+X-Received: by 2002:a62:1d90:: with SMTP id d138mr2630175pfd.223.1575453364360;
+        Wed, 04 Dec 2019 01:56:04 -0800 (PST)
+Received: from santosiv.in.ibm.com ([129.41.84.69])
+        by smtp.gmail.com with ESMTPSA id h68sm7834198pfe.162.2019.12.04.01.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2019 01:56:03 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linux-nvdimm@lists.01.org,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	vaibhav@linux.ibm.com
+Cc: Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH ndctl] namespace/create: Don't create multiple namespace unless greedy
+Date: Wed,  4 Dec 2019 15:25:53 +0530
+Message-Id: <20191204095553.83209-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-References: <2369E669066F8E42A79A3DF0E43B9E643AC9EB31@pgsmsx114.gar.corp.intel.com>
-In-Reply-To: <2369E669066F8E42A79A3DF0E43B9E643AC9EB31@pgsmsx114.gar.corp.intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 3 Dec 2019 18:42:42 -0800
-Message-ID: <CAPcyv4jTS+JcmH=Oe3Js0dw+Ovu+P6yBKHDZp8xxUT6Rbhpaqw@mail.gmail.com>
-Subject: Re: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-To: "Li, Redhairer" <redhairer.li@intel.com>
-Message-ID-Hash: ZKQ3DPUEDWY7E3OB3MVF7NDCIJO4SE6O
-X-Message-ID-Hash: ZKQ3DPUEDWY7E3OB3MVF7NDCIJO4SE6O
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: BKY3N7HOT45FZZ5C3KJOERONJ4F5EC5M
+X-Message-ID-Hash: BKY3N7HOT45FZZ5C3KJOERONJ4F5EC5M
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZKQ3DPUEDWY7E3OB3MVF7NDCIJO4SE6O/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BKY3N7HOT45FZZ5C3KJOERONJ4F5EC5M/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,72 +72,74 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Nice! You got mail working!
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-On Tue, Dec 3, 2019 at 6:33 PM Li, Redhairer <redhairer.li@intel.com> wrote:
->
-> Allow daxctl to accept both <region-id>, and region name as region parameter.
-> For example:
->
->     daxctl list -r region5
->     daxctl list -r 5
->
-> Link: https://github.com/pmem/ndctl/issues/109
-> Signed-off-by: Redhairer Li <redhairer.li@intel.com>
-> ---
->  daxctl/device.c | 11 ++++-------
->  daxctl/list.c   | 14 ++++++--------
->  util/filter.c   | 16 ++++++++++++++++
->  util/filter.h   |  2 ++
->  4 files changed, 28 insertions(+), 15 deletions(-)
->
-> diff --git a/daxctl/device.c b/daxctl/device.c
-> index 72e506e..d9db2f9 100644
-> --- a/daxctl/device.c
-> +++ b/daxctl/device.c
-> @@ -19,15 +19,13 @@
->  static struct {
->         const char *dev;
->         const char *mode;
-> -       int region_id;
-> +       const char *region;
->         bool no_online;
->         bool no_movable;
->         bool force;
->         bool human;
->         bool verbose;
-> -} param = {
-> -       .region_id = -1,
-> -};
-> +} param;
->
->  enum dev_mode {
->         DAXCTL_DEV_MODE_UNKNOWN,
-> @@ -51,7 +49,7 @@ enum device_action {
->  };
->
->  #define BASE_OPTIONS() \
-> -OPT_INTEGER('r', "region", &param.region_id, "restrict to the given region"), \
-> +OPT_STRING('r', "region", &param.region, "region-id", "filter by region"), \
->  OPT_BOOLEAN('u', "human", &param.human, "use human friendly number formats"), \
->  OPT_BOOLEAN('v', "verbose", &param.verbose, "emit more debug messages")
->
-> @@ -484,8 +482,7 @@ static int do_xaction_device(const char *device, enum device_action action,
->         *processed = 0;
->
->         daxctl_region_foreach(ctx, region) {
-> -               if (param.region_id >= 0 && param.region_id
-> -                               != daxctl_region_get_id(region))
-> +               if (!util_daxctl_region_filter(region, device))
->                         continue;
+Currently create-namespace creates two namespaces with the '-f' option
+even without the greedy flag. This behavior got introduced by
+c75f7236d. The earlier behaviour was to create one namespace even with
+the '-f' flag. The earlier behavior:
 
-There's a bug here, can you spot it?
+$ sudo ./ndctl/ndctl create-namespace -s 16M -f
+[sudo] password for santosh:
+{
+  "dev":"namespace1.14",
+  "mode":"fsdax",
+  "map":"dev",
+  "size":"14.00 MiB (14.68 MB)",
+  "uuid":"03f6b921-7684-4736-b2be-87f021996e52",
+  "sector_size":512,
+  "align":65536,
+  "blockdev":"pmem1.14"
+}
 
-This causes:
+After greedy option was introduced:
 
-     make TESTS=daxctl-devices.sh check
+$ sudo ./ndctl/ndctl create-namespace -s 16M -f
+{
+  "dev":"namespace1.8",
+  "mode":"fsdax",
+  "map":"dev",
+  "size":"14.00 MiB (14.68 MB)",
+  "uuid":"1a9d6610-558b-454e-8b95-76c6201798cb",
+  "sector_size":512,
+  "align":65536,
+  "blockdev":"pmem1.8"
+}
+{
+  "dev":"namespace0.3",
+  "mode":"fsdax",
+  "map":"dev",
+  "size":"14.00 MiB (14.68 MB)",
+  "uuid":"eed9d28b-69a2-4c7c-9503-24e8aee87b1e",
+  "sector_size":512,
+  "align":65536,
+  "blockdev":"pmem0.3"
+}
 
-...to fail.
+If no region or '-c' flag is specified bail out if the creation was successful.
+
+Fixes: c75f7236d (ndctl/namespace: add a --continue option to create namespaces greedily)
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ ndctl/namespace.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index 7fb0007..8098456 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -1392,6 +1392,8 @@ static int do_xaction_namespace(const char *namespace,
+ 				if (force) {
+ 					if (rc)
+ 						saved_rc = rc;
++					else if (!param.region)
++							return rc;
+ 					continue;
+ 				}
+ 				return rc;
+-- 
+2.23.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
