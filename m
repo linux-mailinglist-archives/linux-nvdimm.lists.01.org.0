@@ -2,64 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF23F119046
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Dec 2019 20:02:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9029111904E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Dec 2019 20:06:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1DEF510113614;
-	Tue, 10 Dec 2019 11:05:49 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+	by ml01.01.org (Postfix) with ESMTP id 84FA810113615;
+	Tue, 10 Dec 2019 11:09:33 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 527CD10113613
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Dec 2019 11:05:45 -0800 (PST)
-Received: by mail-oi1-x244.google.com with SMTP id v140so10883904oie.0
-        for <linux-nvdimm@lists.01.org>; Tue, 10 Dec 2019 11:02:23 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 02B2910113615
+	for <linux-nvdimm@lists.01.org>; Tue, 10 Dec 2019 11:09:30 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id x195so10866768oix.4
+        for <linux-nvdimm@lists.01.org>; Tue, 10 Dec 2019 11:06:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=7XYrI9DkfUc2ykiq6b6ysEux5dCVg9XK+T8cZYiLt28=;
-        b=IA+2dChlDfueAPMspCYawsRD3X9H0Wwwzfr41KaqFkI6IAc8nEZOV8HPfiTjx4cX+h
-         NOG4HQKBvxPWG9XRjxUbQFkFdu33gSd+8OH2wjRLtV5PhOvQF59NMWEJ0eXPJtkbPR97
-         c+tsw/LxLBgEJlMezjOddGPM8hiSJzfw81dlgl7ikeDdJVMWFTXVIW+SsDw5Xli09OQq
-         hizWOeIPPC+bFLiHh0zhZqbg3RoPisGHjmQ49ZExg0i8VEMoklheqCz6s06gmA9RUaBH
-         XYjVIiYGOZfgP2WiEG36lSpbcYU97pSSE/X542nUEOeUX/Q7WeWoHTzcZDQsELqZ9ljW
-         YNCg==
+        bh=lm0qjFt/+snyw9l0OjmW9SiqN5sT07oRcQlj3rvkvyQ=;
+        b=INyp8HriDUzc6C/ZyER7ejVcLfuU+5HybZtskbfdrf5sVq4Qz/6b2u3owxRoh+CF+N
+         1jFHxPt4rkfIv28oxNJR2Pwl8brRThcUGeXIBDXn8iEXLW44r7q+EASvWYVe0kbyuYxF
+         I/eIrOLNuThTDZ/lmcBx2aTVzLRRWOtUEc3X4XNs+vnLsmmaSlk/gnHi9QxkKNe99Jrf
+         mpAD7abJ/5wwsJqv/qu8O1mjZgXZvO8OXTj1CMvWl2AIY8gQ9XWHNZQyH7KUPSLM9kxZ
+         qSvp9Z1HxefklcC6CGbeLjtpsMzvBLO4ZdiPcwXWxMUGQHBA4aIlYiUyKDej+rBz2pzo
+         XhLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=7XYrI9DkfUc2ykiq6b6ysEux5dCVg9XK+T8cZYiLt28=;
-        b=a/S/2t0J1nYxvzTtuQPxHK+7mzvCPzE531Gza+Jz/ddWUL7K8dppJ+mE7K+ikKs+jW
-         creDmZjNVm4PP82yh8BE58TAA+6xuX9K8OGC8lEypJteCxqMVdlISFYg22Ew4a7m5o6V
-         dHQDhLueyqj04+XzNNV0PpmDeeH/vDTctqeKViN3ETK/axCUofcM/M1JHg8LACXDrF6K
-         UAZv3+a2w4rMe3xhIFk13pZA8pXeRV//4FPWLCLHw736oeIdipGuztLtE45H85TyNmXo
-         F3C6NOVzxXjVc9k5pvUkO5bLL7a7J6GngfUYgZonGvmJz20uENk/bFuxjFpwBravt7cf
-         QvBA==
-X-Gm-Message-State: APjAAAWk2AvoZvrliG0ZooDLuQIWuN3AIdfErDrlymvGuoA+E9QOu0Ss
-	8ervlyGVyFQ92AnBrWSddIwbO73xWfG3hqlYGMb28w==
-X-Google-Smtp-Source: APXvYqzhbUIS0qz2iiMhOt+A1dtTtb1aSQ3/eEB6Et6MMNlT5gWpwSm2wg8yILfXLBA54VBv1V4T2lKa3S1RBjAneoU=
-X-Received: by 2002:a05:6808:7da:: with SMTP id f26mr202506oij.73.1576004542592;
- Tue, 10 Dec 2019 11:02:22 -0800 (PST)
+        bh=lm0qjFt/+snyw9l0OjmW9SiqN5sT07oRcQlj3rvkvyQ=;
+        b=IHfKM8A4/C+/AqlXmm9v5ZP9bfW1myQG4t3S1O7NbE4TNC+j1IfkFMBLb1CHSzFitY
+         d99/0TXEnOovVR/C5bpo3dLHxn2cKD3JIIpXmXeh0JdBQNqkk0sLl0G8tAOWqDkbJoFj
+         y/PFuxqS4/6alTDqWBwDFG+GqqyYbNgCh1nN2ZtNczqz9kqBmLETpkdmIIinCaYoJOh1
+         Gl8JVwJ12lkkUrRwFWeZ75W3wDARUtTaChjxT69ysg4RS5Scpbe4/HBTiw3jitWAihy7
+         vuPXD0bLjwuB+NeMGRaxozapzZIy7ftFsTth4Mvc2pEcEqEnck4/VhOOPU8N3ta0ZhC5
+         8KjQ==
+X-Gm-Message-State: APjAAAVe0GF5OmxHl1BvppOOw0HSUvjsO6zbaKOpSfXiTfDLuuUcQ+7K
+	nWQhAs8o4ncp1ufCFnmvyCBGR11VWcMijabEuCevTvUS
+X-Google-Smtp-Source: APXvYqz9iJj9T4qBIF5fi0fFAFynevtBEGcI+0LmNyYp1Pm4Gakpx+JcR2yusr2mH9LsSVxtvZSn/dtDxA/ACldX6w4=
+X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr384365oij.0.1576004768043;
+ Tue, 10 Dec 2019 11:06:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20191206053520.235805-1-santosh@fossix.org>
-In-Reply-To: <20191206053520.235805-1-santosh@fossix.org>
+References: <20191206064731.283172-1-santosh@fossix.org>
+In-Reply-To: <20191206064731.283172-1-santosh@fossix.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 10 Dec 2019 11:02:11 -0800
-Message-ID: <CAPcyv4gh0yJ62Ki2NWmRDOiinqiv2v_snQ3_JWNhqVMfLCQ6Rg@mail.gmail.com>
-Subject: Re: [ndctl V2] namespace/create: Don't create multiple namespaces
- unless greedy
+Date: Tue, 10 Dec 2019 11:05:56 -0800
+Message-ID: <CAPcyv4jTpNmc2Bvs0ivdD1VpXPvJT=ZjaB+c7L2i7JaQp6QgBQ@mail.gmail.com>
+Subject: Re: [PATCH] ndctl/zero-labels: Display error if regions are active
 To: Santosh Sivaraj <santosh@fossix.org>
-Message-ID-Hash: E4CFCRYZFAKYMINUOPGHNE4DCLBPAM4J
-X-Message-ID-Hash: E4CFCRYZFAKYMINUOPGHNE4DCLBPAM4J
+Message-ID-Hash: GBQN2K3F76A2H3YPNN7SEH654AXVE4FS
+X-Message-ID-Hash: GBQN2K3F76A2H3YPNN7SEH654AXVE4FS
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Vaibhav Jain <vaibhav@linux.ibm.com>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E4CFCRYZFAKYMINUOPGHNE4DCLBPAM4J/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GBQN2K3F76A2H3YPNN7SEH654AXVE4FS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,79 +67,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Dec 5, 2019 at 9:35 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+On Thu, Dec 5, 2019 at 10:48 PM Santosh Sivaraj <santosh@fossix.org> wrote:
 >
-> From: Vaibhav Jain <vaibhav@linux.ibm.com>
->
-> Currently create-namespace creates two namespaces with the '-f' option
-> even without the greedy flag. This behavior got introduced by
-> c75f7236d. The earlier behaviour was to create one namespace even with
-> the '-f' flag. The earlier behavior:
->
-> $ sudo ./ndctl/ndctl create-namespace -s 16M -f
-> [sudo] password for santosh:
-> {
->   "dev":"namespace1.14",
->   "mode":"fsdax",
->   "map":"dev",
->   "size":"14.00 MiB (14.68 MB)",
->   "uuid":"03f6b921-7684-4736-b2be-87f021996e52",
->   "sector_size":512,
->   "align":65536,
->   "blockdev":"pmem1.14"
-> }
->
-> After greedy option was introduced:
->
-> $ sudo ./ndctl/ndctl create-namespace -s 16M -f
-> {
->   "dev":"namespace1.8",
->   "mode":"fsdax",
->   "map":"dev",
->   "size":"14.00 MiB (14.68 MB)",
->   "uuid":"1a9d6610-558b-454e-8b95-76c6201798cb",
->   "sector_size":512,
->   "align":65536,
->   "blockdev":"pmem1.8"
-> }
-> {
->   "dev":"namespace0.3",
->   "mode":"fsdax",
->   "map":"dev",
->   "size":"14.00 MiB (14.68 MB)",
->   "uuid":"eed9d28b-69a2-4c7c-9503-24e8aee87b1e",
->   "sector_size":512,
->   "align":65536,
->   "blockdev":"pmem0.3"
-> }
->
-> The force flag makes sense only in the case of a reconfiguration or
-> greedy namespace creation.
->
-> Fixes: c75f7236d (ndctl/namespace: add a --continue option to create namespaces greedily)
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->  ndctl/namespace.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-> index 7fb0007..b1f2158 100644
-> --- a/ndctl/namespace.c
-> +++ b/ndctl/namespace.c
-> @@ -1388,11 +1388,9 @@ static int do_xaction_namespace(const char *namespace,
->                                         (*processed)++;
->                                         if (param.greedy)
->                                                 continue;
-> -                               }
-> -                               if (force) {
-> -                                       if (rc)
-> +                               } else if (param.greedy && force) {
->                                                 saved_rc = rc;
-> -                                       continue;
-> +                                               continue;
+> Get zero-labels behave similar to init-labels.
 
-Looks good, applied.
+This changelog could be more precise. I'll fix this up to be.
+
+"Make zero-labels behave the same as init-labels with respect to
+failing the operation while the DIMM is active (i.e. label area is
+busy)."
+
+>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+
+...otherwise, looks good, applied.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
