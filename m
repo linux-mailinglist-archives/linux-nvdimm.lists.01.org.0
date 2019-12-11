@@ -1,68 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4771E11BF3B
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Dec 2019 22:32:29 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB78111BF3C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Dec 2019 22:32:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2F5FD10113630;
-	Wed, 11 Dec 2019 13:35:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::f4a; helo=mail-qv1-xf4a.google.com; envelope-from=3agdxxqqkdomgwmtlttlqj.htrqnszc-sainrrqnxyx.fg.twl@flex--brho.bounces.google.com; receiver=<UNKNOWN> 
-Received: from mail-qv1-xf4a.google.com (mail-qv1-xf4a.google.com [IPv6:2607:f8b0:4864:20::f4a])
+	by ml01.01.org (Postfix) with ESMTP id A566810113633;
+	Wed, 11 Dec 2019 13:35:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::e49; helo=mail-vs1-xe49.google.com; envelope-from=3bgdxxqqkdockaqxpxxpun.lxvurwdg-wemrvvurbcb.jk.xap@flex--brho.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-vs1-xe49.google.com (mail-vs1-xe49.google.com [IPv6:2607:f8b0:4864:20::e49])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0CEEB10113628
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Dec 2019 13:35:47 -0800 (PST)
-Received: by mail-qv1-xf4a.google.com with SMTP id c22so122152qvc.1
-        for <linux-nvdimm@lists.01.org>; Wed, 11 Dec 2019 13:32:25 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 4981B10113634
+	for <linux-nvdimm@lists.01.org>; Wed, 11 Dec 2019 13:35:52 -0800 (PST)
+Received: by mail-vs1-xe49.google.com with SMTP id j9so25417vsn.15
+        for <linux-nvdimm@lists.01.org>; Wed, 11 Dec 2019 13:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20161025;
         h=date:in-reply-to:message-id:mime-version:references:subject:from:to
          :cc;
-        bh=sDaCcLT3BcQJ23kfy/HaXZtjLV54Z/X5vMBQ4m0F9ws=;
-        b=EsxnNiRNv8If11+vloXSQ7nwWN1lItAewnF+sLDaSlmolmYksUpNvpwBYaM7L41HUd
-         uWxT5Uu6Hic1c/J1Y90egmD8MQQddHSFtNUFiZ5CgltHtE64rJa9kd7xChSG2D/6uEYH
-         tso9FlUjwcWCykQdNsAPbyh3GEyMbxk8q6nPIK6Itca/A4kuMsDUiiPT4l8tKvAc7+4P
-         TfcrFl85CPUmcmMtw5eYhoZX333AYEy6qoWY13yAKMWwOQP/bqViTLN5LEzAoWkVYn4+
-         9YSHcl3zD7aKQyQ02OdDsUczHpKePD6qPvej9G3oRirDEbrbz7oIgSvbjWHtU4syo/ie
-         grnQ==
+        bh=cpnhXnLglixPPYBVn7HgN2if2evOi/FjwLYbdxu/Tg4=;
+        b=BjkB4hQuCzNvgDg1hIM+zGyYK1u8CTBOSJ20PWcYUmmzJm0EEozkJ9Q1YxNVhZbr/H
+         giphN6cCCXbh58OitPnHXjObIa6Lisbnnsvi3GVkeLZDzoZtLarfyhvxTCAT5FC1bQn/
+         ABMbYqeYtHThYG5cKkpxH4rsuDwQQYbSC5IR8WViXW4NXf5GbkrJH0PqNj87OVn+HzCx
+         wv3VAMzPpJ9mH4AeUf1vyZP60dMKx7RiDbRa3LFMKTxz2A61K7XqIDr8FG353vLUY1pP
+         mooYYKMADxjb8XPiPdZTRxvh/hp+RiCzYIWeKWEuaT29+ds4KLwo96ik7QNi4n675Sop
+         aasQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:in-reply-to:message-id:mime-version
          :references:subject:from:to:cc;
-        bh=sDaCcLT3BcQJ23kfy/HaXZtjLV54Z/X5vMBQ4m0F9ws=;
-        b=dDJ5221M2pa87w2JIRgp2XPkYAMdoTcb6rPm7tSWpracIU6YfO3c7+N0Xa9ciPUiDD
-         0kUuWMZgOnPnA0BWwLoNl9UozSAgEIYEr1iffw2p4YZbjt8DL5zwVDaNlotVL3+BglLG
-         gKuZ14Eu7AiUGZQzjkcwZm8QTlKU796s0M0Sgo0SiyZhyV1b69nAv+Wg57xgwBv7GYoU
-         Vy14UwrU6oHapstibO1KDpVjBaeWFUT4Hvty2z0EUZJ9TnCjxo4YYtFEoD2oO5sAxHHo
-         37eYwyY+Hn3Iyiwjf1EErELZapGQ2qFciML8KBkAE5eChiVlPd5ZjA8aQp1kXBII/wFs
-         M56w==
-X-Gm-Message-State: APjAAAVP4a1C8nRxrk4NwMggDAZpbR2/dyb/teC2/tvYyKbK7A4bNASU
-	G/g4E7XlHuXS9k6un8zRwhrXbzOh
-X-Google-Smtp-Source: APXvYqymtB08I22rTfCyFtgWxWJ8AqN73LVOvZo61CMncBXCwtep0KelAX9VW18l1EiAV26YFXB+Df9C
-X-Received: by 2002:a05:6214:209:: with SMTP id i9mr5144868qvt.54.1576099944237;
- Wed, 11 Dec 2019 13:32:24 -0800 (PST)
-Date: Wed, 11 Dec 2019 16:32:06 -0500
+        bh=cpnhXnLglixPPYBVn7HgN2if2evOi/FjwLYbdxu/Tg4=;
+        b=Yg9C/+LmRx2ybiO5I8GUZyhs+/84CZonJaatz8Hksqfxu9npD4AEQMFbw0+2rYY5p1
+         7lfOAM35rHEa2whfSZc7HwaK05tmBV5yaOIchWdwe2KxLZ2Vqw4ZVza6DrWaSaM0u/6s
+         xpb0g/ObxcgvIsgkDyBtIw4w4EjXrrF+RDANcNsg6ZSTOCoRpS4moLCuJTMJK1NbE/PB
+         Ab/NGcB6CtXDXQvH5aJP423LsCL2ihChO17+3DyzYBYIObaV5atDLGFMofRjQALvt6gi
+         K1oDOv+J0RsOnD/jWZJidLAxNDqiMCrz6kXWgnfdo9aebaOb9nfPUN0vChCASAYmHIDA
+         HV6g==
+X-Gm-Message-State: APjAAAVVprOVuMAPifcay4WsqGFR89f8oj6tU30xExifFfMCy9Cw/VG8
+	yK8J2mEne8JYzJm9plBcKVuZpGGB
+X-Google-Smtp-Source: APXvYqz6qNfUF/2RBgQj1i0wA7WRKTT/3zMghj8ls7WH3mm9ABUYccruj1nHyEp3pYmgO7zVmf0M+JNp
+X-Received: by 2002:a1f:ac57:: with SMTP id v84mr5840002vke.90.1576099948361;
+ Wed, 11 Dec 2019 13:32:28 -0800 (PST)
+Date: Wed, 11 Dec 2019 16:32:07 -0500
 In-Reply-To: <20191211213207.215936-1-brho@google.com>
-Message-Id: <20191211213207.215936-2-brho@google.com>
+Message-Id: <20191211213207.215936-3-brho@google.com>
 Mime-Version: 1.0
 References: <20191211213207.215936-1-brho@google.com>
 X-Mailer: git-send-email 2.24.0.525.g8f36a354ae-goog
-Subject: [PATCH v4 1/2] mm: make dev_pagemap_mapping_shift() externally visible
+Subject: [PATCH v4 2/2] kvm: Use huge pages for DAX-backed files
 From: Barret Rhoden <brho@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Dan Williams <dan.j.williams@intel.com>,
 	David Hildenbrand <david@redhat.com>, Dave Jiang <dave.jiang@intel.com>,
 	Alexander Duyck <alexander.h.duyck@linux.intel.com>
-Message-ID-Hash: 2ZRP3YBXTPOE77CM77OZZLLPX34R75OG
-X-Message-ID-Hash: 2ZRP3YBXTPOE77CM77OZZLLPX34R75OG
-X-MailFrom: 3aGDxXQQKDOMGWMTLTTLQJ.HTRQNSZc-SaINRRQNXYX.fg.TWL@flex--brho.bounces.google.com
+Message-ID-Hash: 26WSZC6JBAGZKLWRJOYCJUUSXKLIRVGI
+X-Message-ID-Hash: 26WSZC6JBAGZKLWRJOYCJUUSXKLIRVGI
+X-MailFrom: 3bGDxXQQKDOcKaQXPXXPUN.LXVURWdg-WeMRVVURbcb.jk.XaP@flex--brho.bounces.google.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: linux-nvdimm@lists.01.org, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jason.zeng@intel.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2ZRP3YBXTPOE77CM77OZZLLPX34R75OG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/26WSZC6JBAGZKLWRJOYCJUUSXKLIRVGI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,131 +71,84 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-KVM has a use case for determining the size of a dax mapping.  The KVM
-code has easy access to the address and the mm; hence the change in
-parameters.
+This change allows KVM to map DAX-backed files made of huge pages with
+huge mappings in the EPT/TDP.
+
+DAX pages are not PageTransCompound.  The existing check is trying to
+determine if the mapping for the pfn is a huge mapping or not.  For
+non-DAX maps, e.g. hugetlbfs, that means checking PageTransCompound.
+For DAX, we can check the page table itself.
+
+Note that KVM already faulted in the page (or huge page) in the host's
+page table, and we hold the KVM mmu spinlock.  We grabbed that lock in
+kvm_mmu_notifier_invalidate_range_end, before checking the mmu seq.
 
 Signed-off-by: Barret Rhoden <brho@google.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Dan Williams <dan.j.williams@intel.com>
 ---
- include/linux/mm.h  |  3 +++
- mm/memory-failure.c | 38 +++-----------------------------------
- mm/util.c           | 34 ++++++++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+), 35 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 8b0ef04b6d15..f88bcc6a3bd1 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -998,6 +998,9 @@ static inline bool is_pci_p2pdma_page(const struct page *page)
- #define page_ref_zero_or_close_to_overflow(page) \
- 	((unsigned int) page_ref_count(page) + 127u <= 127u)
- 
-+unsigned long dev_pagemap_mapping_shift(unsigned long address,
-+					struct mm_struct *mm);
-+
- static inline void get_page(struct page *page)
- {
- 	page = compound_head(page);
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 41c634f45d45..9dc487e73d9b 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -261,40 +261,6 @@ void shake_page(struct page *p, int access)
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 6f92b40d798c..cd07bc4e595f 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -3384,6 +3384,35 @@ static int kvm_handle_bad_page(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+ 	return -EFAULT;
  }
- EXPORT_SYMBOL_GPL(shake_page);
  
--static unsigned long dev_pagemap_mapping_shift(struct page *page,
--		struct vm_area_struct *vma)
--{
--	unsigned long address = vma_address(page, vma);
--	pgd_t *pgd;
--	p4d_t *p4d;
--	pud_t *pud;
--	pmd_t *pmd;
--	pte_t *pte;
--
--	pgd = pgd_offset(vma->vm_mm, address);
--	if (!pgd_present(*pgd))
--		return 0;
--	p4d = p4d_offset(pgd, address);
--	if (!p4d_present(*p4d))
--		return 0;
--	pud = pud_offset(p4d, address);
--	if (!pud_present(*pud))
--		return 0;
--	if (pud_devmap(*pud))
--		return PUD_SHIFT;
--	pmd = pmd_offset(pud, address);
--	if (!pmd_present(*pmd))
--		return 0;
--	if (pmd_devmap(*pmd))
--		return PMD_SHIFT;
--	pte = pte_offset_map(pmd, address);
--	if (!pte_present(*pte))
--		return 0;
--	if (pte_devmap(*pte))
--		return PAGE_SHIFT;
--	return 0;
--}
--
- /*
-  * Failure handling: if we can't find or can't kill a process there's
-  * not much we can do.	We just print a message and ignore otherwise.
-@@ -318,7 +284,9 @@ static void add_to_kill(struct task_struct *tsk, struct page *p,
- 
- 	tk->addr = page_address_in_vma(p, vma);
- 	if (is_zone_device_page(p))
--		tk->size_shift = dev_pagemap_mapping_shift(p, vma);
-+		tk->size_shift =
-+			dev_pagemap_mapping_shift(vma_address(page, vma),
-+						  vma->vm_mm);
- 	else
- 		tk->size_shift = page_shift(compound_head(p));
- 
-diff --git a/mm/util.c b/mm/util.c
-index 988d11e6c17c..553fbe1692ed 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -911,3 +911,37 @@ int memcmp_pages(struct page *page1, struct page *page2)
- 	kunmap_atomic(addr1);
- 	return ret;
- }
-+
-+unsigned long dev_pagemap_mapping_shift(unsigned long address,
-+					struct mm_struct *mm)
++static bool pfn_is_huge_mapped(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn)
 +{
-+	pgd_t *pgd;
-+	p4d_t *p4d;
-+	pud_t *pud;
-+	pmd_t *pmd;
-+	pte_t *pte;
++	struct page *page = pfn_to_page(pfn);
++	unsigned long hva;
 +
-+	pgd = pgd_offset(mm, address);
-+	if (!pgd_present(*pgd))
-+		return 0;
-+	p4d = p4d_offset(pgd, address);
-+	if (!p4d_present(*p4d))
-+		return 0;
-+	pud = pud_offset(p4d, address);
-+	if (!pud_present(*pud))
-+		return 0;
-+	if (pud_devmap(*pud))
-+		return PUD_SHIFT;
-+	pmd = pmd_offset(pud, address);
-+	if (!pmd_present(*pmd))
-+		return 0;
-+	if (pmd_devmap(*pmd))
-+		return PMD_SHIFT;
-+	pte = pte_offset_map(pmd, address);
-+	if (!pte_present(*pte))
-+		return 0;
-+	if (pte_devmap(*pte))
-+		return PAGE_SHIFT;
-+	return 0;
++	if (!is_zone_device_page(page))
++		return PageTransCompoundMap(page);
++
++	/*
++	 * DAX pages do not use compound pages.  The page should have already
++	 * been mapped into the host-side page table during try_async_pf(), so
++	 * we can check the page tables directly.
++	 */
++	hva = gfn_to_hva(kvm, gfn);
++	if (kvm_is_error_hva(hva))
++		return false;
++
++	/*
++	 * Our caller grabbed the KVM mmu_lock with a successful
++	 * mmu_notifier_retry, so we're safe to walk the page table.
++	 */
++	switch (dev_pagemap_mapping_shift(hva, current->mm)) {
++	case PMD_SHIFT:
++	case PUD_SIZE:
++		return true;
++	}
++	return false;
 +}
-+EXPORT_SYMBOL_GPL(dev_pagemap_mapping_shift);
++
+ static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
+ 					gfn_t gfn, kvm_pfn_t *pfnp,
+ 					int *levelp)
+@@ -3398,8 +3427,8 @@ static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
+ 	 * here.
+ 	 */
+ 	if (!is_error_noslot_pfn(pfn) && !kvm_is_reserved_pfn(pfn) &&
+-	    !kvm_is_zone_device_pfn(pfn) && level == PT_PAGE_TABLE_LEVEL &&
+-	    PageTransCompoundMap(pfn_to_page(pfn)) &&
++	    level == PT_PAGE_TABLE_LEVEL &&
++	    pfn_is_huge_mapped(vcpu->kvm, gfn, pfn) &&
+ 	    !mmu_gfn_lpage_is_disallowed(vcpu, gfn, PT_DIRECTORY_LEVEL)) {
+ 		unsigned long mask;
+ 		/*
+@@ -6015,8 +6044,7 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
+ 		 * mapping if the indirect sp has level = 1.
+ 		 */
+ 		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
+-		    !kvm_is_zone_device_pfn(pfn) &&
+-		    PageTransCompoundMap(pfn_to_page(pfn))) {
++		    pfn_is_huge_mapped(kvm, sp->gfn, pfn)) {
+ 			pte_list_remove(rmap_head, sptep);
+ 
+ 			if (kvm_available_flush_tlb_with_range())
 -- 
 2.24.0.525.g8f36a354ae-goog
 _______________________________________________
