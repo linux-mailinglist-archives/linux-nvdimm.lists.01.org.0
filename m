@@ -2,211 +2,163 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80C811CD0C
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Dec 2019 13:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C441A11CD47
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Dec 2019 13:35:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5A0A810113638;
-	Thu, 12 Dec 2019 04:25:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5A35E1011363B;
+	Thu, 12 Dec 2019 04:38:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=liran.alon@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1D98210113304
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Dec 2019 04:25:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1576153340;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1qesrVN4EimxHknkcna6mR6JDjMYcUUxw/rPgRUa9lk=;
-	b=a7MONRIPEzKEoAW58X3JqgC9dPa4YedZRYH5/t8LKkbzrsejI66EI7AkWeSxNgaDpMBrI4
-	6ARcyRj8D3G/R8BIa22bVWqBzmIzSGqXWrw5DIFmMUzQ2edupm0ub2YWQVJ6kJT1VoZV+F
-	3Wl9nLwEw0twX3wl+MYju4I+DCEW784=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-357-feVWBmqHMe6e8ynZ-r4yKw-1; Thu, 12 Dec 2019 07:22:16 -0500
-X-MC-Unique: feVWBmqHMe6e8ynZ-r4yKw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E99038024E9;
-	Thu, 12 Dec 2019 12:22:14 +0000 (UTC)
-Received: from [10.36.117.91] (ovpn-117-91.ams2.redhat.com [10.36.117.91])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C949319C58;
-	Thu, 12 Dec 2019 12:22:12 +0000 (UTC)
+	by ml01.01.org (Postfix) with ESMTPS id E943210113639
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Dec 2019 04:38:49 -0800 (PST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBCCTpGa128359;
+	Thu, 12 Dec 2019 12:34:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2019-08-05; bh=n1JBRyyfCwsCHYv3CHqoGwd85kLedGZ22Wnm/zj+jG0=;
+ b=OT/1j1tK0abiy5wwnE5NhUn83CiDA9dfgm1NfceOVUHSKUPTBAcIbhrXPAXH9jRLaP5L
+ sEeIBsq33bMGm5iaRBN3uIHjy/67+I+GDiHF46ySgbH4ClSK4DurTiNi/FT9gr/SHq2/
+ 8j5f7gtDq5k/Wbqs4mpz9JC29JEqEBSR6bgOaHZ3QO2BjkthdbIDYafAGTVdNwpnKVd5
+ 8/kuWWFDeL/tFVS2aZLaQeXw89An+FXsY/Gk+MiTtbNXlJCiyEkZAOOfVKgUaYeSE7wd
+ wsBk/hW/fociplvOOdTgHM8eFK2D7gYK5AWqEJRaKrKCtUpV8B7ahVz0voPx6UD/o02b tg==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by userp2120.oracle.com with ESMTP id 2wr4qrtn4f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Dec 2019 12:34:21 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBCCYBjl123101;
+	Thu, 12 Dec 2019 12:34:20 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+	by aserp3020.oracle.com with ESMTP id 2wumvy3ffe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Dec 2019 12:34:20 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBCCXhC4029770;
+	Thu, 12 Dec 2019 12:33:43 GMT
+Received: from [192.168.14.112] (/109.65.223.49)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Thu, 12 Dec 2019 04:33:42 -0800
+Mime-Version: 1.0 (Mac OS X Mail 11.1 \(3445.4.7\))
 Subject: Re: [PATCH v4 2/2] kvm: Use huge pages for DAX-backed files
-To: Barret Rhoden <brho@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>
+From: Liran Alon <liran.alon@oracle.com>
+In-Reply-To: <20191211213207.215936-3-brho@google.com>
+Date: Thu, 12 Dec 2019 14:33:36 +0200
+Message-Id: <376DB19A-4EF1-42BF-A73C-741558E397D4@oracle.com>
 References: <20191211213207.215936-1-brho@google.com>
  <20191211213207.215936-3-brho@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <eb9ef218-1bbc-83e6-ec84-c6aae245e62b@redhat.com>
-Date: Thu, 12 Dec 2019 13:22:12 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-In-Reply-To: <20191211213207.215936-3-brho@google.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL
-X-Message-ID-Hash: UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL
-X-MailFrom: david@redhat.com
+To: Barret Rhoden <brho@google.com>
+X-Mailer: Apple Mail (2.3445.4.7)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9468 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912120094
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9468 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912120094
+Message-ID-Hash: EPJ5IU3UBTLHEHSY7TAYL7NAAJX4ED6Y
+X-Message-ID-Hash: EPJ5IU3UBTLHEHSY7TAYL7NAAJX4ED6Y
+X-MailFrom: liran.alon@oracle.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jason.zeng@intel.com
+CC: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, Alexander Duyck <alexander.h.duyck@linux.intel.com>, linux-nvdimm@lists.01.org, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jason.zeng@intel.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EPJ5IU3UBTLHEHSY7TAYL7NAAJX4ED6Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 11.12.19 22:32, Barret Rhoden wrote:
-> This change allows KVM to map DAX-backed files made of huge pages with
-> huge mappings in the EPT/TDP.
-> 
-> DAX pages are not PageTransCompound.  The existing check is trying to
-> determine if the mapping for the pfn is a huge mapping or not.  For
-> non-DAX maps, e.g. hugetlbfs, that means checking PageTransCompound.
-> For DAX, we can check the page table itself.
-> 
-> Note that KVM already faulted in the page (or huge page) in the host's
-> page table, and we hold the KVM mmu spinlock.  We grabbed that lock in
-> kvm_mmu_notifier_invalidate_range_end, before checking the mmu seq.
-> 
-> Signed-off-by: Barret Rhoden <brho@google.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 36 ++++++++++++++++++++++++++++++++----
->  1 file changed, 32 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 6f92b40d798c..cd07bc4e595f 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -3384,6 +3384,35 @@ static int kvm_handle_bad_page(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
->  	return -EFAULT;
->  }
->  
-> +static bool pfn_is_huge_mapped(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn)
-> +{
-> +	struct page *page = pfn_to_page(pfn);
-> +	unsigned long hva;
-> +
-> +	if (!is_zone_device_page(page))
-> +		return PageTransCompoundMap(page);
-> +
-> +	/*
-> +	 * DAX pages do not use compound pages.  The page should have already
-> +	 * been mapped into the host-side page table during try_async_pf(), so
-> +	 * we can check the page tables directly.
-> +	 */
-> +	hva = gfn_to_hva(kvm, gfn);
-> +	if (kvm_is_error_hva(hva))
-> +		return false;
-> +
-> +	/*
-> +	 * Our caller grabbed the KVM mmu_lock with a successful
-> +	 * mmu_notifier_retry, so we're safe to walk the page table.
-> +	 */
-> +	switch (dev_pagemap_mapping_shift(hva, current->mm)) {
-> +	case PMD_SHIFT:
-> +	case PUD_SIZE:
-
-Shouldn't this be PUD_SHIFT?
-
-But I agree with Paolo, that this is simply
-
-return dev_pagemap_mapping_shift(hva, current->mm) > PAGE_SHIFT;
-
-> +		return true;
-> +	}
-> +	return false;
-> +}
-> +
->  static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
->  					gfn_t gfn, kvm_pfn_t *pfnp,
->  					int *levelp)
-> @@ -3398,8 +3427,8 @@ static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
->  	 * here.
->  	 */
->  	if (!is_error_noslot_pfn(pfn) && !kvm_is_reserved_pfn(pfn) &&
-> -	    !kvm_is_zone_device_pfn(pfn) && level == PT_PAGE_TABLE_LEVEL &&
-> -	    PageTransCompoundMap(pfn_to_page(pfn)) &&
-> +	    level == PT_PAGE_TABLE_LEVEL &&
-> +	    pfn_is_huge_mapped(vcpu->kvm, gfn, pfn) &&
->  	    !mmu_gfn_lpage_is_disallowed(vcpu, gfn, PT_DIRECTORY_LEVEL)) {
->  		unsigned long mask;
->  		/*
-> @@ -6015,8 +6044,7 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
->  		 * mapping if the indirect sp has level = 1.
->  		 */
->  		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
-> -		    !kvm_is_zone_device_pfn(pfn) &&
-> -		    PageTransCompoundMap(pfn_to_page(pfn))) {
-> +		    pfn_is_huge_mapped(kvm, sp->gfn, pfn)) {
->  			pte_list_remove(rmap_head, sptep);
->  
->  			if (kvm_available_flush_tlb_with_range())
-> 
-
-Patch itself looks good to me (especially, cleans up these two places a
-bit). I am not an expert on the locking part, so I can't give my RB.
-
--- 
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCj4gT24gMTEgRGVjIDIwMTksIGF0IDIzOjMyLCBCYXJyZXQgUmhvZGVuIDxicmhvQGdvb2ds
+ZS5jb20+IHdyb3RlOg0KPiANCj4gVGhpcyBjaGFuZ2UgYWxsb3dzIEtWTSB0byBtYXAgREFYLWJh
+Y2tlZCBmaWxlcyBtYWRlIG9mIGh1Z2UgcGFnZXMgd2l0aA0KPiBodWdlIG1hcHBpbmdzIGluIHRo
+ZSBFUFQvVERQLg0KPiANCj4gREFYIHBhZ2VzIGFyZSBub3QgUGFnZVRyYW5zQ29tcG91bmQuICBU
+aGUgZXhpc3RpbmcgY2hlY2sgaXMgdHJ5aW5nIHRvDQo+IGRldGVybWluZSBpZiB0aGUgbWFwcGlu
+ZyBmb3IgdGhlIHBmbiBpcyBhIGh1Z2UgbWFwcGluZyBvciBub3QuICBGb3INCj4gbm9uLURBWCBt
+YXBzLCBlLmcuIGh1Z2V0bGJmcywgdGhhdCBtZWFucyBjaGVja2luZyBQYWdlVHJhbnNDb21wb3Vu
+ZC4NCj4gRm9yIERBWCwgd2UgY2FuIGNoZWNrIHRoZSBwYWdlIHRhYmxlIGl0c2VsZi4NCg0KRm9y
+IGh1Z2V0bGJmcyBwYWdlcywgdGRwX3BhZ2VfZmF1bHQoKSAtPiBtYXBwaW5nX2xldmVsKCkgLT4g
+aG9zdF9tYXBwaW5nX2xldmVsKCkgLT4ga3ZtX2hvc3RfcGFnZV9zaXplKCkgLT4gdm1hX2tlcm5l
+bF9wYWdlc2l6ZSgpDQp3aWxsIHJldHVybiB0aGUgcGFnZS1zaXplIG9mIHRoZSBodWdldGxiZnMg
+d2l0aG91dCB0aGUgbmVlZCB0byBwYXJzZSB0aGUgcGFnZS10YWJsZXMuDQpTZWUgdm1hLT52bV9v
+cHMtPnBhZ2VzaXplKCkgY2FsbGJhY2sgaW1wbGVtZW50YXRpb24gYXQgaHVnZXRsYl92bV9vcHMt
+PnBhZ2VzaXplKCk9PWh1Z2V0bGJfdm1fb3BfcGFnZXNpemUoKS4NCg0KT25seSBmb3IgcGFnZXMg
+dGhhdCB3ZXJlIG9yaWdpbmFsbHkgbWFwcGVkIGFzIHNtYWxsLXBhZ2VzIGFuZCBsYXRlciBtZXJn
+ZWQgdG8gbGFyZ2VyIHBhZ2VzIGJ5IFRIUCwgdGhlcmUgaXMgYSBuZWVkIHRvIGNoZWNrIGZvciBQ
+YWdlVHJhbnNDb21wb3VuZCgpLiBBZ2FpbiwgaW5zdGVhZCBvZiBwYXJzaW5nIHBhZ2UtdGFibGVz
+Lg0KDQpUaGVyZWZvcmUsIGl0IHNlZW1zIG1vcmUgbG9naWNhbCB0byBtZSB0aGF0Og0KKGEpIElm
+IERBWC1iYWNrZWQgZmlsZXMgYXJlIG1hcHBlZCBhcyBsYXJnZS1wYWdlcyB0byB1c2Vyc3BhY2Us
+IGl0IHNob3VsZCBiZSByZWZsZWN0ZWQgaW4gdm1hLT52bV9vcHMtPnBhZ2Vfc2l6ZSgpIG9mIHRo
+YXQgbWFwcGluZy4gQ2F1c2luZyBrdm1faG9zdF9wYWdlX3NpemUoKSB0byByZXR1cm4gdGhlIHJp
+Z2h0IHNpemUgd2l0aG91dCB0aGUgbmVlZCB0byBwYXJzZSB0aGUgcGFnZS10YWJsZXMuDQooYikg
+SWYgREFYLWJhY2tlZCBmaWxlcyBzbWFsbC1wYWdlcyBjYW4gYmUgbGF0ZXIgbWVyZ2VkIHRvIGxh
+cmdlLXBhZ2VzIGJ5IFRIUCwgdGhlbiB0aGUg4oCcc3RydWN0IHBhZ2XigJ0gb2YgdGhlc2UgcGFn
+ZXMgc2hvdWxkIGJlIG1vZGlmaWVkIGFzIHVzdWFsIHRvIG1ha2UgUGFnZVRyYW5zQ29tcG91bmQo
+KSByZXR1cm4gdHJ1ZSBmb3IgdGhlbS4gSeKAmW0gbm90IGhpZ2hseSBmYW1pbGlhciB3aXRoIHRo
+aXMgbWVjaGFuaXNtLCBidXQgSSB3b3VsZCBleHBlY3QgVEhQIHRvIGJlIGFibGUgdG8gbWVyZ2Ug
+REFYLWJhY2tlZCBmaWxlcyBzbWFsbC1wYWdlcyB0byBsYXJnZS1wYWdlcyBpbiBjYXNlIERBWCBw
+cm92aWRlcyDigJxzdHJ1Y3QgcGFnZeKAnSBmb3IgdGhlIERBWCBwYWdlcy4NCg0KPiANCj4gTm90
+ZSB0aGF0IEtWTSBhbHJlYWR5IGZhdWx0ZWQgaW4gdGhlIHBhZ2UgKG9yIGh1Z2UgcGFnZSkgaW4g
+dGhlIGhvc3Qncw0KPiBwYWdlIHRhYmxlLCBhbmQgd2UgaG9sZCB0aGUgS1ZNIG1tdSBzcGlubG9j
+ay4gIFdlIGdyYWJiZWQgdGhhdCBsb2NrIGluDQo+IGt2bV9tbXVfbm90aWZpZXJfaW52YWxpZGF0
+ZV9yYW5nZV9lbmQsIGJlZm9yZSBjaGVja2luZyB0aGUgbW11IHNlcS4NCj4gDQo+IFNpZ25lZC1v
+ZmYtYnk6IEJhcnJldCBSaG9kZW4gPGJyaG9AZ29vZ2xlLmNvbT4NCj4gLS0tDQo+IGFyY2gveDg2
+L2t2bS9tbXUvbW11LmMgfCAzNiArKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0N
+Cj4gMSBmaWxlIGNoYW5nZWQsIDMyIGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0pDQo+IA0K
+PiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL21tdS9tbXUuYyBiL2FyY2gveDg2L2t2bS9tbXUv
+bW11LmMNCj4gaW5kZXggNmY5MmI0MGQ3OThjLi5jZDA3YmM0ZTU5NWYgMTAwNjQ0DQo+IC0tLSBh
+L2FyY2gveDg2L2t2bS9tbXUvbW11LmMNCj4gKysrIGIvYXJjaC94ODYva3ZtL21tdS9tbXUuYw0K
+PiBAQCAtMzM4NCw2ICszMzg0LDM1IEBAIHN0YXRpYyBpbnQga3ZtX2hhbmRsZV9iYWRfcGFnZShz
+dHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGdmbl90IGdmbiwga3ZtX3Bmbl90IHBmbikNCj4gCXJldHVy
+biAtRUZBVUxUOw0KPiB9DQo+IA0KPiArc3RhdGljIGJvb2wgcGZuX2lzX2h1Z2VfbWFwcGVkKHN0
+cnVjdCBrdm0gKmt2bSwgZ2ZuX3QgZ2ZuLCBrdm1fcGZuX3QgcGZuKQ0KPiArew0KPiArCXN0cnVj
+dCBwYWdlICpwYWdlID0gcGZuX3RvX3BhZ2UocGZuKTsNCj4gKwl1bnNpZ25lZCBsb25nIGh2YTsN
+Cj4gKw0KPiArCWlmICghaXNfem9uZV9kZXZpY2VfcGFnZShwYWdlKSkNCj4gKwkJcmV0dXJuIFBh
+Z2VUcmFuc0NvbXBvdW5kTWFwKHBhZ2UpOw0KPiArDQo+ICsJLyoNCj4gKwkgKiBEQVggcGFnZXMg
+ZG8gbm90IHVzZSBjb21wb3VuZCBwYWdlcy4gIFRoZSBwYWdlIHNob3VsZCBoYXZlIGFscmVhZHkN
+Cj4gKwkgKiBiZWVuIG1hcHBlZCBpbnRvIHRoZSBob3N0LXNpZGUgcGFnZSB0YWJsZSBkdXJpbmcg
+dHJ5X2FzeW5jX3BmKCksIHNvDQo+ICsJICogd2UgY2FuIGNoZWNrIHRoZSBwYWdlIHRhYmxlcyBk
+aXJlY3RseS4NCj4gKwkgKi8NCj4gKwlodmEgPSBnZm5fdG9faHZhKGt2bSwgZ2ZuKTsNCj4gKwlp
+ZiAoa3ZtX2lzX2Vycm9yX2h2YShodmEpKQ0KPiArCQlyZXR1cm4gZmFsc2U7DQo+ICsNCj4gKwkv
+Kg0KPiArCSAqIE91ciBjYWxsZXIgZ3JhYmJlZCB0aGUgS1ZNIG1tdV9sb2NrIHdpdGggYSBzdWNj
+ZXNzZnVsDQo+ICsJICogbW11X25vdGlmaWVyX3JldHJ5LCBzbyB3ZSdyZSBzYWZlIHRvIHdhbGsg
+dGhlIHBhZ2UgdGFibGUuDQo+ICsJICovDQo+ICsJc3dpdGNoIChkZXZfcGFnZW1hcF9tYXBwaW5n
+X3NoaWZ0KGh2YSwgY3VycmVudC0+bW0pKSB7DQoNCkRvZXNu4oCZdCBkZXZfcGFnZW1hcF9tYXBw
+aW5nX3NoaWZ0KCkgZ2V0IOKAnHN0cnVjdCBwYWdl4oCdIGFzIGZpcnN0IHBhcmFtZXRlcj8NCldh
+cyB0aGlzIGNoYW5nZWQgYnkgYSBjb21taXQgSSBtaXNzZWQ/DQoNCi1MaXJhbg0KDQo+ICsJY2Fz
+ZSBQTURfU0hJRlQ6DQo+ICsJY2FzZSBQVURfU0laRToNCj4gKwkJcmV0dXJuIHRydWU7DQo+ICsJ
+fQ0KPiArCXJldHVybiBmYWxzZTsNCj4gK30NCj4gKw0KPiBzdGF0aWMgdm9pZCB0cmFuc3BhcmVu
+dF9odWdlcGFnZV9hZGp1c3Qoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LA0KPiAJCQkJCWdmbl90IGdm
+biwga3ZtX3Bmbl90ICpwZm5wLA0KPiAJCQkJCWludCAqbGV2ZWxwKQ0KPiBAQCAtMzM5OCw4ICsz
+NDI3LDggQEAgc3RhdGljIHZvaWQgdHJhbnNwYXJlbnRfaHVnZXBhZ2VfYWRqdXN0KHN0cnVjdCBr
+dm1fdmNwdSAqdmNwdSwNCj4gCSAqIGhlcmUuDQo+IAkgKi8NCj4gCWlmICghaXNfZXJyb3Jfbm9z
+bG90X3BmbihwZm4pICYmICFrdm1faXNfcmVzZXJ2ZWRfcGZuKHBmbikgJiYNCj4gLQkgICAgIWt2
+bV9pc196b25lX2RldmljZV9wZm4ocGZuKSAmJiBsZXZlbCA9PSBQVF9QQUdFX1RBQkxFX0xFVkVM
+ICYmDQo+IC0JICAgIFBhZ2VUcmFuc0NvbXBvdW5kTWFwKHBmbl90b19wYWdlKHBmbikpICYmDQo+
+ICsJICAgIGxldmVsID09IFBUX1BBR0VfVEFCTEVfTEVWRUwgJiYNCj4gKwkgICAgcGZuX2lzX2h1
+Z2VfbWFwcGVkKHZjcHUtPmt2bSwgZ2ZuLCBwZm4pICYmDQo+IAkgICAgIW1tdV9nZm5fbHBhZ2Vf
+aXNfZGlzYWxsb3dlZCh2Y3B1LCBnZm4sIFBUX0RJUkVDVE9SWV9MRVZFTCkpIHsNCj4gCQl1bnNp
+Z25lZCBsb25nIG1hc2s7DQo+IAkJLyoNCj4gQEAgLTYwMTUsOCArNjA0NCw3IEBAIHN0YXRpYyBi
+b29sIGt2bV9tbXVfemFwX2NvbGxhcHNpYmxlX3NwdGUoc3RydWN0IGt2bSAqa3ZtLA0KPiAJCSAq
+IG1hcHBpbmcgaWYgdGhlIGluZGlyZWN0IHNwIGhhcyBsZXZlbCA9IDEuDQo+IAkJICovDQo+IAkJ
+aWYgKHNwLT5yb2xlLmRpcmVjdCAmJiAha3ZtX2lzX3Jlc2VydmVkX3BmbihwZm4pICYmDQo+IC0J
+CSAgICAha3ZtX2lzX3pvbmVfZGV2aWNlX3BmbihwZm4pICYmDQo+IC0JCSAgICBQYWdlVHJhbnND
+b21wb3VuZE1hcChwZm5fdG9fcGFnZShwZm4pKSkgew0KPiArCQkgICAgcGZuX2lzX2h1Z2VfbWFw
+cGVkKGt2bSwgc3AtPmdmbiwgcGZuKSkgew0KPiAJCQlwdGVfbGlzdF9yZW1vdmUocm1hcF9oZWFk
+LCBzcHRlcCk7DQo+IA0KPiAJCQlpZiAoa3ZtX2F2YWlsYWJsZV9mbHVzaF90bGJfd2l0aF9yYW5n
+ZSgpKQ0KPiAtLSANCj4gMi4yNC4wLjUyNS5nOGYzNmEzNTRhZS1nb29nDQo+IA0KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxp
+bmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQg
+YW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
