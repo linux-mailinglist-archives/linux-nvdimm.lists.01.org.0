@@ -1,94 +1,212 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCBA11C385
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Dec 2019 03:49:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80C811CD0C
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Dec 2019 13:22:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BC80A10113631;
-	Wed, 11 Dec 2019 18:52:23 -0800 (PST)
-Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=95.188.29.2; helo=115-191.static.spheral.ru; envelope-from=info@tribunanaroda.info; receiver=<UNKNOWN> 
-Received: from 115-191.static.spheral.ru (dnm.2.29.188.95.dsl.krasnet.ru [95.188.29.2])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5A0A810113638;
+	Thu, 12 Dec 2019 04:25:46 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C501F10113626
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Dec 2019 18:52:18 -0800 (PST)
-Message-ID: <0e75a07f8b5de19dbe6573202bfff8341783772946@tribunanaroda.info>
-From: Hristina <info@tribunanaroda.info>
-To: linux-nvdimm@lists.01.org
-Subject: =?windows-1251?B?zeDi++roIO/w7uTg5iDv7iDy5evl9O7t8w==?=
-Date: Thu, 12 Dec 2019 04:48:50 +0200
+	by ml01.01.org (Postfix) with ESMTPS id 1D98210113304
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Dec 2019 04:25:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1576153340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1qesrVN4EimxHknkcna6mR6JDjMYcUUxw/rPgRUa9lk=;
+	b=a7MONRIPEzKEoAW58X3JqgC9dPa4YedZRYH5/t8LKkbzrsejI66EI7AkWeSxNgaDpMBrI4
+	6ARcyRj8D3G/R8BIa22bVWqBzmIzSGqXWrw5DIFmMUzQ2edupm0ub2YWQVJ6kJT1VoZV+F
+	3Wl9nLwEw0twX3wl+MYju4I+DCEW784=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-357-feVWBmqHMe6e8ynZ-r4yKw-1; Thu, 12 Dec 2019 07:22:16 -0500
+X-MC-Unique: feVWBmqHMe6e8ynZ-r4yKw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E99038024E9;
+	Thu, 12 Dec 2019 12:22:14 +0000 (UTC)
+Received: from [10.36.117.91] (ovpn-117-91.ams2.redhat.com [10.36.117.91])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id C949319C58;
+	Thu, 12 Dec 2019 12:22:12 +0000 (UTC)
+Subject: Re: [PATCH v4 2/2] kvm: Use huge pages for DAX-backed files
+To: Barret Rhoden <brho@google.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Dan Williams <dan.j.williams@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>
+References: <20191211213207.215936-1-brho@google.com>
+ <20191211213207.215936-3-brho@google.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <eb9ef218-1bbc-83e6-ec84-c6aae245e62b@redhat.com>
+Date: Thu, 12 Dec 2019 13:22:12 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Message-ID-Hash: ZXMNKESYAULJA5V3B57WKR4KW674SXO7
-X-Message-ID-Hash: ZXMNKESYAULJA5V3B57WKR4KW674SXO7
-X-MailFrom: info@tribunanaroda.info
+In-Reply-To: <20191211213207.215936-3-brho@google.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Message-ID-Hash: UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL
+X-Message-ID-Hash: UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL
+X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm@lists.01.org, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jason.zeng@intel.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZXMNKESYAULJA5V3B57WKR4KW674SXO7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UYZVQXJJ4KDG625QOTSUVRGUZKYOKAAL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-0OXn8+v88uDy6OLt++Ug7/Du5ODm6CDv7iDy5evl9O7t8yDxIPPk7uLu6/zx8uLo5ewuDQoNCsru
-4+TgIOru6+j35fHy4u4g7+Xw5fXu5OjyIOIg6uD35fHy4u4uDQoNCszl8fLuIOgg5ODy4CDv8O7i
-5eTl7ej/OiAyMCDk5erg4fD/DQoNCtbl6+g6IKCgoA0KDQotIO/u4vv45e3o5SDw5efz6/zy4PLo
-4u3u8fLoICL17uvu5O379SDn4u7t6u7iIjsNCi0g9O7w7Ojw7uLg7ejlICLw4OHu8uD++ej1IPHv
-6Pfl6SIsIOru8u7w++Ug7+7n4u7r//Ig8eTl6+Dy/CDn4u7t6ugg6uvo5e3y4Owg/fT05ery6OLt
-5eU7DQotIO/u6/P35e3o5SDo7fHy8PPs5e3y7uIsIOru8u7w++Ug7+7n4u7r//Ig7/Dl7uTu6+Xi
-4PL8IOLu5/Dg5uXt6P8g6CDx7u/w7vLo4uvl7ejlIOIg7/Du9uXx8eUg7/Du5ODm6CDv7iDy5evl
-9O7t8ywg8e718ODt//8g7/DoIP3y7uwg7+7n6PLo4u376SDt4PHy8O7pIOgg4eXx6u7t9Ovo6vLt
-++kg8fLo6/wg4ufg6Ozu5OXp8fLi6P87DQotIPDg5+Lo8ujlIOru7Ozz7ejq4PLo4u379SDt4OL7
-6u7iIPPx7+X47fv1IOru7Ozz7ejq4Pbo6SDv7iDy5evl9O7t8zsNCi0g7+7i+/jl7ejlIPHg7O7s
-7vLo4uD26Ogg7OXt5eTm5fDgIO/uIO/w7uTg5uDsIOgg8/Ho6+Xt6OUgIuLl8PsiIOIg5O7x8ujm
-5e3o5SDn4O/r4O3o8O7i4O3t+/Ug8OXn8+v88uDy7uIg4iDv8O7k4Obg9S4NCg0Kz+vg7ToNCg0K
-wevu6iAxLiDQ4Ofi6PLo5SDq6/735eL79SDt4OL76u7iIPPx7+X47fv1IO/w7uTg5iDv7iDy5evl
-9O7t8y4NCi0gwvvx8vDg6OLg7ejlIPHo8fLl7O3u6SDoIOru7O/r5erx7e7pIPDg4e7y+yDxIOrr
-6OXt8u7sDQotIML76uv+9+Xt6OUgIi0iIPHy5fDl7vLo7+7iIOjr6CDk5fH/8vwg8uXr5fTu7e37
-9SAi7uPw5fXu4iIg7/DoIO7h+eXt6Ogg7+4g8uXr5fTu7fMNCi0g0uX17ejq6CDo5+Hl4+Dt6P8g
-Iuru7Ozz7ejq4PLo4u379SDr7uLz+OXqIiDv5fDi6Pft7uPuIOru7fLg6vLgIOIg7/Du9uXx8eUg
-7uH55e3o/yDv7iDy5evl9O7t8w0KLSDU7vDs6PDu4uDt6OUgMTAg4eDn7uL79SDt4OL76u7iIO/w
-7uTg5iDv7iDy5evl9O7t8yDu4eXx7+X36OLg/vno9SDz8e/l9SDv8Ogg8/Hy4O3u4uvl7ejoIOru
-7fLg6vLgDQrB6+7qIDIuINHl6vDl8vsg8/Hv5fjt7uPuIPPx8uDt7uLr5e3o/yDq7u3y4Ory4CDx
-IOrr6OXt8u7sIO/uIPLl6+X07u3zLg0KLSDP8ej17vLl9e3o6ugg7+7k8fLw7unq6CDv8Ogg8/Hy
-4O3u4uvl7ejoIOru7fLg6vLgDQotIMrg6iDv8Oji6+X3/CDi7ejs4O3o5SDoIPPk5fDm6OLg8vwg
-6u7t8uDq8iDxIO/u8uXt9ujg6/zt++wg6uvo5e3y7uwg7+4g8uXr5fTu7fMNCi0g0uX17ejq6CAi
-7+Xw5fHy8+/g7ej/IiD35fDl5yDv5fDi6Pft++Ug7vLq4Of7IOgg4vv17uQg7eAg5+7t8yAi8e7j
-6+Dx6P8iDQotIM3g4e7wIPLl9e3o6iDt4O/w4OLr5e3t+/Ug7eAg9O7w7Ojw7uLg7ejlIOjt8uXw
-5fHgIPMg6uvo5e3y4CDoIPLl9e3o6ugg/erx7/Dl8fEt7/Dl5+Xt8uD26OgNCsHr7uogMy4gzvLw
-4OHu8urgIPLl9e3o6iDw4OHu8vsg8SDi7ufw4Obl7ej/7Ogg6CDx7uzt5e3o/+zoIOrr6OXt8uAu
-DQotIMrr4PHx6PTo6uD26P8g6CDv8Oj36O37IOLu5+3o6u3u4uXt6P8g4u7n8ODm5e3o6SDoIPHu
-7O3l7ejpIOrr6OXt8u7iDQotINLl9e3o6ugg7/Dl5PPj4OT74uDt6P8g6CDx7f/y6P8g8ujv6Pft
-+/Ug4u7n8ODm5e3o6Q0KLSDP8OXu5O7r5e3o5SDi7ufw4Obl7ejpDQrB6+7qIDQuIMLu8O7t6uAg
-4vv/4uvl7ej/IO/u8vDl4e3u8fLl6SDoICLv8O7k4P754P8iIO/w5efl7fLg9uj/Lg0KLSDX8u4g
-7eAg8eDs7uwg5OXr5SDv7urz7+D+8iDi4PjoIOrr6OXt8vs/DQotINLo7+7r7uPo/yDi7u/w7vHu
-4g0KLSDP7ufo8uji7eD/IOgg7eXj4PLo4u3g/yDs7vLo4uD26P8uIMLr6P/t6OUg7eAg6uvo5e3y
-4CDiIO/w7vbl8fHlIOru7fLg6vLgDQotINPt6OLl8PHg6/zt4P8g8uX17ejq4CDu7/Du8eAg8SD2
-5ev8/iDi+//i6+Xt6P8g7+7y8OXh7e7x8uXpOiDv8OXk6+7m5e3o5Swg7vIg6u7y7vDu4+4g7eXr
-/Of/IO7y6uDn4PL88f8NCsHr7uogNS4gzeDn7eD35e3o5SDi8fLw5ffoIO/uIPLl6+X07u3zLg0K
-LSDA6+Pu8Ojy7CDt4Oft4Pfl7ej/IOLx8vDl9+gg7+4g8uXr5fTu7fMuIMrr/vfl4vvlIOzu7OXt
-8vsg8/Hv5fjt7uPuIO3g5+3g9+Xt6P8g4vHy8OX36A0KLSDg6/zy5fDt4PLo4u3u5SDv8O7k4ujm
-5e3o5Q0KLSDt4Oft4Pfl7ejlIOLx8vDl9+gg9+Xw5ecgIvTg6vEg7eDi5fD1Ig0KLSDg6vLo4u3u
-5SDn4OLl8Pjl7ejlDQotIOjt8u7t4Pbo7u3t7uUgIu/u5PLg6+ro4uDt6OUiDQotIODw4/Ps5e3y
-4Pbo/yDi4Obt7vHy6CDi8fLw5ffoDQrB6+7qIDYuINHy8ODy5ePo/yAi7vLq8Pvy+/Ug5OLl8OXp
-Ijog5+Di5fD45e3o5SDq7u3y4Ory4CDoIOL78fLw4Oji4O3o5SDk7uvj7vHw7vft+/Ug7vLt7vjl
-7ejpLg0KLSDA6+Pu8Ojy7Psg5+Di5fD45e3o/yDy5evl9O7t7e7j7iDw4Ofj7uLu8OAg8SDq6+jl
-7fLu7A0KLSDK4Oog4vvi5fHy6CDq6+jl7fLgIPEgIuzg//Lt6OrgIOTgLe3l8iINCi0g0ODh7vLg
-IPEg7vLq4Ofg7OgNCi0gyuDqIO/u7O73/CDq6+jl7fLzIO/w6O3/8vwg8OX45e3o5Q0KLSDR7uPr
-4PHu4uDt6OUg5ODr/O3l6fjl6SDv8O7j8ODs7Psg5OXp8fLi6P8g6CDw4PHx8uDi4O3o5SDt4CDv
-7ufo8ujiDQotIMjk5e7r7uPo/yDx7u/w7uLu5uTl7ej/Lg0KLSDP7ufo8uji7fvpIO3g8fLw7ukg
-6CDx4Ozu7O7y6OLg9uj/IOog8evl5PP++eXs8yDq7u3y4Ory8w0KDQrP7uTw7uHt4P8g6O307vDs
-4Pbo/yA+Pj4NCg0KLS0goKCgDQoNCtEg0+Lg5uXt6OXsLKCgoA0KzOjr5e3gIM3g5+Dw7uLt4A0K
-DQpXRUI6IGh0dHA6Ly9lcS5pbi51YS8NCg0K1/Lu4fsg7vLv6PHg8vzx/yDu8iDw4PHx++vq6Cwg
-7/Du6eTo8uUg7+4g/fLu6SDx8fvr6uUgzvLv6PHg8vzx/yDu8iDv7uTv6PHq6C4NCkxpc3QtVW5z
-dWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciDuciBjb21wbGFpbiDgYu51dCBTUMDMDQpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
-bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
-c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On 11.12.19 22:32, Barret Rhoden wrote:
+> This change allows KVM to map DAX-backed files made of huge pages with
+> huge mappings in the EPT/TDP.
+> 
+> DAX pages are not PageTransCompound.  The existing check is trying to
+> determine if the mapping for the pfn is a huge mapping or not.  For
+> non-DAX maps, e.g. hugetlbfs, that means checking PageTransCompound.
+> For DAX, we can check the page table itself.
+> 
+> Note that KVM already faulted in the page (or huge page) in the host's
+> page table, and we hold the KVM mmu spinlock.  We grabbed that lock in
+> kvm_mmu_notifier_invalidate_range_end, before checking the mmu seq.
+> 
+> Signed-off-by: Barret Rhoden <brho@google.com>
+> ---
+>  arch/x86/kvm/mmu/mmu.c | 36 ++++++++++++++++++++++++++++++++----
+>  1 file changed, 32 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+> index 6f92b40d798c..cd07bc4e595f 100644
+> --- a/arch/x86/kvm/mmu/mmu.c
+> +++ b/arch/x86/kvm/mmu/mmu.c
+> @@ -3384,6 +3384,35 @@ static int kvm_handle_bad_page(struct kvm_vcpu *vcpu, gfn_t gfn, kvm_pfn_t pfn)
+>  	return -EFAULT;
+>  }
+>  
+> +static bool pfn_is_huge_mapped(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn)
+> +{
+> +	struct page *page = pfn_to_page(pfn);
+> +	unsigned long hva;
+> +
+> +	if (!is_zone_device_page(page))
+> +		return PageTransCompoundMap(page);
+> +
+> +	/*
+> +	 * DAX pages do not use compound pages.  The page should have already
+> +	 * been mapped into the host-side page table during try_async_pf(), so
+> +	 * we can check the page tables directly.
+> +	 */
+> +	hva = gfn_to_hva(kvm, gfn);
+> +	if (kvm_is_error_hva(hva))
+> +		return false;
+> +
+> +	/*
+> +	 * Our caller grabbed the KVM mmu_lock with a successful
+> +	 * mmu_notifier_retry, so we're safe to walk the page table.
+> +	 */
+> +	switch (dev_pagemap_mapping_shift(hva, current->mm)) {
+> +	case PMD_SHIFT:
+> +	case PUD_SIZE:
+
+Shouldn't this be PUD_SHIFT?
+
+But I agree with Paolo, that this is simply
+
+return dev_pagemap_mapping_shift(hva, current->mm) > PAGE_SHIFT;
+
+> +		return true;
+> +	}
+> +	return false;
+> +}
+> +
+>  static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
+>  					gfn_t gfn, kvm_pfn_t *pfnp,
+>  					int *levelp)
+> @@ -3398,8 +3427,8 @@ static void transparent_hugepage_adjust(struct kvm_vcpu *vcpu,
+>  	 * here.
+>  	 */
+>  	if (!is_error_noslot_pfn(pfn) && !kvm_is_reserved_pfn(pfn) &&
+> -	    !kvm_is_zone_device_pfn(pfn) && level == PT_PAGE_TABLE_LEVEL &&
+> -	    PageTransCompoundMap(pfn_to_page(pfn)) &&
+> +	    level == PT_PAGE_TABLE_LEVEL &&
+> +	    pfn_is_huge_mapped(vcpu->kvm, gfn, pfn) &&
+>  	    !mmu_gfn_lpage_is_disallowed(vcpu, gfn, PT_DIRECTORY_LEVEL)) {
+>  		unsigned long mask;
+>  		/*
+> @@ -6015,8 +6044,7 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
+>  		 * mapping if the indirect sp has level = 1.
+>  		 */
+>  		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
+> -		    !kvm_is_zone_device_pfn(pfn) &&
+> -		    PageTransCompoundMap(pfn_to_page(pfn))) {
+> +		    pfn_is_huge_mapped(kvm, sp->gfn, pfn)) {
+>  			pte_list_remove(rmap_head, sptep);
+>  
+>  			if (kvm_available_flush_tlb_with_range())
+> 
+
+Patch itself looks good to me (especially, cleans up these two places a
+bit). I am not an expert on the locking part, so I can't give my RB.
+
+-- 
+Thanks,
+
+David / dhildenb
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
