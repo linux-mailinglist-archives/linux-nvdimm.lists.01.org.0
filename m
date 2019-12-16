@@ -1,172 +1,153 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBAA121456
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Dec 2019 19:10:30 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0D212197C
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 16 Dec 2019 19:55:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C1ADF10097F24;
-	Mon, 16 Dec 2019 10:13:50 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 0CF2D10097F25;
+	Mon, 16 Dec 2019 10:58:35 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.166.200; helo=mail-il1-f200.google.com; envelope-from=3ddp3xqkbaig4abwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 45B8A10097F23
-	for <linux-nvdimm@lists.01.org>; Mon, 16 Dec 2019 10:13:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1576519825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h6VrGNpFemlDLaD9vxutvKkD8W8dnGU6FQoXLjmTtYc=;
-	b=MGVJp9fdfHKW74NasqGgIWWe0keJb+lwiPC1+Wh5o+lUiS+mNQ+JqUR6T0yAOaZN2/2G2K
-	vbNZ/Jp8K+kfrqQRZubZLzxDZlQ2ZplSTTafntl8yMFGGm6E8Vbdj2FdmV4Y6pr8Uqi9D1
-	wCwrmtI9jkoHTmtjUDuKFrrF/+DbUPc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-172-hZe2nHW0NpqB8uv36jRMYQ-1; Mon, 16 Dec 2019 13:10:21 -0500
-X-MC-Unique: hZe2nHW0NpqB8uv36jRMYQ-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2C0F91800D7B;
-	Mon, 16 Dec 2019 18:10:20 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 03A7D68863;
-	Mon, 16 Dec 2019 18:10:15 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 7F15F220A24; Mon, 16 Dec 2019 13:10:14 -0500 (EST)
-Date: Mon, 16 Dec 2019 13:10:14 -0500
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 01/19] dax: remove block device dependencies
-Message-ID: <20191216181014.GA30106@redhat.com>
-References: <20190821175720.25901-1-vgoyal@redhat.com>
- <20190821175720.25901-2-vgoyal@redhat.com>
- <20190826115152.GA21051@infradead.org>
- <20190827163828.GA6859@redhat.com>
- <20190828065809.GA27426@infradead.org>
- <20190828175843.GB912@redhat.com>
- <20190828225322.GA7777@dread.disaster.area>
- <CAPcyv4jGEAbYSJef2zLzgg6Arozsuz7eN_vZL1iTcd1XQuNT4Q@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 8F38410097F22
+	for <linux-nvdimm@lists.01.org>; Mon, 16 Dec 2019 10:58:32 -0800 (PST)
+Received: by mail-il1-f200.google.com with SMTP id s85so7236155ild.13
+        for <linux-nvdimm@lists.01.org>; Mon, 16 Dec 2019 10:55:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:date:message-id:subject:from:to;
+        bh=tmqmR3+vlPyZZu/9yb3HcQ7dVLCo+U2onyjU4cVHi0w=;
+        b=a2W9eehv4Y0iOByAChJ5s+Uh3vOcMTHtCF6X9JsUc+348HWurWtXxBH2ECLZip3Xcq
+         ijWV8c2OmZYwsZQSf45eFUx47LfYCfW7twXOTgXfrD4Jo63sufvEKDXS/nMT42YwfEOm
+         EF0CdCN+EGuqlyyaMuRwCtk48g5rp/AUF99WW0+J/O3o8YugzaFP568LDW56LdBJ8V1b
+         z5vhohdC6p5oGZPdT/Vn2kVs2Tmn4FhRAZz8nb0+Ot7sTtJ2eDwrqNC9R9IkIClqdsk8
+         kpcuEwfgKDcOciyKFtVuRB3H42WMon4aYO+d/T43nuKRQ4ZElLSXoK16KVzj5JaF78wQ
+         X8hQ==
+X-Gm-Message-State: APjAAAVZjCS5Ycw5+dzJqAtrQMiRPCtDNf/T/97BC0Qwf9lsJJwRTR5V
+	Z//ytPQTutRdczlwymEKd0M72L5mkdWOirQhApFMJPHpVnjN
+X-Google-Smtp-Source: APXvYqxFNUUSx7QdncAf6uGRlTJWldYx4Lhfu3gnPt+XtiWQ6HMfGu0/RPiDMlRDDPq8ZIcFuaXACWXUu4a7tGMb00bNSpJ76BuB
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jGEAbYSJef2zLzgg6Arozsuz7eN_vZL1iTcd1XQuNT4Q@mail.gmail.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Message-ID-Hash: NQ3I5XHNEVG37VQNQ3FOL7WNMFXGT3UL
-X-Message-ID-Hash: NQ3I5XHNEVG37VQNQ3FOL7WNMFXGT3UL
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Dave Chinner <david@fromorbit.com>, Christoph Hellwig <hch@infradead.org>, Miklos Szeredi <miklos@szeredi.hu>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+X-Received: by 2002:a5d:9046:: with SMTP id v6mr458515ioq.302.1576522509304;
+ Mon, 16 Dec 2019 10:55:09 -0800 (PST)
+Date: Mon, 16 Dec 2019 10:55:09 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000025cf0f0599d6c049@google.com>
+Subject: KASAN: stack-out-of-bounds Read in acpi_nfit_ctl
+From: syzbot <syzbot+2812ea3c67cdf329dde3@syzkaller.appspotmail.com>
+To: dan.j.williams@intel.com, dave.jiang@intel.com, ira.weiny@intel.com,
+	lenb@kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-nvdimm@lists.01.org, rjw@rjwysocki.net, syzkaller-bugs@googlegroups.com,
+	vishal.l.verma@intel.com
+Message-ID-Hash: AFNIERLY4D7TBYF6LVPWQXFD6ZSUNHSD
+X-Message-ID-Hash: AFNIERLY4D7TBYF6LVPWQXFD6ZSUNHSD
+X-MailFrom: 3DdP3XQkbAIg4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NQ3I5XHNEVG37VQNQ3FOL7WNMFXGT3UL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AFNIERLY4D7TBYF6LVPWQXFD6ZSUNHSD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"; delsp="yes"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Aug 28, 2019 at 05:04:11PM -0700, Dan Williams wrote:
-> On Wed, Aug 28, 2019 at 3:53 PM Dave Chinner <david@fromorbit.com> wrote:
-> >
-> > On Wed, Aug 28, 2019 at 01:58:43PM -0400, Vivek Goyal wrote:
-> > > On Tue, Aug 27, 2019 at 11:58:09PM -0700, Christoph Hellwig wrote:
-> > > > On Tue, Aug 27, 2019 at 12:38:28PM -0400, Vivek Goyal wrote:
-> > > > > > For bdev_dax_pgoff
-> > > > > > I'd much rather have the partition offset if there is on in the daxdev
-> > > > > > somehow so that we can get rid of the block device entirely.
-> > > > >
-> > > > > IIUC, there is one block_device per partition while there is only one
-> > > > > dax_device for the whole disk. So we can't directly move bdev logical
-> > > > > offset into dax_device.
-> > > >
-> > > > Well, then we need to find a way to get partitions for dax devices,
-> > > > as we really should not expect a block device hiding behind a dax
-> > > > dev.  That is just a weird legacy assumption - block device need to
-> > > > layer on top of the dax device optionally.
-> > > >
-> > > > >
-> > > > > We probably could put this in "iomap" and leave it to filesystems to
-> > > > > report offset into dax_dev in iomap that way dax generic code does not
-> > > > > have to deal with it. But that probably will be a bigger change.
-> > > >
-> > > > And where would the file system get that information from?
-> > >
-> > > File system knows about block device, can it just call get_start_sect()
-> > > while filling iomap->addr. And this means we don't have to have
-> > > parition information in dax device. Will something like following work?
-> > > (Just a proof of concept patch).
-> > >
-> > >
-> > > ---
-> > >  drivers/dax/super.c |   11 +++++++++++
-> > >  fs/dax.c            |    6 +++---
-> > >  fs/ext4/inode.c     |    6 +++++-
-> > >  include/linux/dax.h |    1 +
-> > >  4 files changed, 20 insertions(+), 4 deletions(-)
-> > >
-> > > Index: rhvgoyal-linux/fs/ext4/inode.c
-> > > ===================================================================
-> > > --- rhvgoyal-linux.orig/fs/ext4/inode.c       2019-08-28 13:51:16.051937204 -0400
-> > > +++ rhvgoyal-linux/fs/ext4/inode.c    2019-08-28 13:51:44.453937204 -0400
-> > > @@ -3589,7 +3589,11 @@ retry:
-> > >                       WARN_ON_ONCE(1);
-> > >                       return -EIO;
-> > >               }
-> > > -             iomap->addr = (u64)map.m_pblk << blkbits;
-> > > +             if (IS_DAX(inode))
-> > > +                     iomap->addr = ((u64)map.m_pblk << blkbits) +
-> > > +                                   (get_start_sect(iomap->bdev) * 512);
-> > > +             else
-> > > +                     iomap->addr = (u64)map.m_pblk << blkbits;
-> >
-> > I'm not a fan of returning a physical device sector address from an
-> > interface where ever other user/caller expects this address to be a
-> > logical block address into the block device. It creates a landmine
-> > in the iomap API that callers may not be aware of and that's going
-> > to cause bugs. We're trying really hard to keep special case hacks
-> > like this out of the iomap infrastructure, so on those grounds alone
-> > I'd suggest this is a dead end approach.
-> >
-> > Hence I think that if the dax device needs a physical offset from
-> > the start of the block device the filesystem sits on, it should be
-> > set up at dax device instantiation time and so the filesystem/bdev
-> > never needs to be queried again for this information.
-> >
-> 
-> Agree. In retrospect it was my laziness in the dax-device
-> implementation to expect the block-device to be available.
-> 
-> It looks like fs_dax_get_by_bdev() is an intercept point where a
-> dax_device could be dynamically created to represent the subset range
-> indicated by the block-device partition. That would open up more
-> cleanup opportunities.
+Hello,
 
-Hi Dan,
+syzbot found the following crash on:
 
-After a long time I got time to look at it again. Want to work on this
-cleanup so that I can make progress with virtiofs DAX paches.
+HEAD commit:    510c9788 Merge tag 'Wimplicit-fallthrough-5.5-rc2' of git:..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17bbac99e00000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=79f79de2a27d3e3d
+dashboard link: https://syzkaller.appspot.com/bug?extid=2812ea3c67cdf329dde3
+compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+userspace arch: i386
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=117b520ae00000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14a5cf41e00000
 
-I am not sure I understand the requirements fully. I see that right now
-dax_device is created per device and all block partitions refer to it. If
-we want to create one dax_device per partition, then it looks like this
-will be structured more along the lines how block layer handles disk and
-partitions. (One gendisk for disk and block_devices for partitions,
-including partition 0). That probably means state belong to whole device
-will be in common structure say dax_device_common, and per partition state
-will be in dax_device and dax_device can carry a pointer to
-dax_device_common.
+IMPORTANT: if you fix the bug, please add the following tag to the commit:
+Reported-by: syzbot+2812ea3c67cdf329dde3@syzkaller.appspotmail.com
 
-I am also not sure what does it mean to partition dax devices. How will
-partitions be exported to user space.
+==================================================================
+BUG: KASAN: stack-out-of-bounds in test_bit  
+include/asm-generic/bitops/instrumented-non-atomic.h:110 [inline]
+BUG: KASAN: stack-out-of-bounds in acpi_nfit_ctl+0x47f/0x1840  
+drivers/acpi/nfit/core.c:495
+Read of size 8 at addr ffffc90003267bd0 by task syz-executor077/8537
 
-Thanks
-Vivek
+CPU: 2 PID: 8537 Comm: syz-executor077 Not tainted 5.5.0-rc1-syzkaller #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS  
+rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+  __dump_stack lib/dump_stack.c:77 [inline]
+  dump_stack+0x197/0x210 lib/dump_stack.c:118
+  print_address_description.constprop.0.cold+0x5/0x30b mm/kasan/report.c:374
+  __kasan_report.cold+0x1b/0x41 mm/kasan/report.c:506
+  kasan_report+0x12/0x20 mm/kasan/common.c:639
+  check_memory_region_inline mm/kasan/generic.c:185 [inline]
+  check_memory_region+0x134/0x1a0 mm/kasan/generic.c:192
+  __kasan_check_read+0x11/0x20 mm/kasan/common.c:95
+  test_bit include/asm-generic/bitops/instrumented-non-atomic.h:110 [inline]
+  acpi_nfit_ctl+0x47f/0x1840 drivers/acpi/nfit/core.c:495
+  __nd_ioctl drivers/nvdimm/bus.c:1152 [inline]
+  nd_ioctl.isra.0+0xfe2/0x1580 drivers/nvdimm/bus.c:1230
+  bus_ioctl+0x59/0x70 drivers/nvdimm/bus.c:1242
+  compat_ptr_ioctl+0x6e/0xa0 fs/ioctl.c:788
+  __do_compat_sys_ioctl fs/compat_ioctl.c:214 [inline]
+  __se_compat_sys_ioctl fs/compat_ioctl.c:142 [inline]
+  __ia32_compat_sys_ioctl+0x233/0x610 fs/compat_ioctl.c:142
+  do_syscall_32_irqs_on arch/x86/entry/common.c:337 [inline]
+  do_fast_syscall_32+0x27b/0xe16 arch/x86/entry/common.c:408
+  entry_SYSENTER_compat+0x70/0x7f arch/x86/entry/entry_64_compat.S:139
+RIP: 0023:0xf7f12a39
+Code: 00 00 00 89 d3 5b 5e 5f 5d c3 b8 80 96 98 00 eb c4 8b 04 24 c3 8b 1c  
+24 c3 8b 34 24 c3 8b 3c 24 c3 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90  
+90 90 90 eb 0d 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 002b:00000000ff8ed9cc EFLAGS: 00000213 ORIG_RAX: 0000000000000036
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 000000004018920a
+RDX: 00000000200001c0 RSI: 00000000ff8eda20 RDI: 00000000080481b0
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+
+
+addr ffffc90003267bd0 is located in stack of task syz-executor077/8537 at  
+offset 88 in frame:
+  acpi_nfit_ctl+0x0/0x1840 drivers/acpi/nfit/core.c:288
+
+this frame has 5 objects:
+  [32, 40) 'cmd_mask'
+  [64, 72) 'dsm_mask'
+  [96, 112) 'buf'
+  [128, 152) 'in_obj'
+  [192, 216) 'in_buf'
+
+Memory state around the buggy address:
+  ffffc90003267a80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  ffffc90003267b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f1
+> ffffc90003267b80: f1 f1 f1 00 f2 f2 f2 00 f2 f2 f2 00 00 f2 f2 00
+                                                  ^
+  ffffc90003267c00: 00 00 f2 f2 f2 f2 f2 00 00 00 f3 f3 f3 f3 f3 00
+  ffffc90003267c80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+
+---
+This bug is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this bug report. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+syzbot can test patches for this bug, for details see:
+https://goo.gl/tpsmEJ#testing-patches
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
