@@ -1,71 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F48128BD7
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 22 Dec 2019 00:20:12 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25597128D2C
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 22 Dec 2019 09:06:47 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1140C1011368F;
-	Sat, 21 Dec 2019 15:23:31 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D8C6E1011368C
-	for <linux-nvdimm@lists.01.org>; Sat, 21 Dec 2019 15:23:29 -0800 (PST)
-Subject: Re: [GIT PULL] libnvdimm fix for v5.5-rc3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1576970409;
-	bh=7fbGfoEJtFS0Sef1e8X5drdSmP96+Xjn9/xIHrZW6Ps=;
-	h=From:In-Reply-To:References:Date:To:Cc:From;
-	b=BqXnIFoHU2zbEifs0Q/FMNSVssxSyEdl7IcjhDDgfJm+HbVvnY+p1Gxq/qK4bcKE6
-	 Hp9OALzIQYHLH4Un6vX9ZoqQTSqfJIhlkyeIDffJPzGheUcIZwVhV/ATBvZZB7RnCW
-	 gvMEwXE2hmrQJMyEqLxrxsSOmOJVuvRD+P15p2NQ=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <CAPcyv4gfbuttbdW0ea6EUzMihUK33cc0mBQmLjqZe1T_QCKF-Q@mail.gmail.com>
-References: <CAPcyv4gfbuttbdW0ea6EUzMihUK33cc0mBQmLjqZe1T_QCKF-Q@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAPcyv4gfbuttbdW0ea6EUzMihUK33cc0mBQmLjqZe1T_QCKF-Q@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm
- tags/libnvdimm-fix-5.5-rc3
-X-PR-Tracked-Commit-Id: c1468554776229d0db69e74a9aaf6f7e7095fd51
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4746104a6f599f213c3d97d8c39032953fd4580f
-Message-Id: <157697040940.14543.13427891455993675175.pr-tracker-bot@kernel.org>
-Date: Sat, 21 Dec 2019 23:20:09 +0000
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: GYO6FMBJMGMKV4EO35MFQRLIIDKKZGQ5
-X-Message-ID-Hash: GYO6FMBJMGMKV4EO35MFQRLIIDKKZGQ5
-X-MailFrom: pr-tracker-bot@kernel.org
+	by ml01.01.org (Postfix) with ESMTP id 6964A1011368F;
+	Sun, 22 Dec 2019 00:10:05 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.62; helo=ggbc.com; envelope-from=mrcnod@ggbc.com; receiver=<UNKNOWN> 
+Received: from ggbc.com (unknown [223.73.35.62])
+	by ml01.01.org (Postfix) with ESMTP id 0B5541011351C
+	for <linux-nvdimm@lists.01.org>; Sun, 22 Dec 2019 00:08:24 -0800 (PST)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 22 Dec 2019 16:03:41 +0800
+Message-ID: f6f8492c-d36e-411e-887b-7fc96a7410fc
+MIME-Version: 1.0
+Sender: =?utf-8?Q?=E5=B9=BF=E4=BA=A4=E4=BC=9A124=E5=B1=8A=E5?=
+ =?utf-8?Q?=8F=82=E5=B1=95=E5=95=86=E5=90=8D=E5=BD=95---=E6=8A=A2=E8=B4?=
+ =?utf-8?Q?=AD=E4=BB=B7300RMB---=E6=9C=892=E4=B8=87=E5=A4=9A=E5=AE=B6?=
+ =?utf-8?Q?=E5=8F=82=E5=B1=95=E5=95=86?=
+ <mrcnod@ggbc.com>
+From: =?utf-8?Q?=E5=B9=BF=E4=BA=A4=E4=BC=9A124=E5=B1=8A=E5=8F?=
+ =?utf-8?Q?=82=E5=B1=95=E5=95=86=E5=90=8D=E5=BD=95---=E6=8A=A2=E8=B4=AD?=
+ =?utf-8?Q?=E4=BB=B7300RMB---=E6=9C=892=E4=B8=87=E5=A4=9A=E5=AE=B6=E5?=
+ =?utf-8?Q?=8F=82=E5=B1=95=E5=95=86?=
+ <ixoizf@ggbc.com>
+To: linux-nvdimm@lists.01.org
+Date: 22 Dec 2019 16:03:41 +0800
+Subject: =?utf-8?B?UkU6IOacgOaWsOW5v+S6pOS8mjEx5pyIMTI25bGK5Ye654KJ?=
+ =?utf-8?B?5LqG?=
+Message-ID-Hash: DMRR3J2LP2IGQXKEEJRH6WAY7JXV5WBP
+X-Message-ID-Hash: DMRR3J2LP2IGQXKEEJRH6WAY7JXV5WBP
+X-MailFrom: mrcnod@ggbc.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GYO6FMBJMGMKV4EO35MFQRLIIDKKZGQ5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DMRR3J2LP2IGQXKEEJRH6WAY7JXV5WBP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The pull request you sent on Sat, 21 Dec 2019 13:07:20 -0800:
-
-> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm tags/libnvdimm-fix-5.5-rc3
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4746104a6f599f213c3d97d8c39032953fd4580f
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQrlhbPplK7mnInotJ/otKPkurrmnInmiYvmnLrlj7cNCiZuYnNwOw0K5bm/5Lqk5Lya
+MTI25bGK5bGV5ZWG5pWw5o2uDQrmnIkyLjfkuIflpJrlrrblj4LlsZXllYYNClFRIDogMjA4Mzky
+NTc4NQ0KRS1tYWls77yaJm5ic3A7c2FsZXMwNzY5QGhvdG1haWwuY29tJm5ic3A7Jm5ic3A7Jm5i
+c3A7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4
+LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1
+YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
