@@ -2,287 +2,244 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C8812AA21
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Dec 2019 05:01:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D18012ABBD
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 26 Dec 2019 11:53:35 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CC32A10097F2C;
-	Wed, 25 Dec 2019 20:05:17 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=redhairer.li@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BCB5B10113319;
+	Thu, 26 Dec 2019 02:56:52 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com; envelope-from=jencce.kernel@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D371F10097F2A
-	for <linux-nvdimm@lists.01.org>; Wed, 25 Dec 2019 20:05:15 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Dec 2019 20:01:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,357,1571727600";
-   d="scan'208";a="419362904"
-Received: from fmsmsx103.amr.corp.intel.com ([10.18.124.201])
-  by fmsmga006.fm.intel.com with ESMTP; 25 Dec 2019 20:01:55 -0800
-Received: from fmsmsx114.amr.corp.intel.com (10.18.116.8) by
- FMSMSX103.amr.corp.intel.com (10.18.124.201) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 25 Dec 2019 20:01:54 -0800
-Received: from FMSEDG001.ED.cps.intel.com (10.1.192.133) by
- FMSMSX114.amr.corp.intel.com (10.18.116.8) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 25 Dec 2019 20:01:54 -0800
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.109)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Wed, 25 Dec 2019 20:01:54 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R0vjBLi/ZCu/ytcsLL3/vnKeIfDnXzjRC9WBiR9Hgpuje/YqCTM+MdUlqEbXLfNYXEgjepUiYMMO2b1CVMUGOKUhl5A/BPjIEPNxmZgKUQUiZrBVGSh2Kpbj+V43Ahio3eMPIhv6IOJh3vK1Or3zVjmb3OLINlSmb4G3RaN+5+MfuFS5tka7KaF5TxgBhxsxagEPxUbon1jTB1nf7Y6PvddQ7wbK79dVb8zw/yrIeuw2y76OjNRUmwXQX10jQbDPGH4V7Yw31+zQC7CIA17fWOZ/smc3bSTAndff5dd0XJvYTk3pCTqJWlm8hBCfnBLRSaaR1nmETccxnNbjAIzkJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zBSyjGTzXgcux/Jk/MHwsZYAlaeocNBJ0KdzOi/g79E=;
- b=ORWqJsG5hjoxXUm7LwjOnCPzAuKiHmaIxkJDOwUW6crlgyY04AiMBKQe8FDp+nmWWJkvIcdlT7O1l1T8nJMubCv0BYssNbDIHlgrZ6hfQetrvOeF2exm6f8W6kURwb366l7cc2TiS3UyPaOujbHYmpXpyidOwAG+6A6ObukjC7KnPu6iLbVs2g3ZQgZ+dRLycGLEcbtLbPCHsnXF5LO2HIW+nDjFuWJbBHXzTXFiPtq8I3pWUxf/s3GOnX7Fo+PAoZ18fg3uUGDabIo/6YBBTWtRcv5mptAA0j5y97pAxi23JuwHmKsMRkHYhNa1XuSDzjL/dhNOvsgSqYeIk9MikQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zBSyjGTzXgcux/Jk/MHwsZYAlaeocNBJ0KdzOi/g79E=;
- b=FMvqF8TazZ7jEQGFrpw++yZTtCOaIhjzTmpUsCzUPYZ5iS/K0VwBWKe5ThouVvZ2mq019VanfwnPfthmcV3vXwp6732B4LMwA8shioBlx4O/+K8RcXEjKPR2luWFsnXRCkUKajgTcWo3ZEWCgJHs8mO9uuxJN8pP8cXcM0qxXlw=
-Received: from SN6PR11MB3264.namprd11.prod.outlook.com (52.135.111.80) by
- SN6PR11MB3023.namprd11.prod.outlook.com (52.135.125.206) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2581.11; Thu, 26 Dec 2019 04:01:50 +0000
-Received: from SN6PR11MB3264.namprd11.prod.outlook.com
- ([fe80::78f3:73f9:eaff:d25c]) by SN6PR11MB3264.namprd11.prod.outlook.com
- ([fe80::78f3:73f9:eaff:d25c%7]) with mapi id 15.20.2559.017; Thu, 26 Dec 2019
- 04:01:49 +0000
-From: "Li, Redhairer" <redhairer.li@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: RE: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-Thread-Topic: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-Thread-Index: AdWqSy7tSheIw9IbRFeymChi7Sx2XP//fIUA/99j/4CAQ1rRAP//ul5A//9ohUD//saYwA==
-Date: Thu, 26 Dec 2019 04:01:49 +0000
-Message-ID: <SN6PR11MB32647968C27C92C1D3A5B7D8922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
-References: <2369E669066F8E42A79A3DF0E43B9E643AC9EB31@pgsmsx114.gar.corp.intel.com>
- <CAPcyv4jTS+JcmH=Oe3Js0dw+Ovu+P6yBKHDZp8xxUT6Rbhpaqw@mail.gmail.com>
- <SN6PR11MB3264D981A619065F1A4EFFB992280@SN6PR11MB3264.namprd11.prod.outlook.com>
- <CAPcyv4iP1NK=2funtr6yp9VhedntKvzkvBsXDkLLXt6FBZYO=A@mail.gmail.com>
- <SN6PR11MB3264C140FEB5C66679095AFF922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
- <SN6PR11MB3264617D4EA3C3C4706C7C6D922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB3264617D4EA3C3C4706C7C6D922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-version: 11.2.0.6
-dlp-product: dlpe-windows
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZTRmYWVmYjktNGZhMC00MWExLWJhZGEtNjU3NWYzMzg0YTMwIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiQ1NaN29FMXd0bFp0U0d2S1NmbURlaURua1wvUXQ0dkRcL2JvXC9TOGRJUVwveGxSY3BRXC9vem5TYXRZQUMwY1VFaTB3In0=
-x-ctpclassification: CTP_NT
-dlp-reaction: request-justification,no-action
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=redhairer.li@intel.com;
-x-originating-ip: [192.55.52.207]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4ca44f61-bd44-4563-70fd-08d789b8559c
-x-ms-traffictypediagnostic: SN6PR11MB3023:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR11MB302323BAAA545C71F50DE5BC922B0@SN6PR11MB3023.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:112;
-x-forefront-prvs: 02638D901B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39860400002)(396003)(376002)(136003)(346002)(13464003)(20264003)(199004)(189003)(478600001)(4326008)(33656002)(71200400001)(316002)(6636002)(6862004)(9686003)(7696005)(55016002)(66476007)(64756008)(66446008)(76116006)(8936002)(5660300002)(186003)(26005)(6506007)(52536014)(66556008)(86362001)(2940100002)(81166006)(66946007)(8676002)(81156014)(53546011)(2906002);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3023;H:SN6PR11MB3264.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: M/IPrR3GIN1Bq00BMXi/e3iGrpelDfbsWS97fIxZrsG+wGtC/xvXKzFsVqEcKajr1Mj7/yv97s3txKLyF/xsKZCFv8krIEF+c/kprTaPFsvS+FtMRsbECZWjU0vR7JvXIMuBVBxSDcMqAz7ETgV47yEipUqI+TZXdTHKwUFZEuh+iJAmO1xB0GvyuHks1PoqEdx3TUrsYC1NL+r9gE7XkmKLUWeS1D8H1te/5YC9N6nbFhD4ZZeUf15XHNJl2b0RSKoRXOlz5Bhm9Y99sdVApbDzeifUIrB5xZUmZMPcPV4K4UzW0HcfFDnLD3BxfGM94iKEQki2yBz1PD0+fpWb7XUhd0ecJNWaLQk0AQ3Tff3kC3+iwCqJMBSKYr2ucMrSwXA6f4VAs9wN8ovlOBMrB3oGtbWA5t8ZNJjO431Fq58TG3EbXTn/RQSSEWkE6/kAyPcXoLsfqO7Bd7YFcUy7e3TS8jBa05jZf0CSlu+92WOn6oPOvZB7EwoU47PZRV8l3qbbqQvehIGx4Sv9BZM6mQ==
+	by ml01.01.org (Postfix) with ESMTPS id 9741E100DC2C2
+	for <linux-nvdimm@lists.01.org>; Thu, 26 Dec 2019 02:56:50 -0800 (PST)
+Received: by mail-pf1-x441.google.com with SMTP id p14so13040239pfn.4
+        for <linux-nvdimm@lists.01.org>; Thu, 26 Dec 2019 02:53:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=LXwymZG3Dd7Xqvu6rc90Mi3tXxp5Tl9c/XBOphDdrqU=;
+        b=qKjkbsr5Y43vpNtr0tAw9JmS6A+QtKb1V4bL/yU7b3/KWDXQzbWf5rjaCDxdT8SzGF
+         7vt/T6xtl0NflquUM3G81NnlIv57z484MCzq1l8WVx43A2+rmODC43vdFRNAKMWOEAfk
+         bW9nK6HDKBEpupRFJ1IBVF1G9bdh6c6FtwcpriE8R5zciGELOLZk46t4rjmy4N6R1QxQ
+         8bFEwyiS/Oct+4FMOtNPQUB9KEK2ox+/owVxVOlB00Q6XqxFdFEeDdZAujvkWfIIglQw
+         Z6W54dxfZZAt56mR2mIsBtC3RAaXEMzIWIvsfwcO/DwgALlsT3N3rffFnPJbwq8OdQAX
+         8qBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=LXwymZG3Dd7Xqvu6rc90Mi3tXxp5Tl9c/XBOphDdrqU=;
+        b=o5MUjRUCCYqCw//VbUFtdj/ZXovyTSLfJs4jyNM7guL29J66vvq0m0RUrJSaUW6vzb
+         Msz3WyJYpNwcqEB5JHzc2J8FAoCqB//MZJ0PiAGB9pZ5JVQhZWwFk+nQrve9eBTske+4
+         g11KaptG7puOVSkHDCW+bzguU4TSXn5Zkt4dQPKW23nh0Wa4E0RJ46Yjt9711dgXDFsy
+         mtSmk2L5tfj8wYUG8YhWmtTjiXKaPx6a0/T/zsniPeWQLrZKwEHAsAGpgtuszK/MV+UL
+         q+CUWJ6lrMaTh7EqGt+hQ5YSCQajJcnTS7IHHAkhsDXVh229vM8/4iDlDZrQWT5GKEyO
+         xfeQ==
+X-Gm-Message-State: APjAAAUt6JSbp7RbDBV8lUAVN6QAwc05c/VxEXFXsh4TZz73MlO5Wgax
+	fybnulkz+VPHPk/n7RhpH3vzWil6
+X-Google-Smtp-Source: APXvYqyzFTJd2s5HEocsSNL9Byor/2oDbkAzbgRJ2tQWRW3I/9zxGKBb1Yf6HDiWBIsWPGD8gkVjNg==
+X-Received: by 2002:a62:382:: with SMTP id 124mr49420555pfd.11.1577357610003;
+        Thu, 26 Dec 2019 02:53:30 -0800 (PST)
+Received: from localhost ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id 189sm37162783pfw.73.2019.12.26.02.53.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2019 02:53:29 -0800 (PST)
+Date: Thu, 26 Dec 2019 18:53:22 +0800
+From: Murphy Zhou <jencce.kernel@gmail.com>
+To: Justin He <Justin.He@arm.com>
+Subject: Re: [PATCH] mm: get rid of WARN if failed to cow user pages
+Message-ID: <20191226105322.mx5bp4njwkrchinc@xzhoux.usersys.redhat.com>
+References: <20191225054227.gii6ctjkuddjnprs@xzhoux.usersys.redhat.com>
+ <VE1PR08MB46390C98EBC3FE58A0132B86F7280@VE1PR08MB4639.eurprd08.prod.outlook.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ca44f61-bd44-4563-70fd-08d789b8559c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Dec 2019 04:01:49.5920
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ML2UfneryMMkZSwW3BxFMMFp22mGjZFY/6H4xn3cSpcGnZDJZdNAAV1D3C0xAGO6WIQR6gMvqMN/Gt5HLWUcYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3023
-X-OriginatorOrg: intel.com
-Message-ID-Hash: TK4N6W2FAF2Y7US6ROPSWYRS7ZAWV7QB
-X-Message-ID-Hash: TK4N6W2FAF2Y7US6ROPSWYRS7ZAWV7QB
-X-MailFrom: redhairer.li@intel.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <VE1PR08MB46390C98EBC3FE58A0132B86F7280@VE1PR08MB4639.eurprd08.prod.outlook.com>
+Message-ID-Hash: BDW7KYJ52RBRYQ7K3BQZHY5VEOPSTOXJ
+X-Message-ID-Hash: BDW7KYJ52RBRYQ7K3BQZHY5VEOPSTOXJ
+X-MailFrom: jencce.kernel@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TK4N6W2FAF2Y7US6ROPSWYRS7ZAWV7QB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BDW7KYJ52RBRYQ7K3BQZHY5VEOPSTOXJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-I saw daxctl-devices.sh is still failed before I apply my patch.
-
-root@ubuntu-red:~/git/ndctl# vi test/test-suite.log
-=========================================
-   ndctl 67.dirty: test/test-suite.log
-=========================================
-
-# TOTAL: 1
-# PASS:  0
-# SKIP:  0
-# XFAIL: 0
-# FAIL:  1
-# XPASS: 0
-# ERROR: 0
-
-.. contents:: :depth: 2
-
-FAIL: daxctl-devices.sh
-=======================
-
-+ rc=77
-+ . ./common
-++ '[' -f ../ndctl/ndctl ']'
-++ '[' -x ../ndctl/ndctl ']'
-++ export NDCTL=../ndctl/ndctl
-++ NDCTL=../ndctl/ndctl
-++ '[' -f ../daxctl/daxctl ']'
-++ '[' -x ../daxctl/daxctl ']'
-++ export DAXCTL=../daxctl/daxctl
-++ DAXCTL=../daxctl/daxctl
-++ NFIT_TEST_BUS0=nfit_test.0
-++ NFIT_TEST_BUS1=nfit_test.1
-++ ACPI_BUS=ACPI.NFIT
-++ E820_BUS=e820
-+ trap 'cleanup $LINENO' ERR
-+ find_testdev
-+ local rc=77
-+ modinfo kmem
-filename:       /lib/modules/5.4.0-rc5_red_ndctltest_VM/kernel/drivers/dax/kmem.ko
-alias:          dax:t0*
-license:        GPL v2
-author:         Intel Corporation
-srcversion:     A0712EA9D9E63723E6B4CDA
-depends:
-retpoline:      Y
-intree:         Y
-name:           kmem
-vermagic:       5.4.0-rc5_red_ndctltest_VM SMP mod_unload
-signat:         PKCS#7
-signer:
-sig_key:
-sig_hashalgo:   md4
-+ testbus=ACPI.NFIT
-++ ../ndctl/ndctl list -b ACPI.NFIT -Ni
-++ jq -er '.[0].dev | .//""'
-+ testdev=namespace0.0
-+ [[ ! -n namespace0.0 ]]
-+ printf 'Found victim dev: %s on bus: %s\n' namespace0.0 ACPI.NFIT
-Found victim dev: namespace0.0 on bus: ACPI.NFIT
-+ setup_dev
-+ test -n ACPI.NFIT
-+ test -n namespace0.0
-+ ../ndctl/ndctl destroy-namespace -f -b ACPI.NFIT namespace0.0
-destroyed 1 namespace
-++ ../ndctl/ndctl create-namespace -b ACPI.NFIT -m devdax -fe namespace0.0 -s 256M
-++ jq -er .dev
-+ testdev=namespace0.0
-+ test -n namespace0.0
-+ rc=1
-+ daxctl_test
-+ local daxdev
-++ daxctl_get_dev namespace0.0
-++ ../ndctl/ndctl list -n namespace0.0 -X
-++ jq -er '.[].daxregion.devices[0].chardev'
-+ daxdev=dax0.0
-+ test -n dax0.0
-+ ../daxctl/daxctl reconfigure-device -N -m system-ram dax0.0
-libdaxctl: daxctl_dev_disable: dax0.0: error: device model is dax-class
-libdaxctl: daxctl_dev_disable: dax0.0: see man daxctl-migrate-device-model
-dax0.0: disable failed: Operation not supported
-error reconfiguring devices: Operation not supported
-reconfigured 0 devices
-++ cleanup 74
-++ printf 'Error at line %d\n' 74
-Error at line 74
-++ [[ -n namespace0.0 ]]
-++ reset_dev
-++ ../ndctl/ndctl destroy-namespace -f -b ACPI.NFIT namespace0.0
-destroyed 1 namespace
-++ exit 1
-FAIL daxctl-devices.sh (exit status: 1)
-
------Original Message-----
-From: Li, Redhairer 
-Sent: Thursday, December 26, 2019 10:23 AM
-To: 'Dan Williams' <dan.j.williams@intel.com>
-Cc: 'linux-nvdimm@lists.01.org' <linux-nvdimm@lists.01.org>
-Subject: RE: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-
-
-
-Build error is solved by following change.
-
-diff --git a/test/Makefile.am b/test/Makefile.am index 829146d..d764190 100644
---- a/test/Makefile.am
-+++ b/test/Makefile.am
-@@ -98,10 +98,10 @@ ack_shutdown_count_set_SOURCES =\  ack_shutdown_count_set_LDADD = $(LIBNDCTL_LIB) $(KMOD_LIBS)
-
- blk_ns_SOURCES = blk_namespaces.c $(testcore) -blk_ns_LDADD = $(LIBNDCTL_LIB) $(KMOD_LIBS)
-+blk_ns_LDADD = $(LIBNDCTL_LIB) $(KMOD_LIBS) $(UUID_LIBS)
-
- pmem_ns_SOURCES = pmem_namespaces.c $(testcore) -pmem_ns_LDADD = $(LIBNDCTL_LIB) $(KMOD_LIBS)
-+pmem_ns_LDADD = $(LIBNDCTL_LIB) $(KMOD_LIBS) $(UUID_LIBS)
-
- dpa_alloc_SOURCES = dpa-alloc.c $(testcore)  dpa_alloc_LDADD = $(LIBNDCTL_LIB) $(UUID_LIBS) $(KMOD_LIBS) @@ -143,6 +143,7 @@ device_dax_LDADD = \
-                $(LIBNDCTL_LIB) \
-                $(KMOD_LIBS) \
-                $(JSON_LIBS) \
-+               $(UUID_LIBS) \
-                ../libutil.a
-
- smart_notify_SOURCES = smart-notify.c
-
-
------Original Message-----
-From: Li, Redhairer
-Sent: Thursday, December 26, 2019 9:48 AM
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: linux-nvdimm@lists.01.org
-Subject: RE: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-
-I try "--enable-destructive".
-But I always see the following msg when I run "make check" and "make TESTS=daxctl-devices.sh check".
-Do I miss anything here?
-
-
-/usr/bin/ld: blk_namespaces.o: undefined reference to symbol 'uuid_generate@@UUID_1.0'
-//lib/x86_64-linux-gnu/libuuid.so.1: error adding symbols: DSO missing from command line
-collect2: error: ld returned 1 exit status
-Makefile:850: recipe for target 'blk-ns' failed
-make[3]: *** [blk-ns] Error 1
-Makefile:1477: recipe for target 'check-am' failed
-make[2]: *** [check-am] Error 2
-Makefile:785: recipe for target 'check-recursive' failed
-make[1]: *** [check-recursive] Error 1
-Makefile:1079: recipe for target 'check' failed
-make: *** [check] Error 2
-
------Original Message-----
-From: Dan Williams <dan.j.williams@intel.com>
-Sent: Thursday, December 26, 2019 5:18 AM
-To: Li, Redhairer <redhairer.li@intel.com>
-Cc: linux-nvdimm@lists.01.org
-Subject: Re: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-
-On Wed, Dec 25, 2019 at 2:33 AM Li, Redhairer <redhairer.li@intel.com> wrote:
->
-> Hi Dan,
->
-> I don't see any failure even apply my patch.
-> What failure do you observe?
-
-I see the failure in the daxctl-devices.sh unit test. That test and others are included in the "destructive" set of unit tests. They are classified "destructive" because they write to platform persistent memory resources instead of the emulated nfit_test resources. You need to pass "--enable-destructive" to the configure script at build time to enable the destructive tests.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gV2VkLCBEZWMgMjUsIDIwMTkgYXQgMDg6MTc6MjlBTSArMDAwMCwgSnVzdGluIEhlIHdyb3Rl
+Og0KPiBIaSBNdXJwaHkNCj4gDQo+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiBG
+cm9tOiBNdXJwaHkgWmhvdSA8amVuY2NlLmtlcm5lbEBnbWFpbC5jb20+DQo+ID4gU2VudDogV2Vk
+bmVzZGF5LCBEZWNlbWJlciAyNSwgMjAxOSAxOjQyIFBNDQo+ID4gVG86IGxpbnV4LW52ZGltbUBs
+aXN0cy4wMS5vcmc7IEp1c3RpbiBIZSA8SnVzdGluLkhlQGFybS5jb20+OyBSb3NzIFp3aXNsZXIN
+Cj4gPiA8cm9zcy56d2lzbGVyQGxpbnV4LmludGVsLmNvbT4NCj4gPiBTdWJqZWN0OiBbUEFUQ0hd
+IG1tOiBnZXQgcmlkIG9mIFdBUk4gaWYgZmFpbGVkIHRvIGNvdyB1c2VyIHBhZ2VzDQo+ID4NCj4g
+PiBCeSBydW5uaW5nIHhmc3Rlc3RzIHdpdGggZnNkYXggZW5hYmxlZCwgZ2VuZXJpYy80MzcgYWx3
+YXlzIGhpdHMgdGhpcw0KPiA+IHdhcm5pbmdbMV0gc2luY2UgdGhpcyBjb21taXQ6DQo+ID4NCj4g
+PiBjb21taXQgODNkMTE2YzUzMDU4ZDUwNWRkZWYwNTFlOTBhYjI3ZjU3MDE1YjAyNQ0KPiA+IEF1
+dGhvcjogSmlhIEhlIDxqdXN0aW4uaGVAYXJtLmNvbT4NCj4gPiBEYXRlOiAgIEZyaSBPY3QgMTEg
+MjI6MDk6MzkgMjAxOSArMDgwMA0KPiA+DQo+ID4gICAgIG1tOiBmaXggZG91YmxlIHBhZ2UgZmF1
+bHQgb24gYXJtNjQgaWYgUFRFX0FGIGlzIGNsZWFyZWQNCj4gPg0KPiA+IExvb2tpbmcgYXQgdGhl
+IHRlc3QgcHJvZ3JhbVsyXSBnZW5lcmljLzQzNyB1c2VzLCBpdCdzIHByZXR0eSBlYXN5DQo+ID4g
+dG8gaGl0IHRoaXMgd2FybmluZy4gUmVtb3ZlIHRoaXMgV0FSTiBhcyBpdCBzZWVtcyBub3QgbmVj
+ZXNzYXJ5Lg0KPiA+DQo+ID4gWzJdIGh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9mcy94
+ZnMveGZzdGVzdHMtDQo+ID4gZGV2LmdpdC90cmVlL3NyYy90X21tYXBfY293X3JhY2UuYw0KPiA+
+IFsxXSB3YXJuaW5nIG1lc3NhZ2U6DQo+ID4gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPiBbICAgOTcuMzQ0
+MDc3XSBXQVJOSU5HOiBDUFU6IDAgUElEOiAyNDg2IGF0IG1tL21lbW9yeS5jOjIyODENCj4gSXQg
+aXMgaGFyZCBmb3IgbWUgdG8gcmVwcm9kdWNlIGl0IGluIG15IHg4NiBkZXNrdG9wIHdoZW4gcnVu
+bmluZyB0aGF0IGdlbmVyaWMvNDM3DQo+IA0KPiBDb3VsZCB5b3UgcGxlYXNlIHNoYXJlIHlvdXIg
+dGVzdCBlbnY/IEUuZy4gZ3Vlc3Qgb3IgaG9zdD8gV2hhdCBpcyB0aGUgdGVzdF9kZXYgb2YNCj4g
+eW91ciB4ZnN0ZXN0cz8gSXMgaXQgYSAxMDAlIHJlcHJvZHVjaWJsZSBpc3N1ZT8NCg0KSXQncyBh
+IGt2bSBndWVzdCwgd2l0aCBwbWVtIHJhbWRpc2tzLiAxMDAlIHJlcHJvZHVjaWJsZS4NCg0KW3Jv
+b3RAOHUgfl0jIHVuYW1lIC1yDQo1LjUuMC1yYzMtdjUuNS1yYzMNCltyb290QDh1IH5dIyBjYXQg
+L3Byb2MvY21kbGluZQ0KQk9PVF9JTUFHRT0oaGQwLG1zZG9zMikvYm9vdC92bWxpbnV6LTUuNS4w
+LXJjMy12NS41LXJjMyByb290PVVVSUQ9NjJiNzZkN2UtZTMxNC00NDAwLTllYTctZGVkMGRlMmY5
+ZmNhIHJvIGNyYXNoa2VybmVsPWF1dG8gcmVzdW1lPS9kZXYvbWFwcGVyL3JoZWwtc3dhcCByZC5s
+dm0ubHY9cmhlbC9zd2FwIGNvbnNvbGU9dHR5UzAsMTE1MjAwIG1lbW1hcD01RyE2RyBtZW1tYXA9
+NUchMTNHDQpbcm9vdEA4dSB+XSMgbHNwY2kNCjAwOjAwLjAgSG9zdCBicmlkZ2U6IEludGVsIENv
+cnBvcmF0aW9uIDQ0MEZYIC0gODI0NDFGWCBQTUMgW05hdG9tYV0gKHJldiAwMikNCjAwOjAxLjAg
+SVNBIGJyaWRnZTogSW50ZWwgQ29ycG9yYXRpb24gODIzNzFTQiBQSUlYMyBJU0EgW05hdG9tYS9U
+cml0b24gSUldDQowMDowMS4xIElERSBpbnRlcmZhY2U6IEludGVsIENvcnBvcmF0aW9uIDgyMzcx
+U0IgUElJWDMgSURFIFtOYXRvbWEvVHJpdG9uIElJXQ0KMDA6MDEuMyBCcmlkZ2U6IEludGVsIENv
+cnBvcmF0aW9uIDgyMzcxQUIvRUIvTUIgUElJWDQgQUNQSSAocmV2IDAzKQ0KMDA6MDIuMCBWR0Eg
+Y29tcGF0aWJsZSBjb250cm9sbGVyOiBSZWQgSGF0LCBJbmMuIFFYTCBwYXJhdmlydHVhbCBncmFw
+aGljIGNhcmQgKHJldiAwNCkNCjAwOjAzLjAgRXRoZXJuZXQgY29udHJvbGxlcjogUmVhbHRlayBT
+ZW1pY29uZHVjdG9yIENvLiwgTHRkLiAgUlRMLTgxMDAvODEwMUwvODEzOSBQQ0kgRmFzdCBFdGhl
+cm5ldCBBZGFwdGVyIChyZXYgMjApDQowMDowNC4wIEF1ZGlvIGRldmljZTogSW50ZWwgQ29ycG9y
+YXRpb24gODI4MDFGQi9GQk0vRlIvRlcvRlJXIChJQ0g2IEZhbWlseSkgSGlnaCBEZWZpbml0aW9u
+IEF1ZGlvIENvbnRyb2xsZXIgKHJldiAwMSkNCjAwOjA1LjAgVVNCIGNvbnRyb2xsZXI6IEludGVs
+IENvcnBvcmF0aW9uIDgyODAxSSAoSUNIOSBGYW1pbHkpIFVTQiBVSENJIENvbnRyb2xsZXIgIzEg
+KHJldiAwMykNCjAwOjA1LjEgVVNCIGNvbnRyb2xsZXI6IEludGVsIENvcnBvcmF0aW9uIDgyODAx
+SSAoSUNIOSBGYW1pbHkpIFVTQiBVSENJIENvbnRyb2xsZXIgIzIgKHJldiAwMykNCjAwOjA1LjIg
+VVNCIGNvbnRyb2xsZXI6IEludGVsIENvcnBvcmF0aW9uIDgyODAxSSAoSUNIOSBGYW1pbHkpIFVT
+QiBVSENJIENvbnRyb2xsZXIgIzMgKHJldiAwMykNCjAwOjA1LjcgVVNCIGNvbnRyb2xsZXI6IElu
+dGVsIENvcnBvcmF0aW9uIDgyODAxSSAoSUNIOSBGYW1pbHkpIFVTQjIgRUhDSSBDb250cm9sbGVy
+ICMxIChyZXYgMDMpDQowMDowNi4wIENvbW11bmljYXRpb24gY29udHJvbGxlcjogUmVkIEhhdCwg
+SW5jLiBWaXJ0aW8gY29uc29sZQ0KMDA6MDcuMCBVbmNsYXNzaWZpZWQgZGV2aWNlIFswMGZmXTog
+UmVkIEhhdCwgSW5jLiBWaXJ0aW8gbWVtb3J5IGJhbGxvb24NCjAwOjA4LjAgRXRoZXJuZXQgY29u
+dHJvbGxlcjogUmVhbHRlayBTZW1pY29uZHVjdG9yIENvLiwgTHRkLiAgUlRMLTgxMDAvODEwMUwv
+ODEzOSBQQ0kgRmFzdCBFdGhlcm5ldCBBZGFwdGVyIChyZXYgMjApDQpbcm9vdEA4dSB+XSMNClty
+b290QDh1IH5dIyBuZGN0bCBsaXN0DQpbDQogIHsNCiAgICAiZGV2IjoibmFtZXNwYWNlMC4wIiwN
+CiAgICAibW9kZSI6ImZzZGF4IiwNCiAgICAibWFwIjoibWVtIiwNCiAgICAic2l6ZSI6NTM2ODcw
+OTEyMCwNCiAgICAic2VjdG9yX3NpemUiOjUxMiwNCiAgICAiYmxvY2tkZXYiOiJwbWVtMCINCiAg
+fQ0KXQ0KW3Jvb3RAOHUgfl0jIGxzYmxrDQpOQU1FICAgICAgICAgIE1BSjpNSU4gUk0gIFNJWkUg
+Uk8gVFlQRSBNT1VOVFBPSU5UDQpzZGEgICAgICAgICAgICAgODowICAgIDAgIDYyMEcgIDAgZGlz
+aw0K4pSc4pSAc2RhMSAgICAgICAgICA4OjEgICAgMCAgICAyRyAgMCBwYXJ0DQrilIIg4pSU4pSA
+cmhlbC1zd2FwIDI1MzowICAgIDAgICAgMkcgIDAgbHZtICBbU1dBUF0NCuKUlOKUgHNkYTIgICAg
+ICAgICAgODoyICAgIDAgIDYxOEcgIDAgcGFydCAvDQpzZGIgICAgICAgICAgICAgODoxNiAgIDAg
+IDIwMEcgIDAgZGlzayAvaG9tZQ0Kc2RjICAgICAgICAgICAgIDg6MzIgICAwICAgMjBHICAwIGRp
+c2sNCuKUnOKUgHNkYzEgICAgICAgICAgODozMyAgIDAgICAxMEcgIDAgcGFydA0K4pSU4pSAc2Rj
+MiAgICAgICAgICA4OjM0ICAgMCAgIDEwRyAgMCBwYXJ0DQpwbWVtMCAgICAgICAgIDI1OTowICAg
+IDAgICAgNUcgIDAgZGlzaw0K4pSc4pSAcG1lbTBwMSAgICAgMjU5OjEgICAgMCAgMi40RyAgMCBw
+YXJ0DQrilJTilIBwbWVtMHAyICAgICAyNTk6MiAgICAwICAyLjZHICAwIHBhcnQNCltyb290QDh1
+IH5dIw0KDQpbcm9vdEA4dSB4ZnN0ZXN0cy1kZXYgKG1hc3RlcildIyBjYXQgbG9jYWwuY29uZmln
+DQpURVNUX0RFVj0vZGV2L3BtZW0wcDENClRFU1RfRElSPS90ZXN0Mg0KU0NSQVRDSF9ERVY9L2Rl
+di9wbWVtMHAyDQpTQ1JBVENIX01OVD0vdGVzdDENCkZTVFlQPXhmcw0KTU9VTlRfT1BUSU9OUz0i
+LW8gZGF4Ig0KVEVTVF9GU19NT1VOVF9PUFRTPSItbyBkYXgiDQpNS0ZTX09QVElPTlM9Ii1mIC1i
+IHNpemU9NDA5NiAtbSByZWZsaW5rPTAiDQpMT0dXUklURVNfREVWPSIiDQpbcm9vdEA4dSB4ZnN0
+ZXN0cy1kZXYgKG1hc3RlcildIw0KPiANCj4gQmVzaWRlcywgYSBmZXcgZGF5cyBhZ28sIHN5emJv
+dCByZXBvcnRlZCBhIHNpbWlsYXIgaXNzdWUsIEtpcmlsbCByZWxpZWQgaGlzIGNvbmNlcm5zDQo+
+IGF0IFsxXQ0KPiANCj4gWzFdIGh0dHBzOi8vd3d3LnNwaW5pY3MubmV0L2xpc3RzL2xpbnV4LW1t
+L21zZzE5OTAwOC5odG1sDQo+IA0KPiAtLQ0KPiBDaGVlcnMsDQo+IEp1c3RpbiAoSmlhIEhlKQ0K
+PiANCj4gDQo+ID4gd3BfcGFnZV9jb3B5KzB4Njg3LzB4NmUwDQo+ID4gWyAgIDk3LjM0ODM1NF0g
+TW9kdWxlcyBsaW5rZWQgaW46IG5mX3RhYmxlcyBuZm5ldGxpbmsgcmZraWxsIHN1bnJwYw0KPiA+
+IHNuZF9oZGFfY29kZWNfZ2VuZXJpYyBsZWR0cmlnX2F1ZGlvIHF4bCBzbmRfaGRhX2ludGVsIHNu
+ZF9pbnRlbF9kc3BjZmcNCj4gPiBkcm1fdHRtX2hlbHBlciBzbmRfaGRhX2NvZGVjIHR0bSBzbmRf
+aGRhX2NvcmUgZHJtX2ttc19oZWxwZXINCj4gPiBzbmRfaHdkZXAgc25kX3NlcSBzeXNjb3B5YXJl
+YSBzeXNmaWxscmVjdCBzeXNpbWdibHQgc25kX3NlcV9kZXZpY2UNCj4gPiBmYl9zeXNfZm9wcyBz
+bmRfcGNtIGRybSBzbmRfdGltZXIgY3JjMzJfcGNsbXVsIHNuZCBzb3VuZGNvcmUNCj4gPiBkYXhf
+cG1lbV9jb21wYXQgaTJjX3BpaXg0IGRldmljZV9kYXggdmlydGlvX2JhbGxvb24gcGNzcGtyIGpv
+eWRldg0KPiA+IGRheF9wbWVtX2NvcmUgaXBfdGFibGVzIHhmcyBsaWJjcmMzMmMgY3JjdDEwZGlm
+X3BjbG11bCBjcmMzMmNfaW50ZWwgc2RfbW9kDQo+ID4gc2cgYXRhX2dlbmVyaWMgODEzOXRvbyBh
+dGFfcGlpeCBsaWJhdGEgZ2hhc2hfY2xtdWxuaV9pbnRlbCA4MTM5Y3ANCj4gPiB2aXJ0aW9fY29u
+c29sZSBzZXJpb19yYXcgbmRfcG1lbSBtaWkgZG1fbWlycm9yIGRtX3JlZ2lvbl9oYXNoIGRtX2xv
+Zw0KPiA+IGRtX21vZA0KPiA+IFsgICA5Ny4zODIxNzZdIENQVTogMCBQSUQ6IDI0ODYgQ29tbTog
+dF9tbWFwX2Nvd19yYWNlIFRhaW50ZWQ6IEcgICAgICAgIFcNCj4gPiA1LjUuMC1yYzMtdjUuNS1y
+YzMgIzENCj4gPiBbICAgOTcuMzg3ODA0XSBIYXJkd2FyZSBuYW1lOiBSZWQgSGF0IEtWTSwgQklP
+UyAwLjUuMSAwMS8wMS8yMDExDQo+ID4gWyAgIDk3LjM5MjIyOF0gUklQOiAwMDEwOndwX3BhZ2Vf
+Y29weSsweDY4Ny8weDZlMA0KPiA+IFsgICA5Ny4zOTY1NzJdIENvZGU6IDk1IGY1IDAwIDQ4IDgx
+IGU2IDAwIGYwIGZmIGZmIGJhIDAwIDEwIDAwIDAwIDQ5IGMxIGZmIDA2IDQ5DQo+ID4gYzEgZTcg
+MGMgNGMgMDMgM2QgMzUgOTUgZjUgMDAgNGMgODkgZmYgZTggOGQgODUgNmEgMDAgODUgYzAgNzQg
+MGEgPDBmPiAwYiA0YyA4OQ0KPiA+IGZmIGU4IDhmIDgwIDZhIDAwIDY1IDQ4IDhiIDA0IDI1IDQw
+IDdmIDAxIDAwIDgzIGE4IGQ4DQo+ID4gWyAgIDk3LjQxMzQ4N10gUlNQOiAwMDAwOmZmZmZiODgy
+NDkzYWZkMjggRUZMQUdTOiAwMDAxMDIwNg0KPiA+IFsgICA5Ny40MTc1MjBdIFJBWDogMDAwMDAw
+MDAwMDAwMTAwMCBSQlg6IGZmZmZiODgyNDkzYWZkZjggUkNYOg0KPiA+IDAwMDAwMDAwMDAwMDEw
+MDANCj4gPiBbICAgOTcuNDIyMjk1XSBSRFg6IDAwMDAwMDAwMDAwMDEwMDAgUlNJOiAwMDAwN2Yx
+ZDIwYzAwMDAwIFJESToNCj4gPiBmZmZmOTc2Mzg0ZDFmMDAwDQo+ID4gWyAgIDk3LjQyNjkxNF0g
+UkJQOiAwMDAwMDAwMDAwMDAwMDAwIFIwODogMDAwMDAwMDAwMDAwMDAwMCBSMDk6DQo+ID4gMDAw
+MDAwMDAwMDBjYTMwOA0KPiA+IFsgICA5Ny40MzE3NDZdIFIxMDogMDAwMDAwMDAwMDAwMDAwMCBS
+MTE6IGZmZmZlMGNkNGMxMzQ3YzAgUjEyOg0KPiA+IGZmZmZlMGNkNGMxMzQ3YzANCj4gPiBbICAg
+OTcuNDM2MzcxXSBSMTM6IGZmZmY5NzYzYjQ2YmExOTAgUjE0OiBmZmZmOTc2M2E5NjNkMGMwIFIx
+NToNCj4gPiBmZmZmOTc2Mzg0ZDFmMDAwDQo+ID4gWyAgIDk3LjQ0MTA4NV0gRlM6ICAwMDAwN2Yx
+ZDIwM2ZlNzAwKDAwMDApIEdTOmZmZmY5NzYzYjhhMDAwMDAoMDAwMCkNCj4gPiBrbmxHUzowMDAw
+MDAwMDAwMDAwMDAwDQo+ID4gWyAgIDk3LjQ0NTUwMF0gQ1M6ICAwMDEwIERTOiAwMDAwIEVTOiAw
+MDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMw0KPiA+IFsgICA5Ny40NDgzOTNdIENSMjogMDAwMDdm
+MWQyMGMwMDAwMCBDUjM6IDAwMDAwMDAzMzNkZmMwMDAgQ1I0Og0KPiA+IDAwMDAwMDAwMDAwMDA2
+ZjANCj4gPiBbICAgOTcuNDUyMzQ2XSBDYWxsIFRyYWNlOg0KPiA+IFsgICA5Ny40NTM2ODFdICA/
+IF9fc3dpdGNoX3RvX2FzbSsweDM0LzB4NzANCj4gPiBbICAgOTcuNDU1NTY2XSAgPyBfX3N3aXRj
+aF90b19hc20rMHg0MC8weDcwDQo+ID4gWyAgIDk3LjQ1NzQxOF0gID8gX19zd2l0Y2hfdG9fYXNt
+KzB4MzQvMHg3MA0KPiA+IFsgICA5Ny40NTkxOTddICA/IF9fc3dpdGNoX3RvX2FzbSsweDQwLzB4
+NzANCj4gPiBbICAgOTcuNDYwOTcxXSAgPyBfX3N3aXRjaF90b19hc20rMHgzNC8weDcwDQo+ID4g
+WyAgIDk3LjQ2Mjc0Nl0gID8gX19zd2l0Y2hfdG9fYXNtKzB4NDAvMHg3MA0KPiA+IFsgICA5Ny40
+NjQ1NjFdICA/IF9fc3dpdGNoX3RvX2FzbSsweDM0LzB4NzANCj4gPiBbICAgOTcuNDY2MzQyXSAg
+PyBfX3N3aXRjaF90b19hc20rMHg0MC8weDcwDQo+ID4gWyAgIDk3LjQ2ODE0MV0gIGRvX3dwX3Bh
+Z2UrMHg4Yy8weDY0MA0KPiA+IFsgICA5Ny40Njk4MThdICA/IGZpbmlzaF90YXNrX3N3aXRjaCsw
+eDc3LzB4MmEwDQo+ID4gWyAgIDk3LjQ3MTYzMV0gIF9faGFuZGxlX21tX2ZhdWx0KzB4YTA2LzB4
+MTQyMA0KPiA+IFsgICA5Ny40NzM1MTddICBoYW5kbGVfbW1fZmF1bHQrMHhhZS8weDFkMA0KPiA+
+IFsgICA5Ny40NzUxNjhdICBfX2RvX3BhZ2VfZmF1bHQrMHgyN2YvMHg0ZTANCj4gPiBbICAgOTcu
+NDc2OTQ3XSAgZG9fcGFnZV9mYXVsdCsweDMwLzB4MTEwDQo+ID4gWyAgIDk3LjQ3ODQ5MF0gIGFz
+eW5jX3BhZ2VfZmF1bHQrMHgzOS8weDQwDQo+ID4gWyAgIDk3LjQ4MDI3NV0gUklQOiAwMDMzOjB4
+NDAwZDY4DQo+ID4gWyAgIDk3LjQ4MTU4N10gQ29kZTogNTMgNDggODkgZmIgNDggODMgZWMgMTAg
+NjYgMmUgMGYgMWYgODQgMDAgMDAgMDAgMDAgMDAgMGYNCj4gPiBiNiAwMyBiYSAwNCAwMCAwMCAw
+MCBiZSAwMCAwMCAyMCAwMCA0OCA4OSBkZiA4OSA0NCAyNCAwYyA4YiA0NCAyNCAwYyA8ODg+IDAz
+DQo+ID4gZTggNzEgZmMgZmYgZmYgODUgYzAgNzggMzAgZTggYjggZmMgZmYgZmYgODkgYzcgNDEg
+ZjcgZWMgODkNCj4gPiBbICAgOTcuNDg5MzI2XSBSU1A6IDAwMmI6MDAwMDdmMWQyMDNmZGVkMCBF
+RkxBR1M6IDAwMDEwMjAyDQo+ID4gWyAgIDk3LjQ5MTMzNl0gUkFYOiAwMDAwMDAwMDAwMDAwMDAx
+IFJCWDogMDAwMDdmMWQyMGMwMDAwMCBSQ1g6DQo+ID4gMDAwMDAwMDAwMDAwMDAwMA0KPiA+IFsg
+ICA5Ny40OTQwODBdIFJEWDogMDAwMDAwMDAwMDAwMDAwNCBSU0k6IDAwMDAwMDAwMDAyMDAwMDAg
+UkRJOg0KPiA+IDAwMDA3ZjFkMjBjMDAwMDANCj4gPiBbICAgOTcuNDk3MjQ0XSBSQlA6IDAwMDAw
+MDAwMDAwMDAwMDIgUjA4OiAwMDAwN2YxZDIxMzhkMjMwIFIwOToNCj4gPiAwMDAwN2YxZDIxMzhk
+MjYwDQo+ID4gWyAgIDk3LjUwMDAyOF0gUjEwOiAwMDAwN2YxZDIwM2ZlOWQwIFIxMTogMDAwMDAw
+MDAwMDAwMDAwMCBSMTI6DQo+ID4gMDAwMDAwMDA1MWViODUxZg0KPiA+IFsgICA5Ny41MDI3ODVd
+IFIxMzogMDAwMDdmZmYwMWQ1NjA3ZiBSMTQ6IDAwMDAwMDAwMDAwMDAwMDAgUjE1Og0KPiA+IDAw
+MDA3ZjFkMjAzZmRmYzANCj4gPiBbICAgOTcuNTA1NTQ2XSAtLS1bIGVuZCB0cmFjZSAxOGYxYzk0
+YmQ3YzNkMWUxIF0tLS0NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IE11cnBoeSBaaG91IDxqZW5j
+Y2Uua2VybmVsQGdtYWlsLmNvbT4NCj4gPiAtLS0NCj4gPiAgbW0vbWVtb3J5LmMgfCAxNCArKysr
+LS0tLS0tLS0tLQ0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxMCBkZWxl
+dGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9tbS9tZW1vcnkuYyBiL21tL21lbW9yeS5j
+DQo+ID4gaW5kZXggNDU0NDJkOS4uZTNhMWRjZSAxMDA2NDQNCj4gPiAtLS0gYS9tbS9tZW1vcnku
+Yw0KPiA+ICsrKyBiL21tL21lbW9yeS5jDQo+ID4gQEAgLTIyNjksMTggKzIyNjksMTIgQEAgc3Rh
+dGljIGlubGluZSBib29sIGNvd191c2VyX3BhZ2Uoc3RydWN0IHBhZ2UNCj4gPiAqZHN0LCBzdHJ1
+Y3QgcGFnZSAqc3JjLA0KPiA+DQo+ID4gICAgICAgLyoNCj4gPiAgICAgICAgKiBUaGlzIHJlYWxs
+eSBzaG91bGRuJ3QgZmFpbCwgYmVjYXVzZSB0aGUgcGFnZSBpcyB0aGVyZQ0KPiA+IC0gICAgICAq
+IGluIHRoZSBwYWdlIHRhYmxlcy4gQnV0IGl0IG1pZ2h0IGp1c3QgYmUgdW5yZWFkYWJsZSwNCj4g
+PiAtICAgICAgKiBpbiB3aGljaCBjYXNlIHdlIGp1c3QgZ2l2ZSB1cCBhbmQgZmlsbCB0aGUgcmVz
+dWx0IHdpdGgNCj4gPiAtICAgICAgKiB6ZXJvZXMuDQo+ID4gKyAgICAgICogaW4gdGhlIHBhZ2Ug
+dGFibGVzLiBCdXQgaXQgY291bGQgaGFwcGVuIGR1cmluZyByYWNlcywNCj4gPiArICAgICAgKiBv
+ciBpdCBtaWdodCBqdXN0IGJlIHVucmVhZGFibGUsIGluIHdoaWNoIGNhc2VzIHdlDQo+ID4gKyAg
+ICAgICoganVzdCBnaXZlIHVwIGFuZCBmaWxsIHRoZSByZXN1bHQgd2l0aCB6ZXJvZXMuDQo+ID4g
+ICAgICAgICovDQo+ID4gLSAgICAgaWYgKF9fY29weV9mcm9tX3VzZXJfaW5hdG9taWMoa2FkZHIs
+IHVhZGRyLCBQQUdFX1NJWkUpKSB7DQo+ID4gLSAgICAgICAgICAgICAvKg0KPiA+IC0gICAgICAg
+ICAgICAgICogR2l2ZSBhIHdhcm4gaW4gY2FzZSB0aGVyZSBjYW4gYmUgc29tZSBvYnNjdXJlDQo+
+ID4gLSAgICAgICAgICAgICAgKiB1c2UtY2FzZQ0KPiA+IC0gICAgICAgICAgICAgICovDQo+ID4g
+LSAgICAgICAgICAgICBXQVJOX09OX09OQ0UoMSk7DQo+ID4gKyAgICAgaWYgKF9fY29weV9mcm9t
+X3VzZXJfaW5hdG9taWMoa2FkZHIsIHVhZGRyLCBQQUdFX1NJWkUpKQ0KPiA+ICAgICAgICAgICAg
+ICAgY2xlYXJfcGFnZShrYWRkcik7DQo+ID4gLSAgICAgfQ0KPiA+DQo+ID4gICAgICAgcmV0ID0g
+dHJ1ZTsNCj4gPg0KPiA+IC0tDQo+ID4gMS44LjMuMQ0KPiANCj4gSU1QT1JUQU5UIE5PVElDRTog
+VGhlIGNvbnRlbnRzIG9mIHRoaXMgZW1haWwgYW5kIGFueSBhdHRhY2htZW50cyBhcmUgY29uZmlk
+ZW50aWFsIGFuZCBtYXkgYWxzbyBiZSBwcml2aWxlZ2VkLiBJZiB5b3UgYXJlIG5vdCB0aGUgaW50
+ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgaW1tZWRpYXRlbHkgYW5k
+IGRvIG5vdCBkaXNjbG9zZSB0aGUgY29udGVudHMgdG8gYW55IG90aGVyIHBlcnNvbiwgdXNlIGl0
+IGZvciBhbnkgcHVycG9zZSwgb3Igc3RvcmUgb3IgY29weSB0aGUgaW5mb3JtYXRpb24gaW4gYW55
+IG1lZGl1bS4gVGhhbmsgeW91LgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0
+cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVh
+dmVAbGlzdHMuMDEub3JnCg==
