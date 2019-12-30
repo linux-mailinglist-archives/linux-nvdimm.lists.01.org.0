@@ -1,71 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7833512CD25
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Dec 2019 07:03:05 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1A212CD27
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Dec 2019 07:03:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A3DF41011367C;
-	Sun, 29 Dec 2019 22:06:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+	by ml01.01.org (Postfix) with ESMTP id C2E4410097F37;
+	Sun, 29 Dec 2019 22:07:01 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8462110113626
-	for <linux-nvdimm@lists.01.org>; Sun, 29 Dec 2019 22:06:18 -0800 (PST)
-Received: by mail-ot1-x343.google.com with SMTP id 19so32495511otz.3
-        for <linux-nvdimm@lists.01.org>; Sun, 29 Dec 2019 22:02:58 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id C6CFF1011367C
+	for <linux-nvdimm@lists.01.org>; Sun, 29 Dec 2019 22:06:59 -0800 (PST)
+Received: by mail-ot1-x341.google.com with SMTP id w21so37218711otj.7
+        for <linux-nvdimm@lists.01.org>; Sun, 29 Dec 2019 22:03:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=xTt/A5BYyvjJrihc3qsHFNSw61N4Hh8gtJ3xZHt8a3I=;
-        b=DP60F/IcpPZgKmfkGs6DgypAKkbkXZw1ioZ9+afN1JiZ8umYI5efmBiKpnkHJbIiRX
-         kernDZDxfkT5o94u8PduR8wFreO4KIPhe9gWKa2/VgrtOYe/gwxNBAyqvcfObG3xCZ16
-         D5v2I4gezyUtMR0cLu4XjCyBmiAN0LVyomtGqcsySH9M1GBgbhlkr3meHO6BfmMSEbBD
-         1gVCPmeMVcg+eoW7OhOXuOVEYeOj5ihR2BTezAhNqFyjim9nQMZFEs7yA6AK1WKUiH81
-         i/OUf64JasKmbJEsLvIL2n+5CBW1JfSfQBa+2BUwvn/DzY6XjivxuN6yCgV/wYSuytyG
-         B0qg==
+        bh=SxfcCf4y4b6yU7YSRRvn0XL3Q5Hgt+8ueeZ6moAH764=;
+        b=QjucmdM+xlWZMOjLcX+VlJMsAgPSTddJeq8dBmBFYqQt8PY7XIHSPirfhx7TEPY9AJ
+         r5x3GHkvDktXa314E9P9Q5Wj5X1UZjHfKhZoNtX4ICn+6J4IbJzB5+WyJhj7A12K4sBX
+         /biN6O0aL7umfBGmbvIUUHFrPfZeZfkxV0ql5StDICLuwJy/tEfeBg6HY3fXZzadBV7w
+         UzsC7/uAHi8T2ZvelvGNsIRFd6PuF/RnFRuyfpkPdzMM3epS8T86DYMWJu7WIBd3nUsl
+         HAzSz9SLnCS6lV1+PronP168VYzg1/L/UZBsto1OPPLF2t7lVNPK40/kkUaxEFg9B9bl
+         u0Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=xTt/A5BYyvjJrihc3qsHFNSw61N4Hh8gtJ3xZHt8a3I=;
-        b=E7tTPY5y8e+/WNtPXZR4UVTN2itZoxH/X4QRK1K+wdWApN//WlISp3rIrNypTNDj36
-         6kF0hDfCkMzUDN/pGIdc0Cju4AyhaiK2tv7Wa5lMrp3mAXdOLvvCgHx86IbZR9sEsSTB
-         ZyEiqMhu8Yay4lVxLbU8aYRveib/cRchC6GgLNMTLFDWAG9vy5Z2P0dx2wCTkO+ew56d
-         NcN/q6nVMxEh5HX8FISdkUPLuy3dqZ9+Qkw+1JdZ2MhcQfd81HOzF+ZOypIdw4cG2qKP
-         QgOitudkapz1dm4V+AKrM3WRbbd3bL5H6VDXgSjPKGNra9Kl9xHEMJyc67v0HwbHdE5F
-         xCdw==
-X-Gm-Message-State: APjAAAVT959CbMFw2Hb9ytrccVCrvldgYBd8UiTmqwYb3xPGVXR8aTDt
-	oUHRqXcHh84YvbgrmuAIeIURqCHJ7W49tuDiZ1Gw4w==
-X-Google-Smtp-Source: APXvYqygAOxq99f8LVOB0T3U3bUBlYpWlWT/mAVzh/aRAkKX8zxB78R9LDZmmQBS2ZV85oaCcTTsjyfjR24o5WN/bC4=
-X-Received: by 2002:a9d:4e99:: with SMTP id v25mr74429726otk.363.1577685777883;
- Sun, 29 Dec 2019 22:02:57 -0800 (PST)
+        bh=SxfcCf4y4b6yU7YSRRvn0XL3Q5Hgt+8ueeZ6moAH764=;
+        b=O5DJdFwsqsVQfLkJqupB+EE73sjO8c82MkpGEz6q2iJcMwr2PmAn5fLeRbErwzjAxB
+         D7HTyMhNt7yGhnM80lpogxME6Nen6E0kVtPK6mK3nsgLRTbbompzJgoZRapHBrU2A6XC
+         19weSNeC8O7yPkDSUoTg8c3v0Wpy2l8MOzcLWhn6wqWp+PNsk6Jx2jquusniv1Kru4hT
+         XCKNcFwfvXnjrdjy6gcTP5hYQts2atbU3Ek3+mUAf6raG8hF5xhlGufiewftUtPIE2KI
+         ftzCNsBQt8Xz8LkTo0/A2oXyAk2L8IxqKuTfwdc/4dHbQLQQP8R3ei9W7wg12uzpjQcz
+         60xg==
+X-Gm-Message-State: APjAAAUNNZTxGEgb/tjCSgcU75OSkPhRTgzn3+mzFqsox8ACQtqozYHz
+	stao4erfuqQwCh2l5tCWVYdkYgaG/MwvjxPpRxn/xw==
+X-Google-Smtp-Source: APXvYqzo7FKsIEdQLekukCaXebrzR+3ZukGEGIYSBzdrh1fShvunrJl7nE0ygYg8hgh+FBgJ+idfMkb3eEOq0GN9wB4=
+X-Received: by 2002:a9d:68d3:: with SMTP id i19mr17969653oto.71.1577685819234;
+ Sun, 29 Dec 2019 22:03:39 -0800 (PST)
 MIME-Version: 1.0
-References: <2369E669066F8E42A79A3DF0E43B9E643AC9EB31@pgsmsx114.gar.corp.intel.com>
- <CAPcyv4jTS+JcmH=Oe3Js0dw+Ovu+P6yBKHDZp8xxUT6Rbhpaqw@mail.gmail.com>
- <SN6PR11MB3264D981A619065F1A4EFFB992280@SN6PR11MB3264.namprd11.prod.outlook.com>
- <CAPcyv4iP1NK=2funtr6yp9VhedntKvzkvBsXDkLLXt6FBZYO=A@mail.gmail.com>
- <SN6PR11MB3264C140FEB5C66679095AFF922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
- <SN6PR11MB3264617D4EA3C3C4706C7C6D922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
- <SN6PR11MB32647968C27C92C1D3A5B7D8922B0@SN6PR11MB3264.namprd11.prod.outlook.com>
- <CAPcyv4iU2xt9L1U7JXLoM1ex__KFHQ--6wdJeD2RNz6yfb87OQ@mail.gmail.com> <SN6PR11MB32643D4FCE4E828182CB78AF92240@SN6PR11MB3264.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB32643D4FCE4E828182CB78AF92240@SN6PR11MB3264.namprd11.prod.outlook.com>
+References: <20191229075013.22620-1-redhairer.li@intel.com>
+In-Reply-To: <20191229075013.22620-1-redhairer.li@intel.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Sun, 29 Dec 2019 22:02:47 -0800
-Message-ID: <CAPcyv4jEEKjpc8_Y0EBFH=4uHcTGGVpnSEOt425ARdTY3nuMqQ@mail.gmail.com>
-Subject: Re: [PATCH] daxctl: Change region input type from INTEGER to STRING.
-To: "Li, Redhairer" <redhairer.li@intel.com>
-Message-ID-Hash: 7T2VEQ34SSK7EZ4VQ5Y2TYX76E7GWPIN
-X-Message-ID-Hash: 7T2VEQ34SSK7EZ4VQ5Y2TYX76E7GWPIN
+Date: Sun, 29 Dec 2019 22:03:28 -0800
+Message-ID: <CAPcyv4hc5nV6EPQXD=UzgRGxHq8-U+BXdw5EXfQz8bg_NSDPpg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] daxctl: Change region input type from INTEGER to STRING.
+To: redhairer <redhairer.li@intel.com>
+Message-ID-Hash: L4CJ5TEY4B4M3ZM56IEUNJFZCGJL3MJL
+X-Message-ID-Hash: L4CJ5TEY4B4M3ZM56IEUNJFZCGJL3MJL
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7T2VEQ34SSK7EZ4VQ5Y2TYX76E7GWPIN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/L4CJ5TEY4B4M3ZM56IEUNJFZCGJL3MJL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,57 +67,155 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 28, 2019 at 11:54 PM Li, Redhairer <redhairer.li@intel.com> wrote:
+On Sat, Dec 28, 2019 at 11:50 PM redhairer <redhairer.li@intel.com> wrote:
 >
-> OK, got it.
-> I have figured out the problem.
-> I pass wrong parameter to util_daxctl_region_filter.
+> Allow daxctl to accept both <region-id>, and region name as region parameter.
+> For example:
 >
-> But I found two other problems before I apply my patch.
+>     daxctl list -r region5
+>     daxctl list -r 5
 >
-> 1. DAX device already online after reconfigure it to system-ram.
->
-> "$DAXCTL" reconfigure-device -N -m system-ram "$daxdev"
->
-> If daxctl-device.sh do online-memory again,
-> it makes FAIL daxctl-devices.sh (exit status: 1) even I add --no-online when reconfigure-device
->
-> + ../daxctl/daxctl reconfigure-device -N -m system-ram --no-online dax0.0
-> libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-> reconfigured 1 device
-> [
->   {
->     "chardev":"dax0.0",
->     "size":262144000,
->     "target_node":0,
->     "mode":"system-ram",
->     "movable":false
->   }
-> ]
-> ++ daxctl_get_mode dax0.0
-> ++ ../daxctl/daxctl list -d dax0.0
-> ++ jq -er '.[].mode'
-> libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-> + [[ system-ram == \s\y\s\t\e\m\-\r\a\m ]]
-> + ../daxctl/daxctl online-memory dax0.0
-> libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-> libdaxctl: memblock_in_dev: dax0.0: memory0: Unable to determine phys_index: Success
-> dax0.0:
->   WARNING: detected a race while onlining memory
->   Some memory may not be in the expected zone. It is
->   recommended to disable any other onlining mechanisms,
->   and retry. If onlining is to be left to other agents,
->   use the --no-online option to suppress this warning
+> Link: https://github.com/pmem/ndctl/issues/109
+> Signed-off-by: Redhairer Li <redhairer.li@intel.com>
 
-This is likely because Ubuntu ships a udev rule that automatically
-onlines hot-added memory. We've talked about a way to auto-detect when
-a distribution ships a udev configuration like this, but for now this
-warning message is the best we can do.
+Looks good, applied.
 
-[..]>
-> 2.  2 nvdimm will make daxctl-devices.sh FAIL
-
-Do you mean a system with real nvdimms makes daxctl-devices.sh fail?
+>  daxctl/device.c | 11 ++++-------
+>  daxctl/list.c   | 14 ++++++--------
+>  util/filter.c   | 16 ++++++++++++++++
+>  util/filter.h   |  2 ++
+>  4 files changed, 28 insertions(+), 15 deletions(-)
+>
+> diff --git a/daxctl/device.c b/daxctl/device.c
+> index 72e506e..705f1f8 100644
+> --- a/daxctl/device.c
+> +++ b/daxctl/device.c
+> @@ -19,15 +19,13 @@
+>  static struct {
+>         const char *dev;
+>         const char *mode;
+> -       int region_id;
+> +       const char *region;
+>         bool no_online;
+>         bool no_movable;
+>         bool force;
+>         bool human;
+>         bool verbose;
+> -} param = {
+> -       .region_id = -1,
+> -};
+> +} param;
+>
+>  enum dev_mode {
+>         DAXCTL_DEV_MODE_UNKNOWN,
+> @@ -51,7 +49,7 @@ enum device_action {
+>  };
+>
+>  #define BASE_OPTIONS() \
+> -OPT_INTEGER('r', "region", &param.region_id, "restrict to the given region"), \
+> +OPT_STRING('r', "region", &param.region, "region-id", "filter by region"), \
+>  OPT_BOOLEAN('u', "human", &param.human, "use human friendly number formats"), \
+>  OPT_BOOLEAN('v', "verbose", &param.verbose, "emit more debug messages")
+>
+> @@ -484,8 +482,7 @@ static int do_xaction_device(const char *device, enum device_action action,
+>         *processed = 0;
+>
+>         daxctl_region_foreach(ctx, region) {
+> -               if (param.region_id >= 0 && param.region_id
+> -                               != daxctl_region_get_id(region))
+> +               if (!util_daxctl_region_filter(region, param.region))
+>                         continue;
+>
+>                 daxctl_dev_foreach(region, dev) {
+> diff --git a/daxctl/list.c b/daxctl/list.c
+> index e56300d..6c6251b 100644
+> --- a/daxctl/list.c
+> +++ b/daxctl/list.c
+> @@ -44,10 +44,8 @@ static unsigned long listopts_to_flags(void)
+>
+>  static struct {
+>         const char *dev;
+> -       int region_id;
+> -} param = {
+> -       .region_id = -1,
+> -};
+> +       const char *region;
+> +} param;
+>
+>  static int did_fail;
+>
+> @@ -66,7 +64,8 @@ static int num_list_flags(void)
+>  int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx)
+>  {
+>         const struct option options[] = {
+> -               OPT_INTEGER('r', "region", &param.region_id, "filter by region"),
+> +               OPT_STRING('r', "region", &param.region, "region-id",
+> +                               "filter by region"),
+>                 OPT_STRING('d', "dev", &param.dev, "dev-id",
+>                                 "filter by dax device instance name"),
+>                 OPT_BOOLEAN('D', "devices", &list.devs, "include dax device info"),
+> @@ -94,7 +93,7 @@ int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx)
+>                 usage_with_options(u, options);
+>
+>         if (num_list_flags() == 0) {
+> -               list.regions = param.region_id >= 0;
+> +               list.regions = !!param.region;
+>                 list.devs = !!param.dev;
+>         }
+>
+> @@ -106,8 +105,7 @@ int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx)
+>         daxctl_region_foreach(ctx, region) {
+>                 struct json_object *jregion = NULL;
+>
+> -               if (param.region_id >= 0 && param.region_id
+> -                               != daxctl_region_get_id(region))
+> +               if (!util_daxctl_region_filter(region, param.region))
+>                         continue;
+>
+>                 if (list.regions) {
+> diff --git a/util/filter.c b/util/filter.c
+> index 1734bce..877d6c7 100644
+> --- a/util/filter.c
+> +++ b/util/filter.c
+> @@ -335,6 +335,22 @@ struct daxctl_dev *util_daxctl_dev_filter(struct daxctl_dev *dev,
+>         return NULL;
+>  }
+>
+> +struct daxctl_region *util_daxctl_region_filter(struct daxctl_region *region,
+> +               const char *ident)
+> +{
+> +       int region_id;
+> +
+> +       if (!ident || strcmp(ident, "all") == 0)
+> +               return region;
+> +
+> +       if ((sscanf(ident, "%d", &region_id) == 1
+> +       || sscanf(ident, "region%d", &region_id) == 1)
+> +                       && daxctl_region_get_id(region) == region_id)
+> +               return region;
+> +
+> +       return NULL;
+> +}
+> +
+>  static enum ndctl_namespace_mode mode_to_type(const char *mode)
+>  {
+>         if (!mode)
+> diff --git a/util/filter.h b/util/filter.h
+> index c2cdddf..0c12b94 100644
+> --- a/util/filter.h
+> +++ b/util/filter.h
+> @@ -37,6 +37,8 @@ struct ndctl_region *util_region_filter_by_namespace(struct ndctl_region *region
+>                 const char *ident);
+>  struct daxctl_dev *util_daxctl_dev_filter(struct daxctl_dev *dev,
+>                 const char *ident);
+> +struct daxctl_region *util_daxctl_region_filter(struct daxctl_region *region,
+> +               const char *ident);
+>
+>  struct json_object;
+>
+> --
+> 2.20.1.windows.1
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
