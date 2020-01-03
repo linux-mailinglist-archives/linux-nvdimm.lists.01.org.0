@@ -1,65 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F230612F911
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jan 2020 15:12:53 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037F912FC1E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jan 2020 19:12:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 17D7A10097F32;
-	Fri,  3 Jan 2020 06:16:11 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 94D2C1011366C;
+	Fri,  3 Jan 2020 10:15:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DD28510113693
-	for <linux-nvdimm@lists.01.org>; Fri,  3 Jan 2020 06:16:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1578060767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CGMg0pHtt4SVc4uhGk+7pIjVLdzZuIJr8uS5jcpc3MY=;
-	b=fAU1oio51SZavWUAwL8vE4GnstVQfJ++F+/ENj3Z0CgdKacEX0iI5MPIcCOZftqUgkY+Qf
-	GTW56ah/0qpy6kthvPTTYE1HEAGNUnQd059aBWcpcF0QemZfxBupy/3LyWVLKPOk1jcW88
-	Zrydrh7ZZzmnh5g199a+DlI2ORxxFzM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-385--FlagLmkMOm7LZJqTa9NNQ-1; Fri, 03 Jan 2020 09:12:43 -0500
-X-MC-Unique: -FlagLmkMOm7LZJqTa9NNQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 29D92801A0D;
-	Fri,  3 Jan 2020 14:12:42 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 11FFE386;
-	Fri,  3 Jan 2020 14:12:36 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 9A02E2202E9; Fri,  3 Jan 2020 09:12:35 -0500 (EST)
-Date: Fri, 3 Jan 2020 09:12:35 -0500
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH 02/19] dax: Pass dax_dev to dax_writeback_mapping_range()
-Message-ID: <20200103141235.GA13350@redhat.com>
-References: <20190821175720.25901-1-vgoyal@redhat.com>
- <20190821175720.25901-3-vgoyal@redhat.com>
- <20190826115316.GB21051@infradead.org>
- <20190826203326.GB13860@redhat.com>
- <20190826205829.GC13860@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id A939610113668
+	for <linux-nvdimm@lists.01.org>; Fri,  3 Jan 2020 10:15:41 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id c16so14756390oic.3
+        for <linux-nvdimm@lists.01.org>; Fri, 03 Jan 2020 10:12:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=k3brJhWTSesWIRxDSnHgjF8nIZbts1Wu314rZzjXn1M=;
+        b=lAn6FgwQQMYzkHNrvN1rRFNYVp+0/0fgWehxuV9jdkjbcq9UCjg/LWklrQMinMlTD+
+         rjYhtgI2mNvRwWUnxAh3hV7ai1xjTahx4eD0I1E9IdQ4AWpZK0J6emaWKMy8TPy41pKP
+         h63PGVQD/FEUvYx/yJwAhI8+3ooXUTbsu+MiCIAAHl1x2cxQqUlcp3d01qkIiWnF0sdv
+         N2jvz2p8Z951aXN0UyUCkTU2WzwTU9HH0ZeLgyQzMMEl2rsW74FOlfswuDQP5Pw2wqYc
+         ECOLx9irUQlfTHxACK2Lo5WiAl8FxMN5h06QpbaSb3r19c6QAS8YIyYY0iE0yDWNxke9
+         SqmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=k3brJhWTSesWIRxDSnHgjF8nIZbts1Wu314rZzjXn1M=;
+        b=JKQc96I5NfFW8PcU1u0/GyjebSJrmX/1EBeoQ/FxykCR82BzXh3vtWaQNIxiDPJVg6
+         /eTYXXT7n735Clebvt01ux5xtRzFhrJ+2N+WkeC129cMF+fWFalLdj6Qcio6EOX9dMO2
+         BEmfwUU8ehRD6caVSN9LeDoTkD1RT5FRDM7vo8qBZywO+Y4jcmzXjkc3eGP46ac1MGDr
+         +mPsJREU/PLVUQyrV2Wqs2CSrKXksGtVuCutF125LT4r9Tcz9X37426zvP9UqW3GZUto
+         +STo87peGCAeLVV18XGU93aanzGAGiEgkC3dlkgMQY4Xq0QPdTQ2ND2YBIvnlQQr+RaK
+         GEhA==
+X-Gm-Message-State: APjAAAU6vYji4CAI3bm9kAeOJWMkuaMRNu+OE+3GrvrbF6oxOV7aSh2h
+	SYWNAEjZWLMFzERLptjQrHgb/KGTDaY86vh6rjirlQ==
+X-Google-Smtp-Source: APXvYqxNvahWxntDLEIKUszdbRJxBKjKuUGiDqlTVmO0biL4kYnJB9fAtU7+SaWNBxJZ6Rlsg/jaWbQJSirwoQgnbaI=
+X-Received: by 2002:aca:3b44:: with SMTP id i65mr4303906oia.70.1578075140713;
+ Fri, 03 Jan 2020 10:12:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20190826205829.GC13860@redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP
-X-Message-ID-Hash: MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP
-X-MailFrom: vgoyal@redhat.com
+References: <20190821175720.25901-1-vgoyal@redhat.com> <20190821175720.25901-3-vgoyal@redhat.com>
+ <20190826115316.GB21051@infradead.org> <20190826203326.GB13860@redhat.com>
+ <20190826205829.GC13860@redhat.com> <20200103141235.GA13350@redhat.com>
+In-Reply-To: <20200103141235.GA13350@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 3 Jan 2020 10:12:09 -0800
+Message-ID: <CAPcyv4hr-KXUAT_tVy-GuTOq1GvVGHKsHwAPih60wcW3DGmqRg@mail.gmail.com>
+Subject: Re: [PATCH 02/19] dax: Pass dax_dev to dax_writeback_mapping_range()
+To: Vivek Goyal <vgoyal@redhat.com>
+Message-ID-Hash: OVB432LKSV2GHU5QE2Q4ILZVILSYZ2XP
+X-Message-ID-Hash: OVB432LKSV2GHU5QE2Q4ILZVILSYZ2XP
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, Christoph Hellwig <hch@infradead.org>
+CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, virtio-fs@redhat.com, Miklos Szeredi <miklos@szeredi.hu>, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Christoph Hellwig <hch@infradead.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OVB432LKSV2GHU5QE2Q4ILZVILSYZ2XP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,167 +69,58 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 26, 2019 at 04:58:29PM -0400, Vivek Goyal wrote:
-> On Mon, Aug 26, 2019 at 04:33:26PM -0400, Vivek Goyal wrote:
-> > On Mon, Aug 26, 2019 at 04:53:16AM -0700, Christoph Hellwig wrote:
-> > > On Wed, Aug 21, 2019 at 01:57:03PM -0400, Vivek Goyal wrote:
-> > > > Right now dax_writeback_mapping_range() is passed a bdev and dax_dev
-> > > > is searched from that bdev name.
-> > > > 
-> > > > virtio-fs does not have a bdev. So pass in dax_dev also to
-> > > > dax_writeback_mapping_range(). If dax_dev is passed in, bdev is not
-> > > > used otherwise dax_dev is searched using bdev.
-> > > 
-> > > Please just pass in only the dax_device and get rid of the block device.
-> > > The callers should have one at hand easily, e.g. for XFS just call
-> > > xfs_find_daxdev_for_inode instead of xfs_find_bdev_for_inode.
-> > 
-> > Sure. Here is the updated patch.
-> > 
-> > This patch can probably go upstream independently. If you are fine with
-> > the patch, I can post it separately for inclusion.
-> 
-> Forgot to update function declaration in case of !CONFIG_FS_DAX. Here is
-> the updated patch.
-> 
-> Subject: dax: Pass dax_dev instead of bdev to dax_writeback_mapping_range()
-> 
-> As of now dax_writeback_mapping_range() takes "struct block_device" as a
-> parameter and dax_dev is searched from bdev name. This also involves taking
-> a fresh reference on dax_dev and putting that reference at the end of
-> function.
-> 
-> We are developing a new filesystem virtio-fs and using dax to access host
-> page cache directly. But there is no block device. IOW, we want to make
-> use of dax but want to get rid of this assumption that there is always
-> a block device associated with dax_dev.
-> 
-> So pass in "struct dax_device" as parameter instead of bdev.
-> 
-> ext2/ext4/xfs are current users and they already have a reference on
-> dax_device. So there is no need to take reference and drop reference to
-> dax_device on each call of this function.
-> 
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+On Fri, Jan 3, 2020 at 6:12 AM Vivek Goyal <vgoyal@redhat.com> wrote:
+>
+> On Mon, Aug 26, 2019 at 04:58:29PM -0400, Vivek Goyal wrote:
+> > On Mon, Aug 26, 2019 at 04:33:26PM -0400, Vivek Goyal wrote:
+> > > On Mon, Aug 26, 2019 at 04:53:16AM -0700, Christoph Hellwig wrote:
+> > > > On Wed, Aug 21, 2019 at 01:57:03PM -0400, Vivek Goyal wrote:
+> > > > > Right now dax_writeback_mapping_range() is passed a bdev and dax_dev
+> > > > > is searched from that bdev name.
+> > > > >
+> > > > > virtio-fs does not have a bdev. So pass in dax_dev also to
+> > > > > dax_writeback_mapping_range(). If dax_dev is passed in, bdev is not
+> > > > > used otherwise dax_dev is searched using bdev.
+> > > >
+> > > > Please just pass in only the dax_device and get rid of the block device.
+> > > > The callers should have one at hand easily, e.g. for XFS just call
+> > > > xfs_find_daxdev_for_inode instead of xfs_find_bdev_for_inode.
+> > >
+> > > Sure. Here is the updated patch.
+> > >
+> > > This patch can probably go upstream independently. If you are fine with
+> > > the patch, I can post it separately for inclusion.
+> >
+> > Forgot to update function declaration in case of !CONFIG_FS_DAX. Here is
+> > the updated patch.
+> >
+> > Subject: dax: Pass dax_dev instead of bdev to dax_writeback_mapping_range()
+> >
+> > As of now dax_writeback_mapping_range() takes "struct block_device" as a
+> > parameter and dax_dev is searched from bdev name. This also involves taking
+> > a fresh reference on dax_dev and putting that reference at the end of
+> > function.
+> >
+> > We are developing a new filesystem virtio-fs and using dax to access host
+> > page cache directly. But there is no block device. IOW, we want to make
+> > use of dax but want to get rid of this assumption that there is always
+> > a block device associated with dax_dev.
+> >
+> > So pass in "struct dax_device" as parameter instead of bdev.
+> >
+> > ext2/ext4/xfs are current users and they already have a reference on
+> > dax_device. So there is no need to take reference and drop reference to
+> > dax_device on each call of this function.
+> >
+> > Suggested-by: Christoph Hellwig <hch@infradead.org>
+> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+>
+> Hi Dan,
+>
+> Ping for this patch. I see christoph and Jan acked it. Can we take it. Not
+> sure how to get ack from ext4 developers.
 
-Hi Dan,
-
-Ping for this patch. I see christoph and Jan acked it. Can we take it. Not
-sure how to get ack from ext4 developers.
-
-Thanks
-Vivek
-
-> ---
->  fs/dax.c            |    8 +-------
->  fs/ext2/inode.c     |    5 +++--
->  fs/ext4/inode.c     |    2 +-
->  fs/xfs/xfs_aops.c   |    2 +-
->  include/linux/dax.h |    4 ++--
->  5 files changed, 8 insertions(+), 13 deletions(-)
-> 
-> Index: rhvgoyal-linux-fuse/fs/dax.c
-> ===================================================================
-> --- rhvgoyal-linux-fuse.orig/fs/dax.c	2019-08-26 16:45:26.093710196 -0400
-> +++ rhvgoyal-linux-fuse/fs/dax.c	2019-08-26 16:45:29.462710196 -0400
-> @@ -936,12 +936,11 @@ static int dax_writeback_one(struct xa_s
->   * on persistent storage prior to completion of the operation.
->   */
->  int dax_writeback_mapping_range(struct address_space *mapping,
-> -		struct block_device *bdev, struct writeback_control *wbc)
-> +		struct dax_device *dax_dev, struct writeback_control *wbc)
->  {
->  	XA_STATE(xas, &mapping->i_pages, wbc->range_start >> PAGE_SHIFT);
->  	struct inode *inode = mapping->host;
->  	pgoff_t end_index = wbc->range_end >> PAGE_SHIFT;
-> -	struct dax_device *dax_dev;
->  	void *entry;
->  	int ret = 0;
->  	unsigned int scanned = 0;
-> @@ -952,10 +951,6 @@ int dax_writeback_mapping_range(struct a
->  	if (!mapping->nrexceptional || wbc->sync_mode != WB_SYNC_ALL)
->  		return 0;
->  
-> -	dax_dev = dax_get_by_host(bdev->bd_disk->disk_name);
-> -	if (!dax_dev)
-> -		return -EIO;
-> -
->  	trace_dax_writeback_range(inode, xas.xa_index, end_index);
->  
->  	tag_pages_for_writeback(mapping, xas.xa_index, end_index);
-> @@ -976,7 +971,6 @@ int dax_writeback_mapping_range(struct a
->  		xas_lock_irq(&xas);
->  	}
->  	xas_unlock_irq(&xas);
-> -	put_dax(dax_dev);
->  	trace_dax_writeback_range_done(inode, xas.xa_index, end_index);
->  	return ret;
->  }
-> Index: rhvgoyal-linux-fuse/include/linux/dax.h
-> ===================================================================
-> --- rhvgoyal-linux-fuse.orig/include/linux/dax.h	2019-08-26 16:45:26.094710196 -0400
-> +++ rhvgoyal-linux-fuse/include/linux/dax.h	2019-08-26 16:46:08.101710196 -0400
-> @@ -141,7 +141,7 @@ static inline void fs_put_dax(struct dax
->  
->  struct dax_device *fs_dax_get_by_bdev(struct block_device *bdev);
->  int dax_writeback_mapping_range(struct address_space *mapping,
-> -		struct block_device *bdev, struct writeback_control *wbc);
-> +		struct dax_device *dax_dev, struct writeback_control *wbc);
->  
->  struct page *dax_layout_busy_page(struct address_space *mapping);
->  dax_entry_t dax_lock_page(struct page *page);
-> @@ -180,7 +180,7 @@ static inline struct page *dax_layout_bu
->  }
->  
->  static inline int dax_writeback_mapping_range(struct address_space *mapping,
-> -		struct block_device *bdev, struct writeback_control *wbc)
-> +		struct dax_device *dax_dev, struct writeback_control *wbc)
->  {
->  	return -EOPNOTSUPP;
->  }
-> Index: rhvgoyal-linux-fuse/fs/xfs/xfs_aops.c
-> ===================================================================
-> --- rhvgoyal-linux-fuse.orig/fs/xfs/xfs_aops.c	2019-08-26 16:45:26.094710196 -0400
-> +++ rhvgoyal-linux-fuse/fs/xfs/xfs_aops.c	2019-08-26 16:45:29.471710196 -0400
-> @@ -1120,7 +1120,7 @@ xfs_dax_writepages(
->  {
->  	xfs_iflags_clear(XFS_I(mapping->host), XFS_ITRUNCATED);
->  	return dax_writeback_mapping_range(mapping,
-> -			xfs_find_bdev_for_inode(mapping->host), wbc);
-> +			xfs_find_daxdev_for_inode(mapping->host), wbc);
->  }
->  
->  STATIC int
-> Index: rhvgoyal-linux-fuse/fs/ext4/inode.c
-> ===================================================================
-> --- rhvgoyal-linux-fuse.orig/fs/ext4/inode.c	2019-08-26 16:45:26.093710196 -0400
-> +++ rhvgoyal-linux-fuse/fs/ext4/inode.c	2019-08-26 16:45:29.475710196 -0400
-> @@ -2992,7 +2992,7 @@ static int ext4_dax_writepages(struct ad
->  	percpu_down_read(&sbi->s_journal_flag_rwsem);
->  	trace_ext4_writepages(inode, wbc);
->  
-> -	ret = dax_writeback_mapping_range(mapping, inode->i_sb->s_bdev, wbc);
-> +	ret = dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
->  	trace_ext4_writepages_result(inode, wbc, ret,
->  				     nr_to_write - wbc->nr_to_write);
->  	percpu_up_read(&sbi->s_journal_flag_rwsem);
-> Index: rhvgoyal-linux-fuse/fs/ext2/inode.c
-> ===================================================================
-> --- rhvgoyal-linux-fuse.orig/fs/ext2/inode.c	2019-08-26 16:45:26.093710196 -0400
-> +++ rhvgoyal-linux-fuse/fs/ext2/inode.c	2019-08-26 16:45:29.477710196 -0400
-> @@ -957,8 +957,9 @@ ext2_writepages(struct address_space *ma
->  static int
->  ext2_dax_writepages(struct address_space *mapping, struct writeback_control *wbc)
->  {
-> -	return dax_writeback_mapping_range(mapping,
-> -			mapping->host->i_sb->s_bdev, wbc);
-> +	struct ext2_sb_info *sbi = EXT2_SB(mapping->host->i_sb);
-> +
-> +	return dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
->  }
->  
->  const struct address_space_operations ext2_aops = {
+Jan counts for ext4, I just missed this. Now merged.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
