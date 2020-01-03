@@ -1,227 +1,234 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FD312F536
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jan 2020 09:14:39 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F230612F911
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jan 2020 15:12:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 835A510097F36;
-	Fri,  3 Jan 2020 00:17:56 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=97.93.171.158; helo=bbsoweb.bbso.njit.edu; envelope-from=jihs@bbso.njit.edu; receiver=<UNKNOWN> 
-Received: from bbsoweb.bbso.njit.edu (bbsoweb.bbso.njit.edu [97.93.171.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 17D7A10097F32;
+	Fri,  3 Jan 2020 06:16:11 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C397A10113693;
-	Fri,  3 Jan 2020 00:17:53 -0800 (PST)
-Received: from User (sr091.sweetesttimes.com [192.99.175.113] (may be forged))
-	(authenticated bits=0)
-	by bbsoweb.bbso.njit.edu (8.14.7/8.14.7) with ESMTP id 0038E8ss053739;
-	Fri, 3 Jan 2020 00:14:09 -0800
-Message-Id: <202001030814.0038E8ss053739@bbsoweb.bbso.njit.edu>
-From: "MRS HELEN GEORGE"<jihs@bbso.njit.edu>
-Subject: CAN YOU HELP ME OUT?
-Date: Fri, 3 Jan 2020 00:14:24 -0800
+	by ml01.01.org (Postfix) with ESMTPS id DD28510113693
+	for <linux-nvdimm@lists.01.org>; Fri,  3 Jan 2020 06:16:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1578060767;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGMg0pHtt4SVc4uhGk+7pIjVLdzZuIJr8uS5jcpc3MY=;
+	b=fAU1oio51SZavWUAwL8vE4GnstVQfJ++F+/ENj3Z0CgdKacEX0iI5MPIcCOZftqUgkY+Qf
+	GTW56ah/0qpy6kthvPTTYE1HEAGNUnQd059aBWcpcF0QemZfxBupy/3LyWVLKPOk1jcW88
+	Zrydrh7ZZzmnh5g199a+DlI2ORxxFzM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-385--FlagLmkMOm7LZJqTa9NNQ-1; Fri, 03 Jan 2020 09:12:43 -0500
+X-MC-Unique: -FlagLmkMOm7LZJqTa9NNQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 29D92801A0D;
+	Fri,  3 Jan 2020 14:12:42 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 11FFE386;
+	Fri,  3 Jan 2020 14:12:36 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 9A02E2202E9; Fri,  3 Jan 2020 09:12:35 -0500 (EST)
+Date: Fri, 3 Jan 2020 09:12:35 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 02/19] dax: Pass dax_dev to dax_writeback_mapping_range()
+Message-ID: <20200103141235.GA13350@redhat.com>
+References: <20190821175720.25901-1-vgoyal@redhat.com>
+ <20190821175720.25901-3-vgoyal@redhat.com>
+ <20190826115316.GB21051@infradead.org>
+ <20190826203326.GB13860@redhat.com>
+ <20190826205829.GC13860@redhat.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=35.2 required=1.1 tests=ADVANCE_FEE_5_NEW_MONEY,
-	ALL_TRUSTED,AXB_XMAILER_MIMEOLE_OL_024C2,FORGED_MUA_OUTLOOK,
-	FORGED_OUTLOOK_HTML,FORGED_OUTLOOK_TAGS,FREEMAIL_FORGED_REPLYTO,
-	FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,FROM_MISSPACED,
-	FROM_MISSP_EH_MATCH,FROM_MISSP_FREEMAIL,FROM_MISSP_MSFT,FROM_MISSP_USER,
-	FROM_MISSP_XPRIO,FSL_CTYPE_WIN1251,FSL_NEW_HELO_USER,HK_NAME_MR_MRS,HK_SCAM,
-	HTML_MESSAGE,LOTS_OF_MONEY,MIME_HTML_ONLY,MISSING_HEADERS,MISSING_MID,
-	MONEY_FRAUD_8,MONEY_FROM_MISSP,NSL_RCVD_FROM_USER,REPLYTO_WITHOUT_TO_CC,
-	SUBJ_ALL_CAPS,TO_NO_BRKTS_FROM_MSSP,UPPERCASE_75_100 autolearn=no
-	autolearn_force=no version=3.4.0
-X-Spam-Report: 
-	* -3.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  1.0 FSL_CTYPE_WIN1251 Content-Type only seen in 419 spam
-	*  0.4 NSL_RCVD_FROM_USER Received from User
-	*  0.5 SUBJ_ALL_CAPS Subject is all capitals
-	*  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in digit
-	*      (gessh01[at]gmail.com)
-	*  1.2 MISSING_HEADERS Missing To: header
-	*  0.0 HTML_MESSAGE BODY: HTML included in message
-	*  0.1 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
-	*  0.1 MISSING_MID Missing Message-Id: header
-	*  1.2 UPPERCASE_75_100 message body is 75-100% uppercase
-	*  0.1 FROM_MISSP_MSFT From misspaced + supposed Microsoft tool
-	*  2.0 FSL_NEW_HELO_USER Spam's using Helo and User
-	*  0.0 FORGED_OUTLOOK_HTML Outlook can't send HTML message only
-	*  2.2 FROM_MISSP_USER From misspaced, from "User"
-	*  0.6 FORGED_OUTLOOK_TAGS Outlook can't send HTML in this format
-	*  1.0 HK_NAME_MR_MRS No description available.
-	*  0.0 LOTS_OF_MONEY Huge... sums of money
-	*  2.0 HK_SCAM No description available.
-	*  2.1 FROM_MISSP_XPRIO Misspaced FROM + X-Priority
-	*  1.9 REPLYTO_WITHOUT_TO_CC No description available.
-	*  2.2 AXB_XMAILER_MIMEOLE_OL_024C2 Yet another X header trait
-	*  2.0 MONEY_FROM_MISSP Lots of money and misspaced From
-	*  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-	*  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain different
-	*      freemails
-	*  2.5 TO_NO_BRKTS_FROM_MSSP Multiple header formatting problems
-	*  1.3 FROM_MISSPACED From: missing whitespace
-	*  2.0 FROM_MISSP_EH_MATCH From misspaced, matches envelope
-	*  2.8 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
-	*  1.5 FROM_MISSP_FREEMAIL From misspaced + freemail provider
-	*  3.1 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-	*  0.5 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ***********************************
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	bbsoweb.bbso.njit.edu
-Message-ID-Hash: LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G
-X-Message-ID-Hash: LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G
-X-MailFrom: jihs@bbso.njit.edu
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <20190826205829.GC13860@redhat.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Message-ID-Hash: MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP
+X-Message-ID-Hash: MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, Christoph Hellwig <hch@infradead.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: gessh01@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MM2NLFCQQ3HUDL3ZWH6EGXXKH4C2TMBP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4816567352645024674=="
-
---===============4816567352645024674==
-Content-Type: text/html;
-	charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY bgcolor=#FFFFFF leftmargin=5 topmargin=5 rightmargin=5 bottommargin=5>
-<FONT size=2 color=#000000 face="Arial">
-<DIV>
-<B><I>GOOD DAY.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; URGENT - HELP ME DISTRIBUTE MY $12 MILLION TO HUMANITARIAN.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>THIS MAIL MIGHT COME TO YOU AS A SURPRISE AND THE TEMPTATION TO IGNORE</B></I></DIV>
-<DIV>
-<B><I>IT AS UNSERIOUS COULD COME INTO YOUR MIND BUT PLEASE</B></I></DIV>
-<DIV>
-<B><I>CONSIDER IT A DIVINE WISH AND ACCEPT IT WITH A DEEP SENSE OF HUMILITY.</B></I></DIV>
-<DIV>
-<B><I>I AM MRS HELEN GEORGE AND I AM A 61 YEARS OLD WOMAN.</B></I></DIV>
-<DIV>
-<B><I>I AM A SOUTH AFRICAN MARRIED TO A SIERRA LEONIA. I WAS THE</B></I></DIV>
-<DIV>
-<B><I>PRESIDENT/CEO OF OIL COMPANY INTERNATIONAL-AN OIL SERVICING COMPANY IN</B></I></DIV>
-<DIV>
-<B><I>JOHANNESBURG. I WAS ALSO MARRIED WITH NO CHILD.</B></I></DIV>
-<DIV>
-<B><I>MY HUSBAND DIED 3YEARS AGO. BEFORE THIS HAPPENED MY BUSINESS AND</B></I></DIV>
-<DIV>
-<B><I>CONCERN FOR MAKING MONEY WAS ALL I WAS LIVING FOR AND I NEVER REALLY</B></I></DIV>
-<DIV>
-<B><I>CARED ABOUT OTHER PEOPLE. BUT SINCE THE LOSS OF MY HUSBAND AND ALSO</B></I></DIV>
-<DIV>
-<B><I>BECAUSE I HAD HAVE NO CHILD TO CALL MY OWN, I HAVE FOUND A NEW DESIRE</B></I></DIV>
-<DIV>
-<B><I>TO ASSIST THE HELPLESS, I HAVE BEEN HELPING ORPHANS IN</B></I></DIV>
-<DIV>
-<B><I>ORPHANAGES/MOTHERLESS OMES/HUMANITARIANS. I HAVE DONATED SOME MONEY TO</B></I></DIV>
-<DIV>
-<B><I>ORPHANS IN SUDAN,ETHIOPIA, CAMEROON, SPAIN, AUSTRIA, GERMANY AND SOME</B></I></DIV>
-<DIV>
-<B><I>ASIAN COUNTRIES.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>IN SUMMARY:- I HAVE 12,000,000.00 (TWELVE MILLION) U. S. DOLLARS WHICH</B></I></DIV>
-<DIV>
-<B><I>I DEPOSITED IN A SECURITY COMPANY IN COTONOU BENIN REPUBLIC AS A</B></I></DIV>
-<DIV>
-<B><I>FAMILY TREASURE &amp; ARTEFACTS, PLEASE I WANT YOU TO NOTE THAT THE</B></I></DIV>
-<DIV>
-<B><I>SECURITY COMPANY DOES NOT KNOW THE REAL CONTENT TO BE MONEY AND I WANT</B></I></DIV>
-<DIV>
-<B><I>YOU TO ASSIST ME IN CLAIMING THE CONSIGNMENT &amp; DISTRIBUTING THE MONEY</B></I></DIV>
-<DIV>
-<B><I>TO CHARITY ORGANIZATIONS, I AGREE TO REWARD YOU WITH PART OF THE MONEY</B></I></DIV>
-<DIV>
-<B><I>FOR YOUR ASSISTANCE, KINDNESS AND PARTICIPATION IN THIS GODLY PROJECT.</B></I></DIV>
-<DIV>
-<B><I>BEFORE I BECAME ILL, I KEPT $12 MILLION IN A LONG-TERM DEPOSIT IN A</B></I></DIV>
-<DIV>
-<B><I>SECURITY COMPANY WHICH I DECLARED AS A FAMILY TREASURE ARTIFIARTS.I AM</B></I></DIV>
-<DIV>
-<B><I>IN THE HOSPITAL WHERE I HAVE BEEN UNDERGOING TREATMENT FOR OESOPHAGEAL</B></I></DIV>
-<DIV>
-<B><I>CANCER AND MY DOCTORS HAVE TOLD ME THAT I HAVE ONLY A FEW MONTHS TO</B></I></DIV>
-<DIV>
-<B><I>LIVE. IT IS MY LAST WISH TO SEE THIS MONEY DISTRIBUTED TO CHARITY</B></I></DIV>
-<DIV>
-<B><I>ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>BECAUSE MY RELATIVES AND FRIENDS HAVE PLUNDERED SO MUCH OF MY WEALTH</B></I></DIV>
-<DIV>
-<B><I>SINCE MY ILLNESS, I CANNOT LIVE WITH</B></I></DIV>
-<DIV>
-<B><I>THE AGONY OF ENTRUSTING THIS HUGE RESPONSIBILITY TO ANY OF THEM.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>PLEASE, I BEG YOU IN THE NAME OF GOD TO HELP ME COLLECT THE $12</B></I></DIV>
-<DIV>
-<B><I>MILLION WHICH I DEPOSIT WITH THE NAME OF MY LATE HUSBAND AS THE NEXT</B></I></DIV>
-<DIV>
-<B><I>OF KIN BECAUSE NOW DUE TO MY HEALTH THE SECURITY COMPANY IS DEMANDING</B></I></DIV>
-<DIV>
-<B><I>FOR A NEXT OF KIN IN OTHER TO GET THE MONEY TRANSFERRED IN OTHER TO</B></I></DIV>
-<DIV>
-<B><I>SEE THAT MY LAST WISH IS ACCOMPLISHED WHICH IS SHARING THE MONEY AMONG</B></I></DIV>
-<DIV>
-<B><I>CHARITY ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>YOU ARE AT LIBERTY TO USE YOUR DISCRETION TO DISTRIBUTE THE MONEY AND</B></I></DIV>
-<DIV>
-<B><I>FEEL FREE AS WELL TO REIMBURSE YOURSELF WHEN YOU HAVE THE MONEY FOR</B></I></DIV>
-<DIV>
-<B><I>ANY EXPENSES IN DISTRIBUTING THE MONEY TO CHARITY ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>I AM WILLING TO REWARD YOU FOR YOUR ASSISTANCE AND KINDNESS. KINDLY</B></I></DIV>
-<DIV>
-<B><I>EXPEDITE ACTION AND CONTACT ME VIA EMAIL AT mrshel@zoho.com FOR</B></I></DIV>
-<DIV>
-<B><I>MORE DETAILS.</B></I></DIV>
-<DIV>
-<B><I>MAY THE GOOD LORD BLESS YOU AND YOUR FAMILY?</B></I></DIV>
-<DIV>
-<B><I>BEST REGARDS.</B></I></DIV>
-<DIV>
-<B><I>MRS HELEN GEORGE&nbsp; </B></I></DIV>
-<DIV>
-<B><I>PLZ REPLLY TO MY PRIVATE EMAILBOX: mrshel@zoho.com</B></I></DIV>
-<DIV>
-&nbsp;</DIV>
-<DIV>
-&nbsp;</DIV>
-<DIV>
-&nbsp;</DIV>
-</FONT>
-</BODY></HTML>
---===============4816567352645024674==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Mon, Aug 26, 2019 at 04:58:29PM -0400, Vivek Goyal wrote:
+> On Mon, Aug 26, 2019 at 04:33:26PM -0400, Vivek Goyal wrote:
+> > On Mon, Aug 26, 2019 at 04:53:16AM -0700, Christoph Hellwig wrote:
+> > > On Wed, Aug 21, 2019 at 01:57:03PM -0400, Vivek Goyal wrote:
+> > > > Right now dax_writeback_mapping_range() is passed a bdev and dax_dev
+> > > > is searched from that bdev name.
+> > > > 
+> > > > virtio-fs does not have a bdev. So pass in dax_dev also to
+> > > > dax_writeback_mapping_range(). If dax_dev is passed in, bdev is not
+> > > > used otherwise dax_dev is searched using bdev.
+> > > 
+> > > Please just pass in only the dax_device and get rid of the block device.
+> > > The callers should have one at hand easily, e.g. for XFS just call
+> > > xfs_find_daxdev_for_inode instead of xfs_find_bdev_for_inode.
+> > 
+> > Sure. Here is the updated patch.
+> > 
+> > This patch can probably go upstream independently. If you are fine with
+> > the patch, I can post it separately for inclusion.
+> 
+> Forgot to update function declaration in case of !CONFIG_FS_DAX. Here is
+> the updated patch.
+> 
+> Subject: dax: Pass dax_dev instead of bdev to dax_writeback_mapping_range()
+> 
+> As of now dax_writeback_mapping_range() takes "struct block_device" as a
+> parameter and dax_dev is searched from bdev name. This also involves taking
+> a fresh reference on dax_dev and putting that reference at the end of
+> function.
+> 
+> We are developing a new filesystem virtio-fs and using dax to access host
+> page cache directly. But there is no block device. IOW, we want to make
+> use of dax but want to get rid of this assumption that there is always
+> a block device associated with dax_dev.
+> 
+> So pass in "struct dax_device" as parameter instead of bdev.
+> 
+> ext2/ext4/xfs are current users and they already have a reference on
+> dax_device. So there is no need to take reference and drop reference to
+> dax_device on each call of this function.
+> 
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+
+Hi Dan,
+
+Ping for this patch. I see christoph and Jan acked it. Can we take it. Not
+sure how to get ack from ext4 developers.
+
+Thanks
+Vivek
+
+> ---
+>  fs/dax.c            |    8 +-------
+>  fs/ext2/inode.c     |    5 +++--
+>  fs/ext4/inode.c     |    2 +-
+>  fs/xfs/xfs_aops.c   |    2 +-
+>  include/linux/dax.h |    4 ++--
+>  5 files changed, 8 insertions(+), 13 deletions(-)
+> 
+> Index: rhvgoyal-linux-fuse/fs/dax.c
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/fs/dax.c	2019-08-26 16:45:26.093710196 -0400
+> +++ rhvgoyal-linux-fuse/fs/dax.c	2019-08-26 16:45:29.462710196 -0400
+> @@ -936,12 +936,11 @@ static int dax_writeback_one(struct xa_s
+>   * on persistent storage prior to completion of the operation.
+>   */
+>  int dax_writeback_mapping_range(struct address_space *mapping,
+> -		struct block_device *bdev, struct writeback_control *wbc)
+> +		struct dax_device *dax_dev, struct writeback_control *wbc)
+>  {
+>  	XA_STATE(xas, &mapping->i_pages, wbc->range_start >> PAGE_SHIFT);
+>  	struct inode *inode = mapping->host;
+>  	pgoff_t end_index = wbc->range_end >> PAGE_SHIFT;
+> -	struct dax_device *dax_dev;
+>  	void *entry;
+>  	int ret = 0;
+>  	unsigned int scanned = 0;
+> @@ -952,10 +951,6 @@ int dax_writeback_mapping_range(struct a
+>  	if (!mapping->nrexceptional || wbc->sync_mode != WB_SYNC_ALL)
+>  		return 0;
+>  
+> -	dax_dev = dax_get_by_host(bdev->bd_disk->disk_name);
+> -	if (!dax_dev)
+> -		return -EIO;
+> -
+>  	trace_dax_writeback_range(inode, xas.xa_index, end_index);
+>  
+>  	tag_pages_for_writeback(mapping, xas.xa_index, end_index);
+> @@ -976,7 +971,6 @@ int dax_writeback_mapping_range(struct a
+>  		xas_lock_irq(&xas);
+>  	}
+>  	xas_unlock_irq(&xas);
+> -	put_dax(dax_dev);
+>  	trace_dax_writeback_range_done(inode, xas.xa_index, end_index);
+>  	return ret;
+>  }
+> Index: rhvgoyal-linux-fuse/include/linux/dax.h
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/include/linux/dax.h	2019-08-26 16:45:26.094710196 -0400
+> +++ rhvgoyal-linux-fuse/include/linux/dax.h	2019-08-26 16:46:08.101710196 -0400
+> @@ -141,7 +141,7 @@ static inline void fs_put_dax(struct dax
+>  
+>  struct dax_device *fs_dax_get_by_bdev(struct block_device *bdev);
+>  int dax_writeback_mapping_range(struct address_space *mapping,
+> -		struct block_device *bdev, struct writeback_control *wbc);
+> +		struct dax_device *dax_dev, struct writeback_control *wbc);
+>  
+>  struct page *dax_layout_busy_page(struct address_space *mapping);
+>  dax_entry_t dax_lock_page(struct page *page);
+> @@ -180,7 +180,7 @@ static inline struct page *dax_layout_bu
+>  }
+>  
+>  static inline int dax_writeback_mapping_range(struct address_space *mapping,
+> -		struct block_device *bdev, struct writeback_control *wbc)
+> +		struct dax_device *dax_dev, struct writeback_control *wbc)
+>  {
+>  	return -EOPNOTSUPP;
+>  }
+> Index: rhvgoyal-linux-fuse/fs/xfs/xfs_aops.c
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/fs/xfs/xfs_aops.c	2019-08-26 16:45:26.094710196 -0400
+> +++ rhvgoyal-linux-fuse/fs/xfs/xfs_aops.c	2019-08-26 16:45:29.471710196 -0400
+> @@ -1120,7 +1120,7 @@ xfs_dax_writepages(
+>  {
+>  	xfs_iflags_clear(XFS_I(mapping->host), XFS_ITRUNCATED);
+>  	return dax_writeback_mapping_range(mapping,
+> -			xfs_find_bdev_for_inode(mapping->host), wbc);
+> +			xfs_find_daxdev_for_inode(mapping->host), wbc);
+>  }
+>  
+>  STATIC int
+> Index: rhvgoyal-linux-fuse/fs/ext4/inode.c
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/fs/ext4/inode.c	2019-08-26 16:45:26.093710196 -0400
+> +++ rhvgoyal-linux-fuse/fs/ext4/inode.c	2019-08-26 16:45:29.475710196 -0400
+> @@ -2992,7 +2992,7 @@ static int ext4_dax_writepages(struct ad
+>  	percpu_down_read(&sbi->s_journal_flag_rwsem);
+>  	trace_ext4_writepages(inode, wbc);
+>  
+> -	ret = dax_writeback_mapping_range(mapping, inode->i_sb->s_bdev, wbc);
+> +	ret = dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
+>  	trace_ext4_writepages_result(inode, wbc, ret,
+>  				     nr_to_write - wbc->nr_to_write);
+>  	percpu_up_read(&sbi->s_journal_flag_rwsem);
+> Index: rhvgoyal-linux-fuse/fs/ext2/inode.c
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/fs/ext2/inode.c	2019-08-26 16:45:26.093710196 -0400
+> +++ rhvgoyal-linux-fuse/fs/ext2/inode.c	2019-08-26 16:45:29.477710196 -0400
+> @@ -957,8 +957,9 @@ ext2_writepages(struct address_space *ma
+>  static int
+>  ext2_dax_writepages(struct address_space *mapping, struct writeback_control *wbc)
+>  {
+> -	return dax_writeback_mapping_range(mapping,
+> -			mapping->host->i_sb->s_bdev, wbc);
+> +	struct ext2_sb_info *sbi = EXT2_SB(mapping->host->i_sb);
+> +
+> +	return dax_writeback_mapping_range(mapping, sbi->s_daxdev, wbc);
+>  }
+>  
+>  const struct address_space_operations ext2_aops = {
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4816567352645024674==--
