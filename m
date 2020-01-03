@@ -2,135 +2,219 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AF5F12EA84
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 Jan 2020 20:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FD312F536
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jan 2020 09:14:39 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BA2D810097DED;
-	Thu,  2 Jan 2020 11:34:29 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=123.136.117.20; helo=[123.136.117.20]; envelope-from=k-sato@kirosa.jp; receiver=<UNKNOWN> 
-Received: from [123.136.117.20] (unknown [123.136.117.20])
-	by ml01.01.org (Postfix) with ESMTP id AC13F10097DEC
-	for <linux-nvdimm@lists.01.org>; Thu,  2 Jan 2020 11:34:25 -0800 (PST)
-From: <k-sato@kirosa.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?SMOtZ2ggZMOlxYhnxJvFmS4gWcO4dcWZIMOlY2PDuHXFiHQgd8OlcyDDpXR0w6Vja8SbZC4=?=
-Date: 3 Jan 2020 10:24:05 +0700
-Message-ID: <002101d5c1e6$04c48155$3ca9e899$@kirosa.jp>
+	by ml01.01.org (Postfix) with ESMTP id 835A510097F36;
+	Fri,  3 Jan 2020 00:17:56 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=97.93.171.158; helo=bbsoweb.bbso.njit.edu; envelope-from=jihs@bbso.njit.edu; receiver=<UNKNOWN> 
+Received: from bbsoweb.bbso.njit.edu (bbsoweb.bbso.njit.edu [97.93.171.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id C397A10113693;
+	Fri,  3 Jan 2020 00:17:53 -0800 (PST)
+Received: from User (sr091.sweetesttimes.com [192.99.175.113] (may be forged))
+	(authenticated bits=0)
+	by bbsoweb.bbso.njit.edu (8.14.7/8.14.7) with ESMTP id 0038E8ss053739;
+	Fri, 3 Jan 2020 00:14:09 -0800
+Message-Id: <202001030814.0038E8ss053739@bbsoweb.bbso.njit.edu>
+From: "MRS HELEN GEORGE"<jihs@bbso.njit.edu>
+Subject: CAN YOU HELP ME OUT?
+Date: Fri, 3 Jan 2020 00:14:24 -0800
 MIME-Version: 1.0
-X-Mailer: Microsoft Office Outlook 11
-Thread-Index: Acqgo9x9q3p24n4fqgo9x9q3p24n4f==
-X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
-Message-ID-Hash: 6L5C2TYPJLMWUN2SH5BUPHZF7XYRO62M
-X-Message-ID-Hash: 6L5C2TYPJLMWUN2SH5BUPHZF7XYRO62M
-X-MailFrom: k-sato@kirosa.jp
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=35.2 required=1.1 tests=ADVANCE_FEE_5_NEW_MONEY,
+	ALL_TRUSTED,AXB_XMAILER_MIMEOLE_OL_024C2,FORGED_MUA_OUTLOOK,
+	FORGED_OUTLOOK_HTML,FORGED_OUTLOOK_TAGS,FREEMAIL_FORGED_REPLYTO,
+	FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,FROM_MISSPACED,
+	FROM_MISSP_EH_MATCH,FROM_MISSP_FREEMAIL,FROM_MISSP_MSFT,FROM_MISSP_USER,
+	FROM_MISSP_XPRIO,FSL_CTYPE_WIN1251,FSL_NEW_HELO_USER,HK_NAME_MR_MRS,HK_SCAM,
+	HTML_MESSAGE,LOTS_OF_MONEY,MIME_HTML_ONLY,MISSING_HEADERS,MISSING_MID,
+	MONEY_FRAUD_8,MONEY_FROM_MISSP,NSL_RCVD_FROM_USER,REPLYTO_WITHOUT_TO_CC,
+	SUBJ_ALL_CAPS,TO_NO_BRKTS_FROM_MSSP,UPPERCASE_75_100 autolearn=no
+	autolearn_force=no version=3.4.0
+X-Spam-Report: 
+	* -3.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  1.0 FSL_CTYPE_WIN1251 Content-Type only seen in 419 spam
+	*  0.4 NSL_RCVD_FROM_USER Received from User
+	*  0.5 SUBJ_ALL_CAPS Subject is all capitals
+	*  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in digit
+	*      (gessh01[at]gmail.com)
+	*  1.2 MISSING_HEADERS Missing To: header
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.1 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
+	*  0.1 MISSING_MID Missing Message-Id: header
+	*  1.2 UPPERCASE_75_100 message body is 75-100% uppercase
+	*  0.1 FROM_MISSP_MSFT From misspaced + supposed Microsoft tool
+	*  2.0 FSL_NEW_HELO_USER Spam's using Helo and User
+	*  0.0 FORGED_OUTLOOK_HTML Outlook can't send HTML message only
+	*  2.2 FROM_MISSP_USER From misspaced, from "User"
+	*  0.6 FORGED_OUTLOOK_TAGS Outlook can't send HTML in this format
+	*  1.0 HK_NAME_MR_MRS No description available.
+	*  0.0 LOTS_OF_MONEY Huge... sums of money
+	*  2.0 HK_SCAM No description available.
+	*  2.1 FROM_MISSP_XPRIO Misspaced FROM + X-Priority
+	*  1.9 REPLYTO_WITHOUT_TO_CC No description available.
+	*  2.2 AXB_XMAILER_MIMEOLE_OL_024C2 Yet another X header trait
+	*  2.0 MONEY_FROM_MISSP Lots of money and misspaced From
+	*  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+	*  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain different
+	*      freemails
+	*  2.5 TO_NO_BRKTS_FROM_MSSP Multiple header formatting problems
+	*  1.3 FROM_MISSPACED From: missing whitespace
+	*  2.0 FROM_MISSP_EH_MATCH From misspaced, matches envelope
+	*  2.8 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
+	*  1.5 FROM_MISSP_FREEMAIL From misspaced + freemail provider
+	*  3.1 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+	*  0.5 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ***********************************
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+	bbsoweb.bbso.njit.edu
+Message-ID-Hash: LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G
+X-Message-ID-Hash: LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G
+X-MailFrom: jihs@bbso.njit.edu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: gessh01@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6L5C2TYPJLMWUN2SH5BUPHZF7XYRO62M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LFYVLM2JLAFAL2AH2FJP44MMBTQHOH7G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0642606631906593795=="
+Content-Type: multipart/mixed; boundary="===============4816567352645024674=="
 
-This is a multi-part message in MIME format.
+--===============4816567352645024674==
+Content-Type: text/html;
+	charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
 
---===============0642606631906593795==
-Content-Type: text/plain;
-	charset="cp-850"
-Content-Transfer-Encoding: quoted-printable
-
-H&#283;ll&#248;!
-
-&#205; &#229;m &#229; h&#229;cker wh&#248; h&#229;s &#229;ccess t&#248; =
-y&#248;&#252;r &#248;p&#283;r&#229;t&#237;ng syst&#283;m.
-&#205; &#229;ls&#248; h&#229;v&#283; full &#229;cc&#283;ss t&#248; =
-y&#248;&#252;r &#229;cc&#248;&#252;&#328;t.
-
-&#205;'v&#283; b&#283;&#283;n w&#229;tch&#237;ng y&#248;&#252; f&#248;r =
-&#229; f&#283;w m&#248;nths n&#248;w.
-Th&#283; f&#229;ct &#237;s th&#229;t y&#248;&#252; w&#283;r&#283; =
-&#237;nf&#283;ct&#283;d w&#237;th m&#229;lw&#229;r&#283; =
-thr&#248;&#252;gh &#229;n &#229;d&#252;lt s&#237;t&#283; th&#229;t =
-y&#248;&#252; v&#237;s&#237;t&#283;d.
-
-&#205;f y&#248;&#252; &#229;r&#283; n&#248;t =
-f&#229;m&#237;l&#237;&#229;r w&#237;th th&#237;s, &#205; w&#237;ll =
-&#283;xpl&#229;&#237;n.
-Tr&#248;j&#229;n V&#237;r&#252;s g&#237;v&#283;s m&#283; f&#252;ll =
-&#229;cc&#283;ss &#229;nd c&#248;ntr&#248;l &#248;v&#283;r &#229; =
-c&#248;mp&#252;t&#283;r &#248;r &#248;th&#283;r d&#283;v&#237;c&#283;.
-Th&#237;s m&#283;&#229;ns th&#229;t &#205; c&#229;n s&#283;&#283; =
-&#283;v&#283;ryth&#237;ng &#248;n y&#248;&#252;r scr&#283;&#283;n, =
-t&#252;rn &#248;n th&#283; c&#229;m&#283;r&#229; &#229;nd =
-m&#237;cr&#248;ph&#248;n&#283;, b&#252;t y&#248;&#252; d&#248; n&#248;t =
-kn&#248;w &#229;b&#248;&#252;t &#237;t.
-
-&#205; &#229;ls&#248; h&#229;v&#283; &#229;cc&#283;ss t&#248; &#229;ll =
-y&#248;&#252;r c&#248;nt&#229;cts &#229;nd &#229;ll y&#248;&#252;r =
-c&#248;rr&#283;sp&#248;nd&#283;nc&#283;.
-
-Why y&#248;&#252;r &#229;nt&#237;v&#237;r&#252;s d&#237;d n&#248;t =
-det&#283;ct m&#229;lw&#229;r&#283;?
-&#197;nsw&#283;r: My m&#229;lw&#229;r&#283; &#252;s&#283;s th&#283; =
-dr&#237;v&#283;r, &#205; &#252;pd&#229;t&#283; &#237;ts =
-s&#237;gn&#229;t&#252;r&#283;s &#283;v&#283;ry 4 h&#248;&#252;rs s&#248; =
-th&#229;t y&#248;&#252;r &#229;nt&#237;v&#237;r&#252;s &#237;s =
-s&#237;l&#283;nt.
-
-&#205; m&#229;d&#283; &#229; v&#237;d&#283;&#248; sh&#248;w&#237;ng =
-h&#248;w y&#248;&#252; s&#229;t&#237;sfy y&#248;&#252;rs&#283;lf &#237;n =
-th&#283; l&#283;ft h&#229;lf &#248;f th&#283; scr&#283;&#283;n, &#229;nd =
-&#237;n th&#283; r&#237;ght h&#229;lf y&#248;&#252; s&#283;e th&#283; =
-v&#237;d&#283;&#248; th&#229;t y&#248;&#252; w&#229;tch&#283;d. =
-W&#237;th &#248;n&#283; cl&#237;ck &#248;f th&#283; =
-m&#248;&#252;s&#283;,
-&#205; c&#229;n s&#283;nd th&#237;s v&#237;d&#283;&#248; t&#248; =
-&#229;ll y&#248;&#252;r &#283;m&#229;&#237;ls &#229;nd =
-c&#248;nt&#229;cts &#248;n s&#248;c&#237;&#229;l n&#283;tw&#248;rks. =
-&#205; c&#229;n &#229;ls&#248; p&#248;st &#229;cc&#283;ss t&#248; =
-&#229;ll y&#248;&#252;r &#283;-m&#229;&#237;l =
-c&#248;rr&#283;sp&#248;nd&#283;nc&#283; &#229;nd =
-m&#283;ss&#283;ng&#283;rs th&#229;t y&#248;&#252; &#252;s&#283;.
-
-&#205;f y&#248;&#252; w&#229;nt t&#248; pr&#283;v&#283;nt th&#237;s, =
-tr&#229;nsf&#283;r th&#283; &#229;m&#248;&#252;nt &#248;f $1500(USD) =
-t&#248; my b&#237;tc&#248;&#237;n &#229;ddr&#283;ss (&#237;f =
-y&#248;&#252; d&#248; n&#248;t kn&#248;w h&#248;w t&#248; d&#248; =
-th&#237;s, wr&#237;t&#283; t&#248; G&#248;&#248;gl&#283;: 'B&#252;y =
-B&#237;tc&#248;&#237;n').
-
-My b&#237;tc&#248;&#237;n &#229;ddr&#283;ss (B&#356;C W&#229;ll&#283;t) =
-&#237;s: 19A5rdrxb4MREtyGWo944uRoNDBxBPNNG8
-
-&#197;ft&#283;r r&#283;c&#283;&#237;v&#237;ng th&#283; =
-p&#229;ym&#283;nt, &#205; w&#237;ll d&#283;l&#283;t&#283; th&#283; =
-v&#237;d&#283;&#248; &#229;nd y&#248;&#252; w&#237;ll n&#283;v&#283;r =
-h&#283;&#229;r m&#283; &#229;g&#229;&#237;n.
-&#205; g&#237;v&#283; y&#248;&#252; 48 h&#248;&#252;rs t&#248; p&#229;y.
-&#205; h&#229;v&#283; &#229; n&#248;t&#237;c&#283; =
-r&#283;&#229;d&#237;ng th&#237;s l&#283;tt&#283;r, &#229;nd th&#283; =
-t&#237;m&#283;r w&#237;ll w&#248;rk wh&#283;n y&#248;&#252; =
-s&#283;&#283; th&#237;s l&#283;tt&#283;r.
-F&#237;l&#237;ng &#229; c&#248;mpl&#229;&#237;nt =
-s&#248;m&#283;wh&#283;r&#283; d&#248;&#283;s n&#248;t m&#229;k&#283; =
-s&#283;ns&#283; b&#283;c&#229;&#252;s&#283; th&#237;s =
-&#283;m&#229;&#237;l c&#229;nn&#248;t b&#283; tr&#229;ck&#283;d =
-l&#237;k&#283; my b&#237;tc&#248;&#237;n &#229;ddr&#283;ss.
-&#205; d&#248; n&#248;t m&#229;k&#283; &#229;ny m&#237;st&#229;k&#283;s.
-
-&#205;f &#205; f&#237;nd th&#229;t y&#248;&#252; h&#229;v&#283; =
-sh&#229;r&#283;d th&#237;s m&#283;ss&#229;g&#283; w&#237;th =
-s&#248;m&#283;&#248;n&#283; &#283;lse, th&#283; v&#237;d&#283;&#248; =
-w&#237;ll b&#283; &#237;mm&#283;d&#237;&#229;t&#283;ly =
-d&#237;str&#237;b&#252;t&#283;d.
-
-B&#283;st r&#283;g&#229;rds!
---===============0642606631906593795==
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY bgcolor=#FFFFFF leftmargin=5 topmargin=5 rightmargin=5 bottommargin=5>
+<FONT size=2 color=#000000 face="Arial">
+<DIV>
+<B><I>GOOD DAY.</B></I></DIV>
+<DIV>
+<B><I>&nbsp;</B></I></DIV>
+<DIV>
+<B><I>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; URGENT - HELP ME DISTRIBUTE MY $12 MILLION TO HUMANITARIAN.</B></I></DIV>
+<DIV>
+<B><I>&nbsp;</B></I></DIV>
+<DIV>
+<B><I>THIS MAIL MIGHT COME TO YOU AS A SURPRISE AND THE TEMPTATION TO IGNORE</B></I></DIV>
+<DIV>
+<B><I>IT AS UNSERIOUS COULD COME INTO YOUR MIND BUT PLEASE</B></I></DIV>
+<DIV>
+<B><I>CONSIDER IT A DIVINE WISH AND ACCEPT IT WITH A DEEP SENSE OF HUMILITY.</B></I></DIV>
+<DIV>
+<B><I>I AM MRS HELEN GEORGE AND I AM A 61 YEARS OLD WOMAN.</B></I></DIV>
+<DIV>
+<B><I>I AM A SOUTH AFRICAN MARRIED TO A SIERRA LEONIA. I WAS THE</B></I></DIV>
+<DIV>
+<B><I>PRESIDENT/CEO OF OIL COMPANY INTERNATIONAL-AN OIL SERVICING COMPANY IN</B></I></DIV>
+<DIV>
+<B><I>JOHANNESBURG. I WAS ALSO MARRIED WITH NO CHILD.</B></I></DIV>
+<DIV>
+<B><I>MY HUSBAND DIED 3YEARS AGO. BEFORE THIS HAPPENED MY BUSINESS AND</B></I></DIV>
+<DIV>
+<B><I>CONCERN FOR MAKING MONEY WAS ALL I WAS LIVING FOR AND I NEVER REALLY</B></I></DIV>
+<DIV>
+<B><I>CARED ABOUT OTHER PEOPLE. BUT SINCE THE LOSS OF MY HUSBAND AND ALSO</B></I></DIV>
+<DIV>
+<B><I>BECAUSE I HAD HAVE NO CHILD TO CALL MY OWN, I HAVE FOUND A NEW DESIRE</B></I></DIV>
+<DIV>
+<B><I>TO ASSIST THE HELPLESS, I HAVE BEEN HELPING ORPHANS IN</B></I></DIV>
+<DIV>
+<B><I>ORPHANAGES/MOTHERLESS OMES/HUMANITARIANS. I HAVE DONATED SOME MONEY TO</B></I></DIV>
+<DIV>
+<B><I>ORPHANS IN SUDAN,ETHIOPIA, CAMEROON, SPAIN, AUSTRIA, GERMANY AND SOME</B></I></DIV>
+<DIV>
+<B><I>ASIAN COUNTRIES.</B></I></DIV>
+<DIV>
+<B><I>&nbsp;</B></I></DIV>
+<DIV>
+<B><I>IN SUMMARY:- I HAVE 12,000,000.00 (TWELVE MILLION) U. S. DOLLARS WHICH</B></I></DIV>
+<DIV>
+<B><I>I DEPOSITED IN A SECURITY COMPANY IN COTONOU BENIN REPUBLIC AS A</B></I></DIV>
+<DIV>
+<B><I>FAMILY TREASURE &amp; ARTEFACTS, PLEASE I WANT YOU TO NOTE THAT THE</B></I></DIV>
+<DIV>
+<B><I>SECURITY COMPANY DOES NOT KNOW THE REAL CONTENT TO BE MONEY AND I WANT</B></I></DIV>
+<DIV>
+<B><I>YOU TO ASSIST ME IN CLAIMING THE CONSIGNMENT &amp; DISTRIBUTING THE MONEY</B></I></DIV>
+<DIV>
+<B><I>TO CHARITY ORGANIZATIONS, I AGREE TO REWARD YOU WITH PART OF THE MONEY</B></I></DIV>
+<DIV>
+<B><I>FOR YOUR ASSISTANCE, KINDNESS AND PARTICIPATION IN THIS GODLY PROJECT.</B></I></DIV>
+<DIV>
+<B><I>BEFORE I BECAME ILL, I KEPT $12 MILLION IN A LONG-TERM DEPOSIT IN A</B></I></DIV>
+<DIV>
+<B><I>SECURITY COMPANY WHICH I DECLARED AS A FAMILY TREASURE ARTIFIARTS.I AM</B></I></DIV>
+<DIV>
+<B><I>IN THE HOSPITAL WHERE I HAVE BEEN UNDERGOING TREATMENT FOR OESOPHAGEAL</B></I></DIV>
+<DIV>
+<B><I>CANCER AND MY DOCTORS HAVE TOLD ME THAT I HAVE ONLY A FEW MONTHS TO</B></I></DIV>
+<DIV>
+<B><I>LIVE. IT IS MY LAST WISH TO SEE THIS MONEY DISTRIBUTED TO CHARITY</B></I></DIV>
+<DIV>
+<B><I>ORGANIZATIONS.</B></I></DIV>
+<DIV>
+<B><I>BECAUSE MY RELATIVES AND FRIENDS HAVE PLUNDERED SO MUCH OF MY WEALTH</B></I></DIV>
+<DIV>
+<B><I>SINCE MY ILLNESS, I CANNOT LIVE WITH</B></I></DIV>
+<DIV>
+<B><I>THE AGONY OF ENTRUSTING THIS HUGE RESPONSIBILITY TO ANY OF THEM.</B></I></DIV>
+<DIV>
+<B><I>&nbsp;</B></I></DIV>
+<DIV>
+<B><I>PLEASE, I BEG YOU IN THE NAME OF GOD TO HELP ME COLLECT THE $12</B></I></DIV>
+<DIV>
+<B><I>MILLION WHICH I DEPOSIT WITH THE NAME OF MY LATE HUSBAND AS THE NEXT</B></I></DIV>
+<DIV>
+<B><I>OF KIN BECAUSE NOW DUE TO MY HEALTH THE SECURITY COMPANY IS DEMANDING</B></I></DIV>
+<DIV>
+<B><I>FOR A NEXT OF KIN IN OTHER TO GET THE MONEY TRANSFERRED IN OTHER TO</B></I></DIV>
+<DIV>
+<B><I>SEE THAT MY LAST WISH IS ACCOMPLISHED WHICH IS SHARING THE MONEY AMONG</B></I></DIV>
+<DIV>
+<B><I>CHARITY ORGANIZATIONS.</B></I></DIV>
+<DIV>
+<B><I>YOU ARE AT LIBERTY TO USE YOUR DISCRETION TO DISTRIBUTE THE MONEY AND</B></I></DIV>
+<DIV>
+<B><I>FEEL FREE AS WELL TO REIMBURSE YOURSELF WHEN YOU HAVE THE MONEY FOR</B></I></DIV>
+<DIV>
+<B><I>ANY EXPENSES IN DISTRIBUTING THE MONEY TO CHARITY ORGANIZATIONS.</B></I></DIV>
+<DIV>
+<B><I>I AM WILLING TO REWARD YOU FOR YOUR ASSISTANCE AND KINDNESS. KINDLY</B></I></DIV>
+<DIV>
+<B><I>EXPEDITE ACTION AND CONTACT ME VIA EMAIL AT mrshel@zoho.com FOR</B></I></DIV>
+<DIV>
+<B><I>MORE DETAILS.</B></I></DIV>
+<DIV>
+<B><I>MAY THE GOOD LORD BLESS YOU AND YOUR FAMILY?</B></I></DIV>
+<DIV>
+<B><I>BEST REGARDS.</B></I></DIV>
+<DIV>
+<B><I>MRS HELEN GEORGE&nbsp; </B></I></DIV>
+<DIV>
+<B><I>PLZ REPLLY TO MY PRIVATE EMAILBOX: mrshel@zoho.com</B></I></DIV>
+<DIV>
+&nbsp;</DIV>
+<DIV>
+&nbsp;</DIV>
+<DIV>
+&nbsp;</DIV>
+</FONT>
+</BODY></HTML>
+--===============4816567352645024674==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -140,5 +224,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============0642606631906593795==--
-
+--===============4816567352645024674==--
