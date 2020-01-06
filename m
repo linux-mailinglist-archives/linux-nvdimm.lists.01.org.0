@@ -1,227 +1,121 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295871303E7
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Jan 2020 19:46:15 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE57131748
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Jan 2020 19:11:31 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B3DE910097F35;
-	Sat,  4 Jan 2020 10:49:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=97.93.171.158; helo=bbsoweb.bbso.njit.edu; envelope-from=jihs@bbso.njit.edu; receiver=<UNKNOWN> 
-Received: from bbsoweb.bbso.njit.edu (bbsoweb.bbso.njit.edu [97.93.171.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 44FD310097DE8;
+	Mon,  6 Jan 2020 10:14:48 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2472D10097F34
-	for <linux-nvdimm@lists.01.org>; Sat,  4 Jan 2020 10:49:31 -0800 (PST)
-Received: from User (sr091.sweetesttimes.com [192.99.175.113] (may be forged))
-	(authenticated bits=0)
-	by bbsoweb.bbso.njit.edu (8.14.7/8.14.7) with ESMTP id 004IjfjE161122;
-	Sat, 4 Jan 2020 10:45:42 -0800
-Message-Id: <202001041845.004IjfjE161122@bbsoweb.bbso.njit.edu>
-From: "MRS HELEN GEORGE"<jihs@bbso.njit.edu>
-Subject: CAN YOU HELP ME OUT?
-Date: Sat, 4 Jan 2020 10:45:58 -0800
+	by ml01.01.org (Postfix) with ESMTPS id BB60310097F38
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jan 2020 10:14:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1578334284;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=CRysVtjZRGC/Wj52fo19nEafOFpuDwYw8PVTvgf5qKY=;
+	b=VYkOp/zJEgUYY5dTpJ0qLctnQ90oC4VcEbWmBUGK3+KwQYEgUk4TOG7tLHnRUIY63HfnHd
+	CCeQu26pxtVHGdkN9yhSLxOTNTFY2NSAF2PX87XZTLLQmNXOerNEK9sJR2c4+kv6Y0YBdR
+	NqYHitmotmNjk31V4kZKjSqWZu6NfC8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-148-6eHQhMmfNfywzX5U9a-rPg-1; Mon, 06 Jan 2020 13:11:19 -0500
+X-MC-Unique: 6eHQhMmfNfywzX5U9a-rPg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3417F18557E5;
+	Mon,  6 Jan 2020 18:11:18 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0F3907C3A3;
+	Mon,  6 Jan 2020 18:11:18 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 8F2312202E9; Mon,  6 Jan 2020 13:11:17 -0500 (EST)
+Date: Mon, 6 Jan 2020 13:11:17 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: linux-nvdimm@lists.01.org, dan.j.williams@intel.com
+Subject: dax: Get rid of fs_dax_get_by_host() helper
+Message-ID: <20200106181117.GA16248@redhat.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=38.7 required=1.1 tests=ADVANCE_FEE_5_NEW_MONEY,
-	ALL_TRUSTED,AXB_XMAILER_MIMEOLE_OL_024C2,FORGED_MUA_OUTLOOK,
-	FORGED_OUTLOOK_HTML,FORGED_OUTLOOK_TAGS,FREEMAIL_FORGED_REPLYTO,
-	FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,FROM_MISSPACED,
-	FROM_MISSP_EH_MATCH,FROM_MISSP_FREEMAIL,FROM_MISSP_MSFT,FROM_MISSP_USER,
-	FROM_MISSP_XPRIO,FSL_CTYPE_WIN1251,FSL_NEW_HELO_USER,HK_NAME_MR_MRS,HK_SCAM,
-	HTML_MESSAGE,LOTS_OF_MONEY,MIME_HTML_ONLY,MISSING_HEADERS,MISSING_MID,
-	MONEY_FRAUD_8,MONEY_FROM_MISSP,NSL_RCVD_FROM_USER,REPLYTO_WITHOUT_TO_CC,
-	SUBJ_ALL_CAPS,TO_NO_BRKTS_FROM_MSSP,UPPERCASE_75_100 autolearn=no
-	autolearn_force=no version=3.4.0
-X-Spam-Report: 
-	* -3.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  2.5 FSL_CTYPE_WIN1251 Content-Type only seen in 419 spam
-	*  1.8 NSL_RCVD_FROM_USER Received from User
-	*  0.5 SUBJ_ALL_CAPS Subject is all capitals
-	*  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in digit
-	*      (gessh01[at]gmail.com)
-	*  1.2 MISSING_HEADERS Missing To: header
-	*  0.0 HTML_MESSAGE BODY: HTML included in message
-	*  0.1 MIME_HTML_ONLY BODY: Message only has text/html MIME parts
-	*  0.1 MISSING_MID Missing Message-Id: header
-	*  1.2 UPPERCASE_75_100 message body is 75-100% uppercase
-	*  2.3 FROM_MISSP_MSFT From misspaced + supposed Microsoft tool
-	*  2.0 FSL_NEW_HELO_USER Spam's using Helo and User
-	*  0.0 FORGED_OUTLOOK_HTML Outlook can't send HTML message only
-	*  2.2 FROM_MISSP_USER From misspaced, from "User"
-	*  0.6 FORGED_OUTLOOK_TAGS Outlook can't send HTML in this format
-	*  1.0 HK_NAME_MR_MRS No description available.
-	*  0.0 LOTS_OF_MONEY Huge... sums of money
-	*  2.0 HK_SCAM No description available.
-	*  2.0 FROM_MISSP_XPRIO Misspaced FROM + X-Priority
-	*  1.9 REPLYTO_WITHOUT_TO_CC No description available.
-	*  1.3 AXB_XMAILER_MIMEOLE_OL_024C2 Yet another X header trait
-	*  2.0 MONEY_FROM_MISSP Lots of money and misspaced From
-	*  2.5 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-	*  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain different
-	*      freemails
-	*  2.5 TO_NO_BRKTS_FROM_MSSP Multiple header formatting problems
-	*  0.9 FROM_MISSPACED From: missing whitespace
-	*  2.0 FROM_MISSP_EH_MATCH From misspaced, matches envelope
-	*  2.8 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
-	*  1.6 FROM_MISSP_FREEMAIL From misspaced + freemail provider
-	*  3.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-	*  0.4 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: **************************************
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-	bbsoweb.bbso.njit.edu
-Message-ID-Hash: E3VST3DMT7IBYIEA4SWUOGCTU7VB56NG
-X-Message-ID-Hash: E3VST3DMT7IBYIEA4SWUOGCTU7VB56NG
-X-MailFrom: jihs@bbso.njit.edu
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Message-ID-Hash: VHIBWSCWYTZ3QRSAINJPHGJWCM7EP3QI
+X-Message-ID-Hash: VHIBWSCWYTZ3QRSAINJPHGJWCM7EP3QI
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: gessh01@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E3VST3DMT7IBYIEA4SWUOGCTU7VB56NG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VHIBWSCWYTZ3QRSAINJPHGJWCM7EP3QI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6417117015986103446=="
-
---===============6417117015986103446==
-Content-Type: text/html;
-	charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-
-<HTML><HEAD><TITLE></TITLE>
-</HEAD>
-<BODY bgcolor=#FFFFFF leftmargin=5 topmargin=5 rightmargin=5 bottommargin=5>
-<FONT size=2 color=#000000 face="Arial">
-<DIV>
-<B><I>GOOD DAY.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; URGENT - HELP ME DISTRIBUTE MY $12 MILLION TO HUMANITARIAN.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>THIS MAIL MIGHT COME TO YOU AS A SURPRISE AND THE TEMPTATION TO IGNORE</B></I></DIV>
-<DIV>
-<B><I>IT AS UNSERIOUS COULD COME INTO YOUR MIND BUT PLEASE</B></I></DIV>
-<DIV>
-<B><I>CONSIDER IT A DIVINE WISH AND ACCEPT IT WITH A DEEP SENSE OF HUMILITY.</B></I></DIV>
-<DIV>
-<B><I>I AM MRS HELEN GEORGE AND I AM A 61 YEARS OLD WOMAN.</B></I></DIV>
-<DIV>
-<B><I>I AM A SOUTH AFRICAN MARRIED TO A SIERRA LEONIA. I WAS THE</B></I></DIV>
-<DIV>
-<B><I>PRESIDENT/CEO OF OIL COMPANY INTERNATIONAL-AN OIL SERVICING COMPANY IN</B></I></DIV>
-<DIV>
-<B><I>JOHANNESBURG. I WAS ALSO MARRIED WITH NO CHILD.</B></I></DIV>
-<DIV>
-<B><I>MY HUSBAND DIED 3YEARS AGO. BEFORE THIS HAPPENED MY BUSINESS AND</B></I></DIV>
-<DIV>
-<B><I>CONCERN FOR MAKING MONEY WAS ALL I WAS LIVING FOR AND I NEVER REALLY</B></I></DIV>
-<DIV>
-<B><I>CARED ABOUT OTHER PEOPLE. BUT SINCE THE LOSS OF MY HUSBAND AND ALSO</B></I></DIV>
-<DIV>
-<B><I>BECAUSE I HAD HAVE NO CHILD TO CALL MY OWN, I HAVE FOUND A NEW DESIRE</B></I></DIV>
-<DIV>
-<B><I>TO ASSIST THE HELPLESS, I HAVE BEEN HELPING ORPHANS IN</B></I></DIV>
-<DIV>
-<B><I>ORPHANAGES/MOTHERLESS OMES/HUMANITARIANS. I HAVE DONATED SOME MONEY TO</B></I></DIV>
-<DIV>
-<B><I>ORPHANS IN SUDAN,ETHIOPIA, CAMEROON, SPAIN, AUSTRIA, GERMANY AND SOME</B></I></DIV>
-<DIV>
-<B><I>ASIAN COUNTRIES.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>IN SUMMARY:- I HAVE 12,000,000.00 (TWELVE MILLION) U. S. DOLLARS WHICH</B></I></DIV>
-<DIV>
-<B><I>I DEPOSITED IN A SECURITY COMPANY IN COTONOU BENIN REPUBLIC AS A</B></I></DIV>
-<DIV>
-<B><I>FAMILY TREASURE &amp; ARTEFACTS, PLEASE I WANT YOU TO NOTE THAT THE</B></I></DIV>
-<DIV>
-<B><I>SECURITY COMPANY DOES NOT KNOW THE REAL CONTENT TO BE MONEY AND I WANT</B></I></DIV>
-<DIV>
-<B><I>YOU TO ASSIST ME IN CLAIMING THE CONSIGNMENT &amp; DISTRIBUTING THE MONEY</B></I></DIV>
-<DIV>
-<B><I>TO CHARITY ORGANIZATIONS, I AGREE TO REWARD YOU WITH PART OF THE MONEY</B></I></DIV>
-<DIV>
-<B><I>FOR YOUR ASSISTANCE, KINDNESS AND PARTICIPATION IN THIS GODLY PROJECT.</B></I></DIV>
-<DIV>
-<B><I>BEFORE I BECAME ILL, I KEPT $12 MILLION IN A LONG-TERM DEPOSIT IN A</B></I></DIV>
-<DIV>
-<B><I>SECURITY COMPANY WHICH I DECLARED AS A FAMILY TREASURE ARTIFIARTS.I AM</B></I></DIV>
-<DIV>
-<B><I>IN THE HOSPITAL WHERE I HAVE BEEN UNDERGOING TREATMENT FOR OESOPHAGEAL</B></I></DIV>
-<DIV>
-<B><I>CANCER AND MY DOCTORS HAVE TOLD ME THAT I HAVE ONLY A FEW MONTHS TO</B></I></DIV>
-<DIV>
-<B><I>LIVE. IT IS MY LAST WISH TO SEE THIS MONEY DISTRIBUTED TO CHARITY</B></I></DIV>
-<DIV>
-<B><I>ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>BECAUSE MY RELATIVES AND FRIENDS HAVE PLUNDERED SO MUCH OF MY WEALTH</B></I></DIV>
-<DIV>
-<B><I>SINCE MY ILLNESS, I CANNOT LIVE WITH</B></I></DIV>
-<DIV>
-<B><I>THE AGONY OF ENTRUSTING THIS HUGE RESPONSIBILITY TO ANY OF THEM.</B></I></DIV>
-<DIV>
-<B><I>&nbsp;</B></I></DIV>
-<DIV>
-<B><I>PLEASE, I BEG YOU IN THE NAME OF GOD TO HELP ME COLLECT THE $12</B></I></DIV>
-<DIV>
-<B><I>MILLION WHICH I DEPOSIT WITH THE NAME OF MY LATE HUSBAND AS THE NEXT</B></I></DIV>
-<DIV>
-<B><I>OF KIN BECAUSE NOW DUE TO MY HEALTH THE SECURITY COMPANY IS DEMANDING</B></I></DIV>
-<DIV>
-<B><I>FOR A NEXT OF KIN IN OTHER TO GET THE MONEY TRANSFERRED IN OTHER TO</B></I></DIV>
-<DIV>
-<B><I>SEE THAT MY LAST WISH IS ACCOMPLISHED WHICH IS SHARING THE MONEY AMONG</B></I></DIV>
-<DIV>
-<B><I>CHARITY ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>YOU ARE AT LIBERTY TO USE YOUR DISCRETION TO DISTRIBUTE THE MONEY AND</B></I></DIV>
-<DIV>
-<B><I>FEEL FREE AS WELL TO REIMBURSE YOURSELF WHEN YOU HAVE THE MONEY FOR</B></I></DIV>
-<DIV>
-<B><I>ANY EXPENSES IN DISTRIBUTING THE MONEY TO CHARITY ORGANIZATIONS.</B></I></DIV>
-<DIV>
-<B><I>I AM WILLING TO REWARD YOU FOR YOUR ASSISTANCE AND KINDNESS. KINDLY</B></I></DIV>
-<DIV>
-<B><I>EXPEDITE ACTION AND CONTACT ME VIA EMAIL AT mrshel@zoho.com FOR</B></I></DIV>
-<DIV>
-<B><I>MORE DETAILS.</B></I></DIV>
-<DIV>
-<B><I>MAY THE GOOD LORD BLESS YOU AND YOUR FAMILY?</B></I></DIV>
-<DIV>
-<B><I>BEST REGARDS.</B></I></DIV>
-<DIV>
-<B><I>MRS HELEN GEORGE&nbsp; </B></I></DIV>
-<DIV>
-<B><I>PLZ REPLLY TO MY PRIVATE EMAILBOX: mrshel@zoho.com</B></I></DIV>
-<DIV>
-&nbsp;</DIV>
-<DIV>
-&nbsp;</DIV>
-<DIV>
-&nbsp;</DIV>
-</FONT>
-</BODY></HTML>
---===============6417117015986103446==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Looks like nobody is using fs_dax_get_by_host() except fs_dax_get_by_bdev()
+and it can easily use dax_get_by_host() instead.
+
+IIUC, fs_dax_get_by_host() was only introduced so that one could compile
+with CONFIG_FS_DAX=n and CONFIG_DAX=m. fs_dax_get_by_bdev() achieves
+the same purpose and hence it looks like fs_dax_get_by_host() is not
+needed anymore.
+ 
+Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+---
+ drivers/dax/super.c |    2 +-
+ include/linux/dax.h |   10 ----------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
+
+Index: rhvgoyal-linux-fuse/drivers/dax/super.c
+===================================================================
+--- rhvgoyal-linux-fuse.orig/drivers/dax/super.c	2020-01-03 11:19:57.616186062 -0500
++++ rhvgoyal-linux-fuse/drivers/dax/super.c	2020-01-03 11:20:08.941186062 -0500
+@@ -61,7 +61,7 @@ struct dax_device *fs_dax_get_by_bdev(st
+ {
+ 	if (!blk_queue_dax(bdev->bd_queue))
+ 		return NULL;
+-	return fs_dax_get_by_host(bdev->bd_disk->disk_name);
++	return dax_get_by_host(bdev->bd_disk->disk_name);
+ }
+ EXPORT_SYMBOL_GPL(fs_dax_get_by_bdev);
+ #endif
+Index: rhvgoyal-linux-fuse/include/linux/dax.h
+===================================================================
+--- rhvgoyal-linux-fuse.orig/include/linux/dax.h	2020-01-03 11:20:05.603186062 -0500
++++ rhvgoyal-linux-fuse/include/linux/dax.h	2020-01-03 11:20:08.942186062 -0500
+@@ -129,11 +129,6 @@ static inline bool generic_fsdax_support
+ 			sectors);
+ }
+ 
+-static inline struct dax_device *fs_dax_get_by_host(const char *host)
+-{
+-	return dax_get_by_host(host);
+-}
+-
+ static inline void fs_put_dax(struct dax_device *dax_dev)
+ {
+ 	put_dax(dax_dev);
+@@ -160,11 +155,6 @@ static inline bool generic_fsdax_support
+ 	return false;
+ }
+ 
+-static inline struct dax_device *fs_dax_get_by_host(const char *host)
+-{
+-	return NULL;
+-}
+-
+ static inline void fs_put_dax(struct dax_device *dax_dev)
+ {
+ }
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============6417117015986103446==--
