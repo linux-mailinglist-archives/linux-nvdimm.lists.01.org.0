@@ -2,121 +2,131 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16095132F40
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jan 2020 20:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2A7132FD0
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jan 2020 20:46:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5DFD410097DBD;
-	Tue,  7 Jan 2020 11:22:31 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::442; helo=mail-pf1-x442.google.com; envelope-from=brho@google.com; receiver=<UNKNOWN> 
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
+	by ml01.01.org (Postfix) with ESMTP id 52BDE10097DBE;
+	Tue,  7 Jan 2020 11:50:10 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D47D710097DBB
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jan 2020 11:22:28 -0800 (PST)
-Received: by mail-pf1-x442.google.com with SMTP id 4so328305pfz.9
-        for <linux-nvdimm@lists.01.org>; Tue, 07 Jan 2020 11:19:09 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 734E710097DBD
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jan 2020 11:50:08 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id p67so478483oib.13
+        for <linux-nvdimm@lists.01.org>; Tue, 07 Jan 2020 11:46:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=TU5y0uOd04v29R1ldy4aCdHRn60AIShQAfhIrYqvct4=;
-        b=KuhBgkhmzY+be0c7oA/ma8hxZhuoHjFirs176QvXXz/8TxiRr6YQ8GknYwFMLw1MtL
-         G5mycKgbz64sOLtaaTynzyLMeFAlctWwoDdtIulNgI4aCVpmcAoiQHuYr8f0bWNv+jqv
-         HMu/z7+GvtaFoAMV6thwF4A7WTUJ9Rh4KO08NaZEOaHv52TRRWsWMRLudoMK6W0PHaJx
-         OIPAG5RU+91Q4CX0/TyPnG7ydKx5ImuveytiD5wUcjBK9KGUXWJ4XHpEaDPSpM9CljDW
-         OiMqRWyN7ID3K0FkcOD4TS+Ieou2h7qp9XyN6u4X/M1xbFRYfk3/iyRYvjiQYb5MpBaN
-         fy4A==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=oMeNYRjmE3xADDHseE8To74pLJCIPrrI6iJEnl8/MJE=;
+        b=aT9oM/LCSkoU4DdjNflW1gLMp0wxVh5dnFJb8sf5sPgjVDLhWEqnZiSRpAeeGcHRg3
+         GRzzra9Yib97QPwwnxC3RKcRXN0Osb1l24DjUOUZJ42RCQqm3m5RkDe9UzWztOZTtr3w
+         XJLFOTDwV3oVI5CjkHlup8nJ4bFUjCoH08/1ROlE0ivkkm69CMkthrbLYK4pynoIEaCB
+         4b2UfkD1BJyszzW0TA68YU1tJwy/mY/yyObGN3t3ngSw0QpZlvhObmzfxajy07Khz5ST
+         sg9FBbkL6YcKUuz5INzL2GxKWtGK7zsaP+IAywWCUcl1epohdi+uxvi6VWUJeh0J4I0J
+         5dyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=TU5y0uOd04v29R1ldy4aCdHRn60AIShQAfhIrYqvct4=;
-        b=Bjm7S4qKahZf8owl5tyBjPAhbbWGoBZWWHMySQnPgo70CPR8Bq+xMuGY6VUaaVUTtc
-         zG39bZsGsepw40cVNQKlPZpTXLxfMcqjoPrtXc7JyQVFuik3PftbDGbF38N6c9NwpzwH
-         adK3TwnkJOAWMPpyEcv8JIQcicAqzK5NumfaQ0CrFvFXPfhaaewiKJCi/YsRMgvNzkfZ
-         aPfBEpiDpVXS/nWYE6dH79+B/u5R1BWq90K66dmkhrnWZn1RPeunOZ4BcAGKsSHQy5Ai
-         k+J5srKz6lY0utUBzgSbVHYcviNmq8vbyBBw5C3jb9kVj+F/ihP9eHIpnhGwmzw8W2Z4
-         Nq3g==
-X-Gm-Message-State: APjAAAVutcBm9uku+z2jS4610Aw0eKhv2bgxQts0oYo+cpb/obREMQ0P
-	q8wxsHrWQF8lJ71j1tpjNts0Fw==
-X-Google-Smtp-Source: APXvYqz3hHvhtKQxlmnApv3yxgqZQM3teHJBcT4UloZ5gm4T7Df1KmGi/QM9c96hmThP+tfqKucIyA==
-X-Received: by 2002:a62:f94d:: with SMTP id g13mr825176pfm.60.1578424749010;
-        Tue, 07 Jan 2020 11:19:09 -0800 (PST)
-Received: from gnomeregan01.cam.corp.google.com ([2620:15c:6:14:50b7:ffca:29c4:6488])
-        by smtp.googlemail.com with ESMTPSA id i2sm485165pgi.94.2020.01.07.11.19.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2020 11:19:08 -0800 (PST)
-Subject: Re: [PATCH v5 2/2] kvm: Use huge pages for DAX-backed files
-To: Sean Christopherson <sean.j.christopherson@intel.com>
-References: <20191212182238.46535-1-brho@google.com>
- <20191212182238.46535-3-brho@google.com>
- <06108004-1720-41EB-BCAB-BFA8FEBF4772@oracle.com>
- <ED482280-CB47-4AB6-9E7E-EEE7848E0F8B@oracle.com>
- <f8e948ff-6a2a-a6d6-9d8e-92b93003354a@google.com>
- <65FB6CC1-3AD2-4D6F-9481-500BD7037203@oracle.com>
- <20191213171950.GA31552@linux.intel.com>
- <e012696f-f13e-5af1-2b14-084607d69bfa@google.com>
- <20200107190522.GA16987@linux.intel.com>
-From: Barret Rhoden <brho@google.com>
-Message-ID: <08a36944-ad5a-ca49-99b3-d3908ce0658b@google.com>
-Date: Tue, 7 Jan 2020 14:19:06 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=oMeNYRjmE3xADDHseE8To74pLJCIPrrI6iJEnl8/MJE=;
+        b=gOuW79ACvgLDJJVxCuQOAg+IkNGUzyrVN+dfHN16gvYw1IHlF807i7HAfm8gmP/BOD
+         Vl/4Lgg86M56rNh6ySAe11J/hSqgo8YayFj3Yy0FUgkIdEyPEmYShRVUi2rgHR60JT0A
+         bW8Bn7Ak7n9Ma7wf0nSAn2f/8BdhGlQ9bR8psmBDT7lRzk0m9TUbhQ4PVeRUon8N5Ra1
+         EYup5aijK40dXGbHfzkCS1Adq0EFuxwGZ28Ht5w5zi4qjblfqgbnJAC6+HJoiKbFRqgM
+         nAh8h/xn03FgROAfpR2hxG67WqW0oZfQ/d/craSr/PezZAYR4OJseEvInnNDDu0ASAst
+         UGFA==
+X-Gm-Message-State: APjAAAUSNltnYS0P1gbksf14lBTMGhvnU8QzqOM/qlYliaUM0QRalotW
+	arcINa88+QsGW3vgI9Cb7JvCPxPNCueqydPP1yIFdgmF
+X-Google-Smtp-Source: APXvYqySAx4Aj+DuXpJ61i5oIH9smYDCpRBqp5amCWZu7+ti/Z0kAtAfr2EMJlp3TgztEotsg427i+HmWJznPk4npVI=
+X-Received: by 2002:aca:3f54:: with SMTP id m81mr33945oia.73.1578426408315;
+ Tue, 07 Jan 2020 11:46:48 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200107190522.GA16987@linux.intel.com>
-Content-Language: en-US
-Message-ID-Hash: MTDOFTOEJDDKXPW3H4YAQEG5CLRIMDXV
-X-Message-ID-Hash: MTDOFTOEJDDKXPW3H4YAQEG5CLRIMDXV
-X-MailFrom: brho@google.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Liran Alon <liran.alon@oracle.com>, Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>, Alexander Duyck <alexander.h.duyck@linux.intel.com>, linux-nvdimm@lists.01.org, x86@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, jason.zeng@intel.com
+References: <CAPcyv4jGEAbYSJef2zLzgg6Arozsuz7eN_vZL1iTcd1XQuNT4Q@mail.gmail.com>
+ <20191216181014.GA30106@redhat.com> <20200107125159.GA15745@infradead.org>
+ <CAPcyv4jZE35sbDo6J4ihioEUFTuekJ3_h0=2Ra4PY+xn2xn1cQ@mail.gmail.com>
+ <20200107170731.GA472641@magnolia> <CAPcyv4ggH7-QhYg+YOOWn_m25uds+-0L46=N09ap-LALeGuU_A@mail.gmail.com>
+ <20200107180101.GC15920@redhat.com> <CAPcyv4gmdoqpwwwy4dS3D2eZFjmJ_Zi39k=1a4wn-_ksm-UV4A@mail.gmail.com>
+ <20200107183307.GD15920@redhat.com> <CAPcyv4ggoS4dWjq-1KbcuaDtroHKEi5Vu19ggJ-qgycs6w1eCA@mail.gmail.com>
+ <20200107190258.GB472665@magnolia>
+In-Reply-To: <20200107190258.GB472665@magnolia>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 7 Jan 2020 11:46:37 -0800
+Message-ID: <CAPcyv4ia9r0rdbb7t0JvEnGW6nnHdAWUHbaMrY5FKBY+4Fum6Q@mail.gmail.com>
+Subject: Re: [PATCH 01/19] dax: remove block device dependencies
+To: "Darrick J. Wong" <darrick.wong@oracle.com>
+Message-ID-Hash: ETOQRGIBZWCV3AU2HZ65QCRL4PUJ7H6D
+X-Message-ID-Hash: ETOQRGIBZWCV3AU2HZ65QCRL4PUJ7H6D
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@infradead.org>, Dave Chinner <david@fromorbit.com>, Miklos Szeredi <miklos@szeredi.hu>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MTDOFTOEJDDKXPW3H4YAQEG5CLRIMDXV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ETOQRGIBZWCV3AU2HZ65QCRL4PUJ7H6D/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi -
+On Tue, Jan 7, 2020 at 11:03 AM Darrick J. Wong <darrick.wong@oracle.com> wrote:
+[..]
+> > That can already happen today. If you do not properly align the
+> > partition then dax operations will be disabled.
+>
+> Er... is this conversation getting confused?  I was talking about
+> kpartx's /dev/mapper/pmem0p1 being a straight replacement for the kernel
+> creating /dev/pmem0p1.  I thnk Vivek was complaining about the
+> inconsistent behavior between the two, even if the partition is aligned
+> properly.
+>
+> I'm not sure how alignment leaked in here?
 
-On 1/7/20 2:05 PM, Sean Christopherson wrote:
-> On Mon, Dec 16, 2019 at 11:05:26AM -0500, Barret Rhoden wrote:
->> On 12/13/19 12:19 PM, Sean Christopherson wrote:
->>> Teaching thp_adjust() how to handle 1GB wouldn't be a bad thing.  It's
->>> unlikely THP itself will support 1GB pages any time soon, but having the
->>> logic there wouldn't hurt anything.
->>>
->>
->> Cool.  This was my main concern - I didn't want to break THP.
->>
->> I'll rework the series based on all of your comments.
-> 
-> Hopefully you haven't put too much effort into the rework, because I want
-> to commandeer the proposed changes and use them as the basis for a more
-> aggressive overhaul of KVM's hugepage handling.  Ironically, there's a bug
-> in KVM's THP handling that I _think_ can be avoided by using the DAX
-> approach of walking the host PTEs.
-> 
-> I'm in the process of testing, hopefully I'll get a series sent out later
-> today.  If not, I should at least be able to provide an update.
+Oh, whoops, I was jumping to the mismatch between host device and
+partition and whether we had precedent to fail to support dax on the
+partition when the base block device does support it.
 
-Nice timing.  I was just about to get back to this, so I haven't put any 
-time in yet.  =)
+But yes, the mismatch between kpartx and native partitions is weird.
+That said kpartx is there to add partition support where the kernel
+for whatever reason fails to, or chooses not to, and dax is looking
+like such a place.
 
-Please CC me, and I'll try your patches out on my end.
+> > This proposal just
+> > extends that existing failure domain to make all partitions fail to
+> > support dax.
+>
+> Oh, wait.  You're proposing that "partitions of pmem devices don't
+> support DAX", not "the kernel will not create partitions for pmem
+> devices".
+>
+> Yeah, that would be inconsistent and weird.
 
-Thanks,
+More weird than the current constraints?
 
-Barret
+> I'd say deprecate the
+> kernel automounting partitions, but I guess it already does that, and
 
+Ok, now I don't know why automounting is leaking into this discussion?
 
+> removing it would break /something/.
+
+Yes, the breakage risk is anyone that was using ext4 mount failure as
+a dax capability detector.
+
+> I guess you could put
+> "/dev/pmemXpY" on the deprecation schedule.
+
+...but why deprecate /dev/pmemXpY partitions altogether? If someone
+doesn't care about dax then they can do all the legacy block things.
+If they do care about dax then work with whole device namespaces.
+
+The proposal is to detect dax on partitions and warn people to move to
+kpartx. Let the core fs/dax implementation continue to shed block
+dependencies.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
