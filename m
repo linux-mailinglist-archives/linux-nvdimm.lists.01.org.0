@@ -2,16 +2,16 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE20134D5D
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jan 2020 21:27:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E72134D5E
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jan 2020 21:27:30 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A530710097DD0;
-	Wed,  8 Jan 2020 12:30:33 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id B9B7810097DCE;
+	Wed,  8 Jan 2020 12:30:34 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=sean.j.christopherson@intel.com; receiver=<UNKNOWN> 
 Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6E05910097DEE
+	by ml01.01.org (Postfix) with ESMTPS id 803FD10097DEE
 	for <linux-nvdimm@lists.01.org>; Wed,  8 Jan 2020 12:30:26 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
@@ -19,20 +19,20 @@ Received: from orsmga007.jf.intel.com ([10.7.209.58])
   by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Jan 2020 12:27:07 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.69,411,1571727600";
-   d="scan'208";a="211658398"
+   d="scan'208";a="211658401"
 Received: from sjchrist-coffee.jf.intel.com ([10.54.74.202])
   by orsmga007.jf.intel.com with ESMTP; 08 Jan 2020 12:27:07 -0800
 From: Sean Christopherson <sean.j.christopherson@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 13/14] KVM: x86/mmu: Remove lpage_is_disallowed() check from set_spte()
-Date: Wed,  8 Jan 2020 12:24:47 -0800
-Message-Id: <20200108202448.9669-14-sean.j.christopherson@intel.com>
+Subject: [PATCH 14/14] KVM: x86/mmu: Use huge pages for DAX-backed files
+Date: Wed,  8 Jan 2020 12:24:48 -0800
+Message-Id: <20200108202448.9669-15-sean.j.christopherson@intel.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200108202448.9669-1-sean.j.christopherson@intel.com>
 References: <20200108202448.9669-1-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: C3UYIMVHNQHIVEQ3GK5Y3GXEWXX65XCU
-X-Message-ID-Hash: C3UYIMVHNQHIVEQ3GK5Y3GXEWXX65XCU
+Message-ID-Hash: 3OHPHVDMGGSVU7WOZTBZIAYDT2PUHV4O
+X-Message-ID-Hash: 3OHPHVDMGGSVU7WOZTBZIAYDT2PUHV4O
 X-MailFrom: sean.j.christopherson@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -40,7 +40,7 @@ CC: Paul Mackerras <paulus@ozlabs.org>, Sean Christopherson <sean.j.christophers
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C3UYIMVHNQHIVEQ3GK5Y3GXEWXX65XCU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3OHPHVDMGGSVU7WOZTBZIAYDT2PUHV4O/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,94 +49,64 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Remove the late "lpage is disallowed" check from set_spte() now that the
-initial check is performed after acquiring mmu_lock.  Fold the guts of
-the remaining helper, __mmu_gfn_lpage_is_disallowed(), into
-kvm_mmu_hugepage_adjust() to eliminate the unnecessary slot !NULL check.
+Walk the host page tables to identify hugepage mappings for ZONE_DEVICE
+pfns, i.e. DAX pages.  Explicitly query kvm_is_zone_device_pfn() when
+deciding whether or not to bother walking the host page tables, as DAX
+pages do not set up the head/tail infrastructure, i.e. will return false
+for PageCompound() even when using huge pages.
 
+Zap ZONE_DEVICE sptes when disabling dirty logging, e.g. if live
+migration fails, to allow KVM to rebuild large pages for DAX-based
+mappings.  Presumably DAX favors large pages, and worst case scenario is
+a minor performance hit as KVM will need to re-fault all DAX-based
+pages.
+
+Suggested-by: Barret Rhoden <brho@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Jason Zeng <jason.zeng@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Liran Alon <liran.alon@oracle.com>
+Cc: linux-nvdimm <linux-nvdimm@lists.01.org>
 Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 39 +++------------------------------------
- 1 file changed, 3 insertions(+), 36 deletions(-)
+ arch/x86/kvm/mmu/mmu.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index f2667fe0dc75..1e4e0ac169a7 100644
+index 1e4e0ac169a7..324e1919722f 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -1264,28 +1264,6 @@ static void unaccount_huge_nx_page(struct kvm *kvm, struct kvm_mmu_page *sp)
- 	list_del(&sp->lpage_disallowed_link);
- }
+@@ -3250,7 +3250,7 @@ static int host_pfn_mapping_level(struct kvm_vcpu *vcpu, gfn_t gfn,
+ 		     PT_DIRECTORY_LEVEL != (int)PG_LEVEL_2M ||
+ 		     PT_PDPE_LEVEL != (int)PG_LEVEL_1G);
  
--static bool __mmu_gfn_lpage_is_disallowed(gfn_t gfn, int level,
--					  struct kvm_memory_slot *slot)
--{
--	struct kvm_lpage_info *linfo;
--
--	if (slot) {
--		linfo = lpage_info_slot(gfn, slot, level);
--		return !!linfo->disallow_lpage;
--	}
--
--	return true;
--}
--
--static bool mmu_gfn_lpage_is_disallowed(struct kvm_vcpu *vcpu, gfn_t gfn,
--					int level)
--{
--	struct kvm_memory_slot *slot;
--
--	slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
--	return __mmu_gfn_lpage_is_disallowed(gfn, level, slot);
--}
--
- static inline bool memslot_valid_for_gpte(struct kvm_memory_slot *slot,
- 					  bool no_dirty_log)
- {
-@@ -3078,18 +3056,6 @@ static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
- 	spte |= (u64)pfn << PAGE_SHIFT;
+-	if (!PageCompound(pfn_to_page(pfn)))
++	if (!PageCompound(pfn_to_page(pfn)) && !kvm_is_zone_device_pfn(pfn))
+ 		return PT_PAGE_TABLE_LEVEL;
  
- 	if (pte_access & ACC_WRITE_MASK) {
--
--		/*
--		 * Legacy code to handle an obsolete scenario where a different
--		 * vcpu creates new sp in the window between this vcpu's query
--		 * of lpage_is_disallowed() and acquiring mmu_lock.  No longer
--		 * necessary now that lpage_is_disallowed() is called after
--		 * acquiring mmu_lock.
--		 */
--		if (level > PT_PAGE_TABLE_LEVEL &&
--		    mmu_gfn_lpage_is_disallowed(vcpu, gfn, level))
--			goto done;
--
- 		spte |= PT_WRITABLE_MASK | SPTE_MMU_WRITEABLE;
+ 	/*
+@@ -3282,8 +3282,7 @@ static int kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, gfn_t gfn,
+ 	if (unlikely(max_level == PT_PAGE_TABLE_LEVEL))
+ 		return PT_PAGE_TABLE_LEVEL;
  
- 		/*
-@@ -3121,7 +3087,6 @@ static int set_spte(struct kvm_vcpu *vcpu, u64 *sptep,
- set_pte:
- 	if (mmu_spte_update(sptep, spte))
- 		ret |= SET_SPTE_NEED_REMOTE_TLB_FLUSH;
--done:
- 	return ret;
- }
+-	if (is_error_noslot_pfn(pfn) || kvm_is_reserved_pfn(pfn) ||
+-	    kvm_is_zone_device_pfn(pfn))
++	if (is_error_noslot_pfn(pfn) || kvm_is_reserved_pfn(pfn))
+ 		return PT_PAGE_TABLE_LEVEL;
  
-@@ -3309,6 +3274,7 @@ static int kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, gfn_t gfn,
- 				   int max_level, kvm_pfn_t *pfnp)
- {
- 	struct kvm_memory_slot *slot;
-+	struct kvm_lpage_info *linfo;
- 	kvm_pfn_t pfn = *pfnp;
- 	kvm_pfn_t mask;
- 	int level;
-@@ -3326,7 +3292,8 @@ static int kvm_mmu_hugepage_adjust(struct kvm_vcpu *vcpu, gfn_t gfn,
+ 	slot = kvm_vcpu_gfn_to_memslot(vcpu, gfn);
+@@ -5910,8 +5909,8 @@ static bool kvm_mmu_zap_collapsible_spte(struct kvm *kvm,
+ 		 * mapping if the indirect sp has level = 1.
+ 		 */
+ 		if (sp->role.direct && !kvm_is_reserved_pfn(pfn) &&
+-		    !kvm_is_zone_device_pfn(pfn) &&
+-		    PageCompound(pfn_to_page(pfn))) {
++		    (kvm_is_zone_device_pfn(pfn) ||
++		     PageCompound(pfn_to_page(pfn)))) {
+ 			pte_list_remove(rmap_head, sptep);
  
- 	max_level = min(max_level, kvm_x86_ops->get_lpage_level());
- 	for ( ; max_level > PT_PAGE_TABLE_LEVEL; max_level--) {
--		if (!__mmu_gfn_lpage_is_disallowed(gfn, max_level, slot))
-+		linfo = lpage_info_slot(gfn, slot, max_level);
-+		if (!linfo->disallow_lpage)
- 			break;
- 	}
- 
+ 			if (kvm_available_flush_tlb_with_range())
 -- 
 2.24.1
 _______________________________________________
