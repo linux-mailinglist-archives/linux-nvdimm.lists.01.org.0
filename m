@@ -2,88 +2,135 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EB41339B0
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jan 2020 04:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B84BC133BE5
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jan 2020 07:49:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 44F8910097DA7;
-	Tue,  7 Jan 2020 19:44:53 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=188.132.210.179; helo=178.tebilisim.com; envelope-from=yilmazbay@haberyirmibir.com; receiver=<UNKNOWN> 
-Received: from 178.tebilisim.com (unknown [188.132.210.179])
+	by ml01.01.org (Postfix) with ESMTP id 42A8A10097DA7;
+	Tue,  7 Jan 2020 22:52:43 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6B36210097DA3
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jan 2020 19:44:50 -0800 (PST)
-Received: from [14.248.69.211] (port=44283 helo=[127.0.0.1])
-	by 178.tebilisim.com with esmtpsa (TLSv1:ECDHE-RSA-AES256-SHA:256)
-	(Exim 4.91)
-	(envelope-from <yilmazbay@haberyirmibir.com>)
-	id 1ip2Dm-0007ir-Vt
-	for linux-nvdimm@lists.01.org; Wed, 08 Jan 2020 06:41:27 +0300
-Date: Tue, 7 Jan 2020 22:41:28 -0500
-Subject: Hackers know password from your account. Password must be changed now.
+	by ml01.01.org (Postfix) with ESMTPS id 934FF10097E17
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jan 2020 22:52:38 -0800 (PST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0086lVmX140152;
+	Wed, 8 Jan 2020 01:49:15 -0500
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 2xctgqeb1r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2020 01:49:15 -0500
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+	by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0086k02K006811;
+	Wed, 8 Jan 2020 06:49:15 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+	by ppma05wdc.us.ibm.com with ESMTP id 2xajb69xc0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2020 06:49:14 +0000
+Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0086nD3u50790878
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jan 2020 06:49:13 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A29C16E04E;
+	Wed,  8 Jan 2020 06:49:13 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 094A36E04C;
+	Wed,  8 Jan 2020 06:49:11 +0000 (GMT)
+Received: from skywalker.in.ibm.com (unknown [9.204.201.20])
+	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Jan 2020 06:49:11 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: dan.j.williams@intel.com
+Subject: [RFC PATCH] libnvdimm: Update the meaning for persistence_domain values
+Date: Wed,  8 Jan 2020 12:19:05 +0530
+Message-Id: <20200108064905.170394-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-To: linux-nvdimm@lists.01.org
-From: Jazlyn Andrews <yilmazbay@haberyirmibir.com>
-Message-ID: 
- <Andrews520090779.556070.6841416515612.JavaMail.support@haberyirmibir.com>
-X-EMarSys-Identify: 7::2::07535346::7066390661
-X-Report-Abuse: abuse@haberyirmibir.com
-Message-ID-Hash: W3M24MEDMA3CS6ZM567ESMHIDPLJ66HI
-X-Message-ID-Hash: W3M24MEDMA3CS6ZM567ESMHIDPLJ66HI
-X-MailFrom: yilmazbay@haberyirmibir.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-08_01:2020-01-07,2020-01-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 spamscore=0 malwarescore=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 suspectscore=1 mlxscore=0 adultscore=0
+ clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001080057
+Message-ID-Hash: 4WY42ZCATFVUMGRTJEYLHCCWDUFLPC67
+X-Message-ID-Hash: 4WY42ZCATFVUMGRTJEYLHCCWDUFLPC67
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U7KTHNA252HNHKC6K3ZVMRZV7KZEI4WT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4WY42ZCATFVUMGRTJEYLHCCWDUFLPC67/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-4oCcWC1BbnRpQWJ1c2U6IFRoaXMgaGVhZGVyIHdhcyBhZGRlZCB0byB0cmFjayBhYnVzZSwgcGxl
-YXNlIGluY2x1ZGUgaXQgd2l0aCBhbnkgYWJ1c2UgcmVwb3J0DQpYLUFudGlBYnVzZTogUHJpbWFy
-eSBIb3N0bmFtZSAtIDE3OC50ZWJpbGlzaW0uY29tDQpYLUFudGlBYnVzZTogT3JpZ2luYWwgRG9t
-YWluIC0gbGlzdHMuMDEub3JnDQpYLUFudGlBYnVzZTogT3JpZ2luYXRvci9DYWxsZXIgVUlEL0dJ
-RCAtIFs0NyAxMl0gLyBbNDcgMTJdDQpYLUFudGlBYnVzZTogU2VuZGVyIEFkZHJlc3MgRG9tYWlu
-IC0gaGFiZXJ5aXJtaWJpci5jb20NClgtR2V0LU1lc3NhZ2UtU2VuZGVyLVZpYTogMTc4LnRlYmls
-aXNpbS5jb206IG5vbmUNClgtQXV0aGVudGljYXRlZC1TZW5kZXI6IDE3OC50ZWJpbGlzaW0uY29t
-OiANCuKAnQ0KDQpIZWxsbyENCg0KSSBhbSBhIGhhY2tlciB3aG8gaGFzIGFjY2VzcyB0byB5b3Vy
-IG9wZXJhdGluZyBzeXN0ZW0uDQpJIGFsc28gaGF2ZSBmdWxsIGFjY2VzcyB0byB5b3VyIGFjY291
-bnQuDQoNCkkndmUgYmVlbiB3YXRjaGluZyB5b3UgZm9yIGEgZmV3IG1vbnRocyBub3cuDQpUaGUg
-ZmFjdCBpcyB0aGF0IHlvdSB3ZXJlIGluZmVjdGVkIHdpdGggbWFsd2FyZSB0aHJvdWdoIGFuIGFk
-dWx0IHNpdGUgdGhhdCB5b3UgdmlzaXRlZC4NCg0KSWYgeW91IGFyZSBub3QgZmFtaWxpYXIgd2l0
-aCB0aGlzLCBJIHdpbGwgZXhwbGFpbi4NClRyb2phbiBWaXJ1cyBnaXZlcyBtZSBmdWxsIGFjY2Vz
-cyBhbmQgY29udHJvbCBvdmVyIGEgY29tcHV0ZXIgb3Igb3RoZXIgZGV2aWNlLg0KVGhpcyBtZWFu
-cyB0aGF0IEkgY2FuIHNlZSBldmVyeXRoaW5nIG9uIHlvdXIgc2NyZWVuLCB0dXJuIG9uIHRoZSBj
-YW1lcmEgYW5kIG1pY3JvcGhvbmUsIGJ1dCB5b3UgZG8gbm90IGtub3cgYWJvdXQgaXQuDQoNCkkg
-YWxzbyBoYXZlIGFjY2VzcyB0byBhbGwgeW91ciBjb250YWN0cyBhbmQgYWxsIHlvdXIgY29ycmVz
-cG9uZGVuY2UuDQoNCldoeSB5b3VyIGFudGl2aXJ1cyBkaWQgbm90IGRldGVjdCBtYWx3YXJlPw0K
-QW5zd2VyOiBNeSBtYWx3YXJlIHVzZXMgdGhlIGRyaXZlciwgSSB1cGRhdGUgaXRzIHNpZ25hdHVy
-ZXMgZXZlcnkgNCBob3VycyBzbyB0aGF0IHlvdXIgYW50aXZpcnVzIGlzIHNpbGVudC4NCg0KSSBt
-YWRlIGEgdmlkZW8gc2hvd2luZyBob3cgeW91IHNhdGlzZnkgeW91cnNlbGYgaW4gdGhlIGxlZnQg
-aGFsZiBvZiB0aGUgc2NyZWVuLCBhbmQgaW4gdGhlIHJpZ2h0IGhhbGYgeW91IHNlZSB0aGUgdmlk
-ZW8gdGhhdCB5b3Ugd2F0Y2hlZC4NCldpdGggb25lIGNsaWNrIG9mIHRoZSBtb3VzZSwgSSBjYW4g
-c2VuZCB0aGlzIHZpZGVvIHRvIGFsbCB5b3VyIGVtYWlscyBhbmQgY29udGFjdHMgb24gc29jaWFs
-IG5ldHdvcmtzLg0KSSBjYW4gYWxzbyBwb3N0IGFjY2VzcyB0byBhbGwgeW91ciBlLW1haWwgY29y
-cmVzcG9uZGVuY2UgYW5kIG1lc3NlbmdlcnMgdGhhdCB5b3UgdXNlLg0KDQpJZiB5b3Ugd2FudCB0
-byBwcmV2ZW50IHRoaXMsDQp0cmFuc2ZlciB0aGUgYW1vdW50IG9mICQ1MDAgdG8gbXkgYml0Y29p
-biBhZGRyZXNzIChpZiB5b3UgZG8gbm90IGtub3cgaG93IHRvIGRvIHRoaXMsIHdyaXRlIHRvIEdv
-b2dsZTogIkJ1eSBCaXRjb2luIikuDQoNCk15IGJpdGNvaW4gYWRkcmVzcyAoQlRDIFdhbGxldCkg
-aXM6ICAxOEN5Rzd0Ylp5cEFRQ1EyNVkzSE1MakxNRkQ5eTdoWlNODQoNCkFmdGVyIHJlY2Vpdmlu
-ZyB0aGUgcGF5bWVudCwgSSB3aWxsIGRlbGV0ZSB0aGUgdmlkZW8gYW5kIHlvdSB3aWxsIG5ldmVy
-IGhlYXIgbWUgYWdhaW4uDQpJIGdpdmUgeW91IDUwIGhvdXJzIChtb3JlIHRoYW4gMiBkYXlzKSB0
-byBwYXkuDQpJIGhhdmUgYSBub3RpY2UgcmVhZGluZyB0aGlzIGxldHRlciwgYW5kIHRoZSB0aW1l
-ciB3aWxsIHdvcmsgd2hlbiB5b3Ugc2VlIHRoaXMgbGV0dGVyLg0KDQpGaWxpbmcgYSBjb21wbGFp
-bnQgc29tZXdoZXJlIGRvZXMgbm90IG1ha2Ugc2Vuc2UgYmVjYXVzZSB0aGlzIGVtYWlsIGNhbm5v
-dCBiZSB0cmFja2VkIGxpa2UgbXkgYml0Y29pbiBhZGRyZXNzLg0KSSBkbyBub3QgbWFrZSBhbnkg
-bWlzdGFrZXMuDQoNCklmIEkgZmluZCB0aGF0IHlvdSBoYXZlIHNoYXJlZCB0aGlzIG1lc3NhZ2Ug
-d2l0aCBzb21lb25lIGVsc2UsIHRoZSB2aWRlbyB3aWxsIGJlIGltbWVkaWF0ZWx5IGRpc3RyaWJ1
-dGVkLg0KDQpCZXN0IHJlZ2FyZHMhCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
-c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
-ZWF2ZUBsaXN0cy4wMS5vcmcK
+Currently, kernel shows the below values
+	"persistence_domain":"cpu_cache"
+	"persistence_domain":"memory_controller"
+	"persistence_domain":"unknown"
+
+This patch updates the meaning of these values such that
+
+"cpu_cache" indicates no extra instructions is needed to ensure the persistence
+of data in the pmem media on power failure.
+
+"memory_controller" indicates platform provided instructions need to be issued
+as per documented sequence to make sure data flushed is guaranteed to be on pmem
+media in case of system power loss.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 7 ++++++-
+ include/linux/libnvdimm.h                 | 6 +++---
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index c2ef320ba1bf..26a5ef263758 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -360,8 +360,13 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 
+ 	if (p->is_volatile)
+ 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+-	else
++	else {
++		/*
++		 * We need to flush things correctly to guarantee persistance
++		 */
++		set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+ 		p->region = nvdimm_pmem_region_create(p->bus, &ndr_desc);
++	}
+ 	if (!p->region) {
+ 		dev_err(dev, "Error registering region %pR from %pOF\n",
+ 				ndr_desc.res, p->dn);
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index f2a33f2e3ba8..9126737377e1 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -52,9 +52,9 @@ enum {
+ 	 */
+ 	ND_REGION_PERSIST_CACHE = 1,
+ 	/*
+-	 * Platform provides mechanisms to automatically flush outstanding
+-	 * write data from memory controler to pmem on system power loss.
+-	 * (ADR)
++	 * Platform provides instructions to flush data such that on completion
++	 * of the instructions, data flushed is guaranteed to be on pmem even
++	 * in case of a system power loss.
+ 	 */
+ 	ND_REGION_PERSIST_MEMCTRL = 2,
+ 
+-- 
+2.24.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
