@@ -2,362 +2,132 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F19B137691
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jan 2020 20:05:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0061613780B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jan 2020 21:39:06 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 07A0F10096C95;
-	Fri, 10 Jan 2020 11:09:15 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5685210097DDF;
+	Fri, 10 Jan 2020 12:42:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0684A10096C96
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 11:09:09 -0800 (PST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00AJ3xrK131913;
-	Fri, 10 Jan 2020 19:05:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2019-08-05;
- bh=KCRuAAvQAwl0rfqZGNTEjq3Xbk+5StxMV3R+zKC6+g8=;
- b=JrPCmplD9EMEh51IfNBg19dXdZpwX0YSrH0fuLXZbPtzBggR1OlVflWX3ojalVgEQ16k
- YfQESJzZDYlOWPMN2sTcqvz9ZXxYTDy32sFop2GrM41KDU3xYuc6wJ6yiPKXXPBApWZT
- xOsCwsJEfeWi1ChoY5o/CkkaxUK7gFzYpGvcUIkqT3p183iiqFmsrAFCTAYZ8Sd5r1IZ
- JgsiPMiCL0pQM/GeOjZQeEhh5n/rinDIpAy8EFAivHI1yoeAOjZ7M6YzFO0woSNnYz/A
- 8qPEjY4km8oE0MYe0GaQeAF7E4a/XDEj3UHH1SX8Ln3csinf83vsCblTS8thQ1MHXt3c /w==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2130.oracle.com with ESMTP id 2xaj4um8jn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2020 19:05:32 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00AJ3tj7183577;
-	Fri, 10 Jan 2020 19:05:31 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by aserp3030.oracle.com with ESMTP id 2xedhypv58-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2020 19:05:31 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00AJ5UBM014974;
-	Fri, 10 Jan 2020 19:05:30 GMT
-Received: from paddy.uk.oracle.com (/10.175.192.165)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Fri, 10 Jan 2020 11:05:29 -0800
-From: Joao Martins <joao.m.martins@oracle.com>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH RFC 10/10] nvdimm/e820: add multiple namespaces support
-Date: Fri, 10 Jan 2020 19:03:13 +0000
-Message-Id: <20200110190313.17144-11-joao.m.martins@oracle.com>
-X-Mailer: git-send-email 2.11.0
-In-Reply-To: <20200110190313.17144-1-joao.m.martins@oracle.com>
-References: <20200110190313.17144-1-joao.m.martins@oracle.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9496 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001100154
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9496 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=3 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001100154
-Message-ID-Hash: 3DPPCTZ66IG37BA4PKDKU5JV4NSS53OR
-X-Message-ID-Hash: 3DPPCTZ66IG37BA4PKDKU5JV4NSS53OR
-X-MailFrom: joao.m.martins@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alex Williamson <alex.williamson@redhat.com>, Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Liran Alon <liran.alon@oracle.com>, Nikita Leshenko <nikita.leshchenko@oracle.com>, Barret Rhoden <brho@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Matthew Wilcox <willy@infradead.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+	by ml01.01.org (Postfix) with ESMTPS id D011210097DDC
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 12:42:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1578688740;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hj4IKAYX3opVay+zOjDOMD4FkgngWu+kCGGgbKH+hWw=;
+	b=QL8Ay3hrq1LZd58KuRJN4SrkbfiaeZIYd5JLBsDMcVugZg/DXnmLGYMLWT9/+S0EKvplw+
+	ByXUssRKMDZKM9CuahJZfaA1vdP0/Vq8uUGaymW/Lbb+6g2eGNyF9N+4Z63oimI2mZpkvF
+	HEO9defS2GWlh7cg5ca0HxIYXTtHgzk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-371-kKxxdPhsPBGsEk-kfwlwEw-1; Fri, 10 Jan 2020 15:38:58 -0500
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9AF371800D78;
+	Fri, 10 Jan 2020 20:38:56 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A58C86CD3;
+	Fri, 10 Jan 2020 20:38:56 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 1/6] libnvdimm/namespace: Make namespace size validation arch dependent
+References: <20200108065219.171221-1-aneesh.kumar@linux.ibm.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Fri, 10 Jan 2020 15:38:54 -0500
+In-Reply-To: <20200108065219.171221-1-aneesh.kumar@linux.ibm.com> (Aneesh
+	Kumar K. V.'s message of "Wed, 8 Jan 2020 12:22:14 +0530")
+Message-ID: <x49muavm4gx.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-MC-Unique: kKxxdPhsPBGsEk-kfwlwEw-1
+X-Mimecast-Spam-Score: 0
+Message-ID-Hash: TQJGQKWEMR6PCZ5JDJEAB67KJFGLAC3D
+X-Message-ID-Hash: TQJGQKWEMR6PCZ5JDJEAB67KJFGLAC3D
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3DPPCTZ66IG37BA4PKDKU5JV4NSS53OR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TQJGQKWEMR6PCZ5JDJEAB67KJFGLAC3D/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-User can define regions with 'memmap=size!offset' which in turn
-creates PMEM legacy devices. But because it is a label-less
-NVDIMM device we only have one namespace for the whole device.
+Hi, Aneesh,
 
-Add support for multiple namespaces by adding ndctl control
-support, and exposing a minimal set of features:
-(ND_CMD_GET_CONFIG_SIZE, ND_CMD_GET_CONFIG_DATA,
-ND_CMD_SET_CONFIG_DATA) alongside NDD_ALIASING because we can
-store labels.
+After applying this patch series, several of my namespaces no longer
+enumerate:
 
-Initialization is a little different: We allocate and register an
-nvdimm bus with an @nvdimm_descriptor which we use to locate
-where we are keeping our label storage area. The config data
-get/set/size operations are then simply memcpying to this area.
+Before:
 
-Equivalent approach can also be found in the NFIT tests which
-emulate the same thing.
+# ndctl list
+[
+  {
+    "dev":"namespace0.2",
+    "mode":"sector",
+    "size":106541672960,
+    "uuid":"ea1122b2-c219-424c-b09c-38a6e94a1042",
+    "sector_size":512,
+    "blockdev":"pmem0.2s"
+  },
+  {
+    "dev":"namespace0.1",
+    "mode":"fsdax",
+    "map":"dev",
+    "size":10567548928,
+    "uuid":"68b6746f-481a-4ae6-80b5-71d62176606c",
+    "sector_size":512,
+    "align":4096,
+    "blockdev":"pmem0.1"
+  },
+  {
+    "dev":"namespace0.0",
+    "mode":"fsdax",
+    "map":"dev",
+    "size":52850327552,
+    "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
+    "sector_size":512,
+    "align":2097152,
+    "blockdev":"pmem0"
+  }
+]
 
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
----
- drivers/nvdimm/e820.c | 212 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 191 insertions(+), 21 deletions(-)
+After:
 
-diff --git a/drivers/nvdimm/e820.c b/drivers/nvdimm/e820.c
-index e02f60ad6c99..36fbff3d7110 100644
---- a/drivers/nvdimm/e820.c
-+++ b/drivers/nvdimm/e820.c
-@@ -7,14 +7,21 @@
- #include <linux/memory_hotplug.h>
- #include <linux/libnvdimm.h>
- #include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/ndctl.h>
-+#include <linux/nd.h>
- 
--static int e820_pmem_remove(struct platform_device *pdev)
--{
--	struct nvdimm_bus *nvdimm_bus = platform_get_drvdata(pdev);
-+#define LABEL_SIZE SZ_128K
- 
--	nvdimm_bus_unregister(nvdimm_bus);
--	return 0;
--}
-+struct e820_descriptor {
-+	struct nd_interleave_set nd_set;
-+	struct nvdimm_bus_descriptor nd_desc;
-+	void *label;
-+	unsigned char cookie1[16];
-+	unsigned char cookie2[16];
-+	struct nvdimm_bus *nvdimm_bus;
-+	struct nvdimm *nvdimm;
-+};
- 
- #ifdef CONFIG_MEMORY_HOTPLUG
- static int e820_range_to_nid(resource_size_t addr)
-@@ -28,43 +35,206 @@ static int e820_range_to_nid(resource_size_t addr)
- }
- #endif
- 
-+static int e820_get_config_size(struct nd_cmd_get_config_size *nd_cmd,
-+				unsigned int buf_len)
-+{
-+	if (buf_len < sizeof(*nd_cmd))
-+		return -EINVAL;
-+
-+	nd_cmd->status = 0;
-+	nd_cmd->config_size = LABEL_SIZE;
-+	nd_cmd->max_xfer = SZ_4K;
-+
-+	return 0;
-+}
-+
-+static int e820_get_config_data(struct nd_cmd_get_config_data_hdr
-+		*nd_cmd, unsigned int buf_len, void *label)
-+{
-+	unsigned int len, offset = nd_cmd->in_offset;
-+	int rc;
-+
-+	if (buf_len < sizeof(*nd_cmd))
-+		return -EINVAL;
-+	if (offset >= LABEL_SIZE)
-+		return -EINVAL;
-+	if (nd_cmd->in_length + sizeof(*nd_cmd) > buf_len)
-+		return -EINVAL;
-+
-+	nd_cmd->status = 0;
-+	len = min(nd_cmd->in_length, LABEL_SIZE - offset);
-+	memcpy(nd_cmd->out_buf, label + offset, len);
-+	rc = buf_len - sizeof(*nd_cmd) - len;
-+
-+	return rc;
-+}
-+
-+static int e820_set_config_data(struct nd_cmd_set_config_hdr *nd_cmd,
-+		unsigned int buf_len, void *label)
-+{
-+	unsigned int len, offset = nd_cmd->in_offset;
-+	u32 *status;
-+	int rc;
-+
-+	if (buf_len < sizeof(*nd_cmd))
-+		return -EINVAL;
-+	if (offset >= LABEL_SIZE)
-+		return -EINVAL;
-+	if (nd_cmd->in_length + sizeof(*nd_cmd) + 4 > buf_len)
-+		return -EINVAL;
-+
-+	status = (void *)nd_cmd + nd_cmd->in_length + sizeof(*nd_cmd);
-+	*status = 0;
-+	len = min(nd_cmd->in_length, LABEL_SIZE - offset);
-+	memcpy(label + offset, nd_cmd->in_buf, len);
-+	rc = buf_len - sizeof(*nd_cmd) - (len + 4);
-+
-+	return rc;
-+}
-+
-+static struct e820_descriptor *to_e820_desc(struct nvdimm_bus_descriptor *desc)
-+{
-+	return container_of(desc, struct e820_descriptor, nd_desc);
-+}
-+
-+static int e820_ndctl(struct nvdimm_bus_descriptor *nd_desc,
-+			 struct nvdimm *nvdimm, unsigned int cmd, void *buf,
-+			 unsigned int buf_len, int *cmd_rc)
-+{
-+	struct e820_descriptor *t = to_e820_desc(nd_desc);
-+	int rc = -EINVAL;
-+
-+	switch (cmd) {
-+	case ND_CMD_GET_CONFIG_SIZE:
-+		rc = e820_get_config_size(buf, buf_len);
-+		break;
-+	case ND_CMD_GET_CONFIG_DATA:
-+		rc = e820_get_config_data(buf, buf_len, t->label);
-+		break;
-+	case ND_CMD_SET_CONFIG_DATA:
-+		rc = e820_set_config_data(buf, buf_len, t->label);
-+		break;
-+	default:
-+		return rc;
-+	}
-+
-+	return rc;
-+}
-+
-+static void e820_desc_free(struct e820_descriptor *desc)
-+{
-+	if (!desc)
-+		return;
-+
-+	nvdimm_bus_unregister(desc->nvdimm_bus);
-+	kfree(desc->label);
-+	kfree(desc);
-+}
-+
-+static struct e820_descriptor *e820_desc_alloc(struct platform_device *pdev)
-+{
-+	struct nvdimm_bus_descriptor *nd_desc;
-+	unsigned int cmd_mask, dimm_flags;
-+	struct device *dev = &pdev->dev;
-+	struct nvdimm_bus *nvdimm_bus;
-+	struct e820_descriptor *desc;
-+	struct nvdimm *nvdimm;
-+
-+	desc = kzalloc(sizeof(*desc), GFP_KERNEL);
-+	if (!desc)
-+		goto err;
-+
-+	desc->label = kzalloc(LABEL_SIZE, GFP_KERNEL);
-+	if (!desc->label)
-+		goto err;
-+
-+	nd_desc = &desc->nd_desc;
-+	nd_desc->provider_name = "e820";
-+	nd_desc->module = THIS_MODULE;
-+	nd_desc->ndctl = e820_ndctl;
-+	nvdimm_bus = nvdimm_bus_register(&pdev->dev, nd_desc);
-+	if (!nvdimm_bus) {
-+		dev_err(dev, "nvdimm bus registration failure\n");
-+		goto err;
-+	}
-+	desc->nvdimm_bus = nvdimm_bus;
-+
-+	cmd_mask = (1UL << ND_CMD_GET_CONFIG_SIZE |
-+			1UL << ND_CMD_GET_CONFIG_DATA |
-+			1UL << ND_CMD_SET_CONFIG_DATA);
-+	dimm_flags = (1UL << NDD_ALIASING);
-+	nvdimm = nvdimm_create(nvdimm_bus, pdev, NULL,
-+				dimm_flags, cmd_mask, 0, NULL);
-+	if (!nvdimm) {
-+		dev_err(dev, "nvdimm creation failure\n");
-+		goto err;
-+	}
-+	desc->nvdimm = nvdimm;
-+	return desc;
-+
-+err:
-+	e820_desc_free(desc);
-+	return NULL;
-+}
-+
- static int e820_register_one(struct resource *res, void *data)
- {
-+	struct platform_device *pdev = data;
- 	struct nd_region_desc ndr_desc;
--	struct nvdimm_bus *nvdimm_bus = data;
-+	struct nd_mapping_desc mapping;
-+	struct e820_descriptor *desc;
-+
-+	desc = e820_desc_alloc(pdev);
-+	if (!desc)
-+		return -ENOMEM;
-+
-+	mapping.nvdimm = desc->nvdimm;
-+	mapping.start = res->start;
-+	mapping.size = resource_size(res);
-+	mapping.position = 0;
-+
-+	generate_random_uuid(desc->cookie1);
-+	desc->nd_set.cookie1 = (u64) desc->cookie1;
-+	generate_random_uuid(desc->cookie2);
-+	desc->nd_set.cookie2 = (u64) desc->cookie2;
- 
- 	memset(&ndr_desc, 0, sizeof(ndr_desc));
- 	ndr_desc.res = res;
- 	ndr_desc.numa_node = e820_range_to_nid(res->start);
- 	ndr_desc.target_node = ndr_desc.numa_node;
-+	ndr_desc.mapping = &mapping;
-+	ndr_desc.num_mappings = 1;
-+	ndr_desc.nd_set = &desc->nd_set;
- 	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
--	if (!nvdimm_pmem_region_create(nvdimm_bus, &ndr_desc))
-+	if (!nvdimm_pmem_region_create(desc->nvdimm_bus, &ndr_desc)) {
-+		e820_desc_free(desc);
-+		dev_err(&pdev->dev, "nvdimm region creation failure\n");
- 		return -ENXIO;
-+	}
-+
-+	platform_set_drvdata(pdev, desc);
-+	return 0;
-+}
-+
-+static int e820_pmem_remove(struct platform_device *pdev)
-+{
-+	struct e820_descriptor *desc = platform_get_drvdata(pdev);
-+
-+	e820_desc_free(desc);
- 	return 0;
- }
- 
- static int e820_pmem_probe(struct platform_device *pdev)
- {
--	static struct nvdimm_bus_descriptor nd_desc;
--	struct device *dev = &pdev->dev;
--	struct nvdimm_bus *nvdimm_bus;
- 	int rc = -ENXIO;
- 
--	nd_desc.provider_name = "e820";
--	nd_desc.module = THIS_MODULE;
--	nvdimm_bus = nvdimm_bus_register(dev, &nd_desc);
--	if (!nvdimm_bus)
--		goto err;
--	platform_set_drvdata(pdev, nvdimm_bus);
--
- 	rc = walk_iomem_res_desc(IORES_DESC_PERSISTENT_MEMORY_LEGACY,
--			IORESOURCE_MEM, 0, -1, nvdimm_bus, e820_register_one);
-+			IORESOURCE_MEM, 0, -1, pdev, e820_register_one);
- 	if (rc)
- 		goto err;
- 	return 0;
- err:
--	nvdimm_bus_unregister(nvdimm_bus);
--	dev_err(dev, "failed to register legacy persistent memory ranges\n");
-+	dev_err(&pdev->dev, "failed to register legacy persistent memory ranges\n");
- 	return rc;
- }
- 
--- 
-2.17.1
+# ndctl list
+[
+  {
+    "dev":"namespace0.0",
+    "mode":"fsdax",
+    "map":"dev",
+    "size":52850327552,
+    "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
+    "sector_size":512,
+    "align":2097152,
+    "blockdev":"pmem0"
+  }
+]
+
+I won't have time to dig into it this week, but I wanted to mention it
+before Dan merged these patches.
+
+I'll follow up next week with more information.
+
+Cheers,
+Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
