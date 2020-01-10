@@ -1,74 +1,145 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD3E136233
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jan 2020 22:05:10 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9389513680A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jan 2020 08:15:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0D97210097DCC;
-	Thu,  9 Jan 2020 13:08:27 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 497DE10097DCA
-	for <linux-nvdimm@lists.01.org>; Thu,  9 Jan 2020 13:08:24 -0800 (PST)
-Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos.tec.linutronix.de)
-	by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-	(Exim 4.80)
-	(envelope-from <tglx@linutronix.de>)
-	id 1ipez7-0008OC-Ij; Thu, 09 Jan 2020 22:04:53 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-	id 0AA1A105BCE; Thu,  9 Jan 2020 22:04:53 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Sean Christopherson <sean.j.christopherson@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 05/14] x86/mm: Introduce lookup_address_in_mm()
-In-Reply-To: <20200108202448.9669-6-sean.j.christopherson@intel.com>
-References: <20200108202448.9669-1-sean.j.christopherson@intel.com> <20200108202448.9669-6-sean.j.christopherson@intel.com>
-Date: Thu, 09 Jan 2020 22:04:53 +0100
-Message-ID: <871rs8batm.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTP id B595310097DC6;
+	Thu,  9 Jan 2020 23:18:29 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=143.137.189.122; helo=brsmtp-out9.net2.com.br; envelope-from=engr.franciscopinto1954@gmail.com; receiver=<UNKNOWN> 
+Received: from brsmtp-out9.net2.com.br (brsmtp-out9.net2.com.br [143.137.189.122])
+	by ml01.01.org (Postfix) with ESMTP id 812CC10097DC6;
+	Thu,  9 Jan 2020 23:18:26 -0800 (PST)
+Received: from brsmtp.net2.com.br (brsmtp.net2.com.br [143.137.189.4])
+	by brsmtp-out9.net2.com.br (Postfix) with ESMTP id D98B318830E;
+	Fri, 10 Jan 2020 04:15:00 -0300 (BRT)
+Received: from wmail.net2.com.br (143-137-191-194.net2.com.br [143.137.191.194])
+	by brsmtp.net2.com.br (Postfix) with ESMTP id DED59186044;
+	Fri, 10 Jan 2020 04:11:36 -0300 (BRT)
+Received: from 41.80.228.52
+        (SquirrelMail authenticated user rosane@indextech.com.br)
+        by wmail.net2.com.br with HTTP;
+        Fri, 10 Jan 2020 05:13:15 -0200
+Message-ID: <6fc7f48b35a47fe0a71016b3d3b013ba.squirrel@wmail.net2.com.br>
+Date: Fri, 10 Jan 2020 05:13:15 -0200
+Subject: Crude Oil Lifting Contract Offer.
+From: "Engr. Francisco Pinto" <engr.franciscopinto1954@gmail.com>
+User-Agent: SquirrelMail/1.4.20
 MIME-Version: 1.0
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Message-ID-Hash: B25QYIO7JLOTIQEMDFFXHPYAHOM2NXNX
-X-Message-ID-Hash: B25QYIO7JLOTIQEMDFFXHPYAHOM2NXNX
-X-MailFrom: tglx@linutronix.de
+X-Priority: 3 (Normal)
+Importance: Normal
+Message-ID-Hash: C2DSBWQYN2Q3KRMPRKOI2ADZSXHTPFWY
+X-Message-ID-Hash: C2DSBWQYN2Q3KRMPRKOI2ADZSXHTPFWY
+X-MailFrom: engr.franciscopinto1954@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Paul Mackerras <paulus@ozlabs.org>, Sean Christopherson <sean.j.christopherson@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Wanpeng Li <wanpengli@tencent.com>, Jim Mattson <jmattson@google.com>, Joerg Roedel <joro@8bytes.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>, Julien Thierry <julien.thierry.kdev@gmail.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, kvm-ppc@vger.kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.cs.columbia.edu, syzbot+c9d1fb51ac9d0d10c39d@syzkaller.appspotmail.com, Andrea Arcangeli <aarcange@redhat.com>, Barret Rhoden <brho@google.com>, David Hildenbrand <david@redhat.com>, Jason Zeng <jason.zeng@intel.com>, Liran Alon <liran.alon@oracle.com>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Type: text/plain; charset="iso-8859-1"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: engr.franciscopinto1955@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B25QYIO7JLOTIQEMDFFXHPYAHOM2NXNX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C2DSBWQYN2Q3KRMPRKOI2ADZSXHTPFWY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-Sean Christopherson <sean.j.christopherson@intel.com> writes:
 
-> diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-> index b5e49e6bac63..400ac8da75e8 100644
-> --- a/arch/x86/include/asm/pgtable_types.h
-> +++ b/arch/x86/include/asm/pgtable_types.h
-> @@ -561,6 +561,10 @@ static inline void update_page_count(int level, unsigned long pages) { }
->  extern pte_t *lookup_address(unsigned long address, unsigned int *level);
->  extern pte_t *lookup_address_in_pgd(pgd_t *pgd, unsigned long address,
->  				    unsigned int *level);
-> +
-> +struct mm_struct;
-> +pte_t *lookup_address_in_mm(struct mm_struct *mm, unsigned long address,
-> +			    unsigned int *level);
 
-Please keep the file consistent and use extern even if not required.
+Hello Dear=A0 Partner,
+CONFIDENTIAL OFFER REGARDING CRUDE OIL
+LIFTING CONTRACT.
+CRUDE OIL LIFTING LICENSE NO: ANP-C-STP/056432.
+Reply Email:engr.franciscopinto1955@gmail.com
 
-Other than that:
+This is a
+confidential business offer from the oil rich Sao Tome and Principe.=A0
+Please ensure that you reply this email strictly at
+:engr.franciscopinto1955@gmail.com
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+I make this introduction
+based on my regard for your credibility. My name is Engr. Francisco Pinto.
+I work with the Sao Tome and Principe national petroleum agency. To be
+precise, I oversee the issuance of oil allocation license for our oil
+company. My position in the agency entitles me to recommend oil allocation
+bidders and actualize oil lifting and exploration allocation licenses to
+my candidates based on my interest. I also oversee and approve the
+issuance of the license for oil allocation in our company and also monitor
+the lifting procedures in our company.
+=A0
+In June 2007, I
+facilitated and actualized the license of a candidate. A business man from
+Korea (Comprehensive details to be provided subsequently). The license was
+for 1 year at 24 million BBLS/12 months. Incidentally the candidate was no
+more. The license has been valid till date (as I always ensure that I keep
+to my side of the bargain), I have decided to begin using the license from
+JANUARY. I am in need of a partner from your country whom I can trust. I
+will package this partner as the allocation license beneficiary and assign
+the license to this partner. Due to my position in the petroleum agency, I
+cannot handle this position. Your profile fits into the criteria of a
+partner I need. This is why I am contacting you. With the trend of events
+in Sao Tome and Principe, we shall be able to lift a minimum of 400,000
+barrels of BLCO per month. This will fetch us an average of US$28 million
+per month. And we have from JANUARY 2020 up until JANUARY=A0 2021 to
+lift crude oil which will fetch us approximately (12) x (28) Million
+dollars. This is approximately 336 Million dollars for the rest of the
+time of the license allocation.=A0 I have ready buyers who are waiting
+and would be ready to scramble for any number of barrels we lift. Also, I
+will oversee all lifting procedures with the available mercenary
+around.
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0
+
+=A0THIS IS WHAT I PROPOSE.
+
+{1} Your Company profile
+shall be used in place of the initial license Operator. This I shall
+handle with my capacity in the company.
+{2} I will ensure that your
+company's profile is recognized as the current license operator and that
+we have a mandate for at least min of 400,000 barrels per month, a maximum
+of 500,000 barrels per month. Starting from JANUARY.
+{3}I will ensure
+that all lifting procedures are in place and buyers readily available to
+purchase the product.
+{4} You shall stand in as the license operator
+for all lifting and sales transactions; we shall open an account for the
+receipt of the oil sale proceeds in which both of us shall be signatories
+to the account or you can provide your personal or company bank account to
+receive the payments on our behalf.
+{5} We shall split the oil sale
+proceeds in the ratio of 60:40 equity shares. I shall be entitled to 60%
+share while your company shall be entitled to 40% share.
+
+Please
+note: no third-party arrangement shall be allowed. I believe you are a man
+of wisdom and intelligence. This offer I make to you is based on utmost
+good faith. I could be Jeopardizing my position in the agency if a word of
+this goes out. Therefore, without mincing words, I rely on you for utmost
+confidentiality on every bit of detail relating to this transaction. I am
+in London on official duties at the moment waiting for your response. Upon
+your positive response, I will be willing to forward to you proof of my
+proposition and my personal identity. Also, I shall fly back to Sao Tome
+and Principe and from there we shall commence operations. I shall also
+provide you details of the former license operator and a copy of the
+license issued to him for the lifting of crude oil in our company which I
+personally approved and endorsed. Also, procedures for license
+reassignment and actualizing the rest of the project shall be provided to
+you.
+=A0
+Please in response to this email:
+engr.franciscopinto1955@gmail.com, quote the reference number. CRUDE OIL
+LIFTING LICENSE NO: ANP-C-STP/056432.=20
+I look forward to a
+prospective business relationship between us.
+Thanks,=20
+Engr.
+Francisco Pinto
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
