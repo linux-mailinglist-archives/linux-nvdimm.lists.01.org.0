@@ -2,161 +2,164 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B05137B5D
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 Jan 2020 05:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B89A2137B6E
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 Jan 2020 05:55:58 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3FD2910096CAC;
-	Fri, 10 Jan 2020 20:36:54 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D79531007B8C0;
+	Fri, 10 Jan 2020 20:59:15 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0C1B110096C9B
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 20:36:51 -0800 (PST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00B4WJFd093848
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 23:33:31 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2xf73arcyc-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 23:33:31 -0500
-Received: from localhost
-	by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
-	Sat, 11 Jan 2020 04:33:29 -0000
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
-	by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Sat, 11 Jan 2020 04:33:28 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00B4XRoR57016420
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 11 Jan 2020 04:33:27 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54964A405B;
-	Sat, 11 Jan 2020 04:33:27 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6576AA4054;
-	Sat, 11 Jan 2020 04:33:26 +0000 (GMT)
-Received: from [9.85.72.79] (unknown [9.85.72.79])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Sat, 11 Jan 2020 04:33:26 +0000 (GMT)
+	by ml01.01.org (Postfix) with ESMTPS id 6687210096CAC
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 20:59:14 -0800 (PST)
+Received: by mail-ot1-x342.google.com with SMTP id r9so4055767otp.13
+        for <linux-nvdimm@lists.01.org>; Fri, 10 Jan 2020 20:55:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DXw7+lmwxxGW0pW3Lab+hpREo++qohaUzd19RBqCoKA=;
+        b=kojBvxELyYGWWAc/77rNWYrUSn6AH9BEDZAg875w0dJasG5wADCzZ0TrQz8Lhlec46
+         C8x8nkpfjtUXcxyP7w4hBONLRzI7OImpA8VVQ+KQz0m3N6y2guOAOQmxN0MJwFZ3XHEG
+         m2KyOHLn4bg5oHxw1gKUmT0gvi7DTmk7xB40F4SPZPAIllXcXNxeo/pcVrj+2X4BU8Hi
+         sbm9RnHrxRY69yEkgfabT+fT6ZegNHIIb+PHd/AJgGRYVG47gVvkpcPD98eqVjyiclXC
+         lGBckyRMoslduNyfoll1Q5ejfhvtYHc6B740cPhls9PW34vNPj+m9yITDhgGx/NW+Op2
+         ssHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DXw7+lmwxxGW0pW3Lab+hpREo++qohaUzd19RBqCoKA=;
+        b=QhaQHpAo8LCeAR7xzUAn26QAcoI6eh6UYRzGd3EvjZi3QB13xxRsW9bsv9OC5Lh6VL
+         6IUGlnck+MDWMvKvOhf5htcQnTdAXFtah6qvdKwQvyboOPJZQKpdsHlWZn9BMV+DTIRR
+         fjlyG1OxZflKN6sCXrSzf5zt/WuNCdUyu5AKrd/h4bti227Aot4vFk775SJEMks+5c5J
+         B4TUoCstj5z/B8JFhyPq/RGYAH4DEN5MxbmZl3Z18ei+u8UV871yFpKQo26fToicL4Y6
+         akivRsc/QCbshPT8prCTEiD1t+1C7DA6xR1YdsE4Wm9lKy3ichdXIzNUujD591p0I6Mm
+         cdSA==
+X-Gm-Message-State: APjAAAU+0i/PxLkHgtMA46ZI77FfMvKEm5a+9IdHxPnnpUHLBS8ov5RA
+	R1u0Jpg9ff6mPp09GqpgvDpdTncV8GiHI0Klwz/qPQ==
+X-Google-Smtp-Source: APXvYqztZUwMmGPluzhv4MCHVJzT4kLaj+aPPjdSNnXZp6j2pZ6cvLnIMxs30I0/ASwFjgll57VoxvcEkTkR6X9aiY4=
+X-Received: by 2002:a9d:68cc:: with SMTP id i12mr5461736oto.207.1578718554461;
+ Fri, 10 Jan 2020 20:55:54 -0800 (PST)
+MIME-Version: 1.0
+References: <20200108065219.171221-1-aneesh.kumar@linux.ibm.com>
+ <x49muavm4gx.fsf@segfault.boston.devel.redhat.com> <253f7f57-d27f-91f1-4e99-ff69a0e88084@linux.ibm.com>
+In-Reply-To: <253f7f57-d27f-91f1-4e99-ff69a0e88084@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 10 Jan 2020 20:55:43 -0800
+Message-ID: <CAPcyv4jKC=TBYh7pnF__iHNpcunifcRKhz4eQ3t86uCd4ZNNwg@mail.gmail.com>
 Subject: Re: [PATCH v3 1/6] libnvdimm/namespace: Make namespace size
  validation arch dependent
-To: Jeff Moyer <jmoyer@redhat.com>
-References: <20200108065219.171221-1-aneesh.kumar@linux.ibm.com>
- <x49muavm4gx.fsf@segfault.boston.devel.redhat.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Sat, 11 Jan 2020 10:03:24 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
-MIME-Version: 1.0
-In-Reply-To: <x49muavm4gx.fsf@segfault.boston.devel.redhat.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20011104-0012-0000-0000-0000037C676E
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20011104-0013-0000-0000-000021B88D31
-Message-Id: <253f7f57-d27f-91f1-4e99-ff69a0e88084@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-10_04:2020-01-10,2020-01-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 phishscore=0 mlxscore=0
- mlxlogscore=731 priorityscore=1501 suspectscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001110037
-Message-ID-Hash: HM3XADCHUWXILLJ63NSXENNK6RL3FFKK
-X-Message-ID-Hash: HM3XADCHUWXILLJ63NSXENNK6RL3FFKK
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: NMXTG4P5FQ53XDSES7HM2SUVF32OA3QR
+X-Message-ID-Hash: NMXTG4P5FQ53XDSES7HM2SUVF32OA3QR
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HM3XADCHUWXILLJ63NSXENNK6RL3FFKK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NMXTG4P5FQ53XDSES7HM2SUVF32OA3QR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 1/11/20 2:08 AM, Jeff Moyer wrote:
-> Hi, Aneesh,
-> 
-> After applying this patch series, several of my namespaces no longer
-> enumerate:
-> 
-> Before:
-> 
-> # ndctl list
-> [
->    {
->      "dev":"namespace0.2",
->      "mode":"sector",
->      "size":106541672960,
->      "uuid":"ea1122b2-c219-424c-b09c-38a6e94a1042",
->      "sector_size":512,
->      "blockdev":"pmem0.2s"
->    },
->    {
->      "dev":"namespace0.1",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":10567548928,
->      "uuid":"68b6746f-481a-4ae6-80b5-71d62176606c",
->      "sector_size":512,
->      "align":4096,
->      "blockdev":"pmem0.1"
->    },
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52850327552,
->      "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
->      "sector_size":512,
->      "align":2097152,
->      "blockdev":"pmem0"
->    }
-> ]
-> 
-> After:
-> 
-> # ndctl list
-> [
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52850327552,
->      "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
->      "sector_size":512,
->      "align":2097152,
->      "blockdev":"pmem0"
->    }
-> ]
-> 
-> I won't have time to dig into it this week, but I wanted to mention it
-> before Dan merged these patches.
-> 
-> I'll follow up next week with more information.
-> 
+On Fri, Jan 10, 2020 at 8:33 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 1/11/20 2:08 AM, Jeff Moyer wrote:
+> > Hi, Aneesh,
+> >
+> > After applying this patch series, several of my namespaces no longer
+> > enumerate:
+> >
+> > Before:
+> >
+> > # ndctl list
+> > [
+> >    {
+> >      "dev":"namespace0.2",
+> >      "mode":"sector",
+> >      "size":106541672960,
+> >      "uuid":"ea1122b2-c219-424c-b09c-38a6e94a1042",
+> >      "sector_size":512,
+> >      "blockdev":"pmem0.2s"
+> >    },
+> >    {
+> >      "dev":"namespace0.1",
+> >      "mode":"fsdax",
+> >      "map":"dev",
+> >      "size":10567548928,
+> >      "uuid":"68b6746f-481a-4ae6-80b5-71d62176606c",
+> >      "sector_size":512,
+> >      "align":4096,
+> >      "blockdev":"pmem0.1"
+> >    },
+> >    {
+> >      "dev":"namespace0.0",
+> >      "mode":"fsdax",
+> >      "map":"dev",
+> >      "size":52850327552,
+> >      "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
+> >      "sector_size":512,
+> >      "align":2097152,
+> >      "blockdev":"pmem0"
+> >    }
+> > ]
+> >
+> > After:
+> >
+> > # ndctl list
+> > [
+> >    {
+> >      "dev":"namespace0.0",
+> >      "mode":"fsdax",
+> >      "map":"dev",
+> >      "size":52850327552,
+> >      "uuid":"6d3a0199-5d9a-4fed-830d-e25249b70571",
+> >      "sector_size":512,
+> >      "align":2097152,
+> >      "blockdev":"pmem0"
+> >    }
+> > ]
+> >
+> > I won't have time to dig into it this week, but I wanted to mention it
+> > before Dan merged these patches.
+> >
+> > I'll follow up next week with more information.
+> >
+>
+> dmesg should contain details  like
+>
+> [    5.810939] nd_pmem namespace0.1: invalid size/SPA
+> [    5.810969] nd_pmem: probe of namespace0.1 failed with error -95
+>
+> This is mostly due to the namespace start address not aligned to
+> subsection size.
+>
+> "namespace0.2" not having a 2MB aligned size which cause namespace 0.1
+> start addr to be not aligned. Hence both the namespace are marked disabled.
+>
 
-dmesg should contain details  like
+2 observations:
 
-[    5.810939] nd_pmem namespace0.1: invalid size/SPA
-[    5.810969] nd_pmem: probe of namespace0.1 failed with error -95
+- It's ok if the namespace start address is not subsection aligned as
+long as the mapped portion for data access is subsection aligned, at
+least on x86.
 
-This is mostly due to the namespace start address not aligned to 
-subsection size.
+- "sector" mode namespaces are not mapped by devm_memremap_pages() so
+there should be no restriction there. If powerpc can't map them that's
+a separate concern.
 
-"namespace0.2" not having a 2MB aligned size which cause namespace 0.1 
-start addr to be not aligned. Hence both the namespace are marked disabled.
-
--aneesh
+So, cross arch compatible namespaces is a goal, but not regressing
+existing namespaces takes precedence. I'd be happy if newly created
+namespaces tried to account for all the arch quirks, but if libnvdimm
+can enable a namespace it should try.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
