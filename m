@@ -2,82 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B1F139452
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jan 2020 16:08:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ECD13A0BD
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jan 2020 06:41:16 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF7A010097E0E;
-	Mon, 13 Jan 2020 07:12:02 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4CD2210097DF6;
+	Mon, 13 Jan 2020 21:44:32 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 168F910097E0D
-	for <linux-nvdimm@lists.01.org>; Mon, 13 Jan 2020 07:12:01 -0800 (PST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00DF1VTo033034;
-	Mon, 13 Jan 2020 10:08:41 -0500
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2xfva18mkd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2020 10:08:41 -0500
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00DF1tbD036021;
-	Mon, 13 Jan 2020 10:08:40 -0500
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2xfva18mk4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2020 10:08:40 -0500
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-	by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00DF4tV6017556;
-	Mon, 13 Jan 2020 15:08:40 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-	by ppma05wdc.us.ibm.com with ESMTP id 2xf755b1p8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 13 Jan 2020 15:08:40 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com [9.57.199.110])
-	by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00DF8dME27525416
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jan 2020 15:08:39 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 81153AE05F;
-	Mon, 13 Jan 2020 15:08:39 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FF55AE05C;
-	Mon, 13 Jan 2020 15:08:38 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.93.127])
-	by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Jan 2020 15:08:37 +0000 (GMT)
-X-Mailer: emacs 27.0.60 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v3 1/6] libnvdimm/namespace: Make namespace size
- validation arch dependent
-In-Reply-To: <CAPcyv4jKC=TBYh7pnF__iHNpcunifcRKhz4eQ3t86uCd4ZNNwg@mail.gmail.com>
-References: <20200108065219.171221-1-aneesh.kumar@linux.ibm.com>
- <x49muavm4gx.fsf@segfault.boston.devel.redhat.com>
- <253f7f57-d27f-91f1-4e99-ff69a0e88084@linux.ibm.com>
- <CAPcyv4jKC=TBYh7pnF__iHNpcunifcRKhz4eQ3t86uCd4ZNNwg@mail.gmail.com>
-Date: Mon, 13 Jan 2020 20:38:33 +0530
-Message-ID: <87lfqbl7gu.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 945BA10097F20
+	for <linux-nvdimm@lists.01.org>; Mon, 13 Jan 2020 21:44:29 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id g9so2567060plq.1
+        for <linux-nvdimm@lists.01.org>; Mon, 13 Jan 2020 21:41:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NKz4FX5CF5RWtMIEJLlbOdwI95yp0yWq9uv4iA4TuLU=;
+        b=E79D5MKrwB8ytDFFU947MiiZe0BxbTsP/xCDyiyxTC4SMe8qIkYZwzlXp+99jHU7HR
+         0/xpP7GNn5wy8dK390kBS4JL6NTs7ixK67fnVEJmbWMqb3uNT83LpHiNqdWTelMI84JR
+         CxDgBT70On7NH0fqcvJrL8vld0mgMZBY7LNt/7wi36Zm8JUh9z4Ihe8wEDUgXFKynZcs
+         stLXH5J2RvcUdW5KoW7BAnkpYAXcio9dsxGlGtZ5LxvrY53uXO00jxVsCfWeeNH80q5o
+         NqZ9tjEEz2KcQBU8WYPF6x6eL1BSztS1rnh5cX9Cru7qoJwCcIUgN8UO+2F7hGsH3SfZ
+         VNfA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=NKz4FX5CF5RWtMIEJLlbOdwI95yp0yWq9uv4iA4TuLU=;
+        b=miqLDU0d0xl7GXpna1VmPcDFdmyS8zQLlRDCS26xJPVGNoi/eFxevnakeUUjASr+mr
+         Qxxse5rwltt3M125H+dMngjd9GUe45lL/B61GZweBWthrEE7TNNX/VVX9Gjxi+pT8ULx
+         +1M+BnrHSC+ilOsySvGiXF9YGmrN09uNDeTQpxK050bea6BRa5F1LLV6GGYd5Pm87UtX
+         f1thnSpwzYTqB+eBKIlGpC0onyeAa/kz81oiJRik5BXSHj+zk/ZE0RoRLrTJD1BD9MtL
+         NjI/OHAqNlUYz9UWFrB+DyA0vXtlcL6YzGSWxbxKMztLBvszROFK9ZlJSXMnMqxPgQT/
+         pkGg==
+X-Gm-Message-State: APjAAAW2gajB9clJW0RjrwN4WXPk33BiTqwpXCQJUOdNfurZ8uE5aYk9
+	SojOiAxqo4R66ldecewdUb1ODnrgIQ8=
+X-Google-Smtp-Source: APXvYqycgnki7UFJ3jjwmkel10iCKfOZ8TQS/dAebxiAVDps0qH3m89EMQIS7ttcg/4My2qHjOa70A==
+X-Received: by 2002:a17:90a:c388:: with SMTP id h8mr26116319pjt.83.1578980470196;
+        Mon, 13 Jan 2020 21:41:10 -0800 (PST)
+Received: from santosiv.in.ibm.com ([129.41.84.75])
+        by smtp.gmail.com with ESMTPSA id j9sm15983173pff.6.2020.01.13.21.41.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2020 21:41:09 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linux-nvdimm@lists.01.org,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH] tools/test/nvdimm: Fix out of tree build
+Date: Tue, 14 Jan 2020 11:10:51 +0530
+Message-Id: <20200114054051.4115790-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-13_04:2020-01-13,2020-01-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- impostorscore=0 mlxlogscore=999 spamscore=0 adultscore=0 suspectscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001130124
-Message-ID-Hash: GGCYGATBHDJ43Z4Q2T5HAYCX7AYA3K2P
-X-Message-ID-Hash: GGCYGATBHDJ43Z4Q2T5HAYCX7AYA3K2P
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+Message-ID-Hash: T2PZQA75J7DKHQR7H3SFX5Q2HWTXQWOR
+X-Message-ID-Hash: T2PZQA75J7DKHQR7H3SFX5Q2HWTXQWOR
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GGCYGATBHDJ43Z4Q2T5HAYCX7AYA3K2P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/T2PZQA75J7DKHQR7H3SFX5Q2HWTXQWOR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -86,88 +71,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+Out of tree build using
 
-> On Fri, Jan 10, 2020 at 8:33 PM Aneesh Kumar K.V
-> <aneesh.kumar@linux.ibm.com> wrote:
->>
->> On 1/11/20 2:08 AM, Jeff Moyer wrote:
->> > Hi, Aneesh,
->
->> "namespace0.2" not having a 2MB aligned size which cause namespace 0.1
->> start addr to be not aligned. Hence both the namespace are marked disabled.
->>
->
-> 2 observations:
->
-> - It's ok if the namespace start address is not subsection aligned as
-> long as the mapped portion for data access is subsection aligned, at
-> least on x86.
->
-> - "sector" mode namespaces are not mapped by devm_memremap_pages() so
-> there should be no restriction there. If powerpc can't map them that's
-> a separate concern.
+   make M=tools/test/nvdimm O=/tmp/build -C /tmp/build
 
-Does that mean the `supported_size_align` attribute should be a property
-of pfn and dax seed device? Considering we don't want to apply this
-restrictions for blk, raw namespace, and btt mode namespace should we
-make the attribute a seed device property rather than a namespace
-property?
+fails with the following error
 
+make: Entering directory '/tmp/build'
+  CC [M]  tools/testing/nvdimm/test/nfit.o
+linux/tools/testing/nvdimm/test/nfit.c:19:10: fatal error: nd-core.h: No such file or directory
+   19 | #include <nd-core.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
 
->
-> So, cross arch compatible namespaces is a goal, but not regressing
-> existing namespaces takes precedence. I'd be happy if newly created
-> namespaces tried to account for all the arch quirks, but if libnvdimm
-> can enable a namespace it should try.
+That is because the kbuild file uses $(src) which points to
+tools/testing/nvdimm, $(srctree) correctly points to root of the linux
+source tree.
 
-Ok. So that means we apply the alignment rules when creating new
-namespaces irrespective of its type/mode. But when initializing via scan
-label we only apply them for devdax and fsdax namespace?
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ tools/testing/nvdimm/Kbuild      | 4 ++--
+ tools/testing/nvdimm/test/Kbuild | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-Something like
-
-static bool nvdimm_valid_namespace(struct device *dev,
-		struct nd_namespace_common *ndns, resource_size_t size)
-{
-	struct nd_region *nd_region = to_nd_region(ndns->dev.parent);
-	unsigned long align_size = arch_namespace_align_size();
-	struct resource *res;
-	u32 remainder;
-
-	/*
-	 * Don't validate the start and size for blk namespace type
-	 */
-	if (is_namespace_blk(&ndns->dev))
-		return true;
-
-	/*
-	 * For btt and raw namespace we use ioremap. Assume both can work
-	 * with PAGE_SIZE alignment.
-	 */
-	if (is_nd_btt(dev) || is_namespace_io(dev))
-		return true;
-
-	div_u64_rem(size, align_size * nd_region->ndr_mappings, &remainder);
-	if (remainder)
-		return false;
-
-	if (is_namespace_pmem(&ndns->dev)) {
-		struct nd_namespace_pmem *nspm = to_nd_namespace_pmem(&ndns->dev);
-
-		res = &nspm->nsio.res;
-	} else
-		/* cannot reach */
-		return false;
-
-	div_u64_rem(res->start, align_size * nd_region->ndr_mappings, &remainder);
-	if (remainder)
-		return false;
-
-	return true;
-}
-
--aneesh
+diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
+index 6aca8d5be159..0615fa3d9f7e 100644
+--- a/tools/testing/nvdimm/Kbuild
++++ b/tools/testing/nvdimm/Kbuild
+@@ -22,8 +22,8 @@ DRIVERS := ../../../drivers
+ NVDIMM_SRC := $(DRIVERS)/nvdimm
+ ACPI_SRC := $(DRIVERS)/acpi/nfit
+ DAX_SRC := $(DRIVERS)/dax
+-ccflags-y := -I$(src)/$(NVDIMM_SRC)/
+-ccflags-y += -I$(src)/$(ACPI_SRC)/
++ccflags-y := -I$(srctree)/drivers/nvdimm/
++ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+ 
+ obj-$(CONFIG_LIBNVDIMM) += libnvdimm.o
+ obj-$(CONFIG_BLK_DEV_PMEM) += nd_pmem.o
+diff --git a/tools/testing/nvdimm/test/Kbuild b/tools/testing/nvdimm/test/Kbuild
+index fb3c3d7cdb9b..75baebf8f4ba 100644
+--- a/tools/testing/nvdimm/test/Kbuild
++++ b/tools/testing/nvdimm/test/Kbuild
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+-ccflags-y := -I$(src)/../../../../drivers/nvdimm/
+-ccflags-y += -I$(src)/../../../../drivers/acpi/nfit/
++ccflags-y := -I$(srctree)/drivers/nvdimm/
++ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+ 
+ obj-m += nfit_test.o
+ obj-m += nfit_test_iomap.o
+-- 
+2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
