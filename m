@@ -2,63 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722E113B955
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Jan 2020 07:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7AC13BBCA
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Jan 2020 10:03:22 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 280A110097DC1;
-	Tue, 14 Jan 2020 22:06:09 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6260E10097DBE;
+	Wed, 15 Jan 2020 01:06:38 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 803DB10097DBE
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jan 2020 22:06:06 -0800 (PST)
-Received: by mail-oi1-x244.google.com with SMTP id c77so14313891oib.7
-        for <linux-nvdimm@lists.01.org>; Tue, 14 Jan 2020 22:02:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WyKlBkScoVZ6BBeE/lvKOUnxM2fwU6k2+3ORlYeQ1JU=;
-        b=HNS/MuCyM2Y0rPTycj0ERFuxRvMu1QHpp95g6CP0C2mcOOP17W3rjfRnyo8mZNws9l
-         Bcv17zUUAkkGTvOLwd1IP1Q6kQdxkNC/BtRTUsWN9in2f4VRO4DjkljU1DghPGI42WVQ
-         jUuVLY3zCBFOvviuNPlx0NRWZKXOYYWOD0An0XLByT1bn95S8DuHxEUEKSnrL30YhlyT
-         +h+l0ymO2e0tgatyf84uKe0HDE06uZYrHOHGYewqXSfc7NmSlTYA6qssHrbd2ft+e7BG
-         Ov/+58wifUZ6rKsf/zQwYB50hnJMVNNyZF84Dl5dZNk3GBE3TR4AQ7f8vv5m0rnBpM3q
-         yzGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WyKlBkScoVZ6BBeE/lvKOUnxM2fwU6k2+3ORlYeQ1JU=;
-        b=rjQSJY8kN68RHFX1AJQhag20xrLtf6PTviza9LdFiwlpnyF5Wus0IkMr4RGVAOM8GJ
-         I3IHiKmgsowtb3lUSFPqSfpM1zjt/iC4gUh/lIgR1QM/kecX/MwyYxu1z8gmuJYR67gP
-         4LqhabJ+P9TcX2nkOkRCLSVZDtthicicSC3UZyjLr0kDV129Ozm4P7neFBGvhpkArWrb
-         pMZVCdadeamGBpJrGysHxZrl52AiOZ7ly76KD6NGjg5SaBHS7p2lvg/H+nuClGKx7rHr
-         hvdObsYWZzh3QJ86Ntic+pMNqRWTrPgYxZgnMhO76OrHmOCtFj+QxpM3CY4OMWwnNz6j
-         Kn2g==
-X-Gm-Message-State: APjAAAUDiqtnFuPXrnkf2Qgb2+pVl+3XS6wofN6SMmByWzIcACPWe5TJ
-	LQDPCNbQ2Z1oul0acK+ImBmrPCndQniKoII5lrzK0A==
-X-Google-Smtp-Source: APXvYqzeuAG8OGRFPj/VxBeMJvbxWakGlATFxZiTEHM5ApidHx987T6zad1F65AWRIeqz6hwenMYEqMe9i/yHCxcJeM=
-X-Received: by 2002:a05:6808:b37:: with SMTP id t23mr20144974oij.149.1579068165602;
- Tue, 14 Jan 2020 22:02:45 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 6224C10097DAF
+	for <linux-nvdimm@lists.01.org>; Wed, 15 Jan 2020 01:06:35 -0800 (PST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx2.suse.de (Postfix) with ESMTP id 063F3AC6E;
+	Wed, 15 Jan 2020 09:03:13 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 3EAEA1E0CBC; Wed, 15 Jan 2020 10:03:06 +0100 (CET)
+Date: Wed, 15 Jan 2020 10:03:06 +0100
+From: Jan Kara <jack@suse.cz>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [PATCH 01/19] dax: remove block device dependencies
+Message-ID: <20200115090306.GA31450@quack2.suse.cz>
+References: <CAPcyv4ggH7-QhYg+YOOWn_m25uds+-0L46=N09ap-LALeGuU_A@mail.gmail.com>
+ <20200107180101.GC15920@redhat.com>
+ <CAPcyv4gmdoqpwwwy4dS3D2eZFjmJ_Zi39k=1a4wn-_ksm-UV4A@mail.gmail.com>
+ <20200107183307.GD15920@redhat.com>
+ <CAPcyv4ggoS4dWjq-1KbcuaDtroHKEi5Vu19ggJ-qgycs6w1eCA@mail.gmail.com>
+ <20200109112447.GG27035@quack2.suse.cz>
+ <CAPcyv4j5Mra8qeLO3=+BYZMeXNAxFXv7Ex7tL9gra1TbhOgiqg@mail.gmail.com>
+ <20200114203138.GA3145@redhat.com>
+ <CAPcyv4iXKFt207Pen+E1CnqCFtC1G85fxw5EXFVx+jtykGWMXA@mail.gmail.com>
+ <20200114212805.GB3145@redhat.com>
 MIME-Version: 1.0
-References: <20191225054227.gii6ctjkuddjnprs@xzhoux.usersys.redhat.com>
-In-Reply-To: <20191225054227.gii6ctjkuddjnprs@xzhoux.usersys.redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 14 Jan 2020 22:02:34 -0800
-Message-ID: <CAPcyv4hMPh0C+_OV+vuiYQikb8ZvRanna4vXfKN=10yrAyCjDA@mail.gmail.com>
-Subject: Re: [PATCH] mm: get rid of WARN if failed to cow user pages
-To: Murphy Zhou <jencce.kernel@gmail.com>
-Message-ID-Hash: INW7MIJAQ3VZQ4QXPDGEDPFXKOOY557R
-X-Message-ID-Hash: INW7MIJAQ3VZQ4QXPDGEDPFXKOOY557R
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Jia He <justin.he@arm.com>, Linux MM <linux-mm@kvack.org>, "Shutemov, Kirill" <kirill.shutemov@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Disposition: inline
+In-Reply-To: <20200114212805.GB3145@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: MJSN6JZSZCCWC6IUSJYJ3DQPTAWVLDMW
+X-Message-ID-Hash: MJSN6JZSZCCWC6IUSJYJ3DQPTAWVLDMW
+X-MailFrom: jack@suse.cz
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Jan Kara <jack@suse.cz>, "Darrick J. Wong" <darrick.wong@oracle.com>, Christoph Hellwig <hch@infradead.org>, Dave Chinner <david@fromorbit.com>, Miklos Szeredi <miklos@szeredi.hu>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/INW7MIJAQ3VZQ4QXPDGEDPFXKOOY557R/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MJSN6JZSZCCWC6IUSJYJ3DQPTAWVLDMW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,25 +56,61 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-[ drop Ross, add Kirill, linux-mm, and lkml ]
+On Tue 14-01-20 16:28:05, Vivek Goyal wrote:
+> On Tue, Jan 14, 2020 at 12:39:00PM -0800, Dan Williams wrote:
+> > I think we should at least try to delete the partition support and see
+> > if anyone screams. Have a module option to revert the behavior so
+> > people are not stuck waiting for the revert to land, but if it stays
+> > quiet then we're in a better place with that support pushed out of the
+> > dax core.
+> 
+> Hi Dan,
+> 
+> So basically keep partition support code just that disable it by default
+> and it is enabled by some knob say kernel command line option/module
+> option.
+> 
+> At what point of time will we remove that code completely. I mean what
+> if people scream after two kernel releases, after we have removed the
+> code.
+> 
+> Also, from distribution's perspective, we might not hear from our
+> customers for a very long time (till we backport that code in to
+> existing releases or release this new code in next major release). From
+> that view point I will not like to break existing user visible behavior.
+> 
+> How bad it is to keep partition support around. To me it feels reasonaly
+> simple where we just have to store offset into dax device into another
+> dax object and pass that object around (instead of dax_device). If that's
+> the case, I am not sure why to even venture into a direction where some
+> user's setup might be broken.
+> 
+> Also from an application perspective, /dev/pmem is a block device, so it
+> should behave like a block device, (including kernel partition table support).
+> From that view, dax looks like just an additional feature of that device
+> which can be enabled by passing option "-o dax".
 
-On Tue, Dec 24, 2019 at 9:42 PM Murphy Zhou <jencce.kernel@gmail.com> wrote:
->
-> By running xfstests with fsdax enabled, generic/437 always hits this
-> warning[1] since this commit:
->
-> commit 83d116c53058d505ddef051e90ab27f57015b025
-> Author: Jia He <justin.he@arm.com>
-> Date:   Fri Oct 11 22:09:39 2019 +0800
->
->     mm: fix double page fault on arm64 if PTE_AF is cleared
->
-> Looking at the test program[2] generic/437 uses, it's pretty easy
-> to hit this warning. Remove this WARN as it seems not necessary.
+Well, not all block devices are partitionable. For example cdroms are
+standard block devices but partitioning does not run for them. Similarly
+device mapper devices are block devices but not partitioned. So there is
+some precedens in not doing partitioning for some types of block devices.
 
-This is not sufficient justification. Does this same test fail without
-DAX? If not, why not? At a minimum you need to explain why this is not
-indicating a problem.
+For the rest I agree that kernels where pmem devices are partitionable have
+shipped in enterprise distros and are going to be supported (and used) for
+5-10 years before users decide to move on to something newer - at which
+point we'll only find out whether someone used the feature or not. So
+deprecation is going to be somewhat interesting. On the other hand clever
+udev rule that detects partition table on pmem device and uses kpartx to
+partition these devices (like what happens e.g. for dm-multipath devices)
+could possibly be used as a replacement for kernel support so there's a way
+out of this...
+
+So I don't care too deeply about what the decision is going to be.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
