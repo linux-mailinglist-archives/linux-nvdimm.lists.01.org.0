@@ -1,141 +1,102 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D19613B3BF
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jan 2020 21:39:16 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1526013B3CD
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jan 2020 21:49:04 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2547910097DAB;
-	Tue, 14 Jan 2020 12:42:33 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id E67AE10097DB2;
+	Tue, 14 Jan 2020 12:52:20 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=209.59.133.238; helo=host2.strykerdigital.com; envelope-from=developers@techcuriosity.in; receiver=<UNKNOWN> 
+Received: from host2.strykerdigital.com (host2.strykerdigital.com [209.59.133.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E8AAC10097E0A
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jan 2020 12:42:31 -0800 (PST)
-Received: by mail-ot1-x344.google.com with SMTP id p8so13953505oth.10
-        for <linux-nvdimm@lists.01.org>; Tue, 14 Jan 2020 12:39:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KIZnzMCbYIPyWmmiZXOrwZsr2d1DaLuYf9PqBFFGxaY=;
-        b=1ufiHoIhgkel1wNgfe5RR02iDJ6+fd8UzlDlpmsKFP4dFT9Zw+z+eHe5IHCwBCzia3
-         Qx3uIUdT99fmuIsed3Wcx0ZiytVs24h1TKYzEHptbEJN6KLwBLnismJWzCM54qIzbXng
-         6i+ainEaEBsD70PzhoIWMZ4fJhRG9/48EC7wGC+l3Tme4CNXCr+PDkn9oDjPuVkiudiu
-         Jx7Hin+lVNC4afdBHw5tEOHqQLhQ+LCEm1bcbgLD2uj8DLGYhrZaQksVeFHTnazOxnuZ
-         Kf5qJe/0whlXEMBDWBNM1CA1AAsAXa05zB+qlcDBZa7WUgJ3Wn6b+JSCmcNfsshtiJ1A
-         CETA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KIZnzMCbYIPyWmmiZXOrwZsr2d1DaLuYf9PqBFFGxaY=;
-        b=AzQ3Up1a+eGExDbZJV4EVImnGpC+bPFZuCqNrUly7irtc4zDtEFhwk4wvdvZuUQQUT
-         iHEL+sKDYe7dIurpSJmxix5W8ducQwOZXrvfDhuryHN6/uw41VQU2/BGD5azvPfbDmwb
-         NOABtm6SSr1gfExfJ5L6Dlalg0j6DUp3voQCDkZrdqAe7LDyO8c8f6uzxEp0/+uDeoUm
-         6D0Bbx9OVCd9lbCE+TWzG43Jt5wHpjmSZmes92A0HSVNUi7D+WiUJnU7nXnlP7MTqqlJ
-         YU9A92U0Q5CJo8iP8OWBKtxZWOz86l4WpKFaz11M+svq9h22rOSh2HtwpsFsLEFmRfFM
-         DrPw==
-X-Gm-Message-State: APjAAAWb0oh/ER1fSCNiNoYxtn0mSEH5JHqyQv2qpM7o9WBcl1ui5yNx
-	5XBHAj5aIdbP+X1GQhGjaTG0ORKx6QjOO1a0s9Ssrw==
-X-Google-Smtp-Source: APXvYqzvyu/O19EV+W3nd5Qbhe0VPu8Zpxx4j6lAGURR9nwfPKNQXF393TmIiEgkujYPUIcgpRgr0BZ6QoEDec2+nxI=
-X-Received: by 2002:a9d:68d3:: with SMTP id i19mr130746oto.71.1579034351613;
- Tue, 14 Jan 2020 12:39:11 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 3608510097DB1
+	for <linux-nvdimm@lists.01.org>; Tue, 14 Jan 2020 12:52:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=techcuriosity.in; s=default; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Sender:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WjWj2VSrr33SQDQ3d1bkIDuES9safXcb5E/FMp/k54o=; b=OzW9TMLiBHRQaIDK2h3Uld5Fd1
+	7cUTt70JDsbeO5CxGLcqnYV/EXO5uYBg5KpgcDa0+YQoXnLGmkHASG2TsHn56nUaSWrMutzZTfe7v
+	f9tQTuYQ9Szna8xMttuDNhJSCZDlVx3jQdHu4CXqXEKXfwcWySkFVh9euDHwHtuJS+62J6SWxlRfR
+	R5iChbY7N4VVET6InKo4HKqkT1KSVESTCUuEs42Ird8EnOEAqHFX7yyPqstxP7MzGiliCjO7HS/NM
+	U/RHYOcoY1aGk53If5EA7F2rHpgPOZmKmAiKeWKn8zJ37HZQAQwZA5DwRkbqORUB+YstQi88wwJ1n
+	p+Ka6mQQ==;
+Received: from [195.206.106.234] (port=58874 helo=techcuriosity.in)
+	by host2.strykerdigital.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.92)
+	(envelope-from <developers@techcuriosity.in>)
+	id 1irT7R-000Lco-JZ
+	for linux-nvdimm@lists.01.org; Tue, 14 Jan 2020 15:48:57 -0500
+From: Mr@ml01.01.org, Abdullah Mishail <developers@techcuriosity.in>
+To: linux-nvdimm@lists.01.org
+Subject: Urgent Help Needed
+Date: 15 Jan 2020 04:52:31 -0800
+Message-ID: <20200115045231.AC34E12181F7AE41@techcuriosity.in>
 MIME-Version: 1.0
-References: <20200107125159.GA15745@infradead.org> <CAPcyv4jZE35sbDo6J4ihioEUFTuekJ3_h0=2Ra4PY+xn2xn1cQ@mail.gmail.com>
- <20200107170731.GA472641@magnolia> <CAPcyv4ggH7-QhYg+YOOWn_m25uds+-0L46=N09ap-LALeGuU_A@mail.gmail.com>
- <20200107180101.GC15920@redhat.com> <CAPcyv4gmdoqpwwwy4dS3D2eZFjmJ_Zi39k=1a4wn-_ksm-UV4A@mail.gmail.com>
- <20200107183307.GD15920@redhat.com> <CAPcyv4ggoS4dWjq-1KbcuaDtroHKEi5Vu19ggJ-qgycs6w1eCA@mail.gmail.com>
- <20200109112447.GG27035@quack2.suse.cz> <CAPcyv4j5Mra8qeLO3=+BYZMeXNAxFXv7Ex7tL9gra1TbhOgiqg@mail.gmail.com>
- <20200114203138.GA3145@redhat.com>
-In-Reply-To: <20200114203138.GA3145@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 14 Jan 2020 12:39:00 -0800
-Message-ID: <CAPcyv4iXKFt207Pen+E1CnqCFtC1G85fxw5EXFVx+jtykGWMXA@mail.gmail.com>
-Subject: Re: [PATCH 01/19] dax: remove block device dependencies
-To: Vivek Goyal <vgoyal@redhat.com>
-Message-ID-Hash: JLBEWFXBJARX3FGJ6WIDU5IMYVJQGTSA
-X-Message-ID-Hash: JLBEWFXBJARX3FGJ6WIDU5IMYVJQGTSA
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jan Kara <jack@suse.cz>, "Darrick J. Wong" <darrick.wong@oracle.com>, Christoph Hellwig <hch@infradead.org>, Dave Chinner <david@fromorbit.com>, Miklos Szeredi <miklos@szeredi.hu>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host2.strykerdigital.com
+X-AntiAbuse: Original Domain - lists.01.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - techcuriosity.in
+X-Get-Message-Sender-Via: host2.strykerdigital.com: authenticated_id: developers@techcuriosity.in
+X-Authenticated-Sender: host2.strykerdigital.com: developers@techcuriosity.in
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Message-ID-Hash: 3GVQ7WKZTFAXHSGOJ4S5DOHMRKOGTGKO
+X-Message-ID-Hash: 3GVQ7WKZTFAXHSGOJ4S5DOHMRKOGTGKO
+X-MailFrom: developers@techcuriosity.in
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: sabdullahmishailsabdullah@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JLBEWFXBJARX3FGJ6WIDU5IMYVJQGTSA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3GVQ7WKZTFAXHSGOJ4S5DOHMRKOGTGKO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============6990426529355006134=="
+
+--===============6990426529355006134==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><HEAD><TITLE></TITLE>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19572"></HEAD>
+<body>
+<P>Dear Sir/ Madam,</P>
+<P>My name is Mr,Abdullah Mishail, executive member of Multi-companies<BR>i=
+n Syria government. I believe you are aware of ongoing war in my country, o=
+ur country is no longer conducive for us.</P>
+<P>I have some fund which I want to move to you for investment as I have in=
+terest in investing it in your country and company because we are not safe =
+here,I am contacting&nbsp;</P>
+<P>you to work with me in handling the fund and investment as partner,the a=
+mount involved is $12Million united state dollars.</P>
+<P>As I have plan also to live this country once I you recieve the money I =
+will be coming over to your country to see how far you have gone base on we=
+ both we agreed on.&nbsp;</P>
+<P>Get back to me upon your response we shall discuss your percentage terms=
+=2EHope to hear from you,</P>
+<P>&nbsp;</P>
+<P>Please Reply To: <B>Sabdullahmishailsabdullah@gmail.com</B></P>
+<P>Best Regard.<BR>S Abdullah Mishail</P></BODY></HTML>
+--===============6990426529355006134==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Tue, Jan 14, 2020 at 12:31 PM Vivek Goyal <vgoyal@redhat.com> wrote:
->
-> On Thu, Jan 09, 2020 at 12:03:01PM -0800, Dan Williams wrote:
-> > On Thu, Jan 9, 2020 at 3:27 AM Jan Kara <jack@suse.cz> wrote:
-> > >
-> > > On Tue 07-01-20 10:49:55, Dan Williams wrote:
-> > > > On Tue, Jan 7, 2020 at 10:33 AM Vivek Goyal <vgoyal@redhat.com> wrote:
-> > > > > W.r.t partitioning, bdev_dax_pgoff() seems to be the pain point where
-> > > > > dax code refers back to block device to figure out partition offset in
-> > > > > dax device. If we create a dax object corresponding to "struct block_device"
-> > > > > and store sector offset in that, then we could pass that object to dax
-> > > > > code and not worry about referring back to bdev. I have written some
-> > > > > proof of concept code and called that object "dax_handle". I can post
-> > > > > that code if there is interest.
-> > > >
-> > > > I don't think it's worth it in the end especially considering
-> > > > filesystems are looking to operate on /dev/dax devices directly and
-> > > > remove block entanglements entirely.
-> > > >
-> > > > > IMHO, it feels useful to be able to partition and use a dax capable
-> > > > > block device in same way as non-dax block device. It will be really
-> > > > > odd to think that if filesystem is on /dev/pmem0p1, then dax can't
-> > > > > be enabled but if filesystem is on /dev/mapper/pmem0p1, then dax
-> > > > > will work.
-> > > >
-> > > > That can already happen today. If you do not properly align the
-> > > > partition then dax operations will be disabled. This proposal just
-> > > > extends that existing failure domain to make all partitions fail to
-> > > > support dax.
-> > >
-> > > Well, I have some sympathy with the sysadmin that has /dev/pmem0 device,
-> > > decides to create partitions on it for whatever (possibly misguided)
-> > > reason and then ponders why the hell DAX is not working? And PAGE_SIZE
-> > > partition alignment is so obvious and widespread that I don't count it as a
-> > > realistic error case sysadmins would be pondering about currently.
-> > >
-> > > So I'd find two options reasonably consistent:
-> > > 1) Keep status quo where partitions are created and support DAX.
-> > > 2) Stop partition creation altogether, if anyones wants to split pmem
-> > > device further, he can use dm-linear for that (i.e., kpartx).
-> > >
-> > > But I'm not sure if the ship hasn't already sailed for option 2) to be
-> > > feasible without angry users and Linus reverting the change.
-> >
-> > Christoph? I feel myself leaning more and more to the "keep pmem
-> > partitions" camp.
-> >
-> > I don't see "drop partition support" effort ending well given the long
-> > standing "ext4 fails to mount when dax is not available" precedent.
-> >
-> > I think the next least bad option is to have a dax_get_by_host()
-> > variant that passes an offset and length pair rather than requiring a
-> > later bdev_dax_pgoff() to recall the offset. This also prevents
-> > needing to add another dax-device object representation.
->
-> I am wondering what's the conclusion on this. I want to this to make
-> progress in some direction so that I can make progress on virtiofs DAX
-> support.
-
-I think we should at least try to delete the partition support and see
-if anyone screams. Have a module option to revert the behavior so
-people are not stuck waiting for the revert to land, but if it stays
-quiet then we're in a better place with that support pushed out of the
-dax core.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6990426529355006134==--
