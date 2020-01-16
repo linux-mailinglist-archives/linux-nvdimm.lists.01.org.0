@@ -2,130 +2,133 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9596713DCE6
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jan 2020 15:04:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D3813DE16
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jan 2020 15:54:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3394B10096C9B;
-	Thu, 16 Jan 2020 06:07:31 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.240.4.2; helo=a4-2.smtp-out.eu-west-1.amazonses.com; envelope-from=0102016faeab01be-58b14a75-2440-46d9-a15a-3faad7d3b487-000000@eu-west-1.amazonses.com; receiver=<UNKNOWN> 
-Received: from a4-2.smtp-out.eu-west-1.amazonses.com (a4-2.smtp-out.eu-west-1.amazonses.com [54.240.4.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8EF0410096CA2;
+	Thu, 16 Jan 2020 06:57:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1BFCF10096C97
-	for <linux-nvdimm@lists.01.org>; Thu, 16 Jan 2020 06:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=ihchhvubuqgjsxyuhssfvqohv7z3u4hn; d=amazonses.com; t=1579183440;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-	bh=KT9SmZTgktge7oUq/xfcR0QHxGR7P9CBHQwDi7VfbuE=;
-	b=gelj/TkrmjNOuqDHcDHvxHL6G29oZq0muA8+xAR71bFA9A+RXD3hFHzMnB1DKVDM
-	JwCfMcO45LzbGUi+aAuIISa7OdiHmB7hm+/XkW8OEO3YtgoNd1nOh7EducEKvhdblAN
-	kN5omByhj7KBHfu5yOhjydbRDt/wlxuos9AW7YrE=
-thread-index: AdXMY0+ihsu9M7kSRx+LnGnsPFMkMA==
-Thread-Topic: =?gb2312?B?ob7E2sKape+pYKWvob+hvtTa1ayl76lgpa+hvyC9VfJZsruGliDX1NWspMs=?=
-	=?gb2312?B?vtOkyqSspOm82qSwIKXNpcOlyKW3peelw6XXpNikzsnMxrez9sa3tPrQ0A==?=
-	=?gb2312?B?pdGpYKXIpcqpYKTytPPEvLyv?=
-From: <y5566jp1@gmail.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?gb2312?B?ob7E2sKape+pYKWvob+hvtTa1ayl76lgpa+hvyC9VfJZsruGliDX1NWspMs=?=
-	=?gb2312?B?vtOkyqSspOm82qSwIKXNpcOlyKW3peelw6XXpNikzsnMxrez9sa3tPrQ0A==?=
-	=?gb2312?B?pdGpYKXIpcqpYKTytPPEvLyv?=
-Date: Thu, 16 Jan 2020 14:04:00 +0000
-Message-ID: <0102016faeab01be-58b14a75-2440-46d9-a15a-3faad7d3b487-000000@eu-west-1.amazonses.com>
+	by ml01.01.org (Postfix) with ESMTPS id 402EF10096C95
+	for <linux-nvdimm@lists.01.org>; Thu, 16 Jan 2020 06:57:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1579186449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GewXvgai6oYcv5uu5jT3XLWaUiemLMNm2W6ZLR1T1ko=;
+	b=I3l/Wu/Afu/aPy4XSrz5lIPlSYz23shLRENfrLYvXhGvNkajJDdJJjcbVuZnPVUhF5jxMd
+	Yzy8VFtZNZMz4jvQpXPeUk+RD4F9MBmM76kJPs5sR8R1kLxxd4hWOZyxN2xdV66UJNPnvh
+	86ei9cTieIs0hi7TDgaV9CaIOPDJaPQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-388-KoBNpf3IMQSxaLPYFvWuOw-1; Thu, 16 Jan 2020 09:54:05 -0500
+X-MC-Unique: KoBNpf3IMQSxaLPYFvWuOw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5406CA0CC2;
+	Thu, 16 Jan 2020 14:54:04 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2F8455DA60;
+	Thu, 16 Jan 2020 14:54:04 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id ABB94220A24; Thu, 16 Jan 2020 09:54:03 -0500 (EST)
+Date: Thu, 16 Jan 2020 09:54:03 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: dan.j.williams@intel.com
+Subject: Re: dax: Get rid of fs_dax_get_by_host() helper
+Message-ID: <20200116145403.GB25291@redhat.com>
+References: <20200106181117.GA16248@redhat.com>
 MIME-Version: 1.0
-X-Mailer: Microsoft CDO for Windows 2000
-Content-Class: urn:content-classes:message
-Importance: normal
-Priority: normal
-X-MimeOLE: Produced By Microsoft MimeOLE
-X-SES-Outgoing: 2020.01.16-54.240.4.2
-Feedback-ID: 1.eu-west-1.ghcekm2URM80rxYsQ8srimAAfaKSrkY5TjtvLRYnlsQ=:AmazonSES
-Message-ID-Hash: YUVCRCF7HK2CDAY77RAGB6XRIJX64OUD
-X-Message-ID-Hash: YUVCRCF7HK2CDAY77RAGB6XRIJX64OUD
-X-MailFrom: 0102016faeab01be-58b14a75-2440-46d9-a15a-3faad7d3b487-000000@eu-west-1.amazonses.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <20200106181117.GA16248@redhat.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: NKVRVVHPOJ5XDUL7WM4TLAATLNGRX4QM
+X-Message-ID-Hash: NKVRVVHPOJ5XDUL7WM4TLAATLNGRX4QM
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YUVCRCF7HK2CDAY77RAGB6XRIJX64OUD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NKVRVVHPOJ5XDUL7WM4TLAATLNGRX4QM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5156419443226460140=="
-
---===============5156419443226460140==
-Content-Type: text/plain
-Content-Class: urn:content-classes:message
-Content-Transfer-Encoding: quoted-printable
-
-=CD=BB=C8=BB=EF=BF=BD=CA=A5=EF=BF=BD`=EF=BF=BD=EF=BF=BD=EF=BF=BD=CA=A7=EF=
-=BF=BD=F1=A4=A4=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=DE=A4=EF=BF=BD=EF=BF=
-=BD=EF=BF=BD
-
-=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BDj=D8=9B=EF=BF=BD=EF=BF=BD=D8=9C=EF=BF=BD=
-=D3=A4=F2=A4=B7=A4=C6=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=
-=BD=CB=A4=CA=A4=EF=BF=BD=DE=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD
-=D8=9C=C2=B7=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=CB=B0=E9=A4=A4=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=CD=A5=C3=A5=C8=A5=EF=BF=BD=EF=BF=BD=EF=BF=BD=C3=A5=D7=A4=EF=
-=BF=BD=EF=BF=BD_=EF=BF=BD=EF=BF=BD?=D8=9C=EF=BF=BD=D3=A4=EF=BF=BD=EF=BF=BD=
-=D6=81=EF=BF=BD=EF=BF=BD=C3=A4=C6=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=D1=A9`=EF=BF=BD=C8=A5=CA=A9`=EF=
-=BF=BD=EF=BF=BD=C4=BC=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=C6=A4=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=DE=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD
-
-=EF=BF=BD=EF=BF=BD=D5=AC=EF=BF=BD=DA=84=D5=A4=CA=A4=CE=A4=C7=A1=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=CA=B7=EF=BF=BD=EF=BF=BD=CB=A5=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=C7=A4=EF=BF=BD
-?=EF=BF=BD=D2=A4=CB=A4=EF=BF=BD=EF=BF=BD=CA=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=
-=EF=BF=BD=EF=BF=BD=EF=BF=BD=C2=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=
-=BD=EF=BF=BD=EF=BF=BD
-?=EF=BF=BD=EF=BF=BD=EF=BF=BDI=EF=BF=BD=C7=85=EF=BF=BD=EF=BF=BD=EB=A5=A2=EF=
-=BF=BD=C3=A5=D7=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD
-?=EF=BF=BD=D4=B7=D6=A4=CE=A5=DA=A9`=EF=BF=BD=EF=BF=BD=EF=BF=BD=C7=BA=C3=A4=
-=EF=BF=BD=EF=BF=BD=CA=95r=EF=BF=BDg=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=C2=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD
-?=EF=BF=BD=EF=BF=BD=EF=BF=BD=C2=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BDo=EF=BF=BD=CA=A4=C9=A4=
-=F2=A4=B7=A4=CA=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD`=EF=BF=BD=EF=BF=BD=
-=EF=BF=BD=C7=A4=EF=BF=BD=EF=BF=BD=EB=B7=BD
-?=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BDM=EF=BF=BD=EF=BF=BD=EF=BF=BD=
-=E3=A4=B7=EF=BF=BD=C7=B8=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EB=A4=AC=EF=BF=
-=BD=DB=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD
-?=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=CE=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BDA=EF=BF=BD=EE=A4=B7=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD
-
-=CE=B4=EF=BF=BDU=EF=BF=BDY=EF=BF=BD=C7=A4=EF=BF=BD=EF=BF=BDZ=D3=AD=EF=BF=BD=
-=C7=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD
-=EF=BF=BD=EF=BF=BD=EF=BF=BDD?=EF=BF=BD=EF=BF=BD=EF=BF=BD=CB=A5=EF=BF=BD=EF=
-=BF=BD=CE=B7=EF=BF=BD=EF=BF=BD=CF=B4=EF=BF=BDZ=D3=AD=EF=BF=BD=C7=A4=EF=BF=
-=BD=EF=BF=BD=EF=BF=BD
-=C8=AB=EF=BF=BD=EF=BF=BD=EF=BF=BD=C9=A4=EF=BF=BD=EF=BF=BD=C7=A4=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=EF=BF=BDI=EF=BF=BD=EF=BF=BD=EF=BF=BD=DC=A4=C7=A4=EF=BF=BD=
-=EF=BF=BD=EF=BF=BD
-=EF=BF=BD=C2=85=EF=BF=BD5=EF=BF=BD=EF=BF=BD=D2=A1=EF=BF=BD=EF=BF=BD=C7=A4=
-=EF=BF=BD=EF=BF=BD=EF=BF=BD
-
-=D4=94=EF=BF=BD=EF=BF=BD=EF=BF=BD=CF=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=
-X=EF=BF=BD=CB=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=CF=
-=A4=EF=A4=BB=EF=BF=BD=C2=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD
-=EF=BF=BD=EF=BF=BD=EF=BF=BD=CE=A5=EF=BF=BD`=EF=BF=BD=EF=BF=BD=CB=B7=EF=BF=
-=BD=EF=BF=BD=C5=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=D4=94=EF=BF=BD=EF=BF=
-=BD=EF=BF=BD=EF=BF=BD=EF=BF=BDB=EF=BF=BDj=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=
-=BD=EF=BF=BD=C6=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=BF=BD=EF=
-=BF=BD=EF=BF=BD=DE=A4=EF=BF=BD=EF=BF=BD=EF=BF=BD
---===============5156419443226460140==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Mon, Jan 06, 2020 at 01:11:17PM -0500, Vivek Goyal wrote:
+> Looks like nobody is using fs_dax_get_by_host() except fs_dax_get_by_bdev()
+> and it can easily use dax_get_by_host() instead.
+> 
+> IIUC, fs_dax_get_by_host() was only introduced so that one could compile
+> with CONFIG_FS_DAX=n and CONFIG_DAX=m. fs_dax_get_by_bdev() achieves
+> the same purpose and hence it looks like fs_dax_get_by_host() is not
+> needed anymore.
+>  
+> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+
+Hi Dan,
+
+Ping for this patch. How does it look to you. If you don't have concerns,
+can you please take it in your tree.
+
+Thanks
+Vivek
+
+> ---
+>  drivers/dax/super.c |    2 +-
+>  include/linux/dax.h |   10 ----------
+>  2 files changed, 1 insertion(+), 11 deletions(-)
+> 
+> Index: rhvgoyal-linux-fuse/drivers/dax/super.c
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/drivers/dax/super.c	2020-01-03 11:19:57.616186062 -0500
+> +++ rhvgoyal-linux-fuse/drivers/dax/super.c	2020-01-03 11:20:08.941186062 -0500
+> @@ -61,7 +61,7 @@ struct dax_device *fs_dax_get_by_bdev(st
+>  {
+>  	if (!blk_queue_dax(bdev->bd_queue))
+>  		return NULL;
+> -	return fs_dax_get_by_host(bdev->bd_disk->disk_name);
+> +	return dax_get_by_host(bdev->bd_disk->disk_name);
+>  }
+>  EXPORT_SYMBOL_GPL(fs_dax_get_by_bdev);
+>  #endif
+> Index: rhvgoyal-linux-fuse/include/linux/dax.h
+> ===================================================================
+> --- rhvgoyal-linux-fuse.orig/include/linux/dax.h	2020-01-03 11:20:05.603186062 -0500
+> +++ rhvgoyal-linux-fuse/include/linux/dax.h	2020-01-03 11:20:08.942186062 -0500
+> @@ -129,11 +129,6 @@ static inline bool generic_fsdax_support
+>  			sectors);
+>  }
+>  
+> -static inline struct dax_device *fs_dax_get_by_host(const char *host)
+> -{
+> -	return dax_get_by_host(host);
+> -}
+> -
+>  static inline void fs_put_dax(struct dax_device *dax_dev)
+>  {
+>  	put_dax(dax_dev);
+> @@ -160,11 +155,6 @@ static inline bool generic_fsdax_support
+>  	return false;
+>  }
+>  
+> -static inline struct dax_device *fs_dax_get_by_host(const char *host)
+> -{
+> -	return NULL;
+> -}
+> -
+>  static inline void fs_put_dax(struct dax_device *dax_dev)
+>  {
+>  }
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============5156419443226460140==--
