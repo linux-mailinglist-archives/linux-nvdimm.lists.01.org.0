@@ -1,57 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0DD142CD7
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jan 2020 15:08:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96BEB142CD4
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jan 2020 15:08:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DB19910097DDC;
-	Mon, 20 Jan 2020 06:11:40 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id 8F7F410097DB1;
+	Mon, 20 Jan 2020 06:11:34 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 45F0310097DC0
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Jan 2020 06:11:38 -0800 (PST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00KE46Oe080122;
-	Mon, 20 Jan 2020 09:08:19 -0500
+	by ml01.01.org (Postfix) with ESMTPS id D762810097DAB
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Jan 2020 06:11:31 -0800 (PST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00KE3HN5135348;
+	Mon, 20 Jan 2020 09:08:11 -0500
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2xkxhwykky-1
+	by mx0b-001b2d01.pphosted.com with ESMTP id 2xmg37u0g5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jan 2020 09:08:19 -0500
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00KE4k1T082206;
-	Mon, 20 Jan 2020 09:08:10 -0500
+	Mon, 20 Jan 2020 09:08:11 -0500
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 00KE3VDB136855;
+	Mon, 20 Jan 2020 09:08:11 -0500
 Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2xkxhwykjd-1
+	by mx0b-001b2d01.pphosted.com with ESMTP id 2xmg37u0fp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Mon, 20 Jan 2020 09:08:10 -0500
 Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00KE4r5H000522;
-	Mon, 20 Jan 2020 14:08:07 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
-	by ppma02dal.us.ibm.com with ESMTP id 2xksn6g217-1
+	by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00KE6uXu003131;
+	Mon, 20 Jan 2020 14:08:10 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma02dal.us.ibm.com with ESMTP id 2xksn6g21n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 20 Jan 2020 14:08:07 +0000
+	Mon, 20 Jan 2020 14:08:10 +0000
 Received: from b03ledav005.gho.boulder.ibm.com (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
-	by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00KE86jj42664446
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00KE89dw51052948
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 20 Jan 2020 14:08:06 GMT
+	Mon, 20 Jan 2020 14:08:09 GMT
 Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20271BE058;
+	by IMSVA (Postfix) with ESMTP id EB783BE05B;
+	Mon, 20 Jan 2020 14:08:08 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D823FBE053;
 	Mon, 20 Jan 2020 14:08:06 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E97DCBE04F;
-	Mon, 20 Jan 2020 14:08:03 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.71.225])
 	by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon, 20 Jan 2020 14:08:03 +0000 (GMT)
+	Mon, 20 Jan 2020 14:08:06 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: dan.j.williams@intel.com, vishal.l.verma@intel.com, jmoyer@redhat.com
-Subject: [PATCH v4 1/6] libnvdimm/namespace: Make namespace size validation arch dependent
-Date: Mon, 20 Jan 2020 19:37:44 +0530
-Message-Id: <20200120140749.69549-2-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 2/6] libnvdimm/namespace: Validate namespace start addr and size
+Date: Mon, 20 Jan 2020 19:37:45 +0530
+Message-Id: <20200120140749.69549-3-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200120140749.69549-1-aneesh.kumar@linux.ibm.com>
 References: <20200120140749.69549-1-aneesh.kumar@linux.ibm.com>
@@ -60,12 +60,12 @@ X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-01-20_02:2020-01-20,2020-01-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- phishscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 mlxscore=0 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-1910280000 definitions=main-2001200122
-Message-ID-Hash: 56BN6FWJ63DVBWJ6VTQ6EPB6Z66QIGSI
-X-Message-ID-Hash: 56BN6FWJ63DVBWJ6VTQ6EPB6Z66QIGSI
+ mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
+ definitions=main-2001200122
+Message-ID-Hash: TUJ3LWM6OWQEP6G3VLABI43O7O6CA5G4
+X-Message-ID-Hash: TUJ3LWM6OWQEP6G3VLABI43O7O6CA5G4
 X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -73,7 +73,7 @@ CC: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/56BN6FWJ63DVBWJ6VTQ6EPB6Z66QIGSI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TUJ3LWM6OWQEP6G3VLABI43O7O6CA5G4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,108 +82,103 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The page size used to map the namespace is arch dependent. For example
-architectures like ppc64 use 16MB page size for direct-mapping. If the namespace
-size is not aligned to the mapping page size, users can observe kernel crash
-during namespace init and destroy.
+Make sure namespace start addr and size are properly aligned as per architecture
+restrictions. If the namespace is not aligned kernel mark the namespace 'disabled'
 
-This is due to kernel doing partial map/unmap of the resource range
+Architectures like ppc64 use different page size than PAGE_SIZE to map
+direct-map address range. The kernel needs to make sure the namespace size is aligned
+correctly for the direct-map page size.
 
-BUG: Unable to handle kernel data access at 0xc001000406000000
-Faulting instruction address: 0xc000000000090790
-NIP [c000000000090790] arch_add_memory+0xc0/0x130
-LR [c000000000090744] arch_add_memory+0x74/0x130
-Call Trace:
- arch_add_memory+0x74/0x130 (unreliable)
- memremap_pages+0x74c/0xa30
- devm_memremap_pages+0x3c/0xa0
- pmem_attach_disk+0x188/0x770
- nvdimm_bus_probe+0xd8/0x470
- really_probe+0x148/0x570
- driver_probe_device+0x19c/0x1d0
- device_driver_attach+0xcc/0x100
- bind_store+0x134/0x1c0
- drv_attr_store+0x44/0x60
- sysfs_kf_write+0x74/0xc0
- kernfs_fop_write+0x1b4/0x290
- __vfs_write+0x3c/0x70
- vfs_write+0xd0/0x260
- ksys_write+0xdc/0x130
- system_call+0x5c/0x68
+kernel log will contain information as below.
 
-Kernel should also ensure that namespace size is also mulitple of subsection size.
+[    5.810939] nd_pmem namespace0.1: invalid size/SPA
+[    5.810969] nd_pmem: probe of namespace0.1 failed with error -95
+
+and the namespace will be marked 'disabled'
+
+  {
+    "dev":"namespace0.1",
+    "mode":"fsdax",
+    "map":"mem",
+    "size":1071644672,
+    "uuid":"25577a00-c012-421d-89ca-3ee189e08848",
+    "sector_size":512,
+    "state":"disabled"
+  },
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/arm64/mm/flush.c     | 6 ++++++
- arch/powerpc/lib/pmem.c   | 9 +++++++++
- arch/x86/mm/pageattr.c    | 7 +++++++
- include/linux/libnvdimm.h | 1 +
- 4 files changed, 23 insertions(+)
+ drivers/nvdimm/namespace_devs.c | 50 +++++++++++++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
 
-diff --git a/arch/arm64/mm/flush.c b/arch/arm64/mm/flush.c
-index ac485163a4a7..95cb5538bc6e 100644
---- a/arch/arm64/mm/flush.c
-+++ b/arch/arm64/mm/flush.c
-@@ -91,4 +91,10 @@ void arch_invalidate_pmem(void *addr, size_t size)
- 	__inval_dcache_area(addr, size);
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index 032dc61725ff..0e2c90730ce3 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1113,6 +1113,51 @@ resource_size_t nvdimm_namespace_capacity(struct nd_namespace_common *ndns)
  }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
-+
-+unsigned long arch_namespace_map_size(void)
-+{
-+	return PAGE_SIZE;
-+}
-+EXPORT_SYMBOL_GPL(arch_namespace_map_size);
- #endif
-diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-index 0666a8d29596..63dca24e4a18 100644
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -26,6 +26,15 @@ void arch_invalidate_pmem(void *addr, size_t size)
- }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+ EXPORT_SYMBOL(nvdimm_namespace_capacity);
  
-+unsigned long arch_namespace_map_size(void)
++static bool nvdimm_valid_namespace(struct device *dev,
++		struct nd_namespace_common *ndns, resource_size_t size)
 +{
-+	if (radix_enabled())
-+		return PAGE_SIZE;
-+	return (1UL << mmu_psize_defs[mmu_linear_psize].shift);
++	struct device *ndns_dev = &ndns->dev;
++	struct nd_region *nd_region = to_nd_region(ndns->dev.parent);
++	unsigned long map_size = arch_namespace_map_size();
++	struct resource *res;
++	u32 remainder;
 +
++	/*
++	 * Don't validate the start and size for blk namespace type
++	 */
++	if (is_namespace_blk(ndns_dev))
++		return true;
++
++	/*
++	 * For btt and raw namespace kernel use ioremap. Assume both can work
++	 * with PAGE_SIZE alignment.
++	 */
++	if (is_nd_btt(dev) || is_namespace_io(ndns_dev))
++		map_size = PAGE_SIZE;
++
++	div_u64_rem(size, map_size * nd_region->ndr_mappings, &remainder);
++	if (remainder)
++		return false;
++
++	if (is_namespace_pmem(ndns_dev)) {
++		struct nd_namespace_pmem *nspm = to_nd_namespace_pmem(ndns_dev);
++
++		res = &nspm->nsio.res;
++	} else if (is_namespace_io(ndns_dev)) {
++		struct nd_namespace_io *nsio = to_nd_namespace_io(ndns_dev);
++
++		res = &nsio->res;
++	} else
++		/* cannot reach */
++		return false;
++
++	div_u64_rem(res->start, map_size * nd_region->ndr_mappings, &remainder);
++	if (remainder)
++		return false;
++
++	return true;
 +}
-+EXPORT_SYMBOL_GPL(arch_namespace_map_size);
 +
- /*
-  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
-  */
-diff --git a/arch/x86/mm/pageattr.c b/arch/x86/mm/pageattr.c
-index 1b99ad05b117..d78b5082f376 100644
---- a/arch/x86/mm/pageattr.c
-+++ b/arch/x86/mm/pageattr.c
-@@ -310,6 +310,13 @@ void arch_invalidate_pmem(void *addr, size_t size)
- }
- EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
- 
-+unsigned long arch_namespace_map_size(void)
-+{
-+	return PAGE_SIZE;
-+}
-+EXPORT_SYMBOL_GPL(arch_namespace_map_size);
-+
-+
- static void __cpa_flush_all(void *arg)
+ bool nvdimm_namespace_locked(struct nd_namespace_common *ndns)
  {
- 	unsigned long cache = (unsigned long)arg;
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index 9df091bd30ba..a3476dbd2656 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -284,4 +284,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
- }
- #endif
+ 	int i;
+@@ -1739,6 +1784,11 @@ struct nd_namespace_common *nvdimm_namespace_common_probe(struct device *dev)
+ 		return ERR_PTR(-ENODEV);
+ 	}
  
-+unsigned long arch_namespace_map_size(void);
- #endif /* __LIBNVDIMM_H__ */
++	if (!nvdimm_valid_namespace(dev, ndns, size)) {
++		dev_err(&ndns->dev, "invalid size/SPA");
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	if (is_namespace_pmem(&ndns->dev)) {
+ 		struct nd_namespace_pmem *nspm;
+ 
 -- 
 2.24.1
 _______________________________________________
