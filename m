@@ -2,153 +2,390 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E677147905
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 24 Jan 2020 08:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E07148666
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 24 Jan 2020 14:52:35 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8C9221007B8F4;
-	Thu, 23 Jan 2020 23:37:29 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id CD52B1007B8F8;
+	Fri, 24 Jan 2020 05:55:51 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8EBE810097E00
-	for <linux-nvdimm@lists.01.org>; Thu, 23 Jan 2020 23:37:27 -0800 (PST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00O7Rs9x102794
-	for <linux-nvdimm@lists.01.org>; Fri, 24 Jan 2020 02:34:09 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2xqmjt45mj-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Fri, 24 Jan 2020 02:34:08 -0500
-Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
-	Fri, 24 Jan 2020 07:34:06 -0000
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Fri, 24 Jan 2020 07:34:04 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00O7Y4N150069578
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 24 Jan 2020 07:34:04 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E44CFA4055;
-	Fri, 24 Jan 2020 07:34:03 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBF76A4040;
-	Fri, 24 Jan 2020 07:34:02 +0000 (GMT)
-Received: from [9.204.201.20] (unknown [9.204.201.20])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 24 Jan 2020 07:34:02 +0000 (GMT)
-Subject: Re: [PATCH v4 1/6] libnvdimm/namespace: Make namespace size
- validation arch dependent
-To: Dan Williams <dan.j.williams@intel.com>
-References: <20200120140749.69549-1-aneesh.kumar@linux.ibm.com>
- <20200120140749.69549-2-aneesh.kumar@linux.ibm.com>
- <CAPcyv4jcZhQcKr=0OGWc1aZb0OQ1ws2edd-LZMR-EJ_Z2174Sg@mail.gmail.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Fri, 24 Jan 2020 13:04:02 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+	by ml01.01.org (Postfix) with ESMTPS id EC03A10097DF6
+	for <linux-nvdimm@lists.01.org>; Fri, 24 Jan 2020 05:55:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1579873949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZH8NJqGSY1PPdoC2VlIpK3mw5QStA/y8S6ZxdSctrO8=;
+	b=aj5VGB3bCPktsvST2rBwwQhHCaUgzTqNUugOLCTu7LPupWqdAAzS7D/ubWth6JSo5/OyMo
+	C4G2pmlkoYFIU+CNcnlDtP0u3M5c5tRXeM2GdaIf9/VVkKZSl77W8AuRR2jv0+v5GXGctJ
+	uKbnckUf/7O8zTDLC97k3EmPZiGEwck=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-221-owH1qX_JOZi6Xg0rZCxUpg-1; Fri, 24 Jan 2020 08:52:25 -0500
+X-MC-Unique: owH1qX_JOZi6Xg0rZCxUpg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B9D2F801E6D;
+	Fri, 24 Jan 2020 13:52:23 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 6A27385F13;
+	Fri, 24 Jan 2020 13:52:23 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id F22442202E9; Fri, 24 Jan 2020 08:52:22 -0500 (EST)
+Date: Fri, 24 Jan 2020 08:52:22 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: "Darrick J. Wong" <darrick.wong@oracle.com>
+Subject: Re: [RFC] dax,pmem: Provide a dax operation to zero range of memory
+Message-ID: <20200124135222.GB6010@redhat.com>
+References: <20200123165249.GA7664@redhat.com>
+ <20200123190103.GB8236@magnolia>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jcZhQcKr=0OGWc1aZb0OQ1ws2edd-LZMR-EJ_Z2174Sg@mail.gmail.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20012407-0028-0000-0000-000003D3F0D9
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20012407-0029-0000-0000-000024982E7B
-Message-Id: <5fd11235-5f26-b10a-140f-ef24214c85b1@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-24_01:2020-01-24,2020-01-24 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=869
- impostorscore=0 spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 adultscore=0 priorityscore=1501
- suspectscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-2001240061
-Message-ID-Hash: VK7B5GGRWEQPHF37R2MDLCD7OAJ2WB7G
-X-Message-ID-Hash: VK7B5GGRWEQPHF37R2MDLCD7OAJ2WB7G
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Disposition: inline
+In-Reply-To: <20200123190103.GB8236@magnolia>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Message-ID-Hash: ZGZ4HOTSV4KNYX7CZIWKCRFG4USDAFWM
+X-Message-ID-Hash: ZGZ4HOTSV4KNYX7CZIWKCRFG4USDAFWM
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@infradead.org>, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VK7B5GGRWEQPHF37R2MDLCD7OAJ2WB7G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZGZ4HOTSV4KNYX7CZIWKCRFG4USDAFWM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 1/24/20 11:27 AM, Dan Williams wrote:
-> On Mon, Jan 20, 2020 at 6:08 AM Aneesh Kumar K.V
->
+On Thu, Jan 23, 2020 at 11:01:03AM -0800, Darrick J. Wong wrote:
+> On Thu, Jan 23, 2020 at 11:52:49AM -0500, Vivek Goyal wrote:
+> > Hi,
+> > 
+> > This is an RFC patch to provide a dax operation to zero a range of memory.
+> > It will also clear poison in the process. This is primarily compile tested
+> > patch. I don't have real hardware to test the poison logic. I am posting
+> > this to figure out if this is the right direction or not.
+> > 
+> > Motivation from this patch comes from Christoph's feedback that he will
+> > rather prefer a dax way to zero a range instead of relying on having to
+> > call blkdev_issue_zeroout() in __dax_zero_page_range().
+> > 
+> > https://lkml.org/lkml/2019/8/26/361
+> > 
+> > My motivation for this change is virtiofs DAX support. There we use DAX
+> > but we don't have a block device. So any dax code which has the assumption
+> > that there is always a block device associated is a problem. So this
+> > is more of a cleanup of one of the places where dax has this dependency
+> > on block device and if we add a dax operation for zeroing a range, it
+> > can help with not having to call blkdev_issue_zeroout() in dax path.
+> > 
+> > I have yet to take care of stacked block drivers (dm/md).
+> > 
+> > Current poison clearing logic is primarily written with assumption that
+> > I/O is sector aligned. With this new method, this assumption is broken
+> > and one can pass any range of memory to zero. I have fixed few places
+> > in existing logic to be able to handle an arbitrary start/end. I am
+> > not sure are there other dependencies which might need fixing or
+> > prohibit us from providing this method.
+> > 
+> > Any feedback or comment is welcome.
+> 
+> So who gest to use this? :)
 
-....
+Right now iomap_zero_range() is the only user. May be there can be
+other users as well. Not sure.
 
->>
->> +unsigned long arch_namespace_map_size(void)
->> +{
->> +       return PAGE_SIZE;
->> +}
->> +EXPORT_SYMBOL_GPL(arch_namespace_map_size);
->> +
->> +
->>   static void __cpa_flush_all(void *arg)
->>   {
->>          unsigned long cache = (unsigned long)arg;
->> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
->> index 9df091bd30ba..a3476dbd2656 100644
->> --- a/include/linux/libnvdimm.h
->> +++ b/include/linux/libnvdimm.h
->> @@ -284,4 +284,5 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
->>   }
->>   #endif
->>
->> +unsigned long arch_namespace_map_size(void);
 > 
-> This property is more generic than the nvdimm namespace mapping size,
-> it's more the fundamental remap granularity that the architecture
-> supports. So I would expect this to be defined in core header files.
-> Something like:
-> 
-> diff --git a/include/linux/io.h b/include/linux/io.h
-> index a59834bc0a11..58b3b2091dbb 100644
-> --- a/include/linux/io.h
-> +++ b/include/linux/io.h
-> @@ -155,6 +155,13 @@ enum {
->   void *memremap(resource_size_t offset, size_t size, unsigned long flags);
->   void memunmap(void *addr);
-> 
-> +#ifndef memremap_min_align
-> +static inline unsigned int memremap_min_align(void)
-> +{
-> +       return PAGE_SIZE;
-> +}
-> +#endif
-> +
+> Should we (XFS) make fallocate(ZERO_RANGE) detect when it's operating on
+> a written extent in a DAX file and call this instead of what it does now
+> (punch range and reallocate unwritten)?
 
+May be if this method turns out to be more efficient. But if zeroing
+blocks right away was more efficient, then blkdev_issue_zeroout() will
+work even now? I am assuming that's what you are using to zero full
+blocks. 
 
-Should that be memremap_pages_min_align()?
+> 
+> Is this the kind of thing XFS should just do on its own when DAX us that
+> some range of pmem has gone bad and now we need to (a) race with the
+> userland programs to write /something/ to the range to prevent a machine
+> check, (b) whack all the programs that think they have a mapping to
+> their data, (c) see if we have a DRAM copy and just write that back, (d)
+> set wb_err so fsyncs fail, and/or (e) regenerate metadata as necessary?
 
->   /*
->    * On x86 PAT systems we have memory tracking that keeps track of
->    * the allowed mappings on memory ranges. This tracking works for
-> 
-> ...and then have a definition is asm/io.h like this:
-> 
-> unsigned int memremap_min_align(void);
-> #define memremap_min_align memremap_min_align
-> 
-> That way only architectures that want to opt out of the default need
-> to define something in their local header.
-> 
+I am not sure but current idea seems to be if there are some bad blocks
+(poisoned memory), then user comes to know about it when reading (read
+fails or user space gets SIGBUS in case of mapped file). And now user
+space takes action to clear poison. So if user space is driving clearing
+bad blocks/poison, XFS probably does not have to know about poisoned
+memory locations.
 
--aneesh
+I am not aware of all the discussions around this design. This seems
+like a new thing which should be addressed through a different set 
+of patches.
+
+> 
+> <cough> Will XFS ever get that "your storage went bad" hook that was
+> promised ages ago?
+> 
+> Though I guess it only does this a single page at a time, which won't be
+> awesome if we're trying to zero (say) 100GB of pmem.  I was expecting to
+> see one big memset() call to zero the entire range followed by
+> pmem_clear_poison() on the entire range, but I guess you did tag this
+> RFC. :)
+
+I was thinking about memset(). But in first attempt I just wanted to
+do what existing code is doing to make sure it works. I was not sure
+what issues might come up if I first call memset() on the full range.
+
+One issue seems to be what if we face errors while clearing poision/bad
+sectors/hwpoison. So is it better to do it page by page and abort soon
+if we error out in clearing poison or first clear the whole rance and
+abort clearing poison whenever we face error. Don't know.
+
+Thanks
+Vivek
+
+> 
+> --D
+> 
+> > Thanks
+> > Vivek
+> > 
+> > ---
+> >  drivers/dax/super.c   |   13 +++++++++
+> >  drivers/nvdimm/pmem.c |   67 ++++++++++++++++++++++++++++++++++++++++++--------
+> >  fs/dax.c              |   39 ++++++++---------------------
+> >  include/linux/dax.h   |    3 ++
+> >  4 files changed, 85 insertions(+), 37 deletions(-)
+> > 
+> > Index: rhvgoyal-linux/drivers/nvdimm/pmem.c
+> > ===================================================================
+> > --- rhvgoyal-linux.orig/drivers/nvdimm/pmem.c	2020-01-23 11:32:11.075139183 -0500
+> > +++ rhvgoyal-linux/drivers/nvdimm/pmem.c	2020-01-23 11:32:28.660139183 -0500
+> > @@ -52,8 +52,8 @@ static void hwpoison_clear(struct pmem_d
+> >  	if (is_vmalloc_addr(pmem->virt_addr))
+> >  		return;
+> >  
+> > -	pfn_start = PHYS_PFN(phys);
+> > -	pfn_end = pfn_start + PHYS_PFN(len);
+> > +	pfn_start = PFN_UP(phys);
+> > +	pfn_end = PFN_DOWN(phys + len);
+> >  	for (pfn = pfn_start; pfn < pfn_end; pfn++) {
+> >  		struct page *page = pfn_to_page(pfn);
+> >  
+> > @@ -71,22 +71,24 @@ static blk_status_t pmem_clear_poison(st
+> >  		phys_addr_t offset, unsigned int len)
+> >  {
+> >  	struct device *dev = to_dev(pmem);
+> > -	sector_t sector;
+> > +	sector_t sector_start, sector_end;
+> >  	long cleared;
+> >  	blk_status_t rc = BLK_STS_OK;
+> > +	int nr_sectors;
+> >  
+> > -	sector = (offset - pmem->data_offset) / 512;
+> > +	sector_start = ALIGN((offset - pmem->data_offset), 512) / 512;
+> > +	sector_end = ALIGN_DOWN((offset - pmem->data_offset + len), 512)/512;
+> > +	nr_sectors =  sector_end - sector_start;
+> >  
+> >  	cleared = nvdimm_clear_poison(dev, pmem->phys_addr + offset, len);
+> >  	if (cleared < len)
+> >  		rc = BLK_STS_IOERR;
+> > -	if (cleared > 0 && cleared / 512) {
+> > +	if (cleared > 0 && nr_sectors > 0) {
+> >  		hwpoison_clear(pmem, pmem->phys_addr + offset, cleared);
+> > -		cleared /= 512;
+> > -		dev_dbg(dev, "%#llx clear %ld sector%s\n",
+> > -				(unsigned long long) sector, cleared,
+> > -				cleared > 1 ? "s" : "");
+> > -		badblocks_clear(&pmem->bb, sector, cleared);
+> > +		dev_dbg(dev, "%#llx clear %d sector%s\n",
+> > +				(unsigned long long) sector_start, nr_sectors,
+> > +				nr_sectors > 1 ? "s" : "");
+> > +		badblocks_clear(&pmem->bb, sector_start, nr_sectors);
+> >  		if (pmem->bb_state)
+> >  			sysfs_notify_dirent(pmem->bb_state);
+> >  	}
+> > @@ -268,6 +270,50 @@ static const struct block_device_operati
+> >  	.revalidate_disk =	nvdimm_revalidate_disk,
+> >  };
+> >  
+> > +static int pmem_dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
+> > +				    unsigned int offset, loff_t len)
+> > +{
+> > +	int rc = 0;
+> > +	phys_addr_t phys_pos = pgoff * PAGE_SIZE + offset;
+> > +	struct pmem_device *pmem = dax_get_private(dax_dev);
+> > +	struct page *page = ZERO_PAGE(0);
+> > +
+> > +	do {
+> > +		unsigned bytes, nr_sectors = 0;
+> > +		sector_t sector_start, sector_end;
+> > +		bool bad_pmem = false;
+> > +		phys_addr_t pmem_off = phys_pos + pmem->data_offset;
+> > +		void *pmem_addr = pmem->virt_addr + pmem_off;
+> > +		unsigned int page_offset;
+> > +
+> > +		page_offset = offset_in_page(phys_pos);
+> > +		bytes = min_t(loff_t, PAGE_SIZE - page_offset, len);
+> > +
+> > +		sector_start = ALIGN(phys_pos, 512)/512;
+> > +		sector_end = ALIGN_DOWN(phys_pos + bytes, 512)/512;
+> > +		if (sector_end > sector_start)
+> > +			nr_sectors = sector_end - sector_start;
+> > +
+> > +		if (nr_sectors &&
+> > +		    unlikely(is_bad_pmem(&pmem->bb, sector_start,
+> > +					 nr_sectors * 512)))
+> > +			bad_pmem = true;
+> > +
+> > +		write_pmem(pmem_addr, page, 0, bytes);
+> > +		if (unlikely(bad_pmem)) {
+> > +			rc = pmem_clear_poison(pmem, pmem_off, bytes);
+> > +			write_pmem(pmem_addr, page, 0, bytes);
+> > +		}
+> > +		if (rc > 0)
+> > +			return -EIO;
+> > +
+> > +		phys_pos += phys_pos + bytes;
+> > +		len -= bytes;
+> > +	} while (len > 0);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static long pmem_dax_direct_access(struct dax_device *dax_dev,
+> >  		pgoff_t pgoff, long nr_pages, void **kaddr, pfn_t *pfn)
+> >  {
+> > @@ -299,6 +345,7 @@ static const struct dax_operations pmem_
+> >  	.dax_supported = generic_fsdax_supported,
+> >  	.copy_from_iter = pmem_copy_from_iter,
+> >  	.copy_to_iter = pmem_copy_to_iter,
+> > +	.zero_page_range = pmem_dax_zero_page_range,
+> >  };
+> >  
+> >  static const struct attribute_group *pmem_attribute_groups[] = {
+> > Index: rhvgoyal-linux/include/linux/dax.h
+> > ===================================================================
+> > --- rhvgoyal-linux.orig/include/linux/dax.h	2020-01-23 11:25:23.814139183 -0500
+> > +++ rhvgoyal-linux/include/linux/dax.h	2020-01-23 11:32:17.799139183 -0500
+> > @@ -34,6 +34,8 @@ struct dax_operations {
+> >  	/* copy_to_iter: required operation for fs-dax direct-i/o */
+> >  	size_t (*copy_to_iter)(struct dax_device *, pgoff_t, void *, size_t,
+> >  			struct iov_iter *);
+> > +	/* zero_page_range: optional operation for fs-dax direct-i/o */
+> > +	int (*zero_page_range)(struct dax_device *, pgoff_t, unsigned, loff_t);
+> >  };
+> >  
+> >  extern struct attribute_group dax_attribute_group;
+> > @@ -209,6 +211,7 @@ size_t dax_copy_from_iter(struct dax_dev
+> >  		size_t bytes, struct iov_iter *i);
+> >  size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+> >  		size_t bytes, struct iov_iter *i);
+> > +int dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff, unsigned offset, loff_t len);
+> >  void dax_flush(struct dax_device *dax_dev, void *addr, size_t size);
+> >  
+> >  ssize_t dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+> > Index: rhvgoyal-linux/fs/dax.c
+> > ===================================================================
+> > --- rhvgoyal-linux.orig/fs/dax.c	2020-01-23 11:25:23.814139183 -0500
+> > +++ rhvgoyal-linux/fs/dax.c	2020-01-23 11:32:17.801139183 -0500
+> > @@ -1044,38 +1044,23 @@ static vm_fault_t dax_load_hole(struct x
+> >  	return ret;
+> >  }
+> >  
+> > -static bool dax_range_is_aligned(struct block_device *bdev,
+> > -				 unsigned int offset, unsigned int length)
+> > -{
+> > -	unsigned short sector_size = bdev_logical_block_size(bdev);
+> > -
+> > -	if (!IS_ALIGNED(offset, sector_size))
+> > -		return false;
+> > -	if (!IS_ALIGNED(length, sector_size))
+> > -		return false;
+> > -
+> > -	return true;
+> > -}
+> > -
+> >  int __dax_zero_page_range(struct block_device *bdev,
+> >  		struct dax_device *dax_dev, sector_t sector,
+> >  		unsigned int offset, unsigned int size)
+> >  {
+> > -	if (dax_range_is_aligned(bdev, offset, size)) {
+> > -		sector_t start_sector = sector + (offset >> 9);
+> > +	pgoff_t pgoff;
+> > +	long rc, id;
+> >  
+> > -		return blkdev_issue_zeroout(bdev, start_sector,
+> > -				size >> 9, GFP_NOFS, 0);
+> > -	} else {
+> > -		pgoff_t pgoff;
+> > -		long rc, id;
+> > +	rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	id = dax_read_lock();
+> > +	rc = dax_zero_page_range(dax_dev, pgoff, offset, size);
+> > +	if (rc == -EOPNOTSUPP) {
+> >  		void *kaddr;
+> >  
+> > -		rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
+> > -		if (rc)
+> > -			return rc;
+> > -
+> > -		id = dax_read_lock();
+> > +		/* If driver does not implement zero page range, fallback */
+> >  		rc = dax_direct_access(dax_dev, pgoff, 1, &kaddr, NULL);
+> >  		if (rc < 0) {
+> >  			dax_read_unlock(id);
+> > @@ -1083,9 +1068,9 @@ int __dax_zero_page_range(struct block_d
+> >  		}
+> >  		memset(kaddr + offset, 0, size);
+> >  		dax_flush(dax_dev, kaddr + offset, size);
+> > -		dax_read_unlock(id);
+> >  	}
+> > -	return 0;
+> > +	dax_read_unlock(id);
+> > +	return rc;
+> >  }
+> >  EXPORT_SYMBOL_GPL(__dax_zero_page_range);
+> >  
+> > Index: rhvgoyal-linux/drivers/dax/super.c
+> > ===================================================================
+> > --- rhvgoyal-linux.orig/drivers/dax/super.c	2020-01-23 11:25:23.814139183 -0500
+> > +++ rhvgoyal-linux/drivers/dax/super.c	2020-01-23 11:32:17.802139183 -0500
+> > @@ -344,6 +344,19 @@ size_t dax_copy_to_iter(struct dax_devic
+> >  }
+> >  EXPORT_SYMBOL_GPL(dax_copy_to_iter);
+> >  
+> > +int dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
+> > +			unsigned offset, loff_t len)
+> > +{
+> > +	if (!dax_alive(dax_dev))
+> > +		return 0;
+> > +
+> > +	if (!dax_dev->ops->zero_page_range)
+> > +		return -EOPNOTSUPP;
+> > +
+> > +	return dax_dev->ops->zero_page_range(dax_dev, pgoff, offset, len);
+> > +}
+> > +EXPORT_SYMBOL_GPL(dax_zero_page_range);
+> > +
+> >  #ifdef CONFIG_ARCH_HAS_PMEM_API
+> >  void arch_wb_cache_pmem(void *addr, size_t size);
+> >  void dax_flush(struct dax_device *dax_dev, void *addr, size_t size)
+> > 
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
