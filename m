@@ -1,56 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD33614F534
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  1 Feb 2020 00:31:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5EA14F535
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  1 Feb 2020 00:32:15 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9B06710FC3179;
-	Fri, 31 Jan 2020 15:34:16 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=98.137.64.84; helo=sonic305-21.consmr.mail.gq1.yahoo.com; envelope-from=elpumita@ymail.com; receiver=<UNKNOWN> 
-Received: from sonic305-21.consmr.mail.gq1.yahoo.com (sonic305-21.consmr.mail.gq1.yahoo.com [98.137.64.84])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C125710FC317B;
+	Fri, 31 Jan 2020 15:35:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A55EB10FC3178
-	for <linux-nvdimm@lists.01.org>; Fri, 31 Jan 2020 15:34:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ymail.com; s=s2048; t=1580513456; bh=8xpm+cacAfAnFCbwSdgMceaBJxowNWaFZvEVU/zxgKw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=pq8QOaqykmcadwvX1Hn4KDnBXIONoybbZfgGY5TkTD/Y50ezbgfbKwb9nPsRfn3gXiXuUSIsQVhDaEgeIOIyW0lug+dYmHfCS4H5Pc5Tw2Ajtf94te0YJBwvtIyzy/nNdo0ToBUX2bRemCwpUKeD8uNe57wsDESirq8vpy77D7DYwMuHsFXDHZIEav9hhJAsuRigujtyfNeDxD6+6BmSf0Wmrkz06NG7LXAyM4ZcdUaeiN+j1+Q94GDkPcsWyRWgDgcNWsGe5mwtvTHStvxltxWPRurMNYOcOj7QN3juvG2fAOiUh7xR4uaTYzHlKtqsI8I7Dl9glJk36Q5wA1PNVg==
-X-YMail-OSG: 7lAiTeQVM1nIWphFAcoMD89kkY7pwhncwdNVfYYhUkLl_MIX5keri4eB2Qd4TGI
- yaPw04KwCq950eqc3UCrdv50DnmbKUqOb4Mgl_J87.TqPeM4i_ZaLEzje7NDvCD7oQgAwG0Tp3Rf
- Gg.xoAPWNqmuo0txvfCMrb_b.XXmI1P0yUQ.yooq4257ctxigaeRA0uh_FNuRU2GXJV3it_Bw8yb
- jMVC589aECzA7MSfjzffEr9dWfORT5aeIAWuqf1RC0hJZRwuLPDygjaCy8AhYTw11ao6RP5pY4Re
- DsFrXYn.jNtXZW0xgTDFcFpUz8EZjZlSZeNAB2olAlSRctswsQFPLlfEIQPOxVDc5keGENNClwSG
- Tufh6fhAH2Iv.dD4gEqk8nJSGPQ_Z1WWJAC1f08U.Ceu.staAnAHriYkkkOqq76KYMCDY1neClq.
- qgcCqV3eV8BRJKEanxf3ZMQriR_ivY9lhQBJbyNEK7waaVxPvEYgzAd1m60XCfhkCtBK_ldv6crD
- qi1AOhRlv_LFcPTn3KEwsn6NgEAiz6KFavkWaYCIWRyIDKQMcYfu9Ww9neuBsOhbGSeUWK.lrk.Y
- kBnNcWgI_NX1xx34qMe6UEY50S5nEh2AaKF9PAuxGsLCFZvWn5cuL7NenAZcnhws7xjvw8zsdgXt
- slc0UA_YUEoeD..ZIvmlzaZqALFSXHIMvcsyPXdV26x1bzpdvKurFqdAFGmZ3A8oZahiVDSDt9kh
- v.l_.X4nscjujfpCPjA4aPSht4MuJufMAipS6E.IgtbD72fNnY8526Tn31dK3QpG2IRdlPhkkt3d
- 7Lx3i5ma_LEVnhhHQSP5oHiXVhi3MottVwkz8hBdic7ES0FZSBoYo1qcPWCBDzZG6NvGQ0Y8laac
- 3VwPUgylruincBhGN_7j2ws3C3AKRUHxGz7r1JTmw1zNNTTo8041vFEAiMxWtDmDveL0DI3UCkry
- eWm1XxZoU9yOWX8FD8ysX2M0YLHqVe4whYMv9qTofZkiWh8UpY62XdCp.L7gMXI.5ZLdHlY9wIkI
- awRaB_JkXIijAjB742otCMQ3Ii2gYwmpuFs4mwVJu3e_XfHgTJkt3rP1rHvJESbnR6VZzSzogpj6
- n0rGtUezgOeoz3j3sTObuI7IPynNUHFDNYNyoorpBAnlX17JTn9q5qndXc_Oi17q3QKRDfzgj_vy
- fVmOvLZRpv2q5JWI3bhH2UUU2AntLvCVESL3T1uQ4pE0qLjXPAUeHD3BQWBzJZrxvSLFTlP9L1ux
- qhVOjmJXQ_t85KysOs6DtphnU_dWZa.MkYkzmcdV04Py_Vt4mzLgAYHF1k7EA_80rSM2wwncPBYN
- ArA--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.gq1.yahoo.com with HTTP; Fri, 31 Jan 2020 23:30:56 +0000
-Date: Fri, 31 Jan 2020 23:30:55 +0000 (UTC)
-From: Cherif Titi <elpumita@ymail.com>
-Message-ID: <130240372.70853.1580513455002@mail.yahoo.com>
-Subject: My Dear
+	by ml01.01.org (Postfix) with ESMTPS id 8275E10FC317A
+	for <linux-nvdimm@lists.01.org>; Fri, 31 Jan 2020 15:35:28 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id c16so9012226oic.3
+        for <linux-nvdimm@lists.01.org>; Fri, 31 Jan 2020 15:32:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jbvzdoNUIaDNq+3zk83a56z2N8LGBGLQ9n7er2/J/Fc=;
+        b=NobVDx/gd01Sll6Fd/Vcv5vLnnh9IpBkdCmAUSz+yxvtMkHRMHoT9UMW822cJqyfga
+         IHhGXKPGIRoOs25ZUB4eR/Osb3Lj7veVqz4eBrV6NTfFdwPGdbDFL1Gx0LuUcJEplq1G
+         ryuCo3IVpjtG3VW4thw9RUwAHcdBaJ0EZEF9/9WLWkBtA8iBqS/s4WSuXpgPSO+i1HA7
+         4rRNghurksWFslBIYgRFflg4fnpqhmuadmeFDordOb0IH3RrElAQJ8a1ppu6cqkxI7VF
+         P0OKh4QM1DB9ljpJiXpSuOJcVCBbFV+urrSvpDAF2s7NoogkKKDdf5k4/w1YUOc7O0NI
+         RTNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jbvzdoNUIaDNq+3zk83a56z2N8LGBGLQ9n7er2/J/Fc=;
+        b=mUxPn3xO9sEPQVtbfUrs+7Tuzhe5B6f4fTli2xQrlP8cC3BzstIc7dLxPzYvUdAioe
+         CRJ7V9cEuIwMu4PgS1hMNStObwYMbnAPtvey6PBDIjZ2i3jMKLLQDaEtf0TLjWyfhRyz
+         Z4ouDcI/f+n5D3lsthuywLqylvnRjxXL/eZrBZ00zGTKQK2ZxHFr5zyfqPm7ZwBWOfPA
+         X27WTtRrMGg8Va9MuRz4U3BKo22r2bTD0ff3IUhGtU640Nl2/woTldlhFUDjvkEw0a0W
+         +cJYr3J91wDNmoUVLh0nCqlR0drAPr94Wgxau9fs2p5u3AksXsXJE23LQ6ZtS7OtqZ74
+         vOYQ==
+X-Gm-Message-State: APjAAAVTu37/FaSGvXKr78lr9w7Brs/O4A8fr0sRlvgooVuIjXJDZWeN
+	pKIFb8QsY0Sytwg8B5Jv/5DC5YDYYM9vhQhxJG31EA==
+X-Google-Smtp-Source: APXvYqzy4XwNMjBVemev+5VjKUaUiGQr17Dr+lTA27hy9UvwPh/URJrCK0yRVnuVEljIQo3bIk2HK2DGzmqVBHngv+4=
+X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr8258617oij.0.1580513529312;
+ Fri, 31 Jan 2020 15:32:09 -0800 (PST)
 MIME-Version: 1.0
-References: <130240372.70853.1580513455002.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15149 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
-Message-ID-Hash: 4F5ZV7HMXUES7L7MQU6OVP6KQ2DFU5T5
-X-Message-ID-Hash: 4F5ZV7HMXUES7L7MQU6OVP6KQ2DFU5T5
-X-MailFrom: elpumita@ymail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20200123165249.GA7664@redhat.com> <20200123190103.GB8236@magnolia>
+In-Reply-To: <20200123190103.GB8236@magnolia>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 31 Jan 2020 15:31:58 -0800
+Message-ID: <CAPcyv4jT3py4gtdJo84i8gPnJo5MO4uGaaO=+fuuAjXQ0gQsHA@mail.gmail.com>
+Subject: Re: [RFC] dax,pmem: Provide a dax operation to zero range of memory
+To: "Darrick J. Wong" <darrick.wong@oracle.com>
+Message-ID-Hash: FCU56AV6RZWB2NLRTRZXHQFJXR2Q6DM7
+X-Message-ID-Hash: FCU56AV6RZWB2NLRTRZXHQFJXR2Q6DM7
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: cheriftiti268@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4F5ZV7HMXUES7L7MQU6OVP6KQ2DFU5T5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FCU56AV6RZWB2NLRTRZXHQFJXR2Q6DM7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,35 +67,83 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
- My Dear
+On Thu, Jan 23, 2020 at 11:07 AM Darrick J. Wong
+<darrick.wong@oracle.com> wrote:
+>
+> On Thu, Jan 23, 2020 at 11:52:49AM -0500, Vivek Goyal wrote:
+> > Hi,
+> >
+> > This is an RFC patch to provide a dax operation to zero a range of memory.
+> > It will also clear poison in the process. This is primarily compile tested
+> > patch. I don't have real hardware to test the poison logic. I am posting
+> > this to figure out if this is the right direction or not.
+> >
+> > Motivation from this patch comes from Christoph's feedback that he will
+> > rather prefer a dax way to zero a range instead of relying on having to
+> > call blkdev_issue_zeroout() in __dax_zero_page_range().
+> >
+> > https://lkml.org/lkml/2019/8/26/361
+> >
+> > My motivation for this change is virtiofs DAX support. There we use DAX
+> > but we don't have a block device. So any dax code which has the assumption
+> > that there is always a block device associated is a problem. So this
+> > is more of a cleanup of one of the places where dax has this dependency
+> > on block device and if we add a dax operation for zeroing a range, it
+> > can help with not having to call blkdev_issue_zeroout() in dax path.
+> >
+> > I have yet to take care of stacked block drivers (dm/md).
+> >
+> > Current poison clearing logic is primarily written with assumption that
+> > I/O is sector aligned. With this new method, this assumption is broken
+> > and one can pass any range of memory to zero. I have fixed few places
+> > in existing logic to be able to handle an arbitrary start/end. I am
+> > not sure are there other dependencies which might need fixing or
+> > prohibit us from providing this method.
+> >
+> > Any feedback or comment is welcome.
+>
+> So who gest to use this? :)
+>
+> Should we (XFS) make fallocate(ZERO_RANGE) detect when it's operating on
+> a written extent in a DAX file and call this instead of what it does now
+> (punch range and reallocate unwritten)?
 
-I am Miss cherif Titi,20 years old and the only daughter of my late parents Dr.Richard Tit. My father was a highly reputable real estate developer who operated in the capital city of Ivory coast during his days
+If it eliminates more block assumptions, then yes. In general I think
+there are opportunities to use "native" direct_access instead of
+block-i/o for other areas too, like metadata i/o.
 
-It is sad to say that he passed away mysteriously in UK during one of his business trips abroad year 12th. JUNE 12, 2014. Though his sudden death, But God knows the truth! My mother died when I was just 4 years old,and since then my father took me so special Before his death on JUNE 12, 2014 he called his secretary who accompanied him to the hospital and told him that he has the sum of Nine million,five hundred thousand United State Dollars.(USD$9.500,000) left in bank
+> Is this the kind of thing XFS should just do on its own when DAX us that
+> some range of pmem has gone bad and now we need to (a) race with the
+> userland programs to write /something/ to the range to prevent a machine
+> check (b) whack all the programs that think they have a mapping to
+> their data, (c) see if we have a DRAM copy and just write that back, (d)
+> set wb_err so fsyncs fail, and/or (e) regenerate metadata as necessary?
 
-He further told him that he deposited the money in my name, and finally issued a written instruction to his lawyer whom he said is in possession of all the necessary legal documents to this fund
+(a), (b) duplicate what memory error handling already does. So yes,
+could be done but it only helps if machine check handling is broken or
+missing.
 
-I am just 20 years old and a university undergraduate and really don't know what to do. Now I want an account overseas where I can transfer this funds. This is because I have suffered a lot of set backs as a result of incessant political crisis here in Ivory coast. The death of my father actually brought sorrow to my life
+(c) what DRAM copy in the DAX case?
 
-Dear, I am in a sincere desire of your humble assistance in this regards,Your suggestions and ideas will be highly regarded.
+(d) dax fsync is just cache flush, so it can't fail, or are you
+talking about errors in metadata?
 
+(e) I thought our solution for dax metadata redundancy is to use a
+realtime data device and raid mirror for the metadata device.
 
-Now permit me to ask these few questions:
+> <cough> Will XFS ever get that "your storage went bad" hook that was
+> promised ages ago?
 
-1. Can you honestly help me as your daughter
+pmem developers don't scale?
 
-2. Can I completely trust you
+> Though I guess it only does this a single page at a time, which won't be
+> awesome if we're trying to zero (say) 100GB of pmem.  I was expecting to
+> see one big memset() call to zero the entire range followed by
+> pmem_clear_poison() on the entire range, but I guess you did tag this
+> RFC. :)
 
-3. What percentage of the total amount in question will be good for you after the money is in your account
-
-Please contact me with my private email cheriftiti268@yahoo.com
-
-
-Please,Consider this and get back to me as soon as possible.
-
-
-My sincere regards,
-Mrs.cherif TITI
+Until movdir64b is available the only way to clear poison is by making
+a call to the BIOS. The BIOS may not be efficient at bulk clearing.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
