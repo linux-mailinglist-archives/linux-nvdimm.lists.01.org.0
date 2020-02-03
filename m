@@ -2,62 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB761510AB
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Feb 2020 21:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AFF1511D9
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Feb 2020 22:34:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 851FE10FC337A;
-	Mon,  3 Feb 2020 12:04:15 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 58D9E1007B8F5;
+	Mon,  3 Feb 2020 13:38:08 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 31ABC10FC3374
-	for <linux-nvdimm@lists.01.org>; Mon,  3 Feb 2020 12:04:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1580760054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hxbWiCAn4qzNWGzInygE6oJMfXNXSLmxv5Z+XX2YjiM=;
-	b=Gnow+liDE+uygCdRhfXiOwFreEarG0t8h3deJ8EaoeXwJPYQE1AIzOUp0vbAnDI+Krr8Tm
-	vR0pVymgR1M0pVctesfNZhWjYENSKjJsLUBjODTF5mzYPVd508PQMNB+dQVlkvfUAwyKs8
-	efMB82ods2IV6HdmUtPWQiMHXI7zIQE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-137-1o3bk_lWMSKbfqaHjQvukw-1; Mon, 03 Feb 2020 15:00:51 -0500
-X-MC-Unique: 1o3bk_lWMSKbfqaHjQvukw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A51121005502;
-	Mon,  3 Feb 2020 20:00:49 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6CB865C1B5;
-	Mon,  3 Feb 2020 20:00:49 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 22CDD224750; Mon,  3 Feb 2020 15:00:46 -0500 (EST)
-From: Vivek Goyal <vgoyal@redhat.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-nvdimm@lists.01.org,
-	dan.j.williams@intel.com,
-	hch@infradead.org
-Subject: [PATCH 5/5] dax,iomap: Add helper dax_iomap_zero() to zero a range
-Date: Mon,  3 Feb 2020 15:00:29 -0500
-Message-Id: <20200203200029.4592-6-vgoyal@redhat.com>
-In-Reply-To: <20200203200029.4592-1-vgoyal@redhat.com>
-References: <20200203200029.4592-1-vgoyal@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id DFA5D10097E04
+	for <linux-nvdimm@lists.01.org>; Mon,  3 Feb 2020 13:38:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=RopiKUB7iog3vHCG/dVyQVRi17HY++IdZnq14RjmMqo=; b=qCNcTepKO/3xSSn/r68TuzJnKt
+	b2OiqCyvcFUUCCCK6Cv9cMtmbBCWvbSY9HbCzoQ+nTTK6Pxo9KdDl8xjsD8mavlTxr7ffgM4bY5jI
+	AODGNG2a/KJ1GGnInvzU2bGXJQvPtn8Zr75YRh7YBiM2wN1RwLhSBO+Dpq/R4gXUvmr2f4yVsBA2O
+	+HQNwoIKHINdjxW34l2NoVYFStBBu88xEuAh/WLw1BQ9ds7XH6Lcjx9XTY2FLc8xLwLXQAOjFquka
+	NX3t2BWf08QbBO6vk11n1FqvqNxg6EvK59GsxvC8Ev6WMc16PJw/v/43KKDud2wKo2JGkG+ghrgsv
+	0jE6UybQ==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1iyjMg-0004O9-7p; Mon, 03 Feb 2020 21:34:42 +0000
+Date: Mon, 3 Feb 2020 13:34:42 -0800
+From: Matthew Wilcox <willy@infradead.org>
+To: Joao Martins <joao.m.martins@oracle.com>
+Subject: Re: [PATCH RFC 01/10] mm: Add pmd support for _PAGE_SPECIAL
+Message-ID: <20200203213442.GK8731@bombadil.infradead.org>
+References: <20200110190313.17144-1-joao.m.martins@oracle.com>
+ <20200110190313.17144-2-joao.m.martins@oracle.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: CD5NJLKMAYTZ7WSBZHTBVQVHPTY55STK
-X-Message-ID-Hash: CD5NJLKMAYTZ7WSBZHTBVQVHPTY55STK
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: dm-devel@redhat.com
+Content-Disposition: inline
+In-Reply-To: <20200110190313.17144-2-joao.m.martins@oracle.com>
+Message-ID-Hash: WIBWZPXMODO4SW2W7DPOC7TK7VH3O4PC
+X-Message-ID-Hash: WIBWZPXMODO4SW2W7DPOC7TK7VH3O4PC
+X-MailFrom: willy@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, Alex Williamson <alex.williamson@redhat.com>, Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Liran Alon <liran.alon@oracle.com>, Nikita Leshenko <nikita.leshchenko@oracle.com>, Barret Rhoden <brho@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CD5NJLKMAYTZ7WSBZHTBVQVHPTY55STK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WIBWZPXMODO4SW2W7DPOC7TK7VH3O4PC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,110 +53,77 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add a helper dax_ioamp_zero() to zero a range. This patch basically
-merges __dax_zero_page_range() and iomap_dax_zero().
+On Fri, Jan 10, 2020 at 07:03:04PM +0000, Joao Martins wrote:
+> +++ b/arch/x86/include/asm/pgtable.h
+> @@ -293,6 +293,15 @@ static inline int pgd_devmap(pgd_t pgd)
+>  {
+>  	return 0;
+>  }
+> +#endif
+> +
+> +#ifdef CONFIG_ARCH_HAS_PTE_SPECIAL
+> +static inline int pmd_special(pmd_t pmd)
+> +{
+> +	return !!(pmd_flags(pmd) & _PAGE_SPECIAL);
+> +}
+> +#endif
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
----
- fs/dax.c               | 12 ++++++------
- fs/iomap/buffered-io.c |  9 +--------
- include/linux/dax.h    | 11 +++++------
- 3 files changed, 12 insertions(+), 20 deletions(-)
+The ifdef/endif don't make much sense here; x86 does have PTE_SPECIAL,
+and this is an x86 header file, so that can be assumed.
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 1b9ba6b59cdb..63303e274221 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1059,23 +1059,23 @@ int generic_dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
- }
- EXPORT_SYMBOL_GPL(generic_dax_zero_page_range);
- 
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int size)
-+int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-+			      struct iomap *iomap)
- {
- 	pgoff_t pgoff;
- 	long rc, id;
-+	sector_t sector = iomap_sector(iomap, pos & PAGE_MASK);
- 
--	rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
-+	rc = bdev_dax_pgoff(iomap->bdev, sector, PAGE_SIZE, &pgoff);
- 	if (rc)
- 		return rc;
- 
- 	id = dax_read_lock();
--	rc = dax_zero_page_range(dax_dev, pgoff, offset, size);
-+	rc = dax_zero_page_range(iomap->dax_dev, pgoff, offset, size);
- 	dax_read_unlock(id);
- 	return rc;
- }
--EXPORT_SYMBOL_GPL(__dax_zero_page_range);
-+EXPORT_SYMBOL_GPL(dax_iomap_zero);
- 
- static loff_t
- dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 828444e14d09..5a5d784a110e 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -974,13 +974,6 @@ static int iomap_zero(struct inode *inode, loff_t pos, unsigned offset,
- 	return iomap_write_end(inode, pos, bytes, bytes, page, iomap, srcmap);
- }
- 
--static int iomap_dax_zero(loff_t pos, unsigned offset, unsigned bytes,
--		struct iomap *iomap)
--{
--	return __dax_zero_page_range(iomap->bdev, iomap->dax_dev,
--			iomap_sector(iomap, pos & PAGE_MASK), offset, bytes);
--}
--
- static loff_t
- iomap_zero_range_actor(struct inode *inode, loff_t pos, loff_t count,
- 		void *data, struct iomap *iomap, struct iomap *srcmap)
-@@ -1000,7 +993,7 @@ iomap_zero_range_actor(struct inode *inode, loff_t pos, loff_t count,
- 		bytes = min_t(loff_t, PAGE_SIZE - offset, count);
- 
- 		if (IS_DAX(inode))
--			status = iomap_dax_zero(pos, offset, bytes, iomap);
-+			status = dax_iomap_zero(pos, offset, bytes, iomap);
- 		else
- 			status = iomap_zero(inode, pos, offset, bytes, iomap,
- 					srcmap);
-diff --git a/include/linux/dax.h b/include/linux/dax.h
-index 3356b874c55d..ffaaa12f8ca9 100644
---- a/include/linux/dax.h
-+++ b/include/linux/dax.h
-@@ -13,6 +13,7 @@
- typedef unsigned long dax_entry_t;
- 
- struct iomap_ops;
-+struct iomap;
- struct dax_device;
- struct dax_operations {
- 	/*
-@@ -228,13 +229,11 @@ int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
- 				      pgoff_t index);
- 
- #ifdef CONFIG_FS_DAX
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length);
-+int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-+			      struct iomap *iomap);
- #else
--static inline int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length)
-+static inline int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-+				 struct iomap *iomap)
- {
- 	return -ENXIO;
- }
--- 
-2.18.1
+> +++ b/mm/gup.c
+> @@ -2079,6 +2079,9 @@ static int gup_huge_pmd(pmd_t orig, pmd_t *pmdp, unsigned long addr,
+>  		return __gup_device_huge_pmd(orig, pmdp, addr, end, pages, nr);
+>  	}
+>  
+> +	if (pmd_special(orig))
+> +		return 0;
+
+Here, you're calling it unconditionally.  I think you need a pmd_special()
+conditionally defined in include/asm-generic/pgtable.h
+
++#ifndef CONFIG_ARCH_HAS_PTE_SPECIAL
++static inline bool pmd_special(pmd_t pmd)
++{
++	return false;
++}
++#endif
+
+(oh, and plese use bool instead of int; I know that's different from
+pte_special(), but pte_special() predates bool and nobody's done the work
+to convert it yet)
+
+> +++ b/mm/huge_memory.c
+> @@ -791,6 +791,8 @@ static void insert_pfn_pmd(struct vm_area_struct *vma, unsigned long addr,
+>  	entry = pmd_mkhuge(pfn_t_pmd(pfn, prot));
+>  	if (pfn_t_devmap(pfn))
+>  		entry = pmd_mkdevmap(entry);
+> +	else if (pfn_t_special(pfn))
+> +		entry = pmd_mkspecial(entry);
+
+Again, we'll need a generic one.
+
+> @@ -823,8 +825,7 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, pfn_t pfn, bool write)
+>  	 * but we need to be consistent with PTEs and architectures that
+>  	 * can't support a 'special' bit.
+>  	 */
+> -	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) &&
+> -			!pfn_t_devmap(pfn));
+> +	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
+
+Should that rather be ...
+
++	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) &&
++			!pfn_t_devmap(pfn) && !pfn_t_special(pfn));
+
+I also think this comment needs adjusting:
+
+        /*
+         * There is no pmd_special() but there may be special pmds, e.g.
+         * in a direct-access (dax) mapping, so let's just replicate the
+         * !CONFIG_ARCH_HAS_PTE_SPECIAL case from vm_normal_page() here.
+         */
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
