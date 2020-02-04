@@ -1,90 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982CF15026A
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Feb 2020 09:20:56 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF2E150298
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Feb 2020 09:30:14 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DB4301007B8FA;
-	Mon,  3 Feb 2020 00:23:56 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+57336caf17137e9598f7+6007+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DF80C10097E00
-	for <linux-nvdimm@lists.01.org>; Mon,  3 Feb 2020 00:23:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	 bh=5oSol6AJdXMbCJMDVMGUM5HRTLbTqCM84Fe095grLcs=; b=SokjtW/FezvuEupKXN2cChAqB
-	oPwGX8vFXLlimpAJ5Kew9eRkIRIDyyZNXZI7gvQAQArb4sHqrZ9xxilqJy9b/HocCRafhXvGXQ+9i
-	TntRLLRAn5enwp68NJjaf9UOpflGxKBVXQwrvFNs67N6K9tRY1O97fUSWCF/rzckGmjdwQeF3KYYD
-	4tqL1SZXERp7lUJS0pqEZmsy2bF9qV3oopeQ29afKHF33H5/+xUU/MzeH8GyCnce4zJllOxZDRsJ0
-	L+Q2yAPYydIiwg7SIVVba57iO0ZR/XHsEZOZIobNxCSq+3NgSTgdDpKRUpW9NW6twHKdAP21vwdam
-	9TZKVzjyw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1iyWy5-0004l9-4r; Mon, 03 Feb 2020 08:20:30 +0000
-Date: Mon, 3 Feb 2020 00:20:29 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [RFC] dax,pmem: Provide a dax operation to zero range of memory
-Message-ID: <20200203082029.GA11435@infradead.org>
-References: <20200123165249.GA7664@redhat.com>
- <20200123190103.GB8236@magnolia>
- <CAPcyv4jT3py4gtdJo84i8gPnJo5MO4uGaaO=+fuuAjXQ0gQsHA@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id 9FC841007B1F1;
+	Mon,  3 Feb 2020 00:33:29 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=103.99.2.5; helo=fidecogroup.com; envelope-from=sec1@fidecogroup.com; receiver=<UNKNOWN> 
+Received: from fidecogroup.com (unknown [103.99.2.5])
+	by ml01.01.org (Postfix) with ESMTP id 426EF1007B8FA
+	for <linux-nvdimm@lists.01.org>; Mon,  3 Feb 2020 00:33:26 -0800 (PST)
+From: "Treeza Rodrigues " <sec1@fidecogroup.com>
+To: linux-nvdimm@lists.01.org
+Subject: Fwd: Payment TT Slip
+Date: 03 Feb 2020 16:15:29 -0800
+Message-ID: <20200203161529.7FF9C05B87198632@fidecogroup.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4jT3py4gtdJo84i8gPnJo5MO4uGaaO=+fuuAjXQ0gQsHA@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: SOSINSKJCGJC73SG6WULYWI5CFUY6WUV
-X-Message-ID-Hash: SOSINSKJCGJC73SG6WULYWI5CFUY6WUV
-X-MailFrom: BATV+57336caf17137e9598f7+6007+infradead.org+hch@bombadil.srs.infradead.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Darrick J. Wong" <darrick.wong@oracle.com>, Christoph Hellwig <hch@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0012_068586D7.B158244C"
+Message-ID-Hash: AIFKNSZBKP4VRITE3O3SFRIPN65E67YJ
+X-Message-ID-Hash: AIFKNSZBKP4VRITE3O3SFRIPN65E67YJ
+X-MailFrom: sec1@fidecogroup.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SOSINSKJCGJC73SG6WULYWI5CFUY6WUV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AIFKNSZBKP4VRITE3O3SFRIPN65E67YJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0012_068586D7.B158244C
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On Fri, Jan 31, 2020 at 03:31:58PM -0800, Dan Williams wrote:
-> > Should we (XFS) make fallocate(ZERO_RANGE) detect when it's operating on
-> > a written extent in a DAX file and call this instead of what it does now
-> > (punch range and reallocate unwritten)?
-> 
-> If it eliminates more block assumptions, then yes. In general I think
-> there are opportunities to use "native" direct_access instead of
-> block-i/o for other areas too, like metadata i/o.
-
-Yes, and at least for XFS there aren't too many places where we rely
-on block I/O after this.  It is the buffer cache and the log code,
-and I actually have a WIP conversion for the latter here:
-
-	http://git.infradead.org/users/hch/xfs.git/shortlog/refs/heads/xfs-log-dax
-
-which I need to dust off, similar with the cache flushing changes.
-
-But more importantly with just the patch in this thread we should be
-able to stop the block device pointer in struct iomap for DAX file
-systems, and thus be able to union the bdev, dax_dev and inline data
-fields, which should make their usage much more clear, and reduce the
-stack footprint.
-
-> (d) dax fsync is just cache flush, so it can't fail, or are you
-> talking about errors in metadata?
-
-And based on our discussion even that cache flush sounds like a bad
-idea, and might be a reason why all the file system bypass or
-weirdo file systems are faster than XFS.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+------=_NextPart_000_0012_068586D7.B158244C--
