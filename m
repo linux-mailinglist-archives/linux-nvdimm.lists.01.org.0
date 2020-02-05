@@ -2,68 +2,63 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EBE153964
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 21:04:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A78153966
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 21:04:38 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EC27010FC33F8;
-	Wed,  5 Feb 2020 12:07:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::22d; helo=mail-oi1-x22d.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 0E07110FC33FB;
+	Wed,  5 Feb 2020 12:07:55 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4D93B10FC33F7
-	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 12:07:45 -0800 (PST)
-Received: by mail-oi1-x22d.google.com with SMTP id a142so2065962oii.7
-        for <linux-nvdimm@lists.01.org>; Wed, 05 Feb 2020 12:04:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=dHlc/MOybwrYmV5jBLq6KwrM1cJCP0BAaqLu3hdRYuc=;
-        b=CD6HliQrmafHLbiUOUhYHhc6l3iLUEysgW48YyyFOOD8C6Wxi0lp/7Fkp+R+asK3xk
-         /qXa+OD82i60kPgsWqkWXbBKbr4fQ/Pwl8XdBlR44obHbF4MQxk+1FKKR4/jDN1K6KTb
-         5ExHzmIi3HXWktt6Sd8Uz6t2FBl6gab63IWpT3a9n/DjW42kQtjoZd2pkyDw3QAPb1+Y
-         LFFh/TnY9BegxpWqanIVrypuMPMJJ6skpgcV5WP5QdnKpQ+Jhn3SQ5P6UG3B+o9LH2KA
-         C0ALnk456XTS2djO3mLjNT3h5p03cw1cNsXiIzIc1FK5V53smNHbujOnBGfGi1MZgnLq
-         zv1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=dHlc/MOybwrYmV5jBLq6KwrM1cJCP0BAaqLu3hdRYuc=;
-        b=PamSgXX0zm4HTxn2pJ3x2JhH1hE7++tPzQmcd+CoHp3gakoT8D8CSGECW/5obP9p+8
-         bnkahBf4ZnIjBeMdFAEIkX77TpZnfq6+ioUjiGZUkUC+d0qGYObYpO0LWPNZMrwNM4A6
-         i7kAh5qs170DmZa1oFSAPPvAZFqsxcBG4bw7CiYDpFAQvNN7lTCg8aBoZo6pUve8xUMv
-         LoWajte22PhkO61D7zEWO3JCpv5zOxr6tEwHHpA3wiqkHOCauohgbs1780UZsZ+NVgWa
-         NxmzIU5ZoPX2w0k8x/k/2N/WU26tG/bLAr6xekBZBzh31IIoxt/icOseqe76mVckATb8
-         cJpw==
-X-Gm-Message-State: APjAAAUAr/Ko7xY+4bFZ+i+ukklyckkChxMIsXjTZUB26Q1C8R1xCKJE
-	DevmQNgRvS/sypJRj60j17oAZ/WwX4TO95l3F0VuposK3MI=
-X-Google-Smtp-Source: APXvYqwWRxpod8ALY+krWqGBU60hDYKBExALTNx6xf7T7zljU6TIGzc80yMoms9veopfLDB49emhTf9VZkKwNoFhLAg=
-X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr4472982oij.0.1580933067002;
- Wed, 05 Feb 2020 12:04:27 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 3CC0410FC33F8
+	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 12:07:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1580933074;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=O1jb9TeXcL+mLndWBR1WKFjkYUCNYgUFm6/IdT2uVWM=;
+	b=R6msnIu5n+yjocTa1FovjtMTgosS06LZGAYft1H9jxOAQy1wjjq5h6hjOw3vAQrZ8HC8t+
+	1cJrNmkdvX8Km07jkMqEEgbSGc82LIFl3ssWgo5cSgd2yk+nZJXthBxIpIljay4+3yWc+z
+	Mg23Z1PJafQ2tRV0eQM+EOT9PW4SvgQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-250-IieA2SHXP2Cyliv94B-pXA-1; Wed, 05 Feb 2020 15:04:29 -0500
+X-MC-Unique: IieA2SHXP2Cyliv94B-pXA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 988C7107B270;
+	Wed,  5 Feb 2020 20:04:28 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 13E1284DB8;
+	Wed,  5 Feb 2020 20:04:26 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id A44F22202E9; Wed,  5 Feb 2020 15:04:25 -0500 (EST)
+Date: Wed, 5 Feb 2020 15:04:25 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 2/5] s390,dax: Add dax zero_page_range operation to
+ dcssblk driver
+Message-ID: <20200205200425.GF14544@redhat.com>
+References: <20200203200029.4592-1-vgoyal@redhat.com>
+ <20200203200029.4592-3-vgoyal@redhat.com>
+ <20200205183205.GB26711@infradead.org>
 MIME-Version: 1.0
-References: <20200205123826.kdvtsm47iy2ihw6r@kili.mountain>
- <CAPcyv4j12vgjgEgY3xAr9bpV8dd+3E7Q5Q3OFo2AXmwnN45PBA@mail.gmail.com>
- <20200205181040.GC24804@kadam> <CAPcyv4itFypOmv38Oo=DRWk_1Y3PFhPpYPDzxShmZVY9ZsTNLA@mail.gmail.com>
- <20200205190845.GD24804@kadam> <CAPcyv4jkTHeS2zTmYRoFi+evMemhmMkvPVcsBOQGXinGq6JyiQ@mail.gmail.com>
- <20200205192806.GE24804@kadam>
-In-Reply-To: <20200205192806.GE24804@kadam>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 5 Feb 2020 12:04:15 -0800
-Message-ID: <CAPcyv4gySPR0+sC1-xQsXirprX96Kyk764kUOuada+6djTXUjQ@mail.gmail.com>
-Subject: Re: [bug report] libnvdimm, nvdimm: dimm driver and base libnvdimm
- device-driver infrastructure
-To: Dan Carpenter <dan.carpenter@oracle.com>
-Message-ID-Hash: NUR64VYEO333LVGGCSUNLWPP63BPGD4K
-X-Message-ID-Hash: NUR64VYEO333LVGGCSUNLWPP63BPGD4K
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <20200205183205.GB26711@infradead.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: UXQKW7V656RLZP5SSZWK2EUUCWNX6XW3
+X-Message-ID-Hash: UXQKW7V656RLZP5SSZWK2EUUCWNX6XW3
+X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NUR64VYEO333LVGGCSUNLWPP63BPGD4K/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UXQKW7V656RLZP5SSZWK2EUUCWNX6XW3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,48 +67,39 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 5, 2020 at 11:28 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Wed, Feb 05, 2020 at 11:16:22AM -0800, Dan Williams wrote:
-> > Ugh, sorry I thought you were pointing out that there's too many
-> > put_device() not the use after free. Yes, the use after free is a bug
-> > that needs fixing.
->
-> I am complaining about the device_puts...  If we call device_put()
-> twice then it cause a problem in __nvdimm_create()
->
-> drivers/nvdimm/dimm_devs.c
->    506          nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_USER);
->    507          nvdimm->sec.ext_flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
->    508          nd_device_register(dev);
->    509
->    510          return nvdimm;
->                        ^^^^^^
-> If we call device_put() twice then we this pointer within 4 seconds.
+On Wed, Feb 05, 2020 at 10:32:05AM -0800, Christoph Hellwig wrote:
+> > diff --git a/drivers/s390/block/dcssblk.c b/drivers/s390/block/dcssblk.c
+> > index 63502ca537eb..f6709200bcd0 100644
+> > --- a/drivers/s390/block/dcssblk.c
+> > +++ b/drivers/s390/block/dcssblk.c
+> > @@ -62,6 +62,7 @@ static const struct dax_operations dcssblk_dax_ops = {
+> >  	.dax_supported = generic_fsdax_supported,
+> >  	.copy_from_iter = dcssblk_dax_copy_from_iter,
+> >  	.copy_to_iter = dcssblk_dax_copy_to_iter,
+> > +	.zero_page_range = dcssblk_dax_zero_page_range,
+> >  };
+> >  
+> >  struct dcssblk_dev_info {
+> > @@ -941,6 +942,12 @@ dcssblk_dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff,
+> >  	return __dcssblk_direct_access(dev_info, pgoff, nr_pages, kaddr, pfn);
+> >  }
+> >  
+> > +static int dcssblk_dax_zero_page_range(struct dax_device *dax_dev,pgoff_t pgoff,
+> > +				       unsigned offset, size_t len)
+> > +{
+> > +	return generic_dax_zero_page_range(dax_dev, pgoff, offset, len);
+> > +}
+> 
+> Wouldn't this need a forward declaration?  Then again given that dcssblk
+> is the only caller of generic_dax_zero_page_range we might as well merge
+> the two.  If you want to keep the generic one it could be wired up to
+> dcssblk_dax_ops directly, though.
 
-"we this pointer"? We "what" this pointer. 4 seconds is relative to a
-runtime test case?
+Given dcssblk is the only user, I am inclined to get rid of genric
+version. We can add one later if another user shows up.
 
-...but yes, point taken this looks like an obvious leak in isolation.
-
->
->    511  }
->
-> The fix is probably to make nd_device_register() return an error code so
-> we can do:
->
->         ret = nd_device_register(dev);
->         if (ret) {
->                 device_put(&nvdimm->dev);
->                 return NULL;
->         }
->
->         return nvdimm;
-
-Ok, so this is meant to be mitigated by the fact that all consumers of
-nvdimm_create() perform a nvdimm_bus_check_dimm_count() to validate
-that device_add() did not fail. The reason for this organization is to
-allow nvdimm initialization to happen in parallel.
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
