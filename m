@@ -2,88 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22B415374E
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 19:10:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224E41537F4
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 19:23:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 03DB410FC317D;
-	Wed,  5 Feb 2020 10:14:10 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id DA41110FC33E8;
+	Wed,  5 Feb 2020 10:26:32 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CB85E10FC3171
-	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 10:14:08 -0800 (PST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015I8cCD156969;
-	Wed, 5 Feb 2020 18:10:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=vgZXPFB092P/9Z9uooh3xX3Dlg+lyN4kp19H8W61O/k=;
- b=p/MRS8FytJcMC11J+eKTAXD5MYhuEcw2SldWGtrAY4+A9OG2SrGpb5gdKgu7yfC5BXMG
- 1isnGYbovKpeLSqplS291cacLtBFOWx0eSyBcyal22hINcEqKrA/iztZJR5P3x6DOSdK
- 4CZaZNzOWNRnLrp40RnRZRjJjg8236fObPlh55oymwxX3oC/SceTHQDlN9gvDBEsAfo7
- oLRV//czwOQ6Bw9QRaZLokt4ozFgbXC14tBJW6eUbQ0AWeXI+0UkNdqrHk+VA+Shv/3A
- rdRutpEWUCMLMC5hNoVWhkjDKwrgQ4S/0pNdvnRaWfArd547fg9ax9cW7X+6Kxf6sDxy XA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=vgZXPFB092P/9Z9uooh3xX3Dlg+lyN4kp19H8W61O/k=;
- b=ZtDuTILBSilFsdbG9GEPm5tJ5EDfvADRb55B9KODD2dr/Zr71QuAhuLAAEzaKeMn7LV7
- bqQrEU2SN7+1UFte16HuZ9z1pDG05dXKo8J+LReLSDHNYOP9whg4Z2hyztiGa3NINjZA
- dyl12NPJ4Du9m1kdyPvm25/aOh1y3LKVIfFuEMHW9v1pnt/s6lAgY74h9li1T6wJLCcN
- lHICLQ2m6/W5Cvozm9RCPX+n1c3QAEFpuHK8L3xoQcphTVpjWTl4CNmq6Z8AOGkykn96
- kCLj67VvHFtSSoI47/R0Fi2zo7R32folyVaCd+FfaMSjSBUtRH999iuOKzIYQItVq9F8 TQ==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2120.oracle.com with ESMTP id 2xykbpcs0n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Feb 2020 18:10:49 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015I8cpQ082829;
-	Wed, 5 Feb 2020 18:10:48 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-	by aserp3030.oracle.com with ESMTP id 2xykbsf4r1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Feb 2020 18:10:48 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 015IAmVR031684;
-	Wed, 5 Feb 2020 18:10:48 GMT
-Received: from kadam (/10.175.200.151)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Wed, 05 Feb 2020 10:10:47 -0800
-Date: Wed, 5 Feb 2020 21:10:40 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 95B3810FC33E7
+	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 10:26:30 -0800 (PST)
+Received: by mail-oi1-x241.google.com with SMTP id i1so1712422oie.8
+        for <linux-nvdimm@lists.01.org>; Wed, 05 Feb 2020 10:23:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NCKSyIrMJQWi2dVW1d6lMlZcUF4Vpex7BkJoZ7HsUkQ=;
+        b=FqyubSBkm08L9enJBWwrAwaBz/5JGqL+SYR8vRtbi4lfeXbty3oXeBf/P2ZwXEgPPQ
+         Wy1oC+9Ljg1R7iRIR3OMCteODNhDv8W7OAgfbyd9/7wJnWUu+ARxALDU9mOshgB7YriK
+         msoFHz8RX+XaNo8As61qFbufQ/WWchsz4gcCd6yfMM0cMt10lI6noizjCyQSKTi6edmn
+         mySBm41GVlZhN7IpTeHg4z3Kad0uwAr5OMNARbl4+jwxcqsQYZGd0th7gtdTxjc4JZUg
+         ZHHN4dS/V5ObkDjVGp8Su9bGE+v7vkMNcsDP8CjmNbcj+BHUb5+luw3BHyl+qzJzdgCH
+         nszQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NCKSyIrMJQWi2dVW1d6lMlZcUF4Vpex7BkJoZ7HsUkQ=;
+        b=g5SuAG6TnPzmQHpOk68U6Oc8vRDwJ7lhit7frlVXn4AowB0q/5duQLB1oDUfc1eE80
+         tCKcjrZ3nm7pGMObmalGDg5tArGQT9c7hJEPaJ52wHJ151TiL83k8ik6CAB8TuGUQIcC
+         l4F1hUu08YCcxnyihtjPlxuXKqk0/I3ODe4NiL9St3LVTnmNTb2kSacy+84DoSk0cbKA
+         XpQO3afMFUollIWmBOupkQqkcK0703qXOce7bipDSZIuhRXFl+qVlTERRJdOpMUbIZzN
+         BdZVItMImQgRYtpqNHCXpv2lbpH5ZnDcYS/C/Oqtal/CF/8yysecTdwa39j9AolAQGhv
+         YvcA==
+X-Gm-Message-State: APjAAAV/bzkA+AaplUWCyKvUAc44PD0wMrn4JPMyXxHpUhLoKGa95S1C
+	Exo8k/HE8ueRgi0OW2aRGvXlpWaAcfS12YS5DjCw0A==
+X-Google-Smtp-Source: APXvYqx2AOcVlU3axA5dA1CJpnQZ3D0S8Z7vI9sk9INbhkuWZ3d9B4MTipGux56U2IRyDvbCClmMPPbVwHK8vVpBAhk=
+X-Received: by 2002:aca:aa0e:: with SMTP id t14mr4033494oie.149.1580926991380;
+ Wed, 05 Feb 2020 10:23:11 -0800 (PST)
+MIME-Version: 1.0
+References: <20200205123826.kdvtsm47iy2ihw6r@kili.mountain>
+ <CAPcyv4j12vgjgEgY3xAr9bpV8dd+3E7Q5Q3OFo2AXmwnN45PBA@mail.gmail.com> <20200205181040.GC24804@kadam>
+In-Reply-To: <20200205181040.GC24804@kadam>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 5 Feb 2020 10:23:00 -0800
+Message-ID: <CAPcyv4itFypOmv38Oo=DRWk_1Y3PFhPpYPDzxShmZVY9ZsTNLA@mail.gmail.com>
 Subject: Re: [bug report] libnvdimm, nvdimm: dimm driver and base libnvdimm
  device-driver infrastructure
-Message-ID: <20200205181040.GC24804@kadam>
-References: <20200205123826.kdvtsm47iy2ihw6r@kili.mountain>
- <CAPcyv4j12vgjgEgY3xAr9bpV8dd+3E7Q5Q3OFo2AXmwnN45PBA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAPcyv4j12vgjgEgY3xAr9bpV8dd+3E7Q5Q3OFo2AXmwnN45PBA@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2002050140
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2002050140
-Message-ID-Hash: GEDGHQYTSIAWQWJSSZWLSYPXUDXTQTIK
-X-Message-ID-Hash: GEDGHQYTSIAWQWJSSZWLSYPXUDXTQTIK
-X-MailFrom: dan.carpenter@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+To: Dan Carpenter <dan.carpenter@oracle.com>
+Message-ID-Hash: CRA6X7VDWNZY4WNODCS4JXSW52FJGP4S
+X-Message-ID-Hash: CRA6X7VDWNZY4WNODCS4JXSW52FJGP4S
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GEDGHQYTSIAWQWJSSZWLSYPXUDXTQTIK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CRA6X7VDWNZY4WNODCS4JXSW52FJGP4S/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -92,50 +69,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 05, 2020 at 09:47:01AM -0800, Dan Williams wrote:
-> On Wed, Feb 5, 2020 at 4:38 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, Feb 5, 2020 at 10:11 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> On Wed, Feb 05, 2020 at 09:47:01AM -0800, Dan Williams wrote:
+> > On Wed, Feb 5, 2020 at 4:38 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > >
+> > > Hello Dan Williams,
+> > >
+> > > The patch 4d88a97aa9e8: "libnvdimm, nvdimm: dimm driver and base
+> > > libnvdimm device-driver infrastructure" from May 31, 2015, leads to
+> > > the following static checker warning:
+> > >
+> > >         drivers/nvdimm/bus.c:511 nd_async_device_register()
+> > >         error: dereferencing freed memory 'dev'
+> > >
+> > > drivers/nvdimm/bus.c
+> > >    502  static void nd_async_device_register(void *d, async_cookie_t cookie)
+> > >    503  {
+> > >    504          struct device *dev = d;
+> > >    505
+> > >    506          if (device_add(dev) != 0) {
+> > >    507                  dev_err(dev, "%s: failed\n", __func__);
+> > >    508                  put_device(dev);
+> > >                         ^^^^^^^^^^^^^^^
+> > >    509          }
+> > >    510          put_device(dev);
+> > >                 ^^^^^^^^^^^^^^
+> > >    511          if (dev->parent)
+> > >    512                  put_device(dev->parent);
+> > >    513  }
+> > >
+> > > We call get_device() from __nd_device_register(), I guess.  It seems
+> > > buggy to call put device twice on error.
 > >
-> > Hello Dan Williams,
+> > The registration path does:
 > >
-> > The patch 4d88a97aa9e8: "libnvdimm, nvdimm: dimm driver and base
-> > libnvdimm device-driver infrastructure" from May 31, 2015, leads to
-> > the following static checker warning:
+> >         get_device(dev);
 > >
-> >         drivers/nvdimm/bus.c:511 nd_async_device_register()
-> >         error: dereferencing freed memory 'dev'
+> >         async_schedule_dev_domain(nd_async_device_register, dev,
+> >                                   &nd_async_domain);
 > >
-> > drivers/nvdimm/bus.c
-> >    502  static void nd_async_device_register(void *d, async_cookie_t cookie)
-> >    503  {
-> >    504          struct device *dev = d;
-> >    505
-> >    506          if (device_add(dev) != 0) {
-> >    507                  dev_err(dev, "%s: failed\n", __func__);
-> >    508                  put_device(dev);
-> >                         ^^^^^^^^^^^^^^^
-> >    509          }
-> >    510          put_device(dev);
-> >                 ^^^^^^^^^^^^^^
-> >    511          if (dev->parent)
-> >    512                  put_device(dev->parent);
-> >    513  }
-> >
-> > We call get_device() from __nd_device_register(), I guess.  It seems
-> > buggy to call put device twice on error.
-> 
-> The registration path does:
-> 
->         get_device(dev);
-> 
->         async_schedule_dev_domain(nd_async_device_register, dev,
->                                   &nd_async_domain);
-> 
-> ...and device_add() does its own get_device().
+> > ...and device_add() does its own get_device().
+>
+> device_add() does its own put_device() at the end so it's a net zero.
+>
 
-device_add() does its own put_device() at the end so it's a net zero.
+It does it's own, yes, but the put_device() after device_add() failure
+is there to drop the reference taken by device_initialize().
+Otherwise, device_add() has always documented:
 
-regards,
-dan carpenter
+ * NOTE: _Never_ directly free @dev after calling this function, even
+ * if it returned an error! Always use put_device() to give up your
+ * reference instead.
+
+...so what am I missing?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
