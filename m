@@ -1,93 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BF4153919
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 20:28:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EDA153962
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Feb 2020 21:03:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F342910FC33F6;
-	Wed,  5 Feb 2020 11:31:39 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C3BCD10FC33F7;
+	Wed,  5 Feb 2020 12:06:27 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5368C10FC33F6
-	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 11:31:38 -0800 (PST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015JNeKq023763;
-	Wed, 5 Feb 2020 19:28:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=MRxTEb/TAwReEwri4knyMEV5v+tQpMHdBF3fW9aEiWo=;
- b=F+pPEYtWMOpP3QVi6yp3L0G/8LlX9kW44Ojw2aNJa1C2G11fCOVJd5ohr/q7NcrX1sxv
- h2JZoXC/Z/HQcj8qNOi5KefF2YMTu/c642LJa0hk4zqxBYLbqxEHCuK3NS4GTqFMlfnu
- eG3flMqE+/iBo24UQNr1XP5BVZosetmaDWSqhiiTpso+21VbsXAFfdUVKh7dBwi/Kvp9
- VdVdu/2whSvypwDE20tY9H6ixeRxjqIVpcJGG9wpFBGn8PFsh7sgIEUrbKa5TbHyIf6e
- ClWHsJEQYR47Q20xTBYlxqK8tb9vSHopKTJbyBP/W28G+iMv1Q7xYSBf1Vk5JYAB2VLw lw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=MRxTEb/TAwReEwri4knyMEV5v+tQpMHdBF3fW9aEiWo=;
- b=pZRZoWGAzqoWwKfs0j3qNfSX8+MyA6dfTz7Hpr4LXkuf8raCNeqzv3i7C/cuQ4Bn2sec
- xr4DLMEAuFP20HhQ4v6uvwtUL5Rftv10hnroik3qIDfrU2cRIuQkr+q2qumbcKqUriIY
- AEdTexztemRlW9W/GwCrdxI19YvQiKbNBE7ho4k7ieJpeiPngOFK5TeFr+J9tInpL8OD
- TPudaECxpXCdKwGtBFdiXvByjdfqIbmUPeFeWp+rA9MFG3bap+S/urIk9a5j2jteK35k
- RQi0kzVngKN9r0/vNROIqIC30gcnPUbxQAGjVNFEVfTqQYy8p4IMzpRo0V0F3+cKT8mk fg==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2120.oracle.com with ESMTP id 2xykbpd6qr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Feb 2020 19:28:19 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015JNiwC099752;
-	Wed, 5 Feb 2020 19:28:18 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3020.oracle.com with ESMTP id 2xykc84wgv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 05 Feb 2020 19:28:18 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 015JSHRx027153;
-	Wed, 5 Feb 2020 19:28:17 GMT
-Received: from kadam (/10.175.200.151)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Wed, 05 Feb 2020 11:28:16 -0800
-Date: Wed, 5 Feb 2020 22:28:06 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [bug report] libnvdimm, nvdimm: dimm driver and base libnvdimm
- device-driver infrastructure
-Message-ID: <20200205192806.GE24804@kadam>
-References: <20200205123826.kdvtsm47iy2ihw6r@kili.mountain>
- <CAPcyv4j12vgjgEgY3xAr9bpV8dd+3E7Q5Q3OFo2AXmwnN45PBA@mail.gmail.com>
- <20200205181040.GC24804@kadam>
- <CAPcyv4itFypOmv38Oo=DRWk_1Y3PFhPpYPDzxShmZVY9ZsTNLA@mail.gmail.com>
- <20200205190845.GD24804@kadam>
- <CAPcyv4jkTHeS2zTmYRoFi+evMemhmMkvPVcsBOQGXinGq6JyiQ@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 1F35D10FC33F6
+	for <linux-nvdimm@lists.01.org>; Wed,  5 Feb 2020 12:06:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1580932986;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BpPZ5tPOzIi782xwIySoug6Mj3mFol2Rq1NxMABC0gc=;
+	b=QJk5mJrOQJ2d1FS5BM3y+jZlk5C2ul2ztS5CQDghP+AqeBOYuDd/nomKfozbK1guJ0cuJI
+	bl8UFeBn9ZCaL1fUf6xRnrhJtkgyZ08ppm3QUlrK0bFe+3V1XdWp8RDKyrlWbjF5AAbHlM
+	O/LS+VSkV23kXsnPsaFSlBRWPkN8gro=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-212-Ia_x1XtbN7K5wWSb8iM-oQ-1; Wed, 05 Feb 2020 15:03:03 -0500
+X-MC-Unique: Ia_x1XtbN7K5wWSb8iM-oQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8100E1857341;
+	Wed,  5 Feb 2020 20:03:02 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E022810013A1;
+	Wed,  5 Feb 2020 20:02:59 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 73FD42202E9; Wed,  5 Feb 2020 15:02:59 -0500 (EST)
+Date: Wed, 5 Feb 2020 15:02:59 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 1/5] dax, pmem: Add a dax operation zero_page_range
+Message-ID: <20200205200259.GE14544@redhat.com>
+References: <20200203200029.4592-1-vgoyal@redhat.com>
+ <20200203200029.4592-2-vgoyal@redhat.com>
+ <20200205183050.GA26711@infradead.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <CAPcyv4jkTHeS2zTmYRoFi+evMemhmMkvPVcsBOQGXinGq6JyiQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=888
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2002050149
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=958 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2002050149
-Message-ID-Hash: 2VRRV2KD6HDJ3RILGFBWIOKPXUCDKWWX
-X-Message-ID-Hash: 2VRRV2KD6HDJ3RILGFBWIOKPXUCDKWWX
-X-MailFrom: dan.carpenter@oracle.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+In-Reply-To: <20200205183050.GA26711@infradead.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: 4SSTACD77FZ4NDHESLCDNIJCCVFTQUV5
+X-Message-ID-Hash: 4SSTACD77FZ4NDHESLCDNIJCCVFTQUV5
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2VRRV2KD6HDJ3RILGFBWIOKPXUCDKWWX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4SSTACD77FZ4NDHESLCDNIJCCVFTQUV5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -96,38 +66,95 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 05, 2020 at 11:16:22AM -0800, Dan Williams wrote:
-> Ugh, sorry I thought you were pointing out that there's too many
-> put_device() not the use after free. Yes, the use after free is a bug
-> that needs fixing.
+On Wed, Feb 05, 2020 at 10:30:50AM -0800, Christoph Hellwig wrote:
+> > +	/*
+> > +	 * There are no users as of now. Once users are there, fix dm code
+> > +	 * to be able to split a long range across targets.
+> > +	 */
+> 
+> This comment confused me.  I think this wants to say something like:
+> 
+> 	/*
+> 	 * There are now callers that want to zero across a page boundary as of
+> 	 * now.  Once there are users this check can be removed after the
+> 	 * device mapper code has been updated to split ranges across targets.
+> 	 */
 
-I am complaining about the device_puts...  If we call device_put()
-twice then it cause a problem in __nvdimm_create()
+Yes, that's what I wanted to say but I missed one line. Thanks. Will fix
+it.
 
-drivers/nvdimm/dimm_devs.c
-   506          nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_USER);
-   507          nvdimm->sec.ext_flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
-   508          nd_device_register(dev);
-   509  
-   510          return nvdimm;
-                       ^^^^^^
-If we call device_put() twice then we this pointer within 4 seconds.
+> 
+> > +static int pmem_dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
+> > +				    unsigned int offset, size_t len)
+> > +{
+> > +	int rc = 0;
+> > +	phys_addr_t phys_pos = pgoff * PAGE_SIZE + offset;
+> 
+> Any reason not to pass a phys_addr_t in the calling convention for the
+> method and maybe also for dax_zero_page_range itself?
 
-   511  }
+I don't have any reason not to pass phys_addr_t. If that sounds better,
+will make changes.
 
-The fix is probably to make nd_device_register() return an error code so
-we can do:
+> 
+> > +	sector_start = ALIGN(phys_pos, 512)/512;
+> > +	sector_end = ALIGN_DOWN(phys_pos + bytes, 512)/512;
+> 
+> Missing whitespaces.  Also this could use DIV_ROUND_UP and
+> DIV_ROUND_DOWN.
 
-	ret = nd_device_register(dev);
-	if (ret) {
-		device_put(&nvdimm->dev);
-		return NULL;
-	}
+Will do.
 
-	return nvdimm;
 
-regards,
-dan carpenter
+> 
+> > +	if (sector_end > sector_start)
+> > +		nr_sectors = sector_end - sector_start;
+> > +
+> > +	if (nr_sectors &&
+> > +	    unlikely(is_bad_pmem(&pmem->bb, sector_start,
+> > +				 nr_sectors * 512)))
+> > +		bad_pmem = true;
+> 
+> How could nr_sectors be zero?
+
+If somebody specified a range across two sectors but none of the sector is
+completely written. Then nr_sectors will be zero. In fact this check
+shoudl probably be nr_sectors > 0 as writes with-in a sector will lead
+to nr_sector being -1.
+
+Am I missing something.
+
+> 
+> > +	write_pmem(pmem_addr, page, 0, bytes);
+> > +	if (unlikely(bad_pmem)) {
+> > +		/*
+> > +		 * Pass block aligned offset and length. That seems
+> > +		 * to work as of now. Other finer grained alignment
+> > +		 * cases can be addressed later if need be.
+> > +		 */
+> > +		rc = pmem_clear_poison(pmem, ALIGN(pmem_off, 512),
+> > +				       nr_sectors * 512);
+> > +		write_pmem(pmem_addr, page, 0, bytes);
+> > +	}
+> 
+> This code largerly duplicates the write side of pmem_do_bvec.  I
+> think it might make sense to split pmem_do_bvec into a read and a write
+> side as a prep patch, and then reuse the write side here.
+
+Ok, I will look into it. How about just add a helper function for write
+side and use that function both here and in pmem_do_bvec().
+
+> 
+> > +int generic_dax_zero_page_range(struct dax_device *dax_dev, pgoff_t pgoff,
+> > +				 unsigned int offset, size_t len);
+> 
+> This should probably go into a separare are of the header and have
+> comment about being a section for generic helpers for drivers.
+
+ok, will do.
+
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
