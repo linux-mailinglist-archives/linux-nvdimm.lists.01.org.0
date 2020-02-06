@@ -1,80 +1,94 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903731545C5
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Feb 2020 15:12:25 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF52154642
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Feb 2020 15:33:50 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D3F2B10FC3404;
-	Thu,  6 Feb 2020 06:15:40 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.131.41; helo=sonic303-2.consmr.mail.bf2.yahoo.com; envelope-from=mikebenz550@aol.com; receiver=<UNKNOWN> 
-Received: from sonic303-2.consmr.mail.bf2.yahoo.com (sonic303-2.consmr.mail.bf2.yahoo.com [74.6.131.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 467E71007A82E;
+	Thu,  6 Feb 2020 06:37:06 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9B30B10FC3400
-	for <linux-nvdimm@lists.01.org>; Thu,  6 Feb 2020 06:15:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1580998340; bh=aoPnLSnNJjZPPuOCAzh4EwkNWkEpImt2Lwq6nh5NGww=; h=Date:From:Subject:References:From:Subject; b=Kiq5gWRn2gsqdHeM6nagX5cVSP6GDuoidxkUNAeP42aX+EJjspOxJ2c6CB4+7qgMZ6Tlkm5r2OKpjbVZ3xDiqSlqUielFDtbvxJedD7NfWRq8mGDCOQPWj7JMuoZqpgQjvf7VkNhYoL8Fx3odp5oj6re/ulMzrB5oVf1gYwaWYMRBBUO8rMMi70xVyc+3wVNrqC17+jXVSPxFsNjzaJIxqsiZOBJO+dCh5IlutVSM4HGFZdLXfxioP0YhWhQGeQxYROnhFwjKx6PHBnSUTtgLZZlo5XAViqGtWScv5VkT/9Em7dmSQx0VD84/Y0pErB9S/YETDeSBPWdJumkc3swJQ==
-X-YMail-OSG: FHX4uDsVM1lisqFAy.2d_iq8fMlTbUnn1cWVyQz4BMrj_1ZIdOkAdXVExOuG6E3
- VncelQZVGujNEq4cCA9iGzlMHYSj_FoN6GCC5J6ifvEAJz3_sP62yAzEJtCagPnYE5i0086gQHqh
- 3Z7HH.MdfE380pfaT0Kyijkxi.cU27v.NM4ExdxElfj9hg7pn9__3eJhtjf5XVF6ZmN5omEcK_RC
- nfArz2dtF2T1rF3bUE8jSAVp6yoYJQCwRz_SY2cO7yXKBkz.Y_l9SirWk6.KEhagigsI6KwTkaSP
- BYzDdZhYwn30uyW1Sj.93p4Wtj8GBBnVPw4M9deCqbiY5NFPQbi_kKPlM8y2SRxbtHlhULvuwspX
- FMwkKEzhRKZZgI8.EiNxa02bto5PHci4pf9q5uXq2vhMUSlfV9A5GHNy7.Vz0MyloqLVZuHXTHgm
- Q9SgeM1id6XunjhNLl.3TBkIZzIcEmIwrf9pmDF9.CS2xmzfSdJ0pHJZtJA9oxAFEqBB06PTQ5a5
- 7xWBKe_y6HuJegBoi4Xc2C2k5a58xGT3HOkQ0lUsIinTSj0hDOUeXoDq6B6rzfOXao6POaEbfWdo
- CJt04Hf5.3wlEAKClwDmciQ8O3yONwSZyg1r7ZEHEUWCBypCI7xBbUs.v9LIrHGmNkRZZWN3eC1c
- bUxu.dOM8D_vbTjnusgxz7gXAeWqOUCaGWfPlJ8cPfkyd9fX2yvA6aLabR1VNKRAqg.YKYf8Y1z3
- 2RGu_jT.EO6_yidOdSj4AgYeHBavGAjONO8T1anVw0HAKe0b.TAY1VB1EUSIDvOh5BZ4LHQJjTOl
- ld_23h0MdRGeQxaX_qXtheONVQykBrlDeoi3LGKlOrgfSl82iDH6UGe.Lxsq2dA4i2pQfWtO.zoP
- mNA1eM9GiW8_ckopYq4M6fIDdljm6rO7zgtVrlkJKqjBcImT6G112J_U6Od6i0ucZ4vrpO3JBqLN
- 5Xf6FRCwFF_xD2SiGa6m1hOnnZ7h.hdMYQno26do3rsMg2PcxDNXAFUYujTlD7iqa0.QmAVh.w3A
- 9mSSFIGJ.l1x0w2O5uQrmAWCblx_9ySekB414FdIZeRi6zK_Dye5TC_j0i3yWj8tQc_8JoyPBDFR
- QAZHx2XA8DurJuA0nv8eJkM4yJrSnCT0EEXIWuRNl7hOjFmmdYRKBOTrQlJUz.gLM3LOzY4.I.e7
- s5QWv.14pWED_OqKuIw6AMwozachdtWhLu8tc7HsBNNxtHT4f332K4Uxe9L65P1_luHL2jaQBwQJ
- ZB41suYSrAJ5UscHZq3q6beLSaxy3x3dPmqPtTtUqGOOkaU3adqxfFSMD7TqGsGdUgzvS57qj4q5
- sWbX1LMIYt5gzXgP1
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.bf2.yahoo.com with HTTP; Thu, 6 Feb 2020 14:12:20 +0000
-Date: Thu, 6 Feb 2020 14:12:18 +0000 (UTC)
-From: mike benz <mikebenz550@aol.com>
-Message-ID: <1069591791.207224.1580998338297@mail.yahoo.com>
-Subject: Contact Federal Reserve Bank New York to receive your inheritance
- contract payment  (US$12.8M)
+	by ml01.01.org (Postfix) with ESMTPS id BCDA51007A82C
+	for <linux-nvdimm@lists.01.org>; Thu,  6 Feb 2020 06:37:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1580999624;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ncPmjoEwq7PfrjChe+n1l2nRN+8/UziQd61vGlVP2YY=;
+	b=eNpfm++nOWKHv8sav6wp+9ddiXu2kmwJEzeyD4Oyq0bnLcWWu48FY3Omv/yqZaOPKe9Kfg
+	6so+OhfdDxeraqmwBSEU+MJBgbDD0WebJd1Q/I0CxfJ0u5Zv7feUtqxvgPzqb6H51ySTdb
+	Bar1AdHS2OMQFfWFChP8kKNBS+q8Mtk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-213-7qb4itb2PoGbLbtchBfLaw-1; Thu, 06 Feb 2020 09:33:42 -0500
+X-MC-Unique: 7qb4itb2PoGbLbtchBfLaw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3746C85EE82;
+	Thu,  6 Feb 2020 14:33:41 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A21526FA9;
+	Thu,  6 Feb 2020 14:33:40 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Jan Kara <jack@suse.cz>
+Subject: Re: [patch] dax: pass NOWAIT flag to iomap_apply
+References: <x49r1z86e1d.fsf@segfault.boston.devel.redhat.com>
+	<20200206084740.GE14001@quack2.suse.cz>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Thu, 06 Feb 2020 09:33:39 -0500
+In-Reply-To: <20200206084740.GE14001@quack2.suse.cz> (Jan Kara's message of
+	"Thu, 6 Feb 2020 09:47:40 +0100")
+Message-ID: <x49tv43lr98.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <1069591791.207224.1580998338297.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15185 aolwebmail Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
-Message-ID-Hash: ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I
-X-Message-ID-Hash: ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I
-X-MailFrom: mikebenz550@aol.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Message-ID-Hash: UK7LNQEBSALKDEO66Q6MU7K4XMMZI74F
+X-Message-ID-Hash: UK7LNQEBSALKDEO66Q6MU7K4XMMZI74F
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, willy@infradead.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UK7LNQEBSALKDEO66Q6MU7K4XMMZI74F/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXR0ZW50aW9uIEZ1bmQgQmVuZWZpY2lhcnkswqBDb250YWN0IEZlZGVyYWwgUmVzZXJ2ZSBCYW5r
-IE5ldyBZb3JrIHRvIHJlY2VpdmUgeW91ciBpbmhlcml0YW5jZSBjb250cmFjdCBwYXltZW50wqAg
-KFVTJDEyLjhNKVBheW1lbnQgUmVsZWFzZSBJbnN0cnVjdGlvbiBmcm9tIFVTIGRlcGFydG1lbnQg
-b2YgSG9tZWxhbmQgU2VjdXJpdHkgTmV3IFlvcmsuQ29udGFjdCBGZWRlcmFsIFJlc2VydmUgQmFu
-ayBOZXcgWW9yayB0byByZWNlaXZlIHlvdXIgaW5oZXJpdGFuY2UgY29udHJhY3QgcGF5bWVudMKg
-IChVUyQxMi44TSnCoGRlcG9zaXRlZCB0aGlzIG1vcm5pbmcgaW4geW91ciBmYXZvci5Db250YWN0
-IFBlcnNvbiwgRHIuIEplcm9tZSBILiBQb3dlbGwuwqBDRU8gRGlyZWN0b3IsIEZlZGVyYWwgUmVz
-ZXJ2ZSBCYW5rIE5ldyBZb3JrwqBFbWFpbDogcmVzZXJ2ZWJhbmsubnk5M0BnbWFpbC5jb23CoFRl
-bGVwaG9uZS0gKDkxNykgOTgzLTQ4NDYpwqBOb3RlLkkgaGF2ZSBwYWlkIHRoZSBkZXBvc2l0IGFu
-ZCBpbnN1cmFuY2UgZmVlIGZvciB5b3UsYnV0IG9ubHkgbW9uZXkgeW91IGFyZSByZXF1aXJlZCB0
-byBzZW5kIHRvIHRoZSBiYW5rIGlzICRVUzI1LjAwLHlvdXIgcHJvY2Vzc2luZyBmdW5kcyB0cmFu
-c2ZlciBmZWUgb25seSB0byBlbmFibGUgdGhlbSByZWxlYXNlIHlvdXIgZnVuZHMgdG8geW91IHRv
-ZGF5LlRoYW5rIHlvdSBmb3IgeW91ciBhbnRpY2lwYXRlZCBjby1vcGVyYXRpb24uVFJFQVQgQVMg
-VVJHRU5ULk1yLiBSaWNoYXJkwqBMb25naGFpckRJUkVDVE9SIE9GIEZVTkRTIENMRUFSQU5DRSBV
-TklUDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51
-eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5z
-dWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3Jn
-Cg==
+Jan Kara <jack@suse.cz> writes:
+
+> On Wed 05-02-20 14:15:58, Jeff Moyer wrote:
+>> fstests generic/471 reports a failure when run with MOUNT_OPTIONS="-o
+>> dax".  The reason is that the initial pwrite to an empty file with the
+>> RWF_NOWAIT flag set does not return -EAGAIN.  It turns out that
+>> dax_iomap_rw doesn't pass that flag through to iomap_apply.
+>> 
+>> With this patch applied, generic/471 passes for me.
+>> 
+>> Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
+>
+> The patch looks good to me. You can add:
+>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+>
+> BTW, I've just noticed ext4 seems to be buggy in this regard and even this
+> patch doesn't fix it. So I guess you've been using XFS for testing this?
+
+That's right, sorry I didn't mention that.  Will you send a patch for
+ext4, or do you want me to look into it?
+
+Thanks!
+Jeff
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
