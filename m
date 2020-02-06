@@ -2,88 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BA591540B6
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Feb 2020 09:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 903731545C5
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Feb 2020 15:12:25 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EFDB910FC3403;
-	Thu,  6 Feb 2020 00:58:59 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D3F2B10FC3404;
+	Thu,  6 Feb 2020 06:15:40 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.131.41; helo=sonic303-2.consmr.mail.bf2.yahoo.com; envelope-from=mikebenz550@aol.com; receiver=<UNKNOWN> 
+Received: from sonic303-2.consmr.mail.bf2.yahoo.com (sonic303-2.consmr.mail.bf2.yahoo.com [74.6.131.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8DCC410FC3401
-	for <linux-nvdimm@lists.01.org>; Thu,  6 Feb 2020 00:58:57 -0800 (PST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-	by mx2.suse.de (Postfix) with ESMTP id 074ECAD55;
-	Thu,  6 Feb 2020 08:55:38 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id 521681E0E31; Thu,  6 Feb 2020 09:47:40 +0100 (CET)
-Date: Thu, 6 Feb 2020 09:47:40 +0100
-From: Jan Kara <jack@suse.cz>
-To: Jeff Moyer <jmoyer@redhat.com>
-Subject: Re: [patch] dax: pass NOWAIT flag to iomap_apply
-Message-ID: <20200206084740.GE14001@quack2.suse.cz>
-References: <x49r1z86e1d.fsf@segfault.boston.devel.redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 9B30B10FC3400
+	for <linux-nvdimm@lists.01.org>; Thu,  6 Feb 2020 06:15:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1580998340; bh=aoPnLSnNJjZPPuOCAzh4EwkNWkEpImt2Lwq6nh5NGww=; h=Date:From:Subject:References:From:Subject; b=Kiq5gWRn2gsqdHeM6nagX5cVSP6GDuoidxkUNAeP42aX+EJjspOxJ2c6CB4+7qgMZ6Tlkm5r2OKpjbVZ3xDiqSlqUielFDtbvxJedD7NfWRq8mGDCOQPWj7JMuoZqpgQjvf7VkNhYoL8Fx3odp5oj6re/ulMzrB5oVf1gYwaWYMRBBUO8rMMi70xVyc+3wVNrqC17+jXVSPxFsNjzaJIxqsiZOBJO+dCh5IlutVSM4HGFZdLXfxioP0YhWhQGeQxYROnhFwjKx6PHBnSUTtgLZZlo5XAViqGtWScv5VkT/9Em7dmSQx0VD84/Y0pErB9S/YETDeSBPWdJumkc3swJQ==
+X-YMail-OSG: FHX4uDsVM1lisqFAy.2d_iq8fMlTbUnn1cWVyQz4BMrj_1ZIdOkAdXVExOuG6E3
+ VncelQZVGujNEq4cCA9iGzlMHYSj_FoN6GCC5J6ifvEAJz3_sP62yAzEJtCagPnYE5i0086gQHqh
+ 3Z7HH.MdfE380pfaT0Kyijkxi.cU27v.NM4ExdxElfj9hg7pn9__3eJhtjf5XVF6ZmN5omEcK_RC
+ nfArz2dtF2T1rF3bUE8jSAVp6yoYJQCwRz_SY2cO7yXKBkz.Y_l9SirWk6.KEhagigsI6KwTkaSP
+ BYzDdZhYwn30uyW1Sj.93p4Wtj8GBBnVPw4M9deCqbiY5NFPQbi_kKPlM8y2SRxbtHlhULvuwspX
+ FMwkKEzhRKZZgI8.EiNxa02bto5PHci4pf9q5uXq2vhMUSlfV9A5GHNy7.Vz0MyloqLVZuHXTHgm
+ Q9SgeM1id6XunjhNLl.3TBkIZzIcEmIwrf9pmDF9.CS2xmzfSdJ0pHJZtJA9oxAFEqBB06PTQ5a5
+ 7xWBKe_y6HuJegBoi4Xc2C2k5a58xGT3HOkQ0lUsIinTSj0hDOUeXoDq6B6rzfOXao6POaEbfWdo
+ CJt04Hf5.3wlEAKClwDmciQ8O3yONwSZyg1r7ZEHEUWCBypCI7xBbUs.v9LIrHGmNkRZZWN3eC1c
+ bUxu.dOM8D_vbTjnusgxz7gXAeWqOUCaGWfPlJ8cPfkyd9fX2yvA6aLabR1VNKRAqg.YKYf8Y1z3
+ 2RGu_jT.EO6_yidOdSj4AgYeHBavGAjONO8T1anVw0HAKe0b.TAY1VB1EUSIDvOh5BZ4LHQJjTOl
+ ld_23h0MdRGeQxaX_qXtheONVQykBrlDeoi3LGKlOrgfSl82iDH6UGe.Lxsq2dA4i2pQfWtO.zoP
+ mNA1eM9GiW8_ckopYq4M6fIDdljm6rO7zgtVrlkJKqjBcImT6G112J_U6Od6i0ucZ4vrpO3JBqLN
+ 5Xf6FRCwFF_xD2SiGa6m1hOnnZ7h.hdMYQno26do3rsMg2PcxDNXAFUYujTlD7iqa0.QmAVh.w3A
+ 9mSSFIGJ.l1x0w2O5uQrmAWCblx_9ySekB414FdIZeRi6zK_Dye5TC_j0i3yWj8tQc_8JoyPBDFR
+ QAZHx2XA8DurJuA0nv8eJkM4yJrSnCT0EEXIWuRNl7hOjFmmdYRKBOTrQlJUz.gLM3LOzY4.I.e7
+ s5QWv.14pWED_OqKuIw6AMwozachdtWhLu8tc7HsBNNxtHT4f332K4Uxe9L65P1_luHL2jaQBwQJ
+ ZB41suYSrAJ5UscHZq3q6beLSaxy3x3dPmqPtTtUqGOOkaU3adqxfFSMD7TqGsGdUgzvS57qj4q5
+ sWbX1LMIYt5gzXgP1
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.bf2.yahoo.com with HTTP; Thu, 6 Feb 2020 14:12:20 +0000
+Date: Thu, 6 Feb 2020 14:12:18 +0000 (UTC)
+From: mike benz <mikebenz550@aol.com>
+Message-ID: <1069591791.207224.1580998338297@mail.yahoo.com>
+Subject: Contact Federal Reserve Bank New York to receive your inheritance
+ contract payment  (US$12.8M)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <x49r1z86e1d.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: 6NS5PHLGTWH57K3WGU4O6O2QW6VLZO3N
-X-Message-ID-Hash: 6NS5PHLGTWH57K3WGU4O6O2QW6VLZO3N
-X-MailFrom: jack@suse.cz
+References: <1069591791.207224.1580998338297.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15185 aolwebmail Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36
+Message-ID-Hash: ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I
+X-Message-ID-Hash: ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I
+X-MailFrom: mikebenz550@aol.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, willy@infradead.org, jack@suse.cz
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6NS5PHLGTWH57K3WGU4O6O2QW6VLZO3N/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZBUH7JMWLFPNZIZSMHOKGI2QA4FL5O2I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed 05-02-20 14:15:58, Jeff Moyer wrote:
-> fstests generic/471 reports a failure when run with MOUNT_OPTIONS="-o
-> dax".  The reason is that the initial pwrite to an empty file with the
-> RWF_NOWAIT flag set does not return -EAGAIN.  It turns out that
-> dax_iomap_rw doesn't pass that flag through to iomap_apply.
-> 
-> With this patch applied, generic/471 passes for me.
-> 
-> Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
-
-The patch looks good to me. You can add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-BTW, I've just noticed ext4 seems to be buggy in this regard and even this
-patch doesn't fix it. So I guess you've been using XFS for testing this?
-
-									Honza
-
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 1f1f0201cad1..0b0d8819cb1b 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -1207,6 +1207,9 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
->  		lockdep_assert_held(&inode->i_rwsem);
->  	}
->  
-> +	if (iocb->ki_flags & IOCB_NOWAIT)
-> +		flags |= IOMAP_NOWAIT;
-> +
->  	while (iov_iter_count(iter)) {
->  		ret = iomap_apply(inode, pos, iov_iter_count(iter), flags, ops,
->  				iter, dax_iomap_actor);
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXR0ZW50aW9uIEZ1bmQgQmVuZWZpY2lhcnkswqBDb250YWN0IEZlZGVyYWwgUmVzZXJ2ZSBCYW5r
+IE5ldyBZb3JrIHRvIHJlY2VpdmUgeW91ciBpbmhlcml0YW5jZSBjb250cmFjdCBwYXltZW50wqAg
+KFVTJDEyLjhNKVBheW1lbnQgUmVsZWFzZSBJbnN0cnVjdGlvbiBmcm9tIFVTIGRlcGFydG1lbnQg
+b2YgSG9tZWxhbmQgU2VjdXJpdHkgTmV3IFlvcmsuQ29udGFjdCBGZWRlcmFsIFJlc2VydmUgQmFu
+ayBOZXcgWW9yayB0byByZWNlaXZlIHlvdXIgaW5oZXJpdGFuY2UgY29udHJhY3QgcGF5bWVudMKg
+IChVUyQxMi44TSnCoGRlcG9zaXRlZCB0aGlzIG1vcm5pbmcgaW4geW91ciBmYXZvci5Db250YWN0
+IFBlcnNvbiwgRHIuIEplcm9tZSBILiBQb3dlbGwuwqBDRU8gRGlyZWN0b3IsIEZlZGVyYWwgUmVz
+ZXJ2ZSBCYW5rIE5ldyBZb3JrwqBFbWFpbDogcmVzZXJ2ZWJhbmsubnk5M0BnbWFpbC5jb23CoFRl
+bGVwaG9uZS0gKDkxNykgOTgzLTQ4NDYpwqBOb3RlLkkgaGF2ZSBwYWlkIHRoZSBkZXBvc2l0IGFu
+ZCBpbnN1cmFuY2UgZmVlIGZvciB5b3UsYnV0IG9ubHkgbW9uZXkgeW91IGFyZSByZXF1aXJlZCB0
+byBzZW5kIHRvIHRoZSBiYW5rIGlzICRVUzI1LjAwLHlvdXIgcHJvY2Vzc2luZyBmdW5kcyB0cmFu
+c2ZlciBmZWUgb25seSB0byBlbmFibGUgdGhlbSByZWxlYXNlIHlvdXIgZnVuZHMgdG8geW91IHRv
+ZGF5LlRoYW5rIHlvdSBmb3IgeW91ciBhbnRpY2lwYXRlZCBjby1vcGVyYXRpb24uVFJFQVQgQVMg
+VVJHRU5ULk1yLiBSaWNoYXJkwqBMb25naGFpckRJUkVDVE9SIE9GIEZVTkRTIENMRUFSQU5DRSBV
+TklUDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51
+eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5z
+dWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3Jn
+Cg==
