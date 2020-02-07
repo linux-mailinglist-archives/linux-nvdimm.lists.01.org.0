@@ -1,63 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C3C155F94
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 21:27:20 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F030C156004
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 21:44:13 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F3DA610FC35A6;
-	Fri,  7 Feb 2020 12:30:32 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9A55710FC359A;
+	Fri,  7 Feb 2020 12:47:29 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=cristinamedina0010@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E2EE510FC3592
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 12:30:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1581107231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WTamhpAnwChD3OEQqxRkf3An1EjerkCeXOOCWgzEmpk=;
-	b=SFTUINxzWy12RlbIg/g1g30+NdWtrMQ6frVpUstPdYGSZ5F9VJ3EdPkHrDvI2Uonhp6inp
-	CV2xRTeTe2YJOQpSDQsgDVn9RKT0Q/Uo5NJM/3TLglTE4XdXNvgsSBQuqDreHyp8PQtTI0
-	/bYcsD0tifWnDaiBf6WvZJR+lKo61dk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-227-DweDYff0PISyNIl050Upmw-1; Fri, 07 Feb 2020 15:27:07 -0500
-X-MC-Unique: DweDYff0PISyNIl050Upmw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5B7EC107B267;
-	Fri,  7 Feb 2020 20:27:06 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3670060BF7;
-	Fri,  7 Feb 2020 20:27:06 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id AE4192257D9; Fri,  7 Feb 2020 15:27:02 -0500 (EST)
-From: Vivek Goyal <vgoyal@redhat.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-nvdimm@lists.01.org,
-	hch@infradead.org,
-	dan.j.williams@intel.com
-Subject: [PATCH v3 7/7] dax,iomap: Add helper dax_iomap_zero() to zero a range
-Date: Fri,  7 Feb 2020 15:26:52 -0500
-Message-Id: <20200207202652.1439-8-vgoyal@redhat.com>
-In-Reply-To: <20200207202652.1439-1-vgoyal@redhat.com>
-References: <20200207202652.1439-1-vgoyal@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 2E20310FC3599
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 12:47:27 -0800 (PST)
+Received: by mail-ot1-x343.google.com with SMTP id 77so591523oty.6
+        for <linux-nvdimm@lists.01.org>; Fri, 07 Feb 2020 12:44:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
+         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
+         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
+         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
+         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
+         CMWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=IJ9DgfgfolUnkykQc8aa8bK1X5J1zHkqm3k8A5eYZ6Qc0n+m+VUs2Cui1TMpuCa0Ev
+         PJp7TYtBynIMEVQeYGMsEtON5lvwegYyLFIQbVdHRCxACmXUk7wuVyG5lwjO5RzFXI9j
+         tphfjUdz0VeQiQyqPw2LunOpg5LbV3vD7zhXFbswW5LhJL6HB4hmf9Z27PohFsj43L62
+         OKk5fQoyKpR95vMgQP58u3sahC9Mavftr4ITngqpVpylIW04N4nd5InzgXXZwP6TyOBV
+         LzMslJHEIoIwztN14yfGZItiJ//TIA6CmdQu+XaeA6kXY1080yLiFgr1g/V4TYri8jxR
+         MqSA==
+X-Gm-Message-State: APjAAAWtVGvLUnPwaKePUVR8NWYGfFl9L942/Hs66x5e6k2KLX0lmt7s
+	MzKzRuB5N0ZeB6d0oyuh+gll6/DfbDs7pY55bcc=
+X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
+X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
+ Fri, 07 Feb 2020 12:44:08 -0800 (PST)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: AHIVQNK5ZTLM452BAI2ELNN72QSWM3HJ
-X-Message-ID-Hash: AHIVQNK5ZTLM452BAI2ELNN72QSWM3HJ
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: dm-devel@redhat.com
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
+From: "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date: Fri, 7 Feb 2020 15:44:08 -0500
+Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To: undisclosed-recipients:;
+Message-ID-Hash: RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS
+X-Message-ID-Hash: RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS
+X-MailFrom: cristinamedina0010@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: auch197722@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AHIVQNK5ZTLM452BAI2ELNN72QSWM3HJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,115 +66,23 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add a helper dax_ioamp_zero() to zero a range. This patch basically
-merges __dax_zero_page_range() and iomap_dax_zero().
+Good Day,
 
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
----
- fs/dax.c               | 12 ++++++------
- fs/iomap/buffered-io.c |  9 +--------
- include/linux/dax.h    | 17 +++--------------
- 3 files changed, 10 insertions(+), 28 deletions(-)
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 6757e12b86b2..f6c4788ba764 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1044,23 +1044,23 @@ static vm_fault_t dax_load_hole(struct xa_state *xas,
- 	return ret;
- }
- 
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int size)
-+int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-+		   struct iomap *iomap)
- {
- 	pgoff_t pgoff;
- 	long rc, id;
-+	sector_t sector = iomap_sector(iomap, pos & PAGE_MASK);
- 
--	rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
-+	rc = bdev_dax_pgoff(iomap->bdev, sector, PAGE_SIZE, &pgoff);
- 	if (rc)
- 		return rc;
- 
- 	id = dax_read_lock();
--	rc = dax_zero_page_range(dax_dev, (pgoff << PAGE_SHIFT) + offset, size);
-+	rc = dax_zero_page_range(iomap->dax_dev, (pgoff << PAGE_SHIFT) + offset,
-+				 size);
- 	dax_read_unlock(id);
- 	return rc;
- }
--EXPORT_SYMBOL_GPL(__dax_zero_page_range);
- 
- static loff_t
- dax_iomap_actor(struct inode *inode, loff_t pos, loff_t length, void *data,
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 828444e14d09..5a5d784a110e 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -974,13 +974,6 @@ static int iomap_zero(struct inode *inode, loff_t pos, unsigned offset,
- 	return iomap_write_end(inode, pos, bytes, bytes, page, iomap, srcmap);
- }
- 
--static int iomap_dax_zero(loff_t pos, unsigned offset, unsigned bytes,
--		struct iomap *iomap)
--{
--	return __dax_zero_page_range(iomap->bdev, iomap->dax_dev,
--			iomap_sector(iomap, pos & PAGE_MASK), offset, bytes);
--}
--
- static loff_t
- iomap_zero_range_actor(struct inode *inode, loff_t pos, loff_t count,
- 		void *data, struct iomap *iomap, struct iomap *srcmap)
-@@ -1000,7 +993,7 @@ iomap_zero_range_actor(struct inode *inode, loff_t pos, loff_t count,
- 		bytes = min_t(loff_t, PAGE_SIZE - offset, count);
- 
- 		if (IS_DAX(inode))
--			status = iomap_dax_zero(pos, offset, bytes, iomap);
-+			status = dax_iomap_zero(pos, offset, bytes, iomap);
- 		else
- 			status = iomap_zero(inode, pos, offset, bytes, iomap,
- 					srcmap);
-diff --git a/include/linux/dax.h b/include/linux/dax.h
-index a555f0aeb7bd..31d0e6fc3023 100644
---- a/include/linux/dax.h
-+++ b/include/linux/dax.h
-@@ -13,6 +13,7 @@
- typedef unsigned long dax_entry_t;
- 
- struct iomap_ops;
-+struct iomap;
- struct dax_device;
- struct dax_operations {
- 	/*
-@@ -223,20 +224,8 @@ vm_fault_t dax_finish_sync_fault(struct vm_fault *vmf,
- int dax_delete_mapping_entry(struct address_space *mapping, pgoff_t index);
- int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
- 				      pgoff_t index);
--
--#ifdef CONFIG_FS_DAX
--int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length);
--#else
--static inline int __dax_zero_page_range(struct block_device *bdev,
--		struct dax_device *dax_dev, sector_t sector,
--		unsigned int offset, unsigned int length)
--{
--	return -ENXIO;
--}
--#endif
--
-+int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-+			struct iomap *iomap);
- static inline bool dax_mapping(struct address_space *mapping)
- {
- 	return mapping->host && IS_DAX(mapping->host);
--- 
-2.20.1
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
+
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
+
+Regards
+Theophilus Odadudu
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
