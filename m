@@ -2,69 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A60155B2D
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 16:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDE3155BDC
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 17:34:21 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 321741007A826;
-	Fri,  7 Feb 2020 07:56:57 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=180.110.34.203; helo=zmezlitkh.net; envelope-from=fdtqkfkyj@zmezlitkh.net; receiver=<UNKNOWN> 
-Received: from zmezlitkh.net (unknown [180.110.34.203])
-	by ml01.01.org (Postfix) with ESMTP id 7167C1007B162
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 07:56:50 -0800 (PST)
-Message-ID: <20200207235330638338@zmezlitkh.net>
-From: "amazon" <fdtqkfkyj@zmezlitkh.net>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
-	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
-	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
-Date: Fri, 7 Feb 2020 23:53:24 +0800
+	by ml01.01.org (Postfix) with ESMTP id 6EA1A10FC3583;
+	Fri,  7 Feb 2020 08:37:37 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 97A831007A826
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 08:37:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1581093255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3QRTAga3VQ9v/y6z6auDep6PqNUpoH7brYD9i0zJlUs=;
+	b=GEqisqCUyTNTz6qdmaj3TyRirvRTpiX5U59uMEG3j17RreG1+wLTHeb+FhVxFbUcQ/P2wO
+	FkLp+oIIXlk1f5neLbZSJ6Z59eE67WwXFyMqJLr1652f3FzF8Bf3f8eZyivLSepTiz0MZV
+	Hx7IvjCYMfs+alrnHgKDuHizSASV4uE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-426-FcrUSCs0P4araZ4RMEpJ8Q-1; Fri, 07 Feb 2020 11:34:05 -0500
+X-MC-Unique: FcrUSCs0P4araZ4RMEpJ8Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 896671005513;
+	Fri,  7 Feb 2020 16:34:04 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id F08FD790E1;
+	Fri,  7 Feb 2020 16:34:01 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 63FFF220A24; Fri,  7 Feb 2020 11:34:01 -0500 (EST)
+Date: Fri, 7 Feb 2020 11:34:01 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 3/5] dm,dax: Add dax zero_page_range operation
+Message-ID: <20200207163401.GB11998@redhat.com>
+References: <20200203200029.4592-1-vgoyal@redhat.com>
+ <20200203200029.4592-4-vgoyal@redhat.com>
+ <20200205183304.GC26711@infradead.org>
 MIME-Version: 1.0
-X-mailer: Xjbtfugwrr 6
-Message-ID-Hash: ZJZWLTTFMUUBH6KLGMI5SJG7Z63PH63N
-X-Message-ID-Hash: ZJZWLTTFMUUBH6KLGMI5SJG7Z63PH63N
-X-MailFrom: fdtqkfkyj@zmezlitkh.net
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Content-Disposition: inline
+In-Reply-To: <20200205183304.GC26711@infradead.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Message-ID-Hash: WX7Z54KW7TMPIZMZJEV5V2E2UG4P4CHA
+X-Message-ID-Hash: WX7Z54KW7TMPIZMZJEV5V2E2UG4P4CHA
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZJZWLTTFMUUBH6KLGMI5SJG7Z63PH63N/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WX7Z54KW7TMPIZMZJEV5V2E2UG4P4CHA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-dmJBbWF6b24uY28uanAg44Gr44GU55m76Yyy44Gu44Ki44Kr44Km44Oz44OI77yI5ZCN5YmN44CB
-44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqNLi4uDQo5
-ajdzajl0dmhiOHUNCiANCg0KICAgDQog0JBtYXpvbiDjgYrlrqLmp5ggDQoNCg0K5q6L5b+144Gq
-44GM44KJ44CB44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OIIA0Ka2pmbWI3bmVqDQrQkG1hem9u
-IOOCkuabtOaWsOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAgg0K44GT44KM44Gv44CB44Kr44O8
-44OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC6KuL5rGC5YWI5L2P5omA44GM5aSJ
-5pu044GV44KM44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf44GZ44KL
-5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CCIA0KZ3l5MjUNCuOCouOCq+OCpuODs+ODiOaDheWg
-seOBruS4gOmDqOOBjOiqpOOBo+OBpuOBhOOCi+aVheOBq+OAgeOBiuWuouanmOOBruOCouOCq+OC
-puODs+ODiOOCkue2reaMgeOBmeOCi+OBn+OCgSANCnoycjd0YQ0KanJ1bTENCtCQbWF6b24g5oOF
-5aCx44KS56K66KqN44GZ44KL5b+F6KaB44O744Kn44GC44KK44G+44GZ44CC5LuK44Ki44Kr44Km
-44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQrQkG1hem9uIOODreOCsOOCpOODsyDjgarj
-gYrjgIEyNOaZgumWk+S7peWGheOBq+OBlOeiuuiqjeOBjOOBquOBhOWgtOWQiOOAgeiqoOOBq+mB
-uuaGvuOBquOBjOOCieOAgeOCouOCq+OCpuODs+ODiOOCkuODreODg+OCr+OBleOBm+OBpuOBhOOB
-n+OBoOOBj+OBk+OBqOOCkuitpuWRiuOBhOOBn+OBl+OBvuOBmeOAgg0KDQpobXENCuODkeOCueOD
-r+ODvOODieOCkuWkieabtOOBl+OBn+immuOBiOOBjOOBquOBhOWgtOWQiOOBr+OAgeiHs+aApSgw
-MyktMDkwLTg4NDjjgb7jgafjgYrpm7voqbHjgY/jgaDjgZXjgYTjgIINCg0KDQpyeHkNCuOBiuef
-peOCieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLmlZnjgYjjgarjgYTjgafjgY/j
-gaDjgZXjgYTjgIIgDQptY25vbHM4NmkgcWsgeHI3enR0YyBycnpmejMgaGZwa2VobGduOWggDQrl
-gIvkurrmg4XloLHjgajplqLkv4LjgYzjgarjgY/jgIHmjqjmuKzjgZfjgavjgY/jgYTjg5Hjgrnj
-g6/jg7zjg4njgpLkvZzmiJDjgZfjgabjgY/jgaDjgZXjgYTjgILlpKfmloflrZfjgajlsI/mlofl
-rZfjgIHmlbDlrZfjgIHjgYrjgojjgbPoqJjlj7fjgpLlv4XjgZrkvb/nlKjjgZfjgabjgY/jgaDj
-gZXjgYTjgIIgDQp1NWtia28gNXFzZ3ZkIGp6Y3ogcWc4NXZ2cGthIGxnYWszdWNmNjc0cno0eWFn
-b2I4ciANCuOCquODs+ODqeOCpOODs+OCouOCq+OCpuODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOC
-i+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgg0KDQoNCuOBqeOB
-huOBnuOCiOOCjeOBl+OBj+OBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgiANCnlsdWEwNmtuDQoN
-CtCQbWF6b24gDQogDQoNCg0KDQogCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
-c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
-ZWF2ZUBsaXN0cy4wMS5vcmcK
+On Wed, Feb 05, 2020 at 10:33:04AM -0800, Christoph Hellwig wrote:
+> On Mon, Feb 03, 2020 at 03:00:27PM -0500, Vivek Goyal wrote:
+> > This patch adds support for dax zero_page_range operation to dm targets.
+> 
+> Any way to share the code with the dax copy iter here?
+
+Had a look at it and can't think of a good way of sharing the code. If
+you have something specific in mind, I am happy to make changes.
+
+Vivek
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
