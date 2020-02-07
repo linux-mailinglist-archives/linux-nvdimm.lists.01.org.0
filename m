@@ -1,63 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638DF155F93
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 21:27:19 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0447F155F92
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 21:27:18 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D9B9410FC35A1;
-	Fri,  7 Feb 2020 12:30:31 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id BD07910FC359C;
+	Fri,  7 Feb 2020 12:30:30 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2139410FC3592
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 12:30:29 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 2C9E110FC3594
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 12:30:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1581107230;
+	s=mimecast20190719; t=1581107229;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PB+gWFvG77GLEzOFbhdQg0iy3vsZ/QZsUnjkaWFwfK0=;
-	b=WfpVIrMkQgodxFVe/6P+V3IUUn2zRZNcShpsh15TbN2NfA/euAbgzbBvL5CS0KxoorK+BB
-	EML2VjSHzAcSBGnQBjcOYMhtY1X4Fd5Fbuh0TrbBhzmntNImb8fSDqeXeBo68UgJFKvS5O
-	cybMo7T/y4ybAduws8TJDmV3dInVKns=
+	bh=+PIs0aogCK20rQ10EgLXcJqcuxsHbzkpWoBj+waYkxo=;
+	b=YGS4+pmeeO5i8dl4DI8nA5wRC3VuCit74gjdbulY/b61uhux7vXsZhCYcGm59G2O87hFNW
+	h17ZpdgiDzReEzL7P7VlPL111lxrn6Sh1+X1LlaVYWyoOoSkSubd474ihWpOSCz8VG38AW
+	SwqCaMoYy6N89We4H6KLxSrnhHgPRHc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-372-6Spsn_9VOW2BnY8Cgm3YQg-1; Fri, 07 Feb 2020 15:27:07 -0500
-X-MC-Unique: 6Spsn_9VOW2BnY8Cgm3YQg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-145-G1LW6OLLO12cioVzd5mrEQ-1; Fri, 07 Feb 2020 15:27:07 -0500
+X-MC-Unique: G1LW6OLLO12cioVzd5mrEQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D472214E0;
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C14B2800E21;
 	Fri,  7 Feb 2020 20:27:05 +0000 (UTC)
 Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0885D60BF7;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 14E2C1BC6D;
 	Fri,  7 Feb 2020 20:27:03 +0000 (UTC)
 Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 9664B2257D5; Fri,  7 Feb 2020 15:27:02 -0500 (EST)
+	id 9B0742257D6; Fri,  7 Feb 2020 15:27:02 -0500 (EST)
 From: Vivek Goyal <vgoyal@redhat.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-nvdimm@lists.01.org,
 	hch@infradead.org,
 	dan.j.williams@intel.com
-Subject: [PATCH v3 3/7] dax, pmem: Add a dax operation zero_page_range
-Date: Fri,  7 Feb 2020 15:26:48 -0500
-Message-Id: <20200207202652.1439-4-vgoyal@redhat.com>
+Subject: [PATCH v3 4/7] s390,dcssblk,dax: Add dax zero_page_range operation to dcssblk driver
+Date: Fri,  7 Feb 2020 15:26:49 -0500
+Message-Id: <20200207202652.1439-5-vgoyal@redhat.com>
 In-Reply-To: <20200207202652.1439-1-vgoyal@redhat.com>
 References: <20200207202652.1439-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: KHRTCNF3SRRBP4DXNJAVVIRFXH67G2NU
-X-Message-ID-Hash: KHRTCNF3SRRBP4DXNJAVVIRFXH67G2NU
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Message-ID-Hash: NBVDRECPYLKHGDOWJFTW5VZQHZX5DJ47
+X-Message-ID-Hash: NBVDRECPYLKHGDOWJFTW5VZQHZX5DJ47
 X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: dm-devel@redhat.com
+CC: dm-devel@redhat.com, linux-s390@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KHRTCNF3SRRBP4DXNJAVVIRFXH67G2NU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NBVDRECPYLKHGDOWJFTW5VZQHZX5DJ47/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,109 +66,48 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add a dax operation zero_page_range, to zero a range of memory. This will
-also clear any poison in the range being zeroed.
+Add dax operation zero_page_range for dcssblk driver.
 
-As of now, zeroing of up to one page is allowed in a single call. There
-are no callers which are trying to zero more than a page in a single call.
-Once we grow the callers which zero more than a page in single call, we
-can add that support. Primary reason for not doing that yet is that this
-will add little complexity in dm implementation where a range might be
-spanning multiple underlying targets and one will have to split the range
-into multiple sub ranges and call zero_page_range() on individual targets.
-
+CC: linux-s390@vger.kernel.org
 Suggested-by: Christoph Hellwig <hch@infradead.org>
 Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 ---
- drivers/dax/super.c   | 19 +++++++++++++++++++
- drivers/nvdimm/pmem.c | 15 +++++++++++++++
- include/linux/dax.h   |  3 +++
- 3 files changed, 37 insertions(+)
+ drivers/s390/block/dcssblk.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-index 26a654dbc69a..31ee0b47b4ed 100644
---- a/drivers/dax/super.c
-+++ b/drivers/dax/super.c
-@@ -344,6 +344,25 @@ size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+diff --git a/drivers/s390/block/dcssblk.c b/drivers/s390/block/dcssblk.c
+index 63502ca537eb..331abab5d066 100644
+--- a/drivers/s390/block/dcssblk.c
++++ b/drivers/s390/block/dcssblk.c
+@@ -57,11 +57,28 @@ static size_t dcssblk_dax_copy_to_iter(struct dax_device *dax_dev,
+ 	return copy_to_iter(addr, bytes, i);
  }
- EXPORT_SYMBOL_GPL(dax_copy_to_iter);
  
-+int dax_zero_page_range(struct dax_device *dax_dev, u64 offset, size_t len)
++static int dcssblk_dax_zero_page_range(struct dax_device *dax_dev, u64 offset,
++				       size_t len)
 +{
-+	if (!dax_alive(dax_dev))
-+		return -ENXIO;
++	long rc;
++	void *kaddr;
++	pgoff_t pgoff = offset >> PAGE_SHIFT;
++	unsigned page_offset = offset_in_page(offset);
 +
-+	if (!dax_dev->ops->zero_page_range)
-+		return -EOPNOTSUPP;
-+	/*
-+	 * There are no callers that want to zero across a page boundary as of
-+	 * now. Once users are there, this check can be removed after the
-+	 * device mapper code has been updated to split ranges across targets.
-+	 */
-+	if (offset_in_page(offset) + len > PAGE_SIZE)
-+		return -EIO;
-+
-+	return dax_dev->ops->zero_page_range(dax_dev, offset, len);
-+}
-+EXPORT_SYMBOL_GPL(dax_zero_page_range);
-+
- #ifdef CONFIG_ARCH_HAS_PMEM_API
- void arch_wb_cache_pmem(void *addr, size_t size);
- void dax_flush(struct dax_device *dax_dev, void *addr, size_t size)
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 281fe04d25fd..0def7dc8e487 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -299,6 +299,20 @@ static const struct block_device_operations pmem_fops = {
- 	.revalidate_disk =	nvdimm_revalidate_disk,
- };
- 
-+static int pmem_dax_zero_page_range(struct dax_device *dax_dev, u64 offset,
-+				    size_t len)
-+{
-+	int rc;
-+	struct pmem_device *pmem = dax_get_private(dax_dev);
-+	struct page *page = ZERO_PAGE(0);
-+
-+	rc = pmem_do_write(pmem, page, 0, offset, len);
-+	if (rc > 0)
-+		return -EIO;
-+
++	rc = dax_direct_access(dax_dev, pgoff, 1, &kaddr, NULL);
++	if (rc < 0)
++		return rc;
++	memset(kaddr + page_offset, 0, len);
++	dax_flush(dax_dev, kaddr + page_offset, len);
 +	return 0;
 +}
 +
- static long pmem_dax_direct_access(struct dax_device *dax_dev,
- 		pgoff_t pgoff, long nr_pages, void **kaddr, pfn_t *pfn)
- {
-@@ -330,6 +344,7 @@ static const struct dax_operations pmem_dax_ops = {
+ static const struct dax_operations dcssblk_dax_ops = {
+ 	.direct_access = dcssblk_dax_direct_access,
  	.dax_supported = generic_fsdax_supported,
- 	.copy_from_iter = pmem_copy_from_iter,
- 	.copy_to_iter = pmem_copy_to_iter,
-+	.zero_page_range = pmem_dax_zero_page_range,
+ 	.copy_from_iter = dcssblk_dax_copy_from_iter,
+ 	.copy_to_iter = dcssblk_dax_copy_to_iter,
++	.zero_page_range = dcssblk_dax_zero_page_range,
  };
  
- static const struct attribute_group *pmem_attribute_groups[] = {
-diff --git a/include/linux/dax.h b/include/linux/dax.h
-index 9bd8528bd305..a555f0aeb7bd 100644
---- a/include/linux/dax.h
-+++ b/include/linux/dax.h
-@@ -34,6 +34,8 @@ struct dax_operations {
- 	/* copy_to_iter: required operation for fs-dax direct-i/o */
- 	size_t (*copy_to_iter)(struct dax_device *, pgoff_t, void *, size_t,
- 			struct iov_iter *);
-+	/* zero_page_range: required operation. Zero range with-in a page  */
-+	int (*zero_page_range)(struct dax_device *, u64, size_t);
- };
- 
- extern struct attribute_group dax_attribute_group;
-@@ -209,6 +211,7 @@ size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
- 		size_t bytes, struct iov_iter *i);
- size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
- 		size_t bytes, struct iov_iter *i);
-+int dax_zero_page_range(struct dax_device *dax_dev, u64 offset, size_t len);
- void dax_flush(struct dax_device *dax_dev, void *addr, size_t size);
- 
- ssize_t dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+ struct dcssblk_dev_info {
 -- 
 2.20.1
 _______________________________________________
