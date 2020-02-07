@@ -2,87 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F030C156004
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 21:44:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C351A15607E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Feb 2020 22:09:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A55710FC359A;
-	Fri,  7 Feb 2020 12:47:29 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=cristinamedina0010@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7ABCC10FC35A1;
+	Fri,  7 Feb 2020 13:12:42 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=188.127.237.225; helo=s248147.savps.ru; envelope-from=drefggod@ukr.net; receiver=<UNKNOWN> 
+Received: from s248147.savps.ru (unknown [188.127.237.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2E20310FC3599
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 12:47:27 -0800 (PST)
-Received: by mail-ot1-x343.google.com with SMTP id 77so591523oty.6
-        for <linux-nvdimm@lists.01.org>; Fri, 07 Feb 2020 12:44:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=WJgFJ9PR0yBQ+ciD08Pby60OVZzn3dTgtieZ17slfRQssKmPnwQmAwZPgDIpR6heck
-         dDY9m0nAiR73dL1CtCDLlqWI9lV6barO9i6phYUUcmMyI9lhyUunotwwGjtLNjZZXHps
-         B+ZJy7kS8IDHqb+LatDXLkBcGkPTiMku+kX9Fb92ZmFsnK1n3liOHkc4TmrSz2VBzqpm
-         gOXxQUuwBna/l8aq9nu864h1RGE/T5vMQdJwoV4IagKfmqrsTX7n4WpDLnLJobosvK0X
-         9Z7fBUirFx02ZREq+PBFhuGxFcksAi/eOnsjoHpvtfcuXe3k+tw0qtyYWnKvHtkX+Drl
-         CMWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=IJ9DgfgfolUnkykQc8aa8bK1X5J1zHkqm3k8A5eYZ6Qc0n+m+VUs2Cui1TMpuCa0Ev
-         PJp7TYtBynIMEVQeYGMsEtON5lvwegYyLFIQbVdHRCxACmXUk7wuVyG5lwjO5RzFXI9j
-         tphfjUdz0VeQiQyqPw2LunOpg5LbV3vD7zhXFbswW5LhJL6HB4hmf9Z27PohFsj43L62
-         OKk5fQoyKpR95vMgQP58u3sahC9Mavftr4ITngqpVpylIW04N4nd5InzgXXZwP6TyOBV
-         LzMslJHEIoIwztN14yfGZItiJ//TIA6CmdQu+XaeA6kXY1080yLiFgr1g/V4TYri8jxR
-         MqSA==
-X-Gm-Message-State: APjAAAWtVGvLUnPwaKePUVR8NWYGfFl9L942/Hs66x5e6k2KLX0lmt7s
-	MzKzRuB5N0ZeB6d0oyuh+gll6/DfbDs7pY55bcc=
-X-Google-Smtp-Source: APXvYqxZ0BHxezvYatUCwR5ujJY2IO6fZCUlpHww8WEnDHAAAY+0VvtiMdEe6JnWZWwDRH8AP8uVvx3q0Y+IviYPdhQ=
-X-Received: by 2002:a9d:7305:: with SMTP id e5mr948882otk.64.1581108248790;
- Fri, 07 Feb 2020 12:44:08 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id DEDB210FC35A1
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Feb 2020 13:12:39 -0800 (PST)
+Received: from [62.122.202.195] (helo=knyuem)
+	by s248147.savps.ru with esmtpa (Exim 4.92.3)
+	(envelope-from <drefggod@ukr.net>)
+	id 1j0AsH-0006oM-EC; Sat, 08 Feb 2020 00:09:17 +0300
+Message-ID: <1510A6F5FE2A0FFC20256CD0D497E307@ukr.net>
+From: =?windows-1251?B?wejn7eXxLdbl7fLwIC0g8eXs6O3g8Psg6CDy?=
+	=?windows-1251?B?8OXt6O3j6A==?= <drefggod@ukr.net>
+Subject: =?windows-1251?B?z/Do4+vg+ODl7CDt4CDh6Oft5fEg8eXs6O3g?=
+	=?windows-1251?B?8PssIPLw5e3o7ePoIOgg7ODx8uXwIOrr4PHx?=
+	=?windows-1251?B?+yDi5eTz+ej1IOHo5+3l8ezl7e7iLCDz9+jy?=
+	=?windows-1251?B?5evl6SDoIO/x6PXu6+7j7uIh?=
+Date: Fri, 7 Feb 2020 23:08:44 +0200
 MIME-Version: 1.0
-Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:44:08 -0800 (PST)
-From: "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
-Date: Fri, 7 Feb 2020 15:44:08 -0500
-Message-ID: <CAPNvSTj-8q7w5QPmnH26+_3xCKjEWyE+9xcb8QyQs9Xie+iYgg@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To: undisclosed-recipients:;
-Message-ID-Hash: RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS
-X-Message-ID-Hash: RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS
-X-MailFrom: cristinamedina0010@gmail.com
+X-Antivirus: Avast (VPS 200206-2, 06.02.2020), Outbound message
+X-Antivirus-Status: Clean
+Message-ID-Hash: FLTA5MYGWPQV24F3VJWA23Y2PTQIXJQW
+X-Message-ID-Hash: FLTA5MYGWPQV24F3VJWA23Y2PTQIXJQW
+X-MailFrom: drefggod@ukr.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: auch197722@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUMR7BHAYVTNOIPBL34UPCX44WVAM3XS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FLTA5MYGWPQV24F3VJWA23Y2PTQIXJQW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-Good Day,
-
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
-
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
-
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
-
-Regards
-Theophilus Odadudu
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+x+Tw4OLx8uLz6fLlIQ0KDQrI5OXg6/zt++wg6O3x8vDz7OXt8u7sIOTr/yDv7uL7+OXt6P8g8/Du
+4u3/IO/w7vTl8fHo7u3g6+jn7OAg6CDw4Ofi6PLo/yDv5fDx7u3g6+Ag/+Lr//7y8f8g6vPw8fsg
+7+7i+/jl7ejlIOri4Ovo9Ojq4Pbo6C4gyOzl7e3uIOru8O/u8ODy6OLt++kg8vDl7ejt4yDv7ufi
+7uvo8iDz9+Xx8vwg4vH+IPHv5fbo9Ojq8yDv8O7i7uTo7O7pIOru7O/g7ejl6SDk5f/y5ev87e7x
+8ugsIPPw7uLl7fwg6u7s7+Xy5e3y7e7x8ugg7+Xw8e7t4OvgIOgg7+7n4u7r6PIg4OTg7/Lo8O7i
+4PL8IOLx/iDv8O7j8ODs7PMg7uHz9+Xt6P8g6O3k6OLo5PPg6/zt7iDv7uQg7+7y8OXh7e7x8ugg
+4uD45ekg6u7s7+Dt6OguDQoNCsHr6Obg6fjo5SDx5ezo7eDw+yDoIPLw5e3o7ePoIOIgyujl4uUN
+Cg0Kz+7k8O7h7eXlIO3gIPHg6fLlIC0gaHR0cHM6Ly9iY3UuYmVzdC8NCg0KxfHr6CDv6PH87O4g
+7+7v4OvuIOogwuDsIO/uIO746OHq5Swgwvsg7O7m5fLlDQrN5SDv7uvz9+Dy/CDw4PHx++vq8y6g
+6OvooO/u5uDr7uLg8vzx/yDt4CBTcGFtDQpMaXN0LVVuc3Vic2NyaWJloGZyb20gdGhlIG5ld3Ns
+ZXR0ZXIgb3KgY29tcGxhaW4gYWJvdXQgU3BhbQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1u
+dmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgt
+bnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
