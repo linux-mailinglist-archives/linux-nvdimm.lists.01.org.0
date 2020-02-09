@@ -1,70 +1,157 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1947156B00
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  9 Feb 2020 16:31:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B21156B50
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  9 Feb 2020 17:12:39 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1C06410FC319A;
-	Sun,  9 Feb 2020 07:34:43 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=222.95.129.98; helo=ginwzuzx.org; envelope-from=ihweewzyj@ginwzuzx.org; receiver=<UNKNOWN> 
-Received: from ginwzuzx.org (unknown [222.95.129.98])
-	by ml01.01.org (Postfix) with ESMTP id 454ED1007B18F
-	for <linux-nvdimm@lists.01.org>; Sun,  9 Feb 2020 07:34:40 -0800 (PST)
-Message-ID: <20200209233116805837@ginwzuzx.org>
-From: "amazon" <ihweewzyj@ginwzuzx.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
-	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
-	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
-Date: Sun, 9 Feb 2020 23:31:03 +0800
+	by ml01.01.org (Postfix) with ESMTP id D299310FC3173;
+	Sun,  9 Feb 2020 08:15:54 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::244; helo=mail-oi1-x244.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id CDD4B1003EC45
+	for <linux-nvdimm@lists.01.org>; Sun,  9 Feb 2020 08:15:52 -0800 (PST)
+Received: by mail-oi1-x244.google.com with SMTP id c16so6952642oic.3
+        for <linux-nvdimm@lists.01.org>; Sun, 09 Feb 2020 08:12:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TvMojplJbmxwO1iOJeURmK+oFSfZngPcvYQJtCKHfW8=;
+        b=meAEp81qSJVz7dXt4UnLtZry9PtoQbUBOr3GJLAIh4q5m8drJxQZ4Oz+ZMA5ur4PUC
+         UdPdIf23+nN+1egnGk9fUuGOgUTAt8iIUDfU6C1x9447AJt6qIQJrRrolp30PMIUXib1
+         YJdPJEjgBFr4wXpJhf5X0cmk/kohH2hx2ChcQbAa5VVfFEQ60Up89qZpEzJu2g/5xDsK
+         DoG44ea5PKfE6Yzr6PhaNcLC0lu7Rw5gew+hKlwSAlv3auEIBw7RhLbVGULmgSVOqJy7
+         W+MlNa8J3WNhrFIy9Krgcr0kiBjk8Nt3EA7DlS/aKCaygpuRKK3pVQmBYHKZK2w+du5l
+         4ttA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TvMojplJbmxwO1iOJeURmK+oFSfZngPcvYQJtCKHfW8=;
+        b=kKiDxL/haEWhOEuTwj4ryPLNDze84Q1CAWPdx08RvhN04HxO1q6TXLLKEy+hNsuhut
+         2IHccwp3pmlLUODdWq13eC0QMFLf/qKfj/dNlljnaqBAMdKMBxFpAC5UypinNiZ64jls
+         YhVFCvKCHZVZVf3fjslv4BOwNpXk7I2ofBt32XcL+Dv7eI/QkjxeAPRvLO/CXLbxYRf+
+         8KYEZQTsztdROToreFpU7VZHxAYc/7RXbNjaDvHKQ8bNdUgVCZ1oNOs6ksU9MztDjDhV
+         3g9goi8X5zcwE+EUOzyZYqmuW1eKiuKFHebsnOU1ZqQfMsBMAk7xZvhMU9s+atHMwAIN
+         y3cA==
+X-Gm-Message-State: APjAAAVhvaLDehhQD1qPgE+LKFso69/kENKNsYBA46EmZNa69fNceA4c
+	AzzT2eCXAvLFEOTsa4RF9IJ7S0ec9Q79E7bPpgpLbA==
+X-Google-Smtp-Source: APXvYqwyEPi/dOmLjoXvgsgsmTkdL5NLyztYKH9eYBnWSndT/W/QfwtIhs+bu1bO2GnpffymtYHL9+iyQAVJ8EJwt98=
+X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr8576458oij.0.1581264754089;
+ Sun, 09 Feb 2020 08:12:34 -0800 (PST)
 MIME-Version: 1.0
-X-mailer: Lhzmjrjde 1
-Message-ID-Hash: HO2WB7SVBHZUDQY5CQSHFOF4OO5WJLMB
-X-Message-ID-Hash: HO2WB7SVBHZUDQY5CQSHFOF4OO5WJLMB
-X-MailFrom: ihweewzyj@ginwzuzx.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+References: <20200205052056.74604-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200205052056.74604-1-aneesh.kumar@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sun, 9 Feb 2020 08:12:22 -0800
+Message-ID: <CAPcyv4hBAk-dwO4=AT7cQm5YUwCBg0AECsZsiCjRJ_ZGWvWUAw@mail.gmail.com>
+Subject: Re: [PATCH v2] libnvdimm: Update persistence domain value for of_pmem
+ and papr_scm device
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: HMUXFZRKZOUI4JSXUZO4WBYTZEY4LDVB
+X-Message-ID-Hash: HMUXFZRKZOUI4JSXUZO4WBYTZEY4LDVB
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HO2WB7SVBHZUDQY5CQSHFOF4OO5WJLMB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HMUXFZRKZOUI4JSXUZO4WBYTZEY4LDVB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-a2dkb2tja0FtYXpvbi5jby5qcCDjgavjgZTnmbvpjLLjga7jgqLjgqvjgqbjg7Pjg4jvvIjlkI3l
-iY3jgIHjg5Hjgrnjg6/jg7zjg4njgIHjgZ3jga7ku5blgIvkurrmg4XloLHvvInjga7norroqo0u
-Li4NCnR1ZnJ4d3lqc2p6bWNqd2lpDQogDQoNCiAgIA0KINCQbWF6b24g44GK5a6i5qeYIA0KDQoN
-Cuaui+W/teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiCANCm9qZzV5bw0K
-0JBtYXpvbiDjgpLmm7TmlrDjgafjgY3jgb7jgZvjgpPjgafjgZfjgZ/jgIINCuOBk+OCjOOBr+OA
-geOCq+ODvOODieOBjOacn+mZkOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAguiri+axguWFiOS9j+aJ
-gOOBjOWkieabtOOBleOCjOOBn+OBquOBqeOAgeOBleOBvuOBluOBvuOBqueQhueUseOBp+eZuueU
-n+OBmeOCi+WPr+iDveaAp+OBjOOBguOCiuOBvuOBmeOAgiANCjBrZA0K44Ki44Kr44Km44Oz44OI
-5oOF5aCx44Gu5LiA6YOo44GM6Kqk44Gj44Gm44GE44KL5pWF44Gr44CB44GK5a6i5qeY44Gu44Ki
-44Kr44Km44Oz44OI44KS57at5oyB44GZ44KL44Gf44KBIA0KYmtwcDBuZw0KNGdmdg0K0JBtYXpv
-biDmg4XloLHjgpLnorroqo3jgZnjgovlv4XopoHjg7vjgqfjgYLjgorjgb7jgZnjgILku4rjgqLj
-gqvjgqbjg7Pjg4jjgpLnorroqo3jgafjgY3jgb7jgZnjgIINCtCQbWF6b24g44Ot44Kw44Kk44Oz
-IOOBquOBiuOAgTI05pmC6ZaT5Lul5YaF44Gr44GU56K66KqN44GM44Gq44GE5aC05ZCI44CB6Kqg
-44Gr6YG65oa+44Gq44GM44KJ44CB44Ki44Kr44Km44Oz44OI44KS44Ot44OD44Kv44GV44Gb44Gm
-44GE44Gf44Gg44GP44GT44Go44KS6K2m5ZGK44GE44Gf44GX44G+44GZ44CCDQoNCnl2OGFqZGp3
-DQrjg5Hjgrnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/j
-gIHoh7PmgKUoMDMpLTA5MC04ODQ444G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCDQoNCg0K
-OWhmZnVjc3UNCuOBiuefpeOCieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLmlZnj
-gYjjgarjgYTjgafjgY/jgaDjgZXjgYTjgIIgDQp5NnYwNWUgaXZvcGIgNW53IDR0OSBza2xjNGZw
-dXl0IA0K5YCL5Lq65oOF5aCx44Go6Zai5L+C44GM44Gq44GP44CB5o6o5ris44GX44Gr44GP44GE
-44OR44K544Ov44O844OJ44KS5L2c5oiQ44GX44Gm44GP44Gg44GV44GE44CC5aSn5paH5a2X44Go
-5bCP5paH5a2X44CB5pWw5a2X44CB44GK44KI44Gz6KiY5Y+344KS5b+F44Ga5L2/55So44GX44Gm
-44GP44Gg44GV44GE44CCIA0KNmgyOHBtam9nIGJpejJwciBmZ2xrYXdjenYgaGc3MmRlIGtkc2tv
-anJyZG1lZDJzcjFndXZvN3VwIA0K44Kq44Oz44Op44Kk44Oz44Ki44Kr44Km44Oz44OI44GU44Go
-44Gr44CB55Ww44Gq44KL44OR44K544Ov44O844OJ44KS5L2/55So44GX44Gm44GP44Gg44GV44GE
-44CCDQoNCg0K44Gp44GG44Ge44KI44KN44GX44GP44GK6aGY44GE44GE44Gf44GX44G+44GZ44CC
-IA0KcXhhbW8NCg0K0JBtYXpvbiANCiANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Tue, Feb 4, 2020 at 9:21 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Currently, kernel shows the below values
+>         "persistence_domain":"cpu_cache"
+>         "persistence_domain":"memory_controller"
+>         "persistence_domain":"unknown"
+>
+> "cpu_cache" indicates no extra instructions is needed to ensure the persistence
+> of data in the pmem media on power failure.
+>
+> "memory_controller" indicates platform provided instructions need to be issued
+
+No, it does not. The only requirement implied by "memory_controller"
+is global visibility outside the cpu cache. If there are special
+instructions beyond that then it isn't persistent memory, at least not
+pmem that is safe for dax. virtio-pmem is an example of pmem-like
+memory that is not enabled for userspace flushing (MAP_SYNC disabled).
+
+> as per documented sequence to make sure data get flushed so that it is
+> guaranteed to be on pmem media in case of system power loss.
+>
+> Based on the above use memory_controller for non volatile regions on ppc64.
+>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 7 ++++++-
+>  drivers/nvdimm/of_pmem.c                  | 4 +++-
+>  include/linux/libnvdimm.h                 | 1 -
+>  3 files changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 7525635a8536..ffcd0d7a867c 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -359,8 +359,13 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+>
+>         if (p->is_volatile)
+>                 p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+> -       else
+> +       else {
+> +               /*
+> +                * We need to flush things correctly to guarantee persistance
+> +                */
+
+There are never guarantees. If you're going to comment what does
+software need to flush, and how?
+
+> +               set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+>                 p->region = nvdimm_pmem_region_create(p->bus, &ndr_desc);
+> +       }
+>         if (!p->region) {
+>                 dev_err(dev, "Error registering region %pR from %pOF\n",
+>                                 ndr_desc.res, p->dn);
+> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+> index 8224d1431ea9..6826a274a1f1 100644
+> --- a/drivers/nvdimm/of_pmem.c
+> +++ b/drivers/nvdimm/of_pmem.c
+> @@ -62,8 +62,10 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+>
+>                 if (is_volatile)
+>                         region = nvdimm_volatile_region_create(bus, &ndr_desc);
+> -               else
+> +               else {
+> +                       set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+>                         region = nvdimm_pmem_region_create(bus, &ndr_desc);
+> +               }
+>
+>                 if (!region)
+>                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
+> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+> index 0f366706b0aa..771d888a5ed7 100644
+> --- a/include/linux/libnvdimm.h
+> +++ b/include/linux/libnvdimm.h
+> @@ -54,7 +54,6 @@ enum {
+>         /*
+>          * Platform provides mechanisms to automatically flush outstanding
+>          * write data from memory controler to pmem on system power loss.
+> -        * (ADR)
+
+I'd rather not delete critical terminology for a developer / platform
+owner to be able to consult documentation, or their vendor. Can you
+instead add the PowerPC equivalent term for this capability? I.e. list
+(x86: ADR PowerPC: foo ...).
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
