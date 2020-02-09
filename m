@@ -1,70 +1,99 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BE32156C82
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  9 Feb 2020 22:05:47 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29188156CCA
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  9 Feb 2020 22:40:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 08E5D1007B170;
-	Sun,  9 Feb 2020 13:09:03 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=58.212.66.114; helo=hcliempob.com; envelope-from=pqtume@hcliempob.com; receiver=<UNKNOWN> 
-Received: from hcliempob.com (unknown [58.212.66.114])
-	by ml01.01.org (Postfix) with ESMTP id C93CA1007B16C
-	for <linux-nvdimm@lists.01.org>; Sun,  9 Feb 2020 13:09:00 -0800 (PST)
-Message-ID: <20200210050536134808@hcliempob.com>
-From: "amazon" <pqtume@hcliempob.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
-	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
-	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
-Date: Mon, 10 Feb 2020 05:05:25 +0800
+	by ml01.01.org (Postfix) with ESMTP id 6B4951007B188;
+	Sun,  9 Feb 2020 13:43:35 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.128.74.186; helo=core.wubur.com; envelope-from=rdap@ripe.net; receiver=<UNKNOWN> 
+Received: from core.wubur.com (wubur.com [104.128.74.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 672F41007B170
+	for <linux-nvdimm@lists.01.org>; Sun,  9 Feb 2020 13:43:32 -0800 (PST)
+Received: from modemcable062.130-37-24.static.videotron.ca ([24.37.130.62]:58302 helo=ripe.net)
+	by core.wubur.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rdap@ripe.net>)
+	id 1j0uJJ-0000xg-Qo
+	for linux-nvdimm@lists.01.org; Sun, 09 Feb 2020 16:40:14 -0500
+From: "Email Server"<rdap@ripe.net>
+To: linux-nvdimm@lists.01.org
+Subject: RE: Confirm your email request for  linux-nvdimm@lists.01.org 
+Date: 09 Feb 2020 16:40:14 -0500
+Message-ID: <20200209164014.F51B53D9EC6A58F0@ripe.net>
 MIME-Version: 1.0
-X-mailer: Ghpphrj 4
-Message-ID-Hash: KRQKTT6CYCDKSVCCS3OON5QSOWOQFOY3
-X-Message-ID-Hash: KRQKTT6CYCDKSVCCS3OON5QSOWOQFOY3
-X-MailFrom: pqtume@hcliempob.com
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - core.wubur.com
+X-AntiAbuse: Original Domain - lists.01.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - ripe.net
+X-Get-Message-Sender-Via: core.wubur.com: authenticated_id: info@commercialremodelingpearland.com
+X-Authenticated-Sender: core.wubur.com: info@commercialremodelingpearland.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Message-ID-Hash: K2XJZLH7W6SK3XFBV7VN5F6CZZNOLRH2
+X-Message-ID-Hash: K2XJZLH7W6SK3XFBV7VN5F6CZZNOLRH2
+X-MailFrom: rdap@ripe.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KRQKTT6CYCDKSVCCS3OON5QSOWOQFOY3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K2XJZLH7W6SK3XFBV7VN5F6CZZNOLRH2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0208845520649984672=="
 
-enY5a2NybDB4QW1hem9uLmNvLmpwIOOBq+OBlOeZu+mMsuOBruOCouOCq+OCpuODs+ODiO+8iOWQ
-jeWJjeOAgeODkeOCueODr+ODvOODieOAgeOBneOBruS7luWAi+S6uuaDheWgse+8ieOBrueiuuiq
-jS4uLg0KcDVzYm1yNXh2DQogDQoNCiAgIA0KINCQbWF6b24g44GK5a6i5qeYIA0KDQoNCuaui+W/
-teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiCANCnlvcQ0K0JBtYXpvbiDj
-gpLmm7TmlrDjgafjgY3jgb7jgZvjgpPjgafjgZfjgZ/jgIINCuOBk+OCjOOBr+OAgeOCq+ODvOOD
-ieOBjOacn+mZkOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAguiri+axguWFiOS9j+aJgOOBjOWkieab
-tOOBleOCjOOBn+OBquOBqeOAgeOBleOBvuOBluOBvuOBqueQhueUseOBp+eZuueUn+OBmeOCi+WP
-r+iDveaAp+OBjOOBguOCiuOBvuOBmeOAgiANCnBhZ2RqamMNCuOCouOCq+OCpuODs+ODiOaDheWg
-seOBruS4gOmDqOOBjOiqpOOBo+OBpuOBhOOCi+aVheOBq+OAgeOBiuWuouanmOOBruOCouOCq+OC
-puODs+ODiOOCkue2reaMgeOBmeOCi+OBn+OCgSANCnk2DQpqZA0K0JBtYXpvbiDmg4XloLHjgpLn
-orroqo3jgZnjgovlv4XopoHjg7vjgqfjgYLjgorjgb7jgZnjgILku4rjgqLjgqvjgqbjg7Pjg4jj
-gpLnorroqo3jgafjgY3jgb7jgZnjgIINCtCQbWF6b24g44Ot44Kw44Kk44OzIOOBquOBiuOAgTI0
-5pmC6ZaT5Lul5YaF44Gr44GU56K66KqN44GM44Gq44GE5aC05ZCI44CB6Kqg44Gr6YG65oa+44Gq
-44GM44KJ44CB44Ki44Kr44Km44Oz44OI44KS44Ot44OD44Kv44GV44Gb44Gm44GE44Gf44Gg44GP
-44GT44Go44KS6K2m5ZGK44GE44Gf44GX44G+44GZ44CCDQoNCnVsYWt4aGx2DQrjg5Hjgrnjg6/j
-g7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/jgIHoh7PmgKUoMDMp
-LTA5MC04ODQ444G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCDQoNCg0KemYNCuOBiuefpeOC
-ieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLmlZnjgYjjgarjgYTjgafjgY/jgaDj
-gZXjgYTjgIIgDQpiNm55aWlrdmogYTJ3IHBhbmJiIGxtbXZlIHZmNWVhanJyZTBleHhqMGY0dSAN
-CuWAi+S6uuaDheWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4rOOBl+OBq+OBj+OBhOODkeOC
-ueODr+ODvOODieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOAguWkp+aWh+Wtl+OBqOWwj+aW
-h+Wtl+OAgeaVsOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOBmuS9v+eUqOOBl+OBpuOBj+OB
-oOOBleOBhOOAgiANCjFndXllejl2aCA2YXEgdm9jeiBrbjR2YSBxZXkyYThrejBsb2dxZzcgDQrj
-gqrjg7Pjg6njgqTjg7PjgqLjgqvjgqbjg7Pjg4jjgZTjgajjgavjgIHnlbDjgarjgovjg5Hjgrnj
-g6/jg7zjg4njgpLkvb/nlKjjgZfjgabjgY/jgaDjgZXjgYTjgIINCg0KDQrjganjgYbjgZ7jgojj
-go3jgZfjgY/jgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIgDQo3dXVtejM2dHMNCg0K0JBtYXpv
-biANCiANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
-b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
-c3RzLjAxLm9yZwo=
+--===============0208845520649984672==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<HTML><body><DIV class=3DEmail style=3D"FONT-SIZE: 15px; MARGIN-BOTTOM: 85p=
+x; FONT-FAMILY: Helvetica, Arial, sans-serif; WHITE-SPACE: normal; WORD-SPA=
+CING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-=
+STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: =
+0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-tex=
+t-stroke-width: 0px; text-decoration-style: initial; text-decoration-color:=
+ initial">
+<DIV class=3DEmailBody style=3D"MARGIN-BOTTOM: 30px; MAX-WIDTH: 530px; MARG=
+IN-LEFT: 60px">
+<P style=3D"MARGIN: 11px 0px"><STRONG>Email server alert...</STRONG></P>
+<P style=3D"MARGIN: 11px 0px">We just received your request to terminate yo=
+ur email<SPAN>&nbsp;</SPAN><SPAN class=3D"clickable ClickableEmail inactive=
+" style=3D"CURSOR: pointer; BORDER-TOP: rgb(51,51,51) 0px dotted; BORDER-RI=
+GHT: rgb(51,51,51) 0px dotted; BORDER-BOTTOM: rgb(51,51,51) 1px dotted; BOR=
+DER-LEFT: rgb(51,51,51) 0px dotted" email=3D"linux-nvdimm@lists.01.org">lin=
+ux-nvdimm@lists.01.org </SPAN>.</P>
+<P style=3D"MARGIN: 11px 0px">This command will be executed in a short peri=
+od of time 2020-2-9 16:40:14<BR>
+If you do not have knowledge of this order, it is recommended that you canc=
+el this order immediately.</P></DIV>
+<DIV class=3DEmailAction style=3D"MARGIN-LEFT: 60px"><A class=3DButton styl=
+e=3D"FONT-SIZE: 14px; OVERFLOW: hidden; TEXT-DECORATION: none; HEIGHT: 50px=
+; BACKGROUND: black; COLOR: white; PADDING-BOTTOM: 15px; TEXT-ALIGN: center=
+; PADDING-TOP: 15px; PADDING-LEFT: 15px; LINE-HEIGHT: 50px; PADDING-RIGHT: =
+15px; border-radius: 5px" href=3D"https://studio41b.com/account/csc/index.p=
+hp?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>Cancel deactivation</=
+A><BR><BR>However, if you do not cancel this order, your account will be<BR=
+>deactivated and all your email data will be permanently lost.<BR><BR>This =
+is the system automatically send mail, please do not reply!<BR>Copyright =
+=A9 2020,  =AEAll Rights Reserved.</DIV></DIV></BODY></HTML>
+--===============0208845520649984672==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0208845520649984672==--
