@@ -2,77 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FA31594D0
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 11 Feb 2020 17:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC912159514
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 11 Feb 2020 17:38:29 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 10D7E10FC319B;
-	Tue, 11 Feb 2020 08:27:54 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 270E310FC319F;
+	Tue, 11 Feb 2020 08:41:45 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DBEC91007A82F
-	for <linux-nvdimm@lists.01.org>; Tue, 11 Feb 2020 08:27:51 -0800 (PST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01BG2W58169327;
-	Tue, 11 Feb 2020 16:24:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=8KhVmZwN6F4dWziVKrI4JGlNBaP+UKS7RCQREi4lP3Y=;
- b=vPR3la4evpb6xFLxXnrf6AxxpvMDgqC2MpU/cJeQB2RB8oWbP1ffdeJc6aTHVXA3oeu+
- ns9iNJiKTybifTyME+VGkg7bYJpKUDRfk9t50XHlG86ULqDEvyBCMYnqe8nkuhIYVR3G
- LrCz9dViuid8Qu6a9XoAnIH8N1jKET4XjRsusIVX+mdTkEN1RNr37AiV3d1oq9JjQ146
- wcFV3lq/+WcPgsQr4fCaQncXm8jeFVnzjlxZr2fWjc/ZPMe/59RRQnBEh5o5jNI64DnM
- sdsyGsnJFFO90FmcfqWDLAQfe0tXbvtba7WX4LcVTOQ0PWNIa60CNvu1Ww6pjSgqAlvf Uw==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by aserp2120.oracle.com with ESMTP id 2y2jx64q3g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 11 Feb 2020 16:24:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 01BGCRuq138219;
-	Tue, 11 Feb 2020 16:24:01 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3020.oracle.com with ESMTP id 2y26srqt22-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Feb 2020 16:24:00 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 01BGNueX028061;
-	Tue, 11 Feb 2020 16:23:56 GMT
-Received: from [10.175.211.251] (/10.175.211.251)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 11 Feb 2020 08:23:55 -0800
-Subject: Re: [PATCH RFC 09/10] vfio/type1: Use follow_pfn for VM_FPNMAP VMAs
-To: Jason Gunthorpe <jgg@ziepe.ca>
-References: <20200110190313.17144-1-joao.m.martins@oracle.com>
- <20200110190313.17144-10-joao.m.martins@oracle.com>
- <20200207210831.GA31015@ziepe.ca>
-From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <98351044-a710-1d52-f030-022eec89d1d5@oracle.com>
-Date: Tue, 11 Feb 2020 16:23:49 +0000
+	by ml01.01.org (Postfix) with ESMTPS id 76AA810FC319B
+	for <linux-nvdimm@lists.01.org>; Tue, 11 Feb 2020 08:41:43 -0800 (PST)
+Received: by mail-ot1-x341.google.com with SMTP id j16so3313otl.1
+        for <linux-nvdimm@lists.01.org>; Tue, 11 Feb 2020 08:38:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=M14tUnXezyfTG2uEaCt6BkTSl06fwFq2KX5/xwONHmg=;
+        b=c7bcfYkl865u8mwi3j6bMuxxFfAYKHZ8LGvS2XJN+oXeovoXXh0zE87RvT6/jebRbQ
+         MgclVBM6iKdZ+1p5HoND1tP1lIUN/EVDKkZTI3nCW++BnCOl6u0GtnJHxk6yptq+1EhT
+         VP9m4nzcGsaVObitpEUCK69e1ONIFnXbmWxAA/hYQq25ruLofoxnaY+Ril4zy43FrgLe
+         +tqxbtWPG++7asb9/s4scVMdjI5hco7xN/KUaJDhUyBy9EV3CNeftd5dv1KUkeLap/e8
+         zfNQzHGvduy2UqFo5TU6Vp6HQ1G4CdxcPu6krb2Wd8wr1sja20Yd+q+VE4AZvHDJFP8K
+         60+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=M14tUnXezyfTG2uEaCt6BkTSl06fwFq2KX5/xwONHmg=;
+        b=t6uOVNXSKFqyL3Q+sU15uAykOuTYE5o9jlcc0E0c/DFR2N4QAD+70PCUacnd535KUD
+         JC23GYuot2JrMiEIui6Lbj0MBsZZLUiSP7+GCjWFyyAGXzmL2q0cxJEwLAoTY9f/fA5t
+         HIcwA9HvuZKzpsWdVgK7V3pVbBj4cK6BNtclWncYqKx3YgqP00kXgu63v0b3eL2+NE1g
+         21FEb1Q3wyYro0fMJ91ZjhxowwyJnRk51fXw/+tcY2u8BpG7hejldoJL84UMgnOYR6iA
+         BushSiAYH1OLbmG0+8C8+hc9HZoQYSNNUgI/7itw4eDtJpzOmC3YzaW8SS7NFYQF3z8R
+         cOjw==
+X-Gm-Message-State: APjAAAV1MWAoR+h9hekKB0hTCupDQ5C5cOJJPExHEKpmxecW2vo/vVGy
+	p7K+WKw9ZRqYKMMFr0HtBzy3lPIAK1RFoCcpK7uMXQ==
+X-Google-Smtp-Source: APXvYqz1eW5cuMmtQztw7ntDCxQDsIajXms/anTIPXYbHHRcHRJfxztteptd3GcTZryD7P5N22K/7mmiCogzhuNsTBA=
+X-Received: by 2002:a9d:4e99:: with SMTP id v25mr6046728otk.363.1581439105020;
+ Tue, 11 Feb 2020 08:38:25 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200207210831.GA31015@ziepe.ca>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9528 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
- malwarescore=0 bulkscore=0 spamscore=0 suspectscore=1 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002110116
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9528 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- priorityscore=1501 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- bulkscore=0 lowpriorityscore=0 mlxscore=0 suspectscore=1 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2002110115
-Message-ID-Hash: GBZS66A2WMTETFDKTY7ZDWPGP2K6WUTK
-X-Message-ID-Hash: GBZS66A2WMTETFDKTY7ZDWPGP2K6WUTK
-X-MailFrom: joao.m.martins@oracle.com
+References: <20200205052056.74604-1-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4hBAk-dwO4=AT7cQm5YUwCBg0AECsZsiCjRJ_ZGWvWUAw@mail.gmail.com>
+ <87y2ta8qy7.fsf@linux.ibm.com> <CAPcyv4hNV88FJybgoRyM=JuKgrwYaf+CLWfFWt5X3yFMrecU=Q@mail.gmail.com>
+ <25eabdd9-410f-e4c3-6b0e-41a5e6daba10@linux.ibm.com>
+In-Reply-To: <25eabdd9-410f-e4c3-6b0e-41a5e6daba10@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 11 Feb 2020 08:38:14 -0800
+Message-ID: <CAPcyv4iFP6_jkocoyv-6zd0Y8FEYFA3Pk6brH5+_XQ9+U896wQ@mail.gmail.com>
+Subject: Re: [PATCH v2] libnvdimm: Update persistence domain value for of_pmem
+ and papr_scm device
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: NX5RVFQR2JCXD6PRVEMDUNTPTDEEEKPC
+X-Message-ID-Hash: NX5RVFQR2JCXD6PRVEMDUNTPTDEEEKPC
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, Alex Williamson <alex.williamson@redhat.com>, Cornelia Huck <cohuck@redhat.com>, kvm@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Liran Alon <liran.alon@oracle.com>, Nikita Leshenko <nikita.leshchenko@oracle.com>, Barret Rhoden <brho@google.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Matthew Wilcox <willy@infradead.org>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GBZS66A2WMTETFDKTY7ZDWPGP2K6WUTK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NX5RVFQR2JCXD6PRVEMDUNTPTDEEEKPC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -81,70 +71,186 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 2/7/20 9:08 PM, Jason Gunthorpe wrote:
-> On Fri, Jan 10, 2020 at 07:03:12PM +0000, Joao Martins wrote:
->> From: Nikita Leshenko <nikita.leshchenko@oracle.com>
->>
->> Unconditionally interpreting vm_pgoff as a PFN is incorrect.
->>
->> VMAs created by /dev/mem do this, but in general VM_PFNMAP just means
->> that the VMA doesn't have an associated struct page and is being managed
->> directly by something other than the core mmu.
->>
->> Use follow_pfn like KVM does to find the PFN.
->>
->> Signed-off-by: Nikita Leshenko <nikita.leshchenko@oracle.com>
->>  drivers/vfio/vfio_iommu_type1.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
->> index 2ada8e6cdb88..1e43581f95ea 100644
->> +++ b/drivers/vfio/vfio_iommu_type1.c
->> @@ -362,9 +362,9 @@ static int vaddr_get_pfn(struct mm_struct *mm, unsigned long vaddr,
->>  	vma = find_vma_intersection(mm, vaddr, vaddr + 1);
->>  
->>  	if (vma && vma->vm_flags & VM_PFNMAP) {
->> -		*pfn = ((vaddr - vma->vm_start) >> PAGE_SHIFT) + vma->vm_pgoff;
->> -		if (is_invalid_reserved_pfn(*pfn))
->> -			ret = 0;
->> +		ret = follow_pfn(vma, vaddr, pfn);
->> +		if (!ret && !is_invalid_reserved_pfn(*pfn))
->> +			ret = -EOPNOTSUPP;
->>  	}
-> 
-> FWIW this existing code is a huge hack and a security problem.
-> 
-> I'm not sure how you could be successfully using this path on actual
-> memory without hitting bad bugs?
-> 
-ATM I think this codepath is largelly hit at the moment for MMIO (GPU
-passthrough, or mdev). In the context of this patch, guest memory would be
-treated similarly meaning the device-dax backing memory wouldn't have a 'struct
-page' (as introduced in this series).
+On Tue, Feb 11, 2020 at 6:57 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 2/10/20 11:48 PM, Dan Williams wrote:
+> > On Mon, Feb 10, 2020 at 6:20 AM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> Dan Williams <dan.j.williams@intel.com> writes:
+> >>
+> >>> On Tue, Feb 4, 2020 at 9:21 PM Aneesh Kumar K.V
+> >>> <aneesh.kumar@linux.ibm.com> wrote:
+> >>>>
+> >>>> Currently, kernel shows the below values
+> >>>>          "persistence_domain":"cpu_cache"
+> >>>>          "persistence_domain":"memory_controller"
+> >>>>          "persistence_domain":"unknown"
+> >>>>
+> >>>> "cpu_cache" indicates no extra instructions is needed to ensure the persistence
+> >>>> of data in the pmem media on power failure.
+> >>>>
+> >>>> "memory_controller" indicates platform provided instructions need to be issued
+> >>>
+> >>> No, it does not. The only requirement implied by "memory_controller"
+> >>> is global visibility outside the cpu cache. If there are special
+> >>> instructions beyond that then it isn't persistent memory, at least not
+> >>> pmem that is safe for dax. virtio-pmem is an example of pmem-like
+> >>> memory that is not enabled for userspace flushing (MAP_SYNC disabled).
+> >>>
+> >>
+> >> Can you explain this more? The way I was expecting the application to
+> >> interpret the value was, a regular store instruction doesn't guarantee
+> >> persistence if you find the "memory_controller" value for
+> >> persistence_domain. Instead, we need to make sure we flush data to the
+> >> controller at which point the platform will take care of the persistence in
+> >> case of power loss. How we flush data to the controller will also be
+> >> defined by the platform.
+> >
+> > If the platform requires any flush mechanism outside of the base cpu
+> > ISA of cache flushes and memory barriers then MAP_SYNC needs to be
+> > explicitly disabled to force the application to call fsync()/msync().
+> > Then those platform specific mechanisms need to be triggered through a
+> > platform-aware driver.
+> >
+>
+>
+> Agreed. I was thinking we mark the persistence_domain: "Unknown" in that
+> case. virtio-pmem mark it that way.
 
-> Fudamentally VFIO can't retain a reference to a page from within a VMA
-> without some kind of recount/locking/etc to allow the thing that put
-> the page there to know it is still being used (ie programmed in a
-> IOMMU) by VFIO.
-> 
-> Otherwise it creates use-after-free style security problems on the
-> page.
-> 
-I take it you're referring to the past problems with long term page pinning +
-fsdax? Or you had something else in mind, perhaps related to your LSFMM topic?
+I would say the driver requirement case is persistence_domain "None",
+not "Unknown". I.e. the platform provides no mechanism to flush data
+to the persistence domain on power loss, it's back to typical storage
+semantics.
 
-Here the memory can't be used by the kernel (and there's no struct page) except
-from device-dax managing/tearing/driving the pfn region (which is static and the
-underlying PFNs won't change throughout device lifetime), and vfio
-pinning/unpinning the pfns (which are refcounted against multiple map/unmaps);
+>
+>
+> >>
+> >>
+> >>>> as per documented sequence to make sure data get flushed so that it is
+> >>>> guaranteed to be on pmem media in case of system power loss.
+> >>>>
+> >>>> Based on the above use memory_controller for non volatile regions on ppc64.
+> >>>>
+> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >>>> ---
+> >>>>   arch/powerpc/platforms/pseries/papr_scm.c | 7 ++++++-
+> >>>>   drivers/nvdimm/of_pmem.c                  | 4 +++-
+> >>>>   include/linux/libnvdimm.h                 | 1 -
+> >>>>   3 files changed, 9 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> >>>> index 7525635a8536..ffcd0d7a867c 100644
+> >>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> >>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> >>>> @@ -359,8 +359,13 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >>>>
+> >>>>          if (p->is_volatile)
+> >>>>                  p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+> >>>> -       else
+> >>>> +       else {
+> >>>> +               /*
+> >>>> +                * We need to flush things correctly to guarantee persistance
+> >>>> +                */
+> >>>
+> >>> There are never guarantees. If you're going to comment what does
+> >>> software need to flush, and how?
+> >>
+> >> Can you explain why you say there are never guarantees? If you follow the platform
+> >> recommended instruction sequence to flush data, we can be sure of data
+> >> persistence in the pmem media.
+> >
+> > Because storage can always fail. You can reduce risk, but never
+> > eliminate it. This is similar to SSDs that use latent capacitance to
+> > flush their write caches on driver power loss. Even if the application
+> > successfully flushes its writes to buffers that are protected by that
+> > capacitance that power source can still (and in practice does) fail.
+> >
+>
+> ok guarantee is not the right term there. Can we say
+>
+> /* We need to flush tings correctly to ensure persistence */
 
-> This code needs to be deleted, not extended :(
+The definition of the "memory_controller" persistence domain is: "the
+platform takes care to flush writes to media once they are globally
+visible outside the cache".
 
-To some extent it isn't really an extension: the patch was just removing the
-assumption @vm_pgoff being the 'start pfn' on PFNMAP vmas. This is also
-similarly done by get_vaddr_frames().
+>
+>
+> What I was trying to understand/clarify was the detail an application
+> can infer looking at the value of persistence_domain ?
+>
+> Do you agree that below can be inferred from the "memory_controller"
+> value of persistence_domain
+>
+> 1) Application needs to use cache flush instructions and that ensures
+> data is persistent across power failure.
+>
+>
+> Or are you suggesting that application should not infer any of those
+> details looking at persistence_domain value? If so what is the purpose
+> of exporting that attribute?
 
-	Joao
+The way the patch was worded I thought it was referring to an explicit
+mechanism outside cpu cache flushes, i.e. a mechanism that required a
+driver call.
+
+>
+>
+> >>
+> >>
+> >>>
+> >>>> +               set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+> >>>>                  p->region = nvdimm_pmem_region_create(p->bus, &ndr_desc);
+> >>>> +       }
+> >>>>          if (!p->region) {
+> >>>>                  dev_err(dev, "Error registering region %pR from %pOF\n",
+> >>>>                                  ndr_desc.res, p->dn);
+> >>>> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+> >>>> index 8224d1431ea9..6826a274a1f1 100644
+> >>>> --- a/drivers/nvdimm/of_pmem.c
+> >>>> +++ b/drivers/nvdimm/of_pmem.c
+> >>>> @@ -62,8 +62,10 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+> >>>>
+> >>>>                  if (is_volatile)
+> >>>>                          region = nvdimm_volatile_region_create(bus, &ndr_desc);
+> >>>> -               else
+> >>>> +               else {
+> >>>> +                       set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+> >>>>                          region = nvdimm_pmem_region_create(bus, &ndr_desc);
+> >>>> +               }
+> >>>>
+> >>>>                  if (!region)
+> >>>>                          dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
+> >>>> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+> >>>> index 0f366706b0aa..771d888a5ed7 100644
+> >>>> --- a/include/linux/libnvdimm.h
+> >>>> +++ b/include/linux/libnvdimm.h
+> >>>> @@ -54,7 +54,6 @@ enum {
+> >>>>          /*
+> >>>>           * Platform provides mechanisms to automatically flush outstanding
+> >>>>           * write data from memory controler to pmem on system power loss.
+> >>>> -        * (ADR)
+> >>>
+> >>> I'd rather not delete critical terminology for a developer / platform
+> >>> owner to be able to consult documentation, or their vendor. Can you
+> >>> instead add the PowerPC equivalent term for this capability? I.e. list
+> >>> (x86: ADR PowerPC: foo ...).
+> >>
+> >> Power ISA doesn't clearly call out what mechanism will be used to ensure
+> >> that a load following power loss will return the previously flushed
+> >> data. Hence there is no description of details like Asynchronous DRAM
+> >> Refresh. Only details specified is with respect to flush sequence that ensures
+> >> that a load following power loss will return the value stored.
+> >
+> > What is this "flush sequence"?
+> >
+>
+> cpu cache flush instructions "dcbf; hwsync"
+
+Looks good, as long as the flush mechanism is defined by the cpu ISA
+then MAP_SYNC is viable.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
