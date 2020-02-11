@@ -1,92 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB3F158B1D
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 11 Feb 2020 09:14:37 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96A2158B36
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 11 Feb 2020 09:23:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2004E1007B1FF;
-	Tue, 11 Feb 2020 00:17:53 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=209.88.129.169; helo=smtp.setarnet.aw; envelope-from=noreplyloans@setarnet.aw; receiver=<UNKNOWN> 
-Received: from smtp.setarnet.aw (smtp.setarnet.aw [209.88.129.169])
-	by ml01.01.org (Postfix) with ESMTP id 00D2310097DA6;
-	Tue, 11 Feb 2020 00:17:50 -0800 (PST)
-X-SENDER-REPUTATION: -1.2
-X-SENDER-IP: 201.229.0.186
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2DD/wCxYUJeWLoA5clQEgSCQ4J4gRASG?=
- =?us-ascii?q?hqBGIJziF6EC18YLIEOgiCFBogMDDOFUAECgTyEZYFnCQEBATsCAQEOdYNigiM?=
- =?us-ascii?q?TEUsSAgcBAQYEBwEZFi+EcjoeQhYBhQQBMgwODQg8CQEJFAoXAhE0LVuCTIF+T?=
- =?us-ascii?q?AECMAOmLIMpgTIaAoF0gVqBUBCCJh8ECxeCC41bGh2BY4VmgwILBQESARVwgiw?=
- =?us-ascii?q?UgkqNQROJf2l+li4OCh6CHJZnjmgSFAOHD4RvhESlWwGDA3GCXgqCFBiOQo4wQ?=
- =?us-ascii?q?IE3iwkoFYIdAQ?=
-X-IPAS-Result: =?us-ascii?q?A2DD/wCxYUJeWLoA5clQEgSCQ4J4gRASGhqBGIJziF6EC18?=
- =?us-ascii?q?YLIEOgiCFBogMDDOFUAECgTyEZYFnCQEBATsCAQEOdYNigiMTEUsSAgcBAQYEB?=
- =?us-ascii?q?wEZFi+EcjoeQhYBhQQBMgwODQg8CQEJFAoXAhE0LVuCTIF+TAECMAOmLIMpgTI?=
- =?us-ascii?q?aAoF0gVqBUBCCJh8ECxeCC41bGh2BY4VmgwILBQESARVwgiwUgkqNQROJf2l+l?=
- =?us-ascii?q?i4OCh6CHJZnjmgSFAOHD4RvhESlWwGDA3GCXgqCFBiOQo4wQIE3iwkoFYIdAQ?=
-X-IronPort-AV: E=Sophos;i="5.70,428,1574136000";
-   d="scan'208,217";a="115419795"
-Received: from unknown (HELO bunito04.setarnet.aw) ([201.229.0.186])
-  by smtp.setarnet.aw with ESMTP; 11 Feb 2020 04:13:23 -0400
-MIME-version: 1.0
-Received: from setarnet.aw ([201.229.0.186])
- by bunito04.setarnet.aw (Oracle Communications Messaging Server 8.0.1.0.0
- 64bit (built Sep  4 2015))
- with ESMTPA id <0Q5J00FLH2UAPQ30@bunito04.setarnet.aw>; Tue,
- 11 Feb 2020 04:13:23 -0400 (AST)
-Received: from [201.229.0.186] (Forwarded-For: 197.185.96.160)
- by bunito04.setarnet.aw (mshttpd); Tue, 11 Feb 2020 10:13:22 +0200
-From: "ALL LOANS FINANCIAL SERVICES" <noreplyloans@setarnet.aw>
-Message-id: <78a0dd8611236.5e427e42@setarnet.aw>
-Date: Tue, 11 Feb 2020 10:13:22 +0200
-X-Mailer: Oracle Communications Messenger Express 8.0.1.0.0 64bit (built Sep  4
- 2015)
-Content-language: en
-Subject: CONTACT BELINDA 0764227966 FOR MORE DETAILS
-X-Accept-Language: en
-X-Priority: 1 (Highest)
-Priority: urgent
-Message-ID-Hash: CU4SPXIJLAKMTX2J3BPD346WQYCXMRCR
-X-Message-ID-Hash: CU4SPXIJLAKMTX2J3BPD346WQYCXMRCR
-X-MailFrom: noreplyloans@setarnet.aw
+	by ml01.01.org (Postfix) with ESMTP id C61CB1007B1FF;
+	Tue, 11 Feb 2020 00:27:03 -0800 (PST)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=180.109.152.9; helo=sy.net; envelope-from=zmqsamu@sy.net; receiver=<UNKNOWN> 
+Received: from sy.net (unknown [180.109.152.9])
+	by ml01.01.org (Postfix) with ESMTP id F2AE81007B8E0
+	for <linux-nvdimm@lists.01.org>; Tue, 11 Feb 2020 00:26:57 -0800 (PST)
+Message-ID: <20200211162332247234@sy.net>
+From: "amazon" <zmqsamu@sy.net>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
+	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
+	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
+Date: Tue, 11 Feb 2020 16:23:25 +0800
+MIME-Version: 1.0
+X-mailer: Mqp 1
+Message-ID-Hash: NP376USPNMK3PYVBHV2YGT5XDT5BNFBK
+X-Message-ID-Hash: NP376USPNMK3PYVBHV2YGT5XDT5BNFBK
+X-MailFrom: zmqsamu@sy.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: all.loans@webmail.co.za
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CU4SPXIJLAKMTX2J3BPD346WQYCXMRCR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NP376USPNMK3PYVBHV2YGT5XDT5BNFBK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-
-
-
-Dear Valued Client,
-
-Kindly view attached document to make application on 3% fixed loan.
-
-We offer Personal,Debt Consolidation and Business Loan.
-
-Send Us The Completed Loan Application Form, A Copy of your ID,
-
-Three Months Bank Statement And Three Months Payslip.
-
-We await your swift response.
-
-Regards,
-Belinda Mayer
-Direct Line: +27(0)764 227 966
-Email 1: all.loans@fastservice.com
-Email 2: all.loans@webmail.co.za
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+YWkyNnV4QW1hem9uLmNvLmpwIOOBq+OBlOeZu+mMsuOBruOCouOCq+OCpuODs+ODiO+8iOWQjeWJ
+jeOAgeODkeOCueODr+ODvOODieOAgeOBneOBruS7luWAi+S6uuaDheWgse+8ieOBrueiuuiqjS4u
+Lg0KZXFxbGZqZWp5dDJka2V4bGEyeWRrDQogDQoNCiAgIA0KINCQbWF6b24g44GK5a6i5qeYIA0K
+DQoNCuaui+W/teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiCANCnN6Yw0K
+0JBtYXpvbiDjgpLmm7TmlrDjgafjgY3jgb7jgZvjgpPjgafjgZfjgZ/jgIINCuOBk+OCjOOBr+OA
+geOCq+ODvOODieOBjOacn+mZkOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAguiri+axguWFiOS9j+aJ
+gOOBjOWkieabtOOBleOCjOOBn+OBquOBqeOAgeOBleOBvuOBluOBvuOBqueQhueUseOBp+eZuueU
+n+OBmeOCi+WPr+iDveaAp+OBjOOBguOCiuOBvuOBmeOAgiANCmxyM2NtaA0K44Ki44Kr44Km44Oz
+44OI5oOF5aCx44Gu5LiA6YOo44GM6Kqk44Gj44Gm44GE44KL5pWF44Gr44CB44GK5a6i5qeY44Gu
+44Ki44Kr44Km44Oz44OI44KS57at5oyB44GZ44KL44Gf44KBIA0KanENCmd6a2RlNGZwZQ0K0JBt
+YXpvbiDmg4XloLHjgpLnorroqo3jgZnjgovlv4XopoHjg7vjgqfjgYLjgorjgb7jgZnjgILku4rj
+gqLjgqvjgqbjg7Pjg4jjgpLnorroqo3jgafjgY3jgb7jgZnjgIINCtCQbWF6b24g44Ot44Kw44Kk
+44OzIOOBquOBiuOAgTI05pmC6ZaT5Lul5YaF44Gr44GU56K66KqN44GM44Gq44GE5aC05ZCI44CB
+6Kqg44Gr6YG65oa+44Gq44GM44KJ44CB44Ki44Kr44Km44Oz44OI44KS44Ot44OD44Kv44GV44Gb
+44Gm44GE44Gf44Gg44GP44GT44Go44KS6K2m5ZGK44GE44Gf44GX44G+44GZ44CCDQoNCm5yOQ0K
+44OR44K544Ov44O844OJ44KS5aSJ5pu044GX44Gf6Kaa44GI44GM44Gq44GE5aC05ZCI44Gv44CB
+6Iez5oClKDAzKS0wOTAtODg0OOOBvuOBp+OBiumbu+ipseOBj+OBoOOBleOBhOOAgg0KDQoNCmRu
+eQ0K44GK55+l44KJ44GbOiANCuODkeOCueODr+ODvOODieOBr+iqsOOBq+OCguaVmeOBiOOBquOB
+hOOBp+OBj+OBoOOBleOBhOOAgiANCmVmaHYgem51ZnAgdXp1YXQgd3BtdSBobnFuZWR6emlodDZx
+cHQgDQrlgIvkurrmg4XloLHjgajplqLkv4LjgYzjgarjgY/jgIHmjqjmuKzjgZfjgavjgY/jgYTj
+g5Hjgrnjg6/jg7zjg4njgpLkvZzmiJDjgZfjgabjgY/jgaDjgZXjgYTjgILlpKfmloflrZfjgajl
+sI/mloflrZfjgIHmlbDlrZfjgIHjgYrjgojjgbPoqJjlj7fjgpLlv4XjgZrkvb/nlKjjgZfjgabj
+gY/jgaDjgZXjgYTjgIIgDQpva3EwcHRpIGR0aGU0ZW91IDQ4NG00ejk4ayB4bjQgb3lwYjN0dmRz
+b2xqdCANCuOCquODs+ODqeOCpOODs+OCouOCq+OCpuODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOC
+i+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgg0KDQoNCuOBqeOB
+huOBnuOCiOOCjeOBl+OBj+OBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgiANCnZ2cDByDQoNCtCQ
+bWF6b24gDQogDQoNCg0KDQogCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3Rz
+LjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2
+ZUBsaXN0cy4wMS5vcmcK
