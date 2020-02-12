@@ -2,62 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE4315AE19
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Feb 2020 18:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A109415AE26
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Feb 2020 18:08:09 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 03EA810FC337D;
-	Wed, 12 Feb 2020 09:11:16 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 5700610FC3385;
+	Wed, 12 Feb 2020 09:11:24 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
 Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [207.211.31.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0219B10FC317F
-	for <linux-nvdimm@lists.01.org>; Wed, 12 Feb 2020 09:11:13 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 315F210FC3170
+	for <linux-nvdimm@lists.01.org>; Wed, 12 Feb 2020 09:11:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1581527275;
+	s=mimecast20190719; t=1581527284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+Kx97YjoepQpQ0kz210ikU62VnqPVqaOjhm9SlazRBo=;
-	b=gNcbxa1isplaIvP9rBjxqY2ejICIZ/qnU8BEf+6rbzT1vqz273d3oXqK5vyv5SZo7Ejh74
-	4fxcjGLwl/mXcQgtpT/ZjK+LSzXnQG2imJYukUvz6oayGDHzYO7oQjiyLsuREvTZtgVSw9
-	/OQFYYMhcpUJR8Fa19OrWJtwCHybt0k=
+	bh=EFXOBK5kg+//3C1Cq5RJK/z4kqT5swnlhwxFrx47y84=;
+	b=fais9dnFIufZPu49DWXnNHpwnAiSgOsB8/0CyMufSdBL4vQh57qPVROZqn4W5s469gPq1u
+	qifgpBsareelXTdFy/FbNSar7+KfoqJR8C9ShQs7IIr8PinvrZaDsVuX0J/zX1qag9TY+t
+	mX3mD7GqeoR25MBmjp/y5nSTTTjLyjA=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-367-e1m5cTtcPZ-n_WXIgSZPsQ-1; Wed, 12 Feb 2020 12:07:51 -0500
-X-MC-Unique: e1m5cTtcPZ-n_WXIgSZPsQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+ us-mta-309-mUGUErWkMiihwvXwGDO0Wg-1; Wed, 12 Feb 2020 12:07:54 -0500
+X-MC-Unique: mUGUErWkMiihwvXwGDO0Wg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 432DF800D41;
-	Wed, 12 Feb 2020 17:07:50 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C8EF5107ACCA;
+	Wed, 12 Feb 2020 17:07:52 +0000 (UTC)
 Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 21BC25C1B2;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 200F15D9E2;
 	Wed, 12 Feb 2020 17:07:50 +0000 (UTC)
 Received: by horse.redhat.com (Postfix, from userid 10451)
-	id C052D2257D7; Wed, 12 Feb 2020 12:07:46 -0500 (EST)
+	id CAEF32257D8; Wed, 12 Feb 2020 12:07:46 -0500 (EST)
 From: Vivek Goyal <vgoyal@redhat.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-nvdimm@lists.01.org,
 	dan.j.williams@intel.com,
 	hch@infradead.org
-Subject: [PATCH 5/6] drivers/dax: Use dax_pgoff() instead of bdev_dax_pgoff()
-Date: Wed, 12 Feb 2020 12:07:32 -0500
-Message-Id: <20200212170733.8092-6-vgoyal@redhat.com>
+Subject: [PATCH 6/6] dax: Remove bdev_dax_pgoff() helper
+Date: Wed, 12 Feb 2020 12:07:33 -0500
+Message-Id: <20200212170733.8092-7-vgoyal@redhat.com>
 In-Reply-To: <20200212170733.8092-1-vgoyal@redhat.com>
 References: <20200212170733.8092-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: 6RZCOTNZ56ZFENU7CCHNP74RQJCTPERW
-X-Message-ID-Hash: 6RZCOTNZ56ZFENU7CCHNP74RQJCTPERW
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: VDYMQFC6LH4N3U42OUOGQS5PG762O4X4
+X-Message-ID-Hash: VDYMQFC6LH4N3U42OUOGQS5PG762O4X4
 X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: dm-devel@redhat.com, jack@suse.cz
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6RZCOTNZ56ZFENU7CCHNP74RQJCTPERW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VDYMQFC6LH4N3U42OUOGQS5PG762O4X4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,35 +66,51 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Start using dax_pgoff() instead of bdev_dax_pgoff().
+Now there don't seem to be anyuser of bdev_dax_pgoff(). All users have been
+moved to dax_pgoff(). So remove this helper.
 
 Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 ---
- drivers/dax/super.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dax/super.c | 13 -------------
+ include/linux/dax.h |  1 -
+ 2 files changed, 14 deletions(-)
 
 diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-index e9daa30e4250..ee35ecc61545 100644
+index ee35ecc61545..371e391e6b1e 100644
 --- a/drivers/dax/super.c
 +++ b/drivers/dax/super.c
-@@ -97,7 +97,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 		return false;
- 	}
+@@ -43,19 +43,6 @@ EXPORT_SYMBOL_GPL(dax_read_unlock);
+ #ifdef CONFIG_BLOCK
+ #include <linux/blkdev.h>
  
--	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
-+	err = dax_pgoff(get_start_sect(bdev), start, PAGE_SIZE, &pgoff);
- 	if (err) {
- 		pr_debug("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
-@@ -105,7 +105,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	}
+-int bdev_dax_pgoff(struct block_device *bdev, sector_t sector, size_t size,
+-		pgoff_t *pgoff)
+-{
+-	phys_addr_t phys_off = (get_start_sect(bdev) + sector) * 512;
+-
+-	if (pgoff)
+-		*pgoff = PHYS_PFN(phys_off);
+-	if (phys_off % PAGE_SIZE || size % PAGE_SIZE)
+-		return -EINVAL;
+-	return 0;
+-}
+-EXPORT_SYMBOL(bdev_dax_pgoff);
+-
+ int dax_pgoff(sector_t dax_offset, sector_t sector, size_t size, pgoff_t *pgoff)
+ {
+ 	phys_addr_t phys_off = (dax_offset + sector) * 512;
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index 5101a4b5c1f9..84ed0e993190 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -110,7 +110,6 @@ static inline bool daxdev_mapping_supported(struct vm_area_struct *vma,
+ #endif
  
- 	last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SIZE / 512;
--	err = bdev_dax_pgoff(bdev, last_page, PAGE_SIZE, &pgoff_end);
-+	err = dax_pgoff(get_start_sect(bdev), last_page, PAGE_SIZE, &pgoff_end);
- 	if (err) {
- 		pr_debug("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
+ struct writeback_control;
+-int bdev_dax_pgoff(struct block_device *, sector_t, size_t, pgoff_t *pgoff);
+ int dax_pgoff(sector_t dax_offset, sector_t, size_t, pgoff_t *pgoff);
+ #if IS_ENABLED(CONFIG_FS_DAX)
+ bool __bdev_dax_supported(struct block_device *bdev, int blocksize);
 -- 
 2.20.1
 _______________________________________________
