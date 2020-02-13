@@ -2,65 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F3015CD66
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Feb 2020 22:40:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 598E615CDA0
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Feb 2020 22:55:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6866D10FC33F7;
-	Thu, 13 Feb 2020 13:43:42 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8EB5C10FC33F8;
+	Thu, 13 Feb 2020 13:59:06 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C79A210FC33F6
-	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 13:43:40 -0800 (PST)
-Received: by mail-ot1-x344.google.com with SMTP id 59so7098239otp.12
-        for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 13:40:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KTv9gN6I6yzih5qKCBcYKwo2e18uwbHe8iXC38+9hd0=;
-        b=pOLKBGFdDmsjxxfsFb1e7iJQtMQ7g+GGM3cpiCIvN06JvANWBupzho8YYBSAAbeKaY
-         Zla3c948sXHK4kc/W0U68fIEojXwyz/BhRmi0DHOh7I/TrksghWSyuAfEqqILp7fTJkc
-         aiisRybHg46rfa447mtqBqwCp6mBjdbMwcSXEw1oe8ki4SBgbMPUyDMlyVlImCGC+Q1W
-         cnDG83FfPU5WEldM8Od9jZauR50FdGvRpB6FFFutJtRLguIojSNyJ5mzr1o7nQ2AYNbX
-         tLz7cet7HxsV1Fj7UFt8lZOYf4ibR9GrjIXtTipstk+tMM13uqbl3qugjZvJi1TE/Dn1
-         42Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KTv9gN6I6yzih5qKCBcYKwo2e18uwbHe8iXC38+9hd0=;
-        b=h5+O2mJnpbqJAbcpkWV3qvLqyj5Xyuc043VD9iz/ydBKwC3zfWFY9eAgL8piPim+eR
-         QhZudsnArM1GGuG1l9veeI0qU7L7JsC5DLKu0LU71URaLamQ1/8pqszHhdbdJo1WpSCV
-         qrc+TfeVXMzptSGSit9uGk36wdYA510zIP/DdspAPl32baUaK0kxxWUkhPWKd3wU1eSQ
-         sywg0ByliVJaRqH2IfLhIh4U8S74GNJKPrFa0d01y9h1RqaIozLA4uTRWyiqEePYcbXY
-         yC7+faZOW+snQjBGlzp4VyqHyqsk4zTai+zvp7TQKMoWx9v/iOuQGGaQ9cH5gxxLt6HU
-         fUZg==
-X-Gm-Message-State: APjAAAV5xW6CKfTKT1zD/1cgP+Wu7wKZt9+6qOvmypBpC0n2FeIm7WV2
-	7jxA3R+2nQohgVyHDe5jOgu42kZ7TtwVB8wKhwCaYw==
-X-Google-Smtp-Source: APXvYqw5aEfUpyFTQZazSkVeOJDzHTwzm+wOG5KP2AGcBjkKirUZiP9tAackQuvwRLWXumQcnRB+P+mYdWGMw5tsiJg=
-X-Received: by 2002:a9d:5d09:: with SMTP id b9mr8569240oti.207.1581630022932;
- Thu, 13 Feb 2020 13:40:22 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 92F6A10FC33F7
+	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 13:59:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1581630946;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fgc8eEHzweZEt6vDWPHCdsqE62iMp2A4jBEBu5mmwpE=;
+	b=e5OYpfCQ0RPMvyqyOan3pNLV5X6hk7AI6FSpHBkwgYuJOwM12dvsBUSOLqQkjgbmlUSY//
+	xuc+zpehYbzT9+mBEAj9NjtN7bIarIbg9XWdRqHZfl6Jdf6QR9IE3T2RPSXmk39jHpu860
+	X+Ni0SMAkTNAcYCmqhQ8ID2tYsVnWII=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-137-KFIxhWeINIGEenkLQv6mnA-1; Thu, 13 Feb 2020 16:55:38 -0500
+X-MC-Unique: KFIxhWeINIGEenkLQv6mnA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 00EE5100550E;
+	Thu, 13 Feb 2020 21:55:37 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 2EBB96031D;
+	Thu, 13 Feb 2020 21:55:35 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 2/4] libnvdimm/namespace: Enforce memremap_compat_align()
+References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
+	<158155490897.3343782.14216276134794923581.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Thu, 13 Feb 2020 16:55:35 -0500
+In-Reply-To: <158155490897.3343782.14216276134794923581.stgit@dwillia2-desk3.amr.corp.intel.com>
+	(Dan Williams's message of "Wed, 12 Feb 2020 16:48:29 -0800")
+Message-ID: <x49k14q5ezs.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-References: <157966227494.2508551.7206194169374588977.stgit@dwillia2-desk3.amr.corp.intel.com>
- <157966230092.2508551.3905721944859436879.stgit@dwillia2-desk3.amr.corp.intel.com>
- <874kvu3egp.fsf@nanos.tec.linutronix.de>
-In-Reply-To: <874kvu3egp.fsf@nanos.tec.linutronix.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 13 Feb 2020 13:40:12 -0800
-Message-ID: <CAPcyv4gDnbTss7cAph4vyiO2R5cJeACOReTgzafoT6iHxsR6Ew@mail.gmail.com>
-Subject: Re: [PATCH v4 5/6] x86/numa: Provide a range-to-target_node lookup facility
-To: Thomas Gleixner <tglx@linutronix.de>
-Message-ID-Hash: QO4CUNH7XSOAGDAKAY3O7V2HA5DMPZCF
-X-Message-ID-Hash: QO4CUNH7XSOAGDAKAY3O7V2HA5DMPZCF
-X-MailFrom: dan.j.williams@intel.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: 4HZ22TJXVTPOKDVJAOGFRFL7ME5J2DIT
+X-Message-ID-Hash: 4HZ22TJXVTPOKDVJAOGFRFL7ME5J2DIT
+X-MailFrom: jmoyer@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, X86 ML <x86@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, kbuild test robot <lkp@intel.com>, Christoph Hellwig <hch@lst.de>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: linux-nvdimm@lists.01.org, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QO4CUNH7XSOAGDAKAY3O7V2HA5DMPZCF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4HZ22TJXVTPOKDVJAOGFRFL7ME5J2DIT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,33 +65,64 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 13, 2020 at 3:38 AM Thomas Gleixner <tglx@linutronix.de> wrote:
->
-> Dan Williams <dan.j.williams@intel.com> writes:
-> > +/**
-> > + * numa_move_memblk - Move one numa_memblk from one numa_meminfo to another
-> > + * @dst: numa_meminfo to move block to
-> > + * @idx: Index of memblk to remove
-> > + * @src: numa_meminfo to remove memblk from
-> > + *
-> > + * If @dst is non-NULL add it at the @dst->nr_blks index and increment
-> > + * @dst->nr_blks, then remove it from @src.
->
-> This is not correct. It's suggesting that these operations are only
-> happening when @dst is non-NULL. Remove is unconditional though.
->
-> Also this is called with &numa_reserved_meminfo as @dst argument, which is:
->
-> > +static struct numa_meminfo numa_reserved_meminfo __initdata_numa;
->
-> So how would @dst ever be NULL?
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Ugh, something I should have caught. An earlier version of this patch
-optionally defined numa_reserved_meminfo [1], but I later switched to
-the current / cleaner __initdata_or_meminfo scheme. Will clean this
-up.
+> The pmem driver on PowerPC crashes with the following signature when
+> instantiating misaligned namespaces that map their capacity via
+> memremap_pages().
+>
+>     BUG: Unable to handle kernel data access at 0xc001000406000000
+>     Faulting instruction address: 0xc000000000090790
+>     NIP [c000000000090790] arch_add_memory+0xc0/0x130
+>     LR [c000000000090744] arch_add_memory+0x74/0x130
+>     Call Trace:
+>      arch_add_memory+0x74/0x130 (unreliable)
+>      memremap_pages+0x74c/0xa30
+>      devm_memremap_pages+0x3c/0xa0
+>      pmem_attach_disk+0x188/0x770
+>      nvdimm_bus_probe+0xd8/0x470
+>
+> With the assumption that only memremap_pages() has alignment
+> constraints, enforce memremap_compat_align() for
+> pmem_should_map_pages(), nd_pfn, or nd_dax cases.
+>
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Jeff Moyer <jmoyer@redhat.com>
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Link: https://lore.kernel.org/r/158041477336.3889308.4581652885008605170.stgit@dwillia2-desk3.amr.corp.intel.com
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> ---
+>  drivers/nvdimm/namespace_devs.c |   10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+> index 032dc61725ff..aff1f32fdb4f 100644
+> --- a/drivers/nvdimm/namespace_devs.c
+> +++ b/drivers/nvdimm/namespace_devs.c
+> @@ -1739,6 +1739,16 @@ struct nd_namespace_common *nvdimm_namespace_common_probe(struct device *dev)
+>  		return ERR_PTR(-ENODEV);
+>  	}
+>  
+> +	if (pmem_should_map_pages(dev) || nd_pfn || nd_dax) {
+> +		struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
+> +		resource_size_t start = nsio->res.start;
+> +
+> +		if (!IS_ALIGNED(start | size, memremap_compat_align())) {
+> +			dev_dbg(&ndns->dev, "misaligned, unable to map\n");
+> +			return ERR_PTR(-EOPNOTSUPP);
+> +		}
+> +	}
+> +
+>  	if (is_namespace_pmem(&ndns->dev)) {
+>  		struct nd_namespace_pmem *nspm;
+>  
 
-[1]: https://lore.kernel.org/linux-mm/157309907296.1582359.7986676987778026949.stgit@dwillia2-desk3.amr.corp.intel.com/
+Actually, I take back my ack.  :) This prevents a previously working
+namespace from being successfully probed/setup.  I thought we were only
+going to enforce the alignment for a newly created namespace?  This should
+only check whether the alignment works for the current platform.
+
+-Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
