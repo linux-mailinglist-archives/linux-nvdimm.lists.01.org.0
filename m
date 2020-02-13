@@ -2,69 +2,108 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31FD15D355
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 09:01:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4C715D4E2
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 10:42:13 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D616210FC33EA;
-	Fri, 14 Feb 2020 00:04:34 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=114.221.62.110; helo=advtumqrm.org; envelope-from=bdpl@advtumqrm.org; receiver=<UNKNOWN> 
-Received: from advtumqrm.org (unknown [114.221.62.110])
-	by ml01.01.org (Postfix) with ESMTP id A823B1007A841
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 00:04:26 -0800 (PST)
-Message-ID: <20200214160108034116@advtumqrm.org>
-From: "amazon" <bdpl@advtumqrm.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
-	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
-	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
-Date: Fri, 14 Feb 2020 16:01:01 +0800
+	by ml01.01.org (Postfix) with ESMTP id 062DD10FC33EC;
+	Fri, 14 Feb 2020 01:45:29 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id CC34D10FC33EA
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 01:45:26 -0800 (PST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx2.suse.de (Postfix) with ESMTP id 00004ACC6;
+	Fri, 14 Feb 2020 09:42:07 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 7AD7D1E0D3F; Thu, 13 Feb 2020 21:58:43 +0100 (CET)
+Date: Thu, 13 Feb 2020 21:58:43 +0100
+From: Jan Kara <jack@suse.cz>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH] tools/testing/nvdimm: Fix compilation failure without
+ CONFIG_DEV_DAX_PMEM_COMPAT
+Message-ID: <20200213205843.GA6600@quack2.suse.cz>
+References: <20200123154720.12097-1-jack@suse.cz>
+ <x498sl73nsc.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4jKKfWCNHtxQDYcKV_6hMXWrATkppQ4v=4E0teOmT8+mg@mail.gmail.com>
 MIME-Version: 1.0
-X-mailer: Xrjin 5
-Message-ID-Hash: WJ4IBUTUNGQ6Q4ZTKSBO4FPTPNUPFYF5
-X-Message-ID-Hash: WJ4IBUTUNGQ6Q4ZTKSBO4FPTPNUPFYF5
-X-MailFrom: bdpl@advtumqrm.org
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4jKKfWCNHtxQDYcKV_6hMXWrATkppQ4v=4E0teOmT8+mg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: B2FI7R7QG5FVHDFKTBW5XDOELNFE777Y
+X-Message-ID-Hash: B2FI7R7QG5FVHDFKTBW5XDOELNFE777Y
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WJ4IBUTUNGQ6Q4ZTKSBO4FPTPNUPFYF5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B2FI7R7QG5FVHDFKTBW5XDOELNFE777Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Z3ZjbWl0Z2lBbWF6b24uY28uanAg44Gr44GU55m76Yyy44Gu44Ki44Kr44Km44Oz44OI77yI5ZCN
-5YmN44CB44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqN
-Li4uDQpwamFwbXd3MXR6Nmh1d2w2eTR6DQogDQoNCiAgIA0KINCQbWF6b24g44GK5a6i5qeYIA0K
-DQoNCuaui+W/teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiCANCjBxDQrQ
-kG1hem9uIOOCkuabtOaWsOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAgg0K44GT44KM44Gv44CB
-44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC6KuL5rGC5YWI5L2P5omA
-44GM5aSJ5pu044GV44KM44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf
-44GZ44KL5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CCIA0KMHhrcHRhNWFhDQrjgqLjgqvjgqbj
-g7Pjg4jmg4XloLHjga7kuIDpg6jjgYzoqqTjgaPjgabjgYTjgovmlYXjgavjgIHjgYrlrqLmp5jj
-ga7jgqLjgqvjgqbjg7Pjg4jjgpLntq3mjIHjgZnjgovjgZ/jgoEgDQpieHZ3d2kNCmJiaWR3M2QN
-CtCQbWF6b24g5oOF5aCx44KS56K66KqN44GZ44KL5b+F6KaB44O744Kn44GC44KK44G+44GZ44CC
-5LuK44Ki44Kr44Km44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQrQkG1hem9uIOODreOC
-sOOCpOODsyDjgarjgYrjgIEyNOaZgumWk+S7peWGheOBq+OBlOeiuuiqjeOBjOOBquOBhOWgtOWQ
-iOOAgeiqoOOBq+mBuuaGvuOBquOBjOOCieOAgeOCouOCq+OCpuODs+ODiOOCkuODreODg+OCr+OB
-leOBm+OBpuOBhOOBn+OBoOOBj+OBk+OBqOOCkuitpuWRiuOBhOOBn+OBl+OBvuOBmeOAgg0KDQo1
-ajhqaXA0DQrjg5Hjgrnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTl
-kIjjga/jgIHoh7PmgKUoMDMpLTA5MC04ODQ444G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CC
-DQoNCg0KdGENCuOBiuefpeOCieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLmlZnj
-gYjjgarjgYTjgafjgY/jgaDjgZXjgYTjgIIgDQpvbSBxeCB3byB0eXV2dnplZnYgOXh1Mnl3b2tu
-emJrZiANCuWAi+S6uuaDheWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4rOOBl+OBq+OBj+OB
-hOODkeOCueODr+ODvOODieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOAguWkp+aWh+Wtl+OB
-qOWwj+aWh+Wtl+OAgeaVsOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOBmuS9v+eUqOOBl+OB
-puOBj+OBoOOBleOBhOOAgiANCnY5dCA5ZGgzMiA2bnF5IGJldjYgY3BoZWVsM2VmanNwMnAgDQrj
-gqrjg7Pjg6njgqTjg7PjgqLjgqvjgqbjg7Pjg4jjgZTjgajjgavjgIHnlbDjgarjgovjg5Hjgrnj
-g6/jg7zjg4njgpLkvb/nlKjjgZfjgabjgY/jgaDjgZXjgYTjgIINCg0KDQrjganjgYbjgZ7jgojj
-go3jgZfjgY/jgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIgDQpuNHF3bTENCg0K0JBtYXpvbiAN
-CiANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
-LjAxLm9yZwo=
+On Wed 12-02-20 12:49:41, Dan Williams wrote:
+> On Wed, Feb 12, 2020 at 6:04 AM Jeff Moyer <jmoyer@redhat.com> wrote:
+> >
+> > Jan Kara <jack@suse.cz> writes:
+> >
+> > > When a kernel is configured without CONFIG_DEV_DAX_PMEM_COMPAT, the
+> > > compilation of tools/testing/nvdimm fails with:
+> > >
+> > >   Building modules, stage 2.
+> > >   MODPOST 11 modules
+> > > ERROR: "dax_pmem_compat_test" [tools/testing/nvdimm/test/nfit_test.ko] undefined!
+> > >
+> > > Fix the problem by calling dax_pmem_compat_test() only if the kernel has
+> > > the required functionality.
+> > >
+> > > Signed-off-by: Jan Kara <jack@suse.cz>
+> >
+> > What's the motivation?  Is this just to fix randconfig builds?  The
+> > reason I ask is that the test suite will expect to be able to find the
+> > dax_pmem_compat module, so it doesn't make sense to me to disable those
+> > tests only in the kernel as you'll hit a problem when running the tests
+> > anyway.
+> 
+> Yeah, at a minimum you'd also need to go fix up nfit_test_init() to
+> not check for the dax_pmem_compat module:
+> 
+> https://github.com/pmem/ndctl/blob/master/test/core.c#L119
+
+OK.
+
+> > But, I understand if you want to prevent build bots from hitting
+> > compilation failures due to this.
+> 
+> Hmm, build bots would only hit what's covered by
+> CONFIG_NVDIMM_TEST_BUILD, and that's only building
+> tools/testing/nvdimm/test/iomap.c.
+> 
+> Jan, were you just looking to use nfit_test outside of running the
+> ndctl test suites? Or was this just a drive-by compilation test?
+
+The problem is following: We build our distro kernels without
+CONFIG_DEV_DAX_PMEM_COMPAT because we don't need that functionality. And
+Jing Han (from Intel ;) is now complaining that he cannot compile and run
+the ndctl testsuite on our kernels... It seems stupid to enable that config
+option for all distro users just to be able to run the testsuite but OTOH
+it would be neat to be able to run the testsuite with stock distro
+config.
+
+								Honza
+
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
