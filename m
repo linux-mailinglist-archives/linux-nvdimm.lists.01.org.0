@@ -1,93 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D90D15BDC3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Feb 2020 12:37:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B9115C260
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 13 Feb 2020 16:33:48 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 075EC10FC33E6;
-	Thu, 13 Feb 2020 03:41:15 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1DA8F10FC33E5
-	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 03:41:13 -0800 (PST)
-Received: from [5.158.153.52] (helo=nanos.tec.linutronix.de)
-	by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-	(Exim 4.80)
-	(envelope-from <tglx@linutronix.de>)
-	id 1j2CoR-0008Dp-Bg; Thu, 13 Feb 2020 12:37:43 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-	id E2B141013A6; Thu, 13 Feb 2020 12:37:42 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Dan Williams <dan.j.williams@intel.com>, mingo@redhat.com
-Subject: Re: [PATCH v4 5/6] x86/numa: Provide a range-to-target_node lookup facility
-In-Reply-To: <157966230092.2508551.3905721944859436879.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <157966227494.2508551.7206194169374588977.stgit@dwillia2-desk3.amr.corp.intel.com> <157966230092.2508551.3905721944859436879.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Thu, 13 Feb 2020 12:37:42 +0100
-Message-ID: <874kvu3egp.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTP id BA2D110FC33E9;
+	Thu, 13 Feb 2020 07:37:03 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=117.88.240.113; helo=epauyua.org; envelope-from=wh@epauyua.org; receiver=<UNKNOWN> 
+Received: from epauyua.org (unknown [117.88.240.113])
+	by ml01.01.org (Postfix) with ESMTP id 1DD5E1007A85B
+	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 07:36:59 -0800 (PST)
+Message-ID: <20200213233341572238@epauyua.org>
+From: "amazon" <wh@epauyua.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
+	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
+	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
+Date: Thu, 13 Feb 2020 23:33:33 +0800
 MIME-Version: 1.0
-Message-ID-Hash: NXO4WOX45QDECEQM2QJXLVOCFKLZBXAX
-X-Message-ID-Hash: NXO4WOX45QDECEQM2QJXLVOCFKLZBXAX
-X-MailFrom: tglx@linutronix.de
+X-mailer: Uaslm 7
+Message-ID-Hash: XFNICEW6BOMEP2AH6G7NMTNFVIHAMOCQ
+X-Message-ID-Hash: XFNICEW6BOMEP2AH6G7NMTNFVIHAMOCQ
+X-MailFrom: wh@epauyua.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, kbuild test robot <lkp@intel.com>, hch@lst.de, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NXO4WOX45QDECEQM2QJXLVOCFKLZBXAX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XFNICEW6BOMEP2AH6G7NMTNFVIHAMOCQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Dan Williams <dan.j.williams@intel.com> writes:
-> +/**
-> + * numa_move_memblk - Move one numa_memblk from one numa_meminfo to another
-> + * @dst: numa_meminfo to move block to
-> + * @idx: Index of memblk to remove
-> + * @src: numa_meminfo to remove memblk from
-> + *
-> + * If @dst is non-NULL add it at the @dst->nr_blks index and increment
-> + * @dst->nr_blks, then remove it from @src.
-
-This is not correct. It's suggesting that these operations are only
-happening when @dst is non-NULL. Remove is unconditional though.
-
-Also this is called with &numa_reserved_meminfo as @dst argument, which is:
-
-> +static struct numa_meminfo numa_reserved_meminfo __initdata_numa;
-
-So how would @dst ever be NULL?
- 
-> + */
-> +static void __init numa_move_memblk(struct numa_meminfo *dst, int idx,
-> +		struct numa_meminfo *src)
-> +{
-> +	if (dst) {
-> +		memcpy(&dst->blk[dst->nr_blks], &src->blk[idx],
-> +				sizeof(struct numa_memblk));
-> +		dst->nr_blks++;
-> +	}
-> +	numa_remove_memblk_from(idx, src);
-> +}
-
-...
-
-> -		/* make sure all blocks are inside the limits */
-> +		/* move / save reserved memory ranges */
-> +		if (!memblock_overlaps_region(&memblock.memory,
-> +					bi->start, bi->end - bi->start)) {
-> +			numa_move_memblk(&numa_reserved_meminfo, i--, mi);
-
-Thanks,
-
-        tglx
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+dGtlZWpBbWF6b24uY28uanAg44Gr44GU55m76Yyy44Gu44Ki44Kr44Km44Oz44OI77yI5ZCN5YmN
+44CB44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqNLi4u
+DQpqMHVhZnVkc21iZnkwcG8NCiANCg0KICAgDQog0JBtYXpvbiDjgYrlrqLmp5ggDQoNCg0K5q6L
+5b+144Gq44GM44KJ44CB44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OIIA0KdHlkajE2cG1rDQrQ
+kG1hem9uIOOCkuabtOaWsOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAgg0K44GT44KM44Gv44CB
+44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC6KuL5rGC5YWI5L2P5omA
+44GM5aSJ5pu044GV44KM44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf
+44GZ44KL5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CCIA0KMndtbw0K44Ki44Kr44Km44Oz44OI
+5oOF5aCx44Gu5LiA6YOo44GM6Kqk44Gj44Gm44GE44KL5pWF44Gr44CB44GK5a6i5qeY44Gu44Ki
+44Kr44Km44Oz44OI44KS57at5oyB44GZ44KL44Gf44KBIA0KZG01OQ0KdmYNCtCQbWF6b24g5oOF
+5aCx44KS56K66KqN44GZ44KL5b+F6KaB44O744Kn44GC44KK44G+44GZ44CC5LuK44Ki44Kr44Km
+44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQrQkG1hem9uIOODreOCsOOCpOODsyDjgarj
+gYrjgIEyNOaZgumWk+S7peWGheOBq+OBlOeiuuiqjeOBjOOBquOBhOWgtOWQiOOAgeiqoOOBq+mB
+uuaGvuOBquOBjOOCieOAgeOCouOCq+OCpuODs+ODiOOCkuODreODg+OCr+OBleOBm+OBpuOBhOOB
+n+OBoOOBj+OBk+OBqOOCkuitpuWRiuOBhOOBn+OBl+OBvuOBmeOAgg0KDQpkdHl4d3cNCuODkeOC
+ueODr+ODvOODieOCkuWkieabtOOBl+OBn+immuOBiOOBjOOBquOBhOWgtOWQiOOBr+OAgeiHs+aA
+pSgwMyktMDkwLTg4NDjjgb7jgafjgYrpm7voqbHjgY/jgaDjgZXjgYTjgIINCg0KDQp2bXpnDQrj
+gYrnn6XjgonjgZs6IA0K44OR44K544Ov44O844OJ44Gv6Kqw44Gr44KC5pWZ44GI44Gq44GE44Gn
+44GP44Gg44GV44GE44CCIA0KeTkgbWFlMGx1ZCB1b2poc24gOGJiYyA2aHVsbHIwZDlzbDlnYXJs
+cXp6ZG83bHkgDQrlgIvkurrmg4XloLHjgajplqLkv4LjgYzjgarjgY/jgIHmjqjmuKzjgZfjgavj
+gY/jgYTjg5Hjgrnjg6/jg7zjg4njgpLkvZzmiJDjgZfjgabjgY/jgaDjgZXjgYTjgILlpKfmlofl
+rZfjgajlsI/mloflrZfjgIHmlbDlrZfjgIHjgYrjgojjgbPoqJjlj7fjgpLlv4XjgZrkvb/nlKjj
+gZfjgabjgY/jgaDjgZXjgYTjgIIgDQplMDV1bHd1ZCBxeW1lZXdrIG45dmtvZyBnZnI1IGluaHQ4
+eGFudHJkZGc1bHggDQrjgqrjg7Pjg6njgqTjg7PjgqLjgqvjgqbjg7Pjg4jjgZTjgajjgavjgIHn
+lbDjgarjgovjg5Hjgrnjg6/jg7zjg4njgpLkvb/nlKjjgZfjgabjgY/jgaDjgZXjgYTjgIINCg0K
+DQrjganjgYbjgZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIgDQpramEN
+Cg0K0JBtYXpvbiANCiANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
+LWxlYXZlQGxpc3RzLjAxLm9yZwo=
