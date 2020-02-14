@@ -1,281 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960E815E7AE
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 17:55:42 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5BF15F295
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 19:14:31 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C10A310FC339D;
-	Fri, 14 Feb 2020 08:58:57 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F0C1810FC319D
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 08:58:54 -0800 (PST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01EGo8PA103994
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 11:55:37 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2y4j8gr6b3-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 11:55:37 -0500
-Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <aneesh.kumar@linux.ibm.com>;
-	Fri, 14 Feb 2020 16:55:34 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Fri, 14 Feb 2020 16:55:32 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01EGtV7W27656442
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2020 16:55:31 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 52E7711C05C;
-	Fri, 14 Feb 2020 16:55:31 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C111711C04A;
-	Fri, 14 Feb 2020 16:55:29 +0000 (GMT)
-Received: from [9.85.93.41] (unknown [9.85.93.41])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Feb 2020 16:55:29 +0000 (GMT)
-Subject: Re: [PATCH v2 2/4] libnvdimm/namespace: Enforce
- memremap_compat_align()
-To: Jeff Moyer <jmoyer@redhat.com>, Dan Williams <dan.j.williams@intel.com>
-References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158155490897.3343782.14216276134794923581.stgit@dwillia2-desk3.amr.corp.intel.com>
- <x49k14q5ezs.fsf@segfault.boston.devel.redhat.com>
- <CAPcyv4hQouRNBcJ4uZ2mysr_aKstLhvUf66gRQ_3QoQNyOy72g@mail.gmail.com>
- <x49h7ztdsp5.fsf@segfault.boston.devel.redhat.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Date: Fri, 14 Feb 2020 22:25:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+	by ml01.01.org (Postfix) with ESMTP id BB86D10FC3414;
+	Fri, 14 Feb 2020 10:17:46 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=114.222.181.132; helo=yj.com; envelope-from=bf@yj.com; receiver=<UNKNOWN> 
+Received: from yj.com (unknown [114.222.181.132])
+	by ml01.01.org (Postfix) with ESMTP id 5C21610FC3412
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 10:17:33 -0800 (PST)
+Message-ID: <20200215021423316081@yj.com>
+From: "amazon" <bf@yj.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
+	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
+	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
+Date: Sat, 15 Feb 2020 02:14:09 +0800
 MIME-Version: 1.0
-In-Reply-To: <x49h7ztdsp5.fsf@segfault.boston.devel.redhat.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20021416-0028-0000-0000-000003DB0464
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021416-0029-0000-0000-000024A0047E
-Message-Id: <0843d8bf-c9e4-37c9-d9c2-ba4407daae21@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-14_05:2020-02-12,2020-02-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1015
- phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0 mlxscore=0
- adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002140127
-Message-ID-Hash: FVVZBFW4AF3P4B7XJDPDWPZFCHGZEWUM
-X-Message-ID-Hash: FVVZBFW4AF3P4B7XJDPDWPZFCHGZEWUM
-X-MailFrom: aneesh.kumar@linux.ibm.com
+X-mailer: Gvzlxlpezb 0
+Message-ID-Hash: HVVOVK3PVG755UJCODYYBNZPZZLQKD7V
+X-Message-ID-Hash: HVVOVK3PVG755UJCODYYBNZPZZLQKD7V
+X-MailFrom: bf@yj.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FVVZBFW4AF3P4B7XJDPDWPZFCHGZEWUM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HVVOVK3PVG755UJCODYYBNZPZZLQKD7V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 2/14/20 10:14 PM, Jeff Moyer wrote:
-> Dan Williams <dan.j.williams@intel.com> writes:
-> 
->> On Thu, Feb 13, 2020 at 1:55 PM Jeff Moyer <jmoyer@redhat.com> wrote:
->>>
->>> Dan Williams <dan.j.williams@intel.com> writes:
->>>
->>>> The pmem driver on PowerPC crashes with the following signature when
->>>> instantiating misaligned namespaces that map their capacity via
->>>> memremap_pages().
->>>>
->>>>      BUG: Unable to handle kernel data access at 0xc001000406000000
->>>>      Faulting instruction address: 0xc000000000090790
->>>>      NIP [c000000000090790] arch_add_memory+0xc0/0x130
->>>>      LR [c000000000090744] arch_add_memory+0x74/0x130
->>>>      Call Trace:
->>>>       arch_add_memory+0x74/0x130 (unreliable)
->>>>       memremap_pages+0x74c/0xa30
->>>>       devm_memremap_pages+0x3c/0xa0
->>>>       pmem_attach_disk+0x188/0x770
->>>>       nvdimm_bus_probe+0xd8/0x470
->>>>
->>>> With the assumption that only memremap_pages() has alignment
->>>> constraints, enforce memremap_compat_align() for
->>>> pmem_should_map_pages(), nd_pfn, or nd_dax cases.
->>>>
->>>> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> Cc: Jeff Moyer <jmoyer@redhat.com>
->>>> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>> Link: https://lore.kernel.org/r/158041477336.3889308.4581652885008605170.stgit@dwillia2-desk3.amr.corp.intel.com
->>>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>>> ---
->>>>   drivers/nvdimm/namespace_devs.c |   10 ++++++++++
->>>>   1 file changed, 10 insertions(+)
->>>>
->>>> diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
->>>> index 032dc61725ff..aff1f32fdb4f 100644
->>>> --- a/drivers/nvdimm/namespace_devs.c
->>>> +++ b/drivers/nvdimm/namespace_devs.c
->>>> @@ -1739,6 +1739,16 @@ struct nd_namespace_common *nvdimm_namespace_common_probe(struct device *dev)
->>>>                return ERR_PTR(-ENODEV);
->>>>        }
->>>>
->>>> +     if (pmem_should_map_pages(dev) || nd_pfn || nd_dax) {
->>>> +             struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
->>>> +             resource_size_t start = nsio->res.start;
->>>> +
->>>> +             if (!IS_ALIGNED(start | size, memremap_compat_align())) {
->>>> +                     dev_dbg(&ndns->dev, "misaligned, unable to map\n");
->>>> +                     return ERR_PTR(-EOPNOTSUPP);
->>>> +             }
->>>> +     }
->>>> +
->>>>        if (is_namespace_pmem(&ndns->dev)) {
->>>>                struct nd_namespace_pmem *nspm;
->>>>
->>>
->>> Actually, I take back my ack.  :) This prevents a previously working
->>> namespace from being successfully probed/setup.
->>
->> Do you have a test case handy? I can see a potential gap with a
->> namespace that used internal padding to fix up the alignment.
-> 
-> # ndctl list -v -n namespace0.0
-> [
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52846133248,
->      "uuid":"b99f6f6a-2909-4189-9bfa-6eeebd95d40e",
->      "raw_uuid":"aff43777-015b-493f-bbf9-7c7b0fe33519",
->      "sector_size":512,
->      "align":4096,
->      "blockdev":"pmem0",
->      "numa_node":0
->    }
-> ]
-> 
-> # cat /sys/bus/nd/devices/region0/mappings
-> 6
-> 
-> # grep namespace0.0 /proc/iomem
->    1860000000-24e0003fff : namespace0.0
-> 
->> The goal of this check is to catch cases that are just going to fail
->> devm_memremap_pages(), and the expectation is that it could not have
->> worked before unless it was ported from another platform, or someone
->> flipped the page-size switch on PowerPC.
-> 
-> On x86, creation and probing of the namespace worked fine before this
-> patch.  What *doesn't* work is creating another fsdax namespace after
-> this one.  sector mode namespaces can still be created, though:
-> 
-> [
->    {
->      "dev":"namespace0.1",
->      "mode":"sector",
->      "size":53270768640,
->      "uuid":"67ea2c74-d4b1-4fc9-9c1a-a7d2a6c2a4a7",
->      "sector_size":512,
->      "blockdev":"pmem0.1s"
->    },
-> 
-> # grep namespace0.1 /proc/iomem
->    24e0004000-3160007fff : namespace0.1
-> 
->>> I thought we were only going to enforce the alignment for a newly
->>> created namespace?  This should only check whether the alignment
->>> works for the current platform.
->>
->> The model is a new default 16MB alignment is enforced at creation
->> time, but if you need to support previously created namespaces then
->> you can manually trim that alignment requirement to no less than
->> memremap_compat_align() because that's the point at which
->> devm_memremap_pages() will start failing or crashing.
-> 
-> The problem is that older kernels did not enforce alignment to
-> SUBSECTION_SIZE.  We shouldn't prevent those namespaces from being
-> accessed.  The probe itself will not cause the WARN_ON to trigger.
-> Creating new namespaces at misaligned addresses could, but you've
-> altered the free space allocation such that we won't hit that anymore.
-> 
-> If I drop this patch, the probe will still work, and allocating new
-> namespaces will also work:
-> 
-> # ndctl list
-> [
->    {
->      "dev":"namespace0.1",
->      "mode":"sector",
->      "size":53270768640,
->      "uuid":"67ea2c74-d4b1-4fc9-9c1a-a7d2a6c2a4a7",
->      "sector_size":512,
->      "blockdev":"pmem0.1s"
->    },
->    {
->      "dev":"namespace0.0",
->      "mode":"fsdax",
->      "map":"dev",
->      "size":52846133248,
->      "uuid":"b99f6f6a-2909-4189-9bfa-6eeebd95d40e",
->      "sector_size":512,
->      "align":4096,
->      "blockdev":"pmem0"
->    }
-> ]
->   ndctl create-namespace -m fsdax -s 36g -r 0
-> {
->    "dev":"namespace0.2",
->    "mode":"fsdax",
->    "map":"dev",
->    "size":"35.44 GiB (38.05 GB)",
->    "uuid":"7893264c-c7ef-4cbe-95e1-ccf2aff041fb",
->    "sector_size":512,
->    "align":2097152,
->    "blockdev":"pmem0.2"
-> }
-> 
-> proc/iomem:
-> 
-> 1860000000-d55fffffff : Persistent Memory
->    1860000000-24e0003fff : namespace0.0
->    24e0004000-3160007fff : namespace0.1
->    3162000000-3a61ffffff : namespace0.2
-> 
-> So, maybe the right thing is to make memremap_compat_align return
-> PAGE_SIZE for x86 instead of SUBSECTION_SIZE?
-> 
-
-
-I did that as part of 
-https://lore.kernel.org/linux-nvdimm/20200120140749.69549-2-aneesh.kumar@linux.ibm.com 
-and applied the subsection details only when creating new namespace
-
-https://lore.kernel.org/linux-nvdimm/20200120140749.69549-4-aneesh.kumar@linux.ibm.com
-
-
-But I do agree with the approach that in-order to create a compatible 
-namespace we need enforce max possible align value across all supported 
-architectures.
-
-
-On POWER we should still be able to enforce SUBSECTION_SIZE 
-restrictions. We did put that as document w.r.t. distributions like Suse 
-https://www.suse.com/support/kb/doc/?id=7024300
-
-
-
--aneesh
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+aHFkNkFtYXpvbi5jby5qcCDjgavjgZTnmbvpjLLjga7jgqLjgqvjgqbjg7Pjg4jvvIjlkI3liY3j
+gIHjg5Hjgrnjg6/jg7zjg4njgIHjgZ3jga7ku5blgIvkurrmg4XloLHvvInjga7norroqo0uLi4N
+CnlhcWp2cmlmemc5bw0KIA0KDQogICANCiDQkG1hem9uIOOBiuWuouanmCANCg0KDQrmrovlv7Xj
+garjgYzjgonjgIHjgYLjgarjgZ/jga7jgqLjgqvjgqbjg7Pjg4ggDQphcHZiNnRkDQrQkG1hem9u
+IOOCkuabtOaWsOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAgg0K44GT44KM44Gv44CB44Kr44O8
+44OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC6KuL5rGC5YWI5L2P5omA44GM5aSJ
+5pu044GV44KM44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf44GZ44KL
+5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CCIA0KZm0wcQ0K44Ki44Kr44Km44Oz44OI5oOF5aCx
+44Gu5LiA6YOo44GM6Kqk44Gj44Gm44GE44KL5pWF44Gr44CB44GK5a6i5qeY44Gu44Ki44Kr44Km
+44Oz44OI44KS57at5oyB44GZ44KL44Gf44KBIA0KeXA0dWMNCnVjDQrQkG1hem9uIOaDheWgseOC
+kueiuuiqjeOBmeOCi+W/heimgeODu+OCp+OBguOCiuOBvuOBmeOAguS7iuOCouOCq+OCpuODs+OD
+iOOCkueiuuiqjeOBp+OBjeOBvuOBmeOAgg0K0JBtYXpvbiDjg63jgrDjgqTjg7Mg44Gq44GK44CB
+MjTmmYLplpPku6XlhoXjgavjgZTnorroqo3jgYzjgarjgYTloLTlkIjjgIHoqqDjgavpgbrmhr7j
+garjgYzjgonjgIHjgqLjgqvjgqbjg7Pjg4jjgpLjg63jg4Pjgq/jgZXjgZvjgabjgYTjgZ/jgaDj
+gY/jgZPjgajjgpLorablkYrjgYTjgZ/jgZfjgb7jgZnjgIINCg0KZHF0ZXF6YnoNCuODkeOCueOD
+r+ODvOODieOCkuWkieabtOOBl+OBn+immuOBiOOBjOOBquOBhOWgtOWQiOOBr+OAgeiHs+aApSgw
+MyktMDkwLTg4NDjjgb7jgafjgYrpm7voqbHjgY/jgaDjgZXjgYTjgIINCg0KDQpoZGR2eHZvOA0K
+44GK55+l44KJ44GbOiANCuODkeOCueODr+ODvOODieOBr+iqsOOBq+OCguaVmeOBiOOBquOBhOOB
+p+OBj+OBoOOBleOBhOOAgiANCmpvIGxvZWhmdWsgZGE1IGIwZGl1NXAgcnB4bWpibnN4cnlhNW92
+aGxsa3ZvIA0K5YCL5Lq65oOF5aCx44Go6Zai5L+C44GM44Gq44GP44CB5o6o5ris44GX44Gr44GP
+44GE44OR44K544Ov44O844OJ44KS5L2c5oiQ44GX44Gm44GP44Gg44GV44GE44CC5aSn5paH5a2X
+44Go5bCP5paH5a2X44CB5pWw5a2X44CB44GK44KI44Gz6KiY5Y+344KS5b+F44Ga5L2/55So44GX
+44Gm44GP44Gg44GV44GE44CCIA0KeGpmZnBka2c4IHc0NXBlbnFrciByOXM4d3d6YyBudndwYTIg
+MHN6d2NiYmF5MmR0NzZ2IA0K44Kq44Oz44Op44Kk44Oz44Ki44Kr44Km44Oz44OI44GU44Go44Gr
+44CB55Ww44Gq44KL44OR44K544Ov44O844OJ44KS5L2/55So44GX44Gm44GP44Gg44GV44GE44CC
+DQoNCg0K44Gp44GG44Ge44KI44KN44GX44GP44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCIA0K
+dHNxeDd4cTMNCg0K0JBtYXpvbiANCiANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
+eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
+dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
