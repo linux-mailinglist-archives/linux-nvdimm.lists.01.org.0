@@ -2,69 +2,181 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89BC15CFEC
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 03:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1505215D06C
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Feb 2020 04:26:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4EF0410FC33F1;
-	Thu, 13 Feb 2020 18:28:39 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=222.95.163.92; helo=wszidl.org; envelope-from=ed@wszidl.org; receiver=<UNKNOWN> 
-Received: from wszidl.org (unknown [222.95.163.92])
-	by ml01.01.org (Postfix) with ESMTP id 245401007A85B
-	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 18:28:35 -0800 (PST)
-Message-ID: <20200214102517853252@wszidl.org>
-From: "amazon" <ed@wszidl.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
-	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
-	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
-Date: Fri, 14 Feb 2020 10:25:04 +0800
+	by ml01.01.org (Postfix) with ESMTP id 61AFC10FC319E;
+	Thu, 13 Feb 2020 19:29:57 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 9C47610FC3190
+	for <linux-nvdimm@lists.01.org>; Thu, 13 Feb 2020 19:29:55 -0800 (PST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01E3Llie158648;
+	Thu, 13 Feb 2020 22:26:36 -0500
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2y1tn6y6k8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2020 22:26:36 -0500
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 01E3MFPe159701;
+	Thu, 13 Feb 2020 22:26:35 -0500
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com [169.55.85.253])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2y1tn6y6jx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2020 22:26:35 -0500
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+	by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 01E3NYPa021929;
+	Fri, 14 Feb 2020 03:26:34 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com [9.57.198.29])
+	by ppma01wdc.us.ibm.com with ESMTP id 2y5bbyu8ex-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2020 03:26:34 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com [9.57.199.107])
+	by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01E3QYl346006578
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2020 03:26:34 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E71CD124052;
+	Fri, 14 Feb 2020 03:26:33 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 32344124058;
+	Fri, 14 Feb 2020 03:26:27 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.90.43])
+	by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Feb 2020 03:26:26 +0000 (GMT)
+X-Mailer: emacs 27.0.60 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>, Jeff Moyer <jmoyer@redhat.com>
+Subject: Re: [PATCH v2 1/4] mm/memremap_pages: Introduce
+ memremap_compat_align()
+In-Reply-To: <CAPcyv4i8xNEsdX=8c2+ehf24U2AFcc-sKmAPS9UoVvm8z0aRng@mail.gmail.com>
+References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158155490379.3343782.10305190793306743949.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x498sl677cf.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4i8xNEsdX=8c2+ehf24U2AFcc-sKmAPS9UoVvm8z0aRng@mail.gmail.com>
+Date: Fri, 14 Feb 2020 08:56:22 +0530
+Message-ID: <878sl5x31d.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-mailer: Nrv 0
-Message-ID-Hash: XCBSGPY4RYGI2TNGUUR6D6MKWUMA2CDS
-X-Message-ID-Hash: XCBSGPY4RYGI2TNGUUR6D6MKWUMA2CDS
-X-MailFrom: ed@wszidl.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-13_10:2020-02-12,2020-02-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ malwarescore=0 mlxscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2002140025
+Message-ID-Hash: AYY37V2OEEQVQGLKIYBOM5KVBQGTXEGA
+X-Message-ID-Hash: AYY37V2OEEQVQGLKIYBOM5KVBQGTXEGA
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XCBSGPY4RYGI2TNGUUR6D6MKWUMA2CDS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AYY37V2OEEQVQGLKIYBOM5KVBQGTXEGA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-ZWc4YjFrOXZBbWF6b24uY28uanAg44Gr44GU55m76Yyy44Gu44Ki44Kr44Km44Oz44OI77yI5ZCN
-5YmN44CB44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqN
-Li4uDQpybGhwd2NvbGFoMHQ0a290d2l3dQ0KIA0KDQogICANCiDQkG1hem9uIOOBiuWuouanmCAN
-Cg0KDQrmrovlv7XjgarjgYzjgonjgIHjgYLjgarjgZ/jga7jgqLjgqvjgqbjg7Pjg4ggDQo3MWFw
-cGM4ag0K0JBtYXpvbiDjgpLmm7TmlrDjgafjgY3jgb7jgZvjgpPjgafjgZfjgZ/jgIINCuOBk+OC
-jOOBr+OAgeOCq+ODvOODieOBjOacn+mZkOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAguiri+axguWF
-iOS9j+aJgOOBjOWkieabtOOBleOCjOOBn+OBquOBqeOAgeOBleOBvuOBluOBvuOBqueQhueUseOB
-p+eZuueUn+OBmeOCi+WPr+iDveaAp+OBjOOBguOCiuOBvuOBmeOAgiANCnhieHl3dGENCuOCouOC
-q+OCpuODs+ODiOaDheWgseOBruS4gOmDqOOBjOiqpOOBo+OBpuOBhOOCi+aVheOBq+OAgeOBiuWu
-ouanmOOBruOCouOCq+OCpuODs+ODiOOCkue2reaMgeOBmeOCi+OBn+OCgSANCnZpZ2dwDQpnMXUy
-YW16aw0K0JBtYXpvbiDmg4XloLHjgpLnorroqo3jgZnjgovlv4XopoHjg7vjgqfjgYLjgorjgb7j
-gZnjgILku4rjgqLjgqvjgqbjg7Pjg4jjgpLnorroqo3jgafjgY3jgb7jgZnjgIINCtCQbWF6b24g
-44Ot44Kw44Kk44OzIOOBquOBiuOAgTI05pmC6ZaT5Lul5YaF44Gr44GU56K66KqN44GM44Gq44GE
-5aC05ZCI44CB6Kqg44Gr6YG65oa+44Gq44GM44KJ44CB44Ki44Kr44Km44Oz44OI44KS44Ot44OD
-44Kv44GV44Gb44Gm44GE44Gf44Gg44GP44GT44Go44KS6K2m5ZGK44GE44Gf44GX44G+44GZ44CC
-DQoNCmFmDQrjg5Hjgrnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTl
-kIjjga/jgIHoh7PmgKUoMDMpLTA5MC04ODQ444G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CC
-DQoNCg0KZ3d2dGwNCuOBiuefpeOCieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLm
-lZnjgYjjgarjgYTjgafjgY/jgaDjgZXjgYTjgIIgDQpxZWtvOGdmdCB0YjYgZTlqciBqNGZsaCA5
-cjBydnFsN2pta2sgDQrlgIvkurrmg4XloLHjgajplqLkv4LjgYzjgarjgY/jgIHmjqjmuKzjgZfj
-gavjgY/jgYTjg5Hjgrnjg6/jg7zjg4njgpLkvZzmiJDjgZfjgabjgY/jgaDjgZXjgYTjgILlpKfm
-loflrZfjgajlsI/mloflrZfjgIHmlbDlrZfjgIHjgYrjgojjgbPoqJjlj7fjgpLlv4XjgZrkvb/n
-lKjjgZfjgabjgY/jgaDjgZXjgYTjgIIgDQpwYiAxcTVmIDJxdzJ3Y3ogeHMgNHJpZnd4ZnNnd3Ay
-eWRpbyANCuOCquODs+ODqeOCpOODs+OCouOCq+OCpuODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOC
-i+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgg0KDQoNCuOBqeOB
-huOBnuOCiOOCjeOBl+OBj+OBiumhmOOBhOOBhOOBn+OBl+OBvuOBmeOAgiANCmRmengwbg0KDQrQ
-kG1hem9uIA0KIA0KDQoNCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0
-cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVh
-dmVAbGlzdHMuMDEub3JnCg==
+Dan Williams <dan.j.williams@intel.com> writes:
+
+> On Thu, Feb 13, 2020 at 8:58 AM Jeff Moyer <jmoyer@redhat.com> wrote:
+>>
+>> Dan Williams <dan.j.williams@intel.com> writes:
+>>
+>> > The "sub-section memory hotplug" facility allows memremap_pages() users
+>> > like libnvdimm to compensate for hardware platforms like x86 that have a
+>> > section size larger than their hardware memory mapping granularity.  The
+>> > compensation that sub-section support affords is being tolerant of
+>> > physical memory resources shifting by units smaller (64MiB on x86) than
+>> > the memory-hotplug section size (128 MiB). Where the platform
+>> > physical-memory mapping granularity is limited by the number and
+>> > capability of address-decode-registers in the memory controller.
+>> >
+>> > While the sub-section support allows memremap_pages() to operate on
+>> > sub-section (2MiB) granularity, the Power architecture may still
+>> > require 16MiB alignment on "!radix_enabled()" platforms.
+>> >
+>> > In order for libnvdimm to be able to detect and manage this per-arch
+>> > limitation, introduce memremap_compat_align() as a common minimum
+>> > alignment across all driver-facing memory-mapping interfaces, and let
+>> > Power override it to 16MiB in the "!radix_enabled()" case.
+>> >
+>> > The assumption / requirement for 16MiB to be a viable
+>> > memremap_compat_align() value is that Power does not have platforms
+>> > where its equivalent of address-decode-registers never hardware remaps a
+>> > persistent memory resource on smaller than 16MiB boundaries. Note that I
+>> > tried my best to not add a new Kconfig symbol, but header include
+>> > entanglements defeated the #ifndef memremap_compat_align design pattern
+>> > and the need to export it defeats the __weak design pattern for arch
+>> > overrides.
+>> >
+>> > Based on an initial patch by Aneesh.
+>>
+>> I have just a couple of questions.
+>>
+>> First, can you please add a comment above the generic implementation of
+>> memremap_compat_align describing its purpose, and why a platform might
+>> want to override it?
+>
+> Sure, how about:
+>
+> /*
+>  * The memremap() and memremap_pages() interfaces are alternately used
+>  * to map persistent memory namespaces. These interfaces place different
+>  * constraints on the alignment and size of the mapping (namespace).
+>  * memremap() can map individual PAGE_SIZE pages. memremap_pages() can
+>  * only map subsections (2MB), and at least one architecture (PowerPC)
+>  * the minimum mapping granularity of memremap_pages() is 16MB.
+>  *
+>  * The role of memremap_compat_align() is to communicate the minimum
+>  * arch supported alignment of a namespace such that it can freely
+>  * switch modes without violating the arch constraint. Namely, do not
+>  * allow a namespace to be PAGE_SIZE aligned since that namespace may be
+>  * reconfigured into a mode that requires SUBSECTION_SIZE alignment.
+>  */
+>
+>> Second, I will take it at face value that the power architecture
+>> requires a 16MB alignment, but it's not clear to me why mmu_linear_psize
+>> was chosen to represent that.  What's the relationship, there, and can
+>> we please have a comment explaining it?
+>
+> Aneesh, can you help here?
+
+With hash translation, we map the direct-map range with just one page
+size. Based on different restrictions as described in htab_init_page_sizes
+we can end up choosing 16M, 64K or even 4K. We use the variable
+mmu_linear_psize to indicate which page size we used for direct-map
+range. 
+
+ie we should do. 
+
+ +unsigned long arch_namespace_align_size(void)
+ +{
+ +	unsigned long sub_section_size = (1UL << SUBSECTION_SHIFT);
+ +
+ +	if (radix_enabled())
+ +		return sub_section_size;
+ +	return max(sub_section_size, (1UL << mmu_psize_defs[mmu_linear_psize].shift));
+ +
+ +}
+ +EXPORT_SYMBOL_GPL(arch_namespace_align_size);
+
+as done here
+
+https://lore.kernel.org/linux-nvdimm/20200120140749.69549-4-aneesh.kumar@linux.ibm.com/
+
+Dan can you update the powerpc definition?
+
+-aneesh
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
