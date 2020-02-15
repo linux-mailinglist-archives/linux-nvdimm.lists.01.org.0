@@ -1,110 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6F115FA2F
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Feb 2020 00:05:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521D815FBDC
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Feb 2020 02:04:09 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B076410FC341C;
-	Fri, 14 Feb 2020 15:08:42 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EE6141007A841
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 15:08:40 -0800 (PST)
-Received: by mail-ot1-x343.google.com with SMTP id i6so10731875otr.7
-        for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 15:05:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MFbGjBAZ9jJ0epeJ8+efVvoWM9zaa3+GyCDFwE2/leM=;
-        b=JMTUKbWTyneQpCu5P7I6UY4sjbtgcldSXd8L6n24Ux/t41POpIteMsP3aa4eebSYZl
-         puBtNSopjm55AOT7X1FSnUU4whwN+YFgMC9PCjzgxdcA5tNBbmDW1XPp4uYbNM75J1Gl
-         +6wP4N0b//tq9VMwWxGNNCKfxpvP9+eiqoIGuiMRRza2HJaZEeQ4isuHO7iYlwmw6zR8
-         5NJfOBLW0bd+vnwxwOKAMtiZ0HDb91pCHTz9sqX+VJBKT0Q9aEnm1QgJy5aGqk71HIuF
-         LJwai3h5GTbqhdXGkMACukn4Zknw283nV1VHgNb/33G68/BRUNMw2ertvirUBT8Kng3e
-         li5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MFbGjBAZ9jJ0epeJ8+efVvoWM9zaa3+GyCDFwE2/leM=;
-        b=Eo86fOjbDnMEFIk9x7rIU4zDhrOWs6TN/Q+iDiY3PkeK0qtKLxPcMlDlxRnfaC88ie
-         4N3qzITja2TdelSbf7CfYLdJ3zw7fDvvKJVNZWfbfkFwU2VnD/DCp9WH+cNLC20md3Up
-         NK8OtO559zTceoNBef8ukFKeCOosecaCNsEeG4zvg4iyVR9lLtUHIc4z6LM5Qr+K83Iw
-         tl/20fmtyc5vdisADp2QQ1C3COQ1YrKONl/FT89NyU80R4MMA44dFJQlpGzfe8y797gM
-         Hwf2CrhTcKtooX+ZDnrP9J4oOFOm9QtLHADWumdElNqTCrO3XfJPlx79ZmjnZ5oSgcMd
-         5h2Q==
-X-Gm-Message-State: APjAAAVGB+XQWCypIoVYUbFxwHOo2RdGWuf3UQaL68lHeiPGj4LcCqki
-	l9lQDj5teVhEqcs9EjcqsJPWUojZRvC7mHcmN4kkeQ==
-X-Google-Smtp-Source: APXvYqyiTvPjMMOcsUvKfqz6iMQdR7SXgorFNb7wdpVGvSunO+Nl0vivaI37jSYP7UU4tRj9jLKbuUD42j/eENCmZ7c=
-X-Received: by 2002:a9d:7852:: with SMTP id c18mr3938798otm.247.1581721522180;
- Fri, 14 Feb 2020 15:05:22 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 5305010FC341C;
+	Fri, 14 Feb 2020 17:07:24 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=117.89.9.231; helo=fqmjn.org; envelope-from=gpvrsta@fqmjn.org; receiver=<UNKNOWN> 
+Received: from fqmjn.org (unknown [117.89.9.231])
+	by ml01.01.org (Postfix) with ESMTP id 0E70A10FC3400
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Feb 2020 17:07:20 -0800 (PST)
+Message-ID: <20200215090400046401@fqmjn.org>
+From: "amazon" <gpvrsta@fqmjn.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?shift_jis?B?QW1hem9uLmNvLmpwIILJgrKTb5hegsyDQYNK?=
+	=?shift_jis?B?g0WDk4NngWmWvJFPgUGDcINYg4+BW4NogUGCu4LMkbyMwpBsj+6V8Q==?=
+	=?shift_jis?B?gWqCzIptlEYgW1RJTUVd?=
+Date: Sat, 15 Feb 2020 09:03:47 +0800
 MIME-Version: 1.0
-References: <158155489850.3343782.2687127373754434980.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158155490379.3343782.10305190793306743949.stgit@dwillia2-desk3.amr.corp.intel.com>
- <x498sl677cf.fsf@segfault.boston.devel.redhat.com> <CAPcyv4i8xNEsdX=8c2+ehf24U2AFcc-sKmAPS9UoVvm8z0aRng@mail.gmail.com>
- <x49k14odgwz.fsf@segfault.boston.devel.redhat.com>
-In-Reply-To: <x49k14odgwz.fsf@segfault.boston.devel.redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 14 Feb 2020 15:05:09 -0800
-Message-ID: <CAPcyv4hc2ZOyymas1svXYQFa49tziC2ZkVLfgKVV64bu4gTTEg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm/memremap_pages: Introduce memremap_compat_align()
-To: Jeff Moyer <jmoyer@redhat.com>
-Message-ID-Hash: IWT7Y3DS2VXXLUSC3COJBV7UPBAGBFFF
-X-Message-ID-Hash: IWT7Y3DS2VXXLUSC3COJBV7UPBAGBFFF
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+X-mailer: Hlavji 9
+Message-ID-Hash: DR6H747A6JGA62IVVHAFUE5RYVSESEFL
+X-Message-ID-Hash: DR6H747A6JGA62IVVHAFUE5RYVSESEFL
+X-MailFrom: gpvrsta@fqmjn.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IWT7Y3DS2VXXLUSC3COJBV7UPBAGBFFF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DR6H747A6JGA62IVVHAFUE5RYVSESEFL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Fri, Feb 14, 2020 at 12:59 PM Jeff Moyer <jmoyer@redhat.com> wrote:
->
-> Dan Williams <dan.j.williams@intel.com> writes:
->
-> > On Thu, Feb 13, 2020 at 8:58 AM Jeff Moyer <jmoyer@redhat.com> wrote:
->
-> >> I have just a couple of questions.
-> >>
-> >> First, can you please add a comment above the generic implementation of
-> >> memremap_compat_align describing its purpose, and why a platform might
-> >> want to override it?
-> >
-> > Sure, how about:
-> >
-> > /*
-> >  * The memremap() and memremap_pages() interfaces are alternately used
-> >  * to map persistent memory namespaces. These interfaces place different
-> >  * constraints on the alignment and size of the mapping (namespace).
-> >  * memremap() can map individual PAGE_SIZE pages. memremap_pages() can
-> >  * only map subsections (2MB), and at least one architecture (PowerPC)
-> >  * the minimum mapping granularity of memremap_pages() is 16MB.
-> >  *
-> >  * The role of memremap_compat_align() is to communicate the minimum
-> >  * arch supported alignment of a namespace such that it can freely
-> >  * switch modes without violating the arch constraint. Namely, do not
-> >  * allow a namespace to be PAGE_SIZE aligned since that namespace may be
-> >  * reconfigured into a mode that requires SUBSECTION_SIZE alignment.
-> >  */
->
-> Well, if we modify the x86 variant to be PAGE_SIZE, I think that text
-> won't work.  How about:
-
-...but I'm not looking to change it to PAGE_SIZE, I'm going to fix the
-alignment check to skip if the namespace has "inner" alignment
-padding, i.e. "start_pad" and/or "end_trunc" are non-zero.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+emFjNzZqcTlxQW1hem9uLmNvLmpwIOOBq+OBlOeZu+mMsuOBruOCouOCq+OCpuODs+ODiO+8iOWQ
+jeWJjeOAgeODkeOCueODr+ODvOODieOAgeOBneOBruS7luWAi+S6uuaDheWgse+8ieOBrueiuuiq
+jS4uLg0KYTRkYXdxbncNCiANCg0KICAgDQog0JBtYXpvbiDjgYrlrqLmp5ggDQoNCg0K5q6L5b+1
+44Gq44GM44KJ44CB44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OIIA0KZGF0DQrQkG1hem9uIOOC
+kuabtOaWsOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAgg0K44GT44KM44Gv44CB44Kr44O844OJ
+44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC6KuL5rGC5YWI5L2P5omA44GM5aSJ5pu0
+44GV44KM44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf44GZ44KL5Y+v
+6IO95oCn44GM44GC44KK44G+44GZ44CCIA0KZGVmbWp3bGN1DQrjgqLjgqvjgqbjg7Pjg4jmg4Xl
+oLHjga7kuIDpg6jjgYzoqqTjgaPjgabjgYTjgovmlYXjgavjgIHjgYrlrqLmp5jjga7jgqLjgqvj
+gqbjg7Pjg4jjgpLntq3mjIHjgZnjgovjgZ/jgoEgDQp1dWFoZmwNCmpibW15MDFlDQrQkG1hem9u
+IOaDheWgseOCkueiuuiqjeOBmeOCi+W/heimgeODu+OCp+OBguOCiuOBvuOBmeOAguS7iuOCouOC
+q+OCpuODs+ODiOOCkueiuuiqjeOBp+OBjeOBvuOBmeOAgg0K0JBtYXpvbiDjg63jgrDjgqTjg7Mg
+44Gq44GK44CBMjTmmYLplpPku6XlhoXjgavjgZTnorroqo3jgYzjgarjgYTloLTlkIjjgIHoqqDj
+gavpgbrmhr7jgarjgYzjgonjgIHjgqLjgqvjgqbjg7Pjg4jjgpLjg63jg4Pjgq/jgZXjgZvjgabj
+gYTjgZ/jgaDjgY/jgZPjgajjgpLorablkYrjgYTjgZ/jgZfjgb7jgZnjgIINCg0KZm9mDQrjg5Hj
+grnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/jgIHoh7Pm
+gKUoMDMpLTA5MC04ODQ444G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCDQoNCg0Kb2tuMG4N
+CuOBiuefpeOCieOBmzogDQrjg5Hjgrnjg6/jg7zjg4njga/oqrDjgavjgoLmlZnjgYjjgarjgYTj
+gafjgY/jgaDjgZXjgYTjgIIgDQpqem5zanZjIHk5ZHl4NzBoIGlqIGp5IHBxMmZucXRjcnV0aG9l
+IA0K5YCL5Lq65oOF5aCx44Go6Zai5L+C44GM44Gq44GP44CB5o6o5ris44GX44Gr44GP44GE44OR
+44K544Ov44O844OJ44KS5L2c5oiQ44GX44Gm44GP44Gg44GV44GE44CC5aSn5paH5a2X44Go5bCP
+5paH5a2X44CB5pWw5a2X44CB44GK44KI44Gz6KiY5Y+344KS5b+F44Ga5L2/55So44GX44Gm44GP
+44Gg44GV44GE44CCIA0KMXBpNTggZ3k5YWxmIGZjdmhsMXcgYXJ2MWhyczl4IGVtdnNzMnF6d2pp
+b3kgDQrjgqrjg7Pjg6njgqTjg7PjgqLjgqvjgqbjg7Pjg4jjgZTjgajjgavjgIHnlbDjgarjgovj
+g5Hjgrnjg6/jg7zjg4njgpLkvb/nlKjjgZfjgabjgY/jgaDjgZXjgYTjgIINCg0KDQrjganjgYbj
+gZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIgDQppcWc0d20yDQoNCtCQ
+bWF6b24gDQogDQoNCg0KDQogCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3Rz
+LjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2
+ZUBsaXN0cy4wMS5vcmcK
