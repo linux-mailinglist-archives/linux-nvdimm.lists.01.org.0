@@ -1,46 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14048160D1E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Feb 2020 09:23:17 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6184B16132B
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 17 Feb 2020 14:21:52 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 982E810FC3373;
-	Mon, 17 Feb 2020 00:26:32 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=<UNKNOWN> 
-Received: from Galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5E83110FC3374;
+	Mon, 17 Feb 2020 05:25:07 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+384e8c264b588af03727+6021+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3E4E010FC3370
-	for <linux-nvdimm@lists.01.org>; Mon, 17 Feb 2020 00:26:22 -0800 (PST)
-Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
-	by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-	(Exim 4.80)
-	(envelope-from <tglx@linutronix.de>)
-	id 1j3bg9-0005ux-16; Mon, 17 Feb 2020 09:22:57 +0100
-Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
-	id 91A8C100617; Mon, 17 Feb 2020 09:22:56 +0100 (CET)
-From: Thomas Gleixner <tglx@linutronix.de>
-To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v5 5/6] x86/NUMA: Provide a range-to-target_node lookup facility
-In-Reply-To: <158188326978.894464.217282995221175417.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158188324272.894464.5941332130956525504.stgit@dwillia2-desk3.amr.corp.intel.com> <158188326978.894464.217282995221175417.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Mon, 17 Feb 2020 09:22:56 +0100
-Message-ID: <87y2t1pqqn.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTPS id 3601410FC3180
+	for <linux-nvdimm@lists.01.org>; Mon, 17 Feb 2020 05:24:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=D5TyLgd0jRYPWavRlJvo3pOwK15lw15o14H3IXOmbJo=; b=YJpaCvYwPOT6yndq/bHvy9tOdc
+	xFrtP5YNz5t64Xkw7PR2QZoAGAjBWPa4DV5et7wKneH3NQYRSWiZBf+fBMjrGz0QpVNvzfgVOpNSy
+	EsQZGGrLTq3VqLL6YVQ25nAqEwAn0JNmoXf1YDZbxsJqHYZ12At2Hmr6RAq4iW2CSPIaaZHrWl4SP
+	+J7L+M6fegLGJ4kkISoLkQTs2Y8rU1vHT/oa7IJJySp8JgZYTvlvYDQUA3Mnku2L3y1mitg0elIar
+	Aq9W4LP7d5Rm7A5F2RwqLHrtcw8tLpneKJZgcH1V/k7V89Mdviz2+1a+42yg20UoUX9FHpxx3ZTkS
+	oC0fcrSA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1j3gLC-0002Jr-K2; Mon, 17 Feb 2020 13:21:38 +0000
+Date: Mon, 17 Feb 2020 05:21:38 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [PATCH v3 1/7] pmem: Add functions for reading/writing page
+ to/from pmem
+Message-ID: <20200217132138.GB14490@infradead.org>
+References: <20200207202652.1439-1-vgoyal@redhat.com>
+ <20200207202652.1439-2-vgoyal@redhat.com>
 MIME-Version: 1.0
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
-Message-ID-Hash: BN7T3FJIVLKLRONYYW4OTYNGGUNOMKYJ
-X-Message-ID-Hash: BN7T3FJIVLKLRONYYW4OTYNGGUNOMKYJ
-X-MailFrom: tglx@linutronix.de
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, kbuild test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>, hch@lst.de, linux-kernel@vger.kernel.org
+Content-Disposition: inline
+In-Reply-To: <20200207202652.1439-2-vgoyal@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: OGM5F4UQW2JETK6G3L7SHNYEIZEC6FTF
+X-Message-ID-Hash: OGM5F4UQW2JETK6G3L7SHNYEIZEC6FTF
+X-MailFrom: BATV+384e8c264b588af03727+6021+infradead.org+hch@bombadil.srs.infradead.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, hch@infradead.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BN7T3FJIVLKLRONYYW4OTYNGGUNOMKYJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGM5F4UQW2JETK6G3L7SHNYEIZEC6FTF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,39 +54,26 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dan Williams <dan.j.williams@intel.com> writes:
+On Fri, Feb 07, 2020 at 03:26:46PM -0500, Vivek Goyal wrote:
+> +static blk_status_t pmem_do_bvec(struct pmem_device *pmem, struct page *page,
+> +			unsigned int len, unsigned int off, unsigned int op,
+> +			sector_t sector)
+> +{
+> +	if (!op_is_write(op))
+> +		return pmem_do_read(pmem, page, off, sector, len);
+> +
+> +	return pmem_do_write(pmem, page, off, sector, len);
 
-> The DEV_DAX_KMEM facility is a generic mechanism to allow device-dax
-> instances, fronting performance-differentiated-memory like pmem, to be
-> added to the System RAM pool. The NUMA node for that hot-added memory is
-> derived from the device-dax instance's 'target_node' attribute.
->
-> Recall that the 'target_node' is the ACPI-PXM-to-node translation for
-> memory when it comes online whereas the 'numa_node' attribute of the
-> device represents the closest online cpu node.
->
-> Presently useful target_node information from the ACPI SRAT is discarded
-> with the expectation that "Reserved" memory will never be onlined. Now,
-> DEV_DAX_KMEM violates that assumption, there is a need to retain the
-> translation. Move, rather than discard, numa_memblk data to a secondary
-> array that memory_add_physaddr_to_target_node() may consider at a later
-> point in time.
->
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: "H. Peter Anvin" <hpa@zytor.com>
-> Cc: <x86@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Reviewed-by: Ingo Molnar <mingo@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Why not:
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+	if (op_is_write(op))
+		return pmem_do_write(pmem, page, off, sector, len);
+	return pmem_do_read(pmem, page, off, sector, len);
+
+that being said I don't see the point of this pmem_do_bvec helper given
+that it only has two callers.
+
+The rest looks good to me.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
