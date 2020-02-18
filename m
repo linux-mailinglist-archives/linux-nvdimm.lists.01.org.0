@@ -1,77 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD95162F87
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 20:13:34 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8061630A2
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 20:51:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CF50100780A1;
-	Tue, 18 Feb 2020 11:14:12 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vajain21@vajain21.in.ibm.com.in.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 3171F10FC33FD;
+	Tue, 18 Feb 2020 11:51:53 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 50A111007A827
-	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 11:14:11 -0800 (PST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01IJAOaH050747
-	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 14:13:18 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2y8hwnh9hg-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 14:13:18 -0500
-Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <vajain21@vajain21.in.ibm.com.in.ibm.com>;
-	Tue, 18 Feb 2020 19:13:16 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Tue, 18 Feb 2020 19:13:14 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01IJDDsT58654866
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2020 19:13:13 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7FAF42045;
-	Tue, 18 Feb 2020 19:13:12 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 49F834203F;
-	Tue, 18 Feb 2020 19:13:10 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.199.60.35])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Tue, 18 Feb 2020 19:13:09 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Wed, 19 Feb 2020 00:43:08 +0530
-From: Vaibhav Jain <vajain21@vajain21.in.ibm.com.in.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [ndctl PATCH] ndctl,daxctl: Ensure allocated contexts are released before exit
-In-Reply-To: <CAPcyv4isdnEi=-EOv5EVu=6u7D32eLFLGWK0K5nQZa+9SMMGkQ@mail.gmail.com>
-References: <20200218155314.89123-1-vaibhav@linux.ibm.com> <CAPcyv4isdnEi=-EOv5EVu=6u7D32eLFLGWK0K5nQZa+9SMMGkQ@mail.gmail.com>
-Date: Wed, 19 Feb 2020 00:43:08 +0530
+	by ml01.01.org (Postfix) with ESMTPS id C462510FC33E7
+	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 11:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1582055457;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K+LV8qrLkLKxHNwn2AaZxB78FQ7KCDxReRpoihQjkh4=;
+	b=HWxmiD0rD8SEe+AH5TdLMJtiliYwprfImQM1tX6UJ++rjAGfD3Dcp/DFbCQk6rZ9GPIRfd
+	l9E/k0T3eFo2G5X8hsoUJpzRZZUtDoRmLiXB0gL9+blkMIQQy1NhWxb354uWQS+XIfHPod
+	aw2nsbPUZd4qe7x0rC7UcuaGtZh9AUE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-217-aS0ax9IXOAmCjVPDxzFEnw-1; Tue, 18 Feb 2020 14:50:52 -0500
+X-MC-Unique: aS0ax9IXOAmCjVPDxzFEnw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5F37F10509B8;
+	Tue, 18 Feb 2020 19:50:51 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 974031001920;
+	Tue, 18 Feb 2020 19:50:50 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC][PATCH] dax: Do not try to clear poison for partial pages
+References: <20200129210337.GA13630@redhat.com>
+	<f97d1ce2-9003-6b46-cd25-a908dc3bd2c6@oracle.com>
+	<CAPcyv4ittXHkEV4eH_4F5vCfwRLoTTtDqEU1SmCs5DYUdZxBOA@mail.gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Tue, 18 Feb 2020 14:50:49 -0500
+In-Reply-To: <CAPcyv4ittXHkEV4eH_4F5vCfwRLoTTtDqEU1SmCs5DYUdZxBOA@mail.gmail.com>
+	(Dan Williams's message of "Wed, 5 Feb 2020 16:37:40 -0800")
+Message-ID: <x49v9o3brom.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 20021819-0028-0000-0000-000003DC34D8
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20021819-0029-0000-0000-000024A13F11
-Message-Id: <87lfozk8u3.fsf@vajain21.in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-18_05:2020-02-18,2020-02-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 suspectscore=1 bulkscore=0 adultscore=0 clxscore=1034
- priorityscore=1501 mlxlogscore=844 spamscore=0 malwarescore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002180129
-Message-ID-Hash: FMWUTFTBPQDDVKBOQL376G4XLC6BWGL4
-X-Message-ID-Hash: FMWUTFTBPQDDVKBOQL376G4XLC6BWGL4
-X-MailFrom: vajain21@vajain21.in.ibm.com.in.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: 6MXVSRRUYIIULT2WXEXIV4CGELSREP3I
+X-Message-ID-Hash: 6MXVSRRUYIIULT2WXEXIV4CGELSREP3I
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Christoph Hellwig <hch@infradead.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FMWUTFTBPQDDVKBOQL376G4XLC6BWGL4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6MXVSRRUYIIULT2WXEXIV4CGELSREP3I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,72 +68,24 @@ Content-Transfer-Encoding: 7bit
 
 Dan Williams <dan.j.williams@intel.com> writes:
 
-> On Tue, Feb 18, 2020 at 7:53 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
->>
->> Presently main_handle_internal_command() will simply call exit() on
->> the return value from run_builtin(). This prevents release of allocated
->> contexts 'struct ndctl_ctx' or 'struct daxctl_ctx' when the main
->> thread exits.
->>
->
-> There is ultimately no leak since process exit cleans up all
-> resources. Does this address a functional problem, or is it just a
-> hygiene fixup?
+> Right now the kernel does not install a pte on faults that land on a
+> page with known poison, but only because the error clearing path is so
+> convoluted and could only claim that fallocate(PUNCH_HOLE) cleared
+> errors because that was guaranteed to send 512-byte aligned zero's
+> down the block-I/O path when the fs-blocks got reallocated. In a world
+> where native cpu instructions can clear errors the dax write() syscall
+> case could be covered (modulo 64-byte alignment), and the kernel could
+> just let the page be mapped so that the application could attempt it's
+> own fine-grained clearing without calling back into the kernel.
 
-I am trying to implement support for a new dimm type in ndctl and was
-trying to debug a potential memory leak via valgrind/memcheck when came
-across this issue. Without this patch, memcheck reports lots of leaking
-reachable memory at ndctl exit that made the task of isolating real leak
-bit problematic.
+I'm not sure we'd want to do allow mapping the PTEs even if there was
+support for clearing errors via CPU instructions.  Any load from a
+poisoned page will result in an MCE, and there exists the possiblity
+that you will hit an unrecoverable error (Processor Context Corrupt).
+It's just safer to catch these cases by not mapping the page, and
+forcing recovery through the driver.
 
-Below are the run logs of a 'ndctl list' command without and with the
-patch applied.
-
-# Without the patch
-$ valgrind --leak-check=full ndctl/.libs/ndctl list  
-==132738== Memcheck, a memory error detector
-==132738== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==132738== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==132738== Command: ndctl/.libs/ndctl list
-==132738== 
-==132738== 
-==132738== HEAP SUMMARY:
-==132738==     in use at exit: 16,564 bytes in 264 blocks
-==132738==   total heap usage: 920 allocs, 656 frees, 466,916 bytes allocated
-==132738== 
-==132738== LEAK SUMMARY:
-==132738==    definitely lost: 0 bytes in 0 blocks
-==132738==    indirectly lost: 0 bytes in 0 blocks
-==132738==      possibly lost: 0 bytes in 0 blocks
-==132738==    still reachable: 16,564 bytes in 264 blocks
-==132738==         suppressed: 0 bytes in 0 blocks
-==132738== Reachable blocks (those to which a pointer was found) are not shown.
-==132738== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==132738== 
-==132738== For lists of detected and suppressed errors, rerun with: -s
-==132738== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
-
-# With the patch applied
-$ valgrind --leak-check=full ndctl/.libs/ndctl list 
-==132759== Memcheck, a memory error detector
-==132759== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==132759== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==132759== Command: ndctl/.libs/ndctl list
-==132759== 
-==132759== 
-==132759== HEAP SUMMARY:
-==132759==     in use at exit: 0 bytes in 0 blocks
-==132759==   total heap usage: 920 allocs, 920 frees, 466,916 bytes allocated
-==132759== 
-==132759== All heap blocks were freed -- no leaks are possible
-==132759== 
-==132759== For lists of detected and suppressed errors, rerun with: -s
-==132759== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-
--- 
-Vaibhav Jain <vaibhav@linux.ibm.com>
-Linux Technology Center, IBM India Pvt. Ltd.
+-Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
