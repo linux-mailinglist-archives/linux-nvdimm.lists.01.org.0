@@ -2,64 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D6C162AD8
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 17:41:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC965162B87
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 18:08:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 40ED710FC33E6;
-	Tue, 18 Feb 2020 08:42:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::241; helo=mail-oi1-x241.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C0D1610FC33E6;
+	Tue, 18 Feb 2020 09:08:40 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+407f53ceaa3a8fe198ff+6022+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AFF3A1007B1FD
-	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 08:42:55 -0800 (PST)
-Received: by mail-oi1-x241.google.com with SMTP id a142so20706881oii.7
-        for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 08:40:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=p8K7bRgMIpoqIE67OrY5lFjC6s4gW3U9U0H2xoj25kw=;
-        b=oid16IX7f7CHfsm6agFZdtMQgo0SiRT7u7TlInmVa8wfmQkPjI2PE7uAcn/BLB6i45
-         Kjzk+N7PNIFzvVSxiZZOJDyT9Kw8l4IogvK5vI9tgDEderngrjcAlkC38mIqQcoXf/eH
-         cmYZMFSPW2HgWGAJwOzre6HOFTu08anqPp2J05cZGpplXxD4/giON09LYBDBt4ub/g1T
-         HUjZxgWE0/IbVc+rlpuyAZy84grJObAjLOX9E8JUS1xduhug9OkmUEsqBlGKIZWfCz8p
-         jFg4asDnUKBTRyrC1mcM9xz1bfv3TMQoWR2Ywn4e8o5rbwRq32R+Gd3SJzn0w9UVFNpJ
-         WbKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=p8K7bRgMIpoqIE67OrY5lFjC6s4gW3U9U0H2xoj25kw=;
-        b=ZPXPHLCTNiTFIBxaPBjSBNzZcbxljTuwYphP9lGjjW8tFfmV0cCAIwS8twB67M4RL/
-         x6p2POJPVRrxV7dpf05H4guG4XFyoDSRPqiHjPiLJ387ZqcS+H1ZjDzzrTRAc4PZGbXf
-         keiyBb8kNEwlU34u/D803NK+MqSIBeezGhBUcV10qzFglNqwhwOkxXPPoF/30aKtPBnU
-         iG+LTWiWbX1IZ2fMFiKaMSjNLF4NZ8VShtLNp/K7OZN2gg/L0TipeF9xdcv5sszfaFBI
-         D5e+Jw8XNMYNgv8+P+jyxW1MxDpUirISSsBiTtcFZN7Vo4Dz1DHdlRirpBxI693stxdu
-         EWuQ==
-X-Gm-Message-State: APjAAAUSjuJbGYKF10y/ZjSZJrBVqgx7nz1dIBd7edHSAyxZAH1tZu+R
-	r0fcN4SFhFnVluK/yV2Ps9+V6z25MD/7iPEO/5peuA==
-X-Google-Smtp-Source: APXvYqxKj389Ca7isA6lXFGih3cTi2B4mIYr7lceKx2QMSg6NIbiU0Fm0H3yxQ04HNpK9kjVtiKI3dPA4qJKh00QkiM=
-X-Received: by 2002:aca:4c9:: with SMTP id 192mr1871066oie.105.1582044051997;
- Tue, 18 Feb 2020 08:40:51 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id A5F341007B16F
+	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 09:08:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=j2WGs4C1vLnL8fc/aOtqeG9qe3lmQcu+zgjxzRT1RuI=; b=o7sf60WWlvof4jYu7ttN+64LOc
+	B+2H+zPtYs9lptGsjPwxiQoOkSAgMncfULRPJ0VtVJxFfgt21bu3pShHZfSg8YI4YEjzviRHj0Yx/
+	V6J6E7hwYzztsnUsxyh9x9gfuflCIvFFnGJMLFnaFNKowbbUs2s4LyE6k4xP4XM9IBrVqI0+B09Iw
+	U2Kg9seWWADNhL6ODYe/u/N7R6D1GVZgOWXZ2I37zVC3+Utc2z/N13gMs3nUe1VccOjuDTs+HsRUU
+	mPD41sLA2JutnlUO/Sc6jaN4E0ci/WxL8mdm4uIHv9xovvhu6o1v5Q/EJ7cZS07cKOSF7E2y726ok
+	IKgd5L5A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1j46LX-00083T-4i; Tue, 18 Feb 2020 17:07:43 +0000
+Date: Tue, 18 Feb 2020 09:07:43 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [dm-devel] [PATCH v4 1/7] pmem: Add functions for
+ reading/writing page to/from pmem
+Message-ID: <20200218170743.GA30766@infradead.org>
+References: <20200217181653.4706-1-vgoyal@redhat.com>
+ <20200217181653.4706-2-vgoyal@redhat.com>
 MIME-Version: 1.0
-References: <20200218155314.89123-1-vaibhav@linux.ibm.com>
-In-Reply-To: <20200218155314.89123-1-vaibhav@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 18 Feb 2020 08:40:41 -0800
-Message-ID: <CAPcyv4isdnEi=-EOv5EVu=6u7D32eLFLGWK0K5nQZa+9SMMGkQ@mail.gmail.com>
-Subject: Re: [ndctl PATCH] ndctl,daxctl: Ensure allocated contexts are
- released before exit
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Message-ID-Hash: 4QQU6GQ6O7QYEJU3VRLCDTQTROD3AMJU
-X-Message-ID-Hash: 4QQU6GQ6O7QYEJU3VRLCDTQTROD3AMJU
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <20200217181653.4706-2-vgoyal@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: 4U6BPJUAYQRLR4HLAVL5DWP6Y7HH5NLS
+X-Message-ID-Hash: 4U6BPJUAYQRLR4HLAVL5DWP6Y7HH5NLS
+X-MailFrom: BATV+407f53ceaa3a8fe198ff+6022+infradead.org+hch@bombadil.srs.infradead.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, hch@infradead.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4QQU6GQ6O7QYEJU3VRLCDTQTROD3AMJU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4U6BPJUAYQRLR4HLAVL5DWP6Y7HH5NLS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,17 +54,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 18, 2020 at 7:53 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
->
-> Presently main_handle_internal_command() will simply call exit() on
-> the return value from run_builtin(). This prevents release of allocated
-> contexts 'struct ndctl_ctx' or 'struct daxctl_ctx' when the main
-> thread exits.
->
+On Mon, Feb 17, 2020 at 01:16:47PM -0500, Vivek Goyal wrote:
+> This splits pmem_do_bvec() into pmem_do_read() and pmem_do_write().
+> pmem_do_write() will be used by pmem zero_page_range() as well. Hence
+> sharing the same code.
+> 
+> Suggested-by: Christoph Hellwig <hch@infradead.org>
+> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 
-There is ultimately no leak since process exit cleans up all
-resources. Does this address a functional problem, or is it just a
-hygiene fixup?
+Looks good,
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
