@@ -1,64 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289FF163460
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 22:10:21 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D410163481
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 22:12:55 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 267C710FC3408;
-	Tue, 18 Feb 2020 13:11:12 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id 8852210FC340C;
+	Tue, 18 Feb 2020 13:13:46 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 679A710FC3405
-	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 13:11:10 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 1DDA210FC340A
+	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 13:13:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1582060217;
+	s=mimecast20190719; t=1582060371;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xkdUovKifhRODs8J1uyT4NjG5UsLCNrvnkk18Wikk2k=;
-	b=XgTZs1R4OSLakPa/tTjijm7tqV0jbZuCg3xR9BHvy38IzJog5sv/zVgNaPDlVz2vlYV+jT
-	n0pZ9Wtv72/MD6Oz59mGaj+IxRcYDIGTIaqLQhm/hIaWsWVFplh4HSSKX9MhGqN7M2ub9E
-	eyO3cFqGoZj1LejdmZgpU7zHrEqmhAw=
+	bh=dcoEnVPH4YXfkwXGAc9vYSXk97yhitvx6mPN7wiSCI8=;
+	b=WosBEEfEk5Y4Kf2IndcURATlS1hZMVkG3KM/F1ur4o2xl3+nwAShPH6p815tfWD7mvlfI7
+	11exARHhjQYLQIww+XBboFRQkm8rKcstMvogEnOPAHDdzqIiXIuovVzMCykzg/5p35dQFM
+	A8h8njfAbwGWLG4ZugwrCcSefFdXU88=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-237-z_QZstOwMa-ZO7deoOum_w-1; Tue, 18 Feb 2020 16:10:13 -0500
-X-MC-Unique: z_QZstOwMa-ZO7deoOum_w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+ us-mta-239-skP_IvATOTmlRhN0ERtlCg-1; Tue, 18 Feb 2020 16:12:49 -0500
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D29BF107ACCA;
-	Tue, 18 Feb 2020 21:10:11 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id BAD1490779;
-	Tue, 18 Feb 2020 21:10:08 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 36D182257D2; Tue, 18 Feb 2020 16:10:08 -0500 (EST)
-Date: Tue, 18 Feb 2020 16:10:08 -0500
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [dm-devel] [PATCH v4 2/7] pmem: Enable pmem_do_write() to deal
- with arbitrary ranges
-Message-ID: <20200218211008.GB19413@redhat.com>
-References: <20200217181653.4706-1-vgoyal@redhat.com>
- <20200217181653.4706-3-vgoyal@redhat.com>
- <20200218170928.GB30766@infradead.org>
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1D2DD1005512;
+	Tue, 18 Feb 2020 21:12:48 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id E58625C1B0;
+	Tue, 18 Feb 2020 21:12:44 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Yi Zhang <yi.zhang@redhat.com>
+Subject: Re: [PATCH ndctl] ndctl, test: add bus-id parameter for start-scrub/wait-scrub operation
+References: <20191218025145.26741-1-yi.zhang@redhat.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Tue, 18 Feb 2020 16:12:44 -0500
+In-Reply-To: <20191218025145.26741-1-yi.zhang@redhat.com> (Yi Zhang's message
+	of "Wed, 18 Dec 2019 10:51:45 +0800")
+Message-ID: <x49eeurbnw3.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200218170928.GB30766@infradead.org>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: WTGNMMFZBRE4M3T4L73O66L5MTDZ7QFV
-X-Message-ID-Hash: WTGNMMFZBRE4M3T4L73O66L5MTDZ7QFV
-X-MailFrom: vgoyal@redhat.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: skP_IvATOTmlRhN0ERtlCg-1
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Message-ID-Hash: TFNNMWEGYHODGBTUZFJCE2Q3EUFGPFW2
+X-Message-ID-Hash: TFNNMWEGYHODGBTUZFJCE2Q3EUFGPFW2
+X-MailFrom: jmoyer@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, dm-devel@redhat.com
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WTGNMMFZBRE4M3T4L73O66L5MTDZ7QFV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TFNNMWEGYHODGBTUZFJCE2Q3EUFGPFW2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,148 +67,98 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 18, 2020 at 09:09:28AM -0800, Christoph Hellwig wrote:
-> On Mon, Feb 17, 2020 at 01:16:48PM -0500, Vivek Goyal wrote:
-> > Currently pmem_do_write() is written with assumption that all I/O is
-> > sector aligned. Soon I want to use this function in zero_page_range()
-> > where range passed in does not have to be sector aligned.
-> > 
-> > Modify this function to be able to deal with an arbitrary range. Which
-> > is specified by pmem_off and len.
-> > 
-> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> > ---
-> >  drivers/nvdimm/pmem.c | 32 +++++++++++++++++++++++---------
-> >  1 file changed, 23 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> > index 075b11682192..fae8f67da9de 100644
-> > --- a/drivers/nvdimm/pmem.c
-> > +++ b/drivers/nvdimm/pmem.c
-> > @@ -154,15 +154,23 @@ static blk_status_t pmem_do_read(struct pmem_device *pmem,
-> >  
-> >  static blk_status_t pmem_do_write(struct pmem_device *pmem,
-> >  			struct page *page, unsigned int page_off,
-> > -			sector_t sector, unsigned int len)
-> > +			u64 pmem_off, unsigned int len)
-> >  {
-> >  	blk_status_t rc = BLK_STS_OK;
-> >  	bool bad_pmem = false;
-> > -	phys_addr_t pmem_off = sector * 512 + pmem->data_offset;
-> > -	void *pmem_addr = pmem->virt_addr + pmem_off;
-> > -
-> > -	if (unlikely(is_bad_pmem(&pmem->bb, sector, len)))
-> > -		bad_pmem = true;
-> > +	phys_addr_t pmem_real_off = pmem_off + pmem->data_offset;
-> > +	void *pmem_addr = pmem->virt_addr + pmem_real_off;
-> > +	sector_t sector_start, sector_end;
-> > +	unsigned nr_sectors;
-> > +
-> > +	sector_start = DIV_ROUND_UP(pmem_off, SECTOR_SIZE);
-> > +	sector_end = (pmem_off + len) >> SECTOR_SHIFT;
-> > +	if (sector_end > sector_start) {
-> > +		nr_sectors = sector_end - sector_start;
-> > +		if (is_bad_pmem(&pmem->bb, sector_start,
-> > +				nr_sectors << SECTOR_SHIFT))
-> > +			bad_pmem = true;
-> > +	}
-> >  
-> >  	/*
-> >  	 * Note that we write the data both before and after
-> > @@ -181,7 +189,13 @@ static blk_status_t pmem_do_write(struct pmem_device *pmem,
-> >  	flush_dcache_page(page);
-> >  	write_pmem(pmem_addr, page, page_off, len);
-> >  	if (unlikely(bad_pmem)) {
-> > -		rc = pmem_clear_poison(pmem, pmem_off, len);
-> > +		/*
-> > +		 * Pass sector aligned offset and length. That seems
-> > +		 * to work as of now. Other finer grained alignment
-> > +		 * cases can be addressed later if need be.
-> > +		 */
-> > +		rc = pmem_clear_poison(pmem, ALIGN(pmem_real_off, SECTOR_SIZE),
-> > +				       nr_sectors << SECTOR_SHIFT);
-> >  		write_pmem(pmem_addr, page, page_off, len);
-> 
-> I'm still scared about the as of now commnet.  If the interface to
-> clearing poison is page aligned I think we should document that in the
-> actual pmem_clear_poison function, and make that take the unaligned
-> offset.  I also think we want some feedback from Dan or other what the
-> official interface is instead of "seems to work".
+Yi Zhang <yi.zhang@redhat.com> writes:
 
-Ok, I am adding one more patch to series and enabling pmem_clear_poison()
-to accept arbitrary offset and length and let it align offset and length
-to sector boundary. Keeping it in a separate patch so that Dan can have
-a close look at it and make sure I am doing things correctly.
+> On some NVDIMM servers, scrub operation will take long time to be finished
+> as it start on all nvdimm buses in the system, add the bus-id parameter to
+> do the scrub on the NFIT_TEST_BUS0
+>
+> Signed-off-by: Yi Zhang <yi.zhang@redhat.com>
 
-Here is the new patch. I will post the V5 soon with this new patch.
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 
-Thanks
-Vivek
-
-
-Subject: drivers/pmem: Allow pmem_clear_poison() to accept arbitrary offset and len
-
-Currently pmem_clear_poison() expects offset and len to be sector aligned.
-Atleast that seems to be the assumption with which code has been written.
-It is called only from pmem_do_bvec() which is called only from pmem_rw_page()
-and pmem_make_request() which will only passe sector aligned offset and len.
-
-Soon we want use this function from dax_zero_page_range() code path which
-can try to zero arbitrary range of memory with-in a page. So update this
-function to assume that offset and length can be arbitrary and do the
-necessary alignments as needed.
-
-nvdimm_clear_poison() seems to assume offset and len to be aligned to
-clear_err_unit boundary. But this is currently internal detail and is
-not exported for others to use. So for now, continue to align offset and
-length to SECTOR_SIZE boundary. Improving it further and to align it
-to clear_err_unit boundary is a TODO item for future.
-
-Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
----
- drivers/nvdimm/pmem.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 075b11682192..e72959203253 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -74,14 +74,28 @@ static blk_status_t pmem_clear_poison(struct pmem_device *pmem,
- 	sector_t sector;
- 	long cleared;
- 	blk_status_t rc = BLK_STS_OK;
-+	phys_addr_t start_aligned, end_aligned;
-+	unsigned int len_aligned;
- 
--	sector = (offset - pmem->data_offset) / 512;
-+	/*
-+	 * Callers can pass arbitrary offset and len. But nvdimm_clear_poison()
-+	 * expects memory offset and length to meet certain alignment
-+	 * restrction (clear_err_unit). Currently nvdimm does not export
-+	 * required alignment. So align offset and length to sector boundary
-+	 * before passing it to nvdimm_clear_poison().
-+	 */
-+	start_aligned = ALIGN(offset, SECTOR_SIZE);
-+	end_aligned = ALIGN_DOWN((offset + len), SECTOR_SIZE) - 1;
-+	len_aligned = end_aligned - start_aligned + 1;
-+
-+	sector = (start_aligned - pmem->data_offset) / 512;
- 
--	cleared = nvdimm_clear_poison(dev, pmem->phys_addr + offset, len);
--	if (cleared < len)
-+	cleared = nvdimm_clear_poison(dev, pmem->phys_addr + start_aligned,
-+				      len_aligned);
-+	if (cleared < len_aligned)
- 		rc = BLK_STS_IOERR;
- 	if (cleared > 0 && cleared / 512) {
--		hwpoison_clear(pmem, pmem->phys_addr + offset, cleared);
-+		hwpoison_clear(pmem, pmem->phys_addr + start_aligned, cleared);
- 		cleared /= 512;
- 		dev_dbg(dev, "%#llx clear %ld sector%s\n",
- 				(unsigned long long) sector, cleared,
--- 
-2.20.1
-
+> ---
+>  test/btt-errors.sh      | 4 ++--
+>  test/clear.sh           | 2 +-
+>  test/inject-error.sh    | 2 +-
+>  test/pfn-meta-errors.sh | 2 +-
+>  test/pmem-errors.sh     | 2 +-
+>  5 files changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/test/btt-errors.sh b/test/btt-errors.sh
+> index cb35865..00c0796 100755
+> --- a/test/btt-errors.sh
+> +++ b/test/btt-errors.sh
+> @@ -115,7 +115,7 @@ bb_inj=$((dataoff/512))
+>  
+>  # inject badblocks for one page at the start of the file
+>  $NDCTL inject-error --block="$bb_inj" --count=8 $dev
+> -$NDCTL start-scrub && $NDCTL wait-scrub
+> +$NDCTL start-scrub $NFIT_TEST_BUS0 && $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  
+>  force_raw 0
+>  mount -o nodelalloc "/dev/$blockdev" $MNT
+> @@ -149,7 +149,7 @@ map=$(hexdump -s 96 -n 4 "/dev/$raw_bdev" | head -1 | cut -d' ' -f2-)
+>  map=$(tr -d ' ' <<< "0x${map#* }${map%% *}")
+>  bb_inj=$((map/512))
+>  $NDCTL inject-error --block="$bb_inj" --count=1 $dev
+> -$NDCTL start-scrub && $NDCTL wait-scrub
+> +$NDCTL start-scrub $NFIT_TEST_BUS0 && $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  force_raw 0
+>  
+>  # make sure reading the first block of the namespace fails
+> diff --git a/test/clear.sh b/test/clear.sh
+> index 17d5bed..1bd12da 100755
+> --- a/test/clear.sh
+> +++ b/test/clear.sh
+> @@ -41,7 +41,7 @@ err_sector="$(((size/512) / 2))"
+>  err_count=8
+>  if ! read sector len < /sys/block/$blockdev/badblocks; then
+>  	$NDCTL inject-error --block="$err_sector" --count=$err_count $dev
+> -	$NDCTL start-scrub && $NDCTL wait-scrub
+> +	$NDCTL start-scrub $NFIT_TEST_BUS0 && $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  fi
+>  read sector len < /sys/block/$blockdev/badblocks
+>  [ $((sector * 2)) -ne $((size /512)) ] && echo "fail: $LINENO" && exit 1
+> diff --git a/test/inject-error.sh b/test/inject-error.sh
+> index 49e68b3..825bf18 100755
+> --- a/test/inject-error.sh
+> +++ b/test/inject-error.sh
+> @@ -77,7 +77,7 @@ do_tests()
+>  
+>  	# inject normally
+>  	$NDCTL inject-error --block=$err_block --count=$err_count $dev
+> -	$NDCTL start-scrub && $NDCTL wait-scrub
+> +	$NDCTL start-scrub $NFIT_TEST_BUS0 && $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  	check_status "$err_block" "$err_count"
+>  	if read -r sector len < /sys/block/$blockdev/badblocks; then
+>  		test "$sector" -eq "$err_block"
+> diff --git a/test/pfn-meta-errors.sh b/test/pfn-meta-errors.sh
+> index 2b57f19..14a15ae 100755
+> --- a/test/pfn-meta-errors.sh
+> +++ b/test/pfn-meta-errors.sh
+> @@ -61,7 +61,7 @@ mblk="$((metaoff/512))"
+>  # inject in the middle of the struct page area
+>  bb_inj=$(((dblk - mblk)/2))
+>  $NDCTL inject-error --block="$bb_inj" --count=32 $dev
+> -$NDCTL start-scrub && $NDCTL wait-scrub
+> +$NDCTL start-scrub $NFIT_TEST_BUS0 && $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  
+>  # after probe from the enable-namespace, the error should've been cleared
+>  force_raw 0
+> diff --git a/test/pmem-errors.sh b/test/pmem-errors.sh
+> index 9553a3f..3d90508 100755
+> --- a/test/pmem-errors.sh
+> +++ b/test/pmem-errors.sh
+> @@ -46,7 +46,7 @@ err_sector="$(((size/512) / 2))"
+>  err_count=8
+>  if ! read sector len < /sys/block/$blockdev/badblocks; then
+>  	$NDCTL inject-error --block="$err_sector" --count=$err_count $dev
+> -	$NDCTL start-scrub; $NDCTL wait-scrub
+> +	$NDCTL start-scrub $NFIT_TEST_BUS0; $NDCTL wait-scrub $NFIT_TEST_BUS0
+>  fi
+>  read sector len < /sys/block/$blockdev/badblocks
+>  [ $((sector * 2)) -ne $((size /512)) ] && echo "fail: $LINENO" && false
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
