@@ -2,62 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B74163564
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 22:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4194B163565
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 18 Feb 2020 22:49:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9960110FC340F;
-	Tue, 18 Feb 2020 13:49:54 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id AE08810FC3581;
+	Tue, 18 Feb 2020 13:49:55 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5B93310FC33F3
+	by ml01.01.org (Postfix) with ESMTPS id C0FFA10FC33F2
 	for <linux-nvdimm@lists.01.org>; Tue, 18 Feb 2020 13:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1582062538;
+	s=mimecast20190719; t=1582062539;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/xheq0Kv3ALRSOX+hpzwGoRJOYo9Awxk5MHohlOXv/Y=;
-	b=e5sC9iYu5w7ca+XhDXBF02ZY2Ckf8nnZV5twFr2G7Bduk+XERVoegqQeqXLIPvGnmd6RbO
-	TGp3c+v0EbdLkufpDaezv6hn4+EIT1jecLTGGvPgKGj8QM6HFHIz0AuI/6OJhtPUQ5BW1k
-	yWOjU8s/Y+6h43qYT57pOeIlCoB9XXA=
+	bh=dWuQevadGbeWpwHhQNwK1IjmkMEDQ0KYV5P1Kw6/vBY=;
+	b=Cs/TkbH+TCLFbRuU+u5wFkJqftUwZim9L/BTX/o7RzCVfXG4mLK1vxZkJSreQ2YojPwER2
+	fROmIS+LYj/B6fnjzNrsJ13Lw+2fd9ODebJn7BheWUdUKEqu6JeHlTJ47AzeLx0dRgfgQg
+	nGKjEG+QxL7ei5cJdkDWn1p0Ih6ic3Y=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-394-SWHJk1X9MHKf6zVamgtOJA-1; Tue, 18 Feb 2020 16:48:57 -0500
-X-MC-Unique: SWHJk1X9MHKf6zVamgtOJA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+ us-mta-177-pkhcM5VjO76REe6mdKaKbg-1; Tue, 18 Feb 2020 16:48:57 -0500
+X-MC-Unique: pkhcM5VjO76REe6mdKaKbg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CA3CA190B2AA;
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CBA6710CE783;
 	Tue, 18 Feb 2020 21:48:55 +0000 (UTC)
 Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2B8891001B05;
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2846460BE1;
 	Tue, 18 Feb 2020 21:48:53 +0000 (UTC)
 Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 9BF7D2257D5; Tue, 18 Feb 2020 16:48:52 -0500 (EST)
+	id A7FE52257D6; Tue, 18 Feb 2020 16:48:52 -0500 (EST)
 From: Vivek Goyal <vgoyal@redhat.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-nvdimm@lists.01.org,
 	hch@infradead.org,
 	dan.j.williams@intel.com
-Subject: [PATCH v5 3/8] pmem: Enable pmem_do_write() to deal with arbitrary ranges
-Date: Tue, 18 Feb 2020 16:48:36 -0500
-Message-Id: <20200218214841.10076-4-vgoyal@redhat.com>
+Subject: [PATCH v5 4/8] dax, pmem: Add a dax operation zero_page_range
+Date: Tue, 18 Feb 2020 16:48:37 -0500
+Message-Id: <20200218214841.10076-5-vgoyal@redhat.com>
 In-Reply-To: <20200218214841.10076-1-vgoyal@redhat.com>
 References: <20200218214841.10076-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Message-ID-Hash: 5DIXBRP6RTWBGR7JGIRF7ELZ7JSYQ4ZS
-X-Message-ID-Hash: 5DIXBRP6RTWBGR7JGIRF7ELZ7JSYQ4ZS
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Message-ID-Hash: 6ERZJZOD4YJYN2TNKNOQNE6ZOXJETEKG
+X-Message-ID-Hash: 6ERZJZOD4YJYN2TNKNOQNE6ZOXJETEKG
 X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: dm-devel@redhat.com
+CC: dm-devel@redhat.com, Christoph Hellwig <hch@lst.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5DIXBRP6RTWBGR7JGIRF7ELZ7JSYQ4ZS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ERZJZOD4YJYN2TNKNOQNE6ZOXJETEKG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,79 +66,105 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Currently pmem_do_write() is written with assumption that all I/O is
-sector aligned. Soon I want to use this function in zero_page_range()
-where range passed in does not have to be sector aligned.
+Add a dax operation zero_page_range, to zero a range of memory. This will
+also clear any poison in the range being zeroed.
 
-Modify this function to be able to deal with an arbitrary range. Which
-is specified by pmem_off and len.
+As of now, zeroing of up to one page is allowed in a single call. There
+are no callers which are trying to zero more than a page in a single call.
+Once we grow the callers which zero more than a page in single call, we
+can add that support. Primary reason for not doing that yet is that this
+will add little complexity in dm implementation where a range might be
+spanning multiple underlying targets and one will have to split the range
+into multiple sub ranges and call zero_page_range() on individual targets.
 
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 ---
- drivers/nvdimm/pmem.c | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/dax/super.c   | 19 +++++++++++++++++++
+ drivers/nvdimm/pmem.c | 10 ++++++++++
+ include/linux/dax.h   |  3 +++
+ 3 files changed, 32 insertions(+)
 
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 0aa4b6bc5101..c912808bc886 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -344,6 +344,25 @@ size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+ }
+ EXPORT_SYMBOL_GPL(dax_copy_to_iter);
+ 
++int dax_zero_page_range(struct dax_device *dax_dev, u64 offset, size_t len)
++{
++	if (!dax_alive(dax_dev))
++		return -ENXIO;
++
++	if (!dax_dev->ops->zero_page_range)
++		return -EOPNOTSUPP;
++	/*
++	 * There are no callers that want to zero across a page boundary as of
++	 * now. Once users are there, this check can be removed after the
++	 * device mapper code has been updated to split ranges across targets.
++	 */
++	if (offset_in_page(offset) + len > PAGE_SIZE)
++		return -EIO;
++
++	return dax_dev->ops->zero_page_range(dax_dev, offset, len);
++}
++EXPORT_SYMBOL_GPL(dax_zero_page_range);
++
+ #ifdef CONFIG_ARCH_HAS_PMEM_API
+ void arch_wb_cache_pmem(void *addr, size_t size);
+ void dax_flush(struct dax_device *dax_dev, void *addr, size_t size)
 diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index e72959203253..3c46e9e6d04c 100644
+index 3c46e9e6d04c..e17f9f56d6fe 100644
 --- a/drivers/nvdimm/pmem.c
 +++ b/drivers/nvdimm/pmem.c
-@@ -168,15 +168,23 @@ static blk_status_t pmem_do_read(struct pmem_device *pmem,
+@@ -304,6 +304,15 @@ static const struct block_device_operations pmem_fops = {
+ 	.revalidate_disk =	nvdimm_revalidate_disk,
+ };
  
- static blk_status_t pmem_do_write(struct pmem_device *pmem,
- 			struct page *page, unsigned int page_off,
--			sector_t sector, unsigned int len)
-+			u64 pmem_off, unsigned int len)
- {
- 	blk_status_t rc = BLK_STS_OK;
- 	bool bad_pmem = false;
--	phys_addr_t pmem_off = sector * 512 + pmem->data_offset;
--	void *pmem_addr = pmem->virt_addr + pmem_off;
--
--	if (unlikely(is_bad_pmem(&pmem->bb, sector, len)))
--		bad_pmem = true;
-+	phys_addr_t pmem_real_off = pmem_off + pmem->data_offset;
-+	void *pmem_addr = pmem->virt_addr + pmem_real_off;
-+	sector_t sector_start, sector_end;
-+	unsigned nr_sectors;
++static int pmem_dax_zero_page_range(struct dax_device *dax_dev, u64 offset,
++				    size_t len)
++{
++	struct pmem_device *pmem = dax_get_private(dax_dev);
 +
-+	sector_start = DIV_ROUND_UP(pmem_off, SECTOR_SIZE);
-+	sector_end = (pmem_off + len) >> SECTOR_SHIFT;
-+	if (sector_end > sector_start) {
-+		nr_sectors = sector_end - sector_start;
-+		if (is_bad_pmem(&pmem->bb, sector_start,
-+				nr_sectors << SECTOR_SHIFT))
-+			bad_pmem = true;
-+	}
++	return blk_status_to_errno(pmem_do_write(pmem, ZERO_PAGE(0), 0, offset,
++				   len));
++}
++
+ static long pmem_dax_direct_access(struct dax_device *dax_dev,
+ 		pgoff_t pgoff, long nr_pages, void **kaddr, pfn_t *pfn)
+ {
+@@ -335,6 +344,7 @@ static const struct dax_operations pmem_dax_ops = {
+ 	.dax_supported = generic_fsdax_supported,
+ 	.copy_from_iter = pmem_copy_from_iter,
+ 	.copy_to_iter = pmem_copy_to_iter,
++	.zero_page_range = pmem_dax_zero_page_range,
+ };
  
- 	/*
- 	 * Note that we write the data both before and after
-@@ -195,7 +203,7 @@ static blk_status_t pmem_do_write(struct pmem_device *pmem,
- 	flush_dcache_page(page);
- 	write_pmem(pmem_addr, page, page_off, len);
- 	if (unlikely(bad_pmem)) {
--		rc = pmem_clear_poison(pmem, pmem_off, len);
-+		rc = pmem_clear_poison(pmem, pmem_real_off, len);
- 		write_pmem(pmem_addr, page, page_off, len);
- 	}
+ static const struct attribute_group *pmem_attribute_groups[] = {
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index 328c2dbb4409..93a663c26d6a 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -34,6 +34,8 @@ struct dax_operations {
+ 	/* copy_to_iter: required operation for fs-dax direct-i/o */
+ 	size_t (*copy_to_iter)(struct dax_device *, pgoff_t, void *, size_t,
+ 			struct iov_iter *);
++	/* zero_page_range: required operation. Zero range with-in a page  */
++	int (*zero_page_range)(struct dax_device *, u64, size_t);
+ };
  
-@@ -220,7 +228,7 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
- 	bio_for_each_segment(bvec, bio, iter) {
- 		if (op_is_write(bio_op(bio)))
- 			rc = pmem_do_write(pmem, bvec.bv_page, bvec.bv_offset,
--				iter.bi_sector, bvec.bv_len);
-+				iter.bi_sector << SECTOR_SHIFT, bvec.bv_len);
- 		else
- 			rc = pmem_do_read(pmem, bvec.bv_page, bvec.bv_offset,
- 				iter.bi_sector, bvec.bv_len);
-@@ -249,7 +257,7 @@ static int pmem_rw_page(struct block_device *bdev, sector_t sector,
- 	blk_status_t rc;
+ extern struct attribute_group dax_attribute_group;
+@@ -199,6 +201,7 @@ size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+ 		size_t bytes, struct iov_iter *i);
+ size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+ 		size_t bytes, struct iov_iter *i);
++int dax_zero_page_range(struct dax_device *dax_dev, u64 offset, size_t len);
+ void dax_flush(struct dax_device *dax_dev, void *addr, size_t size);
  
- 	if (op_is_write(op))
--		rc = pmem_do_write(pmem, page, 0, sector,
-+		rc = pmem_do_write(pmem, page, 0, sector << SECTOR_SHIFT,
- 				   hpage_nr_pages(page) * PAGE_SIZE);
- 	else
- 		rc = pmem_do_read(pmem, page, 0, sector,
+ ssize_t dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
 -- 
 2.20.1
 _______________________________________________
