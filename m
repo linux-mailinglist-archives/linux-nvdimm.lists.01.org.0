@@ -1,67 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C2C164FD6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Feb 2020 21:28:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778BB1655DF
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Feb 2020 04:53:10 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 33DA310FC35AB;
-	Wed, 19 Feb 2020 12:28:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8860410FC339D;
+	Wed, 19 Feb 2020 19:54:00 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E483310FC359F
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Feb 2020 12:28:55 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Feb 2020 12:28:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,461,1574150400";
-   d="scan'208";a="236003326"
-Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
-  by orsmga003.jf.intel.com with ESMTP; 19 Feb 2020 12:28:02 -0800
-Received: from fmsmsx122.amr.corp.intel.com (10.18.125.37) by
- FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 19 Feb 2020 12:28:02 -0800
-Received: from fmsmsx113.amr.corp.intel.com ([169.254.13.48]) by
- fmsmsx122.amr.corp.intel.com ([169.254.5.169]) with mapi id 14.03.0439.000;
- Wed, 19 Feb 2020 12:28:02 -0800
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [ndctl PATCH] ndctl/list: Drop named list objects from verbose
- listing
-Thread-Topic: [ndctl PATCH] ndctl/list: Drop named list objects from verbose
- listing
-Thread-Index: AQHV51AWnmJff0QsXEycy1WlrjZqyagjY0mAgAATCwCAAAICgIAABU4A
-Date: Wed, 19 Feb 2020 20:28:01 +0000
-Message-ID: <00abe72085e75c1c54b87635c81352b628211707.camel@intel.com>
-References: <157481532698.2805671.8095763752180655226.stgit@dwillia2-desk3.amr.corp.intel.com>
-	 <x49sgj6law0.fsf@segfault.boston.devel.redhat.com>
-	 <CAPcyv4ibE3ssieq=A5diqwRyiT6e3X=kcpQ3aA0vYneBpuSCAA@mail.gmail.com>
-	 <x49k14ila4r.fsf@segfault.boston.devel.redhat.com>
-	 <CAPcyv4hHU+RC6TZW94UrjFJZ1fsOU8Nug0GP+Mb5mBGW8qk+UQ@mail.gmail.com>
-	 <03b5da834f0be8bc7110c459f3172732b96e85fa.camel@intel.com>
-	 <CAPcyv4gVDEum7RiSMXug5fwNC04mEHo5MhAuUW37t4tN9y899A@mail.gmail.com>
-In-Reply-To: <CAPcyv4gVDEum7RiSMXug5fwNC04mEHo5MhAuUW37t4tN9y899A@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.32.5 (3.32.5-1.fc30) 
-x-originating-ip: [10.254.46.202]
-Content-ID: <7E0A933F78523447AE3AC3D1CBBA0042@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 48D6D1003ECBD
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Feb 2020 19:53:59 -0800 (PST)
+Received: by mail-pl1-x643.google.com with SMTP id d9so985654plo.11
+        for <linux-nvdimm@lists.01.org>; Wed, 19 Feb 2020 19:53:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:in-reply-to:references:date:message-id:mime-version;
+        bh=OJQI1O+wncsLf6OJpSffVkGuuXAMhkTM7kqX4B6lt6Y=;
+        b=y3AHXZam2D3GXM3KLC5pe2HF+1CJm9kfrxv9IVzgG18iklkq9hYZW5K5UF523ZShDk
+         mznQBo3nu7Lvss08DNyZRw3J7QIDc9mRCzq/qbWOxNmJB1uG7ejJmNXk+jPxaJG4qz2H
+         mEoqCx3k5O+exRCektgQING5TAYLD1c5VySDULk5/Vae9pj33D7uVlvJVQ0oN42oOu50
+         YTsscrOhNvdLyJLfPyUmNMFxQ2FQG/m3liLn6oIgIGSZivdg5BLzGaqDXyDl+CLUZ3Np
+         rZbVV9Zdu8D5CcXWFKcDDtZwI2cTuYOLt7nrLmFiMouGXJVxUC6/4IR76SlUKv0hDVfS
+         uJag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=OJQI1O+wncsLf6OJpSffVkGuuXAMhkTM7kqX4B6lt6Y=;
+        b=iaEtvzKNH6SH2TwelvNhjz6jSJdCKPvpkDRo1RB8jRwKGzPNTwCqv3Y3Q0fWWN6ybY
+         yEMXhMoIT5M9ZtzPYiEJc2gk8y4V5yEyH577WC86LBurQbZkBKlN1ISd5UcK7wpRAZQi
+         9Vo1wmmVribm3svMGbZb4LWlHzjLLU4KqR0R44m3WjYUO7RMf/kvk4zdeElcjqeJ35Xo
+         +7HoTah1Q5megycEN6hQfXcTZU8BUy/RvhWKd94hOdKuZgVDRs3MDaMFRM1ja117NkH6
+         FGckE+bEKLS95iETJhQySgKPrprCVIqRiyGkbzLdzOEvokrFps47DpYSyekqTqSqQWKc
+         6o7Q==
+X-Gm-Message-State: APjAAAVOPsD/8+uQ2dcu48eR2XsbpDMmZPNwRLcxOBSPytLkvfXGT4h4
+	hRQKXH8/f73kpdMA2kBAfmDYxmrSAjs=
+X-Google-Smtp-Source: APXvYqwiSNmLBHsiOzXYcdI+YXYvGM54of2+JeHG9OcsLQ0buksPGXYNtFSZ6iTumQJq04x0+B+qXw==
+X-Received: by 2002:a17:902:6ac3:: with SMTP id i3mr29036900plt.111.1582170786235;
+        Wed, 19 Feb 2020 19:53:06 -0800 (PST)
+Received: from localhost ([129.41.84.76])
+        by smtp.gmail.com with ESMTPSA id o16sm1175357pgl.58.2020.02.19.19.53.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Feb 2020 19:53:05 -0800 (PST)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linux-nvdimm@lists.01.org, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 ndctl] ndctl/namespace: Fix enable-namespace error for seed namespaces
+In-Reply-To: <20200113042453.3579711-1-santosh@fossix.org>
+References: <20200113042453.3579711-1-santosh@fossix.org>
+Date: Thu, 20 Feb 2020 09:23:02 +0530
+Message-ID: <87h7zlykwx.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: FYAECN5PMJDO7JEYRQPQ6X6OYY3XBBDP
-X-Message-ID-Hash: FYAECN5PMJDO7JEYRQPQ6X6OYY3XBBDP
-X-MailFrom: vishal.l.verma@intel.com
+Message-ID-Hash: 2GFUWI3VH6WXKY3MIFDXPS4VDGDEGYIJ
+X-Message-ID-Hash: 2GFUWI3VH6WXKY3MIFDXPS4VDGDEGYIJ
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FYAECN5PMJDO7JEYRQPQ6X6OYY3XBBDP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2GFUWI3VH6WXKY3MIFDXPS4VDGDEGYIJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,27 +69,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2020-02-19 at 12:09 -0800, Dan Williams wrote:
-> > > 
-> > > Let's do a compromise, because users also hate nonsensical legacy that
-> > > they can't avoid. How about an environment variable,
-> > > "NDCTL_LIST_LINT", that users can set to opt into the latest /
-> > > cleanest output format with the understanding that the clean up may
-> > > regress scripts that were dependent on the old bugs.
-> > > 
-> > Hm, this sounds good in concept, but how about waiting for this cleanup
-> > to go in after the (yes, long pending) config rework. Then this can just
-> > be a global config setting, and we won't have config things coming from
-> > the environment as well (which this would be a first of).
-> 
-> That does make some sense, but I notice that git deals with "cosmetic"
-> environment variables (GIT_EDITOR, GIT_PAGER, etc) in addition to its
-> config file. So if we're borrowing from git, I'd also borrow that
-> config vs environment logic.
+Santosh Sivaraj <santosh@fossix.org> writes:
 
-True, that's reasonable. I guess I was hoping to avoid, if we can,
-suddenly having a multitude of config sources, but env variables are
-pretty standard and it should be fine to add them.
+> 'ndctl enable-namespace all' tries to enable seed namespaces too, which results
+> in a error like
+>
+> libndctl: ndctl_namespace_enable: namespace1.0: failed to enable
+
+Dan/Vishal,
+
+Will this patch be taken in the next ndctl release?
+
+Thanks,
+Santosh
+
+>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  ndctl/lib/libndctl.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+> index 6596f94..9c6ccb8 100644
+> --- a/ndctl/lib/libndctl.c
+> +++ b/ndctl/lib/libndctl.c
+> @@ -4010,11 +4010,16 @@ NDCTL_EXPORT int ndctl_namespace_enable(struct ndctl_namespace *ndns)
+>  	const char *devname = ndctl_namespace_get_devname(ndns);
+>  	struct ndctl_ctx *ctx = ndctl_namespace_get_ctx(ndns);
+>  	struct ndctl_region *region = ndns->region;
+> +	unsigned long long size = ndctl_namespace_get_size(ndns);
+>  	int rc;
+>  
+>  	if (ndctl_namespace_is_enabled(ndns))
+>  		return 0;
+>  
+> +	/* Don't try to enable idle namespace (no capacity allocated) */
+> +	if (size == 0)
+> +		return -ENXIO;
+> +
+>  	rc = ndctl_bind(ctx, ndns->module, devname);
+>  
+>  	/*
+> -- 
+> 2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
