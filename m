@@ -1,64 +1,80 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC6C166A15
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Feb 2020 22:57:23 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2F6166D89
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Feb 2020 04:28:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9823810FC3605;
-	Thu, 20 Feb 2020 13:58:13 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EEB0610FC3610;
+	Thu, 20 Feb 2020 19:29:14 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6EF4F10FC3602
-	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 13:58:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1582235837;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KM6ABKd2tpz8kP31CQDO/5cFEUK72lQAq/0AyCLrpz4=;
-	b=BzirWnC1E+bypiTxU6wzsU9+qzjau8N66CskbzQaOvDDe1Ehvon5rTsWOnCLLZmi+Ixcv4
-	Kv/DY0D9DR6F6ySPQOSCFEVR7nvcBGo2o54DJ/cmijkvSqlD71QN5cXBS0HVIUljbd2Czg
-	fmgVQgSQN4B4p1eWHEsANBH7U+nw4D4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-137-hV10MjEWOhC3izx9CnXW2Q-1; Thu, 20 Feb 2020 16:57:12 -0500
-X-MC-Unique: hV10MjEWOhC3izx9CnXW2Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTPS id 518791003E988
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 19:29:12 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01L3KJ95104874
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 22:28:19 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2y8ubqh1hr-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 22:28:19 -0500
+Received: from localhost
+	by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
+	Fri, 21 Feb 2020 03:28:16 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+	by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Fri, 21 Feb 2020 03:28:08 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01L3S7Xw51314800
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Feb 2020 03:28:07 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BADFCA405C;
+	Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1E1F6A4054;
+	Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Fri, 21 Feb 2020 03:28:07 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8A759107ACC5;
-	Thu, 20 Feb 2020 21:57:11 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 90817619DB;
-	Thu, 20 Feb 2020 21:57:08 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 0C6C1220A24; Thu, 20 Feb 2020 16:57:08 -0500 (EST)
-Date: Thu, 20 Feb 2020 16:57:07 -0500
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Jeff Moyer <jmoyer@redhat.com>
-Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
- arbitrary offset and len
-Message-ID: <20200220215707.GC10816@redhat.com>
-References: <20200218214841.10076-1-vgoyal@redhat.com>
- <20200218214841.10076-3-vgoyal@redhat.com>
- <x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 82291A0209;
+	Fri, 21 Feb 2020 14:28:02 +1100 (AEDT)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: alastair@d-silva.org
+Subject: [PATCH v3 00/27] Add support for OpenCAPI Persistent Memory devices
+Date: Fri, 21 Feb 2020 14:26:53 +1100
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: MYEELMEPQKEENFNUHFMK63ZOVO243ZZZ
-X-Message-ID-Hash: MYEELMEPQKEENFNUHFMK63ZOVO243ZZZ
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, hch@infradead.org, dm-devel@redhat.com
+X-TM-AS-GCONF: 00
+x-cbid: 20022103-0020-0000-0000-000003AC220E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20022103-0021-0000-0000-000022042A30
+Message-Id: <20200221032720.33893-1-alastair@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-02-20_19:2020-02-19,2020-02-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ priorityscore=1501 suspectscore=1 spamscore=0 bulkscore=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
+ definitions=main-2002210020
+Message-ID-Hash: 2246NMSMADL2UVUMDLEZKFXCZQWJVTJD
+X-Message-ID-Hash: 2246NMSMADL2UVUMDLEZKFXCZQWJVTJD
+X-MailFrom: alastair@au1.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.r
+ u>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MYEELMEPQKEENFNUHFMK63ZOVO243ZZZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2246NMSMADL2UVUMDLEZKFXCZQWJVTJD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,134 +83,81 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 20, 2020 at 04:35:17PM -0500, Jeff Moyer wrote:
-> Vivek Goyal <vgoyal@redhat.com> writes:
-> 
-> > Currently pmem_clear_poison() expects offset and len to be sector aligned.
-> > Atleast that seems to be the assumption with which code has been written.
-> > It is called only from pmem_do_bvec() which is called only from pmem_rw_page()
-> > and pmem_make_request() which will only passe sector aligned offset and len.
-> >
-> > Soon we want use this function from dax_zero_page_range() code path which
-> > can try to zero arbitrary range of memory with-in a page. So update this
-> > function to assume that offset and length can be arbitrary and do the
-> > necessary alignments as needed.
-> 
-> What caller will try to zero a range that is smaller than a sector?
+From: Alastair D'Silva <alastair@d-silva.org>
 
-Hi Jeff,
+This series adds support for OpenCAPI Persistent Memory devices, exposing
+them as nvdimms so that we can make use of the existing infrastructure.
 
-New dax zeroing interface (dax_zero_page_range()) can technically pass
-a range which is less than a sector. Or which is bigger than a sector
-but start and end are not aligned on sector boundaries.
+Alastair D'Silva (27):
+  powerpc: Add OPAL calls for LPC memory alloc/release
+  mm/memory_hotplug: Allow check_hotplug_memory_addressable to be called
+    from drivers
+  powerpc: Map & release OpenCAPI LPC memory
+  ocxl: Remove unnecessary externs
+  ocxl: Address kernel doc errors & warnings
+  ocxl: Tally up the LPC memory on a link & allow it to be mapped
+  ocxl: Add functions to map/unmap LPC memory
+  ocxl: Emit a log message showing how much LPC memory was detected
+  ocxl: Save the device serial number in ocxl_fn
+  powerpc: Add driver for OpenCAPI Persistent Memory
+  powerpc: Enable the OpenCAPI Persistent Memory driver for
+    powernv_defconfig
+  powerpc/powernv/pmem: Add register addresses & status values to the
+    header
+  powerpc/powernv/pmem: Read the capability registers & wait for device
+    ready
+  powerpc/powernv/pmem: Add support for Admin commands
+  powerpc/powernv/pmem: Add support for near storage commands
+  powerpc/powernv/pmem: Register a character device for userspace to
+    interact with
+  powerpc/powernv/pmem: Implement the Read Error Log command
+  powerpc/powernv/pmem: Add controller dump IOCTLs
+  powerpc/powernv/pmem: Add an IOCTL to report controller statistics
+  powerpc/powernv/pmem: Forward events to userspace
+  powerpc/powernv/pmem: Add an IOCTL to request controller health & perf
+    data
+  powerpc/powernv/pmem: Implement the heartbeat command
+  powerpc/powernv/pmem: Add debug IOCTLs
+  powerpc/powernv/pmem: Expose SMART data via ndctl
+  powerpc/powernv/pmem: Expose the serial number in sysfs
+  powerpc/powernv/pmem: Expose the firmware version in sysfs
+  MAINTAINERS: Add myself & nvdimm/ocxl to ocxl
 
-At this point of time, all I care about is that case of an arbitrary
-range is handeled well. So if a caller passes a range in, we figure
-out subrange which is sector aligned in terms of start and end, and
-clear poison on those sectors and ignore rest of the range. And
-this itself will be an improvement over current behavior where 
-nothing is cleared if I/O is not sector aligned.
+ MAINTAINERS                                   |    3 +
+ arch/powerpc/configs/powernv_defconfig        |    5 +
+ arch/powerpc/include/asm/opal-api.h           |    2 +
+ arch/powerpc/include/asm/opal.h               |    3 +
+ arch/powerpc/include/asm/pnv-ocxl.h           |   40 +-
+ arch/powerpc/platforms/powernv/Kconfig        |    3 +
+ arch/powerpc/platforms/powernv/Makefile       |    1 +
+ arch/powerpc/platforms/powernv/ocxl.c         |   43 +
+ arch/powerpc/platforms/powernv/opal-call.c    |    2 +
+ arch/powerpc/platforms/powernv/pmem/Kconfig   |   21 +
+ arch/powerpc/platforms/powernv/pmem/Makefile  |    7 +
+ arch/powerpc/platforms/powernv/pmem/ocxl.c    | 1991 +++++++++++++++++
+ .../platforms/powernv/pmem/ocxl_internal.c    |  213 ++
+ .../platforms/powernv/pmem/ocxl_internal.h    |  254 +++
+ .../platforms/powernv/pmem/ocxl_sysfs.c       |   46 +
+ drivers/misc/ocxl/config.c                    |   74 +-
+ drivers/misc/ocxl/core.c                      |   61 +
+ drivers/misc/ocxl/link.c                      |   53 +
+ drivers/misc/ocxl/ocxl_internal.h             |   45 +-
+ include/linux/memory_hotplug.h                |    5 +
+ include/misc/ocxl.h                           |  122 +-
+ include/uapi/linux/ndctl.h                    |    1 +
+ include/uapi/nvdimm/ocxl-pmem.h               |  127 ++
+ mm/memory_hotplug.c                           |    4 +-
+ 24 files changed, 3029 insertions(+), 97 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/Kconfig
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/Makefile
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl.c
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_internal.c
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c
+ create mode 100644 include/uapi/nvdimm/ocxl-pmem.h
 
-> 
-> > nvdimm_clear_poison() seems to assume offset and len to be aligned to
-> > clear_err_unit boundary. But this is currently internal detail and is
-> > not exported for others to use. So for now, continue to align offset and
-> > length to SECTOR_SIZE boundary. Improving it further and to align it
-> > to clear_err_unit boundary is a TODO item for future.
-> 
-> When there is a poisoned range of persistent memory, it is recorded by
-> the badblocks infrastructure, which currently operates on sectors.  So,
-> no matter what the error unit is for the hardware, we currently can't
-> record/report to userspace anything smaller than a sector, and so that
-> is what we expect when clearing errors.
-> 
-> Continuing on for completeness, we will currently not map a page with
-> badblocks into a process' address space.  So, let's say you have 256
-> bytes of bad pmem, we will tell you we've lost 512 bytes, and even if
-> you access a valid mmap()d address in the same page as the poisoned
-> memory, you will get a segfault.
-> 
-> Userspace can fix up the error by calling write(2) and friends to
-> provide new data, or by punching a hole and writing new data to the hole
-> (which may result in getting a new block, or reallocating the old block
-> and zeroing it, which will clear the error).
-
-Fair enough. I do not need poison clearing at finer granularity. It might
-be needed once dev_dax path wants to clear poison. Not sure how exactly
-that works.
-
-> 
-> More comments below...
-> 
-> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> > ---
-> >  drivers/nvdimm/pmem.c | 22 ++++++++++++++++++----
-> >  1 file changed, 18 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> > index 075b11682192..e72959203253 100644
-> > --- a/drivers/nvdimm/pmem.c
-> > +++ b/drivers/nvdimm/pmem.c
-> > @@ -74,14 +74,28 @@ static blk_status_t pmem_clear_poison(struct pmem_device *pmem,
-> >  	sector_t sector;
-> >  	long cleared;
-> >  	blk_status_t rc = BLK_STS_OK;
-> > +	phys_addr_t start_aligned, end_aligned;
-> > +	unsigned int len_aligned;
-> >  
-> > -	sector = (offset - pmem->data_offset) / 512;
-> > +	/*
-> > +	 * Callers can pass arbitrary offset and len. But nvdimm_clear_poison()
-> > +	 * expects memory offset and length to meet certain alignment
-> > +	 * restrction (clear_err_unit). Currently nvdimm does not export
->                                                   ^^^^^^^^^^^^^^^^^^^^^^
-> > +	 * required alignment. So align offset and length to sector boundary
-> 
-> What is "nvdimm" in that sentence?  Because the nvdimm most certainly
-> does export the required alignment.  Perhaps you meant libnvdimm?
-
-I meant nvdimm_clear_poison() function in drivers/nvdimm/bus.c. Whatever
-it is called. It first queries alignement required (clear_err_unit) and
-then makes sure range passed in meets that alignment requirement.
-
-> 
-> > +	 * before passing it to nvdimm_clear_poison().
-> > +	 */
-> > +	start_aligned = ALIGN(offset, SECTOR_SIZE);
-> > +	end_aligned = ALIGN_DOWN((offset + len), SECTOR_SIZE) - 1;
-> > +	len_aligned = end_aligned - start_aligned + 1;
-> > +
-> > +	sector = (start_aligned - pmem->data_offset) / 512;
-> >  
-> > -	cleared = nvdimm_clear_poison(dev, pmem->phys_addr + offset, len);
-> > -	if (cleared < len)
-> > +	cleared = nvdimm_clear_poison(dev, pmem->phys_addr + start_aligned,
-> > +				      len_aligned);
-> > +	if (cleared < len_aligned)
-> >  		rc = BLK_STS_IOERR;
-> >  	if (cleared > 0 && cleared / 512) {
-> > -		hwpoison_clear(pmem, pmem->phys_addr + offset, cleared);
-> > +		hwpoison_clear(pmem, pmem->phys_addr + start_aligned, cleared);
-> >  		cleared /= 512;
-> >  		dev_dbg(dev, "%#llx clear %ld sector%s\n",
-> >  				(unsigned long long) sector, cleared,
-> 
-> We could potentially support clearing less than a sector, but I'd have
-> to understand the use cases better before offerring implementation
-> suggestions.
-
-I don't need clearing less than a secotr. Once somebody needs it they
-can implement it. All I am doing is making sure current logic is not
-broken when dax_zero_page_range() starts using this logic and passes
-an arbitrary range. We need to make sure we internally align I/O 
-and carve out an aligned sub-range and pass that subrange to
-nvdimm_clear_poison().
-
-So if you can make sure I am not breaking things and new interface
-will continue to clear poison on sector boundary, that will be great.
-
-Thanks
-Vivek
+-- 
+2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
