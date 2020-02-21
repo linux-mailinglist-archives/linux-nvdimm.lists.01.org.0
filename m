@@ -2,69 +2,69 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4169F166D9D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Feb 2020 04:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4DB166DA1
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Feb 2020 04:28:53 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C09EC10FC3610;
-	Thu, 20 Feb 2020 19:29:21 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 4496E10FC36C6;
+	Thu, 20 Feb 2020 19:29:23 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A782510FC3606
-	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 19:29:15 -0800 (PST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01L3KRO7014794
+	by ml01.01.org (Postfix) with ESMTPS id 2A40310FC3619
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 19:29:16 -0800 (PST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01L3JHNT067581
 	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 22:28:23 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2y8ubxwp51-1
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2y8ubvvvut-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 22:28:22 -0500
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Feb 2020 22:28:23 -0500
 Received: from localhost
-	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
 	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Fri, 21 Feb 2020 03:28:19 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	Fri, 21 Feb 2020 03:28:20 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+	by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Fri, 21 Feb 2020 03:28:11 -0000
+	Fri, 21 Feb 2020 03:28:12 -0000
 Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01L3SAf252232290
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01L3SBA740239416
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Fri, 21 Feb 2020 03:28:11 GMT
 Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD3A552051;
-	Fri, 21 Feb 2020 03:28:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6D7105204E;
+	Fri, 21 Feb 2020 03:28:11 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 31D4E5204F;
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id C201652059;
 	Fri, 21 Feb 2020 03:28:10 +0000 (GMT)
 Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 06839A03E7;
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 18E42A03E8;
 	Fri, 21 Feb 2020 14:28:04 +1100 (AEDT)
 From: "Alastair D'Silva" <alastair@au1.ibm.com>
 To: alastair@d-silva.org
-Subject: [PATCH v3 24/27] powerpc/powernv/pmem: Expose SMART data via ndctl
-Date: Fri, 21 Feb 2020 14:27:17 +1100
+Subject: [PATCH v3 25/27] powerpc/powernv/pmem: Expose the serial number in sysfs
+Date: Fri, 21 Feb 2020 14:27:18 +1100
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200221032720.33893-1-alastair@au1.ibm.com>
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-x-cbid: 20022103-4275-0000-0000-000003A3FE65
+x-cbid: 20022103-0016-0000-0000-000002E8CEC5
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022103-4276-0000-0000-000038B80C7B
-Message-Id: <20200221032720.33893-25-alastair@au1.ibm.com>
+x-cbparentid: 20022103-0017-0000-0000-0000334BED98
+Message-Id: <20200221032720.33893-26-alastair@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-02-20_19:2020-02-19,2020-02-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 impostorscore=0 clxscore=1015 priorityscore=1501 bulkscore=0
- suspectscore=1 malwarescore=0 mlxlogscore=871 spamscore=0 adultscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ spamscore=0 priorityscore=1501 mlxlogscore=928 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 adultscore=0 mlxscore=0 suspectscore=1
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
  definitions=main-2002210020
-Message-ID-Hash: Q7JTHVE6B7QX3LZ2HFHIUTLDLOKLBEQC
-X-Message-ID-Hash: Q7JTHVE6B7QX3LZ2HFHIUTLDLOKLBEQC
+Message-ID-Hash: EKDRECFKL3JXN2Y3VHYWXWDMKRUOADMD
+X-Message-ID-Hash: EKDRECFKL3JXN2Y3VHYWXWDMKRUOADMD
 X-MailFrom: alastair@au1.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -73,7 +73,7 @@ CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <b
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q7JTHVE6B7QX3LZ2HFHIUTLDLOKLBEQC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EKDRECFKL3JXN2Y3VHYWXWDMKRUOADMD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,218 +84,101 @@ Content-Transfer-Encoding: 7bit
 
 From: Alastair D'Silva <alastair@d-silva.org>
 
-This patch retrieves proprietary formatted SMART data and makes it
-available via ndctl. A later contribution will be made to ndctl to
-parse this data.
+This information will be used by ndctl in userspace to help users identify
+the device.
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 ---
- arch/powerpc/platforms/powernv/pmem/ocxl.c    | 128 ++++++++++++++++++
- .../platforms/powernv/pmem/ocxl_internal.h    |  18 +++
- include/uapi/linux/ndctl.h                    |   1 +
- 3 files changed, 147 insertions(+)
+ arch/powerpc/platforms/powernv/pmem/Makefile  |  2 +-
+ arch/powerpc/platforms/powernv/pmem/ocxl.c    |  5 +++
+ .../platforms/powernv/pmem/ocxl_internal.h    |  6 +++
+ .../platforms/powernv/pmem/ocxl_sysfs.c       | 37 +++++++++++++++++++
+ 4 files changed, 49 insertions(+), 1 deletion(-)
+ create mode 100644 arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c
 
+diff --git a/arch/powerpc/platforms/powernv/pmem/Makefile b/arch/powerpc/platforms/powernv/pmem/Makefile
+index 4ceda25907d4..d02870806f30 100644
+--- a/arch/powerpc/platforms/powernv/pmem/Makefile
++++ b/arch/powerpc/platforms/powernv/pmem/Makefile
+@@ -4,4 +4,4 @@ ccflags-$(CONFIG_PPC_WERROR)	+= -Werror
+ 
+ obj-$(CONFIG_OCXL_PMEM) += ocxlpmem.o
+ 
+-ocxlpmem-y := ocxl.o ocxl_internal.o
++ocxlpmem-y := ocxl.o ocxl_internal.o ocxl_sysfs.o
 diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl.c b/arch/powerpc/platforms/powernv/pmem/ocxl.c
-index d4ce5e9e0521..5cd1b6d78dd6 100644
+index 5cd1b6d78dd6..ec73713d05ad 100644
 --- a/arch/powerpc/platforms/powernv/pmem/ocxl.c
 +++ b/arch/powerpc/platforms/powernv/pmem/ocxl.c
-@@ -81,6 +81,129 @@ static int ndctl_config_size(struct nd_cmd_get_config_size *command)
- 	return 0;
- }
+@@ -1878,6 +1878,11 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto err;
+ 	}
  
-+/**
-+ * smart_header_parse() - Parse the first 64 bits of the SMART admin command response
-+ * @ocxlpmem: the device metadata
-+ * @length: out, returns the number of bytes in the response (excluding the 64 bit header)
-+ */
-+static int smart_header_parse(struct ocxlpmem *ocxlpmem, u32 *length)
-+{
-+	int rc;
-+	u64 val;
-+
-+	u16 data_identifier;
-+	u32 data_length;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-+				     ocxlpmem->admin_command.data_offset,
-+				     OCXL_LITTLE_ENDIAN, &val);
-+	if (rc)
-+		return rc;
-+
-+	data_identifier = val >> 48;
-+	data_length = val & 0xFFFFFFFF;
-+
-+	if (data_identifier != 0x534D) { // 'SM'
-+		dev_err(&ocxlpmem->dev,
-+			"Bad data identifier for smart data, expected 'SM', got '%-.*s'\n",
-+			2, (char *)&data_identifier);
-+		return -EINVAL;
++	if (ocxlpmem_sysfs_add(ocxlpmem)) {
++		dev_err(&pdev->dev, "Could not create sysfs entries\n");
++		goto err;
 +	}
 +
-+	*length = data_length;
-+	return 0;
-+}
-+
-+static int ndctl_smart(struct ocxlpmem *ocxlpmem, struct nd_cmd_pkg *pkg)
-+{
-+	u32 length, i;
-+	struct nd_ocxl_smart *out;
-+	int rc;
-+
-+	mutex_lock(&ocxlpmem->admin_command.lock);
-+
-+	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_SMART);
-+	if (rc)
-+		goto out;
-+
-+	rc = admin_command_execute(ocxlpmem);
-+	if (rc)
-+		goto out;
-+
-+	rc = admin_command_complete_timeout(ocxlpmem, ADMIN_COMMAND_SMART);
-+	if (rc < 0) {
-+		dev_err(&ocxlpmem->dev, "SMART timeout\n");
-+		goto out;
-+	}
-+
-+	rc = admin_response(ocxlpmem);
-+	if (rc < 0)
-+		goto out;
-+	if (rc != STATUS_SUCCESS) {
-+		warn_status(ocxlpmem, "Unexpected status from SMART", rc);
-+		goto out;
-+	}
-+
-+	rc = smart_header_parse(ocxlpmem, &length);
-+	if (rc)
-+		goto out;
-+
-+	pkg->nd_fw_size = length;
-+
-+	length = min(length, pkg->nd_size_out); // bytes
-+	out = (struct nd_ocxl_smart *)pkg->nd_payload;
-+	// Each SMART attribute is 2 * 64 bits
-+	out->count = length / (2 * sizeof(u64)); // attributes
-+
-+	for (i = 0; i < length; i += sizeof(u64)) {
-+		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-+					     ocxlpmem->admin_command.data_offset + sizeof(u64) + i,
-+					     OCXL_LITTLE_ENDIAN,
-+					     &out->attribs[i/sizeof(u64)]);
-+		if (rc)
-+			goto out;
-+	}
-+
-+	rc = admin_response_handled(ocxlpmem);
-+	if (rc)
-+		goto out;
-+
-+	rc = 0;
-+	goto out;
-+
-+out:
-+	mutex_unlock(&ocxlpmem->admin_command.lock);
-+	return rc;
-+}
-+
-+static int ndctl_call(struct ocxlpmem *ocxlpmem, void *buf, unsigned int buf_len)
-+{
-+	struct nd_cmd_pkg *pkg = buf;
-+
-+	if (buf_len < sizeof(struct nd_cmd_pkg)) {
-+		dev_err(&ocxlpmem->dev, "Invalid ND_CALL size=%u\n", buf_len);
-+		return -EINVAL;
-+	}
-+
-+	if (pkg->nd_family != NVDIMM_FAMILY_OCXL) {
-+		dev_err(&ocxlpmem->dev, "Invalid ND_CALL family=0x%llx\n", pkg->nd_family);
-+		return -EINVAL;
-+	}
-+
-+	switch (pkg->nd_command) {
-+	case ND_CMD_OCXL_SMART:
-+		ndctl_smart(ocxlpmem, pkg);
-+		break;
-+
-+	default:
-+		dev_err(&ocxlpmem->dev, "Invalid ND_CALL command=0x%llx\n", pkg->nd_command);
-+		return -EINVAL;
-+	}
-+
-+
-+	return 0;
-+}
-+
- static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
- 		 struct nvdimm *nvdimm,
- 		 unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
-@@ -88,6 +211,10 @@ static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
- 	struct ocxlpmem *ocxlpmem = container_of(nd_desc, struct ocxlpmem, bus_desc);
- 
- 	switch (cmd) {
-+	case ND_CMD_CALL:
-+		*cmd_rc = ndctl_call(ocxlpmem, buf, buf_len);
-+		return 0;
-+
- 	case ND_CMD_GET_CONFIG_SIZE:
- 		*cmd_rc = ndctl_config_size(buf);
- 		return 0;
-@@ -171,6 +298,7 @@ static int register_lpc_mem(struct ocxlpmem *ocxlpmem)
- 	set_bit(ND_CMD_GET_CONFIG_SIZE, &nvdimm_cmd_mask);
- 	set_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm_cmd_mask);
- 	set_bit(ND_CMD_SET_CONFIG_DATA, &nvdimm_cmd_mask);
-+	set_bit(ND_CMD_CALL, &nvdimm_cmd_mask);
- 
- 	set_bit(NDD_ALIASING, &nvdimm_flags);
- 
+ 	elapsed = 0;
+ 	timeout = ocxlpmem->readiness_timeout + ocxlpmem->memory_available_timeout;
+ 	while (!is_usable(ocxlpmem, false)) {
 diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
-index 927690f4888f..0eb7a35d24ae 100644
+index 0eb7a35d24ae..12304ceace61 100644
 --- a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
 +++ b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
-@@ -7,6 +7,7 @@
- #include <linux/libnvdimm.h>
- #include <uapi/nvdimm/ocxl-pmem.h>
- #include <linux/mm.h>
-+#include <linux/ndctl.h>
- 
- #define LABEL_AREA_SIZE	(1UL << PA_SECTION_SHIFT)
- #define DEFAULT_TIMEOUT 100
-@@ -98,6 +99,23 @@ struct ocxlpmem_function0 {
- 	struct ocxl_fn *ocxl_fn;
- };
- 
-+struct nd_ocxl_smart {
-+	__u8 count;
-+	__u8 reserved[7];
-+	__u64 attribs[0];
-+} __packed;
+@@ -246,3 +246,9 @@ int ns_response_handled(const struct ocxlpmem *ocxlpmem);
+  */
+ void warn_status(const struct ocxlpmem *ocxlpmem, const char *message,
+ 		 u8 status);
 +
-+struct nd_pkg_ocxl {
-+	struct nd_cmd_pkg gen;
-+	union {
-+		struct nd_ocxl_smart smart;
-+	};
++/**
++ * ocxlpmem_sysfs_add() - Create sysfs entries for an OpenCAPI persistent memory device
++ * @ocxlpmem: the device metadata
++ */
++int ocxlpmem_sysfs_add(struct ocxlpmem *ocxlpmem);
+diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c b/arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c
+new file mode 100644
+index 000000000000..7829e4bc887d
+--- /dev/null
++++ b/arch/powerpc/platforms/powernv/pmem/ocxl_sysfs.c
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0+
++// Copyright 2018 IBM Corp.
++
++#include <linux/sysfs.h>
++#include <linux/capability.h>
++#include <linux/limits.h>
++#include <linux/firmware.h>
++#include "ocxl_internal.h"
++
++static ssize_t serial_show(struct device *device, struct device_attribute *attr,
++			   char *buf)
++{
++	struct ocxlpmem *ocxlpmem = container_of(device, struct ocxlpmem, dev);
++	const struct ocxl_fn_config *fn_config = ocxl_function_config(ocxlpmem->ocxl_fn);
++
++	return scnprintf(buf, PAGE_SIZE, "%llu\n", fn_config->serial);
++}
++
++static struct device_attribute attrs[] = {
++	__ATTR_RO(serial),
 +};
 +
-+enum nd_cmd_ocxl {
-+	ND_CMD_OCXL_SMART = 1,
-+};
++int ocxlpmem_sysfs_add(struct ocxlpmem *ocxlpmem)
++{
++	int i, rc;
 +
- struct ocxlpmem {
- 	struct device dev;
- 	struct pci_dev *pdev;
-diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
-index de5d90212409..2885052e7f40 100644
---- a/include/uapi/linux/ndctl.h
-+++ b/include/uapi/linux/ndctl.h
-@@ -244,6 +244,7 @@ struct nd_cmd_pkg {
- #define NVDIMM_FAMILY_HPE2 2
- #define NVDIMM_FAMILY_MSFT 3
- #define NVDIMM_FAMILY_HYPERV 4
-+#define NVDIMM_FAMILY_OCXL 6
- 
- #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
- 					struct nd_cmd_pkg)
++	for (i = 0; i < ARRAY_SIZE(attrs); i++) {
++		rc = device_create_file(&ocxlpmem->dev, &attrs[i]);
++		if (rc) {
++			for (; --i >= 0;)
++				device_remove_file(&ocxlpmem->dev, &attrs[i]);
++
++			return rc;
++		}
++	}
++	return 0;
++}
 -- 
 2.24.1
 _______________________________________________
