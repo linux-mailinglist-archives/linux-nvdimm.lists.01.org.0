@@ -2,73 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F22C61685B2
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Feb 2020 18:55:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAB51686B8
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Feb 2020 19:33:02 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7464310FC362B;
-	Fri, 21 Feb 2020 09:56:18 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 73E2A10FC362F;
+	Fri, 21 Feb 2020 10:33:53 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 254D910FC3611
-	for <linux-nvdimm@lists.01.org>; Fri, 21 Feb 2020 09:56:14 -0800 (PST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01LHpGKk112808
-	for <linux-nvdimm@lists.01.org>; Fri, 21 Feb 2020 12:55:22 -0500
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2y8ucpft1b-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Fri, 21 Feb 2020 12:55:21 -0500
-Received: from localhost
-	by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <vaibhav@linux.ibm.com>;
-	Fri, 21 Feb 2020 17:55:19 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-	by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Fri, 21 Feb 2020 17:55:15 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01LHtEFt56623222
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Feb 2020 17:55:14 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 12CFDA4057;
-	Fri, 21 Feb 2020 17:55:14 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BFFD1A4053;
-	Fri, 21 Feb 2020 17:55:11 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.85.88.6])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Feb 2020 17:55:11 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linux-nvdimm@lists.01.org
-Subject: [ndctl PATCH] monitor: Add epoll timeout for forcing a full dimm health check
-Date: Fri, 21 Feb 2020 23:24:59 +0530
-X-Mailer: git-send-email 2.24.1
+	by ml01.01.org (Postfix) with ESMTPS id D7D4F10FC3629
+	for <linux-nvdimm@lists.01.org>; Fri, 21 Feb 2020 10:33:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1582309978;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 references:references; bh=1v386c33OCfoWq5rdrSRVkV3V8KG82wJZIl0LzRYsP4=;
+	b=K4xVyhOxsxLVihcMjrOJkHN3SEIatb1Sv8YaWcTTzWp+PBUtok0QJhkNWZcZlExsq/7CJ2
+	FM/syJw23aYHUnC0NxHph8zm+iA5A2pEAsw8DUEFfeE5xpQiVe2TPx4UYiTS+6br8umDoD
+	AZMd/gdkkMbEkUOKjJAqe5KiCAvEh6E=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-70-CXKSf2MjPw61ydoOohx6uA-1; Fri, 21 Feb 2020 13:32:54 -0500
+X-MC-Unique: CXKSf2MjPw61ydoOohx6uA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 493801137867;
+	Fri, 21 Feb 2020 18:32:53 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 548D85D9C5;
+	Fri, 21 Feb 2020 18:32:49 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Vivek Goyal <vgoyal@redhat.com>
+Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept arbitrary offset and len
+References: <20200218214841.10076-1-vgoyal@redhat.com>
+	<20200218214841.10076-3-vgoyal@redhat.com>
+	<x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
+	<20200220215707.GC10816@redhat.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Fri, 21 Feb 2020 13:32:48 -0500
+Message-ID: <x498skv3i5r.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 20022117-0016-0000-0000-000002E91094
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022117-0017-0000-0000-0000334C3201
-Message-Id: <20200221175459.255556-1-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-21_06:2020-02-21,2020-02-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=957
- priorityscore=1501 clxscore=1015 suspectscore=1 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002210135
-Message-ID-Hash: 63DIIKNQMHHO6BLMLKVTWKPEF2ZJPIMG
-X-Message-ID-Hash: 63DIIKNQMHHO6BLMLKVTWKPEF2ZJPIMG
-X-MailFrom: vaibhav@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: JAE3ZBWIPKZZSYU7KM42SDSPZBTGXBCI
+X-Message-ID-Hash: JAE3ZBWIPKZZSYU7KM42SDSPZBTGXBCI
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, hch@infradead.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/63DIIKNQMHHO6BLMLKVTWKPEF2ZJPIMG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JAE3ZBWIPKZZSYU7KM42SDSPZBTGXBCI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -77,127 +64,117 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-This patch adds a new command argument to the 'monitor' command namely
-'--check-interval' that triggers a call to notify_dimm_event() at
-regular intervals forcing a periodic check of dimm smart events.
+Vivek Goyal <vgoyal@redhat.com> writes:
 
-This behavior is useful for dimms that do not support event notifications
-in case the health status of an nvdimm changes. This is especially
-true in case of PAPR-SCM dimms as the PHYP hyper-visor doesn't provide
-any notifications to the guest kernel on a change in nvdimm health
-status. In such case periodic polling of the is the only way to track
-the health of a nvdimm.
+> On Thu, Feb 20, 2020 at 04:35:17PM -0500, Jeff Moyer wrote:
+>> Vivek Goyal <vgoyal@redhat.com> writes:
+>> 
+>> > Currently pmem_clear_poison() expects offset and len to be sector aligned.
+>> > Atleast that seems to be the assumption with which code has been written.
+>> > It is called only from pmem_do_bvec() which is called only from pmem_rw_page()
+>> > and pmem_make_request() which will only passe sector aligned offset and len.
+>> >
+>> > Soon we want use this function from dax_zero_page_range() code path which
+>> > can try to zero arbitrary range of memory with-in a page. So update this
+>> > function to assume that offset and length can be arbitrary and do the
+>> > necessary alignments as needed.
+>> 
+>> What caller will try to zero a range that is smaller than a sector?
+>
+> Hi Jeff,
+>
+> New dax zeroing interface (dax_zero_page_range()) can technically pass
+> a range which is less than a sector. Or which is bigger than a sector
+> but start and end are not aligned on sector boundaries.
 
-The patch updates monitor_event() adding a timeout value to
-epoll_wait() call. Also to prevent the possibility of a single dimm
-generating enough events thereby preventing check of health status of
-other nvdimms, a 'fullpoll_ts' time-stamp is added to keep track of
-when full health check of all dimms happened. If after epoll_wait()
-returns 'fullpoll_ts' time-stamp indicates last full dimm health check
-happened beyond 'check-interval' seconds then a full dimm health check
-is enforced.
+Sure, but who will call it with misaligned ranges?
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- Documentation/ndctl/ndctl-monitor.txt |  4 ++++
- ndctl/monitor.c                       | 31 ++++++++++++++++++++++++---
- 2 files changed, 32 insertions(+), 3 deletions(-)
+> At this point of time, all I care about is that case of an arbitrary
+> range is handeled well. So if a caller passes a range in, we figure
+> out subrange which is sector aligned in terms of start and end, and
+> clear poison on those sectors and ignore rest of the range. And
+> this itself will be an improvement over current behavior where 
+> nothing is cleared if I/O is not sector aligned.
 
-diff --git a/Documentation/ndctl/ndctl-monitor.txt b/Documentation/ndctl/ndctl-monitor.txt
-index 2239f047266d..14cc59d57157 100644
---- a/Documentation/ndctl/ndctl-monitor.txt
-+++ b/Documentation/ndctl/ndctl-monitor.txt
-@@ -108,6 +108,10 @@ will not work if "--daemon" is specified.
- The monitor will attempt to enable the alarm control bits for all
- specified events.
- 
-+-i::
-+--check-interval=::
-+	Force a recheck of dimm health every <n> seconds.
-+
- -u::
- --human::
- 	Output monitor notification as human friendly json format instead
-diff --git a/ndctl/monitor.c b/ndctl/monitor.c
-index 1755b87a5eeb..b72c5852524e 100644
---- a/ndctl/monitor.c
-+++ b/ndctl/monitor.c
-@@ -4,6 +4,7 @@
- #include <stdio.h>
- #include <json-c/json.h>
- #include <libgen.h>
-+#include <time.h>
- #include <dirent.h>
- #include <util/json.h>
- #include <util/filter.h>
-@@ -33,6 +34,7 @@ static struct monitor {
- 	bool daemon;
- 	bool human;
- 	bool verbose;
-+	unsigned int poll_timeout;
- 	unsigned int event_flags;
- 	struct log_ctx ctx;
- } monitor;
-@@ -322,9 +324,14 @@ static int monitor_event(struct ndctl_ctx *ctx,
- 		struct monitor_filter_arg *mfa)
- {
- 	struct epoll_event ev, *events;
--	int nfds, epollfd, i, rc = 0;
-+	int nfds, epollfd, i, rc = 0, polltimeout = -1;
- 	struct monitor_dimm *mdimm;
- 	char buf;
-+	/* last time a full poll happened */
-+	struct timespec fullpoll_ts, ts;
-+
-+	if (monitor.poll_timeout)
-+		polltimeout = monitor.poll_timeout * 1000;
- 
- 	events = calloc(mfa->num_dimm, sizeof(struct epoll_event));
- 	if (!events) {
-@@ -354,14 +361,30 @@ static int monitor_event(struct ndctl_ctx *ctx,
- 		}
- 	}
- 
-+	clock_gettime(CLOCK_BOOTTIME, &fullpoll_ts);
- 	while (1) {
- 		did_fail = 0;
--		nfds = epoll_wait(epollfd, events, mfa->num_dimm, -1);
--		if (nfds <= 0 && errno != EINTR) {
-+		nfds = epoll_wait(epollfd, events, mfa->num_dimm, polltimeout);
-+		if (nfds < 0 && errno != EINTR) {
- 			err(&monitor, "epoll_wait error: (%s)\n", strerror(errno));
- 			rc = -errno;
- 			goto out;
- 		}
-+
-+		/* If needed force a full poll of dimm health */
-+		clock_gettime(CLOCK_BOOTTIME, &ts);
-+		if ((fullpoll_ts.tv_sec - ts.tv_sec) > monitor.poll_timeout) {
-+			nfds = 0;
-+			dbg(&monitor, "forcing a full poll\n");
-+		}
-+
-+		/* If we timed out then fill events array with all dimms */
-+		if (nfds == 0) {
-+			list_for_each(&mfa->dimms, mdimm, list)
-+				events[nfds++].data.ptr = mdimm;
-+			fullpoll_ts = ts;
-+		}
-+
- 		for (i = 0; i < nfds; i++) {
- 			mdimm = events[i].data.ptr;
- 			if (util_dimm_event_filter(mdimm, monitor.event_flags)) {
-@@ -570,6 +593,8 @@ int cmd_monitor(int argc, const char **argv, struct ndctl_ctx *ctx)
- 				"use human friendly output formats"),
- 		OPT_BOOLEAN('v', "verbose", &monitor.verbose,
- 				"emit extra debug messages to log"),
-+		OPT_UINTEGER('i', "check-interval", &monitor.poll_timeout,
-+			     "force a dimm health recheck every <n> seconds"),
- 		OPT_END(),
- 	};
- 	const char * const u[] = {
--- 
-2.24.1
+I don't think this makes sense.  The caller needs to know about the
+blast radius of errors.  This is why I asked for a concrete example.
+It might make more sense, for example, to return an error if not all of
+the errors could be cleared.
+
+>> > nvdimm_clear_poison() seems to assume offset and len to be aligned to
+>> > clear_err_unit boundary. But this is currently internal detail and is
+>> > not exported for others to use. So for now, continue to align offset and
+>> > length to SECTOR_SIZE boundary. Improving it further and to align it
+>> > to clear_err_unit boundary is a TODO item for future.
+>> 
+>> When there is a poisoned range of persistent memory, it is recorded by
+>> the badblocks infrastructure, which currently operates on sectors.  So,
+>> no matter what the error unit is for the hardware, we currently can't
+>> record/report to userspace anything smaller than a sector, and so that
+>> is what we expect when clearing errors.
+>> 
+>> Continuing on for completeness, we will currently not map a page with
+>> badblocks into a process' address space.  So, let's say you have 256
+>> bytes of bad pmem, we will tell you we've lost 512 bytes, and even if
+>> you access a valid mmap()d address in the same page as the poisoned
+>> memory, you will get a segfault.
+>> 
+>> Userspace can fix up the error by calling write(2) and friends to
+>> provide new data, or by punching a hole and writing new data to the hole
+>> (which may result in getting a new block, or reallocating the old block
+>> and zeroing it, which will clear the error).
+>
+> Fair enough. I do not need poison clearing at finer granularity. It might
+> be needed once dev_dax path wants to clear poison. Not sure how exactly
+> that works.
+
+It doesn't.  :)
+
+>> > +	/*
+>> > +	 * Callers can pass arbitrary offset and len. But nvdimm_clear_poison()
+>> > +	 * expects memory offset and length to meet certain alignment
+>> > +	 * restrction (clear_err_unit). Currently nvdimm does not export
+>>                                                   ^^^^^^^^^^^^^^^^^^^^^^
+>> > +	 * required alignment. So align offset and length to sector boundary
+>> 
+>> What is "nvdimm" in that sentence?  Because the nvdimm most certainly
+>> does export the required alignment.  Perhaps you meant libnvdimm?
+>
+> I meant nvdimm_clear_poison() function in drivers/nvdimm/bus.c. Whatever
+> it is called. It first queries alignement required (clear_err_unit) and
+> then makes sure range passed in meets that alignment requirement.
+
+My point was your comment is misleading.
+
+>> We could potentially support clearing less than a sector, but I'd have
+>> to understand the use cases better before offerring implementation
+>> suggestions.
+>
+> I don't need clearing less than a secotr. Once somebody needs it they
+> can implement it. All I am doing is making sure current logic is not
+> broken when dax_zero_page_range() starts using this logic and passes
+> an arbitrary range. We need to make sure we internally align I/O 
+
+An arbitrary range is the same thing as less than a sector.  :)  Do you
+know of an instance where the range will not be sector-aligned and sized?
+
+> and carve out an aligned sub-range and pass that subrange to
+> nvdimm_clear_poison().
+
+And what happens to the rest?  The caller is left to trip over the
+errors?  That sounds pretty terrible.  I really think there needs to be
+an explicit contract here.
+
+> So if you can make sure I am not breaking things and new interface
+> will continue to clear poison on sector boundary, that will be great.
+
+I think allowing arbitrary ranges /could/ break things.  How it breaks
+things depends on what the caller is doing.
+
+If ther eare no callers using the interface in this way, then I see no
+need to relax the restriction.  I do think we could document it better.
+
+-Jeff
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
