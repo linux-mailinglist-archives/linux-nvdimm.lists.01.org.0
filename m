@@ -2,71 +2,193 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCA6168F67
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 22 Feb 2020 15:46:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41117169145
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 22 Feb 2020 19:30:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2C80E1007A831;
-	Sat, 22 Feb 2020 06:47:21 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=77.245.222.207; helo=53-253.static.spheral.ru; envelope-from=psobv@meta.ua; receiver=<UNKNOWN> 
-Received: from 53-253.static.spheral.ru (unknown [77.245.222.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A1A091007A82E;
+	Sat, 22 Feb 2020 10:31:10 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::f49; helo=mail-qv1-xf49.google.com; envelope-from=3nxnrxgykdfo256dn28gg8d6.4gedafmp-fn5aeedaklk.st.gj8@flex--adelva.bounces.google.com; receiver=<UNKNOWN> 
+Received: from mail-qv1-xf49.google.com (mail-qv1-xf49.google.com [IPv6:2607:f8b0:4864:20::f49])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A25F11007B1FF
-	for <linux-nvdimm@lists.01.org>; Sat, 22 Feb 2020 06:47:17 -0800 (PST)
-Message-ID: <0c2b72d622ee6fa28157613239edfc406329588141@meta.ua>
-From: Violet <psobv@meta.ua>
-To: linux-nvdimm@lists.01.org
-Subject: =?windows-1251?B?0uDs7ubl7e376SDv7vHyLeDz5Ojy?=
-Date: Sat, 22 Feb 2020 16:46:20 +0200
-MIME-Version: 1.0
-Message-ID-Hash: K2KHMRHIWTQBZJPLQFV2GSGCD522YKWH
-X-Message-ID-Hash: K2KHMRHIWTQBZJPLQFV2GSGCD522YKWH
-X-MailFrom: psobv@meta.ua
+	by ml01.01.org (Postfix) with ESMTPS id EA49D1007B1FC
+	for <linux-nvdimm@lists.01.org>; Sat, 22 Feb 2020 10:31:07 -0800 (PST)
+Received: by mail-qv1-xf49.google.com with SMTP id g6so3663943qvp.0
+        for <linux-nvdimm@lists.01.org>; Sat, 22 Feb 2020 10:30:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=1SCGFJcdT57UM9g569dFzCXIAoXI2cL9T0Egcs4At5A=;
+        b=rbOWC4VRcR9Ei8+SP5+fapjsG7JlPOKlvg+6qkAOKcy6S/PxZg8y9o8/iIVVyJzQkW
+         9ip7Q7kYYyXMXXXHv88LopTajfUnbdYyt5OkA+tLHFSAE90ujIrBQjaMBXPPp3jSfvC/
+         DVzVECbEepl/OuWA/FGV1dp5oEP9g6coMxU0VY7VWgdnJigkNDeJpwObPa47iOzjo3at
+         qMKV56vuAatorqaL/0c60rV+QnIljtSwi795S+MLa3Y7gsohW1qCnzUjKct0OM33VHCm
+         PxSouKW+/VhINbMOOj1hyCHu3RxI4zYU7SmlVsv+iSMtdW/a8qWiRR6aBgUJXOg8kr/B
+         yTcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=1SCGFJcdT57UM9g569dFzCXIAoXI2cL9T0Egcs4At5A=;
+        b=n0nJnuFaSDSmiRotkP9Dd8KMmzgZ1GmNWFQ5j32ZEALb45UWboMaSaBvBGAH5XdHxM
+         xzlzIBRqN8Q0lZv0HLTdDpY6EiiTioSBe0HPb4ZX8QCNQVUkc5emz8E9L9vs6uZ+Oluf
+         hwq7htH+Ldp8WItjhYSePe0PEAABMgMF+iCTTcV4GTjygKeRCs9n7pj3Brg8+lTtbmIJ
+         tFTrwpe+4lg25IFk6vMNWLkof2KnXQK6G3m1ERR0z/Yk6xV7A1pZHDpA8BD3hjaDrw+1
+         +vGhCUMbtwpHM5iNlni2T/8WMzCISZyP6uLXptF2iVGM70p43j4t2LgAKlX1VLQhwQGA
+         BjJg==
+X-Gm-Message-State: APjAAAUX7fezOp43oDCCTPqys7KLUBQJSsPVYWzVpjydX4hT/84ztzPw
+	prPzqHo0JU1PeXlrzD/4eznxzw5LRUA=
+X-Google-Smtp-Source: APXvYqyI0nbEkK8t5PqjH2XUeMtXnlvIm2qcZEUezASmjw62vNPGTkH8/bD15V7Jh7dUFdFSRS3DMwUqrcY=
+X-Received: by 2002:ac8:835:: with SMTP id u50mr38957444qth.15.1582396213599;
+ Sat, 22 Feb 2020 10:30:13 -0800 (PST)
+Date: Sat, 22 Feb 2020 10:30:09 -0800
+Message-Id: <20200222183010.197844-1-adelva@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.25.0.265.gbab2e86ba0-goog
+Subject: [PATCH 1/2] libnvdimm/of_pmem: handle memory-region in DT
+From: Alistair Delva <adelva@google.com>
+To: linux-kernel@vger.kernel.org
+Message-ID-Hash: 3EM2JAO24TNUV4CFLLRVANDNZX26FXHW
+X-Message-ID-Hash: 3EM2JAO24TNUV4CFLLRVANDNZX26FXHW
+X-MailFrom: 3NXNRXgYKDFo256DN28GG8D6.4GEDAFMP-FN5AEEDAKLK.ST.GJ8@flex--adelva.bounces.google.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Kenny Root <kroot@google.com>, Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org, linux-nvdimm@lists.01.org, kernel-team@android.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K2KHMRHIWTQBZJPLQFV2GSGCD522YKWH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3EM2JAO24TNUV4CFLLRVANDNZX26FXHW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-xODy4CDoIOzl8fLuIO/w7uLl5OXt6P86IKAgMjctMjgg9OXi8ODr/y4NCg0KzeDw8/jl7ejlIPLg
-7O7m5e3t+/Ug7/Dg4ujrLg0KDQrK4Oog6Ofh5ebg8vwg6CD38u4g5OXr4PL8IOXx6+gg7/Du8u7q
-7usg8+blIPHu8fLg4uvl7S4NCg0K1uXr5eLg/yDg8+To8u7w6P86DQoNCi0g5Ov/IPHu4fHy4uXt
-7ejq7uIg6CDo7eLl8fLu8O7iLCDh6Oft5fEt6O3y5fDl8fsg6u7y7vD79SDr5ebg8iDiIO/u6+Ug
-wt3EOyCgDQoNCi0g5Ov/IPLu7y3s5e3l5Obl8O7iIO/w6CDu8OPg7ejn4Pbo6CDoIOru7fLw7uvl
-IPDg4e7y+yDv8OXk7/Do//Lo/yDiIPH05fDlIMLdxDsgoA0KDQotIOTr/yD96vHv5eTo8u7w7uIs
-IOvu4+jx8u7iLCDk5err4PDg7fLu4iDl5uXk7eXi7e4g8OX44P756PUg8uXq8/no5SDn4OTg9+gg
-wt3EOyCgDQoNCi0g5Ov/IPDz6u7i7uTo8uXr5ekg6CDx7vLw8+Tt6Oru4iDy4Ozu5uXt7e4t4fDu
-6uXw8ero9SDu8uTl6+7iIOgg6u7s7+Dt6Ok7oKANCg0KLSDk6/8g7/Dg6vLo6u7iIPHy4Ovq6OLg
-/vno9fH/IPEgIu/w7uHr5ezg7Ogg7eAg8uDs7ubt5SIsIO/w6CDv5fDl7OX55e3o6CDy7uLg8O7i
-IPfl8OXnIPLg7O7m5e3t8/4NCg0K4/Dg7ej28yDT6vDg6O37IOgg6PUg7+7x6+Xk8/755ewg8uDs
-7ubl7e3u7CDu9O7w7Ovl7ejoOyCgDQoNCi0g5Ov/IP7w6PHy7uIsIO/w4Ory6Orz/vno9SDiIO7h
-6+Dx8ugg8uDs7ubl7e3u4+4g7/Dg4uAuIKANCg0Kz+7i5fHy6uAg5O3/Og0KDQoxLiDS4Ozu5uXt
-7fvlIO7w4+Dt+yDT6vDg6O37LiDP7vD/5O7qIO/l8OXs5fnl7ej/IOPw8+fu4iD35fDl5yDj8ODt
-6PbzLg0KDQoyLiDP7vD/5O7qIO707vDs6+Xt6P8g8u7i4PDu4iDoIPPx6+7i6P8g4vvv7uvt5e3o
-/yDy4Ozu5uXt7fv1IPTu8Ozg6/zt7vHy5ekNCg0KMy4gzeDw8/jl7ejlIPLg7O7m5e3t+/Ug7/Dg
-4ujrLiDK4Oog6Ofh5ebg8vwgKOjn4eDi6PL88f8g7vIpIPHy4PLz8eAgIu3g8PP46PLl6/wiDQoN
-CjQuIMTl6fHy4uj/IOTuIOgg7+7x6+Ug8e7x8uDi6+Xt6P8g7/Du8u7q7uvgIO4g7eDw8/jl7ejl
-IPLg7O7m5e3t+/Ug7/Dg4ujrDQoNCjUuIM3gIPfy7iDu4fDg+eDl8iDi7ejs4O3o5SDy4Ozu5u3/
-IO/w6CDy4Ozu5uXt7e7sIO707vDs6+Xt6Ogg8u7i4PDu4i4NCs/u8uXt9ujg6/zt++Ug7eDw8/jl
-7ej/IPLg7O7m5e3t+/Ug7/Dg4ujrLiCgDQoNCjYuINHy8ODt4CDv8O7o8fXu5uTl7ej/IPLu4uDw
-7uIuINHl8PLo9Ojq4PIgRVVSLjEsICjk5err4PDg9uj/Lejt4u7p8SkuINPx6+7i6P+goA0K7/Do
-7OXt5e3o/yDt7vDsIPHu4+vg+OXt6P8g7iDA8fHu9ujg9ujoIOzl5uTzINPq8ODo7e7pIOggxdEg
-oA0KDQo3LiDS4Ozu5uXt7fvlIPDo8eroLqAgxO7q8+zl7fLg6/zt++Ug7/Du4uXw6ugg7+7x6+Ug
-7vTu8Ozr5e3o/yDy7uLg8O7iLqCgDQoNCjguIMDi8u7w6Ofu4uDt7fvpIP3q7u3u7Oj35fHq6Okg
-7u/l8ODy7vAgKMDFzikgoA0KDQrP5fDl6fLoIO3gIPHg6fIgPj4+DQoNCi0tDQrRIPPi4Obl7ejl
-7CwgoA0KwO3g8fLg8ej/INHl7OXt7uLt4A0KZW1haWwt7ODw6uXy7uvu4w0KV2ViOiBodHRwOi8v
-dWtydmVkLmluLnVhL6AgDQoNCs7y6uDnIO7yIO/u9/L7LiDo6+gg7+7m4Ovu4uDy/PH/IO3gINHP
-QU0NCkxpc3QtVW5zdWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciBvciBjb21wbGFpbiDgYu51
-dCBTUMDMDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8g
-dW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEu
-b3JnCg==
+From: Kenny Root <kroot@google.com>
+
+Add support for parsing the 'memory-region' DT property in addition to
+the 'reg' DT property. This enables use cases where the pmem region is
+not in I/O address space or dedicated memory (e.g. a bootloader
+carveout).
+
+Signed-off-by: Kenny Root <kroot@google.com>
+Signed-off-by: Alistair Delva <adelva@google.com>
+Cc: "Oliver O'Halloran" <oohall@gmail.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-nvdimm@lists.01.org
+Cc: kernel-team@android.com
+---
+ drivers/nvdimm/of_pmem.c | 75 ++++++++++++++++++++++++++--------------
+ 1 file changed, 50 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+index 8224d1431ea9..a68e44fb0041 100644
+--- a/drivers/nvdimm/of_pmem.c
++++ b/drivers/nvdimm/of_pmem.c
+@@ -14,13 +14,47 @@ struct of_pmem_private {
+ 	struct nvdimm_bus *bus;
+ };
+ 
++static void of_pmem_register_region(struct platform_device *pdev,
++				    struct nvdimm_bus *bus,
++				    struct device_node *np,
++				    struct resource *res, bool is_volatile)
++{
++	struct nd_region_desc ndr_desc;
++	struct nd_region *region;
++
++	/*
++	 * NB: libnvdimm copies the data from ndr_desc into it's own
++	 * structures so passing a stack pointer is fine.
++	 */
++	memset(&ndr_desc, 0, sizeof(ndr_desc));
++	ndr_desc.numa_node = dev_to_node(&pdev->dev);
++	ndr_desc.target_node = ndr_desc.numa_node;
++	ndr_desc.res = res;
++	ndr_desc.of_node = np;
++	set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
++
++	if (is_volatile)
++		region = nvdimm_volatile_region_create(bus, &ndr_desc);
++	else
++		region = nvdimm_pmem_region_create(bus, &ndr_desc);
++
++	if (!region)
++		dev_warn(&pdev->dev,
++			 "Unable to register region %pR from %pOF\n",
++			 ndr_desc.res, np);
++	else
++		dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
++			ndr_desc.res, np);
++}
++
+ static int of_pmem_region_probe(struct platform_device *pdev)
+ {
+ 	struct of_pmem_private *priv;
+-	struct device_node *np;
++	struct device_node *mrp, *np;
+ 	struct nvdimm_bus *bus;
++	struct resource res;
+ 	bool is_volatile;
+-	int i;
++	int i, ret;
+ 
+ 	np = dev_of_node(&pdev->dev);
+ 	if (!np)
+@@ -46,31 +80,22 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+ 			is_volatile ? "volatile" : "non-volatile",  np);
+ 
+ 	for (i = 0; i < pdev->num_resources; i++) {
+-		struct nd_region_desc ndr_desc;
+-		struct nd_region *region;
+-
+-		/*
+-		 * NB: libnvdimm copies the data from ndr_desc into it's own
+-		 * structures so passing a stack pointer is fine.
+-		 */
+-		memset(&ndr_desc, 0, sizeof(ndr_desc));
+-		ndr_desc.numa_node = dev_to_node(&pdev->dev);
+-		ndr_desc.target_node = ndr_desc.numa_node;
+-		ndr_desc.res = &pdev->resource[i];
+-		ndr_desc.of_node = np;
+-		set_bit(ND_REGION_PAGEMAP, &ndr_desc.flags);
+-
+-		if (is_volatile)
+-			region = nvdimm_volatile_region_create(bus, &ndr_desc);
+-		else
+-			region = nvdimm_pmem_region_create(bus, &ndr_desc);
++		of_pmem_register_region(pdev, bus, np, &pdev->resource[i],
++					is_volatile);
++	}
+ 
+-		if (!region)
+-			dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
+-					ndr_desc.res, np);
++	i = 0;
++	while ((mr_np = of_parse_phandle(np, "memory-region", i++))) {
++		ret = of_address_to_resource(mr_np, 0, &res);
++		if (ret)
++			dev_warn(
++				&pdev->dev,
++				"Unable to acquire memory-region from %pOF: %d\n",
++				mr_np, ret);
+ 		else
+-			dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
+-					ndr_desc.res, np);
++			of_pmem_register_region(pdev, bus, np, &res,
++						is_volatile);
++		of_node_put(mr_np);
+ 	}
+ 
+ 	return 0;
+-- 
+2.25.0.265.gbab2e86ba0-goog
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
