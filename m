@@ -1,55 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F5A169A95
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Feb 2020 00:03:40 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E40A169AAB
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Feb 2020 00:18:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 32E651007B1F1;
-	Sun, 23 Feb 2020 15:04:30 -0800 (PST)
-Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.249; helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au [211.29.132.249])
-	by ml01.01.org (Postfix) with ESMTP id 6DC561007B1F1
-	for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 15:04:26 -0800 (PST)
-Received: from dread.disaster.area (pa49-195-185-106.pa.nsw.optusnet.com.au [49.195.185.106])
-	by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id C92953A2160;
-	Mon, 24 Feb 2020 10:03:31 +1100 (AEDT)
-Received: from dave by dread.disaster.area with local (Exim 4.92.3)
-	(envelope-from <david@fromorbit.com>)
-	id 1j60Ha-0004Lm-SA; Mon, 24 Feb 2020 10:03:30 +1100
-Date: Mon, 24 Feb 2020 10:03:30 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
- arbitrary offset and len
-Message-ID: <20200223230330.GE10737@dread.disaster.area>
-References: <20200218214841.10076-1-vgoyal@redhat.com>
- <20200218214841.10076-3-vgoyal@redhat.com>
- <x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
- <20200220215707.GC10816@redhat.com>
- <x498skv3i5r.fsf@segfault.boston.devel.redhat.com>
- <20200221201759.GF25974@redhat.com>
+	by ml01.01.org (Postfix) with ESMTP id 4407F1007B1F6;
+	Sun, 23 Feb 2020 15:18:53 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com; envelope-from=jbi.octave@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 141721007B1F1
+	for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 15:18:50 -0800 (PST)
+Received: by mail-wm1-x344.google.com with SMTP id t23so7197370wmi.1
+        for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 15:17:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=m+LokEgk1OhCrIxCmqaU1nM/hbi0PMRKHeGZ/+qQiZ0=;
+        b=WxJxvW7S7Tz2b6SBXdAVYnjRHLSfa7FbKJLMOZlTGVrI2g01Fgn1qfwPi31Tpvxz/F
+         mtoIEApfsV+vV4P6AYC2imNjwiPxX6kR/eq+B/kav2hBTYR5oSKABqpmoyQ+lVmrSH4H
+         gmIEShzOYsMb7vB12RlsHijOgSMF9BXmKF2kmVPa/BylY5BEhJSGihsBdZb64/TwOS4/
+         zVcjeV9iHUfXWXFNF8JA7Ro20aRnz+nGYgEb7QNHoVj6FzDIfsWiJWTRsueCexqOUt4V
+         lV4MeE9HuAoLj9oAbCXL8/3GSY6/+l8RzDyEKgSE2gaZFVg5X1z9CyJ0HpiGrNbgEP4s
+         Sfkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=m+LokEgk1OhCrIxCmqaU1nM/hbi0PMRKHeGZ/+qQiZ0=;
+        b=Oux5xVmgG1iNX3RAfl44HHpd/ejhOfIhWYnAYMiGDqLDYQ8Vk920LPOHIqZNdSvujM
+         zjf1YZplpA7X1izUv+SjPnPrAci5CXYYrlqBfC8/GUlQoiZRlj9mOfLnMucn9CnkyKiJ
+         CIfpPlGqm5Vec3lyU9HuP06+HcuNqX07sganVibWSk7eXFO0uYvDu39gzMTlKi+r7opE
+         mZwFRwyQloSQQNkDMRHuXgGYkASZEpLDT2h4D+FQbtGeNrh8OpkmGsOPyB3y5wLyomVm
+         +CyyoZ93FlxeUVErBWONCx2tK24XCsvYvDw0cfpKeSae8D0JhUC7OiodkFoUMebBzxX/
+         UoDQ==
+X-Gm-Message-State: APjAAAVb8hR9YNcCTsfo2ox9EfLZPGaibDeka/U8qeWCs7MzaKEFOXaH
+	Reau1CmZWiQpES4SJS/qaw==
+X-Google-Smtp-Source: APXvYqx1xZoZd3Mg7blMfa6A8ZoF9XsfYVxAGm7/w6r4xbRVfj5XMCLb2k9zu8tiV2VMfYJA/cbBeA==
+X-Received: by 2002:a1c:16:: with SMTP id 22mr18168884wma.8.1582499875389;
+        Sun, 23 Feb 2020 15:17:55 -0800 (PST)
+Received: from ninjahost.lan (host-2-102-13-223.as13285.net. [2.102.13.223])
+        by smtp.googlemail.com with ESMTPSA id q6sm8968203wrf.67.2020.02.23.15.17.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Feb 2020 15:17:54 -0800 (PST)
+From: Jules Irenge <jbi.octave@gmail.com>
+To: boqun.feng@gmail.com
+Subject: [PATCH 02/30] dax: Add missing annotations ofr dax_read_lock() and dax_read_unlock()
+Date: Sun, 23 Feb 2020 23:16:43 +0000
+Message-Id: <20200223231711.157699-3-jbi.octave@gmail.com>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200223231711.157699-1-jbi.octave@gmail.com>
+References: <0/30>
+ <20200223231711.157699-1-jbi.octave@gmail.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200221201759.GF25974@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.3 cv=LYdCFQXi c=1 sm=1 tr=0
-	a=bkRQb8bsQZKWSSj4M57YXw==:117 a=bkRQb8bsQZKWSSj4M57YXw==:17
-	a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=l697ptgUJYAA:10
-	a=20KFwNOVAAAA:8 a=7-415B0cAAAA:8 a=Tiexoni3D8iDDdk-dk8A:9
-	a=e9bV8kUA3kBD_Rgu:21 a=cgdUXTeVlpyUC10k:21 a=CjuIK1q_8ugA:10
-	a=biEYGPWJfzWAr4FL6Ov7:22
-Message-ID-Hash: PM2YQGD23I52Q7VENSNZDAXTBGJBQJHB
-X-Message-ID-Hash: PM2YQGD23I52Q7VENSNZDAXTBGJBQJHB
-X-MailFrom: david@fromorbit.com
+Message-ID-Hash: LEVGXDD2MSLICDDMINAH7UIYSKT36MMA
+X-Message-ID-Hash: LEVGXDD2MSLICDDMINAH7UIYSKT36MMA
+X-MailFrom: jbi.octave@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, hch@infradead.org, dm-devel@redhat.com
+CC: jbi.octave@gmail.com, linux-kernel@vger.kernel.org, "open list:DEVICE DIRECT ACCESS DAX" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PM2YQGD23I52Q7VENSNZDAXTBGJBQJHB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LEVGXDD2MSLICDDMINAH7UIYSKT36MMA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,124 +74,44 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 21, 2020 at 03:17:59PM -0500, Vivek Goyal wrote:
-> On Fri, Feb 21, 2020 at 01:32:48PM -0500, Jeff Moyer wrote:
-> > Vivek Goyal <vgoyal@redhat.com> writes:
-> > 
-> > > On Thu, Feb 20, 2020 at 04:35:17PM -0500, Jeff Moyer wrote:
-> > >> Vivek Goyal <vgoyal@redhat.com> writes:
-> > >> 
-> > >> > Currently pmem_clear_poison() expects offset and len to be sector aligned.
-> > >> > Atleast that seems to be the assumption with which code has been written.
-> > >> > It is called only from pmem_do_bvec() which is called only from pmem_rw_page()
-> > >> > and pmem_make_request() which will only passe sector aligned offset and len.
-> > >> >
-> > >> > Soon we want use this function from dax_zero_page_range() code path which
-> > >> > can try to zero arbitrary range of memory with-in a page. So update this
-> > >> > function to assume that offset and length can be arbitrary and do the
-> > >> > necessary alignments as needed.
-> > >> 
-> > >> What caller will try to zero a range that is smaller than a sector?
-> > >
-> > > Hi Jeff,
-> > >
-> > > New dax zeroing interface (dax_zero_page_range()) can technically pass
-> > > a range which is less than a sector. Or which is bigger than a sector
-> > > but start and end are not aligned on sector boundaries.
-> > 
-> > Sure, but who will call it with misaligned ranges?
-> 
-> create a file foo.txt of size 4K and then truncate it.
-> 
-> "truncate -s 23 foo.txt". Filesystems try to zero the bytes from 24 to
-> 4095.
+Sparse reports warning at dax_read_lock() and at dax_read_unlock()
 
-This should fail with EIO. Only full page writes should clear the
-bad page state, and partial writes should therefore fail because
-they do not guarantee the data in the filesystem block is all good.
+warning: context imbalance in dax_read_lock() - wrong count at exit
+ warning: context imbalance in dax_read_unlock() - unexpected unlock
 
-If this zeroing was a buffered write to an address with a bad
-sector, then the writeback will fail and the user will (eventually)
-get an EIO on the file.
+The root cause is the mnissing annotations at dax_read_lock()
+	and dax_read_unlock()
 
-DAX should do the same thing, except because the zeroing is
-synchronous (i.e. done directly by the truncate syscall) we can -
-and should - return EIO immediately.
+Add the missing __acquires(&dax_srcu) notations to dax_read_lock()
+Add the missing __releases(&dax_srcu) annotation to dax_read_unlock()
 
-Indeed, with your code, if we then extend the file by truncating up
-back to 4k, then the range between 23 and 512 is still bad, even
-though we've successfully zeroed it and the user knows it. An
-attempt to read anywhere in this range (e.g. 10 bytes at offset 100)
-will fail with EIO, but reading 10 bytes at offset 2000 will
-succeed.
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+---
+ drivers/dax/super.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-That's *awful* behaviour to expose to userspace, especially when
-they look at the fs config and see that it's using both 4kB block
-and sector sizes...
-
-The only thing that makes sense from a filesystem perspective is
-clearing bad page state when entire filesystem blocks are
-overwritten. The data in a filesystem block is either good or bad,
-and it doesn't matter how many internal (kernel or device) sectors
-it has.
-
-> > And what happens to the rest?  The caller is left to trip over the
-> > errors?  That sounds pretty terrible.  I really think there needs to be
-> > an explicit contract here.
-> 
-> Ok, I think is is the contentious bit. Current interface
-> (__dax_zero_page_range()) either clears the poison (if I/O is aligned to
-> sector) or expects page to be free of poison.
-> 
-> So in above example, of "truncate -s 23 foo.txt", currently I get an error
-> because range being zeroed is not sector aligned. So
-> __dax_zero_page_range() falls back to calling direct_access(). Which
-> fails because there are poisoned sectors in the page.
-> 
-> With my patches, dax_zero_page_range(), clears the poison from sector 1 to
-> 7 but leaves sector 0 untouched and just writes zeroes from byte 0 to 511
-> and returns success.
-
-Ok, kernel sectors are not the unit of granularity bad page state
-should be managed at. They don't match page state granularity, and
-they don't match filesystem block granularity, and the whacky
-"partial writes silently succeed, reads fail unpredictably"
-assymetry it leads to will just cause problems for users.
-
-> So question is, is this better behavior or worse behavior. If sector 0
-> was poisoned, it will continue to remain poisoned and caller will come
-> to know about it on next read and then it should try to truncate file
-> to length 0 or unlink file or restore that file to get rid of poison.
-
-Worse, because the filesystem can't track what sub-parts of the
-block are bad and that leads to inconsistent data integrity status
-being exposed to userspace.
-
-
-> IOW, if a partial block is being zeroed and if it is poisoned, caller
-> will not be return an error and poison will not be cleared and memory
-> will be zeroed. What do we expect in such cases.
-> 
-> Do we expect an interface where if there are any bad blocks in the range
-> being zeroed, then they all should be cleared (and hence all I/O should
-> be aligned) otherwise error is returned. If yes, I could make that
-> change.
-> 
-> Downside of current interface is that it will clear as many blocks as
-> possible in the given range and leave starting and end blocks poisoned
-> (if it is unaligned) and not return error. That means a reader will
-> get error on these blocks again and they will have to try to clear it
-> again.
-
-Which is solved by having partial page writes always EIO on poisoned
-memory.
-
-Cheers,
-
-Dave.
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 26a654dbc69a..f872a2fb98d4 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -28,13 +28,13 @@ static struct super_block *dax_superblock __read_mostly;
+ static struct hlist_head dax_host_list[DAX_HASH_SIZE];
+ static DEFINE_SPINLOCK(dax_host_lock);
+ 
+-int dax_read_lock(void)
++int dax_read_lock(void) __acquires(&dax_srcu)
+ {
+ 	return srcu_read_lock(&dax_srcu);
+ }
+ EXPORT_SYMBOL_GPL(dax_read_lock);
+ 
+-void dax_read_unlock(int id)
++void dax_read_unlock(int id) __releases(&dax_srcu)
+ {
+ 	srcu_read_unlock(&dax_srcu, id);
+ }
 -- 
-Dave Chinner
-david@fromorbit.com
+2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
