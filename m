@@ -1,44 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFF1169383
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 23 Feb 2020 03:23:48 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F7D16939A
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 23 Feb 2020 03:24:19 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5EFCA10FC3370;
-	Sat, 22 Feb 2020 18:24:39 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTP id 7B85A10FC337C;
+	Sat, 22 Feb 2020 18:25:10 -0800 (PST)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6189810FC3361
-	for <linux-nvdimm@lists.01.org>; Sat, 22 Feb 2020 18:24:37 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 5A48010FC3370
+	for <linux-nvdimm@lists.01.org>; Sat, 22 Feb 2020 18:25:08 -0800 (PST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 42C3124670;
-	Sun, 23 Feb 2020 02:23:44 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id 40C5422464;
+	Sun, 23 Feb 2020 02:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1582424625;
-	bh=99EtiNtJdAvPT2as60AJ2VmPObSheEPp0q5rtgVAgns=;
+	s=default; t=1582424656;
+	bh=+4WPWUaGDWLShhdy5FaNvPbfl02ykHihgTT9PqSSayA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FsLF2fFePkndfvhHhCTdww8Olpm5/+yJkblEz45b/pC+RWYMiBYVJNt/DxPkZmU6j
-	 wQN9Hxp7UWzBhcUU3ZS6meDFZ8xaOUJkWl+0gTo/tLGvzOjjA5D72X9yK0yrsnkA0H
-	 GOoTaXm8cROKS6N/4AdGglxbHGlQ/7ysYqtEaGHk=
+	b=k3nvsnYMtUJ8E7He9fK3XluVy5ErBPbePaT2uj3qqS8RoeSzHVqTWUnolGZZ+Abr9
+	 ATZpKXCh8X91Y+J9MarZSr1MirQjdjLu8SsRPHbjapCGa96LDd/+wML+GQIobHWFdi
+	 TykNNCMJXZZxzbfzRdNLZBaYFK6yoQEOtqwtIZV8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 04/25] dax: pass NOWAIT flag to iomap_apply
-Date: Sat, 22 Feb 2020 21:23:18 -0500
-Message-Id: <20200223022339.1885-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 03/21] dax: pass NOWAIT flag to iomap_apply
+Date: Sat, 22 Feb 2020 21:23:53 -0500
+Message-Id: <20200223022411.2159-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200223022339.1885-1-sashal@kernel.org>
-References: <20200223022339.1885-1-sashal@kernel.org>
+In-Reply-To: <20200223022411.2159-1-sashal@kernel.org>
+References: <20200223022411.2159-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-Message-ID-Hash: JUFAP5BQWYUJ7I57B7DMOLMNUKLPQLMA
-X-Message-ID-Hash: JUFAP5BQWYUJ7I57B7DMOLMNUKLPQLMA
+Message-ID-Hash: PGKCRMJC4XJHCKE77RHQY7LFO3DG5QVI
+X-Message-ID-Hash: PGKCRMJC4XJHCKE77RHQY7LFO3DG5QVI
 X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -46,7 +46,7 @@ CC: Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>, Sasha Levin <sashal
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JUFAP5BQWYUJ7I57B7DMOLMNUKLPQLMA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PGKCRMJC4XJHCKE77RHQY7LFO3DG5QVI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -77,10 +77,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/fs/dax.c b/fs/dax.c
-index f0d932fa39c20..d09701aa6f2f4 100644
+index ddb4981ae32eb..34a55754164f4 100644
 --- a/fs/dax.c
 +++ b/fs/dax.c
-@@ -1301,6 +1301,9 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
+@@ -1057,6 +1057,9 @@ dax_iomap_rw(struct kiocb *iocb, struct iov_iter *iter,
  		lockdep_assert_held(&inode->i_rwsem);
  	}
  
