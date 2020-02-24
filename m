@@ -1,66 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A328D169BEE
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Feb 2020 02:43:45 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52F2169BF9
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 24 Feb 2020 02:51:21 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 664F710FC33E6;
-	Sun, 23 Feb 2020 17:44:36 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::a43; helo=mail-vk1-xa43.google.com; envelope-from=adelva@google.com; receiver=<UNKNOWN> 
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
+	by ml01.01.org (Postfix) with ESMTP id 028C810FC33E7;
+	Sun, 23 Feb 2020 17:52:12 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::342; helo=mail-wm1-x342.google.com; envelope-from=jbi.octave@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 51DF810FC337F
-	for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 17:44:34 -0800 (PST)
-Received: by mail-vk1-xa43.google.com with SMTP id m195so2097151vkh.10
-        for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 17:43:42 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id A498310FC33E6
+	for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 17:52:08 -0800 (PST)
+Received: by mail-wm1-x342.google.com with SMTP id s10so7364618wmh.3
+        for <linux-nvdimm@lists.01.org>; Sun, 23 Feb 2020 17:51:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/tDUe/596kLQOTI3w8zi8SEzFY93PKMz1mi66rU0+Hs=;
-        b=odvADANgVGTTfCRvnRE2ojhtUfO+STbMJFvaug7W5NcEtwaHV2bzfquurK62hxfoxz
-         J1WGUscx/FqcJyd2LKg0uW/ayUJhMz9gW4laps101NC0y7kosjR2vtcLKWV5HCwLaVXZ
-         55q8ZXghnSNGEp1J+fcMyICppzh9rikjzkwxhEZjC9Q33G6d4jZafMi9JMz3Tpocwicf
-         ZKssWuh3fB05xobe3VJud4FR6mqwnA8UcC5XiVkFAT8aT3bmApl0EtWQGrD/KIvtlBGx
-         xQpPlASjuOcmfu9RllWf90OuQBMIYy75dsmFnMc9rbZkj0Ote8ki0v0nu1zQ3Zilf1wF
-         pipQ==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nfdAonBHBDdIO56FXt/6K3IvqAFG9q35tqL/Ax7yCLk=;
+        b=FFO+GTQRYzvhCR/T9+OWH1M/t3DTcKoSYbe3tNNlO+4/iYItgFWLssom6rF8Xp9YL8
+         FxIOs3ucAdHWJObclb57laiH68CJjjRonzGzNSWiCQ/ESHEqfnKpwxZFfjpEupFud1Gh
+         ScWU0ls2v0O4nQQImaNXlT+NkoNmtJKDBODogXyRBkFgjkWET9G11A95E8WFvbabMkKT
+         9rXEO9BXZPJFODc7CEd8pXl1KQuU8Kb3GqpOCwqpN8BcPH7Xx+UPCD5KKsaTfES7j0mA
+         UeBHMq2Ab5fM0AceBfL3d0nyb19eoV8z4Uv4Tl07m86GL4c8Ymptqshgij9ep3Wd8xjI
+         UgoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/tDUe/596kLQOTI3w8zi8SEzFY93PKMz1mi66rU0+Hs=;
-        b=ZwgEsqkCqOfsmNVOse5vfUcoJ/H4SvOs911qAYM4Qw8ae4/1joA5Ep76mqTYY3NbBN
-         XRu0jhwFS5CKRNDmXP2cix1KFTijva3ZnRL3gLizS92ellk+cQKlT5CsJ8TaSx/qs4Vt
-         4KvUNULdPA31jgn+85kFFCCVO7RYEKwqM/GXn/TfhX2occxBQD549mLDkzR3rTIutWoi
-         g++vgn6v2yx0mrt07feBuRedKfp07lWl3skli3/Txi42iCH6WZt+hAvkLaOKUqh0rGWe
-         GD2Cpa1CsyK+SRuc+1GBCKMjRGRXyYShyT+wCfV57fivicjkW5ay+DW15cXSpubXXBs2
-         XY2w==
-X-Gm-Message-State: APjAAAVXEAFIiPm/BFgb6mrjMV5D3K3GXwYYbfv5Vbi4xUgJrtaaFOLj
-	yHDToVBp51BgciTFgCOLGpvBZ+VPCPBVjxKDIPrJQA==
-X-Google-Smtp-Source: APXvYqypuLtLmgW4rAaRuxj1Wpdl9Fq5n92rcRfcLstwQaDQC8z/1gbliCGTeVFx6ViQYEvWrjlLa+VXyYd2Ab1orhM=
-X-Received: by 2002:a1f:90d4:: with SMTP id s203mr22035473vkd.65.1582508620766;
- Sun, 23 Feb 2020 17:43:40 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nfdAonBHBDdIO56FXt/6K3IvqAFG9q35tqL/Ax7yCLk=;
+        b=Mu6pqwJlKWgSLyOc3WUeahG0ibeVvfHaA4DwDpFA60cZAfVhYHGoDs58uvhtuAxQRi
+         l8okfFgUBJWthI2h6YmeXNR+gKXDkjGBE6RwNLxV7J0Oo4NTQIJwgQRmkgX7az/8N+xb
+         Q/wGM9vEPifuFLicnrEnhi4aaAq4PvSN3Uj0c3GhrW4ox7dBVhw9p3n/NL1vlKqk2A0J
+         C6CAU50l3JaHhOf75xTsRL9FsEvfAZD23o7haaOUC7Uvz9pbWcGWJPDK3dR2DLslMQmI
+         /Lj+v4VOIJ8KYeRcZE4SrQlr88vnP0DGiYk12SPci3uTPcL4jW0ahz3lhxeML+yFFiRu
+         BHEA==
+X-Gm-Message-State: APjAAAVXv7RMqNN0EifVrVexHZPCXwi9JmrZZ5gEIkRcLM5IQbFcWxAH
+	1CSyzbKPe8UcY4mUS3fsxQ==
+X-Google-Smtp-Source: APXvYqxJAxUIP1L7ykTRvXbpONm2cH/HKZWVO+UYiPkZXblqP/FothfdvA4k9N0h6ME4NC2QJV/tMA==
+X-Received: by 2002:a05:600c:114d:: with SMTP id z13mr18633181wmz.105.1582509074914;
+        Sun, 23 Feb 2020 17:51:14 -0800 (PST)
+Received: from ninjahub.lan (host-2-102-13-223.as13285.net. [2.102.13.223])
+        by smtp.googlemail.com with ESMTPSA id q6sm9528128wrf.67.2020.02.23.17.51.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 23 Feb 2020 17:51:14 -0800 (PST)
+From: Jules Irenge <jbi.octave@gmail.com>
+To: boqun.feng@gmail.com
+Subject: [PATCH v2] dax: Add missing annotations for dax_read_lock() and dax_read_unlock()
+Date: Mon, 24 Feb 2020 01:50:49 +0000
+Message-Id: <20200224015049.57556-1-jbi.octave@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-References: <20200222183010.197844-1-adelva@google.com> <20200223145635.GB29607@iweiny-DESK2.sc.intel.com>
- <CAOSf1CH-WMA5DDt9LKcPPZwb-ya-y=1WCc8mrUEEDMjg0WeX5g@mail.gmail.com>
-In-Reply-To: <CAOSf1CH-WMA5DDt9LKcPPZwb-ya-y=1WCc8mrUEEDMjg0WeX5g@mail.gmail.com>
-From: Alistair Delva <adelva@google.com>
-Date: Sun, 23 Feb 2020 17:43:29 -0800
-Message-ID: <CANDihLF8bjOVAypQF-L-h82wcW5OBj4MQZRNRthAoaXPM51gpA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] libnvdimm/of_pmem: handle memory-region in DT
-To: "Oliver O'Halloran" <oohall@gmail.com>
-Message-ID-Hash: NTJXKSRHYDSVAQNYJ3DYRCBSAGOAVMKB
-X-Message-ID-Hash: NTJXKSRHYDSVAQNYJ3DYRCBSAGOAVMKB
-X-MailFrom: adelva@google.com
+Message-ID-Hash: LPWTYFPP43A4X6IHNYFXF7HIAPQZUNCK
+X-Message-ID-Hash: LPWTYFPP43A4X6IHNYFXF7HIAPQZUNCK
+X-MailFrom: jbi.octave@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Kenny Root <kroot@google.com>, Rob Herring <robh+dt@kernel.org>, Device Tree <devicetree@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, kernel-team@android.com
+CC: vishal.l.verma@intel.co, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, yi.zhang@redhat.com, Jules Irenge <jbi.octave@gmail.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NTJXKSRHYDSVAQNYJ3DYRCBSAGOAVMKB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LPWTYFPP43A4X6IHNYFXF7HIAPQZUNCK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,88 +71,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sun, Feb 23, 2020 at 5:42 PM Oliver O'Halloran <oohall@gmail.com> wrote:
->
-> On Mon, Feb 24, 2020 at 1:56 AM Ira Weiny <ira.weiny@intel.com> wrote:
-> >
-> > On Sat, Feb 22, 2020 at 10:30:09AM -0800, Alistair Delva wrote:
-> > > From: Kenny Root <kroot@google.com>
-> > >
-> > > Add support for parsing the 'memory-region' DT property in addition to
-> > > the 'reg' DT property. This enables use cases where the pmem region is
-> > > not in I/O address space or dedicated memory (e.g. a bootloader
-> > > carveout).
-> > >
-> > > Signed-off-by: Kenny Root <kroot@google.com>
-> > > Signed-off-by: Alistair Delva <adelva@google.com>
-> > > Cc: "Oliver O'Halloran" <oohall@gmail.com>
-> > > Cc: Rob Herring <robh+dt@kernel.org>
-> > > Cc: Dan Williams <dan.j.williams@intel.com>
-> > > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > > Cc: Dave Jiang <dave.jiang@intel.com>
-> > > Cc: Ira Weiny <ira.weiny@intel.com>
-> > > Cc: devicetree@vger.kernel.org
-> > > Cc: linux-nvdimm@lists.01.org
-> > > Cc: kernel-team@android.com
-> > > ---
-> > >  drivers/nvdimm/of_pmem.c | 75 ++++++++++++++++++++++++++--------------
-> > >  1 file changed, 50 insertions(+), 25 deletions(-)
-> > >
-> > > diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-> > > index 8224d1431ea9..a68e44fb0041 100644
-> > > --- a/drivers/nvdimm/of_pmem.c
-> > > +++ b/drivers/nvdimm/of_pmem.c
-> > > @@ -14,13 +14,47 @@ struct of_pmem_private {
-> > >       struct nvdimm_bus *bus;
-> > >  };
-> > >
-> > > +static void of_pmem_register_region(struct platform_device *pdev,
-> > > +                                 struct nvdimm_bus *bus,
-> > > +                                 struct device_node *np,
-> > > +                                 struct resource *res, bool is_volatile)
-> >
-> > FWIW it would be easier to review if this was splut into a patch which created
-> > the helper of_pmem_register_region() without the new logic.  Then added the new
-> > logic here.
->
-> Yeah, that wouldn't hurt.
->
-> *snip*
->
-> > > +     i = 0;
-> > > +     while ((mr_np = of_parse_phandle(np, "memory-region", i++))) {
-> > > +             ret = of_address_to_resource(mr_np, 0, &res);
-> > > +             if (ret)
-> > > +                     dev_warn(
-> > > +                             &pdev->dev,
-> > > +                             "Unable to acquire memory-region from %pOF: %d\n",
-> > > +                             mr_np, ret);
-> > >               else
-> > > -                     dev_dbg(&pdev->dev, "Registered region %pR from %pOF\n",
-> > > -                                     ndr_desc.res, np);
-> > > +                     of_pmem_register_region(pdev, bus, np, &res,
-> > > +                                             is_volatile);
-> > > +             of_node_put(mr_np);
-> >
-> > Why of_node_put()?
->
-> "memory-region" is an array of pointers to nodes in /reserved-memory/
-> which describe the actual memory region. of_parse_phandle() elevates
-> the refcount of the returned node and we need to balance that.
+Sparse reports warnings at dax_read_lock() and dax_read_unlock()
 
-That was my understanding too.
+warning: context imbalance in dax_read_lock() - wrong count at exit
+warning: context imbalance in dax_read_unlock() - unexpected unlock
 
-Thanks both for the review and sorry for the last minute untested
-variable rename! I'll fix both and split the refactoring out in v2.
+The root cause is the missing annotations at dax_read_lock()
+	and dax_read_unlock()
 
-> >
-> > Ira
-> > >       }
-> > >
-> > >       return 0;
-> > > --
-> > > 2.25.0.265.gbab2e86ba0-goog
-> > >
+Add the missing __acquires(&dax_srcu) annotation to dax_read_lock()
+Add the missing __releases(&dax_srcu) annotation to dax_read_unlock()
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+---
+Changes since V1
+Correct commit log typing mistakes
+
+ drivers/dax/super.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 26a654dbc69a..f872a2fb98d4 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -28,13 +28,13 @@ static struct super_block *dax_superblock __read_mostly;
+ static struct hlist_head dax_host_list[DAX_HASH_SIZE];
+ static DEFINE_SPINLOCK(dax_host_lock);
+ 
+-int dax_read_lock(void)
++int dax_read_lock(void) __acquires(&dax_srcu)
+ {
+ 	return srcu_read_lock(&dax_srcu);
+ }
+ EXPORT_SYMBOL_GPL(dax_read_lock);
+ 
+-void dax_read_unlock(int id)
++void dax_read_unlock(int id) __releases(&dax_srcu)
+ {
+ 	srcu_read_unlock(&dax_srcu, id);
+ }
+-- 
+2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
