@@ -1,35 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7BC16ED07
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Feb 2020 18:49:55 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7291616EFC6
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Feb 2020 21:08:39 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CA49F10FC363D;
-	Tue, 25 Feb 2020 09:50:45 -0800 (PST)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=102.156.228.141; helo=[102.156.228.141]; envelope-from=kssa603@invni.com.tw; receiver=<UNKNOWN> 
-Received: from [102.156.228.141] (unknown [102.156.228.141])
-	by ml01.01.org (Postfix) with ESMTP id B660B10FC3601
-	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 09:50:39 -0800 (PST)
-From: <kssa603@invni.com.tw>
-To: <linux-nvdimm@lists.01.org>
-Subject: Check the confidentiality of your information (according to our security service, your account has been hacked).
-Date: 25 Feb 2020 18:41:21 +0000
-Message-ID: <001a01d5ec0c$04ac2b77$869fc28a$@invni.com.tw>
+	by ml01.01.org (Postfix) with ESMTP id A4ED410FC36C0;
+	Tue, 25 Feb 2020 12:09:29 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 8E8C010FC35BE
+	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 12:09:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1582661313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kmErMkzp02Oq0AqML4SKhQ/+5fqPKtI4uzTiDDsGXBU=;
+	b=KR4cvySE7LPFTGK5hsy4KbnlyHmu4eq7Iv6g9gKot0Lb7TFeFQ6kvDZUCMKNP+J5hpP8gY
+	BgztwyvmLMOxkLOtoQ45ankERzJH/zJDzlXywNBmN0KencjaRQExQ5n/07T9gx8+vEhC+W
+	qiQS9qrgVTK26uoOihdAwzOZRDR0R7w=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-74-BxXoMsUMO0eopAJcG6sBOw-1; Tue, 25 Feb 2020 15:08:29 -0500
+X-MC-Unique: BxXoMsUMO0eopAJcG6sBOw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1867A800D53;
+	Tue, 25 Feb 2020 20:08:28 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 58C121001B2C;
+	Tue, 25 Feb 2020 20:08:25 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id D471F2257D2; Tue, 25 Feb 2020 15:08:24 -0500 (EST)
+Date: Tue, 25 Feb 2020 15:08:24 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
+ arbitrary offset and len
+Message-ID: <20200225200824.GB7488@redhat.com>
+References: <20200220215707.GC10816@redhat.com>
+ <x498skv3i5r.fsf@segfault.boston.devel.redhat.com>
+ <20200221201759.GF25974@redhat.com>
+ <20200223230330.GE10737@dread.disaster.area>
+ <20200224201346.GC14651@redhat.com>
+ <CAPcyv4gGrimesjZ=OKRaYTDd5dUVz+U9aPeBMh_H3_YCz4FOEQ@mail.gmail.com>
+ <20200224211553.GD14651@redhat.com>
+ <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
+ <20200225133653.GA7488@redhat.com>
+ <CAPcyv4h2fdo=-jqLPTqnuxYVMbBgODWPqafH35yBMBaPa5Rxcw@mail.gmail.com>
 MIME-Version: 1.0
-X-Mailer: Microsoft Office Outlook 11
-Thread-Index: Acnych9eqnych9eqnych9eqnych9eq==
-X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
-Message-ID-Hash: DOV5P26CSCD23U5FCDVR7JY6TEIQMD6F
-X-Message-ID-Hash: DOV5P26CSCD23U5FCDVR7JY6TEIQMD6F
-X-MailFrom: kssa603@invni.com.tw
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4h2fdo=-jqLPTqnuxYVMbBgODWPqafH35yBMBaPa5Rxcw@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: K6LT2RYWJ2DLYWNVGAHAYGKRAFW6KVDX
+X-Message-ID-Hash: K6LT2RYWJ2DLYWNVGAHAYGKRAFW6KVDX
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Dave Chinner <david@fromorbit.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DOV5P26CSCD23U5FCDVR7JY6TEIQMD6F/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K6LT2RYWJ2DLYWNVGAHAYGKRAFW6KVDX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -38,9 +74,173 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-_Hello!&#205; am a hacker who has access to yo&#252;r operat&#237;ng system.&#205; also have full access to yo&#252;r acco&#252;&#328;t.&#205;'ve been watch&#237;ng yo&#252; for a few months now.The fact &#237;s that yo&#252; were &#237;nfected w&#237;th malware thro&#252;gh an ad&#252;lt s&#237;te that yo&#252; v&#237;s&#237;ted.&#205;f yo&#252; are not fam&#237;l&#237;ar w&#237;th th&#237;s, &#205; w&#237;ll expla&#237;n.Trojan V&#237;r&#252;s g&#237;ves me f&#252;ll access and control over a comp&#252;ter or other dev&#237;ce.Th&#237;s means that &#205; can see everyth&#237;ng on yo&#252;r screen, t&#252;rn on the camera and m&#237;crophone, b&#252;t yo&#252; do not know abo&#252;t &#237;t.&#205; also have access to all yo&#252;r contacts and all yo&#252;r correspondence.Why yo&#252;r ant&#237;v&#237;r&#252;s d&#237;d not detect malware?Answer: My malware &#252;ses the dr&#237;ver, &#205; &#252;pdate &#237;ts s&#237;gnat&#252;res every 4 ho&#252;rs so that yo&#252;r ant&#237;v&#23
- 7;r&#252;s &#237;s s&#237;lent.&#205; made a v&#237;deo show&#237;ng how yo&#252; sat&#237;sfy yo&#252;rself &#237;n the left half of the screen, and &#237;n the r&#237;ght half yo&#252; see the v&#237;deo that yo&#252; watched. W&#237;th one cl&#237;ck of the mo&#252;se,&#205; can send th&#237;s v&#237;deo to all yo&#252;r ema&#237;ls and contacts on soc&#237;al networks. &#205; can also post access to all yo&#252;r e-ma&#237;l correspondence and messengers that yo&#252; &#252;se.&#205;f yo&#252; want to prevent th&#237;s, transfer the amo&#252;nt of $950(USD) to my b&#237;tco&#237;n address (&#237;f yo&#252; do not know how to do th&#237;s, wr&#237;te to Google: 'B&#252;y B&#237;tco&#237;n').My b&#237;tco&#237;n address (B&#356;C Wallet) &#237;s: 18Jro9LNFqBQarcc63WYGf3w7PdDAiwXpkAfter rece&#237;v&#237;ng the payment, &#205; w&#237;ll delete the v&#237;deo and yo&#252; w&#237;ll never hear me aga&#237;n.&#205; g&#237;ve yo&#252; 48 ho&#252;rs to pay.&#205; have a not&#237;ce read&
- #237;ng th&#237;s letter, and the t&#237;mer w&#237;ll work when yo&#252; see th&#237;s letter.F&#237;l&#237;ng a compla&#237;nt somewhere does not make sense beca&#252;se th&#237;s ema&#237;l cannot be tracked l&#237;ke my b&#237;tco&#237;n address.&#205; do not make any m&#237;stakes.&#205;f &#205; f&#237;nd that yo&#252; have shared th&#237;s message w&#237;th someone else, the v&#237;deo w&#237;ll be &#237;mmed&#237;ately d&#237;str&#237;b&#252;ted.Best regards!
+On Tue, Feb 25, 2020 at 08:25:27AM -0800, Dan Williams wrote:
+> On Tue, Feb 25, 2020 at 5:37 AM Vivek Goyal <vgoyal@redhat.com> wrote:
+> >
+> > On Mon, Feb 24, 2020 at 01:32:58PM -0800, Dan Williams wrote:
+> >
+> > [..]
+> > > > > > Ok, how about if I add one more patch to the series which will check
+> > > > > > if unwritten portion of the page has known poison. If it has, then
+> > > > > > -EIO is returned.
+> > > > > >
+> > > > > >
+> > > > > > Subject: pmem: zero page range return error if poisoned memory in unwritten area
+> > > > > >
+> > > > > > Filesystems call into pmem_dax_zero_page_range() to zero partial page upon
+> > > > > > truncate. If partial page is being zeroed, then at the end of operation
+> > > > > > file systems expect that there is no poison in the whole page (atleast
+> > > > > > known poison).
+> > > > > >
+> > > > > > So make sure part of the partial page which is not being written, does not
+> > > > > > have poison. If it does, return error. If there is poison in area of page
+> > > > > > being written, it will be cleared.
+> > > > >
+> > > > > No, I don't like that the zero operation is special cased compared to
+> > > > > the write case. I'd say let's make them identical for now. I.e. fail
+> > > > > the I/O at dax_direct_access() time.
+> > > >
+> > > > So basically __dax_zero_page_range() will only write zeros (and not
+> > > > try to clear any poison). Right?
+> > >
+> > > Yes, the zero operation would have already failed at the
+> > > dax_direct_access() step if there was present poison.
+> > >
+> > > > > I think the error clearing
+> > > > > interface should be an explicit / separate op rather than a
+> > > > > side-effect. What about an explicit interface for initializing newly
+> > > > > allocated blocks, and the only reliable way to destroy poison through
+> > > > > the filesystem is to free the block?
+> > > >
+> > > > Effectively pmem_make_request() is already that interface filesystems
+> > > > use to initialize blocks and clear poison. So we don't really have to
+> > > > introduce a new interface?
+> > >
+> > > pmem_make_request() is shared with the I/O path and is too low in the
+> > > stack to understand intent. DAX intercepts the I/O path closer to the
+> > > filesystem and can understand zeroing vs writing today. I'm proposing
+> > > we go a step further and make DAX understand free-to-allocated-block
+> > > initialization instead of just zeroing. Inject the error clearing into
+> > > that initialization interface.
+> > >
+> > > > Or you are suggesting separate dax_zero_page_range() interface which will
+> > > > always call into firmware to clear poison. And that will make sure latent
+> > > > poison is cleared as well and filesystem should use that for block
+> > > > initialization instead?
+> > >
+> > > Yes, except latent poison would not be cleared until the zeroing is
+> > > implemented with movdir64b instead of callouts to firmware. It's
+> > > otherwise too slow to call out to firmware unconditionally.
+> > >
+> > > > I do like the idea of not having to differentiate
+> > > > between known poison and latent poison. Once a block has been initialized
+> > > > all poison should be cleared (known/latent). I am worried though that
+> > > > on large devices this might slowdown filesystem initialization a lot
+> > > > if they are zeroing large range of blocks.
+> > > >
+> > > > If yes, this sounds like two different patch series. First patch series
+> > > > takes care of removing blkdev_issue_zeroout() from
+> > > > __dax_zero_page_range() and couple of iomap related cleans christoph
+> > > > wanted.
+> > > >
+> > > > And second patch series for adding new dax operation to zero a range
+> > > > and always call info firmware to clear poison and modify filesystems
+> > > > accordingly.
+> > >
+> > > Yes, but they may need to be merged together. I don't want to regress
+> > > the ability of a block-aligned hole-punch to clear errors.
+> >
+> > Hi Dan,
+> >
+> > IIUC, block aligned hole punch don't go through __dax_zero_page_range()
+> > path. Instead they call blkdev_issue_zeroout() at later point of time.
+> >
+> > Only partial block zeroing path is taking __dax_zero_page_range(). So
+> > even if we remove poison clearing code from __dax_zero_page_range(),
+> > there should not be a regression w.r.t full block zeroing. Only possible
+> > regression will be if somebody was doing partial block zeroing on sector
+> > boundary, then poison will not be cleared.
+> >
+> > We now seem to be discussing too many issues w.r.t poison clearing
+> > and dax. Atleast 3 issues are mentioned in this thread.
+> >
+> > A. Get rid of dependency on block device in dax zeroing path.
+> >    (__dax_zero_page_range)
+> >
+> > B. Provide a way to clear latent poison. And possibly use movdir64b to
+> >    do that and make filesystems use that interface for initialization
+> >    of blocks.
+> >
+> > C. Dax zero operation is clearing known poison while copy_from_iter() is
+> >    not. I guess this ship has already sailed. If we change it now,
+> >    somebody will complain of some regression.
+> >
+> > For issue A, there are two possible ways to deal with it.
+> >
+> > 1. Implement a dax method to zero page. And this method will also clear
+> >    known poison. This is what my patch series is doing.
+> >
+> > 2. Just get rid of blkdev_issue_zeroout() from __dax_zero_page_range()
+> >    so that no poison will be cleared in __dax_zero_page_range() path. This
+> >    path is currently used in partial page zeroing path and full filesystem
+> >    block zeroing happens with blkdev_issue_zeroout(). There is a small
+> >    chance of regression here in case of sector aligned partial block
+> >    zeroing.
+> >
+> > My patch series takes care of issue A without any regressions. In fact it
+> > improves current interface. For example, currently "truncate -s 512
+> > foo.txt" will succeed even if first sector in the block is poisoned. My
+> > patch series fixes it. Current implementation will return error on if any
+> > non sector aligned truncate is done and any of the sector is poisoned. My
+> > implementation will not return error if poisoned can be cleared as part
+> > of zeroing. It will return only if poison is present in non-zeoring part.
+> 
+> That asymmetry makes the implementation too much of a special case. If
+> the dax mapping path forces error boundaries on PAGE_SIZE blocks then
+> so should zeroing.
+> 
+> >
+> > Why don't we solve one issue A now and deal with issue B and C later in
+> > a sepaprate patch series. This patch series gets rid of dependency on
+> > block device in dax path and also makes current zeroing interface better.
+> 
+> I'm ok with replacing blkdev_issue_zeroout() with a dax operation
+> callback that deals with page aligned entries. That change at least
+> makes the error boundary symmetric across copy_from_iter() and the
+> zeroing path.
+
+IIUC, you are suggesting that modify dax_zero_page_range() to take page
+aligned start and size and call this interface from
+__dax_zero_page_range() and get rid of blkdev_issue_zeroout() in that
+path?
+
+Something like.
+
+__dax_zero_page_range() {
+  if(page_aligned_io)
+  	call_dax_page_zero_range()
+  else
+   	use_direct_access_and_memcpy;
+}
+
+And other callers of blkdev_issue_zeroout() in filesystems can migrate
+to calling dax_zero_page_range() instead.
+
+If yes, I am not seeing what advantage do we get by this change.
+
+- __dax_zero_page_range() seems to be called by only partial block
+  zeroing code. So dax_zero_page_range() call will remain unused.
+
+- dax_zero_page_range() will be exact replacement of
+  blkdev_issue_zeroout() so filesystems will not gain anything. Just that
+  it will create a dax specific hook.
+
+In that case it might be simpler to just get rid of blkdev_issue_zeroout()
+call from __dax_zero_page_range() and make sure there are no callers of
+full block zeroing from this path.
+
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
