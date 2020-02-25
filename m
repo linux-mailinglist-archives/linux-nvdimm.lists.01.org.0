@@ -1,169 +1,203 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FB116C230
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Feb 2020 14:24:15 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3ACE16C276
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 25 Feb 2020 14:37:07 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2BEE210FC3403;
-	Tue, 25 Feb 2020 05:25:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 1E0DD10FC3403;
+	Tue, 25 Feb 2020 05:37:58 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7E2C210FC33FB
-	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 05:25:04 -0800 (PST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01PDNW5D040401
-	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 08:24:12 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2yb1b8k7kb-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 08:24:11 -0500
-Received: from localhost
-	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <fbarrat@linux.ibm.com>;
-	Tue, 25 Feb 2020 13:24:08 -0000
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
-	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Tue, 25 Feb 2020 13:24:01 -0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01PDO0jc51773506
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Feb 2020 13:24:00 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0CB611C05B;
-	Tue, 25 Feb 2020 13:23:59 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C212811C058;
-	Tue, 25 Feb 2020 13:23:58 +0000 (GMT)
-Received: from bali.tlslab.ibm.com (unknown [9.101.4.17])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 25 Feb 2020 13:23:58 +0000 (GMT)
-Subject: Re: [PATCH v3 04/27] ocxl: Remove unnecessary externs
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-5-alastair@au1.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 25 Feb 2020 14:23:58 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+	by ml01.01.org (Postfix) with ESMTPS id E097C10FC3403
+	for <linux-nvdimm@lists.01.org>; Tue, 25 Feb 2020 05:37:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1582637822;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VbB7+QADsI1EK8eonSCcKnzGBIFtu6wHTsOjHf0RC78=;
+	b=f9RVoECvyYQlB2FEtC2RFsqcRVVIxyUsc4QCXaJYJ4P5HRJ3if7Sy6Kh2gHW9vuh0KqLka
+	NHyyF0DOOgsMEBROH524mgxRXDAJ3tnLdIRcUrtdGIoPfhVoq22ZikfpUC12js7OeXuxIl
+	+Wk/sJA+SMAVJyZZn66aHwQiTxLO7aI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-439-ACVQtKhEOeGgmNJNlb4jcw-1; Tue, 25 Feb 2020 08:36:58 -0500
+X-MC-Unique: ACVQtKhEOeGgmNJNlb4jcw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 64F43800D53;
+	Tue, 25 Feb 2020 13:36:57 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 70A185C548;
+	Tue, 25 Feb 2020 13:36:54 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id E8AB92257D2; Tue, 25 Feb 2020 08:36:53 -0500 (EST)
+Date: Tue, 25 Feb 2020 08:36:53 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
+ arbitrary offset and len
+Message-ID: <20200225133653.GA7488@redhat.com>
+References: <20200218214841.10076-3-vgoyal@redhat.com>
+ <x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
+ <20200220215707.GC10816@redhat.com>
+ <x498skv3i5r.fsf@segfault.boston.devel.redhat.com>
+ <20200221201759.GF25974@redhat.com>
+ <20200223230330.GE10737@dread.disaster.area>
+ <20200224201346.GC14651@redhat.com>
+ <CAPcyv4gGrimesjZ=OKRaYTDd5dUVz+U9aPeBMh_H3_YCz4FOEQ@mail.gmail.com>
+ <20200224211553.GD14651@redhat.com>
+ <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-5-alastair@au1.ibm.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20022513-4275-0000-0000-000003A552DA
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022513-4276-0000-0000-000038B968AA
-Message-Id: <4a29677a-885e-d493-c9f0-2698ea41a58c@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-25_04:2020-02-21,2020-02-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- malwarescore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
- adultscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- suspectscore=2 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002250106
-Message-ID-Hash: EU7D43OKQYZ42RR3ASFYB65H3F5OEVF3
-X-Message-ID-Hash: EU7D43OKQYZ42RR3ASFYB65H3F5OEVF3
-X-MailFrom: fbarrat@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-de
- v@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+Message-ID-Hash: 5VWFRTGKZP7SYNKTJF5NFFVB3QKQQK76
+X-Message-ID-Hash: 5VWFRTGKZP7SYNKTJF5NFFVB3QKQQK76
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Dave Chinner <david@fromorbit.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EU7D43OKQYZ42RR3ASFYB65H3F5OEVF3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5VWFRTGKZP7SYNKTJF5NFFVB3QKQQK76/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCkxlIDIxLzAyLzIwMjAgw6AgMDQ6MjYsIEFsYXN0YWlyIEQnU2lsdmEgYSDDqWNyaXTCoDoN
-Cj4gRnJvbTogQWxhc3RhaXIgRCdTaWx2YSA8YWxhc3RhaXJAZC1zaWx2YS5vcmc+DQo+IA0KPiBG
-dW5jdGlvbiBkZWNsYXJhdGlvbnMgZG9uJ3QgbmVlZCBleHRlcm5zLCByZW1vdmUgdGhlIGV4aXN0
-aW5nIG9uZXMNCj4gc28gdGhleSBhcmUgY29uc2lzdGVudCB3aXRoIG5ld2VyIGNvZGUNCj4gDQo+
-IFNpZ25lZC1vZmYtYnk6IEFsYXN0YWlyIEQnU2lsdmEgPGFsYXN0YWlyQGQtc2lsdmEub3JnPg0K
-PiAtLS0NCg0KVGhhbmtzIGZvciB0aGUgY2xlYW51cCENCkFja2VkLWJ5OiBGcmVkZXJpYyBCYXJy
-YXQgPGZiYXJyYXRAbGludXguaWJtLmNvbT4NCg0KDQoNCg0KPiAgIGFyY2gvcG93ZXJwYy9pbmNs
-dWRlL2FzbS9wbnYtb2N4bC5oIHwgMzIgKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0NCj4g
-ICBpbmNsdWRlL21pc2Mvb2N4bC5oICAgICAgICAgICAgICAgICB8ICA2ICsrKy0tLQ0KPiAgIDIg
-ZmlsZXMgY2hhbmdlZCwgMTggaW5zZXJ0aW9ucygrKSwgMjAgZGVsZXRpb25zKC0pDQo+IA0KPiBk
-aWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Budi1vY3hsLmggYi9hcmNoL3Bv
-d2VycGMvaW5jbHVkZS9hc20vcG52LW9jeGwuaA0KPiBpbmRleCAwYjJhNjcwN2U1NTUuLmIyM2M5
-OWJjMGM4NCAxMDA2NDQNCj4gLS0tIGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Budi1vY3hs
-LmgNCj4gKysrIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL3Budi1vY3hsLmgNCj4gQEAgLTks
-MjkgKzksMjcgQEANCj4gICAjZGVmaW5lIFBOVl9PQ1hMX1RMX0JJVFNfUEVSX1JBVEUgICAgICAg
-NA0KPiAgICNkZWZpbmUgUE5WX09DWExfVExfUkFURV9CVUZfU0laRSAgICAgICAoKFBOVl9PQ1hM
-X1RMX01BWF9URU1QTEFURSsxKSAqIFBOVl9PQ1hMX1RMX0JJVFNfUEVSX1JBVEUgLyA4KQ0KPiAg
-IA0KPiAtZXh0ZXJuIGludCBwbnZfb2N4bF9nZXRfYWN0YWcoc3RydWN0IHBjaV9kZXYgKmRldiwg
-dTE2ICpiYXNlLCB1MTYgKmVuYWJsZWQsDQo+IC0JCQl1MTYgKnN1cHBvcnRlZCk7DQo+IC1leHRl
-cm4gaW50IHBudl9vY3hsX2dldF9wYXNpZF9jb3VudChzdHJ1Y3QgcGNpX2RldiAqZGV2LCBpbnQg
-KmNvdW50KTsNCj4gK2ludCBwbnZfb2N4bF9nZXRfYWN0YWcoc3RydWN0IHBjaV9kZXYgKmRldiwg
-dTE2ICpiYXNlLCB1MTYgKmVuYWJsZWQsIHUxNiAqc3VwcG9ydGVkKTsNCj4gK2ludCBwbnZfb2N4
-bF9nZXRfcGFzaWRfY291bnQoc3RydWN0IHBjaV9kZXYgKmRldiwgaW50ICpjb3VudCk7DQo+ICAg
-DQo+IC1leHRlcm4gaW50IHBudl9vY3hsX2dldF90bF9jYXAoc3RydWN0IHBjaV9kZXYgKmRldiwg
-bG9uZyAqY2FwLA0KPiAraW50IHBudl9vY3hsX2dldF90bF9jYXAoc3RydWN0IHBjaV9kZXYgKmRl
-diwgbG9uZyAqY2FwLA0KPiAgIAkJCWNoYXIgKnJhdGVfYnVmLCBpbnQgcmF0ZV9idWZfc2l6ZSk7
-DQo+IC1leHRlcm4gaW50IHBudl9vY3hsX3NldF90bF9jb25mKHN0cnVjdCBwY2lfZGV2ICpkZXYs
-IGxvbmcgY2FwLA0KPiAraW50IHBudl9vY3hsX3NldF90bF9jb25mKHN0cnVjdCBwY2lfZGV2ICpk
-ZXYsIGxvbmcgY2FwLA0KPiAgIAkJCXVpbnQ2NF90IHJhdGVfYnVmX3BoeXMsIGludCByYXRlX2J1
-Zl9zaXplKTsNCj4gICANCj4gLWV4dGVybiBpbnQgcG52X29jeGxfZ2V0X3hzbF9pcnEoc3RydWN0
-IHBjaV9kZXYgKmRldiwgaW50ICpod2lycSk7DQo+IC1leHRlcm4gdm9pZCBwbnZfb2N4bF91bm1h
-cF94c2xfcmVncyh2b2lkIF9faW9tZW0gKmRzaXNyLCB2b2lkIF9faW9tZW0gKmRhciwNCj4gLQkJ
-CQl2b2lkIF9faW9tZW0gKnRmYywgdm9pZCBfX2lvbWVtICpwZV9oYW5kbGUpOw0KPiAtZXh0ZXJu
-IGludCBwbnZfb2N4bF9tYXBfeHNsX3JlZ3Moc3RydWN0IHBjaV9kZXYgKmRldiwgdm9pZCBfX2lv
-bWVtICoqZHNpc3IsDQo+IC0JCQkJdm9pZCBfX2lvbWVtICoqZGFyLCB2b2lkIF9faW9tZW0gKip0
-ZmMsDQo+IC0JCQkJdm9pZCBfX2lvbWVtICoqcGVfaGFuZGxlKTsNCj4gK2ludCBwbnZfb2N4bF9n
-ZXRfeHNsX2lycShzdHJ1Y3QgcGNpX2RldiAqZGV2LCBpbnQgKmh3aXJxKTsNCj4gK3ZvaWQgcG52
-X29jeGxfdW5tYXBfeHNsX3JlZ3Modm9pZCBfX2lvbWVtICpkc2lzciwgdm9pZCBfX2lvbWVtICpk
-YXIsDQo+ICsJCQkgICAgIHZvaWQgX19pb21lbSAqdGZjLCB2b2lkIF9faW9tZW0gKnBlX2hhbmRs
-ZSk7DQo+ICtpbnQgcG52X29jeGxfbWFwX3hzbF9yZWdzKHN0cnVjdCBwY2lfZGV2ICpkZXYsIHZv
-aWQgX19pb21lbSAqKmRzaXNyLA0KPiArCQkJICB2b2lkIF9faW9tZW0gKipkYXIsIHZvaWQgX19p
-b21lbSAqKnRmYywNCj4gKwkJCSAgdm9pZCBfX2lvbWVtICoqcGVfaGFuZGxlKTsNCj4gICANCj4g
-LWV4dGVybiBpbnQgcG52X29jeGxfc3BhX3NldHVwKHN0cnVjdCBwY2lfZGV2ICpkZXYsIHZvaWQg
-KnNwYV9tZW0sIGludCBQRV9tYXNrLA0KPiAtCQkJdm9pZCAqKnBsYXRmb3JtX2RhdGEpOw0KPiAt
-ZXh0ZXJuIHZvaWQgcG52X29jeGxfc3BhX3JlbGVhc2Uodm9pZCAqcGxhdGZvcm1fZGF0YSk7DQo+
-IC1leHRlcm4gaW50IHBudl9vY3hsX3NwYV9yZW1vdmVfcGVfZnJvbV9jYWNoZSh2b2lkICpwbGF0
-Zm9ybV9kYXRhLCBpbnQgcGVfaGFuZGxlKTsNCj4gK2ludCBwbnZfb2N4bF9zcGFfc2V0dXAoc3Ry
-dWN0IHBjaV9kZXYgKmRldiwgdm9pZCAqc3BhX21lbSwgaW50IFBFX21hc2ssIHZvaWQgKipwbGF0
-Zm9ybV9kYXRhKTsNCj4gK3ZvaWQgcG52X29jeGxfc3BhX3JlbGVhc2Uodm9pZCAqcGxhdGZvcm1f
-ZGF0YSk7DQo+ICtpbnQgcG52X29jeGxfc3BhX3JlbW92ZV9wZV9mcm9tX2NhY2hlKHZvaWQgKnBs
-YXRmb3JtX2RhdGEsIGludCBwZV9oYW5kbGUpOw0KPiAgIA0KPiAtZXh0ZXJuIGludCBwbnZfb2N4
-bF9hbGxvY194aXZlX2lycSh1MzIgKmlycSwgdTY0ICp0cmlnZ2VyX2FkZHIpOw0KPiAtZXh0ZXJu
-IHZvaWQgcG52X29jeGxfZnJlZV94aXZlX2lycSh1MzIgaXJxKTsNCj4gK2ludCBwbnZfb2N4bF9h
-bGxvY194aXZlX2lycSh1MzIgKmlycSwgdTY0ICp0cmlnZ2VyX2FkZHIpOw0KPiArdm9pZCBwbnZf
-b2N4bF9mcmVlX3hpdmVfaXJxKHUzMiBpcnEpOw0KPiAgICNpZmRlZiBDT05GSUdfTUVNT1JZX0hP
-VFBMVUdfU1BBUlNFDQo+ICAgdTY0IHBudl9vY3hsX3BsYXRmb3JtX2xwY19zZXR1cChzdHJ1Y3Qg
-cGNpX2RldiAqcGRldiwgdTY0IHNpemUpOw0KPiAgIHZvaWQgcG52X29jeGxfcGxhdGZvcm1fbHBj
-X3JlbGVhc2Uoc3RydWN0IHBjaV9kZXYgKnBkZXYpOw0KPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9t
-aXNjL29jeGwuaCBiL2luY2x1ZGUvbWlzYy9vY3hsLmgNCj4gaW5kZXggMDZkZDU4MzllNDM4Li4w
-YTc2MmUzODc0MTggMTAwNjQ0DQo+IC0tLSBhL2luY2x1ZGUvbWlzYy9vY3hsLmgNCj4gKysrIGIv
-aW5jbHVkZS9taXNjL29jeGwuaA0KPiBAQCAtMTczLDcgKzE3Myw3IEBAIGludCBvY3hsX2NvbnRl
-eHRfZGV0YWNoKHN0cnVjdCBvY3hsX2NvbnRleHQgKmN0eCk7DQo+ICAgICoNCj4gICAgKiBSZXR1
-cm5zIDAgb24gc3VjY2VzcywgbmVnYXRpdmUgb24gZmFpbHVyZQ0KPiAgICAqLw0KPiAtZXh0ZXJu
-IGludCBvY3hsX2FmdV9pcnFfYWxsb2Moc3RydWN0IG9jeGxfY29udGV4dCAqY3R4LCBpbnQgKmly
-cV9pZCk7DQo+ICtpbnQgb2N4bF9hZnVfaXJxX2FsbG9jKHN0cnVjdCBvY3hsX2NvbnRleHQgKmN0
-eCwgaW50ICppcnFfaWQpOw0KPiAgIA0KPiAgIC8qKg0KPiAgICAqIEZyZWVzIGFuIElSUSBhc3Nv
-Y2lhdGVkIHdpdGggYW4gQUZVIGNvbnRleHQNCj4gQEAgLTE4Miw3ICsxODIsNyBAQCBleHRlcm4g
-aW50IG9jeGxfYWZ1X2lycV9hbGxvYyhzdHJ1Y3Qgb2N4bF9jb250ZXh0ICpjdHgsIGludCAqaXJx
-X2lkKTsNCj4gICAgKg0KPiAgICAqIFJldHVybnMgMCBvbiBzdWNjZXNzLCBuZWdhdGl2ZSBvbiBm
-YWlsdXJlDQo+ICAgICovDQo+IC1leHRlcm4gaW50IG9jeGxfYWZ1X2lycV9mcmVlKHN0cnVjdCBv
-Y3hsX2NvbnRleHQgKmN0eCwgaW50IGlycV9pZCk7DQo+ICtpbnQgb2N4bF9hZnVfaXJxX2ZyZWUo
-c3RydWN0IG9jeGxfY29udGV4dCAqY3R4LCBpbnQgaXJxX2lkKTsNCj4gICANCj4gICAvKioNCj4g
-ICAgKiBHZXRzIHRoZSBhZGRyZXNzIG9mIHRoZSB0cmlnZ2VyIHBhZ2UgZm9yIGFuIElSUQ0KPiBA
-QCAtMTkzLDcgKzE5Myw3IEBAIGV4dGVybiBpbnQgb2N4bF9hZnVfaXJxX2ZyZWUoc3RydWN0IG9j
-eGxfY29udGV4dCAqY3R4LCBpbnQgaXJxX2lkKTsNCj4gICAgKg0KPiAgICAqIHJldHVybnMgdGhl
-IHRyaWdnZXIgcGFnZSBhZGRyZXNzLCBvciAwIGlmIHRoZSBJUlEgaXMgbm90IHZhbGlkDQo+ICAg
-ICovDQo+IC1leHRlcm4gdTY0IG9jeGxfYWZ1X2lycV9nZXRfYWRkcihzdHJ1Y3Qgb2N4bF9jb250
-ZXh0ICpjdHgsIGludCBpcnFfaWQpOw0KPiArdTY0IG9jeGxfYWZ1X2lycV9nZXRfYWRkcihzdHJ1
-Y3Qgb2N4bF9jb250ZXh0ICpjdHgsIGludCBpcnFfaWQpOw0KPiAgIA0KPiAgIC8qKg0KPiAgICAq
-IFByb3ZpZGUgYSBjYWxsYmFjayB0byBiZSBjYWxsZWQgd2hlbiBhbiBJUlEgaXMgdHJpZ2dlcmVk
-DQo+IA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
-dXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVu
-c3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9y
-Zwo=
+On Mon, Feb 24, 2020 at 01:32:58PM -0800, Dan Williams wrote:
+
+[..]
+> > > > Ok, how about if I add one more patch to the series which will check
+> > > > if unwritten portion of the page has known poison. If it has, then
+> > > > -EIO is returned.
+> > > >
+> > > >
+> > > > Subject: pmem: zero page range return error if poisoned memory in unwritten area
+> > > >
+> > > > Filesystems call into pmem_dax_zero_page_range() to zero partial page upon
+> > > > truncate. If partial page is being zeroed, then at the end of operation
+> > > > file systems expect that there is no poison in the whole page (atleast
+> > > > known poison).
+> > > >
+> > > > So make sure part of the partial page which is not being written, does not
+> > > > have poison. If it does, return error. If there is poison in area of page
+> > > > being written, it will be cleared.
+> > >
+> > > No, I don't like that the zero operation is special cased compared to
+> > > the write case. I'd say let's make them identical for now. I.e. fail
+> > > the I/O at dax_direct_access() time.
+> >
+> > So basically __dax_zero_page_range() will only write zeros (and not
+> > try to clear any poison). Right?
+> 
+> Yes, the zero operation would have already failed at the
+> dax_direct_access() step if there was present poison.
+> 
+> > > I think the error clearing
+> > > interface should be an explicit / separate op rather than a
+> > > side-effect. What about an explicit interface for initializing newly
+> > > allocated blocks, and the only reliable way to destroy poison through
+> > > the filesystem is to free the block?
+> >
+> > Effectively pmem_make_request() is already that interface filesystems
+> > use to initialize blocks and clear poison. So we don't really have to
+> > introduce a new interface?
+> 
+> pmem_make_request() is shared with the I/O path and is too low in the
+> stack to understand intent. DAX intercepts the I/O path closer to the
+> filesystem and can understand zeroing vs writing today. I'm proposing
+> we go a step further and make DAX understand free-to-allocated-block
+> initialization instead of just zeroing. Inject the error clearing into
+> that initialization interface.
+> 
+> > Or you are suggesting separate dax_zero_page_range() interface which will
+> > always call into firmware to clear poison. And that will make sure latent
+> > poison is cleared as well and filesystem should use that for block
+> > initialization instead?
+> 
+> Yes, except latent poison would not be cleared until the zeroing is
+> implemented with movdir64b instead of callouts to firmware. It's
+> otherwise too slow to call out to firmware unconditionally.
+> 
+> > I do like the idea of not having to differentiate
+> > between known poison and latent poison. Once a block has been initialized
+> > all poison should be cleared (known/latent). I am worried though that
+> > on large devices this might slowdown filesystem initialization a lot
+> > if they are zeroing large range of blocks.
+> >
+> > If yes, this sounds like two different patch series. First patch series
+> > takes care of removing blkdev_issue_zeroout() from
+> > __dax_zero_page_range() and couple of iomap related cleans christoph
+> > wanted.
+> >
+> > And second patch series for adding new dax operation to zero a range
+> > and always call info firmware to clear poison and modify filesystems
+> > accordingly.
+> 
+> Yes, but they may need to be merged together. I don't want to regress
+> the ability of a block-aligned hole-punch to clear errors.
+
+Hi Dan,
+
+IIUC, block aligned hole punch don't go through __dax_zero_page_range()
+path. Instead they call blkdev_issue_zeroout() at later point of time.
+
+Only partial block zeroing path is taking __dax_zero_page_range(). So
+even if we remove poison clearing code from __dax_zero_page_range(),
+there should not be a regression w.r.t full block zeroing. Only possible
+regression will be if somebody was doing partial block zeroing on sector
+boundary, then poison will not be cleared.
+
+We now seem to be discussing too many issues w.r.t poison clearing
+and dax. Atleast 3 issues are mentioned in this thread.
+
+A. Get rid of dependency on block device in dax zeroing path.
+   (__dax_zero_page_range)
+
+B. Provide a way to clear latent poison. And possibly use movdir64b to
+   do that and make filesystems use that interface for initialization
+   of blocks.
+
+C. Dax zero operation is clearing known poison while copy_from_iter() is
+   not. I guess this ship has already sailed. If we change it now,
+   somebody will complain of some regression.
+
+For issue A, there are two possible ways to deal with it.
+
+1. Implement a dax method to zero page. And this method will also clear
+   known poison. This is what my patch series is doing.
+
+2. Just get rid of blkdev_issue_zeroout() from __dax_zero_page_range()
+   so that no poison will be cleared in __dax_zero_page_range() path. This
+   path is currently used in partial page zeroing path and full filesystem
+   block zeroing happens with blkdev_issue_zeroout(). There is a small
+   chance of regression here in case of sector aligned partial block
+   zeroing.
+
+My patch series takes care of issue A without any regressions. In fact it
+improves current interface. For example, currently "truncate -s 512
+foo.txt" will succeed even if first sector in the block is poisoned. My
+patch series fixes it. Current implementation will return error on if any
+non sector aligned truncate is done and any of the sector is poisoned. My
+implementation will not return error if poisoned can be cleared as part
+of zeroing. It will return only if poison is present in non-zeoring part.
+
+Why don't we solve one issue A now and deal with issue B and C later in
+a sepaprate patch series. This patch series gets rid of dependency on 
+block device in dax path and also makes current zeroing interface better.
+
+Thanks
+Vivek
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
