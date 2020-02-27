@@ -2,70 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2237172232
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Feb 2020 16:25:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28FE617245B
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Feb 2020 18:01:43 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A9C210FC3638;
-	Thu, 27 Feb 2020 07:26:23 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E89BD10FC363E;
+	Thu, 27 Feb 2020 09:02:32 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8290010FC3638
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 07:26:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1582817128;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IhP/uVeNAjyfX+4w576BUdyw6NCAxT3/mgVgsHd4czE=;
-	b=Y1W4GdSr/dObwbu5ns2MPYwsuA3Cdr53iX8kR2fV3AbMtep+HaVbH0oTIcJ649KSrxOaTI
-	g1F6oU6sbCSDKitjl0NQaZ9JemYYpn/+V/n0GFyUjcbGdD5NfJDA7JiKsEyJ/AouQuOrjl
-	u5WRYbInFlmWQSyZ8GMagqUQpGV/b0I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-346-zSt6dAGOPb6f6QGsCD_XYw-1; Thu, 27 Feb 2020 10:25:22 -0500
-X-MC-Unique: zSt6dAGOPb6f6QGsCD_XYw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 237A68017CC;
-	Thu, 27 Feb 2020 15:25:21 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.35])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 1249F87B08;
-	Thu, 27 Feb 2020 15:25:18 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 7E1272257D2; Thu, 27 Feb 2020 10:25:17 -0500 (EST)
-Date: Thu, 27 Feb 2020 10:25:17 -0500
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
- arbitrary offset and len
-Message-ID: <20200227152517.GA22844@redhat.com>
-References: <20200224201346.GC14651@redhat.com>
- <CAPcyv4gGrimesjZ=OKRaYTDd5dUVz+U9aPeBMh_H3_YCz4FOEQ@mail.gmail.com>
- <20200224211553.GD14651@redhat.com>
- <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
- <20200225133653.GA7488@redhat.com>
- <CAPcyv4h2fdo=-jqLPTqnuxYVMbBgODWPqafH35yBMBaPa5Rxcw@mail.gmail.com>
- <20200225200824.GB7488@redhat.com>
- <CAPcyv4jN7ntOO2hK4ByDcX4-Kob=aJNOr3fGR_k_8rxZ=3Sz7w@mail.gmail.com>
- <20200226165756.GB30329@redhat.com>
- <20200227031143.GH10737@dread.disaster.area>
+	by ml01.01.org (Postfix) with ESMTPS id 2CFE510FC3639
+	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 09:02:29 -0800 (PST)
+Received: by mail-ot1-x343.google.com with SMTP id 66so3573632otd.9
+        for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 09:01:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=S6h30Tw2mjD0V+USDZTW8hFhBkYs512Lqr51yu3+ofs=;
+        b=uAn0b8d75rtFVOIdOZnsmQfugjpQalJefb4ste8jolUNr1Yv8HzUsChA5IZdX6dVwd
+         XioJKiTWbGnDtU4IboFdBuWNdSUJyhqOywZAqPHtfAPsP5EE2Vctx7h4d3HzmAz8kJg2
+         QEZGCgmxda9Q1U7l8UKx5rYUE8e0CalNOfmq1Gr0p48T3nigCDKHxAA95PerIyA9cG+e
+         dR6hBEjqTyDoYw9c1pPJAGrnBH4XrcTdP2uQp8VES5MNja8u2NBJLM/amQM8kZtjM4o2
+         775/8oUqrrg44OGDHSVN//FW3bxKZ/Q8bzo3dFUV9T7ZLLB9OUQvlYn0dAJ0bMRvvuyk
+         8XAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S6h30Tw2mjD0V+USDZTW8hFhBkYs512Lqr51yu3+ofs=;
+        b=XXRSo/Ca7Z4PDwXbITpqO2322GXG+iXPO1yKR3jYtgUYMO2Dmn8pSlJiVVX4UpGej5
+         QTvKD9HM/Vl8OMCRncrGHK8Wl7xZ9WipROjaWvODn5T4jwoWFlH1fuUrQO8AwqOu7aiK
+         OsqhxJDG/j/3wwPDvAHMGWCTNQl2/Jc2vReLCpNL/ScZPa3mb8Te+HTX80HRGOLpIFad
+         Z4zlPAhgZHB2g5V2sq8SsNfb34T0RvUKtUkYxL6CvzKQRQ/47z9o4YGi5gWkx5WH0OC8
+         Ogsn4g92+2LFeLqwbNXtUePGlndDx4bfXfnK7uSFACiImu3sHrsFLLum7r0F79X4j2ei
+         X5ng==
+X-Gm-Message-State: APjAAAXFyddYTuWPvf9ZhcCvJ6lM23bNoPwU255VDnROJ9Ms7XBOCZwe
+	ggOFEBSLlasIapi8PWxIeGxfLb+ndveeqZm8huJFOg==
+X-Google-Smtp-Source: APXvYqyXwQILrbtHCsUHMWn42meoZX0KXIZsOEVsgrRpEJ3IcJaY2hGUVFuyZ1kdlGiQhmRiXVOeUC0xDwMJYMZQufs=
+X-Received: by 2002:a9d:64d8:: with SMTP id n24mr525264otl.71.1582822896420;
+ Thu, 27 Feb 2020 09:01:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200227031143.GH10737@dread.disaster.area>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y
-X-Message-ID-Hash: MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y
-X-MailFrom: vgoyal@redhat.com
+References: <20200221032720.33893-1-alastair@au1.ibm.com> <20200221032720.33893-15-alastair@au1.ibm.com>
+In-Reply-To: <20200221032720.33893-15-alastair@au1.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 27 Feb 2020 09:01:25 -0800
+Message-ID: <CAPcyv4iJahL8w3mjfS3C6Pb5PgAsN9+7=FDVgtndU2oHmYYUgQ@mail.gmail.com>
+Subject: Re: [PATCH v3 14/27] powerpc/powernv/pmem: Add support for Admin commands
+To: "Alastair D'Silva" <alastair@au1.ibm.com>
+Message-ID-Hash: 7URFXY3TENAQZ2U7BNDGX3CWFGVCKGKZ
+X-Message-ID-Hash: 7URFXY3TENAQZ2U7BNDGX3CWFGVCKGKZ
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
+CC: alastair@d-silva.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashev
+ skiy <aik@ozlabs.ru>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7URFXY3TENAQZ2U7BNDGX3CWFGVCKGKZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,82 +68,16 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 27, 2020 at 02:11:43PM +1100, Dave Chinner wrote:
-> On Wed, Feb 26, 2020 at 11:57:56AM -0500, Vivek Goyal wrote:
-> > On Tue, Feb 25, 2020 at 02:49:30PM -0800, Dan Williams wrote:
-> > [..]
-> > > > > I'm ok with replacing blkdev_issue_zeroout() with a dax operation
-> > > > > callback that deals with page aligned entries. That change at least
-> > > > > makes the error boundary symmetric across copy_from_iter() and the
-> > > > > zeroing path.
-> > > >
-> > > > IIUC, you are suggesting that modify dax_zero_page_range() to take page
-> > > > aligned start and size and call this interface from
-> > > > __dax_zero_page_range() and get rid of blkdev_issue_zeroout() in that
-> > > > path?
-> > > >
-> > > > Something like.
-> > > >
-> > > > __dax_zero_page_range() {
-> > > >   if(page_aligned_io)
-> > > >         call_dax_page_zero_range()
-> > > >   else
-> > > >         use_direct_access_and_memcpy;
-> > > > }
-> > > >
-> > > > And other callers of blkdev_issue_zeroout() in filesystems can migrate
-> > > > to calling dax_zero_page_range() instead.
-> > > >
-> > > > If yes, I am not seeing what advantage do we get by this change.
-> > > >
-> > > > - __dax_zero_page_range() seems to be called by only partial block
-> > > >   zeroing code. So dax_zero_page_range() call will remain unused.
-> > > >
-> > > >
-> > > > - dax_zero_page_range() will be exact replacement of
-> > > >   blkdev_issue_zeroout() so filesystems will not gain anything. Just that
-> > > >   it will create a dax specific hook.
-> > > >
-> > > > In that case it might be simpler to just get rid of blkdev_issue_zeroout()
-> > > > call from __dax_zero_page_range() and make sure there are no callers of
-> > > > full block zeroing from this path.
-> > > 
-> > > I think you're right. The path I'm concerned about not regressing is
-> > > the error clearing on new block allocation and we get that already via
-> > > xfs_zero_extent() and sb_issue_zeroout().
-> > 
-> > Well I was wrong. I found atleast one user which uses __dax_zero_page_range()
-> > to zero full PAGE_SIZE blocks.
-> > 
-> > xfs_io -c "allocsp 32K 0" foo.txt
-> 
-> That ioctl interface is deprecated and likely unused by any new
-> application written since 1999. It predates unwritten extents (1998)
-> and I don't think any native linux applications have ever used it. A
-> newly written DAX aware application would almost certainly not use
-> this interface.
-> 
-> IOWs, I wouldn't use it as justification for some special case
-> behaviour; I'm more likely to say "rip that ancient ioctl out" than
-> to jump through hoops because it's implementation behaviour.
+On Thu, Feb 20, 2020 at 7:28 PM Alastair D'Silva <alastair@au1.ibm.com> wrote:
+>
+> From: Alastair D'Silva <alastair@d-silva.org>
+>
+> This patch requests the metadata required to issue admin commands, as well
+> as some helper functions to construct and check the completion of the
+> commands.
 
-Hi Dave,
-
-Do you see any other path in xfs using iomap_zero_range() and zeroing
-full block. iomap_zero_range() already skips IOMAP_HOLE and
-IOMAP_UNWRITTEN. So it has to be a full block zeroing which is of not type
-IOMAP_HOLE and IOMAP_UNWRITTEN.
-
-My understanding is that ext4 and xfs both are initializing full blocks
-using blkdev_issue_zeroout(). Only partial blocks are being zeroed using
-this dax zeroing path.
-
-If there are no callers of full block zeroing through
-__dax_zero_page_range(), then I can simply get rid of
-blkdev_issue_zerout() call from __dax_zero_page_range().
-
-Thanks
-Vivek
+What are the admin commands? Any pointer to a spec? Why does Linux
+need to support these commands?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
