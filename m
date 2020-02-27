@@ -2,107 +2,154 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46810171295
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Feb 2020 09:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2237172232
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Feb 2020 16:25:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6517C10FC362D;
-	Thu, 27 Feb 2020 00:31:47 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9A9C210FC3638;
+	Thu, 27 Feb 2020 07:26:23 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B095410FC3629
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 00:31:44 -0800 (PST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 01R8TprY008590
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 03:30:52 -0500
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2ydcp5pnw8-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 03:30:52 -0500
-Received: from localhost
-	by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <ajd@linux.ibm.com>;
-	Thu, 27 Feb 2020 08:30:49 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-	by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Thu, 27 Feb 2020 08:30:41 -0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 01R8UeRl48038088
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Feb 2020 08:30:40 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AFC9242047;
-	Thu, 27 Feb 2020 08:30:40 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 542E942042;
-	Thu, 27 Feb 2020 08:30:40 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu, 27 Feb 2020 08:30:40 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTPS id 8290010FC3638
+	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 07:26:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1582817128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IhP/uVeNAjyfX+4w576BUdyw6NCAxT3/mgVgsHd4czE=;
+	b=Y1W4GdSr/dObwbu5ns2MPYwsuA3Cdr53iX8kR2fV3AbMtep+HaVbH0oTIcJ649KSrxOaTI
+	g1F6oU6sbCSDKitjl0NQaZ9JemYYpn/+V/n0GFyUjcbGdD5NfJDA7JiKsEyJ/AouQuOrjl
+	u5WRYbInFlmWQSyZ8GMagqUQpGV/b0I=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-346-zSt6dAGOPb6f6QGsCD_XYw-1; Thu, 27 Feb 2020 10:25:22 -0500
+X-MC-Unique: zSt6dAGOPb6f6QGsCD_XYw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 850F2A01C0;
-	Thu, 27 Feb 2020 19:30:35 +1100 (AEDT)
-Subject: Re: [PATCH v3 15/27] powerpc/powernv/pmem: Add support for near
- storage commands
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-16-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 27 Feb 2020 19:30:38 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 237A68017CC;
+	Thu, 27 Feb 2020 15:25:21 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.35])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1249F87B08;
+	Thu, 27 Feb 2020 15:25:18 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 7E1272257D2; Thu, 27 Feb 2020 10:25:17 -0500 (EST)
+Date: Thu, 27 Feb 2020 10:25:17 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Dave Chinner <david@fromorbit.com>
+Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
+ arbitrary offset and len
+Message-ID: <20200227152517.GA22844@redhat.com>
+References: <20200224201346.GC14651@redhat.com>
+ <CAPcyv4gGrimesjZ=OKRaYTDd5dUVz+U9aPeBMh_H3_YCz4FOEQ@mail.gmail.com>
+ <20200224211553.GD14651@redhat.com>
+ <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
+ <20200225133653.GA7488@redhat.com>
+ <CAPcyv4h2fdo=-jqLPTqnuxYVMbBgODWPqafH35yBMBaPa5Rxcw@mail.gmail.com>
+ <20200225200824.GB7488@redhat.com>
+ <CAPcyv4jN7ntOO2hK4ByDcX4-Kob=aJNOr3fGR_k_8rxZ=3Sz7w@mail.gmail.com>
+ <20200226165756.GB30329@redhat.com>
+ <20200227031143.GH10737@dread.disaster.area>
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-16-alastair@au1.ibm.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20022708-0020-0000-0000-000003AE06E1
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20022708-0021-0000-0000-0000220624FF
-Message-Id: <49df8d51-f84b-3f2a-4df8-24569162bcf5@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-02-27_02:2020-02-26,2020-02-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
- adultscore=0 bulkscore=0 mlxscore=0 phishscore=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=871 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2002270069
-Message-ID-Hash: HC74TBC7IHGHN7NUI2X2A2PT4BNLVZ2Z
-X-Message-ID-Hash: HC74TBC7IHGHN7NUI2X2A2PT4BNLVZ2Z
-X-MailFrom: ajd@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc
- -dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+Content-Disposition: inline
+In-Reply-To: <20200227031143.GH10737@dread.disaster.area>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Message-ID-Hash: MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y
+X-Message-ID-Hash: MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HC74TBC7IHGHN7NUI2X2A2PT4BNLVZ2Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MASY62RGBC6QAZHCPZZMXI3N2K2PKQ2Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 21/2/20 2:27 pm, Alastair D'Silva wrote:> +int 
-ns_response_handled(const struct ocxlpmem *ocxlpmem)
-> +{
-> +	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIC,
-> +				      OCXL_LITTLE_ENDIAN, GLOBAL_MMIO_CHI_NSCRA);
-> +}
+On Thu, Feb 27, 2020 at 02:11:43PM +1100, Dave Chinner wrote:
+> On Wed, Feb 26, 2020 at 11:57:56AM -0500, Vivek Goyal wrote:
+> > On Tue, Feb 25, 2020 at 02:49:30PM -0800, Dan Williams wrote:
+> > [..]
+> > > > > I'm ok with replacing blkdev_issue_zeroout() with a dax operation
+> > > > > callback that deals with page aligned entries. That change at least
+> > > > > makes the error boundary symmetric across copy_from_iter() and the
+> > > > > zeroing path.
+> > > >
+> > > > IIUC, you are suggesting that modify dax_zero_page_range() to take page
+> > > > aligned start and size and call this interface from
+> > > > __dax_zero_page_range() and get rid of blkdev_issue_zeroout() in that
+> > > > path?
+> > > >
+> > > > Something like.
+> > > >
+> > > > __dax_zero_page_range() {
+> > > >   if(page_aligned_io)
+> > > >         call_dax_page_zero_range()
+> > > >   else
+> > > >         use_direct_access_and_memcpy;
+> > > > }
+> > > >
+> > > > And other callers of blkdev_issue_zeroout() in filesystems can migrate
+> > > > to calling dax_zero_page_range() instead.
+> > > >
+> > > > If yes, I am not seeing what advantage do we get by this change.
+> > > >
+> > > > - __dax_zero_page_range() seems to be called by only partial block
+> > > >   zeroing code. So dax_zero_page_range() call will remain unused.
+> > > >
+> > > >
+> > > > - dax_zero_page_range() will be exact replacement of
+> > > >   blkdev_issue_zeroout() so filesystems will not gain anything. Just that
+> > > >   it will create a dax specific hook.
+> > > >
+> > > > In that case it might be simpler to just get rid of blkdev_issue_zeroout()
+> > > > call from __dax_zero_page_range() and make sure there are no callers of
+> > > > full block zeroing from this path.
+> > > 
+> > > I think you're right. The path I'm concerned about not regressing is
+> > > the error clearing on new block allocation and we get that already via
+> > > xfs_zero_extent() and sb_issue_zeroout().
+> > 
+> > Well I was wrong. I found atleast one user which uses __dax_zero_page_range()
+> > to zero full PAGE_SIZE blocks.
+> > 
+> > xfs_io -c "allocsp 32K 0" foo.txt
+> 
+> That ioctl interface is deprecated and likely unused by any new
+> application written since 1999. It predates unwritten extents (1998)
+> and I don't think any native linux applications have ever used it. A
+> newly written DAX aware application would almost certainly not use
+> this interface.
+> 
+> IOWs, I wouldn't use it as justification for some special case
+> behaviour; I'm more likely to say "rip that ancient ioctl out" than
+> to jump through hoops because it's implementation behaviour.
 
-Same comment as on the last patch - I think we're meant to be clearing 
-this bit, not setting it to 1,
+Hi Dave,
 
+Do you see any other path in xfs using iomap_zero_range() and zeroing
+full block. iomap_zero_range() already skips IOMAP_HOLE and
+IOMAP_UNWRITTEN. So it has to be a full block zeroing which is of not type
+IOMAP_HOLE and IOMAP_UNWRITTEN.
 
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+My understanding is that ext4 and xfs both are initializing full blocks
+using blkdev_issue_zeroout(). Only partial blocks are being zeroed using
+this dax zeroing path.
+
+If there are no callers of full block zeroing through
+__dax_zero_page_range(), then I can simply get rid of
+blkdev_issue_zerout() call from __dax_zero_page_range().
+
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
