@@ -2,55 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CBD173834
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Feb 2020 14:22:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B93517395A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Feb 2020 15:05:19 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 63CFF10FC36E3;
-	Fri, 28 Feb 2020 05:23:49 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=74.6.131.123; helo=sonic311-13.consmr.mail.bf2.yahoo.com; envelope-from=lw3628517@gmail.com; receiver=<UNKNOWN> 
-Received: from sonic311-13.consmr.mail.bf2.yahoo.com (sonic311-13.consmr.mail.bf2.yahoo.com [74.6.131.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4B32810FC36E5;
+	Fri, 28 Feb 2020 06:06:09 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+961d4909b86d2e9c90d3+6032+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7D431007B191
-	for <linux-nvdimm@lists.01.org>; Fri, 28 Feb 2020 05:23:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1582896173; bh=zI0m+DRhZDm01EKX+YHsQU600DuE8AwybL7Vu4lblwE=; h=Date:From:Reply-To:Subject:References:From:Subject; b=ZXBjVvyPzfsJJI8WmgivXcG1IpYanQHk/y4WZsZc1rnLg426UQtyWasMxnhUQpF9ysRCjb0tpUeqczbvEeQP7sC7p5KEKy4p+qf0G4L+X75X/2SbZgwiGq6Nt20NpJix/7jV+O6Mgr8tum6uDknFC8UrN0QIsiRUdSNb5HjSb8EQaMvKl2Q0y5EeYIrcz7BQawcz4kiseC2dcbbtpsTvlX+L1FmCjAgSuHNGodxh7QudSsl+ANUny+cAF4/JwYD671mM5QpQWB+w149IXOUpoRwdxZpLfSU4RY0FSZg9RXFmrq57cLjr5+bxH+41tFN91iWwVvXbNISfj4sZkCRU6g==
-X-YMail-OSG: EjW2WpEVM1nEwsGyqzNFpUe4iMZhGj_AfQ7qGkFelrAvAkKhlxCeVoAuyErYTgv
- bUYs2FHyY.k0XlvTyW4hSVPkotHzX5EzUzTynQ.QWZxhl2S341o9LCJDbrq6leumgzhXHZNfRw5M
- GnCFaHZxXpfFaaUaTVmUm.yoED0b4WGcFxIwYq7LpLioJWyj42gtoJavWzHYgDTZ8nQbi3Wh9Rxh
- X67NqW0OYU9.jKFEhCBvibmGwEyvbLYW.Lho_xaF.iS266qMEQeuLoZ_wcM4sfGsbwfOGCrRFNij
- 8uJuVeI9zTXaT3VY1Z5.sUWFnoHGO8xq4FhfgiCedi1ouTl4gP6..URI7.oztic7GFWJm4GNqb_Q
- .MXkG1IJ1gIuRiridjlCrOptf2rtTpbtmE04TRBOGy5Y8SZ0vZ66u0JA8tPuNrnkC4OlcTR6K1_4
- vnXEmZUeshU4___3Q218ylLSCDFcR7b_VbR7BAsn1FQk54inNJ9zLYPw_Ts85TxCac69hpJ8tNSt
- accyJ2f281SbTx8cp3SynUJ9b62geb1yxyX.dEclySFEy35JvPyW83oiyYztcs6_XOl1.WXpbcak
- eFOA5eYg2ZGQ9965HRoqyL6xsoqvEagLmahR.zEDnn9nUtlcwdFVPt5kKXReB85sIJhEfqYQinn9
- k9gH0s6V0cQv7oLzAMVQIrKq2NeOZJxHYq5Ryso2ecDpHTvgWes3LMJXybJHCuJYKxZt3u5TKfA9
- 6SOH_k3ctKl0CZuXU64XwMjyP_YYpUjbbPbFZZcZsi8MYqz0QzoZwH120eDQ_RMS5NiowNuSwcX8
- OMF2.PjsjygOapwbnbxfDEhyp3IthCmxwQKkHzme1YW_X2PaoV2sXnDbapE8iCl.ALfGHNr8rzQ3
- _dK0vumVk5.TTwMiE.N5b__efET2j1PUXqvpp4xsqPHa9AjozxQhDBP4EIt9Ke8OYxnLSg7NdZv.
- KQmEmyB_1tnbIbizfp6DhxKFexeFZoxlefAtr5YIhXizEsHj5iKeDIiPc8REJ1hECGEm_n8y7baT
- CquEyqyWDnPQCGIVW26FgdehLKfWLWjyus5k_.xqAn._6xXKib3STbLEDpXOjbWuHZjOhhUn7Jt9
- L2.B8pO1DiZXBUcN_HwFLHmFS__czA9YifSuYTEtPzHV652VMbhksaNzxLwo509iuvHnMD.RK_rl
- 1CosPvityee_Oq7aT_7DJW6tSttyFKqtYbAWllky.ifH5.aCOKKTatiSvfxninGGMA2lW5CthGcb
- _Ns4h.AWvO2_QbOJe1URZ489rPfyrzJCgvnT4uhARVAXSGqw_zY3i2CmBRftBgq8dmCRmqEAfLcs
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Fri, 28 Feb 2020 13:22:53 +0000
-Date: Fri, 28 Feb 2020 13:22:52 +0000 (UTC)
-From: Lisa Williams <lw3628517@gmail.com>
-Message-ID: <245385345.1333082.1582896172571@mail.yahoo.com>
-Subject: Hi Dear
+	by ml01.01.org (Postfix) with ESMTPS id 98BAD10FC36E4
+	for <linux-nvdimm@lists.01.org>; Fri, 28 Feb 2020 06:06:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=l/9vD4kWJ5DgSyvKhFv1tb5oLOTsgXLSNIzvAAdRX2o=; b=mtQ9sSvzCTY3BgpfOC5D6cHQFZ
+	Ixh2Tv/4gk5gFcBys/QcmXPiA5puZzBqBTeFRuaSaH9QNSl0CfAglRw6bNLx6AhO7qlQlH957/HD6
+	HM0yj+eoyohvvRCiPJYQqJWZABZeaoIgzGoT8oK1uBJSrUjBGRXGgJDcuyyxFISQGu0lsQukeM5/4
+	GLt4ahZoIPPu7FbZqDZ12B/QLmJAxu3kS6CLYe1V0/Shv7FP6vb8SJfCGT0WrmWMLoe5Cd1+J4lcY
+	UAGcWqH+e1nEcznk5WKgMdVW6DkCturcBrWQ1BrsKa7ai3BQXloxASvhwdD8ZZkDDocxBjmYONzzP
+	80DEcfqw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1j7gGK-00048K-IE; Fri, 28 Feb 2020 14:05:08 +0000
+Date: Fri, 28 Feb 2020 06:05:08 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
+ arbitrary offset and len
+Message-ID: <20200228140508.GA2987@infradead.org>
+References: <x49lfoxj622.fsf@segfault.boston.devel.redhat.com>
+ <20200220215707.GC10816@redhat.com>
+ <x498skv3i5r.fsf@segfault.boston.devel.redhat.com>
+ <20200221201759.GF25974@redhat.com>
+ <20200223230330.GE10737@dread.disaster.area>
+ <20200224153844.GB14651@redhat.com>
+ <20200227030248.GG10737@dread.disaster.area>
+ <CAPcyv4gTSb-xZ2k938HxQeAXATvGg1aSkEGPfrzeQAz9idkgzQ@mail.gmail.com>
+ <20200228013054.GO10737@dread.disaster.area>
+ <CAPcyv4i2vjUGrwaRsjp1-L0wFf0a00e46F-SUbocQBkiQ3M1kg@mail.gmail.com>
 MIME-Version: 1.0
-References: <245385345.1333082.1582896172571.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15302 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:73.0) Gecko/20100101 Firefox/73.0
-Message-ID-Hash: 2A4NXPNXEAFCSDVPOCDKW4XPII3MMHMF
-X-Message-ID-Hash: 2A4NXPNXEAFCSDVPOCDKW4XPII3MMHMF
-X-MailFrom: lw3628517@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4i2vjUGrwaRsjp1-L0wFf0a00e46F-SUbocQBkiQ3M1kg@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: RLF6LFUXMGABRK6AEEQU7OYNG5U4YJLV
+X-Message-ID-Hash: RLF6LFUXMGABRK6AEEQU7OYNG5U4YJLV
+X-MailFrom: BATV+961d4909b86d2e9c90d3+6032+infradead.org+hch@bombadil.srs.infradead.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Dave Chinner <david@fromorbit.com>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: lisawilam@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2A4NXPNXEAFCSDVPOCDKW4XPII3MMHMF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RLF6LFUXMGABRK6AEEQU7OYNG5U4YJLV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,18 +62,21 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Thu, Feb 27, 2020 at 07:28:41PM -0800, Dan Williams wrote:
+> "don't perform generic memory-error-handling, there's an fs that owns
+> this daxdev and wants to disposition errors". The fs/dax.c
+> infrastructure that sets up ->index and ->mapping would still need to
+> be there for ext4 until its ready to take on the same responsibility.
+> Last I checked the ext4 reverse mapping implementation was not as
+> capable as XFS. This goes back to why the initial design avoided
+> relying on not universally available / stable reverse-mapping
+> facilities and opted for extending the generic mm/memory-failure.c
+> implementation.
 
-
-Hi Dear,
-
- How are you doing hope you are fine and OK?
-
-I was just going through the Internet search when I found your email address, I want to make a new and special friend, so I decided to contact you to see how we can make it work out if we can. Please I wish you will have the desire with me so that we can get to know each other better and see what happens in future.
-
-My name is Lisa Williams, I am an American, but presently I live in the UK, I will be glad to see your reply for us to know each other better to exchange pictures and details about us.
-
-Yours
-Lisa
+The important but is that we stop using ->index and ->mapping when XFS
+is used as that enables using DAX+reflinks, which actually is the most
+requested DAX feature on XFS (way more than silly runtime flag switches
+for example).
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
