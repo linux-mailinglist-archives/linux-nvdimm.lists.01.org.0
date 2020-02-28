@@ -2,57 +2,69 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F30172E6B
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Feb 2020 02:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C53B172F51
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Feb 2020 04:28:57 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AC28D10FC36D7;
-	Thu, 27 Feb 2020 17:51:19 -0800 (PST)
-Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.246; helo=mail104.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
-Received: from mail104.syd.optusnet.com.au (mail104.syd.optusnet.com.au [211.29.132.246])
-	by ml01.01.org (Postfix) with ESMTP id EA4EC10FC36D6
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 17:51:16 -0800 (PST)
-Received: from dread.disaster.area (pa49-195-202-68.pa.nsw.optusnet.com.au [49.195.202.68])
-	by mail104.syd.optusnet.com.au (Postfix) with ESMTPS id 769D67EAD73;
-	Fri, 28 Feb 2020 12:50:23 +1100 (AEDT)
-Received: from dave by dread.disaster.area with local (Exim 4.92.3)
-	(envelope-from <david@fromorbit.com>)
-	id 1j7UnG-0005hW-Ph; Fri, 28 Feb 2020 12:50:22 +1100
-Date: Fri, 28 Feb 2020 12:50:22 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Vivek Goyal <vgoyal@redhat.com>
+	by ml01.01.org (Postfix) with ESMTP id 7C7F31007A830;
+	Thu, 27 Feb 2020 19:29:47 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::242; helo=mail-oi1-x242.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 8DFE710FC3192
+	for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 19:29:45 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id c16so1558433oic.3
+        for <linux-nvdimm@lists.01.org>; Thu, 27 Feb 2020 19:28:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GEX6rvdBlO7hz9k8V7o5YOXnBqCUwNjK2oTZUppbe28=;
+        b=iFtgCGgz7stZT+cTg0hEEXaO6+15FCXvWoh0GPbqKQE17YrUava9nJT2WH5/fEUePy
+         hWaaTAxg8ONBYVQnvIyUU0UXZdpKmU5/h54lowSHdTy1ko2XzKsUE/V82ZvP4RN7dCu7
+         qKTGAa8oWqij2/t07hF3e+G/Cm431bgJzuBWfBUFL1Lr2JEDqbmSscKoldDvYrL6NP8G
+         S/xqMZttg9FiCRMgNIczj2TwUN/45WkdAne58ZRNQ8yodldeCCLic/LXD0i1FZ12upL+
+         4UjrSmXjdFhQC5TmfNfJmn1kWGKcDxNczhFRqNRKTcG+yAFNJ82E6v90QTo8/keoV2qI
+         q87A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GEX6rvdBlO7hz9k8V7o5YOXnBqCUwNjK2oTZUppbe28=;
+        b=RQ0YMw1Wfrie2WqWRAklb7raaQbgDxd8K80wbbS+0CCwmS5W95S97hBX4egTw0nSeo
+         gupuNYNsovIxUsYDjw9D8ImifT0mcdY2aDGCahdgVWCvHAYCn3M1yY4qHFOzA4U6ao+x
+         ToFc2wWm2nrUHbr1xwtEQDpcz7oObFNV/OaMF4MF7gL44rFLAwJK15VnWSSkywJ8gQ93
+         AouB/L5ruf28yydMjXgmgs7lGHoO7qQT1aALFM7+qEpCBdAUmXC4pyQ8mrsslL/uhmic
+         XwXllbsPEVoXIchXigc4QFRsegrnHHaHCl+S/AVyK5k3LTOIU+p+gdDM0khfq569cO85
+         pFVg==
+X-Gm-Message-State: APjAAAVEgOVb4IywKe/JsGxkrBp/V4Yguygf1EJPJCocKkoblecJTvtS
+	m5INpMgOH7+4nZHiTA+un3kdhfTDt4Mvp3IVJsiNqQ==
+X-Google-Smtp-Source: APXvYqwQar6+RTCUGLwq/zZ52sZmJNQGhbFyt0+u8eKfi4z6SLcYdrIfqOMEAyhGR5Y0vg5HRZsmmP1OzNllORh8E8c=
+X-Received: by 2002:aca:3f54:: with SMTP id m81mr1636050oia.73.1582860532725;
+ Thu, 27 Feb 2020 19:28:52 -0800 (PST)
+MIME-Version: 1.0
+References: <20200218214841.10076-1-vgoyal@redhat.com> <20200218214841.10076-3-vgoyal@redhat.com>
+ <x49lfoxj622.fsf@segfault.boston.devel.redhat.com> <20200220215707.GC10816@redhat.com>
+ <x498skv3i5r.fsf@segfault.boston.devel.redhat.com> <20200221201759.GF25974@redhat.com>
+ <20200223230330.GE10737@dread.disaster.area> <20200224153844.GB14651@redhat.com>
+ <20200227030248.GG10737@dread.disaster.area> <CAPcyv4gTSb-xZ2k938HxQeAXATvGg1aSkEGPfrzeQAz9idkgzQ@mail.gmail.com>
+ <20200228013054.GO10737@dread.disaster.area>
+In-Reply-To: <20200228013054.GO10737@dread.disaster.area>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 27 Feb 2020 19:28:41 -0800
+Message-ID: <CAPcyv4i2vjUGrwaRsjp1-L0wFf0a00e46F-SUbocQBkiQ3M1kg@mail.gmail.com>
 Subject: Re: [PATCH v5 2/8] drivers/pmem: Allow pmem_clear_poison() to accept
  arbitrary offset and len
-Message-ID: <20200228015022.GP10737@dread.disaster.area>
-References: <CAPcyv4gGrimesjZ=OKRaYTDd5dUVz+U9aPeBMh_H3_YCz4FOEQ@mail.gmail.com>
- <20200224211553.GD14651@redhat.com>
- <CAPcyv4gX8p0YuMg3=r9DtPAO3Lz-96nuNyXbK1X5-cyVzNrDTA@mail.gmail.com>
- <20200225133653.GA7488@redhat.com>
- <CAPcyv4h2fdo=-jqLPTqnuxYVMbBgODWPqafH35yBMBaPa5Rxcw@mail.gmail.com>
- <20200225200824.GB7488@redhat.com>
- <CAPcyv4jN7ntOO2hK4ByDcX4-Kob=aJNOr3fGR_k_8rxZ=3Sz7w@mail.gmail.com>
- <20200226165756.GB30329@redhat.com>
- <20200227031143.GH10737@dread.disaster.area>
- <20200227152517.GA22844@redhat.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200227152517.GA22844@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.3 cv=W5xGqiek c=1 sm=1 tr=0
-	a=mqTaRPt+QsUAtUurwE173Q==:117 a=mqTaRPt+QsUAtUurwE173Q==:17
-	a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=l697ptgUJYAA:10
-	a=7-415B0cAAAA:8 a=lA3oqZJ5Ye0HhCd3yN8A:9 a=O0Xyyn5K-h7nI4-n:21
-	a=Q5LBZUXVF_w9l6fN:21 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
-Message-ID-Hash: 7CIGIROYM6ZEQH5TDGPA23NCMRUJ6DKG
-X-Message-ID-Hash: 7CIGIROYM6ZEQH5TDGPA23NCMRUJ6DKG
-X-MailFrom: david@fromorbit.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+To: Dave Chinner <david@fromorbit.com>
+Message-ID-Hash: ZJ5XUHPBCI6ZSMOQAIYGGRX5BKEAFLOM
+X-Message-ID-Hash: ZJ5XUHPBCI6ZSMOQAIYGGRX5BKEAFLOM
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Christoph Hellwig <hch@infradead.org>, device-mapper development <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7CIGIROYM6ZEQH5TDGPA23NCMRUJ6DKG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZJ5XUHPBCI6ZSMOQAIYGGRX5BKEAFLOM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -61,109 +73,100 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 27, 2020 at 10:25:17AM -0500, Vivek Goyal wrote:
-> On Thu, Feb 27, 2020 at 02:11:43PM +1100, Dave Chinner wrote:
-> > On Wed, Feb 26, 2020 at 11:57:56AM -0500, Vivek Goyal wrote:
-> > > On Tue, Feb 25, 2020 at 02:49:30PM -0800, Dan Williams wrote:
-> > > [..]
-> > > > > > I'm ok with replacing blkdev_issue_zeroout() with a dax operation
-> > > > > > callback that deals with page aligned entries. That change at least
-> > > > > > makes the error boundary symmetric across copy_from_iter() and the
-> > > > > > zeroing path.
-> > > > >
-> > > > > IIUC, you are suggesting that modify dax_zero_page_range() to take page
-> > > > > aligned start and size and call this interface from
-> > > > > __dax_zero_page_range() and get rid of blkdev_issue_zeroout() in that
-> > > > > path?
-> > > > >
-> > > > > Something like.
-> > > > >
-> > > > > __dax_zero_page_range() {
-> > > > >   if(page_aligned_io)
-> > > > >         call_dax_page_zero_range()
-> > > > >   else
-> > > > >         use_direct_access_and_memcpy;
-> > > > > }
-> > > > >
-> > > > > And other callers of blkdev_issue_zeroout() in filesystems can migrate
-> > > > > to calling dax_zero_page_range() instead.
-> > > > >
-> > > > > If yes, I am not seeing what advantage do we get by this change.
-> > > > >
-> > > > > - __dax_zero_page_range() seems to be called by only partial block
-> > > > >   zeroing code. So dax_zero_page_range() call will remain unused.
-> > > > >
-> > > > >
-> > > > > - dax_zero_page_range() will be exact replacement of
-> > > > >   blkdev_issue_zeroout() so filesystems will not gain anything. Just that
-> > > > >   it will create a dax specific hook.
-> > > > >
-> > > > > In that case it might be simpler to just get rid of blkdev_issue_zeroout()
-> > > > > call from __dax_zero_page_range() and make sure there are no callers of
-> > > > > full block zeroing from this path.
-> > > > 
-> > > > I think you're right. The path I'm concerned about not regressing is
-> > > > the error clearing on new block allocation and we get that already via
-> > > > xfs_zero_extent() and sb_issue_zeroout().
-> > > 
-> > > Well I was wrong. I found atleast one user which uses __dax_zero_page_range()
-> > > to zero full PAGE_SIZE blocks.
-> > > 
-> > > xfs_io -c "allocsp 32K 0" foo.txt
-> > 
-> > That ioctl interface is deprecated and likely unused by any new
-> > application written since 1999. It predates unwritten extents (1998)
-> > and I don't think any native linux applications have ever used it. A
-> > newly written DAX aware application would almost certainly not use
-> > this interface.
-> > 
-> > IOWs, I wouldn't use it as justification for some special case
-> > behaviour; I'm more likely to say "rip that ancient ioctl out" than
-> > to jump through hoops because it's implementation behaviour.
-> 
-> Hi Dave,
-> 
-> Do you see any other path in xfs using iomap_zero_range() and zeroing
-> full block.
+On Thu, Feb 27, 2020 at 5:31 PM Dave Chinner <david@fromorbit.com> wrote:
+> On Wed, Feb 26, 2020 at 08:19:37PM -0800, Dan Williams wrote:
+[..]
+> > So you want the FS to have error handling for just pmem errors or all
+> > memory errors?
+>
+> Just pmem errors in the specific range the filesystem manages - we
+> really only care storage errors because those are the only errors
+> the filesystem is responsible for handling correctly.
+>
+> Somebody else can worry about errors that hit page cache pages -
+> page cache pages require mapping/index pointers on each page anyway,
+> so a generic mechanism for handling those errors can be built into
+> the page cache. And if the error is in general kernel memory, then
+> it's game over for the entire kernel at that point, not just the
+> filesystem.
+>
+> > And you want this to be done without the mm core using
+> > page->index to identify what to unmap when the error happens?
+>
+> Isn't that exactly what I just said? We get the page address that
+> failed, the daxdev can turn that into a sector address and call into
+> the filesystem with a {sector, len, errno} tuple. We then do a
+> reverse mapping lookup on {sector, len} to find all the owners of
+> that range in the filesystem. If it's file data, that owner record
+> gives us the inode and the offset into the file, which then gives us
+> a {mapping, index} tuple.
+>
+> Further, the filesytem reverse map is aware that it's blocks can be
+> shared by multiple owners, so it will have a record for every inode
+> and file offset that maps to that page. Hence we can simply iterate
+> the reverse map and do that whacky collect_procs/kill_procs dance
+> for every {mapping, index} pair that references the the bad range.
+>
+> Nothing ever needs to be stored on the struct page...
 
-Yes:
+Ok, so fs/dax.c needs to coordinate with mm/memory-failure.c to say
+"don't perform generic memory-error-handling, there's an fs that owns
+this daxdev and wants to disposition errors". The fs/dax.c
+infrastructure that sets up ->index and ->mapping would still need to
+be there for ext4 until its ready to take on the same responsibility.
+Last I checked the ext4 reverse mapping implementation was not as
+capable as XFS. This goes back to why the initial design avoided
+relying on not universally available / stable reverse-mapping
+facilities and opted for extending the generic mm/memory-failure.c
+implementation.
 
-- xfs_file_aio_write_checks() for zeroing blocks between the
-  existing EOF and the start of the incoming write beyond EOF
-- xfs_setattr_size() on truncate up for zeroing blocks between the
-  existing EOF and the new EOF.
-- xfs_reflink_zero_posteof() for zeroing blocks between the old EOF
-  and where the new reflinked extents are going to land beyond EOF
+If XFS optionally supplants mm/memory-failure.c I would expect we'd
+want to do better than the "whacky collect_procs/kill_procs"
+implementation and let applications register for a notification format
+better than BUS_MCEERR_AO signals.
 
-And don't think that blocks beyond EOF can't exist when DAX is
-enabled. We can turn DAX on and off, we can crash between allocation
-and file size extension, etc. Hence this code must be able to handle
-zeroing large ranges of blocks beyond EOF...
+> > Memory
+> > error scanning is not universally available on all pmem
+> > implementations, so FS will need to subscribe for memory-error
+> > handling events.
+>
+> No. Filesystems interact with the underlying device abstraction, not
+> the physical storage that lies behind that device abstraction.  The
+> filesystem should not interface with pmem directly in any way (all
+> direct accesses are hidden inside fs/dax.c!), nor should it care
+> about the quirks of the pmem implementation it is sitting on. That's
+> what the daxdev abstraction is supposed to hide from the users of
+> the pmem.
 
-> iomap_zero_range() already skips IOMAP_HOLE and
-> IOMAP_UNWRITTEN. So it has to be a full block zeroing which is of not type
-> IOMAP_HOLE and IOMAP_UNWRITTEN.
-> 
-> My understanding is that ext4 and xfs both are initializing full blocks
-> using blkdev_issue_zeroout(). Only partial blocks are being zeroed using
-> this dax zeroing path.
+I wasn't proposing that XFS have a machine-check handler, I was trying
+to get to the next level detail of the async notification interface to
+the fs.
 
-Look at the API, not the callers: iomap_zero_range takes a 64 bit
-length parameter. It can be asked to zero blocks across petabytes of
-a file. If there's a single block somewhere in that range, it will
-only zero that block. If the entire range is allocated, it will zero
-that entire range (yes, it will take forever!) as that it what it
-is intended to do.
+>
+> IOWs, the daxdev infrastructure subscribes to memory-error event
+> subsystem, calls out to the filesystem when an error in a page in
+> the daxdev is reported. The filesystem only needs to know the
+> {sector, len, errno} tuple related to the error; it is the device's
+> responsibility to handle the physical mechanics of listening,
+> filtering and translating MCEs to a format the filesystem
+> understands....
+>
+> Another reason it should be provided by the daxdev as a {sector,
+> len, errno} tuple is that it also allows non-dax block devices to
+> implement the similar error notifications and provide filesystems
+> with exactly the same information so the filesystem can start
+> auto-recovery processes....
 
-It should be pretty clear that needs to be able to zero entire
-pages, regardless of how it is currently used/called by filesystems.
-
-Cheers,
-
-Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+The driver layer does already have 'struct badblocks' that both pmem
+and md use, just no current way for the FS to get a reference to it.
+However, my hope was to get away from the interface being sector based
+because the error granularity is already smaller than a sector in the
+daxdev case as compared to a bdev. A daxdev native error record should
+be a daxdev relative byte offset, not a sector. If the fs wants to
+align the blast radius of the error to sectors or fs-blocks that's its
+choice, but I don't think the driver interface should preclude
+sub-sector error handling. Essentially I don't want to add more bdev
+semantics to fs/dax.c while Vivek is busy removing them.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
