@@ -1,45 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA097174943
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:37:12 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2846174944
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:37:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1B67510FC3418;
-	Sat, 29 Feb 2020 12:38:03 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id 3202510FC340D;
+	Sat, 29 Feb 2020 12:38:08 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E78D310FC3418
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:37:59 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 329E010FC3408
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:38:06 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:07 -0800
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:14 -0800
 X-IronPort-AV: E=Sophos;i="5.70,501,1574150400";
-   d="scan'208";a="262203359"
+   d="scan'208";a="285978773"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:07 -0800
-Subject: [ndctl PATCH 11/36] ndctl/namespace: Validate resource alignment
- for dax-mode namespaces
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:13 -0800
+Subject: [ndctl PATCH 12/36] ndctl/namespace: Add read-infoblock command
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Sat, 29 Feb 2020 12:21:02 -0800
-Message-ID: <158300766271.2141307.12541085220843554138.stgit@dwillia2-desk3.amr.corp.intel.com>
+Cc: vishal.l.verma@intel.com
+Date: Sat, 29 Feb 2020 12:21:08 -0800
+Message-ID: <158300766814.2141307.3604583129159405889.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U
-X-Message-ID-Hash: RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U
+Message-ID-Hash: LPWV77CTT73RYLVYMIFWQPOLGF2BEZHL
+X-Message-ID-Hash: LPWV77CTT73RYLVYMIFWQPOLGF2BEZHL
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LPWV77CTT73RYLVYMIFWQPOLGF2BEZHL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,98 +47,811 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The kernel sets the default region alignment to 16M to promote
-cross-arch compatible namespace creation. While ndctl never touches the
-region alignment the end user might have changed it from its default.
-Enforce 16MiB alignment for the namespace resource base by default for
-dax-mode namespaces.
+Namespaces may contain an info-block that correlates with the possible
+modes of a namespace: 'sector', 'fsdax', or 'devdax'. Provide a command
+that can temporarily convert the namespace into 'raw' mode to read the
+info-block.
 
-It is still possible to use a 2MiB region-align for dax-mode namespaces
-on x86, but that requires --force to bypass this default alignment
-check.
+Also, similar to 'read-labels' provide a facility to decode the
+info-block into json.
 
-I chose a hard coded default value in ndctl with a --force to bypass the
-check rather than having a new sysfs attribute to probe for this detail.
-I.e. the kernel could export the minimum alignment for dax namespaces,
-but since the minimum compat value is already known, no need for a trip
-to the kernel.
-
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- Documentation/ndctl/ndctl-create-namespace.txt |    8 ++++++++
- ndctl/namespace.c                              |   24 ++++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ Documentation/ndctl/Makefile.am              |    3 
+ Documentation/ndctl/ndctl-read-infoblock.txt |   94 ++++++
+ ndctl/action.h                               |    1 
+ ndctl/builtin.h                              |    1 
+ ndctl/check.c                                |   20 -
+ ndctl/namespace.c                            |  404 ++++++++++++++++++++++++++
+ ndctl/namespace.h                            |   51 +++
+ ndctl/ndctl.c                                |    1 
+ util/fletcher.h                              |    1 
+ util/size.h                                  |    1 
+ 10 files changed, 555 insertions(+), 22 deletions(-)
+ create mode 100644 Documentation/ndctl/ndctl-read-infoblock.txt
 
-diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
-index 8cd80fa789c1..7637e2403132 100644
---- a/Documentation/ndctl/ndctl-create-namespace.txt
-+++ b/Documentation/ndctl/ndctl-create-namespace.txt
-@@ -88,6 +88,14 @@ OPTIONS
- 	    fault scenarios are supported. I.e. if a device is
- 	    configured with a 2M alignment an attempt to fault a 4K
- 	    aligned offset will result in SIGBUS.
-+::
-+	Note both 'fsdax' and 'devdax' mode require 16MiB physical
-+	alignment to be cross-arch compatible. By default ndctl will
-+	block attempts to create namespaces in these modes when the
-+	physical starting address of the namespace is not 16MiB aligned.
-+	The --force option tries to override this constraint if the
-+	platform supports a smaller alignment, but this is not
-+	recommended.
+diff --git a/Documentation/ndctl/Makefile.am b/Documentation/ndctl/Makefile.am
+index 659cb32f0878..a5b20715fa9b 100644
+--- a/Documentation/ndctl/Makefile.am
++++ b/Documentation/ndctl/Makefile.am
+@@ -55,7 +55,8 @@ man1_MANS = \
+ 	ndctl-freeze-security.1 \
+ 	ndctl-sanitize-dimm.1 \
+ 	ndctl-load-keys.1 \
+-	ndctl-wait-overwrite.1
++	ndctl-wait-overwrite.1 \
++	ndctl-read-infoblock.1
  
- -s::
- --size=::
-diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index c4aab94abcd4..96d318166300 100644
---- a/ndctl/namespace.c
-+++ b/ndctl/namespace.c
-@@ -356,6 +356,24 @@ static bool do_setup_pfn(struct ndctl_namespace *ndns,
- 	return false;
+ EXTRA_DIST = $(man1_MANS)
+ 
+diff --git a/Documentation/ndctl/ndctl-read-infoblock.txt b/Documentation/ndctl/ndctl-read-infoblock.txt
+new file mode 100644
+index 000000000000..603cd6b223d3
+--- /dev/null
++++ b/Documentation/ndctl/ndctl-read-infoblock.txt
+@@ -0,0 +1,94 @@
++// SPDX-License-Identifier: GPL-2.0
++
++ndctl-read-infoblock(1)
++=======================
++
++NAME
++----
++ndctl-read-infoblock - read and optionally parse the info-block a namespace
++
++SYNOPSIS
++--------
++[verse]
++'ndctl read-infoblock' <namespace0.0> [<namespace1.0>..<namespaceN.Y>] [<options>]
++
++DESCRIPTION
++-----------
++As described in the theory of operation section of
++linkndctl:ndctl-create-namespace[1], the raw capacity of a namespace may
++encapsulate a personality, or mode of operation. Specifically, the mode
++may be set to one of "sector", "fsdax", and "devdax". Each of those
++modes is defined by an info-block format that uniquely identifies the
++mode of operation. The read-infoblock command knows the location
++(relative to the start of the namespace) and field definition of those
++data structures.
++
++Note that unlike a partition table info-block is not exposed by default,
++so the namespace needs to be disabled before the info-block can be
++accessed.
++
++EXAMPLE
++-------
++
++[verse]
++ndctl disable-namespace namespace0.0
++disabled 1 namespace
++ndctl read-infoblock -j namespace0.0
++[
++  {
++    "dev":"namespace0.0",
++    "signature":"NVDIMM_PFN_INFO",
++    "uuid":"56b11990-66b1-4d91-9cac-ca084c051259",
++    "parent_uuid":"00000000-0000-0000-0000-000000000000",
++    "flags":0,
++    "version":"1.3",
++    "dataoff":69206016,
++    "npfns":1031680,
++    "mode":2,
++    "start_pad":0,
++    "end_trunc":0,
++    "align":2097152
++  }
++]
++
++
++OPTIONS
++-------
++<namespace(s)>::
++	One or more 'namespaceX.Y' device names. The keyword 'all' can be specified to
++	operate on every namespace in the system, optionally filtered by bus id (see
++        --bus= option), or region id (see --region= option).
++
++-V::
++--verify::
++	Attempt to validate that the info-block is self consistent by
++	validating the embedded checksum, and that info-block formats
++	that contain a 'parent-uuid' attribute also match the base-uuid
++	of the namespace.
++
++-o::
++--output::
++	Output file
++
++-j::
++--json::
++	Parse the info-block data into json.
++-u::
++--human::
++	Enable json output and convert number formats to human readable
++	strings, for example show the size in terms of "KB", "MB", "GB", etc
++	instead of a signed 64-bit numbers per the JSON interchange
++	format (implies --json).
++
++-r::
++--region=::
++include::xable-region-options.txt[]
++
++
++include::../copyright.txt[]
++
++SEE ALSO
++--------
++linkndctl:ndctl-create-namespace[1],
++http://www.uefi.org/sites/default/files/resources/UEFI_Spec_2_7.pdf[UEFI NVDIMM Label Protocol]
++
+diff --git a/ndctl/action.h b/ndctl/action.h
+index 50da010ae826..636524c01f20 100644
+--- a/ndctl/action.h
++++ b/ndctl/action.h
+@@ -14,5 +14,6 @@ enum device_action {
+ 	ACTION_WAIT,
+ 	ACTION_START,
+ 	ACTION_CLEAR,
++	ACTION_READ_INFOBLOCK,
+ };
+ #endif /* __NDCTL_ACTION_H__ */
+diff --git a/ndctl/builtin.h b/ndctl/builtin.h
+index 94ab3177e9b6..aa41ad01a84c 100644
+--- a/ndctl/builtin.h
++++ b/ndctl/builtin.h
+@@ -8,6 +8,7 @@ int cmd_create_nfit(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_enable_namespace(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_create_namespace(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_destroy_namespace(int argc, const char **argv, struct ndctl_ctx *ctx);
++int cmd_read_infoblock(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_disable_namespace(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_check_namespace(int argc, const char **argv, struct ndctl_ctx *ctx);
+ int cmd_clear_errors(int argc, const char **argv, struct ndctl_ctx *ctx);
+diff --git a/ndctl/check.c b/ndctl/check.c
+index 365abafc12d1..cdb3d0bb5ae7 100644
+--- a/ndctl/check.c
++++ b/ndctl/check.c
+@@ -297,24 +297,6 @@ static int btt_log_read(struct arena_info *a, u32 lane, struct log_entry *ent)
+ 	return 0;
  }
  
-+static int check_dax_align(struct ndctl_namespace *ndns)
-+{
-+	unsigned long long resource = ndctl_namespace_get_resource(ndns);
-+	const char *devname = ndctl_namespace_get_devname(ndns);
+-static int btt_checksum_verify(struct btt_sb *btt_sb)
+-{
+-	uint64_t sum;
+-	le64 sum_save;
+-
+-	BUILD_BUG_ON(sizeof(struct btt_sb) != SZ_4K);
+-
+-	sum_save = btt_sb->checksum;
+-	btt_sb->checksum = 0;
+-	sum = fletcher64(btt_sb, sizeof(*btt_sb), 1);
+-	if (sum != sum_save)
+-		return 1;
+-	/* restore the checksum in the buffer */
+-	btt_sb->checksum = sum_save;
+-
+-	return 0;
+-}
+-
+ /*
+  * Never pass a mmapped buffer to this as it will attempt to write to
+  * the buffer, and we want writes to only happened in a controlled fashion.
+@@ -330,7 +312,7 @@ static int btt_info_verify(struct btt_chk *bttc, struct btt_sb *btt_sb)
+ 		if (uuid_compare(bttc->parent_uuid, btt_sb->parent_uuid) != 0)
+ 			return -ENXIO;
+ 
+-	if (btt_checksum_verify(btt_sb))
++	if (!verify_infoblock_checksum((union info_block *) btt_sb))
+ 		return -ENXIO;
+ 
+ 	return 0;
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index 96d318166300..9bc54abfd437 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -21,6 +21,7 @@
+ 
+ #include <ndctl.h>
+ #include "action.h"
++#include "namespace.h"
+ #include <sys/stat.h>
+ #include <uuid/uuid.h>
+ #include <sys/types.h>
+@@ -42,6 +43,9 @@ static struct parameters {
+ 	bool mode_default;
+ 	bool autolabel;
+ 	bool greedy;
++	bool verify;
++	bool human;
++	bool json;
+ 	const char *bus;
+ 	const char *map;
+ 	const char *type;
+@@ -53,6 +57,8 @@ static struct parameters {
+ 	const char *reconfig;
+ 	const char *sector_size;
+ 	const char *align;
++	const char *outfile;
++	const char *infile;
+ } param = {
+ 	.autolabel = true,
+ };
+@@ -83,6 +89,13 @@ struct parsed_parameters {
+ 	bool autolabel;
+ };
+ 
++#define pr_verbose(fmt, ...) \
++	({if (verbose) { \
++		fprintf(stderr, fmt, ##__VA_ARGS__); \
++	} else { \
++		do { } while (0); \
++	}})
 +
-+	if (resource == ULLONG_MAX) {
-+		warning("%s unable to validate alignment\n", devname);
+ #define debug(fmt, ...) \
+ 	({if (verbose) { \
+ 		fprintf(stderr, "%s:%d: " fmt, __func__, __LINE__, ##__VA_ARGS__); \
+@@ -133,6 +146,16 @@ OPT_BOOLEAN('f', "force", &force, "check namespace even if currently active")
+ #define CLEAR_OPTIONS() \
+ OPT_BOOLEAN('s', "scrub", &scrub, "run a scrub to find latent errors")
+ 
++#define READ_INFOBLOCK_OPTIONS() \
++OPT_FILENAME('o', "output", &param.outfile, "output-file", \
++	"filename to write info-block contents"), \
++OPT_FILENAME('i', "input", &param.infile, "input-file", \
++	"filename to read info-block instead of a namespace"), \
++OPT_BOOLEAN('V', "verify", &param.verify, \
++	"validate parent uuid, and info-block checksum"), \
++OPT_BOOLEAN('j', "json", &param.json, "parse label data into json"), \
++OPT_BOOLEAN('u', "human", &param.human, "use human friendly number formats (implies --json)")
++
+ static const struct option base_options[] = {
+ 	BASE_OPTIONS(),
+ 	OPT_END(),
+@@ -163,6 +186,12 @@ static const struct option clear_options[] = {
+ 	OPT_END(),
+ };
+ 
++static const struct option read_infoblock_options[] = {
++	BASE_OPTIONS(),
++	READ_INFOBLOCK_OPTIONS(),
++	OPT_END(),
++};
++
+ static int set_defaults(enum device_action mode)
+ {
+ 	int rc = 0;
+@@ -307,18 +336,30 @@ static const char *parse_namespace_options(int argc, const char **argv,
+ 			case ACTION_CLEAR:
+ 				action_string = "clear errors for";
+ 				break;
++			case ACTION_READ_INFOBLOCK:
++				action_string = "read-infoblock";
++				break;
+ 			default:
+ 				action_string = "<>";
+ 				break;
+ 		}
+-		error("specify a namespace to %s, or \"all\"\n", action_string);
+-		rc = -EINVAL;
++
++		if ((mode == ACTION_READ_INFOBLOCK && !param.infile)
++				|| mode != ACTION_READ_INFOBLOCK) {
++			error("specify a namespace to %s, or \"all\"\n", action_string);
++			rc = -EINVAL;
++		}
+ 	}
+ 	for (i = mode == ACTION_CREATE ? 0 : 1; i < argc; i++) {
+ 		error("unknown extra parameter \"%s\"\n", argv[i]);
+ 		rc = -EINVAL;
+ 	}
+ 
++	if (mode == ACTION_READ_INFOBLOCK && param.infile && argc) {
++		error("specify a namespace, or --input, not both\n");
++		rc = -EINVAL;
++	}
++
+ 	if (rc) {
+ 		usage_with_options(u, options);
+ 		return NULL; /* we won't return from usage_with_options() */
+@@ -1377,10 +1418,322 @@ static int namespace_clear_bb(struct ndctl_namespace *ndns, bool do_scrub)
+ 	return 0;
+ }
+ 
++struct read_infoblock_ctx {
++	struct json_object *jblocks;
++	FILE *f_out;
++};
++
++#define parse_field(sb, field)						\
++do {									\
++	jobj = json_object_new_int(le32_to_cpu((sb)->field));		\
++	if (!jobj)							\
++		goto err;						\
++	json_object_object_add(jblock, #field, jobj);			\
++} while (0)
++
++#define parse_hex(sb, field, sz)						\
++do {										\
++	jobj = util_json_object_hex(le##sz##_to_cpu((sb)->field), flags);	\
++	if (!jobj)								\
++		goto err;							\
++	json_object_object_add(jblock, #field, jobj);				\
++} while (0)
++
++static json_object *btt_parse(struct btt_sb *btt_sb, struct ndctl_namespace *ndns,
++		const char *path, unsigned long flags)
++{
++	uuid_t uuid;
++	char str[40];
++	struct json_object *jblock, *jobj;
++	const char *cmd = "read-info-block";
++	const bool verify = param.verify;
++
++	if (verify && !verify_infoblock_checksum((union info_block *) btt_sb)) {
++		pr_verbose("%s: %s checksum verification failed\n", cmd, __func__);
++		return NULL;
++	}
++
++	if (ndns) {
++		ndctl_namespace_get_uuid(ndns, uuid);
++		if (verify && !uuid_is_null(uuid) && memcmp(uuid, btt_sb->parent_uuid,
++					sizeof(uuid) != 0)) {
++			pr_verbose("%s: %s uuid verification failed\n", cmd, __func__);
++			return NULL;
++		}
++	}
++
++	jblock = json_object_new_object();
++	if (!jblock)
++		return NULL;
++
++	if (ndns) {
++		jobj = json_object_new_string(ndctl_namespace_get_devname(ndns));
++		if (!jobj)
++			goto err;
++		json_object_object_add(jblock, "dev", jobj);
++	} else {
++		jobj = json_object_new_string(path);
++		if (!jobj)
++			goto err;
++		json_object_object_add(jblock, "file", jobj);
++	}
++
++	jobj = json_object_new_string((char *) btt_sb->signature);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "signature", jobj);
++
++	uuid_unparse((void *) btt_sb->uuid, str);
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "uuid", jobj);
++
++	uuid_unparse((void *) btt_sb->parent_uuid, str);
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "parent_uuid", jobj);
++
++	jobj = util_json_object_hex(le32_to_cpu(btt_sb->flags), flags);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "flags", jobj);
++
++	if (snprintf(str, 4, "%d.%d", btt_sb->version_major,
++				btt_sb->version_minor) >= 4)
++		goto err;
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "version", jobj);
++
++	parse_field(btt_sb, external_lbasize);
++	parse_field(btt_sb, external_nlba);
++	parse_field(btt_sb, internal_lbasize);
++	parse_field(btt_sb, internal_nlba);
++	parse_field(btt_sb, nfree);
++	parse_field(btt_sb, infosize);
++	parse_hex(btt_sb, nextoff, 64);
++	parse_hex(btt_sb, dataoff, 64);
++	parse_hex(btt_sb, mapoff, 64);
++	parse_hex(btt_sb, logoff, 64);
++	parse_hex(btt_sb, info2off, 64);
++
++	return jblock;
++err:
++	pr_verbose("%s: failed to create json representation\n", cmd);
++	json_object_put(jblock);
++	return NULL;
++}
++
++static json_object *pfn_parse(struct pfn_sb *pfn_sb, struct ndctl_namespace *ndns,
++		const char *path, unsigned long flags)
++{
++	uuid_t uuid;
++	char str[40];
++	struct json_object *jblock, *jobj;
++	const char *cmd = "read-info-block";
++	const bool verify = param.verify;
++
++	if (verify && !verify_infoblock_checksum((union info_block *) pfn_sb)) {
++		pr_verbose("%s: %s checksum verification failed\n", cmd, __func__);
++		return NULL;
++	}
++
++	if (ndns) {
++		ndctl_namespace_get_uuid(ndns, uuid);
++		if (verify && !uuid_is_null(uuid) && memcmp(uuid, pfn_sb->parent_uuid,
++					sizeof(uuid) != 0)) {
++			pr_verbose("%s: %s uuid verification failed\n", cmd, __func__);
++			return NULL;
++		}
++	}
++
++	jblock = json_object_new_object();
++	if (!jblock)
++		return NULL;
++
++	if (ndns) {
++		jobj = json_object_new_string(ndctl_namespace_get_devname(ndns));
++		if (!jobj)
++			goto err;
++		json_object_object_add(jblock, "dev", jobj);
++	} else {
++		jobj = json_object_new_string(path);
++		if (!jobj)
++			goto err;
++		json_object_object_add(jblock, "file", jobj);
++	}
++
++	jobj = json_object_new_string((char *) pfn_sb->signature);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "signature", jobj);
++
++	uuid_unparse((void *) pfn_sb->uuid, str);
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "uuid", jobj);
++
++	uuid_unparse((void *) pfn_sb->parent_uuid, str);
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "parent_uuid", jobj);
++
++	jobj = util_json_object_hex(le32_to_cpu(pfn_sb->flags), flags);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "flags", jobj);
++
++	if (snprintf(str, 4, "%d.%d", pfn_sb->version_major,
++				pfn_sb->version_minor) >= 4)
++		goto err;
++	jobj = json_object_new_string(str);
++	if (!jobj)
++		goto err;
++	json_object_object_add(jblock, "version", jobj);
++
++	parse_hex(pfn_sb, dataoff, 64);
++	parse_hex(pfn_sb, npfns, 64);
++	parse_field(pfn_sb, mode);
++	parse_hex(pfn_sb, start_pad, 32);
++	parse_hex(pfn_sb, end_trunc, 32);
++	parse_hex(pfn_sb, align, 32);
++
++	return jblock;
++err:
++	pr_verbose("%s: failed to create json representation\n", cmd);
++	json_object_put(jblock);
++	return NULL;
++}
++
++#define INFOBLOCK_SZ SZ_8K
++
++static int parse_namespace_infoblock(char *_buf, struct ndctl_namespace *ndns,
++		const char *path, struct read_infoblock_ctx *ri_ctx)
++{
++	int rc;
++	void *buf = _buf;
++	unsigned long flags = param.human ? UTIL_JSON_HUMAN : 0;
++	struct btt_sb *btt1_sb = buf + SZ_4K, *btt2_sb = buf;
++	struct json_object *jblock = NULL, *jblocks = ri_ctx->jblocks;
++	struct pfn_sb *pfn_sb = buf + SZ_4K, *dax_sb = buf + SZ_4K;
++
++	if (!param.json && !param.human) {
++		rc = fwrite(buf, 1, INFOBLOCK_SZ, ri_ctx->f_out);
++		if (rc != INFOBLOCK_SZ)
++			return -EIO;
++		fflush(ri_ctx->f_out);
 +		return 0;
 +	}
 +
-+	if (IS_ALIGNED(resource, SZ_16M) || force)
-+		return 0;
++	if (!jblocks) {
++		jblocks = json_object_new_array();
++		if (!jblocks)
++			return -ENOMEM;
++		ri_ctx->jblocks = jblocks;
++	}
 +
-+	error("%s misaligned to 16M, adjust region alignment and retry\n",
-+			devname);
-+	return -EINVAL;
++	if (memcmp(btt1_sb->signature, BTT_SIG, BTT_SIG_LEN) == 0) {
++		jblock = btt_parse(btt1_sb, ndns, path, flags);
++		if (jblock)
++			json_object_array_add(jblocks, jblock);
++	}
++
++	if (memcmp(btt2_sb->signature, BTT_SIG, BTT_SIG_LEN) == 0) {
++		jblock = btt_parse(btt2_sb, ndns, path, flags);
++		if (jblock)
++			json_object_array_add(jblocks, jblock);
++	}
++
++	if (memcmp(pfn_sb->signature, PFN_SIG, PFN_SIG_LEN) == 0) {
++		jblock = pfn_parse(pfn_sb, ndns, path, flags);
++		if (jblock)
++			json_object_array_add(jblocks, jblock);
++	}
++
++	if (memcmp(dax_sb->signature, DAX_SIG, PFN_SIG_LEN) == 0) {
++		jblock = pfn_parse(dax_sb, ndns, path, flags);
++		if (jblock)
++			json_object_array_add(jblocks, jblock);
++	}
++
++	return 0;
 +}
 +
- static int setup_namespace(struct ndctl_region *region,
- 		struct ndctl_namespace *ndns, struct parsed_parameters *p)
++static int file_read_infoblock(const char *path, struct ndctl_namespace *ndns,
++		struct read_infoblock_ctx *ri_ctx)
++{
++	const char *devname = ndns ? ndctl_namespace_get_devname(ndns) : "";
++	const char *cmd = "read-info-block";
++	void *buf = NULL;
++	int fd = -1, rc;
++
++	buf = calloc(1, INFOBLOCK_SZ);
++	if (!buf)
++		return -ENOMEM;
++
++	fd = open(path, O_RDONLY|O_EXCL);
++	if (fd < 0) {
++		pr_verbose("%s: %s failed to open %s: %s\n",
++				cmd, devname, path, strerror(errno));
++		rc = -errno;
++		goto out;
++	}
++
++	rc = read(fd, buf, INFOBLOCK_SZ);
++	if (rc < 0) {
++		pr_verbose("%s: %s failed to read %s: %s\n",
++				cmd, devname, path, strerror(errno));
++		rc = -errno;
++		goto out;
++	}
++
++	rc = parse_namespace_infoblock(buf, ndns, path, ri_ctx);
++out:
++	free(buf);
++	if (fd >= 0)
++		close(fd);
++	return rc;
++}
++
++static int namespace_read_infoblock(struct ndctl_namespace *ndns,
++		struct read_infoblock_ctx *ri_ctx)
++{
++	int rc;
++	char path[50];
++	const char *cmd = "read-info-block";
++	const char *devname = ndctl_namespace_get_devname(ndns);
++
++	if (ndctl_namespace_is_active(ndns)) {
++		pr_verbose("%s: %s enabled, must be disabled\n", cmd, devname);
++		return -EBUSY;
++	}
++
++	ndctl_namespace_set_raw_mode(ndns, 1);
++	rc = ndctl_namespace_enable(ndns);
++	if (rc < 0) {
++		pr_verbose("%s: %s failed to enable\n", cmd, devname);
++		goto out;
++	}
++
++	sprintf(path, "/dev/%s", ndctl_namespace_get_block_device(ndns));
++	rc = file_read_infoblock(path, ndns, ri_ctx);
++
++out:
++	ndctl_namespace_set_raw_mode(ndns, 0);
++	ndctl_namespace_disable_invalidate(ndns);
++	return rc;
++}
++
+ static int do_xaction_namespace(const char *namespace,
+ 		enum device_action action, struct ndctl_ctx *ctx,
+ 		int *processed)
  {
-@@ -406,6 +424,9 @@ static int setup_namespace(struct ndctl_region *region,
- 	if (do_setup_pfn(ndns, p)) {
- 		struct ndctl_pfn *pfn = ndctl_region_get_pfn_seed(region);
++	struct read_infoblock_ctx ri_ctx = { 0 };
+ 	struct ndctl_namespace *ndns, *_n;
+ 	int rc = -ENXIO, saved_rc = 0;
+ 	struct ndctl_region *region;
+@@ -1389,6 +1742,26 @@ static int do_xaction_namespace(const char *namespace,
  
-+		rc = check_dax_align(ndns);
-+		if (rc)
-+			return rc;
- 		try(ndctl_pfn, set_uuid, pfn, uuid);
- 		try(ndctl_pfn, set_location, pfn, p->loc);
- 		if (ndctl_pfn_has_align(pfn))
-@@ -417,6 +438,9 @@ static int setup_namespace(struct ndctl_region *region,
- 	} else if (p->mode == NDCTL_NS_MODE_DAX) {
- 		struct ndctl_dax *dax = ndctl_region_get_dax_seed(region);
+ 	*processed = 0;
  
-+		rc = check_dax_align(ndns);
-+		if (rc)
++	if (action == ACTION_READ_INFOBLOCK) {
++		if (!param.outfile)
++			ri_ctx.f_out = stdout;
++		else {
++			ri_ctx.f_out = fopen(param.outfile, "w+");
++			if (!ri_ctx.f_out) {
++				fprintf(stderr, "failed to open: %s: (%s)\n",
++						param.outfile, strerror(errno));
++				return -errno;
++			}
++		}
++
++		if (param.infile) {
++			rc = file_read_infoblock(param.infile, NULL, &ri_ctx);
++			if (ri_ctx.jblocks)
++				util_display_json_array(ri_ctx.f_out, ri_ctx.jblocks, 0);
 +			return rc;
- 		try(ndctl_dax, set_uuid, dax, uuid);
- 		try(ndctl_dax, set_location, dax, p->loc);
- 		/* device-dax assumes 'align' attribute present */
++		}
++	}
++
+ 	if (!namespace && action != ACTION_CREATE)
+ 		return rc;
+ 
+@@ -1494,6 +1867,11 @@ static int do_xaction_namespace(const char *namespace,
+ 					if (rc == 0)
+ 						*processed = 1;
+ 					return rc;
++				case ACTION_READ_INFOBLOCK:
++					rc = namespace_read_infoblock(ndns, &ri_ctx);
++					if (rc == 0)
++						(*processed)++;
++					break;
+ 				default:
+ 					rc = -EINVAL;
+ 					break;
+@@ -1502,6 +1880,12 @@ static int do_xaction_namespace(const char *namespace,
+ 		}
+ 	}
+ 
++	if (ri_ctx.jblocks)
++		util_display_json_array(ri_ctx.f_out, ri_ctx.jblocks, 0);
++
++	if (ri_ctx.f_out && ri_ctx.f_out != stdout)
++		fclose(ri_ctx.f_out);
++
+ 	if (action == ACTION_CREATE && rc == -EAGAIN) {
+ 		/*
+ 		 * Namespace creation searched through all candidate
+@@ -1634,3 +2018,19 @@ int cmd_clear_errors(int argc , const char **argv, struct ndctl_ctx *ctx)
+ 			cleared == 1 ? "" : "s");
+ 	return rc;
+ }
++
++int cmd_read_infoblock(int argc, const char **argv, struct ndctl_ctx *ctx)
++{
++	char *xable_usage = "ndctl read-info-block <namespace> [<options>]";
++	const char *namespace = parse_namespace_options(argc, argv,
++			ACTION_READ_INFOBLOCK, read_infoblock_options,
++			xable_usage);
++	int read, rc;
++
++	rc = do_xaction_namespace(namespace, ACTION_READ_INFOBLOCK, ctx, &read);
++	if (rc < 0)
++		fprintf(stderr, "error checking namespaces: %s\n",
++				strerror(-rc));
++	fprintf(stderr, "read %d namespace%s\n", read, read == 1 ? "" : "s");
++	return rc;
++}
+diff --git a/ndctl/namespace.h b/ndctl/namespace.h
+index bc210857642f..861dfbfa5127 100644
+--- a/ndctl/namespace.h
++++ b/ndctl/namespace.h
+@@ -13,7 +13,9 @@
+ #ifndef __NDCTL_NAMESPACE_H__
+ #define __NDCTL_NAMESPACE_H__
+ #include <sys/types.h>
++#include <util/util.h>
+ #include <util/size.h>
++#include <util/fletcher.h>
+ #include <ccan/endian/endian.h>
+ #include <ccan/short_types/short_types.h>
+ 
+@@ -202,4 +204,53 @@ struct arena_map {
+ 	struct btt_sb *info2;
+ 	size_t info2_len;
+ };
++
++#define PFN_SIG_LEN 16
++#define PFN_SIG "NVDIMM_PFN_INFO\0"
++#define DAX_SIG "NVDIMM_DAX_INFO\0"
++
++struct pfn_sb {
++	u8 signature[PFN_SIG_LEN];
++	u8 uuid[16];
++	u8 parent_uuid[16];
++	le32 flags;
++	le16 version_major;
++	le16 version_minor;
++	le64 dataoff; /* relative to namespace_base + start_pad */
++	le64 npfns;
++	le32 mode;
++	/* minor-version-1 additions for section alignment */
++	le32 start_pad;
++	le32 end_trunc;
++	/* minor-version-2 record the base alignment of the mapping */
++	le32 align;
++	u8 padding[4000];
++	le64 checksum;
++};
++
++union info_block {
++	struct pfn_sb pfn_sb;
++	struct btt_sb btt_sb;
++};
++
++static inline bool verify_infoblock_checksum(union info_block *sb)
++{
++	uint64_t sum;
++	le64 sum_save;
++
++	BUILD_BUG_ON(sizeof(union info_block) != SZ_4K);
++
++	/* all infoblocks share the btt_sb layout for checksum */
++	sum_save = sb->btt_sb.checksum;
++	sb->btt_sb.checksum = 0;
++	sum = fletcher64(&sb->btt_sb, sizeof(*sb), 1);
++	if (sum != sum_save)
++		return false;
++	/* restore the checksum in the buffer */
++	sb->btt_sb.checksum = sum_save;
++
++	return true;
++}
++
++
+ #endif /* __NDCTL_NAMESPACE_H__ */
+diff --git a/ndctl/ndctl.c b/ndctl/ndctl.c
+index 6c4975c9f841..5c9c424dcae6 100644
+--- a/ndctl/ndctl.c
++++ b/ndctl/ndctl.c
+@@ -73,6 +73,7 @@ static struct cmd_struct commands[] = {
+ 	{ "disable-namespace", { cmd_disable_namespace } },
+ 	{ "create-namespace", { cmd_create_namespace } },
+ 	{ "destroy-namespace", { cmd_destroy_namespace } },
++	{ "read-infoblock",  { cmd_read_infoblock } },
+ 	{ "check-namespace", { cmd_check_namespace } },
+ 	{ "clear-errors", { cmd_clear_errors } },
+ 	{ "enable-region", { cmd_enable_region } },
+diff --git a/util/fletcher.h b/util/fletcher.h
+index 54e2ecf5d6ed..8fccac4ec758 100644
+--- a/util/fletcher.h
++++ b/util/fletcher.h
+@@ -1,6 +1,7 @@
+ #ifndef _NDCTL_FLETCHER_H_
+ #define _NDCTL_FLETCHER_H_
+ 
++#include <stdbool.h>
+ #include <ccan/endian/endian.h>
+ #include <ccan/short_types/short_types.h>
+ 
+diff --git a/util/size.h b/util/size.h
+index 2f36c2c85ca7..2138989b42ac 100644
+--- a/util/size.h
++++ b/util/size.h
+@@ -17,6 +17,7 @@
+ 
+ #define SZ_1K     0x00000400
+ #define SZ_4K     0x00001000
++#define SZ_8K     0x00002000
+ #define SZ_1M     0x00100000
+ #define SZ_2M     0x00200000
+ #define SZ_4M     0x00400000
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
