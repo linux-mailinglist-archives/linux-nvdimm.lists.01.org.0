@@ -2,44 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA1317495D
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:39:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F89F17495E
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:39:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BB81010FC3769;
-	Sat, 29 Feb 2020 12:40:10 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id CF5FD10FC3761;
+	Sat, 29 Feb 2020 12:40:14 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 906BF10FC36EA
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:40:07 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 1989810FC36E6
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:40:13 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:15 -0800
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:20 -0800
 X-IronPort-AV: E=Sophos;i="5.70,501,1574150400";
-   d="scan'208";a="318461859"
+   d="scan'208";a="232874204"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:15 -0800
-Subject: [ndctl PATCH 35/36] ndctl/lib/namespace: Fix resource retrieval
- after size change
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:20 -0800
+Subject: [ndctl PATCH 36/36] ndctl/test: Regression test misaligned
+ namespaces
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Cc: vishal.l.verma@intel.com
-Date: Sat, 29 Feb 2020 12:23:10 -0800
-Message-ID: <158300779047.2141307.11160238427930235188.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 29 Feb 2020 12:23:15 -0800
+Message-ID: <158300779557.2141307.1119464097611805912.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: VABRSIF4G6HSZX7ABOOPIYYF5I3G3E5B
-X-Message-ID-Hash: VABRSIF4G6HSZX7ABOOPIYYF5I3G3E5B
+Message-ID-Hash: S7XE63TEIWTTB4RD23WAUZM62O5PVNGY
+X-Message-ID-Hash: S7XE63TEIWTTB4RD23WAUZM62O5PVNGY
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VABRSIF4G6HSZX7ABOOPIYYF5I3G3E5B/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/S7XE63TEIWTTB4RD23WAUZM62O5PVNGY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,45 +48,158 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The namespaceX.Y/resource attribute returns -1 while the namespace does
-not have capacity allocated. While it is valid after setting the size
-the library has already cached the error value. Teach
-ndctl_namespace_set_size() to refresh ->resource.
+The kernel is now requiring that namespace creation results in
+cross-arch compatible namespaces by default. However, it must also
+continue to support previously valid, but misaligned, namespaces. Use
+the write-infoblock utility to create "legacy" configurations and
+validate that the kernel still accepts it along with other corner case
+configurations.
 
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/lib/libndctl.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ test/Makefile.am |    1 
+ test/align.sh    |  118 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 119 insertions(+)
+ create mode 100755 test/align.sh
 
-diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-index a996bff66fb2..ee737cbbfe3e 100644
---- a/ndctl/lib/libndctl.c
-+++ b/ndctl/lib/libndctl.c
-@@ -4484,6 +4484,24 @@ static int namespace_set_size(struct ndctl_namespace *ndns,
- 		return rc;
- 
- 	ndns->size = size;
+diff --git a/test/Makefile.am b/test/Makefile.am
+index cce60c5221fd..1d24a65ded8b 100644
+--- a/test/Makefile.am
++++ b/test/Makefile.am
+@@ -54,6 +54,7 @@ TESTS +=\
+ 	dax-dev \
+ 	dax-ext4.sh \
+ 	dax-xfs.sh \
++	align.sh \
+ 	device-dax \
+ 	device-dax-fio.sh \
+ 	daxctl-devices.sh \
+diff --git a/test/align.sh b/test/align.sh
+new file mode 100755
+index 000000000000..0129255610ab
+--- /dev/null
++++ b/test/align.sh
+@@ -0,0 +1,118 @@
++#!/bin/bash -x
++# SPDX-License-Identifier: GPL-2.0
++# Copyright(c) 2015-2020 Intel Corporation. All rights reserved.
 +
-+	/*
-+	 * A size change event invalidates / establishes 'resource', try
-+	 * to refresh it.
-+	 */
-+	if (snprintf(path, len, "%s/resource", ndns->ndns_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				ndctl_namespace_get_devname(ndns));
-+		ndns->resource = ULLONG_MAX;
-+		return 0;
-+	}
++. $(dirname $0)/common
 +
-+	if (sysfs_read_attr(ctx, path, buf) < 0) {
-+		ndns->resource = ULLONG_MAX;
-+		return 0;
-+	}
++rc=77
++cleanup() {
++	echo "align.sh: failed at line $1"
++	if [ "x$region" != "x" -a x$save_align != "x" ]; then
++		echo $save_align > $region_path/align
++	fi
 +
-+	ndns->resource = strtoull(buf, NULL, 0);
- 	return 0;
- }
- 
++	if [ "x$ns1" != "x" ]; then
++		$NDCTL destroy-namespace -f $ns1
++	fi
++	if [ "x$ns2" != "x" ]; then
++		$NDCTL destroy-namespace -f $ns2
++	fi
++
++	exit $rc
++}
++
++is_aligned() {
++	val=$1
++	align=$2
++
++	if [ $((val & (align - 1))) -eq 0 ]; then
++		return 0
++	fi
++	return 1
++}
++
++set -e
++trap 'err $LINENO cleanup' ERR
++
++region=$($NDCTL list -R -b ACPI.NFIT | jq -r '.[] | [select(.available_size == .size)] | .[0].dev')
++
++if [ "x$region" = "xnull"  ]; then
++	unset $region
++	echo "unable to find empty region"
++	false
++fi
++
++region_path="/sys/bus/nd/devices/$region"
++save_align=$(cat $region_path/align)
++
++# check that the region is 1G aligned
++resource=$(cat $region_path/resource)
++is_aligned $resource $((1 << 30)) || (echo "need a 1GB aligned namespace to test alignment conditions" && false)
++
++rc=1
++
++# check that start-aligned, but end-misaligned namespaces can be created
++# and probed
++echo 4096 > $region_path/align
++SIZE=$(((1<<30) + (8<<10)))
++json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a 4K)
++eval $(json2var <<< "$json")
++$NDCTL disable-namespace $dev
++$NDCTL enable-namespace $dev
++ns1=$dev
++
++# check that start-misaligned namespaces can't be created until the
++# region alignment is set to a compatible value.
++# Note the namespace capacity alignment requirement in this case is
++# SUBSECTION_SIZE (2M) as the data alignment can be satisfied with
++# metadata padding.
++json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a 4K -f) || status="failed"
++if [ $status != "failed" ]; then
++	echo "expected namespace creation failure"
++	eval $(json2var <<< "$json")
++	$NDCTL destroy-namespace -f $dev
++	false
++fi
++
++# check that start-misaligned namespaces can't be probed. Since the
++# kernel does not support creating this misalignment, force it with a
++# custom info-block
++json=$($NDCTL create-namespace -r $region -s $SIZE -m raw)
++eval $(json2var <<< "$json")
++
++$NDCTL disable-namespace $dev
++$NDCTL write-infoblock $dev -a 4K
++$NDCTL enable-namespace $dev || status="failed"
++
++if [ $status != "failed" ]; then
++	echo "expected namespace enable failure"
++	$NDCTL destroy-namespace -f $dev
++	false
++fi
++ns2=$dev
++
++# check that namespace with proper inner padding can be enabled, even
++# though non-zero start_pad namespaces don't support dax
++$NDCTL write-infoblock $ns2 -a 4K -O 8K
++$NDCTL enable-namespace $ns2
++$NDCTL destroy-namespace $ns2 -f
++unset ns2
++
++# check that all namespace alignments can be created with the region
++# alignment at a compatible value
++SIZE=$((2 << 30))
++echo $((16 << 20)) > $region_path/align
++for i in $((1 << 30)) $((2 << 20)) $((4 << 10))
++do
++	json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a $i)
++	eval $(json2var <<< "$json")
++	ns2=$dev
++	$NDCTL disable-namespace $dev
++	$NDCTL enable-namespace $dev
++	$NDCTL destroy-namespace $dev -f
++	unset ns2
++done
++
++# final cleanup
++$NDCTL destroy-namespace $ns1 -f
++exit 0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
