@@ -1,45 +1,45 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98740174941
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:37:05 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA097174943
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:37:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 05D4910FC3418;
-	Sat, 29 Feb 2020 12:37:56 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	by ml01.01.org (Postfix) with ESMTP id 1B67510FC3418;
+	Sat, 29 Feb 2020 12:38:03 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 68CE810FC3418
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:37:54 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id E78D310FC3418
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:37:59 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:02 -0800
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:07 -0800
 X-IronPort-AV: E=Sophos;i="5.70,501,1574150400";
-   d="scan'208";a="437787251"
+   d="scan'208";a="262203359"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:02 -0800
-Subject: [ndctl PATCH 10/36] ndctl/util: Up-level is_power_of_2() and
- introduce IS_ALIGNED
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:37:07 -0800
+Subject: [ndctl PATCH 11/36] ndctl/namespace: Validate resource alignment
+ for dax-mode namespaces
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Cc: vishal.l.verma@intel.com
-Date: Sat, 29 Feb 2020 12:20:57 -0800
-Message-ID: <158300765729.2141307.8955010212426376178.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sat, 29 Feb 2020 12:21:02 -0800
+Message-ID: <158300766271.2141307.12541085220843554138.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: UQIIVDY73IJURE3MPTFWI7XLYCHPIIYB
-X-Message-ID-Hash: UQIIVDY73IJURE3MPTFWI7XLYCHPIIYB
+Message-ID-Hash: RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U
+X-Message-ID-Hash: RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UQIIVDY73IJURE3MPTFWI7XLYCHPIIYB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RKFGYC3RLF6CKPWNRWAKCFHXDF5OBN2U/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,65 +48,98 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add helpers for checking alignment to util/size.h.
+The kernel sets the default region alignment to 16M to promote
+cross-arch compatible namespace creation. While ndctl never touches the
+region alignment the end user might have changed it from its default.
+Enforce 16MiB alignment for the namespace resource base by default for
+dax-mode namespaces.
 
+It is still possible to use a 2MiB region-align for dax-mode namespaces
+on x86, but that requires --force to bypass this default alignment
+check.
+
+I chose a hard coded default value in ndctl with a --force to bypass the
+check rather than having a new sysfs attribute to probe for this detail.
+I.e. the kernel could export the minimum alignment for dax namespaces,
+but since the minimum compat value is already known, no need for a trip
+to the kernel.
+
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Jeff Moyer <jmoyer@redhat.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/lib/ars.c |    6 +-----
- util/size.h     |    7 +++++++
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ Documentation/ndctl/ndctl-create-namespace.txt |    8 ++++++++
+ ndctl/namespace.c                              |   24 ++++++++++++++++++++++++
+ 2 files changed, 32 insertions(+)
 
-diff --git a/ndctl/lib/ars.c b/ndctl/lib/ars.c
-index bd75131081ba..d91a99d00d10 100644
---- a/ndctl/lib/ars.c
-+++ b/ndctl/lib/ars.c
-@@ -11,6 +11,7 @@
-  * more details.
-  */
- #include <stdlib.h>
-+#include <util/size.h>
- #include <ndctl/libndctl.h>
- #include "private.h"
+diff --git a/Documentation/ndctl/ndctl-create-namespace.txt b/Documentation/ndctl/ndctl-create-namespace.txt
+index 8cd80fa789c1..7637e2403132 100644
+--- a/Documentation/ndctl/ndctl-create-namespace.txt
++++ b/Documentation/ndctl/ndctl-create-namespace.txt
+@@ -88,6 +88,14 @@ OPTIONS
+ 	    fault scenarios are supported. I.e. if a device is
+ 	    configured with a 2M alignment an attempt to fault a 4K
+ 	    aligned offset will result in SIGBUS.
++::
++	Note both 'fsdax' and 'devdax' mode require 16MiB physical
++	alignment to be cross-arch compatible. By default ndctl will
++	block attempts to create namespaces in these modes when the
++	physical starting address of the namespace is not 16MiB aligned.
++	The --force option tries to override this constraint if the
++	platform supports a smaller alignment, but this is not
++	recommended.
  
-@@ -43,11 +44,6 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_bus_cmd_new_ars_cap(struct ndctl_bus *bus,
- 	return cmd;
+ -s::
+ --size=::
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index c4aab94abcd4..96d318166300 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -356,6 +356,24 @@ static bool do_setup_pfn(struct ndctl_namespace *ndns,
+ 	return false;
  }
  
--static bool is_power_of_2(unsigned int v)
--{
--	return v && ((v & (v - 1)) == 0);
--}
--
- static bool validate_clear_error(struct ndctl_cmd *ars_cap)
- {
- 	if (!is_power_of_2(ars_cap->ars_cap->clear_err_unit))
-diff --git a/util/size.h b/util/size.h
-index 34fac58d6945..2f36c2c85ca7 100644
---- a/util/size.h
-+++ b/util/size.h
-@@ -13,6 +13,7 @@
- 
- #ifndef _NDCTL_SIZE_H_
- #define _NDCTL_SIZE_H_
-+#include <stdbool.h>
- 
- #define SZ_1K     0x00000400
- #define SZ_4K     0x00001000
-@@ -27,8 +28,14 @@
- unsigned long long parse_size64(const char *str);
- unsigned long long __parse_size64(const char *str, unsigned long long *units);
- 
-+static inline bool is_power_of_2(unsigned long long v)
++static int check_dax_align(struct ndctl_namespace *ndns)
 +{
-+	return v && ((v & (v - 1)) == 0);
++	unsigned long long resource = ndctl_namespace_get_resource(ndns);
++	const char *devname = ndctl_namespace_get_devname(ndns);
++
++	if (resource == ULLONG_MAX) {
++		warning("%s unable to validate alignment\n", devname);
++		return 0;
++	}
++
++	if (IS_ALIGNED(resource, SZ_16M) || force)
++		return 0;
++
++	error("%s misaligned to 16M, adjust region alignment and retry\n",
++			devname);
++	return -EINVAL;
 +}
 +
- #define ALIGN(x, a) ((((unsigned long long) x) + (a - 1)) & ~(a - 1))
- #define ALIGN_DOWN(x, a) (((((unsigned long long) x) + a) & ~(a - 1)) - a)
-+#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
- #define BITS_PER_LONG (sizeof(unsigned long) * 8)
- #define HPAGE_SIZE (2 << 20)
+ static int setup_namespace(struct ndctl_region *region,
+ 		struct ndctl_namespace *ndns, struct parsed_parameters *p)
+ {
+@@ -406,6 +424,9 @@ static int setup_namespace(struct ndctl_region *region,
+ 	if (do_setup_pfn(ndns, p)) {
+ 		struct ndctl_pfn *pfn = ndctl_region_get_pfn_seed(region);
  
++		rc = check_dax_align(ndns);
++		if (rc)
++			return rc;
+ 		try(ndctl_pfn, set_uuid, pfn, uuid);
+ 		try(ndctl_pfn, set_location, pfn, p->loc);
+ 		if (ndctl_pfn_has_align(pfn))
+@@ -417,6 +438,9 @@ static int setup_namespace(struct ndctl_region *region,
+ 	} else if (p->mode == NDCTL_NS_MODE_DAX) {
+ 		struct ndctl_dax *dax = ndctl_region_get_dax_seed(region);
+ 
++		rc = check_dax_align(ndns);
++		if (rc)
++			return rc;
+ 		try(ndctl_dax, set_uuid, dax, uuid);
+ 		try(ndctl_dax, set_location, dax, p->loc);
+ 		/* device-dax assumes 'align' attribute present */
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
