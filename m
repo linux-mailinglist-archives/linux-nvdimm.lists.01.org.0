@@ -2,68 +2,88 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315F0174A9A
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  1 Mar 2020 01:53:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F277917510D
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Mar 2020 00:42:31 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EBA3C10FC340C;
-	Sat, 29 Feb 2020 16:54:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id E46C610FC33EC;
+	Sun,  1 Mar 2020 15:43:20 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E8A2910FC3405
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 16:54:04 -0800 (PST)
-Received: by mail-oi1-x243.google.com with SMTP id a22so6760240oid.13
-        for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 16:53:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=vG5vKAngWN33ruKiQuTpYlNArSL1q2CIczuy2BXBfuE=;
-        b=EVi4QsCCZqdsO8jd42lKporuaZWmTGpqfIMnjxCebFY1LWoQBpvsJde3zsB8GpxnBt
-         zw4aJI2i9+UOBEhxpyIu55VAY1xuv9Ag0Y3eU7wTricIZszIxXYZE4fn5pAsYOrQP3UE
-         u+FMEGRsfhU/ecS+9x/87ShXW2Rhtg7ETsP1y4ObvCMTl62DpePlNTwWJPpBh9iKVFfU
-         Ux+Ccie/MIu1m1YMRSBahPdPTuVkoc7d6KZHCa1049ULEC/MLoxTYHlF7b+gO+CkG7zL
-         0l6Cy7fgfvdIUY/VJ44n1/GSKscbwmiZb2s0uxWcW0WFZVZxJVnVSja9gdLPJrjaCeYi
-         yfPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vG5vKAngWN33ruKiQuTpYlNArSL1q2CIczuy2BXBfuE=;
-        b=kARD9uwkaEMssodzeVYVQ9jyDrjSt1n7mTkB2QqdWDtWbh8E4K0th6IqyM6BxAm8bk
-         KAbAc+X7r5QCJInB7nsugkmS69OrhYl2htQ6vetUqCwyXav9HLLwlOucdG2Qm8yni7p3
-         myfvMnN/zkPoucaQDLG4A+x61VAMm6zWoHQBdyHeGs/8ujAfKEZ5hbTByYIDvLCOWHRB
-         WctUIF+RTUO8Tnz3O1Lw67Kp6QAforZzK+6DexGwA1r5XsZzxpRxSq326oKHECLBxo01
-         EF/7B9sXmHmrrh0P/7TWbAic1PAagOCaMMBDbDhkZmLoKuskjzUfTILElV4qJTp44m3x
-         Muuw==
-X-Gm-Message-State: APjAAAXPu0BR5Ya55yH6VhXK+z89Ir1cPPLFtv2GLkQQMShZrIJtBpkK
-	oAFZNphXvgscE8UyiyLU45KcAd90YSUwB6Zsjdav2A==
-X-Google-Smtp-Source: APXvYqxQUskahAUriWcdS5qGOWflBUlwfbNwzYextBzEpd0SD71vKrl0tWRo484a4970WvsZinC6zCJ5UkXvhnIXo7Y=
-X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr7998258oij.0.1583023992112;
- Sat, 29 Feb 2020 16:53:12 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id ABC861007B170
+	for <linux-nvdimm@lists.01.org>; Sun,  1 Mar 2020 15:43:18 -0800 (PST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 021Na2AU034191
+	for <linux-nvdimm@lists.01.org>; Sun, 1 Mar 2020 18:42:26 -0500
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmfybdrk-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Sun, 01 Mar 2020 18:42:26 -0500
+Received: from localhost
+	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
+	Sun, 1 Mar 2020 23:42:23 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Sun, 1 Mar 2020 23:42:15 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 021NgECQ48037968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 1 Mar 2020 23:42:14 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8BBBA404D;
+	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 52D62A4057;
+	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3D5BCA00BE;
+	Mon,  2 Mar 2020 10:42:09 +1100 (AEDT)
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Donnellan
+	 <ajd@linux.ibm.com>
+Date: Mon, 02 Mar 2020 10:42:12 +1100
+In-Reply-To: <20200228071520.GA2897773@kroah.com>
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+	 <20200221032720.33893-26-alastair@au1.ibm.com>
+	 <96687fbf-38ab-13ff-ca19-ccb67bbc4405@linux.ibm.com>
+	 <20200228071520.GA2897773@kroah.com>
+Organization: IBM Australia
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-References: <157481532698.2805671.8095763752180655226.stgit@dwillia2-desk3.amr.corp.intel.com>
- <x49sgj6law0.fsf@segfault.boston.devel.redhat.com> <CAPcyv4ibE3ssieq=A5diqwRyiT6e3X=kcpQ3aA0vYneBpuSCAA@mail.gmail.com>
- <x49k14ila4r.fsf@segfault.boston.devel.redhat.com> <CAPcyv4hHU+RC6TZW94UrjFJZ1fsOU8Nug0GP+Mb5mBGW8qk+UQ@mail.gmail.com>
- <03b5da834f0be8bc7110c459f3172732b96e85fa.camel@intel.com>
- <CAPcyv4gVDEum7RiSMXug5fwNC04mEHo5MhAuUW37t4tN9y899A@mail.gmail.com>
- <00abe72085e75c1c54b87635c81352b628211707.camel@intel.com> <149112cd-0ae4-02b8-84ba-f13cce5aa45d@jp.fujitsu.com>
-In-Reply-To: <149112cd-0ae4-02b8-84ba-f13cce5aa45d@jp.fujitsu.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 29 Feb 2020 16:53:01 -0800
-Message-ID: <CAPcyv4gyxSYKXFdkr2M646sEMYGNRTBq6SMzAJz+iuuk0XoC7w@mail.gmail.com>
-Subject: Re: [ndctl PATCH] ndctl/list: Drop named list objects from verbose listing
-To: "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>
-Message-ID-Hash: C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26
-X-Message-ID-Hash: C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+X-TM-AS-GCONF: 00
+x-cbid: 20030123-0028-0000-0000-000003DFAB5C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030123-0029-0000-0000-000024A4D240
+Message-Id: <4075f48568fee61123579d4edea0e7939b4b2e6c.camel@au1.ibm.com>
+Subject: RE: [PATCH v3 25/27] powerpc/powernv/pmem: Expose the serial number in
+ sysfs
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-01_09:2020-02-28,2020-03-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=879 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003010189
+Message-ID-Hash: JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3
+X-Message-ID-Hash: JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3
+X-MailFrom: alastair@au1.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.or
+ g, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,57 +92,48 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 21, 2020 at 2:21 AM qi.fuli@fujitsu.com <qi.fuli@fujitsu.com> wrote:
->
->
->
-> On 2/20/20 5:28 AM, Verma, Vishal L wrote:
-> > On Wed, 2020-02-19 at 12:09 -0800, Dan Williams wrote:
-> >>>>
-> >>>> Let's do a compromise, because users also hate nonsensical legacy that
-> >>>> they can't avoid. How about an environment variable,
-> >>>> "NDCTL_LIST_LINT", that users can set to opt into the latest /
-> >>>> cleanest output format with the understanding that the clean up may
-> >>>> regress scripts that were dependent on the old bugs.
-> >>>>
-> >>> Hm, this sounds good in concept, but how about waiting for this cleanup
-> >>> to go in after the (yes, long pending) config rework. Then this can just
-> >>> be a global config setting, and we won't have config things coming from
-> >>> the environment as well (which this would be a first of).
-> >>
-> >> That does make some sense, but I notice that git deals with "cosmetic"
-> >> environment variables (GIT_EDITOR, GIT_PAGER, etc) in addition to its
-> >> config file. So if we're borrowing from git, I'd also borrow that
-> >> config vs environment logic.
-> >
-> > True, that's reasonable. I guess I was hoping to avoid, if we can,
-> > suddenly having a multitude of config sources, but env variables are
-> > pretty standard and it should be fine to add them.
->
-> Hi,
->
-> I am sorry for suspending the ndctl global config patch for such a long
-> time. If it is not urgent, I would like to implement it.
+On Fri, 2020-02-28 at 08:15 +0100, Greg Kroah-Hartman wrote:
+> On Fri, Feb 28, 2020 at 05:25:31PM +1100, Andrew Donnellan wrote:
+> > On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> > > +int ocxlpmem_sysfs_add(struct ocxlpmem *ocxlpmem)
+> > > +{
+> > > +	int i, rc;
+> > > +
+> > > +	for (i = 0; i < ARRAY_SIZE(attrs); i++) {
+> > > +		rc = device_create_file(&ocxlpmem->dev, &attrs[i]);
+> > > +		if (rc) {
+> > > +			for (; --i >= 0;)
+> > > +				device_remove_file(&ocxlpmem->dev,
+> > > &attrs[i]);
+> > 
+> > I'd rather avoid weird for loop constructs if possible.
+> > 
+> > Is it actually dangerous to call device_remove_file() on an attr
+> > that hasn't
+> > been added? If not then I'd rather define an err: label and loop
+> > over the
+> > whole array there.
+> 
+> None of this should be used at all, just use attribute groups
+> properly
+> and the driver core will handle this all for you.
+> 
+> device_create/remove_file should never be called by anyone anymore if
+> at all
+> possible.
+> 
+> thanks,
+> 
+> greg k-h
 
-It's getting more and more urgent, especially as more people are
-trying to use the DIMM security features and finding it difficult to
-contend with the command-line interface.
 
-The goal is to import  the git config system. Specifically one of the
-features of the git config syntax that are useful for DIMM security
-(and in the future Namespace security) is the ability to have named
-sub-sections. From the git config man page:
+Thanks, I'll rework it to use the .groups member of struct pci_driver.
 
-       Sections can be further divided into subsections. To begin a
-subsection put its name in double
-       quotes, separated by space from the section name, in the
-section header, like in the example
-       below:
-
-                   [section "subsection"]
-
-With that capability policy can be established by a named object
-instance. dimm.<dimm_id>.<attribute>, or namespace.<uuid>.<attribute>.
+-- 
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
