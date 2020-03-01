@@ -2,44 +2,68 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F89F17495E
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Feb 2020 21:39:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315F0174A9A
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  1 Mar 2020 01:53:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF5FD10FC3761;
-	Sat, 29 Feb 2020 12:40:14 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EBA3C10FC340C;
+	Sat, 29 Feb 2020 16:54:06 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::243; helo=mail-oi1-x243.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1989810FC36E6
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 12:40:13 -0800 (PST)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:20 -0800
-X-IronPort-AV: E=Sophos;i="5.70,501,1574150400";
-   d="scan'208";a="232874204"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Feb 2020 12:39:20 -0800
-Subject: [ndctl PATCH 36/36] ndctl/test: Regression test misaligned
- namespaces
-From: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Date: Sat, 29 Feb 2020 12:23:15 -0800
-Message-ID: <158300779557.2141307.1119464097611805912.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158300760415.2141307.14060353322051900501.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id E8A2910FC3405
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 16:54:04 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id a22so6760240oid.13
+        for <linux-nvdimm@lists.01.org>; Sat, 29 Feb 2020 16:53:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vG5vKAngWN33ruKiQuTpYlNArSL1q2CIczuy2BXBfuE=;
+        b=EVi4QsCCZqdsO8jd42lKporuaZWmTGpqfIMnjxCebFY1LWoQBpvsJde3zsB8GpxnBt
+         zw4aJI2i9+UOBEhxpyIu55VAY1xuv9Ag0Y3eU7wTricIZszIxXYZE4fn5pAsYOrQP3UE
+         u+FMEGRsfhU/ecS+9x/87ShXW2Rhtg7ETsP1y4ObvCMTl62DpePlNTwWJPpBh9iKVFfU
+         Ux+Ccie/MIu1m1YMRSBahPdPTuVkoc7d6KZHCa1049ULEC/MLoxTYHlF7b+gO+CkG7zL
+         0l6Cy7fgfvdIUY/VJ44n1/GSKscbwmiZb2s0uxWcW0WFZVZxJVnVSja9gdLPJrjaCeYi
+         yfPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vG5vKAngWN33ruKiQuTpYlNArSL1q2CIczuy2BXBfuE=;
+        b=kARD9uwkaEMssodzeVYVQ9jyDrjSt1n7mTkB2QqdWDtWbh8E4K0th6IqyM6BxAm8bk
+         KAbAc+X7r5QCJInB7nsugkmS69OrhYl2htQ6vetUqCwyXav9HLLwlOucdG2Qm8yni7p3
+         myfvMnN/zkPoucaQDLG4A+x61VAMm6zWoHQBdyHeGs/8ujAfKEZ5hbTByYIDvLCOWHRB
+         WctUIF+RTUO8Tnz3O1Lw67Kp6QAforZzK+6DexGwA1r5XsZzxpRxSq326oKHECLBxo01
+         EF/7B9sXmHmrrh0P/7TWbAic1PAagOCaMMBDbDhkZmLoKuskjzUfTILElV4qJTp44m3x
+         Muuw==
+X-Gm-Message-State: APjAAAXPu0BR5Ya55yH6VhXK+z89Ir1cPPLFtv2GLkQQMShZrIJtBpkK
+	oAFZNphXvgscE8UyiyLU45KcAd90YSUwB6Zsjdav2A==
+X-Google-Smtp-Source: APXvYqxQUskahAUriWcdS5qGOWflBUlwfbNwzYextBzEpd0SD71vKrl0tWRo484a4970WvsZinC6zCJ5UkXvhnIXo7Y=
+X-Received: by 2002:a05:6808:a83:: with SMTP id q3mr7998258oij.0.1583023992112;
+ Sat, 29 Feb 2020 16:53:12 -0800 (PST)
 MIME-Version: 1.0
-Message-ID-Hash: S7XE63TEIWTTB4RD23WAUZM62O5PVNGY
-X-Message-ID-Hash: S7XE63TEIWTTB4RD23WAUZM62O5PVNGY
+References: <157481532698.2805671.8095763752180655226.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <x49sgj6law0.fsf@segfault.boston.devel.redhat.com> <CAPcyv4ibE3ssieq=A5diqwRyiT6e3X=kcpQ3aA0vYneBpuSCAA@mail.gmail.com>
+ <x49k14ila4r.fsf@segfault.boston.devel.redhat.com> <CAPcyv4hHU+RC6TZW94UrjFJZ1fsOU8Nug0GP+Mb5mBGW8qk+UQ@mail.gmail.com>
+ <03b5da834f0be8bc7110c459f3172732b96e85fa.camel@intel.com>
+ <CAPcyv4gVDEum7RiSMXug5fwNC04mEHo5MhAuUW37t4tN9y899A@mail.gmail.com>
+ <00abe72085e75c1c54b87635c81352b628211707.camel@intel.com> <149112cd-0ae4-02b8-84ba-f13cce5aa45d@jp.fujitsu.com>
+In-Reply-To: <149112cd-0ae4-02b8-84ba-f13cce5aa45d@jp.fujitsu.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sat, 29 Feb 2020 16:53:01 -0800
+Message-ID: <CAPcyv4gyxSYKXFdkr2M646sEMYGNRTBq6SMzAJz+iuuk0XoC7w@mail.gmail.com>
+Subject: Re: [ndctl PATCH] ndctl/list: Drop named list objects from verbose listing
+To: "qi.fuli@fujitsu.com" <qi.fuli@fujitsu.com>
+Message-ID-Hash: C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26
+X-Message-ID-Hash: C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/S7XE63TEIWTTB4RD23WAUZM62O5PVNGY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C7JWGLRTT3VID6YZL2EESJ7UJ3WVKH26/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,158 +72,57 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The kernel is now requiring that namespace creation results in
-cross-arch compatible namespaces by default. However, it must also
-continue to support previously valid, but misaligned, namespaces. Use
-the write-infoblock utility to create "legacy" configurations and
-validate that the kernel still accepts it along with other corner case
-configurations.
+On Fri, Feb 21, 2020 at 2:21 AM qi.fuli@fujitsu.com <qi.fuli@fujitsu.com> wrote:
+>
+>
+>
+> On 2/20/20 5:28 AM, Verma, Vishal L wrote:
+> > On Wed, 2020-02-19 at 12:09 -0800, Dan Williams wrote:
+> >>>>
+> >>>> Let's do a compromise, because users also hate nonsensical legacy that
+> >>>> they can't avoid. How about an environment variable,
+> >>>> "NDCTL_LIST_LINT", that users can set to opt into the latest /
+> >>>> cleanest output format with the understanding that the clean up may
+> >>>> regress scripts that were dependent on the old bugs.
+> >>>>
+> >>> Hm, this sounds good in concept, but how about waiting for this cleanup
+> >>> to go in after the (yes, long pending) config rework. Then this can just
+> >>> be a global config setting, and we won't have config things coming from
+> >>> the environment as well (which this would be a first of).
+> >>
+> >> That does make some sense, but I notice that git deals with "cosmetic"
+> >> environment variables (GIT_EDITOR, GIT_PAGER, etc) in addition to its
+> >> config file. So if we're borrowing from git, I'd also borrow that
+> >> config vs environment logic.
+> >
+> > True, that's reasonable. I guess I was hoping to avoid, if we can,
+> > suddenly having a multitude of config sources, but env variables are
+> > pretty standard and it should be fine to add them.
+>
+> Hi,
+>
+> I am sorry for suspending the ndctl global config patch for such a long
+> time. If it is not urgent, I would like to implement it.
 
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Jeff Moyer <jmoyer@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- test/Makefile.am |    1 
- test/align.sh    |  118 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 119 insertions(+)
- create mode 100755 test/align.sh
+It's getting more and more urgent, especially as more people are
+trying to use the DIMM security features and finding it difficult to
+contend with the command-line interface.
 
-diff --git a/test/Makefile.am b/test/Makefile.am
-index cce60c5221fd..1d24a65ded8b 100644
---- a/test/Makefile.am
-+++ b/test/Makefile.am
-@@ -54,6 +54,7 @@ TESTS +=\
- 	dax-dev \
- 	dax-ext4.sh \
- 	dax-xfs.sh \
-+	align.sh \
- 	device-dax \
- 	device-dax-fio.sh \
- 	daxctl-devices.sh \
-diff --git a/test/align.sh b/test/align.sh
-new file mode 100755
-index 000000000000..0129255610ab
---- /dev/null
-+++ b/test/align.sh
-@@ -0,0 +1,118 @@
-+#!/bin/bash -x
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright(c) 2015-2020 Intel Corporation. All rights reserved.
-+
-+. $(dirname $0)/common
-+
-+rc=77
-+cleanup() {
-+	echo "align.sh: failed at line $1"
-+	if [ "x$region" != "x" -a x$save_align != "x" ]; then
-+		echo $save_align > $region_path/align
-+	fi
-+
-+	if [ "x$ns1" != "x" ]; then
-+		$NDCTL destroy-namespace -f $ns1
-+	fi
-+	if [ "x$ns2" != "x" ]; then
-+		$NDCTL destroy-namespace -f $ns2
-+	fi
-+
-+	exit $rc
-+}
-+
-+is_aligned() {
-+	val=$1
-+	align=$2
-+
-+	if [ $((val & (align - 1))) -eq 0 ]; then
-+		return 0
-+	fi
-+	return 1
-+}
-+
-+set -e
-+trap 'err $LINENO cleanup' ERR
-+
-+region=$($NDCTL list -R -b ACPI.NFIT | jq -r '.[] | [select(.available_size == .size)] | .[0].dev')
-+
-+if [ "x$region" = "xnull"  ]; then
-+	unset $region
-+	echo "unable to find empty region"
-+	false
-+fi
-+
-+region_path="/sys/bus/nd/devices/$region"
-+save_align=$(cat $region_path/align)
-+
-+# check that the region is 1G aligned
-+resource=$(cat $region_path/resource)
-+is_aligned $resource $((1 << 30)) || (echo "need a 1GB aligned namespace to test alignment conditions" && false)
-+
-+rc=1
-+
-+# check that start-aligned, but end-misaligned namespaces can be created
-+# and probed
-+echo 4096 > $region_path/align
-+SIZE=$(((1<<30) + (8<<10)))
-+json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a 4K)
-+eval $(json2var <<< "$json")
-+$NDCTL disable-namespace $dev
-+$NDCTL enable-namespace $dev
-+ns1=$dev
-+
-+# check that start-misaligned namespaces can't be created until the
-+# region alignment is set to a compatible value.
-+# Note the namespace capacity alignment requirement in this case is
-+# SUBSECTION_SIZE (2M) as the data alignment can be satisfied with
-+# metadata padding.
-+json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a 4K -f) || status="failed"
-+if [ $status != "failed" ]; then
-+	echo "expected namespace creation failure"
-+	eval $(json2var <<< "$json")
-+	$NDCTL destroy-namespace -f $dev
-+	false
-+fi
-+
-+# check that start-misaligned namespaces can't be probed. Since the
-+# kernel does not support creating this misalignment, force it with a
-+# custom info-block
-+json=$($NDCTL create-namespace -r $region -s $SIZE -m raw)
-+eval $(json2var <<< "$json")
-+
-+$NDCTL disable-namespace $dev
-+$NDCTL write-infoblock $dev -a 4K
-+$NDCTL enable-namespace $dev || status="failed"
-+
-+if [ $status != "failed" ]; then
-+	echo "expected namespace enable failure"
-+	$NDCTL destroy-namespace -f $dev
-+	false
-+fi
-+ns2=$dev
-+
-+# check that namespace with proper inner padding can be enabled, even
-+# though non-zero start_pad namespaces don't support dax
-+$NDCTL write-infoblock $ns2 -a 4K -O 8K
-+$NDCTL enable-namespace $ns2
-+$NDCTL destroy-namespace $ns2 -f
-+unset ns2
-+
-+# check that all namespace alignments can be created with the region
-+# alignment at a compatible value
-+SIZE=$((2 << 30))
-+echo $((16 << 20)) > $region_path/align
-+for i in $((1 << 30)) $((2 << 20)) $((4 << 10))
-+do
-+	json=$($NDCTL create-namespace -r $region -s $SIZE -m fsdax -a $i)
-+	eval $(json2var <<< "$json")
-+	ns2=$dev
-+	$NDCTL disable-namespace $dev
-+	$NDCTL enable-namespace $dev
-+	$NDCTL destroy-namespace $dev -f
-+	unset ns2
-+done
-+
-+# final cleanup
-+$NDCTL destroy-namespace $ns1 -f
-+exit 0
+The goal is to import  the git config system. Specifically one of the
+features of the git config syntax that are useful for DIMM security
+(and in the future Namespace security) is the ability to have named
+sub-sections. From the git config man page:
+
+       Sections can be further divided into subsections. To begin a
+subsection put its name in double
+       quotes, separated by space from the section name, in the
+section header, like in the example
+       below:
+
+                   [section "subsection"]
+
+With that capability policy can be established by a named object
+instance. dimm.<dimm_id>.<attribute>, or namespace.<uuid>.<attribute>.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
