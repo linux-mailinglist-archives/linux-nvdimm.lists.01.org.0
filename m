@@ -1,89 +1,33 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F277917510D
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Mar 2020 00:42:31 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B04E1752A7
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Mar 2020 05:25:11 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E46C610FC33EC;
-	Sun,  1 Mar 2020 15:43:20 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id ABC861007B170
-	for <linux-nvdimm@lists.01.org>; Sun,  1 Mar 2020 15:43:18 -0800 (PST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 021Na2AU034191
-	for <linux-nvdimm@lists.01.org>; Sun, 1 Mar 2020 18:42:26 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 2yfmfybdrk-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Sun, 01 Mar 2020 18:42:26 -0500
-Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Sun, 1 Mar 2020 23:42:23 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Sun, 1 Mar 2020 23:42:15 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 021NgECQ48037968
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 1 Mar 2020 23:42:14 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A8BBBA404D;
-	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 52D62A4057;
-	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Sun,  1 Mar 2020 23:42:14 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3D5BCA00BE;
-	Mon,  2 Mar 2020 10:42:09 +1100 (AEDT)
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Donnellan
-	 <ajd@linux.ibm.com>
-Date: Mon, 02 Mar 2020 10:42:12 +1100
-In-Reply-To: <20200228071520.GA2897773@kroah.com>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
-	 <20200221032720.33893-26-alastair@au1.ibm.com>
-	 <96687fbf-38ab-13ff-ca19-ccb67bbc4405@linux.ibm.com>
-	 <20200228071520.GA2897773@kroah.com>
-Organization: IBM Australia
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+	by ml01.01.org (Postfix) with ESMTP id F14FA10FC3411;
+	Sun,  1 Mar 2020 20:26:00 -0800 (PST)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=201.76.122.141; helo=201-76-122-141.gtctelecom.net.br; envelope-from=kiran.kapadi@rediffrmail.com; receiver=<UNKNOWN> 
+Received: from 201-76-122-141.gtctelecom.net.br (201-76-122-141.gtctelecom.net.br [201.76.122.141])
+	by ml01.01.org (Postfix) with ESMTP id 0462910FC340C
+	for <linux-nvdimm@lists.01.org>; Sun,  1 Mar 2020 20:25:55 -0800 (PST)
+Message-ID: <7B9B80E5E160FE84647F1A1E9F017B9B@rediffrmail.com>
+From: <kiran.kapadi@rediffrmail.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: Check the confidentiality of your information (according to our security service, your account has been hacked).
+Date: 1 Mar 2020 20:50:59 -0400
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 20030123-0028-0000-0000-000003DFAB5C
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030123-0029-0000-0000-000024A4D240
-Message-Id: <4075f48568fee61123579d4edea0e7939b4b2e6c.camel@au1.ibm.com>
-Subject: RE: [PATCH v3 25/27] powerpc/powernv/pmem: Expose the serial number in
- sysfs
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-01_09:2020-02-28,2020-03-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=879 clxscore=1015
- lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003010189
-Message-ID-Hash: JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3
-X-Message-ID-Hash: JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3
-X-MailFrom: alastair@au1.ibm.com
+X-Mailer: Sqjebuvh hslaepi 9.1
+Message-ID-Hash: P3JZCTXF3FNKNOBIAVUTDUGBDBI5CGEA
+X-Message-ID-Hash: P3JZCTXF3FNKNOBIAVUTDUGBDBI5CGEA
+X-MailFrom: kiran.kapadi@rediffrmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.or
- g, linux-mm@kvack.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JJDKZRIMKNAAL6PB4NKQDE56QVM7MTF3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P3JZCTXF3FNKNOBIAVUTDUGBDBI5CGEA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -92,48 +36,9 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, 2020-02-28 at 08:15 +0100, Greg Kroah-Hartman wrote:
-> On Fri, Feb 28, 2020 at 05:25:31PM +1100, Andrew Donnellan wrote:
-> > On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> > > +int ocxlpmem_sysfs_add(struct ocxlpmem *ocxlpmem)
-> > > +{
-> > > +	int i, rc;
-> > > +
-> > > +	for (i = 0; i < ARRAY_SIZE(attrs); i++) {
-> > > +		rc = device_create_file(&ocxlpmem->dev, &attrs[i]);
-> > > +		if (rc) {
-> > > +			for (; --i >= 0;)
-> > > +				device_remove_file(&ocxlpmem->dev,
-> > > &attrs[i]);
-> > 
-> > I'd rather avoid weird for loop constructs if possible.
-> > 
-> > Is it actually dangerous to call device_remove_file() on an attr
-> > that hasn't
-> > been added? If not then I'd rather define an err: label and loop
-> > over the
-> > whole array there.
-> 
-> None of this should be used at all, just use attribute groups
-> properly
-> and the driver core will handle this all for you.
-> 
-> device_create/remove_file should never be called by anyone anymore if
-> at all
-> possible.
-> 
-> thanks,
-> 
-> greg k-h
-
-
-Thanks, I'll rework it to use the .groups member of struct pci_driver.
-
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+_Hello!&#205; am a hacker who has access to yo&#252;r operat&#237;ng system.&#205; also have full access to yo&#252;r acco&#252;&#328;t.&#205;'ve been watch&#237;ng yo&#252; for a few months now.The fact &#237;s that yo&#252; were &#237;nfected w&#237;th malware thro&#252;gh an ad&#252;lt s&#237;te that yo&#252; v&#237;s&#237;ted.&#205;f yo&#252; are not fam&#237;l&#237;ar w&#237;th th&#237;s, &#205; w&#237;ll expla&#237;n.Trojan V&#237;r&#252;s g&#237;ves me f&#252;ll access and control over a comp&#252;ter or other dev&#237;ce.Th&#237;s means that &#205; can see everyth&#237;ng on yo&#252;r screen, t&#252;rn on the camera and m&#237;crophone, b&#252;t yo&#252; do not know abo&#252;t &#237;t.&#205; also have access to all yo&#252;r contacts and all yo&#252;r correspondence.Why yo&#252;r ant&#237;v&#237;r&#252;s d&#237;d not detect malware?Answer: My malware &#252;ses the dr&#237;ver, &#205; &#252;pdate &#237;ts s&#237;gnat&#252;res every 4 ho&#252;rs so that yo&#252;r ant&#237;v&#23
+ 7;r&#252;s &#237;s s&#237;lent.&#205; made a v&#237;deo show&#237;ng how yo&#252; mast&#252;rbate on the left half of the screen, and &#237;n the r&#237;ght half yo&#252; see the v&#237;deo that yo&#252; watched. W&#237;th one cl&#237;ck of the mo&#252;se,&#205; can send th&#237;s v&#237;deo to all yo&#252;r ema&#237;ls and contacts on soc&#237;al networks. &#205; can also post access to all yo&#252;r e-ma&#237;l correspondence and messengers that yo&#252; &#252;se.&#205;f yo&#252; want to prevent th&#237;s, transfer the amo&#252;nt of $950(USD) to my b&#237;tco&#237;n address (&#237;f yo&#252; do not know how to do th&#237;s, wr&#237;te to Google: 'B&#252;y B&#237;tco&#237;n').My b&#237;tco&#237;n address (B&#356;C Wallet) &#237;s: 1LFkUg9nWmZEBYMxzizXpHXfyy5CRvmzaAAfter rece&#237;v&#237;ng the payment, &#205; w&#237;ll delete the v&#237;deo and yo&#252; w&#237;ll never hear me aga&#237;n.&#205; g&#237;ve yo&#252; 48 ho&#252;rs to pay.&#205; have a not&#237;ce read&#237;ng th&#237;
+ s letter, and the t&#237;mer w&#237;ll work when yo&#252; see th&#237;s letter.F&#237;l&#237;ng a compla&#237;nt somewhere does not make sense beca&#252;se th&#237;s ema&#237;l cannot be tracked l&#237;ke my b&#237;tco&#237;n address.&#205; do not make any m&#237;stakes.&#205;f &#205; f&#237;nd that yo&#252; have shared th&#237;s message w&#237;th someone else, the v&#237;deo w&#237;ll be &#237;mmed&#237;ately d&#237;str&#237;b&#252;ted.Best regards!
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
