@@ -1,42 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B280F17676F
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Mar 2020 23:36:08 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 607E6176770
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  2 Mar 2020 23:36:12 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 70E7410FC3602;
-	Mon,  2 Mar 2020 14:36:58 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	by ml01.01.org (Postfix) with ESMTP id 9D87B10FC3606;
+	Mon,  2 Mar 2020 14:37:02 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8ED8C1007B1EA
-	for <linux-nvdimm@lists.01.org>; Mon,  2 Mar 2020 14:36:55 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 7EFAE10FC3415
+	for <linux-nvdimm@lists.01.org>; Mon,  2 Mar 2020 14:37:01 -0800 (PST)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 14:36:03 -0800
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 14:36:09 -0800
 X-IronPort-AV: E=Sophos;i="5.70,508,1574150400";
-   d="scan'208";a="273921114"
+   d="scan'208";a="351657315"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 14:36:02 -0800
-Subject: [PATCH 0/5] Manual definition of Soft Reserved memory devices
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Mar 2020 14:36:09 -0800
+Subject: [PATCH 1/5] ACPI: NUMA: Add 'nohmat' option
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-acpi@vger.kernel.org
-Date: Mon, 02 Mar 2020 14:19:57 -0800
-Message-ID: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 02 Mar 2020 14:20:03 -0800
+Message-ID: <158318760361.2216124.13612198312947463590.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: AVNMM4E4ZSZLEM5MV3MT2T3QIAJE4Y2M
-X-Message-ID-Hash: AVNMM4E4ZSZLEM5MV3MT2T3QIAJE4Y2M
+Message-ID-Hash: HPEUKJY7A27WRO2C4DR5LQSR2DGKBPB2
+X-Message-ID-Hash: HPEUKJY7A27WRO2C4DR5LQSR2DGKBPB2
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jason Gunthorpe <jgg@ziepe.ca>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Brice Goglin <Brice.Goglin@inria.fr>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Andy Lutomirski <luto@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, ard.biesheuvel@linaro.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AVNMM4E4ZSZLEM5MV3MT2T3QIAJE4Y2M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HPEUKJY7A27WRO2C4DR5LQSR2DGKBPB2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -45,94 +47,73 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Given the current dearth of systems that supply an ACPI HMAT table, and
-the utility of being able to manually define device-dax "hmem" instances
-via the efi_fake_mem= option, relax the requirements for creating these
-devices. Specifically, add an option (numa=nohmat) to optionally disable
-consideration of the HMAT and update efi_fake_mem= to behave like
-memmap=nn!ss in terms of delimiting device boundaries.
+Disable parsing of the HMAT for debug, to workaround broken platform
+instances, or cases where it is otherwise not wanted.
 
-All review welcome of course, but the E820 changes want an x86
-maintainer ack, the efi_fake_mem update needs Ard, and Rafael has
-previously shepherded the HMAT changes. For the changes to
-kernel/resource.c, where there is no clear maintainer, I just copied the
-last few people to make thoughtful changes in that area. I am happy to
-take these through the nvdimm tree along with these prerequisites
-already in -next:
-
-b2ca916ce392 ACPI: NUMA: Up-level "map to online node" functionality
-4fcbe96e4d0b mm/numa: Skip NUMA_NO_NODE and online nodes in numa_map_to_online_node()
-575e23b6e13c powerpc/papr_scm: Switch to numa_map_to_online_node()
-1e5d8e1e47af x86/mm: Introduce CONFIG_NUMA_KEEP_MEMINFO
-5d30f92e7631 x86/NUMA: Provide a range-to-target_node lookup facility
-7b27a8622f80 libnvdimm/e820: Retrieve and populate correct 'target_node' info
-
-Tested with:
-
-        numa=nohmat efi_fake_mem=4G@9G:0x40000,4G@13G:0x40000
-
-...to create to device-dax instances:
-
-	# daxctl list -RDu
-	[
-	  {
-	    "path":"\/platform\/hmem.1",
-	    "id":1,
-	    "size":"4.00 GiB (4.29 GB)",
-	    "align":2097152,
-	    "devices":[
-	      {
-	        "chardev":"dax1.0",
-	        "size":"4.00 GiB (4.29 GB)",
-	        "target_node":3,
-	        "mode":"devdax"
-	      }
-	    ]
-	  },
-	  {
-	    "path":"\/platform\/hmem.0",
-	    "id":0,
-	    "size":"4.00 GiB (4.29 GB)",
-	    "align":2097152,
-	    "devices":[
-	      {
-	        "chardev":"dax0.0",
-	        "size":"4.00 GiB (4.29 GB)",
-	        "target_node":2,
-	        "mode":"devdax"
-	      }
-	    ]
-	  }
-	]
-
+Cc: x86@kernel.org
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+ arch/x86/mm/numa.c       |    4 ++++
+ drivers/acpi/numa/hmat.c |    3 ++-
+ include/acpi/acpi_numa.h |    1 +
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-Dan Williams (5):
-      ACPI: NUMA: Add 'nohmat' option
-      efi/fake_mem: Arrange for a resource entry per efi_fake_mem instance
-      ACPI: HMAT: Refactor hmat_register_target_device to hmem_register_device
-      resource: Report parent to walk_iomem_res_desc() callback
-      ACPI: HMAT: Attach a device for each soft-reserved range
-
-
- arch/x86/kernel/e820.c              |   16 +++++-
- arch/x86/mm/numa.c                  |    4 +
- drivers/acpi/numa/hmat.c            |   71 +++-----------------------
- drivers/dax/Kconfig                 |    5 ++
- drivers/dax/Makefile                |    3 -
- drivers/dax/hmem/Makefile           |    6 ++
- drivers/dax/hmem/device.c           |   97 +++++++++++++++++++++++++++++++++++
- drivers/dax/hmem/hmem.c             |    2 -
- drivers/firmware/efi/x86_fake_mem.c |   12 +++-
- include/acpi/acpi_numa.h            |    1 
- include/linux/dax.h                 |    8 +++
- kernel/resource.c                   |    1 
- 12 files changed, 156 insertions(+), 70 deletions(-)
- create mode 100644 drivers/dax/hmem/Makefile
- create mode 100644 drivers/dax/hmem/device.c
- rename drivers/dax/{hmem.c => hmem/hmem.c} (98%)
-
-base-commit: 7b27a8622f802761d5c6abd6c37b22312a35343c
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 59ba008504dc..22de2e2610c1 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -44,6 +44,10 @@ static __init int numa_setup(char *opt)
+ #ifdef CONFIG_ACPI_NUMA
+ 	if (!strncmp(opt, "noacpi", 6))
+ 		acpi_numa = -1;
++#ifdef CONFIG_ACPI_HMAT
++	if (!strncmp(opt, "nohmat", 6))
++		hmat_disable = 1;
++#endif
+ #endif
+ 	return 0;
+ }
+diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+index 2c32cfb72370..d3db121e393a 100644
+--- a/drivers/acpi/numa/hmat.c
++++ b/drivers/acpi/numa/hmat.c
+@@ -26,6 +26,7 @@
+ #include <linux/sysfs.h>
+ 
+ static u8 hmat_revision;
++int hmat_disable __initdata;
+ 
+ static LIST_HEAD(targets);
+ static LIST_HEAD(initiators);
+@@ -814,7 +815,7 @@ static __init int hmat_init(void)
+ 	enum acpi_hmat_type i;
+ 	acpi_status status;
+ 
+-	if (srat_disabled())
++	if (srat_disabled() || hmat_disable)
+ 		return 0;
+ 
+ 	status = acpi_get_table(ACPI_SIG_SRAT, 0, &tbl);
+diff --git a/include/acpi/acpi_numa.h b/include/acpi/acpi_numa.h
+index fdebcfc6c8df..48ca468e9b61 100644
+--- a/include/acpi/acpi_numa.h
++++ b/include/acpi/acpi_numa.h
+@@ -18,6 +18,7 @@ extern int node_to_pxm(int);
+ extern int acpi_map_pxm_to_node(int);
+ extern unsigned char acpi_srat_revision;
+ extern int acpi_numa __initdata;
++extern int hmat_disable __initdata;
+ 
+ extern void bad_srat(void);
+ extern int srat_disabled(void);
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
