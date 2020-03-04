@@ -1,431 +1,206 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61900179386
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Mar 2020 16:35:18 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370FF1793C5
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Mar 2020 16:40:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8210C10FC36C5;
-	Wed,  4 Mar 2020 07:36:07 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::a43; helo=mail-vk1-xa43.google.com; envelope-from=ulf.hansson@linaro.org; receiver=<UNKNOWN> 
-Received: from mail-vk1-xa43.google.com (mail-vk1-xa43.google.com [IPv6:2607:f8b0:4864:20::a43])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 015C210FC3162;
+	Wed,  4 Mar 2020 07:41:41 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3BA0910FC3162
-	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 07:36:05 -0800 (PST)
-Received: by mail-vk1-xa43.google.com with SMTP id r5so677719vkf.2
-        for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 07:35:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6cS3FWfjvrO1ZUT7DZy+lSQzbt9YdNm9ZhTZZc8PAug=;
-        b=mRIOjSGpn9s/L+86kk3Uww2g23Pb3wdpimWCHzZQQGefklq7yXvUPTYWSj2MZHp1iC
-         sYA2BK5S2x0Mpw5f5Mj7pUM9efeKgkkATpGekWCt/mP/CI8EixGuzz4LJ+cUVWHTvUlZ
-         +Oy5EXNfRzxrT6L1xGtxNxtJMyRfQhmkKuizDbGLEy7PfGceuBQwaUjkkNJtcZXEPtJG
-         fItbFSVs8uCSirpdgjVDOpLYC9wVCM7pnH2p3eSYnMBdjf2Ck0fI5hnA/C+2kJ2xUSNG
-         KKMZS0IUHuOllR1rLYriX6SG92omJbqHXiAYFo3pNiWqoxcJeKpOVwvFFtyYY2FCdxmq
-         ru5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6cS3FWfjvrO1ZUT7DZy+lSQzbt9YdNm9ZhTZZc8PAug=;
-        b=eciwJDfHB1lQH53w0OiStCsyOuX3kD0rNV43svKC/WewA+qaU0wQAEPa7uQS3u21eW
-         /2MV0B88VKrUDUUqTKSLU0IDrK9rUGqHRI6LzXDJCaHh2mcxH9/SRo6I54yoK2plrUEj
-         HhQAm/3u7Ay0LLD7fHtrv//5tUkzcBFYLJRDcRhAG/66vrpxDrKPdsdUaOLG3NSLMDia
-         MI/01Aa1ca/Vb+Rhq43TtSCGXqDr+HWdOL6ZUZs1Lbeiy0GITG6Hl2IaHWCjOflSTMl8
-         EYKgRostLnnhZ1l1wvXhZXp66foqcDje6i0GbG+E09tPA0PTbZ9qyLO0pM9+HSJSsRNH
-         JJ6Q==
-X-Gm-Message-State: ANhLgQ0pgnWNB7EoGfDU8MybgJJIWahoaN+fSkZ4+7R6s/KtpBYjY6Uc
-	9oG6xycfPmLiSuOq5sVvimijXQa1M3frkZbbN5XDSQ==
-X-Google-Smtp-Source: ADFU+vv27biy3HG8yDmFUfALjgCLWWI0UWXsQhDngblfPmSvrgnEbHYIJzjZFyYXAszTxn5WrS/P8mt0TjVii5+r2/s=
-X-Received: by 2002:ac5:c4fc:: with SMTP id b28mr1719680vkl.101.1583336112179;
- Wed, 04 Mar 2020 07:35:12 -0800 (PST)
+	by ml01.01.org (Postfix) with ESMTPS id 5825810FC36C5
+	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 07:41:38 -0800 (PST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 024FZLYS132663
+	for <linux-nvdimm@lists.01.org>; Wed, 4 Mar 2020 10:40:46 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yj4q18kss-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 10:40:45 -0500
+Received: from localhost
+	by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <fbarrat@linux.ibm.com>;
+	Wed, 4 Mar 2020 15:40:42 -0000
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+	by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Wed, 4 Mar 2020 15:40:34 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 024FeWKl48758790
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Mar 2020 15:40:32 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B7001AE05A;
+	Wed,  4 Mar 2020 15:40:32 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9640AE045;
+	Wed,  4 Mar 2020 15:40:31 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.145.27])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed,  4 Mar 2020 15:40:31 +0000 (GMT)
+Subject: Re: [PATCH v3 24/27] powerpc/powernv/pmem: Expose SMART data via
+ ndctl
+To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+ <20200221032720.33893-25-alastair@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Wed, 4 Mar 2020 16:40:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-References: <20200223165724.23816-1-mcroce@redhat.com>
-In-Reply-To: <20200223165724.23816-1-mcroce@redhat.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Wed, 4 Mar 2020 16:34:36 +0100
-Message-ID: <CAPDyKFrw+PHqcy_yDgj4V9WBy0b8+zbNugHvc4kBOCO2_FT6xg@mail.gmail.com>
-Subject: Re: [PATCH] block: refactor duplicated macros
-To: Matteo Croce <mcroce@redhat.com>
-Message-ID-Hash: SELRKUISFL6HAGVISPLX4E7RSQQ4Z32H
-X-Message-ID-Hash: SELRKUISFL6HAGVISPLX4E7RSQQ4Z32H
-X-MailFrom: ulf.hansson@linaro.org
+In-Reply-To: <20200221032720.33893-25-alastair@au1.ibm.com>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 20030415-0008-0000-0000-0000035951B1
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20030415-0009-0000-0000-00004A7A85DB
+Message-Id: <7d461119-12e6-7813-50d5-42e2d7774b54@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-04_05:2020-03-04,2020-03-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 adultscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003040115
+Message-ID-Hash: WID4ROXRMI5BORKWLE6CKCLRNAOLFDHQ
+X-Message-ID-Hash: WID4ROXRMI5BORKWLE6CKCLRNAOLFDHQ
+X-MailFrom: fbarrat@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-block <linux-block@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm@lists.01.org, linux-bcache@vger.kernel.org, linux-raid@vger.kernel.org, "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>, xen-devel@lists.xenproject.org, linux-scsi <linux-scsi@vger.kernel.org>, linux-nfs@vger.kernel.org, Jens Axboe <axboe@kernel.dk>, "James E.J. Bottomley" <jejb@linux.ibm.com>, Anna Schumaker <anna.schumaker@netapp.com>
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-de
+ v@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SELRKUISFL6HAGVISPLX4E7RSQQ4Z32H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WID4ROXRMI5BORKWLE6CKCLRNAOLFDHQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Sun, 23 Feb 2020 at 17:57, Matteo Croce <mcroce@redhat.com> wrote:
->
-> The macros PAGE_SECTORS, PAGE_SECTORS_SHIFT and SECTOR_MASK are defined
-> several times in different flavours across the whole tree.
-> Define them just once in a common header.
->
-> Signed-off-by: Matteo Croce <mcroce@redhat.com>
-
-For mmc:
-
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-Kind regards
-Uffe
-
-
-> ---
->  block/blk-lib.c                  |  2 +-
->  drivers/block/brd.c              |  3 ---
->  drivers/block/null_blk_main.c    |  4 ----
->  drivers/block/zram/zram_drv.c    |  8 ++++----
->  drivers/block/zram/zram_drv.h    |  2 --
->  drivers/dax/super.c              |  2 +-
->  drivers/md/bcache/util.h         |  2 --
->  drivers/md/dm-bufio.c            |  6 +++---
->  drivers/md/dm-integrity.c        | 10 +++++-----
->  drivers/md/md.c                  |  4 ++--
->  drivers/md/raid1.c               |  2 +-
->  drivers/mmc/core/host.c          |  3 ++-
->  drivers/scsi/xen-scsifront.c     |  4 ++--
->  fs/iomap/buffered-io.c           |  2 +-
->  fs/nfs/blocklayout/blocklayout.h |  2 --
->  include/linux/blkdev.h           |  4 ++++
->  include/linux/device-mapper.h    |  1 -
->  17 files changed, 26 insertions(+), 35 deletions(-)
->
-> diff --git a/block/blk-lib.c b/block/blk-lib.c
-> index 5f2c429d4378..f5e705d307e0 100644
-> --- a/block/blk-lib.c
-> +++ b/block/blk-lib.c
-> @@ -260,7 +260,7 @@ static int __blkdev_issue_write_zeroes(struct block_device *bdev,
->   */
->  static unsigned int __blkdev_sectors_to_bio_pages(sector_t nr_sects)
->  {
-> -       sector_t pages = DIV_ROUND_UP_SECTOR_T(nr_sects, PAGE_SIZE / 512);
-> +       sector_t pages = DIV_ROUND_UP_SECTOR_T(nr_sects, PAGE_SECTORS);
->
->         return min(pages, (sector_t)BIO_MAX_PAGES);
->  }
-> diff --git a/drivers/block/brd.c b/drivers/block/brd.c
-> index 220c5e18aba0..33e2cbe11400 100644
-> --- a/drivers/block/brd.c
-> +++ b/drivers/block/brd.c
-> @@ -25,9 +25,6 @@
->
->  #include <linux/uaccess.h>
->
-> -#define PAGE_SECTORS_SHIFT     (PAGE_SHIFT - SECTOR_SHIFT)
-> -#define PAGE_SECTORS           (1 << PAGE_SECTORS_SHIFT)
-> -
->  /*
->   * Each block ramdisk device has a radix_tree brd_pages of pages that stores
->   * the pages containing the block device's contents. A brd page's ->index is
-> diff --git a/drivers/block/null_blk_main.c b/drivers/block/null_blk_main.c
-> index 16510795e377..c42af6cf0b97 100644
-> --- a/drivers/block/null_blk_main.c
-> +++ b/drivers/block/null_blk_main.c
-> @@ -11,10 +11,6 @@
->  #include <linux/init.h>
->  #include "null_blk.h"
->
-> -#define PAGE_SECTORS_SHIFT     (PAGE_SHIFT - SECTOR_SHIFT)
-> -#define PAGE_SECTORS           (1 << PAGE_SECTORS_SHIFT)
-> -#define SECTOR_MASK            (PAGE_SECTORS - 1)
-> -
->  #define FREE_BATCH             16
->
->  #define TICKS_PER_SEC          50ULL
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index 1bdb5793842b..6ee59da4a6e2 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -1548,9 +1548,9 @@ static void __zram_make_request(struct zram *zram, struct bio *bio)
->         struct bio_vec bvec;
->         struct bvec_iter iter;
->
-> -       index = bio->bi_iter.bi_sector >> SECTORS_PER_PAGE_SHIFT;
-> +       index = bio->bi_iter.bi_sector >> PAGE_SECTORS_SHIFT;
->         offset = (bio->bi_iter.bi_sector &
-> -                 (SECTORS_PER_PAGE - 1)) << SECTOR_SHIFT;
-> +                 SECTOR_MASK) << SECTOR_SHIFT;
->
->         switch (bio_op(bio)) {
->         case REQ_OP_DISCARD:
-> @@ -1643,8 +1643,8 @@ static int zram_rw_page(struct block_device *bdev, sector_t sector,
->                 goto out;
->         }
->
-> -       index = sector >> SECTORS_PER_PAGE_SHIFT;
-> -       offset = (sector & (SECTORS_PER_PAGE - 1)) << SECTOR_SHIFT;
-> +       index = sector >> PAGE_SECTORS_SHIFT;
-> +       offset = (sector & SECTOR_MASK) << SECTOR_SHIFT;
->
->         bv.bv_page = page;
->         bv.bv_len = PAGE_SIZE;
-> diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
-> index f2fd46daa760..12309175d55e 100644
-> --- a/drivers/block/zram/zram_drv.h
-> +++ b/drivers/block/zram/zram_drv.h
-> @@ -21,8 +21,6 @@
->
->  #include "zcomp.h"
->
-> -#define SECTORS_PER_PAGE_SHIFT (PAGE_SHIFT - SECTOR_SHIFT)
-> -#define SECTORS_PER_PAGE       (1 << SECTORS_PER_PAGE_SHIFT)
->  #define ZRAM_LOGICAL_BLOCK_SHIFT 12
->  #define ZRAM_LOGICAL_BLOCK_SIZE        (1 << ZRAM_LOGICAL_BLOCK_SHIFT)
->  #define ZRAM_SECTOR_PER_LOGICAL_BLOCK  \
-> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-> index 0aa4b6bc5101..7f7672f72085 100644
-> --- a/drivers/dax/super.c
-> +++ b/drivers/dax/super.c
-> @@ -92,7 +92,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
->                 return false;
->         }
->
-> -       last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SIZE / 512;
-> +       last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SECTORS;
->         err = bdev_dax_pgoff(bdev, last_page, PAGE_SIZE, &pgoff_end);
->         if (err) {
->                 pr_debug("%s: error: unaligned partition for dax\n",
-> diff --git a/drivers/md/bcache/util.h b/drivers/md/bcache/util.h
-> index c029f7443190..55196e0f37c3 100644
-> --- a/drivers/md/bcache/util.h
-> +++ b/drivers/md/bcache/util.h
-> @@ -15,8 +15,6 @@
->
->  #include "closure.h"
->
-> -#define PAGE_SECTORS           (PAGE_SIZE / 512)
-> -
->  struct closure;
->
->  #ifdef CONFIG_BCACHE_DEBUG
-> diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
-> index 2d519c223562..f4496ce0d598 100644
-> --- a/drivers/md/dm-bufio.c
-> +++ b/drivers/md/dm-bufio.c
-> @@ -384,7 +384,7 @@ static void *alloc_buffer_data(struct dm_bufio_client *c, gfp_t gfp_mask,
->             gfp_mask & __GFP_NORETRY) {
->                 *data_mode = DATA_MODE_GET_FREE_PAGES;
->                 return (void *)__get_free_pages(gfp_mask,
-> -                                               c->sectors_per_block_bits - (PAGE_SHIFT - SECTOR_SHIFT));
-> +                                               c->sectors_per_block_bits - PAGE_SECTORS_SHIFT);
->         }
->
->         *data_mode = DATA_MODE_VMALLOC;
-> @@ -422,7 +422,7 @@ static void free_buffer_data(struct dm_bufio_client *c,
->
->         case DATA_MODE_GET_FREE_PAGES:
->                 free_pages((unsigned long)data,
-> -                          c->sectors_per_block_bits - (PAGE_SHIFT - SECTOR_SHIFT));
-> +                          c->sectors_per_block_bits - PAGE_SECTORS_SHIFT);
->                 break;
->
->         case DATA_MODE_VMALLOC:
-> @@ -597,7 +597,7 @@ static void use_bio(struct dm_buffer *b, int rw, sector_t sector,
->         unsigned vec_size, len;
->
->         vec_size = b->c->block_size >> PAGE_SHIFT;
-> -       if (unlikely(b->c->sectors_per_block_bits < PAGE_SHIFT - SECTOR_SHIFT))
-> +       if (unlikely(b->c->sectors_per_block_bits < PAGE_SECTORS_SHIFT))
->                 vec_size += 2;
->
->         bio = bio_kmalloc(GFP_NOWAIT | __GFP_NORETRY | __GFP_NOWARN, vec_size);
-> diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-> index b225b3e445fa..4e60cda465cc 100644
-> --- a/drivers/md/dm-integrity.c
-> +++ b/drivers/md/dm-integrity.c
-> @@ -652,7 +652,7 @@ static void page_list_location(struct dm_integrity_c *ic, unsigned section, unsi
->
->         sector = section * ic->journal_section_sectors + offset;
->
-> -       *pl_index = sector >> (PAGE_SHIFT - SECTOR_SHIFT);
-> +       *pl_index = sector >> PAGE_SECTORS_SHIFT;
->         *pl_offset = (sector << SECTOR_SHIFT) & (PAGE_SIZE - 1);
->  }
->
-> @@ -951,7 +951,7 @@ static void rw_journal_sectors(struct dm_integrity_c *ic, int op, int op_flags,
->                 return;
->         }
->
-> -       pl_index = sector >> (PAGE_SHIFT - SECTOR_SHIFT);
-> +       pl_index = sector >> PAGE_SECTORS_SHIFT;
->         pl_offset = (sector << SECTOR_SHIFT) & (PAGE_SIZE - 1);
->
->         io_req.bi_op = op;
-> @@ -1072,7 +1072,7 @@ static void copy_from_journal(struct dm_integrity_c *ic, unsigned section, unsig
->
->         sector = section * ic->journal_section_sectors + JOURNAL_BLOCK_SECTORS + offset;
->
-> -       pl_index = sector >> (PAGE_SHIFT - SECTOR_SHIFT);
-> +       pl_index = sector >> PAGE_SECTORS_SHIFT;
->         pl_offset = (sector << SECTOR_SHIFT) & (PAGE_SIZE - 1);
->
->         io_req.bi_op = REQ_OP_WRITE;
-> @@ -3343,7 +3343,7 @@ static int create_journal(struct dm_integrity_c *ic, char **error)
->         ic->commit_ids[3] = cpu_to_le64(0x4444444444444444ULL);
->
->         journal_pages = roundup((__u64)ic->journal_sections * ic->journal_section_sectors,
-> -                               PAGE_SIZE >> SECTOR_SHIFT) >> (PAGE_SHIFT - SECTOR_SHIFT);
-> +                               PAGE_SIZE >> SECTOR_SHIFT) >> PAGE_SECTORS_SHIFT;
->         journal_desc_size = journal_pages * sizeof(struct page_list);
->         if (journal_pages >= totalram_pages() - totalhigh_pages() || journal_desc_size > ULONG_MAX) {
->                 *error = "Journal doesn't fit into memory";
-> @@ -4075,7 +4075,7 @@ static int dm_integrity_ctr(struct dm_target *ti, unsigned argc, char **argv)
->                         spin_lock_init(&bbs->bio_queue_lock);
->
->                         sector = i * (BITMAP_BLOCK_SIZE >> SECTOR_SHIFT);
-> -                       pl_index = sector >> (PAGE_SHIFT - SECTOR_SHIFT);
-> +                       pl_index = sector >> PAGE_SECTORS_SHIFT;
->                         pl_offset = (sector << SECTOR_SHIFT) & (PAGE_SIZE - 1);
->
->                         bbs->bitmap = lowmem_page_address(ic->journal[pl_index].page) + pl_offset;
-> diff --git a/drivers/md/md.c b/drivers/md/md.c
-> index 469f551863be..b28f9390608f 100644
-> --- a/drivers/md/md.c
-> +++ b/drivers/md/md.c
-> @@ -1734,7 +1734,7 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
->                 __le64 *bbp;
->                 int i;
->                 int sectors = le16_to_cpu(sb->bblog_size);
-> -               if (sectors > (PAGE_SIZE / 512))
-> +               if (sectors > PAGE_SECTORS)
->                         return -EINVAL;
->                 offset = le32_to_cpu(sb->bblog_offset);
->                 if (offset == 0)
-> @@ -8733,7 +8733,7 @@ void md_do_sync(struct md_thread *thread)
->         /*
->          * Tune reconstruction:
->          */
-> -       window = 32 * (PAGE_SIZE / 512);
-> +       window = 32 * PAGE_SECTORS;
->         pr_debug("md: using %dk window, over a total of %lluk.\n",
->                  window/2, (unsigned long long)max_sectors/2);
->
-> diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-> index cd810e195086..37a0b571903a 100644
-> --- a/drivers/md/raid1.c
-> +++ b/drivers/md/raid1.c
-> @@ -2129,7 +2129,7 @@ static void process_checks(struct r1bio *r1_bio)
->         int vcnt;
->
->         /* Fix variable parts of all bios */
-> -       vcnt = (r1_bio->sectors + PAGE_SIZE / 512 - 1) >> (PAGE_SHIFT - 9);
-> +       vcnt = (r1_bio->sectors + PAGE_SECTORS - 1) >> (PAGE_SHIFT - 9);
->         for (i = 0; i < conf->raid_disks * 2; i++) {
->                 blk_status_t status;
->                 struct bio *b = r1_bio->bios[i];
-> diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-> index c8768726d925..4a23fb9d5642 100644
-> --- a/drivers/mmc/core/host.c
-> +++ b/drivers/mmc/core/host.c
-> @@ -18,6 +18,7 @@
->  #include <linux/export.h>
->  #include <linux/leds.h>
->  #include <linux/slab.h>
-> +#include <linux/blkdev.h>
->
->  #include <linux/mmc/host.h>
->  #include <linux/mmc/card.h>
-> @@ -427,7 +428,7 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
->
->         host->max_req_size = PAGE_SIZE;
->         host->max_blk_size = 512;
-> -       host->max_blk_count = PAGE_SIZE / 512;
-> +       host->max_blk_count = PAGE_SECTORS;
->
->         host->fixed_drv_type = -EINVAL;
->         host->ios.power_delay_ms = 10;
-> diff --git a/drivers/scsi/xen-scsifront.c b/drivers/scsi/xen-scsifront.c
-> index f0068e96a177..e6b29e54d07a 100644
-> --- a/drivers/scsi/xen-scsifront.c
-> +++ b/drivers/scsi/xen-scsifront.c
-> @@ -852,7 +852,7 @@ static int scsifront_probe(struct xenbus_device *dev,
->         host->max_id      = VSCSIIF_MAX_TARGET;
->         host->max_channel = 0;
->         host->max_lun     = VSCSIIF_MAX_LUN;
-> -       host->max_sectors = (host->sg_tablesize - 1) * PAGE_SIZE / 512;
-> +       host->max_sectors = (host->sg_tablesize - 1) * PAGE_SECTORS;
->         host->max_cmd_len = VSCSIIF_MAX_COMMAND_SIZE;
->
->         err = scsi_add_host(host, &dev->dev);
-> @@ -1073,7 +1073,7 @@ static void scsifront_read_backend_params(struct xenbus_device *dev,
->                          host->sg_tablesize, nr_segs);
->
->         host->sg_tablesize = nr_segs;
-> -       host->max_sectors = (nr_segs - 1) * PAGE_SIZE / 512;
-> +       host->max_sectors = (nr_segs - 1) * PAGE_SECTORS;
->  }
->
->  static void scsifront_backend_changed(struct xenbus_device *dev,
-> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index 7c84c4c027c4..60505fc156c5 100644
-> --- a/fs/iomap/buffered-io.c
-> +++ b/fs/iomap/buffered-io.c
-> @@ -29,7 +29,7 @@ struct iomap_page {
->         atomic_t                read_count;
->         atomic_t                write_count;
->         spinlock_t              uptodate_lock;
-> -       DECLARE_BITMAP(uptodate, PAGE_SIZE / 512);
-> +       DECLARE_BITMAP(uptodate, PAGE_SECTORS);
->  };
->
->  static inline struct iomap_page *to_iomap_page(struct page *page)
-> diff --git a/fs/nfs/blocklayout/blocklayout.h b/fs/nfs/blocklayout/blocklayout.h
-> index 716bc75e9ed2..22407751e0fd 100644
-> --- a/fs/nfs/blocklayout/blocklayout.h
-> +++ b/fs/nfs/blocklayout/blocklayout.h
-> @@ -40,8 +40,6 @@
->  #include "../pnfs.h"
->  #include "../netns.h"
->
-> -#define PAGE_CACHE_SECTORS (PAGE_SIZE >> SECTOR_SHIFT)
-> -#define PAGE_CACHE_SECTOR_SHIFT (PAGE_SHIFT - SECTOR_SHIFT)
->  #define SECTOR_SIZE (1 << SECTOR_SHIFT)
->
->  struct pnfs_block_dev;
-> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-> index 053ea4b51988..b3c9be6906a0 100644
-> --- a/include/linux/blkdev.h
-> +++ b/include/linux/blkdev.h
-> @@ -910,6 +910,10 @@ static inline struct request_queue *bdev_get_queue(struct block_device *bdev)
->  #define SECTOR_SIZE (1 << SECTOR_SHIFT)
->  #endif
->
-> +#define PAGE_SECTORS_SHIFT     (PAGE_SHIFT - SECTOR_SHIFT)
-> +#define PAGE_SECTORS           (1 << PAGE_SECTORS_SHIFT)
-> +#define SECTOR_MASK            (PAGE_SECTORS - 1)
-> +
->  /*
->   * blk_rq_pos()                        : the current sector
->   * blk_rq_bytes()              : bytes left in the entire request
-> diff --git a/include/linux/device-mapper.h b/include/linux/device-mapper.h
-> index 475668c69dbc..c98a533f8ffa 100644
-> --- a/include/linux/device-mapper.h
-> +++ b/include/linux/device-mapper.h
-> @@ -141,7 +141,6 @@ typedef long (*dm_dax_direct_access_fn) (struct dm_target *ti, pgoff_t pgoff,
->                 long nr_pages, void **kaddr, pfn_t *pfn);
->  typedef size_t (*dm_dax_copy_iter_fn)(struct dm_target *ti, pgoff_t pgoff,
->                 void *addr, size_t bytes, struct iov_iter *i);
-> -#define PAGE_SECTORS (PAGE_SIZE / 512)
->
->  void dm_error(const char *message);
->
-> --
-> 2.24.1
->
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCkxlIDIxLzAyLzIwMjAgw6AgMDQ6MjcsIEFsYXN0YWlyIEQnU2lsdmEgYSDDqWNyaXTCoDoN
+Cj4gRnJvbTogQWxhc3RhaXIgRCdTaWx2YSA8YWxhc3RhaXJAZC1zaWx2YS5vcmc+DQo+IA0KPiBU
+aGlzIHBhdGNoIHJldHJpZXZlcyBwcm9wcmlldGFyeSBmb3JtYXR0ZWQgU01BUlQgZGF0YSBhbmQg
+bWFrZXMgaXQNCj4gYXZhaWxhYmxlIHZpYSBuZGN0bC4gQSBsYXRlciBjb250cmlidXRpb24gd2ls
+bCBiZSBtYWRlIHRvIG5kY3RsIHRvDQo+IHBhcnNlIHRoaXMgZGF0YS4NCj4gDQo+IFNpZ25lZC1v
+ZmYtYnk6IEFsYXN0YWlyIEQnU2lsdmEgPGFsYXN0YWlyQGQtc2lsdmEub3JnPg0KPiAtLS0NCg0K
+DQpOb3RoaW5nIG5ldyB0byBhZGQgY29tcGFyZWQgdG8gcHJldmlvdXMgcGF0Y2hlcyB3aXRoIHNp
+bWlsYXJpdGllcy4NCg0KICAgRnJlZA0KDQoNCg0KPiAgIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMv
+cG93ZXJudi9wbWVtL29jeGwuYyAgICB8IDEyOCArKysrKysrKysrKysrKysrKysNCj4gICAuLi4v
+cGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsX2ludGVybmFsLmggICAgfCAgMTggKysrDQo+ICAg
+aW5jbHVkZS91YXBpL2xpbnV4L25kY3RsLmggICAgICAgICAgICAgICAgICAgIHwgICAxICsNCj4g
+ICAzIGZpbGVzIGNoYW5nZWQsIDE0NyBpbnNlcnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+YXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bC5jIGIvYXJjaC9wb3dlcnBj
+L3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bC5jDQo+IGluZGV4IGQ0Y2U1ZTllMDUyMS4uNWNk
+MWI2ZDc4ZGQ2IDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYv
+cG1lbS9vY3hsLmMNCj4gKysrIGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0v
+b2N4bC5jDQo+IEBAIC04MSw2ICs4MSwxMjkgQEAgc3RhdGljIGludCBuZGN0bF9jb25maWdfc2l6
+ZShzdHJ1Y3QgbmRfY21kX2dldF9jb25maWdfc2l6ZSAqY29tbWFuZCkNCj4gICAJcmV0dXJuIDA7
+DQo+ICAgfQ0KPiAgIA0KPiArLyoqDQo+ICsgKiBzbWFydF9oZWFkZXJfcGFyc2UoKSAtIFBhcnNl
+IHRoZSBmaXJzdCA2NCBiaXRzIG9mIHRoZSBTTUFSVCBhZG1pbiBjb21tYW5kIHJlc3BvbnNlDQo+
+ICsgKiBAb2N4bHBtZW06IHRoZSBkZXZpY2UgbWV0YWRhdGENCj4gKyAqIEBsZW5ndGg6IG91dCwg
+cmV0dXJucyB0aGUgbnVtYmVyIG9mIGJ5dGVzIGluIHRoZSByZXNwb25zZSAoZXhjbHVkaW5nIHRo
+ZSA2NCBiaXQgaGVhZGVyKQ0KPiArICovDQo+ICtzdGF0aWMgaW50IHNtYXJ0X2hlYWRlcl9wYXJz
+ZShzdHJ1Y3Qgb2N4bHBtZW0gKm9jeGxwbWVtLCB1MzIgKmxlbmd0aCkNCj4gK3sNCj4gKwlpbnQg
+cmM7DQo+ICsJdTY0IHZhbDsNCj4gKw0KPiArCXUxNiBkYXRhX2lkZW50aWZpZXI7DQo+ICsJdTMy
+IGRhdGFfbGVuZ3RoOw0KPiArDQo+ICsJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3JlYWQ2NChvY3hs
+cG1lbS0+b2N4bF9hZnUsDQo+ICsJCQkJICAgICBvY3hscG1lbS0+YWRtaW5fY29tbWFuZC5kYXRh
+X29mZnNldCwNCj4gKwkJCQkgICAgIE9DWExfTElUVExFX0VORElBTiwgJnZhbCk7DQo+ICsJaWYg
+KHJjKQ0KPiArCQlyZXR1cm4gcmM7DQo+ICsNCj4gKwlkYXRhX2lkZW50aWZpZXIgPSB2YWwgPj4g
+NDg7DQo+ICsJZGF0YV9sZW5ndGggPSB2YWwgJiAweEZGRkZGRkZGOw0KPiArDQo+ICsJaWYgKGRh
+dGFfaWRlbnRpZmllciAhPSAweDUzNEQpIHsgLy8gJ1NNJw0KPiArCQlkZXZfZXJyKCZvY3hscG1l
+bS0+ZGV2LA0KPiArCQkJIkJhZCBkYXRhIGlkZW50aWZpZXIgZm9yIHNtYXJ0IGRhdGEsIGV4cGVj
+dGVkICdTTScsIGdvdCAnJS0uKnMnXG4iLA0KPiArCQkJMiwgKGNoYXIgKikmZGF0YV9pZGVudGlm
+aWVyKTsNCj4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ICsJfQ0KPiArDQo+ICsJKmxlbmd0aCA9IGRh
+dGFfbGVuZ3RoOw0KPiArCXJldHVybiAwOw0KPiArfQ0KPiArDQo+ICtzdGF0aWMgaW50IG5kY3Rs
+X3NtYXJ0KHN0cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0sIHN0cnVjdCBuZF9jbWRfcGtnICpwa2cp
+DQo+ICt7DQo+ICsJdTMyIGxlbmd0aCwgaTsNCj4gKwlzdHJ1Y3QgbmRfb2N4bF9zbWFydCAqb3V0
+Ow0KPiArCWludCByYzsNCj4gKw0KPiArCW11dGV4X2xvY2soJm9jeGxwbWVtLT5hZG1pbl9jb21t
+YW5kLmxvY2spOw0KPiArDQo+ICsJcmMgPSBhZG1pbl9jb21tYW5kX3JlcXVlc3Qob2N4bHBtZW0s
+IEFETUlOX0NPTU1BTkRfU01BUlQpOw0KPiArCWlmIChyYykNCj4gKwkJZ290byBvdXQ7DQo+ICsN
+Cj4gKwlyYyA9IGFkbWluX2NvbW1hbmRfZXhlY3V0ZShvY3hscG1lbSk7DQo+ICsJaWYgKHJjKQ0K
+PiArCQlnb3RvIG91dDsNCj4gKw0KPiArCXJjID0gYWRtaW5fY29tbWFuZF9jb21wbGV0ZV90aW1l
+b3V0KG9jeGxwbWVtLCBBRE1JTl9DT01NQU5EX1NNQVJUKTsNCj4gKwlpZiAocmMgPCAwKSB7DQo+
+ICsJCWRldl9lcnIoJm9jeGxwbWVtLT5kZXYsICJTTUFSVCB0aW1lb3V0XG4iKTsNCj4gKwkJZ290
+byBvdXQ7DQo+ICsJfQ0KPiArDQo+ICsJcmMgPSBhZG1pbl9yZXNwb25zZShvY3hscG1lbSk7DQo+
+ICsJaWYgKHJjIDwgMCkNCj4gKwkJZ290byBvdXQ7DQo+ICsJaWYgKHJjICE9IFNUQVRVU19TVUND
+RVNTKSB7DQo+ICsJCXdhcm5fc3RhdHVzKG9jeGxwbWVtLCAiVW5leHBlY3RlZCBzdGF0dXMgZnJv
+bSBTTUFSVCIsIHJjKTsNCj4gKwkJZ290byBvdXQ7DQo+ICsJfQ0KPiArDQo+ICsJcmMgPSBzbWFy
+dF9oZWFkZXJfcGFyc2Uob2N4bHBtZW0sICZsZW5ndGgpOw0KPiArCWlmIChyYykNCj4gKwkJZ290
+byBvdXQ7DQo+ICsNCj4gKwlwa2ctPm5kX2Z3X3NpemUgPSBsZW5ndGg7DQo+ICsNCj4gKwlsZW5n
+dGggPSBtaW4obGVuZ3RoLCBwa2ctPm5kX3NpemVfb3V0KTsgLy8gYnl0ZXMNCj4gKwlvdXQgPSAo
+c3RydWN0IG5kX29jeGxfc21hcnQgKilwa2ctPm5kX3BheWxvYWQ7DQo+ICsJLy8gRWFjaCBTTUFS
+VCBhdHRyaWJ1dGUgaXMgMiAqIDY0IGJpdHMNCj4gKwlvdXQtPmNvdW50ID0gbGVuZ3RoIC8gKDIg
+KiBzaXplb2YodTY0KSk7IC8vIGF0dHJpYnV0ZXMNCj4gKw0KPiArCWZvciAoaSA9IDA7IGkgPCBs
+ZW5ndGg7IGkgKz0gc2l6ZW9mKHU2NCkpIHsNCj4gKwkJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3Jl
+YWQ2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ICsJCQkJCSAgICAgb2N4bHBtZW0tPmFkbWluX2Nv
+bW1hbmQuZGF0YV9vZmZzZXQgKyBzaXplb2YodTY0KSArIGksDQo+ICsJCQkJCSAgICAgT0NYTF9M
+SVRUTEVfRU5ESUFOLA0KPiArCQkJCQkgICAgICZvdXQtPmF0dHJpYnNbaS9zaXplb2YodTY0KV0p
+Ow0KPiArCQlpZiAocmMpDQo+ICsJCQlnb3RvIG91dDsNCj4gKwl9DQo+ICsNCj4gKwlyYyA9IGFk
+bWluX3Jlc3BvbnNlX2hhbmRsZWQob2N4bHBtZW0pOw0KPiArCWlmIChyYykNCj4gKwkJZ290byBv
+dXQ7DQo+ICsNCj4gKwlyYyA9IDA7DQo+ICsJZ290byBvdXQ7DQo+ICsNCj4gK291dDoNCj4gKwlt
+dXRleF91bmxvY2soJm9jeGxwbWVtLT5hZG1pbl9jb21tYW5kLmxvY2spOw0KPiArCXJldHVybiBy
+YzsNCj4gK30NCj4gKw0KPiArc3RhdGljIGludCBuZGN0bF9jYWxsKHN0cnVjdCBvY3hscG1lbSAq
+b2N4bHBtZW0sIHZvaWQgKmJ1ZiwgdW5zaWduZWQgaW50IGJ1Zl9sZW4pDQo+ICt7DQo+ICsJc3Ry
+dWN0IG5kX2NtZF9wa2cgKnBrZyA9IGJ1ZjsNCj4gKw0KPiArCWlmIChidWZfbGVuIDwgc2l6ZW9m
+KHN0cnVjdCBuZF9jbWRfcGtnKSkgew0KPiArCQlkZXZfZXJyKCZvY3hscG1lbS0+ZGV2LCAiSW52
+YWxpZCBORF9DQUxMIHNpemU9JXVcbiIsIGJ1Zl9sZW4pOw0KPiArCQlyZXR1cm4gLUVJTlZBTDsN
+Cj4gKwl9DQo+ICsNCj4gKwlpZiAocGtnLT5uZF9mYW1pbHkgIT0gTlZESU1NX0ZBTUlMWV9PQ1hM
+KSB7DQo+ICsJCWRldl9lcnIoJm9jeGxwbWVtLT5kZXYsICJJbnZhbGlkIE5EX0NBTEwgZmFtaWx5
+PTB4JWxseFxuIiwgcGtnLT5uZF9mYW1pbHkpOw0KPiArCQlyZXR1cm4gLUVJTlZBTDsNCj4gKwl9
+DQo+ICsNCj4gKwlzd2l0Y2ggKHBrZy0+bmRfY29tbWFuZCkgew0KPiArCWNhc2UgTkRfQ01EX09D
+WExfU01BUlQ6DQo+ICsJCW5kY3RsX3NtYXJ0KG9jeGxwbWVtLCBwa2cpOw0KPiArCQlicmVhazsN
+Cj4gKw0KPiArCWRlZmF1bHQ6DQo+ICsJCWRldl9lcnIoJm9jeGxwbWVtLT5kZXYsICJJbnZhbGlk
+IE5EX0NBTEwgY29tbWFuZD0weCVsbHhcbiIsIHBrZy0+bmRfY29tbWFuZCk7DQo+ICsJCXJldHVy
+biAtRUlOVkFMOw0KPiArCX0NCj4gKw0KPiArDQo+ICsJcmV0dXJuIDA7DQo+ICt9DQo+ICsNCj4g
+ICBzdGF0aWMgaW50IG5kY3RsKHN0cnVjdCBudmRpbW1fYnVzX2Rlc2NyaXB0b3IgKm5kX2Rlc2Ms
+DQo+ICAgCQkgc3RydWN0IG52ZGltbSAqbnZkaW1tLA0KPiAgIAkJIHVuc2lnbmVkIGludCBjbWQs
+IHZvaWQgKmJ1ZiwgdW5zaWduZWQgaW50IGJ1Zl9sZW4sIGludCAqY21kX3JjKQ0KPiBAQCAtODgs
+NiArMjExLDEwIEBAIHN0YXRpYyBpbnQgbmRjdGwoc3RydWN0IG52ZGltbV9idXNfZGVzY3JpcHRv
+ciAqbmRfZGVzYywNCj4gICAJc3RydWN0IG9jeGxwbWVtICpvY3hscG1lbSA9IGNvbnRhaW5lcl9v
+ZihuZF9kZXNjLCBzdHJ1Y3Qgb2N4bHBtZW0sIGJ1c19kZXNjKTsNCj4gICANCj4gICAJc3dpdGNo
+IChjbWQpIHsNCj4gKwljYXNlIE5EX0NNRF9DQUxMOg0KPiArCQkqY21kX3JjID0gbmRjdGxfY2Fs
+bChvY3hscG1lbSwgYnVmLCBidWZfbGVuKTsNCj4gKwkJcmV0dXJuIDA7DQo+ICsNCj4gICAJY2Fz
+ZSBORF9DTURfR0VUX0NPTkZJR19TSVpFOg0KPiAgIAkJKmNtZF9yYyA9IG5kY3RsX2NvbmZpZ19z
+aXplKGJ1Zik7DQo+ICAgCQlyZXR1cm4gMDsNCj4gQEAgLTE3MSw2ICsyOTgsNyBAQCBzdGF0aWMg
+aW50IHJlZ2lzdGVyX2xwY19tZW0oc3RydWN0IG9jeGxwbWVtICpvY3hscG1lbSkNCj4gICAJc2V0
+X2JpdChORF9DTURfR0VUX0NPTkZJR19TSVpFLCAmbnZkaW1tX2NtZF9tYXNrKTsNCj4gICAJc2V0
+X2JpdChORF9DTURfR0VUX0NPTkZJR19EQVRBLCAmbnZkaW1tX2NtZF9tYXNrKTsNCj4gICAJc2V0
+X2JpdChORF9DTURfU0VUX0NPTkZJR19EQVRBLCAmbnZkaW1tX2NtZF9tYXNrKTsNCj4gKwlzZXRf
+Yml0KE5EX0NNRF9DQUxMLCAmbnZkaW1tX2NtZF9tYXNrKTsNCj4gICANCj4gICAJc2V0X2JpdChO
+RERfQUxJQVNJTkcsICZudmRpbW1fZmxhZ3MpOw0KPiAgIA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC9w
+b3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bF9pbnRlcm5hbC5oIGIvYXJjaC9wb3dl
+cnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bF9pbnRlcm5hbC5oDQo+IGluZGV4IDkyNzY5
+MGY0ODg4Zi4uMGViN2EzNWQyNGFlIDEwMDY0NA0KPiAtLS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZv
+cm1zL3Bvd2VybnYvcG1lbS9vY3hsX2ludGVybmFsLmgNCj4gKysrIGIvYXJjaC9wb3dlcnBjL3Bs
+YXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bF9pbnRlcm5hbC5oDQo+IEBAIC03LDYgKzcsNyBAQA0K
+PiAgICNpbmNsdWRlIDxsaW51eC9saWJudmRpbW0uaD4NCj4gICAjaW5jbHVkZSA8dWFwaS9udmRp
+bW0vb2N4bC1wbWVtLmg+DQo+ICAgI2luY2x1ZGUgPGxpbnV4L21tLmg+DQo+ICsjaW5jbHVkZSA8
+bGludXgvbmRjdGwuaD4NCj4gICANCj4gICAjZGVmaW5lIExBQkVMX0FSRUFfU0laRQkoMVVMIDw8
+IFBBX1NFQ1RJT05fU0hJRlQpDQo+ICAgI2RlZmluZSBERUZBVUxUX1RJTUVPVVQgMTAwDQo+IEBA
+IC05OCw2ICs5OSwyMyBAQCBzdHJ1Y3Qgb2N4bHBtZW1fZnVuY3Rpb24wIHsNCj4gICAJc3RydWN0
+IG9jeGxfZm4gKm9jeGxfZm47DQo+ICAgfTsNCj4gICANCj4gK3N0cnVjdCBuZF9vY3hsX3NtYXJ0
+IHsNCj4gKwlfX3U4IGNvdW50Ow0KPiArCV9fdTggcmVzZXJ2ZWRbN107DQo+ICsJX191NjQgYXR0
+cmlic1swXTsNCj4gK30gX19wYWNrZWQ7DQo+ICsNCj4gK3N0cnVjdCBuZF9wa2dfb2N4bCB7DQo+
+ICsJc3RydWN0IG5kX2NtZF9wa2cgZ2VuOw0KPiArCXVuaW9uIHsNCj4gKwkJc3RydWN0IG5kX29j
+eGxfc21hcnQgc21hcnQ7DQo+ICsJfTsNCj4gK307DQo+ICsNCj4gK2VudW0gbmRfY21kX29jeGwg
+ew0KPiArCU5EX0NNRF9PQ1hMX1NNQVJUID0gMSwNCj4gK307DQo+ICsNCj4gICBzdHJ1Y3Qgb2N4
+bHBtZW0gew0KPiAgIAlzdHJ1Y3QgZGV2aWNlIGRldjsNCj4gICAJc3RydWN0IHBjaV9kZXYgKnBk
+ZXY7DQo+IGRpZmYgLS1naXQgYS9pbmNsdWRlL3VhcGkvbGludXgvbmRjdGwuaCBiL2luY2x1ZGUv
+dWFwaS9saW51eC9uZGN0bC5oDQo+IGluZGV4IGRlNWQ5MDIxMjQwOS4uMjg4NTA1MmU3ZjQwIDEw
+MDY0NA0KPiAtLS0gYS9pbmNsdWRlL3VhcGkvbGludXgvbmRjdGwuaA0KPiArKysgYi9pbmNsdWRl
+L3VhcGkvbGludXgvbmRjdGwuaA0KPiBAQCAtMjQ0LDYgKzI0NCw3IEBAIHN0cnVjdCBuZF9jbWRf
+cGtnIHsNCj4gICAjZGVmaW5lIE5WRElNTV9GQU1JTFlfSFBFMiAyDQo+ICAgI2RlZmluZSBOVkRJ
+TU1fRkFNSUxZX01TRlQgMw0KPiAgICNkZWZpbmUgTlZESU1NX0ZBTUlMWV9IWVBFUlYgNA0KPiAr
+I2RlZmluZSBOVkRJTU1fRkFNSUxZX09DWEwgNg0KPiAgIA0KPiAgICNkZWZpbmUgTkRfSU9DVExf
+Q0FMTAkJCV9JT1dSKE5EX0lPQ1RMLCBORF9DTURfQ0FMTCxcDQo+ICAgCQkJCQlzdHJ1Y3QgbmRf
+Y21kX3BrZykNCj4gDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5v
+cmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlz
+dHMuMDEub3JnCg==
