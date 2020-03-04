@@ -1,221 +1,87 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795DA178AF5
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Mar 2020 07:53:27 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23743178CE4
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  4 Mar 2020 09:55:36 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4567610FC317D;
-	Tue,  3 Mar 2020 22:54:17 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id E0D5C10FC3634;
+	Wed,  4 Mar 2020 00:56:25 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=91.210.168.149; helo=mail.creosan.info; envelope-from=info@creosan.info; receiver=<UNKNOWN> 
+Received: from mail.creosan.info (creosan.info [91.210.168.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CF7471003E9BE
-	for <linux-nvdimm@lists.01.org>; Tue,  3 Mar 2020 22:54:14 -0800 (PST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0246pNhY038393
-	for <linux-nvdimm@lists.01.org>; Wed, 4 Mar 2020 01:53:22 -0500
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2yhpwmkh9q-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 01:53:22 -0500
-Received: from localhost
-	by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <ajd@linux.ibm.com>;
-	Wed, 4 Mar 2020 06:53:19 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-	by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Wed, 4 Mar 2020 06:53:12 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0246qDVG43975134
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Mar 2020 06:52:13 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7C3E04C059;
-	Wed,  4 Mar 2020 06:53:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE9434C04A;
-	Wed,  4 Mar 2020 06:53:10 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Mar 2020 06:53:10 +0000 (GMT)
-Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A6CBDA023A;
-	Wed,  4 Mar 2020 17:53:05 +1100 (AEDT)
-Subject: Re: [PATCH v3 18/27] powerpc/powernv/pmem: Add controller dump IOCTLs
-To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-19-alastair@au1.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Wed, 4 Mar 2020 17:53:09 +1100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+	by ml01.01.org (Postfix) with ESMTPS id 3FD1910FC3162
+	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 00:56:22 -0800 (PST)
+Message-ID: <a6de7fcb3fece43a19d315464d998f230040e7502d@creosan.info>
+From: Victoria <info@creosan.info>
+To: linux-nvdimm@lists.01.org
+Subject: =?windows-1251?B?1O7w7Ojw7uLg7ejlIOH+5Obl8u7iIOru7O/g?=
+	=?windows-1251?B?7ejo?=
+Date: Wed, 4 Mar 2020 10:55:27 +0200
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-19-alastair@au1.ibm.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20030406-0012-0000-0000-0000038CFCD6
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030406-0013-0000-0000-000021C9B5FE
-Message-Id: <7fc5ee46-d849-11f1-d0ad-429a8c87d7eb@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-03_08:2020-03-03,2020-03-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- adultscore=0 spamscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
- mlxlogscore=951 phishscore=0 malwarescore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003040052
-Message-ID-Hash: IUAQMFQVLYAKYFSJOCVHNYX7RGVAOKSO
-X-Message-ID-Hash: IUAQMFQVLYAKYFSJOCVHNYX7RGVAOKSO
-X-MailFrom: ajd@linux.ibm.com
+DKIM-Signature: v=1; a=rsa-sha256; d=creosan.info; s=mail;
+	c=relaxed/relaxed; t=1583312127;
+	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+	bh=CHA13A7lC60UM9g/R0/M3wpni5HOngOVZWbeq8uEaTc=;
+	b=D9hxMKiFCeDC/1DtUIv3WQYZEVFiBYbjTzkS18iDdFVdLcnu4VTHOU2POQvpGU
+	Fm+FsVDXQ6MWHQNU4SHsy4moH4Er6B90gocLJrPokxpDw5qljTnlWw2m61P/d0a5
+	mcMt4LRGE54eOWrbBJPPJa+BQ/Bmfj+pKEASDnujRS3jg=
+Message-ID-Hash: QUBX3PEBX6WR4CKZVFKJEY6BPJBFPTZ2
+X-Message-ID-Hash: QUBX3PEBX6WR4CKZVFKJEY6BPJBFPTZ2
+X-MailFrom: info@creosan.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc
- -dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IUAQMFQVLYAKYFSJOCVHNYX7RGVAOKSO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QUBX3PEBX6WR4CKZVFKJEY6BPJBFPTZ2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> +static int ioctl_controller_dump_data(struct ocxlpmem *ocxlpmem,
-> +		struct ioctl_ocxl_pmem_controller_dump_data __user *uarg)
-> +{
-> +	struct ioctl_ocxl_pmem_controller_dump_data args;
-> +	u16 i;
-> +	u64 val;
-> +	int rc;
-> +
-> +	if (copy_from_user(&args, uarg, sizeof(args)))
-> +		return -EFAULT;
-> +
-> +	if (args.buf_size % 8)
-> +		return -EINVAL;
-> +
-> +	if (args.buf_size > ocxlpmem->admin_command.data_size)
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&ocxlpmem->admin_command.lock);
-> +
-> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_CONTROLLER_DUMP);
-> +	if (rc)
-> +		goto out;
-> +
-> +	val = ((u64)args.offset) << 32;
-> +	val |= args.buf_size;
-> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +				      ocxlpmem->admin_command.request_offset + 0x08,
-> +				      OCXL_LITTLE_ENDIAN, val);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = admin_command_execute(ocxlpmem);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = admin_command_complete_timeout(ocxlpmem,
-> +					    ADMIN_COMMAND_CONTROLLER_DUMP);
-> +	if (rc < 0) {
-> +		dev_warn(&ocxlpmem->dev, "Controller dump timed out\n");
-> +		goto out;
-> +	}
-> +
-> +	rc = admin_response(ocxlpmem);
-> +	if (rc < 0)
-> +		goto out;
-> +	if (rc != STATUS_SUCCESS) {
-> +		warn_status(ocxlpmem,
-> +			    "Unexpected status from retrieve error log",
-
-Controller dump
-
-> +			    rc);
-> +		goto out;
-> +	}
-> +
-> +	for (i = 0; i < args.buf_size; i += 8) {
-> +		u64 val;
-> +
-> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> +					     ocxlpmem->admin_command.data_offset + i,
-> +					     OCXL_HOST_ENDIAN, &val);
-
-Is a controller dump something where we want to do endian swapping?
-
-Any reason we're not doing the usual check of the data identifier, 
-additional data length etc?
-
-> +		if (rc)
-> +			goto out;
-> +
-> +		if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
-> +			rc = -EFAULT;
-> +			goto out;
-> +		}
-> +	}
-> +
-> +	if (copy_to_user(uarg, &args, sizeof(args))) {
-> +		rc = -EFAULT;
-> +		goto out;
-> +	}
-> +
-> +	rc = admin_response_handled(ocxlpmem);
-> +	if (rc)
-> +		goto out;
-> +
-> +out:
-> +	mutex_unlock(&ocxlpmem->admin_command.lock);
-> +	return rc;
-> +}
-> +
-> +int request_controller_dump(struct ocxlpmem *ocxlpmem)
-> +{
-> +	int rc;
-> +	u64 busy = 1;
-> +
-> +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIC,
-> +				    OCXL_LITTLE_ENDIAN,
-> +				    GLOBAL_MMIO_CHI_CDA);
-
-This return code is ignored
-
-> +
-> +
-> +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
-> +				    OCXL_LITTLE_ENDIAN,
-> +				    GLOBAL_MMIO_HCI_CONTROLLER_DUMP);
-> +	if (rc)
-> +		return rc;
-> +
-> +	while (busy) {
-> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> +					     GLOBAL_MMIO_HCI,
-> +					     OCXL_LITTLE_ENDIAN, &busy);
-> +		if (rc)
-> +			return rc;
-> +
-> +		busy &= GLOBAL_MMIO_HCI_CONTROLLER_DUMP;
-> +		cond_resched();
-> +	}
-> +
-> +	return 0;
-> +}
-
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+wf7k5uXy6PDu4uDt6OUg8SD44OHr7u3g7Ogg4f7k5uXy7uIg6CD06O3g7fHu4u7pIOzu5OXr/P4u
+DQoNCsTg8uA6IDEzIOzg8PLgLg0KDQrCIPLl9+Xt6OUgNCD34PHu4iDx6/P44PLl6//sIOHz5OXy
+IO/w5eTu8fLg4uvl7eAg8u7r/OruIO/w4Ory6OrgIO7w4+Dt6Ofg9ujoIOH+5Obl8u3u4+4g8+/w
+4OLr5e3o/yDiIOru7O/g7ejoLCDq4Oog8ODx8ffo8uDy/CDh/uTm5fL7IOru7O/g7ejoLCDq4Oru
+4uAg5O7r5u3gIOH78vwg8fLw8+ry8/DgIOH+5Obl8u7iLCDq4Oog8ODx7/Dl5OXr6PL8IOfu7fsg
+9Ojt4O3x7uLu6SDu8uLl8vHy4uXt7e7x8uggliDq8u4g5+Ag6uDq6OUg9uj08Psg5O7r5uXtIO7y
+4uX34PL8DQoNCtHu5OXw5uDt6OU6IKCgoA0KDQoxLiDO8OPg7ejn4Pbo/yDh/uTm5fLt7uPuIPPv
+8ODi6+Xt6P8uIMrg6iDz7/Dg4uv/8vwg8SDv7uzu+fz+IOH+5Obl8u7iDQotIMrg6iDh+/Hy8O4g
+7/Do4uXx8ugg5OXr4CDiIO/u8P/k7uog4iD06O3g7fHg9TsgoKCgDQotIMPu4u7w6CDt4CD/5/vq
+5SD26PTwLiDA8Oj07OXy6OrgIO/w6OH76+guIKCgoA0KLSDW5e3y8Psg9Ojt4O3x7uLu6SDu8uLl
+8vHy4uXt7e7x8uggKNbUzikgoKCgDQotIEtQSSDoIO3u8Ozg8uji+yDv7uTw4Ofk5evl7ejpIKCg
+oA0KLSDK4Oog7u/l8ODy6OLt7iDoIP309OXq8uji7e4g8+/w4OLr//L8IPTo7eDt8e7i++zoIPDl
+5/Pr/PLg8uDs6CCgoKANCi0gwf7k5uXy6PDu4uDt6OUg8eLl8PXzIOLt6Ocg6CDx7ejn8yDi4uXw
+9SCgoKANCi0gz/Du4+3u5/sg6CDv6+Dt+yCgoKANCi0gzvHt7uLt++Ug4ujk+yDh/uTm5fLu4iCW
+IO7v5fDg9uju7e375Swg6O3i5fHy6Pbo7u3t++Ug6CD06O3g7fHu4vvlIOH+5Obl8vsNCg0KMi4g
+0uX17ejq6CD07vDs6PDu4uDt6P8g4f7k5uXy7uIg6u7s7+Dt6Ogg7+7k8ODn5OXr5e3o6SCgoKAN
+Cszu5PPr/CDw4PHx7ODy8Oji4OXy8f8g7eAg7/Dg6vLo9+Xx6u7sIO/w6Ozl8OUsIOIg6u7y7vDu
+7CDv8OXk8fLg4uvl7fsg4vHlIO3o5uXv5fDl9+jx6+Xt7fvlIOH+5Obl8vsg4iBFeGNlbCwg8e7n
+5ODt7fvlIPLw5e3l8ODs6CDxIOPu8u7i++zoIPTu8Ozz6+Ds6C4NCsH+5Obl8u3g/yDx8vDz6vLz
+8OAg6u7s7+Dt6Ogg6CD06O3g7fHu4vvlIOH+5Obl8vsg6u7s7+Dt6OgNCi0gwf7k5uXyIOTu9e7k
+7uIg6CDw4PH17uTu4iAo7/Do4fvr5ekg6CDz4fvy6u7iKSCgoKANCi0gwf7k5uXyIOTi6Obl7ej/
+IOTl7eXm7fv1IPHw5eTx8uIsIM/w7uPt7uft++kg4eDr4O3xDQoNCtTz7er26O7t4Ov87fvlIOH+
+5Obl8vsgoKCgDQotIMH+5Obl8iDv8O7k4OYgoKCgDQotIMH+5Obl8iDi4Ovu4u7pIO/w6OH76+gg
+oKCgDQotIMH+5Obl8iDn4Orz7+7qIO/uIPHl4eXx8u7o7O7x8ugg6CDn4Orz7+737e7pIPHy7ujs
+7vHy6CCgoKANCi0gwf7k5uXy6PDu4uDt6OUg8ODx9e7k7uIg7eAg7+Xw8e7t4OsgoKCgDQotIMH+
+5Obl8iDt4Ovu4+7iIO3gIPTu7eQg7u/r4PL7IPLw8+TgICjUztIpIKCgoA0KLSDB/uTm5fIg6u7s
+4O3k6PDu4u737fv1IPDg8fXu5O7iIKCgoA0KLSDB/uTm5fIg7eDr7uPu4iCgoKANCg0Kwf7k5uXy
++yDv7uTw4Ofk5evl7ejpLiDB/uTm5fL7IO/uINbUziCgoKANCi0gzvHt7uLt++Ug7+7q4Ofg8uXr
+6CDv7uTw4Ofk5evl7ejpIKCgoA0KLSDB/uTm5fL7IOTu9e7k7u7h8ODn8/756PUg7+7k8ODn5OXr
+5e3o6SCgoKANCi0gwf7k5uXy+yDx5fDi6PHt+/Ug7+7k8ODn5OXr5e3o6S4goKCgDQoNCs/u5PDu
+4e3l5SDt4CDx4Ony5T4NCg0KxfHr6CDzIMLg8SDi7uft6Ort8/Ig5O7v7uvt6PLl6/zt++Ug4u7v
+8O7x+yAtIO7h8OD54Ony5fH8LCDs+yDi8eXj5OAg8ODk+yDC4Owg7+7s7vf8IQ0KzeD46CDy5evl
+9O7t+zogKDDX1ykgMsfHLdc2LTY5DQoNCtPi4Obg5ez76SDv7uTv6PH36OouIMTg7e3u5SDv6PH8
+7O4g7eUg8vDl4fPl8iDu8uLl8uAuDQrF8evoIML7IO3o6u7j5OAg7eUg7+7k7+jx++Lg6+jx/CDt
+4CDw4PHx++vq6CDB6Oft5fEt1uXt8vAgIs3g9uju7eDr/O376SIsIO/w7vHo7CDu8u/o8eDy/PH/
+IC0g7PsgwuDxIOHu6/z45SDt5SDv7uHl8e/u6u7o7C4NCg0KzvLv6PHg8vzx/yDu8iDv7vfy+y4g
+TGlzdC1VbnN1YnNjcmliZSDo6+gg7+7m4Ovu4uDy/PH/IO3gIFNwYW0gISEhDQpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGlu
+ZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBh
+biBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
