@@ -2,75 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62306179E23
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Mar 2020 04:11:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7ED179E4C
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Mar 2020 04:36:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 07C6D10FC36F6;
-	Wed,  4 Mar 2020 19:12:34 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id E14DD10FC3770;
+	Wed,  4 Mar 2020 19:37:22 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B083510FC36DC
-	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 19:12:32 -0800 (PST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 025398UX057424
-	for <linux-nvdimm@lists.01.org>; Wed, 4 Mar 2020 22:11:40 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2yhs0uvya9-1
+	by ml01.01.org (Postfix) with ESMTPS id 2103B10FC36F0
+	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 19:37:19 -0800 (PST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0253SkRI066633
+	for <linux-nvdimm@lists.01.org>; Wed, 4 Mar 2020 22:36:28 -0500
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yj8hcc5bu-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 22:11:40 -0500
+	for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 22:36:27 -0500
 Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
 	for <linux-nvdimm@lists.01.org> from <ajd@linux.ibm.com>;
-	Thu, 5 Mar 2020 03:11:37 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	Thu, 5 Mar 2020 03:36:24 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Thu, 5 Mar 2020 03:11:29 -0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0253BSml56099026
+	Thu, 5 Mar 2020 03:36:16 -0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0253aF4b44433444
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2020 03:11:28 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C792BA4054;
-	Thu,  5 Mar 2020 03:11:28 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2CD0BA4060;
-	Thu,  5 Mar 2020 03:11:28 +0000 (GMT)
+	Thu, 5 Mar 2020 03:36:15 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9883E5204E;
+	Thu,  5 Mar 2020 03:36:15 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Mar 2020 03:11:28 +0000 (GMT)
+	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id EF6FE5204F;
+	Thu,  5 Mar 2020 03:36:14 +0000 (GMT)
 Received: from [10.61.2.125] (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2C378A0264;
-	Thu,  5 Mar 2020 14:11:23 +1100 (AEDT)
-Subject: Re: [PATCH v3 23/27] powerpc/powernv/pmem: Add debug IOCTLs
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id AB3D3A0264;
+	Thu,  5 Mar 2020 14:36:09 +1100 (AEDT)
+Subject: Re: [PATCH v3 24/27] powerpc/powernv/pmem: Expose SMART data via
+ ndctl
 To: "Alastair D'Silva" <alastair@au1.ibm.com>, alastair@d-silva.org
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
- <20200221032720.33893-24-alastair@au1.ibm.com>
+ <20200221032720.33893-25-alastair@au1.ibm.com>
 From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Thu, 5 Mar 2020 14:11:26 +1100
+Date: Thu, 5 Mar 2020 14:36:13 +1100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200221032720.33893-24-alastair@au1.ibm.com>
+In-Reply-To: <20200221032720.33893-25-alastair@au1.ibm.com>
 Content-Language: en-US
 X-TM-AS-GCONF: 00
-x-cbid: 20030503-0028-0000-0000-000003E0FEB2
+x-cbid: 20030503-4275-0000-0000-000003A87B69
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030503-0029-0000-0000-000024A631F9
-Message-Id: <5e2be4dd-bc8b-ff2c-d057-acd5f3728f4a@linux.ibm.com>
+x-cbparentid: 20030503-4276-0000-0000-000038BD89E6
+Message-Id: <e68c9064-cb7f-2b5e-9a7b-70fd5367270a@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-03-04_10:2020-03-04,2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- lowpriorityscore=0 impostorscore=0 spamscore=0 clxscore=1015 adultscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2001150001
- definitions=main-2003050015
-Message-ID-Hash: UMZYQLHEMI23IRKOXM4JECHSOWEK3NGP
-X-Message-ID-Hash: UMZYQLHEMI23IRKOXM4JECHSOWEK3NGP
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 suspectscore=0 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003050016
+Message-ID-Hash: 2XZP6XFOHFKRNKNIKDWKDQKK57I3G3EP
+X-Message-ID-Hash: 2XZP6XFOHFKRNKNIKDWKDQKK57I3G3EP
 X-MailFrom: ajd@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -79,7 +77,7 @@ CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <b
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMZYQLHEMI23IRKOXM4JECHSOWEK3NGP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2XZP6XFOHFKRNKNIKDWKDQKK57I3G3EP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -89,222 +87,71 @@ Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
 On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> From: Alastair D'Silva <alastair@d-silva.org>
-> 
-> These IOCTLs provide low level access to the card to aid in debugging
-> controller/FPGA firmware.
-> 
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> ---
->   arch/powerpc/platforms/powernv/pmem/Kconfig |   6 +
->   arch/powerpc/platforms/powernv/pmem/ocxl.c  | 249 ++++++++++++++++++++
->   include/uapi/nvdimm/ocxl-pmem.h             |  32 +++
->   3 files changed, 287 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pmem/Kconfig b/arch/powerpc/platforms/powernv/pmem/Kconfig
-> index c5d927520920..3f44429d70c9 100644
-> --- a/arch/powerpc/platforms/powernv/pmem/Kconfig
-> +++ b/arch/powerpc/platforms/powernv/pmem/Kconfig
-> @@ -12,4 +12,10 @@ config OCXL_PMEM
->   
->   	  Select N if unsure.
->   
-> +config OCXL_PMEM_DEBUG
-> +	bool "OpenCAPI Persistent Memory debugging"
-> +	depends on OCXL_PMEM
-> +	help
-> +	  Enables low level IOCTLs for OpenCAPI Persistent Memory firmware development
-> +
-
-How dangerous are these ioctls and does that need to be pointed out in 
-this description?
-
->   endif
-> diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl.c b/arch/powerpc/platforms/powernv/pmem/ocxl.c
-> index e01f6f9fc180..d4ce5e9e0521 100644
-> --- a/arch/powerpc/platforms/powernv/pmem/ocxl.c
-> +++ b/arch/powerpc/platforms/powernv/pmem/ocxl.c
-> @@ -1050,6 +1050,235 @@ int req_controller_health_perf(struct ocxlpmem *ocxlpmem)
->   				      GLOBAL_MMIO_HCI_REQ_HEALTH_PERF);
->   }
->   
-> +#ifdef CONFIG_OCXL_PMEM_DEBUG
-> +/**
-> + * enable_fwdebug() - Enable FW debug on the controller
-> + * @ocxlpmem: the device metadata
-> + * Return: 0 on success, negative on failure
-> + */
-> +static int enable_fwdebug(const struct ocxlpmem *ocxlpmem)
+> +static int ndctl_smart(struct ocxlpmem *ocxlpmem, struct nd_cmd_pkg *pkg)
 > +{
-> +	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
-> +				      OCXL_LITTLE_ENDIAN,
-> +				      GLOBAL_MMIO_HCI_FW_DEBUG);
-> +}
-> +
-> +/**
-> + * disable_fwdebug() - Disable FW debug on the controller
-> + * @ocxlpmem: the device metadata
-> + * Return: 0 on success, negative on failure
-> + */
-> +static int disable_fwdebug(const struct ocxlpmem *ocxlpmem)
-> +{
-> +	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCIC,
-> +				      OCXL_LITTLE_ENDIAN,
-> +				      GLOBAL_MMIO_HCI_FW_DEBUG);
-> +}
-> +
-> +static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
-> +			     struct ioctl_ocxl_pmem_fwdebug __user *uarg)
-> +{
-> +	struct ioctl_ocxl_pmem_fwdebug args;
-> +	u64 val;
-> +	int i;
+> +	u32 length, i;
+> +	struct nd_ocxl_smart *out;
 > +	int rc;
-> +
-> +	if (copy_from_user(&args, uarg, sizeof(args)))
-> +		return -EFAULT;
-> +
-> +	// Buffer size must be a multiple of 8
-> +	if ((args.buf_size & 0x07))
-> +		return -EINVAL;
-> +
-> +	if (args.buf_size > ocxlpmem->admin_command.data_size)
-> +		return -EINVAL;
 > +
 > +	mutex_lock(&ocxlpmem->admin_command.lock);
 > +
-> +	rc = enable_fwdebug(ocxlpmem);
+> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_SMART);
 > +	if (rc)
 > +		goto out;
-> +
-> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_FW_DEBUG);
-> +	if (rc)
-> +		goto out;
-> +
-> +	// Write DebugAction & FunctionCode
-> +	val = ((u64)args.debug_action << 56) | ((u64)args.function_code << 40);
-> +
-> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +				      ocxlpmem->admin_command.request_offset + 0x08,
-> +				      OCXL_LITTLE_ENDIAN, val);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +				      ocxlpmem->admin_command.request_offset + 0x10,
-> +				      OCXL_LITTLE_ENDIAN, args.debug_parameter_1);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +				      ocxlpmem->admin_command.request_offset + 0x18,
-> +				      OCXL_LITTLE_ENDIAN, args.debug_parameter_2);
-> +	if (rc)
-> +		goto out;
-> +
-> +	for (i = 0x20; i < 0x38; i += 0x08)
-
-Comparison should be <=, the request block ends at 0x40.
-
-But in any case, scm_command_request() should I think already handle the 
-clearing of the request block?
-
-> +		rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +					      ocxlpmem->admin_command.request_offset + i,
-> +					      OCXL_LITTLE_ENDIAN, 0);
-> +	if (rc)
-> +		goto out;
-> +
-> +
-> +	// Populate admin command buffer
-> +	if (args.buf_size) {
-> +		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-> +			u64 val;
-> +
-> +			if (copy_from_user(&val, &args.buf[i], sizeof(u64)))
-> +				return -EFAULT;
-> +
-> +			rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> +						      ocxlpmem->admin_command.data_offset + i,
-> +						      OCXL_HOST_ENDIAN, val);
-> +			if (rc)
-> +				goto out;
-> +		}
-> +	}
 > +
 > +	rc = admin_command_execute(ocxlpmem);
 > +	if (rc)
 > +		goto out;
 > +
-> +	rc = admin_command_complete_timeout(ocxlpmem,
-> +					    ocxlpmem->timeouts[ADMIN_COMMAND_FW_DEBUG]);
-> +	if (rc < 0)
+> +	rc = admin_command_complete_timeout(ocxlpmem, ADMIN_COMMAND_SMART);
+> +	if (rc < 0) {
+> +		dev_err(&ocxlpmem->dev, "SMART timeout\n");
 > +		goto out;
+> +	}
 > +
 > +	rc = admin_response(ocxlpmem);
 > +	if (rc < 0)
 > +		goto out;
 > +	if (rc != STATUS_SUCCESS) {
-> +		warn_status(ocxlpmem, "Unexpected status from FW Debug", rc);
+> +		warn_status(ocxlpmem, "Unexpected status from SMART", rc);
 > +		goto out;
 > +	}
 > +
-> +	if (args.buf_size) {
-> +		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-> +			u64 val;
+> +	rc = smart_header_parse(ocxlpmem, &length);
+> +	if (rc)
+> +		goto out;
 > +
-> +			rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> +						     ocxlpmem->admin_command.data_offset + i,
-> +						     OCXL_HOST_ENDIAN, &val);
-
-No check of the data identifier?
-
-It seems to me that there's no definition in the spec whatsoever for the 
-format of the data, so just copying as much as fits in the buffer seems 
-correct.
-
-> +			if (rc)
-> +				goto out;
+> +	pkg->nd_fw_size = length;
 > +
-> +			if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
-> +				rc = -EFAULT;
-> +				goto out;
-> +			}
-> +		}
+> +	length = min(length, pkg->nd_size_out); // bytes
+> +	out = (struct nd_ocxl_smart *)pkg->nd_payload;
+> +	// Each SMART attribute is 2 * 64 bits
+> +	out->count = length / (2 * sizeof(u64)); // attributes
+
+ From what I can tell - 8 bytes of nd_ocxl_smart are taken up for the 
+count + reserved bytes, so this is going to potentially overrun the user 
+buffer.
+
+> +
+> +	for (i = 0; i < length; i += sizeof(u64)) {
+
+It might be neater to make i count up by 1 and then multiply by 
+sizeof(u64) later.
+
+> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> +					     ocxlpmem->admin_command.data_offset + sizeof(u64) + i,
+
++ 0x08 rather than + sizeof(u64) for consistency.
+
+> +					     OCXL_LITTLE_ENDIAN,
+> +					     &out->attribs[i/sizeof(u64)]);
+> +		if (rc)
+> +			goto out;
 > +	}
 > +
 > +	rc = admin_response_handled(ocxlpmem);
 > +	if (rc)
 > +		goto out;
-> +
-> +	rc = disable_fwdebug(ocxlpmem);
-> +	if (rc)
-> +		goto out;
-> +
-> +out:
-> +	mutex_unlock(&ocxlpmem->admin_command.lock);
-> +	return rc;
-> +}
-> +
-> +static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
-> +{
-> +	int rc;
-> +
-> +	mutex_lock(&ocxlpmem->admin_command.lock);
-> +
-> +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = admin_command_execute(ocxlpmem);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = admin_command_complete_timeout(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
-> +	if (rc < 0) {
-> +		dev_warn(&ocxlpmem->dev, "Shutdown timed out\n");
-> +		goto out;
-> +	}
 > +
 > +	rc = 0;
 > +	goto out;
@@ -314,150 +161,107 @@ correct.
 > +	return rc;
 > +}
 > +
-> +static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
-> +				struct ioctl_ocxl_pmem_mmio __user *uarg)
+> +static int ndctl_call(struct ocxlpmem *ocxlpmem, void *buf, unsigned int buf_len)
 > +{
-> +	struct scm_ioctl_mmio args;
+> +	struct nd_cmd_pkg *pkg = buf;
 > +
-> +	if (copy_from_user(&args, uarg, sizeof(args)))
-> +		return -EFAULT;
+> +	if (buf_len < sizeof(struct nd_cmd_pkg)) {
+> +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL size=%u\n", buf_len);
+> +		return -EINVAL;
+> +	}
 > +
-> +	return ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, args.address,
-> +					OCXL_LITTLE_ENDIAN, args.val);
-> +}
+> +	if (pkg->nd_family != NVDIMM_FAMILY_OCXL) {
+> +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL family=0x%llx\n", pkg->nd_family);
+> +		return -EINVAL;
+> +	}
 > +
-> +static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
-> +				     struct ioctl_ocxl_pmem_mmio __user *uarg)
-> +{
-> +	struct ioctl_ocxl_pmem_mmio args;
-> +	int rc;
+> +	switch (pkg->nd_command) {
+> +	case ND_CMD_OCXL_SMART:
+> +		ndctl_smart(ocxlpmem, pkg);
+
+Did you intend to dispose of the return code here?
+
+> +		break;
 > +
-> +	if (copy_from_user(&args, uarg, sizeof(args)))
-> +		return -EFAULT;
+> +	default:
+> +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL command=0x%llx\n", pkg->nd_command);
+> +		return -EINVAL;
+> +	}
 > +
-> +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, args.address,
-> +				     OCXL_LITTLE_ENDIAN, &args.val);
-> +	if (rc)
-> +		return rc;
-> +
-> +	if (copy_to_user(uarg, &args, sizeof(args)))
-> +		return -EFAULT;
 > +
 > +	return 0;
 > +}
-> +#else /* CONFIG_OCXL_PMEM_DEBUG */
-> +static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
-> +			     struct ioctl_ocxl_pmem_fwdebug __user *uarg)
-> +{
-> +	return -EPERM;
-> +}
 > +
-> +static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
-> +{
-> +	return -EPERM;
-> +}
-> +
-> +static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
-> +				struct ioctl_ocxl_pmem_mmio __user *uarg)
-> +{
-> +	return -EPERM;
-> +}
-> +
-> +static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
-> +			       struct ioctl_ocxl_pmem_mmio __user *uarg)
-> +{
-> +	return -EPERM;
-> +}
-> +#endif /* CONFIG_OCXL_PMEM_DEBUG */
-> +
->   static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
->   {
->   	struct ocxlpmem *ocxlpmem = file->private_data;
-> @@ -1091,6 +1320,26 @@ static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
->   	case IOCTL_OCXL_PMEM_REQUEST_HEALTH:
->   		rc = req_controller_health_perf(ocxlpmem);
->   		break;
-> +
-> +	case IOCTL_OCXL_PMEM_FWDEBUG:
-> +		rc = ioctl_fwdebug(ocxlpmem,
-> +				   (struct ioctl_ocxl_pmem_fwdebug __user *)args);
-> +		break;
-> +
-> +	case IOCTL_OCXL_PMEM_SHUTDOWN:
-> +		rc = ioctl_shutdown(ocxlpmem);
-> +		break;
-> +
-> +	case IOCTL_OCXL_PMEM_MMIO_WRITE:
-> +		rc = ioctl_mmio_write(ocxlpmem,
-> +				      (struct ioctl_ocxl_pmem_mmio __user *)args);
-> +		break;
-> +
-> +	case IOCTL_OCXL_PMEM_MMIO_READ:
-> +		rc = ioctl_mmio_read(ocxlpmem,
-> +				     (struct ioctl_ocxl_pmem_mmio __user *)args);
-> +		break;
-> +
->   	}
+>   static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>   		 struct nvdimm *nvdimm,
+>   		 unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
+> @@ -88,6 +211,10 @@ static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>   	struct ocxlpmem *ocxlpmem = container_of(nd_desc, struct ocxlpmem, bus_desc);
 >   
->   	return rc;
-> diff --git a/include/uapi/nvdimm/ocxl-pmem.h b/include/uapi/nvdimm/ocxl-pmem.h
-> index 0d03abb44001..e20a4f8be82a 100644
-> --- a/include/uapi/nvdimm/ocxl-pmem.h
-> +++ b/include/uapi/nvdimm/ocxl-pmem.h
-> @@ -6,6 +6,28 @@
->   #include <linux/types.h>
->   #include <linux/ioctl.h>
+>   	switch (cmd) {
+> +	case ND_CMD_CALL:
+> +		*cmd_rc = ndctl_call(ocxlpmem, buf, buf_len);
+> +		return 0;
+> +
+>   	case ND_CMD_GET_CONFIG_SIZE:
+>   		*cmd_rc = ndctl_config_size(buf);
+>   		return 0;
+> @@ -171,6 +298,7 @@ static int register_lpc_mem(struct ocxlpmem *ocxlpmem)
+>   	set_bit(ND_CMD_GET_CONFIG_SIZE, &nvdimm_cmd_mask);
+>   	set_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm_cmd_mask);
+>   	set_bit(ND_CMD_SET_CONFIG_DATA, &nvdimm_cmd_mask);
+> +	set_bit(ND_CMD_CALL, &nvdimm_cmd_mask);
 >   
-> +enum ocxlpmem_fwdebug_action {
-> +	OCXL_PMEM_FWDEBUG_READ_CONTROLLER_MEMORY = 0x01,
-> +	OCXL_PMEM_FWDEBUG_WRITE_CONTROLLER_MEMORY = 0x02,
-> +	OCXL_PMEM_FWDEBUG_ENABLE_FUNCTION = 0x03,
-> +	OCXL_PMEM_FWDEBUG_DISABLE_FUNCTION = 0x04,
-> +	OCXL_PMEM_FWDEBUG_GET_PEL = 0x05, // Retrieve Persistent Error Log
-> +};
-> +
-> +struct ioctl_ocxl_pmem_buffer_info {
-> +	__u32	admin_command_buffer_size; // out
-> +	__u32	near_storage_buffer_size; // out
-> +};
-
-This struct seems unused.
-
-> +
-> +struct ioctl_ocxl_pmem_fwdebug { // All args are inputs
-> +	enum ocxlpmem_fwdebug_action debug_action;
-> +	__u16 function_code;
-> +	__u16 buf_size; // Size of optional data buffer
-> +	__u64 debug_parameter_1;
-> +	__u64 debug_parameter_2;
-> +	__u8 *buf; // Pointer to optional in/out data buffer
-> +};
-> +
->   #define OCXL_PMEM_ERROR_LOG_ACTION_RESET	(1 << (32-32))
->   #define OCXL_PMEM_ERROR_LOG_ACTION_CHKFW	(1 << (53-32))
->   #define OCXL_PMEM_ERROR_LOG_ACTION_REPLACE	(1 << (54-32))
-> @@ -66,6 +88,11 @@ struct ioctl_ocxl_pmem_controller_stats {
->   	__u64 cache_write_latency; /* nanoseconds */
+>   	set_bit(NDD_ALIASING, &nvdimm_flags);
+>   
+> diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> index 927690f4888f..0eb7a35d24ae 100644
+> --- a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> +++ b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> @@ -7,6 +7,7 @@
+>   #include <linux/libnvdimm.h>
+>   #include <uapi/nvdimm/ocxl-pmem.h>
+>   #include <linux/mm.h>
+> +#include <linux/ndctl.h>
+>   
+>   #define LABEL_AREA_SIZE	(1UL << PA_SECTION_SHIFT)
+>   #define DEFAULT_TIMEOUT 100
+> @@ -98,6 +99,23 @@ struct ocxlpmem_function0 {
+>   	struct ocxl_fn *ocxl_fn;
 >   };
 >   
-> +struct ioctl_ocxl_pmem_mmio {
-> +	__u64 address; /* Offset in global MMIO space */
-> +	__u64 val; /* value to write/was read */
+> +struct nd_ocxl_smart {
+> +	__u8 count;
+> +	__u8 reserved[7];
+> +	__u64 attribs[0];
+> +} __packed;
+> +
+> +struct nd_pkg_ocxl {
+> +	struct nd_cmd_pkg gen;
+> +	union {
+> +		struct nd_ocxl_smart smart;
+> +	};
 > +};
 > +
->   struct ioctl_ocxl_pmem_eventfd {
->   	__s32 eventfd;
->   	__u32 reserved;
-> @@ -92,4 +119,9 @@ struct ioctl_ocxl_pmem_eventfd {
->   #define IOCTL_OCXL_PMEM_EVENT_CHECK			_IOR(OCXL_PMEM_MAGIC, 0x07, __u64)
->   #define IOCTL_OCXL_PMEM_REQUEST_HEALTH			_IO(OCXL_PMEM_MAGIC, 0x08)
->   
-> +#define IOCTL_OCXL_PMEM_FWDEBUG		_IOWR(OCXL_PMEM_MAGIC, 0xf0, struct ioctl_ocxl_pmem_fwdebug)
-> +#define IOCTL_OCXL_PMEM_MMIO_WRITE	_IOW(OCXL_PMEM_MAGIC, 0xf1, struct ioctl_ocxl_pmem_mmio)
-> +#define IOCTL_OCXL_PMEM_MMIO_READ	_IOWR(OCXL_PMEM_MAGIC, 0xf2, struct ioctl_ocxl_pmem_mmio)
-> +#define IOCTL_OCXL_PMEM_SHUTDOWN	_IO(OCXL_PMEM_MAGIC, 0xf3)
+> +enum nd_cmd_ocxl {
+> +	ND_CMD_OCXL_SMART = 1,
+> +};
 > +
->   #endif /* _UAPI_OCXL_SCM_H */
+>   struct ocxlpmem {
+>   	struct device dev;
+>   	struct pci_dev *pdev;
+> diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
+> index de5d90212409..2885052e7f40 100644
+> --- a/include/uapi/linux/ndctl.h
+> +++ b/include/uapi/linux/ndctl.h
+> @@ -244,6 +244,7 @@ struct nd_cmd_pkg {
+>   #define NVDIMM_FAMILY_HPE2 2
+>   #define NVDIMM_FAMILY_MSFT 3
+>   #define NVDIMM_FAMILY_HYPERV 4
+> +#define NVDIMM_FAMILY_OCXL 6
+>   
+>   #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
+>   					struct nd_cmd_pkg)
 > 
 
 -- 
