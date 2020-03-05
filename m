@@ -1,375 +1,451 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2F6179E9D
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Mar 2020 05:31:57 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 129D717A241
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  5 Mar 2020 10:33:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF90B10FC3772;
-	Wed,  4 Mar 2020 20:32:46 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 44F2810FC376D;
+	Thu,  5 Mar 2020 01:34:31 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 673DE10FC3772
-	for <linux-nvdimm@lists.01.org>; Wed,  4 Mar 2020 20:32:44 -0800 (PST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0254SmeO105628
-	for <linux-nvdimm@lists.01.org>; Wed, 4 Mar 2020 23:31:52 -0500
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2yjtd7g478-1
+	by ml01.01.org (Postfix) with ESMTPS id E6FCE10FC36C3
+	for <linux-nvdimm@lists.01.org>; Thu,  5 Mar 2020 01:34:28 -0800 (PST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0259Kt8N127700
+	for <linux-nvdimm@lists.01.org>; Thu, 5 Mar 2020 04:33:37 -0500
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yj8hcnrds-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Wed, 04 Mar 2020 23:31:51 -0500
+	for <linux-nvdimm@lists.01.org>; Thu, 05 Mar 2020 04:33:36 -0500
 Received: from localhost
-	by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Thu, 5 Mar 2020 04:31:49 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-	by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <fbarrat@linux.ibm.com>;
+	Thu, 5 Mar 2020 09:33:32 -0000
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+	by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Thu, 5 Mar 2020 04:31:42 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0254VfAe55574684
+	Thu, 5 Mar 2020 09:33:25 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0259XO8d49348610
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2020 04:31:41 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2C410A4040;
-	Thu,  5 Mar 2020 04:31:41 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7BD60A4051;
-	Thu,  5 Mar 2020 04:31:40 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Mar 2020 04:31:40 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 8AB7AA0264;
-	Thu,  5 Mar 2020 15:31:35 +1100 (AEDT)
+	Thu, 5 Mar 2020 09:33:24 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 21AA242049;
+	Thu,  5 Mar 2020 09:33:24 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1D2AD4204D;
+	Thu,  5 Mar 2020 09:33:23 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.161.121])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Mar 2020 09:33:23 +0000 (GMT)
 Subject: Re: [PATCH v3 17/27] powerpc/powernv/pmem: Implement the Read Error
  Log command
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 05 Mar 2020 15:31:39 +1100
-In-Reply-To: <7767dec4-fb78-dd3e-3720-8d15f544639e@linux.ibm.com>
+To: "Alastair D'Silva" <alastair@au1.ibm.com>
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
-	 <20200221032720.33893-18-alastair@au1.ibm.com>
-	 <7767dec4-fb78-dd3e-3720-8d15f544639e@linux.ibm.com>
-Organization: IBM Australia
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ <20200221032720.33893-18-alastair@au1.ibm.com>
+ <7767dec4-fb78-dd3e-3720-8d15f544639e@linux.ibm.com>
+ <739066a997f83e7aa27dc364071223936fa753ef.camel@au1.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Date: Thu, 5 Mar 2020 10:33:22 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
+In-Reply-To: <739066a997f83e7aa27dc364071223936fa753ef.camel@au1.ibm.com>
+Content-Language: en-US
 X-TM-AS-GCONF: 00
-x-cbid: 20030504-0028-0000-0000-000003E10282
+x-cbid: 20030509-0008-0000-0000-000003598926
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030504-0029-0000-0000-000024A635EA
-Message-Id: <739066a997f83e7aa27dc364071223936fa753ef.camel@au1.ibm.com>
+x-cbparentid: 20030509-0009-0000-0000-00004A7ABFC9
+Message-Id: <758b62a8-f359-504d-3d45-fa96d1ef468f@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-04_10:2020-03-04,2020-03-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 bulkscore=0 suspectscore=2 impostorscore=0 mlxscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003050024
-Message-ID-Hash: 7XTXO7K6JLGIN2ISW7URGPZDH7OBYJJ3
-X-Message-ID-Hash: 7XTXO7K6JLGIN2ISW7URGPZDH7OBYJJ3
-X-MailFrom: alastair@au1.ibm.com
+ definitions=2020-03-05_02:2020-03-04,2020-03-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 suspectscore=2 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003050059
+Message-ID-Hash: 24WYNAPQZCZYQ2Q2TRDOGPMAU2BB7RMG
+X-Message-ID-Hash: 24WYNAPQZCZYQ2Q2TRDOGPMAU2BB7RMG
+X-MailFrom: fbarrat@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-
- dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-de
+ v@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7XTXO7K6JLGIN2ISW7URGPZDH7OBYJJ3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/24WYNAPQZCZYQ2Q2TRDOGPMAU2BB7RMG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlLCAyMDIwLTAzLTAzIGF0IDExOjM2ICswMTAwLCBGcmVkZXJpYyBCYXJyYXQgd3JvdGU6
-DQo+IA0KPiBMZSAyMS8wMi8yMDIwIMOgIDA0OjI3LCBBbGFzdGFpciBEJ1NpbHZhIGEgw6ljcml0
-IDoNCj4gPiBGcm9tOiBBbGFzdGFpciBEJ1NpbHZhIDxhbGFzdGFpckBkLXNpbHZhLm9yZz4NCj4g
-PiANCj4gPiBUaGUgcmVhZCBlcnJvciBsb2cgY29tbWFuZCBleHRyYWN0cyBpbmZvcm1hdGlvbiBm
-cm9tIHRoZQ0KPiA+IGNvbnRyb2xsZXIncw0KPiA+IGludGVybmFsIGVycm9yIGxvZy4NCj4gPiAN
-Cj4gPiBUaGlzIHBhdGNoIGV4cG9zZXMgdGhpcyBpbmZvcm1hdGlvbiBpbiAyIHdheXM6DQo+ID4g
-LSBEdXJpbmcgcHJvYmUsIGlmIGFuIGVycm9yIG9jY3VycyAmIGEgbG9nIGlzIGF2YWlsYWJsZSwg
-cHJpbnQgaXQNCj4gPiB0byB0aGUNCj4gPiAgICBjb25zb2xlDQo+ID4gLSBBZnRlciBwcm9iZSwg
-bWFrZSB0aGUgZXJyb3IgbG9nIGF2YWlsYWJsZSB0byB1c2Vyc3BhY2UgdmlhIGFuDQo+ID4gSU9D
-VEwuDQo+ID4gICAgVXNlcnNwYWNlIGlzIG5vdGlmaWVkIG9mIHBlbmRpbmcgZXJyb3IgbG9ncyBp
-biBhIGxhdGVyIHBhdGNoDQo+ID4gICAgKCJwb3dlcnBjL3Bvd2VybnYvcG1lbTogRm9yd2FyZCBl
-dmVudHMgdG8gdXNlcnNwYWNlIikNCj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbGFzdGFpciBE
-J1NpbHZhIDxhbGFzdGFpckBkLXNpbHZhLm9yZz4NCj4gPiAtLS0NCj4gPiAgIGFyY2gvcG93ZXJw
-Yy9wbGF0Zm9ybXMvcG93ZXJudi9wbWVtL29jeGwuYyAgICB8IDI2OQ0KPiA+ICsrKysrKysrKysr
-KysrKysrKw0KPiA+ICAgLi4uL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bF9pbnRlcm5hbC5o
-ICAgIHwgICAxICsNCj4gPiAgIGluY2x1ZGUvdWFwaS9udmRpbW0vb2N4bC1wbWVtLmggICAgICAg
-ICAgICAgICB8ICA0NiArKysNCj4gPiAgIDMgZmlsZXMgY2hhbmdlZCwgMzE2IGluc2VydGlvbnMo
-KykNCj4gPiAgIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNsdWRlL3VhcGkvbnZkaW1tL29jeGwtcG1l
-bS5oDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJu
-di9wbWVtL29jeGwuYw0KPiA+IGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0v
-b2N4bC5jDQo+ID4gaW5kZXggNjMxMDlhODcwZDJjLi4yYjY0NTA0ZjkxMjkgMTAwNjQ0DQo+ID4g
-LS0tIGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bC5jDQo+ID4gKysr
-IGIvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bC5jDQo+ID4gQEAgLTQ0
-NywxMCArNDQ3LDIxOSBAQCBzdGF0aWMgaW50IGZpbGVfcmVsZWFzZShzdHJ1Y3QgaW5vZGUgKmlu
-b2RlLA0KPiA+IHN0cnVjdCBmaWxlICpmaWxlKQ0KPiA+ICAgCXJldHVybiAwOw0KPiA+ICAgfQ0K
-PiA+ICAgDQo+ID4gKy8qKg0KPiA+ICsgKiBlcnJvcl9sb2dfaGVhZGVyX3BhcnNlKCkgLSBQYXJz
-ZSB0aGUgZmlyc3QgNjQgYml0cyBvZiB0aGUgZXJyb3INCj4gPiBsb2cgY29tbWFuZCByZXNwb25z
-ZQ0KPiA+ICsgKiBAb2N4bHBtZW06IHRoZSBkZXZpY2UgbWV0YWRhdGENCj4gPiArICogQGxlbmd0
-aDogb3V0LCByZXR1cm5zIHRoZSBudW1iZXIgb2YgYnl0ZXMgaW4gdGhlIHJlc3BvbnNlDQo+ID4g
-KGV4Y2x1ZGluZyB0aGUgNjQgYml0IGhlYWRlcikNCj4gPiArICovDQo+ID4gK3N0YXRpYyBpbnQg
-ZXJyb3JfbG9nX2hlYWRlcl9wYXJzZShzdHJ1Y3Qgb2N4bHBtZW0gKm9jeGxwbWVtLCB1MTYNCj4g
-PiAqbGVuZ3RoKQ0KPiA+ICt7DQo+ID4gKwlpbnQgcmM7DQo+ID4gKwl1NjQgdmFsOw0KPiA+ICsN
-Cj4gDQo+IEVtcHR5IGxpbmUgaW4gdGhlIG1pZGRsZSBvZiBkZWNsYXJhdGlvbnMNCj4gDQoNCk9r
-DQoNCj4gDQo+ID4gKwl1MTYgZGF0YV9pZGVudGlmaWVyOw0KPiA+ICsJdTMyIGRhdGFfbGVuZ3Ro
-Ow0KPiA+ICsNCj4gPiArCXJjID0gb2N4bF9nbG9iYWxfbW1pb19yZWFkNjQob2N4bHBtZW0tPm9j
-eGxfYWZ1LA0KPiA+ICsJCQkJICAgICBvY3hscG1lbS0NCj4gPiA+YWRtaW5fY29tbWFuZC5kYXRh
-X29mZnNldCwNCj4gPiArCQkJCSAgICAgT0NYTF9MSVRUTEVfRU5ESUFOLCAmdmFsKTsNCj4gPiAr
-CWlmIChyYykNCj4gPiArCQlyZXR1cm4gcmM7DQo+ID4gKw0KPiA+ICsJZGF0YV9pZGVudGlmaWVy
-ID0gdmFsID4+IDQ4Ow0KPiA+ICsJZGF0YV9sZW5ndGggPSB2YWwgJiAweEZGRkY7DQo+ID4gKw0K
-PiA+ICsJaWYgKGRhdGFfaWRlbnRpZmllciAhPSAweDQ1NEMpIHsgLy8gJ0VMJw0KPiA+ICsJCWRl
-dl9lcnIoJm9jeGxwbWVtLT5kZXYsDQo+ID4gKwkJCSJCYWQgZGF0YSBpZGVudGlmaWVyIGZvciBl
-cnJvciBsb2cgZGF0YSwNCj4gPiBleHBlY3RlZCAnRUwnLCBnb3QgJyUycycgKCUjeCksIGRhdGFf
-bGVuZ3RoPSV1XG4iLA0KPiA+ICsJCQkoY2hhciAqKSZkYXRhX2lkZW50aWZpZXIsDQo+ID4gKwkJ
-CSh1bnNpZ25lZCBpbnQpZGF0YV9pZGVudGlmaWVyLCBkYXRhX2xlbmd0aCk7DQo+ID4gKwkJcmV0
-dXJuIC1FSU5WQUw7DQo+ID4gKwl9DQo+ID4gKw0KPiA+ICsJKmxlbmd0aCA9IGRhdGFfbGVuZ3Ro
-Ow0KPiA+ICsJcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgZXJyb3Jf
-bG9nX29mZnNldF8weDA4KHN0cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0sDQo+ID4gKwkJCQkgdTMy
-ICpsb2dfaWRlbnRpZmllciwgdTMyDQo+ID4gKnByb2dyYW1fcmVmX2NvZGUpDQo+ID4gK3sNCj4g
-PiArCWludCByYzsNCj4gPiArCXU2NCB2YWw7DQo+ID4gKw0KPiA+ICsJcmMgPSBvY3hsX2dsb2Jh
-bF9tbWlvX3JlYWQ2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ID4gKwkJCQkgICAgIG9jeGxwbWVt
-LQ0KPiA+ID5hZG1pbl9jb21tYW5kLmRhdGFfb2Zmc2V0ICsgMHgwOCwNCj4gPiArCQkJCSAgICAg
-T0NYTF9MSVRUTEVfRU5ESUFOLCAmdmFsKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlyZXR1cm4g
-cmM7DQo+ID4gKw0KPiA+ICsJKmxvZ19pZGVudGlmaWVyID0gdmFsID4+IDMyOw0KPiA+ICsJKnBy
-b2dyYW1fcmVmX2NvZGUgPSB2YWwgJiAweEZGRkZGRkZGOw0KPiA+ICsNCj4gPiArCXJldHVybiAw
-Ow0KPiA+ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgaW50IHJlYWRfZXJyb3JfbG9nKHN0cnVjdCBv
-Y3hscG1lbSAqb2N4bHBtZW0sDQo+ID4gKwkJCSAgc3RydWN0IGlvY3RsX29jeGxfcG1lbV9lcnJv
-cl9sb2cgKmxvZywgYm9vbA0KPiA+IGJ1Zl9pc191c2VyKQ0KPiA+ICt7DQo+ID4gKwl1NjQgdmFs
-Ow0KPiA+ICsJdTE2IHVzZXJfYnVmX2xlbmd0aDsNCj4gPiArCXUxNiBidWZfbGVuZ3RoOw0KPiA+
-ICsJdTE2IGk7DQo+ID4gKwlpbnQgcmM7DQo+ID4gKw0KPiA+ICsJaWYgKGxvZy0+YnVmX3NpemUg
-JSA4KQ0KPiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ICsNCj4gPiArCXJjID0gb2N4bHBtZW1f
-Y2hpKG9jeGxwbWVtLCAmdmFsKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlnb3RvIG91dDsNCj4g
-DQo+IA0KPiAib3V0IiB3aWxsIHVubG9jayBhIG11dGV4IG5vdCB5ZXQgdGFrZW4uDQo+IA0KDQpU
-aGFua3MsIHRoYXQgc2hvdWxkIGhhdmUgYmVlbiBhIHJldHVybi4NCg0KPiANCj4gDQo+ID4gKw0K
-PiA+ICsJaWYgKCEodmFsICYgR0xPQkFMX01NSU9fQ0hJX0VMQSkpDQo+ID4gKwkJcmV0dXJuIC1F
-QUdBSU47DQo+ID4gKw0KPiA+ICsJdXNlcl9idWZfbGVuZ3RoID0gbG9nLT5idWZfc2l6ZTsNCj4g
-PiArDQo+ID4gKwltdXRleF9sb2NrKCZvY3hscG1lbS0+YWRtaW5fY29tbWFuZC5sb2NrKTsNCj4g
-PiArDQo+ID4gKwlyYyA9IGFkbWluX2NvbW1hbmRfcmVxdWVzdChvY3hscG1lbSwgQURNSU5fQ09N
-TUFORF9FUlJMT0cpOw0KPiA+ICsJaWYgKHJjKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsNCj4g
-PiArCXJjID0gYWRtaW5fY29tbWFuZF9leGVjdXRlKG9jeGxwbWVtKTsNCj4gPiArCWlmIChyYykN
-Cj4gPiArCQlnb3RvIG91dDsNCj4gPiArDQo+ID4gKwlyYyA9IGFkbWluX2NvbW1hbmRfY29tcGxl
-dGVfdGltZW91dChvY3hscG1lbSwNCj4gPiBBRE1JTl9DT01NQU5EX0VSUkxPRyk7DQo+ID4gKwlp
-ZiAocmMgPCAwKSB7DQo+ID4gKwkJZGV2X3dhcm4oJm9jeGxwbWVtLT5kZXYsICJSZWFkIGVycm9y
-IGxvZyB0aW1lZCBvdXRcbiIpOw0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsJfQ0KPiA+ICsNCj4g
-PiArCXJjID0gYWRtaW5fcmVzcG9uc2Uob2N4bHBtZW0pOw0KPiA+ICsJaWYgKHJjIDwgMCkNCj4g
-PiArCQlnb3RvIG91dDsNCj4gPiArCWlmIChyYyAhPSBTVEFUVVNfU1VDQ0VTUykgew0KPiA+ICsJ
-CXdhcm5fc3RhdHVzKG9jeGxwbWVtLCAiVW5leHBlY3RlZCBzdGF0dXMgZnJvbSByZXRyaWV2ZQ0K
-PiA+IGVycm9yIGxvZyIsIHJjKTsNCj4gPiArCQlnb3RvIG91dDsNCj4gPiArCX0NCj4gPiArDQo+
-ID4gKw0KPiA+ICsJcmMgPSBlcnJvcl9sb2dfaGVhZGVyX3BhcnNlKG9jeGxwbWVtLCAmbG9nLT5i
-dWZfc2l6ZSk7DQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+ID4gKwkvLyBsb2ct
-PmJ1Zl9zaXplIG5vdyBjb250YWlucyB0aGUgcmV0dXJuZWQgYnVmZmVyIHNpemUsIG5vdCB0aGUN
-Cj4gPiB1c2VyIHNpemUNCj4gPiArDQo+ID4gKwlyYyA9IGVycm9yX2xvZ19vZmZzZXRfMHgwOChv
-Y3hscG1lbSwgJmxvZy0+bG9nX2lkZW50aWZpZXIsDQo+ID4gKwkJCQkgICAgICAgJmxvZy0+cHJv
-Z3JhbV9yZWZlcmVuY2VfY29kZSk7DQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+
-IA0KPiANCj4gT2Zmc2V0IDB4MDggZ2V0cyBhIHByZWZlcmVudGlhbCB0cmVhdG1lbnQgY29tcGFy
-ZWQgdG8gMHgxMCBiZWxvdyBhbmQgDQo+IGl0J3Mgbm90IGNsZWFyIHdoeS4NCj4gSSB3b3VsZCBj
-cmVhdGUgYSBzdWJmb25jdGlvbiB3aGljaCBwYXJzZXMgYWxsIHRoZSBmaWVsZHMgbGluZWFybHku
-DQo+IA0KDQpJJ2xsIGlubGluZSB0aGUgY29udGVudHMgb2YgZXJyb3JfbG9nX29mZnNldF8weDA4
-KCkgLSBJIGNhbid0IHNlZSBhIGJpZw0KYmVuZWZpdCB0byBmYWN0b3Jpbmcgb3V0IHRoZSBndXRz
-IG9mIHRoYXQgZnVuY3Rpb24uDQoNCj4gDQo+IA0KPiA+ICsJcmMgPSBvY3hsX2dsb2JhbF9tbWlv
-X3JlYWQ2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ID4gKwkJCQkgICAgIG9jeGxwbWVtLQ0KPiA+
-ID5hZG1pbl9jb21tYW5kLmRhdGFfb2Zmc2V0ICsgMHgxMCwNCj4gPiArCQkJCSAgICAgT0NYTF9M
-SVRUTEVfRU5ESUFOLCAmdmFsKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlnb3RvIG91dDsNCj4g
-PiArDQo+ID4gKwlsb2ctPmVycm9yX2xvZ190eXBlID0gdmFsID4+IDU2Ow0KPiA+ICsJbG9nLT5h
-Y3Rpb25fZmxhZ3MgPSAobG9nLT5lcnJvcl9sb2dfdHlwZSA9PQ0KPiA+IE9DWExfUE1FTV9FUlJP
-Ul9MT0dfVFlQRV9HRU5FUkFMKSA/DQo+ID4gKwkJCSAgICAodmFsID4+IDMyKSAmIDB4RkZGRkZG
-IDogMDsNCj4gPiArCWxvZy0+cG93ZXJfb25fc2Vjb25kcyA9IHZhbCAmIDB4RkZGRkZGRkY7DQo+
-ID4gKw0KPiA+ICsJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3JlYWQ2NChvY3hscG1lbS0+b2N4bF9h
-ZnUsDQo+ID4gKwkJCQkgICAgIG9jeGxwbWVtLQ0KPiA+ID5hZG1pbl9jb21tYW5kLmRhdGFfb2Zm
-c2V0ICsgMHgxOCwNCj4gPiArCQkJCSAgICAgT0NYTF9MSVRUTEVfRU5ESUFOLCAmbG9nLQ0KPiA+
-ID50aW1lc3RhbXApOw0KPiA+ICsJaWYgKHJjKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsNCj4g
-PiArCXJjID0gb2N4bF9nbG9iYWxfbW1pb19yZWFkNjQob2N4bHBtZW0tPm9jeGxfYWZ1LA0KPiA+
-ICsJCQkJICAgICBvY3hscG1lbS0NCj4gPiA+YWRtaW5fY29tbWFuZC5kYXRhX29mZnNldCArIDB4
-MjAsDQo+ID4gKwkJCQkgICAgIE9DWExfSE9TVF9FTkRJQU4sICZsb2ctPnd3aWRbMF0pOw0KPiAN
-Cj4gDQo+IEEgYml0IG9mIGEgbW9vdCBwb2ludCwgYnV0IGlzIHRoZXJlIGEgcmVhc29uIHdoeSBz
-b21lIG9mIHRob3NlIE1NSU8NCj4gb3BzIA0KPiB1c2UgT0NYTF9MSVRUTEVfRU5ESUFOIGFuZCB0
-aGUgb3RoZXJzIE9DWExfSE9TVF9FTkRJQU4/DQo+IA0KDQpTb21lIGFyZSBsaXR0bGUgZW5kaWFu
-IHZhbHVlcywgYW5kIHNvbWUgYXJlIGJpbmFyeSBkYXRhLiBXV0lEcyBzaG91bGQNCmJlIExFIHRo
-b3VnaC4NCg0KPiANCj4gDQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+ID4gKw0K
-PiA+ICsJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3JlYWQ2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+
-ID4gKwkJCQkgICAgIG9jeGxwbWVtLQ0KPiA+ID5hZG1pbl9jb21tYW5kLmRhdGFfb2Zmc2V0ICsg
-MHgyOCwNCj4gPiArCQkJCSAgICAgT0NYTF9IT1NUX0VORElBTiwgJmxvZy0+d3dpZFsxXSk7DQo+
-ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+ID4gKw0KPiA+ICsJcmMgPSBvY3hsX2ds
-b2JhbF9tbWlvX3JlYWQ2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ID4gKwkJCQkgICAgIG9jeGxw
-bWVtLQ0KPiA+ID5hZG1pbl9jb21tYW5kLmRhdGFfb2Zmc2V0ICsgMHgzMCwNCj4gPiArCQkJCSAg
-ICAgT0NYTF9IT1NUX0VORElBTiwgKHU2NCAqKWxvZy0NCj4gPiA+ZndfcmV2aXNpb24pOw0KPiA+
-ICsJaWYgKHJjKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsJbG9nLT5md19yZXZpc2lvbls4XSA9
-ICdcMCc7DQo+ID4gKw0KPiA+ICsJYnVmX2xlbmd0aCA9ICh1c2VyX2J1Zl9sZW5ndGggPCBsb2ct
-PmJ1Zl9zaXplKSA/DQo+ID4gKwkJICAgICB1c2VyX2J1Zl9sZW5ndGggOiBsb2ctPmJ1Zl9zaXpl
-Ow0KPiA+ICsJZm9yIChpID0gMDsgaSA8IGJ1Zl9sZW5ndGggKyAweDQ4OyBpICs9IDgpIHsNCj4g
-PiArCQl1NjQgdmFsOw0KPiA+ICsNCj4gPiArCQlyYyA9IG9jeGxfZ2xvYmFsX21taW9fcmVhZDY0
-KG9jeGxwbWVtLT5vY3hsX2FmdSwNCj4gPiArCQkJCQkgICAgIG9jeGxwbWVtLQ0KPiA+ID5hZG1p
-bl9jb21tYW5kLmRhdGFfb2Zmc2V0ICsgaSwNCj4gPiArCQkJCQkgICAgIE9DWExfSE9TVF9FTkRJ
-QU4sICZ2YWwpOw0KPiA+ICsJCWlmIChyYykNCj4gPiArCQkJZ290byBvdXQ7DQo+ID4gKw0KPiA+
-ICsJCWlmIChidWZfaXNfdXNlcikgew0KPiA+ICsJCQlpZiAoY29weV90b191c2VyKCZsb2ctPmJ1
-ZltpXSwgJnZhbCwNCj4gPiBzaXplb2YodTY0KSkpIHsNCj4gPiArCQkJCXJjID0gLUVGQVVMVDsN
-Cj4gPiArCQkJCWdvdG8gb3V0Ow0KPiA+ICsJCQl9DQo+ID4gKwkJfSBlbHNlDQo+ID4gKwkJCWxv
-Zy0+YnVmW2ldID0gdmFsOw0KPiA+ICsJfQ0KPiANCj4gDQo+IEkgdGhpbmsgaXQgY291bGQgYmUg
-YSBiaXQgc2ltcGxpZmllZCBieSBrZWVwaW5nIHRoZSBoYW5kbGluZyBvZiB0aGUNCj4gdXNlciAN
-Cj4gYnVmZmVyIG91dCBvZiB0aGlzIGZ1bmN0aW9uLiBBbHdheXMgY2FsbCBpdCB3aXRoIGEga2Vy
-bmVsIGJ1ZmZlci4NCj4gQW5kIA0KPiBoYXZlIG9ubHkgb25lIGNvcHlfdG9fdXNlcigpIGNhbGwg
-b24gdGhlIGlvY3RsKCkgcGF0aC4gWW91J2QgbmVlZCB0byANCj4gYWxsb2NhdGUgYSBrZXJuZWwg
-YnVmIG9uIHRoZSBpb2N0bCBwYXRoLCBidXQgeW91J3JlIGFscmVhZHkgZG9pbmcgaXQNCj4gb24g
-DQo+IHRoZSBwcm9iZSgpIHBhdGgsIHNvIGl0IHNob3VsZCBiZSBkb2FibGUgdG8gc2hhcmUgY29k
-ZS4NCg0KSG1tLCB0aGUgcHJvYmxlbSB0aGVuIGlzIHRoYXQgb24gdGhlIElPQ1RMIHNpZGUsIEkn
-bGwgaGF2ZSB0byBzYXZlLA0KbW9kaWZ5LCB0aGVuIHJlc3RvcmUgdGhlIGJ1ZiBtZW1iZXIgb2Yg
-c3RydWN0DQppb2N0bF9vY3hsX3BtZW1fZXJyb3JfbG9nLCB3aGljaCB3b3VsZCBiZSB1Z2xpZXIu
-DQoNCj4gDQo+IA0KPiA+ICsNCj4gPiArCXJjID0gYWRtaW5fcmVzcG9uc2VfaGFuZGxlZChvY3hs
-cG1lbSk7DQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+ID4gKw0KPiA+ICtvdXQ6
-DQo+ID4gKwltdXRleF91bmxvY2soJm9jeGxwbWVtLT5hZG1pbl9jb21tYW5kLmxvY2spOw0KPiA+
-ICsJcmV0dXJuIHJjOw0KPiA+ICsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIGludCBpb2N0
-bF9lcnJvcl9sb2coc3RydWN0IG9jeGxwbWVtICpvY3hscG1lbSwNCj4gPiArCQlzdHJ1Y3QgaW9j
-dGxfb2N4bF9wbWVtX2Vycm9yX2xvZyBfX3VzZXIgKnVhcmcpDQo+ID4gK3sNCj4gPiArCXN0cnVj
-dCBpb2N0bF9vY3hsX3BtZW1fZXJyb3JfbG9nIGFyZ3M7DQo+ID4gKwlpbnQgcmM7DQo+ID4gKw0K
-PiA+ICsJaWYgKGNvcHlfZnJvbV91c2VyKCZhcmdzLCB1YXJnLCBzaXplb2YoYXJncykpKQ0KPiA+
-ICsJCXJldHVybiAtRUZBVUxUOw0KPiA+ICsNCj4gPiArCXJjID0gcmVhZF9lcnJvcl9sb2cob2N4
-bHBtZW0sICZhcmdzLCB0cnVlKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlyZXR1cm4gcmM7DQo+
-ID4gKw0KPiA+ICsJaWYgKGNvcHlfdG9fdXNlcih1YXJnLCAmYXJncywgc2l6ZW9mKGFyZ3MpKSkN
-Cj4gPiArCQlyZXR1cm4gLUVGQVVMVDsNCj4gPiArDQo+ID4gKwlyZXR1cm4gMDsNCj4gPiArfQ0K
-PiA+ICsNCj4gPiArc3RhdGljIGxvbmcgZmlsZV9pb2N0bChzdHJ1Y3QgZmlsZSAqZmlsZSwgdW5z
-aWduZWQgaW50IGNtZCwNCj4gPiB1bnNpZ25lZCBsb25nIGFyZ3MpDQo+ID4gK3sNCj4gPiArCXN0
-cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0gPSBmaWxlLT5wcml2YXRlX2RhdGE7DQo+ID4gKwlpbnQg
-cmMgPSAtRUlOVkFMOw0KPiA+ICsNCj4gPiArCXN3aXRjaCAoY21kKSB7DQo+ID4gKwljYXNlIElP
-Q1RMX09DWExfUE1FTV9FUlJPUl9MT0c6DQo+ID4gKwkJcmMgPSBpb2N0bF9lcnJvcl9sb2cob2N4
-bHBtZW0sDQo+ID4gKwkJCQkgICAgIChzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2Vycm9yX2xvZw0K
-PiA+IF9fdXNlciAqKWFyZ3MpOw0KPiA+ICsJCWJyZWFrOw0KPiA+ICsJfQ0KPiA+ICsJcmV0dXJu
-IHJjOw0KPiA+ICt9DQo+ID4gKw0KPiA+ICAgc3RhdGljIGNvbnN0IHN0cnVjdCBmaWxlX29wZXJh
-dGlvbnMgZm9wcyA9IHsNCj4gPiAgIAkub3duZXIJCT0gVEhJU19NT0RVTEUsDQo+ID4gICAJLm9w
-ZW4JCT0gZmlsZV9vcGVuLA0KPiA+ICAgCS5yZWxlYXNlCT0gZmlsZV9yZWxlYXNlLA0KPiA+ICsJ
-LnVubG9ja2VkX2lvY3RsID0gZmlsZV9pb2N0bCwNCj4gPiArCS5jb21wYXRfaW9jdGwgICA9IGZp
-bGVfaW9jdGwsDQo+ID4gICB9Ow0KPiA+ICAgDQo+ID4gICAvKioNCj4gPiBAQCAtNTI3LDYgKzcz
-Niw2MCBAQCBzdGF0aWMgaW50IHJlYWRfZGV2aWNlX21ldGFkYXRhKHN0cnVjdA0KPiA+IG9jeGxw
-bWVtICpvY3hscG1lbSkNCj4gPiAgIAlyZXR1cm4gMDsNCj4gPiAgIH0NCj4gPiAgIA0KPiA+ICtz
-dGF0aWMgY29uc3QgY2hhciAqZGVjb2RlX2Vycm9yX2xvZ190eXBlKHU4IGVycm9yX2xvZ190eXBl
-KQ0KPiA+ICt7DQo+ID4gKwlzd2l0Y2ggKGVycm9yX2xvZ190eXBlKSB7DQo+ID4gKwljYXNlIDB4
-MDA6DQo+ID4gKwkJcmV0dXJuICJnZW5lcmFsIjsNCj4gPiArCWNhc2UgMHgwMToNCj4gPiArCQly
-ZXR1cm4gInByZWRpY3RpdmUgZmFpbHVyZSI7DQo+ID4gKwljYXNlIDB4MDI6DQo+ID4gKwkJcmV0
-dXJuICJ0aGVybWFsIHdhcm5pbmciOw0KPiA+ICsJY2FzZSAweDAzOg0KPiA+ICsJCXJldHVybiAi
-ZGF0YSBsb3NzIjsNCj4gPiArCWNhc2UgMHgwNDoNCj4gPiArCQlyZXR1cm4gImhlYWx0aCAmIHBl
-cmZvcm1hbmNlIjsNCj4gPiArCWRlZmF1bHQ6DQo+ID4gKwkJcmV0dXJuICJ1bmtub3duIjsNCj4g
-PiArCX0NCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgZHVtcF9lcnJvcl9sb2coc3Ry
-dWN0IG9jeGxwbWVtICpvY3hscG1lbSkNCj4gPiArew0KPiA+ICsJc3RydWN0IGlvY3RsX29jeGxf
-cG1lbV9lcnJvcl9sb2cgbG9nOw0KPiA+ICsJdTMyIGJ1Zl9zaXplOw0KPiA+ICsJdTggKmJ1ZjsN
-Cj4gPiArCWludCByYzsNCj4gPiArDQo+ID4gKwlpZiAob2N4bHBtZW0tPmFkbWluX2NvbW1hbmQu
-ZGF0YV9zaXplID09IDApDQo+ID4gKwkJcmV0dXJuOw0KPiA+ICsNCj4gPiArCWJ1Zl9zaXplID0g
-b2N4bHBtZW0tPmFkbWluX2NvbW1hbmQuZGF0YV9zaXplIC0gMHg0ODsNCj4gPiArCWJ1ZiA9IGt6
-YWxsb2MoYnVmX3NpemUsIEdGUF9LRVJORUwpOw0KPiA+ICsJaWYgKCFidWYpDQo+ID4gKwkJcmV0
-dXJuOw0KPiA+ICsNCj4gPiArCWxvZy5idWYgPSBidWY7DQo+ID4gKwlsb2cuYnVmX3NpemUgPSBi
-dWZfc2l6ZTsNCj4gPiArDQo+ID4gKwlyYyA9IHJlYWRfZXJyb3JfbG9nKG9jeGxwbWVtLCAmbG9n
-LCBmYWxzZSk7DQo+ID4gKwlpZiAocmMgPCAwKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsNCj4g
-PiArCWRldl93YXJuKCZvY3hscG1lbS0+ZGV2LA0KPiA+ICsJCSAiT0NYTCBQTUVNIEVycm9yIGxv
-ZzogV1dJRD0weCUwMTZsbHglMDE2bGx4IExJRD0weCV4DQo+ID4gUFJDPSV4IHR5cGU9MHgleCAl
-cywgVXB0aW1lPSV1IHNlY29uZHMgdGltZXN0YW1wPTB4JWxseFxuIiwNCj4gPiArCQkgbG9nLnd3
-aWRbMF0sIGxvZy53d2lkWzFdLA0KPiA+ICsJCSBsb2cubG9nX2lkZW50aWZpZXIsIGxvZy5wcm9n
-cmFtX3JlZmVyZW5jZV9jb2RlLA0KPiA+ICsJCSBsb2cuZXJyb3JfbG9nX3R5cGUsDQo+ID4gKwkJ
-IGRlY29kZV9lcnJvcl9sb2dfdHlwZShsb2cuZXJyb3JfbG9nX3R5cGUpLA0KPiA+ICsJCSBsb2cu
-cG93ZXJfb25fc2Vjb25kcywgbG9nLnRpbWVzdGFtcCk7DQo+ID4gKwlwcmludF9oZXhfZHVtcChL
-RVJOX1dBUk5JTkcsICJidWYiLCBEVU1QX1BSRUZJWF9PRkZTRVQsIDE2LCAxLA0KPiA+IGJ1ZiwN
-Cj4gPiArCQkgICAgICAgbG9nLmJ1Zl9zaXplLCBmYWxzZSk7DQo+IA0KPiBkZXZfd2FybiBhbHJl
-YWR5IGxvZ3MgYSB3YXJuaW5nLiBJc24ndCBLRVJOX0RFQlVHIG1vcmUgYXBwcm9wcmlhdGUNCj4g
-Zm9yIA0KPiB0aGUgaGV4IGR1bXA/DQo+IA0KPiANCg0KVGhlIGhleCBkdW1wIGlzIGFzc29jaWF0
-ZWQgYmluYXJ5IGRhdGEgZm9yIHRoZSB3YXJuaW5nLCBpdCBkb2Vzbid0DQpyZXBsaWNhdGUgdGhl
-IGNvbnRlbnRzIG9mIHRoZSBtZXNzYWdlLg0KDQo+IA0KPiA+ICsNCj4gPiArb3V0Og0KPiA+ICsJ
-a2ZyZWUoYnVmKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiAgIC8qKg0KPiA+ICAgICogcHJvYmVfZnVu
-Y3Rpb24wKCkgLSBTZXQgdXAgZnVuY3Rpb24gMCBmb3IgYW4gT3BlbkNBUEkNCj4gPiBwZXJzaXN0
-ZW50IG1lbW9yeSBkZXZpY2UNCj4gPiAgICAqIFRoaXMgaXMgaW1wb3J0YW50IGFzIGl0IGVuYWJs
-ZXMgdGVtcGxhdGVzIGhpZ2hlciB0aGFuIDAgYWNyb3NzDQo+ID4gYWxsIG90aGVyIGZ1bmN0aW9u
-cywNCj4gPiBAQCAtNTY4LDYgKzgzMSw3IEBAIHN0YXRpYyBpbnQgcHJvYmUoc3RydWN0IHBjaV9k
-ZXYgKnBkZXYsIGNvbnN0DQo+ID4gc3RydWN0IHBjaV9kZXZpY2VfaWQgKmVudCkNCj4gPiAgIAlz
-dHJ1Y3Qgb2N4bHBtZW0gKm9jeGxwbWVtOw0KPiA+ICAgCWludCByYzsNCj4gPiAgIAl1MTYgZWxh
-cHNlZCwgdGltZW91dDsNCj4gPiArCXU2NCBjaGk7DQo+ID4gICANCj4gPiAgIAlpZiAoUENJX0ZV
-TkMocGRldi0+ZGV2Zm4pID09IDApDQo+ID4gICAJCXJldHVybiBwcm9iZV9mdW5jdGlvbjAocGRl
-dik7DQo+ID4gQEAgLTY2Nyw2ICs5MzEsMTEgQEAgc3RhdGljIGludCBwcm9iZShzdHJ1Y3QgcGNp
-X2RldiAqcGRldiwgY29uc3QNCj4gPiBzdHJ1Y3QgcGNpX2RldmljZV9pZCAqZW50KQ0KPiA+ICAg
-CXJldHVybiAwOw0KPiA+ICAgDQo+ID4gICBlcnI6DQo+ID4gKwlpZiAob2N4bHBtZW0gJiYNCj4g
-PiArCQkgICAgKG9jeGxwbWVtX2NoaShvY3hscG1lbSwgJmNoaSkgPT0gMCkgJiYNCj4gPiArCQkg
-ICAgKGNoaSAmIEdMT0JBTF9NTUlPX0NISV9FTEEpKQ0KPiA+ICsJCWR1bXBfZXJyb3JfbG9nKG9j
-eGxwbWVtKTsNCj4gPiArDQo+ID4gICAJLyoNCj4gPiAgIAkgKiBGdXJ0aGVyIGNsZWFudXAgaXMg
-ZG9uZSBpbiB0aGUgcmVsZWFzZSBoYW5kbGVyIHZpYQ0KPiA+IGZyZWVfb2N4bHBtZW0oKQ0KPiA+
-ICAgCSAqIFRoaXMgYWxsb3dzIHVzIHRvIGtlZXAgdGhlIGNoYXJhY3RlciBkZXZpY2UgbGl2ZSB0
-byBoYW5kbGUNCj4gPiBJT0NUTHMgdG8NCj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3Bs
-YXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4bF9pbnRlcm5hbC5oDQo+ID4gYi9hcmNoL3Bvd2VycGMv
-cGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsX2ludGVybmFsLmgNCj4gPiBpbmRleCBkMmQ4MWZl
-YzdiYjEuLmI5NTNlZTUyMmVkNCAxMDA2NDQNCj4gPiAtLS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZv
-cm1zL3Bvd2VybnYvcG1lbS9vY3hsX2ludGVybmFsLmgNCj4gPiArKysgYi9hcmNoL3Bvd2VycGMv
-cGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsX2ludGVybmFsLmgNCj4gPiBAQCAtNSw2ICs1LDcg
-QEANCj4gPiAgICNpbmNsdWRlIDxsaW51eC9jZGV2Lmg+DQo+ID4gICAjaW5jbHVkZSA8bWlzYy9v
-Y3hsLmg+DQo+ID4gICAjaW5jbHVkZSA8bGludXgvbGlibnZkaW1tLmg+DQo+ID4gKyNpbmNsdWRl
-IDx1YXBpL252ZGltbS9vY3hsLXBtZW0uaD4NCj4gDQo+IENhbid0IHdlIGxpbWl0IHRoZSBleHRy
-YSBpbmNsdWRlIHRvIG9jeGwuYz8NCj4gDQoNClllcywgdGhlcmUgYXJlIG5vIGNvbnN1bWVycyBy
-ZWZlcnJlZCB0byBpbiBvY3hsX2ludGVyYWwuW2hjXQ0KDQo+IENvbXBsZXRlbHkgdW5yZWxhdGVk
-LCBidXQgb2N4bC5jIGNvbnRhaW5zIG1vc3Qgb2YgdGhlIGNvZGUgZm9yIHRoaXMgDQo+IGRyaXZl
-ci4gV2Ugc2hvdWxkIGNvbnNpZGVyIHJlbmFtaW5nIGl0IHRvIG9jeGxwbWVtLmMgb3Igc29tZXRo
-aW5nDQo+IGFsb25nIA0KPiB0aG9zZSBsaW5lcywgc2luY2UgaXQgZG9lcyBhIGxvdCBtb3JlIHRo
-YW4ganVzdCBpbnRlcmZhY2luZyB3aXRoIHRoZSANCj4gb3BlbmNhcGkgaW50ZXJmYWNlLiBBbmQg
-d291bGQgYXZvaWQgY29uZnVzaW9uIHdpdGggYW4gb3RoZXIgYWxyZWFkeSANCj4gZXhpc3Rpbmcg
-b2N4bC5jIGZpbGUuDQo+IA0KDQpPaywgbXkgdGhpbmtpbmcgd2FzIHRoYXQgaXQncyBhbHJlYWR5
-IGluIGEgcG1lbSBkaXJlY3RvcnksIGJ1dCBJIGNhbg0Kc2VlIGFyZ3VtZW50cyBib3RoIHdheXMu
-DQoNCj4gDQo+ID4gICAjaW5jbHVkZSA8bGludXgvbW0uaD4NCj4gPiAgIA0KPiA+ICAgI2RlZmlu
-ZSBMQUJFTF9BUkVBX1NJWkUJKDFVTCA8PCBQQV9TRUNUSU9OX1NISUZUKQ0KPiA+IGRpZmYgLS1n
-aXQgYS9pbmNsdWRlL3VhcGkvbnZkaW1tL29jeGwtcG1lbS5oDQo+ID4gYi9pbmNsdWRlL3VhcGkv
-bnZkaW1tL29jeGwtcG1lbS5oDQo+ID4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gPiBpbmRleCAw
-MDAwMDAwMDAwMDAuLmIxMGY4YWMwYzIwZg0KPiA+IC0tLSAvZGV2L251bGwNCj4gPiArKysgYi9p
-bmNsdWRlL3VhcGkvbnZkaW1tL29jeGwtcG1lbS5oDQo+ID4gQEAgLTAsMCArMSw0NiBAQA0KPiA+
-ICsvKiBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BMLTIuMCsgV0lUSCBMaW51eC1zeXNjYWxs
-LW5vdGUgKi8NCj4gPiArLyogQ29weXJpZ2h0IDIwMTcgSUJNIENvcnAuICovDQo+ID4gKyNpZm5k
-ZWYgX1VBUElfT0NYTF9TQ01fSA0KPiA+ICsjZGVmaW5lIF9VQVBJX09DWExfU0NNX0gNCj4gPiAr
-DQo+ID4gKyNpbmNsdWRlIDxsaW51eC90eXBlcy5oPg0KPiA+ICsjaW5jbHVkZSA8bGludXgvaW9j
-dGwuaD4NCj4gPiArDQo+ID4gKyNkZWZpbmUgT0NYTF9QTUVNX0VSUk9SX0xPR19BQ1RJT05fUkVT
-RVQJKDEgPDwgKDMyLTMyKSkNCj4gPiArI2RlZmluZSBPQ1hMX1BNRU1fRVJST1JfTE9HX0FDVElP
-Tl9DSEtGVwkoMSA8PCAoNTMtMzIpKQ0KPiA+ICsjZGVmaW5lIE9DWExfUE1FTV9FUlJPUl9MT0df
-QUNUSU9OX1JFUExBQ0UJKDEgPDwgKDU0LTMyKSkNCj4gPiArI2RlZmluZSBPQ1hMX1BNRU1fRVJS
-T1JfTE9HX0FDVElPTl9EVU1QCQkoMSA8PCAoNTUtMzIpKQ0KPiA+ICsNCj4gPiArI2RlZmluZSBP
-Q1hMX1BNRU1fRVJST1JfTE9HX1RZUEVfR0VORVJBTAkJKDB4MDApDQo+ID4gKyNkZWZpbmUgT0NY
-TF9QTUVNX0VSUk9SX0xPR19UWVBFX1BSRURJQ1RJVkVfRkFJTFVSRQkoMHgwMSkNCj4gPiArI2Rl
-ZmluZSBPQ1hMX1BNRU1fRVJST1JfTE9HX1RZUEVfVEhFUk1BTF9XQVJOSU5HCSgweDAyKQ0KPiA+
-ICsjZGVmaW5lIE9DWExfUE1FTV9FUlJPUl9MT0dfVFlQRV9EQVRBX0xPU1MJCSgweDAzKQ0KPiA+
-ICsjZGVmaW5lIE9DWExfUE1FTV9FUlJPUl9MT0dfVFlQRV9IRUFMVEhfUEVSRk9STUFOQ0UJKDB4
-MDQpDQo+ID4gKw0KPiA+ICtzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2Vycm9yX2xvZyB7DQo+ID4g
-KwlfX3UzMiBsb2dfaWRlbnRpZmllcjsgLyogb3V0ICovDQo+ID4gKwlfX3UzMiBwcm9ncmFtX3Jl
-ZmVyZW5jZV9jb2RlOyAvKiBvdXQgKi8NCj4gPiArCV9fdTMyIGFjdGlvbl9mbGFnczsgLyogb3V0
-LCByZWNvbW1lbmRlZCBjb3Vyc2Ugb2YgYWN0aW9uICovDQo+ID4gKwlfX3UzMiBwb3dlcl9vbl9z
-ZWNvbmRzOyAvKiBvdXQsIE51bWJlciBvZiBzZWNvbmRzIHRoZQ0KPiA+IGNvbnRyb2xsZXIgaGFz
-IGJlZW4gb24gd2hlbiB0aGUgZXJyb3Igb2NjdXJyZWQgKi8NCj4gPiArCV9fdTY0IHRpbWVzdGFt
-cDsgLyogb3V0LCByZWxhdGl2ZSB0aW1lIHNpbmNlIHRoZSBjdXJyZW50IElQTCAqLw0KPiA+ICsJ
-X191NjQgd3dpZFsyXTsgLyogb3V0LCB0aGUgTkFBIGZvcm1hdHRlZCBXV0lEIGFzc29jaWF0ZWQg
-d2l0aA0KPiA+IHRoZSBjb250cm9sbGVyICovDQo+ID4gKwljaGFyICBmd19yZXZpc2lvbls4KzFd
-OyAvKiBvdXQsIGZpcm13YXJlIHJldmlzaW9uIGFzIG51bGwNCj4gPiB0ZXJtaW5hdGVkIHRleHQg
-Ki8NCj4gDQo+IFRoZSA4KzEgc2l6ZSB3aWxsIG1ha2UgdGhlIGNvbXBpbGVyIGFkZCBzb21lIHBh
-ZGRpbmcgaGVyZS4gQXJlIHdlIA0KPiBjb25maWRlbnQgdGhhdCBhbGwgdGhlIGNvbXBpbGVycywg
-YXQgbGVhc3Qgb24gcG93ZXJwYywgd2lsbCBkbyB0aGUNCj4gc2FtZSANCj4gdGhpbmcgYW5kIHdl
-IGNhbiBndWFyYW50ZWUgYSBrZXJuZWwgQUJJPyBJIHdvdWxkIHBsYXkgaXQgc2FmZSBhbmQNCj4g
-aGF2ZSBhIA0KPiBkaXNjdXNzaW9uIHdpdGggZm9sa3Mgd2hvIHVuZGVyc3RhbmQgY29tcGlsZXJz
-IGJldHRlci4NCj4gDQoNCkknbGwgYWRkIHNvbWUgZXhwbGljaXQgcGFkZGluZy4NCg0KPiANCj4g
-DQo+ID4gKwlfX3UxNiBidWZfc2l6ZTsgLyogaW4vb3V0LCBidWZmZXIgc2l6ZSBwcm92aWRlZC9y
-ZXF1aXJlZC4NCj4gPiArCQkJICogSWYgcmVxdWlyZWQgaXMgZ3JlYXRlciB0aGFuIHByb3ZpZGVk
-LCB0aGUNCj4gPiBidWZmZXINCj4gPiArCQkJICogd2lsbCBiZSB0cnVuY2F0ZWQgdG8gdGhlIGFt
-b3VudCBwcm92aWRlZC4gSWYNCj4gPiBpdHMNCj4gPiArCQkJICogbGVzcywgdGhlbiBvbmx5IHRo
-ZSByZXF1aXJlZCBieXRlcyB3aWxsIGJlDQo+ID4gcG9wdWxhdGVkLg0KPiA+ICsJCQkgKiBJZiBp
-dCBpcyAwLCB0aGVuIHRoZXJlIGFyZSBubyBtb3JlIGVycm9yIGxvZw0KPiA+IGVudHJpZXMuDQo+
-ID4gKwkJCSAqLw0KPiA+ICsJX191OCAgZXJyb3JfbG9nX3R5cGU7DQo+ID4gKwlfX3U4ICByZXNl
-cnZlZDE7DQo+ID4gKwlfX3UzMiByZXNlcnZlZDI7DQo+ID4gKwlfX3U2NCByZXNlcnZlZDNbMl07
-DQo+ID4gKwlfX3U4ICpidWY7IC8qIHBvaW50ZXIgdG8gb3V0cHV0IGJ1ZmZlciAqLw0KPiA+ICt9
-Ow0KPiA+ICsNCj4gPiArLyogaW9jdGwgbnVtYmVycyAqLw0KPiA+ICsjZGVmaW5lIE9DWExfUE1F
-TV9NQUdJQyAweDVDDQo+IA0KPiBSYW5kb21seSBwaWNrZWQ/DQo+IFNlZSAoYW5kIGFkZCBlbnRy
-eSBpbikgRG9jdW1lbnRhdGlvbi91c2Vyc3BhY2UtYXBpL2lvY3RsL2lvY3RsLQ0KPiBudW1iZXIu
-cnN0DQo+IA0KT2sNCg0KPiANCj4gICAgRnJlZA0KPiANCj4gDQo+IA0KPiA+ICsvKiBTQ00gZGV2
-aWNlcyAqLw0KPiA+ICsjZGVmaW5lIElPQ1RMX09DWExfUE1FTV9FUlJPUl9MT0cJCQlfSU9XUihP
-Q1hMX1BNRU0NCj4gPiBfTUFHSUMsIDB4MDEsIHN0cnVjdCBpb2N0bF9vY3hsX3BtZW1fZXJyb3Jf
-bG9nKQ0KPiA+ICsNCj4gPiArI2VuZGlmIC8qIF9VQVBJX09DWExfU0NNX0ggKi8NCj4gPiANCi0t
-IA0KQWxhc3RhaXIgRCdTaWx2YQ0KT3BlbiBTb3VyY2UgRGV2ZWxvcGVyDQpMaW51eCBUZWNobm9s
-b2d5IENlbnRyZSwgSUJNIEF1c3RyYWxpYQ0KbW9iOiAwNDIzIDc2MiA4MTkNCl9fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5n
-IGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFu
-IGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+
+>>> +	if (rc)
+>>> +		goto out;
+>>> +
+>>> +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+>>> +				     ocxlpmem-
+>>>> admin_command.data_offset + 0x28,
+>>> +				     OCXL_HOST_ENDIAN, &log->wwid[1]);
+>>> +	if (rc)
+>>> +		goto out;
+>>> +
+>>> +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+>>> +				     ocxlpmem-
+>>>> admin_command.data_offset + 0x30,
+>>> +				     OCXL_HOST_ENDIAN, (u64 *)log-
+>>>> fw_revision);
+>>> +	if (rc)
+>>> +		goto out;
+>>> +	log->fw_revision[8] = '\0';
+>>> +
+>>> +	buf_length = (user_buf_length < log->buf_size) ?
+>>> +		     user_buf_length : log->buf_size;
+>>> +	for (i = 0; i < buf_length + 0x48; i += 8) {
+>>> +		u64 val;
+>>> +
+>>> +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+>>> +					     ocxlpmem-
+>>>> admin_command.data_offset + i,
+>>> +					     OCXL_HOST_ENDIAN, &val);
+>>> +		if (rc)
+>>> +			goto out;
+>>> +
+>>> +		if (buf_is_user) {
+>>> +			if (copy_to_user(&log->buf[i], &val,
+>>> sizeof(u64))) {
+>>> +				rc = -EFAULT;
+>>> +				goto out;
+>>> +			}
+>>> +		} else
+>>> +			log->buf[i] = val;
+>>> +	}
+>>
+>>
+>> I think it could be a bit simplified by keeping the handling of the
+>> user
+>> buffer out of this function. Always call it with a kernel buffer.
+>> And
+>> have only one copy_to_user() call on the ioctl() path. You'd need to
+>> allocate a kernel buf on the ioctl path, but you're already doing it
+>> on
+>> the probe() path, so it should be doable to share code.
+> 
+> Hmm, the problem then is that on the IOCTL side, I'll have to save,
+> modify, then restore the buf member of struct
+> ioctl_ocxl_pmem_error_log, which would be uglier.
+
+
+buf is just an output buffer. All you'd need to do is allocate a kernel 
+buf, like it's already done for the "probe" case in dump_error_log(). 
+And add a global copy_to_user() of the buf at the end of the ioctl path, 
+instead of having multiple smaller copy_to_user() in the loop here.
+copy_to_user() is a bit expensive so it's usually better to regroup 
+them. I think it's easy here and make sense since that function is also 
+trying to handle both a kernel and user space bufffers.
+But we're not in a critical path, and after this patch, there are others 
+copying out mmio content to user buffers and those don't have a kernel 
+buffer to handle, so the copy_to_user() in a loop makes things easier.
+So I guess the conclusion is whatever you think is the easiest...
+
+
+
+>>
+>>
+>>> +
+>>> +	rc = admin_response_handled(ocxlpmem);
+>>> +	if (rc)
+>>> +		goto out;
+>>> +
+>>> +out:
+>>> +	mutex_unlock(&ocxlpmem->admin_command.lock);
+>>> +	return rc;
+>>> +
+>>> +}
+>>> +
+>>> +static int ioctl_error_log(struct ocxlpmem *ocxlpmem,
+>>> +		struct ioctl_ocxl_pmem_error_log __user *uarg)
+>>> +{
+>>> +	struct ioctl_ocxl_pmem_error_log args;
+>>> +	int rc;
+>>> +
+>>> +	if (copy_from_user(&args, uarg, sizeof(args)))
+>>> +		return -EFAULT;
+>>> +
+>>> +	rc = read_error_log(ocxlpmem, &args, true);
+>>> +	if (rc)
+>>> +		return rc;
+>>> +
+>>> +	if (copy_to_user(uarg, &args, sizeof(args)))
+>>> +		return -EFAULT;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static long file_ioctl(struct file *file, unsigned int cmd,
+>>> unsigned long args)
+>>> +{
+>>> +	struct ocxlpmem *ocxlpmem = file->private_data;
+>>> +	int rc = -EINVAL;
+>>> +
+>>> +	switch (cmd) {
+>>> +	case IOCTL_OCXL_PMEM_ERROR_LOG:
+>>> +		rc = ioctl_error_log(ocxlpmem,
+>>> +				     (struct ioctl_ocxl_pmem_error_log
+>>> __user *)args);
+>>> +		break;
+>>> +	}
+>>> +	return rc;
+>>> +}
+>>> +
+>>>    static const struct file_operations fops = {
+>>>    	.owner		= THIS_MODULE,
+>>>    	.open		= file_open,
+>>>    	.release	= file_release,
+>>> +	.unlocked_ioctl = file_ioctl,
+>>> +	.compat_ioctl   = file_ioctl,
+>>>    };
+>>>    
+>>>    /**
+>>> @@ -527,6 +736,60 @@ static int read_device_metadata(struct
+>>> ocxlpmem *ocxlpmem)
+>>>    	return 0;
+>>>    }
+>>>    
+>>> +static const char *decode_error_log_type(u8 error_log_type)
+>>> +{
+>>> +	switch (error_log_type) {
+>>> +	case 0x00:
+>>> +		return "general";
+>>> +	case 0x01:
+>>> +		return "predictive failure";
+>>> +	case 0x02:
+>>> +		return "thermal warning";
+>>> +	case 0x03:
+>>> +		return "data loss";
+>>> +	case 0x04:
+>>> +		return "health & performance";
+>>> +	default:
+>>> +		return "unknown";
+>>> +	}
+>>> +}
+>>> +
+>>> +static void dump_error_log(struct ocxlpmem *ocxlpmem)
+>>> +{
+>>> +	struct ioctl_ocxl_pmem_error_log log;
+>>> +	u32 buf_size;
+>>> +	u8 *buf;
+>>> +	int rc;
+>>> +
+>>> +	if (ocxlpmem->admin_command.data_size == 0)
+>>> +		return;
+>>> +
+>>> +	buf_size = ocxlpmem->admin_command.data_size - 0x48;
+>>> +	buf = kzalloc(buf_size, GFP_KERNEL);
+>>> +	if (!buf)
+>>> +		return;
+>>> +
+>>> +	log.buf = buf;
+>>> +	log.buf_size = buf_size;
+>>> +
+>>> +	rc = read_error_log(ocxlpmem, &log, false);
+>>> +	if (rc < 0)
+>>> +		goto out;
+>>> +
+>>> +	dev_warn(&ocxlpmem->dev,
+>>> +		 "OCXL PMEM Error log: WWID=0x%016llx%016llx LID=0x%x
+>>> PRC=%x type=0x%x %s, Uptime=%u seconds timestamp=0x%llx\n",
+>>> +		 log.wwid[0], log.wwid[1],
+>>> +		 log.log_identifier, log.program_reference_code,
+>>> +		 log.error_log_type,
+>>> +		 decode_error_log_type(log.error_log_type),
+>>> +		 log.power_on_seconds, log.timestamp);
+>>> +	print_hex_dump(KERN_WARNING, "buf", DUMP_PREFIX_OFFSET, 16, 1,
+>>> buf,
+>>> +		       log.buf_size, false);
+>>
+>> dev_warn already logs a warning. Isn't KERN_DEBUG more appropriate
+>> for
+>> the hex dump?
+>>
+>>
+> 
+> The hex dump is associated binary data for the warning, it doesn't
+> replicate the contents of the message.
+
+
+My point is not about duplicating, it's about exposing an hexadecimal 
+dump where it makes sense. Those DEBUG and WARNING tags are used for 
+filtering content. For example to know what to display on the console. A 
+warning to mention that a device hits a serious error is perfectly fine. 
+A hexadecimal dump which is going to be meaningless to most everybody is 
+not. The system is not crashing, so it's not like the console is our 
+last hope. I think the dump is debug data and should be tagged as such.
+
+   Fred
+
+
+
+>>
+>>> +
+>>> +out:
+>>> +	kfree(buf);
+>>> +}
+>>> +
+>>>    /**
+>>>     * probe_function0() - Set up function 0 for an OpenCAPI
+>>> persistent memory device
+>>>     * This is important as it enables templates higher than 0 across
+>>> all other functions,
+>>> @@ -568,6 +831,7 @@ static int probe(struct pci_dev *pdev, const
+>>> struct pci_device_id *ent)
+>>>    	struct ocxlpmem *ocxlpmem;
+>>>    	int rc;
+>>>    	u16 elapsed, timeout;
+>>> +	u64 chi;
+>>>    
+>>>    	if (PCI_FUNC(pdev->devfn) == 0)
+>>>    		return probe_function0(pdev);
+>>> @@ -667,6 +931,11 @@ static int probe(struct pci_dev *pdev, const
+>>> struct pci_device_id *ent)
+>>>    	return 0;
+>>>    
+>>>    err:
+>>> +	if (ocxlpmem &&
+>>> +		    (ocxlpmem_chi(ocxlpmem, &chi) == 0) &&
+>>> +		    (chi & GLOBAL_MMIO_CHI_ELA))
+>>> +		dump_error_log(ocxlpmem);
+>>> +
+>>>    	/*
+>>>    	 * Further cleanup is done in the release handler via
+>>> free_ocxlpmem()
+>>>    	 * This allows us to keep the character device live to handle
+>>> IOCTLs to
+>>> diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+>>> b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+>>> index d2d81fec7bb1..b953ee522ed4 100644
+>>> --- a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+>>> +++ b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+>>> @@ -5,6 +5,7 @@
+>>>    #include <linux/cdev.h>
+>>>    #include <misc/ocxl.h>
+>>>    #include <linux/libnvdimm.h>
+>>> +#include <uapi/nvdimm/ocxl-pmem.h>
+>>
+>> Can't we limit the extra include to ocxl.c?
+>>
+> 
+> Yes, there are no consumers referred to in ocxl_interal.[hc]
+> 
+>> Completely unrelated, but ocxl.c contains most of the code for this
+>> driver. We should consider renaming it to ocxlpmem.c or something
+>> along
+>> those lines, since it does a lot more than just interfacing with the
+>> opencapi interface. And would avoid confusion with an other already
+>> existing ocxl.c file.
+>>
+> 
+> Ok, my thinking was that it's already in a pmem directory, but I can
+> see arguments both ways.
+> 
+>>
+>>>    #include <linux/mm.h>
+>>>    
+>>>    #define LABEL_AREA_SIZE	(1UL << PA_SECTION_SHIFT)
+>>> diff --git a/include/uapi/nvdimm/ocxl-pmem.h
+>>> b/include/uapi/nvdimm/ocxl-pmem.h
+>>> new file mode 100644
+>>> index 000000000000..b10f8ac0c20f
+>>> --- /dev/null
+>>> +++ b/include/uapi/nvdimm/ocxl-pmem.h
+>>> @@ -0,0 +1,46 @@
+>>> +/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
+>>> +/* Copyright 2017 IBM Corp. */
+>>> +#ifndef _UAPI_OCXL_SCM_H
+>>> +#define _UAPI_OCXL_SCM_H
+>>> +
+>>> +#include <linux/types.h>
+>>> +#include <linux/ioctl.h>
+>>> +
+>>> +#define OCXL_PMEM_ERROR_LOG_ACTION_RESET	(1 << (32-32))
+>>> +#define OCXL_PMEM_ERROR_LOG_ACTION_CHKFW	(1 << (53-32))
+>>> +#define OCXL_PMEM_ERROR_LOG_ACTION_REPLACE	(1 << (54-32))
+>>> +#define OCXL_PMEM_ERROR_LOG_ACTION_DUMP		(1 << (55-32))
+>>> +
+>>> +#define OCXL_PMEM_ERROR_LOG_TYPE_GENERAL		(0x00)
+>>> +#define OCXL_PMEM_ERROR_LOG_TYPE_PREDICTIVE_FAILURE	(0x01)
+>>> +#define OCXL_PMEM_ERROR_LOG_TYPE_THERMAL_WARNING	(0x02)
+>>> +#define OCXL_PMEM_ERROR_LOG_TYPE_DATA_LOSS		(0x03)
+>>> +#define OCXL_PMEM_ERROR_LOG_TYPE_HEALTH_PERFORMANCE	(0x04)
+>>> +
+>>> +struct ioctl_ocxl_pmem_error_log {
+>>> +	__u32 log_identifier; /* out */
+>>> +	__u32 program_reference_code; /* out */
+>>> +	__u32 action_flags; /* out, recommended course of action */
+>>> +	__u32 power_on_seconds; /* out, Number of seconds the
+>>> controller has been on when the error occurred */
+>>> +	__u64 timestamp; /* out, relative time since the current IPL */
+>>> +	__u64 wwid[2]; /* out, the NAA formatted WWID associated with
+>>> the controller */
+>>> +	char  fw_revision[8+1]; /* out, firmware revision as null
+>>> terminated text */
+>>
+>> The 8+1 size will make the compiler add some padding here. Are we
+>> confident that all the compilers, at least on powerpc, will do the
+>> same
+>> thing and we can guarantee a kernel ABI? I would play it safe and
+>> have a
+>> discussion with folks who understand compilers better.
+>>
+> 
+> I'll add some explicit padding.
+> 
+>>
+>>
+>>> +	__u16 buf_size; /* in/out, buffer size provided/required.
+>>> +			 * If required is greater than provided, the
+>>> buffer
+>>> +			 * will be truncated to the amount provided. If
+>>> its
+>>> +			 * less, then only the required bytes will be
+>>> populated.
+>>> +			 * If it is 0, then there are no more error log
+>>> entries.
+>>> +			 */
+>>> +	__u8  error_log_type;
+>>> +	__u8  reserved1;
+>>> +	__u32 reserved2;
+>>> +	__u64 reserved3[2];
+>>> +	__u8 *buf; /* pointer to output buffer */
+>>> +};
+>>> +
+>>> +/* ioctl numbers */
+>>> +#define OCXL_PMEM_MAGIC 0x5C
+>>
+>> Randomly picked?
+>> See (and add entry in) Documentation/userspace-api/ioctl/ioctl-
+>> number.rst
+>>
+> Ok
+> 
+>>
+>>     Fred
+>>
+>>
+>>
+>>> +/* SCM devices */
+>>> +#define IOCTL_OCXL_PMEM_ERROR_LOG			_IOWR(OCXL_PMEM
+>>> _MAGIC, 0x01, struct ioctl_ocxl_pmem_error_log)
+>>> +
+>>> +#endif /* _UAPI_OCXL_SCM_H */
+>>>
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
