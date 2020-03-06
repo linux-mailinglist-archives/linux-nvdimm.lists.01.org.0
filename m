@@ -2,85 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D71717B4F4
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Mar 2020 04:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43A017C6CC
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  6 Mar 2020 21:07:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E9B3F10FC3160;
-	Thu,  5 Mar 2020 19:36:06 -0800 (PST)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 81DDE10FC3404;
+	Fri,  6 Mar 2020 12:08:39 -0800 (PST)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=jmoyer@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7BB921007A84E
-	for <linux-nvdimm@lists.01.org>; Thu,  5 Mar 2020 19:36:04 -0800 (PST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0263ZCDk166221
-	for <linux-nvdimm@lists.01.org>; Thu, 5 Mar 2020 22:35:12 -0500
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2yhsv5vxr2-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Thu, 05 Mar 2020 22:35:11 -0500
-Received: from localhost
-	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Fri, 6 Mar 2020 03:34:33 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Fri, 6 Mar 2020 03:34:26 -0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0263YPWr47906834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Mar 2020 03:34:25 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6904BA4053;
-	Fri,  6 Mar 2020 03:34:25 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0707A4051;
-	Fri,  6 Mar 2020 03:34:24 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Mar 2020 03:34:24 +0000 (GMT)
-Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
-	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTPS id 20F1010FC33FD
+	for <linux-nvdimm@lists.01.org>; Fri,  6 Mar 2020 12:08:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1583525264;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+YIIYWVi7RdgKfAy7yTaNL+3yMfo1EDUARXKVoiNRlk=;
+	b=iORSAA+dvGs8kGAy7INVNjSgZaeQlvWI0LcSQIeTCrDSFzVoNo2lizxJGSc4gpQvEeF4Ii
+	ywln5Q2Gx4dT0F37AfPsTsHjoWhmXSxNLzskAkYcIS4bJg7X8hsY0OJa56/m/6XBEXyf2K
+	ueAbIihO24iciP2EbmdSq2CsakVLOyQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-299-9S-s0OdCNB2jyIvWkNZXNg-1; Fri, 06 Mar 2020 15:07:35 -0500
+X-MC-Unique: 9S-s0OdCNB2jyIvWkNZXNg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id C3638A011F;
-	Fri,  6 Mar 2020 14:34:19 +1100 (AEDT)
-Subject: Re: [PATCH v3 18/27] powerpc/powernv/pmem: Add controller dump
- IOCTLs
-From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Fri, 06 Mar 2020 14:34:23 +1100
-In-Reply-To: <7fc5ee46-d849-11f1-d0ad-429a8c87d7eb@linux.ibm.com>
-References: <20200221032720.33893-1-alastair@au1.ibm.com>
-	 <20200221032720.33893-19-alastair@au1.ibm.com>
-	 <7fc5ee46-d849-11f1-d0ad-429a8c87d7eb@linux.ibm.com>
-Organization: IBM Australia
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BB225184C804;
+	Fri,  6 Mar 2020 20:07:32 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id AB79A1001B2D;
+	Fri,  6 Mar 2020 20:07:29 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH 0/5] Manual definition of Soft Reserved memory devices
+References: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Fri, 06 Mar 2020 15:07:28 -0500
+In-Reply-To: <158318759687.2216124.4684754859068906007.stgit@dwillia2-desk3.amr.corp.intel.com>
+	(Dan Williams's message of "Mon, 02 Mar 2020 14:19:57 -0800")
+Message-ID: <x49a74tnt6n.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 20030603-4275-0000-0000-000003A8D469
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20030603-4276-0000-0000-000038BDE5E2
-Message-Id: <c27d416fa11435e8ae6ede081278368506b3b9fc.camel@au1.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-03-05_08:2020-03-05,2020-03-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- clxscore=1015 mlxlogscore=999 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 suspectscore=0 spamscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003060021
-Message-ID-Hash: 7U537Q6LH6TVDUT4QFDRAZ6XV7UJGP7D
-X-Message-ID-Hash: 7U537Q6LH6TVDUT4QFDRAZ6XV7UJGP7D
-X-MailFrom: alastair@au1.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxp
- pc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: CK3BRODFQDSRVEHNLD4SBX5UPD6AHZTE
+X-Message-ID-Hash: CK3BRODFQDSRVEHNLD4SBX5UPD6AHZTE
+X-MailFrom: jmoyer@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-acpi@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ardb@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Brice Goglin <Brice.Goglin@inria.fr>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Andy Lutomirski <luto@kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7U537Q6LH6TVDUT4QFDRAZ6XV7UJGP7D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CK3BRODFQDSRVEHNLD4SBX5UPD6AHZTE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -89,157 +64,104 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, 2020-03-04 at 17:53 +1100, Andrew Donnellan wrote:
-> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
-> > +static int ioctl_controller_dump_data(struct ocxlpmem *ocxlpmem,
-> > +		struct ioctl_ocxl_pmem_controller_dump_data __user
-> > *uarg)
-> > +{
-> > +	struct ioctl_ocxl_pmem_controller_dump_data args;
-> > +	u16 i;
-> > +	u64 val;
-> > +	int rc;
-> > +
-> > +	if (copy_from_user(&args, uarg, sizeof(args)))
-> > +		return -EFAULT;
-> > +
-> > +	if (args.buf_size % 8)
-> > +		return -EINVAL;
-> > +
-> > +	if (args.buf_size > ocxlpmem->admin_command.data_size)
-> > +		return -EINVAL;
-> > +
-> > +	mutex_lock(&ocxlpmem->admin_command.lock);
-> > +
-> > +	rc = admin_command_request(ocxlpmem,
-> > ADMIN_COMMAND_CONTROLLER_DUMP);
-> > +	if (rc)
-> > +		goto out;
-> > +
-> > +	val = ((u64)args.offset) << 32;
-> > +	val |= args.buf_size;
-> > +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-> > +				      ocxlpmem-
-> > >admin_command.request_offset + 0x08,
-> > +				      OCXL_LITTLE_ENDIAN, val);
-> > +	if (rc)
-> > +		goto out;
-> > +
-> > +	rc = admin_command_execute(ocxlpmem);
-> > +	if (rc)
-> > +		goto out;
-> > +
-> > +	rc = admin_command_complete_timeout(ocxlpmem,
-> > +					    ADMIN_COMMAND_CONTROLLER_DU
-> > MP);
-> > +	if (rc < 0) {
-> > +		dev_warn(&ocxlpmem->dev, "Controller dump timed
-> > out\n");
-> > +		goto out;
-> > +	}
-> > +
-> > +	rc = admin_response(ocxlpmem);
-> > +	if (rc < 0)
-> > +		goto out;
-> > +	if (rc != STATUS_SUCCESS) {
-> > +		warn_status(ocxlpmem,
-> > +			    "Unexpected status from retrieve error
-> > log",
-> 
-> Controller dump
-> 
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Ok
+> Given the current dearth of systems that supply an ACPI HMAT table, and
+> the utility of being able to manually define device-dax "hmem" instances
+> via the efi_fake_mem= option, relax the requirements for creating these
+> devices. Specifically, add an option (numa=nohmat) to optionally disable
+> consideration of the HMAT and update efi_fake_mem= to behave like
+> memmap=nn!ss in terms of delimiting device boundaries.
 
-> > +			    rc);
-> > +		goto out;
-> > +	}
-> > +
-> > +	for (i = 0; i < args.buf_size; i += 8) {
-> > +		u64 val;
-> > +
-> > +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> > +					     ocxlpmem-
-> > >admin_command.data_offset + i,
-> > +					     OCXL_HOST_ENDIAN, &val);
-> 
-> Is a controller dump something where we want to do endian swapping?
-> 
+So, am I correct in deducing that your primary motivation is testing
+without hardware/firmware support?  This looks like a bit of a hack to
+me, and I think maybe it would be better to just emulate the HMAT using
+qemu.  I don't have a strong objection, though.
 
-No, we just have raw binary data that we want to pass through.
-OCXL_HOST_ENDIAN does no swapping.
+-Jeff
 
-> Any reason we're not doing the usual check of the data identifier, 
-> additional data length etc?
-> 
-
-I'll add that
-
-> > +		if (rc)
-> > +			goto out;
-> > +
-> > +		if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
-> > +			rc = -EFAULT;
-> > +			goto out;
-> > +		}
-> > +	}
-> > +
-> > +	if (copy_to_user(uarg, &args, sizeof(args))) {
-> > +		rc = -EFAULT;
-> > +		goto out;
-> > +	}
-> > +
-> > +	rc = admin_response_handled(ocxlpmem);
-> > +	if (rc)
-> > +		goto out;
-> > +
-> > +out:
-> > +	mutex_unlock(&ocxlpmem->admin_command.lock);
-> > +	return rc;
-> > +}
-> > +
-> > +int request_controller_dump(struct ocxlpmem *ocxlpmem)
-> > +{
-> > +	int rc;
-> > +	u64 busy = 1;
-> > +
-> > +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu,
-> > GLOBAL_MMIO_CHIC,
-> > +				    OCXL_LITTLE_ENDIAN,
-> > +				    GLOBAL_MMIO_CHI_CDA);
-> 
-> This return code is ignored
-> 
-> > +
-> > +
-> > +	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu,
-> > GLOBAL_MMIO_HCI,
-> > +				    OCXL_LITTLE_ENDIAN,
-> > +				    GLOBAL_MMIO_HCI_CONTROLLER_DUMP);
-> > +	if (rc)
-> > +		return rc;
-> > +
-> > +	while (busy) {
-> > +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-> > +					     GLOBAL_MMIO_HCI,
-> > +					     OCXL_LITTLE_ENDIAN,
-> > &busy);
-> > +		if (rc)
-> > +			return rc;
-> > +
-> > +		busy &= GLOBAL_MMIO_HCI_CONTROLLER_DUMP;
-> > +		cond_resched();
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> 
-> 
--- 
-Alastair D'Silva
-Open Source Developer
-Linux Technology Centre, IBM Australia
-mob: 0423 762 819
+>
+> All review welcome of course, but the E820 changes want an x86
+> maintainer ack, the efi_fake_mem update needs Ard, and Rafael has
+> previously shepherded the HMAT changes. For the changes to
+> kernel/resource.c, where there is no clear maintainer, I just copied the
+> last few people to make thoughtful changes in that area. I am happy to
+> take these through the nvdimm tree along with these prerequisites
+> already in -next:
+>
+> b2ca916ce392 ACPI: NUMA: Up-level "map to online node" functionality
+> 4fcbe96e4d0b mm/numa: Skip NUMA_NO_NODE and online nodes in numa_map_to_online_node()
+> 575e23b6e13c powerpc/papr_scm: Switch to numa_map_to_online_node()
+> 1e5d8e1e47af x86/mm: Introduce CONFIG_NUMA_KEEP_MEMINFO
+> 5d30f92e7631 x86/NUMA: Provide a range-to-target_node lookup facility
+> 7b27a8622f80 libnvdimm/e820: Retrieve and populate correct 'target_node' info
+>
+> Tested with:
+>
+>         numa=nohmat efi_fake_mem=4G@9G:0x40000,4G@13G:0x40000
+>
+> ...to create to device-dax instances:
+>
+> 	# daxctl list -RDu
+> 	[
+> 	  {
+> 	    "path":"\/platform\/hmem.1",
+> 	    "id":1,
+> 	    "size":"4.00 GiB (4.29 GB)",
+> 	    "align":2097152,
+> 	    "devices":[
+> 	      {
+> 	        "chardev":"dax1.0",
+> 	        "size":"4.00 GiB (4.29 GB)",
+> 	        "target_node":3,
+> 	        "mode":"devdax"
+> 	      }
+> 	    ]
+> 	  },
+> 	  {
+> 	    "path":"\/platform\/hmem.0",
+> 	    "id":0,
+> 	    "size":"4.00 GiB (4.29 GB)",
+> 	    "align":2097152,
+> 	    "devices":[
+> 	      {
+> 	        "chardev":"dax0.0",
+> 	        "size":"4.00 GiB (4.29 GB)",
+> 	        "target_node":2,
+> 	        "mode":"devdax"
+> 	      }
+> 	    ]
+> 	  }
+> 	]
+>
+> ---
+>
+> Dan Williams (5):
+>       ACPI: NUMA: Add 'nohmat' option
+>       efi/fake_mem: Arrange for a resource entry per efi_fake_mem instance
+>       ACPI: HMAT: Refactor hmat_register_target_device to hmem_register_device
+>       resource: Report parent to walk_iomem_res_desc() callback
+>       ACPI: HMAT: Attach a device for each soft-reserved range
+>
+>
+>  arch/x86/kernel/e820.c              |   16 +++++-
+>  arch/x86/mm/numa.c                  |    4 +
+>  drivers/acpi/numa/hmat.c            |   71 +++-----------------------
+>  drivers/dax/Kconfig                 |    5 ++
+>  drivers/dax/Makefile                |    3 -
+>  drivers/dax/hmem/Makefile           |    6 ++
+>  drivers/dax/hmem/device.c           |   97 +++++++++++++++++++++++++++++++++++
+>  drivers/dax/hmem/hmem.c             |    2 -
+>  drivers/firmware/efi/x86_fake_mem.c |   12 +++-
+>  include/acpi/acpi_numa.h            |    1 
+>  include/linux/dax.h                 |    8 +++
+>  kernel/resource.c                   |    1 
+>  12 files changed, 156 insertions(+), 70 deletions(-)
+>  create mode 100644 drivers/dax/hmem/Makefile
+>  create mode 100644 drivers/dax/hmem/device.c
+>  rename drivers/dax/{hmem.c => hmem/hmem.c} (98%)
+>
+> base-commit: 7b27a8622f802761d5c6abd6c37b22312a35343c
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
