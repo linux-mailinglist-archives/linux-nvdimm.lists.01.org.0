@@ -1,39 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7AF17D07D
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  7 Mar 2020 23:57:48 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6793817D49F
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  8 Mar 2020 17:06:17 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EB47C10FC3164;
-	Sat,  7 Mar 2020 14:58:37 -0800 (PST)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=42.231.163.212; helo=gmail.com; envelope-from=johnsonloretta061zvec@gmail.com; receiver=<UNKNOWN> 
-Received: from gmail.com (unknown [42.231.163.212])
-	by ml01.01.org (Postfix) with SMTP id 5EF7E1007B1EA
-	for <linux-nvdimm@lists.01.org>; Sat,  7 Mar 2020 14:58:35 -0800 (PST)
-Received: from unknown (HELO group21.345mail.com) (Sun, 08 Mar 2020 02:38:33 +0400)
-	by mxs.perenter.com with SMTP; Sun, 08 Mar 2020 02:38:33 +0400
-Received: from mailout.endmonthnow.com [22.150.65.210] by smtp.doneohx.com with QMQP; Sun, 08 Mar 2020 02:32:41 +0400
-Received: from unknown (HELO group21.345mail.com) (Sun, 08 Mar 2020 02:30:35 +0400)
-	by public.micromail.com.au with SMTP; Sun, 08 Mar 2020 02:30:35 +0400
-Message-ID: <E8657E4B.5EA8F02A@gmail.com>
-Date: Sun, 08 Mar 2020 02:03:01 +0400
-From: "Neda Greeson" <johnsonloretta061zvec@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; SunOS sun4u; en-US; rv:1.8.1.4) Gecko/20070622 Thunderbird/2.0.0.4
-X-Accept-Language: en-us
+	by ml01.01.org (Postfix) with ESMTP id AAAAF1003ECB9;
+	Sun,  8 Mar 2020 09:07:06 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=59.106.19.202; helo=www752.sakura.ne.jp; envelope-from=postmaster@hokusetubad.sakura.ne.jp; receiver=<UNKNOWN> 
+Received: from www752.sakura.ne.jp (www752.sakura.ne.jp [59.106.19.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id A91E210078090
+	for <linux-nvdimm@lists.01.org>; Sun,  8 Mar 2020 09:07:04 -0700 (PDT)
+Received: from fsav405.sakura.ne.jp (fsav405.sakura.ne.jp [133.242.250.104])
+	by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028G3SVE063772;
+	Mon, 9 Mar 2020 01:03:28 +0900 (JST)
+	(envelope-from postmaster@hokusetubad.sakura.ne.jp)
+Received: from www752.sakura.ne.jp (59.106.19.202)
+ by fsav405.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav405.sakura.ne.jp);
+ Mon, 09 Mar 2020 01:03:28 +0900 (JST)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav405.sakura.ne.jp)
+Received: from www752.sakura.ne.jp (localhost [127.0.0.1])
+	by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028G3QwI063755;
+	Mon, 9 Mar 2020 01:03:27 +0900 (JST)
+	(envelope-from postmaster@hokusetubad.sakura.ne.jp)
+Received: (from hokusetubad@localhost)
+	by www752.sakura.ne.jp (8.15.2/8.15.2/Submit) id 028G3QZL063754;
+	Mon, 9 Mar 2020 01:03:26 +0900 (JST)
+	(envelope-from postmaster@hokusetubad.sakura.ne.jp)
+Message-Id: <202003081603.028G3QZL063754@www752.sakura.ne.jp>
+X-Authentication-Warning: www752.sakura.ne.jp: hokusetubad set sender to postmaster@hokusetubad.sakura.ne.jp using -f
+Subject: BUSINESS PROPOSAL
+From: postmaster@hokusetubad.sakura.ne.jp
+To: glider@google.com
 MIME-Version: 1.0
-To: <linux-nvdimm@lists.01.org>
-Subject: re: Country targeted organic visits
-X-Priority: 1
-Message-ID-Hash: MH2RDB6RGH3C7GM2MSPESY53D5U753JX
-X-Message-ID-Hash: MH2RDB6RGH3C7GM2MSPESY53D5U753JX
-X-MailFrom: johnsonloretta061zvec@gmail.com
+Date: Mon, 09 Mar 2020 01:03:26 +0900
+Message-ID-Hash: OP4C6BWG7IWG5VDFQ4723KBQQHMJZICL
+X-Message-ID-Hash: OP4C6BWG7IWG5VDFQ4723KBQQHMJZICL
+X-MailFrom: postmaster@hokusetubad.sakura.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: abulkareem461@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MH2RDB6RGH3C7GM2MSPESY53D5U753JX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OP4C6BWG7IWG5VDFQ4723KBQQHMJZICL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -42,9 +54,14 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-bulkwebtraffic.io
+Dearest Friend
 
-
+I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
+I have a very profitable Business that concerns you and will benefit both of us after completion.
+Kindly get back to me for more details.
+Awaiting your response.
+Regards
+Abdul Kareem
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
