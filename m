@@ -1,62 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0150180746
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Mar 2020 19:47:39 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C18180807
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Mar 2020 20:29:59 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5B94C10FC3624;
-	Tue, 10 Mar 2020 11:48:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 91F6C10FC362D;
+	Tue, 10 Mar 2020 12:30:49 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d41; helo=mail-io1-xd41.google.com; envelope-from=miklos@szeredi.hu; receiver=<UNKNOWN> 
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 356F210FC316E
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 11:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1583866054;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvrq31NBMkv7Vsef+6f+mBGyLXD/eDRO+WBoQLnMO/s=;
-	b=A90CR9b+5ERYZcvA94Ya8A4/iAfjbnY5QXsrpGjcZeEwdmVz5nVXuVFen/6a7ud9pqb+Gt
-	d97xe8b+yVxT5N0FS7iFqbEY+JVGe2+DxQAFWvzWU2MmgS5CYLFcHqJvxy1xeAwUi0pyAE
-	benwlQ2NrIltU/T8D82YEtuxLswDLTE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-82-lrpkCCq3MUejwZtd_UU6uw-1; Tue, 10 Mar 2020 14:47:30 -0400
-X-MC-Unique: lrpkCCq3MUejwZtd_UU6uw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A82A2477;
-	Tue, 10 Mar 2020 18:47:29 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.210])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DDAF6277A4;
-	Tue, 10 Mar 2020 18:47:20 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 7B8B322021D; Tue, 10 Mar 2020 14:47:20 -0400 (EDT)
-Date: Tue, 10 Mar 2020 14:47:20 -0400
-From: Vivek Goyal <vgoyal@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH 04/20] virtio: Implement get_shm_region for PCI transport
-Message-ID: <20200310184720.GD38440@redhat.com>
-References: <20200304165845.3081-1-vgoyal@redhat.com>
- <20200304165845.3081-5-vgoyal@redhat.com>
- <20200310071043-mutt-send-email-mst@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id E49BB10FC362D
+	for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 12:30:46 -0700 (PDT)
+Received: by mail-io1-xd41.google.com with SMTP id q128so14001809iof.9
+        for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 12:29:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=szeredi.hu; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O+5kKx2vjd+32qtXdrToSkdcaTFfCoL0XwTHvIf1Udg=;
+        b=aK5PVE29ZcX0JiUctdQKR6J4V8Ui1eAIPqRanRd0A6P1wY0Olma3AwHhrD2PySTEY1
+         kZXXW4WCwVRDmSdrzbH44gRLv2dG0A/Uo2FsE583gbPAcJns18ZxYKCVeIw3hoRvR9nW
+         X63aa+sKmNAHbQ4QA3pDh67PTQqXiIq2fbgVc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O+5kKx2vjd+32qtXdrToSkdcaTFfCoL0XwTHvIf1Udg=;
+        b=AfxRkCPu5oZJtWzN981vYyrlT1aQGe+PTnbi1uOSQiRMawDjvHXMsqVcY02qqxcup1
+         Cm9Zo7Qr4FaldLfdDuSHDvt4C3F5WIDlbzp/7G2uxJ5XtsA5wSs+gl1uN1rkQ7zF+ToJ
+         4SMfG+mY9gBkYFY78C6E+TiekazE6fLQrPa+KTBNJJPWHRr8M/CKiy9QMVYmVrRyTFnK
+         EGufntim7+niQRLYh98UA138vDUW7MQdoo0csuo8NynKkRByAcaT8d1q5u4yJCxZAWr5
+         vDDKex65D83mqPhOwOamHBn2TuIrin8nhAbJEq9aiq1UdeGKMTh93IePhXgCtEPoNwGF
+         rb1Q==
+X-Gm-Message-State: ANhLgQ3GT/YNh303Qf78UUkfMM2XSycmLhHGoSzA9W+NwSR4PHJ+4Nzs
+	bEPt6hhMEL6liOq7h88DXoXFXzhko07Q8qbG0aloGw==
+X-Google-Smtp-Source: ADFU+vtsHIE3juf6VloEHRQ+IFMzK3xP4NZGmqU4UP+Nis9eHwUR1TaPlSRS7pe1JGlIhD+fR0kBGJFzXYHNxz1Bts4=
+X-Received: by 2002:a02:7a07:: with SMTP id a7mr12556058jac.77.1583868594718;
+ Tue, 10 Mar 2020 12:29:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200310071043-mutt-send-email-mst@kernel.org>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: TSBF5CGKDGX2IRWVTAT7DLHBY75FA2DB
-X-Message-ID-Hash: TSBF5CGKDGX2IRWVTAT7DLHBY75FA2DB
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, Sebastien Boeuf <sebastien.boeuf@intel.com>, kbuild test robot <lkp@intel.com>
+References: <20200304165845.3081-1-vgoyal@redhat.com> <20200304165845.3081-11-vgoyal@redhat.com>
+In-Reply-To: <20200304165845.3081-11-vgoyal@redhat.com>
+From: Miklos Szeredi <miklos@szeredi.hu>
+Date: Tue, 10 Mar 2020 20:29:43 +0100
+Message-ID: <CAJfpegshzZB=e3npbY3h9VOLMwAgLtQ3PJSC8AupF_d3FW9few@mail.gmail.com>
+Subject: Re: [PATCH 10/20] fuse,virtiofs: Keep a list of free dax memory ranges
+To: Vivek Goyal <vgoyal@redhat.com>
+Message-ID-Hash: J5YATSNDKQYBB73CB6PB76MIRLSE2ONQ
+X-Message-ID-Hash: J5YATSNDKQYBB73CB6PB76MIRLSE2ONQ
+X-MailFrom: miklos@szeredi.hu
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Peng Tao <tao.peng@linux.alibaba.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TSBF5CGKDGX2IRWVTAT7DLHBY75FA2DB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J5YATSNDKQYBB73CB6PB76MIRLSE2ONQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -65,57 +65,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 10, 2020 at 07:12:25AM -0400, Michael S. Tsirkin wrote:
-[..]
-> > +static bool vp_get_shm_region(struct virtio_device *vdev,
-> > +			      struct virtio_shm_region *region, u8 id)
-> > +{
-> > +	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
-> > +	struct pci_dev *pci_dev = vp_dev->pci_dev;
-> > +	u8 bar;
-> > +	u64 offset, len;
-> > +	phys_addr_t phys_addr;
-> > +	size_t bar_len;
-> > +	int ret;
-> > +
-> > +	if (!virtio_pci_find_shm_cap(pci_dev, id, &bar, &offset, &len)) {
-> > +		return false;
-> > +	}
-> > +
-> > +	ret = pci_request_region(pci_dev, bar, "virtio-pci-shm");
-> > +	if (ret < 0) {
-> > +		dev_err(&pci_dev->dev, "%s: failed to request BAR\n",
-> > +			__func__);
-> > +		return false;
-> > +	}
-> > +
-> > +	phys_addr = pci_resource_start(pci_dev, bar);
-> > +	bar_len = pci_resource_len(pci_dev, bar);
-> > +
-> > +        if (offset + len > bar_len) {
-> > +                dev_err(&pci_dev->dev,
-> > +                        "%s: bar shorter than cap offset+len\n",
-> > +                        __func__);
-> > +                return false;
-> > +        }
-> > +
-> 
-> Something wrong with indentation here.
+On Wed, Mar 4, 2020 at 5:59 PM Vivek Goyal <vgoyal@redhat.com> wrote:
+>
+> Divide the dax memory range into fixed size ranges (2MB for now) and put
+> them in a list. This will track free ranges. Once an inode requires a
+> free range, we will take one from here and put it in interval-tree
+> of ranges assigned to inode.
+>
+> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> Signed-off-by: Peng Tao <tao.peng@linux.alibaba.com>
 
-Will fix all indentation related issues in this patch.
-
-> Also as long as you are validating things, it's worth checking
-> offset + len does not overflow.
-
-Something like addition of following lines?
-
-+       if ((offset + len) < offset) {
-+               dev_err(&pci_dev->dev, "%s: cap offset+len overflow detected\n",
-+                       __func__);
-+               return false;
-+       }
-
-Vivek
+Reviewed-by: Miklos Szeredi <mszeredi@redhat.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
