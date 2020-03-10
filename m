@@ -1,54 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCC917FFD7
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Mar 2020 15:10:20 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D87D17FFE9
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 10 Mar 2020 15:13:06 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 881B710FC3617;
-	Tue, 10 Mar 2020 07:11:09 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com; envelope-from=miklos@szeredi.hu; receiver=<UNKNOWN> 
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+	by ml01.01.org (Postfix) with ESMTP id D513F10FC361A;
+	Tue, 10 Mar 2020 07:13:55 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com; envelope-from=miklos@szeredi.hu; receiver=<UNKNOWN> 
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 873F310FC35BE
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 07:11:06 -0700 (PDT)
-Received: by mail-il1-x144.google.com with SMTP id p1so8096900ils.12
-        for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 07:10:15 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E6D1310FC3619
+	for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 07:13:53 -0700 (PDT)
+Received: by mail-io1-xd44.google.com with SMTP id h8so12899927iob.2
+        for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 07:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=szeredi.hu; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4Dq64x4DjoKFCRaWP0RmVXxQ/yypMvRHHigI32DgfmA=;
-        b=IMSgfzJYgymp5J//NAnPuXmv+ttIDEmyfzo3Bl/xD5bXo890r/Y+o2KMqeTHJlcpRr
-         LHhWPmBfOOouLuWuT3Uj7HRvFT2ydIXCkZaFwsKzywxSWuEKNBetWQvDVoULEZEDm03p
-         tRMUsriMnv8JkVwffZVVKi89BSYtpcGRODjq8=
+        bh=OYU1wxb/ge5DirIWwK28AnywpJQY3e/U9vYLjiccLeo=;
+        b=VUMeVtRyDXOmmJAxS6+A2yYelERcpsMobnU+K+HXqAre31LWH5Ybg9m1IevwykOAC8
+         LuhKNNqsEpPoC+7agcvG1rpEStM2V2YpmRpy+BjS+BXwOrIaMeNotiWCXzqWdLczA50g
+         BSV6AlSgpI8eO6i/dsioSkintiC6wBXLVK/So=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4Dq64x4DjoKFCRaWP0RmVXxQ/yypMvRHHigI32DgfmA=;
-        b=sBaPa2VXwX0/AO57DFkAPrNCEY7DZlY/O1VoQAuqwi12pI92GA43dDpM43AA/vO6y8
-         RsfpHX2Rds7Big9LfbXX8+E5v52j4PiydFAsiYIj6w+eRnugZx8KFXb70jtIpUvYUrRh
-         bAWKwG/jby4L9qv4jl8S6E08kKPpT3EASibOQ3aU/fQqsBp0SCVKSAc3Zprh6pjbQ2ao
-         qr5Dhn+luJbuZYko5P0ncEFLja5WLclcjufP1jJABYHjcXJexeBPFamsMZz5U8zCuNYm
-         sz5WXYeP7Op2Yr+Mf++WBfIvhg0nG+tsZx8cF6kDshXBKyuMCBYFzivhmL9jRmnYL+cW
-         /G5w==
-X-Gm-Message-State: ANhLgQ10JN+3PwxEC63fjvmnYUP2vmNiQ6MjxkOCPC4d6bEk4zRSgtg1
-	zFmmctaa6lR+2m4nGHCUEOn7GfFbcQJE4Qh4Wi2nkQ==
-X-Google-Smtp-Source: ADFU+vtA2bBrA3QBgj3ZymF37VCxe3Znyz4vcji09X2nGjZ9/L3vfB4trInJdMsBR57HttHenvzZDwFXg1DyS7Avj/4=
-X-Received: by 2002:a92:aa87:: with SMTP id p7mr12249562ill.63.1583849414997;
- Tue, 10 Mar 2020 07:10:14 -0700 (PDT)
+        bh=OYU1wxb/ge5DirIWwK28AnywpJQY3e/U9vYLjiccLeo=;
+        b=Pd0Mdf6/G3XjgnTtcb8/DLSLAkqsFEY/wRu1PYHIQOHjDlPAJldC096KDTk0ehw2N1
+         rvGo36NKVojqenaHlyrPk/gco+EmX7z/wG75/bu/6tOLDNA5bXXhQ71yQumE0na1C7tE
+         l5UZBMeYZ8u71k+xdPvj2vNhBZ+75xnkKVlkVLjGdJjTmjWTjvcxDqHla6RDwqqNANnl
+         fpyVOCd/akiwf81LYryXij0D5cutWEoKWsqZmiSOLdlzuOZ+SC/Hs/m54fvGrDxOzE+2
+         wF44qgAQfHPRRspx78K2K6HVLcqY4D/Gx55ky5tPcM/eg4xV4OTeNC9k+167cOgWAR/p
+         yWgw==
+X-Gm-Message-State: ANhLgQ2nb9OCLC+T0wCsrtGSSFJA7EWgEhJK8E7+QC5hVa6HybFbKs/K
+	RvWJzZc4/XwOYkbIvMBhmERsnfeIVEVloawsQUJYyw==
+X-Google-Smtp-Source: ADFU+vt4UJTT+vs/UI2ECs5CVHI9EXdfAc9QZZ6Sp885Ay5Ze3oaL6r9lcZCZ0eNm46t4uWRe96k4C0dQKTFbWt2E9E=
+X-Received: by 2002:a5d:934d:: with SMTP id i13mr17966092ioo.154.1583849582112;
+ Tue, 10 Mar 2020 07:13:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200304165845.3081-1-vgoyal@redhat.com> <20200304165845.3081-7-vgoyal@redhat.com>
-In-Reply-To: <20200304165845.3081-7-vgoyal@redhat.com>
+References: <20200304165845.3081-1-vgoyal@redhat.com> <20200304165845.3081-8-vgoyal@redhat.com>
+In-Reply-To: <20200304165845.3081-8-vgoyal@redhat.com>
 From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Tue, 10 Mar 2020 15:10:04 +0100
-Message-ID: <CAJfpegvKRt6eaZHzs3e70y_c6j5q30jAir6k-hOWevWiQUOVKw@mail.gmail.com>
-Subject: Re: [PATCH 06/20] virtiofs: Provide a helper function for virtqueue initialization
+Date: Tue, 10 Mar 2020 15:12:51 +0100
+Message-ID: <CAJfpeguxR2mR53BHEaSQUq2dN6mUVQHMVCoECrCX1F6x38M-0A@mail.gmail.com>
+Subject: Re: [PATCH 07/20] fuse: Get rid of no_mount_options
 To: Vivek Goyal <vgoyal@redhat.com>
-Message-ID-Hash: NJJUQIIP4ALZKV3ZQASHZWP5EOBPM7WN
-X-Message-ID-Hash: NJJUQIIP4ALZKV3ZQASHZWP5EOBPM7WN
+Message-ID-Hash: WJDDGJYYUWFPKQCZS4X2A6EBMZYYCW4C
+X-Message-ID-Hash: WJDDGJYYUWFPKQCZS4X2A6EBMZYYCW4C
 X-MailFrom: miklos@szeredi.hu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -56,7 +56,7 @@ CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@li
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NJJUQIIP4ALZKV3ZQASHZWP5EOBPM7WN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WJDDGJYYUWFPKQCZS4X2A6EBMZYYCW4C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,7 +67,17 @@ Content-Transfer-Encoding: 7bit
 
 On Wed, Mar 4, 2020 at 5:59 PM Vivek Goyal <vgoyal@redhat.com> wrote:
 >
-> This reduces code duplication and make it little easier to read code.
+> This option was introduced so that for virtio_fs we don't show any mounts
+> options fuse_show_options(). Because we don't offer any of these options
+> to be controlled by mounter.
+>
+> Very soon we are planning to introduce option "dax" which mounter should
+> be able to specify. And no_mount_options does not work anymore. What
+> we need is a per mount option specific flag so that fileystem can
+> specify which options to show.
+>
+> Add few such flags to control the behavior in more fine grained manner
+> and get rid of no_mount_options.
 >
 > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 
