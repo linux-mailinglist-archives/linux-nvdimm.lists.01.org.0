@@ -2,64 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8C7180FC6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Mar 2020 06:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC581181166
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 11 Mar 2020 08:04:01 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F0D2210FC3611;
-	Tue, 10 Mar 2020 22:23:56 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d42; helo=mail-io1-xd42.google.com; envelope-from=amir73il@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+	by ml01.01.org (Postfix) with ESMTP id 91CF810FC36E7;
+	Wed, 11 Mar 2020 00:04:50 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com; envelope-from=amir73il@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9010E1007B1F6
-	for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 22:23:54 -0700 (PDT)
-Received: by mail-io1-xd42.google.com with SMTP id d8so621854ion.7
-        for <linux-nvdimm@lists.01.org>; Tue, 10 Mar 2020 22:23:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id DF27A10FC36E5
+	for <linux-nvdimm@lists.01.org>; Wed, 11 Mar 2020 00:04:46 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id m25so810233ioo.8
+        for <linux-nvdimm@lists.01.org>; Wed, 11 Mar 2020 00:03:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vhWEqnexHgncpvxDS2l8sBNTUU1im25PrBPC7w+tOLk=;
-        b=FQioROWeCZRT5RbT70b6aS3L4z5A8Xh9+TkXcRo1x7CAqq0IA0ua0MEGE5Uykqe0FL
-         s7mGcH8etLLtylbbbK6FSbTb6IJjRhs43A8ysMHl6swkDiSbevywH8PsYFGAc5tuTu4F
-         hx5OcZDYIvjseSVuRKJfka41SHIGYvXKH88DsabLaszJEEo8W3EyzPcO//PwBEE3M3gH
-         e8lIZX3B3ofO7IvWP08ivloJcQzyEW6krILi2rllnwhYD/9lqaIRca+M2m313QFn0KyF
-         ArCoRx8xQTINJyLzKbBhKUuuPeE0059amPOESX5qE3B8OeqEICFbnYjaivOd08jIc7RP
-         nwqA==
+        bh=8hb6iJ/Efn6V2wxOcA+ehqPLCrGm2i7aFEcinNiAwTg=;
+        b=rd8rhWCgH//f6swHt00TfU44oSyrPrCf9zNhKCp43xO5/c/lia8gyyB94BWGxKw6yV
+         QOm0DqL9P4U5T2uB6Inj7XI/UlbsEfDNG3do1rbezI/44mNdmxVEQCDVkll8kGrYaAts
+         AnQLHHVMbGjbmGMLgv1f/s/a2ayaX6Up7a8Mk/4/8kxlP++P1jSBtRfGYdv1fszrCbxB
+         J4YKst/ZXrjqvQcelfdiL548nQVPzdxVY02bdopH9Vz+v97xEl+GHknDNi4r2tcrPYJy
+         YXna9QlT8wDB2bvqb0c0qdd8LBkPPhhTwJblfNdloF3Yaj4tR2lznGCBm/Z0Trm4sqID
+         A62Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vhWEqnexHgncpvxDS2l8sBNTUU1im25PrBPC7w+tOLk=;
-        b=D/etFK1saf5EOtGUkzCWrJIz/6v8/U5NAs/ERu0ju14u6NiZ+rVQTPMI9psbs6GVwz
-         5wfr2BcWb4gQE6zmvTf/P8bPjcEimaPmbZc53k37/IoP0Bq6NmJR0UMbNviHml0vHTT+
-         DEIHOfTRSq1jx4GqYM/gIKiOfvF+PuwFmfWxCNT0f8T+VNCaNvBOtUUyOujNMAhVHZl7
-         RfAxIFr8JCcTW7G8owD6x9ECXEeah+VpVKDI76MuHOD2G3HwhQS7hGTCJU+FVbu91HU6
-         wVqhz7fdM5N4FyNgejGPls5HmyBNxwyjACim9oHsOYbHr0sWcq+pI24i3IGbYS5agaob
-         IbKA==
-X-Gm-Message-State: ANhLgQ3Ag4eLn0Mg70lYB3d7gNwBAJPYJV8RuM+e5vi/IZCW9LLT02IS
-	4YHWI80YDfaNPE6dESh8DMS67XcyfKWwtsnN7VI=
-X-Google-Smtp-Source: ADFU+vtANanN8/PEuGjCzSXszWB2s1uvEicvF+tk9dez9cHRd+Aa9rbD4VGIuhF4w32MFOQw+Ll20yj+6BJ6OuZClyY=
-X-Received: by 2002:a6b:784a:: with SMTP id h10mr1383631iop.64.1583904182703;
- Tue, 10 Mar 2020 22:23:02 -0700 (PDT)
+        bh=8hb6iJ/Efn6V2wxOcA+ehqPLCrGm2i7aFEcinNiAwTg=;
+        b=Xb04yKSBt4RYwNgHY1gdkplm3qMH9SIpw9s1KXX2b2LBB6HjoUudltvdJrpe/qdZ3F
+         zmdKI9jQK7Yyez/rDS/8ECcCga5jSsN31gP+RzvOp5lo/XZSA4IUnWFH4B5sHVz6ml/r
+         B5V/YUal9nfPyOQXAso8nzGuPNyaT73/He1jM1T1Hw8AfvevymsbNOoOhd/ZkJpxqmaF
+         odEUQlorcHxTxVs+AJomJdfa/gbunQOVpdBP1vSqIl7bk1jrVFicZzy4AbYQjWDX9MgX
+         A7aQyElosXgKLiund5dcYSLCtuE+ZNt42RRLAr10l/TtXN7OtWAX/bhSLpniWaxFpC3B
+         cC7g==
+X-Gm-Message-State: ANhLgQ08gep9lhBiec2CZt6K+DNR+A2QR++a0S5TZirz+i8uG7m8A4ZX
+	0ZXiIRfuEJ4IJ/xZkTj44L7pVlhuMgnPidtpQvE=
+X-Google-Smtp-Source: ADFU+vsVx9UgJ7cAQ6SG+cvSpbW4652fcOa7BWrz3sf2jEUSFhkJmAIC862rB5+gVmJyC7VWx0RpfWNz15LQu2ii7R0=
+X-Received: by 2002:a6b:f718:: with SMTP id k24mr1627720iog.186.1583910234416;
+ Wed, 11 Mar 2020 00:03:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200304165845.3081-1-vgoyal@redhat.com>
-In-Reply-To: <20200304165845.3081-1-vgoyal@redhat.com>
+References: <20200304165845.3081-1-vgoyal@redhat.com> <20200304165845.3081-13-vgoyal@redhat.com>
+ <CAJfpeguY8gDYVp_q3-W6JNA24zCry+SfWmEW2zuHLQLhmyUB3Q@mail.gmail.com> <20200310203321.GF38440@redhat.com>
+In-Reply-To: <20200310203321.GF38440@redhat.com>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 11 Mar 2020 07:22:51 +0200
-Message-ID: <CAOQ4uxi_Xrf+iyP6KVugFgLOfzUvscMr0de0KxQo+jHNBCA9oA@mail.gmail.com>
-Subject: Re: [PATCH 00/20] virtiofs: Add DAX support
+Date: Wed, 11 Mar 2020 09:03:42 +0200
+Message-ID: <CAOQ4uxh2WdLdbcMp+qvQCX2hiBx+hLO1z5wkZtc-7GCuDdsthw@mail.gmail.com>
+Subject: Re: [PATCH 12/20] fuse: Introduce setupmapping/removemapping commands
 To: Vivek Goyal <vgoyal@redhat.com>
-Message-ID-Hash: RSSLV43ZQB2IZLPLYYTRFUPJUIJLUPUE
-X-Message-ID-Hash: RSSLV43ZQB2IZLPLYYTRFUPJUIJLUPUE
+Message-ID-Hash: HHANEB3YLZY26O7JV66AMOPV24IVG3LC
+X-Message-ID-Hash: HHANEB3YLZY26O7JV66AMOPV24IVG3LC
 X-MailFrom: amir73il@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, virtio-fs@redhat.com, Miklos Szeredi <miklos@szeredi.hu>, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, mst@redhat.com
+CC: Miklos Szeredi <miklos@szeredi.hu>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Peng Tao <tao.peng@linux.alibaba.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RSSLV43ZQB2IZLPLYYTRFUPJUIJLUPUE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HHANEB3YLZY26O7JV66AMOPV24IVG3LC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,48 +69,91 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 4, 2020 at 7:01 PM Vivek Goyal <vgoyal@redhat.com> wrote:
+On Tue, Mar 10, 2020 at 10:34 PM Vivek Goyal <vgoyal@redhat.com> wrote:
 >
-> Hi,
+> On Tue, Mar 10, 2020 at 08:49:49PM +0100, Miklos Szeredi wrote:
+> > On Wed, Mar 4, 2020 at 5:59 PM Vivek Goyal <vgoyal@redhat.com> wrote:
+> > >
+> > > Introduce two new fuse commands to setup/remove memory mappings. This
+> > > will be used to setup/tear down file mapping in dax window.
+> > >
+> > > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> > > Signed-off-by: Peng Tao <tao.peng@linux.alibaba.com>
+> > > ---
+> > >  include/uapi/linux/fuse.h | 37 +++++++++++++++++++++++++++++++++++++
+> > >  1 file changed, 37 insertions(+)
+> > >
+> > > diff --git a/include/uapi/linux/fuse.h b/include/uapi/linux/fuse.h
+> > > index 5b85819e045f..62633555d547 100644
+> > > --- a/include/uapi/linux/fuse.h
+> > > +++ b/include/uapi/linux/fuse.h
+> > > @@ -894,4 +894,41 @@ struct fuse_copy_file_range_in {
+> > >         uint64_t        flags;
+> > >  };
+> > >
+> > > +#define FUSE_SETUPMAPPING_ENTRIES 8
+> > > +#define FUSE_SETUPMAPPING_FLAG_WRITE (1ull << 0)
+> > > +struct fuse_setupmapping_in {
+> > > +       /* An already open handle */
+> > > +       uint64_t        fh;
+> > > +       /* Offset into the file to start the mapping */
+> > > +       uint64_t        foffset;
+> > > +       /* Length of mapping required */
+> > > +       uint64_t        len;
+> > > +       /* Flags, FUSE_SETUPMAPPING_FLAG_* */
+> > > +       uint64_t        flags;
+> > > +       /* Offset in Memory Window */
+> > > +       uint64_t        moffset;
+> > > +};
+> > > +
+> > > +struct fuse_setupmapping_out {
+> > > +       /* Offsets into the cache of mappings */
+> > > +       uint64_t        coffset[FUSE_SETUPMAPPING_ENTRIES];
+> > > +        /* Lengths of each mapping */
+> > > +        uint64_t       len[FUSE_SETUPMAPPING_ENTRIES];
+> > > +};
+> >
+> > fuse_setupmapping_out together with FUSE_SETUPMAPPING_ENTRIES seem to be unused.
 >
-> This patch series adds DAX support to virtiofs filesystem. This allows
-> bypassing guest page cache and allows mapping host page cache directly
-> in guest address space.
+> This looks like leftover from the old code. I will get rid of it. Thanks.
 >
-> When a page of file is needed, guest sends a request to map that page
-> (in host page cache) in qemu address space. Inside guest this is
-> a physical memory range controlled by virtiofs device. And guest
-> directly maps this physical address range using DAX and hence gets
-> access to file data on host.
->
-> This can speed up things considerably in many situations. Also this
-> can result in substantial memory savings as file data does not have
-> to be copied in guest and it is directly accessed from host page
-> cache.
->
-> Most of the changes are limited to fuse/virtiofs. There are couple
-> of changes needed in generic dax infrastructure and couple of changes
-> in virtio to be able to access shared memory region.
->
-> These patches apply on top of 5.6-rc4 and are also available here.
->
-> https://github.com/rhvgoyal/linux/commits/vivek-04-march-2020
->
-> Any review or feedback is welcome.
->
-[...]
->  drivers/dax/super.c                |    3 +-
->  drivers/virtio/virtio_mmio.c       |   32 +
->  drivers/virtio/virtio_pci_modern.c |  107 +++
->  fs/dax.c                           |   66 +-
->  fs/fuse/dir.c                      |    2 +
->  fs/fuse/file.c                     | 1162 +++++++++++++++++++++++++++-
 
-That's a big addition to already big file.c.
-Maybe split dax specific code to dax.c?
-Can be a post series cleanup too.
+Hmm. I wonder if we should keep some out args for future extensions.
+Maybe return the mapped size even though it is all or nothing at this
+point?
 
-Thanks,
+I have interest in a similar FUSE mapping functionality that was prototyped
+by Miklos and published here:
+https://lore.kernel.org/linux-fsdevel/CAJfpegtjEoE7H8tayLaQHG9fRSBiVuaspnmPr2oQiOZXVB1+7g@mail.gmail.com/
+
+In this prototype, a FUSE_MAP command is used by the server to map a
+range of file to the kernel for io. The command in args are quite similar to
+those in fuse_setupmapping_in, but since the server is on the same host,
+the mapping response is {mapfd, offset, size}.
+
+I wonder, if we decide to go forward with this prototype (and I may well decide
+to drive this forward), should the new command be overloading
+FUSE_SETUPMAPPING, by using new flags or should it be a new
+command? In either case, I think it would be best to try and make a decision
+now in order to avoid ambiguity with protocol command/flag names later on.
+
+If we decide that those are completely different beasts and it is agreed that
+the future command will be named, for example, FUSE_SETUPIOMAP
+with different arguments and that this naming will not create confusion and
+ambiguity with FUSE_SETUPMAPPING, then there is no actionable item at
+this time.
+
+But it is possible that there is something to gain from using the same
+command(?) and same book keeping mechanism for both types of
+mappings. Even server on same host could decide that it wants
+to map some file regions via mmap and some via iomap.
+In that case, perhaps we should make the FUSE_SETUPMAPPING
+response args expressive enough to be able to express an iomap
+mapping in the future and perhaps dax code should explicitly request
+for FUSE_SETUPMAPPING_FLAG_DAX mapping type?
+
+Thoughts?
+
 Amir.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
