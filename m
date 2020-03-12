@@ -2,65 +2,85 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656ED1836E7
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 18:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76451183D21
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 00:14:49 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ACD5410FC378D;
-	Thu, 12 Mar 2020 10:09:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::32d; helo=mail-ot1-x32d.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 254701007B1EA;
+	Thu, 12 Mar 2020 16:15:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EE5C710FC378B
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 10:09:36 -0700 (PDT)
-Received: by mail-ot1-x32d.google.com with SMTP id h17so7041922otn.7
-        for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 10:08:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EnZsikVQ3dU9KHvCKd2cGzH/NybsIIzFB4kEy/ggnbU=;
-        b=Jdi859buybi2SmteKOLWDvMSst/wdIskhHCsuWBywLHRNbpLL7CDHw0Wx02E8ZhWfZ
-         LsISPQl3+W/afjIoGt7/tTLUC1AYL9AT4FQwXRQpOs7t4KfwbL8ShjqrUH/zd2/eaYeA
-         4yXNeWVpQRtpg+K/A17aRrb8ZMsRYtB+fJgWc76KwjnkPqkqgMrCc1A2Wx+75clSezxp
-         UIgTdK8aFqFxP76JfIN/6NUFySXf6D0Y668/LRIGRW0BTKtk2gkCE93peSXjwjsCCqDK
-         cxB71Ooq4ucxNpwLgg749+exq0W9feVDf/Sm9Kf4hV/n5JOYrApv9xsKjNjStH/7HSLY
-         9WAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EnZsikVQ3dU9KHvCKd2cGzH/NybsIIzFB4kEy/ggnbU=;
-        b=SD7eVExWUxNdYcWYN2JXL4etINDDYRarovhcBu9OvP97QDnqCq6QO64eI/ZHPpyInL
-         HOxO6sXZQQmeCsFTKWw3IbyLuzv2bBRHAXpeKcyj5QIUmlUMf6XVodLD9bdYT94o/fZT
-         ZQITNkom3jK/uQ7B2HZshm2SygBZOjUf6wu57oPxIVJ3vx1vKD4IXR65Cqu+z9ucMB2C
-         5lz8O9O4r67EFPbBka2HHud7B1G4PlYa7358HLatFieD334WQawc8wF4evFP6EJz/1er
-         SAyP013NpHFRnRtZ/6aQ48YYmzDkYiHOIqBotSH0JsaQtSPqZEpRVmztYVrZqivpLvIK
-         VLzQ==
-X-Gm-Message-State: ANhLgQ0awiJIN+sILkbml8RJZALKWKFENXF1qWfMalhyRjljAPEDF4lc
-	OvpBpiLgXQxnGJMmdMEOORNR6MnXQ+KnbH/aHVqDZg==
-X-Google-Smtp-Source: ADFU+vu4JqyqdD0n1h0u/U3bHlvknFJXIUnPusQwrfQQRWj/WWsiiDxmtrL/DQeYzaUqtefZtw0QN3DrJ1viRPuBts4=
-X-Received: by 2002:a9d:64d8:: with SMTP id n24mr6625269otl.71.1584032924323;
- Thu, 12 Mar 2020 10:08:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id CD2ED1007B1E6
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 16:15:34 -0700 (PDT)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02CNC52x030945
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 19:14:42 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yqvw2k27y-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 19:14:42 -0400
+Received: from localhost
+	by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
+	Thu, 12 Mar 2020 23:14:40 -0000
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+	by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Thu, 12 Mar 2020 23:14:32 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 02CNEVfL61603914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Mar 2020 23:14:32 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E02F2A4040;
+	Thu, 12 Mar 2020 23:14:31 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36C0DA4053;
+	Thu, 12 Mar 2020 23:14:31 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Mar 2020 23:14:31 +0000 (GMT)
+Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 01057A0218;
+	Fri, 13 Mar 2020 10:14:26 +1100 (AEDT)
+Subject: Re: [PATCH v3 24/27] powerpc/powernv/pmem: Expose SMART data via
+ ndctl
+From: "Alastair D'Silva" <alastair@au1.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 13 Mar 2020 10:14:29 +1100
+In-Reply-To: <e68c9064-cb7f-2b5e-9a7b-70fd5367270a@linux.ibm.com>
+References: <20200221032720.33893-1-alastair@au1.ibm.com>
+	 <20200221032720.33893-25-alastair@au1.ibm.com>
+	 <e68c9064-cb7f-2b5e-9a7b-70fd5367270a@linux.ibm.com>
+Organization: IBM Australia
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-References: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
- <SN6PR11MB2864BBFAA6EC62A7747F9E5D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB2864BBFAA6EC62A7747F9E5D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 12 Mar 2020 10:08:33 -0700
-Message-ID: <CAPcyv4gXZKPyqu+9JmWuivw4Yuc05_Q+bbcjRAsHK2PWKtjwjg@mail.gmail.com>
-Subject: Re: nfit_test: issue #3: BUG: kernel NULL pointer dereference,
- address: 0000000000000018
-To: "Dorau, Lukasz" <lukasz.dorau@intel.com>
-Message-ID-Hash: RJJYQDIJMX23OX5I6DCKQRVUSRZEGMMP
-X-Message-ID-Hash: RJJYQDIJMX23OX5I6DCKQRVUSRZEGMMP
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+X-TM-AS-GCONF: 00
+x-cbid: 20031223-0008-0000-0000-0000035C4F74
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20031223-0009-0000-0000-00004A7D9A8A
+Message-Id: <d70936f77cbbf712cee505e7ec009ba1ddaf74e6.camel@au1.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-03-12_16:2020-03-11,2020-03-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 phishscore=0 impostorscore=0 clxscore=1015 mlxscore=0
+ mlxlogscore=999 bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003120113
+Message-ID-Hash: B2C3PEKWUC77VZ473WTIWNZGVDT5XDKL
+X-Message-ID-Hash: B2C3PEKWUC77VZ473WTIWNZGVDT5XDKL
+X-MailFrom: alastair@au1.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxp
+ pc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RJJYQDIJMX23OX5I6DCKQRVUSRZEGMMP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B2C3PEKWUC77VZ473WTIWNZGVDT5XDKL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,38 +89,218 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 12, 2020 at 8:06 AM Dorau, Lukasz <lukasz.dorau@intel.com> wrote:
->
-> Hi,
->
-> [Resending the same, because the first e-mail got corrupted]
->
-> I have inserted the 'nfit_test' module, removed it and reinserted it again (like in the previous e-mail " nfit_test: issue #2: modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter ") and called:
-> $ ndctl disable-region all
-> And got the following oops:
->
-> [ 3079.971649] nfit_test: mcsafe_test: disabled, skip.
-> [ 3080.030189] nfit_test nfit_test.0: failed to evaluate _FIT
-> [ 3080.039150] nfit_test nfit_test.1: Error found in NVDIMM nmem4 flags: save_fail restore_fail flush_fail not_armed
-> [ 3080.039159] nfit_test nfit_test.1: Error found in NVDIMM nmem5 flags: map_fail
-> [ 3080.039696] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-> [ 3080.039805] pmem6: detected capacity change from 0 to 33554432
-> [ 3080.039806] pmem7: detected capacity change from 0 to 4194304
-> [ 3080.243372] pmem7: detected capacity change from 0 to 4194304
-> [ 3080.251781] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-> [ 3080.251871] pmem6: detected capacity change from 0 to 33554432
-> [ 3080.508112] BUG: kernel NULL pointer dereference, address: 0000000000000018
-> [ 3080.508117] #PF: supervisor read access in kernel mode
-> [ 3080.508118] #PF: error_code(0x0000) - not-present page
-> [ 3080.508120] PGD 0 P4D 0
-> [ 3080.508123] Oops: 0000 [#1] PREEMPT SMP PTI
-> [ 3080.508126] CPU: 3 PID: 80123 Comm: pmempool Tainted: G           O      5.5.8-arch1-1-bb #1
-> [ 3080.508128] Hardware name: System manufacturer System Product Name/RAMPAGE IV EXTREME, BIOS 4701 11/18/2013
-> [ 3080.508133] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
+On Thu, 2020-03-05 at 14:36 +1100, Andrew Donnellan wrote:
+> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> > +static int ndctl_smart(struct ocxlpmem *ocxlpmem, struct
+> > nd_cmd_pkg *pkg)
+> > +{
+> > +	u32 length, i;
+> > +	struct nd_ocxl_smart *out;
+> > +	int rc;
+> > +
+> > +	mutex_lock(&ocxlpmem->admin_command.lock);
+> > +
+> > +	rc = admin_command_request(ocxlpmem, ADMIN_COMMAND_SMART);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = admin_command_execute(ocxlpmem);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = admin_command_complete_timeout(ocxlpmem,
+> > ADMIN_COMMAND_SMART);
+> > +	if (rc < 0) {
+> > +		dev_err(&ocxlpmem->dev, "SMART timeout\n");
+> > +		goto out;
+> > +	}
+> > +
+> > +	rc = admin_response(ocxlpmem);
+> > +	if (rc < 0)
+> > +		goto out;
+> > +	if (rc != STATUS_SUCCESS) {
+> > +		warn_status(ocxlpmem, "Unexpected status from SMART",
+> > rc);
+> > +		goto out;
+> > +	}
+> > +
+> > +	rc = smart_header_parse(ocxlpmem, &length);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	pkg->nd_fw_size = length;
+> > +
+> > +	length = min(length, pkg->nd_size_out); // bytes
+> > +	out = (struct nd_ocxl_smart *)pkg->nd_payload;
+> > +	// Each SMART attribute is 2 * 64 bits
+> > +	out->count = length / (2 * sizeof(u64)); // attributes
+> 
+>  From what I can tell - 8 bytes of nd_ocxl_smart are taken up for
+> the 
+> count + reserved bytes, so this is going to potentially overrun the
+> user 
+> buffer.
 
-If you force loaded a module with unresolved symbols all bets are off,
-lets get "make TESTS=libndctl check" running cleanly before trying to
-debug this report.
+Ok
+
+> 
+> > +
+> > +	for (i = 0; i < length; i += sizeof(u64)) {
+> 
+> It might be neater to make i count up by 1 and then multiply by 
+> sizeof(u64) later.
+> 
+I tried, it doesn't make much difference to the complexity, and makes
+it less clear that we are stepping in 64bit chunks.
+
+> > +		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +					     ocxlpmem-
+> > >admin_command.data_offset + sizeof(u64) + i,
+> 
+> + 0x08 rather than + sizeof(u64) for consistency.
+> 
+We use sizeof(u64) in the rest of this function.
+
+> > +					     OCXL_LITTLE_ENDIAN,
+> > +					     &out-
+> > >attribs[i/sizeof(u64)]);
+> > +		if (rc)
+> > +			goto out;
+> > +	}
+> > +
+> > +	rc = admin_response_handled(ocxlpmem);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = 0;
+> > +	goto out;
+> > +
+> > +out:
+> > +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> > +	return rc;
+> > +}
+> > +
+> > +static int ndctl_call(struct ocxlpmem *ocxlpmem, void *buf,
+> > unsigned int buf_len)
+> > +{
+> > +	struct nd_cmd_pkg *pkg = buf;
+> > +
+> > +	if (buf_len < sizeof(struct nd_cmd_pkg)) {
+> > +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL size=%u\n",
+> > buf_len);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	if (pkg->nd_family != NVDIMM_FAMILY_OCXL) {
+> > +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL
+> > family=0x%llx\n", pkg->nd_family);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	switch (pkg->nd_command) {
+> > +	case ND_CMD_OCXL_SMART:
+> > +		ndctl_smart(ocxlpmem, pkg);
+> 
+> Did you intend to dispose of the return code here?
+
+Whoops.
+
+> 
+> > +		break;
+> > +
+> > +	default:
+> > +		dev_err(&ocxlpmem->dev, "Invalid ND_CALL
+> > command=0x%llx\n", pkg->nd_command);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >   static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
+> >   		 struct nvdimm *nvdimm,
+> >   		 unsigned int cmd, void *buf, unsigned int buf_len, int
+> > *cmd_rc)
+> > @@ -88,6 +211,10 @@ static int ndctl(struct nvdimm_bus_descriptor
+> > *nd_desc,
+> >   	struct ocxlpmem *ocxlpmem = container_of(nd_desc, struct
+> > ocxlpmem, bus_desc);
+> >   
+> >   	switch (cmd) {
+> > +	case ND_CMD_CALL:
+> > +		*cmd_rc = ndctl_call(ocxlpmem, buf, buf_len);
+> > +		return 0;
+> > +
+> >   	case ND_CMD_GET_CONFIG_SIZE:
+> >   		*cmd_rc = ndctl_config_size(buf);
+> >   		return 0;
+> > @@ -171,6 +298,7 @@ static int register_lpc_mem(struct ocxlpmem
+> > *ocxlpmem)
+> >   	set_bit(ND_CMD_GET_CONFIG_SIZE, &nvdimm_cmd_mask);
+> >   	set_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm_cmd_mask);
+> >   	set_bit(ND_CMD_SET_CONFIG_DATA, &nvdimm_cmd_mask);
+> > +	set_bit(ND_CMD_CALL, &nvdimm_cmd_mask);
+> >   
+> >   	set_bit(NDD_ALIASING, &nvdimm_flags);
+> >   
+> > diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> > b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> > index 927690f4888f..0eb7a35d24ae 100644
+> > --- a/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> > +++ b/arch/powerpc/platforms/powernv/pmem/ocxl_internal.h
+> > @@ -7,6 +7,7 @@
+> >   #include <linux/libnvdimm.h>
+> >   #include <uapi/nvdimm/ocxl-pmem.h>
+> >   #include <linux/mm.h>
+> > +#include <linux/ndctl.h>
+> >   
+> >   #define LABEL_AREA_SIZE	(1UL << PA_SECTION_SHIFT)
+> >   #define DEFAULT_TIMEOUT 100
+> > @@ -98,6 +99,23 @@ struct ocxlpmem_function0 {
+> >   	struct ocxl_fn *ocxl_fn;
+> >   };
+> >   
+> > +struct nd_ocxl_smart {
+> > +	__u8 count;
+> > +	__u8 reserved[7];
+> > +	__u64 attribs[0];
+> > +} __packed;
+> > +
+> > +struct nd_pkg_ocxl {
+> > +	struct nd_cmd_pkg gen;
+> > +	union {
+> > +		struct nd_ocxl_smart smart;
+> > +	};
+> > +};
+> > +
+> > +enum nd_cmd_ocxl {
+> > +	ND_CMD_OCXL_SMART = 1,
+> > +};
+> > +
+> >   struct ocxlpmem {
+> >   	struct device dev;
+> >   	struct pci_dev *pdev;
+> > diff --git a/include/uapi/linux/ndctl.h
+> > b/include/uapi/linux/ndctl.h
+> > index de5d90212409..2885052e7f40 100644
+> > --- a/include/uapi/linux/ndctl.h
+> > +++ b/include/uapi/linux/ndctl.h
+> > @@ -244,6 +244,7 @@ struct nd_cmd_pkg {
+> >   #define NVDIMM_FAMILY_HPE2 2
+> >   #define NVDIMM_FAMILY_MSFT 3
+> >   #define NVDIMM_FAMILY_HYPERV 4
+> > +#define NVDIMM_FAMILY_OCXL 6
+> >   
+> >   #define ND_IOCTL_CALL			_IOWR(ND_IOCTL,
+> > ND_CMD_CALL,\
+> >   					struct nd_cmd_pkg)
+> > 
+-- 
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
