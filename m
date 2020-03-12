@@ -2,222 +2,492 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A722F183415
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 16:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 482591835B0
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 17:02:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 68A2610FC378B;
-	Thu, 12 Mar 2020 08:07:18 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id B484C10097DFC;
+	Thu, 12 Mar 2020 09:03:17 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2411010FC3788
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 08:07:16 -0700 (PDT)
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 08:06:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,545,1574150400";
-   d="scan'208";a="235048517"
-Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
-  by fmsmga007.fm.intel.com with ESMTP; 12 Mar 2020 08:06:24 -0700
-Received: from fmsmsx111.amr.corp.intel.com (10.18.116.5) by
- FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 08:06:24 -0700
-Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
- fmsmsx111.amr.corp.intel.com (10.18.116.5) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 08:06:23 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.109)
- by edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Thu, 12 Mar 2020 08:06:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D5LtS3+qXFykn8X91fMYR/PTEcdcHn6EfxjcPtpSbuYILw9gXetZabLfx6wGkCEPtY4mk2caaEGmK26+dq3kaJOSBwi/qQSOTHd8X/jA9eEyDp6J48qB63fscCRf5Diok5IwKJF8ciFAx6dEdqvvSVicFw0XwJ222LfPf0n+iFiANvpP5nzfPYtwRbAD2CKTlQX0kXtRr+mQAZBw6IKrVej5HytWU9kpDeE2D7+j2dJD5vFhMnLuyopT8iUboCLmcBmShlyLB+7t9Y/zng3nYOACpV1avZufpVma8peUIpApreIJM6GCsKcjDn61CGUU303CrPSe3FVh+4mfOMqCmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mnX8CWGft1DEwanAagsra3oRPUybQ8KYqUvQxzg9LjI=;
- b=la9DQJwdvthc1eOS1pTKJldqUzaeKItAmcWS1MQpamQJBoLh6o+T2CLUKMIsVbpqtQTYAR4OtqsMkaIeHs0I4s2ep/hP/9Dz5HmxxEV9A39oruLXG5k63kjEu7UQWbMZmsXuJplAIc39XoenRoytappmyGyYMMBbSK7F6LjWytEHHx4jgb7f5QjmdVB6bcLJuW+L0Gh5kNuI+8PLd0Q4SFaG7Rc0BWxk8gklBJk+awiIJufjj846NNl8Bpc2+b+ahx5ib4sNcqzdd1ILCjaumzW5+jKaiFmB93sQ6DDvDYZypbdNjgoE7jgslEfxMqQZVAP+Mg/s+A+KsvCtY1ZdXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
- s=selector2-intel-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mnX8CWGft1DEwanAagsra3oRPUybQ8KYqUvQxzg9LjI=;
- b=SYws07Y1Ihm7lvY5Ek39/Gzx1cQI9lHYUX/eFGJOIu8BYj3rq/efbdNhuaIU5AnR+HqOZv39HSrDMW0KLTIgkndpj1CR+nVKfiVsA19RwpmOC7au8I35OxqVoGNBSnopUwQPG9+kFkIjctKTbFDAstiPFGxh58CeUfzMXXqsitM=
-Received: from SN6PR11MB2864.namprd11.prod.outlook.com (2603:10b6:805:63::26)
- by SN6PR11MB3456.namprd11.prod.outlook.com (2603:10b6:805:c8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.14; Thu, 12 Mar
- 2020 15:06:21 +0000
-Received: from SN6PR11MB2864.namprd11.prod.outlook.com
- ([fe80::fd11:322:84c8:a4e3]) by SN6PR11MB2864.namprd11.prod.outlook.com
- ([fe80::fd11:322:84c8:a4e3%5]) with mapi id 15.20.2793.018; Thu, 12 Mar 2020
- 15:06:21 +0000
-From: "Dorau, Lukasz" <lukasz.dorau@intel.com>
-To: linux-nvdimm <linux-nvdimm@lists.01.org>
-CC: "Verma, Vishal L" <vishal.l.verma@intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>
-Subject: nfit_test: issue #3: BUG: kernel NULL pointer dereference, address:
- 0000000000000018
-Thread-Topic: nfit_test: issue #3: BUG: kernel NULL pointer dereference,
- address: 0000000000000018
-Thread-Index: AdX4ff9vRi+83PXwTQC0PvRaS9yWHAAAVn9Q
-Date: Thu, 12 Mar 2020 15:06:21 +0000
-Message-ID: <SN6PR11MB2864BBFAA6EC62A7747F9E5D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
-References: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.2.0.6
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=lukasz.dorau@intel.com;
-x-originating-ip: [134.191.221.115]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ba9e19a6-64ec-412f-62cd-08d7c696ecdf
-x-ms-traffictypediagnostic: SN6PR11MB3456:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR11MB34564FBDE136CE6C6755A9B496FD0@SN6PR11MB3456.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 0340850FCD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(366004)(346002)(376002)(396003)(136003)(199004)(66446008)(66476007)(9686003)(81156014)(52536014)(316002)(76116006)(66946007)(6916009)(64756008)(33656002)(4326008)(2906002)(107886003)(54906003)(5660300002)(45080400002)(86362001)(8936002)(81166006)(6506007)(7696005)(2940100002)(26005)(55016002)(478600001)(186003)(8676002)(66556008)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3456;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: U+aAsNZxoToXOc3wsls+wrDy7Z7EwwoW1BoB/MICauefhr8WVt53qMZO/3t/XARGQw0cIKRjRp1hPGuEt1Q3gdNE7R2A2DbAEMkeV8tPg+ZrVH58ld6KBu3i4Omou2sTvSgtyuUzF2T5abJ4tew6rWLym+qFEsiA24e4WgyZn7Jb/E99myn6F1MINlC+aRZp2bg2Eu0N4C0WiCyRE12NyNxbsOo96QUujn5uBJ/TSV1fb/g2jPjfnRVYQ9H8M6S5hLpDrmL10RQdIFVIBHiunDB5YQ4t+5NIPKEQHo93sivEtd3ZW6bskAsLHCzuX6T2K6WEcbZAxuemtMs7vwCPOMHXBqtQy+Rn8UPXhJK6xdR6i4M5ud1yJECWm57LBYssBYjsJg0LU0MYhU1O6sD+HQBiQXSzoJgQgoH/W4SivLKmj0sMa9FQj8eaARVW0BH2
-x-ms-exchange-antispam-messagedata: YIotJPfzLDRt9WBN/llopRRd2GHJQbsRsL+clAKjLq8mkDMrWfezFOcL3M7abqgTK4JXx/a0p8cYx3JiF1/rScRAEtKsWFNlqIIcBQMOsHHmb7FOiVB0F91Om3koeLGi2nK4Jg270cn0DprtjBrXdQ==
-Content-Type: text/plain; charset="us-ascii"
+	by ml01.01.org (Postfix) with ESMTPS id 375C810FC378A
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 09:03:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1584028942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3Levu9e5gKEGuGjfYAxBNO+RhloIEDELGqMCTmJZ5K4=;
+	b=JzharAGDPX4P7WPKaFioUm3ihGmXwUFMmrNXDhT8J2CEXxC8svLesFMRA02ZTXh2xw6q4x
+	T4+T2Iv+qisTJ0GP5XR4zic8nAztVb3I8e/cnpyqUSsIS/gZNKbOD6mGPz0YHUJ5gxHzC9
+	9WqrdiXVd6esIulVG1iijx7EyT4cYdI=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-150-NMmabGOgMtyJm4gfGA7NGw-1; Thu, 12 Mar 2020 12:02:18 -0400
+X-MC-Unique: NMmabGOgMtyJm4gfGA7NGw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C5D3D86A070;
+	Thu, 12 Mar 2020 16:02:16 +0000 (UTC)
+Received: from horse.redhat.com (unknown [10.18.25.210])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id D379C8F35C;
+	Thu, 12 Mar 2020 16:02:08 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 7025022021D; Thu, 12 Mar 2020 12:02:08 -0400 (EDT)
+Date: Thu, 12 Mar 2020 12:02:08 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Miklos Szeredi <miklos@szeredi.hu>
+Subject: Re: [PATCH 13/20] fuse, dax: Implement dax read/write operations
+Message-ID: <20200312160208.GB114720@redhat.com>
+References: <20200304165845.3081-1-vgoyal@redhat.com>
+ <20200304165845.3081-14-vgoyal@redhat.com>
+ <CAJfpegtpgE+vnN0hvEVMDyNkYZ0h3_kNgxWCQUb2iuBdy8kEsw@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba9e19a6-64ec-412f-62cd-08d7c696ecdf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 15:06:21.5502
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QGO30QnKU82766u2z2EWUE3hWdsJR5c0ujOAFHObnYx+aEFMroKU9NIZ0xCWNvzdWdKylWAEzz/UQ3MQccIVKw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3456
-X-OriginatorOrg: intel.com
-Message-ID-Hash: QR4DK5OVO32EEIEZLLNDDDME2VXJXROO
-X-Message-ID-Hash: QR4DK5OVO32EEIEZLLNDDDME2VXJXROO
-X-MailFrom: lukasz.dorau@intel.com
+Content-Disposition: inline
+In-Reply-To: <CAJfpegtpgE+vnN0hvEVMDyNkYZ0h3_kNgxWCQUb2iuBdy8kEsw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: AMGWLI36R7YQSLKFIVVSOA7MSCJMMPPB
+X-Message-ID-Hash: AMGWLI36R7YQSLKFIVVSOA7MSCJMMPPB
+X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Miklos Szeredi <mszeredi@redhat.com>, Liu Bo <bo.liu@linux.alibaba.com>, Peng Tao <tao.peng@linux.alibaba.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QR4DK5OVO32EEIEZLLNDDDME2VXJXROO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AMGWLI36R7YQSLKFIVVSOA7MSCJMMPPB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On Thu, Mar 12, 2020 at 10:43:10AM +0100, Miklos Szeredi wrote:
+> On Wed, Mar 4, 2020 at 5:59 PM Vivek Goyal <vgoyal@redhat.com> wrote:
+> >
+> > This patch implements basic DAX support. mmap() is not implemented
+> > yet and will come in later patches. This patch looks into implemeting
+> > read/write.
+> >
+> > We make use of interval tree to keep track of per inode dax mappings.
+> >
+> > Do not use dax for file extending writes, instead just send WRITE message
+> > to daemon (like we do for direct I/O path). This will keep write and
+> > i_size change atomic w.r.t crash.
+> >
+> > Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+> > Signed-off-by: Dr. David Alan Gilbert <dgilbert@redhat.com>
+> > Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+> > Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+> > Signed-off-by: Liu Bo <bo.liu@linux.alibaba.com>
+> > Signed-off-by: Peng Tao <tao.peng@linux.alibaba.com>
+> > ---
+> >  fs/fuse/file.c            | 597 +++++++++++++++++++++++++++++++++++++-
+> >  fs/fuse/fuse_i.h          |  23 ++
+> >  fs/fuse/inode.c           |   6 +
+> >  include/uapi/linux/fuse.h |   1 +
+> >  4 files changed, 621 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> > index 9d67b830fb7a..9effdd3dc6d6 100644
+> > --- a/fs/fuse/file.c
+> > +++ b/fs/fuse/file.c
+> > @@ -18,6 +18,12 @@
+> >  #include <linux/swap.h>
+> >  #include <linux/falloc.h>
+> >  #include <linux/uio.h>
+> > +#include <linux/dax.h>
+> > +#include <linux/iomap.h>
+> > +#include <linux/interval_tree_generic.h>
+> > +
+> > +INTERVAL_TREE_DEFINE(struct fuse_dax_mapping, rb, __u64, __subtree_last,
+> > +                     START, LAST, static inline, fuse_dax_interval_tree);
+> 
+> Are you using this because of byte ranges (u64)?   Does it not make
+> more sense to use page offsets, which are unsigned long and so fit
+> nicely into the generic interval tree?
 
-[Resending the same, because the first e-mail got corrupted]
+I think I should be able to use generic interval tree. I will switch
+to that.
 
-I have inserted the 'nfit_test' module, removed it and reinserted it again (like in the previous e-mail " nfit_test: issue #2: modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter ") and called:
-$ ndctl disable-region all
-And got the following oops:
+[..]
+> > +/* offset passed in should be aligned to FUSE_DAX_MEM_RANGE_SZ */
+> > +static int fuse_setup_one_mapping(struct inode *inode, loff_t offset,
+> > +                                 struct fuse_dax_mapping *dmap, bool writable,
+> > +                                 bool upgrade)
+> > +{
+> > +       struct fuse_conn *fc = get_fuse_conn(inode);
+> > +       struct fuse_inode *fi = get_fuse_inode(inode);
+> > +       struct fuse_setupmapping_in inarg;
+> > +       FUSE_ARGS(args);
+> > +       ssize_t err;
+> > +
+> > +       WARN_ON(offset % FUSE_DAX_MEM_RANGE_SZ);
+> > +       WARN_ON(fc->nr_free_ranges < 0);
+> > +
+> > +       /* Ask fuse daemon to setup mapping */
+> > +       memset(&inarg, 0, sizeof(inarg));
+> > +       inarg.foffset = offset;
+> > +       inarg.fh = -1;
+> > +       inarg.moffset = dmap->window_offset;
+> > +       inarg.len = FUSE_DAX_MEM_RANGE_SZ;
+> > +       inarg.flags |= FUSE_SETUPMAPPING_FLAG_READ;
+> > +       if (writable)
+> > +               inarg.flags |= FUSE_SETUPMAPPING_FLAG_WRITE;
+> > +       args.opcode = FUSE_SETUPMAPPING;
+> > +       args.nodeid = fi->nodeid;
+> > +       args.in_numargs = 1;
+> > +       args.in_args[0].size = sizeof(inarg);
+> > +       args.in_args[0].value = &inarg;
+> 
+> args.force = true?
 
-[ 3079.971649] nfit_test: mcsafe_test: disabled, skip.
-[ 3080.030189] nfit_test nfit_test.0: failed to evaluate _FIT
-[ 3080.039150] nfit_test nfit_test.1: Error found in NVDIMM nmem4 flags: save_fail restore_fail flush_fail not_armed
-[ 3080.039159] nfit_test nfit_test.1: Error found in NVDIMM nmem5 flags: map_fail
-[ 3080.039696] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-[ 3080.039805] pmem6: detected capacity change from 0 to 33554432
-[ 3080.039806] pmem7: detected capacity change from 0 to 4194304
-[ 3080.243372] pmem7: detected capacity change from 0 to 4194304
-[ 3080.251781] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-[ 3080.251871] pmem6: detected capacity change from 0 to 33554432
-[ 3080.508112] BUG: kernel NULL pointer dereference, address: 0000000000000018
-[ 3080.508117] #PF: supervisor read access in kernel mode
-[ 3080.508118] #PF: error_code(0x0000) - not-present page
-[ 3080.508120] PGD 0 P4D 0 
-[ 3080.508123] Oops: 0000 [#1] PREEMPT SMP PTI
-[ 3080.508126] CPU: 3 PID: 80123 Comm: pmempool Tainted: G           O      5.5.8-arch1-1-bb #1
-[ 3080.508128] Hardware name: System manufacturer System Product Name/RAMPAGE IV EXTREME, BIOS 4701 11/18/2013
-[ 3080.508133] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
-[ 3080.508136] Code: 37 48 c1 ee 0c 48 01 f0 48 ba ff ff ff ff ff ff 0f 00 49 c1 ef 0c 48 21 d3 49 01 c7 48 c1 e3 06 48 03 1d 98 54 0d db 48 89 da <48> 83 7a 18 00 75 10 49 8b 8c 24 f0 00 00 00 48 89 42 20 48 89 4a
-[ 3080.508137] RSP: 0000:ffffb44406bdfdb0 EFLAGS: 00010247
-[ 3080.508139] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[ 3080.508141] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff924c3d789900
-[ 3080.508142] RBP: ffffb44406bdfe28 R08: 000709b000000000 R09: 00000000001baf04
-[ 3080.508144] R10: ffff924cbfffc000 R11: 0000000000033160 R12: ffff924c48dd4200
-[ 3080.508145] R13: 0000000000000001 R14: 0000000000000100 R15: 0000000000000001
-[ 3080.508147] FS:  00007fb40da5c900(0000) GS:ffff924cafac0000(0000) knlGS:0000000000000000
-[ 3080.508149] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 3080.508151] CR2: 0000000000000018 CR3: 00000003cab58003 CR4: 00000000000606e0
-[ 3080.508152] Call Trace:
-[ 3080.508161]  __do_fault+0x38/0x120
-[ 3080.508165]  __handle_mm_fault+0xff2/0x1580
-[ 3080.508170]  ? big_key_read+0x1b0/0x1b0
-[ 3080.508174]  handle_mm_fault+0xce/0x200
-[ 3080.508178]  do_user_addr_fault+0x1ef/0x470
-[ 3080.508184]  page_fault+0x34/0x40
-[ 3080.508187] RIP: 0033:0x7fb40de6cb7c
-[ 3080.508189] Code: c3 48 81 fa 00 08 00 00 77 a1 48 83 fa 40 77 16 f3 0f 7f 07 f3 0f 7f 47 10 f3 0f 7f 44 17 f0 f3 0f 7f 44 17 e0 c3 48 8d 4f 40 <f3> 0f 7f 07 48 83 e1 c0 f3 0f 7f 44 17 f0 f3 0f 7f 47 10 f3 0f 7f
-[ 3080.508190] RSP: 002b:00007ffe85e8e758 EFLAGS: 00010206
-[ 3080.508192] RAX: 00007fb40ba00000 RBX: 0000000000000000 RCX: 00007fb40ba00040
-[ 3080.508193] RDX: 0000000000200000 RSI: 0000000000000000 RDI: 00007fb40ba00000
-[ 3080.508195] RBP: 0000000001e00000 R08: 000000000000000a R09: 0000000000000000
-[ 3080.508196] R10: 0000000000000001 R11: 0000000000000206 R12: 000000000000000a
-[ 3080.508197] R13: 0000000000000000 R14: 00007fb40ba00000 R15: 0000000000000000
-[ 3080.508201] Modules linked in: kmem nfit_test(O) nfit(O) nd_blk dax_pmem_compat(O) device_dax(O) dax_pmem(O) dax_pmem_core(O) nd_pmem(O) nd_btt(O) libnvdimm(O) nfit_test_iomap(O) encrypted_keys trusted tpm rng_core fuse xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xfrm_user xfrm_algo xt_addrtype iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c br_netfilter bridge stp llc overlay intel_rapl_msr intel_rapl_common snd_hda_codec_hdmi x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm snd_hda_codec_realtek snd_hda_codec_generic irqbypass nouveau ledtrig_audio eeepc_wmi snd_hda_intel btusb asus_wmi snd_intel_dspcfg btrtl iTCO_wdt battery crct10dif_pclmul crc32_pclmul btbcm snd_hda_codec iTCO_vendor_support sparse_keymap btintel wmi_bmof ghash_clmulni_intel bluetooth mxm_wmi aesni_intel snd_hda_core crypto_simd i2c_algo_bit cryptd ttm glue_helper intel_cstate snd_hwdep intel_uncore ecdh_generic dm_mod input_leds intel_rapl_perf
-  snd_pcm
-[ 3080.508235]  joydev mousedev rfkill drm_kms_helper pcspkr i2c_i801 ecc snd_timer lpc_ich e1000e snd mei_me syscopyarea sysfillrect sysimgblt mei fb_sys_fops soundcore wmi evdev mac_hid drm sg crypto_user agpgart ip_tables x_tables ext4 crc32c_generic crc16 mbcache jbd2 hid_generic usbhid hid sr_mod cdrom sd_mod ahci libahci libata crc32c_intel xhci_pci scsi_mod xhci_hcd ehci_pci ehci_hcd [last unloaded: nfit]
-[ 3080.508258] CR2: 0000000000000018
-[ 3080.508260] ---[ end trace 4485b40fc6cb1bcb ]---
-[ 3080.508264] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
-[ 3080.508266] Code: 37 48 c1 ee 0c 48 01 f0 48 ba ff ff ff ff ff ff 0f 00 49 c1 ef 0c 48 21 d3 49 01 c7 48 c1 e3 06 48 03 1d 98 54 0d db 48 89 da <48> 83 7a 18 00 75 10 49 8b 8c 24 f0 00 00 00 48 89 42 20 48 89 4a
-[ 3080.508268] RSP: 0000:ffffb44406bdfdb0 EFLAGS: 00010247
-[ 3080.508270] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[ 3080.508271] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff924c3d789900
-[ 3080.508272] RBP: ffffb44406bdfe28 R08: 000709b000000000 R09: 00000000001baf04
-[ 3080.508274] R10: ffff924cbfffc000 R11: 0000000000033160 R12: ffff924c48dd4200
-[ 3080.508275] R13: 0000000000000001 R14: 0000000000000100 R15: 0000000000000001
-[ 3080.508277] FS:  00007fb40da5c900(0000) GS:ffff924cafac0000(0000) knlGS:0000000000000000
-[ 3080.508279] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 3080.508280] CR2: 0000000000000018 CR3: 00000003cab58003 CR4: 00000000000606e0
+I can do that but I am not sure what exactly does args.force do and
+why do we need it in this case.
 
-$ ps aux | grep ndctl
-root       25958  0.0  0.0   6396  1732 pts/0    D+   15:40   0:00 ndctl disable-region all
-root       26409  0.0  0.0   6396  1800 pts/0    D+   15:43   0:00 ndctl disable-region all
+First thing it does is that request is allocated with flag __GFP_NOFAIL.
+Second thing it does is that caller is forced to wait for request
+completion and its not an interruptible sleep. 
 
-$ sudo cat /proc/25958/stack
-[<0>] __synchronize_srcu+0x8e/0xc0
-[<0>] kill_dax+0x22/0x70
-[<0>] pmem_release_disk+0x12/0x40 [nd_pmem]
-[<0>] release_nodes+0x19b/0x1e0
-[<0>] device_release_driver_internal+0xf4/0x1c0
-[<0>] unbind_store+0xef/0x120
-[<0>] kernfs_fop_write+0xce/0x1b0
-[<0>] vfs_write+0xb6/0x1a0
-[<0>] ksys_write+0x67/0xe0
-[<0>] do_syscall_64+0x4e/0x150
-[<0>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
+I am wondering what makes FUSE_SETUPMAPING/FUSE_REMOVEMAPPING requests
+special that we need to set force flag.
 
-$ sudo cat /proc/26409/stack
-[<0>] flush_namespaces+0x15/0x30 [libnvdimm]
-[<0>] device_for_each_child+0x69/0xa0
-[<0>] flush_regions_dimms+0x33/0x40 [libnvdimm]
-[<0>] device_for_each_child+0x69/0xa0
-[<0>] wait_probe_show+0x3d/0x60 [libnvdimm]
-[<0>] dev_attr_show+0x19/0x40
-[<0>] sysfs_kf_seq_show+0x9b/0xf0
-[<0>] seq_read+0xcd/0x440
-[<0>] vfs_read+0x9d/0x150
-[<0>] ksys_read+0x67/0xe0
-[<0>] do_syscall_64+0x4e/0x150
-[<0>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
- 
---
-Lukasz
+> 
+> > +       err = fuse_simple_request(fc, &args);
+> > +       if (err < 0) {
+> > +               printk(KERN_ERR "%s request failed at mem_offset=0x%llx %zd\n",
+> > +                                __func__, dmap->window_offset, err);
+> 
+> Is this level of noisiness really needed?  AFAICS, the error will
+> reach the caller, in which case we don't usually need to print a
+> kernel error.
+
+I will remove it. I think code in general has quite a few printk() and
+pr_debug() we can get rid of. Some of them were helpful for debugging
+problems while code was being developed. But now that code is working,
+we should be able to drop some of them.
+
+[..]
+> > +static int
+> > +fuse_send_removemapping(struct inode *inode,
+> > +                       struct fuse_removemapping_in *inargp,
+> > +                       struct fuse_removemapping_one *remove_one)
+> > +{
+> > +       struct fuse_inode *fi = get_fuse_inode(inode);
+> > +       struct fuse_conn *fc = get_fuse_conn(inode);
+> > +       FUSE_ARGS(args);
+> > +
+> > +       args.opcode = FUSE_REMOVEMAPPING;
+> > +       args.nodeid = fi->nodeid;
+> > +       args.in_numargs = 2;
+> > +       args.in_args[0].size = sizeof(*inargp);
+> > +       args.in_args[0].value = inargp;
+> > +       args.in_args[1].size = inargp->count * sizeof(*remove_one);
+> > +       args.in_args[1].value = remove_one;
+> 
+> args.force = true?
+
+FUSE_REMOVEMAPPING is an optional nice to have request. Will it make
+help to set force.
+
+> 
+> > +       return fuse_simple_request(fc, &args);
+> > +}
+> > +
+> > +static int dmap_removemapping_list(struct inode *inode, unsigned num,
+> > +                                  struct list_head *to_remove)
+> > +{
+> > +       struct fuse_removemapping_one *remove_one, *ptr;
+> > +       struct fuse_removemapping_in inarg;
+> > +       struct fuse_dax_mapping *dmap;
+> > +       int ret, i = 0, nr_alloc;
+> > +
+> > +       nr_alloc = min_t(unsigned int, num, FUSE_REMOVEMAPPING_MAX_ENTRY);
+> > +       remove_one = kmalloc_array(nr_alloc, sizeof(*remove_one), GFP_NOFS);
+> > +       if (!remove_one)
+> > +               return -ENOMEM;
+> > +
+> > +       ptr = remove_one;
+> > +       list_for_each_entry(dmap, to_remove, list) {
+> > +               ptr->moffset = dmap->window_offset;
+> > +               ptr->len = dmap->length;
+> > +               ptr++;
+> 
+> Minor nit: ptr = &remove_one[i] at the start of the section would be
+> cleaner IMO.
+
+Will do.
+
+[..]
+> > +static int iomap_begin_setup_new_mapping(struct inode *inode, loff_t pos,
+> > +                                        loff_t length, unsigned flags,
+> > +                                        struct iomap *iomap)
+> > +{
+> > +       struct fuse_inode *fi = get_fuse_inode(inode);
+> > +       struct fuse_conn *fc = get_fuse_conn(inode);
+> > +       struct fuse_dax_mapping *dmap, *alloc_dmap = NULL;
+> > +       int ret;
+> > +       bool writable = flags & IOMAP_WRITE;
+> > +
+> > +       alloc_dmap = alloc_dax_mapping(fc);
+> > +       if (!alloc_dmap)
+> > +               return -EBUSY;
+> > +
+> > +       /*
+> > +        * Take write lock so that only one caller can try to setup mapping
+> > +        * and other waits.
+> > +        */
+> > +       down_write(&fi->i_dmap_sem);
+> > +       /*
+> > +        * We dropped lock. Check again if somebody else setup
+> > +        * mapping already.
+> > +        */
+> > +       dmap = fuse_dax_interval_tree_iter_first(&fi->dmap_tree, pos,
+> > +                                               pos);
+> > +       if (dmap) {
+> > +               fuse_fill_iomap(inode, pos, length, iomap, dmap, flags);
+> > +               dmap_add_to_free_pool(fc, alloc_dmap);
+> > +               up_write(&fi->i_dmap_sem);
+> > +               return 0;
+> > +       }
+> > +
+> > +       /* Setup one mapping */
+> > +       ret = fuse_setup_one_mapping(inode,
+> > +                                    ALIGN_DOWN(pos, FUSE_DAX_MEM_RANGE_SZ),
+> > +                                    alloc_dmap, writable, false);
+> > +       if (ret < 0) {
+> > +               printk("fuse_setup_one_mapping() failed. err=%d"
+> > +                       " pos=0x%llx, writable=%d\n", ret, pos, writable);
+> 
+> More  unnecessary noise?
+
+Will remove.
+
+> 
+> > +               dmap_add_to_free_pool(fc, alloc_dmap);
+> > +               up_write(&fi->i_dmap_sem);
+> > +               return ret;
+> > +       }
+> > +       fuse_fill_iomap(inode, pos, length, iomap, alloc_dmap, flags);
+> > +       up_write(&fi->i_dmap_sem);
+> > +       return 0;
+> > +}
+> > +
+> > +static int iomap_begin_upgrade_mapping(struct inode *inode, loff_t pos,
+> > +                                        loff_t length, unsigned flags,
+> > +                                        struct iomap *iomap)
+> > +{
+> > +       struct fuse_inode *fi = get_fuse_inode(inode);
+> > +       struct fuse_dax_mapping *dmap;
+> > +       int ret;
+> > +
+> > +       /*
+> > +        * Take exclusive lock so that only one caller can try to setup
+> > +        * mapping and others wait.
+> > +        */
+> > +       down_write(&fi->i_dmap_sem);
+> > +       dmap = fuse_dax_interval_tree_iter_first(&fi->dmap_tree, pos, pos);
+> > +
+> > +       /* We are holding either inode lock or i_mmap_sem, and that should
+> > +        * ensure that dmap can't reclaimed or truncated and it should still
+> > +        * be there in tree despite the fact we dropped and re-acquired the
+> > +        * lock.
+> > +        */
+> > +       ret = -EIO;
+> > +       if (WARN_ON(!dmap))
+> > +               goto out_err;
+> > +
+> > +       /* Maybe another thread already upgraded mapping while we were not
+> > +        * holding lock.
+> > +        */
+> > +       if (dmap->writable)
+> > +               goto out_fill_iomap;
+> > +
+> > +       ret = fuse_setup_one_mapping(inode,
+> > +                                    ALIGN_DOWN(pos, FUSE_DAX_MEM_RANGE_SZ),
+> > +                                    dmap, true, true);
+> > +       if (ret < 0) {
+> > +               printk("fuse_setup_one_mapping() failed. err=%d pos=0x%llx\n",
+> > +                      ret, pos);
+> 
+> Again.
+
+Will remove. How about converting some of them to pr_debug() instead? It
+can help with debugging if something is not working.
+
+> 
+> > +               goto out_err;
+> > +       }
+> > +
+> > +out_fill_iomap:
+> > +       fuse_fill_iomap(inode, pos, length, iomap, dmap, flags);
+> > +out_err:
+> > +       up_write(&fi->i_dmap_sem);
+> > +       return ret;
+> > +}
+> > +
+> > +/* This is just for DAX and the mapping is ephemeral, do not use it for other
+> > + * purposes since there is no block device with a permanent mapping.
+> > + */
+> > +static int fuse_iomap_begin(struct inode *inode, loff_t pos, loff_t length,
+> > +                           unsigned flags, struct iomap *iomap,
+> > +                           struct iomap *srcmap)
+> > +{
+> > +       struct fuse_inode *fi = get_fuse_inode(inode);
+> > +       struct fuse_conn *fc = get_fuse_conn(inode);
+> > +       struct fuse_dax_mapping *dmap;
+> > +       bool writable = flags & IOMAP_WRITE;
+> > +
+> > +       /* We don't support FIEMAP */
+> > +       BUG_ON(flags & IOMAP_REPORT);
+> > +
+> > +       pr_debug("fuse_iomap_begin() called. pos=0x%llx length=0x%llx\n",
+> > +                       pos, length);
+> > +
+> > +       /*
+> > +        * Writes beyond end of file are not handled using dax path. Instead
+> > +        * a fuse write message is sent to daemon
+> > +        */
+> > +       if (flags & IOMAP_WRITE && pos >= i_size_read(inode))
+> > +               return -EIO;
+> 
+> Okay, this will work fine if the host filesystem is not modified by
+> other entities.
+
+This requires little longer explanation. It took me a while to remember
+what I did.
+
+For file extending writes, we do not want to go through dax path because
+we want written data and file size to be atomic operation w.r.t guest
+crash. So in fuse_dax_write_iter() I detect that this is file extending
+write and call fuse_dax_direct_write() instead to fall back to regular
+fuse message for write and bypass dax.
+
+But if write is partially overwriting and rest is file extending, current
+logic tries to use dax for the portion of page which is being overwritten
+and fall back to fuse write message for the remaining file extending
+write. And that's why after the call to dax_iomap_rw() I check one more
+time if there are some bytes not written and use fuse write to extend
+file.
+
+        /*
+         * If part of the write was file extending, fuse dax path will not
+         * take care of that. Do direct write instead.
+         */
+        if (iov_iter_count(from) && file_extending_write(iocb, from)) {
+                count = fuse_dax_direct_write(iocb, from);
+                if (count < 0)
+                        goto out;
+                ret += count;
+        }
+
+dax_iomap_rw() will do dax operation for the bytes which are with-in
+i_size. Then it will call iomap_apply() again with the portion of
+file doing file extending write and this time iomap_begin() will return
+-EIO. And dax_iomap_rw() will return number of bytes written (and not
+-EIO) to caller. 
+
+        while (iov_iter_count(iter)) {
+                ret = iomap_apply(inode, pos, iov_iter_count(iter), flags, ops,
+                                iter, dax_iomap_actor);
+                if (ret <= 0)
+                        break;
+                pos += ret;
+                done += ret;
+        }
+
+I am beginning to think that this is way more complicated then it needs
+to be. Probably I should detect that if any part of the file is file
+extending, just fall back to using fuse write path.
+
+> What happens if there's a concurrent truncate going on on the host
+> with this write?
+
+For regular fuse write, concurrent truncate is not a problem. But for
+dax read/write/mmap, concurrent truncate is a problem. If another guest
+truncates the file (after this guest has mapped this page), then
+any attempt to access this page hangs that process. KVM is trying to
+fault in a page on host which does not exist anymore. Currently kvm
+does not seem to have the logic to be able to deal with errors in
+async page fault path. And we will have to modify all that so that
+we can somehow propagate errors (SIGBUS) to guest and deliver it
+to process.
+
+So if process did mmap() and tried to access truncated portion of
+file, then it should get SIGBUS. If we are doing read/write then
+we should have the logic to deal with this error (exception table
+magic) and deliver -EIO to user space.
+
+None of that is handled right now and is a future TODO item. So
+for now, this will work well only with single guest and we will
+run into issues if we are sharing directories with another
+guest.
+
+> If the two are not in any way synchronized than
+> either the two following behavior is allowed:
+> 
+>  1) Whole or partial data in write is truncated. (If there are
+> complete pages from the write being truncated, then the writing
+> process will receive SIGBUS.  Does KVM hande that?   I remember that
+> being discussed, but don't remember the conclusion).
+> 
+>  2) Write re-extends file size.
+
+Currently, for file extending writes, if other guest truncates file first
+then fuse write will extend file again. If fuse write finished first,
+then other guest will truncate file and reduce size.
+
+I think we will have problem when only part of the write is extending
+file. In that case part of the file which is being overwritten, we are
+doing dax. And if other guest truncates file first, then kvm will hang.
+
+But that's a problem we have with not just file extending write, but
+any read/write/mmap w.r.t truncate by another guest. We will have to
+fix that before we support virtiofs+dax for shared directory.
+
+> 
+> However EIO is not a good result, so we need to do something with it.
+
+This -EIO is not seen by user. But dax_iomap_rw() does not return it
+instead returns number of bytes which have been written. 
+
+[..]
+> > +static ssize_t fuse_dax_write_iter(struct kiocb *iocb, struct iov_iter *from)
+> > +{
+> > +       struct inode *inode = file_inode(iocb->ki_filp);
+> > +       ssize_t ret, count;
+> > +
+> > +       if (iocb->ki_flags & IOCB_NOWAIT) {
+> > +               if (!inode_trylock(inode))
+> > +                       return -EAGAIN;
+> > +       } else {
+> > +               inode_lock(inode);
+> > +       }
+> > +
+> > +       ret = generic_write_checks(iocb, from);
+> > +       if (ret <= 0)
+> > +               goto out;
+> > +
+> > +       ret = file_remove_privs(iocb->ki_filp);
+> > +       if (ret)
+> > +               goto out;
+> > +       /* TODO file_update_time() but we don't want metadata I/O */
+> > +
+> > +       /* Do not use dax for file extending writes as its an mmap and
+> > +        * trying to write beyong end of existing page will generate
+> > +        * SIGBUS.
+> 
+> Ah, here it is.  So what happens in case of a race?  Does that
+> currently crash KVM?
+
+In case of race, yes, KVM hangs. So no shared directory operation yet
+till we have designed proper error handling in kvm path.
+
+Thanks
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
