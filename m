@@ -1,313 +1,463 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64ED51827C3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 05:24:59 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D131827EE
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 05:47:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B560E10FC3779;
-	Wed, 11 Mar 2020 21:25:48 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7724210FC376C;
+	Wed, 11 Mar 2020 21:48:22 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=alastair@au1.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BC20D10FC3778
-	for <linux-nvdimm@lists.01.org>; Wed, 11 Mar 2020 21:25:45 -0700 (PDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02C4MqsK140442
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 00:24:53 -0400
+	by ml01.01.org (Postfix) with ESMTPS id 51D5C10FC36F0
+	for <linux-nvdimm@lists.01.org>; Wed, 11 Mar 2020 21:48:20 -0700 (PDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02C4i0kW001934
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 00:47:28 -0400
 Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 2yqcp7jt0g-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 2yqe34rpga-1
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 00:24:52 -0400
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 00:47:28 -0400
 Received: from localhost
 	by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
 	for <linux-nvdimm@lists.01.org> from <alastair@au1.ibm.com>;
-	Thu, 12 Mar 2020 04:24:40 -0000
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+	Thu, 12 Mar 2020 04:47:25 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
 	by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
 	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Thu, 12 Mar 2020 04:24:33 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 02C4OWx649414340
+	Thu, 12 Mar 2020 04:47:18 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 02C4lHxm42664226
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Mar 2020 04:24:32 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 503905204E;
-	Thu, 12 Mar 2020 04:24:32 +0000 (GMT)
+	Thu, 12 Mar 2020 04:47:17 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C22DA4054;
+	Thu, 12 Mar 2020 04:47:17 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E39BA4062;
+	Thu, 12 Mar 2020 04:47:16 +0000 (GMT)
 Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
-	by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id A612A52050;
-	Thu, 12 Mar 2020 04:24:31 +0000 (GMT)
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Thu, 12 Mar 2020 04:47:16 +0000 (GMT)
 Received: from adsilva.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
 	(using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 85BBDA021A;
-	Thu, 12 Mar 2020 15:24:26 +1100 (AEDT)
-Subject: Re: [PATCH v3 23/27] powerpc/powernv/pmem: Add debug IOCTLs
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1D97CA021A;
+	Thu, 12 Mar 2020 15:47:11 +1100 (AEDT)
+Subject: Re: [PATCH v3 19/27] powerpc/powernv/pmem: Add an IOCTL to report
+ controller statistics
 From: "Alastair D'Silva" <alastair@au1.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Thu, 12 Mar 2020 15:24:30 +1100
-In-Reply-To: <7e0e3b71-d70c-1dee-b630-0c33596b7223@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Thu, 12 Mar 2020 15:47:14 +1100
+In-Reply-To: <c0002b11-7f54-38d3-4ae2-9008a5cc0b61@linux.ibm.com>
 References: <20200221032720.33893-1-alastair@au1.ibm.com>
-	 <20200221032720.33893-24-alastair@au1.ibm.com>
-	 <7e0e3b71-d70c-1dee-b630-0c33596b7223@linux.ibm.com>
+	 <20200221032720.33893-20-alastair@au1.ibm.com>
+	 <c0002b11-7f54-38d3-4ae2-9008a5cc0b61@linux.ibm.com>
 Organization: IBM Australia
 User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-x-cbid: 20031204-4275-0000-0000-000003AAE747
+x-cbid: 20031204-4275-0000-0000-000003AAEA55
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20031204-4276-0000-0000-000038C004D4
-Message-Id: <ac25aa3ba40d54f973e3d9705d6b75a0856eafb4.camel@au1.ibm.com>
+x-cbparentid: 20031204-4276-0000-0000-000038C007DD
+Message-Id: <bd6e5ef945a1e51e09bfa7eae2737e4842b13ec7.camel@au1.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
  definitions=2020-03-11_15:2020-03-11,2020-03-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 phishscore=0
- malwarescore=0 adultscore=0 impostorscore=0 mlxscore=0 mlxlogscore=702
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2001150001 definitions=main-2003120020
-Message-ID-Hash: QM4QKZOUJVWT3FW3M6VIPJSSQ6DHPGZJ
-X-Message-ID-Hash: QM4QKZOUJVWT3FW3M6VIPJSSQ6DHPGZJ
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ mlxscore=0 phishscore=0 mlxlogscore=999 clxscore=1015 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2001150001 definitions=main-2003120023
+Message-ID-Hash: WQMQIP7JRIQOBLXBJH75G7L4L3CBMWHA
+X-Message-ID-Hash: WQMQIP7JRIQOBLXBJH75G7L4L3CBMWHA
 X-MailFrom: alastair@au1.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxppc-
- dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org, linuxp
+ pc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QM4QKZOUJVWT3FW3M6VIPJSSQ6DHPGZJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WQMQIP7JRIQOBLXBJH75G7L4L3CBMWHA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDIwLTAzLTA0IGF0IDE2OjIxICswMTAwLCBGcmVkZXJpYyBCYXJyYXQgd3JvdGU6
-DQo+IA0KPiBMZSAyMS8wMi8yMDIwIMOgIDA0OjI3LCBBbGFzdGFpciBEJ1NpbHZhIGEgw6ljcml0
-IDoNCj4gPiBGcm9tOiBBbGFzdGFpciBEJ1NpbHZhIDxhbGFzdGFpckBkLXNpbHZhLm9yZz4NCj4g
-PiANCj4gPiBUaGVzZSBJT0NUTHMgcHJvdmlkZSBsb3cgbGV2ZWwgYWNjZXNzIHRvIHRoZSBjYXJk
-IHRvIGFpZCBpbg0KPiA+IGRlYnVnZ2luZw0KPiA+IGNvbnRyb2xsZXIvRlBHQSBmaXJtd2FyZS4N
-Cj4gPiANCj4gPiBTaWduZWQtb2ZmLWJ5OiBBbGFzdGFpciBEJ1NpbHZhIDxhbGFzdGFpckBkLXNp
-bHZhLm9yZz4NCj4gPiAtLS0NCj4gPiAgIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvcG93ZXJudi9w
-bWVtL0tjb25maWcgfCAgIDYgKw0KPiA+ICAgYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52
-L3BtZW0vb2N4bC5jICB8IDI0OQ0KPiA+ICsrKysrKysrKysrKysrKysrKysrDQo+ID4gICBpbmNs
-dWRlL3VhcGkvbnZkaW1tL29jeGwtcG1lbS5oICAgICAgICAgICAgIHwgIDMyICsrKw0KPiA+ICAg
-MyBmaWxlcyBjaGFuZ2VkLCAyODcgaW5zZXJ0aW9ucygrKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQg
-YS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9LY29uZmlnDQo+ID4gYi9hcmNo
-L3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9LY29uZmlnDQo+ID4gaW5kZXggYzVkOTI3
-NTIwOTIwLi4zZjQ0NDI5ZDcwYzkgMTAwNjQ0DQo+ID4gLS0tIGEvYXJjaC9wb3dlcnBjL3BsYXRm
-b3Jtcy9wb3dlcm52L3BtZW0vS2NvbmZpZw0KPiA+ICsrKyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9y
-bXMvcG93ZXJudi9wbWVtL0tjb25maWcNCj4gPiBAQCAtMTIsNCArMTIsMTAgQEAgY29uZmlnIE9D
-WExfUE1FTQ0KPiA+ICAgDQo+ID4gICAJICBTZWxlY3QgTiBpZiB1bnN1cmUuDQo+ID4gICANCj4g
-PiArY29uZmlnIE9DWExfUE1FTV9ERUJVRw0KPiA+ICsJYm9vbCAiT3BlbkNBUEkgUGVyc2lzdGVu
-dCBNZW1vcnkgZGVidWdnaW5nIg0KPiA+ICsJZGVwZW5kcyBvbiBPQ1hMX1BNRU0NCj4gPiArCWhl
-bHANCj4gPiArCSAgRW5hYmxlcyBsb3cgbGV2ZWwgSU9DVExzIGZvciBPcGVuQ0FQSSBQZXJzaXN0
-ZW50IE1lbW9yeQ0KPiA+IGZpcm13YXJlIGRldmVsb3BtZW50DQo+ID4gKw0KPiA+ICAgZW5kaWYN
-Cj4gPiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wb3dlcm52L3BtZW0vb2N4
-bC5jDQo+ID4gYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsLmMNCj4g
-PiBpbmRleCBlMDFmNmY5ZmMxODAuLmQ0Y2U1ZTllMDUyMSAxMDA2NDQNCj4gPiAtLS0gYS9hcmNo
-L3Bvd2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsLmMNCj4gPiArKysgYi9hcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zL3Bvd2VybnYvcG1lbS9vY3hsLmMNCj4gPiBAQCAtMTA1MCw2ICsxMDUw
-LDIzNSBAQCBpbnQgcmVxX2NvbnRyb2xsZXJfaGVhbHRoX3BlcmYoc3RydWN0DQo+ID4gb2N4bHBt
-ZW0gKm9jeGxwbWVtKQ0KPiA+ICAgCQkJCSAgICAgIEdMT0JBTF9NTUlPX0hDSV9SRVFfSEVBTFRI
-X1BFUkYpOw0KPiA+ICAgfQ0KPiA+ICAgDQo+ID4gKyNpZmRlZiBDT05GSUdfT0NYTF9QTUVNX0RF
-QlVHDQo+ID4gKy8qKg0KPiA+ICsgKiBlbmFibGVfZndkZWJ1ZygpIC0gRW5hYmxlIEZXIGRlYnVn
-IG9uIHRoZSBjb250cm9sbGVyDQo+ID4gKyAqIEBvY3hscG1lbTogdGhlIGRldmljZSBtZXRhZGF0
-YQ0KPiA+ICsgKiBSZXR1cm46IDAgb24gc3VjY2VzcywgbmVnYXRpdmUgb24gZmFpbHVyZQ0KPiA+
-ICsgKi8NCj4gPiArc3RhdGljIGludCBlbmFibGVfZndkZWJ1Zyhjb25zdCBzdHJ1Y3Qgb2N4bHBt
-ZW0gKm9jeGxwbWVtKQ0KPiA+ICt7DQo+ID4gKwlyZXR1cm4gb2N4bF9nbG9iYWxfbW1pb19zZXQ2
-NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ID4gR0xPQkFMX01NSU9fSENJLA0KPiA+ICsJCQkJICAg
-ICAgT0NYTF9MSVRUTEVfRU5ESUFOLA0KPiA+ICsJCQkJICAgICAgR0xPQkFMX01NSU9fSENJX0ZX
-X0RFQlVHKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArLyoqDQo+ID4gKyAqIGRpc2FibGVfZndkZWJ1
-ZygpIC0gRGlzYWJsZSBGVyBkZWJ1ZyBvbiB0aGUgY29udHJvbGxlcg0KPiA+ICsgKiBAb2N4bHBt
-ZW06IHRoZSBkZXZpY2UgbWV0YWRhdGENCj4gPiArICogUmV0dXJuOiAwIG9uIHN1Y2Nlc3MsIG5l
-Z2F0aXZlIG9uIGZhaWx1cmUNCj4gPiArICovDQo+ID4gK3N0YXRpYyBpbnQgZGlzYWJsZV9md2Rl
-YnVnKGNvbnN0IHN0cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0pDQo+ID4gK3sNCj4gPiArCXJldHVy
-biBvY3hsX2dsb2JhbF9tbWlvX3NldDY0KG9jeGxwbWVtLT5vY3hsX2FmdSwNCj4gPiBHTE9CQUxf
-TU1JT19IQ0lDLA0KPiA+ICsJCQkJICAgICAgT0NYTF9MSVRUTEVfRU5ESUFOLA0KPiA+ICsJCQkJ
-ICAgICAgR0xPQkFMX01NSU9fSENJX0ZXX0RFQlVHKTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3Rh
-dGljIGludCBpb2N0bF9md2RlYnVnKHN0cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0sDQo+ID4gKwkJ
-CSAgICAgc3RydWN0IGlvY3RsX29jeGxfcG1lbV9md2RlYnVnIF9fdXNlcg0KPiA+ICp1YXJnKQ0K
-PiA+ICt7DQo+ID4gKwlzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2Z3ZGVidWcgYXJnczsNCj4gPiAr
-CXU2NCB2YWw7DQo+ID4gKwlpbnQgaTsNCj4gPiArCWludCByYzsNCj4gPiArDQo+ID4gKwlpZiAo
-Y29weV9mcm9tX3VzZXIoJmFyZ3MsIHVhcmcsIHNpemVvZihhcmdzKSkpDQo+ID4gKwkJcmV0dXJu
-IC1FRkFVTFQ7DQo+ID4gKw0KPiA+ICsJLy8gQnVmZmVyIHNpemUgbXVzdCBiZSBhIG11bHRpcGxl
-IG9mIDgNCj4gPiArCWlmICgoYXJncy5idWZfc2l6ZSAmIDB4MDcpKQ0KPiA+ICsJCXJldHVybiAt
-RUlOVkFMOw0KPiA+ICsNCj4gPiArCWlmIChhcmdzLmJ1Zl9zaXplID4gb2N4bHBtZW0tPmFkbWlu
-X2NvbW1hbmQuZGF0YV9zaXplKQ0KPiA+ICsJCXJldHVybiAtRUlOVkFMOw0KPiA+ICsNCj4gPiAr
-CW11dGV4X2xvY2soJm9jeGxwbWVtLT5hZG1pbl9jb21tYW5kLmxvY2spOw0KPiA+ICsNCj4gPiAr
-CXJjID0gZW5hYmxlX2Z3ZGVidWcob2N4bHBtZW0pOw0KPiA+ICsJaWYgKHJjKQ0KPiA+ICsJCWdv
-dG8gb3V0Ow0KPiA+ICsNCj4gPiArCXJjID0gYWRtaW5fY29tbWFuZF9yZXF1ZXN0KG9jeGxwbWVt
-LCBBRE1JTl9DT01NQU5EX0ZXX0RFQlVHKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlnb3RvIG91
-dDsNCj4gPiArDQo+ID4gKwkvLyBXcml0ZSBEZWJ1Z0FjdGlvbiAmIEZ1bmN0aW9uQ29kZQ0KPiA+
-ICsJdmFsID0gKCh1NjQpYXJncy5kZWJ1Z19hY3Rpb24gPDwgNTYpIHwgKCh1NjQpYXJncy5mdW5j
-dGlvbl9jb2RlDQo+ID4gPDwgNDApOw0KPiA+ICsNCj4gPiArCXJjID0gb2N4bF9nbG9iYWxfbW1p
-b193cml0ZTY0KG9jeGxwbWVtLT5vY3hsX2FmdSwNCj4gPiArCQkJCSAgICAgIG9jeGxwbWVtLQ0K
-PiA+ID5hZG1pbl9jb21tYW5kLnJlcXVlc3Rfb2Zmc2V0ICsgMHgwOCwNCj4gPiArCQkJCSAgICAg
-IE9DWExfTElUVExFX0VORElBTiwgdmFsKTsNCj4gPiArCWlmIChyYykNCj4gPiArCQlnb3RvIG91
-dDsNCj4gPiArDQo+ID4gKwlyYyA9IG9jeGxfZ2xvYmFsX21taW9fd3JpdGU2NChvY3hscG1lbS0+
-b2N4bF9hZnUsDQo+ID4gKwkJCQkgICAgICBvY3hscG1lbS0NCj4gPiA+YWRtaW5fY29tbWFuZC5y
-ZXF1ZXN0X29mZnNldCArIDB4MTAsDQo+ID4gKwkJCQkgICAgICBPQ1hMX0xJVFRMRV9FTkRJQU4s
-DQo+ID4gYXJncy5kZWJ1Z19wYXJhbWV0ZXJfMSk7DQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290
-byBvdXQ7DQo+ID4gKw0KPiA+ICsJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3dyaXRlNjQob2N4bHBt
-ZW0tPm9jeGxfYWZ1LA0KPiA+ICsJCQkJICAgICAgb2N4bHBtZW0tDQo+ID4gPmFkbWluX2NvbW1h
-bmQucmVxdWVzdF9vZmZzZXQgKyAweDE4LA0KPiA+ICsJCQkJICAgICAgT0NYTF9MSVRUTEVfRU5E
-SUFOLA0KPiA+IGFyZ3MuZGVidWdfcGFyYW1ldGVyXzIpOw0KPiA+ICsJaWYgKHJjKQ0KPiA+ICsJ
-CWdvdG8gb3V0Ow0KPiA+ICsNCj4gPiArCWZvciAoaSA9IDB4MjA7IGkgPCAweDM4OyBpICs9IDB4
-MDgpDQo+ID4gKwkJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3dyaXRlNjQob2N4bHBtZW0tPm9jeGxf
-YWZ1LA0KPiA+ICsJCQkJCSAgICAgIG9jeGxwbWVtLQ0KPiA+ID5hZG1pbl9jb21tYW5kLnJlcXVl
-c3Rfb2Zmc2V0ICsgaSwNCj4gPiArCQkJCQkgICAgICBPQ1hMX0xJVFRMRV9FTkRJQU4sIDApOw0K
-PiA+ICsJaWYgKHJjKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiANCj4gcmMgaXMgdGhlIGZvciBsb29w
-IGJvZHkuIFRoZSByYyB0ZXN0IGlzIG5vdC4NCj4gDQpXaG9vcHMgOikNCg0KPiANCj4gPiArDQo+
-ID4gKw0KPiA+ICsJLy8gUG9wdWxhdGUgYWRtaW4gY29tbWFuZCBidWZmZXINCj4gPiArCWlmIChh
-cmdzLmJ1Zl9zaXplKSB7DQo+ID4gKwkJZm9yIChpID0gMDsgaSA8IGFyZ3MuYnVmX3NpemU7IGkg
-Kz0gc2l6ZW9mKHU2NCkpIHsNCj4gPiArCQkJdTY0IHZhbDsNCj4gPiArDQo+ID4gKwkJCWlmIChj
-b3B5X2Zyb21fdXNlcigmdmFsLCAmYXJncy5idWZbaV0sDQo+ID4gc2l6ZW9mKHU2NCkpKQ0KPiA+
-ICsJCQkJcmV0dXJuIC1FRkFVTFQ7DQo+IA0KPiBuZWVkIHRvIGdldCByYyBhbmQgZ290byBvdXQg
-YmVjYXVzZSBvZiB0aGUgbXV0ZXgNCj4gDQpPaw0KDQo+IA0KPiA+ICsNCj4gPiArCQkJcmMgPSBv
-Y3hsX2dsb2JhbF9tbWlvX3dyaXRlNjQob2N4bHBtZW0tDQo+ID4gPm9jeGxfYWZ1LA0KPiA+ICsJ
-CQkJCQkgICAgICBvY3hscG1lbS0NCj4gPiA+YWRtaW5fY29tbWFuZC5kYXRhX29mZnNldCArIGks
-DQo+ID4gKwkJCQkJCSAgICAgIE9DWExfSE9TVF9FTkRJQU4sDQo+ID4gdmFsKTsNCj4gPiArCQkJ
-aWYgKHJjKQ0KPiA+ICsJCQkJZ290byBvdXQ7DQo+ID4gKwkJfQ0KPiA+ICsJfQ0KPiA+ICsNCj4g
-PiArCXJjID0gYWRtaW5fY29tbWFuZF9leGVjdXRlKG9jeGxwbWVtKTsNCj4gPiArCWlmIChyYykN
-Cj4gPiArCQlnb3RvIG91dDsNCj4gPiArDQo+ID4gKwlyYyA9IGFkbWluX2NvbW1hbmRfY29tcGxl
-dGVfdGltZW91dChvY3hscG1lbSwNCj4gPiArCQkJCQkgICAgb2N4bHBtZW0tDQo+ID4gPnRpbWVv
-dXRzW0FETUlOX0NPTU1BTkRfRldfREVCVUddKTsNCj4gPiArCWlmIChyYyA8IDApDQo+ID4gKwkJ
-Z290byBvdXQ7DQo+ID4gKw0KPiA+ICsJcmMgPSBhZG1pbl9yZXNwb25zZShvY3hscG1lbSk7DQo+
-ID4gKwlpZiAocmMgPCAwKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+ICsJaWYgKHJjICE9IFNUQVRV
-U19TVUNDRVNTKSB7DQo+ID4gKwkJd2Fybl9zdGF0dXMob2N4bHBtZW0sICJVbmV4cGVjdGVkIHN0
-YXR1cyBmcm9tIEZXDQo+ID4gRGVidWciLCByYyk7DQo+ID4gKwkJZ290byBvdXQ7DQo+ID4gKwl9
-DQo+ID4gKw0KPiA+ICsJaWYgKGFyZ3MuYnVmX3NpemUpIHsNCj4gPiArCQlmb3IgKGkgPSAwOyBp
-IDwgYXJncy5idWZfc2l6ZTsgaSArPSBzaXplb2YodTY0KSkgew0KPiA+ICsJCQl1NjQgdmFsOw0K
-PiA+ICsNCj4gPiArCQkJcmMgPSBvY3hsX2dsb2JhbF9tbWlvX3JlYWQ2NChvY3hscG1lbS0NCj4g
-PiA+b2N4bF9hZnUsDQo+ID4gKwkJCQkJCSAgICAgb2N4bHBtZW0tDQo+ID4gPmFkbWluX2NvbW1h
-bmQuZGF0YV9vZmZzZXQgKyBpLA0KPiA+ICsJCQkJCQkgICAgIE9DWExfSE9TVF9FTkRJQU4sDQo+
-ID4gJnZhbCk7DQo+ID4gKwkJCWlmIChyYykNCj4gPiArCQkJCWdvdG8gb3V0Ow0KPiA+ICsNCj4g
-PiArCQkJaWYgKGNvcHlfdG9fdXNlcigmYXJncy5idWZbaV0sICZ2YWwsDQo+ID4gc2l6ZW9mKHU2
-NCkpKSB7DQo+ID4gKwkJCQlyYyA9IC1FRkFVTFQ7DQo+ID4gKwkJCQlnb3RvIG91dDsNCj4gPiAr
-CQkJfQ0KPiA+ICsJCX0NCj4gPiArCX0NCj4gPiArDQo+ID4gKwlyYyA9IGFkbWluX3Jlc3BvbnNl
-X2hhbmRsZWQob2N4bHBtZW0pOw0KPiA+ICsJaWYgKHJjKQ0KPiA+ICsJCWdvdG8gb3V0Ow0KPiA+
-ICsNCj4gPiArCXJjID0gZGlzYWJsZV9md2RlYnVnKG9jeGxwbWVtKTsNCj4gPiArCWlmIChyYykN
-Cj4gPiArCQlnb3RvIG91dDsNCj4gPiArDQo+ID4gK291dDoNCj4gPiArCW11dGV4X3VubG9jaygm
-b2N4bHBtZW0tPmFkbWluX2NvbW1hbmQubG9jayk7DQo+ID4gKwlyZXR1cm4gcmM7DQo+ID4gK30N
-Cj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgaW9jdGxfc2h1dGRvd24oc3RydWN0IG9jeGxwbWVtICpv
-Y3hscG1lbSkNCj4gPiArew0KPiA+ICsJaW50IHJjOw0KPiA+ICsNCj4gPiArCW11dGV4X2xvY2so
-Jm9jeGxwbWVtLT5hZG1pbl9jb21tYW5kLmxvY2spOw0KPiA+ICsNCj4gPiArCXJjID0gYWRtaW5f
-Y29tbWFuZF9yZXF1ZXN0KG9jeGxwbWVtLCBBRE1JTl9DT01NQU5EX1NIVVRET1dOKTsNCj4gPiAr
-CWlmIChyYykNCj4gPiArCQlnb3RvIG91dDsNCj4gPiArDQo+ID4gKwlyYyA9IGFkbWluX2NvbW1h
-bmRfZXhlY3V0ZShvY3hscG1lbSk7DQo+ID4gKwlpZiAocmMpDQo+ID4gKwkJZ290byBvdXQ7DQo+
-ID4gKw0KPiA+ICsJcmMgPSBhZG1pbl9jb21tYW5kX2NvbXBsZXRlX3RpbWVvdXQob2N4bHBtZW0s
-DQo+ID4gQURNSU5fQ09NTUFORF9TSFVURE9XTik7DQo+ID4gKwlpZiAocmMgPCAwKSB7DQo+ID4g
-KwkJZGV2X3dhcm4oJm9jeGxwbWVtLT5kZXYsICJTaHV0ZG93biB0aW1lZCBvdXRcbiIpOw0KPiA+
-ICsJCWdvdG8gb3V0Ow0KPiA+ICsJfQ0KPiA+ICsNCj4gPiArCXJjID0gMDsNCj4gPiArCWdvdG8g
-b3V0Ow0KPiANCj4gV2UgY2FuIHJlbW92ZSB0aGF0IGdvdG8uDQoNCk9rDQoNCj4gDQo+IE5vIGFk
-bWluX3Jlc3BvbnNlX2hhbmRsZWQoKT8gSXMgdGhhdCBzaHV0dGluZyBkb3duIHRoZSBmdWxsIGFk
-YXB0ZXINCj4gYW5kIA0KPiB3ZSBoYXZlIG5vYm9keSB0byB0YWxrIHRvPyBXaGF0IGhhcHBlbnMg
-bmV4dD8NCj4gDQoNClRoYXQncyBhbiBvdmVyc2lnaHQsIHdlIHNob3VsZCBjYWxsIGFkbWluX3Jl
-c3BvbnNlX2hhbmRsZWQoKS4NCg0KPiANCj4gPiArDQo+ID4gK291dDoNCj4gPiArCW11dGV4X3Vu
-bG9jaygmb2N4bHBtZW0tPmFkbWluX2NvbW1hbmQubG9jayk7DQo+ID4gKwlyZXR1cm4gcmM7DQo+
-ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgaW9jdGxfbW1pb193cml0ZShzdHJ1Y3Qgb2N4
-bHBtZW0gKm9jeGxwbWVtLA0KPiA+ICsJCQkJc3RydWN0IGlvY3RsX29jeGxfcG1lbV9tbWlvIF9f
-dXNlcg0KPiA+ICp1YXJnKQ0KPiA+ICt7DQo+ID4gKwlzdHJ1Y3Qgc2NtX2lvY3RsX21taW8gYXJn
-czsNCj4gPiArDQo+ID4gKwlpZiAoY29weV9mcm9tX3VzZXIoJmFyZ3MsIHVhcmcsIHNpemVvZihh
-cmdzKSkpDQo+ID4gKwkJcmV0dXJuIC1FRkFVTFQ7DQo+ID4gKw0KPiA+ICsJcmV0dXJuIG9jeGxf
-Z2xvYmFsX21taW9fd3JpdGU2NChvY3hscG1lbS0+b2N4bF9hZnUsDQo+ID4gYXJncy5hZGRyZXNz
-LA0KPiA+ICsJCQkJCU9DWExfTElUVExFX0VORElBTiwgYXJncy52YWwpOw0KPiA+ICt9DQo+ID4g
-Kw0KPiA+ICtzdGF0aWMgaW50IGlvY3RsX21taW9fcmVhZChzdHJ1Y3Qgb2N4bHBtZW0gKm9jeGxw
-bWVtLA0KPiA+ICsJCQkJICAgICBzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX21taW8gX191c2VyDQo+
-ID4gKnVhcmcpDQo+ID4gK3sNCj4gPiArCXN0cnVjdCBpb2N0bF9vY3hsX3BtZW1fbW1pbyBhcmdz
-Ow0KPiA+ICsJaW50IHJjOw0KPiA+ICsNCj4gPiArCWlmIChjb3B5X2Zyb21fdXNlcigmYXJncywg
-dWFyZywgc2l6ZW9mKGFyZ3MpKSkNCj4gPiArCQlyZXR1cm4gLUVGQVVMVDsNCj4gPiArDQo+ID4g
-KwlyYyA9IG9jeGxfZ2xvYmFsX21taW9fcmVhZDY0KG9jeGxwbWVtLT5vY3hsX2FmdSwgYXJncy5h
-ZGRyZXNzLA0KPiA+ICsJCQkJICAgICBPQ1hMX0xJVFRMRV9FTkRJQU4sICZhcmdzLnZhbCk7DQo+
-ID4gKwlpZiAocmMpDQo+ID4gKwkJcmV0dXJuIHJjOw0KPiA+ICsNCj4gPiArCWlmIChjb3B5X3Rv
-X3VzZXIodWFyZywgJmFyZ3MsIHNpemVvZihhcmdzKSkpDQo+ID4gKwkJcmV0dXJuIC1FRkFVTFQ7
-DQo+ID4gKw0KPiA+ICsJcmV0dXJuIDA7DQo+ID4gK30NCj4gPiArI2Vsc2UgLyogQ09ORklHX09D
-WExfUE1FTV9ERUJVRyAqLw0KPiA+ICtzdGF0aWMgaW50IGlvY3RsX2Z3ZGVidWcoc3RydWN0IG9j
-eGxwbWVtICpvY3hscG1lbSwNCj4gPiArCQkJICAgICBzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2Z3
-ZGVidWcgX191c2VyDQo+ID4gKnVhcmcpDQo+ID4gK3sNCj4gPiArCXJldHVybiAtRVBFUk07DQo+
-ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBpbnQgaW9jdGxfc2h1dGRvd24oc3RydWN0IG9jeGxw
-bWVtICpvY3hscG1lbSkNCj4gPiArew0KPiA+ICsJcmV0dXJuIC1FUEVSTTsNCj4gPiArfQ0KPiA+
-ICsNCj4gPiArc3RhdGljIGludCBpb2N0bF9tbWlvX3dyaXRlKHN0cnVjdCBvY3hscG1lbSAqb2N4
-bHBtZW0sDQo+ID4gKwkJCQlzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX21taW8gX191c2VyDQo+ID4g
-KnVhcmcpDQo+ID4gK3sNCj4gPiArCXJldHVybiAtRVBFUk07DQo+ID4gK30NCj4gPiArDQo+ID4g
-K3N0YXRpYyBpbnQgaW9jdGxfbW1pb19yZWFkKHN0cnVjdCBvY3hscG1lbSAqb2N4bHBtZW0sDQo+
-ID4gKwkJCSAgICAgICBzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX21taW8gX191c2VyDQo+ID4gKnVh
-cmcpDQo+ID4gK3sNCj4gPiArCXJldHVybiAtRVBFUk07DQo+ID4gK30NCj4gDQo+IFRoZSAnZWxz
-ZScgY2xhdXNlIGNvdWxkIGJlIGRyb3BwZWQsIHRoZSBpb2N0bHMgd2lsbCByZXR1cm4gRUlOVkFM
-LA0KPiB3aGljaCANCj4gaXMgZmluZSwgSSB0aGluay4NCj4gDQo+IA0KDQpPaw0KDQo+IA0KPiA+
-ICsjZW5kaWYgLyogQ09ORklHX09DWExfUE1FTV9ERUJVRyAqLw0KPiA+ICsNCj4gPiAgIHN0YXRp
-YyBsb25nIGZpbGVfaW9jdGwoc3RydWN0IGZpbGUgKmZpbGUsIHVuc2lnbmVkIGludCBjbWQsDQo+
-ID4gdW5zaWduZWQgbG9uZyBhcmdzKQ0KPiA+ICAgew0KPiA+ICAgCXN0cnVjdCBvY3hscG1lbSAq
-b2N4bHBtZW0gPSBmaWxlLT5wcml2YXRlX2RhdGE7DQo+ID4gQEAgLTEwOTEsNiArMTMyMCwyNiBA
-QCBzdGF0aWMgbG9uZyBmaWxlX2lvY3RsKHN0cnVjdCBmaWxlICpmaWxlLA0KPiA+IHVuc2lnbmVk
-IGludCBjbWQsIHVuc2lnbmVkIGxvbmcgYXJncykNCj4gPiAgIAljYXNlIElPQ1RMX09DWExfUE1F
-TV9SRVFVRVNUX0hFQUxUSDoNCj4gPiAgIAkJcmMgPSByZXFfY29udHJvbGxlcl9oZWFsdGhfcGVy
-ZihvY3hscG1lbSk7DQo+ID4gICAJCWJyZWFrOw0KPiA+ICsNCj4gPiArCWNhc2UgSU9DVExfT0NY
-TF9QTUVNX0ZXREVCVUc6DQo+ID4gKwkJcmMgPSBpb2N0bF9md2RlYnVnKG9jeGxwbWVtLA0KPiA+
-ICsJCQkJICAgKHN0cnVjdCBpb2N0bF9vY3hsX3BtZW1fZndkZWJ1Zw0KPiA+IF9fdXNlciAqKWFy
-Z3MpOw0KPiA+ICsJCWJyZWFrOw0KPiA+ICsNCj4gPiArCWNhc2UgSU9DVExfT0NYTF9QTUVNX1NI
-VVRET1dOOg0KPiA+ICsJCXJjID0gaW9jdGxfc2h1dGRvd24ob2N4bHBtZW0pOw0KPiA+ICsJCWJy
-ZWFrOw0KPiA+ICsNCj4gPiArCWNhc2UgSU9DVExfT0NYTF9QTUVNX01NSU9fV1JJVEU6DQo+ID4g
-KwkJcmMgPSBpb2N0bF9tbWlvX3dyaXRlKG9jeGxwbWVtLA0KPiA+ICsJCQkJICAgICAgKHN0cnVj
-dCBpb2N0bF9vY3hsX3BtZW1fbW1pbw0KPiA+IF9fdXNlciAqKWFyZ3MpOw0KPiA+ICsJCWJyZWFr
-Ow0KPiA+ICsNCj4gPiArCWNhc2UgSU9DVExfT0NYTF9QTUVNX01NSU9fUkVBRDoNCj4gPiArCQly
-YyA9IGlvY3RsX21taW9fcmVhZChvY3hscG1lbSwNCj4gPiArCQkJCSAgICAgKHN0cnVjdCBpb2N0
-bF9vY3hsX3BtZW1fbW1pbw0KPiA+IF9fdXNlciAqKWFyZ3MpOw0KPiA+ICsJCWJyZWFrOw0KPiA+
-ICsNCj4gPiAgIAl9DQo+ID4gICANCj4gPiAgIAlyZXR1cm4gcmM7DQo+ID4gZGlmZiAtLWdpdCBh
-L2luY2x1ZGUvdWFwaS9udmRpbW0vb2N4bC1wbWVtLmgNCj4gPiBiL2luY2x1ZGUvdWFwaS9udmRp
-bW0vb2N4bC1wbWVtLmgNCj4gPiBpbmRleCAwZDAzYWJiNDQwMDEuLmUyMGE0ZjhiZTgyYSAxMDA2
-NDQNCj4gPiAtLS0gYS9pbmNsdWRlL3VhcGkvbnZkaW1tL29jeGwtcG1lbS5oDQo+ID4gKysrIGIv
-aW5jbHVkZS91YXBpL252ZGltbS9vY3hsLXBtZW0uaA0KPiA+IEBAIC02LDYgKzYsMjggQEANCj4g
-PiAgICNpbmNsdWRlIDxsaW51eC90eXBlcy5oPg0KPiA+ICAgI2luY2x1ZGUgPGxpbnV4L2lvY3Rs
-Lmg+DQo+ID4gICANCj4gPiArZW51bSBvY3hscG1lbV9md2RlYnVnX2FjdGlvbiB7DQo+ID4gKwlP
-Q1hMX1BNRU1fRldERUJVR19SRUFEX0NPTlRST0xMRVJfTUVNT1JZID0gMHgwMSwNCj4gPiArCU9D
-WExfUE1FTV9GV0RFQlVHX1dSSVRFX0NPTlRST0xMRVJfTUVNT1JZID0gMHgwMiwNCj4gPiArCU9D
-WExfUE1FTV9GV0RFQlVHX0VOQUJMRV9GVU5DVElPTiA9IDB4MDMsDQo+ID4gKwlPQ1hMX1BNRU1f
-RldERUJVR19ESVNBQkxFX0ZVTkNUSU9OID0gMHgwNCwNCj4gPiArCU9DWExfUE1FTV9GV0RFQlVH
-X0dFVF9QRUwgPSAweDA1LCAvLyBSZXRyaWV2ZSBQZXJzaXN0ZW50IEVycm9yDQo+ID4gTG9nDQo+
-ID4gK307DQo+ID4gKw0KPiA+ICtzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2J1ZmZlcl9pbmZvIHsN
-Cj4gPiArCV9fdTMyCWFkbWluX2NvbW1hbmRfYnVmZmVyX3NpemU7IC8vIG91dA0KPiA+ICsJX191
-MzIJbmVhcl9zdG9yYWdlX2J1ZmZlcl9zaXplOyAvLyBvdXQNCj4gPiArfTsNCj4gPiArDQo+ID4g
-K3N0cnVjdCBpb2N0bF9vY3hsX3BtZW1fZndkZWJ1ZyB7IC8vIEFsbCBhcmdzIGFyZSBpbnB1dHMN
-Cj4gPiArCWVudW0gb2N4bHBtZW1fZndkZWJ1Z19hY3Rpb24gZGVidWdfYWN0aW9uOw0KPiANCj4g
-TW9yZSBrZXJuZWwgQUJJIHByb2JsZW1zLiBNeSBpbnRlcnByZXRhdGlvbiBvZiB0aGUgImVudW1l
-cmF0aW9uIA0KPiBzcGVjaWZpZXJzIiBzZWN0aW9uIG9mIEM5OSBpcyB0aGF0IHdlIGNhbid0IHJl
-bHkgb24gdGhlIHNpemUgb2YgdGhlDQo+IGVudW0uDQo+IA0KDQpPaw0KDQo+IA0KPiA+ICsJX191
-MTYgZnVuY3Rpb25fY29kZTsNCj4gPiArCV9fdTE2IGJ1Zl9zaXplOyAvLyBTaXplIG9mIG9wdGlv
-bmFsIGRhdGEgYnVmZmVyDQo+ID4gKwlfX3U2NCBkZWJ1Z19wYXJhbWV0ZXJfMTsNCj4gPiArCV9f
-dTY0IGRlYnVnX3BhcmFtZXRlcl8yOw0KPiA+ICsJX191OCAqYnVmOyAvLyBQb2ludGVyIHRvIG9w
-dGlvbmFsIGluL291dCBkYXRhIGJ1ZmZlcg0KPiA+ICt9Ow0KPiA+ICsNCj4gPiAgICNkZWZpbmUg
-T0NYTF9QTUVNX0VSUk9SX0xPR19BQ1RJT05fUkVTRVQJKDEgPDwgKDMyLTMyKSkNCj4gPiAgICNk
-ZWZpbmUgT0NYTF9QTUVNX0VSUk9SX0xPR19BQ1RJT05fQ0hLRlcJKDEgPDwgKDUzLTMyKSkNCj4g
-PiAgICNkZWZpbmUgT0NYTF9QTUVNX0VSUk9SX0xPR19BQ1RJT05fUkVQTEFDRQkoMSA8PCAoNTQt
-MzIpKQ0KPiA+IEBAIC02Niw2ICs4OCwxMSBAQCBzdHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2NvbnRy
-b2xsZXJfc3RhdHMgew0KPiA+ICAgCV9fdTY0IGNhY2hlX3dyaXRlX2xhdGVuY3k7IC8qIG5hbm9z
-ZWNvbmRzICovDQo+ID4gICB9Ow0KPiA+ICAgDQo+ID4gK3N0cnVjdCBpb2N0bF9vY3hsX3BtZW1f
-bW1pbyB7DQo+ID4gKwlfX3U2NCBhZGRyZXNzOyAvKiBPZmZzZXQgaW4gZ2xvYmFsIE1NSU8gc3Bh
-Y2UgKi8NCj4gPiArCV9fdTY0IHZhbDsgLyogdmFsdWUgdG8gd3JpdGUvd2FzIHJlYWQgKi8NCj4g
-PiArfTsNCj4gDQo+IENhbiB3ZSBncm91cCBhbGwgdGhlIGRlYnVnIGRhdGEgc3RydWN0dXJlcyB0
-b2dldGhlciBpbiB0aGUgaGVhZGVyDQo+IGZpbGUsIA0KPiB3aXRoIGEgY29tbWVudCBpbmRpY2F0
-aW5nIHRoYXQgdGhleSBtYXkgbm90IGJlIGF2YWlsYWJsZSBpbiB0aGUNCj4ga2VybmVsLCANCj4g
-ZGVwZW5kaW5nIG9uIHRoZSBjb25maWc/DQo+IA0KDQpPaw0KDQo+ICAgIEZyZWQNCj4gDQo+IA0K
-PiA+ICsNCj4gPiAgIHN0cnVjdCBpb2N0bF9vY3hsX3BtZW1fZXZlbnRmZCB7DQo+ID4gICAJX19z
-MzIgZXZlbnRmZDsNCj4gPiAgIAlfX3UzMiByZXNlcnZlZDsNCj4gPiBAQCAtOTIsNCArMTE5LDkg
-QEAgc3RydWN0IGlvY3RsX29jeGxfcG1lbV9ldmVudGZkIHsNCj4gPiAgICNkZWZpbmUgSU9DVExf
-T0NYTF9QTUVNX0VWRU5UX0NIRUNLCQkJX0lPUihPQw0KPiA+IFhMX1BNRU1fTUFHSUMsIDB4MDcs
-IF9fdTY0KQ0KPiA+ICAgI2RlZmluZSBJT0NUTF9PQ1hMX1BNRU1fUkVRVUVTVF9IRUFMVEgJCQlf
-SU8oT0NYDQo+ID4gTF9QTUVNX01BR0lDLCAweDA4KQ0KPiA+ICAgDQo+ID4gKyNkZWZpbmUgSU9D
-VExfT0NYTF9QTUVNX0ZXREVCVUcJCV9JT1dSKE9DWExfUE1FTV9NQUdJQywNCj4gPiAweGYwLCBz
-dHJ1Y3QgaW9jdGxfb2N4bF9wbWVtX2Z3ZGVidWcpDQo+ID4gKyNkZWZpbmUgSU9DVExfT0NYTF9Q
-TUVNX01NSU9fV1JJVEUJX0lPVyhPQ1hMX1BNRU1fTUFHSUMsIDB4ZjEsDQo+ID4gc3RydWN0IGlv
-Y3RsX29jeGxfcG1lbV9tbWlvKQ0KPiA+ICsjZGVmaW5lIElPQ1RMX09DWExfUE1FTV9NTUlPX1JF
-QUQJX0lPV1IoT0NYTF9QTUVNX01BR0lDLCAweGYyLA0KPiA+IHN0cnVjdCBpb2N0bF9vY3hsX3Bt
-ZW1fbW1pbykNCj4gPiArI2RlZmluZSBJT0NUTF9PQ1hMX1BNRU1fU0hVVERPV04JX0lPKE9DWExf
-UE1FTV9NQUdJQywgMHhmMykNCj4gPiArDQo+ID4gICAjZW5kaWYgLyogX1VBUElfT0NYTF9TQ01f
-SCAqLw0KPiA+IA0KLS0gDQpBbGFzdGFpciBEJ1NpbHZhDQpPcGVuIFNvdXJjZSBEZXZlbG9wZXIN
-CkxpbnV4IFRlY2hub2xvZ3kgQ2VudHJlLCBJQk0gQXVzdHJhbGlhDQptb2I6IDA0MjMgNzYyIDgx
-OQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Thu, 2020-03-05 at 11:46 +1100, Andrew Donnellan wrote:
+> On 21/2/20 2:27 pm, Alastair D'Silva wrote:
+> > From: Alastair D'Silva <alastair@d-silva.org>
+> > 
+> > The controller can report a number of statistics that are useful
+> > in evaluating the performance and reliability of the card.
+> > 
+> > This patch exposes this information via an IOCTL.
+> > 
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > ---
+> >   arch/powerpc/platforms/powernv/pmem/ocxl.c | 185
+> > +++++++++++++++++++++
+> >   include/uapi/nvdimm/ocxl-pmem.h            |  17 ++
+> >   2 files changed, 202 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> > b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> > index 2cabafe1fc58..009d4fd29e7d 100644
+> > --- a/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> > +++ b/arch/powerpc/platforms/powernv/pmem/ocxl.c
+> > @@ -758,6 +758,186 @@ static int
+> > ioctl_controller_dump_complete(struct ocxlpmem *ocxlpmem)
+> >   				    GLOBAL_MMIO_HCI_CONTROLLER_DUMP_COL
+> > LECTED);
+> >   }
+> >   
+> > +/**
+> > + * controller_stats_header_parse() - Parse the first 64 bits of
+> > the controller stats admin command response
+> > + * @ocxlpmem: the device metadata
+> > + * @length: out, returns the number of bytes in the response
+> > (excluding the 64 bit header)
+> > + */
+> > +static int controller_stats_header_parse(struct ocxlpmem
+> > *ocxlpmem,
+> > +	u32 *length)
+> > +{
+> > +	int rc;
+> > +	u64 val;
+> > +
+> > +	u16 data_identifier;
+> > +	u32 data_length;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset,
+> > +				     OCXL_LITTLE_ENDIAN, &val);
+> > +	if (rc)
+> > +		return rc;
+> > +
+> > +	data_identifier = val >> 48;
+> > +	data_length = val & 0xFFFFFFFF;
+> > +
+> > +	if (data_identifier != 0x4353) { // 'CS'
+> > +		dev_err(&ocxlpmem->dev,
+> > +			"Bad data identifier for controller stats,
+> > expected 'CS', got '%-.*s'\n",
+> > +			2, (char *)&data_identifier);
+> > +		return -EINVAL;
+> 
+> Same comment as earlier patches re EINVAL
+> 
+
+I don't think I've seen a comment yet on these particular blocks. Can
+you suggest a better return value?
+
+> > +	}
+> > +
+> > +	*length = data_length;
+> > +	return 0;
+> > +}
+> > +
+> > +static int ioctl_controller_stats(struct ocxlpmem *ocxlpmem,
+> > +				  struct
+> > ioctl_ocxl_pmem_controller_stats __user *uarg)
+> > +{
+> > +	struct ioctl_ocxl_pmem_controller_stats args;
+> > +	u32 length;
+> > +	int rc;
+> > +	u64 val;
+> > +
+> > +	memset(&args, '\0', sizeof(args));
+> > +
+> > +	mutex_lock(&ocxlpmem->admin_command.lock);
+> > +
+> > +	rc = admin_command_request(ocxlpmem,
+> > ADMIN_COMMAND_CONTROLLER_STATS);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
+> > +				      ocxlpmem-
+> > >admin_command.request_offset + 0x08,
+> > +				      OCXL_LITTLE_ENDIAN, 0);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = admin_command_execute(ocxlpmem);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +
+> > +	rc = admin_command_complete_timeout(ocxlpmem,
+> > +					    ADMIN_COMMAND_CONTROLLER_ST
+> > ATS);
+> > +	if (rc < 0) {
+> > +		dev_warn(&ocxlpmem->dev, "Controller stats timed
+> > out\n");
+> > +		goto out;
+> > +	}
+> > +
+> > +	rc = admin_response(ocxlpmem);
+> > +	if (rc < 0)
+> > +		goto out;
+> > +	if (rc != STATUS_SUCCESS) {
+> > +		warn_status(ocxlpmem,
+> > +			    "Unexpected status from controller stats",
+> > rc);
+> > +		goto out;
+> > +	}
+> > +
+> > +	rc = controller_stats_header_parse(ocxlpmem, &length);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	if (length != 0x140)
+> > +		warn_status(ocxlpmem,
+> > +			    "Unexpected length for controller stats
+> > data, expected 0x140, got 0x%x",
+> > +			    length);
+> 
+> Might be worth a comment to explain where 0x140 comes from (it looks 
+> correct from my reading of the spec)
+
+Ok
+
+> 
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x08,
+> > +				     OCXL_LITTLE_ENDIAN, &val);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	args.reset_count = val >> 32;
+> > +	args.reset_uptime = val & 0xFFFFFFFF;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x10,
+> > +				     OCXL_LITTLE_ENDIAN, &val);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	args.power_on_uptime = val >> 32;
+> 
+> We're not collecting life remaining?
+> 
+
+It looks like my implementation is out of date. I'll bring it in line
+with the spec.
+
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x08,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.host_load_count);
+> 
+> My reading of the spec says HLC is at +0x10
+> 
+Ditto
+
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x10,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.host_store_count);
+> 
+> HSC at +0x18
+> 
+Ditto
+
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x18,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.media_read_count);
+> 
+> MRC is at +0x50
+> 
+> And you're missing CRU, HLD, HSD
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x20,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.media_write_count);
+> 
+> MWC at +0x58
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x28,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.cache_hit_count);
+> 
+> CRHC at +0x90
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x30,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.cache_miss_count);
+> 
+> This field doesn't seem to exist at all in my copy of the spec
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x38,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.media_read_latency);
+> 
+> Nor this one
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x40,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.media_write_latency);
+> 
+> Nor this one
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x48,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.cache_read_latency);
+> 
+> Nor this one
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
+> > +				     ocxlpmem-
+> > >admin_command.data_offset + 0x08 + 0x40 + 0x50,
+> > +				     OCXL_LITTLE_ENDIAN,
+> > &args.cache_write_latency);
+> 
+> Nor this one
+> 
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	if (copy_to_user(uarg, &args, sizeof(args))) {
+> > +		rc = -EFAULT;
+> > +		goto out;
+> > +	}
+> > +
+> > +	rc = admin_response_handled(ocxlpmem);
+> > +	if (rc)
+> > +		goto out;
+> > +
+> > +	rc = 0;
+> > +	goto out;
+> 
+> Per Fred this pattern isn't common in the kernel, but perhaps this
+> is 
+> just personal taste
+> 
+
+Ok
+
+> > +
+> > +out:
+> > +	mutex_unlock(&ocxlpmem->admin_command.lock);
+> > +	return rc;
+> > +}
+> > +
+> >   static long file_ioctl(struct file *file, unsigned int cmd,
+> > unsigned long args)
+> >   {
+> >   	struct ocxlpmem *ocxlpmem = file->private_data;
+> > @@ -781,6 +961,11 @@ static long file_ioctl(struct file *file,
+> > unsigned int cmd, unsigned long args)
+> >   	case IOCTL_OCXL_PMEM_CONTROLLER_DUMP_COMPLETE:
+> >   		rc = ioctl_controller_dump_complete(ocxlpmem);
+> >   		break;
+> > +
+> > +	case IOCTL_OCXL_PMEM_CONTROLLER_STATS:
+> > +		rc = ioctl_controller_stats(ocxlpmem,
+> > +					    (struct
+> > ioctl_ocxl_pmem_controller_stats __user *)args);
+> > +		break;
+> >   	}
+> >   
+> >   	return rc;
+> > diff --git a/include/uapi/nvdimm/ocxl-pmem.h
+> > b/include/uapi/nvdimm/ocxl-pmem.h
+> > index d4d8512d03f7..add223aa2fdb 100644
+> > --- a/include/uapi/nvdimm/ocxl-pmem.h
+> > +++ b/include/uapi/nvdimm/ocxl-pmem.h
+> > @@ -50,6 +50,22 @@ struct ioctl_ocxl_pmem_controller_dump_data {
+> >   	__u64 reserved[8];
+> >   };
+> >   
+> > +struct ioctl_ocxl_pmem_controller_stats {
+> > +	__u32 reset_count;
+> > +	__u32 reset_uptime; /* seconds */
+> > +	__u32 power_on_uptime; /* seconds */
+> > +	__u64 host_load_count;
+> > +	__u64 host_store_count;
+> > +	__u64 media_read_count;
+> > +	__u64 media_write_count;
+> > +	__u64 cache_hit_count;
+> > +	__u64 cache_miss_count;
+> > +	__u64 media_read_latency; /* nanoseconds */
+> > +	__u64 media_write_latency; /* nanoseconds */
+> > +	__u64 cache_read_latency; /* nanoseconds */
+> > +	__u64 cache_write_latency; /* nanoseconds */
+> > +};
+> > +
+> >   /* ioctl numbers */
+> >   #define OCXL_PMEM_MAGIC 0x5C
+> >   /* SCM devices */
+> > @@ -57,5 +73,6 @@ struct ioctl_ocxl_pmem_controller_dump_data {
+> >   #define IOCTL_OCXL_PMEM_CONTROLLER_DUMP			_IO(OCX
+> > L_PMEM_MAGIC, 0x02)
+> >   #define IOCTL_OCXL_PMEM_CONTROLLER_DUMP_DATA		_IOWR(O
+> > CXL_PMEM_MAGIC, 0x03, struct ioctl_ocxl_pmem_controller_dump_data)
+> >   #define IOCTL_OCXL_PMEM_CONTROLLER_DUMP_COMPLETE	_IO(OCXL_PMEM_M
+> > AGIC, 0x04)
+> > +#define IOCTL_OCXL_PMEM_CONTROLLER_STATS		_IO(OCXL_PMEM_M
+> > AGIC, 0x05)
+> >   
+> >   #endif /* _UAPI_OCXL_SCM_H */
+> > 
+-- 
+Alastair D'Silva
+Open Source Developer
+Linux Technology Centre, IBM Australia
+mob: 0423 762 819
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
