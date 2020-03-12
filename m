@@ -1,74 +1,73 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F241833F3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 15:59:51 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A722F183415
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 16:06:28 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C4CF110FC3786;
-	Thu, 12 Mar 2020 08:00:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	by ml01.01.org (Postfix) with ESMTP id 68A2610FC378B;
+	Thu, 12 Mar 2020 08:07:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4B41210FC36E4
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 08:00:38 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 2411010FC3788
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 08:07:16 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 07:59:47 -0700
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 08:06:25 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.70,545,1574150400";
-   d="scan'208";a="389627512"
-Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
-  by orsmga004.jf.intel.com with ESMTP; 12 Mar 2020 07:59:47 -0700
-Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
- ORSMSX110.amr.corp.intel.com (10.22.240.8) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 07:59:46 -0700
-Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
- ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 12 Mar 2020 07:59:46 -0700
-Received: from ORSEDG001.ED.cps.intel.com (10.7.248.4) by
- orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Thu, 12 Mar 2020 07:59:46 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 07:59:43 -0700
+   d="scan'208";a="235048517"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+  by fmsmga007.fm.intel.com with ESMTP; 12 Mar 2020 08:06:24 -0700
+Received: from fmsmsx111.amr.corp.intel.com (10.18.116.5) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 12 Mar 2020 08:06:24 -0700
+Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
+ fmsmsx111.amr.corp.intel.com (10.18.116.5) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 12 Mar 2020 08:06:23 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.109)
+ by edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Thu, 12 Mar 2020 08:06:23 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GStKtU3P7efWnQAvnb0DlS4xzdYyRSGnf/OS8VIgjw8pj8qm+yw4GM5XrSdfNYuJZZHbP+T4FU20QcQ69Ciqrm1STpzUsdqpwonVq9UONgCBwRsB0D2kipJFmWaXz73WEmaNAeIMtCV0MqvriI+G0h1siQqi1bNXvqrvN8UWhwVvGtrIUcHhWrXyC0vhtmJaKbChMndoY5nb9OYE7jMw/SFLf0ru/ypegS6cdeptRwEZJvGMwf61yc8XnHPwbf9BdTMpmzp+usBTCgYiUnjqgpw3WMqibO2lVM84W+Q5vDkc09eRqDW9MevdqMyJQK09S6GaXPzO+/piGqvsBwldmA==
+ b=D5LtS3+qXFykn8X91fMYR/PTEcdcHn6EfxjcPtpSbuYILw9gXetZabLfx6wGkCEPtY4mk2caaEGmK26+dq3kaJOSBwi/qQSOTHd8X/jA9eEyDp6J48qB63fscCRf5Diok5IwKJF8ciFAx6dEdqvvSVicFw0XwJ222LfPf0n+iFiANvpP5nzfPYtwRbAD2CKTlQX0kXtRr+mQAZBw6IKrVej5HytWU9kpDeE2D7+j2dJD5vFhMnLuyopT8iUboCLmcBmShlyLB+7t9Y/zng3nYOACpV1avZufpVma8peUIpApreIJM6GCsKcjDn61CGUU303CrPSe3FVh+4mfOMqCmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RY0ni6eNKb4Uog1aAaoq836gC8XU36Fyz+iPocFGvQc=;
- b=DIQZwvCJPiPk1Bhj64RsAUYTucoNonu+gET0KmiWTAegH9RfXyQP1DeuElWHP6u8C75JP4e9/iNflOEVEtXsImAsA0++IEObC2DFrdZobpnPaNzc6JG4uaXnYaXp7FSbtwJP9dOMS3P1QUZTqytW24sX2azVdtbGYhvQ6wBy9dRIBS/kgNKrBfJ+g1sxzIcL9JIgNDFhaH+uhb9gKAJ9EnAXyFnheKD+NNsUEsEJQTvzJaO4yPw0tXLHoE+O9aCWe753OAafW7nsQmP6M3nRqkpJHwH/AmcpfScy3634rTcL5OYLWun8HxoZ8sWIJElgfxYoZYgTCOZU7MjgSXB5Sw==
+ bh=mnX8CWGft1DEwanAagsra3oRPUybQ8KYqUvQxzg9LjI=;
+ b=la9DQJwdvthc1eOS1pTKJldqUzaeKItAmcWS1MQpamQJBoLh6o+T2CLUKMIsVbpqtQTYAR4OtqsMkaIeHs0I4s2ep/hP/9Dz5HmxxEV9A39oruLXG5k63kjEu7UQWbMZmsXuJplAIc39XoenRoytappmyGyYMMBbSK7F6LjWytEHHx4jgb7f5QjmdVB6bcLJuW+L0Gh5kNuI+8PLd0Q4SFaG7Rc0BWxk8gklBJk+awiIJufjj846NNl8Bpc2+b+ahx5ib4sNcqzdd1ILCjaumzW5+jKaiFmB93sQ6DDvDYZypbdNjgoE7jgslEfxMqQZVAP+Mg/s+A+KsvCtY1ZdXQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
  s=selector2-intel-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RY0ni6eNKb4Uog1aAaoq836gC8XU36Fyz+iPocFGvQc=;
- b=oBOar+f17IexKhMGdypMvx2Xv8s7bp2jrkv5Q/VadVUug7zuW+UUDWtXzhrTpJNsn3ggWe4B0JNIAT86Dz1aMWZcrrEuJJWc4RtpOLPv300DtSu1t90UsxJe1Pb0dpvAF9llsiwJljslxaTgWTaxwvKwoGqKcUOyAU5BClCWWA0=
+ bh=mnX8CWGft1DEwanAagsra3oRPUybQ8KYqUvQxzg9LjI=;
+ b=SYws07Y1Ihm7lvY5Ek39/Gzx1cQI9lHYUX/eFGJOIu8BYj3rq/efbdNhuaIU5AnR+HqOZv39HSrDMW0KLTIgkndpj1CR+nVKfiVsA19RwpmOC7au8I35OxqVoGNBSnopUwQPG9+kFkIjctKTbFDAstiPFGxh58CeUfzMXXqsitM=
 Received: from SN6PR11MB2864.namprd11.prod.outlook.com (2603:10b6:805:63::26)
- by SN6PR11MB3407.namprd11.prod.outlook.com (2603:10b6:805:bd::32) with
+ by SN6PR11MB3456.namprd11.prod.outlook.com (2603:10b6:805:c8::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.15; Thu, 12 Mar
- 2020 14:59:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.14; Thu, 12 Mar
+ 2020 15:06:21 +0000
 Received: from SN6PR11MB2864.namprd11.prod.outlook.com
  ([fe80::fd11:322:84c8:a4e3]) by SN6PR11MB2864.namprd11.prod.outlook.com
  ([fe80::fd11:322:84c8:a4e3%5]) with mapi id 15.20.2793.018; Thu, 12 Mar 2020
- 14:59:40 +0000
+ 15:06:21 +0000
 From: "Dorau, Lukasz" <lukasz.dorau@intel.com>
 To: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "Verma, Vishal L" <vishal.l.verma@intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>
 Subject: nfit_test: issue #3: BUG: kernel NULL pointer dereference, address:
  0000000000000018
 Thread-Topic: nfit_test: issue #3: BUG: kernel NULL pointer dereference,
  address: 0000000000000018
-Thread-Index: AdX4ff9vRi+83PXwTQC0PvRaS9yWHA==
-Date: Thu, 12 Mar 2020 14:59:40 +0000
-Message-ID: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+Thread-Index: AdX4ff9vRi+83PXwTQC0PvRaS9yWHAAAVn9Q
+Date: Thu, 12 Mar 2020 15:06:21 +0000
+Message-ID: <SN6PR11MB2864BBFAA6EC62A7747F9E5D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+References: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -80,38 +79,37 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=lukasz.dorau@intel.com;
 x-originating-ip: [134.191.221.115]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0a8e57be-731d-4d2e-8bf3-08d7c695fdfd
-x-ms-traffictypediagnostic: SN6PR11MB3407:
+x-ms-office365-filtering-correlation-id: ba9e19a6-64ec-412f-62cd-08d7c696ecdf
+x-ms-traffictypediagnostic: SN6PR11MB3456:
 x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR11MB3407958E0EA133F2AB4C44F396FD0@SN6PR11MB3407.namprd11.prod.outlook.com>
+x-microsoft-antispam-prvs: <SN6PR11MB34564FBDE136CE6C6755A9B496FD0@SN6PR11MB3456.namprd11.prod.outlook.com>
 x-ms-oob-tlc-oobclassifiers: OLM:6108;
 x-forefront-prvs: 0340850FCD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(396003)(366004)(136003)(376002)(346002)(199004)(81166006)(76116006)(66446008)(45080400002)(33656002)(26005)(66946007)(66476007)(66556008)(64756008)(107886003)(478600001)(186003)(316002)(54906003)(86362001)(5660300002)(8676002)(6916009)(71200400001)(81156014)(8936002)(55016002)(2906002)(4326008)(52536014)(6506007)(9686003)(7696005);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3407;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(366004)(346002)(376002)(396003)(136003)(199004)(66446008)(66476007)(9686003)(81156014)(52536014)(316002)(76116006)(66946007)(6916009)(64756008)(33656002)(4326008)(2906002)(107886003)(54906003)(5660300002)(45080400002)(86362001)(8936002)(81166006)(6506007)(7696005)(2940100002)(26005)(55016002)(478600001)(186003)(8676002)(66556008)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3456;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 4D2V7NIwR5idi2w0Id3Z6VJRt9G0FX1mztFrv9CzfRHOLu3PRMhvghqTOsJ8EE/PmG7zZfaeomX68fGJmV111Aa5FVmQ0pZKIdvR6NONcNKYGrgzuA7Ja+xMrlRXWHBKvIR4+uSZZ/ItWMmJcdj6D9Tcobuxg7X0zXD6WffITc921gZRXgVaZ6y9dEZGUA3I3YrlHx02Pv2Ws77qe/dml/Kz5oH8fR3qurAjFVm330etwNKbTSj0vdDbYfPeq1MnEU4nofwSyIlNu1Wdsb7BKs1oP9NLdBjh3DCenF8ApfDd+tvG+k/28AZHxyehI+o2fsZJBqtQ8W3DQILBk3wUDiGEQbnAFfcAgeCkOlrIs+es6InZGzo4hBQ3X3XcVsQIygOy4lPOUZVBnLeU7XzevJd8gDxywQ0HraMyiql/dKihlVbLNuRNOomm4oqmBoWZ
-x-ms-exchange-antispam-messagedata: ZO6BF+1gNG6r/zG+al+f5kTphSzFxtEeY/kBI0Z+izFa595CIkr/r/rEwO+ZwiSMK0B3/MSEoYZGRLE26q5EBSw8Rq3k+1jQ37ZiQLdtJZIY3WAzzgbEZdBMxqGdXi4/HSeFF57r/MKVshmHCutGVg==
+x-microsoft-antispam-message-info: U+aAsNZxoToXOc3wsls+wrDy7Z7EwwoW1BoB/MICauefhr8WVt53qMZO/3t/XARGQw0cIKRjRp1hPGuEt1Q3gdNE7R2A2DbAEMkeV8tPg+ZrVH58ld6KBu3i4Omou2sTvSgtyuUzF2T5abJ4tew6rWLym+qFEsiA24e4WgyZn7Jb/E99myn6F1MINlC+aRZp2bg2Eu0N4C0WiCyRE12NyNxbsOo96QUujn5uBJ/TSV1fb/g2jPjfnRVYQ9H8M6S5hLpDrmL10RQdIFVIBHiunDB5YQ4t+5NIPKEQHo93sivEtd3ZW6bskAsLHCzuX6T2K6WEcbZAxuemtMs7vwCPOMHXBqtQy+Rn8UPXhJK6xdR6i4M5ud1yJECWm57LBYssBYjsJg0LU0MYhU1O6sD+HQBiQXSzoJgQgoH/W4SivLKmj0sMa9FQj8eaARVW0BH2
+x-ms-exchange-antispam-messagedata: YIotJPfzLDRt9WBN/llopRRd2GHJQbsRsL+clAKjLq8mkDMrWfezFOcL3M7abqgTK4JXx/a0p8cYx3JiF1/rScRAEtKsWFNlqIIcBQMOsHHmb7FOiVB0F91Om3koeLGi2nK4Jg270cn0DprtjBrXdQ==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a8e57be-731d-4d2e-8bf3-08d7c695fdfd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 14:59:40.7884
+X-MS-Exchange-CrossTenant-Network-Message-Id: ba9e19a6-64ec-412f-62cd-08d7c696ecdf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 15:06:21.5502
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: UQkYMcmHXxvscrVeIoWAFnfMYw669FV/LWBkPin92s+ArfcOQ07jNEuS5CD9Ve+uPPcbxURYJsN2lDuyKM5ryA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3407
+X-MS-Exchange-CrossTenant-userprincipalname: QGO30QnKU82766u2z2EWUE3hWdsJR5c0ujOAFHObnYx+aEFMroKU9NIZ0xCWNvzdWdKylWAEzz/UQ3MQccIVKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3456
 X-OriginatorOrg: intel.com
-Message-ID-Hash: O37AP64NN42MZONOMBMASM22LGOKYP7N
-X-Message-ID-Hash: O37AP64NN42MZONOMBMASM22LGOKYP7N
+Message-ID-Hash: QR4DK5OVO32EEIEZLLNDDDME2VXJXROO
+X-Message-ID-Hash: QR4DK5OVO32EEIEZLLNDDDME2VXJXROO
 X-MailFrom: lukasz.dorau@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Slusarz, Marcin" <marcin.slusarz@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O37AP64NN42MZONOMBMASM22LGOKYP7N/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QR4DK5OVO32EEIEZLLNDDDME2VXJXROO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -120,6 +118,8 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Transfer-Encoding: 7bit
 
 Hi,
+
+[Resending the same, because the first e-mail got corrupted]
 
 I have inserted the 'nfit_test' module, removed it and reinserted it again (like in the previous e-mail " nfit_test: issue #2: modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter ") and called:
 $ ndctl disable-region all
