@@ -2,91 +2,197 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A24A182F1D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 12:27:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1AFA183031
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 13:29:24 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 733A710FC3764;
-	Thu, 12 Mar 2020 04:28:16 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=98.137.65.30; helo=sonic315-54.consmr.mail.gq1.yahoo.com; envelope-from=aomrisa@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic315-54.consmr.mail.gq1.yahoo.com (sonic315-54.consmr.mail.gq1.yahoo.com [98.137.65.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2707510FC3411;
+	Thu, 12 Mar 2020 05:30:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A41D910FC36E4
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 04:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584012443; bh=8xpm+cacAfAnFCbwSdgMceaBJxowNWaFZvEVU/zxgKw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=UXCgo0FdMxeK2bzuT12XomAwub4ZqiOn8pMOgGczJ+MaOWKh7Zcmyn+80/QWn+HOOVvo0YWs0+WurBg98h/i0sMDKlHTaZTU1VWBt6oWI2cjDLQ1iLmNztD5d3/pGhCYS/ZW6AVI5re9DiiAOUr526jOrUcVkIWWjKHvOtLNuR8gbpJl2Pz45DtGS/NYuVvqq4CsQ5MOA1U3PYD0oHkHDhXDadHelWqJkcQMc+blzJkVyEXCfzYkmgnuW9gT7F9VYCGr9oNj+IpCuvP02R+JYGZnFV2TbJ+QFZcWRO2oV/ibT5MwhMq/tBjskr/Yvzbm9bLrfNhx/MpWTO38vxDT5A==
-X-YMail-OSG: WBB_.2YVM1kIz_K1X_szcIrBNo7CUJKj3r5xNbLSqXZlyXjYBRoMbsfSpqdJe01
- Ly.gASDhtsp._EOXYow5Yzxp1djK8398oG0uM1Cepl.u28EqvgiXAymmWGKGqxL95FzeXhvj5I7a
- IPfvB_FkxG1z0w8vPm46d6GhxxlvTlvQ2D3xnHZbOPfbxtNPJ0asopbIW77PRyp2ar9dWaOsBv0E
- xe.oVmssdef9pIUgjsx_hNUd_xiW_ivgfTbDoXmNARAKGU2tY09uwqARTeI5gRs7nbyrvjcs6kEv
- YX61WgMLZY7w.DM1JgTmPsfornnMm1pmPSkbkZygn.0OrjKkeeEkb_IWE341R43HVN7MsCa78PWI
- tNIpsUWDLMabKAy5r6O5ravhmXSU9D7YB4ZCk6mOlc9tVqhYV3hPjoeF4u1bcIRGDP3a2365IDBO
- 2iPMegnaHLB_HWaCTZfXkGvdJGeOfIkI3uW69UzJ6Ptc96w5qX_oiQ.mYKx22S9wzaFUTpUJijVh
- 7XFUIhbw.pHBzCNOJOWRKgUtdvMTDJsqNOLXwx1wE5vlH19rZFzUI_TWTbgLI4uQZwdPMmkDt2z8
- SzGSc8my5pVWIl0NjSvN1rIugaT9aJdoetrVbrkW8ukpkQrzIurwCB0ZDGQteNHkx5s38OHhLXpB
- UKRRFsVSS0wTvpcztGY9lOUeEm0MQISUTBUawqF3xKWWpUbQT4CWWh1_84UfQTZkE9lHD4IZkXcE
- U2NsFzWB22vjF3CLSpVFVfWr8.wOIJogHNbXCcUUEFiCF.qyw69Mp3aOliv6mRqwTmc9Ln6PoLrP
- XsWXmXJ7pRiQIY0KZ3X2jhamvXHs2vguZXtCB.2GqjSChwGvRvo2jsAaEi8ZiFAv_fk4HYOp90FT
- 2dObuokw9TmMM5Sdv5QV7nUbTboCXrWkBPSL9Y4OJg3PdjJ9iLv08sUX5keg8f0Qd1LVe_CYAX7m
- hGLA2rZQGeKyiOoqcDKTzuYhE3WRhwI8sDg3pfy5sageZJkMZYPZ8Dgp1qehkjVU79g9WffihIr3
- PsrOo09kJCnuQKV6bqzdNAN6K5FchbJjQb2YBKWs6Wtw_KECYKbw8v.2pDitM55l8V4kdZW6_03L
- Hwxy.7rYYdvnGj61GKDr4rNIYwttoWquQv5jkk6ITSbpc0uwGd.AJ2n.9TZjxz1Xqqa5QEQrHiQo
- 3k21lZ9aeaMM8HgZgWuttT5Il9oxqIJtQg3MYdDC3oOe7lUQcF9TddPPy6ecMWNU7Pk.3DjkIp1G
- UKrOyGjamkybBsSd8glOhJyNtQFvo5iqmlazwu5ER8MhcdvjGvB18.pi7uPVof1HvMiU-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.gq1.yahoo.com with HTTP; Thu, 12 Mar 2020 11:27:23 +0000
-Date: Thu, 12 Mar 2020 11:27:21 +0000 (UTC)
-From: Ttiti Roseline <aomrisa@yahoo.com>
-Message-ID: <1768237896.4338480.1584012441136@mail.yahoo.com>
-Subject: My Dear
+	by ml01.01.org (Postfix) with ESMTPS id 9258D10FC3166
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 05:30:12 -0700 (PDT)
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 05:29:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,544,1574150400";
+   d="scan'208";a="236814851"
+Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
+  by orsmga008.jf.intel.com with ESMTP; 12 Mar 2020 05:29:20 -0700
+Received: from orsmsx606.amr.corp.intel.com (10.22.229.19) by
+ ORSMSX106.amr.corp.intel.com (10.22.225.133) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 12 Mar 2020 05:29:20 -0700
+Received: from orsmsx606.amr.corp.intel.com (10.22.229.19) by
+ ORSMSX606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 12 Mar 2020 05:29:20 -0700
+Received: from ORSEDG002.ED.cps.intel.com (10.7.248.5) by
+ orsmsx606.amr.corp.intel.com (10.22.229.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
+ via Frontend Transport; Thu, 12 Mar 2020 05:29:20 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (134.134.137.101) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 12 Mar 2020 05:29:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kvdtj0rIA1+Mq8MWeok1+KA9jX86RjbiZiXL/JrtY8YlIoyKnlOdkEjb0XG2Z5z9cGvXjVGAWF0JNhnAImOcNoTea7WHQ53Uhuk0YY97vMAzTi6tHbKIejG2ignjFbXFzlkhi5BL4pTxy+4tsIO0f6v+tCWdUnUx8kO3cnSaZu3gAdDR2K8PhelBWGSrHbPayfXcaQmLWTsjBIqv6NBvtWntcYmmrZjtqz8Bi1DUlk8RwjVjBrTbCujYDMKEqRF3KBCP6uNEzgpwLzQIdaEBF8YodVLiTujMPd7DLkvDrabGLd5EjNGrKwkCwPkfp5qRcglB69nu1HnItwCgu8vgFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BQp0NvJ876wAtXZE4AEa89WhgUiKGjKRGKB9PsnbtnI=;
+ b=aAhj63qXTgXVOYFFily8fyRdlaP/5hq/W8el2sFKUS/OLMfNOvqa/nVr1Nzjjh/vUEr4sj8DwRVZEpW8yaUWYDshzeynIlcSJxFJ2Ejvz9Eil8+8b6P7+C0xxjmdBIBtQ8lPcVfK04cG6nYllbWgxNBpDEK+X5oja02tWJmFnfgG6Euc57Jdh6xmbAuVC6Z8nRTGLmrmDT6UX9FEFIne6JoDKUVl/XZs4oCzlDFuNanU6sEJCXkv9fzMDAvDmNXpDJ5EgKfhzSJKml9TqSrwnJl7uMJVySx01Mzdu+mpO/06neeAf7BgkqEef5m2PFZnTyIUYcpEFRv9jqiBY8lbzw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BQp0NvJ876wAtXZE4AEa89WhgUiKGjKRGKB9PsnbtnI=;
+ b=h2z/Zx0M9f9FhariiKB1ZS9b7H2IMcIixv9oJ8CFD2EV0d/g131VcnUEtwpq6o+5AsaxYbrZVI1j4oukvfdd/IVFy4E9Ncq9mZMmXEyvJ2pqmN7FhmGcA5aX8fL6zyYQIf3M/CEHRh8KcrDSmCmanVo1C+rF7xMjVGJd2Ht23Ok=
+Received: from SN6PR11MB2864.namprd11.prod.outlook.com (2603:10b6:805:63::26)
+ by SN6PR11MB3424.namprd11.prod.outlook.com (2603:10b6:805:d2::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.17; Thu, 12 Mar
+ 2020 12:29:15 +0000
+Received: from SN6PR11MB2864.namprd11.prod.outlook.com
+ ([fe80::fd11:322:84c8:a4e3]) by SN6PR11MB2864.namprd11.prod.outlook.com
+ ([fe80::fd11:322:84c8:a4e3%5]) with mapi id 15.20.2793.018; Thu, 12 Mar 2020
+ 12:29:15 +0000
+From: "Dorau, Lukasz" <lukasz.dorau@intel.com>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Subject: nfit_test: issue #1: depmod: WARNING: extra/test/nfit_test.ko.xz
+ needs unknown symbols libnvdimm_test ...
+Thread-Topic: nfit_test: issue #1: depmod: WARNING: extra/test/nfit_test.ko.xz
+ needs unknown symbols libnvdimm_test ...
+Thread-Index: AdX4Z0Lxn8kvPZDZQwSwk80ODinF5w==
+Date: Thu, 12 Mar 2020 12:29:15 +0000
+Message-ID: <SN6PR11MB2864AF4F3C6C9ECC6FE89EFD96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.2.0.6
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=lukasz.dorau@intel.com;
+x-originating-ip: [134.191.221.115]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 1040d6b9-e63d-42e6-af24-08d7c680fa7f
+x-ms-traffictypediagnostic: SN6PR11MB3424:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <SN6PR11MB34243209C9721056EF16EF5E96FD0@SN6PR11MB3424.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-forefront-prvs: 0340850FCD
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(376002)(366004)(136003)(346002)(396003)(39860400002)(199004)(86362001)(64756008)(66446008)(66556008)(5660300002)(6506007)(76116006)(66946007)(7696005)(4326008)(33656002)(26005)(54906003)(186003)(316002)(966005)(478600001)(52536014)(71200400001)(66476007)(107886003)(2906002)(55016002)(9686003)(8676002)(81156014)(8936002)(6916009)(81166006)(17413003);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3424;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: m4MUqUtGqvn60W5Cg3VAOCEaXIhOiF3j4W7jkd+yvCPDQJTUkjvp5p1+s3wXdsnTObFhlZD6HKxrNctxx6Ia1PSx7z2D2SquWXUA07l038zF4sj9vlnR1IAFqAIdwDMKcuTlTosKDL6p6IlER7oO2wSUsgMso4jtRhQuTWbMmSa58YbrediYN7K6qQ7mpnrQeWIUV3HiYT3TF2BBl9axNg6Wgbdrlx+g5q2inT1qPEW++HxS2bLzzxLEenftz9XPt+3cisSYqmCbnV3dZ1hQUdqmI/ZmXN4xHEg8x3BOolyMkfi6UTmI5AZgNrehY1aI6Nx1OY1i1ZxcTskXEqcceWxFcuWPajF6UIw/G7aa7gtv4igA5iqb3nANsdmgbiE8VVvlFJnM4SCEk1EZqbHWWFgWb/YRxM0MmQONBNYaw6nDmJef6JqRg3xhvfCtvf02uVdq2nSxhfEFoD8pFZIXHSNnZhVw+BbIRQwwIDJ26fYx4OIbAHNo+/g/fU7MMH8HrWzt5NrsWac9hcpEslqFXl17lMSN++VwqzvzLvHBL0l3Lh/gZy/P5p4soUUlAT4B
+x-ms-exchange-antispam-messagedata: iStJM8aBvZBqkCO/wm9JWTftpUnwprqhxBlbS3a7wrv5W7va5+bbl6hZEL3mMD9LxfXEPNrhUWMBbxlokN3ZpG7gfbbhcJVj+MUcr49dOUf1nsoapsVmjXYaCbnqY9LxGbV2qSzV8b7qGr8GKCB0bw==
+Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
-References: <1768237896.4338480.1584012441136.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:73.0) Gecko/20100101 Firefox/73.0
-Message-ID-Hash: PM3E2U7K4LEI7GQ7VXOKKUCPA72EQYWS
-X-Message-ID-Hash: PM3E2U7K4LEI7GQ7VXOKKUCPA72EQYWS
-X-MailFrom: aomrisa@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1040d6b9-e63d-42e6-af24-08d7c680fa7f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 12:29:15.5021
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MdqNCol1WU13Ol0Fc45u1X8VuXoDj/DEutkGl6CpQiv0uKPOEDnXHXYN6tzFffRjS118hlayKKlgbV0IN4zk3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3424
+X-OriginatorOrg: intel.com
+Message-ID-Hash: KHMFJX25WB5WQ2BSE5IUJ67QJ2RMHAQZ
+X-Message-ID-Hash: KHMFJX25WB5WQ2BSE5IUJ67QJ2RMHAQZ
+X-MailFrom: lukasz.dorau@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Slusarz, Marcin" <marcin.slusarz@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: cheriftiti268@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PM3E2U7K4LEI7GQ7VXOKKUCPA72EQYWS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KHMFJX25WB5WQ2BSE5IUJ67QJ2RMHAQZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
- My Dear
+Hi
 
-I am Miss cherif Titi,20 years old and the only daughter of my late parents Dr.Richard Tit. My father was a highly reputable real estate developer who operated in the capital city of Ivory coast during his days
+It seems that the 'nfit_test' module has some issues from more than 1 year and 4 months...
+https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/JMTYTZYKFZ73ZNXTLB4FQZ3CMDHDLD24/?sort=date
 
-It is sad to say that he passed away mysteriously in UK during one of his business trips abroad year 12th. JUNE 12, 2014. Though his sudden death, But God knows the truth! My mother died when I was just 4 years old,and since then my father took me so special Before his death on JUNE 12, 2014 he called his secretary who accompanied him to the hospital and told him that he has the sum of Nine million,five hundred thousand United State Dollars.(USD$9.500,000) left in bank
+It looks the same now...
+I have followed the instructions listed in https://github.com/pmem/ndctl/blob/master/README.md
 
-He further told him that he deposited the money in my name, and finally issued a written instruction to his lawyer whom he said is in possession of all the necessary legal documents to this fund
+$ git clone -b libnvdimm-for-next git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git linux-nvdimm
+$ cd linux-nvdimm
+$ make menuconfig
+$ make
+$ ls -l /lib/modules
+total 12
+drwxr-xr-x 4 root root 4096 Mar 12 08:14 5.5.8-arch1-1
 
-I am just 20 years old and a university undergraduate and really don't know what to do. Now I want an account overseas where I can transfer this funds. This is because I have suffered a lot of set backs as a result of incessant political crisis here in Ivory coast. The death of my father actually brought sorrow to my life
+$ sudo make M=tools/testing/nvdimm modules_install
+  INSTALL tools/testing/nvdimm/dax_pmem.ko
+  INSTALL tools/testing/nvdimm/dax_pmem_compat.ko
+  INSTALL tools/testing/nvdimm/dax_pmem_core.ko
+  INSTALL tools/testing/nvdimm/device_dax.ko
+  INSTALL tools/testing/nvdimm/libnvdimm.ko
+  INSTALL tools/testing/nvdimm/nd_blk.ko
+  INSTALL tools/testing/nvdimm/nd_btt.ko
+  INSTALL tools/testing/nvdimm/nd_e820.ko
+  INSTALL tools/testing/nvdimm/nd_pmem.ko
+  INSTALL tools/testing/nvdimm/nfit.ko
+  INSTALL tools/testing/nvdimm/test/nfit_test.ko
+  INSTALL tools/testing/nvdimm/test/nfit_test_iomap.ko
+  DEPMOD  5.6.0-rc1-bb-13504-g7b27a8622f80
+depmod: WARNING: could not open modules.order at /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80: No such file or directory
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/libnvdimm.ko.xz needs unknown symbol key_type_encrypted
+depmod: WARNING: could not open modules.builtin at /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80: No such file or directory
 
-Dear, I am in a sincere desire of your humble assistance in this regards,Your suggestions and ideas will be highly regarded.
+$ sudo make modules_install
+  INSTALL arch/x86/crypto/aegis128-aesni.ko
+  ...
+  INSTALL sound/xen/snd_xen_front.ko
+  INSTALL virt/lib/irqbypass.ko
+  DEPMOD  5.6.0-rc1-bb-13504-g7b27a8622f80
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol libnvdimm_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol acpi_nfit_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol pmem_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_core_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_compat_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol device_dax_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_test
 
+$ sudo make M=tools/testing/nvdimm modules_install
+  INSTALL tools/testing/nvdimm/dax_pmem.ko
+  INSTALL tools/testing/nvdimm/dax_pmem_compat.ko
+  INSTALL tools/testing/nvdimm/dax_pmem_core.ko
+  INSTALL tools/testing/nvdimm/device_dax.ko
+  INSTALL tools/testing/nvdimm/libnvdimm.ko
+  INSTALL tools/testing/nvdimm/nd_blk.ko
+  INSTALL tools/testing/nvdimm/nd_btt.ko
+  INSTALL tools/testing/nvdimm/nd_e820.ko
+  INSTALL tools/testing/nvdimm/nd_pmem.ko
+  INSTALL tools/testing/nvdimm/nfit.ko
+  INSTALL tools/testing/nvdimm/test/nfit_test.ko
+  INSTALL tools/testing/nvdimm/test/nfit_test_iomap.ko
+  DEPMOD  5.6.0-rc1-bb-13504-g7b27a8622f80
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol libnvdimm_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol acpi_nfit_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol pmem_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_core_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_compat_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol device_dax_test
+depmod: WARNING: /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz needs unknown symbol dax_pmem_test
 
-Now permit me to ask these few questions:
+Does anyone know what is wrong here and how it can be fixed? Any suggestions?
 
-1. Can you honestly help me as your daughter
-
-2. Can I completely trust you
-
-3. What percentage of the total amount in question will be good for you after the money is in your account
-
-Please contact me with my private email cheriftiti268@yahoo.com
-
-
-Please,Consider this and get back to me as soon as possible.
-
-
-My sincere regards,
-Mrs.cherif TITI
+--
+Lukasz
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
