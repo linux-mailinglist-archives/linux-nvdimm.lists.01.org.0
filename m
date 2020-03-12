@@ -1,74 +1,74 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955E518334F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 15:38:44 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F241833F3
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 12 Mar 2020 15:59:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2A69110FC3785;
-	Thu, 12 Mar 2020 07:39:34 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id C4CF110FC3786;
+	Thu, 12 Mar 2020 08:00:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=lukasz.dorau@intel.com; receiver=<UNKNOWN> 
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 42C2610FC3784
-	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 07:39:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4B41210FC36E4
+	for <linux-nvdimm@lists.01.org>; Thu, 12 Mar 2020 08:00:38 -0700 (PDT)
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 07:38:40 -0700
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Mar 2020 07:59:47 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.70,545,1574150400";
-   d="scan'208";a="443950874"
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga006.fm.intel.com with ESMTP; 12 Mar 2020 07:38:40 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 07:38:40 -0700
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+   d="scan'208";a="389627512"
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by orsmga004.jf.intel.com with ESMTP; 12 Mar 2020 07:59:47 -0700
+Received: from orsmsx604.amr.corp.intel.com (10.22.229.17) by
+ ORSMSX110.amr.corp.intel.com (10.22.240.8) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 12 Mar 2020 07:59:46 -0700
+Received: from orsmsx609.amr.corp.intel.com (10.22.229.22) by
+ ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Thu, 12 Mar 2020 07:38:25 -0700
+ 15.1.1713.5; Thu, 12 Mar 2020 07:59:46 -0700
 Received: from ORSEDG001.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ orsmsx609.amr.corp.intel.com (10.22.229.22) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Thu, 12 Mar 2020 07:38:25 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.109)
+ via Frontend Transport; Thu, 12 Mar 2020 07:59:46 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.177)
  by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 12 Mar 2020 07:38:25 -0700
+ id 14.3.439.0; Thu, 12 Mar 2020 07:59:43 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IX0/cMXs/a0Krh6THdShXUuBljjFch+VmpzN00STzgRnusaOUZDZpSJPVpzjnHsIAYlJw6a4ihNKLgZpa5UM4PobRfsu+KTI8MuBQkMimPumqSp+UkDIB615uomZsidfWf3FwW0DPutqLMBjbwKiiFJQ9SGMGuEJ4qtTFAGZqdpWCZz5Sh3J6OkcQI7hQmqy7e9c4GEUSNB24M7iLXLqxB4MO3VwE/vWUt/5uOIg7rW9mpNoKeDiXw/tG1oDEZ3WgErmCuu90uzlxeWDA8yYeLRKCxlRx/MwqAbpUJI7KIBVgiiBS9e8OZ9FlgYYU9G2pI2hiGZFvNZdkJrOAUlYPA==
+ b=GStKtU3P7efWnQAvnb0DlS4xzdYyRSGnf/OS8VIgjw8pj8qm+yw4GM5XrSdfNYuJZZHbP+T4FU20QcQ69Ciqrm1STpzUsdqpwonVq9UONgCBwRsB0D2kipJFmWaXz73WEmaNAeIMtCV0MqvriI+G0h1siQqi1bNXvqrvN8UWhwVvGtrIUcHhWrXyC0vhtmJaKbChMndoY5nb9OYE7jMw/SFLf0ru/ypegS6cdeptRwEZJvGMwf61yc8XnHPwbf9BdTMpmzp+usBTCgYiUnjqgpw3WMqibO2lVM84W+Q5vDkc09eRqDW9MevdqMyJQK09S6GaXPzO+/piGqvsBwldmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bL3BQQDOmeAZ4uxVAqICF0APk/JOJ2UML4TZ86JvTGo=;
- b=nY9tffB8UN+fcZ39MslEZXeiqZsc71BVkxOAoSs5GGAeBv+FT1DKIW8DVVeOjMvmwRQnUDoN8V/UdfUJynCWGzo2TRpN5piFQFaMas7JNFND3uD6/4sW/m/Y2fGcpU5XQt3EhO+JvIFI8mnb2mnehBLUWLJhMGmWs24GFLqUr627Xt+b2XQa0AsQj5IcODHAkAlAGjeb9gf4bNhsxO0lT9dIq8WiXxDv6fSPGSwE4yU+gUPSTp0w1fz/MUHUAG6MC6HMN40Bkg4eoRJQ0j3IApTAWXAGbAGn6s0OE52b9MZvsT9cx9FdM16tw/+6FBl478VW5Q7P/wcSNEKYTSNjhg==
+ bh=RY0ni6eNKb4Uog1aAaoq836gC8XU36Fyz+iPocFGvQc=;
+ b=DIQZwvCJPiPk1Bhj64RsAUYTucoNonu+gET0KmiWTAegH9RfXyQP1DeuElWHP6u8C75JP4e9/iNflOEVEtXsImAsA0++IEObC2DFrdZobpnPaNzc6JG4uaXnYaXp7FSbtwJP9dOMS3P1QUZTqytW24sX2azVdtbGYhvQ6wBy9dRIBS/kgNKrBfJ+g1sxzIcL9JIgNDFhaH+uhb9gKAJ9EnAXyFnheKD+NNsUEsEJQTvzJaO4yPw0tXLHoE+O9aCWe753OAafW7nsQmP6M3nRqkpJHwH/AmcpfScy3634rTcL5OYLWun8HxoZ8sWIJElgfxYoZYgTCOZU7MjgSXB5Sw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
  s=selector2-intel-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bL3BQQDOmeAZ4uxVAqICF0APk/JOJ2UML4TZ86JvTGo=;
- b=JxcNu7IHG83LC66h9jyxSQpk/Zf/YGNJuHR3zjiAfh11NVADRC62N/KSqJcaGIU0oXCYcTEb/HMphbfwzQIrE2hEmAMZQgujUCft/Jpbh77DDNUrYk1A3fu/3IRf6QFjF6EWutdgsITFeTwriyS6Lcq5MuuEMMHA1QyF5XQlrIA=
+ bh=RY0ni6eNKb4Uog1aAaoq836gC8XU36Fyz+iPocFGvQc=;
+ b=oBOar+f17IexKhMGdypMvx2Xv8s7bp2jrkv5Q/VadVUug7zuW+UUDWtXzhrTpJNsn3ggWe4B0JNIAT86Dz1aMWZcrrEuJJWc4RtpOLPv300DtSu1t90UsxJe1Pb0dpvAF9llsiwJljslxaTgWTaxwvKwoGqKcUOyAU5BClCWWA0=
 Received: from SN6PR11MB2864.namprd11.prod.outlook.com (2603:10b6:805:63::26)
- by SN6PR11MB2990.namprd11.prod.outlook.com (2603:10b6:805:cf::21) with
+ by SN6PR11MB3407.namprd11.prod.outlook.com (2603:10b6:805:bd::32) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.14; Thu, 12 Mar
- 2020 14:38:21 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2793.15; Thu, 12 Mar
+ 2020 14:59:41 +0000
 Received: from SN6PR11MB2864.namprd11.prod.outlook.com
  ([fe80::fd11:322:84c8:a4e3]) by SN6PR11MB2864.namprd11.prod.outlook.com
  ([fe80::fd11:322:84c8:a4e3%5]) with mapi id 15.20.2793.018; Thu, 12 Mar 2020
- 14:38:21 +0000
+ 14:59:40 +0000
 From: "Dorau, Lukasz" <lukasz.dorau@intel.com>
 To: linux-nvdimm <linux-nvdimm@lists.01.org>
-Subject: nfit_test: issue #2: modprobe: ERROR: could not insert 'nfit_test':
- Unknown symbol in module, or unknown parameter
-Thread-Topic: nfit_test: issue #2: modprobe: ERROR: could not insert
- 'nfit_test': Unknown symbol in module, or unknown parameter
-Thread-Index: AdX4eeu8S4UKpcXxQVyul9RQ8BWIzA==
-Date: Thu, 12 Mar 2020 14:38:21 +0000
-Message-ID: <SN6PR11MB2864B07E6EA3CFCDB77169FE96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+Subject: nfit_test: issue #3: BUG: kernel NULL pointer dereference, address:
+ 0000000000000018
+Thread-Topic: nfit_test: issue #3: BUG: kernel NULL pointer dereference,
+ address: 0000000000000018
+Thread-Index: AdX4ff9vRi+83PXwTQC0PvRaS9yWHA==
+Date: Thu, 12 Mar 2020 14:59:40 +0000
+Message-ID: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -80,38 +80,38 @@ authentication-results: spf=none (sender IP is )
  smtp.mailfrom=lukasz.dorau@intel.com;
 x-originating-ip: [134.191.221.115]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6e3af14f-756c-4e2f-c2ca-08d7c6930383
-x-ms-traffictypediagnostic: SN6PR11MB2990:
+x-ms-office365-filtering-correlation-id: 0a8e57be-731d-4d2e-8bf3-08d7c695fdfd
+x-ms-traffictypediagnostic: SN6PR11MB3407:
 x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <SN6PR11MB299006199B8E290B4040AF5896FD0@SN6PR11MB2990.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-microsoft-antispam-prvs: <SN6PR11MB3407958E0EA133F2AB4C44F396FD0@SN6PR11MB3407.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6108;
 x-forefront-prvs: 0340850FCD
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(376002)(396003)(39860400002)(366004)(136003)(199004)(7696005)(54906003)(52536014)(2906002)(186003)(6916009)(107886003)(6506007)(71200400001)(66946007)(478600001)(64756008)(86362001)(66476007)(66446008)(66556008)(76116006)(5660300002)(4326008)(26005)(316002)(8936002)(8676002)(33656002)(55016002)(9686003)(81166006)(81156014);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB2990;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39860400002)(396003)(366004)(136003)(376002)(346002)(199004)(81166006)(76116006)(66446008)(45080400002)(33656002)(26005)(66946007)(66476007)(66556008)(64756008)(107886003)(478600001)(186003)(316002)(54906003)(86362001)(5660300002)(8676002)(6916009)(71200400001)(81156014)(8936002)(55016002)(2906002)(4326008)(52536014)(6506007)(9686003)(7696005);DIR:OUT;SFP:1102;SCL:1;SRVR:SN6PR11MB3407;H:SN6PR11MB2864.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: g8Cc/WaIxadyJ8MQ0xgiuNjGK+5Qazf4Qn+uwoGZCgVaJm2Eh8Az/kmTFl1rCMkZ0raYBWYm1kT9BZ7kAt8PNjJGMIZVT5xctgn8Tr2g+TTMz4vzgub8dIc8e1BYDnzM73Ak3AVdrB+2LR+X5Mdn2oMKpi93V1Pul1F/MB0eQkRwI12436V+FwqF2NNySRANTJoMi/C0gJ4bfll0Pgy3yzEOyENLRQrRNFTFEYudDbQsIoC/JznQ4/7pl4JktVD7QCFa4WLEodzLUeIBTdbO5pI9pnnjXxucX6t5/H/JdAOaiWTKCJ59ODnke91XnwO2ENep/M3d0udfNUFwAinrVB15J2I4gYcmUr3Pewd0P+FOdcVvPZqyup9O91f36fUVcKXeC0EkupkFzHbZYcclTqI8aEyQwwDJGQ4clS+o3V+Ds6OZmtM9GHElpEqLlGbT
-x-ms-exchange-antispam-messagedata: 6zK5oZ5Ndp/nqR53z4nfaM2wJrbQQnz1l0+0sP4CHaCSMyh1exuTX7cHSSASLE+AqguH98WkKCGJNbew+vXXKTDSiu2c3H451q0d/0gC9xGlWp9s3ZUbX1szMYuhk3xaLqkLhRdaGiy5zU2yzGRH3Q==
+x-microsoft-antispam-message-info: 4D2V7NIwR5idi2w0Id3Z6VJRt9G0FX1mztFrv9CzfRHOLu3PRMhvghqTOsJ8EE/PmG7zZfaeomX68fGJmV111Aa5FVmQ0pZKIdvR6NONcNKYGrgzuA7Ja+xMrlRXWHBKvIR4+uSZZ/ItWMmJcdj6D9Tcobuxg7X0zXD6WffITc921gZRXgVaZ6y9dEZGUA3I3YrlHx02Pv2Ws77qe/dml/Kz5oH8fR3qurAjFVm330etwNKbTSj0vdDbYfPeq1MnEU4nofwSyIlNu1Wdsb7BKs1oP9NLdBjh3DCenF8ApfDd+tvG+k/28AZHxyehI+o2fsZJBqtQ8W3DQILBk3wUDiGEQbnAFfcAgeCkOlrIs+es6InZGzo4hBQ3X3XcVsQIygOy4lPOUZVBnLeU7XzevJd8gDxywQ0HraMyiql/dKihlVbLNuRNOomm4oqmBoWZ
+x-ms-exchange-antispam-messagedata: ZO6BF+1gNG6r/zG+al+f5kTphSzFxtEeY/kBI0Z+izFa595CIkr/r/rEwO+ZwiSMK0B3/MSEoYZGRLE26q5EBSw8Rq3k+1jQ37ZiQLdtJZIY3WAzzgbEZdBMxqGdXi4/HSeFF57r/MKVshmHCutGVg==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e3af14f-756c-4e2f-c2ca-08d7c6930383
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 14:38:21.6154
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a8e57be-731d-4d2e-8bf3-08d7c695fdfd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Mar 2020 14:59:40.7884
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: X/U3ZiKpN1MXN6XWe7ABQGOxPOpRIia4ooFWOCYpK3Wu3cZGAhUElaWWiPZArkXThrhiwjQ/h/IPoMj3M2Am5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB2990
+X-MS-Exchange-CrossTenant-userprincipalname: UQkYMcmHXxvscrVeIoWAFnfMYw669FV/LWBkPin92s+ArfcOQ07jNEuS5CD9Ve+uPPcbxURYJsN2lDuyKM5ryA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3407
 X-OriginatorOrg: intel.com
-Message-ID-Hash: QDFPRM5C3UQJKPQ6OKA6PO57Z55S67RF
-X-Message-ID-Hash: QDFPRM5C3UQJKPQ6OKA6PO57Z55S67RF
+Message-ID-Hash: O37AP64NN42MZONOMBMASM22LGOKYP7N
+X-Message-ID-Hash: O37AP64NN42MZONOMBMASM22LGOKYP7N
 X-MailFrom: lukasz.dorau@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: "Slusarz, Marcin" <marcin.slusarz@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QDFPRM5C3UQJKPQ6OKA6PO57Z55S67RF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O37AP64NN42MZONOMBMASM22LGOKYP7N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -121,94 +121,101 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-Inserting the 'nfit_test' module in a natural way fails with the following error:
+I have inserted the 'nfit_test' module, removed it and reinserted it again (like in the previous e-mail " nfit_test: issue #2: modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter ") and called:
+$ ndctl disable-region all
+And got the following oops:
 
-$ sudo modprobe -v nfit_test
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/char/hw_random/rng-core.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/char/tpm/tpm.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/security/keys/trusted-keys/trusted.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/security/keys/encrypted-keys/encrypted-keys.ko.xz 
-install /usr/bin/ndctl load-keys ; /sbin/modprobe --ignore-install libnvdimm $CMDLINE_OPTS 
-No TPM handle discovered.
-failed to open file /etc/ndctl/keys/nvdimm-master.blob: No such file or directory
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/nvdimm/libnvdimm.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test_iomap.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz 
-modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter (see dmesg)
+[ 3079.971649] nfit_test: mcsafe_test: disabled, skip.
+[ 3080.030189] nfit_test nfit_test.0: failed to evaluate _FIT
+[ 3080.039150] nfit_test nfit_test.1: Error found in NVDIMM nmem4 flags: save_fail restore_fail flush_fail not_armed
+[ 3080.039159] nfit_test nfit_test.1: Error found in NVDIMM nmem5 flags: map_fail
+[ 3080.039696] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
+[ 3080.039805] pmem6: detected capacity change from 0 to 33554432
+[ 3080.039806] pmem7: detected capacity change from 0 to 4194304
+[ 3080.243372] pmem7: detected capacity change from 0 to 4194304
+[ 3080.251781] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
+[ 3080.251871] pmem6: detected capacity change from 0 to 33554432
+[ 3080.508112] BUG: kernel NULL pointer dereference, address: 0000000000000018
+[ 3080.508117] #PF: supervisor read access in kernel mode
+[ 3080.508118] #PF: error_code(0x0000) - not-present page
+[ 3080.508120] PGD 0 P4D 0 
+[ 3080.508123] Oops: 0000 [#1] PREEMPT SMP PTI
+[ 3080.508126] CPU: 3 PID: 80123 Comm: pmempool Tainted: G           O      5.5.8-arch1-1-bb #1
+[ 3080.508128] Hardware name: System manufacturer System Product Name/RAMPAGE IV EXTREME, BIOS 4701 11/18/2013
+[ 3080.508133] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
+[ 3080.508136] Code: 37 48 c1 ee 0c 48 01 f0 48 ba ff ff ff ff ff ff 0f 00 49 c1 ef 0c 48 21 d3 49 01 c7 48 c1 e3 06 48 03 1d 98 54 0d db 48 89 da <48> 83 7a 18 00 75 10 49 8b 8c 24 f0 00 00 00 48 89 42 20 48 89 4a
+[ 3080.508137] RSP: 0000:ffffb44406bdfdb0 EFLAGS: 00010247
+[ 3080.508139] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[ 3080.508141] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff924c3d789900
+[ 3080.508142] RBP: ffffb44406bdfe28 R08: 000709b000000000 R09: 00000000001baf04
+[ 3080.508144] R10: ffff924cbfffc000 R11: 0000000000033160 R12: ffff924c48dd4200
+[ 3080.508145] R13: 0000000000000001 R14: 0000000000000100 R15: 0000000000000001
+[ 3080.508147] FS:  00007fb40da5c900(0000) GS:ffff924cafac0000(0000) knlGS:0000000000000000
+[ 3080.508149] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3080.508151] CR2: 0000000000000018 CR3: 00000003cab58003 CR4: 00000000000606e0
+[ 3080.508152] Call Trace:
+[ 3080.508161]  __do_fault+0x38/0x120
+[ 3080.508165]  __handle_mm_fault+0xff2/0x1580
+[ 3080.508170]  ? big_key_read+0x1b0/0x1b0
+[ 3080.508174]  handle_mm_fault+0xce/0x200
+[ 3080.508178]  do_user_addr_fault+0x1ef/0x470
+[ 3080.508184]  page_fault+0x34/0x40
+[ 3080.508187] RIP: 0033:0x7fb40de6cb7c
+[ 3080.508189] Code: c3 48 81 fa 00 08 00 00 77 a1 48 83 fa 40 77 16 f3 0f 7f 07 f3 0f 7f 47 10 f3 0f 7f 44 17 f0 f3 0f 7f 44 17 e0 c3 48 8d 4f 40 <f3> 0f 7f 07 48 83 e1 c0 f3 0f 7f 44 17 f0 f3 0f 7f 47 10 f3 0f 7f
+[ 3080.508190] RSP: 002b:00007ffe85e8e758 EFLAGS: 00010206
+[ 3080.508192] RAX: 00007fb40ba00000 RBX: 0000000000000000 RCX: 00007fb40ba00040
+[ 3080.508193] RDX: 0000000000200000 RSI: 0000000000000000 RDI: 00007fb40ba00000
+[ 3080.508195] RBP: 0000000001e00000 R08: 000000000000000a R09: 0000000000000000
+[ 3080.508196] R10: 0000000000000001 R11: 0000000000000206 R12: 000000000000000a
+[ 3080.508197] R13: 0000000000000000 R14: 00007fb40ba00000 R15: 0000000000000000
+[ 3080.508201] Modules linked in: kmem nfit_test(O) nfit(O) nd_blk dax_pmem_compat(O) device_dax(O) dax_pmem(O) dax_pmem_core(O) nd_pmem(O) nd_btt(O) libnvdimm(O) nfit_test_iomap(O) encrypted_keys trusted tpm rng_core fuse xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xfrm_user xfrm_algo xt_addrtype iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c br_netfilter bridge stp llc overlay intel_rapl_msr intel_rapl_common snd_hda_codec_hdmi x86_pkg_temp_thermal intel_powerclamp coretemp kvm_intel kvm snd_hda_codec_realtek snd_hda_codec_generic irqbypass nouveau ledtrig_audio eeepc_wmi snd_hda_intel btusb asus_wmi snd_intel_dspcfg btrtl iTCO_wdt battery crct10dif_pclmul crc32_pclmul btbcm snd_hda_codec iTCO_vendor_support sparse_keymap btintel wmi_bmof ghash_clmulni_intel bluetooth mxm_wmi aesni_intel snd_hda_core crypto_simd i2c_algo_bit cryptd ttm glue_helper intel_cstate snd_hwdep intel_uncore ecdh_generic dm_mod input_leds intel_rapl_perf
+  snd_pcm
+[ 3080.508235]  joydev mousedev rfkill drm_kms_helper pcspkr i2c_i801 ecc snd_timer lpc_ich e1000e snd mei_me syscopyarea sysfillrect sysimgblt mei fb_sys_fops soundcore wmi evdev mac_hid drm sg crypto_user agpgart ip_tables x_tables ext4 crc32c_generic crc16 mbcache jbd2 hid_generic usbhid hid sr_mod cdrom sd_mod ahci libahci libata crc32c_intel xhci_pci scsi_mod xhci_hcd ehci_pci ehci_hcd [last unloaded: nfit]
+[ 3080.508258] CR2: 0000000000000018
+[ 3080.508260] ---[ end trace 4485b40fc6cb1bcb ]---
+[ 3080.508264] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
+[ 3080.508266] Code: 37 48 c1 ee 0c 48 01 f0 48 ba ff ff ff ff ff ff 0f 00 49 c1 ef 0c 48 21 d3 49 01 c7 48 c1 e3 06 48 03 1d 98 54 0d db 48 89 da <48> 83 7a 18 00 75 10 49 8b 8c 24 f0 00 00 00 48 89 42 20 48 89 4a
+[ 3080.508268] RSP: 0000:ffffb44406bdfdb0 EFLAGS: 00010247
+[ 3080.508270] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[ 3080.508271] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff924c3d789900
+[ 3080.508272] RBP: ffffb44406bdfe28 R08: 000709b000000000 R09: 00000000001baf04
+[ 3080.508274] R10: ffff924cbfffc000 R11: 0000000000033160 R12: ffff924c48dd4200
+[ 3080.508275] R13: 0000000000000001 R14: 0000000000000100 R15: 0000000000000001
+[ 3080.508277] FS:  00007fb40da5c900(0000) GS:ffff924cafac0000(0000) knlGS:0000000000000000
+[ 3080.508279] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3080.508280] CR2: 0000000000000018 CR3: 00000003cab58003 CR4: 00000000000606e0
 
-$ dmesg | tail
-[  659.295461] Key type encrypted registered
-[  659.337971] nfit_test: Unknown symbol libnvdimm_test (err -2)
-[  659.337997] nfit_test: Unknown symbol acpi_nfit_test (err -2)
-[  659.338035] nfit_test: Unknown symbol pmem_test (err -2)
-[  659.338061] nfit_test: Unknown symbol dax_pmem_core_test (err -2)
-[  659.338097] nfit_test: Unknown symbol dax_pmem_compat_test (err -2)
-[  659.338125] nfit_test: Unknown symbol device_dax_test (err -2)
-[  659.338144] nfit_test: Unknown symbol dax_pmem_test (err -2)
+$ ps aux | grep ndctl
+root       25958  0.0  0.0   6396  1732 pts/0    D+   15:40   0:00 ndctl disable-region all
+root       26409  0.0  0.0   6396  1800 pts/0    D+   15:43   0:00 ndctl disable-region all
 
-It is because the standard versions of the 'libnvdimm' and 'nfit' modules were inserted instead of the mocked ones from the 'extra' subdirectory as you can see above and below:
+$ sudo cat /proc/25958/stack
+[<0>] __synchronize_srcu+0x8e/0xc0
+[<0>] kill_dax+0x22/0x70
+[<0>] pmem_release_disk+0x12/0x40 [nd_pmem]
+[<0>] release_nodes+0x19b/0x1e0
+[<0>] device_release_driver_internal+0xf4/0x1c0
+[<0>] unbind_store+0xef/0x120
+[<0>] kernfs_fop_write+0xce/0x1b0
+[<0>] vfs_write+0xb6/0x1a0
+[<0>] ksys_write+0x67/0xe0
+[<0>] do_syscall_64+0x4e/0x150
+[<0>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-$ sudo modinfo nfit | grep -e filename
-filename:       /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz
-$ sudo modinfo libnvdimm | grep -e filename
-filename:       /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/nvdimm/libnvdimm.ko.xz
-
-There is a workaround - it can be done manually in the following way....
-
-$ sudo rmmod nfit
-$ sudo rmmod libnvdimm
-
-Only /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test_iomap.ko.xz is inserted now.
-
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/libnvdimm.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/nd_btt.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/nd_pmem.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/nfit.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/dax_pmem_core.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/dax_pmem.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/device_dax.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/dax_pmem_compat.ko.xz
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz
-
-$ dmesg | tail
-[ 1214.908974] nfit_test: mcsafe_test: disabled, skip.
-[ 1214.968913] nfit_test nfit_test.0: failed to evaluate _FIT
-[ 1214.976728] nfit_test nfit_test.1: Error found in NVDIMM nmem4 flags: save_fail restore_fail flush_fail not_armed
-[ 1214.976740] nfit_test nfit_test.1: Error found in NVDIMM nmem5 flags: map_fail
-[ 1214.977745] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-[ 1214.977906] pmem6: detected capacity change from 0 to 33554432
-[ 1214.977915] pmem7: detected capacity change from 0 to 4194304
-
-Let's try to remove the 'nfit_test' module:
-
-$ sudo ndctl disable-region all
-disabled 8 regions
-
-$ sudo modprobe -v -r nfit_test
-rmmod nfit_test
-rmmod nfit
-
-... and insert it again:
-
-$ sudo modprobe -v nfit_test
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz 
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz 
-modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter (see dmesg)
-
-$ dmesg | tail
-[ 1486.193503] nfit_test: Unknown symbol acpi_nfit_test (err -2)
-
-And now the wrong version of the 'nfit' module was inserted ... 
-The only way is to do it  manualy again:
-
-$ sudo rmmod -v nfit 
-$ sudo insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/nfit.ko.xz
-$ sudo modprobe -v nfit_test
-insmod /lib/modules/5.6.0-rc1-bb-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz 
-
-Does anyone know how it can be fixed? Any suggestions?
-
+$ sudo cat /proc/26409/stack
+[<0>] flush_namespaces+0x15/0x30 [libnvdimm]
+[<0>] device_for_each_child+0x69/0xa0
+[<0>] flush_regions_dimms+0x33/0x40 [libnvdimm]
+[<0>] device_for_each_child+0x69/0xa0
+[<0>] wait_probe_show+0x3d/0x60 [libnvdimm]
+[<0>] dev_attr_show+0x19/0x40
+[<0>] sysfs_kf_seq_show+0x9b/0xf0
+[<0>] seq_read+0xcd/0x440
+[<0>] vfs_read+0x9d/0x150
+[<0>] ksys_read+0x67/0xe0
+[<0>] do_syscall_64+0x4e/0x150
+[<0>] entry_SYSCALL_64_after_hwframe+0x44/0xa9
+ 
 --
 Lukasz
 _______________________________________________
