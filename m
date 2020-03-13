@@ -1,82 +1,167 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9345184A2E
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 16:05:03 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C03184AE3
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 16:41:42 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 03D1D10FC3887;
-	Fri, 13 Mar 2020 08:05:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com; envelope-from=ogbonna100@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+	by ml01.01.org (Postfix) with ESMTP id C212510FC3881;
+	Fri, 13 Mar 2020 08:42:31 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5213510FC3886
-	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:05:50 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id j2so109724qkl.7
-        for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:04:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 19AB110FC3593
+	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:42:29 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id j14so10566830otq.3
+        for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:41:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=j2QEI9qhE499vmlTCneDpKaQfUXMxdNli1p0sYnTZJ8=;
-        b=QDxQO+D2/i7ke+aVMh9xK4b68MqlMDukiKeGAyAVOv/UvbSMNvl8OcrVktR8dVZcJC
-         PN2aCW5GRoPlKUnzUbVXQYxc9raNiQgESelwinDH52Xn8KC7M4SZzzua1b9Mtbw3uuBD
-         B7xiAK9bBLvDUVxLBv/qN4TCX/tA+0CuVXQkBRJr+LtHpOO+bIDce+vhK7+MM6ROYIPZ
-         11aab6TG1/c9y8n8v3w7GIpeb1N0IPRepN09KJ8RXz6eSYbjc14YvPLVD+AyNMsUPEaZ
-         dZlOLWxWNqf9fzdmrvb5aWaulqZO5/uIZP36/+N2vAoA50OtidGunuj1bnZEquhf1A6S
-         XOog==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vYlJTH2qA+/4DS7qpZloj8tQt2V5eWoCXB8gjCwZ2kc=;
+        b=h9DQVYhYvQlcSyfImi53yYMU+O7Ol/wR+jtSYqOd2BSfTArxkJ7C0VM23mqbxyPzbm
+         V7kAmXRFsP3ChuCy60lApQc4f+RhN3vUFAGXvjPszt7TrWshRv0js69TIdAGQEj8P7WW
+         wZtItoT9BEIxk3CerPZ3v/lw2ylShpwCouJJCm9bPseawuLetrFJxvswcGJ/qSsJU50B
+         lxsklW9UVDXLnUPnMyBrWQmA26vqj6W/hqqRewo2B1PI+VQ6N0Tt+NLxZNpUz87QgPTP
+         b9Xm3rDqEWGCgiiht3tFjolMcS/sdwpnlZ/pOlmfDXt9mb6weuC89Nl1jMhSXU6FFsJK
+         G3XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=j2QEI9qhE499vmlTCneDpKaQfUXMxdNli1p0sYnTZJ8=;
-        b=TFLFBpiXyFJ/XjF1NYbetKn6Gnenyr3l9BAQHhvC3obw7gmvBnOpalndFaUd4xHr58
-         /kWurjMfv1cJ/aXGKSCgDfpRvekYonR5tmuSYiAGDBaOEveJekprvmhBwAj2QG6IU42g
-         DLkkAPfWHVOjvyxVzi8zBQlBelXU9Ef3orEuLOVxozgWaBkDA8obQ0rk74Dejx/wMvGc
-         d+g765UFo/I1+06YKoqylcF2XK6EQT/gp1GIKOESLlbjm4RbrCV2NHNT1038KBPIOxCZ
-         JdRxTTTcJ+gNiRb/lt0rAEsjEtXe32nsLkuMDgWHHmpO/ggTbeSKc4TrqZQNDgTZqzMz
-         b13w==
-X-Gm-Message-State: ANhLgQ0uJ6/ck/okYmd+KH7MmdLQY9n5+lyZc6mL+NYVSa/WvN45LDUZ
-	XybFXkHrI73SzXt7dahKL0PJQIr60+7JV0+ZnFM=
-X-Google-Smtp-Source: ADFU+vuJssxI9hUfHwB+c4MHxpPMleTdlHiz+EZnFAVc1FDw/7eVpxytY7IIhvJ8k+wL2+uGNh1LmD9j3zHuHlJnN9g=
-X-Received: by 2002:a05:620a:110c:: with SMTP id o12mr13231329qkk.87.1584111897959;
- Fri, 13 Mar 2020 08:04:57 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vYlJTH2qA+/4DS7qpZloj8tQt2V5eWoCXB8gjCwZ2kc=;
+        b=NueXEcW/bmnHAePQfsgxsJliQZ/EZXUlSyOhs1ZrOIZ5kVWdqb5J+cykwiIoL6okZd
+         rIfYTQ0FyCpIwj7haOnzIzBaaKfBcveZ0bpiw1o2cNQV+/uWcZuos1EY82NutaUWdE2z
+         Za/vbMCVEFK7pVp+brx+Li1ouh1Dn6OFZRWDPTuZEJ8t+PbkkI0nOPvJbtn5Jp3WBI1E
+         BY83qfKIJtovWSMHTzqYw/tvszkfxvJZflpSPbkn3obtKQfog/XVhM2e0C/KBWVzE6/h
+         lDG+H8DjmcJleUMv9spnHBkTRiS/MqXHoqYJyPSK3p6kmaFfc3CTBjWhDqf1oaMd+5+o
+         4PeA==
+X-Gm-Message-State: ANhLgQ118IWQfdljpqmQT2qus20JxaNqHJxPV2luWP5n2DInBYY81YgU
+	rthZzGkSeEUpGZEjt+LUqHYUPoLZiXpBDbd6M51BQg==
+X-Google-Smtp-Source: ADFU+vu4dTjfsE9awiFQZ7RTA8r1tCDcA0vOmyeGowfNEuM5ChlrpYd3gvqQYxDdF83y4nm1f7cGIwobrgpN3qwvPYk=
+X-Received: by 2002:a9d:6f07:: with SMTP id n7mr11049761otq.247.1584114097473;
+ Fri, 13 Mar 2020 08:41:37 -0700 (PDT)
 MIME-Version: 1.0
-From: Komlaw Louis Atohm <ogbonna100@gmail.com>
-Date: Fri, 13 Mar 2020 16:04:46 +0100
-Message-ID: <CA+YdZB2exLknazr1-jME-r-zFK=-KOfrYB2XQJPHo-9C+z_c0g@mail.gmail.com>
-Subject: =?UTF-8?B?15TXkNedINeQ16rXlCDXoteT15nXmdefINee16nXqtee16kg15HXk9eV15Ai15wg15bXlA==?=
-To: undisclosed-recipients:;
-Message-ID-Hash: 2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7
-X-Message-ID-Hash: 2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7
-X-MailFrom: ogbonna100@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+References: <SN6PR11MB2864B07E6EA3CFCDB77169FE96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
+ <CAPcyv4hX5D6G6uSCoeV78NfJtNj8cvk5=ouLJ+EL2SXvqi-d_Q@mail.gmail.com> <SN6PR11MB28647C6C4DE888D1B74A903B96FA0@SN6PR11MB2864.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB28647C6C4DE888D1B74A903B96FA0@SN6PR11MB2864.namprd11.prod.outlook.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 13 Mar 2020 08:41:26 -0700
+Message-ID: <CAPcyv4igs_41gvtoqkA6a8LshkrXsKLBaZa3KwkuRRPyczdXSg@mail.gmail.com>
+Subject: Re: nfit_test: issue #2: modprobe: ERROR: could not insert
+ 'nfit_test': Unknown symbol in module, or unknown parameter
+To: "Dorau, Lukasz" <lukasz.dorau@intel.com>
+Message-ID-Hash: MTKGHRIZCXVXEZZMHFITO7FHNGUGSKLI
+X-Message-ID-Hash: MTKGHRIZCXVXEZZMHFITO7FHNGUGSKLI
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Slusarz, Marcin" <marcin.slusarz@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: atohmk225@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MTKGHRIZCXVXEZZMHFITO7FHNGUGSKLI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-157XlCDXqdec15XXnteaLA0KDQrXqNenINeo15XXpteUINec15DXqdeoINeQ150g15DXqteUINei
-15PXmdeZ158g157Xqdeq157XqSDXkdeb16rXldeR16og15PXldeQItecINeW15U/INeQ150g15vX
-nywg15DXoNeQINeU16nXkSDXnNeT15XXkNeoDQrXlNeQ15fXqNeV158g16nXqdec15fXqteZINeQ
-15zXmdeaLCDXoNeV16nXkCDXl9ep15XXkSDXqdeQ16DXmSDXqNeV16bXlCDXnNeT15XXnyDXkNeq
-15ouDQoNCtee16bXpNeUINec16nXnteV16Ig157XnteaLg0KDQrXotedINee16nXkNec15XXqteZ
-15og15TXmNeV15HXldeqINeR15nXldeq16ghDQoNCg0KQXRvaCBMb3VpcyBLb21sYWgNCg0KDQoN
-Cg0KDQpIb3cgYXJlIHlvdSwNCg0KIEp1c3Qgd2FudCB0byBjb25maXJtIGlmICB5b3UgU3RpbGwg
-dXNpbmcgdGhpcyBlbWFpbCBhZGRyZXNzPyBJZiBzbywgcGxlYXNlDQpyZXBseSB0byBteSBsYXN0
-IG1haWwgaSBzZW50IHlvdSwgYW4gaW1wb3J0YW50IGlzc3VlIEkgd291bGQgbGlrZSB0bw0KZGlz
-Y3VzcyB3aXRoIHlvdS4NCg0KTG9va2luZyBmb3J3YXJkIHRvIGhlYXJpbmcgZnJvbSB5b3UuDQoN
-CiBXaXRoIHlvdXIgYmVzdCB3aXNoZXMhDQoNCkF0b2ggTG91aXMgS29tbGFoDQpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGlu
-ZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBh
-biBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Fri, Mar 13, 2020 at 2:49 AM Dorau, Lukasz <lukasz.dorau@intel.com> wrote:
+>
+> On Thursday, March 12, 2020 6:06 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > Yes, you're environment is not being careful to exclude the production
+> > version of the modules from being loaded. The ndctl unit test core
+> > also sanity checks nfit_Test and reports the collisions before running
+> > tests. See nfit_test_init():
+> >
+> >     https://github.com/pmem/ndctl/blob/master/test/core.c#L119
+> >
+> > I'd recommend at least running:
+> >
+> >     make TESTS=libndctl check
+> >
+> > ...from latest ndctl.git to sanity check your nfit_test module
+> > dependencies before trying to load it manually.
+> >
+> > See the troubleshooting document:
+> >
+> >     https://github.com/pmem/ndctl#troubleshooting
+> >
+> > ...for other tips about how to prevent the production modules from loading.
+>
+> Thanks for tips! I have followed those instructions and it did not help:
+>
+> $ cat /etc/depmod.d/nvdimm-extra
+> override nfit * extra
+> override device_dax * extra
+> override dax_pmem * extra
+> override dax_pmem_core * extra
+> override dax_pmem_compat * extra
+> override libnvdimm * extra
+> override nd_blk * extra
+> override nd_btt * extra
+> override nd_e820 * extra
+> override nd_pmem * extra
+>
+> $ find /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/ -name "*nfit*"
+> /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/acpi/nfit
+> /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz
+> /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/nfit.ko.xz
+> /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz
+> /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test_iomap.ko.xz
+>
+> $ make TESTS=libndctl check
+> [...]
+> make --no-print-directory check-TESTS
+> SKIP: libndctl
+> ============================================================================
+> Testsuite summary for ndctl 67
+> ============================================================================
+> # TOTAL: 1
+> # PASS:  0
+> # SKIP:  1
+> # XFAIL: 0
+> # FAIL:  0
+> # XPASS: 0
+> # ERROR: 0
+> ============================================================================
+>
+> $ cat test/test-suite.log
+> [...]
+> .. contents:: :depth: 2
+>
+> SKIP: libndctl
+> ==============
+>
+> test/init: nfit_test_init: nfit.ko: appears to be production version: /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz
+> __ndctl_test_skip: explicit skip test_libndctl:2695
+> nfit_test unavailable skipping tests
+> libdaxctl: daxctl_unref: context 0xe02a00 released
+> libndctl: ndctl_unref: context 0xe05f20 released
+> attempted: 1 skipped: 1
+> SKIP libndctl (exit status: 77)
+>
+> As you can see 'ndctl' also cannot load the extra test version of the modules even if there is the following file:
+>
+> $ cat /etc/depmod.d/nvdimm-extra
+> override nfit * extra
+> override device_dax * extra
+> override dax_pmem * extra
+> override dax_pmem_core * extra
+> override dax_pmem_compat * extra
+> override libnvdimm * extra
+> override nd_blk * extra
+> override nd_btt * extra
+> override nd_e820 * extra
+> override nd_pmem * extra
+>
+> Can I try anything else? Do you have any suggestions?
+
+Do you have the nfit, or libnvdimm modules loading from the initramfs?
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
