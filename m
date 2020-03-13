@@ -2,237 +2,81 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2876E184863
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 14:42:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9345184A2E
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 16:05:03 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E473310FC3881;
-	Fri, 13 Mar 2020 06:43:11 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 03D1D10FC3887;
+	Fri, 13 Mar 2020 08:05:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com; envelope-from=ogbonna100@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B2FC410FC3880
-	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 06:43:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1584106937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WmJMCPjLeZOGPd5XvclGChfYUeyS2atWd4pQtWyZc14=;
-	b=O0/xIU8PYyIdhAF0dRYKwYnzU5sJmjuC5eimXNuOq93YuKRradlNDPKYEeF6Rr4YiirAq7
-	eaFsDZbwDoDxe5GbnqH8WFgqzKsRdNWGzMJtA8yKgXJzK0tMm3w4jSSKNebf1yJ1Dq2oON
-	PGw4v25ewUm2VYe/hNhmZGs6yHUg82g=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-408-dxlPnEmCMRqY71uj9jQetw-1; Fri, 13 Mar 2020 09:42:06 -0400
-X-MC-Unique: dxlPnEmCMRqY71uj9jQetw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0C61518A8CAF;
-	Fri, 13 Mar 2020 13:42:04 +0000 (UTC)
-Received: from horse.redhat.com (unknown [10.18.25.210])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A89A4101D480;
-	Fri, 13 Mar 2020 13:41:55 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 3896722021D; Fri, 13 Mar 2020 09:41:55 -0400 (EDT)
-Date: Fri, 13 Mar 2020 09:41:55 -0400
-From: Vivek Goyal <vgoyal@redhat.com>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Subject: Re: [PATCH 13/20] fuse, dax: Implement dax read/write operations
-Message-ID: <20200313134155.GA156804@redhat.com>
-References: <20200304165845.3081-1-vgoyal@redhat.com>
- <20200304165845.3081-14-vgoyal@redhat.com>
- <CAJfpegtpgE+vnN0hvEVMDyNkYZ0h3_kNgxWCQUb2iuBdy8kEsw@mail.gmail.com>
- <20200312160208.GB114720@redhat.com>
- <CAJfpegtuCCRfKfctUyQBimAOpnOTvW5zodLAy307Mr_1h0+e7g@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 5213510FC3886
+	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:05:50 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id j2so109724qkl.7
+        for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:04:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=j2QEI9qhE499vmlTCneDpKaQfUXMxdNli1p0sYnTZJ8=;
+        b=QDxQO+D2/i7ke+aVMh9xK4b68MqlMDukiKeGAyAVOv/UvbSMNvl8OcrVktR8dVZcJC
+         PN2aCW5GRoPlKUnzUbVXQYxc9raNiQgESelwinDH52Xn8KC7M4SZzzua1b9Mtbw3uuBD
+         B7xiAK9bBLvDUVxLBv/qN4TCX/tA+0CuVXQkBRJr+LtHpOO+bIDce+vhK7+MM6ROYIPZ
+         11aab6TG1/c9y8n8v3w7GIpeb1N0IPRepN09KJ8RXz6eSYbjc14YvPLVD+AyNMsUPEaZ
+         dZlOLWxWNqf9fzdmrvb5aWaulqZO5/uIZP36/+N2vAoA50OtidGunuj1bnZEquhf1A6S
+         XOog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=j2QEI9qhE499vmlTCneDpKaQfUXMxdNli1p0sYnTZJ8=;
+        b=TFLFBpiXyFJ/XjF1NYbetKn6Gnenyr3l9BAQHhvC3obw7gmvBnOpalndFaUd4xHr58
+         /kWurjMfv1cJ/aXGKSCgDfpRvekYonR5tmuSYiAGDBaOEveJekprvmhBwAj2QG6IU42g
+         DLkkAPfWHVOjvyxVzi8zBQlBelXU9Ef3orEuLOVxozgWaBkDA8obQ0rk74Dejx/wMvGc
+         d+g765UFo/I1+06YKoqylcF2XK6EQT/gp1GIKOESLlbjm4RbrCV2NHNT1038KBPIOxCZ
+         JdRxTTTcJ+gNiRb/lt0rAEsjEtXe32nsLkuMDgWHHmpO/ggTbeSKc4TrqZQNDgTZqzMz
+         b13w==
+X-Gm-Message-State: ANhLgQ0uJ6/ck/okYmd+KH7MmdLQY9n5+lyZc6mL+NYVSa/WvN45LDUZ
+	XybFXkHrI73SzXt7dahKL0PJQIr60+7JV0+ZnFM=
+X-Google-Smtp-Source: ADFU+vuJssxI9hUfHwB+c4MHxpPMleTdlHiz+EZnFAVc1FDw/7eVpxytY7IIhvJ8k+wL2+uGNh1LmD9j3zHuHlJnN9g=
+X-Received: by 2002:a05:620a:110c:: with SMTP id o12mr13231329qkk.87.1584111897959;
+ Fri, 13 Mar 2020 08:04:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <CAJfpegtuCCRfKfctUyQBimAOpnOTvW5zodLAy307Mr_1h0+e7g@mail.gmail.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Message-ID-Hash: EGYIB23LFWSDC4GYWPKMAQXA7FDHEGID
-X-Message-ID-Hash: EGYIB23LFWSDC4GYWPKMAQXA7FDHEGID
-X-MailFrom: vgoyal@redhat.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>, virtio-fs@redhat.com, Stefan Hajnoczi <stefanha@redhat.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Miklos Szeredi <mszeredi@redhat.com>, Liu Bo <bo.liu@linux.alibaba.com>, Peng Tao <tao.peng@linux.alibaba.com>
+From: Komlaw Louis Atohm <ogbonna100@gmail.com>
+Date: Fri, 13 Mar 2020 16:04:46 +0100
+Message-ID: <CA+YdZB2exLknazr1-jME-r-zFK=-KOfrYB2XQJPHo-9C+z_c0g@mail.gmail.com>
+Subject: =?UTF-8?B?15TXkNedINeQ16rXlCDXoteT15nXmdefINee16nXqtee16kg15HXk9eV15Ai15wg15bXlA==?=
+To: undisclosed-recipients:;
+Message-ID-Hash: 2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7
+X-Message-ID-Hash: 2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7
+X-MailFrom: ogbonna100@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: atohmk225@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EGYIB23LFWSDC4GYWPKMAQXA7FDHEGID/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2LITDK6H5LKRDHXVRB3MMO2B6F5XHVK7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Fri, Mar 13, 2020 at 11:18:15AM +0100, Miklos Szeredi wrote:
-
-[..]
-> > > > +/* offset passed in should be aligned to FUSE_DAX_MEM_RANGE_SZ */
-> > > > +static int fuse_setup_one_mapping(struct inode *inode, loff_t offset,
-> > > > +                                 struct fuse_dax_mapping *dmap, bool writable,
-> > > > +                                 bool upgrade)
-> > > > +{
-> > > > +       struct fuse_conn *fc = get_fuse_conn(inode);
-> > > > +       struct fuse_inode *fi = get_fuse_inode(inode);
-> > > > +       struct fuse_setupmapping_in inarg;
-> > > > +       FUSE_ARGS(args);
-> > > > +       ssize_t err;
-> > > > +
-> > > > +       WARN_ON(offset % FUSE_DAX_MEM_RANGE_SZ);
-> > > > +       WARN_ON(fc->nr_free_ranges < 0);
-> > > > +
-> > > > +       /* Ask fuse daemon to setup mapping */
-> > > > +       memset(&inarg, 0, sizeof(inarg));
-> > > > +       inarg.foffset = offset;
-> > > > +       inarg.fh = -1;
-> > > > +       inarg.moffset = dmap->window_offset;
-> > > > +       inarg.len = FUSE_DAX_MEM_RANGE_SZ;
-> > > > +       inarg.flags |= FUSE_SETUPMAPPING_FLAG_READ;
-> > > > +       if (writable)
-> > > > +               inarg.flags |= FUSE_SETUPMAPPING_FLAG_WRITE;
-> > > > +       args.opcode = FUSE_SETUPMAPPING;
-> > > > +       args.nodeid = fi->nodeid;
-> > > > +       args.in_numargs = 1;
-> > > > +       args.in_args[0].size = sizeof(inarg);
-> > > > +       args.in_args[0].value = &inarg;
-> > >
-> > > args.force = true?
-> >
-> > I can do that but I am not sure what exactly does args.force do and
-> > why do we need it in this case.
-> 
-> Hm, it prevents interrupts.  Looking closely, however it will only
-> prevent SIGKILL from immediately interrupting the request, otherwise
-> it will send an INTERRUPT request and the filesystem can ignore that.
-> Might make sense to have a args.nonint flag to prevent the sending of
-> INTERRUPT...
-
-Hi Miklos,
-
-virtiofs does not support interrupt requests yet. Its fiq interrupt
-handler just does not do anything.
-
-static void virtio_fs_wake_interrupt_and_unlock(struct fuse_iqueue *fiq)
-__releases(fiq->lock)
-{
-        /*
-         * TODO interrupts.
-         *
-         * Normal fs operations on a local filesystems aren't interruptible.
-         * Exceptions are blocking lock operations; for example fcntl(F_SETLKW)
-         * with shared lock between host and guest.
-         */
-        spin_unlock(&fiq->lock);
-}
-
-So as of now setting force or not will not make any difference. We will
-still end up waiting for request to finish.
-
-Infact, I think there is no mechanism to set fc->no_interrupt in
-virtio_fs. If I am reading request_wait_answer(), correctly, it will
-see fc->no_interrupt is not set. That means filesystem supports
-interrupt requests and it will do wait_event_interruptible() and
-not even check for FR_FORCE bit. 
-
-Right now fc->no_interrupt is set in response to INTERRUPT request
-reply. Will it make sense to also be able to set it as part of
-connection negotation protocol and filesystem can tell in the
-beginning itself that it does not support interrupt and virtiofs
-can make use of that.
-
-So force flag is only useful if filesystem does not support interrupt
-and in that case we do wait_event_killable() and upon receiving
-SIGKILL, cancel request if it is still in pending queue. For virtiofs,
-we take request out of fiq->pending queue in submission path itself
-and if it can't be dispatched it waits on virtiofs speicfic queue
-with FR_PENDING cleared. That means, setting FR_FORCE for virtiofs
-does not mean anything as caller will end up waiting for
-request to finish anyway.
-
-IOW, setting FR_FORCE will make sense when we have mechanism to
-detect that request is still queued in virtiofs queues and have
-mechanism to cancel it. We don't have it. In fact, given we are
-a push model, we dispatch request immediately to filesystem,
-until and unless virtqueue is full. So probability of a request
-still in virtiofs queue is low.
-
-So may be we can start setting force at some point of time later
-when we have mechanism to cancel detect and cancel pending requests
-in virtiofs.
-
-> 
-> > First thing it does is that request is allocated with flag __GFP_NOFAIL.
-> > Second thing it does is that caller is forced to wait for request
-> > completion and its not an interruptible sleep.
-> >
-> > I am wondering what makes FUSE_SETUPMAPING/FUSE_REMOVEMAPPING requests
-> > special that we need to set force flag.
-> 
-> Maybe not for SETUPMAPPING (I was confused by the error log).
-> 
-> However if REMOVEMAPPING fails for some reason, than that dax mapping
-> will be leaked for the lifetime of the filesystem.   Or am I
-> misunderstanding it?
-
-FUSE_REMVOEMAPPING is not must. If we send another FUSE_SETUPMAPPING, then
-it will create the new mapping and free up resources associated with
-the previous mapping, IIUC.
-
-So at one point of time we were thinking that what's the point of
-sending FUSE_REMOVEMAPPING. It helps a bit with freeing up filesystem
-resources earlier. So if cache size is big, then there will not be
-much reclaim activity going and if we don't send FUSE_REMOVEMAPPING,
-all these filesystem resources will remain busy on host for a long
-time.
-
-> 
-> > > > +       ret = fuse_setup_one_mapping(inode,
-> > > > +                                    ALIGN_DOWN(pos, FUSE_DAX_MEM_RANGE_SZ),
-> > > > +                                    dmap, true, true);
-> > > > +       if (ret < 0) {
-> > > > +               printk("fuse_setup_one_mapping() failed. err=%d pos=0x%llx\n",
-> > > > +                      ret, pos);
-> > >
-> > > Again.
-> >
-> > Will remove. How about converting some of them to pr_debug() instead? It
-> > can help with debugging if something is not working.
-> 
-> Okay, and please move it to fuse_setup_one_mapping() where there's
-> already a pr_debug() for the success case.
-
-Will do.
-
-> 
->  > > +
-> > > > +       /* Do not use dax for file extending writes as its an mmap and
-> > > > +        * trying to write beyong end of existing page will generate
-> > > > +        * SIGBUS.
-> > >
-> > > Ah, here it is.  So what happens in case of a race?  Does that
-> > > currently crash KVM?
-> >
-> > In case of race, yes, KVM hangs. So no shared directory operation yet
-> > till we have designed proper error handling in kvm path.
-> 
-> I think before this is merged we have to fix the KVM crash; that's not
-> acceptable even if we explicitly say that shared directory is not
-> supported for the time being.
-
-Ok, I will look into it. I had done some work in the past and realized
-its not trivial to fix kvm error paths. There are no users and propagating
-signals back into qemu instances and finding the right process is going to be
-tricky.
-
-Given the complexity of that work, I thought that for now we say that
-shared directory is not supported and once basic dax patches get merged,
-focus on kvm work.
-
-Thanks
-Vivek
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+157XlCDXqdec15XXnteaLA0KDQrXqNenINeo15XXpteUINec15DXqdeoINeQ150g15DXqteUINei
+15PXmdeZ158g157Xqdeq157XqSDXkdeb16rXldeR16og15PXldeQItecINeW15U/INeQ150g15vX
+nywg15DXoNeQINeU16nXkSDXnNeT15XXkNeoDQrXlNeQ15fXqNeV158g16nXqdec15fXqteZINeQ
+15zXmdeaLCDXoNeV16nXkCDXl9ep15XXkSDXqdeQ16DXmSDXqNeV16bXlCDXnNeT15XXnyDXkNeq
+15ouDQoNCtee16bXpNeUINec16nXnteV16Ig157XnteaLg0KDQrXotedINee16nXkNec15XXqteZ
+15og15TXmNeV15HXldeqINeR15nXldeq16ghDQoNCg0KQXRvaCBMb3VpcyBLb21sYWgNCg0KDQoN
+Cg0KDQpIb3cgYXJlIHlvdSwNCg0KIEp1c3Qgd2FudCB0byBjb25maXJtIGlmICB5b3UgU3RpbGwg
+dXNpbmcgdGhpcyBlbWFpbCBhZGRyZXNzPyBJZiBzbywgcGxlYXNlDQpyZXBseSB0byBteSBsYXN0
+IG1haWwgaSBzZW50IHlvdSwgYW4gaW1wb3J0YW50IGlzc3VlIEkgd291bGQgbGlrZSB0bw0KZGlz
+Y3VzcyB3aXRoIHlvdS4NCg0KTG9va2luZyBmb3J3YXJkIHRvIGhlYXJpbmcgZnJvbSB5b3UuDQoN
+CiBXaXRoIHlvdXIgYmVzdCB3aXNoZXMhDQoNCkF0b2ggTG91aXMgS29tbGFoDQpfX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGlu
+ZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBh
+biBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
