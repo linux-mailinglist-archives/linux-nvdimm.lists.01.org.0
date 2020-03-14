@@ -1,67 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA1E184BA6
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 13 Mar 2020 16:50:17 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11661853D0
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 14 Mar 2020 02:21:34 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8326010FC3887;
-	Fri, 13 Mar 2020 08:51:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::344; helo=mail-ot1-x344.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+	by ml01.01.org (Postfix) with ESMTP id 20BC910FC36E4;
+	Fri, 13 Mar 2020 18:22:24 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::444; helo=mail-pf1-x444.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3FD0C10FC340C
-	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:51:02 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id 66so10551182otd.9
-        for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 08:50:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id A752410FC3363
+	for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 18:22:21 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id c144so6326716pfb.10
+        for <linux-nvdimm@lists.01.org>; Fri, 13 Mar 2020 18:21:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=WGeC4dpRpWSyHetiKWdIqRSC1KUK/MG4fFcR85sJYeQ=;
-        b=SiMfFcwh7vZBKmZEQurFjRcmrWhd8weAHJL+Yjmp9p2TRIZP/Ac3WjpuHs2OwT9njD
-         kBy/sVuhmHYo30DslX5ajmUBrFCcfR0iGwG5NXl3odKFgmuAe3zYqT0GBYGyx1sMU+mf
-         kIywkyNcszp6PH6ppErP4caMk8yFwFuY6ib2Fe2C767tLI2jTgqZavwdJj3wXFEU1aGb
-         kLNB3ZQ9pEcy3LzMuj4GZxPjJmLH/Q5pYZrGpGtd0cv9S5Ff+Q3iU9LUzA00n+vAx+mW
-         enFefOZ+5v2RtlVfv85XV3P4W8t2J419LTjXkOLkQw3dZ1cMzPy6U5h+nprBy/9oSBRq
-         g/vA==
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=fjTjSXUTPxmhKb/gbbaGR/OvXETYgB9qnJBZykBuEHk=;
+        b=V65RGzBW+IeTWu5NJDyA35IYArEjNBxFfw850IA/HZ7mBksKfV9wWMmHcJpQ8Na1s7
+         vp0xXnPyxVWpGkY95PlODgUnKeNQJwQ8gRsdDYAKFg80TmywIASU39HTgve9KfOq8aEt
+         OXEM4mJLFlJ4z/7H0GNnDE59fzO2N3EoqMzKKtMALFSMXnNO/zLpHbpK+Ra6H8zjXVtX
+         2w8qyNSRoRvhxfU4wziiVD/hn1cGudFsMPjC1lMC0xdxT+aIhqPpQTmPxVXEDzmlKk+j
+         WYeFiBgiOHK8BqwsIODMESxLzbyw4WvKcImobXRccHxMwlsflhqKsiPBTEtcXQrEfviB
+         zXCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=WGeC4dpRpWSyHetiKWdIqRSC1KUK/MG4fFcR85sJYeQ=;
-        b=m9ypZk/aBl/gtL9ZtbgrHXbkyDhODoY7V2UxTTcZanuqfih//sWkSAJvl829xxaDpU
-         o/av2eNwzQFRyFRX0bJjE2hAyc1jUJ4mS8CgNbIXqEWUYruJxVb4YHY44dt/a58bpmxW
-         tIQKxXCqUu7KoUZyvbteM2ZuA8QX9wE0A7YEHbkvbzW7gLYxsPC4irBHxOrS20UROYIZ
-         a3CGr+qrSE+2nkZKDLbBguJ8vIV7+KHDl57zdiFmbJfy+MYDzLMHQn/+yjRpOtVr2UlY
-         +O0ULRvBt85sjkSE4Ze0ZpXFotJ7NVO6GktS/RbsoE/wq5acCHMGXiej0fM75OkHad3f
-         1kbw==
-X-Gm-Message-State: ANhLgQ0hajQMfbThQXWi8CQMe3PH51YZUF//zUst5WfBuZuqpnYdOxzp
-	mL0sRU35EW2Yl0UQMwZg+2fw5FChSQDxiu1Uzz6oGX/r
-X-Google-Smtp-Source: ADFU+vscNBdBUe/TJ+l1GPTFKhdkOvlgzEsbI13O/7csDUYxVkogwbyJ3bxkdabt32AXH9Hogp/KrXJHDsiutOWJltM=
-X-Received: by 2002:a9d:6f07:: with SMTP id n7mr11079517otq.247.1584114611046;
- Fri, 13 Mar 2020 08:50:11 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=fjTjSXUTPxmhKb/gbbaGR/OvXETYgB9qnJBZykBuEHk=;
+        b=rRg2COMakRSnUAvSXCksd1fO14akltfdjaenurVQMk6zOdOBLaaYUJWJ+DzJ+n5DbA
+         SywKbCVBi79CWRTEP+dZEIwAz1VI8wzHqO+EteCtL+DljquAbWf8Z3FxEV6noRlGfpJl
+         FqZQYztV9rsmP1ueGjHNqr5CTABb6/+JbRgusjBGqjyzWIeLYX+0JfXsxHsPIdvOSM5o
+         caomosKRYG3ch2T1u9PHWQEQtcYD9XSD6mXp9MF23GSInPKIonwzyhwCHWzvjaXdNuoE
+         DfqygO3mULaidlCn2kK5En4e+GPHfDWjnOmWt4XnkiO7InvQ33FHC3LhqG8XvDGZMKQ2
+         muLA==
+X-Gm-Message-State: ANhLgQ3K3ccKpXp3bX0x5yq8QHI4rsu5vCgqyD/8Ana7ieIUbax7T3x8
+	4RDja39+7O+ilbtbleDv7RgVadud1pM=
+X-Google-Smtp-Source: ADFU+vsuZ1ZXIO875/31n4+qmjr6zBqC2VdgnKYR/4sw4SMGUhUhNWw5nplyXlACoAKO1F7fZLGuvQ==
+X-Received: by 2002:a63:a06e:: with SMTP id u46mr15524375pgn.140.1584148889696;
+        Fri, 13 Mar 2020 18:21:29 -0700 (PDT)
+Received: from localhost ([111.125.192.41])
+        by smtp.gmail.com with ESMTPSA id n22sm12568658pjq.36.2020.03.13.18.21.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Mar 2020 18:21:28 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linux-nvdimm@lists.01.org, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH] tools/test/nvdimm: Fix out of tree build
+In-Reply-To: <20200114054051.4115790-1-santosh@fossix.org>
+References: <20200114054051.4115790-1-santosh@fossix.org>
+Date: Sat, 14 Mar 2020 06:51:26 +0530
+Message-ID: <87d09fenop.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-References: <SN6PR11MB28641D4A1AF433086764A98D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
- <SN6PR11MB2864BBFAA6EC62A7747F9E5D96FD0@SN6PR11MB2864.namprd11.prod.outlook.com>
- <CAPcyv4gXZKPyqu+9JmWuivw4Yuc05_Q+bbcjRAsHK2PWKtjwjg@mail.gmail.com> <SN6PR11MB286493B9A749705B8A107F4396FA0@SN6PR11MB2864.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB286493B9A749705B8A107F4396FA0@SN6PR11MB2864.namprd11.prod.outlook.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 13 Mar 2020 08:49:59 -0700
-Message-ID: <CAPcyv4jOuTXdNzUTSj2EWBoKJ5V8FeEWo4cCA3e95jdT3=7XFQ@mail.gmail.com>
-Subject: Re: nfit_test: issue #3: BUG: kernel NULL pointer dereference,
- address: 0000000000000018
-To: "Dorau, Lukasz" <lukasz.dorau@intel.com>
-Message-ID-Hash: UZY7WA2SGAHHFGEHJBZTG2KNOZXDKLJM
-X-Message-ID-Hash: UZY7WA2SGAHHFGEHJBZTG2KNOZXDKLJM
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: UBFOZAVOTBIT473YBGPGVI4Z454EIRKR
+X-Message-ID-Hash: UBFOZAVOTBIT473YBGPGVI4Z454EIRKR
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UZY7WA2SGAHHFGEHJBZTG2KNOZXDKLJM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UBFOZAVOTBIT473YBGPGVI4Z454EIRKR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,116 +71,69 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 13, 2020 at 3:06 AM Dorau, Lukasz <lukasz.dorau@intel.com> wrote:
->
-> On Thursday, March 12, 2020 6:09 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > If you force loaded a module with unresolved symbols all bets are off,
-> > lets get "make TESTS=libndctl check" running cleanly before trying to
-> > debug this report.
->
-> My experiments with "make TESTS=libndctl check" I have described in the separate thread "nfit_test: issue #2":
-> https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/QDFPRM5C3UQJKPQ6OKA6PO57Z55S67RF/
->
-> I have *NOT* force loaded a module with unresolved symbols. I have loaded the 'nfit_test' module manually (using 'insmod') without any errors.
-> I have repeated those steps below for the latest
-> git://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git
-> kernel from the ' libnvdimm-for-next' branch and the oops occurred again:
->
-> [ 1559.560169] BUG: kernel NULL pointer dereference, address: 0000000000000018
-> [ 1559.560177] #PF: supervisor read access in kernel mode
-> [ 1559.560180] #PF: error_code(0x0000) - not-present page
-> [ 1559.560182] PGD 80000003886b7067 P4D 80000003886b7067 PUD 3f53af067 PMD 0
-> [ 1559.560190] Oops: 0000 [#1] PREEMPT SMP PTI
-> [ 1559.560196] CPU: 0 PID: 79767 Comm: pmempool Tainted: G           O      5.6.0-rc1-13504-g7b27a8622f80 #1
-> [ 1559.560199] Hardware name: System manufacturer System Product Name/RAMPAGE IV EXTREME, BIOS 4701 11/18/2013
-> [ 1559.560207] RIP: 0010:dev_dax_huge_fault+0x2b3/0x570 [device_dax]
->
-> The steps to reproduce:
->
-> $ sudo modprobe -v nfit_test
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/char/hw_random/rng-core.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/char/tpm/tpm.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/security/keys/trusted-keys/trusted.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/security/keys/encrypted-keys/encrypted-keys.ko.xz
-> install /usr/bin/ndctl load-keys ; /sbin/modprobe --ignore-install libnvdimm $CMDLINE_OPTS
-> No TPM handle discovered.
-> failed to open file /etc/ndctl/keys/nvdimm-master.blob: No such file or directory
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/nvdimm/libnvdimm.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test_iomap.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz
-> modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter (see dmesg)
->
-> $ dmesg | tail
-> [  102.769871] Key type encrypted registered
-> [  102.799289] nfit_test_iomap: loading out-of-tree module taints kernel.
-> [  102.804008] nfit_test: Unknown symbol libnvdimm_test (err -2)
-> [  102.804054] nfit_test: Unknown symbol acpi_nfit_test (err -2)
-> [  102.804118] nfit_test: Unknown symbol pmem_test (err -2)
-> [  102.804164] nfit_test: Unknown symbol dax_pmem_core_test (err -2)
-> [  102.804226] nfit_test: Unknown symbol dax_pmem_compat_test (err -2)
-> [  102.804273] nfit_test: Unknown symbol device_dax_test (err -2)
-> [  102.804308] nfit_test: Unknown symbol dax_pmem_test (err -2)
->
-> Removing the wrong modules:
->
-> $ sudo rmmod nfit
-> $ sudo rmmod libnvdimm
->
-> Inserting the right modules manually:
->
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/libnvdimm.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/nd_btt.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/nd_pmem.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/nfit.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/dax_pmem_core.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/dax_pmem.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/device_dax.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/dax_pmem_compat.ko.xz
-> $ sudo insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz
->
-> The 'nfit_test' module is successfully inserted with *NO ERRORS* now:
->
-> $ dmesg | tail
-> [  464.439504] nfit_test: mcsafe_test: disabled, skip.
-> [  464.500439] nfit_test nfit_test.0: failed to evaluate _FIT
-> [  464.507964] nfit_test nfit_test.1: Error found in NVDIMM nmem4 flags: save_fail restore_fail flush_fail not_armed
-> [  464.507990] nfit_test nfit_test.1: Error found in NVDIMM nmem5 flags: map_fail
-> [  464.508614] nd_pmem namespace6.0: region6 read-only, marking pmem6 read-only
-> [  464.508729] pmem6: detected capacity change from 0 to 33554432
-> [  464.508737] pmem7: detected capacity change from 0 to 4194304
->
-> $ lsmod | grep nfit
-> nfit_test              49152  8
-> dax_pmem_compat        20480  1 nfit_test
-> device_dax             20480  2 nfit_test,dax_pmem_compat
-> dax_pmem               20480  1 nfit_test
-> dax_pmem_core          20480  3 dax_pmem,nfit_test,dax_pmem_compat
-> nfit                   73728  1 nfit_test
-> nd_pmem                24576  1 nfit_test
-> libnvdimm             200704  8 dax_pmem,nfit_test,dax_pmem_core,nd_btt,nd_pmem,dax_pmem_compat,nd_blk,nfit
-> nfit_test_iomap        24576  6 nfit_test,dax_pmem_core,device_dax,nd_pmem,libnvdimm,nfit
->
-> Trying to remove and reinsert the 'nfit_test' module:
->
-> $ sudo ndctl disable-region all
-> disabled 8 regions
->
-> $ sudo modprobe -v -r nfit_test
-> rmmod nfit_test
-> rmmod nfit
->
-> $ sudo modprobe -v nfit_test
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/kernel/drivers/acpi/nfit/nfit.ko.xz
-> insmod /lib/modules/5.6.0-rc1-13504-g7b27a8622f80/extra/test/nfit_test.ko.xz
-> modprobe: ERROR: could not insert 'nfit_test': Unknown symbol in module, or unknown parameter (see dmesg)
->
-> $ dmesg | tail
-> [  919.861636] nfit_test: Unknown symbol acpi_nfit_test (err -2)
+Hi Dan,
 
-I'm still not sure how you are managing to hit "unknown symbol"
-errors, are you re-running depmod after creating the test modules?
+Any comments on the below patch to fix builds that use KBUILD_OUT?
+
+Thanks,
+Santosh
+
+Santosh Sivaraj <santosh@fossix.org> writes:
+
+> Out of tree build using
+>
+>    make M=tools/test/nvdimm O=/tmp/build -C /tmp/build
+>
+> fails with the following error
+>
+> make: Entering directory '/tmp/build'
+>   CC [M]  tools/testing/nvdimm/test/nfit.o
+> linux/tools/testing/nvdimm/test/nfit.c:19:10: fatal error: nd-core.h: No such file or directory
+>    19 | #include <nd-core.h>
+>       |          ^~~~~~~~~~~
+> compilation terminated.
+>
+> That is because the kbuild file uses $(src) which points to
+> tools/testing/nvdimm, $(srctree) correctly points to root of the linux
+> source tree.
+>
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  tools/testing/nvdimm/Kbuild      | 4 ++--
+>  tools/testing/nvdimm/test/Kbuild | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
+> index 6aca8d5be159..0615fa3d9f7e 100644
+> --- a/tools/testing/nvdimm/Kbuild
+> +++ b/tools/testing/nvdimm/Kbuild
+> @@ -22,8 +22,8 @@ DRIVERS := ../../../drivers
+>  NVDIMM_SRC := $(DRIVERS)/nvdimm
+>  ACPI_SRC := $(DRIVERS)/acpi/nfit
+>  DAX_SRC := $(DRIVERS)/dax
+> -ccflags-y := -I$(src)/$(NVDIMM_SRC)/
+> -ccflags-y += -I$(src)/$(ACPI_SRC)/
+> +ccflags-y := -I$(srctree)/drivers/nvdimm/
+> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+>  
+>  obj-$(CONFIG_LIBNVDIMM) += libnvdimm.o
+>  obj-$(CONFIG_BLK_DEV_PMEM) += nd_pmem.o
+> diff --git a/tools/testing/nvdimm/test/Kbuild b/tools/testing/nvdimm/test/Kbuild
+> index fb3c3d7cdb9b..75baebf8f4ba 100644
+> --- a/tools/testing/nvdimm/test/Kbuild
+> +++ b/tools/testing/nvdimm/test/Kbuild
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -ccflags-y := -I$(src)/../../../../drivers/nvdimm/
+> -ccflags-y += -I$(src)/../../../../drivers/acpi/nfit/
+> +ccflags-y := -I$(srctree)/drivers/nvdimm/
+> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+>  
+>  obj-m += nfit_test.o
+>  obj-m += nfit_test_iomap.o
+> -- 
+> 2.24.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
