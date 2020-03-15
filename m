@@ -2,64 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A9A1856A0
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Mar 2020 01:17:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC381856A1
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 15 Mar 2020 01:17:23 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 19E1310FC3783;
-	Sat, 14 Mar 2020 17:17:53 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.81; helo=golq.com; envelope-from=qjbut@juca.com; receiver=<UNKNOWN> 
-Received: from golq.com (unknown [223.73.128.81])
-	by ml01.01.org (Postfix) with ESMTP id 4B89F10077CEE
-	for <linux-nvdimm@lists.01.org>; Sat, 14 Mar 2020 17:17:46 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 15 Mar 2020 04:12:18 +0800
-Message-ID: 12bec4e3-1ee4-440c-a59e-1ec9aba59b26
+	by ml01.01.org (Postfix) with ESMTP id 378A410FC388A;
+	Sat, 14 Mar 2020 17:18:13 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=196.200.16.23; helo=outbound.accesskenya.com; envelope-from=cfo@devkisteel.com; receiver=<UNKNOWN> 
+Received: from outbound.accesskenya.com (outbound.accesskenya.com [196.200.16.23])
+	by ml01.01.org (Postfix) with SMTP id 4DC0510FC379F;
+	Sat, 14 Mar 2020 17:18:08 -0700 (PDT)
+Received: from smtpout.accesskenya.com (smtpout.accesskenya.com [196.200.16.45])
+	by outbound.accesskenya.com  with ESMTP id 02F0HFKZ001169-02F0HFKa001169;
+	Sun, 15 Mar 2020 03:17:15 +0300
+Received: from mail.nccke.com (HELO mail.devkisteel.com) ([41.215.8.186])
+  by smtpout.accesskenya.com with ESMTP; 15 Mar 2020 03:17:14 +0300
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.devkisteel.com (Postfix) with ESMTP id 75EC02982B0B;
+	Sun, 15 Mar 2020 03:17:14 +0300 (EAT)
+Received: from mail.devkisteel.com ([127.0.0.1])
+	by localhost (mail.devkisteel.com [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id bzMpdO0OwX2C; Sun, 15 Mar 2020 03:17:14 +0300 (EAT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.devkisteel.com (Postfix) with ESMTP id EDE1F2982B77;
+	Sun, 15 Mar 2020 03:17:13 +0300 (EAT)
+X-Amavis-Modified: Mail body modified (using disclaimer) - mail.devkisteel.com
+X-Virus-Scanned: amavisd-new at devkisteel.com
+Received: from mail.devkisteel.com ([127.0.0.1])
+	by localhost (mail.devkisteel.com [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id hOIX6PN2qMHa; Sun, 15 Mar 2020 03:17:13 +0300 (EAT)
+Received: from User (unknown [154.124.148.59])
+	by mail.devkisteel.com (Postfix) with ESMTPA id 5C5592982B0B;
+	Sun, 15 Mar 2020 03:16:54 +0300 (EAT)
+From: "Ken Global Enterprise, Inc"<cfo@devkisteel.com>
+Subject: Inquiry for new Order!!!
+Date: Sun, 15 Mar 2020 00:16:48 -0000
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E5=B9=BF=E4=B8=9C=E7=9C=81=E4=B8=9C=E8=8E=9E=E5=B8=82?=
- =?utf-8?Q?=E5=BE=80=E8=BF=94=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E9?=
- =?utf-8?Q?=9B=B6=E4=BD=86=EF=BC=8C=E6=95=B4=E8=BD=A6=E8=BF=90=E8=BE?=
- =?utf-8?Q?=93?= <qjbut@juca.com>
-From: =?utf-8?Q?=E5=B9=BF=E4=B8=9C=E7=9C=81=E4=B8=9C=E8=8E=9E=E5=B8=82?=
- =?utf-8?Q?=E5=BE=80=E8=BF=94=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E9?=
- =?utf-8?Q?=9B=B6=E4=BD=86=EF=BC=8C=E6=95=B4=E8=BD=A6=E8=BF=90=E8=BE?=
- =?utf-8?Q?=93?= <rt56sales@hotmail.com>
-To: linux-nvdimm@lists.01.org
-Date: 15 Mar 2020 04:12:18 +0800
-Subject: =?utf-8?B?5bm/5Lic55yB5Lic6I6e5biC5b6A6L+U5YWo5Zu95ZCE5Zyw?=
- =?utf-8?B?6Zu25L2G77yM5pW06L2m6L+Q6L6T?=
-Message-ID-Hash: 7HVBPZQFEZHGMHJ6HMKDL5CT5HST7TIY
-X-Message-ID-Hash: 7HVBPZQFEZHGMHJ6HMKDL5CT5HST7TIY
-X-MailFrom: qjbut@juca.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Cyberoam-smtpxy-version: 1.0.6.3
+X-Cyberoam-AV-Policy: default
+Message-Id: <20200315001655.5C5592982B0B@mail.devkisteel.com>
+X-Cyberoam-smtpxy-version: 1.0.6.3
+X-Cyberoam-AV-Policy: default
+X-CTCH-PVer: 0000001
+X-CTCH-Spam: Bulk
+X-CTCH-VOD: Unknown
+X-CTCH-Flags: 0
+X-CTCH-RefID: str=0001.0A090203.5E6D5E60.0002,ss=3,sh,re=4.680,recu=0.000,reip=0.000,cl=3,cld=1,fgs=0
+X-CTCH-Score: 4.680
+X-CTCH-ScoreCust: 0.000
+X-CTCH-Rules: FSL_CTYPE_WIN1251,NSL_RCVD_FROM_USER,
+X-MIME-Autoconverted: from 8bit to quoted-printable by outbound.accesskenya.com id 02F0HFKZ001169-02F0HFKa001169
+Message-ID-Hash: W5MNZ7UVUQOVCHOETYBZYGHXZB5LAMR7
+X-Message-ID-Hash: W5MNZ7UVUQOVCHOETYBZYGHXZB5LAMR7
+X-MailFrom: cfo@devkisteel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: alicelouis82@outlook.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7HVBPZQFEZHGMHJ6HMKDL5CT5HST7TIY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/W5MNZ7UVUQOVCHOETYBZYGHXZB5LAMR7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="windows-1251"
 Content-Transfer-Encoding: base64
 
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7IOW5v+S4nOecgeS4nOiOnuW4guW+gOi/lOWFqOWbveWQhOWcsOmbtuS9
-hu+8jOaVtOi9pui/kOi+kyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
-OyZuYnNwOyDmnKzlhazlj7jmib/mjqXlub/kuJzkuJzojp7oh7Plhajlm73lkITlnLDotKfov5Dv
-vIzlhajluILkuIrpl6jmj5DotKfvvIznu5nmgqjotLTlv4PlkajliLDmnI3liqHjgILnm7Tovr7l
-hajlm73otKfnianmlbTovabjgIHpm7bmi4Xov5DovpPkuJrliqHvvIzotoXplb/jgIHotoXlrr3j
-gIHotoXpq5jjgIHotoXph43ov5DovpPjgIHlm57nqIvovabosIPluqbku5PlgqjjgIHpgIHnrYnm
-nI3liqHjgILmj5DkvpvlpJrnp43ov5DovpPmnI3liqHvvIjlhazot6/jgIHpk4Hot6/jgIHoiKrn
-qbrvvInvvIzkuJrliqHlt7LpgY3lj4rlhajlm73lkITlnLDvvIzlnKjljY7kuJzjgIHljY7ljZfj
-gIHljY7kuK3jgIHljY7ljJflj4ropb/pg6jlnLDljLrmnInoh6rlt7HnmoTliIbmi6jkuK3lv4Pv
-vIzlpKnlpKnlj5HovaYs5a6J5YWo5b+r5o23LOS7o+WKnuS/nemZqSzku7fmoLzkvJjmg6DvvIzm
-rKLov47lkqjor6INCiZuYnNwOyDkvaDouqvovrnnmoTnianmtYHkuJPlrrYmbmJzcDsmbmJzcDsg
-6IGU57O75Lq677ya5p2o55SfJm5ic3A7Jm5ic3A7IFEmbmJzcDsgUSA6IDI5MDU2NTA3NzkmbmJz
-cDsmbmJzcDsgTW9iaWxlIO+8mis4Ni0xMzY0Mjk4MDkzNSAo5b6u5L+h5ZCM5Y+377yJJm5ic3A7
-Jm5ic3A7IEUtbWFpbCA6IHJ0NTZzYWxlc0Bob3RtYWlsLmNvbQ0KJm5ic3A7DQombmJzcDsNCiZu
-YnNwOw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGlu
-dXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVu
-c3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9y
-Zwo=
+SGVsbG8gRGVhciwNCiANCldlIGFyZSBpbnRlcmVzdGVkIGluIHB1cmNoYXNpbmcgeW91ciBwcm9k
+dWN0cyBhbmQgd2Ugc2luY2VyZWx5IGhvcGUgdG8gZXN0YWJsaXNoIGEgbG9uZy10ZXJtIGJ1c2lu
+ZXNzIHJlbGF0aW9uIHdpdGggeW91ciBlc3RlZW1lZCBjb21wYW55Lg0KIA0KUGxlYXNlIGtpbmRs
+eSBwcm92aWRlIHVzIHlvdXIgbGF0ZXN0IGNhdGFsb2cuIEFsc286DQq3ICAgICAgICAgSW5mb3Jt
+IHVzIGFib3V0IHlvdXIgbWluaW11bSBvcmRlciBxdWFudGl0eQ0KtyAgICAgICAgIFBheW1lbnQg
+dGVybXMNCrcgICAgICAgICBEZWxpdmVyeSB0aW1lDQq3ICAgICAgICAgV2FycmFudHkNCiANCllv
+dXIgZWFybHkgcmVwbHkgaXMgaGlnaGx5IGFwcHJlY2lhdGVkIQ0KIA0KVGhhbmtzLA0KIA0KQWxp
+Y2UgTG91aXMgfCBQdXJjaGFzaW5nIE1hbmFnZXINCktlbiBHbG9iYWwgRW50ZXJwcmlzZSwgSW5j
+DQogDQpIZWFkIG9mZmljZTo4MDgsIENvbmNvcmQgVG93ZXINCkR1YmFpIE1lZGlhIENpdHksIHAu
+by5ib3ggMzc0ODcsIER1YmFpLVVBRQ0KVDogKzk3MSA0IDMzIDUwOCAzNA0KRjogKzk3MSA0IDQy
+IDUzNTkgNjENCkR1YmFpICBVLkEuRS4gKiBTUEFJTiAqSVNSQUVMKiBVU0EgKiBBRlJJQ0ENCkUt
+bWFpbDogYWxpY2Vsb3VpczgyQG91dGxvb2suY29tDQoobnVsbCkKX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAt
+LSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwg
+dG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
