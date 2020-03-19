@@ -2,23 +2,23 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7C018C0BC
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 19 Mar 2020 20:50:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25AAC18C37D
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Mar 2020 00:07:45 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 99D4810FC36DF;
-	Thu, 19 Mar 2020 12:51:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.185.51.196; helo=gateway24.websitewelcome.com; envelope-from=gustavo@embeddedor.com; receiver=<UNKNOWN> 
-Received: from gateway24.websitewelcome.com (gateway24.websitewelcome.com [192.185.51.196])
+	by ml01.01.org (Postfix) with ESMTP id F2C6A10FC36C4;
+	Thu, 19 Mar 2020 16:08:33 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.185.143.38; helo=gateway31.websitewelcome.com; envelope-from=gustavo@embeddedor.com; receiver=<UNKNOWN> 
+Received: from gateway31.websitewelcome.com (gateway31.websitewelcome.com [192.185.143.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6ADEF10FC3192
-	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 12:51:40 -0700 (PDT)
-Received: from cm13.websitewelcome.com (cm13.websitewelcome.com [100.42.49.6])
-	by gateway24.websitewelcome.com (Postfix) with ESMTP id C48229ED1D
-	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 14:50:48 -0500 (CDT)
+	by ml01.01.org (Postfix) with ESMTPS id 77D8610FC363B
+	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 16:08:31 -0700 (PDT)
+Received: from cm17.websitewelcome.com (cm17.websitewelcome.com [100.42.49.20])
+	by gateway31.websitewelcome.com (Postfix) with ESMTP id F22A677F9
+	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 18:07:39 -0500 (CDT)
 Received: from gator4166.hostgator.com ([108.167.133.22])
 	by cmsmtp with SMTP
-	id F1BojP9EOVQh0F1Boje9XS; Thu, 19 Mar 2020 14:50:48 -0500
+	id F4GJjlPRjAGTXF4GJjBLGW; Thu, 19 Mar 2020 18:07:39 -0500
 X-Authority-Reason: nr=8
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=embeddedor.com; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
@@ -26,26 +26,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9Wv3jbj7V3+afTv1zkiRc6/kzb45qZM0mlCOpT5a6Vw=; b=GqMq4pnkbHIJSyj16jS/IXGon5
-	AEK/9C5A6VCq+zyljXQCj3ZPDd6r0vwMi+/18RhWGw3wWgiXIa0/QH9fFbUimH8EX8ZLLhraHmjHS
-	snmVD9enTefCRw9Y1O1txFkR4D40WMSnEL8tPoDHUxDhN7oUCGn2s2nRt8huwibaYN9e3Abq9iixp
-	vgWV6VI3P07cp9/Yb2VonQwMzLAI+Z+Hk0o917cOW297KF/7ozJnexvQcsrF1psDNFLBGY1KKeCX7
-	hWb2RYznbyyH9IwB4sr2lBO0J40VD0KxaadhtPCTSakKVqQ0Ir8sROTfJvSFpMYVXvxVfnZ7g6Gwz
-	4kIpaSow==;
-Received: from cablelink-189-218-116-241.hosts.intercable.net ([189.218.116.241]:52652 helo=embeddedor)
+	bh=10e20ftHbNBtdbV6audFvzsWbL3yXsySetTvF2M/Lq8=; b=O2K0uP9L/sLPmqZfto8eZ9Auuz
+	3wwFpugnOnD//3aPNsBC2Yfrzs9P6q6SVPUTEmkWvRkFqr4geqD9awCrpXtgP7er9l3St8GVs32Hu
+	11vLzovX1rQ/e+aP/2W7gAwQsVwPOL7QP/w7UlC8fD817SuFG+J3gBHp2Hwc6UcQUO21Ve7FkVTB8
+	0LjnIhDC4DjjHNmIREHMNIJd7TRB5yDDzrEv5VJzOTWZTqXsKI7ISNA0pqQvKivZSC2Z6iEJ1DzPg
+	knO42HE5DxsaCGw4WkYv3bYFHwApBAfTf3it+gbpU39jgYutPu98w1QiP748MluBFdyIXYhrALmwp
+	bAt84OQA==;
+Received: from cablelink-189-218-116-241.hosts.intercable.net ([189.218.116.241]:54038 helo=embeddedor)
 	by gator4166.hostgator.com with esmtpa (Exim 4.92)
 	(envelope-from <gustavo@embeddedor.com>)
-	id 1jF1Bm-000mHI-HG; Thu, 19 Mar 2020 14:50:46 -0500
-Date: Thu, 19 Mar 2020 14:50:46 -0500
+	id 1jF4GI-002PZ0-A4; Thu, 19 Mar 2020 18:07:38 -0500
+Date: Thu, 19 Mar 2020 18:07:37 -0500
 From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 To: Dan Williams <dan.j.williams@intel.com>,
 	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Len Brown <lenb@kernel.org>
-Subject: [PATCH][next] acpi: nfit.h: Replace zero-length array with
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH][next] nvdimm: label.h: Replace zero-length array with
  flexible-array member
-Message-ID: <20200319195046.GA452@embeddedor.com>
+Message-ID: <20200319230737.GA16452@embeddedor.com>
 MIME-Version: 1.0
 Content-Disposition: inline
 User-Agent: Mutt/1.9.4 (2018-02-28)
@@ -57,25 +55,25 @@ X-AntiAbuse: Sender Address Domain - embeddedor.com
 X-BWhitelist: no
 X-Source-IP: 189.218.116.241
 X-Source-L: No
-X-Exim-ID: 1jF1Bm-000mHI-HG
+X-Exim-ID: 1jF4GI-002PZ0-A4
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-X-Source-Sender: cablelink-189-218-116-241.hosts.intercable.net (embeddedor) [189.218.116.241]:52652
+X-Source-Sender: cablelink-189-218-116-241.hosts.intercable.net (embeddedor) [189.218.116.241]:54038
 X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 9
+X-Email-Count: 15
 X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
 X-Local-Domain: yes
-Message-ID-Hash: Y24C2KMHCT7LP7BUA2KSYYGPGDJALGDO
-X-Message-ID-Hash: Y24C2KMHCT7LP7BUA2KSYYGPGDJALGDO
+Message-ID-Hash: SBEJL6QZF3LRDNEQ2USPV4TWFGEJ34BX
+X-Message-ID-Hash: SBEJL6QZF3LRDNEQ2USPV4TWFGEJ34BX
 X-MailFrom: gustavo@embeddedor.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, "Gustavo A. R. Silva" <gustavo@embeddedor.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y24C2KMHCT7LP7BUA2KSYYGPGDJALGDO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SBEJL6QZF3LRDNEQ2USPV4TWFGEJ34BX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -114,52 +112,22 @@ This issue was found with the help of Coccinelle.
 
 Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
 ---
- drivers/acpi/nfit/nfit.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/nvdimm/label.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-index 24241941181c..af09143ce403 100644
---- a/drivers/acpi/nfit/nfit.h
-+++ b/drivers/acpi/nfit/nfit.h
-@@ -144,32 +144,32 @@ struct nfit_spa {
- 	unsigned long ars_state;
- 	u32 clear_err_unit;
- 	u32 max_ars;
--	struct acpi_nfit_system_address spa[0];
-+	struct acpi_nfit_system_address spa[];
+diff --git a/drivers/nvdimm/label.h b/drivers/nvdimm/label.h
+index 4c7b775c2811..956b6d1bd8cc 100644
+--- a/drivers/nvdimm/label.h
++++ b/drivers/nvdimm/label.h
+@@ -62,7 +62,7 @@ struct nd_namespace_index {
+ 	__le16 major;
+ 	__le16 minor;
+ 	__le64 checksum;
+-	u8 free[0];
++	u8 free[];
  };
  
- struct nfit_dcr {
- 	struct list_head list;
--	struct acpi_nfit_control_region dcr[0];
-+	struct acpi_nfit_control_region dcr[];
- };
- 
- struct nfit_bdw {
- 	struct list_head list;
--	struct acpi_nfit_data_region bdw[0];
-+	struct acpi_nfit_data_region bdw[];
- };
- 
- struct nfit_idt {
- 	struct list_head list;
--	struct acpi_nfit_interleave idt[0];
-+	struct acpi_nfit_interleave idt[];
- };
- 
- struct nfit_flush {
- 	struct list_head list;
--	struct acpi_nfit_flush_address flush[0];
-+	struct acpi_nfit_flush_address flush[];
- };
- 
- struct nfit_memdev {
- 	struct list_head list;
--	struct acpi_nfit_memory_map memdev[0];
-+	struct acpi_nfit_memory_map memdev[];
- };
- 
- enum nfit_mem_flags {
+ /**
 -- 
 2.23.0
 _______________________________________________
