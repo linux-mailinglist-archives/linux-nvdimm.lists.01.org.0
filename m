@@ -2,66 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20C418C5A3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Mar 2020 04:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC3AC18C5E8
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 20 Mar 2020 04:37:23 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 268D110FC36E9;
-	Thu, 19 Mar 2020 20:19:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.74; helo=us-smtp-delivery-74.mimecast.com; envelope-from=xifeng@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [63.128.21.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 76A3410FC36EB;
+	Thu, 19 Mar 2020 20:38:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8A70010FC36E7
-	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 20:19:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1584674319;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fj97gJkdixMRyXUxSt5rG9WX/Cbx7ZZHXv0C3W0Ejck=;
-	b=ed+H2F+M/AvDWGsqWtKFKG0qsfRp4hh0Qkxde/0jTSRI45Ev8a4uFohRPURc2Z8lWBhP7v
-	K+VoyGk2h0JHivN+qTYApEV8oFgi8ShT90N3ePpWCIY8vC9m29Es4YEIwzHur36y6LUYrW
-	hJ9CFyIWGICWb/3UTF9pDL+HVG6MzSs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-358--ctQ7oUyNHugLkFzzpfM_Q-1; Thu, 19 Mar 2020 23:18:33 -0400
-X-MC-Unique: -ctQ7oUyNHugLkFzzpfM_Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2F37F8017CC;
-	Fri, 20 Mar 2020 03:18:32 +0000 (UTC)
-Received: from colo-mx.corp.redhat.com (colo-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 274055C1D8;
-	Fri, 20 Mar 2020 03:18:32 +0000 (UTC)
-Received: from zmail23.collab.prod.int.phx2.redhat.com (zmail23.collab.prod.int.phx2.redhat.com [10.5.83.28])
-	by colo-mx.corp.redhat.com (Postfix) with ESMTP id EFF8C18095FF;
-	Fri, 20 Mar 2020 03:18:31 +0000 (UTC)
-Date: Thu, 19 Mar 2020 23:18:31 -0400 (EDT)
-From: Xiaoli Feng <xifeng@redhat.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID: <1404245216.17517222.1584674311320.JavaMail.zimbra@redhat.com>
-In-Reply-To: <CAPcyv4h61jpnWv5eOE5u5-THXBnmRKLqeTuyPcHXKiATKFyheQ@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 4C65810FC36EA
+	for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 20:38:09 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id e19so4735801otj.7
+        for <linux-nvdimm@lists.01.org>; Thu, 19 Mar 2020 20:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ywr2sC+6dreOtfdxEyV0euAo/a4FIIC/IQSVfI0jEMU=;
+        b=WUNIUD7L89FuNZw5Kpn07ADf/34JFqCn680ezj9rWGt0MFBDcqpxhm9mXl2vlpAFhd
+         ohjQwPcAyDgwhmJLMbrL2HIwq56EtAzOn6btKVeQKQg1gzh1hrRFrIMzmNnhm/p5BsNo
+         Yzcl2HxW436qwmAQL6/NCopvDs1rtj7Y3AceLCa+6grLmMub2intp59i+P/v4P9jIpoi
+         HevK15zR5l4MiHAEP+WLM8HB6vnVhHoZ4QYlNlnC84ghDcLQrtPR5GPDTi5b/lksSr0L
+         byhX5OTIhzZ8XnN0QSMfFKH0XKoIJId4Olme7vuWNpOqdFRYn9JRbnaWsHqH5hJxQtvd
+         OIww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ywr2sC+6dreOtfdxEyV0euAo/a4FIIC/IQSVfI0jEMU=;
+        b=dAOVTnfVmrDxEOId7foDcNr/iz7upyeiFNGWCy8obe7qjgDbeml6NEUQebdkARdEK7
+         3KNjYoTDI36J+eceZ30pFbSmAmypil7fAw0Hh/SyRHCJ2JrEYjGQtjDmNmnI1PECHAHy
+         2QAcXcQZ/WFrMXcagLhN9VgTYM5doiWYM2vULA3LDeGU/c5RORJLMM31wvxgVNzsC3mb
+         WeXSKl4bMZ63YRGGJMJaIuYzdoYW2GNjcZNe7e4KltkfrQPrQuO2CVlL8Sx87aHYLk/o
+         ZvIarfaTDLUqAfWiAMxo0mDEz5ylOUm1KUdgjvgX0plJGV1YEEPuFIFmbLzv5m190Njq
+         RYzw==
+X-Gm-Message-State: ANhLgQ0lX+iIjpxgCXHw477e40b/QgsHR/DljgXM6HjOZRAsbWhytzu+
+	h8mQ5h78BxaSYm2TTIStAxiLFWHoiJdISfa60yRC7Q==
+X-Google-Smtp-Source: ADFU+vtGlimBujD7qsptb/7unW+rhdjYMRBF5Y92YkceWNjmyurdyUea44uwtWhw1TJZEIqJJE+5oB4Jxf302rSCa4Y=
+X-Received: by 2002:a9d:6398:: with SMTP id w24mr4194196otk.363.1584675438257;
+ Thu, 19 Mar 2020 20:37:18 -0700 (PDT)
+MIME-Version: 1.0
 References: <20200320021255.1778-1-xifeng@redhat.com> <CAPcyv4h61jpnWv5eOE5u5-THXBnmRKLqeTuyPcHXKiATKFyheQ@mail.gmail.com>
+ <1404245216.17517222.1584674311320.JavaMail.zimbra@redhat.com>
+In-Reply-To: <1404245216.17517222.1584674311320.JavaMail.zimbra@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 19 Mar 2020 20:37:07 -0700
+Message-ID: <CAPcyv4hd_N0Hef8EysL2obYiZQA9ka_=iUt+NTjaQJVbzcME6Q@mail.gmail.com>
 Subject: Re: [PATCH v1] test/dax.sh: correct the pmd pagefault counts
  generated by dax-pmd
-MIME-Version: 1.0
-X-Originating-IP: [10.72.12.163, 10.4.195.6]
-Thread-Topic: test/dax.sh: correct the pmd pagefault counts generated by dax-pmd
-Thread-Index: eSnCnsRY4ONtXqe6+a71ItuA44E/cw==
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Message-ID-Hash: RKFJRGWOGJLZYHOG6Y5ZKV5J6OJG7TNB
-X-Message-ID-Hash: RKFJRGWOGJLZYHOG6Y5ZKV5J6OJG7TNB
-X-MailFrom: xifeng@redhat.com
+To: Xiaoli Feng <xifeng@redhat.com>
+Message-ID-Hash: QMXEPYF4FGED2TWEZHO2HNWRCYC3I4LE
+X-Message-ID-Hash: QMXEPYF4FGED2TWEZHO2HNWRCYC3I4LE
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RKFJRGWOGJLZYHOG6Y5ZKV5J6OJG7TNB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QMXEPYF4FGED2TWEZHO2HNWRCYC3I4LE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,77 +69,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi,
-
------ Original Message -----
-> From: "Dan Williams" <dan.j.williams@intel.com>
-> To: "XiaoLi Feng" <xifeng@redhat.com>
-> Cc: "linux-nvdimm" <linux-nvdimm@lists.01.org>
-> Sent: Friday, March 20, 2020 10:36:05 AM
-> Subject: Re: [PATCH v1] test/dax.sh: correct the pmd pagefault counts generated by dax-pmd
-> 
-> On Thu, Mar 19, 2020 at 7:13 PM XiaoLi Feng <xifeng@redhat.com> wrote:
+On Thu, Mar 19, 2020 at 8:19 PM Xiaoli Feng <xifeng@redhat.com> wrote:
+>
+> Hi,
+>
+> ----- Original Message -----
+> > From: "Dan Williams" <dan.j.williams@intel.com>
+> > To: "XiaoLi Feng" <xifeng@redhat.com>
+> > Cc: "linux-nvdimm" <linux-nvdimm@lists.01.org>
+> > Sent: Friday, March 20, 2020 10:36:05 AM
+> > Subject: Re: [PATCH v1] test/dax.sh: correct the pmd pagefault counts generated by dax-pmd
 > >
-> > From: Xiaoli Feng <xifeng@redhat.com>
+> > On Thu, Mar 19, 2020 at 7:13 PM XiaoLi Feng <xifeng@redhat.com> wrote:
+> > >
+> > > From: Xiaoli Feng <xifeng@redhat.com>
+> > >
+> > > For directIO, cannot generate pmd pagefault by pread|pwrite|read|write
+> > > if do not map fd to memory. In dax-pmd.c, case 1 and case 4 each only
+> > > generate once pmd pagefault. So change the all counts from 10 to 8.
 > >
-> > For directIO, cannot generate pmd pagefault by pread|pwrite|read|write
-> > if do not map fd to memory. In dax-pmd.c, case 1 and case 4 each only
-> > generate once pmd pagefault. So change the all counts from 10 to 8.
-> 
-> What kernel are you seeing this failure on? It's passing for me on v5.6-rc.
+> > What kernel are you seeing this failure on? It's passing for me on v5.6-rc.
+>
+> I test on v4.18. I will test on v5.6.
+>
 
-I test on v4.18. I will test on v5.6.
+The tests are not backwards compatible with older kernels. If the
+current tests fail on an older kernel it means that older kernel is
+missing a backport of features / fixes from upstream. In this case the
+test was written as a regression test for kernel commit 6370740e5f8e
+("fs/dax: Fix pmd vs pte conflict detection"). v4.18 precedes the
+Xarray conversion of the filesystem-dax interface which incurred other
+pmd behavior fixes so I'm not sure it will ever map correctly to that
+baseline.
 
-# make check-TESTS
-PASS: libndctl
-PASS: dsm-fail
-PASS: dpa-alloc
-PASS: parent-uuid
-PASS: multi-pmem
-PASS: create.sh
-PASS: clear.sh
-PASS: pmem-errors.sh
-PASS: daxdev-errors.sh
-PASS: multi-dax.sh
-PASS: btt-check.sh
-PASS: label-compat.sh
-PASS: blk-exhaust.sh
-PASS: sector-mode.sh
-PASS: inject-error.sh
-PASS: btt-errors.sh
-PASS: hugetlb
-PASS: btt-pad-compat.sh
-PASS: firmware-update.sh
-PASS: ack-shutdown-count-set
-PASS: rescan-partitions.sh
-SKIP: inject-smart.sh
-PASS: monitor.sh
-SKIP: max_available_extent_ns.sh
-SKIP: pfn-meta-errors.sh
-PASS: blk-ns
-PASS: pmem-ns
-PASS: dax-dev
-FAIL: dax-ext4.sh
-FAIL: dax-xfs.sh
-PASS: device-dax
-SKIP: device-dax-fio.sh
-PASS: mmap.sh
-SKIP: daxctl-devices.sh
-SKIP: security.sh
-
-...cut...
-
-# grep -r "cleanup 66" -B 5 dax-ext4.sh.log
-+ '[' NOPAGE '!=' 0x100 ']'
-+ '[' NOPAGE '!=' NOPAGE ']'
-+ count=8
-+ read -r p
-+ '[' 8 -lt 10 ']'
-+ cleanup 66
-
-
-> 
-> 
+At a minimum I would say you would need to carry this change in the
+distro package for ndctl that corresponds with that v4.18 kernel.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
