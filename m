@@ -2,54 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A1218F227
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Mar 2020 10:51:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBAB18F45A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Mar 2020 13:19:20 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 56D7C10FC3604;
-	Mon, 23 Mar 2020 02:52:15 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=59.152.240.207; helo=gateway1.lkk.com; envelope-from=prvs=344b5a59e=admin@supply.org; receiver=<UNKNOWN> 
-Received: from gateway1.lkk.com (gateway1.lkk.com [59.152.240.207])
+	by ml01.01.org (Postfix) with ESMTP id 0135810FC3623;
+	Mon, 23 Mar 2020 05:20:09 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=45.233.80.126; helo=srv01.fiber.rs; envelope-from=alice@prodatanet.com.br; receiver=<UNKNOWN> 
+Received: from srv01.fiber.rs (unknown [45.233.80.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 96E6C1003E9A2;
-	Mon, 23 Mar 2020 02:52:12 -0700 (PDT)
-X-IronPort-AV: E=Sophos;i="5.72,295,1580745600";
-   d="scan'208";a="6362463"
-Received: from hkhqex01.saucegroup.ad.lkk.com ([10.228.1.70])
-  by gateway1.lkk.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Mar 2020 17:51:18 +0800
-Received: from HKHQEXMRS01.saucegroup.ad.lkk.com (10.228.1.51) by
- HKHQEX01.saucegroup.ad.lkk.com (10.228.1.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 23 Mar 2020 17:51:18 +0800
-Received: from HKHQEXMRS02.saucegroup.ad.lkk.com (10.228.1.52) by
- HKHQEXMRS01.saucegroup.ad.lkk.com (10.228.1.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 23 Mar 2020 17:51:18 +0800
-Received: from User (192.168.180.52) by HKHQEXMRS02.saucegroup.ad.lkk.com
- (10.228.1.52) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Mon, 23 Mar 2020 17:51:17 +0800
-From: Abdul Kareem <admin@supply.org>
-Subject: BUSINESS PROPOSAL !!!
-Date: Mon, 23 Mar 2020 02:51:18 -0700
+	by ml01.01.org (Postfix) with ESMTPS id AA40610FC3621
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Mar 2020 05:20:06 -0700 (PDT)
+Received: from [172.245.81.109] (helo=User)
+	by srv01.fiber.rs with esmtpa (Exim 4.92.2)
+	(envelope-from <alice@prodatanet.com.br>)
+	id 1jGM2Z-0005TE-T0; Mon, 23 Mar 2020 09:18:48 -0300
+From: "BMW  PROMOTIONS.."<alice@prodatanet.com.br>
+Subject: BMW  PROMOTIONS..
+Date: Mon, 23 Mar 2020 05:18:47 -0700
 MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2600.0000
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <563ccf93-3405-42b2-9668-b020fbbdf6bc@HKHQEXMRS02.saucegroup.ad.lkk.com>
-To: Undisclosed recipients:;
-X-CrossPremisesHeadersFilteredBySendConnector: HKHQEX01.saucegroup.ad.lkk.com
-X-OrganizationHeadersPreserved: HKHQEX01.saucegroup.ad.lkk.com
-Message-ID-Hash: LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z
-X-Message-ID-Hash: LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z
-X-MailFrom: prvs=344b5a59e=admin@supply.org
+Message-Id: <E1jGM2Z-0005TE-T0@srv01.fiber.rs>
+Message-ID-Hash: FEGLVKARUMRHHXCCNBVLDQ34JQGJ2X6J
+X-Message-ID-Hash: FEGLVKARUMRHHXCCNBVLDQ34JQGJ2X6J
+X-MailFrom: alice@prodatanet.com.br
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: abulkareem461@gmail.com
+Reply-To: bischejohnson5@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FEGLVKARUMRHHXCCNBVLDQ34JQGJ2X6J/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,15 +44,65 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dearest Friend
-
-I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
-I have a very profitable Business that relate to you and will benefit both of us after completion.
-Kindly get back to me for more details.
-Awaiting your response.
-Regards
-Abdul Kareem
-DISCLAIMER: This email and any files transmitted with it are intended for the named recipient(s) only. It may contain confidential, proprietary or legally privileged information. If you are not the intended recipient(s), please immediately delete it and you should not read, print, re-transmit or act in reliance on any of the contents of this e-mail.This email has been swept by a virus software product for the presence of computer viruses. Lee Kum Kee and its affiliates will not be liable as a result of any computer virus being passed on. -Love the Earth. Think before printing this e-mail.-
+BMW LOTTERY DEPARTMENT
+5070 WILSHIRE BLVD
+LOS ANGELES. CA 90036
+UNITED STATES OF AMERICA.
+ 
+ 
+ 
+ 
+NOTE: If you received this message in your SPAM/BULK folder, that is because of therestrictions implemented by your Internet Service Provider, we (BMW) urge you to treat it genuinely.
+ 
+ 
+ 
+Dear Winner,
+ 
+ 
+This is to inform you that you have been selected for a prize of a brand new 2017 Model BMW 7 Series Car and a Check of $1,500,000.00 USD from the international balloting programs held on the 2nd section in the UNITED STATE OF AMERICA. Description of prize vehicle; Model: 530i Color (exterior): Metallic Silver Mileage: 5 Transmission: Automatic 6 Speed Options: Cold weather package, premium package, fold down rear seats w/ski bag, am stereo with single in dash compact disc player.
+ 
+ 
+ 
+The selection process was carried out through random selection in our computerized email selection system (ESS) from a database of over 250,000 email addresses drawn from all the continents of the world which you wereselected.
+ 
+ 
+ 
+The BMW Lottery is approved by the British Gaming Board and also Licensed by the International Association of Gaming Regulators (IAGR). To begin the processing of your prize you are to contact our fiduciary claims department fomore information as regards procedures to the claim of your prize.
+ 
+ 
+ 
+ 
+Name: Mr. Johnson Bische
+Email:bischejohnson5@gmail.com
+.
+Contact him by providing him with your secret pin code Number
+BMW:255125HGDY03/23.
+ 
+ 
+You are also advised to provide him with the under listed information as soon as possible:
+1. Name In Full :
+2. Residential Address :
+3. Nationality :
+4. Age :
+5. Sex
+6. Occupation :
+7. Direct Phone :
+8. Present Country :
+9. Email address :
+10. pin code Number BMW:255125HGDY03/23
+ 
+ 
+Please you are to provide him with the above listed details as soon as possible so he can begin with the processing of your prize winning
+ 
+ 
+ 
+Congratulations again from all our staff and thank you for being part of our promotional program.
+ 
+ 
+Mr. Kevin Davidson.
+THE DIRECTOR PROMOTIONS
+BMW LOTTERY DEPARTMENT
+UNITED STATES OF AMERICA
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
