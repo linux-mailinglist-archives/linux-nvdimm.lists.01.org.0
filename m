@@ -1,43 +1,47 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B67B18EF1B
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Mar 2020 06:21:39 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A1218F227
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 23 Mar 2020 10:51:26 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 518EB10FC378D;
-	Sun, 22 Mar 2020 22:22:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 56D7C10FC3604;
+	Mon, 23 Mar 2020 02:52:15 -0700 (PDT)
 Received-SPF: None (mailfrom) identity=mailfrom; client-ip=59.152.240.207; helo=gateway1.lkk.com; envelope-from=prvs=344b5a59e=admin@supply.org; receiver=<UNKNOWN> 
 Received: from gateway1.lkk.com (gateway1.lkk.com [59.152.240.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AE67510FC358D;
-	Sun, 22 Mar 2020 22:22:25 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 96E6C1003E9A2;
+	Mon, 23 Mar 2020 02:52:12 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="5.72,295,1580745600";
-   d="scan'208";a="6300113"
-Received: from hkhqex02.saucegroup.ad.lkk.com ([10.228.1.71])
-  by gateway1.lkk.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Mar 2020 13:21:33 +0800
+   d="scan'208";a="6362463"
+Received: from hkhqex01.saucegroup.ad.lkk.com ([10.228.1.70])
+  by gateway1.lkk.com with ESMTP/TLS/AES256-GCM-SHA384; 23 Mar 2020 17:51:18 +0800
 Received: from HKHQEXMRS01.saucegroup.ad.lkk.com (10.228.1.51) by
- HKHQEX02.saucegroup.ad.lkk.com (10.228.1.71) with Microsoft SMTP Server
+ HKHQEX01.saucegroup.ad.lkk.com (10.228.1.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Mon, 23 Mar 2020 13:21:33 +0800
-Received: from User (192.168.180.52) by HKHQEXMRS01.saucegroup.ad.lkk.com
- (10.228.1.51) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Mon, 23 Mar 2020 13:21:32 +0800
+ 15.1.1713.5; Mon, 23 Mar 2020 17:51:18 +0800
+Received: from HKHQEXMRS02.saucegroup.ad.lkk.com (10.228.1.52) by
+ HKHQEXMRS01.saucegroup.ad.lkk.com (10.228.1.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 23 Mar 2020 17:51:18 +0800
+Received: from User (192.168.180.52) by HKHQEXMRS02.saucegroup.ad.lkk.com
+ (10.228.1.52) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
+ Transport; Mon, 23 Mar 2020 17:51:17 +0800
 From: Abdul Kareem <admin@supply.org>
 Subject: BUSINESS PROPOSAL !!!
-Date: Sun, 22 Mar 2020 22:21:32 -0700
+Date: Mon, 23 Mar 2020 02:51:18 -0700
 MIME-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2600.0000
 X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <e20f98c6-3946-4b0d-beac-3f8be964ff82@HKHQEXMRS01.saucegroup.ad.lkk.com>
+Message-ID: <563ccf93-3405-42b2-9668-b020fbbdf6bc@HKHQEXMRS02.saucegroup.ad.lkk.com>
 To: Undisclosed recipients:;
-X-CrossPremisesHeadersFilteredBySendConnector: HKHQEX02.saucegroup.ad.lkk.com
-X-OrganizationHeadersPreserved: HKHQEX02.saucegroup.ad.lkk.com
-Message-ID-Hash: LGJENNV6MRO5XZC7V23VPSJHSNYT2LYL
-X-Message-ID-Hash: LGJENNV6MRO5XZC7V23VPSJHSNYT2LYL
+X-CrossPremisesHeadersFilteredBySendConnector: HKHQEX01.saucegroup.ad.lkk.com
+X-OrganizationHeadersPreserved: HKHQEX01.saucegroup.ad.lkk.com
+Message-ID-Hash: LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z
+X-Message-ID-Hash: LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z
 X-MailFrom: prvs=344b5a59e=admin@supply.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -45,7 +49,7 @@ X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: abulkareem461@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LGJENNV6MRO5XZC7V23VPSJHSNYT2LYL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LYSPHFHHBI5K7EJ45Q2KUPC5VBCGMZ7Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
