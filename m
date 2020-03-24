@@ -1,149 +1,73 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2D151904D9
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Mar 2020 06:21:05 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC2E19053E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 24 Mar 2020 06:35:44 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 33DF310FC388D;
-	Mon, 23 Mar 2020 22:21:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D53D210FC388D
-	for <linux-nvdimm@lists.01.org>; Mon, 23 Mar 2020 22:21:51 -0700 (PDT)
-IronPort-SDR: /Z750v19e/pZVt1MhZ5TRwhoWa54Q8CfQd4ZFCIDlSXLeAEszsJt+U0zw8W72d4Q+3LRCAdxxX
- F6ySYo96/Tnw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2020 22:21:01 -0700
-IronPort-SDR: BvDaOJNTdFUGir7DwItvqXte20C6SoQtTJyL562nRCpW6o6vnUeKoMAyN8iCtaDRNovkaOn3e3
- zkiRfugZdOCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,299,1580803200";
-   d="scan'208";a="246420051"
-Received: from fmsmsx106.amr.corp.intel.com ([10.18.124.204])
-  by orsmga003.jf.intel.com with ESMTP; 23 Mar 2020 22:21:00 -0700
-Received: from fmsmsx111.amr.corp.intel.com (10.18.116.5) by
- FMSMSX106.amr.corp.intel.com (10.18.124.204) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Mon, 23 Mar 2020 22:21:00 -0700
-Received: from fmsmsx125.amr.corp.intel.com ([169.254.2.68]) by
- fmsmsx111.amr.corp.intel.com ([169.254.12.42]) with mapi id 14.03.0439.000;
- Mon, 23 Mar 2020 22:21:00 -0700
-From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-CC: "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: [ANNOUNCE] ndctl v68
-Thread-Topic: [ANNOUNCE] ndctl v68
-Thread-Index: AQHWAZwBACJaOpizC0i858vE3CtFCw==
-Date: Tue, 24 Mar 2020 05:21:00 +0000
-Message-ID: <9c68af5d0bbdaaf29165f970e2b5095d6c89c6ff.camel@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.32.5 (3.32.5-1.fc30) 
-x-originating-ip: [10.255.6.108]
-Content-ID: <BEE034BEC677B349947396C620B10440@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id 5CF8D10FC389A;
+	Mon, 23 Mar 2020 22:36:33 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=113.77.17.115; helo=bkbc.com; envelope-from=nfemhx@bkbc.com; receiver=<UNKNOWN> 
+Received: from bkbc.com (unknown [113.77.17.115])
+	by ml01.01.org (Postfix) with ESMTP id 22AFA10FC388D
+	for <linux-nvdimm@lists.01.org>; Mon, 23 Mar 2020 22:36:29 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Tue, 24 Mar 2020 13:34:52 +0800
+Message-ID: 4f16f00d-7ab6-40b2-b8a4-8aa8c74d16ce
 MIME-Version: 1.0
-Message-ID-Hash: TZB7IXUL2ELKT7DJ7X4KKFZOUHKEYH4H
-X-Message-ID-Hash: TZB7IXUL2ELKT7DJ7X4KKFZOUHKEYH4H
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Sender: =?utf-8?Q?=E5=A4=A7=E9=99=86=E2=80=94=E2=80=94=E9=A6=99=E6=B8=AF?=
+ =?utf-8?Q?_=E8=BF=9B=E5=87=BA=E5=8F=A3=E4=B8=93=E7=BA=BF=E7=89=A9=E6?=
+ =?utf-8?Q?=B5=81?= <nfemhx@bkbc.com>
+From: =?utf-8?Q?=E5=A4=A7=E9=99=86=E2=80=94=E2=80=94=E9=A6=99=E6=B8=AF?=
+ =?utf-8?Q?_=E8=BF=9B=E5=87=BA=E5=8F=A3=E4=B8=93=E7=BA=BF=E7=89=A9=E6?=
+ =?utf-8?Q?=B5=81?= <lxwtzs@bkbc.com>
+To: linux-nvdimm@lists.01.org
+Date: 24 Mar 2020 13:34:52 +0800
+Subject: =?utf-8?B?5aSn6ZmG4oCU4oCU6aaZ5rivIOi/m+WHuuWPo+S4k+e6v+eJ?=
+ =?utf-8?B?qea1gQ==?=
+Message-ID-Hash: 57GOFAIFKW4S2LJOHEK3WPS2ONWALTZV
+X-Message-ID-Hash: 57GOFAIFKW4S2LJOHEK3WPS2ONWALTZV
+X-MailFrom: nfemhx@bkbc.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TZB7IXUL2ELKT7DJ7X4KKFZOUHKEYH4H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/57GOFAIFKW4S2LJOHEK3WPS2ONWALTZV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-This release incorporates functionality up to the 5.6 kernel.
-
-Highlights for this release include new commands to read-infoblock and
-write-infoblock, improvements and tests related to alignment
-constraints, misc build/compilation related fixes, and misc usability
-and documentation fixes.
-
-The shortlog for this release is appended below:
-
-Auke Kok (3):
-      ndctl/build: Do not use `check-news` when `NEWS` file is absent entirely.
-      ndctl/build: Ensure header and other misc files are listed.
-      ndctl/build: Add `header` as a prereq to Make rule where it is consumed.
-
-Dan Williams (39):
-      ndctl/namespace: Clarify that 'reconfigure' == 'destroy+create'
-      ndctl/namespace: Fixup man page indentation
-      ndctl/list: Add 'target_node' to region and namespace verbose listings
-      ndctl/docs: Fix mailing list sign-up link
-      ndctl/list: Drop named list objects from verbose listing
-      daxctl/list: Avoid memory operations without resource data
-      ndctl/build: Fix distcheck
-      ndctl/namespace: Fix destroy-namespace accounting relative to seed devices
-      ndctl/region: Support ndctl_region_{get, set}_align()
-      ndctl/namespace: Emit better errors on failure
-      ndctl/namespace: Check for region alignment violations
-      ndctl/util: Up-level is_power_of_2() and introduce IS_ALIGNED
-      ndctl/namespace: Validate resource alignment for dax-mode namespaces
-      ndctl/namespace: Add read-infoblock command
-      ndctl/test: Update dax-dev to handle multiple e820 ranges
-      ndctl/namespace: Always zero info-blocks
-      ndctl/namespace: Disable autorecovery of create-namespace failures
-      ndctl/build: Fix EXTRA_DIST already defined errors
-      ndctl/test: Checkout device-mapper + dax operation
-      ndctl/test: Exercise sub-section sized namespace creation/deletion
-      ndctl/namespace: Kill off the legacy mode names
-      ndctl/namespace: Introduce mode-to-name and name-to-mode helpers
-      ndctl/namespace: Validate namespace size within validate_namespace_options()
-      ndctl/namespace: Clarify 16M minimum size requirement
-      ndctl/test: Regression test 'failed to track'
-      ndctl/dimm: Rework dimm command status reporting
-      ndctl/dimm: Rework iteration to drop unaligned pointers
-      ndctl/test: Fix typos / loss of tpm.handle in security test
-      ndctl/test: Cleanup test-vs-production nvdimm module detection
-      ndctl/test: Relax dax_pmem_compat requirement
-      ndctl/namespace: Fix namespace-action vs namespace-mode confusion
-      ndctl/namespace: Update 'pfn' infoblock definition
-      ndctl/util: Return 0 for NULL arguments to parse_size64()
-      ndctl/namespace: Fix read-info-block vs read-infoblock
-      ndctl/namespace: Parse infoblocks from stdin
-      ndctl/namespace: Add write-infoblock command
-      ndctl/list: Add option to list configured + disabled namespaces
-      ndctl/lib/namespace: Fix resource retrieval after size change
-      ndctl/test: Regression test misaligned namespaces
-
-Ira Weiny (1):
-      ndctl: Clean up loop logic in query_fw_finish_status
-
-Santosh Sivaraj (2):
-      ndctl/namespace: Fix enable-namespace error for seed namespaces
-      ndctl/zero-labels: Display error if regions are active
-
-Vaibhav Jain (1):
-      namespace/create: Don't create multiple namespaces unless greedy
-
-Vishal Verma (7):
-      ndctl/namespace: remove open coded is_namespace_active()
-      ndctl/namespace: introduce ndctl_namespace_is_configuration_idle()
-      ndctl/README: Update kernel documentation URL
-      ndctl/lib: fix symbol redefinitions reported by GCC10
-      ndctl: add util/filter.{c,h} to ndctl_SOURCES in Makefile.am
-      ndctl/namespace: Fix a resource leak in file_write_infoblock
-      ndctl: release v68
-
-Yi Zhang (1):
-      ndctl/test: add bus-id parameter for start-scrub/wait-scrub operation
-
-redhairer (2):
-      ndctl/test: add UUID_LIBS for blk_namespaces/pmem_namespaces/device_dax
-      daxctl: Change region input type from INTEGER to STRING.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQoNCiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwO+aCqOWlve+8gQ0KJm5ic3A7ICZuYnNw
+OyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwO+WcqOS4i+aYr+aWsOS4gOi/kOWbvemZheeJqea1geaciemZkOWFrOWPuOeahGNoYXJs
+aWUs5oiR5Y+45piv5LiT5Lia5LuO5LqL5aSn6ZmG6Iez6aaZ5riv55qE5LiT57q/54mp5rWB77yM
+6Ieq5bex5YWs5Y+45Zyo5rex5Zyz5Y+K5Lic6I6e5Y+R6L2m5Yiw6aaZ5riv77yM5LiT6Zeo5om/
+5o6l77yaDQombmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAxLuaVo+i0
+p+S5sOWNleWHuuWPo++8jA0KJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsgMi7mlaPotKfkuIDoiKzotLjmmJPlh7rlj6PvvIwNCiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZu
+YnNwOyAmbmJzcDsgJm5ic3A7IDMu5ZCo6L2m5Y+K5pW05p+c6L+Q6L6T44CCDQombmJzcDsgJm5i
+c3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsg5oiR5Y+46aaZ5riv5YWs5Y+45Li65oC75YWs5Y+477yM5Zyo6aaZ5riv5Luj55CG5Zu96ZmF
+5rW36L+Q56m66L+Q77yM5Lul5Y+K6aaZ5riv5YaF5Zyw5rS+6YCB5Y+K5LuT5YKo5pyN5Yqh77yM
+5aSn6ZmG5LuO5LqL6aaZ5riv6L+Q6L6T5bey5pyJMTXlubTkuYvkuYXvvIzov5DovpPovabpmJ8N
+CiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A75oiQ54af5LiT5Lia5pe2
+5pWI5b+r77yM5Zyo6L+Q6L6T5pa56Z2i6IO95Li66LS15Y+46IqC57qm6L+Q6L6T5oiQ5pys77yM
+5o+Q6auY6L+Q6L6T5pWI546H44CCDQoNCiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwO+OAgOOAgOS4rea4r+i/kOi0ue+8mjAuN+WFgy9LRyZuYnNwOyAxNDDlhYMvQ0JNJm5ic3A7
+ICZuYnNwOyDmiqXlhbMmbmJzcDsg5riF5YWzJm5ic3A7IOS4gOadoem+meacjeWKoe+8gQ0KDQom
+bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsmbmJzcDvjgIAmbmJzcDvmlrDkuIDov5Dlm73pmYXn
+ianmtYHmnInpmZDlhazlj7gmbmJzcDsgJm5ic3A7DQombmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
+cDsgJm5ic3A75omL5py677yaMTM5MjY4MDU0ODAmbmJzcDsmbmJzcDsNCiZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyAmbmJzcDvogZTns7vkurrvvJpDaGFybGllJm5ic3A7DQombmJzcDsgJm5i
+c3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7UVEg77yaMjU4NDQ3MTE1MCDvvIjlvq7kv6HlkIzlj7fv
+vIkmbmJzcDsgJm5ic3A7DQombmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A755S16YKu
+77yaenkxMzkyNjgwNTQ4MEBvdXRsb29rLmNvbSZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGlt
+bUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRp
+bW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
