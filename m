@@ -2,58 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90571951CB
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 27 Mar 2020 08:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E474E195878
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 27 Mar 2020 15:01:33 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E460B10FC3BB5;
-	Fri, 27 Mar 2020 00:13:19 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.55.73.32; helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org; receiver=<UNKNOWN> 
-Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com [66.55.73.32])
-	by ml01.01.org (Postfix) with ESMTP id 8667510FC3614
-	for <linux-nvdimm@lists.01.org>; Fri, 27 Mar 2020 00:13:12 -0700 (PDT)
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-	by ushosting.nmnhosting.com (Postfix) with ESMTPS id B91E72DC6832;
-	Fri, 27 Mar 2020 18:12:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-	s=201810a; t=1585293142;
-	bh=cqaf1e/QB+IAchm8eT268pDK8d/xM41B6FFZ8OqT9TI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QF7zCKhOO9JvoXlvxy4VnsDJX+RwAyK4FeUeePRbrO8WnTpKijCUVL+iCF4MaMQrG
-	 ODUD+yy/GvqqYRFbFAhuAmr95mcjJ3FrGBL9IcJd82LSzVZ6n505dXIjRK5nQ19haz
-	 XIhzLF1o3GbzKvzl62NLKo1bgpWPTET1DgVMEk0NxV+85UIOszyAYm/eJ50+9LjziC
-	 HHEFwR7hJlwcRcSjs80Q7YUKX+EZslhdHnIDDsluGeo620FtT09A0WHYXlWT/GQ7Rh
-	 lslYpbukXPF+GkOfYhgHSNQB9T9TdVuv2OJf1C5MlMagEloNAEW4ZHT6JQivBWi+m+
-	 Y9ZuIyQHe7Z240X832lKU/bC2AGYKCBupxW52G0BdEtNwVSGXzTeN+fntXETw1ZCZn
-	 3Xs2pTUDHwyD7WdoNyUorO3WE4BkVVTgr2kOeQW3kxbhnLMSi5DvBP4VJUfWfEsCy0
-	 tLQZiWPZey9bX9WqPZQXFch/xoGYoG/79znqmFlQdFC8GyITraJlBO/GehHDStGyD3
-	 DAqwT0+8NGQvuPhjx9yfDN31nTaBzytXIuvHtEniZvZ6CpAlv+tLVc4uh2A7+ev0kv
-	 zluDpBRC7bvTnT8TKZbFkT/oEMeKPYxN1VMFytlWUlBlYMmxbyG6ii3I2N166ErNDF
-	 H99oxckYP+MvCqnW37EbNJj8=
-Received: from localhost.lan ([10.0.1.179])
-	by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4An045934;
-	Fri, 27 Mar 2020 18:12:17 +1100 (AEDT)
-	(envelope-from alastair@d-silva.org)
-From: "Alastair D'Silva" <alastair@d-silva.org>
-To: alastair@d-silva.org
-Subject: [PATCH v4 14/25] nvdimm/ocxl: Add support for Admin commands
-Date: Fri, 27 Mar 2020 18:11:51 +1100
-Message-Id: <20200327071202.2159885-15-alastair@d-silva.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
-References: <20200327071202.2159885-1-alastair@d-silva.org>
+	by ml01.01.org (Postfix) with ESMTP id 0F31D10FC3BA9;
+	Fri, 27 Mar 2020 07:02:22 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.74; helo=us-smtp-delivery-74.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [63.128.21.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 61B0C10FC3624
+	for <linux-nvdimm@lists.01.org>; Fri, 27 Mar 2020 07:02:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1585317687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmGn2iu/6hb//kS/DiygB1sR/c0YTQN3IceTCMDHJQI=;
+	b=P7hqw9fYxamwMPG7PmB/s2DWPm0P50WwyyUZY0L7xjgKwHGn5ukU1Fv+l6/5wVtf1vuUHW
+	W8AnMjkKwScpxTWOkZQ6b+fqMU+xSnQi/Sy+n4gzkxvL8pczu+Xy+1y8T3sOH/yt4lnakA
+	sn7OvQJq3UI6YeQludZAq2f5bzgAmRg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-30-IhFdegswPqOnvQl_xs_QBQ-1; Fri, 27 Mar 2020 10:01:25 -0400
+X-MC-Unique: IhFdegswPqOnvQl_xs_QBQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 331DC8018AB;
+	Fri, 27 Mar 2020 14:01:24 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-117-99.rdu2.redhat.com [10.10.117.99])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 05F425DA81;
+	Fri, 27 Mar 2020 14:01:14 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id 3255B222D9D; Fri, 27 Mar 2020 10:01:14 -0400 (EDT)
+Date: Fri, 27 Mar 2020 10:01:14 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Liu Bo <bo.liu@linux.alibaba.com>
+Subject: Re: [PATCH 20/20] fuse,virtiofs: Add logic to free up a memory range
+Message-ID: <20200327140114.GB32717@redhat.com>
+References: <20200304165845.3081-1-vgoyal@redhat.com>
+ <20200304165845.3081-21-vgoyal@redhat.com>
+ <20200326000904.GA34937@rsjd01523.et2sqa>
 MIME-Version: 1.0
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:17 +1100 (AEDT)
-Message-ID-Hash: OCOIZBDOINK5GUAYBQRETTOY5EZP5YH4
-X-Message-ID-Hash: OCOIZBDOINK5GUAYBQRETTOY5EZP5YH4
-X-MailFrom: alastair@d-silva.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.r
- u>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+Content-Disposition: inline
+In-Reply-To: <20200326000904.GA34937@rsjd01523.et2sqa>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: SMPDWSVAN2M5UOQ5ZJA3ZFCHZ3URCQQX
+X-Message-ID-Hash: SMPDWSVAN2M5UOQ5ZJA3ZFCHZ3URCQQX
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, mst@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OCOIZBDOINK5GUAYBQRETTOY5EZP5YH4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMPDWSVAN2M5UOQ5ZJA3ZFCHZ3URCQQX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,481 +65,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Admin commands for these devices are the primary means of interacting
-with the device controller to provide functionality beyond the load/store
-capabilities offered via the NPU.
+On Thu, Mar 26, 2020 at 08:09:05AM +0800, Liu Bo wrote:
 
-For example, SMART data, firmware update, and device error logs are
-implemented via admin commands.
+[..]
+> > +/*
+> > + * Find first mapping in the tree and free it and return it. Do not add
+> > + * it back to free pool. If fault == true, this function should be called
+> > + * with fi->i_mmap_sem held.
+> > + */
+> > +static struct fuse_dax_mapping *inode_reclaim_one_dmap(struct fuse_conn *fc,
+> > +							 struct inode *inode,
+> > +							 bool fault)
+> > +{
+> > +	struct fuse_inode *fi = get_fuse_inode(inode);
+> > +	struct fuse_dax_mapping *dmap;
+> > +	int ret;
+> > +
+> > +	if (!fault)
+> > +		down_write(&fi->i_mmap_sem);
+> > +
+> > +	/*
+> > +	 * Make sure there are no references to inode pages using
+> > +	 * get_user_pages()
+> > +	 */
+> > +	ret = fuse_break_dax_layouts(inode, 0, 0);
+> 
+> Hi Vivek,
+> 
+> This patch is enabling inline reclaim for fault path, but fault path
+> has already holds a locked exceptional entry which I believe the above
+> fuse_break_dax_layouts() needs to wait for, can you please elaborate
+> on how this can be avoided?
+> 
 
-This patch requests the metadata required to issue admin commands, as well
-as some helper functions to construct and check the completion of the
-commands.
+Hi Liubo,
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- drivers/nvdimm/ocxl/main.c              |  65 ++++++
- drivers/nvdimm/ocxl/ocxlpmem.h          |  50 ++++-
- drivers/nvdimm/ocxl/ocxlpmem_internal.c | 261 ++++++++++++++++++++++++
- 3 files changed, 375 insertions(+), 1 deletion(-)
+Can you please point to the exact lock you are referring to. I will
+check it out. Once we got rid of needing to take inode lock in
+reclaim path, that opended the door to do inline reclaim in fault
+path as well. But I was not aware of this exceptional entry lock.
 
-diff --git a/drivers/nvdimm/ocxl/main.c b/drivers/nvdimm/ocxl/main.c
-index be76acd33d74..8db573036423 100644
---- a/drivers/nvdimm/ocxl/main.c
-+++ b/drivers/nvdimm/ocxl/main.c
-@@ -217,6 +217,58 @@ static int register_lpc_mem(struct ocxlpmem *ocxlpmem)
- 	return 0;
- }
- 
-+/**
-+ * extract_command_metadata() - Extract command data from MMIO & save it for further use
-+ * @ocxlpmem: the device metadata
-+ * @offset: The base address of the command data structures (address of CREQO)
-+ * @command_metadata: A pointer to the command metadata to populate
-+ * Return: 0 on success, negative on failure
-+ */
-+static int extract_command_metadata(struct ocxlpmem *ocxlpmem, u32 offset,
-+				    struct command_metadata *command_metadata)
-+{
-+	int rc;
-+	u64 tmp;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, offset,
-+				     OCXL_LITTLE_ENDIAN, &tmp);
-+	if (rc)
-+		return rc;
-+
-+	command_metadata->request_offset = tmp >> 32;
-+	command_metadata->response_offset = tmp & 0xFFFFFFFF;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, offset + 8,
-+				     OCXL_LITTLE_ENDIAN, &tmp);
-+	if (rc)
-+		return rc;
-+
-+	command_metadata->data_offset = tmp >> 32;
-+	command_metadata->data_size = tmp & 0xFFFFFFFF;
-+
-+	command_metadata->id = 0;
-+
-+	return 0;
-+}
-+
-+/**
-+ * setup_command_metadata() - Set up the command metadata
-+ * @ocxlpmem: the device metadata
-+ */
-+static int setup_command_metadata(struct ocxlpmem *ocxlpmem)
-+{
-+	int rc;
-+
-+	mutex_init(&ocxlpmem->admin_command.lock);
-+
-+	rc = extract_command_metadata(ocxlpmem, GLOBAL_MMIO_ACMA_CREQO,
-+				      &ocxlpmem->admin_command);
-+	if (rc)
-+		return rc;
-+
-+	return 0;
-+}
-+
- /**
-  * allocate_minor() - Allocate a minor number to use for an OpenCAPI pmem device
-  * @ocxlpmem: the device metadata
-@@ -421,6 +473,14 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	ocxlpmem->pdev = pci_dev_get(pdev);
- 
-+	ocxlpmem->timeouts[ADMIN_COMMAND_ERRLOG] = 2000; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_HEARTBEAT] = 100; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_SMART] = 100; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_CONTROLLER_DUMP] = 1000; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_CONTROLLER_STATS] = 100; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_SHUTDOWN] = 1000; // ms
-+	ocxlpmem->timeouts[ADMIN_COMMAND_FW_UPDATE] = 16000; // ms
-+
- 	pci_set_drvdata(pdev, ocxlpmem);
- 
- 	ocxlpmem->ocxl_fn = ocxl_function_open(pdev);
-@@ -467,6 +527,11 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err;
- 	}
- 
-+	if (setup_command_metadata(ocxlpmem)) {
-+		dev_err(&pdev->dev, "Could not read command metadata\n");
-+		goto err;
-+	}
-+
- 	elapsed = 0;
- 	timeout = ocxlpmem->readiness_timeout +
- 		  ocxlpmem->memory_available_timeout;
-diff --git a/drivers/nvdimm/ocxl/ocxlpmem.h b/drivers/nvdimm/ocxl/ocxlpmem.h
-index 3eadbe19f6d0..b72b3f909fc3 100644
---- a/drivers/nvdimm/ocxl/ocxlpmem.h
-+++ b/drivers/nvdimm/ocxl/ocxlpmem.h
-@@ -7,6 +7,7 @@
- #include <linux/mm.h>
- 
- #define LABEL_AREA_SIZE	BIT_ULL(PA_SECTION_SHIFT)
-+#define DEFAULT_TIMEOUT 100
- 
- #define GLOBAL_MMIO_CHI		0x000
- #define GLOBAL_MMIO_CHIC	0x008
-@@ -57,6 +58,7 @@
- #define GLOBAL_MMIO_HCI_CONTROLLER_DUMP_COLLECTED	BIT_ULL(5) // CDC
- #define GLOBAL_MMIO_HCI_REQ_HEALTH_PERF			BIT_ULL(6) // CHPD
- 
-+// must be maintained with admin_command_names in ocxlpmem_internal.c
- #define ADMIN_COMMAND_HEARTBEAT		0x00u
- #define ADMIN_COMMAND_SHUTDOWN		0x01u
- #define ADMIN_COMMAND_FW_UPDATE		0x02u
-@@ -68,6 +70,13 @@
- #define ADMIN_COMMAND_CMD_CAPS		0x08u
- #define ADMIN_COMMAND_MAX		0x08u
- 
-+#define NS_COMMAND_SECURE_ERASE	0x20ull
-+
-+#define NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_SUCCESS 0x20
-+#define NS_RESPONSE_SECURE_ERASE_ACCESSIBLE_ATTEMPTED 0x28
-+#define NS_RESPONSE_SECURE_ERASE_DEFECTIVE_SUCCESS 0x30
-+#define NS_RESPONSE_SECURE_ERASE_DEFECTIVE_ATTEMPTED 0x38
-+
- #define STATUS_SUCCESS		0x00
- #define STATUS_MEM_UNAVAILABLE	0x20
- #define STATUS_BLOCKED_BG_TASK	0x21
-@@ -81,6 +90,16 @@
- #define STATUS_FW_ARG_INVALID	STATUS_BAD_REQUEST_PARM
- #define STATUS_FW_INVALID	STATUS_BAD_DATA_PARM
- 
-+struct command_metadata {
-+	u32 request_offset;
-+	u32 response_offset;
-+	u32 data_offset;
-+	u32 data_size;
-+	struct mutex lock; /* locks access to this command */
-+	u16 id;
-+	u8 op_code;
-+};
-+
- struct ocxlpmem {
- 	struct device dev;
- 	struct pci_dev *pdev;
-@@ -91,10 +110,11 @@ struct ocxlpmem {
- 	struct ocxl_afu *ocxl_afu;
- 	struct ocxl_context *ocxl_context;
- 	void *metadata_addr;
-+	struct command_metadata admin_command;
- 	struct resource pmem_res;
- 	struct nd_region *nd_region;
- 	char fw_version[8 + 1];
--
-+	u32 timeouts[ADMIN_COMMAND_MAX + 1];
- 	u32 max_controller_dump_size;
- 	u16 scm_revision; // major/minor
- 	u8 readiness_timeout;  /* The worst case time (in seconds) that the host
-@@ -123,3 +143,31 @@ struct ocxlpmem {
-  * Returns 0 on success, negative on error
-  */
- int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi);
-+
-+/**
-+ * admin_command_execute() - Execute an admin command and wait for completion
-+ *
-+ * Additional MMIO registers (dependent on the command) may
-+ * need to be initialized
-+ *
-+ * @ocxlpmem: the device metadata
-+ * @op_code: the code for the admin command
-+ * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
-+ */
-+int admin_command_execute(struct ocxlpmem *ocxlpmem, u8 op_code);
-+
-+/**
-+ * admin_response_handled() - Notify the controller that the admin response has been handled
-+ * @ocxlpmem: the device metadata
-+ * Returns 0 on success, negative on failure
-+ */
-+int admin_response_handled(const struct ocxlpmem *ocxlpmem);
-+
-+/**
-+ * warn_status() - Emit a kernel warning showing a command status.
-+ * @ocxlpmem: the device metadata
-+ * @message: A message to accompany the warning
-+ * @status: The command status
-+ */
-+void warn_status(const struct ocxlpmem *ocxlpmem, const char *message,
-+		 u8 status);
-diff --git a/drivers/nvdimm/ocxl/ocxlpmem_internal.c b/drivers/nvdimm/ocxl/ocxlpmem_internal.c
-index 5578169b7515..7470a6ab3b08 100644
---- a/drivers/nvdimm/ocxl/ocxlpmem_internal.c
-+++ b/drivers/nvdimm/ocxl/ocxlpmem_internal.c
-@@ -17,3 +17,264 @@ int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi)
- 
- 	return 0;
- }
-+
-+#define COMMAND_REQUEST_SIZE (8 * sizeof(u64))
-+/**
-+ * scm_command_request() - Set up a command request
-+ * @cmd: The metadata for the type of command to be issued
-+ * @op_code: the op code for the command
-+ * @valid_bytes: the number of bytes in the header to preserve (these must be set before calling)
-+ */
-+static int scm_command_request(const struct ocxlpmem *ocxlpmem,
-+			       struct command_metadata *cmd, u8 op_code,
-+			       u8 valid_bytes)
-+{
-+	u64 val = op_code;
-+	int rc;
-+	u8 i;
-+
-+	cmd->op_code = op_code;
-+	cmd->id++;
-+
-+	val |= ((u64)cmd->id) << 16;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, cmd->request_offset,
-+				      OCXL_LITTLE_ENDIAN, val);
-+	if (rc)
-+		return rc;
-+
-+	for (i = valid_bytes; i < COMMAND_REQUEST_SIZE; i += sizeof(u64)) {
-+		rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-+					      cmd->request_offset + i,
-+					      OCXL_LITTLE_ENDIAN, 0);
-+		if (rc)
-+			return rc;
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ * admin_command_request() - Issue an admin command request
-+ * @ocxlpmem: the device metadata
-+ * @op_code: The op-code for the command
-+ *
-+ * Returns an identifier for the command, or negative on error
-+ */
-+static int admin_command_request(struct ocxlpmem *ocxlpmem, u8 op_code)
-+{
-+	u8 valid_bytes = sizeof(u64);
-+
-+	switch (op_code) {
-+	case ADMIN_COMMAND_HEARTBEAT:
-+	case ADMIN_COMMAND_SHUTDOWN:
-+	case ADMIN_COMMAND_ERRLOG:
-+	case ADMIN_COMMAND_CMD_CAPS:
-+		valid_bytes += 0;
-+		break;
-+	case ADMIN_COMMAND_FW_UPDATE:
-+	case ADMIN_COMMAND_SMART:
-+	case ADMIN_COMMAND_CONTROLLER_STATS:
-+	case ADMIN_COMMAND_CONTROLLER_DUMP:
-+		valid_bytes += sizeof(u64);
-+		break;
-+	case ADMIN_COMMAND_FW_DEBUG:
-+		valid_bytes += 3 * sizeof(u64);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return scm_command_request(ocxlpmem, &ocxlpmem->admin_command, op_code,
-+				   valid_bytes);
-+}
-+
-+static int command_response(const struct ocxlpmem *ocxlpmem,
-+			    const struct command_metadata *cmd)
-+{
-+	u64 val;
-+	u16 id;
-+	u8 status;
-+	int rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-+					 cmd->response_offset,
-+					 OCXL_LITTLE_ENDIAN, &val);
-+	if (rc)
-+		return rc;
-+
-+	status = val & 0xff;
-+	id = (val >> 16) & 0xffff;
-+
-+	if (id != cmd->id) {
-+		dev_err(&ocxlpmem->dev,
-+			"Expected response for command %d, but received response for command %d instead.\n",
-+			cmd->id, id);
-+		return -EBUSY;
-+	}
-+
-+	return status;
-+}
-+
-+/**
-+ * admin_response() - Validate an admin response
-+ * @ocxlpmem: the device metadata
-+ * Returns the status code of the command, or negative on error
-+ */
-+static int admin_response(const struct ocxlpmem *ocxlpmem)
-+{
-+	return command_response(ocxlpmem, &ocxlpmem->admin_command);
-+}
-+
-+/**
-+ * admin_command_exec() - Notify the controller to start processing a pending admin command
-+ * @ocxlpmem: the device metadata
-+ * Returns 0 on success, negative on error
-+ */
-+static int admin_command_exec(const struct ocxlpmem *ocxlpmem)
-+{
-+	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
-+				      OCXL_LITTLE_ENDIAN, GLOBAL_MMIO_HCI_ACRW);
-+}
-+
-+static bool admin_command_complete(const struct ocxlpmem *ocxlpmem)
-+{
-+	u64 val = 0;
-+
-+	int rc = ocxlpmem_chi(ocxlpmem, &val);
-+
-+	WARN_ON(rc);
-+
-+	return (val & GLOBAL_MMIO_CHI_ACRA) != 0;
-+}
-+
-+/**
-+ * admin_command_complete_timeout() - Wait for an admin command to finish executing
-+ * @ocxlpmem: the device metadata
-+ * @command: the admin command to wait for completion (determines the timeout)
-+ * Returns 0 on success, -EBUSY on timeout
-+ */
-+static int admin_command_complete_timeout(const struct ocxlpmem *ocxlpmem,
-+					  int command)
-+{
-+	unsigned long timeout = jiffies +
-+				msecs_to_jiffies(ocxlpmem->timeouts[command]);
-+
-+	// 32 is the next power of 2 greater than the 20ms minimum for msleep
-+#define TIMEOUT_SLEEP_MILLIS 32
-+	do {
-+		if (admin_command_complete(ocxlpmem))
-+			return 0;
-+		msleep(TIMEOUT_SLEEP_MILLIS);
-+	} while (time_before(jiffies, timeout));
-+
-+	if (admin_command_complete(ocxlpmem))
-+		return 0;
-+
-+	return -EBUSY;
-+}
-+
-+// Must be maintained with ADMIN_COMMAND_* in ocxlpmem.h
-+static const char * const admin_command_names[] = {
-+	"heartbeat",
-+	"shutdown",
-+	"firmware update",
-+	"firmware debug",
-+	"retrieve error log",
-+	"retrieve SMART data",
-+	"controller statistics",
-+	"controller dump",
-+	"command capabilities",
-+};
-+
-+/**
-+ * admin_command_name() - get the name of an admin command
-+ * @ocxlpmem: the device metadata
-+ * @op_code: the code for the admin command
-+ * Returns a string representing the name of the command
-+ */
-+static const char *admin_command_name(u8 op_code)
-+{
-+	if (op_code > ADMIN_COMMAND_MAX)
-+		return "unknown command";
-+
-+	return admin_command_names[op_code];
-+}
-+
-+/**
-+ * admin_command_execute() - Execute an admin command and wait for completion
-+ *
-+ * Additional MMIO registers (dependent on the command) may
-+ * need to be initialized
-+ *
-+ * @ocxlpmem: the device metadata
-+ * @op_code: the code for the admin command
-+ * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
-+ */
-+int admin_command_execute(struct ocxlpmem *ocxlpmem, u8 op_code)
-+{
-+	int rc;
-+
-+	if (op_code > ADMIN_COMMAND_MAX)
-+		return -EINVAL;
-+
-+	rc = admin_command_request(ocxlpmem, op_code);
-+	if (rc)
-+		return rc;
-+
-+	rc = admin_command_exec(ocxlpmem);
-+	if (rc)
-+		return rc;
-+
-+	rc = admin_command_complete_timeout(ocxlpmem, op_code);
-+	if (rc < 0) {
-+		dev_warn(&ocxlpmem->dev, "%s timed out\n",
-+			 admin_command_name(op_code));
-+		return rc;
-+	}
-+
-+	return admin_response(ocxlpmem);
-+}
-+
-+int admin_response_handled(const struct ocxlpmem *ocxlpmem)
-+{
-+	// writing to the CHIC register clears the bit in CHI
-+	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIC,
-+				      OCXL_LITTLE_ENDIAN, GLOBAL_MMIO_CHI_ACRA);
-+}
-+
-+void warn_status(const struct ocxlpmem *ocxlpmem, const char *message,
-+		 u8 status)
-+{
-+	const char *text = "Unknown";
-+
-+	switch (status) {
-+	case STATUS_SUCCESS:
-+		text = "Success";
-+		break;
-+
-+	case STATUS_MEM_UNAVAILABLE:
-+		text = "Persistent memory unavailable";
-+		break;
-+
-+	case STATUS_BAD_OPCODE:
-+		text = "Bad opcode";
-+		break;
-+
-+	case STATUS_BAD_REQUEST_PARM:
-+		text = "Bad request parameter";
-+		break;
-+
-+	case STATUS_BAD_DATA_PARM:
-+		text = "Bad data parameter";
-+		break;
-+
-+	case STATUS_DEBUG_BLOCKED:
-+		text = "Debug action blocked";
-+		break;
-+
-+	case STATUS_FAIL:
-+		text = "Failed";
-+		break;
-+	}
-+
-+	dev_warn(&ocxlpmem->dev, "%s: %s (%x)\n", message, text, status);
-+}
--- 
-2.24.1
+Vivek
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
