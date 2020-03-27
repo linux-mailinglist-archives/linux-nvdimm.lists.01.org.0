@@ -2,49 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE76197410
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Mar 2020 07:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 524C419741C
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Mar 2020 07:53:23 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 712B210FC36DF;
-	Sun, 29 Mar 2020 22:53:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id D757610FC3797;
+	Sun, 29 Mar 2020 22:54:11 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.55.73.32; helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org; receiver=<UNKNOWN> 
 Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com [66.55.73.32])
-	by ml01.01.org (Postfix) with ESMTP id EB14E10FC36CD
-	for <linux-nvdimm@lists.01.org>; Sun, 29 Mar 2020 22:53:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4F41510FC3795
+	for <linux-nvdimm@lists.01.org>; Sun, 29 Mar 2020 22:54:09 -0700 (PDT)
 Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-	by ushosting.nmnhosting.com (Postfix) with ESMTPS id 277FA2DC684C;
-	Mon, 30 Mar 2020 16:52:46 +1100 (AEDT)
+	by ushosting.nmnhosting.com (Postfix) with ESMTPS id 23A0E2DC6861;
+	Mon, 30 Mar 2020 16:52:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-	s=201810a; t=1585547567;
-	bh=/c0sygyGptvZJ7mjxJ2I2ERy9RY2BO4lgAUmGcAOvOI=;
+	s=201810a; t=1585547576;
+	bh=8s7da4KbOpaV4mqdxyxNi6aCXQRjcGL9fg5XH8aq39A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMjl+0uXIk2WsRYFK7QMnoeZwiXtbQvngMc30HklM7M/UaYiwbRU0QE9+G/GnjCpF
-	 6TnIi2bluBUjI33oB/IGG++wI53XGTIwCq5K0VlcVhmAbh8fhf/pZM4Ced6P4QxUan
-	 4mCoqUpqEQuPXCesRSY06c5qvKiv1LsP8cfIca3WUYgQYOJ/q/s8LwSNJX9HBkkIhn
-	 gDlQa2bD02tm9GPOYMeF42o7Bj/XBxnHbDvb+sZWgfzyMO+XkIa7CR1jZ4i6HRAFM+
-	 YbdnR295TH0kUDCjW5WeNmhPseRb1h1xcrGkr1E7ZJs7ZsylKwzALmMvOAhH9LL5vq
-	 3sSEcN0wjhm82H8oqQYmkz6pFE9Ngz7Yk7lRcCnGpzQVRWYRpVTksaPYJsbD/6F8t2
-	 MetLhu1IrJSl7OBndz4jJBgg6mmUQXdE5qPmzLqjrTwMXPbnNkvRn55MI0MKPAsiA2
-	 v3UhZHqDsS3yj8k9ftzhbgmpM9o3tilShHFLuLa6EEPGAyGhkC0JmK4UJSSU4vuBsl
-	 DAAPAo9W0AH+Quua6imoMGuoYzJ2F3ro6L2zDSZSLZw6BC3GtyzRpLXvgZ5C/FjG+f
-	 tIZ+HRu9YYQm06ECg8BUrm41v1jxxG21JM4D7E34KQMuRdIJeivVBNTbxAwVDV35Ax
-	 wfbVKJDpJWOjuCjbEN7nnoZA=
+	b=NrRTkA2bxZwFMeoCf0Wr6Odf6o65lo0QM+ThRM66hf/7Tb+pvtJVuQxJN394NTysC
+	 VgilHFKK5xR1f6lDBP0QlOXi2EJtvYeXpa6JFreVlZ03HY/0O6eVn0cvRH8pvqRpyo
+	 cdzWDRkWYXg1MPX4tN1fXYDXGdiYygmqECTUp+0YnDPD6LfGx+xx+gategBGRubdAL
+	 L0JRYtfskZ/D5Zw0QaK/Tz53JgYEGDdF037VYvOeTQp7vuawto13Te3Rm7pe7J0n3j
+	 H6iwZUTYry2yNKsgzOEM59Q5V7lk5UymbYbT6X5deJlY236MnLO6jpfeBIjPT8WeYG
+	 zbyXaR3DorudKtfRcOMCYngpMoCzEzYlFjON6mwdALYIvaxuWIpUi0eUv4wErujoca
+	 ev2YxG6LJtlTTbFLoAYDap+my1DyfAet2uXwgjOsEAogxT/DBD0646Y0yGqEn2L3J6
+	 hinFHFG49vIm36L/NCftTmxqx7+9UfvO5s+VkIilw2q9UHK+gBNkJiRQVDG1yFm5Rn
+	 co+eZdxegSRaD39VqYwEY+iKgvu/Jb1w0cb0ho+kiB03px14BmTNlQk4Tof0LqmFNk
+	 7tVG7Vgv/QEAcjH8bPZwH8sZw7WayGyD+FfKrWAwVv7XeAsc2mBHBKPSE++URXQ1Nz
+	 MdXl8DGDe8LMBnwkv+CQ57LQ=
 Received: from localhost.lan ([10.0.1.179])
-	by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Au045934;
-	Fri, 27 Mar 2020 18:12:19 +1100 (AEDT)
+	by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Aw045934;
+	Fri, 27 Mar 2020 18:12:20 +1100 (AEDT)
 	(envelope-from alastair@d-silva.org)
 From: "Alastair D'Silva" <alastair@d-silva.org>
 To: alastair@d-silva.org
-Subject: [PATCH v4 21/25] nvdimm/ocxl: Implement the heartbeat command
-Date: Fri, 27 Mar 2020 18:11:58 +1100
-Message-Id: <20200327071202.2159885-22-alastair@d-silva.org>
+Subject: [PATCH v4 23/25] nvdimm/ocxl: Expose SMART data via ndctl
+Date: Fri, 27 Mar 2020 18:12:00 +1100
+Message-Id: <20200327071202.2159885-24-alastair@d-silva.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
 References: <20200327071202.2159885-1-alastair@d-silva.org>
 MIME-Version: 1.0
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:19 +1100 (AEDT)
-Message-ID-Hash: 2HW65I34VO4LRQW64BM7GGN6FSAJG3IL
-X-Message-ID-Hash: 2HW65I34VO4LRQW64BM7GGN6FSAJG3IL
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:20 +1100 (AEDT)
+Message-ID-Hash: J5ASZDBHX72SLXCVWSZJ3Y5LCNSWWBVD
+X-Message-ID-Hash: J5ASZDBHX72SLXCVWSZJ3Y5LCNSWWBVD
 X-MailFrom: alastair@d-silva.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -53,7 +53,7 @@ CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <b
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2HW65I34VO4LRQW64BM7GGN6FSAJG3IL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J5ASZDBHX72SLXCVWSZJ3Y5LCNSWWBVD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,66 +62,203 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The heartbeat admin command is a simple admin command that exercises
-the communication mechanisms within the controller.
-
-This patch issues a heartbeat command to the card during init to ensure
-we can communicate with the card's controller.
+This patch retrieves proprietary formatted SMART data and makes it
+available via ndctl. A later contribution will be made to ndctl to
+parse this data.
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 ---
- drivers/nvdimm/ocxl/main.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/nvdimm/ocxl/main.c     | 113 +++++++++++++++++++++++++++++++++
+ drivers/nvdimm/ocxl/ocxlpmem.h |  18 ++++++
+ include/uapi/linux/ndctl.h     |   1 +
+ 3 files changed, 132 insertions(+)
 
 diff --git a/drivers/nvdimm/ocxl/main.c b/drivers/nvdimm/ocxl/main.c
-index a4315472683c..2fbe3f2f77d9 100644
+index 2811bf7efbab..92b4389e8cbb 100644
 --- a/drivers/nvdimm/ocxl/main.c
 +++ b/drivers/nvdimm/ocxl/main.c
-@@ -272,6 +272,30 @@ static int setup_command_metadata(struct ocxlpmem *ocxlpmem)
+@@ -82,6 +82,114 @@ static int ndctl_config_size(struct nd_cmd_get_config_size *command)
  	return 0;
  }
  
 +/**
-+ * heartbeat() - Issue a heartbeat command to the controller
++ * smart_header_parse() - Parse the first 64 bits of the SMART admin command response
 + * @ocxlpmem: the device metadata
-+ * Return: 0 if the controller responded correctly, negative on error
++ * @length: out, returns the number of bytes in the response (excluding the 64 bit header)
 + */
-+static int heartbeat(struct ocxlpmem *ocxlpmem)
++static int smart_header_parse(struct ocxlpmem *ocxlpmem, u32 *length)
 +{
++	int rc;
++	u64 val;
++
++	u16 data_identifier;
++	u32 data_length;
++
++	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
++				     ocxlpmem->admin_command.data_offset,
++				     OCXL_LITTLE_ENDIAN, &val);
++	if (rc)
++		return rc;
++
++	data_identifier = val >> 48;
++	data_length = val & 0xFFFFFFFF;
++
++	if (data_identifier != 0x534D) { // 'SM'
++		dev_err(&ocxlpmem->dev,
++			"Bad data identifier for smart data, expected 'SM', got '%2s'\n",
++			(char *)&data_identifier);
++		return -EINVAL;
++	}
++
++	*length = data_length;
++	return 0;
++}
++
++static int ndctl_smart(struct ocxlpmem *ocxlpmem, struct nd_cmd_pkg *pkg)
++{
++	u32 length, i;
++	struct nd_ocxl_smart *out;
 +	int rc;
 +
 +	mutex_lock(&ocxlpmem->admin_command.lock);
 +
-+	rc = admin_command_execute(ocxlpmem, ADMIN_COMMAND_HEARTBEAT);
++	rc = admin_command_execute(ocxlpmem, ADMIN_COMMAND_SMART);
 +	if (rc < 0)
 +		goto out;
-+	if (rc != STATUS_SUCCESS)
-+		warn_status(ocxlpmem, "Unexpected status from heartbeat", rc);
++	if (rc != STATUS_SUCCESS) {
++		warn_status(ocxlpmem, "Unexpected status from SMART", rc);
++		goto out;
++	}
 +
-+	(void)admin_response_handled(ocxlpmem);
++	rc = smart_header_parse(ocxlpmem, &length);
++	if (rc)
++		goto out;
++
++	pkg->nd_fw_size = length + offsetof(struct nd_ocxl_smart, attribs);
++
++	length = min(length, (u32)(pkg->nd_size_out -
++		     offsetof(struct nd_ocxl_smart, attribs))); // bytes
++	out = (struct nd_ocxl_smart *)pkg->nd_payload;
++	// Each SMART attribute is 2 * 64 bits
++	out->count = length / (2 * sizeof(u64)); // attributes
++
++	for (i = 0; i < length; i += sizeof(u64)) {
++		rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
++					     ocxlpmem->admin_command.data_offset +
++					     sizeof(u64) + i,
++					     OCXL_LITTLE_ENDIAN,
++					     &out->attribs[i / sizeof(u64)]);
++		if (rc)
++			goto out;
++	}
++
++	rc = admin_response_handled(ocxlpmem);
++	if (rc)
++		goto out;
 +
 +out:
 +	mutex_unlock(&ocxlpmem->admin_command.lock);
 +	return rc;
 +}
 +
- /**
-  * allocate_minor() - Allocate a minor number to use for an OpenCAPI pmem device
-  * @ocxlpmem: the device metadata
-@@ -1460,6 +1484,12 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err;
- 	}
- 
-+	rc = heartbeat(ocxlpmem);
-+	if (rc) {
-+		dev_err(&pdev->dev, "Heartbeat failed\n");
-+		goto err;
++static int ndctl_call(struct ocxlpmem *ocxlpmem, void *buf,
++		      unsigned int buf_len)
++{
++	struct nd_cmd_pkg *pkg = buf;
++
++	if (buf_len < sizeof(struct nd_cmd_pkg)) {
++		dev_err(&ocxlpmem->dev, "Invalid ND_CALL size=%u\n", buf_len);
++		return -EINVAL;
 +	}
 +
- 	elapsed = 0;
- 	timeout = ocxlpmem->readiness_timeout +
- 		  ocxlpmem->memory_available_timeout;
++	if (pkg->nd_family != NVDIMM_FAMILY_OCXL) {
++		dev_err(&ocxlpmem->dev, "Invalid ND_CALL family=0x%llx\n",
++			pkg->nd_family);
++		return -EINVAL;
++	}
++
++	switch (pkg->nd_command) {
++	case ND_CMD_OCXL_SMART:
++		return ndctl_smart(ocxlpmem, pkg);
++	default:
++		dev_err(&ocxlpmem->dev, "Invalid ND_CALL command=0x%llx\n",
++			pkg->nd_command);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
+ 		 struct nvdimm *nvdimm,
+ 		 unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
+@@ -90,6 +198,10 @@ static int ndctl(struct nvdimm_bus_descriptor *nd_desc,
+ 						 struct ocxlpmem, bus_desc);
+ 
+ 	switch (cmd) {
++	case ND_CMD_CALL:
++		*cmd_rc = ndctl_call(ocxlpmem, buf, buf_len);
++		return 0;
++
+ 	case ND_CMD_GET_CONFIG_SIZE:
+ 		*cmd_rc = ndctl_config_size(buf);
+ 		return 0;
+@@ -173,6 +285,7 @@ static int register_lpc_mem(struct ocxlpmem *ocxlpmem)
+ 	set_bit(ND_CMD_GET_CONFIG_SIZE, &nvdimm_cmd_mask);
+ 	set_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm_cmd_mask);
+ 	set_bit(ND_CMD_SET_CONFIG_DATA, &nvdimm_cmd_mask);
++	set_bit(ND_CMD_CALL, &nvdimm_cmd_mask);
+ 
+ 	set_bit(NDD_ALIASING, &nvdimm_flags);
+ 
+diff --git a/drivers/nvdimm/ocxl/ocxlpmem.h b/drivers/nvdimm/ocxl/ocxlpmem.h
+index c8794e7775ec..ebaf11692c09 100644
+--- a/drivers/nvdimm/ocxl/ocxlpmem.h
++++ b/drivers/nvdimm/ocxl/ocxlpmem.h
+@@ -6,6 +6,7 @@
+ #include <misc/ocxl.h>
+ #include <linux/libnvdimm.h>
+ #include <linux/mm.h>
++#include <linux/ndctl.h>
+ 
+ #define LABEL_AREA_SIZE	BIT_ULL(PA_SECTION_SHIFT)
+ #define DEFAULT_TIMEOUT 100
+@@ -101,6 +102,23 @@ struct command_metadata {
+ 	u8 op_code;
+ };
+ 
++struct nd_ocxl_smart {
++	__u8 count;
++	__u8 reserved[7];
++	__u64 attribs[0];
++} __packed;
++
++struct nd_pkg_ocxl {
++	struct nd_cmd_pkg gen;
++	union {
++		struct nd_ocxl_smart smart;
++	};
++};
++
++enum nd_cmd_ocxl {
++	ND_CMD_OCXL_SMART = 1,
++};
++
+ struct ocxlpmem {
+ 	struct device dev;
+ 	struct pci_dev *pdev;
+diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
+index de5d90212409..2885052e7f40 100644
+--- a/include/uapi/linux/ndctl.h
++++ b/include/uapi/linux/ndctl.h
+@@ -244,6 +244,7 @@ struct nd_cmd_pkg {
+ #define NVDIMM_FAMILY_HPE2 2
+ #define NVDIMM_FAMILY_MSFT 3
+ #define NVDIMM_FAMILY_HYPERV 4
++#define NVDIMM_FAMILY_OCXL 6
+ 
+ #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
+ 					struct nd_cmd_pkg)
 -- 
 2.24.1
 _______________________________________________
