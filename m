@@ -1,46 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21EF1960D5
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 27 Mar 2020 23:06:19 +0100 (CET)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED781964A7
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 28 Mar 2020 10:00:51 +0100 (CET)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 57E0510FC3599;
-	Fri, 27 Mar 2020 15:07:07 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.56; helo=out30-56.freemail.mail.aliyun.com; envelope-from=bo.liu@linux.alibaba.com; receiver=<UNKNOWN> 
-Received: from out30-56.freemail.mail.aliyun.com (out30-56.freemail.mail.aliyun.com [115.124.30.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2155910FC3605;
+	Sat, 28 Mar 2020 02:01:39 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=31.7.62.100; helo=abx.publicvm.com; envelope-from=info@abx.publicvm.com; receiver=<UNKNOWN> 
+Received: from abx.publicvm.com (abx.publicvm.com [31.7.62.100])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 02A5A10FC341D
-	for <linux-nvdimm@lists.01.org>; Fri, 27 Mar 2020 15:07:04 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01422;MF=bo.liu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0TtnyMjr_1585346766;
-Received: from rsjd01523.et2sqa(mailfrom:bo.liu@linux.alibaba.com fp:SMTPD_---0TtnyMjr_1585346766)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 28 Mar 2020 06:06:11 +0800
-Date: Sat, 28 Mar 2020 06:06:06 +0800
-From: Liu Bo <bo.liu@linux.alibaba.com>
-To: Vivek Goyal <vgoyal@redhat.com>
-Subject: Re: [PATCH 20/20] fuse,virtiofs: Add logic to free up a memory range
-Message-ID: <20200327220606.GA119028@rsjd01523.et2sqa>
-References: <20200304165845.3081-1-vgoyal@redhat.com>
- <20200304165845.3081-21-vgoyal@redhat.com>
- <20200326000904.GA34937@rsjd01523.et2sqa>
- <20200327140114.GB32717@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id C9B8210FC35A0
+	for <linux-nvdimm@lists.01.org>; Sat, 28 Mar 2020 02:01:36 -0700 (PDT)
+Received: from WIN-RDR2Q7VKKVI (localhost.localdomain [127.0.0.1])
+	by abx.publicvm.com (8.14.4/8.14.4) with ESMTP id 02S9AqZt006547
+	for <linux-nvdimm@lists.01.org>; Sat, 28 Mar 2020 12:10:53 +0300
+Message-ID: <03765914-43918-ba340831176389@win-rdr2q7vkkvi>
+From: "Smith Kabila" <info@abx.publicvm.com>
+To: linux-nvdimm@lists.01.org
+Subject: Hello 3/28/2020  1:59:41 AM
+Date: Sat, 28 Mar 2020 01:58:42 -0700
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200327140114.GB32717@redhat.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-Message-ID-Hash: EXKNEKDM4HDWVA42JM425A56VWLOBXXP
-X-Message-ID-Hash: EXKNEKDM4HDWVA42JM425A56VWLOBXXP
-X-MailFrom: bo.liu@linux.alibaba.com
+X-Priority: 3
+Message-ID-Hash: KDLD267MPMD7QBT2GY4XQIX7JEF7PFSJ
+X-Message-ID-Hash: KDLD267MPMD7QBT2GY4XQIX7JEF7PFSJ
+X-MailFrom: info@abx.publicvm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, virtio-fs@redhat.com, miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, mst@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: bo.liu@linux.alibaba.com
+Reply-To: Smith Kabila <smithmai785@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EXKNEKDM4HDWVA42JM425A56VWLOBXXP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KDLD267MPMD7QBT2GY4XQIX7JEF7PFSJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,56 +41,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 27, 2020 at 10:01:14AM -0400, Vivek Goyal wrote:
-> On Thu, Mar 26, 2020 at 08:09:05AM +0800, Liu Bo wrote:
-> 
-> [..]
-> > > +/*
-> > > + * Find first mapping in the tree and free it and return it. Do not add
-> > > + * it back to free pool. If fault == true, this function should be called
-> > > + * with fi->i_mmap_sem held.
-> > > + */
-> > > +static struct fuse_dax_mapping *inode_reclaim_one_dmap(struct fuse_conn *fc,
-> > > +							 struct inode *inode,
-> > > +							 bool fault)
-> > > +{
-> > > +	struct fuse_inode *fi = get_fuse_inode(inode);
-> > > +	struct fuse_dax_mapping *dmap;
-> > > +	int ret;
-> > > +
-> > > +	if (!fault)
-> > > +		down_write(&fi->i_mmap_sem);
-> > > +
-> > > +	/*
-> > > +	 * Make sure there are no references to inode pages using
-> > > +	 * get_user_pages()
-> > > +	 */
-> > > +	ret = fuse_break_dax_layouts(inode, 0, 0);
-> > 
-> > Hi Vivek,
-> > 
-> > This patch is enabling inline reclaim for fault path, but fault path
-> > has already holds a locked exceptional entry which I believe the above
-> > fuse_break_dax_layouts() needs to wait for, can you please elaborate
-> > on how this can be avoided?
-> > 
-> 
-> Hi Liubo,
-> 
-> Can you please point to the exact lock you are referring to. I will
-> check it out. Once we got rid of needing to take inode lock in
-> reclaim path, that opended the door to do inline reclaim in fault
-> path as well. But I was not aware of this exceptional entry lock.
+Please permit me the time and chance to introduce myself to you. My name is Smith Kabila from Sudan in Africa, I am 16yrs of age(Male), but am presently staying in Ghana. My late father Michael Kabila was the owner of the diamond-mining co-operation company in. As a result of this, he was killed by the rebels in my country because of the political unrest in my country. Before his death, he deposited a consignment that contained, AU Gold Dust, which quantity is 950kg and a huge sum of money, in a security company in London-England, but my late father deposited it as family belongings and that was the information he told my mother as at the time of deposit, not until about one year after his death that we found out in a secret diary the true contents and the documents showing the deposit of the consignments in the Security Company. Like my beloved mother narrated to me, my uncles had taken over all that my father left for me over there in Sudan and I cannot go back there becau!
+ se of the current war.
 
-Hi Vivek,
+Just two weeks ago the security company was able to contact me and said my uncles reached out to them and trying to make claim but was declined because I am the next of kin. They are trying to take advantage of me as the only child because my mother and father got separated while I was very young.
 
-dax_iomap_{pte,pmd}_fault has called grab_mapping_entry to get a
-locked entry, when this fault gets into inline reclaim, would
-fuse_break_dax_layouts wait for the locked exceptional entry which is
-locked in dax_iomap_{pte,pmd}_fault?
+Also during the time of deposit, my father stated in the documents that the consignment should only be released to me when I am 16yrs but I must present a foreign investor/partner who can stand as my guardian to help me invest the money in any meaningful/lucrative business in your country and also help me come over to further my education.
 
-thanks,
-liubo
+Right now I am not safe here and due to my bad health condition, I cannot handle this all by myself. This is why I came to seek for a trust person to stand as my foreign beneficiary/partner to receive this for me and help me invest in any profitable business in your country because this is my only hope and source of livelihood. I was lucky to have you among the list of good people out there on the humanitarian child support game which I participated as the winner.
+
+I am anxiously waiting to hear from you so that I can forward all documentation and tell you how to make claim.
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
