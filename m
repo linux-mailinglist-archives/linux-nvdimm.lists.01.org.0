@@ -2,149 +2,91 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C404019702E
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 29 Mar 2020 22:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4B8197246
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Mar 2020 03:55:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C048310FC362D;
-	Sun, 29 Mar 2020 13:29:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.74; helo=us-smtp-delivery-74.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [63.128.21.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 942971007B8F8;
+	Sun, 29 Mar 2020 18:56:06 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=62.76.40.208; helo=mail.fragolino.info; envelope-from=info@fragolino.info; receiver=<UNKNOWN> 
+Received: from mail.fragolino.info (fragolino.info [62.76.40.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 769A610FC362C
-	for <linux-nvdimm@lists.01.org>; Sun, 29 Mar 2020 13:29:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1585513724;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=A5ymUfXT3dX08vaY7ExHIJc/Jj55SENZBQdpnoTwfbM=;
-	b=OCQOnvq3igNwkz43e6oybOB+yXPPCgqle2MfZvqBMl+4Z6WyYo05KyNQhQvW3Lgtx46Qr9
-	Ka8sczGDvWLef4A+iroqumM8b+gV2rP0OtbhQ5SWmrt3IB+nP9kPWw2WWp08fF+H3saglA
-	ZxYUEmQthOmI/A87JYGZEi5h4OSImPM=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-130-U34lZZm7MK27CcXdjD5Pqw-1; Sun, 29 Mar 2020 16:28:41 -0400
-X-MC-Unique: U34lZZm7MK27CcXdjD5Pqw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0F28713F8;
-	Sun, 29 Mar 2020 20:28:40 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 6EBFC19925;
-	Sun, 29 Mar 2020 20:28:37 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 02TKSawd032317;
-	Sun, 29 Mar 2020 16:28:36 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 02TKSarG032314;
-	Sun, 29 Mar 2020 16:28:36 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Sun, 29 Mar 2020 16:28:36 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
-        Mike Snitzer <msnitzer@redhat.com>
-Subject: [PATCH] memcpy_flushcache: use cache flusing for larger lengths
-Message-ID: <alpine.LRH.2.02.2003291625590.32108@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 1C2A810096C9B
+	for <linux-nvdimm@lists.01.org>; Sun, 29 Mar 2020 18:56:02 -0700 (PDT)
+Message-ID: <aada9339522a00395550e64aff0b21e5a63818@fragolino.info>
+From: Irene <info@fragolino.info>
+To: linux-nvdimm@lists.01.org
+Subject: =?windows-1251?B?zeUg5O7w7uPu6SDoIP309OXq8uji7fvpIPHv?=
+	=?windows-1251?B?7vHu4SDw5err4Oz7IQ==?=
+Date: Mon, 30 Mar 2020 04:57:37 +0300
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Message-ID-Hash: 7NXHXPSAIJYOTWX5EISPKL3MRTZEEZKY
-X-Message-ID-Hash: 7NXHXPSAIJYOTWX5EISPKL3MRTZEEZKY
-X-MailFrom: mpatocka@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; d=fragolino.info; s=mail;
+	c=relaxed/relaxed; t=1585533457;
+	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
+	bh=lz61PkGkUsQ2FDoDmHy9p09KIZuXlQe19hZuUWCmqB4=;
+	b=WW1uYwm7eWHXCviUf9WWMyQ/SZeMFLHZRnKJWDZHeLvoGvEpsZUIyhQjq9BXXS
+	2leyk+H9VxcjlFySlEDJ3JPUkhJqf7glPJeOtgItMr8dhP29bELEBy6h32dGiD5/
+	iVJ7a4ydy7x0W8/FxPAz3vgm+GUQVwx2s4hKjJI88KyxY=
+Message-ID-Hash: QK37X5R3XNE5LMH7BWW347XZJQAHSZPI
+X-Message-ID-Hash: QK37X5R3XNE5LMH7BWW347XZJQAHSZPI
+X-MailFrom: info@fragolino.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, dm-devel@redhat.com
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7NXHXPSAIJYOTWX5EISPKL3MRTZEEZKY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QK37X5R3XNE5LMH7BWW347XZJQAHSZPI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-I tested dm-writecache performance on a machine with Optane nvdimm and it
-turned out that for larger writes, cached stores + cache flushing perform
-better than non-temporal stores. This is the throughput of dm-writecache
-measured with this command:
-dd if=/dev/zero of=/dev/mapper/wc bs=64 oflag=direct
-
-block size	512		1024		2048		4096
-movnti		496 MB/s	642 MB/s	725 MB/s	744 MB/s
-clflushopt	373 MB/s	688 MB/s	1.1 GB/s	1.2 GB/s
-
-We can see that for smaller block, movnti performs better, but for larger
-blocks, clflushopt has better performance.
-
-This patch changes the function __memcpy_flushcache accordingly, so that
-with size >= 768 it performs cached stores and cache flushing. Note that
-we must not use the new branch if the CPU doesn't have clflushopt - in
-that case, the kernel would use inefficient "clflush" instruction that has
-very bad performance.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-
----
- arch/x86/lib/usercopy_64.c |   36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-Index: linux-2.6/arch/x86/lib/usercopy_64.c
-===================================================================
---- linux-2.6.orig/arch/x86/lib/usercopy_64.c	2020-03-24 15:15:36.644945091 -0400
-+++ linux-2.6/arch/x86/lib/usercopy_64.c	2020-03-29 13:16:49.937011736 -0400
-@@ -152,6 +152,42 @@ void __memcpy_flushcache(void *_dst, con
- 			return;
- 	}
- 
-+	if (static_cpu_has(X86_FEATURE_CLFLUSHOPT) && size >= 768) {
-+		while (!IS_ALIGNED(dest, 64)) {
-+			asm("movq    (%0), %%r8\n"
-+			    "movnti  %%r8,   (%1)\n"
-+			    :: "r" (source), "r" (dest)
-+			    : "memory", "r8");
-+			dest += 8;
-+			source += 8;
-+			size -= 8;
-+		}
-+		do {
-+			asm("movq    (%0), %%r8\n"
-+			    "movq   8(%0), %%r9\n"
-+			    "movq  16(%0), %%r10\n"
-+			    "movq  24(%0), %%r11\n"
-+			    "movq    %%r8,   (%1)\n"
-+			    "movq    %%r9,  8(%1)\n"
-+			    "movq   %%r10, 16(%1)\n"
-+			    "movq   %%r11, 24(%1)\n"
-+			    "movq  32(%0), %%r8\n"
-+			    "movq  40(%0), %%r9\n"
-+			    "movq  48(%0), %%r10\n"
-+			    "movq  56(%0), %%r11\n"
-+			    "movq    %%r8, 32(%1)\n"
-+			    "movq    %%r9, 40(%1)\n"
-+			    "movq   %%r10, 48(%1)\n"
-+			    "movq   %%r11, 56(%1)\n"
-+			    :: "r" (source), "r" (dest)
-+			    : "memory", "r8", "r9", "r10", "r11");
-+			clflushopt((void *)dest);
-+			dest += 64;
-+			source += 64;
-+			size -= 64;
-+		} while (size >= 64);
-+	}
-+
- 	/* 4x8 movnti loop */
- 	while (size >= 32) {
- 		asm("movq    (%0), %%r8\n"
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+RW1haWwg7ODw6uXy6O3jIA0KDQrQ4PHx++vq6CD/4uv//vLx/yDy5ewg6O3x8vDz7OXt8u7sLCDq
+7vLu8PvpIOPg8ODt8ujw7uLg7e3uIO/w6OLu5OjyIOrr6OXt8u7iLiCgoKCgoA0KDQrQ4PHx++vq
+4CDv6PHl7CDv7iDs7e7j7vfo8evl7e377CDFLW1haWwg4OTw5fHg7CD/4uv//vLx/yDu9+Xt/CDs
+7vnt++wg6CDw5efz6/zy4PLo4u377CDo7fHy8PPs5e3y7uwsIOHr4OPu5ODw/yDq7vLu8O7s8yDi
++yDx7O7m5fLlIO/w7ujt9O7w7Ojw7uLg8vwg8e7y7egg8vvx//cg6/7k5ekg7iDx4u7o9SDy7uLg
+8OD1IOgg8/Hr8+Pg9S4goKCgoKANCtDg8fH76+rgIO3gIP3r5ery8O7t7fP+IO/u9/LzIOjs5eXy
+IOzt7ubl8fLi7iDv8OXo7PP55fHy4joNCjEuIML78e7q4P8g8OXn8+v88uDy6OLt7vHy/DogoKCg
+oKANCu7h/+fg8uXr/O3uIPXu8vwg7uTo7SD35evu4uXqIOjnIO3l8eru6/zq6PUg8e7y5e0g5+Do
+7fLl8OXx8+Xy8f8g4uD45ewg7/Dl5Ovu5uXt6OXsLCD98u4g4fPk5fIg5+Di6PHl8vwg7vIg8u7j
+7iwg9/LuIOL7IO/w5eTr4OPg5fLlLCDoIPfl7CDk5fjl4uvlIOHz5OXyIPHy7ujy/CDi4PjgIPPx
+6/Pj4CDo6+gg8u7i4PAsIPLuIPLl7CDh7uv8+OUg7eAg7eXj7iDh8+Tl8iDx7/Du8S4goKCgoKAN
+CjIuINHq7vDu8fL8OiCgoKCgoA0KwuD44CDw5err4Owg7eD37eXyIPHy4PDy7uLg8vwg8fDg5/Mg
+5uUg7+7x6+Ug5bgg5+Dq4OfgLiDC4Owg7eUg7fPm7e4g4fPk5fIg5uTg8vwg7+738ugg7OXx//Ys
+IOrg6iD98u4g9+Dx8u4g8evz9+Dl8vH/LCDl8evoIOL7IOfg6uDn++Lg5fLlIPDl6uvg7PMg7eAg
+8uXr5eLo5OXt6OUsIPDg5OjuIOjr6CDiIO/w5fHx5S4g5+Dq4OfgISCgoKCgoA0KMy4gzeXyIO3g
+5O7h7e7x8ugg4iDx7uHx8uLl7e3u7CDx4Ony5TogoKCgoKANCsLg7CDi7uLx5SDt5SDt8+bt7iDo
+7OXy/CDx7uHx8uLl7e376SDx4OnyLCDt4Pgg7u/78u376SDk6Ofg6e3l8CDq4Pfl8fLi5e3t7iDu
+9O7w7OjyIOv+4e7lIOLg+OUg6u7s7OXw9+Xx6u7lIO/w5eTr7ubl7ejlLCDiIOru8u7w7uwg4vsg
+8ezu5uXy5SDz6uDn4PL8IOLx/iDt5e7h9e7k6Ozz/iDo7fTu8Ozg9uj/IOTr/yDx4u7o9SDq6+jl
+7fLu4i4goKCgoKANCjQuIMTl7eXm7eD/IP3q7u3u7Oj/OiCgoKCgoA0K0ODx8fvr6uAg4fPk5fIg
+8fLu6PL8IOft4Pfo8uXr/O3u5SDk5fjl4uvlLCDl5uXr6CDh+yD98u4g8fLu6OvgIOv+4eD/IOTw
+8+Pg/yDw5err4OzgLCDt4O/w6Ozl8Cwg8ODk6O4sIO/w5fHx4CDo6+gg8uXr5eLo5OXt6OUuINMg
+4uDxIO/u/+Lr/+Xy8f8g4uXr6Oru6+Xv7eD/IOLu5+zu5u3u8fL8IOfgIOzl7fz46OUg5OXt/OPo
+IO/w6OLr5ff8IOLt6Ozg7ejlIPLu9+3uIPLg6u7lIPfo8evuIO/u8uXt9ujg6/zt+/Ug6uvo5e3y
+7uIsIOXx6+gg4fsg4vsg/fLuIPHk5evg6+gg5+Ag4e7r/Pjz/iDx8+zs8y4NCjUuIMLu5+zu5u3u
+8fL8IO/u8fLu/+3t7ukg8ODh7vL7OiCgoKCgoA0KzPsg7uHt7uLr/+XsIMUtbWFpbCDh4Of7IOrg
+5uTz/iDt5eTl6/4sIP3y7iDu5+3g9+Dl8iwg9/LuIOL7IOzu5uXy5SDt5SDh5fHv7uru6PL88f8s
+IPfy7iDi4PjzIPDg8fH76+rzIOHz5PPyIO/u6/P34PL8IO7k7egg6CDy5SDm5SDr/uToLiCgoKCg
+oA0KDQrR8u7o7O7x8vwg8ODx8fvr7uo6DQoNCi0gz/Dl5O/w6P/y6P8g0+rw4Ojt+yAtIDg1MCDj
+8O0uICg3ODUgNjk3IODk8C4pDQotINTo5yDr6PbgINPq8ODo7fsgLSAxMzAwIOPw7S4gKDEgMjU3
+IDM5MSDg5PAuKQ0KLSDO4fng/yDw4PHx++vq4CDv7iDT6vDg6O3lIC0gMTgwMCDj8O0uICjh7uvl
+5SAzIDAwMCAwMDAg4OTwLikNCg0K0uDqIOblIO/w7uLu5OjsIEUtTWFpbCDw4PHx++vq6CDv7iDo
+7fvsIPHy8ODt4Owg7Ojw4Cwg5fHr6CDC4PEg6O3y5fDl8fPl8iDw4PHx++vq4CDv7iDq7u3q8OXy
+7e7pIPHy8ODt5SAtIO3g7+j46PLlLCDoIOz7IO7y4uXy6Owg7+4g8fLu6Ozu8fLoIOgg6u7r6Pfl
+8fLi8yDv7uvz9+Dy5evl6S4NCg0KyiDw4PHx++vq4OzoIO/w6O3o7OD+8vH/IO/o8fzs4CDt5SDv
+8O7y6OLu8OX34Pno5SDn4Oru7e7k4PLl6/zx8uLzINPq8ODo7fshDQoNCi0tDQpDIPPi4Obl7ejl
+7CwgweXr6+CgoKCgoKANCg0K0ODn4ujy6OUg4uD45ePuIOHo5+3l8eAg4iDo7fLl8O3l8uUgoKCg
+oKANCg0K0eL/5+Dy/PH/IPEg7eDs6DogMzggMDkzLSA3NzItIDc3LSA4OA0KDQpFLW1haWw6IHJk
+bEByYW1ibGVyLnVhDQpUZWxlZ3JhbTogKzM4MDkzNzcyNzc4OCCgoKCgoA0KVmliZXI6ICszODA5
+Mzc3Mjc3ODggoKCgoKANCg0KxfHr6CDk4O3t7uUg7+jx/OzuIO/u6/P35e3uIO3gIODk8OXxIGxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcg7+4g7vjo4erlLCDv8O7x8u4g7/Du6OPt7vDo8PPp8uUg
+5ePuLg0KTGlzdC1VbnN1YnNjcmliZQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
+LWxlYXZlQGxpc3RzLjAxLm9yZwo=
