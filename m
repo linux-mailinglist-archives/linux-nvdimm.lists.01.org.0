@@ -1,61 +1,114 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29641982E4
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Mar 2020 20:03:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE8311984F9
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 30 Mar 2020 21:55:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E99B910FC388F;
-	Mon, 30 Mar 2020 11:04:34 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=188.127.249.47; helo=s260544.savps.ru; envelope-from=drefggod@ukr.net; receiver=<UNKNOWN> 
-Received: from s260544.savps.ru (unknown [188.127.249.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id ABC3210077D1D;
+	Mon, 30 Mar 2020 12:56:03 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DB58510FC388A
-	for <linux-nvdimm@lists.01.org>; Mon, 30 Mar 2020 11:04:31 -0700 (PDT)
-Received: from [78.110.60.78] (helo=manduca-online.ru)
-	by s260544.savps.ru with esmtpa (Exim 4.92.3)
-	(envelope-from <drefggod@ukr.net>)
-	id 1jIyl9-0002gF-9C; Mon, 30 Mar 2020 21:03:39 +0300
-Message-ID: <B7B204575C88B3D00C0940FCF8124FFD@ukr.net>
-From: "Pereklad24" <drefggod@ukr.net>
-Subject: =?windows-1251?B?z+Xw5err4OToIOIg7+Xws+7kIO/g7eTl7LO/?=
-	=?windows-1251?B?IENPVklELTE5ICg4MCDs7uIp?=
-Date: Mon, 30 Mar 2020 21:02:38 +0300
+	by ml01.01.org (Postfix) with ESMTPS id D3B201007A83C
+	for <linux-nvdimm@lists.01.org>; Mon, 30 Mar 2020 12:56:01 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id de14so22292169edb.4
+        for <linux-nvdimm@lists.01.org>; Mon, 30 Mar 2020 12:55:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0m2AnfIRcCHRpZW6PDeIax9gdSThqigcANOhQSHQQRM=;
+        b=l9UrcbgGyZHpzzpXZ0ao5T6qmamT4bwpPo9Q1ZImIf8A7LLg6hVilR0KrN4O3gamsX
+         TTDYIQCaPyZJm/VklimIRgeNaVSOlkAPYBcWC6u4lLFVoKVG3GvRC4sgvM5WwLN230cR
+         NqacKnMDiHYRg5NxBw2W+fdR/djzIb+BwQuL5HGUnGcaGsEKVpBQA6Ibaza1SI8dNSo4
+         1wCRpauHNIBwEuVetbcLpEdV1LxzYnn6SincBoe4V3EhF3iBRM/JOpP5Gm6ettn+PyeR
+         kd8ucX/kUEddGzeLrJ8AcsMIcaAHlPDS+29wJSZpBltd4kvSmndVWXZiizq1H4clGtmK
+         Zjrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0m2AnfIRcCHRpZW6PDeIax9gdSThqigcANOhQSHQQRM=;
+        b=G2bfomvyDHd4NBGTx4hJwp3IVsDb8TdKBEOy9Xj1L7IP1fEUHdPV27RTQ9/4hTqM3k
+         KujR24jiELbGSieqI2FYxLkWvJnAWi5R0C3ngsOkwW+w54fZAjKxpK9CDCoqSM5xWO4w
+         13a8W4rkrGGRAiwoVXwA/1cYVoY4S2v5VgZgGcBvBvB41cKRa/4m9llsG+kL7y+cR797
+         W29cVqY+0nMJ42tJCselAj6R85XmqpgXkur8G7eeNaNpzpLu8dbepgQMDNVHUMd5qv2m
+         nRK9DqG/h3yrQinBpUdddQEcQxKxLYUk30Nvo1tw3TEVEE0RVE9F7IXYLZsemeLNCePq
+         j6Lg==
+X-Gm-Message-State: ANhLgQ1ptkuDOuogh+xjTkoPVvf1qk+DrXrH7Pavc6m0BSbzzdLkxQwP
+	jQ4U4gmQ8w/L6rLtoRnJk+1/FrWT30eXiUKZCjyhwA==
+X-Google-Smtp-Source: ADFU+vuRYf2PNGMfKGMR9APzvmfg1zGeVpB4kVz6LrQE2pYYEguvqYB2rhx1GF+WePdck7GQUX3jq1SI88VCcV1b6Hc=
+X-Received: by 2002:a17:906:1697:: with SMTP id s23mr12715702ejd.211.1585598108932;
+ Mon, 30 Mar 2020 12:55:08 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: 4ZV2PPDUKEIOGZCPR3UY3HHBPWMI4DVQ
-X-Message-ID-Hash: 4ZV2PPDUKEIOGZCPR3UY3HHBPWMI4DVQ
-X-MailFrom: drefggod@ukr.net
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+References: <20200319195046.GA452@embeddedor.com> <CAJZ5v0iDVL1WWTmmQX+2JDmyAfu2e8nSdLSmCqA-WZV+7pBHvw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0iDVL1WWTmmQX+2JDmyAfu2e8nSdLSmCqA-WZV+7pBHvw@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 30 Mar 2020 12:54:57 -0700
+Message-ID: <CAPcyv4icgZEn9r9-+-R+rBQKebq+QcpYGQ-dvCiqhkO8XmDmEA@mail.gmail.com>
+Subject: Re: [PATCH][next] acpi: nfit.h: Replace zero-length array with
+ flexible-array member
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: QKWACDS5MT5XIHIK5D3ZQQLES6OCKHC4
+X-Message-ID-Hash: QKWACDS5MT5XIHIK5D3ZQQLES6OCKHC4
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4ZV2PPDUKEIOGZCPR3UY3HHBPWMI4DVQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QKWACDS5MT5XIHIK5D3ZQQLES6OCKHC4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-UGVyZWtsYWQyNCCWIOH+8O4g7+Xw5err4OSz4iwg8e/l9rPg67Pn7uLg7eUg7eAg4ujq7u3g7e2z
-IPLl8Oyz7e7i6PUg7+Xw5err4OSz4iAoODAg7O7iKS4NCg0KzeAg7+Xws+7kIOrg8ODt8ujt8yDs
-6CDv8O7k7uLm87rs7iDv8OD2/uLg8ugg8uAg4ujq7u3zuuzuIO/l8OXq6+Dk6CDh5efv5fDl4bPp
-7e4uDQoNCsLo6u7t87rs7iDv5fDl6uvg5Og6IA0KDQqVIMTu4+7i7vCz4iDy4CDq7u3y8ODq8rPi
-DQoNCpUgx+Kz8u3u8fKzIPLgIPPx8uDt7uL36PUg5O7q8+zl7fKz4g0KDQqVINHg6fKz4iwg7ODw
-6uXy6O3j7uLo9SDy4CDw5err4Ozt6PUg7ODy5fCz4Ouz4g0KDQqVINLl9e2z9+3o9SDy5erx8rPi
-DQoNCpUgzOXk6Pft6PUg5O7q8+zl7fKz4g0KDQqVINHv5faz4Ouz5+7i4O3o9SDx6uvg5O3o9SDy
-5erx8rPiDQoNCsTr/yDvs+Ty8Ojs6ugg7eD46PUg6uuzuu3ys+Ig4iDq8Ojn7uLo6SD34PEg7Ogg
-8O7n+Ojw6OvoIOPu5Ojt6CDw7uHu8ugg8uAg7/Do6ezguuzuIOfg7O7i6+Xt7f8g5yAwODowMCDk
-7iAyMDowMC4NCg0Kzurws+wg8fLg7eTg8PLt6PUg8fLw7uqz4iwg4ujq7u3zuuzuIO/l8OXq6+Dk
-6CDiIPLl8Oyz7e7i7uzzICjx/O7j7uTtsyDt4CDn4OLy8OApIO3gIO3g5PLl8Oyz7e7i7uzzICjx
-/O7j7uTtsyDt4CDx/O7j7uTtsykg8OXm6OyzLg0KDQrE6/8g8O7n8OD18+3q8yDi4PDy7vHysyDy
-4CDx8vDu6rPiIO/l8OXq6+Dk8ywg8eru8Ojx8uDp8uXx/yD07vDs7v4g5Ov/IOfg7O7i6+Xt7f8g
-7eAg8eDp8rM6DQoNCs/l8OXp8ugg7eAg8eDp8j4+PqANCg0KKzM4MDQ0IDM1NSAwNzU1DQoNCisz
-ODA2MyAzNTUgMDc1NQ0KDQrB5fDl5rPy/CDx5eHlIQ0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Wed, Mar 25, 2020 at 3:06 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Thu, Mar 19, 2020 at 9:15 PM Gustavo A. R. Silva
+> <gustavo@embeddedor.com> wrote:
+> >
+> > The current codebase makes use of the zero-length array language
+> > extension to the C90 standard, but the preferred mechanism to declare
+> > variable-length types such as these ones is a flexible array member[1][2],
+> > introduced in C99:
+> >
+> > struct foo {
+> >         int stuff;
+> >         struct boo array[];
+> > };
+> >
+> > By making use of the mechanism above, we will get a compiler warning
+> > in case the flexible array does not occur last in the structure, which
+> > will help us prevent some kind of undefined behavior bugs from being
+> > inadvertently introduced[3] to the codebase from now on.
+> >
+> > Also, notice that, dynamic memory allocations won't be affected by
+> > this change:
+> >
+> > "Flexible array members have incomplete type, and so the sizeof operator
+> > may not be applied. As a quirk of the original implementation of
+> > zero-length arrays, sizeof evaluates to zero."[1]
+> >
+> > This issue was found with the help of Coccinelle.
+> >
+> > [1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+> > [2] https://github.com/KSPP/linux/issues/21
+> > [3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+> >
+> > Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+>
+> Dan,
+>
+> I'm assuming that you will take care of this one or please let me know
+> otherwise.
+
+Yes, this one and the other 2 related libnvdimm fixups are in my queue.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
