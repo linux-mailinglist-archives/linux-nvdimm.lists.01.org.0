@@ -1,351 +1,95 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B16199487
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 12:59:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0F31995C7
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 13:51:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C3B8E10FC38A6;
-	Tue, 31 Mar 2020 03:59:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 5D41F10FC389E;
+	Tue, 31 Mar 2020 04:52:23 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=huawei.com; envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN> 
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 87E7E10FC38A0
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 03:59:51 -0700 (PDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02VAXDPv155869
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 06:59:01 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 30206y3yve-1
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 06:59:00 -0400
-Received: from localhost
-	by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-	for <linux-nvdimm@lists.01.org> from <vaibhav@linux.ibm.com>;
-	Tue, 31 Mar 2020 11:58:46 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-	by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-	Tue, 31 Mar 2020 11:58:43 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 02VAwsxM2032120
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 31 Mar 2020 10:58:54 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DDA911C04A;
-	Tue, 31 Mar 2020 10:58:54 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 933EC11C04C;
-	Tue, 31 Mar 2020 10:58:51 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.85.86.229])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Tue, 31 Mar 2020 10:58:51 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [PATCH v4 4/4] powerpc/papr_scm: Implement support for DSM_PAPR_SCM_HEALTH
-Date: Tue, 31 Mar 2020 16:28:29 +0530
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200331105829.266591-1-vaibhav@linux.ibm.com>
-References: <20200331105829.266591-1-vaibhav@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 9A88C10FC389C
+	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 04:52:20 -0700 (PDT)
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+	by Forcepoint Email with ESMTP id 3180AD57F30DCA01549B;
+	Tue, 31 Mar 2020 19:51:27 +0800 (CST)
+Received: from localhost (10.173.223.234) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Tue, 31 Mar 2020
+ 19:51:20 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
+	<dave.jiang@intel.com>, <ira.weiny@intel.com>, <aneesh.kumar@linux.ibm.com>,
+	<jmoyer@redhat.com>
+Subject: [PATCH v2 -next] libnvdimm/region: Fix build error
+Date: Tue, 31 Mar 2020 19:50:24 +0800
+Message-ID: <20200331115024.31628-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+In-Reply-To: <20200330141943.31696-1-yuehaibing@huawei.com>
+References: <20200330141943.31696-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 20033110-0016-0000-0000-000002FB9748
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20033110-0017-0000-0000-0000335F55F8
-Message-Id: <20200331105829.266591-5-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-03-31_03:2020-03-30,2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2003310091
-Message-ID-Hash: WBCCMQZ6DNG5DYCU2DT2ODJTKYC2GFVI
-X-Message-ID-Hash: WBCCMQZ6DNG5DYCU2DT2ODJTKYC2GFVI
-X-MailFrom: vaibhav@linux.ibm.com
+X-Originating-IP: [10.173.223.234]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: 7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H
+X-Message-ID-Hash: 7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H
+X-MailFrom: yuehaibing@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <ellerman@au1.ibm.com>, Alastair D'Silva <alastair@au1.ibm.com>
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WBCCMQZ6DNG5DYCU2DT2ODJTKYC2GFVI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-This patch implements support for papr_scm command
-'DSM_PAPR_SCM_HEALTH' that returns a newly introduced 'struct
-nd_papr_scm_dimm_health_stat' instance containing dimm health
-information back to user space in response to ND_CMD_CALL. This
-functionality is implemented in newly introduced papr_scm_get_health()
-that queries the scm-dimm health information and then copies these bitmaps
-to the package payload whose layout is defined by 'struct
-papr_scm_ndctl_health'.
-
-The patch also introduces a new member a new member 'struct
-papr_scm_priv.health' thats an instance of 'struct
-nd_papr_scm_dimm_health_stat' to cache the health information of a
-scm-dimm. As a result functions drc_pmem_query_health() and
-papr_flags_show() are updated to populate and use this new struct
-instead of two be64 integers that we earlier used.
-
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Changelog:
-
-v3..v4: Call the DSM_PAPR_SCM_HEALTH service function from
-	papr_scm_service_dsm() instead of papr_scm_ndctl(). [Aneesh]
-
-v2..v3: Updated struct nd_papr_scm_dimm_health_stat_v1 to use '__xx'
-	types as its exported to the userspace [Aneesh]
-	Changed the constants DSM_PAPR_SCM_DIMM_XX indicating dimm
-	health from enum to #defines [Aneesh]
-
-v1..v2: New patch in the series
----
- arch/powerpc/include/uapi/asm/papr_scm_dsm.h |  40 +++++++
- arch/powerpc/platforms/pseries/papr_scm.c    | 109 ++++++++++++++++---
- 2 files changed, 132 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/include/uapi/asm/papr_scm_dsm.h b/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-index c039a49b41b4..8265125304ca 100644
---- a/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-+++ b/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-@@ -132,6 +132,7 @@ struct nd_papr_scm_cmd_pkg {
-  */
- enum dsm_papr_scm {
- 	DSM_PAPR_SCM_MIN =  0x10000,
-+	DSM_PAPR_SCM_HEALTH,
- 	DSM_PAPR_SCM_MAX,
- };
- 
-@@ -158,4 +159,43 @@ static void *papr_scm_pcmd_to_payload(struct nd_papr_scm_cmd_pkg *pcmd)
- 	else
- 		return (void *)((__u8 *) pcmd + pcmd->payload_offset);
- }
-+
-+/* Various scm-dimm health indicators */
-+#define DSM_PAPR_SCM_DIMM_HEALTHY       0
-+#define DSM_PAPR_SCM_DIMM_UNHEALTHY     1
-+#define DSM_PAPR_SCM_DIMM_CRITICAL      2
-+#define DSM_PAPR_SCM_DIMM_FATAL         3
-+
-+/*
-+ * Struct exchanged between kernel & ndctl in for PAPR_DSM_PAPR_SMART_HEALTH
-+ * Various bitflags indicate the health status of the dimm.
-+ *
-+ * dimm_unarmed		: Dimm not armed. So contents wont persist.
-+ * dimm_bad_shutdown	: Previous shutdown did not persist contents.
-+ * dimm_bad_restore	: Contents from previous shutdown werent restored.
-+ * dimm_scrubbed	: Contents of the dimm have been scrubbed.
-+ * dimm_locked		: Contents of the dimm cant be modified until CEC reboot
-+ * dimm_encrypted	: Contents of dimm are encrypted.
-+ * dimm_health		: Dimm health indicator.
-+ */
-+struct nd_papr_scm_dimm_health_stat_v1 {
-+	__u8 dimm_unarmed;
-+	__u8 dimm_bad_shutdown;
-+	__u8 dimm_bad_restore;
-+	__u8 dimm_scrubbed;
-+	__u8 dimm_locked;
-+	__u8 dimm_encrypted;
-+	__u16 dimm_health;
-+};
-+
-+/*
-+ * Typedef the current struct for dimm_health so that any application
-+ * or kernel recompiled after introducing a new version automatically
-+ * supports the new version.
-+ */
-+#define nd_papr_scm_dimm_health_stat nd_papr_scm_dimm_health_stat_v1
-+
-+/* Current version number for the dimm health struct */
-+#define ND_PAPR_SCM_DIMM_HEALTH_VERSION 1
-+
- #endif /* _UAPI_ASM_POWERPC_PAPR_SCM_DSM_H_ */
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index e415a3c0d89e..62b20ef66b33 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -47,8 +47,7 @@ struct papr_scm_priv {
- 	struct mutex dimm_mutex;
- 
- 	/* Health information for the dimm */
--	__be64 health_bitmap;
--	__be64 health_bitmap_valid;
-+	struct nd_papr_scm_dimm_health_stat health;
- };
- 
- static int drc_pmem_bind(struct papr_scm_priv *p)
-@@ -158,6 +157,7 @@ static int drc_pmem_query_health(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
- 	int64_t rc;
-+	__be64 health;
- 
- 	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
- 	if (rc != H_SUCCESS) {
-@@ -172,13 +172,41 @@ static int drc_pmem_query_health(struct papr_scm_priv *p)
- 		return rc;
- 
- 	/* Store the retrieved health information in dimm platform data */
--	p->health_bitmap = ret[0];
--	p->health_bitmap_valid = ret[1];
-+	health = ret[0] & ret[1];
- 
- 	dev_dbg(&p->pdev->dev,
- 		"Queried dimm health info. Bitmap:0x%016llx Mask:0x%016llx\n",
--		be64_to_cpu(p->health_bitmap),
--		be64_to_cpu(p->health_bitmap_valid));
-+		be64_to_cpu(ret[0]),
-+		be64_to_cpu(ret[1]));
-+
-+	memset(&p->health, 0, sizeof(p->health));
-+
-+	/* Check for various masks in bitmap and set the buffer */
-+	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
-+		p->health.dimm_unarmed = true;
-+
-+	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
-+		p->health.dimm_bad_shutdown = true;
-+
-+	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
-+		p->health.dimm_bad_restore = true;
-+
-+	if (health & PAPR_SCM_DIMM_ENCRYPTED)
-+		p->health.dimm_encrypted = true;
-+
-+	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED) {
-+		p->health.dimm_locked = true;
-+		p->health.dimm_scrubbed = true;
-+	}
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_UNHEALTHY)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_UNHEALTHY;
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_CRITICAL)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_CRITICAL;
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_FATAL)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_FATAL;
- 
- 	mutex_unlock(&p->dimm_mutex);
- 	return 0;
-@@ -331,6 +359,51 @@ static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
- 	return 0;
- }
- 
-+/* Fetch the DIMM health info and populate it in provided package. */
-+static int papr_scm_get_health(struct papr_scm_priv *p,
-+			       struct nd_papr_scm_cmd_pkg *pkg)
-+{
-+	int rc;
-+	size_t copysize = sizeof(p->health);
-+
-+	rc = drc_pmem_query_health(p);
-+	if (rc)
-+		goto out;
-+	/*
-+	 * If the requested payload version is greater than one we know
-+	 * about, return the payload version we know about and let
-+	 * caller/userspace handle.
-+	 */
-+	if (pkg->payload_version > ND_PAPR_SCM_DIMM_HEALTH_VERSION)
-+		pkg->payload_version = ND_PAPR_SCM_DIMM_HEALTH_VERSION;
-+
-+	if (pkg->hdr.nd_size_out < copysize) {
-+		dev_dbg(&p->pdev->dev, "%s Payload not large enough\n",
-+			__func__);
-+		dev_dbg(&p->pdev->dev, "%s Expected %lu, available %u\n",
-+			__func__, copysize, pkg->hdr.nd_size_out);
-+		rc = -ENOSPC;
-+		goto out;
-+	}
-+
-+	dev_dbg(&p->pdev->dev, "%s Copying payload size=%lu version=0x%x\n",
-+		__func__, copysize, pkg->payload_version);
-+
-+	/* Copy a subset of health struct based on copysize */
-+	memcpy(papr_scm_pcmd_to_payload(pkg), &p->health, copysize);
-+	pkg->hdr.nd_fw_size = copysize;
-+
-+out:
-+	/*
-+	 * Put the error in out package and return success from function
-+	 * so that errors if any are propogated back to userspace.
-+	 */
-+	pkg->cmd_status = rc;
-+	dev_dbg(&p->pdev->dev, "%s completion code = %d\n", __func__, rc);
-+
-+	return 0;
-+}
-+
- static int papr_scm_service_dsm(struct papr_scm_priv *p,
- 				struct nd_papr_scm_cmd_pkg *call_pkg)
- {
-@@ -345,6 +418,9 @@ static int papr_scm_service_dsm(struct papr_scm_priv *p,
- 
- 	/* Depending on the DSM command call appropriate service routine */
- 	switch (call_pkg->hdr.nd_command) {
-+	case DSM_PAPR_SCM_HEALTH:
-+		return papr_scm_get_health(p, call_pkg);
-+
- 	default:
- 		pr_debug("Unsupported DSM command 0x%llx\n",
- 			 call_pkg->hdr.nd_command);
-@@ -431,7 +507,6 @@ static ssize_t papr_flags_show(struct device *dev,
- {
- 	struct nvdimm *dimm = to_nvdimm(dev);
- 	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
--	__be64 health;
- 	int rc;
- 
- 	rc = drc_pmem_query_health(p);
-@@ -443,26 +518,26 @@ static ssize_t papr_flags_show(struct device *dev,
- 	if (rc)
- 		return rc;
- 
--	health = p->health_bitmap & p->health_bitmap_valid;
--
--	/* Check for various masks in bitmap and set the buffer */
--	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
-+	if (p->health.dimm_unarmed)
- 		rc += sprintf(buf, "not_armed ");
- 
--	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
-+	if (p->health.dimm_bad_shutdown)
- 		rc += sprintf(buf + rc, "save_fail ");
- 
--	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
-+	if (p->health.dimm_bad_restore)
- 		rc += sprintf(buf + rc, "restore_fail ");
- 
--	if (health & PAPR_SCM_DIMM_ENCRYPTED)
-+	if (p->health.dimm_encrypted)
- 		rc += sprintf(buf + rc, "encrypted ");
- 
--	if (health & PAPR_SCM_DIMM_SMART_EVENT_MASK)
-+	if (p->health.dimm_health)
- 		rc += sprintf(buf + rc, "smart_notify ");
- 
--	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED)
--		rc += sprintf(buf + rc, "scrubbed locked ");
-+	if (p->health.dimm_scrubbed)
-+		rc += sprintf(buf + rc, "scrubbed ");
-+
-+	if (p->health.dimm_locked)
-+		rc += sprintf(buf + rc, "locked ");
- 
- 	if (rc > 0)
- 		rc += sprintf(buf + rc, "\n");
--- 
-2.24.1
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gQ09ORklHX1BQQzMyPXkgYnVpbGQgZmFpbHM6DQoNCmRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9k
+ZXZzLmM6MTAzNDoxNDogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGRvX2RpduKAmQ0K
+ICByZW1haW5kZXIgPSBkb19kaXYocGVyX21hcHBpbmcsIG1hcHBpbmdzKTsNCiAgICAgICAgICAg
+ICAgXn5+fn5+DQpJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9n
+ZW5lcmF0ZWQvYXNtL2RpdjY0Lmg6MTowLA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVk
+ZS9saW51eC9rZXJuZWwuaDoxOCwNCiAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvYXNt
+LWdlbmVyaWMvYnVnLmg6MTksDQogICAgICAgICAgICAgICAgIGZyb20gLi9hcmNoL3Bvd2VycGMv
+aW5jbHVkZS9hc20vYnVnLmg6MTA5LA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9s
+aW51eC9idWcuaDo1LA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9saW51eC9zY2F0
+dGVybGlzdC5oOjcsDQogICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9udmRpbW0vcmVnaW9u
+X2RldnMuYzo1Og0KLi9pbmNsdWRlL2FzbS1nZW5lcmljL2RpdjY0Lmg6MjQzOjIyOiBlcnJvcjog
+cGFzc2luZyBhcmd1bWVudCAxIG9mIOKAmF9fZGl2NjRfMzLigJkgZnJvbSBpbmNvbXBhdGlibGUg
+cG9pbnRlciB0eXBlIFstV2Vycm9yPWluY29tcGF0aWJsZS1wb2ludGVyLXR5cGVzXQ0KICAgX19y
+ZW0gPSBfX2RpdjY0XzMyKCYobiksIF9fYmFzZSk7IFwNCg0KVXNlIGRpdl91NjQgaW5zdGVhZCBv
+ZiBkb19kaXYgdG8gZml4IHRoaXMuDQoNCkZpeGVzOiAyNTIyYWZiODZhOGMgKCJsaWJudmRpbW0v
+cmVnaW9uOiBJbnRyb2R1Y2UgYW4gJ2FsaWduJyBhdHRyaWJ1dGUiKQ0KU2lnbmVkLW9mZi1ieTog
+WXVlSGFpYmluZyA8eXVlaGFpYmluZ0BodWF3ZWkuY29tPg0KLS0tDQp2MjogdXNlIGRpdl91NjRf
+cmVtIGFuZCBjb2RlIGNsZWFudXANCi0tLQ0KIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMg
+fCA4ICsrKy0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlv
+bnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMgYi9kcml2
+ZXJzL252ZGltbS9yZWdpb25fZGV2cy5jDQppbmRleCBiZjIzOWU3ODM5NDAuLmNjYmI1YjQzYjhi
+MiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMNCisrKyBiL2RyaXZl
+cnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMNCkBAIC01NjMsOCArNTYzLDcgQEAgc3RhdGljIHNzaXpl
+X3QgYWxpZ25fc3RvcmUoc3RydWN0IGRldmljZSAqZGV2LA0KIAkgKiBjb250cmlidXRlIHRvIHRo
+ZSB0YWlsIGNhcGFjaXR5IGluIHN5c3RlbS1waHlzaWNhbC1hZGRyZXNzDQogCSAqIHNwYWNlIGZv
+ciB0aGUgbmFtZXNwYWNlLg0KIAkgKi8NCi0JZHBhID0gdmFsOw0KLQlyZW1haW5kZXIgPSBkb19k
+aXYoZHBhLCBuZF9yZWdpb24tPm5kcl9tYXBwaW5ncyk7DQorCWRwYSA9IGRpdl91NjRfcmVtKHZh
+bCwgbmRfcmVnaW9uLT5uZHJfbWFwcGluZ3MsICZyZW1haW5kZXIpOw0KIAlpZiAoIWlzX3Bvd2Vy
+X29mXzIoZHBhKSB8fCBkcGEgPCBQQUdFX1NJWkUNCiAJCQl8fCB2YWwgPiByZWdpb25fc2l6ZShu
+ZF9yZWdpb24pIHx8IHJlbWFpbmRlcikNCiAJCXJldHVybiAtRUlOVkFMOw0KQEAgLTEwMTAsNyAr
+MTAwOSw3IEBAIEVYUE9SVF9TWU1CT0wobmRfcmVnaW9uX3JlbGVhc2VfbGFuZSk7DQogDQogc3Rh
+dGljIHVuc2lnbmVkIGxvbmcgZGVmYXVsdF9hbGlnbihzdHJ1Y3QgbmRfcmVnaW9uICpuZF9yZWdp
+b24pDQogew0KLQl1bnNpZ25lZCBsb25nIGFsaWduLCBwZXJfbWFwcGluZzsNCisJdW5zaWduZWQg
+bG9uZyBhbGlnbjsNCiAJaW50IGksIG1hcHBpbmdzOw0KIAl1MzIgcmVtYWluZGVyOw0KIA0KQEAg
+LTEwMzAsOCArMTAyOSw3IEBAIHN0YXRpYyB1bnNpZ25lZCBsb25nIGRlZmF1bHRfYWxpZ24oc3Ry
+dWN0IG5kX3JlZ2lvbiAqbmRfcmVnaW9uKQ0KIAl9DQogDQogCW1hcHBpbmdzID0gbWF4X3QodTE2
+LCAxLCBuZF9yZWdpb24tPm5kcl9tYXBwaW5ncyk7DQotCXBlcl9tYXBwaW5nID0gYWxpZ247DQot
+CXJlbWFpbmRlciA9IGRvX2RpdihwZXJfbWFwcGluZywgbWFwcGluZ3MpOw0KKwlkaXZfdTY0X3Jl
+bShhbGlnbiwgbWFwcGluZ3MsICZyZW1haW5kZXIpOw0KIAlpZiAocmVtYWluZGVyKQ0KIAkJYWxp
+Z24gKj0gbWFwcGluZ3M7DQogDQotLSANCjIuMTcuMQ0KDQpfX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
+bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
+aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
