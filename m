@@ -2,363 +2,177 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A371198F02
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 10:59:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 747A31988E8
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 02:28:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 952D610FC3892;
-	Tue, 31 Mar 2020 02:00:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.55.73.32; helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org; receiver=<UNKNOWN> 
-Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com [66.55.73.32])
-	by ml01.01.org (Postfix) with ESMTP id 095A310FC3890
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 02:00:34 -0700 (PDT)
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-	by ushosting.nmnhosting.com (Postfix) with ESMTPS id 709922DC6863;
-	Mon, 30 Mar 2020 16:52:58 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-	s=201810a; t=1585547579;
-	bh=/ca1KYpFanyYMVbs68dr19xdKxkz41V0vgTQ9aYJwrk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEAkgqy8sYoMNXNSHtEMHgFyUhgF7eswqGIzw5cTL9d8Ce/mAiuF+j3x6UsLKfeCJ
-	 sKdZc2iP7tvcfSfPjHmM5V72eHMWyvPdp7/ls+jgJF3WTd81TsaF4PPVObcERiLV61
-	 hiNs5FJcPjagQHqbTXyR15J5ngFd+eo6SsOLV0X8YkpTsMEm0ICDvFiSfEiuay91kn
-	 4ohxvdABPi+smiQm+O9dLWUxRXXz3jk1VFkHIcC+iC8yftoAlg/6XGbxqSs08xQu9A
-	 55RvHF+bmzPvzR3igzK2spwG9M3j9SURWqI7vlJXLMHk9HAlN1q/5Jdh/G5VOSaHJ1
-	 88QkO+qFKB48gAQ8Z9DkVMS5xIXff17UEwjngE3ppAKkQotDdHDo6o7O8ksTciapJW
-	 djlsNB+lf1rFQLBA29PqyfwXkZwEFhVhgTDCCbc0a8ga7B0O85V+VqzuT4ODU2bPdd
-	 ocBKT+GnvkXD3nwPqVZ39v0lOsGIAb5Bgly9fNCf1+DugXZQMjoBHNinZ1XefGz02V
-	 93blURIhnMD1Nk1FodnmCjbywYdB6f2mRb+jEwqvcQogdJN7xE+qxXW3kpuvBeU5dX
-	 NrokEv2reY/lK0p+vku/YE1ZckI+CDcB+Tjt2inhEyRDDJftojDu7CjT6J9Q/6B0rn
-	 VwiJrr14r7AX8jm6PdMRVxvc=
-Received: from localhost.lan ([10.0.1.179])
-	by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Av045934;
-	Fri, 27 Mar 2020 18:12:19 +1100 (AEDT)
-	(envelope-from alastair@d-silva.org)
-From: "Alastair D'Silva" <alastair@d-silva.org>
-To: alastair@d-silva.org
-Subject: [PATCH v4 22/25] nvdimm/ocxl: Add debug IOCTLs
-Date: Fri, 27 Mar 2020 18:11:59 +1100
-Message-Id: <20200327071202.2159885-23-alastair@d-silva.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
-References: <20200327071202.2159885-1-alastair@d-silva.org>
+	by ml01.01.org (Postfix) with ESMTP id A9BB810FC35A4;
+	Mon, 30 Mar 2020 17:28:57 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.147.86; helo=mx0a-002e3701.pphosted.com; envelope-from=prvs=03591b7fa3=elliott@hpe.com; receiver=<UNKNOWN> 
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 611D910FC3192
+	for <linux-nvdimm@lists.01.org>; Mon, 30 Mar 2020 17:28:54 -0700 (PDT)
+Received: from pps.filterd (m0148663.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 02V0NKkx012711;
+	Tue, 31 Mar 2020 00:28:04 GMT
+Received: from g9t5009.houston.hpe.com (g9t5009.houston.hpe.com [15.241.48.73])
+	by mx0a-002e3701.pphosted.com with ESMTP id 303qjk9df1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 31 Mar 2020 00:28:04 +0000
+Received: from G9W8456.americas.hpqcorp.net (exchangepmrr1.us.hpecorp.net [16.216.161.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by g9t5009.houston.hpe.com (Postfix) with ESMTPS id 899E270;
+	Tue, 31 Mar 2020 00:28:03 +0000 (UTC)
+Received: from G9W8454.americas.hpqcorp.net (2002:10d8:a104::10d8:a104) by
+ G9W8456.americas.hpqcorp.net (2002:10d8:a15f::10d8:a15f) with Microsoft SMTP
+ Server (TLS) id 15.0.1497.2; Tue, 31 Mar 2020 00:28:03 +0000
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (15.241.52.12) by
+ G9W8454.americas.hpqcorp.net (16.216.161.4) with Microsoft SMTP Server (TLS)
+ id 15.0.1497.2 via Frontend Transport; Tue, 31 Mar 2020 00:28:03 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oevEkno+XK3XJ7w/pi7ZaFjWwUrJtD1A97awpwNk/uN2J2y5gs40SZEwkCd4eAZpYDCoShOHHiCnkxwmFSaFcJHAQc+CDVJFIxoONTBJOtDVr9SORQZUH2bC6pYFQwQ35+UpOG9gKXtX34qnxBMrNUrQSWpXE2dTmwO/dGlBnCnepEMKhUfq232exDW/gw05tJzISKTddX5742+AFNLVXfzYquBOezR528TbDvzcWQA1SG7IBEL/e7B+0OowX1gIgvEWPI5uRrNfsOROFmFWCc20cldS+eEecqv7SnUjbA6gRGDJfuFMr/A8Batk2zltdywa+Pj5t8Y/2bQGI+2JpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VI6n+BX3RcEDHP6qKjzBAC5STXNbndYnJBlC+9jGfIg=;
+ b=Nhg/rfBzW+IHs/+g4t2uFLa1hcnVyRus3E0VBuhRVPP8rGRdVq48S13zMsNLOIvjTGm7S+GmmoHWEdfhNXe/Q4Cp9Bryh8hJ/7VYawBE3NxSbH/ylJ5i2rY95Ozo1M62V//n/ecNC+pa6Lw6/7eSkMbI7JuK2pKlylXcKno+PPWdlcz4JnbaAcDj3I2LGMRGWlvF6Df5NDF0mcm440C/fjFR386OGDX/2cnD/RgaVuDKRHp10ih5+7Z1MZWM2zWa75JuL4zZzoyzZYu9VmxxM3LCmhURFBQFxHcRtJhuS2X2bY3UrEL3I3QXFY+4iXf+WcRR/9fE7DQSk6egcbkJUw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM
+ (2a01:111:e400:7514::15) by CS1PR8401MB0519.NAMPRD84.PROD.OUTLOOK.COM
+ (2a01:111:e400:7509::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Tue, 31 Mar
+ 2020 00:28:01 +0000
+Received: from CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::6023:914f:6cca:4c98]) by CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::6023:914f:6cca:4c98%7]) with mapi id 15.20.2856.019; Tue, 31 Mar 2020
+ 00:28:01 +0000
+From: "Elliott, Robert (Servers)" <elliott@hpe.com>
+To: Mikulas Patocka <mpatocka@redhat.com>,
+        Dan Williams
+	<dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
+        "Dave
+ Jiang" <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+        Mike Snitzer
+	<msnitzer@redhat.com>
+Subject: RE: [PATCH v2] memcpy_flushcache: use cache flusing for larger
+ lengths
+Thread-Topic: [PATCH v2] memcpy_flushcache: use cache flusing for larger
+ lengths
+Thread-Index: AQHWBob+0rIHl10OXEaKSzaWD6MWpKhh0ScQ
+Date: Tue, 31 Mar 2020 00:28:01 +0000
+Message-ID: <CS1PR8401MB12377197482867F688BF93F7ABC80@CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM>
+References: <alpine.LRH.2.02.2003291625590.32108@file01.intranet.prod.int.rdu2.redhat.com>
+ <alpine.LRH.2.02.2003300729320.9938@file01.intranet.prod.int.rdu2.redhat.com>
+In-Reply-To: <alpine.LRH.2.02.2003300729320.9938@file01.intranet.prod.int.rdu2.redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [73.206.28.217]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 487cec50-a767-46f6-87fd-08d7d50a5ee6
+x-ms-traffictypediagnostic: CS1PR8401MB0519:
+x-microsoft-antispam-prvs: <CS1PR8401MB0519F05506A9C9E69E24D4B6ABC80@CS1PR8401MB0519.NAMPRD84.PROD.OUTLOOK.COM>
+x-ms-oob-tlc-oobclassifiers: OLM:473;
+x-forefront-prvs: 0359162B6D
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFTY:;SFS:(10019020)(136003)(346002)(376002)(396003)(39860400002)(366004)(55016002)(81166006)(8676002)(81156014)(53546011)(54906003)(316002)(110136005)(7696005)(6506007)(66946007)(71200400001)(66446008)(86362001)(8936002)(33656002)(9686003)(186003)(478600001)(26005)(76116006)(4326008)(2906002)(64756008)(66476007)(52536014)(5660300002)(66556008);DIR:OUT;SFP:1102;
+received-spf: None (protection.outlook.com: hpe.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: JTiLml9JUPekVlsBCXfsfTKyJvTNiV1dZsrkQ1Un/YlbvqvfipcZkX+LNrVVo8xVIp3b3/egS5ou5oA1oVs08NkpeDRQ/PaKsCQuIghIz0tq6pDCp0uHI0xR9+U5GEi+F5l4yY6wsryGkUC+j7KzNiNO7VYLaQCvwvbx8jHL/26De1gvP+RsH67OZaQDwr/l68EBQ2vcDDRT4CliIyP6TTJ7/Ay+1mzMXOEiGjkmfGoaXV1bYNb40szvwQ0pcUDXHxdx49eT9z0r5udsrcWo67+lSzrb4csDz6KtZedb+9jYBDqQsyqvmTeoJFpnhxnAYw4cajs4IJf2Tsu1saisq+c3sKvFgXPdiDaYAZeW2OqMsNkTj/S5tscethihpCdxUBC/eNaBMY0dC2VAJiGWH3oiYS+EzUV23GzR8XXRv/N13v6kApw6k8PdtYtXBc9O
+x-ms-exchange-antispam-messagedata: YY8r65q0WyiPF93UJ3S4KRMPdfw+50yiJdr4o79W84aztSzvBEJNAefDIwnPkpark8tFhqZxqNaQSPTkpsB22ZyAlGC9s7whF6RFtMhZ1gGfK4UMJPciju7rFICfrgVhvQePDSEBcZvro0AV2iU2Rw==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:20 +1100 (AEDT)
-Message-ID-Hash: BFKLZYRCCOZJEBNSTRTEBGFLGNAVU2UL
-X-Message-ID-Hash: BFKLZYRCCOZJEBNSTRTEBGFLGNAVU2UL
-X-MailFrom: alastair@d-silva.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Frederic Barrat <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Mauro Carvalho Chehab <mchehab+samsung@kernel.org>, "David S. Miller" <davem@davemloft.net>, Rob Herring <robh@kernel.org>, Anton Blanchard <anton@ozlabs.org>, Krzysztof Kozlowski <krzk@kernel.org>, Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Madhavan Srinivasan <maddy@linux.vnet.ibm.com>, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Anju T Sudhakar <anju@linux.vnet.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>, Masahiro Yamada <yamada.masahiro@socionext.com>, Alexey Kardashevskiy <aik@ozlabs.r
- u>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org
+X-MS-Exchange-CrossTenant-Network-Message-Id: 487cec50-a767-46f6-87fd-08d7d50a5ee6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Mar 2020 00:28:01.3750
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: iZ3oXsVHYr/mCTYfW567NqKUugVjIu6HmfzIQdRVGILcGow4hZXCtKY6BpHJRPef
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CS1PR8401MB0519
+X-OriginatorOrg: hpe.com
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-03-30_07:2020-03-30,2020-03-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ mlxlogscore=999 spamscore=0 adultscore=0 bulkscore=0 impostorscore=0
+ clxscore=1011 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003310000
+Message-ID-Hash: XNV6A2JKANROO5COLVRKO5XXGL5WJPN7
+X-Message-ID-Hash: XNV6A2JKANROO5COLVRKO5XXGL5WJPN7
+X-MailFrom: prvs=03591b7fa3=elliott@hpe.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dm-devel@redhat.com" <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BFKLZYRCCOZJEBNSTRTEBGFLGNAVU2UL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XNV6A2JKANROO5COLVRKO5XXGL5WJPN7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-These IOCTLs provide low level access to the card to aid in debugging
-controller/FPGA firmware.
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
----
- drivers/nvdimm/ocxl/Kconfig    |   6 +
- drivers/nvdimm/ocxl/main.c     | 198 +++++++++++++++++++++++++++++++++
- drivers/nvdimm/ocxl/ocxlpmem.h |   2 +-
- include/uapi/nvdimm/ocxlpmem.h |  31 ++++++
- 4 files changed, 236 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/ocxl/Kconfig b/drivers/nvdimm/ocxl/Kconfig
-index c5d927520920..3f44429d70c9 100644
---- a/drivers/nvdimm/ocxl/Kconfig
-+++ b/drivers/nvdimm/ocxl/Kconfig
-@@ -12,4 +12,10 @@ config OCXL_PMEM
- 
- 	  Select N if unsure.
- 
-+config OCXL_PMEM_DEBUG
-+	bool "OpenCAPI Persistent Memory debugging"
-+	depends on OCXL_PMEM
-+	help
-+	  Enables low level IOCTLs for OpenCAPI Persistent Memory firmware development
-+
- endif
-diff --git a/drivers/nvdimm/ocxl/main.c b/drivers/nvdimm/ocxl/main.c
-index 2fbe3f2f77d9..2811bf7efbab 100644
---- a/drivers/nvdimm/ocxl/main.c
-+++ b/drivers/nvdimm/ocxl/main.c
-@@ -1027,6 +1027,183 @@ int req_controller_health_perf(struct ocxlpmem *ocxlpmem)
- 				      GLOBAL_MMIO_HCI_REQ_HEALTH_PERF);
- }
- 
-+#ifdef CONFIG_OCXL_PMEM_DEBUG
-+/**
-+ * enable_fwdebug() - Enable FW debug on the controller
-+ * @ocxlpmem: the device metadata
-+ * Return: 0 on success, negative on failure
-+ */
-+static int enable_fwdebug(const struct ocxlpmem *ocxlpmem)
-+{
-+	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
-+				      OCXL_LITTLE_ENDIAN,
-+				      GLOBAL_MMIO_HCI_FW_DEBUG);
-+}
-+
-+/**
-+ * disable_fwdebug() - Disable FW debug on the controller
-+ * @ocxlpmem: the device metadata
-+ * Return: 0 on success, negative on failure
-+ */
-+static int disable_fwdebug(const struct ocxlpmem *ocxlpmem)
-+{
-+	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCIC,
-+				      OCXL_LITTLE_ENDIAN,
-+				      GLOBAL_MMIO_HCI_FW_DEBUG);
-+}
-+
-+static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
-+			 struct ioctl_ocxl_pmem_fwdebug __user *uarg)
-+{
-+	struct ioctl_ocxl_pmem_fwdebug args;
-+	u64 val;
-+	int i;
-+	int rc;
-+
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
-+
-+	// Buffer size must be a multiple of 8
-+	if ((args.buf_size & 0x07))
-+		return -EINVAL;
-+
-+	if (args.buf_size > ocxlpmem->admin_command.data_size)
-+		return -EINVAL;
-+
-+	mutex_lock(&ocxlpmem->admin_command.lock);
-+
-+	rc = enable_fwdebug(ocxlpmem);
-+	if (rc)
-+		goto out;
-+
-+	// Write DebugAction & FunctionCode
-+	val = ((u64)args.debug_action << 56) | ((u64)args.function_code << 40);
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-+				      ocxlpmem->admin_command.request_offset + 0x08,
-+				      OCXL_LITTLE_ENDIAN, val);
-+	if (rc)
-+		goto out;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-+				      ocxlpmem->admin_command.request_offset + 0x10,
-+				      OCXL_LITTLE_ENDIAN,
-+				      args.debug_parameter_1);
-+	if (rc)
-+		goto out;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-+				      ocxlpmem->admin_command.request_offset + 0x18,
-+				      OCXL_LITTLE_ENDIAN,
-+				      args.debug_parameter_2);
-+	if (rc)
-+		goto out;
-+
-+	// Populate admin command buffer
-+	if (args.buf_size) {
-+		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-+			u64 val;
-+
-+			if (copy_from_user(&val, &args.buf[i], sizeof(u64))) {
-+				rc = -EFAULT;
-+				goto out;
-+			}
-+
-+			rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
-+						      ocxlpmem->admin_command.data_offset + i,
-+						      OCXL_HOST_ENDIAN, val);
-+			if (rc)
-+				goto out;
-+		}
-+	}
-+
-+	rc = admin_command_execute(ocxlpmem,
-+				   ocxlpmem->timeouts[ADMIN_COMMAND_FW_DEBUG]);
-+	if (rc < 0)
-+		goto out;
-+	if (rc != STATUS_SUCCESS) {
-+		warn_status(ocxlpmem, "Unexpected status from FW Debug", rc);
-+		goto out;
-+	}
-+
-+	if (args.buf_size) {
-+		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
-+			u64 val;
-+
-+			rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
-+						     ocxlpmem->admin_command.data_offset + i,
-+						     OCXL_HOST_ENDIAN, &val);
-+			if (rc)
-+				goto out;
-+
-+			if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
-+				rc = -EFAULT;
-+				goto out;
-+			}
-+		}
-+	}
-+
-+	rc = admin_response_handled(ocxlpmem);
-+	if (rc)
-+		goto out;
-+
-+	rc = disable_fwdebug(ocxlpmem);
-+
-+out:
-+	mutex_unlock(&ocxlpmem->admin_command.lock);
-+	return rc;
-+}
-+
-+static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
-+{
-+	int rc;
-+
-+	mutex_lock(&ocxlpmem->admin_command.lock);
-+
-+	rc = admin_command_execute(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
-+	if (rc)
-+		goto out;
-+
-+	rc = admin_response_handled(ocxlpmem);
-+
-+out:
-+	mutex_unlock(&ocxlpmem->admin_command.lock);
-+	return rc;
-+}
-+
-+static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
-+			    struct ioctl_ocxl_pmem_mmio __user *uarg)
-+{
-+	struct scm_ioctl_mmio args;
-+
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
-+
-+	return ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, args.address,
-+					OCXL_LITTLE_ENDIAN, args.val);
-+}
-+
-+static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
-+			   struct ioctl_ocxl_pmem_mmio __user *uarg)
-+{
-+	struct ioctl_ocxl_pmem_mmio args;
-+	int rc;
-+
-+	if (copy_from_user(&args, uarg, sizeof(args)))
-+		return -EFAULT;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, args.address,
-+				     OCXL_LITTLE_ENDIAN, &args.val);
-+	if (rc)
-+		return rc;
-+
-+	if (copy_to_user(uarg, &args, sizeof(args)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+#endif /* CONFIG_OCXL_PMEM_DEBUG */
-+
- static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
- {
- 	struct ocxlpmem *ocxlpmem = file->private_data;
-@@ -1068,6 +1245,27 @@ static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
- 	case IOCTL_OCXLPMEM_REQUEST_HEALTH:
- 		rc = req_controller_health_perf(ocxlpmem);
- 		break;
-+
-+#ifdef CONFIG_OCXL_PMEM_DEBUG
-+	case IOCTL_OCXL_PMEM_FWDEBUG:
-+		rc = ioctl_fwdebug(ocxlpmem,
-+				   (struct ioctl_ocxl_pmem_fwdebug __user *)args);
-+		break;
-+
-+	case IOCTL_OCXL_PMEM_SHUTDOWN:
-+		rc = ioctl_shutdown(ocxlpmem);
-+		break;
-+
-+	case IOCTL_OCXL_PMEM_MMIO_WRITE:
-+		rc = ioctl_mmio_write(ocxlpmem,
-+				      (struct ioctl_ocxl_pmem_mmio __user *)args);
-+		break;
-+
-+	case IOCTL_OCXL_PMEM_MMIO_READ:
-+		rc = ioctl_mmio_read(ocxlpmem,
-+				     (struct ioctl_ocxl_pmem_mmio __user *)args);
-+		break;
-+#endif
- 	}
- 
- 	return rc;
-diff --git a/drivers/nvdimm/ocxl/ocxlpmem.h b/drivers/nvdimm/ocxl/ocxlpmem.h
-index 01721596f982..c8794e7775ec 100644
---- a/drivers/nvdimm/ocxl/ocxlpmem.h
-+++ b/drivers/nvdimm/ocxl/ocxlpmem.h
-@@ -158,7 +158,7 @@ int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi);
-  *
-  * @ocxlpmem: the device metadata
-  * @op_code: the code for the admin command
-- * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
-+// * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
-  */
- int admin_command_execute(struct ocxlpmem *ocxlpmem, u8 op_code);
- 
-diff --git a/include/uapi/nvdimm/ocxlpmem.h b/include/uapi/nvdimm/ocxlpmem.h
-index 9c5c8585c1c2..374b70690b3a 100644
---- a/include/uapi/nvdimm/ocxlpmem.h
-+++ b/include/uapi/nvdimm/ocxlpmem.h
-@@ -93,4 +93,35 @@ struct ioctl_ocxlpmem_eventfd {
- #define IOCTL_OCXLPMEM_EVENT_CHECK			_IOR(OCXLPMEM_MAGIC, 0x36, __u64)
- #define IOCTL_OCXLPMEM_REQUEST_HEALTH			_IO(OCXLPMEM_MAGIC, 0x37)
- 
-+/*
-+ * Debug IOCTLs, these are only available if the kernel is compiled with
-+ * CONFIG_OCXLPMEM_DEBUG
-+ */
-+
-+#define	OCXLPMEM_FWDEBUG_READ_CONTROLLER_MEMORY	0x01
-+#define	OCXLPMEM_FWDEBUG_WRITE_CONTROLLER_MEMORY	0x02
-+#define	OCXLPMEM_FWDEBUG_ENABLE_FUNCTION		0x03
-+#define	OCXLPMEM_FWDEBUG_DISABLE_FUNCTION		0x04
-+#define	OCXLPMEM_FWDEBUG_GET_PEL			0x05 /* Retrieve Persistent Error Log */
-+
-+struct ioctl_ocxlpmem_fwdebug { /* All args are inputs */
-+	__u64 debug_parameter_1;
-+	__u64 debug_parameter_2;
-+	__u64 buf; /* Coerced pointer to optional in/out data buffer */
-+	__u16 debug_action; /* OCXLPMEM_FWDEBUG_... */
-+	__u16 function_code;
-+	__u16 buf_size; /* Size of optional data buffer */
-+	__u16 reserved;
-+};
-+
-+struct ioctl_ocxlpmem_mmio {
-+	__u64 address; /* Offset in global MMIO space */
-+	__u64 val; /* value to write/was read */
-+};
-+
-+#define IOCTL_OCXLPMEM_FWDEBUG		_IOWR(OCXLPMEM_MAGIC, 0xf0, struct ioctl_ocxlpmem_fwdebug)
-+#define IOCTL_OCXLPMEM_MMIO_WRITE	_IOW(OCXLPMEM_MAGIC, 0xf1, struct ioctl_ocxlpmem_mmio)
-+#define IOCTL_OCXLPMEM_MMIO_READ	_IOWR(OCXLPMEM_MAGIC, 0xf2, struct ioctl_ocxlpmem_mmio)
-+#define IOCTL_OCXLPMEM_SHUTDOWN	_IO(OCXLPMEM_MAGIC, 0xf3)
-+
- #endif /* _UAPI_OCXL_SCM_H */
--- 
-2.24.1
+> -----Original Message-----
+> From: Mikulas Patocka <mpatocka@redhat.com>
+> Sent: Monday, March 30, 2020 6:32 AM
+> To: Dan Williams <dan.j.williams@intel.com>; Vishal Verma
+> <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Ira
+> Weiny <ira.weiny@intel.com>; Mike Snitzer <msnitzer@redhat.com>
+> Cc: linux-nvdimm@lists.01.org; dm-devel@redhat.com
+> Subject: [PATCH v2] memcpy_flushcache: use cache flusing for larger
+> lengths
+> 
+> I tested dm-writecache performance on a machine with Optane nvdimm
+> and it turned out that for larger writes, cached stores + cache
+> flushing perform better than non-temporal stores. This is the
+> throughput of dm- writecache measured with this command:
+> dd if=/dev/zero of=/dev/mapper/wc bs=64 oflag=direct
+> 
+> block size	512		1024		2048		4096
+> movnti	496 MB/s	642 MB/s	725 MB/s	744 MB/s
+> clflushopt	373 MB/s	688 MB/s	1.1 GB/s	1.2 GB/s
+> 
+> We can see that for smaller block, movnti performs better, but for
+> larger blocks, clflushopt has better performance.
+
+There are other interactions to consider... see threads from the last
+few years on the linux-nvdimm list.
+
+For example, software generally expects that read()s take a long time and
+avoids re-reading from disk; the normal pattern is to hold the data in
+memory and read it from there. By using normal stores, CPU caches end up
+holding a bunch of persistent memory data that is probably not going to
+be read again any time soon, bumping out more useful data. In contrast,
+movnti avoids filling the CPU caches.
+
+Another option is the AVX vmovntdq instruction (if available), the
+most recent of which does 64-byte (cache line) sized transfers to
+zmm registers. There's a hefty context switching overhead (e.g.,
+304 clocks), and the CPU often runs AVX instructions at a slower
+clock frequency, so it's hard to judge when it's worthwhile.
+
+In user space, glibc faces similar choices for its memcpy() functions;
+glibc memcpy() uses non-temporal stores for transfers > 75% of the
+L3 cache size divided by the number of cores. For example, with
+glibc-2.216-16.fc27 (August 2017), on a Broadwell system with
+E5-2699 36 cores 45 MiB L3 cache, non-temporal stores are used
+for memcpy()s over 36 MiB.
+
+It'd be nice if glibc, PMDK, and the kernel used the same algorithms.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
