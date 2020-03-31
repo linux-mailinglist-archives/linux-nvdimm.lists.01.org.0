@@ -1,67 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5607A19A097
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 23:19:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733A019A0ED
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 23:38:08 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4127110FC36EA;
-	Tue, 31 Mar 2020 14:20:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+	by ml01.01.org (Postfix) with ESMTP id 9CFAE10FC38A0;
+	Tue, 31 Mar 2020 14:38:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2760110FC3635
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:20:34 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id v1so27030394edq.8
-        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:19:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 5DF4310FC36EA
+	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:38:54 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id w26so27098383edu.7
+        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:38:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=vyTO6009JTCfLd3UlfmmxMzroAfVBiq2wFtDZniOPoA=;
-        b=gbUvCPWpTriQ8JHR5BxWvl+KYugoDEUDTX2hJiCCBDgiZUE0ATCo//xiJyGPU8R8OD
-         FcKDYZchRH1ODRx3qEwcsQaJPYXbB5tpRl1A2HL5KTGTv/m0sxp12TTeoCCVHBXysSkx
-         qn6KAN6urppZpJ8vU+epdSmVXOKoseFDYAv1OQipfovxYpXFMmUju27RoIUCbFGFLZ/A
-         FFK9eEmr3Gs7vBD0GD2TihdoCmbLkeoF7Kt2Fo4d0Uc0wYw4uPcpkjfKwiBWoZ4owWv8
-         MC9YqtFh2L8Kj2hP8p2X4f6EpHoS9v0cqT/bs2dZIRR6CEad2pDEJaXmcmvbIjZt4nSZ
-         sR0Q==
+        bh=d/S6mKyvK/9h9eec5jGC1hT/GCbR11EkaitnfXiq39U=;
+        b=IJHWSXws99YhEHheHI5kRV8NLqU6W6/5tz8Uipf33E9JQ1iKRzKa3LpDQ2PW05y1Xe
+         rSVfw66Gd9e2RTq83J2AuxUNWXR1r83mTX1DB+aps66pn3fGTruX+jVTFFQj1+gxlZel
+         9+98cXExS5hqdjnC/hwXaSVewhiqR/VQaQU4/e+0dvapQ5dBdsX41CfSGuwqU91yfsBz
+         vjJU164qQSVP/zu06VZdwSXdWBJfpTvcDRp4Id0ocxGg8XD7UsL2m0qiq2NdXIuQcQZG
+         4rFxFin0ebvl7JOT1EUo+fYODHDLDYu1kIfSPwOJ/BNrUvwwNS4ivB88r8IAvuiM7eLi
+         N1Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=vyTO6009JTCfLd3UlfmmxMzroAfVBiq2wFtDZniOPoA=;
-        b=Hm+lrjdzPrR4wJGcgF/sOgeG5ZAUWbR5Jxi+THs++Dl8XIABNTRnZNoKoE7BMGTNGN
-         Wg3/3Y0xGVGoSlwW/WgMoLt6CNpCdSM5WmhD5YMvyg91pG3wV2C0nedYWzzNQ+eNXu0m
-         XTxTPIXKKUKPxOV4GTbTdSYAGG/39wq11Bw2XItUxDvg/uZbz+8UkjTGIK2f5lq8jqxr
-         D88gjh2TNS5mZwBewK/PCWvpKz100u++G+y9VAFy7FZWWcN5mjDZYaefI1GTVcF9d+t0
-         xqQUAdvs6wdijvN+Na+ac2NMLVb3iIj3kP0TbGQVRBN76cU/SJ0v+L0F5IVGJsFEzrJa
-         uOIA==
-X-Gm-Message-State: ANhLgQ2MPG0/uvJMKMRys5DAqUKrl1kqIJk2EuFpw1pHKvxmHnhjJH/s
-	Ed8FVN8+P8TM4dVxmNnG/nhFh4wXMeCYxeDeacOoCA==
-X-Google-Smtp-Source: ADFU+vtABgQXb+2PEWx0hDcyeb3463r13Md1qzkMGG01QQesWZLScUbpHISBuKxebdal1y7UNBfkFGiG0aFoj641FX8=
-X-Received: by 2002:a50:d847:: with SMTP id v7mr17832750edj.154.1585689583161;
- Tue, 31 Mar 2020 14:19:43 -0700 (PDT)
+        bh=d/S6mKyvK/9h9eec5jGC1hT/GCbR11EkaitnfXiq39U=;
+        b=F3JjwqhbfGFfFyiF2+UN7kFfSK4DnvsC7FmxpJ0oR/MBBiZavcQM0b0XTTQqrmviEY
+         MMBFLpwy7M2kp8sG+xjEaxXJcs5sYkvPm0RQZJ/xgEdLpyYJhoWwXpG5U+WlZpomI6+L
+         BFr6FC3ppMxxUWcZcZOcngkqLS/rIKy7TT4FRKInHxCO4ArcE8aZZH6k2xFv05UOhYPw
+         VFyLruS+Do2jxlePpbaFlR6eDq6WYUiqREuT1MEQppzMcxvJ71Xsc7hH5/M/NmLqpr6i
+         E/A4x4UsL44AA/4eOSeiGpE1oPZpR98i6mCp7cN71lOJs+HLMi0TrfMpMy+J+LuNMDI6
+         YP+A==
+X-Gm-Message-State: ANhLgQ0/WewayilsSqAO2D3J/Hsh3otbBYY4bqmik/KELIRlZx59idXn
+	fessLEzzZy+ihM8nBirjVie3teyn+67W3vJ9yT+/Xg==
+X-Google-Smtp-Source: ADFU+vtySOXZOcJqcg/5FIQUydOo+YFpr2bWXtHsUgzLWBkS96QXJ4PMaKC5awNcgr4FWwIwB7hRuxNNcLTQPD2NtKc=
+X-Received: by 2002:aa7:c609:: with SMTP id h9mr17634840edq.93.1585690682636;
+ Tue, 31 Mar 2020 14:38:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <alpine.LRH.2.02.2003291625590.32108@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2003300729320.9938@file01.intranet.prod.int.rdu2.redhat.com>
- <CS1PR8401MB12377197482867F688BF93F7ABC80@CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM>
- <alpine.LRH.2.02.2003310709090.2117@file01.intranet.prod.int.rdu2.redhat.com>
-In-Reply-To: <alpine.LRH.2.02.2003310709090.2117@file01.intranet.prod.int.rdu2.redhat.com>
+References: <20200114054051.4115790-1-santosh@fossix.org>
+In-Reply-To: <20200114054051.4115790-1-santosh@fossix.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 31 Mar 2020 14:19:32 -0700
-Message-ID: <CAPcyv4ijR185RLmtT+A+WZxJs309qPfdqj5eUDEkMgFbxsV+uw@mail.gmail.com>
-Subject: Re: [PATCH v2] memcpy_flushcache: use cache flusing for larger lengths
-To: Mikulas Patocka <mpatocka@redhat.com>
-Message-ID-Hash: JT3WEH7PYTGC6CTHT35QGXPUBNCNLUO3
-X-Message-ID-Hash: JT3WEH7PYTGC6CTHT35QGXPUBNCNLUO3
+Date: Tue, 31 Mar 2020 14:37:47 -0700
+Message-ID: <CAPcyv4gPmr0qTfnW3OX+79os+BGO5VczuhBoT6eRd+8XHvEBfQ@mail.gmail.com>
+Subject: Re: [PATCH] tools/test/nvdimm: Fix out of tree build
+To: Santosh Sivaraj <santosh@fossix.org>
+Message-ID-Hash: ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU
+X-Message-ID-Hash: ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Mike Snitzer <msnitzer@redhat.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dm-devel@redhat.com" <dm-devel@redhat.com>, X86 ML <x86@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JT3WEH7PYTGC6CTHT35QGXPUBNCNLUO3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,129 +67,66 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-[ add x86 and LKML ]
+On Mon, Jan 13, 2020 at 9:41 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+>
+> Out of tree build using
+>
+>    make M=tools/test/nvdimm O=/tmp/build -C /tmp/build
+>
+> fails with the following error
+>
+> make: Entering directory '/tmp/build'
+>   CC [M]  tools/testing/nvdimm/test/nfit.o
+> linux/tools/testing/nvdimm/test/nfit.c:19:10: fatal error: nd-core.h: No such file or directory
+>    19 | #include <nd-core.h>
+>       |          ^~~~~~~~~~~
+> compilation terminated.
+>
+> That is because the kbuild file uses $(src) which points to
+> tools/testing/nvdimm, $(srctree) correctly points to root of the linux
+> source tree.
 
-On Tue, Mar 31, 2020 at 5:27 AM Mikulas Patocka <mpatocka@redhat.com> wrote:
->
->
->
-> On Tue, 31 Mar 2020, Elliott, Robert (Servers) wrote:
->
-> >
-> >
-> > > -----Original Message-----
-> > > From: Mikulas Patocka <mpatocka@redhat.com>
-> > > Sent: Monday, March 30, 2020 6:32 AM
-> > > To: Dan Williams <dan.j.williams@intel.com>; Vishal Verma
-> > > <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Ira
-> > > Weiny <ira.weiny@intel.com>; Mike Snitzer <msnitzer@redhat.com>
-> > > Cc: linux-nvdimm@lists.01.org; dm-devel@redhat.com
-> > > Subject: [PATCH v2] memcpy_flushcache: use cache flusing for larger
-> > > lengths
-> > >
-> > > I tested dm-writecache performance on a machine with Optane nvdimm
-> > > and it turned out that for larger writes, cached stores + cache
-> > > flushing perform better than non-temporal stores. This is the
-> > > throughput of dm- writecache measured with this command:
-> > > dd if=/dev/zero of=/dev/mapper/wc bs=64 oflag=direct
-> > >
-> > > block size  512             1024            2048            4096
-> > > movnti      496 MB/s        642 MB/s        725 MB/s        744 MB/s
-> > > clflushopt  373 MB/s        688 MB/s        1.1 GB/s        1.2 GB/s
-> > >
-> > > We can see that for smaller block, movnti performs better, but for
-> > > larger blocks, clflushopt has better performance.
-> >
-> > There are other interactions to consider... see threads from the last
-> > few years on the linux-nvdimm list.
->
-> dm-writecache is the only linux driver that uses memcpy_flushcache on
-> persistent memory. There is also the btt driver, it uses the "do_io"
-> method to write to persistent memory and I don't know where this method
-> comes from.
->
-> Anyway, if patching memcpy_flushcache conflicts with something else, we
-> should introduce memcpy_flushcache_to_pmem.
->
-> > For example, software generally expects that read()s take a long time and
-> > avoids re-reading from disk; the normal pattern is to hold the data in
-> > memory and read it from there. By using normal stores, CPU caches end up
-> > holding a bunch of persistent memory data that is probably not going to
-> > be read again any time soon, bumping out more useful data. In contrast,
-> > movnti avoids filling the CPU caches.
->
-> But if I write one cacheline and flush it immediatelly, it would consume
-> just one associative entry in the cache.
->
-> > Another option is the AVX vmovntdq instruction (if available), the
-> > most recent of which does 64-byte (cache line) sized transfers to
-> > zmm registers. There's a hefty context switching overhead (e.g.,
-> > 304 clocks), and the CPU often runs AVX instructions at a slower
-> > clock frequency, so it's hard to judge when it's worthwhile.
->
-> The benchmark shows that 64-byte non-temporal avx512 vmovntdq is as good
-> as 8, 16 or 32-bytes writes.
->                                          ram            nvdimm
-> sequential write-nt 4 bytes              4.1 GB/s       1.3 GB/s
-> sequential write-nt 8 bytes              4.1 GB/s       1.3 GB/s
-> sequential write-nt 16 bytes (sse)       4.1 GB/s       1.3 GB/s
-> sequential write-nt 32 bytes (avx)       4.2 GB/s       1.3 GB/s
-> sequential write-nt 64 bytes (avx512)    4.1 GB/s       1.3 GB/s
->
-> With cached writes (where each cache line is immediatelly followed by clwb
-> or clflushopt), 8, 16 or 32-byte write performs better than non-temporal
-> stores and avx512 performs worse.
->
-> sequential write 8 + clwb                5.1 GB/s       1.6 GB/s
-> sequential write 16 (sse) + clwb         5.1 GB/s       1.6 GB/s
-> sequential write 32 (avx) + clwb         4.4 GB/s       1.5 GB/s
-> sequential write 64 (avx512) + clwb      1.7 GB/s       0.6 GB/s
-
-This is indeed compelling straight-line data. My concern, similar to
-Robert's, is what it does to the rest of the system. In addition to
-increasing cache pollution, which I agree is difficult to quantify, it
-may also increase read-for-ownership traffic. Could you collect 'perf
-stat' for this clwb vs nt comparison to check if any of this
-incidental overhead effect shows up in the numbers? Here is a 'perf
-stat' line that might capture that.
-
-perf stat -e L1-dcache-loads,L1-dcache-load-misses,L1-dcache-stores,L1-dcache-store-misses,L1-dcache-prefetch-misses,LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses,LLC-prefetch-misses
--r 5 $benchmark
-
-In both cases nt and explicit clwb there's nothing that prevents the
-dirty-cacheline, or the fill buffer from being written-back / flushed
-before the full line is populated and maybe you are hitting that
-scenario differently with the two approaches? I did not immediately
-see a perf counter for events like this. Going forward I think this
-gets better with the movdir64b instruction because that can guarantee
-full-line-sized store-buffer writes.
-
-Maybe the perf data can help make a decision about whether we go with
-your patch in the near term?
+Looks good to me, applied.
 
 >
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>  tools/testing/nvdimm/Kbuild      | 4 ++--
+>  tools/testing/nvdimm/test/Kbuild | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> > In user space, glibc faces similar choices for its memcpy() functions;
-> > glibc memcpy() uses non-temporal stores for transfers > 75% of the
-> > L3 cache size divided by the number of cores. For example, with
-> > glibc-2.216-16.fc27 (August 2017), on a Broadwell system with
-> > E5-2699 36 cores 45 MiB L3 cache, non-temporal stores are used
-> > for memcpy()s over 36 MiB.
+> diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
+> index 6aca8d5be159..0615fa3d9f7e 100644
+> --- a/tools/testing/nvdimm/Kbuild
+> +++ b/tools/testing/nvdimm/Kbuild
+> @@ -22,8 +22,8 @@ DRIVERS := ../../../drivers
+>  NVDIMM_SRC := $(DRIVERS)/nvdimm
+>  ACPI_SRC := $(DRIVERS)/acpi/nfit
+>  DAX_SRC := $(DRIVERS)/dax
+> -ccflags-y := -I$(src)/$(NVDIMM_SRC)/
+> -ccflags-y += -I$(src)/$(ACPI_SRC)/
+> +ccflags-y := -I$(srctree)/drivers/nvdimm/
+> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
 >
-> BTW. what does glibc do with reads? Does it flush them from the cache
-> after they are consumed?
+>  obj-$(CONFIG_LIBNVDIMM) += libnvdimm.o
+>  obj-$(CONFIG_BLK_DEV_PMEM) += nd_pmem.o
+> diff --git a/tools/testing/nvdimm/test/Kbuild b/tools/testing/nvdimm/test/Kbuild
+> index fb3c3d7cdb9b..75baebf8f4ba 100644
+> --- a/tools/testing/nvdimm/test/Kbuild
+> +++ b/tools/testing/nvdimm/test/Kbuild
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+> -ccflags-y := -I$(src)/../../../../drivers/nvdimm/
+> -ccflags-y += -I$(src)/../../../../drivers/acpi/nfit/
+> +ccflags-y := -I$(srctree)/drivers/nvdimm/
+> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
 >
-> AFAIK glibc doesn't support persistent memory - i.e. there is no function
-> that flushes data and the user has to use inline assembly for that.
-
-Yes, and I don't know of any copy routines that try to limit the cache
-pollution of pulling the source data for a copy, only the destination.
-
-> > It'd be nice if glibc, PMDK, and the kernel used the same algorithms.
-
-Yes, it would. Although I think PMDK would make a different decision
-than the kernel when optimizing for highest bandwidth for the local
-application vs bandwidth efficiency across all applications.
+>  obj-m += nfit_test.o
+>  obj-m += nfit_test_iomap.o
+> --
+> 2.24.1
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
