@@ -2,63 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733A019A0ED
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 23:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB819A188
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Apr 2020 00:00:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CFAE10FC38A0;
-	Tue, 31 Mar 2020 14:38:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 67FAB10FC38BB;
+	Tue, 31 Mar 2020 15:01:25 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
 Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5DF4310FC36EA
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:38:54 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id w26so27098383edu.7
-        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 14:38:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4819C10FC38A0
+	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 15:01:22 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id bd14so27135208edb.10
+        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 15:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=d/S6mKyvK/9h9eec5jGC1hT/GCbR11EkaitnfXiq39U=;
-        b=IJHWSXws99YhEHheHI5kRV8NLqU6W6/5tz8Uipf33E9JQ1iKRzKa3LpDQ2PW05y1Xe
-         rSVfw66Gd9e2RTq83J2AuxUNWXR1r83mTX1DB+aps66pn3fGTruX+jVTFFQj1+gxlZel
-         9+98cXExS5hqdjnC/hwXaSVewhiqR/VQaQU4/e+0dvapQ5dBdsX41CfSGuwqU91yfsBz
-         vjJU164qQSVP/zu06VZdwSXdWBJfpTvcDRp4Id0ocxGg8XD7UsL2m0qiq2NdXIuQcQZG
-         4rFxFin0ebvl7JOT1EUo+fYODHDLDYu1kIfSPwOJ/BNrUvwwNS4ivB88r8IAvuiM7eLi
-         N1Rw==
+        bh=ojxiAu/FCFqTkzhngt9HlaCcT6MN2axphIIDAEYdjhY=;
+        b=DXp73Kre0WHHcaFNScLALczu3lu1R/hzFk0USqMn4cc2gxSbLb6LTkMotSPbhIEKCz
+         2o1ZvmlDMiKXISpDTC38wGvnw8IfJPuBeQ8qifTkUI/NZKWz+cN81qbGkurvGQkjo9J4
+         hJGVmK6UzHZdxhhxziVTm6kCc+kdOwYgU97PP4Dw3cd5TESj8jHwSpujx1oBmZQymooi
+         glX4lX/Sl+u2rov186UsowzRBSiiyq9k/Hl1sbi6G363t0U2mgkQOXTPOyVNc4ZRIw1J
+         r+ZFkLSsMiHfl1hJF2G2KUcK/reeM6GPsCdDkWMDupJNb/NhicYj43azNT2R6qLBdJJ1
+         mHNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=d/S6mKyvK/9h9eec5jGC1hT/GCbR11EkaitnfXiq39U=;
-        b=F3JjwqhbfGFfFyiF2+UN7kFfSK4DnvsC7FmxpJ0oR/MBBiZavcQM0b0XTTQqrmviEY
-         MMBFLpwy7M2kp8sG+xjEaxXJcs5sYkvPm0RQZJ/xgEdLpyYJhoWwXpG5U+WlZpomI6+L
-         BFr6FC3ppMxxUWcZcZOcngkqLS/rIKy7TT4FRKInHxCO4ArcE8aZZH6k2xFv05UOhYPw
-         VFyLruS+Do2jxlePpbaFlR6eDq6WYUiqREuT1MEQppzMcxvJ71Xsc7hH5/M/NmLqpr6i
-         E/A4x4UsL44AA/4eOSeiGpE1oPZpR98i6mCp7cN71lOJs+HLMi0TrfMpMy+J+LuNMDI6
-         YP+A==
-X-Gm-Message-State: ANhLgQ0/WewayilsSqAO2D3J/Hsh3otbBYY4bqmik/KELIRlZx59idXn
-	fessLEzzZy+ihM8nBirjVie3teyn+67W3vJ9yT+/Xg==
-X-Google-Smtp-Source: ADFU+vtySOXZOcJqcg/5FIQUydOo+YFpr2bWXtHsUgzLWBkS96QXJ4PMaKC5awNcgr4FWwIwB7hRuxNNcLTQPD2NtKc=
-X-Received: by 2002:aa7:c609:: with SMTP id h9mr17634840edq.93.1585690682636;
- Tue, 31 Mar 2020 14:38:02 -0700 (PDT)
+        bh=ojxiAu/FCFqTkzhngt9HlaCcT6MN2axphIIDAEYdjhY=;
+        b=nrLQjycr0sk+B4MbZh3oRVu4qkrTqXQjwqrHN/w5SSghuQd2JEM2Efhg+tbg2ve7un
+         qtWaG7zLSXwh2eHZhgvsjml4I4CohKbw6UKYjs8/0CNXnb5cJkLDOuOPr9R/wBtFptLW
+         GBn/GGFiSP0je62EO3W4SNW2MK0cDGFMkiJBY2ejFLYl0E9a137L6dRLqoRVir1PZS9H
+         UN3vvbU+c9fCFY8rMzVbOmL3jm4U1IxqCA4qkfyNdIxp/hUq5fuGXJyvtGmnD2S+j/6t
+         575dlndqKduXgLbLhwqESSEIWGrdcE3W0tX8XztzGjlIbeV7XFVtAJT3FUzp2feZOnUD
+         vPKw==
+X-Gm-Message-State: ANhLgQ03xg0ABelP7mei2uNiOb9NfLmIHZacgnnNuH3WaGjD826ViQwr
+	XNnYXcpd+czfApclZyXhCY+kcUCfo9z+zTi9lbRODDie
+X-Google-Smtp-Source: ADFU+vtXo5KE+mKAumYJmyeiBk8BYhL5REQSACSWtKMDiNqEgJ4HuDD2zNKhq6fioeCx5GzslCdUnfB/hUheuOueB90=
+X-Received: by 2002:a17:906:dbd4:: with SMTP id yc20mr17302602ejb.335.1585692030849;
+ Tue, 31 Mar 2020 15:00:30 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200114054051.4115790-1-santosh@fossix.org>
-In-Reply-To: <20200114054051.4115790-1-santosh@fossix.org>
+References: <20200324034821.60869-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200324034821.60869-1-aneesh.kumar@linux.ibm.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 31 Mar 2020 14:37:47 -0700
-Message-ID: <CAPcyv4gPmr0qTfnW3OX+79os+BGO5VczuhBoT6eRd+8XHvEBfQ@mail.gmail.com>
-Subject: Re: [PATCH] tools/test/nvdimm: Fix out of tree build
-To: Santosh Sivaraj <santosh@fossix.org>
-Message-ID-Hash: ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU
-X-Message-ID-Hash: ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU
+Date: Tue, 31 Mar 2020 15:00:19 -0700
+Message-ID: <CAPcyv4gwnAqxA4naKD0BLfj6Qmcw5J0WhAmvvgKOszk68ZfjFg@mail.gmail.com>
+Subject: Re: [PATCH v3] libnvdimm: Update persistence domain value for of_pmem
+ and papr_scm device
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: IF2YG3J6LNFWBA4OFZNH5CVQ2ZWHCD3X
+X-Message-ID-Hash: IF2YG3J6LNFWBA4OFZNH5CVQ2ZWHCD3X
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZDJYCDH7AO4EBVAMIQOMX63NT5TL6WZU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IF2YG3J6LNFWBA4OFZNH5CVQ2ZWHCD3X/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,65 +68,69 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 13, 2020 at 9:41 PM Santosh Sivaraj <santosh@fossix.org> wrote:
+On Mon, Mar 23, 2020 at 8:48 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
 >
-> Out of tree build using
+> Currently, kernel shows the below values
+>         "persistence_domain":"cpu_cache"
+>         "persistence_domain":"memory_controller"
+>         "persistence_domain":"unknown"
 >
->    make M=tools/test/nvdimm O=/tmp/build -C /tmp/build
+> "cpu_cache" indicates no extra instructions is needed to ensure the persistence
+> of data in the pmem media on power failure.
 >
-> fails with the following error
+> "memory_controller" indicates cpu cache flush instructions are required to flush
+> the data. Platform provides mechanisms to automatically flush outstanding
+> write data from memory controler to pmem on system power loss.
 >
-> make: Entering directory '/tmp/build'
->   CC [M]  tools/testing/nvdimm/test/nfit.o
-> linux/tools/testing/nvdimm/test/nfit.c:19:10: fatal error: nd-core.h: No such file or directory
->    19 | #include <nd-core.h>
->       |          ^~~~~~~~~~~
-> compilation terminated.
+> Based on the above use memory_controller for non volatile regions on ppc64.
 >
-> That is because the kbuild file uses $(src) which points to
-> tools/testing/nvdimm, $(srctree) correctly points to root of the linux
-> source tree.
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> ---
+> Changes from V1:
+> * update commit message and retain ADR details in comment
 
 Looks good to me, applied.
 
 >
-> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-> ---
->  tools/testing/nvdimm/Kbuild      | 4 ++--
->  tools/testing/nvdimm/test/Kbuild | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>  arch/powerpc/platforms/pseries/papr_scm.c | 4 +++-
+>  drivers/nvdimm/of_pmem.c                  | 4 +++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
-> index 6aca8d5be159..0615fa3d9f7e 100644
-> --- a/tools/testing/nvdimm/Kbuild
-> +++ b/tools/testing/nvdimm/Kbuild
-> @@ -22,8 +22,8 @@ DRIVERS := ../../../drivers
->  NVDIMM_SRC := $(DRIVERS)/nvdimm
->  ACPI_SRC := $(DRIVERS)/acpi/nfit
->  DAX_SRC := $(DRIVERS)/dax
-> -ccflags-y := -I$(src)/$(NVDIMM_SRC)/
-> -ccflags-y += -I$(src)/$(ACPI_SRC)/
-> +ccflags-y := -I$(srctree)/drivers/nvdimm/
-> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0b4467e378e5..922a4fc3b61b 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -361,8 +361,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
 >
->  obj-$(CONFIG_LIBNVDIMM) += libnvdimm.o
->  obj-$(CONFIG_BLK_DEV_PMEM) += nd_pmem.o
-> diff --git a/tools/testing/nvdimm/test/Kbuild b/tools/testing/nvdimm/test/Kbuild
-> index fb3c3d7cdb9b..75baebf8f4ba 100644
-> --- a/tools/testing/nvdimm/test/Kbuild
-> +++ b/tools/testing/nvdimm/test/Kbuild
-> @@ -1,6 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
-> -ccflags-y := -I$(src)/../../../../drivers/nvdimm/
-> -ccflags-y += -I$(src)/../../../../drivers/acpi/nfit/
-> +ccflags-y := -I$(srctree)/drivers/nvdimm/
-> +ccflags-y += -I$(srctree)/drivers/acpi/nfit/
+>         if (p->is_volatile)
+>                 p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
+> -       else
+> +       else {
+> +               set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+>                 p->region = nvdimm_pmem_region_create(p->bus, &ndr_desc);
+> +       }
+>         if (!p->region) {
+>                 dev_err(dev, "Error registering region %pR from %pOF\n",
+>                                 ndr_desc.res, p->dn);
+> diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+> index 8224d1431ea9..6826a274a1f1 100644
+> --- a/drivers/nvdimm/of_pmem.c
+> +++ b/drivers/nvdimm/of_pmem.c
+> @@ -62,8 +62,10 @@ static int of_pmem_region_probe(struct platform_device *pdev)
 >
->  obj-m += nfit_test.o
->  obj-m += nfit_test_iomap.o
+>                 if (is_volatile)
+>                         region = nvdimm_volatile_region_create(bus, &ndr_desc);
+> -               else
+> +               else {
+> +                       set_bit(ND_REGION_PERSIST_MEMCTRL, &ndr_desc.flags);
+>                         region = nvdimm_pmem_region_create(bus, &ndr_desc);
+> +               }
+>
+>                 if (!region)
+>                         dev_warn(&pdev->dev, "Unable to register region %pR from %pOF\n",
 > --
-> 2.24.1
+> 2.25.1
 >
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
