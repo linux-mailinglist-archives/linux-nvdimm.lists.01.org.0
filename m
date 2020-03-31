@@ -1,95 +1,170 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0F31995C7
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 13:51:35 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1BF719967E
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 14:27:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5D41F10FC389E;
-	Tue, 31 Mar 2020 04:52:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=huawei.com; envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN> 
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 07F9A10FC389F;
+	Tue, 31 Mar 2020 05:28:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9A88C10FC389C
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 04:52:20 -0700 (PDT)
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-	by Forcepoint Email with ESMTP id 3180AD57F30DCA01549B;
-	Tue, 31 Mar 2020 19:51:27 +0800 (CST)
-Received: from localhost (10.173.223.234) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.487.0; Tue, 31 Mar 2020
- 19:51:20 +0800
-From: YueHaibing <yuehaibing@huawei.com>
-To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
-	<dave.jiang@intel.com>, <ira.weiny@intel.com>, <aneesh.kumar@linux.ibm.com>,
-	<jmoyer@redhat.com>
-Subject: [PATCH v2 -next] libnvdimm/region: Fix build error
-Date: Tue, 31 Mar 2020 19:50:24 +0800
-Message-ID: <20200331115024.31628-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
-In-Reply-To: <20200330141943.31696-1-yuehaibing@huawei.com>
-References: <20200330141943.31696-1-yuehaibing@huawei.com>
+	by ml01.01.org (Postfix) with ESMTPS id EBE8810FC389E
+	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 05:28:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1585657646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hYI1H5xvbhp7r0w6nSEzGN4hQIZrI+OF27OaaOA7sQ0=;
+	b=HbGDcvfytfuuzefwRzfnixbuS6CULdMGL/Ave9TuY1XDU3bDkMmeZc7jbmvxKcaehp4z3L
+	4m7fP/YEjsWX46PmCnmhgFG8d8QumibpXWfflmBZJqzQ1uAfL6TQSGaUD3np8atvnxIlCb
+	a7pPBhO5/PSvV2luTNQsy6TA/uQlW8w=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-240-srONtDzJN2KHeuZli9He2A-1; Tue, 31 Mar 2020 08:27:25 -0400
+X-MC-Unique: srONtDzJN2KHeuZli9He2A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A13FADB60;
+	Tue, 31 Mar 2020 12:27:23 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 768A298A3C;
+	Tue, 31 Mar 2020 12:27:23 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 02VCRMK4019806;
+	Tue, 31 Mar 2020 08:27:22 -0400
+Received: from localhost (mpatocka@localhost)
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 02VBwYXk017547;
+	Tue, 31 Mar 2020 07:58:58 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date: Tue, 31 Mar 2020 07:58:34 -0400 (EDT)
+From: Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To: "Elliott, Robert (Servers)" <elliott@hpe.com>
+Subject: RE: [PATCH v2] memcpy_flushcache: use cache flusing for larger
+ lengths
+In-Reply-To: <CS1PR8401MB12377197482867F688BF93F7ABC80@CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM>
+Message-ID: <alpine.LRH.2.02.2003310709090.2117@file01.intranet.prod.int.rdu2.redhat.com>
+References: <alpine.LRH.2.02.2003291625590.32108@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2003300729320.9938@file01.intranet.prod.int.rdu2.redhat.com> <CS1PR8401MB12377197482867F688BF93F7ABC80@CS1PR8401MB1237.NAMPRD84.PROD.OUTLOOK.COM>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-X-Originating-IP: [10.173.223.234]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: 7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H
-X-Message-ID-Hash: 7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H
-X-MailFrom: yuehaibing@huawei.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Message-ID-Hash: 6UZLKKB43BP4R27J7NJGOWBLVPP5J2PD
+X-Message-ID-Hash: 6UZLKKB43BP4R27J7NJGOWBLVPP5J2PD
+X-MailFrom: mpatocka@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, YueHaibing <yuehaibing@huawei.com>
+CC: Mike Snitzer <msnitzer@redhat.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "dm-devel@redhat.com" <dm-devel@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7P5CS7QSGGCJQ5LNIHFOKADR56AGUN6H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6UZLKKB43BP4R27J7NJGOWBLVPP5J2PD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gQ09ORklHX1BQQzMyPXkgYnVpbGQgZmFpbHM6DQoNCmRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9k
-ZXZzLmM6MTAzNDoxNDogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvIOKAmGRvX2RpduKAmQ0K
-ICByZW1haW5kZXIgPSBkb19kaXYocGVyX21hcHBpbmcsIG1hcHBpbmdzKTsNCiAgICAgICAgICAg
-ICAgXn5+fn5+DQpJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9n
-ZW5lcmF0ZWQvYXNtL2RpdjY0Lmg6MTowLA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVk
-ZS9saW51eC9rZXJuZWwuaDoxOCwNCiAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvYXNt
-LWdlbmVyaWMvYnVnLmg6MTksDQogICAgICAgICAgICAgICAgIGZyb20gLi9hcmNoL3Bvd2VycGMv
-aW5jbHVkZS9hc20vYnVnLmg6MTA5LA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9s
-aW51eC9idWcuaDo1LA0KICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9saW51eC9zY2F0
-dGVybGlzdC5oOjcsDQogICAgICAgICAgICAgICAgIGZyb20gZHJpdmVycy9udmRpbW0vcmVnaW9u
-X2RldnMuYzo1Og0KLi9pbmNsdWRlL2FzbS1nZW5lcmljL2RpdjY0Lmg6MjQzOjIyOiBlcnJvcjog
-cGFzc2luZyBhcmd1bWVudCAxIG9mIOKAmF9fZGl2NjRfMzLigJkgZnJvbSBpbmNvbXBhdGlibGUg
-cG9pbnRlciB0eXBlIFstV2Vycm9yPWluY29tcGF0aWJsZS1wb2ludGVyLXR5cGVzXQ0KICAgX19y
-ZW0gPSBfX2RpdjY0XzMyKCYobiksIF9fYmFzZSk7IFwNCg0KVXNlIGRpdl91NjQgaW5zdGVhZCBv
-ZiBkb19kaXYgdG8gZml4IHRoaXMuDQoNCkZpeGVzOiAyNTIyYWZiODZhOGMgKCJsaWJudmRpbW0v
-cmVnaW9uOiBJbnRyb2R1Y2UgYW4gJ2FsaWduJyBhdHRyaWJ1dGUiKQ0KU2lnbmVkLW9mZi1ieTog
-WXVlSGFpYmluZyA8eXVlaGFpYmluZ0BodWF3ZWkuY29tPg0KLS0tDQp2MjogdXNlIGRpdl91NjRf
-cmVtIGFuZCBjb2RlIGNsZWFudXANCi0tLQ0KIGRyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMg
-fCA4ICsrKy0tLS0tDQogMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlv
-bnMoLSkNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMgYi9kcml2
-ZXJzL252ZGltbS9yZWdpb25fZGV2cy5jDQppbmRleCBiZjIzOWU3ODM5NDAuLmNjYmI1YjQzYjhi
-MiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMNCisrKyBiL2RyaXZl
-cnMvbnZkaW1tL3JlZ2lvbl9kZXZzLmMNCkBAIC01NjMsOCArNTYzLDcgQEAgc3RhdGljIHNzaXpl
-X3QgYWxpZ25fc3RvcmUoc3RydWN0IGRldmljZSAqZGV2LA0KIAkgKiBjb250cmlidXRlIHRvIHRo
-ZSB0YWlsIGNhcGFjaXR5IGluIHN5c3RlbS1waHlzaWNhbC1hZGRyZXNzDQogCSAqIHNwYWNlIGZv
-ciB0aGUgbmFtZXNwYWNlLg0KIAkgKi8NCi0JZHBhID0gdmFsOw0KLQlyZW1haW5kZXIgPSBkb19k
-aXYoZHBhLCBuZF9yZWdpb24tPm5kcl9tYXBwaW5ncyk7DQorCWRwYSA9IGRpdl91NjRfcmVtKHZh
-bCwgbmRfcmVnaW9uLT5uZHJfbWFwcGluZ3MsICZyZW1haW5kZXIpOw0KIAlpZiAoIWlzX3Bvd2Vy
-X29mXzIoZHBhKSB8fCBkcGEgPCBQQUdFX1NJWkUNCiAJCQl8fCB2YWwgPiByZWdpb25fc2l6ZShu
-ZF9yZWdpb24pIHx8IHJlbWFpbmRlcikNCiAJCXJldHVybiAtRUlOVkFMOw0KQEAgLTEwMTAsNyAr
-MTAwOSw3IEBAIEVYUE9SVF9TWU1CT0wobmRfcmVnaW9uX3JlbGVhc2VfbGFuZSk7DQogDQogc3Rh
-dGljIHVuc2lnbmVkIGxvbmcgZGVmYXVsdF9hbGlnbihzdHJ1Y3QgbmRfcmVnaW9uICpuZF9yZWdp
-b24pDQogew0KLQl1bnNpZ25lZCBsb25nIGFsaWduLCBwZXJfbWFwcGluZzsNCisJdW5zaWduZWQg
-bG9uZyBhbGlnbjsNCiAJaW50IGksIG1hcHBpbmdzOw0KIAl1MzIgcmVtYWluZGVyOw0KIA0KQEAg
-LTEwMzAsOCArMTAyOSw3IEBAIHN0YXRpYyB1bnNpZ25lZCBsb25nIGRlZmF1bHRfYWxpZ24oc3Ry
-dWN0IG5kX3JlZ2lvbiAqbmRfcmVnaW9uKQ0KIAl9DQogDQogCW1hcHBpbmdzID0gbWF4X3QodTE2
-LCAxLCBuZF9yZWdpb24tPm5kcl9tYXBwaW5ncyk7DQotCXBlcl9tYXBwaW5nID0gYWxpZ247DQot
-CXJlbWFpbmRlciA9IGRvX2RpdihwZXJfbWFwcGluZywgbWFwcGluZ3MpOw0KKwlkaXZfdTY0X3Jl
-bShhbGlnbiwgbWFwcGluZ3MsICZyZW1haW5kZXIpOw0KIAlpZiAocmVtYWluZGVyKQ0KIAkJYWxp
-Z24gKj0gbWFwcGluZ3M7DQogDQotLSANCjIuMTcuMQ0KDQpfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
-aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+
+
+On Tue, 31 Mar 2020, Elliott, Robert (Servers) wrote:
+
+> 
+> 
+> > -----Original Message-----
+> > From: Mikulas Patocka <mpatocka@redhat.com>
+> > Sent: Monday, March 30, 2020 6:32 AM
+> > To: Dan Williams <dan.j.williams@intel.com>; Vishal Verma
+> > <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Ira
+> > Weiny <ira.weiny@intel.com>; Mike Snitzer <msnitzer@redhat.com>
+> > Cc: linux-nvdimm@lists.01.org; dm-devel@redhat.com
+> > Subject: [PATCH v2] memcpy_flushcache: use cache flusing for larger
+> > lengths
+> > 
+> > I tested dm-writecache performance on a machine with Optane nvdimm
+> > and it turned out that for larger writes, cached stores + cache
+> > flushing perform better than non-temporal stores. This is the
+> > throughput of dm- writecache measured with this command:
+> > dd if=/dev/zero of=/dev/mapper/wc bs=64 oflag=direct
+> > 
+> > block size	512		1024		2048		4096
+> > movnti	496 MB/s	642 MB/s	725 MB/s	744 MB/s
+> > clflushopt	373 MB/s	688 MB/s	1.1 GB/s	1.2 GB/s
+> > 
+> > We can see that for smaller block, movnti performs better, but for
+> > larger blocks, clflushopt has better performance.
+> 
+> There are other interactions to consider... see threads from the last
+> few years on the linux-nvdimm list.
+
+dm-writecache is the only linux driver that uses memcpy_flushcache on 
+persistent memory. There is also the btt driver, it uses the "do_io" 
+method to write to persistent memory and I don't know where this method 
+comes from.
+
+Anyway, if patching memcpy_flushcache conflicts with something else, we 
+should introduce memcpy_flushcache_to_pmem.
+
+> For example, software generally expects that read()s take a long time and
+> avoids re-reading from disk; the normal pattern is to hold the data in
+> memory and read it from there. By using normal stores, CPU caches end up
+> holding a bunch of persistent memory data that is probably not going to
+> be read again any time soon, bumping out more useful data. In contrast,
+> movnti avoids filling the CPU caches.
+
+But if I write one cacheline and flush it immediatelly, it would consume 
+just one associative entry in the cache.
+
+> Another option is the AVX vmovntdq instruction (if available), the
+> most recent of which does 64-byte (cache line) sized transfers to
+> zmm registers. There's a hefty context switching overhead (e.g.,
+> 304 clocks), and the CPU often runs AVX instructions at a slower
+> clock frequency, so it's hard to judge when it's worthwhile.
+
+The benchmark shows that 64-byte non-temporal avx512 vmovntdq is as good 
+as 8, 16 or 32-bytes writes.
+                                         ram            nvdimm
+sequential write-nt 4 bytes              4.1 GB/s       1.3 GB/s
+sequential write-nt 8 bytes              4.1 GB/s       1.3 GB/s
+sequential write-nt 16 bytes (sse)       4.1 GB/s       1.3 GB/s
+sequential write-nt 32 bytes (avx)       4.2 GB/s       1.3 GB/s
+sequential write-nt 64 bytes (avx512)    4.1 GB/s       1.3 GB/s
+
+With cached writes (where each cache line is immediatelly followed by clwb 
+or clflushopt), 8, 16 or 32-byte write performs better than non-temporal 
+stores and avx512 performs worse.
+
+sequential write 8 + clwb                5.1 GB/s       1.6 GB/s
+sequential write 16 (sse) + clwb         5.1 GB/s       1.6 GB/s
+sequential write 32 (avx) + clwb         4.4 GB/s       1.5 GB/s
+sequential write 64 (avx512) + clwb      1.7 GB/s       0.6 GB/s
+
+
+> In user space, glibc faces similar choices for its memcpy() functions;
+> glibc memcpy() uses non-temporal stores for transfers > 75% of the
+> L3 cache size divided by the number of cores. For example, with
+> glibc-2.216-16.fc27 (August 2017), on a Broadwell system with
+> E5-2699 36 cores 45 MiB L3 cache, non-temporal stores are used
+> for memcpy()s over 36 MiB.
+
+BTW. what does glibc do with reads? Does it flush them from the cache 
+after they are consumed?
+
+AFAIK glibc doesn't support persistent memory - i.e. there is no function 
+that flushes data and the user has to use inline assembly for that.
+
+> It'd be nice if glibc, PMDK, and the kernel used the same algorithms.
+
+Mikulas
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
