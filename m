@@ -2,91 +2,105 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5FB199F53
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 21:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D742E19A010
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 31 Mar 2020 22:47:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8038A10FC38BE;
-	Tue, 31 Mar 2020 12:43:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	by ml01.01.org (Postfix) with ESMTP id E1EA110FC3635;
+	Tue, 31 Mar 2020 13:48:06 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com; envelope-from=jbi.octave@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9E3A910FC38BB
-	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 12:43:30 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id e5so26657740edq.5
-        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 12:42:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 0C4BA10FC3607
+	for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 13:48:04 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id u10so27805792wro.7
+        for <linux-nvdimm@lists.01.org>; Tue, 31 Mar 2020 13:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=eFUT43ck5+5R1qbPUjuBcQdIh9wgFblamWMErw9KKfs=;
-        b=je25YuKe3GdVdtwLOJijqDoBjgC4vcbMmwqpJBL7TftLf5Rf2uF6T28QN6UMibZRR/
-         q3tIy09alG6RoDm0HtwfJG8wHEXCMnryizTVYiyQFGq3zUfj5W5ILRAcM2FqfkUlyBOJ
-         Wihp9iwjComgRQpBvDEi+Tk7jz10b26UVroo31SMO+2ktSkZnbjiwRuUnEbEn/x/bYOn
-         3qZALbEK3VGxUlFPkmkzvSeqRYruhXFuK/HJ7HE+VIsEUlUg+/glj/tAejPoe0QLvTiM
-         7UJ/xVyWbstvIZcgdDe4zc3c6Iggoc0Dy9/QZYkZDh5t589XtzXCtP+kB/SK5xreo5dq
-         PjPA==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=tvASRPgCaC5pl51Xj9DP4Wxeu7mG/1HPSOpzyUZ53rM=;
+        b=nxjeR2sq/OMueEcNnfyf3sqemFIQ9tRGoOtZdGieEPWtcApjY+OYjIb31E2gmLTNM8
+         CUgd9dtowCAqqqpgEeXxGXP1D9306b8uQ6lUh9pQXYKRU7WvJU8MQ1nGyJ/bhl6HsE2d
+         fO2vXmVQXXxe50iieIYpECUT7t5+Ev5FmIp1Xpfg7vdj1j8J000+k7us0PlYNhwJYXIY
+         MzDUSKMifaHmFQ+yDQL4XS3Lwq1sa/8X6GdduXBnXeLrntd/uoK0JQRBpfQWbtWDBTR6
+         dfIDTmL6zER//TR+/mZXKqqlQkO2iYsQhmYX591wZ7mZiS7ZSyB+prpkut0lW687tY4z
+         MlwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=eFUT43ck5+5R1qbPUjuBcQdIh9wgFblamWMErw9KKfs=;
-        b=a4T4NXHgtp3+2xjk+NI3S1LLjiDz2Zl+OlG+4q9r0mxzkXSY6PfuOjD/MBDKT75VU2
-         BFvxQeRGqwuAsitknmKJVg0+c7+G/rHTAz8g1m0Fba/3oE39Pl9bILIaoTeKlkAmYelw
-         CkxhTD2wDzcxXrbGTpkWInhqUGC6krjZ3kVytAwcpXE7m8l8FW7n5eIi6O3IHHWPBaoR
-         wgotNYvruT8juHc7Ld6u3VhMLU26haEh2sxQMhRmeCmJEWx88FTOHMP4Wwyw+b4XH3hU
-         SlXxvpWEEpKhzbsB4lLlsmWOi/X2rV4KZMu/TORxJuh55uAtH4PrlCTIUlhNwdx7ygWJ
-         KMAw==
-X-Gm-Message-State: ANhLgQ2HC3vadB5NjlX4jTp2YiI1navohIQqobNG2TJwhnvT8s6ZoLi1
-	k2aKICzvTNeFMajkDYBgminiIrOf7qDbUOs6ea0XqQ==
-X-Google-Smtp-Source: ADFU+vtgud1DPhJvy8MROSuueMDBRjBInsn6e61/cbeRbUBWdx+oWjjB73XjMAzsgm2c9WauM9poEgqR2PS/m48qJOs=
-X-Received: by 2002:a17:906:1e42:: with SMTP id i2mr16428941ejj.317.1585683759433;
- Tue, 31 Mar 2020 12:42:39 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=tvASRPgCaC5pl51Xj9DP4Wxeu7mG/1HPSOpzyUZ53rM=;
+        b=V+ky/X9by6N+zswo7lMdL/WAQ8DeeoC8v6ct4fITr9Nak/rl56wk2o3L+lH3g0Mi67
+         Ox71n4MO+Nwx4QD3bZ2dOxKcXRZzChdYTQ/icSi5tEHQVI+0QFglL0n/SC/jVryZeafI
+         hxlY981Ksmf4Gud5FIJ5I6i9ND0/bcwYUxMwuc4D04quIDmAJ+nnBrdmaZkpPs0sgvb7
+         OwfA3uWygLPhs8bYjiKNzCVWRgLggqjhvJlmNhJr2q5DxL70xmy19PGgIoo7W+i0lJGZ
+         bgadCfywnZaADKTJ94bFJRYNtiwvVO3lM7Xi1Ki7tRHoLYglIiT8eXpAnh/4hzrGhI1b
+         /IRw==
+X-Gm-Message-State: ANhLgQ1eZe/Cn3+G656mjHUKhaIk5WQj5pr3h3PmJHzLLD0IAoBB7LqG
+	0rJNz0k/yUVFcUHtXIBSsQ==
+X-Google-Smtp-Source: ADFU+vteECjsDAZ2xVHVsEm663gf11mvqdgWJ7byHpmU5MP+FnkJj06hcikww+/wXxKq9e7VFm3Sqw==
+X-Received: by 2002:a5d:4290:: with SMTP id k16mr21990816wrq.406.1585687633570;
+        Tue, 31 Mar 2020 13:47:13 -0700 (PDT)
+Received: from ninjahost.lan (host-92-23-85-227.as13285.net. [92.23.85.227])
+        by smtp.gmail.com with ESMTPSA id o9sm28335491wrx.48.2020.03.31.13.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Mar 2020 13:47:13 -0700 (PDT)
+From: Jules Irenge <jbi.octave@gmail.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 3/7] dax: Add missing annotation for wait_entry_unlocked()
+Date: Tue, 31 Mar 2020 21:46:39 +0100
+Message-Id: <20200331204643.11262-4-jbi.octave@gmail.com>
+X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200331204643.11262-1-jbi.octave@gmail.com>
+References: <0/7>
+ <20200331204643.11262-1-jbi.octave@gmail.com>
 MIME-Version: 1.0
-References: <20200330141943.31696-1-yuehaibing@huawei.com> <20200331115024.31628-1-yuehaibing@huawei.com>
-In-Reply-To: <20200331115024.31628-1-yuehaibing@huawei.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 31 Mar 2020 12:42:28 -0700
-Message-ID: <CAPcyv4i=vyAFiAkGRaRx=+fnGOq9Eebo8szobBDD2AZ+vy877A@mail.gmail.com>
-Subject: Re: [PATCH v2 -next] libnvdimm/region: Fix build error
-To: YueHaibing <yuehaibing@huawei.com>
-Message-ID-Hash: GCQUUC4C2T62NKQULAAFNKTKSI5BM4ZO
-X-Message-ID-Hash: GCQUUC4C2T62NKQULAAFNKTKSI5BM4ZO
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Message-ID-Hash: YF5TCHPF6VR5UBNMIECW6T7ZIWQHNWJG
+X-Message-ID-Hash: YF5TCHPF6VR5UBNMIECW6T7ZIWQHNWJG
+X-MailFrom: jbi.octave@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: boqun.feng@gmail.com, Alexander Viro <viro@zeniv.linux.org.uk>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, "open list:FILESYSTEMS VFS and infrastructure" <linux-fsdevel@vger.kernel.org>, "open list:FILESYSTEM DIRECT ACCESS DAX" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GCQUUC4C2T62NKQULAAFNKTKSI5BM4ZO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YF5TCHPF6VR5UBNMIECW6T7ZIWQHNWJG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlLCBNYXIgMzEsIDIwMjAgYXQgNDo1MiBBTSBZdWVIYWliaW5nIDx5dWVoYWliaW5nQGh1
-YXdlaS5jb20+IHdyb3RlOg0KPg0KPiBPbiBDT05GSUdfUFBDMzI9eSBidWlsZCBmYWlsczoNCj4N
-Cj4gZHJpdmVycy9udmRpbW0vcmVnaW9uX2RldnMuYzoxMDM0OjE0OiBub3RlOiBpbiBleHBhbnNp
-b24gb2YgbWFjcm8g4oCYZG9fZGl24oCZDQo+ICAgcmVtYWluZGVyID0gZG9fZGl2KHBlcl9tYXBw
-aW5nLCBtYXBwaW5ncyk7DQo+ICAgICAgICAgICAgICAgXn5+fn5+DQo+IEluIGZpbGUgaW5jbHVk
-ZWQgZnJvbSAuL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2dlbmVyYXRlZC9hc20vZGl2NjQuaDoxOjAs
-DQo+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvbGludXgva2VybmVsLmg6MTgsDQo+
-ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvYXNtLWdlbmVyaWMvYnVnLmg6MTksDQo+
-ICAgICAgICAgICAgICAgICAgZnJvbSAuL2FyY2gvcG93ZXJwYy9pbmNsdWRlL2FzbS9idWcuaDox
-MDksDQo+ICAgICAgICAgICAgICAgICAgZnJvbSAuL2luY2x1ZGUvbGludXgvYnVnLmg6NSwNCj4g
-ICAgICAgICAgICAgICAgICBmcm9tIC4vaW5jbHVkZS9saW51eC9zY2F0dGVybGlzdC5oOjcsDQo+
-ICAgICAgICAgICAgICAgICAgZnJvbSBkcml2ZXJzL252ZGltbS9yZWdpb25fZGV2cy5jOjU6DQo+
-IC4vaW5jbHVkZS9hc20tZ2VuZXJpYy9kaXY2NC5oOjI0MzoyMjogZXJyb3I6IHBhc3NpbmcgYXJn
-dW1lbnQgMSBvZiDigJhfX2RpdjY0XzMy4oCZIGZyb20gaW5jb21wYXRpYmxlIHBvaW50ZXIgdHlw
-ZSBbLVdlcnJvcj1pbmNvbXBhdGlibGUtcG9pbnRlci10eXBlc10NCj4gICAgX19yZW0gPSBfX2Rp
-djY0XzMyKCYobiksIF9fYmFzZSk7IFwNCj4NCj4gVXNlIGRpdl91NjQgaW5zdGVhZCBvZiBkb19k
-aXYgdG8gZml4IHRoaXMuDQo+DQo+IEZpeGVzOiAyNTIyYWZiODZhOGMgKCJsaWJudmRpbW0vcmVn
-aW9uOiBJbnRyb2R1Y2UgYW4gJ2FsaWduJyBhdHRyaWJ1dGUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBZ
-dWVIYWliaW5nIDx5dWVoYWliaW5nQGh1YXdlaS5jb20+DQo+IC0tLQ0KPiB2MjogdXNlIGRpdl91
-NjRfcmVtIGFuZCBjb2RlIGNsZWFudXANCg0KTG9va3MgZ29vZCBub3csIHRoYW5rcywgYXBwbGll
-ZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Sparse reports a warning at wait_entry_unlocked()
+
+warning: context imbalance in wait_entry_unlocked()
+	- unexpected unlock
+
+The root cause is the missing annotation at wait_entry_unlocked()
+Add the missing __releases(xa) annotation.
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+---
+ fs/dax.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/dax.c b/fs/dax.c
+index 1f1f0201cad1..adcd2a57fbad 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -244,6 +244,7 @@ static void *get_unlocked_entry(struct xa_state *xas, unsigned int order)
+  * After we call xas_unlock_irq(), we cannot touch xas->xa.
+  */
+ static void wait_entry_unlocked(struct xa_state *xas, void *entry)
++	__releases(xa)
+ {
+ 	struct wait_exceptional_entry_queue ewait;
+ 	wait_queue_head_t *wq;
+-- 
+2.24.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
