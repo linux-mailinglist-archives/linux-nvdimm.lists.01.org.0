@@ -1,126 +1,190 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF6C19AF4C
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Apr 2020 18:05:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B7619AF77
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Apr 2020 18:11:40 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EB54710FC363D;
-	Wed,  1 Apr 2020 09:06:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com; envelope-from=jbi.octave@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 72FE710FC363D;
+	Wed,  1 Apr 2020 09:12:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4CB2D10FC3618
-	for <linux-nvdimm@lists.01.org>; Wed,  1 Apr 2020 09:06:00 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id 31so725794wrs.3
-        for <linux-nvdimm@lists.01.org>; Wed, 01 Apr 2020 09:05:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :mime-version;
-        bh=x0iGf5X4LVYTv3/i+3RQO+ppyXBQZXoUL8LL0fm5I0w=;
-        b=EXpjA8rTQUsKE+qdZqP/OdGd6eCxiipdusbCGRdMgrzSFDoTFfrG8GcWy5dSL+FGAu
-         ZmAiMwADAOV9LvQ0JMLfaxNcfPTrWpQPuPaPxkK5bZQwQt4WNNGxNy2baRVZYXVIP5rT
-         6UR1mJoZ5uwMwQR09xEaxeei29Umc1sb9HHkqSPRgThc+AkTmVWz8YPHKtYWLcItT0IF
-         rv4j9Om54xQbV/ZQtczS930PXJ/ze/EcF3UEvLj0otsGO+DW7cena5EZ7doG/84pnfO+
-         CO4Dlu39M6co2U7plhwPYNFD+2FDjGLuLuk7vU057+iIupH64dmPnABgUU6YlwoYav9W
-         x7hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:mime-version;
-        bh=x0iGf5X4LVYTv3/i+3RQO+ppyXBQZXoUL8LL0fm5I0w=;
-        b=LE/wMOV9j+nirDk0VTME5OrbK+ylMnCaVZbvPPpyBXlDto0/0yehbv/qfkuZytxD+Y
-         CYCSM/6dUt5F7vmFW+SR7GeI12+/DaFFjVnSuO8pnK2/95FzGB9KdGE7oUZctFF/nbzj
-         +TtZj1YYE6xMu5E6B6F1dCMi8FW6j1crmlRkMGFtx4VF8Wncv16tDAhRo6YDi66gAdO1
-         Vjaxh2/uy1+V0iYdA5A+9BySa3iHd1NruKhgEqVMnP/cV0eTlymKvxkoXaMH3x+9IiMH
-         UQRkesrG005mw/eOpb5cG2DMKyWP/BWopDCyt+do2WyhlMeqKhjc0XVudBQVAYyYdMlu
-         n36A==
-X-Gm-Message-State: ANhLgQ3rJOsmiO57ReG8Yqlp/Uvl2aKrCD4nCdE5EtuNeQ4eT+RMkHI0
-	Gi5fvzdGHMjruTScKNMUeEJzrO2k//D4
-X-Google-Smtp-Source: ADFU+vsGgsO5O4k/Oz4y3nId5ruptaNQ0NK34qLOhjZcXf6pDS0gcYHgxF/Tk6yhVtQY7TgTs81tYg==
-X-Received: by 2002:a5d:460f:: with SMTP id t15mr26748856wrq.413.1585757108643;
-        Wed, 01 Apr 2020 09:05:08 -0700 (PDT)
-Received: from earth.lan (host-92-23-85-227.as13285.net. [92.23.85.227])
-        by smtp.gmail.com with ESMTPSA id i21sm3321949wmb.23.2020.04.01.09.05.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Apr 2020 09:05:08 -0700 (PDT)
-From: Jules Irenge <jbi.octave@gmail.com>
-X-Google-Original-From: Jules Irenge <djed@earth.lan>
-Date: Wed, 1 Apr 2020 17:04:54 +0100 (BST)
-To: Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 3/7] dax: Add missing annotation for
- wait_entry_unlocked()
-In-Reply-To: <20200401100125.GB19466@quack2.suse.cz>
-Message-ID: <alpine.LFD.2.21.2004011702002.25676@earth.lan>
-References: <0/7> <20200331204643.11262-1-jbi.octave@gmail.com> <20200331204643.11262-4-jbi.octave@gmail.com> <20200401100125.GB19466@quack2.suse.cz>
+	by ml01.01.org (Postfix) with ESMTPS id 415F510FC363D
+	for <linux-nvdimm@lists.01.org>; Wed,  1 Apr 2020 09:12:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1585757495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KCQVduOzYqeO0UI7AC7TozjgQwEuu7aRADaqvSOaujc=;
+	b=h9B2yrmxpCjkKqyd1mxNXZZLEFqOJbVlt2b9bndDt9SpDEwX5llgodjBbmLVT72Cuvkv6D
+	/vQVSKqVVYW0oSLtVPkpo/nnVCpO/TwZbQxc8AGKA9VFt6ueNIUIPKnKsmb042uS8R+CaE
+	EYHe40yBIHxmhAnTpaTmHM+EZ8QExHM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-54-yTPcPYSwN9K5iE6YgFMaDA-1; Wed, 01 Apr 2020 12:11:30 -0400
+X-MC-Unique: yTPcPYSwN9K5iE6YgFMaDA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7FF931005509;
+	Wed,  1 Apr 2020 16:11:29 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-115-83.rdu2.redhat.com [10.10.115.83])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 833BE5C1A2;
+	Wed,  1 Apr 2020 16:11:26 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id F1704220005; Wed,  1 Apr 2020 12:11:25 -0400 (EDT)
+Date: Wed, 1 Apr 2020 12:11:25 -0400
+From: Vivek Goyal <vgoyal@redhat.com>
+To: linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org,
+	hch@infradead.org, dan.j.williams@intel.com
+Subject: [PATCH v6 7/6] dax: Move mandatory ->zero_page_range() check in
+ alloc_dax()
+Message-ID: <20200401161125.GB9398@redhat.com>
+References: <20200228163456.1587-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-Message-ID-Hash: 2UA6TRER6UJ7QSZHXC5LJSWF6BYMJ6ZM
-X-Message-ID-Hash: 2UA6TRER6UJ7QSZHXC5LJSWF6BYMJ6ZM
-X-MailFrom: jbi.octave@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Jules Irenge <jbi.octave@gmail.com>, linux-kernel@vger.kernel.org, boqun.feng@gmail.com, Alexander Viro <viro@zeniv.linux.org.uk>, Matthew Wilcox <willy@infradead.org>, "open list:FILESYSTEMS (VFS and infrastructure)" <linux-fsdevel@vger.kernel.org>, "open list:FILESYSTEM DIRECT ACCESS (DAX)" <linux-nvdimm@lists.01.org>
+Content-Disposition: inline
+In-Reply-To: <20200228163456.1587-1-vgoyal@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+Message-ID-Hash: MJDIBS5V44KCM3KLGSW6FVWDSDNONFMY
+X-Message-ID-Hash: MJDIBS5V44KCM3KLGSW6FVWDSDNONFMY
+X-MailFrom: vgoyal@redhat.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: david@fromorbit.com, dm-devel@redhat.com, gerald.schaefer@de.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2UA6TRER6UJ7QSZHXC5LJSWF6BYMJ6ZM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MJDIBS5V44KCM3KLGSW6FVWDSDNONFMY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+zero_page_range() dax operation is mandatory for dax devices. Right now
+that check happens in dax_zero_page_range() function. Dan thinks that's
+too late and its better to do the check earlier in alloc_dax().
 
+I also modified alloc_dax() to return pointer with error code in it in
+case of failure. Right now it returns NULL and caller assumes failure
+happened due to -ENOMEM. But with this ->zero_page_range() check, I
+need to return -EINVAL instead.
 
-On Wed, 1 Apr 2020, Jan Kara wrote:
+Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+---
+ drivers/dax/bus.c            |    4 +++-
+ drivers/dax/super.c          |   14 +++++++++-----
+ drivers/md/dm.c              |    2 +-
+ drivers/nvdimm/pmem.c        |    4 ++--
+ drivers/s390/block/dcssblk.c |    5 +++--
+ 5 files changed, 18 insertions(+), 11 deletions(-)
 
-> On Tue 31-03-20 21:46:39, Jules Irenge wrote:
->> Sparse reports a warning at wait_entry_unlocked()
->>
->> warning: context imbalance in wait_entry_unlocked()
->> 	- unexpected unlock
->>
->> The root cause is the missing annotation at wait_entry_unlocked()
->> Add the missing __releases(xa) annotation.
->>
->> Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
->> ---
->>  fs/dax.c | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/fs/dax.c b/fs/dax.c
->> index 1f1f0201cad1..adcd2a57fbad 100644
->> --- a/fs/dax.c
->> +++ b/fs/dax.c
->> @@ -244,6 +244,7 @@ static void *get_unlocked_entry(struct xa_state *xas, unsigned int order)
->>   * After we call xas_unlock_irq(), we cannot touch xas->xa.
->>   */
->>  static void wait_entry_unlocked(struct xa_state *xas, void *entry)
->> +	__releases(xa)
->
-> Thanks for the patch but is this a proper sparse annotation? I'd rather
-> expect something like __releases(xas->xa->xa_lock) here...
->
-> 								Honza
->
->>  {
->>  	struct wait_exceptional_entry_queue ewait;
->>  	wait_queue_head_t *wq;
->> --
->> 2.24.1
->>
-> -- 
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
->
-Thanks for the kind reply. I learned and changed. If there is a further 
-issue, please do not hesitate to contact me.
-Thanks,
-Jules
+Index: redhat-linux/drivers/dax/super.c
+===================================================================
+--- redhat-linux.orig/drivers/dax/super.c	2020-04-01 12:03:39.911439769 -0400
++++ redhat-linux/drivers/dax/super.c	2020-04-01 12:05:31.727439769 -0400
+@@ -349,9 +349,6 @@ int dax_zero_page_range(struct dax_devic
+ {
+ 	if (!dax_alive(dax_dev))
+ 		return -ENXIO;
+-
+-	if (!dax_dev->ops->zero_page_range)
+-		return -EOPNOTSUPP;
+ 	/*
+ 	 * There are no callers that want to zero more than one page as of now.
+ 	 * Once users are there, this check can be removed after the
+@@ -571,9 +568,16 @@ struct dax_device *alloc_dax(void *priva
+ 	dev_t devt;
+ 	int minor;
+ 
++	if (ops && !ops->zero_page_range) {
++		pr_debug("%s: error: device does not provide dax"
++			 " operation zero_page_range()\n",
++			 __host ? __host : "Unknown");
++		return ERR_PTR(-EINVAL);
++	}
++
+ 	host = kstrdup(__host, GFP_KERNEL);
+ 	if (__host && !host)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	minor = ida_simple_get(&dax_minor_ida, 0, MINORMASK+1, GFP_KERNEL);
+ 	if (minor < 0)
+@@ -596,7 +600,7 @@ struct dax_device *alloc_dax(void *priva
+ 	ida_simple_remove(&dax_minor_ida, minor);
+  err_minor:
+ 	kfree(host);
+-	return NULL;
++	return ERR_PTR(-ENOMEM);
+ }
+ EXPORT_SYMBOL_GPL(alloc_dax);
+ 
+Index: redhat-linux/drivers/nvdimm/pmem.c
+===================================================================
+--- redhat-linux.orig/drivers/nvdimm/pmem.c	2020-04-01 12:03:39.911439769 -0400
++++ redhat-linux/drivers/nvdimm/pmem.c	2020-04-01 12:05:31.729439769 -0400
+@@ -487,9 +487,9 @@ static int pmem_attach_disk(struct devic
+ 	if (is_nvdimm_sync(nd_region))
+ 		flags = DAXDEV_F_SYNC;
+ 	dax_dev = alloc_dax(pmem, disk->disk_name, &pmem_dax_ops, flags);
+-	if (!dax_dev) {
++	if (IS_ERR(dax_dev)) {
+ 		put_disk(disk);
+-		return -ENOMEM;
++		return PTR_ERR(dax_dev);
+ 	}
+ 	dax_write_cache(dax_dev, nvdimm_has_cache(nd_region));
+ 	pmem->dax_dev = dax_dev;
+Index: redhat-linux/drivers/dax/bus.c
+===================================================================
+--- redhat-linux.orig/drivers/dax/bus.c	2020-04-01 12:03:39.911439769 -0400
++++ redhat-linux/drivers/dax/bus.c	2020-04-01 12:05:31.729439769 -0400
+@@ -421,8 +421,10 @@ struct dev_dax *__devm_create_dev_dax(st
+ 	 * device outside of mmap of the resulting character device.
+ 	 */
+ 	dax_dev = alloc_dax(dev_dax, NULL, NULL, DAXDEV_F_SYNC);
+-	if (!dax_dev)
++	if (IS_ERR(dax_dev)) {
++		rc = PTR_ERR(dax_dev);
+ 		goto err;
++	}
+ 
+ 	/* a device_dax instance is dead while the driver is not attached */
+ 	kill_dax(dax_dev);
+Index: redhat-linux/drivers/s390/block/dcssblk.c
+===================================================================
+--- redhat-linux.orig/drivers/s390/block/dcssblk.c	2020-04-01 12:03:39.911439769 -0400
++++ redhat-linux/drivers/s390/block/dcssblk.c	2020-04-01 12:05:31.730439769 -0400
+@@ -695,8 +695,9 @@ dcssblk_add_store(struct device *dev, st
+ 
+ 	dev_info->dax_dev = alloc_dax(dev_info, dev_info->gd->disk_name,
+ 			&dcssblk_dax_ops, DAXDEV_F_SYNC);
+-	if (!dev_info->dax_dev) {
+-		rc = -ENOMEM;
++	if (IS_ERR(dev_info->dax_dev)) {
++		rc = PTR_ERR(dev_info->dax_dev);
++		dev_info->dax_dev = NULL;
+ 		goto put_dev;
+ 	}
+ 
+Index: redhat-linux/drivers/md/dm.c
+===================================================================
+--- redhat-linux.orig/drivers/md/dm.c	2020-04-01 12:03:39.911439769 -0400
++++ redhat-linux/drivers/md/dm.c	2020-04-01 12:05:31.732439769 -0400
+@@ -2005,7 +2005,7 @@ static struct mapped_device *alloc_dev(i
+ 	if (IS_ENABLED(CONFIG_DAX_DRIVER)) {
+ 		md->dax_dev = alloc_dax(md, md->disk->disk_name,
+ 					&dm_dax_ops, 0);
+-		if (!md->dax_dev)
++		if (IS_ERR(md->dax_dev))
+ 			goto bad;
+ 	}
+ 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
