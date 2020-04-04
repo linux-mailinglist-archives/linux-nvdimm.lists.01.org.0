@@ -1,55 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A0A19E28E
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Apr 2020 05:39:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2411A19E4B7
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Apr 2020 13:40:49 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D5171100DCAE6;
-	Fri,  3 Apr 2020 20:39:54 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=62.76.177.171; helo=nessti.info; envelope-from=info@nessti.info; receiver=<UNKNOWN> 
-Received: from nessti.info (unknown [62.76.177.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 41FCF100DCDFF
-	for <linux-nvdimm@lists.01.org>; Fri,  3 Apr 2020 20:39:41 -0700 (PDT)
-Message-ID: <0f9318b441438a869386306397013b37c3de62c1@nessti.info>
-From: Jeanne <info@nessti.info>
-To: linux-nvdimm@lists.01.org
-Subject: How to use a PC to earn money?
-Date: Sat, 4 Apr 2020 06:38:28 +0300
+	by ml01.01.org (Postfix) with ESMTP id 26DB210FC546E;
+	Sat,  4 Apr 2020 04:41:36 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.18; helo=czop.com; envelope-from=zkka@tonb.com; receiver=<UNKNOWN> 
+Received: from czop.com (unknown [223.73.35.18])
+	by ml01.01.org (Postfix) with ESMTP id 665DC10FC546B
+	for <linux-nvdimm@lists.01.org>; Sat,  4 Apr 2020 04:41:12 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 04 Apr 2020 19:26:54 +0800
+Message-ID: d8304696-62f5-440e-ad36-6fee286c370e
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=nessti.info; s=mail;
-	c=relaxed/relaxed; t=1585971508;
-	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
-	bh=KrzxrG2CGHOS+7b5L3RbJOsBzjEFi2hLYoCBm9YaM6E=;
-	b=GVbQKhYPX0XoWN9I1OOeDg7+5mx5pgjX1BHPrkIrnK5OvXJYkZZToR5DmqSkuj
-	IkPdrBvOFPbyhcmIk9ToU6CcWdOy4uEqmXo4QOl6TUeg9bE9+cfhWKtXJBYO4h/6
-	PoMdptsaKV00Ru1fvce5niYMP0nRRcqwWWw/hzo67CJvw=
-Message-ID-Hash: 5IS343ZNPIBMRBOAS2I5B4EVMIDPCSQV
-X-Message-ID-Hash: 5IS343ZNPIBMRBOAS2I5B4EVMIDPCSQV
-X-MailFrom: info@nessti.info
+Sender: =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E5=87?=
+ =?utf-8?Q?=BA=E5=8F=A3=E9=A6=99=E6=B8=AF=E6=95=A3=E8=B4=A7=E6=8B=BC=E8?=
+ =?utf-8?Q?=BD=A6=EF=BC=8C=E6=95=B4=E6=9F=9C=E8=BF=90=E8=BE=93?=
+ <zkka@tonb.com>
+From: =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E5=87=BA?=
+ =?utf-8?Q?=E5=8F=A3=E9=A6=99=E6=B8=AF=E6=95=A3=E8=B4=A7=E6=8B=BC=E8=BD?=
+ =?utf-8?Q?=A6=EF=BC=8C=E6=95=B4=E6=9F=9C=E8=BF=90=E8=BE=93?=
+ <wuliu56sales01@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 4 Apr 2020 19:26:54 +0800
+Subject: =?utf-8?B?5YWo5Zu95ZCE5Zyw5Ye65Y+j6aaZ5riv5pWj6LSn5ou86L2m?=
+ =?utf-8?B?77yM5pW05p+c6L+Q6L6T?=
+Message-ID-Hash: OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B
+X-Message-ID-Hash: OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B
+X-MailFrom: zkka@tonb.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5IS343ZNPIBMRBOAS2I5B4EVMIDPCSQV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-VHVybiBZb3VyIENvbXB1dGVyIGludG8gYSAyNFg3IE1vbmV5IEdlbmVyYXRvci4NCg0KMTAwJSBB
-dXRvcGlsb3QuIDEwMCUgRlJFRS4NCg0KRXZlcnlvbmUncyBJbnZpdGVkIQ0KDQpHbyB0byBzaXRl
-PqBodHRwOi8vYml0Lmx5LzJJaDRkZnINCg0KSWYgeW91IGRvIG5vdCB3aXNoIHRvIHJlY2VpdmUg
-ZnVydGhlciBlbWFpbHMsIHRoZW4gcGxlYXNlIGNsaWNrIGhlcmUgdG8gTGlzdC1VbnN1YnNjcmli
-ZQ0KDQp8IDg2ODQgU2FudGEgTW9uaWNhIEJsdmQsIFN1aXRlIDg2ODQgTG9zIEFuZ2VsZXMsIENB
-IDg2ODQtODY4NCwgVVNBIHwNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3Rz
-LjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2
-ZUBsaXN0cy4wMS5vcmcK
+Jm5ic3A7DQrlhajlm73lkITlnLDlh7rlj6PpppnmuK/ov5DovpPvvIzlronlhajlv6vmjbfvvIzm
+k43kvZznroDljZXvvIzku7fmoLzlhazpgZPlhaXku5PkuqTmlLbjgIHotKfmn5zovaboo4Xmi4bj
+gIHlpKfpmYbovaboo4Xmi4bjgIHmnLrlnLrkuqTmlLbjgIHku6PmiqXlhbMNCuKWoCZuYnNwO+ac
+rOWFrOWPuOS4k+iQpeWkp+mZhuWHuuWPo+mmmea4r+aVo+i0p+aLvOi9pu+8jOaVtOafnOi/kOi+
+kw0K4pagJm5ic3A75Luj5a6i5Lmw5Y2V5oql5YWz77yM5Y2V6K+B5oql5YWz77yM5ZWG5qOA562J
+5LiA5p2h6b6Z5pyN5YqhDQrilqAmbmJzcDvkuK3lm73lhoXlnLDlhajljLrlj6/ku6XkuIrpl6jm
+j5DotKfvvIzku6PlrqLpqozotKfnrYnmnI3liqENCuKWoCZuYnNwO+mmmea4r+S7o+WuoumAgeac
+uuWcuu+8jOeggeWktO+8jOWGmeWtl+alvO+8jOW3peS4muWkp+WOpuetiQ0K4pagJm5ic3A75YWN
+6LS5562+5Zue5Y2V77yM5Luj5a6i5a+E6YCB6LSn5Y2V77yM5bC+57q477yM5pS25o2u562J562J
+DQombmJzcDsNCuS4rea4r+eJqea1geaciemZkOWFrOWPuA0K6IGU57O75Lq677yaSmFjaw0K5aSn
+6ZmG5omL5py6Jm5ic3A777yaKzg2LTEzNjQyOTgwOTM16aaZ5riv55S16K+dJm5ic3A777yaKzg1
+MiA1MTAxIDU1NTANClEmbmJzcDtRIDombmJzcDsmbmJzcDsgMjkwNTY1MDc3OUUtbWFpbCA6d3Vs
+aXU1NnNhbGVzMDFAaG90bWFpbC5jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
+LWxlYXZlQGxpc3RzLjAxLm9yZwo=
