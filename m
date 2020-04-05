@@ -1,62 +1,81 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2411A19E4B7
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Apr 2020 13:40:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E1719E7FA
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  5 Apr 2020 00:54:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 26DB210FC546E;
-	Sat,  4 Apr 2020 04:41:36 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.18; helo=czop.com; envelope-from=zkka@tonb.com; receiver=<UNKNOWN> 
-Received: from czop.com (unknown [223.73.35.18])
-	by ml01.01.org (Postfix) with ESMTP id 665DC10FC546B
-	for <linux-nvdimm@lists.01.org>; Sat,  4 Apr 2020 04:41:12 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 04 Apr 2020 19:26:54 +0800
-Message-ID: d8304696-62f5-440e-ad36-6fee286c370e
+	by ml01.01.org (Postfix) with ESMTP id D65A5100B60C8;
+	Sat,  4 Apr 2020 15:55:35 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=200.110.188.19; helo=lujans08.lujan.gob.ar; envelope-from=test@asrockrackchina.com; receiver=<UNKNOWN> 
+Received: from lujans08.lujan.gob.ar (lujans08.lujan.gob.ar [200.110.188.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 56A6D100B7749
+	for <linux-nvdimm@lists.01.org>; Sat,  4 Apr 2020 15:55:32 -0700 (PDT)
+Received: from [156.96.116.238] (gracie.drumgrey.com [156.96.116.238] (may be forged))
+	(authenticated bits=0)
+	by lujans08.lujan.gob.ar (8.14.4/8.14.4) with ESMTP id 034JVUik009897
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sat, 4 Apr 2020 18:52:35 -0300
+Message-Id: <202004042152.034JVUik009897@lujans08.lujan.gob.ar>
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E5=87?=
- =?utf-8?Q?=BA=E5=8F=A3=E9=A6=99=E6=B8=AF=E6=95=A3=E8=B4=A7=E6=8B=BC=E8?=
- =?utf-8?Q?=BD=A6=EF=BC=8C=E6=95=B4=E6=9F=9C=E8=BF=90=E8=BE=93?=
- <zkka@tonb.com>
-From: =?utf-8?Q?=E5=85=A8=E5=9B=BD=E5=90=84=E5=9C=B0=E5=87=BA?=
- =?utf-8?Q?=E5=8F=A3=E9=A6=99=E6=B8=AF=E6=95=A3=E8=B4=A7=E6=8B=BC=E8=BD?=
- =?utf-8?Q?=A6=EF=BC=8C=E6=95=B4=E6=9F=9C=E8=BF=90=E8=BE=93?=
- <wuliu56sales01@hotmail.com>
-To: linux-nvdimm@lists.01.org
-Date: 4 Apr 2020 19:26:54 +0800
-Subject: =?utf-8?B?5YWo5Zu95ZCE5Zyw5Ye65Y+j6aaZ5riv5pWj6LSn5ou86L2m?=
- =?utf-8?B?77yM5pW05p+c6L+Q6L6T?=
-Message-ID-Hash: OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B
-X-Message-ID-Hash: OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B
-X-MailFrom: zkka@tonb.com
+Content-Description: Mail message body
+Subject: INSTRUCTIONS / WARNING FROM CENTRAL BANK. 04/04
+To: Recipients <test@asrockrackchina.com>
+From: "Mr. Godwin Emefiele" <test@asrockrackchina.com>
+Date: Sat, 04 Apr 2020 17:38:21 -0700
+X-Lujan-MailScanner-Information: Please contact the ISP for more information
+X-Lujan-MailScanner-ID: 034JVUik009897
+X-Lujan-MailScanner: Found to be clean
+X-Lujan-MailScanner-SpamScore: s
+X-Lujan-MailScanner-From: test@asrockrackchina.com
+X-Spam-Status: No
+Message-ID-Hash: DOO6MVKRMVTJEJKZ3EL4QQYH4DTFBK2Z
+X-Message-ID-Hash: DOO6MVKRMVTJEJKZ3EL4QQYH4DTFBK2Z
+X-MailFrom: test@asrockrackchina.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: cyrilcbn@yahoo.co.jp
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGK7OUJJAWARVHFTTMJWOCVJBLRBNX6B/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DOO6MVKRMVTJEJKZ3EL4QQYH4DTFBK2Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Jm5ic3A7DQrlhajlm73lkITlnLDlh7rlj6PpppnmuK/ov5DovpPvvIzlronlhajlv6vmjbfvvIzm
-k43kvZznroDljZXvvIzku7fmoLzlhazpgZPlhaXku5PkuqTmlLbjgIHotKfmn5zovaboo4Xmi4bj
-gIHlpKfpmYbovaboo4Xmi4bjgIHmnLrlnLrkuqTmlLbjgIHku6PmiqXlhbMNCuKWoCZuYnNwO+ac
-rOWFrOWPuOS4k+iQpeWkp+mZhuWHuuWPo+mmmea4r+aVo+i0p+aLvOi9pu+8jOaVtOafnOi/kOi+
-kw0K4pagJm5ic3A75Luj5a6i5Lmw5Y2V5oql5YWz77yM5Y2V6K+B5oql5YWz77yM5ZWG5qOA562J
-5LiA5p2h6b6Z5pyN5YqhDQrilqAmbmJzcDvkuK3lm73lhoXlnLDlhajljLrlj6/ku6XkuIrpl6jm
-j5DotKfvvIzku6PlrqLpqozotKfnrYnmnI3liqENCuKWoCZuYnNwO+mmmea4r+S7o+WuoumAgeac
-uuWcuu+8jOeggeWktO+8jOWGmeWtl+alvO+8jOW3peS4muWkp+WOpuetiQ0K4pagJm5ic3A75YWN
-6LS5562+5Zue5Y2V77yM5Luj5a6i5a+E6YCB6LSn5Y2V77yM5bC+57q477yM5pS25o2u562J562J
-DQombmJzcDsNCuS4rea4r+eJqea1geaciemZkOWFrOWPuA0K6IGU57O75Lq677yaSmFjaw0K5aSn
-6ZmG5omL5py6Jm5ic3A777yaKzg2LTEzNjQyOTgwOTM16aaZ5riv55S16K+dJm5ic3A777yaKzg1
-MiA1MTAxIDU1NTANClEmbmJzcDtRIDombmJzcDsmbmJzcDsgMjkwNTY1MDc3OUUtbWFpbCA6d3Vs
-aXU1NnNhbGVzMDFAaG90bWFpbC5jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1A
-bGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1t
-LWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Dear Esteemed Beneficiary,
+
+This is to bring to your notice from the Executive Governor of the Central Bank Remittance Department that your outstanding contractual / inheritance payment which was suspended by the Nigerian government there by stopping the TRANSFER DEPARTMENT to pause the transfer of your contract fund to your nominated bank account. As a result of this development verification conducted by the Finance Ministry in conjunction with the Debt Verification Panel on your contract case file has been endorsed
+for payment awaiting your confirmations.
+
+In view of several efforts already made by us to contact you for the following reasons based on the new account submitted to this office on your behalf:
+
+(1) My Office desks have just received a sworn affidavit from Mr.Jim Hermann  from your country to re-route your payment into a new bank account.
+
+The sum of US$ 3.8 Million US Dollars ( THREE MILLION EIGHT HUNDRED THOUSAND  US Dollars) 
+(2) Please, confirm to our office if you have instructed Mr. Jim Hermann from your country to appoint an attorney/agent on your behalf thereby asking that he receive cash call remittance on your behalf.
+
+(3) It have come to our notice that you are being contacted by unauthorized individuals with respect to your Contract / Inheritance payment but unfortunately this office is not aware of your unofficial dealings and warned that it is at your own risk.
+
+(4) Please, also confirm if you have authorized Mr. Jim Hermann to change your banking particulars. Also re-confirm your details and, Private Telephone, your e-mail address,  so that we can cross-check it with our file records.
+
+We have decided to contact you for re-verification because we suspected that Mr. Jim Hermann is trying to divert your money through the sworn affidavit into a new different bank account. You are advised to get back to this office within 7days from today.
+
+
+Best Regards
+Mr.Godwin Emefiele
+Executive Governor Central Bank Nigeria
+
+-- 
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
