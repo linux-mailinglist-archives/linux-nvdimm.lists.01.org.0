@@ -1,77 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CAE19F3C7
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 12:46:08 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DDD19F4DF
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 13:39:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 49DD1100A462C;
-	Mon,  6 Apr 2020 03:46:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 3777E10FD2AD7;
+	Mon,  6 Apr 2020 04:40:35 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DDE0210112D92
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 03:46:52 -0700 (PDT)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036Ahpbk171975;
-	Mon, 6 Apr 2020 10:45:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=0ZlPWVkYRVCozqYJTFdUyWBFeoRAi1Fmbngpdi2INOk=;
- b=XNOH+k8XPlBNYkcARuaq8rKfhIT3CzOerQi8RV/2LDRX8Wk1mHs01ESA6dKqhJT74tHi
- HKpnhTw0+iXvMc/piNoqqrN7z3I0wEOvpLpR6yFxZ5fwLKq/o5Kd/GMv76rpOZlcSu8w
- j5N73gp+swY/lsVRGGuC3I+iVDwGBL7EQfGmLMjKnGz4qkB8hZ4bNBSAIGraL0EeFgaU
- LFZ94AHFJJa6XTeBT4i0wgxzLjeIucZIbtOpUr3EM11+kSwx+RBh/ikqPrqRc2vISGRS
- 5lVTSsZbG/s0dwIkRAhFtbRpgEVDmL5F3ngbTaUHZFwPt8k7Gxs+0CaIXjdL7uDEgwpn Gw==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by aserp2120.oracle.com with ESMTP id 306j6m62gx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 06 Apr 2020 10:45:58 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 036AgPwf010217;
-	Mon, 6 Apr 2020 10:43:57 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by userp3020.oracle.com with ESMTP id 3073xvxbka-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 06 Apr 2020 10:43:57 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 036Ahscm004286;
-	Mon, 6 Apr 2020 10:43:54 GMT
-Received: from [10.175.175.249] (/10.175.175.249)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Mon, 06 Apr 2020 03:43:54 -0700
-Subject: Re: [PATCH 11/12] device-dax: Add dis-contiguous resource support
-To: Dan Williams <dan.j.williams@intel.com>
-References: <158500767138.2088294.17131646259803932461.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <23742bb8-831f-29ff-1463-75427eec57c7@oracle.com>
-Date: Mon, 6 Apr 2020 11:43:51 +0100
+	by ml01.01.org (Postfix) with ESMTPS id 170BE10FCD94C
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 04:40:32 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id o26so7394361pgc.12
+        for <linux-nvdimm@lists.01.org>; Mon, 06 Apr 2020 04:39:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=TVo5U5Qk5KaqTFJoyOHQL8+EKyddqtlkeUHweeNyqZ0=;
+        b=Bg4UnCw71mE6R7n9jpyaZnzOESPfO6Wit11wTpFxMDPw49+X04Pb6K1jOQlOGtHDNd
+         h8tF7fYVjKY8stF+XSvQUC11ANVsiWo1O6sAgMFcPZwO4ooakFm/sn4WGHqhipGfpysv
+         c0kUJhCdFD3STqO2qxzw9FQtB08Q3bosms+xaVlMo8FXBb062gcRf3/3nyAzMSwVhpFN
+         S5nus6FmbpkaH/DWRbSK+qLc5LGPQmSFBJB0zYzHrwNwAZ5kko6ZG+X6AM8EUo6smY5x
+         0sLSij6oDqNgX8w97KZ1kQHxOFb3h9zZ9a96Jsyc0aze/BmiMzlQDcO6SYhekOr5VAdZ
+         bX/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=TVo5U5Qk5KaqTFJoyOHQL8+EKyddqtlkeUHweeNyqZ0=;
+        b=U0CfjyNwWashhQwPQbB5M6UH43wVPQ7Nl2Gu+VlQcOqyesTdXZFjOUn48rsJBiEG0A
+         e0w7ST14qws2Zd3qCY4G0iKwGMcZACjocLDNo8QDdU52aL8fNZrydJ0C5qz1IGS5cHmz
+         LLFk1JvGbyerPNx2twVq1Nf6sjESzWIzAVtXaT4EjttUY22BsdJLE388Jov0kTB3qV83
+         fAUxXDTvjCZD3OqCCjx10D3j0zDhZAhG9XwQ0LzXlNavUdRE1qYL+JvrMQuUOnFd47Cw
+         PrDK9xUkHNdnTx2LqpJNyAOyIXQk2KO82DBaGnphO9776KGdrnrnlgw3rYrGQxja1SnI
+         A9uQ==
+X-Gm-Message-State: AGi0PuaLSy8RYPkkHK/anDRc96M9HFcaCU1Y5zif+n03qxYe3V+N1nPO
+	PMnuOcMDx2JycDP4PwxnbZUeVA==
+X-Google-Smtp-Source: APiQypKLlKv3itN7zUskK0eyz5PUt+BHkJHMpS3KUA+Nl/n4TD0WuaCwUjCt4m4BTAB2Z8JkReTz2Q==
+X-Received: by 2002:a63:82c2:: with SMTP id w185mr21453657pgd.382.1586173183152;
+        Mon, 06 Apr 2020 04:39:43 -0700 (PDT)
+Received: from localhost ([2401:4900:3608:7cce:5302:f185:2859:b4e1])
+        by smtp.gmail.com with ESMTPSA id u13sm10593150pgp.49.2020.04.06.04.39.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Apr 2020 04:39:42 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Michal Suchanek <msuchanek@suse.de>, linux-nvdimm@lists.01.org
+Subject: Re: [PATCH] ndctl/namespace: skip zero namespaces when processing
+In-Reply-To: <20200403210514.21786-1-msuchanek@suse.de>
+References: <20200403210514.21786-1-msuchanek@suse.de>
+Date: Mon, 06 Apr 2020 17:09:36 +0530
+Message-ID: <87zhboc07b.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=999
- adultscore=0 spamscore=0 phishscore=0 malwarescore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004060093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9582 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999 spamscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 mlxscore=0 phishscore=0 adultscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004060093
-Message-ID-Hash: HCNQY6TDOE3H4Q3TVPQFDEWFPSLBITIS
-X-Message-ID-Hash: HCNQY6TDOE3H4Q3TVPQFDEWFPSLBITIS
-X-MailFrom: joao.m.martins@oracle.com
+Message-ID-Hash: QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM
+X-Message-ID-Hash: QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-mm@kvack.org, dave.hansen@linux.intel.com, hch@lst.de, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: Michal Suchanek <msuchanek@suse.de>, jack@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HCNQY6TDOE3H4Q3TVPQFDEWFPSLBITIS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -80,76 +71,77 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 3/23/20 11:55 PM, Dan Williams wrote:
+Michal Suchanek <msuchanek@suse.de> writes:
 
-[...]
+> Hello,
+>
+> this is a fix for github issue #41. I tested on system with vpmem with
+> ndctl 64.1 that the issue is fixed. master builds with the fix applied.
+>
+> 8<-------------------------------------------------------------------->8
+>
+> The kernel always creates zero length namespace with uuid 0 in each
+> region.
+>
+> When processing all namespaces the user gets confusing errors from ndctl
+> trying to process this namespace. Skip it.
+>
+> The user can still specify the namespace by name directly in case
+> processing it is desirable.
+>
+> Fixes: #41
+>
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> ---
+>  ndctl/namespace.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
 
->  static ssize_t dev_dax_resize(struct dax_region *dax_region,
->  		struct dev_dax *dev_dax, resource_size_t size)
->  {
->  	resource_size_t avail = dax_region_avail_size(dax_region), to_alloc;
-> -	resource_size_t dev_size = range_len(&dev_dax->range);
-> +	resource_size_t dev_size = dev_dax_size(dev_dax);
->  	struct resource *region_res = &dax_region->res;
->  	struct device *dev = &dev_dax->dev;
-> -	const char *name = dev_name(dev);
->  	struct resource *res, *first;
-> +	resource_size_t alloc = 0;
-> +	int rc;
+Reviewed-by: Santosh S <santosh@fossix.org>
+
+Tested on a vpmem system with master branch, and I can see the issue got fixed.
+
+# ./ndctl/ndctl enable-namespace all
+error enabling namespaces: No such device or address
+enabled 24 namespaces
+
+After this patch
+
+# ./ndctl/ndctl enable-namespace all 
+enabled 24 namespaces
+
+Thanks,
+Santosh
+
+>
+> diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+> index 0550580707e8..6f4a4b5b8883 100644
+> --- a/ndctl/namespace.c
+> +++ b/ndctl/namespace.c
+> @@ -2128,9 +2128,19 @@ static int do_xaction_namespace(const char *namespace,
+>  			ndctl_namespace_foreach_safe(region, ndns, _n) {
+>  				ndns_name = ndctl_namespace_get_devname(ndns);
 >  
->  	if (dev->driver)
->  		return -EBUSY;
-> @@ -684,38 +766,47 @@ static ssize_t dev_dax_resize(struct dax_region *dax_region,
->  	 * allocating a new resource.
->  	 */
->  	first = region_res->child;
-> -	if (!first)
-> -		return __alloc_dev_dax_range(dev_dax, dax_region->res.start,
-> -				to_alloc);
-> -	for (res = first; to_alloc && res; res = res->sibling) {
-> +retry:
-> +	rc = -ENOSPC;
-> +	for (res = first; res; res = res->sibling) {
->  		struct resource *next = res->sibling;
-> -		resource_size_t free;
->  
->  		/* space at the beginning of the region */
-> -		free = 0;
-> -		if (res == first && res->start > dax_region->res.start)
-> -			free = res->start - dax_region->res.start;
-> -		if (free >= to_alloc && dev_size == 0)
-> -			return __alloc_dev_dax_range(dev_dax,
-> -					dax_region->res.start, to_alloc);
-> -
-> -		free = 0;
-> +		if (res == first && res->start > dax_region->res.start) {
-> +			alloc = min(res->start - dax_region->res.start,
-> +					to_alloc);
-> +			rc = __alloc_dev_dax_range(dev_dax,
-> +					dax_region->res.start, alloc);
-
-You might be missing:
-
-	first = region_res->child;
-
-(...) right after returning from __alloc_dev_dax_range(). Alternatively, perhaps
-even moving the 'retry' label to right before the @first initialization.
-
-In the case that you pick space from the beginning, the child resource of the
-dax region will point to first occupied region, and that changes after you pick
-this space. So, IIUC, you want to adjust where you start searching free space
-otherwise you end up wrongly picking that same space twice.
-
-If it helps, the bug can be reproduced in this unit test below, see
-daxctl_test3() test:
-
-https://lore.kernel.org/linux-nvdimm/20200403205900.18035-11-joao.m.martins@oracle.com/
-
-> +			break;
-> +		}
+> -				if (strcmp(namespace, "all") != 0
+> -						&& strcmp(namespace, ndns_name) != 0)
+> -					continue;
+> +				if (strcmp(namespace, "all") == 0) {
+> +					static const uuid_t zero_uuid;
+> +					uuid_t uuid;
 > +
-
-[...]
+> +					ndctl_namespace_get_uuid(ndns, uuid);
+> +					if (!ndctl_namespace_get_size(ndns) &&
+> +					    !memcmp(uuid, zero_uuid, sizeof(uuid_t)))
+> +						continue;
+> +				} else {
+> +					if (strcmp(namespace, ndns_name) != 0)
+> +						continue;
+> +				}
+> +
+>  				switch (action) {
+>  				case ACTION_DISABLE:
+>  					rc = ndctl_namespace_disable_safe(ndns);
+> -- 
+> 2.23.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
