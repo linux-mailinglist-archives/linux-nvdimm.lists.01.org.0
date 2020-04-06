@@ -2,227 +2,140 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 531D719F9F7
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 18:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF0E19FEFC
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 22:23:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E2A65100A30E0;
-	Mon,  6 Apr 2020 09:15:23 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=212.32.245.155; helo=vresso.com; envelope-from=vresso@vresso.com; receiver=<UNKNOWN> 
-Received: from vresso.com (unknown [212.32.245.155])
-	by ml01.01.org (Postfix) with ESMTP id 6DE46100A30DE
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 09:15:21 -0700 (PDT)
-From: Syed Farhan <vresso@vresso.com>
-To: linux-nvdimm@lists.01.org
-Subject: RFQ for MFT#301823.PDF
-Date: 06 Apr 2020 09:14:28 -0700
-Message-ID: <20200406091428.22EFFDB9448E8881@vresso.com>
+	by ml01.01.org (Postfix) with ESMTP id 8333010FC3C1A;
+	Mon,  6 Apr 2020 13:24:03 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id DD95F100B39FA
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 13:23:57 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id cw6so1120405edb.9
+        for <linux-nvdimm@lists.01.org>; Mon, 06 Apr 2020 13:23:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=39PH+pwpIycTi0BsfN3QezNcOPRNhfwqmeD1bO42FHI=;
+        b=re0wkM9Y8K0FkjQlOYTtllVGDKo96zzEV9ijGYRTSuOy69i+w+YnLmP5o40GJpt35d
+         id1hpQ7x/EK/kFALbsL9tNzD+6SkS/Vk7I8UkLLjA6NHyxmzdfU0k6F9dHb3Eiyy+jok
+         E18GAbSDHu0DAsBxHQd0paCz6sqrKShssxJf9In36mDsiTd1aw+w+YOkQcTzQqwKkpSd
+         og/4qTJ341EkMIRECzta+agUB7EVJK0c/mFmjYoRMgxHoP+ySEESE37xSNcO1R2BgqbL
+         Fbf4XVj2ywZ2YkHUG6xzQnnc3PHFsmGWn2zp1TMpAQpcERcFithJvKtO7PePdYzBw4ab
+         d7Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=39PH+pwpIycTi0BsfN3QezNcOPRNhfwqmeD1bO42FHI=;
+        b=f7WYUGdkwpU79zUewLtprcm26ODKrUmier19LxplhGTO5bIjL8W1Wbx4pv9LTxQAls
+         /f/2gDlbtJD/TOihoF9AMxa/5VGkhVmC0QZ6clUcpxI7p1P08FlCQ1jtGWoXGuZEWYgX
+         7oCSJ8IRGVGRuwzSkaoU/R+dBig520Do3E4itvdXjxVXgDLx8prr4h5Sos83F+TTNmGs
+         EXEVIocJ9zKT4IO5oGR+X4e7PE0IMV7+MH0tXK5XBCjsBpX1QBB6LbjDHfOaq5y4ZBdh
+         Ik5qego/Fob51yW7Vow1y0hSSumWFZ0VDrvoSzeDqHoOgCUqnc9lDhqgGlsICixSegRW
+         gbyg==
+X-Gm-Message-State: AGi0PuZNGJCOeJjYsSRdQHuYXZW6rPtWy9zfCrqJHeiIOFKTunxcK9CE
+	rXohcr7lyGSSnicpxAUWUnRjlO1z63whM3dAcDPbEw==
+X-Google-Smtp-Source: APiQypLKe5k4sPIdyDlAdrXh1qMjrKzUsMm7i1sTvxIVG8cUt7zm4WnRhiU6r3Bysf7eOs3J7AGGIYYvkaNPjCfcQMI=
+X-Received: by 2002:a17:906:6d8e:: with SMTP id h14mr1160830ejt.123.1586204586068;
+ Mon, 06 Apr 2020 13:23:06 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: OGO3AE7HHHESETPH3MED63MY4R5RZPJU
-X-Message-ID-Hash: OGO3AE7HHHESETPH3MED63MY4R5RZPJU
-X-MailFrom: vresso@vresso.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <158500767138.2088294.17131646259803932461.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <23742bb8-831f-29ff-1463-75427eec57c7@oracle.com>
+In-Reply-To: <23742bb8-831f-29ff-1463-75427eec57c7@oracle.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 6 Apr 2020 13:22:54 -0700
+Message-ID: <CAPcyv4jvsBSD3SELYn=oj_nvLZ_VgM2YbyswbSEeq5DmkcbXcw@mail.gmail.com>
+Subject: Re: [PATCH 11/12] device-dax: Add dis-contiguous resource support
+To: Joao Martins <joao.m.martins@oracle.com>
+Message-ID-Hash: OIHNWOJSAH7RS3DLC7CGHTZRH6SNRMD2
+X-Message-ID-Hash: OIHNWOJSAH7RS3DLC7CGHTZRH6SNRMD2
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux MM <linux-mm@kvack.org>, Dave Hansen <dave.hansen@linux.intel.com>, Christoph Hellwig <hch@lst.de>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OGO3AE7HHHESETPH3MED63MY4R5RZPJU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OIHNWOJSAH7RS3DLC7CGHTZRH6SNRMD2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============3564897243664308651=="
-
---===============3564897243664308651==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
-w3.org/TR/html4/loose.dtd">
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.19650"></HEAD>
-<body style=3D"MARGIN: 0.5em">
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; MARGIN: 0in 0in 0pt'><SPAN lang=3DEN-GB =
-style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri, sans-serif">Dear,<U></U><U>=
-</U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif"><U></U><U></U></SPAN>&nbsp;</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; TEXT-ALIGN: justify; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LET=
-TER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt=
-; FONT-FAMILY: Calibri, sans-serif; BACKGROUND: yellow">Urgent</SPAN><SPAN =
-lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri, sans-serif"><U=
-></U><U></U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; TEXT-ALIGN: justify; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LET=
-TER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt=
-; FONT-FAMILY: Calibri, sans-serif">Kindly provide us your most competitive=
- quotation &amp; advise the availability for the<A href=3D"http://ddl8.data=
-=2Ehu/get/273416/12377837/MFT301823_pdf.zip"><SPAN>&nbsp;</SPAN><U><SPAN st=
-yle=3D"COLOR: red">MFT#301823</SPAN></U></A></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; TEXT-ALIGN: justify; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LET=
-TER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial'><U><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 1=
-1pt; FONT-FAMILY: Calibri, sans-serif; COLOR: red"><U></U><SPAN style=3D"TE=
-XT-DECORATION: none"></SPAN><U></U></SPAN></U>&nbsp;</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; TEXT-ALIGN: justify; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LET=
-TER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial'><U><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 1=
-1pt; FONT-FAMILY: Calibri, sans-serif; COLOR: red">Note: need your quote/pr=
-ice per cubic meter(m3).</SPAN></U><SPAN lang=3DEN-GB><U></U><U></U></SPAN>=
-</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; TEXT-ALIGN: justify; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LET=
-TER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; =
-font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-str=
-oke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt=
-; FONT-FAMILY: Calibri, sans-serif"><BR><SPAN>&nbsp;</SPAN><U><SPAN style=
-=3D"COLOR: red"><A href=3D"http://ddl8.data.hu/get/273416/12377837/MFT30182=
-3_pdf.zip">MFT#301823.PDF</A><BR><BR></SPAN></U><A href=3D"http://ddl8.data=
-=2Ehu/get/273416/12377837/MFT301823_pdf.zip">DOWNLOAD</A>&nbsp;<A href=3D"h=
-ttp://ddl8.data.hu/get/273416/12377837/MFT301823_pdf.zip"><SPAN>&nbsp;</SPA=
-N><U><SPAN style=3D"COLOR: red">MFT#301823.PDF</SPAN></U><BR></A>
-<BR><A href=3D"http://ddl8.data.hu/get/273416/12377837/MFT301823_pdf.zip">h=
-ttp://ddl8.data.hu/get/273416/12377837/MFT301823_pdf.zip</A><BR><BR></SPAN>=
-</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">Project: Early Site Works for the NFE Onshore Project - RLIC &=
-#8211; Qatar</SPAN><SPAN lang=3DEN-GB><U></U><U></U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">Job Location: RAS LAFFAN</SPAN><SPAN lang=3DEN-GB><U></U><U></=
-U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">&nbsp;&nbsp;</SPAN><SPAN lang=3DEN-GB style=3D"COLOR: rgb(31,7=
-3,125)"><U></U><U></U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">Regards</SPAN><SPAN lang=3DEN-GB><U></U><U></U></SPAN></P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">Syed Farhan Ali</SPAN><SPAN lang=3DEN-GB><U></U><U></U></SPAN>=
-</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">NFE-EWS Project</SPAN><SPAN lang=3DEN-GB><U></U><U></U></SPAN>=
-</P>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><SPAN lang=3DEN-GB style=3D"FONT-SIZE: 11pt; FONT-FAMILY: Calibri,=
- sans-serif">Mob: +974 30242675</SPAN><SPAN lang=3DEN-GB><U></U><U></U></SP=
-AN></P>
-<DIV class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FO=
-NT-FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px=
-; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE:=
- normal; TEXT-ALIGN: center; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LE=
-TTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px;=
- font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-st=
-roke-width: 0px; text-decoration-style: initial;=20
-text-decoration-color: initial' align=3Dcenter>
-<HR align=3Dcenter SIZE=3D3 width=3D"100%">
-</DIV>
-<P class=3Dm_6912130055441677874wordsection1 style=3D'FONT-SIZE: 12pt; FONT=
--FAMILY: "Times New Roman", serif; WHITE-SPACE: normal; WORD-SPACING: 0px; =
-TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(34,34,34); FONT-STYLE: n=
-ormal; MARGIN: 0in 0in 0pt; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; =
-BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligature=
-s: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-=
-decoration-style: initial; text-decoration-color:=20
-initial'><I><SPAN style=3D"COLOR: gray">
-This email and any attachments to it may be confidential and are intended s=
-olely for the use of the recipient(s). If you are not the intended recipien=
-t of this email, you must neither take any action based upon its content, n=
-or copy or show it to anyone. Please contact the sender if you believe you =
-have received this email in error. Statements and opinions expressed in thi=
-s e-mail are those of the sender, and do not necessarily reflect those of C=
-CC unless explicitly so mentioned. FYI, CCC=20
-regularly deploys anti-virus and malicious software protection, we however =
-cannot accept any liability for damage caused by any virus / error transmit=
-ted by this email.</SPAN></I></P></BODY></HTML>
---===============3564897243664308651==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Mon, Apr 6, 2020 at 3:46 AM Joao Martins <joao.m.martins@oracle.com> wrote:
+>
+> On 3/23/20 11:55 PM, Dan Williams wrote:
+>
+> [...]
+>
+> >  static ssize_t dev_dax_resize(struct dax_region *dax_region,
+> >               struct dev_dax *dev_dax, resource_size_t size)
+> >  {
+> >       resource_size_t avail = dax_region_avail_size(dax_region), to_alloc;
+> > -     resource_size_t dev_size = range_len(&dev_dax->range);
+> > +     resource_size_t dev_size = dev_dax_size(dev_dax);
+> >       struct resource *region_res = &dax_region->res;
+> >       struct device *dev = &dev_dax->dev;
+> > -     const char *name = dev_name(dev);
+> >       struct resource *res, *first;
+> > +     resource_size_t alloc = 0;
+> > +     int rc;
+> >
+> >       if (dev->driver)
+> >               return -EBUSY;
+> > @@ -684,38 +766,47 @@ static ssize_t dev_dax_resize(struct dax_region *dax_region,
+> >        * allocating a new resource.
+> >        */
+> >       first = region_res->child;
+> > -     if (!first)
+> > -             return __alloc_dev_dax_range(dev_dax, dax_region->res.start,
+> > -                             to_alloc);
+> > -     for (res = first; to_alloc && res; res = res->sibling) {
+> > +retry:
+> > +     rc = -ENOSPC;
+> > +     for (res = first; res; res = res->sibling) {
+> >               struct resource *next = res->sibling;
+> > -             resource_size_t free;
+> >
+> >               /* space at the beginning of the region */
+> > -             free = 0;
+> > -             if (res == first && res->start > dax_region->res.start)
+> > -                     free = res->start - dax_region->res.start;
+> > -             if (free >= to_alloc && dev_size == 0)
+> > -                     return __alloc_dev_dax_range(dev_dax,
+> > -                                     dax_region->res.start, to_alloc);
+> > -
+> > -             free = 0;
+> > +             if (res == first && res->start > dax_region->res.start) {
+> > +                     alloc = min(res->start - dax_region->res.start,
+> > +                                     to_alloc);
+> > +                     rc = __alloc_dev_dax_range(dev_dax,
+> > +                                     dax_region->res.start, alloc);
+>
+> You might be missing:
+>
+>         first = region_res->child;
+>
+> (...) right after returning from __alloc_dev_dax_range(). Alternatively, perhaps
+> even moving the 'retry' label to right before the @first initialization.
+>
+> In the case that you pick space from the beginning, the child resource of the
+> dax region will point to first occupied region, and that changes after you pick
+> this space. So, IIUC, you want to adjust where you start searching free space
+> otherwise you end up wrongly picking that same space twice.
+>
+> If it helps, the bug can be reproduced in this unit test below, see
+> daxctl_test3() test:
+
+It definitely will, thanks. I'll be circling back to this now that
+I've settled my tree for the v5.7 window.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============3564897243664308651==--
