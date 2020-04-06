@@ -1,78 +1,90 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DDD19F4DF
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 13:39:47 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64A419F4E6
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Apr 2020 13:41:49 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3777E10FD2AD7;
-	Mon,  6 Apr 2020 04:40:35 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6C05E10FD2ADC;
+	Mon,  6 Apr 2020 04:42:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=harish@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 170BE10FCD94C
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 04:40:32 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id o26so7394361pgc.12
-        for <linux-nvdimm@lists.01.org>; Mon, 06 Apr 2020 04:39:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=TVo5U5Qk5KaqTFJoyOHQL8+EKyddqtlkeUHweeNyqZ0=;
-        b=Bg4UnCw71mE6R7n9jpyaZnzOESPfO6Wit11wTpFxMDPw49+X04Pb6K1jOQlOGtHDNd
-         h8tF7fYVjKY8stF+XSvQUC11ANVsiWo1O6sAgMFcPZwO4ooakFm/sn4WGHqhipGfpysv
-         c0kUJhCdFD3STqO2qxzw9FQtB08Q3bosms+xaVlMo8FXBb062gcRf3/3nyAzMSwVhpFN
-         S5nus6FmbpkaH/DWRbSK+qLc5LGPQmSFBJB0zYzHrwNwAZ5kko6ZG+X6AM8EUo6smY5x
-         0sLSij6oDqNgX8w97KZ1kQHxOFb3h9zZ9a96Jsyc0aze/BmiMzlQDcO6SYhekOr5VAdZ
-         bX/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=TVo5U5Qk5KaqTFJoyOHQL8+EKyddqtlkeUHweeNyqZ0=;
-        b=U0CfjyNwWashhQwPQbB5M6UH43wVPQ7Nl2Gu+VlQcOqyesTdXZFjOUn48rsJBiEG0A
-         e0w7ST14qws2Zd3qCY4G0iKwGMcZACjocLDNo8QDdU52aL8fNZrydJ0C5qz1IGS5cHmz
-         LLFk1JvGbyerPNx2twVq1Nf6sjESzWIzAVtXaT4EjttUY22BsdJLE388Jov0kTB3qV83
-         fAUxXDTvjCZD3OqCCjx10D3j0zDhZAhG9XwQ0LzXlNavUdRE1qYL+JvrMQuUOnFd47Cw
-         PrDK9xUkHNdnTx2LqpJNyAOyIXQk2KO82DBaGnphO9776KGdrnrnlgw3rYrGQxja1SnI
-         A9uQ==
-X-Gm-Message-State: AGi0PuaLSy8RYPkkHK/anDRc96M9HFcaCU1Y5zif+n03qxYe3V+N1nPO
-	PMnuOcMDx2JycDP4PwxnbZUeVA==
-X-Google-Smtp-Source: APiQypKLlKv3itN7zUskK0eyz5PUt+BHkJHMpS3KUA+Nl/n4TD0WuaCwUjCt4m4BTAB2Z8JkReTz2Q==
-X-Received: by 2002:a63:82c2:: with SMTP id w185mr21453657pgd.382.1586173183152;
-        Mon, 06 Apr 2020 04:39:43 -0700 (PDT)
-Received: from localhost ([2401:4900:3608:7cce:5302:f185:2859:b4e1])
-        by smtp.gmail.com with ESMTPSA id u13sm10593150pgp.49.2020.04.06.04.39.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Apr 2020 04:39:42 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Michal Suchanek <msuchanek@suse.de>, linux-nvdimm@lists.01.org
+	by ml01.01.org (Postfix) with ESMTPS id BC60C10FD2ADA
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Apr 2020 04:42:34 -0700 (PDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 036BXvZN096018
+	for <linux-nvdimm@lists.01.org>; Mon, 6 Apr 2020 07:41:44 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 3082cgtr3k-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Mon, 06 Apr 2020 07:41:44 -0400
+Received: from localhost
+	by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <harish@linux.ibm.com>;
+	Mon, 6 Apr 2020 12:41:25 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+	by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Mon, 6 Apr 2020 12:41:22 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 036BfcmD37552496
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Apr 2020 11:41:38 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A908811C052;
+	Mon,  6 Apr 2020 11:41:38 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C48A511C050;
+	Mon,  6 Apr 2020 11:41:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.108.222])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Apr 2020 11:41:37 +0000 (GMT)
 Subject: Re: [PATCH] ndctl/namespace: skip zero namespaces when processing
-In-Reply-To: <20200403210514.21786-1-msuchanek@suse.de>
+To: Michal Suchanek <msuchanek@suse.de>, linux-nvdimm@lists.01.org
 References: <20200403210514.21786-1-msuchanek@suse.de>
-Date: Mon, 06 Apr 2020 17:09:36 +0530
-Message-ID: <87zhboc07b.fsf@santosiv.in.ibm.com>
+From: Harish <harish@linux.ibm.com>
+Date: Mon, 6 Apr 2020 17:11:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Message-ID-Hash: QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM
-X-Message-ID-Hash: QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM
-X-MailFrom: santosh@fossix.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Michal Suchanek <msuchanek@suse.de>, jack@suse.de
+In-Reply-To: <20200403210514.21786-1-msuchanek@suse.de>
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 20040611-0008-0000-0000-0000036B783E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040611-0009-0000-0000-00004A8D0E37
+Message-Id: <1fda4cb0-3ca7-3701-a2ad-fc99cec0432d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-06_07:2020-04-06,2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 suspectscore=0 spamscore=0 clxscore=1011 mlxscore=0
+ bulkscore=0 malwarescore=0 adultscore=0 mlxlogscore=999 impostorscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004060097
+Message-ID-Hash: R72WG6TKYOHUBW6TYBRWFKNK7E2QERUM
+X-Message-ID-Hash: R72WG6TKYOHUBW6TYBRWFKNK7E2QERUM
+X-MailFrom: harish@linux.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: jack@suse.de
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QL7IXTQACMRQMY2TQUM7VM47Q2NYAPSM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R72WG6TKYOHUBW6TYBRWFKNK7E2QERUM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-Michal Suchanek <msuchanek@suse.de> writes:
+Tested-by: Harish Sriram <harish@linux.ibm.com>
 
+
+On 4/4/20 2:35 AM, Michal Suchanek wrote:
 > Hello,
 >
 > this is a fix for github issue #41. I tested on system with vpmem with
@@ -93,34 +105,17 @@ Michal Suchanek <msuchanek@suse.de> writes:
 >
 > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->  ndctl/namespace.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-
-Reviewed-by: Santosh S <santosh@fossix.org>
-
-Tested on a vpmem system with master branch, and I can see the issue got fixed.
-
-# ./ndctl/ndctl enable-namespace all
-error enabling namespaces: No such device or address
-enabled 24 namespaces
-
-After this patch
-
-# ./ndctl/ndctl enable-namespace all 
-enabled 24 namespaces
-
-Thanks,
-Santosh
-
+>   ndctl/namespace.c | 16 +++++++++++++---
+>   1 file changed, 13 insertions(+), 3 deletions(-)
 >
 > diff --git a/ndctl/namespace.c b/ndctl/namespace.c
 > index 0550580707e8..6f4a4b5b8883 100644
 > --- a/ndctl/namespace.c
 > +++ b/ndctl/namespace.c
 > @@ -2128,9 +2128,19 @@ static int do_xaction_namespace(const char *namespace,
->  			ndctl_namespace_foreach_safe(region, ndns, _n) {
->  				ndns_name = ndctl_namespace_get_devname(ndns);
->  
+>   			ndctl_namespace_foreach_safe(region, ndns, _n) {
+>   				ndns_name = ndctl_namespace_get_devname(ndns);
+>
 > -				if (strcmp(namespace, "all") != 0
 > -						&& strcmp(namespace, ndns_name) != 0)
 > -					continue;
@@ -137,11 +132,9 @@ Santosh
 > +						continue;
 > +				}
 > +
->  				switch (action) {
->  				case ACTION_DISABLE:
->  					rc = ndctl_namespace_disable_safe(ndns);
-> -- 
-> 2.23.0
+>   				switch (action) {
+>   				case ACTION_DISABLE:
+>   					rc = ndctl_namespace_disable_safe(ndns);
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
