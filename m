@@ -2,45 +2,46 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041E31A49AB
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Apr 2020 20:06:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2BF1A4CBE
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 Apr 2020 02:09:34 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2E1B51007B8C9;
-	Fri, 10 Apr 2020 11:06:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+	by ml01.01.org (Postfix) with ESMTP id E95DA10FC33FD;
+	Fri, 10 Apr 2020 17:10:21 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
 Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2DC5F100B63FF
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Apr 2020 11:06:53 -0700 (PDT)
-IronPort-SDR: Za8g1xfVxTUa8k7VfDargWkhen/j8u3WV6eY70S1wEe4cWfAwLFdOBngf3dGb+acx9zwHrwqYc
- S77XuKrl7Z/w==
+	by ml01.01.org (Postfix) with ESMTPS id B04AA10FC33E2
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Apr 2020 17:10:19 -0700 (PDT)
+IronPort-SDR: 41kAuagkBToIbYJJMyczl41o3Dy+b/kwNNv60ckUwupzHIPNTwyTnwiaoJC1h64fEYeuyZsjTr
+ TVlZY0/4pq8A==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2020 11:06:03 -0700
-IronPort-SDR: qyy5FFgT/5+KDj3JmCdr9hbkLalbeN2Eq0BgeJ/4+M/kZvAiWGCVQxcH1fiW1eNgbj9uV4Wawu
- ktjLjvSQLBDg==
-X-IronPort-AV: E=Sophos;i="5.72,367,1580803200";
-   d="scan'208";a="425962259"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2020 11:06:03 -0700
-Subject: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
-From: Dan Williams <dan.j.williams@intel.com>
-To: tglx@linutronix.de, mingo@redhat.com
-Date: Fri, 10 Apr 2020 10:49:55 -0700
-Message-ID: <158654083112.1572482.8944305411228188871.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2020 17:09:30 -0700
+IronPort-SDR: 7BcNaqm+J64TVfPlQwwzm/cOtuANdguHOHjksmNmSTEIHMGk5S30POGIjgV6PTeRG+dlD5DPFs
+ rLLYJ61XL8WA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,368,1580803200";
+   d="scan'208";a="331316197"
+Received: from vverma7-mobl4.lm.intel.com ([10.251.142.92])
+  by orsmga001.jf.intel.com with ESMTP; 10 Apr 2020 17:09:29 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
+To: <linux-nvdimm@lists.01.org>
+Subject: [PATCH] dax/kmem: refrain from adding memory into an impossible node
+Date: Fri, 10 Apr 2020 18:09:16 -0600
+Message-Id: <20200411000916.13656-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Message-ID-Hash: 2PAOCQFC4WSTNNQCEIN6UF64NISHAZJ4
-X-Message-ID-Hash: 2PAOCQFC4WSTNNQCEIN6UF64NISHAZJ4
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: BGZBNNI5W2F4MLBDKISBDRUROON4XLN4
+X-Message-ID-Hash: BGZBNNI5W2F4MLBDKISBDRUROON4XLN4
+X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, stable@vger.kernel.org, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: linux-mm@kvack.org, Dave Hansen <dave.hansen@linux.intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2PAOCQFC4WSTNNQCEIN6UF64NISHAZJ4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BGZBNNI5W2F4MLBDKISBDRUROON4XLN4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,321 +50,68 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The original memcpy_mcsafe() implementation satisfied two primary
-concerns. It provided a copy routine that avoided known unrecoverable
-scenarios (poison consumption via fast-string instructions / accesses
-across cacheline boundaries), and it provided a fallback to fast plain
-memcpy if the platform did not indicate recovery capability.
+A misbehaving qemu created a situation where the ACPI SRAT table
+advertised one fewer proximity domains than intended. The NFIT table did
+describe all the expected proximity domains. This caused the device dax
+driver to assign an impossible target_node to the device, and when
+hotplugged as system memory, this would fail with the following
+signature:
 
-However, the platform indication for recovery capability is not
-architectural so it was always going to require an ever growing list of
-opt-in quirks. Also, ongoing hardware improvements to recoverability
-mean that the cross-cacheline-boundary and fast-string poison
-consumption scenarios are no longer concerns on newer platforms. The
-introduction of memcpy_mcsafe_fast(), and resulting reworks, recovers
-performance for these newer CPUs, but without the maintenance burden of
-an opt-in whitelist.
+  [  +0.001627] BUG: kernel NULL pointer dereference, address: 0000000000000088
+  [  +0.001331] #PF: supervisor read access in kernel mode
+  [  +0.000975] #PF: error_code(0x0000) - not-present page
+  [  +0.000976] PGD 80000001767d4067 P4D 80000001767d4067 PUD 10e0c4067 PMD 0
+  [  +0.001338] Oops: 0000 [#1] SMP PTI
+  [  +0.000676] CPU: 4 PID: 22737 Comm: kswapd3 Tainted: G           O      5.6.0-rc5 #9
+  [  +0.001457] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+      BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+  [  +0.001990] RIP: 0010:prepare_kswapd_sleep+0x7c/0xc0
+  [  +0.000780] Code: 89 df e8 87 fd ff ff 89 c2 31 c0 84 d2 74 e6 0f 1f 44
+                      00 00 48 8b 05 fb af 7a 01 48 63 93 88 1d 01 00 48 8b
+		      84 d0 20 0f 00 00 <48> 3b 98 88 00 00 00 75 28 f0 80 a0
+		      80 00 00 00 fe f0 80 a3 38 20
+  [  +0.002877] RSP: 0018:ffffc900017a3e78 EFLAGS: 00010202
+  [  +0.000805] RAX: 0000000000000000 RBX: ffff8881209e0000 RCX: 0000000000000000
+  [  +0.001115] RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff8881209e0e80
+  [  +0.001098] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000008000
+  [  +0.001092] R10: 0000000000000000 R11: 0000000000000003 R12: 0000000000000003
+  [  +0.001092] R13: 0000000000000003 R14: 0000000000000000 R15: ffffc900017a3ec8
+  [  +0.001091] FS:  0000000000000000(0000) GS:ffff888318c00000(0000) knlGS:0000000000000000
+  [  +0.001275] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [  +0.000882] CR2: 0000000000000088 CR3: 0000000120b50002 CR4: 00000000001606e0
+  [  +0.001095] Call Trace:
+  [  +0.000388]  kswapd+0x103/0x520
+  [  +0.000494]  ? finish_wait+0x80/0x80
+  [  +0.000547]  ? balance_pgdat+0x5a0/0x5a0
+  [  +0.000607]  kthread+0x120/0x140
+  [  +0.000508]  ? kthread_create_on_node+0x60/0x60
+  [  +0.000706]  ret_from_fork+0x3a/0x50
 
-With memcpy_mcsafe_fast() the existing opt-in becomes a blacklist for
-CPUs that benefit from a more careful slower implementation. Every other
-CPU gets a fast, but optionally recoverable implementation.
+Add a check in the kmem driver to ensure that the target_node for the
+device in question is in the nodes_possible mask.
 
-With this in place memcpy_mcsafe() never falls back to plain memcpy().
-It can be used in any scenario where the caller needs guarantees that
-source or destination access faults / exceptions will be handled.
-Systems without recovery support continue to default to a fast
-implementation while newer systems both default to fast, and support
-recovery, without needing an explicit quirk.
-
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Acked-by: Tony Luck <tony.luck@intel.com>
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Tested-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Fixes: 92b0729c34ca ("x86/mm, x86/mce: Add memcpy_mcsafe()")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
 ---
-Note that I marked this for stable and included a Fixes tag because it
-is arguably a regression that old kernels stop recovering from poison
-consumption on new hardware.
+ drivers/dax/kmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- arch/x86/include/asm/string_64.h         |   24 ++++++-------
- arch/x86/include/asm/uaccess_64.h        |    7 +---
- arch/x86/kernel/cpu/mce/core.c           |    6 ++-
- arch/x86/kernel/quirks.c                 |    4 +-
- arch/x86/lib/memcpy_64.S                 |   57 +++++++++++++++++++++++++++---
- arch/x86/lib/usercopy_64.c               |    6 +--
- tools/objtool/check.c                    |    3 +-
- tools/perf/bench/mem-memcpy-x86-64-lib.c |    8 +---
- tools/testing/nvdimm/test/nfit.c         |    2 +
- 9 files changed, 75 insertions(+), 42 deletions(-)
-
-diff --git a/arch/x86/include/asm/string_64.h b/arch/x86/include/asm/string_64.h
-index 75314c3dbe47..07840fa3582a 100644
---- a/arch/x86/include/asm/string_64.h
-+++ b/arch/x86/include/asm/string_64.h
-@@ -83,21 +83,23 @@ int strcmp(const char *cs, const char *ct);
- #endif
- 
- #define __HAVE_ARCH_MEMCPY_MCSAFE 1
--__must_check unsigned long __memcpy_mcsafe(void *dst, const void *src,
-+__must_check unsigned long memcpy_mcsafe_slow(void *dst, const void *src,
- 		size_t cnt);
--DECLARE_STATIC_KEY_FALSE(mcsafe_key);
-+__must_check unsigned long memcpy_mcsafe_fast(void *dst, const void *src,
-+		size_t cnt);
-+DECLARE_STATIC_KEY_FALSE(mcsafe_slow_key);
- 
- /**
-- * memcpy_mcsafe - copy memory with indication if a machine check happened
-+ * memcpy_mcsafe - copy memory with indication if an exception / fault happened
-  *
-  * @dst:	destination address
-  * @src:	source address
-  * @cnt:	number of bytes to copy
-  *
-- * Low level memory copy function that catches machine checks
-- * We only call into the "safe" function on systems that can
-- * actually do machine check recovery. Everyone else can just
-- * use memcpy().
-+ * The slow version is opted into by platform quirks. The fast version
-+ * is equivalent to memcpy() regardless of CPU machine-check-recovery
-+ * capability, but may still fall back to the slow version if the CPU
-+ * lacks fast-string instruction support.
-  *
-  * Return 0 for success, or number of bytes not copied if there was an
-  * exception.
-@@ -106,12 +108,10 @@ static __always_inline __must_check unsigned long
- memcpy_mcsafe(void *dst, const void *src, size_t cnt)
- {
- #ifdef CONFIG_X86_MCE
--	if (static_branch_unlikely(&mcsafe_key))
--		return __memcpy_mcsafe(dst, src, cnt);
--	else
-+	if (static_branch_unlikely(&mcsafe_slow_key))
-+		return memcpy_mcsafe_slow(dst, src, cnt);
- #endif
--		memcpy(dst, src, cnt);
--	return 0;
-+	return memcpy_mcsafe_fast(dst, src, cnt);
- }
- 
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
-diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
-index 5cd1caa8bc65..f8c0d38c3f45 100644
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -52,12 +52,7 @@ copy_to_user_mcsafe(void *to, const void *from, unsigned len)
- 	unsigned long ret;
- 
- 	__uaccess_begin();
--	/*
--	 * Note, __memcpy_mcsafe() is explicitly used since it can
--	 * handle exceptions / faults.  memcpy_mcsafe() may fall back to
--	 * memcpy() which lacks this handling.
--	 */
--	ret = __memcpy_mcsafe(to, from, len);
-+	ret = memcpy_mcsafe(to, from, len);
- 	__uaccess_end();
- 	return ret;
- }
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 2c4f949611e4..6bf94d39dc7f 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -2579,13 +2579,13 @@ static void __init mcheck_debugfs_init(void)
- static void __init mcheck_debugfs_init(void) { }
- #endif
- 
--DEFINE_STATIC_KEY_FALSE(mcsafe_key);
--EXPORT_SYMBOL_GPL(mcsafe_key);
-+DEFINE_STATIC_KEY_FALSE(mcsafe_slow_key);
-+EXPORT_SYMBOL_GPL(mcsafe_slow_key);
- 
- static int __init mcheck_late_init(void)
- {
- 	if (mca_cfg.recovery)
--		static_branch_inc(&mcsafe_key);
-+		static_branch_inc(&mcsafe_slow_key);
- 
- 	mcheck_debugfs_init();
- 	cec_init();
-diff --git a/arch/x86/kernel/quirks.c b/arch/x86/kernel/quirks.c
-index 896d74cb5081..89c88d9de5c4 100644
---- a/arch/x86/kernel/quirks.c
-+++ b/arch/x86/kernel/quirks.c
-@@ -636,7 +636,7 @@ static void quirk_intel_brickland_xeon_ras_cap(struct pci_dev *pdev)
- 	pci_read_config_dword(pdev, 0x84, &capid0);
- 
- 	if (capid0 & 0x10)
--		static_branch_inc(&mcsafe_key);
-+		static_branch_inc(&mcsafe_slow_key);
- }
- 
- /* Skylake */
-@@ -653,7 +653,7 @@ static void quirk_intel_purley_xeon_ras_cap(struct pci_dev *pdev)
- 	 * enabled, so memory machine check recovery is also enabled.
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index 3d0a7e702c94..760c5b4e88c8 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -32,7 +32,7 @@ int dev_dax_kmem_probe(struct device *dev)
+ 	 * unavoidable performance issues.
  	 */
- 	if ((capid0 & 0xc0) == 0xc0 || (capid5 & 0x1e0))
--		static_branch_inc(&mcsafe_key);
-+		static_branch_inc(&mcsafe_slow_key);
- 
- }
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_INTEL, 0x0ec3, quirk_intel_brickland_xeon_ras_cap);
-diff --git a/arch/x86/lib/memcpy_64.S b/arch/x86/lib/memcpy_64.S
-index 56b243b14c3a..b5e4fc1cf99d 100644
---- a/arch/x86/lib/memcpy_64.S
-+++ b/arch/x86/lib/memcpy_64.S
-@@ -189,11 +189,18 @@ SYM_FUNC_END(memcpy_orig)
- MCSAFE_TEST_CTL
- 
- /*
-- * __memcpy_mcsafe - memory copy with machine check exception handling
-- * Note that we only catch machine checks when reading the source addresses.
-- * Writes to target are posted and don't generate machine checks.
-+ * memcpy_mcsafe_slow() - memory copy with exception handling
-+ *
-+ * In contrast to memcpy_mcsafe_fast() this version is careful to
-+ * never perform a read across a cacheline boundary, and not use
-+ * fast-string instruction sequences which are known to be unrecoverable
-+ * on CPUs identified by mcsafe_slow_key.
-+ *
-+ * Note that this only catches machine check exceptions when reading the
-+ * source addresses.  Writes to target are posted and don't generate
-+ * machine checks. However this does handle protection faults on writes.
-  */
--SYM_FUNC_START(__memcpy_mcsafe)
-+SYM_FUNC_START(memcpy_mcsafe_slow)
- 	cmpl $8, %edx
- 	/* Less than 8 bytes? Go to byte copy loop */
- 	jb .L_no_whole_words
-@@ -260,8 +267,8 @@ SYM_FUNC_START(__memcpy_mcsafe)
- 	xorl %eax, %eax
- .L_done:
- 	ret
--SYM_FUNC_END(__memcpy_mcsafe)
--EXPORT_SYMBOL_GPL(__memcpy_mcsafe)
-+SYM_FUNC_END(memcpy_mcsafe_slow)
-+EXPORT_SYMBOL_GPL(memcpy_mcsafe_slow)
- 
- 	.section .fixup, "ax"
- 	/*
-@@ -296,4 +303,42 @@ EXPORT_SYMBOL_GPL(__memcpy_mcsafe)
- 	_ASM_EXTABLE(.L_write_leading_bytes, .E_leading_bytes)
- 	_ASM_EXTABLE(.L_write_words, .E_write_words)
- 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
-+
-+/*
-+ * memcpy_mcsafe_fast - memory copy with exception handling
-+ *
-+ * Fast string copy + exception handling. If the CPU does support
-+ * machine check exception recovery, but does not support recovering
-+ * from fast-string exceptions then this CPU needs to be added to the
-+ * mcsafe_slow_key set of quirks. Otherwise, absent any machine check
-+ * recovery support this version should be no slower than standard
-+ * memcpy.
-+ */
-+SYM_FUNC_START(memcpy_mcsafe_fast)
-+	ALTERNATIVE "jmp memcpy_mcsafe_slow", "", X86_FEATURE_ERMS
-+	movq %rdi, %rax
-+	movq %rdx, %rcx
-+.L_copy:
-+	rep movsb
-+	/* Copy successful. Return zero */
-+	xorl %eax, %eax
-+	ret
-+SYM_FUNC_END(memcpy_mcsafe_fast)
-+EXPORT_SYMBOL_GPL(memcpy_mcsafe_fast)
-+
-+	.section .fixup, "ax"
-+.E_copy:
-+	/*
-+	 * On fault %rcx is updated such that the copy instruction could
-+	 * optionally be restarted at the fault position, i.e. it
-+	 * contains 'bytes remaining'. A non-zero return indicates error
-+	 * to memcpy_mcsafe() users, or indicate short transfers to
-+	 * user-copy routines.
-+	 */
-+	movq %rcx, %rax
-+	ret
-+
-+	.previous
-+
-+	_ASM_EXTABLE_FAULT(.L_copy, .E_copy)
- #endif
-diff --git a/arch/x86/lib/usercopy_64.c b/arch/x86/lib/usercopy_64.c
-index fff28c6f73a2..348c9331748e 100644
---- a/arch/x86/lib/usercopy_64.c
-+++ b/arch/x86/lib/usercopy_64.c
-@@ -64,11 +64,7 @@ __visible notrace unsigned long
- mcsafe_handle_tail(char *to, char *from, unsigned len)
- {
- 	for (; len; --len, to++, from++) {
--		/*
--		 * Call the assembly routine back directly since
--		 * memcpy_mcsafe() may silently fallback to memcpy.
--		 */
--		unsigned long rem = __memcpy_mcsafe(to, from, 1);
-+		unsigned long rem = memcpy_mcsafe(to, from, 1);
- 
- 		if (rem)
- 			break;
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 4768d91c6d68..bae1f77aae90 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -485,7 +485,8 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_shift_out_of_bounds",
- 	/* misc */
- 	"csum_partial_copy_generic",
--	"__memcpy_mcsafe",
-+	"memcpy_mcsafe_slow",
-+	"memcpy_mcsafe_fast",
- 	"mcsafe_handle_tail",
- 	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
- 	NULL
-diff --git a/tools/perf/bench/mem-memcpy-x86-64-lib.c b/tools/perf/bench/mem-memcpy-x86-64-lib.c
-index 4130734dde84..23e1747b3a67 100644
---- a/tools/perf/bench/mem-memcpy-x86-64-lib.c
-+++ b/tools/perf/bench/mem-memcpy-x86-64-lib.c
-@@ -5,17 +5,13 @@
-  */
- #include <linux/types.h>
- 
--unsigned long __memcpy_mcsafe(void *dst, const void *src, size_t cnt);
-+unsigned long memcpy_mcsafe(void *dst, const void *src, size_t cnt);
- unsigned long mcsafe_handle_tail(char *to, char *from, unsigned len);
- 
- unsigned long mcsafe_handle_tail(char *to, char *from, unsigned len)
- {
- 	for (; len; --len, to++, from++) {
--		/*
--		 * Call the assembly routine back directly since
--		 * memcpy_mcsafe() may silently fallback to memcpy.
--		 */
--		unsigned long rem = __memcpy_mcsafe(to, from, 1);
-+		unsigned long rem = memcpy_mcsafe(to, from, 1);
- 
- 		if (rem)
- 			break;
-diff --git a/tools/testing/nvdimm/test/nfit.c b/tools/testing/nvdimm/test/nfit.c
-index bf6422a6af7f..282722d96f8e 100644
---- a/tools/testing/nvdimm/test/nfit.c
-+++ b/tools/testing/nvdimm/test/nfit.c
-@@ -3136,7 +3136,7 @@ void mcsafe_test(void)
- 			}
- 
- 			mcsafe_test_init(dst, src, 512);
--			rem = __memcpy_mcsafe(dst, src, 512);
-+			rem = memcpy_mcsafe_slow(dst, src, 512);
- 			valid = mcsafe_test_validate(dst, src, 512, expect);
- 			if (rem == expect && valid)
- 				continue;
+ 	numa_node = dev_dax->target_node;
+-	if (numa_node < 0) {
++	if (numa_node < 0 || !node_possible(numa_node)) {
+ 		dev_warn(dev, "rejecting DAX region %pR with invalid node: %d\n",
+ 			 res, numa_node);
+ 		return -EINVAL;
+-- 
+2.21.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
