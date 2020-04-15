@@ -2,43 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE26B1A9AFF
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 12:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE8D1A9B1C
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 12:43:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 05ABB10106308;
-	Wed, 15 Apr 2020 03:42:59 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2F6EE10106309;
+	Wed, 15 Apr 2020 03:44:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.221.68; helo=mail-wr1-f68.google.com; envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 133B710106306
-	for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 03:42:56 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-	by mx2.suse.de (Postfix) with ESMTP id 50499AE72;
-	Wed, 15 Apr 2020 10:42:24 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id D21A61E1250; Wed, 15 Apr 2020 12:42:23 +0200 (CEST)
-Date: Wed, 15 Apr 2020 12:42:23 +0200
-From: Jan Kara <jack@suse.cz>
-To: Jules Irenge <jbi.octave@gmail.com>
-Subject: Re: [PATCH v2] dax: Add missing annotation for wait_entry_unlocked()
-Message-ID: <20200415104223.GB6126@quack2.suse.cz>
-References: <20200401153400.23610-1-jbi.octave@gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 8D11810106308
+	for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 03:44:12 -0700 (PDT)
+Received: by mail-wr1-f68.google.com with SMTP id k11so17909272wrp.5
+        for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 03:43:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=U4/j6DsdU58IfdYBzmmkMpF8PTjT5JEuky8VhAe+f5Q=;
+        b=Mh4AP0JsWXyaCMDluV3xIIzhVBU9cjlpz3e0tubd05/UdFdBlwJODt7CtY0nsSmSeU
+         4nV9SL8qN5dFF7+WDJgovMuhikV6WaIbEG4aI2bmIAFZbpf5+AIKg0fCM1MMI1JXUYBb
+         0fJJeeGv+VlYzfrMsXALzFHPfDIWmWstbojR81V5EGqvmk9HNkSe2UzL4qYi/EZRHmHt
+         zQl0uoRonLzQGA22oCdzmfVUaCUDraDY5PvlWyFPp6nmJeAKSuaAjbwfe19Mh9040jTt
+         mfN8B1EpgtaIY/nikvBsdm3iymEjXcPHf0JyxNIWX0I1zgn7/BOSz1eBvxkFAkMytRAE
+         89xw==
+X-Gm-Message-State: AGi0PuYpKKmGJXtv4GRGsfj5ksdkEEUTdxB+Yz+hJGe7L6sZVRxVvrr5
+	+RYrivRNYquSG7lgNVYGK1U=
+X-Google-Smtp-Source: APiQypLORd/IKgRFpp7S3dA/ZU6/sxCxycvBJkbVFL1bUdvL8hM/nU4Hz7cjmSOUwFyYBpEH5FNTqg==
+X-Received: by 2002:adf:aac5:: with SMTP id i5mr26517718wrc.285.1586947421042;
+        Wed, 15 Apr 2020 03:43:41 -0700 (PDT)
+Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
+        by smtp.gmail.com with ESMTPSA id y15sm23209097wro.68.2020.04.15.03.43.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2020 03:43:40 -0700 (PDT)
+Date: Wed, 15 Apr 2020 12:43:38 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Vishal Verma <vishal.l.verma@intel.com>
+Subject: Re: [PATCH v3] mm/memory_hotplug: refrain from adding memory into an
+ impossible node
+Message-ID: <20200415104338.GF4629@dhcp22.suse.cz>
+References: <20200414235812.6158-1-vishal.l.verma@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200401153400.23610-1-jbi.octave@gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: ZMDJVDZEYNXRZK5LZKLKUDPQ3ZG3S3VR
-X-Message-ID-Hash: ZMDJVDZEYNXRZK5LZKLKUDPQ3ZG3S3VR
-X-MailFrom: jack@suse.cz
+In-Reply-To: <20200414235812.6158-1-vishal.l.verma@intel.com>
+Message-ID-Hash: YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3
+X-Message-ID-Hash: YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3
+X-MailFrom: mstsxfx@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, "open list:FILESYSTEM DIRECT ACCESS (DAX)" <linux-fsdevel@vger.kernel.org>, "open list:FILESYSTEM DIRECT ACCESS (DAX)" <linux-nvdimm@lists.01.org>
+CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZMDJVDZEYNXRZK5LZKLKUDPQ3ZG3S3VR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -47,46 +63,29 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed 01-04-20 16:33:59, Jules Irenge wrote:
-> Sparse reports a warning at wait_entry_unlocked()
-> 
-> warning: context imbalance in wait_entry_unlocked() - unexpected unlock
-> 
-> The root cause is the missing annotation at wait_entry_unlocked()
-> Add the missing __releases(xas->xa->xa_lock) annotation
-> 
-> Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+On Tue 14-04-20 17:58:12, Vishal Verma wrote:
+[...]
+> +static int check_hotplug_node(int nid)
+> +{
+> +	int alt_nid;
+> +
+> +	if (node_possible(nid))
+> +		return nid;
+> +
+> +	alt_nid = numa_map_to_online_node(nid);
+> +	if (alt_nid == NUMA_NO_NODE)
+> +		alt_nid = first_online_node;
+> +	WARN_TAINT(1, TAINT_FIRMWARE_WORKAROUND,
+> +		   "node %d expected, but was absent from the node_possible_map, using %d instead\n",
+> +		   nid, alt_nid);
 
-The patch looks good to me. You can add:
+I really do not like this. Why should we try to be clever and change the
+node id requested by the caller? I would just stick with node_possible
+check and be done with this.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/dax.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 35da144375a0..ee0468af4d81 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -244,6 +244,7 @@ static void *get_unlocked_entry(struct xa_state *xas, unsigned int order)
->   * After we call xas_unlock_irq(), we cannot touch xas->xa.
->   */
->  static void wait_entry_unlocked(struct xa_state *xas, void *entry)
-> +	__releases(xas->xa->xa_lock)
->  {
->  	struct wait_exceptional_entry_queue ewait;
->  	wait_queue_head_t *wq;
-> -- 
-> Change since v2
-> - gives more accurate lock variable name
-> 2.25.1
-> 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Michal Hocko
+SUSE Labs
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
