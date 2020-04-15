@@ -2,37 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2411BF4EA
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Apr 2020 12:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D78F1AAAF2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 16:56:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7F66B111B5B7F;
-	Thu, 30 Apr 2020 03:06:43 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=210.123.250.206; helo=mail.powererp.kr; envelope-from=projectaseel1@gmail.com; receiver=<UNKNOWN> 
-Received: from mail.powererp.kr (unknown [210.123.250.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id BF9CF1010631A;
+	Wed, 15 Apr 2020 07:57:01 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=149.72.62.239; helo=wrqvpzzf.outbound-email.sendgrid.net; envelope-from=bounces+14365309-d4c9-linux-nvdimm=lists.01.org@sendgrid.net; receiver=<UNKNOWN> 
+Received: from wrqvpzzf.outbound-email.sendgrid.net (unknown [149.72.62.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 34431111B5B7A
-	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 03:06:37 -0700 (PDT)
-Received: from gmail.com (Unknown [142.91.3.98])
-	by mail.powererp.kr with ESMTPA
-	; Wed, 15 Apr 2020 21:58:23 +0900
-From: Aseel Islamic Finance PJSC <projectaseel1@gmail.com>
-To: linux-nvdimm@lists.01.org
-Subject: Re: Project establishment
-Date: 15 Apr 2020 05:58:22 -0700
-Message-ID: <20200415055822.09F4B36C1F674FDB@gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id 3CD4D10106317
+	for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 07:56:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.net;
+	h=content-type:mime-version:subject:to:from; s=smtpapi;
+	bh=3NR+ztWyXXx4400xkiVQlEzcpFFB0lp8E1HU2csg0vg=; b=ujn2VwF2NVJN/
+	Wu2SzYUrS5rdTMe1GoCJNE1rShRZ+xnypMl+BtUd0sLZ2/IKcodqZMaIGpkQA0su
+	080zOfapgqGoNVdDL2CIYS7JvEMQLw5xCgkWBfBvpfWdE+mXBqcPrqtVbuoWGDtG
+	xH6qQgf72ej4Bz7/cv2ANbrzHBKdWI=
+Received: by filter0763p1iad2.sendgrid.net with SMTP id filter0763p1iad2-801-5E971D00-9
+        2020-04-15 14:41:04.730079882 +0000 UTC m=+1178421.587399642
+Received: from)
+	by ismtpd0078p1mdw1.sendgrid.net (SG) with ESMTP id lAQgfByaTIWlkJoZ3--o5w
+	Wed, 15 Apr 2020 14:41:04.414 +0000 (UTC)
 MIME-Version: 1.0
-Message-ID-Hash: M3XPIBSVT2Q2RESZROACFTDNDPG3QAZ5
-X-Message-ID-Hash: M3XPIBSVT2Q2RESZROACFTDNDPG3QAZ5
-X-MailFrom: projectaseel1@gmail.com
+Subject: Account Reference 
+To: Recipients <noreply@docusign.com>
+From: "Docusign" <noreply@docusign.com>
+Date: Wed, 15 Apr 2020 14:56:28 +0000 (UTC)
+Message-ID: <lAQgfByaTIWlkJoZ3--o5w@ismtpd0078p1mdw1.sendgrid.net>
+X-SG-EID: ke+Bwwuh8DadKJDZimY4ZO2X8vVub/nPehTySyaiYrR2HDZ1H2L7u3/4Q563L09o7C3llfmr/AWnci
+ p8BZkEa/KBfK2Qu1niM60z7mQRCN+SbEBG9ckat64WospVIS0E200bNUOPW1edTdoAM/4JIGoW7P7e
+ EsVTBj8SEH8XWc/vFS48RRgdzqZ5ZgQ+xiMzFqR5sKiZUUbS8kgKIihwFOJvj+H68mTUAyK3bq1sIO
+ c=
+Message-ID-Hash: 3ZUW35MJWFUQXL3YHKSYEWKNNDKRBHBT
+X-Message-ID-Hash: 3ZUW35MJWFUQXL3YHKSYEWKNNDKRBHBT
+X-MailFrom: bounces+14365309-d4c9-linux-nvdimm=lists.01.org@sendgrid.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Description: Mail message body
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: projectaseel1@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/M3XPIBSVT2Q2RESZROACFTDNDPG3QAZ5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3ZUW35MJWFUQXL3YHKSYEWKNNDKRBHBT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -41,50 +53,10 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Dear Sir,
 
-As-Salaam-Alaikum.
+  Kindly find Attached invoice & packing list for your reference.
 
-Greetings from Aseel Islamic Finance PJSC.
-
-Aseel Islamic finance PJSC is private joint stock company that 
-was established in 2006 and has built a leading market position 
-for itself in the UAE's finance market which specializes in loan 
-finance and investment activities in real estate, hospitality, 
-sports, industrial & sustainable technologies, strategic 
-financial investments,
-specialized education, healthcare services, 
-agriculture,manufacturing, mining, energy and additional 
-environmentally sustainable projects.
-
-My Name is Saif dawood. Do you have projects that require 
-funding? We have finance available for your projects with over 2 
-trillion private and corporate investment portfolios. Aseel 
-Islamic finance PJSC is looking for equity partners, 
-entrepreneur, fund raisers and portfolio managers who will pay up 
-to 3.5% interest and/or part equity position with a 5 to 10 year 
-hold. In 2030, we plan on acquiring up to 2 trillion in high-
-quality, low risk assets and investments to capitalize on the 
-current market cycle.
-
-Aseel Islamic finance PJSC is acting as a lender and the fund 
-will be disbursed on a clear interest rate of 3.5% annually to 
-the equity partners and entrepreneurs for their investment 
-projects. We also give a 2% commission to brokers, who bring 
-project owners for finance or other opportunities.
-
-For further details, kindly send us via email with your business 
-plans 
-
-Regards,
-
-Mr. SaIf Dawood
-International Business Coordinator
-Aseel Islamic Finance PJSC
-Al Mankhool, Dubai C2 Tower,
-Ground floor,P.O 94669 Dubai,
-United Arab Emirates
-+971 586 242 191
+Best Regards,     1file  (Total 387.5KB)         View Download    
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
