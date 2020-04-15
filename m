@@ -2,59 +2,51 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE8D1A9B1C
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 12:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BCC1A9CA8
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 13:37:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2F6EE10106309;
-	Wed, 15 Apr 2020 03:44:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.221.68; helo=mail-wr1-f68.google.com; envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 136C91010630E;
+	Wed, 15 Apr 2020 04:37:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8D11810106308
-	for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 03:44:12 -0700 (PDT)
-Received: by mail-wr1-f68.google.com with SMTP id k11so17909272wrp.5
-        for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 03:43:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=U4/j6DsdU58IfdYBzmmkMpF8PTjT5JEuky8VhAe+f5Q=;
-        b=Mh4AP0JsWXyaCMDluV3xIIzhVBU9cjlpz3e0tubd05/UdFdBlwJODt7CtY0nsSmSeU
-         4nV9SL8qN5dFF7+WDJgovMuhikV6WaIbEG4aI2bmIAFZbpf5+AIKg0fCM1MMI1JXUYBb
-         0fJJeeGv+VlYzfrMsXALzFHPfDIWmWstbojR81V5EGqvmk9HNkSe2UzL4qYi/EZRHmHt
-         zQl0uoRonLzQGA22oCdzmfVUaCUDraDY5PvlWyFPp6nmJeAKSuaAjbwfe19Mh9040jTt
-         mfN8B1EpgtaIY/nikvBsdm3iymEjXcPHf0JyxNIWX0I1zgn7/BOSz1eBvxkFAkMytRAE
-         89xw==
-X-Gm-Message-State: AGi0PuYpKKmGJXtv4GRGsfj5ksdkEEUTdxB+Yz+hJGe7L6sZVRxVvrr5
-	+RYrivRNYquSG7lgNVYGK1U=
-X-Google-Smtp-Source: APiQypLORd/IKgRFpp7S3dA/ZU6/sxCxycvBJkbVFL1bUdvL8hM/nU4Hz7cjmSOUwFyYBpEH5FNTqg==
-X-Received: by 2002:adf:aac5:: with SMTP id i5mr26517718wrc.285.1586947421042;
-        Wed, 15 Apr 2020 03:43:41 -0700 (PDT)
-Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
-        by smtp.gmail.com with ESMTPSA id y15sm23209097wro.68.2020.04.15.03.43.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Apr 2020 03:43:40 -0700 (PDT)
-Date: Wed, 15 Apr 2020 12:43:38 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Subject: Re: [PATCH v3] mm/memory_hotplug: refrain from adding memory into an
- impossible node
-Message-ID: <20200415104338.GF4629@dhcp22.suse.cz>
-References: <20200414235812.6158-1-vishal.l.verma@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 72B601010630D
+	for <linux-nvdimm@lists.01.org>; Wed, 15 Apr 2020 04:37:43 -0700 (PDT)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id F318820768;
+	Wed, 15 Apr 2020 11:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1586950633;
+	bh=O9zMXw7EVV/7T8D8FIM99Vc76xzMBdRqHU46kaUojBs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OYpIsVMNBA/ASHTyM8jh6UYh5W1dkPKOhw7p6nDAUCQTpiSnJcYHAEHgoP7cEveem
+	 Se2qx0TynC4V/o84rm2HVnd4IojxQs1eAYVCONT+I0JpSJqhVMqW++mtTxktgkmeNK
+	 gJ+Vhp5HPfyt/xYqdn3VJVcC/sZObbB6KEqIH1QY=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 124/129] libnvdimm: Out of bounds read in __nd_ioctl()
+Date: Wed, 15 Apr 2020 07:34:39 -0400
+Message-Id: <20200415113445.11881-124-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200415113445.11881-1-sashal@kernel.org>
+References: <20200415113445.11881-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200414235812.6158-1-vishal.l.verma@intel.com>
-Message-ID-Hash: YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3
-X-Message-ID-Hash: YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3
-X-MailFrom: mstsxfx@gmail.com
+X-stable: review
+X-Patchwork-Hint: Ignore
+Message-ID-Hash: BJYGYJTRH4PQMVKZT226E6T5BJBS6O74
+X-Message-ID-Hash: BJYGYJTRH4PQMVKZT226E6T5BJBS6O74
+X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>
+CC: Dan Carpenter <dan.carpenter@oracle.com>, Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YBSE2ZQYXJI4BGC6PIWYZOEUWTYPWCL3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BJYGYJTRH4PQMVKZT226E6T5BJBS6O74/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,29 +55,43 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue 14-04-20 17:58:12, Vishal Verma wrote:
-[...]
-> +static int check_hotplug_node(int nid)
-> +{
-> +	int alt_nid;
-> +
-> +	if (node_possible(nid))
-> +		return nid;
-> +
-> +	alt_nid = numa_map_to_online_node(nid);
-> +	if (alt_nid == NUMA_NO_NODE)
-> +		alt_nid = first_online_node;
-> +	WARN_TAINT(1, TAINT_FIRMWARE_WORKAROUND,
-> +		   "node %d expected, but was absent from the node_possible_map, using %d instead\n",
-> +		   nid, alt_nid);
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-I really do not like this. Why should we try to be clever and change the
-node id requested by the caller? I would just stick with node_possible
-check and be done with this.
+[ Upstream commit f84afbdd3a9e5e10633695677b95422572f920dc ]
 
+The "cmd" comes from the user and it can be up to 255.  It it's more
+than the number of bits in long, it results out of bounds read when we
+check test_bit(cmd, &cmd_mask).  The highest valid value for "cmd" is
+ND_CMD_CALL (10) so I added a compare against that.
+
+Fixes: 62232e45f4a2 ("libnvdimm: control (ioctl) messages for nvdimm_bus and nvdimm devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: https://lore.kernel.org/r/20200225162055.amtosfy7m35aivxg@kili.mountain
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/nvdimm/bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index a8b5159685699..09087c38fabdc 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -1042,8 +1042,10 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
+ 			return -EFAULT;
+ 	}
+ 
+-	if (!desc || (desc->out_num + desc->in_num == 0) ||
+-			!test_bit(cmd, &cmd_mask))
++	if (!desc ||
++	    (desc->out_num + desc->in_num == 0) ||
++	    cmd > ND_CMD_CALL ||
++	    !test_bit(cmd, &cmd_mask))
+ 		return -ENOTTY;
+ 
+ 	/* fail write commands (when read-only) */
 -- 
-Michal Hocko
-SUSE Labs
+2.20.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
