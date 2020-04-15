@@ -2,158 +2,74 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07E21A8F59
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 01:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF6B1A9182
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Apr 2020 05:24:50 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 258051104314F;
-	Tue, 14 Apr 2020 16:58:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8495E11065560;
+	Tue, 14 Apr 2020 20:25:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.135.125; helo=sonic310-15.consmr.mail.bf2.yahoo.com; envelope-from=svccv@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic310-15.consmr.mail.bf2.yahoo.com (sonic310-15.consmr.mail.bf2.yahoo.com [74.6.135.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B50AF1100B15E
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Apr 2020 16:58:51 -0700 (PDT)
-IronPort-SDR: 8pVJQYOEqxcIPdhkxp3v19g32KrkVdm9dN7r3/Ekj/1oIcrKI8y1xLEoL6Q9qWZVpiiRYrHJOo
- 3yuPOinPtC0Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Apr 2020 16:58:17 -0700
-IronPort-SDR: l0qAgHwbuOXV33ALd5qh72FLM5o0yf8G9M77cvY7XCrrZ9mTRRUtjnTgwOLQrCPB2gZmYCPSig
- KR8URPWVNhEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,384,1580803200";
-   d="scan'208";a="453732307"
-Received: from vverma7-mobl4.lm.intel.com ([10.251.131.109])
-  by fmsmga005.fm.intel.com with ESMTP; 14 Apr 2020 16:58:17 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
-To: <linux-mm@kvack.org>
-Subject: [PATCH v3] mm/memory_hotplug: refrain from adding memory into an impossible node
-Date: Tue, 14 Apr 2020 17:58:12 -0600
-Message-Id: <20200414235812.6158-1-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.21.1
+	by ml01.01.org (Postfix) with ESMTPS id CA52211064B89
+	for <linux-nvdimm@lists.01.org>; Tue, 14 Apr 2020 20:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1586921084; bh=E8d6yINuGiwhTg99MSrPuu24cfYbI9DLht69LRA8ork=; h=Date:From:Reply-To:Subject:References:From:Subject; b=mA3JmHG9UoWxbDz5TVf21cEc5YXr/pwCv/IDzvXxXsKcR1lWcszMIrGZP6nvlaMBmjkP/Vl7mgGvjuqV7S20xxXdI84COKP2/oJyJC/TSCPvAqM5U7UucOd/gisky+sxkrrU5oxsJ381RS5ZOG1qJt6o9YnpPgH2SJcrjml1xyc4j7ivDUihDh4tM7l2fxb7UW7UXCh2GWzWP1QEOHcCAmjT8VLDnBSON2S71WNcUYA2PxGxFm6909VK2wCzzR2JkHJK7vVUiDgeXsaenmnk/nImqeRi1dAiJtgjRgzDcgrMcfH8WHrZEJarWjGZgC6gOjIaBHVufUNTZid6BUoFAg==
+X-YMail-OSG: XhNi2G8VM1kXN1e7Ndi9NXpLpYlXuNMm8r7n6zkf6yUx6uXfla3.t733nxZnYKK
+ u6DphPy8eAZqarfqCmiz3n9XZ6i2aZwqbROjrUpEYEpryPe6DtEND_Yk6R0CRdm16TjrEKySpUH0
+ giNsnXgI87dQt7QoQhiQWSNYwC85OhcL377SxKeHq8c8DS6yFBLCtApWCfg56cXaS_tbHTH9MZ7q
+ SEZScszyXNf74eOm7kCZW9tc9nimz331DcgoVYgJGWenzhbxT6JeHCstKCLv_3uTyLUlQIjgxK35
+ 1uqGltV1kMm2rWEfdp8Bi7sCZMt1EsTL4ez1.jFCvjCQL44kriQx2lKxf3kXghXfoEIP4OC48rK1
+ TJ03UqKbH3n23rURsV.RjbRaTEZAkHEZYaC5MbNEbAU54cXc6jL1jXwE2w9JEITp6LJP9MJocCF4
+ wSpjqAiVOhOY89yrLUkwVErIvHbX2m3CMgoyZz64yE5Hvk05KiLpaIs4Om6HkyG_3xxAVSREBNZ_
+ jakwGzEOQvFjydCN.C1Qh_ype0tLwhG06LPQpTBg0Nc8AWzdw6KThzTcpzwnqqXNJ80nNIFnIysa
+ w_8xHrtESvXemWdZZgO.Czq191fmwsxD_UX4Rmgi2vf3XUXw.nK8.qSSOGquA43b73.y3iGRYXeC
+ 1.n8sFXf7oS0fwlKKAz9I3MOZiLMB_UdTFg1UfXZe9Pr.aVA5b3z4sS4LhyOHj6bj6iDowbF2XJV
+ JEA1joUCUjnaw80rnMxRkhgu8ckrolVM_Quih6ea4qo.m3CwmBZCqOdn3ttYriUTeuv21ksGntuk
+ UUaKnOxMsDMG1j0jmpjVCb29_L6puDgGngbpa8VGB.YAu.OBi7N5TaFXIjVDeNXkFBDnmw742G0i
+ LGHk_g255Br54Qgcql939xqj4wIMEbrAHT_VZaNfTy21XkoKCKiw9nDsyg_rjPYYFd.AZgrE1j7c
+ fQc7OpMZe5V896GA7DnTIpbgCj4UkjM4teqPLIV7k3VVpiolHLF_4ciSwpmGhf5TrckUCDVRBYB9
+ PU7OeyLhcM1.lqlv7CChyzHNLHN57NHzN7UAHmg6rMlmJllqVUupMiqErz41s7XwbQVGdQ9cVM4v
+ hlFjiwRPPwQtUNPebLQ6pkNIIL1WBsyekPdFvCWhVDVaOdG.jc5pzsDzp_PVZmD1mpZj_5GgpXbA
+ 1ItSebmBFHMyaBGZ5SB6M2FHc_jYo9ujKTZXG4KA_7OwqZh._MMMv8GLSi_WmV8H24dPZoZKwGwK
+ 30UQSH62NAn8QxJpANCWYdcRE_AaW9OOPNq.8pw8ds6gRUaw3odWKgQwHoNMn3VVLlFbHcISlERs
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.bf2.yahoo.com with HTTP; Wed, 15 Apr 2020 03:24:44 +0000
+Date: Wed, 15 Apr 2020 03:24:43 +0000 (UTC)
+From: "Mrs. Rinehart Maaly Bob" <svccv@yahoo.com>
+Message-ID: <257891168.496836.1586921083537@mail.yahoo.com>
+Subject: Good Day Dear,
 MIME-Version: 1.0
-Message-ID-Hash: 4444YUC6ULA5NUQXPG5UNUOPY4XKAVTP
-X-Message-ID-Hash: 4444YUC6ULA5NUQXPG5UNUOPY4XKAVTP
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>
+References: <257891168.496836.1586921083537.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15651 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:74.0) Gecko/20100101 Firefox/74.0
+Message-ID-Hash: DZIC5VBOWTYBAYOVTTLDRY423HHAC2MZ
+X-Message-ID-Hash: DZIC5VBOWTYBAYOVTTLDRY423HHAC2MZ
+X-MailFrom: svccv@yahoo.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mrsrinehartm719@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4444YUC6ULA5NUQXPG5UNUOPY4XKAVTP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DZIC5VBOWTYBAYOVTTLDRY423HHAC2MZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-A misbehaving qemu created a situation where the ACPI SRAT table
-advertised one fewer proximity domains than intended. The NFIT table did
-describe all the expected proximity domains. This caused the device dax
-driver to assign an impossible target_node to the device, and when
-hotplugged as system memory, this would fail with the following
-signature:
-
-  [  +0.001627] BUG: kernel NULL pointer dereference, address: 0000000000000088
-  [  +0.001331] #PF: supervisor read access in kernel mode
-  [  +0.000975] #PF: error_code(0x0000) - not-present page
-  [  +0.000976] PGD 80000001767d4067 P4D 80000001767d4067 PUD 10e0c4067 PMD 0
-  [  +0.001338] Oops: 0000 [#1] SMP PTI
-  [  +0.000676] CPU: 4 PID: 22737 Comm: kswapd3 Tainted: G           O      5.6.0-rc5 #9
-  [  +0.001457] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-      BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-  [  +0.001990] RIP: 0010:prepare_kswapd_sleep+0x7c/0xc0
-  [  +0.000780] Code: 89 df e8 87 fd ff ff 89 c2 31 c0 84 d2 74 e6 0f 1f 44
-                      00 00 48 8b 05 fb af 7a 01 48 63 93 88 1d 01 00 48 8b
-		      84 d0 20 0f 00 00 <48> 3b 98 88 00 00 00 75 28 f0 80 a0
-		      80 00 00 00 fe f0 80 a3 38 20
-  [  +0.002877] RSP: 0018:ffffc900017a3e78 EFLAGS: 00010202
-  [  +0.000805] RAX: 0000000000000000 RBX: ffff8881209e0000 RCX: 0000000000000000
-  [  +0.001115] RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff8881209e0e80
-  [  +0.001098] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000008000
-  [  +0.001092] R10: 0000000000000000 R11: 0000000000000003 R12: 0000000000000003
-  [  +0.001092] R13: 0000000000000003 R14: 0000000000000000 R15: ffffc900017a3ec8
-  [  +0.001091] FS:  0000000000000000(0000) GS:ffff888318c00000(0000) knlGS:0000000000000000
-  [  +0.001275] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [  +0.000882] CR2: 0000000000000088 CR3: 0000000120b50002 CR4: 00000000001606e0
-  [  +0.001095] Call Trace:
-  [  +0.000388]  kswapd+0x103/0x520
-  [  +0.000494]  ? finish_wait+0x80/0x80
-  [  +0.000547]  ? balance_pgdat+0x5a0/0x5a0
-  [  +0.000607]  kthread+0x120/0x140
-  [  +0.000508]  ? kthread_create_on_node+0x60/0x60
-  [  +0.000706]  ret_from_fork+0x3a/0x50
-
-Add a check in the add_memory path to ensure that the node to which we
-are adding memory is in the node_possible_map
-
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- mm/memory_hotplug.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
-
-v2:
-- Centralize the check in the add_memory path (David)
-- Instead of failing, add the memory to a nearby node, while warning
-  (and tainting) to call out attention to the firmware bug (Dan)
-
-v3:
-- Fix the CONFIG_NUMA=n case, and use node 0 as the final fallback (Dan)
-
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 0a54ffac8c68..536a809d6ebb 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -980,6 +980,30 @@ static int check_hotplug_memory_range(u64 start, u64 size)
- 	return 0;
- }
- 
-+/*
-+ * Check that the node provided for adding memory was valid.
-+ * If not, find the nearest valid node and add the memory there while
-+ * tainting the kernel and displaying a warning to bring attention to the
-+ * underlying firmware problem.
-+ * Return nid if valid, or an adjusted node number that can be used instead
-+ * if the original nid was not valid
-+ */
-+static int check_hotplug_node(int nid)
-+{
-+	int alt_nid;
-+
-+	if (node_possible(nid))
-+		return nid;
-+
-+	alt_nid = numa_map_to_online_node(nid);
-+	if (alt_nid == NUMA_NO_NODE)
-+		alt_nid = first_online_node;
-+	WARN_TAINT(1, TAINT_FIRMWARE_WORKAROUND,
-+		   "node %d expected, but was absent from the node_possible_map, using %d instead\n",
-+		   nid, alt_nid);
-+	return alt_nid;
-+}
-+
- static int online_memory_block(struct memory_block *mem, void *arg)
- {
- 	return device_online(&mem->dev);
-@@ -1005,6 +1029,10 @@ int __ref add_memory_resource(int nid, struct resource *res)
- 	if (ret)
- 		return ret;
- 
-+	nid = check_hotplug_node(nid);
-+	if (nid < 0)
-+		return -ENXIO;
-+
- 	mem_hotplug_begin();
- 
- 	/*
--- 
-2.21.1
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+R29vZMKgRGF5wqBEZWFyZXN0LA0KDQpJwqBhbcKgTXJzLsKgUmluZWhhcnTCoE0uwqBCb2LCoGZy
+b23CoEF1c3RyYWxpYS7CoEl0wqBpc8KgdW5kZXJzdGFuZGFibGXCoHRoYXTCoHlvdcKgbWF5wqBi
+ZcKgYcKgYml0wqBhcHByZWhlbnNpdmXCoGJlY2F1c2XCoHlvdcKgZG/CoG5vdMKga25vd8KgbWU7
+wqBJwqBmb3VuZMKgeW91csKgZW1haWzCoGFkZHJlc3PCoGZyb23CoGHCoEh1bWFuwqByZXNvdXJj
+ZXPCoGRhdGHCoGJhc2XCoGFuZMKgZGVjaWRlZMKgdG/CoGNvbnRhY3TCoHlvdS7CoEnCoHdvdWxk
+wqBsb3ZlwqB0b8KgZW1wbG95wqB5b3XCoGludG/CoG15wqBjaGFyaXR5wqB3b3JrO8KgScKgYW3C
+oHJlYWR5wqB0b8KgZG9uYXRlwqBzb21lwqBtb25lecKgdG/CoHlvdcKgdG/CoGNhcnJ5wqBvbsKg
+dGhlwqBDaGFyaXR5wqB3b3JrwqBpbsKgeW91csKgY291bnRyeS7CoFBsZWFzZcKgcmVwbHnCoHNv
+wqB0aGF0wqBJwqB3aWxswqBnaXZlwqB5b3XCoGZ1cnRoZXLCoGRldGFpbHPCoGFuZMKgdGVsbMKg
+eW91wqBhYm91dMKgbXlzZWxmwqB2aWHCoGVtYWlsOsKgbXJzcmluZWhhcnRtNzE5QGdtYWlsLmNv
+bQ0KDQpUaGFua3PCoGFuZMKgR29kwqBibGVzc8KgeW91LA0KTXJzLsKgUmluZWhhcnTCoE0uwqBC
+b2IuCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4
+LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1
+YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
