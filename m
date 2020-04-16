@@ -1,48 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6561ACEA8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Apr 2020 19:25:21 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2CB1ACF1F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Apr 2020 19:53:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 320A2100DCB7C;
-	Thu, 16 Apr 2020 10:25:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	by ml01.01.org (Postfix) with ESMTP id 46495100DCB7A;
+	Thu, 16 Apr 2020 10:53:32 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 581AB100DCB77
-	for <linux-nvdimm@lists.01.org>; Thu, 16 Apr 2020 10:25:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 0E3D8100DCB79
+	for <linux-nvdimm@lists.01.org>; Thu, 16 Apr 2020 10:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1587057911;
+	s=mimecast20190719; t=1587059587;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Y+49uvQ4v9X+dVBk0k6r45L4RAb7Kt4QNJHS8V8zLug=;
-	b=M00+1XX3Fg/p5O4+v21rEROGxo7casq6/WFQs6FReDLg9gKwFb40TRELGUNpU+QLJ4PHtG
-	YYh5I/+MLL88awzVHigm3V0ZbvW+w+wFHCrthb4zUO497arR73fGnuYfD0qCxprO4bGQzo
-	kYSvgL7F3Ah/LRCIVRgoLR/wzPvxUwc=
+	bh=EJxkG56Zp9uwwjgLuG4V+rsnQkabmY//Fpqh1uMpF40=;
+	b=Mpd4YcI6LxvOJS/VcJjU0nPjnvmiDRUNg70GeD+NH2370jX+SMsopNlfe22TdRou1n83RW
+	0Y8B3G+qfKQWbmYlooOqsHjYYhh0gJNI3nlUCxRiIkXMzMm/SlRZWVUGi4o3yfGMNXyhVe
+	5Db0NawZtYLtTCBFikxRLTdcBfc/U9w=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-500-6BudIIEsO6OQUgxc73Kbfg-1; Thu, 16 Apr 2020 13:25:10 -0400
-X-MC-Unique: 6BudIIEsO6OQUgxc73Kbfg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-409-X9k442drMYGnk2todO_A_w-1; Thu, 16 Apr 2020 13:53:05 -0400
+X-MC-Unique: X9k442drMYGnk2todO_A_w-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DF77C107ACC9;
-	Thu, 16 Apr 2020 17:25:08 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 71BFF8017F3;
+	Thu, 16 Apr 2020 17:53:04 +0000 (UTC)
 Received: from [10.36.114.9] (ovpn-114-9.ams2.redhat.com [10.36.114.9])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7E6517E7D2;
-	Thu, 16 Apr 2020 17:25:07 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id ED2C760BF3;
+	Thu, 16 Apr 2020 17:53:02 +0000 (UTC)
 Subject: Re: [PATCH v4] mm/memory_hotplug: refrain from adding memory into an
  impossible node
+From: David Hildenbrand <david@redhat.com>
 To: "Verma, Vishal L" <vishal.l.verma@intel.com>,
  "linux-mm@kvack.org" <linux-mm@kvack.org>
 References: <20200416171019.24433-1-vishal.l.verma@intel.com>
  <185a067e-5864-100c-9a9a-6fd90f47ff43@redhat.com>
  <0983dbe3a19d1a074a5959e91f315756ded4c90e.camel@intel.com>
-From: David Hildenbrand <david@redhat.com>
+ <149f247e-173d-dcd5-3f68-f648bf18351c@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -87,18 +88,18 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <149f247e-173d-dcd5-3f68-f648bf18351c@redhat.com>
-Date: Thu, 16 Apr 2020 19:25:06 +0200
+Message-ID: <6af5471c-8c41-e642-b20e-9c9d156cc754@redhat.com>
+Date: Thu, 16 Apr 2020 19:53:02 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <0983dbe3a19d1a074a5959e91f315756ded4c90e.camel@intel.com>
+In-Reply-To: <149f247e-173d-dcd5-3f68-f648bf18351c@redhat.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Message-ID-Hash: WTNBDFLNFLZKY27ZTLNSUPQPR2H3ZFA2
-X-Message-ID-Hash: WTNBDFLNFLZKY27ZTLNSUPQPR2H3ZFA2
+Message-ID-Hash: LIXORONAAQJI5QOL2HXJQPMMFGIOXXI4
+X-Message-ID-Hash: LIXORONAAQJI5QOL2HXJQPMMFGIOXXI4
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -106,7 +107,7 @@ CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "mhocko@kernel.org"
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WTNBDFLNFLZKY27ZTLNSUPQPR2H3ZFA2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LIXORONAAQJI5QOL2HXJQPMMFGIOXXI4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -115,41 +116,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 16.04.20 19:23, Verma, Vishal L wrote:
-> On Thu, 2020-04-16 at 19:12 +0200, David Hildenbrand wrote:
->> On 16.04.20 19:10, Vishal Verma wrote:
+On 16.04.20 19:25, David Hildenbrand wrote:
+> On 16.04.20 19:23, Verma, Vishal L wrote:
+>> On Thu, 2020-04-16 at 19:12 +0200, David Hildenbrand wrote:
+>>> On 16.04.20 19:10, Vishal Verma wrote:
+>>>>
+>>>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>>>> index 0a54ffac8c68..ddd3347edd54 100644
+>>>> --- a/mm/memory_hotplug.c
+>>>> +++ b/mm/memory_hotplug.c
+>>>> @@ -1005,6 +1005,11 @@ int __ref add_memory_resource(int nid, struct resource *res)
+>>>>  	if (ret)
+>>>>  		return ret;
+>>>>  
+>>>> +	if (!node_possible(nid)) {
+>>>> +		WARN(1, "node %d was absent from the node_possible_map\n", nid);
+>>>> +		return -ENXIO;
 >>>
->>> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->>> index 0a54ffac8c68..ddd3347edd54 100644
->>> --- a/mm/memory_hotplug.c
->>> +++ b/mm/memory_hotplug.c
->>> @@ -1005,6 +1005,11 @@ int __ref add_memory_resource(int nid, struct resource *res)
->>>  	if (ret)
->>>  		return ret;
->>>  
->>> +	if (!node_possible(nid)) {
->>> +		WARN(1, "node %d was absent from the node_possible_map\n", nid);
->>> +		return -ENXIO;
->>
->> Nit: I suggest using "-EINVAL" instead (e.g., returned via
->> check_hotplug_memory_range).
->>
->> Not sure if we should pr_err() instead of WARN (see e.g.,
->> check_hotplug_memory_range)
->>
-> Hm, I'm happy to make the changes, but EINVAL to me suggests there is a
-> problem in the way this was called by the user. And in this case there
-> really might not be much the user can change in case fo buggy firmware.
-
-Yeah, but introducing new return codes callers might not expected might
-create IMHO other issues.
-
+>>> Nit: I suggest using "-EINVAL" instead (e.g., returned via
+>>> check_hotplug_memory_range).
+>>>
+>>> Not sure if we should pr_err() instead of WARN (see e.g.,
+>>> check_hotplug_memory_range)
+>>>
+>> Hm, I'm happy to make the changes, but EINVAL to me suggests there is a
+>> problem in the way this was called by the user. And in this case there
+>> really might not be much the user can change in case fo buggy firmware.
 > 
-> Same thing with the WARN - make the potential firmware bug much more
-> obvious and visible.
+> Yeah, but introducing new return codes callers might not expected might
+> create IMHO other issues.
+> 
+>>
+>> Same thing with the WARN - make the potential firmware bug much more
+>> obvious and visible.
+>>
+> 
+> Yeah, but I doubt this is really necessary. No strong feelings.
 > 
 
-Yeah, but I doubt this is really necessary. No strong feelings.
+Forgot to
+
+Acked-by: David Hildenbrand <david@redhat.com>
 
 -- 
 Thanks,
