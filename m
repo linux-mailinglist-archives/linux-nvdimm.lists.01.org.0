@@ -2,59 +2,75 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3201AD63A
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Apr 2020 08:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 258921AD675
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Apr 2020 08:51:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3E0C6100DCB8C;
-	Thu, 16 Apr 2020 23:38:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.128.68; helo=mail-wm1-f68.google.com; envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 340B8100DCB8D;
+	Thu, 16 Apr 2020 23:52:10 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 46385100DCB8B
-	for <linux-nvdimm@lists.01.org>; Thu, 16 Apr 2020 23:38:29 -0700 (PDT)
-Received: by mail-wm1-f68.google.com with SMTP id v8so4153286wma.0
-        for <linux-nvdimm@lists.01.org>; Thu, 16 Apr 2020 23:38:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Ws32jJmT+R0CL8tzacJV7jo0j6Ti1fPmWEmwahhw6sw=;
-        b=RRrXImeBQqPbeCEXIdJlPWvi9T2Wo14UmdAn9QWa63ccGqvMKhKADXuera/U5DTjyH
-         yHya2eh3oEtAvELh5wIMJfvsxjfvCl0G/HKF8azey8X6b/hsxPxopc0o8faOxHWRW538
-         QMWbaWrB39L22CmkC1HKoOW8NF95dAaYOgBiF+QoY2Y/NiZpGCaeTKYmBcUXEx/TyJyO
-         XF/7O7Rn+w1Oq0hft4l9NSEjDfV76XT7NpDaCioqpXkmyS/fNRzpSl4Eg8fyIJFoLlIB
-         vkKjL6uQ4NDzsE+7MbhfIwHOA5Y2y7BnKqHA+VwKw40OyQR5ncccdJ0L3NQ8ykUrpPfI
-         nJaQ==
-X-Gm-Message-State: AGi0PuaZ2H4Ht9YNB5D+eJ5w20qQHh6Dqm/qdiKK+xvkdPNNAh8AdBUX
-	b2RFzYyaTxpjeSpakbziMhA=
-X-Google-Smtp-Source: APiQypL5vLHlWFVemeDjP2cy2Wiiy/ZJ12G7O1sob0XhTjRmk9rTr94hDcHXns1fkrX5JgTTfvhxxg==
-X-Received: by 2002:a7b:c156:: with SMTP id z22mr1841019wmi.51.1587105489755;
-        Thu, 16 Apr 2020 23:38:09 -0700 (PDT)
-Received: from localhost (ip-37-188-130-62.eurotel.cz. [37.188.130.62])
-        by smtp.gmail.com with ESMTPSA id b191sm6667198wmd.39.2020.04.16.23.38.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 23:38:08 -0700 (PDT)
-Date: Fri, 17 Apr 2020 08:38:07 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Vishal Verma <vishal.l.verma@intel.com>
-Subject: Re: [PATCH v5] mm/memory_hotplug: refrain from adding memory into an
- impossible node
-Message-ID: <20200417063807.GE26707@dhcp22.suse.cz>
-References: <20200416225438.15208-1-vishal.l.verma@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 2FDEE100DCB8C
+	for <linux-nvdimm@lists.01.org>; Thu, 16 Apr 2020 23:52:07 -0700 (PDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 03H6Xt9M066215
+	for <linux-nvdimm@lists.01.org>; Fri, 17 Apr 2020 02:51:49 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 30f05wt2w6-1
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Fri, 17 Apr 2020 02:51:49 -0400
+Received: from localhost
+	by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+	for <linux-nvdimm@lists.01.org> from <vaibhav@linux.ibm.com>;
+	Fri, 17 Apr 2020 07:51:08 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+	by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+	(version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+	Fri, 17 Apr 2020 07:51:06 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 03H6piZr48300076
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Apr 2020 06:51:44 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 811F942047;
+	Fri, 17 Apr 2020 06:51:44 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 93D1E4203F;
+	Fri, 17 Apr 2020 06:51:42 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.79.187.50])
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Fri, 17 Apr 2020 06:51:42 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Fri, 17 Apr 2020 12:21:41 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [ndctl PATCH] libndctl: Fix buffer 'offset' calculation in do_cmd()
+In-Reply-To: <20200416200207.GN2309605@iweiny-DESK2.sc.intel.com>
+References: <20200416185223.48486-1-vaibhav@linux.ibm.com> <20200416200207.GN2309605@iweiny-DESK2.sc.intel.com>
+Date: Fri, 17 Apr 2020 12:21:41 +0530
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200416225438.15208-1-vishal.l.verma@intel.com>
-Message-ID-Hash: XFXVWZYJTVFOFMH5XCPV6FQC2EXLOUW4
-X-Message-ID-Hash: XFXVWZYJTVFOFMH5XCPV6FQC2EXLOUW4
-X-MailFrom: mstsxfx@gmail.com
+X-TM-AS-GCONF: 00
+x-cbid: 20041706-0016-0000-0000-0000030608DD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20041706-0017-0000-0000-0000336A1049
+Message-Id: <87lfmuwqo2.fsf@vajain21.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
+ definitions=2020-04-17_01:2020-04-14,2020-04-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 clxscore=1011 mlxlogscore=999
+ suspectscore=7 adultscore=0 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004170046
+Message-ID-Hash: NPU7ROZN2VVOGZMF6ZBQAYLYWOOTP6SJ
+X-Message-ID-Hash: NPU7ROZN2VVOGZMF6ZBQAYLYWOOTP6SJ
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, David Hildenbrand <david@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XFXVWZYJTVFOFMH5XCPV6FQC2EXLOUW4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NPU7ROZN2VVOGZMF6ZBQAYLYWOOTP6SJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -63,104 +79,123 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu 16-04-20 16:54:38, Vishal Verma wrote:
-> A misbehaving qemu created a situation where the ACPI SRAT table
-> advertised one fewer proximity domains than intended. The NFIT table did
-> describe all the expected proximity domains. This caused the device dax
-> driver to assign an impossible target_node to the device, and when
-> hotplugged as system memory, this would fail with the following
-> signature:
-> 
->   [  +0.001627] BUG: kernel NULL pointer dereference, address: 0000000000000088
->   [  +0.001331] #PF: supervisor read access in kernel mode
->   [  +0.000975] #PF: error_code(0x0000) - not-present page
->   [  +0.000976] PGD 80000001767d4067 P4D 80000001767d4067 PUD 10e0c4067 PMD 0
->   [  +0.001338] Oops: 0000 [#1] SMP PTI
->   [  +0.000676] CPU: 4 PID: 22737 Comm: kswapd3 Tainted: G           O      5.6.0-rc5 #9
->   [  +0.001457] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
->       BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
->   [  +0.001990] RIP: 0010:prepare_kswapd_sleep+0x7c/0xc0
->   [  +0.000780] Code: 89 df e8 87 fd ff ff 89 c2 31 c0 84 d2 74 e6 0f 1f 44
->                       00 00 48 8b 05 fb af 7a 01 48 63 93 88 1d 01 00 48 8b
-> 		      84 d0 20 0f 00 00 <48> 3b 98 88 00 00 00 75 28 f0 80 a0
-> 		      80 00 00 00 fe f0 80 a3 38 20
->   [  +0.002877] RSP: 0018:ffffc900017a3e78 EFLAGS: 00010202
->   [  +0.000805] RAX: 0000000000000000 RBX: ffff8881209e0000 RCX: 0000000000000000
->   [  +0.001115] RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff8881209e0e80
->   [  +0.001098] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000008000
->   [  +0.001092] R10: 0000000000000000 R11: 0000000000000003 R12: 0000000000000003
->   [  +0.001092] R13: 0000000000000003 R14: 0000000000000000 R15: ffffc900017a3ec8
->   [  +0.001091] FS:  0000000000000000(0000) GS:ffff888318c00000(0000) knlGS:0000000000000000
->   [  +0.001275] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   [  +0.000882] CR2: 0000000000000088 CR3: 0000000120b50002 CR4: 00000000001606e0
->   [  +0.001095] Call Trace:
->   [  +0.000388]  kswapd+0x103/0x520
->   [  +0.000494]  ? finish_wait+0x80/0x80
->   [  +0.000547]  ? balance_pgdat+0x5a0/0x5a0
->   [  +0.000607]  kthread+0x120/0x140
->   [  +0.000508]  ? kthread_create_on_node+0x60/0x60
->   [  +0.000706]  ret_from_fork+0x3a/0x50
-> 
-> Add a check in the add_memory path to fail if the node to which we
-> are adding memory is in the node_possible_map
-> 
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+Hi,
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks for reviewing this patch. My responses below:
 
-We can start thiking on how to handle such a misconfiguration more
-gracefully when we see this hitting in real world and find out more why
-that happens. E.g. if a FW/BIOS are not fixable then we can implement
-some fallback strategy but this should be a good start.
+Ira Weiny <ira.weiny@intel.com> writes:
 
-Thanks!
+> On Fri, Apr 17, 2020 at 12:22:23AM +0530, Vaibhav Jain wrote:
+>> The 'for' loop in do_cmd() that generates multiple ioctls to
+>> libnvdimm assumes that each ioctl will result in transfer of
+>> 'iter->max_xfer' bytes. Hence after each successful iteration the
+>> buffer 'offset' is incremented by 'iter->max_xfer'.
+>> 
+>> This is in contrast to similar implementation in libnvdimm kernel
+>> function nvdimm_get_config_data() which increments the buffer offset
+>> by 'cmd->in_length' thats the actual number of bytes transferred from
+>> the dimm/bus control function.
+>> 
+>> The implementation in kernel function nvdimm_get_config_data() is more
+>> accurate compared to one in do_cmd() as former doesn't assume that
+>> config/label-area data size is in multiples of 'iter->max_xfer'.
+>> 
+>> Hence the patch updates do_cmd() to increment the buffer 'offset'
+>> variable by 'cmd->get_xfer()' rather than 'iter->max_xfer' after each
+>> iteration.
+>
+> This commit message is not correct.  The problem is that commit
+> a2fd7017b72d113ff7dfcf1b92b6a0a4de34c8b3 introduced the concept of
+> {get,set}_xfer() and did not change the loop iterator to match.
+The assumption to increment the buffer 'offset' by max_xfer instead of
+*(cmd->iter.xfer) or get_xfer() predates the commit
+a2fd7017b72d113ff7dfcf1b92b6a0a4de34c8b3
 
-> ---
->  mm/memory_hotplug.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> v2:
-> - Centralize the check in the add_memory path (David)
-> - Instead of failing, add the memory to a nearby node, while warning
->   (and tainting) to call out attention to the firmware bug (Dan)
-> 
-> v3:
-> - Fix the CONFIG_NUMA=n case, and use node 0 as the final fallback (Dan)
-> 
-> v4:
-> - Error out instead of being smart about picking a node that wasn't
->   asked for (Michal)
-> 
-> v5:
-> - Change the return code to -EINVAL (David)
-> 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 0a54ffac8c68..e07b80d149db 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1005,6 +1005,11 @@ int __ref add_memory_resource(int nid, struct resource *res)
->  	if (ret)
->  		return ret;
->  
-> +	if (!node_possible(nid)) {
-> +		WARN(1, "node %d was absent from the node_possible_map\n", nid);
-> +		return -EINVAL;
-> +	}
-> +
->  	mem_hotplug_begin();
->  
->  	/*
-> -- 
-> 2.21.1
+>
+> Having the loop iterator match is not 100% required here as ->set_xfer() will
+> only change alter the cmd length written on the final command when the loop is
+> exiting anyway.
+Agree that this condition is presently hit only at the final iteration
+of the loop. But as the patch description points out that this differs
+from the assumption made in kernel function nvdimm_get_config_data()
+which doesnt assume that max_xfer bytes will be transffered at each
+iteration.
+
+Since the label area is stored separately from the nvdimm (in many cases
+accessible only via slow i2c), a nvdimm/bus providers (like papr_scm)
+may want to return xfer < max_xfer bytes for ND_CMD_GET_CONFIG_DATA
+command without blocking.
+
+nvdimm_get_config_data() provides this flexibility but do_cmd()
+doesnt. Infact if a bus provider does such a thing then do_cmd() will
+skip over the buffer range that was never trasffered to/from kernel.
+
+>
+> That said should set_xfer() ever do something more clever using get_xfer() is
+> cleaner.
+>
+>> 
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> ---
+>>  ndctl/lib/libndctl.c | 6 ++++--
+>>  1 file changed, 4 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+>> index cda17ff32410..24fa67f0ccd0 100644
+>> --- a/ndctl/lib/libndctl.c
+>> +++ b/ndctl/lib/libndctl.c
+>> @@ -3089,7 +3089,7 @@ NDCTL_EXPORT int ndctl_cmd_xlat_firmware_status(struct ndctl_cmd *cmd)
+>>  static int do_cmd(int fd, int ioctl_cmd, struct ndctl_cmd *cmd)
+>>  {
+>>  	int rc;
+>> -	u32 offset;
+>> +	u32 offset = 0;
+>>  	const char *name, *sub_name = NULL;
+>>  	struct ndctl_dimm *dimm = cmd->dimm;
+>>  	struct ndctl_bus *bus = cmd_to_bus(cmd);
+>> @@ -3116,7 +3116,7 @@ static int do_cmd(int fd, int ioctl_cmd, struct ndctl_cmd *cmd)
+>>  			return rc;
+>>  	}
+>>  
+>> -	for (offset = 0; offset < iter->total_xfer; offset += iter->max_xfer) {
+>> +	while (offset < iter->total_xfer) {
+>
+> FWIW I prefer for loops if possible.
+Sure will rework the for loop. Was just trying to avoid an ugly looking
+for loop that didnt have an iteration-expression.
+
+>
+>>  		cmd->set_xfer(cmd, min(iter->total_xfer - offset,
+>>  				iter->max_xfer));
+>>  		cmd->set_offset(cmd, offset);
+>> @@ -3136,6 +3136,8 @@ static int do_cmd(int fd, int ioctl_cmd, struct ndctl_cmd *cmd)
+>>  			rc = offset + cmd->get_xfer(cmd) - rc;
+>>  			break;
+>>  		}
+>> +
+>> +		offset += cmd->get_xfer(cmd) - rc;
+>
+> Why "- rc"?  Doesn't this break WRITE?
+Thanks for catching this. Will get it fixed.
+
+>
+> Ira
+>
+>>  	}
+>>  
+>>  	dbg(ctx, "bus: %d dimm: %#x cmd: %s%s%s total: %d max_xfer: %d status: %d fw: %d (%s)\n",
+>> -- 
+>> 2.25.2
+>> _______________________________________________
+>> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+>> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
 -- 
-Michal Hocko
-SUSE Labs
+Vaibhav Jain <vaibhav@linux.ibm.com>
+Linux Technology Center, IBM India Pvt. Ltd.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
