@@ -2,43 +2,43 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5291AEF0C
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 16:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0831AEF45
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 16:43:59 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7177110FC62C4;
-	Sat, 18 Apr 2020 07:43:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9CB23100B7749;
+	Sat, 18 Apr 2020 07:44:06 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6381810FC62C3
-	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 07:43:11 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 883FC100BC453
+	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 07:44:03 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id B359321D7E;
-	Sat, 18 Apr 2020 14:43:01 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id DCD6C21D79;
+	Sat, 18 Apr 2020 14:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1587220982;
-	bh=g+/DlI/neXXLGTI4GaNTz0Xd8LaLWlzfFIRyTD5ifOs=;
+	s=default; t=1587221034;
+	bh=5Gb4NGTfkx9h26Nx0aaiJNVgu0YKJnRYpcXYM3gzJnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WamSD2RzXoByciS6WJW8ecal9JynqDMHV0Jgj9XXwrO3+LhAfK5mSg1QEIBV/d9sl
-	 MIJe3UKWxmnvEMGKhi7tNb5k2UwuaCTqgby/5qXLQRwGar0t7DOURWJWwcm8OrjDm0
-	 UH7635233XHXcI+pz9euriJhOJsVDd6aBYzPedPY=
+	b=NLFWtlkKYpWCZ//SOEDP2RLk66zToiLsoY8Evh9FXPkb5X7YN+hk0p+KL68ZZ67mK
+	 WEsRXZamGMSkCz2XKY9hkSEaSGetTJyoBVbaRUc4pCFs8iFKTRm5JQvpmXIpaIlFnN
+	 EJwfTjNdyWKeTFV4evpvOPoW+BUUyEzQNhsWmJMk=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 27/47] libnvdimm: Out of bounds read in __nd_ioctl()
-Date: Sat, 18 Apr 2020 10:42:07 -0400
-Message-Id: <20200418144227.9802-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 20/28] libnvdimm: Out of bounds read in __nd_ioctl()
+Date: Sat, 18 Apr 2020 10:43:20 -0400
+Message-Id: <20200418144328.10265-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200418144227.9802-1-sashal@kernel.org>
-References: <20200418144227.9802-1-sashal@kernel.org>
+In-Reply-To: <20200418144328.10265-1-sashal@kernel.org>
+References: <20200418144328.10265-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-Message-ID-Hash: QNIUI52DURQB7F6WJIYBRTMIAFEGTTXC
-X-Message-ID-Hash: QNIUI52DURQB7F6WJIYBRTMIAFEGTTXC
+Message-ID-Hash: MZ4VBEIAYKZDDZWWW3TN5U6KPA63IO7A
+X-Message-ID-Hash: MZ4VBEIAYKZDDZWWW3TN5U6KPA63IO7A
 X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -46,7 +46,7 @@ CC: Dan Carpenter <dan.carpenter@oracle.com>, Sasha Levin <sashal@kernel.org>, l
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QNIUI52DURQB7F6WJIYBRTMIAFEGTTXC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MZ4VBEIAYKZDDZWWW3TN5U6KPA63IO7A/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,10 +74,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 54a633e8cb5d2..48a070a37ea9b 100644
+index 2f1b54fab399f..83e18b367944c 100644
 --- a/drivers/nvdimm/bus.c
 +++ b/drivers/nvdimm/bus.c
-@@ -984,8 +984,10 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
+@@ -951,8 +951,10 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
  			return -EFAULT;
  	}
  
