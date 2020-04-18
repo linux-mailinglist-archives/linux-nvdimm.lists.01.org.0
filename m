@@ -1,52 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA0E1AECD9
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 15:48:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C039B1AECE6
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 15:48:45 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 75D4E10FC52A1;
-	Sat, 18 Apr 2020 06:48:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 9215610FC52A1;
+	Sat, 18 Apr 2020 06:48:53 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6288910FC38B1
-	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 06:48:32 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 96AF510FC3897
+	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 06:48:50 -0700 (PDT)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 63F9122240;
-	Sat, 18 Apr 2020 13:48:22 +0000 (UTC)
+	by mail.kernel.org (Postfix) with ESMTPSA id 8B9B92220A;
+	Sat, 18 Apr 2020 13:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1587217703;
-	bh=6zGuVlsnnAF2MBnoLbzHZy4QBMSzi7A2hpbIrg/pvyI=;
+	s=default; t=1587217721;
+	bh=gepK8epY5y1X2So4zmONyxVbZIzOOcoBP1WVOXiBqls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sjz0FABcTdemgyS73Voi6gkuYKueGJoNGa0+Lr0pURax4G6sQHyFNfZG85Ivccwug
-	 4YkDP3maTVO3TgLdiVHxzPiNaUceImyrh+A6DK+u/ggmU1SvB4CMLRkR9yRy3s05C0
-	 rCIMFQDEKr+Dc5Wa3kRFXDRcZbWlnrhKC8IaBjeU=
+	b=obVOWQLq7ASNnaD/55Y9rWq+Lb/pmJBhaDaC7gsgiSVo5IaCKQZX/Nhe7pmlg2KL0
+	 wLMqCxpO1gtB2hO/TEenlE3hdDdfOMXvnZWuleu/rnmzsCnGSSo7G6DT157vXyjPYn
+	 AjmPbtRGxhO6u+4yS3kXd9NZ0OzXULfDaFy1ZQF8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 06/73] acpi/nfit: improve bounds checking for 'func'
-Date: Sat, 18 Apr 2020 09:47:08 -0400
-Message-Id: <20200418134815.6519-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.6 21/73] tools/test/nvdimm: Fix out of tree build
+Date: Sat, 18 Apr 2020 09:47:23 -0400
+Message-Id: <20200418134815.6519-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200418134815.6519-1-sashal@kernel.org>
 References: <20200418134815.6519-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-Message-ID-Hash: Y7ASTWS3Q5OTPZFXDNI7TDISMM2DYGLD
-X-Message-ID-Hash: Y7ASTWS3Q5OTPZFXDNI7TDISMM2DYGLD
+Message-ID-Hash: HUMUTO5IPJQEFV5L6D7LYMKOUZPIH77G
+X-Message-ID-Hash: HUMUTO5IPJQEFV5L6D7LYMKOUZPIH77G
 X-MailFrom: sashal@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dan Carpenter <dan.carpenter@oracle.com>, Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y7ASTWS3Q5OTPZFXDNI7TDISMM2DYGLD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HUMUTO5IPJQEFV5L6D7LYMKOUZPIH77G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,84 +55,65 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+From: Santosh Sivaraj <santosh@fossix.org>
 
-[ Upstream commit 01091c496f920e634ea84b689f480c39016752a8 ]
+[ Upstream commit 1f776799628139d0da47e710ad86eb58d987ff66 ]
 
-The 'func' variable can come from the user in the __nd_ioctl().  If it's
-too high then the (1 << func) shift in acpi_nfit_clear_to_send() is
-undefined.  In acpi_nfit_ctl() we pass 'func' to test_bit(func, &dsm_mask)
-which could result in an out of bounds access.
+Out of tree build using
 
-To fix these issues, I introduced the NVDIMM_CMD_MAX (31) define and
-updated nfit_dsm_revid() to use that define as well instead of magic
-numbers.
+   make M=tools/test/nvdimm O=/tmp/build -C /tmp/build
 
-Fixes: 11189c1089da ("acpi/nfit: Fix command-supported detection")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/20200225161927.hvftuq7kjn547fyj@kili.mountain
+fails with the following error
+
+make: Entering directory '/tmp/build'
+  CC [M]  tools/testing/nvdimm/test/nfit.o
+linux/tools/testing/nvdimm/test/nfit.c:19:10: fatal error: nd-core.h: No such file or directory
+   19 | #include <nd-core.h>
+      |          ^~~~~~~~~~~
+compilation terminated.
+
+That is because the kbuild file uses $(src) which points to
+tools/testing/nvdimm, $(srctree) correctly points to root of the linux
+source tree.
+
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+Link: https://lore.kernel.org/r/20200114054051.4115790-1-santosh@fossix.org
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/nfit/core.c | 10 ++++++----
- drivers/acpi/nfit/nfit.h |  1 +
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/nvdimm/Kbuild      | 4 ++--
+ tools/testing/nvdimm/test/Kbuild | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-index a3320f93616de..d0090f71585c4 100644
---- a/drivers/acpi/nfit/core.c
-+++ b/drivers/acpi/nfit/core.c
-@@ -360,7 +360,7 @@ static union acpi_object *acpi_label_info(acpi_handle handle)
+diff --git a/tools/testing/nvdimm/Kbuild b/tools/testing/nvdimm/Kbuild
+index dbebf05f59313..47f9cc9dcd94b 100644
+--- a/tools/testing/nvdimm/Kbuild
++++ b/tools/testing/nvdimm/Kbuild
+@@ -21,8 +21,8 @@ DRIVERS := ../../../drivers
+ NVDIMM_SRC := $(DRIVERS)/nvdimm
+ ACPI_SRC := $(DRIVERS)/acpi/nfit
+ DAX_SRC := $(DRIVERS)/dax
+-ccflags-y := -I$(src)/$(NVDIMM_SRC)/
+-ccflags-y += -I$(src)/$(ACPI_SRC)/
++ccflags-y := -I$(srctree)/drivers/nvdimm/
++ccflags-y += -I$(srctree)/drivers/acpi/nfit/
  
- static u8 nfit_dsm_revid(unsigned family, unsigned func)
- {
--	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][32] = {
-+	static const u8 revid_table[NVDIMM_FAMILY_MAX+1][NVDIMM_CMD_MAX+1] = {
- 		[NVDIMM_FAMILY_INTEL] = {
- 			[NVDIMM_INTEL_GET_MODES] = 2,
- 			[NVDIMM_INTEL_GET_FWINFO] = 2,
-@@ -386,7 +386,7 @@ static u8 nfit_dsm_revid(unsigned family, unsigned func)
+ obj-$(CONFIG_LIBNVDIMM) += libnvdimm.o
+ obj-$(CONFIG_BLK_DEV_PMEM) += nd_pmem.o
+diff --git a/tools/testing/nvdimm/test/Kbuild b/tools/testing/nvdimm/test/Kbuild
+index fb3c3d7cdb9bd..75baebf8f4ba1 100644
+--- a/tools/testing/nvdimm/test/Kbuild
++++ b/tools/testing/nvdimm/test/Kbuild
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+-ccflags-y := -I$(src)/../../../../drivers/nvdimm/
+-ccflags-y += -I$(src)/../../../../drivers/acpi/nfit/
++ccflags-y := -I$(srctree)/drivers/nvdimm/
++ccflags-y += -I$(srctree)/drivers/acpi/nfit/
  
- 	if (family > NVDIMM_FAMILY_MAX)
- 		return 0;
--	if (func > 31)
-+	if (func > NVDIMM_CMD_MAX)
- 		return 0;
- 	id = revid_table[family][func];
- 	if (id == 0)
-@@ -492,7 +492,8 @@ int acpi_nfit_ctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 	 * Check for a valid command.  For ND_CMD_CALL, we also have to
- 	 * make sure that the DSM function is supported.
- 	 */
--	if (cmd == ND_CMD_CALL && !test_bit(func, &dsm_mask))
-+	if (cmd == ND_CMD_CALL &&
-+	    (func > NVDIMM_CMD_MAX || !test_bit(func, &dsm_mask)))
- 		return -ENOTTY;
- 	else if (!test_bit(cmd, &cmd_mask))
- 		return -ENOTTY;
-@@ -3492,7 +3493,8 @@ static int acpi_nfit_clear_to_send(struct nvdimm_bus_descriptor *nd_desc,
- 	if (nvdimm && cmd == ND_CMD_CALL &&
- 			call_pkg->nd_family == NVDIMM_FAMILY_INTEL) {
- 		func = call_pkg->nd_command;
--		if ((1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
-+		if (func > NVDIMM_CMD_MAX ||
-+		    (1 << func) & NVDIMM_INTEL_SECURITY_CMDMASK)
- 			return -EOPNOTSUPP;
- 	}
- 
-diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
-index 24241941181ce..b317f4043705f 100644
---- a/drivers/acpi/nfit/nfit.h
-+++ b/drivers/acpi/nfit/nfit.h
-@@ -34,6 +34,7 @@
- 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
- 
- #define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_HYPERV
-+#define NVDIMM_CMD_MAX 31
- 
- #define NVDIMM_STANDARD_CMDMASK \
- (1 << ND_CMD_SMART | 1 << ND_CMD_SMART_THRESHOLD | 1 << ND_CMD_DIMM_FLAGS \
+ obj-m += nfit_test.o
+ obj-m += nfit_test_iomap.o
 -- 
 2.20.1
 _______________________________________________
