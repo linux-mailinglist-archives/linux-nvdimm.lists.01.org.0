@@ -2,56 +2,81 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF201AF575
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 19 Apr 2020 00:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97E81AF577
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 19 Apr 2020 00:36:27 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 675E010FC62FA;
-	Sat, 18 Apr 2020 15:32:31 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id C034F10FC62FB;
+	Sat, 18 Apr 2020 15:36:32 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=chuck.lever@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id ECF2710FC62F8
-	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 15:32:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-	Subject:Sender:Reply-To:Content-ID:Content-Description;
-	bh=zyG1QPS3RY2nWyGdHwcEoZL1dyrlEFupJ3Qi8VlAHRo=; b=loO7QmrtjVUfmmDDXVlI56bim3
-	vaQVMQJheKFM/fE/1PTtCTTNe5XzeE/U7X2nTTSIWa2jsTphcpKDjL38BHOFJmFjIERkw1AXdISWE
-	voAskfcYnobN2Cg1+P9xUb2INjXTpWf5cHvlbdHJX8AvFR/Nh2KWcL+zidNsbp7aa5RWLcbm4tdBY
-	Q0wqgJei4sy2H6/qPY4WvoBul6hgnZd/9ZU74LcYk0mKxiyoJ+abZZmI+6EKaHmhxW62rGd+bzcYi
-	uN5aQpL4TxGWtDU3C4cNci1ZCHm1UWwy33ZzvpUBRGHVtwzMJ6QU7jRANEHTNyCknHb8PG26nUhi/
-	eFavfSdg==;
-Received: from [2601:1c0:6280:3f0::19c2]
-	by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1jPw0Q-0000cZ-8H; Sat, 18 Apr 2020 22:32:10 +0000
+	by ml01.01.org (Postfix) with ESMTPS id C54EE10FC62FA
+	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 15:36:30 -0700 (PDT)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03IMWJax025251;
+	Sat, 18 Apr 2020 22:35:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=content-type :
+ mime-version : subject : from : in-reply-to : date : cc :
+ content-transfer-encoding : message-id : references : to;
+ s=corp-2020-01-29; bh=zK4gJmDAQjm6odpqw+dWgt3X8Z8VkPHJX9eb1aKLC5g=;
+ b=x2TF6WJw26JFS9DnzG1jjX7fP7mK0Gmueyj0VEUPz5H83bvjFEEwlne4gN+tk9eBscUm
+ 90ro37TBLrsx8aoPw+tGrpex6qPRAvhSHvbeBXswEwzL2kVQ3pz78kuJncF1HNoWMT2j
+ QRoWUa/r0eaCnaztQlQ4n8h/igTGoktprS0Lj0IKrdFzvtpr1o3bwUEpjem5uQioamKj
+ 82bJVWqQoP+zfd1SQ+rPmWEF1NJGwV8Sey/KtKrs2TWKmazxhP9idWtuAFq86C+upl5u
+ lJ2ZrAZYW+xzqm4vONNeX03aSz20xUVcvYXQ9z+0XJHfCyxQGRNSSE1mtNbDXfldBK+t HA==
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+	by aserp2120.oracle.com with ESMTP id 30fsgkj1d6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 18 Apr 2020 22:35:49 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03IMXRJG022075;
+	Sat, 18 Apr 2020 22:33:49 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserp3030.oracle.com with ESMTP id 30fqkadq8j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 18 Apr 2020 22:33:49 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03IMXbL4005563;
+	Sat, 18 Apr 2020 22:33:41 GMT
+Received: from anon-dhcp-153.1015granger.net (/68.61.232.219)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Sat, 18 Apr 2020 15:33:37 -0700
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
 Subject: Re: [PATCH 6/9] nfsd: fix empty-body warning in nfs4state.c
-To: Trond Myklebust <trondmy@hammerspace.com>,
- "chuck.lever@oracle.com" <chuck.lever@oracle.com>
+From: Chuck Lever <chuck.lever@oracle.com>
+In-Reply-To: <c838fc1d-3973-9cd8-ecc6-8739af514dd0@infradead.org>
+Date: Sat, 18 Apr 2020 18:33:35 -0400
+Message-Id: <B4067786-F04F-4CE5-B84B-DE5BB0890529@oracle.com>
 References: <20200418184111.13401-1-rdunlap@infradead.org>
  <20200418184111.13401-7-rdunlap@infradead.org>
  <CDCF7717-7CBC-47CA-9E83-3A18ECB3AB89@oracle.com>
  <d2e2f7967804446a825ec0ff61095e6640b5a968.camel@hammerspace.com>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <c838fc1d-3973-9cd8-ecc6-8739af514dd0@infradead.org>
-Date: Sat, 18 Apr 2020 15:32:05 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <d2e2f7967804446a825ec0ff61095e6640b5a968.camel@hammerspace.com>
-Content-Language: en-US
-Message-ID-Hash: MS5TA7WHCNB22E4SDWENQARE7J4VOQS6
-X-Message-ID-Hash: MS5TA7WHCNB22E4SDWENQARE7J4VOQS6
-X-MailFrom: rdunlap@infradead.org
+ <c838fc1d-3973-9cd8-ecc6-8739af514dd0@infradead.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+X-Mailer: Apple Mail (2.3445.104.11)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9595 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ spamscore=0 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004180188
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9595 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
+ spamscore=0 bulkscore=0 phishscore=0 suspectscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004180188
+Message-ID-Hash: YNSUFM6C6IY4UXBILCT4PD2Q5ELTFNRY
+X-Message-ID-Hash: YNSUFM6C6IY4UXBILCT4PD2Q5ELTFNRY
+X-MailFrom: chuck.lever@oracle.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, "bfields@fieldses.org" <bfields@fieldses.org>, "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>, "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>, "zzy@zzywysm.com" <zzy@zzywysm.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "johannes@sipsolutions.net" <johannes@sipsolutions.net>, "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>, "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>, "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>, "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>, "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "alsa-deve
- l@alsa-project.org" <alsa-devel@alsa-project.org>
+CC: Trond Myklebust <trondmy@hammerspace.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, Bruce Fields <bfields@fieldses.org>, "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>, "torvalds@linux-foundation.org" <torvalds@linux-foundation.org>, "zzy@zzywysm.com" <zzy@zzywysm.com>, Andrew Morton <akpm@linux-foundation.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "johannes@sipsolutions.net" <johannes@sipsolutions.net>, "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>, Linux NFS Mailing List <linux-nfs@vger.kernel.org>, "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>, "perex@perex.cz" <perex@perex.cz>, "tiwai@suse.com" <tiwai@suse.com>, "target-devel@vger.kernel.org" <target-devel@vger.kernel.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "alsa-devel@al
+ sa-project.org" <alsa-devel@alsa-project.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MS5TA7WHCNB22E4SDWENQARE7J4VOQS6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YNSUFM6C6IY4UXBILCT4PD2Q5ELTFNRY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,40 +85,44 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-T24gNC8xOC8yMCAzOjI4IFBNLCBUcm9uZCBNeWtsZWJ1c3Qgd3JvdGU6DQo+IE9uIFNhdCwgMjAy
-MC0wNC0xOCBhdCAxNDo0NSAtMDQwMCwgQ2h1Y2sgTGV2ZXIgd3JvdGU6DQo+Pj4gT24gQXByIDE4
-LCAyMDIwLCBhdCAyOjQxIFBNLCBSYW5keSBEdW5sYXAgPHJkdW5sYXBAaW5mcmFkZWFkLm9yZz4N
-Cj4+PiB3cm90ZToNCj4+Pg0KPj4+IEZpeCBnY2MgZW1wdHktYm9keSB3YXJuaW5nIHdoZW4gLVdl
-eHRyYSBpcyB1c2VkOg0KPj4+DQo+Pj4gLi4vZnMvbmZzZC9uZnM0c3RhdGUuYzozODk4OjM6IHdh
-cm5pbmc6IHN1Z2dlc3QgYnJhY2VzIGFyb3VuZCBlbXB0eQ0KPj4+IGJvZHkgaW4gYW4g4oCYZWxz
-ZeKAmSBzdGF0ZW1lbnQgWy1XZW1wdHktYm9keV0NCj4+Pg0KPj4+IFNpZ25lZC1vZmYtYnk6IFJh
-bmR5IER1bmxhcCA8cmR1bmxhcEBpbmZyYWRlYWQub3JnPg0KPj4+IENjOiBMaW51cyBUb3J2YWxk
-cyA8dG9ydmFsZHNAbGludXgtZm91bmRhdGlvbi5vcmc+DQo+Pj4gQ2M6IEFuZHJldyBNb3J0b24g
-PGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQo+Pj4gQ2M6ICJKLiBCcnVjZSBGaWVsZHMiIDxi
-ZmllbGRzQGZpZWxkc2VzLm9yZz4NCj4+PiBDYzogQ2h1Y2sgTGV2ZXIgPGNodWNrLmxldmVyQG9y
-YWNsZS5jb20+DQo+Pj4gQ2M6IGxpbnV4LW5mc0B2Z2VyLmtlcm5lbC5vcmcNCj4+DQo+PiBJIGhh
-dmUgYSBwYXRjaCBpbiBteSBxdWV1ZSB0aGF0IGFkZHJlc3NlcyB0aGlzIHBhcnRpY3VsYXIgd2Fy
-bmluZywNCj4+IGJ1dCB5b3VyIGNoYW5nZSB3b3JrcyBmb3IgbWUgdG9vLg0KPj4NCj4+IEFja2Vk
-LWJ5OiBDaHVjayBMZXZlciA8Y2h1Y2subGV2ZXJAb3JhY2xlLmNvbT4NCj4+DQo+PiBVbmxlc3Mg
-QnJ1Y2Ugb2JqZWN0cy4NCj4+DQo+Pg0KPj4+IC0tLQ0KPj4+IGZzL25mc2QvbmZzNHN0YXRlLmMg
-fCAgICAzICsrLQ0KPj4+IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDEgZGVsZXRp
-b24oLSkNCj4+Pg0KPj4+IC0tLSBsaW51eC1uZXh0LTIwMjAwNDE3Lm9yaWcvZnMvbmZzZC9uZnM0
-c3RhdGUuYw0KPj4+ICsrKyBsaW51eC1uZXh0LTIwMjAwNDE3L2ZzL25mc2QvbmZzNHN0YXRlLmMN
-Cj4+PiBAQCAtMzQsNiArMzQsNyBAQA0KPj4+DQo+Pj4gI2luY2x1ZGUgPGxpbnV4L2ZpbGUuaD4N
-Cj4+PiAjaW5jbHVkZSA8bGludXgvZnMuaD4NCj4+PiArI2luY2x1ZGUgPGxpbnV4L2tlcm5lbC5o
-Pg0KPj4+ICNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+Pj4gI2luY2x1ZGUgPGxpbnV4L25hbWVp
-Lmg+DQo+Pj4gI2luY2x1ZGUgPGxpbnV4L3N3YXAuaD4NCj4+PiBAQCAtMzg5NSw3ICszODk2LDcg
-QEAgbmZzZDRfc2V0Y2xpZW50aWQoc3RydWN0IHN2Y19ycXN0ICpycXN0cA0KPj4+IAkJY29weV9j
-bGlkKG5ldywgY29uZik7DQo+Pj4gCQlnZW5fY29uZmlybShuZXcsIG5uKTsNCj4+PiAJfSBlbHNl
-IC8qIGNhc2UgNCAobmV3IGNsaWVudCkgb3IgY2FzZXMgMiwgMyAoY2xpZW50IHJlYm9vdCk6ICov
-DQo+Pj4gLQkJOw0KPj4+ICsJCWRvX2VtcHR5KCk7DQo+IA0KPiBVcmdoLi4uIFRoaXMgaXMganVz
-dCBmb3IgZG9jdW1lbnRhdGlvbiBwdXJwb3NlcyBhbnl3YXksIHNvIHdoeSBub3QganVzdA0KPiB0
-dXJuIGl0IGFsbCBpbnRvIGEgY29tbWVudCBieSBtb3ZpbmcgdGhlICdlbHNlJyBpbnRvIHRoZSBj
-b21tZW50IGZpZWxkPw0KPiANCj4gaS5lLg0KPiAJfSAvKiBlbHNlIGNhc2UgNCAoLi4uLiAqLw0K
-PiANCj4gCW5ldy0+Y2xfbWlub3J2ZXJzaW9uID0gMDsNCj4+PiAJZ2VuX2NhbGxiYWNrKG5ldywg
-c2V0Y2xpZCwgcnFzdHApOw0KPj4+IAlhZGRfdG9fdW5jb25maXJtZWQobmV3KTsNCg0KTGlrZSBJ
-IHNhaWQgZWFybGllciwgc2luY2UgQ2h1Y2sgaGFzIGEgcGF0Y2ggdGhhdCBhZGRyZXNzZXMgdGhp
-cywNCmxldCdzIGp1c3QgZ28gd2l0aCB0aGF0Lg0KDQp0aGFua3MuDQotLSANCn5SYW5keQ0KX19f
+DQoNCj4gT24gQXByIDE4LCAyMDIwLCBhdCA2OjMyIFBNLCBSYW5keSBEdW5sYXAgPHJkdW5sYXBA
+aW5mcmFkZWFkLm9yZz4gd3JvdGU6DQo+IA0KPiBPbiA0LzE4LzIwIDM6MjggUE0sIFRyb25kIE15
+a2xlYnVzdCB3cm90ZToNCj4+IE9uIFNhdCwgMjAyMC0wNC0xOCBhdCAxNDo0NSAtMDQwMCwgQ2h1
+Y2sgTGV2ZXIgd3JvdGU6DQo+Pj4+IE9uIEFwciAxOCwgMjAyMCwgYXQgMjo0MSBQTSwgUmFuZHkg
+RHVubGFwIDxyZHVubGFwQGluZnJhZGVhZC5vcmc+DQo+Pj4+IHdyb3RlOg0KPj4+PiANCj4+Pj4g
+Rml4IGdjYyBlbXB0eS1ib2R5IHdhcm5pbmcgd2hlbiAtV2V4dHJhIGlzIHVzZWQ6DQo+Pj4+IA0K
+Pj4+PiAuLi9mcy9uZnNkL25mczRzdGF0ZS5jOjM4OTg6Mzogd2FybmluZzogc3VnZ2VzdCBicmFj
+ZXMgYXJvdW5kIGVtcHR5DQo+Pj4+IGJvZHkgaW4gYW4g4oCYZWxzZeKAmSBzdGF0ZW1lbnQgWy1X
+ZW1wdHktYm9keV0NCj4+Pj4gDQo+Pj4+IFNpZ25lZC1vZmYtYnk6IFJhbmR5IER1bmxhcCA8cmR1
+bmxhcEBpbmZyYWRlYWQub3JnPg0KPj4+PiBDYzogTGludXMgVG9ydmFsZHMgPHRvcnZhbGRzQGxp
+bnV4LWZvdW5kYXRpb24ub3JnPg0KPj4+PiBDYzogQW5kcmV3IE1vcnRvbiA8YWtwbUBsaW51eC1m
+b3VuZGF0aW9uLm9yZz4NCj4+Pj4gQ2M6ICJKLiBCcnVjZSBGaWVsZHMiIDxiZmllbGRzQGZpZWxk
+c2VzLm9yZz4NCj4+Pj4gQ2M6IENodWNrIExldmVyIDxjaHVjay5sZXZlckBvcmFjbGUuY29tPg0K
+Pj4+PiBDYzogbGludXgtbmZzQHZnZXIua2VybmVsLm9yZw0KPj4+IA0KPj4+IEkgaGF2ZSBhIHBh
+dGNoIGluIG15IHF1ZXVlIHRoYXQgYWRkcmVzc2VzIHRoaXMgcGFydGljdWxhciB3YXJuaW5nLA0K
+Pj4+IGJ1dCB5b3VyIGNoYW5nZSB3b3JrcyBmb3IgbWUgdG9vLg0KPj4+IA0KPj4+IEFja2VkLWJ5
+OiBDaHVjayBMZXZlciA8Y2h1Y2subGV2ZXJAb3JhY2xlLmNvbT4NCj4+PiANCj4+PiBVbmxlc3Mg
+QnJ1Y2Ugb2JqZWN0cy4NCj4+PiANCj4+PiANCj4+Pj4gLS0tDQo+Pj4+IGZzL25mc2QvbmZzNHN0
+YXRlLmMgfCAgICAzICsrLQ0KPj4+PiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspLCAx
+IGRlbGV0aW9uKC0pDQo+Pj4+IA0KPj4+PiAtLS0gbGludXgtbmV4dC0yMDIwMDQxNy5vcmlnL2Zz
+L25mc2QvbmZzNHN0YXRlLmMNCj4+Pj4gKysrIGxpbnV4LW5leHQtMjAyMDA0MTcvZnMvbmZzZC9u
+ZnM0c3RhdGUuYw0KPj4+PiBAQCAtMzQsNiArMzQsNyBAQA0KPj4+PiANCj4+Pj4gI2luY2x1ZGUg
+PGxpbnV4L2ZpbGUuaD4NCj4+Pj4gI2luY2x1ZGUgPGxpbnV4L2ZzLmg+DQo+Pj4+ICsjaW5jbHVk
+ZSA8bGludXgva2VybmVsLmg+DQo+Pj4+ICNpbmNsdWRlIDxsaW51eC9zbGFiLmg+DQo+Pj4+ICNp
+bmNsdWRlIDxsaW51eC9uYW1laS5oPg0KPj4+PiAjaW5jbHVkZSA8bGludXgvc3dhcC5oPg0KPj4+
+PiBAQCAtMzg5NSw3ICszODk2LDcgQEAgbmZzZDRfc2V0Y2xpZW50aWQoc3RydWN0IHN2Y19ycXN0
+ICpycXN0cA0KPj4+PiAJCWNvcHlfY2xpZChuZXcsIGNvbmYpOw0KPj4+PiAJCWdlbl9jb25maXJt
+KG5ldywgbm4pOw0KPj4+PiAJfSBlbHNlIC8qIGNhc2UgNCAobmV3IGNsaWVudCkgb3IgY2FzZXMg
+MiwgMyAoY2xpZW50IHJlYm9vdCk6ICovDQo+Pj4+IC0JCTsNCj4+Pj4gKwkJZG9fZW1wdHkoKTsN
+Cj4+IA0KPj4gVXJnaC4uLiBUaGlzIGlzIGp1c3QgZm9yIGRvY3VtZW50YXRpb24gcHVycG9zZXMg
+YW55d2F5LCBzbyB3aHkgbm90IGp1c3QNCj4+IHR1cm4gaXQgYWxsIGludG8gYSBjb21tZW50IGJ5
+IG1vdmluZyB0aGUgJ2Vsc2UnIGludG8gdGhlIGNvbW1lbnQgZmllbGQ/DQo+PiANCj4+IGkuZS4N
+Cj4+IAl9IC8qIGVsc2UgY2FzZSA0ICguLi4uICovDQo+PiANCj4+IAluZXctPmNsX21pbm9ydmVy
+c2lvbiA9IDA7DQo+Pj4+IAlnZW5fY2FsbGJhY2sobmV3LCBzZXRjbGlkLCBycXN0cCk7DQo+Pj4+
+IAlhZGRfdG9fdW5jb25maXJtZWQobmV3KTsNCj4gDQo+IExpa2UgSSBzYWlkIGVhcmxpZXIsIHNp
+bmNlIENodWNrIGhhcyBhIHBhdGNoIHRoYXQgYWRkcmVzc2VzIHRoaXMsDQo+IGxldCdzIGp1c3Qg
+Z28gd2l0aCB0aGF0Lg0KDQpJJ2xsIHBvc3QgdGhhdCBwYXRjaCBmb3IgcmV2aWV3IGFzIHBhcnQg
+b2YgbXkgTkZTRCBmb3ItNS44IHBhdGNoZXMuDQoNCg0KLS0NCkNodWNrIExldmVyDQoNCg0KX19f
 X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
 IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
 IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
