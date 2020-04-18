@@ -1,97 +1,86 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254CC1AEF91
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 16:44:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4421AF351
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 18 Apr 2020 20:41:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B64FE100B7749;
-	Sat, 18 Apr 2020 07:44:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 96BD710FC62E0;
+	Sat, 18 Apr 2020 11:41:50 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B8BBA1010630A
-	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 07:44:36 -0700 (PDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 1066621BE5;
-	Sat, 18 Apr 2020 14:44:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1587221067;
-	bh=8ueGKzVpssWmv48W/XObwKppzjDuII99J2uriC02WAw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJDR61UE0bitsp066OveImHi48y8jhdNVvN3OYYv6pfw7vBXLuls032jM+37e+9jE
-	 s6QmVvBXzD6xRpajGGo0n07FByz7/9x+cX8QBdp5DoYQCzpKz5QOY1ymga/MeBMr9Q
-	 Nibuozi9kaQI8Fr9TKSf4iUx+ea63/xv0Ez+Ilh4=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 17/23] libnvdimm: Out of bounds read in __nd_ioctl()
-Date: Sat, 18 Apr 2020 10:43:59 -0400
-Message-Id: <20200418144405.10565-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200418144405.10565-1-sashal@kernel.org>
-References: <20200418144405.10565-1-sashal@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 6F5C110FC62E4
+	for <linux-nvdimm@lists.01.org>; Sat, 18 Apr 2020 11:41:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=d5zfrylOKoUmkiJ/VV8Fl3fzLkxXbmDEJr/3MIsevyo=; b=XCwSjlVez+qHxOPmcyTIK6oiMp
+	olawr70vtpi0V1QI9XKQUEdNlzc7gZtydJwYjHnNgNwCiR0Y8ytqLU1885mYKcfU2nNRcSQ+hBEej
+	MiJH64ZiTrBz5h80SHKV7B2XhV/8NA5dx2/XMstBP2kRcY+jAyFTPEP07dibSEvWPpw6URRhjEARq
+	GsW6VSkFXNXfFpWKtacsKtxhxuNePEr2gYhZGljGT1rr1HkTT8hxKqdKHdiJLDwOvTjuHdAESVOeL
+	NqEnuUJjyC5UmLntvc7lJwAg8Acv/O1w1fMRoAZtCHCPa4lyuiz4kTPN/HiIYqU17pqZ6fxYiBEQ9
+	d15hNa1Q==;
+Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
+	by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1jPsOv-0007rZ-9I; Sat, 18 Apr 2020 18:41:13 +0000
+From: Randy Dunlap <rdunlap@infradead.org>
+To: linux-kernel@vger.kernel.org
+Subject: [RFC PATCH 0/9] fix -Wempty-body build warnings
+Date: Sat, 18 Apr 2020 11:41:02 -0700
+Message-Id: <20200418184111.13401-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.16.4
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Message-ID-Hash: KFDO2XGKQ2AYAHSHJV2FQ4HEJHQ3SSN5
-X-Message-ID-Hash: KFDO2XGKQ2AYAHSHJV2FQ4HEJHQ3SSN5
-X-MailFrom: sashal@kernel.org
+Message-ID-Hash: YID4PI24KYYUGLOISMWCAHCX6HVIG523
+X-Message-ID-Hash: YID4PI24KYYUGLOISMWCAHCX6HVIG523
+X-MailFrom: rdunlap@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dan Carpenter <dan.carpenter@oracle.com>, Sasha Levin <sashal@kernel.org>, linux-nvdimm@lists.01.org
+CC: Randy Dunlap <rdunlap@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, "J. Bruce Fields" <bfields@fieldses.org>, Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>, linux-nvdimm@lists.01.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, Zzy Wysm <zzy@zzywysm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KFDO2XGKQ2AYAHSHJV2FQ4HEJHQ3SSN5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YID4PI24KYYUGLOISMWCAHCX6HVIG523/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-
-[ Upstream commit f84afbdd3a9e5e10633695677b95422572f920dc ]
-
-The "cmd" comes from the user and it can be up to 255.  It it's more
-than the number of bits in long, it results out of bounds read when we
-check test_bit(cmd, &cmd_mask).  The highest valid value for "cmd" is
-ND_CMD_CALL (10) so I added a compare against that.
-
-Fixes: 62232e45f4a2 ("libnvdimm: control (ioctl) messages for nvdimm_bus and nvdimm devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20200225162055.amtosfy7m35aivxg@kili.mountain
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/nvdimm/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
-index 5768a4749564a..65ac1d3870f93 100644
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -851,8 +851,10 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
- 			return -EFAULT;
- 	}
- 
--	if (!desc || (desc->out_num + desc->in_num == 0) ||
--			!test_bit(cmd, &cmd_mask))
-+	if (!desc ||
-+	    (desc->out_num + desc->in_num == 0) ||
-+	    cmd > ND_CMD_CALL ||
-+	    !test_bit(cmd, &cmd_mask))
- 		return -ENOTTY;
- 
- 	/* fail write commands (when read-only) */
--- 
-2.20.1
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+SGksDQoNCldoZW4gLVdleHRyYSBpcyB1c2VkLCBnY2MgZW1pdHMgbWFueSB3YXJuaW5ncyBhYm91
+dCBhbiBlbXB0eSAnaWYnIG9yDQonZWxzZScgYm9keSwgbGlrZSB0aGlzOg0KDQouLi9mcy9wb3Np
+eF9hY2wuYzogSW4gZnVuY3Rpb24g4oCYZ2V0X2FjbOKAmToNCi4uL2ZzL3Bvc2l4X2FjbC5jOjEy
+NzoyMjogd2FybmluZzogc3VnZ2VzdCBicmFjZXMgYXJvdW5kIGVtcHR5IGJvZHkgaW4gYW4g4oCY
+aWbigJkgc3RhdGVtZW50IFstV2VtcHR5LWJvZHldDQogICAvKiBmYWxsIHRocm91Z2ggKi8gOw0K
+ICAgICAgICAgICAgICAgICAgICAgIF4NCg0KVG8gcXVpZXRlbiB0aGVzZSB3YXJuaW5ncywgYWRk
+IGEgbmV3IG1hY3JvICJkb19lbXB0eSgpIi4NCkkgb3JpZ2luYWxseSB3YW50ZWQgdG8gdXNlIGRv
+X25vdGhpbmcoKSwgYnV0IHRoYXQncyBhbHJlYWR5IGluIHVzZS4NCg0KSXQgd291bGQgc29ydGEg
+YmUgbmljZSBpZiAiZmFsbHRocm91Z2giIGNvdWxkIGJlIGNvZXJjZWQgZm9yIHRoaXMNCmluc3Rl
+YWQgb2YgdXNpbmcgc29tZXRoaW5nIGxpa2UgZG9fZW1wdHkoKS4NCg0KT3Igc2hvdWxkIHdlIGp1
+c3QgdXNlICJ7fSIgaW4gcGxhY2Ugb2YgIjsiPw0KVGhpcyBjYXVzZXMgc29tZSBvZGQgY29kaW5n
+IHN0eWxlIGlzc3VlIElNTy4gRS5nLiwgc2VlIHRoaXMgY2hhbmdlOg0KDQpvcmlnaW5hbDoNCiAJ
+aWYgKGNtcHhjaGcocCwgQUNMX05PVF9DQUNIRUQsIHNlbnRpbmVsKSAhPSBBQ0xfTk9UX0NBQ0hF
+RCkNCgkJLyogZmFsbCB0aHJvdWdoICovIDsNCg0Kd2l0aCBuZXcgbWFjcm86DQogCWlmIChjbXB4
+Y2hnKHAsIEFDTF9OT1RfQ0FDSEVELCBzZW50aW5lbCkgIT0gQUNMX05PVF9DQUNIRUQpDQoJCWRv
+X2VtcHR5KCk7IC8qIGZhbGwgdGhyb3VnaCAqLw0KDQp1c2luZyB7fToNCiAJaWYgKGNtcHhjaGco
+cCwgQUNMX05PVF9DQUNIRUQsIHNlbnRpbmVsKSAhPSBBQ0xfTk9UX0NBQ0hFRCkNCgkJe30gLyog
+ZmFsbCB0aHJvdWdoICovDQpvcg0KCQl7IC8qIGZhbGwgdGhyb3VnaCAqLyB9DQpvciBldmVuDQog
+CWlmIChjbXB4Y2hnKHAsIEFDTF9OT1RfQ0FDSEVELCBzZW50aW5lbCkgIT0gQUNMX05PVF9DQUNI
+RUQpIHsNCgkJLyogZmFsbCB0aHJvdWdoICovIH0NCm9yDQogCWlmIChjbXB4Y2hnKHAsIEFDTF9O
+T1RfQ0FDSEVELCBzZW50aW5lbCkgIT0gQUNMX05PVF9DQUNIRUQpIHsNCgkJfSAvKiBmYWxsIHRo
+cm91Z2ggKi8NCg0KDQogZHJpdmVycy9iYXNlL2RldmNvcmVkdW1wLmMgICAgICAgICB8ICAgIDUg
+KysrLS0NCiBkcml2ZXJzL2RheC9idXMuYyAgICAgICAgICAgICAgICAgIHwgICAgNSArKystLQ0K
+IGRyaXZlcnMvaW5wdXQvbW91c2Uvc3luYXB0aWNzLmMgICAgfCAgICAzICsrLQ0KIGRyaXZlcnMv
+dGFyZ2V0L3RhcmdldF9jb3JlX3BzY3NpLmMgfCAgICAzICsrLQ0KIGRyaXZlcnMvdXNiL2NvcmUv
+c3lzZnMuYyAgICAgICAgICAgfCAgICAyICstDQogZnMvbmZzZC9uZnM0c3RhdGUuYyAgICAgICAg
+ICAgICAgICB8ICAgIDMgKystDQogZnMvcG9zaXhfYWNsLmMgICAgICAgICAgICAgICAgICAgICB8
+ICAgIDIgKy0NCiBpbmNsdWRlL2xpbnV4L2tlcm5lbC5oICAgICAgICAgICAgIHwgICAgOCArKysr
+KysrKw0KIHNvdW5kL2RyaXZlcnMvdngvdnhfY29yZS5jICAgICAgICAgfCAgICAzICsrLQ0KIDkg
+ZmlsZXMgY2hhbmdlZCwgMjQgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pCl9fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWls
+aW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5k
+IGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
