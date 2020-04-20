@@ -2,73 +2,98 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD30C1B066A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 12:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF101B0C76
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 15:20:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EB18D100A0279;
-	Mon, 20 Apr 2020 03:18:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=106.10.244.82; helo=sonic309-19.consmr.mail.sg3.yahoo.com; envelope-from=roshanishrivastaw@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic309-19.consmr.mail.sg3.yahoo.com (sonic309-19.consmr.mail.sg3.yahoo.com [106.10.244.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8061F10106312;
+	Mon, 20 Apr 2020 06:20:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::343; helo=mail-wm1-x343.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EE742100A0277
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 03:18:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1587377899; bh=peyYmCtjljtWlLVt9nd7pAncy+qfy6U8NN3Z+m16P3I=; h=Date:From:Reply-To:Subject:References:From:Subject; b=gXfFM/ryReiTkE2oNiQoqb+IJmFLNFaLNfJLfzaVi4z1NOUKh9jCHRAZ1uP1da4yJVz1oZDlucdwzHWpZbEXtNw5ZZt5GQfhm2cXSkGIEd+nhUvtVtGb5O8c3BdD0ru6d1iI+FYtXAqUWPY3g9d6xyoGgZiiTvqDfDWwxljlPcxDYSmxy7gkWJoXW9glOLaa5B/BGOKsZ1F56jgLQaHsuDVmS5WznPFoVkIvF+j7sCi2fWxmqoy/1Ues9dj/A/6XGOIGQg2BgBPtG+ateXH5rnu0EG4F/1wapc24UaNVr+Uqrpe3nKuQhOt7pceRj4Xffwr0mqyndmcbkOZHiEaD7w==
-X-YMail-OSG: 3UEimxEVM1mXOD_rmIPgTPcuzfEk0mA440ciC_bBh06K_CY58uNAOCYRlVT2wfI
- WMWPaBqyTWmuQ1aRub7UHWIeSahL2WOYsuJFCFafwq9xZANqvGOtBUL8.Bx11m6w_HvHOXMDoAzO
- ziWnvK6AcYTW1x12CF3xGxsUjeljrop.XluB62iCdj1S1wrhe1g3bgrPyLnxrTRDz41MZZSPojI2
- KaiU7D5gvUnlFQ3UuG_z9XcVYYFYi__3NqdxDVMnsK1c5O1EY90Ysll73tAuogzwQIAkD00zlYuq
- _VLNS_2ud6PXxgcrlKiWdBFA0qUSkU_JNA4Xvwpu1uyO51DU1xXIDTmV3UAMuo0Rpb7pMOCn3P0j
- 5hmW3GQS6yjjZNarXyOrIqeZipl4pEhX6.JG1ikGJdPfjXR3x_zr8jXXOa2.f1QIcPrT1QyInWFV
- JM1iDNnn__wFPJ_Qde8nphy2F8ICTVw_4ZQ8CKRFkCyDeN_jMc2JgQATRsCXHxd7lBVa1ryI.CgS
- 4TiLmK8YeIzUa0lQnVeoYOkLRH3RDz0aiTxb.DK2YUIHEmq4EghGRqGisAGvx7dZLQha1W8DmXtm
- ingebvDUBsc5YQatYbJAYigt_nnTfkYpYU9sCst.iIWzfue5t3cKmh6sbz0KgIPg00nSmhsrId5B
- pbcibz5yiPthG5VI2kEC03L44KT9SQjOimnd1MIxa3AWpQwMRb3PqNGSG_NX_gm91rQZHjn27FdR
- 2I0WJzKsbED3EwAMQtHEnnLjT5HitiPkoPMLlKNnGPxp54npJmy8xttnmYgtmE4I_jSAQXTuQ8Ih
- 6iEM1sBCgfbtZjJt3acOFzqoqNZ.I0F3JwsOtjSLaQxw4ENAwiaKNEUsx1adfDkE6Gfy0q7rKIlY
- KfBzv1DpNbUE2u4kuIxmnU7aM3LblT41Qv1mv_XYip3MpbREFv5Sx.PwMIYcUUZPSDLS0.7O1T0n
- Ig5GuRbhhaY2zR.LpnjRQNxyKkUp53jTJPszX5c1s514lbL1jhtLqNGuuUHy9R0EDujK6p2r47qa
- w5bQ4Mr2i7SATYK5t.SlTS6tvI6s.zDtsmlbUp1z1WTDB9RpmEcV9KEcGdJFIH1btSaMQEEJS3wu
- ECFl4bICIjDPKhIU7iid45LMZb9EM.9QlA7MQhx_R1dIexaEOcPFHdo1CzxqeeK0Y_6TqloPzx78
- Z.8nIVMszwr1KPu33Lyd0MfiI8OEAFxUjM2qSYCRTLucRfPZ.lo_JdOOlLYVTIFMZIl3duJrZMlB
- xe7UcnPiya_LE4wXRCBwPXJcEs928YPzEF9IZ.LC6LWpxRecBCRWQsaNPQDptWEud4sOC.DHwgSG
- XVvzjLKzuPg--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.sg3.yahoo.com with HTTP; Mon, 20 Apr 2020 10:18:19 +0000
-Date: Mon, 20 Apr 2020 10:18:14 +0000 (UTC)
-From: Riya Goyal <roshanishrivastaw@yahoo.com>
-Message-ID: <951256005.2233599.1587377894073@mail.yahoo.com>
-Subject: Apps
+	by ml01.01.org (Postfix) with ESMTPS id BED12100DBB0B
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 06:19:59 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id u16so2734498wmc.5
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 06:20:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HbALYnvj9b7TiRQ6HAqBN8J26z1aInuwy6QTO8EMY+I=;
+        b=jZm2UUq2zjNKVHP1+m+OOsr9+zzuILrI7wjwY/9JrBC5piC62jvTTbtdcvDr9INl5c
+         6icvBQX98bCQRu4iSJsSZApWvmr9ZbCLWZibrXkn7wS5xb4e4C/ICOiHI1nfJqBWgp0d
+         4qTYn9ur/ZTZBgha/eYrZZSX66bQhU0MdiEZKMgkLZrNeMzerZlHcijPpDLb8OH2pXNx
+         D3WmPygjrnuLAc4GkBS6NRVvtMcyThcUucBOLoxUz8vZzhlNREGq0ZRcrkPfcjJJv4tP
+         ZopbxiAhBhhg+RoiiIfB7G0QZc3GfPTkCE7VrzT6ma8YlFY0I6lDZkttm2Cc4A0j7zZC
+         Wwbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HbALYnvj9b7TiRQ6HAqBN8J26z1aInuwy6QTO8EMY+I=;
+        b=JuFt6GoqhQZYunFpNoDxogZ6vqmS2S1Vct5v3ByMWZE8mEXXvT/DMMJB7By0wVkF2B
+         t55wGihF3FcvjWfwvnqlgnc4NCpR2n7wJrk9NsgWpM0yUMU5TljKzBPd94Otyk9JbRT9
+         kANuwvwLR96bsMyKXlfVU9mMpgBncz5fe9aHpH+NxU8hNtxEzoEGDslQIgfz8fVZaIN1
+         1GKim76eH/WCOTOVWnF8LFulIKAO5EIf7oVOmVXQiWwaFTYCMbejIRKpkA/ZQWmut69/
+         qz799Ev9NarcJylfuDsmHDFsvx9xCpMvz1WPYD36kgTKBIzmua9VXkpaj6rBDX6TLFD0
+         SHaw==
+X-Gm-Message-State: AGi0PuakgjvqYPaEW9WvLyOkx4u8Qlog6L+JJ6bMN747x3hqUxgyzFcI
+	HYNT6e7WIzYs9+n/9BCZP6A=
+X-Google-Smtp-Source: APiQypJ3sBXuI4PxATAUoiduk4LKotXHhIwDCjwHAeKuon8DwwJa/VWAxVcq9SgNV9e+kI3dEVCx4w==
+X-Received: by 2002:a05:600c:2c04:: with SMTP id q4mr16987057wmg.7.1587388802106;
+        Mon, 20 Apr 2020 06:20:02 -0700 (PDT)
+Received: from PC192-168-2-103.speedport.ip (p5B05E57B.dip0.t-ipconnect.de. [91.5.229.123])
+        by smtp.gmail.com with ESMTPSA id z76sm1545815wmc.9.2020.04.20.06.20.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2020 06:20:01 -0700 (PDT)
+From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-nvdimm@lists.01.org
+Subject: [RFC 0/2] virtio-pmem: Asynchronous flush
+Date: Mon, 20 Apr 2020 15:19:45 +0200
+Message-Id: <20200420131947.41991-1-pankaj.gupta.linux@gmail.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-References: <951256005.2233599.1587377894073.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15651 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36
-Message-ID-Hash: 7G73QV7KVB6FUJIMSJ4M3MRKMOR4OFWH
-X-Message-ID-Hash: 7G73QV7KVB6FUJIMSJ4M3MRKMOR4OFWH
-X-MailFrom: roshanishrivastaw@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Message-ID-Hash: JFZDO4TJHRT63Z2KCATIAR5ZRWGLLQIN
+X-Message-ID-Hash: JFZDO4TJHRT63Z2KCATIAR5ZRWGLLQIN
+X-MailFrom: pankaj.gupta.linux@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: david@redhat.com, mst@redhat.com, pankaj.gupta@cloud.ionos.com, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Riya Goyal <roshanishrivastaw@yahoo.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7G73QV7KVB6FUJIMSJ4M3MRKMOR4OFWH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JFZDO4TJHRT63Z2KCATIAR5ZRWGLLQIN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQpIaSwNCg0KR3JlZXRpbmdzIQ0KDQpEbyB5b3Ugd2FudCBhIE1vYmlsZSBBcHBzIChBbmRyb2lk
-L2lPUyBhcHApZm9yIHlvdXIgQnVzaW5lc3M/DQoNCldlIGRldmVsb3AgbG93IGNvc3QgbW9iaWxl
-IGFwcGxpY2F0aW9ucyBmb3JnbG9iYWwgZW50ZXJwcmlzZXMgdGhhdCBoZWxwIHRoZW0gZ3JvdyB0
-aGVpciBidXNpbmVzcy4NCg0KwqBXZSBhcmUgYW4gSVQgY29tcGFueSwgd2hpY2ggZm9jdXNlc29u
-wqBBcHAgZGV2ZWxvcG1lbnQsIGlPUyBhcHBkZXZlbG9wbWVudCwgQW5kcm9pZCBhcHAgZGV2ZWxv
-cG1lbnQsIEhUTUw1IGFwcCwgTWFjIE9TWCBhcHAsIE1vYmlsZSBhcHBkZXZlbG9wbWVudCBhbmQg
-Q3VzdG9tIFdlYiBhcHBzLg0KDQooQ3JlYXRlIGFwcCBmb3IgeW91ciBidXNpbmVzcykNCg0KSWYg
-aW50ZXJlc3RlZCwgcGxlYXNlIHdyaXRlIG1lIGJhY2sgd2l0aCB5b3VycmVxdWlyZW1lbnQgYW5k
-IGlkZWFzLMKgDQoNClJlZ2FyZHMsDQoNCihJbmRpYSkNCg0KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
-aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
-bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+ Jeff reported preflush order issue with the existing implementation
+ of virtio pmem preflush. Dan suggested[1] to implement asynchronous flush
+ for virtio pmem using work queue as done in md/RAID. This patch series
+ intends to solve the preflush ordering issue and also makes the flush
+ asynchronous from the submitting thread POV.
+
+ Submitting this patch series for feeback and is in WIP. I have
+ done basic testing and currently doing more testing.
+
+Pankaj Gupta (2):
+  pmem: make nvdimm_flush asynchronous
+  virtio_pmem: Async virtio-pmem flush
+
+ drivers/nvdimm/nd_virtio.c   | 66 ++++++++++++++++++++++++++----------
+ drivers/nvdimm/pmem.c        | 15 ++++----
+ drivers/nvdimm/region_devs.c |  3 +-
+ drivers/nvdimm/virtio_pmem.c |  9 +++++
+ drivers/nvdimm/virtio_pmem.h | 12 +++++++
+ 5 files changed, 78 insertions(+), 27 deletions(-)
+
+[1] https://marc.info/?l=linux-kernel&m=157446316409937&w=2
+-- 
+2.20.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
