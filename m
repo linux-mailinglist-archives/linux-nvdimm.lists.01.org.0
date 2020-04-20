@@ -2,65 +2,74 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1EF1B144E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 20:20:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED051B155C
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 21:07:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5F7A3100A026A;
-	Mon, 20 Apr 2020 11:20:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+	by ml01.01.org (Postfix) with ESMTP id B5032100A0280;
+	Mon, 20 Apr 2020 12:06:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A53C51010632A
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 11:20:10 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id d16so8174953edq.7
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 11:20:15 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 9E365100A027D
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 12:06:01 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id b2so5815042ljp.4
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 12:06:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ZtO01bYahgOb7Z9oRmIlu41t03TJcXzE5gRBaNEAL7Q=;
-        b=hfCwL9e+vf+caPGwbcjlSh2CVWoPvLRnIJcrj9mrBBg13LqXHm391fyBRHAGUhOojJ
-         LFECsoHiwbzsCXzyE4yH5jK/CDgMbH7FByj4ye7bEj/Ofh9EY2YC2x6C7G6R7GjxFyvx
-         2gRQywjHtfuTQV7PlTAPcwJydCPzueCu7uy7izUk1uyjenndaa6On7aS8aabj3t4uFE+
-         p8oCadvi8p8EhSxf6uH8wrvny0KrtCMVNd4OS91UYmaa2RWisGlQjHRt7xajzGeHfkD+
-         77kA25TlmNCq/KLfxDuchQz6UT/xj/9zjeQ2akTKJ8eiod7ODfifUo9nA88OMQiZpONE
-         lY+A==
+        bh=iuOgcxk1XV3miYbE7wpVHuN9QYRjBAm2R22P+wf2gcE=;
+        b=L+lzdQ0+hDFUem0lsVOV5EEYL1IYLI2EyZmSOvm4b3/QX4qVY2eRGYR8Fmx43dHaxD
+         epXuGVZNXGEWLO/SYMnG05d7STOV0RHNdkoQftSAtlO9QVIUFhFPyz6oIQoNGvgRQc02
+         tzao2Bfws+6xheDrFv7gnxb7gcG2SXhJxYmUM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ZtO01bYahgOb7Z9oRmIlu41t03TJcXzE5gRBaNEAL7Q=;
-        b=V8nse+ReYWHEXClV3rb3ntyh7kMuZVwgys47ulXylL7na5RuWSS8dfO9pWIS+QEB2Z
-         tPJI9Gdei003ugOMMa/Btm+wOl4h8bL+k3ln/ajGQ1Gllxv0pucAwAypYwEe6LfXJVnn
-         5z0knA3KYB1CjtYi2ocbrfVkVqmJzpkwSCeMKQBih9o+45ZvCs8g16QfFYbIoU3i64cR
-         q1Nwhrlr7dwtTn5bwY/XYosgOnnPboLG7A5aZQf3t/KneZ738991OND32XAxFyialWXn
-         vIKhatKPhX49g9lyv7dXG399+4hgIpaSUxxioW1WjVSD/Ccnv3+6V6ZGA6xUdRxiRNiO
-         Ppqw==
-X-Gm-Message-State: AGi0PuZhvR+z0YWhb/OYr3VIQswfmLdY4hhvq+QRUSN74TMbinhZlfI9
-	DZR8IaPytSgSKnQvBtgKkaPSVNgm38ygC6MU/Q2Cpg==
-X-Google-Smtp-Source: APiQypIB2bw4dzyFz/giglaCjVx3tH8usOa1T6pRutdl0wU2qwmyfZCwpwPbaM4BrQQaPmzCgUG//qy8oe92xQNI5M4=
-X-Received: by 2002:a50:ee86:: with SMTP id f6mr16488628edr.123.1587406812976;
- Mon, 20 Apr 2020 11:20:12 -0700 (PDT)
+        bh=iuOgcxk1XV3miYbE7wpVHuN9QYRjBAm2R22P+wf2gcE=;
+        b=Ma1q12LZxZ1pMidqToh9vCN1mjXz+6nEGIsdoRku6qLQZ+Qr3e7B5OyEwi6GEmgWRv
+         UbRAuLvsIhFU/lfsZ01kYyWuYUwvhz3VLyMwVsm1BEhYd9m2N3Hp7DsXaB18iQE3pJV1
+         BSeqNMLtH0RdZKsGU+PH9rPJWy3HbvY74oWHDs00ofAfhkil2ayINlPbv/ZSXx45akT8
+         BvN4RgtnSxpNEbZbHRlKcU99sZdNIA7NzSdD7b0fBXVA6fZhZmZgjj4V76cld/9IFlTQ
+         0uHSButpotxV9PT0AILRjWIkVoNJPd2SwV09xD+NtT41oCXHv2ME5Qt3xEb0+HweHw9m
+         PGzg==
+X-Gm-Message-State: AGi0PuYR9v/VgH1hJ4VC8elm13uKPtKMN8h5Yvm0vLPXqbyKh0lWsZKV
+	RU38yVYpGxSiQ037Yc0lnJqyopOQhhU=
+X-Google-Smtp-Source: APiQypJ5R/BTH4oDiTL8861+oxCAinqK64ds6h3va/7rdoH1Q/kQ+FgcAYQbseaM65WD/PxP3AyTbw==
+X-Received: by 2002:a2e:8087:: with SMTP id i7mr8697276ljg.99.1587409564315;
+        Mon, 20 Apr 2020 12:06:04 -0700 (PDT)
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
+        by smtp.gmail.com with ESMTPSA id u6sm226280ljd.68.2020.04.20.12.06.02
+        for <linux-nvdimm@lists.01.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2020 12:06:03 -0700 (PDT)
+Received: by mail-lf1-f54.google.com with SMTP id j14so8943676lfg.9
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 12:06:02 -0700 (PDT)
+X-Received: by 2002:a19:7706:: with SMTP id s6mr11379259lfc.31.1587409561755;
+ Mon, 20 Apr 2020 12:06:01 -0700 (PDT)
 MIME-Version: 1.0
 References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
  <CAHk-=wjePyyiNZo0oufYSn0s46qMYHoFyyNKhLOm5MXnKtfLcg@mail.gmail.com>
- <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com> <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
-In-Reply-To: <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Mon, 20 Apr 2020 11:20:01 -0700
-Message-ID: <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
+ <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
+ <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com> <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 20 Apr 2020 12:05:45 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgcc=5kiph7o+aBZoWBCbu=9nQDQtD41DvuRRrqixohUA@mail.gmail.com>
+Message-ID: <CAHk-=wgcc=5kiph7o+aBZoWBCbu=9nQDQtD41DvuRRrqixohUA@mail.gmail.com>
 Subject: Re: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Message-ID-Hash: 3S5A22JKK7BBFKQUGJC56YN4DB7IE5Y2
-X-Message-ID-Hash: 3S5A22JKK7BBFKQUGJC56YN4DB7IE5Y2
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: ED5DVZAVGPDH7PXNEVK7A6GFS4TJLIDG
+X-Message-ID-Hash: ED5DVZAVGPDH7PXNEVK7A6GFS4TJLIDG
+X-MailFrom: torvalds@linuxfoundation.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Andy Lutomirski <luto@amacapital.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3S5A22JKK7BBFKQUGJC56YN4DB7IE5Y2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ED5DVZAVGPDH7PXNEVK7A6GFS4TJLIDG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,175 +78,151 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 20, 2020 at 10:29 AM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
+On Mon, Apr 20, 2020 at 11:20 AM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> On Sun, Apr 19, 2020 at 10:08 PM Dan Williams <dan.j.williams@intel.com> wrote:
-> >
-> > Do we have examples of doing exception handling from C? I thought all
-> > the exception handling copy routines were assembly routines?
->
-> You need assembler for the actual access, but that's a _single_
-> instruction - best done as inline asm.
->
-> The best example of something that does *exactly* what you want to do is likely
->
->         unsafe_get_user();
->         unsafe_put_user();
->
-> which basically turns into a single instruction with exception
-> handling, with the exception hander jumping directly to an error
-> label.
->
-> Ok, so right now gcc can't do that for inline asm with outputs, so it
-> generates fairly nasty code (a secondary register with the error state
-> that then causes a conditional branch on it), but that's a compiler
-> limitation that will eventually go away (where "eventially" means that
-> it already works in LLVM with experimental patches).
->
-> You could literally mis-use those helpers as-is (please don't - the
-> code generation is correct, but at the very least we'd have to
-> re-organize a bit to make it a better interface, ie have an
-> alternative name like "unsafe_get_kernel()" for kernel pointer
-> accesses).
->
-> You'd have to do the alignment guarantees yourself, but there are
-> examples of that in this area too (strnlen_user() does exactly that -
-> aligned word accesses).
+> * I'm at a loss of why you seem to be suggesting that hardware should
+> / could avoid all exceptions. What else could hardware do besides
+> throw an exception on consumption of a naturally occuring multi-bit
+> ECC error? Data is gone, and only software might know how to recover.
 
-Ok, I'll take a deeper look, but my initial reaction is that this
-approach could be a way to replace memcpy_mcsafe_slow(), but would be
-unfortunate for the fast case which can just use rep; movs;
+This is classic bogus thinking.
 
->
-> So the point here is that the current interfaces are garbage, _if_ the
-> whole "access a single value" is actually performance-critical.
->
-> And if that is *not* the case, then the best thing to do is likely to
-> just use a static call. No inlining of single instructions at all,
-> just always use a function call, and then pick the function
-> appropriately.
->
-> Honestly, I can't imagine that the "single access" case is so
-> timing-critical that the static call isn't the right model. Your use
-> case is _not_ as important or common as doing user accesses.
->
-> Finally, the big question is whether the completely broken hardware
-> even matters. Are there actual customers that actually use the garbage
-> "we can crash the machine" stuff?
->
-> Because when it comes to things like nvdimms etc, the _primary_
-> performance target would be getting the kernel entirely out of the
-> way, and allowing databases etc to just access the damn thing
-> directly.
->
-> And if you allow user space to access it directly, then you just have
-> to admit that it's not a software issue any more - it's the hardware
-> that is terminally broken and unusable garbage. It's not even
-> interesting to work around things in the kernel, because user space
-> can just crash the machine directly.
->
-> This is why I absolutely detest that thing so much. The hardware is
-> _so_ fundamentally broken that I have always considered the kernel
-> workarounds to basically be "staging" level stuff - good enough for
-> some random testing of known-broken stuff, but not something that
-> anybody sane should ever use.
->
-> So my preference would actually be to just call the broken cases to be
-> largely ignored, at least from a performance angle. If you can only
-> access it through the kernel, the biggest performance limitation is
-> that you cannot do any DAX-like thing at all safely, so then the
-> performance of some kernel accessors is completely secondary and
-> meaningless. When a kernel entry/exit takes a few thousand cycles on
-> the broken hardware (due to _other_ bugs), what's the point about
-> worrying about trying to inline some single access to the nvdimm?
->
-> Did the broken hardware ever spread out into the general public?
-> Because if not, then the proper thing to do might be to just make it a
-> compile-time option for the (few) customers that signed up for testing
-> the initial broken stuff, and make the way _forward_ be a clean model
-> without the need to worry about any exceptions at all.
+If Intel ever makes ECC DRAM available to everybody, there would be a
+_shred_ of logic to that thinking, but right now it's some hw designer
+in their mom's basement that has told you that hardware has to throw a
+synchronous exception because hardware doesn't know any better.
 
-There are 3 classes of hardware, all of them trigger exceptions* it's
-just the recoverability of those exceptions that is different:
+That hardware designer really doesn't have a _clue_ about the big issues.
 
-1/ Recovery not supported all exceptions report PCC=1 (processor
-context corrupted) and the kernel decides to panic.
+The fact is, a synchronous machine check exception is about the
+_worst_ thing you can ever do when you encounter something like a
+memory error.
 
-2/ Recovery supported, user processes killed on consumption, panic on
-kernel consumption outside of an exception handler instrumented code
-path. Unfortunately there is no architectural way to distinguish
-class1 from class2 outside of a PCI quirk whitelist. The kernel prior
-to memcpy_mcsafe() just unconditionally enabled recovery for user
-consumption, panicked on kernel consumption, and hoped that exceptions
-are sent with PCC=0. The introduction of memcpy_mcsafe() to handle
-poison consumption from kernel-space without a panic introduced this
-not pretty caveat that some platforms needed to do special snowflake
-memcpy to avoid known scenarios** that trigger PCC=1 when they could
-otherwise trigger PCC=0. So a PCI quirk whitelist was added for those.
+It literally means that the software cannot possibly do anything sane
+to recover, because the software is in some random place. The hardware
+designer didn't think about the fact that the low-level access is
+hidden from the software by a compiler and/or a lot of other
+infrastructure - maybe microcode, maybe the OS, maybe a scriping
+language, yadda yadda.
 
-3/ Recovery supported *and* special snowflake memcpy rules relaxed.
-Still no architectural way to discover this state so let us just
-enable memcpy_mcsafe_fast() always and let the former whitelist become
-a blacklist of "this CPU requires you to do a dance to avoid some
-PCC=1 cases, but that dance impacts performance".
+Absolutely NOBODY can recover at the level of one instruction. The
+microcode people already proved that. At the level of "memcpy()", you
+do not have a recovery option.
 
-* I'm at a loss of why you seem to be suggesting that hardware should
-/ could avoid all exceptions. What else could hardware do besides
-throw an exception on consumption of a naturally occuring multi-bit
-ECC error? Data is gone, and only software might know how to recover.
+A hardware designer that tells you that you have to magically recover
+at an instruction boundary fundamentally DOES NOT UNDERSTAND THE
+PROBLEM.
 
-** Unaligned access across a cacheline boundary, fast string consumption...
+IOW, you have completely uncritically just taken that incorrect
+statement of "what else could hardware do" without questioning that
+hardware designer AT ALL.
 
-> > The writes can mmu-fault now that memcpy_mcsafe() is also used by
-> > _copy_to_iter_mcsafe(). This allows a clean bypass of the block layer
-> > in fs/dax.c in addition to the pmem driver access of poisoned memory.
-> > Now that the fallback is a sane rep; movs; it can be considered for
-> > plain copy_to_iter() for other user copies so you get exception
-> > handling on kernel access of poison outside of persistent memory. To
-> > Andy's point I think a recoverable copy (for exceptions or faults) is
-> > generally useful.
->
-> I think that's completely independent.
->
-> If we have good reasons for having targets with exception handling,
-> then that has absolutely nothing to do with machine checks or buggy
-> hardware.
->
-> And it sure shouldn't be called "mcsafe", since it has nothing to do
-> with that situation any more.
+And remember, this is likely the same hardware designer that told you
+that it's a good idea to then make machine checks go to every single
+CPU in the system.
 
-Ok, true.
+And this is the same hardware designer that then didn't even give you
+enough information to recover.
 
-> > I understand the gripes about the mcsafe_slow() implementation, but
-> > how do I implement mcsafe_fast() any better than how it is currently
-> > organized given that, setting aside machine check handling,
-> > memcpy_mcsafe() is the core of a copy_to_iter*() front-end that can
-> > mmu-fault on either source or destination access?
->
-> So honestly, once it is NOT about the broken machine check garbage,
-> then it should be sold on its own independent reasons.
->
-> Do we want to have a "copy_to_iter_safe" that can handle page faults?
-> Because we have lots of those kinds of things, we have
->
->  - load_unaligned_zeropad()
->
->    This loads a single word knowing that the _first_ byte is valid,
-> but can take an exception and zero-pad if it crosses a page boundary
->
->  - probe_kernel_read()/write()
->
->    This is a kernel memcpy() with the source/destination perhaps being unmapped.
->
->  - various perf and tracing helpers that have special semantics.
->
-> but once it's about some generic interface, then it also needs to take
-> other architectures into account.
+And this is the same hardware designer that made recovery impossible
+anyway, because if the error happened in microcode or in some other
+situation, the microcode COULDN'T HANDLE IT EITHER!
 
-For the fast case it's really just copy_user_enhanced_fast_string()
-without forced stac/clac when the source and dest are both kernel
-accesses.
+In other words, you are talking to people WHO ARE KNOWN TO BE INCOMPETENT.
+
+Seriously. Question them. When they tell ytou that "it's the only
+thing we can possibly do", they do so from being incompetent, and we
+have the history to PROVE it.
+
+I don't understand why nobody else seems to be pushing back against
+the completely insane and known garbage that is the Intel machine
+checks. They are wrong.
+
+The fact is, synchronous errors are the absolute worst possible
+interface, exactly because they cause problems in various nasty corner
+cases.
+
+We _know_ a lot of those corner cases, for chrissake:
+
+ - random standard library routine like "memcpy". How the hell do you
+think a memcpy can recover? It can't.
+
+ - Unaligned handling where "one" access isn't actually a single access.
+
+ - microcode. Intel saw this problem themselves, but instead of making
+people realize "oh, synchronous exceptions don't work that well" and
+think about the problem, they wasted our time for decades, and then
+probably spent a lot of effort in trying to make them work.
+
+ - random generic code that isn't able to handle the fault, because IT
+SHOULDN'T NEED TO CARE. Low-level filesystems, user mappings, the list
+just goes on.
+
+The only thing that can recover tends to be at a *MUCH* higher level
+than one instruction access.
+
+So the next time somebody tells you "there's nothing else we can do",
+call them out on being incompetent, and call them out on the fact that
+history has _shown_ that they are incompetent and wrong. Over and over
+again.
+
+I can _trivially_ point to a number of "what else could we do" that
+are much better options.
+
+ (a) let the corrupted value through, notify things ASYNCHRONOUSLY
+that there were problems, and let people handle the issue later when
+they are ready to do so.
+
+Yeah, the data was corrupt - but not allowing the user to read it may
+mean that the whole file is now inaccessible, even if it was just a
+single ECC block that was wrong. I don't know the block-size people
+use for ECC, and the fact is, software shouldn't really even need to
+care. I may be able to recover from the situation at a higher level.
+The data may be recoverable other ways - including just a "I want even
+corrupted data, because I might have enough context that I can make
+sense of it anyway".
+
+ (b) if you have other issues so that you don't have data at all
+(maybe it was metadata that was corrupted, don't ask me how that would
+happen), just return zeroes, and notify about the problem
+ASYNCHRONOUSLY.
+
+And when notifying, give as much useful information as possible: the
+virtual and physical address of the data, please, in addition to maybe
+lower level bank information. Add a bit for "multiple errors", so that
+whoever then later tries to maybe recover, can tell if it has complete
+data or not.
+
+The OS can send a SIGBUS with that information to user land that can
+then maybe recover. Or it can say "hey, I'm in some recovery mode,
+I'll try to limp along with incomplete data". Sometimes "recover"
+means "try to limp along, notify the user that their hw is going bad,
+but try to use the data anyway".
+
+Again, what Intel engineers actually did with the synchronous
+non-recoverable thing was not "the only thing I could possibly have
+done".
+
+It was literally the ABSOLUTE WORST POSSIBLE THING they could do, with
+potentially  a dead machine as a result.
+
+And now - after years of pain - you have the gall to repeat that
+idiocy that you got from people who have shown themselves to be
+completely wrong in the past?
+
+Why?
+
+Why do you take their known wrong approach as unthinking gospel? Just
+because it's been handed down over generations on stone slabs?
+
+I really really detest the whole mcsafe garbage. And I absolutely
+*ABHOR* how nobody inside of Intel has apparently ever questioned the
+brokenness at a really fundamental level.
+
+That "I throw my hands in the air and just give up" thing is a
+disease. It's absolutely not "what else could we do".
+
+                  Linus
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
