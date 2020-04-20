@@ -2,53 +2,40 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501FE1B1712
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 22:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C733E1B1768
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 22:45:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A7360100A0288;
-	Mon, 20 Apr 2020 13:27:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 12C8B100A0288;
+	Mon, 20 Apr 2020 13:45:36 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=tony.luck@intel.com; receiver=<UNKNOWN> 
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7104100A0287
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:27:51 -0700 (PDT)
-Received: by mail-lf1-x142.google.com with SMTP id 198so9179086lfo.7
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7lXVFlCuhZRlNIKPWno7jyPJtjBUewfnSNmf8ZBkjkU=;
-        b=cn88vqLJ3iqpfoPaMzWrtCIV4M8jcHhWWu71rGqbgTe5Q/UQn2kwB72nwO+wt0ZsxV
-         Fe0cMAvboICZetRhUSad49xM+2KRg2LEkiMxaySpZdfmgaSTauF8lNCz7NT6nkAP+jvT
-         GCDKi7YV6yK0o0sTidFCFjCHDaGmRz+vbXKJo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7lXVFlCuhZRlNIKPWno7jyPJtjBUewfnSNmf8ZBkjkU=;
-        b=uBCaDKC/XbwGBEOitM5ioiZSFadAm6dePiwAVZACD1s+lrh0aJGbeIRgrX9Bh1W7/0
-         vM3Hh2dtny6L8o+ZV5XwdEyrXPfdLBgNPvpRWWpLWwzrCpFou/RS6dTm3irx6q040mGN
-         dOg1uN4+8LAXQb5Toc5pbpL65HqG2bP4iticHJJxQo9SgD/pZUin9D4zMol4+h2eRJcI
-         fFhX/QquRtPM1dVkaFljJdcfyN+N3Z8CvQ+zpkNTfwIXRbQ+0g5p2QYR+B3OuNg5PVci
-         J9Zen2vG6d/xSTPqqjdG5bJCsDl5cDhEdYLN4tsBtcgpOgIikyKnqE3o/Xoe4/+XsRM0
-         8XTg==
-X-Gm-Message-State: AGi0Pub+VlaxVfcMsjiyW+vF/xupHVcqBKz5T/rQN+vPLKcv5Y8wM6ni
-	bu+okCtWv/qK7sDcdaNhabVg6nx/jms=
-X-Google-Smtp-Source: APiQypItSwckKJozVMpcoWaE3gdIdM8uk8irkxg0sA3Xjckz9DkbOP9OnphPubpgmCWwdrD1Sx6nsw==
-X-Received: by 2002:a19:ca13:: with SMTP id a19mr11522047lfg.68.1587414475088;
-        Mon, 20 Apr 2020 13:27:55 -0700 (PDT)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id z23sm343159ljm.46.2020.04.20.13.27.52
-        for <linux-nvdimm@lists.01.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2020 13:27:53 -0700 (PDT)
-Received: by mail-lf1-f42.google.com with SMTP id w145so9170880lff.3
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:27:52 -0700 (PDT)
-X-Received: by 2002:a05:6512:405:: with SMTP id u5mr11369327lfk.192.1587414472376;
- Mon, 20 Apr 2020 13:27:52 -0700 (PDT)
-MIME-Version: 1.0
+	by ml01.01.org (Postfix) with ESMTPS id C4A5910106330
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:45:28 -0700 (PDT)
+IronPort-SDR: VPMWeWg3KPLILtnAWEFd0beZwx8UY1N/CGuY9gfdxAysEmNcxTR0O+OEuIx3ZocgoH5GE/vIts
+ 25rVzqOQJBVA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2020 13:45:34 -0700
+IronPort-SDR: 9wacpcNj1X7bZVjCS2BWPnrcI9BXhubPhcWdxC9v9tkuthZl31RSKE8EyqAK89B1ixIJ8dk2Od
+ vVplzjpcKI9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,407,1580803200";
+   d="scan'208";a="279373633"
+Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
+  by fmsmga004.fm.intel.com with ESMTP; 20 Apr 2020 13:45:34 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.83]) by
+ ORSMSX105.amr.corp.intel.com ([169.254.2.15]) with mapi id 14.03.0439.000;
+ Mon, 20 Apr 2020 13:45:33 -0700
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: RE: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
+Thread-Topic: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
+Thread-Index: AQHWFcAkxzMCKIhw+kKWzhMhw9bMXah/0FOAgAIc84CAAM7CAIAADmyAgAAMx4CAAAaOAIAACpqA//+PPQCAAHZ6AP//jGvw
+Date: Mon, 20 Apr 2020 20:45:33 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F5FB1C0@ORSMSX115.amr.corp.intel.com>
 References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
  <CAHk-=wjePyyiNZo0oufYSn0s46qMYHoFyyNKhLOm5MXnKtfLcg@mail.gmail.com>
  <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
@@ -56,24 +43,35 @@ References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
  <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
  <CAHk-=wgcc=5kiph7o+aBZoWBCbu=9nQDQtD41DvuRRrqixohUA@mail.gmail.com>
  <CAPcyv4iTaBNPMwqUwas+J4rxd867QL7JnQBYB8NKnYaTA-R_Tw@mail.gmail.com>
- <CAHk-=wgOUOveRe8=iFWw0S1LSDEjSfQ-4bM64eiXdGj4n7Omng@mail.gmail.com> <20200420202332.GA30160@agluck-desk2.amr.corp.intel.com>
-In-Reply-To: <20200420202332.GA30160@agluck-desk2.amr.corp.intel.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 20 Apr 2020 13:27:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whNL-P71xQRsahpYrzKquvz3WwqPCUVPT+1TUmWZ+67TQ@mail.gmail.com>
-Message-ID: <CAHk-=whNL-P71xQRsahpYrzKquvz3WwqPCUVPT+1TUmWZ+67TQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
-To: "Luck, Tony" <tony.luck@intel.com>
-Message-ID-Hash: KDOR6TAAJXGVK4MXTV2BXTBLOMO3WRLS
-X-Message-ID-Hash: KDOR6TAAJXGVK4MXTV2BXTBLOMO3WRLS
-X-MailFrom: torvalds@linuxfoundation.org
+ <CAHk-=wgOUOveRe8=iFWw0S1LSDEjSfQ-4bM64eiXdGj4n7Omng@mail.gmail.com>
+ <20200420202332.GA30160@agluck-desk2.amr.corp.intel.com>
+ <CAHk-=whNL-P71xQRsahpYrzKquvz3WwqPCUVPT+1TUmWZ+67TQ@mail.gmail.com>
+In-Reply-To: <CAHk-=whNL-P71xQRsahpYrzKquvz3WwqPCUVPT+1TUmWZ+67TQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+MIME-Version: 1.0
+Message-ID-Hash: UO6PDR22HR2MQAVSIDAIQNKCDJGX3CGF
+X-Message-ID-Hash: UO6PDR22HR2MQAVSIDAIQNKCDJGX3CGF
+X-MailFrom: tony.luck@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andy Lutomirski <luto@amacapital.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Erwin Tsaur <erwin.tsaur@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Andy Lutomirski <luto@amacapital.net>,
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+	Peter@ml01.01.org,
+	"Erwin  <erwin.tsaur@intel.com>, Linux Kernel Mailing List" <linux-kernel@vger.kernel.org>,
+	linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KDOR6TAAJXGVK4MXTV2BXTBLOMO3WRLS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UO6PDR22HR2MQAVSIDAIQNKCDJGX3CGF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,22 +80,24 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 20, 2020 at 1:23 PM Luck, Tony <tony.luck@intel.com> wrote:
+> By "asynchronous" I don't mean "hours later".
 >
-> I think they do. If the result of the wrong data has already
-> been sent out the network before you process the signal, then you
-> will need far smarter application software than has ever been written
-> to hunt it down and stop the spread of the bogus result.
+> Make it be "interrupts are enabled, before serializing instruction".
+>
+> Yes, we want bounded error handling latency. But that doesn't mean "synchronous"
 
-Bah. That's a completely red herring argument.
+Another X86 vendor seems to be adding something like that. See MCOMMIT
+in https://www.amd.com/system/files/TechDocs/24594.pdf
 
-By "asynchronous" I don't mean "hours later".
+But I wonder how an OS will know whether it is running some smart
+MCOMMIT-aware application that can figure out what to do with bad
+data, or a legacy application that should probably be stopped before
+it hurts somebody.
 
-Make it be "interrupts are enabled, before serializing instruction".
+I also wonder how expensive MCOMMIT is (since it is essentially
+polling for "did any errors happen").
 
-Yes, we want bounded error handling latency. But that doesn't mean "synchronous"
-
-           Linus
+-Tony
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
