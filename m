@@ -2,98 +2,193 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F411B1665
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 21:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A524D1B16AE
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 22:07:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 54500100A0282;
-	Mon, 20 Apr 2020 12:58:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com; envelope-from=zzy@zzywysm.com; receiver=<UNKNOWN> 
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+	by ml01.01.org (Postfix) with ESMTP id F289D100A0283;
+	Mon, 20 Apr 2020 13:07:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6324B100A0281
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 12:58:31 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id l78so12125522qke.7
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 12:58:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 8A98A100A0282
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:07:24 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id 198so9128659lfo.7
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:07:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=zzywysm.com; s=google;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=1CahSbHOz6rwR75qjwbzvpk5/lxzAsXTVlJJFrluNmk=;
-        b=DHwk8VKEaaVWe6umPwn75HeYPWa4/to4TPUyIyniHa8w0VjI4jbFRgfwiJbMPyVTBF
-         XIxMCwftVuZ5LMDuVHb9gd/oo9bVOeOag3KnWsbyRKiBySEDw18VNG9po6wPOgaX+JV0
-         U696lIpKGeSvPcCzw56gqM/agX1+2/QWVes4jWwOX1kSM0DMbVae9AqQEle3/5swq1WR
-         3E0xc6MJg7TbdMO3xq2INKKP9cMKexf1GETBAnT4Wc/qvIJu4eZ79zfLThZbNisSrGcf
-         uNvuImd6aWtDGh5xTm0hSIil3sDlm0TTj3TRSR1SEsiBL/e+4Ps6DP19SkF+CcVNT33D
-         HkgA==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=CkLzDOs2QhGApweR1QmmWlbi9o5ixalfBfDesdrfxCg=;
+        b=BazmrNGdTnM2FQ5CtGkMj83BfdJa4Yp3E5qxoKOOrd3F9bdAFvJI4Bd7wUfW440c25
+         fcBUzphgipH/0eS786g3ZSKfwKmAcpIo7XBMPXb8HD5Wraa4Lh9QMQbTto9Z2/5fRG9w
+         wi+Jb2TouNkb2lobBro+yIBnKNzlulF08P2ho=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=1CahSbHOz6rwR75qjwbzvpk5/lxzAsXTVlJJFrluNmk=;
-        b=NC6rzgdENsFGB0EpDIEptj6hOEbxbQwo6VHW1XKIB++Hotw1WG71tyLfxYLNAwD1AL
-         PsebRgUNAwXHmo2EMWqUvpsO3i1KCbbBzRshQ/cLeveCZDhw4Nxd9irLA4seQ1B3FfQE
-         ooeaWFYZBw/OItMlkllAFwhuEtGQdCCXeR/97bAZzfSYFCZUfuwiSd+az19HcYkPw8Wu
-         RDsJFbqGbJj0eOySE2WRm5YVXZoLrFHajnErh2ya9+92tZPVAGuKLMarDroCjC9ZlgCe
-         tCxag3xR4qCGFWbXHbE8X781AQ176BDvBU81eLaz+1Ua79o1dUzshLGC1Z/cv/TzV6C5
-         hkow==
-X-Gm-Message-State: AGi0PuaBVBJB9zbsCRcEH7YcNj9YyMabMugTf+UfjL08WNwSoYIdNbU2
-	cOBIeZvs7yZspA5grX62mKNgFw==
-X-Google-Smtp-Source: APiQypLbKFRt3y7j9cRt5ohxKGUgZ2cg5IXsM72wAdwrD/eEvlPuY2BnSQ46fW3IHvQ9kSE9m6xMag==
-X-Received: by 2002:a37:5284:: with SMTP id g126mr18284316qkb.51.1587412716060;
-        Mon, 20 Apr 2020 12:58:36 -0700 (PDT)
-Received: from [10.19.49.2] (ec2-3-17-74-181.us-east-2.compute.amazonaws.com. [3.17.74.181])
-        by smtp.gmail.com with ESMTPSA id j2sm241058qtp.5.2020.04.20.12.58.33
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 20 Apr 2020 12:58:35 -0700 (PDT)
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH 2/9] fix empty-body warning in posix_acl.c
-From: Zzy Wysm <zzy@zzywysm.com>
-In-Reply-To: <CAHk-=wjSzuTyyBkmMDG4fx_sXzLJsh+9Xk-ubgbpJzJq_kzPsA@mail.gmail.com>
-Date: Mon, 20 Apr 2020 14:58:31 -0500
-Message-Id: <F8B969BE-A2B1-4E6D-8746-BBFBE6399328@zzywysm.com>
-References: <20200418184111.13401-1-rdunlap@infradead.org>
- <20200418184111.13401-3-rdunlap@infradead.org>
- <CAHk-=wjSzuTyyBkmMDG4fx_sXzLJsh+9Xk-ubgbpJzJq_kzPsA@mail.gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-Message-ID-Hash: 35D4JHUFJHUXDHRPAQL72PBTQQ4NR6I3
-X-Message-ID-Hash: 35D4JHUFJHUXDHRPAQL72PBTQQ4NR6I3
-X-MailFrom: zzy@zzywysm.com
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CkLzDOs2QhGApweR1QmmWlbi9o5ixalfBfDesdrfxCg=;
+        b=b95rup1tljjymqLvWXFaaBO4njvQ6iDWbFNR9+s4C9FBTPEDRuEDlk7166X9vJfNO2
+         RFt9f19P5pMLAzaizgQpInhMv8U09ewIQy/UGp5N8fM7mYXM7ieyDUfq2mCoECMWzZjj
+         nMcx5CmQNjIA8QiZjlTe8+HszIPeWYQRZMX4COH2TeczkPCAoRhMNXQ7zT0P8lRaGzW1
+         1tDinehWaHG5KYNnJodaD0skBFDlflhn1rI1zeuFry1w9KnmAo3t81ct+KPmRYuCOCG2
+         iFzrGqqpmYJ7lHvGx4uOxPaXMbZmIyqNNqRZa1XZbScGj1MSPofKG4jyIOL2718jBqeg
+         uBjw==
+X-Gm-Message-State: AGi0PuZMSThxJANmonxsyPMtulxz+fyy13sHHSRAW3hCQa9y9wnAiyEh
+	1pCs4H8NWhd0uu40IGv9SYW+EOz8dIw=
+X-Google-Smtp-Source: APiQypKg6YNz5+LCJz8OaC+cu/tF5jn59wtkXjcV48a8ykkvirWP5Ft5NoNUh/gYjlAHSdENQjuoTw==
+X-Received: by 2002:ac2:43c6:: with SMTP id u6mr11875686lfl.170.1587413246772;
+        Mon, 20 Apr 2020 13:07:26 -0700 (PDT)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com. [209.85.167.50])
+        by smtp.gmail.com with ESMTPSA id q19sm309529ljj.84.2020.04.20.13.07.25
+        for <linux-nvdimm@lists.01.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2020 13:07:25 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id l11so9148036lfc.5
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 13:07:25 -0700 (PDT)
+X-Received: by 2002:a19:9109:: with SMTP id t9mr11708783lfd.10.1587413245018;
+ Mon, 20 Apr 2020 13:07:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
+ <CAHk-=wjePyyiNZo0oufYSn0s46qMYHoFyyNKhLOm5MXnKtfLcg@mail.gmail.com>
+ <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
+ <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
+ <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
+ <CAHk-=wgcc=5kiph7o+aBZoWBCbu=9nQDQtD41DvuRRrqixohUA@mail.gmail.com> <CAPcyv4iTaBNPMwqUwas+J4rxd867QL7JnQBYB8NKnYaTA-R_Tw@mail.gmail.com>
+In-Reply-To: <CAPcyv4iTaBNPMwqUwas+J4rxd867QL7JnQBYB8NKnYaTA-R_Tw@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 20 Apr 2020 13:07:09 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgOUOveRe8=iFWw0S1LSDEjSfQ-4bM64eiXdGj4n7Omng@mail.gmail.com>
+Message-ID: <CAHk-=wgOUOveRe8=iFWw0S1LSDEjSfQ-4bM64eiXdGj4n7Omng@mail.gmail.com>
+Subject: Re: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: 7U2CC736SJFQCRI45VT6FIXLZ4FOZY3W
+X-Message-ID-Hash: 7U2CC736SJFQCRI45VT6FIXLZ4FOZY3W
+X-MailFrom: torvalds@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Randy Dunlap <rdunlap@infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, linux-input@vger.kernel.org, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, "J. Bruce Fields" <bfields@fieldses.org>, Chuck Lever <chuck.lever@oracle.com>, "open list:NFS, SUNRPC, AND..." <linux-nfs@vger.kernel.org>, Johannes Berg <johannes@sipsolutions.net>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-scsi <linux-scsi@vger.kernel.org>, target-devel <target-devel@vger.kernel.org>
+CC: Andy Lutomirski <luto@amacapital.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/35D4JHUFJHUXDHRPAQL72PBTQQ4NR6I3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7U2CC736SJFQCRI45VT6FIXLZ4FOZY3W/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQo+IE9uIEFwciAxOCwgMjAyMCwgYXQgMTo1MyBQTSwgTGludXMgVG9ydmFsZHMgPHRvcnZhbGRz
-QGxpbnV4LWZvdW5kYXRpb24ub3JnPiB3cm90ZToNCj4gDQo+IFRoaXJkbHksIHRoZXJlJ3MgYSAq
-cmVhc29uKiB3aHkgIi1XZXh0cmEiIGlzbid0IHVzZWQuDQo+IA0KPiBUaGUgd2FybmluZ3MgZW5h
-YmxlZCBieSAtV2V4dHJhIGFyZSB1c3VhbGx5IGNvbXBsZXRlIGdhcmJhZ2UsIGFuZA0KPiB0cnlp
-bmcgdG8gZml4IHRoZW0gb2Z0ZW4gbWFrZXMgdGhlIGNvZGUgd29yc2UuIEV4YWN0bHkgbGlrZSBo
-ZXJlLg0KPiANCg0KQXMgdGhlIGluc3RpZ2F0b3Igb2YgdGhpcyB3YXJuaW5nIGNsZWFudXAgYWN0
-aXZpdHksIGV2ZW4gX0lfIGRvbuKAmXQgcmVjb21tZW5kDQpidWlsZGluZyB3aXRoIGFsbCBvZiAt
-V2V4dHJhLiAgRG9pbmcgc28gb24gYW4gYWxsbW9kY29uZmlnIGJ1aWxkIGdlbmVyYXRlcyANCjUw
-MCBtZWdhYnl0ZXMgb2Ygd2FybmluZyB0ZXh0IChub3QgZXhhZ2dlcmF0aW5nKSwgcHJpbWFyaWx5
-IGR1ZSB0byANCi1XdW51c2VkLXBhcmFtZXRlciBhbmQgV21pc3NpbmctZmllbGQtaW5pdGlhbGl6
-ZXJzLg0KDQpJIHN0cm9uZ2x5IHJlY29tbWVuZCBkaXNhYmxpbmcgdGhlbSB3aXRoIC1Xbm8tdW51
-c2VkLXBhcmFtZXRlciANCi1Xbm8tbWlzc2luZy1maWVsZC1pbml0aWFsaXplcnMgc2luY2UgdGhl
-IHNwZXcgaXMgY29tcGxldGVseSB1bmFjdGlvbmFibGUuDQoNCk9uIHRoZSBvdGhlciBoYW5kLCAt
-V292ZXJyaWRlLWluaXQgZm91bmQgYSBsZWdpdCBidWcgdGhhdCB3YXMgYnJlYWtpbmcgRFZEDQpk
-cml2ZXMsIGZpeGVkIGluIGNvbW1pdCAwMzI2NGRkZGUyNDUzZjY4NzdhN2Q2MzdkODQwNjgwNzk2
-MzJhM2M1Lg0KDQpJIGJlbGlldmUgZmluZGluZyBhIGdvb2Qgc2V0IG9mIGNvbXBpbGVyIHdhcm5p
-bmcgc2V0dGluZ3MgY2FuIGxlYWQgdG8gbG90cyBvZiANCmdvb2QgYnVncyBiZWluZyBzcG90dGVk
-IGFuZCAoaG9wZWZ1bGx5KSBmaXhlZC4gIFdoeSBsZXQgc3l6Ym90IGRvIGFsbCB0aGUgd29yaz8N
-Cg0Kenp5DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8g
-dW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEu
-b3JnCg==
+On Mon, Apr 20, 2020 at 12:29 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+>  I didn't consider asynchronous to be
+> better because that means there is a gap between when the data
+> corruption is detected and when it might escape the system that some
+> external agent could trust the result and start acting on before the
+> asynchronous signal is delivered.
+
+The thing is, absolutely nobody cares whether you start acting on the
+wrong data or not.
+
+Even if you use the wrong data as a pointer, and get other wrong data
+behind it (or take an exception), that doesn't change a thing: the end
+result is still the exact same thing "unpredictably wrong data". You
+didn't really make things worse by continuing, and people who care
+about some very particular case can easily add a barrier to get any
+error before they go past some important point.
+
+It's not like Intel hasn't done that before. It's how legacy FP
+instructions work - and while the legacy FP unit had horrendous
+problems, the delayed exception wasn't one of them (routing it to
+irq13 was, but that's on IBM, not Intel). Async exception handling
+simplifies a lot of problems, and in fact, if you then have explicit
+"check now" points (which the Intel FPU also had, as long as you
+didn't have that nasty irq13 routing), it simplifies software too.
+
+So there is no _advantage_ to being synchronous to the source of the
+problem.  There is only pain.
+
+There are lots and lots of disadvantages, most of them being
+variations - on many different levesl of - "it hit at a point where I
+cannot recover".
+
+The microcode example is one such example that Intel engineers should
+really take to heart. But the real take-away is that it is only _one_
+such example. And making the microcode able to recover doesn't fix all
+the _other_ places that aren't able to recover at that point, or fix
+the fundamental pain.
+
+For example, for the kernel, NMI's tend to be pretty special things,
+and we simply may not be able to handle errors inside an NMI context.
+It's not all that unlike the intel microcode example, just at another
+level.
+
+But we have lots of other situations. We have random
+compiler-generated code, and we're simply not able to take exceptions
+at random stages and expect to recover. We have very strict rules
+about "this might be unsafe", and a normal memory access of a trusted
+pointer IS NOT IT.
+
+But at a higher level, something like "strnlen()" - or any other
+low-level library routine - isn't really all that different from
+microcode for most programs. We don't want to have a million copies of
+"standard library routine, except for nvram".
+
+The whole - and ONLY - point of something like nvram is that it's
+supposed to act like memory. It's part of the name, and it's very much
+part of the whole argument for why it's a good idea.
+
+And the advantage of it being memory is that you are supposed to be
+able to do all those random operations that you just do normally on
+any memory region - ask for string lengths, do copies, add up numbers,
+look for patterns. Without having to do an "IO" operation for it.
+
+Taking random synchronous faults is simply not acceptable. It breaks
+that fundamental principle.
+
+Maybe you have a language with a try/catch/throw model of exception
+handling - but one where throwing exceptions is constrained to happen
+for documented operations, not any random memory access. That's very
+common, and kind of like what the kernel exception handling does by
+hand.
+
+So an allocation failure can throw an exception, but once you've
+allocated memory, the language runtime simply depends on knowing that
+it has pointer safety etc, and normal accesses won't throw an
+exception.
+
+In that kind of model, you can easily add a model where "SIGBUS sets a
+flag, we'll handle it at catch time", but that depends on things being
+able to just continue _despite_ the error.
+
+So a source-synchronous error can be really hard to handle. Exception
+handling at random points is simply really really tough in general -
+and there are few more random and more painful points than some "I
+accessed memory".
+
+So no. An ECC error is nothing like a page fault. A page fault you
+have *control* over. You can have a language without the ability to
+generate wild pointers, or you can have a language like C where wild
+pointers are possible, but they are a bug. So you can work on the
+assumption that a page fault is always entirely invisible to the
+program at hand.
+
+A synchronous ECC error doesn't have that "entirely invisible to the
+program at hand" behavior.
+
+And yes, I've asked for ECC for regular memory for regular CPU's from
+Intel for over two decades now. I do NOT want their broken machine
+check model with it. I don't even necessarily want the "correction"
+part of it - I want reporting of "your hardware / the results of your
+computation is no longer reliable". I don't want a dead machine, I
+don't want some worry about "what happens if I get an ECC error in
+NMI", I don't want any of the problems that come from taking an
+absolute "ECC errors are fatal" approach. I just want "an error
+happened", with as much information about where it happened as
+possible.
+
+                 Linus
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
