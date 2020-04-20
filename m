@@ -1,70 +1,73 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136B21B0C7A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 15:21:33 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930961B12FE
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 19:28:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B587F1010631D;
-	Mon, 20 Apr 2020 06:21:27 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::441; helo=mail-wr1-x441.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+	by ml01.01.org (Postfix) with ESMTP id 788A510106329;
+	Mon, 20 Apr 2020 10:28:44 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::244; helo=mail-lj1-x244.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 17A77100DBB0B
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 06:20:06 -0700 (PDT)
-Received: by mail-wr1-x441.google.com with SMTP id k1so12142233wrx.4
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 06:20:10 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 30AF31010631A
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 10:28:41 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id q19so10882369ljp.9
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 10:28:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=oPdZQyRabt6he4bhfa5uiDoDto3iaERte2f8Bkdq2dw=;
-        b=tF2OVncK+ugkAA0A6/qVKJOT2F+p1Xs+5i9grlHooTDlg6Xh4UXsF6uAmEs1dcFDT8
-         o5OhLCJ0mYBEMkKpj6VVsq0/afAdQ5ds/MC+4PXXMoeNk3a2vwbR87IoOZUN6B5CxzwZ
-         aMJ35ThdS6B/A9OWe1PAyCfDQDve3XV3cc9d16fuGBEnbhpvNc0DLKAmR7bHc90tq/MO
-         2g3eFdXnKnRJPwuiNPfBJWZhNYyTVC4s3siecJR2qEctGPo/a/Xxtt87gnoRpB1Y2jHT
-         GHojSiqt35ROFpABxTxzHxAKnveIfz2S86dEoJNZAaY9011wZDahmwerFOoMRbuUs+BX
-         kZng==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=IpmTQOayCD1Il3q30iPH6dEUv0PiLxNc2sXawwla/vE=;
+        b=cXn3mltz8qorrEfyE5y8hVv9238WfQDrBvoOtyFkveWMr/VgNd23+A0MesJO6OFCV6
+         ekBgPWm67RrpmalcOyyI3Lfn/4D8gPsmxyLQQLtBSaECUBbJAREMKbBzRetnjAo+dwFd
+         BWGwQIPm49gqAKYyUDjg0Eqhoie/KGQ8r/37o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=oPdZQyRabt6he4bhfa5uiDoDto3iaERte2f8Bkdq2dw=;
-        b=rB7+U7sjt2YZ23WqmSC5/FqicBu+4RtEFQwvqoywC8kYZV8gUu7Lto9KygbHp+i6+l
-         a2krKmmMl5M8W/fhjVYMjKmPRLEglw7vajoX5O90+wiS50c9wpzaRys1yrERKWKv/Qua
-         ZGM6jjbhK8EraUAVABJ5kIxl1OMI5GbVL3jv6y4Yhh7Tu/wWLD5DZSk8cFStzjDK8VV8
-         ITSOiTCHs9Fu0nbgYbBQHmu00uYDyAxuYWMDLnNT3T8na1JaDlWJc4p3EGznVVIUzWBZ
-         T6C51pJj0MxWxjbgl8GPNZBqQoTNczQDLT2OCZdjkfMcHL8Y+vNOiKWc8cwh6/ixXtQG
-         CB3g==
-X-Gm-Message-State: AGi0PuYdpOmAu9IOnqkr6UdoSwBpf+7hyY61gKyrVktzd3tGFqjMzp8I
-	+XPyv/VpoMFLMy/77UqocfM=
-X-Google-Smtp-Source: APiQypLTT+egxtT73HLwY0UOVwG+pILDTsDsZ1ej+0/Fx34zgMak60ZvBvwtp3mCSthkZBRng6HwzA==
-X-Received: by 2002:adf:f748:: with SMTP id z8mr9539405wrp.45.1587388808377;
-        Mon, 20 Apr 2020 06:20:08 -0700 (PDT)
-Received: from PC192-168-2-103.speedport.ip (p5B05E57B.dip0.t-ipconnect.de. [91.5.229.123])
-        by smtp.gmail.com with ESMTPSA id z76sm1545815wmc.9.2020.04.20.06.20.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2020 06:20:08 -0700 (PDT)
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-nvdimm@lists.01.org
-Subject: [RFC 2/2] virtio_pmem: Async virtio-pmem flush
-Date: Mon, 20 Apr 2020 15:19:47 +0200
-Message-Id: <20200420131947.41991-3-pankaj.gupta.linux@gmail.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200420131947.41991-1-pankaj.gupta.linux@gmail.com>
-References: <20200420131947.41991-1-pankaj.gupta.linux@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IpmTQOayCD1Il3q30iPH6dEUv0PiLxNc2sXawwla/vE=;
+        b=Q1cOT3wMSAXsEkbJgsMlJPvg4NeDcTAjDZ6eomlvnfYsdzmmGD/KJhNYr4iDV8nxQK
+         R6hFo084e6rQ8KMvtIU0RNL0EvGI662igOR/nN1SIz1dtfgSC4FVRLFztWd2nthpRMEN
+         zrIZERV+1CryKoKjwyOfwdblVIHATsZblF2n06V1t7ePlU3p27slhhaz9YyVRS7Zu3az
+         2XlbyxBCxanRwBdhARhdC4LL7Uxz3w5Kil9fNo1ZKO3aFHwe/Q+laM7JdwEfr5roVncX
+         S2+aYtRG9DNLrxxgshTiXa6PACyLU/+C9A6/Thsbawt4ijA1Gxmko3W8+PyfFNt85eps
+         psWw==
+X-Gm-Message-State: AGi0Pub2OpRBsz5LEW6MNcJ9QbYbVKsynf284q4eyVGqLFR8j6rI35Du
+	GHCp8C3r0+KHc/D+XrXa3vy0Qdy8mg4=
+X-Google-Smtp-Source: APiQypI66BWQQZGysJH+bSso9CT4WDa9K02m1ZKmywkHabrRmayGW8T48gdZxWMc2bmaTuPbEQJiDQ==
+X-Received: by 2002:a2e:700e:: with SMTP id l14mr2221319ljc.135.1587403722956;
+        Mon, 20 Apr 2020 10:28:42 -0700 (PDT)
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com. [209.85.167.47])
+        by smtp.gmail.com with ESMTPSA id p8sm58170ljn.93.2020.04.20.10.28.41
+        for <linux-nvdimm@lists.01.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2020 10:28:41 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id x23so8678209lfq.1
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 10:28:41 -0700 (PDT)
+X-Received: by 2002:a05:6512:405:: with SMTP id u5mr10953490lfk.192.1587403720981;
+ Mon, 20 Apr 2020 10:28:40 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: OO4W3ELF3ZP2FLKR2OSCYRVNYLOJ5AF3
-X-Message-ID-Hash: OO4W3ELF3ZP2FLKR2OSCYRVNYLOJ5AF3
-X-MailFrom: pankaj.gupta.linux@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: david@redhat.com, mst@redhat.com, pankaj.gupta@cloud.ionos.com, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
+ <CAHk-=wjePyyiNZo0oufYSn0s46qMYHoFyyNKhLOm5MXnKtfLcg@mail.gmail.com> <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
+In-Reply-To: <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 20 Apr 2020 10:28:24 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
+Message-ID: <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
+Subject: Re: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: AE3SPTNZHTFS2LYTAEXDMLOUM6ZZSTRV
+X-Message-ID-Hash: AE3SPTNZHTFS2LYTAEXDMLOUM6ZZSTRV
+X-MailFrom: torvalds@linuxfoundation.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andy Lutomirski <luto@amacapital.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OO4W3ELF3ZP2FLKR2OSCYRVNYLOJ5AF3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AE3SPTNZHTFS2LYTAEXDMLOUM6ZZSTRV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -73,164 +76,132 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
- This patch enables asynchronous flush for virtio pmem
- using work queue. Also, it coalesce the flush requests
- when a flush is already in process.
+On Sun, Apr 19, 2020 at 10:08 PM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> Do we have examples of doing exception handling from C? I thought all
+> the exception handling copy routines were assembly routines?
 
-Signed-off-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
----
- drivers/nvdimm/nd_virtio.c   | 62 ++++++++++++++++++++++++++----------
- drivers/nvdimm/virtio_pmem.c |  9 ++++++
- drivers/nvdimm/virtio_pmem.h | 14 ++++++++
- 3 files changed, 68 insertions(+), 17 deletions(-)
+You need assembler for the actual access, but that's a _single_
+instruction - best done as inline asm.
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index 10351d5b49fa..ef53d0a0d134 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -97,29 +97,57 @@ static int virtio_pmem_flush(struct nd_region *nd_region)
- 	return err;
- };
- 
-+static void submit_async_flush(struct work_struct *ws);
-+
- /* The asynchronous flush callback function */
- int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
- {
--	/*
--	 * Create child bio for asynchronous flush and chain with
--	 * parent bio. Otherwise directly call nd_region flush.
--	 */
--	if (bio && bio->bi_iter.bi_sector != -1) {
--		struct bio *child = bio_alloc(GFP_ATOMIC, 0);
--
--		if (!child)
--			return -ENOMEM;
--		bio_copy_dev(child, bio);
--		child->bi_opf = REQ_PREFLUSH;
--		child->bi_iter.bi_sector = -1;
--		bio_chain(child, bio);
--		submit_bio(child);
--		return 0;
-+	struct virtio_device *vdev = nd_region->provider_data;
-+	struct virtio_pmem *vpmem  = vdev->priv;
-+	ktime_t start = ktime_get_boottime();
-+
-+	spin_lock_irq(&vpmem->lock);
-+	wait_event_lock_irq(vpmem->sb_wait,
-+			    !vpmem->flush_bio ||
-+			    ktime_after(vpmem->last_flush, start),
-+			    vpmem->lock);
-+
-+	if (!ktime_after(vpmem->last_flush, start)) {
-+		WARN_ON(vpmem->flush_bio);
-+		vpmem->flush_bio = bio;
-+		bio = NULL;
- 	}
--	if (virtio_pmem_flush(nd_region))
--		return -EIO;
-+	spin_unlock_irq(&vpmem->lock);
- 
-+	if (!bio) {
-+		INIT_WORK(&vpmem->flush_work, submit_async_flush);
-+		queue_work(vpmem->pmem_wq, &vpmem->flush_work);
-+		return 1;
-+	}
-+
-+	bio->bi_opf &= ~REQ_PREFLUSH;
- 	return 0;
- };
- EXPORT_SYMBOL_GPL(async_pmem_flush);
-+
-+static void submit_async_flush(struct work_struct *ws)
-+{
-+	struct virtio_pmem *vpmem = container_of(ws, struct virtio_pmem, flush_work);
-+	struct bio *bio = vpmem->flush_bio;
-+
-+	vpmem->start_flush = ktime_get_boottime();
-+	bio->bi_status = errno_to_blk_status(virtio_pmem_flush(vpmem->nd_region));
-+	vpmem->last_flush = vpmem->start_flush;
-+	vpmem->flush_bio = NULL;
-+	wake_up(&vpmem->sb_wait);
-+
-+	/* Submit parent bio only for PREFLUSH */
-+	if (bio && (bio->bi_opf & REQ_PREFLUSH)) {
-+		bio->bi_opf &= ~REQ_PREFLUSH;
-+		submit_bio(bio);
-+	} else if (bio && (bio->bi_opf & REQ_FUA)) {
-+		bio->bi_opf &= ~REQ_FUA;
-+		bio_endio(bio);
-+	}
-+}
- MODULE_LICENSE("GPL");
-diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-index 5e3d07b47e0c..4ab135d820fd 100644
---- a/drivers/nvdimm/virtio_pmem.c
-+++ b/drivers/nvdimm/virtio_pmem.c
-@@ -24,6 +24,7 @@ static int init_vq(struct virtio_pmem *vpmem)
- 		return PTR_ERR(vpmem->req_vq);
- 
- 	spin_lock_init(&vpmem->pmem_lock);
-+	spin_lock_init(&vpmem->lock);
- 	INIT_LIST_HEAD(&vpmem->req_list);
- 
- 	return 0;
-@@ -58,6 +59,12 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
- 		goto out_err;
- 	}
- 
-+	vpmem->pmem_wq = alloc_workqueue("vpmem_wq", WQ_MEM_RECLAIM, 0);
-+	if (!vpmem->pmem_wq) {
-+		err = -ENOMEM;
-+		goto out_err;
-+	}
-+	init_waitqueue_head(&vpmem->sb_wait);
- 	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
- 			start, &vpmem->start);
- 	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-@@ -90,10 +97,12 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
- 		goto out_nd;
- 	}
- 	nd_region->provider_data = dev_to_virtio(nd_region->dev.parent->parent);
-+	vpmem->nd_region = nd_region;
- 	return 0;
- out_nd:
- 	nvdimm_bus_unregister(vpmem->nvdimm_bus);
- out_vq:
-+	destroy_workqueue(vpmem->pmem_wq);
- 	vdev->config->del_vqs(vdev);
- out_err:
- 	return err;
-diff --git a/drivers/nvdimm/virtio_pmem.h b/drivers/nvdimm/virtio_pmem.h
-index 0dddefe594c4..9d3615a324bf 100644
---- a/drivers/nvdimm/virtio_pmem.h
-+++ b/drivers/nvdimm/virtio_pmem.h
-@@ -35,9 +35,23 @@ struct virtio_pmem {
- 	/* Virtio pmem request queue */
- 	struct virtqueue *req_vq;
- 
-+	struct bio *flush_bio;
-+	/* last_flush is when the last completed flush was started */
-+	ktime_t last_flush, start_flush;
-+
-+	/* work queue for deferred flush */
-+	struct work_struct flush_work;
-+	struct workqueue_struct *pmem_wq;
-+
-+	/* Synchronize flush wait queue data */
-+	spinlock_t lock;
-+	/* for waiting for previous flush to complete */
-+	wait_queue_head_t sb_wait;
-+
- 	/* nvdimm bus registers virtio pmem device */
- 	struct nvdimm_bus *nvdimm_bus;
- 	struct nvdimm_bus_descriptor nd_desc;
-+	struct nd_region *nd_region;
- 
- 	/* List to store deferred work if virtqueue is full */
- 	struct list_head req_list;
--- 
-2.20.1
+The best example of something that does *exactly* what you want to do is likely
+
+        unsafe_get_user();
+        unsafe_put_user();
+
+which basically turns into a single instruction with exception
+handling, with the exception hander jumping directly to an error
+label.
+
+Ok, so right now gcc can't do that for inline asm with outputs, so it
+generates fairly nasty code (a secondary register with the error state
+that then causes a conditional branch on it), but that's a compiler
+limitation that will eventually go away (where "eventially" means that
+it already works in LLVM with experimental patches).
+
+You could literally mis-use those helpers as-is (please don't - the
+code generation is correct, but at the very least we'd have to
+re-organize a bit to make it a better interface, ie have an
+alternative name like "unsafe_get_kernel()" for kernel pointer
+accesses).
+
+You'd have to do the alignment guarantees yourself, but there are
+examples of that in this area too (strnlen_user() does exactly that -
+aligned word accesses).
+
+So the point here is that the current interfaces are garbage, _if_ the
+whole "access a single value" is actually performance-critical.
+
+And if that is *not* the case, then the best thing to do is likely to
+just use a static call. No inlining of single instructions at all,
+just always use a function call, and then pick the function
+appropriately.
+
+Honestly, I can't imagine that the "single access" case is so
+timing-critical that the static call isn't the right model. Your use
+case is _not_ as important or common as doing user accesses.
+
+Finally, the big question is whether the completely broken hardware
+even matters. Are there actual customers that actually use the garbage
+"we can crash the machine" stuff?
+
+Because when it comes to things like nvdimms etc, the _primary_
+performance target would be getting the kernel entirely out of the
+way, and allowing databases etc to just access the damn thing
+directly.
+
+And if you allow user space to access it directly, then you just have
+to admit that it's not a software issue any more - it's the hardware
+that is terminally broken and unusable garbage. It's not even
+interesting to work around things in the kernel, because user space
+can just crash the machine directly.
+
+This is why I absolutely detest that thing so much. The hardware is
+_so_ fundamentally broken that I have always considered the kernel
+workarounds to basically be "staging" level stuff - good enough for
+some random testing of known-broken stuff, but not something that
+anybody sane should ever use.
+
+So my preference would actually be to just call the broken cases to be
+largely ignored, at least from a performance angle. If you can only
+access it through the kernel, the biggest performance limitation is
+that you cannot do any DAX-like thing at all safely, so then the
+performance of some kernel accessors is completely secondary and
+meaningless. When a kernel entry/exit takes a few thousand cycles on
+the broken hardware (due to _other_ bugs), what's the point about
+worrying about trying to inline some single access to the nvdimm?
+
+Did the broken hardware ever spread out into the general public?
+Because if not, then the proper thing to do might be to just make it a
+compile-time option for the (few) customers that signed up for testing
+the initial broken stuff, and make the way _forward_ be a clean model
+without the need to worry about any exceptions at all.
+
+> The writes can mmu-fault now that memcpy_mcsafe() is also used by
+> _copy_to_iter_mcsafe(). This allows a clean bypass of the block layer
+> in fs/dax.c in addition to the pmem driver access of poisoned memory.
+> Now that the fallback is a sane rep; movs; it can be considered for
+> plain copy_to_iter() for other user copies so you get exception
+> handling on kernel access of poison outside of persistent memory. To
+> Andy's point I think a recoverable copy (for exceptions or faults) is
+> generally useful.
+
+I think that's completely independent.
+
+If we have good reasons for having targets with exception handling,
+then that has absolutely nothing to do with machine checks or buggy
+hardware.
+
+And it sure shouldn't be called "mcsafe", since it has nothing to do
+with that situation any more.
+
+> I understand the gripes about the mcsafe_slow() implementation, but
+> how do I implement mcsafe_fast() any better than how it is currently
+> organized given that, setting aside machine check handling,
+> memcpy_mcsafe() is the core of a copy_to_iter*() front-end that can
+> mmu-fault on either source or destination access?
+
+So honestly, once it is NOT about the broken machine check garbage,
+then it should be sold on its own independent reasons.
+
+Do we want to have a "copy_to_iter_safe" that can handle page faults?
+Because we have lots of those kinds of things, we have
+
+ - load_unaligned_zeropad()
+
+   This loads a single word knowing that the _first_ byte is valid,
+but can take an exception and zero-pad if it crosses a page boundary
+
+ - probe_kernel_read()/write()
+
+   This is a kernel memcpy() with the source/destination perhaps being unmapped.
+
+ - various perf and tracing helpers that have special semantics.
+
+but once it's about some generic interface, then it also needs to take
+other architectures into account.
+
+               Linus
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
