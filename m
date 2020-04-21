@@ -1,81 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F6A1B182D
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Apr 2020 23:16:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C6481B1A96
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 Apr 2020 02:15:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A1DAC100A028B;
-	Mon, 20 Apr 2020 14:16:41 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::242; helo=mail-lj1-x242.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 800CC100A028B;
+	Mon, 20 Apr 2020 17:15:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6E11C10106333
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 14:16:39 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id j3so11630947ljg.8
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 14:16:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2jN6r5vrIi0padwgEOntdkWRPVKTeqU1oUMQLiCc9u8=;
-        b=RVMGvgq4dRxVUT5c5yRM7AhK9ONOictyu7KmC/oVUe3820d9C3IZ+Cl66v1+icCDF2
-         QgktcgmK+enRUmEsD4pcjlFOgbs2CCGzmQZ3a/E9nbtEQg0f5RbB2c6ns7l8HoIvYshY
-         AzHkoLW3JYQL1BBA+DEehjxgRjaVjJWqfueOc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2jN6r5vrIi0padwgEOntdkWRPVKTeqU1oUMQLiCc9u8=;
-        b=PI7YsaKKks/aGGoch89EdFSDOq1Oswv5Zcm6APi645muaBRv0aJwrrRp65P00rm8Me
-         +mhRCSOH4YNz9FMguIYZjqsxwFV76ZKE7r/5VyiM+TwMJRFlR21HbXUubj62fDMiebz8
-         FuEf/Yog2pbpU9NVLyKY0KKBEK0YbjR34twKD/kOje9toa2JTwn1ANt+uQrJb5vC431M
-         YNHbK4Wp1uGoP9QYHNFTHwbt/aJcUuJUkdeiIeZb3fpvL4CO4OT6mMBiiD0XsCbyfDmD
-         sEFy+PTfiTsA45zxnVs/S8gt/QsNv4hcgSprJ7MxmiTkInHTbAJKkqDlcJ7D+Y81aC1P
-         ksIA==
-X-Gm-Message-State: AGi0PuYVulPxYpWncwj+p5LkJSVeoxKZnJve6oEV5XoTbmZJZmeRPNbA
-	6o75Peu9Prms3tR0+3f2Og808AHn9qU=
-X-Google-Smtp-Source: APiQypIQbASo85r/r99wM4IBjVJdEqBawyb/DgYoCzqC3v127R5PFebSxDFyFK1fPtpzjQf22O6Ovg==
-X-Received: by 2002:a2e:5847:: with SMTP id x7mr3350600ljd.61.1587417402963;
-        Mon, 20 Apr 2020 14:16:42 -0700 (PDT)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
-        by smtp.gmail.com with ESMTPSA id a28sm430776lfr.4.2020.04.20.14.16.41
-        for <linux-nvdimm@lists.01.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2020 14:16:41 -0700 (PDT)
-Received: by mail-lj1-f169.google.com with SMTP id g4so3551215ljl.2
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 14:16:41 -0700 (PDT)
-X-Received: by 2002:a2e:7c1a:: with SMTP id x26mr10530724ljc.209.1587417401085;
- Mon, 20 Apr 2020 14:16:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 53DAB100A027E
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Apr 2020 17:14:54 -0700 (PDT)
+IronPort-SDR: TaNB3GICD7Le/x5MJr5qSoXEJmoKwOL2ULIkhCYIX1UKIfoBXlaggC4oQKxTWimrXqMMjcQans
+ 3sQ2aRwAyWkA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Apr 2020 17:14:45 -0700
+IronPort-SDR: B9UgK6aTUs5TQMh3rTlex+wdoRwmpjxEazW9iBWkeBAuGTQ+aOfqPpJ4ifs2yBDjKu4q9o9Rmc
+ cD+OfwOtpKzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,408,1580803200";
+   d="scan'208";a="243999155"
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by orsmga007.jf.intel.com with ESMTP; 20 Apr 2020 17:14:44 -0700
+Received: from orsmsx116.amr.corp.intel.com (10.22.240.14) by
+ ORSMSX110.amr.corp.intel.com (10.22.240.8) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 20 Apr 2020 17:14:44 -0700
+Received: from orsmsx121.amr.corp.intel.com ([169.254.10.248]) by
+ ORSMSX116.amr.corp.intel.com ([169.254.7.87]) with mapi id 14.03.0439.000;
+ Mon, 20 Apr 2020 17:14:44 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "mhocko@kernel.org" <mhocko@kernel.org>
+Subject: Re: [PATCH v5] mm/memory_hotplug: refrain from adding memory into
+ an impossible node
+Thread-Topic: [PATCH v5] mm/memory_hotplug: refrain from adding memory into
+ an impossible node
+Thread-Index: AQHWFEIECEG69Pt18UScZqzwUBMWk6h9UlaAgAXeMwA=
+Date: Tue, 21 Apr 2020 00:14:43 +0000
+Message-ID: <5c0459c661560e22f77a73878b59d250f30750f7.camel@intel.com>
+References: <20200416225438.15208-1-vishal.l.verma@intel.com>
+	 <20200417063807.GE26707@dhcp22.suse.cz>
+In-Reply-To: <20200417063807.GE26707@dhcp22.suse.cz>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+x-originating-ip: [10.18.116.7]
+Content-ID: <86E1CC51F340F84A8D8DD20059DE2CFF@intel.com>
 MIME-Version: 1.0
-References: <67FF611B-D10E-4BAF-92EE-684C83C9107E@amacapital.net>
- <CAHk-=wjePyyiNZo0oufYSn0s46qMYHoFyyNKhLOm5MXnKtfLcg@mail.gmail.com>
- <CAPcyv4jQ3s_ZVRvw6jAmm3vcebc-Ucf7FHYP3_nTybwdfQeG8Q@mail.gmail.com>
- <CAHk-=wjSqtXAqfUJxFtWNwmguFASTgB0dz1dT3V-78Quiezqbg@mail.gmail.com>
- <CAPcyv4hrfZsg48Gw_s7xTLLhjLTk_U+PV0MsLnG+xh3652xFCQ@mail.gmail.com>
- <CAHk-=wgcc=5kiph7o+aBZoWBCbu=9nQDQtD41DvuRRrqixohUA@mail.gmail.com>
- <CAPcyv4iTaBNPMwqUwas+J4rxd867QL7JnQBYB8NKnYaTA-R_Tw@mail.gmail.com>
- <CAHk-=wgOUOveRe8=iFWw0S1LSDEjSfQ-4bM64eiXdGj4n7Omng@mail.gmail.com>
- <CAPcyv4hKcAvQEo+peg3MRT3j+u8UdOHVNUWCZhi0aHaiLbe8gw@mail.gmail.com>
- <CAHk-=wj0yVRjD9KgsnOD39k7FzPqhG794reYT4J7HsL0P89oQg@mail.gmail.com> <3908561D78D1C84285E8C5FCA982C28F7F5FB29E@ORSMSX115.amr.corp.intel.com>
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F5FB29E@ORSMSX115.amr.corp.intel.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Mon, 20 Apr 2020 14:16:24 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjcwJd6+HVQNYdssNONWUx1=orzRKkVyr7+t2x9Ydcwsw@mail.gmail.com>
-Message-ID: <CAHk-=wjcwJd6+HVQNYdssNONWUx1=orzRKkVyr7+t2x9Ydcwsw@mail.gmail.com>
-Subject: Re: [PATCH] x86/memcpy: Introduce memcpy_mcsafe_fast
-To: "Luck, Tony" <tony.luck@intel.com>
-Message-ID-Hash: VCD4JVAGZ2RWQSSUINQZSDVXKF4B7I7Z
-X-Message-ID-Hash: VCD4JVAGZ2RWQSSUINQZSDVXKF4B7I7Z
-X-MailFrom: torvalds@linuxfoundation.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andy Lutomirski <luto@amacapital.net>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Tsaur, Erwin" <erwin.tsaur@intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Message-ID-Hash: MBRNXDMDY7DF3J6L6ZHXUG23UDLU5ZVA
+X-Message-ID-Hash: MBRNXDMDY7DF3J6L6ZHXUG23UDLU5ZVA
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "david@redhat.com" <david@redhat.com>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "akpm@linux-foundation.org" <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VCD4JVAGZ2RWQSSUINQZSDVXKF4B7I7Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MBRNXDMDY7DF3J6L6ZHXUG23UDLU5ZVA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,71 +69,106 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 20, 2020 at 1:57 PM Luck, Tony <tony.luck@intel.com> wrote:
->
-> >  (a) is a trap, not an exception - so the instruction has been done,
-> > and you don't need to try to emulate it or anything to continue.
->
-> Maybe for errors on the data side of the pipeline. On the instruction
-> side we can usually recover from user space instruction fetches by
-> just throwing away the page with the corrupted instructions and reading
-> from disk into a new page. Then just point the page table to the new
-> page, and hey presto, its all transparently fixed (modulo time lost fixing
-> things).
+On Fri, 2020-04-17 at 08:38 +0200, Michal Hocko wrote:
+> On Thu 16-04-20 16:54:38, Vishal Verma wrote:
+> > A misbehaving qemu created a situation where the ACPI SRAT table
+> > advertised one fewer proximity domains than intended. The NFIT table did
+> > describe all the expected proximity domains. This caused the device dax
+> > driver to assign an impossible target_node to the device, and when
+> > hotplugged as system memory, this would fail with the following
+> > signature:
+> > 
+> >   [  +0.001627] BUG: kernel NULL pointer dereference, address: 0000000000000088
+> >   [  +0.001331] #PF: supervisor read access in kernel mode
+> >   [  +0.000975] #PF: error_code(0x0000) - not-present page
+> >   [  +0.000976] PGD 80000001767d4067 P4D 80000001767d4067 PUD 10e0c4067 PMD 0
+> >   [  +0.001338] Oops: 0000 [#1] SMP PTI
+> >   [  +0.000676] CPU: 4 PID: 22737 Comm: kswapd3 Tainted: G           O      5.6.0-rc5 #9
+> >   [  +0.001457] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+> >       BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+> >   [  +0.001990] RIP: 0010:prepare_kswapd_sleep+0x7c/0xc0
+> >   [  +0.000780] Code: 89 df e8 87 fd ff ff 89 c2 31 c0 84 d2 74 e6 0f 1f 44
+> >                       00 00 48 8b 05 fb af 7a 01 48 63 93 88 1d 01 00 48 8b
+> > 		      84 d0 20 0f 00 00 <48> 3b 98 88 00 00 00 75 28 f0 80 a0
+> > 		      80 00 00 00 fe f0 80 a3 38 20
+> >   [  +0.002877] RSP: 0018:ffffc900017a3e78 EFLAGS: 00010202
+> >   [  +0.000805] RAX: 0000000000000000 RBX: ffff8881209e0000 RCX: 0000000000000000
+> >   [  +0.001115] RDX: 0000000000000003 RSI: 0000000000000000 RDI: ffff8881209e0e80
+> >   [  +0.001098] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000008000
+> >   [  +0.001092] R10: 0000000000000000 R11: 0000000000000003 R12: 0000000000000003
+> >   [  +0.001092] R13: 0000000000000003 R14: 0000000000000000 R15: ffffc900017a3ec8
+> >   [  +0.001091] FS:  0000000000000000(0000) GS:ffff888318c00000(0000) knlGS:0000000000000000
+> >   [  +0.001275] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> >   [  +0.000882] CR2: 0000000000000088 CR3: 0000000120b50002 CR4: 00000000001606e0
+> >   [  +0.001095] Call Trace:
+> >   [  +0.000388]  kswapd+0x103/0x520
+> >   [  +0.000494]  ? finish_wait+0x80/0x80
+> >   [  +0.000547]  ? balance_pgdat+0x5a0/0x5a0
+> >   [  +0.000607]  kthread+0x120/0x140
+> >   [  +0.000508]  ? kthread_create_on_node+0x60/0x60
+> >   [  +0.000706]  ret_from_fork+0x3a/0x50
+> > 
+> > Add a check in the add_memory path to fail if the node to which we
+> > are adding memory is in the node_possible_map
+> > 
+> > Cc: Michal Hocko <mhocko@kernel.org>
+> > Cc: David Hildenbrand <david@redhat.com>
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> > Acked-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+> 
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> 
+> We can start thiking on how to handle such a misconfiguration more
+> gracefully when we see this hitting in real world and find out more why
+> that happens. E.g. if a FW/BIOS are not fixable then we can implement
+> some fallback strategy but this should be a good start.
+> 
+> Thanks!
 
-That's true for things like ECC on real RAM, with traditional executables.
+Thank you for the review Michal.
 
-It's not so true of something like nvram that you execute out of
-directly. There is not necessarily a disk to re-read things from.
+Should this go via Andrew and the mm tree?
 
-But it's also not true of things like JIT's. They are kind of a big
-thing. Asking the JIT to do "hey, I faulted at a random point, you
-need to re-JIT" is no different from all the other "that's a _really_
-painful recovery point, please delay it".
-
-Sure, the JIT environment will probably just have to kill that thread
-anyway, but I do think this falls under the same "you're better off
-giving the _option_ to just continue and hope for the best" than force
-a non-recoverable state.
-
-For regular ECC, I literally would like the machine to just always
-continue. I'd like to be informed that there's something bad going on
-(because it might be RAM going bad, but it might also be a rowhammer
-attack), but the decision to kill things or not should ultimately be
-the *users*, not the JIT's, not the kernel.
-
-So the basic rule should be that you should always have the _option_
-to just continue. The corrupted state might not be critical - or it
-might be the ECC bits themselves, not the data.
-
-There are situations where stopping everything is worse than "let's
-continue as best we can, and inform the user with a big red blinking
-light".
-
-ECC should not make things less reliable, even if it's another 10+% of
-bits that can go wrong.
-
-It should also be noted that even a good ECC pattern _can_ miss
-corruption if you're unlucky with the corruption. So the whole
-black-and-white model of "ECC means you need to stop everything" is
-questionable to begin with, because the signal isn't that absolute in
-the first place.
-
-So when somebody brings up a "what if I use corrupted data and make
-things worse", they are making an intellectually dishonest argument.
-What if you saw corrupted data and simply never caught it, because it
-was a unlucky multi-bit failure"?
-
-There is no "absolute" thing about ECC. The only thing that is _never_
-wrong is to report it and try to continue, and let some higher-level
-entity decide what to do.
-
-And that final decision might literally be "I ran this simulation for
-2 days, I see that there's an error report, I will buy a new machine.
-For now I'll use the data it generated, but I'll re-run to validate it
-later".
-
-                 Linus
+> 
+> > ---
+> >  mm/memory_hotplug.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> > 
+> > v2:
+> > - Centralize the check in the add_memory path (David)
+> > - Instead of failing, add the memory to a nearby node, while warning
+> >   (and tainting) to call out attention to the firmware bug (Dan)
+> > 
+> > v3:
+> > - Fix the CONFIG_NUMA=n case, and use node 0 as the final fallback (Dan)
+> > 
+> > v4:
+> > - Error out instead of being smart about picking a node that wasn't
+> >   asked for (Michal)
+> > 
+> > v5:
+> > - Change the return code to -EINVAL (David)
+> > 
+> > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> > index 0a54ffac8c68..e07b80d149db 100644
+> > --- a/mm/memory_hotplug.c
+> > +++ b/mm/memory_hotplug.c
+> > @@ -1005,6 +1005,11 @@ int __ref add_memory_resource(int nid, struct resource *res)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > +	if (!node_possible(nid)) {
+> > +		WARN(1, "node %d was absent from the node_possible_map\n", nid);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> >  	mem_hotplug_begin();
+> >  
+> >  	/*
+> > -- 
+> > 2.21.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
