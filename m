@@ -1,100 +1,346 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1E61B635D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 Apr 2020 20:26:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7611B6BD8
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 24 Apr 2020 05:20:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 542A510FC3897;
-	Thu, 23 Apr 2020 11:26:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d43; helo=mail-io1-xd43.google.com; envelope-from=info.zennitbankplcnigerian@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+	by ml01.01.org (Postfix) with ESMTP id 9047E10FC389F;
+	Thu, 23 Apr 2020 20:20:01 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1043; helo=mail-pj1-x1043.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5DB5210FC379F
-	for <linux-nvdimm@lists.01.org>; Thu, 23 Apr 2020 11:26:27 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id u11so7546101iow.4
-        for <linux-nvdimm@lists.01.org>; Thu, 23 Apr 2020 11:26:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 50DD710FC3897
+	for <linux-nvdimm@lists.01.org>; Thu, 23 Apr 2020 20:19:59 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id a31so1528211pje.1
+        for <linux-nvdimm@lists.01.org>; Thu, 23 Apr 2020 20:20:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
-        b=g40sBMuaO0eKdotmx6qgQBl63DKBmrekz5bvyEQHA4wVZtcqrxc+aFVgh/QD84O9VQ
-         7GeGJGwCstc5CQBYUut5JFB/SR9hiHRBoNucBdQ5+M/xcZE7LYnQNVriX94nlJDQQ53M
-         WWNnGuPMmJMtuCxOc6M3BOG48McWyi9pwkfv1qCbwmDhh95byI3UmcGK9ZJ59xQm/kqA
-         giNgZwxUHu+XTIAoqn/uu1orK63Ur+6hMBQW2TB101zb0oJ5HpVThkCq6id/TjpQtg27
-         HPMb1DcYsj7bM6wQaeV1UkPK6mgUhECRFNV10F5zDhvx1RXP4ikb8uuEIGMKOSNWVb51
-         vLew==
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=cCvu9PWKxKrms8aW1C54HePFnidQrgsf5hMRoohpycU=;
+        b=li+fXRYWOINaITP4+1mz3aj2XAM6LhcHq8BdhUD8F4+MVLAUFVU2dFybQhLPjjmSzX
+         16BWR0kDknJMr7wkvykNQSBPtq5q8cxYUA106pYT+jidcQBnEP1bTtOaX/CesTa7SSgI
+         Bc1ec1ab9UxBVTaLNIwcCfzYkIaYTNiy9jwBeOQXaT+G3qslxiHKtMfjNSY5B22qDJw3
+         tvdoZ7YQ4tB798gsqOlr09e+oPCBH6XvhxX3HkQrRsykduayT0KItVZrZp5IE3wJZ4ZK
+         +xI1rclcPQo+RiIXOR4oUEmWJI1sA+Bi9PO6Zp/9voprMdFbrcggC+s2ca02CiUFmLHZ
+         X92Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
-        b=Gc4Gg8IXETuj12LMW94yHStJfrItAvMtrtU59TQKexDlPK7dwJqnDOulqGyOxMXrkZ
-         Ptd+Q/exKGb5nrf1pvoEQg9Q7r7eEkk+Bzv56ovUp14Sngr0hAasz/zqWT2ndyQgJoLN
-         MLFWIJT4JKU3OgLpNsUO5OSxPktxsBci1DyO30cpbk6Usz16f57Y/rrIFq5dCp+uEnC9
-         0HvA7TDLhIRb6ZrZKWdmjFN/Ww8MCQF/i6Z/pCIIwPV7vsW8rOknznEkqYBCvOS4jTIy
-         SsjlnBahwdSMCj5G+eqyIIO5gwfpjB9cIFJ1ABCd9ADtiHQjRsNQv1TYwt8Bw7C7ZSEC
-         4MsQ==
-X-Gm-Message-State: AGi0PuZ6iuiJRxXOgjthFwA3NaAlieoTuBfHsp8RivqkeLYnM421XcH+
-	FZiFC/0VdsOknnj0ZAIlERj2iV2nGB2uuiS6Wg==
-X-Google-Smtp-Source: APiQypKZ88CB7WlyCjo0k9+cU4PX0VcggKkKtzSKgRJHkcPGizF0yZXAjzEMBgo6XH4xzBXv0KAOMjPM9p1sgpp6/70=
-X-Received: by 2002:a5e:9416:: with SMTP id q22mr2547966ioj.93.1587666410194;
- Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=cCvu9PWKxKrms8aW1C54HePFnidQrgsf5hMRoohpycU=;
+        b=SeLDk/RrEzyrOvGn09a+6OXsfM/aL7yleM5s2nk9C6EWUkZvuN8AR9emc9ta/zuj51
+         ZKqCsWJRk2oWIpADTLeXRcgHvTIdZ3aVwjJHSnGR3JsDHxpnqBcVUyU6kIavMYVJHDtt
+         KhD/IY5XHXN6kOatkqC5nr0d/lTaKnS9zC8pX8bHPJmWKySF+NrqVHRRUTb7E0SxMOBn
+         Y+0+gf2a7mtRDqw6IuXTU1a/3ToIZYBC2CzNPWZ8faHj0BxlAOSFcHvW3O3SSYJRUiO2
+         IlkDvkA+R8WoR4QBqU3IH6PQA3f0TWLdkLjO6f3nZ1G9pIIv0qyvqvSx0xaeD0oz9DAF
+         iQHA==
+X-Gm-Message-State: AGi0Pub5vAoookfkGOtbm7q19Utqd969mrmWu04PcTSUP2Tx67wiAh6m
+	qBWzdD4gXeMwQqXepGS15X63uQ==
+X-Google-Smtp-Source: APiQypJ8gEMiOs2GxPrTKpKD8h4PWxGoDmIrpxxmK370tlUiAgk1VDwG+Yt033CooFucyMY7Pt8/mQ==
+X-Received: by 2002:a17:902:7593:: with SMTP id j19mr7170913pll.62.1587698426242;
+        Thu, 23 Apr 2020 20:20:26 -0700 (PDT)
+Received: from localhost ([106.198.47.139])
+        by smtp.gmail.com with ESMTPSA id r4sm3455553pgi.6.2020.04.23.20.20.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2020 20:20:25 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linux-nvdimm@lists.01.org
+Subject: Re: [ndctl PATCH v2 1/6] libndctl: Refactor out add_dimm() to handle NFIT specific init
+In-Reply-To: <20200420075556.272174-2-vaibhav@linux.ibm.com>
+References: <20200420075556.272174-1-vaibhav@linux.ibm.com> <20200420075556.272174-2-vaibhav@linux.ibm.com>
+Date: Fri, 24 Apr 2020 08:48:11 +0530
+Message-ID: <87zhb1po5o.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-Received: by 2002:a02:c845:0:0:0:0:0 with HTTP; Thu, 23 Apr 2020 11:26:49
- -0700 (PDT)
-From: "Mrs. Angella Michelle" <info.zennitbankplcnigerian@gmail.com>
-Date: Thu, 23 Apr 2020 20:26:49 +0200
-Message-ID: <CABHzvr=N78snvtMHePMOa+RLFdcZEjXLPkuhkojt4VoZGNzBsQ@mail.gmail.com>
-Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
- amount of $12.800.000,00 Million USD,approved this morning by IMF.
-To: undisclosed-recipients:;
-Message-ID-Hash: ZJR6JO375UIRDUIYCKTUPDWVJZIKS67W
-X-Message-ID-Hash: ZJR6JO375UIRDUIYCKTUPDWVJZIKS67W
-X-MailFrom: info.zennitbankplcnigerian@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: 6M7HAQ5EQX6DUTYMFJW3LK4V4T6UA4FB
+X-Message-ID-Hash: 6M7HAQ5EQX6DUTYMFJW3LK4V4T6UA4FB
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: boa.benin107@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZJR6JO375UIRDUIYCKTUPDWVJZIKS67W/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6M7HAQ5EQX6DUTYMFJW3LK4V4T6UA4FB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-QXR0biBEZWFyLg0KQ29udGFjdCBCYW5rIG9mIEFmcmljYS1CZW5pbiB0byByZWNlaXZlIHlvdXIg
-cGF5bWVudCBmdW5kcyB0cmFuc2ZlciBhbW91bnQgb2YNCiQxMi44MDAuMDAwLDAwIE1pbGxpb24g
-VVNELGFwcHJvdmVkIHRoaXMgbW9ybmluZyBieSBJTUYuDQpIYXBweSB0byBpbmZvcm0geW91LCB3
-ZSBoYXZlIGZpbmFsbHkgZGVwb3NpdGVkIHlvdXIgcGF5bWVudCBmdW5kcw0KJDEyLjggbWlsbGlv
-biB1cyBkb2xsYXJzIHdpdGggdGhlIFBheWluZyBCYW5rIG9mIEFmcmljYS1CZW5pbg0KdG8gdHJh
-bnNmZXIgdGhlIHBheW1lbnQgYW1vdW50IG9mICQxMi44MDAsMDAwLDAwIE1pbGxpb24gVXMgRG9s
-bGFycyB0byB5b3UNCkNvbnRhY3QgdGhlIGJhbmsgaW1tZWRpYXRlbHkgeW91IHJlY2VpdmUgdGhp
-cyBlbWFpbCBub3cuDQpEaXJlY3RvciBCYW5rIG9mIEFmcmljYS1CZW5pbjogRHIuIEZlc3R1cyBP
-YmlhcmENCkVtYWlsIGlkOiAgYm9hLmJlbmluMTA3QHlhaG9vLmNvbQ0KVGVsL21vYmlsZSwgKDIy
-OSkgNjI4MTkzNzgNCkJPQS1CRU5JTiB8IEdST1VQRSBCQU5LIE9GIEFGUklDQSwgYm9hLWJlbmlu
-DQpBdmVudWUgSmVhbi1QYXVsIElJIC0gMDggQlAgMDg3OSAtIENvdG9ub3UgLSBCw6luaW4NClBo
-b25lOigyMjkpIDYyODE5Mzc4Lg0KMjAyMCBHUk9VUEUgQkFOSyBPRiBBRlJJQ0ENCkJlIGFkdmlz
-ZWQgdG8gcmUtY29uZmlybSB5b3VyIGJhbmsgZGV0YWlscyB0byB0aGlzIGJhbmsgYXMgbGlzdGVk
-Lg0KWW91ciBhY2NvdW50IEhvbGRlcidzIG5hbWUtLS0tLS0tLS0tLS0tLS0tDQpCYW5rIE5hbWUt
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-DQpCYW5rIGFkZHJlc3MtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tDQpBY2NvdW50IE51bWJlcnMtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0NClJvdW50aW5nLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0NCllvdXIgZGlyZWN0IFBob25lIE51bWJlcnMtLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQpOb3RlLEkgaGF2ZSBwYWlkIHRo
-ZSBkZXBvc2l0IGFuZCBpbnN1cmFuY2UgZmVlcyBmb3IgeW91DQpCdXQgdGhlIG9ubHkgbW9uZXkg
-eW91IGFyZSB0byBzZW5kIHRvIHRoaXMgYmFuayBpcyAkMTUwLjAwIHVzIGRvbGxhcnMNCkJlZW4g
-Zm9yIHRoZSB3aXJlIHRyYW5zZmVyIGZlZXMgb2YgeW91ciBmdW5kcw0KQ29udGFjdCBIaW0gbm93
-IHRvIHJlY2VpdmUgeW91ciB0cmFuc2ZlciBkZXBvc2l0ZWQgdGhpcyBtb3JuaW5nDQpJIHdhaXQg
-Zm9yIHlvdXIgcmVwbHkgdXBvbiBjb25maXJtYXRpb24NCk1ycy4gQW5nZWxsYSBNaWNoZWxsZQ0K
-RWRpdG9yLCBaZW5pdGggQmFuay0gQ29tcGFuaWVzIEJlbmluDQptcnNhOTM4OUBnbWFpbC5jb20K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZk
-aW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2Ny
-aWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+
+> Presently add_dimm() only probes dimms that support NFIT/ACPI. Hence
+> this patch refactors this functionality into two functions namely
+> add_dimm() and add_nfit_dimm(). Function add_dimm() performs
+> allocation and common 'struct ndctl_dimm' initialization and depending
+> on whether the dimm-bus supports NIFT, calls add_nfit_dimm(). Once
+> the probe is completed based on the value of 'ndctl_dimm.cmd_family'
+> appropriate dimm-ops are assigned to the dimm.
+>
+> In case dimm-bus is of unknown type or doesn't support NFIT the
+> initialization still continues, with no dimm-ops assigned to the
+> 'struct ndctl_dimm' there-by limiting the functionality available.
+>
+> This patch shouldn't introduce any behavioral change.
+>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Changelog:
+>
+> v1..v2:
+> * None
+
+
+Looks good to me. For the series,
+
+Reviewed-by: Santosh S <santosh@fossix.org>
+
+
+Thanks,
+Santosh
+
+> ---
+>  ndctl/lib/libndctl.c | 193 +++++++++++++++++++++++++------------------
+>  1 file changed, 112 insertions(+), 81 deletions(-)
+>
+> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+> index ee737cbbfe3e..d76dbf7e17de 100644
+> --- a/ndctl/lib/libndctl.c
+> +++ b/ndctl/lib/libndctl.c
+> @@ -1441,82 +1441,15 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
+>  static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
+>  static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
+>  
+> -static void *add_dimm(void *parent, int id, const char *dimm_base)
+> +static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+>  {
+> -	int formats, i;
+> -	struct ndctl_dimm *dimm;
+> +	int i, rc = -1;
+>  	char buf[SYSFS_ATTR_SIZE];
+> -	struct ndctl_bus *bus = parent;
+> -	struct ndctl_ctx *ctx = bus->ctx;
+> +	struct ndctl_ctx *ctx = dimm->bus->ctx;
+>  	char *path = calloc(1, strlen(dimm_base) + 100);
+>  
+>  	if (!path)
+> -		return NULL;
+> -
+> -	sprintf(path, "%s/nfit/formats", dimm_base);
+> -	if (sysfs_read_attr(ctx, path, buf) < 0)
+> -		formats = 1;
+> -	else
+> -		formats = clamp(strtoul(buf, NULL, 0), 1UL, 2UL);
+> -
+> -	dimm = calloc(1, sizeof(*dimm) + sizeof(int) * formats);
+> -	if (!dimm)
+> -		goto err_dimm;
+> -	dimm->bus = bus;
+> -	dimm->id = id;
+> -
+> -	sprintf(path, "%s/dev", dimm_base);
+> -	if (sysfs_read_attr(ctx, path, buf) < 0)
+> -		goto err_read;
+> -	if (sscanf(buf, "%d:%d", &dimm->major, &dimm->minor) != 2)
+> -		goto err_read;
+> -
+> -	sprintf(path, "%s/commands", dimm_base);
+> -	if (sysfs_read_attr(ctx, path, buf) < 0)
+> -		goto err_read;
+> -	dimm->cmd_mask = parse_commands(buf, 1);
+> -
+> -	dimm->dimm_buf = calloc(1, strlen(dimm_base) + 50);
+> -	if (!dimm->dimm_buf)
+> -		goto err_read;
+> -	dimm->buf_len = strlen(dimm_base) + 50;
+> -
+> -	dimm->dimm_path = strdup(dimm_base);
+> -	if (!dimm->dimm_path)
+> -		goto err_read;
+> -
+> -	sprintf(path, "%s/modalias", dimm_base);
+> -	if (sysfs_read_attr(ctx, path, buf) < 0)
+> -		goto err_read;
+> -	dimm->module = to_module(ctx, buf);
+> -
+> -	dimm->handle = -1;
+> -	dimm->phys_id = -1;
+> -	dimm->serial = -1;
+> -	dimm->vendor_id = -1;
+> -	dimm->device_id = -1;
+> -	dimm->revision_id = -1;
+> -	dimm->health_eventfd = -1;
+> -	dimm->dirty_shutdown = -ENOENT;
+> -	dimm->subsystem_vendor_id = -1;
+> -	dimm->subsystem_device_id = -1;
+> -	dimm->subsystem_revision_id = -1;
+> -	dimm->manufacturing_date = -1;
+> -	dimm->manufacturing_location = -1;
+> -	dimm->cmd_family = -1;
+> -	dimm->nfit_dsm_mask = ULONG_MAX;
+> -	for (i = 0; i < formats; i++)
+> -		dimm->format[i] = -1;
+> -
+> -	sprintf(path, "%s/flags", dimm_base);
+> -	if (sysfs_read_attr(ctx, path, buf) < 0) {
+> -		dimm->locked = -1;
+> -		dimm->aliased = -1;
+> -	} else
+> -		parse_dimm_flags(dimm, buf);
+> -
+> -	if (!ndctl_bus_has_nfit(bus))
+> -		goto out;
+> +		return -1;
+>  
+>  	/*
+>  	 * 'unique_id' may not be available on older kernels, so don't
+> @@ -1582,24 +1515,15 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+>  	sprintf(path, "%s/nfit/family", dimm_base);
+>  	if (sysfs_read_attr(ctx, path, buf) == 0)
+>  		dimm->cmd_family = strtoul(buf, NULL, 0);
+> -	if (dimm->cmd_family == NVDIMM_FAMILY_INTEL)
+> -		dimm->ops = intel_dimm_ops;
+> -	if (dimm->cmd_family == NVDIMM_FAMILY_HPE1)
+> -		dimm->ops = hpe1_dimm_ops;
+> -	if (dimm->cmd_family == NVDIMM_FAMILY_MSFT)
+> -		dimm->ops = msft_dimm_ops;
+> -	if (dimm->cmd_family == NVDIMM_FAMILY_HYPERV)
+> -		dimm->ops = hyperv_dimm_ops;
+>  
+>  	sprintf(path, "%s/nfit/dsm_mask", dimm_base);
+>  	if (sysfs_read_attr(ctx, path, buf) == 0)
+>  		dimm->nfit_dsm_mask = strtoul(buf, NULL, 0);
+>  
+> -	dimm->formats = formats;
+>  	sprintf(path, "%s/nfit/format", dimm_base);
+>  	if (sysfs_read_attr(ctx, path, buf) == 0)
+>  		dimm->format[0] = strtoul(buf, NULL, 0);
+> -	for (i = 1; i < formats; i++) {
+> +	for (i = 1; i < dimm->formats; i++) {
+>  		sprintf(path, "%s/nfit/format%d", dimm_base, i);
+>  		if (sysfs_read_attr(ctx, path, buf) == 0)
+>  			dimm->format[i] = strtoul(buf, NULL, 0);
+> @@ -1610,7 +1534,114 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+>  		parse_nfit_mem_flags(dimm, buf);
+>  
+>  	dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
+> +	rc = 0;
+> + err_read:
+> +
+> +	free(path);
+> +	return rc;
+> +}
+> +
+> +static void *add_dimm(void *parent, int id, const char *dimm_base)
+> +{
+> +	int formats, i, rc = -ENODEV;
+> +	struct ndctl_dimm *dimm = NULL;
+> +	char buf[SYSFS_ATTR_SIZE];
+> +	struct ndctl_bus *bus = parent;
+> +	struct ndctl_ctx *ctx = bus->ctx;
+> +	char *path = calloc(1, strlen(dimm_base) + 100);
+> +
+> +	if (!path)
+> +		return NULL;
+> +
+> +	sprintf(path, "%s/nfit/formats", dimm_base);
+> +	if (sysfs_read_attr(ctx, path, buf) < 0)
+> +		formats = 1;
+> +	else
+> +		formats = clamp(strtoul(buf, NULL, 0), 1UL, 2UL);
+> +
+> +	dimm = calloc(1, sizeof(*dimm) + sizeof(int) * formats);
+> +	if (!dimm)
+> +		goto err_dimm;
+> +	dimm->bus = bus;
+> +	dimm->id = id;
+> +
+> +	sprintf(path, "%s/dev", dimm_base);
+> +	if (sysfs_read_attr(ctx, path, buf) < 0)
+> +		goto err_read;
+> +	if (sscanf(buf, "%d:%d", &dimm->major, &dimm->minor) != 2)
+> +		goto err_read;
+> +
+> +	sprintf(path, "%s/commands", dimm_base);
+> +	if (sysfs_read_attr(ctx, path, buf) < 0)
+> +		goto err_read;
+> +	dimm->cmd_mask = parse_commands(buf, 1);
+> +
+> +	dimm->dimm_buf = calloc(1, strlen(dimm_base) + 50);
+> +	if (!dimm->dimm_buf)
+> +		goto err_read;
+> +	dimm->buf_len = strlen(dimm_base) + 50;
+> +
+> +	dimm->dimm_path = strdup(dimm_base);
+> +	if (!dimm->dimm_path)
+> +		goto err_read;
+> +
+> +	sprintf(path, "%s/modalias", dimm_base);
+> +	if (sysfs_read_attr(ctx, path, buf) < 0)
+> +		goto err_read;
+> +	dimm->module = to_module(ctx, buf);
+> +
+> +	dimm->handle = -1;
+> +	dimm->phys_id = -1;
+> +	dimm->serial = -1;
+> +	dimm->vendor_id = -1;
+> +	dimm->device_id = -1;
+> +	dimm->revision_id = -1;
+> +	dimm->health_eventfd = -1;
+> +	dimm->dirty_shutdown = -ENOENT;
+> +	dimm->subsystem_vendor_id = -1;
+> +	dimm->subsystem_device_id = -1;
+> +	dimm->subsystem_revision_id = -1;
+> +	dimm->manufacturing_date = -1;
+> +	dimm->manufacturing_location = -1;
+> +	dimm->cmd_family = -1;
+> +	dimm->nfit_dsm_mask = ULONG_MAX;
+> +	for (i = 0; i < formats; i++)
+> +		dimm->format[i] = -1;
+> +
+> +	sprintf(path, "%s/flags", dimm_base);
+> +	if (sysfs_read_attr(ctx, path, buf) < 0) {
+> +		dimm->locked = -1;
+> +		dimm->aliased = -1;
+> +	} else
+> +		parse_dimm_flags(dimm, buf);
+> +
+> +	/* Check if the given dimm supports nfit */
+> +	if (ndctl_bus_has_nfit(bus)) {
+> +		dimm->formats = formats;
+> +		rc = add_nfit_dimm(dimm, dimm_base);
+> +	}
+> +
+> +	if (rc == -ENODEV) {
+> +		/* Unprobed dimm with no family */
+> +		rc = 0;
+> +		goto out;
+> +	}
+> +
+> +	/* Assign dimm-ops based on command family */
+> +	if (dimm->cmd_family == NVDIMM_FAMILY_INTEL)
+> +		dimm->ops = intel_dimm_ops;
+> +	if (dimm->cmd_family == NVDIMM_FAMILY_HPE1)
+> +		dimm->ops = hpe1_dimm_ops;
+> +	if (dimm->cmd_family == NVDIMM_FAMILY_MSFT)
+> +		dimm->ops = msft_dimm_ops;
+> +	if (dimm->cmd_family == NVDIMM_FAMILY_HYPERV)
+> +		dimm->ops = hyperv_dimm_ops;
+>   out:
+> +	if (rc) {
+> +		err(ctx, "Unable to probe dimm:%d. Err:%d\n", id, rc);
+> +		goto err_read;
+> +	}
+> +
+>  	list_add(&bus->dimms, &dimm->list);
+>  	free(path);
+>  
+> -- 
+> 2.25.3
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
