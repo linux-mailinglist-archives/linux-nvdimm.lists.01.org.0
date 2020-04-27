@@ -2,55 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD5D1BAB0E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Apr 2020 19:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1C71BAF81
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Apr 2020 22:31:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8D89A1009A320;
-	Mon, 27 Apr 2020 10:19:10 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.128.32; helo=sonic304-9.consmr.mail.bf2.yahoo.com; envelope-from=wilsonri_richard77@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic304-9.consmr.mail.bf2.yahoo.com (sonic304-9.consmr.mail.bf2.yahoo.com [74.6.128.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 226D8100986F3;
+	Mon, 27 Apr 2020 13:30:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 73B621009A31D
-	for <linux-nvdimm@lists.01.org>; Mon, 27 Apr 2020 10:19:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588007998; bh=wQAZ2vw+ABSMpAJoIp2gUqC/PoAMxiKP625Y+8N3DxE=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Yb228/a9getB8DGNWsc2gqEOyGocq0oxzE1d0MGR1OC9L92yyESwXI/8A9X1kEd6svaW7Hr47iv1tyE1mCaudtFHnMWrG5eWyGgnZAI7prGWi+l05FpcSr45mhS6/XmjM4YZ+L/Syf6+12II6w4JzIibs2MSbTQ6zcj1TtMIEjNR9uYOMgvDoQ1kA/wjoen7j/GLw6EyfLp6HIFD8MEtx+AGrO38iEjvBFTiwR1dFaAB9JShFtNk+jIkNk/ROXiHUQGepE3LPq7TLEyHsLgokF3a+YSTsnI+bQGfLxeF0wK/VaIj4zxtRZhGAAD6IYSzpCWoxRouFf2pTOypumvF9g==
-X-YMail-OSG: cuaEI18VM1nBRJyefehW8OlQQl5ToMnjXK65Oi1WqfsudNSDX8Klbwpy0anWQ5b
- iXO5x7juSYzoI.FLAkv29O93QV7FL7uNmTvvJ2nXnLETvyJ2BRWakRE5E52Be0nTNFGroyY3bYtP
- UJ83crXfBN16oFqQ.mi864patWCWovm9LxGKWmQj4.Q54Zw658eY_SXJPbEpEg0ps6l7ASCsUo2K
- HqISva25Q2sVp9AGAcRoZeBW5JjS2iL6vFPtKaM1ra6UDLtmIXoQBODUyhSrtfRgmR2GkPciOfrA
- sVrzuwE.woLylPQJoK5ujn2.8sJdGMz6.SDTdj.Gw2vFM4Nmqk0Yz16.JB_ia_sAjypkn7pJuynI
- AvIXEl5d4Yf6QgEzF6XjiMk6Svqfh4vAxsPufUXDk7SUVrto1uEK1mrLWyzYuYff8Dj9w_qlJUEU
- pnPUNBjFlvan62kXYqdRMCQACQTt37QUOaNVL0nWWD9UZ0HjJbWy7DvzgKDcI9iVGMGDO9PD73B.
- hTE4fWdLKPxJyXD94yPJmR.xstdFWUFZNqlgnVHoJ6.m1F3lT3Awja_Ic3q_4zIh4keJJ0oZDqQ1
- bZ0vCwEgFygeRpKmG0Aqw2b7H36xMIHK1rHW1fspg6urKayAtyrqByblo6RW9OCyGBpMMEwJFS.A
- kIa77Cumd85JBuq9C_2BBe9wHukMPAxyqCeOLMyYiesbU6es2mSRUiLd.YSblve5bgIMgDJPbASY
- LFjHtJzHIQZw6EglYDCWa3QRXfEWdM8Izbt9lPy6NbdLCu9eiyW1FKNdy.Ab5lJjKgeeSrfpQWUa
- viEam_4wOC8xWT5Xsuzv_ymE52yqu86A01NVQE6MhRpIDT7aWRTOr2s2UQdWgfqKZMv0Elgr9vEG
- ESYsbq.d1iG3c5jyEi.D8e_bieXwRiBgb4aFEzVSJKpoQRx5gydyAqg5jPsaiLqP4WLNTeYlAen2
- bZY0eh7ijWS.pHZ4_6Q8qQEygYh7KZWfxdNnrDbt00xXasL10GThlYy92dGIEQgbRP4bXaJ.KlcK
- SrTYorsVRwcZ.5G_HJFLtiRVgosNbjSKK.jlgAs0yPKppT3axoykZqc8A6SP4BgBVPdCThDS3WBF
- RBDUjRTjjp9gBRPdDwGi68PEsXnt4DFD.NKk.Uh5.bxBAgnpksTm6dZZHFqz6MWiyThIErW7KmcX
- BUQeUCYHhHVjdFCgpCE.PW3TtPm5lgfxnqcOA3jRo7MpTLtUOBcdICqooGcCQ1UWLI7ydC1666lj
- bbxOHJUrYb9G6bPALBISdC6OoXRCA1QiqngCtd350wxf1VbwzFhHgHxvTPM6kkLISy4oxLbvEMXt
- 0yy5W
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.bf2.yahoo.com with HTTP; Mon, 27 Apr 2020 17:19:58 +0000
-Date: Mon, 27 Apr 2020 17:19:53 +0000 (UTC)
-From: Richard Wilson <wilsonri_richard77@yahoo.com>
-Message-ID: <1249015205.694854.1588007993266@mail.yahoo.com>
-Subject: Dear
+	by ml01.01.org (Postfix) with ESMTPS id 6D59410098A4B
+	for <linux-nvdimm@lists.01.org>; Mon, 27 Apr 2020 13:30:39 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id pg17so15325025ejb.9
+        for <linux-nvdimm@lists.01.org>; Mon, 27 Apr 2020 13:31:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rLbBtWFLYbFaQI/byT069w9dl98KqDThHokIOOMUQVw=;
+        b=1HQK3GldCwaWq908cTlKArnoAAW9FUCn8WoLr1W3dATkxJCMuh7zHOMvJdDutWtrdW
+         GdpiGAZWbVbaDVRsX6MGXiH5gQvwAlRoNxn7K1BQs6TQUyaMiFqSfVJT5D70r3mm2RNA
+         Mk3+HG6p0iVjIeOugBMP9g3O0yrmlVd7lFsE/qiJABRMigvKsjm/iWfSvQk3a6X0z8VW
+         nOQ8YEKY+kGwSj4qJhDvov/TcZmzIto0X1okkOl9e7WG2j920W0S7/fuDuNJu6wZFNrY
+         Ie1fmHivGf/JD9+eoEvjpmVjMTat6des9VUxRx0kNPkhTHEEGMwg6WDgbtto9mfWMvIx
+         GfTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rLbBtWFLYbFaQI/byT069w9dl98KqDThHokIOOMUQVw=;
+        b=djUwBhZDGJb/FSuovM9nCx2rpjH6rgIslhPLcE9QaRgqLMrZ0wze8/zGLVOnUb6pfo
+         gcZKJ9Ni9ac/a8HAeqY1WD3VUM8K4xz8I/8pKxhcp0QQpShWjA++rwYzLHyIOK/2Vrau
+         OCfXUPMaTkArfkVf19MC6CXu/EXma6Wgc84CJQeBsiIVZyp+ThzWUcFDutYuEXJDB4rJ
+         yeEmyTq2T73JWwXBx8/gjiqvFX3lbAvsvcVYfmXjUmWWWMJWTjCAPg487NbxOh2SaY8T
+         1ehiIM/+0ITW4aVDYvM5Xyer7eROL2scw+bpIe6GwbGhP3f9UXoJBIkhk6FK96EweWDy
+         twUw==
+X-Gm-Message-State: AGi0PuYhv+Aya0be+cw56IuNy6YJiFqHc2HxPHcbayOzisSQIDBSR9A8
+	BoR3Z5HyMWF5Kl1TeWVz00yIGnxdpDeDfWxuyJlnsg==
+X-Google-Smtp-Source: APiQypLxGnMmzELyuecDIyHtgCX2oDLS2win/E+mL6YZkNe8naYkaOGe9NmfnocfuoqVZnHIlC0PYGIj7zfcVchqax4=
+X-Received: by 2002:a17:906:eb90:: with SMTP id mh16mr21693457ejb.201.1588019488268;
+ Mon, 27 Apr 2020 13:31:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <1249015205.694854.1588007993266.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7
-Message-ID-Hash: MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF
-X-Message-ID-Hash: MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF
-X-MailFrom: wilsonri_richard77@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+References: <20200426095232.27524-1-redhairer.li@intel.com>
+In-Reply-To: <20200426095232.27524-1-redhairer.li@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 27 Apr 2020 13:31:17 -0700
+Message-ID: <CAPcyv4gLKSMa4bN446MnRtjdfGaM-Hjy+dcYm316=4EP43G1wg@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ndctl/namespace: Fix disable-namespace accounting
+ relative to seed devices
+To: Redhairer Li <redhairer.li@intel.com>
+Message-ID-Hash: LECIOWDKIE5DZLK5RPIOWG67VJ4XSKO4
+X-Message-ID-Hash: LECIOWDKIE5DZLK5RPIOWG67VJ4XSKO4
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: barr.kone@aol.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LECIOWDKIE5DZLK5RPIOWG67VJ4XSKO4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,13 +68,114 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Sun, Apr 26, 2020 at 2:53 AM Redhairer Li <redhairer.li@intel.com> wrote:
+>
+> Seed namespaces are included in "ndctl disable-namespace all". However
+> since the user never "creates" them it is surprising to see
+> "disable-namespace" report 1 more namespace relative to the number that
+> have been created. Catch attempts to disable a zero-sized namespace:
+>
+> Before:
+> {
+>   "dev":"namespace1.0",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1"
+> }
+> {
+>   "dev":"namespace1.1",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1.1"
+> }
+> {
+>   "dev":"namespace1.2",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1.2"
+> }
+> disabled 4 namespaces
+>
+> After:
+> {
+>   "dev":"namespace1.0",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1"
+> }
+> {
+>   "dev":"namespace1.3",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1.3"
+> }
+> {
+>   "dev":"namespace1.1",
+>   "size":"492.00 MiB (515.90 MB)",
+>   "blockdev":"pmem1.1"
+> }
+> disabled 3 namespaces
+>
+> Signed-off-by: Redhairer Li <redhairer.li@intel.com>
+> ---
+>  ndctl/lib/libndctl.c | 11 ++++++++---
+>  ndctl/region.c       |  4 +++-
+>  2 files changed, 11 insertions(+), 4 deletions(-)
+>
+> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+> index ee737cb..49f362b 100644
+> --- a/ndctl/lib/libndctl.c
+> +++ b/ndctl/lib/libndctl.c
+> @@ -4231,6 +4231,7 @@ NDCTL_EXPORT int ndctl_namespace_disable_safe(struct ndctl_namespace *ndns)
+>         const char *bdev = NULL;
+>         char path[50];
+>         int fd;
+> +       unsigned long long size = ndctl_namespace_get_size(ndns);
+>
+>         if (pfn && ndctl_pfn_is_enabled(pfn))
+>                 bdev = ndctl_pfn_get_block_device(pfn);
+> @@ -4260,9 +4261,13 @@ NDCTL_EXPORT int ndctl_namespace_disable_safe(struct ndctl_namespace *ndns)
+>                                         devname, bdev, strerror(errno));
+>                         return -errno;
+>                 }
+> -       } else
+> -               ndctl_namespace_disable_invalidate(ndns);
+> -
+> +       } else {
+> +               if (size == 0)
+> +                       /* Don't try to disable idle namespace (no capacity allocated) */
+> +                       return -ENXIO;
+> +               else
+> +                       ndctl_namespace_disable_invalidate(ndns);
+> +       }
 
+Maybe make this return 0 in the case when size is zero since by
+definition the namespace must already be disabled if it has zero size.
 
-Dear
+} else if (size)
+    ndctl_namespace_disable_invalidate(ndns);
 
-I am contacting you to assist retrieve his huge deposit Mr. Alexander left in the bank before its get confiscated by the bank. Get back to me for more detail's
+return 0;
 
-Barr's George A Levi
+>
+> diff --git a/ndctl/region.c b/ndctl/region.c
+> index 7945007..0014bb9 100644
+> --- a/ndctl/region.c
+> +++ b/ndctl/region.c
+> @@ -72,6 +72,7 @@ static int region_action(struct ndctl_region *region, enum device_action mode)
+>  {
+>         struct ndctl_namespace *ndns;
+>         int rc = 0;
+> +       unsigned long long size;
+>
+>         switch (mode) {
+>         case ACTION_ENABLE:
+> @@ -80,7 +81,8 @@ static int region_action(struct ndctl_region *region, enum device_action mode)
+>         case ACTION_DISABLE:
+>                 ndctl_namespace_foreach(region, ndns) {
+>                         rc = ndctl_namespace_disable_safe(ndns);
+> -                       if (rc)
+> +                       size = ndctl_namespace_get_size(ndns);
+> +                       if (rc && size != 0)
+>                                 return rc;
+
+...then you wouldn't need to have this special case here since
+ndctl_namespace_disable_safe() will not fail.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
