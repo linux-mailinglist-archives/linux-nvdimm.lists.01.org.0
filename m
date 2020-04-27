@@ -1,49 +1,56 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE02D1BA396
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Apr 2020 14:28:48 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD5D1BAB0E
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Apr 2020 19:20:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 441D81009D30D;
-	Mon, 27 Apr 2020 05:27:56 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8D89A1009A320;
+	Mon, 27 Apr 2020 10:19:10 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.128.32; helo=sonic304-9.consmr.mail.bf2.yahoo.com; envelope-from=wilsonri_richard77@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic304-9.consmr.mail.bf2.yahoo.com (sonic304-9.consmr.mail.bf2.yahoo.com [74.6.128.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 85AE81009D30A
-	for <linux-nvdimm@lists.01.org>; Mon, 27 Apr 2020 05:27:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Wzixkdd1MP05tKyiJudvvJUbNJ4oUXlhwu6lo0T90lk=; b=h4uZN/H6Mu3d0zPdDsclCVH32p
-	44gY3nD6XgbLkqBBMl44AzSP/BJE3KBzRAPQwmBogEvavTEhIQUL3ocaF+cw7UkzuVAwITD4seBgk
-	Pp8Hl1+tIQ8RODfstqU0/krSNx7E830cBVrxSyf5dfg0gpQoKrJKe2M5AynwMKOl0n3mi6Pl4oFKf
-	efaEddM5vpsfG757hkc2v8IEonhVlf8jAZ4wp/U05w15FPDDSa7fkY0VDdkD1WHqV691GKsmZEkS8
-	SOQI03I+FKN/fUWcflc8dcvjdXytbEbhLDXDLTXiJZruWD/RddNBs2RHT5uDy951iViKV1ctgL7yg
-	iJXmOD4A==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1jT2sG-0003WE-Dr; Mon, 27 Apr 2020 12:28:36 +0000
-Date: Mon, 27 Apr 2020 05:28:36 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [RFC PATCH 0/8] dax: Add a dax-rmap tree to support reflink
-Message-ID: <20200427122836.GD29705@bombadil.infradead.org>
-References: <20200427084750.136031-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTPS id 73B621009A31D
+	for <linux-nvdimm@lists.01.org>; Mon, 27 Apr 2020 10:19:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588007998; bh=wQAZ2vw+ABSMpAJoIp2gUqC/PoAMxiKP625Y+8N3DxE=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Yb228/a9getB8DGNWsc2gqEOyGocq0oxzE1d0MGR1OC9L92yyESwXI/8A9X1kEd6svaW7Hr47iv1tyE1mCaudtFHnMWrG5eWyGgnZAI7prGWi+l05FpcSr45mhS6/XmjM4YZ+L/Syf6+12II6w4JzIibs2MSbTQ6zcj1TtMIEjNR9uYOMgvDoQ1kA/wjoen7j/GLw6EyfLp6HIFD8MEtx+AGrO38iEjvBFTiwR1dFaAB9JShFtNk+jIkNk/ROXiHUQGepE3LPq7TLEyHsLgokF3a+YSTsnI+bQGfLxeF0wK/VaIj4zxtRZhGAAD6IYSzpCWoxRouFf2pTOypumvF9g==
+X-YMail-OSG: cuaEI18VM1nBRJyefehW8OlQQl5ToMnjXK65Oi1WqfsudNSDX8Klbwpy0anWQ5b
+ iXO5x7juSYzoI.FLAkv29O93QV7FL7uNmTvvJ2nXnLETvyJ2BRWakRE5E52Be0nTNFGroyY3bYtP
+ UJ83crXfBN16oFqQ.mi864patWCWovm9LxGKWmQj4.Q54Zw658eY_SXJPbEpEg0ps6l7ASCsUo2K
+ HqISva25Q2sVp9AGAcRoZeBW5JjS2iL6vFPtKaM1ra6UDLtmIXoQBODUyhSrtfRgmR2GkPciOfrA
+ sVrzuwE.woLylPQJoK5ujn2.8sJdGMz6.SDTdj.Gw2vFM4Nmqk0Yz16.JB_ia_sAjypkn7pJuynI
+ AvIXEl5d4Yf6QgEzF6XjiMk6Svqfh4vAxsPufUXDk7SUVrto1uEK1mrLWyzYuYff8Dj9w_qlJUEU
+ pnPUNBjFlvan62kXYqdRMCQACQTt37QUOaNVL0nWWD9UZ0HjJbWy7DvzgKDcI9iVGMGDO9PD73B.
+ hTE4fWdLKPxJyXD94yPJmR.xstdFWUFZNqlgnVHoJ6.m1F3lT3Awja_Ic3q_4zIh4keJJ0oZDqQ1
+ bZ0vCwEgFygeRpKmG0Aqw2b7H36xMIHK1rHW1fspg6urKayAtyrqByblo6RW9OCyGBpMMEwJFS.A
+ kIa77Cumd85JBuq9C_2BBe9wHukMPAxyqCeOLMyYiesbU6es2mSRUiLd.YSblve5bgIMgDJPbASY
+ LFjHtJzHIQZw6EglYDCWa3QRXfEWdM8Izbt9lPy6NbdLCu9eiyW1FKNdy.Ab5lJjKgeeSrfpQWUa
+ viEam_4wOC8xWT5Xsuzv_ymE52yqu86A01NVQE6MhRpIDT7aWRTOr2s2UQdWgfqKZMv0Elgr9vEG
+ ESYsbq.d1iG3c5jyEi.D8e_bieXwRiBgb4aFEzVSJKpoQRx5gydyAqg5jPsaiLqP4WLNTeYlAen2
+ bZY0eh7ijWS.pHZ4_6Q8qQEygYh7KZWfxdNnrDbt00xXasL10GThlYy92dGIEQgbRP4bXaJ.KlcK
+ SrTYorsVRwcZ.5G_HJFLtiRVgosNbjSKK.jlgAs0yPKppT3axoykZqc8A6SP4BgBVPdCThDS3WBF
+ RBDUjRTjjp9gBRPdDwGi68PEsXnt4DFD.NKk.Uh5.bxBAgnpksTm6dZZHFqz6MWiyThIErW7KmcX
+ BUQeUCYHhHVjdFCgpCE.PW3TtPm5lgfxnqcOA3jRo7MpTLtUOBcdICqooGcCQ1UWLI7ydC1666lj
+ bbxOHJUrYb9G6bPALBISdC6OoXRCA1QiqngCtd350wxf1VbwzFhHgHxvTPM6kkLISy4oxLbvEMXt
+ 0yy5W
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.bf2.yahoo.com with HTTP; Mon, 27 Apr 2020 17:19:58 +0000
+Date: Mon, 27 Apr 2020 17:19:53 +0000 (UTC)
+From: Richard Wilson <wilsonri_richard77@yahoo.com>
+Message-ID: <1249015205.694854.1588007993266@mail.yahoo.com>
+Subject: Dear
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200427084750.136031-1-ruansy.fnst@cn.fujitsu.com>
-Message-ID-Hash: 4F5VIDHBLEDHUYPDQQBNKS44WUZENACB
-X-Message-ID-Hash: 4F5VIDHBLEDHUYPDQQBNKS44WUZENACB
-X-MailFrom: willy@infradead.org
+References: <1249015205.694854.1588007993266.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.77 Safari/535.7
+Message-ID-Hash: MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF
+X-Message-ID-Hash: MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF
+X-MailFrom: wilsonri_richard77@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: barr.kone@aol.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4F5VIDHBLEDHUYPDQQBNKS44WUZENACB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MXUWFGCE5VWHZCZQEXKCW2VQQHR6Y3VF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,21 +59,13 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Apr 27, 2020 at 04:47:42PM +0800, Shiyang Ruan wrote:
-> This patchset is a try to resolve the shared 'page cache' problem for
-> fsdax.
-> 
-> In order to track multiple mappings and indexes on one page, I
-> introduced a dax-rmap rb-tree to manage the relationship.  A dax entry
-> will be associated more than once if is shared.  At the second time we
-> associate this entry, we create this rb-tree and store its root in
-> page->private(not used in fsdax).  Insert (->mapping, ->index) when
-> dax_associate_entry() and delete it when dax_disassociate_entry().
 
-Do we really want to track all of this on a per-page basis?  I would
-have thought a per-extent basis was more useful.  Essentially, create
-a new address_space for each shared extent.  Per page just seems like
-a huge overhead.
+
+Dear
+
+I am contacting you to assist retrieve his huge deposit Mr. Alexander left in the bank before its get confiscated by the bank. Get back to me for more detail's
+
+Barr's George A Levi
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
