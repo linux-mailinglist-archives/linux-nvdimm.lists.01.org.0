@@ -1,161 +1,71 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995521BCF50
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Apr 2020 00:02:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536DA1BD0C2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Apr 2020 01:55:59 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 908BB110CF1C0;
-	Tue, 28 Apr 2020 15:01:41 -0700 (PDT)
-Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.249; helo=mail105.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
-Received: from mail105.syd.optusnet.com.au (mail105.syd.optusnet.com.au [211.29.132.249])
-	by ml01.01.org (Postfix) with ESMTP id 869121007A9ED
-	for <linux-nvdimm@lists.01.org>; Tue, 28 Apr 2020 15:01:38 -0700 (PDT)
-Received: from dread.disaster.area (pa49-195-157-175.pa.nsw.optusnet.com.au [49.195.157.175])
-	by mail105.syd.optusnet.com.au (Postfix) with ESMTPS id 3E9873A45A1;
-	Wed, 29 Apr 2020 08:02:33 +1000 (AEST)
-Received: from dave by dread.disaster.area with local (Exim 4.92.3)
-	(envelope-from <david@fromorbit.com>)
-	id 1jTYJE-0008Uv-5w; Wed, 29 Apr 2020 08:02:32 +1000
-Date: Wed, 29 Apr 2020 08:02:32 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: "Darrick J. Wong" <darrick.wong@oracle.com>
-Subject: Re: =?utf-8?B?5Zue5aSNOiBSZQ==?= =?utf-8?Q?=3A?= [RFC PATCH 0/8]
- dax: Add a dax-rmap tree to support reflink
-Message-ID: <20200428220232.GI2040@dread.disaster.area>
-References: <20200427084750.136031-1-ruansy.fnst@cn.fujitsu.com>
- <20200427122836.GD29705@bombadil.infradead.org>
- <em33c55fa5-15ca-4c46-8c27-6b0300fa4e51@g08fnstd180058>
- <20200428064318.GG2040@dread.disaster.area>
- <259fe633-e1ff-b279-cd8c-1a81eaa40941@cn.fujitsu.com>
- <20200428111636.GK29705@bombadil.infradead.org>
- <20200428112441.GH2040@dread.disaster.area>
- <20200428153732.GZ6742@magnolia>
+	by ml01.01.org (Postfix) with ESMTP id 3A65E1007AC81;
+	Tue, 28 Apr 2020 16:54:57 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=159.213.248.65; helo=smtp.comune.fi.it; envelope-from=mediaan.office@outlook.com; receiver=<UNKNOWN> 
+Received: from smtp.comune.fi.it (smtp3.comune.fi.it [159.213.248.65])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 3133C1007AC80
+	for <linux-nvdimm@lists.01.org>; Tue, 28 Apr 2020 16:54:53 -0700 (PDT)
+Received: from Wise-PC.lan ([151.82.250.202])
+	(authenticated bits=0)
+	by smtp.comune.fi.it (8.13.8/8.13.8) with ESMTP id 03SNbPiC024573
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 29 Apr 2020 01:38:28 +0200
+Message-Id: <202004282338.03SNbPiC024573@smtp.comune.fi.it>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200428153732.GZ6742@magnolia>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Optus-CM-Score: 0
-X-Optus-CM-Analysis: v=2.3 cv=QIgWuTDL c=1 sm=1 tr=0
-	a=ONQRW0k9raierNYdzxQi9Q==:117 a=ONQRW0k9raierNYdzxQi9Q==:17
-	a=IkcTkHD0fZMA:10 a=cl8xLZFz6L8A:10 a=5KLPUuaC_9wA:10 a=JfrnYn6hAAAA:8
-	a=7-415B0cAAAA:8 a=l6wd5GMc4HtCNSAcdtkA:9 a=z4jTvAT5gXS7p1mQ:21
-	a=_k9EnfUi_P5Muxk2:21 a=QEXdDO2ut3YA:10 a=1CNFftbPRP8L7MoqJWF3:22
-	a=biEYGPWJfzWAr4FL6Ov7:22
-Message-ID-Hash: KHZWDTOFHTNCIRK6OZET6XEH4PD7VMBL
-X-Message-ID-Hash: KHZWDTOFHTNCIRK6OZET6XEH4PD7VMBL
-X-MailFrom: david@fromorbit.com
+Subject: Financial Project.
+To: Recipients <mediaan.office@outlook.com>
+From: mediaan.office@outlook.com
+Date: Wed, 29 Apr 2020 01:38:30 +0200
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (smtp.comune.fi.it [159.213.248.65]); Wed, 29 Apr 2020 01:38:30 +0200 (CEST)
+X-CDF-MailScanner-Information: Please contact the ISP for more information
+X-CDF-MailScanner: Found to be clean
+X-CDF-MailScanner-From: mediaan.office@outlook.com
+X-Spam-Status: No
+Message-ID-Hash: F75GA2FR4H7QEA5SOSNNCVU72MCAZK2Z
+X-Message-ID-Hash: F75GA2FR4H7QEA5SOSNNCVU72MCAZK2Z
+X-MailFrom: mediaan.office@outlook.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Matthew Wilcox <willy@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "Qi, Fuli" <qi.fuli@fujitsu.com>, "Gotou, Yasunori" <y-goto@fujitsu.com>
+Content-Description: Mail message body
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: contact.mediaanabsfinance@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KHZWDTOFHTNCIRK6OZET6XEH4PD7VMBL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F75GA2FR4H7QEA5SOSNNCVU72MCAZK2Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gVHVlLCBBcHIgMjgsIDIwMjAgYXQgMDg6Mzc6MzJBTSAtMDcwMCwgRGFycmljayBKLiBXb25n
-IHdyb3RlOg0KPiBPbiBUdWUsIEFwciAyOCwgMjAyMCBhdCAwOToyNDo0MVBNICsxMDAwLCBEYXZl
-IENoaW5uZXIgd3JvdGU6DQo+ID4gT24gVHVlLCBBcHIgMjgsIDIwMjAgYXQgMDQ6MTY6MzZBTSAt
-MDcwMCwgTWF0dGhldyBXaWxjb3ggd3JvdGU6DQo+ID4gPiBPbiBUdWUsIEFwciAyOCwgMjAyMCBh
-dCAwNTozMjo0MVBNICswODAwLCBSdWFuIFNoaXlhbmcgd3JvdGU6DQo+ID4gPiA+IE9uIDIwMjAv
-NC8yOCDkuIvljYgyOjQzLCBEYXZlIENoaW5uZXIgd3JvdGU6DQo+ID4gPiA+ID4gT24gVHVlLCBB
-cHIgMjgsIDIwMjAgYXQgMDY6MDk6NDdBTSArMDAwMCwgUnVhbiwgU2hpeWFuZyB3cm90ZToNCj4g
-PiA+ID4gPiA+IOWcqCAyMDIwLzQvMjcgMjA6Mjg6MzYsICJNYXR0aGV3IFdpbGNveCIgPHdpbGx5
-QGluZnJhZGVhZC5vcmc+IOWGmemBkzoNCj4gPiA+ID4gPiA+ID4gT24gTW9uLCBBcHIgMjcsIDIw
-MjAgYXQgMDQ6NDc6NDJQTSArMDgwMCwgU2hpeWFuZyBSdWFuIHdyb3RlOg0KPiA+ID4gPiA+ID4g
-PiA+ICAgVGhpcyBwYXRjaHNldCBpcyBhIHRyeSB0byByZXNvbHZlIHRoZSBzaGFyZWQgJ3BhZ2Ug
-Y2FjaGUnIHByb2JsZW0gZm9yDQo+ID4gPiA+ID4gPiA+ID4gICBmc2RheC4NCj4gPiA+ID4gPiA+
-ID4gPiANCj4gPiA+ID4gPiA+ID4gPiAgIEluIG9yZGVyIHRvIHRyYWNrIG11bHRpcGxlIG1hcHBp
-bmdzIGFuZCBpbmRleGVzIG9uIG9uZSBwYWdlLCBJDQo+ID4gPiA+ID4gPiA+ID4gICBpbnRyb2R1
-Y2VkIGEgZGF4LXJtYXAgcmItdHJlZSB0byBtYW5hZ2UgdGhlIHJlbGF0aW9uc2hpcC4gIEEgZGF4
-IGVudHJ5DQo+ID4gPiA+ID4gPiA+ID4gICB3aWxsIGJlIGFzc29jaWF0ZWQgbW9yZSB0aGFuIG9u
-Y2UgaWYgaXMgc2hhcmVkLiAgQXQgdGhlIHNlY29uZCB0aW1lIHdlDQo+ID4gPiA+ID4gPiA+ID4g
-ICBhc3NvY2lhdGUgdGhpcyBlbnRyeSwgd2UgY3JlYXRlIHRoaXMgcmItdHJlZSBhbmQgc3RvcmUg
-aXRzIHJvb3QgaW4NCj4gPiA+ID4gPiA+ID4gPiAgIHBhZ2UtPnByaXZhdGUobm90IHVzZWQgaW4g
-ZnNkYXgpLiAgSW5zZXJ0ICgtPm1hcHBpbmcsIC0+aW5kZXgpIHdoZW4NCj4gPiA+ID4gPiA+ID4g
-PiAgIGRheF9hc3NvY2lhdGVfZW50cnkoKSBhbmQgZGVsZXRlIGl0IHdoZW4gZGF4X2Rpc2Fzc29j
-aWF0ZV9lbnRyeSgpLg0KPiA+ID4gPiA+ID4gPiANCj4gPiA+ID4gPiA+ID4gRG8gd2UgcmVhbGx5
-IHdhbnQgdG8gdHJhY2sgYWxsIG9mIHRoaXMgb24gYSBwZXItcGFnZSBiYXNpcz8gIEkgd291bGQN
-Cj4gPiA+ID4gPiA+ID4gaGF2ZSB0aG91Z2h0IGEgcGVyLWV4dGVudCBiYXNpcyB3YXMgbW9yZSB1
-c2VmdWwuICBFc3NlbnRpYWxseSwgY3JlYXRlDQo+ID4gPiA+ID4gPiA+IGEgbmV3IGFkZHJlc3Nf
-c3BhY2UgZm9yIGVhY2ggc2hhcmVkIGV4dGVudC4gIFBlciBwYWdlIGp1c3Qgc2VlbXMgbGlrZQ0K
-PiA+ID4gPiA+ID4gPiBhIGh1Z2Ugb3ZlcmhlYWQuDQo+ID4gPiA+ID4gPiA+IA0KPiA+ID4gPiA+
-ID4gUGVyLWV4dGVudCB0cmFja2luZyBpcyBhIG5pY2UgaWRlYSBmb3IgbWUuICBJIGhhdmVuJ3Qg
-dGhvdWdodCBvZiBpdA0KPiA+ID4gPiA+ID4geWV0Li4uDQo+ID4gPiA+ID4gPiANCj4gPiA+ID4g
-PiA+IEJ1dCB0aGUgZXh0ZW50IGluZm8gaXMgbWFpbnRhaW5lZCBieSBmaWxlc3lzdGVtLiAgSSB0
-aGluayB3ZSBuZWVkIGEgd2F5DQo+ID4gPiA+ID4gPiB0byBvYnRhaW4gdGhpcyBpbmZvIGZyb20g
-RlMgd2hlbiBhc3NvY2lhdGluZyBhIHBhZ2UuICBNYXkgYmUgYSBiaXQNCj4gPiA+ID4gPiA+IGNv
-bXBsaWNhdGVkLiAgTGV0IG1lIHRoaW5rIGFib3V0IGl0Li4uDQo+ID4gPiA+ID4gDQo+ID4gPiA+
-ID4gVGhhdCdzIHdoeSBJIHdhbnQgdGhlIC11c2VyIG9mIHRoaXMgYXNzb2NpYXRpb24tIHRvIGRv
-IGEgZmlsZXN5c3RlbQ0KPiA+ID4gPiA+IGNhbGxvdXQgaW5zdGVhZCBvZiBrZWVwaW5nIGl0J3Mg
-b3duIG5haXZlIHRyYWNraW5nIGluZnJhc3RydWN0dXJlLg0KPiA+ID4gPiA+IFRoZSBmaWxlc3lz
-dGVtIGNhbiBkbyBhbiBlZmZpY2llbnQsIG9uLWRlbWFuZCByZXZlcnNlIG1hcHBpbmcgbG9va3Vw
-DQo+ID4gPiA+ID4gZnJvbSBpdCdzIG93biBleHRlbnQgdHJhY2tpbmcgaW5mcmFzdHJ1Y3R1cmUs
-IGFuZCB0aGVyZSdzIHplcm8NCj4gPiA+ID4gPiBydW50aW1lIG92ZXJoZWFkIHdoZW4gdGhlcmUg
-YXJlIG5vIGVycm9ycyBwcmVzZW50Lg0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+IEF0IHRoZSBtb21l
-bnQsIHRoaXMgImRheCBhc3NvY2lhdGlvbiIgaXMgdXNlZCB0byAicmVwb3J0IiBhIHN0b3JhZ2UN
-Cj4gPiA+ID4gPiBtZWRpYSBlcnJvciBkaXJlY3RseSB0byB1c2Vyc3BhY2UuIEkgc2F5ICJyZXBv
-cnQiIGJlY2F1c2Ugd2hhdCBpdA0KPiA+ID4gPiA+IGRvZXMgaXMga2lsbCB1c2Vyc3BhY2UgcHJv
-Y2Vzc2VzIGRlYWQuIFRoZSBzdG9yYWdlIG1lZGlhIGVycm9yDQo+ID4gPiA+ID4gYWN0dWFsbHkg
-bmVlZHMgdG8gYmUgcmVwb3J0ZWQgdG8gdGhlIG93bmVyIG9mIHRoZSBzdG9yYWdlIG1lZGlhLA0K
-PiA+ID4gPiA+IHdoaWNoIGluIHRoZSBjYXNlIG9mIEZTLURBWCBpcyB0aGUgZmlsZXN5dGVtLg0K
-PiA+ID4gPiANCj4gPiA+ID4gVW5kZXJzdG9vZC4NCj4gPiA+ID4gDQo+ID4gPiA+IEJUVywgdGhp
-cyBpcyB0aGUgdXNhZ2UgaW4gbWVtb3J5LWZhaWx1cmUsIHNvIHdoYXQgYWJvdXQgcm1hcD8gIEkg
-aGF2ZSBub3QNCj4gPiA+ID4gZm91bmQgaG93IHRvIHVzZSB0aGlzIHRyYWNraW5nIGluIHJtYXAu
-ICBEbyB5b3UgaGF2ZSBhbnkgaWRlYXM/DQo+ID4gPiA+IA0KPiA+ID4gPiA+IA0KPiA+ID4gPiA+
-IFRoYXQgd2F5IHRoZSBmaWxlc3lzdGVtIGNhbiB0aGVuIGxvb2sgdXAgYWxsIHRoZSBvd25lcnMg
-b2YgdGhhdCBiYWQNCj4gPiA+ID4gPiBtZWRpYSByYW5nZSAoaS5lLiB0aGUgZmlsZXN5c3RlbSBi
-bG9jayBpdCBjb3JyZXNwb25kcyB0bykgYW5kIHRha2UNCj4gPiA+ID4gPiBhcHByb3ByaWF0ZSBh
-Y3Rpb24uIGUuZy4NCj4gPiA+ID4gDQo+ID4gPiA+IEkgdHJpZWQgd3JpdGluZyBhIGZ1bmN0aW9u
-IHRvIGxvb2sgdXAgYWxsIHRoZSBvd25lcnMnIGluZm8gb2Ygb25lIGJsb2NrIGluDQo+ID4gPiA+
-IHhmcyBmb3IgbWVtb3J5LWZhaWx1cmUgdXNlLiAgSXQgd2FzIGRyb3BwZWQgaW4gdGhpcyBwYXRj
-aHNldCBiZWNhdXNlIEkgZm91bmQNCj4gPiA+ID4gb3V0IHRoYXQgdGhpcyBsb29rdXAgZnVuY3Rp
-b24gbmVlZHMgJ3JtYXBidCcgdG8gYmUgZW5hYmxlZCB3aGVuIG1rZnMuICBCdXQNCj4gPiA+ID4g
-YnkgZGVmYXVsdCwgcm1hcGJ0IGlzIGRpc2FibGVkLiAgSSBhbSBub3Qgc3VyZSBpZiBpdCBtYXR0
-ZXJzLi4uDQo+ID4gPiANCj4gPiA+IEknbSBwcmV0dHkgc3VyZSB5b3UgY2FuJ3QgaGF2ZSBzaGFy
-ZWQgZXh0ZW50cyBvbiBhbiBYRlMgZmlsZXN5c3RlbSBpZiB5b3UNCj4gPiA+IF9kb24ndF8gaGF2
-ZSB0aGUgcm1hcGJ0IGZlYXR1cmUgZW5hYmxlZC4gIEkgbWVhbiwgdGhhdCdzIHdoeSBpdCBleGlz
-dHMuDQo+ID4gDQo+ID4gWW91J3JlIGNvbmZ1c2luZyByZWZsaW5rIHdpdGggcm1hcC4gOikNCj4g
-PiANCj4gPiBybWFwYnQgZG9lcyBhbGwgdGhlIHJldmVyc2UgbWFwcGluZyB0cmFja2luZywgcmVm
-bGluayBqdXN0IGRvZXMgdGhlDQo+ID4gc2hhcmVkIGRhdGEgZXh0ZW50IHRyYWNraW5nLg0KPiA+
-IA0KPiA+IEJ1dCBnaXZlbiB0aGF0IGFueW9uZSB3aG8gd2FudHMgdG8gdXNlIERBWCB3aXRoIHJl
-ZmxpbmsgaXMgZ29pbmcgdG8NCj4gPiBoYXZlIHRvIG1rZnMgdGhlaXIgZmlsZXN5c3RlbSBhbnl3
-YXkgKHRvIHR1cm4gb24gcmVmbGluaykgcmVxdWlyaW5nDQo+ID4gdGhhdCBybWFwYnQgaXMgYWxz
-byB0dXJuZWQgb24gaXMgbm90IGEgYmlnIGRlYWwuIEVzcGVjaWFsbHkgYXMgd2UNCj4gPiBjYW4g
-Y2hlY2sgaXQgYXQgbW91bnQgdGltZSBpbiB0aGUga2VybmVsLi4uDQo+IA0KPiBBcmUgd2UgZ29p
-bmcgdG8gdHVybiBvbiBybWFwIGJ5IGRlZmF1bHQ/ICBUaGUgbGFzdCBJIGNoZWNrZWQsIGl0IGRp
-ZA0KPiBoYXZlIGEgMTAtMjAlIHBlcmZvcm1hbmNlIGNvc3Qgb24gZXh0cmVtZSBtZXRhZGF0YS1o
-ZWF2eSB3b3JrbG9hZHMuDQo+IE9yIGRvIHdlIG9ubHkgZW5hYmxlIGl0IGJ5IGRlZmF1bHQgaWYg
-bWtmcyBkZXRlY3RzIGEgcG1lbSBkZXZpY2U/DQoNCkp1c3QgaGF2ZSB0aGUga2VybmVsIHJlZnVz
-ZSB0byBtb3VudCBhIHJlZmxpbmsgZW5hYmxlZCBmaWxlc3lzdGVtIG9uDQphIERBWCBjYXBhYmxl
-IGRldmljZSB1bmxlc3MgLW8gZGF4PW5ldmVyIG9yIHJtYXBidCBpcyBlbmFibGVkLg0KDQpUaGF0
-J2xsIGdldCB0aGUgbWVzc2FnZSBhY3Jvc3MgcHJldHR5IHF1aWNrbHkuLi4uDQoNCj4gKEFkbWl0
-dGVkbHksIG1vc3QgcGVvcGxlIGRvIG5vdCBydW4gZnN4IGFzIGEgcHJvZHVjdGl2aXR5IGFwcDsg
-dGhlDQo+IG5vcm1hbCBoaXQgaXMgdXN1YWxseSAzLTUlIHdoaWNoIG1pZ2h0IG5vdCBiZSBzdWNo
-IGEgYmlnIGRlYWwgc2luY2UgeW91DQo+IGFsc28gZ2V0IChoYWxmIG9mKSBvbmxpbmUgZnNjay4g
-OlApDQoNCkkgaGF2ZSBub3Qgbm90aWNlZCB0aGUgb3ZlcmhlYWQgYXQgYWxsIG9uIGFueSBvZiBt
-eSBwcm9kdWN0aW9uDQptYWNoaW5lcyBzaW5jZSBJIGVuYWJsZWQgaXQgd2F5IG9uIGFsbCBvZiB0
-aGVtIHdheSBiYWNrIHdoZW4uLi4uDQoNCkFuZCwgcmVhbGx5LCBwbWVtIGlzIGEgX3ZlcnkgcG9v
-ciBjaG9pY2VfIGZvciBtZXRhZGF0YSBpbnRlbnNpdmUNCmFwcGxpY2F0aW9ucyBvbiBYRlMgYXMg
-cG1lbSBpcyBjb21wbGV0ZWx5IHN5bmNocm9ub3VzLiAgWEZTIGhhcyBhbg0KYXN5bmMgSU8gbW9k
-ZWwgZm9yIGl0J3MgbWV0YWRhdGEgdGhhdCAqbXVzdCogYmUgYnVmZmVyZWQgKHNvIG5vDQpEQVgh
-KSBhbmQgdGhlIHN5bmNocm9ub3VzIG5hdHVyZSBvZiBwbWVtIGNvbXBsZXRlbHkgZGVmZWF0cyB0
-aGUNCmFyY2hpdGVjdHVyYWwgSU8gcGlwZWxpbmluZyBYRlMgdXNlcyB0byBhbGxvdyB0aG91c2Fu
-ZHMgb2YNCmNvbmN1cnJlbnQgbWV0YWRhdGEgSU9zIGluIGZsaWdodC4gT1RPSCwgcG1lbSBJTyBk
-ZXB0aCBpcyBsaW1pdGVkIHRvDQp0aGUgbnVtYmVyIG9mIENQVXMgdGhhdCBhcmUgY29uY3VycmVu
-dGx5IGlzc3VpbmcgSU8sIHNvIGl0IHJlYWxseSwNCnJlYWxseSBzdWNrcyBjb21wYXJlZCB0byBh
-IGhhbmRmdWwgb2YgaGlnaCBlbmQgbnZtZSBTU0RzIG9uIFBDSWUNCjQuMC4uLi4NCg0KU28gd2l0
-aCB0aGF0IGluIG1pbmQsIEkgc2VlIGxpdHRsZSByZWFzb24gdG8gY2FyZSBhYm91dCB0aGUgc21h
-bGwNCmFkZGl0aW9uYWwgb3ZlcmhlYWQgb2Ygcm1hcGJ0IG9uIEZTLURBWCBpbnN0YWxsYXRpb25z
-IHRoYXQgcmVxdWlyZQ0KcmVmbGluay4uLg0KDQpDaGVlcnMsDQoNCkRhdmUuDQotLSANCkRhdmUg
-Q2hpbm5lcg0KZGF2aWRAZnJvbW9yYml0LmNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
-ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
-dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+Hello,
+ 
+We, MEDIAAN ABS Financial Service offer private , commercial and personal loans at very low annual interest rate of 3%. Are you losing sleep worrying how to find a Legit Loan Lender? Have you been rejected by banks? Then look no forward contact us today via email. Interested persons should get back to us with the following.
+Name:
+Amount Needed:
+Duration:
+Country:
+Email:
+We also offer you the opporturnity to participate as follows:
+ - Want to be an Agent/Broker?
+- Investment Offer?
+- Do you need a Loan?
+- Partnership/Incorporation?
+ Awaiting your urgent application. Thanks
+ Best Regards,
+Ella
+https://www.mediaanabsfinancialservice.com
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
