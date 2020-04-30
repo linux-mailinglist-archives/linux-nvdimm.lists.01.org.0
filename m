@@ -1,91 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B70F1C045D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Apr 2020 20:09:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0671C04FF
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Apr 2020 20:42:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 30E7910053E2A;
-	Thu, 30 Apr 2020 11:08:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=166.70.13.231; helo=out01.mta.xmission.com; envelope-from=ebiederm@xmission.com; receiver=<UNKNOWN> 
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+	by ml01.01.org (Postfix) with ESMTP id 9B6DA10053E20;
+	Thu, 30 Apr 2020 11:41:24 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=luto@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0B34B10053E25
-	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 11:08:37 -0700 (PDT)
-Received: from in02.mta.xmission.com ([166.70.13.52])
-	by out01.mta.xmission.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	(Exim 4.90_1)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1jUDd3-0002vZ-L9; Thu, 30 Apr 2020 12:09:45 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-	by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.87)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1jUDd2-0000hI-EL; Thu, 30 Apr 2020 12:09:45 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: David Hildenbrand <david@redhat.com>
-References: <20200430102908.10107-1-david@redhat.com>
-	<20200430102908.10107-3-david@redhat.com>
-	<87pnbp2dcz.fsf@x220.int.ebiederm.org>
-	<1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
-	<871ro52ary.fsf@x220.int.ebiederm.org>
-	<373a6898-4020-4af1-5b3d-f827d705dd77@redhat.com>
-Date: Thu, 30 Apr 2020 13:06:26 -0500
-In-Reply-To: <373a6898-4020-4af1-5b3d-f827d705dd77@redhat.com> (David
-	Hildenbrand's message of "Thu, 30 Apr 2020 18:49:39 +0200")
-Message-ID: <875zdg26hp.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+	by ml01.01.org (Postfix) with ESMTPS id 7FBAF10053E01
+	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 11:41:22 -0700 (PDT)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 173BD24954
+	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 18:42:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1588272154;
+	bh=R81KA1exG6QyWEvvM1/QecUU8WMGFHG/k/cxKcdkfnc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SKIj3ofhpyqALEnbxq/Qwt9I+q8xqgFA+l6wnFR3a2eTeE5nVt5QfYHFAwjC/y+Ja
+	 s8uytIm5fXDttDTtpNCgxSD0+3yT34ulwtIpiC/VwDctbm4BV5uOySFOyHPHNganWE
+	 ftAE+TPkYBb4X9BD4lyjCgOpqW23VPFKogllHC+c=
+Received: by mail-wr1-f54.google.com with SMTP id d15so8344818wrx.3
+        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 11:42:34 -0700 (PDT)
+X-Gm-Message-State: AGi0Pua5zfTfC08IfLjfIsowZiiAVaEiLv0dLhnKpVuPdzusb+05+fWM
+	ds7y3ckkvZ5o6m8HrqP8DuuslKn9/hJLTdtafFXbLw==
+X-Google-Smtp-Source: APiQypJgn2E33Ju/7FojR2A+zMnprCF7LbVkAmb0PlfhPmDEYEV5k/ga1+sfxFBZugZk5p4MRnQtkD5+A+c7WwtOQ+E=
+X-Received: by 2002:a5d:42c8:: with SMTP id t8mr3902056wrr.70.1588272152368;
+ Thu, 30 Apr 2020 11:42:32 -0700 (PDT)
 MIME-Version: 1.0
-X-XM-SPF: eid=1jUDd2-0000hI-EL;;;mid=<875zdg26hp.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX1/0nSmexEm1WkrDW9iKj+jfV8y2wWo/acY=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa05.xmission.com
-X-Spam-Level: ***
-X-Spam-Status: No, score=3.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-	DCC_CHECK_NEGATIVE,TR_XM_PhishingBody,T_TM2_M_HEADER_IN_MSG,
-	T_TooManySym_01,XMGappySubj_01,XMSubLong,XM_B_Phish66
-	autolearn=disabled version=3.4.2
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-	*      [score: 0.5000]
-	*  0.7 XMSubLong Long Subject
-	*  0.5 XMGappySubj_01 Very gappy subject
-	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-	*  2.0 XM_B_Phish66 BODY: Obfuscated XMission
-	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-	*      [sa05 1397; Body=1 Fuz1=1 Fuz2=1]
-	*  0.0 T_TooManySym_01 4+ unique symbols in subject
-	*  0.0 TR_XM_PhishingBody Phishing flag in body of message
-X-Spam-DCC: XMission; sa05 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ***;David Hildenbrand <david@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 806 ms - load_scoreonly_sql: 0.09 (0.0%),
-	signal_user_changed: 13 (1.6%), b_tie_ro: 11 (1.4%), parse: 1.99
-	(0.2%), extract_message_metadata: 23 (2.8%), get_uri_detail_list: 7
-	(0.8%), tests_pri_-1000: 19 (2.4%), tests_pri_-950: 1.58 (0.2%),
-	tests_pri_-900: 1.29 (0.2%), tests_pri_-90: 310 (38.5%), check_bayes:
-	309 (38.3%), b_tokenize: 17 (2.1%), b_tok_get_all: 195 (24.2%),
-	b_comp_prob: 6 (0.7%), b_tok_touch_all: 87 (10.8%), b_finish: 0.91
-	(0.1%), tests_pri_0: 423 (52.5%), check_dkim_signature: 0.62 (0.1%),
-	check_dkim_adsp: 2.2 (0.3%), poll_dns_idle: 0.46 (0.1%), tests_pri_10:
-	1.80 (0.2%), tests_pri_500: 6 (0.7%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
-Message-ID-Hash: 2TOPRC53FMIY7EVDBXHMNYIOAQCYJHFI
-X-Message-ID-Hash: 2TOPRC53FMIY7EVDBXHMNYIOAQCYJHFI
-X-MailFrom: ebiederm@xmission.com
+References: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAHk-=wh6d59KAG_6t+NrCLBz-i0OUSJrqurric=m0ZG850Ddkw@mail.gmail.com>
+ <CALCETrVP5k25yCfknEPJm=XX0or4o2b2mnzmevnVHGNLNOXJ2g@mail.gmail.com> <CAHk-=widQfxhWMUN3bGxM_zg3az0fRKYvFoP8bEhqsCtaEDVAA@mail.gmail.com>
+In-Reply-To: <CAHk-=widQfxhWMUN3bGxM_zg3az0fRKYvFoP8bEhqsCtaEDVAA@mail.gmail.com>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Thu, 30 Apr 2020 11:42:20 -0700
+X-Gmail-Original-Message-ID: <CALCETrVq11YVqGZH7J6A=tkHB1AZUWXnKwAfPUQ-m9qXjWfZtg@mail.gmail.com>
+Message-ID: <CALCETrVq11YVqGZH7J6A=tkHB1AZUWXnKwAfPUQ-m9qXjWfZtg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Message-ID-Hash: ADZEANTRAQ7BOKC2U4ZVKP2RPOIHY3EM
+X-Message-ID-Hash: ADZEANTRAQ7BOKC2U4ZVKP2RPOIHY3EM
+X-MailFrom: luto@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-mm@kvack.org, virtio-dev@lists.oasis-open.org, virtualization@lists.linux-foundation.org, linuxppc-dev@lists.ozlabs.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-hyperv@vger.kernel.org, linux-s390@vger.kernel.org, xen-devel@lists.xenproject.org, Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "Michael S . Tsirkin" <mst@redhat.com>, Michal Hocko <mhocko@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, Baoquan He <bhe@redhat.com>
+CC: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Tony Luck <tony.luck@intel.com>, Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, stable <stable@vger.kernel.org>, the arch/x86 maintainers <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Erwin Tsaur <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2TOPRC53FMIY7EVDBXHMNYIOAQCYJHFI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ADZEANTRAQ7BOKC2U4ZVKP2RPOIHY3EM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -94,154 +61,50 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-David Hildenbrand <david@redhat.com> writes:
-
-> On 30.04.20 18:33, Eric W. Biederman wrote:
->> David Hildenbrand <david@redhat.com> writes:
->> 
->>> On 30.04.20 17:38, Eric W. Biederman wrote:
->>>> David Hildenbrand <david@redhat.com> writes:
->>>>
->>>>> Some devices/drivers that add memory via add_memory() and friends (e.g.,
->>>>> dax/kmem, but also virtio-mem in the future) don't want to create entries
->>>>> in /sys/firmware/memmap/ - primarily to hinder kexec from adding this
->>>>> memory to the boot memmap of the kexec kernel.
->>>>>
->>>>> In fact, such memory is never exposed via the firmware memmap as System
->>>>> RAM (e.g., e820), so exposing this memory via /sys/firmware/memmap/ is
->>>>> wrong:
->>>>>  "kexec needs the raw firmware-provided memory map to setup the
->>>>>   parameter segment of the kernel that should be booted with
->>>>>   kexec. Also, the raw memory map is useful for debugging. For
->>>>>   that reason, /sys/firmware/memmap is an interface that provides
->>>>>   the raw memory map to userspace." [1]
->>>>>
->>>>> We don't have to worry about firmware_map_remove() on the removal path.
->>>>> If there is no entry, it will simply return with -EINVAL.
->>>>>
->>>>> [1]
->>>>> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-firmware-memmap
->>>>
->>>>
->>>> You know what this justification is rubbish, and I have previously
->>>> explained why it is rubbish.
->>>
->>> Actually, no, I don't think it is rubbish. See patch #3 and the cover
->>> letter why this is the right thing to do *for special memory*, *not
->>> ordinary DIMMs*.
->>>
->>> And to be quite honest, I think your response is a little harsh. I don't
->>> recall you replying to my virtio-mem-related comments.
->>>
->>>>
->>>> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
->>>>
->>>> This needs to be based on weather the added memory is ultimately normal
->>>> ram or is something special.
->>>
->>> Yes, that's what the caller are expected to decide, see patch #3.
->>>
->>> kexec should try to be as closely as possible to a real reboot - IMHO.
->> 
->> That is very fuzzy in terms of hotplug memory.  The kexec'd kernel
->> should see the hotplugged memory assuming it is ordinary memory.
->> 
->> But kexec is not a reboot although it is quite similar.   Kexec is
->> swapping one running kernel and it's state for another kernel without
->> rebooting.
+On Thu, Apr 30, 2020 at 10:17 AM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
 >
-> I agree (especially regarding the arm64 DIMM hotplug discussion).
-> However, for the two cases
+> On Thu, Apr 30, 2020 at 9:52 AM Andy Lutomirski <luto@kernel.org> wrote:
+> >
+> > If I'm going to copy from memory that might be bad but is at least a
+> > valid pointer, I want a function to do this.  If I'm going to copy
+> > from memory that might be entirely bogus, that's a different
+> > operation.  In other words, if I'm writing e.g. filesystem that is
+> > touching get_user_pages()'d persistent memory, I don't want to panic
+> > if the memory fails, but I do want at least a very loud warning if I
+> > follow a wild pointer.
+> >
+> > So I think that probe_kernel_copy() is not a valid replacement for
+> > memcpy_mcsafe().
 >
-> a) dax/kmem
-> b) virtio-mem
+> Fair enough.
 >
-> We really want to let the driver take back control and figure out "what
-> to do with the memory".
-
-From reading your v1 cover letter (the description appears missing in
-v2) I see what you are talking about with respect to virtio-mem.
-
-So I will count virt-io mem as something different.
-
->>>> Justifying behavior by documentation that does not consider memory
->>>> hotplug is bad thinking.
->>>
->>> Are you maybe confusing this patch series with the arm64 approach? This
->>> is not about ordinary hotplugged DIMMs.
->> 
->> I think I am.
->> 
->> My challenge is that I don't see anything in the description that says
->> this isn't about ordinary hotplugged DIMMs.  All I saw was hotplug
->> memory.
+> That said, the part I do like about probe_kernel_read/write() is that
+> it does indicate which part we think is possibly the one that needs
+> more care.
 >
-> I'm sorry if that was confusing, I tried to stress that kmem and
-> virtio-mem is special in the description.
+> Sure, it _might_ be both sides, but honestly, that's likely the much
+> less common case. Kind of like "copy_{to,from}_user()" vs
+> "copy_in_user()".
 >
-> I squeezed a lot of that information into the cover letter and into
-> patch #3.
+> Yes, the "copy_in_user()" case exists, but it's the odd and unusual case.
 
+I suppose there could be a consistent naming like this:
 
->> If the class of memory is different then please by all means let's mark
->> it differently in struct resource so everyone knows it is different.
->> But that difference needs to be more than hotplug.
->> 
->> That difference needs to be the hypervisor loaned us memory and might
->> take it back at any time, or this memory is persistent and so it has
->> these different characteristics so don't use it as ordinary ram.
->
-> Yes, and I think kmem took an excellent approach of explicitly putting
-> that "System RAM" into a resource hierarchy. That "System RAM" won't
-> show up as a root node under /proc/iomem (see patch #3), which already
-> results in kexec-tools to treat it in a special way. I am thinking about
-> doing the same for virtio-mem.
+copy_from_user()
+copy_to_user()
 
-Reading this and your patch cover letters again my concern is that
-the justification seems to be letting the tail wag the dog.
+copy_from_unchecked_kernel_address() [what probe_kernel_read() is]
+copy_to_unchecked_kernel_address() [what probe_kernel_write() is]
 
-You want kexec-tools to behave in a certain way so you are changing the
-kernel.
+copy_from_fallible() [from a kernel address that can fail to a kernel
+address that can't fail]
+copy_to_fallible() [the opposite, but hopefully identical to memcpy() on x86]
 
-Rather it should be change the kernel to clearly reflect reality and if
-you can get away without a change to kexec-tools that is a bonus.
+copy_from_fallible_to_user()
+copy_from_user_to_fallible()
 
->> That information is also useful to other people looking at the system
->> and seeing what is going on.
->> 
->> Just please don't muddle the concepts, or assume that whatever subset of
->> hotplug memory you are dealing with is the only subset.
->
-> I can certainly rephrase the subject/description/comment, stating that
-> this is not to be used for ordinary hotplugged DIMMs - only when the
-> device driver is under control to decide what to do with that memory -
-> especially when kexec'ing.
->
-> (previously, I called this flag MHP_DRIVER_MANAGED, but I think
-> MHP_NO_FIRMWARE_MEMMAP is clearer, we just need a better description)
->
-> Would that make it clearer?
-
-I am not certain, but Andrew Morton deliberately added that
-firmware_map_add_hotplug call.  Which means that there is a reason
-for putting hotplugged memory in the firmware map.
-
-So the justification needs to take that reason into account.  The
-justification can not be it is hotplugged therefore it should not belong
-in the firmware memory map.  Unless you can show that
-firmware_map_add_hotplug that was actually a bug and should be removed.
-But as it has been that way since 2010 that seems like a long shot.
-
-So my question is what is right for the firmware map?
-
-Why does the firmware map support hotplug entries?
-
-Once we have the answers to those questions we can figure out what logic
-the special kinds of memory hotplug need.
-
-Ref: d96ae5309165 ("memory-hotplug: create /sys/firmware/memmap entry for new memory")
-
-Eric
+These names are fairly verbose and could probably be improved.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
