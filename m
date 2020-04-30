@@ -1,48 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69251BF31A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Apr 2020 10:41:22 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C701BF2E7
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Apr 2020 10:34:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 356F11114C1BB;
-	Thu, 30 Apr 2020 01:40:12 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5E5E5111B218A;
+	Thu, 30 Apr 2020 01:33:06 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::644; helo=mail-ej1-x644.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2C82C1114C1BB
-	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 01:40:10 -0700 (PDT)
-IronPort-SDR: 0hr2MyUoSdO0bYB1x3PtY3UTzajQBUU6pe+yeqMc2D+eRQvAOwizzo19/2D5eZlk5uj45OFF2e
- dWxvLICOf98A==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2020 01:41:19 -0700
-IronPort-SDR: 9Q009KJtDX0U5mEh/Vb1gvGvryyqyuUiHJvnd4ywchno/7wp/uzjgf0gq2h1ROcgWMyeOHi73B
- NA/EaQp265Rw==
-X-IronPort-AV: E=Sophos;i="5.73,334,1583222400";
-   d="scan'208";a="282790726"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2020 01:41:18 -0700
-Subject: [PATCH v2 2/2] x86/copy_safe: Introduce copy_safe_fast()
-From: Dan Williams <dan.j.williams@intel.com>
-To: tglx@linutronix.de, mingo@redhat.com
-Date: Thu, 30 Apr 2020 01:25:09 -0700
-Message-ID: <158823510897.2094061.8955960257425244970.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 8FFE1111B2187
+	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 01:33:03 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id pg17so3982680ejb.9
+        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 01:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=87dIcS/jrU3IxflLIkdtnvU4qll0iHvEZNuLGZ4o7wI=;
+        b=C7NzSwQeQ8r7hb6zu0mE43nN5BVsWOZy21t9s86oMspwPoqNG+2r9QwYXMI253bkO+
+         f2NXbqJEZlVUDXw2jKOJXTdMksOMSeCU/1+d1/KW3kPK6bDnIkjaV85ydvslVx7+7VaK
+         H/Wy8s3jtrbog9dFPbt+U8g4F9a/kPxAFzoHfDtTpSCDud/nTiDKxbIHNOx4gDT1cWli
+         scShmtfTOkTf1D6LztaDjOZAMAIUOcl9E1Ehg4s+icpPrmffJn6TfhOtMJuuVZZemCWo
+         u5q8IaOdIkls7C87+V/X7frCMtH72XB/et/faVXvhnFad5uP3/TQ8BbSLNTCllAusarT
+         BwFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=87dIcS/jrU3IxflLIkdtnvU4qll0iHvEZNuLGZ4o7wI=;
+        b=NXQhsbX1h+FjddziSFgDApAfE962gy7IIm+OL7Q95dshgqeFuAgNPNYPncc1dret2E
+         4cxZi2uAFIYJdYxBBRyxdGAT6djae338ah8Mki8kyqfo153Fojk6rCv4W8ZlUpxwrEkl
+         N1zQem1Khgbkc8ObEPDFfC2oTyaY/vJLNo8DCVfCecSK2YYnSmnmexWCnh6ENGMt+Blk
+         N0LtFpqFk4mpg6mJk8T+v/IdahgXiRbxF86vRKhp9P8y9kj6LtwDKTNav8/W/eiGQMY6
+         W6SHZt1VCim51UDOxwXbeeBko82SaNov4EzdYbRvvC84wsFl+Gs8kxGcvcLA0+EHMedC
+         8qbQ==
+X-Gm-Message-State: AGi0PuYVIdYj+DWjPNU+NhxJyT9JBNDEg35D7khOiAA38gKpHS9kYZnB
+	3OreFmUeJCITTf3YhdmFaG1D9NUmOoczX0lsa+m5cw==
+X-Google-Smtp-Source: APiQypLBVztlIIHfr3wCtEt+MVa/TaJHl/O1nuNqStB0TwAKkS6wTTbCgFJlPXMDG8iI601GTPaB481cRsH+FNdImHY=
+X-Received: by 2002:a17:906:7750:: with SMTP id o16mr1715515ejn.12.1588235651152;
+ Thu, 30 Apr 2020 01:34:11 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: PXFVPD62G6I5NZ6L6TTV23XU3MDAS7BJ
-X-Message-ID-Hash: PXFVPD62G6I5NZ6L6TTV23XU3MDAS7BJ
+References: <20200429160803.109056-1-david@redhat.com> <20200429160803.109056-3-david@redhat.com>
+ <a7305cd8-8b2f-1d8f-7654-ecf777c46df6@redhat.com> <CAPcyv4i04+QLxiOyz04_eef2DFetEFKBUmi2A4xxw9abQD8hNQ@mail.gmail.com>
+ <e32522cd-31bb-e129-47a6-9ec13b570506@redhat.com>
+In-Reply-To: <e32522cd-31bb-e129-47a6-9ec13b570506@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 30 Apr 2020 01:34:00 -0700
+Message-ID: <CAPcyv4gjRE23BHsBAnaVWAPUHWdenxYMUwDBnDF7UmoejmmbNQ@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] mm/memory_hotplug: Introduce MHP_DRIVER_MANAGED
+To: David Hildenbrand <david@redhat.com>
+Message-ID-Hash: 34EI3RMXK6AZJI7MN4QXW5DQAVMVAR2A
+X-Message-ID-Hash: 34EI3RMXK6AZJI7MN4QXW5DQAVMVAR2A
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, stable@vger.kernel.org, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Tony Luck <tony.luck@intel.com>, Linus Torvalds <torvalds@linux-foundation.org>, Erwin Tsaur <erwin.tsaur@intel.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, virtio-dev@lists.oasis-open.org, virtualization@lists.linux-foundation.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Linux ACPI <linux-acpi@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-hyperv@vger.kernel.org, linux-s390 <linux-s390@vger.kernel.org>, xen-devel <xen-devel@lists.xenproject.org>, Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, "Michael S . Tsirkin" <mst@redhat.com>, Michal Hocko <mhocko@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, Baoquan He <bhe@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Dave Hansen <dave.hansen@linux.intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PXFVPD62G6I5NZ6L6TTV23XU3MDAS7BJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/34EI3RMXK6AZJI7MN4QXW5DQAVMVAR2A/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -51,144 +69,68 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The existing copy_safe() implementation satisfies two primary concerns.
-It provides a copy routine that avoids known unrecoverable scenarios
-(poison consumption via fast-string instructions / accesses across
-cacheline boundaries), and it provides a fallback to fast plain memcpy
-if the platform does not indicate recovery capability. The fallback is
-broken for two reasons. It fails the expected copy_safe() semantics that
-allow it to be used in scenarios where reads / writes trigger memory
-protection faults and it fails to enable machine check recovery on
-systems that do not need the careful semantics of copy_safe_slow().
+On Thu, Apr 30, 2020 at 1:21 AM David Hildenbrand <david@redhat.com> wrote:
+> >> Just because we decided to use some DAX memory in the current kernel as
+> >> system ram, doesn't mean we should make that decision for the kexec
+> >> kernel (e.g., using it as initial memory, placing kexec binaries onto
+> >> it, etc.). This is also not what we would observe during a real reboot.
+> >
+> > Agree.
+> >
+> >> I can see that the "System RAM" resource will show up as child resource
+> >> under the device e.g., in /proc/iomem.
+> >>
+> >> However, entries in /sys/firmware/memmap/ are created as "System RAM".
+> >
+> > True. Do you think this rename should just be limited to what type
+> > /sys/firmware/memmap/ emits? I have the concern, but no proof
+>
+> We could split this patch into
+>
+> MHP_NO_FIRMWARE_MEMMAP (create firmware memmap entries)
+>
+> and
+>
+> MHP_DRIVER_MANAGED (name of the resource)
+>
+> See below, the latter might not be needed.
+>
+> > currently, that there are /proc/iomem walkers that explicitly look for
+> > "System RAM", but might be thrown off by "System RAM (driver
+> > managed)". I was not aware of /sys/firmware/memmap until about 5
+> > minutes ago.
+>
+> The only two users of /proc/iomem I am aware of are kexec-tools and some
+> s390x tools.
+>
+> kexec-tools on x86-64 uses /sys/firmware/memmap to craft the initial
+> memmap, but uses /proc/iomem to
+> a) Find places for kexec images
+> b) Detect memory regions to dump via kdump
+>
+> I am not yet sure if we really need the "System RAM (driver managed)"
+> part. If we can teach kexec-tools to
+> a) Don't place kexec images on "System RAM" that has a parent resource
+> (most likely requires kexec-tools changes)
+> b) Consider for kdump "System RAM" that has a parent resource
+> we might be able to avoid renaming that. (I assume that's already done)
+>
+> E.g., regarding virtio-mem (patch #3) I am currently also looking into
+> creating a parent resource instead, like dax/kmem to avoid the rename:
+>
+> :/# cat /proc/iomem
+> 00000000-00000fff : Reserved
+> [...]
+> 100000000-13fffffff : System RAM
+> 140000000-33fffffff : virtio0
+>   140000000-147ffffff : System RAM
+>   148000000-14fffffff : System RAM
+>   150000000-157ffffff : System RAM
+> 340000000-303fffffff : virtio1
+>   340000000-347ffffff : System RAM
+> 3280000000-32ffffffff : PCI Bus 0000:00
 
-With copy_safe_fast() in place copy_safe() never falls back to plain
-memcpy(), and it is fast regardless in every other scenario outside of
-the copy_safe_slow() blacklist scenario.
-
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Tested-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Fixes: 92b0729c34ca ("x86/mm, x86/mce: Add memcpy_mcsafe()")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- arch/x86/include/asm/copy_safe.h |    2 ++
- arch/x86/lib/copy_safe.c         |    5 ++---
- arch/x86/lib/copy_safe_64.S      |   40 ++++++++++++++++++++++++++++++++++++++
- tools/objtool/check.c            |    1 +
- 4 files changed, 45 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/include/asm/copy_safe.h b/arch/x86/include/asm/copy_safe.h
-index 1c130364dd61..306248ca819f 100644
---- a/arch/x86/include/asm/copy_safe.h
-+++ b/arch/x86/include/asm/copy_safe.h
-@@ -12,5 +12,7 @@ static inline void enable_copy_safe_slow(void)
- 
- __must_check unsigned long
- copy_safe_slow(void *dst, const void *src, size_t cnt);
-+__must_check unsigned long
-+copy_safe_fast(void *dst, const void *src, size_t cnt);
- 
- #endif /* _COPY_SAFE_H_ */
-diff --git a/arch/x86/lib/copy_safe.c b/arch/x86/lib/copy_safe.c
-index 9dd3a831ff94..b8472e6a44d3 100644
---- a/arch/x86/lib/copy_safe.c
-+++ b/arch/x86/lib/copy_safe.c
-@@ -25,7 +25,7 @@ void enable_copy_safe_slow(void)
-  *
-  * We only call into the slow version on systems that have trouble
-  * actually do machine check recovery. Everyone else can just
-- * use memcpy().
-+ * use copy_safe_fast().
-  *
-  * Return 0 for success, or number of bytes not copied if there was an
-  * exception.
-@@ -34,8 +34,7 @@ __must_check unsigned long copy_safe(void *dst, const void *src, size_t cnt)
- {
- 	if (static_branch_unlikely(&copy_safe_slow_key))
- 		return copy_safe_slow(dst, src, cnt);
--	memcpy(dst, src, cnt);
--	return 0;
-+	return copy_safe_fast(dst, src, cnt);
- }
- EXPORT_SYMBOL_GPL(copy_safe);
- 
-diff --git a/arch/x86/lib/copy_safe_64.S b/arch/x86/lib/copy_safe_64.S
-index 46dfdd832bde..551c781ae9fd 100644
---- a/arch/x86/lib/copy_safe_64.S
-+++ b/arch/x86/lib/copy_safe_64.S
-@@ -2,7 +2,9 @@
- /* Copyright(c) 2016-2020 Intel Corporation. All rights reserved. */
- 
- #include <linux/linkage.h>
-+#include <asm/alternative-asm.h>
- #include <asm/copy_safe_test.h>
-+#include <asm/cpufeatures.h>
- #include <asm/export.h>
- #include <asm/asm.h>
- 
-@@ -120,4 +122,42 @@ EXPORT_SYMBOL_GPL(copy_safe_slow)
- 	_ASM_EXTABLE(.L_write_leading_bytes, .E_leading_bytes)
- 	_ASM_EXTABLE(.L_write_words, .E_write_words)
- 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
-+
-+/*
-+ * copy_safe_fast - memory copy with exception handling
-+ *
-+ * Fast string copy + fault / exception handling. If the CPU does
-+ * support machine check exception recovery, but does not support
-+ * recovering from fast-string exceptions then this CPU needs to be
-+ * added to the copy_safe_slow_key set of quirks. Otherwise, absent any
-+ * machine check recovery support this version should be no slower than
-+ * standard memcpy.
-+ */
-+SYM_FUNC_START(copy_safe_fast)
-+	ALTERNATIVE "jmp copy_safe_slow", "", X86_FEATURE_ERMS
-+	movq %rdi, %rax
-+	movq %rdx, %rcx
-+.L_copy:
-+	rep movsb
-+	/* Copy successful. Return zero */
-+	xorl %eax, %eax
-+	ret
-+SYM_FUNC_END(copy_safe_fast)
-+EXPORT_SYMBOL_GPL(copy_safe_fast)
-+
-+	.section .fixup, "ax"
-+.E_copy:
-+	/*
-+	 * On fault %rcx is updated such that the copy instruction could
-+	 * optionally be restarted at the fault position, i.e. it
-+	 * contains 'bytes remaining'. A non-zero return indicates error
-+	 * to copy_safe() users, or indicate short transfers to
-+	 * user-copy routines.
-+	 */
-+	movq %rcx, %rax
-+	ret
-+
-+	.previous
-+
-+	_ASM_EXTABLE_FAULT(.L_copy, .E_copy)
- #endif
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index be20eff8f358..e8b6e2438d31 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -533,6 +533,7 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_shift_out_of_bounds",
- 	/* misc */
- 	"csum_partial_copy_generic",
-+	"copy_safe_fast",
- 	"copy_safe_slow",
- 	"copy_safe_slow_handle_tail",
- 	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
+Looks good to me if it flies with kexec-tools.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
