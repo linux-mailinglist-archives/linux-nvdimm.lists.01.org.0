@@ -1,70 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95AC1C0B46
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 May 2020 02:31:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DCE1C0B4E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  1 May 2020 02:40:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 38D62111FC1C0;
-	Thu, 30 Apr 2020 17:30:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	by ml01.01.org (Postfix) with ESMTP id 00EBA111FC1E6;
+	Thu, 30 Apr 2020 17:38:58 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::142; helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BBC44111FC1C0
-	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:30:28 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id d16so6088933edv.8
-        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:31:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 5AFC810113FCE
+	for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:38:56 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id z22so2636353lfd.0
+        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:40:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linux-foundation.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VDf2N8mBL2qJb74S4ITCK9fAPPmUAgvoerWrh8dXt4o=;
-        b=MreruorxVqBBm3pLqSig9B5BAdyGIXSOxD6BJt2oKVTHUb1/8Whm8gIpcX16l58lSv
-         QPNB29r7LEHIVU4GCCsv3CKa2gCOu0ExTOuE3vO1blHXWjouvTt8wvZBkUIdShaFwHPi
-         GYDLjgWlY3m6y8KprJDmZNXjTI5GXeXGOTUNA=
+         :cc:content-transfer-encoding;
+        bh=sRFJfZwHnsJQqFJepe+LvPqS40H3J51FnSnbFsYaAJM=;
+        b=AvUgqN7PB/2m6j6r3ChFqht9nBGFMbV8AKa9u30SyVlVrTUy+Tv1TOIg+df2atuDm9
+         mrQr9/kg7XzvTBlUGO0QByBQRaSsjKRXNdddPP7Y9Z8zjn9Nh1TKQSTFhhdcbHFIGZAm
+         23fUYndzjvvhniZu8dhlkJL4EDHoYqfSv1iW0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VDf2N8mBL2qJb74S4ITCK9fAPPmUAgvoerWrh8dXt4o=;
-        b=B5FWZSGNFuso7Rcf6uVAqsv3CQPmelnT89ZDOEGvXLAecMG4Sm8ZIOaeiCP0PfSUaG
-         Dyjuyi2TVwwQTxtgTBXUdJzROpugSdiTXRlhmj5Q0OHpx0pqAUsxsEITrn/x0Ej5XH+f
-         uc+AZk9GyQXvp5DgOxJ69fGasX3MaZU0em6yhnmjy7YQMY7M/9H0OmJlNxtIhHRpmvJj
-         NCgW4fiyaKzLMaMiJJsgqgb0R1CJems0CbdJFODM4/71+ZtMj7YxyROMxtIbBqa5q7Tk
-         j1p0ra2/u54PBiqSRrWjI8arpcqjEEA9oQCT+gf4mSGiMnY29rfLwwN5EyFi/NRGCHuq
-         j1kg==
-X-Gm-Message-State: AGi0PuZMwy880dLxQeRop2klATj65rSC1kvuUY6TEShLwBhgMQKvOyWt
-	lfopoV0GQy6AeWqyd/AWMgbMBGOC5ZA=
-X-Google-Smtp-Source: APiQypK9/yrUvEFCuiJyQhAIwOXGzc7RWNOU0XGxsCzIpgK00SSWux4Q5ZNoTb4NtAX7kZ4QoOYzXQ==
-X-Received: by 2002:a05:6402:1a2f:: with SMTP id be15mr1465346edb.385.1588293100497;
-        Thu, 30 Apr 2020 17:31:40 -0700 (PDT)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
-        by smtp.gmail.com with ESMTPSA id f4sm106049ejk.26.2020.04.30.17.31.40
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=sRFJfZwHnsJQqFJepe+LvPqS40H3J51FnSnbFsYaAJM=;
+        b=jmeeiVXa5h3mbYcbYqZpx5m7lRQSgFs3/7ByaMW8S8h15UgwGUWuTYvxWpPb0UhO1o
+         SAniZrWz4EL0i7iZA/WGY5fWbcZQ5+fon+btYSGVNqyjxy3O5gFlOASakxArLSL/sAq4
+         diiLYBqrLlRbtuugl/Chi42Mvb5eOp6ZrkxF74dGOhWYbcdk1XunuxvtJHQhFo314aTN
+         mIyqrent4LFxENys7GDuYs/tgi75hXp4j0vDQL1lO07YEiMhWzOrLAcyO6hUZfgcQ4mO
+         xHQgTgV5Tyxwt0q+FC4u+HmlFmh189dsiTkgvkudfMZdc7H4p5tRkL33FthXzmp4sbDq
+         YQXQ==
+X-Gm-Message-State: AGi0Pua/NjQw8LSPVMTFaa8Fw9vsKvgmLoty/1sjzDt6+0csWgRyOsA2
+	ANWu5l5XxKkQxj+rHiHRu38gBTChugY=
+X-Google-Smtp-Source: APiQypIaIfyg6cUwSowpAVOU7ID9BRybagQ3233Ekvv8j30pMwM018cn8kZvftggOmDWom0Frk6fYQ==
+X-Received: by 2002:a19:505b:: with SMTP id z27mr764857lfj.123.1588293605548;
+        Thu, 30 Apr 2020 17:40:05 -0700 (PDT)
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
+        by smtp.gmail.com with ESMTPSA id b9sm1193671lfp.27.2020.04.30.17.40.02
         for <linux-nvdimm@lists.01.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Apr 2020 17:31:40 -0700 (PDT)
-Received: by mail-wr1-f47.google.com with SMTP id x17so9703283wrt.5
-        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:31:40 -0700 (PDT)
-X-Received: by 2002:ac2:4da1:: with SMTP id h1mr783565lfe.152.1588292705876;
- Thu, 30 Apr 2020 17:25:05 -0700 (PDT)
+        Thu, 30 Apr 2020 17:40:03 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id b2so1315144ljp.4
+        for <linux-nvdimm@lists.01.org>; Thu, 30 Apr 2020 17:40:02 -0700 (PDT)
+X-Received: by 2002:a2e:814e:: with SMTP id t14mr886854ljg.204.1588293602471;
+ Thu, 30 Apr 2020 17:40:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAHk-=wh6d59KAG_6t+NrCLBz-i0OUSJrqurric=m0ZG850Ddkw@mail.gmail.com>
- <CALCETrVP5k25yCfknEPJm=XX0or4o2b2mnzmevnVHGNLNOXJ2g@mail.gmail.com>
- <CAHk-=widQfxhWMUN3bGxM_zg3az0fRKYvFoP8bEhqsCtaEDVAA@mail.gmail.com>
- <CALCETrVq11YVqGZH7J6A=tkHB1AZUWXnKwAfPUQ-m9qXjWfZtg@mail.gmail.com>
- <20200430192258.GA24749@agluck-desk2.amr.corp.intel.com> <CAHk-=wg0Sza8uzQHzJbdt7FFc7bRK+o1BB=VBUGrQEvVv6+23w@mail.gmail.com>
- <CAPcyv4g0a406X9-=NATJZ9QqObim9Phdkb_WmmhsT9zvXsGSpw@mail.gmail.com> <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
-In-Reply-To: <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
+References: <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
+ <1962EE67-8AD1-409D-963A-4F1E1AB3B865@amacapital.net>
+In-Reply-To: <1962EE67-8AD1-409D-963A-4F1E1AB3B865@amacapital.net>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Thu, 30 Apr 2020 17:24:49 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh1SPyuGkTkQESsacwKTpjWd=_-KwoCK5o=SuC3yMdf7A@mail.gmail.com>
-Message-ID: <CAHk-=wh1SPyuGkTkQESsacwKTpjWd=_-KwoCK5o=SuC3yMdf7A@mail.gmail.com>
+Date: Thu, 30 Apr 2020 17:39:46 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgeMRm_yhb_fwvmgdaPMYzgXY01cYvw5htHUCTwSzswqg@mail.gmail.com>
+Message-ID: <CAHk-=wgeMRm_yhb_fwvmgdaPMYzgXY01cYvw5htHUCTwSzswqg@mail.gmail.com>
 Subject: Re: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
-To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: 3BX6KFH6QRPG5ZUMCA2ELT2GMBKXYPVT
-X-Message-ID-Hash: 3BX6KFH6QRPG5ZUMCA2ELT2GMBKXYPVT
+To: Andy Lutomirski <luto@amacapital.net>
+Message-ID-Hash: 4MREIW3LBCNTYRZ6CYULXJNPCFAORXUU
+X-Message-ID-Hash: 4MREIW3LBCNTYRZ6CYULXJNPCFAORXUU
 X-MailFrom: torvalds@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -72,64 +67,56 @@ CC: "Luck, Tony" <tony.luck@intel.com>, Andy Lutomirski <luto@kernel.org>, Thoma
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3BX6KFH6QRPG5ZUMCA2ELT2GMBKXYPVT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4MREIW3LBCNTYRZ6CYULXJNPCFAORXUU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Thu, Apr 30, 2020 at 5:10 PM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> It's a horrible word, btw. The word doesn't actually mean what Andy
-> means it to mean. "fallible" means "can make mistakes", not "can
-> fault".
-
-Btw, on naming: the name should be about _why_ it can fault, not about
-whether it faults.
-
-Which hasn't been explained to me.
-
-I know why user accesses can fault. I still don't know why these new
-accesses can fault. I know of the old name (mcs), but the newly
-suggested name (safe) is the _opposite_ of an explanation of why it
-faults.
-
-Naming - like comments - shouldn't be about what some implementation
-is, but about the concept.
-
-Again, let me use that "copy_to_user()" as an example of this. Yes, it
-can fault. Notice how the name doesn't say "copy_to_faulting()". That
-would be WRONG. It can fault _because_ it is user memory, so
-"copy_to_user()" not only describes what it does, but it also
-implicitly describes that it can fault.
-
-THAT is the kind of explanation I'm looking for. The "memcpy_mcsafe()"
-at least had _some_ of that in it. It was wrong for all the _other_
-reasons (not having a direction, and the hardware just being complete
-and utter garbage), but at least there was a reason in the name.
-
-I am not interested in adding new infrastructure that cannot even be
-explained. Why would writes ever fault, considering they are posted
-(and again, "user space" is not a valid reason, we have that case
-already and have had it since day #1 even if the original naming was
-the same kind of bad implementation-specific name that "mcsafe" was).
-
-If the ONLY reason for the fault is a machine check, then the name
-should say so, and "copy_mc_to_user()" would be a perfectly fine name
-(along with copy_to_mc(), copy_from_mc(), and copy_in_mc()).
-
-It wasn't clear how "copy_to_mc()" could ever fault. Poisoning
-after-the-fact? Why would that be preferable to just mapping a dummy
-page? But even if it cannot fault, I can see that you might want to do
-it as a special kind of copy to avoid any read-mask-write artifacts
-(which can definitely happen on other architectures, and I could see a
-manual memcpy() implementation doing even on x86)
-
-                  Linus
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gVGh1LCBBcHIgMzAsIDIwMjAgYXQgNToyMyBQTSBBbmR5IEx1dG9taXJza2kgPGx1dG9AYW1h
+Y2FwaXRhbC5uZXQ+IHdyb3RlOg0KPg0KPiA+IEJ1dCBhbnl3YXksIEkgZG9uJ3QgaGF0ZSBzb21l
+dGhpbmcgbGlrZSAiY29weV90b191c2VyX2ZhbGxpYmxlKCkiDQo+ID4gY29uY2VwdHVhbGx5LiBU
+aGUgbmFtaW5nIG5lZWRzIHRvIGJlIGZpeGVkLCBpbiB0aGF0ICJ1c2VyIiBjYW4gYWx3YXlzDQo+
+ID4gdGFrZSBhIGZhdWx0LCBzbyBpdCdzIHRoZSBfc291cmNlXyB0aGF0IGNhbiBmYXVsdCwgbm90
+IHRoZSAidXNlciINCj4gPiBwYXJ0Lg0KPg0KPiBJIGRvbuKAmXQgbGlrZSB0aGlzLiAg4oCcdXNl
+cuKAnSBhbHJlYWR5IGltcGxpZWQgdGhhdCBiYXNpY2FsbHkgYW55dGhpbmcgY2FuIGJlIHdyb25n
+IHdpdGggdGhlIG1lbW9yeQ0KDQpNYXliZSBJIGRpZG4ndCBleHBsYWluLg0KDQoidXNlciIgYWxy
+ZWFkeSBpbXBsaWVzIGZhdWx0aW5nLiBXZSBhZ3JlZS4NCg0KQW5kIHNpbmNlIHdlIGJ5IGRlZmlu
+aXRpb24gY2Fubm90IGtub3cgd2hhdCB0aGUgdXNlciBoYXMgbWFwcGVkIGludG8NCnVzZXIgc3Bh
+Y2UsICpldmVyeSogbm9ybWFsIGNvcHlfdG9fdXNlcigpIGhhcyB0byBiZSBhYmxlIHRvIGhhbmRs
+ZQ0Kd2hhdGV2ZXIgZmF1bHRzIHRoYXQgdGhyb3dzIGF0IHVzLg0KDQpUaGUgcmVhc29uIEkgZGlz
+bGlrZSAiY29weV90b191c2VyX2ZhbGxpYmxlKCkiIGlzIHRoYXQgdGhlIHVzZXIgc2lkZQ0KYWxy
+ZWFkeSBoYXMgdGhhdCAnZmFsbGlibGUiLg0KDQpJZiBpdCdzIHRoZSBfc291cmNlXyBiZWluZyAi
+ZmFsbGlibGUiIChpdCByZWFsbHkgbmVlZHMgYSBiZXR0ZXIgbmFtZSAtDQpJIHdpbGwgbm90IGNh
+bGwgaXQganVzdCAiZiIpIHRoZW4gaXQgc2hvdWxkIGJlICJjb3B5X2ZfdG9fdXNlcigpIi4NCg0K
+VGhhdCB3b3VsZCBiZSBvay4NCg0KU28gImNvcHlfZl90b191c2VyKCkiIG1ha2VzIHNlbnNlLiBC
+dXQgImNvcHlfdG9fdXNlcl9mKCkiIGRvZXMgbm90Lg0KVGhhdCBwdXRzIHRoZSAiZiIgb24gdGhl
+ICJ1c2VyIiwgd2hpY2ggd2UgYWxyZWFkeSBrbm93IGNhbiBmYXVsdC4NCg0KU2VlIHdoYXQgSSB3
+YW50IGluIHRoZSBuYW1lPyBJIHdhbnQgdGhlIG5hbWUgdG8gc2F5IHdoaWNoIHNpZGUgY2FuDQpj
+YXVzZSBwcm9ibGVtcyENCg0KSWYgeW91IGFyZSBjb3B5aW5nIG1lbW9yeSBmcm9tIHNvbWUgZiBz
+b3VyY2UsIGl0IG11c3Qgbm90IGJlDQoiY29weV9zYWZlKCkiLiBUaGF0IGRvZXNuJ3Qgc2F5IGlm
+IHRoZSBfc291cmNlXyBpcyBmLCBvciB0aGUNCmRlc3RpbmF0aW9uIGlzIGYuDQoNClNvICJjb3B5
+X3RvX2YoKSIgbWFrZXMgc2Vuc2UgKHdlIGRvbid0IHNheSAiY29weV9rZXJuZWxfdG9fdXNlcigp
+IiAtDQp0aGUgIm5vcm1hbCIgY2FzZSBpcyBzaWxlbnQpLCBhbmQgImNvcHlfZnJvbV9mKCkiIG1h
+a2VzIHNlbnNlLg0KImNvcHlfaW5fZigpIiBtYWtlcyBzZW5zZSB0b28uDQoNCkJ1dCBub3QgdGhp
+cyAicmFuZG9tbHkgY29weSBzb21lIHJhbmRvbWx5IGYgbWVtb3J5IGFyZWEgdGhhdCBJIGRvbid0
+DQprbm93IGlmIGl0J3MgdGhlIHNvdXJjZSBvciB0aGUgZGVzdGluYXRpb24iLg0KDQpTb21ldGlt
+ZXMgeW91IG1heSB0aGVuIHVzZSBhIGNvbW1vbiBpbXBsZW1lbnRhdGlvbiBmb3IgdGhlIGRpZmZl
+cmVudA0KZGlyZWN0aW9ucyAtIGlmIHRoYXQgd29ya3Mgb24gdGhlIGFyY2hpdGVjdHVyZS4NCg0K
+Rm9yIGV4YW1wbGUsICJjb3B5X3RvX3VzZXIoKSIgYW5kICJjb3B5X2Zyb21fdXNlcigpIiBvbiB4
+ODYgYm90aCBlbmQNCnVwIGludGVybmFsbHkgdXNpbmcgYSBzaGFyZWQgImNvcHlfdXNlcl9nZW5l
+cmljKCkiIGltcGxlbWVudGF0aW9uLiBJDQp3aXNoIHRoYXQgd2Fzbid0IHRoZSBjYXNlICh3aGVu
+IEkgYXNrZWQgZm9yIHdoYXQgd2FzIHRvIGJlY29tZQ0KU1RBQy9DTEFDLCBJIGFza2VkIGZvciBv
+bmUgdGhhdCBjb3VsZCBkZXRlcm1pbmUgd2hpY2ggZGlyZWN0aW9uIG9mIGENCiJyZXAgbW92cyIg
+Y291bGQgdG91Y2ggdXNlciBzcGFjZSksIGJ1dCBpdCBzbyBoYXBwZW5zIHRoYXQgdGhlDQppbXBs
+ZW1lbnRhdGlvbnMgZW5kIHVwIGJlaW5nIHN5bW1ldHJpYyBvbiB4ODYuDQoNCkJ1dCB0aGF0J3Mg
+YSBwdXJlIGltcGxlbWVudGF0aW9uIGlzc3VlLCBhbmQgaXQgdmVyeSBtdWNoIGlzIG5vdCBnb2lu
+Zw0KdG8gYmUgdHJ1ZSBpbiBnZW5lcmFsLCBhbmQgaXQgc2hvdWxkbid0IGJlIGV4cG9zZWQgdG8g
+dXNlcnMgYXMgc3VjaA0KKGFuZCB3ZSBvYnZpb3VzbHkgZG9uJ3QpLg0KDQogICAgICAgICAgICAg
+ICAgTGludXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
+IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
+Lm9yZwo=
