@@ -2,66 +2,60 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B8F1C2C97
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  3 May 2020 14:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F531C2D34
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  3 May 2020 17:05:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EFE86110D4E25;
-	Sun,  3 May 2020 05:56:11 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=146.101.78.151; helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com; receiver=<UNKNOWN> 
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6CE471007B53E;
+	Sun,  3 May 2020 08:04:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::144; helo=mail-il1-x144.google.com; envelope-from=siregueye690@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-il1-x144.google.com (mail-il1-x144.google.com [IPv6:2607:f8b0:4864:20::144])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9470F110D4E23
-	for <linux-nvdimm@lists.01.org>; Sun,  3 May 2020 05:56:06 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-181-BT3qH9VsMz-dk4PkoNseiQ-1; Sun, 03 May 2020 13:57:31 +0100
-X-MC-Unique: BT3qH9VsMz-dk4PkoNseiQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Sun, 3 May 2020 13:57:30 +0100
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Sun, 3 May 2020 13:57:30 +0100
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Linus Torvalds' <torvalds@linux-foundation.org>, Dan Williams
-	<dan.j.williams@intel.com>
-Subject: RE: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
-Thread-Topic: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
-Thread-Index: AQHWH+ZTSK33XHL44ESHjM2jwgOtw6iWT55g
-Date: Sun, 3 May 2020 12:57:30 +0000
-Message-ID: <a4aabe6f2ca649779a772a5f0365af6f@AcuMS.aculab.com>
-References: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAHk-=wh6d59KAG_6t+NrCLBz-i0OUSJrqurric=m0ZG850Ddkw@mail.gmail.com>
- <CALCETrVP5k25yCfknEPJm=XX0or4o2b2mnzmevnVHGNLNOXJ2g@mail.gmail.com>
- <CAHk-=widQfxhWMUN3bGxM_zg3az0fRKYvFoP8bEhqsCtaEDVAA@mail.gmail.com>
- <CALCETrVq11YVqGZH7J6A=tkHB1AZUWXnKwAfPUQ-m9qXjWfZtg@mail.gmail.com>
- <20200430192258.GA24749@agluck-desk2.amr.corp.intel.com>
- <CAHk-=wg0Sza8uzQHzJbdt7FFc7bRK+o1BB=VBUGrQEvVv6+23w@mail.gmail.com>
- <CAPcyv4g0a406X9-=NATJZ9QqObim9Phdkb_WmmhsT9zvXsGSpw@mail.gmail.com>
- <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
- <CAPcyv4jvgCGU700x_U6EKyGsHwQBoPkJUF+6gP4YDPupjdViyQ@mail.gmail.com>
- <CAHk-=wiPkwF2+y6wZd=VD9BooKxHRWhSVW8dr+WSeeSPkJk7kQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wiPkwF2+y6wZd=VD9BooKxHRWhSVW8dr+WSeeSPkJk7kQ@mail.gmail.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+	by ml01.01.org (Postfix) with ESMTPS id A90D3100E5D94
+	for <linux-nvdimm@lists.01.org>; Sun,  3 May 2020 08:04:13 -0700 (PDT)
+Received: by mail-il1-x144.google.com with SMTP id b18so8930533ilf.2
+        for <linux-nvdimm@lists.01.org>; Sun, 03 May 2020 08:05:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=7pSTTOgZ+gT6KbdmMkmexbsXUVT//t5Stk1qx9sIS14=;
+        b=C+R/sJXiPPPmZY95gi22LG/IsPeD+jvYXHZ0YJWXEOFqHkMuV1Rq2Z27CSgRmI1qQE
+         Z1Y7ncFkE+LamaJRuIj9H8W5XPs/yKRiAkP00D/ziKknBiVeZffZAM5cVjDIfpcCqFWj
+         ydAJUOhqNmPuTfwM2xLhANL2agwJNeoQCpBt27qU0PqYymjlG2Nk9Mhs3kK8T3Dnqj1k
+         1b68tSyxlBucLE55K7KDqLwWBskuFiuolT0LEz41XyObOYX1mJn0QuOQjHQ0cX5QkKZ+
+         0nBHrX2VCxKwvTiycCC/ydC2ZI+hgsgYQ6K8vubaeQIqzsEAWlfp7CMzIUgIZaz4Jl+R
+         NQQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=7pSTTOgZ+gT6KbdmMkmexbsXUVT//t5Stk1qx9sIS14=;
+        b=dHRgvbD91aZVK9tosC+MjzIK4xdguIUQDuipYLvGzKmx5jeBLdMi/yYe3cbQrkrxqT
+         /BFAjEZZ54at1JXTtdCA0qA/QXaeGsSDIYZeMh/8basqWuYQE+OqI0cHFuqTGFl94qV+
+         mToCBF8qj1crvPgCjOwGWM0zWiCIOgB0SQlbPCFjVcegFrgpL3air3hwx+QUVHDkywBS
+         PwlmKMem45v/tmmTzsIQaru74o/eYzl3wMC4OJ8Jx1/4VZZUaGU94lHng5+pKwsRa9hx
+         RPI51ZoFP+NwI1VF4OrNj7Ts9zBlQbulAK6Lr0sp+badgJNg+rorSff9oLqNhlL0ySX0
+         ZGxw==
+X-Gm-Message-State: AGi0PuaOKQ2lI/GzbJ//nXFPP/pWQBPVzEx4TAPXl7HJtpbskHNgTx3R
+	0Q0XvNv/Pe5NHqNyAQoRrmp3AqFMZieSJB8R6PE=
+X-Google-Smtp-Source: APiQypJbPESYwPkOv3/fDQEqzbxPntfsIELvI0aI/02lUgeHLIFKGW5yyDdw/wPdLl/tJ8jUts4oRZ7RhPJuqfi/A0s=
+X-Received: by 2002:a92:9c0a:: with SMTP id h10mr11059481ili.12.1588518342957;
+ Sun, 03 May 2020 08:05:42 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Message-ID-Hash: A5YS3CKKYKUXWSY2QKX6BBWD25UY7TM5
-X-Message-ID-Hash: A5YS3CKKYKUXWSY2QKX6BBWD25UY7TM5
-X-MailFrom: david.laight@aculab.com
+From: Amelia Ibrahim <ameliaibrahim520@gmail.com>
+Date: Sun, 3 May 2020 16:05:32 +0100
+Message-ID: <CAGtvjUi4wLCFz4W5PjXsw7qPfck8jZpHSk1iyDG8d1AKYSX+eg@mail.gmail.com>
+Subject: Hello
+To: undisclosed-recipients:;
+Message-ID-Hash: DKC4LC4DMUTYHG2JHEVMQD57ICUJQ4CH
+X-Message-ID-Hash: DKC4LC4DMUTYHG2JHEVMQD57ICUJQ4CH
+X-MailFrom: siregueye690@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Luck, Tony" <tony.luck@intel.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, "Peter Zijlstra  <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, stable" <stable@vger.kernel.org>, the arch/x86 maintainers <x86@kernel.org>, "H. Peter Anvin  <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,  Benjamin Herrenschmidt  <benh@kernel.crashing.org>, Erwin Tsaur" <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, "Arnaldo Carvalho de Melo  <acme@kernel.org>, linux-nvdimm" <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A5YS3CKKYKUXWSY2QKX6BBWD25UY7TM5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DKC4LC4DMUTYHG2JHEVMQD57ICUJQ4CH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,51 +64,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Linus Torvalds
-> Sent: 01 May 2020 19:29
-...
-> And as DavidL pointed out - if you ever have "iomem" as a source or
-> destination, you need yet another case. Not because they can take
-> another kind of fault (although on some platforms you have the machine
-> checks for that too), but because they have *very* different
-> performance profiles (and the ERMS "rep movsb" sucks baby donkeys
-> through a straw).
-
-
-I was actually thinking that the nvdimm accesses need to be treated
-much more like (cached) memory mapped io space than normal system
-memory.
-So treating them the same as "iomem" and then having access functions
-that report access failures (which the current readq() doesn't)
-might make sense.
-
-If you are using memory that 'might fail' for kernel code or data
-you really get what you deserve.
-
-OTOH system response to PCIe errors is currently rather problematic.
-Mostly reads time out and return ~0u.
-This can be checked for and, if possibly valid, a second location read.
-
-However we have a x86 server box (I've forgotten whether it is HP or
-Dell) that generates an NMI whenever a PCIe link goes down.
-(The 'platform' takes the AER interrupt and uses an NMI to pass
-it to the kernel - whose bright idea was it to use an NMI???)
-This happens even after we've done an 'echo 1 >remove'.
-The system is supposed to be NEBS (I think that is the term) compliant
-which is supposed to be suitable for telephony work (including
-emergency calls), but any PCIe failure crashes the box!
-
-I've another system here that sometimes fails to bring the PCIe
-link back up.
-I guess these code paths don't get regular testing.
-In my case the PCIe slave is an fpga, reloading the fpga image
-(either over JTAG or after rewriting eeprom) doesn't always work.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+    Hello, I will like to talk with you
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
