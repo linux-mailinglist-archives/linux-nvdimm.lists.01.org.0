@@ -1,39 +1,73 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D255C1C3B4F
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 15:32:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E65B1C4608
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 20:34:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 782D311504ED1;
-	Mon,  4 May 2020 06:30:24 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=rpalethorpe@suse.com; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 929C3115170E9;
+	Mon,  4 May 2020 11:32:23 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4225311504ECF
-	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 06:30:22 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-	by mx2.suse.de (Postfix) with ESMTP id 80226AEB1;
-	Mon,  4 May 2020 13:31:59 +0000 (UTC)
-From: Richard Palethorpe <rpalethorpe@suse.com>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] nvdimm: Avoid race between probe and reading device attributes
-Date: Mon,  4 May 2020 14:31:22 +0100
-Message-Id: <20200504133122.22196-1-rpalethorpe@suse.com>
-X-Mailer: git-send-email 2.26.1
+	by ml01.01.org (Postfix) with ESMTPS id DDB4D11504EDE
+	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 11:32:20 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id gr25so14797303ejb.10
+        for <linux-nvdimm@lists.01.org>; Mon, 04 May 2020 11:33:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Glau+s6Q6iM76mHi/QXePg8xF2snTXD5otz87ESSu8A=;
+        b=F+2NEE8n0+6a2Uxkq3oo+gK/iDs1gXhBaBtJu3It7O83YXrMkKTw/j5R5KqU4cLb1I
+         vlOYdG8d6H2sSQjfFpkieMLY+KM5edr1MbbCXsj+B9wkYlXKMNdfSGw1CJFXf7fx5Q7C
+         nLx7CYq5rjomyrqgHsVmp6vku6f3HeDmYZpPHsh7ka8b5Df1pXeivwm1iUG0Tio8BF4o
+         ZS585n3JOtRJMk45ZcupX+D3R94fYlWZsYjSr5wbogW/u9eqdMEat4pDnASo56oFKvzS
+         7tnb7wc1b4OhUfvjaDeX366gFmfgoP2fFKltlwAvd8N31RZXbHNtbqksmP+ogCEDB/JL
+         SgwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Glau+s6Q6iM76mHi/QXePg8xF2snTXD5otz87ESSu8A=;
+        b=a7mVkx8kJIkIvp8dBkvp6A2WrC4q5/ElFxLFAkZ0eVo22qWkbPjYYX5TECmMtfGPUs
+         Vepb8qi3m60wvxkMhsfcDV+i64aJycr9EbWALbodGzS+Vno3dswGdmwq7mWT1/B4e6l8
+         uw/Lh5BSGy2E+fbBxO/iSmfIvTPSLAvbYuAgDiZvrwy1KON5RDF5IEN4nOnYpxcAEbRI
+         1WaQ4Qo193e6N2yj4kegyt9NLipeg2g6wwlqJAl+IXJfbZzEX/YvhbUGBqOkulnDgGaQ
+         UNStUwHasKybgxqEZQXZKQ2MNL3etisaRs67EZI6qjwp4cI7U9XNzOqp3A8eSVP834bb
+         0F1Q==
+X-Gm-Message-State: AGi0PuZWZEQ8MiEwteETM1BFqFwZSmEjNww0nw+NB77oWmzPXYKraKEk
+	/sCBUEaiMGb0DKZtvJEVwdx1smhBweRW9XshcU0bgA==
+X-Google-Smtp-Source: APiQypKMZgww2SWaJ3dlnMp45iEyQic5CmZ0rEfuzBZzZC+1C4Op+IwopR9sfyLSwESK4to/xI+WLCvGiTO9JNWKJqE=
+X-Received: by 2002:a17:907:9e5:: with SMTP id ce5mr15759967ejc.123.1588617237480;
+ Mon, 04 May 2020 11:33:57 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: 7AWKGIGESE5DPQGDLP554D26WAJHQCOS
-X-Message-ID-Hash: 7AWKGIGESE5DPQGDLP554D26WAJHQCOS
-X-MailFrom: rpalethorpe@suse.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Richard Palethorpe <rpalethorpe@suse.com>, linux-kernel@vger.kernel.org
+References: <158823509800.2094061.9683997333958344535.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAHk-=wh6d59KAG_6t+NrCLBz-i0OUSJrqurric=m0ZG850Ddkw@mail.gmail.com>
+ <CALCETrVP5k25yCfknEPJm=XX0or4o2b2mnzmevnVHGNLNOXJ2g@mail.gmail.com>
+ <CAHk-=widQfxhWMUN3bGxM_zg3az0fRKYvFoP8bEhqsCtaEDVAA@mail.gmail.com>
+ <CALCETrVq11YVqGZH7J6A=tkHB1AZUWXnKwAfPUQ-m9qXjWfZtg@mail.gmail.com>
+ <20200430192258.GA24749@agluck-desk2.amr.corp.intel.com> <CAHk-=wg0Sza8uzQHzJbdt7FFc7bRK+o1BB=VBUGrQEvVv6+23w@mail.gmail.com>
+ <CAPcyv4g0a406X9-=NATJZ9QqObim9Phdkb_WmmhsT9zvXsGSpw@mail.gmail.com>
+ <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
+ <CAPcyv4jvgCGU700x_U6EKyGsHwQBoPkJUF+6gP4YDPupjdViyQ@mail.gmail.com>
+ <CAHk-=wiPkwF2+y6wZd=VD9BooKxHRWhSVW8dr+WSeeSPkJk7kQ@mail.gmail.com> <a4aabe6f2ca649779a772a5f0365af6f@AcuMS.aculab.com>
+In-Reply-To: <a4aabe6f2ca649779a772a5f0365af6f@AcuMS.aculab.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 4 May 2020 11:33:46 -0700
+Message-ID: <CAPcyv4i8V9FCuTHZG2RG9o3vjrMmLkv40-41MwLBO8tZWUsZ5Q@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
+To: David Laight <David.Laight@aculab.com>
+Message-ID-Hash: 6VG7LF6XQVO53YK5RFWPI7MHG32TTHQD
+X-Message-ID-Hash: 6VG7LF6XQVO53YK5RFWPI7MHG32TTHQD
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linus Torvalds <torvalds@linux-foundation.org>, "Luck, Tony" <tony.luck@intel.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, stable <stable@vger.kernel.org>, the arch/x86 maintainers <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Erwin Tsaur <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7AWKGIGESE5DPQGDLP554D26WAJHQCOS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6VG7LF6XQVO53YK5RFWPI7MHG32TTHQD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -42,197 +76,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-It is possible to cause a division error and use-after-free by querying the
-nmem device before the driver data is fully initialised in nvdimm_probe. E.g
-by doing
+On Sun, May 3, 2020 at 5:57 AM David Laight <David.Laight@aculab.com> wrote:
+>
+> From: Linus Torvalds
+> > Sent: 01 May 2020 19:29
+> ...
+> > And as DavidL pointed out - if you ever have "iomem" as a source or
+> > destination, you need yet another case. Not because they can take
+> > another kind of fault (although on some platforms you have the machine
+> > checks for that too), but because they have *very* different
+> > performance profiles (and the ERMS "rep movsb" sucks baby donkeys
+> > through a straw).
+>
+>
+> I was actually thinking that the nvdimm accesses need to be treated
+> much more like (cached) memory mapped io space than normal system
+> memory.
+> So treating them the same as "iomem" and then having access functions
+> that report access failures (which the current readq() doesn't)
+> might make sense.
 
-(while true; do
-     cat /sys/bus/nd/devices/nmem*/available_slots 2>&1 > /dev/null
- done) &
+While I agree that something like copy_mc_iomem_to_{user,kernel} could
+have users, nvdimm is not one of them.
 
-while true; do
-     for i in $(seq 0 4); do
-	 echo nmem$i > /sys/bus/nd/drivers/nvdimm/bind
-     done
-     for i in $(seq 0 4); do
-	 echo nmem$i > /sys/bus/nd/drivers/nvdimm/unbind
-     done
- done
+> If you are using memory that 'might fail' for kernel code or data
+> you really get what you deserve.
 
-On 5.7-rc3 this causes:
+nvdimms are no less "might fail" than DRAM, recall that some nvdimms
+are just DRAM with a platform promise that their contents are battery
+backed.
 
-[   12.711578] divide error: 0000 [#1] SMP KASAN PTI
-[   12.712321] CPU: 0 PID: 231 Comm: cat Not tainted 5.7.0-rc3 #48
-[   12.713188] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba527-rebuilt.opensuse.org 04/01/2014
-[   12.714857] RIP: 0010:nd_label_nfree+0x134/0x1a0 [libnvdimm]
-[   12.715772] Code: ba 00 00 00 00 00 fc ff df 48 89 f9 48 c1 e9 03 0f b6 14 11 84 d2 74 05 80 fa 03 7e 52 8b 73 08 31 d2 89 c1 48 83 c4 08 5b 5d <f7> f6 31 d2 41 5c 83 c0 07 c1 e8 03 48 8d 84 00 8e 02 00 00 25 00
-[   12.718311] RSP: 0018:ffffc9000046fd08 EFLAGS: 00010282
-[   12.719030] RAX: 0000000000000000 RBX: ffffffffc0073aa0 RCX: 0000000000000000
-[   12.720005] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888060931808
-[   12.720970] RBP: ffff88806609d018 R08: 0000000000000001 R09: ffffed100cc0a2b1
-[   12.721889] R10: ffff888066051587 R11: ffffed100cc0a2b0 R12: ffff888060931800
-[   12.722744] R13: ffff888064362000 R14: ffff88806609d018 R15: ffffffff8b1a2520
-[   12.723602] FS:  00007fd16f3d5580(0000) GS:ffff88806b400000(0000) knlGS:0000000000000000
-[   12.724600] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   12.725308] CR2: 00007fd16f1ec000 CR3: 0000000064322006 CR4: 0000000000160ef0
-[   12.726268] Call Trace:
-[   12.726633]  available_slots_show+0x4e/0x120 [libnvdimm]
-[   12.727380]  dev_attr_show+0x42/0x80
-[   12.727891]  ? memset+0x20/0x40
-[   12.728341]  sysfs_kf_seq_show+0x218/0x410
-[   12.728923]  seq_read+0x389/0xe10
-[   12.729415]  vfs_read+0x101/0x2d0
-[   12.729891]  ksys_read+0xf9/0x1d0
-[   12.730361]  ? kernel_write+0x120/0x120
-[   12.730915]  do_syscall_64+0x95/0x4a0
-[   12.731435]  entry_SYSCALL_64_after_hwframe+0x49/0xb3
-[   12.732163] RIP: 0033:0x7fd16f2fe4be
-[   12.732685] Code: c0 e9 c6 fe ff ff 50 48 8d 3d 2e 12 0a 00 e8 69 e9 01 00 66 0f 1f 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00 f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-[   12.735207] RSP: 002b:00007ffd3177b838 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[   12.736261] RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fd16f2fe4be
-[   12.737233] RDX: 0000000000020000 RSI: 00007fd16f1ed000 RDI: 0000000000000003
-[   12.738203] RBP: 00007fd16f1ed000 R08: 00007fd16f1ec010 R09: 0000000000000000
-[   12.739172] R10: 00007fd16f3f4f70 R11: 0000000000000246 R12: 00007ffd3177ce23
-[   12.740144] R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
-[   12.741139] Modules linked in: nfit libnvdimm
-[   12.741783] ---[ end trace 99532e4b82410044 ]---
-[   12.742452] RIP: 0010:nd_label_nfree+0x134/0x1a0 [libnvdimm]
-[   12.743167] Code: ba 00 00 00 00 00 fc ff df 48 89 f9 48 c1 e9 03 0f b6 14 11 84 d2 74 05 80 fa 03 7e 52 8b 73 08 31 d2 89 c1 48 83 c4 08 5b 5d <f7> f6 31 d2 41 5c 83 c0 07 c1 e8 03 48 8d 84 00 8e 02 00 00 25 00
-[   12.745709] RSP: 0018:ffffc9000046fd08 EFLAGS: 00010282
-[   12.746340] RAX: 0000000000000000 RBX: ffffffffc0073aa0 RCX: 0000000000000000
-[   12.747209] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff888060931808
-[   12.748081] RBP: ffff88806609d018 R08: 0000000000000001 R09: ffffed100cc0a2b1
-[   12.748977] R10: ffff888066051587 R11: ffffed100cc0a2b0 R12: ffff888060931800
-[   12.749849] R13: ffff888064362000 R14: ffff88806609d018 R15: ffffffff8b1a2520
-[   12.750729] FS:  00007fd16f3d5580(0000) GS:ffff88806b400000(0000) knlGS:0000000000000000
-[   12.751708] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   12.752441] CR2: 00007fd16f1ec000 CR3: 0000000064322006 CR4: 0000000000160ef0
-[   12.821357] ==================================================================
-[   12.822284] BUG: KASAN: use-after-free in __mutex_lock+0x111c/0x11a0
-[   12.823084] Read of size 4 at addr ffff888065c26238 by task reproducer/218
-[   12.823968]
-[   12.824183] CPU: 2 PID: 218 Comm: reproducer Tainted: G      D           5.7.0-rc3 #48
-[   12.825167] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba527-rebuilt.opensuse.org 04/01/2014
-[   12.826595] Call Trace:
-[   12.826926]  dump_stack+0x97/0xe0
-[   12.827362]  print_address_description.constprop.0+0x1b/0x210
-[   12.828111]  ? __mutex_lock+0x111c/0x11a0
-[   12.828645]  __kasan_report.cold+0x37/0x92
-[   12.829179]  ? __mutex_lock+0x111c/0x11a0
-[   12.829706]  kasan_report+0x38/0x50
-[   12.830158]  __mutex_lock+0x111c/0x11a0
-[   12.830666]  ? ftrace_graph_stop+0x10/0x10
-[   12.831193]  ? is_nvdimm_bus+0x40/0x40 [libnvdimm]
-[   12.831820]  ? mutex_trylock+0x2b0/0x2b0
-[   12.832333]  ? nvdimm_probe+0x259/0x420 [libnvdimm]
-[   12.832975]  ? mutex_trylock+0x2b0/0x2b0
-[   12.833500]  ? nvdimm_probe+0x259/0x420 [libnvdimm]
-[   12.834122]  ? prepare_ftrace_return+0xa1/0xf0
-[   12.834724]  ? ftrace_graph_caller+0x6b/0xa0
-[   12.835269]  ? acpi_label_write+0x390/0x390 [nfit]
-[   12.835909]  ? nvdimm_probe+0x259/0x420 [libnvdimm]
-[   12.836558]  ? nvdimm_probe+0x259/0x420 [libnvdimm]
-[   12.837179]  nvdimm_probe+0x259/0x420 [libnvdimm]
-[   12.837802]  nvdimm_bus_probe+0x110/0x6b0 [libnvdimm]
-[   12.838470]  really_probe+0x212/0x9a0
-[   12.838954]  driver_probe_device+0x1cd/0x300
-[   12.839511]  ? driver_probe_device+0x5/0x300
-[   12.840063]  device_driver_attach+0xe7/0x120
-[   12.840623]  bind_store+0x18d/0x230
-[   12.841075]  kernfs_fop_write+0x200/0x420
-[   12.841606]  vfs_write+0x154/0x450
-[   12.842047]  ksys_write+0xf9/0x1d0
-[   12.842497]  ? __ia32_sys_read+0xb0/0xb0
-[   12.843010]  do_syscall_64+0x95/0x4a0
-[   12.843495]  entry_SYSCALL_64_after_hwframe+0x49/0xb3
-[   12.844140] RIP: 0033:0x7f5b235d3563
-[   12.844607] Code: 0c 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb bb 0f 1f 80 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 55 c3 0f 1f 40 00 48 83 ec 28 48 89 54 24 18
-[   12.846877] RSP: 002b:00007fff1c3bc578 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[   12.847822] RAX: ffffffffffffffda RBX: 0000000000000006 RCX: 00007f5b235d3563
-[   12.848717] RDX: 0000000000000006 RSI: 000055f9576710d0 RDI: 0000000000000001
-[   12.849594] RBP: 000055f9576710d0 R08: 000000000000000a R09: 0000000000000000
-[   12.850470] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000006
-[   12.851333] R13: 00007f5b236a3500 R14: 0000000000000006 R15: 00007f5b236a3700
-[   12.852247]
-[   12.852466] Allocated by task 225:
-[   12.852893]  save_stack+0x1b/0x40
-[   12.853310]  __kasan_kmalloc.constprop.0+0xc2/0xd0
-[   12.853918]  kmem_cache_alloc_node+0xef/0x270
-[   12.854475]  copy_process+0x485/0x6130
-[   12.854945]  _do_fork+0xf1/0xb40
-[   12.855353]  __do_sys_clone+0xc3/0x100
-[   12.855843]  do_syscall_64+0x95/0x4a0
-[   12.856302]  entry_SYSCALL_64_after_hwframe+0x49/0xb3
-[   12.856939]
-[   12.857140] Freed by task 0:
-[   12.857522]  save_stack+0x1b/0x40
-[   12.857940]  __kasan_slab_free+0x12c/0x170
-[   12.858464]  kmem_cache_free+0xb0/0x330
-[   12.858945]  rcu_core+0x55f/0x19f0
-[   12.859385]  __do_softirq+0x228/0x944
-[   12.859869]
-[   12.860075] The buggy address belongs to the object at ffff888065c26200
-[   12.860075]  which belongs to the cache task_struct of size 6016
-[   12.861638] The buggy address is located 56 bytes inside of
-[   12.861638]  6016-byte region [ffff888065c26200, ffff888065c27980)
-[   12.863084] The buggy address belongs to the page:
-[   12.863702] page:ffffea0001970800 refcount:1 mapcount:0 mapping:0000000021ee3712 index:0x0 head:ffffea0001970800 order:3 compound_mapcount:0 compound_pincount:0
-[   12.865478] flags: 0x80000000010200(slab|head)
-[   12.866039] raw: 0080000000010200 0000000000000000 0000000100000001 ffff888066c0f980
-[   12.867010] raw: 0000000000000000 0000000080050005 00000001ffffffff 0000000000000000
-[   12.867986] page dumped because: kasan: bad access detected
-[   12.868696]
-[   12.868900] Memory state around the buggy address:
-[   12.869514]  ffff888065c26100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   12.870414]  ffff888065c26180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   12.871318] >ffff888065c26200: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   12.872238]                                         ^
-[   12.872870]  ffff888065c26280: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   12.873754]  ffff888065c26300: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[   12.874640]
-==================================================================
+> OTOH system response to PCIe errors is currently rather problematic.
+> Mostly reads time out and return ~0u.
+> This can be checked for and, if possibly valid, a second location read.
 
-This can be prevented by setting the driver data after initialisation is
-complete. As a precaution the bus lock is also taken when setting the driver
-data.
-
-Fixes: 4d88a97aa9e8 ("libnvdimm, nvdimm: dimm driver and base libnvdimm device-driver infrastructure")
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: linux-nvdimm@lists.01.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Richard Palethorpe <rpalethorpe@suse.com>
----
- drivers/nvdimm/dimm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nvdimm/dimm.c b/drivers/nvdimm/dimm.c
-index 7d4ddc4d9322..c757e8a5094d 100644
---- a/drivers/nvdimm/dimm.c
-+++ b/drivers/nvdimm/dimm.c
-@@ -43,7 +43,6 @@ static int nvdimm_probe(struct device *dev)
- 	if (!ndd)
- 		return -ENOMEM;
- 
--	dev_set_drvdata(dev, ndd);
- 	ndd->dpa.name = dev_name(dev);
- 	ndd->ns_current = -1;
- 	ndd->ns_next = -1;
-@@ -106,6 +105,10 @@ static int nvdimm_probe(struct device *dev)
- 	if (rc)
- 		goto err;
- 
-+	nvdimm_bus_lock(dev);
-+	dev_set_drvdata(dev, ndd);
-+	nvdimm_bus_unlock(dev);
-+
- 	return 0;
- 
-  err:
--- 
-2.26.1
+Yes, the ambiguous ~0u return needs careful handling.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
