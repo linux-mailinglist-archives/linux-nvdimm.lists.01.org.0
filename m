@@ -2,72 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05131C34F9
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 10:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA1801C3911
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 14:15:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CD1C311509E3C;
-	Mon,  4 May 2020 01:51:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D862611504ED1;
+	Mon,  4 May 2020 05:13:25 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=74.6.134.40; helo=sonic307-1.consmr.mail.bf2.yahoo.com; envelope-from=elodieantoine5777@gmail.com; receiver=<UNKNOWN> 
+Received: from sonic307-1.consmr.mail.bf2.yahoo.com (sonic307-1.consmr.mail.bf2.yahoo.com [74.6.134.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D635B11509E3A
-	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 01:51:37 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0448hGEr076213;
-	Mon, 4 May 2020 04:53:08 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 30s4gtk65s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2020 04:53:08 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0448osbo004705;
-	Mon, 4 May 2020 08:53:05 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma04fra.de.ibm.com with ESMTP id 30s0g61rqc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 May 2020 08:53:05 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0448psXc66191812
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 May 2020 08:51:54 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7157C11C04A;
-	Mon,  4 May 2020 08:53:03 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B80011C04C;
-	Mon,  4 May 2020 08:53:00 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.85.89.222])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Mon,  4 May 2020 08:53:00 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 04 May 2020 14:22:58 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-        linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v6 1/4] powerpc: Document details on H_SCM_HEALTH hcall
-In-Reply-To: <87r1w5echa.fsf@mpe.ellerman.id.au>
-References: <20200420070711.223545-1-vaibhav@linux.ibm.com> <20200420070711.223545-2-vaibhav@linux.ibm.com> <87r1w5echa.fsf@mpe.ellerman.id.au>
-Date: Mon, 04 May 2020 14:22:58 +0530
-Message-ID: <87bln4dqtx.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 27AC211504ED0
+	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 05:13:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588594497; bh=r5QHRsE0gRLjHV/jve/1QelQ13auG1gTnnP/vIL2AZM=; h=Date:From:Reply-To:Subject:References:From:Subject; b=T7FFS2vrdy4IYBJ871sJccr7j0GHWVNyLo2+YuuJD+6Q4i/NWfj9PC9Qv6IQCnC+aHefR/7ODUQhu7SsrdMVXKCQ/bZveU6EguqIT5lssUUfV/dueB/YKoFN1mfdfLB84NvO0YIfEAsmc+FDMAeZfX3d7OgPxtEhLN7C8JVKsC3R/c8HxUixaTxEpv7yMlGEliw4j+yap54E08csFG2zmC1lVcTPPkj6PbYhcldzP+QDKj+6nqaZKz+AUfnOKKjXKU05QZrpHgKd364cP2OwFdc+IcnPuntQ9kAyTrMzD1wrXH6e04+A6yRDHtoMPB1Z+M0TemLgrATLM5enxmRxfA==
+X-YMail-OSG: 4RvDgWsVM1miFlFpk7JWWCp5UhL76TlzsdooI_kpTi8PhzjImCN3YT0_S6uT2CU
+ 7UHJjkeKROYXLgPZ82eECFwA7HyFGoB3NjHWG_fCNcWxuz3ChLEQNjg5BwoDgQUFHlI9MqRpGixl
+ yof1ZtXrYkMX8Zug4LR7GGYAz8D30AmekYvhjJDcMduP.zj_h9Cu8GIgz7shOKTFfrvvxW5gTcxY
+ 1dnxHM71.Ciro.gF9_PsD2jZRPQzziIb6BJIybFV8LJ_DxKR5hJlj7nr8UG567tT6Ued4FS6Pftd
+ huNzmYszSCdbGBeY0uE3iUWojmCddpjcrB6e4jdDkHWwaYZ3uvBhEpQn.4fb3JHmT0lwfcko72PV
+ NPM.AGI44eMg0HmyegKLR6.F8Wit17UjlbpYIsxlGLszgg67BVygDvDOG3AZMjBEyaegCzzEWNiT
+ iCEcZWu1_8SWuQmIZ400kdZ6ykPR2itKs7DPTGBP2kFjD38NnuU4pU7gFU2LSNMhhMO.cN3Vindr
+ E0oexg5lwiP9J6ftoqN2j6m4Yj6MAECMEr00ZWfKMUkjbLvDqW84LZL1DaW9D7zxG.DGiogKwSfD
+ yJOm85A_B42T94tF.dx8SJZL_3TqqIp8ipLPI3KsZjF8yKEWoColTCkvv8UEiZnuXcIaTyQh7qPx
+ qyeDLIwXcm6_fHGbVh8XsZOMD1pL7RChQqWWCP.Y_vWpQbuB3kYLCh1RW0nuKGULS6pjggNQHQ0e
+ XxmZHAqP_pFBSzkqIm3e9ekzrRrLh.5cGu.1BpJZ9eIkStzaymrgN_XNUQ.O486qWQp23yxhHtUF
+ wPLAfkozEDFY7ZK.d8rgF_6NqK6r06ggUhAuUy_quLcBelDUeZvl7_QiOPE5VAc8XbhUq1SgeQ.8
+ eU5H84f4ezlM9xgdtvTHsKpEIM5ZoxL1MJEi7XLheXQV7dp8ybwGTD1ycjm2yDZwylpOgbqFJF2M
+ PvkAv_ipHp.yFvCYM7QGj_EOiPaOsLiQ31Ve02txAjeDtabUYQrrW.49RTNVTeUAErr92sBgGeJF
+ Do_IqhaKfYm.JHFtdWKMqC0jdUdmKWUdN624SCGLWxxY6V_ghHqtSgMN1Jg_qxWFS5Y9dkUFB.SZ
+ ADr5LPg692bD7EvKBq.gMBr6nWV95FeyiP9dRlWhqZst4Ahu98byCeOXg9J2J0fespORu3tQylmr
+ oTwD11KWqyR3aPcwQLG8Ebh6eHnwJc6dtqmX5XpHFlEvc4PdybaSwrzqpeHEqNVZa4iV8jNSvSIM
+ GzKNlXAkBlC8PnYEwQCEKoz15qZrtgz9rdjNDRPJp4LJsuAOmYBXMqZ5TG33j6ApqQH5sBIMHDg-
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Mon, 4 May 2020 12:14:57 +0000
+Date: Mon, 4 May 2020 12:14:53 +0000 (UTC)
+From: "Mr.Antoin Mark" <elodieantoine5777@gmail.com>
+Message-ID: <581096038.555065.1588594493029@mail.yahoo.com>
+Subject: Greetings!
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.676
- definitions=2020-05-04_04:2020-05-01,2020-05-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 clxscore=1015 bulkscore=0 mlxscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 spamscore=0 impostorscore=0
- suspectscore=7 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005040069
-Message-ID-Hash: RBY3VESLS3AOJFKFU6SBCE77JDVITHNE
-X-Message-ID-Hash: RBY3VESLS3AOJFKFU6SBCE77JDVITHNE
-X-MailFrom: vaibhav@linux.ibm.com
+References: <581096038.555065.1588594493029.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:75.0) Gecko/20100101 Firefox/75.0
+Message-ID-Hash: KGE4GNACUTUCEJMB5GTCSV7FURBD4YN5
+X-Message-ID-Hash: KGE4GNACUTUCEJMB5GTCSV7FURBD4YN5
+X-MailFrom: elodieantoine5777@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: antoinmark17945@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RBY3VESLS3AOJFKFU6SBCE77JDVITHNE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KGE4GNACUTUCEJMB5GTCSV7FURBD4YN5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -76,70 +59,23 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Thanks for looking into this patch Mpe,
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
 
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
->> Add documentation to 'papr_hcalls.rst' describing the bitmap flags
->> that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
->> specification.
->>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->> Changelog:
->>
->> v5..v6
->> * New patch in the series
->> ---
->>  Documentation/powerpc/papr_hcalls.rst | 43 ++++++++++++++++++++++++---
->>  1 file changed, 39 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
->> index 3493631a60f8..9a5ba5eaf323 100644
->> --- a/Documentation/powerpc/papr_hcalls.rst
->> +++ b/Documentation/powerpc/papr_hcalls.rst
->> @@ -220,13 +220,48 @@ from the LPAR memory.
->>  **H_SCM_HEALTH**
->>  
->>  | Input: drcIndex
->> -| Out: *health-bitmap, health-bit-valid-bitmap*
->> +| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
->>  | Return Value: *H_Success, H_Parameter, H_Hardware*
->>  
->>  Given a DRC Index return the info on predictive failure and overall health of
->> -the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
->> -failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
->> -valid.
->> +the NVDIMM. The asserted bits in the health-bitmap indicate one or more states
->> +(described in table below) of the NVDIMM and health-bit-valid-bitmap indicate
->> +which bits in health-bitmap are valid.
->> +
->> +Health Bitmap Flags:
->> +
->> ++------+-----------------------------------------------------------------------+
->> +|  Bit |               Definition                                              |
->> ++======+=======================================================================+
->> +|  00  | SCM device is unable to persist memory contents.                      |
->> +|      | If the system is powered down, nothing will be saved.                 |
->> ++------+-----------------------------------------------------------------------+
->
-> Are these correct bit numbers or backward IBM big endian bit numbers?
->
-> ie. which bit is LSB?
-These bit numbers index to a 64-bit dword laid in IBM big endian
-format. So LSB would be at the located at a higher address. For example
-0xC400000000000000 indicates bits 0, 1, and 5 are valid.
+Dear Friend,
 
->
-> cheers
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+ Greetings!
+
+How are you with your family today? I hope both of you are in good
+health. Decently I know that this message might meet you in utmost
+surprise as we never know each other before. I am Mr.Antoin Mark, a
+banker by profession, I need your urgent assist in transferring the
+sum of $6.2 Million U.S Dollars into your account. It is 100% risk
+free and under this achievement you are entitled to receive 40% of the
+total cash. More details will be sent to you on confirmation of your
+interest.
+
+Regards;
+Mr.Antoin Mark
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
