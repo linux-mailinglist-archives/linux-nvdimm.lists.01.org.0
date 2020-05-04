@@ -2,58 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D973A1C4698
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 21:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40AE1C47A7
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  4 May 2020 22:05:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1805A1162A531;
-	Mon,  4 May 2020 12:01:28 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id AB1081162A364;
+	Mon,  4 May 2020 13:03:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=tony.luck@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 20FC61162A527
-	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 12:01:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1588618983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LnHTyg8VhS7UwK7+YtYdl8Nx9ZbZlJd/OJWiKRZNwDo=;
-	b=eQKS+tA+/HFGlmZ4OqcEfTEVIZcpI8ex9G6Q0YhDrwD7UHi7kZ+WVoysY2vKFiyCCXCYd8
-	QzYFDLCeE5Is7mJmedECpx7NGXcGsGfmhPn37yddBIJHb/MzX651LmzuXfbQ0KA53vqZTn
-	08xozG6sprrzQ/DOBQcb3FYaUXyOYEo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-378-zszvihSwO6K7Ykp-GmZ0tg-1; Mon, 04 May 2020 15:03:01 -0400
-X-MC-Unique: zszvihSwO6K7Ykp-GmZ0tg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 459E51840400;
-	Mon,  4 May 2020 19:02:59 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-114-235.ams2.redhat.com [10.36.114.235])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 03D522B4AF;
-	Mon,  4 May 2020 19:02:55 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/3] device-dax: Add memory via add_memory_driver_managed()
-Date: Mon,  4 May 2020 21:02:27 +0200
-Message-Id: <20200504190227.18269-4-david@redhat.com>
-In-Reply-To: <20200504190227.18269-1-david@redhat.com>
-References: <20200504190227.18269-1-david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 77DF7116200BC
+	for <linux-nvdimm@lists.01.org>; Mon,  4 May 2020 13:03:35 -0700 (PDT)
+IronPort-SDR: IolbzFKyzq6qyoDm3I/WtM5gvJLsRLVGBngPV4Q4rGffecldXWwCXlQHcMfEHUbDN1fpXj+BY2
+ HS6uLRG+PTlA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 May 2020 13:05:14 -0700
+IronPort-SDR: y6fTkTYfYGLd3JKagbsQwauiKg0nMn8mM9txTn416ln2atUAwyG96Uo76gWXw3GTge/+DbTk/6
+ +0HZlUW+PY3g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,353,1583222400";
+   d="scan'208";a="338429331"
+Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
+  by orsmga001.jf.intel.com with ESMTP; 04 May 2020 13:05:14 -0700
+Received: from orsmsx121.amr.corp.intel.com (10.22.225.226) by
+ ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 4 May 2020 13:05:13 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.83]) by
+ ORSMSX121.amr.corp.intel.com ([169.254.10.248]) with mapi id 14.03.0439.000;
+ Mon, 4 May 2020 13:05:13 -0700
+From: "Luck, Tony" <tony.luck@intel.com>
+To: Andy Lutomirski <luto@amacapital.net>
+Subject: RE: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
+Thread-Topic: [PATCH v2 0/2] Replace and improve "mcsafe" with copy_safe()
+Thread-Index: AQHWHsst2+7frPAw9kCYaqQsGNEgp6iSJ9mAgAAvKwCAAAcmgIAAF8EA//+WBACAAH0TAIAAQ4gAgAAE/4CAAAO1gIAAb4YQgAK28ICAAmL9AA==
+Date: Mon, 4 May 2020 20:05:13 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F612DF4@ORSMSX115.amr.corp.intel.com>
+References: <CAHk-=wiMs=A90np0Hv5WjHY8HXQWpgtuq-xrrJvyk7_pNB4meg@mail.gmail.com>
+ <1962EE67-8AD1-409D-963A-4F1E1AB3B865@amacapital.net>
+ <3908561D78D1C84285E8C5FCA982C28F7F60EBB6@ORSMSX115.amr.corp.intel.com>
+ <CALCETrW5zNLOrhOS69xeb3ANa0HVAW5+xaHvG2CA8iFy1ByHKQ@mail.gmail.com>
+In-Reply-To: <CALCETrW5zNLOrhOS69xeb3ANa0HVAW5+xaHvG2CA8iFy1ByHKQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: BXVWW3FCKHNVDUCKRRFKWRYPLLDSZMNL
-X-Message-ID-Hash: BXVWW3FCKHNVDUCKRRFKWRYPLLDSZMNL
-X-MailFrom: david@redhat.com
+Message-ID-Hash: 5KOB4H26Q7ZCRAPTVEAIJ7UARY2YSK4S
+X-Message-ID-Hash: 5KOB4H26Q7ZCRAPTVEAIJ7UARY2YSK4S
+X-MailFrom: tony.luck@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, kexec@lists.infradead.org, Pavel Tatashin <pasha.tatashin@soleen.com>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, Baoquan He <bhe@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Eric Biederman <ebiederm@xmission.com>
+CC: Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Thomas Gleixner  <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra  <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, stable" <stable@vger.kernel.org>,
+	the arch/x86 maintainers <x86@kernel.org>, "H."@ml01.01.org,
+	Erwin <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	"Arnaldo Carvalho de Melo  <acme@kernel.org>, linux-nvdimm" <linux-nvdimm@lists.01.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BXVWW3FCKHNVDUCKRRFKWRYPLLDSZMNL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5KOB4H26Q7ZCRAPTVEAIJ7UARY2YSK4S/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,147 +77,25 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Currently, when adding memory, we create entries in /sys/firmware/memmap/
-as "System RAM". This will lead to kexec-tools to add that memory to the
-fixed-up initial memmap for a kexec kernel (loaded via kexec_load()). The
-memory will be considered initial System RAM by the kexec'd kernel and
-can no longer be reconfigured. This is not what happens during a real
-reboot.
+> When a copy function hits a bad page and the page is not yet known to
+> be bad, what does it do?  (I.e. the page was believed to be fine but
+> the copy function gets #MC.)  Does it unmap it right away?  What does
+> it return?
 
-Let's add our memory via add_memory_driver_managed() now, so we won't
-create entries in /sys/firmware/memmap/ and indicate the memory as
-"System RAM (kmem)" in /proc/iomem. This allows everybody (especially
-kexec-tools) to identify that this memory is special and has to be treated
-differently than ordinary (hotplugged) System RAM.
+I suspect that we will only ever find a handful of situations where the
+kernel can recover from memory that has gone bad that are worth fixing
+(got to be some code path that touches a meaningful fraction of memory,
+otherwise we get code complexity without any meaningful payoff).
 
-Before configuring the namespace:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-33fffffff : namespace0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+I don't think we'd want different actions for the cases of "we just found out
+now that this page is bad" and "we got a notification an hour ago that this
+page had gone bad". Currently we treat those the same for application
+errors ... SIGBUS either way[1].
 
-After configuring the namespace:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+-Tony
 
-After loading kmem before this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : dax0.0
-	    150000000-33fffffff : System RAM
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-After loading kmem after this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : dax0.0
-	    150000000-33fffffff : System RAM (kmem)
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-After a proper reboot:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-Within the kexec kernel before this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : System RAM
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-Within the kexec kernel after this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
-
-/sys/firmware/memmap/ before this change:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
-	0000000150000000-0000000340000000 (System RAM)
-
-/sys/firmware/memmap/ after a proper reboot:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
-
-/sys/firmware/memmap/ after this change:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
-
-kexec-tools already seem to basically ignore any System RAM that's not
-on top level when searching for areas to place kexec images - but also
-for determining crash areas to dump via kdump. Changing the resource name
-won't have an impact.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/dax/kmem.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 3d0a7e702c94..5a645a24e359 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -65,7 +65,13 @@ int dev_dax_kmem_probe(struct device *dev)
- 	new_res->flags = IORESOURCE_SYSTEM_RAM;
- 	new_res->name = dev_name(dev);
- 
--	rc = add_memory(numa_node, new_res->start, resource_size(new_res));
-+	/*
-+	 * Ensure that future kexec'd kernels will not treat this as RAM
-+	 * automatically.
-+	 */
-+	rc = add_memory_driver_managed(numa_node, new_res->start,
-+				       resource_size(new_res),
-+				       "System RAM (kmem)");
- 	if (rc) {
- 		release_resource(new_res);
- 		kfree(new_res);
--- 
-2.25.3
+[1] well there are options both globally and at the per-process level to have
+the "early" notifications delivered right away.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
