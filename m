@@ -2,107 +2,45 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788451C72A5
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  6 May 2020 16:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FFB1C7E34
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 May 2020 01:55:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9084B1162F7DB;
-	Wed,  6 May 2020 07:17:59 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E44A2114CC969;
+	Wed,  6 May 2020 16:53:29 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 97D1A1162F7CF
-	for <linux-nvdimm@lists.01.org>; Wed,  6 May 2020 07:17:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1588774785;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=CGA2fN4nBl9aeNZil0r79uRHvl/2kzPFplO146nQt3M=;
-	b=iBVEtOYh1KV7h3Vsnnqsj+8AS4eHErfqxNTSwYfskQUiNef0Fg8Hq5uCLze7lGrv15VG+U
-	FwXTRnUBS/03jZJoOkcLl9ZrndbHRFXIj7iMWHfttrqDNhDXdfNhBIrJ/TnwloXrewpiyH
-	o5zDD2LcmtdHPYTeQIaqb0qvPjC4x5U=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-157-gahsR3uRMZevuCHahA-IOw-1; Wed, 06 May 2020 10:19:40 -0400
-X-MC-Unique: gahsR3uRMZevuCHahA-IOw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 17F418014D6;
-	Wed,  6 May 2020 14:19:38 +0000 (UTC)
-Received: from [10.36.113.17] (ovpn-113-17.ams2.redhat.com [10.36.113.17])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 005F32DE76;
-	Wed,  6 May 2020 14:19:34 +0000 (UTC)
-Subject: Re: [PATCH v3 1/3] mm/memory_hotplug: Introduce
- add_memory_device_managed()
-To: linux-kernel@vger.kernel.org
-References: <20200504190227.18269-1-david@redhat.com>
- <20200504190227.18269-2-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <1b908bcb-e2e1-88fd-1aa1-6226add49a40@redhat.com>
-Date: Wed, 6 May 2020 16:19:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	by ml01.01.org (Postfix) with ESMTPS id 925A9114CC968
+	for <linux-nvdimm@lists.01.org>; Wed,  6 May 2020 16:53:27 -0700 (PDT)
+IronPort-SDR: 9z9GbfZ5jKjdLdMatqlQPBp+i0jlr/a2H4NiO7DRUbGZwfFzw2vkFdG/lPHHaGYKOVg+9o79vP
+ vZITXScDihrQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 16:55:20 -0700
+IronPort-SDR: hDjKBQAjG74fdY55cMuXOXGU9I2V35Lv1XkTeGeBRGMBfl6opcQYgeYga3yzWKEjbxny2L0P4x
+ 0EMjz1nJqnNQ==
+X-IronPort-AV: E=Sophos;i="5.73,361,1583222400";
+   d="scan'208";a="461645509"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2020 16:55:19 -0700
+Subject: [PATCH] ACPI: Drop rcu usage for MMIO mappings
+From: Dan Williams <dan.j.williams@intel.com>
+To: rafael.j.wysocki@intel.com
+Date: Wed, 06 May 2020 16:39:09 -0700
+Message-ID: <158880834905.2183490.15616329469420234017.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-In-Reply-To: <20200504190227.18269-2-david@redhat.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: EOZTY4H57YL7HZG22R7OZOMFTMZZKWOA
-X-Message-ID-Hash: EOZTY4H57YL7HZG22R7OZOMFTMZZKWOA
-X-MailFrom: david@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, kexec@lists.infradead.org, Pavel Tatashin <pasha.tatashin@soleen.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Wei Yang <richard.weiyang@gmail.com>, Baoquan He <bhe@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Eric Biederman <ebiederm@xmission.com>
+Message-ID-Hash: 7C2RZKWPBIWAJ764C45VOQGTZCNT4JXL
+X-Message-ID-Hash: 7C2RZKWPBIWAJ764C45VOQGTZCNT4JXL
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: stable@vger.kernel.org, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Erik Kaneda <erik.kaneda@intel.com>, Myron Stowe <myron.stowe@redhat.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EOZTY4H57YL7HZG22R7OZOMFTMZZKWOA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7C2RZKWPBIWAJ764C45VOQGTZCNT4JXL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -111,12 +49,288 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Typo in $SUBJECT, should be "add_memory_driver_managed" ...
+Recently a performance problem was reported for a process invoking a
+non-trival ASL program. The method call in this case ends up
+repetitively triggering a call path like:
 
--- 
-Thanks,
+    acpi_ex_store
+    acpi_ex_store_object_to_node
+    acpi_ex_write_data_to_field
+    acpi_ex_insert_into_field
+    acpi_ex_write_with_update_rule
+    acpi_ex_field_datum_io
+    acpi_ex_access_region
+    acpi_ev_address_space_dispatch
+    acpi_ex_system_memory_space_handler
+    acpi_os_map_cleanup.part.14
+    _synchronize_rcu_expedited.constprop.89
+    schedule
 
-David / dhildenb
+The end result of frequent synchronize_rcu_expedited() invocation is
+tiny sub-millisecond spurts of execution where the scheduler freely
+migrates this apparently sleepy task. The overhead of frequent scheduler
+invocation multiplies the execution time by a factor of 2-3X.
+
+For example, performance improves from 16 minutes to 7 minutes for a
+firmware update procedure across 24 devices.
+
+Perhaps the rcu usage was intended to allow for not taking a sleeping
+lock in the acpi_os_{read,write}_memory() path which ostensibly could be
+called from an APEI NMI error interrupt? Neither rcu_read_lock() nor
+ioremap() are interrupt safe, so add a WARN_ONCE() to validate that rcu
+was not serving as a mechanism to avoid direct calls to ioremap(). Even
+the original implementation had a spin_lock_irqsave(), but that is not
+NMI safe.
+
+APEI itself already has some concept of avoiding ioremap() from
+interrupt context (see erst_exec_move_data()), if the new warning
+triggers it means that APEI either needs more instrumentation like that
+to pre-emptively fail, or more infrastructure to arrange for pre-mapping
+the resources it needs in NMI context.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 620242ae8c3d ("ACPI: Maintain a list of ACPI memory mapped I/O remappings")
+Cc: Len Brown <lenb@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Erik Kaneda <erik.kaneda@intel.com>
+Cc: Myron Stowe <myron.stowe@redhat.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/acpi/osl.c |  117 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 57 insertions(+), 60 deletions(-)
+
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 762c5d50b8fe..207528c71e9c 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -214,13 +214,13 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
+ 	return pa;
+ }
+ 
+-/* Must be called with 'acpi_ioremap_lock' or RCU read lock held. */
+ static struct acpi_ioremap *
+ acpi_map_lookup(acpi_physical_address phys, acpi_size size)
+ {
+ 	struct acpi_ioremap *map;
+ 
+-	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
++	lockdep_assert_held(&acpi_ioremap_lock);
++	list_for_each_entry(map, &acpi_ioremaps, list)
+ 		if (map->phys <= phys &&
+ 		    phys + size <= map->phys + map->size)
+ 			return map;
+@@ -228,7 +228,6 @@ acpi_map_lookup(acpi_physical_address phys, acpi_size size)
+ 	return NULL;
+ }
+ 
+-/* Must be called with 'acpi_ioremap_lock' or RCU read lock held. */
+ static void __iomem *
+ acpi_map_vaddr_lookup(acpi_physical_address phys, unsigned int size)
+ {
+@@ -263,7 +262,8 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
+ {
+ 	struct acpi_ioremap *map;
+ 
+-	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
++	lockdep_assert_held(&acpi_ioremap_lock);
++	list_for_each_entry(map, &acpi_ioremaps, list)
+ 		if (map->virt <= virt &&
+ 		    virt + size <= map->virt + map->size)
+ 			return map;
+@@ -360,7 +360,7 @@ void __iomem __ref
+ 	map->size = pg_sz;
+ 	map->refcount = 1;
+ 
+-	list_add_tail_rcu(&map->list, &acpi_ioremaps);
++	list_add_tail(&map->list, &acpi_ioremaps);
+ 
+ out:
+ 	mutex_unlock(&acpi_ioremap_lock);
+@@ -374,20 +374,13 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
+ }
+ EXPORT_SYMBOL_GPL(acpi_os_map_memory);
+ 
+-/* Must be called with mutex_lock(&acpi_ioremap_lock) */
+-static unsigned long acpi_os_drop_map_ref(struct acpi_ioremap *map)
+-{
+-	unsigned long refcount = --map->refcount;
+-
+-	if (!refcount)
+-		list_del_rcu(&map->list);
+-	return refcount;
+-}
+-
+-static void acpi_os_map_cleanup(struct acpi_ioremap *map)
++static void acpi_os_drop_map_ref(struct acpi_ioremap *map)
+ {
+-	synchronize_rcu_expedited();
++	lockdep_assert_held(&acpi_ioremap_lock);
++	if (--map->refcount > 0)
++		return;
+ 	acpi_unmap(map->phys, map->virt);
++	list_del(&map->list);
+ 	kfree(map);
+ }
+ 
+@@ -408,7 +401,6 @@ static void acpi_os_map_cleanup(struct acpi_ioremap *map)
+ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
+ {
+ 	struct acpi_ioremap *map;
+-	unsigned long refcount;
+ 
+ 	if (!acpi_permanent_mmap) {
+ 		__acpi_unmap_table(virt, size);
+@@ -422,11 +414,8 @@ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
+ 		WARN(true, PREFIX "%s: bad address %p\n", __func__, virt);
+ 		return;
+ 	}
+-	refcount = acpi_os_drop_map_ref(map);
++	acpi_os_drop_map_ref(map);
+ 	mutex_unlock(&acpi_ioremap_lock);
+-
+-	if (!refcount)
+-		acpi_os_map_cleanup(map);
+ }
+ EXPORT_SYMBOL_GPL(acpi_os_unmap_iomem);
+ 
+@@ -461,7 +450,6 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
+ {
+ 	u64 addr;
+ 	struct acpi_ioremap *map;
+-	unsigned long refcount;
+ 
+ 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
+ 		return;
+@@ -477,11 +465,8 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
+ 		mutex_unlock(&acpi_ioremap_lock);
+ 		return;
+ 	}
+-	refcount = acpi_os_drop_map_ref(map);
++	acpi_os_drop_map_ref(map);
+ 	mutex_unlock(&acpi_ioremap_lock);
+-
+-	if (!refcount)
+-		acpi_os_map_cleanup(map);
+ }
+ EXPORT_SYMBOL(acpi_os_unmap_generic_address);
+ 
+@@ -700,55 +685,71 @@ int acpi_os_read_iomem(void __iomem *virt_addr, u64 *value, u32 width)
+ 	return 0;
+ }
+ 
++static void __iomem *acpi_os_rw_map(acpi_physical_address phys_addr,
++				    unsigned int size, bool *did_fallback)
++{
++	void __iomem *virt_addr = NULL;
++
++	if (WARN_ONCE(in_interrupt(), "ioremap in interrupt context\n"))
++		return NULL;
++
++	/* Try to use a cached mapping and fallback otherwise */
++	*did_fallback = false;
++	mutex_lock(&acpi_ioremap_lock);
++	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
++	if (virt_addr)
++		return virt_addr;
++	mutex_unlock(&acpi_ioremap_lock);
++
++	virt_addr = acpi_os_ioremap(phys_addr, size);
++	*did_fallback = true;
++
++	return virt_addr;
++}
++
++static void acpi_os_rw_unmap(void __iomem *virt_addr, bool did_fallback)
++{
++	if (did_fallback) {
++		/* in the fallback case no lock is held */
++		iounmap(virt_addr);
++		return;
++	}
++
++	mutex_unlock(&acpi_ioremap_lock);
++}
++
+ acpi_status
+ acpi_os_read_memory(acpi_physical_address phys_addr, u64 *value, u32 width)
+ {
+-	void __iomem *virt_addr;
+ 	unsigned int size = width / 8;
+-	bool unmap = false;
++	bool did_fallback = false;
++	void __iomem *virt_addr;
+ 	u64 dummy;
+ 	int error;
+ 
+-	rcu_read_lock();
+-	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
+-	if (!virt_addr) {
+-		rcu_read_unlock();
+-		virt_addr = acpi_os_ioremap(phys_addr, size);
+-		if (!virt_addr)
+-			return AE_BAD_ADDRESS;
+-		unmap = true;
+-	}
+-
++	virt_addr = acpi_os_rw_map(phys_addr, size, &did_fallback);
++	if (!virt_addr)
++		return AE_BAD_ADDRESS;
+ 	if (!value)
+ 		value = &dummy;
+ 
+ 	error = acpi_os_read_iomem(virt_addr, value, width);
+ 	BUG_ON(error);
+ 
+-	if (unmap)
+-		iounmap(virt_addr);
+-	else
+-		rcu_read_unlock();
+-
++	acpi_os_rw_unmap(virt_addr, did_fallback);
+ 	return AE_OK;
+ }
+ 
+ acpi_status
+ acpi_os_write_memory(acpi_physical_address phys_addr, u64 value, u32 width)
+ {
+-	void __iomem *virt_addr;
+ 	unsigned int size = width / 8;
+-	bool unmap = false;
++	bool did_fallback = false;
++	void __iomem *virt_addr;
+ 
+-	rcu_read_lock();
+-	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
+-	if (!virt_addr) {
+-		rcu_read_unlock();
+-		virt_addr = acpi_os_ioremap(phys_addr, size);
+-		if (!virt_addr)
+-			return AE_BAD_ADDRESS;
+-		unmap = true;
+-	}
++	virt_addr = acpi_os_rw_map(phys_addr, size, &did_fallback);
++	if (!virt_addr)
++		return AE_BAD_ADDRESS;
+ 
+ 	switch (width) {
+ 	case 8:
+@@ -767,11 +768,7 @@ acpi_os_write_memory(acpi_physical_address phys_addr, u64 value, u32 width)
+ 		BUG();
+ 	}
+ 
+-	if (unmap)
+-		iounmap(virt_addr);
+-	else
+-		rcu_read_unlock();
+-
++	acpi_os_rw_unmap(virt_addr, did_fallback);
+ 	return AE_OK;
+ }
+ 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
