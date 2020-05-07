@@ -1,350 +1,130 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5207B1C96BA
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 May 2020 18:43:13 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2821C99EF
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  7 May 2020 20:53:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 09FD81149FF87;
-	Thu,  7 May 2020 09:41:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=rafael.j.wysocki@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id ABFB9117E9C6B;
+	Thu,  7 May 2020 11:51:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gustavoars@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 79CB31108EEF3
-	for <linux-nvdimm@lists.01.org>; Thu,  7 May 2020 09:41:09 -0700 (PDT)
-IronPort-SDR: CSshxTCECe9vGg+QYqqIXMuPWn16fZvnY3+a5Xp+N2xEqv3AtNyQ8nMiSh/EkuHVxFCBL8JNu6
- UPOpuMXOfTlQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2020 09:43:07 -0700
-IronPort-SDR: CiHmnCmP3XUkgB4RURPDa7Bn0OXxk+KACt0xAbpZEi/bg3lN152KAVipouD2fXjh7cwhmsXwNE
- psJmAwc5wLGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,364,1583222400";
-   d="scan'208";a="251556357"
-Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.152.102]) ([10.249.152.102])
-  by fmsmga008.fm.intel.com with ESMTP; 07 May 2020 09:43:03 -0700
-Subject: Re: [PATCH] ACPI: Drop rcu usage for MMIO mappings
-To: Dan Williams <dan.j.williams@intel.com>
-References: <158880834905.2183490.15616329469420234017.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
- 173, 80-298 Gdansk
-Message-ID: <bd3963f3-c6d6-f138-331c-9ac065633491@intel.com>
-Date: Thu, 7 May 2020 18:43:03 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+	by ml01.01.org (Postfix) with ESMTPS id 4FD5B117E5ADE
+	for <linux-nvdimm@lists.01.org>; Thu,  7 May 2020 11:51:19 -0700 (PDT)
+Received: from embeddedor (unknown [189.207.59.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 8828424960;
+	Thu,  7 May 2020 18:53:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1588877598;
+	bh=qD1YTu45POQi4xsMj+gdlSVCGKp5j89OYm2p2pPtKh4=;
+	h=Date:From:To:Cc:Subject:From;
+	b=FSQeULZOf97JknZWY5LLJLQT/B28yD4GV5UeqoNuLVRKkxweMPCE3bj9Ix6zBiXZG
+	 SkK2rXUmNi8iocLO2FpUJfFio+NqcvdSBhbGk6cfmwEwR3nhnNDUrEwSblam8VUPu8
+	 tKEbXqXjoojLcnrP4v7c2q3FxuHkngwmGz6OeIH8=
+Date: Thu, 7 May 2020 13:57:44 -0500
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH] tools/testing/nvdimm: Replace zero-length array with
+ flexible-array
+Message-ID: <20200507185744.GA14974@embeddedor>
 MIME-Version: 1.0
-In-Reply-To: <158880834905.2183490.15616329469420234017.stgit@dwillia2-desk3.amr.corp.intel.com>
-Content-Language: en-US
-Message-ID-Hash: 777D4W2PSK5ZZK5N63JAIY36XOXQZK45
-X-Message-ID-Hash: 777D4W2PSK5ZZK5N63JAIY36XOXQZK45
-X-MailFrom: rafael.j.wysocki@intel.com
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Message-ID-Hash: NXBJ3SLK7FN5RUTE2QHOPYQ7NWLDF33Q
+X-Message-ID-Hash: NXBJ3SLK7FN5RUTE2QHOPYQ7NWLDF33Q
+X-MailFrom: gustavoars@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: stable@vger.kernel.org, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Erik Kaneda <erik.kaneda@intel.com>, Myron Stowe <myron.stowe@redhat.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/777D4W2PSK5ZZK5N63JAIY36XOXQZK45/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NXBJ3SLK7FN5RUTE2QHOPYQ7NWLDF33Q/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 5/7/2020 1:39 AM, Dan Williams wrote:
-> Recently a performance problem was reported for a process invoking a
-> non-trival ASL program. The method call in this case ends up
-> repetitively triggering a call path like:
->
->      acpi_ex_store
->      acpi_ex_store_object_to_node
->      acpi_ex_write_data_to_field
->      acpi_ex_insert_into_field
->      acpi_ex_write_with_update_rule
->      acpi_ex_field_datum_io
->      acpi_ex_access_region
->      acpi_ev_address_space_dispatch
->      acpi_ex_system_memory_space_handler
->      acpi_os_map_cleanup.part.14
->      _synchronize_rcu_expedited.constprop.89
->      schedule
->
-> The end result of frequent synchronize_rcu_expedited() invocation is
-> tiny sub-millisecond spurts of execution where the scheduler freely
-> migrates this apparently sleepy task. The overhead of frequent scheduler
-> invocation multiplies the execution time by a factor of 2-3X.
->
-> For example, performance improves from 16 minutes to 7 minutes for a
-> firmware update procedure across 24 devices.
->
-> Perhaps the rcu usage was intended to allow for not taking a sleeping
-> lock in the acpi_os_{read,write}_memory() path which ostensibly could be
-> called from an APEI NMI error interrupt? Neither rcu_read_lock() nor
-> ioremap() are interrupt safe, so add a WARN_ONCE() to validate that rcu
-> was not serving as a mechanism to avoid direct calls to ioremap(). Even
-> the original implementation had a spin_lock_irqsave(), but that is not
-> NMI safe.
->
-> APEI itself already has some concept of avoiding ioremap() from
-> interrupt context (see erst_exec_move_data()), if the new warning
-> triggers it means that APEI either needs more instrumentation like that
-> to pre-emptively fail, or more infrastructure to arrange for pre-mapping
-> the resources it needs in NMI context.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 620242ae8c3d ("ACPI: Maintain a list of ACPI memory mapped I/O remappings")
-> Cc: Len Brown <lenb@kernel.org>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: James Morse <james.morse@arm.com>
-> Cc: Erik Kaneda <erik.kaneda@intel.com>
-> Cc: Myron Stowe <myron.stowe@redhat.com>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+The current codebase makes use of the zero-length array language
+extension to the C90 standard, but the preferred mechanism to declare
+variable-length types such as these ones is a flexible array member[1][2],
+introduced in C99:
 
-linux-acpi is kind of relevant for this too, so please CC it.
+struct foo {
+        int stuff;
+        struct boo array[];
+};
 
+By making use of the mechanism above, we will get a compiler warning
+in case the flexible array does not occur last in the structure, which
+will help us prevent some kind of undefined behavior bugs from being
+inadvertently introduced[3] to the codebase from now on.
 
-> ---
->   drivers/acpi/osl.c |  117 +++++++++++++++++++++++++---------------------------
->   1 file changed, 57 insertions(+), 60 deletions(-)
->
-> diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-> index 762c5d50b8fe..207528c71e9c 100644
-> --- a/drivers/acpi/osl.c
-> +++ b/drivers/acpi/osl.c
-> @@ -214,13 +214,13 @@ acpi_physical_address __init acpi_os_get_root_pointer(void)
->   	return pa;
->   }
->   
-> -/* Must be called with 'acpi_ioremap_lock' or RCU read lock held. */
->   static struct acpi_ioremap *
->   acpi_map_lookup(acpi_physical_address phys, acpi_size size)
->   {
->   	struct acpi_ioremap *map;
->   
-> -	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
-> +	lockdep_assert_held(&acpi_ioremap_lock);
-> +	list_for_each_entry(map, &acpi_ioremaps, list)
->   		if (map->phys <= phys &&
->   		    phys + size <= map->phys + map->size)
->   			return map;
-> @@ -228,7 +228,6 @@ acpi_map_lookup(acpi_physical_address phys, acpi_size size)
->   	return NULL;
->   }
->   
-> -/* Must be called with 'acpi_ioremap_lock' or RCU read lock held. */
->   static void __iomem *
->   acpi_map_vaddr_lookup(acpi_physical_address phys, unsigned int size)
->   {
-> @@ -263,7 +262,8 @@ acpi_map_lookup_virt(void __iomem *virt, acpi_size size)
->   {
->   	struct acpi_ioremap *map;
->   
-> -	list_for_each_entry_rcu(map, &acpi_ioremaps, list, acpi_ioremap_lock_held())
-> +	lockdep_assert_held(&acpi_ioremap_lock);
-> +	list_for_each_entry(map, &acpi_ioremaps, list)
->   		if (map->virt <= virt &&
->   		    virt + size <= map->virt + map->size)
->   			return map;
-> @@ -360,7 +360,7 @@ void __iomem __ref
->   	map->size = pg_sz;
->   	map->refcount = 1;
->   
-> -	list_add_tail_rcu(&map->list, &acpi_ioremaps);
-> +	list_add_tail(&map->list, &acpi_ioremaps);
->   
->   out:
->   	mutex_unlock(&acpi_ioremap_lock);
-> @@ -374,20 +374,13 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
->   }
->   EXPORT_SYMBOL_GPL(acpi_os_map_memory);
->   
-> -/* Must be called with mutex_lock(&acpi_ioremap_lock) */
-> -static unsigned long acpi_os_drop_map_ref(struct acpi_ioremap *map)
-> -{
-> -	unsigned long refcount = --map->refcount;
-> -
-> -	if (!refcount)
-> -		list_del_rcu(&map->list);
-> -	return refcount;
-> -}
-> -
-> -static void acpi_os_map_cleanup(struct acpi_ioremap *map)
-> +static void acpi_os_drop_map_ref(struct acpi_ioremap *map)
->   {
-> -	synchronize_rcu_expedited();
-> +	lockdep_assert_held(&acpi_ioremap_lock);
-> +	if (--map->refcount > 0)
-> +		return;
->   	acpi_unmap(map->phys, map->virt);
-> +	list_del(&map->list);
->   	kfree(map);
->   }
->   
-> @@ -408,7 +401,6 @@ static void acpi_os_map_cleanup(struct acpi_ioremap *map)
->   void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
->   {
->   	struct acpi_ioremap *map;
-> -	unsigned long refcount;
->   
->   	if (!acpi_permanent_mmap) {
->   		__acpi_unmap_table(virt, size);
-> @@ -422,11 +414,8 @@ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
->   		WARN(true, PREFIX "%s: bad address %p\n", __func__, virt);
->   		return;
->   	}
-> -	refcount = acpi_os_drop_map_ref(map);
-> +	acpi_os_drop_map_ref(map);
->   	mutex_unlock(&acpi_ioremap_lock);
-> -
-> -	if (!refcount)
-> -		acpi_os_map_cleanup(map);
->   }
->   EXPORT_SYMBOL_GPL(acpi_os_unmap_iomem);
->   
-> @@ -461,7 +450,6 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
->   {
->   	u64 addr;
->   	struct acpi_ioremap *map;
-> -	unsigned long refcount;
->   
->   	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
->   		return;
-> @@ -477,11 +465,8 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
->   		mutex_unlock(&acpi_ioremap_lock);
->   		return;
->   	}
-> -	refcount = acpi_os_drop_map_ref(map);
-> +	acpi_os_drop_map_ref(map);
->   	mutex_unlock(&acpi_ioremap_lock);
-> -
-> -	if (!refcount)
-> -		acpi_os_map_cleanup(map);
->   }
->   EXPORT_SYMBOL(acpi_os_unmap_generic_address);
->   
-> @@ -700,55 +685,71 @@ int acpi_os_read_iomem(void __iomem *virt_addr, u64 *value, u32 width)
->   	return 0;
->   }
->   
-> +static void __iomem *acpi_os_rw_map(acpi_physical_address phys_addr,
-> +				    unsigned int size, bool *did_fallback)
-> +{
-> +	void __iomem *virt_addr = NULL;
-> +
-> +	if (WARN_ONCE(in_interrupt(), "ioremap in interrupt context\n"))
-> +		return NULL;
-> +
-> +	/* Try to use a cached mapping and fallback otherwise */
-> +	*did_fallback = false;
-> +	mutex_lock(&acpi_ioremap_lock);
-> +	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
-> +	if (virt_addr)
-> +		return virt_addr;
-> +	mutex_unlock(&acpi_ioremap_lock);
-> +
-> +	virt_addr = acpi_os_ioremap(phys_addr, size);
-> +	*did_fallback = true;
-> +
-> +	return virt_addr;
-> +}
-> +
-> +static void acpi_os_rw_unmap(void __iomem *virt_addr, bool did_fallback)
-> +{
-> +	if (did_fallback) {
-> +		/* in the fallback case no lock is held */
-> +		iounmap(virt_addr);
-> +		return;
-> +	}
-> +
-> +	mutex_unlock(&acpi_ioremap_lock);
-> +}
-> +
->   acpi_status
->   acpi_os_read_memory(acpi_physical_address phys_addr, u64 *value, u32 width)
->   {
-> -	void __iomem *virt_addr;
->   	unsigned int size = width / 8;
-> -	bool unmap = false;
-> +	bool did_fallback = false;
-> +	void __iomem *virt_addr;
->   	u64 dummy;
->   	int error;
->   
-> -	rcu_read_lock();
-> -	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
-> -	if (!virt_addr) {
-> -		rcu_read_unlock();
-> -		virt_addr = acpi_os_ioremap(phys_addr, size);
-> -		if (!virt_addr)
-> -			return AE_BAD_ADDRESS;
-> -		unmap = true;
-> -	}
-> -
-> +	virt_addr = acpi_os_rw_map(phys_addr, size, &did_fallback);
-> +	if (!virt_addr)
-> +		return AE_BAD_ADDRESS;
->   	if (!value)
->   		value = &dummy;
->   
->   	error = acpi_os_read_iomem(virt_addr, value, width);
->   	BUG_ON(error);
->   
-> -	if (unmap)
-> -		iounmap(virt_addr);
-> -	else
-> -		rcu_read_unlock();
-> -
-> +	acpi_os_rw_unmap(virt_addr, did_fallback);
->   	return AE_OK;
->   }
->   
->   acpi_status
->   acpi_os_write_memory(acpi_physical_address phys_addr, u64 value, u32 width)
->   {
-> -	void __iomem *virt_addr;
->   	unsigned int size = width / 8;
-> -	bool unmap = false;
-> +	bool did_fallback = false;
-> +	void __iomem *virt_addr;
->   
-> -	rcu_read_lock();
-> -	virt_addr = acpi_map_vaddr_lookup(phys_addr, size);
-> -	if (!virt_addr) {
-> -		rcu_read_unlock();
-> -		virt_addr = acpi_os_ioremap(phys_addr, size);
-> -		if (!virt_addr)
-> -			return AE_BAD_ADDRESS;
-> -		unmap = true;
-> -	}
-> +	virt_addr = acpi_os_rw_map(phys_addr, size, &did_fallback);
-> +	if (!virt_addr)
-> +		return AE_BAD_ADDRESS;
->   
->   	switch (width) {
->   	case 8:
-> @@ -767,11 +768,7 @@ acpi_os_write_memory(acpi_physical_address phys_addr, u64 value, u32 width)
->   		BUG();
->   	}
->   
-> -	if (unmap)
-> -		iounmap(virt_addr);
-> -	else
-> -		rcu_read_unlock();
-> -
-> +	acpi_os_rw_unmap(virt_addr, did_fallback);
->   	return AE_OK;
->   }
->   
->
+Also, notice that, dynamic memory allocations won't be affected by
+this change:
+
+"Flexible array members have incomplete type, and so the sizeof operator
+may not be applied. As a quirk of the original implementation of
+zero-length arrays, sizeof evaluates to zero."[1]
+
+sizeof(flexible-array-member) triggers a warning because flexible array
+members have incomplete type[1]. There are some instances of code in
+which the sizeof operator is being incorrectly/erroneously applied to
+zero-length arrays and the result is zero. Such instances may be hiding
+some bugs. So, this work (flexible-array member conversions) will also
+help to get completely rid of those sorts of issues.
+
+This issue was found with the help of Coccinelle.
+
+[1] https://gcc.gnu.org/onlinedocs/gcc/Zero-Length.html
+[2] https://github.com/KSPP/linux/issues/21
+[3] commit 76497732932f ("cxgb3/l2t: Fix undefined behaviour")
+
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ tools/testing/nvdimm/test/nfit_test.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/testing/nvdimm/test/nfit_test.h b/tools/testing/nvdimm/test/nfit_test.h
+index db3c07beb9d1..b5f7a996c4d0 100644
+--- a/tools/testing/nvdimm/test/nfit_test.h
++++ b/tools/testing/nvdimm/test/nfit_test.h
+@@ -51,7 +51,7 @@ struct nd_cmd_translate_spa {
+ 		__u32 nfit_device_handle;
+ 		__u32 _reserved;
+ 		__u64 dpa;
+-	} __packed devices[0];
++	} __packed devices[];
+ 
+ } __packed;
+ 
+@@ -74,7 +74,7 @@ struct nd_cmd_ars_err_inj_stat {
+ 	struct nd_error_stat_query_record {
+ 		__u64 err_inj_stat_spa_range_base;
+ 		__u64 err_inj_stat_spa_range_length;
+-	} __packed record[0];
++	} __packed record[];
+ } __packed;
+ 
+ #define ND_INTEL_SMART			 1
+@@ -180,7 +180,7 @@ struct nd_intel_fw_send_data {
+ 	__u32 context;
+ 	__u32 offset;
+ 	__u32 length;
+-	__u8 data[0];
++	__u8 data[];
+ /* this field is not declared due ot variable data from input */
+ /*	__u32 status; */
+ } __packed;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
