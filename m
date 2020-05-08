@@ -1,59 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAFA1CA655
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 10:42:49 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE5D1CA88E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 12:50:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D8EFF11842517;
-	Fri,  8 May 2020 01:40:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6F12411847EBC;
+	Fri,  8 May 2020 03:48:10 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4146E11842510
-	for <linux-nvdimm@lists.01.org>; Fri,  8 May 2020 01:40:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1588927365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f6TeMrGs7xjeCj9G607qVf2e66dWDywj8Qub6sAiaWA=;
-	b=Ciwc1Gyc7rUGo4o2E31rMdT+x/1y6/5dcWUsjUIUWMd03kIui1OBxVkvXjIr9fHN2UZUP5
-	i2GIA31KaoC7+hyI+hgLHfzmAsF5U9bGYNgNnKvYCWJyUP0v2JBBRevP6ZLI+/XY0Jk/AR
-	9TbT+v0yycoLrxehyrBjdzoPS21B8Hs=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-184-e2MKSisaOFSWnPAgNcUing-1; Fri, 08 May 2020 04:42:43 -0400
-X-MC-Unique: e2MKSisaOFSWnPAgNcUing-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5C966107ACCA;
-	Fri,  8 May 2020 08:42:41 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-181.ams2.redhat.com [10.36.113.181])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 54D1C5C1C5;
-	Fri,  8 May 2020 08:42:38 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 4/4] device-dax: Add memory via add_memory_driver_managed()
-Date: Fri,  8 May 2020 10:42:17 +0200
-Message-Id: <20200508084217.9160-5-david@redhat.com>
-In-Reply-To: <20200508084217.9160-1-david@redhat.com>
-References: <20200508084217.9160-1-david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 7296011847EBB
+	for <linux-nvdimm@lists.01.org>; Fri,  8 May 2020 03:48:08 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 048AWqmD137280;
+	Fri, 8 May 2020 06:49:35 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 30vtsxgpsf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2020 06:49:35 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 048Ae4Hi151854;
+	Fri, 8 May 2020 06:49:34 -0400
+Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 30vtsxgpre-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2020 06:49:33 -0400
+Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
+	by ppma05fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 048AjTPY008355;
+	Fri, 8 May 2020 10:49:31 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma05fra.de.ibm.com with ESMTP id 30s0g5nc15-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2020 10:49:31 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 048AnS8W63439074
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2020 10:49:28 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7FD2AE045;
+	Fri,  8 May 2020 10:49:28 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C43DAE05A;
+	Fri,  8 May 2020 10:49:25 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.93.12])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Fri,  8 May 2020 10:49:25 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Fri, 08 May 2020 16:19:24 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v7 0/5] powerpc/papr_scm: Add support for reporting nvdimm health
+Date: Fri,  8 May 2020 16:19:17 +0530
+Message-Id: <20200508104922.72565-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: A4NSE3QNT7AQXHI7B2JAUHLPAQXPJS5M
-X-Message-ID-Hash: A4NSE3QNT7AQXHI7B2JAUHLPAQXPJS5M
-X-MailFrom: david@redhat.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-08_08:2020-05-07,2020-05-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 suspectscore=0
+ phishscore=0 impostorscore=0 adultscore=0 mlxscore=0 priorityscore=1501
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005080091
+Message-ID-Hash: GABDO6N4ZVWEFMORIEJFOPTCZ5QQKALY
+X-Message-ID-Hash: GABDO6N4ZVWEFMORIEJFOPTCZ5QQKALY
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, kexec@lists.infradead.org, Pavel Tatashin <pasha.tatashin@soleen.com>, David Hildenbrand <david@redhat.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Wei Yang <richard.weiyang@gmail.com>, Baoquan He <bhe@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Eric Biederman <ebiederm@xmission.com>
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/A4NSE3QNT7AQXHI7B2JAUHLPAQXPJS5M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GABDO6N4ZVWEFMORIEJFOPTCZ5QQKALY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,217 +82,176 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Currently, when adding memory, we create entries in /sys/firmware/memmap/
-as "System RAM". This will lead to kexec-tools to add that memory to the
-fixed-up initial memmap for a kexec kernel (loaded via kexec_load()). The
-memory will be considered initial System RAM by the kexec'd kernel and
-can no longer be reconfigured. This is not what happens during a real
-reboot.
+The PAPR standard[1][3] provides mechanisms to query the health and
+performance stats of an NVDIMM via various hcalls as described in
+Ref[2].  Until now these stats were never available nor exposed to the
+user-space tools like 'ndctl'. This is partly due to PAPR platform not
+having support for ACPI and NFIT. Hence 'ndctl' is unable to query and
+report the dimm health status and a user had no way to determine the
+current health status of a NDVIMM.
 
-Let's add our memory via add_memory_driver_managed() now, so we won't
-create entries in /sys/firmware/memmap/ and indicate the memory as
-"System RAM (kmem)" in /proc/iomem. This allows everybody (especially
-kexec-tools) to identify that this memory is special and has to be treated
-differently than ordinary (hotplugged) System RAM.
+To overcome this limitation, this patch-set updates papr_scm kernel
+module to query and fetch NVDIMM health stats using hcalls described
+in Ref[2].  This health and performance stats are then exposed to
+userspace via sysfs and PAPR-NVDIMM-Specific-Methods(PDSM) issued by
+libndctl.
 
-Before configuring the namespace:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-33fffffff : namespace0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+These changes coupled with proposed ndtcl changes located at Ref[4]
+should provide a way for the user to retrieve NVDIMM health status
+using ndtcl.
 
-After configuring the namespace:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+Below is a sample output using proposed kernel + ndctl for PAPR NVDIMM
+in a emulation environment:
 
-After loading kmem before this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : dax0.0
-	    150000000-33fffffff : System RAM
-	3280000000-32ffffffff : PCI Bus 0000:00
+ # ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"fatal",
+      "shutdown_state":"dirty"
+    }
+  }
+]
 
-After loading kmem after this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : dax0.0
-	    150000000-33fffffff : System RAM (kmem)
-	3280000000-32ffffffff : PCI Bus 0000:00
+Dimm health report output on a pseries guest lpar with vPMEM or HMS
+based NVDIMMs that are in perfectly healthy conditions:
 
-After a proper reboot:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+ # ndctl list -d nmem0 -H
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "shutdown_state":"clean"
+    }
+  }
+]
 
-Within the kexec kernel before this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  150000000-33fffffff : System RAM
-	3280000000-32ffffffff : PCI Bus 0000:00
+PAPR NVDIMM-Specific-Methods(PDSM)
+==================================
 
-Within the kexec kernel after this change:
-	[root@localhost ~]# cat /proc/iomem
-	...
-	140000000-33fffffff : Persistent Memory
-	  140000000-1481fffff : namespace0.0
-	  148200000-33fffffff : dax0.0
-	3280000000-32ffffffff : PCI Bus 0000:00
+PDSM requests are issued by vendor specific code in libndctl to
+execute certain operations or fetch information from NVDIMMS. PDSMs
+requests can be sent to papr_scm module via libndctl(userspace) and
+libnvdimm (kernel) using the ND_CMD_CALL ioctl command which can be
+handled in the dimm control function papr_scm_ndctl(). Current
+patchset proposes a single PDSM to retrieve NVDIMM health, defined in
+the newly introduced uapi header named 'papr_scm_pdsm.h'. Support for
+more PDSMs will be added in future.
 
-/sys/firmware/memmap/ before this change:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
-	0000000150000000-0000000340000000 (System RAM)
+Structure of the patch-set
+==========================
 
-/sys/firmware/memmap/ after a proper reboot:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
+The patch-set starts with a doc patch documenting details of hcall
+H_SCM_HEALTH. Second patch exports kernel symbol seq_buf_printf()
+thats used in subsequent patches to generate sysfs attribute content.
 
-/sys/firmware/memmap/ after this change:
-	0000000000000000-000000000009fc00 (System RAM)
-	000000000009fc00-00000000000a0000 (Reserved)
-	00000000000f0000-0000000000100000 (Reserved)
-	0000000000100000-00000000bffdf000 (System RAM)
-	00000000bffdf000-00000000c0000000 (Reserved)
-	00000000feffc000-00000000ff000000 (Reserved)
-	00000000fffc0000-0000000100000000 (Reserved)
-	0000000100000000-0000000140000000 (System RAM)
+Third patch implements support for fetching NVDIMM health information
+from PHYP and partially exposing it to user-space via a NVDIMM sysfs
+flag.
 
-kexec-tools already seem to basically ignore any System RAM that's not
-on top level when searching for areas to place kexec images - but also
-for determining crash areas to dump via kdump. Changing the resource name
-won't have an impact.
+Fourth patches deal with implementing support for servicing PDSM
+commands in papr_scm module.
 
-Handle unloading of the driver after memory hotremove failed properly, by
-duplicating the string if necessary.
+Finally the last patch implements support for servicing PDSM
+'PAPR_SCM_PDSM_HEALTH' that returns the NVDIMM health information to
+libndctl.
 
-Acked-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/dax/dax-private.h |  1 +
- drivers/dax/kmem.c        | 28 ++++++++++++++++++++++++++--
- 2 files changed, 27 insertions(+), 2 deletions(-)
+Changelog:
+==========
 
-diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-index 3107ce80e809..16850d5388ab 100644
---- a/drivers/dax/dax-private.h
-+++ b/drivers/dax/dax-private.h
-@@ -44,6 +44,7 @@ struct dax_region {
-  * @dev - device core
-  * @pgmap - pgmap for memmap setup / lifetime (driver owned)
-  * @dax_mem_res: physical address range of hotadded DAX memory
-+ * @dax_mem_name: name for hotadded DAX memory via add_memory_driver_managed()
-  */
- struct dev_dax {
- 	struct dax_region *region;
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 1e678bdf5aed..275aa5f87399 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -14,6 +14,11 @@
- #include "dax-private.h"
- #include "bus.h"
- 
-+/* Memory resource name used for add_memory_driver_managed(). */
-+static const char *kmem_name;
-+/* Set if any memory will remain added when the driver will be unloaded. */
-+static bool any_hotremove_failed;
-+
- int dev_dax_kmem_probe(struct device *dev)
- {
- 	struct dev_dax *dev_dax = to_dev_dax(dev);
-@@ -70,7 +75,12 @@ int dev_dax_kmem_probe(struct device *dev)
- 	 */
- 	new_res->flags = IORESOURCE_SYSTEM_RAM;
- 
--	rc = add_memory(numa_node, new_res->start, resource_size(new_res));
-+	/*
-+	 * Ensure that future kexec'd kernels will not treat this as RAM
-+	 * automatically.
-+	 */
-+	rc = add_memory_driver_managed(numa_node, new_res->start,
-+				       resource_size(new_res), kmem_name);
- 	if (rc) {
- 		release_resource(new_res);
- 		kfree(new_res);
-@@ -100,6 +110,7 @@ static int dev_dax_kmem_remove(struct device *dev)
- 	 */
- 	rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
- 	if (rc) {
-+		any_hotremove_failed = true;
- 		dev_err(dev,
- 			"DAX region %pR cannot be hotremoved until the next reboot\n",
- 			res);
-@@ -124,6 +135,7 @@ static int dev_dax_kmem_remove(struct device *dev)
- 	 * permanently pinned as reserved by the unreleased
- 	 * request_mem_region().
- 	 */
-+	any_hotremove_failed = true;
- 	return 0;
- }
- #endif /* CONFIG_MEMORY_HOTREMOVE */
-@@ -137,12 +149,24 @@ static struct dax_device_driver device_dax_kmem_driver = {
- 
- static int __init dax_kmem_init(void)
- {
--	return dax_driver_register(&device_dax_kmem_driver);
-+	int rc;
-+
-+	/* Resource name is permanently allocated if any hotremove fails. */
-+	kmem_name = kstrdup_const("System RAM (kmem)", GFP_KERNEL);
-+	if (!kmem_name)
-+		return -ENOMEM;
-+
-+	rc = dax_driver_register(&device_dax_kmem_driver);
-+	if (rc)
-+		kfree_const(kmem_name);
-+	return rc;
- }
- 
- static void __exit dax_kmem_exit(void)
- {
- 	dax_driver_unregister(&device_dax_kmem_driver);
-+	if (!any_hotremove_failed)
-+		kfree_const(kmem_name);
- }
- 
- MODULE_AUTHOR("Intel Corporation");
+v6..v7:
+
+* Incorporate various review comments from Mpe.  Removed papr_scm.h
+* Added a patch to export seq_buf_printf() [Mpe, Steven Rostedt]
+* header file and moved its contents to papr_scm.c.
+* Split function drc_pmem_query_health() into two functions, one that takes
+  care of caching and concurrency and other one that doesn't.
+* Fixed a possible incorrect way to make local copy of nvdimm health data.
+* Some variable renames changed as suggested in previous review.
+* Removed unused macros/defines from papr_scm_pdsm.h
+* Updated papr_scm_pdsm.h to remove usage of __KERNEL__ define.
+* Updated papr_scm_pdsm.h to remove redefinition of __packed macro.
+
+v5..v6:
+
+* Incorporate review comments from Mpe and Dan Williams.
+* Changed the usage of term DSM to PDSM as former conflicted with
+  usage in ACPI context.
+* UAPI updates to remove usage of bool and marking the structs 
+  defined as 'packed'.
+* Simplified the health-bitmap handling in papr_scm to use u64
+  instead of __be64 integers.
+* Caching of the health information so reading the dimm-flag file
+  doesn't result in costly hcalls everytime.
+* Changed dimm-flag 'save_fail' to 'flush_fail'
+* Moved the dimm flag file from 'papr_flags' to 'papr/flags'.
+* Added a patch to document H_SCM_HEALTH hcall return values.
+* Added sysfs ABI documentation for newly introduce dimm-flag
+  sysfs file 'papr/flags'
+
+v4..v5:
+
+* Fixed a bug in new implementation of papr_scm_ndctl() that was triggering
+  a false error condition.
+
+v3..v4:
+
+* Restructured papr_scm_ndctl() to dispatch ND_CMD_CALL commands to a new
+  function named papr_scm_service_dsm() to serivice DSM requests. [Aneesh]
+
+v2..v3:
+
+* Updated the papr_scm_dsm.h header to be more confimant general kernel
+  guidelines for UAPI headers. [Aneesh]
+
+* Changed the definition of macro PAPR_SCM_DIMM_UNARMED_MASK to not
+  include case when the NVDIMM is unarmed because its a vPMEM
+  NVDIMM. [Aneesh]
+
+v1..v2:
+
+* Restructured the patch-set based on review comments on V1 patch-set to
+simplify the patch review. Multiple small patches have been combined into
+single patches to reduce cross referencing that was needed in earlier
+patch-set. Hence most of the patches in this patch-set as now new. [Aneesh]
+
+* Removed the initial work done for fetch NVDIMM performance statistics.
+These changes will be re-proposed in a separate patch-set. [Aneesh]
+
+* Simplified handling of versioning of 'struct
+nd_papr_scm_dimm_health_stat_v1' as only one version of the structure is
+currently in existence.
+
+References:
+[1] "Power Architecture Platform Reference"
+      https://en.wikipedia.org/wiki/Power_Architecture_Platform_Reference
+[2] commit 58b278f568f0
+     ("powerpc: Provide initial documentation for PAPR hcalls")
+[3] "Linux on Power Architecture Platform Reference"
+     https://members.openpowerfoundation.org/document/dl/469
+[4] https://github.com/vaibhav92/ndctl/tree/papr_scm_health_v7
+
+Vaibhav Jain (5):
+  powerpc: Document details on H_SCM_HEALTH hcall
+  seq_buf: Export seq_buf_printf() to external modules
+  powerpc/papr_scm: Fetch nvdimm health information from PHYP
+  ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
+  powerpc/papr_scm: Implement support for PAPR_SCM_PDSM_HEALTH
+
+ Documentation/ABI/testing/sysfs-bus-papr-scm  |  27 ++
+ Documentation/powerpc/papr_hcalls.rst         |  43 ++-
+ arch/powerpc/include/uapi/asm/papr_scm_pdsm.h | 173 +++++++++
+ arch/powerpc/platforms/pseries/papr_scm.c     | 363 +++++++++++++++++-
+ include/uapi/linux/ndctl.h                    |   1 +
+ lib/seq_buf.c                                 |   1 +
+ 6 files changed, 595 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-papr-scm
+ create mode 100644 arch/powerpc/include/uapi/asm/papr_scm_pdsm.h
+
 -- 
-2.25.4
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
