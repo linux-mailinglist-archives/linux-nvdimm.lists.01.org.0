@@ -2,133 +2,138 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209FD1CA64E
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 10:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2B71CA64F
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 10:42:42 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 807F21183DF54;
-	Fri,  8 May 2020 01:40:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id 97F6811842510;
+	Fri,  8 May 2020 01:40:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4EEE01108EF37
-	for <linux-nvdimm@lists.01.org>; Fri,  8 May 2020 01:40:33 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 096D71108EF37
+	for <linux-nvdimm@lists.01.org>; Fri,  8 May 2020 01:40:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1588927354;
+	s=mimecast20190719; t=1588927356;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ouBt4BfusFaa/lv0LTRbmOSgoxSr9cZTrvcQPivP5Jg=;
-	b=WsuS/KY5MMKBiOajQSSbkj9bRrxJbryD/IUVamXAAM1FW9GRjkt6zwdHytSI6393QsmMZ7
-	dOvROlUlWGq/6vhN6K82AKq+i2rMUd7RUQsZd0093B8Au+4j2pkEb5Shs4f9RteYqqxNAF
-	pICuz/HQ3oaSnfgn+rOhRR02eNpR7z0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDqdz7vUW07g8cOkfmGPIO8ov0KvSWCkjJFS1FzKfW0=;
+	b=KgELIlqoT/Gzay5TM23oNfJiFXsV2VnmItnz92sU7H84Ih2kF35E25ynK+GPOAMtl/yHqI
+	+d6DD5nflh7JjjzrsT7iGzI7HRDPYElzhTusKOP7E4tWXMAra6qe0VL9c4VkSFDwWF2I87
+	H/m9/jOCpBcfgI3ufnvnEwAlGwjiIKU=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-340-l6nWo52fN4uNSj25Te985g-1; Fri, 08 May 2020 04:42:30 -0400
-X-MC-Unique: l6nWo52fN4uNSj25Te985g-1
+ us-mta-427-tly-VFRPOxOjTHrhhsV3FQ-1; Fri, 08 May 2020 04:42:32 -0400
+X-MC-Unique: tly-VFRPOxOjTHrhhsV3FQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B3D84461;
-	Fri,  8 May 2020 08:42:28 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 41EEE8018AB;
+	Fri,  8 May 2020 08:42:31 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-113-181.ams2.redhat.com [10.36.113.181])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C8F425C1B0;
-	Fri,  8 May 2020 08:42:22 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0F93E5C1B0;
+	Fri,  8 May 2020 08:42:28 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v4 0/4] mm/memory_hotplug: Interface to add driver-managed system ram
-Date: Fri,  8 May 2020 10:42:13 +0200
-Message-Id: <20200508084217.9160-1-david@redhat.com>
+Subject: [PATCH v4 1/4] device-dax: Don't leak kernel memory to user space after unloading kmem
+Date: Fri,  8 May 2020 10:42:14 +0200
+Message-Id: <20200508084217.9160-2-david@redhat.com>
+In-Reply-To: <20200508084217.9160-1-david@redhat.com>
+References: <20200508084217.9160-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: 7BDE2GHBUOBV3CGU65KA4N422O4LR3NM
-X-Message-ID-Hash: 7BDE2GHBUOBV3CGU65KA4N422O4LR3NM
+Message-ID-Hash: 2EP3FDTS5J6IMZAZYUFRU5UMWXDRJDXA
+X-Message-ID-Hash: 2EP3FDTS5J6IMZAZYUFRU5UMWXDRJDXA
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, kexec@lists.infradead.org, Pavel Tatashin <pasha.tatashin@soleen.com>, David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Eric Biederman <ebiederm@xmission.com>, Michal Hocko <mhocko@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Wei Yang <richard.weiyang@gmail.com>
+CC: linux-mm@kvack.org, linux-nvdimm@lists.01.org, kexec@lists.infradead.org, Pavel Tatashin <pasha.tatashin@soleen.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7BDE2GHBUOBV3CGU65KA4N422O4LR3NM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2EP3FDTS5J6IMZAZYUFRU5UMWXDRJDXA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-I did some more testing to v3 and found issues with unloading the kmem
-module, followed by reconfiguring the namespace.
-
-kexec (via kexec_load()) can currently not properly handle memory added via
-dax/kmem, and will have similar issues with virtio-mem. kexec-tools will
-currently add all memory to the fixed-up initial firmware memmap. In case
-of dax/kmem, this means that - in contrast to a proper reboot - how that
-persistent memory will be used can no longer be configured by the kexec'd
-kernel. In case of virtio-mem it will be harmful, because that memory
-might contain inaccessible pieces that require coordination with hypervisor
-first.
-
-In both cases, we want to let the driver in the kexec'd kernel handle
-detecting and adding the memory, like during an ordinary reboot.
-Introduce add_memory_driver_managed(). More on the samentics are in patch
-#1.
-
-In the future, we might want to make this behavior configurable for
-dax/kmem- either by configuring it in the kernel (which would then also
-allow to configure kexec_file_load()) or in kexec-tools by also adding
-"System RAM (kmem)" memory from /proc/iomem to the fixed-up initial
-firmware memmap.
-
-More on the motivation can be found in [1] and [2].
-
-v3 -> v4:
-- "device-dax: Don't leak kernel memory to user space after unloading kmem"
--- Added
-- "device-dax: Add memory via add_memory_driver_managed()"
--- kstrdup_const() the resource name to be used for added memory
--- Remember if any hotremove failed / we still have memory added to the
-   system and conditionally kfree_const().
-
-v2 -> v3:
-- Don't use flags for add_memory() and friends, provide
-  add_memory_driver_managed() instead.
-- Flag memory resources via IORESOURCE_MEM_DRIVER_MANAGED and handle them
-  in kexec.
-- Name memory resources "System RAM ($DRIVER)", visible via /proc/iomem
-- Added more details to the patch descriptions, especially regarding the
-  history of /sys/firmware/memmap
-- Add a comment to the device-dax change. Dropped Dave's Ack as the
-
-v1 -> v2:
-- Don't change the resource name
-- Rename the flag to MHP_NO_FIRMWARE_MEMMAP to reflect what it is doing
-- Rephrase subjects/descriptions
-- Use the flag for dax/kmem
-
-[1] https://lkml.kernel.org/r/20200429160803.109056-1-david@redhat.com
-[2] https://lkml.kernel.org/r/20200430102908.10107-1-david@redhat.com
-
-
-David Hildenbrand (4):
-  device-dax: Don't leak kernel memory to user space after unloading
-    kmem
-  mm/memory_hotplug: Introduce add_memory_driver_managed()
-  kexec_file: Don't place kexec images on IORESOURCE_MEM_DRIVER_MANAGED
-  device-dax: Add memory via add_memory_driver_managed()
-
- drivers/dax/dax-private.h      |  1 +
- drivers/dax/kmem.c             | 42 ++++++++++++++++++++---
- include/linux/ioport.h         |  1 +
- include/linux/memory_hotplug.h |  2 ++
- kernel/kexec_file.c            |  5 +++
- mm/memory_hotplug.c            | 62 +++++++++++++++++++++++++++++++---
- 6 files changed, 104 insertions(+), 9 deletions(-)
-
--- 
-2.25.4
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXNzdW1lIHdlIGhhdmUga21lbSBjb25maWd1cmVkIGFuZCBsb2FkZWQ6DQogIFtyb290QGxvY2Fs
+aG9zdCB+XSMgY2F0IC9wcm9jL2lvbWVtDQogIC4uLg0KICAxNDAwMDAwMDAtMzNmZmZmZmZmIDog
+UGVyc2lzdGVudCBNZW1vcnkkDQogICAgMTQwMDAwMDAwLTE0ODFmZmZmZiA6IG5hbWVzcGFjZTAu
+MA0KICAgIDE1MDAwMDAwMC0zM2ZmZmZmZmYgOiBkYXgwLjANCiAgICAgIDE1MDAwMDAwMC0zM2Zm
+ZmZmZmYgOiBTeXN0ZW0gUkFNDQoNCkFzc3VtZSB3ZSB0cnkgdG8gdW5sb2FkIGttZW0uIFRoaXMg
+Zm9yY2UtdW5sb2FkaW5nIHdpbGwgd29yaywgZXZlbiBpZg0KbWVtb3J5IGNhbm5vdCBnZXQgcmVt
+b3ZlZCBmcm9tIHRoZSBzeXN0ZW0uDQogIFtyb290QGxvY2FsaG9zdCB+XSMgcm1tb2Qga21lbQ0K
+ICBbICAgODYuMzgwMjI4XSByZW1vdmluZyBtZW1vcnkgZmFpbHMsIGJlY2F1c2UgbWVtb3J5IFsw
+eDAwMDAwMDAxNTAwMDAwMDAtMHgwMDAwMDAwMTU3ZmZmZmZmXSBpcyBvbmxpbmVkDQogIC4uLg0K
+ICBbICAgODYuNDMxMjI1XSBrbWVtIGRheDAuMDogREFYIHJlZ2lvbiBbbWVtIDB4MTUwMDAwMDAw
+LTB4MzNmZmZmZmZmXSBjYW5ub3QgYmUgaG90cmVtb3ZlZCB1bnRpbCB0aGUgbmV4dCByZWJvb3QN
+Cg0KTm93LCB3ZSBjYW4gcmVjb25maWd1cmUgdGhlIG5hbWVzcGFjZToNCiAgW3Jvb3RAbG9jYWxo
+b3N0IH5dIyBuZGN0bCBjcmVhdGUtbmFtZXNwYWNlIC0tZm9yY2UgLS1yZWNvbmZpZz1uYW1lc3Bh
+Y2UwLjAgLS1tb2RlPWRldmRheA0KICBbICAxMzEuNDA5MzUxXSBuZF9wbWVtIG5hbWVzcGFjZTAu
+MDogY291bGQgbm90IHJlc2VydmUgcmVnaW9uIFttZW0gMHgxNDAwMDAwMDAtMHgzM2ZmZmZmZmZd
+ZGF4DQogIFsgIDEzMS40MTAxNDddIG5kX3BtZW06IHByb2JlIG9mIG5hbWVzcGFjZTAuMCBmYWls
+ZWQgd2l0aCBlcnJvciAtMTZuYW1lc3BhY2UwLjAgLS1tb2RlPWRldmRheA0KICAuLi4NCg0KVGhp
+cyBmYWlscyBhcyBleHBlY3RlZCBkdWUgdG8gdGhlIGJ1c3kgbWVtb3J5IHJlc291cmNlLCBhbmQg
+dGhlIG1lbW9yeQ0KY2Fubm90IGJlIHVzZWQuIEhvd2V2ZXIsIHRoZSBkYXgwLjAgZGV2aWNlIGlz
+IHJlbW92ZWQsIGFuZCBhbG9uZyBpdHMgbmFtZS4NCg0KVGhlIG5hbWUgb2YgdGhlIG1lbW9yeSBy
+ZXNvdXJjZSBub3cgcG9pbnRzIGF0IGZyZWVkIG1lbW9yeSAobmFtZSBvZiB0aGUNCmRldmljZSku
+DQogIFtyb290QGxvY2FsaG9zdCB+XSMgY2F0IC9wcm9jL2lvbWVtDQogIC4uLg0KICAxNDAwMDAw
+MDAtMzNmZmZmZmZmIDogUGVyc2lzdGVudCBNZW1vcnkNCiAgICAxNDAwMDAwMDAtMTQ4MWZmZmZm
+IDogbmFtZXNwYWNlMC4wDQogICAgMTUwMDAwMDAwLTMzZmZmZmZmZiA6IO+/vV/vv71eN1/vv73v
+v70vX++/ve+/vXdS77+977+9V1Hvv73vv73vv71e77+977+977+9IC4uLg0KICAgIDE1MDAwMDAw
+MC0zM2ZmZmZmZmYgOiBTeXN0ZW0gUkFNDQoNCldlIGhhdmUgdG8gbWFrZSBzdXJlIHRvIGR1cGxp
+Y2F0ZSB0aGUgc3RyaW5nLiBXaGlsZSBhdCBpdCwgcmVtb3ZlIHRoZQ0Kc3VwZXJmbHVvdXMgc2V0
+dGluZyBvZiB0aGUgbmFtZSBhbmQgZml4dXAgYSBzdGFsZSBjb21tZW50Lg0KDQpGaXhlczogOWY5
+NjBkYTcyYjI1ICgiZGV2aWNlLWRheDogIkhvdHJlbW92ZSIgcGVyc2lzdGVudCBtZW1vcnkgdGhh
+dCBpcyB1c2VkIGxpa2Ugbm9ybWFsIFJBTSIpDQpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZyAj
+IHY1LjMNCkNjOiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NCkNjOiBW
+aXNoYWwgVmVybWEgPHZpc2hhbC5sLnZlcm1hQGludGVsLmNvbT4NCkNjOiBEYXZlIEppYW5nIDxk
+YXZlLmppYW5nQGludGVsLmNvbT4NCkNjOiBQYXZlbCBUYXRhc2hpbiA8cGFzaGEudGF0YXNoaW5A
+c29sZWVuLmNvbT4NCkNjOiBBbmRyZXcgTW9ydG9uIDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3Jn
+Pg0KU2lnbmVkLW9mZi1ieTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQot
+LS0NCiBkcml2ZXJzL2RheC9rbWVtLmMgfCAxNCArKysrKysrKysrKy0tLQ0KIDEgZmlsZSBjaGFu
+Z2VkLCAxMSBpbnNlcnRpb25zKCspLCAzIGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9kYXgva21lbS5jIGIvZHJpdmVycy9kYXgva21lbS5jDQppbmRleCAzZDBhN2U3MDJjOTQu
+LjFlNjc4YmRmNWFlZCAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvZGF4L2ttZW0uYw0KKysrIGIvZHJp
+dmVycy9kYXgva21lbS5jDQpAQCAtMjIsNiArMjIsNyBAQCBpbnQgZGV2X2RheF9rbWVtX3Byb2Jl
+KHN0cnVjdCBkZXZpY2UgKmRldikNCiAJcmVzb3VyY2Vfc2l6ZV90IGttZW1fc2l6ZTsNCiAJcmVz
+b3VyY2Vfc2l6ZV90IGttZW1fZW5kOw0KIAlzdHJ1Y3QgcmVzb3VyY2UgKm5ld19yZXM7DQorCWNv
+bnN0IGNoYXIgKm5ld19yZXNfbmFtZTsNCiAJaW50IG51bWFfbm9kZTsNCiAJaW50IHJjOw0KIA0K
+QEAgLTQ4LDExICs0OSwxNiBAQCBpbnQgZGV2X2RheF9rbWVtX3Byb2JlKHN0cnVjdCBkZXZpY2Ug
+KmRldikNCiAJa21lbV9zaXplICY9IH4obWVtb3J5X2Jsb2NrX3NpemVfYnl0ZXMoKSAtIDEpOw0K
+IAlrbWVtX2VuZCA9IGttZW1fc3RhcnQgKyBrbWVtX3NpemU7DQogDQotCS8qIFJlZ2lvbiBpcyBw
+ZXJtYW5lbnRseSByZXNlcnZlZC4gIEhvdC1yZW1vdmUgbm90IHlldCBpbXBsZW1lbnRlZC4gKi8N
+Ci0JbmV3X3JlcyA9IHJlcXVlc3RfbWVtX3JlZ2lvbihrbWVtX3N0YXJ0LCBrbWVtX3NpemUsIGRl
+dl9uYW1lKGRldikpOw0KKwluZXdfcmVzX25hbWUgPSBrc3RyZHVwKGRldl9uYW1lKGRldiksIEdG
+UF9LRVJORUwpOw0KKwlpZiAoIW5ld19yZXNfbmFtZSkNCisJCXJldHVybiAtRU5PTUVNOw0KKw0K
+KwkvKiBSZWdpb24gaXMgcGVybWFuZW50bHkgcmVzZXJ2ZWQgaWYgaG90cmVtb3ZlIGZhaWxzLiAq
+Lw0KKwluZXdfcmVzID0gcmVxdWVzdF9tZW1fcmVnaW9uKGttZW1fc3RhcnQsIGttZW1fc2l6ZSwg
+bmV3X3Jlc19uYW1lKTsNCiAJaWYgKCFuZXdfcmVzKSB7DQogCQlkZXZfd2FybihkZXYsICJjb3Vs
+ZCBub3QgcmVzZXJ2ZSByZWdpb24gWyVwYS0lcGFdXG4iLA0KIAkJCSAma21lbV9zdGFydCwgJmtt
+ZW1fZW5kKTsNCisJCWtmcmVlKG5ld19yZXNfbmFtZSk7DQogCQlyZXR1cm4gLUVCVVNZOw0KIAl9
+DQogDQpAQCAtNjMsMTIgKzY5LDEyIEBAIGludCBkZXZfZGF4X2ttZW1fcHJvYmUoc3RydWN0IGRl
+dmljZSAqZGV2KQ0KIAkgKiB1bmtub3duIHRvIHVzIHRoYXQgd2lsbCBicmVhayBhZGRfbWVtb3J5
+KCkgYmVsb3cuDQogCSAqLw0KIAluZXdfcmVzLT5mbGFncyA9IElPUkVTT1VSQ0VfU1lTVEVNX1JB
+TTsNCi0JbmV3X3Jlcy0+bmFtZSA9IGRldl9uYW1lKGRldik7DQogDQogCXJjID0gYWRkX21lbW9y
+eShudW1hX25vZGUsIG5ld19yZXMtPnN0YXJ0LCByZXNvdXJjZV9zaXplKG5ld19yZXMpKTsNCiAJ
+aWYgKHJjKSB7DQogCQlyZWxlYXNlX3Jlc291cmNlKG5ld19yZXMpOw0KIAkJa2ZyZWUobmV3X3Jl
+cyk7DQorCQlrZnJlZShuZXdfcmVzX25hbWUpOw0KIAkJcmV0dXJuIHJjOw0KIAl9DQogCWRldl9k
+YXgtPmRheF9rbWVtX3JlcyA9IG5ld19yZXM7DQpAQCAtODMsNiArODksNyBAQCBzdGF0aWMgaW50
+IGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldmljZSAqZGV2KQ0KIAlzdHJ1Y3QgcmVzb3Vy
+Y2UgKnJlcyA9IGRldl9kYXgtPmRheF9rbWVtX3JlczsNCiAJcmVzb3VyY2Vfc2l6ZV90IGttZW1f
+c3RhcnQgPSByZXMtPnN0YXJ0Ow0KIAlyZXNvdXJjZV9zaXplX3Qga21lbV9zaXplID0gcmVzb3Vy
+Y2Vfc2l6ZShyZXMpOw0KKwljb25zdCBjaGFyICpyZXNfbmFtZSA9IHJlcy0+bmFtZTsNCiAJaW50
+IHJjOw0KIA0KIAkvKg0KQEAgLTEwMiw2ICsxMDksNyBAQCBzdGF0aWMgaW50IGRldl9kYXhfa21l
+bV9yZW1vdmUoc3RydWN0IGRldmljZSAqZGV2KQ0KIAkvKiBSZWxlYXNlIGFuZCBmcmVlIGRheCBy
+ZXNvdXJjZXMgKi8NCiAJcmVsZWFzZV9yZXNvdXJjZShyZXMpOw0KIAlrZnJlZShyZXMpOw0KKwlr
+ZnJlZShyZXNfbmFtZSk7DQogCWRldl9kYXgtPmRheF9rbWVtX3JlcyA9IE5VTEw7DQogDQogCXJl
+dHVybiAwOw0KLS0gDQoyLjI1LjQNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
+c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
+ZWF2ZUBsaXN0cy4wMS5vcmcK
