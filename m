@@ -1,43 +1,43 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040181CB48F
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 18:16:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372C71CB481
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  8 May 2020 18:16:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1756011887086;
-	Fri,  8 May 2020 09:14:01 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A1DDF1187B6F5;
+	Fri,  8 May 2020 09:13:59 -0700 (PDT)
 Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+ade674efe42abf9194a0+6102+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B094D1186988C
+	by ml01.01.org (Postfix) with ESMTPS id 970831186988C
 	for <linux-nvdimm@lists.01.org>; Fri,  8 May 2020 09:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=zekiztpHAl5zTc85DlA+lKmHw2vnmnAdlN6jt1NptOQ=; b=gMI4IluXgmfUheyu/l2QveyPlK
-	i4SNHFgRBDop0ixqFR6NOfjpEaxOv7VTbmodIcu9si1cWjVBYQDG6v9N/SQKTcIDdmdtFrMHvMGq4
-	7VwLdfduY/zZm5rbNMNDbCVA2QminS5SQF2Ryon+1776Db6rJUjGBi636TvJ5LPMiPVl8OS/EGTAr
-	QXC8nd4AZMDGOG1P05uL+i5JNI1fZaFdjzwPFpAyn8sUOllj+VeSnBpVCprpcaUI+1pp00GRdNPLh
-	+byhqt7TSgqpa+lXFVFw6v5ZP2qBd37t/EdUBb1ie7tWFtfGUfQDL7IWBNU2HiGAPLQ24l4C0m8Yb
-	nElKlH3Q==;
+	bh=j5nrzAlvNQFEC2KON7qkpQkXIXdfboSiMBR3IvqeqYg=; b=MZaYZgws8RyRNk7JmFkevJM5QG
+	XkP/5QQ+KcB03US1KdXYdVY4JWMd45+cQiqhbpJ2aisOmBp9lOOd4kfjkyTkjQwbZkkZrq450qSNz
+	0y+mklGTu6scOtDYJLkdl7wTCN9XMTxpbIQBHXEJpAvwuhpuK2AAll78bcBvs+NRHP1WHn24osKJD
+	+hBLRYfPBBwcRMGtWvC/ZB/eiukX+tAZRYobW/Vc17N2qUlFsAfCNtu1m53RPB6+kmGJVLmIZUBJa
+	rOfp4vdPLFhYMyKQ5cFw70aiKXFCl3jZXbIboLehfTk7XajvhEJiY/3q4vycGCJ2WbOoWFzQnh9zZ
+	x80RGkzQ==;
 Received: from [2001:4bb8:180:9d3f:90d7:9df8:7cd:3504] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1jX5fD-0004ke-Gh; Fri, 08 May 2020 16:15:52 +0000
+	id 1jX5fG-0004lz-8s; Fri, 08 May 2020 16:15:54 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 10/15] bcache: stop setting ->queuedata
-Date: Fri,  8 May 2020 18:15:12 +0200
-Message-Id: <20200508161517.252308-11-hch@lst.de>
+Subject: [PATCH 11/15] dm: stop using ->queuedata
+Date: Fri,  8 May 2020 18:15:13 +0200
+Message-Id: <20200508161517.252308-12-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200508161517.252308-1-hch@lst.de>
 References: <20200508161517.252308-1-hch@lst.de>
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: TZQRPQQ64WV7NKD4CU6FU7C775OAQWSD
-X-Message-ID-Hash: TZQRPQQ64WV7NKD4CU6FU7C775OAQWSD
+Message-ID-Hash: ED35BRKTQYYI6W57FCMDNXSWENSTZJGL
+X-Message-ID-Hash: ED35BRKTQYYI6W57FCMDNXSWENSTZJGL
 X-MailFrom: BATV+ade674efe42abf9194a0+6102+infradead.org+hch@bombadil.srs.infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -45,7 +45,7 @@ CC: Jim Paris <jim@jtan.com>, Geoff Levand <geoff@infradead.org>, Joshua Morris 
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TZQRPQQ64WV7NKD4CU6FU7C775OAQWSD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ED35BRKTQYYI6W57FCMDNXSWENSTZJGL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,21 +56,30 @@ Content-Transfer-Encoding: 7bit
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/md/bcache/super.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/md/dm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index d98354fa28e3e..a0fb5af2beeda 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -871,7 +871,6 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 		return -ENOMEM;
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 0eb93da44ea2a..2aaae6c1ed312 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1783,7 +1783,7 @@ static blk_qc_t dm_process_bio(struct mapped_device *md,
  
- 	d->disk->queue			= q;
--	q->queuedata			= d;
- 	q->backing_dev_info->congested_data = d;
- 	q->limits.max_hw_sectors	= UINT_MAX;
- 	q->limits.max_sectors		= UINT_MAX;
+ static blk_qc_t dm_make_request(struct request_queue *q, struct bio *bio)
+ {
+-	struct mapped_device *md = q->queuedata;
++	struct mapped_device *md = bio->bi_disk->private_data;
+ 	blk_qc_t ret = BLK_QC_T_NONE;
+ 	int srcu_idx;
+ 	struct dm_table *map;
+@@ -1980,7 +1980,6 @@ static struct mapped_device *alloc_dev(int minor)
+ 	md->queue = blk_alloc_queue(dm_make_request, numa_node_id);
+ 	if (!md->queue)
+ 		goto bad;
+-	md->queue->queuedata = md;
+ 
+ 	md->disk = alloc_disk_node(1, md->numa_node_id);
+ 	if (!md->disk)
 -- 
 2.26.2
 _______________________________________________
