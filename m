@@ -2,115 +2,210 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C661CF73E
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 May 2020 16:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ECEB1CFAA3
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 12 May 2020 18:28:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BE9D4118FCDDF;
-	Tue, 12 May 2020 07:34:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	by ml01.01.org (Postfix) with ESMTP id D5E4210FC3723;
+	Tue, 12 May 2020 09:26:09 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=rafael.j.wysocki@intel.com; receiver=<UNKNOWN> 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 95B4A1173AD86
-	for <linux-nvdimm@lists.01.org>; Tue, 12 May 2020 07:34:39 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04CEb3lS040127;
-	Tue, 12 May 2020 14:37:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=iZX0vpfj4/FmfDVyUC3t3DN/LcDWMEdqRaJHSY+KNck=;
- b=i2geK7cGN8wVAmB/U87v0qnFX1QsR+WN2KKy8qIbb+ZositxYdc6rT4+ETuMUIi3Xjmj
- eX7DYE4M+zq4HYpt9DaOc7HzJrm4UDhvMlC+eTemHmsxN96P4VGD18ymE1Xh0hy3vZPY
- uwBSyd8DhPHJ+ooXn+PhWRrbZpM0jUy1nDKA0qYpVKZycQGp7gqWeAzUSxI0ZbIY1QCf
- 24MMrrFizuvMUp9g6oM1XzMr4U0t6opTHWA39SjWztIEcXiJWxB7m2y9k6KRVyypT2vs
- r9tiTRBoAfxVs0UwJSn7xAFR6RIOl7GtLi4Ly/QRmQ+KyGVcg/XirDJmbnedcrsjm1Xp ww==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by userp2120.oracle.com with ESMTP id 30x3mbuccf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 12 May 2020 14:36:57 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04CESNMe105391;
-	Tue, 12 May 2020 14:36:56 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by userp3020.oracle.com with ESMTP id 30x69tbdhj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 May 2020 14:36:56 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04CEasTW008459;
-	Tue, 12 May 2020 14:36:54 GMT
-Received: from [10.175.218.127] (/10.175.218.127)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 12 May 2020 07:36:54 -0700
-Subject: Re: [PATCH 11/12] device-dax: Add dis-contiguous resource support
+	by ml01.01.org (Postfix) with ESMTPS id 2865210FC3720;
+	Tue, 12 May 2020 09:26:07 -0700 (PDT)
+IronPort-SDR: 0WCdBdtUEUFny+uqBwPPi12UCV7bN00lg1ZCRkGpQibwDlVPCmB7AVYROhl0or+M4l3CCCUG0V
+ ZDHwX6B7hdVQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2020 09:28:39 -0700
+IronPort-SDR: ieEcfun9CR8VoCUAxdIOWYwx0WFXrTPlrkOMCCY4QywR2g32UB+jUdSm8uadDavVF/r/v4ReIp
+ ZFbjIQrEWQ1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,384,1583222400";
+   d="scan'208";a="262177201"
+Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.130.105]) ([10.249.130.105])
+  by orsmga003.jf.intel.com with ESMTP; 12 May 2020 09:28:35 -0700
+Subject: Re: [ACPI] b13663bdf9:
+ BUG:sleeping_function_called_from_invalid_context_at_kernel/locking/mutex.c
 To: Dan Williams <dan.j.williams@intel.com>
-References: <158500767138.2088294.17131646259803932461.stgit@dwillia2-desk3.amr.corp.intel.com>
- <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: Joao Martins <joao.m.martins@oracle.com>
-Message-ID: <d7043cad-076d-d065-f933-b772b4e9c131@oracle.com>
-Date: Tue, 12 May 2020 15:36:50 +0100
+References: <20200511090034.GX5770@shao2-debian>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
+ 173, 80-298 Gdansk
+Message-ID: <440dae1b-9146-0bc3-e8f2-bd3cb3aa89bb@intel.com>
+Date: Tue, 12 May 2020 18:28:34 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <20200511090034.GX5770@shao2-debian>
 Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 adultscore=0
- spamscore=0 suspectscore=5 mlxscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005120109
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 impostorscore=0
- mlxscore=0 suspectscore=5 bulkscore=0 mlxlogscore=999 phishscore=0
- malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2005120110
-Message-ID-Hash: ORUOGYMYE5KIRTUBNIG2FK4SN3MMK5F4
-X-Message-ID-Hash: ORUOGYMYE5KIRTUBNIG2FK4SN3MMK5F4
-X-MailFrom: joao.m.martins@oracle.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-mm@kvack.org, dave.hansen@linux.intel.com, hch@lst.de, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+Message-ID-Hash: XSE5KHODO72RZY3BBY63NL522MYOS6HI
+X-Message-ID-Hash: XSE5KHODO72RZY3BBY63NL522MYOS6HI
+X-MailFrom: rafael.j.wysocki@intel.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: kernel test robot <rong.a.chen@intel.com>, stable@vger.kernel.org, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Erik Kaneda <erik.kaneda@intel.com>, Myron Stowe <myron.stowe@redhat.com>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, lkp@lists.01.org, linux-acpi@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ORUOGYMYE5KIRTUBNIG2FK4SN3MMK5F4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XSE5KHODO72RZY3BBY63NL522MYOS6HI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On 3/23/20 11:55 PM, Dan Williams wrote:
-> @@ -561,13 +580,26 @@ static int __alloc_dev_dax_range(struct dev_dax *dev_dax, u64 start,
->  	if (start == U64_MAX)
->  		return -EINVAL;
->  
-> +	ranges = krealloc(dev_dax->ranges, sizeof(*ranges)
-> +			* (dev_dax->nr_range + 1), GFP_KERNEL);
-> +	if (!ranges)
-> +		return -ENOMEM;
-> +
->  	alloc = __request_region(res, start, size, dev_name(dev), 0);
-> -	if (!alloc)
-> +	if (!alloc) {
-> +		kfree(ranges);
->  		return -ENOMEM;
-> +	}
+On 5/11/2020 11:00 AM, kernel test robot wrote:
+> Greeting,
+>
+> FYI, we noticed the following commit (built with gcc-7):
+>
+> commit: b13663bdf9701c8896bebcc7ee998f8656c1ea37 ("[PATCH] ACPI: Drop rcu usage for MMIO mappings")
+> url: https://github.com/0day-ci/linux/commits/Dan-Williams/ACPI-Drop-rcu-usage-for-MMIO-mappings/20200507-075930
+> base: https://git.kernel.org/cgit/linux/kernel/git/rafael/linux-pm.git linux-next
+>
+> in testcase: v4l2
+> with following parameters:
+>
+> 	test: device
+> 	ucode: 0x43
+>
+>
+>
+> on test machine: 72 threads Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz with 256G memory
+>
+> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
+>
+>
+>
+> If you fix the issue, kindly add following tag
+> Reported-by: kernel test robot <rong.a.chen@intel.com>
 
-Noticed this yesterday while looking at alloc_dev_dax_range().
+Dan,
 
-Is it correct to free @ranges here on __request_region failure?
+Has this been addressed in the v2?
 
-IIUC krealloc() would free dev_dax->ranges if it succeeds, leaving us without
-any valid ranges if __request_region failure case indeed frees @ranges. These
-@ranges are being used afterwards when we delete the interface and free the
-assigned regions. Perhaps we should remove the kfree() above and set
-dev_dax->ranges instead before __request_region; or alternatively change the
-call order between krealloc and __request_region? FWIW, krealloc checks if the
-object being reallocated already meets the requested size, so perhaps there's no
-harm with going with the former.
 
-	Joao
+>
+>
+> [   21.012858] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
+> [   21.013816] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+> [   21.029953] tsc: Refined TSC clocksource calibration: 2294.686 MHz
+> [   21.013816] CPU: 55 PID: 1 Comm: swapper/0 Not tainted 5.7.0-rc3-00025-gb13663bdf9701c #1
+> [   21.013816] Hardware name: Intel Corporation S2600WTT/S2600WTT, BIOS SE5C610.86B.01.01.0008.021120151325 02/11/2015
+> [   21.013816] Call Trace:
+> [   21.042037] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x211399552f8, max_idle_ns: 440795292447 ns
+> [   21.013816]  dump_stack+0x66/0x8b
+> [   21.064421]  ___might_sleep+0x102/0x120
+> [   21.064421]  mutex_lock+0x1c/0x40
+> [   21.064421]  acpi_os_rw_map+0x37/0xe0
+> [   21.064421]  acpi_os_read_memory+0x34/0xc0
+> [   21.064421]  ? acpi_match_platform_list+0x84/0x100
+> [   21.064421]  apei_read+0x97/0xb0
+> [   21.064421]  __ghes_peek_estatus+0x27/0xc0
+> [   21.064421]  ghes_proc+0x37/0x120
+> [   21.064421]  ghes_probe+0x1d0/0x460
+> [   21.064421]  platform_drv_probe+0x37/0x90
+> [   21.064421]  really_probe+0xef/0x430
+> [   21.064421]  driver_probe_device+0x110/0x120
+> [   21.064421]  device_driver_attach+0x4f/0x60
+> [   21.064421]  __driver_attach+0x9a/0x140
+> [   21.064421]  ? device_driver_attach+0x60/0x60
+> [   21.064421]  bus_for_each_dev+0x76/0xc0
+> [   21.064421]  ? klist_add_tail+0x3b/0x70
+> [   21.064421]  bus_add_driver+0x144/0x220
+> [   21.064421]  ? bert_init+0x229/0x229
+> [   21.064421]  driver_register+0x5b/0xf0
+> [   21.064421]  ? bert_init+0x229/0x229
+> [   21.064421]  ghes_init+0x83/0xde
+> [   21.064421]  do_one_initcall+0x46/0x220
+> [   21.064421]  kernel_init_freeable+0x206/0x280
+> [   21.064421]  ? rest_init+0xd0/0xd0
+> [   21.064421]  kernel_init+0xa/0x110
+> [   21.064421]  ret_from_fork+0x35/0x40
+> [   21.211518] clocksource: Switched to clocksource tsc
+> [   21.212408] GHES: APEI firmware first mode is enabled by APEI bit and WHEA _OSC.
+> [   21.227478] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+> [   21.235019] 00:02: ttyS0 at I/O 0x3f8 (irq = 4, base_baud = 115200) is a 16550A
+> [   21.244105] 00:03: ttyS1 at I/O 0x2f8 (irq = 3, base_baud = 115200) is a 16550A
+> [   21.254257] Non-volatile memory driver v1.3
+> [   21.259421] Linux agpgart interface v0.103
+> [   21.272262] rdac: device handler registered
+> [   21.277466] hp_sw: device handler registered
+> [   21.282671] emc: device handler registered
+> [   21.288039] alua: device handler registered
+> [   21.293154] MACsec IEEE 802.1AE
+> [   21.297325] libphy: Fixed MDIO Bus: probed
+> [   21.302666] e1000: Intel(R) PRO/1000 Network Driver - version 7.3.21-k8-NAPI
+> [   21.310980] e1000: Copyright (c) 1999-2006 Intel Corporation.
+> [   21.317926] e1000e: Intel(R) PRO/1000 Network Driver - 3.2.6-k
+> [   21.324883] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+> [   21.332069] igb: Intel(R) Gigabit Ethernet Network Driver - version 5.6.0-k
+> [   21.340297] igb: Copyright (c) 2007-2014 Intel Corporation.
+> [   21.347058] ixgbe: Intel(R) 10 Gigabit PCI Express Network Driver - version 5.1.0-k
+> [   21.356399] ixgbe: Copyright (c) 1999-2016 Intel Corporation.
+> [   21.363577] IOAPIC[9]: Set IRTE entry (P:1 FPD:0 Dst_Mode:1 Redir_hint:1 Trig_Mode:0 Dlvry_Mode:0 Avail:0 Vector:EF Dest:00000001 SID:002C SQ:0 SVT:1)
+> [   21.379417] IOAPIC[1]: Set routing entry (9-13 -> 0xef -> IRQ 38 Mode:1 Active:1 Dest:1)
+> [   21.665318] ixgbe 0000:03:00.0: Multiqueue Enabled: Rx Queue count = 63, Tx Queue count = 63 XDP Queue count = 0
+> [   21.761727] ixgbe 0000:03:00.0: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+> [   21.795985] ixgbe 0000:03:00.0: MAC: 3, PHY: 0, PBA No: 000000-000
+> [   21.803321] ixgbe 0000:03:00.0: 00:1e:67:f7:44:b3
+> [   21.957977] ixgbe 0000:03:00.0: Intel(R) 10 Gigabit Network Connection
+> [   21.965867] libphy: ixgbe-mdio: probed
+> [   21.970646] IOAPIC[9]: Set IRTE entry (P:1 FPD:0 Dst_Mode:1 Redir_hint:1 Trig_Mode:0 Dlvry_Mode:0 Avail:0 Vector:EF Dest:00000001 SID:002C SQ:0 SVT:1)
+> [   21.986482] IOAPIC[1]: Set routing entry (9-10 -> 0xef -> IRQ 105 Mode:1 Active:1 Dest:1)
+> [   22.265269] ixgbe 0000:03:00.1: Multiqueue Enabled: Rx Queue count = 63, Tx Queue count = 63 XDP Queue count = 0
+> [   22.361656] ixgbe 0000:03:00.1: 32.000 Gb/s available PCIe bandwidth (5.0 GT/s PCIe x8 link)
+> [   22.395908] ixgbe 0000:03:00.1: MAC: 3, PHY: 0, PBA No: 000000-000
+> [   22.403235] ixgbe 0000:03:00.1: 00:1e:67:f7:44:b4
+> [   22.556985] ixgbe 0000:03:00.1: Intel(R) 10 Gigabit Network Connection
+> [   22.564864] libphy: ixgbe-mdio: probed
+> [   22.569541] i40e: Intel(R) Ethernet Connection XL710 Network Driver - version 2.8.20-k
+> [   22.579179] i40e: Copyright (c) 2013 - 2019 Intel Corporation.
+> [   22.586811] usbcore: registered new interface driver catc
+> [   22.593299] usbcore: registered new interface driver kaweth
+> [   22.599957] pegasus: v0.9.3 (2013/04/25), Pegasus/Pegasus II USB Ethernet driver
+> [   22.609017] usbcore: registered new interface driver pegasus
+> [   22.615784] usbcore: registered new interface driver rtl8150
+> [   22.622550] usbcore: registered new interface driver asix
+> [   22.629029] usbcore: registered new interface driver cdc_ether
+> [   22.635987] usbcore: registered new interface driver cdc_eem
+> [   22.642749] usbcore: registered new interface driver dm9601
+> [   22.649423] usbcore: registered new interface driver smsc75xx
+> [   22.656294] usbcore: registered new interface driver smsc95xx
+> [   22.663163] usbcore: registered new interface driver gl620a
+> [   22.669828] usbcore: registered new interface driver net1080
+> [   22.676587] usbcore: registered new interface driver plusb
+> [   22.683162] usbcore: registered new interface driver rndis_host
+> [   22.690218] usbcore: registered new interface driver cdc_subset
+> [   22.697285] usbcore: registered new interface driver zaurus
+> [   22.703954] usbcore: registered new interface driver MOSCHIP usb-ethernet driver
+> [   22.713005] usbcore: registered new interface driver int51x1
+> [   22.719770] usbcore: registered new interface driver ipheth
+> [   22.726439] usbcore: registered new interface driver sierra_net
+> [   22.733563] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+> [   22.741292] ehci-pci: EHCI PCI platform driver
+> [   22.746931] IOAPIC[8]: Set IRTE entry (P:1 FPD:0 Dst_Mode:1 Redir_hint:1 Trig_Mode:0 Dlvry_Mode:0 Avail:0 Vector:EF Dest:00000001 SID:F0FF SQ:0 SVT:1)
+> [   22.762784] IOAPIC[0]: Set routing entry (8-18 -> 0xef -> IRQ 18 Mode:1 Active:1 Dest:1)
+> [   22.772881] ehci-pci 0000:00:1a.0: EHCI Host Controller
+> [   22.779227] ehci-pci 0000:00:1a.0: new USB bus registered, assigned bus number 1
+>
+>
+> To reproduce:
+>
+>          git clone https://github.com/intel/lkp-tests.git
+>          cd lkp-tests
+>          bin/lkp install job.yaml  # job file is attached in this email
+>          bin/lkp run     job.yaml
+>
+>
+>
+> Thanks,
+> Rong Chen
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
