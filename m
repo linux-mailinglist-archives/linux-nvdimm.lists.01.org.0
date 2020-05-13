@@ -1,75 +1,143 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FEA1D02D1
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 May 2020 01:05:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF61D0595
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 May 2020 05:48:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2ABD611ABBAC7;
-	Tue, 12 May 2020 16:02:48 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=85.143.198.206; helo=mail.provaider.icu; envelope-from=info@provaider.icu; receiver=<UNKNOWN> 
-Received: from mail.provaider.icu (provaider.icu [85.143.198.206])
+	by ml01.01.org (Postfix) with ESMTP id 2CA7111AC81FE;
+	Tue, 12 May 2020 20:45:25 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 26C3C11ABBAC3
-	for <linux-nvdimm@lists.01.org>; Tue, 12 May 2020 16:02:44 -0700 (PDT)
-Message-ID: <0f8cc26e9b99505c453086d521b78d817f9d972e@provaider.icu>
-From: Albina <info@provaider.icu>
-To: linux-nvdimm@lists.01.org
-Subject: =?windows-1251?B?yu7w7+7w4PLo4u3u5SDu4fP35e3o5Q==?=
-Date: Wed, 13 May 2020 02:05:04 +0300
+	by ml01.01.org (Postfix) with ESMTPS id B436911AC81FB
+	for <linux-nvdimm@lists.01.org>; Tue, 12 May 2020 20:45:21 -0700 (PDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04D3X7To003825;
+	Tue, 12 May 2020 23:47:47 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3101m6k9c2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2020 23:47:47 -0400
+Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04D3XQRe004886;
+	Tue, 12 May 2020 23:47:46 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3101m6k9bc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2020 23:47:46 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+	by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04D3eYwt021122;
+	Wed, 13 May 2020 03:47:45 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+	by ppma01dal.us.ibm.com with ESMTP id 3100ubc9wb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 May 2020 03:47:45 +0000
+Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+	by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04D3lhsI28574170
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 May 2020 03:47:43 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC11D6A04F;
+	Wed, 13 May 2020 03:47:43 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0D9876A047;
+	Wed, 13 May 2020 03:47:40 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.3.92])
+	by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+	Wed, 13 May 2020 03:47:40 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+        linux-nvdimm@lists.01.org
+Subject: [PATCH v2 1/5] powerpc/pmem: Add new instructions for persistent storage and sync
+Date: Wed, 13 May 2020 09:17:01 +0530
+Message-Id: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=provaider.icu; s=mail;
-	c=relaxed/relaxed; t=1589324704;
-	h=message-id:from:to:subject:date:mime-version:list-unsubscribe;
-	bh=kX85lLqqkkP6VrdXH4AsO9xZKa4C7Ru2FGDQ474gw+w=;
-	b=A5gk3cI1rnWhP2ituirpqRGi3QM7eSF6DIModDSC4HWNAI4KMNRNKxHaxCCGs7
-	eq4KzPJ0oAtbQ16iEvftIM696Da2D6pGWU6hyPH56pSAa8pCtKMqFVjXBgYJVfgA
-	9pb+6ivyiS+xy23Y/kKye3KK6rXnaG2TNmeIX9DWaFY64=
-Message-ID-Hash: AIM2MZQ3RAWW5ZTDIZTC5WTKYE7NWJ2D
-X-Message-ID-Hash: AIM2MZQ3RAWW5ZTDIZTC5WTKYE7NWJ2D
-X-MailFrom: info@provaider.icu
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-12_08:2020-05-11,2020-05-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ cotscore=-2147483648 mlxlogscore=999 adultscore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 spamscore=0 lowpriorityscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005130026
+Message-ID-Hash: 5MTFNHSV6LF3KCWGVO35VIDG6WNVXJNP
+X-Message-ID-Hash: 5MTFNHSV6LF3KCWGVO35VIDG6WNVXJNP
+X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: alistair@popple.id.au, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AIM2MZQ3RAWW5ZTDIZTC5WTKYE7NWJ2D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5MTFNHSV6LF3KCWGVO35VIDG6WNVXJNP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-zu3r4OntIO7h8/fl7ejlIOIgIubo4u7sIiD07vDs4PLlDQoNCsru8O/u8ODy6OLt++Ug8vDl7ejt
-4+gg4iDq7uzv4O3o6CAtIP3y7iDw4Ofi6PLo5SDv5fDx7u3g6+AsIOru8u7w7uUg7eXi7ufs7ubt
-7iDv5fDl7vbl7ejy/Cwg8uDqIOrg6iDu7egg/+Lr//7y8f8g5+Dr7uPu7CDz8e/l+O3u6SDk5f/y
-5ev87e7x8ugg7vDj4O3o5+D26Ogg6CDt5e7h9e7k6Oz77CDz8evu4ujl7CDx7u7y4uXy8fLi6P8g
-7/Du9OXx8eju7eDr/O3uIPPw7uLt/yDC4Pjl4+4g7+Xw8e7t4OvgIPDl4Ovo/+wg6Ofs5e336OL7
-9SDw++3q7uIuDQoNCjgwJSDv8ODq8ujq6CEgw+7y7uL75SDx6vDo7/L7ISDO8vDg4e7y6uAg8uX1
-7ejqIOgg6u7w8OXq8ujw7uLq4CDv8Ojs5e3l7ej/IO3gIO/w4Ory6OrlIPEg8/e48u7sIPHv5fbo
-9Ojq6CDk5f/y5ev87e7x8ugg6u7s7+Dt6OguDQoNCtTu8Ozg8iDv8O7i5eTl7ej/Og0KMjAlIC0g
-8uXu8Oj/LCDs5fLu5O7r7uPo/ywg8uX17ejq6A0KMjAlIC0g7/Du4uXw6uAg8/Hi7uXt6P8g6CDg
-5ODv8uD26P8g7+7kIPHv5fbo9Ojq8yDk5f/y5ev87e7x8ugg8/fg8fLt6Oru4iDy8OXt6O3j4A0K
-NjAlIC0g7/Dg6vLo6uAsIO7y8ODh7vLq4CDw5ffl4vv1IPHq8Ojv8u7iLCDg8+To7vPv8ODm7eXt
-6P8sIO7h8ODy7eD/IPHi/+f8IO7yIPLw5e3l8OANCg0Kx+Dq4Of74uD/IOru8O/u8ODy6OLt++kg
-8vDl7ejt4ywgwvsg5OXr4OXy5SDt4PHy7v/58/4g6O3i5fHy6Pbo/iwg6u7y7vDg/ywg6uDqIO/u
-6uDn4OvgIO/w4Ory6OrgIOLl5OXt6P8g4ejn7eXx4CDiIPHr7ubt+/Ug/eru7e7s6Pfl8ero9SDz
-8evu4uj/9SDu6vPv4OXy8f8g7O3u4+7q8ODy7e4sIO/u5+Lu6///IOLg7CDh+/L8IO3gIOPw5eHt
-5SDz8e/l9eAg5ODm5SDiIPHg7Pv1IPHr7ubt+/Ug8/Hr7uLo//UuDQoNCtPn7eDy/CDv7uTw7uHt
-5eUgaHR0cDovL3VhY29ycC5pbi51YS9wYWdlcy9zZXJ2aWNlcy9jb3Jwb3JhdGUtdHJhaW5pbmdz
-Lmh0bQ0KDQrF8evoIPMgwuDxIOLu5+3o6uvoIOLu7/Du8fsgLSDu4fDg+eDp8uXx/A0KKzM4ICgw
-NjMpIDIzMy00Ni02OQ0KDQpQLlMuINLg6iDm5SDw4OT7IO/w5eTr7ubo8vwgwuDsIO3g+Ogg7vLq
-8Pvy++Ug7u3r4OntIO/w7uPw4Ozs+yA6IA0KDQoyMS0yMiDs4P8gLSDQ5efz6/zy4PLo4u375SDv
-8O7k4OboIO/uIPLl6+X07u3zIPEg8+Tu4u7r/PHy4ujl7A0KDQoyNi0yNyDs4P8gLaDT7/Dg4uvl
-7ejlIO7y5OXr7uwg7/Du5ODmDQoNCjI4IOzg/yAtIMTl7vT47vDo5+D26P8gMjAyMA0KDQo0LTUg
-6P7t/yAtoNHl6vDl8vsg/fT05ery6OLt+/Ug7+Xw5ePu4u7w7uINCg0KMTAtMTEg6P7t/yAtIM3l
-7ODy5fDo4Ov87eD/IOzu8uji4Pbo/yDv5fDx7u3g6+ANCg0KzvLq4Ofg8vzx/yDu8iDv7uTv6PHq
-6C4NCkxpc3QtVW5zdWJzY3JpYmUgZnJvbSB0aGUgbmV3c2xldHRlciBvciBjb21wbGFpbiDgYu51
-dCBTUMDMDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpM
-aW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8g
-dW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEu
-b3JnCg==
+POWER10 introduces two new variants of dcbf instructions (dcbstps and dcbfps)
+that can be used to write modified locations back to persistent storage.
+
+Additionally, POWER10 also introduce phwsync and plwsync which can be used
+to establish order of these writes to persistent storage.
+
+This patch exposes these instructions to the rest of the kernel. The existing
+dcbf and hwsync instructions in P9 are adequate to enable appropriate
+synchronization with OpenCAPI-hosted persistent storage. Hence the new
+instructions are added as a variant of the old ones that old hardware
+won't differentiate.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/include/asm/ppc-opcode.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index c1df75edde44..45eccd842f84 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -216,6 +216,8 @@
+ #define PPC_INST_STWCX			0x7c00012d
+ #define PPC_INST_LWSYNC			0x7c2004ac
+ #define PPC_INST_SYNC			0x7c0004ac
++#define PPC_INST_PHWSYNC		0x7c8004ac
++#define PPC_INST_PLWSYNC		0x7ca004ac
+ #define PPC_INST_SYNC_MASK		0xfc0007fe
+ #define PPC_INST_ISYNC			0x4c00012c
+ #define PPC_INST_LXVD2X			0x7c000698
+@@ -281,6 +283,8 @@
+ #define PPC_INST_TABORT			0x7c00071d
+ #define PPC_INST_TSR			0x7c0005dd
+ 
++#define PPC_INST_DCBF			0x7c0000ac
++
+ #define PPC_INST_NAP			0x4c000364
+ #define PPC_INST_SLEEP			0x4c0003a4
+ #define PPC_INST_WINKLE			0x4c0003e4
+@@ -529,6 +533,14 @@
+ #define STBCIX(s,a,b)		stringify_in_c(.long PPC_INST_STBCIX | \
+ 				       __PPC_RS(s) | __PPC_RA(a) | __PPC_RB(b))
+ 
++#define	PPC_DCBFPS(a, b)	stringify_in_c(.long PPC_INST_DCBF |	\
++				       ___PPC_RA(a) | ___PPC_RB(b) | (4 << 21))
++#define	PPC_DCBSTPS(a, b)	stringify_in_c(.long PPC_INST_DCBF |	\
++				       ___PPC_RA(a) | ___PPC_RB(b) | (6 << 21))
++
++#define	PPC_PHWSYNC		stringify_in_c(.long PPC_INST_PHWSYNC)
++#define	PPC_PLWSYNC		stringify_in_c(.long PPC_INST_PLWSYNC)
++
+ /*
+  * Define what the VSX XX1 form instructions will look like, then add
+  * the 128 bit load store instructions based on that.
+-- 
+2.26.2
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
