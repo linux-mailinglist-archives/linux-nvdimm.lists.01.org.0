@@ -1,65 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B1061D1AC6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 May 2020 18:14:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8541D1B0B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 13 May 2020 18:28:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2E95611820DE0;
-	Wed, 13 May 2020 09:11:45 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 408FE11A692DD
-	for <linux-nvdimm@lists.01.org>; Wed, 13 May 2020 09:11:43 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id g9so7822221edr.8
-        for <linux-nvdimm@lists.01.org>; Wed, 13 May 2020 09:14:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=JcMsgBgFOR33rFkSLHsQoINTFi9A4r6gtBoxzM7yf+g=;
-        b=i4xpCY5DSLfkEnhkBrJWM45ywVBJL4NJOtQux7qlHGMyoowblY76h3qVob1a001eel
-         Q1RlgpqnZYfw0vUxGrfqj1fYKb+VNR0YPkAkDn23oiTp3VPCQoTstXPKTcxlvnbuCYvU
-         Rd5Uu7wUKbDoA2zGV5xcPyhO8LBU+2Gdwt+BY6hMSk5TZx0zKKq+ZPIaAXfYUXW3oD37
-         2LYEevpq6KqCQYYdcjkUwngZL7WjstoB73zpTX4YMCH7jClwh+5kKoDxmBjonmi1iTZE
-         EYlk8ve1Yc7tPD/t0iOIwPUAj1ena1t9IZmY1lMWleSYlqchy010j/mXS0Cq9Piw2TfC
-         sxhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=JcMsgBgFOR33rFkSLHsQoINTFi9A4r6gtBoxzM7yf+g=;
-        b=IuxgS1KngMM7xwDfL3yxLMDZH+EFzOYCngF9oXQiCIqcO0sWT8FG8iVPE1BuncI9cT
-         +2bcxuPYgpwyNg9IoorcjXWhr38XkNXCEE9g6f/UuHzNXSx1nXIJUNZWOLqft+PvJJws
-         R2wETQT0bCJ4tmdk/mmmX+Cm4ZTsYPUaeQIZ/lABG0sW6E9l7W0HyfNT3AdKp3wntHYx
-         Q5sUxAWV0S5JbGk6rIBM8Wl/eitHx3dOlNRdh2tsM2WDTdR2QYNdUM34iOPExwY3TM2a
-         uJirBHctyxEknF2KiA27nFMAguhZRLAQCL2nxnK7XLm+r1xPOMtbD13rhUZ5nBRtdkU3
-         XZqg==
-X-Gm-Message-State: AOAM530BqalVVTf5FA2V4JAVFI9IuvVHG6ZFJ1RxQZ8++Hwt1FRz4VRY
-	5TArW2946EwrU53obqgNiWuhvRSoc7E1k+7nPzVwMw==
-X-Google-Smtp-Source: ABdhPJx9RnZUcqpbWUC0Rcy7ZBVVzkwrmg9V1QAHY5D9yoPZmXBNmm8PjE9ALhQbCbIJz8bYcgepWe2nAndXgth+Jb8=
-X-Received: by 2002:a50:ee86:: with SMTP id f6mr378941edr.123.1589386459763;
- Wed, 13 May 2020 09:14:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A468611820DAE;
+	Wed, 13 May 2020 09:26:11 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=84.254.8.101; helo=ipa101.8.tellas.gr; envelope-from=underbrushinggsu6@njppsagent6.ups.com; receiver=<UNKNOWN> 
+Received: from ipa101.8.tellas.gr (ipa101.8.tellas.gr [84.254.8.101])
+	by ml01.01.org (Postfix) with ESMTP id 39C8E117DDD27
+	for <linux-nvdimm@lists.01.org>; Wed, 13 May 2020 09:26:06 -0700 (PDT)
+Received: from [218.86.79.157] (account eddyeih712@gaalplpclu00074.linux.us.ups.com HELO SUPUSIM.LIEEPUR.njppsagent6.ups.com)
+	by ipa101.8.tellas.gr (Exim 4.89)
+	with ESMTPA id Qka4j14rIIg31.567 for linux-nvdimm@lists.01.org; Wed, 13 May 2020 18:28:44 +0200
+Received: from [130.122.146.55] (helo=QUKAROQ.HESAHED.website)
+	by ipa101.8.tellas.gr with ESMTPA
+	id 74a3c763
+	for linux-nvdimm@lists.01.org; Wed, 13 May 2020 18:28:44 +0200
+Date: Wed, 13 May 2020 18:28:44 +0200
+Message-ID: <c455.9555.7c08EaDe98.A3a6E@neugidbhpz.vfapjtzacdc.biz>
+From: "Invoice-notification@ups.com" <prvs=77085d3b66=noreply@ups.com>
+To: linux-nvdimm@lists.01.org
+Subject: UPS Invoice Notification
 MIME-Version: 1.0
-References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com> <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
-In-Reply-To: <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 13 May 2020 09:14:08 -0700
-Message-ID: <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
- override the flush barrier
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID-Hash: XM3EHNUGYULRDCRLDD5FX2D7AQDPXBUH
-X-Message-ID-Hash: XM3EHNUGYULRDCRLDD5FX2D7AQDPXBUH
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, alistair@popple.id.au
+Message-ID-Hash: EUZE3LJY2PQANBJ32QULTWMFLGJINSMR
+X-Message-ID-Hash: EUZE3LJY2PQANBJ32QULTWMFLGJINSMR
+X-MailFrom: underbrushinggsu6@njppsagent6.ups.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XM3EHNUGYULRDCRLDD5FX2D7AQDPXBUH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EUZE3LJY2PQANBJ32QULTWMFLGJINSMR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,74 +42,8 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, May 12, 2020 at 8:47 PM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> Architectures like ppc64 provide persistent memory specific barriers
-> that will ensure that all stores for which the modifications are
-> written to persistent storage by preceding dcbfps and dcbstps
-> instructions have updated persistent storage before any data
-> access or data transfer caused by subsequent instructions is initiated.
-> This is in addition to the ordering done by wmb()
->
-> Update nvdimm core such that architecture can use barriers other than
-> wmb to ensure all previous writes are architecturally visible for
-> the platform buffer flush.
-
-This seems like an exceedingly bad idea, maybe I'm missing something.
-This implies that the deployed base of DAX applications using the old
-instruction sequence are going to regress on new hardware that
-requires the new instructions to be deployed. I'm thinking the kernel
-should go as far as to disable DAX operation by default on new
-hardware until userspace asserts that it is prepared to switch to the
-new implementation. Is there any other way to ensure the forward
-compatibility of deployed ppc64 DAX applications?
-
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  drivers/nvdimm/region_devs.c | 8 ++++----
->  include/linux/libnvdimm.h    | 4 ++++
->  2 files changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-> index ccbb5b43b8b2..88ea34a9c7fd 100644
-> --- a/drivers/nvdimm/region_devs.c
-> +++ b/drivers/nvdimm/region_devs.c
-> @@ -1216,13 +1216,13 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
->         idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
->
->         /*
-> -        * The first wmb() is needed to 'sfence' all previous writes
-> -        * such that they are architecturally visible for the platform
-> -        * buffer flush.  Note that we've already arranged for pmem
-> +        * The first arch_pmem_flush_barrier() is needed to 'sfence' all
-> +        * previous writes such that they are architecturally visible for
-> +        * the platform buffer flush. Note that we've already arranged for pmem
->          * writes to avoid the cache via memcpy_flushcache().  The final
->          * wmb() ensures ordering for the NVDIMM flush write.
->          */
-> -       wmb();
-> +       arch_pmem_flush_barrier();
->         for (i = 0; i < nd_region->ndr_mappings; i++)
->                 if (ndrd_get_flush_wpq(ndrd, i, 0))
->                         writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
-> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-> index 18da4059be09..66f6c65bd789 100644
-> --- a/include/linux/libnvdimm.h
-> +++ b/include/linux/libnvdimm.h
-> @@ -286,4 +286,8 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
->  }
->  #endif
->
-> +#ifndef arch_pmem_flush_barrier
-> +#define arch_pmem_flush_barrier() wmb()
-> +#endif
-> +
->  #endif /* __LIBNVDIMM_H__ */
-> --
-> 2.26.2
->
+Your most recent UPS invoice for your account  is now available.Please view and pay your invoice.For questions about your invoice, or invoice payment, please call (800) 811-1648 Monday through Friday 8:00 am to 9:00 pm Eastern Time.For technical support questions regarding your electronic invoicing, please call 877-289-6418.For more information about UPS billing options, visit http://www.ups.com/content/us/en/bussol/browse/billing.html.Thank you for using UPS.This is a post only email; please do not respond to this message.Notice:  This email message and all attachments transmitted with it may contain proprietary information intended solely for the use of the addressee.  If the reader of this message is not the intended recipient, you are hereby notified that any reading, dissemination, distribution, copying or other use of this message or its attachments is strictly prohibited.  If you have received this message in error, please notify the sender immediately by electronic mail at cu
+ stomer.service@ups.com and delete this message and all copies and backups thereof.  Thank you.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
