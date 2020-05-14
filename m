@@ -2,58 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257881D23B8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 May 2020 02:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71331D24A3
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 May 2020 03:25:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9F89F11ADC8DC;
-	Wed, 13 May 2020 17:34:52 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=122.238.19.148; helo=eemag.com; envelope-from=dnthl@eemag.com; receiver=<UNKNOWN> 
-Received: from eemag.com (unknown [122.238.19.148])
-	by ml01.01.org (Postfix) with ESMTP id 9E3C11189A23C
-	for <linux-nvdimm@lists.01.org>; Wed, 13 May 2020 17:34:50 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Thu, 14 May 2020 08:37:20 +0800
-Message-ID: 58da4211-6088-4603-b1e0-562d8a51641b
+	by ml01.01.org (Postfix) with ESMTP id 09A6611AE62EB;
+	Wed, 13 May 2020 18:22:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu; receiver=<UNKNOWN> 
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 5028111AE2B32
+	for <linux-nvdimm@lists.01.org>; Wed, 13 May 2020 18:22:41 -0700 (PDT)
+Received: from callcc.thunk.org (pool-100-0-195-244.bstnma.fios.verizon.net [100.0.195.244])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 04E1PCQp014833
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 May 2020 21:25:13 -0400
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+	id 391134202E4; Wed, 13 May 2020 21:25:12 -0400 (EDT)
+Date: Wed, 13 May 2020 21:25:12 -0400
+From: "Theodore Y. Ts'o" <tytso@mit.edu>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: How to fake a dax device for debugging purposes?
+Message-ID: <20200514012512.GK1596452@mit.edu>
+References: <20200511015404.GA1490816@mit.edu>
+ <CAPcyv4gotnFKCw8+p+DbT30E7eEix3mDkCbHJz9BA4DfeJOKig@mail.gmail.com>
 MIME-Version: 1.0
-Sender: "Eason" <dnthl@eemag.com>
-From: "Eason" <lona@lonasign.com>
-To: linux-nvdimm@lists.01.org
-Date: 14 May 2020 08:37:20 +0800
-Subject: Tarpaulin
-Message-ID-Hash: I2TVSXD4JAVAIIG7LNP7PLKAQ733JQB7
-X-Message-ID-Hash: I2TVSXD4JAVAIIG7LNP7PLKAQ733JQB7
-X-MailFrom: dnthl@eemag.com
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4gotnFKCw8+p+DbT30E7eEix3mDkCbHJz9BA4DfeJOKig@mail.gmail.com>
+Message-ID-Hash: 4QBI7WG57VHY26WY4S7ESK5SGHAFCXSJ
+X-Message-ID-Hash: 4QBI7WG57VHY26WY4S7ESK5SGHAFCXSJ
+X-MailFrom: tytso@mit.edu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I2TVSXD4JAVAIIG7LNP7PLKAQ733JQB7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4QBI7WG57VHY26WY4S7ESK5SGHAFCXSJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCkRlYXIgTWFuYWdlckhvdyBhcmUgeW91ISZuYnNwO1RoaXMgaXMgSEFJTklORyBMT05BIENP
-QVRFRCBNQVRFUklBTCBDTy4sTFREV2Vic2l0ZTombmJzcDsmbmJzcDtodHRwczovL2xvbmF0YXJw
-YXVsaW4uZW4uYWxpYmFiYS5jb20mbmJzcDtPdXIgRmFjdG9yIG1ham9yIHByb2R1Y2UgcHZjIGNv
-YXRlZCBmYWJyaWMsIHB1IGNvYXRlZCBmYWJyaWMgYW5kIHB2YyBtZXNoLlBWQyBDb2F0ZWQgRmFi
-cmljJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IHVzZWQgZm9yIFRlbnRzLCZuYnNwOyBCYWdzLCZu
-YnNwOyBUcnVjayBjb3ZlciAuLi4oQm9keSBCYWcpUFUmbmJzcDsmbmJzcDsgQ29hdGVkJm5ic3A7
-IEZhYnJpYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyB1c2VkIGZvciBTcG9ydCB3ZWFyLCBHYXJt
-ZW50cywgU3dpbW1pbmcgQ2FwLi4uUFZDIENvYXRlZCBNZXNoOiZuYnNwOyZuYnNwOyZuYnNwOyZu
-YnNwOyB1c2VkIGZvciBGaXJlIHByZXZlbnRpb24gbmV0IHdvcmtXZSBsaWtlIHRvIGVzdGFibGlz
-aCBnb29kIGJ1c2luZXNzIHJlbGF0aW9ucyB3aXRoIHlvdSBpbiB0aGUgZnV0dXJlLlJlZ2FyZHNF
-YXNvbg0K5pyX5pyX5raC5bGCOiDkvpvlupRQVkPlpLnnvZHluIMs566x5YyF5biDLiDlpoLmnpzp
-nIDmsYLor7fkuI7miJHmlrnogZTns7suDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLUhBSU5JTkcgTE9O
-QSBDT0FURUQgTUFURVJJQUwgQ08uLExUREFkZDogSG9uZ3FpIFJvYWQsIEhhaW5pbmcgV2FycCBL
-bml0aW5nIFpvbmUgWmhlamlhbmcgQ2hpbmEgUG9zdCBDb2RlOiAzMTQ0MTlQaG9uZSAmYW1wOyBX
-ZWNoYXQ6Jm5ic3A7IDAwODYtMTg5NjYzMDc3NzdXZWJzaXRlOiZuYnNwOyZuYnNwO2h0dHBzOi8v
-bG9uYXRhcnBhdWxpbi5lbi5hbGliYWJhLmNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
-ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
-dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Mon, May 11, 2020 at 11:38:45AM -0700, Dan Williams wrote:
+> Might you have disabled CONFIG_ZONE_DEVICE? That allows the pmem
+> driver to map 'struct page' for pmem and is required for DAX.
+
+Yep that's it!  Apparently there have been changes so that the "make
+olddefconfig" starting with [1] doesn't result in CONFIG_ZONE_DEVICE
+being defined any more.  I'll fix that...
+
+[1] https://github.com/tytso/xfstests-bld/blob/master/kernel-configs/x86_64-config-5.4
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
