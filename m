@@ -2,38 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA521D3054
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 May 2020 14:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6C71D3145
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 14 May 2020 15:28:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ADD4D11B6D2CD;
-	Thu, 14 May 2020 05:49:44 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=82.103.81.186; helo=[82.103.81.186]; envelope-from=sharkeda99@gaalplpclu00074.linux.us.ups.com; receiver=<UNKNOWN> 
-Received: from [82.103.81.186] (unknown [82.103.81.186])
-	by ml01.01.org (Postfix) with ESMTP id 14F3311B6D2BE;
-	Thu, 14 May 2020 05:49:40 -0700 (PDT)
-Received: from  (
- [190.80.15.2])        by  with SMTP id
- Cd7EDEed; Thu, 14 May 2020 14:52:24 +0200
-Received: from [183.6.75.182] (account inexactrt10@njppsagent6.ups.com HELO RIRAHIN.DYEAKYF.biz)
-	by  (Postfix)
-	with ESMTPA id 2ADA8644D8 for linux-nvdimm@lists.01.org; Thu, 14 May 2020 14:52:24 +0200
+	by ml01.01.org (Postfix) with ESMTP id 5314011A1F277;
+	Thu, 14 May 2020 06:25:29 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=95.23.93.122; helo=122.93.23.95.dynamic.jazztel.es; envelope-from=meridian8@pvma00192.prod.fedex.com; receiver=<UNKNOWN> 
+Received: from 122.93.23.95.dynamic.jazztel.es (122.93.23.95.dynamic.jazztel.es [95.23.93.122])
+	by ml01.01.org (Postfix) with ESMTP id 838B91185766D
+	for <linux-nvdimm@lists.01.org>; Thu, 14 May 2020 06:25:27 -0700 (PDT)
+Received: from [108.50.63.195] (account irreverentlya3@pvma00009.prod.fedex.com HELO JIBOXUDO.top)
+	by 122.93.23.95.dynamic.jazztel.es (Exim 4.89)
+	with ESMTPA id b1B48458 for linux-nvdimm@lists.01.org; Thu, 14 May 2020 14:28:11 +0100
+Subject: FedEx Shipment 504512437092 Delivered
+From: TrackingUpdates@fedex.com
 To: linux-nvdimm@lists.01.org
-From: trackingemail@fedex.com
-Subject: FedEx Shipment 223783895708: Delivered
-Message-ID: <2ae645d58d8c3b9e23c67ef2@ewaznwohx.zgwqkcaqcwlm.ch>
-Date: Thu, 14 May 2020 14:52:24 +0200
 MIME-Version: 1.0
-Message-ID-Hash: AVGAD3LUQCOWIDPG6G7UVGTSNMKCDTO6
-X-Message-ID-Hash: AVGAD3LUQCOWIDPG6G7UVGTSNMKCDTO6
-X-MailFrom: sharkeda99@gaalplpclu00074.linux.us.ups.com
+Message-ID: <141701.20200514142811@PEXOCUC.CUKIXYJ.club>
+X-Priority: 3
+Date: Thu, 14 May 2020 14:28:11 +0100
+Message-ID-Hash: LYR6RIVPR72O6XCYSASGYHHR2W3HZISL
+X-Message-ID-Hash: LYR6RIVPR72O6XCYSASGYHHR2W3HZISL
+X-MailFrom: meridian8@pvma00192.prod.fedex.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: trackingemail@fedex.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AVGAD3LUQCOWIDPG6G7UVGTSNMKCDTO6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LYR6RIVPR72O6XCYSASGYHHR2W3HZISL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
