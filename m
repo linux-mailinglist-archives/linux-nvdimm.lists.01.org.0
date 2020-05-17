@@ -2,43 +2,77 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58291D6EE8
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 May 2020 04:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 932E51D6E04
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 May 2020 01:26:49 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8F28811DD8A9D;
-	Sun, 17 May 2020 19:30:43 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=124.219.160.254; helo=irie.jp; envelope-from=postmaster@irie.jp; receiver=<UNKNOWN> 
-Received: from irie.jp (p7cdba0fe.hyogff01.ap.so-net.ne.jp [124.219.160.254])
-	by ml01.01.org (Postfix) with SMTP id 486FC11861CC3
-	for <linux-nvdimm@lists.01.org>; Sun, 17 May 2020 19:30:40 -0700 (PDT)
-Received: (qmail 3478 invoked by uid 0); 18 May 2020 07:27:03 +0900
-Received: from unknown (HELO irie.jp) (postmaster@irie.jp@172.83.14.90)
-  by 0 with SMTP; 18 May 2020 07:27:03 +0900
-From: "Sales" <postmaster@irie.jp>
+	by ml01.01.org (Postfix) with ESMTP id 3030111DD41C2;
+	Sun, 17 May 2020 16:23:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=64.225.55.151; helo=mail.medicproduct.uno; envelope-from=info@medicproduct.uno; receiver=<UNKNOWN> 
+Received: from mail.medicproduct.uno (mail.medicproduct.uno [64.225.55.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 912ED11DCF93C
+	for <linux-nvdimm@lists.01.org>; Sun, 17 May 2020 16:23:37 -0700 (PDT)
+From: Sales <info@medicproduct.uno>
 To: linux-nvdimm@lists.01.org
-Subject: Postdated Check cleared receipt for 2020/15/May 
-Date: 17 May 2020 18:33:47 -0400
-Message-ID: <20200517183347.D698A63D7CEB0819@irie.jp>
+Subject: KN95 mask quotation
+Date: 17 May 2020 16:26:40 -0700
+Message-ID: <20200517162640.65B73B01A6B99589@medicproduct.uno>
 MIME-Version: 1.0
-Message-ID-Hash: 4UQSOG72N4VTP7WK6EEINLQR6EQU2XJN
-X-Message-ID-Hash: 4UQSOG72N4VTP7WK6EEINLQR6EQU2XJN
-X-MailFrom: postmaster@irie.jp
+Message-ID-Hash: BQU3AE3U4JSMMC2YYYGMEVP6CRS42KRL
+X-Message-ID-Hash: BQU3AE3U4JSMMC2YYYGMEVP6CRS42KRL
+X-MailFrom: info@medicproduct.uno
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Sales <sales@medicproduction.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4UQSOG72N4VTP7WK6EEINLQR6EQU2XJN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BQU3AE3U4JSMMC2YYYGMEVP6CRS42KRL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/mixed; boundary="===============1101357335856303353=="
 
-Please confirm payment made May 14 2020.
+--===============1101357335856303353==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.17037"></HEAD>
+<body style=3D"MARGIN: 0.5em">
+<P>Dear linux-nvdimm,<BR>Thanks so much for your time.<BR>I am DENISSE MART=
+INEZ of&nbsp;Mexico MEDICPRODUCTION since 1993 year.</P>
+<P>Attached are our KN95 masks with CE.<BR>Our best price is USD0.9/pc(ex w=
+orks)<BR>Sincerely we wish to cooperate with you:<BR>Best price for you is =
+USD4,500(ex works, for 5,000 KN95 masks)</P>
+<P>We have stock now, can delivery at once.<BR>Where is your receiving addr=
+ess, we check freight for you ok?<BR>Waiting for your early reply and good =
+day!<BR><BR>We also sell all COVID-19 fighting kits also we have&nbsp;a tes=
+t kit to show result in an hour<BR>Visit :<A href=3D"http://www.medicproduc=
+tion.com/"><FONT color=3D#0000ff><EM>http://www.medicproduction.com/</FONT>=
+</EM></A></P>
+<P>Sincerely and best wishes,<STRONG></P>
+<P>DENISSE MARTINEZ</STRONG> <BR><EM>DIRECTOR OF MARKETING</EM><BR><EM>Emai=
+l: </EM><A href=3D"mailto:sales@medicproduction.com"><FONT color=3D#0000ff>=
+<EM>sales@medicproduction.com</FONT></EM></A></P><EM>
+<P>Whatsapp: +5215620732704<BR>phone number: +5215620732704<BR></EM><A href=
+=3D"http://www.medicproduction.com/"><FONT color=3D#0000ff><EM>http://www.m=
+edicproduction.com/</FONT></EM></A><BR></P></BODY></HTML>
+--===============1101357335856303353==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1101357335856303353==--
