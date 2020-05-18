@@ -2,50 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068D81D76B6
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 May 2020 13:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0B31D76B7
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 18 May 2020 13:20:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5D81C11E16D16;
-	Mon, 18 May 2020 04:17:30 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 813A511E16D18;
+	Mon, 18 May 2020 04:17:35 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 23ECD11E16D0E
-	for <linux-nvdimm@lists.01.org>; Mon, 18 May 2020 04:17:28 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 5056511E16CF7
+	for <linux-nvdimm@lists.01.org>; Mon, 18 May 2020 04:17:32 -0700 (PDT)
 Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04IB3fYh059474;
-	Mon, 18 May 2020 07:20:37 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 312cqkvwja-1
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04IB3gje059503;
+	Mon, 18 May 2020 07:20:40 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 312cqkvwm2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2020 07:20:36 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04IBKVWo008469;
-	Mon, 18 May 2020 11:20:34 GMT
+	Mon, 18 May 2020 07:20:40 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04IBKQoj024321;
+	Mon, 18 May 2020 11:20:38 GMT
 Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma05fra.de.ibm.com with ESMTP id 3127t5hm0e-1
+	by ppma04ams.nl.ibm.com with ESMTP id 3127t5m101-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2020 11:20:34 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04IBKVln8257958
+	Mon, 18 May 2020 11:20:37 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04IBKZN914024918
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2020 11:20:31 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B0774C044;
-	Mon, 18 May 2020 11:20:31 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F3E644C04E;
-	Mon, 18 May 2020 11:20:28 +0000 (GMT)
+	Mon, 18 May 2020 11:20:35 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05EC611C058;
+	Mon, 18 May 2020 11:20:35 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 839F611C04A;
+	Mon, 18 May 2020 11:20:32 +0000 (GMT)
 Received: from vajain21-in-ibm-com (unknown [9.102.2.238])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Mon, 18 May 2020 11:20:28 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 18 May 2020 16:50:28 +0530
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Mon, 18 May 2020 11:20:32 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 18 May 2020 16:50:31 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linux-nvdimm@lists.01.org
-Subject: [ndctl RFC-PATCH 1/4] ndctl,libndctl: Implement new dimm-ops 'new_stats' and 'get_stat'
-Date: Mon, 18 May 2020 16:50:20 +0530
-Message-Id: <20200518112023.147139-2-vaibhav@linux.ibm.com>
+Subject: [ndctl RFC-PATCH 2/4] papr_scm: Add support for fetching dimm-stats
+Date: Mon, 18 May 2020 16:50:21 +0530
+Message-Id: <20200518112023.147139-3-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200518112023.147139-1-vaibhav@linux.ibm.com>
 References: <20200518112023.147139-1-vaibhav@linux.ibm.com>
@@ -55,11 +55,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
  definitions=2020-05-18_04:2020-05-15,2020-05-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
  adultscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0
- suspectscore=1 lowpriorityscore=0 clxscore=1015 cotscore=-2147483648
+ suspectscore=4 lowpriorityscore=0 clxscore=1015 cotscore=-2147483648
  spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2005180100
-Message-ID-Hash: 6VTRAOROJKU275NISVNBOVKXLCIFCB74
-X-Message-ID-Hash: 6VTRAOROJKU275NISVNBOVKXLCIFCB74
+Message-ID-Hash: 6RUET7JHCZI3NVTBUINWDSHS2JWXKPXH
+X-Message-ID-Hash: 6RUET7JHCZI3NVTBUINWDSHS2JWXKPXH
 X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -67,7 +67,7 @@ CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@lin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6VTRAOROJKU275NISVNBOVKXLCIFCB74/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6RUET7JHCZI3NVTBUINWDSHS2JWXKPXH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -76,353 +76,338 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Do necessary ndctl, libndctl changes to add support for two new dimm-ops
-namely 'new_stats' and 'get_stat' that can be implemented by dimm
-providers to expose dimm statistics for e.g "Controller Reset Count"
-etc, to ndctl. These dimm-ops are called when newly introduced command
-line argument '-S' or '--stats' is provided on with ndctl-list
-command.
+Add support for fetching dimm-stats from 'papr_scm' module by
+implementing newly introduced dimm-op 'new_stats' as
+papr_new_stats(). The function uses two pdsm to fetch dimm-stats.
 
-Following are the semantics of these new dimm-ops:
+* PAPR_SCM_PDSM_FETCH_PERF_STATS:
+  Asks 'papr_scm' module to request fresh values of all dimm-stats
+  from PHYP and store then in its perf-stats buffer. It returns the
+  size of the perf-stats buffer as bytes in command package 'struct
+  nd_pdsm_fetch_perf_stats'.
 
-* struct ndctl_cmd *(*new_stats)(struct ndctl_dimm *):
+* PAPR_SCM_PDSM_READ_PERF_STATS:
+  Once dimm-stats are placed in 'papr_scm' perf-stats buffer, this
+  pdsm is issued to read it contents and copy then to libndctl
+  user-space memory using 'struct nd_pdsm_read_perf_stats'
+  payload. Since libnvdimm enforces a envelope size limit of 256
+  bytes, this pdsm uses libndctl command iterator functionality to
+  incrementally copy the entire perf-stat buffer content from
+  'papr_scm' module.
 
-  Return a ndctl command that can be sent to libnvdimm to fetch
-  dimm-stats from kernel. On successful submission
-  'dimm_ops->smart_get_flags' is called to check if ND_SMART_STATS_VALID
-  flag is set which indicates dimm-stats successfully fetched from
-  libnvdimm.
+The patch introduces new members in 'struct dimm_priv' to hold the
+dimm-stat information fetched from 'papr_scm' module. A new function
+update_perf_stat_size() is introduced that handles response to pdsm
+FETCH_PERF_STATS and allocate enough memory to 'dimm_priv.perf_stats'
+to hold all dimm-stats.
 
-* int (*get_stat)(struct ndctl_cmd *, struct ndctl_dimm_stat *):
+When papr_new_stats() is called by libndctl in response to '--stats'
+arg being given to ndctl-list command, following sequence is executed:
 
-  If ND_SMART_STATS_VALID flag was returned for a command from
-  'dimm-ops->smart_get_flags' then this dimm-op is called to
-  incrementally retrieve dimm-stats. For each call the dimm-op
-  implementer is expected to populate the provided instance of 'struct
-  ndctl_dimm_stat *' with a info on name, type and value of a
-  dimm-stat. In case no more dimm-stats are available the dimm-op
-  should return an error.
-
-The newly introduced 'struct ndctl_dimm_stat' holds Name, type and
-value information of a single dimm-stat. The ndctl_dimm_stat.type
-information is used to appropriately format the dimm-stat value in the
-json output.
-
-The patch also updates 'util/json-smart.c' introducing new function
-util_dimm_stats_to_json() thats called when '--stats' command line arg
-is provided, and it drives the calls to dimm-ops 'new_stats' and
-'get_stat'. The function does follows this sequence:
-
-1. Generates a new json-object named 'stats' in the json output
-2. Use 'dimm_ops->new_stats' to get a ndctl_cmd instance.
-3. Submit the command to libndctl.
-4. In case of successful submission, retrieve flags associated with the
-   command.
-4. In case flag ND_SMART_STATS_VALID use dimm-op 'get_stat' to retrieve
-   available dimm-stats.
-5. Creates new json-object for each 'struct ndctl_dimm_stat' returned
-   from dimm-op 'get_stat' based on the type of dimm-stat.
-6. Adds the above create json-object as child node of the 'stats'
-   json-object.
-7. Return the 'stats' json object from the function.
+1. Allocate and submit ndctl_cmd to issue pdsm FETCH_PERF_STATS.
+2. On success call update_dimm_stats() that in return calls
+   update_perf_stat_size() to allocate buffer 'dimm_priv.perf_stats'
+   needed to store dimm-stats.
+3. Allocate ndctl_cmd to issue pdsm READ_PERF_STATS.
+4. Setup the command iterator pointing to dimm_priv.perf_stats to hold
+   the entire data and setting the total length of the read operation.
+5. Setup the various get/set callback functions for command 'xfer' and
+   'offset' access.
+6. Return this command back to libndctl that will then submit the
+   command to libnvdimm.
 
 Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
- Documentation/ndctl/ndctl-list.txt | 24 ++++++++++
- ndctl/lib/libndctl.sym             |  5 ++
- ndctl/lib/private.h                |  6 +++
- ndctl/lib/smart.c                  | 26 +++++++++++
- ndctl/libndctl.h                   | 23 ++++++++++
- ndctl/list.c                       |  9 ++++
- ndctl/util/json-smart.c            | 73 ++++++++++++++++++++++++++++++
- util/json.h                        |  1 +
- 8 files changed, 167 insertions(+)
+ ndctl/lib/papr_scm.c      | 169 ++++++++++++++++++++++++++++++++++++++
+ ndctl/lib/papr_scm_pdsm.h |  48 +++++++++++
+ 2 files changed, 217 insertions(+)
 
-diff --git a/Documentation/ndctl/ndctl-list.txt b/Documentation/ndctl/ndctl-list.txt
-index 7c7e3ac9d05c..4ba58b96fb74 100644
---- a/Documentation/ndctl/ndctl-list.txt
-+++ b/Documentation/ndctl/ndctl-list.txt
-@@ -129,6 +129,30 @@ include::xable-bus-options.txt[]
-     "shutdown_state":"clean"
-   }
- }
-+-S::
-+--stats::
-+	Include dimm statistics in the listing. For example:
-+[verse]
-+{
-+  "dev":"nmem0"
-+  "stats":{
-+    "Controller Reset Count":2,
-+    "Controller Reset Elapsed Time":50800,
-+    "Power-on Seconds":51400,
-+    "Critical Resource Utilization":"0%",
-+    "Host Load Count":4056485,
-+    "Host Store Count":8956850,
-+    "Host Load Duration":765053890,
-+    "Host Store Duration":715390700,
-+    "Media Read Count":0,
-+    "Media Write Count":6178,
-+    "Media Read Duration":0,
-+    "Media Write Duration":9468375,
-+    "Cache Read Hit Count":4056485,
-+    "Cache Write Hit Count":8432554,
-+    "Fast Write Count":8959962
-+  }
-+}
+diff --git a/ndctl/lib/papr_scm.c b/ndctl/lib/papr_scm.c
+index 562262111c91..14fb6d48c12a 100644
+--- a/ndctl/lib/papr_scm.c
++++ b/ndctl/lib/papr_scm.c
+@@ -14,6 +14,7 @@
+ #include <stdlib.h>
+ #include <limits.h>
+ #include <util/log.h>
++#include <util/util.h>
+ #include <ndctl.h>
+ #include <ndctl/libndctl.h>
+ #include <lib/private.h>
+@@ -40,11 +41,19 @@
+ #define CMD_PKG_SUBMITTED 1
+ #define CMD_PKG_PARSED 2
  
- -F::
- --firmware::
-diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
-index ac575a23d035..5b8eabc1b9d5 100644
---- a/ndctl/lib/libndctl.sym
-+++ b/ndctl/lib/libndctl.sym
-@@ -431,3 +431,8 @@ LIBNDCTL_23 {
- 	ndctl_region_get_align;
- 	ndctl_region_set_align;
- } LIBNDCTL_22;
++/* Number of bytes to transffer in each ioctl for pdsm READ_PERF_STATS */
++#define GET_PERF_STAT_XFER_SIZE 16
 +
-+LIBNDCTL_24 {
-+	ndctl_dimm_cmd_new_stats;
-+	ndctl_dimm_get_stat;
-+} LIBNDCTL_23;
-\ No newline at end of file
-diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
-index 679e359a1070..c4d1f42f7ac2 100644
---- a/ndctl/lib/private.h
-+++ b/ndctl/lib/private.h
-@@ -238,6 +238,7 @@ struct ndctl_namespace {
-  * @status: negative if failed, 0 if success, > 0 if never submitted
-  * @get_firmware_status: per command firmware status field retrieval
-  * @iter: iterator for multi-xfer commands
-+ * @private_data: Used by dimm-provider to store private data
-  * @source: source cmd of an inherited iter.total_buf
-  *
-  * For dynamically sized commands like 'get_config', 'set_config', or
-@@ -266,6 +267,7 @@ struct ndctl_cmd {
- 		u32 total_xfer;
- 		int dir;
- 	} iter;
-+	void *private_data;
- 	struct ndctl_cmd *source;
- 	union {
- 		struct nd_cmd_ars_cap ars_cap[0];
-@@ -352,6 +354,10 @@ struct ndctl_dimm_ops {
- 	int (*dimm_init)(struct ndctl_dimm *);
- 	/* Called just before struct ndctl_dimm is de-allocated */
- 	void (*dimm_uninit)(struct ndctl_dimm *);
-+	/* Return a command to fetch dimm stats */
-+	struct ndctl_cmd *(*new_stats)(struct ndctl_dimm *);
-+	/* Return a single dimm-stat from the command until error */
-+	int (*get_stat)(struct ndctl_cmd *, struct ndctl_dimm_stat *);
+ /* Per dimm data. Holds per-dimm data parsed from the cmd_pkgs */
+ struct dimm_priv {
+ 
+ 	/* Cache the dimm health status */
+ 	struct nd_papr_pdsm_health health;
++
++	/* Cache the dimm perf-stats buffer, length in bytes, count */
++	ssize_t len_perf_stats;
++	ssize_t count_perf_stats;
++	struct nd_pdsm_perf_stat *perf_stats;
  };
  
- extern struct ndctl_dimm_ops * const intel_dimm_ops;
-diff --git a/ndctl/lib/smart.c b/ndctl/lib/smart.c
-index 0e180cff5a3e..fbb1248c08a9 100644
---- a/ndctl/lib/smart.c
-+++ b/ndctl/lib/smart.c
-@@ -31,6 +31,32 @@ NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_cmd_new_smart(
- 		return NULL;
+ static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
+@@ -136,6 +145,45 @@ static int update_dimm_health(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ 	return -EINVAL;
  }
  
-+NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_cmd_new_stats(
-+		struct ndctl_dimm *dimm)
++/* Parse the PAPR_SCM_PDSM_FETCH_PERF_STATS command package */
++static int update_perf_stat_size(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
 +{
-+	struct ndctl_dimm_ops *ops = dimm->ops;
++	struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
++	struct dimm_priv *p = dimm->dimm_user_data;
++	const struct nd_pdsm_fetch_perf_stats * psize =
++		pdsm_cmd_to_payload(pcmd);
 +
-+	if (ops && ops->new_stats)
-+		return ops->new_stats(dimm);
-+	else
-+		return NULL;
++	/* is it an unknown version */
++	if (pcmd->payload_version != 1) {
++		papr_err(dimm, "Unknown payload version for perf stat size\n");
++		return -EBADE;
++	}
++
++	/* Update the perf_size and reallocate the buffer if needed */
++	if (p->len_perf_stats < psize->max_stats_size) {
++		struct nd_pdsm_perf_stat *new_stats, *old_stats;
++		old_stats = p->perf_stats;
++
++		new_stats = (struct nd_pdsm_perf_stat *)
++			calloc(1, psize->max_stats_size);
++		if (!new_stats) {
++			papr_err(dimm, "Unable to allocate new perf_stats buffer\n");
++			return -ENOMEM;
++		}
++		if (old_stats) {
++			/* Copy the old buffer contents to new */
++			memcpy(new_stats, old_stats, p->len_perf_stats);
++			free(old_stats);
++		}
++		p->perf_stats = new_stats;
++	}
++
++	p->len_perf_stats = psize->max_stats_size;
++	papr_dbg(dimm, "dimm perf stats size =%lu\n",
++		 p->len_perf_stats);
++	return 0;
 +}
 +
-+NDCTL_EXPORT int ndctl_dimm_get_stat(struct ndctl_cmd *cmd,
-+				      struct ndctl_dimm_stat * stat)
-+{
-+	struct ndctl_dimm_ops *ops;
-+
-+	if (!cmd || !cmd->dimm)
-+		return -EINVAL;
-+	ops = cmd->dimm->ops;
-+
-+	if (ops && ops->get_stat)
-+		return ops->get_stat(cmd, stat);
-+	else
-+		return -ENOENT;
-+}
-+
- NDCTL_EXPORT struct ndctl_cmd *ndctl_dimm_cmd_new_smart_threshold(
- 		struct ndctl_dimm *dimm)
+ /* Parse a command payload and update dimm flags/private data */
+ static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
  {
-diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
-index daf11b8ce4ea..9fab2097a920 100644
---- a/ndctl/libndctl.h
-+++ b/ndctl/libndctl.h
-@@ -247,6 +247,7 @@ int ndctl_cmd_ars_stat_get_flag_overflow(struct ndctl_cmd *ars_stat);
- #define ND_SMART_ALARM_VALID	(1 << 9)
- #define ND_SMART_SHUTDOWN_VALID	(1 << 10)
- #define ND_SMART_VENDOR_VALID	(1 << 11)
-+#define ND_SMART_STATS_VALID	(1 << 12)
- #define ND_SMART_SPARE_TRIP	(1 << 0)
- #define ND_SMART_MTEMP_TRIP	(1 << 1)
- #define ND_SMART_TEMP_TRIP	ND_SMART_MTEMP_TRIP
-@@ -341,6 +342,28 @@ int ndctl_cmd_get_status(struct ndctl_cmd *cmd);
- unsigned int ndctl_cmd_get_firmware_status(struct ndctl_cmd *cmd);
- int ndctl_cmd_submit(struct ndctl_cmd *cmd);
- 
-+/* Holds a single dimm stat which can be retrived */
-+struct ndctl_dimm_stat {
-+        const char *name;
-+        enum {
-+		STAT_TYPE_BOOL,
-+		STAT_TYPE_INT,
-+		STAT_TYPE_INT64,
-+		STAT_TYPE_DOUBLE,
-+		STAT_TYPE_STR,
-+		STAT_TYPE_PERCENT,
-+	} type;
-+	union {
-+		bool bool_val;
-+		int int_val;
-+		long long int64_val;
-+		double double_val;
-+		char str_val[32];
-+	} val;
-+};
-+
-+struct ndctl_cmd *ndctl_dimm_cmd_new_stats(struct ndctl_dimm *dimm);
-+int ndctl_dimm_get_stat(struct ndctl_cmd *cmd, struct ndctl_dimm_stat *stat);
- struct badblock {
- 	unsigned long long offset;
- 	unsigned int len;
-diff --git a/ndctl/list.c b/ndctl/list.c
-index 31fb1b9593a2..cda3493c2ffc 100644
---- a/ndctl/list.c
-+++ b/ndctl/list.c
-@@ -32,6 +32,7 @@ static struct {
- 	bool namespaces;
- 	bool idle;
- 	bool health;
-+	bool stats;
- 	bool dax;
- 	bool media_errors;
- 	bool human;
-@@ -367,6 +368,13 @@ static void filter_dimm(struct ndctl_dimm *dimm, struct util_filter_ctx *ctx)
- 		}
+@@ -163,6 +211,8 @@ static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ 	switch (pcmd_to_pdsm(pcmd)) {
+ 	case PAPR_SCM_PDSM_HEALTH:
+ 		return update_dimm_health(dimm, cmd);
++	case PAPR_SCM_PDSM_FETCH_PERF_STATS:
++		return update_perf_stat_size(dimm, cmd);
+ 	default:
+ 		papr_err(dimm, "Unhandled pdsm-request 0x%016llx\n",
+ 			 pcmd_to_pdsm(pcmd));
+@@ -286,10 +336,128 @@ static void papr_dimm_uninit(struct ndctl_dimm *dimm)
+ 		return;
  	}
  
-+	if (list.stats) {
-+		struct json_object *jstats;
++	if (p->perf_stats)
++		free(p->perf_stats);
 +
-+		jstats = util_dimm_stats_to_json(dimm);
-+		json_object_object_add(jdimm, "stats", jstats);
-+	}
-+
- 	if (list.firmware) {
- 		struct json_object *jfirmware;
- 
-@@ -479,6 +487,7 @@ int cmd_list(int argc, const char **argv, struct ndctl_ctx *ctx)
- 		OPT_BOOLEAN('D', "dimms", &list.dimms, "include dimm info"),
- 		OPT_BOOLEAN('F', "firmware", &list.firmware, "include firmware info"),
- 		OPT_BOOLEAN('H', "health", &list.health, "include dimm health"),
-+		OPT_BOOLEAN('S', "stats", &list.stats, "include dimm stats"),
- 		OPT_BOOLEAN('R', "regions", &list.regions,
- 				"include region info"),
- 		OPT_BOOLEAN('N', "namespaces", &list.namespaces,
-diff --git a/ndctl/util/json-smart.c b/ndctl/util/json-smart.c
-index a9bd17b37b4e..1312439453ee 100644
---- a/ndctl/util/json-smart.c
-+++ b/ndctl/util/json-smart.c
-@@ -221,3 +221,76 @@ struct json_object *util_dimm_health_to_json(struct ndctl_dimm *dimm)
- 		ndctl_cmd_unref(cmd);
- 	return jhealth;
+ 	dimm->dimm_user_data = NULL;
+ 	free(p);
  }
-+
-+struct json_object *util_dimm_stats_to_json(struct ndctl_dimm *dimm)
+ 
++/*
++ * Check if the given command is of type PDSM_READ_PERF_STATS and return
++ * 'struct nd_pdsm_read_perf_stats *' otherwise return NULL.
++ */
++static struct nd_pdsm_read_perf_stats *cmd_to_read_perf(struct ndctl_cmd *cmd)
 +{
-+	struct json_object *jstat = json_object_new_object();
-+	struct json_object *jobj;
-+	struct ndctl_cmd *cmd;
-+	struct ndctl_dimm_stat stat = { 0 };
-+	char format_buffer[32] = { 0 };
-+	int rc;
-+	unsigned int flags;
++	struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
 +
-+	if (!jstat)
++	if (cmd && cmd_is_valid(cmd->dimm, cmd) &&
++	    pcmd_to_pdsm(pcmd) == PAPR_SCM_PDSM_READ_PERF_STATS)
++		return (struct nd_pdsm_read_perf_stats *)
++			(pdsm_cmd_to_payload(pcmd));
++	else
 +		return NULL;
-+
-+	cmd = ndctl_dimm_cmd_new_stats(dimm);
-+	if (!cmd)
-+		goto err;
-+
-+	rc = ndctl_cmd_submit_xlat(cmd);
-+	if (rc < 0) {
-+		jobj = json_object_new_string("unknown");
-+		if (jobj)
-+			json_object_object_add(jstat, "stats", jobj);
-+		goto out;
-+	}
-+
-+	/* Check if any stats are reported */
-+	flags = ndctl_cmd_smart_get_flags(cmd);
-+	if (!(flags & ND_SMART_STATS_VALID))
-+		goto out;
-+
-+	/* Iterate through the reported stats list */
-+	while (ndctl_dimm_get_stat(cmd, &stat) == 0) {
-+		switch(stat.type) {
-+		case STAT_TYPE_BOOL:
-+			jobj = json_object_new_boolean(stat.val.bool_val);
-+			break;
-+		case STAT_TYPE_INT:
-+			jobj = json_object_new_int(stat.val.int_val);
-+			break;
-+		case STAT_TYPE_INT64:
-+			jobj = json_object_new_int64(stat.val.int64_val);
-+			break;
-+		case STAT_TYPE_DOUBLE:
-+			jobj = json_object_new_double(stat.val.double_val);
-+			break;
-+		case STAT_TYPE_STR:
-+			jobj = json_object_new_string(stat.val.str_val);
-+			break;
-+		case STAT_TYPE_PERCENT:
-+			snprintf(format_buffer, sizeof(format_buffer) - 1,
-+				 "%u%%",stat.val.int_val);
-+			format_buffer[sizeof(format_buffer) - 1] = '\0';
-+			jobj = json_object_new_string(format_buffer);
-+			break;
-+		default:
-+			jobj = json_object_new_string("unknown-type");
-+			break;
-+		};
-+
-+		if (jobj)
-+			json_object_object_add(jstat, stat.name, jobj);
-+	}
-+	ndctl_cmd_unref(cmd);
-+	return jstat;
-+ err:
-+	json_object_put(jstat);
-+	jstat = NULL;
-+ out:
-+	if (cmd)
-+		ndctl_cmd_unref(cmd);
-+	return jstat;
 +}
-diff --git a/util/json.h b/util/json.h
-index 6d39d3aa4693..e678596e1aab 100644
---- a/util/json.h
-+++ b/util/json.h
-@@ -56,6 +56,7 @@ struct json_object *util_json_object_size(unsigned long long size,
- struct json_object *util_json_object_hex(unsigned long long val,
- 		unsigned long flags);
- struct json_object *util_dimm_health_to_json(struct ndctl_dimm *dimm);
-+struct json_object *util_dimm_stats_to_json(struct ndctl_dimm *dimm);
- struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
- 		unsigned long flags);
- struct json_object *util_region_capabilities_to_json(struct ndctl_region *region);
++
++/* Callbacks from libndctl core to handle iterable read_perf_stats command */
++static u32 papr_get_xfer(struct ndctl_cmd *cmd)
++{
++	struct nd_pdsm_read_perf_stats *stats = cmd_to_read_perf(cmd);
++	if (stats == NULL)
++		papr_err(cmd->dimm, "Invalid command\n");
++	return stats ? stats->in_length : 0;
++}
++
++static u32 papr_get_offset(struct ndctl_cmd *cmd)
++{
++	struct nd_pdsm_read_perf_stats *stats = cmd_to_read_perf(cmd);
++	if (stats == NULL)
++		papr_err(cmd->dimm, "Invalid command\n");
++	return stats ? stats->in_offset : 0;
++}
++
++static void papr_set_xfer(struct ndctl_cmd *cmd, u32 xfer)
++{
++	struct nd_pdsm_read_perf_stats *stats = cmd_to_read_perf(cmd);
++	if (stats == NULL)
++		papr_err(cmd->dimm, "Invalid command\n");
++	stats->in_length = xfer;
++}
++
++static void papr_set_offset(struct ndctl_cmd *cmd, u32 offset)
++{
++	struct nd_pdsm_read_perf_stats *stats = cmd_to_read_perf(cmd);
++	if (stats == NULL)
++		papr_err(cmd->dimm, "Invalid command\n");
++	stats->in_offset = offset;
++}
++
++/* Fetch dimm stats and return a command to read them */
++static struct ndctl_cmd * papr_new_stats(struct ndctl_dimm * dimm)
++{
++	struct dimm_priv * p = dimm->dimm_user_data;
++	struct ndctl_cmd * cmd = NULL;
++	int rc;
++
++	/*
++	 * Submit a pdsm FETCH_PERF_STATS to get the latest stats fetched from
++	 * PHYP and have their length returned to libndctl. Next allocate
++	 * suitable size buffer in dimm private buffer 'perf_stats' and create
++	 * an iterable command for pdsm READ_PERF_STATS to read these stats
++	 * from kernel to 'perf_stats'
++	 */
++	cmd = allocate_cmd(dimm, PAPR_SCM_PDSM_FETCH_PERF_STATS,
++			   sizeof (struct nd_pdsm_fetch_perf_stats),
++			   ND_PDSM_FETCH_PERF_STATS_VERSION);
++	if (!cmd) {
++		papr_err(dimm, "Unable to allocate cmd for perf_stats size\n");
++		return NULL;
++	}
++
++	papr_dbg(dimm, "Fetching dimm stats from papr_scm\n");
++	cmd->pkg[0].nd_size_out = ND_PDSM_ENVELOPE_CONTENT_SIZE(
++		struct nd_pdsm_fetch_perf_stats);
++
++	/* If successful update the dimm data with length of dimm stats */
++	rc = ndctl_cmd_submit_xlat(cmd);
++	rc = rc ? rc : update_dimm_stats(dimm, cmd);
++
++	ndctl_cmd_unref(cmd);
++	if (rc) {
++		papr_err(dimm, "Error fetching perf stats. Err=%d\n", rc);
++		return NULL;
++	}
++
++	/* allocate pdsm READ_PERF_STATS command having tail xfer buffer */
++	cmd = allocate_cmd(dimm, PAPR_SCM_PDSM_READ_PERF_STATS,
++			   sizeof(struct nd_pdsm_read_perf_stats) + GET_PERF_STAT_XFER_SIZE,
++			   ND_PDSM_READ_PERF_STATS_VERSION);
++	if (!cmd) {
++		papr_err(dimm, "Unable to allocated read_perf_stats cmd\n");
++		return NULL;
++	}	/* Update the expected out size from the papr_scm module */
++
++        cmd->pkg[0].nd_size_out =
++		ND_PDSM_ENVELOPE_CONTENT_SIZE(struct nd_pdsm_read_perf_stats) +
++		GET_PERF_STAT_XFER_SIZE;
++
++        /* Setup the iterators */
++	cmd->iter.total_buf = (char *) p->perf_stats;
++	cmd->iter.init_offset = 0;
++	cmd->iter.max_xfer = GET_PERF_STAT_XFER_SIZE;
++	cmd->iter.total_xfer = p->len_perf_stats;
++	cmd->iter.dir = READ;
++	cmd->iter.data = (u8*)cmd_to_read_perf(cmd)->stats_data;
++
++	/* setup the callbacks */
++	cmd->get_xfer = papr_get_xfer;
++	cmd->get_offset = papr_get_offset;
++	cmd->set_xfer = papr_set_xfer;
++	cmd->set_offset = papr_set_offset;
++
++	return cmd;
++}
++
+ struct ndctl_dimm_ops * const papr_scm_dimm_ops = &(struct ndctl_dimm_ops) {
+ 	.cmd_is_supported = papr_cmd_is_supported,
+ 	.dimm_init = papr_dimm_init,
+@@ -299,4 +467,5 @@ struct ndctl_dimm_ops * const papr_scm_dimm_ops = &(struct ndctl_dimm_ops) {
+ 	.new_smart = papr_new_smart_health,
+ 	.smart_get_health = papr_smart_get_health,
+ 	.smart_get_shutdown_state = papr_smart_get_shutdown_state,
++	.new_stats = papr_new_stats,
+ };
+diff --git a/ndctl/lib/papr_scm_pdsm.h b/ndctl/lib/papr_scm_pdsm.h
+index 9b1fdd894a6e..f9f463e6b7dd 100644
+--- a/ndctl/lib/papr_scm_pdsm.h
++++ b/ndctl/lib/papr_scm_pdsm.h
+@@ -114,6 +114,8 @@ struct nd_pdsm_cmd_pkg {
+ enum papr_scm_pdsm {
+ 	PAPR_SCM_PDSM_MIN = 0x0,
+ 	PAPR_SCM_PDSM_HEALTH,
++	PAPR_SCM_PDSM_FETCH_PERF_STATS,
++	PAPR_SCM_PDSM_READ_PERF_STATS,
+ 	PAPR_SCM_PDSM_MAX,
+ };
+ 
+@@ -170,4 +172,50 @@ struct nd_papr_pdsm_health_v1 {
+ /* Current version number for the dimm health struct */
+ #define ND_PAPR_PDSM_HEALTH_VERSION 1
+ 
++/*
++ * Return the maximum buffer size needed to hold all performance state.
++ * max_stats_size: The buffer size needed to hold all stat entries
++ */
++struct nd_pdsm_fetch_perf_stats_v1 {
++	__u32 max_stats_size;
++	__u8 reserved[4];
++} __attribute__((packed));
++
++#define nd_pdsm_fetch_perf_stats nd_pdsm_fetch_perf_stats_v1
++#define ND_PDSM_FETCH_PERF_STATS_VERSION 1
++
++/*
++ * Holds a single performance stat. papr_scm owns a buffer that holds an array
++ * of all the available stats and their values. Access to the buffer is provided
++ * via PERF_STAT_SIZE and READ_PERF_STATS psdm.
++ * id : id of the performance stat. Usually acsii encode stat name.
++ * val : Non normalized value of the id.
++ */
++
++struct nd_pdsm_perf_stat {
++	__u64 id;
++	__u64 val;
++};
++
++/*
++ * Returns a chunk of performance stats buffer data to libndctl.
++ * This is needed to overcome the 256 byte envelope size limit enforced by
++ * libnvdimm.
++ * in_offset: The starting offset to perf stats data buffer.
++ * in_length: Length of data to be copied to 'stats_data'
++ * stats_data: Holds the chunk of requested perf stats data buffer.
++ *
++ * Note: To prevent races in reading performance stats, in_offset and in_length
++ * should multiple of 16-Bytes. If they are not then papr_scm will return an
++ * -EINVAL error.
++ */
++struct nd_pdsm_read_perf_stats_v1 {
++	__u32 in_offset;
++	__u32 in_length;
++ 	struct nd_pdsm_perf_stat stats_data[];
++} __attribute__((packed));
++
++#define nd_pdsm_read_perf_stats nd_pdsm_read_perf_stats_v1
++#define ND_PDSM_READ_PERF_STATS_VERSION 1
++
+ #endif /* _UAPI_ASM_POWERPC_PAPR_SCM_PDSM_H_ */
 -- 
 2.26.2
 _______________________________________________
