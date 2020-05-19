@@ -1,81 +1,67 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8E71D8FAB
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 07:57:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D131D90AB
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 09:09:29 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 38E1A11EA6785;
-	Mon, 18 May 2020 22:53:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9676111EAAB26;
+	Tue, 19 May 2020 00:06:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 09E4511EA6782
-	for <linux-nvdimm@lists.01.org>; Mon, 18 May 2020 22:53:38 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04J5jBff186534;
-	Tue, 19 May 2020 01:56:50 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 312btuv5ku-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 01:56:50 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04J52tkv187353;
-	Tue, 19 May 2020 01:56:49 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 312btuv5hv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 01:56:48 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04J5tPUo006468;
-	Tue, 19 May 2020 05:56:45 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma01dal.us.ibm.com with ESMTP id 313x16qd55-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 05:56:45 +0000
-Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04J5th9561080002
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2020 05:55:43 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8BDE67805E;
-	Tue, 19 May 2020 05:55:43 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E188D7805C;
-	Tue, 19 May 2020 05:55:40 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.85.81.200])
-	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 19 May 2020 05:55:40 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
-        linux-nvdimm@lists.01.org
-Subject: [PATCH v3 7/7] powerpc/book3s/pmem: Add WARN_ONCE to catch the wrong usage of pmem flush functions.
-Date: Tue, 19 May 2020 11:25:02 +0530
-Message-Id: <20200519055502.128318-7-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200519055502.128318-1-aneesh.kumar@linux.ibm.com>
-References: <20200519055502.128318-1-aneesh.kumar@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 6F38311EAAB23
+	for <linux-nvdimm@lists.01.org>; Tue, 19 May 2020 00:06:09 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id h21so10896366ejq.5
+        for <linux-nvdimm@lists.01.org>; Tue, 19 May 2020 00:09:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=kh83+i5wB5y2TfXkmhcoF7oKPmPUYzTeTgOonnemCpU=;
+        b=pN7+ZmJtXthz51NwK6m+cXBceZzSW8sG8yjk8lz9tZ2AYsaxG7G5SuJU9gcTPwhgF2
+         SjBsEkJFw+nwv5D66n6a7vYs1Fm44ovq7EFARvR/L30Q7OvDbNiFqOuKH6yh0qSYaCXD
+         4C71DCRRAxm98S6NZmsDUvbqxY2Y2TiyvEpPQGYxLr7E2T/53XMsHzWJ77p2dgQV4UMl
+         6FO8hAIZ450ZNMkZsnUDPuZ2ROfV7bCLdgmXPfKqmdjPC+y+E+M03Bq1hhukl82tFPd9
+         T+es2PQDXaXYx+CU5Hfv8opcO/Vh58qINekflet+xyOykAlkVmzUW0Yp+bGlDIZaRKkQ
+         5Nng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=kh83+i5wB5y2TfXkmhcoF7oKPmPUYzTeTgOonnemCpU=;
+        b=a4BZie03IoPZpFFErJCr3bPcz+cegbyCAxljU2DuUQrVD2Le4FsuQTHXP9NlMiN6o6
+         eq4adMr8MqW1U9WacRhvSVHMGFz3MxDlkwYIDzx5Qkfvmr6fSZ1/1LEnMj66J+zTAiRd
+         Z5CckjhgN4Re/AjuGjc1SfrTgd9OMa0WB2075aSUqeRkx92MAS6lfOfRY0on5IOv73ig
+         EYUPb8d24Af/R2+rjDdwSQfUaDS4b/6NHhDALO5xrybP2l9OIxcA5y8lxlc6wJPDf9el
+         P8YsYEYFVL60yMCG2RUxEGFgE7KqTuqL6dTXaOBXsbQE7okjQ3BCSxxM1JbySwLNVv9p
+         yiZg==
+X-Gm-Message-State: AOAM532eoUC/NNQv25QNNRHEJzhlwMwFCVmJRs4BSHYirsm9AQZXkdRA
+	CS9HMVVSVfeNNTkmc3c5Mo0rdMbErIsAuBNkpoEG2A==
+X-Google-Smtp-Source: ABdhPJyY1+6icu96XuroiXonfBuEVeMr79j7e37fGri7YK7TKCij2SqixO72vqqnp4Yc2n02GlZTqPAoijK4JHeT+rg=
+X-Received: by 2002:a17:907:9484:: with SMTP id dm4mr8403153ejc.56.1589872162813;
+ Tue, 19 May 2020 00:09:22 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-19_01:2020-05-15,2020-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- priorityscore=1501 malwarescore=0 mlxscore=0 mlxlogscore=999
- impostorscore=0 spamscore=0 clxscore=1015 cotscore=-2147483648
- lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005190044
-Message-ID-Hash: SLQHP3RVMWPAAWVVSRGUTMWLA4JOBJNS
-X-Message-ID-Hash: SLQHP3RVMWPAAWVVSRGUTMWLA4JOBJNS
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: alistair@popple.id.au, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ <20200513034705.172983-3-aneesh.kumar@linux.ibm.com> <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+ <87v9kspk3x.fsf@linux.ibm.com>
+In-Reply-To: <87v9kspk3x.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 19 May 2020 00:09:11 -0700
+Message-ID: <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
+ override the flush barrier
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Message-ID-Hash: CSRK7C7ICUYD7XEBCHL5MJP7V4CAPZN6
+X-Message-ID-Hash: CSRK7C7ICUYD7XEBCHL5MJP7V4CAPZN6
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>, alistair@popple.id.au
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SLQHP3RVMWPAAWVVSRGUTMWLA4JOBJNS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CSRK7C7ICUYD7XEBCHL5MJP7V4CAPZN6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,50 +70,80 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-We only support persistent memory on P8 and above. This is enforced by the
-firmware and further checked on virtualzied platform during platform init.
-Add WARN_ONCE in pmem flush routines to catch the wrong usage of these.
+On Mon, May 18, 2020 at 10:30 PM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+>
+> Hi Dan,
+>
+> Apologies for the delay in response. I was waiting for feedback from
+> hardware team before responding to this email.
+>
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Tue, May 12, 2020 at 8:47 PM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+> >>
+> >> Architectures like ppc64 provide persistent memory specific barriers
+> >> that will ensure that all stores for which the modifications are
+> >> written to persistent storage by preceding dcbfps and dcbstps
+> >> instructions have updated persistent storage before any data
+> >> access or data transfer caused by subsequent instructions is initiated.
+> >> This is in addition to the ordering done by wmb()
+> >>
+> >> Update nvdimm core such that architecture can use barriers other than
+> >> wmb to ensure all previous writes are architecturally visible for
+> >> the platform buffer flush.
+> >
+> > This seems like an exceedingly bad idea, maybe I'm missing something.
+> > This implies that the deployed base of DAX applications using the old
+> > instruction sequence are going to regress on new hardware that
+> > requires the new instructions to be deployed.
+>
+>
+> pmdk support for ppc64 is still work in progress and there is pull
+> request to switch pmdk to use new instruction.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/include/asm/cacheflush.h | 2 ++
- arch/powerpc/lib/pmem.c               | 2 ++
- 2 files changed, 4 insertions(+)
+Ok.
 
-diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
-index bc3ea009cf14..865fae8a226e 100644
---- a/arch/powerpc/include/asm/cacheflush.h
-+++ b/arch/powerpc/include/asm/cacheflush.h
-@@ -125,6 +125,8 @@ static inline void  arch_pmem_flush_barrier(void)
- {
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
- 		asm volatile(PPC_PHWSYNC ::: "memory");
-+	else
-+		WARN_ONCE(1, "Using pmem flush on older hardware.");
- }
- #endif /* __KERNEL__ */
- 
-diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-index 21210fa676e5..f40bd908d28d 100644
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -37,12 +37,14 @@ static inline void clean_pmem_range(unsigned long start, unsigned long stop)
- {
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
- 		return __clean_pmem_range(start, stop);
-+	WARN_ONCE(1, "Using pmem flush on older hardware.");
- }
- 
- static inline void flush_pmem_range(unsigned long start, unsigned long stop)
- {
- 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
- 		return __flush_pmem_range(start, stop);
-+	WARN_ONCE(1, "Using pmem flush on older hardware.");
- }
- 
- /*
--- 
-2.26.2
+>
+> https://github.com/tuliom/pmdk/commit/fix-flush
+>
+> All userspace applications will be switched to use the new
+> instructions. The new instructions are designed such that when running on P8
+> and P9 they behave as 'dcbf' and 'hwsync'.
+
+Sure, makes sense.
+
+> Applications using new instructions will behave as expected when running
+> on P8 and P9. Only future hardware will differentiate between 'dcbf' and
+> 'dcbfps'
+
+Right, this is the problem. Applications using new instructions behave
+as expected, the kernel has been shipping of_pmem and papr_scm for
+several cycles now, you're saying that the DAX applications written
+against those platforms are going to be broken on P8 and P9?
+
+> > I'm thinking the kernel
+> > should go as far as to disable DAX operation by default on new
+> > hardware until userspace asserts that it is prepared to switch to the
+> > new implementation. Is there any other way to ensure the forward
+> > compatibility of deployed ppc64 DAX applications?
+>
+> AFAIU there is no released persistent memory hardware on ppc64 platform
+> and we need to make sure before applications get enabled to use these
+> persistent memory devices, they should switch to use the new
+> instruction?
+
+Right, I want the kernel to offer some level of safety here because
+everything you are describing sounds like a flag day conversion. Am I
+misreading? Is there some other gate that prevents existing users of
+of_pmem and papr_scm from having their expectations violated when
+running on P8 / P9 hardware? Maybe there's tighter ecosystem control
+that I'm just not familiar with, I'm only going off the fact that the
+kernel has shipped a non-zero number of NVDIMM drivers that build with
+ARCH=ppc64 for several cycles.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
