@@ -1,58 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF3F1D8FA1
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 07:55:36 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26481D8FA3
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 07:55:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CA97F11EA6783;
-	Mon, 18 May 2020 22:52:19 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id F000811EA677D;
+	Mon, 18 May 2020 22:52:31 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6B07F11EA6782
-	for <linux-nvdimm@lists.01.org>; Mon, 18 May 2020 22:52:17 -0700 (PDT)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04J5VKH6095381;
-	Tue, 19 May 2020 01:55:27 -0400
+	by ml01.01.org (Postfix) with ESMTPS id 69A4B11E9E2F4
+	for <linux-nvdimm@lists.01.org>; Mon, 18 May 2020 22:52:29 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04J5WZjC047291;
+	Tue, 19 May 2020 01:55:39 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 312c641wv8-1
+	by mx0b-001b2d01.pphosted.com with ESMTP id 312aars7rv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 01:55:27 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04J5Vdpo096321;
-	Tue, 19 May 2020 01:55:27 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 312c641wuy-1
+	Tue, 19 May 2020 01:55:39 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04J5sX6N109162;
+	Tue, 19 May 2020 01:55:39 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com [169.53.41.122])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 312aars7rm-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 01:55:27 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
-	by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04J5tQ77005882;
-	Tue, 19 May 2020 05:55:26 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma02dal.us.ibm.com with ESMTP id 313whafqdp-1
+	Tue, 19 May 2020 01:55:39 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+	by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04J5sV2N005360;
+	Tue, 19 May 2020 05:55:38 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+	by ppma04dal.us.ibm.com with ESMTP id 313wjy7mw7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 05:55:26 +0000
+	Tue, 19 May 2020 05:55:38 +0000
 Received: from b03ledav004.gho.boulder.ibm.com (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04J5tPTD61931982
+	by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04J5tbZd40435980
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2020 05:55:25 GMT
+	Tue, 19 May 2020 05:55:37 GMT
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7094878060;
-	Tue, 19 May 2020 05:55:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E0D1C78063;
+	Tue, 19 May 2020 05:55:36 +0000 (GMT)
 Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ABEFB7805C;
-	Tue, 19 May 2020 05:55:22 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1C8847805F;
+	Tue, 19 May 2020 05:55:34 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.81.200])
 	by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Tue, 19 May 2020 05:55:22 +0000 (GMT)
+	Tue, 19 May 2020 05:55:25 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
         linux-nvdimm@lists.01.org
-Subject: [PATCH v3 4/7] libnvdimm/nvdimm/flush: Allow architecture to override the flush barrier
-Date: Tue, 19 May 2020 11:24:59 +0530
-Message-Id: <20200519055502.128318-4-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3 5/7] powerpc/pmem/of_pmem: Update of_pmem to use the new barrier instruction.
+Date: Tue, 19 May 2020 11:25:00 +0530
+Message-Id: <20200519055502.128318-5-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200519055502.128318-1-aneesh.kumar@linux.ibm.com>
 References: <20200519055502.128318-1-aneesh.kumar@linux.ibm.com>
@@ -60,14 +60,13 @@ MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
  definitions=2020-05-19_01:2020-05-15,2020-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 cotscore=-2147483648
- spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0
- mlxscore=0 lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005190044
-Message-ID-Hash: CDG7HEH4ZB22P6AU2GF6IZ3PWDEBAFUZ
-X-Message-ID-Hash: CDG7HEH4ZB22P6AU2GF6IZ3PWDEBAFUZ
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 spamscore=0 clxscore=1015
+ impostorscore=0 adultscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005190044
+Message-ID-Hash: IHSMDHAMMUNBA2JOI5DRI6ABA5TOHH4G
+X-Message-ID-Hash: IHSMDHAMMUNBA2JOI5DRI6ABA5TOHH4G
 X-MailFrom: aneesh.kumar@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -75,7 +74,7 @@ CC: alistair@popple.id.au, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CDG7HEH4ZB22P6AU2GF6IZ3PWDEBAFUZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IHSMDHAMMUNBA2JOI5DRI6ABA5TOHH4G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,58 +83,33 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Architectures like ppc64 provide persistent memory specific barriers
-that will ensure that all stores for which the modifications are
-written to persistent storage by preceding dcbfps and dcbstps
-instructions have updated persistent storage before any data
-access or data transfer caused by subsequent instructions is initiated.
-This is in addition to the ordering done by wmb()
-
-Update nvdimm core such that architecture can use barriers other than
-wmb to ensure all previous writes are architecturally visible for
-the platform buffer flush.
+of_pmem on POWER10 can now use phwsync instead of hwsync to ensure
+all previous writes are architecturally visible for the platform
+buffer flush.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- drivers/nvdimm/region_devs.c | 8 ++++----
- include/linux/libnvdimm.h    | 4 ++++
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/cacheflush.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index ccbb5b43b8b2..88ea34a9c7fd 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -1216,13 +1216,13 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
- 	idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
+diff --git a/arch/powerpc/include/asm/cacheflush.h b/arch/powerpc/include/asm/cacheflush.h
+index e92191b390f3..bc3ea009cf14 100644
+--- a/arch/powerpc/include/asm/cacheflush.h
++++ b/arch/powerpc/include/asm/cacheflush.h
+@@ -119,6 +119,13 @@ static inline void invalidate_dcache_range(unsigned long start,
+ #define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+ 	memcpy(dst, src, len)
  
- 	/*
--	 * The first wmb() is needed to 'sfence' all previous writes
--	 * such that they are architecturally visible for the platform
--	 * buffer flush.  Note that we've already arranged for pmem
-+	 * The first arch_pmem_flush_barrier() is needed to 'sfence' all
-+	 * previous writes such that they are architecturally visible for
-+	 * the platform buffer flush. Note that we've already arranged for pmem
- 	 * writes to avoid the cache via memcpy_flushcache().  The final
- 	 * wmb() ensures ordering for the NVDIMM flush write.
- 	 */
--	wmb();
-+	arch_pmem_flush_barrier();
- 	for (i = 0; i < nd_region->ndr_mappings; i++)
- 		if (ndrd_get_flush_wpq(ndrd, i, 0))
- 			writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index 18da4059be09..66f6c65bd789 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -286,4 +286,8 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
- }
- #endif
- 
-+#ifndef arch_pmem_flush_barrier
-+#define arch_pmem_flush_barrier() wmb()
-+#endif
 +
- #endif /* __LIBNVDIMM_H__ */
++#define arch_pmem_flush_barrier arch_pmem_flush_barrier
++static inline void  arch_pmem_flush_barrier(void)
++{
++	if (cpu_has_feature(CPU_FTR_ARCH_207S))
++		asm volatile(PPC_PHWSYNC ::: "memory");
++}
+ #endif /* __KERNEL__ */
+ 
+ #endif /* _ASM_POWERPC_CACHEFLUSH_H */
 -- 
 2.26.2
 _______________________________________________
