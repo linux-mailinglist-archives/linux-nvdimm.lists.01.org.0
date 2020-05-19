@@ -2,72 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF781DA04C
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 21:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 923D61DA053
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 19 May 2020 21:02:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EF47111E48A2D;
-	Tue, 19 May 2020 11:59:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 1553911E3D2BB;
+	Tue, 19 May 2020 11:59:16 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6D6E111E48A38
-	for <linux-nvdimm@lists.01.org>; Tue, 19 May 2020 11:59:01 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04JI4XbT112812;
-	Tue, 19 May 2020 15:02:19 -0400
+	by ml01.01.org (Postfix) with ESMTPS id 27862100A027A
+	for <linux-nvdimm@lists.01.org>; Tue, 19 May 2020 11:59:14 -0700 (PDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04JIWZ5E126581;
+	Tue, 19 May 2020 15:02:31 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 313x639kad-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 312cp967aw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 15:02:19 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04JJ2HQX137643;
-	Tue, 19 May 2020 15:02:18 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 313x639k99-1
+	Tue, 19 May 2020 15:02:30 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04JItwNV040711;
+	Tue, 19 May 2020 15:02:30 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 312cp96768-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 15:02:18 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04JJ0QWg012442;
-	Tue, 19 May 2020 19:02:15 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma03ams.nl.ibm.com with ESMTP id 313xas26rs-1
+	Tue, 19 May 2020 15:02:30 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04JJ0qR5012601;
+	Tue, 19 May 2020 19:02:19 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma04fra.de.ibm.com with ESMTP id 313wne0xmu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2020 19:02:15 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04JJ10qL54133192
+	Tue, 19 May 2020 19:02:19 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04JJ2Grc62324778
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2020 19:01:00 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C0F20AE051;
-	Tue, 19 May 2020 19:02:12 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 09A65AE057;
-	Tue, 19 May 2020 19:02:10 +0000 (GMT)
+	Tue, 19 May 2020 19:02:17 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD8CA42041;
+	Tue, 19 May 2020 19:02:16 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 092804203F;
+	Tue, 19 May 2020 19:02:14 +0000 (GMT)
 Received: from vajain21-in-ibm-com (unknown [9.85.89.230])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Tue, 19 May 2020 19:02:09 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 20 May 2020 00:32:09 +0530
+	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Tue, 19 May 2020 19:02:13 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 20 May 2020 00:32:13 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linux-nvdimm@lists.01.org
-Subject: [ndctl PATCH v3 5/6] libndctl,papr_scm: Add scaffolding to issue and handle PDSM requests
-Date: Wed, 20 May 2020 00:31:46 +0530
-Message-Id: <20200519190147.258142-6-vaibhav@linux.ibm.com>
+Subject: [ndctl PATCH v3 6/6] libndctl,papr_scm: Implement support for PAPR_SCM_PDSM_HEALTH
+Date: Wed, 20 May 2020 00:31:47 +0530
+Message-Id: <20200519190147.258142-7-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200519190147.258142-1-vaibhav@linux.ibm.com>
 References: <20200519190147.258142-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-19_07:2020-05-19,2020-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
- suspectscore=3 cotscore=-2147483648 malwarescore=0 clxscore=1015
- lowpriorityscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0
+ definitions=2020-05-19_06:2020-05-19,2020-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=1
+ adultscore=0 mlxlogscore=999 bulkscore=0 cotscore=-2147483648
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0
+ impostorscore=0 lowpriorityscore=0 spamscore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005190153
-Message-ID-Hash: FMPWBVMMW7HGLHMFHTKUEZ4OBUC7BSCJ
-X-Message-ID-Hash: FMPWBVMMW7HGLHMFHTKUEZ4OBUC7BSCJ
+Message-ID-Hash: PBR77SVCTMCECSWQDCQQZIGNM6G6W5ZG
+X-Message-ID-Hash: PBR77SVCTMCECSWQDCQQZIGNM6G6W5ZG
 X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -75,7 +75,7 @@ CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@lin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FMPWBVMMW7HGLHMFHTKUEZ4OBUC7BSCJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PBR77SVCTMCECSWQDCQQZIGNM6G6W5ZG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,24 +84,21 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-This patch implement necessary infrastructure inside 'papr_scm.c' to
-issue and handle PDSM requests. Changes implemented are:
+Add support for reporting DIMM health and shutdown state by issuing
+PAPR_SCM_PDSM_HEALTH request to papr_scm module. It returns an
+instance of 'struct nd_papr_pdsm_health' as defined in
+'papr_scm_pdsm.h'. The patch provides support for dimm-ops
+'new_smart', 'smart_get_health' & 'smart_get_shutdown_state' as newly
+introduced functions papr_new_smart_health(), papr_smart_get_health()
+& papr_smart_get_shutdown_state() respectively. These callbacks should
+enable ndctl to report DIMM health.
 
-* Implement dimm initialization/un-initialization functions
-  papr_dimm_init()/unint() to allocate a per-dimm 'struct dimm_priv'
-  instance.
-
-* New helper function allocate_cmd() to allocate command packages for
-  a specific PDSM command and payload size.
-
-* New function update_dimm_state() to parse a given command payload
-  and update per dimm 'struct dimm_priv'.
-
-* Provide an implementation of 'dimm_ops->smart_get_flags' to send the
-  submitted instance of 'struct ndctl_cmd' to update_dimm_state().
-
-* Logging helpers for papr_scm that use the underlying libndctl
-  provided logging.
+Also a new member 'struct dimm_priv.health' is introduced which holds
+the current health status of the dimm. This member is set inside newly
+added function 'update_dimm_health_v1()' which parses the v1 payload
+returned by the kernel after servicing PAPR_SCM_PDSM_HEALTH. The
+function will also update dimm-flags viz 'struct ndctl_dimm.flags.f_*'
+based on the flags set in the returned payload.
 
 Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
@@ -111,217 +108,144 @@ v2..v3:
 * None
 
 v1..v2:
-* Added new dimm callback 'papr_get_firmware_status'
-* Switched to new papr_scm interface as described by papr_scm_dsm.h
-* Changed the case of logging functions [ Santosh Sivaraj ]
-* Removed redundant logging functions.
-* Minor updates to patch description to s/DSM/PDSM/
+* Squashed patch to report nvdimm bad shutdown state with this patch.
+* Switched to new structs/enums as defined in papr_scm_pdsm.h
 ---
- ndctl/lib/papr_scm.c | 185 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 185 insertions(+)
+ ndctl/lib/papr_scm.c | 90 ++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 87 insertions(+), 3 deletions(-)
 
 diff --git a/ndctl/lib/papr_scm.c b/ndctl/lib/papr_scm.c
-index 57ae943c0260..78d88e84efd8 100644
+index 78d88e84efd8..562262111c91 100644
 --- a/ndctl/lib/papr_scm.c
 +++ b/ndctl/lib/papr_scm.c
-@@ -19,6 +19,32 @@
- #include <lib/private.h>
- #include <papr_scm_pdsm.h>
+@@ -42,7 +42,9 @@
  
-+/* Utility logging maros for simplify logging */
-+#define papr_dbg(_dimm_, _format_str_, ...) dbg(_dimm_->bus->ctx,	\
-+					      "papr_scm:"#_format_str_,	\
-+					      ##__VA_ARGS__)
-+#define papr_err(_dimm_, _format_str_, ...) err(_dimm_->bus->ctx,	\
-+					      "papr_scm:"#_format_str_,	\
-+					      ##__VA_ARGS__)
+ /* Per dimm data. Holds per-dimm data parsed from the cmd_pkgs */
+ struct dimm_priv {
+-	/* Empty for now */
 +
-+/* Helpers to evaluate the size of PDSM envelope */
-+/* Calculate the papr_scm-header size */
-+#define ND_PDSM_ENVELOPE_CONTENT_HDR_SIZE \
-+	(sizeof(struct nd_pdsm_cmd_pkg) - sizeof(struct nd_cmd_pkg))
-+
-+/* Given a type calculate envelope-content size (papr_scm-header + payload) */
-+#define ND_PDSM_ENVELOPE_CONTENT_SIZE(_type_)	\
-+	(sizeof(_type_) + ND_PDSM_ENVELOPE_CONTENT_HDR_SIZE)
-+
-+/* Command flags to indicate if a given command is parsed of not */
-+#define CMD_PKG_SUBMITTED 1
-+#define CMD_PKG_PARSED 2
-+
-+/* Per dimm data. Holds per-dimm data parsed from the cmd_pkgs */
-+struct dimm_priv {
-+	/* Empty for now */
-+};
-+
++	/* Cache the dimm health status */
++	struct nd_papr_pdsm_health health;
+ };
+ 
  static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
- {
- 	/* Handle this separately to support monitor mode */
-@@ -28,6 +54,165 @@ static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
- 	return !!(dimm->cmd_mask & (1ULL << cmd));
+@@ -97,6 +99,43 @@ static bool cmd_is_valid(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ 	return true;
  }
  
-+static __u64 pcmd_to_pdsm(const struct nd_pdsm_cmd_pkg *pcmd)
++/*
++ * Parse the nd_papr_pdsm_health_v1 payload embedded in ndctl_cmd and
++ * update dimm health/flags
++ */
++static int update_dimm_health_v1(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
 +{
-+	return pcmd->hdr.nd_command;
++	struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
++	struct dimm_priv *p = dimm->dimm_user_data;
++	const struct nd_papr_pdsm_health_v1 *health =
++		pdsm_cmd_to_payload(pcmd);
++
++	/* Update the dimm flags */
++	dimm->flags.f_arm = health->dimm_unarmed;
++	dimm->flags.f_flush = health->dimm_bad_shutdown;
++	dimm->flags.f_restore = health->dimm_bad_restore;
++	dimm->flags.f_smart = (health->dimm_health != 0);
++
++	/* Cache the dimm health information */
++	memcpy(&p->health, health, sizeof(*health));
++	return 0;
 +}
 +
-+static u32 papr_get_firmware_status(struct ndctl_cmd *cmd)
++/* Check payload version returned and pass the packet to appropriate handler */
++static int update_dimm_health(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
 +{
 +	const struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
 +
-+	return (u32) pcmd->cmd_status;
++	if (pcmd->payload_version == 1)
++		return update_dimm_health_v1(dimm, cmd);
++
++	/* unknown version */
++	papr_err(dimm, "Unknown payload version for dimm_health.\n");
++	papr_dbg(dimm, "dimm_health payload Ver=%d, Supported=%d\n",
++		 pcmd->payload_version, ND_PAPR_PDSM_HEALTH_VERSION);
++	return -EINVAL;
 +}
 +
-+/* Verify if the given command is supported and valid */
-+static bool cmd_is_valid(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ /* Parse a command payload and update dimm flags/private data */
+ static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ {
+@@ -122,6 +161,8 @@ static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
+ 	/* Get the pdsm request and handle it */
+ 	pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
+ 	switch (pcmd_to_pdsm(pcmd)) {
++	case PAPR_SCM_PDSM_HEALTH:
++		return update_dimm_health(dimm, cmd);
+ 	default:
+ 		papr_err(dimm, "Unhandled pdsm-request 0x%016llx\n",
+ 			 pcmd_to_pdsm(pcmd));
+@@ -167,14 +208,54 @@ static struct ndctl_cmd *allocate_cmd(struct ndctl_dimm *dimm,
+ 	return cmd;
+ }
+ 
++static struct ndctl_cmd *papr_new_smart_health(struct ndctl_dimm *dimm)
 +{
-+	const struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
++	struct ndctl_cmd *cmd_ret;
 +
-+	if (dimm == NULL)
-+		return false;
-+
-+	if (cmd == NULL) {
-+		papr_err(dimm, "Invalid command\n");
-+		return false;
++	cmd_ret = allocate_cmd(dimm, PAPR_SCM_PDSM_HEALTH,
++			       sizeof(struct nd_papr_pdsm_health),
++			       ND_PAPR_PDSM_HEALTH_VERSION);
++	if (!cmd_ret) {
++		papr_err(dimm, "Unable to allocate smart_health command\n");
++		return NULL;
 +	}
 +
-+	/* Verify the command family */
-+	if (pcmd->hdr.nd_family != NVDIMM_FAMILY_PAPR_SCM) {
-+		papr_err(dimm, "Invalid command family:0x%016llx\n",
-+			 pcmd->hdr.nd_family);
-+		return false;
-+	}
++	cmd_ret->pkg[0].nd_size_out = ND_PDSM_ENVELOPE_CONTENT_SIZE(
++		struct nd_papr_pdsm_health);
 +
-+	/* Verify the PDSM */
-+	if (pcmd_to_pdsm(pcmd) <= PAPR_SCM_PDSM_MIN ||
-+	    pcmd_to_pdsm(pcmd) >= PAPR_SCM_PDSM_MAX) {
-+		papr_err(dimm, "Invalid command :0x%016llx\n",
-+			 pcmd->hdr.nd_command);
-+		return false;
-+	}
-+
-+	return true;
++	return cmd_ret;
 +}
 +
-+/* Parse a command payload and update dimm flags/private data */
-+static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
++static unsigned int papr_smart_get_health(struct ndctl_cmd *cmd)
 +{
-+	const struct nd_pdsm_cmd_pkg *pcmd;
-+
-+	if (!cmd_is_valid(dimm, cmd))
-+		return -EINVAL;
++	struct dimm_priv *p = cmd->dimm->dimm_user_data;
 +
 +	/*
-+	 * Silently prevent parsing of an already parsed ndctl_cmd else
-+	 * mark the command as parsed.
++	 * Update the dimm stats and use some math to return one of
++	 * defined ND_SMART_*_HEALTH values
 +	 */
-+	if (cmd->status >= CMD_PKG_PARSED) {
++	if (update_dimm_stats(cmd->dimm, cmd) || !p->health.dimm_health)
 +		return 0;
-+	} else if (cmd->status < 0) {
-+		papr_err(dimm, "Command error %d\n", cmd->status);
-+		return -ENXIO;
-+	}
-+
-+	/* Mark the command as parsed */
-+	cmd->status = CMD_PKG_PARSED;
-+
-+	/* Get the pdsm request and handle it */
-+	pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
-+	switch (pcmd_to_pdsm(pcmd)) {
-+	default:
-+		papr_err(dimm, "Unhandled pdsm-request 0x%016llx\n",
-+			 pcmd_to_pdsm(pcmd));
-+		return -ENOENT;
-+	}
++	else
++		return 1 << (p->health.dimm_health - 1);
 +}
 +
-+/* Allocate a struct ndctl_cmd for given pdsm request with payload size */
-+static struct ndctl_cmd *allocate_cmd(struct ndctl_dimm *dimm,
-+				      __u64 pdsm_cmd, size_t payload_size,
-+				      uint16_t payload_version)
++static unsigned int papr_smart_get_shutdown_state(struct ndctl_cmd *cmd)
 +{
-+	struct ndctl_cmd *cmd;
-+	struct nd_pdsm_cmd_pkg *pcmd;
-+	size_t size;
++	struct dimm_priv *p = cmd->dimm->dimm_user_data;
 +
-+	size = sizeof(struct ndctl_cmd) +
-+		sizeof(struct nd_pdsm_cmd_pkg) + payload_size;
-+	cmd = calloc(1, size);
-+	if (!cmd)
-+		return NULL;
-+	pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
-+
-+	ndctl_cmd_ref(cmd);
-+	cmd->dimm = dimm;
-+	cmd->type = ND_CMD_CALL;
-+	cmd->size = size;
-+	cmd->status = CMD_PKG_SUBMITTED;
-+	cmd->get_firmware_status = &papr_get_firmware_status;
-+
-+	/* Populate the nd_cmd_pkg contained in nd_pdsm_cmd_pkg */
-+	pcmd->hdr.nd_family = NVDIMM_FAMILY_PAPR_SCM;
-+	pcmd->hdr.nd_command = pdsm_cmd;
-+
-+	pcmd->payload_version = payload_version;
-+	pcmd->payload_offset = sizeof(struct nd_pdsm_cmd_pkg);
-+
-+	/* Keep payload size empty. To be populated by called */
-+	pcmd->hdr.nd_fw_size = 0;
-+	pcmd->hdr.nd_size_out = 0;
-+	pcmd->hdr.nd_size_in = 0;
-+
-+	return cmd;
++	/* Update dimm state and return f_flush */
++	return update_dimm_stats(cmd->dimm, cmd) ?
++		0 : p->health.dimm_bad_shutdown;
 +}
 +
-+static unsigned int papr_smart_get_flags(struct ndctl_cmd *cmd)
-+{
-+	/* In case of error return empty flags * */
-+	if (update_dimm_stats(cmd->dimm, cmd))
-+		return 0;
-+
-+	/* Return empty flags for now as no DSM support */
-+	return 0;
-+}
-+
-+static int papr_dimm_init(struct ndctl_dimm *dimm)
-+{
-+	struct dimm_priv *p;
-+
-+	if (dimm->dimm_user_data) {
-+		papr_dbg(dimm, "Dimm already initialized !!\n");
-+		return 0;
-+	}
-+
-+	p = calloc(1, sizeof(struct dimm_priv));
-+	if (!p) {
-+		papr_err(dimm, "Unable to allocate memory for dimm-private\n");
-+		return -1;
-+	}
-+
-+	dimm->dimm_user_data = p;
-+	return 0;
-+}
-+
-+static void papr_dimm_uninit(struct ndctl_dimm *dimm)
-+{
-+	struct dimm_priv *p = dimm->dimm_user_data;
-+
-+	if (!p) {
-+		papr_dbg(dimm, "Dimm already un-initialized !!\n");
-+		return;
-+	}
-+
-+	dimm->dimm_user_data = NULL;
-+	free(p);
-+}
-+
- struct ndctl_dimm_ops * const papr_scm_dimm_ops = &(struct ndctl_dimm_ops) {
- 	.cmd_is_supported = papr_cmd_is_supported,
-+	.dimm_init = papr_dimm_init,
-+	.dimm_uninit = papr_dimm_uninit,
-+	.smart_get_flags = papr_smart_get_flags,
-+	.get_firmware_status =  papr_get_firmware_status,
+ static unsigned int papr_smart_get_flags(struct ndctl_cmd *cmd)
+ {
+ 	/* In case of error return empty flags * */
+ 	if (update_dimm_stats(cmd->dimm, cmd))
+ 		return 0;
+ 
+-	/* Return empty flags for now as no DSM support */
+-	return 0;
++	return ND_SMART_HEALTH_VALID | ND_SMART_SHUTDOWN_VALID;
+ }
+ 
+ static int papr_dimm_init(struct ndctl_dimm *dimm)
+@@ -215,4 +296,7 @@ struct ndctl_dimm_ops * const papr_scm_dimm_ops = &(struct ndctl_dimm_ops) {
+ 	.dimm_uninit = papr_dimm_uninit,
+ 	.smart_get_flags = papr_smart_get_flags,
+ 	.get_firmware_status =  papr_get_firmware_status,
++	.new_smart = papr_new_smart_health,
++	.smart_get_health = papr_smart_get_health,
++	.smart_get_shutdown_state = papr_smart_get_shutdown_state,
  };
 -- 
 2.26.2
