@@ -2,51 +2,74 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B42D1DAF6F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 May 2020 11:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A896D1DAFF2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 20 May 2020 12:20:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 52DE011F2B603;
-	Wed, 20 May 2020 02:50:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2401:3900:2:1::2; helo=ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN> 
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 89B5611F2B5C2;
+	Wed, 20 May 2020 03:16:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B5A1511F2B602
-	for <linux-nvdimm@lists.01.org>; Wed, 20 May 2020 02:50:35 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 49Rp402YYWz9sT8;
-	Wed, 20 May 2020 19:53:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-	s=201909; t=1589968435;
-	bh=/SF1u7fw4ywQyV8P7dpLPnWaV4yJIIqpzxqUzkg8c6Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=T+hxgGBRSUegBTRkzKQh78Jwhd7vM/gf+Td+YjdjpgwMKJLsSXIB9lVyMSzWh8a/L
-	 UagqkLU5AXOT2G1Ha9EMwJ59WmTfO0P1DILDzLkTXuLBsvclv2ca8SH8PUbyKw9q2/
-	 f1YmVf9PvcpG6a+wAfpJAQl0X5Sz8nFsc4gWWB2tfHCo+MbFobpvEOrilpEW30EgaP
-	 HJlZtCvstHE1IxZwaWKX04MPB3uH+9GpBaVVhSlkzoln59HTISkw12E2rekiLabeHN
-	 6sOXFVjT5H3ZRaxqZDS0h2Dorh7kpPJNe8xqd+7HJiMh+7BPWpmuBw/xq+/qGEju2C
-	 DwodaOymHjJLw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Dan Williams <dan.j.williams@intel.com>, tglx@linutronix.de, mingo@redhat.com
-Subject: Re: [PATCH v3 1/2] x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()
-In-Reply-To: <158992635697.403910.6957168747147028694.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <158992635164.403910.2616621400995359522.stgit@dwillia2-desk3.amr.corp.intel.com> <158992635697.403910.6957168747147028694.stgit@dwillia2-desk3.amr.corp.intel.com>
-Date: Wed, 20 May 2020 19:53:05 +1000
-Message-ID: <87d06z7x1a.fsf@mpe.ellerman.id.au>
+	by ml01.01.org (Postfix) with ESMTPS id 8855311F2B5C0
+	for <linux-nvdimm@lists.01.org>; Wed, 20 May 2020 03:16:54 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04KA2CrK001868;
+	Wed, 20 May 2020 06:19:46 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 312cb1g4f6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2020 06:19:46 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04KAGN8M024752;
+	Wed, 20 May 2020 10:19:44 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 313xas3dr0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2020 10:19:43 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04KAJfKo54001720
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 May 2020 10:19:41 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA8A6A4055;
+	Wed, 20 May 2020 10:19:41 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 47229A404D;
+	Wed, 20 May 2020 10:19:39 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.92.5])
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Wed, 20 May 2020 10:19:39 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 20 May 2020 15:49:37 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
+In-Reply-To: <87a723f5fs.fsf@linux.ibm.com>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <87a723f5fs.fsf@linux.ibm.com>
+Date: Wed, 20 May 2020 15:49:37 +0530
+Message-ID: <87y2pmx612.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: WVOBIRGQG2NKAOE6LPOKY3XI5RKBVGXM
-X-Message-ID-Hash: WVOBIRGQG2NKAOE6LPOKY3XI5RKBVGXM
-X-MailFrom: mpe@ellerman.id.au
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-20_05:2020-05-19,2020-05-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 suspectscore=1 spamscore=0 impostorscore=0
+ malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015 mlxlogscore=999
+ priorityscore=1501 cotscore=-2147483648 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005200083
+Message-ID-Hash: YGPW4SAQEGVG2SMTNJPVGUZRNHK7OLQF
+X-Message-ID-Hash: YGPW4SAQEGVG2SMTNJPVGUZRNHK7OLQF
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, stable@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>, Peter Zijlstra <peterz@infradead.org>, Mikulas Patocka <mpatocka@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Arnaldo Carvalho de Melo <acme@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WVOBIRGQG2NKAOE6LPOKY3XI5RKBVGXM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YGPW4SAQEGVG2SMTNJPVGUZRNHK7OLQF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,133 +78,92 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Dan,
+Thanks for reviewing this patch Aneesh.
 
-Just a couple of minor things ...
+"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
 
-Dan Williams <dan.j.williams@intel.com> writes:
-> In reaction to a proposal to introduce a memcpy_mcsafe_fast()
-> implementation Linus points out that memcpy_mcsafe() is poorly named
-> relative to communicating the scope of the interface. Specifically what
-> addresses are valid to pass as source, destination, and what faults /
-> exceptions are handled. Of particular concern is that even though x86
-> might be able to handle the semantics of copy_mc_to_user() with its
-> common copy_user_generic() implementation other archs likely need / want
-> an explicit path for this case:
-...
+> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+>
+> ....
+>
+>  +
+>> +/* Papr-scm-header + payload expected with ND_CMD_CALL ioctl from libnvdimm */
+>> +struct nd_pdsm_cmd_pkg {
+>> +	struct nd_cmd_pkg hdr;	/* Package header containing sub-cmd */
+>> +	__s32 cmd_status;	/* Out: Sub-cmd status returned back */
+>> +	__u16 payload_offset;	/* In: offset from start of struct */
+>> +	__u16 payload_version;	/* In/Out: version of the payload */
+>> +	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
+>> +} __packed;
+>
+> that payload_offset can be avoided if we prevent userspace to user a
+> different variant of nd_pdsm_cmd_pkg which different header. We can keep
+> things simpler if we can always find payload at
+> nd_pdsm_cmd_pkg->payload.
+Had introduced this member to handle case where new fields are added to
+'struct nd_pdsm_cmd_pkg' without having to break the ABI. But agree with
+the point that you made later that this can be simplified by replacing
+'payload_offset' with a set of reserved variables. Will address this in
+next iteration of this patchset.
 
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 0969285996cb..dcbbcbf3552c 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -348,6 +348,32 @@ do {								\
->  extern unsigned long __copy_tofrom_user(void __user *to,
->  		const void __user *from, unsigned long size);
->  
-> +#ifdef CONFIG_ARCH_HAS_COPY_MC
-> +extern unsigned long __must_check
+>
+>> +
+>> +/*
+>> + * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
+>> + * via 'nd_pdsm_cmd_pkg.hdr.nd_command' member of the ioctl struct
+>> + */
+>> +enum papr_scm_pdsm {
+>> +	PAPR_SCM_PDSM_MIN = 0x0,
+>> +	PAPR_SCM_PDSM_MAX,
+>> +};
+>> +
+>> +/* Convert a libnvdimm nd_cmd_pkg to pdsm specific pkg */
+>> +static inline struct nd_pdsm_cmd_pkg *nd_to_pdsm_cmd_pkg(struct nd_cmd_pkg *cmd)
+>> +{
+>> +	return (struct nd_pdsm_cmd_pkg *) cmd;
+>> +}
+>> +
+>> +/* Return the payload pointer for a given pcmd */
+>> +static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
+>> +{
+>> +	if (pcmd->hdr.nd_size_in == 0 && pcmd->hdr.nd_size_out == 0)
+>> +		return NULL;
+>> +	else
+>> +		return (void *)((__u8 *) pcmd + pcmd->payload_offset);
+>> +}
+>> +
+>
+> we need to make sure userspace is not passing a wrong payload_offset.
+Agree, that this function should have more strict checking for
+payload_offset field. However will be getting rid of
+'payload_offset' all together in the next iteration as you previously
+suggested.
 
-We try not to add extern in headers anymore.
-
-> +copy_mc_generic(void *to, const void *from, unsigned long size);
+> and in the next patch you do
+>
+> +	/* Copy the health struct to the payload */
+> +	memcpy(pdsm_cmd_to_payload(pkg), &p->health, copysize);
+> +	pkg->hdr.nd_fw_size = copysize;
 > +
-> +static inline unsigned long __must_check
-> +copy_mc_to_kernel(void *to, const void *from, unsigned long size)
-> +{
-> +	return copy_mc_generic(to, from, size);
-> +}
-> +#define copy_mc_to_kernel copy_mc_to_kernel
-> +
-> +static inline unsigned long __must_check
-> +copy_mc_to_user(void __user *to, const void *from, unsigned long n)
-> +{
-> +	if (likely(check_copy_size(from, n, true))) {
-> +		if (access_ok(to, n)) {
-> +			allow_write_to_user(to, n);
-> +			n = copy_mc_generic((void *)to, from, n);
-> +			prevent_write_to_user(to, n);
-> +		}
-> +	}
-> +
-> +	return n;
-> +}
-> +#endif
+Yes this is already being done in the patchset and changes proposed to
+this pdsm_cmd_to_payload() should not impact other patches as
+pdsm_cmd_to_payload() abstracts rest of the code from how to access the
+payload.
 
-Otherwise that looks fine.
+> All this can be simplified if you can keep payload at
+> nd_pdsm_cmd_pkg->payload.
+>
+> If you still want to have the ability to extend the header, then added a
+> reserved field similar to nd_cmd_pkg.
+>
+Agree to this and will address this in V8.
 
-...
+>
+> -aneesh
 
-> diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
-> index 0917983a1c78..959817e7567c 100644
-> --- a/tools/testing/selftests/powerpc/copyloops/Makefile
-> +++ b/tools/testing/selftests/powerpc/copyloops/Makefile
-> @@ -45,9 +45,9 @@ $(OUTPUT)/memcpy_p7_t%:	memcpy_power7.S $(EXTRA_SOURCES)
->  		-D SELFTEST_CASE=$(subst memcpy_p7_t,,$(notdir $@)) \
->  		-o $@ $^
->  
-> -$(OUTPUT)/memcpy_mcsafe_64: memcpy_mcsafe_64.S $(EXTRA_SOURCES)
-> +$(OUTPUT)/copy_mc: copy_mc.S $(EXTRA_SOURCES)
->  	$(CC) $(CPPFLAGS) $(CFLAGS) \
-> -		-D COPY_LOOP=test_memcpy_mcsafe \
-> +		-D COPY_LOOP=test_copy_mc \
-
-This needs a fixup:
-
-diff --git a/tools/testing/selftests/powerpc/copyloops/Makefile b/tools/testing/selftests/powerpc/copyloops/Makefile
-index 959817e7567c..b4eb5c4c6858 100644
---- a/tools/testing/selftests/powerpc/copyloops/Makefile
-+++ b/tools/testing/selftests/powerpc/copyloops/Makefile
-@@ -47,7 +47,7 @@ $(OUTPUT)/memcpy_p7_t%:	memcpy_power7.S $(EXTRA_SOURCES)
- 
- $(OUTPUT)/copy_mc: copy_mc.S $(EXTRA_SOURCES)
- 	$(CC) $(CPPFLAGS) $(CFLAGS) \
--		-D COPY_LOOP=test_copy_mc \
-+		-D COPY_LOOP=test_copy_mc_generic \
- 		-o $@ $^
- 
- $(OUTPUT)/copyuser_64_exc_t%: copyuser_64.S exc_validate.c ../harness.c \
-
-
->  		-o $@ $^
->  
->  $(OUTPUT)/copyuser_64_exc_t%: copyuser_64.S exc_validate.c ../harness.c \
-> diff --git a/tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S b/tools/testing/selftests/powerpc/copyloops/copy_mc.S
-> similarity index 100%
-> rename from tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S
-> rename to tools/testing/selftests/powerpc/copyloops/copy_mc.S
-
-This file is a symlink to the file in arch/powerpc/lib, so the name of
-the link needs updating, as well as the target.
-
-Also is there a reason you dropped the "_64"? It would make most sense
-to keep it I think, as then the file in selftests and the file in arch/
-have the same name.
-
-If you want to keep the copy_mc.S name it needs the diff below. Though
-as I said I think it would be better to use copy_mc_64.S.
-
-cheers
-
-
-diff --git a/tools/testing/selftests/powerpc/copyloops/copy_mc.S b/tools/testing/selftests/powerpc/copyloops/copy_mc.S
-new file mode 120000
-index 000000000000..dcbe06d500fb
---- /dev/null
-+++ b/tools/testing/selftests/powerpc/copyloops/copy_mc.S
-@@ -0,0 +1 @@
-+../../../../../arch/powerpc/lib/copy_mc_64.S
-\ No newline at end of file
-diff --git a/tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S b/tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S
-deleted file mode 120000
-index f0feef3062f6..000000000000
---- a/tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S
-+++ /dev/null
-@@ -1 +0,0 @@
--../../../../../arch/powerpc/lib/memcpy_mcsafe_64.S
-\ No newline at end of file
 -- 
-2.25.1
-
+Cheers
+~ Vaibhav
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
