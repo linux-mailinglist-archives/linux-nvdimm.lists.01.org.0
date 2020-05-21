@@ -2,47 +2,53 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8571DDAB7
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA531DDB05
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:32:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2CEA61171B4FA;
-	Thu, 21 May 2020 16:00:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	by ml01.01.org (Postfix) with ESMTP id 282EA1171B4BE;
+	Thu, 21 May 2020 16:29:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C3DF110095A27
-	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:00:32 -0700 (PDT)
-IronPort-SDR: gnm4wBaVf5Yji/+Xfusn6wEWWaR/Fvv3XMeirAv82OBh5ogiPs3xmOXoCSKWXyYhhjc+i9jl9k
- D7YGGguZoaOA==
+	by ml01.01.org (Postfix) with ESMTPS id 324AA116F5972
+	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:29:17 -0700 (PDT)
+IronPort-SDR: k7i+6yIIkMhAiKIdohvXY6aPPPJ3GQDROd1L6HhytCr3O3FGqEFUL+BTMe0vqvBnAu5n46izsC
+ myooPhHden2Q==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:04:06 -0700
-IronPort-SDR: 0Ks7DztqBRsmQK36PCIIUEB8W/YCU6eK6LrhDnwP8YBf3/cIrhB74iTnnwdx2ZkfNIOoUTnmVO
- fV2pPLy6Gp9Q==
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:32:51 -0700
+IronPort-SDR: iXDJu0gHCZ++z4lJs2CJwAwxWiqu1G57gotmEGMU7x42fkmIXHH5MA5pmiaIC0yU53MHWv3T5+
+ 0u4bppZYbnvA==
+X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,419,1583222400";
-   d="scan'208";a="300483150"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:04:05 -0700
-Subject: [PATCH v4 2/2] x86/copy_mc: Introduce copy_mc_generic()
-From: Dan Williams <dan.j.williams@intel.com>
-To: tglx@linutronix.de, mingo@redhat.com
-Date: Thu, 21 May 2020 15:47:53 -0700
-Message-ID: <159010127377.975921.9608345973272408430.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159010126119.975921.6614194205409771984.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159010126119.975921.6614194205409771984.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+   d="scan'208";a="467106648"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by fmsmga006.fm.intel.com with ESMTP; 21 May 2020 16:32:51 -0700
+Date: Thu, 21 May 2020 16:32:51 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [RESEND PATCH v7 3/5] powerpc/papr_scm: Fetch nvdimm health
+ information from PHYP
+Message-ID: <20200521233250.GA310685@iweiny-DESK2.sc.intel.com>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com>
+ <20200519190058.257981-4-vaibhav@linux.ibm.com>
+ <20200520145430.GB3660833@iweiny-DESK2.sc.intel.com>
+ <87tv0awmr5.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: KOBIRTPKKPAP6GNGPPXHRGEWHC3B3WBY
-X-Message-ID-Hash: KOBIRTPKKPAP6GNGPPXHRGEWHC3B3WBY
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <87tv0awmr5.fsf@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: 2V2QC6CRYDTDXUH5P75UZNCEQJQQVVPZ
+X-Message-ID-Hash: 2V2QC6CRYDTDXUH5P75UZNCEQJQQVVPZ
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, stable@vger.kernel.org, Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Erwin Tsaur <erwin.tsaur@intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KOBIRTPKKPAP6GNGPPXHRGEWHC3B3WBY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2V2QC6CRYDTDXUH5P75UZNCEQJQQVVPZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -51,168 +57,251 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The original copy_mc_fragile() implementation had negative performance
-implications since it did not use the fast-string instruction sequence
-to perform copies. For this reason copy_mc_to_kernel() fell back to
-plain memcpy() to preserve performance on platform that did not indicate
-the capability to recover from machine check exceptions. However, that
-capability detection was not architectural and now that some platforms
-can recover from fast-string consumption of memory errors the memcpy()
-fallback now causes these more capable platforms to fail.
+On Wed, May 20, 2020 at 10:45:58PM +0530, Vaibhav Jain wrote:
+...
 
-Introduce copy_mc_generic() as the fast default implementation of
-copy_mc_to_kernel() and finalize the transition of copy_mc_fragile() to
-be a platform quirk to indicate 'fragility'. With this in place
-copy_mc_to_kernel() is fast and recovery-ready by default regardless of
-hardware capability.
+> > On Wed, May 20, 2020 at 12:30:56AM +0530, Vaibhav Jain wrote:
 
-Thanks to Vivek for identifying that copy_user_generic() is not suitable
-as the copy_mc_to_user() backend since the #MC handler explicitly checks
-ex_has_fault_handler().
+...
 
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Tested-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Fixes: 92b0729c34ca ("x86/mm, x86/mce: Add memcpy_mcsafe()")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- arch/x86/include/asm/uaccess.h |    3 +++
- arch/x86/lib/copy_mc.c         |   12 +++++-------
- arch/x86/lib/copy_mc_64.S      |   40 ++++++++++++++++++++++++++++++++++++++++
- tools/objtool/check.c          |    1 +
- 4 files changed, 49 insertions(+), 7 deletions(-)
+> >> @@ -39,6 +78,15 @@ struct papr_scm_priv {
+> >>  	struct resource res;
+> >>  	struct nd_region *region;
+> >>  	struct nd_interleave_set nd_set;
+> >> +
+> >> +	/* Protect dimm health data from concurrent read/writes */
+> >> +	struct mutex health_mutex;
+> >> +
+> >> +	/* Last time the health information of the dimm was updated */
+> >> +	unsigned long lasthealth_jiffies;
+> >> +
+> >> +	/* Health information for the dimm */
+> >> +	u64 health_bitmap;
+> >
+> > I wonder if this should be typed big endian as you mention that it is in the
+> > commit message?
+> This was discussed in an earlier review of the patch series at
+> https://lore.kernel.org/linux-nvdimm/878sjetcis.fsf@mpe.ellerman.id.au
+> 
+> Even though health bitmap is returned in big endian format (For ex
+> value 0xC00000000000000 indicates bits 0,1 set), its value is never
+> used. Instead only test for specific bits being set in the register is
+> done.
+> 
+> Hence using native cpu type instead of __be64 to store this value.
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 6e856e180096..05cf0acd65d1 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -464,6 +464,9 @@ copy_mc_to_user(void *to, const void *from, unsigned len);
- 
- unsigned long __must_check
- copy_mc_fragile(void *dst, const void *src, unsigned cnt);
-+
-+unsigned long __must_check
-+copy_mc_generic(void *dst, const void *src, unsigned cnt);
- #else
- static inline void enable_copy_mc_fragile(void)
- {
-diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-index cdb8f5dc403d..9e6fac1ab72e 100644
---- a/arch/x86/lib/copy_mc.c
-+++ b/arch/x86/lib/copy_mc.c
-@@ -23,7 +23,7 @@ void enable_copy_mc_fragile(void)
-  *
-  * Call into the 'fragile' version on systems that have trouble
-  * actually do machine check recovery. Everyone else can just
-- * use memcpy().
-+ * use copy_mc_generic().
-  *
-  * Return 0 for success, or number of bytes not copied if there was an
-  * exception.
-@@ -33,8 +33,7 @@ copy_mc_to_kernel(void *dst, const void *src, unsigned cnt)
- {
- 	if (static_branch_unlikely(&copy_mc_fragile_key))
- 		return copy_mc_fragile(dst, src, cnt);
--	memcpy(dst, src, cnt);
--	return 0;
-+	return copy_mc_generic(dst, src, cnt);
- }
- EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
- 
-@@ -56,11 +55,10 @@ copy_mc_to_user(void *to, const void *from, unsigned len)
- {
- 	unsigned long ret;
- 
--	if (!static_branch_unlikely(&copy_mc_fragile_key))
--		return copy_user_generic(to, from, len);
--
- 	__uaccess_begin();
--	ret = copy_mc_fragile(to, from, len);
-+	if (static_branch_unlikely(&copy_mc_fragile_key))
-+		ret = copy_mc_fragile(to, from, len);
-+	ret = copy_mc_generic(to, from, len);
- 	__uaccess_end();
- 	return ret;
- }
-diff --git a/arch/x86/lib/copy_mc_64.S b/arch/x86/lib/copy_mc_64.S
-index 35a67c50890b..a08e7a4d9e28 100644
---- a/arch/x86/lib/copy_mc_64.S
-+++ b/arch/x86/lib/copy_mc_64.S
-@@ -2,7 +2,9 @@
- /* Copyright(c) 2016-2020 Intel Corporation. All rights reserved. */
- 
- #include <linux/linkage.h>
-+#include <asm/alternative-asm.h>
- #include <asm/copy_mc_test.h>
-+#include <asm/cpufeatures.h>
- #include <asm/export.h>
- #include <asm/asm.h>
- 
-@@ -122,4 +124,42 @@ EXPORT_SYMBOL_GPL(copy_mc_fragile)
- 	_ASM_EXTABLE(.L_write_leading_bytes, .E_leading_bytes)
- 	_ASM_EXTABLE(.L_write_words, .E_write_words)
- 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
-+
-+/*
-+ * copy_mc_generic - memory copy with exception handling
-+ *
-+ * Fast string copy + fault / exception handling. If the CPU does
-+ * support machine check exception recovery, but does not support
-+ * recovering from fast-string exceptions then this CPU needs to be
-+ * added to the copy_mc_fragile_key set of quirks. Otherwise, absent any
-+ * machine check recovery support this version should be no slower than
-+ * standard memcpy.
-+ */
-+SYM_FUNC_START(copy_mc_generic)
-+	ALTERNATIVE "jmp copy_mc_fragile", "", X86_FEATURE_ERMS
-+	movq %rdi, %rax
-+	movq %rdx, %rcx
-+.L_copy:
-+	rep movsb
-+	/* Copy successful. Return zero */
-+	xorl %eax, %eax
-+	ret
-+SYM_FUNC_END(copy_mc_generic)
-+EXPORT_SYMBOL_GPL(copy_mc_generic)
-+
-+	.section .fixup, "ax"
-+.E_copy:
-+	/*
-+	 * On fault %rcx is updated such that the copy instruction could
-+	 * optionally be restarted at the fault position, i.e. it
-+	 * contains 'bytes remaining'. A non-zero return indicates error
-+	 * to copy_mc_generic() users, or indicate short transfers to
-+	 * user-copy routines.
-+	 */
-+	movq %rcx, %rax
-+	ret
-+
-+	.previous
-+
-+	_ASM_EXTABLE_FAULT(.L_copy, .E_copy)
- #endif
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index b62235004f0b..449a36101385 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -546,6 +546,7 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_shift_out_of_bounds",
- 	/* misc */
- 	"csum_partial_copy_generic",
-+	"copy_mc_generic",
- 	"copy_mc_fragile",
- 	"copy_mc_fragile_handle_tail",
- 	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
+ok.
+
+> 
+> >
+> >>  };
+> >>  
+> >>  static int drc_pmem_bind(struct papr_scm_priv *p)
+> >> @@ -144,6 +192,62 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+> >>  	return drc_pmem_bind(p);
+> >>  }
+> >>  
+> >> +/*
+> >> + * Issue hcall to retrieve dimm health info and populate papr_scm_priv with the
+> >> + * health information.
+> >> + */
+> >> +static int __drc_pmem_query_health(struct papr_scm_priv *p)
+> >> +{
+> >> +	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> >
+> > Is this exclusive to 64bit?  Why not u64?
+> Yes this is specific to 64 bit as the array holds 64 bit register values
+> returned from PHYP. Can u64 but here that will be a departure from existing
+> practice within arch/powerpc code to use an unsigned long array to fetch
+> returned values for PHYP.
+> 
+> >
+> >> +	s64 rc;
+> >
+> > plpar_hcall() returns long and this function returns int and rc is declared
+> > s64?
+> >
+> > Why not have them all be long to follow plpar_hcall?
+> Yes 'long' type is better suited for variable 'rc' and I will get it fixed.
+> 
+> But the value of variable 'rc' is never directly returned from this
+> function, we always return kernel error codes instead. Hence the
+> return type of this function is consistent.
+
+Honestly masking the error return of plpar_hcall() seems a problem as well...
+but ok.
+
+Ira
+
+> 
+> >
+> >> +
+> >> +	/* issue the hcall */
+> >> +	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
+> >> +	if (rc != H_SUCCESS) {
+> >> +		dev_err(&p->pdev->dev,
+> >> +			 "Failed to query health information, Err:%lld\n", rc);
+> >> +		rc = -ENXIO;
+> >> +		goto out;
+> >> +	}
+> >> +
+> >> +	p->lasthealth_jiffies = jiffies;
+> >> +	p->health_bitmap = ret[0] & ret[1];
+> >> +
+> >> +	dev_dbg(&p->pdev->dev,
+> >> +		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
+> >> +		ret[0], ret[1]);
+> >> +out:
+> >> +	return rc;
+> >> +}
+> >> +
+> >> +/* Min interval in seconds for assuming stable dimm health */
+> >> +#define MIN_HEALTH_QUERY_INTERVAL 60
+> >> +
+> >> +/* Query cached health info and if needed call drc_pmem_query_health */
+> >> +static int drc_pmem_query_health(struct papr_scm_priv *p)
+> >> +{
+> >> +	unsigned long cache_timeout;
+> >> +	s64 rc;
+> >> +
+> >> +	/* Protect concurrent modifications to papr_scm_priv */
+> >> +	rc = mutex_lock_interruptible(&p->health_mutex);
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	/* Jiffies offset for which the health data is assumed to be same */
+> >> +	cache_timeout = p->lasthealth_jiffies +
+> >> +		msecs_to_jiffies(MIN_HEALTH_QUERY_INTERVAL * 1000);
+> >> +
+> >> +	/* Fetch new health info is its older than MIN_HEALTH_QUERY_INTERVAL */
+> >> +	if (time_after(jiffies, cache_timeout))
+> >> +		rc = __drc_pmem_query_health(p);
+> >
+> > And back to s64 after returning int?
+> Agree, will change 's64 rc' to 'int rc'.
+> 
+> >
+> >> +	else
+> >> +		/* Assume cached health data is valid */
+> >> +		rc = 0;
+> >> +
+> >> +	mutex_unlock(&p->health_mutex);
+> >> +	return rc;
+> >> +}
+> >>  
+> >>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+> >>  			     struct nd_cmd_get_config_data_hdr *hdr)
+> >> @@ -286,6 +390,64 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+> >>  	return 0;
+> >>  }
+> >>  
+> >> +static ssize_t flags_show(struct device *dev,
+> >> +				struct device_attribute *attr, char *buf)
+> >> +{
+> >> +	struct nvdimm *dimm = to_nvdimm(dev);
+> >> +	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+> >> +	struct seq_buf s;
+> >> +	u64 health;
+> >> +	int rc;
+> >> +
+> >> +	rc = drc_pmem_query_health(p);
+> >
+> > and back to int...
+> >
+> drc_pmem_query_health() returns an 'int' so the type of variable 'rc'
+> looks correct to me.
+> 
+> > Just make them long all through...
+> I think the return type for above all functions is 'int' with
+> an issue in drc_pmem_query_health() that you pointed out.
+> 
+> With that fixed the usage of 'int' return type for functions will become
+> consistent.
+> 
+> >
+> > Ira
+> >
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	/* Copy health_bitmap locally, check masks & update out buffer */
+> >> +	health = READ_ONCE(p->health_bitmap);
+> >> +
+> >> +	seq_buf_init(&s, buf, PAGE_SIZE);
+> >> +	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
+> >> +		seq_buf_printf(&s, "not_armed ");
+> >> +
+> >> +	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
+> >> +		seq_buf_printf(&s, "flush_fail ");
+> >> +
+> >> +	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
+> >> +		seq_buf_printf(&s, "restore_fail ");
+> >> +
+> >> +	if (health & PAPR_SCM_DIMM_ENCRYPTED)
+> >> +		seq_buf_printf(&s, "encrypted ");
+> >> +
+> >> +	if (health & PAPR_SCM_DIMM_SMART_EVENT_MASK)
+> >> +		seq_buf_printf(&s, "smart_notify ");
+> >> +
+> >> +	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED)
+> >> +		seq_buf_printf(&s, "scrubbed locked ");
+> >> +
+> >> +	if (seq_buf_used(&s))
+> >> +		seq_buf_printf(&s, "\n");
+> >> +
+> >> +	return seq_buf_used(&s);
+> >> +}
+> >> +DEVICE_ATTR_RO(flags);
+> >> +
+> >> +/* papr_scm specific dimm attributes */
+> >> +static struct attribute *papr_scm_nd_attributes[] = {
+> >> +	&dev_attr_flags.attr,
+> >> +	NULL,
+> >> +};
+> >> +
+> >> +static struct attribute_group papr_scm_nd_attribute_group = {
+> >> +	.name = "papr",
+> >> +	.attrs = papr_scm_nd_attributes,
+> >> +};
+> >> +
+> >> +static const struct attribute_group *papr_scm_dimm_attr_groups[] = {
+> >> +	&papr_scm_nd_attribute_group,
+> >> +	NULL,
+> >> +};
+> >> +
+> >>  static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >>  {
+> >>  	struct device *dev = &p->pdev->dev;
+> >> @@ -312,8 +474,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >>  	dimm_flags = 0;
+> >>  	set_bit(NDD_LABELING, &dimm_flags);
+> >>  
+> >> -	p->nvdimm = nvdimm_create(p->bus, p, NULL, dimm_flags,
+> >> -				  PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
+> >> +	p->nvdimm = nvdimm_create(p->bus, p, papr_scm_dimm_attr_groups,
+> >> +				  dimm_flags, PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
+> >>  	if (!p->nvdimm) {
+> >>  		dev_err(dev, "Error creating DIMM object for %pOF\n", p->dn);
+> >>  		goto err;
+> >> @@ -399,6 +561,9 @@ static int papr_scm_probe(struct platform_device *pdev)
+> >>  	if (!p)
+> >>  		return -ENOMEM;
+> >>  
+> >> +	/* Initialize the dimm mutex */
+> >> +	mutex_init(&p->health_mutex);
+> >> +
+> >>  	/* optional DT properties */
+> >>  	of_property_read_u32(dn, "ibm,metadata-size", &metadata_size);
+> >>  
+> >> -- 
+> >> 2.26.2
+> >> _______________________________________________
+> >> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> >> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+> 
+> -- 
+> Cheers
+> ~ Vaibhav
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
