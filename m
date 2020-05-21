@@ -2,94 +2,104 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE621DC72C
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 May 2020 08:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F51DCC84
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 May 2020 14:01:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BFFDA10054ECB;
-	Wed, 20 May 2020 23:45:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2401:3900:2:1::2; helo=ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN> 
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6026611613777;
+	Thu, 21 May 2020 04:57:27 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=66.163.186.147; helo=sonic302-21.consmr.mail.ne1.yahoo.com; envelope-from=flora-diomande@outlook.fr; receiver=<UNKNOWN> 
+Received: from sonic302-21.consmr.mail.ne1.yahoo.com (sonic302-21.consmr.mail.ne1.yahoo.com [66.163.186.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5B5A1100956E7
-	for <linux-nvdimm@lists.01.org>; Wed, 20 May 2020 23:44:59 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 49SKvV6hDcz9sT9;
-	Thu, 21 May 2020 16:48:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-	s=201909; t=1590043704;
-	bh=mylN82RMn5av9mlUtP03Bq7JN7H0txBfw8gjg+ZMQ7s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TD2fDeKCARBDrWHY+VsGAe2iNnjSqQg60E3P1g7BHV/e9JoUek2xU6OXtkwdaFBlG
-	 aGsN7rfCMbH628gOSdZXEoRypdxmeNdDtrpbG4z8i41l8g31J3EgJqZna48GJKwC2D
-	 5bRYia+7Z03muiVkvkWqj3ePOGlgXK0kW3acfngvbgMdQClEMJRRQ5Z8x3nV+qRPyX
-	 EraBdtFn9TliOy7sS163c8RGPhBZnu6NStAC3CIu4NHNsMKW+KtIsGQQxbHCcvH6dx
-	 4yVgcFUs0HZ2rGH7IcJSH/rK0vExeIUOkgCbyQhjDX2DlL14cZeT9FW4/IsS3D9Hip
-	 vvOPM4L7nSzmA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Ira Weiny <ira.weiny@intel.com>, Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
-In-Reply-To: <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com>
-References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com>
-Date: Thu, 21 May 2020 16:48:40 +1000
-Message-ID: <87367t941j.fsf@mpe.ellerman.id.au>
+	by ml01.01.org (Postfix) with ESMTPS id 446DC11613773
+	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 04:57:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590062444; bh=OWGwHJ9x9PJf7dlxBBeRBfUZJODNYne2+kl8BjeMq+M=; h=Date:From:Reply-To:Subject:References:From:Subject; b=B0DMD2Uy9FAomzd4zuUg07Zve2WLJZac1QPBfUZh/vXrSauntfVKhI9tvl+LziZW/0MoUKOVmD5PauRCOAk5MlZ6+CE8Y3HMXALsn7qAv9seiJYMyKVSYW2inzLxC+UYiMNVLiC3m7wbG9sELpHkdQOOjgkcShoS5gHxVQaBq5AoEz9NWT6JsVXBdyqbL6m7SR62lWggU2sLSSf6tXa2r82Gk2xZ+55BOdHV4RQCu2PHfbvtwy+O/4Y7aoJdCHBZDcLFsOEvqwecIZAarQALQ6WjlPvAGFfobH+NQ1IhRdybT+vXgd4HV6A6uKcosLJ7iAg5yceRx+r8OThOx/7Uog==
+X-YMail-OSG: D.TgATkVM1ndBjGigq4945jeb4C6fX3Y9fqzumhixOfEUcpCGD4jMryT8acL.hd
+ XS_AlB3WjBNbQwfiwpAQ3UGOj8KUFqiKEC80cdZWQlC_Us6n7gXmfL9I308aPJLOr5.fEn_tqIIP
+ ScxT2maVOb3XX8KfaU_MfnTyfYyvz1pAO0aOI_FIdifIa.hfJCh1cX09_Yv0pHfsC67Twi4ibMuw
+ vrBSD1v1c0gON4.K6B9ffY3VfThfKjg6DjeDV4xhjiACiARUyNxejgU35qaA1LphtyZKRPdbA3fT
+ jYugEKNKsMT3yjYsdsAPd.J79_LgklovoJsB51HqYprDy3kjyC85sfppCMZqkF36UrKB8b2dq0MW
+ F3FnFzxHxbAF7Nj3HXeGtNjYwD7UUwfphm_yN7llI0ucfrVlZFqKQ6fxIrzFxf9lyG7XdE1XjBnu
+ ZRX8POK_RTBEr07pc7HVyyCeiO1iupdrLvbDI4.iIXK37xTeRpmXGSAtwyAC_AB7bACxs1zhMmJQ
+ p2dj._rITSZtz9kNMkk4Kty1IavXV2mftiLGlBxIb5xzwVb4wKjy8SnNb3DQ1hZovcgdWRZecr.e
+ 9idVuzmtlOR1JGWaW6iprtvNXtE_3xSKKeLmWmt45VgP59TZIhEVGeYLfOT6ttqNm.c4fMTWTnKg
+ HPUPFeB0n5nEdqi43HK9R_uNKHFPDbft8XMd77qzDh3rDUaleAPBHH9wa6wx2UfgvyFC5I7RFuBY
+ fngzbjSLVr9VYUtTsl1z1hQSAbxR7cx3Z82DRF7gOHjRL6AALFI6WitAQdvx5QwwOB.bT_4ipeRE
+ I3iwGXctcmXLaCFiKpSFzF_in9eUiVQnFx66SqlU3pX6llxpoE9k2Zxuxfe3_LMENfayu2NM4YBa
+ nlinM3Fz6hBlUyjJSHS7t23gStubkTH2VrxJE0BMWeeNowk1atHFsXSYBePcYatX9Sfx1HnOQwsz
+ RYRx781uyHrflBLEaPvi.A5TSSpSxiY4jl38ZZ_AxRjhJ3zq0Fz7B0F0gQgQaP79SgcE1Psk2Y0X
+ G4x_QSndCe36n9ubKfPsYwvZK34V9wQxij4lpDO.kiAwYVXdwnfyfbI8HgZKwmgiZcIk7aI4MhU3
+ QqAHmRevE..wRFkfEJ6J6clBcgdxmxQCBXlGQrXm0tf2r4Ayp8Kaf5CsoNdZwo9J.wtfynlGoaKI
+ HPkh9ajBb_jQ5c8k5h3d0T1cYY9sQklIS21jO7G2jbSfmks_fr54uMIliubgWoDrG2qMkZma5Tjb
+ D63M1RkhIOwyIgUvarv1JUtQyihAn12NP6tpvRSiSuWq8meu4RmrIpo3lTzTQ4KJqqFd3WjBceQA
+ -
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Thu, 21 May 2020 12:00:44 +0000
+Date: Thu, 21 May 2020 12:00:40 +0000 (UTC)
+From: "Mrs. Flora Diomande" <flora-diomande@outlook.fr>
+Message-ID: <1249539239.341736.1590062440203@mail.yahoo.com>
+Subject: Greetings dearest in the lord,
 MIME-Version: 1.0
-Message-ID-Hash: BOVGGHQ4YTLS35DKKCAIH55BISYAE45Z
-X-Message-ID-Hash: BOVGGHQ4YTLS35DKKCAIH55BISYAE45Z
-X-MailFrom: mpe@ellerman.id.au
+References: <1249539239.341736.1590062440203.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15959 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36
+Message-ID-Hash: 5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6
+X-Message-ID-Hash: 5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6
+X-MailFrom: flora-diomande@outlook.fr
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: d_iomandeflora@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BOVGGHQ4YTLS35DKKCAIH55BISYAE45Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Ira Weiny <ira.weiny@intel.com> writes:
-> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
->> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
->> modules and add the command family to the white list of NVDIMM command
->> sets. Also advertise support for ND_CMD_CALL for the dimm
->> command mask and implement necessary scaffolding in the module to
->> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
-...
->> + *
->> + * Payload Version:
->> + *
->> + * A 'payload_version' field is present in PDSM header that indicates a specific
->> + * version of the structure present in PDSM Payload for a given PDSM command.
->> + * This provides backward compatibility in case the PDSM Payload structure
->> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
->> + *
->> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
->> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
->> + * module when servicing the PDSM envelope checks the 'payload_version' and then
->> + * uses 'payload struct version' == MIN('payload_version field',
->> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
->> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
->> + * struct in returned 'payload_version' field.
->
-> FWIW many people believe using a size rather than version is more sustainable.
-> It is expected that new payload structures are larger (more features) than the
-> previous payload structure.
->
-> I can't find references at the moment through.
-
-I think clone_args is a good modern example:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
-
-cheers
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+R3JlZXRpbmdzIGRlYXJlc3QgaW4gdGhlIGxvcmQsDQoNCkkgZ3JlZXQgeW91IHdpdGggdGhlIG5h
+bWUgb2Ygb3VyIExvcmQgSmVzdXMgQ2hyaXN0OyBpdCBpcyB0cnVlIHRoYXQgdGhpcyBsZXR0ZXIg
+bWF5IGNvbWUgdG8geW91IGFzIGEgc3VycHJpc2UuIE5ldmVydGhlbGVzcywgSSBodW1ibHkgYXNr
+IHlvdSB0byBnaXZlIG1lIHlvdXIgYXR0ZW50aW9uIGFuZCBoZWFyIG1lIHdlbGwuIE15IG5hbWUg
+aXMgTXJzLiBGbG9yYSBEaW9tYW5kZSBmcm9tIFVuaXRlZCBTdGF0ZXMgb2YgQW1lcmljYS4gSSBh
+bSA1OCB5ZWFycyBvbGQgYW5kIEkgYW0gbWFycmllZCB0byBNci4gQmFrYXlva28gRGlvbWFuZGUg
+d2hvIG9uY2Ugd29ya2VkIHdpdGggb3VyIEVtYmFzc3kgaW4gR2VybWFueSBpbiB0aGUgeWVhciAy
+MDAyIGFuZCBoZSBhbHNvIHdvcmtlZCBpbiBhbiBlbWJhc3N5IGluIENvdGUgZCdJdm9pcmUgZm9y
+IGEgcGVyaW9kIG9mIDE2IHllYXJzIGJlZm9yZSBoZSBkaWVkLg0KDQpXZSB3ZXJlIG1hcnJpZWQg
+Zm9yIDMwIHllYXJzIHdpdGhvdXQgYSBjaGlsZCBiZWZvcmUgaGUgZGllZCBhZnRlciBhIGJyaWVm
+IGlsbG5lc3MuIFNpbmNlIGhpcyBkZWF0aCBJIGRlY2lkZWQgbm90IHRvIHJlbWFycnkgZHVlIHRv
+IG15IHJlbGlnaW91cyBiZWxpZWYuIFdoZW4gbXkgbGF0ZSBodXNiYW5kIHdhcyBhbGl2ZSBoZSBk
+ZXBvc2l0ZWQgdGhlIHN1bSBvZiBVU0QkNC41IE1pbGxpb24gKEZvdXIgTWlsbGlvbiwgRml2ZSBI
+dW5kcmVkIFRob3VzYW5kIFVuaXRlZCBTdGF0ZSBkb2xsYXJzKSB3aXRoIGEgQmFuayBpbiBDb3Rl
+IGQnSXZvaXJlLiBQcmVzZW50bHkgdGhpcyBtb25leSBpcyBzdGlsbCBpbiB0aGUgY3VzdG9keSBv
+ZiB0aGUgQmFuay4gUmVjZW50bHksIG15IERvY3RvciB0b2xkIG1lIHRoYXQgSSB3b3VsZCBub3Qg
+bGFzdCBmb3IgdGhlIG5leHQgRm91ciBtb250aHMgZHVlIHRvIG15IGNhbmNlciBpbGxuZXNzLg0K
+DQpIYXZpbmcga25vd24gbXkgY29uZGl0aW9uIEkgZGVjaWRlZCB0byBkb25hdGUgdGhpcyBtb25l
+eSB0byBjaHVyY2hlcywgb3JnYW5pemF0aW9uIG9yIGdvb2QgcGVyc29uIHRoYXQgd2lsbCB1dGls
+aXplIHRoaXMgbW9uZXkgdGhlIHdheSBJIGFtIGdvaW5nIHRvIGluc3RydWN0IGhlcmVpbi4NCg0K
+SSB3YW50IHlvdSB0byB1c2UgdGhpcyBtb25leSBmb3IgY2h1cmNoZXMsIENoYXJpdHkgb3JnYW5p
+emF0aW9uLCBvcnBoYW5hZ2VzLCB3aWRvd3MgYW5kIG90aGVyIHBlb3BsZSB0aGF0IGFyZSBpbiBu
+ZWVkLiBsIHRvb2sgdGhpcyBkZWNpc2lvbiBiZWNhdXNlIEkgZG9uJ3QgaGF2ZSBhbnkgY2hpbGQg
+dGhhdCB3aWxsIGluaGVyaXQgdGhpcyBtb25leS4gTW9yZW92ZXIsIG15IGh1c2JhbmQgcmVsYXRp
+dmVzIGFyZSBub3QgY2xvc2UgdG8gbWUgc2luY2UgSSBkZXZlbG9wIGEgQ2FuY2VyIHByb2JsZW0g
+YW5kIGl0IGhhZCBiZWVuIHRoZWlyIHdpc2ggdG8gc2VlIG1lIGRlYWQgaW4gb3JkZXIgdG8gaW5o
+ZXJpdCBoaXMgd2VhbHRoIHNpbmNlIHdlIGhhdmUgbm8gQ2hpbGQuIFRoZXNlIHBlb3BsZSBhcmUg
+bm90IHdvcnRoeSBvZiB0aGlzIGluaGVyaXRhbmNlLiBUaGlzIGlzIHdoeSBJIGFtIHRha2luZyB0
+aGlzIGRlY2lzaW9uIHRvIGNvbnRhY3QgeW91IGFuZCBkb25hdGUgdGhpcyBmdW5kIHRvIHlvdSBp
+biBvcmRlciBmb3IgeW91IHRvIHVzZSBpdCBmb3IgdGhlIGNoYXJpdHkgd29ya3MuDQoNCkFzIHNv
+b24gYXMgSSByZWNlaXZlIHlvdXIgcmVwbHkgSSB3aWxsIGdpdmUgeW91IHRoZSBjb250YWN0IG9m
+IHRoZSBCYW5rIGluIENvdGUgZCdJdm9pcmUgd2hlcmUgdGhpcyBtb25leSBpcyBkZXBvc2l0ZWQg
+YnkgbXkgaHVzYmFuZCBiZWZvcmUgaGlzIHN1ZGRlbiBkZWF0aCwgYWxzbyBJIHdpbGwgaW5zdHJ1
+Y3Qgb3VyIGZhbWlseSBsYXd5ZXIgaW4gQ290ZSBk4oCZSXZvaXJlIHRvIGlzc3VlIGEgbGV0dGVy
+IG9mIGF1dGhvcml6YXRpb24gdG8gdGhlIGJhbmsgdGhhdCB3aWxsIHByb3ZlIHlvdSB0aGUgcHJl
+c2VudCBiZW5lZmljaWFyeSBvZiB0aGlzIG1vbmV5LiBJIGFsc28gd2FudCB5b3UgdG8gYWx3YXlz
+IHB1dCBtZSBpbiB5b3VyIGRhaWx5IHByYXllci4NCg0KQW55IGRlbGF5IGluIHlvdXIgcmVwbHkg
+bWF5IGdpdmUgbWUgcm9vbSB0byBsb29rIGZvciBhbm90aGVyIGdvb2QgcGVyc29uIGZvciB0aGlz
+IHNhbWUgcHVycG9zZS4gUGxlYXNlIGFzc3VyZSBtZSB0aGF0IHlvdSB3aWxsIGFjdCBhY2NvcmRp
+bmdseSBhcyBJIHN0YXRlZCBoZXJlaW4uDQoNClRoYW5rcyBhbmQgUmVtYWluIGJsZXNzZWQuDQoN
+CllvdXJzIHNpc3RlciBpbiB0aGUgTG9yZCwNCg0KTXJzLiBGbG9yYSBEaW9tYW5kZSwKX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
+aWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNl
+bmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
