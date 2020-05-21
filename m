@@ -1,49 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3213D1DDB59
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:54:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 594161DDB5B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:54:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ECA9A1172D36C;
-	Thu, 21 May 2020 16:50:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+	by ml01.01.org (Postfix) with ESMTP id 0DDC81172D36B;
+	Thu, 21 May 2020 16:50:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 477E910095A27
-	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:50:38 -0700 (PDT)
-IronPort-SDR: y52OQDHaJOz7NQDq3l0vRNBjxj7AmHFws4u7qxj5djojJnlV0ubzSfLESkdKSJ1o4PXC92djFo
- w6cdIo1u1FVg==
+	by ml01.01.org (Postfix) with ESMTPS id BE9601172D368
+	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:50:43 -0700 (PDT)
+IronPort-SDR: klx7ew2j4lPt+TBc1hU1cPIZLa1tReS0C5hQsS73M32xW7Q822EGSIARyqGLDmGle3FitUrlVb
+ t2LuDx3d5ecQ==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:11 -0700
-IronPort-SDR: jC4NIxANmRw8At+c3PgCbb7hwea+BXWGo4yZ3uqm2DPl+lDjqCIpgJ+azYgPUWWP8rGeus0cJ5
- TsUeO52fiPTg==
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:17 -0700
+IronPort-SDR: ROjuZNDlLRNLug3TjhV2WIuX4ZIbIOLnyqxC8TroxBj6wGfc44W8xfNQSOx34qvRVAwHVmpQ88
+ InVFqdAw0a/w==
 X-IronPort-AV: E=Sophos;i="5.73,419,1583222400";
-   d="scan'208";a="254130247"
+   d="scan'208";a="300494343"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:11 -0700
-Subject: [5.4-stable PATCH 3/7] libnvdimm/pfn: Prevent raw mode fallback if
- pfn-infoblock valid
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:16 -0700
+Subject: [5.4-stable PATCH 4/7] libnvdimm/pfn_dev: Don't clear device memmap
+ area during generic namespace probe
 From: Dan Williams <dan.j.williams@intel.com>
 To: stable@vger.kernel.org
-Date: Thu, 21 May 2020 16:37:59 -0700
-Message-ID: <159010427971.1062454.10990062889525749549.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Thu, 21 May 2020 16:38:05 -0700
+Message-ID: <159010428513.1062454.12082464664066026554.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: DNXUCUZH3EKIQ2KC7LDCD5XZJMG4U5R4
-X-Message-ID-Hash: DNXUCUZH3EKIQ2KC7LDCD5XZJMG4U5R4
+Message-ID-Hash: XIL5S64MM4UUZFUDF2MP2TL5HSNB4LYT
+X-Message-ID-Hash: XIL5S64MM4UUZFUDF2MP2TL5HSNB4LYT
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, hch@lst.de, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DNXUCUZH3EKIQ2KC7LDCD5XZJMG4U5R4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XIL5S64MM4UUZFUDF2MP2TL5HSNB4LYT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,64 +52,59 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Commit b2ba7e91fa81bec9b64c47ab852145559cad2b68 upstream.
+From: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 
-The EOPNOTSUPP return code from the pmem driver indicates that the
-namespace has a configuration that may be valid, but the current kernel
-does not support it. Expand this to all of the nd_pfn_validate() error
-conditions after the infoblock has been verified as self consistent.
+Commit c1f45d86a522d568aef541dbbc066ccac262b4c3 upstream.
 
-This prevents exposing the namespace to I/O when the infoblock needs to
-be corrected, or the system needs to be put into a different
-configuration (like changing the page size on PowerPC).
+nvdimm core use nd_pfn_validate when looking for devdax or fsdax namespace. In this
+case device resources are allocated against nd_namespace_io dev. In-order to
+allow remap of range in nd_pfn_clear_memmap_error(), move the device memmap
+area clearing while initializing pfn namespace. With this device
+resource are allocated against nd_pfn and we can use nd_pfn->dev for remapping.
 
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Jeff Moyer <jmoyer@redhat.com>
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+This also avoids calling nd_pfn_clear_mmap_errors twice. Once while probing the
+namespace and second while initializing a pfn namespace.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Link: https://lore.kernel.org/r/20191101032728.113001-1-aneesh.kumar@linux.ibm.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/nvdimm/pfn_devs.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/nvdimm/pfn_devs.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index aa144c8a4ee6..8c5b13567f55 100644
+index 8c5b13567f55..6e5b042f453e 100644
 --- a/drivers/nvdimm/pfn_devs.c
 +++ b/drivers/nvdimm/pfn_devs.c
-@@ -560,14 +560,14 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 			dev_dbg(&nd_pfn->dev, "align: %lx:%lx mode: %d:%d\n",
- 					nd_pfn->align, align, nd_pfn->mode,
- 					mode);
--			return -EINVAL;
-+			return -EOPNOTSUPP;
- 		}
+@@ -591,7 +591,7 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+ 		return -EOPNOTSUPP;
  	}
  
- 	if (align > nvdimm_namespace_capacity(ndns)) {
- 		dev_err(&nd_pfn->dev, "alignment: %lx exceeds capacity %llx\n",
- 				align, nvdimm_namespace_capacity(ndns));
--		return -EINVAL;
-+		return -EOPNOTSUPP;
- 	}
+-	return nd_pfn_clear_memmap_errors(nd_pfn);
++	return 0;
+ }
+ EXPORT_SYMBOL(nd_pfn_validate);
  
- 	/*
-@@ -580,7 +580,7 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 	if (offset >= resource_size(&nsio->res)) {
- 		dev_err(&nd_pfn->dev, "pfn array size exceeds capacity of %s\n",
- 				dev_name(&ndns->dev));
--		return -EBUSY;
-+		return -EOPNOTSUPP;
- 	}
+@@ -729,6 +729,8 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 		sig = PFN_SIG;
  
- 	if ((align && !IS_ALIGNED(nsio->res.start + offset + start_pad, align))
-@@ -588,7 +588,7 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 		dev_err(&nd_pfn->dev,
- 				"bad offset: %#llx dax disabled align: %#lx\n",
- 				offset, align);
--		return -ENXIO;
-+		return -EOPNOTSUPP;
- 	}
+ 	rc = nd_pfn_validate(nd_pfn, sig);
++	if (rc == 0)
++		return nd_pfn_clear_memmap_errors(nd_pfn);
+ 	if (rc != -ENODEV)
+ 		return rc;
  
- 	return nd_pfn_clear_memmap_errors(nd_pfn);
+@@ -796,6 +798,10 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
+ 	checksum = nd_sb_checksum((struct nd_gen_sb *) pfn_sb);
+ 	pfn_sb->checksum = cpu_to_le64(checksum);
+ 
++	rc = nd_pfn_clear_memmap_errors(nd_pfn);
++	if (rc)
++		return rc;
++
+ 	return nvdimm_write_bytes(ndns, SZ_4K, pfn_sb, sizeof(*pfn_sb), 0);
+ }
+ 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
