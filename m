@@ -1,49 +1,48 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468F21DDB5D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:54:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771C51DDB5E
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:54:32 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 20EDD1172D372;
-	Thu, 21 May 2020 16:50:51 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	by ml01.01.org (Postfix) with ESMTP id 3D5D71172D375;
+	Thu, 21 May 2020 16:50:57 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3BAF91172D370
-	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:50:49 -0700 (PDT)
-IronPort-SDR: GVGKp4mDv3usipWbW9f4rUYJ+85W0TJlxiRoegpFRTP1sH4fCR6gXl3Cw/ZCIe57CJWJv54Ge6
- 2Yj9ULbf9C1w==
+	by ml01.01.org (Postfix) with ESMTPS id A68F41172D36B
+	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:50:54 -0700 (PDT)
+IronPort-SDR: m0NLuF1JgDXuvoIiCn86CYb1iMu7gjZhgdIJ3fD7n7ju0WvVOLH3W2CaL6VXF79pWODNdtRMdM
+ a6KFJibw/wWw==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:23 -0700
-IronPort-SDR: ZqJXlm+G3u6fJYil8N129n5yuQzUGfBMLNNW0IWI7CjnLCnOZjqay9UvrpLZhv/gUCpLLM6/6i
- fv5Bb081zJYQ==
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:28 -0700
+IronPort-SDR: k0vW4pbr6l/1Px6LHbUd7ZEfDhfhIQRahtarteM5Dlds0i01/r2K8fKH3nQKnnI5d7iuKMppEp
+ 4SKoWa5fDIqQ==
 X-IronPort-AV: E=Sophos;i="5.73,419,1583222400";
-   d="scan'208";a="255450425"
+   d="scan'208";a="440664864"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:22 -0700
-Subject: [5.4-stable PATCH 5/7] libnvdimm/namespace: Enforce
- memremap_compat_align()
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:28 -0700
+Subject: [5.4-stable PATCH 6/7] libnvdimm/region: Introduce NDD_LABELING
 From: Dan Williams <dan.j.williams@intel.com>
 To: stable@vger.kernel.org
-Date: Thu, 21 May 2020 16:38:10 -0700
-Message-ID: <159010429083.1062454.2466252359997112899.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Thu, 21 May 2020 16:38:16 -0700
+Message-ID: <159010429637.1062454.16630290613007655390.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: NVIM5LC2SL355NQ7REB4SOWOVA64CQTK
-X-Message-ID-Hash: NVIM5LC2SL355NQ7REB4SOWOVA64CQTK
+Message-ID-Hash: XG77OGJCPKAWPYJSTHEJOUNZRCLVOE7G
+X-Message-ID-Hash: XG77OGJCPKAWPYJSTHEJOUNZRCLVOE7G
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, hch@lst.de, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NVIM5LC2SL355NQ7REB4SOWOVA64CQTK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XG77OGJCPKAWPYJSTHEJOUNZRCLVOE7G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,167 +51,182 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Commit 6acd7d5ef264d8e9a8988cebf6eeb3567eaf60c6 upstream.
+Commit a0e374525def2ef18a078523e1faefb5ce2b05e5 upstream.
 
-The pmem driver on PowerPC crashes with the following signature when
-instantiating misaligned namespaces that map their capacity via
-memremap_pages().
+The NDD_ALIASING flag is used to indicate where pmem capacity might
+alias with blk capacity and require labeling. It is also used to
+indicate whether the DIMM supports labeling. Separate this latter
+capability into its own flag so that the NDD_ALIASING flag is scoped to
+true aliased configurations.
 
-    BUG: Unable to handle kernel data access at 0xc001000406000000
-    Faulting instruction address: 0xc000000000090790
-    NIP [c000000000090790] arch_add_memory+0xc0/0x130
-    LR [c000000000090744] arch_add_memory+0x74/0x130
-    Call Trace:
-     arch_add_memory+0x74/0x130 (unreliable)
-     memremap_pages+0x74c/0xa30
-     devm_memremap_pages+0x3c/0xa0
-     pmem_attach_disk+0x188/0x770
-     nvdimm_bus_probe+0xd8/0x470
+To my knowledge aliased configurations only exist in the ACPI spec,
+there are no known platforms that ship this support in production.
 
-With the assumption that only memremap_pages() has alignment
-constraints, enforce memremap_compat_align() for
-pmem_should_map_pages(), nd_pfn, and nd_dax cases. This includes
-preventing the creation of namespaces where the base address is
-misaligned and cases there infoblock padding parameters are invalid.
+This clarity allows namespace-capacity alignment constraints around
+interleave-ways to be relaxed.
 
-Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Jeff Moyer <jmoyer@redhat.com>
-Fixes: a3619190d62e ("libnvdimm/pfn: stop padding pmem namespaces to section alignment")
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Oliver O'Halloran <oohall@gmail.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Link: https://lore.kernel.org/r/158041477856.3889308.4212605617834097674.stgit@dwillia2-desk3.amr.corp.intel.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/nvdimm/namespace_devs.c |   17 +++++++++++++++++
- drivers/nvdimm/pfn.h            |   12 ++++++++++++
- drivers/nvdimm/pfn_devs.c       |   32 +++++++++++++++++++++++++++++---
- 3 files changed, 58 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/papr_scm.c |    2 +-
+ drivers/acpi/nfit/core.c                  |    4 +++-
+ drivers/nvdimm/dimm.c                     |    2 +-
+ drivers/nvdimm/dimm_devs.c                |    9 +++++----
+ drivers/nvdimm/namespace_devs.c           |    2 +-
+ drivers/nvdimm/nd.h                       |    2 +-
+ drivers/nvdimm/region_devs.c              |   10 +++++-----
+ include/linux/libnvdimm.h                 |    2 ++
+ 8 files changed, 19 insertions(+), 14 deletions(-)
 
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 66fd517c4816..d3cf791bc39f 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -347,7 +347,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	}
+ 
+ 	dimm_flags = 0;
+-	set_bit(NDD_ALIASING, &dimm_flags);
++	set_bit(NDD_LABELING, &dimm_flags);
+ 
+ 	p->nvdimm = nvdimm_create(p->bus, p, papr_scm_dimm_groups,
+ 				dimm_flags, PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 12d980aafc5f..702105b17dda 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -2030,8 +2030,10 @@ static int acpi_nfit_register_dimms(struct acpi_nfit_desc *acpi_desc)
+ 			continue;
+ 		}
+ 
+-		if (nfit_mem->bdw && nfit_mem->memdev_pmem)
++		if (nfit_mem->bdw && nfit_mem->memdev_pmem) {
+ 			set_bit(NDD_ALIASING, &flags);
++			set_bit(NDD_LABELING, &flags);
++		}
+ 
+ 		/* collate flags across all memdevs for this dimm */
+ 		list_for_each_entry(nfit_memdev, &acpi_desc->memdevs, list) {
+diff --git a/drivers/nvdimm/dimm.c b/drivers/nvdimm/dimm.c
+index 64776ed15bb3..7d4ddc4d9322 100644
+--- a/drivers/nvdimm/dimm.c
++++ b/drivers/nvdimm/dimm.c
+@@ -99,7 +99,7 @@ static int nvdimm_probe(struct device *dev)
+ 	if (ndd->ns_current >= 0) {
+ 		rc = nd_label_reserve_dpa(ndd);
+ 		if (rc == 0)
+-			nvdimm_set_aliasing(dev);
++			nvdimm_set_labeling(dev);
+ 	}
+ 	nvdimm_bus_unlock(dev);
+ 
+diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+index 196aa44c4936..def5c2846bea 100644
+--- a/drivers/nvdimm/dimm_devs.c
++++ b/drivers/nvdimm/dimm_devs.c
+@@ -32,7 +32,7 @@ int nvdimm_check_config_data(struct device *dev)
+ 
+ 	if (!nvdimm->cmd_mask ||
+ 	    !test_bit(ND_CMD_GET_CONFIG_DATA, &nvdimm->cmd_mask)) {
+-		if (test_bit(NDD_ALIASING, &nvdimm->flags))
++		if (test_bit(NDD_LABELING, &nvdimm->flags))
+ 			return -ENXIO;
+ 		else
+ 			return -ENOTTY;
+@@ -173,11 +173,11 @@ int nvdimm_set_config_data(struct nvdimm_drvdata *ndd, size_t offset,
+ 	return rc;
+ }
+ 
+-void nvdimm_set_aliasing(struct device *dev)
++void nvdimm_set_labeling(struct device *dev)
+ {
+ 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ 
+-	set_bit(NDD_ALIASING, &nvdimm->flags);
++	set_bit(NDD_LABELING, &nvdimm->flags);
+ }
+ 
+ void nvdimm_set_locked(struct device *dev)
+@@ -322,8 +322,9 @@ static ssize_t flags_show(struct device *dev,
+ {
+ 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ 
+-	return sprintf(buf, "%s%s\n",
++	return sprintf(buf, "%s%s%s\n",
+ 			test_bit(NDD_ALIASING, &nvdimm->flags) ? "alias " : "",
++			test_bit(NDD_LABELING, &nvdimm->flags) ? "label " : "",
+ 			test_bit(NDD_LOCKED, &nvdimm->flags) ? "lock " : "");
+ }
+ static DEVICE_ATTR_RO(flags);
 diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index cca0a3ba1d2c..b2db15250e0d 100644
+index b2db15250e0d..8cf1c8932a3b 100644
 --- a/drivers/nvdimm/namespace_devs.c
 +++ b/drivers/nvdimm/namespace_devs.c
-@@ -10,6 +10,7 @@
- #include <linux/nd.h>
- #include "nd-core.h"
- #include "pmem.h"
-+#include "pfn.h"
- #include "nd.h"
- 
- static void namespace_io_release(struct device *dev)
-@@ -1735,6 +1736,22 @@ struct nd_namespace_common *nvdimm_namespace_common_probe(struct device *dev)
- 		return ERR_PTR(-ENODEV);
- 	}
- 
-+	/*
-+	 * Note, alignment validation for fsdax and devdax mode
-+	 * namespaces happens in nd_pfn_validate() where infoblock
-+	 * padding parameters can be applied.
-+	 */
-+	if (pmem_should_map_pages(dev)) {
-+		struct nd_namespace_io *nsio = to_nd_namespace_io(&ndns->dev);
-+		struct resource *res = &nsio->res;
-+
-+		if (!IS_ALIGNED(res->start | (res->end + 1),
-+					memremap_compat_align())) {
-+			dev_err(&ndns->dev, "%pr misaligned, unable to map\n", res);
-+			return ERR_PTR(-EOPNOTSUPP);
-+		}
-+	}
-+
- 	if (is_namespace_pmem(&ndns->dev)) {
- 		struct nd_namespace_pmem *nspm;
- 
-diff --git a/drivers/nvdimm/pfn.h b/drivers/nvdimm/pfn.h
-index acb19517f678..37cb1b8a2a39 100644
---- a/drivers/nvdimm/pfn.h
-+++ b/drivers/nvdimm/pfn.h
-@@ -24,6 +24,18 @@ struct nd_pfn_sb {
- 	__le64 npfns;
- 	__le32 mode;
- 	/* minor-version-1 additions for section alignment */
-+	/**
-+	 * @start_pad: Deprecated attribute to pad start-misaligned namespaces
-+	 *
-+	 * start_pad is deprecated because the original definition did
-+	 * not comprehend that dataoff is relative to the base address
-+	 * of the namespace not the start_pad adjusted base. The result
-+	 * is that the dax path is broken, but the block-I/O path is
-+	 * not. The kernel will no longer create namespaces using start
-+	 * padding, but it still supports block-I/O for legacy
-+	 * configurations mainly to allow a backup, reconfigure the
-+	 * namespace, and restore flow to repair dax operation.
-+	 */
- 	__le32 start_pad;
- 	__le32 end_trunc;
- 	/* minor-version-2 record the base alignment of the mapping */
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 6e5b042f453e..18a2602d93e7 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -445,6 +445,7 @@ static bool nd_supported_alignment(unsigned long align)
- int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
+@@ -2519,7 +2519,7 @@ static int init_active_labels(struct nd_region *nd_region)
+ 		if (!ndd) {
+ 			if (test_bit(NDD_LOCKED, &nvdimm->flags))
+ 				/* fail, label data may be unreadable */;
+-			else if (test_bit(NDD_ALIASING, &nvdimm->flags))
++			else if (test_bit(NDD_LABELING, &nvdimm->flags))
+ 				/* fail, labels needed to disambiguate dpa */;
+ 			else
+ 				return 0;
+diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
+index ee5c04070ef9..4a946c019e0f 100644
+--- a/drivers/nvdimm/nd.h
++++ b/drivers/nvdimm/nd.h
+@@ -244,7 +244,7 @@ int nvdimm_set_config_data(struct nvdimm_drvdata *ndd, size_t offset,
+ 		void *buf, size_t len);
+ long nvdimm_clear_poison(struct device *dev, phys_addr_t phys,
+ 		unsigned int len);
+-void nvdimm_set_aliasing(struct device *dev);
++void nvdimm_set_labeling(struct device *dev);
+ void nvdimm_set_locked(struct device *dev);
+ void nvdimm_clear_locked(struct device *dev);
+ int nvdimm_security_setup_events(struct device *dev);
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index ef423ba1a711..b1b13debffbc 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -225,16 +225,16 @@ EXPORT_SYMBOL_GPL(nd_blk_region_set_provider_data);
+ int nd_region_to_nstype(struct nd_region *nd_region)
  {
- 	u64 checksum, offset;
-+	struct resource *res;
- 	enum nd_pfn_mode mode;
- 	struct nd_namespace_io *nsio;
- 	unsigned long align, start_pad;
-@@ -577,13 +578,14 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 	 * established.
- 	 */
- 	nsio = to_nd_namespace_io(&ndns->dev);
--	if (offset >= resource_size(&nsio->res)) {
-+	res = &nsio->res;
-+	if (offset >= resource_size(res)) {
- 		dev_err(&nd_pfn->dev, "pfn array size exceeds capacity of %s\n",
- 				dev_name(&ndns->dev));
- 		return -EOPNOTSUPP;
- 	}
+ 	if (is_memory(&nd_region->dev)) {
+-		u16 i, alias;
++		u16 i, label;
  
--	if ((align && !IS_ALIGNED(nsio->res.start + offset + start_pad, align))
-+	if ((align && !IS_ALIGNED(res->start + offset + start_pad, align))
- 			|| !IS_ALIGNED(offset, PAGE_SIZE)) {
- 		dev_err(&nd_pfn->dev,
- 				"bad offset: %#llx dax disabled align: %#lx\n",
-@@ -591,6 +593,18 @@ int nd_pfn_validate(struct nd_pfn *nd_pfn, const char *sig)
- 		return -EOPNOTSUPP;
- 	}
+-		for (i = 0, alias = 0; i < nd_region->ndr_mappings; i++) {
++		for (i = 0, label = 0; i < nd_region->ndr_mappings; i++) {
+ 			struct nd_mapping *nd_mapping = &nd_region->mapping[i];
+ 			struct nvdimm *nvdimm = nd_mapping->nvdimm;
  
-+	if (!IS_ALIGNED(res->start + le32_to_cpu(pfn_sb->start_pad),
-+				memremap_compat_align())) {
-+		dev_err(&nd_pfn->dev, "resource start misaligned\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!IS_ALIGNED(res->end + 1 - le32_to_cpu(pfn_sb->end_trunc),
-+				memremap_compat_align())) {
-+		dev_err(&nd_pfn->dev, "resource end misaligned\n");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL(nd_pfn_validate);
-@@ -754,7 +768,19 @@ static int nd_pfn_init(struct nd_pfn *nd_pfn)
- 	start = nsio->res.start;
- 	size = resource_size(&nsio->res);
- 	npfns = PHYS_PFN(size - SZ_8K);
--	align = max(nd_pfn->align, SUBSECTION_SIZE);
-+	align = max(nd_pfn->align, memremap_compat_align());
-+
-+	/*
-+	 * When @start is misaligned fail namespace creation. See
-+	 * the 'struct nd_pfn_sb' commentary on why ->start_pad is not
-+	 * an option.
-+	 */
-+	if (!IS_ALIGNED(start, memremap_compat_align())) {
-+		dev_err(&nd_pfn->dev, "%s: start %pa misaligned to %#lx\n",
-+				dev_name(&ndns->dev), &start,
-+				memremap_compat_align());
-+		return -EINVAL;
-+	}
- 	end_trunc = start + size - ALIGN_DOWN(start + size, align);
- 	if (nd_pfn->mode == PFN_MODE_PMEM) {
- 		/*
+-			if (test_bit(NDD_ALIASING, &nvdimm->flags))
+-				alias++;
++			if (test_bit(NDD_LABELING, &nvdimm->flags))
++				label++;
+ 		}
+-		if (alias)
++		if (label)
+ 			return ND_DEVICE_NAMESPACE_PMEM;
+ 		else
+ 			return ND_DEVICE_NAMESPACE_IO;
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index b6eddf912568..aa4b79d68d79 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -37,6 +37,8 @@ enum {
+ 	NDD_WORK_PENDING = 4,
+ 	/* ignore / filter NSLABEL_FLAG_LOCAL for this DIMM, i.e. no aliasing */
+ 	NDD_NOBLK = 5,
++	/* dimm supports namespace labels */
++	NDD_LABELING = 6,
+ 
+ 	/* need to set a limit somewhere, but yes, this is likely overkill */
+ 	ND_IOCTL_MAX_BUFLEN = SZ_4M,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
