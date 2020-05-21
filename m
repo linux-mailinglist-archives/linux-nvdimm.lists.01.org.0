@@ -2,104 +2,55 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3F51DCC84
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 May 2020 14:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 971F41DCE15
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 21 May 2020 15:33:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6026611613777;
-	Thu, 21 May 2020 04:57:27 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=66.163.186.147; helo=sonic302-21.consmr.mail.ne1.yahoo.com; envelope-from=flora-diomande@outlook.fr; receiver=<UNKNOWN> 
-Received: from sonic302-21.consmr.mail.ne1.yahoo.com (sonic302-21.consmr.mail.ne1.yahoo.com [66.163.186.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 446DC11613773
-	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 04:57:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590062444; bh=OWGwHJ9x9PJf7dlxBBeRBfUZJODNYne2+kl8BjeMq+M=; h=Date:From:Reply-To:Subject:References:From:Subject; b=B0DMD2Uy9FAomzd4zuUg07Zve2WLJZac1QPBfUZh/vXrSauntfVKhI9tvl+LziZW/0MoUKOVmD5PauRCOAk5MlZ6+CE8Y3HMXALsn7qAv9seiJYMyKVSYW2inzLxC+UYiMNVLiC3m7wbG9sELpHkdQOOjgkcShoS5gHxVQaBq5AoEz9NWT6JsVXBdyqbL6m7SR62lWggU2sLSSf6tXa2r82Gk2xZ+55BOdHV4RQCu2PHfbvtwy+O/4Y7aoJdCHBZDcLFsOEvqwecIZAarQALQ6WjlPvAGFfobH+NQ1IhRdybT+vXgd4HV6A6uKcosLJ7iAg5yceRx+r8OThOx/7Uog==
-X-YMail-OSG: D.TgATkVM1ndBjGigq4945jeb4C6fX3Y9fqzumhixOfEUcpCGD4jMryT8acL.hd
- XS_AlB3WjBNbQwfiwpAQ3UGOj8KUFqiKEC80cdZWQlC_Us6n7gXmfL9I308aPJLOr5.fEn_tqIIP
- ScxT2maVOb3XX8KfaU_MfnTyfYyvz1pAO0aOI_FIdifIa.hfJCh1cX09_Yv0pHfsC67Twi4ibMuw
- vrBSD1v1c0gON4.K6B9ffY3VfThfKjg6DjeDV4xhjiACiARUyNxejgU35qaA1LphtyZKRPdbA3fT
- jYugEKNKsMT3yjYsdsAPd.J79_LgklovoJsB51HqYprDy3kjyC85sfppCMZqkF36UrKB8b2dq0MW
- F3FnFzxHxbAF7Nj3HXeGtNjYwD7UUwfphm_yN7llI0ucfrVlZFqKQ6fxIrzFxf9lyG7XdE1XjBnu
- ZRX8POK_RTBEr07pc7HVyyCeiO1iupdrLvbDI4.iIXK37xTeRpmXGSAtwyAC_AB7bACxs1zhMmJQ
- p2dj._rITSZtz9kNMkk4Kty1IavXV2mftiLGlBxIb5xzwVb4wKjy8SnNb3DQ1hZovcgdWRZecr.e
- 9idVuzmtlOR1JGWaW6iprtvNXtE_3xSKKeLmWmt45VgP59TZIhEVGeYLfOT6ttqNm.c4fMTWTnKg
- HPUPFeB0n5nEdqi43HK9R_uNKHFPDbft8XMd77qzDh3rDUaleAPBHH9wa6wx2UfgvyFC5I7RFuBY
- fngzbjSLVr9VYUtTsl1z1hQSAbxR7cx3Z82DRF7gOHjRL6AALFI6WitAQdvx5QwwOB.bT_4ipeRE
- I3iwGXctcmXLaCFiKpSFzF_in9eUiVQnFx66SqlU3pX6llxpoE9k2Zxuxfe3_LMENfayu2NM4YBa
- nlinM3Fz6hBlUyjJSHS7t23gStubkTH2VrxJE0BMWeeNowk1atHFsXSYBePcYatX9Sfx1HnOQwsz
- RYRx781uyHrflBLEaPvi.A5TSSpSxiY4jl38ZZ_AxRjhJ3zq0Fz7B0F0gQgQaP79SgcE1Psk2Y0X
- G4x_QSndCe36n9ubKfPsYwvZK34V9wQxij4lpDO.kiAwYVXdwnfyfbI8HgZKwmgiZcIk7aI4MhU3
- QqAHmRevE..wRFkfEJ6J6clBcgdxmxQCBXlGQrXm0tf2r4Ayp8Kaf5CsoNdZwo9J.wtfynlGoaKI
- HPkh9ajBb_jQ5c8k5h3d0T1cYY9sQklIS21jO7G2jbSfmks_fr54uMIliubgWoDrG2qMkZma5Tjb
- D63M1RkhIOwyIgUvarv1JUtQyihAn12NP6tpvRSiSuWq8meu4RmrIpo3lTzTQ4KJqqFd3WjBceQA
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Thu, 21 May 2020 12:00:44 +0000
-Date: Thu, 21 May 2020 12:00:40 +0000 (UTC)
-From: "Mrs. Flora Diomande" <flora-diomande@outlook.fr>
-Message-ID: <1249539239.341736.1590062440203@mail.yahoo.com>
-Subject: Greetings dearest in the lord,
+	by ml01.01.org (Postfix) with ESMTP id BE26711674C58;
+	Thu, 21 May 2020 06:29:57 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.80.20.243; helo=[183.80.20.243]; envelope-from=guallatirio948@o1.e.notification.intuit.com; receiver=<UNKNOWN> 
+Received: from [183.80.20.243] (unknown [183.80.20.243])
+	by ml01.01.org (Postfix) with ESMTP id 1AB8311674C57;
+	Thu, 21 May 2020 06:29:47 -0700 (PDT)
+Received: from FOBUDEG.o1.e.notification.intuit.com (FOBUDEG.o1.e.notification.intuit.com
+ [74.94.37.62])        by  with SMTP id
+ Rhtr-dttre3-Ww; Thu, 21 May 2020 20:33:17 +0700
+Subject: Invoice  5185
+From: "Services" <quickbooks@notification.intuit.com>
+To: linux-nvdimm@lists.01.org
 MIME-Version: 1.0
-References: <1249539239.341736.1590062440203.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15959 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36
-Message-ID-Hash: 5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6
-X-Message-ID-Hash: 5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6
-X-MailFrom: flora-diomande@outlook.fr
+Message-ID: <319065.769710@FOBUDEG.o1.e.notification.intuit.com>
+X-Priority: 3
+Date: Thu, 21 May 2020 20:33:17 +0700
+Message-ID-Hash: ERJG6FQN26QHVOFVU7LO7MBPES6PHM3I
+X-Message-ID-Hash: ERJG6FQN26QHVOFVU7LO7MBPES6PHM3I
+X-MailFrom: guallatirio948@o1.e.notification.intuit.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: d_iomandeflora@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5QVIYCCYOYOIGEN6SXBCTCFXFR6UOGM6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ERJG6FQN26QHVOFVU7LO7MBPES6PHM3I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-R3JlZXRpbmdzIGRlYXJlc3QgaW4gdGhlIGxvcmQsDQoNCkkgZ3JlZXQgeW91IHdpdGggdGhlIG5h
-bWUgb2Ygb3VyIExvcmQgSmVzdXMgQ2hyaXN0OyBpdCBpcyB0cnVlIHRoYXQgdGhpcyBsZXR0ZXIg
-bWF5IGNvbWUgdG8geW91IGFzIGEgc3VycHJpc2UuIE5ldmVydGhlbGVzcywgSSBodW1ibHkgYXNr
-IHlvdSB0byBnaXZlIG1lIHlvdXIgYXR0ZW50aW9uIGFuZCBoZWFyIG1lIHdlbGwuIE15IG5hbWUg
-aXMgTXJzLiBGbG9yYSBEaW9tYW5kZSBmcm9tIFVuaXRlZCBTdGF0ZXMgb2YgQW1lcmljYS4gSSBh
-bSA1OCB5ZWFycyBvbGQgYW5kIEkgYW0gbWFycmllZCB0byBNci4gQmFrYXlva28gRGlvbWFuZGUg
-d2hvIG9uY2Ugd29ya2VkIHdpdGggb3VyIEVtYmFzc3kgaW4gR2VybWFueSBpbiB0aGUgeWVhciAy
-MDAyIGFuZCBoZSBhbHNvIHdvcmtlZCBpbiBhbiBlbWJhc3N5IGluIENvdGUgZCdJdm9pcmUgZm9y
-IGEgcGVyaW9kIG9mIDE2IHllYXJzIGJlZm9yZSBoZSBkaWVkLg0KDQpXZSB3ZXJlIG1hcnJpZWQg
-Zm9yIDMwIHllYXJzIHdpdGhvdXQgYSBjaGlsZCBiZWZvcmUgaGUgZGllZCBhZnRlciBhIGJyaWVm
-IGlsbG5lc3MuIFNpbmNlIGhpcyBkZWF0aCBJIGRlY2lkZWQgbm90IHRvIHJlbWFycnkgZHVlIHRv
-IG15IHJlbGlnaW91cyBiZWxpZWYuIFdoZW4gbXkgbGF0ZSBodXNiYW5kIHdhcyBhbGl2ZSBoZSBk
-ZXBvc2l0ZWQgdGhlIHN1bSBvZiBVU0QkNC41IE1pbGxpb24gKEZvdXIgTWlsbGlvbiwgRml2ZSBI
-dW5kcmVkIFRob3VzYW5kIFVuaXRlZCBTdGF0ZSBkb2xsYXJzKSB3aXRoIGEgQmFuayBpbiBDb3Rl
-IGQnSXZvaXJlLiBQcmVzZW50bHkgdGhpcyBtb25leSBpcyBzdGlsbCBpbiB0aGUgY3VzdG9keSBv
-ZiB0aGUgQmFuay4gUmVjZW50bHksIG15IERvY3RvciB0b2xkIG1lIHRoYXQgSSB3b3VsZCBub3Qg
-bGFzdCBmb3IgdGhlIG5leHQgRm91ciBtb250aHMgZHVlIHRvIG15IGNhbmNlciBpbGxuZXNzLg0K
-DQpIYXZpbmcga25vd24gbXkgY29uZGl0aW9uIEkgZGVjaWRlZCB0byBkb25hdGUgdGhpcyBtb25l
-eSB0byBjaHVyY2hlcywgb3JnYW5pemF0aW9uIG9yIGdvb2QgcGVyc29uIHRoYXQgd2lsbCB1dGls
-aXplIHRoaXMgbW9uZXkgdGhlIHdheSBJIGFtIGdvaW5nIHRvIGluc3RydWN0IGhlcmVpbi4NCg0K
-SSB3YW50IHlvdSB0byB1c2UgdGhpcyBtb25leSBmb3IgY2h1cmNoZXMsIENoYXJpdHkgb3JnYW5p
-emF0aW9uLCBvcnBoYW5hZ2VzLCB3aWRvd3MgYW5kIG90aGVyIHBlb3BsZSB0aGF0IGFyZSBpbiBu
-ZWVkLiBsIHRvb2sgdGhpcyBkZWNpc2lvbiBiZWNhdXNlIEkgZG9uJ3QgaGF2ZSBhbnkgY2hpbGQg
-dGhhdCB3aWxsIGluaGVyaXQgdGhpcyBtb25leS4gTW9yZW92ZXIsIG15IGh1c2JhbmQgcmVsYXRp
-dmVzIGFyZSBub3QgY2xvc2UgdG8gbWUgc2luY2UgSSBkZXZlbG9wIGEgQ2FuY2VyIHByb2JsZW0g
-YW5kIGl0IGhhZCBiZWVuIHRoZWlyIHdpc2ggdG8gc2VlIG1lIGRlYWQgaW4gb3JkZXIgdG8gaW5o
-ZXJpdCBoaXMgd2VhbHRoIHNpbmNlIHdlIGhhdmUgbm8gQ2hpbGQuIFRoZXNlIHBlb3BsZSBhcmUg
-bm90IHdvcnRoeSBvZiB0aGlzIGluaGVyaXRhbmNlLiBUaGlzIGlzIHdoeSBJIGFtIHRha2luZyB0
-aGlzIGRlY2lzaW9uIHRvIGNvbnRhY3QgeW91IGFuZCBkb25hdGUgdGhpcyBmdW5kIHRvIHlvdSBp
-biBvcmRlciBmb3IgeW91IHRvIHVzZSBpdCBmb3IgdGhlIGNoYXJpdHkgd29ya3MuDQoNCkFzIHNv
-b24gYXMgSSByZWNlaXZlIHlvdXIgcmVwbHkgSSB3aWxsIGdpdmUgeW91IHRoZSBjb250YWN0IG9m
-IHRoZSBCYW5rIGluIENvdGUgZCdJdm9pcmUgd2hlcmUgdGhpcyBtb25leSBpcyBkZXBvc2l0ZWQg
-YnkgbXkgaHVzYmFuZCBiZWZvcmUgaGlzIHN1ZGRlbiBkZWF0aCwgYWxzbyBJIHdpbGwgaW5zdHJ1
-Y3Qgb3VyIGZhbWlseSBsYXd5ZXIgaW4gQ290ZSBk4oCZSXZvaXJlIHRvIGlzc3VlIGEgbGV0dGVy
-IG9mIGF1dGhvcml6YXRpb24gdG8gdGhlIGJhbmsgdGhhdCB3aWxsIHByb3ZlIHlvdSB0aGUgcHJl
-c2VudCBiZW5lZmljaWFyeSBvZiB0aGlzIG1vbmV5LiBJIGFsc28gd2FudCB5b3UgdG8gYWx3YXlz
-IHB1dCBtZSBpbiB5b3VyIGRhaWx5IHByYXllci4NCg0KQW55IGRlbGF5IGluIHlvdXIgcmVwbHkg
-bWF5IGdpdmUgbWUgcm9vbSB0byBsb29rIGZvciBhbm90aGVyIGdvb2QgcGVyc29uIGZvciB0aGlz
-IHNhbWUgcHVycG9zZS4gUGxlYXNlIGFzc3VyZSBtZSB0aGF0IHlvdSB3aWxsIGFjdCBhY2NvcmRp
-bmdseSBhcyBJIHN0YXRlZCBoZXJlaW4uDQoNClRoYW5rcyBhbmQgUmVtYWluIGJsZXNzZWQuDQoN
-CllvdXJzIHNpc3RlciBpbiB0aGUgTG9yZCwNCg0KTXJzLiBGbG9yYSBEaW9tYW5kZSwKX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1h
-aWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNl
-bmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Order will be delivered upon payment receipt.
+
+Thanks for your business
+
+
+------------------------   Invoice Summary  --------------------------
+
+Invoice Date: 05/21/2020
+Amount Due: $1,100.00
+
+---------------------------------------------------------------------
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
