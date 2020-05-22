@@ -1,49 +1,72 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AF7E1DDB61
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 01:54:37 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAEC81DE11D
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 22 May 2020 09:38:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 548251172D371;
-	Thu, 21 May 2020 16:51:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	by ml01.01.org (Postfix) with ESMTP id A78A4117AE4DC;
+	Fri, 22 May 2020 00:35:16 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AF8351172D370
-	for <linux-nvdimm@lists.01.org>; Thu, 21 May 2020 16:50:59 -0700 (PDT)
-IronPort-SDR: mn8Vh/0/nkRZdw5JdueMrLqs0bO6yxopVsSgibn7+6iIt38InvDy0WVhhX3N3ZwUTdHCu3+1da
- iwJOnk7UJVfw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:33 -0700
-IronPort-SDR: 5Ud6ZE47rEf3Iem7nxhueUy8uYmGlg1u2XprUu6TAS1G9rG1iDz8ZnjrkasDd1n+jkjnSYCrcG
- yC5W/cJPcAQA==
-X-IronPort-AV: E=Sophos;i="5.73,419,1583222400";
-   d="scan'208";a="412582849"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2020 16:54:33 -0700
-Subject: [5.4-stable PATCH 7/7] libnvdimm/region: Introduce an 'align'
- attribute
-From: Dan Williams <dan.j.williams@intel.com>
-To: stable@vger.kernel.org
-Date: Thu, 21 May 2020 16:38:22 -0700
-Message-ID: <159010430200.1062454.8543650231999164978.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 83DA6117AE4D9
+	for <linux-nvdimm@lists.01.org>; Fri, 22 May 2020 00:35:13 -0700 (PDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04M7V8Vw046770;
+	Fri, 22 May 2020 03:38:14 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 31659tfr9j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2020 03:38:14 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04M7adhL007546;
+	Fri, 22 May 2020 07:38:12 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03ams.nl.ibm.com with ESMTP id 313xas755h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2020 07:38:12 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04M7cAwO6619602
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2020 07:38:10 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C48F4C04A;
+	Fri, 22 May 2020 07:38:10 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F20FC4C062;
+	Fri, 22 May 2020 07:38:06 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.80.144])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Fri, 22 May 2020 07:38:06 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Fri, 22 May 2020 13:08:05 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm, uapi: Add support for PAPR nvdimm specific methods
+In-Reply-To: <87367t941j.fsf@mpe.ellerman.id.au>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com> <87367t941j.fsf@mpe.ellerman.id.au>
+Date: Fri, 22 May 2020 13:08:05 +0530
+Message-ID: <87ftbswhb6.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID-Hash: C2T7HJ4SYBQCXJ5XJ4EEMIZ5QWNISEOT
-X-Message-ID-Hash: C2T7HJ4SYBQCXJ5XJ4EEMIZ5QWNISEOT
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, hch@lst.de, linux-nvdimm@lists.01.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-22_04:2020-05-21,2020-05-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 phishscore=0 mlxlogscore=974 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015 spamscore=0
+ cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005220052
+Message-ID-Hash: 352KH34EXAJWN5I5J47LWTTHBDZDFCUL
+X-Message-ID-Hash: 352KH34EXAJWN5I5J47LWTTHBDZDFCUL
+X-MailFrom: vaibhav@linux.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C2T7HJ4SYBQCXJ5XJ4EEMIZ5QWNISEOT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/352KH34EXAJWN5I5J47LWTTHBDZDFCUL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,447 +75,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Commit 2522afb86a8cceba0f67dbf05772d21b76d79f06 upstream.
+Michael Ellerman <mpe@ellerman.id.au> writes:
 
-The align attribute applies an alignment constraint for namespace
-creation in a region. Whereas the 'align' attribute of a namespace
-applied alignment padding via an info block, the 'align' attribute
-applies alignment constraints to the free space allocation.
+> Ira Weiny <ira.weiny@intel.com> writes:
+>> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
+>>> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
+>>> modules and add the command family to the white list of NVDIMM command
+>>> sets. Also advertise support for ND_CMD_CALL for the dimm
+>>> command mask and implement necessary scaffolding in the module to
+>>> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
+> ...
+>>> + *
+>>> + * Payload Version:
+>>> + *
+>>> + * A 'payload_version' field is present in PDSM header that indicates a specific
+>>> + * version of the structure present in PDSM Payload for a given PDSM command.
+>>> + * This provides backward compatibility in case the PDSM Payload structure
+>>> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
+>>> + *
+>>> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
+>>> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
+>>> + * module when servicing the PDSM envelope checks the 'payload_version' and then
+>>> + * uses 'payload struct version' == MIN('payload_version field',
+>>> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
+>>> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
+>>> + * struct in returned 'payload_version' field.
+>>
+>> FWIW many people believe using a size rather than version is more sustainable.
+>> It is expected that new payload structures are larger (more features) than the
+>> previous payload structure.
+>>
+>> I can't find references at the moment through.
+>
+> I think clone_args is a good modern example:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
+>
+> cheers
 
-The default for 'align' is the maximum known memremap_compat_align()
-across all archs (16MiB from PowerPC at time of writing) multiplied by
-the number of interleave ways if there is blk-aliasing. The minimum is
-PAGE_SIZE and allows for the creation of cross-arch incompatible
-namespaces, just as previous kernels allowed, but the expectation is
-cross-arch and mode-independent compatibility by default.
+Thank Ira and Mpe for pointing this out. I looked into how clone3 sycall
+handles clone_args and few differences came out:
 
-The regression risk with this change is limited to cases that were
-dependent on the ability to create unaligned namespaces, *and* for some
-reason are unable to opt-out of aligned namespaces by writing to
-'regionX/align'. If such a scenario arises the default can be flipped
-from opt-out to opt-in of compat-aligned namespace creation, but that is
-a last resort. The kernel will otherwise continue to support existing
-defined misaligned namespaces.
+* Unlike clone_args that are always transferred in one direction from
+  user-space to kernel, payload contents of pdsms are transferred in both
+  directions. Having a single version number makes it easier for
+  user-space and kernel to determine what data will be exchanged.
 
-Unfortunately this change needs to touch several parts of the
-implementation at once:
-
-- region/available_size: expand busy extents to current align
-- region/max_available_extent: expand busy extents to current align
-- namespace/size: trim free space to current align
-
-...to keep the free space accounting conforming to the dynamic align
-setting.
-
-Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reported-by: Jeff Moyer <jmoyer@redhat.com>
-Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
-Link: https://lore.kernel.org/r/158041478371.3889308.14542630147672668068.stgit@dwillia2-desk3.amr.corp.intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/nvdimm/dimm_devs.c      |   86 +++++++++++++++++++++++-----
- drivers/nvdimm/namespace_devs.c |    9 ++-
- drivers/nvdimm/nd.h             |    1 
- drivers/nvdimm/region_devs.c    |  120 ++++++++++++++++++++++++++++++++++++---
- 4 files changed, 190 insertions(+), 26 deletions(-)
-
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index def5c2846bea..8c773fb60296 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -557,6 +557,21 @@ int nvdimm_security_freeze(struct nvdimm *nvdimm)
- 	return rc;
- }
- 
-+static unsigned long dpa_align(struct nd_region *nd_region)
-+{
-+	struct device *dev = &nd_region->dev;
-+
-+	if (dev_WARN_ONCE(dev, !is_nvdimm_bus_locked(dev),
-+				"bus lock required for capacity provision\n"))
-+		return 0;
-+	if (dev_WARN_ONCE(dev, !nd_region->ndr_mappings || nd_region->align
-+				% nd_region->ndr_mappings,
-+				"invalid region align %#lx mappings: %d\n",
-+				nd_region->align, nd_region->ndr_mappings))
-+		return 0;
-+	return nd_region->align / nd_region->ndr_mappings;
-+}
-+
- int alias_dpa_busy(struct device *dev, void *data)
- {
- 	resource_size_t map_end, blk_start, new;
-@@ -565,6 +580,7 @@ int alias_dpa_busy(struct device *dev, void *data)
- 	struct nd_region *nd_region;
- 	struct nvdimm_drvdata *ndd;
- 	struct resource *res;
-+	unsigned long align;
- 	int i;
- 
- 	if (!is_memory(dev))
-@@ -602,13 +618,21 @@ int alias_dpa_busy(struct device *dev, void *data)
- 	 * Find the free dpa from the end of the last pmem allocation to
- 	 * the end of the interleave-set mapping.
- 	 */
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end;
-+
- 		if (strncmp(res->name, "pmem", 4) != 0)
- 			continue;
--		if ((res->start >= blk_start && res->start < map_end)
--				|| (res->end >= blk_start
--					&& res->end <= map_end)) {
--			new = max(blk_start, min(map_end + 1, res->end + 1));
-+
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		if ((start >= blk_start && start < map_end)
-+				|| (end >= blk_start && end <= map_end)) {
-+			new = max(blk_start, min(map_end, end) + 1);
- 			if (new != blk_start) {
- 				blk_start = new;
- 				goto retry;
-@@ -648,6 +672,7 @@ resource_size_t nd_blk_available_dpa(struct nd_region *nd_region)
- 		.res = NULL,
- 	};
- 	struct resource *res;
-+	unsigned long align;
- 
- 	if (!ndd)
- 		return 0;
-@@ -655,10 +680,20 @@ resource_size_t nd_blk_available_dpa(struct nd_region *nd_region)
- 	device_for_each_child(&nvdimm_bus->dev, &info, alias_dpa_busy);
- 
- 	/* now account for busy blk allocations in unaliased dpa */
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end, size;
-+
- 		if (strncmp(res->name, "blk", 3) != 0)
- 			continue;
--		info.available -= resource_size(res);
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		size = end - start + 1;
-+		if (size >= info.available)
-+			return 0;
-+		info.available -= size;
- 	}
- 
- 	return info.available;
-@@ -677,19 +712,31 @@ resource_size_t nd_pmem_max_contiguous_dpa(struct nd_region *nd_region,
- 	struct nvdimm_bus *nvdimm_bus;
- 	resource_size_t max = 0;
- 	struct resource *res;
-+	unsigned long align;
- 
- 	/* if a dimm is disabled the available capacity is zero */
- 	if (!ndd)
- 		return 0;
- 
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	nvdimm_bus = walk_to_nvdimm_bus(ndd->dev);
- 	if (__reserve_free_pmem(&nd_region->dev, nd_mapping->nvdimm))
- 		return 0;
- 	for_each_dpa_resource(ndd, res) {
-+		resource_size_t start, end;
-+
- 		if (strcmp(res->name, "pmem-reserve") != 0)
- 			continue;
--		if (resource_size(res) > max)
--			max = resource_size(res);
-+		/* trim free space relative to current alignment setting */
-+		start = ALIGN(res->start, align);
-+		end = ALIGN_DOWN(res->end + 1, align) - 1;
-+		if (end < start)
-+			continue;
-+		if (end - start + 1 > max)
-+			max = end - start + 1;
- 	}
- 	release_free_pmem(nvdimm_bus, nd_mapping);
- 	return max;
-@@ -717,24 +764,33 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 	struct nvdimm_drvdata *ndd = to_ndd(nd_mapping);
- 	struct resource *res;
- 	const char *reason;
-+	unsigned long align;
- 
- 	if (!ndd)
- 		return 0;
- 
-+	align = dpa_align(nd_region);
-+	if (!align)
-+		return 0;
-+
- 	map_start = nd_mapping->start;
- 	map_end = map_start + nd_mapping->size - 1;
- 	blk_start = max(map_start, map_end + 1 - *overlap);
- 	for_each_dpa_resource(ndd, res) {
--		if (res->start >= map_start && res->start < map_end) {
-+		resource_size_t start, end;
-+
-+		start = ALIGN_DOWN(res->start, align);
-+		end = ALIGN(res->end + 1, align) - 1;
-+		if (start >= map_start && start < map_end) {
- 			if (strncmp(res->name, "blk", 3) == 0)
- 				blk_start = min(blk_start,
--						max(map_start, res->start));
--			else if (res->end > map_end) {
-+						max(map_start, start));
-+			else if (end > map_end) {
- 				reason = "misaligned to iset";
- 				goto err;
- 			} else
--				busy += resource_size(res);
--		} else if (res->end >= map_start && res->end <= map_end) {
-+				busy += end - start + 1;
-+		} else if (end >= map_start && end <= map_end) {
- 			if (strncmp(res->name, "blk", 3) == 0) {
- 				/*
- 				 * If a BLK allocation overlaps the start of
-@@ -743,8 +799,8 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 				 */
- 				blk_start = map_start;
- 			} else
--				busy += resource_size(res);
--		} else if (map_start > res->start && map_start < res->end) {
-+				busy += end - start + 1;
-+		} else if (map_start > start && map_start < end) {
- 			/* total eclipse of the mapping */
- 			busy += nd_mapping->size;
- 			blk_start = map_start;
-@@ -754,7 +810,7 @@ resource_size_t nd_pmem_available_dpa(struct nd_region *nd_region,
- 	*overlap = map_end + 1 - blk_start;
- 	available = blk_start - map_start;
- 	if (busy < available)
--		return available - busy;
-+		return ALIGN_DOWN(available - busy, align);
- 	return 0;
- 
-  err:
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 8cf1c8932a3b..e80de9b9ccce 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -568,6 +568,11 @@ static void space_valid(struct nd_region *nd_region, struct nvdimm_drvdata *ndd,
- {
- 	bool is_reserve = strcmp(label_id->id, "pmem-reserve") == 0;
- 	bool is_pmem = strncmp(label_id->id, "pmem", 4) == 0;
-+	unsigned long align;
-+
-+	align = nd_region->align / nd_region->ndr_mappings;
-+	valid->start = ALIGN(valid->start, align);
-+	valid->end = ALIGN_DOWN(valid->end + 1, align) - 1;
- 
- 	if (valid->start >= valid->end)
- 		goto invalid;
-@@ -1007,10 +1012,10 @@ static ssize_t __size_store(struct device *dev, unsigned long long val)
- 		return -ENXIO;
- 	}
- 
--	div_u64_rem(val, PAGE_SIZE * nd_region->ndr_mappings, &remainder);
-+	div_u64_rem(val, nd_region->align, &remainder);
- 	if (remainder) {
- 		dev_dbg(dev, "%llu is not %ldK aligned\n", val,
--				(PAGE_SIZE * nd_region->ndr_mappings) / SZ_1K);
-+				nd_region->align / SZ_1K);
- 		return -EINVAL;
- 	}
- 
-diff --git a/drivers/nvdimm/nd.h b/drivers/nvdimm/nd.h
-index 4a946c019e0f..e37c79c340d6 100644
---- a/drivers/nvdimm/nd.h
-+++ b/drivers/nvdimm/nd.h
-@@ -146,6 +146,7 @@ struct nd_region {
- 	struct device *btt_seed;
- 	struct device *pfn_seed;
- 	struct device *dax_seed;
-+	unsigned long align;
- 	u16 ndr_mappings;
- 	u64 ndr_size;
- 	u64 ndr_start;
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index b1b13debffbc..7d5ab00c7b45 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -246,21 +246,25 @@ int nd_region_to_nstype(struct nd_region *nd_region)
- }
- EXPORT_SYMBOL(nd_region_to_nstype);
- 
--static ssize_t size_show(struct device *dev,
--		struct device_attribute *attr, char *buf)
-+static unsigned long long region_size(struct nd_region *nd_region)
- {
--	struct nd_region *nd_region = to_nd_region(dev);
--	unsigned long long size = 0;
--
--	if (is_memory(dev)) {
--		size = nd_region->ndr_size;
-+	if (is_memory(&nd_region->dev)) {
-+		return nd_region->ndr_size;
- 	} else if (nd_region->ndr_mappings == 1) {
- 		struct nd_mapping *nd_mapping = &nd_region->mapping[0];
- 
--		size = nd_mapping->size;
-+		return nd_mapping->size;
- 	}
- 
--	return sprintf(buf, "%llu\n", size);
-+	return 0;
-+}
-+
-+static ssize_t size_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+
-+	return sprintf(buf, "%llu\n", region_size(nd_region));
- }
- static DEVICE_ATTR_RO(size);
- 
-@@ -559,6 +563,54 @@ static ssize_t read_only_store(struct device *dev,
- }
- static DEVICE_ATTR_RW(read_only);
- 
-+static ssize_t align_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+
-+	return sprintf(buf, "%#lx\n", nd_region->align);
-+}
-+
-+static ssize_t align_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t len)
-+{
-+	struct nd_region *nd_region = to_nd_region(dev);
-+	unsigned long val, dpa;
-+	u32 remainder;
-+	int rc;
-+
-+	rc = kstrtoul(buf, 0, &val);
-+	if (rc)
-+		return rc;
-+
-+	if (!nd_region->ndr_mappings)
-+		return -ENXIO;
-+
-+	/*
-+	 * Ensure space-align is evenly divisible by the region
-+	 * interleave-width because the kernel typically has no facility
-+	 * to determine which DIMM(s), dimm-physical-addresses, would
-+	 * contribute to the tail capacity in system-physical-address
-+	 * space for the namespace.
-+	 */
-+	dpa = div_u64_rem(val, nd_region->ndr_mappings, &remainder);
-+	if (!is_power_of_2(dpa) || dpa < PAGE_SIZE
-+			|| val > region_size(nd_region) || remainder)
-+		return -EINVAL;
-+
-+	/*
-+	 * Given that space allocation consults this value multiple
-+	 * times ensure it does not change for the duration of the
-+	 * allocation.
-+	 */
-+	nvdimm_bus_lock(dev);
-+	nd_region->align = val;
-+	nvdimm_bus_unlock(dev);
-+
-+	return len;
-+}
-+static DEVICE_ATTR_RW(align);
-+
- static ssize_t region_badblocks_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
-@@ -601,6 +653,7 @@ static DEVICE_ATTR_RO(persistence_domain);
- 
- static struct attribute *nd_region_attributes[] = {
- 	&dev_attr_size.attr,
-+	&dev_attr_align.attr,
- 	&dev_attr_nstype.attr,
- 	&dev_attr_mappings.attr,
- 	&dev_attr_btt_seed.attr,
-@@ -660,6 +713,19 @@ static umode_t region_visible(struct kobject *kobj, struct attribute *a, int n)
- 		return a->mode;
- 	}
- 
-+	if (a == &dev_attr_align.attr) {
-+		int i;
-+
-+		for (i = 0; i < nd_region->ndr_mappings; i++) {
-+			struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-+			struct nvdimm *nvdimm = nd_mapping->nvdimm;
-+
-+			if (test_bit(NDD_LABELING, &nvdimm->flags))
-+				return a->mode;
-+		}
-+		return 0;
-+	}
-+
- 	if (a != &dev_attr_set_cookie.attr
- 			&& a != &dev_attr_available_size.attr)
- 		return a->mode;
-@@ -930,6 +996,41 @@ void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
- }
- EXPORT_SYMBOL(nd_region_release_lane);
- 
-+/*
-+ * PowerPC requires this alignment for memremap_pages(). All other archs
-+ * should be ok with SUBSECTION_SIZE (see memremap_compat_align()).
-+ */
-+#define MEMREMAP_COMPAT_ALIGN_MAX SZ_16M
-+
-+static unsigned long default_align(struct nd_region *nd_region)
-+{
-+	unsigned long align;
-+	int i, mappings;
-+	u32 remainder;
-+
-+	if (is_nd_blk(&nd_region->dev))
-+		align = PAGE_SIZE;
-+	else
-+		align = MEMREMAP_COMPAT_ALIGN_MAX;
-+
-+	for (i = 0; i < nd_region->ndr_mappings; i++) {
-+		struct nd_mapping *nd_mapping = &nd_region->mapping[i];
-+		struct nvdimm *nvdimm = nd_mapping->nvdimm;
-+
-+		if (test_bit(NDD_ALIASING, &nvdimm->flags)) {
-+			align = MEMREMAP_COMPAT_ALIGN_MAX;
-+			break;
-+		}
-+	}
-+
-+	mappings = max_t(u16, 1, nd_region->ndr_mappings);
-+	div_u64_rem(align, mappings, &remainder);
-+	if (remainder)
-+		align *= mappings;
-+
-+	return align;
-+}
-+
- static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 		struct nd_region_desc *ndr_desc, struct device_type *dev_type,
- 		const char *caller)
-@@ -1034,6 +1135,7 @@ static struct nd_region *nd_region_create(struct nvdimm_bus *nvdimm_bus,
- 	dev->of_node = ndr_desc->of_node;
- 	nd_region->ndr_size = resource_size(ndr_desc->res);
- 	nd_region->ndr_start = ndr_desc->res->start;
-+	nd_region->align = default_align(nd_region);
- 	if (ndr_desc->flush)
- 		nd_region->flush = ndr_desc->flush;
- 	else
+* For PDSMs, the version number is negotiated between libndctl and
+  kernel. For example in case kernel only supports an older version of
+  a structure, its free to send a lower version number back to
+  libndctl. Such negotiations doesnt happen with clone3 syscall.
+  
+-- 
+Cheers
+~ Vaibhav
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
