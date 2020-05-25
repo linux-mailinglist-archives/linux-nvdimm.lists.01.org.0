@@ -1,51 +1,72 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16211E0D20
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 13:31:12 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CEB1E0E04
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 14:01:29 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4B0381221A1C2;
-	Mon, 25 May 2020 04:27:14 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org; envelope-from=batv+ab9bb8b38cf50d3a9241+6119+infradead.org+hch@bombadil.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7815712227BEB;
+	Mon, 25 May 2020 04:57:30 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 065A11221A1C2
-	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 04:27:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=4IXSrzF0DpdIQO5rnizUXwGVEZpXEBJnyHbP5aJAwuk=; b=lE+diA/tjTtgoCEqmasbvPGnOv
-	pox14hYjAwC5xmAd6DqWLaaq47eFX6QKLSUPgMNqwSy0m960zOgOHildrpDDIipUhN5VQILka3NOx
-	LmDz4W6SdgBU8cx3skeGyHQ1Wa30V3oZioLLne6zOVYBIPXFx/U6RTXFFy+pnIBHrtfejNmyA6LlT
-	boJdOj6CqDm4fryFrrfMRbMlwM1RSSt28CN+rks9d6X4pm6eZ1qqky+AsK8NegjJB/jxtlt1h5vY+
-	DOmNuovzfq3IhxrPsvY9eGVz7rDb0cIuGvZWFuBx3tW1PmsViLRODDhfb3AcK95XwnTYp3GTlPQuB
-	edZWMJzA==;
-Received: from [2001:4bb8:18c:5da7:c70:4a89:bc61:2] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1jdBJw-0002cF-Pu; Mon, 25 May 2020 11:31:05 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 16/16] block: reduce part_stat_lock() scope
-Date: Mon, 25 May 2020 13:30:14 +0200
-Message-Id: <20200525113014.345997-17-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200525113014.345997-1-hch@lst.de>
-References: <20200525113014.345997-1-hch@lst.de>
+	by ml01.01.org (Postfix) with ESMTPS id 2092612227BEA
+	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 04:57:27 -0700 (PDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04PBVAUQ035241;
+	Mon, 25 May 2020 08:00:50 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 316weudjhj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 May 2020 08:00:50 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04PBvJuB031814;
+	Mon, 25 May 2020 12:00:48 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+	by ppma04ams.nl.ibm.com with ESMTP id 316uf8v17p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 May 2020 12:00:48 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04PC0kQq60424296
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 May 2020 12:00:46 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5F2834C050;
+	Mon, 25 May 2020 12:00:46 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 163AE4C046;
+	Mon, 25 May 2020 12:00:43 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.102.3.198])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Mon, 25 May 2020 12:00:42 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 25 May 2020 17:30:42 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm, uapi: Add support for PAPR nvdimm specific methods
+In-Reply-To: <87ftbswhb6.fsf@linux.ibm.com>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com> <87367t941j.fsf@mpe.ellerman.id.au> <87ftbswhb6.fsf@linux.ibm.com>
+Date: Mon, 25 May 2020 17:30:42 +0530
+Message-ID: <87a71ww7f9.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: ADQ5AQBVQVAUVEIIMKK3RSYLLKYS2E6J
-X-Message-ID-Hash: ADQ5AQBVQVAUVEIIMKK3RSYLLKYS2E6J
-X-MailFrom: BATV+ab9bb8b38cf50d3a9241+6119+infradead.org+hch@bombadil.srs.infradead.org
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
+ definitions=2020-05-25_05:2020-05-25,2020-05-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
+ suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005250087
+Message-ID-Hash: ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S
+X-Message-ID-Hash: ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>, Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>, dm-devel@redhat.com, linux-block@vger.kernel.org, drbd-dev@lists.linbit.com, linux-bcache@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ADQ5AQBVQVAUVEIIMKK3RSYLLKYS2E6J/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,58 +75,68 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-We only need the stats lock (aka preempt_disable()) for updating the
-states, not for looking up or dropping the hd_struct reference.
+Hi Ira, Mpe and Aneesh,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-core.c  | 5 +++--
- block/blk-merge.c | 3 ++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index bf2f7d4bc0c1c..a01fb2b508f0e 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1437,9 +1437,9 @@ void blk_account_io_done(struct request *req, u64 now)
- 		update_io_ticks(part, jiffies, true);
- 		part_stat_inc(part, ios[sgrp]);
- 		part_stat_add(part, nsecs[sgrp], now - req->start_time_ns);
-+		part_stat_unlock();
- 
- 		hd_struct_put(part);
--		part_stat_unlock();
- 	}
- }
- 
-@@ -1448,8 +1448,9 @@ void blk_account_io_start(struct request *rq)
- 	if (!blk_do_io_stat(rq))
- 		return;
- 
--	part_stat_lock();
- 	rq->part = disk_map_sector_rcu(rq->rq_disk, blk_rq_pos(rq));
-+
-+	part_stat_lock();
- 	update_io_ticks(rq->part, jiffies, false);
- 	part_stat_unlock();
- }
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index c3beae5c1be71..f0b0bae075a0c 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -674,8 +674,9 @@ static void blk_account_io_merge_request(struct request *req)
- 	if (blk_do_io_stat(req)) {
- 		part_stat_lock();
- 		part_stat_inc(req->part, merges[op_stat_group(req_op(req))]);
--		hd_struct_put(req->part);
- 		part_stat_unlock();
-+
-+		hd_struct_put(req->part);
- 	}
- }
- 
+> Michael Ellerman <mpe@ellerman.id.au> writes:
+>
+>> Ira Weiny <ira.weiny@intel.com> writes:
+>>> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
+>>>> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
+>>>> modules and add the command family to the white list of NVDIMM command
+>>>> sets. Also advertise support for ND_CMD_CALL for the dimm
+>>>> command mask and implement necessary scaffolding in the module to
+>>>> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
+>> ...
+>>>> + *
+>>>> + * Payload Version:
+>>>> + *
+>>>> + * A 'payload_version' field is present in PDSM header that indicates a specific
+>>>> + * version of the structure present in PDSM Payload for a given PDSM command.
+>>>> + * This provides backward compatibility in case the PDSM Payload structure
+>>>> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
+>>>> + *
+>>>> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
+>>>> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
+>>>> + * module when servicing the PDSM envelope checks the 'payload_version' and then
+>>>> + * uses 'payload struct version' == MIN('payload_version field',
+>>>> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
+>>>> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
+>>>> + * struct in returned 'payload_version' field.
+>>>
+>>> FWIW many people believe using a size rather than version is more sustainable.
+>>> It is expected that new payload structures are larger (more features) than the
+>>> previous payload structure.
+>>>
+>>> I can't find references at the moment through.
+>>
+>> I think clone_args is a good modern example:
+>>
+>>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
+>>
+>> cheers
+>
+> Thank Ira and Mpe for pointing this out. I looked into how clone3 sycall
+> handles clone_args and few differences came out:
+>
+> * Unlike clone_args that are always transferred in one direction from
+>   user-space to kernel, payload contents of pdsms are transferred in both
+>   directions. Having a single version number makes it easier for
+>   user-space and kernel to determine what data will be exchanged.
+>
+> * For PDSMs, the version number is negotiated between libndctl and
+>   kernel. For example in case kernel only supports an older version of
+>   a structure, its free to send a lower version number back to
+>   libndctl. Such negotiations doesnt happen with clone3 syscall.
+
+If you are ok with the explaination above please let me know. I will
+quickly spin off a v8 addressing your review comments.
+
+Thanks,
 -- 
-2.26.2
+Cheers
+~ Vaibhav
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
