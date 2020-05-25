@@ -1,176 +1,82 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A72E1E0F07
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 15:03:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F24241E1011
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 16:05:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EE5171221A60D;
-	Mon, 25 May 2020 05:59:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id 475AD122338D5;
+	Mon, 25 May 2020 07:01:26 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=184.95.58.173; helo=server.jobs-ksa.net; envelope-from=nivashnee.s@samsung.com; receiver=<UNKNOWN> 
+Received: from server.jobs-ksa.net (unknown [184.95.58.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6698E1221A60C
-	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 05:59:54 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-	by mx2.suse.de (Postfix) with ESMTP id A5D8BABC2;
-	Mon, 25 May 2020 13:03:52 +0000 (UTC)
-Subject: Re: [PATCH 05/16] bcache: use bio_{start,end}_io_acct
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-References: <20200525113014.345997-1-hch@lst.de>
- <20200525113014.345997-6-hch@lst.de>
-From: Coly Li <colyli@suse.de>
-Autocrypt: addr=colyli@suse.de; keydata=
- mQINBFYX6S8BEAC9VSamb2aiMTQREFXK4K/W7nGnAinca7MRuFUD4JqWMJ9FakNRd/E0v30F
- qvZ2YWpidPjaIxHwu3u9tmLKqS+2vnP0k7PRHXBYbtZEMpy3kCzseNfdrNqwJ54A430BHf2S
- GMVRVENiScsnh4SnaYjFVvB8SrlhTsgVEXEBBma5Ktgq9YSoy5miatWmZvHLFTQgFMabCz/P
- j5/xzykrF6yHo0rHZtwzQzF8rriOplAFCECp/t05+OeHHxjSqSI0P/G79Ll+AJYLRRm9til/
- K6yz/1hX5xMToIkYrshDJDrUc8DjEpISQQPhG19PzaUf3vFpmnSVYprcWfJWsa2wZyyjRFkf
- J51S82WfclafNC6N7eRXedpRpG6udUAYOA1YdtlyQRZa84EJvMzW96iSL1Gf+ZGtRuM3k49H
- 1wiWOjlANiJYSIWyzJjxAd/7Xtiy/s3PRKL9u9y25ftMLFa1IljiDG+mdY7LyAGfvdtIkanr
- iBpX4gWXd7lNQFLDJMfShfu+CTMCdRzCAQ9hIHPmBeZDJxKq721CyBiGAhRxDN+TYiaG/UWT
- 7IB7LL4zJrIe/xQ8HhRO+2NvT89o0LxEFKBGg39yjTMIrjbl2ZxY488+56UV4FclubrG+t16
- r2KrandM7P5RjR+cuHhkKseim50Qsw0B+Eu33Hjry7YCihmGswARAQABtBhDb2x5IExpIDxj
- b2x5bGlAc3VzZS5kZT6JAlYEEwEIAEACGyMHCwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgBYh
- BOo+RS/0+Uhgjej60Mc5B5Nrffj8BQJcR84dBQkY++fuAAoJEMc5B5Nrffj8ixcP/3KAKg1X
- EcoW4u/0z+Ton5rCyb/NpAww8MuRjNW82UBUac7yCi1y3OW7NtLjuBLw5SaVG5AArb7IF3U0
- qTOobqfl5XHsT0o5wFHZaKUrnHb6y7V3SplsJWfkP3JmOooJsQB3z3K96ZTkFelsNb0ZaBRu
- gV+LA4MomhQ+D3BCDR1it1OX/tpvm2uaDF6s/8uFtcDEM9eQeqATN/QAJ49nvU/I8zDSY9rc
- 0x9mP0x+gH4RccbnoPu/rUG6Fm1ZpLrbb6NpaYBBJ/V1BC4lIOjnd24bsoQrQmnJn9dSr60X
- 1MY60XDszIyzRw7vbJcUn6ZzPNFDxFFT9diIb+wBp+DD8ZlD/hnVpl4f921ZbvfOSsXAJrKB
- 1hGY17FPwelp1sPcK2mDT+pfHEMV+OQdZzD2OCKtza/5IYismJJm3oVUYMogb5vDNAw9X2aP
- XgwUuG+FDEFPamFMUwIfzYHcePfqf0mMsaeSgtA/xTxzx/0MLjUJHl46Bc0uKDhv7QUyGz0j
- Ywgr2mHTvG+NWQ/mDeHNGkcnsnp3IY7koDHnN2xMFXzY4bn9m8ctqKo2roqjCzoxD/njoAhf
- KBzdybLHATqJG/yiZSbCxDA1n/J4FzPyZ0rNHUAJ/QndmmVspE9syFpFCKigvvyrzm016+k+
- FJ59Q6RG4MSy/+J565Xj+DNY3/dCuQINBFYX6S8BEADZP+2cl4DRFaSaBms08W8/smc5T2CO
- YhAoygZn71rB7Djml2ZdvrLRjR8Qbn0Q/2L2gGUVc63pJnbrjlXSx2LfAFE0SlfYIJ11aFdF
- 9w7RvqWByQjDJor3Z0fWvPExplNgMvxpD0U0QrVT5dIGTx9hadejCl/ug09Lr6MPQn+a4+qs
- aRWwgCSHaIuDkH3zI1MJXiqXXFKUzJ/Fyx6R72rqiMPHH2nfwmMu6wOXAXb7+sXjZz5Po9GJ
- g2OcEc+rpUtKUJGyeQsnCDxUcqJXZDBi/GnhPCcraQuqiQ7EGWuJfjk51vaI/rW4bZkA9yEP
- B9rBYngbz7cQymUsfxuTT8OSlhxjP3l4ZIZFKIhDaQeZMj8pumBfEVUyiF6KVSfgfNQ/5PpM
- R4/pmGbRqrAAElhrRPbKQnCkGWDr8zG+AjN1KF6rHaFgAIO7TtZ+F28jq4reLkur0N5tQFww
- wFwxzROdeLHuZjL7eEtcnNnzSkXHczLkV4kQ3+vr/7Gm65mQfnVpg6JpwpVrbDYQeOFlxZ8+
- GERY5Dag4KgKa/4cSZX2x/5+KkQx9wHwackw5gDCvAdZ+Q81nm6tRxEYBBiVDQZYqO73stgT
- ZyrkxykUbQIy8PI+g7XMDCMnPiDncQqgf96KR3cvw4wN8QrgA6xRo8xOc2C3X7jTMQUytCz9
- 0MyV1QARAQABiQI8BBgBCAAmAhsMFiEE6j5FL/T5SGCN6PrQxzkHk2t9+PwFAlxHziAFCRj7
- 5/EACgkQxzkHk2t9+PxgfA//cH5R1DvpJPwraTAl24SUcG9EWe+NXyqveApe05nk15zEuxxd
- e4zFEjo+xYZilSveLqYHrm/amvQhsQ6JLU+8N60DZHVcXbw1Eb8CEjM5oXdbcJpXh1/1BEwl
- 4phsQMkxOTns51bGDhTQkv4lsZKvNByB9NiiMkT43EOx14rjkhHw3rnqoI7ogu8OO7XWfKcL
- CbchjJ8t3c2XK1MUe056yPpNAT2XPNF2EEBPG2Y2F4vLgEbPv1EtpGUS1+JvmK3APxjXUl5z
- 6xrxCQDWM5AAtGfM/IswVjbZYSJYyH4BQKrShzMb0rWUjkpXvvjsjt8rEXpZEYJgX9jvCoxt
- oqjCKiVLpwje9WkEe9O9VxljmPvxAhVqJjX62S+TGp93iD+mvpCoHo3+CcvyRcilz+Ko8lfO
- hS9tYT0HDUiDLvpUyH1AR2xW9RGDevGfwGTpF0K6cLouqyZNdhlmNciX48tFUGjakRFsxRmX
- K0Jx4CEZubakJe+894sX6pvNFiI7qUUdB882i5GR3v9ijVPhaMr8oGuJ3kvwBIA8lvRBGVGn
- 9xvzkQ8Prpbqh30I4NMp8MjFdkwCN6znBKPHdjNTwE5PRZH0S9J0o67IEIvHfH0eAWAsgpTz
- +jwc7VKH7vkvgscUhq/v1/PEWCAqh9UHy7R/jiUxwzw/288OpgO+i+2l11Y=
-Message-ID: <85828157-ac53-57e8-1a27-068478ab5f5c@suse.de>
-Date: Mon, 25 May 2020 21:03:39 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.0
+	by ml01.01.org (Postfix) with ESMTPS id 8FE4E122338D3
+	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 07:01:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=minsaa.com;
+	 s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Reply-To:From:Date:Subject:To:Sender:Cc:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=QnRRrFL2wD8Y6HpQ80oO8CsQh/hfnivjR/J0kjoGfxw=; b=hvLBbsqXMvsPI0yFoKpuk3hXgL
+	LST+a8PMD5DioEq2+xZIDQFlFpi8Rd7EPNURNinBikmOaFZSe00elIL4+rJrnRoX5MnhwBD6csQEx
+	u1ygEtpIPO7eY98K5+/sNyUZC21fmemGdz/srQU9z/Q1my5fAzl10LsKvnARfvbnK7yd9tg03uJ7b
+	ydrtH4nL41ftEum7so/wucy+iwhV3YmQuIN9bUbIjXAt/uS+Bk28LDsmldtiN2kzNvdvOl1FpWyat
+	kzQJWPa8o5AXHEL4+MzZT7b3mty60R+ok/Dx4xBXK4RL6kPbQ1dfhqNDcArtUSEZBMB2t1/jAWIks
+	/1hdYEhA==;
+Received: from hafr by server.jobs-ksa.net with local (Exim 4.91)
+	(envelope-from <nivashnee.s@samsung.com>)
+	id 1jdDjE-0005VR-Fw
+	for linux-nvdimm@lists.01.org; Mon, 25 May 2020 10:05:20 -0400
+To: linux-nvdimm@lists.01.org
+Subject: Aw: HG 2020-01/ BL: ONEYNB9BMB197700/ PMT REQUEST
+X-PHP-Script: minsaa.com/wp-content/uploads/2016/mail-wp30.php for 35.178.153.58, 184.95.58.173
+X-PHP-Originating-Script: 1003:mail-wp30.php
+Date: Mon, 25 May 2020 14:05:20 +0000
+From: "Nivashnee.s@samsung.com" <nivashnee.s@samsung.com>
+Message-ID: <9dcfcda7a81be7ca0189d5b17a9f7638@minsaa.com>
+X-Mailer: Leaf PHPMailer 2.7 (leafmailer.pw)
 MIME-Version: 1.0
-In-Reply-To: <20200525113014.345997-6-hch@lst.de>
-Content-Language: en-US
-Message-ID-Hash: D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H
-X-Message-ID-Hash: D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H
-X-MailFrom: colyli@suse.de
+Content-Type: multipart/mixed;
+	boundary="b1_9dcfcda7a81be7ca0189d5b17a9f7638"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.jobs-ksa.net
+X-AntiAbuse: Original Domain - lists.01.org
+X-AntiAbuse: Originator/Caller UID/GID - [1003 993] / [47 12]
+X-AntiAbuse: Sender Address Domain - samsung.com
+X-Get-Message-Sender-Via: server.jobs-ksa.net: authenticated_id: hafr/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: server.jobs-ksa.net: hafr
+X-Source: 
+X-Source-Args: php-fpm: pool minsaa_com                                 
+X-Source-Dir: minsaa.com:/public_html/wp-content/uploads/2016
+Content-Transfer-Encoding: 7bit
+Message-ID-Hash: 46YSEOU5LITVB762TKBVJ33ULPXZQKNF
+X-Message-ID-Hash: 46YSEOU5LITVB762TKBVJ33ULPXZQKNF
+X-MailFrom: nivashnee.s@samsung.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>, Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>, dm-devel@redhat.com, linux-block@vger.kernel.org, drbd-dev@lists.linbit.com, linux-bcache@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: sales01-micargichina@mail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/46YSEOU5LITVB762TKBVJ33ULPXZQKNF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+
+This is a multi-part message in MIME format.
+
+--b1_9dcfcda7a81be7ca0189d5b17a9f7638
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On 2020/5/25 19:30, Christoph Hellwig wrote:
-> Switch bcache to use the nicer bio accounting helpers, and call the
-> routines where we also sample the start time to give coherent accounting
-> results.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-by: Coly Li <colyli@suse.de>
-
-
-Coly Li
-
-> ---
->  drivers/md/bcache/request.c | 18 ++++--------------
->  1 file changed, 4 insertions(+), 14 deletions(-)
-> 
-> diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
-> index 77d1a26975174..22b483527176b 100644
-> --- a/drivers/md/bcache/request.c
-> +++ b/drivers/md/bcache/request.c
-> @@ -668,9 +668,7 @@ static void backing_request_endio(struct bio *bio)
->  static void bio_complete(struct search *s)
->  {
->  	if (s->orig_bio) {
-> -		generic_end_io_acct(s->d->disk->queue, bio_op(s->orig_bio),
-> -				    &s->d->disk->part0, s->start_time);
-> -
-> +		bio_end_io_acct(s->orig_bio, s->start_time);
->  		trace_bcache_request_end(s->d, s->orig_bio);
->  		s->orig_bio->bi_status = s->iop.status;
->  		bio_endio(s->orig_bio);
-> @@ -730,7 +728,7 @@ static inline struct search *search_alloc(struct bio *bio,
->  	s->recoverable		= 1;
->  	s->write		= op_is_write(bio_op(bio));
->  	s->read_dirty_data	= 0;
-> -	s->start_time		= jiffies;
-> +	s->start_time		= bio_start_io_acct(bio);
->  
->  	s->iop.c		= d->c;
->  	s->iop.bio		= NULL;
-> @@ -1082,8 +1080,7 @@ static void detached_dev_end_io(struct bio *bio)
->  	bio->bi_end_io = ddip->bi_end_io;
->  	bio->bi_private = ddip->bi_private;
->  
-> -	generic_end_io_acct(ddip->d->disk->queue, bio_op(bio),
-> -			    &ddip->d->disk->part0, ddip->start_time);
-> +	bio_end_io_acct(bio, ddip->start_time);
->  
->  	if (bio->bi_status) {
->  		struct cached_dev *dc = container_of(ddip->d,
-> @@ -1108,7 +1105,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio)
->  	 */
->  	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
->  	ddip->d = d;
-> -	ddip->start_time = jiffies;
-> +	ddip->start_time = bio_start_io_acct(bio);
->  	ddip->bi_end_io = bio->bi_end_io;
->  	ddip->bi_private = bio->bi_private;
->  	bio->bi_end_io = detached_dev_end_io;
-> @@ -1190,11 +1187,6 @@ blk_qc_t cached_dev_make_request(struct request_queue *q, struct bio *bio)
->  		}
->  	}
->  
-> -	generic_start_io_acct(q,
-> -			      bio_op(bio),
-> -			      bio_sectors(bio),
-> -			      &d->disk->part0);
-> -
->  	bio_set_dev(bio, dc->bdev);
->  	bio->bi_iter.bi_sector += dc->sb.data_offset;
->  
-> @@ -1311,8 +1303,6 @@ blk_qc_t flash_dev_make_request(struct request_queue *q, struct bio *bio)
->  		return BLK_QC_T_NONE;
->  	}
->  
-> -	generic_start_io_acct(q, bio_op(bio), bio_sectors(bio), &d->disk->part0);
-> -
->  	s = search_alloc(bio, d);
->  	cl = &s->cl;
->  	bio = &s->bio.bio;
-> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--b1_9dcfcda7a81be7ca0189d5b17a9f7638--
