@@ -2,71 +2,105 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601B21E1285
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 18:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 306E41E12AE
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 18:30:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DDF5011D7C3A1;
-	Mon, 25 May 2020 09:15:19 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net; receiver=<UNKNOWN> 
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D21A811D7C3B0;
+	Mon, 25 May 2020 09:26:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.238.178.201; helo=sonic303-20.consmr.mail.ir2.yahoo.com; envelope-from=carolineedward255@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic303-20.consmr.mail.ir2.yahoo.com (sonic303-20.consmr.mail.ir2.yahoo.com [77.238.178.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E3C1B122338D3
-	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 09:15:17 -0700 (PDT)
-Received: from lwn.net (localhost [127.0.0.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id DBA9C2DC;
-	Mon, 25 May 2020 16:19:14 +0000 (UTC)
-Date: Mon, 25 May 2020 10:19:13 -0600
-From: Jonathan Corbet <corbet@lwn.net>
-To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH] nvdimm: fixes to maintainter-entry-profile
-Message-ID: <20200525101913.07735d91@lwn.net>
-In-Reply-To: <103a0e71-28b5-e4c2-fdf2-80d2dd005b44@infradead.org>
-References: <103a0e71-28b5-e4c2-fdf2-80d2dd005b44@infradead.org>
-Organization: LWN.net
+	by ml01.01.org (Postfix) with ESMTPS id D0E3610FCB711
+	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 09:26:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590424237; bh=6Y7ZU9BahXi5DMHj+CdhAlt4QTrKMDKzjUJl1O/dew8=; h=Date:From:Reply-To:Subject:References:From:Subject; b=fw3m8VApfFwgMk3ryA/R59/Zej4IfiBWDLtgbTZ9NhbrzeTCe/fCaFR6uC/c89jLy5PvnBqqHjAM9m77Tyvy20VBm5KpXRjaM0ug9k+cHLQTMRFqC937LR/3YKuohTcINo/Y49pl++H8rhffWm7DTHckh7TgKvyeOqBX24/F8aXTAdYFU1X5yEb/rHLuZoQayjtUdy4VQ5uvA1ziX0kiVqaDcdrT9rGQfogpWdKe0VQ1l+dHsLNX6tQ+nyZqMkhzsxO+nNzph7A8ysQqrwphNQMg6a5fv1ygY/T7QL1CvY+jgojDDD4jB7klizYYsxd9V9An0yPCbhE9WNVWJtGCtQ==
+X-YMail-OSG: cD4dC7kVM1n6eFgPfnzbPEhWiqkEA5fRyUgMyGYDskO1Iw5PdACAodnuv539a5y
+ YMKgaxHUhY.CFecyvPfWFdM3L8vjfrC_wFH_YVk99w7fBXcMO._HaeujjmxJve2dCyv70xVoRrBn
+ rLb7YhWdb.DJSgewCtfI2riYCwBW0STcTAmLdBd5uBgy4buryGssSEhh5VFAmFLWPnM1Roegfi0A
+ KUHqfbkajl.71TwAPleVIg6y2_7TUXlr4d9o.EDVJdMWcDcbQVgVkS6KqGZdNBWARGPt4XbKcRm2
+ HmyBF.iFWXPkj_atNaQoV9_4B61FBTkm1_cVKO_mDdCKKdZzqcTQrQXlU_0933hiMRjHkPdN7trG
+ GLjOQ9fRXeM98lfeEPagwCjRpjR7Srs3k2Mi98EXdLShzpOqLP2rmX8oO_SKC2hgDHy2pqqPVHoZ
+ G0h8_CGNKcfYMLb.K07R6jWsv_WWea5XUivGpTO4t9bahYRpzBe45MH3KnknaQss.ZUQ1g11GGM0
+ 5W3JXN1UqkQ3VEleFEbhxqe6JTRbgxqEsgMHV0KTk3dDatItMwRTJVbKfGugE1xtVhm0GYUrbb0h
+ nPKUnFY5iedYyVp5oP1fnzrhftebraQhbwk5fAE0i4GTd3nta5kejwjyQbnRsIH4fT9HsnwfTsKA
+ J1vuo8Z9qtlhXMebJK8NfHn7T.taUoQxT_FcGwV8P46p0qcTZpeSlXOYgKo3ovg8Px5uiqCwUO4M
+ 2tCjp0jUhBk6ZHguZbx1FlLWpvWqShWO83IjfFXyZQS4cBWG7ieAzFNDdkIVbiRb_sTQEKjoPEZa
+ sV5d.mmNhr.Qmp9FH6RIPx.6ga2ctCMw8lSP0hSlpQaTMXyCyVlck_SZVn5YatsVR2Hupj1novpj
+ z4ZqFa1UZQEaMNyy036LO8dQSdwuprhNOoqyrJR67BArc4hakmvHljJT.D8nMeO433y7jcomhWzA
+ kR.F7XlU7.6x_zHH4kIHAx5hYGeQY4hDBL5UIumSyzpUvdg0zK9jmZRcXDQaAFmharChOKWUHhRH
+ 4FZkFVc1ciOFP9HMZeQa_iCd_RdcWf4f8XourGPtQtQBjBnHa1YqfVulyscvg7shG_Oyocm7JCsQ
+ 0BS2joFOsWjP7WjvXttM4vhVZRlZ657Wf3T8AW5tnegh6HFXY1U.VpLsTnNPvYZKQEUNut4S2aVc
+ K707IHfANXWiux_5Js_2mfH6powHs4F7OataOZZ0WFnqIw5feWNHze7j4zG7jpCE24fj0dcH44A3
+ 2p_JrWBS1sLsXUvFQ4YmTWnAvEXzD1FAzwVzFAtu2RhFtLvXcVg749F8B5DUfDeqHPWF8NFiadu2
+ e.2gvuzlXBc9zdgFh17LaA.4Z_kEzTcdAQJNGKIFZhWM-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ir2.yahoo.com with HTTP; Mon, 25 May 2020 16:30:37 +0000
+Date: Mon, 25 May 2020 16:30:36 +0000 (UTC)
+From: Caroline Edward <carolineedward255@yahoo.com>
+Message-ID: <496617416.3459584.1590424236145@mail.yahoo.com>
+Subject: Good day,
 MIME-Version: 1.0
-Message-ID-Hash: I5M7MMQXZPB6P6IYRDFQZ3Z4XQTZ543F
-X-Message-ID-Hash: I5M7MMQXZPB6P6IYRDFQZ3Z4XQTZ543F
-X-MailFrom: corbet@lwn.net
+References: <496617416.3459584.1590424236145.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15960 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36
+Message-ID-Hash: WPXCZ43E2S3CJYKYALSOOFXWODV76RTU
+X-Message-ID-Hash: WPXCZ43E2S3CJYKYALSOOFXWODV76RTU
+X-MailFrom: carolineedward255@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: LKML <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mrs.carolineedward@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I5M7MMQXZPB6P6IYRDFQZ3Z4XQTZ543F/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WPXCZ43E2S3CJYKYALSOOFXWODV76RTU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Thu, 21 May 2020 09:51:37 -0700
-Randy Dunlap <rdunlap@infradead.org> wrote:
-
-> From: Randy Dunlap <rdunlap@infradead.org>
-> 
-> Fix punctuation and wording in a few places.
-> 
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: linux-nvdimm@lists.01.org
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: linux-doc@vger.kernel.org
-> ---
->  Documentation/nvdimm/maintainer-entry-profile.rst |   14 ++++++------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-
-Applied, thanks.
-
-jon
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+R29vZCBkYXksDQoNCkFtIENhcm9saW5lIEVkd2FyZCwgYSBzdGFmZiBTZXJnZWFudCBpbiB0aGUg
+VVMgQXJteSBwcmVzZW50bHkgc2VydmluZyBpbiBTeXJpYSBhcyBhIGNvbWJhdCBpbnN0cnVjdG9y
+LCBJIHNpbmNlcmVseSBhcG9sb2dpemUgZm9yIGludHJ1ZGluZyBpbnRvIHlvdXIgcHJpdmFjeSwg
+dGhpcyBtaWdodCBjb21lIGFzIGEgc3VycHJpc2UgdG8geW91LCBidXQgbm90aGluZyBpcyBtb3Jl
+IGRpc3RyZXNzaW5nIHRvIG1lIGF0IHRoaXMgdGltZSBhcyBpIGZpbmQgbXlzZWxmIGZvcmNlZCBi
+eSBldmVudHMgYmV5b25kIG15IGNvbnRyb2wsIGkgaGF2ZSBzdW1tb25lZCBjb3VyYWdlIHRvIGNv
+bnRhY3QgeW91LiBBbSA0NSB5ZWFycyBvbGQgbGFkeSwgYW0gYSB3aWRvdyBhbmQgSSBoYWQgYSBz
+b24gd2hvIGlzIG5vdyAxNiB5ZWFycyBvZiBhZ2UuDQoNClNvbWUgbW9uZXkgaW4gdmFyaW91cyBj
+dXJyZW5jaWVzIHdoZXJlIGRpc2NvdmVyZWQgaW4gYmFycmVscyBhdCBhIGZhcm0gaG91c2UgaW4g
+dGhlIG1pZGRsZSBFYXN0IGR1cmluZyBhIHJlc2N1ZSBvcGVyYXRpb24gaW4gSXJhcSBXYXIsYW5k
+IGl0IHdhcyBhZ3JlZWQgYnkgU3RhZmYgU2VyZ2VhbnQgS2VubmV0aCBCdWZmIGFuZCBteXNlbGYg
+dGhhdCBzb21lIHBhcnQgb2YgdGhlc2UgbW9uZXkgYmUgc2hhcmVkIGJldHdlZW4gYm90aCBvZiB1
+cywgSSB3YXMgZ2l2ZW4gYSB0b3RhbCBvZiAoJDUgTWlsbGlvbiBVUyBEb2xsYXJzKSBhcyBteSBv
+d24gc2hhcmUgLCBJIGtlcHQgdGhpcyBtb25leSBpbiBhIGNvbnNpZ25tZW50IGZvciBhIGxvbmcg
+d2hpbGUgd2l0aCBhIHNlY3VyaXR5IENvbXBhbnkgd2hpY2ggaSBkZWNsYXJlZCBhbmQgZGVwb3Np
+dCBhcyBteSBwZXJzb25hbCBlZmZlY3RzIGFuZCBpdCBoYXMgYmVlbiBzZWN1cmVkIGFuZCBwcm90
+ZWN0ZWQgZm9yIHllYXJzIG5vdyB3aXRoIHRoZSBkaXBsb21hdGljIERlbGl2ZXJ5IFNlcnZpY2Uu
+DQoNCk5vdywgdGhlIFdBUiBpbiBJcmFxIGlzIG92ZXIsIGFuZCBhbGwgcG9zc2libGUgcHJvYmxl
+bXMgdGhhdCBjb3VsZCBoYXZlIGVtYW5hdGVkIGZyb20gdGhlIHNoYXJlZCBtb25leSBoYXMgYmVl
+biB0b3RhbGx5IGNsZWFuZWQgdXAgYW5kIGFsbCBmaWxlIGNsb3NlZCwgYWxsIHdoYXQgd2FzIGRp
+c2NvdmVyZWQgaW4gdGhlIE1pZGRsZSBFYXN0IGlzIG5vIG1vcmUgZGlzY3Vzc2VkLCBhbSBub3cg
+cmVhZHkgdG8gcmV0aXJlIGZyb20gYWN0aXZlIHNlcnZpY2VzLCBidXQsIGkgbmVlZCBhIHRydXN0
+d29ydGh5IHBlcnNvbiB0aGF0IGNhbiBoZWxwIG1lIHRha2UgcG9zc2Vzc2lvbiBvZiB0aGlzIGZ1
+bmRzIGFuZCBrZWVwIGl0IHNhZmUgd2hpbGUgaSB3b3JrIG9uIG15IHJlbGllZiBsZXR0ZXJzIHRv
+IGpvaW4geW91IHNvIHRoYXQgd2UgY291bGQgZGlzY3VzcyBwb3NzaWJsZSBidXNpbmVzcyBwYXJ0
+bmVyc2hpcCB0b2dldGhlciB3aXRoIHRoZSBtb25leS4NCg0KQnV0IEkgdGVsbCB5b3Ugd2hhdCEg
+Tm8gY29tcGVuc2F0aW9uIGNhbiBtYWtlIHVwIGZvciB0aGUgcmlzayB3ZSBhcmUgdGFrZW4gd2l0
+aCBvdXIgbGl2ZXMuWW91IGNhbiBjb25maXJtIHRoZSBnZW51aW5lbmVzcyBvZiB0aGUgZmluZGlu
+Z3MgYnkgY2xpY2tpbmcgb24gdGhpcyB3ZWIgc2l0ZTogICBodHRwOi8vbmV3cy5iYmMuY28udWsv
+Mi9oaS9taWRkbGVfZWFzdC8yOTg4NDU1LnN0bQ0KDQpJ4oCZbSBzZWVraW5nIHlvdXIga2luZCBh
+c3Npc3RhbmNlIHRvIG1vdmUgdGhlIHN1bSBvZiBVUyQ1IE1pbGxpb24gRG9sbGFycyB0byB5b3Ug
+YXMgZmFyIGFzIEkgY2FuIGJlIGFzc3VyZWQgdGhhdCB0aGUgbW9uZXkgd2lsbCBiZSBzYWZlIGlu
+IHlvdXIgY2FyZSB1bnRpbCBJICBjb21wbGV0ZSBteSBzZXJ2aWNlIGhlcmUgaW4gKFNZUklBKSBi
+ZWZvcmUgdGhlIGVuZCBvZiB0aGUgbW9udGguIFRoZSBtb3N0IGltcG9ydGFudCB0aGluZyBpczsg
+4oCcQ2FuIEkgVHJ1c3QgeW914oCdPyxBcyBhbiBvZmZpY2VycyBvbiBBQ1RJVkUgRFVUWSBhbSBu
+b3QgYWxsb3dlZCBhY2Nlc3MgdG8gbW9uZXksIHRoZXJlZm9yZSwgaSBoYXZlIGRlY2xhcmVkIHRo
+ZSBjb250ZW50IG9mIHRoZSBjb25zaWdubWVudCBhcyBwZXJzb25hbCBlZmZlY3QgdGhhdCBpIHdv
+dWxkIGxpa2UgdG8gYmUgZGVsaXZlcmVkIHRvIGEgZnJpZW5kLiBZb3Ugd2lsbCBiZSByZXdhcmRl
+ZCB3aXRoIDMwJSBvZiB0aGlzIGZ1bmRzIGZvciB5b3VyIGhlbHAsIGFsbCB0aGF0IGkgcmVxdWly
+ZWQgaXMgeW91ciB0cnVzdCBiZXR3ZWVuIHVzIHRpbGwgdGhlIG1vbmV5IGdldCB0byB5b3UuDQoN
+ClNpbmNlcmVseSwNClNndC4gQ2Fyb2xpbmUgRWR3YXJkLg0KRW1haWw6IG1ycy5jYXJvbGluZWVk
+d2FyZEBnbWFpbC5jb20KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
+b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
+c3RzLjAxLm9yZwo=
