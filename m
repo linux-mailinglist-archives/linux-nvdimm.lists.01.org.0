@@ -1,72 +1,87 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73CEB1E0E04
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 14:01:29 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A72E1E0F07
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 25 May 2020 15:03:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7815712227BEB;
-	Mon, 25 May 2020 04:57:30 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id EE5171221A60D;
+	Mon, 25 May 2020 05:59:57 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2092612227BEA
-	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 04:57:27 -0700 (PDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04PBVAUQ035241;
-	Mon, 25 May 2020 08:00:50 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 316weudjhj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 May 2020 08:00:50 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04PBvJuB031814;
-	Mon, 25 May 2020 12:00:48 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma04ams.nl.ibm.com with ESMTP id 316uf8v17p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 May 2020 12:00:48 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04PC0kQq60424296
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 May 2020 12:00:46 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5F2834C050;
-	Mon, 25 May 2020 12:00:46 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 163AE4C046;
-	Mon, 25 May 2020 12:00:43 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.102.3.198])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Mon, 25 May 2020 12:00:42 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 25 May 2020 17:30:42 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm, uapi: Add support for PAPR nvdimm specific methods
-In-Reply-To: <87ftbswhb6.fsf@linux.ibm.com>
-References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com> <87367t941j.fsf@mpe.ellerman.id.au> <87ftbswhb6.fsf@linux.ibm.com>
-Date: Mon, 25 May 2020 17:30:42 +0530
-Message-ID: <87a71ww7f9.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 6698E1221A60C
+	for <linux-nvdimm@lists.01.org>; Mon, 25 May 2020 05:59:54 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx2.suse.de (Postfix) with ESMTP id A5D8BABC2;
+	Mon, 25 May 2020 13:03:52 +0000 (UTC)
+Subject: Re: [PATCH 05/16] bcache: use bio_{start,end}_io_acct
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+References: <20200525113014.345997-1-hch@lst.de>
+ <20200525113014.345997-6-hch@lst.de>
+From: Coly Li <colyli@suse.de>
+Autocrypt: addr=colyli@suse.de; keydata=
+ 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
+Message-ID: <85828157-ac53-57e8-1a27-068478ab5f5c@suse.de>
+Date: Mon, 25 May 2020 21:03:39 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.0
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.676
- definitions=2020-05-25_05:2020-05-25,2020-05-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- bulkscore=0 mlxscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- adultscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
- suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005250087
-Message-ID-Hash: ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S
-X-Message-ID-Hash: ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S
-X-MailFrom: vaibhav@linux.ibm.com
+In-Reply-To: <20200525113014.345997-6-hch@lst.de>
+Content-Language: en-US
+Message-ID-Hash: D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H
+X-Message-ID-Hash: D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H
+X-MailFrom: colyli@suse.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
+CC: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>, Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>, dm-devel@redhat.com, linux-block@vger.kernel.org, drbd-dev@lists.linbit.com, linux-bcache@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESAPQZH5DHAUHHWWY55XGW4FX2JXY53S/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/D4GLC2IUFNV5DMZMR7PHT577JC5FYI5H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -75,68 +90,87 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Ira, Mpe and Aneesh,
+On 2020/5/25 19:30, Christoph Hellwig wrote:
+> Switch bcache to use the nicer bio accounting helpers, and call the
+> routines where we also sample the start time to give coherent accounting
+> results.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+Acked-by: Coly Li <colyli@suse.de>
 
-> Michael Ellerman <mpe@ellerman.id.au> writes:
->
->> Ira Weiny <ira.weiny@intel.com> writes:
->>> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
->>>> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
->>>> modules and add the command family to the white list of NVDIMM command
->>>> sets. Also advertise support for ND_CMD_CALL for the dimm
->>>> command mask and implement necessary scaffolding in the module to
->>>> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
->> ...
->>>> + *
->>>> + * Payload Version:
->>>> + *
->>>> + * A 'payload_version' field is present in PDSM header that indicates a specific
->>>> + * version of the structure present in PDSM Payload for a given PDSM command.
->>>> + * This provides backward compatibility in case the PDSM Payload structure
->>>> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
->>>> + *
->>>> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
->>>> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
->>>> + * module when servicing the PDSM envelope checks the 'payload_version' and then
->>>> + * uses 'payload struct version' == MIN('payload_version field',
->>>> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
->>>> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
->>>> + * struct in returned 'payload_version' field.
->>>
->>> FWIW many people believe using a size rather than version is more sustainable.
->>> It is expected that new payload structures are larger (more features) than the
->>> previous payload structure.
->>>
->>> I can't find references at the moment through.
->>
->> I think clone_args is a good modern example:
->>
->>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
->>
->> cheers
->
-> Thank Ira and Mpe for pointing this out. I looked into how clone3 sycall
-> handles clone_args and few differences came out:
->
-> * Unlike clone_args that are always transferred in one direction from
->   user-space to kernel, payload contents of pdsms are transferred in both
->   directions. Having a single version number makes it easier for
->   user-space and kernel to determine what data will be exchanged.
->
-> * For PDSMs, the version number is negotiated between libndctl and
->   kernel. For example in case kernel only supports an older version of
->   a structure, its free to send a lower version number back to
->   libndctl. Such negotiations doesnt happen with clone3 syscall.
 
-If you are ok with the explaination above please let me know. I will
-quickly spin off a v8 addressing your review comments.
+Coly Li
 
-Thanks,
--- 
-Cheers
-~ Vaibhav
+> ---
+>  drivers/md/bcache/request.c | 18 ++++--------------
+>  1 file changed, 4 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+> index 77d1a26975174..22b483527176b 100644
+> --- a/drivers/md/bcache/request.c
+> +++ b/drivers/md/bcache/request.c
+> @@ -668,9 +668,7 @@ static void backing_request_endio(struct bio *bio)
+>  static void bio_complete(struct search *s)
+>  {
+>  	if (s->orig_bio) {
+> -		generic_end_io_acct(s->d->disk->queue, bio_op(s->orig_bio),
+> -				    &s->d->disk->part0, s->start_time);
+> -
+> +		bio_end_io_acct(s->orig_bio, s->start_time);
+>  		trace_bcache_request_end(s->d, s->orig_bio);
+>  		s->orig_bio->bi_status = s->iop.status;
+>  		bio_endio(s->orig_bio);
+> @@ -730,7 +728,7 @@ static inline struct search *search_alloc(struct bio *bio,
+>  	s->recoverable		= 1;
+>  	s->write		= op_is_write(bio_op(bio));
+>  	s->read_dirty_data	= 0;
+> -	s->start_time		= jiffies;
+> +	s->start_time		= bio_start_io_acct(bio);
+>  
+>  	s->iop.c		= d->c;
+>  	s->iop.bio		= NULL;
+> @@ -1082,8 +1080,7 @@ static void detached_dev_end_io(struct bio *bio)
+>  	bio->bi_end_io = ddip->bi_end_io;
+>  	bio->bi_private = ddip->bi_private;
+>  
+> -	generic_end_io_acct(ddip->d->disk->queue, bio_op(bio),
+> -			    &ddip->d->disk->part0, ddip->start_time);
+> +	bio_end_io_acct(bio, ddip->start_time);
+>  
+>  	if (bio->bi_status) {
+>  		struct cached_dev *dc = container_of(ddip->d,
+> @@ -1108,7 +1105,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio)
+>  	 */
+>  	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
+>  	ddip->d = d;
+> -	ddip->start_time = jiffies;
+> +	ddip->start_time = bio_start_io_acct(bio);
+>  	ddip->bi_end_io = bio->bi_end_io;
+>  	ddip->bi_private = bio->bi_private;
+>  	bio->bi_end_io = detached_dev_end_io;
+> @@ -1190,11 +1187,6 @@ blk_qc_t cached_dev_make_request(struct request_queue *q, struct bio *bio)
+>  		}
+>  	}
+>  
+> -	generic_start_io_acct(q,
+> -			      bio_op(bio),
+> -			      bio_sectors(bio),
+> -			      &d->disk->part0);
+> -
+>  	bio_set_dev(bio, dc->bdev);
+>  	bio->bi_iter.bi_sector += dc->sb.data_offset;
+>  
+> @@ -1311,8 +1303,6 @@ blk_qc_t flash_dev_make_request(struct request_queue *q, struct bio *bio)
+>  		return BLK_QC_T_NONE;
+>  	}
+>  
+> -	generic_start_io_acct(q, bio_op(bio), bio_sectors(bio), &d->disk->part0);
+> -
+>  	s = search_alloc(bio, d);
+>  	cl = &s->cl;
+>  	bio = &s->bio.bio;
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
