@@ -2,51 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431841E21AF
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 May 2020 14:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B211E302D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 26 May 2020 22:43:03 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D99EE12120B7D;
-	Tue, 26 May 2020 05:10:20 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=203.11.71.1; helo=ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=<UNKNOWN> 
-Received: from ozlabs.org (ozlabs.org [203.11.71.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7A87112233835;
+	Tue, 26 May 2020 13:38:54 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::642; helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 50F4E12120B7B
-	for <linux-nvdimm@lists.01.org>; Tue, 26 May 2020 05:10:16 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 49WXvD1JR3z9sRW;
-	Tue, 26 May 2020 22:14:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-	s=201909; t=1590495257;
-	bh=edkHVtYOKN1TVgGDRKISh6yBxBVEyLNdkDMbZWBQadE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=jWI5D5V7v1nS5Zu/kPhmvs3xLMxGeKkJ6iQjr/fNYMOTg+mcUqB5qTPqlT8+dPUso
-	 W21vKySR0RcRX+BzZRpQwJVNzfGWB1PyKCy7jqsQQaIDKWPXQsD8qdwSOdHrbxrI7z
-	 YkLKmvvLfbyd1/tBF9ELEPc87BF6KLYzAPQWtpOxKRwNaZdr38ZyOy2EryhBtYUC/j
-	 LBwq3hVjVebNuRw6eVDs6ynqeL3hcPcj8GDQbEc1ygosaYGPm4FIJZrQqKwoqtKTdM
-	 zYFV1CbzFadMKF7jhg9nvAOhk5c/oRbdXzM1+TLQoNFqzkRBOdl1l1mXKGgKGib8Xb
-	 8pUdR5p3WJ5Pw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm, uapi: Add support for PAPR nvdimm specific methods
-In-Reply-To: <87a71ww7f9.fsf@linux.ibm.com>
-References: <20200519190058.257981-1-vaibhav@linux.ibm.com> <20200519190058.257981-5-vaibhav@linux.ibm.com> <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com> <87367t941j.fsf@mpe.ellerman.id.au> <87ftbswhb6.fsf@linux.ibm.com> <87a71ww7f9.fsf@linux.ibm.com>
-Date: Tue, 26 May 2020 22:14:39 +1000
-Message-ID: <875zcigafk.fsf@mpe.ellerman.id.au>
+	by ml01.01.org (Postfix) with ESMTPS id 07C4B12233833
+	for <linux-nvdimm@lists.01.org>; Tue, 26 May 2020 13:38:51 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id h21so25305895ejq.5
+        for <linux-nvdimm@lists.01.org>; Tue, 26 May 2020 13:42:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=z0+qB9PAs/0dIVTxt6TWQveY0BQoV0IqGxgJ1RJtPJ8=;
+        b=Mmipay1v52TsRSAxngafTq/GIafI4i5MGesqoQtqIdctmq2XigRTUluiaR0xV89H8W
+         yFzbwIKrBLUxF4eDbHG0as3sOfpOM83xGs601y887zEJjHAiHDF7VT6KQkB4JHQjB+na
+         TnG/+HHbvltKPGgCYphiAK/76TjA7NPgX/90rpvU+U/H03TfX3bVQeczDzuRzvsb3Urj
+         g9+bv6Z2MMCzThJPGN1avuSRTdBz98RNNdENoNfvHGiE7NT4k8XFpDXzQXR5lr0Aw2Cf
+         OWr9AK5ECVGOcCcBmi9DJ1IEHOE9haHRMJQeACqeeazF80DGfUucWYS/YVdlDlpVhS6j
+         aQUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=z0+qB9PAs/0dIVTxt6TWQveY0BQoV0IqGxgJ1RJtPJ8=;
+        b=rUVWPVhO5EjozGze1JfWXDvhmRGRvpqoWSvXNvjuizTkWlwA4C1A+Efy/pVmANaPO6
+         jLBGWO8y010ms6JmUvlWH15DweNqmzXjrtghed+Kibufgk+9g5RiMAAoqca14ehQkH+D
+         lwgaGqTmepsK+z82Vg9NJ41J3hJBbkDtuX2IkiPsq040SBw3LDNl560dzUDEfSzWecVb
+         yTJt8ApmnRpmPyz7PmluixD6dc+th3MQBxGl5pAk8Rldt2nvYZh4iDH4WycnYRwecvLy
+         cRjiYHYrD4nf/lZhQM2sf3le7gZbxsm/srqd5QAv6rxquOhBBFSYqYdaZTw3A7eEYJLW
+         EeHA==
+X-Gm-Message-State: AOAM5327CdWLlkHABGpCkQxoJfOtBjrF+k/XIrgMgOY3gT2LROzDQXR/
+	fIx4hZ8eds9iPTMdqgcS4bXAuo6NBzam1JGTjR86KA==
+X-Google-Smtp-Source: ABdhPJyjICkIAYJoUWeh5IAj7h4qSUa1lPDgHsaGCVWa7SWsoVWAuaVyTS5T07gQoCLsNSWBDtrrXAQew17WRC/6Zf4=
+X-Received: by 2002:a17:906:3597:: with SMTP id o23mr2695842ejb.174.1590525775277;
+ Tue, 26 May 2020 13:42:55 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: XF4ZFYSWNQMNXGG5Y4XGFW5TMGM3GJXG
-X-Message-ID-Hash: XF4ZFYSWNQMNXGG5Y4XGFW5TMGM3GJXG
-X-MailFrom: mpe@ellerman.id.au
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
+References: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200522115800.GA1451824@kroah.com> <20200522120009.GA1456052@kroah.com>
+In-Reply-To: <20200522120009.GA1456052@kroah.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 26 May 2020 13:42:44 -0700
+Message-ID: <CAPcyv4jW9P2FP2p6OiLoN+e_wzZY9-c8C-mMMoDqohuTekF7WQ@mail.gmail.com>
+Subject: Re: [5.4-stable PATCH 0/7] libnvdimm: Cross-arch compatible namespace alignment
+To: Greg KH <gregkh@linuxfoundation.org>
+Message-ID-Hash: E2X3GLQREZA5EKXMN6D5YLJQFQ7MB5Q7
+X-Message-ID-Hash: E2X3GLQREZA5EKXMN6D5YLJQFQ7MB5Q7
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: stable <stable@vger.kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>, Christoph Hellwig <hch@lst.de>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XF4ZFYSWNQMNXGG5Y4XGFW5TMGM3GJXG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E2X3GLQREZA5EKXMN6D5YLJQFQ7MB5Q7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,67 +68,57 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
-> Hi Ira, Mpe and Aneesh,
+On Fri, May 22, 2020 at 5:00 AM Greg KH <gregkh@linuxfoundation.org> wrote:
 >
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
->> Michael Ellerman <mpe@ellerman.id.au> writes:
->>
->>> Ira Weiny <ira.weiny@intel.com> writes:
->>>> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
->>>>> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
->>>>> modules and add the command family to the white list of NVDIMM command
->>>>> sets. Also advertise support for ND_CMD_CALL for the dimm
->>>>> command mask and implement necessary scaffolding in the module to
->>>>> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
->>> ...
->>>>> + *
->>>>> + * Payload Version:
->>>>> + *
->>>>> + * A 'payload_version' field is present in PDSM header that indicates a specific
->>>>> + * version of the structure present in PDSM Payload for a given PDSM command.
->>>>> + * This provides backward compatibility in case the PDSM Payload structure
->>>>> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
->>>>> + *
->>>>> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
->>>>> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
->>>>> + * module when servicing the PDSM envelope checks the 'payload_version' and then
->>>>> + * uses 'payload struct version' == MIN('payload_version field',
->>>>> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
->>>>> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
->>>>> + * struct in returned 'payload_version' field.
->>>>
->>>> FWIW many people believe using a size rather than version is more sustainable.
->>>> It is expected that new payload structures are larger (more features) than the
->>>> previous payload structure.
->>>>
->>>> I can't find references at the moment through.
->>>
->>> I think clone_args is a good modern example:
->>>
->>>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
->>
->> Thank Ira and Mpe for pointing this out. I looked into how clone3 sycall
->> handles clone_args and few differences came out:
->>
->> * Unlike clone_args that are always transferred in one direction from
->>   user-space to kernel, payload contents of pdsms are transferred in both
->>   directions. Having a single version number makes it easier for
->>   user-space and kernel to determine what data will be exchanged.
->>
->> * For PDSMs, the version number is negotiated between libndctl and
->>   kernel. For example in case kernel only supports an older version of
->>   a structure, its free to send a lower version number back to
->>   libndctl. Such negotiations doesnt happen with clone3 syscall.
->
-> If you are ok with the explaination above please let me know. I will
-> quickly spin off a v8 addressing your review comments.
+> On Fri, May 22, 2020 at 01:58:00PM +0200, Greg KH wrote:
+> > On Thu, May 21, 2020 at 04:37:43PM -0700, Dan Williams wrote:
+> > > Hello stable team,
+> > >
+> > > These patches have been shipping in mainline since v5.7-rc1 with no
+> > > reported issues. They address long standing problems in libnvdimm's
+> > > handling of namespace provisioning relative to alignment constraints
+> > > including crashes trying to even load the driver on some PowerPC
+> > > configurations.
+> > >
+> > > I did fold one build fix [1] into "libnvdimm/region: Introduce an 'align'
+> > > attribute" so as to not convey the bisection breakage to -stable.
+> > >
+> > > Please consider them for v5.4-stable. They do pass the latest
+> > > version of the ndctl unit tests.
+> >
+> > What about 5.6.y?  Any user upgrading from 5.4-stable to 5.6-stable
+> > would hit a regression, right?
+> >
+> > So can we get a series backported to 5.6.y as well?  I need that before
+> > I can take this series.
 
-I don't have strong opinions about the user API, it's really up to the
-nvdimm folks.
+Yes, should be the exact same set, but I will run the regression suite
+to be sure.
 
-cheers
+> Also, I really don't see the "bug" that this is fixing here.  If this
+> didn't work on PowerPC before, it can continue to just "not work" until
+> 5.7, right?
+
+There's a mix of "never worked" and "used to work" in this set. The
+PowerPC case is indeed a "never worked", but I highlighted it as it
+was the simplest to understand.
+
+> What problems with 5.4.y and 5.6.y is this series fixing
+> that used to work before?
+
+The "used to work" bug fixed by this set is the fact that the kernel
+used to force a 128MB (memory hotplug section size) alignment padding
+on all persistent memory namespaces to enable DAX operation. The
+support for sub-sections (2MB) dropped forced alignment padding, but
+unfortunately introduced a regression for the case of trying to create
+multiple unaligned namespaces. When that bug triggers namespace
+creation for the region is disabled, iirc, previously that lockout
+scenario was prevented.
+
+Jeff, can you corroborate this?
+
+I otherwise agree, if the above never worked then this can all wait
+for v5.7 upgrades.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
