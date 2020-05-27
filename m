@@ -2,63 +2,79 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89F071E421F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 May 2020 14:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8641E4BAE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 May 2020 19:17:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 00EE11229BA06;
-	Wed, 27 May 2020 05:21:08 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2.205.203.133; helo=b-002-205-203-133.002.205.pools.vodafone-ip.de; envelope-from=nitpickob098@o4.e.notification.intuit.com; receiver=<UNKNOWN> 
-Received: from b-002-205-203-133.002.205.pools.vodafone-ip.de (dslb-002-205-203-133.002.205.pools.vodafone-ip.de [2.205.203.133])
-	by ml01.01.org (Postfix) with ESMTP id B541A1229BA00;
-	Wed, 27 May 2020 05:20:55 -0700 (PDT)
-Received: from [91.46.47.123] (account inspectkc536@rsapps.net HELO SUDOVOV.EAFOSEF.tv)
-	by b-002-205-203-133.002.205.pools.vodafone-ip.de (Exim 4.89)
-	with ESMTPA id 53BF06F336 for linux-nvdimm@lists.01.org; Wed, 27 May 2020 13:25:14 +0100
-Received: from  (
- [112.92.35.129])        by b-002-205-203-133.002.205.pools.vodafone-ip.de with SMTP id
- GFbYf5JpcZHEKAP.378; Wed, 27 May 2020 13:25:14 +0100
-To: linux-nvdimm@lists.01.org
-Subject: Invoice PAID/Receipt
-From: "O.I Co., Inc" <BusinessServices@intuit.com>
-Date: Wed, 27 May 2020 13:25:14 +0100
-Thread-Index: R8K4YYHStAQ2nO4x528aT0wsjA6IP==
-MIME-Version: 1.0
-Message-ID: <8d2568d0-d531-14e0-2108-@WYZILUE.club>
-Message-ID-Hash: PUHIYHKRY3LYTKSLNWEWV5V7IK34C6UQ
-X-Message-ID-Hash: PUHIYHKRY3LYTKSLNWEWV5V7IK34C6UQ
-X-MailFrom: nitpickob098@o4.e.notification.intuit.com
+	by ml01.01.org (Postfix) with ESMTP id D4BC31211408C;
+	Wed, 27 May 2020 10:12:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.240.27.218; helo=a27-218.smtp-out.us-west-2.amazonses.com; envelope-from=01010172572315ab-04f70da6-b52d-43d5-8abe-3efc2bae4984-000000@us-west-2.amazonses.com; receiver=<UNKNOWN> 
+Received: from a27-218.smtp-out.us-west-2.amazonses.com (a27-218.smtp-out.us-west-2.amazonses.com [54.240.27.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 1A60A1211408A
+	for <linux-nvdimm@lists.01.org>; Wed, 27 May 2020 10:12:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=sknkt525wmvsd5qrslvt4aisaznnhvir; d=konnectglobalmarketing.com;
+	t=1590599816;
+	h=Subject:From:To:Date:Mime-Version:Content-Type:References:Message-Id;
+	bh=rxnNHOt91ytxmxcPgpragSzRru2YFJ9Fmr5Z6uuLCYI=;
+	b=aWyW6G0xsHi8kRm/dqL0T3/QPvKUuJJXTs1b1wQPq4PYAR1HuU5kNWrI9m7eP/gK
+	jFoQ9z4JRWZXzpZQVYIN5cGP2aJ6F43iQhn1fAod3dGdh3/fG9b64yQsiB1EuP1neEH
+	qsDo1JNq/CKneQpAs4GSXRBMk7IpME75tSHQF6gE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=hsbnp7p3ensaochzwyq5wwmceodymuwv; d=amazonses.com; t=1590599816;
+	h=Subject:From:To:Date:Mime-Version:Content-Type:References:Message-Id:Feedback-ID;
+	bh=rxnNHOt91ytxmxcPgpragSzRru2YFJ9Fmr5Z6uuLCYI=;
+	b=nUlwKV9i/uKsg8gbK/QmQkqqHevbhkGkckv/rDs4f56U4aBqjqCoPHp9rGGOpfsa
+	P+UVuo9eT3PVnx+5H6fNY+uSKJD+RDD4iapY+OSZBcl2cLrQ0ASKcxlN5A0U3UzjEGB
+	NFxmQQaZCccfKandQevkN4gVov16+aYHWgBAtl/g=
+Subject: Proposal
+From: =?UTF-8?Q?Hailey_Jones?= <hailey@konnectglobalmarketing.com>
+To: =?UTF-8?Q?linux-nvdimm=40lists=2E01=2Eorg?= <linux-nvdimm@lists.01.org>
+Date: Wed, 27 May 2020 17:16:56 +0000
+Mime-Version: 1.0
+References: <mail.a21a9fea-90d8-42f9-aa98-bc9f48247cbe@storage.wm.amazon.com>
+ <mail.a21a9fea-90d8-42f9-aa98-bc9f48247cbe@storage.wm.amazon.com>
+X-Priority: 3 (Normal)
+X-Mailer: Amazon WorkMail
+Thread-Index: AdY0R04E5QjDrLfvR2KMY4gnAXI2Yw==
+Thread-Topic: Proposal
+Message-ID: <01010172572315ab-04f70da6-b52d-43d5-8abe-3efc2bae4984-000000@us-west-2.amazonses.com>
+X-SES-Outgoing: 2020.05.27-54.240.27.218
+Feedback-ID: 1.us-west-2.An468LAV0jCjQDrDLvlZjeAthld7qrhZr+vow8irkvU=:AmazonSES
+Message-ID-Hash: FHSWPGYEFNQ4JZGV5RHOF3HC2C4RFVXH
+X-Message-ID-Hash: FHSWPGYEFNQ4JZGV5RHOF3HC2C4RFVXH
+X-MailFrom: 01010172572315ab-04f70da6-b52d-43d5-8abe-3efc2bae4984-000000@us-west-2.amazonses.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Disposition: inline
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PUHIYHKRY3LYTKSLNWEWV5V7IK34C6UQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FHSWPGYEFNQ4JZGV5RHOF3HC2C4RFVXH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Please find our payment receipt attached to this email.
-
-Thank you.
-
-Thanks for your business!
-
-
-
-
-
-------------------------   Receipt Summary  --------------------------
-Receipt # :
-Receipt Date: 05/27/2020
-Total: $1,400.00
-The complete version has been provided as an attachment to this email.
----------------------------------------------------------------------
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+SGksDQoNCsKgDQpXb3VsZCB5b3UgbGlrZSB0byBjb25uZWN0IHdpdGgga2V5IGRlY2lzaW9uIG1h
+a2VycyBmcm9tIHRoZSBiZWxvdyBzZWN0b3JzOw0KDQrCoA0KTWFudWZhY3R1cmluZywgQ29uc3Ry
+dWN0aW9uLCBFZHVjYXRpb24sIFJldGFpbCwgSGVhbHRoY2FyZSwgRW5lcmd5LCBVdGlsaXRpZXMg
+JiBXYXN0ZSBUcmVhdG1lbnQsIFRyYW5zcG9ydGF0aW9uLCBCYW5raW5nICYgRmluYW5jZSwgTWVk
+aWEgJiBJbnRlcm5ldCwgSG9zcGl0YWxpdHksIGV0Yy4gDQoNCsKgDQpZb3UgY2FuIGNvbnRhY3Qg
+dGhlbSB2aWEgZGlyZWN0wqBidXNpbmVzcyBlbWFpbHMgb3IgcGhvbmUgbnVtYmVyc8KgZm9yIHlv
+dXIgc2FsZXMgYW5kIG1hcmtldGluZyBpbml0aWF0aXZlcy4gDQoNCsKgDQpXZSBjYW4gYWxzbyBw
+cm92aWRlIHlvdSBjb250YWN0cyBmcm9tIGNvbXBhbmllcyBjdXJyZW50bHkgdXNpbmcgQWx0aXVt
+DQoNClNvZnR3YXJlLg0KDQrCoA0KS2luZGx5IGxldCBtZSBrbm93IHRoZSBTZWN0b3JzLCBKb2Ig
+VGl0bGVzICYgR2VvZ3JhcGh5IHRoYXQgeW91IHdpc2ggdG8gdGFyZ2V0LCBzbyB0aGF0IEkgY2Fu
+IGdldCBiYWNrIHdpdGggdGhlIHNhbXBsZXMsIGNvdW50cyBhbmQgbW9yZSBkZXRhaWxzIGZvciB5
+b3VyIHJldmlldy4gDQoNCsKgDQpMb29raW5nIGZvcndhcmQgdG8geW91ciByZXNwb25zZS4NCg0K
+wqANClRoYW5rcywNCg0KSGFpbGV5IEpvbmVzIC0gTWFya2V0aW5nIEV4ZWN1dGl2ZQ0KDQrCoA0K
+U3RheSBzYWZlLg0KDQpSZXBseSBiYWNrIOKAnFBhc3PigJ0gZm9yIG5vIGZ1cnRoZXIgZW1haWxz
+Lg0KDQrCoA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
+IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
+Lm9yZwo=
