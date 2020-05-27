@@ -2,72 +2,71 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8441E3780
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 May 2020 06:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E891E3781
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 27 May 2020 06:48:45 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BF8231225F25F;
-	Tue, 26 May 2020 21:44:27 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id E6FEE1225F266;
+	Tue, 26 May 2020 21:44:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 47BC61225F263
-	for <linux-nvdimm@lists.01.org>; Tue, 26 May 2020 21:44:25 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04R4bpGV026653;
-	Wed, 27 May 2020 00:48:31 -0400
+	by ml01.01.org (Postfix) with ESMTPS id 4A3181225F267
+	for <linux-nvdimm@lists.01.org>; Tue, 26 May 2020 21:44:34 -0700 (PDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04R4XXBK018253;
+	Wed, 27 May 2020 00:48:41 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 316yyhffgn-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 316ygbwnst-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 May 2020 00:48:30 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04R4gEqX034805;
-	Wed, 27 May 2020 00:48:30 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 316yyhffg9-1
+	Wed, 27 May 2020 00:48:40 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04R4Xnxw019517;
+	Wed, 27 May 2020 00:48:40 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com [149.81.74.107])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 316ygbwnru-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 May 2020 00:48:30 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04R4joSj023044;
-	Wed, 27 May 2020 04:48:28 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04fra.de.ibm.com with ESMTP id 316uf8avkx-1
+	Wed, 27 May 2020 00:48:40 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+	by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04R4kYHW028999;
+	Wed, 27 May 2020 04:48:37 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma03fra.de.ibm.com with ESMTP id 316uf82vta-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 May 2020 04:48:28 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04R4mPIH61800868
+	Wed, 27 May 2020 04:48:37 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04R4mYsh6095204
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 May 2020 04:48:25 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C252AE057;
-	Wed, 27 May 2020 04:48:25 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F1E9AE056;
-	Wed, 27 May 2020 04:48:20 +0000 (GMT)
+	Wed, 27 May 2020 04:48:34 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7661CA4040;
+	Wed, 27 May 2020 04:48:34 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 23B86A4057;
+	Wed, 27 May 2020 04:48:28 +0000 (GMT)
 Received: from vajain21-in-ibm-com (unknown [9.85.121.50])
-	by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Wed, 27 May 2020 04:48:20 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 27 May 2020 10:18:18 +0530
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Wed, 27 May 2020 04:48:27 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 27 May 2020 10:18:26 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linux-nvdimm@lists.01.org
-Subject: [ndctl PATCH v4 2/6] libncdtl: Add initial support for NVDIMM_FAMILY_PAPR_SCM dimm family
-Date: Wed, 27 May 2020 10:17:33 +0530
-Message-Id: <20200527044737.40615-3-vaibhav@linux.ibm.com>
+Subject: [ndctl PATCH v4 3/6] libndctl: Introduce new dimm-ops dimm_init() & dimm_uninit()
+Date: Wed, 27 May 2020 10:17:34 +0530
+Message-Id: <20200527044737.40615-4-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200527044737.40615-1-vaibhav@linux.ibm.com>
 References: <20200527044737.40615-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-26_04:2020-05-26,2020-05-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 cotscore=-2147483648 impostorscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 adultscore=0
- phishscore=0 clxscore=1015 mlxlogscore=999 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270028
-Message-ID-Hash: KIRXE7XSJ67B6V52E7OBHCN5354W5LYN
-X-Message-ID-Hash: KIRXE7XSJ67B6V52E7OBHCN5354W5LYN
+ definitions=2020-05-27_01:2020-05-26,2020-05-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ cotscore=-2147483648 spamscore=0 lowpriorityscore=0 suspectscore=3
+ bulkscore=0 mlxlogscore=999 mlxscore=0 clxscore=1015 malwarescore=0
+ adultscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005270033
+Message-ID-Hash: DFMVZCBXPQBL3Q4CLDRKP375UWXU23SS
+X-Message-ID-Hash: DFMVZCBXPQBL3Q4CLDRKP375UWXU23SS
 X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -75,7 +74,7 @@ CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@lin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KIRXE7XSJ67B6V52E7OBHCN5354W5LYN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DFMVZCBXPQBL3Q4CLDRKP375UWXU23SS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,43 +83,36 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add necessary scaffolding in libndctl for dimms that support papr_scm
-specification[1]. Since there can be platforms that support
-Open-Firmware[2] but not the papr_scm specification, hence the changes
-proposed first add support for probing if the dimm bus supports
-Open-Firmware. This is done via querying for sysfs attribute 'of_node'
-in dimm device sysfs directory. If available newly introduced member
-'struct ndctl_bus.has_of_node' is set. During the probe of the dimm
-and execution of add_dimm(), the newly introduced add_papr_dimm()
-is called if dimm bus reports supports Open-Firmware.
+There are scenarios when a dimm-provider need to allocate some
+per-dimm data that can be quickly retrieved. This data can be used to
+cache data that spans multiple 'struct ndctl_cmd' submissions.
 
-Function add_papr_dimm() queries the 'compatible' device tree
-attribute and based on its value assign NVDIMM_FAMILY_PAPR_SCM to the
-dimm command family. In future, based on the contents of 'compatible'
-attribute more of_pmem dimm families can be queried.
+Unfortunately currently in libnvdimm there is no easy way to implement
+this. Even if this data is some how stored in some field of 'struct
+ndctl_dimm', managing its lifetime is a challenge.
 
-We also add support for parsing the dimm flags for
-NVDIMM_FAMILY_PAPR_SCM supporting nvdimms as described at [3]. A newly
-introduced function parse_papr_scm_flags() reads the contents of this
-flag file and sets appropriate flag bits in 'struct
-ndctl_dimm.flags'.
+To solve this problem, the patch proposes a new member 'struct
+ndctl_dimm.dimm_user_data' to store per-dimm data interpretation of
+which is specific to a dimm-provider. Also two new dimm-ops namely
+dimm_init() & dimm_uninit() are introduced that can be used to manage
+the lifetime of this per-dimm data.
 
-Also we advertise support for monitor mode by allocating a file
-descriptor to the dimm 'flags' file and assigning it to 'struct
-ndctl_dimm.health_event_fd'.
+Semantics
+=========
+int (*dimm_init)(struct ndctl_dimm *):
 
-The dimm-ops implementation for NVDIMM_FAMILY_PAPR_SCM is
-available in global variable 'papr_scm_dimm_ops' which points to
-skeleton implementation in newly introduced file 'lib/papr_scm.c'.
+This callback will be called just after dimm-probe inside add_dimm()
+is completed. Dimm-providers should use this callback to allocate
+per-dimm data and assign it to 'struct ndctl_dimm.dimm_user_data'
+member. In case this function returns an error, dimm initialization is
+halted and errors out.
 
-References:
-[1] Documentation/powerpc/papr_hcalls.rst
-https://lore.kernel.org/linux-nvdimm/20200420070711.223545-2-vaibhav@linux.ibm.com/
+void (*dimm_uninit)(struct ndctl_dimm *):
 
-[2] https://en.wikipedia.org/wiki/Open_Firmware
-
-[3] Documentation/ABI/testing/sysfs-bus-papr-scm
-https://lore.kernel.org/linux-nvdimm/20200420070711.223545-3-vaibhav@linux.ibm.com/
+This callback will be called during free_dimm() and is only called if
+previous call to 'dimm_ops->dimm_init()' had reported no
+error. Dimm-providers should use this callback to unallocate and
+cleanup 'dimm_user_data'.
 
 Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
@@ -130,246 +122,69 @@ v3..v4:
 * None
 
 v2..v3:
-* Renamed add_of_pmem() to add_papr_dimm() [ Aneesh ]
+* None
 
 v1..v2:
-* Squashed the patch to parse dimm flags
-* Updated the dimm flags parsing to add case for 'restore_fail' and
-  'flush_fail'.
-* Renamed parse_of_pmem_flags() to parse_papr_scm_flags().
-* Updated the path to dimm flags file to 'papr/flags'.
-* Introduced 'papr_scm.c' file in this patch rather than later in the
-  patch series.
-* Update add_of_pmem_dimm() to parse dimm flags and enable monitoring
-  only if 'ibm,pmemory' compatible nvdimm is found.
+* Changed the patch order
 ---
- ndctl/lib/Makefile.am |  1 +
- ndctl/lib/libndctl.c  | 78 +++++++++++++++++++++++++++++++++++++++++++
- ndctl/lib/papr_scm.c  | 32 ++++++++++++++++++
- ndctl/lib/private.h   |  2 ++
- ndctl/libndctl.h      |  1 +
- ndctl/ndctl.h         |  1 +
- 6 files changed, 115 insertions(+)
- create mode 100644 ndctl/lib/papr_scm.c
+ ndctl/lib/libndctl.c | 11 +++++++++++
+ ndctl/lib/private.h  |  5 +++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/ndctl/lib/Makefile.am b/ndctl/lib/Makefile.am
-index d6be5c3acd26..90ba680bee56 100644
---- a/ndctl/lib/Makefile.am
-+++ b/ndctl/lib/Makefile.am
-@@ -23,6 +23,7 @@ libndctl_la_SOURCES =\
- 	hpe1.c \
- 	msft.c \
- 	hyperv.c \
-+	papr_scm.c \
- 	ars.c \
- 	firmware.c \
- 	libndctl.c \
 diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-index d76dbf7e17de..a627661852eb 100644
+index a627661852eb..686612c0b876 100644
 --- a/ndctl/lib/libndctl.c
 +++ b/ndctl/lib/libndctl.c
-@@ -799,6 +799,28 @@ static void parse_nfit_mem_flags(struct ndctl_dimm *dimm, char *flags)
- 				ndctl_dimm_get_devname(dimm), flags);
- }
- 
-+static void parse_papr_scm_flags(struct ndctl_dimm *dimm, char *flags)
-+{
-+	char *start, *end;
-+
-+	start = flags;
-+	while ((end = strchr(start, ' '))) {
-+		*end = '\0';
-+		if (strcmp(start, "not_armed") == 0)
-+			dimm->flags.f_arm = 1;
-+		else if (strcmp(start, "flush_fail") == 0)
-+			dimm->flags.f_flush = 1;
-+		else if (strcmp(start, "restore_fail") == 0)
-+			dimm->flags.f_restore = 1;
-+		else if (strcmp(start, "smart_notify") == 0)
-+			dimm->flags.f_smart = 1;
-+		start = end + 1;
-+	}
-+	if (end != start)
-+		dbg(ndctl_dimm_get_ctx(dimm), "%s: %s\n",
-+				ndctl_dimm_get_devname(dimm), flags);
-+}
-+
- static void parse_dimm_flags(struct ndctl_dimm *dimm, char *flags)
+@@ -598,6 +598,11 @@ static void free_dimm(struct ndctl_dimm *dimm)
  {
- 	char *start, *end;
-@@ -856,6 +878,12 @@ static void *add_bus(void *parent, int id, const char *ctl_base)
- 		bus->revision = strtoul(buf, NULL, 0);
- 	}
+ 	if (!dimm)
+ 		return;
++
++	/* If needed call the dimm uninitialization function */
++	if (dimm->ops && dimm->ops->dimm_uninit)
++		dimm->ops->dimm_uninit(dimm);
++
+ 	free(dimm->unique_id);
+ 	free(dimm->dimm_buf);
+ 	free(dimm->dimm_path);
+@@ -1714,8 +1719,14 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ 	if (dimm->cmd_family == NVDIMM_FAMILY_PAPR_SCM)
+ 		dimm->ops = papr_scm_dimm_ops;
  
-+	sprintf(path, "%s/device/of_node/compatible", ctl_base);
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		bus->has_of_node = 0;
-+	else
-+		bus->has_of_node = 1;
-+
- 	sprintf(path, "%s/device/nfit/dsm_mask", ctl_base);
- 	if (sysfs_read_attr(ctx, path, buf) < 0)
- 		bus->nfit_dsm_mask = 0;
-@@ -964,6 +992,10 @@ NDCTL_EXPORT int ndctl_bus_has_nfit(struct ndctl_bus *bus)
- 	return bus->has_nfit;
- }
- 
-+NDCTL_EXPORT int ndctl_bus_has_of_node(struct ndctl_bus *bus)
-+{
-+	return bus->has_of_node;
-+}
- /**
-  * ndctl_bus_get_major - nd bus character device major number
-  * @bus: ndctl_bus instance returned from ndctl_bus_get_{first|next}
-@@ -1441,6 +1473,47 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
- static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
- static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
- 
-+static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
-+{
-+	int rc = -ENODEV;
-+	char buf[SYSFS_ATTR_SIZE];
-+	struct ndctl_ctx *ctx = dimm->bus->ctx;
-+	char *path = calloc(1, strlen(dimm_base) + 100);
-+
-+	dbg(ctx, "Probing of_pmem dimm %d at %s\n", dimm->id, dimm_base);
-+
-+	if (!path)
-+		return -ENOMEM;
-+
-+	sprintf(path, "%s/../of_node/compatible", dimm_base);
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		goto out;
-+
-+
-+	dbg(ctx, "Compatible of_pmem dimm %d at %s\n", dimm->id, buf);
-+	/* construct path to the papr compatible dimm flags file */
-+	sprintf(path, "%s/papr/flags", dimm_base);
-+
-+	if (strcmp(buf, "ibm,pmemory") == 0 &&
-+	    sysfs_read_attr(ctx, path, buf) == 0) {
-+
-+		dbg(ctx, "Found papr_scm dimm %d at %s\n", dimm->id, buf);
-+		dimm->cmd_family = NVDIMM_FAMILY_PAPR_SCM;
-+
-+		/* Parse dimm flags */
-+		parse_papr_scm_flags(dimm, buf);
-+
-+		/* Allocate monitor mode fd */
-+		dimm->health_eventfd = open(path, O_RDONLY|O_CLOEXEC);
-+		rc = 0;
-+	}
-+	/* Ignore dimm if unknown type */
-+
-+ out:
-+	free(path);
-+	return rc;
-+}
-+
- static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
- {
- 	int i, rc = -1;
-@@ -1619,6 +1692,8 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
- 	if (ndctl_bus_has_nfit(bus)) {
- 		dimm->formats = formats;
- 		rc = add_nfit_dimm(dimm, dimm_base);
-+	} else if (ndctl_bus_has_of_node(bus)) {
-+		rc = add_papr_dimm(dimm, dimm_base);
- 	}
- 
- 	if (rc == -ENODEV) {
-@@ -1636,6 +1711,9 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
- 		dimm->ops = msft_dimm_ops;
- 	if (dimm->cmd_family == NVDIMM_FAMILY_HYPERV)
- 		dimm->ops = hyperv_dimm_ops;
-+	if (dimm->cmd_family == NVDIMM_FAMILY_PAPR_SCM)
-+		dimm->ops = papr_scm_dimm_ops;
++	/* Call the dimm initialization function if needed */
++	if (!rc && dimm->ops && dimm->ops->dimm_init)
++		rc = dimm->ops->dimm_init(dimm);
 +
   out:
  	if (rc) {
++		/* Ensure dimm_uninit() is not called during free_dimm() */
++		dimm->ops = NULL;
  		err(ctx, "Unable to probe dimm:%d. Err:%d\n", id, rc);
-diff --git a/ndctl/lib/papr_scm.c b/ndctl/lib/papr_scm.c
-new file mode 100644
-index 000000000000..14ff8879f627
---- /dev/null
-+++ b/ndctl/lib/papr_scm.c
-@@ -0,0 +1,32 @@
-+/*
-+ * Copyright (C) 2020 IBM Corporation
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms and conditions of the GNU Lesser General Public License,
-+ * version 2.1, as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope it will be useful, but WITHOUT ANY
-+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-+ * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
-+ * more details.
-+ */
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <limits.h>
-+#include <util/log.h>
-+#include <ndctl.h>
-+#include <ndctl/libndctl.h>
-+#include <lib/private.h>
-+
-+static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
-+{
-+	/* Handle this separately to support monitor mode */
-+	if (cmd == ND_CMD_SMART)
-+		return true;
-+
-+	return !!(dimm->cmd_mask & (1ULL << cmd));
-+}
-+
-+struct ndctl_dimm_ops * const papr_scm_dimm_ops = &(struct ndctl_dimm_ops) {
-+	.cmd_is_supported = papr_cmd_is_supported,
-+};
+ 		goto err_read;
+ 	}
 diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
-index 2e537f0a8649..05c703ed71b4 100644
+index 05c703ed71b4..679e359a1070 100644
 --- a/ndctl/lib/private.h
 +++ b/ndctl/lib/private.h
-@@ -167,6 +167,7 @@ struct ndctl_bus {
- 	int dimms_init;
- 	int regions_init;
- 	int has_nfit;
-+	int has_of_node;
- 	char *bus_path;
- 	char *bus_buf;
- 	size_t buf_len;
-@@ -352,6 +353,7 @@ extern struct ndctl_dimm_ops * const intel_dimm_ops;
- extern struct ndctl_dimm_ops * const hpe1_dimm_ops;
- extern struct ndctl_dimm_ops * const msft_dimm_ops;
- extern struct ndctl_dimm_ops * const hyperv_dimm_ops;
-+extern struct ndctl_dimm_ops * const papr_scm_dimm_ops;
+@@ -99,6 +99,7 @@ struct ndctl_dimm {
+ 	} flags;
+ 	int locked;
+ 	int aliased;
++	void *dimm_user_data;
+ 	struct list_node list;
+ 	int formats;
+ 	int format[0];
+@@ -347,6 +348,10 @@ struct ndctl_dimm_ops {
+ 	int (*fw_update_supported)(struct ndctl_dimm *);
+ 	int (*xlat_firmware_status)(struct ndctl_cmd *);
+ 	u32 (*get_firmware_status)(struct ndctl_cmd *);
++	/* Called just after dimm is initialized and probed */
++	int (*dimm_init)(struct ndctl_dimm *);
++	/* Called just before struct ndctl_dimm is de-allocated */
++	void (*dimm_uninit)(struct ndctl_dimm *);
+ };
  
- static inline struct ndctl_bus *cmd_to_bus(struct ndctl_cmd *cmd)
- {
-diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
-index 2580f433ade8..daf11b8ce4ea 100644
---- a/ndctl/libndctl.h
-+++ b/ndctl/libndctl.h
-@@ -119,6 +119,7 @@ struct ndctl_bus *ndctl_bus_get_next(struct ndctl_bus *bus);
-              bus = ndctl_bus_get_next(bus))
- struct ndctl_ctx *ndctl_bus_get_ctx(struct ndctl_bus *bus);
- int ndctl_bus_has_nfit(struct ndctl_bus *bus);
-+int ndctl_bus_has_of_node(struct ndctl_bus *bus);
- unsigned int ndctl_bus_get_major(struct ndctl_bus *bus);
- unsigned int ndctl_bus_get_minor(struct ndctl_bus *bus);
- const char *ndctl_bus_get_devname(struct ndctl_bus *bus);
-diff --git a/ndctl/ndctl.h b/ndctl/ndctl.h
-index 008f81cdeb9f..426708e1fd9b 100644
---- a/ndctl/ndctl.h
-+++ b/ndctl/ndctl.h
-@@ -263,6 +263,7 @@ struct nd_cmd_pkg {
- #define NVDIMM_FAMILY_HPE2 2
- #define NVDIMM_FAMILY_MSFT 3
- #define NVDIMM_FAMILY_HYPERV 4
-+#define NVDIMM_FAMILY_PAPR_SCM 5
- 
- #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
- 					struct nd_cmd_pkg)
+ extern struct ndctl_dimm_ops * const intel_dimm_ops;
 -- 
 2.26.2
 _______________________________________________
