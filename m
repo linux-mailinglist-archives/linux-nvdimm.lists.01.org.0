@@ -1,87 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60741E6ACA
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 May 2020 21:25:44 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1241E6F48
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 May 2020 00:40:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 857FA122E98C3;
-	Thu, 28 May 2020 12:21:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 29277122DCD3E;
+	Thu, 28 May 2020 15:36:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C44F3122E98C1
-	for <linux-nvdimm@lists.01.org>; Thu, 28 May 2020 12:21:21 -0700 (PDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04SJ28ce108867;
-	Thu, 28 May 2020 15:25:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=JA0rH5xJR6r+pQyEyY/QRuP6P8EeneHRb5BX3Gz2Bhk=;
- b=a3QZniOpxUue/SLMFToIHssEKgXk1HkymkiiLbVVlyXZ4lIiK8NjXjZZHW8Q+ExYkw8E
- JKgQWHO3O/AY22uFySzNK0iFC+C/em4ga9C3sTzu98WejnVp0zoBSoLM9viT+QH9iTMW
- oGjO08xYCZy/LuyDV5cxAps6LGI4a1FJsmfuxjxSg3SWAtv49zCgc8mRIkDy0/nU9gny
- Yq832Gny373LF1tpKqwO9jKRWt4vs/itIyqmBT5vJX7YK7fHi29wZC5FRG6C5XgiD69Y
- fFn6opAnCWEegyWhAdyK936OTXKwXN3OxU4PGmpTgxtdmU5h1lHg8bPMOivSzX4VY8eZ 0A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 319t3jtwsh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2020 15:25:08 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04SJ3RdU116858;
-	Thu, 28 May 2020 15:25:08 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 319t3jtwrk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2020 15:25:08 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04SJ5liZ013680;
-	Thu, 28 May 2020 19:25:05 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 316uf92gg1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 May 2020 19:25:05 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04SJP3Tw62587254
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 May 2020 19:25:03 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65CB511C05B;
-	Thu, 28 May 2020 19:25:03 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A55C611C04C;
-	Thu, 28 May 2020 19:24:57 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.85.68.59])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Thu, 28 May 2020 19:24:57 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Fri, 29 May 2020 00:54:55 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v8 1/5] powerpc: Document details on H_SCM_HEALTH hcall
-In-Reply-To: <CAPcyv4jXp1FocSe-fFBA_00TnsjPudrBCuHBfv+zwHA_R0353A@mail.gmail.com>
-References: <20200527041244.37821-1-vaibhav@linux.ibm.com> <20200527041244.37821-2-vaibhav@linux.ibm.com> <CAPcyv4jXp1FocSe-fFBA_00TnsjPudrBCuHBfv+zwHA_R0353A@mail.gmail.com>
-Date: Fri, 29 May 2020 00:54:55 +0530
-Message-ID: <87o8q7lv5k.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 67787122F144E
+	for <linux-nvdimm@lists.01.org>; Thu, 28 May 2020 15:35:59 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id g9so186422edr.8
+        for <linux-nvdimm@lists.01.org>; Thu, 28 May 2020 15:40:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Pj7A6R3t5vYVQH1AYdusNsvmuch5nd+84dKo2RoCBgI=;
+        b=ApW11aLoJ0QAG2tZcmN+rdwgoaIAg9hW1Ok1EWmH8gaAfe+1SisQoi+eMmGOKDQU5O
+         Kqveu+xqkduvnPbdglT33vDs/0DRUIGkxbYKvQQNnQBZ1j/FzFJxN9Ncqsw94yS5kRzg
+         QsK9obyyTGqh+oV87+qYzt+tWZsCzUgxkBeDtRZ91NLc0iVJdQELPa1FhuejruEOk+cG
+         vP6h8qZP8yRz6GDzLSC4IVWeZuDj6mpO2NMRfbh88HrtS4nMREyS2FFkgSJr6QEpGvaY
+         7R47VD6GGODGNT+MkKA8AkUBKoTV6lsLLy/YBd1/xXb1/hGX1Y5O83z1qtXQwQe8IRhK
+         1ufA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pj7A6R3t5vYVQH1AYdusNsvmuch5nd+84dKo2RoCBgI=;
+        b=hf2q3+cZ0PBIQspdzNmg8fAJvju9oexP88+u3LURDJURzqqA81YBAAGoay6gufEIe5
+         ouBDDIYuFZTNOocbHq1nV2dy+AgT0kZk7UslcLk6eQjlCuJHQOSRpYSEZ3hu8tmvLu08
+         HZ/m9R06S/zsG2sTZRvrELuxUxCTmBaJfUoFENdcOBcwUXgoqFmVWyk3eyF7vYAKcLc4
+         w8EstjUXh18qsQLPy8+es+59KK3CyIvvm8kKP9+VZWnEs/7tucXT6gw/hlLaGZDzYHUZ
+         VG1fde5yHmSwkl1c8q92jZMzeIvAlLRz9knsShwD1IytmbxqDHXD970RwCslCVtq/fd3
+         jKfA==
+X-Gm-Message-State: AOAM531u/6AMnKtfbXoSN69Nm4TNIV6fWw3/JPJzxtl20+hBbymetLQM
+	NRHeJtxdsWu92KqMDrOA3AxsMlj98CXpQbKYemcP+g==
+X-Google-Smtp-Source: ABdhPJw6BYgPdSobVXqMuZZp5bdAAMKth8ZeJ4tESICsJihuKfQu9XXyHux3QcEckTMVfgluJA1kCniEYKpie6M0Hs4=
+X-Received: by 2002:a50:eb0c:: with SMTP id y12mr5383529edp.165.1590705617704;
+ Thu, 28 May 2020 15:40:17 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-28_04:2020-05-28,2020-05-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 cotscore=-2147483648
- phishscore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=1 spamscore=0 priorityscore=1501 adultscore=0
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005280125
-Message-ID-Hash: HI7U4T6L6JSM5HM3DNO3LBICLOXSLJFP
-X-Message-ID-Hash: HI7U4T6L6JSM5HM3DNO3LBICLOXSLJFP
-X-MailFrom: vaibhav@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
+References: <87d06swfr4.fsf@linux.ibm.com> <CAPcyv4jQmQceE_eptnfnrORfAUnikHConhchYLEUPARYRFOcbA@mail.gmail.com>
+ <CAPcyv4iTNK1ixzBRkm=09mHfrWzmd97HE4v-M2K5Uz0cKKT=3Q@mail.gmail.com> <87r1v3lwcn.fsf@linux.ibm.com>
+In-Reply-To: <87r1v3lwcn.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 28 May 2020 15:40:06 -0700
+Message-ID: <CAPcyv4jjH3=Zah1vmQyVFUwbTaiRovcUwSiVD0eJ08DVJ_DZCw@mail.gmail.com>
+Subject: Re: Feedback requested: Exposing NVDIMM performance statistics in a
+ generic way
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Message-ID-Hash: WDS3DD4H5KU6JHJIXDDIP7WCCC3PF5RS
+X-Message-ID-Hash: WDS3DD4H5KU6JHJIXDDIP7WCCC3PF5RS
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Alastair D'Silva <alastair@d-silva.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HI7U4T6L6JSM5HM3DNO3LBICLOXSLJFP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WDS3DD4H5KU6JHJIXDDIP7WCCC3PF5RS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -90,117 +69,99 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Thanks for looking into this patchset Dan,
-
-
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Tue, May 26, 2020 at 9:13 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
->>
->> Add documentation to 'papr_hcalls.rst' describing the bitmap flags
->> that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
->> specification.
->>
+On Thu, May 28, 2020 at 11:59 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
 >
-> Please do a global s/SCM/PMEM/ or s/SCM/NVDIMM/. It's unfortunate that
-> we already have 2 ways to describe persistent memory devices, let's
-> not perpetuate a third so that "grep" has a chance to find
-> interrelated code across architectures. Other than that this looks
-> good to me.
-
-Sure, will use PAPR_NVDIMM instead of PAPR_SCM for new code being
-introduced. However certain identifiers like H_SCM_HEALTH are taken from
-the papr specificiation hence need to use the same name.
-
+> Thanks for this taking time to look into this Dan,
 >
->> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Ira Weiny <ira.weiny@intel.com>
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->> Changelog:
->> v7..v8:
->> * Added a clarification on bit-ordering of Health Bitmap
->>
->> Resend:
->> * None
->>
->> v6..v7:
->> * None
->>
->> v5..v6:
->> * New patch in the series
->> ---
->>  Documentation/powerpc/papr_hcalls.rst | 45 ++++++++++++++++++++++++---
->>  1 file changed, 41 insertions(+), 4 deletions(-)
->>
->> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
->> index 3493631a60f8..45063f305813 100644
->> --- a/Documentation/powerpc/papr_hcalls.rst
->> +++ b/Documentation/powerpc/papr_hcalls.rst
->> @@ -220,13 +220,50 @@ from the LPAR memory.
->>  **H_SCM_HEALTH**
->>
->>  | Input: drcIndex
->> -| Out: *health-bitmap, health-bit-valid-bitmap*
->> +| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
->>  | Return Value: *H_Success, H_Parameter, H_Hardware*
->>
->>  Given a DRC Index return the info on predictive failure and overall health of
->> -the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
->> -failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
->> -valid.
->> +the NVDIMM. The asserted bits in the health-bitmap indicate one or more states
->> +(described in table below) of the NVDIMM and health-bit-valid-bitmap indicate
->> +which bits in health-bitmap are valid. The bits are reported in
->> +reverse bit ordering for example a value of 0xC400000000000000
->> +indicates bits 0, 1, and 5 are valid.
->> +
->> +Health Bitmap Flags:
->> +
->> ++------+-----------------------------------------------------------------------+
->> +|  Bit |               Definition                                              |
->> ++======+=======================================================================+
->> +|  00  | SCM device is unable to persist memory contents.                      |
->> +|      | If the system is powered down, nothing will be saved.                 |
->> ++------+-----------------------------------------------------------------------+
->> +|  01  | SCM device failed to persist memory contents. Either contents were not|
->> +|      | saved successfully on power down or were not restored properly on     |
->> +|      | power up.                                                             |
->> ++------+-----------------------------------------------------------------------+
->> +|  02  | SCM device contents are persisted from previous IPL. The data from    |
->> +|      | the last boot were successfully restored.                             |
->> ++------+-----------------------------------------------------------------------+
->> +|  03  | SCM device contents are not persisted from previous IPL. There was no |
->> +|      | data to restore from the last boot.                                   |
->> ++------+-----------------------------------------------------------------------+
->> +|  04  | SCM device memory life remaining is critically low                    |
->> ++------+-----------------------------------------------------------------------+
->> +|  05  | SCM device will be garded off next IPL due to failure                 |
->> ++------+-----------------------------------------------------------------------+
->> +|  06  | SCM contents cannot persist due to current platform health status. A  |
->> +|      | hardware failure may prevent data from being saved or restored.       |
->> ++------+-----------------------------------------------------------------------+
->> +|  07  | SCM device is unable to persist memory contents in certain conditions |
->> ++------+-----------------------------------------------------------------------+
->> +|  08  | SCM device is encrypted                                               |
->> ++------+-----------------------------------------------------------------------+
->> +|  09  | SCM device has successfully completed a requested erase or secure     |
->> +|      | erase procedure.                                                      |
->> ++------+-----------------------------------------------------------------------+
->> +|10:63 | Reserved / Unused                                                     |
->> ++------+-----------------------------------------------------------------------+
->>
->>  **H_SCM_PERFORMANCE_STATS**
->>
->> --
->> 2.26.2
->>
+> Agree with the points you have made earlier that I am summarizing below:
+>
+> * This is better done in ndctl rather than ipmctl.
+> * Should only expose general performance metrics and not performance
+>   counters. Performance counter should be exposed via perf
+> * Vendor specific metrics to be separated from generic performance
+>   metrics.
+>
+> One way to split generic and vendor specific metrics might be to report
+> generic performance metrics together with dimm health metrics such as
+> "temprature_celsius" or "spares_percentage" that are already reported in
+> by dimm health output.
+>
+> Vendor specific performance metrics can be reported as a seperate object
+> in the json output. Something similar to output below:
+>
+> # ndctl list -DH --stats --vendor-stats
+> [
+>   {
+>     "dev":"nmem0",
+>     "health":{
+>       "health_state":"ok",
+>       "shutdown_state":"clean",
+>       "temperature_celsius":48.00,
+>       "spares_percentage":10,
+>
+>       /* Generic performance metrics/stats */
+>       "TotalMediaReads": 18929,
+>       "TotalMediaWrites": 0,
+>       ....
+>     }
+>
+>     /* Vendor specific stats for the dimm */
+>     "vendor-stats": {
+>     "Controller Reset Count":10
+>     "Controller Reset Elapsed Time": 3600
+>     "Power-on Seconds": 3600
 
--- 
-Cheers
-~ Vaibhav
+Looks reasonable, although I think I want to maintain the
+"Linux-style" format for the keys i.e. lowercase + underbars. If only
+for consistency, but it also simplifies parsers that have this far
+have assumed no whitespace in the key names.
+
+>     }
+>   }
+> ]
+>
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Wed, May 27, 2020 at 12:24 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> > [..]
+> >> > This was done by adding two new dimm-ops callbacks that were
+> >> > implemented by the papr_scm implementation within libndctl. These
+> >> > callbacks are invoked by newly introduce code in 'util/json-smart.c'
+> >> > that format the returned stats from these new dimm-ops and transform
+> >> > them into a json-object to later presentation. I would request you to
+> >> > look at RFC patch-set[2] to understand the implementation details.
+> >>
+> >> I'm ok to add some stats to ndctl, but I want ndctl to be limited to
+> >> general statistics and not performance counters. Performance counters
+> >> and performance events should be abstracted through perf where
+> >> possible.
+> >
+> > Another aspect that helps common statistics is to expose them in
+> > sysfs. I'm going to go review your proposed ioctl mechanism, but I
+> > would hope that is reserved for multi-field command payloads that need
+> > to be sent as a unit rather than statistics retrieval that is amenable
+> > to a sysfs interface.
+>
+> The patchset is using a machenism similar to GET_CONFIG_SIZE/DATA to
+> retrive a struct composed of tuples of (stat-id, stat-value) from
+> papr_scm and then exposes them to ndctl via some new dimm-ops.
+
+I think sysfs is a better fit for this. Yes, we could make this work
+as you have identified, but I think it was a mistake that I did this
+for health properties especially the static ones.
+
+See commit:
+
+     0ead11181fe0 acpi, nfit: Collect shutdown status
+
+That started as data which was only available via ioctl, but It
+simplified userspace to have a sysfs attribute. In addition to the
+built-in enumeration / capability detection that sysfs affords, it
+also allows for the kernel to cache this property once that many
+different userspace agents might want to read. Between perf for
+dynamic peformance properties, and sysfs for static / health data,
+what's left for the ioctl path?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
