@@ -1,92 +1,135 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B411D1E525D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 May 2020 02:55:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC9A1E5267
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 28 May 2020 03:00:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BF3A51229706A;
-	Wed, 27 May 2020 17:51:16 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::635; helo=mail-ej1-x635.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2AF681229706E;
+	Wed, 27 May 2020 17:55:44 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=74.6.133.124; helo=sonic313-14.consmr.mail.bf2.yahoo.com; envelope-from=abdurazackzebdani89@gmail.com; receiver=<UNKNOWN> 
+Received: from sonic313-14.consmr.mail.bf2.yahoo.com (sonic313-14.consmr.mail.bf2.yahoo.com [74.6.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D175D12297069
-	for <linux-nvdimm@lists.01.org>; Wed, 27 May 2020 17:51:13 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id z5so30240000ejb.3
-        for <linux-nvdimm@lists.01.org>; Wed, 27 May 2020 17:55:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/NqIapQj4M62zo7NAMqZ1WXDa5DQy4R8lLb8tN0P9/I=;
-        b=jmlC2uEYMJxp3Ndg2n4Jc8tAGoiLXU5guSTAKk2zwKIsGHoWBTL6aNKskDb3TjqNb4
-         +X82xsb3nVPpHukjSUnQRVxPc4bHwDWc5FqOXfUjyBegtq1jdKYq+DsuVNwud0Ie408m
-         MDddKH0gFgXP7t/lUWAiRVoyJJiknR45tz+zWPeyXekyWyaIrAPXh0TL5Pnn8ad70DxE
-         nxV3xcaYSDRVDLPKctzIIvrO2QNG5kupe8ut/s3M8VagYAUMVFTjRh9U1VS1dsKelFqz
-         RB8kGAjP5C2Q/zTXFBfqPw4IceNBH3x5KNcFQP9C4iLMtoyhdR2yxA485YXveKDDvp1L
-         cOxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/NqIapQj4M62zo7NAMqZ1WXDa5DQy4R8lLb8tN0P9/I=;
-        b=P/VFUbZ+m+w0/8rpJxl1U3iMLcCVqNjesKcpaZ/qOdibfV1F+qacgHP6nUZmpCKZRA
-         /J5okiPmY7iqW9eoKGAcz1lf5GdAV6KILtg2rf4Hqh0wYzOXcVKxquyLY5YwxUTBdn3C
-         seHsdlSXdWyCXWMk13AsUsisaQBrMREbJFqJLnfawbbVhS/+6CI4lSf/wa19AGD5343/
-         BjY6dcNSibRFSBbY0Jn6xLf9MdIzFtU+5bHgj+DzwhfqHkgIQTZduEnvWOYs4MyPQJ2g
-         uF6uJbiflnHieDNpgmgx8xcKh+gAWrrAuBiFvYYoog5CO3m/idRxZBmuyu/khjgrowzz
-         DSHg==
-X-Gm-Message-State: AOAM531j3ZCs+TekPoPPNHTGskKHRh0m89c2JO1bXsmmnfHaXopKbVKR
-	0ctQdP6O8EVblBBED647gfcXGXxbHnRei4K2KyXKUQ==
-X-Google-Smtp-Source: ABdhPJymJrNgUvg9FdZHtm1DONWdOyiN4v7MOZP9yHB8u9cpmKjtjqCd/4C8UZPeK/1+wkrxfL3N1id+Ip8wc+yn++0=
-X-Received: by 2002:a17:906:3597:: with SMTP id o23mr860338ejb.174.1590627325824;
- Wed, 27 May 2020 17:55:25 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4F9F91229706C
+	for <linux-nvdimm@lists.01.org>; Wed, 27 May 2020 17:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590627595; bh=eDhL9tEY4mOE3PudgrA0V7pleYEfZsBzBye+IJ5k0zU=; h=Date:From:Reply-To:Subject:References:From:Subject; b=mSL4FZGBGTKEPhZfOZ0ouNG46DG5q9I6Nj9lfXkKU5y6D6az0m7oJy4OIKYWQfie8dOcpigrs/bAouB2U3K8PvCRxUX6drOfUnpWlCSuW3GBlv//Gb8VObwY7Dw7CFfkoPN8BLrw47I60n4qw/vI9KMhOcbYepxaNzu/i6VGTrpuDa1MnIVR2pYBMykmPJsFho5rWmD0jD+RFw0QGLiq7X9EyNKykY4XiokopRwgwIuBjQPceyKPCMKXY3Zpv1nc7f/Wp7GLJcV6JFDyqwEG3tFJ95H31UFB6AzRqvc9dIyuR1etupDj9+9ZL+X0qbEXuP/fLtpjdM3ftK8ieTfC7Q==
+X-YMail-OSG: 8fn.ybcVM1nNisK_.jlML3bdS6P5TfHW7_GHMUF7GFCGfov2RvPYrE45ssuopAl
+ JbDmchTuS8CwFlpswhAbZMrYnp7fzwgkJXwQAYJ2ySJb6Qx7GcauLpvapxqTM4VEQW5H0Kpgsd1B
+ ZC5g42mUS9FB5DOWH_XDH0svYixF60LjT_gqL5B_v7GrYqxw3ki2SvyhdwV8i0gJK9AJL3Oix2oa
+ rmMtq6pkn9.6eK_968IIpGrQyceLsv2MWp2eXnfcjHoPHf03T3Kr297OIBUVxA92PJz2_OAF5iLS
+ aBwYH2zKvFp0q9iYdwNunuDnxl7HgPOBs2lr0IWWjUYpWNBDD9tZ0stSSGtJF9koJmyN0YDCdRbo
+ TH_2wEAHqVXj08YOojj.ja6QEPNZpLGdMOjIeTbpsNOAI7T.FgGXsxhA0bqE.bW1EvNP155nYqVZ
+ snXAq4un6Vjq.KrgoVOIpjAc.cDUao20Gs3eLL3.RmMjOqxF6X4glLH8nlcOfJCUH._AzF3lvj4t
+ oMgy77U5bETHtoEnZOwKQj1rVf5eWfxNACRaj4E.xC_yTZuOwS2W4Mr_ico.cf5mzJMTEBHaUNhS
+ qMDcjOO5ux3a8iI81XEfZXi3QJ_FTfdFHdp8mWx0X7txFhehKlKeWc6qdk4CrB8IYDiFV17uodyk
+ iWppOIsIINh7dd8Pdk_sF2hfCrCrMY6pF2VlvGS_lXOuraek83M4_rNiQFik3A1QTbeBYk1v_ccT
+ KNcWmA4sX9afJmQ23wxXPAba.OZJ.M6Mxrh1wqD4Tn5df4_gAaSHJ9ba7Muxx2NlBnw4.7cE0XSK
+ Nb9qCwv5zZGQ4mWJ0knjbPbNCpuNNEgGxdTKcJFvUcamWN6z.SdOLTZhFk14T2acSwIYbtFJ32P5
+ 26CpKaUV1dyCJm2809yDK0TP5E1xS4qzJ0e0ctf7m2oNkr9RzPmx468b5UvZN5TACA6GpGaxghMq
+ bZB_M9v8jmbqwANphOKZEd_qpQT3AeTMZueooBB18JuVrGCyooJMn2kUUKo0sNaT.kxZsNfKy15Q
+ YGsYvLWvvj4S88f2PYq_eC37sZahw11LN8o_Kmifp1cFXoURZV933e1EVoIFuOKqtMM_VLXqqTCX
+ wl_QWEdLDzKpxDxsEjmCDgXq5G9_GsgyAL24i_JMqXIS46wmQ7O0IBzY_WRP51qIa96DbMHJ9p0.
+ HBe1mReq_lMobhyn5Q3.ldOEuVsHDmLqM5qhX8j_67WaofxZabeOopB2EA_cP481tZmIn7N_jgT9
+ E.LNLEhmSRolQUOz8D8Y0OOtQbkzqK3E.dNHbHzzhTLtIy4omoipid0tfk6MfMclFCCUbafKn
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.bf2.yahoo.com with HTTP; Thu, 28 May 2020 00:59:55 +0000
+Date: Thu, 28 May 2020 00:59:53 +0000 (UTC)
+From: Abderazack zebdani <abdurazackzebdani89@gmail.com>
+Message-ID: <211833295.533561.1590627593368@mail.yahoo.com>
+Subject: Greetings My Dear Friend,
 MIME-Version: 1.0
-References: <87d06swfr4.fsf@linux.ibm.com> <CAPcyv4jQmQceE_eptnfnrORfAUnikHConhchYLEUPARYRFOcbA@mail.gmail.com>
-In-Reply-To: <CAPcyv4jQmQceE_eptnfnrORfAUnikHConhchYLEUPARYRFOcbA@mail.gmail.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 27 May 2020 17:55:14 -0700
-Message-ID: <CAPcyv4iTNK1ixzBRkm=09mHfrWzmd97HE4v-M2K5Uz0cKKT=3Q@mail.gmail.com>
-Subject: Re: Feedback requested: Exposing NVDIMM performance statistics in a
- generic way
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Message-ID-Hash: YRL4JJPCMGCENR6A65NRWWQZCWBKY3PI
-X-Message-ID-Hash: YRL4JJPCMGCENR6A65NRWWQZCWBKY3PI
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Alastair D'Silva <alastair@d-silva.org>
+References: <211833295.533561.1590627593368.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15959 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:76.0) Gecko/20100101 Firefox/76.0
+Message-ID-Hash: SEFDRS2JA3FPWUDUAZGYELU4UE4UIZHP
+X-Message-ID-Hash: SEFDRS2JA3FPWUDUAZGYELU4UE4UIZHP
+X-MailFrom: abdurazackzebdani89@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: abdurazackzebdani89@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YRL4JJPCMGCENR6A65NRWWQZCWBKY3PI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SEFDRS2JA3FPWUDUAZGYELU4UE4UIZHP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, May 27, 2020 at 12:24 PM Dan Williams <dan.j.williams@intel.com> wrote:
-[..]
-> > This was done by adding two new dimm-ops callbacks that were
-> > implemented by the papr_scm implementation within libndctl. These
-> > callbacks are invoked by newly introduce code in 'util/json-smart.c'
-> > that format the returned stats from these new dimm-ops and transform
-> > them into a json-object to later presentation. I would request you to
-> > look at RFC patch-set[2] to understand the implementation details.
->
-> I'm ok to add some stats to ndctl, but I want ndctl to be limited to
-> general statistics and not performance counters. Performance counters
-> and performance events should be abstracted through perf where
-> possible.
-
-Another aspect that helps common statistics is to expose them in
-sysfs. I'm going to go review your proposed ioctl mechanism, but I
-would hope that is reserved for multi-field command payloads that need
-to be sent as a unit rather than statistics retrieval that is amenable
-to a sysfs interface.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCkdyZWV0aW5ncyBNeSBEZWFyIEZyaWVuZCwNCg0KQmVmb3JlIEkgaW50cm9kdWNlIG15c2Vs
+ZiwgSSB3aXNoIHRvIGluZm9ybSB5b3UgdGhhdCB0aGlzIGxldHRlciBpcyBub3QgYSBob2F4IG1h
+aWwgYW5kIEkgdXJnZSB5b3UgdG8gdHJlYXQgaXQgc2VyaW91cy5UaGlzIGxldHRlciBtdXN0IGNv
+bWUgdG8geW91IGFzIGEgYmlnIHN1cnByaXNlLCBidXQgSSBiZWxpZXZlIGl0IGlzIG9ubHkgYSBk
+YXkgdGhhdCBwZW9wbGUgbWVldCBhbmQgYmVjb21lIGdyZWF0IGZyaWVuZHMgYW5kIGJ1c2luZXNz
+IHBhcnRuZXJzLiBQbGVhc2UgSSB3YW50IHlvdSB0byByZWFkIHRoaXMgbGV0dGVyIHZlcnkgY2Fy
+ZWZ1bGx5IGFuZCBJIG11c3QgYXBvbG9naXplIGZvciBiYXJnaW5nIHRoaXMgbWVzc2FnZSBpbnRv
+IHlvdXIgbWFpbCBib3ggd2l0aG91dCBhbnkgZm9ybWFsIGludHJvZHVjdGlvbiBkdWUgdG8gdGhl
+IHVyZ2VuY3kgYW5kIGNvbmZpZGVudGlhbGl0eSBvZiB0aGlzIGJ1c2luZXNzIGFuZCBJIGtub3cg
+dGhhdCB0aGlzIG1lc3NhZ2Ugd2lsbCBjb21lIHRvIHlvdSBhcyBhIHN1cnByaXNlLiBQbGVhc2Ug
+dGhpcyBpcyBub3QgYSBqb2tlIGFuZCBJIHdpbGwgbm90IGxpa2UgeW91IHRvIGpva2Ugd2l0aCBp
+dCBvayxXaXRoIGR1ZSByZXNwZWN0IHRvIHlvdXIgcGVyc29uIGFuZCBtdWNoIHNpbmNlcml0eSBv
+ZiBwdXJwb3NlLCBJIG1ha2UgdGhpcyBjb250YWN0IHdpdGggeW91IGFzIEkgYmVsaWV2ZSB0aGF0
+IHlvdSBjYW4gYmUgb2YgZ3JlYXQgYXNzaXN0YW5jZSB0byBtZS4gTXkgbmFtZSBpcyBNci5BYmRl
+cmF6YWNrIHplYmRhbmksIGZyb20gQnVya2luYSBGYXNvLCBXZXN0IEFmcmljYS4gSSB3b3JrIGlu
+IEJhbmsgT2YgQWZyaWNhIChCT0EpIGFzIHRlbGV4IG1hbmFnZXIsIHBsZWFzZSBzZWUgdGhpcyBh
+cyBhIGNvbmZpZGVudGlhbCBtZXNzYWdlIGFuZCBkbyBub3QgcmV2ZWFsIGl0IHRvIGFub3RoZXIg
+cGVyc29uIGFuZCBsZXQgbWUga25vdyB3aGV0aGVyIHlvdSBjYW4gYmUgb2YgYXNzaXN0YW5jZSBy
+ZWdhcmRpbmcgbXkgcHJvcG9zYWwgYmVsb3cgYmVjYXVzZSBpdCBpcyB0b3Agc2VjcmV0Lg0KDQpJ
+IGFtIGFib3V0IHRvIHJldGlyZSBmcm9tIGFjdGl2ZSBCYW5raW5nIHNlcnZpY2UgdG8gc3RhcnQg
+YSBuZXcgbGlmZSBidXQgSSBhbSBza2VwdGljYWwgdG8gcmV2ZWFsIHRoaXMgcGFydGljdWxhciBz
+ZWNyZXQgdG8gYSBzdHJhbmdlci4gWW91IG11c3QgYXNzdXJlIG1lIHRoYXQgZXZlcnl0aGluZyB3
+aWxsIGJlIGhhbmRsZWQgY29uZmlkZW50aWFsbHkgYmVjYXVzZSB3ZSBhcmUgbm90IGdvaW5nIHRv
+IHN1ZmZlciBhZ2FpbiBpbiBsaWZlLiBJdCBoYXMgYmVlbiAxMCB5ZWFycyBub3cgdGhhdCBtb3N0
+IG9mIHRoZSBncmVlZHkgQWZyaWNhbiBQb2xpdGljaWFucyB1c2VkIG91ciBiYW5rIHRvIGxhdW5k
+ZXIgbW9uZXkgb3ZlcnNlYXMgdGhyb3VnaCB0aGUgaGVscCBvZiB0aGVpciBQb2xpdGljYWwgYWR2
+aXNlcnMuIE1vc3Qgb2YgdGhlIGZ1bmRzIHdoaWNoIHRoZXkgdHJhbnNmZXJyZWQgb3V0IG9mIHRo
+ZSBzaG9yZXMgb2YgQWZyaWNhIHdlcmUgZ29sZCBhbmQgb2lsIG1vbmV5IHRoYXQgd2FzIHN1cHBv
+c2VkIHRvIGhhdmUgYmVlbiB1c2VkIHRvIGRldmVsb3AgdGhlIGNvbnRpbmVudC4gVGhlaXIgUG9s
+aXRpY2FsIGFkdmlzZXJzIGFsd2F5cyBpbmZsYXRlZCB0aGUgYW1vdW50cyBiZWZvcmUgdHJhbnNm
+ZXJyaW5nIHRvIGZvcmVpZ24gYWNjb3VudHMsIHNvIEkgYWxzbyB1c2VkIHRoZSBvcHBvcnR1bml0
+eSB0byBkaXZlcnQgcGFydCBvZiB0aGUgZnVuZHMgaGVuY2UgSSBhbSBhd2FyZSB0aGF0IHRoZXJl
+IGlzIG5vIG9mZmljaWFsIHRyYWNlIG9mIGhvdyBtdWNoIHdhcyB0cmFuc2ZlcnJlZCBhcyBhbGwg
+dGhlIGFjY291bnRzIHVzZWQgZm9yIHN1Y2ggdHJhbnNmZXJzIHdlcmUgYmVpbmcgY2xvc2VkIGFm
+dGVyIHRyYW5zZmVyLiBJIGFjdGVkIGFzIHRoZSBCYW5rIE9mZmljZXIgdG8gbW9zdCBvZiB0aGUg
+cG9saXRpY2lhbnMgYW5kIHdoZW4gSSBkaXNjb3ZlcmVkIHRoYXQgdGhleSB3ZXJlIHVzaW5nIG1l
+IHRvIHN1Y2NlZWQgaW4gdGhlaXIgZ3JlZWR5IGFjdDsgSSBhbHNvIGNsZWFuZWQgc29tZSBvZiB0
+aGVpciBiYW5raW5nIHJlY29yZHMgZnJvbSB0aGUgQmFuayBmaWxlcyBhbmQgbm8gb25lIGNhcmVk
+IHRvIGFzayBtZSBiZWNhdXNlIHRoZSBtb25leSB3YXMgdG9vIG11Y2ggZm9yIHRoZW0gdG8gY29u
+dHJvbC4gVGhleSBsYXVuZGVyZWQgb3ZlciAkNWJpbGxpb24gRG9sbGFycyBkdXJpbmcgdGhlIHBy
+b2Nlc3MuDQoNCkJlZm9yZSBJIHNlbmQgdGhpcyBtZXNzYWdlIHRvIHlvdSwgSSBoYXZlIGFscmVh
+ZHkgZGl2ZXJ0ZWQgKCQxMC41bWlsbGlvbiBEb2xsYXJzKSB0byBhbiBlc2Nyb3cgYWNjb3VudCBi
+ZWxvbmdpbmcgdG8gbm8gb25lIGluIHRoZSBiYW5rLiBUaGUgYmFuayBpcyBhbnhpb3VzIG5vdyB0
+byBrbm93IHdobyB0aGUgYmVuZWZpY2lhcnkgdG8gdGhlIGZ1bmRzIGlzIGJlY2F1c2UgdGhleSBo
+YXZlIG1hZGUgYSBsb3Qgb2YgcHJvZml0cyB3aXRoIHRoZSBmdW5kcy4gSXQgaXMgbW9yZSB0aGFu
+IEVpZ2h0IHllYXJzIG5vdyBhbmQgbW9zdCBvZiB0aGUgcG9saXRpY2lhbnMgYXJlIG5vIGxvbmdl
+ciB1c2luZyBvdXIgYmFuayB0byB0cmFuc2ZlciBmdW5kcyBvdmVyc2Vhcy4gVGhlICgkMTAuNW1p
+bGxpb24gRG9sbGFycykgaGFzIGJlZW4gbGF5aW5nIHdhc3RlIGluIG91ciBiYW5rIGFuZCBJIGRv
+buKAmXQgd2FudCB0byByZXRpcmUgZnJvbSB0aGUgYmFuayB3aXRob3V0IHRyYW5zZmVycmluZyB0
+aGUgZnVuZHMgdG8gYSBmb3JlaWduIGFjY291bnQgdG8gZW5hYmxlIG1lIHNoYXJlIHRoZSBwcm9j
+ZWVkcyB3aXRoIHRoZSByZWNlaXZlciAoYSBmb3JlaWduZXIpLiBUaGUgbW9uZXkgd2lsbCBiZSBz
+aGFyZWQgNjAlIGZvciBtZSBhbmQgNDAlIGZvciB5b3UuIFRoZXJlIGlzIG5vIG9uZSBjb21pbmcg
+dG8gYXNrIHlvdSBhYm91dCB0aGUgZnVuZHMgYmVjYXVzZSBJIHNlY3VyZWQgZXZlcnl0aGluZy4g
+SSBvbmx5IHdhbnQgeW91IHRvIGFzc2lzdCBtZSBieSBwcm92aWRpbmcgYSByZWxpYWJsZSBiYW5r
+IGFjY291bnQgd2hlcmUgdGhlIGZ1bmRzIGNhbiBiZSB0cmFuc2ZlcnJlZC4NCg0KWW91IGFyZSBu
+b3QgdG8gZmFjZSBhbnkgZGlmZmljdWx0aWVzIG9yIGxlZ2FsIGltcGxpY2F0aW9ucyBhcyBJIGFt
+IGdvaW5nIHRvIGhhbmRsZSB0aGUgdHJhbnNmZXIgcGVyc29uYWxseS4gSWYgeW91IGFyZSBjYXBh
+YmxlIG9mIHJlY2VpdmluZyB0aGUgZnVuZHMsIGRvIGxldCBtZSBrbm93IGltbWVkaWF0ZWx5IHRv
+IGVuYWJsZSBtZSBnaXZlIHlvdSBhIGRldGFpbGVkIGluZm9ybWF0aW9uIG9uIHdoYXQgdG8gZG8u
+IEZvciBtZSwgSSBoYXZlIG5vdCBzdG9sZW4gdGhlIG1vbmV5IGZyb20gYW55b25lIGJlY2F1c2Ug
+dGhlIG90aGVyIHBlb3BsZSB0aGF0IHRvb2sgdGhlIHdob2xlIG1vbmV5IGRpZCBub3QgZmFjZSBh
+bnkgcHJvYmxlbXMuIFRoaXMgaXMgbXkgY2hhbmNlIHRvIGdyYWIgbXkgb3duIGxpZmUgb3Bwb3J0
+dW5pdHkgYnV0IHlvdSBtdXN0IGtlZXAgdGhlIGRldGFpbHMgb2YgdGhlIGZ1bmRzIHNlY3JldCB0
+byBhdm9pZCBhbnkgbGVha2FnZXMgYXMgbm8gb25lIGluIHRoZSBiYW5rIGtub3dzIGFib3V0IG15
+IHBsYW5zLlBsZWFzZSBnZXQgYmFjayB0byBtZSBpZiB5b3UgYXJlIGludGVyZXN0ZWQgYW5kIGNh
+cGFibGUgdG8gaGFuZGxlIHRoaXMgcHJvamVjdCwgSSBzaGFsbCBpbnRpbWF0ZSB5b3Ugb24gd2hh
+dCB0byBkbyB3aGVuIEkgaGVhciBmcm9tIHlvdXIgY29uZmlybWF0aW9uIGFuZCBhY2NlcHRhbmNl
+LklmIHlvdSBhcmUgY2FwYWJsZSBvZiBiZWluZyBteSB0cnVzdGVkIGFzc29jaWF0ZSwgZG8gZGVj
+bGFyZSB5b3VyIGNvbnNlbnQgdG8gbWUgSSBhbSBsb29raW5nIGZvcndhcmQgdG8gaGVhciBmcm9t
+IHlvdSBpbW1lZGlhdGVseSBmb3IgZnVydGhlciBpbmZvcm1hdGlvbi4NCg0KVGhhbmtzIHdpdGgg
+bXkgYmVzdCByZWdhcmRzLg0KTXIuQWJkZXJhemFjayB6ZWJkYW5pLg0KVGVsZXggTWFuYWdlcg0K
+QmFuayBPZiBBZnJpY2EgKEJPQSkNCkJ1cmtpbmEgRmFzby4KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
+aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
+bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
