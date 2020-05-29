@@ -2,58 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444761E8A62
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 May 2020 23:48:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1079D1E8A6B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 29 May 2020 23:48:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 575DC100F2276;
-	Fri, 29 May 2020 14:43:49 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id E1D75100EAB5A;
+	Fri, 29 May 2020 14:44:27 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 15434100F2247
-	for <linux-nvdimm@lists.01.org>; Fri, 29 May 2020 14:43:46 -0700 (PDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04TLYdxR145452;
-	Fri, 29 May 2020 17:47:43 -0400
+	by ml01.01.org (Postfix) with ESMTPS id 26D0E100F2278
+	for <linux-nvdimm@lists.01.org>; Fri, 29 May 2020 14:44:26 -0700 (PDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04TLWJTb111327;
+	Fri, 29 May 2020 17:47:50 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31as1hwt7h-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31aucb4mpf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 17:47:43 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04TLZI3X150583;
-	Fri, 29 May 2020 17:47:42 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31as1hwt70-1
+	Fri, 29 May 2020 17:47:50 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04TLlnwm153411;
+	Fri, 29 May 2020 17:47:49 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31aucb4mnh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 17:47:42 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04TLjkFr014310;
-	Fri, 29 May 2020 21:47:40 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma02fra.de.ibm.com with ESMTP id 316uf8w6bu-1
+	Fri, 29 May 2020 17:47:49 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04TLjfde031605;
+	Fri, 29 May 2020 21:47:47 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma04ams.nl.ibm.com with ESMTP id 316uf94q69-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 21:47:40 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04TLlbUN65405112
+	Fri, 29 May 2020 21:47:47 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04TLling21561432
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 May 2020 21:47:37 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 80E97A4054;
-	Fri, 29 May 2020 21:47:37 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7ACAA405B;
-	Fri, 29 May 2020 21:47:33 +0000 (GMT)
+	Fri, 29 May 2020 21:47:44 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6718811C050;
+	Fri, 29 May 2020 21:47:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4EC4A11C054;
+	Fri, 29 May 2020 21:47:39 +0000 (GMT)
 Received: from vajain21-in-ibm-com (unknown [9.199.34.115])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Fri, 29 May 2020 21:47:33 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Sat, 30 May 2020 03:17:32 +0530
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Fri, 29 May 2020 21:47:38 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Sat, 30 May 2020 03:17:38 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v9 1/5] powerpc: Document details on H_SCM_HEALTH hcall
-Date: Sat, 30 May 2020 03:17:15 +0530
-Message-Id: <20200529214719.223344-2-vaibhav@linux.ibm.com>
+Subject: [PATCH v9 2/5] seq_buf: Export seq_buf_printf
+Date: Sat, 30 May 2020 03:17:16 +0530
+Message-Id: <20200529214719.223344-3-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200529214719.223344-1-vaibhav@linux.ibm.com>
 References: <20200529214719.223344-1-vaibhav@linux.ibm.com>
@@ -61,21 +61,21 @@ MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
  definitions=2020-05-29_10:2020-05-28,2020-05-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- spamscore=0 adultscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- malwarescore=0 cotscore=-2147483648 mlxlogscore=999 mlxscore=0
- phishscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
+ malwarescore=0 spamscore=0 impostorscore=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 clxscore=1015
+ cotscore=-2147483648 adultscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2005290153
-Message-ID-Hash: R4YFMDL77OQ5FZJHUEBITEXYNDWJZNEW
-X-Message-ID-Hash: R4YFMDL77OQ5FZJHUEBITEXYNDWJZNEW
+Message-ID-Hash: VUB5I7MGVWCLNVI2255DLWTI4ZPYHDFV
+X-Message-ID-Hash: VUB5I7MGVWCLNVI2255DLWTI4ZPYHDFV
 X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>, Piotr Maziarz <piotrx.maziarz@linux.intel.com>, Cezary Rojewski <cezary.rojewski@intel.com>, Christoph Hellwig <hch@infradead.org>, Borislav Petkov <bp@alien8.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R4YFMDL77OQ5FZJHUEBITEXYNDWJZNEW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VUB5I7MGVWCLNVI2255DLWTI4ZPYHDFV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -84,96 +84,54 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add documentation to 'papr_hcalls.rst' describing the bitmap flags
-that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
-specification.
+'seq_buf' provides a very useful abstraction for writing to a string
+buffer without needing to worry about it over-flowing. However even
+though the API has been stable for couple of years now its still not
+exported to kernel loadable modules limiting its usage.
 
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ira Weiny <ira.weiny@intel.com>
+Hence this patch proposes update to 'seq_buf.c' to mark
+seq_buf_printf() which is part of the seq_buf API to be exported to
+kernel loadable GPL modules. This symbol will be used in later parts
+of this patch-set to simplify content creation for a sysfs attribute.
+
+Cc: Piotr Maziarz <piotrx.maziarz@linux.intel.com>
+Cc: Cezary Rojewski <cezary.rojewski@intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
 Changelog:
 
 v8..v9:
-* s/SCM/PMEM device. [ Dan Williams, Aneesh ]
+* None
 
 v7..v8:
-* Added a clarification on bit-ordering of Health Bitmap
+* Updated the patch title [ Christoph Hellwig ]
+* Updated patch description to replace confusing term 'external kernel
+  modules' to 'kernel lodable modules'.
 
 Resend:
-* None
+* Added ack from Steven Rostedt
 
 v6..v7:
-* None
-
-v5..v6:
 * New patch in the series
 ---
- Documentation/powerpc/papr_hcalls.rst | 46 ++++++++++++++++++++++++---
- 1 file changed, 42 insertions(+), 4 deletions(-)
+ lib/seq_buf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-index 3493631a60f8..48fcf1255a33 100644
---- a/Documentation/powerpc/papr_hcalls.rst
-+++ b/Documentation/powerpc/papr_hcalls.rst
-@@ -220,13 +220,51 @@ from the LPAR memory.
- **H_SCM_HEALTH**
+diff --git a/lib/seq_buf.c b/lib/seq_buf.c
+index 4e865d42ab03..707453f5d58e 100644
+--- a/lib/seq_buf.c
++++ b/lib/seq_buf.c
+@@ -91,6 +91,7 @@ int seq_buf_printf(struct seq_buf *s, const char *fmt, ...)
  
- | Input: drcIndex
--| Out: *health-bitmap, health-bit-valid-bitmap*
-+| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
- | Return Value: *H_Success, H_Parameter, H_Hardware*
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(seq_buf_printf);
  
- Given a DRC Index return the info on predictive failure and overall health of
--the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
--failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
--valid.
-+the PMEM device. The asserted bits in the health-bitmap indicate one or more states
-+(described in table below) of the PMEM device and health-bit-valid-bitmap indicate
-+which bits in health-bitmap are valid. The bits are reported in
-+reverse bit ordering for example a value of 0xC400000000000000
-+indicates bits 0, 1, and 5 are valid.
-+
-+Health Bitmap Flags:
-+
-++------+-----------------------------------------------------------------------+
-+|  Bit |               Definition                                              |
-++======+=======================================================================+
-+|  00  | PMEM device is unable to persist memory contents.                     |
-+|      | If the system is powered down, nothing will be saved.                 |
-++------+-----------------------------------------------------------------------+
-+|  01  | PMEM device failed to persist memory contents. Either contents were   |
-+|      | not saved successfully on power down or were not restored properly on |
-+|      | power up.                                                             |
-++------+-----------------------------------------------------------------------+
-+|  02  | PMEM device contents are persisted from previous IPL. The data from   |
-+|      | the last boot were successfully restored.                             |
-++------+-----------------------------------------------------------------------+
-+|  03  | PMEM device contents are not persisted from previous IPL. There was no|
-+|      | data to restore from the last boot.                                   |
-++------+-----------------------------------------------------------------------+
-+|  04  | PMEM device memory life remaining is critically low                   |
-++------+-----------------------------------------------------------------------+
-+|  05  | PMEM device will be garded off next IPL due to failure                |
-++------+-----------------------------------------------------------------------+
-+|  06  | PMEM device contents cannot persist due to current platform health    |
-+|      | status. A hardware failure may prevent data from being saved or       |
-+|      | restored.                                                             |
-++------+-----------------------------------------------------------------------+
-+|  07  | PMEM device is unable to persist memory contents in certain conditions|
-++------+-----------------------------------------------------------------------+
-+|  08  | PMEM device is encrypted                                              |
-++------+-----------------------------------------------------------------------+
-+|  09  | PMEM device has successfully completed a requested erase or secure    |
-+|      | erase procedure.                                                      |
-++------+-----------------------------------------------------------------------+
-+|10:63 | Reserved / Unused                                                     |
-++------+-----------------------------------------------------------------------+
- 
- **H_SCM_PERFORMANCE_STATS**
- 
+ #ifdef CONFIG_BINARY_PRINTF
+ /**
 -- 
 2.26.2
 _______________________________________________
