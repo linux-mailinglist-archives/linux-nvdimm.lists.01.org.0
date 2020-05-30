@@ -2,260 +2,84 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2501E8AF2
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 30 May 2020 00:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015011E8C70
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 30 May 2020 02:07:23 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F0939100EAB5B;
-	Fri, 29 May 2020 15:02:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 257B3100F2261;
+	Fri, 29 May 2020 17:02:53 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=78.110.62.50; helo=78-110-62-50.net.hts.ru; envelope-from=mail-sent@meta.ua; receiver=<UNKNOWN> 
+Received: from 78-110-62-50.net.hts.ru (unknown [78.110.62.50])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6B7BD100F2260
-	for <linux-nvdimm@lists.01.org>; Fri, 29 May 2020 15:02:27 -0700 (PDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 04TM2b0T079261;
-	Fri, 29 May 2020 18:06:49 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31as1e7e8d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 18:06:48 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04TM5DPD087127;
-	Fri, 29 May 2020 18:06:48 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31as1e7e7s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 18:06:48 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04TM5oSn000635;
-	Fri, 29 May 2020 22:06:46 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma02fra.de.ibm.com with ESMTP id 316uf8w6nu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 May 2020 22:06:46 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 04TM6hfb59244576
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 May 2020 22:06:43 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 789DB11C066;
-	Fri, 29 May 2020 22:06:43 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D14011C04C;
-	Fri, 29 May 2020 22:06:40 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.199.34.115])
-	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Fri, 29 May 2020 22:06:40 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Sat, 30 May 2020 03:36:39 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linux-nvdimm@lists.01.org
-Subject: [ndctl PATCH v5 6/6] libndctl,papr_scm: Implement support for PAPR_PDSM_HEALTH
-Date: Sat, 30 May 2020 03:36:00 +0530
-Message-Id: <20200529220600.225320-7-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200529220600.225320-1-vaibhav@linux.ibm.com>
-References: <20200529220600.225320-1-vaibhav@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id DDFE2100F225B
+	for <linux-nvdimm@lists.01.org>; Fri, 29 May 2020 17:02:50 -0700 (PDT)
+Message-ID: <976D3E1BFC2813D00C0940FCF84B20E4@meta.ua>
+From: "ADMIN" <mail-sent@meta.ua>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?windows-1251?B?zeDp5LjsIOrr6OXt8u7iIOTr/yDC4Pjl4+4g?=
+	=?windows-1251?B?4ejn7eXx4CDo6+gg8/Hr8+Mu?=
+Date: Sat, 30 May 2020 03:05:31 +0300
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-05-29_10:2020-05-28,2020-05-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- cotscore=-2147483648 phishscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=1 adultscore=0
- mlxscore=0 clxscore=1015 mlxlogscore=999 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005290155
-Message-ID-Hash: VK2IKUFGH3OPGGEDQVNIXJ7S3RF3JW4E
-X-Message-ID-Hash: VK2IKUFGH3OPGGEDQVNIXJ7S3RF3JW4E
-X-MailFrom: vaibhav@linux.ibm.com
+Message-ID-Hash: ZDJ4M66KDYF7J4UAAMX4EACB6FJAWV2B
+X-Message-ID-Hash: ZDJ4M66KDYF7J4UAAMX4EACB6FJAWV2B
+X-MailFrom: mail-sent@meta.ua
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VK2IKUFGH3OPGGEDQVNIXJ7S3RF3JW4E/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZDJ4M66KDYF7J4UAAMX4EACB6FJAWV2B/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-Add support for reporting DIMM health and shutdown state by issuing
-PAPR_PDSM_HEALTH request to papr_scm module. It returns an
-instance of 'struct nd_papr_pdsm_health' as defined in
-'papr_pdsm.h'. The patch provides support for dimm-ops
-'new_smart', 'smart_get_health' & 'smart_get_shutdown_state' as newly
-introduced functions papr_new_smart_health(), papr_smart_get_health()
-& papr_smart_get_shutdown_state() respectively. These callbacks should
-enable ndctl to report DIMM health.
-
-Also a new member 'struct dimm_priv.health' is introduced which holds
-the current health status of the dimm. This member is set inside newly
-added function 'update_dimm_health_v1()' which parses the v1 payload
-returned by the kernel after servicing PAPR_PDSM_HEALTH. The
-function will also update dimm-flags viz 'struct ndctl_dimm.flags.f_*'
-based on the flags set in the returned payload.
-
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Changelog:
-
-v4..v5:
-* Updated patch description to reflect updated names of struct and
-  defines that have the term 'scm' removed.
-
-v3..v4:
-* None
-
-v2..v3:
-* None
-
-v1..v2:
-* Squashed patch to report nvdimm bad shutdown state with this patch.
-* Switched to new structs/enums as defined in papr_scm_pdsm.h
----
- ndctl/lib/papr.c | 90 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 87 insertions(+), 3 deletions(-)
-
-diff --git a/ndctl/lib/papr.c b/ndctl/lib/papr.c
-index 1b7870beb631..cb7ff9e0d5bd 100644
---- a/ndctl/lib/papr.c
-+++ b/ndctl/lib/papr.c
-@@ -42,7 +42,9 @@
- 
- /* Per dimm data. Holds per-dimm data parsed from the cmd_pkgs */
- struct dimm_priv {
--	/* Empty for now */
-+
-+	/* Cache the dimm health status */
-+	struct nd_papr_pdsm_health health;
- };
- 
- static bool papr_cmd_is_supported(struct ndctl_dimm *dimm, int cmd)
-@@ -97,6 +99,43 @@ static bool cmd_is_valid(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
- 	return true;
- }
- 
-+/*
-+ * Parse the nd_papr_pdsm_health_v1 payload embedded in ndctl_cmd and
-+ * update dimm health/flags
-+ */
-+static int update_dimm_health_v1(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
-+{
-+	struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
-+	struct dimm_priv *p = dimm->dimm_user_data;
-+	const struct nd_papr_pdsm_health_v1 *health =
-+		pdsm_cmd_to_payload(pcmd);
-+
-+	/* Update the dimm flags */
-+	dimm->flags.f_arm = health->dimm_unarmed;
-+	dimm->flags.f_flush = health->dimm_bad_shutdown;
-+	dimm->flags.f_restore = health->dimm_bad_restore;
-+	dimm->flags.f_smart = (health->dimm_health != 0);
-+
-+	/* Cache the dimm health information */
-+	memcpy(&p->health, health, sizeof(*health));
-+	return 0;
-+}
-+
-+/* Check payload version returned and pass the packet to appropriate handler */
-+static int update_dimm_health(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
-+{
-+	const struct nd_pdsm_cmd_pkg *pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
-+
-+	if (pcmd->payload_version == 1)
-+		return update_dimm_health_v1(dimm, cmd);
-+
-+	/* unknown version */
-+	papr_err(dimm, "Unknown payload version for dimm_health.\n");
-+	papr_dbg(dimm, "dimm_health payload Ver=%d, Supported=%d\n",
-+		 pcmd->payload_version, ND_PAPR_PDSM_HEALTH_VERSION);
-+	return -EINVAL;
-+}
-+
- /* Parse a command payload and update dimm flags/private data */
- static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
- {
-@@ -122,6 +161,8 @@ static int update_dimm_stats(struct ndctl_dimm *dimm, struct ndctl_cmd *cmd)
- 	/* Get the pdsm request and handle it */
- 	pcmd = nd_to_pdsm_cmd_pkg(cmd->pkg);
- 	switch (pcmd_to_pdsm(pcmd)) {
-+	case PAPR_PDSM_HEALTH:
-+		return update_dimm_health(dimm, cmd);
- 	default:
- 		papr_err(dimm, "Unhandled pdsm-request 0x%016llx\n",
- 			 pcmd_to_pdsm(pcmd));
-@@ -166,14 +207,54 @@ static struct ndctl_cmd *allocate_cmd(struct ndctl_dimm *dimm,
- 	return cmd;
- }
- 
-+static struct ndctl_cmd *papr_new_smart_health(struct ndctl_dimm *dimm)
-+{
-+	struct ndctl_cmd *cmd_ret;
-+
-+	cmd_ret = allocate_cmd(dimm, PAPR_PDSM_HEALTH,
-+			       sizeof(struct nd_papr_pdsm_health),
-+			       ND_PAPR_PDSM_HEALTH_VERSION);
-+	if (!cmd_ret) {
-+		papr_err(dimm, "Unable to allocate smart_health command\n");
-+		return NULL;
-+	}
-+
-+	cmd_ret->pkg[0].nd_size_out = ND_PDSM_ENVELOPE_CONTENT_SIZE(
-+		struct nd_papr_pdsm_health);
-+
-+	return cmd_ret;
-+}
-+
-+static unsigned int papr_smart_get_health(struct ndctl_cmd *cmd)
-+{
-+	struct dimm_priv *p = cmd->dimm->dimm_user_data;
-+
-+	/*
-+	 * Update the dimm stats and use some math to return one of
-+	 * defined ND_SMART_*_HEALTH values
-+	 */
-+	if (update_dimm_stats(cmd->dimm, cmd) || !p->health.dimm_health)
-+		return 0;
-+	else
-+		return 1 << (p->health.dimm_health - 1);
-+}
-+
-+static unsigned int papr_smart_get_shutdown_state(struct ndctl_cmd *cmd)
-+{
-+	struct dimm_priv *p = cmd->dimm->dimm_user_data;
-+
-+	/* Update dimm state and return f_flush */
-+	return update_dimm_stats(cmd->dimm, cmd) ?
-+		0 : p->health.dimm_bad_shutdown;
-+}
-+
- static unsigned int papr_smart_get_flags(struct ndctl_cmd *cmd)
- {
- 	/* In case of error return empty flags * */
- 	if (update_dimm_stats(cmd->dimm, cmd))
- 		return 0;
- 
--	/* Return empty flags for now as no DSM support */
--	return 0;
-+	return ND_SMART_HEALTH_VALID | ND_SMART_SHUTDOWN_VALID;
- }
- 
- static int papr_dimm_init(struct ndctl_dimm *dimm)
-@@ -214,4 +295,7 @@ struct ndctl_dimm_ops * const papr_dimm_ops = &(struct ndctl_dimm_ops) {
- 	.dimm_uninit = papr_dimm_uninit,
- 	.smart_get_flags = papr_smart_get_flags,
- 	.get_firmware_status =  papr_get_firmware_status,
-+	.new_smart = papr_new_smart_health,
-+	.smart_get_health = papr_smart_get_health,
-+	.smart_get_shutdown_state = papr_smart_get_shutdown_state,
- };
--- 
-2.26.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+xczAycsgzMDQysXSyM3DDQoNCsfk8ODi8fLi8+ny5SENCg0KzPsg5+Dt6Ozg5ezx/yDl7ODp6yDs
+4PDq5fLo7ePu7A0KDQrk7vHy4OLq4CD96+Xq8vDu7e379SDv6PHl7CDt4CDg5PDl8eAg6O3y5fDt
+5fIg7+7r/Ofu4uDy5evl6S4NCg0KzeD46CDh4Of7Og0KDQrP8OXk7/Do//Lo/yDoIO7w4+Dt6Ofg
+9ujoINPq8ODo7fsgLSAzNTk4Mzcg4OTw5fHu4iwg8fLu6Ozu8fL8IPDg5+7i7ukg8ODx8fvr6ugg
+LSA4NTAg4/DtICDU6Ofo9+Xx6ujlIOvo9uAg0+rw4Ojt+yAtIDQ4NjMyOTEg4OTw5fEsIPHy7ujs
+7vHy/CDw4Ofu4u7pIPDg8fH76+roIC0gMTgwMCDj8O0gDQoNCtLg6ublIOXx8vwg4eDn+yDv7iDv
+8OXk7/Do//Lo/+wg6CD06Ofo9+Xx6ujsIOvo9uDsIO7y5OXr/O3uIO/uIO7h6+Dx8v/sINPq8ODo
+7fs6DQoNCs7k5fHx6uD/IO7h6+Dx8vwgLaAxODUzNjkg4OTw5fHu4iwg8fLu6Ozu8fL8IPDg8fH7
+6+roIDQwMCDj8O0gIMTt5e/w7u/l8vDu4vHq4P8g7uHr4PHy/CAtoDIyMDI2OCDg5PDl8e7iLCDx
+8u7o7O7x8vwg8ODx8fvr6uggNDAwIOPw7SDX5fDt6OPu4vHq4P8g7uHr4PHy/CAtoDEzNzU4MiDg
+5PDl8eAsIPHy7ujs7vHy/CDw4PHx++vq6KAzMDAg4/DtICDV4PD86u7i8erg/yDu4evg8fL8IC2g
+MTk0MzgyIODk8OXx4Cwg8fLu6Ozu8fL8IPDg8fH76+roIDM1MCDj8O0gIMbo8u7s6PDx6uD/IO7h
+6+Dx8vwgLaA5NjM5NiDg5PDl8e7iLCDx8u7o7O7x8vwg8ODx8fvr6uigMjUwIOPw7SAgz+7r8uDi
+8erg/yDu4evg8fL8IC2gODQzODYg4OTw5fHu4iwg8fLu6Ozu8fL8IPDg8fH76+rooDI1MCDj8O0g
+1eXw8e7t8erg/yDu4evg8fL8IC2gMTEwNTgzIODk8OXx4Cwg8fLu6Ozu8fL8IPDg8fH76+rooDMw
+MCDj8O0gx+Dv7vDu5vHq4P8g7uHr4PHy/CAtoDEzNzI4NSDg5PDl8e7iLCDx8u7o7O7x8vwg8ODx
+8fvr6uigMzAwIOPw7SAgwujt7ej26uD/IO7h6+Dx8vwgLaAxMDM3NTgg4OTw5fHu4iwg8fLu6Ozu
+8fL8IPDg8fH76+rooDMwMCDj8O0gyujw7uLu4/Dg5PHq4P8g7uHr4PHy/CAtoDk2Mjc0IODk8OXx
+4Cwg8fLu6Ozu8fL8IPDg8fH76+rooDI1MCDj8O0gIM3o6u7r4OXi8erg/yDu4evg8fL8IC2gODg0
+OTIg4OTw5fHgLCDx8u7o7O7x8vwg8ODx8fvr6uigMjUwIOPw7SDR8+zx6uD/IO7h6+Dx8vwgLaA4
+MjYwNCDg5PDl8eAsIPHy7ujs7vHy/CDw4PHx++vq6KAyNTAg4/DtICDL/OLu4vHq4P8g7uHr4PHy
+/CAtoDE3MDY1OCDg5PDl8e7iLCDx8u7o7O7x8vwg8ODx8fvr6uigMzUwIOPw7SAg1+Xw6uDx8erg
+/yDu4evg8fL8IC2gNzgzOTYg4OTw5fHgLCDx8u7o7O7x8vwg8ODx8fvr6uigMjUwIOPw7SAg1ezl
+6/zt6Pbq4P8g7uHr4PHy/CAtoDEzNzU4MiDg5PDl8eAsIPHy7ujs7vHy/CDw4PHx++vq6KAzMDAg
+4/DtICDC7uv77fHq4P8g7uHr4PHy/CAtIDg1MTA5IODk8OXx7uIsIPHy7ujs7vHy/CDw4PHx++vq
+6KAyNTAg4/DtICDQ7uLl7fHq4P8g7uHr4PHy/CAtoDk3Mzc1IODk8OXx7uIsIPHy7ujs7vHy/CDw
+4PHx++vq6KAzMDAg4/DtIMji4O3uLdTw4O3q7uLx6uD/IO7h6+Dx8vwgLaAxMDczODUg4OTw5fHu
+4iwg8fLu6Ozu8fL8IPDg8fH76+rooDMwMCDj8O0g0uXw7e7v7uv88erg/yDu4evg8fL8IC2gMTI2
+NDk4IODk8OXx7uIsIPHy7ujs7vHy/CDw4PHx++vq6KAzMDAg4/DtICDH4Org8O/g8vHq4P8g7uHr
+4PHy/CAtoDczOTI2IODk8OXx7uIsIPHy7ujs7vHy/CDw4PHx++vq6KAzMDAg4/DtICDX5fDt7uLo
+9urg/yDu4evg8fL8IC2gODYyODUg4OTw5fHu4iwg8fLu6Ozu8fL8IPDg8fH76+rooDMwMCDj8O0g
+IMro5eKgKPEg7uHrLimg7/Dl5O/w6P/y6P8g6CDu8OPg7ejn4Pbo6KAtIDEwNjI2NSDg5PDl8e7i
+LCDx8u7o7O7x8vwg8ODx8fvr6uigNDAwIOPw7SAgyujl4iAo8SDu4esuKSD06Ofo9+Xx6ujlIOvo
+9uAgLSAxNDczNTI4IODk8OXx7uIsIPHy7ujs7vHy/CDw4PHx++vq6CA2NTAg4/DtIA0KDQrN4Pjo
+IODq9ujoOg0KDQrI5+Pu8u7i6+Xt6OUg7ODq5fLgIC0gwcXRz8vA0s3OISDP8Ogg7u/r4PLlIDIt
+9SDw4PHx++vu6iwg8vDl8vz/IMHF0c/LwNLNziEgz/DoIOfg6uDn5SDw4PHx++vq5SDv7iDi8eXp
+IOHg5+Ug4OHz5+7z8fLu6ffo4vvpIPXu8fLo7eMgLSDBxdHPy8DSzc4hIA0KDQrR8u7o7O7x8vwg
+8ODn7uLu6SDw4PHx++vq6CDv7iDi8eXsIOHg5+DsINPq8ODo7fsgLSAyMDAwIOPw7Q0KDQrCzcjM
+wM3IxSEhISAtINLl6vHy+yDv6PHl7CDt4PDz+OD++ejlIOfg6u7t7uTg8uXr/PHy4u4g0+rw4Ojt
++w0KDQrqIPDg8fH76+rlIO3lIO/w6O3o7OD+8vH/DQoNCtEg0+Lg5uXt6OXsIMLr4OTo7OjwIMLo
+6vLu8O7i6PcNCg0K0uXr5fTu7TqgICszOCAoMDY4KSA2ODAgNDYgNTKgIA0KRS1tYWlsOiBpbmZv
+Z3JvdXBwQGJpZ21pci5uZXQNClNLWVBFOiBPcmctUmVlc3RyDQpfX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0t
+IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0
+byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
