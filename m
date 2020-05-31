@@ -1,78 +1,66 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D621E9445
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 31 May 2020 00:32:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCCD1E9720
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 31 May 2020 12:58:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2F8C7100EAB7A;
-	Sat, 30 May 2020 15:28:10 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=46.166.185.243; helo=host.acceswealthservice.xyz; envelope-from=deanj00@acceswealthservice.xyz; receiver=<UNKNOWN> 
-Received: from host.acceswealthservice.xyz (unknown [46.166.185.243])
-	by ml01.01.org (Postfix) with ESMTP id 6605A100EAB5A
-	for <linux-nvdimm@lists.01.org>; Sat, 30 May 2020 15:28:07 -0700 (PDT)
-Received: from acceswealthservice.xyz (2t5j.w.time4vps.cloud [212.24.97.110])
-	by host.acceswealthservice.xyz (Postfix) with ESMTPA id 240D5F6666
-	for <linux-nvdimm@lists.01.org>; Sun, 31 May 2020 00:29:27 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.acceswealthservice.xyz 240D5F6666
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=acceswealthservice.xyz; s=default; t=1590877767;
-	bh=td/1klW8T5Eyprv/u3iSt1Uq3pUK6RiW9JQei4VLqgo=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=ajhQffnfNFxVXfd8VtyTIEaAl6azurgjeWPI+Zw7Dl+X2OQogE3uFGawe1pS8ZTDh
-	 korJladjbzAvr5bpX0RmBrp61xvgL2PCRYzwdRXJJ9KN1iMohKDYk1neX71ctQjdJL
-	 3FMgz7QtejbhHjHdOs+lV8PN8sjy8YEGXkDK4frw=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.acceswealthservice.xyz 240D5F6666
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=acceswealthservice.xyz; s=default; t=1590877767;
-	bh=td/1klW8T5Eyprv/u3iSt1Uq3pUK6RiW9JQei4VLqgo=;
-	h=Reply-To:From:To:Subject:Date:From;
-	b=ajhQffnfNFxVXfd8VtyTIEaAl6azurgjeWPI+Zw7Dl+X2OQogE3uFGawe1pS8ZTDh
-	 korJladjbzAvr5bpX0RmBrp61xvgL2PCRYzwdRXJJ9KN1iMohKDYk1neX71ctQjdJL
-	 3FMgz7QtejbhHjHdOs+lV8PN8sjy8YEGXkDK4frw=
-From: Dean <deanj00@acceswealthservice.xyz>
+	by ml01.01.org (Postfix) with ESMTP id 1003B100EA134;
+	Sun, 31 May 2020 03:53:52 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.114; helo=dmuc.com; envelope-from=zrsn@jcvz.com; receiver=<UNKNOWN> 
+Received: from dmuc.com (unknown [223.73.128.114])
+	by ml01.01.org (Postfix) with ESMTP id 27916100EA133
+	for <linux-nvdimm@lists.01.org>; Sun, 31 May 2020 03:53:43 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 31 May 2020 18:40:00 +0800
+Message-ID: 8555efff-45d0-4dbc-a216-83db6ec63ca6
+MIME-Version: 1.0
+Sender: =?utf-8?Q?=E9=A6=99=E6=B8=AF=E6=90=AC=E5=AE=B6=E5=88?=
+ =?utf-8?Q?=B0=E5=85=A7=E5=9C=B0=E5=B0=88=E7=B7=9A?=
+ <zrsn@jcvz.com>
+From: =?utf-8?Q?=E9=A6=99=E6=B8=AF=E6=90=AC=E5=AE=B6=E5=88=B0?=
+ =?utf-8?Q?=E5=85=A7=E5=9C=B0=E5=B0=88=E7=B7=9A?=
+ <hk13642980935@hotmail.com>
 To: linux-nvdimm@lists.01.org
-Subject: Investment
-Date: 31 May 2020 01:29:26 +0300
-Message-ID: <20200531012926.9C1704865B8F447A@acceswealthservice.xyz>
-Mime-Version: 1.0
-Message-ID-Hash: C53ZMD2WMZJXEG2P5ESISG3M35243YP4
-X-Message-ID-Hash: C53ZMD2WMZJXEG2P5ESISG3M35243YP4
-X-MailFrom: deanj00@acceswealthservice.xyz
+Date: 31 May 2020 18:40:00 +0800
+Subject: =?utf-8?B?6aaZ5riv5pCs5a625Yiw5YWn5Zyw5bCI57eaLS3nlbblpKnl?=
+ =?utf-8?B?iLDlhaflnLAtLeiyqOS4u+WPr+maqOi7iumBjumXnA==?=
+Message-ID-Hash: KLB74NG4TGBOG2LI4FL5QNETFBAZDXZP
+X-Message-ID-Hash: KLB74NG4TGBOG2LI4FL5QNETFBAZDXZP
+X-MailFrom: zrsn@jcvz.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: deanj22@accesswealthservices.online
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C53ZMD2WMZJXEG2P5ESISG3M35243YP4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KLB74NG4TGBOG2LI4FL5QNETFBAZDXZP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Good evening. I am Dean Johnston, a broker working with Access 
-Wealth Services. I am contacting you because one of my high 
-profile clients is interested in investing abroad and has asked 
-me to look for individuals and companies with interesting 
-business ideas and companies that he can invest in. He wants to 
-expand his portfolio and has interest in investing a substantial 
-amount of asset abroad. I got your contact (along with other 
-contacts) through an online business directory and I thought I'd 
-contact you to see if you are interested in this opportunity.
-
-Please indicate your interest by replying back to this email. 
-Once I get your response, I will give you more details and we can 
-plan a strategy that will be beneficial to all parties.
-
-Best regards
-
-D Johnston
-Access Wealth Services
-+27319400855
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDsNCkRlYXIgbGludXgtbnZkaW1tDQombmJzcDsNCiZuYnNwOw0KJm5ic3A7
+Jm5ic3A7Jm5ic3A76aaZ5riv5pCs5a625bCI57ea77yM5o+Q5L6b6aaZ5riv5pCs5a625Yiw5rex
+5Zyz77yM5Lit5riv5pCs5a6277yM5rex5Zyz5Yiw6aaZ5riv5b6A6L+U6YGL6Ly477yM6aaZ5riv
+5pCs5a625Yiw5YWn5Zyw562J5LiA5qKd6b6N5Lit5riv6LKo6YGL6aaZ5riv6YGL6Ly45pyN5YuZ
+44CC5qC55pOa5a6i5oi255qE6YGL6Ly45oCn6LOq77yM5oyJ5ZyL5a626KaP5a6a54K65a6i5oi2
+5ZCI55CG5ZCI5rOV55qE6KaP5YqD6YGL6Ly45rWB56iL77yM5o+Q5L6b6aaZ5riv5Yiw5YWo5ZyL
+6YGL6Ly444CB5YCJ5YSy44CB6YCy5Ye65Y+j6YCa6Zec5LiA56uZ5byP5pyN5YuZ44CCDQombmJz
+cDsNCiZuYnNwOyZuYnNwOyDmiJHlj7jmk43kvZzmtYHnqIvvvJombmJzcDsgJm5ic3A75LiA44CB
+5o6l5Zau5YWs5Y+45a6i5pyN5o6l5b6F5a6i5oi26Zu76Kmx5ZKo6Kmi77yM5LqG6Kej5a6i5oi2
+55qE6ZyA5rGCIQ0KJm5ic3A7Jm5ic3A7IOS6jOOAgeWgseWDuee2k+WuouaItuS7i+e0ueW+jO+8
+jOiLpeaJgOmcgOaQrOmBt+WutuWFt+WTgeeoruS4jeWkmu+8jOWxrOaWvOWwj+Wei+aQrOWutu+8
+jOWuouaItuiDveWPo+mgreihqOmBlOa4heaZsOeahO+8jOaOpeWWruS6uuWToeWPr+S+neaTmuWF
+rOWPuOWDueebruaomea6luWwjemhp+Wuoumbu+ipseWgseWDue+8jOmbmeaWuee2k+WNlOWVhuWP
+r+WumuS4i+WPo+mgreWNlOitsOOAgg0KJm5ic3A7IOWms+i6q+mCiueahOeJqea1geWwiOWutiZu
+YnNwOyZuYnNwOyDlpKfpmbjmiYvmqZ/vvJorODYtMTM2NDI5ODA5MzUg5qWK55SfIO+8iDI05bCP
+5pmC54ax57ea77yJJm5ic3A7Jm5ic3A7IFEgUe+8mjI5MDU2NTA3NzkmbmJzcDsg5b6u5L+h6Jmf
+77yaMTM2NDI5ODA5MzUmbmJzcDsmbmJzcDsgRS1NYWls77yaaGsxMzY0Mjk4MDkzNUBob3RtYWls
+LmNvbQ0KJm5ic3A7DQombmJzcDsNCiZuYnNwOw0KMjAyMOW5tDA15pyIMzHml6UNCiZuYnNwOw0K
+Jm5ic3A7Cl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
+bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
+bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
+cmcK
