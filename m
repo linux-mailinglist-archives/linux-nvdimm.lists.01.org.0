@@ -1,154 +1,103 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ADA1EA194
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jun 2020 12:09:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27AE1EA26B
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jun 2020 13:07:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8ABD8100DEFFE;
-	Mon,  1 Jun 2020 03:04:46 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id E0A22100DDCC0;
+	Mon,  1 Jun 2020 04:03:10 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7C1D100DEFFD
-	for <linux-nvdimm@lists.01.org>; Mon,  1 Jun 2020 03:04:43 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-	by mx2.suse.de (Postfix) with ESMTP id 86A91AF7A;
-	Mon,  1 Jun 2020 10:09:27 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id 567D31E0948; Mon,  1 Jun 2020 12:09:25 +0200 (CEST)
-Date: Mon, 1 Jun 2020 12:09:25 +0200
-From: Jan Kara <jack@suse.cz>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
- synchronous fault support.
-Message-ID: <20200601100925.GC3960@quack2.suse.cz>
-References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
- <20200529093310.GL25173@kitsune.suse.cz>
- <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
- <20200529095250.GP14550@quack2.suse.cz>
- <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id CBAA5100DEFFD
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Jun 2020 04:03:08 -0700 (PDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id DB61820657;
+	Mon,  1 Jun 2020 11:07:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1591009672;
+	bh=oeg5LhQy9jYN0KsGCtEYzL2rtk3xXb3RO+RekWTh9gA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uzHMZmy+OOG0e7UVv731fhdgt4V/9SDDlnENqRerylJSTUI9fCfl0fT/Maxxtqnak
+	 lYPmkfXM4GYg9osUrXOcmsgaV1996F7zDgWJWqmRfdLNNNyqnZd/YX8tLXgQ/2UYZe
+	 IQrc1CS2WZp0l/j663+qV8faMzbjPoyHbK6IM4Tk=
+Date: Mon, 1 Jun 2020 13:07:50 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [5.4-stable PATCH 0/7] libnvdimm: Cross-arch compatible
+ namespace alignment
+Message-ID: <20200601110750.GB124421@kroah.com>
+References: <159010426294.1062454.8853083370975871627.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200522115800.GA1451824@kroah.com>
+ <20200522120009.GA1456052@kroah.com>
+ <CAPcyv4jW9P2FP2p6OiLoN+e_wzZY9-c8C-mMMoDqohuTekF7WQ@mail.gmail.com>
+ <x491rn6a0bp.fsf@segfault.boston.devel.redhat.com>
+ <CAPcyv4idRgByUTdb=6coYV=kkhqfLTzO1c+LZc7VQXus-BHh6Q@mail.gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: ECD4DSXEEM2QG5P7ZKQGP36T26V4TPFY
-X-Message-ID-Hash: ECD4DSXEEM2QG5P7ZKQGP36T26V4TPFY
-X-MailFrom: jack@suse.cz
+In-Reply-To: <CAPcyv4idRgByUTdb=6coYV=kkhqfLTzO1c+LZc7VQXus-BHh6Q@mail.gmail.com>
+Message-ID-Hash: 2RBCEZWF6L3YXHB5GIFZOSZJFNB5IMRZ
+X-Message-ID-Hash: 2RBCEZWF6L3YXHB5GIFZOSZJFNB5IMRZ
+X-MailFrom: gregkh@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Jan Kara <jack@suse.cz>, Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>, jack@suse.de, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-nvdimm@lists.01.org
+CC: stable <stable@vger.kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>, Christoph Hellwig <hch@lst.de>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ECD4DSXEEM2QG5P7ZKQGP36T26V4TPFY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2RBCEZWF6L3YXHB5GIFZOSZJFNB5IMRZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Fri 29-05-20 16:25:35, Aneesh Kumar K.V wrote:
-> On 5/29/20 3:22 PM, Jan Kara wrote:
-> > On Fri 29-05-20 15:07:31, Aneesh Kumar K.V wrote:
-> > > Thanks Michal. I also missed Jeff in this email thread.
-> >=20
-> > And I think you'll also need some of the sched maintainers for the prctl
-> > bits...
-> >=20
-> > > On 5/29/20 3:03 PM, Michal Such=E1nek wrote:
-> > > > Adding Jan
-> > > >=20
-> > > > On Fri, May 29, 2020 at 11:11:39AM +0530, Aneesh Kumar K.V wrote:
-> > > > > With POWER10, architecture is adding new pmem flush and sync inst=
-ructions.
-> > > > > The kernel should prevent the usage of MAP_SYNC if applications a=
-re not using
-> > > > > the new instructions on newer hardware.
-> > > > >=20
-> > > > > This patch adds a prctl option MAP_SYNC_ENABLE that can be used t=
-o enable
-> > > > > the usage of MAP_SYNC. The kernel config option is added to allow=
- the user
-> > > > > to control whether MAP_SYNC should be enabled by default or not.
-> > > > >=20
-> > > > > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > ...
-> > > > > diff --git a/kernel/fork.c b/kernel/fork.c
-> > > > > index 8c700f881d92..d5a9a363e81e 100644
-> > > > > --- a/kernel/fork.c
-> > > > > +++ b/kernel/fork.c
-> > > > > @@ -963,6 +963,12 @@ __cacheline_aligned_in_smp DEFINE_SPINLOCK(m=
-mlist_lock);
-> > > > >    static unsigned long default_dump_filter =3D MMF_DUMP_FILTER_D=
-EFAULT;
-> > > > > +#ifdef CONFIG_ARCH_MAP_SYNC_DISABLE
-> > > > > +unsigned long default_map_sync_mask =3D MMF_DISABLE_MAP_SYNC_MAS=
-K;
-> > > > > +#else
-> > > > > +unsigned long default_map_sync_mask =3D 0;
-> > > > > +#endif
-> > > > > +
-> >=20
-> > I'm not sure CONFIG is really the right approach here. For a distro tha=
-t would
-> > basically mean to disable MAP_SYNC for all PPC kernels unless applicati=
-on
-> > explicitly uses the right prctl. Shouldn't we rather initialize
-> > default_map_sync_mask on boot based on whether the CPU we run on requir=
-es
-> > new flush instructions or not? Otherwise the patch looks sensible.
-> >=20
->=20
-> yes that is correct. We ideally want to deny MAP_SYNC only w.r.t POWER10.
-> But on a virtualized platform there is no easy way to detect that. We cou=
-ld
-> ideally hook this into the nvdimm driver where we look at the new compat
-> string ibm,persistent-memory-v2 and then disable MAP_SYNC
-> if we find a device with the specific value.
+On Tue, May 26, 2020 at 01:52:21PM -0700, Dan Williams wrote:
+> On Tue, May 26, 2020 at 1:49 PM Jeff Moyer <jmoyer@redhat.com> wrote:
+> >
+> > Dan Williams <dan.j.williams@intel.com> writes:
+> >
+> > >> What problems with 5.4.y and 5.6.y is this series fixing
+> > >> that used to work before?
+> > >
+> > > The "used to work" bug fixed by this set is the fact that the kernel
+> > > used to force a 128MB (memory hotplug section size) alignment padding
+> > > on all persistent memory namespaces to enable DAX operation. The
+> > > support for sub-sections (2MB) dropped forced alignment padding, but
+> > > unfortunately introduced a regression for the case of trying to create
+> > > multiple unaligned namespaces. When that bug triggers namespace
+> > > creation for the region is disabled, iirc, previously that lockout
+> > > scenario was prevented.
+> > >
+> > > Jeff, can you corroborate this?
+> >
+> > So, I don't pretend to remember the exact state of brokenness for each
+> > iteration.  :)  As far as I can recall, though, the issue you describe
+> > with a misaligned namespace preventing further namespace creation was
+> > present in all kernels up until it was finally fixed.
+> 
+> Well, if it was always there, then there is nothing to fix, and I
+> misremembered that we went backwards.
+> 
+> > > I otherwise agree, if the above never worked then this can all wait
+> > > for v5.7 upgrades.
+> >
+> > I can test specific kernel versions if that would help out.
+> 
+> Thanks for that offer, but outside of a clear regression I don't think
+> this meets -stable criteria.
 
-Hum, couldn't we set some flag for nvdimm devices with
-"ibm,persistent-memory-v2" property and then check it during mmap(2) time
-and when the device has this propery and the mmap(2) caller doesn't have
-the prctl set, we'd disallow MAP_SYNC? That should make things mostly
-seamless, shouldn't it? Only apps that want to use MAP_SYNC on these
-devices would need to use prctl(MMF_DISABLE_MAP_SYNC, 0) but then these
-applications need to be aware of new instructions so this isn't that much
-additional burden...
+I agree, I'll drop this series from my pending-queue.
 
-> With that I am wondering should we even have this patch? Can we expect
-> userspace get updated to use new instruction?.
->=20
-> With ppc64 we never had a real persistent memory device available for end
-> user to try. The available persistent memory stack was using vPMEM which =
-was
-> presented as a volatile memory region for which there is no need to use a=
-ny
-> of the flush instructions. We could safely assume that as we get
-> applications certified/verified for working with pmem device on ppc64, th=
-ey
-> would all be using the new instructions?
+thanks,
 
-This is a bit of a gamble... I don't have too much trust in certification /
-verification because only the "big players" may do powerfail testing
-throughout enough that they'd uncover these problems. So the question
-really is: How many apps are out there using MAP_SYNC on ppc64? Hopefully
-not many given the HW didn't ship yet as you wrote but I have no real clue.
-Similarly there's a question: How many app writers will read manual for
-older ppc64 architecture and write apps that won't work reliably on
-POWER10? Again, I have no idea.
-
-So the prctl would be IMHO a nice safety belt but I'm not 100% certain it
-will be needed...
-
-								Honza
---=20
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+greg k-h
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
