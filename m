@@ -1,81 +1,203 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA3D1E9DFC
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jun 2020 08:19:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE9D1EA133
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  1 Jun 2020 11:50:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A011D100DEFF9;
-	Sun, 31 May 2020 23:15:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=106.10.241.82; helo=sonic305-19.consmr.mail.sg3.yahoo.com; envelope-from=roshanishrivastaw@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic305-19.consmr.mail.sg3.yahoo.com (sonic305-19.consmr.mail.sg3.yahoo.com [106.10.241.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 37040100DEFFD;
+	Mon,  1 Jun 2020 02:46:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E91D2100E2AF2
-	for <linux-nvdimm@lists.01.org>; Sun, 31 May 2020 23:14:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1590992380; bh=VvWhTjueOF3fqxm96/qLqRIVwkVHUuKCcgIq7Fh1RhM=; h=Date:From:Reply-To:In-Reply-To:References:Subject:From:Subject; b=VD4YGtv7f0tqA8YSLMrnVD5wA3RsVUfQD7N2oqasyEk8YZ6TGuMfGbW+7RVTY7xQepzV19O6U5nz+gXUGQGkDXvaVRpvUHZw6GjHqT+FB0g5i5EfUWM82dORSxtBZ2RlINSQf9ld2IYXt2aBU+nK1jJXomafn63+D1/TDAxbE2hhmDKNibQyB+VFuk+jLJb+q9Y/5OlDR77Co2sHAWYu6fRQstt1XTUh4w0k45xU9o+jj2F1kPNYTSoWiwsXXHtmo/BzJF81Eq55Jc2G1W9Cm37PbKVjKskuUVCedQhZmthOIQ8XEjTrHAsaHdDcshKYzjaYUgfEa5vvX7JLlBnwlQ==
-X-YMail-OSG: SasCRxYVM1nwSpN1LUWNmgIMZz78mPGy1ctvyFK_0laeUQCfLA.YiiHqcHuI9ju
- z6yqd.w0q6dK_aRBZ4wkDaL8CIf5oJzmDZNDZp9mOBNr0Ak7_1VAwUYZsnxVh4rQjY8eoNaHIFU_
- ap2CvtszgodsDcy7SRmJOfLzwbPi5MCVIQAcRElUNp0IZShZxxTfPpDoxsQ4yy2ybIdozbK14zJG
- soUbmfbpCgIBNr_A7fGF7POQAMpfmHRJ1vWwOAL3vLIk1CfjIUHDSY0djvVXQkjucPvDlJtvlxdk
- KkdElJgg97oAXQwuG9.GMrVpa8Yk.PCo16yvOP.Sa5k0rbrf72_Un6Rq8xz54So67AXWtmNB9CFn
- u.e_FW.6qThWLNzdj8XfLlZbxFJL8i3ylK5XmHokYJ0WlbQlr08R5Go4rEIW3gkajduCyEaojKiu
- D2cw61KnNkYeUjneE1NJ7Z7h__GSbZJ6sxZ3_xhd57aVRMjuVNPl4JZrXt26i_G0KdJRR5ZrbX.s
- WMW3OH9jfmFthLlunWYJTINlfJC9hBfCNHOHYWG87u08i0TboePJmndvmh20dP283dxBaaizomSL
- vcLyjLDa6dcuB6yde7TL7CO8q8J9J3lu0lURXO02uhHLBi3poGWPfue2xa6tBdoZsppF5AMRnRLF
- KmmEZOsc6GTWHy5CEGp8PlInfCXm38bGnKfZl6kn.iaOo_7Lp9gmgZmnJEBxLR0d0zMb3nnh2MDI
- 3IeE_ef4Lel9gzxw1rvIp_TTx8Cew7KPiKMiOf6YgxveYhmhSNVvFijXpvSw8IgCno7TnDhJS476
- A4Qbz.ERp_xtKB9bLXBs4zMACfSj80xZItqcd4_fo8.n5.hWf_r73IdxVtGBR9RPlUDgts.rZiEb
- AHZ.JSI9_iiZf9bnOyskbJ9ahavR8FYf8NDU4AkEBawnJO_6ygnE1neKHt7_Z0yqPoZyq4OEUdj1
- BXsJ8JJFGis9eBu9g0VtsYBtQVsIhjH1jSNVCbeuO.SfKupM1GXIYXbjqQdDP5whcP6i0P88fZx9
- pzBTRZFfz6VXU8E_XqseZ5htv1nmgpArkmhwtXBLSd5ZhE2r4FkiijhRNsJfH63hOlpsV9oHQlNf
- 8cG0NqAnz87KVlNlMZw6U7ejzq_.uJhKt5KFexXPQUIK8w1Zklv1oSEdUfgdp_1gwMYTfmPB5nBB
- Jg7QPkl295aqjBm18U6IAVaz6LgaqgWRWVDqBQodekN5TKvoD_vT7yNjgL97IIXlGIqhcdHm2CH0
- Dy7sfZItuLDikpKZlT5z8rHk.06ABsj.9RMYSQZPaUfnyQVZVpm8bUylx2Zf4TEMuCGlxHX5nzoM
- -
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.sg3.yahoo.com with HTTP; Mon, 1 Jun 2020 06:19:40 +0000
-Date: Mon, 1 Jun 2020 06:19:35 +0000 (UTC)
-From: Riya Goyal <roshanishrivastaw@yahoo.com>
-Message-ID: <1292310910.599146.1590992375092@mail.yahoo.com>
-In-Reply-To: <951256005.2233599.1587377894073@mail.yahoo.com>
-References: <951256005.2233599.1587377894073.ref@mail.yahoo.com> <951256005.2233599.1587377894073@mail.yahoo.com>
-Subject: Re: Apps
+	by ml01.01.org (Postfix) with ESMTPS id AFB17100DEFFB
+	for <linux-nvdimm@lists.01.org>; Mon,  1 Jun 2020 02:46:09 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+	by mx2.suse.de (Postfix) with ESMTP id 1B2F5AC96;
+	Mon,  1 Jun 2020 09:50:52 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 9BEC31E0948; Mon,  1 Jun 2020 11:50:49 +0200 (CEST)
+Date: Mon, 1 Jun 2020 11:50:49 +0200
+From: Jan Kara <jack@suse.cz>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
+ synchronous fault support.
+Message-ID: <20200601095049.GB3960@quack2.suse.cz>
+References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
+ <20200529093310.GL25173@kitsune.suse.cz>
+ <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
+ <20200529095250.GP14550@quack2.suse.cz>
+ <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
+ <CAPcyv4jrss3dFcCOar3JTFnuN0_pgFNtBPiJzUdKxtiax6pPgQ@mail.gmail.com>
+ <7f163562-e7e3-7668-7415-c40e57c32582@linux.ibm.com>
+ <CAPcyv4i7k7t8is_6FKAWbWsGHVO0kvj-OqqqJTzw=VS7xtZVvQ@mail.gmail.com>
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.16037 YMailNorrin Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36
-Message-ID-Hash: I3LH5LE4XZF2QP3LVBRCUVY5WC67X7AJ
-X-Message-ID-Hash: I3LH5LE4XZF2QP3LVBRCUVY5WC67X7AJ
-X-MailFrom: roshanishrivastaw@yahoo.com
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4i7k7t8is_6FKAWbWsGHVO0kvj-OqqqJTzw=VS7xtZVvQ@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: CVDS64H2DXM6RMN52LCCMDROFLHAQCGC
+X-Message-ID-Hash: CVDS64H2DXM6RMN52LCCMDROFLHAQCGC
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jan Kara <jack@suse.cz>, Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>, jack@suse.de, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Riya Goyal <roshanishrivastaw@yahoo.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I3LH5LE4XZF2QP3LVBRCUVY5WC67X7AJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CVDS64H2DXM6RMN52LCCMDROFLHAQCGC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-IA0KSGksDQoNClN0YXkgc2FmZSENCg0KSnVzdCB3YW50ZWQgdG8gY2hlY2ssIGhhdmUgeW91IGNo
-ZWNrZWQgbXkgcHJldmlvdXMgZS1tYWlsPyBEbyBsZXRtZSBrbm93IGlmIHlvdSB3b3VsZCBsaWtl
-IHRvIGRpc2N1c3PCoE1vYmlsZSBBcHAgRGV2ZWxvcG1lbnQgc2VydmljZXMuDQoNCklmIGFyZSB5
-b3UgaW50ZXJlc3RlZCwgcGxlYXNlIHdyaXRlIG1lIGJhY2sgd2l0aCB5b3VycmVxdWlyZW1lbnQg
-YW5kIGlkZWFzLMKgDQoNClRoYW5rcywNCg0KDQogICAgT24gTW9uZGF5LCAyMCBBcHJpbCwgMjAy
-MCwgMDM6NDg6MTQgcG0gSVNULCBSaXlhIEdveWFsIDxyb3NoYW5pc2hyaXZhc3Rhd0B5YWhvby5j
-b20+IHdyb3RlOiAgDQogDQogDQpIaSwNCg0KR3JlZXRpbmdzIQ0KDQpEbyB5b3Ugd2FudCBhIE1v
-YmlsZSBBcHBzIChBbmRyb2lkL2lPUyBhcHApZm9yIHlvdXIgQnVzaW5lc3M/DQoNCldlIGRldmVs
-b3AgbG93IGNvc3QgbW9iaWxlIGFwcGxpY2F0aW9ucyBmb3JnbG9iYWwgZW50ZXJwcmlzZXMgdGhh
-dCBoZWxwIHRoZW0gZ3JvdyB0aGVpciBidXNpbmVzcy4NCg0KwqBXZSBhcmUgYW4gSVQgY29tcGFu
-eSwgd2hpY2ggZm9jdXNlc29uwqBBcHAgZGV2ZWxvcG1lbnQsIGlPUyBhcHBkZXZlbG9wbWVudCwg
-QW5kcm9pZCBhcHAgZGV2ZWxvcG1lbnQsIEhUTUw1IGFwcCwgTWFjIE9TWCBhcHAsIE1vYmlsZSBh
-cHBkZXZlbG9wbWVudCBhbmQgQ3VzdG9tIFdlYiBhcHBzLg0KDQooQ3JlYXRlIGFwcCBmb3IgeW91
-ciBidXNpbmVzcykNCg0KSWYgaW50ZXJlc3RlZCwgcGxlYXNlIHdyaXRlIG1lIGJhY2sgd2l0aCB5
-b3VycmVxdWlyZW1lbnQgYW5kIGlkZWFzLMKgDQoNClJlZ2FyZHMsDQoNCihJbmRpYSkNCg0KICAK
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZk
-aW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2Ny
-aWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Sat 30-05-20 09:35:19, Dan Williams wrote:
+> On Sat, May 30, 2020 at 12:18 AM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+> >
+> > On 5/30/20 12:52 AM, Dan Williams wrote:
+> > > On Fri, May 29, 2020 at 3:55 AM Aneesh Kumar K.V
+> > > <aneesh.kumar@linux.ibm.com> wrote:
+> > >>
+> > >> On 5/29/20 3:22 PM, Jan Kara wrote:
+> > >>> Hi!
+> > >>>
+> > >>> On Fri 29-05-20 15:07:31, Aneesh Kumar K.V wrote:
+> > >>>> Thanks Michal. I also missed Jeff in this email thread.
+> > >>>
+> > >>> And I think you'll also need some of the sched maintainers for the =
+prctl
+> > >>> bits...
+> > >>>
+> > >>>> On 5/29/20 3:03 PM, Michal Such=E1nek wrote:
+> > >>>>> Adding Jan
+> > >>>>>
+> > >>>>> On Fri, May 29, 2020 at 11:11:39AM +0530, Aneesh Kumar K.V wrote:
+> > >>>>>> With POWER10, architecture is adding new pmem flush and sync ins=
+tructions.
+> > >>>>>> The kernel should prevent the usage of MAP_SYNC if applications =
+are not using
+> > >>>>>> the new instructions on newer hardware.
+> > >>>>>>
+> > >>>>>> This patch adds a prctl option MAP_SYNC_ENABLE that can be used =
+to enable
+> > >>>>>> the usage of MAP_SYNC. The kernel config option is added to allo=
+w the user
+> > >>>>>> to control whether MAP_SYNC should be enabled by default or not.
+> > >>>>>>
+> > >>>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> > >>> ...
+> > >>>>>> diff --git a/kernel/fork.c b/kernel/fork.c
+> > >>>>>> index 8c700f881d92..d5a9a363e81e 100644
+> > >>>>>> --- a/kernel/fork.c
+> > >>>>>> +++ b/kernel/fork.c
+> > >>>>>> @@ -963,6 +963,12 @@ __cacheline_aligned_in_smp DEFINE_SPINLOCK(=
+mmlist_lock);
+> > >>>>>>     static unsigned long default_dump_filter =3D MMF_DUMP_FILTER=
+_DEFAULT;
+> > >>>>>> +#ifdef CONFIG_ARCH_MAP_SYNC_DISABLE
+> > >>>>>> +unsigned long default_map_sync_mask =3D MMF_DISABLE_MAP_SYNC_MA=
+SK;
+> > >>>>>> +#else
+> > >>>>>> +unsigned long default_map_sync_mask =3D 0;
+> > >>>>>> +#endif
+> > >>>>>> +
+> > >>>
+> > >>> I'm not sure CONFIG is really the right approach here. For a distro=
+ that would
+> > >>> basically mean to disable MAP_SYNC for all PPC kernels unless appli=
+cation
+> > >>> explicitly uses the right prctl. Shouldn't we rather initialize
+> > >>> default_map_sync_mask on boot based on whether the CPU we run on re=
+quires
+> > >>> new flush instructions or not? Otherwise the patch looks sensible.
+> > >>>
+> > >>
+> > >> yes that is correct. We ideally want to deny MAP_SYNC only w.r.t
+> > >> POWER10. But on a virtualized platform there is no easy way to detect
+> > >> that. We could ideally hook this into the nvdimm driver where we loo=
+k at
+> > >> the new compat string ibm,persistent-memory-v2 and then disable MAP_=
+SYNC
+> > >> if we find a device with the specific value.
+> > >>
+> > >> BTW with the recent changes I posted for the nvdimm driver, older ke=
+rnel
+> > >> won't initialize persistent memory device on newer hardware. Newer
+> > >> hardware will present the device to OS with a different device tree
+> > >> compat string.
+> > >>
+> > >> My expectation  w.r.t this patch was, Distro would want to  mark
+> > >> CONFIG_ARCH_MAP_SYNC_DISABLE=3Dn based on the different application
+> > >> certification.  Otherwise application will have to end up calling the
+> > >> prctl(MMF_DISABLE_MAP_SYNC, 0) any way. If that is the case, should =
+this
+> > >> be dependent on P10?
+> > >>
+> > >> With that I am wondering should we even have this patch? Can we expe=
+ct
+> > >> userspace get updated to use new instruction?.
+> > >>
+> > >> With ppc64 we never had a real persistent memory device available for
+> > >> end user to try. The available persistent memory stack was using vPM=
+EM
+> > >> which was presented as a volatile memory region for which there is no
+> > >> need to use any of the flush instructions. We could safely assume th=
+at
+> > >> as we get applications certified/verified for working with pmem devi=
+ce
+> > >> on ppc64, they would all be using the new instructions?
+> > >
+> > > I think prctl is the wrong interface for this. I was thinking a sysfs
+> > > interface along the same lines as /sys/block/pmemX/dax/write_cache.
+> > > That attribute is toggling DAXDEV_WRITE_CACHE for the determination of
+> > > whether the platform or the kernel needs to handle cache flushing
+> > > relative to power loss. A similar attribute can be established for
+> > > DAXDEV_SYNC, it would simply default to off based on a configuration
+> > > time policy, but be dynamically changeable at runtime via sysfs.
+> > >
+> > > These flags are device properties that affect the kernel and
+> > > userspace's handling of persistence.
+> > >
+> >
+> > That will not handle the scenario with multiple applications using the
+> > same fsdax mount point where one is updated to use the new instruction
+> > and the other is not.
+>=20
+> Right, it needs to be a global setting / flag day to switch from one
+> regime to another. Per-process control is a recipe for disaster.
+
+First I'd like to mention that hopefully the concern is mostly theoretical
+since as Aneesh wrote above, real persistent memory never shipped for PPC
+and so there are very few apps (if any) using the old way to ensure cache
+flushing.
+
+But I'd like to understand why do you think per-process control is a recipe
+for disaster? Because from my POV the sysfs interface you propose is actual=
+ly
+difficult to use in practice. As a distributor, you have hard time picking
+the default because you have a choice between picking safe option which is
+going to confuse users because of failing MAP_SYNC and unsafe option where
+everyone will be happy until someone looses data because of some ancient
+application using wrong instructions to persist data. Poor experience for
+users in either way. And when distro defaults to "safe option", then the
+burden is on the sysadmin to toggle the switch but how is he supposed to
+decide when that is safe? First he has to understand what the problem
+actually is, then he has to audit all the applications using pmem whether
+they use the new instruction - which is IMO a lot of effort if you have a
+couple of applications and practically infeasible if you have more of them.
+So IMO the burden should be *on the application* to declare that it is
+aware of the new instructions to flush pmem on the platform and only to
+such application the kernel should give the trust to use MAP_SYNC mappings.
+
+								Honza
+--=20
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
