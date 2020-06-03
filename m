@@ -1,80 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC741ECD04
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Jun 2020 11:57:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C704F1ED136
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  3 Jun 2020 15:48:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 42BF8100AA7BA;
-	Wed,  3 Jun 2020 02:52:25 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6D881100A6415;
+	Wed,  3 Jun 2020 06:43:55 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::143; helo=mail-lf1-x143.google.com; envelope-from=mrsolivierk@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 37570100AA7B9
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Jun 2020 02:52:21 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0539WJvD138135;
-	Wed, 3 Jun 2020 05:57:16 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31dj9pgx1w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2020 05:57:16 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0539qhCJ061537;
-	Wed, 3 Jun 2020 05:57:15 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31dj9pgx0u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2020 05:57:15 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0539uEjn014701;
-	Wed, 3 Jun 2020 09:57:13 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma03ams.nl.ibm.com with ESMTP id 31bf47ys1m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jun 2020 09:57:12 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0539vA3b66126126
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 3 Jun 2020 09:57:10 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AED95A404D;
-	Wed,  3 Jun 2020 09:57:10 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D701CA405D;
-	Wed,  3 Jun 2020 09:57:06 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.79.176.103])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Wed,  3 Jun 2020 09:57:06 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Wed, 03 Jun 2020 15:27:05 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: "Verma\, Vishal L" <vishal.l.verma@intel.com>,
-        "linux-nvdimm\@lists.01.org" <linux-nvdimm@lists.01.org>
-Subject: Re: [ndctl PATCH v5 2/6] libncdtl: Add initial support for NVDIMM_FAMILY_PAPR nvdimm family
-In-Reply-To: <2960499ffc4f5f3f3ab305eaba84c2bca15b45ae.camel@intel.com>
-References: <20200529220600.225320-1-vaibhav@linux.ibm.com> <20200529220600.225320-3-vaibhav@linux.ibm.com> <2960499ffc4f5f3f3ab305eaba84c2bca15b45ae.camel@intel.com>
-Date: Wed, 03 Jun 2020 15:27:05 +0530
-Message-ID: <87zh9kh3pq.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 9FEFA100F2260
+	for <linux-nvdimm@lists.01.org>; Wed,  3 Jun 2020 06:43:52 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id w15so1342694lfe.11
+        for <linux-nvdimm@lists.01.org>; Wed, 03 Jun 2020 06:48:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=LImzFWfFZ5MGhzJT1qzCsgEXVo7xW37sUIdrDLCKiXHQE0/Tq0rYX6Af/ld5dvlhmE
+         opFt8B8vUrhAfyxGIRs7eIQZmnu+cHCt7Dz4gEu/fnBWHDlMa8iVHDbM7XgqJUtNcgor
+         I4Oj1yGJ3ygOniFn6Dr+FHDS5BV48N/ldz+eBwWbR5/ADnYCL6KuztRZu9mrKJOxMODU
+         fmVICwwGmTYXXsgICTxE6unupuMdGq6+YZvkWKysZVLYK3Wwxrg7U2ecMo3WGycHWcU1
+         w35jxyjuynpm30G3kj/I18A4vO2Y2WN0kfTajUkGc1Xe9t84eQuWhnB4AGlAS8dbrawc
+         iC3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=FfMlTp3Rjpfjucql95s2CwdvfIMzmWpXCxHBR7VrwT52Ogu1VKOnJSVIPz95BkYIEn
+         VMShidPqruG7clHZR7chkywJdTCt4a6VBHlMSf1yJRYcFa1htCdOdn2IhhXOB3inW9B0
+         cEyOA7ETmGHw6bYaIhzcLVTy+tA7MrTdfTzIywnNEJhSGlmJVH4R4wGOEjgZKquNVDFx
+         q4xejqifQnLIGALiQeO9u7+izO90uti5jlvKvTOVLVBoiB1my8ZR/UlhxQ13qlWvDidv
+         Ox7NmPniPzDzadQvPPqO9o08ZT13HFHCRAFiVCEKkK1w9Ziwvl4rJd3/hcwH2JFm3I2w
+         S/1w==
+X-Gm-Message-State: AOAM533WZzHCjUhyS0aRrDG8RGzy7GrShjG1KHltDcMAn+eoaUahBGuH
+	z0X9YXQ9MAvEXRjqHfIUG3dIuDJaoy7FX/wGH6M=
+X-Google-Smtp-Source: ABdhPJzc66PsPJ7uf2JiXrqj7zfh07Ra5BpBms0TPKeexmxkWkfXYY+ch/Os+E85wJbdOE6Lm+0ANdybV/7KRG4HAcU=
+X-Received: by 2002:a05:6512:308e:: with SMTP id z14mr2566308lfd.29.1591192127287;
+ Wed, 03 Jun 2020 06:48:47 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-03_06:2020-06-02,2020-06-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 bulkscore=0 spamscore=0 cotscore=-2147483648
- lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0
- priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006030071
-Message-ID-Hash: NCW7P2KMQ2ZP77QSSKRIC7GOXW2QXV4T
-X-Message-ID-Hash: NCW7P2KMQ2ZP77QSSKRIC7GOXW2QXV4T
-X-MailFrom: vaibhav@linux.ibm.com
+Sender: mrsolivierk@gmail.com
+Received: by 2002:a19:a405:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 06:48:46 -0700 (PDT)
+From: "Mrs.Susan Jones" <joneswife.susan@gmail.com>
+Date: Wed, 3 Jun 2020 14:48:46 +0100
+X-Google-Sender-Auth: aH2vam-ZraP3yG1gz3ryctMgTE4
+Message-ID: <CALBhdBfusXWup1N4iFuTS3D1AZxWbZbTDS_qa-wA3FkbkE7MrQ@mail.gmail.com>
+Subject: HELLO: I AM MRS SUSAN JONES
+To: undisclosed-recipients:;
+Message-ID-Hash: VXNC6YF2YSP3VF43QKHT3RQTZLP5V7U2
+X-Message-ID-Hash: VXNC6YF2YSP3VF43QKHT3RQTZLP5V7U2
+X-MailFrom: mrsolivierk@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: susanjones.wife@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NCW7P2KMQ2ZP77QSSKRIC7GOXW2QXV4T/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VXNC6YF2YSP3VF43QKHT3RQTZLP5V7U2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -83,201 +68,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-"Verma, Vishal L" <vishal.l.verma@intel.com> writes:
-
-> On Sat, 2020-05-30 at 03:35 +0530, Vaibhav Jain wrote:
->
->> diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
->> index d76dbf7e17de..a52c2e208fbe 100644
->> --- a/ndctl/lib/libndctl.c
->> +++ b/ndctl/lib/libndctl.c
->> @@ -799,6 +799,28 @@ static void parse_nfit_mem_flags(struct ndctl_dimm *dimm, char *flags)
->>  				ndctl_dimm_get_devname(dimm), flags);
->>  }
->>  
->> +static void parse_papr_flags(struct ndctl_dimm *dimm, char *flags)
->> +{
->> +	char *start, *end;
->> +
->> +	start = flags;
->> +	while ((end = strchr(start, ' '))) {
->> +		*end = '\0';
->> +		if (strcmp(start, "not_armed") == 0)
->> +			dimm->flags.f_arm = 1;
->> +		else if (strcmp(start, "flush_fail") == 0)
->> +			dimm->flags.f_flush = 1;
->> +		else if (strcmp(start, "restore_fail") == 0)
->> +			dimm->flags.f_restore = 1;
->> +		else if (strcmp(start, "smart_notify") == 0)
->> +			dimm->flags.f_smart = 1;
->> +		start = end + 1;
->> +	}
->> +	if (end != start)
->> +		dbg(ndctl_dimm_get_ctx(dimm), "%s: %s\n",
->> +				ndctl_dimm_get_devname(dimm), flags);
->
-> I think this would be more readable if ctx was obtained and saved in a
-> 'ctx' variable at the start. Also, it might be better if 'flags' was
-> included in the string - something like "%s flags: %s\n"
-Sure will get this updated in v6. This function definition was derived
-from parse_dimm_flags() hence looks this way.
-
->
->> +}
->> +
->>  static void parse_dimm_flags(struct ndctl_dimm *dimm, char *flags)
->>  {
->>  	char *start, *end;
->> @@ -856,6 +878,12 @@ static void *add_bus(void *parent, int id, const char *ctl_base)
->>  		bus->revision = strtoul(buf, NULL, 0);
->>  	}
->>  
->> +	sprintf(path, "%s/device/of_node/compatible", ctl_base);
->> +	if (sysfs_read_attr(ctx, path, buf) < 0)
->> +		bus->has_of_node = 0;
->> +	else
->> +		bus->has_of_node = 1;
->> +
->>  	sprintf(path, "%s/device/nfit/dsm_mask", ctl_base);
->>  	if (sysfs_read_attr(ctx, path, buf) < 0)
->>  		bus->nfit_dsm_mask = 0;
->> @@ -964,6 +992,10 @@ NDCTL_EXPORT int ndctl_bus_has_nfit(struct ndctl_bus *bus)
->>  	return bus->has_nfit;
->>  }
->>  
->> +NDCTL_EXPORT int ndctl_bus_has_of_node(struct ndctl_bus *bus)
->> +{
->> +	return bus->has_of_node;
->> +}
->
-> New libndctl APIs need to update the 'symbol script' -
-> ndctl/lib/libndctl.sym. Create a new 'section' at the bottom, and add
-> all new symbols to that section. The new section would be 'LIBNDCTL_24'
-> (Everything going into a given release gets a new section in that file,
-> so any subsequent patches - throughout the release cycle - that add new
-> APIs can add them to this new section).
-Sure and thanks for pointing this out. Will add this symbol to the library
-version script in v6
-
->
->>  /**
->>   * ndctl_bus_get_major - nd bus character device major number
->>   * @bus: ndctl_bus instance returned from ndctl_bus_get_{first|next}
->> @@ -1441,6 +1473,47 @@ static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
->>  static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
->>  static struct kmod_module *to_module(struct ndctl_ctx *ctx, const char *alias);
->>  
->> +static int add_papr_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
->> +{
->> +	int rc = -ENODEV;
->> +	char buf[SYSFS_ATTR_SIZE];
->> +	struct ndctl_ctx *ctx = dimm->bus->ctx;
->> +	char *path = calloc(1, strlen(dimm_base) + 100);
->> +
->> +	dbg(ctx, "Probing of_pmem dimm %d at %s\n", dimm->id, dimm_base);
->> +
->> +	if (!path)
->> +		return -ENOMEM;
->> +
->> +	sprintf(path, "%s/../of_node/compatible", dimm_base);
->> +	if (sysfs_read_attr(ctx, path, buf) < 0)
->> +		goto out;
->
-> Two things here:
-> 1. Why not use the new ndctl_bus_has_of_node helper here? and
-> 2. This looks redundant. add_papr_dimm() is only called if
-> ndctl_bus_has_of_node() during add_dimm.
-Presently we have two different nvdimm implementations:
-
-* papr-scm: handled by arch/powerpc/platforms/pseries/papr_scm kernel module.
-* nvdimm-n: handled by drivers/nvdimm/of_pmem kernel module.
-
-Both nvdimms are exposed to the kernel via device tree nodes but different
-'compatible' properties. This patchset only adds support for 'papr-scm'
-compatible nvdimms.
-
-'ndctl_bus_has_of_node()' simply indicates if the nvdimm has an
-open-firmware compatible devicetree node associated with it and doesnt
-necessarily indicate if its papr-scm compliant.
-
-Hence validating the 'compatible' attribute value is necessary here.
-Please see a more detailed info below regarding the 'compatible' sysfs
-attribute.
-
->
->> +
->> +
->
-> Nit: double newline here
-Sure. Will fix this in v6
->
->> +	dbg(ctx, "Compatible of_pmem dimm %d at %s\n", dimm->id, buf);
->> +	/* construct path to the papr compatible dimm flags file */
->> +	sprintf(path, "%s/papr/flags", dimm_base);
->> +
->> +	if (strcmp(buf, "ibm,pmemory") == 0 &&
->> +	    sysfs_read_attr(ctx, path, buf) == 0) {
->> +
->> +		dbg(ctx, "Found papr dimm %d at %s\n", dimm->id, buf);
->
-> Throughout the series - it would be better to print messages such as:
->
-> 	"%s: adding papr dimm with flags: %s\n", devname, buf
->
-> This would result in the canonical dimm names - nmem1, nmem2 and so on
-> being used instead of "dimm 1" which can be confusing just from a
-> convention standpoint.
->
-> Similarly for the print a few lines above this:
->
-> 	"%s: of_pmem compatible dimm: %s\n", devname, buf
->
-Sure will address this in v6.
-
-> (In this case, what does the 'compatible' sysfs attrubute contain? Is it
-> useful to print here? - I havent't looked, just asking).
-
-For papr-scm compatible nvdimms:
-# cat /sys/class/nd/ndctl0/device/of_node/compatible
-ibm,pmemory
-
-This devicetree property is usually in format "<manufacturer>,<model>" that
-tells the which kernel module to bind to the device. The papr_scm
-kernel module indicates support for such device value in its device
-match table ( https://git.io/JfPzF ) so that kernel can call its
-probe-function.
-
-Dumping this value here will be useful in debugging probe failures of nvdimms
-that are exposed via open-firmware devicetree nodes but are not
-necessarily papr_scm specification compliant.
-
->
->> diff --git a/ndctl/lib/papr.c b/ndctl/lib/papr.c
->> new file mode 100644
->> index 000000000000..5ddf2755a950
->> --- /dev/null
->> +++ b/ndctl/lib/papr.c
->> @@ -0,0 +1,32 @@
->> +/*
->> + * Copyright (C) 2020 IBM Corporation
->> + *
->> + * This program is free software; you can redistribute it and/or modify it
->> + * under the terms and conditions of the GNU Lesser General Public License,
->> + * version 2.1, as published by the Free Software Foundation.
->> + *
->> + * This program is distributed in the hope it will be useful, but WITHOUT ANY
->> + * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
->> + * FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
->> + * more details.
->> + */
->
-> Prefer SPDX license header instead fo the long form text for new files.
->
-Sure will address this in v6.
-
 -- 
-Cheers
-~ Vaibhav
+OUR GOLDEN OPPORTUNITY
+
+Hello Dear Friend,
+
+Complement of the day, i hope you are doing great today. However, I am
+Mrs.Susan Jones, an auditor with one of the new generation banks here
+in Burkina Faso.
+
+I am writing you this letter based on the latest development at my
+Department. i discovered some abandoned huge amount of money, Ten
+Million, Five hundred thousand  United States Dollars.($10.500.000).
+Now I am only contacting you as a foreigner because this money cannot
+be approved to a local bank account here, but can only be approved to
+any foreign account and foreign beneficiary because the money is in US
+dollars
+
+This will be  a legitimate transaction once you accept to build trust
+with me and follow simple instruction doing the transfer process,
+until the total sum transfer out of the bank here to your own bank
+account any where in the world, and I agreed to share the total money
+50/50 with you once you successful confirmed it in your bank account.
+But any expenses doing the transfer process will be deduct from the
+amount before sharing, If you are interested to work with me and
+provide a good receiving bank account, get back to me as soon as
+possible with the following details below.
+
+Your full name
+Your Profession
+Your direct mobile phone number
+Your Scanned International passport or any of your identity
+
+NOTE: PLEASE IT YOU ARE NOT INTERESTED DON'T BORDER TO RESPOND BACK TO
+AVOID TIME WASTED.
+
+As soon as I receive these data's, I will forward to you the
+application form which you will send to the bank for the claim and
+transfer of the fund into your bank account as the  new beneficial.
+
+I am waiting to hear from you soon
+
+Yours
+Mrs.Susan Jones
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
