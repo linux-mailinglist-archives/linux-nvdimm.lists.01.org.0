@@ -1,54 +1,54 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872EA1ED8C1
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Jun 2020 00:46:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD331ED8FF
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Jun 2020 01:18:24 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D2624100F227E;
-	Wed,  3 Jun 2020 15:41:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	by ml01.01.org (Postfix) with ESMTP id 55F1E100EAB5B;
+	Wed,  3 Jun 2020 16:13:22 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8D99B100F2279
-	for <linux-nvdimm@lists.01.org>; Wed,  3 Jun 2020 15:41:13 -0700 (PDT)
-IronPort-SDR: Jb2PLoIYPgp59wwMMwmr0DMuSYicMgQLKFw+9sapim0YojDHfJBwEi9h7IxCDF4KibF46xhG9D
- 0yw39QV0D95Q==
+	by ml01.01.org (Postfix) with ESMTPS id CEC32100F227E
+	for <linux-nvdimm@lists.01.org>; Wed,  3 Jun 2020 16:13:20 -0700 (PDT)
+IronPort-SDR: 5zfpmkIdOmVYf1UFkKoDBOtmEyUgLTqZqfTCdIznZRiu/rk0s43EvDK/jHN6KTjGozLIBZlhqB
+ P/VsS/+7Skcg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2020 15:46:13 -0700
-IronPort-SDR: BwMy8V3saj5wGA97puK3HPhCUMIOOAOlsACc7qhIuGKRi4WzRbqGukHo8He1P0Mpv0bTGP4PKK
- Fto5QvvF32SA==
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2020 16:18:15 -0700
+IronPort-SDR: dRcj1THMjCvCJ9qeGIqp6TcxAe36kDH9qe/6ckdcDNw4Jj7PxAECT4104Iw6Cu5oz5+XnWFW45
+ EcD38498m1fQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,470,1583222400";
-   d="scan'208";a="304521862"
+   d="scan'208";a="294136902"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by fmsmga002.fm.intel.com with ESMTP; 03 Jun 2020 15:46:13 -0700
-Date: Wed, 3 Jun 2020 15:46:13 -0700
+  by fmsmga004.fm.intel.com with ESMTP; 03 Jun 2020 16:18:15 -0700
+Date: Wed, 3 Jun 2020 16:18:15 -0700
 From: Ira Weiny <ira.weiny@intel.com>
 To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [RESEND PATCH v9 4/5] ndctl/papr_scm,uapi: Add support for PAPR
- nvdimm specific methods
-Message-ID: <20200603224612.GJ1505637@iweiny-DESK2.sc.intel.com>
+Subject: Re: [RESEND PATCH v9 5/5] powerpc/papr_scm: Implement support for
+ PAPR_PDSM_HEALTH
+Message-ID: <20200603231814.GK1505637@iweiny-DESK2.sc.intel.com>
 References: <20200602101438.73929-1-vaibhav@linux.ibm.com>
- <20200602101438.73929-5-vaibhav@linux.ibm.com>
- <20200602205148.GF1505637@iweiny-DESK2.sc.intel.com>
- <87tuzsggtd.fsf@linux.ibm.com>
+ <20200602101438.73929-6-vaibhav@linux.ibm.com>
+ <20200602211901.GA1676657@iweiny-DESK2.sc.intel.com>
+ <87pnaggee3.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <87tuzsggtd.fsf@linux.ibm.com>
+In-Reply-To: <87pnaggee3.fsf@linux.ibm.com>
 User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: V7EI3HZAPSF3E7VFKZUU43HW5ZLO2C2C
-X-Message-ID-Hash: V7EI3HZAPSF3E7VFKZUU43HW5ZLO2C2C
+Message-ID-Hash: GAKKKDLKJJDSBOISY2HHTEZW53EDX2UT
+X-Message-ID-Hash: GAKKKDLKJJDSBOISY2HHTEZW53EDX2UT
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/V7EI3HZAPSF3E7VFKZUU43HW5ZLO2C2C/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GAKKKDLKJJDSBOISY2HHTEZW53EDX2UT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,503 +57,414 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 03, 2020 at 11:41:42PM +0530, Vaibhav Jain wrote:
+On Thu, Jun 04, 2020 at 12:34:04AM +0530, Vaibhav Jain wrote:
 > Hi Ira,
 > 
 > Thanks for reviewing this patch. My responses below:
 > 
 > Ira Weiny <ira.weiny@intel.com> writes:
 > 
-
-...
-
-> >> + *
-> >> + * Payload Version:
-> >> + *
-> >> + * A 'payload_version' field is present in PDSM header that indicates a specific
-> >> + * version of the structure present in PDSM Payload for a given PDSM command.
-> >> + * This provides backward compatibility in case the PDSM Payload structure
-> >> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
-> >> + *
-> >> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
-> >> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
-> >> + * module when servicing the PDSM envelope checks the 'payload_version' and then
-> >> + * uses 'payload struct version' == MIN('payload_version field',
-> >> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
-> >> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
-> >> + * struct in returned 'payload_version' field.
-> >> + *
-> >> + * Libndctl on receiving the envelope back from papr_scm again checks the
-> >> + * 'payload_version' field and based on it use the appropriate version dsm
-> >> + * struct to parse the results.
-> >> + *
-> >> + * Backward Compatibility:
-> >> + *
-> >> + * Above scheme of exchanging different versioned PDSM struct between libndctl
-> >> + * and papr_scm should provide backward compatibility until following two
-> >> + * assumptions/conditions when defining new PDSM structs hold:
-> >> + *
-> >> + * Let T(X) = { set of attributes in PDSM struct 'T' versioned X }
-> >> + *
-> >> + * 1. T(X) is a proper subset of T(Y) if Y > X.
-> >> + *    i.e Each new version of PDSM struct should retain existing struct
-> >> + *    attributes from previous version
-> >> + *
-> >> + * 2. If an entity (libndctl or papr_scm) supports a PDSM struct T(X) then
-> >> + *    it should also support T(1), T(2)...T(X - 1).
-> >> + *    i.e When adding support for new version of a PDSM struct, libndctl
-> >> + *    and papr_scm should retain support of the existing PDSM struct
-> >> + *    version they support.
-> >
-> > Please see this thread for an example why versions are a bad idea in UAPIs:
-> >
-> > https://lkml.org/lkml/2020/3/26/213
-> >
-> 
-> > While the use of version is different in that thread the fundamental issues are
-> > the same.  You end up with some weird matrix of supported features and
-> > structure definitions.  For example, you are opening up the possibility of
-> > changing structures with a different version for no good reason.
-> 
-> Not really sure I understand the statement correctly "you are opening up
-> the possibility of changing structures with a different version for no
-> good reason."
-
-What I mean is:
-
-struct v1 {
-	u32 x;
-	u32 y;
-};
-
-struct v2 {
-	u32 y;
-	u32 x;
-};
-
-x and y are the same data but you have now redefined the order of the struct.
-You don't need that flexibility/complexity.
-
-Generally I think you are defining:
-
-struct v1 {
-	u32 x;
-	u32 y;
-};
-
-struct v2 {
-	u32 x;
-	u32 y;
-	u32 z;
-	u32 a;
-};
-
-Which becomes 2 structures...  There is no need.
-
-The easiest thing to do is:
-
-struct user_data {
-	u32 x;
-	u32 y;
-};
-
-And later you modify user_data to:
-
-struct user_data {
-	u32 x;
-	u32 y;
-	u32 z;
-	u32 a;
-};
-
-libndctl always passes sizeof(struct user_data) to the call. [Do ensure
-structures are 64bit aligned for this to work.]
-
-The kernel sees the size and returns the amount of data up to that size.
-
-Therefore, older kernels automatically fill in x and y,  newer kernels fill in
-z/a if the buffer was big enough.  libndctl only uses the fields it knows about.
-
-It is _much_ easier this way.  Almost nothing needs to get changed as versions
-roll forward.  The only big issue is if libndctl _needs_ z then it has to check
-if z is returned.
-
-In that case add a cap_mask with bit fields which the kernel can fill in for
-which fields are valid.
-
-struct user_data {
-	u64 cap_mask;  /* where bits define extra future capabilities */
-	u32 x;
-	u32 y;
-};
-
-IFF you need to add data within fields which are reserved you can use
-capability flags to indicate which fields are requested and which are returned
-by the kernel.
-
-But I _think_ for what you want libndctl must survive if z/a are not available
-right?  So just adding to the structure should be fine.
-
-> We want to return more data in the struct in future iterations. So
-> 'changing structure with different version' is something we are
-> expecting. 
-> 
-> With the backward compatibility constraints 1 & 2 above, it will ensure
-> that support matrix looks like a lower traingular matrix with each
-> successive version supporting previous version attributes. So supporting
-> future versions is relatively simplified.
-
-But you end up with weird switch/if's etc to deal with the multiple structures.
-
-With the size method the kernel simply returns the same size data as the user
-requested and everything is done.  No logic required at all.  Literally it can
-just copy the data it has (truncating if necessary).
-
-> 
-> >
-> > Also having the user query with version Z and get back version X (older) is
-> > odd.  Generally if the kernel does not know about a feature (ie version Z of
-> > the structure) it should return -EINVAL and let the user figure out what to do.
-> > The user may just give up or they could try a different query.
-> >
-> Considering the flow of ndctl/libndctl this is needed. libndctl will
-> usually issues only one CMD_CALL ioctl to kernel and if that fails then
-> an error is reported and ndctl will exit loosing state.
-> 
-> Adding mechanism in libndctl to reissue CMD_CALL ioctl to fetch a
-> appropriate version of pdsm struct is going to be considerably more
-> work.
-> 
-> This version fall-back mechanism, ensures that libndctl will receive
-> usable data without having to reissue a more CMD_CALL ioctls.
-
-Define usable?
-
-What happens if libndctl does not get 'z' in my example above?  What does it
-do?  If I understand correctly it does not _need_ z.  So why have a check on
-the version from the kernel?
-
-What if we change to:
-
-struct v3 {
-	u32 x;
-	u32 y;
-	u32 z;
-	u32 a;
-	u32 b;
-	u32 c;
-};
-
-Now it has to
-
-	if(version 2)
-		z/a valid do something()
-
-	if(version 3)
-		b/c valid do something else()
-
-if z, a, b, c are all 0 does it matter?
-
-If not, the logic above disappears.
-
-If so, then you need a cap mask.  Then the kernel can say c and a are valid
-(but c is 0) or other flexible stuff like that.
-
-> 
-> >> + */
+> > On Tue, Jun 02, 2020 at 03:44:38PM +0530, Vaibhav Jain wrote:
+> >> This patch implements support for PDSM request 'PAPR_PDSM_HEALTH'
+> >> that returns a newly introduced 'struct nd_papr_pdsm_health' instance
+> >> containing dimm health information back to user space in response to
+> >> ND_CMD_CALL. This functionality is implemented in newly introduced
+> >> papr_pdsm_health() that queries the nvdimm health information and
+> >> then copies this information to the package payload whose layout is
+> >> defined by 'struct nd_papr_pdsm_health'.
+> >> 
+> >> The patch also introduces a new member 'struct papr_scm_priv.health'
+> >> thats an instance of 'struct nd_papr_pdsm_health' to cache the health
+> >> information of a nvdimm. As a result functions drc_pmem_query_health()
+> >> and flags_show() are updated to populate and use this new struct
+> >> instead of a u64 integer that was earlier used.
+> >> 
+> >> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> >> Cc: Dan Williams <dan.j.williams@intel.com>
+> >> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >> Cc: Ira Weiny <ira.weiny@intel.com>
+> >> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> >> ---
+> >> Changelog:
+> >> 
+> >> Resend:
+> >> * Added ack from Aneesh.
+> >> 
+> >> v8..v9:
+> >> * s/PAPR_SCM_PDSM_HEALTH/PAPR_PDSM_HEALTH/g  [ Dan , Aneesh ]
+> >> * s/PAPR_SCM_PSDM_DIMM_*/PAPR_PDSM_DIMM_*/g
+> >> * Renamed papr_scm_get_health() to papr_psdm_health()
+> >> * Updated patch description to replace papr-scm dimm with nvdimm.
+> >> 
+> >> v7..v8:
+> >> * None
+> >> 
+> >> Resend:
+> >> * None
+> >> 
+> >> v6..v7:
+> >> * Updated flags_show() to use seq_buf_printf(). [Mpe]
+> >> * Updated papr_scm_get_health() to use newly introduced
+> >>   __drc_pmem_query_health() bypassing the cache [Mpe].
+> >> 
+> >> v5..v6:
+> >> * Added attribute '__packed' to 'struct nd_papr_pdsm_health_v1' to
+> >>   gaurd against possibility of different compilers adding different
+> >>   paddings to the struct [ Dan Williams ]
+> >> 
+> >> * Updated 'struct nd_papr_pdsm_health_v1' to use __u8 instead of
+> >>   'bool' and also updated drc_pmem_query_health() to take this into
+> >>   account. [ Dan Williams ]
+> >> 
+> >> v4..v5:
+> >> * None
+> >> 
+> >> v3..v4:
+> >> * Call the DSM_PAPR_SCM_HEALTH service function from
+> >>   papr_scm_service_dsm() instead of papr_scm_ndctl(). [Aneesh]
+> >> 
+> >> v2..v3:
+> >> * Updated struct nd_papr_scm_dimm_health_stat_v1 to use '__xx' types
+> >>   as its exported to the userspace [Aneesh]
+> >> * Changed the constants DSM_PAPR_SCM_DIMM_XX indicating dimm health
+> >>   from enum to #defines [Aneesh]
+> >> 
+> >> v1..v2:
+> >> * New patch in the series
+> >> ---
+> >>  arch/powerpc/include/uapi/asm/papr_pdsm.h |  39 +++++++
+> >>  arch/powerpc/platforms/pseries/papr_scm.c | 125 +++++++++++++++++++---
+> >>  2 files changed, 147 insertions(+), 17 deletions(-)
+> >> 
+> >> diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> index 6407fefcc007..411725a91591 100644
+> >> --- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> +++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> @@ -115,6 +115,7 @@ struct nd_pdsm_cmd_pkg {
+> >>   */
+> >>  enum papr_pdsm {
+> >>  	PAPR_PDSM_MIN = 0x0,
+> >> +	PAPR_PDSM_HEALTH,
+> >>  	PAPR_PDSM_MAX,
+> >>  };
+> >>  
+> >> @@ -133,4 +134,42 @@ static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
+> >>  		return (void *)(pcmd->payload);
+> >>  }
+> >>  
+> >> +/* Various nvdimm health indicators */
+> >> +#define PAPR_PDSM_DIMM_HEALTHY       0
+> >> +#define PAPR_PDSM_DIMM_UNHEALTHY     1
+> >> +#define PAPR_PDSM_DIMM_CRITICAL      2
+> >> +#define PAPR_PDSM_DIMM_FATAL         3
 > >> +
-> >> +/* PDSM-header + payload expected with ND_CMD_CALL ioctl from libnvdimm */
-> >> +struct nd_pdsm_cmd_pkg {
-> >> +	struct nd_cmd_pkg hdr;	/* Package header containing sub-cmd */
-> >> +	__s32 cmd_status;	/* Out: Sub-cmd status returned back */
-> >> +	__u16 reserved[5];	/* Ignored and to be used in future */
-> >
-> > How do you know when reserved is used for something else in the future?  Is
-> > reserved guaranteed (and checked by the code) to be 0?
-> 
-> For current set of pdsm requests ignore these reserved fields. However a
-> future pdsm request can leverage these reserved fields. So papr_scm
-> just bind the usage of these fields with the value of
-> 'nd_cmd_pkg.nd_command' that indicates the pdsm request.
-> 
-> That being said checking if the reserved fields are set to 0 will be a
-> good measure. Will add this check in next iteration.
-
-Exactly, if you don't check them now you will end up with an older libndctl
-which passes in garbage and breaks future users...  Basically rendering the
-reserved fields useless.
-
-> 
-> >
-> >> +	__u16 payload_version;	/* In/Out: version of the payload */
-> >
-> > Why is payload_version after reserved?
-> Want to place the payload version field just before the payload data so
-> that it can be accessed with simple pointer arithmetic.
-
-I did not see that in the patch.  I thought you were using
-nd_pdsm_cmd_pkg->payload_version?
-
-> 
-> >
-> >> +	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
+> >> +/*
+> >> + * Struct exchanged between kernel & ndctl in for PAPR_PDSM_HEALTH
+> >> + * Various flags indicate the health status of the dimm.
+> >> + *
+> >> + * dimm_unarmed		: Dimm not armed. So contents wont persist.
+> >> + * dimm_bad_shutdown	: Previous shutdown did not persist contents.
+> >> + * dimm_bad_restore	: Contents from previous shutdown werent restored.
+> >> + * dimm_scrubbed	: Contents of the dimm have been scrubbed.
+> >> + * dimm_locked		: Contents of the dimm cant be modified until CEC reboot
+> >> + * dimm_encrypted	: Contents of dimm are encrypted.
+> >> + * dimm_health		: Dimm health indicator. One of PAPR_PDSM_DIMM_XXXX
+> >> + */
+> >> +struct nd_papr_pdsm_health_v1 {
+> >> +	__u8 dimm_unarmed;
+> >> +	__u8 dimm_bad_shutdown;
+> >> +	__u8 dimm_bad_restore;
+> >> +	__u8 dimm_scrubbed;
+> >> +	__u8 dimm_locked;
+> >> +	__u8 dimm_encrypted;
+> >> +	__u16 dimm_health;
 > >> +} __packed;
 > >> +
 > >> +/*
-> >> + * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
-> >> + * via 'nd_pdsm_cmd_pkg.hdr.nd_command' member of the ioctl struct
+> >> + * Typedef the current struct for dimm_health so that any application
+> >> + * or kernel recompiled after introducing a new version automatically
+> >> + * supports the new version.
 > >> + */
-> >> +enum papr_pdsm {
-> >> +	PAPR_PDSM_MIN = 0x0,
-> >> +	PAPR_PDSM_MAX,
-> >> +};
+> >> +#define nd_papr_pdsm_health nd_papr_pdsm_health_v1
 > >> +
-> >> +/* Convert a libnvdimm nd_cmd_pkg to pdsm specific pkg */
-> >> +static inline struct nd_pdsm_cmd_pkg *nd_to_pdsm_cmd_pkg(struct nd_cmd_pkg *cmd)
-> >> +{
-> >> +	return (struct nd_pdsm_cmd_pkg *) cmd;
-> >> +}
+> >> +/* Current version number for the dimm health struct */
+> >
+> > This can't be the 'current' version.  You will need a list of versions you
+> > support.  Because if the user passes in an old version you need to be able to
+> > respond with that old version.  Also if you plan to support 'return X for a Y
+> > query' then the user will need both X and Y defined to interpret X.
+> Yes, and that change will be introduced with addition of version-2 of
+> nd_papr_pdsm_health. Earlier version of the patchset[1] had such a table
+> implemented. But to simplify the patchset, as we are only dealing with
+> version-1 of the structs right now, it was dropped.
+> 
+> [1] :
+> https://lore.kernel.org/linuxppc-dev/20200220095805.197229-9-vaibhav@linux.ibm.com/
+
+I'm not sure I follow that comment.
+
+I feel like there is some confusion about what firmware can return vs the UAPI
+structure.  You have already marshaled the data between the 2.  We can define
+whatever we want for the UAPI structures throwing away data the kernel does not
+understand from the firmware.
+
+> 
+> >
+> >> +#define ND_PAPR_PDSM_HEALTH_VERSION 1
 > >> +
-> >> +/* Return the payload pointer for a given pcmd */
-> >> +static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
-> >> +{
-> >> +	if (pcmd->hdr.nd_size_in == 0 && pcmd->hdr.nd_size_out == 0)
-> >> +		return NULL;
-> >> +	else
-> >> +		return (void *)(pcmd->payload);
-> >> +}
-> >> +
-> >> +#endif /* _UAPI_ASM_POWERPC_PAPR_PDSM_H_ */
+> >>  #endif /* _UAPI_ASM_POWERPC_PAPR_PDSM_H_ */
 > >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> >> index 149431594839..5e2237e7ec08 100644
+> >> index 5e2237e7ec08..c0606c0c659c 100644
 > >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
 > >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> >> @@ -15,13 +15,15 @@
-> >>  #include <linux/seq_buf.h>
+> >> @@ -88,7 +88,7 @@ struct papr_scm_priv {
+> >>  	unsigned long lasthealth_jiffies;
 > >>  
-> >>  #include <asm/plpar_wrappers.h>
-> >> +#include <asm/papr_pdsm.h>
+> >>  	/* Health information for the dimm */
+> >> -	u64 health_bitmap;
+> >> +	struct nd_papr_pdsm_health health;
+> >
+> > ok so we are throwing away all the #defs from patch 1?  Are they still valid?
+> >
+> > I'm confused that patch 3 added this and we are throwing it away
+> > here...
+> The #defines are still valid, only the usage moved to a __drc_pmem_query_health().
+> 
+> >
+> >>  };
 > >>  
-> >>  #define BIND_ANY_ADDR (~0ul)
+> >>  static int drc_pmem_bind(struct papr_scm_priv *p)
+> >> @@ -201,6 +201,7 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+> >>  static int __drc_pmem_query_health(struct papr_scm_priv *p)
+> >>  {
+> >>  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> >> +	u64 health;
+> >>  	long rc;
 > >>  
-> >>  #define PAPR_SCM_DIMM_CMD_MASK \
-> >>  	((1ul << ND_CMD_GET_CONFIG_SIZE) | \
-> >>  	 (1ul << ND_CMD_GET_CONFIG_DATA) | \
-> >> -	 (1ul << ND_CMD_SET_CONFIG_DATA))
-> >> +	 (1ul << ND_CMD_SET_CONFIG_DATA) | \
-> >> +	 (1ul << ND_CMD_CALL))
+> >>  	/* issue the hcall */
+> >> @@ -208,18 +209,46 @@ static int __drc_pmem_query_health(struct papr_scm_priv *p)
+> >>  	if (rc != H_SUCCESS) {
+> >>  		dev_err(&p->pdev->dev,
+> >>  			 "Failed to query health information, Err:%ld\n", rc);
+> >> -		rc = -ENXIO;
+> >> -		goto out;
+> >> +		return -ENXIO;
+> >
+> > I missed this...  probably did not need the goto in the first patch?
+> Yes, will get rid of the goto from patch-1.
+
+Cool.
+
+> 
+> >
+> >>  	}
 > >>  
-> >>  /* DIMM health bitmap bitmap indicators */
-> >>  /* SCM device is unable to persist memory contents */
-> >> @@ -350,16 +352,97 @@ static int papr_scm_meta_set(struct papr_scm_priv *p,
+> >>  	p->lasthealth_jiffies = jiffies;
+> >> -	p->health_bitmap = ret[0] & ret[1];
+> >> +	health = ret[0] & ret[1];
+> >>  
+> >>  	dev_dbg(&p->pdev->dev,
+> >>  		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
+> >>  		ret[0], ret[1]);
+> >> -out:
+> >> -	return rc;
+> >> +
+> >> +	memset(&p->health, 0, sizeof(p->health));
+> >> +
+> >> +	/* Check for various masks in bitmap and set the buffer */
+> >> +	if (health & PAPR_PMEM_UNARMED_MASK)
+> >
+> > Oh ok...  odd.  (don't add code then just take it away in a series)
+> > You could have lead with the user structure and put this code in patch
+> > 3.
+> The struct nd_papr_pdsm_health in only introduced this patch in header
+> 'papr_pdsm.h' as means of exchanging nvdimm health information with
+> userspace. Introducing this struct without introducing the necessary
+> scafolding in 'papr_pdsm.h' would have been very counter-intutive.
+
+I respectfully disagree.  You intended to use a copy of this structure in
+kernel to store the data.  Just do that.
+
+> 
+> >
+> > Why does the user need u8 to represent a single bit?  Does this help protect
+> > against endian issues?
+> This was 'bool' earlier but since type 'bool' isnt suitable for ioctl abi
+> and I wanted to avoid bit fields here as not sure if their packing may
+> differ across compilers hence replaced with u8.
+> 
+
+ok works for me...
+
+> >
+> >> +		p->health.dimm_unarmed = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+> >> +		p->health.dimm_bad_shutdown = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+> >> +		p->health.dimm_bad_restore = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_ENCRYPTED)
+> >> +		p->health.dimm_encrypted = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED) {
+> >> +		p->health.dimm_locked = 1;
+> >> +		p->health.dimm_scrubbed = 1;
+> >> +	}
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_UNHEALTHY)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_UNHEALTHY;
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_CRITICAL)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_CRITICAL;
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_FATAL)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_FATAL;
+> >> +
+> >> +	return 0;
+> >>  }
+> >>  
+> >>  /* Min interval in seconds for assuming stable dimm health */
+> >> @@ -403,6 +432,58 @@ static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
 > >>  	return 0;
 > >>  }
 > >>  
-> >> +/*
-> >> + * Validate the inputs args to dimm-control function and return '0' if valid.
-> >> + * This also does initial sanity validation to ND_CMD_CALL sub-command packages.
-> >> + */
-> >> +static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
-> >> +		       unsigned int buf_len)
+> >> +/* Fetch the DIMM health info and populate it in provided package. */
+> >> +static int papr_pdsm_health(struct papr_scm_priv *p,
+> >> +			       struct nd_pdsm_cmd_pkg *pkg)
 > >> +{
-> >> +	unsigned long cmd_mask = PAPR_SCM_DIMM_CMD_MASK;
-> >> +	struct nd_pdsm_cmd_pkg *pkg = nd_to_pdsm_cmd_pkg(buf);
-> >> +	struct papr_scm_priv *p;
-> >> +
-> >> +	/* Only dimm-specific calls are supported atm */
-> >> +	if (!nvdimm)
-> >> +		return -EINVAL;
-> >> +
-> >> +	/* get the provider date from struct nvdimm */
-> >
-> > s/date/data
-> Thanks for point this out. Will fix this in next iteration.
-> 
-> >
-> >> +	p = nvdimm_provider_data(nvdimm);
-> >> +
-> >> +	if (!test_bit(cmd, &cmd_mask)) {
-> >> +		dev_dbg(&p->pdev->dev, "Unsupported cmd=%u\n", cmd);
-> >> +		return -EINVAL;
-> >> +	} else if (cmd == ND_CMD_CALL) {
-> >> +
-> >> +		/* Verify the envelope package */
-> >> +		if (!buf || buf_len < sizeof(struct nd_pdsm_cmd_pkg)) {
-> >> +			dev_dbg(&p->pdev->dev, "Invalid pkg size=%u\n",
-> >> +				buf_len);
-> >> +			return -EINVAL;
-> >> +		}
-> >> +
-> >> +		/* Verify that the PDSM family is valid */
-> >> +		if (pkg->hdr.nd_family != NVDIMM_FAMILY_PAPR) {
-> >> +			dev_dbg(&p->pdev->dev, "Invalid pkg family=0x%llx\n",
-> >> +				pkg->hdr.nd_family);
-> >> +			return -EINVAL;
-> >> +
-> >> +		}
-> >> +
-> >> +		/* We except a payload with all PDSM commands */
-> >> +		if (pdsm_cmd_to_payload(pkg) == NULL) {
-> >> +			dev_dbg(&p->pdev->dev,
-> >> +				"Empty payload for sub-command=0x%llx\n",
-> >> +				pkg->hdr.nd_command);
-> >> +			return -EINVAL;
-> >> +		}
-> >> +	}
-> >> +
-> >> +	/* Command looks valid */
-> >
-> > I assume the first command to be implemented also checks the { nd_command,
-> > payload_version, payload length } for correctness?
-> Yes the pdsm service functions do check the payload_version and
-> payload_length. Please see the papr_pdsm_health() that services the
-> PAPR_PDSM_HEALTH pdsm in Patch-5
-> 
-
-cool.
-
-> >
-> >> +	return 0;
-> >> +}
-> >> +
-> >> +static int papr_scm_service_pdsm(struct papr_scm_priv *p,
-> >> +				struct nd_pdsm_cmd_pkg *call_pkg)
-> >> +{
-> >> +	/* unknown subcommands return error in packages */
-> >> +	if (call_pkg->hdr.nd_command <= PAPR_PDSM_MIN ||
-> >> +	    call_pkg->hdr.nd_command >= PAPR_PDSM_MAX) {
-> >> +		dev_dbg(&p->pdev->dev, "Invalid PDSM request 0x%llx\n",
-> >> +			call_pkg->hdr.nd_command);
-> >> +		call_pkg->cmd_status = -EINVAL;
-> >> +		return 0;
-> >> +	}
-> >> +
-> >> +	/* Depending on the DSM command call appropriate service routine */
-> >> +	switch (call_pkg->hdr.nd_command) {
-> >> +	default:
-> >> +		dev_dbg(&p->pdev->dev, "Unsupported PDSM request 0x%llx\n",
-> >> +			call_pkg->hdr.nd_command);
-> >> +		call_pkg->cmd_status = -ENOENT;
-> >> +		return 0;
-> >> +	}
-> >> +}
-> >> +
-> >>  static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
-> >>  			  struct nvdimm *nvdimm, unsigned int cmd, void *buf,
-> >>  			  unsigned int buf_len, int *cmd_rc)
-> >>  {
-> >>  	struct nd_cmd_get_config_size *get_size_hdr;
-> >>  	struct papr_scm_priv *p;
-> >> +	struct nd_pdsm_cmd_pkg *call_pkg = NULL;
 > >> +	int rc;
-> >>  
-> >> -	/* Only dimm-specific calls are supported atm */
-> >> -	if (!nvdimm)
-> >> -		return -EINVAL;
-> >> +	/* Use a local variable in case cmd_rc pointer is NULL */
-> >> +	if (cmd_rc == NULL)
-> >> +		cmd_rc = &rc;
-> >
-> > Why is this needed?  AFAICT The caller of papr_scm_ndctl does not specify null
-> > and you did not change it.
-> This pointer is coming from outside the papr_scm code hence need to be
-> defensive here. Also as per[1] cmd_rc is "translation of firmware status"
-> and not every caller would need it hence making this pointer optional.
-> 
-> This is evident in acpi_nfit_blk_get_flags() where the 'nd_desc->ndctl'
-> is called with 'cmd_rc == NULL'.
-> 
-> [1] https://lore.kernel.org/linux-nvdimm/CAPcyv4hE_FG0YZXJVA1G=CBq8b9e0K54jxk5Sq5UKU-dnWT2Kg@mail.gmail.com/
-
-Ah... Ok.  So this is a bug fix which needs to happen regardless of the status
-of this patch...
-
-> 
-> >
+> >> +	size_t copysize = sizeof(p->health);
 > >> +
-> >> +	*cmd_rc = is_cmd_valid(nvdimm, cmd, buf, buf_len);
-> >> +	if (*cmd_rc) {
-> >> +		pr_debug("Invalid cmd=0x%x. Err=%d\n", cmd, *cmd_rc);
-> >> +		return *cmd_rc;
-> >> +	}
-> >>  
-> >>  	p = nvdimm_provider_data(nvdimm);
-> >>  
-> >> @@ -381,13 +464,19 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
-> >>  		*cmd_rc = papr_scm_meta_set(p, buf);
-
-... Because this will break here. even without this new code...  right?
-
-Lets get this fix in as a prelim-patch.
-
-> >>  		break;
-> >>  
-> >> +	case ND_CMD_CALL:
-> >> +		call_pkg = nd_to_pdsm_cmd_pkg(buf);
-> >> +		*cmd_rc = papr_scm_service_pdsm(p, call_pkg);
-> >> +		break;
+> >> +	/* Ensure dimm health mutex is taken preventing concurrent access */
+> >> +	rc = mutex_lock_interruptible(&p->health_mutex);
+> >> +	if (rc)
+> >> +		goto out;
 > >> +
-> >>  	default:
-> >> -		return -EINVAL;
-> >> +		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
-> >> +		*cmd_rc = -EINVAL;
+> >> +	/* Always fetch upto date dimm health data ignoring cached values */
+> >> +	rc = __drc_pmem_query_health(p);
+> >> +	if (rc)
+> >> +		goto out_unlock;
+> >> +	/*
+> >> +	 * If the requested payload version is greater than one we know
+> >> +	 * about, return the payload version we know about and let
+> >> +	 * caller/userspace handle.
+> >> +	 */
+> >> +	if (pkg->payload_version > ND_PAPR_PDSM_HEALTH_VERSION)
+> >> +		pkg->payload_version = ND_PAPR_PDSM_HEALTH_VERSION;
 > >
-> > Is this change related?  If there is a bug where there is a caller of
-> > papr_scm_ndctl() with cmd_rc == NULL this should be a separate patch to fix
-> > that issue.
-> This simplifies a bit debugging of errors reported in
-> papr_scm_ndctl() as it ensures that subsequest dev_dbg "Returned with
-> cmd_rc" is always logged.
+> > I know this seems easy now but I do think you will run into trouble later.
 > 
-> I think, this is a too small change to be carved out as an independent
-> patch. Also this doesnt change the behaviour of the code except logging
-> some more error info.
+> I did addressed this in an earlier iteration of this patchset[1] and
+> dropped it in favour of simplicity.
 > 
-> However, If you feel too strongly about it I will spin a separate patch
-> in this patch series for this.
-
-This can go in as part of a 'protect against cmd_rc == NULL' preliminary patch.
-
-I flagged this because at first I could not figure out what this had to do with
-the ND_CMD_CALL...
-
-For reviewers you want to make your patches concise to what you are
-fixing/adding...
-
-Also, based on acpi_nfit_blk_get_flags() using cmd_rc == NULL it looks like we
-have a bug which needs to get fixed regardless of the this patch.  And if that
-bug exists in earlier kernels you will need a separate patch to backport as a
-fix.
-
-So lets get that in first and separate...  :-D
+> [1] :
+> https://lore.kernel.org/linuxppc-dev/20200220095805.197229-9-vaibhav@linux.ibm.com/
+ 
+I don't see how that addresses this?  See my other email.
 
 Ira
 
 > 
-> >
 > > Ira
 > >
-> >>  	}
+> >> +
+> >> +	if (pkg->hdr.nd_size_out < copysize) {
+> >> +		dev_dbg(&p->pdev->dev, "Truncated payload (%u). Expected (%lu)",
+> >> +			pkg->hdr.nd_size_out, copysize);
+> >> +		rc = -ENOSPC;
+> >> +		goto out_unlock;
+> >> +	}
+> >> +
+> >> +	dev_dbg(&p->pdev->dev, "Copying payload size=%lu version=0x%x\n",
+> >> +		copysize, pkg->payload_version);
+> >> +
+> >> +	/* Copy the health struct to the payload */
+> >> +	memcpy(pdsm_cmd_to_payload(pkg), &p->health, copysize);
+> >> +	pkg->hdr.nd_fw_size = copysize;
+> >> +
+> >> +out_unlock:
+> >> +	mutex_unlock(&p->health_mutex);
+> >> +
+> >> +out:
+> >> +	/*
+> >> +	 * Put the error in out package and return success from function
+> >> +	 * so that errors if any are propogated back to userspace.
+> >> +	 */
+> >> +	pkg->cmd_status = rc;
+> >> +	dev_dbg(&p->pdev->dev, "completion code = %d\n", rc);
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >>  static int papr_scm_service_pdsm(struct papr_scm_priv *p,
+> >>  				struct nd_pdsm_cmd_pkg *call_pkg)
+> >>  {
+> >> @@ -417,6 +498,9 @@ static int papr_scm_service_pdsm(struct papr_scm_priv *p,
 > >>  
-> >>  	dev_dbg(&p->pdev->dev, "returned with cmd_rc = %d\n", *cmd_rc);
+> >>  	/* Depending on the DSM command call appropriate service routine */
+> >>  	switch (call_pkg->hdr.nd_command) {
+> >> +	case PAPR_PDSM_HEALTH:
+> >> +		return papr_pdsm_health(p, call_pkg);
+> >> +
+> >>  	default:
+> >>  		dev_dbg(&p->pdev->dev, "Unsupported PDSM request 0x%llx\n",
+> >>  			call_pkg->hdr.nd_command);
+> >> @@ -485,34 +569,41 @@ static ssize_t flags_show(struct device *dev,
+> >>  	struct nvdimm *dimm = to_nvdimm(dev);
+> >>  	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+> >>  	struct seq_buf s;
+> >> -	u64 health;
+> >>  	int rc;
 > >>  
-> >> -	return 0;
-> >> +	return *cmd_rc;
-> >>  }
+> >>  	rc = drc_pmem_query_health(p);
+> >>  	if (rc)
+> >>  		return rc;
 > >>  
-> >>  static ssize_t flags_show(struct device *dev,
-> >> diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
-> >> index de5d90212409..0e09dc5cec19 100644
-> >> --- a/include/uapi/linux/ndctl.h
-> >> +++ b/include/uapi/linux/ndctl.h
-> >> @@ -244,6 +244,7 @@ struct nd_cmd_pkg {
-> >>  #define NVDIMM_FAMILY_HPE2 2
-> >>  #define NVDIMM_FAMILY_MSFT 3
-> >>  #define NVDIMM_FAMILY_HYPERV 4
-> >> +#define NVDIMM_FAMILY_PAPR 5
+> >> -	/* Copy health_bitmap locally, check masks & update out buffer */
+> >> -	health = READ_ONCE(p->health_bitmap);
+> >> -
+> >>  	seq_buf_init(&s, buf, PAGE_SIZE);
+> >> -	if (health & PAPR_PMEM_UNARMED_MASK)
+> >> +
+> >> +	/* Protect concurrent modifications to papr_scm_priv */
+> >> +	rc = mutex_lock_interruptible(&p->health_mutex);
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	if (p->health.dimm_unarmed)
+> >>  		seq_buf_printf(&s, "not_armed ");
 > >>  
-> >>  #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
-> >>  					struct nd_cmd_pkg)
+> >> -	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+> >> +	if (p->health.dimm_bad_shutdown)
+> >>  		seq_buf_printf(&s, "flush_fail ");
+> >>  
+> >> -	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+> >> +	if (p->health.dimm_bad_restore)
+> >>  		seq_buf_printf(&s, "restore_fail ");
+> >>  
+> >> -	if (health & PAPR_PMEM_ENCRYPTED)
+> >> +	if (p->health.dimm_encrypted)
+> >>  		seq_buf_printf(&s, "encrypted ");
+> >>  
+> >> -	if (health & PAPR_PMEM_SMART_EVENT_MASK)
+> >> +	if (p->health.dimm_health)
+> >>  		seq_buf_printf(&s, "smart_notify ");
+> >>  
+> >> -	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED)
+> >> -		seq_buf_printf(&s, "scrubbed locked ");
+> >> +	if (p->health.dimm_scrubbed)
+> >> +		seq_buf_printf(&s, "scrubbed ");
+> >> +
+> >> +	if (p->health.dimm_locked)
+> >> +		seq_buf_printf(&s, "locked ");
+> >> +
+> >> +	mutex_unlock(&p->health_mutex);
+> >>  
+> >>  	if (seq_buf_used(&s))
+> >>  		seq_buf_printf(&s, "\n");
 > >> -- 
 > >> 2.26.2
 > >> 
