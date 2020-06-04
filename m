@@ -2,166 +2,630 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3291D1EE6F1
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Jun 2020 16:51:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4521EEA70
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  4 Jun 2020 20:42:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A7DFB100A3033;
-	Thu,  4 Jun 2020 07:46:33 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+	by ml01.01.org (Postfix) with ESMTP id BE0B9100A22F2;
+	Thu,  4 Jun 2020 11:37:49 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 696DC100A302E
-	for <linux-nvdimm@lists.01.org>; Thu,  4 Jun 2020 07:46:31 -0700 (PDT)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 054EmRN1006694;
-	Thu, 4 Jun 2020 14:51:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=yZ/+ZJnzGnmR7xhhJsmwnbo92NBRhvNckmqD86Sq/yw=;
- b=Y3gp9V2VSFZ5CQzf0bwJEoNtW2VsYWuDv10PHG4vOY9tJtXkCuZY0UNWqXph/Ymwlm+m
- VTK+37yFHeqNgd7lXN81KtlfGdj5Fnj5JT9SSD4VAx+quVwNrrplZAvnX1QTPNpyCYhc
- uEKm48/mrUCaq3oeFnxYZVz8JehshmL+Lta/nYK2AYVt9TqaH5t0m66cWXFdkTy0YX2k
- 4mJAkH0Xhqgdv4qBoIMWyIV9hxaj6y7J7x5cl/KL3P48WOnCRnXPLH0LHukU2X5+Ohqg
- vFXpSG/9HMgYO9PjeGzLCcJ00CrnGJSXf/UamHDxXpzqFNUg1f7TpgpHwdV9jQrbqNOq Sg==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2130.oracle.com with ESMTP id 31evvn1ygm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 04 Jun 2020 14:51:16 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 054Em3vE111522;
-	Thu, 4 Jun 2020 14:51:15 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by aserp3020.oracle.com with ESMTP id 31c25vffjj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 04 Jun 2020 14:51:15 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 054Ep9Dr003969;
-	Thu, 4 Jun 2020 14:51:09 GMT
-Received: from localhost (/67.169.218.210)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Thu, 04 Jun 2020 07:51:09 -0700
-Date: Thu, 4 Jun 2020 07:51:07 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Ruan Shiyang <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: =?utf-8?B?5Zue5aSNOiBSZQ==?= =?utf-8?Q?=3A?= [RFC PATCH 0/8]
- dax: Add a dax-rmap tree to support reflink
-Message-ID: <20200604145107.GA1334206@magnolia>
-References: <20200427084750.136031-1-ruansy.fnst@cn.fujitsu.com>
- <20200427122836.GD29705@bombadil.infradead.org>
- <em33c55fa5-15ca-4c46-8c27-6b0300fa4e51@g08fnstd180058>
- <20200428064318.GG2040@dread.disaster.area>
- <153e13e6-8685-fb0d-6bd3-bb553c06bf51@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTPS id 92FB0100A302C
+	for <linux-nvdimm@lists.01.org>; Thu,  4 Jun 2020 11:37:47 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 054IWZQW101549;
+	Thu, 4 Jun 2020 14:42:24 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31euh9p4fc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2020 14:42:23 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 054IYHS2107906;
+	Thu, 4 Jun 2020 14:42:23 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31euh9p4ev-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2020 14:42:23 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+	by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 054IKilN028133;
+	Thu, 4 Jun 2020 18:42:21 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+	by ppma02fra.de.ibm.com with ESMTP id 31end6gpk5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jun 2020 18:42:20 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 054IgImh5832958
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Jun 2020 18:42:18 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88CC14C050;
+	Thu,  4 Jun 2020 18:42:18 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1F3E4C040;
+	Thu,  4 Jun 2020 18:42:14 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.102.17.54])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Thu,  4 Jun 2020 18:42:14 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Fri, 05 Jun 2020 00:12:13 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RESEND PATCH v9 4/5] ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
+In-Reply-To: <20200603224612.GJ1505637@iweiny-DESK2.sc.intel.com>
+References: <20200602101438.73929-1-vaibhav@linux.ibm.com> <20200602101438.73929-5-vaibhav@linux.ibm.com> <20200602205148.GF1505637@iweiny-DESK2.sc.intel.com> <87tuzsggtd.fsf@linux.ibm.com> <20200603224612.GJ1505637@iweiny-DESK2.sc.intel.com>
+Date: Fri, 05 Jun 2020 00:12:13 +0530
+Message-ID: <87eequhdve.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <153e13e6-8685-fb0d-6bd3-bb553c06bf51@cn.fujitsu.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=1 spamscore=0
- malwarescore=0 bulkscore=0 mlxscore=0 phishscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006040102
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9641 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 cotscore=-2147483648 suspectscore=1
- phishscore=0 clxscore=1011 malwarescore=0 mlxscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006040102
-Message-ID-Hash: XNXPAXSJWAH4IUOTWJJOTDSFJPNODQB6
-X-Message-ID-Hash: XNXPAXSJWAH4IUOTWJJOTDSFJPNODQB6
-X-MailFrom: darrick.wong@oracle.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
+ definitions=2020-06-04_12:2020-06-04,2020-06-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 suspectscore=0 priorityscore=1501 spamscore=0 clxscore=1015
+ cotscore=-2147483648 malwarescore=0 bulkscore=0 mlxlogscore=999
+ impostorscore=0 phishscore=0 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006040127
+Message-ID-Hash: H73EYFESKE5WIRAFOGECJLRU4CS5L3EB
+X-Message-ID-Hash: H73EYFESKE5WIRAFOGECJLRU4CS5L3EB
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Chinner <david@fromorbit.com>, Matthew Wilcox <willy@infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "hch@lst.de" <hch@lst.de>, "rgoldwyn@suse.de" <rgoldwyn@suse.de>, "Qi, Fuli" <qi.fuli@fujitsu.com>, "Gotou, Yasunori" <y-goto@fujitsu.com>
+CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XNXPAXSJWAH4IUOTWJJOTDSFJPNODQB6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/H73EYFESKE5WIRAFOGECJLRU4CS5L3EB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gVGh1LCBKdW4gMDQsIDIwMjAgYXQgMDM6Mzc6NDJQTSArMDgwMCwgUnVhbiBTaGl5YW5nIHdy
-b3RlOg0KPiANCj4gDQo+IE9uIDIwMjAvNC8yOCDkuIvljYgyOjQzLCBEYXZlIENoaW5uZXIgd3Jv
-dGU6DQo+ID4gT24gVHVlLCBBcHIgMjgsIDIwMjAgYXQgMDY6MDk6NDdBTSArMDAwMCwgUnVhbiwg
-U2hpeWFuZyB3cm90ZToNCj4gPiA+IA0KPiA+ID4g5ZyoIDIwMjAvNC8yNyAyMDoyODozNiwgIk1h
-dHRoZXcgV2lsY294IiA8d2lsbHlAaW5mcmFkZWFkLm9yZz4g5YaZ6YGTOg0KPiA+ID4gDQo+ID4g
-PiA+IE9uIE1vbiwgQXByIDI3LCAyMDIwIGF0IDA0OjQ3OjQyUE0gKzA4MDAsIFNoaXlhbmcgUnVh
-biB3cm90ZToNCj4gPiA+ID4gPiAgIFRoaXMgcGF0Y2hzZXQgaXMgYSB0cnkgdG8gcmVzb2x2ZSB0
-aGUgc2hhcmVkICdwYWdlIGNhY2hlJyBwcm9ibGVtIGZvcg0KPiA+ID4gPiA+ICAgZnNkYXguDQo+
-ID4gPiA+ID4gDQo+ID4gPiA+ID4gICBJbiBvcmRlciB0byB0cmFjayBtdWx0aXBsZSBtYXBwaW5n
-cyBhbmQgaW5kZXhlcyBvbiBvbmUgcGFnZSwgSQ0KPiA+ID4gPiA+ICAgaW50cm9kdWNlZCBhIGRh
-eC1ybWFwIHJiLXRyZWUgdG8gbWFuYWdlIHRoZSByZWxhdGlvbnNoaXAuICBBIGRheCBlbnRyeQ0K
-PiA+ID4gPiA+ICAgd2lsbCBiZSBhc3NvY2lhdGVkIG1vcmUgdGhhbiBvbmNlIGlmIGlzIHNoYXJl
-ZC4gIEF0IHRoZSBzZWNvbmQgdGltZSB3ZQ0KPiA+ID4gPiA+ICAgYXNzb2NpYXRlIHRoaXMgZW50
-cnksIHdlIGNyZWF0ZSB0aGlzIHJiLXRyZWUgYW5kIHN0b3JlIGl0cyByb290IGluDQo+ID4gPiA+
-ID4gICBwYWdlLT5wcml2YXRlKG5vdCB1c2VkIGluIGZzZGF4KS4gIEluc2VydCAoLT5tYXBwaW5n
-LCAtPmluZGV4KSB3aGVuDQo+ID4gPiA+ID4gICBkYXhfYXNzb2NpYXRlX2VudHJ5KCkgYW5kIGRl
-bGV0ZSBpdCB3aGVuIGRheF9kaXNhc3NvY2lhdGVfZW50cnkoKS4NCj4gPiA+ID4gDQo+ID4gPiA+
-IERvIHdlIHJlYWxseSB3YW50IHRvIHRyYWNrIGFsbCBvZiB0aGlzIG9uIGEgcGVyLXBhZ2UgYmFz
-aXM/ICBJIHdvdWxkDQo+ID4gPiA+IGhhdmUgdGhvdWdodCBhIHBlci1leHRlbnQgYmFzaXMgd2Fz
-IG1vcmUgdXNlZnVsLiAgRXNzZW50aWFsbHksIGNyZWF0ZQ0KPiA+ID4gPiBhIG5ldyBhZGRyZXNz
-X3NwYWNlIGZvciBlYWNoIHNoYXJlZCBleHRlbnQuICBQZXIgcGFnZSBqdXN0IHNlZW1zIGxpa2UN
-Cj4gPiA+ID4gYSBodWdlIG92ZXJoZWFkLg0KPiA+ID4gPiANCj4gPiA+IFBlci1leHRlbnQgdHJh
-Y2tpbmcgaXMgYSBuaWNlIGlkZWEgZm9yIG1lLiAgSSBoYXZlbid0IHRob3VnaHQgb2YgaXQNCj4g
-PiA+IHlldC4uLg0KPiA+ID4gDQo+ID4gPiBCdXQgdGhlIGV4dGVudCBpbmZvIGlzIG1haW50YWlu
-ZWQgYnkgZmlsZXN5c3RlbS4gIEkgdGhpbmsgd2UgbmVlZCBhIHdheQ0KPiA+ID4gdG8gb2J0YWlu
-IHRoaXMgaW5mbyBmcm9tIEZTIHdoZW4gYXNzb2NpYXRpbmcgYSBwYWdlLiAgTWF5IGJlIGEgYml0
-DQo+ID4gPiBjb21wbGljYXRlZC4gIExldCBtZSB0aGluayBhYm91dCBpdC4uLg0KPiA+IA0KPiA+
-IFRoYXQncyB3aHkgSSB3YW50IHRoZSAtdXNlciBvZiB0aGlzIGFzc29jaWF0aW9uLSB0byBkbyBh
-IGZpbGVzeXN0ZW0NCj4gPiBjYWxsb3V0IGluc3RlYWQgb2Yga2VlcGluZyBpdCdzIG93biBuYWl2
-ZSB0cmFja2luZyBpbmZyYXN0cnVjdHVyZS4NCj4gPiBUaGUgZmlsZXN5c3RlbSBjYW4gZG8gYW4g
-ZWZmaWNpZW50LCBvbi1kZW1hbmQgcmV2ZXJzZSBtYXBwaW5nIGxvb2t1cA0KPiA+IGZyb20gaXQn
-cyBvd24gZXh0ZW50IHRyYWNraW5nIGluZnJhc3RydWN0dXJlLCBhbmQgdGhlcmUncyB6ZXJvDQo+
-ID4gcnVudGltZSBvdmVyaGVhZCB3aGVuIHRoZXJlIGFyZSBubyBlcnJvcnMgcHJlc2VudC4NCj4g
-DQo+IEhpIERhdmUsDQo+IA0KPiBJIHJhbiBpbnRvIHNvbWUgZGlmZmljdWx0aWVzIHdoZW4gdHJ5
-aW5nIHRvIGltcGxlbWVudCB0aGUgcGVyLWV4dGVudCBybWFwDQo+IHRyYWNraW5nLiAgU28sIEkg
-cmUtcmVhZCB5b3VyIGNvbW1lbnRzIGFuZCBmb3VuZCB0aGF0IEkgd2FzIG1pc3VuZGVyc3RhbmRp
-bmcNCj4gd2hhdCB5b3UgZGVzY3JpYmVkIGhlcmUuDQo+IA0KPiBJIHRoaW5rIHdoYXQgeW91IG1l
-YW4gaXM6IHdlIGRvbid0IG5lZWQgdGhlIGluLW1lbW9yeSBkYXgtcm1hcCB0cmFja2luZyBub3cu
-DQo+IEp1c3QgYXNrIHRoZSBGUyBmb3IgdGhlIG93bmVyJ3MgaW5mb3JtYXRpb24gdGhhdCBhc3Nv
-Y2lhdGUgd2l0aCBvbmUgcGFnZQ0KPiB3aGVuIG1lbW9yeS1mYWlsdXJlLiAgU28sIHRoZSBwZXIt
-cGFnZSAoZXZlbiBwZXItZXh0ZW50KSBkYXgtcm1hcCBpcw0KPiBuZWVkbGVzcyBpbiB0aGlzIGNh
-c2UuICBJcyB0aGlzIHJpZ2h0Pw0KDQpSaWdodC4gIFhGUyBhbHJlYWR5IGhhcyBpdHMgb3duIHJt
-YXAgdHJlZS4NCg0KPiBCYXNlZCBvbiB0aGlzLCB3ZSBvbmx5IG5lZWQgdG8gc3RvcmUgdGhlIGV4
-dGVudCBpbmZvcm1hdGlvbiBvZiBhIGZzZGF4IHBhZ2UNCj4gaW4gaXRzIC0+bWFwcGluZyAoYnkg
-c2VhcmNoaW5nIGZyb20gRlMpLiAgVGhlbiBvYnRhaW4gdGhlIG93bmVycyBvZiB0aGlzDQo+IHBh
-Z2UgKGFsc28gYnkgc2VhcmNoaW5nIGZyb20gRlMpIHdoZW4gbWVtb3J5LWZhaWx1cmUgb3Igb3Ro
-ZXIgcm1hcCBjYXNlDQo+IG9jY3Vycy4NCg0KSSBkb24ndCBldmVuIHRoaW5rIHlvdSBuZWVkIHRo
-YXQgbXVjaC4gIEFsbCB5b3UgbmVlZCBpcyB0aGUgInBoeXNpY2FsIg0Kb2Zmc2V0IG9mIHRoYXQg
-cGFnZSB3aXRoaW4gdGhlIHBtZW0gZGV2aWNlIChlLmcuICd0aGlzIGlzIHRoZSAzMDd0aCA0aw0K
-cGFnZSA9PSBvZmZzZXQgMTI1NzQ3MiBzaW5jZSB0aGUgc3RhcnQgb2YgL2Rldi9wbWVtMCcpIGFu
-ZCB4ZnMgY2FuIGxvb2sNCnVwIHRoZSBvd25lciBvZiB0aGF0IHJhbmdlIG9mIHBoeXNpY2FsIHN0
-b3JhZ2UgYW5kIGRlYWwgd2l0aCBpdCBhcw0KbmVlZGVkLg0KDQo+IFNvLCBhIGZzZGF4IHBhZ2Ug
-aXMgbm8gbG9uZ2VyIGFzc29jaWF0ZWQgd2l0aCBhIHNwZWNpZmljIGZpbGUsIGJ1dCB3aXRoIGEN
-Cj4gRlMob3IgdGhlIHBtZW0gZGV2aWNlKS4gIEkgdGhpbmsgaXQncyBlYXNpZXIgdG8gdW5kZXJz
-dGFuZCBhbmQgaW1wbGVtZW50Lg0KDQpZZXMuICBJIGFsc28gc3VzcGVjdCB0aGlzIHdpbGwgYmUg
-bmVjZXNzYXJ5IHRvIHN1cHBvcnQgcmVmbGluay4uLg0KDQotLUQNCg0KPiANCj4gLS0NCj4gVGhh
-bmtzLA0KPiBSdWFuIFNoaXlhbmcuDQo+ID4gDQo+ID4gQXQgdGhlIG1vbWVudCwgdGhpcyAiZGF4
-IGFzc29jaWF0aW9uIiBpcyB1c2VkIHRvICJyZXBvcnQiIGEgc3RvcmFnZQ0KPiA+IG1lZGlhIGVy
-cm9yIGRpcmVjdGx5IHRvIHVzZXJzcGFjZS4gSSBzYXkgInJlcG9ydCIgYmVjYXVzZSB3aGF0IGl0
-DQo+ID4gZG9lcyBpcyBraWxsIHVzZXJzcGFjZSBwcm9jZXNzZXMgZGVhZC4gVGhlIHN0b3JhZ2Ug
-bWVkaWEgZXJyb3INCj4gPiBhY3R1YWxseSBuZWVkcyB0byBiZSByZXBvcnRlZCB0byB0aGUgb3du
-ZXIgb2YgdGhlIHN0b3JhZ2UgbWVkaWEsDQo+ID4gd2hpY2ggaW4gdGhlIGNhc2Ugb2YgRlMtREFY
-IGlzIHRoZSBmaWxlc3l0ZW0uDQo+ID4gDQo+ID4gVGhhdCB3YXkgdGhlIGZpbGVzeXN0ZW0gY2Fu
-IHRoZW4gbG9vayB1cCBhbGwgdGhlIG93bmVycyBvZiB0aGF0IGJhZA0KPiA+IG1lZGlhIHJhbmdl
-IChpLmUuIHRoZSBmaWxlc3lzdGVtIGJsb2NrIGl0IGNvcnJlc3BvbmRzIHRvKSBhbmQgdGFrZQ0K
-PiA+IGFwcHJvcHJpYXRlIGFjdGlvbi4gZS5nLg0KPiA+IA0KPiA+IC0gaWYgaXQgZmFsbHMgaW4g
-ZmlsZXN5dGVtIG1ldGFkYXRhLCBzaHV0ZG93biB0aGUgZmlsZXN5c3RlbQ0KPiA+IC0gaWYgaXQg
-ZmFsbHMgaW4gdXNlciBkYXRhLCBjYWxsIHRoZSAia2lsbCB1c2Vyc3BhY2UgZGVhZCIgcm91dGlu
-ZXMNCj4gPiAgICBmb3IgZWFjaCBtYXBwaW5nL2luZGV4IHR1cGxlIHRoZSBmaWxlc3lzdGVtIGZp
-bmRzIGZvciB0aGUgZ2l2ZW4NCj4gPiAgICBMQkEgYWRkcmVzcyB0aGF0IHRoZSBtZWRpYSBlcnJv
-ciBvY2N1cnJlZC4NCj4gPiANCj4gPiBSaWdodCBub3cgaWYgdGhlIG1lZGlhIGVycm9yIGlzIGlu
-IGZpbGVzeXN0ZW0gbWV0YWRhdGEsIHRoZQ0KPiA+IGZpbGVzeXN0ZW0gaXNuJ3QgZXZlbiB0b2xk
-IGFib3V0IGl0LiBUaGUgZmlsZXN5c3RlbSBjYW4ndCBldmVuIHNodXQNCj4gPiBkb3duIC0gdGhl
-IGVycm9yIGlzIGp1c3QgZHJvcHBlZCBvbiB0aGUgZmxvb3IgYW5kIGl0IHdvbid0IGJlIHVudGls
-DQo+ID4gdGhlIGZpbGVzeXN0ZW0gbmV4dCB0cmllcyB0byByZWZlcmVuY2UgdGhhdCBtZXRhZGF0
-YSB0aGF0IHdlIG5vdGljZQ0KPiA+IHRoZXJlIGlzIGFuIGlzc3VlLg0KPiA+IA0KPiA+IENoZWVy
-cywNCj4gPiANCj4gPiBEYXZlLg0KPiA+IA0KPiANCj4gCl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
-dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
-bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+
+Ira Weiny <ira.weiny@intel.com> writes:
+
+> On Wed, Jun 03, 2020 at 11:41:42PM +0530, Vaibhav Jain wrote:
+>> Hi Ira,
+>> 
+>> Thanks for reviewing this patch. My responses below:
+>> 
+>> Ira Weiny <ira.weiny@intel.com> writes:
+>> 
+>
+> ...
+>
+>> >> + *
+>> >> + * Payload Version:
+>> >> + *
+>> >> + * A 'payload_version' field is present in PDSM header that indicates a specific
+>> >> + * version of the structure present in PDSM Payload for a given PDSM command.
+>> >> + * This provides backward compatibility in case the PDSM Payload structure
+>> >> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
+>> >> + *
+>> >> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
+>> >> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
+>> >> + * module when servicing the PDSM envelope checks the 'payload_version' and then
+>> >> + * uses 'payload struct version' == MIN('payload_version field',
+>> >> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
+>> >> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
+>> >> + * struct in returned 'payload_version' field.
+>> >> + *
+>> >> + * Libndctl on receiving the envelope back from papr_scm again checks the
+>> >> + * 'payload_version' field and based on it use the appropriate version dsm
+>> >> + * struct to parse the results.
+>> >> + *
+>> >> + * Backward Compatibility:
+>> >> + *
+>> >> + * Above scheme of exchanging different versioned PDSM struct between libndctl
+>> >> + * and papr_scm should provide backward compatibility until following two
+>> >> + * assumptions/conditions when defining new PDSM structs hold:
+>> >> + *
+>> >> + * Let T(X) = { set of attributes in PDSM struct 'T' versioned X }
+>> >> + *
+>> >> + * 1. T(X) is a proper subset of T(Y) if Y > X.
+>> >> + *    i.e Each new version of PDSM struct should retain existing struct
+>> >> + *    attributes from previous version
+>> >> + *
+>> >> + * 2. If an entity (libndctl or papr_scm) supports a PDSM struct T(X) then
+>> >> + *    it should also support T(1), T(2)...T(X - 1).
+>> >> + *    i.e When adding support for new version of a PDSM struct, libndctl
+>> >> + *    and papr_scm should retain support of the existing PDSM struct
+>> >> + *    version they support.
+>> >
+>> > Please see this thread for an example why versions are a bad idea in UAPIs:
+>> >
+>> > https://lkml.org/lkml/2020/3/26/213
+>> >
+>> 
+>> > While the use of version is different in that thread the fundamental issues are
+>> > the same.  You end up with some weird matrix of supported features and
+>> > structure definitions.  For example, you are opening up the possibility of
+>> > changing structures with a different version for no good reason.
+>> 
+>> Not really sure I understand the statement correctly "you are opening up
+>> the possibility of changing structures with a different version for no
+>> good reason."
+>
+[..]
+> What I mean is:
+>
+> struct v1 {
+> 	u32 x;
+> 	u32 y;
+> };
+>
+> struct v2 {
+> 	u32 y;
+> 	u32 x;
+> };
+>
+> x and y are the same data but you have now redefined the order of the struct.
+> You don't need that flexibility/complexity.
+>
+> Generally I think you are defining:
+>
+> struct v1 {
+> 	u32 x;
+> 	u32 y;
+> };
+>
+> struct v2 {
+> 	u32 x;
+> 	u32 y;
+> 	u32 z;
+> 	u32 a;
+> };
+>
+> Which becomes 2 structures...  There is no need.
+>
+> The easiest thing to do is:
+>
+> struct user_data {
+> 	u32 x;
+> 	u32 y;
+> };
+>
+> And later you modify user_data to:
+>
+> struct user_data {
+> 	u32 x;
+> 	u32 y;
+> 	u32 z;
+> 	u32 a;
+> };
+>
+> libndctl always passes sizeof(struct user_data) to the call. [Do ensure
+> structures are 64bit aligned for this to work.]
+>
+> The kernel sees the size and returns the amount of data up to that size.
+>
+> Therefore, older kernels automatically fill in x and y,  newer kernels fill in
+> z/a if the buffer was big enough.  libndctl only uses the fields it knows about.
+>
+> It is _much_ easier this way.  Almost nothing needs to get changed as versions
+> roll forward.  The only big issue is if libndctl _needs_ z then it has to check
+> if z is returned.
+>
+> In that case add a cap_mask with bit fields which the kernel can fill in for
+> which fields are valid.
+>
+> struct user_data {
+> 	u64 cap_mask;  /* where bits define extra future capabilities */
+> 	u32 x;
+> 	u32 y;
+> };
+>
+> IFF you need to add data within fields which are reserved you can use
+> capability flags to indicate which fields are requested and which are returned
+> by the kernel.
+>
+> But I _think_ for what you want libndctl must survive if z/a are not available
+> right?  So just adding to the structure should be fine.
+Agreed. But as I mentioned in my response to Dan's review comments [1], we
+will be removing the version field altogether and instead will introduce
+new psdm requests bound to new struct definitions in conjuntion to
+nvdimm-flags. I have a patchset ready which I will be sending out soon.
+
+[1] https://lore.kernel.org/linux-nvdimm/87h7vrgpzx.fsf@linux.ibm.com/
+>
+>> We want to return more data in the struct in future iterations. So
+>> 'changing structure with different version' is something we are
+>> expecting. 
+>> 
+>> With the backward compatibility constraints 1 & 2 above, it will ensure
+>> that support matrix looks like a lower traingular matrix with each
+>> successive version supporting previous version attributes. So supporting
+>> future versions is relatively simplified.
+>
+> But you end up with weird switch/if's etc to deal with the multiple structures.
+>
+> With the size method the kernel simply returns the same size data as the user
+> requested and everything is done.  No logic required at all.  Literally it can
+> just copy the data it has (truncating if necessary).
+>
+Agreed. But with version field gone now we will instead use new psdm
+requests bound to new struct definitions in conjuntion to nvdimm-flags
+to retrive extended data from papr_scm.
+
+>> 
+>> >
+>> > Also having the user query with version Z and get back version X (older) is
+>> > odd.  Generally if the kernel does not know about a feature (ie version Z of
+>> > the structure) it should return -EINVAL and let the user figure out what to do.
+>> > The user may just give up or they could try a different query.
+>> >
+>> Considering the flow of ndctl/libndctl this is needed. libndctl will
+>> usually issues only one CMD_CALL ioctl to kernel and if that fails then
+>> an error is reported and ndctl will exit loosing state.
+>> 
+>> Adding mechanism in libndctl to reissue CMD_CALL ioctl to fetch a
+>> appropriate version of pdsm struct is going to be considerably more
+>> work.
+>> 
+>> This version fall-back mechanism, ensures that libndctl will receive
+>> usable data without having to reissue a more CMD_CALL ioctls.
+>
+> Define usable?
+>
+> What happens if libndctl does not get 'z' in my example above?  What does it
+> do?  If I understand correctly it does not _need_ z.  So why have a check on
+> the version from the kernel?
+>
+> What if we change to:
+>
+> struct v3 {
+> 	u32 x;
+> 	u32 y;
+> 	u32 z;
+> 	u32 a;
+> 	u32 b;
+> 	u32 c;
+> };
+>
+> Now it has to
+>
+> 	if(version 2)
+> 		z/a valid do something()
+>
+> 	if(version 3)
+> 		b/c valid do something else()
+>
+> if z, a, b, c are all 0 does it matter?
+>
+> If not, the logic above disappears.
+>
+> If so, then you need a cap mask.  Then the kernel can say c and a are valid
+> (but c is 0) or other flexible stuff like that.
+>
+>> 
+>> >> + */
+>> >> +
+>> >> +/* PDSM-header + payload expected with ND_CMD_CALL ioctl from libnvdimm */
+>> >> +struct nd_pdsm_cmd_pkg {
+>> >> +	struct nd_cmd_pkg hdr;	/* Package header containing sub-cmd */
+>> >> +	__s32 cmd_status;	/* Out: Sub-cmd status returned back */
+>> >> +	__u16 reserved[5];	/* Ignored and to be used in future */
+>> >
+>> > How do you know when reserved is used for something else in the future?  Is
+>> > reserved guaranteed (and checked by the code) to be 0?
+>> 
+>> For current set of pdsm requests ignore these reserved fields. However a
+>> future pdsm request can leverage these reserved fields. So papr_scm
+>> just bind the usage of these fields with the value of
+>> 'nd_cmd_pkg.nd_command' that indicates the pdsm request.
+>> 
+>> That being said checking if the reserved fields are set to 0 will be a
+>> good measure. Will add this check in next iteration.
+>
+> Exactly, if you don't check them now you will end up with an older libndctl
+> which passes in garbage and breaks future users...  Basically rendering the
+> reserved fields useless.
+I have addressed this in my new patch-series which adds checks for
+reserved fields to be '0'
+
+>
+>> 
+>> >
+>> >> +	__u16 payload_version;	/* In/Out: version of the payload */
+>> >
+>> > Why is payload_version after reserved?
+>> Want to place the payload version field just before the payload data so
+>> that it can be accessed with simple pointer arithmetic.
+>
+> I did not see that in the patch.  I thought you were using
+> nd_pdsm_cmd_pkg->payload_version?
+Thats right, but it just provided another simple way to retrive
+payload_version without resorting to 'container_of' macro. Anyways the
+version field is now gone hence 'payload' follows the reserved fields.
+
+>
+>> 
+>> >
+>> >> +	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
+>> >> +} __packed;
+>> >> +
+>> >> +/*
+>> >> + * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
+>> >> + * via 'nd_pdsm_cmd_pkg.hdr.nd_command' member of the ioctl struct
+>> >> + */
+>> >> +enum papr_pdsm {
+>> >> +	PAPR_PDSM_MIN = 0x0,
+>> >> +	PAPR_PDSM_MAX,
+>> >> +};
+>> >> +
+>> >> +/* Convert a libnvdimm nd_cmd_pkg to pdsm specific pkg */
+>> >> +static inline struct nd_pdsm_cmd_pkg *nd_to_pdsm_cmd_pkg(struct nd_cmd_pkg *cmd)
+>> >> +{
+>> >> +	return (struct nd_pdsm_cmd_pkg *) cmd;
+>> >> +}
+>> >> +
+>> >> +/* Return the payload pointer for a given pcmd */
+>> >> +static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
+>> >> +{
+>> >> +	if (pcmd->hdr.nd_size_in == 0 && pcmd->hdr.nd_size_out == 0)
+>> >> +		return NULL;
+>> >> +	else
+>> >> +		return (void *)(pcmd->payload);
+>> >> +}
+>> >> +
+>> >> +#endif /* _UAPI_ASM_POWERPC_PAPR_PDSM_H_ */
+>> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+>> >> index 149431594839..5e2237e7ec08 100644
+>> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>> >> @@ -15,13 +15,15 @@
+>> >>  #include <linux/seq_buf.h>
+>> >>  
+>> >>  #include <asm/plpar_wrappers.h>
+>> >> +#include <asm/papr_pdsm.h>
+>> >>  
+>> >>  #define BIND_ANY_ADDR (~0ul)
+>> >>  
+>> >>  #define PAPR_SCM_DIMM_CMD_MASK \
+>> >>  	((1ul << ND_CMD_GET_CONFIG_SIZE) | \
+>> >>  	 (1ul << ND_CMD_GET_CONFIG_DATA) | \
+>> >> -	 (1ul << ND_CMD_SET_CONFIG_DATA))
+>> >> +	 (1ul << ND_CMD_SET_CONFIG_DATA) | \
+>> >> +	 (1ul << ND_CMD_CALL))
+>> >>  
+>> >>  /* DIMM health bitmap bitmap indicators */
+>> >>  /* SCM device is unable to persist memory contents */
+>> >> @@ -350,16 +352,97 @@ static int papr_scm_meta_set(struct papr_scm_priv *p,
+>> >>  	return 0;
+>> >>  }
+>> >>  
+>> >> +/*
+>> >> + * Validate the inputs args to dimm-control function and return '0' if valid.
+>> >> + * This also does initial sanity validation to ND_CMD_CALL sub-command packages.
+>> >> + */
+>> >> +static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
+>> >> +		       unsigned int buf_len)
+>> >> +{
+>> >> +	unsigned long cmd_mask = PAPR_SCM_DIMM_CMD_MASK;
+>> >> +	struct nd_pdsm_cmd_pkg *pkg = nd_to_pdsm_cmd_pkg(buf);
+>> >> +	struct papr_scm_priv *p;
+>> >> +
+>> >> +	/* Only dimm-specific calls are supported atm */
+>> >> +	if (!nvdimm)
+>> >> +		return -EINVAL;
+>> >> +
+>> >> +	/* get the provider date from struct nvdimm */
+>> >
+>> > s/date/data
+>> Thanks for point this out. Will fix this in next iteration.
+>> 
+>> >
+>> >> +	p = nvdimm_provider_data(nvdimm);
+>> >> +
+>> >> +	if (!test_bit(cmd, &cmd_mask)) {
+>> >> +		dev_dbg(&p->pdev->dev, "Unsupported cmd=%u\n", cmd);
+>> >> +		return -EINVAL;
+>> >> +	} else if (cmd == ND_CMD_CALL) {
+>> >> +
+>> >> +		/* Verify the envelope package */
+>> >> +		if (!buf || buf_len < sizeof(struct nd_pdsm_cmd_pkg)) {
+>> >> +			dev_dbg(&p->pdev->dev, "Invalid pkg size=%u\n",
+>> >> +				buf_len);
+>> >> +			return -EINVAL;
+>> >> +		}
+>> >> +
+>> >> +		/* Verify that the PDSM family is valid */
+>> >> +		if (pkg->hdr.nd_family != NVDIMM_FAMILY_PAPR) {
+>> >> +			dev_dbg(&p->pdev->dev, "Invalid pkg family=0x%llx\n",
+>> >> +				pkg->hdr.nd_family);
+>> >> +			return -EINVAL;
+>> >> +
+>> >> +		}
+>> >> +
+>> >> +		/* We except a payload with all PDSM commands */
+>> >> +		if (pdsm_cmd_to_payload(pkg) == NULL) {
+>> >> +			dev_dbg(&p->pdev->dev,
+>> >> +				"Empty payload for sub-command=0x%llx\n",
+>> >> +				pkg->hdr.nd_command);
+>> >> +			return -EINVAL;
+>> >> +		}
+>> >> +	}
+>> >> +
+>> >> +	/* Command looks valid */
+>> >
+>> > I assume the first command to be implemented also checks the { nd_command,
+>> > payload_version, payload length } for correctness?
+>> Yes the pdsm service functions do check the payload_version and
+>> payload_length. Please see the papr_pdsm_health() that services the
+>> PAPR_PDSM_HEALTH pdsm in Patch-5
+>> 
+>
+> cool.
+>
+>> >
+>> >> +	return 0;
+>> >> +}
+>> >> +
+>> >> +static int papr_scm_service_pdsm(struct papr_scm_priv *p,
+>> >> +				struct nd_pdsm_cmd_pkg *call_pkg)
+>> >> +{
+>> >> +	/* unknown subcommands return error in packages */
+>> >> +	if (call_pkg->hdr.nd_command <= PAPR_PDSM_MIN ||
+>> >> +	    call_pkg->hdr.nd_command >= PAPR_PDSM_MAX) {
+>> >> +		dev_dbg(&p->pdev->dev, "Invalid PDSM request 0x%llx\n",
+>> >> +			call_pkg->hdr.nd_command);
+>> >> +		call_pkg->cmd_status = -EINVAL;
+>> >> +		return 0;
+>> >> +	}
+>> >> +
+>> >> +	/* Depending on the DSM command call appropriate service routine */
+>> >> +	switch (call_pkg->hdr.nd_command) {
+>> >> +	default:
+>> >> +		dev_dbg(&p->pdev->dev, "Unsupported PDSM request 0x%llx\n",
+>> >> +			call_pkg->hdr.nd_command);
+>> >> +		call_pkg->cmd_status = -ENOENT;
+>> >> +		return 0;
+>> >> +	}
+>> >> +}
+>> >> +
+>> >>  static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>> >>  			  struct nvdimm *nvdimm, unsigned int cmd, void *buf,
+>> >>  			  unsigned int buf_len, int *cmd_rc)
+>> >>  {
+>> >>  	struct nd_cmd_get_config_size *get_size_hdr;
+>> >>  	struct papr_scm_priv *p;
+>> >> +	struct nd_pdsm_cmd_pkg *call_pkg = NULL;
+>> >> +	int rc;
+>> >>  
+>> >> -	/* Only dimm-specific calls are supported atm */
+>> >> -	if (!nvdimm)
+>> >> -		return -EINVAL;
+>> >> +	/* Use a local variable in case cmd_rc pointer is NULL */
+>> >> +	if (cmd_rc == NULL)
+>> >> +		cmd_rc = &rc;
+>> >
+>> > Why is this needed?  AFAICT The caller of papr_scm_ndctl does not specify null
+>> > and you did not change it.
+>> This pointer is coming from outside the papr_scm code hence need to be
+>> defensive here. Also as per[1] cmd_rc is "translation of firmware status"
+>> and not every caller would need it hence making this pointer optional.
+>> 
+>> This is evident in acpi_nfit_blk_get_flags() where the 'nd_desc->ndctl'
+>> is called with 'cmd_rc == NULL'.
+>> 
+>> [1] https://lore.kernel.org/linux-nvdimm/CAPcyv4hE_FG0YZXJVA1G=CBq8b9e0K54jxk5Sq5UKU-dnWT2Kg@mail.gmail.com/
+>
+> Ah... Ok.  So this is a bug fix which needs to happen regardless of the status
+> of this patch...
+>
+>> 
+>> >
+>> >> +
+>> >> +	*cmd_rc = is_cmd_valid(nvdimm, cmd, buf, buf_len);
+>> >> +	if (*cmd_rc) {
+>> >> +		pr_debug("Invalid cmd=0x%x. Err=%d\n", cmd, *cmd_rc);
+>> >> +		return *cmd_rc;
+>> >> +	}
+>> >>  
+>> >>  	p = nvdimm_provider_data(nvdimm);
+>> >>  
+>> >> @@ -381,13 +464,19 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>> >>  		*cmd_rc = papr_scm_meta_set(p, buf);
+>
+> ... Because this will break here. even without this new code...  right?
+>
+> Lets get this fix in as a prelim-patch.
+Yes, I have moved the changes proposed in this hunk to a separate prelim
+patch in the v10 of the patch series.
+
+>
+>> >>  		break;
+>> >>  
+>> >> +	case ND_CMD_CALL:
+>> >> +		call_pkg = nd_to_pdsm_cmd_pkg(buf);
+>> >> +		*cmd_rc = papr_scm_service_pdsm(p, call_pkg);
+>> >> +		break;
+>> >> +
+>> >>  	default:
+>> >> -		return -EINVAL;
+>> >> +		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
+>> >> +		*cmd_rc = -EINVAL;
+>> >
+>> > Is this change related?  If there is a bug where there is a caller of
+>> > papr_scm_ndctl() with cmd_rc == NULL this should be a separate patch to fix
+>> > that issue.
+>> This simplifies a bit debugging of errors reported in
+>> papr_scm_ndctl() as it ensures that subsequest dev_dbg "Returned with
+>> cmd_rc" is always logged.
+>> 
+>> I think, this is a too small change to be carved out as an independent
+>> patch. Also this doesnt change the behaviour of the code except logging
+>> some more error info.
+>> 
+>> However, If you feel too strongly about it I will spin a separate patch
+>> in this patch series for this.
+[..]
+>
+> This can go in as part of a 'protect against cmd_rc == NULL'
+> preliminary patch.
+Yes, have coalesced this change with changes I reffered to in
+my previous comment into a single prelim patch.
+
+[..]
+>
+> I flagged this because at first I could not figure out what this had to do with
+> the ND_CMD_CALL...
+>
+> For reviewers you want to make your patches concise to what you are
+> fixing/adding...
+Sure. Will be more careful of this in future patches.
+
+>
+> Also, based on acpi_nfit_blk_get_flags() using cmd_rc == NULL it looks like we
+> have a bug which needs to get fixed regardless of the this patch.  And if that
+> bug exists in earlier kernels you will need a separate patch to backport as a
+> fix.
+>
+> So lets get that in first and separate...  :-D
+Sure, will send out a separate independent patch fixing the cmd_rc ==
+NULL issue in acpi_nfit_blk_get_flags addressing it to stable tree.
+
+>
+> Ira
+>
+>> 
+>> >
+>> > Ira
+>> >
+>> >>  	}
+>> >>  
+>> >>  	dev_dbg(&p->pdev->dev, "returned with cmd_rc = %d\n", *cmd_rc);
+>> >>  
+>> >> -	return 0;
+>> >> +	return *cmd_rc;
+>> >>  }
+>> >>  
+>> >>  static ssize_t flags_show(struct device *dev,
+>> >> diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
+>> >> index de5d90212409..0e09dc5cec19 100644
+>> >> --- a/include/uapi/linux/ndctl.h
+>> >> +++ b/include/uapi/linux/ndctl.h
+>> >> @@ -244,6 +244,7 @@ struct nd_cmd_pkg {
+>> >>  #define NVDIMM_FAMILY_HPE2 2
+>> >>  #define NVDIMM_FAMILY_MSFT 3
+>> >>  #define NVDIMM_FAMILY_HYPERV 4
+>> >> +#define NVDIMM_FAMILY_PAPR 5
+>> >>  
+>> >>  #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
+>> >>  					struct nd_cmd_pkg)
+>> >> -- 
+>> >> 2.26.2
+>> >> 
+>> 
+>> -- 
+>> Cheers
+>> ~ Vaibhav
+
+-- 
+Cheers
+~ Vaibhav
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
