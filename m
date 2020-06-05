@@ -2,51 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7FE1EFE97
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jun 2020 19:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCF41EFFD2
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jun 2020 20:19:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 710A51009F03B;
-	Fri,  5 Jun 2020 10:08:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4345B1009F03B;
+	Fri,  5 Jun 2020 11:14:30 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E879C1009F039
-	for <linux-nvdimm@lists.01.org>; Fri,  5 Jun 2020 10:08:01 -0700 (PDT)
-IronPort-SDR: 7kT/yc6stHJ6h8FGOkCONAtSzcq3wE17Xa5sB31ExUJlnEHZdSLqcYh5Kk1fCK/qCdhu1bkCrd
- 1J3/4loASowQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2020 10:13:13 -0700
-IronPort-SDR: 8dXeibKw9Oymx4zZCYxphg3R+QpK3j/MMW6EYOklYlz1iNt6dXs2V1i7rgC+IijYWiuL9QozSq
- vrfI0EMm/8Og==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,477,1583222400";
-   d="scan'208";a="273530919"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga006.jf.intel.com with ESMTP; 05 Jun 2020 10:13:13 -0700
-Date: Fri, 5 Jun 2020 10:13:13 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v10 4/6] powerpc/papr_scm: Improve error logging and
- handling papr_scm_ndctl()
-Message-ID: <20200605171313.GO1505637@iweiny-DESK2.sc.intel.com>
-References: <20200604234136.253703-1-vaibhav@linux.ibm.com>
- <20200604234136.253703-5-vaibhav@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 767961009F039
+	for <linux-nvdimm@lists.01.org>; Fri,  5 Jun 2020 11:14:28 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id e12so8198545eds.2
+        for <linux-nvdimm@lists.01.org>; Fri, 05 Jun 2020 11:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DqSUfhL+HpfxHMHLxeDxo+cffKJm8uC5qt8/bLSPpbQ=;
+        b=KFZS46GFTZ9Gy3Cg/ohafbBdin5UVGOHBKY0W2wI6384HxS9k1vLbbdkOtccGTBnfl
+         8XcGqVZeS/TWjJAU9xBTxX6LY+5e3X4A4jUvLcQ2fUqGlmj9zxKy89nhC7UsResG1jCn
+         qcYVtf6k/prKJ895tWtyIpNpncfHOSytxbTBzmcHYmUtmZ5VtKm5h7WitDT3/e4vO2wb
+         FeAk5ZwfXuLAHuSnbVvQTreK2q8TTD3kW2ol12V7p7CDK6LR5q9MgL+ZZM2BYHDuA3DN
+         SGWwD6HEw6x3yX57rz+veZOXIf31k/GhdrbzYfVn74/XVgE4Qnr1acJHTuaoW0SjZHH+
+         J/lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DqSUfhL+HpfxHMHLxeDxo+cffKJm8uC5qt8/bLSPpbQ=;
+        b=goD//+3HVXP11ZTX4/lCVlarA43YfzGgurmItI4FLAPV7ObHZ498gCgXdPl2D3CIvz
+         r1lA1LLZW1CwgkDJH6ajHEesq3sTPzW9PNSFTKdIkX/Vc28Nzi1E0UdULOkgjO+AqXEs
+         gmgz4GzfhMpVUrPFgH9j1I8CzjHlmgfPd3Bq663/9dVoga1EaaxRkGAaZjAtDZx81906
+         qK0P9+daTlZryaNSwz+fnpfDqjOMYkXvwZjQf97XzUnLpcSpZlu1DwjNsoReYxkSfaAk
+         fI7/o3/x4jPPoHJBICpZSnLHXC7SGUbrWvYbADk+xKmEoWr6m/HT9FsYRQJvyLCGg1Ip
+         LNhA==
+X-Gm-Message-State: AOAM53025ZWGVyP2U+ri7fxFSxpgKu9Rn5dxtxDdN2biLcT6RSK8gB4y
+	vV1e8zgbDBafFy2a8p4/luyqMASopJsolHNBGEvgsg==
+X-Google-Smtp-Source: ABdhPJwYKATWO9a3ADTUxQBAa8Nwr2+GQoHSj84HHGLL7MmG5YsI5pBuAWt+4WD3LOSfh0YCGx6dzCQDPaOgqo80aV8=
+X-Received: by 2002:aa7:d6c1:: with SMTP id x1mr6359975edr.154.1591381179201;
+ Fri, 05 Jun 2020 11:19:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200604234136.253703-5-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS
-X-Message-ID-Hash: WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS
-X-MailFrom: ira.weiny@intel.com
+References: <20200602101438.73929-1-vaibhav@linux.ibm.com> <20200602101438.73929-5-vaibhav@linux.ibm.com>
+ <BN6PR11MB413223B333153721405DFD91C6890@BN6PR11MB4132.namprd11.prod.outlook.com>
+ <87h7vrgpzx.fsf@linux.ibm.com> <BN6PR11MB4132FA66A84CBD798AADCEC1C6860@BN6PR11MB4132.namprd11.prod.outlook.com>
+ <873679h72g.fsf@linux.ibm.com>
+In-Reply-To: <873679h72g.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 5 Jun 2020 11:19:27 -0700
+Message-ID: <CAPcyv4jcWc6HOW5dK1hp0vATDxd_mo+eVK=xkYMPOQ7t1fCv-A@mail.gmail.com>
+Subject: Re: [RESEND PATCH v9 4/5] ndctl/papr_scm,uapi: Add support for PAPR
+ nvdimm specific methods
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Message-ID-Hash: AO5JB4GEPJM23OAD7PALD5INQKNVBAS2
+X-Message-ID-Hash: AO5JB4GEPJM23OAD7PALD5INQKNVBAS2
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
+CC: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AO5JB4GEPJM23OAD7PALD5INQKNVBAS2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,96 +71,70 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 05, 2020 at 05:11:34AM +0530, Vaibhav Jain wrote:
-> Since papr_scm_ndctl() can be called from outside papr_scm, its
-> exposed to the possibility of receiving NULL as value of 'cmd_rc'
-> argument. This patch updates papr_scm_ndctl() to protect against such
-> possibility by assigning it pointer to a local variable in case cmd_rc
-> == NULL.
-> 
-> Finally the patch also updates the 'default' clause of the switch-case
-> block removing a 'return' statement thereby ensuring that value of
-> 'cmd_rc' is always logged when papr_scm_ndctl() returns.
-> 
-> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
-> Changelog:
-> 
-> v9..v10
-> * New patch in the series
+On Fri, Jun 5, 2020 at 8:22 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+[..]
+> > Oh, why not define a maximal health payload with all the attributes
+> > you know about today, leave some room for future expansion, and then
+> > report a validity flag for each attribute? This is how the "intel"
+> > smart-health payload works. If they ever needed to extend the payload
+> > they would increase the size and add more validity flags. Old
+> > userspace never groks the new fields, new userspace knows to ask for
+> > and parse the larger payload.
+> >
+> > See the flags field in 'struct nd_intel_smart' (in ndctl) and the
+> > translation of those flags to ndctl generic attribute flags
+> > intel_cmd_smart_get_flags().
+> >
+> > In general I'd like ndctl to understand the superset of all health
+> > attributes across all vendors. For the truly vendor specific ones it
+> > would mean that the health flags with a specific "papr_scm" back-end
+> > just would never be set on an "intel" device. I.e. look at the "hpe"
+> > and "msft" health backends. They only set a subset of the valid flags
+> > that could be reported.
+>
+> Thanks, this sounds good. Infact papr_scm implementation in ndctl does
+> advertises support for only a subset of ND_SMART_* flags right now.
+>
+> Using 'flags' instead of 'version' was indeed discussed during
+> v7..v9. However re-looking at the 'msft' and 'hpe' implementations the
+> approach of maximal health payload tagged with a flags field looks more
+> intuitive and I would prefer implementing this scheme in this patch-set.
+>
+> The current set health data exchanged with between libndctl and
+> papr_scm via 'struct nd_papr_pdsm_health' (e.g various health status
+> bits , nvdimm arming status etc) are guaranteed to be always available
+> hence associating their availability with a flag wont be much useful as
+> the flag will be always set.
+>
+> However as you suggested, extending the 'struct nd_papr_pdsm_health' in
+> future to accommodate new attributes like 'life-remaining' can be done
+> via adding them to the end of the struct and setting a flag field to
+> indicate its presence.
+>
+> So I have the following proposal:
+> * Add a new '__u32 extension_flags' field at beginning of 'struct
+>   nd_papr_pdsm_health'
+> * Set the size of the struct to 184-bytes which is the maximum possible
+>   size for a pdsm payload.
+> * 'papr_scm' kernel driver will currently set 'extension_flag' to 0
+>   indicating no extension fields.
+>
+> * Future patch that adds support for 'life-remaining' add the new-field
+>   at the end of known fields in 'struct nd_papr_pdsm_health'.
+> * When provided to  papr_scm kernel module, if 'life-remaining' data is
+>   available its populated and corresponding flag set in
+>   'extension_flags' field indicating its presence.
+> * When received by libndctl papr_scm implementation its tests if the
+>   extension_flags have associated 'life-remaining' flag set and if yes
+>   then return ND_SMART_USED_VALID flag back from
+>   ndctl_cmd_smart_get_flags().
+>
+> Implementing first 3 items above in the current patchset should be
+> fairly trivial.
+>
+> Does that sounds reasonable ?
 
-Thanks for making this a separate patch it is easier to see what is going on
-here.
-
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 0c091622b15e..6512fe6a2874 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -355,11 +355,16 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  {
->  	struct nd_cmd_get_config_size *get_size_hdr;
->  	struct papr_scm_priv *p;
-> +	int rc;
->  
->  	/* Only dimm-specific calls are supported atm */
->  	if (!nvdimm)
->  		return -EINVAL;
->  
-> +	/* Use a local variable in case cmd_rc pointer is NULL */
-> +	if (!cmd_rc)
-> +		cmd_rc = &rc;
-> +
-
-This protects you from the NULL.  However...
-
->  	p = nvdimm_provider_data(nvdimm);
->  
->  	switch (cmd) {
-> @@ -381,12 +386,13 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  		break;
->  
->  	default:
-> -		return -EINVAL;
-> +		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
-> +		*cmd_rc = -EINVAL;
-
-... I think you are conflating rc and cmd_rc...
-
->  	}
->  
->  	dev_dbg(&p->pdev->dev, "returned with cmd_rc = %d\n", *cmd_rc);
->  
-> -	return 0;
-> +	return *cmd_rc;
-
-... this changes the behavior of the current commands.  Now if the underlying
-papr_scm_meta_[get|set]() fails you return that failure as rc rather than 0.
-
-Is that ok?
-
-Also 'logging cmd_rc' in the invalid cmd case does not seem quite right unless
-you really want rc to be cmd_rc.
-
-The architecture is designed to separate errors which occur in the kernel vs
-errors in the firmware/dimm.  Are they always the same?  The current code
-differentiates them.
-
-Ira
-
->  }
->  
->  static ssize_t flags_show(struct device *dev,
-> -- 
-> 2.26.2
-> 
+This sounds good to me.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
