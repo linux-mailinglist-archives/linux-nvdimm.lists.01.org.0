@@ -2,64 +2,51 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A961EFE83
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jun 2020 19:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7FE1EFE97
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  5 Jun 2020 19:13:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0D0171009F03B;
-	Fri,  5 Jun 2020 10:03:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 710A51009F03B;
+	Fri,  5 Jun 2020 10:08:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8D8B31009F039
-	for <linux-nvdimm@lists.01.org>; Fri,  5 Jun 2020 10:03:54 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id q13so8039957edi.3
-        for <linux-nvdimm@lists.01.org>; Fri, 05 Jun 2020 10:09:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nXYAuD6cJqilYclvO4FvsMZJybvzN9VYDs0VzjdhPnY=;
-        b=t5puf6jywvyNN+70hb28Pvg47DXUPXRfy9clfajsTCTEsz1DVvuvmucmrFXPN4Yera
-         iX5tmSkGaAyNZayciyT3GMyFrOCN4SMWL8M84IxZWnMlNodshGHe66dJPL3M3KK6I7au
-         +Gg13yxDpSJdJwDAO/u+oQ8sXaQeYhxw/MvP+CTILg91x4xdp1wBvSxfUYgpmnTt/Mh1
-         ptUOCyR+L/3/QbN0ianVVqfl1yyY1EzbmpTorznVSk6wXtS5PLZ7NKDsgw4KvfvqTugO
-         4eHoGho3ymydRboxbZbhxWUgmRgJ6CgGhcQB5t8qPVtxxju5siJRkecD5se6dBe/h2N6
-         0LAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nXYAuD6cJqilYclvO4FvsMZJybvzN9VYDs0VzjdhPnY=;
-        b=IsXZWXHEQufCEu14bpdI8j1GONRiXqOVEoMEsEuLe9pFVrVSozVjZaAo0LYl6qJK/W
-         WjMFYJaszbH24XV8MXvhkcqb/CEV4WcRKX81EVPLPSx50C5yZzY3SlvXc9jrWYDGRA7S
-         cFzltcnDgl0N/jpy5dwK+fYSXnW6pJG+kLiuwa0mItM3ro8+K2jT/RhrTH+nyeBxcM0y
-         n+9Mg/Udyixl/7otzQODE/h+SngHUVrQXJXBeEq7fxJ95wVI3UZJ5NGTASyqUfM7XPh0
-         LDoJT6HDgelXUmn1OtbZsLk7DjmyfZpuo/iQ4mf1Rt3u6MiqO8Ro3p2FCMp/XYMQ9SEA
-         hRpg==
-X-Gm-Message-State: AOAM533CumhEJBPP+MJL1bshBcQI/FxH7TMoWXyZw8xsIlntksVNZ/4+
-	S/Pz2xHy9OfGT0Mkv67AJOlw6mKu4nrovzW47uQqEA==
-X-Google-Smtp-Source: ABdhPJxATfr/IFgw85Nm/0I0I4vMJ3s9Mbj4YTfektxdqlqB/pT+k/tztb3pG7J2zznxMo8KQcFTv2Q6AnRteS+UOLs=
-X-Received: by 2002:aa7:c944:: with SMTP id h4mr10040096edt.383.1591376944978;
- Fri, 05 Jun 2020 10:09:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E879C1009F039
+	for <linux-nvdimm@lists.01.org>; Fri,  5 Jun 2020 10:08:01 -0700 (PDT)
+IronPort-SDR: 7kT/yc6stHJ6h8FGOkCONAtSzcq3wE17Xa5sB31ExUJlnEHZdSLqcYh5Kk1fCK/qCdhu1bkCrd
+ 1J3/4loASowQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2020 10:13:13 -0700
+IronPort-SDR: 8dXeibKw9Oymx4zZCYxphg3R+QpK3j/MMW6EYOklYlz1iNt6dXs2V1i7rgC+IijYWiuL9QozSq
+ vrfI0EMm/8Og==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,477,1583222400";
+   d="scan'208";a="273530919"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by orsmga006.jf.intel.com with ESMTP; 05 Jun 2020 10:13:13 -0700
+Date: Fri, 5 Jun 2020 10:13:13 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v10 4/6] powerpc/papr_scm: Improve error logging and
+ handling papr_scm_ndctl()
+Message-ID: <20200605171313.GO1505637@iweiny-DESK2.sc.intel.com>
+References: <20200604234136.253703-1-vaibhav@linux.ibm.com>
+ <20200604234136.253703-5-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2643462.teTRrieJB7@kreacher>
-In-Reply-To: <2643462.teTRrieJB7@kreacher>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 5 Jun 2020 10:08:53 -0700
-Message-ID: <CAPcyv4hWLKP7fdLhWLn8vxf5rJKvKyU0yLfDs0XMjW-9U9tM-g@mail.gmail.com>
-Subject: Re: [RFT][PATCH] ACPI: OSL: Use rwlock instead of RCU for memory management
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Message-ID-Hash: 25HI7BP3J4BFM6BY3GIT67LPF3JBB6AQ
-X-Message-ID-Hash: 25HI7BP3J4BFM6BY3GIT67LPF3JBB6AQ
-X-MailFrom: dan.j.williams@intel.com
+Content-Disposition: inline
+In-Reply-To: <20200604234136.253703-5-vaibhav@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS
+X-Message-ID-Hash: WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Rafael J Wysocki <rafael.j.wysocki@intel.com>, stable <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Erik Kaneda <erik.kaneda@intel.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/25HI7BP3J4BFM6BY3GIT67LPF3JBB6AQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WISBXAIIRMLKJFPRCT4HY5RJ4VKOXTOS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,59 +55,96 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 5, 2020 at 7:06 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
->
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Subject: [PATCH] ACPI: OSL: Use rwlock instead of RCU for memory management
->
-> The ACPI OS layer uses RCU to protect the list of ACPI memory
-> mappings from being walked while it is updated.  Among other
-> situations, that list can be walked in non-NMI interrupt context,
-> so using a sleeping lock to protect it is not an option.
->
-> However, performance issues related to the RCU usage in there
-> appear, as described by Dan Williams:
->
-> "Recently a performance problem was reported for a process invoking
-> a non-trival ASL program. The method call in this case ends up
-> repetitively triggering a call path like:
->
->     acpi_ex_store
->     acpi_ex_store_object_to_node
->     acpi_ex_write_data_to_field
->     acpi_ex_insert_into_field
->     acpi_ex_write_with_update_rule
->     acpi_ex_field_datum_io
->     acpi_ex_access_region
->     acpi_ev_address_space_dispatch
->     acpi_ex_system_memory_space_handler
->     acpi_os_map_cleanup.part.14
->     _synchronize_rcu_expedited.constprop.89
->     schedule
->
-> The end result of frequent synchronize_rcu_expedited() invocation is
-> tiny sub-millisecond spurts of execution where the scheduler freely
-> migrates this apparently sleepy task. The overhead of frequent
-> scheduler invocation multiplies the execution time by a factor
-> of 2-3X."
->
-> In order to avoid these issues, replace the RCU in the ACPI OS
-> layer by an rwlock.
->
-> That rwlock should not be frequently contended, so the performance
-> impact of it is not expected to be significant.
->
-> Reported-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+On Fri, Jun 05, 2020 at 05:11:34AM +0530, Vaibhav Jain wrote:
+> Since papr_scm_ndctl() can be called from outside papr_scm, its
+> exposed to the possibility of receiving NULL as value of 'cmd_rc'
+> argument. This patch updates papr_scm_ndctl() to protect against such
+> possibility by assigning it pointer to a local variable in case cmd_rc
+> == NULL.
+> 
+> Finally the patch also updates the 'default' clause of the switch-case
+> block removing a 'return' statement thereby ensuring that value of
+> 'cmd_rc' is always logged when papr_scm_ndctl() returns.
+> 
+> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > ---
->
-> Hi Dan,
->
-> This is a possible fix for the ACPI OSL RCU-related performance issues, but
-> can you please arrange for the testing of it on the affected systems?
+> Changelog:
+> 
+> v9..v10
+> * New patch in the series
 
-Ugh, is it really this simple? I did not realize the read-side is NMI
-safe. I'll take a look.
+Thanks for making this a separate patch it is easier to see what is going on
+here.
+
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0c091622b15e..6512fe6a2874 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -355,11 +355,16 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>  {
+>  	struct nd_cmd_get_config_size *get_size_hdr;
+>  	struct papr_scm_priv *p;
+> +	int rc;
+>  
+>  	/* Only dimm-specific calls are supported atm */
+>  	if (!nvdimm)
+>  		return -EINVAL;
+>  
+> +	/* Use a local variable in case cmd_rc pointer is NULL */
+> +	if (!cmd_rc)
+> +		cmd_rc = &rc;
+> +
+
+This protects you from the NULL.  However...
+
+>  	p = nvdimm_provider_data(nvdimm);
+>  
+>  	switch (cmd) {
+> @@ -381,12 +386,13 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>  		break;
+>  
+>  	default:
+> -		return -EINVAL;
+> +		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
+> +		*cmd_rc = -EINVAL;
+
+... I think you are conflating rc and cmd_rc...
+
+>  	}
+>  
+>  	dev_dbg(&p->pdev->dev, "returned with cmd_rc = %d\n", *cmd_rc);
+>  
+> -	return 0;
+> +	return *cmd_rc;
+
+... this changes the behavior of the current commands.  Now if the underlying
+papr_scm_meta_[get|set]() fails you return that failure as rc rather than 0.
+
+Is that ok?
+
+Also 'logging cmd_rc' in the invalid cmd case does not seem quite right unless
+you really want rc to be cmd_rc.
+
+The architecture is designed to separate errors which occur in the kernel vs
+errors in the firmware/dimm.  Are they always the same?  The current code
+differentiates them.
+
+Ira
+
+>  }
+>  
+>  static ssize_t flags_show(struct device *dev,
+> -- 
+> 2.26.2
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
