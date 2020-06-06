@@ -1,135 +1,98 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8254B1F0B7C
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Jun 2020 15:41:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5971F0C25
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Jun 2020 16:54:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 056B110106A09;
-	Sun,  7 Jun 2020 06:40:59 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=77.238.179.147; helo=sonic304-22.consmr.mail.ir2.yahoo.com; envelope-from=abdulsalam80044@gmail.com; receiver=<UNKNOWN> 
-Received: from sonic304-22.consmr.mail.ir2.yahoo.com (sonic304-22.consmr.mail.ir2.yahoo.com [77.238.179.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6821E10106A09;
+	Sun,  7 Jun 2020 07:54:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::b44; helo=mail-yb1-xb44.google.com; envelope-from=drowusu1@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D07A010106A08
-	for <linux-nvdimm@lists.01.org>; Sun,  7 Jun 2020 06:40:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591537252; bh=rL9Nereyf6z11xgF2Y4betqrYfTpmZ3zohYWpfFPbDg=; h=Date:From:Reply-To:Subject:References:From:Subject; b=HApO17FMNmTn9l5OuFYITmad9KxKVWxR2NZpHeG9jVPBZKJdPlCokDmwCn3QzXiwDsXvoSrog2h6/DiiPoUHBUw5bh/Zvw5nBglPVhyU74NV/HdrcjchW/qRe5ZfEjVbE8At1tmCpdgX+QL8IDUA3mCLfAT9sJFn0UXGebe3c5tU73x56mA9lk3fBZafZng6E6GQ2AkZygmFTKNqMr4rPEoqCNN7Y65OattSEog+bZ8SbIcYOxFA4ar8ZzF5pq6xgtDFaaNduIo5N/bctETfvZQiRn+gulbqwJ0gUV9ZSYQTQPhXs87v4ai4ACupCYnwE01h/gxrE1rr0h0Jj42v5w==
-X-YMail-OSG: 3YICkxYVM1lIwp1uNX8YgdRYxZk6sFx5lwUZQzfc587QNK7.UKk9ziyjCd5JsVb
- kqB8oRpHVm0bxjWb.ULjAig5b9HnCD1wAruaokfV4nbBZOVYkAi3rKhd2WQs_.0lPZDJwWOzQQC1
- lzWslHWEk5IC5L3Sly4Z_11mmnaX6qRPan1mVSh1nUbriZcZnED5.ciFz6i.u6lfAjgHnSYEUrE5
- ZKOdBgKJJBsT9HS9Rq97Jq6VheFjxMtSqLP8sWtw5Wi5TaF6Tf1CKNdCs1w60gkFWDMuqCmBP8j_
- hOx53vZ1JGctedbxml9kIeVvXfntv_AEWYM3WeSYH33DmkQ22OdzlmWOsTYYfmgMWnK1IPRYWLue
- 0gd_D9BGd3Kdogn32.KnfkLmqHmNNKhrEHOGFlOtmLO5PsaW_y.Dnvs5ZEiDH25w16VhmjpCg5ZN
- _7PoIXOn4VmMsHzMys2kyAOG64BpTUVMNFiq.OOcNuawkaokzlDOokqT4qv0zXwQuzUMKBg2hT7Q
- Fc8BMST5wOepsE7KP2lleWYqFGKDcgmcp1W.Je_KZA4QsYutzLXSBUZTVkJvVITvQHpZVM4ezDbz
- O9d6jvc1nsmkCZMmbclPVRu.dej8zhbxAcJSC06Lo.vS8QkZdK1ey1Q5jclcUjKS7nA6YPw7uL4R
- W.VxGu5._sba83t_Md8hw8UcWdtQJvhhVMEPJIrlZO6TGb7IZERZGtO0pCfLxOBesJBL4rtu3PaI
- 1491I1Xmw0es2ICWoSgnD1Y_4_lZIa5.7wzPK0Azl0erqEkiKZp2UO7Hb6P6ZOpmCDSgaYxz1VCl
- T.xZsQnNXxxK.usjaC2QZz7Q9nJTGAlk65HIRypbVMhcC9yG1jcF4_PZEuT7AseEb.N6O8k6Si5_
- q5ajw7G9Gvb4dGQm3AIiLEqMnKMKr_Rq2.hyeBJGZFTPZBMd3Ge_76ji7cFQqR3lcZCqparzpcwe
- ET1M1AzsKrzmgGua1RIj0siPjEMUqW1jjVO1VmB399MOPStIrJMVI1tSIm8d2kHzd2giCPfm4qUb
- jS1q8Qvw88cTK2ohPrEfSZqtIG.NqQb91V7f6zdgfXio.zZX7GR9l2q1hQTdDxBaUmpaO_WjynrF
- hQX5tNNLr8vbmS6mt32l.Wyq8Cx66PPI.wCvvP_5hE.dZNpPFqsQwtF_tb8mVgsOrUoOOoHy3ZLC
- E665Zu2dQiqLnoaU8uJFxBpGqp.cm7s4eFYY7s2JZ.gHjFTvjYvMNzw9o_EAUFJVw1hg1QJ9J8Eb
- qdYXlcbDTrQM3Ci5ndAecl2EU8Pbv.bIa04m7l7VVP7A71owInpx4V24WBk9XJiKoa.9dtuag
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Jun 2020 13:40:52 +0000
-Date: Sun, 7 Jun 2020 13:40:50 +0000 (UTC)
-From: "Mr. Abdul Salam" <abdulsalam80044@gmail.com>
-Message-ID: <1596530765.835056.1591537250208@mail.yahoo.com>
-Subject: With Due Respect,
+	by ml01.01.org (Postfix) with ESMTPS id 5893310106A08
+	for <linux-nvdimm@lists.01.org>; Sun,  7 Jun 2020 07:54:40 -0700 (PDT)
+Received: by mail-yb1-xb44.google.com with SMTP id k18so7725543ybm.13
+        for <linux-nvdimm@lists.01.org>; Sun, 07 Jun 2020 07:54:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=g+GyIWPUinLYaEGTONefJH7e8nINqtdgENtQyPDD1ZM=;
+        b=OwMnX71fhHzVvwhFXn7wrwap7fEGULUoFz38LnQs3tOaERtkYEayg0rzSJITPixxOl
+         8t+3SWveJjWAfMDFcOCrxoCT3wziYrjhUniXDJYGasdGz5Cp0Bc+TNQJGUgtyzjTayqW
+         Y7DVHkjRTTxCitpR/MKHf9KWyJSNjGccXoQzRk3MBTaST/s0hrPmCaVcSl9uMu8aKXKB
+         SzrZAVJG+nau+d+yxPFgg7sgqwkSRWV2NW8CVGNXBz3W1ClLOmLzpytl+V1UR5lRiSj0
+         sjbLkNRG7ADjc2gcUAU3C4N9H56kEHo2tBwH0cp1AKLm+17whI+IbWgEl7SoKox/7lQJ
+         ndMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=g+GyIWPUinLYaEGTONefJH7e8nINqtdgENtQyPDD1ZM=;
+        b=DLMW7tCg4myWoCzQfnhKwOMG5Z3ObfSAKTorsms7l3zlPo3jpVQnim8KwAU8l91+JS
+         /AeNqyJEa1kZ83N8B5PK5Jpm4cCosyxmoyF/Vqq9A2tteLa2OiAl+ct8hzrTxft+ZIkt
+         lB4WXSZIuFIRs9ZZ/eMNsxCwEmF/jj9lqjbcDe30aes+SMXY8HQeknud0I88qMKdXeOM
+         Gin+I0pb5nMGKjzdyA7WLTbX5ZfARFaofwE8AgGXzpj9JbabBBUSFatyZZ7rnMKb0OE/
+         MCgI83iu8GlOtmzVWk0xkQeWFAsjIYkG8mQA5epMnPYuTkf5dhQf5GqER3fkqYAu7FXY
+         BgBw==
+X-Gm-Message-State: AOAM530fPP2443VKT/ioZEe6gbul5OcU05SdJ/yz6EuwbWvC/tUIq1RA
+	1upFcuN5xgbk12iAaAqizt+oVRTODHtHb8x1HlY=
+X-Google-Smtp-Source: ABdhPJzETP9k4CXMG46QBhGiSFxmhCZ8dsRMv4XGEFZDsMf0bp/17UKQGGnF3LU1TcGaRWiJgDn3xPrVv7tF14o6rXA=
+X-Received: by 2002:a25:b747:: with SMTP id e7mr33955268ybm.269.1591541678706;
+ Sun, 07 Jun 2020 07:54:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <1596530765.835056.1591537250208.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16072 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:76.0) Gecko/20100101 Firefox/76.0
-Message-ID-Hash: YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF
-X-Message-ID-Hash: YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF
-X-MailFrom: abdulsalam80044@gmail.com
+From: 523024447 523024447 <drowusu1@gmail.com>
+Date: Sat, 6 Jun 2020 14:54:17 -0700
+Message-ID: <CAJ3kgektmtJEq8mMqzkwYHvtDWbBHa9dbpd9vj47D8iwbossJw@mail.gmail.com>
+Subject: Partnership Investment proposal In Your Country
+To: undisclosed-recipients:;
+Message-ID-Hash: PPICMXIPZB4Q7ASCOK4F3S6ENNL6HIDH
+X-Message-ID-Hash: PPICMXIPZB4Q7ASCOK4F3S6ENNL6HIDH
+X-MailFrom: drowusu1@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: as8912509@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PPICMXIPZB4Q7ASCOK4F3S6ENNL6HIDH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCk15IERlYXIgRnJpZW5kLA0KDQpCZWZvcmUgSSBpbnRyb2R1Y2UgbXlzZWxmLCBJIHdpc2gg
-dG8gaW5mb3JtIHlvdSB0aGF0IHRoaXMgbGV0dGVyIGlzIG5vdCBhIGhvYXggbWFpbCBhbmQgSSB1
-cmdlIHlvdSB0byB0cmVhdCBpdCBzZXJpb3VzLiBUaGlzIGxldHRlciBtdXN0IGNvbWUgdG8geW91
-IGFzIGEgYmlnIHN1cnByaXNlLCBidXQgSSBiZWxpZXZlIGl0IGlzIG9ubHkgYSBkYXkgdGhhdCBw
-ZW9wbGUgbWVldCBhbmQgYmVjb21lIGdyZWF0IGZyaWVuZHMgYW5kIGJ1c2luZXNzIHBhcnRuZXJz
-LiBQbGVhc2UgSSB3YW50IHlvdSB0byByZWFkIHRoaXMgbGV0dGVyIHZlcnkgY2FyZWZ1bGx5IGFu
-ZCBJIG11c3QgYXBvbG9naXplIGZvciBiYXJnaW5nIHRoaXMgbWVzc2FnZSBpbnRvIHlvdXIgbWFp
-bCBib3ggd2l0aG91dCBhbnkgZm9ybWFsIGludHJvZHVjdGlvbiBkdWUgdG8gdGhlIHVyZ2VuY3kg
-YW5kIGNvbmZpZGVudGlhbGl0eSBvZiB0aGlzIGJ1c2luZXNzIGFuZCBJIGtub3cgdGhhdCB0aGlz
-IG1lc3NhZ2Ugd2lsbCBjb21lIHRvIHlvdSBhcyBhIHN1cnByaXNlLiBQbGVhc2UgdGhpcyBpcyBu
-b3QgYSBqb2tlIGFuZCBJIHdpbGwgbm90IGxpa2UgeW91IHRvIGpva2Ugd2l0aCBpdCBvaywgd2l0
-aCBkdWUgcmVzcGVjdCB0byB5b3VyIHBlcnNvbiBhbmQgbXVjaCBzaW5jZXJpdHkgb2YgcHVycG9z
-ZSwgSSBtYWtlIHRoaXMgY29udGFjdCB3aXRoIHlvdSBhcyBJIGJlbGlldmUgdGhhdCB5b3UgY2Fu
-IGJlIG9mIGdyZWF0IGFzc2lzdGFuY2UgdG8gbWUuIE15IG5hbWUgaXMgTXIuIEFiZHVsIFNhbGFt
-LCBmcm9tIEJ1cmtpbmEgRmFzbywgV2VzdCBBZnJpY2EuIEkgd29yayBpbiBVbml0ZWQgQmFuayBm
-b3IgQWZyaWNhIChVQkEpIGFzIHRlbGV4IG1hbmFnZXIsIHBsZWFzZSBzZWUgdGhpcyBhcyBhIGNv
-bmZpZGVudGlhbCBtZXNzYWdlIGFuZCBkbyBub3QgcmV2ZWFsIGl0IHRvIGFub3RoZXIgcGVyc29u
-IGFuZCBsZXQgbWUga25vdyB3aGV0aGVyIHlvdSBjYW4gYmUgb2YgYXNzaXN0YW5jZSByZWdhcmRp
-bmcgbXkgcHJvcG9zYWwgYmVsb3cgYmVjYXVzZSBpdCBpcyB0b3Agc2VjcmV0Lg0KDQpJIGFtIGFi
-b3V0IHRvIHJldGlyZSBmcm9tIGFjdGl2ZSBCYW5raW5nIHNlcnZpY2UgdG8gc3RhcnQgYSBuZXcg
-bGlmZSBidXQgSSBhbSBza2VwdGljYWwgdG8gcmV2ZWFsIHRoaXMgcGFydGljdWxhciBzZWNyZXQg
-dG8gYSBzdHJhbmdlci4gWW91IG11c3QgYXNzdXJlIG1lIHRoYXQgZXZlcnl0aGluZyB3aWxsIGJl
-IGhhbmRsZWQgY29uZmlkZW50aWFsbHkgYmVjYXVzZSB3ZSBhcmUgbm90IGdvaW5nIHRvIHN1ZmZl
-ciBhZ2FpbiBpbiBsaWZlLiBJdCBoYXMgYmVlbiAxMCB5ZWFycyBub3cgdGhhdCBtb3N0IG9mIHRo
-ZSBncmVlZHkgQWZyaWNhbiBQb2xpdGljaWFucyB1c2VkIG91ciBiYW5rIHRvIGxhdW5kZXIgbW9u
-ZXkgb3ZlcnNlYXMgdGhyb3VnaCB0aGUgaGVscCBvZiB0aGVpciBQb2xpdGljYWwgYWR2aXNlcnMu
-IE1vc3Qgb2YgdGhlIGZ1bmRzIHdoaWNoIHRoZXkgdHJhbnNmZXJyZWQgb3V0IG9mIHRoZSBzaG9y
-ZXMgb2YgQWZyaWNhIHdlcmUgZ29sZCBhbmQgb2lsIG1vbmV5IHRoYXQgd2FzIHN1cHBvc2VkIHRv
-IGhhdmUgYmVlbiB1c2VkIHRvIGRldmVsb3AgdGhlIGNvbnRpbmVudC4gVGhlaXIgUG9saXRpY2Fs
-IGFkdmlzZXJzIGFsd2F5cyBpbmZsYXRlZCB0aGUgYW1vdW50cyBiZWZvcmUgdHJhbnNmZXJyaW5n
-IHRvIGZvcmVpZ24gYWNjb3VudHMsIHNvIEkgYWxzbyB1c2VkIHRoZSBvcHBvcnR1bml0eSB0byBk
-aXZlcnQgcGFydCBvZiB0aGUgZnVuZHMgaGVuY2UgSSBhbSBhd2FyZSB0aGF0IHRoZXJlIGlzIG5v
-IG9mZmljaWFsIHRyYWNlIG9mIGhvdyBtdWNoIHdhcyB0cmFuc2ZlcnJlZCBhcyBhbGwgdGhlIGFj
-Y291bnRzIHVzZWQgZm9yIHN1Y2ggdHJhbnNmZXJzIHdlcmUgYmVpbmcgY2xvc2VkIGFmdGVyIHRy
-YW5zZmVyLiBJIGFjdGVkIGFzIHRoZSBCYW5rIE9mZmljZXIgdG8gbW9zdCBvZiB0aGUgcG9saXRp
-Y2lhbnMgYW5kIHdoZW4gSSBkaXNjb3ZlcmVkIHRoYXQgdGhleSB3ZXJlIHVzaW5nIG1lIHRvIHN1
-Y2NlZWQgaW4gdGhlaXIgZ3JlZWR5IGFjdDsgSSBhbHNvIGNsZWFuZWQgc29tZSBvZiB0aGVpciBi
-YW5raW5nIHJlY29yZHMgZnJvbSB0aGUgQmFuayBmaWxlcyBhbmQgbm8gb25lIGNhcmVkIHRvIGFz
-ayBtZSBiZWNhdXNlIHRoZSBtb25leSB3YXMgdG9vIG11Y2ggZm9yIHRoZW0gdG8gY29udHJvbC4g
-VGhleSBsYXVuZGVyZWQgb3ZlciAkNWJpbGxpb24gRG9sbGFycyBkdXJpbmcgdGhlIHByb2Nlc3Mu
-DQoNCkJlZm9yZSBJIHNlbmQgdGhpcyBtZXNzYWdlIHRvIHlvdSwgSSBoYXZlIGFscmVhZHkgZGl2
-ZXJ0ZWQgKCQxMC41bWlsbGlvbiBEb2xsYXJzKSB0byBhbiBlc2Nyb3cgYWNjb3VudCBiZWxvbmdp
-bmcgdG8gbm8gb25lIGluIHRoZSBiYW5rLiBUaGUgYmFuayBpcyBhbnhpb3VzIG5vdyB0byBrbm93
-IHdobyB0aGUgYmVuZWZpY2lhcnkgdG8gdGhlIGZ1bmRzIGlzIGJlY2F1c2UgdGhleSBoYXZlIG1h
-ZGUgYSBsb3Qgb2YgcHJvZml0cyB3aXRoIHRoZSBmdW5kcy4gSXQgaXMgbW9yZSB0aGFuIEVpZ2h0
-IHllYXJzIG5vdyBhbmQgbW9zdCBvZiB0aGUgcG9saXRpY2lhbnMgYXJlIG5vIGxvbmdlciB1c2lu
-ZyBvdXIgYmFuayB0byB0cmFuc2ZlciBmdW5kcyBvdmVyc2Vhcy4gVGhlICgkMTAuNW1pbGxpb24g
-RG9sbGFycykgaGFzIGJlZW4gbGF5aW5nIHdhc3RlIGluIG91ciBiYW5rIGFuZCBJIGRvbuKAmXQg
-d2FudCB0byByZXRpcmUgZnJvbSB0aGUgYmFuayB3aXRob3V0IHRyYW5zZmVycmluZyB0aGUgZnVu
-ZHMgdG8gYSBmb3JlaWduIGFjY291bnQgdG8gZW5hYmxlIG1lIHNoYXJlIHRoZSBwcm9jZWVkcyB3
-aXRoIHRoZSByZWNlaXZlciAoYSBmb3JlaWduZXIpLiBUaGUgbW9uZXkgd2lsbCBiZSBzaGFyZWQg
-NjAlIGZvciBtZSBhbmQgNDAlIGZvciB5b3UuIFRoZXJlIGlzIG5vIG9uZSBjb21pbmcgdG8gYXNr
-IHlvdSBhYm91dCB0aGUgZnVuZHMgYmVjYXVzZSBJIHNlY3VyZWQgZXZlcnl0aGluZy4gSSBvbmx5
-IHdhbnQgeW91IHRvIGFzc2lzdCBtZSBieSBwcm92aWRpbmcgYSByZWxpYWJsZSBiYW5rIGFjY291
-bnQgd2hlcmUgdGhlIGZ1bmRzIGNhbiBiZSB0cmFuc2ZlcnJlZC4NCg0KWW91IGFyZSBub3QgdG8g
-ZmFjZSBhbnkgZGlmZmljdWx0aWVzIG9yIGxlZ2FsIGltcGxpY2F0aW9ucyBhcyBJIGFtIGdvaW5n
-IHRvIGhhbmRsZSB0aGUgdHJhbnNmZXIgcGVyc29uYWxseS4gSWYgeW91IGFyZSBjYXBhYmxlIG9m
-IHJlY2VpdmluZyB0aGUgZnVuZHMsIGRvIGxldCBtZSBrbm93IGltbWVkaWF0ZWx5IHRvIGVuYWJs
-ZSBtZSBnaXZlIHlvdSBhIGRldGFpbGVkIGluZm9ybWF0aW9uIG9uIHdoYXQgdG8gZG8uIEZvciBt
-ZSwgSSBoYXZlIG5vdCBzdG9sZW4gdGhlIG1vbmV5IGZyb20gYW55b25lIGJlY2F1c2UgdGhlIG90
-aGVyIHBlb3BsZSB0aGF0IHRvb2sgdGhlIHdob2xlIG1vbmV5IGRpZCBub3QgZmFjZSBhbnkgcHJv
-YmxlbXMuIFRoaXMgaXMgbXkgY2hhbmNlIHRvIGdyYWIgbXkgb3duIGxpZmUgb3Bwb3J0dW5pdHkg
-YnV0IHlvdSBtdXN0IGtlZXAgdGhlIGRldGFpbHMgb2YgdGhlIGZ1bmRzIHNlY3JldCB0byBhdm9p
-ZCBhbnkgbGVha2FnZXMgYXMgbm8gb25lIGluIHRoZSBiYW5rIGtub3dzIGFib3V0IG15IHBsYW5z
-LiBQbGVhc2UgZ2V0IGJhY2sgdG8gbWUgaWYgeW91IGFyZSBpbnRlcmVzdGVkIGFuZCBjYXBhYmxl
-IHRvIGhhbmRsZSB0aGlzIHByb2plY3QsIEkgc2hhbGwgaW50aW1hdGUgeW91IG9uIHdoYXQgdG8g
-ZG8gd2hlbiBJIGhlYXIgZnJvbSB5b3VyIGNvbmZpcm1hdGlvbiBhbmQgYWNjZXB0YW5jZS4gSWYg
-eW91IGFyZSBjYXBhYmxlIG9mIGJlaW5nIG15IHRydXN0ZWQgYXNzb2NpYXRlLCBkbyBkZWNsYXJl
-IHlvdXIgY29uc2VudCB0byBtZSBJIGFtIGxvb2tpbmcgZm9yd2FyZCB0byBoZWFyIGZyb20geW91
-IGltbWVkaWF0ZWx5IGZvciBmdXJ0aGVyIGluZm9ybWF0aW9uLg0KVGhhbmtzIHdpdGggbXkgYmVz
-dCByZWdhcmRzLg0KTXIuIEFiZHVsIFNhbGFtLA0KVGVsZXggTWFuYWdlcg0KVW5pdGVkIEJhbmsg
-Zm9yIEFmcmljYSAoVUJBKQ0KQnVya2luYSBGYXNvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
-bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
-LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+ Partnership Investment proposal In Your Country
+
+Good day.
+
+I'm Mrs. Alima Ali a wife to Late Mr Mohammed Ali a politician and
+Gold/Diamond Mining merchant my country republic of Sierra leone.I have a
+substantial capital honorably
+intend for jointly investment with you in your country as a partner with my
+son Michael Ali into a lucrative business of partnership for Real Estate
+Investment venture based
+on your advice and directive. The essence of this mail is to open up
+communication with you to enable us know each other as regards to my plans
+to invest my funds judiciously
+with you in your Country as my partnership.
+
+Finally,Please i will like you to meet with my representative in person
+first before we start this partnership business,Looking forward to hearing
+from you and in your reply
+urgently give me your phone/fax number and your private email for more
+details.
+
+
+Awaiting your urgent reply.
+
+Yours faithfully.
+
+
+Mrs. Alima Ali & Michael Ali (Son)
+Please Reply to my Private Email  (jt049705@gmail.com)
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
