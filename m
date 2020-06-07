@@ -1,334 +1,135 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CC21F0B50
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Jun 2020 15:14:55 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8254B1F0B7C
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  7 Jun 2020 15:41:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9294E100983D9;
-	Sun,  7 Jun 2020 06:14:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 056B110106A09;
+	Sun,  7 Jun 2020 06:40:59 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=77.238.179.147; helo=sonic304-22.consmr.mail.ir2.yahoo.com; envelope-from=abdulsalam80044@gmail.com; receiver=<UNKNOWN> 
+Received: from sonic304-22.consmr.mail.ir2.yahoo.com (sonic304-22.consmr.mail.ir2.yahoo.com [77.238.179.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 599B5100991A7
-	for <linux-nvdimm@lists.01.org>; Sun,  7 Jun 2020 06:14:51 -0700 (PDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 057D3QlV166080;
-	Sun, 7 Jun 2020 09:14:31 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31g5fb3h5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jun 2020 09:14:31 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 057D4opd173320;
-	Sun, 7 Jun 2020 09:14:31 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com [149.81.74.108])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31g5fb3h5g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jun 2020 09:14:30 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
-	by ppma05fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 057D9veO027673;
-	Sun, 7 Jun 2020 13:14:28 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
-	by ppma05fra.de.ibm.com with ESMTP id 31g2s7rw07-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jun 2020 13:14:28 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 057DEPVE51904620
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 7 Jun 2020 13:14:25 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9D5A4A4055;
-	Sun,  7 Jun 2020 13:14:25 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 39629A4040;
-	Sun,  7 Jun 2020 13:14:21 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.85.68.227])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Sun,  7 Jun 2020 13:14:20 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Sun, 07 Jun 2020 18:44:19 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v11 6/6] powerpc/papr_scm: Implement support for PAPR_PDSM_HEALTH
-Date: Sun,  7 Jun 2020 18:43:39 +0530
-Message-Id: <20200607131339.476036-7-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200607131339.476036-1-vaibhav@linux.ibm.com>
-References: <20200607131339.476036-1-vaibhav@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id D07A010106A08
+	for <linux-nvdimm@lists.01.org>; Sun,  7 Jun 2020 06:40:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1591537252; bh=rL9Nereyf6z11xgF2Y4betqrYfTpmZ3zohYWpfFPbDg=; h=Date:From:Reply-To:Subject:References:From:Subject; b=HApO17FMNmTn9l5OuFYITmad9KxKVWxR2NZpHeG9jVPBZKJdPlCokDmwCn3QzXiwDsXvoSrog2h6/DiiPoUHBUw5bh/Zvw5nBglPVhyU74NV/HdrcjchW/qRe5ZfEjVbE8At1tmCpdgX+QL8IDUA3mCLfAT9sJFn0UXGebe3c5tU73x56mA9lk3fBZafZng6E6GQ2AkZygmFTKNqMr4rPEoqCNN7Y65OattSEog+bZ8SbIcYOxFA4ar8ZzF5pq6xgtDFaaNduIo5N/bctETfvZQiRn+gulbqwJ0gUV9ZSYQTQPhXs87v4ai4ACupCYnwE01h/gxrE1rr0h0Jj42v5w==
+X-YMail-OSG: 3YICkxYVM1lIwp1uNX8YgdRYxZk6sFx5lwUZQzfc587QNK7.UKk9ziyjCd5JsVb
+ kqB8oRpHVm0bxjWb.ULjAig5b9HnCD1wAruaokfV4nbBZOVYkAi3rKhd2WQs_.0lPZDJwWOzQQC1
+ lzWslHWEk5IC5L3Sly4Z_11mmnaX6qRPan1mVSh1nUbriZcZnED5.ciFz6i.u6lfAjgHnSYEUrE5
+ ZKOdBgKJJBsT9HS9Rq97Jq6VheFjxMtSqLP8sWtw5Wi5TaF6Tf1CKNdCs1w60gkFWDMuqCmBP8j_
+ hOx53vZ1JGctedbxml9kIeVvXfntv_AEWYM3WeSYH33DmkQ22OdzlmWOsTYYfmgMWnK1IPRYWLue
+ 0gd_D9BGd3Kdogn32.KnfkLmqHmNNKhrEHOGFlOtmLO5PsaW_y.Dnvs5ZEiDH25w16VhmjpCg5ZN
+ _7PoIXOn4VmMsHzMys2kyAOG64BpTUVMNFiq.OOcNuawkaokzlDOokqT4qv0zXwQuzUMKBg2hT7Q
+ Fc8BMST5wOepsE7KP2lleWYqFGKDcgmcp1W.Je_KZA4QsYutzLXSBUZTVkJvVITvQHpZVM4ezDbz
+ O9d6jvc1nsmkCZMmbclPVRu.dej8zhbxAcJSC06Lo.vS8QkZdK1ey1Q5jclcUjKS7nA6YPw7uL4R
+ W.VxGu5._sba83t_Md8hw8UcWdtQJvhhVMEPJIrlZO6TGb7IZERZGtO0pCfLxOBesJBL4rtu3PaI
+ 1491I1Xmw0es2ICWoSgnD1Y_4_lZIa5.7wzPK0Azl0erqEkiKZp2UO7Hb6P6ZOpmCDSgaYxz1VCl
+ T.xZsQnNXxxK.usjaC2QZz7Q9nJTGAlk65HIRypbVMhcC9yG1jcF4_PZEuT7AseEb.N6O8k6Si5_
+ q5ajw7G9Gvb4dGQm3AIiLEqMnKMKr_Rq2.hyeBJGZFTPZBMd3Ge_76ji7cFQqR3lcZCqparzpcwe
+ ET1M1AzsKrzmgGua1RIj0siPjEMUqW1jjVO1VmB399MOPStIrJMVI1tSIm8d2kHzd2giCPfm4qUb
+ jS1q8Qvw88cTK2ohPrEfSZqtIG.NqQb91V7f6zdgfXio.zZX7GR9l2q1hQTdDxBaUmpaO_WjynrF
+ hQX5tNNLr8vbmS6mt32l.Wyq8Cx66PPI.wCvvP_5hE.dZNpPFqsQwtF_tb8mVgsOrUoOOoHy3ZLC
+ E665Zu2dQiqLnoaU8uJFxBpGqp.cm7s4eFYY7s2JZ.gHjFTvjYvMNzw9o_EAUFJVw1hg1QJ9J8Eb
+ qdYXlcbDTrQM3Ci5ndAecl2EU8Pbv.bIa04m7l7VVP7A71owInpx4V24WBk9XJiKoa.9dtuag
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ir2.yahoo.com with HTTP; Sun, 7 Jun 2020 13:40:52 +0000
+Date: Sun, 7 Jun 2020 13:40:50 +0000 (UTC)
+From: "Mr. Abdul Salam" <abdulsalam80044@gmail.com>
+Message-ID: <1596530765.835056.1591537250208@mail.yahoo.com>
+Subject: With Due Respect,
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-07_03:2020-06-04,2020-06-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- priorityscore=1501 mlxscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 cotscore=-2147483648
- bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006070100
-Message-ID-Hash: JUDQ43XEDWGJGVHK6OR2JV4LS6LJJ2T3
-X-Message-ID-Hash: JUDQ43XEDWGJGVHK6OR2JV4LS6LJJ2T3
-X-MailFrom: vaibhav@linux.ibm.com
+References: <1596530765.835056.1591537250208.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16072 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:76.0) Gecko/20100101 Firefox/76.0
+Message-ID-Hash: YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF
+X-Message-ID-Hash: YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF
+X-MailFrom: abdulsalam80044@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Steven Rostedt <rostedt@goodmis.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: as8912509@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JUDQ43XEDWGJGVHK6OR2JV4LS6LJJ2T3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YSNGVUTFE5R3FFAQ66E4ZYKBX65CDMRF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-This patch implements support for PDSM request 'PAPR_PDSM_HEALTH'
-that returns a newly introduced 'struct nd_papr_pdsm_health' instance
-containing dimm health information back to user space in response to
-ND_CMD_CALL. This functionality is implemented in newly introduced
-papr_pdsm_health() that queries the nvdimm health information and
-then copies this information to the package payload whose layout is
-defined by 'struct nd_papr_pdsm_health'.
-
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Changelog:
-
-v10..v11:
-* Changed the definition of 'struct nd_papr_pdsm_health' to a maximal
-  struct 184 bytes in size [ Dan Williams ]
-* Added new field 'extension_flags' to 'struct nd_papr_pdsm_health'
-  [ Dan Williams ]
-* Updated papr_pdsm_health() to set field 'extension_flags' to 0.
-* Introduced a define ND_PDSM_PAYLOAD_MAX_SIZE that indicates the
-  maximum size of a payload.
-* Fixed a suspicious conversion from u64 to u8 in papr_pdsm_health
-  that was preventing correct initialization of 'struct
-  nd_papr_pdsm_health'. [ Ira ]
-
-v9..v10:
-* Removed code in papr_pdsm_health that performed validation on pdsm
-  payload version and corrosponding struct and defines used for
-  validation of payload version.
-* Dropped usage of struct papr_pdsm_health in 'struct
-  papr_scm_priv'. Instead papr_psdm_health() now uses
-  'papr_scm_priv.health_bitmap' to populate the pdsm payload.
-* Above change also fixes the problem where this patch was removing
-  the code that was previously introduced in this patch-series.
-  [ Ira ]
-* Introduced a new def ND_PDSM_ENVELOPE_HDR_SIZE that indicates the
-  space allocated to 'struct nd_pdsm_cmd_pkg' fields except 'struct
-  nd_cmd_pkg'. This def is useful in validating payload sizes.
-* Reworked papr_pdsm_health() to enforce a specific payload size for
-  'PAPR_PDSM_HEALTH' pdsm request.
-
-Resend:
-* Added ack from Aneesh.
-
-v8..v9:
-* s/PAPR_SCM_PDSM_HEALTH/PAPR_PDSM_HEALTH/g  [ Dan , Aneesh ]
-* s/PAPR_SCM_PSDM_DIMM_*/PAPR_PDSM_DIMM_*/g
-* Renamed papr_scm_get_health() to papr_psdm_health()
-* Updated patch description to replace papr-scm dimm with nvdimm.
-
-v7..v8:
-* None
-
-Resend:
-* None
-
-v6..v7:
-* Updated flags_show() to use seq_buf_printf(). [Mpe]
-* Updated papr_scm_get_health() to use newly introduced
-  __drc_pmem_query_health() bypassing the cache [Mpe].
-
-v5..v6:
-* Added attribute '__packed' to 'struct nd_papr_pdsm_health_v1' to
-  gaurd against possibility of different compilers adding different
-  paddings to the struct [ Dan Williams ]
-
-* Updated 'struct nd_papr_pdsm_health_v1' to use __u8 instead of
-  'bool' and also updated drc_pmem_query_health() to take this into
-  account. [ Dan Williams ]
-
-v4..v5:
-* None
-
-v3..v4:
-* Call the DSM_PAPR_SCM_HEALTH service function from
-  papr_scm_service_dsm() instead of papr_scm_ndctl(). [Aneesh]
-
-v2..v3:
-* Updated struct nd_papr_scm_dimm_health_stat_v1 to use '__xx' types
-  as its exported to the userspace [Aneesh]
-* Changed the constants DSM_PAPR_SCM_DIMM_XX indicating dimm health
-  from enum to #defines [Aneesh]
-
-v1..v2:
-* New patch in the series
----
- arch/powerpc/include/uapi/asm/papr_pdsm.h | 43 ++++++++++++++
- arch/powerpc/platforms/pseries/papr_scm.c | 71 +++++++++++++++++++++++
- 2 files changed, 114 insertions(+)
-
-diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-index df2447455cfe..12c7aa5ee8bf 100644
---- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
-+++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-@@ -72,13 +72,56 @@ struct nd_pdsm_cmd_pkg {
- 	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
- } __packed;
- 
-+/* Calculate size used by the pdsm header fields minus 'struct nd_cmd_pkg' */
-+#define ND_PDSM_HDR_SIZE \
-+	(sizeof(struct nd_pdsm_cmd_pkg) - sizeof(struct nd_cmd_pkg))
-+
-+/* Max payload size that we can handle */
-+#define ND_PDSM_PAYLOAD_MAX_SIZE 184
-+
- /*
-  * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
-  * via 'nd_pdsm_cmd_pkg.hdr.nd_command' member of the ioctl struct
-  */
- enum papr_pdsm {
- 	PAPR_PDSM_MIN = 0x0,
-+	PAPR_PDSM_HEALTH,
- 	PAPR_PDSM_MAX,
- };
- 
-+/* Various nvdimm health indicators */
-+#define PAPR_PDSM_DIMM_HEALTHY       0
-+#define PAPR_PDSM_DIMM_UNHEALTHY     1
-+#define PAPR_PDSM_DIMM_CRITICAL      2
-+#define PAPR_PDSM_DIMM_FATAL         3
-+
-+/*
-+ * Struct exchanged between kernel & ndctl in for PAPR_PDSM_HEALTH
-+ * Various flags indicate the health status of the dimm.
-+ *
-+ * extension_flags	: Any extension fields present in the struct.
-+ * dimm_unarmed		: Dimm not armed. So contents wont persist.
-+ * dimm_bad_shutdown	: Previous shutdown did not persist contents.
-+ * dimm_bad_restore	: Contents from previous shutdown werent restored.
-+ * dimm_scrubbed	: Contents of the dimm have been scrubbed.
-+ * dimm_locked		: Contents of the dimm cant be modified until CEC reboot
-+ * dimm_encrypted	: Contents of dimm are encrypted.
-+ * dimm_health		: Dimm health indicator. One of PAPR_PDSM_DIMM_XXXX
-+ */
-+struct nd_papr_pdsm_health {
-+	union {
-+		struct {
-+			__u32 extension_flags;
-+			__u8 dimm_unarmed;
-+			__u8 dimm_bad_shutdown;
-+			__u8 dimm_bad_restore;
-+			__u8 dimm_scrubbed;
-+			__u8 dimm_locked;
-+			__u8 dimm_encrypted;
-+			__u16 dimm_health;
-+		};
-+		__u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
-+	};
-+} __packed;
-+
- #endif /* _UAPI_ASM_POWERPC_PAPR_PDSM_H_ */
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 167fcf0e249d..047ca6bd26a9 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -436,6 +436,73 @@ static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
- 	return 0;
- }
- 
-+/* Fetch the DIMM health info and populate it in provided package. */
-+static int papr_pdsm_health(struct papr_scm_priv *p,
-+			    struct nd_pdsm_cmd_pkg *pkg)
-+{
-+	int rc;
-+	struct nd_papr_pdsm_health health = { 0 };
-+	u16 copysize = sizeof(struct nd_papr_pdsm_health);
-+	u16 payload_size = pkg->hdr.nd_size_out - ND_PDSM_HDR_SIZE;
-+
-+	/* Ensure correct payload size that can hold struct nd_papr_pdsm_health */
-+	if (payload_size != copysize) {
-+		dev_dbg(&p->pdev->dev,
-+			"Unexpected payload-size (%u). Expected (%u)",
-+			pkg->hdr.nd_size_out, copysize);
-+		rc = -ENOSPC;
-+		goto out;
-+	}
-+
-+	/* Ensure dimm health mutex is taken preventing concurrent access */
-+	rc = mutex_lock_interruptible(&p->health_mutex);
-+	if (rc)
-+		goto out;
-+
-+	/* Always fetch upto date dimm health data ignoring cached values */
-+	rc = __drc_pmem_query_health(p);
-+	if (rc) {
-+		mutex_unlock(&p->health_mutex);
-+		goto out;
-+	}
-+
-+	/* update health struct with various flags derived from health bitmap */
-+	health = (struct nd_papr_pdsm_health) {
-+		.extension_flags = 0,
-+		.dimm_unarmed = !!(p->health_bitmap & PAPR_PMEM_UNARMED_MASK),
-+		.dimm_bad_shutdown = !!(p->health_bitmap & PAPR_PMEM_BAD_SHUTDOWN_MASK),
-+		.dimm_bad_restore = !!(p->health_bitmap & PAPR_PMEM_BAD_RESTORE_MASK),
-+		.dimm_encrypted = !!(p->health_bitmap & PAPR_PMEM_ENCRYPTED),
-+		.dimm_locked = !!(p->health_bitmap & PAPR_PMEM_SCRUBBED_AND_LOCKED),
-+		.dimm_scrubbed = !!(p->health_bitmap & PAPR_PMEM_SCRUBBED_AND_LOCKED),
-+		.dimm_health = PAPR_PDSM_DIMM_HEALTHY,
-+	};
-+
-+	/* Update field dimm_health based on health_bitmap flags */
-+	if (p->health_bitmap & PAPR_PMEM_HEALTH_FATAL)
-+		health.dimm_health = PAPR_PDSM_DIMM_FATAL;
-+	else if (p->health_bitmap & PAPR_PMEM_HEALTH_CRITICAL)
-+		health.dimm_health = PAPR_PDSM_DIMM_CRITICAL;
-+	else if (p->health_bitmap & PAPR_PMEM_HEALTH_UNHEALTHY)
-+		health.dimm_health = PAPR_PDSM_DIMM_UNHEALTHY;
-+
-+	/* struct populated hence can release the mutex now */
-+	mutex_unlock(&p->health_mutex);
-+
-+	dev_dbg(&p->pdev->dev, "Copying payload size=%u\n", copysize);
-+
-+	/* Copy the health struct to the payload */
-+	memcpy(pdsm_cmd_to_payload(pkg), &health, copysize);
-+
-+	/* Update fw size including size of struct nd_pdsm_cmd_pkg fields */
-+	pkg->hdr.nd_fw_size = copysize + ND_PDSM_HDR_SIZE;
-+
-+out:
-+	dev_dbg(&p->pdev->dev, "completion code = %d\n", rc);
-+
-+	return rc;
-+}
-+
- /*
-  * For a given pdsm request call an appropriate service function.
-  * Returns errors if any while handling the pdsm command package.
-@@ -449,6 +516,10 @@ static int papr_scm_service_pdsm(struct papr_scm_priv *p,
- 
- 	/* Call pdsm service function */
- 	switch (pdsm) {
-+	case PAPR_PDSM_HEALTH:
-+		pkg->cmd_status = papr_pdsm_health(p, pkg);
-+		break;
-+
- 	default:
- 		dev_dbg(&p->pdev->dev, "PDSM[0x%x]: Unsupported PDSM request\n",
- 			pdsm);
--- 
-2.26.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCk15IERlYXIgRnJpZW5kLA0KDQpCZWZvcmUgSSBpbnRyb2R1Y2UgbXlzZWxmLCBJIHdpc2gg
+dG8gaW5mb3JtIHlvdSB0aGF0IHRoaXMgbGV0dGVyIGlzIG5vdCBhIGhvYXggbWFpbCBhbmQgSSB1
+cmdlIHlvdSB0byB0cmVhdCBpdCBzZXJpb3VzLiBUaGlzIGxldHRlciBtdXN0IGNvbWUgdG8geW91
+IGFzIGEgYmlnIHN1cnByaXNlLCBidXQgSSBiZWxpZXZlIGl0IGlzIG9ubHkgYSBkYXkgdGhhdCBw
+ZW9wbGUgbWVldCBhbmQgYmVjb21lIGdyZWF0IGZyaWVuZHMgYW5kIGJ1c2luZXNzIHBhcnRuZXJz
+LiBQbGVhc2UgSSB3YW50IHlvdSB0byByZWFkIHRoaXMgbGV0dGVyIHZlcnkgY2FyZWZ1bGx5IGFu
+ZCBJIG11c3QgYXBvbG9naXplIGZvciBiYXJnaW5nIHRoaXMgbWVzc2FnZSBpbnRvIHlvdXIgbWFp
+bCBib3ggd2l0aG91dCBhbnkgZm9ybWFsIGludHJvZHVjdGlvbiBkdWUgdG8gdGhlIHVyZ2VuY3kg
+YW5kIGNvbmZpZGVudGlhbGl0eSBvZiB0aGlzIGJ1c2luZXNzIGFuZCBJIGtub3cgdGhhdCB0aGlz
+IG1lc3NhZ2Ugd2lsbCBjb21lIHRvIHlvdSBhcyBhIHN1cnByaXNlLiBQbGVhc2UgdGhpcyBpcyBu
+b3QgYSBqb2tlIGFuZCBJIHdpbGwgbm90IGxpa2UgeW91IHRvIGpva2Ugd2l0aCBpdCBvaywgd2l0
+aCBkdWUgcmVzcGVjdCB0byB5b3VyIHBlcnNvbiBhbmQgbXVjaCBzaW5jZXJpdHkgb2YgcHVycG9z
+ZSwgSSBtYWtlIHRoaXMgY29udGFjdCB3aXRoIHlvdSBhcyBJIGJlbGlldmUgdGhhdCB5b3UgY2Fu
+IGJlIG9mIGdyZWF0IGFzc2lzdGFuY2UgdG8gbWUuIE15IG5hbWUgaXMgTXIuIEFiZHVsIFNhbGFt
+LCBmcm9tIEJ1cmtpbmEgRmFzbywgV2VzdCBBZnJpY2EuIEkgd29yayBpbiBVbml0ZWQgQmFuayBm
+b3IgQWZyaWNhIChVQkEpIGFzIHRlbGV4IG1hbmFnZXIsIHBsZWFzZSBzZWUgdGhpcyBhcyBhIGNv
+bmZpZGVudGlhbCBtZXNzYWdlIGFuZCBkbyBub3QgcmV2ZWFsIGl0IHRvIGFub3RoZXIgcGVyc29u
+IGFuZCBsZXQgbWUga25vdyB3aGV0aGVyIHlvdSBjYW4gYmUgb2YgYXNzaXN0YW5jZSByZWdhcmRp
+bmcgbXkgcHJvcG9zYWwgYmVsb3cgYmVjYXVzZSBpdCBpcyB0b3Agc2VjcmV0Lg0KDQpJIGFtIGFi
+b3V0IHRvIHJldGlyZSBmcm9tIGFjdGl2ZSBCYW5raW5nIHNlcnZpY2UgdG8gc3RhcnQgYSBuZXcg
+bGlmZSBidXQgSSBhbSBza2VwdGljYWwgdG8gcmV2ZWFsIHRoaXMgcGFydGljdWxhciBzZWNyZXQg
+dG8gYSBzdHJhbmdlci4gWW91IG11c3QgYXNzdXJlIG1lIHRoYXQgZXZlcnl0aGluZyB3aWxsIGJl
+IGhhbmRsZWQgY29uZmlkZW50aWFsbHkgYmVjYXVzZSB3ZSBhcmUgbm90IGdvaW5nIHRvIHN1ZmZl
+ciBhZ2FpbiBpbiBsaWZlLiBJdCBoYXMgYmVlbiAxMCB5ZWFycyBub3cgdGhhdCBtb3N0IG9mIHRo
+ZSBncmVlZHkgQWZyaWNhbiBQb2xpdGljaWFucyB1c2VkIG91ciBiYW5rIHRvIGxhdW5kZXIgbW9u
+ZXkgb3ZlcnNlYXMgdGhyb3VnaCB0aGUgaGVscCBvZiB0aGVpciBQb2xpdGljYWwgYWR2aXNlcnMu
+IE1vc3Qgb2YgdGhlIGZ1bmRzIHdoaWNoIHRoZXkgdHJhbnNmZXJyZWQgb3V0IG9mIHRoZSBzaG9y
+ZXMgb2YgQWZyaWNhIHdlcmUgZ29sZCBhbmQgb2lsIG1vbmV5IHRoYXQgd2FzIHN1cHBvc2VkIHRv
+IGhhdmUgYmVlbiB1c2VkIHRvIGRldmVsb3AgdGhlIGNvbnRpbmVudC4gVGhlaXIgUG9saXRpY2Fs
+IGFkdmlzZXJzIGFsd2F5cyBpbmZsYXRlZCB0aGUgYW1vdW50cyBiZWZvcmUgdHJhbnNmZXJyaW5n
+IHRvIGZvcmVpZ24gYWNjb3VudHMsIHNvIEkgYWxzbyB1c2VkIHRoZSBvcHBvcnR1bml0eSB0byBk
+aXZlcnQgcGFydCBvZiB0aGUgZnVuZHMgaGVuY2UgSSBhbSBhd2FyZSB0aGF0IHRoZXJlIGlzIG5v
+IG9mZmljaWFsIHRyYWNlIG9mIGhvdyBtdWNoIHdhcyB0cmFuc2ZlcnJlZCBhcyBhbGwgdGhlIGFj
+Y291bnRzIHVzZWQgZm9yIHN1Y2ggdHJhbnNmZXJzIHdlcmUgYmVpbmcgY2xvc2VkIGFmdGVyIHRy
+YW5zZmVyLiBJIGFjdGVkIGFzIHRoZSBCYW5rIE9mZmljZXIgdG8gbW9zdCBvZiB0aGUgcG9saXRp
+Y2lhbnMgYW5kIHdoZW4gSSBkaXNjb3ZlcmVkIHRoYXQgdGhleSB3ZXJlIHVzaW5nIG1lIHRvIHN1
+Y2NlZWQgaW4gdGhlaXIgZ3JlZWR5IGFjdDsgSSBhbHNvIGNsZWFuZWQgc29tZSBvZiB0aGVpciBi
+YW5raW5nIHJlY29yZHMgZnJvbSB0aGUgQmFuayBmaWxlcyBhbmQgbm8gb25lIGNhcmVkIHRvIGFz
+ayBtZSBiZWNhdXNlIHRoZSBtb25leSB3YXMgdG9vIG11Y2ggZm9yIHRoZW0gdG8gY29udHJvbC4g
+VGhleSBsYXVuZGVyZWQgb3ZlciAkNWJpbGxpb24gRG9sbGFycyBkdXJpbmcgdGhlIHByb2Nlc3Mu
+DQoNCkJlZm9yZSBJIHNlbmQgdGhpcyBtZXNzYWdlIHRvIHlvdSwgSSBoYXZlIGFscmVhZHkgZGl2
+ZXJ0ZWQgKCQxMC41bWlsbGlvbiBEb2xsYXJzKSB0byBhbiBlc2Nyb3cgYWNjb3VudCBiZWxvbmdp
+bmcgdG8gbm8gb25lIGluIHRoZSBiYW5rLiBUaGUgYmFuayBpcyBhbnhpb3VzIG5vdyB0byBrbm93
+IHdobyB0aGUgYmVuZWZpY2lhcnkgdG8gdGhlIGZ1bmRzIGlzIGJlY2F1c2UgdGhleSBoYXZlIG1h
+ZGUgYSBsb3Qgb2YgcHJvZml0cyB3aXRoIHRoZSBmdW5kcy4gSXQgaXMgbW9yZSB0aGFuIEVpZ2h0
+IHllYXJzIG5vdyBhbmQgbW9zdCBvZiB0aGUgcG9saXRpY2lhbnMgYXJlIG5vIGxvbmdlciB1c2lu
+ZyBvdXIgYmFuayB0byB0cmFuc2ZlciBmdW5kcyBvdmVyc2Vhcy4gVGhlICgkMTAuNW1pbGxpb24g
+RG9sbGFycykgaGFzIGJlZW4gbGF5aW5nIHdhc3RlIGluIG91ciBiYW5rIGFuZCBJIGRvbuKAmXQg
+d2FudCB0byByZXRpcmUgZnJvbSB0aGUgYmFuayB3aXRob3V0IHRyYW5zZmVycmluZyB0aGUgZnVu
+ZHMgdG8gYSBmb3JlaWduIGFjY291bnQgdG8gZW5hYmxlIG1lIHNoYXJlIHRoZSBwcm9jZWVkcyB3
+aXRoIHRoZSByZWNlaXZlciAoYSBmb3JlaWduZXIpLiBUaGUgbW9uZXkgd2lsbCBiZSBzaGFyZWQg
+NjAlIGZvciBtZSBhbmQgNDAlIGZvciB5b3UuIFRoZXJlIGlzIG5vIG9uZSBjb21pbmcgdG8gYXNr
+IHlvdSBhYm91dCB0aGUgZnVuZHMgYmVjYXVzZSBJIHNlY3VyZWQgZXZlcnl0aGluZy4gSSBvbmx5
+IHdhbnQgeW91IHRvIGFzc2lzdCBtZSBieSBwcm92aWRpbmcgYSByZWxpYWJsZSBiYW5rIGFjY291
+bnQgd2hlcmUgdGhlIGZ1bmRzIGNhbiBiZSB0cmFuc2ZlcnJlZC4NCg0KWW91IGFyZSBub3QgdG8g
+ZmFjZSBhbnkgZGlmZmljdWx0aWVzIG9yIGxlZ2FsIGltcGxpY2F0aW9ucyBhcyBJIGFtIGdvaW5n
+IHRvIGhhbmRsZSB0aGUgdHJhbnNmZXIgcGVyc29uYWxseS4gSWYgeW91IGFyZSBjYXBhYmxlIG9m
+IHJlY2VpdmluZyB0aGUgZnVuZHMsIGRvIGxldCBtZSBrbm93IGltbWVkaWF0ZWx5IHRvIGVuYWJs
+ZSBtZSBnaXZlIHlvdSBhIGRldGFpbGVkIGluZm9ybWF0aW9uIG9uIHdoYXQgdG8gZG8uIEZvciBt
+ZSwgSSBoYXZlIG5vdCBzdG9sZW4gdGhlIG1vbmV5IGZyb20gYW55b25lIGJlY2F1c2UgdGhlIG90
+aGVyIHBlb3BsZSB0aGF0IHRvb2sgdGhlIHdob2xlIG1vbmV5IGRpZCBub3QgZmFjZSBhbnkgcHJv
+YmxlbXMuIFRoaXMgaXMgbXkgY2hhbmNlIHRvIGdyYWIgbXkgb3duIGxpZmUgb3Bwb3J0dW5pdHkg
+YnV0IHlvdSBtdXN0IGtlZXAgdGhlIGRldGFpbHMgb2YgdGhlIGZ1bmRzIHNlY3JldCB0byBhdm9p
+ZCBhbnkgbGVha2FnZXMgYXMgbm8gb25lIGluIHRoZSBiYW5rIGtub3dzIGFib3V0IG15IHBsYW5z
+LiBQbGVhc2UgZ2V0IGJhY2sgdG8gbWUgaWYgeW91IGFyZSBpbnRlcmVzdGVkIGFuZCBjYXBhYmxl
+IHRvIGhhbmRsZSB0aGlzIHByb2plY3QsIEkgc2hhbGwgaW50aW1hdGUgeW91IG9uIHdoYXQgdG8g
+ZG8gd2hlbiBJIGhlYXIgZnJvbSB5b3VyIGNvbmZpcm1hdGlvbiBhbmQgYWNjZXB0YW5jZS4gSWYg
+eW91IGFyZSBjYXBhYmxlIG9mIGJlaW5nIG15IHRydXN0ZWQgYXNzb2NpYXRlLCBkbyBkZWNsYXJl
+IHlvdXIgY29uc2VudCB0byBtZSBJIGFtIGxvb2tpbmcgZm9yd2FyZCB0byBoZWFyIGZyb20geW91
+IGltbWVkaWF0ZWx5IGZvciBmdXJ0aGVyIGluZm9ybWF0aW9uLg0KVGhhbmtzIHdpdGggbXkgYmVz
+dCByZWdhcmRzLg0KTXIuIEFiZHVsIFNhbGFtLA0KVGVsZXggTWFuYWdlcg0KVW5pdGVkIEJhbmsg
+Zm9yIEFmcmljYSAoVUJBKQ0KQnVya2luYSBGYXNvCl9fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgt
+bnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4
+LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
