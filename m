@@ -1,138 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602251F2395
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Jun 2020 01:15:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D3C1F224E
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  9 Jun 2020 01:08:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BB18E10117609;
-	Mon,  8 Jun 2020 16:15:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 084BD10112D73
-	for <linux-nvdimm@lists.01.org>; Mon,  8 Jun 2020 16:15:54 -0700 (PDT)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id ACE242076A;
-	Mon,  8 Jun 2020 23:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1591658154;
-	bh=RyU8bCmCzVxSV2P47dF/Ddb+fy18hma9gz8vKz6FU4k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9/1dbXIPdp39E9OwOyyPDCNsWx1RMQtvSu4w8JY168NaNjgKA7aGG3jocoAtfWyI
-	 BI12xEQxIl+fdlB13lw2LzoNUV9qwQRDMcRINzhHaD9iW31bse4zkdzp5eD9jnvDES
-	 ax7s4S5MTgb3aJWWj4BtGdTquH+0RtmvgX7BYP5s=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 186/606] device-dax: don't leak kernel memory to user space after unloading kmem
-Date: Mon,  8 Jun 2020 19:05:11 -0400
-Message-Id: <20200608231211.3363633-186-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200608231211.3363633-1-sashal@kernel.org>
-References: <20200608231211.3363633-1-sashal@kernel.org>
+	by ml01.01.org (Postfix) with ESMTP id 250DA100AA7B6;
+	Mon,  8 Jun 2020 16:08:00 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=45.161.227.15; helo=15.227.161.45.provedorjuniorweb.com.br; envelope-from=develop0@czchols3020.prg-dc.dhl.com; receiver=<UNKNOWN> 
+Received: from 15.227.161.45.provedorjuniorweb.com.br (15.227.161.45.provedorjuniorweb.com.br [45.161.227.15])
+	by ml01.01.org (Postfix) with ESMTP id 7443D10112D73;
+	Mon,  8 Jun 2020 16:07:53 -0700 (PDT)
+Received: from [193.62.88.160] (helo=ancvse.qtgzxskdhww.co.jp)
+	by 15.227.161.45.provedorjuniorweb.com.br with esmtpa id jw5xzmxrp71pfzt.9.20200608200753
+	for edk2-devel-owner@lists.01.org; Mon, 8 Jun 2020 20:07:53 -0300
+Received: from [31.207.70.112] (helo=nmwu.czchols3020.prg-dc.dhl.com)
+	by 15.227.161.45.provedorjuniorweb.com.br with ESMTPA
+	id iOmB-OB0S9z-ym
+	for edk2-devel-owner@lists.01.org; Mon, 8 Jun 2020 20:07:53 -0300
+Date: Mon, 8 Jun 2020 20:07:53 -0300
+From: DHL - Davion Moss <Davion.Moss@dhl.com>
+To: edk2-devel-owner@lists.01.org
+Subject: - invoice(s) apr 2020
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Message-ID-Hash: BABLJUMGFDM5GMJLRLA4P4W4R5ZM4ETY
-X-Message-ID-Hash: BABLJUMGFDM5GMJLRLA4P4W4R5ZM4ETY
-X-MailFrom: sashal@kernel.org
+Message-ID: <760aa5d3.90c145e9.ecab72.c2912c9e@feufoginvfeuam.qpaakhe.fr>
+Content-Language: us
+Message-ID-Hash: WFHBFCPZNQUJHUKQPIFTJCLOL37NPBIP
+X-Message-ID-Hash: WFHBFCPZNQUJHUKQPIFTJCLOL37NPBIP
+X-MailFrom: develop0@czchols3020.prg-dc.dhl.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, Pavel Tatashin <pasha.tatashin@soleen.com>, Linus Torvalds <torvalds@linux-foundation.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-nvdimm@lists.01.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BABLJUMGFDM5GMJLRLA4P4W4R5ZM4ETY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WFHBFCPZNQUJHUKQPIFTJCLOL37NPBIP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RnJvbTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQoNCmNvbW1pdCA2MDg1
-OGMwMGU1ZjAxOGVkYTcxMWEzYWE4NGNmNjIyMTRlZjYyZDYxIHVwc3RyZWFtLg0KDQpBc3N1bWUg
-d2UgaGF2ZSBrbWVtIGNvbmZpZ3VyZWQgYW5kIGxvYWRlZDoNCg0KICBbcm9vdEBsb2NhbGhvc3Qg
-fl0jIGNhdCAvcHJvYy9pb21lbQ0KICAuLi4NCiAgMTQwMDAwMDAwLTMzZmZmZmZmZiA6IFBlcnNp
-c3RlbnQgTWVtb3J5JA0KICAgIDE0MDAwMDAwMC0xNDgxZmZmZmYgOiBuYW1lc3BhY2UwLjANCiAg
-ICAxNTAwMDAwMDAtMzNmZmZmZmZmIDogZGF4MC4wDQogICAgICAxNTAwMDAwMDAtMzNmZmZmZmZm
-IDogU3lzdGVtIFJBTQ0KDQpBc3N1bWUgd2UgdHJ5IHRvIHVubG9hZCBrbWVtLiBUaGlzIGZvcmNl
-LXVubG9hZGluZyB3aWxsIHdvcmssIGV2ZW4gaWYNCm1lbW9yeSBjYW5ub3QgZ2V0IHJlbW92ZWQg
-ZnJvbSB0aGUgc3lzdGVtLg0KDQogIFtyb290QGxvY2FsaG9zdCB+XSMgcm1tb2Qga21lbQ0KICBb
-ICAgODYuMzgwMjI4XSByZW1vdmluZyBtZW1vcnkgZmFpbHMsIGJlY2F1c2UgbWVtb3J5IFsweDAw
-MDAwMDAxNTAwMDAwMDAtMHgwMDAwMDAwMTU3ZmZmZmZmXSBpcyBvbmxpbmVkDQogIC4uLg0KICBb
-ICAgODYuNDMxMjI1XSBrbWVtIGRheDAuMDogREFYIHJlZ2lvbiBbbWVtIDB4MTUwMDAwMDAwLTB4
-MzNmZmZmZmZmXSBjYW5ub3QgYmUgaG90cmVtb3ZlZCB1bnRpbCB0aGUgbmV4dCByZWJvb3QNCg0K
-Tm93LCB3ZSBjYW4gcmVjb25maWd1cmUgdGhlIG5hbWVzcGFjZToNCg0KICBbcm9vdEBsb2NhbGhv
-c3Qgfl0jIG5kY3RsIGNyZWF0ZS1uYW1lc3BhY2UgLS1mb3JjZSAtLXJlY29uZmlnPW5hbWVzcGFj
-ZTAuMCAtLW1vZGU9ZGV2ZGF4DQogIFsgIDEzMS40MDkzNTFdIG5kX3BtZW0gbmFtZXNwYWNlMC4w
-OiBjb3VsZCBub3QgcmVzZXJ2ZSByZWdpb24gW21lbSAweDE0MDAwMDAwMC0weDMzZmZmZmZmZl1k
-YXgNCiAgWyAgMTMxLjQxMDE0N10gbmRfcG1lbTogcHJvYmUgb2YgbmFtZXNwYWNlMC4wIGZhaWxl
-ZCB3aXRoIGVycm9yIC0xNm5hbWVzcGFjZTAuMCAtLW1vZGU9ZGV2ZGF4DQogIC4uLg0KDQpUaGlz
-IGZhaWxzIGFzIGV4cGVjdGVkIGR1ZSB0byB0aGUgYnVzeSBtZW1vcnkgcmVzb3VyY2UsIGFuZCB0
-aGUgbWVtb3J5DQpjYW5ub3QgYmUgdXNlZC4gIEhvd2V2ZXIsIHRoZSBkYXgwLjAgZGV2aWNlIGlz
-IHJlbW92ZWQsIGFuZCBhbG9uZyBpdHMNCm5hbWUuDQoNClRoZSBuYW1lIG9mIHRoZSBtZW1vcnkg
-cmVzb3VyY2Ugbm93IHBvaW50cyBhdCBmcmVlZCBtZW1vcnkgKG5hbWUgb2YgdGhlDQpkZXZpY2Up
-Og0KDQogIFtyb290QGxvY2FsaG9zdCB+XSMgY2F0IC9wcm9jL2lvbWVtDQogIC4uLg0KICAxNDAw
-MDAwMDAtMzNmZmZmZmZmIDogUGVyc2lzdGVudCBNZW1vcnkNCiAgICAxNDAwMDAwMDAtMTQ4MWZm
-ZmZmIDogbmFtZXNwYWNlMC4wDQogICAgMTUwMDAwMDAwLTMzZmZmZmZmZiA6IO+/vV/vv71eN1/v
-v73vv70vX++/ve+/vXdS77+977+9V1Hvv73vv73vv71e77+977+977+9IC4uLg0KICAgIDE1MDAw
-MDAwMC0zM2ZmZmZmZmYgOiBTeXN0ZW0gUkFNDQoNCldlIGhhdmUgdG8gbWFrZSBzdXJlIHRvIGR1
-cGxpY2F0ZSB0aGUgc3RyaW5nLiAgV2hpbGUgYXQgaXQsIHJlbW92ZSB0aGUNCnN1cGVyZmx1b3Vz
-IHNldHRpbmcgb2YgdGhlIG5hbWUgYW5kIGZpeHVwIGEgc3RhbGUgY29tbWVudC4NCg0KRml4ZXM6
-IDlmOTYwZGE3MmIyNSAoImRldmljZS1kYXg6ICJIb3RyZW1vdmUiIHBlcnNpc3RlbnQgbWVtb3J5
-IHRoYXQgaXMgdXNlZCBsaWtlIG5vcm1hbCBSQU0iKQ0KU2lnbmVkLW9mZi1ieTogRGF2aWQgSGls
-ZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+DQpTaWduZWQtb2ZmLWJ5OiBBbmRyZXcgTW9ydG9u
-IDxha3BtQGxpbnV4LWZvdW5kYXRpb24ub3JnPg0KQ2M6IERhbiBXaWxsaWFtcyA8ZGFuLmoud2ls
-bGlhbXNAaW50ZWwuY29tPg0KQ2M6IFZpc2hhbCBWZXJtYSA8dmlzaGFsLmwudmVybWFAaW50ZWwu
-Y29tPg0KQ2M6IERhdmUgSmlhbmcgPGRhdmUuamlhbmdAaW50ZWwuY29tPg0KQ2M6IFBhdmVsIFRh
-dGFzaGluIDxwYXNoYS50YXRhc2hpbkBzb2xlZW4uY29tPg0KQ2M6IEFuZHJldyBNb3J0b24gPGFr
-cG1AbGludXgtZm91bmRhdGlvbi5vcmc+DQpDYzogPHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmc+CVs1
-LjNdDQpMaW5rOiBodHRwOi8vbGttbC5rZXJuZWwub3JnL3IvMjAyMDA1MDgwODQyMTcuOTE2MC0y
-LWRhdmlkQHJlZGhhdC5jb20NClNpZ25lZC1vZmYtYnk6IExpbnVzIFRvcnZhbGRzIDx0b3J2YWxk
-c0BsaW51eC1mb3VuZGF0aW9uLm9yZz4NClNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFydG1h
-biA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQotLS0NCiBkcml2ZXJzL2RheC9rbWVtLmMg
-fCAxNCArKysrKysrKysrKy0tLQ0KIDEgZmlsZSBjaGFuZ2VkLCAxMSBpbnNlcnRpb25zKCspLCAz
-IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgva21lbS5jIGIvZHJpdmVy
-cy9kYXgva21lbS5jDQppbmRleCAzZDBhN2U3MDJjOTQuLjFlNjc4YmRmNWFlZCAxMDA2NDQNCi0t
-LSBhL2RyaXZlcnMvZGF4L2ttZW0uYw0KKysrIGIvZHJpdmVycy9kYXgva21lbS5jDQpAQCAtMjIs
-NiArMjIsNyBAQCBpbnQgZGV2X2RheF9rbWVtX3Byb2JlKHN0cnVjdCBkZXZpY2UgKmRldikNCiAJ
-cmVzb3VyY2Vfc2l6ZV90IGttZW1fc2l6ZTsNCiAJcmVzb3VyY2Vfc2l6ZV90IGttZW1fZW5kOw0K
-IAlzdHJ1Y3QgcmVzb3VyY2UgKm5ld19yZXM7DQorCWNvbnN0IGNoYXIgKm5ld19yZXNfbmFtZTsN
-CiAJaW50IG51bWFfbm9kZTsNCiAJaW50IHJjOw0KIA0KQEAgLTQ4LDExICs0OSwxNiBAQCBpbnQg
-ZGV2X2RheF9rbWVtX3Byb2JlKHN0cnVjdCBkZXZpY2UgKmRldikNCiAJa21lbV9zaXplICY9IH4o
-bWVtb3J5X2Jsb2NrX3NpemVfYnl0ZXMoKSAtIDEpOw0KIAlrbWVtX2VuZCA9IGttZW1fc3RhcnQg
-KyBrbWVtX3NpemU7DQogDQotCS8qIFJlZ2lvbiBpcyBwZXJtYW5lbnRseSByZXNlcnZlZC4gIEhv
-dC1yZW1vdmUgbm90IHlldCBpbXBsZW1lbnRlZC4gKi8NCi0JbmV3X3JlcyA9IHJlcXVlc3RfbWVt
-X3JlZ2lvbihrbWVtX3N0YXJ0LCBrbWVtX3NpemUsIGRldl9uYW1lKGRldikpOw0KKwluZXdfcmVz
-X25hbWUgPSBrc3RyZHVwKGRldl9uYW1lKGRldiksIEdGUF9LRVJORUwpOw0KKwlpZiAoIW5ld19y
-ZXNfbmFtZSkNCisJCXJldHVybiAtRU5PTUVNOw0KKw0KKwkvKiBSZWdpb24gaXMgcGVybWFuZW50
-bHkgcmVzZXJ2ZWQgaWYgaG90cmVtb3ZlIGZhaWxzLiAqLw0KKwluZXdfcmVzID0gcmVxdWVzdF9t
-ZW1fcmVnaW9uKGttZW1fc3RhcnQsIGttZW1fc2l6ZSwgbmV3X3Jlc19uYW1lKTsNCiAJaWYgKCFu
-ZXdfcmVzKSB7DQogCQlkZXZfd2FybihkZXYsICJjb3VsZCBub3QgcmVzZXJ2ZSByZWdpb24gWyVw
-YS0lcGFdXG4iLA0KIAkJCSAma21lbV9zdGFydCwgJmttZW1fZW5kKTsNCisJCWtmcmVlKG5ld19y
-ZXNfbmFtZSk7DQogCQlyZXR1cm4gLUVCVVNZOw0KIAl9DQogDQpAQCAtNjMsMTIgKzY5LDEyIEBA
-IGludCBkZXZfZGF4X2ttZW1fcHJvYmUoc3RydWN0IGRldmljZSAqZGV2KQ0KIAkgKiB1bmtub3du
-IHRvIHVzIHRoYXQgd2lsbCBicmVhayBhZGRfbWVtb3J5KCkgYmVsb3cuDQogCSAqLw0KIAluZXdf
-cmVzLT5mbGFncyA9IElPUkVTT1VSQ0VfU1lTVEVNX1JBTTsNCi0JbmV3X3Jlcy0+bmFtZSA9IGRl
-dl9uYW1lKGRldik7DQogDQogCXJjID0gYWRkX21lbW9yeShudW1hX25vZGUsIG5ld19yZXMtPnN0
-YXJ0LCByZXNvdXJjZV9zaXplKG5ld19yZXMpKTsNCiAJaWYgKHJjKSB7DQogCQlyZWxlYXNlX3Jl
-c291cmNlKG5ld19yZXMpOw0KIAkJa2ZyZWUobmV3X3Jlcyk7DQorCQlrZnJlZShuZXdfcmVzX25h
-bWUpOw0KIAkJcmV0dXJuIHJjOw0KIAl9DQogCWRldl9kYXgtPmRheF9rbWVtX3JlcyA9IG5ld19y
-ZXM7DQpAQCAtODMsNiArODksNyBAQCBzdGF0aWMgaW50IGRldl9kYXhfa21lbV9yZW1vdmUoc3Ry
-dWN0IGRldmljZSAqZGV2KQ0KIAlzdHJ1Y3QgcmVzb3VyY2UgKnJlcyA9IGRldl9kYXgtPmRheF9r
-bWVtX3JlczsNCiAJcmVzb3VyY2Vfc2l6ZV90IGttZW1fc3RhcnQgPSByZXMtPnN0YXJ0Ow0KIAly
-ZXNvdXJjZV9zaXplX3Qga21lbV9zaXplID0gcmVzb3VyY2Vfc2l6ZShyZXMpOw0KKwljb25zdCBj
-aGFyICpyZXNfbmFtZSA9IHJlcy0+bmFtZTsNCiAJaW50IHJjOw0KIA0KIAkvKg0KQEAgLTEwMiw2
-ICsxMDksNyBAQCBzdGF0aWMgaW50IGRldl9kYXhfa21lbV9yZW1vdmUoc3RydWN0IGRldmljZSAq
-ZGV2KQ0KIAkvKiBSZWxlYXNlIGFuZCBmcmVlIGRheCByZXNvdXJjZXMgKi8NCiAJcmVsZWFzZV9y
-ZXNvdXJjZShyZXMpOw0KIAlrZnJlZShyZXMpOw0KKwlrZnJlZShyZXNfbmFtZSk7DQogCWRldl9k
-YXgtPmRheF9rbWVtX3JlcyA9IE5VTEw7DQogDQogCXJldHVybiAwOw0KLS0gDQoyLjI1LjENCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Dear Customer,
+
+Please find enclosed invoices issued for this period.
+If you require any assistance, please don't hesitate to contact us at 1-855-376-3394 or send an email
+
+We will be more than glad to assist you with any inquiries or concerns you may have
+
+Regards,
+CONFIDENTIALITY NOTICE: This message is from DHL and may contain confidential business information. It is intended solely for the use of the individual to whom it is addressed. If you are not the intended recipient please contact the sender and delete this message and any attachment from your system. Unauthorized publication, use, dissemination, forwarding, printing or copying of this E-Mail and its attachments is strictly prohibited.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
