@@ -2,64 +2,218 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7901F76F4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Jun 2020 12:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517691F77A0
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 12 Jun 2020 14:05:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 652C91007B178;
-	Fri, 12 Jun 2020 03:56:23 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=78.110.62.3; helo=78-110-62-3.net.hts.ru; envelope-from=mail-sent@meta.ua; receiver=<UNKNOWN> 
-Received: from 78-110-62-3.net.hts.ru (unknown [78.110.62.3])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A95E91007A840;
+	Fri, 12 Jun 2020 05:05:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.194; helo=mail-oi1-f194.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com [209.85.167.194])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E53821007B172
-	for <linux-nvdimm@lists.01.org>; Fri, 12 Jun 2020 03:56:19 -0700 (PDT)
-Message-ID: <E71D40105D89B3A07C7930B3F7A38F1B@meta.ua>
-From: "SEO-BIZ" <mail-sent@meta.ua>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?windows-1251?B?zu/y6Ozo5+D26P8g6CDv8O7k4ujm5e3o5SDR?=
-	=?windows-1251?B?wMnSzsIg7eAgz8XQwtPeIPHy8ODt6PbzIO/u?=
-	=?windows-1251?B?6PHq7uL79SDx6PHy5ewh?=
-Date: Fri, 12 Jun 2020 13:54:25 +0300
+	by ml01.01.org (Postfix) with ESMTPS id 3A9DA1007A829
+	for <linux-nvdimm@lists.01.org>; Fri, 12 Jun 2020 05:05:18 -0700 (PDT)
+Received: by mail-oi1-f194.google.com with SMTP id x202so8411749oix.11
+        for <linux-nvdimm@lists.01.org>; Fri, 12 Jun 2020 05:05:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vFwhiYEH8oFfrk8TNiw5uMiuVfFehhn4UASR2l6vNwU=;
+        b=VM9MrB3Nob1DPttEU4bfsF4jxj1FWcyTfpUJSK0qsogfxaDrq8ok5d9hKv7aWeZVtW
+         QUbYXAgBC5icXRjf76iCjDl/DHdyipLd/dlSmu/6fGbNCeATAdtVr6APta3LB22AaGwB
+         CmsxjzrIpeqqQJWVaJZzpG7zY3eoAhQ5EJzvO5ZPUnd/LCfVkyXuQPpPwdqwRwvRTTLT
+         PJizmDqMdqKK8frSGxykqAyd6kS3NQRtKGwNtG0fgKGJmFeJN6Yz4Smtz4Uf609TupRi
+         Ed++rNDE4WA7Oe8DTmcSd6jg6094uMUB3qfpNRbmSENRAG0JeOimrOtiI2KaYlBkkbf+
+         C07g==
+X-Gm-Message-State: AOAM530x6A1iYBY0WXFA5y5Gobf5eHQBojII6+HZMrAqLnw+iNXnkVAO
+	qMgLh1eREny4g/klOUSnurbRn0amtYZOhTdyIPc=
+X-Google-Smtp-Source: ABdhPJzzratWFEFnCI62Qa2Ya16bGmtMS72/S8i52Q1nskzw+ZVCcqsmcmX3yUortj+kqoj/uHbWSu+vHMfgewzhpGs=
+X-Received: by 2002:aca:ab92:: with SMTP id u140mr1819440oie.68.1591963516898;
+ Fri, 12 Jun 2020 05:05:16 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: FA2D7ON2B5X5KVEMVNO4V3KEGJGP3OSJ
-X-Message-ID-Hash: FA2D7ON2B5X5KVEMVNO4V3KEGJGP3OSJ
-X-MailFrom: mail-sent@meta.ua
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <318372766.6LKUBsbRXE@kreacher> <3974162.pZLctmZ5Iv@kreacher> <BYAPR11MB30963CB784B940A5CD58C4FAF0810@BYAPR11MB3096.namprd11.prod.outlook.com>
+In-Reply-To: <BYAPR11MB30963CB784B940A5CD58C4FAF0810@BYAPR11MB3096.namprd11.prod.outlook.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 12 Jun 2020 14:05:01 +0200
+Message-ID: <CAJZ5v0h0ax4N-Tk+MfAeAyJ_tDYPW5vseqUU49UShBKZ4+F6Bw@mail.gmail.com>
+Subject: Re: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+ interpreter exit
+To: "Kaneda, Erik" <erik.kaneda@intel.com>
+Message-ID-Hash: 4TDPDVRTOYBWQA4Z66MJKZHI76N6G2Z2
+X-Message-ID-Hash: 4TDPDVRTOYBWQA4Z66MJKZHI76N6G2Z2
+X-MailFrom: rjwysocki@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, "Wysocki, Rafael J" <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Moore, Robert" <robert.moore@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FA2D7ON2B5X5KVEMVNO4V3KEGJGP3OSJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4TDPDVRTOYBWQA4Z66MJKZHI76N6G2Z2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-z/Du5OLo5uXt6OUg8eDp8u7iIOIg0s7PLTMNCg0K0s7L3MrOICLBxcvbxSIgzMXSzsTbIM/QzsTC
-yMbFzcjfINHAydLOwiENCg0KzPsg5+Dt6Ozg5ezx/yDv8O7k4ujm5e3o5ewg8eDp8u7ioOIgR09P
-R0xFIOggWUFOREVYDQoNCtfy7uEgwuD4IPHg6fIg7eD34Osg7/Do7e7x6PL8IO/w6OH76/wsIO3z
-5u3uIPDg8erw8/Lo8vwg5ePuIOIg7+7o8eru4vv1IPHo8fLl7OD1IO/uIO3z5u377CDC4Owg8evu
-4uDsXPTw4Ofg7Cwg6iDv8Ojs5fDzIOXx6+ggwuD44CDk5f/y5ev87e7x8vwgz87LyMPQwNTI3ywg
-8u4g7/DoIOLi7uTlIOIg7+7o8eru4ujqIP3y7uPuIPHr7uLgLCDC4Pgg8eDp8iDk7uvm5e0g4fvy
-/CDt4CDv5fDi7ukg8fLw4O3o9uUg4iDv7ujx6uUsIOjt4PflIMLg+Oj1IO/u8uXt9ujg6/zt+/Ug
-6uvo5e3y7uIg5+Dh5fDz8iDC4PjoIOru7erz8OXt8vsuoA0KDQrS8Ogg+ODj4CDqIO/w7uTi6Obl
-7ej+IMLg+OXj7iDx4Ony4CENCg0Kz87Ewc7QIMrL3tfFwtvVINTQwMcgxMvfINHAydLADQrM+yDh
-5fHv6+Dy7e4g7/Du4uXk5ewg4O3g6+jnIMLg+OXj7iDx4Ony4CDoIOL7+Ovl7CDC4Owg8e/o8e7q
-IPTw4Ocg7+4gwuD45ekg8uXs4PLo6uUuDQoNCtHFziDOz9LIzMjHwNbI3yDRwMnSwKANCs3g7+jx
-4O3o5SDn4OPu6+7i6u7iLCDv8ODi6Ov87fv1INHFziDu7+jx4O3o6Swg6uv+9+Xi+/Ug9PDg5yDo
-IO/l8OXr6O3q7uLq4CDx8vDg7ej2Lg0KDQrP0M7EwsjGxc3IxSDPziDKy97XxcLbzCDU0MDHwMwN
-Cs/w7uTi6Obl7ejlIPHg6fLgIO/uIOL74fDg7e377CDC4OzoIOrr/vfl4vvsIPTw4Ofg7CDiINLO
-zyDv7ujx6u7i+/Ug8ejx8uXsLg0KDQrK4Oog5+Dq4Ofg8vwg7/Du5OLo5uXt6OUg8eDp8uANCg0K
-xOv/IOfg6uDn4CDv8O7k4ujm5e3o/yDC4Pjl4+4g8eDp8uAg7eDv6Pjo8uUg7eDsIOXj7iDg5PDl
-8Swg7Psg7/Du4uXk5ewg4O3g6+jnIOggwvv46+XsIMLg7CDv8OXk6+7m5e3o5SDv7iDv8O7k4ujm
-5e3o/iDiINLOzyDv7ujx6u7i+/Ug8ejx8uXsLg0KDQrRINPi4Obl7ejl7CDC6+Dk6Ozo8CDA6+Xq
-8eDt5PDu4uj3DQoNCnRlbDogKzM4MDYzNDAxMDc0MQ0KDQpza3lwZTogb3JnLXJlZXN0cg0KDQpt
-YWlsOiBpbmZvZ3JvdXBwQGJpZ21pci5uZXQNCg0KzvLq4Ofg8vzx/yDu8iDw4PHx++vq6KDo6+ig
-6Ofs5e3o8vwg6u7t8uDq8u3z/iDo7fTu8Ozg9uj+Lg0KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Fri, Jun 12, 2020 at 2:12 AM Kaneda, Erik <erik.kaneda@intel.com> wrote:
+>
+>
+>
+> > -----Original Message-----
+> > From: Rafael J. Wysocki <rjw@rjwysocki.net>
+> > Sent: Wednesday, June 10, 2020 5:22 AM
+> > To: Williams, Dan J <dan.j.williams@intel.com>
+> > Cc: Kaneda, Erik <erik.kaneda@intel.com>; Wysocki, Rafael J
+> > <rafael.j.wysocki@intel.com>; Len Brown <lenb@kernel.org>; Borislav
+> > Petkov <bp@alien8.de>; Weiny, Ira <ira.weiny@intel.com>; James Morse
+> > <james.morse@arm.com>; Myron Stowe <myron.stowe@redhat.com>;
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com>; linux-
+> > kernel@vger.kernel.org; linux-acpi@vger.kernel.org; linux-
+> > nvdimm@lists.01.org; Moore, Robert <robert.moore@intel.com>
+> > Subject: [RFT][PATCH 2/3] ACPICA: Remove unused memory mappings on
+> > interpreter exit
+> >
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> >
+> > For transient memory opregions that are created dynamically under
+> > the namespace and interpreter mutexes and go away quickly, there
+> > still is the problem that removing their memory mappings may take
+> > significant time and so doing that while holding the mutexes should
+> > be avoided.
+> >
+> > For example, unmapping a chunk of memory associated with a memory
+> > opregion in Linux involves running synchronize_rcu_expedited()
+> > which really should not be done with the namespace mutex held.
+> >
+> > To address that problem, notice that the unused memory mappings left
+> > behind by the "dynamic" opregions that went away need not be unmapped
+> > right away when the opregion is deactivated.  Instead, they may be
+> > unmapped when exiting the interpreter, after the namespace and
+> > interpreter mutexes have been dropped (there's one more place dealing
+> > with opregions in the debug code that can be treated analogously).
+> >
+> > Accordingly, change acpi_ev_system_memory_region_setup() to put
+> > the unused mappings into a global list instead of unmapping them
+> > right away and add acpi_ev_system_release_memory_mappings() to
+> > be called when leaving the interpreter in order to unmap the
+> > unused memory mappings in the global list (which is protected
+> > by the namespace mutex).
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > ---
+> >  drivers/acpi/acpica/acevents.h |  2 ++
+> >  drivers/acpi/acpica/dbtest.c   |  3 ++
+> >  drivers/acpi/acpica/evrgnini.c | 51
+> > ++++++++++++++++++++++++++++++++--
+> >  drivers/acpi/acpica/exutils.c  |  3 ++
+> >  drivers/acpi/acpica/utxface.c  | 23 +++++++++++++++
+> >  include/acpi/acpixf.h          |  1 +
+> >  6 files changed, 80 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/acpi/acpica/acevents.h b/drivers/acpi/acpica/acevents.h
+> > index 79f292687bd6..463eb9124765 100644
+> > --- a/drivers/acpi/acpica/acevents.h
+> > +++ b/drivers/acpi/acpica/acevents.h
+> > @@ -197,6 +197,8 @@ acpi_ev_execute_reg_method(union
+> > acpi_operand_object *region_obj, u32 function);
+> >  /*
+> >   * evregini - Region initialization and setup
+> >   */
+> > +void acpi_ev_system_release_memory_mappings(void);
+> > +
+> >  acpi_status
+> >  acpi_ev_system_memory_region_setup(acpi_handle handle,
+> >                                  u32 function,
+> > diff --git a/drivers/acpi/acpica/dbtest.c b/drivers/acpi/acpica/dbtest.c
+> > index 6db44a5ac786..7dac6dae5c48 100644
+> > --- a/drivers/acpi/acpica/dbtest.c
+> > +++ b/drivers/acpi/acpica/dbtest.c
+> > @@ -8,6 +8,7 @@
+> >  #include <acpi/acpi.h>
+> >  #include "accommon.h"
+> >  #include "acdebug.h"
+> > +#include "acevents.h"
+> >  #include "acnamesp.h"
+> >  #include "acpredef.h"
+> >  #include "acinterp.h"
+> > @@ -768,6 +769,8 @@ acpi_db_test_field_unit_type(union
+> > acpi_operand_object *obj_desc)
+> >               acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> >               acpi_ut_release_mutex(ACPI_MTX_INTERPRETER);
+> >
+> > +             acpi_ev_system_release_memory_mappings();
+> > +
+> >               bit_length = obj_desc->common_field.bit_length;
+> >               byte_length =
+> > ACPI_ROUND_BITS_UP_TO_BYTES(bit_length);
+> >
+> > diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
+> > index 48a5e6eaf9b9..946c4eef054d 100644
+> > --- a/drivers/acpi/acpica/evrgnini.c
+> > +++ b/drivers/acpi/acpica/evrgnini.c
+> > @@ -16,6 +16,52 @@
+> >  #define _COMPONENT          ACPI_EVENTS
+> >  ACPI_MODULE_NAME("evrgnini")
+> >
+> > +#ifdef ACPI_OS_MAP_MEMORY_FAST_PATH
+> > +static struct acpi_mem_mapping *unused_memory_mappings;
+> > +
+> > +/*********************************************************
+> > **********************
+> > + *
+> > + * FUNCTION:    acpi_ev_system_release_memory_mappings
+> > + *
+> > + * PARAMETERS:  None
+> > + *
+> > + * RETURN:      None
+> > + *
+> > + * DESCRIPTION: Release all of the unused memory mappings in the queue
+> > + *              under the interpreter mutex.
+> > + *
+> > +
+> > **********************************************************
+> > ********************/
+> > +void acpi_ev_system_release_memory_mappings(void)
+> > +{
+> > +     struct acpi_mem_mapping *mapping;
+> > +
+> > +
+> >       ACPI_FUNCTION_TRACE(acpi_ev_system_release_memory_mappin
+> > gs);
+> > +
+> > +     acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
+> > +
+> > +     while (unused_memory_mappings) {
+> > +             mapping = unused_memory_mappings;
+> > +             unused_memory_mappings = mapping->next;
+> > +
+> > +             acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+> > +
+> > +             acpi_os_unmap_memory(mapping->logical_address,
+> > mapping->length);
+>
+> acpi_os_unmap_memory calls synchronize_rcu_expedited(). I'm no RCU expert but the
+> definition of this function states:
+>
+> * Although this is a great improvement over previous expedited
+>  * implementations, it is still unfriendly to real-time workloads, so is
+>  * thus not recommended for any sort of common-case code.  In fact, if
+>  * you are using synchronize_rcu_expedited() in a loop, please restructure
+>  * your code to batch your updates, and then use a single synchronize_rcu()
+>  * instead.
+
+If this really ends up being a loop, the code without this patch will
+also call synchronize_rcu_expedited() in a loop, but indirectly and
+under the namespace and interpreter mutexes.
+
+While I agree that this is still somewhat suboptimal, improving this
+would require more changes in the OSL code.
+
+Cheers!
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
