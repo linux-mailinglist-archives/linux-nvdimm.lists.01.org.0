@@ -2,70 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472EF1F96D9
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Jun 2020 14:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 043331F96DC
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 15 Jun 2020 14:45:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 00629110D4E23;
-	Mon, 15 Jun 2020 05:44:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 16848110E5FDB;
+	Mon, 15 Jun 2020 05:45:06 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 388A3100A302D
-	for <linux-nvdimm@lists.01.org>; Mon, 15 Jun 2020 05:44:56 -0700 (PDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05FCHXpC030709;
-	Mon, 15 Jun 2020 08:44:26 -0400
+	by ml01.01.org (Postfix) with ESMTPS id E8F6E110E5FDA
+	for <linux-nvdimm@lists.01.org>; Mon, 15 Jun 2020 05:45:03 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05FC24xa100278;
+	Mon, 15 Jun 2020 08:44:35 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31p8v5rr8e-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31n0mmgndd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2020 08:44:26 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05FCXJFP075107;
-	Mon, 15 Jun 2020 08:44:25 -0400
+	Mon, 15 Jun 2020 08:44:34 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05FC28UV100500;
+	Mon, 15 Jun 2020 08:44:34 -0400
 Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 31p8v5rr7n-1
+	by mx0a-001b2d01.pphosted.com with ESMTP id 31n0mmgnb2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2020 08:44:25 -0400
+	Mon, 15 Jun 2020 08:44:34 -0400
 Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05FCfbbw015382;
-	Mon, 15 Jun 2020 12:44:24 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-	by ppma04ams.nl.ibm.com with ESMTP id 31mpe7uk1r-1
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05FCfbbx015382;
+	Mon, 15 Jun 2020 12:44:28 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma04ams.nl.ibm.com with ESMTP id 31mpe7uk1y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Jun 2020 12:44:23 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05FCh4Gh66060756
+	Mon, 15 Jun 2020 12:44:28 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05FCiPVc44630220
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Jun 2020 12:43:04 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19B3C42041;
-	Mon, 15 Jun 2020 12:44:21 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF0A342045;
-	Mon, 15 Jun 2020 12:44:17 +0000 (GMT)
+	Mon, 15 Jun 2020 12:44:25 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B9E1DA4059;
+	Mon, 15 Jun 2020 12:44:25 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 47EDDA4040;
+	Mon, 15 Jun 2020 12:44:22 +0000 (GMT)
 Received: from vajain21-in-ibm-com (unknown [9.85.96.47])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Mon, 15 Jun 2020 12:44:17 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 15 Jun 2020 18:14:16 +0530
+	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Mon, 15 Jun 2020 12:44:22 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Mon, 15 Jun 2020 18:14:21 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v13 0/6] powerpc/papr_scm: Add support for reporting nvdimm health
-Date: Mon, 15 Jun 2020 18:14:01 +0530
-Message-Id: <20200615124407.32596-1-vaibhav@linux.ibm.com>
+Subject: [PATCH v13 1/6] powerpc: Document details on H_SCM_HEALTH hcall
+Date: Mon, 15 Jun 2020 18:14:02 +0530
+Message-Id: <20200615124407.32596-2-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200615124407.32596-1-vaibhav@linux.ibm.com>
+References: <20200615124407.32596-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
  definitions=2020-06-15_02:2020-06-15,2020-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 cotscore=-2147483648
- priorityscore=1501 impostorscore=0 bulkscore=0 phishscore=0 adultscore=0
- clxscore=1015 mlxlogscore=999 spamscore=0 mlxscore=0 malwarescore=0
- suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
+ cotscore=-2147483648 suspectscore=0 clxscore=1015 mlxscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2006150098
-Message-ID-Hash: XSUQCJ5T547RU7WYPLH72YZEBE5YTYPG
-X-Message-ID-Hash: XSUQCJ5T547RU7WYPLH72YZEBE5YTYPG
+Message-ID-Hash: J4U5RJQD2BVOGTROAW4LOG2YSJZMXUOI
+X-Message-ID-Hash: J4U5RJQD2BVOGTROAW4LOG2YSJZMXUOI
 X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -73,7 +75,7 @@ CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@lin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XSUQCJ5T547RU7WYPLH72YZEBE5YTYPG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J4U5RJQD2BVOGTROAW4LOG2YSJZMXUOI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,140 +84,112 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Changes since v12 [1]:
-* Fixed the clang warning regarding variable length object' being not at
-  the end of the 'struct nd_pdsm_cmd_pkg' by introducing a new layout.
-* Removed instance of 'struct nd_cmd_pkg hdr' from 'struct
-  nd_pdsm_cmd_pkg' and renamed the struct to 'struct nd_pkg_pdsm' to
-  match the libndctl naming convention.
-* Introduced 'union nd_pdsm_payload' thats a maximal union of all
-  possible payload structs and use it instead of having flexible
-  'payload' member 'struct nd_pdsm_cmd_pkg'.
-* Introduce pdsm descriptor 'struct pdsm_cmd_desc' and its array
-  __pdsm_cmd_descriptors[] that holds a payload 'size_[in|out]' and
-  service function for each pdsm. This is analogues to
-  '__nd_cmd_dimm_descs[]'
-* Introduce function 'pdsm_cmd_desc()' to fetch the corresponding pdsm
-  descriptor for each valid pdsm.
-* Updated papr_scm_service_pdsm() to use 'pdsm_cmd_desc()' and apply
-  checks on 'nd_cmd_pkg' payload based on psdm descriptor members and
-  finally service the pdsm using the 'service' member of the
-  descriptor.
-* Updated Patch-5 that to use the updated 'struct nd_pkg_pdsm'
-  definition.
-  
-[1] https://lore.kernel.org/linux-nvdimm/20200608211026.67573-1-vaibhav@linux.ibm.com
+Add documentation to 'papr_hcalls.rst' describing the bitmap flags
+that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
+specification.
+
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Acked-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
+Changelog:
 
-The PAPR standard[2][4] provides mechanisms to query the health and
-performance stats of an NVDIMM via various hcalls as described in
-Ref[3].  Until now these stats were never available nor exposed to the
-user-space tools like 'ndctl'. This is partly due to PAPR platform not
-having support for ACPI and NFIT. Hence 'ndctl' is unable to query and
-report the dimm health status and a user had no way to determine the
-current health status of a NDVIMM.
+v12..v13:
+* None
 
-To overcome this limitation, this patch-set updates papr_scm kernel
-module to query and fetch NVDIMM health stats using hcalls described
-in Ref[3].  This health and performance stats are then exposed to
-userspace via sysfs and PAPR-NVDIMM-Specific-Methods(PDSM) issued by
-libndctl.
+v11..v12:
+* None
 
-These changes coupled with proposed ndtcl changes located at Ref[5]
-should provide a way for the user to retrieve NVDIMM health status
-using ndtcl.
+v10..v11:
+* None
 
-Below is a sample output using proposed kernel + ndctl for PAPR NVDIMM
-in a emulation environment:
+v9..v10:
+* Added ack from Ira.
 
- # ndctl list -DH
-[
-  {
-    "dev":"nmem0",
-    "health":{
-      "health_state":"fatal",
-      "shutdown_state":"dirty"
-    }
-  }
-]
+Resend:
+* None
 
-Dimm health report output on a pseries guest lpar with vPMEM or HMS
-based NVDIMMs that are in perfectly healthy conditions:
+v8..v9:
+* s/SCM/PMEM device. [ Dan Williams, Aneesh ]
 
- # ndctl list -d nmem0 -H
-[
-  {
-    "dev":"nmem0",
-    "health":{
-      "health_state":"ok",
-      "shutdown_state":"clean"
-    }
-  }
-]
+v7..v8:
+* Added a clarification on bit-ordering of Health Bitmap
 
-PAPR NVDIMM-Specific-Methods(PDSM)
-==================================
+Resend:
+* None
 
-PDSM requests are issued by vendor specific code in libndctl to
-execute certain operations or fetch information from NVDIMMS. PDSMs
-requests can be sent to papr_scm module via libndctl(userspace) and
-libnvdimm (kernel) using the ND_CMD_CALL ioctl command which can be
-handled in the dimm control function papr_scm_ndctl(). Current
-patchset proposes a single PDSM to retrieve NVDIMM health, defined in
-the newly introduced uapi header named 'papr_pdsm.h'. Support for
-more PDSMs will be added in future.
+v6..v7:
+* None
 
-Structure of the patch-set
-==========================
-
-The patch-set starts with a doc patch documenting details of hcall
-H_SCM_HEALTH. Second patch exports kernel symbol seq_buf_printf()
-thats used in subsequent patches to generate sysfs attribute content.
-
-Third patch implements support for fetching NVDIMM health information
-from PHYP and partially exposing it to user-space via a NVDIMM sysfs
-flag.
-
-Fourth patch updates papr_scm_ndctl() to handle a possible error case
-and also improve debug logging.
-
-Fifth patch deals with implementing support for servicing PDSM
-commands in papr_scm module.
-
-Finally the last patch implements support for servicing PDSM
-'PAPR_PDSM_HEALTH' that returns the NVDIMM health information to
-libndctl.
-
-References:
-[2] "Power Architecture Platform Reference"
-      https://en.wikipedia.org/wiki/Power_Architecture_Platform_Reference
-[3] commit 58b278f568f0
-     ("powerpc: Provide initial documentation for PAPR hcalls")
-[4] "Linux on Power Architecture Platform Reference"
-     https://members.openpowerfoundation.org/document/dl/469
-[5] https://github.com/vaibhav92/ndctl/tree/papr_scm_health_v13
-
+v5..v6:
+* New patch in the series
 ---
+ Documentation/powerpc/papr_hcalls.rst | 46 ++++++++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 4 deletions(-)
 
-
-Vaibhav Jain (6):
-  powerpc: Document details on H_SCM_HEALTH hcall
-  seq_buf: Export seq_buf_printf
-  powerpc/papr_scm: Fetch nvdimm health information from PHYP
-  powerpc/papr_scm: Improve error logging and handling papr_scm_ndctl()
-  ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
-  powerpc/papr_scm: Implement support for PAPR_PDSM_HEALTH
-
- Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 ++
- Documentation/powerpc/papr_hcalls.rst         |  46 +-
- arch/powerpc/include/uapi/asm/papr_pdsm.h     | 132 ++++++
- arch/powerpc/platforms/pseries/papr_scm.c     | 420 +++++++++++++++++-
- include/uapi/linux/ndctl.h                    |   1 +
- lib/seq_buf.c                                 |   1 +
- 6 files changed, 616 insertions(+), 11 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-papr-pmem
- create mode 100644 arch/powerpc/include/uapi/asm/papr_pdsm.h
-
+diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+index 3493631a60f8..48fcf1255a33 100644
+--- a/Documentation/powerpc/papr_hcalls.rst
++++ b/Documentation/powerpc/papr_hcalls.rst
+@@ -220,13 +220,51 @@ from the LPAR memory.
+ **H_SCM_HEALTH**
+ 
+ | Input: drcIndex
+-| Out: *health-bitmap, health-bit-valid-bitmap*
++| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
+ | Return Value: *H_Success, H_Parameter, H_Hardware*
+ 
+ Given a DRC Index return the info on predictive failure and overall health of
+-the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
+-failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
+-valid.
++the PMEM device. The asserted bits in the health-bitmap indicate one or more states
++(described in table below) of the PMEM device and health-bit-valid-bitmap indicate
++which bits in health-bitmap are valid. The bits are reported in
++reverse bit ordering for example a value of 0xC400000000000000
++indicates bits 0, 1, and 5 are valid.
++
++Health Bitmap Flags:
++
+++------+-----------------------------------------------------------------------+
++|  Bit |               Definition                                              |
+++======+=======================================================================+
++|  00  | PMEM device is unable to persist memory contents.                     |
++|      | If the system is powered down, nothing will be saved.                 |
+++------+-----------------------------------------------------------------------+
++|  01  | PMEM device failed to persist memory contents. Either contents were   |
++|      | not saved successfully on power down or were not restored properly on |
++|      | power up.                                                             |
+++------+-----------------------------------------------------------------------+
++|  02  | PMEM device contents are persisted from previous IPL. The data from   |
++|      | the last boot were successfully restored.                             |
+++------+-----------------------------------------------------------------------+
++|  03  | PMEM device contents are not persisted from previous IPL. There was no|
++|      | data to restore from the last boot.                                   |
+++------+-----------------------------------------------------------------------+
++|  04  | PMEM device memory life remaining is critically low                   |
+++------+-----------------------------------------------------------------------+
++|  05  | PMEM device will be garded off next IPL due to failure                |
+++------+-----------------------------------------------------------------------+
++|  06  | PMEM device contents cannot persist due to current platform health    |
++|      | status. A hardware failure may prevent data from being saved or       |
++|      | restored.                                                             |
+++------+-----------------------------------------------------------------------+
++|  07  | PMEM device is unable to persist memory contents in certain conditions|
+++------+-----------------------------------------------------------------------+
++|  08  | PMEM device is encrypted                                              |
+++------+-----------------------------------------------------------------------+
++|  09  | PMEM device has successfully completed a requested erase or secure    |
++|      | erase procedure.                                                      |
+++------+-----------------------------------------------------------------------+
++|10:63 | Reserved / Unused                                                     |
+++------+-----------------------------------------------------------------------+
+ 
+ **H_SCM_PERFORMANCE_STATS**
+ 
 -- 
 2.26.2
 _______________________________________________
