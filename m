@@ -2,63 +2,51 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A87206557
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Jun 2020 23:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 783B72066CE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Jun 2020 00:04:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8D5AA10FC3777;
-	Tue, 23 Jun 2020 14:48:27 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id DBD4D100978D9;
+	Tue, 23 Jun 2020 15:04:16 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=tony.luck@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id AE5B210112D6F
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 14:48:25 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id h28so5284156edz.0
-        for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 14:48:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XKFP4XmM+fzPiSTcosfxpar/wTtCL35clRf++Z9m9ME=;
-        b=F1lsia2rHf1QjZHwmwFyb3rl/n1GTyxCp+pL4CQHVcYaIpRBQYuLp4VEvV3gTVzC6T
-         Y0ZYtALWifMR47OpgIRXM+ZsNLyRakdttcIh1QXcyW2CAiGQCsWbnM2I+gyyYl6mOZI/
-         JhkUDtfG2igjjw82AeihWkKCAY8uQjW8NlLFku1IHUco3VDRgf26H5wOdykBehKwbKD7
-         zXhSocoxUkZekHACS2I7zQH1A44s44Foxo8kZI1Gfhg1+uuLgPmOLjIew4Ex/0pwVJpV
-         iKTFVQcUjN50tdl3MkEkyPSFTjCpyPvys3RVxOb0l88vM9dYQ/ZIXUKrz2dOPmEtnOWg
-         aZyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XKFP4XmM+fzPiSTcosfxpar/wTtCL35clRf++Z9m9ME=;
-        b=XU4XFECJjJ0XByTCOna56WxBKz+hv/ZjnTB0qhuqKJ58alNc1UGlYS4sJ3l+j44bjn
-         vCTp0EaNYbVmiCvnoVH6zPzEdNtAQNq4ZAV06lWf5dKquyTDQfT7lQFGsBYbIcMN3QqH
-         JdNEStl+Xjb5wvDHxHR2effpOPqaRTPr+SmRhbLNDMX+Qu2GOjUbJeOqQTPm+1n8v4KX
-         afAkuZ7l07Sgrn0XjorV9N6ROWbiglFm6eBHJxELiTWGZPABwANCg+/zfkwMgVUAPgw/
-         Je1ug7iMwZRU5ytXIxmUD8r6+ojX4Vjhjgp/O5Duh9TNn2VWszV9j6IV81aVL72dhah5
-         eWpA==
-X-Gm-Message-State: AOAM531VoeVyFqW4TptU3P526LOot9LaZvoxuTUWS2fFdwUVwmpqN7xD
-	kMFCsQvX3FVbm8iPdoI2M6K0Dx9d1HgrE9UoGRJelQ==
-X-Google-Smtp-Source: ABdhPJzeX9nxsXA3Zu7wxZMKFugqzwy3MnzLxu2GT5SKfmIE4H+3rsuLUjVpi+jCAWejZXkG9uDyiRHh1AF4zIqmMME=
-X-Received: by 2002:a50:a1e7:: with SMTP id 94mr23236130edk.165.1592948903362;
- Tue, 23 Jun 2020 14:48:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200623201745.GG21350@casper.infradead.org>
-In-Reply-To: <20200623201745.GG21350@casper.infradead.org>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 23 Jun 2020 14:48:12 -0700
-Message-ID: <CAPcyv4jDfm10pGBJHJYA_=C0-+JMor-r7ViAJSJ=u4ZW0FqAow@mail.gmail.com>
-Subject: Re: [RFC] Make the memory failure blast radius more precise
+	by ml01.01.org (Postfix) with ESMTPS id 4CF6010112D6F
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 15:04:14 -0700 (PDT)
+IronPort-SDR: U9kv5chmiQUqqkGERxmi9CujktzHSVnEAxE7LOog2Ax+ZEPEOv92a7E8yn/pWCesAUYOVhCmul
+ QUzoHVNYx4SA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9661"; a="144275920"
+X-IronPort-AV: E=Sophos;i="5.75,272,1589266800";
+   d="scan'208";a="144275920"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 15:04:13 -0700
+IronPort-SDR: U6/VHjLAHIDc7wJRSFOh4hSGDw0bnpwNPm+jz2L51Xa0Aqu/d+FkkroMJB2muFI0l5naqfsMkJ
+ WAGdzb25lOxA==
+X-IronPort-AV: E=Sophos;i="5.75,272,1589266800";
+   d="scan'208";a="478904509"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2020 15:04:13 -0700
+Date: Tue, 23 Jun 2020 15:04:12 -0700
+From: "Luck, Tony" <tony.luck@intel.com>
 To: Matthew Wilcox <willy@infradead.org>
-Message-ID-Hash: 5EZNR7642M2U75XWVS37ZCU6PXZAAYF3
-X-Message-ID-Hash: 5EZNR7642M2U75XWVS37ZCU6PXZAAYF3
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-edac@vger.kernel.org, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, david <david@fromorbit.com>
+Subject: Re: [RFC] Make the memory failure blast radius more precise
+Message-ID: <20200623220412.GA21232@agluck-desk2.amr.corp.intel.com>
+References: <20200623201745.GG21350@casper.infradead.org>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200623201745.GG21350@casper.infradead.org>
+Message-ID-Hash: F3VU6STVQCH77WKKC3X5ANCPHJS4NW6V
+X-Message-ID-Hash: F3VU6STVQCH77WKKC3X5ANCPHJS4NW6V
+X-MailFrom: tony.luck@intel.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Borislav Petkov <bp@alien8.de>, Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-edac@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, "Darrick J. Wong" <darrick.wong@oracle.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5EZNR7642M2U75XWVS37ZCU6PXZAAYF3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F3VU6STVQCH77WKKC3X5ANCPHJS4NW6V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,14 +55,13 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Jun 23, 2020 at 1:18 PM Matthew Wilcox <willy@infradead.org> wrote:
->
->
+On Tue, Jun 23, 2020 at 09:17:45PM +0100, Matthew Wilcox wrote:
+> 
 > Hardware actually tells us the blast radius of the error, but we ignore
 > it and take out the entire page.  We've had a customer request to know
 > exactly how much of the page is damaged so they can avoid reconstructing
 > an entire 2MB page if only a single cacheline is damaged.
->
+> 
 > This is only a strawman that I did in an hour or two; I'd appreciate
 > architectural-level feedback.  Should I just convert memory_failure() to
 > always take an address & granularity?  Should I create a struct to pass
@@ -82,23 +69,23 @@ On Tue, Jun 23, 2020 at 1:18 PM Matthew Wilcox <willy@infradead.org> wrote:
 > pieces in half a dozen functions?  Is this functionality welcome at all,
 > or is the risk of upsetting applications which expect at least a page
 > of granularity too high?
->
-> I can see places where I've specified a plain PAGE_SHIFT insted of
-> interrogating a compound page for its size.  I'd probably split this
-> patch up into two or three pieces for applying.
->
-> I've also blindly taken out the call to unmap_mapping_range().  Again,
-> the customer requested that we not do this.  That deserves to be in its
-> own patch and properly justified.
 
-I had been thinking that we could not do much with the legacy
-memory-failure reporting model and that applications that want a new
-model would need to opt-into it. This topic also dovetails with what
-Dave and I had been discussing in terms coordinating memory error
-handling with the filesystem which may have more information about
-multiple mappings of a DAX page (reflink) [1].
+What is the interface to these applications that want finer granularity?
 
-[1]: http://lore.kernel.org/r/20200311063942.GE10776@dread.disaster.area
+Current code does very poorly with hugetlbfs pages ... user loses the
+whole 2 MB or 1GB. That's just silly (though I've been told that it is
+hard to fix because allowing a hugetlbfs page to be broken up at an arbitrary
+time as the result of a mahcine check means that the kernel needs locking
+around a bunch of fas paths that currently assume that a huge page will
+stay being a huge page).
+
+For sub-4K page usage, there are different problems. We can't leave the
+original page with the poisoned cache line mapped to the user as they may
+just access the poison data and trigger another machine check. But if we
+map in some different page with all the good bits copied, the user needs
+to be aware which parts of the page no longer have their data.
+
+-Tony
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
