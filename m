@@ -2,78 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A1952051AC
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Jun 2020 14:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1349C2055A4
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 23 Jun 2020 17:17:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BBFCF10FC3C35;
-	Tue, 23 Jun 2020 05:02:17 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com; envelope-from=bakert.jg@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9E51710FC3777
-	for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 05:02:14 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id e12so4220884qtr.9
-        for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 05:02:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=UJLFqH+nz6JL18vmMp9AOPI2FroC31pq+teAwHPNar1eiBQ9Yy+80ms5K4v1/p3T2J
-         L2/VBlv2V7VfKE4rYCdbWJvLLZVc6lYLnv+fXOe3DKiEunpb4W19D97rUv9DtkFDrPR6
-         bxx9SCKFFR7oxS5wyOawR10NgiPx7iNPtQtk1jgGWBrP8t2WHU3s2Svu9XywyJgiovqp
-         l3N+/UeaWFg1/B0rDgEZev7snS4P5yMRqccSmgr8wtgvtp7SCEkaeMIuLfVC1abYn28a
-         0lOm8r0Y3ORb/ecNi+nwJO1PSdlC3wO2gaNbjCYRAGTYyl1dNKtQmi5TFLPwZkpxG3z2
-         jLVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=RGvwSaB56oMfOAHc191uIrbXhronbB+DfQ8JaMM6DqIPKBHbR/a5H7jRsE49XXL9ZP
-         hLw0843l6o2ojT+6aZek9JxJReSRBY+fPhydunaJfQLmjdi2wvohZLN+EjGAgHrQxNVI
-         csE6IS8b0Dt6nYPz02mgHikoIfVzcBDuRnB/xMnPT4H/g2vquzutqBEYbXB+NbnxSh8/
-         b20sVs0+phdo5QeE1i5ixnoyPAk94/Q7l1J8/Gcagp25VP6W5Kodxk9RMpAreE4k/2+y
-         P/mlu+PeOVRurZ1CsU/tHwnhCj74wv5yTOmDZ+B62ryTU0ukUgQO28oC2O+HOHzIIFNY
-         Ictg==
-X-Gm-Message-State: AOAM532dtD/MvOEeEs0/PLzMZBwyifLGhE0Id9g6c3hKf8Xp61sbxfJA
-	ctYmyrM+PLfDFIdR773RZXXfFlgMSKenEnJaBi0=
-X-Google-Smtp-Source: ABdhPJy9hL0j/lhNbfcB00DeOK7b0U4zsoic5mnnMbHNRRfvtq2YEG4GVY9xM4euUA/qj/6OFeVzDzuTpkOX9D54k0k=
-X-Received: by 2002:ac8:2fb0:: with SMTP id l45mr20693117qta.260.1592913733005;
- Tue, 23 Jun 2020 05:02:13 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4D36A10FC3713;
+	Tue, 23 Jun 2020 08:17:00 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=122.238.19.6; helo=slid.com; envelope-from=wvjnn@keley.com; receiver=<UNKNOWN> 
+Received: from slid.com (unknown [122.238.19.6])
+	by ml01.01.org (Postfix) with ESMTP id 29616100978D9
+	for <linux-nvdimm@lists.01.org>; Tue, 23 Jun 2020 08:16:56 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Tue, 23 Jun 2020 21:23:58 +0800
+Message-ID: f689ce4c-e8f2-4b28-a065-84829abcb516
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:02:12
- -0700 (PDT)
-From: YAVUZ BEKTER <bakert.jg@gmail.com>
-Date: Tue, 23 Jun 2020 05:02:12 -0700
-Message-ID: <CAAUSuTW=r1zPYsLsMYZRnSyv_sPyVA3dnZKNBmSk5AVRmY-kDQ@mail.gmail.com>
-Subject: Hello.
-To: undisclosed-recipients:;
-Message-ID-Hash: BZYVV6NZ7RWRUIAYQYRHQEUS6WQAKPVR
-X-Message-ID-Hash: BZYVV6NZ7RWRUIAYQYRHQEUS6WQAKPVR
-X-MailFrom: bakert.jg@gmail.com
+Sender: "Eason" <wvjnn@keley.com>
+From: "Eason" <lona@lonasign.com>
+To: linux-nvdimm@lists.01.org
+Date: 23 Jun 2020 21:23:58 +0800
+Subject: Tarpaulin
+Message-ID-Hash: YVCOMBR7D5XCZEEYSESNNW3HG2B6VAIN
+X-Message-ID-Hash: YVCOMBR7D5XCZEEYSESNNW3HG2B6VAIN
+X-MailFrom: wvjnn@keley.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: bektery@outlook.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BZYVV6NZ7RWRUIAYQYRHQEUS6WQAKPVR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YVCOMBR7D5XCZEEYSESNNW3HG2B6VAIN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCkRlYXIgTWFuYWdlckhvdyBhcmUgeW91ISZuYnNwO1RoaXMgaXMgSEFJTklORyBMT05BIENP
+QVRFRCBNQVRFUklBTCBDTy4sTFREV2Vic2l0ZTombmJzcDsmbmJzcDtodHRwczovL2xvbmF0YXJw
+YXVsaW4uZW4uYWxpYmFiYS5jb20mbmJzcDtPdXIgRmFjdG9yIG1ham9yIHByb2R1Y2UgcHZjIGNv
+YXRlZCBmYWJyaWMsIHB1IGNvYXRlZCBmYWJyaWMgYW5kIHB2YyBtZXNoLlBWQyBDb2F0ZWQgRmFi
+cmljJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IHVzZWQgZm9yIFRlbnRzLCZuYnNwOyBCYWdzLCZu
+YnNwOyBUcnVjayBjb3ZlciAuLi4oQm9keSBCYWcpUFUmbmJzcDsmbmJzcDsgQ29hdGVkJm5ic3A7
+IEZhYnJpYyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyB1c2VkIGZvciBTcG9ydCB3ZWFyLCBHYXJt
+ZW50cywgU3dpbW1pbmcgQ2FwLi4uUFZDIENvYXRlZCBNZXNoOiZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyB1c2VkIGZvciBGaXJlIHByZXZlbnRpb24gbmV0IHdvcmtXZSBsaWtlIHRvIGVzdGFibGlz
+aCBnb29kIGJ1c2luZXNzIHJlbGF0aW9ucyB3aXRoIHlvdSBpbiB0aGUgZnV0dXJlLlJlZ2FyZHNF
+YXNvbg0K5pyX5pyX5raC5bGCOiDkvpvlupRQVkPlpLnnvZHluIMs566x5YyF5biDLiDlpoLmnpzp
+nIDmsYLor7fkuI7miJHmlrnogZTns7suDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLUhBSU5JTkcgTE9O
+QSBDT0FURUQgTUFURVJJQUwgQ08uLExUREFkZDogSG9uZ3FpIFJvYWQsIEhhaW5pbmcgV2FycCBL
+bml0aW5nIFpvbmUgWmhlamlhbmcgQ2hpbmEgUG9zdCBDb2RlOiAzMTQ0MTlQaG9uZSAmYW1wOyBX
+ZWNoYXQ6Jm5ic3A7IDAwODYtMTg5NjYzMDc3NzdXZWJzaXRlOiZuYnNwOyZuYnNwO2h0dHBzOi8v
+bG9uYXRhcnBhdWxpbi5lbi5hbGliYWJhLmNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
+ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
+dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
