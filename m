@@ -1,102 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CEE2079AB
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Jun 2020 18:56:41 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434AE207A56
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 24 Jun 2020 19:33:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B435510FC546F;
-	Wed, 24 Jun 2020 09:56:39 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.223.51; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=rajesh.ananth@smartm.com; receiver=<UNKNOWN> 
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2051.outbound.protection.outlook.com [40.107.223.51])
+	by ml01.01.org (Postfix) with ESMTP id 9320A10FC574F;
+	Wed, 24 Jun 2020 10:33:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 80E8510FC546F
-	for <linux-nvdimm@lists.01.org>; Wed, 24 Jun 2020 09:56:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AWpsVkFmFcSiqTpo7p+TLhUld3DFuxvrtH1o7dttY38SpMfHkkyb2J5rpjcCPgiR4d26B73BRop0aqsmBvLmlGsNrH5tILq9qpPkaHrPvqsYkHflLj9QSYvT2SUQ81rm8bvlRX25dHGz6Mot1G+r6vlGpOAsHlmkz+3gnDQYU7fukDNtd/iTxkQBt0M2ah5dlojx+kJnRFqTFVSwnMzuD67FP7CmWg94HdrerlFs6YCvlx6sFQTTxUvgIJCErKLUQnKWw9wGv9aQa4kVhyZft6iMeFV/tD60iOZFAMZhHWylHBc+Zg6yIzdcfxDoCqmoYik250dXdpPR7imwrpAhNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eV+Zup60HHp0AtJFuDC3FFzPaizj+D3TVzPm+3mL4qk=;
- b=fQz2es5yXKdc9nLDTySHJRvIysgBCkh+IRhos4v7x7y5mGX+hf7boOsxILsOYXAJC0aHWHkTBUwyxpN+EOF9D+tTDGYY0E+aL5CsP2q2viP0Ur8QfVXsmXTKOBkWXymqMAfeCll93W4AcALsyIsn5mk+dIOe4p3lDkQdRs+RI1RUhxBXqCAhBYdnmmRDflrC5Fug8AqaGCbXuyn8hknd2yvedbpmdKKxq1WTlUzHwUkknpZ7cXvb9x/CHZkYDltAmNeGZa9UyaHb9NEJ6QLgpdnpGcs/egtiLwtvCYckVFlweBqlnCw7nJz7v42JuoiD+gSsO8cb9UY7XARfyFwHOg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=smartm.com; dmarc=pass action=none header.from=smartm.com;
- dkim=pass header.d=smartm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smartm.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eV+Zup60HHp0AtJFuDC3FFzPaizj+D3TVzPm+3mL4qk=;
- b=ROtjFs32tIsV8PXloDJF0v5BZbUsj1eyfWgzA/wVZl4qkHf+pMJ8igJmM3plFmm1jYMJMz5AhAwrW3GxrGLGrWZk9U5uSIkyTJ0R3ZqngVrAns5CKY1MZAvxT1u9vTCa443G6xD72ICfhI7aeecAbenCPpdU8Rq4chtuXuTsHQI=
-Received: from BYAPR04MB4310.namprd04.prod.outlook.com (2603:10b6:a02:f0::13)
- by BYAPR04MB5816.namprd04.prod.outlook.com (2603:10b6:a03:10e::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3109.24; Wed, 24 Jun
- 2020 16:56:35 +0000
-Received: from BYAPR04MB4310.namprd04.prod.outlook.com
- ([fe80::c9ea:3cc4:bce4:44ea]) by BYAPR04MB4310.namprd04.prod.outlook.com
- ([fe80::c9ea:3cc4:bce4:44ea%7]) with mapi id 15.20.3109.027; Wed, 24 Jun 2020
- 16:56:35 +0000
-From: "Ananth, Rajesh" <Rajesh.Ananth@smartm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: RE: Question on PMEM regions (Linux 4.9 Kernel & above)
-Thread-Topic: Question on PMEM regions (Linux 4.9 Kernel & above)
-Thread-Index: 
- AdZGj7xlb1bNOIhzRnee4sCHW/WtkQAAmrCAAAAutkAAASDdgAADMNMAAANhXgAA5ZJXkA==
-Date: Wed, 24 Jun 2020 16:56:34 +0000
-Message-ID: 
- <BYAPR04MB4310ECFFE5328E80E8DF5CDB94950@BYAPR04MB4310.namprd04.prod.outlook.com>
-References: 
- <BYAPR04MB4310650471DD3C25D77BEA6394980@BYAPR04MB4310.namprd04.prod.outlook.com>
- <CAPcyv4jDgD82S9VHWb-P5iP+UH-gqdsYcNmA=aMFNhKrdSEUqg@mail.gmail.com>
- <BYAPR04MB4310B8A76F318E50237447E294980@BYAPR04MB4310.namprd04.prod.outlook.com>
- <CAPcyv4gLX1p5Amz_9V7SGurX+aTQfmPdTp8DSTm53u2Qgtgj=A@mail.gmail.com>
- <BYAPR04MB4310B35B8E6A7D66DEB78C0194990@BYAPR04MB4310.namprd04.prod.outlook.com>
- <CAPcyv4g3dtqL6SUfwVd7L6h-pFM+wgJYAXBBaRLq447zdHrtAQ@mail.gmail.com>
-In-Reply-To: 
- <CAPcyv4g3dtqL6SUfwVd7L6h-pFM+wgJYAXBBaRLq447zdHrtAQ@mail.gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=smartm.com;
-x-originating-ip: [65.249.22.10]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 34224011-7713-48ba-b20f-08d8185f8da1
-x-ms-traffictypediagnostic: BYAPR04MB5816:
-x-microsoft-antispam-prvs: 
- <BYAPR04MB581659B470144E07CFF30EF894950@BYAPR04MB5816.namprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0444EB1997
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- lThdFEPIzj9TiXgHdQoMZPK1RkhtK25fRy/LxDzCGvZtAxzN4JTto5FX2GvkawodjvcS0ZOKPlDkV17s2cCgJ8S70dO0OAaf1GlZ9bVeoH2/2NKq//aLS6KvRvbi9ywBrD/X2m/l1ZHZCRr+13YGqpLwafiAbzTa4nbtSkOZsBLS1kT8d0Q2az7t0VuiqQbHzdlzV74vuhCEp3qdc7C1zx8cpfIW0KiRlv/J39PKN9TMWiA8DklUuHyWnhxnFxazhCzoiqjy5l6s8aMxUaVMTODukrgdsX8OEzberOxnUi6qWQDFV+5B9QDun2tTjb1ZrjLy3ywychBqg7/mIczvlw==
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR04MB4310.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(39850400004)(366004)(376002)(136003)(346002)(8936002)(316002)(186003)(8676002)(26005)(6916009)(6506007)(71200400001)(9686003)(55016002)(66446008)(53546011)(66946007)(64756008)(76116006)(83380400001)(7696005)(4326008)(2906002)(66556008)(86362001)(66476007)(5660300002)(33656002)(52536014)(478600001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 
- UU0OVZZTat0BAdRfqTqeeqM5eALlb9PZ9GqdIl01pIAdaveTbOIUaatfDCVqBRWB2HoXO99PA4vE2xc/NG+nMqBiagUmFGmzopEZk2WTWgtMSgED3Khlszmu6PVyaQ1GwSXY/O9+CMaaUGM0S2onu5rTazYxDmIlBprMqjirYC0SWmYL2UJyrWmr2ljd6VmiZISyvssrrNs0uPqvyp4CQhFwCdv4uzwo4+60PMLIeqt+6Q39GePwjdAQjA/aIkKWAIHnLy75H68LhAARhAJkklXYP2ZpO6O4esqsjvuAJITiPgDFXUp5utFwmRcbOE02O+S9CQD9RINyZGFnBKGhd5UFimAb3oH62RzzHyhYKcpWbSf2sJCYeGqqQc4//Vw94PfU8wL/y6k58iASehkj68gPgrIjRd50TZcaD9a+ummlh8APFDKeSBs50gahYPursytW3KyuxngF/XXb2IiHLx/hfOC033xL+FgNVmNzX+U=
-x-ms-exchange-transport-forked: True
+	by ml01.01.org (Postfix) with ESMTPS id 9468A10096677
+	for <linux-nvdimm@lists.01.org>; Wed, 24 Jun 2020 10:33:09 -0700 (PDT)
+IronPort-SDR: u6QuLAXmEHr5PRk++K4WkL/IJ4KJWVIf/4i8u2nSh5rdjz9UMSVKjFPvSunm//wq/CKVt0VnoE
+ lk4u2KlFR+Gg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9662"; a="142046891"
+X-IronPort-AV: E=Sophos;i="5.75,276,1589266800";
+   d="scan'208";a="142046891"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2020 10:33:08 -0700
+IronPort-SDR: tXC23ij2tXFF9QHa/eFTjQQ5eOwfI/v+yPIUywXfenskBRNh05IiK6FfWBwhGFlHoGMW82+3Iw
+ M3XdOSnC3SKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,276,1589266800";
+   d="scan'208";a="293616691"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by orsmga002.jf.intel.com with ESMTP; 24 Jun 2020 10:33:07 -0700
+Date: Wed, 24 Jun 2020 10:33:07 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/papr_scm: Fetch nvdimm performance stats
+ from PHYP
+Message-ID: <20200624173307.GG2617015@iweiny-DESK2.sc.intel.com>
+References: <20200622042451.22448-1-vaibhav@linux.ibm.com>
+ <20200622042451.22448-2-vaibhav@linux.ibm.com>
+ <20200623190255.GG3910394@iweiny-DESK2.sc.intel.com>
+ <877dvwo6ha.fsf@linux.ibm.com>
 MIME-Version: 1.0
-X-OriginatorOrg: smartm.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34224011-7713-48ba-b20f-08d8185f8da1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2020 16:56:34.7550
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: f0fd7909-cd13-4779-b0f9-5ced6b7a2c68
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yE061X2usZUwfqbqDVV8MDINiunj2tchi9D9MgZkPmy4e4NLpc2oo/dsHELDqrvBDGBFSVBM6HEdBUGAVC48Ar+eGrhGrcDuAp7HXZLhUk0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB5816
-Message-ID-Hash: OFLK6JJHNITCUSZZQBJQEP6IIQXXRK3X
-X-Message-ID-Hash: OFLK6JJHNITCUSZZQBJQEP6IIQXXRK3X
-X-MailFrom: Rajesh.Ananth@smartm.com
+Content-Disposition: inline
+In-Reply-To: <877dvwo6ha.fsf@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: UWBFWUGE3CPX776UJOKJYT7RYPE3WEV7
+X-Message-ID-Hash: UWBFWUGE3CPX776UJOKJYT7RYPE3WEV7
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4B2EVUE2V3GVPPYK2IHW52FAHRD25U6V/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UWBFWUGE3CPX776UJOKJYT7RYPE3WEV7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -105,85 +60,326 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Thank you so much  for the details you provided.  We are working with our BIOS vendors to resolve the problem.
+On Wed, Jun 24, 2020 at 08:28:57PM +0530, Vaibhav Jain wrote:
+> Thanks for reviewing this patch Ira,
+> 
+> My responses below inline.
+> 
+> Ira Weiny <ira.weiny@intel.com> writes:
+> 
+> > On Mon, Jun 22, 2020 at 09:54:50AM +0530, Vaibhav Jain wrote:
+> >> Update papr_scm.c to query dimm performance statistics from PHYP via
+> >> H_SCM_PERFORMANCE_STATS hcall and export them to user-space as PAPR
+> >> specific NVDIMM attribute 'perf_stats' in sysfs. The patch also
+> >> provide a sysfs ABI documentation for the stats being reported and
+> >> their meanings.
+> >> 
+> >> During NVDIMM probe time in papr_scm_nvdimm_init() a special variant
+> >> of H_SCM_PERFORMANCE_STATS hcall is issued to check if collection of
+> >> performance statistics is supported or not. If successful then a PHYP
+> >> returns a maximum possible buffer length needed to read all
+> >> performance stats. This returned value is stored in a per-nvdimm
+> >> attribute 'len_stat_buffer'.
+> >> 
+> >> The layout of request buffer for reading NVDIMM performance stats from
+> >> PHYP is defined in 'struct papr_scm_perf_stats' and 'struct
+> >> papr_scm_perf_stat'. These structs are used in newly introduced
+> >> drc_pmem_query_stats() that issues the H_SCM_PERFORMANCE_STATS hcall.
+> >> 
+> >> The sysfs access function perf_stats_show() uses value
+> >> 'len_stat_buffer' to allocate a buffer large enough to hold all
+> >> possible NVDIMM performance stats and passes it to
+> >> drc_pmem_query_stats() to populate. Finally statistics reported in the
+> >> buffer are formatted into the sysfs access function output buffer.
+> >> 
+> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> >> ---
+> >>  Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 ++++
+> >>  arch/powerpc/platforms/pseries/papr_scm.c     | 139 ++++++++++++++++++
+> >>  2 files changed, 166 insertions(+)
+> >> 
+> >> diff --git a/Documentation/ABI/testing/sysfs-bus-papr-pmem b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> >> index 5b10d036a8d4..c1a67275c43f 100644
+> >> --- a/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> >> +++ b/Documentation/ABI/testing/sysfs-bus-papr-pmem
+> >> @@ -25,3 +25,30 @@ Description:
+> >>  				  NVDIMM have been scrubbed.
+> >>  		* "locked"	: Indicating that NVDIMM contents cant
+> >>  				  be modified until next power cycle.
+> >> +
+> >> +What:		/sys/bus/nd/devices/nmemX/papr/perf_stats
+> >> +Date:		May, 2020
+> >> +KernelVersion:	v5.9
+> >> +Contact:	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-nvdimm@lists.01.org,
+> >> +Description:
+> >> +		(RO) Report various performance stats related to papr-scm NVDIMM
+> >> +		device.  Each stat is reported on a new line with each line
+> >> +		composed of a stat-identifier followed by it value. Below are
+> >> +		currently known dimm performance stats which are reported:
+> >> +
+> >> +		* "CtlResCt" : Controller Reset Count
+> >> +		* "CtlResTm" : Controller Reset Elapsed Time
+> >> +		* "PonSecs " : Power-on Seconds
+> >> +		* "MemLife " : Life Remaining
+> >> +		* "CritRscU" : Critical Resource Utilization
+> >> +		* "HostLCnt" : Host Load Count
+> >> +		* "HostSCnt" : Host Store Count
+> >> +		* "HostSDur" : Host Store Duration
+> >> +		* "HostLDur" : Host Load Duration
+> >> +		* "MedRCnt " : Media Read Count
+> >> +		* "MedWCnt " : Media Write Count
+> >> +		* "MedRDur " : Media Read Duration
+> >> +		* "MedWDur " : Media Write Duration
+> >> +		* "CchRHCnt" : Cache Read Hit Count
+> >> +		* "CchWHCnt" : Cache Write Hit Count
+> >> +		* "FastWCnt" : Fast Write Count
+> >> \ No newline at end of file
+> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> index 9c569078a09f..cb3f9acc325b 100644
+> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> @@ -62,6 +62,24 @@
+> >>  				    PAPR_PMEM_HEALTH_FATAL |	\
+> >>  				    PAPR_PMEM_HEALTH_UNHEALTHY)
+> >>  
+> >> +#define PAPR_SCM_PERF_STATS_EYECATCHER __stringify(SCMSTATS)
+> >> +#define PAPR_SCM_PERF_STATS_VERSION 0x1
+> >> +
+> >> +/* Struct holding a single performance metric */
+> >> +struct papr_scm_perf_stat {
+> >> +	u8 statistic_id[8];
+> >> +	u64 statistic_value;
+> >> +};
+> >> +
+> >> +/* Struct exchanged between kernel and PHYP for fetching drc perf stats */
+> >> +struct papr_scm_perf_stats {
+> >> +	u8 eye_catcher[8];
+> >> +	u32 stats_version;		/* Should be 0x01 */
+> >                                                      ^^^^
+> > 				     PAPR_SCM_PERF_STATS_VERSION?
+> Sure. Will update in v2
+> 
+> >
+> >> +	u32 num_statistics;		/* Number of stats following */
+> >> +	/* zero or more performance matrics */
+> >> +	struct papr_scm_perf_stat scm_statistic[];
+> >> +} __packed;
+> >> +
+> >>  /* private struct associated with each region */
+> >>  struct papr_scm_priv {
+> >>  	struct platform_device *pdev;
+> >> @@ -89,6 +107,9 @@ struct papr_scm_priv {
+> >>  
+> >>  	/* Health information for the dimm */
+> >>  	u64 health_bitmap;
+> >> +
+> >> +	/* length of the stat buffer as expected by phyp */
+> >> +	size_t len_stat_buffer;
+> >>  };
+> >>  
+> >>  static int drc_pmem_bind(struct papr_scm_priv *p)
+> >> @@ -194,6 +215,75 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+> >>  	return drc_pmem_bind(p);
+> >>  }
+> >>  
+> >> +/*
+> >> + * Query the Dimm performance stats from PHYP and copy them (if returned) to
+> >> + * provided struct papr_scm_perf_stats instance 'stats' of 'size' in bytes.
+> >> + * The value of R4 is copied to 'out' if the pointer is provided.
+> >> + */
+> >> +static int drc_pmem_query_stats(struct papr_scm_priv *p,
+> >> +				struct papr_scm_perf_stats *buff_stats,
+> >> +				size_t size, unsigned int num_stats,
+> >> +				uint64_t *out)
+> >> +{
+> >> +	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> >> +	struct papr_scm_perf_stat *stats;
+> >> +	s64 rc, i;
+> >> +
+> >> +	/* Setup the out buffer */
+> >> +	if (buff_stats) {
+> >> +		memcpy(buff_stats->eye_catcher,
+> >> +		       PAPR_SCM_PERF_STATS_EYECATCHER, 8);
+> >> +		buff_stats->stats_version =
+> >> +			cpu_to_be32(PAPR_SCM_PERF_STATS_VERSION);
+> >> +		buff_stats->num_statistics =
+> >> +			cpu_to_be32(num_stats);
+> >> +	} else {
+> >> +		/* In case of no out buffer ignore the size */
+> >> +		size = 0;
+> >> +	}
+> >> +
+> >> +	/*
+> >> +	 * Do the HCALL asking PHYP for info and if R4 was requested
+> >> +	 * return its value in 'out' variable.
+> >> +	 */
+> >> +	rc = plpar_hcall(H_SCM_PERFORMANCE_STATS, ret, p->drc_index,
+> >> +			 virt_to_phys(buff_stats), size);
+> >
+> > You are calling virt_to_phys(NULL) here when called from
+> > papr_scm_nvdimm_init()!  That can't be right.
+> Thanks for cathing this. However if the 'size' is '0' the 'buff_stats'
+> address is ignored by the hypervisor hence this didnt get caught in my
+> tests. Though CONFIG_DEBUG_VIRTUAL would have caught it early.
+> 
+> >
+> >> +	if (out)
+> >> +		*out =  ret[0];
+> >> +
+> >> +	if (rc == H_PARTIAL) {
+> >> +		dev_err(&p->pdev->dev,
+> >> +			"Unknown performance stats, Err:0x%016lX\n", ret[0]);
+> >> +		return -ENOENT;
+> >> +	} else if (rc != H_SUCCESS) {
+> >> +		dev_err(&p->pdev->dev,
+> >> +			"Failed to query performance stats, Err:%lld\n", rc);
+> >> +		return -ENXIO;
+> >> +	}
+> >> +
+> >> +	/* Successfully fetched the requested stats from phyp */
+> >> +	if (size != 0) {
+> >> +		buff_stats->num_statistics =
+> >> +			be32_to_cpu(buff_stats->num_statistics);
+> >> +
+> >> +		/* Transform the stats buffer values from BE to cpu native */
+> >> +		for (i = 0, stats = buff_stats->scm_statistic;
+> >> +		     i < buff_stats->num_statistics; ++i) {
+> >> +			stats[i].statistic_value =
+> >> +				be64_to_cpu(stats[i].statistic_value);
+> >> +		}
+> >> +		dev_dbg(&p->pdev->dev,
+> >> +			"Performance stats returned %d stats\n",
+> >> +			buff_stats->num_statistics);
+> >> +	} else {
+> >> +		/* Handle case where stat buffer size was requested */
+> >> +		dev_dbg(&p->pdev->dev,
+> >> +			"Performance stats size %ld\n", ret[0]);
+> >> +	}
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >>  /*
+> >>   * Issue hcall to retrieve dimm health info and populate papr_scm_priv with the
+> >>   * health information.
+> >> @@ -631,6 +721,45 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+> >>  	return 0;
+> >>  }
+> >>  
+> >> +static ssize_t perf_stats_show(struct device *dev,
+> >> +			       struct device_attribute *attr, char *buf)
+> >> +{
+> >> +	int index, rc;
+> >> +	struct seq_buf s;
+> >> +	struct papr_scm_perf_stat *stat;
+> >> +	struct papr_scm_perf_stats *stats;
+> >> +	struct nvdimm *dimm = to_nvdimm(dev);
+> >> +	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+> >> +
+> >> +	if (!p->len_stat_buffer)
+> >> +		return -ENOENT;
+> >> +
+> >> +	/* Allocate the buffer for phyp where stats are written */
+> >> +	stats = kzalloc(p->len_stat_buffer, GFP_KERNEL);
+> >
+> > I'm concerned that this buffer does not seem to have anything to do with the
+> > 'num_stats' parameter passed to drc_pmem_query_stats().  Furthermore why is
+> > num_stats always 0 in those calls?
+> >
+> 'num_stats == 0' is a special case of the hcall where PHYP returns all
+> the possible stats in the 'stats' buffer.
 
--Rajesh
+So how does the above allocate ensure that the buffer length is big enough to
+cover all possible stats with this special case?
 
------Original Message-----
-From: Dan Williams [mailto:dan.j.williams@intel.com] 
-Sent: Friday, June 19, 2020 8:20 PM
-To: Ananth, Rajesh
-Cc: linux-nvdimm
-Subject: Re: Question on PMEM regions (Linux 4.9 Kernel & above)
+Ok I think I see that len_stat_buffer is set below after a query (presumably to
+the hardware).
 
-SMART Modular Security Checkpoint: External email. Please make sure you trust this source before clicking links or opening attachments.
+> 
+> >> +	if (!stats)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	/* Ask phyp to return all dimm perf stats */
+> >> +	rc = drc_pmem_query_stats(p, stats, p->len_stat_buffer, 0, NULL);
+> >> +	if (!rc) {
+> >> +		/*
+> >> +		 * Go through the returned output buffer and print stats and
+> >> +		 * values. Since statistic_id is essentially a char string of
+> >> +		 * 8 bytes, simply use the string format specifier to print it.
+> >> +		 */
+> >> +		seq_buf_init(&s, buf, PAGE_SIZE);
+> >> +		for (index = 0, stat = stats->scm_statistic;
+> >> +		     index < stats->num_statistics; ++index, ++stat) {
+> >> +			seq_buf_printf(&s, "%.8s = 0x%016llX\n",
+> >> +				       stat->statistic_id, stat->statistic_value);
+> >> +		}
+> >> +	}
+> >> +
+> >> +	kfree(stats);
+> >> +	return rc ? rc : seq_buf_used(&s);
+> >> +}
+> >> +DEVICE_ATTR_RO(perf_stats);
+> >> +
+> >>  static ssize_t flags_show(struct device *dev,
+> >>  			  struct device_attribute *attr, char *buf)
+> >>  {
+> >> @@ -676,6 +805,7 @@ DEVICE_ATTR_RO(flags);
+> >>  /* papr_scm specific dimm attributes */
+> >>  static struct attribute *papr_nd_attributes[] = {
+> >>  	&dev_attr_flags.attr,
+> >> +	&dev_attr_perf_stats.attr,
+> >>  	NULL,
+> >>  };
+> >>  
+> >> @@ -696,6 +826,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >>  	struct nd_region_desc ndr_desc;
+> >>  	unsigned long dimm_flags;
+> >>  	int target_nid, online_nid;
+> >> +	u64 stat_size;
+> >>  
+> >>  	p->bus_desc.ndctl = papr_scm_ndctl;
+> >>  	p->bus_desc.module = THIS_MODULE;
+> >> @@ -759,6 +890,14 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >>  		dev_info(dev, "Region registered with target node %d and online node %d",
+> >>  			 target_nid, online_nid);
+> >>  
+> >> +	/* Try retriving the stat buffer and see if its supported */
+> >> +	if (!drc_pmem_query_stats(p, NULL, 0, 0, &stat_size)) {
+> >> +		p->len_stat_buffer = (size_t)stat_size;
+> >> +		dev_dbg(&p->pdev->dev, "Max perf-stat size %lu-bytes\n",
+> >> +			p->len_stat_buffer);
+> >> +	} else {
+> >> +		dev_info(&p->pdev->dev, "Limited dimm stat info available\n");
+> >
+> > Do we really need this print?
+> nvdimm performance stats can be selectively turned on/off from the
+> hypervisor management console hence this info message is more like a
+> warning indicating that extended dimm stat info like 'fuel_gauge' is not
+> available.
 
-On Fri, Jun 19, 2020 at 7:02 PM Ananth, Rajesh <Rajesh.Ananth@smartm.com> wrote:
->
-> We used the Ubuntu 18.04 to get the "acpdump" outputs (This is the only complete package distribution we have. Otherwise, we use mainly the built Kernels).  The NFIT data is all valid, but somehow it is printing the "@ addresss" at the beginning as zeros.
->
-> =============================  acpdump -n NFIT  ========================================
->
-> NFIT @ 0x0000000000000000              <<<<  DON'T KNOW WHY.
+Ah... But this is saying that the stat info _is_ available?  ("info available")
 
-That's fine, acpixtract was still able to convert it... I see this
-from disassembling it:
+Should this be dev_warn(..., "... info not available\n")?
 
-acpixtract -s NFIT nfit.txt
-iasl -d nft.dat
-cat nfit.dsl
+Ira
 
-
-[000h 0000   4]                    Signature : "NFIT"    [NVDIMM
-Firmware Interface Table]
-[004h 0004   4]                 Table Length : 000001A4
-[008h 0008   1]                     Revision : 01
-[009h 0009   1]                     Checksum : 83
-[00Ah 0010   6]                       Oem ID : "ALASKA"
-[010h 0016   8]                 Oem Table ID : "A M I "
-[018h 0024   4]                 Oem Revision : 00000002
-[01Ch 0028   4]              Asl Compiler ID : "INTL"
-[020h 0032   4]        Asl Compiler Revision : 20091013
-
-[024h 0036   4]                     Reserved : 00000000
-
-[028h 0040   2]                Subtable Type : 0000 [System Physical
-Address Range]
-[02Ah 0042   2]                       Length : 0038
-
-[02Ch 0044   2]                  Range Index : 0001
-[02Eh 0046   2]        Flags (decoded below) : 0002
-                   Add/Online Operation Only : 0
-                      Proximity Domain Valid : 1
-[030h 0048   4]                     Reserved : 00000000
-[034h 0052   4]             Proximity Domain : 00000000
-[038h 0056  16]             Region Type GUID :
-66F0D379-B4F3-4074-AC43-0D3318B78CDB
-[048h 0072   8]           Address Range Base : 0000004080000000
-[050h 0080   8]         Address Range Length : 0000000400000000
-[058h 0088   8]         Memory Map Attribute : 0000000000008008
-[..]
-[0E0h 0224   2]                Subtable Type : 0000 [System Physical
-Address Range]
-[0E2h 0226   2]                       Length : 0038
-
-[0E4h 0228   2]                  Range Index : 0002
-[0E6h 0230   2]        Flags (decoded below) : 0002
-                   Add/Online Operation Only : 0
-                      Proximity Domain Valid : 1
-[0E8h 0232   4]                     Reserved : 00000000
-[0ECh 0236   4]             Proximity Domain : 00000000
-[0F0h 0240  16]             Region Type GUID :
-66F0D379-B4F3-4074-AC43-0D3318B78CDB
-[100h 0256   8]           Address Range Base : 0000004480000000
-[108h 0264   8]         Address Range Length : 0000000400000000
-[110h 0272   8]         Memory Map Attribute : 0000000000008008
-
-
-...so Linux is being handed an NFIT with 2 regions. So the 4.16
-interpretation looks correct to me. Are you sure you only changed
-kernel versions and did not also do a BIOS update? If not the 4.7
-result looks like a bug for this NFIT.
+> 
+> >
+> > Ira
+> >
+> >> +	}
+> >>  	return 0;
+> >>  
+> >>  err:	nvdimm_bus_unregister(p->bus);
+> >> -- 
+> >> 2.26.2
+> >> _______________________________________________
+> >> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> >> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+> 
+> -- 
+> Cheers
+> ~ Vaibhav
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
