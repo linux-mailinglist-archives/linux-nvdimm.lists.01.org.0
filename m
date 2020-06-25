@@ -2,125 +2,128 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9CD20A01B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Jun 2020 15:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3520A2D3
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Jun 2020 18:26:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8279410FCDC93;
-	Thu, 25 Jun 2020 06:36:45 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::e41; helo=mail-vs1-xe41.google.com; envelope-from=ginathompson2034@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com [IPv6:2607:f8b0:4864:20::e41])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8B1AE1003EFE5;
+	Thu, 25 Jun 2020 09:26:23 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1FF4510FC54C7
-	for <linux-nvdimm@lists.01.org>; Thu, 25 Jun 2020 06:36:43 -0700 (PDT)
-Received: by mail-vs1-xe41.google.com with SMTP id f24so3567259vsg.1
-        for <linux-nvdimm@lists.01.org>; Thu, 25 Jun 2020 06:36:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AsfmWHlmY1hf5RoZsp1JqUwmS/HKOOtA25m2BINWtYU=;
-        b=XdDapqz52RH1WXf/C2bSo5WDMujL+hIMybFHCZCmPe0OXiJY//L1awfT5BfQzRZWbp
-         c4hEiZ3OIvnDk7gc+m88mSMhV9TZUzGxSBqyBiZjOeh3PDmkt+gTNsqGrr8mSvkW8Z4o
-         Tceacl9fTXXYxGPVefCUQzW57eYAAGpRarJhiSv7U7in6/1gYF7Ue5jwcs1VzY8edCwl
-         2F+lcMV7WmHRbIC+heG4pHpUpSwdrdJIzCowjUyYGXDEIYrqfV1SUa0w2Xt9Db5PHrM+
-         qLmQNUshOp6kLVb4zZGPwnMPnm/7N2XTTo7712dQplLjnMLv+3vNN6O/Q1nd/n5RRtwo
-         5YwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AsfmWHlmY1hf5RoZsp1JqUwmS/HKOOtA25m2BINWtYU=;
-        b=gh+EjLzxvTNCPIFOLQbU9A4puDsfh9VkNrN/K2hmAcJYBQU4YJeEQT2+Qink+Xs8Md
-         oO+JJGpzRecBmurMPdt8rRpFAkC+F1gZ1cwkZPNIrCEIQzsAYdOAvrWT7CRPx58c6t2l
-         8at6QphhfThgYbt13ZTcGONzI9fPu26KY9ToGbnCGVIQ7TBF2DfnJvuyL38mKKVqHb+p
-         lL1Q5i9ry1Xs6hRp3cPgfy24zBdYuVQPg5i1Wbr65xA+8zPnCCxuBl1kFBfjIgcouMSD
-         3U0PK3/qTA3rocvI5dnLUmLKDlGJqztpW9aJtEcNs3gN99BIjq5n/VmajJhUh2POwXtD
-         5GDA==
-X-Gm-Message-State: AOAM532L0/+T8d6ChuMkoV4wXpubgu+MSkDjEPxY3GCofFydq0O2kfqQ
-	9LB+98kJSdr2+muJLxttAVUrG4a+3ZR7LIjH/W8=
-X-Google-Smtp-Source: ABdhPJzoXRu8od47h8I5E7BVk+B7iRIuQP2P/EbQwOgPtnPRWT+mQ/efLsbKdGEHEAVZontqZujAE8/waRtoYFYtz2I=
-X-Received: by 2002:a67:8b86:: with SMTP id n128mr30298692vsd.59.1593092202953;
- Thu, 25 Jun 2020 06:36:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 9393A1003EFE4
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Jun 2020 09:26:21 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PG7qRB176249;
+	Thu, 25 Jun 2020 16:26:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=u+J0urSX+VPS0JEyukwvvQzOKq9cJrq+hfdXkn5ldnA=;
+ b=n1zHCoNMnP6ZR3D0Xc25mVn17UPByoYPvWFElhYxTDlZMEj9pT3Nx98VHF+SDfbXjuv5
+ 3UBy/XijDQQ3fpqbgIfDEq8tI+cqYaOnAbUuI8wsftkhaODK9gpL/uhz87RFzVxQIMk1
+ 1B94FDBYPiR1BE4ObjHcKo4fwWiJivmpbk1oNhS99c/pX8N406zxLMTwXeuvOlidIzoV
+ 4gcYPLzhTFn5DfzgixJA4/sORyEYZQWNweZz6fzR8O8Lqiev1kNksh0gVQ9UskyQjsvG
+ bY3irJkjm8IvjcYg66s4dbzxGX+MGVDGREZWPJsN7rA4bdh5E9GUzjtcng1r9LUfBBS7 1A==
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+	by userp2120.oracle.com with ESMTP id 31uustsh3h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 25 Jun 2020 16:26:07 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PG9ROi063312;
+	Thu, 25 Jun 2020 16:24:07 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by userp3030.oracle.com with ESMTP id 31uurssrh4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 25 Jun 2020 16:24:07 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05PGO31n003645;
+	Thu, 25 Jun 2020 16:24:03 GMT
+Received: from [10.159.156.197] (/10.159.156.197)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Thu, 25 Jun 2020 16:24:03 +0000
+Subject: Re: [RFC] Make the memory failure blast radius more precise
+To: "Luck, Tony" <tony.luck@intel.com>, Matthew Wilcox <willy@infradead.org>
+References: <20200623201745.GG21350@casper.infradead.org>
+ <20200623220412.GA21232@agluck-desk2.amr.corp.intel.com>
+ <20200623221741.GH21350@casper.infradead.org>
+ <20200623222658.GA21817@agluck-desk2.amr.corp.intel.com>
+ <20200623224027.GI21350@casper.infradead.org>
+ <24367ca1-ecb0-de96-b9e5-f94747838c74@oracle.com>
+ <3908561D78D1C84285E8C5FCA982C28F7F67BB29@ORSMSX115.amr.corp.intel.com>
+From: Jane Chu <jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <5aecb2f9-413f-acbb-f2ea-be75589725c6@oracle.com>
+Date: Thu, 25 Jun 2020 09:23:57 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-From: gina thompson <ginathompson2034@gmail.com>
-Date: Thu, 25 Jun 2020 13:36:25 +0000
-Message-ID: <CAHBJkWF+SV8oizaA+BkXiVCXZA=rATxJGaFE6j8siCGjRs25Bw@mail.gmail.com>
-Subject: GOOD NEW FROM GINA THOMPSON!!
-To: undisclosed-recipients:;
-Message-ID-Hash: 76ZVTQBMYJRILFOWV2WHODJ46OKIF6DL
-X-Message-ID-Hash: 76ZVTQBMYJRILFOWV2WHODJ46OKIF6DL
-X-MailFrom: ginathompson2034@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F67BB29@ORSMSX115.amr.corp.intel.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
+ spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006250102
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ cotscore=-2147483648 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006250102
+Message-ID-Hash: LANSTJZOEVND2THSIAMF6V2IQXTBFROB
+X-Message-ID-Hash: LANSTJZOEVND2THSIAMF6V2IQXTBFROB
+X-MailFrom: jane.chu@oracle.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Borislav Petkov <bp@alien8.de>, Naoya Horiguchi <naoya.horiguchi@nec.com>, "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, David Rientjes <rientjes@google.com>, Mike Kravetz <mike.kravetz@oracle.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Peter Xu <peterx@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: ginathomson@ukr.net
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/76ZVTQBMYJRILFOWV2WHODJ46OKIF6DL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LANSTJZOEVND2THSIAMF6V2IQXTBFROB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-Mrs. Gina Thompson
-Manager Accounts/Audit Department.
-London United Kingdom,
-2000/2020 SCAM VICTIMS COMPENSATIONS PAYMENTS.
+On 6/24/2020 5:13 PM, Luck, Tony wrote:
+>> Both the RFC patch and the above 5-step recovery plan look neat, step 4)
+>> is nice to carry forward on icelake when a single instruction to clear
+>> poison is available.
+> 
+> Jane,
+> 
+> Clearing poison has some challenges.
+> 
+> On persistent memory it probably works (as the DIMM is going to remap that address to a different
+> part of the media to avoid the bad spot).
+> 
+> On DDR memory you'd need to decide whether the problem was transient, so that a simple
+> overwrite fixes the problem. Or persistent ... in which case the problem will likely come back
+> with the right data pattern.  To tell that you may need to run some memory test on the affected
+> area.
+> 
+> If the error was just in a 4K page, I'd be inclined to copy the good data to a new page and
+> map that in instead. Throwing away one 4K page isn't likely to be painful.
+> 
+> If it is in a 2M/1G page ... perhaps it is worth the effort and risk of trying to clear the poison
+> in place to avoid the pain of breaking up a large page.
 
-REF/PAYMENTS CODE: UBA/ZENITH BANK/055740 ($950,000.00USD.)
+Thanks!  Yes I was only thinking about persistent memory, but 
+memory_failure_dev_pagemap() applies to DDR as well depends on the 
+underlying technology. In our use case, even if the error was just in a 
+4K page, we'd like to clear the poison and reuse the page to maintain a 
+contiguous 256MB extent in the filesystem.  Perhaps it is better to 
+leave that to the filesystem and driver.
 
-This is to bring to your notice that we are delegated from the UNITED
-NATIONS in Central Bank to pay 150 victims of scam $950,000.00USD. (Nine
-hundred And Fifty Thousand United States Dollars Only each).You are listed
-and approved for this payment as one of the scammed victims to be paid this
-amount, get back to this office as soon as possible for the immediate
-payments of your $950,000.00USD. compensations funds.
+Regards,
+-jane
 
-On this faithful recommendations, I want you to know that during the last
-U.N. meetings, it was alarming on the money lost by various individuals to
-the scams artists operating in syndicates all over the world today. And In
-other to compensate victims, the UNITED NATIONS Body is now paying 150
-victims $950,000.00USD. USD each in accordance with the UNITED NATIONS
-recommendations.
-
-Due to the corrupt and inefficient Banking Systems, the payments are to be
-paid by UBA Bank and Zenith Bank plc which are the corresponding paying
-bank under funding assistance by BRITISH GOVERNMENT via ATM CARD, which
-will be delivered directly to your doorstep by the FedEx Dispatching
-Officer Mr. Edward P. Ambrose. Also, the benefactor of this compensation
-award will have to be first cleared and recommended for payment by the debt
-settlement office.
-
-According to the number of applicants at hand, 114 Beneficiaries has been
-paid, over a half of the victims are from the United States, we still have
-an outstanding of 36 scam victims left to be paid. Other victims who have
-not been contacted can submit their application as well for scrutiny and
-possible consideration.
-
-Please reconfirm to us your home address  to avoid any wrong delivery such
-as:- Reply to Email ginathomson@ukr.net
-
-(1) Your Full Name
-
-(2) Your Home address
-(3) Your Direct Phone Number
-(4) Age
-
-We will advise you on how to process and receive your payment within 48
-hours as soon as we get your response today with your reconfirmed
-information as requested above.
-
-Response with the required information for the immediate release of your
-payment to you within the next 48 hours.
-
-Thanks for your co-operation.
-Respectively
-
-Mrs. Gina Thompson
+> 
+> -Tony
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
