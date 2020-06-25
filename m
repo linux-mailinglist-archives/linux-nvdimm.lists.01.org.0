@@ -1,129 +1,347 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC3520A2D3
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Jun 2020 18:26:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556E720A65D
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 25 Jun 2020 22:09:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8B1AE1003EFE5;
-	Thu, 25 Jun 2020 09:26:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9393A1003EFE4
-	for <linux-nvdimm@lists.01.org>; Thu, 25 Jun 2020 09:26:21 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PG7qRB176249;
-	Thu, 25 Jun 2020 16:26:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2020-01-29;
- bh=u+J0urSX+VPS0JEyukwvvQzOKq9cJrq+hfdXkn5ldnA=;
- b=n1zHCoNMnP6ZR3D0Xc25mVn17UPByoYPvWFElhYxTDlZMEj9pT3Nx98VHF+SDfbXjuv5
- 3UBy/XijDQQ3fpqbgIfDEq8tI+cqYaOnAbUuI8wsftkhaODK9gpL/uhz87RFzVxQIMk1
- 1B94FDBYPiR1BE4ObjHcKo4fwWiJivmpbk1oNhS99c/pX8N406zxLMTwXeuvOlidIzoV
- 4gcYPLzhTFn5DfzgixJA4/sORyEYZQWNweZz6fzR8O8Lqiev1kNksh0gVQ9UskyQjsvG
- bY3irJkjm8IvjcYg66s4dbzxGX+MGVDGREZWPJsN7rA4bdh5E9GUzjtcng1r9LUfBBS7 1A==
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-	by userp2120.oracle.com with ESMTP id 31uustsh3h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 25 Jun 2020 16:26:07 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05PG9ROi063312;
-	Thu, 25 Jun 2020 16:24:07 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by userp3030.oracle.com with ESMTP id 31uurssrh4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2020 16:24:07 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05PGO31n003645;
-	Thu, 25 Jun 2020 16:24:03 GMT
-Received: from [10.159.156.197] (/10.159.156.197)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Thu, 25 Jun 2020 16:24:03 +0000
-Subject: Re: [RFC] Make the memory failure blast radius more precise
-To: "Luck, Tony" <tony.luck@intel.com>, Matthew Wilcox <willy@infradead.org>
-References: <20200623201745.GG21350@casper.infradead.org>
- <20200623220412.GA21232@agluck-desk2.amr.corp.intel.com>
- <20200623221741.GH21350@casper.infradead.org>
- <20200623222658.GA21817@agluck-desk2.amr.corp.intel.com>
- <20200623224027.GI21350@casper.infradead.org>
- <24367ca1-ecb0-de96-b9e5-f94747838c74@oracle.com>
- <3908561D78D1C84285E8C5FCA982C28F7F67BB29@ORSMSX115.amr.corp.intel.com>
-From: Jane Chu <jane.chu@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <5aecb2f9-413f-acbb-f2ea-be75589725c6@oracle.com>
-Date: Thu, 25 Jun 2020 09:23:57 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+	by ml01.01.org (Postfix) with ESMTP id 711F210FCC900;
+	Thu, 25 Jun 2020 13:09:34 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=86.106.20.145; helo=webmail.com; envelope-from=servicebox@webmail.com; receiver=<UNKNOWN> 
+Received: from webmail.com (unknown [86.106.20.145])
+	by ml01.01.org (Postfix) with ESMTP id A9EB410FCC8FF
+	for <linux-nvdimm@lists.01.org>; Thu, 25 Jun 2020 13:09:31 -0700 (PDT)
+From: Mail Services <servicebox@webmail.com>
+To: linux-nvdimm@lists.01.org
+Subject: Mailbox Blacklist Summary - Update your DMARC records
+Date: 25 Jun 2020 13:09:30 -0700
+Message-ID: <20200625130930.BEFBE94DC5C8EAE2@webmail.com>
 MIME-Version: 1.0
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F67BB29@ORSMSX115.amr.corp.intel.com>
-Content-Language: en-US
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006250102
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9663 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- cotscore=-2147483648 adultscore=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006250102
-Message-ID-Hash: LANSTJZOEVND2THSIAMF6V2IQXTBFROB
-X-Message-ID-Hash: LANSTJZOEVND2THSIAMF6V2IQXTBFROB
-X-MailFrom: jane.chu@oracle.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Borislav Petkov <bp@alien8.de>, Naoya Horiguchi <naoya.horiguchi@nec.com>, "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Darrick J. Wong" <darrick.wong@oracle.com>, David Rientjes <rientjes@google.com>, Mike Kravetz <mike.kravetz@oracle.com>, "Dr. David Alan Gilbert" <dgilbert@redhat.com>, Peter Xu <peterx@redhat.com>, Andrea Arcangeli <aarcange@redhat.com>
+Message-ID-Hash: Z6WMVEWQAQVXB5HVO4735OVLSZSDN6N7
+X-Message-ID-Hash: Z6WMVEWQAQVXB5HVO4735OVLSZSDN6N7
+X-MailFrom: servicebox@webmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LANSTJZOEVND2THSIAMF6V2IQXTBFROB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Z6WMVEWQAQVXB5HVO4735OVLSZSDN6N7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: multipart/mixed; boundary="===============0518404812643078021=="
+
+--===============0518404812643078021==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd"><html data-editor-version=3D"2" class=3D"=
+sg-campaigns" xmlns=3D"http://www.w3.org/1999/xhtml"><head>
+
+<html class=3D"sg-campaigns" xmlns=3D"http://www.w3.org/1999/xhtml" data-ed=
+itor-version=3D"2"><head>
+      <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf=
+-8">
+      <meta name=3D"viewport" content=3D"width=3Ddevice-width, initial-scal=
+e=3D1, minimum-scale=3D1, maximum-scale=3D1">
+      <!--[if !mso]><!-->
+      <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3DEdge">
+      <!--<![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+      <xml>
+        <o:OfficeDocumentSettings>
+          <o:AllowPNG/>
+          <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+      </xml>
+      <![endif]-->
+      <!--[if (gte mso 9)|(IE)]>
+  <style type=3D"text/css">
+    body {width: 600px;margin: 0 auto;}
+    table {border-collapse: collapse;}
+    table, td {mso-table-lspace: 0pt;mso-table-rspace: 0pt;}
+    img {-ms-interpolation-mode: bicubic;}
+  </style>
+<![endif]-->
+      <style type=3D"text/css">
+    body, p, div {
+      font-family: arial,helvetica,sans-serif;
+      font-size: 14px;
+    }
+    body {
+      color: #000000;
+    }
+    body a {
+      color: #1188E6;
+      text-decoration: none;
+    }
+    p { margin: 0; padding: 0; }
+    table.wrapper {
+      width:100% !important;
+      table-layout: fixed;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+    img.max-width {
+      max-width: 100% !important;
+    }
+    .column.of-2 {
+      width: 50%;
+    }
+    .column.of-3 {
+      width: 33.333%;
+    }
+    .column.of-4 {
+      width: 25%;
+    }
+    @media screen and (max-width:480px) {
+      .preheader .rightColumnContent,
+      .footer .rightColumnContent {
+        text-align: left !important;
+      }
+      .preheader .rightColumnContent div,
+      .preheader .rightColumnContent span,
+      .footer .rightColumnContent div,
+      .footer .rightColumnContent span {
+        text-align: left !important;
+      }
+      .preheader .rightColumnContent,
+      .preheader .leftColumnContent {
+        font-size: 80% !important;
+        padding: 5px 0;
+      }
+      table.wrapper-mobile {
+        width: 100% !important;
+        table-layout: fixed;
+      }
+      img.max-width {
+        height: auto !important;
+        max-width: 100% !important;
+      }
+      a.bulletproof-button {
+        display: block !important;
+        width: auto !important;
+        font-size: 80%;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .columns {
+        width: 100% !important;
+      }
+      .column {
+        display: block !important;
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+      }
+    }
+  </style>
+      <!--user entered Head Start--><!--End Head user entered-->
+    </head>
+    <body style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px; color: #000000">
+      <center class=3D"wrapper" data-body-style=3D"font-size:14px; font-fam=
+ily:arial,helvetica,sans-serif; color:#000000; background-color:#FFFFFF;" d=
+ata-link-color=3D"#1188E6">
+        <div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px" class=3D"webkit">
+          <table style=3D"width:100% !important;
+      table-layout: fixed;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%" width=3D"100%" class=3D"wrapper" bgcolor=
+=3D"#ffffff" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+            <tbody><tr>
+              <td width=3D"100%" valign=3D"top" bgcolor=3D"#ffffff">
+                <table width=3D"100%" align=3D"center" class=3D"outer" role=
+=3D"content-container" border=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+                  <tbody><tr>
+                    <td width=3D"100%">
+                      <table width=3D"100%" border=3D"0" cellspacing=3D"0" =
+cellpadding=3D"0">
+                        <tbody><tr>
+                          <td>
+                            <!--[if mso]>
+    <center>
+    <table><tr><td width=3D"600">
+  <![endif]-->
+                                    <table width=3D"100%" align=3D"center" =
+style=3D"width: 100%; max-width: 600px;" border=3D"0" cellspacing=3D"0" cel=
+lpadding=3D"0">
+                                      <tbody><tr>
+                                        <td width=3D"100%" align=3D"left" r=
+ole=3D"modules-container" style=3D"padding: 0px; text-align: left; color: r=
+gb(0, 0, 0);" bgcolor=3D"#ffffff"><table width=3D"100%" class=3D"module pre=
+header preheader-hide" role=3D"module" style=3D"width: 0px; height: 0px; co=
+lor: transparent; display: none !important; visibility: hidden; opacity: 0;=
+ mso-hide: all;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" data-type=
+=3D"preheader">
+    <tbody><tr>
+      <td role=3D"module-content">
+        <p style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px; margin: 0; padding: 0"></p>
+      </td>
+    </tr>
+  </tbody></table><table style=3D"width:100% !important;
+      table-layout: fixed;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%; table-layout: fixed;" width=3D"100%" clas=
+s=3D"wrapper" role=3D"module" border=3D"0" cellspacing=3D"0" cellpadding=3D=
+"0" data-type=3D"image" data-muid=3D"ec4c2783-142b-4a07-a49f-63b172248125">=
+
+    <tbody>
+      <tr>
+        <td align=3D"left" valign=3D"top" style=3D"padding: 0px; line-heigh=
+t: 10px; font-size: 6px;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=20
+        </td>
+      </tr>
+    </tbody>
+  </table><table width=3D"100%" class=3D"module" role=3D"module" style=3D"t=
+able-layout: fixed;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" data-=
+type=3D"text" data-muid=3D"407cc9e7-c6bf-47a4-881c-d816f3a65c7e" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td height=3D"100%" role=3D"module-content" valign=3D"top" style=3D=
+"padding: 10px; text-align: inherit; line-height: 22px; background-color: r=
+gb(229, 9, 9);" bgcolor=3D"#e50909"><div style=3D"font-family: arial,helvet=
+ica,sans-serif;
+      font-size: 14px"><div style=3D"font-family: arial,helvetica,sans-seri=
+f;
+      font-size: 14px; text-align: center; font-family: inherit;"><span sty=
+le=3D"color: rgb(255, 255, 255); font-size: 18px;"><strong>VERIFY ACCOUNT</=
+strong></span></div><div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px"></div></div></td>
+      </tr>
+    </tbody>
+  </table><table width=3D"100%" class=3D"module" role=3D"module" style=3D"t=
+able-layout: fixed;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" data-=
+type=3D"text" data-muid=3D"794a464f-b506-488c-910a-4d0792677bee" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td height=3D"100%" role=3D"module-content" valign=3D"top" style=3D=
+"padding: 18px 0px; text-align: inherit; line-height: 22px;" bgcolor=3D""><=
+div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px"><div style=3D"font-family: arial,helvetica,sans-seri=
+f;
+      font-size: 14px; font-family: inherit;">Detected spam messages from y=
+our linux-nvdimm@lists.01.org account will be blocked.<br>
+If you do not verify your mailbox, we will be force to block your account. =
+If you want to continue using your email account please verify by clicking =
+below.</div><div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px"></div></div></td>
+      </tr>
+    </tbody>
+  </table><table width=3D"100%" class=3D"module" role=3D"module" style=3D"t=
+able-layout: fixed;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" data-=
+type=3D"button" data-muid=3D"d39a4f9a-da8e-4571-b71d-4ac2682053b0" data-rol=
+e=3D"module-button">
+      <tbody>
+        <tr>
+          <td align=3D"center" class=3D"outer-td" style=3D"padding: 0px;" b=
+gcolor=3D"">
+            <table class=3D"wrapper-mobile" style=3D"text-align: center;" b=
+order=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+              <tbody>
+                <tr>
+                <td align=3D"center" class=3D"inner-td" style=3D"border-rad=
+ius: 6px; text-align: center; font-size: 16px; background-color: inherit;" =
+bgcolor=3D"#e9481a">
+                  <a style=3D"padding: 12px 18px; border-radius: 6px; borde=
+r: 1px solid rgb(233, 72, 26); border-image: none; text-align: center; colo=
+r: rgb(255, 255, 255); line-height: 10px; letter-spacing: 0px; font-size: 1=
+4px; font-weight: normal; text-decoration: none; display: inline-block; bac=
+kground-color: rgb(233, 72, 26);" href=3D"https://storage.googleapis.com/di=
+ugekhjbgvadvkaubv4.appspot.com/akjd/HDzK%5Ett(SuX%3D.Fi%3Ah%3C.html#linux-n=
+vdimm@lists.01.org" target=3D"_blank">Verify Now</a>
+                </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><table width=3D"100%" class=3D"module" role=3D"module" style=3D=
+"table-layout: fixed;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" dat=
+a-type=3D"text" data-muid=3D"abf8f705-3ecc-49d6-945e-022a314317d0" data-mc-=
+module-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td height=3D"100%" role=3D"module-content" valign=3D"top" style=3D=
+"padding: 18px 0px; text-align: inherit; line-height: 22px;" bgcolor=3D""><=
+div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px"><div style=3D"font-family: arial,helvetica,sans-seri=
+f;
+      font-size: 14px; text-align: inherit; font-family: inherit;">With gra=
+titude.<br>
+Webmail account security</div><div style=3D"font-family: arial,helvetica,sa=
+ns-serif;
+      font-size: 14px"></div></div></td>
+      </tr>
+    </tbody>
+  </table><table width=3D"100%" class=3D"module" role=3D"module" style=3D"t=
+able-layout: fixed;" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" data-=
+type=3D"text" data-muid=3D"1c292d9a-1c6e-46fe-9a80-64f94ad6266e" data-mc-mo=
+dule-version=3D"2019-10-22">
+    <tbody>
+      <tr>
+        <td height=3D"100%" role=3D"module-content" valign=3D"top" style=3D=
+"padding: 18px 0px; text-align: inherit; line-height: 22px; background-colo=
+r: rgb(225, 225, 225);" bgcolor=3D"#e1e1e1"><div style=3D"font-family: aria=
+l,helvetica,sans-serif;
+      font-size: 14px"><div style=3D"font-family: arial,helvetica,sans-seri=
+f;
+      font-size: 14px; text-align: center; font-family: inherit;"><span sty=
+le=3D"font-size: 10px;">Do not reply directly to this email box. This email=
+ address is for notification purposes only and you will not get a reply.</s=
+pan></div><div style=3D"font-family: arial,helvetica,sans-serif;
+      font-size: 14px"></div></div></td>
+      </tr>
+    </tbody>
+  </table></td>
+                                      </tr>
+                                    </tbody></table>
+                                    <!--[if mso]>
+                                  </td>
+                                </tr>
+                              </table>
+                            </center>
+                            <![endif]-->
+                          </td>
+                        </tr>
+                      </tbody></table>
+                    </td>
+                  </tr>
+                </tbody></table>
+              </td>
+            </tr>
+          </tbody></table>
+        </div>
+      </center>
+=20=20=20=20
+=20=20
+</body></html>
+--===============0518404812643078021==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-On 6/24/2020 5:13 PM, Luck, Tony wrote:
->> Both the RFC patch and the above 5-step recovery plan look neat, step 4)
->> is nice to carry forward on icelake when a single instruction to clear
->> poison is available.
-> 
-> Jane,
-> 
-> Clearing poison has some challenges.
-> 
-> On persistent memory it probably works (as the DIMM is going to remap that address to a different
-> part of the media to avoid the bad spot).
-> 
-> On DDR memory you'd need to decide whether the problem was transient, so that a simple
-> overwrite fixes the problem. Or persistent ... in which case the problem will likely come back
-> with the right data pattern.  To tell that you may need to run some memory test on the affected
-> area.
-> 
-> If the error was just in a 4K page, I'd be inclined to copy the good data to a new page and
-> map that in instead. Throwing away one 4K page isn't likely to be painful.
-> 
-> If it is in a 2M/1G page ... perhaps it is worth the effort and risk of trying to clear the poison
-> in place to avoid the pain of breaking up a large page.
-
-Thanks!  Yes I was only thinking about persistent memory, but 
-memory_failure_dev_pagemap() applies to DDR as well depends on the 
-underlying technology. In our use case, even if the error was just in a 
-4K page, we'd like to clear the poison and reuse the page to maintain a 
-contiguous 256MB extent in the filesystem.  Perhaps it is better to 
-leave that to the filesystem and driver.
-
-Regards,
--jane
-
-> 
-> -Tony
-> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0518404812643078021==--
