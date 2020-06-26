@@ -1,66 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7457020B87D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Jun 2020 20:41:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BC420B886
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Jun 2020 20:43:29 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B068210FE3541;
-	Fri, 26 Jun 2020 11:41:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	by ml01.01.org (Postfix) with ESMTP id 0715B11001AC1;
+	Fri, 26 Jun 2020 11:43:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BD23010FCC904
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:41:41 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id d15so7659861edm.10
-        for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:41:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 9684610FCC904
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:43:24 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id b15so7676091edy.7
+        for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0K5VPNdmXZlTpEK22Z0aFSoTEURNY4RlCyiO1qXhgPg=;
-        b=R11LKguwqjk59xIplUm8flq2KsUfM9ZSKQ+ue3XNEh3xaqcql/A1LqO8WqJ2Z0wMrV
-         Ja9C3T76hLGzXQ6SEL9dPdb9+PQ0VpDbwayD/jWxW/g5k+HEXyjnmM+GXQqOQL6QrmHN
-         80fH4SbcRIalhTYJvMKi+6WEIquUl4hGKjK3C9XqBwenis3qOqdrc1ThO/IggREuQAPh
-         vibdjUr77+63gg0nZo76QAHi1mMjwWr3+xjUamopUOg+V3bzZH+axB565gDM3tcVybn9
-         r7rWU4XpJuxXdpUBSDHlgtVca7Z5vuIkFCYvjvpWeWvJwehTcf10duJT2lsqPqEieNRr
-         Xd3Q==
+        bh=2fViRCPiGbmFQGGxHysM7A/NvrpkiAu6F1Ew2P8DlPc=;
+        b=S+ggohbfJIpW4SOtY2JQU7s9jtaYl1FmP4FczLGl76p7cr93CQt5d8sNohtmfXufOB
+         Jf2BVaclP0C52cTiBknVLTAvbRo0dU/8lhqa1Q/Ch00umrHCHfse21oXsot0DBaAg5+4
+         /FLfT5Xum/GeWU6Bmpeo5yLj/J9TlBoZtHP/jJKLg5Y94N3FcF7Q/fQvWCl8pFPLX6Ip
+         dZfE7yCO4fA4D3RtnowyY+XdZ7DdYOZOE74pYabr0SDyhZIMUBAdE0NLS3+FDWYzOYx0
+         V3bJcrugFwIxyQHfRH9Kz0DwteS2N4Nc/709Eogcccb5E6j5PG1yrJYuDqYQizRf/J/h
+         WXtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0K5VPNdmXZlTpEK22Z0aFSoTEURNY4RlCyiO1qXhgPg=;
-        b=KTz5cV2NLmfg8lplkMl4W91BKqsSgg14usGtLNzG4UlxCwGXuLUteV2MSxql0goQf1
-         ShVvEu59AF1cIrV4DmLmP6DbqFatKM+dAUf6pBAzM4LYoGUwOOfcId3Uzykap3q5w1Y0
-         H/wseqrcZwKQR0sU9lo3HZs+RnDMcnSH+a3uedVLK2AO85K3EyCWt+CkMerZYiP7OD6Z
-         zanPGUnp+y8/RPXE/hTZ9OdeVrrA1ahEDgS4aRmIGgjtJN1pYwhd/SYkTvhmJp/CPuX1
-         XUjJPK0aPC+XuL7v0NuEJPjb2NLranAtBLfA1BIhepusmZhG/0C4mL2Dw8ZyHAcf59JT
-         mdwg==
-X-Gm-Message-State: AOAM530thVH06ciZ0wNVr9LZH4CNsRCyiVXkrHgwjnLe8/Qk53B9bG1B
-	NZ26oJM+6fUxKkcS9go6I7lrktGqxcHl183pi6DByA==
-X-Google-Smtp-Source: ABdhPJyot1xiFZLUjntQDRxbUfJEXI+PfIkPQ6MlPsJnQU2vuAcJyNfh4brPbGRTQjAQygy+GdtrpLfUUTnFVLC1nCI=
-X-Received: by 2002:aa7:c24d:: with SMTP id y13mr4977457edo.123.1593196898995;
- Fri, 26 Jun 2020 11:41:38 -0700 (PDT)
+        bh=2fViRCPiGbmFQGGxHysM7A/NvrpkiAu6F1Ew2P8DlPc=;
+        b=rX5pKjZcsXKCpGxWiXcnky/skjj5239jRTz8PViZ935RfOJi+VJf73RgVqcvwH/de9
+         kFsaZ5L6jRuh3EPwzX1oEeq3j4M9PkWGV7VwN9DZSTsQC+XThL+ZkD06LM+Kd81R7Bun
+         v8XWOZTY3XhzznOpitUmnt/ARB83hP0mFuP9mz9Yq7ZwczbQV0DRYEAd3XNp6j6i5VT3
+         P7n8BfMu6g55c21pVHllrtTXlUnC7RJ19uCTCUwMpLECj1ccGkxEw6UBo/j6l1sbeoR+
+         XxJdPEDIXNyQiB0Z/RFafIBkcb1/LbkCwRYFCz6UpXfVKRZQbxmmhmeLVCxn4AL7HOau
+         D30g==
+X-Gm-Message-State: AOAM532oLtlDiclCm/K+uO7Qi40gIu4c4FtOG+Y/P1WaT4C9bjpcOYdn
+	dw6wXH3eAFvarPnW5Ia8KNEHIm6lbl9HtHxIKNz/pg==
+X-Google-Smtp-Source: ABdhPJwlQ42Qr7ZtTaRCNXZWEnGE4iSIeD4BD4JeqhE9xMkDCc8/N5pEp7pGYcJtNL5pMeodJb1BjK4hdu7J2sgv6EU=
+X-Received: by 2002:a50:d9cb:: with SMTP id x11mr4554546edj.93.1593197002827;
+ Fri, 26 Jun 2020 11:43:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher>
-In-Reply-To: <2788992.3K7huLjdjL@kreacher>
+References: <159312902033.1850128.1712559453279208264.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAJZ5v0h8Eg5_FVxz0COLDMK8cy72xxDk_2nFnXDJNUY-MvdBEQ@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h8Eg5_FVxz0COLDMK8cy72xxDk_2nFnXDJNUY-MvdBEQ@mail.gmail.com>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 26 Jun 2020 11:41:27 -0700
-Message-ID: <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com>
-Subject: Re: [RFT][PATCH v3 0/4] ACPI: ACPICA / OSL: Avoid unmapping ACPI
- memory inside of the AML interpreter
-To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Message-ID-Hash: 7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q
-X-Message-ID-Hash: 7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q
+Date: Fri, 26 Jun 2020 11:43:11 -0700
+Message-ID: <CAPcyv4jqShnZr1b0-upwWf8L3JjKtHox_pCuu229630rXGuLkg@mail.gmail.com>
+Subject: Re: [PATCH 00/12] ACPI/NVDIMM: Runtime Firmware Activation
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: 2ZENJ7YHOBNRRXDUU4EADX3XHRUYUV2X
+X-Message-ID-Hash: 2ZENJ7YHOBNRRXDUU4EADX3XHRUYUV2X
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Erik Kaneda <erik.kaneda@intel.com>, Rafael J Wysocki <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Bob Moore <robert.moore@intel.com>
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Pavel Machek <pavel@ucw.cz>, Stable <stable@vger.kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2ZENJ7YHOBNRRXDUU4EADX3XHRUYUV2X/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,59 +68,70 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 26, 2020 at 10:34 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+On Fri, Jun 26, 2020 at 7:22 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
 >
-> Hi All,
->
-> On Monday, June 22, 2020 3:50:42 PM CEST Rafael J. Wysocki wrote:
-> > Hi All,
+> On Fri, Jun 26, 2020 at 2:06 AM Dan Williams <dan.j.williams@intel.com> wrote:
 > >
-> > This series is to address the problem with RCU synchronization occurring,
-> > possibly relatively often, inside of acpi_ex_system_memory_space_handler(),
-> > when the namespace and interpreter mutexes are held.
+> > Quoting the documentation:
 > >
-> > Like I said before, I had decided to change the approach used in the previous
-> > iteration of this series and to allow the unmap operations carried out by
-> > acpi_ex_system_memory_space_handler() to be deferred in the first place,
-> > which is done in patches [1-2/4].
->
-> In the meantime I realized that calling syncrhonize_rcu_expedited() under the
-> "tables" mutex within ACPICA is not quite a good idea too and that there is no
-> reason for any users of acpi_os_unmap_memory() in the tree to use the "sync"
-> variant of unmapping.
->
-> So, unless I'm missing something, acpi_os_unmap_memory() can be changed to
-> always defer the final unmapping and the only ACPICA change needed to support
-> that is the addition of the acpi_os_release_unused_mappings() call to get rid
-> of the unused mappings when leaving the interpreter (module the extra call in
-> the debug code for consistency).
->
-> So patches [1-2/4] have been changed accordingly.
->
-> > However, it turns out that the "fast-path" mapping is still useful on top of
-> > the above to reduce the number of ioremap-iounmap cycles for the same address
-> > range and so it is introduced by patches [3-4/4].
->
-> Patches [3-4/4] still do what they did, but they have been simplified a bit
-> after rebasing on top of the new [1-2/4].
->
-> The below information is still valid, but it applies to the v3, of course.
->
-> > For details, please refer to the patch changelogs.
+> >     Some persistent memory devices run a firmware locally on the device /
+> >     "DIMM" to perform tasks like media management, capacity provisioning,
+> >     and health monitoring. The process of updating that firmware typically
+> >     involves a reboot because it has implications for in-flight memory
+> >     transactions. However, reboots are disruptive and at least the Intel
+> >     persistent memory platform implementation, described by the Intel ACPI
+> >     DSM specification [1], has added support for activating firmware at
+> >     runtime.
 > >
-> > The series is available from the git branch at
+> >     [1]: https://docs.pmem.io/persistent-memory/
 > >
-> >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
-> >  acpica-osl
+> > The approach taken is to abstract the Intel platform specific mechanism
+> > behind a libnvdimm-generic sysfs interface. The interface could support
+> > runtime-firmware-activation on another architecture without need to
+> > change userspace tooling.
 > >
-> > for easier testing.
+> > The ACPI NFIT implementation involves a set of device-specific-methods
+> > (DSMs) to 'arm' individual devices for activation and bus-level
+> > 'trigger' method to execute the activation. Informational / enumeration
+> > methods are also provided at the bus and device level.
+> >
+> > One complicating aspect of the memory device firmware activation is that
+> > the memory controller may need to be quiesced, no memory cycles, during
+> > the activation. While the platform has mechanisms to support holding off
+> > in-flight DMA during the activation, the device response to that delay
+> > is potentially undefined. The platform may reject a runtime firmware
+> > update if, for example a PCI-E device does not support its completion
+> > timeout value being increased to meet the activation time. Outside of
+> > device timeouts the quiesce period may also violate application
+> > timeouts.
+> >
+> > Given the above device and application timeout considerations the
+> > implementation defaults to hooking into the suspend path to trigger the
+> > activation, i.e. that a suspend-resume cycle (at least up to the syscore
+> > suspend point) is required.
 >
-> Also the series have been tested locally.
+> Well, that doesn't work if the suspend method for the system is set to
+> suspend-to-idle (for example, via /sys/power/mem_sleep), because the
+> syscore callbacks are not invoked in that case.
+>
+> Also you probably don't need the device power state toggling that
+> happens during regular suspend/resume (you may not want it even for
+> some devices).
+>
+> The hibernation freeze/thaw may be a better match and there is some
+> test support in there already that may be kind of co-opted for your
+> use case.
 
-Ok, I'm still trying to get the original reporter to confirm this
-reduces the execution time for ASL routines with a lot of OpRegion
-touches. Shall I rebuild that test kernel with these changes, or are
-the results from the original RFT still interesting?
+Hmm, yes I guess freeze should be sufficient to quiesce most
+device-DMA in the general case as applications will stop sending
+requests. I do expect some RDMA devices will happily keep on
+transmitting, but that likely will need explicit mitigation. It also
+appears the suspend callback for at least one RDMA device
+mlx5_suspend() is rather violent as it appears to fully teardown the
+device context, not just suspend operations.
+
+To be clear, what debug interface were you thinking I could glom onto
+to just trigger firmware-activate at the end of the freeze phase?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
