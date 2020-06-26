@@ -2,200 +2,126 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C777720B717
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Jun 2020 19:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7457020B87D
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 26 Jun 2020 20:41:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7CBF911001ABB;
-	Fri, 26 Jun 2020 10:34:16 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=79.96.170.134; helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN> 
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id B068210FE3541;
+	Fri, 26 Jun 2020 11:41:44 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B8DD010FE3541
-	for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 10:34:13 -0700 (PDT)
-Received: from 89-64-83-223.dynamic.chello.pl (89.64.83.223) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 69d62dc03bd9ee5c; Fri, 26 Jun 2020 19:34:10 +0200
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Dan Williams <dan.j.williams@intel.com>, Erik Kaneda <erik.kaneda@intel.com>
-Subject: [RFT][PATCH v3 4/4] ACPI: OSL: Implement acpi_os_map_memory_fast_path()
-Date: Fri, 26 Jun 2020 19:33:53 +0200
-Message-ID: <14649052.BMOpmyQVCI@kreacher>
-In-Reply-To: <2788992.3K7huLjdjL@kreacher>
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com> <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher>
+	by ml01.01.org (Postfix) with ESMTPS id BD23010FCC904
+	for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:41:41 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id d15so7659861edm.10
+        for <linux-nvdimm@lists.01.org>; Fri, 26 Jun 2020 11:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0K5VPNdmXZlTpEK22Z0aFSoTEURNY4RlCyiO1qXhgPg=;
+        b=R11LKguwqjk59xIplUm8flq2KsUfM9ZSKQ+ue3XNEh3xaqcql/A1LqO8WqJ2Z0wMrV
+         Ja9C3T76hLGzXQ6SEL9dPdb9+PQ0VpDbwayD/jWxW/g5k+HEXyjnmM+GXQqOQL6QrmHN
+         80fH4SbcRIalhTYJvMKi+6WEIquUl4hGKjK3C9XqBwenis3qOqdrc1ThO/IggREuQAPh
+         vibdjUr77+63gg0nZo76QAHi1mMjwWr3+xjUamopUOg+V3bzZH+axB565gDM3tcVybn9
+         r7rWU4XpJuxXdpUBSDHlgtVca7Z5vuIkFCYvjvpWeWvJwehTcf10duJT2lsqPqEieNRr
+         Xd3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0K5VPNdmXZlTpEK22Z0aFSoTEURNY4RlCyiO1qXhgPg=;
+        b=KTz5cV2NLmfg8lplkMl4W91BKqsSgg14usGtLNzG4UlxCwGXuLUteV2MSxql0goQf1
+         ShVvEu59AF1cIrV4DmLmP6DbqFatKM+dAUf6pBAzM4LYoGUwOOfcId3Uzykap3q5w1Y0
+         H/wseqrcZwKQR0sU9lo3HZs+RnDMcnSH+a3uedVLK2AO85K3EyCWt+CkMerZYiP7OD6Z
+         zanPGUnp+y8/RPXE/hTZ9OdeVrrA1ahEDgS4aRmIGgjtJN1pYwhd/SYkTvhmJp/CPuX1
+         XUjJPK0aPC+XuL7v0NuEJPjb2NLranAtBLfA1BIhepusmZhG/0C4mL2Dw8ZyHAcf59JT
+         mdwg==
+X-Gm-Message-State: AOAM530thVH06ciZ0wNVr9LZH4CNsRCyiVXkrHgwjnLe8/Qk53B9bG1B
+	NZ26oJM+6fUxKkcS9go6I7lrktGqxcHl183pi6DByA==
+X-Google-Smtp-Source: ABdhPJyot1xiFZLUjntQDRxbUfJEXI+PfIkPQ6MlPsJnQU2vuAcJyNfh4brPbGRTQjAQygy+GdtrpLfUUTnFVLC1nCI=
+X-Received: by 2002:aa7:c24d:: with SMTP id y13mr4977457edo.123.1593196898995;
+ Fri, 26 Jun 2020 11:41:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Message-ID-Hash: CCXVYPHRLVRLM3DCRBAXWJ636JFK36QT
-X-Message-ID-Hash: CCXVYPHRLVRLM3DCRBAXWJ636JFK36QT
-X-MailFrom: rjw@rjwysocki.net
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: rafael.j.wysocki@intel.com, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, Bob Moore <robert.moore@intel.com>
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher>
+In-Reply-To: <2788992.3K7huLjdjL@kreacher>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 26 Jun 2020 11:41:27 -0700
+Message-ID: <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com>
+Subject: Re: [RFT][PATCH v3 0/4] ACPI: ACPICA / OSL: Avoid unmapping ACPI
+ memory inside of the AML interpreter
+To: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Message-ID-Hash: 7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q
+X-Message-ID-Hash: 7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Erik Kaneda <erik.kaneda@intel.com>, Rafael J Wysocki <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Bob Moore <robert.moore@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CCXVYPHRLVRLM3DCRBAXWJ636JFK36QT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7GFAOCMEJERW6XNHHLJJZ7D52CQ5NU2Q/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+On Fri, Jun 26, 2020 at 10:34 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+>
+> Hi All,
+>
+> On Monday, June 22, 2020 3:50:42 PM CEST Rafael J. Wysocki wrote:
+> > Hi All,
+> >
+> > This series is to address the problem with RCU synchronization occurring,
+> > possibly relatively often, inside of acpi_ex_system_memory_space_handler(),
+> > when the namespace and interpreter mutexes are held.
+> >
+> > Like I said before, I had decided to change the approach used in the previous
+> > iteration of this series and to allow the unmap operations carried out by
+> > acpi_ex_system_memory_space_handler() to be deferred in the first place,
+> > which is done in patches [1-2/4].
+>
+> In the meantime I realized that calling syncrhonize_rcu_expedited() under the
+> "tables" mutex within ACPICA is not quite a good idea too and that there is no
+> reason for any users of acpi_os_unmap_memory() in the tree to use the "sync"
+> variant of unmapping.
+>
+> So, unless I'm missing something, acpi_os_unmap_memory() can be changed to
+> always defer the final unmapping and the only ACPICA change needed to support
+> that is the addition of the acpi_os_release_unused_mappings() call to get rid
+> of the unused mappings when leaving the interpreter (module the extra call in
+> the debug code for consistency).
+>
+> So patches [1-2/4] have been changed accordingly.
+>
+> > However, it turns out that the "fast-path" mapping is still useful on top of
+> > the above to reduce the number of ioremap-iounmap cycles for the same address
+> > range and so it is introduced by patches [3-4/4].
+>
+> Patches [3-4/4] still do what they did, but they have been simplified a bit
+> after rebasing on top of the new [1-2/4].
+>
+> The below information is still valid, but it applies to the v3, of course.
+>
+> > For details, please refer to the patch changelogs.
+> >
+> > The series is available from the git branch at
+> >
+> >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+> >  acpica-osl
+> >
+> > for easier testing.
+>
+> Also the series have been tested locally.
 
-Add acpi_os_map_memory_fast_path() and set ACPI_USE_FAST_PATH_MAPPING
-to allow acpi_ex_system_memory_space_handler() to avoid unnecessary
-memory mapping and unmapping overhead by retaining all memory
-mappings created by it until the memory opregions associated with
-them go away.
-
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
----
- drivers/acpi/osl.c                | 65 +++++++++++++++++++++++--------
- include/acpi/platform/aclinux.h   |  4 ++
- include/acpi/platform/aclinuxex.h |  3 ++
- 3 files changed, 56 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 749ae3e32193..b8537ce89ea2 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -306,21 +306,8 @@ static void acpi_unmap(acpi_physical_address pg_off, void __iomem *vaddr)
- 		iounmap(vaddr);
- }
- 
--/**
-- * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-- * @phys: Start of the physical address range to map.
-- * @size: Size of the physical address range to map.
-- *
-- * Look up the given physical address range in the list of existing ACPI memory
-- * mappings.  If found, get a reference to it and return a pointer to it (its
-- * virtual address).  If not found, map it, add it to that list and return a
-- * pointer to it.
-- *
-- * During early init (when acpi_permanent_mmap has not been set yet) this
-- * routine simply calls __acpi_map_table() to get the job done.
-- */
--void __iomem __ref
--*acpi_os_map_iomem(acpi_physical_address phys, acpi_size size)
-+static void __iomem __ref *__acpi_os_map_iomem(acpi_physical_address phys,
-+					       acpi_size size, bool fast_path)
- {
- 	struct acpi_ioremap *map;
- 	void __iomem *virt;
-@@ -332,8 +319,12 @@ void __iomem __ref
- 		return NULL;
- 	}
- 
--	if (!acpi_permanent_mmap)
-+	if (!acpi_permanent_mmap) {
-+		if (WARN_ON(fast_path))
-+			return NULL;
-+
- 		return __acpi_map_table((unsigned long)phys, size);
-+	}
- 
- 	mutex_lock(&acpi_ioremap_lock);
- 	/* Check if there's a suitable mapping already. */
-@@ -343,6 +334,11 @@ void __iomem __ref
- 		goto out;
- 	}
- 
-+	if (fast_path) {
-+		mutex_unlock(&acpi_ioremap_lock);
-+		return NULL;
-+	}
-+
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map) {
- 		mutex_unlock(&acpi_ioremap_lock);
-@@ -370,6 +366,25 @@ void __iomem __ref
- 	mutex_unlock(&acpi_ioremap_lock);
- 	return map->virt + (phys - map->phys);
- }
-+
-+/**
-+ * acpi_os_map_iomem - Get a virtual address for a given physical address range.
-+ * @phys: Start of the physical address range to map.
-+ * @size: Size of the physical address range to map.
-+ *
-+ * Look up the given physical address range in the list of existing ACPI memory
-+ * mappings.  If found, get a reference to it and return a pointer representing
-+ * its virtual address.  If not found, map it, add it to that list and return a
-+ * pointer representing its virtual address.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) call
-+ * __acpi_map_table() to obtain the mapping.
-+ */
-+void __iomem __ref *acpi_os_map_iomem(acpi_physical_address phys,
-+				      acpi_size size)
-+{
-+	return __acpi_os_map_iomem(phys, size, false);
-+}
- EXPORT_SYMBOL_GPL(acpi_os_map_iomem);
- 
- void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
-@@ -378,6 +393,24 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
- }
- EXPORT_SYMBOL_GPL(acpi_os_map_memory);
- 
-+/**
-+ * acpi_os_map_memory_fast_path - Fast-path physical-to-virtual address mapping.
-+ * @phys: Start of the physical address range to map.
-+ * @size: Size of the physical address range to map.
-+ *
-+ * Look up the given physical address range in the list of existing ACPI memory
-+ * mappings.  If found, get a reference to it and return a pointer representing
-+ * its virtual address.  If not found, return NULL.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) log a
-+ * warning and return NULL.
-+ */
-+void __ref *acpi_os_map_memory_fast_path(acpi_physical_address phys,
-+					acpi_size size)
-+{
-+	return __acpi_os_map_iomem(phys, size, true);
-+}
-+
- /* Must be called with mutex_lock(&acpi_ioremap_lock) */
- static bool acpi_os_drop_map_ref(struct acpi_ioremap *map, bool defer)
- {
-diff --git a/include/acpi/platform/aclinux.h b/include/acpi/platform/aclinux.h
-index 784e294dc74c..1a5f8037e3d5 100644
---- a/include/acpi/platform/aclinux.h
-+++ b/include/acpi/platform/aclinux.h
-@@ -118,6 +118,10 @@
- 
- #define USE_NATIVE_ALLOCATE_ZEROED
- 
-+/* Use fast-path memory mapping to optimize memory opregions handling */
-+
-+#define ACPI_USE_FAST_PATH_MAPPING
-+
- /*
-  * Overrides for in-kernel ACPICA
-  */
-diff --git a/include/acpi/platform/aclinuxex.h b/include/acpi/platform/aclinuxex.h
-index ad6b905358c5..c64b836ba455 100644
---- a/include/acpi/platform/aclinuxex.h
-+++ b/include/acpi/platform/aclinuxex.h
-@@ -141,6 +141,9 @@ static inline void acpi_os_terminate_debugger(void)
-  * OSL interfaces added by Linux
-  */
- 
-+void *acpi_os_map_memory_fast_path(acpi_physical_address where,
-+				   acpi_size length);
-+
- #endif				/* __KERNEL__ */
- 
- #endif				/* __ACLINUXEX_H__ */
--- 
-2.26.2
-
-
-
+Ok, I'm still trying to get the original reporter to confirm this
+reduces the execution time for ASL routines with a lot of OpRegion
+touches. Shall I rebuild that test kernel with these changes, or are
+the results from the original RFT still interesting?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
