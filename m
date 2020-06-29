@@ -1,32 +1,32 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938C220D032
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jun 2020 18:34:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FBA720D031
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jun 2020 18:34:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B2590111B33D4;
-	Mon, 29 Jun 2020 09:34:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 99B66111B33D1;
+	Mon, 29 Jun 2020 09:34:56 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=79.96.170.134; helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN> 
 Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5AB05111B33D1
-	for <linux-nvdimm@lists.01.org>; Mon, 29 Jun 2020 09:34:55 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4ABBF100A4626
+	for <linux-nvdimm@lists.01.org>; Mon, 29 Jun 2020 09:34:54 -0700 (PDT)
 Received: from 89-64-84-69.dynamic.chello.pl (89.64.84.69) (HELO kreacher.localnet)
  by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id 4a4c27ae3a89cb78; Mon, 29 Jun 2020 18:34:53 +0200
+ id 39af2550cfacad4d; Mon, 29 Jun 2020 18:34:52 +0200
 From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
 To: Dan Williams <dan.j.williams@intel.com>, Erik Kaneda <erik.kaneda@intel.com>
-Subject: [PATCH v4 1/2] ACPI: OSL: Implement deferred unmapping of ACPI memory
-Date: Mon, 29 Jun 2020 18:33:10 +0200
-Message-ID: <7504970.auntBLC07g@kreacher>
+Subject: [PATCH v4 2/2] ACPICA: Preserve memory opregion mappings
+Date: Mon, 29 Jun 2020 18:33:58 +0200
+Message-ID: <1794490.F2OrUDcHQn@kreacher>
 In-Reply-To: <1666722.UopIai5n7p@kreacher>
 References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com> <2788992.3K7huLjdjL@kreacher> <1666722.UopIai5n7p@kreacher>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Message-ID-Hash: XCXC23HYGBZNHOIPRPVM5ULCKSCN6OYT
-X-Message-ID-Hash: XCXC23HYGBZNHOIPRPVM5ULCKSCN6OYT
+Message-ID-Hash: EKGSNOANCLGL6SKRDCOEHYCCM3GBPKNN
+X-Message-ID-Hash: EKGSNOANCLGL6SKRDCOEHYCCM3GBPKNN
 X-MailFrom: rjw@rjwysocki.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -34,7 +34,7 @@ CC: rafael.j.wysocki@intel.com, Len Brown <lenb@kernel.org>, Borislav Petkov <bp
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XCXC23HYGBZNHOIPRPVM5ULCKSCN6OYT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EKGSNOANCLGL6SKRDCOEHYCCM3GBPKNN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -44,269 +44,218 @@ Content-Transfer-Encoding: 7bit
 
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-The ACPI OS layer in Linux uses RCU to protect the walkers of the
-list of ACPI memory mappings from seeing an inconsistent state
-while it is being updated.  Among other situations, that list can
-be walked in (NMI and non-NMI) interrupt context, so using a
-sleeping lock to protect it is not an option.
+The ACPICA's strategy with respect to the handling of memory mappings
+associated with memory operation regions is to avoid mapping the
+entire region at once which may be problematic at least in principle
+(for example, it may lead to conflicts with overlapping mappings
+having different attributes created by drivers).  It may also be
+wasteful, because memory opregions on some systems take up vast
+chunks of address space while the fields in those regions actually
+accessed by AML are sparsely distributed.
 
-However, performance issues related to the RCU usage in there
-appear, as described by Dan Williams:
+For this reason, a one-page "window" is mapped for a given opregion
+on the first memory access through it and if that "window" does not
+cover an address range accessed through that opregion subsequently,
+it is unmapped and a new "window" is mapped to replace it.  Next,
+if the new "window" is not sufficient to acess memory through the
+opregion in question in the future, it will be replaced with yet
+another "window" and so on.  That may lead to a suboptimal sequence
+of memory mapping and unmapping operations, for example if two fields
+in one opregion separated from each other by a sufficiently wide
+chunk of unused address space are accessed in an alternating pattern.
 
-"Recently a performance problem was reported for a process invoking
-a non-trival ASL program. The method call in this case ends up
-repetitively triggering a call path like:
+The situation may still be suboptimal if the deferred unmapping
+introduced previously is supported by the OS layer.  For instance,
+the alternating memory access pattern mentioned above may produce
+a relatively long list of mappings to release with substantial
+duplication among the entries in it, which could be avoided if
+acpi_ex_system_memory_space_handler() did not release the mapping
+used by it previously as soon as the current access was not covered
+by it.
 
-    acpi_ex_store
-    acpi_ex_store_object_to_node
-    acpi_ex_write_data_to_field
-    acpi_ex_insert_into_field
-    acpi_ex_write_with_update_rule
-    acpi_ex_field_datum_io
-    acpi_ex_access_region
-    acpi_ev_address_space_dispatch
-    acpi_ex_system_memory_space_handler
-    acpi_os_map_cleanup.part.14
-    _synchronize_rcu_expedited.constprop.89
-    schedule
+In order to improve that, modify acpi_ex_system_memory_space_handler()
+to preserve all of the memory mappings created by it until the memory
+regions associated with them go away.
 
-The end result of frequent synchronize_rcu_expedited() invocation is
-tiny sub-millisecond spurts of execution where the scheduler freely
-migrates this apparently sleepy task. The overhead of frequent
-scheduler invocation multiplies the execution time by a factor
-of 2-3X."
-
-The source of this is that acpi_ex_system_memory_space_handler()
-unmaps the memory mapping currently cached by it at the access time
-if that mapping doesn't cover the memory area being accessed.
-Consequently, if there is a memory opregion with two fields
-separated from each other by an unused chunk of address space that
-is large enough for not being covered by a single mapping, and they
-happen to be used in an alternating pattern, the unmapping will
-occur on every acpi_ex_system_memory_space_handler() invocation for
-that memory opregion and that will lead to significant overhead.
-
-Moreover, acpi_ex_system_memory_space_handler() carries out the
-memory unmapping with the namespace and interpreter mutexes held
-which may lead to additional latency, because all of the tasks
-wanting to acquire on of these mutexes need to wait for the
-memory unmapping operation to complete.
-
-To address that, rework acpi_os_unmap_memory() so that it does not
-release the memory mapping covering the given address range right
-away and instead make it queue up the mapping at hand for removal
-via queue_rcu_work().
+Accordingly, update acpi_ev_system_memory_region_setup() to unmap all
+memory associated with memory opregions that go away.
 
 Reported-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 ---
- drivers/acpi/osl.c | 112 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 77 insertions(+), 35 deletions(-)
+ drivers/acpi/acpica/evrgnini.c | 14 ++++----
+ drivers/acpi/acpica/exregion.c | 65 ++++++++++++++++++++++++----------
+ include/acpi/actypes.h         | 12 +++++--
+ 3 files changed, 64 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index 762c5d50b8fe..5ced89a756a8 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -77,7 +77,10 @@ struct acpi_ioremap {
- 	void __iomem *virt;
- 	acpi_physical_address phys;
- 	acpi_size size;
--	unsigned long refcount;
-+	union {
-+		unsigned long refcount;
-+		struct rcu_work rwork;
-+	} track;
+diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
+index aefc0145e583..89be3ccdad53 100644
+--- a/drivers/acpi/acpica/evrgnini.c
++++ b/drivers/acpi/acpica/evrgnini.c
+@@ -38,6 +38,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
+ 	union acpi_operand_object *region_desc =
+ 	    (union acpi_operand_object *)handle;
+ 	struct acpi_mem_space_context *local_region_context;
++	struct acpi_mem_mapping *mm;
+ 
+ 	ACPI_FUNCTION_TRACE(ev_system_memory_region_setup);
+ 
+@@ -46,13 +47,14 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
+ 			local_region_context =
+ 			    (struct acpi_mem_space_context *)*region_context;
+ 
+-			/* Delete a cached mapping if present */
++			/* Delete memory mappings if present */
+ 
+-			if (local_region_context->mapped_length) {
+-				acpi_os_unmap_memory(local_region_context->
+-						     mapped_logical_address,
+-						     local_region_context->
+-						     mapped_length);
++			while (local_region_context->first_mm) {
++				mm = local_region_context->first_mm;
++				local_region_context->first_mm = mm->next_mm;
++				acpi_os_unmap_memory(mm->logical_address,
++						     mm->length);
++				ACPI_FREE(mm);
+ 			}
+ 			ACPI_FREE(local_region_context);
+ 			*region_context = NULL;
+diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+index d15a66de26c0..fd68f2134804 100644
+--- a/drivers/acpi/acpica/exregion.c
++++ b/drivers/acpi/acpica/exregion.c
+@@ -41,6 +41,7 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	acpi_status status = AE_OK;
+ 	void *logical_addr_ptr = NULL;
+ 	struct acpi_mem_space_context *mem_info = region_context;
++	struct acpi_mem_mapping *mm = mem_info->cur_mm;
+ 	u32 length;
+ 	acpi_size map_length;
+ 	acpi_size page_boundary_map_length;
+@@ -96,20 +97,38 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	 * Is 1) Address below the current mapping? OR
+ 	 *    2) Address beyond the current mapping?
+ 	 */
+-	if ((address < mem_info->mapped_physical_address) ||
+-	    (((u64) address + length) > ((u64)
+-					 mem_info->mapped_physical_address +
+-					 mem_info->mapped_length))) {
++	if (!mm || (address < mm->physical_address) ||
++	    ((u64) address + length > (u64) mm->physical_address + mm->length)) {
+ 		/*
+-		 * The request cannot be resolved by the current memory mapping;
+-		 * Delete the existing mapping and create a new one.
++		 * The request cannot be resolved by the current memory mapping.
++		 *
++		 * Look for an existing saved mapping covering the address range
++		 * at hand.  If found, save it as the current one and carry out
++		 * the access.
+ 		 */
+-		if (mem_info->mapped_length) {
++		for (mm = mem_info->first_mm; mm; mm = mm->next_mm) {
++			if (mm == mem_info->cur_mm)
++				continue;
++
++			if (address < mm->physical_address)
++				continue;
++
++			if ((u64) address + length >
++					(u64) mm->physical_address + mm->length)
++				continue;
+ 
+-			/* Valid mapping, delete it */
++			mem_info->cur_mm = mm;
++			goto access;
++		}
+ 
+-			acpi_os_unmap_memory(mem_info->mapped_logical_address,
+-					     mem_info->mapped_length);
++		/* Create a new mappings list entry */
++		mm = ACPI_ALLOCATE_ZEROED(sizeof(*mm));
++		if (!mm) {
++			ACPI_ERROR((AE_INFO,
++				    "Unable to save memory mapping at 0x%8.8X%8.8X, size %u",
++				    ACPI_FORMAT_UINT64(address),
++				    (u32)map_length));
++			return_ACPI_STATUS(AE_NO_MEMORY);
+ 		}
+ 
+ 		/*
+@@ -143,29 +162,39 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 
+ 		/* Create a new mapping starting at the address given */
+ 
+-		mem_info->mapped_logical_address =
+-		    acpi_os_map_memory(address, map_length);
+-		if (!mem_info->mapped_logical_address) {
++		logical_addr_ptr = acpi_os_map_memory(address, map_length);
++		if (!logical_addr_ptr) {
+ 			ACPI_ERROR((AE_INFO,
+ 				    "Could not map memory at 0x%8.8X%8.8X, size %u",
+ 				    ACPI_FORMAT_UINT64(address),
+ 				    (u32)map_length));
+-			mem_info->mapped_length = 0;
++			ACPI_FREE(mm);
+ 			return_ACPI_STATUS(AE_NO_MEMORY);
+ 		}
+ 
+ 		/* Save the physical address and mapping size */
+ 
+-		mem_info->mapped_physical_address = address;
+-		mem_info->mapped_length = map_length;
++		mm->logical_address = logical_addr_ptr;
++		mm->physical_address = address;
++		mm->length = map_length;
++
++		/*
++		 * Add the new entry to the mappigs list and save it as the
++		 * current mapping.
++		 */
++		mm->next_mm = mem_info->first_mm;
++		mem_info->first_mm = mm;
++
++		mem_info->cur_mm = mm;
+ 	}
+ 
++access:
+ 	/*
+ 	 * Generate a logical pointer corresponding to the address we want to
+ 	 * access
+ 	 */
+-	logical_addr_ptr = mem_info->mapped_logical_address +
+-	    ((u64) address - (u64) mem_info->mapped_physical_address);
++	logical_addr_ptr = mm->logical_address +
++		((u64) address - (u64) mm->physical_address);
+ 
+ 	ACPI_DEBUG_PRINT((ACPI_DB_INFO,
+ 			  "System-Memory (width %u) R/W %u Address=%8.8X%8.8X\n",
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index aa236b9e6f24..d005e35ab399 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -1201,12 +1201,18 @@ struct acpi_pci_id {
+ 	u16 function;
  };
  
- static LIST_HEAD(acpi_ioremaps);
-@@ -250,7 +253,7 @@ void __iomem *acpi_os_get_iomem(acpi_physical_address phys, unsigned int size)
- 	map = acpi_map_lookup(phys, size);
- 	if (map) {
- 		virt = map->virt + (phys - map->phys);
--		map->refcount++;
-+		map->track.refcount++;
- 	}
- 	mutex_unlock(&acpi_ioremap_lock);
- 	return virt;
-@@ -335,7 +338,7 @@ void __iomem __ref
- 	/* Check if there's a suitable mapping already. */
- 	map = acpi_map_lookup(phys, size);
- 	if (map) {
--		map->refcount++;
-+		map->track.refcount++;
- 		goto out;
- 	}
- 
-@@ -358,7 +361,7 @@ void __iomem __ref
- 	map->virt = virt;
- 	map->phys = pg_off;
- 	map->size = pg_sz;
--	map->refcount = 1;
-+	map->track.refcount = 1;
- 
- 	list_add_tail_rcu(&map->list, &acpi_ioremaps);
- 
-@@ -374,41 +377,46 @@ void *__ref acpi_os_map_memory(acpi_physical_address phys, acpi_size size)
- }
- EXPORT_SYMBOL_GPL(acpi_os_map_memory);
- 
-+static void acpi_os_map_remove(struct acpi_ioremap *map)
-+{
-+	acpi_unmap(map->phys, map->virt);
-+	kfree(map);
-+}
++struct acpi_mem_mapping {
++	acpi_physical_address physical_address;
++	u8 *logical_address;
++	acpi_size length;
++	struct acpi_mem_mapping *next_mm;
++};
 +
-+static void acpi_os_map_cleanup_deferred(struct work_struct *work)
-+{
-+	acpi_os_map_remove(container_of(to_rcu_work(work), struct acpi_ioremap,
-+					track.rwork));
-+}
-+
- /* Must be called with mutex_lock(&acpi_ioremap_lock) */
--static unsigned long acpi_os_drop_map_ref(struct acpi_ioremap *map)
-+static bool acpi_os_drop_map_ref(struct acpi_ioremap *map, bool defer)
- {
--	unsigned long refcount = --map->refcount;
-+	if (--map->track.refcount)
-+		return true;
+ struct acpi_mem_space_context {
+ 	u32 length;
+ 	acpi_physical_address address;
+-	acpi_physical_address mapped_physical_address;
+-	u8 *mapped_logical_address;
+-	acpi_size mapped_length;
++	struct acpi_mem_mapping *cur_mm;
++	struct acpi_mem_mapping *first_mm;
+ };
  
--	if (!refcount)
--		list_del_rcu(&map->list);
--	return refcount;
-+	list_del_rcu(&map->list);
-+
-+	if (defer) {
-+		INIT_RCU_WORK(&map->track.rwork, acpi_os_map_cleanup_deferred);
-+		queue_rcu_work(system_wq, &map->track.rwork);
-+	}
-+	return defer;
- }
- 
- static void acpi_os_map_cleanup(struct acpi_ioremap *map)
- {
-+	if (!map)
-+		return;
-+
- 	synchronize_rcu_expedited();
--	acpi_unmap(map->phys, map->virt);
--	kfree(map);
-+	acpi_os_map_remove(map);
- }
- 
--/**
-- * acpi_os_unmap_iomem - Drop a memory mapping reference.
-- * @virt: Start of the address range to drop a reference to.
-- * @size: Size of the address range to drop a reference to.
-- *
-- * Look up the given virtual address range in the list of existing ACPI memory
-- * mappings, drop a reference to it and unmap it if there are no more active
-- * references to it.
-- *
-- * During early init (when acpi_permanent_mmap has not been set yet) this
-- * routine simply calls __acpi_unmap_table() to get the job done.  Since
-- * __acpi_unmap_table() is an __init function, the __ref annotation is needed
-- * here.
-- */
--void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
-+static void __ref __acpi_os_unmap_iomem(void __iomem *virt, acpi_size size,
-+					bool defer)
- {
- 	struct acpi_ioremap *map;
--	unsigned long refcount;
- 
- 	if (!acpi_permanent_mmap) {
- 		__acpi_unmap_table(virt, size);
-@@ -416,23 +424,56 @@ void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
- 	}
- 
- 	mutex_lock(&acpi_ioremap_lock);
-+
- 	map = acpi_map_lookup_virt(virt, size);
- 	if (!map) {
- 		mutex_unlock(&acpi_ioremap_lock);
- 		WARN(true, PREFIX "%s: bad address %p\n", __func__, virt);
- 		return;
- 	}
--	refcount = acpi_os_drop_map_ref(map);
-+	if (acpi_os_drop_map_ref(map, defer))
-+		map = NULL;
-+
- 	mutex_unlock(&acpi_ioremap_lock);
- 
--	if (!refcount)
--		acpi_os_map_cleanup(map);
-+	acpi_os_map_cleanup(map);
-+}
-+
-+/**
-+ * acpi_os_unmap_iomem - Drop a memory mapping reference.
-+ * @virt: Start of the address range to drop a reference to.
-+ * @size: Size of the address range to drop a reference to.
-+ *
-+ * Look up the given virtual address range in the list of existing ACPI memory
-+ * mappings, drop a reference to it and unmap it if there are no more active
-+ * references to it.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) this
-+ * routine simply calls __acpi_unmap_table() to get the job done.  Since
-+ * __acpi_unmap_table() is an __init function, the __ref annotation is needed
-+ * here.
-+ */
-+void __ref acpi_os_unmap_iomem(void __iomem *virt, acpi_size size)
-+{
-+	__acpi_os_unmap_iomem(virt, size, false);
- }
- EXPORT_SYMBOL_GPL(acpi_os_unmap_iomem);
- 
-+/**
-+ * acpi_os_unmap_memory - Drop a memory mapping reference.
-+ * @virt: Start of the address range to drop a reference to.
-+ * @size: Size of the address range to drop a reference to.
-+ *
-+ * Look up the given virtual address range in the list of existing ACPI memory
-+ * mappings, drop a reference to it and if there are no more active references
-+ * to it, put it in the list of unused memory mappings.
-+ *
-+ * During early init (when acpi_permanent_mmap has not been set yet) this
-+ * routine behaves like acpi_os_unmap_iomem().
-+ */
- void __ref acpi_os_unmap_memory(void *virt, acpi_size size)
- {
--	return acpi_os_unmap_iomem((void __iomem *)virt, size);
-+	__acpi_os_unmap_iomem((void __iomem *)virt, size, true);
- }
- EXPORT_SYMBOL_GPL(acpi_os_unmap_memory);
- 
-@@ -461,7 +502,6 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
- {
- 	u64 addr;
- 	struct acpi_ioremap *map;
--	unsigned long refcount;
- 
- 	if (gas->space_id != ACPI_ADR_SPACE_SYSTEM_MEMORY)
- 		return;
-@@ -472,16 +512,18 @@ void acpi_os_unmap_generic_address(struct acpi_generic_address *gas)
- 		return;
- 
- 	mutex_lock(&acpi_ioremap_lock);
-+
- 	map = acpi_map_lookup(addr, gas->bit_width / 8);
- 	if (!map) {
- 		mutex_unlock(&acpi_ioremap_lock);
- 		return;
- 	}
--	refcount = acpi_os_drop_map_ref(map);
-+	if (acpi_os_drop_map_ref(map, false))
-+		map = NULL;
-+
- 	mutex_unlock(&acpi_ioremap_lock);
- 
--	if (!refcount)
--		acpi_os_map_cleanup(map);
-+	acpi_os_map_cleanup(map);
- }
- EXPORT_SYMBOL(acpi_os_unmap_generic_address);
- 
+ /*
 -- 
 2.26.2
 
