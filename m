@@ -2,157 +2,143 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09A920DCD5
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jun 2020 22:40:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D3020DCF4
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 29 Jun 2020 22:46:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DA855111F92BA;
-	Mon, 29 Jun 2020 13:40:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5724E111FF492;
+	Mon, 29 Jun 2020 13:46:19 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1A14B10FCBC59
-	for <linux-nvdimm@lists.01.org>; Mon, 29 Jun 2020 13:40:29 -0700 (PDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05TKb6iu105954;
-	Mon, 29 Jun 2020 16:40:25 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31ydjxcy8a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2020 16:40:25 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05TKeObh112150;
-	Mon, 29 Jun 2020 16:40:24 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 31ydjxcy7w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2020 16:40:24 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-	by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05TKYcpa000459;
-	Mon, 29 Jun 2020 20:40:23 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma01dal.us.ibm.com with ESMTP id 31wwr8yh59-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 29 Jun 2020 20:40:23 +0000
-Received: from b03ledav002.gho.boulder.ibm.com (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05TKeMfe22741388
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 29 Jun 2020 20:40:22 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 519A0136051;
-	Mon, 29 Jun 2020 20:40:22 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4024C13604F;
-	Mon, 29 Jun 2020 20:40:19 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.34.39])
-	by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
-	Mon, 29 Jun 2020 20:40:18 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [PATCH v6 6/8] powerpc/pmem: Avoid the barrier in flush routines
-In-Reply-To: <20200629160940.GU21462@kitsune.suse.cz>
-References: <20200629135722.73558-1-aneesh.kumar@linux.ibm.com>
- <20200629135722.73558-7-aneesh.kumar@linux.ibm.com>
- <20200629160940.GU21462@kitsune.suse.cz>
-Date: Tue, 30 Jun 2020 02:10:15 +0530
-Message-ID: <87lfk5hahc.fsf@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 594FA111F92BA
+	for <linux-nvdimm@lists.01.org>; Mon, 29 Jun 2020 13:46:17 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id dr13so18214201ejc.3
+        for <linux-nvdimm@lists.01.org>; Mon, 29 Jun 2020 13:46:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=048/aux/uWIN5e9D0xFyVGaUP4nryXDLfPyRWaH72Ek=;
+        b=zD6ga5emxtpmlIRAVfIT7c+0qmIa0JmJoiG9wTiBB3xtmmIy4qLmkRaMU4kRXvIQIa
+         E83S8YIz7Tm0zhdu5czEB7Hln5/zBfAUh5P3RXjn5dpGJjPvlpteL/5yHDA4MrunZty8
+         SERNEQQciNzdZGDaWJlKmCkPqtQVKg6u1W+ITBhcA6VIARJxNSIYoOBIhTb6FYMn1Wfz
+         3h+U76ciDZZ+skAq1/OiIChJFBHAsTQFdkshuLB8hKyKewfGtGmRnNutNjYbPtDaaIfa
+         Rs1pLnKujXyjWtD10YwTIaIE2NUaTA/V7kGdHd6AtMopwEmEJMRacTA40mLgLoY1u2lC
+         qlxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=048/aux/uWIN5e9D0xFyVGaUP4nryXDLfPyRWaH72Ek=;
+        b=WLyKVEVXxf14k4qEdj/T2WbezwapCn2HpZVCvRPjg7wII8dsgZ22RvRPEgwNZ3RnqR
+         LK/55qBPSOmmMDALqVRz0GXuAvLQWIQPvkvtHiadgGlcrpxupykLyEOHpgqDn+Saf3ie
+         hs2qq8S2HjppJmNZX4LWCfRo0Y0IfAu9/ysTn1+TP/C3T8bWJAr7QPR2GYxMBmn2Tb5Z
+         c3gJxxfXvGn2B6h37pscJ/Ti/Ybq5Z3BH8D5+qLFLTAz3q0FsNvsayJJZsIau4AJra4Y
+         10aW8KLNnvMbsrGHcpvEOTCO+MEqW+gSWlZHydLn+HBnAo3JgvKor6tEYN3J941SXQuv
+         McKw==
+X-Gm-Message-State: AOAM531X0Ntbp2a8jJjPNYIP2J30kN0SF/qza+kjuBSHbkfjUAeIc+I3
+	s6R4NfMAyHjaxql2Wq3qgznMlxDdgzu56LgoHAf1lA==
+X-Google-Smtp-Source: ABdhPJxzX+kvJW1oBz/LQoASVcNYo3f670EC1zMCzFjhu4hr60/3iDTMlcp5vk8mgfPRkD9fqyFOWjpkBHEw5m0Eu48=
+X-Received: by 2002:a17:906:da0f:: with SMTP id fi15mr15169748ejb.237.1593463574870;
+ Mon, 29 Jun 2020 13:46:14 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-06-29_21:2020-06-29,2020-06-29 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- cotscore=-2147483648 bulkscore=0 mlxlogscore=999 mlxscore=0
- impostorscore=0 priorityscore=1501 suspectscore=0 spamscore=0 phishscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006290130
-Message-ID-Hash: 4JKA37O7P2FTODM2RUVYXRU45HFGPNG5
-X-Message-ID-Hash: 4JKA37O7P2FTODM2RUVYXRU45HFGPNG5
-X-MailFrom: aneesh.kumar@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, linux-nvdimm@lists.01.org, Jan Kara <jack@suse.cz>
+References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <2713141.s8EVnczdoM@kreacher> <2788992.3K7huLjdjL@kreacher>
+ <CAPcyv4hXkzpTr3bif7zyVx5EqoWTwLgYrt87Aj2=gVMo+jtUyg@mail.gmail.com> <CAJZ5v0h4Hj4ax1mmMJn3z3VGtVWkoXzO0kOQ7CYnFKJV2cUGzw@mail.gmail.com>
+In-Reply-To: <CAJZ5v0h4Hj4ax1mmMJn3z3VGtVWkoXzO0kOQ7CYnFKJV2cUGzw@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 29 Jun 2020 13:46:03 -0700
+Message-ID: <CAPcyv4iZA6hHH=sh=CZPJ-6skJfeuAVRVAuMeTdD5LYVPRrTqQ@mail.gmail.com>
+Subject: Re: [RFT][PATCH v3 0/4] ACPI: ACPICA / OSL: Avoid unmapping ACPI
+ memory inside of the AML interpreter
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Message-ID-Hash: 4X434PN4AOSQWMUIMGFG75D7W7GNHUIT
+X-Message-ID-Hash: 4X434PN4AOSQWMUIMGFG75D7W7GNHUIT
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Erik Kaneda <erik.kaneda@intel.com>, Rafael J Wysocki <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Bob Moore <robert.moore@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4JKA37O7P2FTODM2RUVYXRU45HFGPNG5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4X434PN4AOSQWMUIMGFG75D7W7GNHUIT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-TWljaGFsIFN1Y2jDoW5layA8bXN1Y2hhbmVrQHN1c2UuZGU+IHdyaXRlczoNCg0KPiBIZWxsbywN
-Cj4NCj4gT24gTW9uLCBKdW4gMjksIDIwMjAgYXQgMDc6Mjc6MjBQTSArMDUzMCwgQW5lZXNoIEt1
-bWFyIEsuViB3cm90ZToNCj4+IG52ZGltbSBleHBlY3QgdGhlIGZsdXNoIHJvdXRpbmVzIHRvIGp1
-c3QgbWFyayB0aGUgY2FjaGUgY2xlYW4uIFRoZSBiYXJyaWVyDQo+PiB0aGF0IG1hcmsgdGhlIHN0
-b3JlIGdsb2JhbGx5IHZpc2libGUgaXMgZG9uZSBpbiBudmRpbW1fZmx1c2goKS4NCj4+IA0KPj4g
-VXBkYXRlIHRoZSBwYXByX3NjbSBkcml2ZXIgdG8gYSBzaW1wbGlmaWVkIG52ZGltX2ZsdXNoIGNh
-bGxiYWNrIHRoYXQgZG8NCj4+IG9ubHkgdGhlIHJlcXVpcmVkIGJhcnJpZXIuDQo+PiANCj4+IFNp
-Z25lZC1vZmYtYnk6IEFuZWVzaCBLdW1hciBLLlYgPGFuZWVzaC5rdW1hckBsaW51eC5pYm0uY29t
-Pg0KPj4gLS0tDQo+PiAgYXJjaC9wb3dlcnBjL2xpYi9wbWVtLmMgICAgICAgICAgICAgICAgICAg
-fCAgNiAtLS0tLS0NCj4+ICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3BzZXJpZXMvcGFwcl9zY20u
-YyB8IDEzICsrKysrKysrKysrKysNCj4+ICAyIGZpbGVzIGNoYW5nZWQsIDEzIGluc2VydGlvbnMo
-KyksIDYgZGVsZXRpb25zKC0pDQo+PiANCj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvbGli
-L3BtZW0uYyBiL2FyY2gvcG93ZXJwYy9saWIvcG1lbS5jDQo+PiBpbmRleCA1YTYxYWFlYjY5MzAu
-LjIxMjEwZmE2NzZlNSAxMDA2NDQNCj4+IC0tLSBhL2FyY2gvcG93ZXJwYy9saWIvcG1lbS5jDQo+
-PiArKysgYi9hcmNoL3Bvd2VycGMvbGliL3BtZW0uYw0KPj4gQEAgLTE5LDkgKzE5LDYgQEAgc3Rh
-dGljIGlubGluZSB2b2lkIF9fY2xlYW5fcG1lbV9yYW5nZSh1bnNpZ25lZCBsb25nIHN0YXJ0LCB1
-bnNpZ25lZCBsb25nIHN0b3ApDQo+PiAgDQo+PiAgCWZvciAoaSA9IDA7IGkgPCBzaXplID4+IHNo
-aWZ0OyBpKyssIGFkZHIgKz0gYnl0ZXMpDQo+PiAgCQlhc20gdm9sYXRpbGUoUFBDX0RDQlNUUFMo
-JTAsICUxKTogOiJpIigwKSwgInIiKGFkZHIpOiAibWVtb3J5Iik7DQo+PiAtDQo+PiAtDQo+PiAt
-CWFzbSB2b2xhdGlsZShQUENfUEhXU1lOQyA6OjogIm1lbW9yeSIpOw0KPj4gIH0NCj4+ICANCj4+
-ICBzdGF0aWMgaW5saW5lIHZvaWQgX19mbHVzaF9wbWVtX3JhbmdlKHVuc2lnbmVkIGxvbmcgc3Rh
-cnQsIHVuc2lnbmVkIGxvbmcgc3RvcCkNCj4+IEBAIC0zNCw5ICszMSw2IEBAIHN0YXRpYyBpbmxp
-bmUgdm9pZCBfX2ZsdXNoX3BtZW1fcmFuZ2UodW5zaWduZWQgbG9uZyBzdGFydCwgdW5zaWduZWQg
-bG9uZyBzdG9wKQ0KPj4gIA0KPj4gIAlmb3IgKGkgPSAwOyBpIDwgc2l6ZSA+PiBzaGlmdDsgaSsr
-LCBhZGRyICs9IGJ5dGVzKQ0KPj4gIAkJYXNtIHZvbGF0aWxlKFBQQ19EQ0JGUFMoJTAsICUxKTog
-OiJpIigwKSwgInIiKGFkZHIpOiAibWVtb3J5Iik7DQo+PiAtDQo+PiAtDQo+PiAtCWFzbSB2b2xh
-dGlsZShQUENfUEhXU1lOQyA6OjogIm1lbW9yeSIpOw0KPj4gIH0NCj4+ICANCj4+ICBzdGF0aWMg
-aW5saW5lIHZvaWQgY2xlYW5fcG1lbV9yYW5nZSh1bnNpZ25lZCBsb25nIHN0YXJ0LCB1bnNpZ25l
-ZCBsb25nIHN0b3ApDQo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3BsYXRmb3Jtcy9wc2Vy
-aWVzL3BhcHJfc2NtLmMgYi9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zL3BzZXJpZXMvcGFwcl9zY20u
-Yw0KPj4gaW5kZXggOWM1NjkwNzhhMDlmLi45YTlhMDc2NmY4YjYgMTAwNjQ0DQo+PiAtLS0gYS9h
-cmNoL3Bvd2VycGMvcGxhdGZvcm1zL3BzZXJpZXMvcGFwcl9zY20uYw0KPj4gKysrIGIvYXJjaC9w
-b3dlcnBjL3BsYXRmb3Jtcy9wc2VyaWVzL3BhcHJfc2NtLmMNCj4+IEBAIC02MzAsNiArNjMwLDE4
-IEBAIHN0YXRpYyBpbnQgcGFwcl9zY21fbmRjdGwoc3RydWN0IG52ZGltbV9idXNfZGVzY3JpcHRv
-ciAqbmRfZGVzYywNCj4+ICANCj4+ICAJcmV0dXJuIDA7DQo+PiAgfQ0KPj4gKy8qDQo+PiArICog
-V2UgaGF2ZSBtYWRlIHN1cmUgdGhlIHBtZW0gd3JpdGVzIGFyZSBkb25lIHN1Y2ggdGhhdCBiZWZv
-cmUgY2FsbGluZyB0aGlzDQo+PiArICogYWxsIHRoZSBjYWNoZXMgYXJlIGZsdXNoZWQvY2xlYW4u
-IFdlIHVzZSBkY2JmL2RjYmZwcyB0byBlbnN1cmUgdGhpcy4gSGVyZQ0KPj4gKyAqIHdlIGp1c3Qg
-bmVlZCB0byBhZGQgdGhlIG5lY2Vzc2FyeSBiYXJyaWVyIHRvIG1ha2Ugc3VyZSB0aGUgYWJvdmUg
-Zmx1c2hlcw0KPj4gKyAqIGFyZSBoYXZlIHVwZGF0ZWQgcGVyc2lzdGVudCBzdG9yYWdlIGJlZm9y
-ZSBhbnkgZGF0YSBhY2Nlc3Mgb3IgZGF0YSB0cmFuc2Zlcg0KPj4gKyAqIGNhdXNlZCBieSBzdWJz
-ZXF1ZW50IGluc3RydWN0aW9ucyBpcyBpbml0aWF0ZWQuDQo+PiArICovDQo+PiArc3RhdGljIGlu
-dCBwYXByX3NjbV9mbHVzaF9zeW5jKHN0cnVjdCBuZF9yZWdpb24gKm5kX3JlZ2lvbiwgc3RydWN0
-IGJpbyAqYmlvKQ0KPj4gK3sNCj4+ICsJYXJjaF9wbWVtX2ZsdXNoX2JhcnJpZXIoKTsNCj4+ICsJ
-cmV0dXJuIDA7DQo+PiArfQ0KPj4gIA0KPj4gIHN0YXRpYyBzc2l6ZV90IGZsYWdzX3Nob3coc3Ry
-dWN0IGRldmljZSAqZGV2LA0KPj4gIAkJCSAgc3RydWN0IGRldmljZV9hdHRyaWJ1dGUgKmF0dHIs
-IGNoYXIgKmJ1ZikNCj4+IEBAIC03NDMsNiArNzU1LDcgQEAgc3RhdGljIGludCBwYXByX3NjbV9u
-dmRpbW1faW5pdChzdHJ1Y3QgcGFwcl9zY21fcHJpdiAqcCkNCj4+ICAJbmRyX2Rlc2MubWFwcGlu
-ZyA9ICZtYXBwaW5nOw0KPj4gIAluZHJfZGVzYy5udW1fbWFwcGluZ3MgPSAxOw0KPj4gIAluZHJf
-ZGVzYy5uZF9zZXQgPSAmcC0+bmRfc2V0Ow0KPj4gKwluZHJfZGVzYy5mbHVzaCA9IHBhcHJfc2Nt
-X2ZsdXNoX3N5bmM7DQo+DQo+IEFGQUlDVCBjdXJyZW50bHkgdGhlIG9ubHkgZGV2aWNlIHRoYXQg
-aW1wbGVtZW50cyBmbHVzaCBpcyB2aXJ0aW9fcG1lbS4NCj4gSG93IGRvZXMgdGhlIG5maXQgZHJp
-dmVyIGdldCBhd2F5IHdpdGhvdXQgaW1wbGVtZW50aW5nIGZsdXNoPw0KDQpnZW5lcmljX252ZGlt
-bV9mbHVzaCBkb2VzIHRoZSByZXF1aXJlZCBiYXJyaWVyIGZvciBuZml0LiBUaGUgcmVhc29uIGZv
-cg0KYWRkaW5nIG5kcl9kZXNjLmZsdXNoIGNhbGwgYmFjayBmb3IgcGFwcl9zY20gd2FzIHRvIGF2
-b2lkIHRoZSB1c2FnZQ0Kb2YgaW9tZW0gYmFzZWQgZGVlcCBmbHVzaGluZyAobmRyX3JlZ2lvbl9k
-YXRhLmZsdXNoX3dwcSkgd2hpY2ggaXMgbm90DQpzdXBwb3J0ZWQgYnkgcGFwcl9zY20uDQoNCkJU
-VyB3ZSBkbyByZXR1cm4gTlVMTCBmb3IgbmRyZF9nZXRfZmx1c2hfd3BxKCkgb24gcG93ZXIuIFNv
-IHRoZSB1cHN0cmVhbQ0KY29kZSBhbHNvIGRvZXMgdGhlIHNhbWUgdGhpbmcsIGJ1dCBpbiBhIGRp
-ZmZlcmVudCB3YXkuDQoNCg0KPiBBbHNvIHRoZSBmbHVzaCB0YWtlcyBhcmd1bWVudHMgdGhhdCBh
-cmUgY29tcGxldGVseSB1bnVzZWQgYnV0IGEgdXNlciBvZg0KPiB0aGUgcG1lbSByZWdpb24gbXVz
-dCBhc3N1bWUgdGhleSBhcmUgdXNlZCwgYW5kIGNhbGwgZmx1c2goKSBvbiB0aGUNCj4gcmVnaW9u
-IHJhdGhlciB0aGFuIGFyY2hfcG1lbV9mbHVzaF9iYXJyaWVyKCkgZGlyZWN0bHkuDQoNClRoZSBi
-aW8gYXJndW1lbnQgY2FuIGhlbHAgYSBwbWVtIGRyaXZlciB0byBkbyByYW5nZSBiYXNlZCBmbHVz
-aGluZyBpbg0KY2FzZSBvZiBwbWVtX21ha2VfcmVxdWVzdC4gSWYgYmlvIGlzIG51bGwgdGhlbiB3
-ZSBtdXN0IGFzc3VtZSBhIGZ1bGwNCmRldmljZSBmbHVzaC4gDQoNCj5UaGlzIG1heSBub3QNCj4g
-d29yayB3ZWxsIHdpdGggbWQgYXMgZGlzY3Vzc2VkIHdpdGggZWFybGllciBpdGVyYXRpb24gb2Yg
-dGhlIHBhdGNoZXN0Lg0KPg0KDQpkbS13cml0ZWNhY2hlIG5lZWRzIHNvbWUgbWFqb3IgY2hhbmdl
-cyB0byB3b3JrIHdpdGggYXN5bmNocm9ub3VzIHBtZW0NCmRldmljZXMuIA0KDQotYW5lZXNoCl9f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGlt
-bSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmli
-ZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+On Sun, Jun 28, 2020 at 10:09 AM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>
+> On Fri, Jun 26, 2020 at 8:41 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > On Fri, Jun 26, 2020 at 10:34 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
+> > >
+> > > Hi All,
+> > >
+> > > On Monday, June 22, 2020 3:50:42 PM CEST Rafael J. Wysocki wrote:
+> > > > Hi All,
+> > > >
+> > > > This series is to address the problem with RCU synchronization occurring,
+> > > > possibly relatively often, inside of acpi_ex_system_memory_space_handler(),
+> > > > when the namespace and interpreter mutexes are held.
+> > > >
+> > > > Like I said before, I had decided to change the approach used in the previous
+> > > > iteration of this series and to allow the unmap operations carried out by
+> > > > acpi_ex_system_memory_space_handler() to be deferred in the first place,
+> > > > which is done in patches [1-2/4].
+> > >
+> > > In the meantime I realized that calling syncrhonize_rcu_expedited() under the
+> > > "tables" mutex within ACPICA is not quite a good idea too and that there is no
+> > > reason for any users of acpi_os_unmap_memory() in the tree to use the "sync"
+> > > variant of unmapping.
+> > >
+> > > So, unless I'm missing something, acpi_os_unmap_memory() can be changed to
+> > > always defer the final unmapping and the only ACPICA change needed to support
+> > > that is the addition of the acpi_os_release_unused_mappings() call to get rid
+> > > of the unused mappings when leaving the interpreter (module the extra call in
+> > > the debug code for consistency).
+> > >
+> > > So patches [1-2/4] have been changed accordingly.
+> > >
+> > > > However, it turns out that the "fast-path" mapping is still useful on top of
+> > > > the above to reduce the number of ioremap-iounmap cycles for the same address
+> > > > range and so it is introduced by patches [3-4/4].
+> > >
+> > > Patches [3-4/4] still do what they did, but they have been simplified a bit
+> > > after rebasing on top of the new [1-2/4].
+> > >
+> > > The below information is still valid, but it applies to the v3, of course.
+> > >
+> > > > For details, please refer to the patch changelogs.
+> > > >
+> > > > The series is available from the git branch at
+> > > >
+> > > >  git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm.git \
+> > > >  acpica-osl
+> > > >
+> > > > for easier testing.
+> > >
+> > > Also the series have been tested locally.
+> >
+> > Ok, I'm still trying to get the original reporter to confirm this
+> > reduces the execution time for ASL routines with a lot of OpRegion
+> > touches. Shall I rebuild that test kernel with these changes, or are
+> > the results from the original RFT still interesting?
+>
+> I'm mostly interested in the results with the v3 applied.
+>
+
+Ok, I just got feedback on v2 and it still showed the 30 minute
+execution time where 7 minutes was achieved previously.
+
+> Also it would be good to check the impact of the first two patches
+> alone relative to all four.
+
+I'll start with the full set and see if they can also support the
+"first 2" experiment.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
