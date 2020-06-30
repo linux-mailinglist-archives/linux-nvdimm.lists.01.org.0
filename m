@@ -2,55 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A438420F3B8
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 30 Jun 2020 13:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863AC20F4C0
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 30 Jun 2020 14:35:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E57EF1141F7A9;
-	Tue, 30 Jun 2020 04:45:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.196; helo=mail-oi1-f196.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com [209.85.167.196])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C210D114129E2;
+	Tue, 30 Jun 2020 05:35:41 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6FF8F10FCDC8D
-	for <linux-nvdimm@lists.01.org>; Tue, 30 Jun 2020 04:45:05 -0700 (PDT)
-Received: by mail-oi1-f196.google.com with SMTP id t198so4621950oie.7
-        for <linux-nvdimm@lists.01.org>; Tue, 30 Jun 2020 04:45:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bsb4MIquaSTYBlodVHOtWcad2ied9oc2sDMq3Pcztr8=;
-        b=PQnuiKnWOLywVcEACnYvGHswDYEhuELpkMe5mG7QWnPcU1PSAtLcGNGnmgm0pjefep
-         CyqZIv5EFZMUDb/G5nwwTpAkVeOg21RLV2QNYz1jbfPto3mlhVjz37lku4VNbzq0wkbJ
-         6wfq4ycJrFjHZP4Bllzk93snZX4ieZZ3L9q4PTVjfdZib1TI4DY/HLM5PvPiVdmJNduN
-         gcDGuiWjsSSq8hM2PYAdxx2eWVlYBE2GETBP5lf5svrRQF93ASamHIP5pynnHe76aCWV
-         kzN0W1V8y3i+O0cyC1aiQu0tL6bSzpRqQi+/0yOYUnQwzy+vjMKmUzmnJ28UjRw2LSWx
-         udTw==
-X-Gm-Message-State: AOAM533HR0FayID0g5Sh8LBc03q3zyMQ4FDJ4lA+MmkLJtH+DLDqzD6z
-	WlYokknkEZLVE8Yln44M32oMl/UXh/rB+IBnMEE=
-X-Google-Smtp-Source: ABdhPJwFw2GAEuZCNbPr0iNOFM+E2OWBK7BzCaHpl9FhHHuLN3NQg/TnqaWOD86/EaQux1Nj8hPKxgTGiCH4OqeDwRQ=
-X-Received: by 2002:aca:f58a:: with SMTP id t132mr9785173oih.68.1593517504450;
- Tue, 30 Jun 2020 04:45:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 0370610FCDC90
+	for <linux-nvdimm@lists.01.org>; Tue, 30 Jun 2020 05:35:38 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id 7A421AF24;
+	Tue, 30 Jun 2020 12:35:37 +0000 (UTC)
+From: Michal Suchanek <msuchanek@suse.de>
+To: linux-nvdimm@lists.01.org
+Subject: [PATCH] dm writecache: reject asynchronous pmem.
+Date: Tue, 30 Jun 2020 14:35:28 +0200
+Message-Id: <20200630123528.29660-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <158889473309.2292982.18007035454673387731.stgit@dwillia2-desk3.amr.corp.intel.com>
- <2788992.3K7huLjdjL@kreacher> <1666722.UopIai5n7p@kreacher>
- <1794490.F2OrUDcHQn@kreacher> <20200629205708.GK1237914@redhat.com>
-In-Reply-To: <20200629205708.GK1237914@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 30 Jun 2020 13:44:52 +0200
-Message-ID: <CAJZ5v0hiAVfgWTLcP2N5PWLsqL7mpHbuL1_de79svYYhd3R57A@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] ACPICA: Preserve memory opregion mappings
-To: Al Stone <ahs3@redhat.com>
-Message-ID-Hash: LZ3GUISV34EO3OVEUXQDFG7EBBK5IQPQ
-X-Message-ID-Hash: LZ3GUISV34EO3OVEUXQDFG7EBBK5IQPQ
-X-MailFrom: rjwysocki@gmail.com
+Message-ID-Hash: QABSYQJJOGFNZZIO5J4BYGMSMPZSICUH
+X-Message-ID-Hash: QABSYQJJOGFNZZIO5J4BYGMSMPZSICUH
+X-MailFrom: msuchanek@suse.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Erik Kaneda <erik.kaneda@intel.com>, Rafael Wysocki <rafael.j.wysocki@intel.com>, Len Brown <lenb@kernel.org>, Borislav Petkov <bp@alien8.de>, James Morse <james.morse@arm.com>, Myron Stowe <myron.stowe@redhat.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Bob Moore <robert.moore@intel.com>
+CC: Michal Suchanek <msuchanek@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Jan Kara <jack@suse.cz>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>, Yuval Shaia <yuval.shaia@oracle.com>, Cornelia Huck <cohuck@redhat.com>, Jakub Staron <jstaron@google.com>, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LZ3GUISV34EO3OVEUXQDFG7EBBK5IQPQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QABSYQJJOGFNZZIO5J4BYGMSMPZSICUH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -59,113 +42,36 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 29, 2020 at 10:57 PM Al Stone <ahs3@redhat.com> wrote:
->
-> On 29 Jun 2020 18:33, Rafael J. Wysocki wrote:
-> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> >
-> > The ACPICA's strategy with respect to the handling of memory mappings
-> > associated with memory operation regions is to avoid mapping the
-> > entire region at once which may be problematic at least in principle
-> > (for example, it may lead to conflicts with overlapping mappings
-> > having different attributes created by drivers).  It may also be
-> > wasteful, because memory opregions on some systems take up vast
-> > chunks of address space while the fields in those regions actually
-> > accessed by AML are sparsely distributed.
-> >
-> > For this reason, a one-page "window" is mapped for a given opregion
-> > on the first memory access through it and if that "window" does not
-> > cover an address range accessed through that opregion subsequently,
-> > it is unmapped and a new "window" is mapped to replace it.  Next,
-> > if the new "window" is not sufficient to acess memory through the
-> > opregion in question in the future, it will be replaced with yet
-> > another "window" and so on.  That may lead to a suboptimal sequence
-> > of memory mapping and unmapping operations, for example if two fields
-> > in one opregion separated from each other by a sufficiently wide
-> > chunk of unused address space are accessed in an alternating pattern.
-> >
-> > The situation may still be suboptimal if the deferred unmapping
-> > introduced previously is supported by the OS layer.  For instance,
-> > the alternating memory access pattern mentioned above may produce
-> > a relatively long list of mappings to release with substantial
-> > duplication among the entries in it, which could be avoided if
-> > acpi_ex_system_memory_space_handler() did not release the mapping
-> > used by it previously as soon as the current access was not covered
-> > by it.
-> >
-> > In order to improve that, modify acpi_ex_system_memory_space_handler()
-> > to preserve all of the memory mappings created by it until the memory
-> > regions associated with them go away.
-> >
-> > Accordingly, update acpi_ev_system_memory_region_setup() to unmap all
-> > memory associated with memory opregions that go away.
-> >
-> > Reported-by: Dan Williams <dan.j.williams@intel.com>
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > ---
-> >  drivers/acpi/acpica/evrgnini.c | 14 ++++----
-> >  drivers/acpi/acpica/exregion.c | 65 ++++++++++++++++++++++++----------
-> >  include/acpi/actypes.h         | 12 +++++--
-> >  3 files changed, 64 insertions(+), 27 deletions(-)
-> >
-> > diff --git a/drivers/acpi/acpica/evrgnini.c b/drivers/acpi/acpica/evrgnini.c
-> > index aefc0145e583..89be3ccdad53 100644
-> > --- a/drivers/acpi/acpica/evrgnini.c
-> > +++ b/drivers/acpi/acpica/evrgnini.c
-> > @@ -38,6 +38,7 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
-> >       union acpi_operand_object *region_desc =
-> >           (union acpi_operand_object *)handle;
-> >       struct acpi_mem_space_context *local_region_context;
-> > +     struct acpi_mem_mapping *mm;
-> >
-> >       ACPI_FUNCTION_TRACE(ev_system_memory_region_setup);
-> >
-> > @@ -46,13 +47,14 @@ acpi_ev_system_memory_region_setup(acpi_handle handle,
-> >                       local_region_context =
-> >                           (struct acpi_mem_space_context *)*region_context;
-> >
-> > -                     /* Delete a cached mapping if present */
-> > +                     /* Delete memory mappings if present */
-> >
-> > -                     if (local_region_context->mapped_length) {
-> > -                             acpi_os_unmap_memory(local_region_context->
-> > -                                                  mapped_logical_address,
-> > -                                                  local_region_context->
-> > -                                                  mapped_length);
-> > +                     while (local_region_context->first_mm) {
-> > +                             mm = local_region_context->first_mm;
-> > +                             local_region_context->first_mm = mm->next_mm;
-> > +                             acpi_os_unmap_memory(mm->logical_address,
-> > +                                                  mm->length);
-> > +                             ACPI_FREE(mm);
-> >                       }
-> >                       ACPI_FREE(local_region_context);
-> >                       *region_context = NULL;
-> > diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
-> > index d15a66de26c0..fd68f2134804 100644
-> > --- a/drivers/acpi/acpica/exregion.c
-> > +++ b/drivers/acpi/acpica/exregion.c
-> > @@ -41,6 +41,7 @@ acpi_ex_system_memory_space_handler(u32 function,
-> >       acpi_status status = AE_OK;
-> >       void *logical_addr_ptr = NULL;
-> >       struct acpi_mem_space_context *mem_info = region_context;
-> > +     struct acpi_mem_mapping *mm = mem_info->cur_mm;
-> >       u32 length;
-> >       acpi_size map_length;
->
-> I think this needs to be:
->
->         acpi_size map_length = mem_info->length;
->
-> since it now gets used in the ACPI_ERROR() call below.
+The writecache driver does not handle asynchronous pmem. Reject it when
+supplied as cache.
 
-No, it's better to print the length value in the message.
+Link: https://lore.kernel.org/linux-nvdimm/87lfk5hahc.fsf@linux.ibm.com/
+Fixes: 6e84200c0a29 ("virtio-pmem: Add virtio pmem driver")
 
->  I'm getting a "maybe used unitialized" error on compilation.
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+---
+ drivers/md/dm-writecache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Thanks for reporting!
-
-I've updated the commit in the acpica-osl branch with the fix.
+diff --git a/drivers/md/dm-writecache.c b/drivers/md/dm-writecache.c
+index 30505d70f423..57b0a972f6fd 100644
+--- a/drivers/md/dm-writecache.c
++++ b/drivers/md/dm-writecache.c
+@@ -2277,6 +2277,12 @@ static int writecache_ctr(struct dm_target *ti, unsigned argc, char **argv)
+ 
+ 		wc->memory_map_size -= (uint64_t)wc->start_sector << SECTOR_SHIFT;
+ 
++		if (!dax_synchronous(wc->ssd_dev->dax_dev)) {
++			r = -EOPNOTSUPP;
++			ti->error = "Asynchronous persistent memory not supported as pmem cache";
++			goto bad;
++		}
++
+ 		bio_list_init(&wc->flush_list);
+ 		wc->flush_thread = kthread_create(writecache_flush_thread, wc, "dm_writecache_flush");
+ 		if (IS_ERR(wc->flush_thread)) {
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
