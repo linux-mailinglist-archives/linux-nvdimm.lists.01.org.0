@@ -2,126 +2,96 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49FF211387
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Jul 2020 21:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DC72116CA
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  2 Jul 2020 01:50:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4737C114493D5;
-	Wed,  1 Jul 2020 12:33:20 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 8B55C1103E37B;
+	Wed,  1 Jul 2020 16:50:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=164.138.21.248; helo=server.altonwebs.com; envelope-from=support@2340.ir; receiver=<UNKNOWN> 
+Received: from server.altonwebs.com (unknown [164.138.21.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0FA3F11427DB3
-	for <linux-nvdimm@lists.01.org>; Wed,  1 Jul 2020 12:33:18 -0700 (PDT)
-Received: from localhost (unknown [137.135.114.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id AA03D208A7;
-	Wed,  1 Jul 2020 19:33:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1593631997;
-	bh=3yFXOIlf/jaJ9LVqAKz8KOR8fQJjduxx7bKp5GcEi+M=;
-	h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
-	 References:From;
-	b=2oAU5Ir4jBKIKpKMgw8qWqs+s4r3GWOAGleRz9cNaB7c62kttSM6hQEW709DGmX6g
-	 cb6Z7YnI+bVZJ/zs3Iciomyv9kNI1ZPkRDedEo72V2onSEYtaUFCvrUv1gZ0EhxMPw
-	 3ZldgAVF2MRpAMrLXrg5mwIlrdOPT+HuVVBCnbYk=
-Date: Wed, 01 Jul 2020 19:33:17 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id D27C811022293
+	for <linux-nvdimm@lists.01.org>; Wed,  1 Jul 2020 16:49:57 -0700 (PDT)
+Received: from 2340.ir (unknown [46.249.32.77])
+	by server.altonwebs.com (Postfix) with ESMTPA id 4157D1640EF
+	for <linux-nvdimm@lists.01.org>; Thu,  2 Jul 2020 00:50:08 +0430 (+0430)
+Authentication-Results: server.altonwebs.com;
+	spf=pass (sender IP is 46.249.32.77) smtp.mailfrom=support@2340.ir smtp.helo=2340.ir
+Received-SPF: pass (server.altonwebs.com: connection is authenticated)
+From: support@2340.ir
 To: linux-nvdimm@lists.01.org
-Subject: Re: [PATCH 01/12] libnvdimm: Validate command family indices
-In-Reply-To: <159312902579.1850128.3536310031352445291.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159312902579.1850128.3536310031352445291.stgit@dwillia2-desk3.amr.corp.intel.com>
-Message-Id: <20200701193317.AA03D208A7@mail.kernel.org>
-Message-ID-Hash: 2IO4LG5V4PJDXCCVKUB5TDWBHN223SOZ
-X-Message-ID-Hash: 2IO4LG5V4PJDXCCVKUB5TDWBHN223SOZ
-X-MailFrom: sashal@kernel.org
+Subject: OFFIZIELLE GEWINNBENACHRITIGUNG  NT60K
+Date: 1 Jul 2020 10:19:27 +0330
+Message-ID: <20200701101927.72E71C50BCEC7BCE@2340.ir>
+MIME-Version: 1.0
+Message-ID-Hash: AQYPBANJYP4QA3H2PKVP3RENEPIV3NP2
+X-Message-ID-Hash: AQYPBANJYP4QA3H2PKVP3RENEPIV3NP2
+X-MailFrom: support@2340.ir
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, stable@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: anthoniogomez41@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2IO4LG5V4PJDXCCVKUB5TDWBHN223SOZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AQYPBANJYP4QA3H2PKVP3RENEPIV3NP2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi
-
-[This is an automated email]
-
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: 31eca76ba2fc ("nfit, libnvdimm: limited/whitelisted dimm command marshaling mechanism").
-
-The bot has tested the following trees: v5.7.6, v5.4.49, v4.19.130, v4.14.186, v4.9.228.
-
-v5.7.6: Failed to apply! Possible dependencies:
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v5.4.49: Failed to apply! Possible dependencies:
-    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v4.19.130: Failed to apply! Possible dependencies:
-    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
-    0ead11181fe0c ("acpi, nfit: Collect shutdown status")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
-    b3ed2ce024c36 ("acpi/nfit: Add support for Intel DSM 1.8 commands")
-    b5beae5e224f1 ("powerpc/pseries: Add driver for PAPR SCM regions")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v4.14.186: Failed to apply! Possible dependencies:
-    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
-    0e7f0741450b1 ("acpi, nfit: validate commands against the device type")
-    1194c4133195d ("nfit: Add Hyper-V NVDIMM DSM command set to white list")
-    11e1427016095 ("acpi, nfit: add support for NVDIMM_FAMILY_INTEL v1.6 DSMs")
-    466d1493ea830 ("acpi, nfit: rework NVDIMM leaf method detection")
-    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    b37b3fd33d034 ("acpi nfit: Enable to show what feature is supported via ND_CMD_CALL for nfit_test")
-    b9b1504d3c6d6 ("acpi, nfit: hide unknown commands from nmemX/commands")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-
-v4.9.228: Failed to apply! Possible dependencies:
-    095ab4b39f91b ("acpi, nfit: allow override of built-in bitmasks for nvdimm DSMs")
-    0f817ae696b04 ("usb: dwc3: pci: add a private driver structure")
-    36daf3aa399c0 ("usb: dwc3: pci: avoid build warning")
-    3f23df72dc351 ("mmc: sdhci-pci: Use ACPI to get max frequency for Intel NI byt sdio")
-    41c8bdb3ab10c ("acpi, nfit: Switch to use new generic UUID API")
-    42237e393f64d ("libnvdimm: allow a platform to force enable label support")
-    42b06496407c0 ("mmc: sdhci-pci: Add PCI ID for Intel NI byt sdio")
-    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    8f078b38dd382 ("libnvdimm: convert NDD_ flags to use bitops, introduce NDD_LOCKED")
-    94116f8126de9 ("ACPI: Switch to use generic guid_t in acpi_evaluate_dsm()")
-    9cecca75b5a0d ("usb: dwc3: pci: call _DSM for suspend/resume")
-    9d62ed9651182 ("libnvdimm: handle locked label storage areas")
-    b7fe92999a98a ("ACPI / extlog: Switch to use new generic UUID API")
-    b917078c1c107 ("net: hns: Add ACPI support to check SFP present")
-    ba650cfcf9409 ("acpi, nfit: allow specifying a default DSM family")
-    c959a6b00ff58 ("mmc: sdhci-pci: Don't re-tune with runtime pm for some Intel devices")
-    d2061f9cc32db ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-    fab9288428ec0 ("usb: USB Type-C connector class")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+OFFIZIELLE GEWINNBENACHRITIGUNG
+ 
+OFFIZIELLE GEWINNBENACHRITIGUNG INTERNATIONALE LOTTO/EUROMILLION 
+PROGRAMME MADRID OFFICE OFFIZIELLE MITTEILUNG VON SITZ DES 
+PRASIDENTEN INTERNATIONALE PROMOTION-GEWINNZUTEILUNG REFERENZ 
+NUMMER:EKAL 020/ESP OFFIZIELLE GEWINNBENACHRITIGUNG Wir sind 
+erfreut ihnen mitteilen zu konnen, das die gewinnliste 
+INTERNATIONALE LOTTO/BONO LOTTO PROGRAMM am 15 JUNE 2020 
+erschienen ist, vorbei Co-organisiert World Tourism 
+Organization/Spanish Ministerio de Tourismo . Dir offizielle 
+liste der gewinner erschien am 25 JUNE 2020. Ihr e-mail wurde auf 
+dem los mit dir nummer: 000442002 und mit der seriennummer: 2113-
+09 registried. Die glucksnummer: 12-16-25-41-46, haben in der 
+zweitens kategorie gewonnen. Sie sind damit gewinner von: 
+1,470.000 .00 (EINE MILLION VIERHUNDRET UND SIEBZIG TAUSEND 
+EURO.) Die summe ergibt sich einer gewinnausschuttung von. 
+25,257,690,00 (FUNF UND ZWANZIG MILLIONEN, ZWEI HUNDERT SIEBEN 
+UND FUNFZIG TAUSEND,SECHS HUNDERT UND NEUNZIG EURO). Die summe 
+wurde durch 27 gewinnern aus der glieichen kategorie geteilt. 
+HERZLICHEN GLUCKWUNSCH!!! Dir gewinn ist bei einer 
+sicherheitsfirma hinterlegt und in ihren namen versichert. um 
+keine komplikationen bei der abwicklung der zahlung zu 
+verursachen bitten wir sie diese offizielle mitteilung, diskret 
+zu behandelnes ist ein teil unseres sicherheitsprotokolls und 
+garantiet ihnen einen reibunglosen Ablauf.Alle gewinner werden 
+per computer aus 65.000.00 namen und e-mails aus ganz Europa, 
+Asien,Australien und Amerika als teil unserer Internationalen 
+promotion programms ausgewahlt, Welches wir einmal im jahr 
+veranstalten. CASER SICHERHEIT FIRMA UNTERNEHMEN S.L SPANIEN 
+AUSLAND ANSPRECH PARTNER: DR.PEDRO LUKAS TEL: +34 631136686 E-
+mail: pedrolukas@gmx.es Bitte beachten Sie bis zu einem Monat, um 
+Ihren Anspruch noch Ihre Fonds zuruck an Ministerio de Economia y 
+Hacienda gesendet werden nachrichtenlosen. Bitte denken sie auch 
+daran das 5% ihres gewinnes an die sicherheitsfirma CASER SEGUROS 
+S.L geht. Dir 5% sind erst nach erhalt des gewinnes fallig da der 
+gewinn in ihren namen versichert ist. BITTE AUSFUILLEN DEIN DATAS 
+AUS UNTEN. 1. 
+NAME:________________________________________________ 2. NACH 
+NAMEN____________________________PLZ____________ 3. 
+ADRESSE______________________________________________ 4. 
+NATIONALITAT:_____________________BERUF______________ 5. 
+GEBURTSDATUM:________________________________________ 6. 
+STAT:________________________________________________ 7. 
+TELEFON:_____________________________________________ 8. 
+MOBIL:_______________________________________________ 9. 
+FAX:_________________________________________________ 
+10.GESCHLECHT:_______________EMAIL ADRESSE______________ Die oben 
+genannten Anforderungen sind erforderlich. Gluckwunsche noch 
+einmal. Herzlichs HERR ANTONIO JUAN GOMEZ
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
