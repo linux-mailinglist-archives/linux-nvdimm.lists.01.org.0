@@ -1,78 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8164521129B
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Jul 2020 20:26:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771E7211384
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  1 Jul 2020 21:33:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF93D11001ABB;
-	Wed,  1 Jul 2020 11:26:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=msnitzer@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B6E9D11001AB9
-	for <linux-nvdimm@lists.01.org>; Wed,  1 Jul 2020 11:26:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1593627978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gM4o34lY2Q2Fu9DNpo9nmnqeENsycpsv4CwD0QpSKRo=;
-	b=dbu174cJhKEx2dtUzkFRaS0PVVs75PHM5sdDyGwbWiHhIXTmVlc6PhjLIg5DgqKGgfjgfS
-	ZfuLVCKw82obJVkHO1/PAXEd/Sr4lW+z2cF6vjNRvVbbMqWYYzzkL+h0brWAQW+oyqwh04
-	huwJyNriiIVu+T5fsBL00HXBRE/hoNw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-467-ve54S7gINvapvHMQrfW7sQ-1; Wed, 01 Jul 2020 14:26:14 -0400
-X-MC-Unique: ve54S7gINvapvHMQrfW7sQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7EE0A80183C;
-	Wed,  1 Jul 2020 18:26:11 +0000 (UTC)
-Received: from localhost (unknown [10.18.25.174])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 244BF5C1D3;
-	Wed,  1 Jul 2020 18:26:08 +0000 (UTC)
-Date: Wed, 1 Jul 2020 13:24:48 -0400
-From: Mike Snitzer <snitzer@redhat.com>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 10/20] dm: stop using ->queuedata
-Message-ID: <20200701172448.GA27528@redhat.com>
-References: <20200701085947.3354405-1-hch@lst.de>
- <20200701085947.3354405-11-hch@lst.de>
+	by ml01.01.org (Postfix) with ESMTP id 33C4111202AC7;
+	Wed,  1 Jul 2020 12:33:11 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.2; helo=msdm.com; envelope-from=wlmspf@hhay.com; receiver=<UNKNOWN> 
+Received: from msdm.com (unknown [223.73.128.2])
+	by ml01.01.org (Postfix) with ESMTP id 89B1510FE3541
+	for <linux-nvdimm@lists.01.org>; Wed,  1 Jul 2020 12:33:06 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Wed, 01 Jul 2020 18:11:34 +0800
+Message-ID: a86f37d1-8a4b-4061-9001-0a00d682be21
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200701085947.3354405-11-hch@lst.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: NXKSOL74ZDLY4ZVDDUIY3KAQEGH4K55H
-X-Message-ID-Hash: NXKSOL74ZDLY4ZVDDUIY3KAQEGH4K55H
-X-MailFrom: msnitzer@redhat.com
+Sender: =?utf-8?Q?=E5=A4=96=E8=B4=B8=E3=80=81=E7=89=A9=E6=B5?=
+ =?utf-8?Q?=81=E3=80=81=E5=B1=95=E4=BC=9A=E4=B8=9A=E5=8A=A1=E5=A5=BD=E5?=
+ =?utf-8?Q?=B8=AE=E6=89=8B?=
+ <wlmspf@hhay.com>
+From: =?utf-8?Q?=E5=A4=96=E8=B4=B8=E3=80=81=E7=89=A9=E6=B5=81?=
+ =?utf-8?Q?=E3=80=81=E5=B1=95=E4=BC=9A=E4=B8=9A=E5=8A=A1=E5=A5=BD=E5=B8?=
+ =?utf-8?Q?=AE=E6=89=8B?=
+ <wfra@hhay.com>
+To: linux-nvdimm@lists.01.org
+Date: 1 Jul 2020 18:11:34 +0800
+Subject: =?utf-8?B?5aSW6LS444CB54mp5rWB44CB5bGV5Lya5Lia5Yqh5aW95biu?=
+ =?utf-8?B?5omL?=
+Message-ID-Hash: SYVEQ3ZRY6EWJBXIEOJLLWUM4QWET6FH
+X-Message-ID-Hash: SYVEQ3ZRY6EWJBXIEOJLLWUM4QWET6FH
+X-MailFrom: wlmspf@hhay.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Jens Axboe <axboe@kernel.dk>, linux-bcache@vger.kernel.org, linux-xtensa@linux-xtensa.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, dm-devel@redhat.com, linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, drbd-dev@lists.linbit.com
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NXKSOL74ZDLY4ZVDDUIY3KAQEGH4K55H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SYVEQ3ZRY6EWJBXIEOJLLWUM4QWET6FH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, Jul 01 2020 at  4:59am -0400,
-Christoph Hellwig <hch@lst.de> wrote:
-
-> Instead of setting up the queuedata as well just use one private data
-> field.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-
-Acked-by: Mike Snitzer <snitzer@redhat.com>
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQrmr4/lj7DnlLXohJHml6Xlj5E1LTIw5LiH6YKu566x5pWw5o2u5peg6ZyA5Y+R5Lu2
+566x55qE6YKu5Lu2576k5Y+R6L2v5Lu25aSW6LS444CB54mp5rWB44CB5bGV5Lya5Lia5Yqh5aW9
+5biu5omLUVHlkqjor6LvvJozMzUxNjY1NjI1IApfX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52
+ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1u
+dmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
