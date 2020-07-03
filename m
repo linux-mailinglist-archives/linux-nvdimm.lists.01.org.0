@@ -2,175 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C889213939
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jul 2020 13:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C87213BD8
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  3 Jul 2020 16:32:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5BA8111487766;
-	Fri,  3 Jul 2020 04:19:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 75D49114726D1
-	for <linux-nvdimm@lists.01.org>; Fri,  3 Jul 2020 04:19:01 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id A1A6BAE65;
-	Fri,  3 Jul 2020 11:18:59 +0000 (UTC)
-From: Hannes Reinecke <hare@suse.de>
-To: Dan Williams <dan.williams@intel.com>
-Subject: [PATCH] libnvdimm: call devm_namespace_disable() on error
-Date: Fri,  3 Jul 2020 13:18:56 +0200
-Message-Id: <20200703111856.40280-1-hare@suse.de>
-X-Mailer: git-send-email 2.16.4
-Message-ID-Hash: 5NG3ZNPD6BZ6ZHDURQWXVMH4MLFOXYLW
-X-Message-ID-Hash: 5NG3ZNPD6BZ6ZHDURQWXVMH4MLFOXYLW
-X-MailFrom: hare@suse.de
+	by ml01.01.org (Postfix) with ESMTP id 164ED1003EFEE;
+	Fri,  3 Jul 2020 07:32:29 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=185.48.43.194; helo=pool43-194.teranet.hu; envelope-from=d5433a1d@hyarbor.it; receiver=<UNKNOWN> 
+Received: from pool43-194.teranet.hu (unknown [185.48.43.194])
+	by ml01.01.org (Postfix) with ESMTP id 5F5FB10078B35
+	for <linux-nvdimm@lists.01.org>; Fri,  3 Jul 2020 07:32:25 -0700 (PDT)
+From: <d5433a1d@hyarbor.it>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?UTF-8?B?UGVyc29uYWwgbm90ZXMgb24gaW5mb3JtYXRpb24gcmVxdWVzdA==?=
+Date: 3 Jul 2020 17:19:23 +0100
+Message-ID: <002501d65157$077a6645$9d2a6eb5$@hyarbor.it>
+MIME-Version: 1.0
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: Ac01pqne6kl61nta01pqne6kl61nta==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
+Message-ID-Hash: HHP3VWAPLI4HVDN2ZK5CTAQA4GTIFAWP
+X-Message-ID-Hash: HHP3VWAPLI4HVDN2ZK5CTAQA4GTIFAWP
+X-MailFrom: d5433a1d@hyarbor.it
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, Hannes Reinecke <hare@suse.de>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5NG3ZNPD6BZ6ZHDURQWXVMH4MLFOXYLW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HHP3VWAPLI4HVDN2ZK5CTAQA4GTIFAWP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Once devm_namespace_enable() has been called the error path in the
-calling function will not call devm_namespace_disable(), leaving the
-namespace enabled on error.
+Hello, I work as a private investigator.
+Our company received an order to hack into your email, phone, cloud, network and to collect intelligence.
+We work with hackers from China for tasks like that, and they are the best. But we do have an ethical protocol in place.
+After checking on the person, who ordered the hack and investigation on you, I have decided to come forward and offer you to buy the information about that person.
+You will also have a report on yourself (including a list of compromised accounts, devices and photos).
+Usually, it's not the case, but after reviewing this matter, I see that something illegal is planned against you.
+Material we have can easily be used to blackmail you.
+We usually work on private and corporate espionage cases, but this one is different.
+We have received a 50% prepayment for your case from that person (total agreed upon cost was 12500 USD).
+However, I will make a discount to you (without any profit for the agency), if you decide to buy this information.
+Do not try to email me back. This is a throwaway address. I have to protect identity, because nature of this job is already illegal.
+When you send the payment, I will get back to you. You have 2 business days to make the transfer. It will cost you 40% of the remaining balance.
+We will process &#36;2,500 payment through bitcoin. In case you have trouble with bitcoin, google how to fund it.
+Send BTC to this wallet 1AxJV1VYBccQvK44unpAx1KAbzvWmEQWDc
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
----
- drivers/dax/pmem/core.c   |  2 +-
- drivers/nvdimm/btt.c      |  5 ++++-
- drivers/nvdimm/claim.c    |  8 +++++++-
- drivers/nvdimm/pfn_devs.c |  1 +
- drivers/nvdimm/pmem.c     | 20 ++++++++++----------
- 5 files changed, 23 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/dax/pmem/core.c b/drivers/dax/pmem/core.c
-index 2bedf8414fff..4b26434f0aca 100644
---- a/drivers/dax/pmem/core.c
-+++ b/drivers/dax/pmem/core.c
-@@ -31,9 +31,9 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
- 	if (rc)
- 		return ERR_PTR(rc);
- 	rc = nvdimm_setup_pfn(nd_pfn, &pgmap);
-+	devm_namespace_disable(dev, ndns);
- 	if (rc)
- 		return ERR_PTR(rc);
--	devm_namespace_disable(dev, ndns);
- 
- 	/* reserve the metadata area, device-dax will reserve the data */
- 	pfn_sb = nd_pfn->pfn_sb;
-diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
-index 48e9d169b6f9..bd4747f2c99b 100644
---- a/drivers/nvdimm/btt.c
-+++ b/drivers/nvdimm/btt.c
-@@ -1704,13 +1704,16 @@ int nvdimm_namespace_attach_btt(struct nd_namespace_common *ndns)
- 		dev_dbg(&nd_btt->dev, "%s must be at least %ld bytes\n",
- 				dev_name(&ndns->dev),
- 				ARENA_MIN_SIZE + nd_btt->initial_offset);
-+		devm_namespace_disable(&nd_btt->dev, ndns);
- 		return -ENXIO;
- 	}
- 	nd_region = to_nd_region(nd_btt->dev.parent);
- 	btt = btt_init(nd_btt, rawsize, nd_btt->lbasize, nd_btt->uuid,
- 			nd_region);
--	if (!btt)
-+	if (!btt) {
-+		devm_namespace_disable(&nd_btt->dev, ndns);
- 		return -ENOMEM;
-+	}
- 	nd_btt->btt = btt;
- 
- 	return 0;
-diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
-index 45964acba944..15fd1b92d32f 100644
---- a/drivers/nvdimm/claim.c
-+++ b/drivers/nvdimm/claim.c
-@@ -314,12 +314,18 @@ int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio,
- 	}
- 
- 	ndns->rw_bytes = nsio_rw_bytes;
--	if (devm_init_badblocks(dev, &nsio->bb))
-+	if (devm_init_badblocks(dev, &nsio->bb)) {
-+		devm_release_mem_region(dev, res->start, size);
- 		return -ENOMEM;
-+	}
- 	nvdimm_badblocks_populate(to_nd_region(ndns->dev.parent), &nsio->bb,
- 			&nsio->res);
- 
- 	nsio->addr = devm_memremap(dev, res->start, size, ARCH_MEMREMAP_PMEM);
-+	if (IS_ERR(nsio->addr)) {
-+		devm_exit_badblocks(dev, &nsio->bb);
-+		devm_release_mem_region(dev, res->start, size);
-+	}
- 
- 	return PTR_ERR_OR_ZERO(nsio->addr);
- }
-diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
-index 34db557dbad1..9faa92662643 100644
---- a/drivers/nvdimm/pfn_devs.c
-+++ b/drivers/nvdimm/pfn_devs.c
-@@ -408,6 +408,7 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
- 				nsoff += chunk;
- 			}
- 			if (rc) {
-+				devm_namespace_disable(&nd_pfn->dev, ndns);
- 				dev_err(&nd_pfn->dev,
- 					"error clearing %x badblocks at %llx\n",
- 					num_bad, first_bad);
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index d25e66fd942d..4f667fe6ef72 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -401,8 +401,10 @@ static int pmem_attach_disk(struct device *dev,
- 	if (is_nd_pfn(dev)) {
- 		nd_pfn = to_nd_pfn(dev);
- 		rc = nvdimm_setup_pfn(nd_pfn, &pmem->pgmap);
--		if (rc)
-+		if (rc) {
-+			devm_namespace_disable(dev, ndns);
- 			return rc;
-+		}
- 	}
- 
- 	/* we're attaching a block device, disable raw namespace access */
-@@ -549,17 +551,15 @@ static int nd_pmem_probe(struct device *dev)
- 	ret = nd_pfn_probe(dev, ndns);
- 	if (ret == 0)
- 		return -ENXIO;
--	else if (ret == -EOPNOTSUPP)
--		return ret;
--
--	ret = nd_dax_probe(dev, ndns);
--	if (ret == 0)
--		return -ENXIO;
--	else if (ret == -EOPNOTSUPP)
--		return ret;
--
-+	else if (ret != EOPNOTSUPP) {
-+		ret = nd_dax_probe(dev, ndns);
-+		if (ret == 0)
-+			return -ENXIO;
-+	}
- 	/* probe complete, attach handles namespace enabling */
- 	devm_namespace_disable(dev, ndns);
-+	if (ret == -EOPNOTSUPP)
-+		return ret;
- 
- 	return pmem_attach_disk(dev, ndns);
- }
--- 
-2.16.4
+I strongly recommend you to make this decision alone for now, without consulting law enforcement or anybody else.
+It will be up to you what to do after you get the information. We will delete all files. The original customer will get nothing.
+Please keep in mind, because I need to pay Chinese contractors, and if you decline this offer, I will have to go to the original customer and send them all intel to cover the costs.
+But at least you know that now and have a free heads up of what's coming.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
