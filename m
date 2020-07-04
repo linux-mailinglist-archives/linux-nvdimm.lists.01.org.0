@@ -2,62 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795AF2145D7
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Jul 2020 14:31:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9CB2145D9
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  4 Jul 2020 14:31:23 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 96C81114EB6BF;
-	Sat,  4 Jul 2020 05:30:59 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id B3785114EB6C3;
+	Sat,  4 Jul 2020 05:31:22 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com; envelope-from=vilhelm.gray@gmail.com; receiver=<UNKNOWN> 
 Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D7839114E9C11
-	for <linux-nvdimm@lists.01.org>; Sat,  4 Jul 2020 05:30:57 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id z63so30959905qkb.8
-        for <linux-nvdimm@lists.01.org>; Sat, 04 Jul 2020 05:30:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 69B38114EB6BF
+	for <linux-nvdimm@lists.01.org>; Sat,  4 Jul 2020 05:31:20 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id e11so31045838qkm.3
+        for <linux-nvdimm@lists.01.org>; Sat, 04 Jul 2020 05:31:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=sOwZHk+VUidgfHH4SuXy00BIvhn2pt9U8Ew+xLvAsZg=;
-        b=OpZFtOaWIMlYV+gfwKL/L+8ff8UWmweHWOKfEufQ7KjkPr/LF9GO3Suf5BAUOgHdG+
-         YMRvdzJkBOY6hna7YZrEpLXFBOOBp81PwigxKHmOJ2GPwZhBdeHv05BtupTZV7tATXwR
-         DPcdZ9jElS7N771ftpchtTFTYqu55hNeZprcQJhE09KKMrs2uqGFEt5pTEoyH2es8Iqq
-         ro0Us25isi/BQXdmmHuwbBHcvFnxXeGG56nVsOPxbYCN+zs0kMMnrVT4EN8443erjvAN
-         i8H5GFPG9frq8EQT+swZCSwTZFhUhI8U1TX+Z6kFiVVLsdLaHU/QMWqNKs5DDcd3VZaH
-         rZrw==
+        bh=wXVeQpxCI+iwkYlezHWcf0l5BZQJCmNvUa2xktmhOME=;
+        b=E1+xoB3rYQ0NBSpfC4fscDTPs9mkC68MYowA8nh/JRikBI2XWSsFtvSpAqy9F494RE
+         0leKOD5qmSi0BkobZ42sbTeyMRO7wxm14RZRZOhOxIkiX3nPIdCcI07bLj4olC9wYduq
+         4uzBC4jqPKxwUhCHDDzrmTxxBr2d8T2olx/cn7pGcxJV0QBlkCfqUQ1Z4WLwivN3O4AS
+         I4IC7dmrAZnY0A3r6sKrIcJAKFfJ5q/E6PEw3Ki+nZJnq+/3of4oB/1jISH3toeyuS33
+         oW2FXmHLG7fLa359OKo8IrsP7AmFyTc4Cg0SKXtooxgf9uEF1gpG0pbPkyOSx9tEkoXI
+         Ujcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=sOwZHk+VUidgfHH4SuXy00BIvhn2pt9U8Ew+xLvAsZg=;
-        b=O3JnGJS2v6A3KFcLqCSzUdds2qiYxYHuKKn0FOCCTMWmNHadj4A4KHhPHBf4HhKZ6L
-         xhO/u8A1G5UPCQ6Dd04IUT/fpDdsJVMcBSnzUI4NNm7zXcjMOJm/NxbxXTMZQjMZK/wv
-         0YbWx2gOB6VtofKAwX6e1RWp3pm5s4Bd+t62AiLK2CNq2Evww+1VkD2+LwkKYytCz1eV
-         VSRdJQXhLEOrEsxRI+BQJDm8YQDnA88fUG+Dwlf93lN9dINP+zPM3PXqWYjbLpzRPVsb
-         sg+67z4i7NsYqvAnRW/gGpwciX343O9JMBRHjlgQYVqeKjfTUTHxuMbMqi/AvDmt/Llx
-         d4lA==
-X-Gm-Message-State: AOAM531um39P5JhQUPpexPNucF6zDcNb7exX4agP4hJLme4Ns0lFPMVO
-	u2YIWuEAJqEogyWUvRnTW+I=
-X-Google-Smtp-Source: ABdhPJxQkc5E1xdUVhKWRhep5Tf5kvtqhrZWqA7orRfGsTG/6YQJPlx2ZdIX0fYJyfo1s/jCEkbjNQ==
-X-Received: by 2002:a37:a14c:: with SMTP id k73mr39030752qke.145.1593865856267;
-        Sat, 04 Jul 2020 05:30:56 -0700 (PDT)
+        bh=wXVeQpxCI+iwkYlezHWcf0l5BZQJCmNvUa2xktmhOME=;
+        b=kZQXhXuId3uoNS1ixdHqQzhm4rLYUysfIpwm00XkOpKyW0D31Igfjo8mrqCrVge64x
+         XmuyvjonR1L8DnUqUbVpjL7nOfRud6W3scCTP0MU5FBla1CmeebAs4Hap/6oJ652l6rQ
+         AHgZqXD6RugI2P5kFcenETSymBbvzlrkJ+b/qW0RevZNTWSBZeSz/M5MBdfG9m4ljQ7P
+         jlPAM7WfRTSoZHvCwLmMPIA3qFvLIhktIxoC53MCkz4KqxzCKCWygvnonhnTS5olRIDP
+         INcGKxWwKNOSFP73eZjHeHGzE8Iw1K/H9TnAMA53A0pr+fvStQVTa9rl9EGQfN3laxh1
+         oYvg==
+X-Gm-Message-State: AOAM531iMgX7LihEh7aVOOcumBgDcOFipuZAsjZztnSJgkVDdKymuCHw
+	awFZ3PCEvlJALELVfy3OOQ0=
+X-Google-Smtp-Source: ABdhPJxUcAycygrd/AP+v+wLXYj/t4ZGB/H3x+bdq/DHUXVvrvZSnflEAQw0KbOs9WzSAMnXvd0YaQ==
+X-Received: by 2002:a37:6589:: with SMTP id z131mr39309316qkb.235.1593865879534;
+        Sat, 04 Jul 2020 05:31:19 -0700 (PDT)
 Received: from shinobu (072-189-064-225.res.spectrum.com. [72.189.64.225])
-        by smtp.gmail.com with ESMTPSA id 21sm13502872qkj.56.2020.07.04.05.30.54
+        by smtp.gmail.com with ESMTPSA id a25sm14159031qtk.40.2020.07.04.05.31.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Jul 2020 05:30:55 -0700 (PDT)
-Date: Sat, 4 Jul 2020 08:30:41 -0400
+        Sat, 04 Jul 2020 05:31:18 -0700 (PDT)
+Date: Sat, 4 Jul 2020 08:31:16 -0400
 From: William Breathitt Gray <vilhelm.gray@gmail.com>
 To: Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [PATCH 06/17] Documentation/driver-api: generic-counter: drop
- doubled word
-Message-ID: <20200704123041.GA5194@shinobu>
+Subject: Re: [PATCH 00/17] Documentation/driver-api: eliminate duplicated
+ words
+Message-ID: <20200704123116.GB5194@shinobu>
 References: <20200704034502.17199-1-rdunlap@infradead.org>
- <20200704034502.17199-7-rdunlap@infradead.org>
 MIME-Version: 1.0
-In-Reply-To: <20200704034502.17199-7-rdunlap@infradead.org>
-Message-ID-Hash: YW7TTG6EXOUCROYR2K4GAV6P7WXXJVWK
-X-Message-ID-Hash: YW7TTG6EXOUCROYR2K4GAV6P7WXXJVWK
+In-Reply-To: <20200704034502.17199-1-rdunlap@infradead.org>
+Message-ID-Hash: 5ALFLFSVFJWGZNGCAVKKESAC56EWOZ62
+X-Message-ID-Hash: 5ALFLFSVFJWGZNGCAVKKESAC56EWOZ62
 X-MailFrom: vilhelm.gray@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -65,75 +64,96 @@ CC: linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, linux-doc@vg
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YW7TTG6EXOUCROYR2K4GAV6P7WXXJVWK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5ALFLFSVFJWGZNGCAVKKESAC56EWOZ62/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1508785840458084391=="
+Content-Type: multipart/mixed; boundary="===============8553597338142291369=="
 
 
---===============1508785840458084391==
+--===============8553597338142291369==
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mP3DRpeJDSE+ciuQ"
+	protocol="application/pgp-signature"; boundary="cvVnyQ+4j833TQvp"
 Content-Disposition: inline
 
 
---mP3DRpeJDSE+ciuQ
+--cvVnyQ+4j833TQvp
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 03, 2020 at 08:44:51PM -0700, Randy Dunlap wrote:
-> Drop the doubled word "the".
+On Fri, Jul 03, 2020 at 08:44:45PM -0700, Randy Dunlap wrote:
+> Remove occurrences of duplicated words in Documentation/driver-api/.
 >=20
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
 > Cc: Jonathan Corbet <corbet@lwn.net>
 > Cc: linux-doc@vger.kernel.org
+> Cc: Vinod Koul <vkoul@kernel.org>
+> Cc: dmaengine@vger.kernel.org
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Cc: William Breathitt Gray <vilhelm.gray@gmail.com>
 > Cc: linux-iio@vger.kernel.org
-> ---
->  Documentation/driver-api/generic-counter.rst |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: linux-media@vger.kernel.org
+> Cc: Jon Mason <jdmason@kudzu.us>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Allen Hubbe <allenbh@gmail.com>
+> Cc: linux-ntb@googlegroups.com
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Cc: linux-nvdimm@lists.01.org
+> Cc: linux-usb@vger.kernel.org
+> Cc: Eli Billauer <eli.billauer@gmail.com>
 >=20
-> --- linux-next-20200701.orig/Documentation/driver-api/generic-counter.rst
-> +++ linux-next-20200701/Documentation/driver-api/generic-counter.rst
-> @@ -262,7 +262,7 @@ the system.
->  Counter Counts may be allocated via counter_count structures, and
->  respective Counter Signal associations (Synapses) made via
->  counter_synapse structures. Associated counter_synapse structures are
-> -stored as an array and set to the the synapses array member of the
-> +stored as an array and set to the synapses array member of the
->  respective counter_count structure. These counter_count structures are
->  set to the counts array member of an allocated counter_device structure
->  before the Counter is registered to the system.
+>=20
+>  Documentation/driver-api/dmaengine/provider.rst        |    2 +-
+>  Documentation/driver-api/driver-model/platform.rst     |    2 +-
+>  Documentation/driver-api/firmware/built-in-fw.rst      |    2 +-
+>  Documentation/driver-api/firmware/direct-fs-lookup.rst |    2 +-
+>  Documentation/driver-api/firmware/firmware_cache.rst   |    2 +-
+>  Documentation/driver-api/firmware/request_firmware.rst |    2 +-
+>  Documentation/driver-api/generic-counter.rst           |    2 +-
+>  Documentation/driver-api/iio/buffers.rst               |    2 +-
+>  Documentation/driver-api/media/cec-core.rst            |    2 +-
+>  Documentation/driver-api/media/dtv-frontend.rst        |    6 +++---
+>  Documentation/driver-api/media/v4l2-controls.rst       |    4 ++--
+>  Documentation/driver-api/media/v4l2-dev.rst            |    2 +-
+>  Documentation/driver-api/ntb.rst                       |    2 +-
+>  Documentation/driver-api/nvdimm/nvdimm.rst             |    2 +-
+>  Documentation/driver-api/uio-howto.rst                 |    2 +-
+>  Documentation/driver-api/usb/URB.rst                   |    2 +-
+>  Documentation/driver-api/xillybus.rst                  |    2 +-
+>  17 files changed, 20 insertions(+), 20 deletions(-)
 
 Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
 
---mP3DRpeJDSE+ciuQ
+--cvVnyQ+4j833TQvp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl8AdmgACgkQhvpINdm7
-VJKL2g/9H6mqC4m/nbUz0xx6u/KB2FTl+BheIuZdhAKQ7vaavuFT9QQK7KdB4VlZ
-9/mxbfR37ZCap3U06SMiqcB3cBirDGz38z0kpQEnjoRLfO86+gb7WfpBn19BkBt3
-SgI+iKUWbpFBZQnOXpP/mpmGDIIBJdb/oPeqamTmeCP5zmkGPStlR66mReRTCF5A
-C1ISpNFBpFTCSLXvMannoxxEWHfug95Oq+z2MxNY87LfNKQm+jtRD+yjfvNJJDEO
-EA/p8gavvQuNNS7HnwjzT7F5xc+1eoZINk5w4/KkoSJzcyMQEBnPCKQV/T6YJT9A
-odyOiKcmBQOQ4SjjWZwsaf86ELIGt85SR6MtjXAv/+Hakuim0lvEN53LjeLw42XS
-UiQ6k3UvFMLccw56hfUrntSUWiMCNSHJHi7CNiHKoR8Bu2lUpGZUbsj2dJ5f2f6B
-QTZxZrFKdYpWQ6Bj56Gw+qz7n6YKWoAdhW6BhSqmnNn+gvgpWqPTgz5OG6hXARgI
-2MyKfuKyyc73wPPenSuCF+0ugENfjmYAfkKkFIHweBP82YemBQH1gzRNtusQgjp3
-NYyhPpdbiSDucr9uicWqOTwEjOppSfUpNIehHwKmZQOePA+Ewj1U0mbKsA17IbDm
-7tXxxkVxTlKSuEIfgiDufrHw5oOner+LPe/QKsMK4nNBHKTRGpQ=
-=Q9+X
+iQIzBAABCgAdFiEEk5I4PDJ2w1cDf/bghvpINdm7VJIFAl8AdpQACgkQhvpINdm7
+VJIBvxAAqwgnnmzKHJ8nY2Ip3r9kE7Fygjzlzj9bHCF7iXLQVTYqC4W7cN0q0Bfu
+QotqGgl0sAWKftn9qkvUzFI6TFRROjPuzPdDPucm+pQ5pW2m6HIEOgK42qjcuHLn
+wvVJmYNuV3L+Y6NQtUS1PBulobtAYL8fMMhtQiG6rialiiB6yaJeHkpU7BP5cdUn
++n6i9IJIdl9//biQjBd5FQy7wqPLr+aXBZLAMSWT+hKl0huWGUXmFBTmcGLkGhAT
+OEKrj9H7j8U7CmavcpNe0bHRLlucKl3a1wQTtf6CV+SwfaaFEtKhaEKEIsB4M9QI
+sRvbV0gY9yJX2y3DabCS61B/EcCA2htBnk++AlNY+HvfXckvW9+g4xaMcCAU0cow
+1EFaMIVEGWrEuaBIRDQJX5f9n97Wvc0Zp2B/hlxYvSo1xmaCObehZ9+UecKCW1C0
+71A8NFc0cYiELXFZmQ+Vf7I9K3UeaRBaeoB8r4YEBNOO3JhmHq9E8re8ULoMvEse
+HKZyuoGyoOhW27cZXoBw1ymZZ07Nnmpupyukmh9wQllQcMj5smqQAcbCtBNCcqXb
+L+dlXBeIpE+KZHRFJ/2RtmDX903PaDcZ0Y5+NZUJsvt/KJCzg1rASkGcHC6lVTLj
+4jBBZt4JmxUWKLxsdnkHXb12eTXPB7DkjhCiSThpm1A2Re9P4Jg=
+=6Gqy
 -----END PGP SIGNATURE-----
 
---mP3DRpeJDSE+ciuQ--
+--cvVnyQ+4j833TQvp--
 
---===============1508785840458084391==
+--===============8553597338142291369==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -143,4 +163,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============1508785840458084391==--
+--===============8553597338142291369==--
