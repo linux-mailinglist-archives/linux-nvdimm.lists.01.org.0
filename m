@@ -1,135 +1,153 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13352214994
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  5 Jul 2020 04:05:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2A22149F0
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  5 Jul 2020 06:16:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0B08610FC4479;
-	Sat,  4 Jul 2020 19:05:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com; envelope-from=hopelight1305@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+	by ml01.01.org (Postfix) with ESMTP id 640F710FCC904;
+	Sat,  4 Jul 2020 21:16:02 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::642; helo=mail-pl1-x642.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 866CC10FC3710
-	for <linux-nvdimm@lists.01.org>; Sat,  4 Jul 2020 19:05:39 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id t11so10648888pfq.11
-        for <linux-nvdimm@lists.01.org>; Sat, 04 Jul 2020 19:05:39 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E5D7E10FCC900
+	for <linux-nvdimm@lists.01.org>; Sat,  4 Jul 2020 21:16:00 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id w19so3362994ply.9
+        for <linux-nvdimm@lists.01.org>; Sat, 04 Jul 2020 21:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:date:list-unsubscribe:mime-version:from:to:subject
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=YIYu/a+zEmG7g8Bdw7Ubgi4J3ukBXf/o4jupCSVN0vE=;
-        b=VyAZHChA7iWhVo2uLCU1jOo7yXyLCVlP6aGG2tUHGAW5gtY7tfclO3fbWsR1WUdpU/
-         ZZxTb270WQYGIF1amiHWeuJegycOXRh+Ut0LqsO5GmmUBqEIRNxdSXIyPCeacSt+CKck
-         nlosp0VyQSGIiflCMPdr6yKdBa/KwBRoCYb5OCh1x2yV+a5pR2Z01rLZhCt9+O7mAJuR
-         Qf0WWxu4R00FU/3xObeOuOTNODLnOHNDhme5SlHwxw5GXYcVEaFxxD6NPn3HkMg9EZjj
-         EUqPToZEyqSCV6QpginskqTMiNxRTyitOBeFtermet8Q0pqEYGgvm8aWbd6htsqhSytz
-         TK8w==
+        bh=KoEguL5/giWK5s2yeoihpBKLkFCXGdzhNwuS/0t+e00=;
+        b=GpX87OCVcJ4eQbMZo4d+nzw07DA/0jj+z50JXiIKNGh+nZHyfZVDyOY6g4POZUgQeB
+         y/rNOSIWPytW6Y3hUAU7MfmvL0lR7dVzCBLR5n4xpN4BTg0wr9iYCBh7NUPb0FjIlYc/
+         s8h0vTv3UpRIekaapM/VrLWari1tsboI4aRe3BslbfR6hMZJ8raNvrfCR2sy95DyOO0G
+         ORXxE0Uu9jzPnzwFOC+g+Xet0S4hQ7O7ZaLT9AbyjUJDPk9+APOXwH27WPj4m7mlCaSb
+         QB2hVRc3OLHT2KXRMkSF00aJykezS+9buve0ZXIeKnNAL4wO7YcS7WeO8/G8DAbJ+c0u
+         hrFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:list-unsubscribe:mime-version
-         :from:to:subject:content-transfer-encoding;
-        bh=YIYu/a+zEmG7g8Bdw7Ubgi4J3ukBXf/o4jupCSVN0vE=;
-        b=aXiMQUH6dHKgBh+mFSHpG1arUMotuEd9XTxr5l4r0KbFA/56EYxbsHGCaFHy51kE1V
-         AMxNvg2/d01FGS0uYIuN42d0rBMIJPThvRjYSYRmxdsIa2p77O4z0sJP96Zixxuo8noR
-         Itq8fN3dIq6sXaKmzfenpUN3075JGhpDkFMzxB14Kk4Ls8D2rAALsEhAQw7jZbKU/Svl
-         5pScYQg3Veb7VJ/kzW0jnZbiYZKtzjjOH8pXVeZ0QTs1F4Lc7HDCYrRZnNRA9StzszHo
-         SXRdUuuGYYXeFdKHeuLd6dUOvjBa32GLzraiWx4IIPo0NXwz5K8IIm4BzCssS4gDG4ah
-         g/Vw==
-X-Gm-Message-State: AOAM533pg+UbBYDX6tFpAzNRVDGcaDmpFDqvxABLCwoikp7Ko7sYRyzu
-	sFGwBuqJ4xmGFcWxT6I091puMaZ5
-X-Google-Smtp-Source: ABdhPJxZ4UErcsmk5kHYB5Gha2Vd8i0yI6JXvbBYnZFz4oRiw4rVmq3bgPuXI05eK8ErHe/O7qFp6Q==
-X-Received: by 2002:a62:8608:: with SMTP id x8mr37346430pfd.96.1593914737682;
-        Sat, 04 Jul 2020 19:05:37 -0700 (PDT)
-Received: from XS1728722211 ([172.87.222.11])
-        by smtp.gmail.com with ESMTPSA id h6sm15265028pfo.123.2020.07.04.19.05.36
-        for <linux-nvdimm@lists.01.org>
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Sat, 04 Jul 2020 19:05:36 -0700 (PDT)
-Message-ID: <5f013570.1c69fb81.4d905.7962@mx.google.com>
-Date: Sat, 04 Jul 2020 19:05:36 -0700 (PDT)
-X-Google-Original-Date: 4 Jul 2020 19:05:23 -0700
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KoEguL5/giWK5s2yeoihpBKLkFCXGdzhNwuS/0t+e00=;
+        b=NIYZglWr3KKtb6KXCgqCsp5bKEGIhqjDVZMMOSFxgOmN/AchMuFQ1hg9Jw94K36BN7
+         BcurqndtKh4ZAY4n7x3F1cMYPbaVACH4vpJtKa+abQdaLs501VVZNox0rQSBbPsppNGy
+         JXP/TYiLlT3yXZvElIWJJAoVooUSP2sg3siK3pJe6wYLRBZUW/Q0EhZro0zZhaKL4KmY
+         3zYpvwXVOLOu3wq9HffksUpWFxx3a/dRJBR3OkIbQGAPGYH0zWrtxyUvTercltfnN9S0
+         JYQLLOfK7BJ/OS+88xC1TLsHRaLkAc/Jm6C2QlPuuMfbS7YTH71UgOgW3BC28iCkRjb2
+         R/Ng==
+X-Gm-Message-State: AOAM5331UGFq0UyWGtF2sjrM9X56hjTXePCYXStZQrwHJhe2lmsFCxq1
+	E//stNNrk4u1XsUMz7fD8Ow7/G4rQlU=
+X-Google-Smtp-Source: ABdhPJwaMHZknr+szVI1MpKTzZZsFB9DCGCqOSUAhmSxpMqkTocbRCvJKRbN/jHcoC9FB3i9gi+L8w==
+X-Received: by 2002:a17:90b:f16:: with SMTP id br22mr31156098pjb.170.1593922559777;
+        Sat, 04 Jul 2020 21:15:59 -0700 (PDT)
+Received: from santosiv.in.ibm.com.com ([203.223.190.240])
+        by smtp.gmail.com with ESMTPSA id w68sm15762548pff.191.2020.07.04.21.15.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 04 Jul 2020 21:15:59 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linux-nvdimm@lists.01.org,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH ndctl] namespace-action: Don't act on any seed namespaces
+Date: Sun,  5 Jul 2020 09:45:19 +0530
+Message-Id: <20200705041519.3263863-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-From: "Tremayne"
- <hopelight1305@gmail.com>
-To: linux-nvdimm@lists.01.org
-Subject: =?utf-8?B?bGludXgtbnZkaW1tP+WWhOW/teiuqeS6uuiDuOaAgOW5v+Wk?=
- =?utf-8?B?pyDnp4Hlv4Poh7TkurrmsJTph4/ni63lsI8hRnJvbSBUcmVtYXluZS4=?=
-Message-ID-Hash: P4S32QAXL2RS6ANTRGRCOEBIV3OKYTYR
-X-Message-ID-Hash: P4S32QAXL2RS6ANTRGRCOEBIV3OKYTYR
-X-MailFrom: hopelight1305@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: QHRHB4O4UJIBYCO6HP2RFVC54HPJVCIC
+X-Message-ID-Hash: QHRHB4O4UJIBYCO6HP2RFVC54HPJVCIC
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, harish@linux.ibm.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P4S32QAXL2RS6ANTRGRCOEBIV3OKYTYR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QHRHB4O4UJIBYCO6HP2RFVC54HPJVCIC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0495350200262861319=="
-
---===============0495350200262861319==
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
-
-PENFTlRFUj4KPHA+PGRpdiBzdHlsZT0iZm9udC1zaXplOiAyN3B4OyBmb250LWZh
-bWlseTogdmVyZGFuYSwgYXJpYWwsIGhlbHZldGljYSwgc2Fucy1zZXJpZjsgYmFj
-a2dyb3VuZC1jb2xvcjogcmdiKDI1NSwgMjU1LCAyNTUpIj48Zm9udCBjb2xvcj0i
-IzAwMDBjYyI+PGEgaHJlZj0iaHR0cDovL3RoZXVvY3h1YS5jb20vZ2V0ZG9jdW1l
-bnRzL0lqZlVQQXR0NUZKazhhQ3FFbG9WazhQNXpzQ3MwUHNCQkJCa0l3ellNMUtL
-aGFaVm5FYzNwb2hNSjVpZXp5QkJCQmF5bHYvbGo1MXl5VFdZODNWTWlveXpUQWZO
-UT09L2xpbnV4LW52ZGltbT/lloTlv7Xorqnkurrog7jmgIDlub/lpKcg56eB5b+D
-6Ie05Lq65rCU6YeP54ut5bCPIUZyb20gVHJlbWF5bmUuIiB0YXJnZXQ9Il9ibGFu
-ayIgcmVsPSJub3JlZmVycmVyIj5UaGUgdHJ1dGguaW5mbzwvYT48L2ZvbnQ+PC9k
-aXY+CjxkaXY+CjxpbWcgc3JjPSJodHRwOi8vdGhldW9jeHVhLmNvbS9nZXRkb2N1
-bWVudHMvSWpmVVBBdHQ1RkprOGFDcUVsb1ZrNmRnMTBCQkJCYnBsajFhTW1aSDNB
-QUFBZkZvdExvaDdFVlRtNmpLVmdhS09CQkJCbWJ6dXB5RWhQd09EZ0d3dDRqTGtN
-OGYwUUE9PS9CSk5vUHRHbnhhTHpHWTZnMld0QkJCQjRhTGtzWUZyMzhCOGZ1S3h1
-TUFBQUFCSHN4R3NKQ2NPMEJMRFQ2MWdhV1FWajM4L2xpbnV4LW52ZGltbT/lloTl
-v7Xorqnkurrog7jmgIDlub/lpKcg56eB5b+D6Ie05Lq65rCU6YeP54ut5bCPIUZy
-b20gVHJlbWF5bmUuIj4KPGltZyBzcmM9Imh0dHA6Ly90aGV1b2N4dWEuY29tL2dl
-dGRvY3VtZW50cy9JamZVUEF0dDVGSms4YUNxRWxvVms4UDV6c0NzMFBzQkJCQmtJ
-d3pZTTFLS2hhWlZuRWMzcG9oTUo1aWV6eUJCQkJheWx2L1VHY2xQek11OE5HcTNM
-WGN2Yk1JN214eTU4WHU2cWJrUFFweEc4WWZsQUJlZmVuV3RhOVJRU2V5ZlcyalFp
-b2cvbGludXgtbnZkaW1tP+WWhOW/teiuqeS6uuiDuOaAgOW5v+WkpyDnp4Hlv4Po
-h7TkurrmsJTph4/ni63lsI8hRnJvbSBUcmVtYXluZS4iPgo8aW1nIHNyYz0iaHR0
-cDovL3RoZXVvY3h1YS5jb20vZ2V0ZG9jdW1lbnRzL0lqZlVQQXR0NUZKazhhQ3FF
-bG9WazhQNXpzQ3MwUHNCQkJCa0l3ellNMUtLaGFaVm5FYzNwb2hNSjVpZXp5QkJC
-QmF5bHYvT2szWXdSTHNZTkpBQUFBQUFBQUFBQUF1eTBqR1BtTEJCQkJ2TjAxNkxv
-THdFZlA1cGp4QUZ2cEdBQUFBZFdJOEZPY2JBdlVDamJEUWZFOGNXVHNCQkJCTk5y
-Z1lzaFRQMWxWNnBOOW5oUXllNWpCeEdBQUFBdnFPa1p2VTlEQ2s9L2xpbnV4LW52
-ZGltbT/lloTlv7Xorqnkurrog7jmgIDlub/lpKcg56eB5b+D6Ie05Lq65rCU6YeP
-54ut5bCPIUZyb20gVHJlbWF5bmUuIj4KPGltZyBzcmM9Imh0dHA6Ly90aGV1b2N4
-dWEuY29tL2dldGRvY3VtZW50cy9JamZVUEF0dDVGSms4YUNxRWxvVms4UDV6c0Nz
-MFBzQkJCQmtJd3pZTTFLS2hhWlZuRWMzcG9oTUo1aWV6eUJCQkJheWx2L09rM1l3
-UkxzWU5KQUFBQUFBQUFBQUFBdXkwakdQbUxCQkJCdk4wMTZMb0x3RWZQNXBqeEFG
-dnJPNVdsbER3bXJ3clE1YnMzMUwxakR6M0dsQkJCQm96MlVwZjh3bGQ3ckJDdWl3
-RzhFdXdiaTZFT2ZPWVo0WnJYejNnPS9saW51eC1udmRpbW0/5ZaE5b+16K6p5Lq6
-6IO45oCA5bm/5aSnIOengeW/g+iHtOS6uuawlOmHj+eLreWwjyFGcm9tIFRyZW1h
-eW5lLiI+CjxpbWcgc3JjPSJodHRwOi8vdGhldW9jeHVhLmNvbS9nZXRkb2N1bWVu
-dHMvSWpmVVBBdHQ1RkprOGFDcUVsb1ZrOFA1enNDczBQc0JCQkJrSXd6WU0xS0to
-YVpWbkVjM3BvaE1KNWllenlCQkJCYXlsdi9PazNZd1JMc1lOSkFBQUFBQUFBQUFB
-QXV5MGpHUG1MQkJCQnZOMDE2TG9Md0VmUDVwanhBRnZvOUtKS1dBMmxzMjlrVW9G
-OUNTY2VrTzV6WFFFQkJCQnJlQUFBQUlkbjRWUGRvSWZQcFIxN2tmcDJCQkJCUUs5
-S1hnNGF3ekJodz0vbGludXgtbnZkaW1tP+WWhOW/teiuqeS6uuiDuOaAgOW5v+Wk
-pyDnp4Hlv4Poh7TkurrmsJTph4/ni63lsI8hRnJvbSBUcmVtYXluZS4iPgo8ZGl2
-Pgo8ZW0+KuWFtuS7luaWh+S7tjo8L2VtPjxiciAvPgo8ZW0+aHR0cHM6Ly93d3cu
-bWVkaWFmaXJlLmNvbS9mb2xkZXIvaW5qMnZlZHdlN2NqMzwvZW0+PGJyIC8+Cjxl
-bT5odHRwOi8vY29kdXllbi5pbmZvL21oLzAwLzkmcGlfbi5nLnBkZjwvZW0+PGJy
-IC8+
-
---===============0495350200262861319==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Catch seed namespaces early on. This will prevent checking for sizes in enable,
+disable and destroy namespace code path, which in turn prevents the inconsistent
+reporting in count of enabled/disabled namespaces.
+
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ ndctl/lib/libndctl.c |  5 -----
+ ndctl/namespace.c    | 14 ++------------
+ 2 files changed, 2 insertions(+), 17 deletions(-)
+
+diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+index ee737cb..d0599f7 100644
+--- a/ndctl/lib/libndctl.c
++++ b/ndctl/lib/libndctl.c
+@@ -4130,16 +4130,11 @@ NDCTL_EXPORT int ndctl_namespace_enable(struct ndctl_namespace *ndns)
+ 	const char *devname = ndctl_namespace_get_devname(ndns);
+ 	struct ndctl_ctx *ctx = ndctl_namespace_get_ctx(ndns);
+ 	struct ndctl_region *region = ndns->region;
+-	unsigned long long size = ndctl_namespace_get_size(ndns);
+ 	int rc;
+ 
+ 	if (ndctl_namespace_is_enabled(ndns))
+ 		return 0;
+ 
+-	/* Don't try to enable idle namespace (no capacity allocated) */
+-	if (size == 0)
+-		return -ENXIO;
+-
+ 	rc = ndctl_bind(ctx, ndns->module, devname);
+ 
+ 	/*
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index 0550580..5a086d0 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -1102,7 +1102,6 @@ static int namespace_destroy(struct ndctl_region *region,
+ 		struct ndctl_namespace *ndns)
+ {
+ 	const char *devname = ndctl_namespace_get_devname(ndns);
+-	unsigned long long size;
+ 	bool did_zero = false;
+ 	int rc;
+ 
+@@ -1147,19 +1146,9 @@ static int namespace_destroy(struct ndctl_region *region,
+ 		goto out;
+ 	}
+ 
+-	size = ndctl_namespace_get_size(ndns);
+-
+ 	rc = ndctl_namespace_delete(ndns);
+ 	if (rc)
+ 		debug("%s: failed to reclaim\n", devname);
+-
+-	/*
+-	 * Don't report a destroyed namespace when no capacity was
+-	 * allocated.
+-	 */
+-	if (size == 0 && rc == 0)
+-		rc = 1;
+-
+ out:
+ 	return rc;
+ }
+@@ -2128,8 +2117,9 @@ static int do_xaction_namespace(const char *namespace,
+ 			ndctl_namespace_foreach_safe(region, ndns, _n) {
+ 				ndns_name = ndctl_namespace_get_devname(ndns);
+ 
+-				if (strcmp(namespace, "all") != 0
++				if ((strcmp(namespace, "all") != 0
+ 						&& strcmp(namespace, ndns_name) != 0)
++				    || ndctl_namespace_get_size(ndns) == 0)
+ 					continue;
+ 				switch (action) {
+ 				case ACTION_DISABLE:
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============0495350200262861319==--
