@@ -1,149 +1,97 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C504215D12
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  6 Jul 2020 19:26:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18591216157
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 00:13:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7D7CF11075BCB;
-	Mon,  6 Jul 2020 10:26:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 42B661106818F;
+	Mon,  6 Jul 2020 15:13:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.132.42; helo=sonic306-3.consmr.mail.bf2.yahoo.com; envelope-from=myway33409@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic306-3.consmr.mail.bf2.yahoo.com (sonic306-3.consmr.mail.bf2.yahoo.com [74.6.132.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 240C611075BCA
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 10:26:35 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id E1EF2ACF2;
-	Mon,  6 Jul 2020 17:26:33 +0000 (UTC)
-From: Coly Li <colyli@suse.de>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] dax: print error message by pr_info() in __generic_fsdax_supported()
-Date: Tue,  7 Jul 2020 01:26:26 +0800
-Message-Id: <20200706172626.5554-1-colyli@suse.de>
-X-Mailer: git-send-email 2.26.2
+	by ml01.01.org (Postfix) with ESMTPS id 3F36111075BD5
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 15:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594073631; bh=oCNEd1hqPk1aOv3IotM9kYb1NCspoUc0Hm/7Y+4kBd0=; h=Date:From:Reply-To:Subject:References:From:Subject; b=tCYir0Lw/8KZV/DZ+TYkNdfJFmcDqvByQ4lddV2RUg9o/Xxl6RWgnE/IosXQqkRTsEH92WqmDAMeF/19sxB0gfOCkhpYm5G382X8tlsO//MaVbsdK370TuhguCuAZCNMAHckpDhluCiVSdwoE6qayTy/OGWl0sjAbYD1ZyLxq//ZZeBVqUDIBbuDyIw3mHfpihJBSdhhdbylGHAGEzbms5IJmaUJbccnhYtqBYg9zKPzbNn3KJtIQfjocMpnj60OOJMUS9kONEi9s6dJlhjW0b6L1spJybC5FBObkn5H+0esDefpIJ41h0nayMQQSiGLv9s5zxIwJc1B6C+OROeAtA==
+X-YMail-OSG: 0BAj14IVM1l0XJrU2sBmFvh6HwM_J.5gW7X.K7rLq4iARa6jvb9GQm2ewI6UU0W
+ mY.PIqelarEfEAGs8yBAX2WDskRSTKBclwUoSexOwpgTglP3Z3GsaT2_8OIgpH.lGlQI6FtxQiEs
+ 4fgo0_6xsd.UFlcFD_CPmI0K7ABIPii8LAzcsDLJi8zr7ov8FPSzZI5sXb.4rAQnTP.gv9d2XzaZ
+ AML.cvpq5_64tM6vWceFhqDLyrZgG32aEYTlh01Ot7fHruDHNTWHZOXGcTh5iAMDqa30SynRbsk0
+ MLhEcKnwzaWlAmtPyMw0kilvnIXABg7arDTer141gFseb5DGV50xmqHdKOtgry8RM1ie90nCIQlx
+ omcUxWRBK9jBa8WS1BaG0tB.oW3NjnPMJV7zweoUg4f7.lo.AT_uB2ZvldzjyZP_Xts_On1CIALz
+ Fxv.6x10jfneb6oExEK7.gKj0jxafQBbF8cGOM1H_5LrpmZDk74jF_.ImnpXP4NdpeZXUAFxHy97
+ huXURBY596T4m29FOqIqAMDLiKcBAoTBGpu.xiovyzj0A8fQH6WuTcz6Ucw.lmmUZeDWFnPhlAOk
+ XL9o8cQDOhAuGhWO4ylcLXbuyHDMqcP3Vi_.I8DozEYLvlwBkDvhr3ADu2R3sOWdqHxdU290JkKJ
+ .jab1hOhuwksEFvSLN.wyneJpB9E6dnr8doBmZbTcsdLrXRTM7Bk1t_XHeuRrIN4T95GHescDucF
+ 81uBmb3ciHeofTGKreN8BAcPXoF7n6SFcj928O6xoeLsReD3W7ycjcyYvj373V2KQKji_lRkIggn
+ RRCMIfqfsmjSugh_fLYm7E5SZPUPJPoO_uhQku3HKnhKPpVkAsHFq2uKRp92eZdCaRyd6SjhpM2v
+ zFZfDxbyWU9d5xcvYg1QWje9cMxfLtYoYNf1gk1sTqQqJaczVXJmGqb48anb1mFMIn2bdkXIo.xw
+ 33_hg4cK1N7qFJFAN.OIW1JuiPO8sdZVOEuq.jrWIDYfr2.GS4FeXEu4YVQztYqqywzEKMWAvyqU
+ wNRTtKDJQqFhNEFX0XbTgNMcLmXMehi_IWOcOSvja1x9U8x8_VQWd_fo8s0xLsz5Hx7k9nLuEGmw
+ w.9tVH8H3blOIyyOYYbFKf9XZ6uHa3Rgz6gHHAG3Z2tYRxWOYPxnihryRgbe4Z50lzTcADn2Fz0C
+ zgleBdfpjYB9C0SjOAVAQCEf.MMwgMK48WVyhO2WbHEo7gR_h3gxvk22xuBwGlEwgPYNWufIrHn0
+ 0HmjOzzb61EyyhV5Gtl6BiKjHCycWCRj4lsUe7PUVlbJSvwNQI1o42IOUL5gX_mTw6WXPFAB_0Xx
+ tiorWWA5RD92nDyx3jACYXZIZ1a8CZVlV4m1w9HcelDtxMlBRKQDy.2agC9a8HDQKjXpGYILx
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.bf2.yahoo.com with HTTP; Mon, 6 Jul 2020 22:13:51 +0000
+Date: Mon, 6 Jul 2020 22:13:47 +0000 (UTC)
+From: Aadi Laboso <myway33409@yahoo.com>
+Message-ID: <1219979207.1508562.1594073627550@mail.yahoo.com>
+Subject: My beloved
 MIME-Version: 1.0
-Message-ID-Hash: 2DVBFTO4XUZJFG7P5Z6AGPMGNJYMGT24
-X-Message-ID-Hash: 2DVBFTO4XUZJFG7P5Z6AGPMGNJYMGT24
-X-MailFrom: colyli@suse.de
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Coly Li <colyli@suse.de>, Michal Suchanek <msuchanek@suse.com>, Jan Kara <jack@suse.com>, Anthony Iliopoulos <ailiopoulos@suse.com>
+References: <1219979207.1508562.1594073627550.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
+Message-ID-Hash: OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN
+X-Message-ID-Hash: OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN
+X-MailFrom: myway33409@yahoo.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: aad25413lao@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2DVBFTO4XUZJFG7P5Z6AGPMGNJYMGT24/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-In struct dax_operations, the callback routine dax_supported() returns
-a bool type result. For false return value, the caller has no idea
-whether the device does not support dax at all, or it is just some mis-
-configuration issue.
-
-An example is formatting an Ext4 file system on pmem device on top of
-a NVDIMM namespace by,
- # mkfs.ext4 /dev/pmem0
-If the fs block size does not match kernel space memory page size (which
-is possible on non-x86 platform), mount this Ext4 file system will fail,
-  # mount -o dax /dev/pmem0 /mnt
-  mount: /mnt: wrong fs type, bad option, bad superblock on /dev/pmem0,
-  missing codepage or helper program, or other error.
-And from the dmesg output there is only the following information,
-  [  307.853148] EXT4-fs (pmem0): DAX unsupported by block device.
-
-The above information is quite confusing. Because definiately the pmem0
-device supports dax operation, and the super block is consistent as how
-it was created by mkfs.ext4.
-
-Indeed the failure is from __generic_fsdax_supported() by the following
-code piece,
-        if (blocksize != PAGE_SIZE) {
-               pr_debug("%s: error: unsupported blocksize for dax\n",
-                                bdevname(bdev, buf));
-                return false;
-        }
-It is because the Ext4 block size is 4KB and kernel page size is 8KB or
-16KB.
-
-It is not simple to make dax_supported() from struct dax_operations
-or __generic_fsdax_supported() to return exact failure type right now.
-So the simplest fix is to use pr_info() to print all the error messages
-inside __generic_fsdax_supported(). Then users may find informative clue
-from the kernel message at least.
-
-Message printed by pr_debug() is very easy to be ignored by users. This
-patch prints error message by pr_info() in __generic_fsdax_supported(),
-when then mount fails, following lines can be found from dmesg output,
- [ 2705.500885] pmem0: error: unsupported blocksize for dax
- [ 2705.500888] EXT4-fs (pmem0): DAX unsupported by block device.
-Now the users may have idea the mount failure is from pmem driver for
-unsupported block size.
-
-Reported-by: Michal Suchanek <msuchanek@suse.com>
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Anthony Iliopoulos <ailiopoulos@suse.com>
----
- drivers/dax/super.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-index 8e32345be0f7..de0d02ec0347 100644
---- a/drivers/dax/super.c
-+++ b/drivers/dax/super.c
-@@ -80,14 +80,14 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	int err, id;
- 
- 	if (blocksize != PAGE_SIZE) {
--		pr_debug("%s: error: unsupported blocksize for dax\n",
-+		pr_info("%s: error: unsupported blocksize for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
- 
- 	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
- 	if (err) {
--		pr_debug("%s: error: unaligned partition for dax\n",
-+		pr_info("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
-@@ -95,7 +95,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SIZE / 512;
- 	err = bdev_dax_pgoff(bdev, last_page, PAGE_SIZE, &pgoff_end);
- 	if (err) {
--		pr_debug("%s: error: unaligned partition for dax\n",
-+		pr_info("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
-@@ -106,7 +106,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	dax_read_unlock(id);
- 
- 	if (len < 1 || len2 < 1) {
--		pr_debug("%s: error: dax access failed (%ld)\n",
-+		pr_info("%s: error: dax access failed (%ld)\n",
- 				bdevname(bdev, buf), len < 1 ? len : len2);
- 		return false;
- 	}
-@@ -139,7 +139,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	}
- 
- 	if (!dax_enabled) {
--		pr_debug("%s: error: dax support not enabled\n",
-+		pr_info("%s: error: dax support not enabled\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
--- 
-2.26.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCkdvb2QgZGF5IGFuZCBHb2QgYmxlc3MgeW91IGFzIHlvdSByZWFkIHRoaXMgbWFzc2FnZSwg
+SSBhbSBieSBuYW1lIEFhZGkgTGFib3NvIEnigJltIDI3IHllYXJzIG9sZCBnaXJsIGZyb20gS2Vu
+eWEsIHllcyBteSBNb3RoZXIgd2FzIExhdGUgTXJzLiBMb3JuYSBMYWJvc28gdGhlIGZvcm1lciBL
+ZW55YW4gQXNzaXN0YW50IE1pbmlzdGVyIG9mIEhvbWUgYW5kIGFmZmFpcnMgd2hvIHdhcyBhbW9u
+ZyB0aGUgcGxhbiB0aGF0IGNyYXNoIG9uIGJvYXJkIGluIHRoZSByZW1vdGUgYXJlYSBvZiBLYWxv
+bmfigJlzIHdlc3Rlcm5LZW55YSBSZWFkIG1vcmUgYWJvdXQgdGhlIGNyYXNoIHdpdGggdGhlIGJl
+bG93IHdlYiBzaXRlDQoNCmh0dHA6Ly9lZGl0aW9uLmNubi5jb20vMjAwOC9XT1JMRC9hZnJpY2Ev
+MDYvMTAva2VueWEuY3Jhc2gvaW5kZXguaHRtbCBJIGFtIGNvbnN0cmFpbmVkIHRvIGNvbnRhY3Qg
+eW91IGJlY2F1c2Ugb2YgdGhlIG1hbHRyZWF0bWVudCBJIGFtIHJlY2VpdmluZyBmcm9tIG15IHN0
+ZXAgbW90aGVyLiBTaGUgcGxhbm5lZCB0byB0YWtlIGF3YXkgYWxsIG15IGxhdGUgbW90aGVycyB0
+cmVhc3VyeSBhbmQgcHJvcGVydGllcyBmcm9tIG1lIHNpbmNlIHRoZSB1bmV4cGVjdGVkIGRlYXRo
+IG9mIG15IGJlbG92ZWQgbW90aGVyLiBPbmUgZGF5IEkgb3BlbmVkIG15IG1vdGhlciBicmF2ZSBj
+YXNlIGFuZCBzZWNyZXRseSBmb3VuZCBvdXQgdGhhdCBteSBtb3RoZXIgZGVwb3NpdGVkIHRoZSBz
+dW0gb2YgJCAyNy41IG1pbGxpb24gaW4gQk9BIGJhbmsgQnVya2luYSBGYXNvIHdpdGggbXkgbmFt
+ZSBhcyB0aGUgbmV4dCBvZiBraW4sIHRoZW4gSSB2aXNpdGVkIEJ1cmtpbmEgRmFzbyB0byB3aXRo
+ZHJhdyB0aGUgbW9uZXkgYW5kIHRha2UgY2FyZSBvZiBteXNlbGYgYW5kIHN0YXJ0IGEgbmV3IGxp
+ZmUsIG9uIG15IGFycml2YWwgdGhlIEJhbmsgRGlyZWN0b3Igd2hvbSBJIG1lZXQgaW4gcGVyc29u
+IE1yLiBCYXRpc2ggWm9uZ28gdG9sZCBtZSB0aGF0IG15IG1vdGhlciBsZWZ0IGFuIGluc3RydWN0
+aW9uIHRvIHRoZSBiYW5rLCB0aGF0IHRoZSBtb25leSBzaG91bGQgYmUgcmVsZWFzZSB0byBtZSBv
+bmx5IHdoZW4gSSBhbSBtYXJyaWVkIG9yIEkgcHJlc2VudCBhIHRydXN0ZWUgd2hvIHdpbGwgaGVs
+cCBtZSBhbmQgaW52ZXN0IHRoZSBtb25leSBvdmVyc2Vhcy4NCg0KVGhhdCBpcyB0aGUgcmVhc29u
+IHdoeSBJIGFtIGluIHNlYXJjaCBvZiBhIGhvbmVzdCBhbmQgcmVsaWFibGUgcGVyc29uIHdobyB3
+aWxsIGhlbHAgbWUgYW5kIHN0YW5kIGFzIG15IHRydXN0ZWUgZm9yIHRoZSBCYW5rIHRvIHRyYW5z
+ZmVyIHRoZSBtb25leSB0byBoaXMgYWNjb3VudCBmb3IgbWUgdG8gY29tZSBvdmVyIGFuZCBqb2lu
+IHlvdS4gSXQgd2lsbCBiZSBteSBncmVhdCBwbGVhc3VyZSB0byBjb21wZW5zYXRlIHlvdSB3aXRo
+IDMwJSBvZiB0aGUgbW9uZXkgZm9yIHlvdXIgaGVscCBhbmQgdGhlIGJhbGFuY2Ugc2hhbGwgYmUg
+bXkgY2FwaXRhbCB3aXRoIHlvdXIga2luZCBpZGVhIGZvciBtZSB0byBpbnZlc3QgdW5kZXIgeW91
+ciBjb250cm9sIG92ZXIgdGhlcmUgaW4geW91ciBjb3VudHJ5Lg0KQXMgc29vbiBhcyBJIHJlY2Vp
+dmUgeW91ciBwb3NpdGl2ZSByZXNwb25zZSBzaG93aW5nIHlvdXIgaW50ZXJlc3QgSSB3aWxsIHNl
+bmQgeW91IG15IHBpY3R1cmUncyBpbiBteSBuZXh0IG1haWwgYW5kIGRlYXRoIGNlcnRpZmljYXRl
+IG9mIG15IE1vbiBhbmQgaG93IHlvdSB3aWxsIHJlY2VpdmUgdGhlIG1vbmV5IGluIHlvdXIgYWNj
+b3VudC4gQ29udGFjdCBtZSB0aG91Z2ggbXkgRW1haWw6IChhYWQyNTQxM2xhb0BnbWFpbC5jb20p
+DQoNCllvdXJzIFNpbmNlcmVseQ0KUXVlZW4gQWFkaSBMYWJvc28KX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAt
+LSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwg
+dG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
