@@ -2,51 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 477532163C6
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD322163D2
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:15:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F155B1108DEA8;
-	Mon,  6 Jul 2020 19:15:45 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id 20DFE1108DEAE;
+	Mon,  6 Jul 2020 19:15:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CE0E91108C539
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:15:43 -0700 (PDT)
-IronPort-SDR: CHFYjOOBwU5/+J5mqjJMjKICHQ7Ft2kHiJjZsbYM3iYDqJGq3TNQyb1t0KpEcQK92Fdbbl7uC1
- EHgTGv8IHvjA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="232389050"
+	by ml01.01.org (Postfix) with ESMTPS id C69501108DEA6
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:15:48 -0700 (PDT)
+IronPort-SDR: WaTdcfrkKec9la5O/CZ+9y7dPnFm3B7nVb7brm1ohEKK18iQYW1B0pY3T8B0D7OeOfrkdO5a9B
+ GBzOkhtE/k8w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="212500813"
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="232389050"
+   d="scan'208";a="212500813"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:15:43 -0700
-IronPort-SDR: TmIvGbbqKmFWxDZP1hc62t3H4ck3smDq8kBt1Mmi2gJYm/T9ktT7GEVwvCEXR93QAVE+8yQiDh
- 6REIY8YYnsbQ==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:15:48 -0700
+IronPort-SDR: IcwpJjPaEOltlsXRlBhplEJH5rtqe525QdZcWSTp7pouBQnffs4MVQHgb+IW3UGrTZ5EgaadWM
+ 7glmLUkzMP4g==
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="315363744"
+   d="scan'208";a="314133911"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:15:42 -0700
-Subject: [PATCH v2 10/12] libnvdimm: Add runtime firmware activation sysfs
- interface
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:15:48 -0700
+Subject: [PATCH v2 11/12] PM,
+ libnvdimm: Add 'mem-quiet' state and callback for firmware
+ activation
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Mon, 06 Jul 2020 18:59:27 -0700
-Message-ID: <159408716708.2385045.6514024283397587226.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 06 Jul 2020 18:59:32 -0700
+Message-ID: <159408717289.2385045.14094866475168644020.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: U5BMV7XHMDCPWWG2YFGHMWHZUUJKEQIJ
-X-Message-ID-Hash: U5BMV7XHMDCPWWG2YFGHMWHZUUJKEQIJ
+Message-ID-Hash: 5XFC2UAKYZL5P3MLLYXUQLWV7QZYYQ3B
+X-Message-ID-Hash: 5XFC2UAKYZL5P3MLLYXUQLWV7QZYYQ3B
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jonathan Corbet <corbet@lwn.net>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@mellanox.com>, Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/U5BMV7XHMDCPWWG2YFGHMWHZUUJKEQIJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5XFC2UAKYZL5P3MLLYXUQLWV7QZYYQ3B/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,425 +56,318 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Abstract the platform specific mechanics for firmware activation behind
-a handful of generic ops. At the bus level ->activate_state() indicates
-the unified state (idle, busy, armed) of all DIMMs on the bus, and
-->capability() indicates the system state expectations for activate. At
-the DIMM level ->activate_state() indicates the per-DIMM state,
-->activate_result() indicates the outcome of the last activation
-attempt, and ->arm() attempts to transition the DIMM from 'idle' to
-'armed'.
+The runtime firmware activation capability of Intel NVDIMM devices
+requires memory transactions to be disabled for 100s of microseconds.
+This timeout is large enough to cause in-flight DMA to fail and other
+application detectable timeouts. Arrange for firmware activation to be
+executed while the system is "quiesced", all processes and device-DMA
+frozen.
 
-Cc: Jonathan Corbet <corbet@lwn.net>
+It is already required that invoking device ->freeze() callbacks is
+sufficient to cease DMA. A device that continues memory writes outside
+of user-direction violates expectations of the PM core to be to
+establish a coherent hibernation image.
+
+That said, RDMA devices are an example of a device that access memory
+outside of user process direction. RDMA drivers also typically assume
+the system they are operating in will never be hibernated. A solution
+for RDMA collisions with firmware activation is outside the scope of
+this change and may need to rely on being able to survive the platform
+imposed memory controller quiesce period.
+
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[rafael: move from suspend to hibernate post-freeze callback]
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Doug Ledford <dledford@redhat.com>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
 Cc: Dave Jiang <dave.jiang@intel.com>
 Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Len Brown <len.brown@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- Documentation/ABI/testing/sysfs-bus-nvdimm         |    2 
- .../driver-api/nvdimm/firmware-activate.rst        |   74 ++++++++++++++++
- drivers/nvdimm/core.c                              |   92 +++++++++++++++++++
- drivers/nvdimm/dimm_devs.c                         |   95 ++++++++++++++++++++
- drivers/nvdimm/nd-core.h                           |    1 
- include/linux/libnvdimm.h                          |   44 +++++++++
- 6 files changed, 308 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-nvdimm
- create mode 100644 Documentation/driver-api/nvdimm/firmware-activate.rst
+ drivers/base/syscore.c      |   21 +++++++++++++++++++++
+ drivers/nvdimm/bus.c        |   30 ++++++++++++++++++++++++++++++
+ drivers/nvdimm/core.c       |    3 +++
+ include/linux/syscore_ops.h |    2 ++
+ kernel/power/hibernate.c    |   17 ++++++++++++-----
+ kernel/power/main.c         |    1 +
+ kernel/power/power.h        |    7 +++++++
+ kernel/power/snapshot.c     |   13 +++++++++++++
+ kernel/power/suspend.c      |   12 +++++++++++-
+ 9 files changed, 100 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-nvdimm b/Documentation/ABI/testing/sysfs-bus-nvdimm
-new file mode 100644
-index 000000000000..d64380262be8
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-nvdimm
-@@ -0,0 +1,2 @@
-+The libnvdimm sub-system implements a common sysfs interface for
-+platform nvdimm resources. See Documentation/driver-api/nvdimm/.
-diff --git a/Documentation/driver-api/nvdimm/firmware-activate.rst b/Documentation/driver-api/nvdimm/firmware-activate.rst
-new file mode 100644
-index 000000000000..8b42c96e1f6f
---- /dev/null
-+++ b/Documentation/driver-api/nvdimm/firmware-activate.rst
-@@ -0,0 +1,74 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+==================================
-+NVDIMM Runtime Firmware Activation
-+==================================
-+
-+Some persistent memory devices run a firmware locally on the device /
-+"DIMM" to perform tasks like media management, capacity provisioning,
-+and health monitoring. The process of updating that firmware typically
-+involves a reboot because it has implications for in-flight memory
-+transactions. However, reboots are disruptive and at least the Intel
-+persistent memory platform implementation, described by the Intel ACPI
-+DSM specification [1], has added support for activating firmware at
-+runtime.
-+
-+A native sysfs interface is implemented in libnvdimm to allow platform
-+to advertise and control their local runtime firmware activation
-+capability.
-+
-+The libnvdimm bus object, ndbusX, implements an ndbusX/firmware_activate
-+attribute that shows the state of the firmware activation as one of 'idle',
-+'armed', 'overflow', and 'busy'.
-+
-+- idle:
-+  No devices are set / armed to activate firmware
-+
-+- armed:
-+  At least one device is armed
-+
-+- busy:
-+  In the busy state armed devices are in the process of transitioning
-+  back to idle and completing an activation cycle.
-+
-+- overflow:
-+  If the platform has a concept of incremental work needed to perform
-+  the activation it could be the case that too many DIMMs are armed for
-+  activation. In that scenario the potential for firmware activation to
-+  timeout is indicated by the 'overflow' state.
-+
-+This property is optionally read-write if the platform implementation
-+allows firmware-activation at run-time. Some activations may involve a
-+memory controller quiesce that may trigger undefined behavior in devices
-+actively performing DMA. On these platform firmware_activate is not
-+writable and instead activation occurs over a suspend event.
-+
-+The libnvdimm memory-device / DIMM object, nmemX, implements
-+nmemX/firmware_activate and nmemX/firmware_activate_result attributes to
-+communicate the per-device firmware activation state. Similar to the
-+ndbusX/firmware_activate attribute, the nmemX/firmware_activate
-+attribute indicates 'idle', 'armed', or 'busy'. The state transitions
-+from 'armed' to 'idle' when the system is prepared to activate firmware,
-+firmware staged + state set to armed, and a system sleep state
-+transition is triggered. After that activation event the
-+nmemX/firmware_activate_result attribute reflects the state of the last
-+activation as one of:
-+
-+- none:
-+  No runtime activation triggered since the last time the device was reset
-+
-+- success:
-+  The last runtime activation completed successfully.
-+
-+- fail:
-+  The last runtime activation failed for device-specific reasons.
-+
-+- not_staged:
-+  The last runtime activation failed due to a sequencing error of the
-+  firmware image not being staged.
-+
-+- need_reset:
-+  Runtime firmware activation failed, but the firmware can still be
-+  activated via the legacy method of power-cycling the system.
-+
-+[1]: https://docs.pmem.io/persistent-memory/
-diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
-index fe9bd6febdd2..b1cc7b35bd51 100644
---- a/drivers/nvdimm/core.c
-+++ b/drivers/nvdimm/core.c
-@@ -378,15 +378,107 @@ static ssize_t wait_probe_show(struct device *dev,
+diff --git a/drivers/base/syscore.c b/drivers/base/syscore.c
+index 0d346a307140..58c26281667c 100644
+--- a/drivers/base/syscore.c
++++ b/drivers/base/syscore.c
+@@ -108,6 +108,27 @@ void syscore_resume(void)
+ 	trace_suspend_resume(TPS("syscore_resume"), 0, false);
  }
- static DEVICE_ATTR_RO(wait_probe);
+ EXPORT_SYMBOL_GPL(syscore_resume);
++
++/**
++ * syscore_mem_quiet - Execute callbacks that need memory to be quiet (as
++ * if prepared to be snapshotted for hibernate)
++ *
++ * This function is executed in the hibernate path after device freeze
++ * callbacks.
++ */
++void syscore_mem_quiet(void)
++{
++	struct syscore_ops *ops;
++
++	list_for_each_entry(ops, &syscore_ops_list, node) {
++		if (!ops->mem_quiet)
++			continue;
++		if (initcall_debug)
++			pr_info("PM: Calling %pS\n", ops->mem_quiet);
++		ops->mem_quiet();
++	}
++}
++
+ #endif /* CONFIG_PM_SLEEP */
  
-+static ssize_t firmware_activate_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
+ /**
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 955265656b96..228b31f85c89 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -3,6 +3,7 @@
+  * Copyright(c) 2013-2015 Intel Corporation. All rights reserved.
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#include <linux/syscore_ops.h>
+ #include <linux/libnvdimm.h>
+ #include <linux/sched/mm.h>
+ #include <linux/vmalloc.h>
+@@ -1289,6 +1290,33 @@ static const struct file_operations nvdimm_fops = {
+ 	.llseek = noop_llseek,
+ };
+ 
++static void trigger_fw_activate(struct nvdimm_bus_descriptor *nd_desc)
 +{
-+	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-+	struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
-+	enum nvdimm_fwa_state state;
-+
 +	if (!nd_desc->fw_ops)
-+		return -EOPNOTSUPP;
-+
-+	nvdimm_bus_lock(dev);
-+	state = nd_desc->fw_ops->activate_state(nd_desc);
-+	nvdimm_bus_unlock(dev);
-+
-+	switch (state) {
-+	case NVDIMM_FWA_IDLE:
-+		return sprintf(buf, "idle\n");
-+	case NVDIMM_FWA_BUSY:
-+		return sprintf(buf, "busy\n");
-+	case NVDIMM_FWA_ARMED:
-+		return sprintf(buf, "armed\n");
-+	case NVDIMM_FWA_ARM_OVERFLOW:
-+		return sprintf(buf, "overflow\n");
-+	default:
-+		return -ENXIO;
-+	}
++		return;
++	nd_desc->fw_ops->activate(nd_desc);
 +}
 +
-+static ssize_t firmware_activate_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t len)
++static void nvdimm_syscore_mem_quiet(void)
 +{
-+	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-+	struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
-+	enum nvdimm_fwa_state state;
-+	ssize_t rc;
++	struct nvdimm_bus *nvdimm_bus;
 +
-+	if (!nd_desc->fw_ops)
-+		return -EOPNOTSUPP;
-+
-+	nvdimm_bus_lock(dev);
-+	state = nd_desc->fw_ops->activate_state(nd_desc);
-+
-+	switch (state) {
-+	case NVDIMM_FWA_BUSY:
-+		rc = -EBUSY;
-+		break;
-+	case NVDIMM_FWA_ARMED:
-+	case NVDIMM_FWA_ARM_OVERFLOW:
-+		rc = nd_desc->fw_ops->activate(nd_desc);
-+		break;
-+	case NVDIMM_FWA_IDLE:
-+	default:
-+		rc = -ENXIO;
-+	}
-+	nvdimm_bus_unlock(dev);
-+
-+	if (rc == 0)
-+		rc = len;
-+	return rc;
-+}
-+
-+static DEVICE_ATTR_ADMIN_RW(firmware_activate);
-+
-+static umode_t nvdimm_bus_visible(struct kobject *kobj, struct attribute *a, int n)
-+{
-+	struct device *dev = container_of(kobj, typeof(*dev), kobj);
-+	struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-+	struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
-+
-+	if (a == &dev_attr_firmware_activate.attr) {
-+		enum nvdimm_fwa_capability cap;
-+
-+		if (!nd_desc->fw_ops)
-+			return 0;
++	mutex_lock(&nvdimm_bus_list_mutex);
++	list_for_each_entry(nvdimm_bus, &nvdimm_bus_list, list) {
++		struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
++		struct device *dev = &nvdimm_bus->dev;
 +
 +		nvdimm_bus_lock(dev);
-+		cap = nd_desc->fw_ops->capability(nd_desc);
++		trigger_fw_activate(nd_desc);
 +		nvdimm_bus_unlock(dev);
-+
-+		if (cap < NVDIMM_FWA_CAP_QUIESCE)
-+			return 0;
-+		/* Force suspend flow for activate */
-+		if (cap == NVDIMM_FWA_CAP_QUIESCE)
-+			return 0400;
-+		/* Live activation permitted */
-+			return 0600;
 +	}
-+	return a->mode;
++	mutex_unlock(&nvdimm_bus_list_mutex);
 +}
 +
- static struct attribute *nvdimm_bus_attributes[] = {
- 	&dev_attr_commands.attr,
- 	&dev_attr_wait_probe.attr,
- 	&dev_attr_provider.attr,
-+	&dev_attr_firmware_activate.attr,
- 	NULL,
- };
++static struct syscore_ops nvdimm_syscore_ops = {
++	.mem_quiet = nvdimm_syscore_mem_quiet,
++};
++
+ int __init nvdimm_bus_init(void)
+ {
+ 	int rc;
+@@ -1317,6 +1345,8 @@ int __init nvdimm_bus_init(void)
+ 	if (rc)
+ 		goto err_nd_bus;
  
- static const struct attribute_group nvdimm_bus_attribute_group = {
- 	.attrs = nvdimm_bus_attributes,
-+	.is_visible = nvdimm_bus_visible,
- };
++	register_syscore_ops(&nvdimm_syscore_ops);
++
+ 	return 0;
  
- const struct attribute_group *nvdimm_bus_attribute_groups[] = {
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index b7b77e8d9027..85835f9add7a 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -406,6 +406,88 @@ static ssize_t security_store(struct device *dev,
- }
- static DEVICE_ATTR_RW(security);
+  err_nd_bus:
+diff --git a/drivers/nvdimm/core.c b/drivers/nvdimm/core.c
+index b1cc7b35bd51..0cbb5620cd45 100644
+--- a/drivers/nvdimm/core.c
++++ b/drivers/nvdimm/core.c
+@@ -417,6 +417,9 @@ static ssize_t firmware_activate_store(struct device *dev,
+ 	if (!nd_desc->fw_ops)
+ 		return -EOPNOTSUPP;
  
-+static ssize_t firmware_activate_result_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nvdimm *nvdimm = to_nvdimm(dev);
-+	enum nvdimm_fwa_result result;
-+
-+	if (!nvdimm->fw_ops)
-+		return -EOPNOTSUPP;
-+
-+	nvdimm_bus_lock(dev);
-+	result = nvdimm->fw_ops->activate_result(nvdimm);
-+	nvdimm_bus_unlock(dev);
-+
-+	switch (result) {
-+	case NVDIMM_FWA_RESULT_NONE:
-+		return sprintf(buf, "none\n");
-+	case NVDIMM_FWA_RESULT_SUCCESS:
-+		return sprintf(buf, "success\n");
-+	case NVDIMM_FWA_RESULT_FAIL:
-+		return sprintf(buf, "fail\n");
-+	case NVDIMM_FWA_RESULT_NOTSTAGED:
-+		return sprintf(buf, "not_staged\n");
-+	case NVDIMM_FWA_RESULT_NEEDRESET:
-+		return sprintf(buf, "need_reset\n");
-+	default:
-+		return -ENXIO;
-+	}
-+}
-+static DEVICE_ATTR_ADMIN_RO(firmware_activate_result);
-+
-+static ssize_t firmware_activate_show(struct device *dev,
-+		struct device_attribute *attr, char *buf)
-+{
-+	struct nvdimm *nvdimm = to_nvdimm(dev);
-+	enum nvdimm_fwa_state state;
-+
-+	if (!nvdimm->fw_ops)
-+		return -EOPNOTSUPP;
-+
-+	nvdimm_bus_lock(dev);
-+	state = nvdimm->fw_ops->activate_state(nvdimm);
-+	nvdimm_bus_unlock(dev);
-+
-+	switch (state) {
-+	case NVDIMM_FWA_IDLE:
-+		return sprintf(buf, "idle\n");
-+	case NVDIMM_FWA_BUSY:
-+		return sprintf(buf, "busy\n");
-+	case NVDIMM_FWA_ARMED:
-+		return sprintf(buf, "armed\n");
-+	default:
-+		return -ENXIO;
-+	}
-+}
-+
-+static ssize_t firmware_activate_store(struct device *dev,
-+		struct device_attribute *attr, const char *buf, size_t len)
-+{
-+	struct nvdimm *nvdimm = to_nvdimm(dev);
-+	enum nvdimm_fwa_trigger arg;
-+	int rc;
-+
-+	if (!nvdimm->fw_ops)
-+		return -EOPNOTSUPP;
-+
-+	if (sysfs_streq(buf, "arm"))
-+		arg = NVDIMM_FWA_ARM;
-+	else if (sysfs_streq(buf, "disarm"))
-+		arg = NVDIMM_FWA_DISARM;
-+	else
++	if (!sysfs_streq(buf, "activate"))
 +		return -EINVAL;
 +
-+	nvdimm_bus_lock(dev);
-+	rc = nvdimm->fw_ops->arm(nvdimm, arg);
-+	nvdimm_bus_unlock(dev);
-+
-+	if (rc < 0)
-+		return rc;
-+	return len;
-+}
-+static DEVICE_ATTR_ADMIN_RW(firmware_activate);
-+
- static struct attribute *nvdimm_attributes[] = {
- 	&dev_attr_state.attr,
- 	&dev_attr_flags.attr,
-@@ -413,6 +495,8 @@ static struct attribute *nvdimm_attributes[] = {
- 	&dev_attr_available_slots.attr,
- 	&dev_attr_security.attr,
- 	&dev_attr_frozen.attr,
-+	&dev_attr_firmware_activate.attr,
-+	&dev_attr_firmware_activate_result.attr,
- 	NULL,
+ 	nvdimm_bus_lock(dev);
+ 	state = nd_desc->fw_ops->activate_state(nd_desc);
+ 
+diff --git a/include/linux/syscore_ops.h b/include/linux/syscore_ops.h
+index ae4d48e4c970..b57f7a93de20 100644
+--- a/include/linux/syscore_ops.h
++++ b/include/linux/syscore_ops.h
+@@ -15,6 +15,7 @@ struct syscore_ops {
+ 	int (*suspend)(void);
+ 	void (*resume)(void);
+ 	void (*shutdown)(void);
++	void (*mem_quiet)(void);
  };
  
-@@ -421,6 +505,17 @@ static umode_t nvdimm_visible(struct kobject *kobj, struct attribute *a, int n)
- 	struct device *dev = container_of(kobj, typeof(*dev), kobj);
- 	struct nvdimm *nvdimm = to_nvdimm(dev);
+ extern void register_syscore_ops(struct syscore_ops *ops);
+@@ -22,6 +23,7 @@ extern void unregister_syscore_ops(struct syscore_ops *ops);
+ #ifdef CONFIG_PM_SLEEP
+ extern int syscore_suspend(void);
+ extern void syscore_resume(void);
++extern void syscore_mem_quiet(void);
+ #endif
+ extern void syscore_shutdown(void);
  
-+	if (a == &dev_attr_firmware_activate.attr) {
-+		struct nvdimm_bus *nvdimm_bus = walk_to_nvdimm_bus(dev);
-+		struct nvdimm_bus_descriptor *nd_desc = nvdimm_bus->nd_desc;
+diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
+index 02ec716a4927..ccf2268b9f27 100644
+--- a/kernel/power/hibernate.c
++++ b/kernel/power/hibernate.c
+@@ -118,11 +118,18 @@ EXPORT_SYMBOL(system_entering_hibernation);
+ #ifdef CONFIG_PM_DEBUG
+ static void hibernation_debug_sleep(void)
+ {
++	/*
++	 * The mem-quiet test state wants to get to syscore_mem_quiet()
++	 * as quickly as possible, skip all debug timeouts by default.
++	 */
++	if (pm_test_level == TEST_MEM_QUIET)
++		return;
 +
-+		if (!nd_desc->fw_ops)
-+			return 0;
-+		if (!nvdimm->fw_ops)
-+			return 0;
-+		return a->mode;
-+	}
+ 	pr_info("debug: Waiting for 5 seconds.\n");
+ 	mdelay(5000);
+ }
+ 
+-static int hibernation_test(int level)
++int hibernation_test(int level)
+ {
+ 	if (pm_test_level == level) {
+ 		hibernation_debug_sleep();
+@@ -130,9 +137,7 @@ static int hibernation_test(int level)
+ 	}
+ 	return 0;
+ }
+-#else /* !CONFIG_PM_DEBUG */
+-static int hibernation_test(int level) { return 0; }
+-#endif /* !CONFIG_PM_DEBUG */
++#endif /* CONFIG_PM_DEBUG */
+ 
+ /**
+  * platform_begin - Call platform to start hibernation.
+@@ -400,11 +405,13 @@ int hibernation_snapshot(int platform_mode)
+ 
+ 	error = dpm_suspend(PMSG_FREEZE);
+ 
+-	if (error || hibernation_test(TEST_DEVICES))
++	if (error || hibernation_test(TEST_DEVICES) || hibernation_test(TEST_MEM_QUIET))
+ 		platform_recover(platform_mode);
+ 	else
+ 		error = create_image(platform_mode);
+ 
++	syscore_mem_quiet();
 +
- 	if (a != &dev_attr_security.attr && a != &dev_attr_frozen.attr)
- 		return a->mode;
- 	if (!nvdimm->sec.flags)
-diff --git a/drivers/nvdimm/nd-core.h b/drivers/nvdimm/nd-core.h
-index ddb9d97d9129..564faa36a3ca 100644
---- a/drivers/nvdimm/nd-core.h
-+++ b/drivers/nvdimm/nd-core.h
-@@ -45,6 +45,7 @@ struct nvdimm {
- 		struct kernfs_node *overwrite_state;
- 	} sec;
- 	struct delayed_work dwork;
-+	const struct nvdimm_fw_ops *fw_ops;
+ 	/*
+ 	 * In the case that we call create_image() above, the control
+ 	 * returns here (1) after the image has been created or the
+diff --git a/kernel/power/main.c b/kernel/power/main.c
+index 40f86ec4ab30..e1cebd0694b3 100644
+--- a/kernel/power/main.c
++++ b/kernel/power/main.c
+@@ -234,6 +234,7 @@ static const char * const pm_tests[__TEST_AFTER_LAST] = {
+ 	[TEST_PLATFORM] = "platform",
+ 	[TEST_DEVICES] = "devices",
+ 	[TEST_FREEZER] = "freezer",
++	[TEST_MEM_QUIET] = "mem-quiet",
  };
  
- static inline unsigned long nvdimm_security_flags(
-diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
-index ad9898ece7d3..15dbcb718316 100644
---- a/include/linux/libnvdimm.h
-+++ b/include/linux/libnvdimm.h
-@@ -86,6 +86,7 @@ struct nvdimm_bus_descriptor {
- 	int (*flush_probe)(struct nvdimm_bus_descriptor *nd_desc);
- 	int (*clear_to_send)(struct nvdimm_bus_descriptor *nd_desc,
- 			struct nvdimm *nvdimm, unsigned int cmd, void *data);
-+	const struct nvdimm_bus_fw_ops *fw_ops;
+ static ssize_t pm_test_show(struct kobject *kobj, struct kobj_attribute *attr,
+diff --git a/kernel/power/power.h b/kernel/power/power.h
+index ba2094db6294..de7dd36865a5 100644
+--- a/kernel/power/power.h
++++ b/kernel/power/power.h
+@@ -233,6 +233,7 @@ enum {
+ 	TEST_PLATFORM,
+ 	TEST_DEVICES,
+ 	TEST_FREEZER,
++	TEST_MEM_QUIET,
+ 	/* keep last */
+ 	__TEST_AFTER_LAST
  };
+@@ -246,6 +247,12 @@ extern int pm_test_level;
+ #define pm_test_level	(TEST_NONE)
+ #endif
  
- struct nd_cmd_desc {
-@@ -200,6 +201,49 @@ struct nvdimm_security_ops {
- 	int (*query_overwrite)(struct nvdimm *nvdimm);
- };
++#ifdef CONFIG_PM_DEBUG
++int hibernation_test(int level);
++#else /* !CONFIG_PM_DEBUG */
++static inline int hibernation_test(int level) { return 0; }
++#endif /* !CONFIG_PM_DEBUG */
++
+ #ifdef CONFIG_SUSPEND_FREEZER
+ static inline int suspend_freeze_processes(void)
+ {
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 881128b9351e..82fbc8150340 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -1080,6 +1080,13 @@ int create_basic_memory_bitmaps(void)
+ 	struct memory_bitmap *bm1, *bm2;
+ 	int error = 0;
  
-+enum nvdimm_fwa_state {
-+	NVDIMM_FWA_INVALID,
-+	NVDIMM_FWA_IDLE,
-+	NVDIMM_FWA_ARMED,
-+	NVDIMM_FWA_BUSY,
-+	NVDIMM_FWA_ARM_OVERFLOW,
-+};
++	/*
++	 * No need to prep bitmaps in the case when the hibernate is
++	 * just being used trigger a memory quiesce point.
++	 */
++	if (hibernation_test(TEST_MEM_QUIET))
++		return 0;
 +
-+enum nvdimm_fwa_trigger {
-+	NVDIMM_FWA_ARM,
-+	NVDIMM_FWA_DISARM,
-+};
+ 	if (forbidden_pages_map && free_pages_map)
+ 		return 0;
+ 	else
+@@ -1129,6 +1136,9 @@ void free_basic_memory_bitmaps(void)
+ {
+ 	struct memory_bitmap *bm1, *bm2;
+ 
++	if (hibernation_test(TEST_MEM_QUIET))
++		return;
 +
-+enum nvdimm_fwa_capability {
-+	NVDIMM_FWA_CAP_INVALID,
-+	NVDIMM_FWA_CAP_NONE,
-+	NVDIMM_FWA_CAP_QUIESCE,
-+	NVDIMM_FWA_CAP_LIVE,
-+};
+ 	if (WARN_ON(!(forbidden_pages_map && free_pages_map)))
+ 		return;
+ 
+@@ -1702,6 +1712,9 @@ int hibernate_preallocate_memory(void)
+ 	ktime_t start, stop;
+ 	int error;
+ 
++	if (hibernation_test(TEST_MEM_QUIET))
++		return 0;
 +
-+enum nvdimm_fwa_result {
-+	NVDIMM_FWA_RESULT_INVALID,
-+	NVDIMM_FWA_RESULT_NONE,
-+	NVDIMM_FWA_RESULT_SUCCESS,
-+	NVDIMM_FWA_RESULT_NOTSTAGED,
-+	NVDIMM_FWA_RESULT_NEEDRESET,
-+	NVDIMM_FWA_RESULT_FAIL,
-+};
+ 	pr_info("Preallocating image memory\n");
+ 	start = ktime_get();
+ 
+diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+index 8b1bb5ee7e5d..ffaef2938ece 100644
+--- a/kernel/power/suspend.c
++++ b/kernel/power/suspend.c
+@@ -323,7 +323,17 @@ MODULE_PARM_DESC(pm_test_delay,
+ static int suspend_test(int level)
+ {
+ #ifdef CONFIG_PM_DEBUG
+-	if (pm_test_level == level) {
++	/*
++	 * The mem-quiet state has special meaning for the hibernate
++	 * path for the suspend path just treat it the same as
++	 * TEST_DEVICES
++	 */
++	int test_level = pm_test_level;
 +
-+struct nvdimm_bus_fw_ops {
-+	enum nvdimm_fwa_state (*activate_state)
-+		(struct nvdimm_bus_descriptor *nd_desc);
-+	enum nvdimm_fwa_capability (*capability)
-+		(struct nvdimm_bus_descriptor *nd_desc);
-+	int (*activate)(struct nvdimm_bus_descriptor *nd_desc);
-+};
++	if (test_level == TEST_MEM_QUIET)
++		test_level = TEST_DEVICES;
 +
-+struct nvdimm_fw_ops {
-+	enum nvdimm_fwa_state (*activate_state)(struct nvdimm *nvdimm);
-+	enum nvdimm_fwa_result (*activate_result)(struct nvdimm *nvdimm);
-+	int (*arm)(struct nvdimm *nvdimm, enum nvdimm_fwa_trigger arg);
-+};
-+
- void badrange_init(struct badrange *badrange);
- int badrange_add(struct badrange *badrange, u64 addr, u64 length);
- void badrange_forget(struct badrange *badrange, phys_addr_t start,
++	if (test_level == level) {
+ 		pr_info("suspend debug: Waiting for %d second(s).\n",
+ 				pm_test_delay);
+ 		mdelay(pm_test_delay * 1000);
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
