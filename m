@@ -2,50 +2,68 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73912162F2
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 02:23:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7987216336
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 02:57:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8E7D41108DEA8;
-	Mon,  6 Jul 2020 17:23:47 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EAEDA1107E169;
+	Mon,  6 Jul 2020 17:57:13 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1044; helo=mail-pj1-x1044.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E09EA110122B2
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 17:23:45 -0700 (PDT)
-IronPort-SDR: ESjIZNz2Qg38hMhl1wgP1SFz56fpyGPxfwz3YeQcOAdb9CqOJIKnPOaHgPCvXcm+aA2Qm0FAND
- /BmqjBphNNvQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="147530269"
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="147530269"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 17:23:45 -0700
-IronPort-SDR: BDW8/34TOP6tt2FLP+jS0OG2l7KjsVblPEXnCw3279SZVukCArSSajQZm/gWHzrsXtMg1arG5c
- bNWRbyIeCwYw==
-X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="322512263"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 17:23:44 -0700
-Subject: [PATCH v7 2/2] x86/copy_mc: Introduce copy_mc_generic()
-From: Dan Williams <dan.j.williams@intel.com>
-To: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de
-Date: Mon, 06 Jul 2020 17:07:29 -0700
-Message-ID: <159408044893.2272533.10383893661682423843.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <159408043801.2272533.17485467640602344900.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159408043801.2272533.17485467640602344900.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 5673D11075BCF
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 17:57:11 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id l6so14433459pjq.1
+        for <linux-nvdimm@lists.01.org>; Mon, 06 Jul 2020 17:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3qVlv451nr86cMyeANpd21SSFv00C3l5EajJUsc6fBA=;
+        b=lgQYrqaKVxNf0glJh1q13xE+RkWs4vp/wgiXO6RZfa9SGjpVsry+P6M2sLDfBEjsh7
+         JookpmmwCT2xSQJ+Oq6D+XQ/3kdzhg5QhgPN0gzFXOUZ8JBIotVHGjKp11O2pzXfyVTx
+         g913ZUNcYl9wCC9J2jA5O/eLlISyeCEF9DSSZzrizRmnVm8MRCrdeNlgrEm9qjgsBqgu
+         4Ty6xzTv57iPu6gI0KDtec03WXWYYvJ3Ogu0lbnNYCYrxgR0FDKNjHxfAOOgW8oB2Ju0
+         QJNixv9wS5ADJbzdnr9UStJ9g4jW0GOy8dl6hgXH8KdiuTWqm+NfwDVgFjN+pRB94OVj
+         tEYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3qVlv451nr86cMyeANpd21SSFv00C3l5EajJUsc6fBA=;
+        b=egbiphWusXt3QQSF9Jmc1mRBPsWCycdT2uBozvPaNHOuTzricQ3aw+AkUxqm8qpFK7
+         kF+1Axhl6UUSOrfm7Wusbq1+rqG7pu5IwMiYoeA5CG1c+DFBWiNqGkwRQzbSfJa0OGEI
+         8YQ45E90hQdkuNjhNmg78LhbDBFPK2kU3+k6t5Vo61yzajCs/hgi0GAgfHa1J9MR9ZTO
+         tPm4Ubvh2tRD9MqMheJqzoggwHnZAvIDam4r1xRkuJQ7XItNchmTm8EtlFY56eEQ60WO
+         4GIraSIziTjBQ1EZbi7IagQvHof3eL1EmnoN2u/63Aw8iOaMPQw2z4Vx/bZI1n8uOTmC
+         Rt9g==
+X-Gm-Message-State: AOAM533ky9nO/vvgEACEEbdTJkeEk1YsRxQnLMq1ObUc3nvW2ZlB4MRe
+	ZEK0ofvFXOdtSM4Q6m2zbnudKzefc4Y=
+X-Google-Smtp-Source: ABdhPJw9GvZ5YH3VR+lBgKk6wOVvRt80QAr8F3+MBUf+eWQZQ0D9gg3/XQPmPkoa53V8c8pjeKxUOg==
+X-Received: by 2002:a17:90b:1045:: with SMTP id gq5mr1725266pjb.30.1594083430245;
+        Mon, 06 Jul 2020 17:57:10 -0700 (PDT)
+Received: from santosiv.in.ibm.com.com ([203.223.190.240])
+        by smtp.gmail.com with ESMTPSA id w1sm20696634pfq.53.2020.07.06.17.57.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jul 2020 17:57:09 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>
+Subject: [PATCH ndctl] infoblock: Set the default alignment to the platform alignment
+Date: Tue,  7 Jul 2020 06:26:41 +0530
+Message-Id: <20200707005641.3936295-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Message-ID-Hash: LJCLLEDNUZ4DIIZGMTNCZI2OSWY6HM5Q
-X-Message-ID-Hash: LJCLLEDNUZ4DIIZGMTNCZI2OSWY6HM5Q
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC
+X-Message-ID-Hash: DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, stable@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LJCLLEDNUZ4DIIZGMTNCZI2OSWY6HM5Q/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,168 +72,126 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The original copy_mc_fragile() implementation had negative performance
-implications since it did not use the fast-string instruction sequence
-to perform copies. For this reason copy_mc_to_kernel() fell back to
-plain memcpy() to preserve performance on platform that did not indicate
-the capability to recover from machine check exceptions. However, that
-capability detection was not architectural and now that some platforms
-can recover from fast-string consumption of memory errors the memcpy()
-fallback now causes these more capable platforms to fail.
+The default alignment for write-infoblock command is set to 2M. Change
+that to use the platform's supported alignment or PAGE_SIZE. The first
+supported alignment is taken as the default.
 
-Introduce copy_mc_generic() as the fast default implementation of
-copy_mc_to_kernel() and finalize the transition of copy_mc_fragile() to
-be a platform quirk to indicate 'fragility'. With this in place
-copy_mc_to_kernel() is fast and recovery-ready by default regardless of
-hardware capability.
-
-Thanks to Vivek for identifying that copy_user_generic() is not suitable
-as the copy_mc_to_user() backend since the #MC handler explicitly checks
-ex_has_fault_handler().
-
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Tested-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Fixes: 92b0729c34ca ("x86/mm, x86/mce: Add memcpy_mcsafe()")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- arch/x86/include/asm/uaccess.h |    3 +++
- arch/x86/lib/copy_mc.c         |   12 +++++-------
- arch/x86/lib/copy_mc_64.S      |   40 ++++++++++++++++++++++++++++++++++++++++
- tools/objtool/check.c          |    1 +
- 4 files changed, 49 insertions(+), 7 deletions(-)
+ ndctl/namespace.c | 56 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 4b2082b61e3e..b038eda58958 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -464,6 +464,9 @@ copy_mc_to_user(void *to, const void *from, unsigned len);
+diff --git a/ndctl/namespace.c b/ndctl/namespace.c
+index 0550580..4f056b7 100644
+--- a/ndctl/namespace.c
++++ b/ndctl/namespace.c
+@@ -175,7 +175,7 @@ OPT_STRING('m', "mode", &param.mode, "operation-mode", \
+ OPT_STRING('s', "size", &param.size, "size", \
+ 	"override the image size to instantiate the infoblock"), \
+ OPT_STRING('a', "align", &param.align, "align", \
+-	"specify the expected physical alignment (default: 2M)"), \
++	"specify the expected physical alignment"), \
+ OPT_STRING('u', "uuid", &param.uuid, "uuid", \
+ 	"specify the uuid for the infoblock (default: autogenerate)"), \
+ OPT_STRING('M', "map", &param.map, "memmap-location", \
+@@ -325,23 +325,15 @@ static int set_defaults(enum device_action action)
+ 					sysconf(_SC_PAGE_SIZE));
+ 			rc = -EINVAL;
+ 		}
+-	} else if (action == ACTION_WRITE_INFOBLOCK)
+-		param.align = "2M";
++	}
  
- unsigned long __must_check
- copy_mc_fragile(void *dst, const void *src, unsigned cnt);
-+
-+unsigned long __must_check
-+copy_mc_generic(void *dst, const void *src, unsigned cnt);
- #else
- static inline void enable_copy_mc_fragile(void)
- {
-diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-index cdb8f5dc403d..9e6fac1ab72e 100644
---- a/arch/x86/lib/copy_mc.c
-+++ b/arch/x86/lib/copy_mc.c
-@@ -23,7 +23,7 @@ void enable_copy_mc_fragile(void)
-  *
-  * Call into the 'fragile' version on systems that have trouble
-  * actually do machine check recovery. Everyone else can just
-- * use memcpy().
-+ * use copy_mc_generic().
-  *
-  * Return 0 for success, or number of bytes not copied if there was an
-  * exception.
-@@ -33,8 +33,7 @@ copy_mc_to_kernel(void *dst, const void *src, unsigned cnt)
- {
- 	if (static_branch_unlikely(&copy_mc_fragile_key))
- 		return copy_mc_fragile(dst, src, cnt);
--	memcpy(dst, src, cnt);
--	return 0;
-+	return copy_mc_generic(dst, src, cnt);
+ 	if (param.size) {
+ 		unsigned long long size = parse_size64(param.size);
+-		unsigned long long align = parse_size64(param.align);
+ 
+ 		if (size == ULLONG_MAX) {
+ 			error("failed to parse namespace size '%s'\n",
+ 					param.size);
+ 			rc = -EINVAL;
+-		} else if (action == ACTION_WRITE_INFOBLOCK
+-				&& align < ULLONG_MAX
+-				&& !IS_ALIGNED(size, align)) {
+-			error("--size=%s not aligned to %s\n", param.size,
+-					param.align);
+-			rc = -EINVAL;
+ 		}
+ 	}
+ 
+@@ -1982,6 +1974,23 @@ out:
+ 	return rc;
  }
- EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
  
-@@ -56,11 +55,10 @@ copy_mc_to_user(void *to, const void *from, unsigned len)
++static unsigned long ndctl_get_default_alignment(struct ndctl_namespace *ndns)
++{
++	unsigned long long align = 0;
++	struct ndctl_dax *dax = ndctl_namespace_get_dax(ndns);
++	struct ndctl_pfn *pfn = ndctl_namespace_get_pfn(ndns);
++
++	if (ndctl_namespace_get_mode(ndns) == NDCTL_NS_MODE_FSDAX && pfn)
++		align = ndctl_pfn_get_supported_alignment(pfn, 1);
++	else if (ndctl_namespace_get_mode(ndns) == NDCTL_NS_MODE_DEVDAX && dax)
++		align = ndctl_dax_get_supported_alignment(dax, 1);
++
++	if (!align)
++		align =  sysconf(_SC_PAGE_SIZE);
++
++	return align;
++}
++
+ static int namespace_rw_infoblock(struct ndctl_namespace *ndns,
+ 		struct read_infoblock_ctx *ri_ctx, int write)
  {
- 	unsigned long ret;
+@@ -1992,12 +2001,36 @@ static int namespace_rw_infoblock(struct ndctl_namespace *ndns,
+ 	const char *save;
+ 	const char *cmd = write ? "write-infoblock" : "read-infoblock";
+ 	const char *devname = ndctl_namespace_get_devname(ndns);
++	unsigned long long align;
  
--	if (!static_branch_unlikely(&copy_mc_fragile_key))
--		return copy_user_generic(to, from, len);
--
- 	__uaccess_begin();
--	ret = copy_mc_fragile(to, from, len);
-+	if (static_branch_unlikely(&copy_mc_fragile_key))
-+		ret = copy_mc_fragile(to, from, len);
-+	ret = copy_mc_generic(to, from, len);
- 	__uaccess_end();
- 	return ret;
- }
-diff --git a/arch/x86/lib/copy_mc_64.S b/arch/x86/lib/copy_mc_64.S
-index 35a67c50890b..a08e7a4d9e28 100644
---- a/arch/x86/lib/copy_mc_64.S
-+++ b/arch/x86/lib/copy_mc_64.S
-@@ -2,7 +2,9 @@
- /* Copyright(c) 2016-2020 Intel Corporation. All rights reserved. */
+ 	if (ndctl_namespace_is_active(ndns)) {
+ 		pr_verbose("%s: %s enabled, must be disabled\n", cmd, devname);
+ 		return -EBUSY;
+ 	}
  
- #include <linux/linkage.h>
-+#include <asm/alternative-asm.h>
- #include <asm/copy_mc_test.h>
-+#include <asm/cpufeatures.h>
- #include <asm/export.h>
- #include <asm/asm.h>
++	if (write) {
++		if (!param.align) {
++			align = ndctl_get_default_alignment(ndns);
++
++			if (asprintf((char **)&param.align, "%llu", align) < 0) {
++				rc = -EINVAL;
++				goto out;
++			}
++		}
++
++		if (param.size) {
++			unsigned long long size = parse_size64(param.size);
++			align = parse_size64(param.align);
++
++			if (align < ULLONG_MAX && !IS_ALIGNED(size, align)) {
++				error("--size=%s not aligned to %s\n", param.size,
++				      param.align);
++				rc = -EINVAL;
++				goto out;
++			}
++		}
++	}
++
+ 	ndctl_namespace_set_raw_mode(ndns, 1);
+ 	rc = ndctl_namespace_enable(ndns);
+ 	if (rc < 0) {
+@@ -2060,6 +2093,9 @@ static int do_xaction_namespace(const char *namespace,
+ 	}
  
-@@ -122,4 +124,42 @@ EXPORT_SYMBOL_GPL(copy_mc_fragile)
- 	_ASM_EXTABLE(.L_write_leading_bytes, .E_leading_bytes)
- 	_ASM_EXTABLE(.L_write_words, .E_write_words)
- 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
+ 	if (action == ACTION_WRITE_INFOBLOCK && !namespace) {
++		if (!param.align)
++			param.align = "2M";
 +
-+/*
-+ * copy_mc_generic - memory copy with exception handling
-+ *
-+ * Fast string copy + fault / exception handling. If the CPU does
-+ * support machine check exception recovery, but does not support
-+ * recovering from fast-string exceptions then this CPU needs to be
-+ * added to the copy_mc_fragile_key set of quirks. Otherwise, absent any
-+ * machine check recovery support this version should be no slower than
-+ * standard memcpy.
-+ */
-+SYM_FUNC_START(copy_mc_generic)
-+	ALTERNATIVE "jmp copy_mc_fragile", "", X86_FEATURE_ERMS
-+	movq %rdi, %rax
-+	movq %rdx, %rcx
-+.L_copy:
-+	rep movsb
-+	/* Copy successful. Return zero */
-+	xorl %eax, %eax
-+	ret
-+SYM_FUNC_END(copy_mc_generic)
-+EXPORT_SYMBOL_GPL(copy_mc_generic)
-+
-+	.section .fixup, "ax"
-+.E_copy:
-+	/*
-+	 * On fault %rcx is updated such that the copy instruction could
-+	 * optionally be restarted at the fault position, i.e. it
-+	 * contains 'bytes remaining'. A non-zero return indicates error
-+	 * to copy_mc_generic() users, or indicate short transfers to
-+	 * user-copy routines.
-+	 */
-+	movq %rcx, %rax
-+	ret
-+
-+	.previous
-+
-+	_ASM_EXTABLE_FAULT(.L_copy, .E_copy)
- #endif
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 17cb0933bf42..d2e1f01df10b 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -548,6 +548,7 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_shift_out_of_bounds",
- 	/* misc */
- 	"csum_partial_copy_generic",
-+	"copy_mc_generic",
- 	"copy_mc_fragile",
- 	"copy_mc_fragile_handle_tail",
- 	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
+ 		rc = file_write_infoblock(param.outfile);
+ 		if (rc >= 0)
+ 			(*processed)++;
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
