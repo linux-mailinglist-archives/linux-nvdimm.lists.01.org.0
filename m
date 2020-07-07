@@ -1,106 +1,118 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBFB4216431
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:56:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB61C216432
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:56:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 898441108DEAA;
-	Mon,  6 Jul 2020 19:56:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	by ml01.01.org (Postfix) with ESMTP id 9DC211108DEAA;
+	Mon,  6 Jul 2020 19:56:47 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2F3111108DEA9
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:56:40 -0700 (PDT)
-IronPort-SDR: NgAiLeRABPfnqpD8NKlLE4TrSpHZJtUTUO4+qss8kPgxwbX+riT2JMtvJrrs885d0g/Dm00r98
- wEgVD+7Ayv7g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="212503340"
+	by ml01.01.org (Postfix) with ESMTPS id 43EB31108DEA8
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:56:45 -0700 (PDT)
+IronPort-SDR: vPqo+wNaoUzjCitqpjYhGDJ2/rjMgO3CEc6Uml9F5LC4izuspGWpjNklM8bj6R9PDbVWoNBVVE
+ XZk9G4qQQ0gA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="127124218"
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="212503340"
+   d="scan'208";a="127124218"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:56:39 -0700
-IronPort-SDR: nbRpX/zozROd5lWxQx8jfzIXH+gXrxFwmj0/Aqh6JowhhjHATn2cQ0OmbW2hADWp8cdniuxoGj
- 0hvypY6yn4Tw==
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:56:44 -0700
+IronPort-SDR: fPF0uSo4aYUqhs8BhPLhC4SsLFcE1tiYkunOk1PafzeRm2TSCxZgnoFUP2gqpkoyZffUMzXCGq
+ kiI25drPRnGg==
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="482903844"
+   d="scan'208";a="322539194"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:56:39 -0700
-Subject: [ndctl PATCH 01/16] ndctl/build: Fix zero-length array warnings
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:56:44 -0700
+Subject: [ndctl PATCH 02/16] ndctl/dimm: Fix chatty status messages
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Cc: vishal.l.verma@intel.com
-Date: Mon, 06 Jul 2020 19:40:23 -0700
-Message-ID: <159408962360.2386154.5219921025264845019.stgit@dwillia2-desk3.amr.corp.intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>, vishal.l.verma@intel.com
+Date: Mon, 06 Jul 2020 19:40:29 -0700
+Message-ID: <159408962923.2386154.3504999903908710322.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-ID-Hash: 6P5J62UUVAHCKXTVEC4VQMRTEVRPZ37A
-X-Message-ID-Hash: 6P5J62UUVAHCKXTVEC4VQMRTEVRPZ37A
+Message-ID-Hash: UJGVW7KKCALKBUGFQFBAH5S2D3WELAVO
+X-Message-ID-Hash: UJGVW7KKCALKBUGFQFBAH5S2D3WELAVO
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6P5J62UUVAHCKXTVEC4VQMRTEVRPZ37A/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UJGVW7KKCALKBUGFQFBAH5S2D3WELAVO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-R0NDMTAgZW1pdHMgd2FybmluZ3MgbGlrZToNCg0KbXNmdC5jOiBJbiBmdW5jdGlvbiDigJhtc2Z0
-X2NtZF9zbWFydF9nZXRfbWVkaWFfdGVtcGVyYXR1cmXigJk6DQptc2Z0LmM6MTQ2OjI4OiB3YXJu
-aW5nOiBhcnJheSBzdWJzY3JpcHQgMCBpcyBvdXRzaWRlIHRoZSBib3VuZHMgb2YgYW4gaW50ZXJp
-b3IgemVyby1sZW5ndGggYXJyYXkg4oCYc3RydWN0IG5kbl9tc2Z0X3NtYXJ0X2RhdGFbMF3igJkg
-Wy1XemVyby1sZW5ndGgtYm91bmRzXQ0KDQpocGUxLmM6IEluIGZ1bmN0aW9uIOKAmGhwZTFfY21k
-X3NtYXJ0X2dldF9mbGFnc+KAmToNCmhwZTEuYzoxMTE6MzM6IHdhcm5pbmc6IGFycmF5IHN1YnNj
-cmlwdCAwIGlzIG91dHNpZGUgdGhlIGJvdW5kcyBvZiBhbiBpbnRlcmlvciB6ZXJvLWxlbmd0aCBh
-cnJheSDigJhzdHJ1Y3QgbmRuX2hwZTFfc21hcnRfZGF0YVswXeKAmSBbLVd6ZXJvLWxlbmd0aC1i
-b3VuZHNdDQoNCmFycy5jOiBJbiBmdW5jdGlvbiDigJhuZGN0bF9jbWRfYXJzX2dldF9yZWNvcmRf
-YWRkcuKAmToNCmFycy5jOjI3NDozODogd2FybmluZzogYXJyYXkgc3Vic2NyaXB0IOKAmCg8dW5r
-bm93bj4pICsgNDI5NDk2NzI5NeKAmSBpcyBvdXRzaWRlIHRoZSBib3VuZHMgb2YgYW4gaW50ZXJp
-b3IgemVyby1sZW5ndGggYXJyYXkg4oCYc3RydWN0IG5kX2Fyc19yZWNvcmRbMF3igJkgWy1XemVy
-by1sZW5ndGgtYm91bmRzXQ0KDQpJbiB0aGUgY2FzZSBvZiB0aGUgJ21zZnQnIGFuZCAnaHBlMScg
-aW1wbGVtZW50YXRpb24gdGhlIHplcm8tbGVuZ3RoIGFycmF5DQppcyBub3QgbmVlZGVkIGJlY2F1
-c2UgdGhleSBhcmUgZGVjbGFyZWQgd2l0aCBhIHVuaW9uIG9mIGEgYnVmZmVyIG9mIHRoZQ0Kc2Ft
-ZSBzaXplIGFzIGEgc2luZ2xlIGVsZW1lbnQuIEZpeCB0aG9zZSBjYXNlcyBieSBqdXN0IGRlY2xh
-cmluZyBhIHNpbmdsZQ0KZWxlbWVudCBhcnJheS4NCg0KVGhlIEFSUyBjYXNlIGlzIGRpZmZlcmVu
-dCwgaXQncyBjb21wbGFpbmluZyBhYm91dCBhbiBpbnRlcm5hbCB6ZXJvLWxlbmd0aA0KbWVtYmVy
-LiBTd2l0Y2ggdG8gdGhlIHJlY29tbWVuZGVkIFsxXSBmbGV4aWJsZS1hcnJheSBzeW50YXggZm9y
-IHRoYXQgY2FzZS4NCg0KWzFdOiBodHRwczovL2djYy5nbnUub3JnL29ubGluZWRvY3MvZ2NjL1pl
-cm8tTGVuZ3RoLmh0bWwNCg0KU2lnbmVkLW9mZi1ieTogRGFuIFdpbGxpYW1zIDxkYW4uai53aWxs
-aWFtc0BpbnRlbC5jb20+DQotLS0NCiBuZGN0bC9saWIvaHBlMS5oIHwgICAgNCArKy0tDQogbmRj
-dGwvbGliL21zZnQuaCB8ICAgIDIgKy0NCiBuZGN0bC9uZGN0bC5oICAgIHwgICAgMiArLQ0KIDMg
-ZmlsZXMgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA0IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0t
-Z2l0IGEvbmRjdGwvbGliL2hwZTEuaCBiL25kY3RsL2xpYi9ocGUxLmgNCmluZGV4IGIwNTA4MzFl
-YzJjNC4uMWFmYTU0ZjEyN2E2IDEwMDY0NA0KLS0tIGEvbmRjdGwvbGliL2hwZTEuaA0KKysrIGIv
-bmRjdGwvbGliL2hwZTEuaA0KQEAgLTExMSw3ICsxMTEsNyBAQCBzdHJ1Y3QgbmRuX2hwZTFfc21h
-cnQgew0KIAlfX3UzMiBzdGF0dXM7DQogCXVuaW9uIHsNCiAJCV9fdTggYnVmWzEyNF07DQotCQlz
-dHJ1Y3QgbmRuX2hwZTFfc21hcnRfZGF0YSBkYXRhWzBdOw0KKwkJc3RydWN0IG5kbl9ocGUxX3Nt
-YXJ0X2RhdGEgZGF0YVsxXTsNCiAJfTsNCiB9IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOw0KIA0K
-QEAgLTEzNiw3ICsxMzYsNyBAQCBzdHJ1Y3QgbmRuX2hwZTFfc21hcnRfdGhyZXNob2xkIHsNCiAJ
-X191MzIgc3RhdHVzOw0KIAl1bmlvbiB7DQogCQlfX3U4IGJ1ZlszMl07DQotCQlzdHJ1Y3QgbmRu
-X2hwZTFfc21hcnRfdGhyZXNob2xkX2RhdGEgZGF0YVswXTsNCisJCXN0cnVjdCBuZG5faHBlMV9z
-bWFydF90aHJlc2hvbGRfZGF0YSBkYXRhWzFdOw0KIAl9Ow0KIH0gX19hdHRyaWJ1dGVfXygocGFj
-a2VkKSk7DQogDQpkaWZmIC0tZ2l0IGEvbmRjdGwvbGliL21zZnQuaCBiL25kY3RsL2xpYi9tc2Z0
-LmgNCmluZGV4IDBhMWM3YzZhMDkwNy4uYzQ1OTgxZWRkOGQ3IDEwMDY0NA0KLS0tIGEvbmRjdGwv
-bGliL21zZnQuaA0KKysrIGIvbmRjdGwvbGliL21zZnQuaA0KQEAgLTQ2LDcgKzQ2LDcgQEAgc3Ry
-dWN0IG5kbl9tc2Z0X3NtYXJ0IHsNCiAJX191MzIJc3RhdHVzOw0KIAl1bmlvbiB7DQogCQlfX3U4
-IGJ1Zls5XTsNCi0JCXN0cnVjdCBuZG5fbXNmdF9zbWFydF9kYXRhIGRhdGFbMF07DQorCQlzdHJ1
-Y3QgbmRuX21zZnRfc21hcnRfZGF0YSBkYXRhWzFdOw0KIAl9Ow0KIH0gX19hdHRyaWJ1dGVfXygo
-cGFja2VkKSk7DQogDQpkaWZmIC0tZ2l0IGEvbmRjdGwvbmRjdGwuaCBiL25kY3RsL25kY3RsLmgN
-CmluZGV4IDAwOGY4MWNkZWI5Zi4uZTM2MDViM2Q2NGI0IDEwMDY0NA0KLS0tIGEvbmRjdGwvbmRj
-dGwuaA0KKysrIGIvbmRjdGwvbmRjdGwuaA0KQEAgLTkxLDcgKzkxLDcgQEAgc3RydWN0IG5kX2Nt
-ZF9hcnNfc3RhdHVzIHsNCiAJCV9fdTMyIHJlc2VydmVkOw0KIAkJX191NjQgZXJyX2FkZHJlc3M7
-DQogCQlfX3U2NCBsZW5ndGg7DQotCX0gX19hdHRyaWJ1dGVfXygocGFja2VkKSkgcmVjb3Jkc1sw
-XTsNCisJfSBfX2F0dHJpYnV0ZV9fKChwYWNrZWQpKSByZWNvcmRzW107DQogfSBfX2F0dHJpYnV0
-ZV9fKChwYWNrZWQpKTsNCiANCiBzdHJ1Y3QgbmRfY21kX2NsZWFyX2Vycm9yIHsNCl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWls
-aW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5k
-IGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Firmware update and overwrite violate the general design principle of ndctl
+that all stdout messages are json formatted. Move the raw status messages
+to stderr. Some of the messages are obviously debug and should be moved
+under a verbose option, while others confuse use of error() vs
+fprintf(stderr, ...). The error() helper is preferred for messages
+indicating command failures vs notices.
+
+Cc: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ ndctl/dimm.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/ndctl/dimm.c b/ndctl/dimm.c
+index 3db01431d618..8523ead36eb5 100644
+--- a/ndctl/dimm.c
++++ b/ndctl/dimm.c
+@@ -795,15 +795,16 @@ static int update_firmware(struct ndctl_dimm *dimm,
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	printf("Uploading firmware to DIMM %s.\n",
+-			ndctl_dimm_get_devname(dimm));
++	if (param.verbose)
++		fprintf(stderr, "Uploading firmware to DIMM %s.\n",
++				ndctl_dimm_get_devname(dimm));
+ 
+ 	rc = send_firmware(dimm, actx);
+ 	if (rc < 0) {
+-		fprintf(stderr, "Firmware send failed. Aborting!\n");
++		error("Firmware send failed. Aborting!\n");
+ 		rc = submit_abort_firmware(dimm, actx);
+ 		if (rc < 0)
+-			fprintf(stderr, "Aborting update sequence failed.\n");
++			error("Aborting update sequence failed.\n");
+ 		return rc;
+ 	}
+ 
+@@ -945,7 +946,8 @@ static int action_sanitize_dimm(struct ndctl_dimm *dimm,
+ 	 */
+ 	if (!param.crypto_erase && !param.overwrite) {
+ 		param.crypto_erase = true;
+-		printf("No santize method passed in, default to crypto-erase\n");
++		if (param.verbose)
++			fprintf(stderr, "No santize method passed in, default to crypto-erase\n");
+ 	}
+ 
+ 	if (param.crypto_erase) {
+@@ -982,8 +984,8 @@ static int action_wait_overwrite(struct ndctl_dimm *dimm,
+ 	}
+ 
+ 	rc = ndctl_dimm_wait_overwrite(dimm);
+-	if (rc == 1)
+-		printf("%s: overwrite completed.\n",
++	if (rc == 1 && param.verbose)
++		fprintf(stderr, "%s: overwrite completed.\n",
+ 				ndctl_dimm_get_devname(dimm));
+ 	return rc;
+ }
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
