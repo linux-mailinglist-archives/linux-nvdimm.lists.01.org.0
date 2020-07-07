@@ -1,51 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F7A216438
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:57:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA9B216439
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:57:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 495E21106818F;
-	Mon,  6 Jul 2020 19:57:19 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	by ml01.01.org (Postfix) with ESMTP id 7153D1108DED2;
+	Mon,  6 Jul 2020 19:57:24 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 890C21108DEB2
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:57:16 -0700 (PDT)
-IronPort-SDR: oG43zhPVI39yJKPap8ig3YqX7Ig2zjWF9elJWCn5Ko6kM+yg6RgOVtu3CAG/bjzz02Qti2C0Ou
- WziKlNm7bJIA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="209052916"
+	by ml01.01.org (Postfix) with ESMTPS id 0B7F81108DED0
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:57:22 -0700 (PDT)
+IronPort-SDR: yPOyp93AX40KKAOTyHsI+ZRCXz0T3/J45B82v/5HQrKQvYvbwrfhcJL3yn5qutmeFfWABvm2Ok
+ 7l5ftDZ1JxkQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="212503450"
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="209052916"
+   d="scan'208";a="212503450"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:16 -0700
-IronPort-SDR: 0Z8jYmmP9E4HeEcHpKvhKVJtwUIXlaRWHZKnqLb0f4yQm2BVoHMCEuyluSBW2L4qqnr1inQLnh
- LQYAxhCNVS4Q==
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:21 -0700
+IronPort-SDR: FD2YvUV+bgElgAmfQc/fufJVVKiknvqolYPxzMwir6kq8idja3YmCJNUTC6apMTtrgySNY3dCC
+ QA8TxJ5dBwtg==
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="357640666"
+   d="scan'208";a="388367356"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:16 -0700
-Subject: [ndctl PATCH 08/16] ndctl/list: Add firmware activation enumeration
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:21 -0700
+Subject: [ndctl PATCH 09/16] ndctl/dimm: Auto-arm firmware activation
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
 Cc: vishal.l.verma@intel.com
-Date: Mon, 06 Jul 2020 19:41:00 -0700
-Message-ID: <159408966081.2386154.6747917694160960735.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 06 Jul 2020 19:41:05 -0700
+Message-ID: <159408966593.2386154.14767450894949502125.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: ORFI2USXBDAN6SOW3LNXT3BLFZCHRDOU
-X-Message-ID-Hash: ORFI2USXBDAN6SOW3LNXT3BLFZCHRDOU
+Message-ID-Hash: YS4HZKROB7YPE2GCCF5AJTBOS7IWCDKN
+X-Message-ID-Hash: YS4HZKROB7YPE2GCCF5AJTBOS7IWCDKN
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ORFI2USXBDAN6SOW3LNXT3BLFZCHRDOU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YS4HZKROB7YPE2GCCF5AJTBOS7IWCDKN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,231 +54,247 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-When firmware is staged check if the platform / kernel also supports live
-firmware activation and include that state at both the dimm and bus level.
-The "last activate result" is included only as a hint to whether a
-powercycle is required to activate the current image. If firmware
-activation fails the "need_powercycle" flag will appear, if firmware
-activation is successful then the "current_version" field will be
-up-to-date.
+Add an option to control firmware-activation arming and enable it by
+default. The arming process checks for the "arm overflow" condition and
+disarms dimms if the last arming caused the overflow to be indicated. The
+--force option skips checking for arm-overflow. The --disarm option toggles
+arming off and can be specified without a firmware-image to just perform
+the disarm operation in isolation.
 
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- Documentation/ndctl/ndctl-list.txt |   39 +++++++--
- ndctl/bus.c                        |    2 
- ndctl/lib/libndctl.c               |  148 ++++++++++++++++++++++++++++++++++++
- ndctl/lib/libndctl.sym             |    7 ++
- ndctl/lib/private.h                |    3 +
- ndctl/libndctl.h                   |   28 +++++++
- ndctl/list.c                       |    3 -
- util/json.c                        |  117 ++++++++++++++++++++++++++--
- util/json.h                        |    3 -
- 9 files changed, 325 insertions(+), 25 deletions(-)
+ Documentation/ndctl/ndctl-update-firmware.txt |   16 +++
+ ndctl/dimm.c                                  |  125 +++++++++++++++++++++++--
+ ndctl/lib/libndctl.c                          |   33 +++++++
+ ndctl/lib/libndctl.sym                        |    2 
+ ndctl/libndctl.h                              |    2 
+ 5 files changed, 166 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/ndctl/ndctl-list.txt b/Documentation/ndctl/ndctl-list.txt
-index 7c7e3ac9d05c..b8d517d784b4 100644
---- a/Documentation/ndctl/ndctl-list.txt
-+++ b/Documentation/ndctl/ndctl-list.txt
-@@ -132,16 +132,35 @@ include::xable-bus-options.txt[]
- 
- -F::
- --firmware::
--	Include dimm firmware info in the listing. For example:
--[verse]
--{
--  "dev":"nmem0",
--  "firmware":{
--      "current_version":0,
--      "next_version":1,
--      "need_powercycle":true
--  }
--}
-+	Include firmware info in the listing, including the state and
-+	capability of runtime firmware activation:
+diff --git a/Documentation/ndctl/ndctl-update-firmware.txt b/Documentation/ndctl/ndctl-update-firmware.txt
+index bcf61abaa989..1080d62a20b9 100644
+--- a/Documentation/ndctl/ndctl-update-firmware.txt
++++ b/Documentation/ndctl/ndctl-update-firmware.txt
+@@ -50,7 +50,21 @@ include::xable-bus-options.txt[]
+ -i::
+ --force::
+ 	Ignore in-progress Address Range Scrub and try to submit the
+-	firmware update.
++	firmware update, or ignore firmware activate arm overflows and
++	force-arm devices.
 +
-+----
-+# ndctl list -BDF
-+[
-+  {
-+    "provider":"nfit_test.0",
-+    "dev":"ndbus2",
-+    "scrub_state":"idle",
-+    "firmware":{
-+      "activate_method":"suspend",
-+      "activate_state":"idle"
-+    },
-+    "dimms":[
-+      {
-+        "dev":"nmem1",
-+        "id":"cdab-0a-07e0-ffffffff",
-+        "handle":0,
-+        "phys_id":0,
-+        "security":"disabled",
-+        "firmware":{
-+          "current_version":0,
-+          "can_update":true
-+        }
-+      },
-+...
-+]
-+----
++-A::
++--arm::
++	Arm a device for firmware activation. This is enabled by default
++	when a firmware image is specified. Specify --no-arm to disable
++	this default. Otherwise, without a firmware image, this option can be
++	used to manually arm a device for firmware activate.
++
++-D::
++--disarm::
++	Disarm devices after uploading the firmware file, or manually
++	disarm devices when a firmware image is not specified.
++	--no-disarm is not accepted.
  
- -X::
- --device-dax::
-diff --git a/ndctl/bus.c b/ndctl/bus.c
-index 86bbd5178df9..6d5bafb86fe4 100644
---- a/ndctl/bus.c
-+++ b/ndctl/bus.c
-@@ -92,7 +92,7 @@ static int bus_action(int argc, const char **argv, const char *usage,
- 			rc = scrub_action(bus, action);
- 			if (rc == 0) {
- 				success++;
--				jbus = util_bus_to_json(bus);
-+				jbus = util_bus_to_json(bus, 0);
- 				if (jbus)
- 					json_object_array_add(jbuses, jbus);
- 			} else if (!fail)
+ -v::
+ --verbose::
+diff --git a/ndctl/dimm.c b/ndctl/dimm.c
+index e02f5dfdb889..90eb0b8013ae 100644
+--- a/ndctl/dimm.c
++++ b/ndctl/dimm.c
+@@ -59,10 +59,15 @@ static struct parameters {
+ 	bool master_pass;
+ 	bool human;
+ 	bool force;
++	bool arm;
++	bool arm_set;
++	bool disarm;
++	bool disarm_set;
+ 	bool index;
+ 	bool json;
+ 	bool verbose;
+ } param = {
++	.arm = true,
+ 	.labelversion = "1.1",
+ };
+ 
+@@ -694,6 +699,72 @@ out:
+ 	return rc;
+ }
+ 
++static enum ndctl_fwa_state fw_update_arm(struct ndctl_dimm *dimm)
++{
++	struct ndctl_bus *bus = ndctl_dimm_get_bus(dimm);
++	const char *devname = ndctl_dimm_get_devname(dimm);
++	enum ndctl_fwa_state state = ndctl_bus_get_fw_activate_state(bus);
++
++	if (state == NDCTL_FWA_INVALID) {
++		if (param.verbose)
++			err("%s: firmware activate capability not found\n",
++					devname);
++		return NDCTL_FWA_INVALID;
++	}
++
++	if (state == NDCTL_FWA_ARM_OVERFLOW && !param.force) {
++		err("%s: overflow detected skip arm\n", devname);
++		return NDCTL_FWA_INVALID;
++	}
++
++	state = ndctl_dimm_fw_activate_arm(dimm);
++	if (state != NDCTL_FWA_ARMED) {
++		err("%s: failed to arm\n", devname);
++		return NDCTL_FWA_INVALID;
++	}
++
++	if (param.force)
++		return state;
++
++	state = ndctl_bus_get_fw_activate_state(bus);
++	if (state == NDCTL_FWA_ARM_OVERFLOW) {
++		err("%s: arm aborted, tripped overflow\n", devname);
++		ndctl_dimm_fw_activate_disarm(dimm);
++		return NDCTL_FWA_INVALID;
++	}
++	return NDCTL_FWA_ARMED;
++}
++
++#define ARM_FAILURE_FATAL (1)
++#define ARM_FAILURE_OK (0)
++
++static int fw_update_toggle_arm(struct ndctl_dimm *dimm,
++		struct json_object *jdimms, bool arm_fatal)
++{
++	enum ndctl_fwa_state state;
++	struct json_object *jobj;
++	unsigned long flags;
++
++	if (param.disarm)
++		state = ndctl_dimm_fw_activate_disarm(dimm);
++	else if (param.arm)
++		state = fw_update_arm(dimm);
++	else
++		state = NDCTL_FWA_INVALID;
++
++	if (state == NDCTL_FWA_INVALID && arm_fatal)
++		return -ENXIO;
++
++	flags = UTIL_JSON_FIRMWARE;
++	if (isatty(1))
++		flags |= UTIL_JSON_HUMAN;
++	jobj = util_dimm_to_json(dimm, flags);
++	if (jobj)
++		json_object_array_add(jdimms, jobj);
++
++	return 0;
++}
++
+ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 		struct action_context *actx)
+ {
+@@ -701,10 +772,8 @@ static int query_fw_finish_status(struct ndctl_dimm *dimm,
+ 	struct update_context *uctx = &actx->update;
+ 	struct fw_info *fw = &uctx->dimm_fw;
+ 	struct timespec now, before, after;
+-	struct json_object *jobj;
+ 	enum ND_FW_STATUS status;
+ 	struct ndctl_cmd *cmd;
+-	unsigned long flags;
+ 	uint64_t ver;
+ 	int rc;
+ 
+@@ -765,12 +834,13 @@ again:
+ 			goto unref;
+ 		}
+ 
+-		flags = UTIL_JSON_FIRMWARE;
+-		if (isatty(1))
+-			flags |= UTIL_JSON_HUMAN;
+-		jobj = util_dimm_to_json(dimm, flags);
+-		if (jobj)
+-			json_object_array_add(actx->jdimms, jobj);
++		/*
++		 * Now try to arm/disarm firmware activation if
++		 * requested.  Failure to toggle the arm state is not
++		 * fatal, the success / failure will be inferred from
++		 * the emitted json state.
++		 */
++		fw_update_toggle_arm(dimm, actx->jdimms, ARM_FAILURE_OK);
+ 		rc = 0;
+ 		break;
+ 	case FW_EBADFW:
+@@ -846,6 +916,10 @@ static int action_update(struct ndctl_dimm *dimm, struct action_context *actx)
+ 	const char *devname = ndctl_dimm_get_devname(dimm);
+ 	int rc;
+ 
++	if (!param.infile)
++		return fw_update_toggle_arm(dimm, actx->jdimms,
++				ARM_FAILURE_FATAL);
++
+ 	rc = ndctl_dimm_fw_update_supported(dimm);
+ 	switch (rc) {
+ 	case -ENOTTY:
+@@ -1090,7 +1164,11 @@ OPT_STRING('i', "input", &param.infile, "input-file", \
+ #define UPDATE_OPTIONS() \
+ OPT_STRING('f', "firmware", &param.infile, "firmware-file", \
+ 	"firmware filename for update"), \
+-OPT_BOOLEAN('i', "force", &param.force, "ignore ARS status, try to force update")
++OPT_BOOLEAN('i', "force", &param.force, "ignore ARS / arm status, try to force update"), \
++OPT_BOOLEAN_SET('A', "arm", &param.arm, &param.arm_set, \
++	"arm device for firmware activation (default)"), \
++OPT_BOOLEAN_SET('D', "disarm", &param.disarm, &param.disarm_set, \
++	"disarm device for firmware activation")
+ 
+ #define INIT_OPTIONS() \
+ OPT_BOOLEAN('f', "force", &param.force, \
+@@ -1237,10 +1315,35 @@ static int dimm_action(int argc, const char **argv, struct ndctl_ctx *ctx,
+ 		}
+ 	}
+ 
++	if (param.arm_set && param.disarm_set) {
++		fprintf(stderr, "set either --arm, or --disarm, not both\n");
++		usage_with_options(u, options);
++	}
++
++	if (param.disarm_set && !param.disarm) {
++		fprintf(stderr, "--no-disarm syntax not supported\n");
++		usage_with_options(u, options);
++		return -EINVAL;
++	}
++
+ 	if (!param.infile) {
++		/*
++		 * Update needs an infile unless we are only being
++		 * called to toggle the arm state. Other actions either
++		 * do no need an input file, or are prepared for stdin.
++		 */
+ 		if (action == action_update) {
+-			usage_with_options(u, options);
+-			return -EINVAL;
++			if (!param.arm_set && !param.disarm_set) {
++				fprintf(stderr, "require --arm, or --disarm\n");
++				usage_with_options(u, options);
++				return -EINVAL;
++			}
++
++			if (param.arm_set && !param.arm) {
++				fprintf(stderr, "--no-arm syntax not supported\n");
++				usage_with_options(u, options);
++				return -EINVAL;
++			}
+ 		}
+ 		actx.f_in = stdin;
+ 	} else {
 diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
-index ee737cbbfe3e..f03635e99a83 100644
+index f03635e99a83..d11b05f113d5 100644
 --- a/ndctl/lib/libndctl.c
 +++ b/ndctl/lib/libndctl.c
-@@ -819,6 +819,19 @@ static void parse_dimm_flags(struct ndctl_dimm *dimm, char *flags)
- 				ndctl_dimm_get_devname(dimm), flags);
- }
- 
-+static enum ndctl_fwa_state fwa_to_state(const char *fwa)
-+{
-+	if (strcmp(fwa, "idle") == 0)
-+		return NDCTL_FWA_IDLE;
-+	if (strcmp(fwa, "busy") == 0)
-+		return NDCTL_FWA_BUSY;
-+	if (strcmp(fwa, "armed") == 0)
-+		return NDCTL_FWA_ARMED;
-+	if (strcmp(fwa, "overflow") == 0)
-+		return NDCTL_FWA_ARM_OVERFLOW;
-+	return NDCTL_FWA_INVALID;
-+}
-+
- static void *add_bus(void *parent, int id, const char *ctl_base)
- {
- 	char buf[SYSFS_ATTR_SIZE];
-@@ -880,6 +893,12 @@ static void *add_bus(void *parent, int id, const char *ctl_base)
- 	if (!bus->scrub_path)
- 		goto err_read;
- 
-+	sprintf(path, "%s/device/firmware_activate", ctl_base);
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		bus->fwa_state = NDCTL_FWA_INVALID;
-+	else
-+		bus->fwa_state = fwa_to_state(buf);
-+
- 	bus->bus_path = parent_dev_path("char", bus->major, bus->minor);
- 	if (!bus->bus_path)
- 		goto err_dev_path;
-@@ -1436,6 +1455,74 @@ NDCTL_EXPORT int ndctl_bus_wait_for_scrub_completion(struct ndctl_bus *bus)
- 	return ndctl_bus_poll_scrub_completion(bus, 0, 0);
- }
- 
-+NDCTL_EXPORT enum ndctl_fwa_state ndctl_bus_get_fw_activate_state(
-+		struct ndctl_bus *bus)
-+{
-+	struct ndctl_ctx *ctx = ndctl_bus_get_ctx(bus);
-+	char *path = bus->bus_buf;
-+	char buf[SYSFS_ATTR_SIZE];
-+	int len = bus->buf_len;
-+
-+	if (bus->fwa_state == NDCTL_FWA_INVALID)
-+		return NDCTL_FWA_INVALID;
-+
-+	if (snprintf(path, len, "%s/firmware_activate", bus->bus_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				ndctl_bus_get_devname(bus));
-+		return NDCTL_FWA_INVALID;
-+	}
-+
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		return NDCTL_FWA_INVALID;
-+
-+	bus->fwa_state = fwa_to_state(buf);
-+
-+	return bus->fwa_state;
-+}
-+
-+NDCTL_EXPORT enum ndctl_fwa_method ndctl_bus_get_fw_activate_method(
-+		struct ndctl_bus *bus)
-+{
-+	struct ndctl_ctx *ctx = ndctl_bus_get_ctx(bus);
-+	char *path = bus->bus_buf;
-+	int len = bus->buf_len;
-+	struct stat st;
-+	int rc;
-+
-+	if (bus->fwa_state == NDCTL_FWA_INVALID)
-+		return NDCTL_FWA_METHOD_RESET;
-+
-+	if (snprintf(path, len, "%s/firmware_activate", bus->bus_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				ndctl_bus_get_devname(bus));
-+		return NDCTL_FWA_INVALID;
-+	}
-+
-+	rc = stat(path, &st);
-+	if (rc < 0)
-+		return NDCTL_FWA_METHOD_RESET;
-+	if ((st.st_mode & 0600) == 0600)
-+		return NDCTL_FWA_METHOD_LIVE;
-+	if ((st.st_mode & 0400) == 0400)
-+		return NDCTL_FWA_METHOD_SUSPEND;
-+	return NDCTL_FWA_METHOD_RESET;
-+}
-+
-+static enum ndctl_fwa_result fwa_result_to_result(const char *result)
-+{
-+	if (strcmp(result, "none") == 0)
-+		return NDCTL_FWA_RESULT_NONE;
-+	if (strcmp(result, "success") == 0)
-+		return NDCTL_FWA_RESULT_SUCCESS;
-+	if (strcmp(result, "fail") == 0)
-+		return NDCTL_FWA_RESULT_FAIL;
-+	if (strcmp(result, "not_staged") == 0)
-+		return NDCTL_FWA_RESULT_NOTSTAGED;
-+	if (strcmp(result, "need_reset") == 0)
-+		return NDCTL_FWA_RESULT_NEEDRESET;
-+	return NDCTL_FWA_RESULT_INVALID;
-+}
-+
- static int ndctl_bind(struct ndctl_ctx *ctx, struct kmod_module *module,
- 		const char *devname);
- static int ndctl_unbind(struct ndctl_ctx *ctx, const char *devpath);
-@@ -1515,6 +1602,18 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
- 	} else
- 		parse_dimm_flags(dimm, buf);
- 
-+	sprintf(path, "%s/firmware_activate", dimm_base);
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		dimm->fwa_state = NDCTL_FWA_INVALID;
-+	else
-+		dimm->fwa_state = fwa_to_state(buf);
-+
-+	sprintf(path, "%s/firmware_activate_result", dimm_base);
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		dimm->fwa_result = NDCTL_FWA_RESULT_INVALID;
-+	else
-+		dimm->fwa_result = fwa_result_to_result(buf);
-+
- 	if (!ndctl_bus_has_nfit(bus))
- 		goto out;
- 
-@@ -1998,6 +2097,55 @@ NDCTL_EXPORT int ndctl_dimm_enable(struct ndctl_dimm *dimm)
+@@ -2097,6 +2097,39 @@ NDCTL_EXPORT int ndctl_dimm_enable(struct ndctl_dimm *dimm)
  	return 0;
  }
  
-+NDCTL_EXPORT enum ndctl_fwa_state ndctl_dimm_get_fw_activate_state(
-+		struct ndctl_dimm *dimm)
++static int dimm_set_arm(struct ndctl_dimm *dimm, bool arm)
 +{
 +	struct ndctl_ctx *ctx = ndctl_dimm_get_ctx(dimm);
 +	char *path = dimm->dimm_buf;
-+	char buf[SYSFS_ATTR_SIZE];
 +	int len = dimm->buf_len;
 +
 +	if (dimm->fwa_state == NDCTL_FWA_INVALID)
@@ -291,327 +307,50 @@ index ee737cbbfe3e..f03635e99a83 100644
 +		return NDCTL_FWA_INVALID;
 +	}
 +
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
++	if (sysfs_write_attr(ctx, path, arm ? "arm" : "disarm") < 0)
 +		return NDCTL_FWA_INVALID;
-+
-+	dimm->fwa_state = fwa_to_state(buf);
-+	return dimm->fwa_state;
++	return NDCTL_FWA_ARMED;
 +}
 +
-+NDCTL_EXPORT enum ndctl_fwa_result ndctl_dimm_get_fw_activate_result(
++NDCTL_EXPORT enum ndctl_fwa_state ndctl_dimm_fw_activate_disarm(
 +		struct ndctl_dimm *dimm)
 +{
-+	struct ndctl_ctx *ctx = ndctl_dimm_get_ctx(dimm);
-+	char *path = dimm->dimm_buf;
-+	char buf[SYSFS_ATTR_SIZE];
-+	int len = dimm->buf_len;
-+
-+	if (dimm->fwa_result == NDCTL_FWA_RESULT_INVALID)
-+		return NDCTL_FWA_RESULT_INVALID;
-+
-+	if (snprintf(path, len, "%s/firmware_activate_result",
-+				dimm->dimm_path) >= len) {
-+		err(ctx, "%s: buffer too small!\n",
-+				ndctl_dimm_get_devname(dimm));
-+		return NDCTL_FWA_RESULT_INVALID;
-+	}
-+
-+	if (sysfs_read_attr(ctx, path, buf) < 0)
-+		return NDCTL_FWA_RESULT_INVALID;
-+
-+	return fwa_result_to_result(buf);
++	return dimm_set_arm(dimm, false);
 +}
 +
- NDCTL_EXPORT struct ndctl_dimm *ndctl_dimm_get_by_handle(struct ndctl_bus *bus,
- 		unsigned int handle)
++NDCTL_EXPORT enum ndctl_fwa_state ndctl_dimm_fw_activate_arm(
++		struct ndctl_dimm *dimm)
++{
++	return dimm_set_arm(dimm, true);
++}
++
+ NDCTL_EXPORT enum ndctl_fwa_state ndctl_dimm_get_fw_activate_state(
+ 		struct ndctl_dimm *dimm)
  {
 diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
-index ac575a23d035..37217036b0d8 100644
+index 37217036b0d8..269ac8693304 100644
 --- a/ndctl/lib/libndctl.sym
 +++ b/ndctl/lib/libndctl.sym
-@@ -431,3 +431,10 @@ LIBNDCTL_23 {
- 	ndctl_region_get_align;
- 	ndctl_region_set_align;
- } LIBNDCTL_22;
-+
-+LIBNDCTL_24 {
-+	ndctl_dimm_get_fw_activate_state;
-+	ndctl_dimm_get_fw_activate_result;
-+	ndctl_bus_get_fw_activate_state;
-+	ndctl_bus_get_fw_activate_method;
-+} LIBNDCTL_23;
-diff --git a/ndctl/lib/private.h b/ndctl/lib/private.h
-index 2e537f0a8649..e1d61f52fed5 100644
---- a/ndctl/lib/private.h
-+++ b/ndctl/lib/private.h
-@@ -79,6 +79,8 @@ struct ndctl_dimm {
- 	unsigned long cmd_mask;
- 	unsigned long nfit_dsm_mask;
- 	long long dirty_shutdown;
-+	enum ndctl_fwa_state fwa_state;
-+	enum ndctl_fwa_result fwa_result;
- 	char *unique_id;
- 	char *dimm_path;
- 	char *dimm_buf;
-@@ -174,6 +176,7 @@ struct ndctl_bus {
- 	char *scrub_path;
- 	unsigned long cmd_mask;
- 	unsigned long nfit_dsm_mask;
-+	enum ndctl_fwa_state fwa_state;
- };
- 
- /**
+@@ -437,4 +437,6 @@ LIBNDCTL_24 {
+ 	ndctl_dimm_get_fw_activate_result;
+ 	ndctl_bus_get_fw_activate_state;
+ 	ndctl_bus_get_fw_activate_method;
++	ndctl_dimm_fw_activate_disarm;
++	ndctl_dimm_fw_activate_arm;
+ } LIBNDCTL_23;
 diff --git a/ndctl/libndctl.h b/ndctl/libndctl.h
-index 2580f433ade8..e66a52029481 100644
+index e66a52029481..04ca127767ac 100644
 --- a/ndctl/libndctl.h
 +++ b/ndctl/libndctl.h
-@@ -110,6 +110,20 @@ enum ndctl_persistence_domain {
- 	PERSISTENCE_UNKNOWN = INT_MAX,
- };
+@@ -729,6 +729,8 @@ enum ndctl_fwa_result {
  
-+enum ndctl_fwa_state {
-+	NDCTL_FWA_INVALID,
-+	NDCTL_FWA_IDLE,
-+	NDCTL_FWA_ARMED,
-+	NDCTL_FWA_BUSY,
-+	NDCTL_FWA_ARM_OVERFLOW,
-+};
-+
-+enum ndctl_fwa_method {
-+	NDCTL_FWA_METHOD_RESET,
-+	NDCTL_FWA_METHOD_SUSPEND,
-+	NDCTL_FWA_METHOD_LIVE,
-+};
-+
- struct ndctl_bus;
- struct ndctl_bus *ndctl_bus_get_first(struct ndctl_ctx *ctx);
- struct ndctl_bus *ndctl_bus_get_next(struct ndctl_bus *bus);
-@@ -139,6 +153,8 @@ unsigned int ndctl_bus_get_scrub_count(struct ndctl_bus *bus);
- int ndctl_bus_get_scrub_state(struct ndctl_bus *bus);
- int ndctl_bus_start_scrub(struct ndctl_bus *bus);
- int ndctl_bus_has_error_injection(struct ndctl_bus *bus);
-+enum ndctl_fwa_state ndctl_bus_get_fw_activate_state(struct ndctl_bus *bus);
-+enum ndctl_fwa_method ndctl_bus_get_fw_activate_method(struct ndctl_bus *bus);
+ enum ndctl_fwa_state ndctl_dimm_get_fw_activate_state(struct ndctl_dimm *dimm);
+ enum ndctl_fwa_result ndctl_dimm_get_fw_activate_result(struct ndctl_dimm *dimm);
++enum ndctl_fwa_state ndctl_dimm_fw_activate_disarm(struct ndctl_dimm *dimm);
++enum ndctl_fwa_state ndctl_dimm_fw_activate_arm(struct ndctl_dimm *dimm);
  
- struct ndctl_dimm;
- struct ndctl_dimm *ndctl_dimm_get_first(struct ndctl_bus *bus);
-@@ -702,6 +718,18 @@ enum ND_FW_STATUS ndctl_cmd_fw_xlat_firmware_status(struct ndctl_cmd *cmd);
- struct ndctl_cmd *ndctl_dimm_cmd_new_ack_shutdown_count(struct ndctl_dimm *dimm);
- int ndctl_dimm_fw_update_supported(struct ndctl_dimm *dimm);
- 
-+enum ndctl_fwa_result {
-+        NDCTL_FWA_RESULT_INVALID,
-+        NDCTL_FWA_RESULT_NONE,
-+        NDCTL_FWA_RESULT_SUCCESS,
-+        NDCTL_FWA_RESULT_NOTSTAGED,
-+        NDCTL_FWA_RESULT_NEEDRESET,
-+        NDCTL_FWA_RESULT_FAIL,
-+};
-+
-+enum ndctl_fwa_state ndctl_dimm_get_fw_activate_state(struct ndctl_dimm *dimm);
-+enum ndctl_fwa_result ndctl_dimm_get_fw_activate_result(struct ndctl_dimm *dimm);
-+
  int ndctl_cmd_xlat_firmware_status(struct ndctl_cmd *cmd);
  int ndctl_cmd_submit_xlat(struct ndctl_cmd *cmd);
- 
-diff --git a/ndctl/list.c b/ndctl/list.c
-index 1f7cc8ee1deb..f98148aea479 100644
---- a/ndctl/list.c
-+++ b/ndctl/list.c
-@@ -403,11 +403,12 @@ static bool filter_bus(struct ndctl_bus *bus, struct util_filter_ctx *ctx)
- 		}
- 	}
- 
--	lfa->jbus = util_bus_to_json(bus);
-+	lfa->jbus = util_bus_to_json(bus, lfa->flags);
- 	if (!lfa->jbus) {
- 		fail("\n");
- 		return false;
- 	}
-+
- 	json_object_array_add(lfa->jbuses, lfa->jbus);
- 	return true;
- }
-diff --git a/util/json.c b/util/json.c
-index 59a3d07cc4a6..77bd4781551d 100644
---- a/util/json.c
-+++ b/util/json.c
-@@ -122,10 +122,10 @@ void util_display_json_array(FILE *f_out, struct json_object *jarray,
- 	json_object_put(jarray);
- }
- 
--struct json_object *util_bus_to_json(struct ndctl_bus *bus)
-+struct json_object *util_bus_to_json(struct ndctl_bus *bus, unsigned long flags)
- {
- 	struct json_object *jbus = json_object_new_object();
--	struct json_object *jobj;
-+	struct json_object *jobj, *fw_obj = NULL;
- 	int scrub;
- 
- 	if (!jbus)
-@@ -150,6 +150,49 @@ struct json_object *util_bus_to_json(struct ndctl_bus *bus)
- 		goto err;
- 	json_object_object_add(jbus, "scrub_state", jobj);
- 
-+	if (flags & UTIL_JSON_FIRMWARE) {
-+		struct ndctl_dimm *dimm;
-+
-+		/*
-+		 * Skip displaying firmware activation capability if no
-+		 * DIMMs support firmware update.
-+		 */
-+		ndctl_dimm_foreach(bus, dimm)
-+			if (ndctl_dimm_fw_update_supported(dimm) == 0) {
-+				fw_obj = json_object_new_object();
-+				break;
-+			}
-+	}
-+
-+	if (fw_obj) {
-+		enum ndctl_fwa_state state;
-+		enum ndctl_fwa_method method;
-+
-+		jobj = NULL;
-+		method = ndctl_bus_get_fw_activate_method(bus);
-+		if (method == NDCTL_FWA_METHOD_RESET)
-+			jobj = json_object_new_string("reset");
-+		if (method == NDCTL_FWA_METHOD_SUSPEND)
-+			jobj = json_object_new_string("suspend");
-+		if (method == NDCTL_FWA_METHOD_LIVE)
-+			jobj = json_object_new_string("live");
-+		if (jobj)
-+			json_object_object_add(fw_obj, "activate_method", jobj);
-+
-+		jobj = NULL;
-+		state = ndctl_bus_get_fw_activate_state(bus);
-+		if (state == NDCTL_FWA_ARMED)
-+			jobj = json_object_new_string("armed");
-+		if (state == NDCTL_FWA_IDLE)
-+			jobj = json_object_new_string("idle");
-+		if (state == NDCTL_FWA_ARM_OVERFLOW)
-+			jobj = json_object_new_string("overflow");
-+		if (jobj)
-+			json_object_object_add(fw_obj, "activate_state", jobj);
-+
-+		json_object_object_add(jbus, "firmware", fw_obj);
-+	}
-+
- 	return jbus;
-  err:
- 	json_object_put(jbus);
-@@ -160,10 +203,13 @@ struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
- 		unsigned long flags)
- {
- 	struct json_object *jfirmware = json_object_new_object();
-+	bool can_update, need_powercycle;
-+	enum ndctl_fwa_result result;
-+	enum ndctl_fwa_state state;
- 	struct json_object *jobj;
- 	struct ndctl_cmd *cmd;
--	int rc;
- 	uint64_t run, next;
-+	int rc;
- 
- 	if (!jfirmware)
- 		return NULL;
-@@ -195,10 +241,12 @@ struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
- 		json_object_object_add(jfirmware, "current_version", jobj);
- 
- 	rc = ndctl_dimm_fw_update_supported(dimm);
--	jobj = json_object_new_boolean(rc == 0);
-+	can_update = rc == 0;
-+	jobj = json_object_new_boolean(can_update);
- 	if (jobj)
- 		json_object_object_add(jfirmware, "can_update", jobj);
- 
-+
- 	next = ndctl_cmd_fw_info_get_updated_version(cmd);
- 	if (next == ULLONG_MAX) {
- 		jobj = util_json_object_hex(-1, flags);
-@@ -208,16 +256,61 @@ struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
- 		goto out;
- 	}
- 
--	if (next != 0) {
--		jobj = util_json_object_hex(next, flags);
--		if (jobj)
--			json_object_object_add(jfirmware,
--					"next_version", jobj);
-+	if (!next)
-+		goto out;
-+
-+	jobj = util_json_object_hex(next, flags);
-+	if (jobj)
-+		json_object_object_add(jfirmware,
-+				"next_version", jobj);
-+
-+	state = ndctl_dimm_get_fw_activate_state(dimm);
-+	switch (state) {
-+	case NDCTL_FWA_IDLE:
-+		jobj = json_object_new_string("idle");
-+		break;
-+	case NDCTL_FWA_ARMED:
-+		jobj = json_object_new_string("armed");
-+		break;
-+	case NDCTL_FWA_BUSY:
-+		jobj = json_object_new_string("busy");
-+		break;
-+	default:
-+		jobj = NULL;
-+		break;
-+	}
-+	if (jobj)
-+		json_object_object_add(jfirmware, "activate_state", jobj);
-+
-+	result = ndctl_dimm_get_fw_activate_result(dimm);
-+	switch (result) {
-+	case NDCTL_FWA_RESULT_NONE:
-+	case NDCTL_FWA_RESULT_SUCCESS:
-+	case NDCTL_FWA_RESULT_NOTSTAGED:
-+		/*
-+		 * If a 'next' firmware version is staged then this
-+		 * result is stale, if the activation succeeds that is
-+		 * indicated by not finding a 'next' entry.
-+		 */
-+		need_powercycle = false;
-+		break;
-+	case NDCTL_FWA_RESULT_NEEDRESET:
-+	case NDCTL_FWA_RESULT_FAIL:
-+	default:
-+		/*
-+		 * If the last activation failed, or if the activation
-+		 * result is unavailable it is always the case that the
-+		 * only remediation is powercycle.
-+		 */
-+		need_powercycle = true;
-+		break;
-+	}
- 
-+	if (need_powercycle) {
- 		jobj = json_object_new_boolean(true);
--		if (jobj)
--			json_object_object_add(jfirmware,
--					"need_powercycle", jobj);
-+		if (!jobj)
-+			goto out;
-+		json_object_object_add(jfirmware, "need_powercycle", jobj);
- 	}
- 
- 	ndctl_cmd_unref(cmd);
-diff --git a/util/json.h b/util/json.h
-index fc91a8db034f..39a33789bac9 100644
---- a/util/json.h
-+++ b/util/json.h
-@@ -32,7 +32,8 @@ enum util_json_flags {
- struct json_object;
- void util_display_json_array(FILE *f_out, struct json_object *jarray,
- 		unsigned long flags);
--struct json_object *util_bus_to_json(struct ndctl_bus *bus);
-+struct json_object *util_bus_to_json(struct ndctl_bus *bus,
-+		unsigned long flags);
- struct json_object *util_dimm_to_json(struct ndctl_dimm *dimm,
- 		unsigned long flags);
- struct json_object *util_mapping_to_json(struct ndctl_mapping *mapping,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
