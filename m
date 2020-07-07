@@ -2,96 +2,144 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18591216157
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 00:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D552162F0
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 02:23:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 42B661106818F;
-	Mon,  6 Jul 2020 15:13:56 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.132.42; helo=sonic306-3.consmr.mail.bf2.yahoo.com; envelope-from=myway33409@yahoo.com; receiver=<UNKNOWN> 
-Received: from sonic306-3.consmr.mail.bf2.yahoo.com (sonic306-3.consmr.mail.bf2.yahoo.com [74.6.132.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 456CD1107E168;
+	Mon,  6 Jul 2020 17:23:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3F36111075BD5
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 15:13:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594073631; bh=oCNEd1hqPk1aOv3IotM9kYb1NCspoUc0Hm/7Y+4kBd0=; h=Date:From:Reply-To:Subject:References:From:Subject; b=tCYir0Lw/8KZV/DZ+TYkNdfJFmcDqvByQ4lddV2RUg9o/Xxl6RWgnE/IosXQqkRTsEH92WqmDAMeF/19sxB0gfOCkhpYm5G382X8tlsO//MaVbsdK370TuhguCuAZCNMAHckpDhluCiVSdwoE6qayTy/OGWl0sjAbYD1ZyLxq//ZZeBVqUDIBbuDyIw3mHfpihJBSdhhdbylGHAGEzbms5IJmaUJbccnhYtqBYg9zKPzbNn3KJtIQfjocMpnj60OOJMUS9kONEi9s6dJlhjW0b6L1spJybC5FBObkn5H+0esDefpIJ41h0nayMQQSiGLv9s5zxIwJc1B6C+OROeAtA==
-X-YMail-OSG: 0BAj14IVM1l0XJrU2sBmFvh6HwM_J.5gW7X.K7rLq4iARa6jvb9GQm2ewI6UU0W
- mY.PIqelarEfEAGs8yBAX2WDskRSTKBclwUoSexOwpgTglP3Z3GsaT2_8OIgpH.lGlQI6FtxQiEs
- 4fgo0_6xsd.UFlcFD_CPmI0K7ABIPii8LAzcsDLJi8zr7ov8FPSzZI5sXb.4rAQnTP.gv9d2XzaZ
- AML.cvpq5_64tM6vWceFhqDLyrZgG32aEYTlh01Ot7fHruDHNTWHZOXGcTh5iAMDqa30SynRbsk0
- MLhEcKnwzaWlAmtPyMw0kilvnIXABg7arDTer141gFseb5DGV50xmqHdKOtgry8RM1ie90nCIQlx
- omcUxWRBK9jBa8WS1BaG0tB.oW3NjnPMJV7zweoUg4f7.lo.AT_uB2ZvldzjyZP_Xts_On1CIALz
- Fxv.6x10jfneb6oExEK7.gKj0jxafQBbF8cGOM1H_5LrpmZDk74jF_.ImnpXP4NdpeZXUAFxHy97
- huXURBY596T4m29FOqIqAMDLiKcBAoTBGpu.xiovyzj0A8fQH6WuTcz6Ucw.lmmUZeDWFnPhlAOk
- XL9o8cQDOhAuGhWO4ylcLXbuyHDMqcP3Vi_.I8DozEYLvlwBkDvhr3ADu2R3sOWdqHxdU290JkKJ
- .jab1hOhuwksEFvSLN.wyneJpB9E6dnr8doBmZbTcsdLrXRTM7Bk1t_XHeuRrIN4T95GHescDucF
- 81uBmb3ciHeofTGKreN8BAcPXoF7n6SFcj928O6xoeLsReD3W7ycjcyYvj373V2KQKji_lRkIggn
- RRCMIfqfsmjSugh_fLYm7E5SZPUPJPoO_uhQku3HKnhKPpVkAsHFq2uKRp92eZdCaRyd6SjhpM2v
- zFZfDxbyWU9d5xcvYg1QWje9cMxfLtYoYNf1gk1sTqQqJaczVXJmGqb48anb1mFMIn2bdkXIo.xw
- 33_hg4cK1N7qFJFAN.OIW1JuiPO8sdZVOEuq.jrWIDYfr2.GS4FeXEu4YVQztYqqywzEKMWAvyqU
- wNRTtKDJQqFhNEFX0XbTgNMcLmXMehi_IWOcOSvja1x9U8x8_VQWd_fo8s0xLsz5Hx7k9nLuEGmw
- w.9tVH8H3blOIyyOYYbFKf9XZ6uHa3Rgz6gHHAG3Z2tYRxWOYPxnihryRgbe4Z50lzTcADn2Fz0C
- zgleBdfpjYB9C0SjOAVAQCEf.MMwgMK48WVyhO2WbHEo7gR_h3gxvk22xuBwGlEwgPYNWufIrHn0
- 0HmjOzzb61EyyhV5Gtl6BiKjHCycWCRj4lsUe7PUVlbJSvwNQI1o42IOUL5gX_mTw6WXPFAB_0Xx
- tiorWWA5RD92nDyx3jACYXZIZ1a8CZVlV4m1w9HcelDtxMlBRKQDy.2agC9a8HDQKjXpGYILx
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.bf2.yahoo.com with HTTP; Mon, 6 Jul 2020 22:13:51 +0000
-Date: Mon, 6 Jul 2020 22:13:47 +0000 (UTC)
-From: Aadi Laboso <myway33409@yahoo.com>
-Message-ID: <1219979207.1508562.1594073627550@mail.yahoo.com>
-Subject: My beloved
+	by ml01.01.org (Postfix) with ESMTPS id DC658110122B2
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 17:23:34 -0700 (PDT)
+IronPort-SDR: Ojrc0KnaUWoUyrgtv8P6Nb2+31/fwh7NZcmVdMDPZlXw8I9GnYWSLtNPYHecMVgfbl1HMiK15+
+ zz8YcAn+Zu5g==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="147530233"
+X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
+   d="scan'208";a="147530233"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 17:23:34 -0700
+IronPort-SDR: 95vkV2BlzuBukNCHuQAgKx50KXPbFW+U7v1o2y4XF8rmhQH3Dd3Oic1fCsYj+T/yviasdyrz0x
+ EfwYOzj0x+cg==
+X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
+   d="scan'208";a="483316089"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 17:23:33 -0700
+Subject: [PATCH v7 0/2] Renovate memcpy_mcsafe with copy_mc_to_{user, kernel}
+From: Dan Williams <dan.j.williams@intel.com>
+To: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de
+Date: Mon, 06 Jul 2020 17:07:18 -0700
+Message-ID: <159408043801.2272533.17485467640602344900.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-References: <1219979207.1508562.1594073627550.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
-Message-ID-Hash: OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN
-X-Message-ID-Hash: OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN
-X-MailFrom: myway33409@yahoo.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: 3OMOBKI3C6C2FJRYB55Q2HH2CUJVWCFT
+X-Message-ID-Hash: 3OMOBKI3C6C2FJRYB55Q2HH2CUJVWCFT
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Tony Luck <tony.luck@intel.com>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, stable@vger.kernel.org, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Paul Mackerras <paulus@samba.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Erwin Tsaur <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, Mikulas Patocka <mpatocka@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: aad25413lao@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OZHTKTT5RCVWKJV5L2VOPHYRCMMVFDBN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3OMOBKI3C6C2FJRYB55Q2HH2CUJVWCFT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCkdvb2QgZGF5IGFuZCBHb2QgYmxlc3MgeW91IGFzIHlvdSByZWFkIHRoaXMgbWFzc2FnZSwg
-SSBhbSBieSBuYW1lIEFhZGkgTGFib3NvIEnigJltIDI3IHllYXJzIG9sZCBnaXJsIGZyb20gS2Vu
-eWEsIHllcyBteSBNb3RoZXIgd2FzIExhdGUgTXJzLiBMb3JuYSBMYWJvc28gdGhlIGZvcm1lciBL
-ZW55YW4gQXNzaXN0YW50IE1pbmlzdGVyIG9mIEhvbWUgYW5kIGFmZmFpcnMgd2hvIHdhcyBhbW9u
-ZyB0aGUgcGxhbiB0aGF0IGNyYXNoIG9uIGJvYXJkIGluIHRoZSByZW1vdGUgYXJlYSBvZiBLYWxv
-bmfigJlzIHdlc3Rlcm5LZW55YSBSZWFkIG1vcmUgYWJvdXQgdGhlIGNyYXNoIHdpdGggdGhlIGJl
-bG93IHdlYiBzaXRlDQoNCmh0dHA6Ly9lZGl0aW9uLmNubi5jb20vMjAwOC9XT1JMRC9hZnJpY2Ev
-MDYvMTAva2VueWEuY3Jhc2gvaW5kZXguaHRtbCBJIGFtIGNvbnN0cmFpbmVkIHRvIGNvbnRhY3Qg
-eW91IGJlY2F1c2Ugb2YgdGhlIG1hbHRyZWF0bWVudCBJIGFtIHJlY2VpdmluZyBmcm9tIG15IHN0
-ZXAgbW90aGVyLiBTaGUgcGxhbm5lZCB0byB0YWtlIGF3YXkgYWxsIG15IGxhdGUgbW90aGVycyB0
-cmVhc3VyeSBhbmQgcHJvcGVydGllcyBmcm9tIG1lIHNpbmNlIHRoZSB1bmV4cGVjdGVkIGRlYXRo
-IG9mIG15IGJlbG92ZWQgbW90aGVyLiBPbmUgZGF5IEkgb3BlbmVkIG15IG1vdGhlciBicmF2ZSBj
-YXNlIGFuZCBzZWNyZXRseSBmb3VuZCBvdXQgdGhhdCBteSBtb3RoZXIgZGVwb3NpdGVkIHRoZSBz
-dW0gb2YgJCAyNy41IG1pbGxpb24gaW4gQk9BIGJhbmsgQnVya2luYSBGYXNvIHdpdGggbXkgbmFt
-ZSBhcyB0aGUgbmV4dCBvZiBraW4sIHRoZW4gSSB2aXNpdGVkIEJ1cmtpbmEgRmFzbyB0byB3aXRo
-ZHJhdyB0aGUgbW9uZXkgYW5kIHRha2UgY2FyZSBvZiBteXNlbGYgYW5kIHN0YXJ0IGEgbmV3IGxp
-ZmUsIG9uIG15IGFycml2YWwgdGhlIEJhbmsgRGlyZWN0b3Igd2hvbSBJIG1lZXQgaW4gcGVyc29u
-IE1yLiBCYXRpc2ggWm9uZ28gdG9sZCBtZSB0aGF0IG15IG1vdGhlciBsZWZ0IGFuIGluc3RydWN0
-aW9uIHRvIHRoZSBiYW5rLCB0aGF0IHRoZSBtb25leSBzaG91bGQgYmUgcmVsZWFzZSB0byBtZSBv
-bmx5IHdoZW4gSSBhbSBtYXJyaWVkIG9yIEkgcHJlc2VudCBhIHRydXN0ZWUgd2hvIHdpbGwgaGVs
-cCBtZSBhbmQgaW52ZXN0IHRoZSBtb25leSBvdmVyc2Vhcy4NCg0KVGhhdCBpcyB0aGUgcmVhc29u
-IHdoeSBJIGFtIGluIHNlYXJjaCBvZiBhIGhvbmVzdCBhbmQgcmVsaWFibGUgcGVyc29uIHdobyB3
-aWxsIGhlbHAgbWUgYW5kIHN0YW5kIGFzIG15IHRydXN0ZWUgZm9yIHRoZSBCYW5rIHRvIHRyYW5z
-ZmVyIHRoZSBtb25leSB0byBoaXMgYWNjb3VudCBmb3IgbWUgdG8gY29tZSBvdmVyIGFuZCBqb2lu
-IHlvdS4gSXQgd2lsbCBiZSBteSBncmVhdCBwbGVhc3VyZSB0byBjb21wZW5zYXRlIHlvdSB3aXRo
-IDMwJSBvZiB0aGUgbW9uZXkgZm9yIHlvdXIgaGVscCBhbmQgdGhlIGJhbGFuY2Ugc2hhbGwgYmUg
-bXkgY2FwaXRhbCB3aXRoIHlvdXIga2luZCBpZGVhIGZvciBtZSB0byBpbnZlc3QgdW5kZXIgeW91
-ciBjb250cm9sIG92ZXIgdGhlcmUgaW4geW91ciBjb3VudHJ5Lg0KQXMgc29vbiBhcyBJIHJlY2Vp
-dmUgeW91ciBwb3NpdGl2ZSByZXNwb25zZSBzaG93aW5nIHlvdXIgaW50ZXJlc3QgSSB3aWxsIHNl
-bmQgeW91IG15IHBpY3R1cmUncyBpbiBteSBuZXh0IG1haWwgYW5kIGRlYXRoIGNlcnRpZmljYXRl
-IG9mIG15IE1vbiBhbmQgaG93IHlvdSB3aWxsIHJlY2VpdmUgdGhlIG1vbmV5IGluIHlvdXIgYWNj
-b3VudC4gQ29udGFjdCBtZSB0aG91Z2ggbXkgRW1haWw6IChhYWQyNTQxM2xhb0BnbWFpbC5jb20p
-DQoNCllvdXJzIFNpbmNlcmVseQ0KUXVlZW4gQWFkaSBMYWJvc28KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAt
-LSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwg
-dG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Changes since v6 [1]:
+- Collected Tony's Reviewed-by.
+
+- Rebased on v5.8-rc3 to address a conflict with commit e3a9e681adb7
+  ("x86/entry: Fixup bad_iret vs noinstr") No other functional changes,
+  and no other comments since v5. At this point I think I'll go ahead
+  with pushing to -next to get it some soak time for a potential v5.9
+  merge and catch any other conflicts that might arise in the meantime. Of
+  course, I'll immediately drop it from -next if x86.tip picks it up or
+  naks it. As it stands, nothing queued in x86.tip/master conflicts with
+  these.
+
+[1]: http://lore.kernel.org/r/159244031857.1107636.5054974045023236143.stgit@dwillia2-desk3.amr.corp.intel.com
+
+---
+
+The primary motivation to go touch memcpy_mcsafe() is that the existing
+benefit of doing slow and careful copies is obviated on newer CPUs. That
+fact solves the problem of needing to detect machine-check recovery
+capability. Now the old "mcsafe_key" opt-in to careful copying can be made
+an opt-out from the default fast copy implementation.
+
+The discussion with Linus further made clear that this facility had
+already lost its x86-machine-check specificity starting with commit
+2c89130a56a ("x86/asm/memcpy_mcsafe: Add write-protection-fault
+handling"). The new changes to not require a "careful copy" further
+de-emphasizes the role that x86-MCA plays in the implementation to just
+one more source of recoverable trap during the operation.
+
+With the above realizations the name "mcsafe" is no longer accurate and
+copy_safe() is proposed as its replacement. x86 grows a copy_safe_fast()
+implementation as a default implementation that is independent of
+detecting the presence of x86-MCA.
+
+---
+
+Dan Williams (2):
+      x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user,kernel}()
+      x86/copy_mc: Introduce copy_mc_generic()
+
+
+ arch/powerpc/Kconfig                               |    2 
+ arch/powerpc/include/asm/string.h                  |    2 
+ arch/powerpc/include/asm/uaccess.h                 |   40 +++--
+ arch/powerpc/lib/Makefile                          |    2 
+ arch/powerpc/lib/copy_mc_64.S                      |    4 
+ arch/x86/Kconfig                                   |    2 
+ arch/x86/Kconfig.debug                             |    2 
+ arch/x86/include/asm/copy_mc_test.h                |   75 +++++++++
+ arch/x86/include/asm/mcsafe_test.h                 |   75 ---------
+ arch/x86/include/asm/string_64.h                   |   32 ----
+ arch/x86/include/asm/uaccess.h                     |   21 +++
+ arch/x86/include/asm/uaccess_64.h                  |   20 --
+ arch/x86/kernel/cpu/mce/core.c                     |    8 -
+ arch/x86/kernel/quirks.c                           |    9 -
+ arch/x86/lib/Makefile                              |    1 
+ arch/x86/lib/copy_mc.c                             |   64 ++++++++
+ arch/x86/lib/copy_mc_64.S                          |  165 ++++++++++++++++++++
+ arch/x86/lib/memcpy_64.S                           |  115 --------------
+ arch/x86/lib/usercopy_64.c                         |   21 ---
+ drivers/md/dm-writecache.c                         |   15 +-
+ drivers/nvdimm/claim.c                             |    2 
+ drivers/nvdimm/pmem.c                              |    6 -
+ include/linux/string.h                             |    9 -
+ include/linux/uaccess.h                            |    9 +
+ include/linux/uio.h                                |   10 +
+ lib/Kconfig                                        |    7 +
+ lib/iov_iter.c                                     |   43 +++--
+ tools/arch/x86/include/asm/mcsafe_test.h           |   13 --
+ tools/arch/x86/lib/memcpy_64.S                     |  115 --------------
+ tools/objtool/check.c                              |    5 -
+ tools/perf/bench/Build                             |    1 
+ tools/perf/bench/mem-memcpy-x86-64-lib.c           |   24 ---
+ tools/testing/nvdimm/test/nfit.c                   |   48 +++---
+ .../testing/selftests/powerpc/copyloops/.gitignore |    2 
+ tools/testing/selftests/powerpc/copyloops/Makefile |    6 -
+ .../selftests/powerpc/copyloops/copy_mc_64.S       |    1 
+ .../selftests/powerpc/copyloops/memcpy_mcsafe_64.S |    1 
+ 37 files changed, 451 insertions(+), 526 deletions(-)
+ rename arch/powerpc/lib/{memcpy_mcsafe_64.S => copy_mc_64.S} (98%)
+ create mode 100644 arch/x86/include/asm/copy_mc_test.h
+ delete mode 100644 arch/x86/include/asm/mcsafe_test.h
+ create mode 100644 arch/x86/lib/copy_mc.c
+ create mode 100644 arch/x86/lib/copy_mc_64.S
+ delete mode 100644 tools/arch/x86/include/asm/mcsafe_test.h
+ delete mode 100644 tools/perf/bench/mem-memcpy-x86-64-lib.c
+ create mode 120000 tools/testing/selftests/powerpc/copyloops/copy_mc_64.S
+ delete mode 120000 tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
