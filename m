@@ -1,69 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7987216336
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 02:57:15 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACBE2163B0
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:14:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EAEDA1107E169;
-	Mon,  6 Jul 2020 17:57:13 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1044; helo=mail-pj1-x1044.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C38F410FE042C;
+	Mon,  6 Jul 2020 19:14:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5673D11075BCF
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 17:57:11 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id l6so14433459pjq.1
-        for <linux-nvdimm@lists.01.org>; Mon, 06 Jul 2020 17:57:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=3qVlv451nr86cMyeANpd21SSFv00C3l5EajJUsc6fBA=;
-        b=lgQYrqaKVxNf0glJh1q13xE+RkWs4vp/wgiXO6RZfa9SGjpVsry+P6M2sLDfBEjsh7
-         JookpmmwCT2xSQJ+Oq6D+XQ/3kdzhg5QhgPN0gzFXOUZ8JBIotVHGjKp11O2pzXfyVTx
-         g913ZUNcYl9wCC9J2jA5O/eLlISyeCEF9DSSZzrizRmnVm8MRCrdeNlgrEm9qjgsBqgu
-         4Ty6xzTv57iPu6gI0KDtec03WXWYYvJ3Ogu0lbnNYCYrxgR0FDKNjHxfAOOgW8oB2Ju0
-         QJNixv9wS5ADJbzdnr9UStJ9g4jW0GOy8dl6hgXH8KdiuTWqm+NfwDVgFjN+pRB94OVj
-         tEYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=3qVlv451nr86cMyeANpd21SSFv00C3l5EajJUsc6fBA=;
-        b=egbiphWusXt3QQSF9Jmc1mRBPsWCycdT2uBozvPaNHOuTzricQ3aw+AkUxqm8qpFK7
-         kF+1Axhl6UUSOrfm7Wusbq1+rqG7pu5IwMiYoeA5CG1c+DFBWiNqGkwRQzbSfJa0OGEI
-         8YQ45E90hQdkuNjhNmg78LhbDBFPK2kU3+k6t5Vo61yzajCs/hgi0GAgfHa1J9MR9ZTO
-         tPm4Ubvh2tRD9MqMheJqzoggwHnZAvIDam4r1xRkuJQ7XItNchmTm8EtlFY56eEQ60WO
-         4GIraSIziTjBQ1EZbi7IagQvHof3eL1EmnoN2u/63Aw8iOaMPQw2z4Vx/bZI1n8uOTmC
-         Rt9g==
-X-Gm-Message-State: AOAM533ky9nO/vvgEACEEbdTJkeEk1YsRxQnLMq1ObUc3nvW2ZlB4MRe
-	ZEK0ofvFXOdtSM4Q6m2zbnudKzefc4Y=
-X-Google-Smtp-Source: ABdhPJw9GvZ5YH3VR+lBgKk6wOVvRt80QAr8F3+MBUf+eWQZQ0D9gg3/XQPmPkoa53V8c8pjeKxUOg==
-X-Received: by 2002:a17:90b:1045:: with SMTP id gq5mr1725266pjb.30.1594083430245;
-        Mon, 06 Jul 2020 17:57:10 -0700 (PDT)
-Received: from santosiv.in.ibm.com.com ([203.223.190.240])
-        by smtp.gmail.com with ESMTPSA id w1sm20696634pfq.53.2020.07.06.17.57.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jul 2020 17:57:09 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH ndctl] infoblock: Set the default alignment to the platform alignment
-Date: Tue,  7 Jul 2020 06:26:41 +0530
-Message-Id: <20200707005641.3936295-1-santosh@fossix.org>
-X-Mailer: git-send-email 2.26.2
+	by ml01.01.org (Postfix) with ESMTPS id 1013E1003FD6A
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:14:49 -0700 (PDT)
+IronPort-SDR: 4cFS5OKaP7tk6+VA/T4VuNRINmVwmoWnnDVTKHocLA3+Yy92S101IFINHFfxhlzJB4caNhwBcW
+ nsrrXP3RfA4Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="149038818"
+X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
+   d="scan'208";a="149038818"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:14:49 -0700
+IronPort-SDR: aM/DQzSNXqXoRKoo+f4FUPP8V+ChlSee823io9y6Qo1rVJETAQmGsTUduAc04a83jMqLOfZryy
+ ZkPdDP7hyB/w==
+X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
+   d="scan'208";a="427299087"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:14:49 -0700
+Subject: [PATCH v2 00/12] ACPI/NVDIMM: Runtime Firmware Activation
+From: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Date: Mon, 06 Jul 2020 18:58:33 -0700
+Message-ID: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC
-X-Message-ID-Hash: DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC
-X-MailFrom: santosh@fossix.org
+Message-ID-Hash: ZICUKMUZVXBWY43HWNG3UKWYTDZ4MLGL
+X-Message-ID-Hash: ZICUKMUZVXBWY43HWNG3UKWYTDZ4MLGL
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+CC: Doug Ledford <dledford@redhat.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Corbet <corbet@lwn.net>, Jason Gunthorpe <jgg@mellanox.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Pavel Machek <pavel@ucw.cz>, stable@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DI5DOZXYHBKHHHETQYVDNPUS3SGXXHHC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZICUKMUZVXBWY43HWNG3UKWYTDZ4MLGL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,126 +52,160 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The default alignment for write-infoblock command is set to 2M. Change
-that to use the platform's supported alignment or PAGE_SIZE. The first
-supported alignment is taken as the default.
+Changes since v1 [1]:
+- Move the syscore callback from 'suspend' path to the 'hibernate' path
+  (Rafael)
 
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+- Add a new PM debug test mode, 'mem-quiet' to disable some unnecessary
+  hibernation steps (memory image preparation) and debug sleeps when the
+  hibernation code is just being used to quiet the system for firmware
+  activation. (Rafael)
+
+- Greg already applied "driver-core: Introduce
+  DEVICE_ATTR_ADMIN_{RO,RW}" to driver-core-next, so I'll need to
+  duplicate that commit in nvdimm.git, or work out a common branch
+  baseline with Greg for this topic and driver-core-next to share.
+
+[1]: http://lore.kernel.org/r/159312902033.1850128.1712559453279208264.stgit@dwillia2-desk3.amr.corp.intel.com
+
 ---
- ndctl/namespace.c | 56 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index 0550580..4f056b7 100644
---- a/ndctl/namespace.c
-+++ b/ndctl/namespace.c
-@@ -175,7 +175,7 @@ OPT_STRING('m', "mode", &param.mode, "operation-mode", \
- OPT_STRING('s', "size", &param.size, "size", \
- 	"override the image size to instantiate the infoblock"), \
- OPT_STRING('a', "align", &param.align, "align", \
--	"specify the expected physical alignment (default: 2M)"), \
-+	"specify the expected physical alignment"), \
- OPT_STRING('u', "uuid", &param.uuid, "uuid", \
- 	"specify the uuid for the infoblock (default: autogenerate)"), \
- OPT_STRING('M', "map", &param.map, "memmap-location", \
-@@ -325,23 +325,15 @@ static int set_defaults(enum device_action action)
- 					sysconf(_SC_PAGE_SIZE));
- 			rc = -EINVAL;
- 		}
--	} else if (action == ACTION_WRITE_INFOBLOCK)
--		param.align = "2M";
-+	}
- 
- 	if (param.size) {
- 		unsigned long long size = parse_size64(param.size);
--		unsigned long long align = parse_size64(param.align);
- 
- 		if (size == ULLONG_MAX) {
- 			error("failed to parse namespace size '%s'\n",
- 					param.size);
- 			rc = -EINVAL;
--		} else if (action == ACTION_WRITE_INFOBLOCK
--				&& align < ULLONG_MAX
--				&& !IS_ALIGNED(size, align)) {
--			error("--size=%s not aligned to %s\n", param.size,
--					param.align);
--			rc = -EINVAL;
- 		}
- 	}
- 
-@@ -1982,6 +1974,23 @@ out:
- 	return rc;
- }
- 
-+static unsigned long ndctl_get_default_alignment(struct ndctl_namespace *ndns)
-+{
-+	unsigned long long align = 0;
-+	struct ndctl_dax *dax = ndctl_namespace_get_dax(ndns);
-+	struct ndctl_pfn *pfn = ndctl_namespace_get_pfn(ndns);
-+
-+	if (ndctl_namespace_get_mode(ndns) == NDCTL_NS_MODE_FSDAX && pfn)
-+		align = ndctl_pfn_get_supported_alignment(pfn, 1);
-+	else if (ndctl_namespace_get_mode(ndns) == NDCTL_NS_MODE_DEVDAX && dax)
-+		align = ndctl_dax_get_supported_alignment(dax, 1);
-+
-+	if (!align)
-+		align =  sysconf(_SC_PAGE_SIZE);
-+
-+	return align;
-+}
-+
- static int namespace_rw_infoblock(struct ndctl_namespace *ndns,
- 		struct read_infoblock_ctx *ri_ctx, int write)
- {
-@@ -1992,12 +2001,36 @@ static int namespace_rw_infoblock(struct ndctl_namespace *ndns,
- 	const char *save;
- 	const char *cmd = write ? "write-infoblock" : "read-infoblock";
- 	const char *devname = ndctl_namespace_get_devname(ndns);
-+	unsigned long long align;
- 
- 	if (ndctl_namespace_is_active(ndns)) {
- 		pr_verbose("%s: %s enabled, must be disabled\n", cmd, devname);
- 		return -EBUSY;
- 	}
- 
-+	if (write) {
-+		if (!param.align) {
-+			align = ndctl_get_default_alignment(ndns);
-+
-+			if (asprintf((char **)&param.align, "%llu", align) < 0) {
-+				rc = -EINVAL;
-+				goto out;
-+			}
-+		}
-+
-+		if (param.size) {
-+			unsigned long long size = parse_size64(param.size);
-+			align = parse_size64(param.align);
-+
-+			if (align < ULLONG_MAX && !IS_ALIGNED(size, align)) {
-+				error("--size=%s not aligned to %s\n", param.size,
-+				      param.align);
-+				rc = -EINVAL;
-+				goto out;
-+			}
-+		}
-+	}
-+
- 	ndctl_namespace_set_raw_mode(ndns, 1);
- 	rc = ndctl_namespace_enable(ndns);
- 	if (rc < 0) {
-@@ -2060,6 +2093,9 @@ static int do_xaction_namespace(const char *namespace,
- 	}
- 
- 	if (action == ACTION_WRITE_INFOBLOCK && !namespace) {
-+		if (!param.align)
-+			param.align = "2M";
-+
- 		rc = file_write_infoblock(param.outfile);
- 		if (rc >= 0)
- 			(*processed)++;
--- 
-2.26.2
+Quoting the documentation:
+
+    Some persistent memory devices run a firmware locally on the device /
+    "DIMM" to perform tasks like media management, capacity provisioning,
+    and health monitoring. The process of updating that firmware typically
+    involves a reboot because it has implications for in-flight memory
+    transactions. However, reboots are disruptive and at least the Intel
+    persistent memory platform implementation, described by the Intel ACPI
+    DSM specification [1], has added support for activating firmware at
+    runtime.
+
+    [1]: https://docs.pmem.io/persistent-memory/
+
+The approach taken is to abstract the Intel platform specific mechanism
+behind a libnvdimm-generic sysfs interface. The interface could support
+runtime-firmware-activation on another architecture without need to
+change userspace tooling.
+
+The ACPI NFIT implementation involves a set of device-specific-methods
+(DSMs) to 'arm' individual devices for activation and bus-level
+'trigger' method to execute the activation. Informational / enumeration
+methods are also provided at the bus and device level.
+
+One complicating aspect of the memory device firmware activation is that
+the memory controller may need to be quiesced, no memory cycles, during
+the activation. While the platform has mechanisms to support holding off
+in-flight DMA during the activation, the device response to that delay
+is potentially undefined. The platform may reject a runtime firmware
+update if, for example a PCI-E device does not support its completion
+timeout value being increased to meet the activation time. Outside of
+device timeouts the quiesce period may also violate application
+timeouts.
+
+Given the above device and application timeout considerations the
+implementation defaults to hooking into the hibernation path to trigger
+the activation, i.e. that a hibernate-resume cycle (at least up to the
+syscore mem-quiet point) is required. That default policy ensures that
+the system is in a quiescent state before ceasing memory controller
+responses for the activate. However, if desired, runtime activation
+without the hibernate freeze can be forced as an override.
+
+The ndctl utility grows the following extensions / commands to drive
+this mechanism:
+
+1/ The existing update-firmware command will 'arm' devices where the
+   firmware image is staged by default.
+
+    ndctl update-firmware all -f firmware_image.bin
+
+2/ The existing ability to enumerate firmware-update capabilities now
+   includes firmware activate capabilities at the 'bus' and 'dimm/device'
+   level:
+
+    ndctl list -BDF -b nfit_test.0
+    [
+      {
+        "provider":"nfit_test.0",
+        "dev":"ndbus2",
+        "scrub_state":"idle",
+        "firmware":{
+          "activate_method":"suspend",
+          "activate_state":"idle"
+        },
+        "dimms":[
+          {
+            "dev":"nmem1",
+            "id":"cdab-0a-07e0-ffffffff",
+            "handle":0,
+            "phys_id":0,
+            "security":"disabled",
+            "firmware":{
+              "current_version":0,
+              "can_update":true
+            }
+          },
+    ...
+
+3/ When the system can support activation without quiesce, or when the
+   hibernate-resume requirement is going to be suppressed, the new
+   activate-firmware command wraps that functionality:
+
+    ndctl activate-firmware nfit_test.0 --force
+
+   Otherwise, if activate_method is "suspend" then the activation can be
+   triggered by the mem-quiet hibernate debug state, or a full hibernate
+   resume:
+
+    echo mem-quiet > /sys/power/pm_debug
+    echo disk > /sys/power/state
+
+---
+
+Dan Williams (12):
+      libnvdimm: Validate command family indices
+      ACPI: NFIT: Move bus_dsm_mask out of generic nvdimm_bus_descriptor
+      ACPI: NFIT: Define runtime firmware activation commands
+      tools/testing/nvdimm: Cleanup dimm index passing
+      tools/testing/nvdimm: Add command debug messages
+      tools/testing/nvdimm: Prepare nfit_ctl_test() for ND_CMD_CALL emulation
+      tools/testing/nvdimm: Emulate firmware activation commands
+      driver-core: Introduce DEVICE_ATTR_ADMIN_{RO,RW}
+      libnvdimm: Convert to DEVICE_ATTR_ADMIN_RO()
+      libnvdimm: Add runtime firmware activation sysfs interface
+      PM, libnvdimm: Add 'mem-quiet' state and callback for firmware activation
+      ACPI: NFIT: Add runtime firmware activate support
+
+
+ Documentation/ABI/testing/sysfs-bus-nfit           |   35 ++
+ Documentation/ABI/testing/sysfs-bus-nvdimm         |    2 
+ .../driver-api/nvdimm/firmware-activate.rst        |   74 +++
+ drivers/acpi/nfit/core.c                           |  146 +++++--
+ drivers/acpi/nfit/intel.c                          |  426 ++++++++++++++++++++
+ drivers/acpi/nfit/intel.h                          |   61 +++
+ drivers/acpi/nfit/nfit.h                           |   39 ++
+ drivers/base/syscore.c                             |   21 +
+ drivers/nvdimm/bus.c                               |   46 ++
+ drivers/nvdimm/core.c                              |  103 +++++
+ drivers/nvdimm/dimm_devs.c                         |   99 +++++
+ drivers/nvdimm/namespace_devs.c                    |    2 
+ drivers/nvdimm/nd-core.h                           |    1 
+ drivers/nvdimm/pfn_devs.c                          |    2 
+ drivers/nvdimm/region_devs.c                       |    2 
+ include/linux/device.h                             |    4 
+ include/linux/libnvdimm.h                          |   53 ++
+ include/linux/syscore_ops.h                        |    2 
+ include/linux/sysfs.h                              |    7 
+ include/uapi/linux/ndctl.h                         |    5 
+ kernel/power/hibernate.c                           |   17 +
+ kernel/power/main.c                                |    1 
+ kernel/power/power.h                               |    7 
+ kernel/power/snapshot.c                            |   13 +
+ kernel/power/suspend.c                             |   12 +
+ tools/testing/nvdimm/test/nfit.c                   |  367 ++++++++++++++---
+ 26 files changed, 1427 insertions(+), 120 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-nvdimm
+ create mode 100644 Documentation/driver-api/nvdimm/firmware-activate.rst
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
