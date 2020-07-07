@@ -2,147 +2,115 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FCA2175C2
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 20:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 447AE2176F5
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 20:43:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 527071108EF24;
-	Tue,  7 Jul 2020 11:01:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 9F4AA1108EF24;
+	Tue,  7 Jul 2020 11:43:46 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=dave.jiang@intel.com; receiver=<UNKNOWN> 
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CA4941108E90D
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 11:01:00 -0700 (PDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 067HWPj9190732;
-	Tue, 7 Jul 2020 14:00:53 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 324ptpxudc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jul 2020 14:00:53 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 067HvTEq104818;
-	Tue, 7 Jul 2020 14:00:53 -0400
-Received: from ppma06fra.de.ibm.com (48.49.7a9f.ip4.static.sl-reverse.com [159.122.73.72])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 324ptpxubh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jul 2020 14:00:52 -0400
-Received: from pps.filterd (ppma06fra.de.ibm.com [127.0.0.1])
-	by ppma06fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 067HpdAD011540;
-	Tue, 7 Jul 2020 18:00:49 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma06fra.de.ibm.com with ESMTP id 322h1g9tcd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jul 2020 18:00:49 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 067I0l8434406650
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jul 2020 18:00:47 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3714F4C050;
-	Tue,  7 Jul 2020 18:00:47 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC2284C070;
-	Tue,  7 Jul 2020 18:00:45 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.148.202.169])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-	Tue,  7 Jul 2020 18:00:45 +0000 (GMT)
-Date: Tue, 7 Jul 2020 21:00:43 +0300
-From: Mike Rapoport <rppt@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as
- EXPORT_SYMBOL_GPL
-Message-ID: <20200707180043.GA386073@linux.ibm.com>
-References: <20200707055917.143653-1-justin.he@arm.com>
- <20200707055917.143653-2-justin.he@arm.com>
- <20200707115454.GN5913@dhcp22.suse.cz>
- <20200707121302.GB9411@linux.ibm.com>
- <474f93e7-c709-1a13-5418-29f1777f614c@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 8A24E1108E90D
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 11:43:44 -0700 (PDT)
+IronPort-SDR: 2hP69TsVmVVZNIn/hXDZgcy1gfDY8SOGLqyPf2R26DO6IaQuMV8bvGOsnlpok8MIH17qDzozAA
+ zu0ggMVaT35A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9675"; a="145788655"
+X-IronPort-AV: E=Sophos;i="5.75,324,1589266800";
+   d="scan'208";a="145788655"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jul 2020 11:43:43 -0700
+IronPort-SDR: tE+2wPm6K9iFIacUOg/CLMFS7F3o0A/U57Q/REyznxMLWP6DfLC9mbDVGuTFmLQbBKrGQ2xHoi
+ WCUff1u5CFuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,324,1589266800";
+   d="scan'208";a="323625145"
+Received: from djiang5-mobl1.amr.corp.intel.com (HELO [10.212.176.45]) ([10.212.176.45])
+  by orsmga007.jf.intel.com with ESMTP; 07 Jul 2020 11:43:43 -0700
+Subject: Re: [PATCH] libnvdimm/security: Fix key lookup permissions
+To: Dan Williams <dan.j.williams@intel.com>, linux-nvdimm@lists.01.org
+References: <159297332630.1304143.237026690015653759.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: Dave Jiang <dave.jiang@intel.com>
+Message-ID: <f220e24b-d8f3-fde6-e590-5e73557b965a@intel.com>
+Date: Tue, 7 Jul 2020 11:43:42 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <474f93e7-c709-1a13-5418-29f1777f614c@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-07-07_09:2020-07-07,2020-07-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 cotscore=-2147483648
- mlxscore=0 phishscore=0 clxscore=1015 suspectscore=1 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 spamscore=0
- bulkscore=0 adultscore=0 impostorscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2007070119
-Message-ID-Hash: Y4BHIKSHDGTPNQBK45ZBL3RPVI7PHC2Q
-X-Message-ID-Hash: Y4BHIKSHDGTPNQBK45ZBL3RPVI7PHC2Q
-X-MailFrom: rppt@linux.ibm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michal Hocko <mhocko@kernel.org>, Jia He <justin.he@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Kaly Xin <Kaly.Xin@arm.com>
+In-Reply-To: <159297332630.1304143.237026690015653759.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
+Message-ID-Hash: BWLMNON67GLLODZA3BH2DZMLXGDKDNQS
+X-Message-ID-Hash: BWLMNON67GLLODZA3BH2DZMLXGDKDNQS
+X-MailFrom: dave.jiang@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: David Howells <dhowells@redhat.com>, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Y4BHIKSHDGTPNQBK45ZBL3RPVI7PHC2Q/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BWLMNON67GLLODZA3BH2DZMLXGDKDNQS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 07, 2020 at 02:26:08PM +0200, David Hildenbrand wrote:
-> On 07.07.20 14:13, Mike Rapoport wrote:
-> > On Tue, Jul 07, 2020 at 01:54:54PM +0200, Michal Hocko wrote:
-> >> On Tue 07-07-20 13:59:15, Jia He wrote:
-> >>> This exports memory_add_physaddr_to_nid() for module driver to use.
-> >>>
-> >>> memory_add_physaddr_to_nid() is a fallback option to get the nid in case
-> >>> NUMA_NO_NID is detected.
-> >>>
-> >>> Suggested-by: David Hildenbrand <david@redhat.com>
-> >>> Signed-off-by: Jia He <justin.he@arm.com>
-> >>> ---
-> >>>  arch/arm64/mm/numa.c | 5 +++--
-> >>>  1 file changed, 3 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-> >>> index aafcee3e3f7e..7eeb31740248 100644
-> >>> --- a/arch/arm64/mm/numa.c
-> >>> +++ b/arch/arm64/mm/numa.c
-> >>> @@ -464,10 +464,11 @@ void __init arm64_numa_init(void)
-> >>>  
-> >>>  /*
-> >>>   * We hope that we will be hotplugging memory on nodes we already know about,
-> >>> - * such that acpi_get_node() succeeds and we never fall back to this...
-> >>> + * such that acpi_get_node() succeeds. But when SRAT is not present, the node
-> >>> + * id may be probed as NUMA_NO_NODE by acpi, Here provide a fallback option.
-> >>>   */
-> >>>  int memory_add_physaddr_to_nid(u64 addr)
-> >>>  {
-> >>> -	pr_warn("Unknown node for memory at 0x%llx, assuming node 0\n", addr);
-> >>>  	return 0;
-> >>>  }
-> >>> +EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-> >>
-> >> Does it make sense to export a noop function? Wouldn't make more sense
-> >> to simply make it static inline somewhere in a header? I haven't checked
-> >> whether there is an easy way to do that sanely bu this just hit my eyes.
-> > 
-> > We'll need to either add a CONFIG_ option or arch specific callback to
-> > make both non-empty (x86, powerpc, ia64) and empty (arm64, sh)
-> > implementations coexist ...
-> 
-> Note: I have a similar dummy (return 0) patch for s390x lying around here.
 
-Then we'll call it a tie - 3:3 ;-)
- 
-> -- 
-> Thanks,
-> 
-> David / dhildenb
-> 
 
--- 
-Sincerely yours,
-Mike.
+On 6/23/2020 9:35 PM, Dan Williams wrote:
+> As of commit 8c0637e950d6 ("keys: Make the KEY_NEED_* perms an enum rather
+> than a mask") lookup_user_key() needs an explicit declaration of what it
+> wants to do with the key. Add KEY_NEED_SEARCH to fix a warning with the
+> below signature, and fixes the inability to retrieve a key.
+> 
+>      WARNING: CPU: 15 PID: 6276 at security/keys/permission.c:35 key_task_permission+0xd3/0x140
+>      [..]
+>      RIP: 0010:key_task_permission+0xd3/0x140
+>      [..]
+>      Call Trace:
+>       lookup_user_key+0xeb/0x6b0
+>       ? vsscanf+0x3df/0x840
+>       ? key_validate+0x50/0x50
+>       ? key_default_cmp+0x20/0x20
+>       nvdimm_get_user_key_payload.part.0+0x21/0x110 [libnvdimm]
+>       nvdimm_security_store+0x67d/0xb20 [libnvdimm]
+>       security_store+0x67/0x1a0 [libnvdimm]
+>       kernfs_fop_write+0xcf/0x1c0
+>       vfs_write+0xde/0x1d0
+>       ksys_write+0x68/0xe0
+>       do_syscall_64+0x5c/0xa0
+>       entry_SYSCALL_64_after_hwframe+0x49/0xb3
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Suggested-by: David Howells <dhowells@redhat.com>
+> Fixes: 8c0637e950d6 ("keys: Make the KEY_NEED_* perms an enum rather than a mask")
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+
+> ---
+>   drivers/nvdimm/security.c |    2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
+> index 89b85970912d..4cef69bd3c1b 100644
+> --- a/drivers/nvdimm/security.c
+> +++ b/drivers/nvdimm/security.c
+> @@ -95,7 +95,7 @@ static struct key *nvdimm_lookup_user_key(struct nvdimm *nvdimm,
+>   	struct encrypted_key_payload *epayload;
+>   	struct device *dev = &nvdimm->dev;
+>   
+> -	keyref = lookup_user_key(id, 0, 0);
+> +	keyref = lookup_user_key(id, 0, KEY_NEED_SEARCH);
+>   	if (IS_ERR(keyref))
+>   		return NULL;
+>   
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
