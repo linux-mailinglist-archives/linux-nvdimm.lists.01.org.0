@@ -1,44 +1,44 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993FB216616
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 07:59:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6682216617
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 07:59:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 700881108DED0;
-	Mon,  6 Jul 2020 22:59:45 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 860D21108DED3;
+	Mon,  6 Jul 2020 22:59:50 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=justin.he@arm.com; receiver=<UNKNOWN> 
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by ml01.01.org (Postfix) with ESMTP id EF5601108E904
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 22:59:42 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 4BB171108E903
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 22:59:48 -0700 (PDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6489531B;
-	Mon,  6 Jul 2020 22:59:42 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF5EF1045;
+	Mon,  6 Jul 2020 22:59:47 -0700 (PDT)
 Received: from localhost.localdomain (entos-thunderx2-02.shanghai.arm.com [10.169.212.213])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B5C823F68F;
-	Mon,  6 Jul 2020 22:59:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id E28C53F68F;
+	Mon,  6 Jul 2020 22:59:42 -0700 (PDT)
 From: Jia He <justin.he@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	Dan Williams <dan.j.williams@intel.com>,
 	Vishal Verma <vishal.l.verma@intel.com>,
 	Dave Jiang <dave.jiang@intel.com>
-Subject: [RFC PATCH v2 2/3] device-dax: use fallback nid when numa_node is invalid
-Date: Tue,  7 Jul 2020 13:59:16 +0800
-Message-Id: <20200707055917.143653-3-justin.he@arm.com>
+Subject: [PATCH v2 3/3] mm/memory_hotplug: fix unpaired mem_hotplug_begin/done
+Date: Tue,  7 Jul 2020 13:59:17 +0800
+Message-Id: <20200707055917.143653-4-justin.he@arm.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200707055917.143653-1-justin.he@arm.com>
 References: <20200707055917.143653-1-justin.he@arm.com>
-Message-ID-Hash: K5NDMHU2R567JOGYEJ3XRLETNA4JECOS
-X-Message-ID-Hash: K5NDMHU2R567JOGYEJ3XRLETNA4JECOS
+Message-ID-Hash: JKGTDH64PXMUHFCXUJGSRYJKUBVWJNSN
+X-Message-ID-Hash: JKGTDH64PXMUHFCXUJGSRYJKUBVWJNSN
 X-MailFrom: justin.he@arm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@linux.ibm.com>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Kaly Xin <Kaly.Xin@arm.com>, Jia He <justin.he@arm.com>
+CC: Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@linux.ibm.com>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, Kaly Xin <Kaly.Xin@arm.com>, Jia He <justin.he@arm.com>, stable@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K5NDMHU2R567JOGYEJ3XRLETNA4JECOS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JKGTDH64PXMUHFCXUJGSRYJKUBVWJNSN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,82 +48,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Previously, numa_off is set unconditionally at the end of dummy_numa_init(),
-even with a fake numa node. Then ACPI detects node id as NUMA_NO_NODE(-1) in
-acpi_map_pxm_to_node() because it regards numa_off as turning off the numa
-node. Hence dev_dax->target_node is NUMA_NO_NODE on arm64 with fake numa.
+When check_memblock_offlined_cb() returns failed rc(e.g. the memblock is
+online at that time), mem_hotplug_begin/done is unpaired in such case.
 
-Without this patch, pmem can't be probed as a RAM device on arm64 if SRAT table
-isn't present:
-$ndctl create-namespace -fe namespace0.0 --mode=devdax --map=dev -s 1g -a 64K
-kmem dax0.0: rejecting DAX region [mem 0x240400000-0x2bfffffff] with invalid node: -1
-kmem: probe of dax0.0 failed with error -22
+Therefore a warning:
+ Call Trace:
+  percpu_up_write+0x33/0x40
+  try_remove_memory+0x66/0x120
+  ? _cond_resched+0x19/0x30
+  remove_memory+0x2b/0x40
+  dev_dax_kmem_remove+0x36/0x72 [kmem]
+  device_release_driver_internal+0xf0/0x1c0
+  device_release_driver+0x12/0x20
+  bus_remove_device+0xe1/0x150
+  device_del+0x17b/0x3e0
+  unregister_dev_dax+0x29/0x60
+  devm_action_release+0x15/0x20
+  release_nodes+0x19a/0x1e0
+  devres_release_all+0x3f/0x50
+  device_release_driver_internal+0x100/0x1c0
+  driver_detach+0x4c/0x8f
+  bus_remove_driver+0x5c/0xd0
+  driver_unregister+0x31/0x50
+  dax_pmem_exit+0x10/0xfe0 [dax_pmem]
 
-This fixes it by using fallback memory_add_physaddr_to_nid() as nid.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
+Fixes: f1037ec0cc8a ("mm/memory_hotplug: fix remove_memory() lockdep splat")
+Cc: stable@vger.kernel.org # v5.6+
 Signed-off-by: Jia He <justin.he@arm.com>
 ---
-I noticed that on powerpc memory_add_physaddr_to_nid is not exported for module
-driver. Set it to RFC due to this concern.
+ mm/memory_hotplug.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
- drivers/dax/kmem.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 275aa5f87399..68e693ca6d59 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -28,20 +28,22 @@ int dev_dax_kmem_probe(struct device *dev)
- 	resource_size_t kmem_end;
- 	struct resource *new_res;
- 	const char *new_res_name;
--	int numa_node;
-+	int numa_node, new_node;
- 	int rc;
- 
- 	/*
- 	 * Ensure good NUMA information for the persistent memory.
--	 * Without this check, there is a risk that slow memory
--	 * could be mixed in a node with faster memory, causing
--	 * unavoidable performance issues.
-+	 * Without this check, there is a risk but not fatal that slow
-+	 * memory could be mixed in a node with faster memory, causing
-+	 * unavoidable performance issues. Furthermore, fallback node
-+	 * id can be used when numa_node is invalid.
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index da374cd3d45b..76c75a599da3 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1742,7 +1742,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
  	 */
- 	numa_node = dev_dax->target_node;
- 	if (numa_node < 0) {
--		dev_warn(dev, "rejecting DAX region %pR with invalid node: %d\n",
--			 res, numa_node);
--		return -EINVAL;
-+		new_node = memory_add_physaddr_to_nid(kmem_start);
-+		dev_info(dev, "changing nid from %d to %d for DAX region %pR\n",
-+			numa_node, new_node, res);
-+		numa_node = new_node;
- 	}
+ 	rc = walk_memory_blocks(start, size, NULL, check_memblock_offlined_cb);
+ 	if (rc)
+-		goto done;
++		return rc;
  
- 	/* Hotplug starting at the beginning of the next block: */
-@@ -100,6 +102,7 @@ static int dev_dax_kmem_remove(struct device *dev)
- 	resource_size_t kmem_start = res->start;
- 	resource_size_t kmem_size = resource_size(res);
- 	const char *res_name = res->name;
-+	int numa_node = dev_dax->target_node;
- 	int rc;
+ 	/* remove memmap entry */
+ 	firmware_map_remove(start, start + size, "System RAM");
+@@ -1766,9 +1766,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
  
- 	/*
-@@ -108,7 +111,10 @@ static int dev_dax_kmem_remove(struct device *dev)
- 	 * there is no way to hotremove this memory until reboot because device
- 	 * unbind will succeed even if we return failure.
- 	 */
--	rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-+	if (numa_node < 0)
-+		numa_node = memory_add_physaddr_to_nid(kmem_start);
-+
-+	rc = remove_memory(numa_node, kmem_start, kmem_size);
- 	if (rc) {
- 		any_hotremove_failed = true;
- 		dev_err(dev,
+ 	try_offline_node(nid);
+ 
+-done:
+ 	mem_hotplug_done();
+-	return rc;
++	return 0;
+ }
+ 
+ /**
 -- 
 2.17.1
 _______________________________________________
