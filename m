@@ -1,52 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CA2216435
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:57:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2FC216436
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  7 Jul 2020 04:57:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EE5D31108DEAC;
-	Mon,  6 Jul 2020 19:57:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	by ml01.01.org (Postfix) with ESMTP id 11D551108DEB2;
+	Mon,  6 Jul 2020 19:57:08 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0621D1106818F
-	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:57:01 -0700 (PDT)
-IronPort-SDR: Y1qvjMbNxB4ALmRpF7bi0m4iT3uMepcD6owJEAJA4oRaFnugtgPJvGssEUJ7qt5gIgaSN4W6w1
- 7RwkjFqXx75g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="209052898"
+	by ml01.01.org (Postfix) with ESMTPS id 526101108DEB2
+	for <linux-nvdimm@lists.01.org>; Mon,  6 Jul 2020 19:57:06 -0700 (PDT)
+IronPort-SDR: JFYQtqMwTp22kpItk46d5YxqgCnJNGF1WcPqejZa7Vcr6P0YPpeC6n+tR+NsdkmXo9QpgLiL4M
+ 3VQBDIGyjbnw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9674"; a="127124230"
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="209052898"
+   d="scan'208";a="127124230"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:00 -0700
-IronPort-SDR: LdvotwAnNNcNLcK61yx9DGwbeefYgPneEPCZhmDAcpws+c3jJftou+cM8whO/GhxA8W3qzK5ZK
- nvyOze1w7GAg==
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:06 -0700
+IronPort-SDR: Sh2tWv9AE5czw4uBKsB19ZQheCB4FrD4JpXqXXZHc4InLoPZJcE1fXdwMTTDP6mrNJaqPbSdmU
+ qz3jgX84vz0Q==
 X-IronPort-AV: E=Sophos;i="5.75,321,1589266800";
-   d="scan'208";a="266701220"
+   d="scan'208";a="315371667"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:00 -0700
-Subject: [ndctl PATCH 05/16] ndctl/dimm: Improve firmware-update failure
- message
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jul 2020 19:57:05 -0700
+Subject: [ndctl PATCH 06/16] ndctl/dimm: Prepare to emit dimm json object
+ after firmware update
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Cc: Dave Jiang <dave.jiang@intel.com>, vishal.l.verma@intel.com
-Date: Mon, 06 Jul 2020 19:40:44 -0700
-Message-ID: <159408964481.2386154.1228959454121163340.stgit@dwillia2-desk3.amr.corp.intel.com>
+Cc: vishal.l.verma@intel.com
+Date: Mon, 06 Jul 2020 19:40:50 -0700
+Message-ID: <159408965016.2386154.1586833845040694311.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159408961822.2386154.888266173771881937.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: VTRYRRWYBI57RQH5I6HUNIQNAYME7CXH
-X-Message-ID-Hash: VTRYRRWYBI57RQH5I6HUNIQNAYME7CXH
+Message-ID-Hash: NHCZYZVW5TYNO5VY2SVWYT2CMY2XPJMI
+X-Message-ID-Hash: NHCZYZVW5TYNO5VY2SVWYT2CMY2XPJMI
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VTRYRRWYBI57RQH5I6HUNIQNAYME7CXH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NHCZYZVW5TYNO5VY2SVWYT2CMY2XPJMI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,268 +55,285 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-If ARS is active while firmware update is attempted the DIMM may fail the
-update. In ndctl reports:
+Move util_dimm_firmware_to_json() internal to util_dimm_to_json().
+Introduce a new UTIL_JSON_FIRMWARE flag to optionally dump firmware info
+when listing the dimm from either 'ndctl list', or after 'ndctl
+update-firmware'.
 
-   FINISH FIRMWARE UPDATE on DIMM nmem0 failed: 0x5
+Move util_dimm_firmware_to_json() out of ndctl/util/json-firmware.c into
+the core util/json.c.
 
-...which is not very helpful. Improve this and other error messages to
-indicate the likely error where possible and make sure error messages are
-consistently emitting the affected dimm.
-
-Cc: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- ndctl/dimm.c |  108 ++++++++++++++++++++++++++++++----------------------------
- 1 file changed, 55 insertions(+), 53 deletions(-)
+ ndctl/Makefile.am          |    1 -
+ ndctl/list.c               |   10 +----
+ ndctl/util/json-firmware.c |   85 --------------------------------------------
+ util/json.c                |   84 +++++++++++++++++++++++++++++++++++++++++++
+ util/json.h                |   17 +++++----
+ 5 files changed, 95 insertions(+), 102 deletions(-)
+ delete mode 100644 ndctl/util/json-firmware.c
 
-diff --git a/ndctl/dimm.c b/ndctl/dimm.c
-index f67f78e6c420..5ecee033cd63 100644
---- a/ndctl/dimm.c
-+++ b/ndctl/dimm.c
-@@ -460,6 +460,7 @@ static int verify_fw_size(struct update_context *uctx)
- static int submit_get_firmware_info(struct ndctl_dimm *dimm,
- 		struct action_context *actx)
- {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	struct update_context *uctx = &actx->update;
- 	struct fw_info *fw = &uctx->dimm_fw;
- 	struct ndctl_cmd *cmd;
-@@ -477,8 +478,7 @@ static int submit_get_firmware_info(struct ndctl_dimm *dimm,
- 	rc = -ENXIO;
- 	status = ndctl_cmd_fw_xlat_firmware_status(cmd);
- 	if (status != FW_SUCCESS) {
--		fprintf(stderr, "GET FIRMWARE INFO on DIMM %s failed: %#x\n",
--				ndctl_dimm_get_devname(dimm), status);
-+		err("%s: failed to retrieve firmware info", devname);
- 		goto out;
- 	}
- 
-@@ -512,6 +512,7 @@ out:
- static int submit_start_firmware_upload(struct ndctl_dimm *dimm,
- 		struct action_context *actx)
- {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	struct update_context *uctx = &actx->update;
- 	struct fw_info *fw = &uctx->dimm_fw;
- 	struct ndctl_cmd *cmd;
-@@ -527,21 +528,18 @@ static int submit_start_firmware_upload(struct ndctl_dimm *dimm,
- 		return rc;
- 
- 	status = ndctl_cmd_fw_xlat_firmware_status(cmd);
-+	if (status == FW_EBUSY) {
-+		err("%s: busy with another firmware update", devname);
-+		return -EBUSY;
-+	}
- 	if (status != FW_SUCCESS) {
--		fprintf(stderr,
--			"START FIRMWARE UPDATE on DIMM %s failed: %#x\n",
--			ndctl_dimm_get_devname(dimm), status);
--		if (status == FW_EBUSY)
--			fprintf(stderr, "Another firmware upload in progress"
--					" or firmware already updated.\n");
-+		err("%s: failed to create start context", devname);
- 		return -ENXIO;
- 	}
- 
- 	fw->context = ndctl_cmd_fw_start_get_context(cmd);
- 	if (fw->context == UINT_MAX) {
--		fprintf(stderr,
--			"Retrieved firmware context invalid on DIMM %s\n",
--			ndctl_dimm_get_devname(dimm));
-+		err("%s: failed to retrieve start context", devname);
- 		return -ENXIO;
- 	}
- 
-@@ -567,16 +565,16 @@ static int get_fw_data_from_file(FILE *file, void *buf, uint32_t len)
- 	return len;
+diff --git a/ndctl/Makefile.am b/ndctl/Makefile.am
+index 49c6c4ab4498..a63b1e0b8a01 100644
+--- a/ndctl/Makefile.am
++++ b/ndctl/Makefile.am
+@@ -25,7 +25,6 @@ ndctl_SOURCES = ndctl.c \
+ 		../util/json.c \
+ 		../util/json.h \
+ 		util/json-smart.c \
+-		util/json-firmware.c \
+ 		util/keys.h \
+ 		inject-error.c \
+ 		inject-smart.c \
+diff --git a/ndctl/list.c b/ndctl/list.c
+index 31fb1b9593a2..1f7cc8ee1deb 100644
+--- a/ndctl/list.c
++++ b/ndctl/list.c
+@@ -59,6 +59,8 @@ static unsigned long listopts_to_flags(void)
+ 		flags |= UTIL_JSON_VERBOSE;
+ 	if (list.capabilities)
+ 		flags |= UTIL_JSON_CAPABILITIES;
++	if (list.firmware)
++		flags |= UTIL_JSON_FIRMWARE;
+ 	return flags;
  }
  
--static int send_firmware(struct ndctl_dimm *dimm,
--		struct action_context *actx)
-+static int send_firmware(struct ndctl_dimm *dimm, struct action_context *actx)
- {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	struct update_context *uctx = &actx->update;
- 	struct fw_info *fw = &uctx->dimm_fw;
-+	uint32_t copied = 0, len, remain;
- 	struct ndctl_cmd *cmd = NULL;
--	ssize_t read;
--	int rc = -ENXIO;
- 	enum ND_FW_STATUS status;
--	uint32_t copied = 0, len, remain;
-+	int rc = -ENXIO;
-+	ssize_t read;
- 	void *buf;
- 
- 	buf = malloc(fw->update_size);
-@@ -596,18 +594,22 @@ static int send_firmware(struct ndctl_dimm *dimm,
- 		cmd = ndctl_dimm_cmd_new_fw_send(uctx->start, copied, read,
- 				buf);
- 		if (!cmd) {
--			rc = -ENXIO;
-+			rc = -ENOMEM;
- 			goto cleanup;
+@@ -367,14 +369,6 @@ static void filter_dimm(struct ndctl_dimm *dimm, struct util_filter_ctx *ctx)
  		}
+ 	}
  
- 		rc = ndctl_cmd_submit(cmd);
--		if (rc < 0)
-+		if (rc < 0) {
-+			err("%s: failed to issue firmware transmit: %d",
-+					devname, rc);
- 			goto cleanup;
-+		}
- 
- 		status = ndctl_cmd_fw_xlat_firmware_status(cmd);
- 		if (status != FW_SUCCESS) {
--			error("SEND FIRMWARE failed: %#x\n", status);
--			rc = -ENXIO;
-+			err("%s: failed to transmit firmware: %d",
-+					devname, status);
-+			rc = -EIO;
- 			goto cleanup;
- 		}
- 
-@@ -627,10 +629,11 @@ cleanup:
- static int submit_finish_firmware(struct ndctl_dimm *dimm,
- 		struct action_context *actx)
- {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	struct update_context *uctx = &actx->update;
+-	if (list.firmware) {
+-		struct json_object *jfirmware;
+-
+-		jfirmware = util_dimm_firmware_to_json(dimm, lfa->flags);
+-		if (jfirmware)
+-			json_object_object_add(jdimm, "firmware", jfirmware);
+-	}
+-
+ 	/*
+ 	 * Without a bus we are collecting dimms anonymously across the
+ 	 * platform.
+diff --git a/ndctl/util/json-firmware.c b/ndctl/util/json-firmware.c
+deleted file mode 100644
+index 9a9db064d851..000000000000
+--- a/ndctl/util/json-firmware.c
++++ /dev/null
+@@ -1,85 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/* Copyright(c) 2018 Intel Corporation. All rights reserved. */
+-#include <limits.h>
+-#include <util/json.h>
+-#include <uuid/uuid.h>
+-#include <json-c/json.h>
+-#include <ndctl/libndctl.h>
+-#include <ccan/array_size/array_size.h>
+-#include <ndctl.h>
+-
+-struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
+-		unsigned long flags)
+-{
+-	struct json_object *jfirmware = json_object_new_object();
+-	struct json_object *jobj;
 -	struct ndctl_cmd *cmd;
 -	int rc;
- 	enum ND_FW_STATUS status;
-+	struct ndctl_cmd *cmd;
-+	int rc = -ENXIO;
- 
- 	cmd = ndctl_dimm_cmd_new_fw_finish(uctx->start);
- 	if (!cmd)
-@@ -641,12 +644,19 @@ static int submit_finish_firmware(struct ndctl_dimm *dimm,
- 		goto out;
- 
- 	status = ndctl_cmd_fw_xlat_firmware_status(cmd);
--	if (status != FW_SUCCESS) {
--		fprintf(stderr,
--			"FINISH FIRMWARE UPDATE on DIMM %s failed: %#x\n",
--			ndctl_dimm_get_devname(dimm), status);
--		rc = -ENXIO;
+-	uint64_t run, next;
+-
+-	if (!jfirmware)
+-		return NULL;
+-
+-	cmd = ndctl_dimm_cmd_new_fw_get_info(dimm);
+-	if (!cmd)
+-		goto err;
+-
+-	rc = ndctl_cmd_submit(cmd);
+-	if ((rc < 0) || ndctl_cmd_fw_xlat_firmware_status(cmd) != FW_SUCCESS) {
+-		jobj = util_json_object_hex(-1, flags);
+-		if (jobj)
+-			json_object_object_add(jfirmware, "current_version",
+-					jobj);
 -		goto out;
-+	switch (status) {
-+	case FW_SUCCESS:
-+		rc = 0;
-+		break;
-+	case FW_ERETRY:
-+		err("%s: device busy with other operation (ARS?)", devname);
-+		break;
-+	case FW_EBADFW:
-+		err("%s: firmware image rejected", devname);
-+		break;
-+	default:
-+		err("%s: update failed: error code: %d", devname, status);
-+		break;
- 	}
+-	}
+-
+-	run = ndctl_cmd_fw_info_get_run_version(cmd);
+-	if (run == ULLONG_MAX) {
+-		jobj = util_json_object_hex(-1, flags);
+-		if (jobj)
+-			json_object_object_add(jfirmware, "current_version",
+-					jobj);
+-		goto out;
+-	}
+-
+-	jobj = util_json_object_hex(run, flags);
+-	if (jobj)
+-		json_object_object_add(jfirmware, "current_version", jobj);
+-
+-	rc = ndctl_dimm_fw_update_supported(dimm);
+-	jobj = json_object_new_boolean(rc == 0);
+-	if (jobj)
+-		json_object_object_add(jfirmware, "can_update", jobj);
+-
+-	next = ndctl_cmd_fw_info_get_updated_version(cmd);
+-	if (next == ULLONG_MAX) {
+-		jobj = util_json_object_hex(-1, flags);
+-		if (jobj)
+-			json_object_object_add(jfirmware, "next_version",
+-					jobj);
+-		goto out;
+-	}
+-
+-	if (next != 0) {
+-		jobj = util_json_object_hex(next, flags);
+-		if (jobj)
+-			json_object_object_add(jfirmware,
+-					"next_version", jobj);
+-
+-		jobj = json_object_new_boolean(true);
+-		if (jobj)
+-			json_object_object_add(jfirmware,
+-					"need_powercycle", jobj);
+-	}
+-
+-	ndctl_cmd_unref(cmd);
+-	return jfirmware;
+-
+-err:
+-	json_object_put(jfirmware);
+-	jfirmware = NULL;
+-out:
+-	if (cmd)
+-		ndctl_cmd_unref(cmd);
+-	return jfirmware;
+-}
+diff --git a/util/json.c b/util/json.c
+index 21ab25674624..59a3d07cc4a6 100644
+--- a/util/json.c
++++ b/util/json.c
+@@ -156,6 +156,82 @@ struct json_object *util_bus_to_json(struct ndctl_bus *bus)
+ 	return NULL;
+ }
  
- out:
-@@ -687,13 +697,14 @@ out:
- static int query_fw_finish_status(struct ndctl_dimm *dimm,
- 		struct action_context *actx)
- {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	struct update_context *uctx = &actx->update;
- 	struct fw_info *fw = &uctx->dimm_fw;
--	struct ndctl_cmd *cmd;
--	int rc;
--	enum ND_FW_STATUS status;
- 	struct timespec now, before, after;
-+	enum ND_FW_STATUS status;
++struct json_object *util_dimm_firmware_to_json(struct ndctl_dimm *dimm,
++		unsigned long flags)
++{
++	struct json_object *jfirmware = json_object_new_object();
++	struct json_object *jobj;
 +	struct ndctl_cmd *cmd;
- 	uint64_t ver;
 +	int rc;
- 
- 	cmd = ndctl_dimm_cmd_new_fw_finish_query(uctx->start);
- 	if (!cmd)
-@@ -747,8 +758,8 @@ again:
- 	case FW_SUCCESS:
- 		ver = ndctl_cmd_fw_fquery_get_fw_rev(cmd);
- 		if (ver == 0) {
--			fprintf(stderr, "No firmware updated.\n");
--			rc = -ENXIO;
-+			err("%s: new firmware not found after update", devname);
-+			rc = -EIO;
- 			goto unref;
- 		}
- 
-@@ -759,25 +770,16 @@ again:
- 		rc = 0;
- 		break;
- 	case FW_EBADFW:
--		fprintf(stderr,
--			"Firmware failed to verify by DIMM %s.\n",
--			ndctl_dimm_get_devname(dimm));
--		/* FALLTHROUGH */
--	case FW_EINVAL_CTX:
--	case FW_ESEQUENCE:
--		rc = -ENXIO;
-+		err("%s: firmware verification failure", devname);
-+		rc = -EINVAL;
- 		break;
- 	case FW_ENORES:
--		fprintf(stderr,
--			"Firmware update sequence timed out: %s\n",
--			ndctl_dimm_get_devname(dimm));
-+		err("%s: timeout awaiting update", devname);
- 		rc = -ETIMEDOUT;
- 		break;
- 	default:
--		fprintf(stderr,
--			"Unknown update status: %#x on DIMM %s\n",
--			status, ndctl_dimm_get_devname(dimm));
--		rc = -EINVAL;
-+		err("%s: unhandled error %d", devname, status);
-+		rc = -EIO;
- 		break;
- 	}
- 
-@@ -789,6 +791,7 @@ unref:
- static int update_firmware(struct ndctl_dimm *dimm,
- 		struct action_context *actx)
++	uint64_t run, next;
++
++	if (!jfirmware)
++		return NULL;
++
++	cmd = ndctl_dimm_cmd_new_fw_get_info(dimm);
++	if (!cmd)
++		goto err;
++
++	rc = ndctl_cmd_submit(cmd);
++	if ((rc < 0) || ndctl_cmd_fw_xlat_firmware_status(cmd) != FW_SUCCESS) {
++		jobj = util_json_object_hex(-1, flags);
++		if (jobj)
++			json_object_object_add(jfirmware, "current_version",
++					jobj);
++		goto out;
++	}
++
++	run = ndctl_cmd_fw_info_get_run_version(cmd);
++	if (run == ULLONG_MAX) {
++		jobj = util_json_object_hex(-1, flags);
++		if (jobj)
++			json_object_object_add(jfirmware, "current_version",
++					jobj);
++		goto out;
++	}
++
++	jobj = util_json_object_hex(run, flags);
++	if (jobj)
++		json_object_object_add(jfirmware, "current_version", jobj);
++
++	rc = ndctl_dimm_fw_update_supported(dimm);
++	jobj = json_object_new_boolean(rc == 0);
++	if (jobj)
++		json_object_object_add(jfirmware, "can_update", jobj);
++
++	next = ndctl_cmd_fw_info_get_updated_version(cmd);
++	if (next == ULLONG_MAX) {
++		jobj = util_json_object_hex(-1, flags);
++		if (jobj)
++			json_object_object_add(jfirmware, "next_version",
++					jobj);
++		goto out;
++	}
++
++	if (next != 0) {
++		jobj = util_json_object_hex(next, flags);
++		if (jobj)
++			json_object_object_add(jfirmware,
++					"next_version", jobj);
++
++		jobj = json_object_new_boolean(true);
++		if (jobj)
++			json_object_object_add(jfirmware,
++					"need_powercycle", jobj);
++	}
++
++	ndctl_cmd_unref(cmd);
++	return jfirmware;
++
++err:
++	json_object_put(jfirmware);
++	jfirmware = NULL;
++out:
++	if (cmd)
++		ndctl_cmd_unref(cmd);
++	return jfirmware;
++}
++
+ struct json_object *util_dimm_to_json(struct ndctl_dimm *dimm,
+ 		unsigned long flags)
  {
-+	const char *devname = ndctl_dimm_get_devname(dimm);
- 	int rc;
- 
- 	rc = submit_get_firmware_info(dimm, actx);
-@@ -800,15 +803,14 @@ static int update_firmware(struct ndctl_dimm *dimm,
- 		return rc;
- 
- 	if (param.verbose)
--		fprintf(stderr, "Uploading firmware to DIMM %s.\n",
--				ndctl_dimm_get_devname(dimm));
-+		fprintf(stderr, "%s: uploading firmware\n", devname);
- 
- 	rc = send_firmware(dimm, actx);
- 	if (rc < 0) {
--		error("Firmware send failed. Aborting!\n");
-+		err("%s: firmware send failed", devname);
- 		rc = submit_abort_firmware(dimm, actx);
- 		if (rc < 0)
--			error("Aborting update sequence failed.\n");
-+			err("%s: abort failed", devname);
- 		return rc;
+@@ -266,6 +342,14 @@ struct json_object *util_dimm_to_json(struct ndctl_dimm *dimm,
+ 			json_object_object_add(jdimm, "security_frozen", jobj);
  	}
  
-@@ -820,10 +822,10 @@ static int update_firmware(struct ndctl_dimm *dimm,
++	if (flags & UTIL_JSON_FIRMWARE) {
++		struct json_object *jfirmware;
++
++		jfirmware = util_dimm_firmware_to_json(dimm, flags);
++		if (jfirmware)
++			json_object_object_add(jdimm, "firmware", jfirmware);
++	}
++
+ 	return jdimm;
+  err:
+ 	json_object_put(jdimm);
+diff --git a/util/json.h b/util/json.h
+index 6d39d3aa4693..fc91a8db034f 100644
+--- a/util/json.h
++++ b/util/json.h
+@@ -18,14 +18,15 @@
+ #include <ccan/short_types/short_types.h>
  
- 	rc = submit_finish_firmware(dimm, actx);
- 	if (rc < 0) {
--		fprintf(stderr, "Unable to end update sequence.\n");
-+		err("%s: failed to finish update sequence", devname);
- 		rc = submit_abort_firmware(dimm, actx);
- 		if (rc < 0)
--			fprintf(stderr, "Aborting update sequence failed.\n");
-+			err("%s: failed to abort update", devname);
- 		return rc;
- 	}
+ enum util_json_flags {
+-	UTIL_JSON_IDLE = (1 << 0),
+-	UTIL_JSON_MEDIA_ERRORS = (1 << 1),
+-	UTIL_JSON_DAX = (1 << 2),
+-	UTIL_JSON_DAX_DEVS = (1 << 3),
+-	UTIL_JSON_HUMAN = (1 << 4),
+-	UTIL_JSON_VERBOSE = (1 << 5),
+-	UTIL_JSON_CAPABILITIES = (1 << 6),
+-	UTIL_JSON_CONFIGURED = (1 << 7),
++	UTIL_JSON_IDLE		= (1 << 0),
++	UTIL_JSON_MEDIA_ERRORS	= (1 << 1),
++	UTIL_JSON_DAX		= (1 << 2),
++	UTIL_JSON_DAX_DEVS	= (1 << 3),
++	UTIL_JSON_HUMAN		= (1 << 4),
++	UTIL_JSON_VERBOSE	= (1 << 5),
++	UTIL_JSON_CAPABILITIES	= (1 << 6),
++	UTIL_JSON_CONFIGURED	= (1 << 7),
++	UTIL_JSON_FIRMWARE	= (1 << 8),
+ };
  
+ struct json_object;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
