@@ -2,65 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50480217F3D
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 07:48:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F3A217F45
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 07:55:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4E552110BA96F;
-	Tue,  7 Jul 2020 22:48:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id E0658110BA970;
+	Tue,  7 Jul 2020 22:55:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0EB81110BA96D
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 22:48:32 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id dm19so34351547edb.13
-        for <linux-nvdimm@lists.01.org>; Tue, 07 Jul 2020 22:48:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sH1vNvX+feajcnCsvdAreoIiJv5hsHTyp2OTCZ6kbJY=;
-        b=C/0f3tzmRBBx7Vg+YwRX/xLuDoujMD5WD2U9zm6TwnXK7bz3Y0scDy3NrKlGxrt4dt
-         CPSXnq85gbf+oan7E6kU8D2KexWrl9DaA/91tbHPSK7w3EMdaaw+idj35XP+k+8JvzwM
-         THBkm3zxP/Pir+7MDn2HW5LgkC9NyWTAGyINlouyVCJHV0dthE23lDDwsrbqQLCZ0PW1
-         nm/byJb3l0XVvKTqmhMFI7rGXOPFYblzFMMYmzkw+/kpyViR3OopzYYJQgc6pMX6R3/v
-         WV5R8XuBqWcrJmqDyOja9AzUxIYm7Skco2oBtv08ExW/YW0HdGSgG4fnpAX9RFpENabo
-         RFqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sH1vNvX+feajcnCsvdAreoIiJv5hsHTyp2OTCZ6kbJY=;
-        b=PRtCIEJhfLNiFXdkQ2lG6tCUPjze+qmtmOT9kwGlHFLEy+hv6aDVnX8Xn/CLA8Ixg/
-         ycPgF0bUnZq4C2R1spsfu5toBHTYBAJ9jQbT+FeqpG1usxdorv8HMVWxRv2u0BnpfGek
-         5JvH4hTOkX+IPNzYwbpO8lQAMe5pJ4SyPnw4D/cT0Pn/ynyOjSTDu31hoCiRAqwsVFdF
-         v5RVk2lgQe6qPeJoSNm1etgrDbdtfZmWKevbwNBKadGrQdGcbPCnuasQGd/415jqANN8
-         hqDQ1BdrDVw6RfUBWWxc2ACpPVbBMlXpG+OjX28sYu/pv3osI9nsoF51StVixQg/qrmY
-         Ygvw==
-X-Gm-Message-State: AOAM531miKHfVeaKF62lGtppwFg6U+NQAegLIksusHjxF8WZWA2zuUoO
-	ucegESkIPmuEcCem8AEwCTL+3JpkidX+3QSOXK3hrg==
-X-Google-Smtp-Source: ABdhPJx46o9+pkuePT9sA7zg+ZJfHTWmUfr0lvtngh+DBcpmZeXU7z8whxlFETGvWd7DkVFim7svR/m0UBFwiuCyhME=
-X-Received: by 2002:aa7:c24d:: with SMTP id y13mr68029408edo.123.1594187311235;
- Tue, 07 Jul 2020 22:48:31 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 45C40110BA96F
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 22:55:01 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id DFD86ABE4;
+	Wed,  8 Jul 2020 05:54:59 +0000 (UTC)
+From: Coly Li <colyli@suse.de>
+To: dan.j.williams@intel.com,
+	linux-nvdimm@lists.01.org
+Subject: [PATCH v2] dax: print error message by pr_info() in __generic_fsdax_supported()
+Date: Wed,  8 Jul 2020 13:54:51 +0800
+Message-Id: <20200708055451.15852-1-colyli@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200707055917.143653-1-justin.he@arm.com> <20200707055917.143653-2-justin.he@arm.com>
- <20200707115454.GN5913@dhcp22.suse.cz> <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
- <CAPcyv4ipu4qwKhk4pzJ8nZB2sp+=AndahS8eCgUvFvVP6dEkeA@mail.gmail.com> <20200708053239.GC386073@linux.ibm.com>
-In-Reply-To: <20200708053239.GC386073@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 7 Jul 2020 22:48:19 -0700
-Message-ID: <CAPcyv4i2gnrugO5n715WsDoj+gxV9Mjt-49zNnv+ROMLYy79LQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as EXPORT_SYMBOL_GPL
-To: Mike Rapoport <rppt@linux.ibm.com>
-Message-ID-Hash: 3NDYB67VL3IWPHEXN7DB2OFW6ZGN4FMV
-X-Message-ID-Hash: 3NDYB67VL3IWPHEXN7DB2OFW6ZGN4FMV
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: KKFHL5RLTA5JCZSREATMNCGURRFWVD3N
+X-Message-ID-Hash: KKFHL5RLTA5JCZSREATMNCGURRFWVD3N
+X-MailFrom: colyli@suse.de
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Justin He <Justin.He@arm.com>, Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
+CC: Coly Li <colyli@suse.de>, Michal Suchanek <msuchanek@suse.com>, Jan Kara <jack@suse.com>, Anthony Iliopoulos <ailiopoulos@suse.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3NDYB67VL3IWPHEXN7DB2OFW6ZGN4FMV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KKFHL5RLTA5JCZSREATMNCGURRFWVD3N/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,103 +42,114 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 7, 2020 at 10:33 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
->
-> On Tue, Jul 07, 2020 at 08:56:36PM -0700, Dan Williams wrote:
-> > On Tue, Jul 7, 2020 at 7:20 PM Justin He <Justin.He@arm.com> wrote:
-> > >
-> > > Hi Michal and David
-> > >
-> > > > -----Original Message-----
-> > > > From: Michal Hocko <mhocko@kernel.org>
-> > > > Sent: Tuesday, July 7, 2020 7:55 PM
-> > > > To: Justin He <Justin.He@arm.com>
-> > > > Cc: Catalin Marinas <Catalin.Marinas@arm.com>; Will Deacon
-> > > > <will@kernel.org>; Dan Williams <dan.j.williams@intel.com>; Vishal Verma
-> > > > <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Andrew
-> > > > Morton <akpm@linux-foundation.org>; Mike Rapoport <rppt@linux.ibm.com>;
-> > > > Baoquan He <bhe@redhat.com>; Chuhong Yuan <hslester96@gmail.com>; linux-
-> > > > arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
-> > > > mm@kvack.org; linux-nvdimm@lists.01.org; Kaly Xin <Kaly.Xin@arm.com>
-> > > > Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid
-> > > > as EXPORT_SYMBOL_GPL
-> > > >
-> > > > On Tue 07-07-20 13:59:15, Jia He wrote:
-> > > > > This exports memory_add_physaddr_to_nid() for module driver to use.
-> > > > >
-> > > > > memory_add_physaddr_to_nid() is a fallback option to get the nid in case
-> > > > > NUMA_NO_NID is detected.
-> > > > >
-> > > > > Suggested-by: David Hildenbrand <david@redhat.com>
-> > > > > Signed-off-by: Jia He <justin.he@arm.com>
-> > > > > ---
-> > > > >  arch/arm64/mm/numa.c | 5 +++--
-> > > > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > > >
-> > > > > diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-> > > > > index aafcee3e3f7e..7eeb31740248 100644
-> > > > > --- a/arch/arm64/mm/numa.c
-> > > > > +++ b/arch/arm64/mm/numa.c
-> > > > > @@ -464,10 +464,11 @@ void __init arm64_numa_init(void)
-> > > > >
-> > > > >  /*
-> > > > >   * We hope that we will be hotplugging memory on nodes we already know
-> > > > about,
-> > > > > - * such that acpi_get_node() succeeds and we never fall back to this...
-> > > > > + * such that acpi_get_node() succeeds. But when SRAT is not present,
-> > > > the node
-> > > > > + * id may be probed as NUMA_NO_NODE by acpi, Here provide a fallback
-> > > > option.
-> > > > >   */
-> > > > >  int memory_add_physaddr_to_nid(u64 addr)
-> > > > >  {
-> > > > > -   pr_warn("Unknown node for memory at 0x%llx, assuming node 0\n",
-> > > > addr);
-> > > > >     return 0;
-> > > > >  }
-> > > > > +EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-> > > >
-> > > > Does it make sense to export a noop function? Wouldn't make more sense
-> > > > to simply make it static inline somewhere in a header? I haven't checked
-> > > > whether there is an easy way to do that sanely bu this just hit my eyes.
-> > >
-> > > Okay, I can make a change in memory_hotplug.h, sth like:
-> > > --- a/include/linux/memory_hotplug.h
-> > > +++ b/include/linux/memory_hotplug.h
-> > > @@ -149,13 +149,13 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
-> > >               struct mhp_params *params);
-> > >  #endif /* ARCH_HAS_ADD_PAGES */
-> > >
-> > > -#ifdef CONFIG_NUMA
-> > > -extern int memory_add_physaddr_to_nid(u64 start);
-> > > -#else
-> > > +#if !defined(CONFIG_NUMA) || !defined(memory_add_physaddr_to_nid)
-> > >  static inline int memory_add_physaddr_to_nid(u64 start)
-> > >  {
-> > >         return 0;
-> > >  }
-> > > +#else
-> > > +extern int memory_add_physaddr_to_nid(u64 start);
-> > >  #endif
-> > >
-> > > And then check the memory_add_physaddr_to_nid() helper on all arches,
-> > > if it is noop(return 0), I can simply remove it.
-> > > if it is not noop, after the helper,
-> > > #define memory_add_physaddr_to_nid
-> > >
-> > > What do you think of this proposal?
-> >
-> > Especially for architectures that use memblock info for numa info
-> > (which seems to be everyone except x86) why not implement a generic
-> > memory_add_physaddr_to_nid() that does:
->
-> That would be only arm64.
->
+In struct dax_operations, the callback routine dax_supported() returns
+a bool type result. For false return value, the caller has no idea
+whether the device does not support dax at all, or it is just some mis-
+configuration issue.
 
-Darn, I saw ARCH_KEEP_MEMBLOCK and had delusions of grandeur that it
-could solve my numa api woes. At least for x86 the problem is already
-solved with reserved numa_meminfo, but now I'm trying to write generic
-drivers that use those apis and finding these gaps on other archs.
+An example is formatting an Ext4 file system on pmem device on top of
+a NVDIMM namespace by,
+ # mkfs.ext4 /dev/pmem0
+If the fs block size does not match kernel space memory page size (which
+is possible on non-x86 platform), mount this Ext4 file system will fail,
+  # mount -o dax /dev/pmem0 /mnt
+  mount: /mnt: wrong fs type, bad option, bad superblock on /dev/pmem0,
+  missing codepage or helper program, or other error.
+And from the dmesg output there is only the following information,
+  [  307.853148] EXT4-fs (pmem0): DAX unsupported by block device.
+
+The above information is quite confusing. Because definiately the pmem0
+device supports dax operation, and the super block is consistent as how
+it was created by mkfs.ext4.
+
+Indeed the failure is from __generic_fsdax_supported() by the following
+code piece,
+        if (blocksize != PAGE_SIZE) {
+               pr_debug("%s: error: unsupported blocksize for dax\n",
+                                bdevname(bdev, buf));
+                return false;
+        }
+It is because the Ext4 block size is 4KB and kernel page size is 8KB or
+16KB.
+
+It is not simple to make dax_supported() from struct dax_operations
+or __generic_fsdax_supported() to return exact failure type right now.
+So the simplest fix is to use pr_info() to print all the error messages
+inside __generic_fsdax_supported(). Then users may find informative clue
+from the kernel message at least.
+
+Message printed by pr_debug() is very easy to be ignored by users. This
+patch prints error message by pr_info() in __generic_fsdax_supported(),
+when then mount fails, following lines can be found from dmesg output,
+ [ 2705.500885] pmem0: error: unsupported blocksize for dax
+ [ 2705.500888] EXT4-fs (pmem0): DAX unsupported by block device.
+Now the users may have idea the mount failure is from pmem driver for
+unsupported block size.
+
+Reported-by: Michal Suchanek <msuchanek@suse.com>
+Suggested-by: Jan Kara <jack@suse.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Jan Kara <jack@suse.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Anthony Iliopoulos <ailiopoulos@suse.com>
+---
+Changelog:
+v2: Add reviewed-by from Jan Kara
+v1: initial version.
+
+ drivers/dax/super.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 8e32345be0f7..de0d02ec0347 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -80,14 +80,14 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+ 	int err, id;
+ 
+ 	if (blocksize != PAGE_SIZE) {
+-		pr_debug("%s: error: unsupported blocksize for dax\n",
++		pr_info("%s: error: unsupported blocksize for dax\n",
+ 				bdevname(bdev, buf));
+ 		return false;
+ 	}
+ 
+ 	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
+ 	if (err) {
+-		pr_debug("%s: error: unaligned partition for dax\n",
++		pr_info("%s: error: unaligned partition for dax\n",
+ 				bdevname(bdev, buf));
+ 		return false;
+ 	}
+@@ -95,7 +95,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+ 	last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SIZE / 512;
+ 	err = bdev_dax_pgoff(bdev, last_page, PAGE_SIZE, &pgoff_end);
+ 	if (err) {
+-		pr_debug("%s: error: unaligned partition for dax\n",
++		pr_info("%s: error: unaligned partition for dax\n",
+ 				bdevname(bdev, buf));
+ 		return false;
+ 	}
+@@ -106,7 +106,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+ 	dax_read_unlock(id);
+ 
+ 	if (len < 1 || len2 < 1) {
+-		pr_debug("%s: error: dax access failed (%ld)\n",
++		pr_info("%s: error: dax access failed (%ld)\n",
+ 				bdevname(bdev, buf), len < 1 ? len : len2);
+ 		return false;
+ 	}
+@@ -139,7 +139,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+ 	}
+ 
+ 	if (!dax_enabled) {
+-		pr_debug("%s: error: dax support not enabled\n",
++		pr_info("%s: error: dax support not enabled\n",
+ 				bdevname(bdev, buf));
+ 		return false;
+ 	}
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
