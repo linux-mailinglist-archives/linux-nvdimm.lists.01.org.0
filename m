@@ -1,68 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB22217F9D
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 08:33:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37942217FBF
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 08:44:32 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 95A5A110BA974;
-	Tue,  7 Jul 2020 23:33:16 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+	by ml01.01.org (Postfix) with ESMTP id 8BD44110BC284;
+	Tue,  7 Jul 2020 23:44:30 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A4532110BA973
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 23:33:13 -0700 (PDT)
-Received: by mail-pg1-x541.google.com with SMTP id j19so14316073pgm.11
-        for <linux-nvdimm@lists.01.org>; Tue, 07 Jul 2020 23:33:13 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id C6716110BC281
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 23:44:28 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id f12so22969384eja.9
+        for <linux-nvdimm@lists.01.org>; Tue, 07 Jul 2020 23:44:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=pOKLrhFd+Wz25ELD7U8n3o8/57LycSlMKk33eZ4LVvA=;
-        b=d5W67kHzvJt+QoyBtwwl4Ly8jzP84q2oI+s3CatsZei/K4hx9sPTf1oi9WNxEHZYiz
-         oXDC98Xryuyv8yMKUo4Xgkk8xNDdtP/SjOqRa1twZlV7rw1CwbdKRmgeBhHTO88J0GNh
-         f4jlVcBhAL3Ocqx6enlAABj6N6dwhd4pI/8i+1OD9mxd0PnmifZocp60DrpAtQBwZmiZ
-         6sTLpmOTPhZcf5F+R0ViuXiFDb/KJmG8K4RQEGqNMTujuZWj3mRTY7DWl5NnjeN0iUK6
-         WsZ7FilNItRZmU+wBvDfJ+WmQI2qbrIzYclpx5/KgaDXxPrv3aB6dAQnkIkp4Ig0QTvq
-         9IhQ==
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H3S5tywqz97erjS7LDzXGuHTrdnZD9VUuldP8+itAa4=;
+        b=wNd/BPeyXfjIe9yIh34g3N8qUwFz9ejUIZFpntOXvJnwbBzo/+oz8abHw3rWSPuac9
+         nqBaSoZK3Gy3yDqwdX2f/vp0IOteYuV7fzbQLe3PRgLLKe4tjlA7S17w1H2qEsImmbqQ
+         lS/4zO1NKhijvhCJOaJVWNT9pkkEcByZXljDcxLjfb1YfdDt5VEgx7xrG3rJnb3ztz1Y
+         Wax2NeMhGGhftDM3IILIDFrh81bWe0QWll2I98iAlA1u7WQSpiQ9Ye163WAyu8mijWiU
+         oiOH838fBNvZlkyVB5A/7OY3CN4Wvcvj+knJQlpRhDPsOTmqBla+/PjydbM3II5CnTJ0
+         Xawg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=pOKLrhFd+Wz25ELD7U8n3o8/57LycSlMKk33eZ4LVvA=;
-        b=uW9YCdaKiTaCxmmlUFh3CCq8AcfhNd0jX7SZwaEGgwmSXShVwK/n3C8ot0Bi7zcX3Y
-         cgQ/y54B7vUkVIGSTX2wOpfHKqd6ugMkgXaNS0IL39CTQbHN9lG/66BFYP8Xi6EQRV9e
-         2hS9KOD/xrjjV4IuQg5U0xIak9CvJ+DxW+i/zPhAK0OESZxpsNV+twwQAXs+AnmO/A22
-         wsbl0XmXWuzG5usv0sbygUjP8I7gFaW9Tn2CW38kmsJG5iOJYx8qVKwehK+BNpsJpYsz
-         uRgGh0bq05dGI4NOdVq9rVfaIFhmo7mo93pBoBq+gaCJcbthrKc599WK9RkIF2I2PDN+
-         rz9Q==
-X-Gm-Message-State: AOAM533GW2pbE6pCQf2YglHNKZQ3Cp2ZG7T+c8g9eV0fHn7jphHjLQY7
-	3xs+vcm+oB5Hd7XWe0/ppj2VOLSwUJk=
-X-Google-Smtp-Source: ABdhPJx2gfAPiqvvNkDMKquOZIFXEgGmKYVdE59j6yffvWT8bpJjI5h2ZWh6YUOMuVRVvxxyYtpy4Q==
-X-Received: by 2002:a65:6799:: with SMTP id e25mr50303205pgr.364.1594189992879;
-        Tue, 07 Jul 2020 23:33:12 -0700 (PDT)
-Received: from localhost ([203.223.190.240])
-        by smtp.gmail.com with ESMTPSA id k63sm3048736pge.0.2020.07.07.23.33.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2020 23:33:12 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH ndctl] infoblock: Set the default alignment to the platform alignment
-In-Reply-To: <20200707211258.GD961523@iweiny-DESK2.sc.intel.com>
-References: <20200707005641.3936295-1-santosh@fossix.org> <20200707211258.GD961523@iweiny-DESK2.sc.intel.com>
-Date: Wed, 08 Jul 2020 12:03:09 +0530
-Message-ID: <87r1tmy0re.fsf@santosiv.in.ibm.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H3S5tywqz97erjS7LDzXGuHTrdnZD9VUuldP8+itAa4=;
+        b=XHfrlUE76Ul6V8+pTttqmoEHmXSlII4hARdHaC83uSomUiQjLqMQzQaX9cPiu4IxQ2
+         B2tW1lHijtNWhrwr/YCx9GKkJLilK/7pFVMMWQDIict7qk1TQZjjvYr8xaoKM6dXeoz/
+         gR9jFJi2luJ8OSkANHGgZHuxhaJZlz7uAlfRUpqTquFnCkGkBMVUpaenfqu/wDxCLJLW
+         5UQK9F27CcttdkX21hgQyo7rOgq9K8tluQMvUwFcwifzkZ+JwYyNturRg8bXqALFybGd
+         E9xnisU0VRPqq92/YQrE4BwMZ4EO7siaD8aSrynTLT1he8911hh7Dh7s46c6vO9+3PDf
+         2SPA==
+X-Gm-Message-State: AOAM5329myJBstsnrS/OOjdC5bWYDHmtpEN4HR8Tb7u6kZr0bs/WnsuX
+	Ri30RZKrM0yxkrJyT9LQ4R+USqKQHtsYsdu7jHjA1g==
+X-Google-Smtp-Source: ABdhPJx4SQlGZTtKojNW/mWzWPOIk3H66jdIvXjAOSf3+ZTHKHnHHoak+j4hKVLWKfpDLoxfuBGf+OkOtlqLn0keYoQ=
+X-Received: by 2002:a17:906:b888:: with SMTP id hb8mr49967426ejb.124.1594190666893;
+ Tue, 07 Jul 2020 23:44:26 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: 7UAGESVQMAUSCYPG3LGZGWTX5S2FSAH5
-X-Message-ID-Hash: 7UAGESVQMAUSCYPG3LGZGWTX5S2FSAH5
-X-MailFrom: santosh@fossix.org
+References: <20200707055917.143653-1-justin.he@arm.com> <20200707055917.143653-2-justin.he@arm.com>
+ <20200707115454.GN5913@dhcp22.suse.cz> <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
+ <CAPcyv4ipu4qwKhk4pzJ8nZB2sp+=AndahS8eCgUvFvVP6dEkeA@mail.gmail.com>
+ <20200708053239.GC386073@linux.ibm.com> <CAPcyv4i2gnrugO5n715WsDoj+gxV9Mjt-49zNnv+ROMLYy79LQ@mail.gmail.com>
+ <20200708061934.GD386073@linux.ibm.com>
+In-Reply-To: <20200708061934.GD386073@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 7 Jul 2020 23:44:15 -0700
+Message-ID: <CAPcyv4j-vs5pJhr=e3PbuydSfxiEdj_Z5TAvui+pvu28SmgiEA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as EXPORT_SYMBOL_GPL
+To: Mike Rapoport <rppt@linux.ibm.com>
+Message-ID-Hash: OQQ32SOEAOGG4WG53CNANJWLPULO7ZTQ
+X-Message-ID-Hash: OQQ32SOEAOGG4WG53CNANJWLPULO7ZTQ
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Harish Sriram <harish@linux.ibm.com>
+CC: Justin He <Justin.He@arm.com>, Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7UAGESVQMAUSCYPG3LGZGWTX5S2FSAH5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OQQ32SOEAOGG4WG53CNANJWLPULO7ZTQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,84 +71,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Ira Weiny <ira.weiny@intel.com> writes:
-
-> On Tue, Jul 07, 2020 at 06:26:41AM +0530, Santosh Sivaraj wrote:
->> The default alignment for write-infoblock command is set to 2M. Change
->> that to use the platform's supported alignment or PAGE_SIZE. The first
->> supported alignment is taken as the default.
->> 
->> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
->> ---
+On Tue, Jul 7, 2020 at 11:20 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
+[..]
+> > Darn, I saw ARCH_KEEP_MEMBLOCK and had delusions of grandeur that it
+> > could solve my numa api woes. At least for x86 the problem is already
+> > solved with reserved numa_meminfo, but now I'm trying to write generic
+> > drivers that use those apis and finding these gaps on other archs.
 >
-> [snip]
->
->> @@ -1992,12 +2001,36 @@ static int namespace_rw_infoblock(struct ndctl_namespace *ndns,
->>  	const char *save;
->>  	const char *cmd = write ? "write-infoblock" : "read-infoblock";
->>  	const char *devname = ndctl_namespace_get_devname(ndns);
->> +	unsigned long long align;
->>  
->>  	if (ndctl_namespace_is_active(ndns)) {
->>  		pr_verbose("%s: %s enabled, must be disabled\n", cmd, devname);
->>  		return -EBUSY;
->>  	}
->>  
->> +	if (write) {
->> +		if (!param.align) {
->> +			align = ndctl_get_default_alignment(ndns);
->> +
->> +			if (asprintf((char **)&param.align, "%llu", align) < 0) {
->
-> If we are looping through namespaces doesn't param.align need to be localized
-> to this function as well?
+> I'm not sure if x86's numa_meminfo is a part of the solution or a part
+> of the problem ;-)
 
-Thanks for reviewing!
-
-Right, I missed the "all" case. I will get that fixed this in v2.
-
-Thanks,
-Santosh
-
->
-> Ira
->
->> +				rc = -EINVAL;
->> +				goto out;
->> +			}
->> +		}
->> +
->> +		if (param.size) {
->> +			unsigned long long size = parse_size64(param.size);
->> +			align = parse_size64(param.align);
->> +
->> +			if (align < ULLONG_MAX && !IS_ALIGNED(size, align)) {
->> +				error("--size=%s not aligned to %s\n", param.size,
->> +				      param.align);
->> +				rc = -EINVAL;
->> +				goto out;
->> +			}
->> +		}
->> +	}
->> +
->>  	ndctl_namespace_set_raw_mode(ndns, 1);
->>  	rc = ndctl_namespace_enable(ndns);
->>  	if (rc < 0) {
->> @@ -2060,6 +2093,9 @@ static int do_xaction_namespace(const char *namespace,
->>  	}
->>  
->>  	if (action == ACTION_WRITE_INFOBLOCK && !namespace) {
->> +		if (!param.align)
->> +			param.align = "2M";
->> +
->>  		rc = file_write_infoblock(param.outfile);
->>  		if (rc >= 0)
->>  			(*processed)++;
->> -- 
->> 2.26.2
->> _______________________________________________
->> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
->> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+More the latter, but hopefully it can remain an exception and not the rule.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
