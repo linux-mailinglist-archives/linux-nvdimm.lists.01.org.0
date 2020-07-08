@@ -2,120 +2,199 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1FD217F4C
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 07:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4D5217F7B
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 08:19:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 32415110BA974;
-	Tue,  7 Jul 2020 22:57:09 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=69.89.25.95; helo=gproxy1-pub.mail.unifiedlayer.com; envelope-from=wealthpartner@thetechxplosion.com; receiver=<UNKNOWN> 
-Received: from gproxy1-pub.mail.unifiedlayer.com (gproxy1-pub.mail.unifiedlayer.com [69.89.25.95])
+	by ml01.01.org (Postfix) with ESMTP id 576C4110BA96D;
+	Tue,  7 Jul 2020 23:19:52 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A0A98110B96A4
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 22:57:06 -0700 (PDT)
-Received: from CMGW (unknown [10.9.0.13])
-	by gproxy1.mail.unifiedlayer.com (Postfix) with ESMTP id F299C7F075AE2
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 23:57:04 -0600 (MDT)
-Received: from bh-62.webhostbox.net ([162.215.252.76])
-	by cmsmtp with ESMTP
-	id t34pjAcPrUY3Dt34qjrFiZ; Tue, 07 Jul 2020 23:57:04 -0600
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.2 cv=GcNnpUfL c=1 sm=1 tr=0
- a=XbG4DPE+Mlnrci7ewvwMTw==:117 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=_RQrkK6FrEwA:10 a=Z80AqLif2MsA:10 a=DR4M_vWnAAAA:8 a=QDMGMP2zAAAA:8
- a=9_0SIA4dVB3SE-i-yS4A:9 a=QEXdDO2ut3YA:10 a=gfdKQuYJAAAA:8
- a=0e5EyUSdTN5HXUgXfPgA:9 a=tGSkeDykbnQpMa55:21 a=e8vfu5fvdzcGChns:21
- a=cfKc9HMCWBItg3f0:21 a=_W_S_7VecoQA:10 a=u-NcHyBbnW-LWjNiJR0A:9
- a=34ZyibuS2H-m9DiA:18 a=HXjIzolwW10A:10 a=T6a71-JsGAwA:10
- a=u7YZ1JVaIoFkcD4MuMIA:9 a=yE8OaggLZ3jDXk2vi4oA:9 a=u27INC8OtUuitMwInk0y:22
- a=vkNJeZvZR2F-fAjwHkdv:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=thetechxplosion.com; s=default; h=Content-Type:Message-ID:Subject:To:From:
-	Date:MIME-Version:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tdwZENb7MbpNeh3sYlDbM+dhtM4bULpqG5rvjbASV3s=; b=DVRFcwLrpRt8j9YZp0+lFPwC64
-	KifC+M4PwBhQ+oXm0VX3M89yGw7lpcY1VBcLHZzkxAIKLUewGfIIIWdhKJsBevZRSwS336B/pkrTa
-	jeBDdFz+Nw4KbhcmfQkolFRkY/a84h1PH2eg64JS9fIvvO5fCoWPldEaYDUf6CPO61UDP6katHLRq
-	Lbkos3HUgt2tpZMbgP7L8y+M3YLUDT2Xn9wTsqo+qBjJPZtkl/+vVeV+DaGbpdYfMQQzu0xiydd3s
-	t4g95aehBfqYSkN3HiTE6gbjg/PANykUga7ZiiH4liRx4/o+wPZ/00es9RMd56Dq5+Oc/Kgay4Y5P
-	BS71h8jA==;
-Received: from bh-62.webhostbox.net ([162.215.252.76]:17898)
-	by bh-62.webhostbox.net with esmtpa (Exim 4.93)
-	(envelope-from <wealthpartner@thetechxplosion.com>)
-	id 1jt34V-003c7n-9e; Wed, 08 Jul 2020 05:56:43 +0000
+	by ml01.01.org (Postfix) with ESMTPS id 8589D100617DA
+	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 23:19:50 -0700 (PDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0686Ce0o118031;
+	Wed, 8 Jul 2020 02:19:43 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3258nxg53j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2020 02:19:43 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0686DxQb125567;
+	Wed, 8 Jul 2020 02:19:42 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 3258nxg52v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2020 02:19:42 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0686GvI5004232;
+	Wed, 8 Jul 2020 06:19:40 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+	by ppma06ams.nl.ibm.com with ESMTP id 322h1h44n3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jul 2020 06:19:40 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0686Jchh63307830
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jul 2020 06:19:38 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0689CAE045;
+	Wed,  8 Jul 2020 06:19:38 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 76559AE053;
+	Wed,  8 Jul 2020 06:19:36 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.202.29])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+	Wed,  8 Jul 2020 06:19:36 +0000 (GMT)
+Date: Wed, 8 Jul 2020 09:19:34 +0300
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as
+ EXPORT_SYMBOL_GPL
+Message-ID: <20200708061934.GD386073@linux.ibm.com>
+References: <20200707055917.143653-1-justin.he@arm.com>
+ <20200707055917.143653-2-justin.he@arm.com>
+ <20200707115454.GN5913@dhcp22.suse.cz>
+ <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
+ <CAPcyv4ipu4qwKhk4pzJ8nZB2sp+=AndahS8eCgUvFvVP6dEkeA@mail.gmail.com>
+ <20200708053239.GC386073@linux.ibm.com>
+ <CAPcyv4i2gnrugO5n715WsDoj+gxV9Mjt-49zNnv+ROMLYy79LQ@mail.gmail.com>
 MIME-Version: 1.0
-Date: Wed, 08 Jul 2020 05:56:41 +0000
-From: wealthpartner@thetechxplosion.com
-To: ceo@alltrendsetter.com
-Subject: Create Your Income Online
-X-Priority: 1 (Highest)
-Message-ID: <2218249eaace9bfe15d603b7cc24aca6@thetechxplosion.com>
-X-Sender: wealthpartner@thetechxplosion.com
-User-Agent: Roundcube Webmail/1.3.11
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - bh-62.webhostbox.net
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - thetechxplosion.com
-X-BWhitelist: no
-X-Source-IP: 162.215.252.76
-X-Source-L: Yes
-X-Exim-ID: 1jt34V-003c7n-9e
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: bh-62.webhostbox.net [162.215.252.76]:17898
-X-Source-Auth: wealthpartner@thetechxplosion.com
-X-Email-Count: 393
-X-Source-Cap: dGhldGVjaHhwbG9zaW9uO3RlY2hicWl3O2JoLTYyLndlYmhvc3Rib3gubmV0
-X-Local-Domain: yes
-Message-ID-Hash: KMRONSO2SGPG7IWGX3GMOIOZUDB43EY6
-X-Message-ID-Hash: KMRONSO2SGPG7IWGX3GMOIOZUDB43EY6
-X-MailFrom: wealthpartner@thetechxplosion.com
+Content-Disposition: inline
+In-Reply-To: <CAPcyv4i2gnrugO5n715WsDoj+gxV9Mjt-49zNnv+ROMLYy79LQ@mail.gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-08_01:2020-07-08,2020-07-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=1
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 phishscore=0 mlxlogscore=999
+ priorityscore=1501 malwarescore=0 impostorscore=0 cotscore=-2147483648
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2007080038
+Message-ID-Hash: WUW44T2YHIYVUMJQIC643BKCLGQNUAAV
+X-Message-ID-Hash: WUW44T2YHIYVUMJQIC643BKCLGQNUAAV
+X-MailFrom: rppt@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Justin He <Justin.He@arm.com>, Michal Hocko <mhocko@kernel.org>, David Hildenbrand <david@redhat.com>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KMRONSO2SGPG7IWGX3GMOIOZUDB43EY6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WUW44T2YHIYVUMJQIC643BKCLGQNUAAV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-SXdpemUgWzFdIGlzIGFuIG9ubGluZSBmaW5hbmNpYWwgYWR2aXNvciBidWlsdCBmb3IgcGVvcGxl
-IHdobyByZWZ1c2UgdG8NCnNldHRsZSBmb3IgYXZlcmFnZSBpbnZlc3RpbmcuIFBlb3BsZSB3aG8g
-ZGVtYW5kIGJldHRlci4gUGVvcGxlIGxpa2UNCnlvdS4uLi4uLiANCg0KQ3JlYXRlIFlvdXIgSW5j
-b21lIE9ubGluZSBbMV06LSAgDQoNCklU4oCZUyBUT1VHSCBUTyBLTk9XIFdIQVQgVEhFIEZVVFVS
-RSBNQVkgSE9MRCBGT1IgWU9VIEFORCBZT1VSIEZBTUlMWS4gTEVUDQpJLVdJWkUgWzFdIEhFTFAg
-WU9VIElOVkVTVCBXSVNFTFkgQU5EIFBST1ZJREUgQUNUSU9OQUJMRSBBRFZJQ0UgT04NClJFQUNI
-SU5HIFlPVVIgRklOQU5DSUFMIEdPQUxTLg0KDQogWzFdIA0KDQpCVUlMVCBUTyBIRUxQIFlPVSBC
-RUNPTUUgQSBNT1JFIENPTkZJREVOVCBJTlZFU1RPUiBBTkQgU0VUIFlPVSBPTiBUSEUNClBBVEgg
-VE8gRklOQU5DSUFMIEVYQ0VMTEVOQ0UuDQoNCiAJKiANCg0KRklHVVJFIE9VVCBZT1VSIEZJTkFO
-Q0lBTCBHT0FMUy4NCg0KV0UgV0lMTCBBU0sgWU9VIFNPTUUgUVVFU1RJT05TIFRPIEtJQ0sgT0ZG
-IFlPVVIgTkVXIEZJTkFOQ0lBTCBGVVRVUkUuDQpUSEVOLCBXRSBXSUxMIEhFTFAgWU9VIEZJR1VS
-RSBPVVQgV0hBVCBUTyBJTlZFU1QgRk9SIEVYQU1QTEU7DQpSRVRJUkVNRU5ULCBBIEJJRyBQVVJD
-SEFTRSwgT1IgU0lNUExZIFRPIEdST1cgV0VBTFRILg0KDQogCSogDQoNCkdFVCBBIFNFTlNFIE9G
-IFlPVVIgRlVMTCBGSU5BTkNJQUwgUElDVFVSRS4NCg0KREVQRU5ESU5HIE9OIFdIQVQgWU9V4oCZ
-UkUgSU5WRVNUSU5HIEZPUiwgV0UgV0lMTCBSRUNPTU1FTkQgSE9XIE1VQ0ggWU9VDQpTSE9VTEQg
-U0FWRSwgVEhFTiBCVUlMRCBZT1UgQSBESVZFUlNJRklFRCBQT1JURk9MSU8gVE8gU0VUIFlPVSBP
-TiBZT1VSDQpXQVkuDQoNCiAJKiANCg0KQkVORUZJVCBGUk9NIEVYUEVSVCBBRFZJQ0UgQU5EIFRF
-Q0hOT0xPR1kuDQoNCk9VUiBDVVRUSU5HLUVER0UgVEVDSE5PTE9HWSAoR1VJREVEIEJZIE9VUiBG
-SU5BTkNJQUwgRVhQRVJUUykgTUFOQUdFUw0KWU9VUiBJTlZFU1RNRU5UUywgQU5EIE9VUiBQTEFU
-Rk9STSBQUk9WSURFUyBPTkdPSU5HIEFEVklDRSBUTyBIRUxQIEtFRVANCllPVSBPTiBUUkFDSy4N
-Cg0KIFsxXSANCg0KIFsxXVRvIFN0YXJ0IFlvdXIgSEFTU0xFLUZSRUUgSW52ZXN0bWVudCBOb3cs
-IENsaWNrIEhlcmUgWzFdLiANCg0KVGhlcmUgYXJlIG11bHRpcGxlIGJlbmVmaXRzIG9mIGludmVz
-dGluZyB0aHJvdWdoIEl3aXplLWdyb3VwLCBMZXQncw0KZGlzY3VzcyBpdCBhbGwgb24gV2hhdHNh
-cHAgWzJdLiAgDQoNCkNsaWNrIGhlcmUgWzJddG8gam9pbiB0aGUgV2hhdHNhcHAgZ3JvdXAgWzJd
-LiANCg0KIA0KDQpMaW5rczoNCi0tLS0tLQ0KWzFdIGh0dHBzOi8vaS13aXplLmNvbS9yZWdpc3Rl
-cj9yZWY9MjkwDQpbMl0gaHR0cHM6Ly9jaGF0LndoYXRzYXBwLmNvbS9KejZkTzA1S1o4UEhhNHFF
-dHV4cVBPCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
-bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
-bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
-cmcK
+On Tue, Jul 07, 2020 at 10:48:19PM -0700, Dan Williams wrote:
+> On Tue, Jul 7, 2020 at 10:33 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
+> >
+> > On Tue, Jul 07, 2020 at 08:56:36PM -0700, Dan Williams wrote:
+> > > On Tue, Jul 7, 2020 at 7:20 PM Justin He <Justin.He@arm.com> wrote:
+> > > >
+> > > > Hi Michal and David
+> > > >
+> > > > > -----Original Message-----
+> > > > > From: Michal Hocko <mhocko@kernel.org>
+> > > > > Sent: Tuesday, July 7, 2020 7:55 PM
+> > > > > To: Justin He <Justin.He@arm.com>
+> > > > > Cc: Catalin Marinas <Catalin.Marinas@arm.com>; Will Deacon
+> > > > > <will@kernel.org>; Dan Williams <dan.j.williams@intel.com>; Vishal Verma
+> > > > > <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Andrew
+> > > > > Morton <akpm@linux-foundation.org>; Mike Rapoport <rppt@linux.ibm.com>;
+> > > > > Baoquan He <bhe@redhat.com>; Chuhong Yuan <hslester96@gmail.com>; linux-
+> > > > > arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; linux-
+> > > > > mm@kvack.org; linux-nvdimm@lists.01.org; Kaly Xin <Kaly.Xin@arm.com>
+> > > > > Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid
+> > > > > as EXPORT_SYMBOL_GPL
+> > > > >
+> > > > > On Tue 07-07-20 13:59:15, Jia He wrote:
+> > > > > > This exports memory_add_physaddr_to_nid() for module driver to use.
+> > > > > >
+> > > > > > memory_add_physaddr_to_nid() is a fallback option to get the nid in case
+> > > > > > NUMA_NO_NID is detected.
+> > > > > >
+> > > > > > Suggested-by: David Hildenbrand <david@redhat.com>
+> > > > > > Signed-off-by: Jia He <justin.he@arm.com>
+> > > > > > ---
+> > > > > >  arch/arm64/mm/numa.c | 5 +++--
+> > > > > >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > > > > >
+> > > > > > diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+> > > > > > index aafcee3e3f7e..7eeb31740248 100644
+> > > > > > --- a/arch/arm64/mm/numa.c
+> > > > > > +++ b/arch/arm64/mm/numa.c
+> > > > > > @@ -464,10 +464,11 @@ void __init arm64_numa_init(void)
+> > > > > >
+> > > > > >  /*
+> > > > > >   * We hope that we will be hotplugging memory on nodes we already know
+> > > > > about,
+> > > > > > - * such that acpi_get_node() succeeds and we never fall back to this...
+> > > > > > + * such that acpi_get_node() succeeds. But when SRAT is not present,
+> > > > > the node
+> > > > > > + * id may be probed as NUMA_NO_NODE by acpi, Here provide a fallback
+> > > > > option.
+> > > > > >   */
+> > > > > >  int memory_add_physaddr_to_nid(u64 addr)
+> > > > > >  {
+> > > > > > -   pr_warn("Unknown node for memory at 0x%llx, assuming node 0\n",
+> > > > > addr);
+> > > > > >     return 0;
+> > > > > >  }
+> > > > > > +EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+> > > > >
+> > > > > Does it make sense to export a noop function? Wouldn't make more sense
+> > > > > to simply make it static inline somewhere in a header? I haven't checked
+> > > > > whether there is an easy way to do that sanely bu this just hit my eyes.
+> > > >
+> > > > Okay, I can make a change in memory_hotplug.h, sth like:
+> > > > --- a/include/linux/memory_hotplug.h
+> > > > +++ b/include/linux/memory_hotplug.h
+> > > > @@ -149,13 +149,13 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
+> > > >               struct mhp_params *params);
+> > > >  #endif /* ARCH_HAS_ADD_PAGES */
+> > > >
+> > > > -#ifdef CONFIG_NUMA
+> > > > -extern int memory_add_physaddr_to_nid(u64 start);
+> > > > -#else
+> > > > +#if !defined(CONFIG_NUMA) || !defined(memory_add_physaddr_to_nid)
+> > > >  static inline int memory_add_physaddr_to_nid(u64 start)
+> > > >  {
+> > > >         return 0;
+> > > >  }
+> > > > +#else
+> > > > +extern int memory_add_physaddr_to_nid(u64 start);
+> > > >  #endif
+> > > >
+> > > > And then check the memory_add_physaddr_to_nid() helper on all arches,
+> > > > if it is noop(return 0), I can simply remove it.
+> > > > if it is not noop, after the helper,
+> > > > #define memory_add_physaddr_to_nid
+> > > >
+> > > > What do you think of this proposal?
+> > >
+> > > Especially for architectures that use memblock info for numa info
+> > > (which seems to be everyone except x86) why not implement a generic
+> > > memory_add_physaddr_to_nid() that does:
+> >
+> > That would be only arm64.
+> >
+> 
+> Darn, I saw ARCH_KEEP_MEMBLOCK and had delusions of grandeur that it
+> could solve my numa api woes. At least for x86 the problem is already
+> solved with reserved numa_meminfo, but now I'm trying to write generic
+> drivers that use those apis and finding these gaps on other archs.
+
+I'm not sure if x86's numa_meminfo is a part of the solution or a part
+of the problem ;-)
+Anyway, this all indeed messy and there is a lot to improve there.
+
+-- 
+Sincerely yours,
+Mike.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
