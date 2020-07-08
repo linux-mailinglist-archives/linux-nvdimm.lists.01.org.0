@@ -2,68 +2,115 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260AD218034
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 09:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1AA218098
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 09:16:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 85E25110BDB37;
-	Wed,  8 Jul 2020 00:04:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::642; helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9AE8B110BDB38;
+	Wed,  8 Jul 2020 00:16:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4C351110BDB36
-	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 00:04:18 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id w6so49234583ejq.6
-        for <linux-nvdimm@lists.01.org>; Wed, 08 Jul 2020 00:04:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=j8DJkdquRNNePQZNFg7Hkhjp0N1sn7vgJTtn21OuChM=;
-        b=SACF4faTk3zv/4UtH39KJpY1EyVX+rh7ao155Gc/PXjG8TrgshGBUjBtrUqQ+9gs7i
-         L5vmTlibESrKgbfMTCGhiWtgPrAMhhcnkOHRM2Ia2Y8Jc9V+3LCyG/yJumUkViP3L7Pb
-         a2I7dIXDDdaZ0Cuyka9u74Vv9AS609TdrAwDEKA4Wo08zzzHJdpen+IvOXLWzV+1McID
-         uEfP5IZ8K/A1vsTLrUkqSpWu6J8+YyNaxkI3zkQBXIxOdEJ349cAM/R1VYOnd962N5Or
-         Sr3whbUU5C6EZxDmca1o0Y6BVT+YPiq8mhQFC+bo3h9VIMzxObom+Gcbl8Fv4uHNxRxt
-         MfoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=j8DJkdquRNNePQZNFg7Hkhjp0N1sn7vgJTtn21OuChM=;
-        b=oiLxTv8a0GTysIJkesjnd+74DQ4Sd5EcFitVYoGtuevV9HJ6IOKrvoP6RyhcgafuCn
-         JTWqK9UHIq3E6RjU4I5G1imhQ/NN+MEqNqtbNJ4AO16ZIn3hny2Q5fxufKDS3Gd7yU/1
-         bB5inQKbszVs8T7wuqHTzInuOHYWmnHXcXHRR4QGk2CnRFlqEH41Cs4fjGkeEciOcF3E
-         YKd02Sjh5S0+ghl+R3UatPo7cIsOkgOFdtig4/XbPMhGWevvvagEJnAW3pLXYEDMLppy
-         1pTIVWwPfobV1tojByF0ez/dPptVsPFapbHX8KQNcHG+Gy3dzZDiPbjn70UJCD0VPyn3
-         cOmA==
-X-Gm-Message-State: AOAM531qkLzO4wiPwyh5qKMj76psk/1KHlOmjRxee3zxSSJLT2Lsdd6u
-	rFlOfdIyvtQmfuwczoGRs4vBvwdDqe0te1O7Dz48vg==
-X-Google-Smtp-Source: ABdhPJyRGR0MQswLR49lOWdnIujwwLeu+bZjq5kGBbvha0J5qEn/N4WpOBb/iGUCPM+O4K8cgy9DfyN1wDvRoKcTF84=
-X-Received: by 2002:a17:906:b888:: with SMTP id hb8mr50016102ejb.124.1594191857256;
- Wed, 08 Jul 2020 00:04:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200707055917.143653-1-justin.he@arm.com> <20200707055917.143653-2-justin.he@arm.com>
- <20200707115454.GN5913@dhcp22.suse.cz> <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
+	by ml01.01.org (Postfix) with ESMTPS id 1D688110BDB37
+	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 00:16:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1594192572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dx3HZ+yedwYcaidK+QZbCcB6z1aYUQHDgwu6LUEYe/4=;
+	b=UbUNMvUeC/lodaXM+IRgCoHShNxvHrSF53gIVKvQIoDrYDeVbubOTKdW8NJ1UKfE3zkeNd
+	VADa4L6BqTDTb31wrvHGcjzl6uA5wHPRKM9dkuODt9q/1cq6LWLmJVK29s4pebwSEvuCpp
+	EL9VK5UeeqOfy7XUriogwCcgnQEOLCk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-273-g9Z8KC3yNxm1InmXP6I2-g-1; Wed, 08 Jul 2020 03:16:08 -0400
+X-MC-Unique: g9Z8KC3yNxm1InmXP6I2-g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 078DD107ACCA;
+	Wed,  8 Jul 2020 07:16:06 +0000 (UTC)
+Received: from [10.36.113.117] (ovpn-113-117.ams2.redhat.com [10.36.113.117])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id E375A10013D7;
+	Wed,  8 Jul 2020 07:16:02 +0000 (UTC)
+Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as
+ EXPORT_SYMBOL_GPL
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20200707055917.143653-1-justin.he@arm.com>
+ <20200707055917.143653-2-justin.he@arm.com>
+ <20200707115454.GN5913@dhcp22.suse.cz>
+ <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
  <CAPcyv4ipu4qwKhk4pzJ8nZB2sp+=AndahS8eCgUvFvVP6dEkeA@mail.gmail.com>
  <AM6PR08MB4069D0D1FD8FB31B6A56DDB5F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
  <CAPcyv4ivyJsyzcbkBWcqBYZMx3VdJF7+VPCNs177DU2rYqtz_A@mail.gmail.com>
- <20200708062217.GE386073@linux.ibm.com> <c4ee0a94-c980-80ca-c43d-15729e1a3663@redhat.com>
-In-Reply-To: <c4ee0a94-c980-80ca-c43d-15729e1a3663@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 8 Jul 2020 00:04:06 -0700
-Message-ID: <CAPcyv4inaZgmv=S36_DofA9prKhWg4KBNPkTvzSALO6Vtb9ddw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as EXPORT_SYMBOL_GPL
-To: David Hildenbrand <david@redhat.com>
-Message-ID-Hash: TQM3VI6ZPDUSJKZJUNQ6FSC3A3CRH75D
-X-Message-ID-Hash: TQM3VI6ZPDUSJKZJUNQ6FSC3A3CRH75D
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+ <20200708062217.GE386073@linux.ibm.com>
+ <c4ee0a94-c980-80ca-c43d-15729e1a3663@redhat.com>
+ <CAPcyv4inaZgmv=S36_DofA9prKhWg4KBNPkTvzSALO6Vtb9ddw@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <6aae78fa-b505-0f76-087b-d8b2146c62f1@redhat.com>
+Date: Wed, 8 Jul 2020 09:16:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <CAPcyv4inaZgmv=S36_DofA9prKhWg4KBNPkTvzSALO6Vtb9ddw@mail.gmail.com>
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: JQWFZUBQHAIB7RPLFG6UZ5CBRPMYQGB5
+X-Message-ID-Hash: JQWFZUBQHAIB7RPLFG6UZ5CBRPMYQGB5
+X-MailFrom: david@redhat.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: Mike Rapoport <rppt@linux.ibm.com>, Justin He <Justin.He@arm.com>, Michal Hocko <mhocko@kernel.org>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TQM3VI6ZPDUSJKZJUNQ6FSC3A3CRH75D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JQWFZUBQHAIB7RPLFG6UZ5CBRPMYQGB5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -72,55 +119,72 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 7, 2020 at 11:59 PM David Hildenbrand <david@redhat.com> wrote:
->
-> On 08.07.20 08:22, Mike Rapoport wrote:
-> > On Tue, Jul 07, 2020 at 09:27:43PM -0700, Dan Williams wrote:
-> >> On Tue, Jul 7, 2020 at 9:08 PM Justin He <Justin.He@arm.com> wrote:
-> >> [..]
-> >>>> Especially for architectures that use memblock info for numa info
-> >>>> (which seems to be everyone except x86) why not implement a generic
-> >>>> memory_add_physaddr_to_nid() that does:
-> >>>>
-> >>>> int memory_add_physaddr_to_nid(u64 addr)
-> >>>> {
-> >>>>         unsigned long start_pfn, end_pfn, pfn = PHYS_PFN(addr);
-> >>>>         int nid;
-> >>>>
-> >>>>         for_each_online_node(nid) {
-> >>>>                 get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> >>>>                 if (pfn >= start_pfn && pfn <= end_pfn)
-> >>>>                         return nid;
-> >>>>         }
-> >>>>         return NUMA_NO_NODE;
-> >>>> }
-> >>>
-> >>> Thanks for your suggestion,
-> >>> Could I wrap the codes and let memory_add_physaddr_to_nid simply invoke
-> >>> phys_to_target_node()?
-> >>
-> >> I think it needs to be the reverse. phys_to_target_node() should call
-> >> memory_add_physaddr_to_nid() by default, but fall back to searching
-> >> reserved memory address ranges in memblock. See phys_to_target_node()
-> >> in arch/x86/mm/numa.c. That one uses numa_meminfo instead of memblock,
-> >> but the principle is the same i.e. that a target node may not be
-> >> represented in memblock.memory, but memblock.reserved. I'm working on
-> >> a patch to provide a function similar to get_pfn_range_for_nid() that
-> >> operates on reserved memory.
-> >
-> > Do we really need yet another memblock iterator?
-> > I think only x86 has memory that is not in memblock.memory but only in
-> > memblock.reserved.
->
-> Reading about abusing the memblock allcoator once again in memory
-> hotplug paths makes me shiver.
+On 08.07.20 09:04, Dan Williams wrote:
+> On Tue, Jul 7, 2020 at 11:59 PM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> On 08.07.20 08:22, Mike Rapoport wrote:
+>>> On Tue, Jul 07, 2020 at 09:27:43PM -0700, Dan Williams wrote:
+>>>> On Tue, Jul 7, 2020 at 9:08 PM Justin He <Justin.He@arm.com> wrote:
+>>>> [..]
+>>>>>> Especially for architectures that use memblock info for numa info
+>>>>>> (which seems to be everyone except x86) why not implement a generic
+>>>>>> memory_add_physaddr_to_nid() that does:
+>>>>>>
+>>>>>> int memory_add_physaddr_to_nid(u64 addr)
+>>>>>> {
+>>>>>>         unsigned long start_pfn, end_pfn, pfn = PHYS_PFN(addr);
+>>>>>>         int nid;
+>>>>>>
+>>>>>>         for_each_online_node(nid) {
+>>>>>>                 get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
+>>>>>>                 if (pfn >= start_pfn && pfn <= end_pfn)
+>>>>>>                         return nid;
+>>>>>>         }
+>>>>>>         return NUMA_NO_NODE;
+>>>>>> }
+>>>>>
+>>>>> Thanks for your suggestion,
+>>>>> Could I wrap the codes and let memory_add_physaddr_to_nid simply invoke
+>>>>> phys_to_target_node()?
+>>>>
+>>>> I think it needs to be the reverse. phys_to_target_node() should call
+>>>> memory_add_physaddr_to_nid() by default, but fall back to searching
+>>>> reserved memory address ranges in memblock. See phys_to_target_node()
+>>>> in arch/x86/mm/numa.c. That one uses numa_meminfo instead of memblock,
+>>>> but the principle is the same i.e. that a target node may not be
+>>>> represented in memblock.memory, but memblock.reserved. I'm working on
+>>>> a patch to provide a function similar to get_pfn_range_for_nid() that
+>>>> operates on reserved memory.
+>>>
+>>> Do we really need yet another memblock iterator?
+>>> I think only x86 has memory that is not in memblock.memory but only in
+>>> memblock.reserved.
+>>
+>> Reading about abusing the memblock allcoator once again in memory
+>> hotplug paths makes me shiver.
+> 
+> Technical reasoning please?
 
-Technical reasoning please?
+ARCH_KEEP_MEMBLOCK is (AFAIK) only a hack for arm64 to implement
+pfn_valid(), because they zap out individual pages corresponding to
+memory holes of full sections.
 
-arm64 numa information is established from memblock data. It seems
-counterproductive to ignore that fact if we're already touching
-memory_add_physaddr_to_nid() and have a use case for a driver to call
-it.
+I am not a friend of adding more post-init code to rely on memblock
+data. It just makes it harder to eventually get rid of ARCH_KEEP_MEMBLOCK.
+
+> 
+> arm64 numa information is established from memblock data. It seems
+> counterproductive to ignore that fact if we're already touching
+> memory_add_physaddr_to_nid() and have a use case for a driver to call
+> it.
+
+... and we are trying to handle the "only a single dummy node" case
+(patch #2), or what am I missing? What is there to optimize currently?
+
+-- 
+Thanks,
+
+David / dhildenb
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
