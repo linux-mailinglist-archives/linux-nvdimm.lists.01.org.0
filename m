@@ -2,86 +2,143 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CBE42189FE
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 16:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BB0218C42
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 17:50:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D8482110BDB36;
-	Wed,  8 Jul 2020 07:20:14 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=188.127.224.141; helo=s291261.savps.ru; envelope-from=mail-sent@meta.ua; receiver=<UNKNOWN> 
-Received: from s291261.savps.ru (unknown [188.127.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7BBFA110BDB36;
+	Wed,  8 Jul 2020 08:50:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::644; helo=mail-ej1-x644.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BCBA4110BDB32
-	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 07:20:11 -0700 (PDT)
-Received: from [62.122.202.92] (helo=oiy)
-	by s291261.savps.ru with esmtpa (Exim 4.94)
-	(envelope-from <mail-sent@meta.ua>)
-	id 1jtAvZ-0001Ui-1o; Wed, 08 Jul 2020 17:20:01 +0300
-Message-ID: <0207B1E2E93D07E4383D74F7B38949E0@meta.ua>
-From: "Admin" <mail-sent@meta.ua>
-Subject: =?windows-1251?B?z+4g7+7i7uTzIO/w7uLl5OXt6P8g8OXq6+Ds?=
-	=?windows-1251?B?+w==?=
-Date: Wed, 8 Jul 2020 17:17:37 +0300
+	by ml01.01.org (Postfix) with ESMTPS id F3C111107E168
+	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 08:50:16 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id n26so37162068ejx.0
+        for <linux-nvdimm@lists.01.org>; Wed, 08 Jul 2020 08:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1EiYlSj53kAa10Re22X7U17L3JibixRtXdcfzQAF4RI=;
+        b=eNptn699SYep16X4CoHPkgiGM5zR/mQnI3Mzfc9eEIY75pcRdSypj0pJntEDR4CHvS
+         AogyjaLxg5b7iP5tvNUzz/jAPzLjWzHgZoJOeYZCaJYfJsP54+JncPgdDwCXaNdf5kDH
+         K1mIGvj60uqPjUQAobqbGoJIlXdqdUK/+fD1DMteEv5JNXCo5U65YhxhYzb+IlmrLu27
+         E3IX7kZcsTEMvjr4RRH6V4KWQ0rfrgXmeEmYl93SiTjzlboiF4oiFV3u04EJoo9Su1be
+         U4kIpVOKeOQn52xh78cieCUwmNTeMkzDU3sr3r03UQCxfqxMjQyf2Q76ItzqDLCVZDbq
+         Bqjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1EiYlSj53kAa10Re22X7U17L3JibixRtXdcfzQAF4RI=;
+        b=uXzXvQC68R7eZ0YXzRiYW2PG/3ibKgkMFF7O9Lc763zpDdyB0BefrS+OkMIlrWI4EP
+         7Ul3+Pj1DOXrxIntGVrdqlKKAMiIS24n+B4ZTR+D/K9xbu8YaUL6JVcTJGYYqGwHV8DY
+         JrsKjHJVGvud9abnW2b5XNeUkfNXHfsD/HwZWCZxBP092bISB/f4d9X59kgfrYTbOo/w
+         /osDcZ1QeGHNvlaEYKk43Tp8AxDkmYvX26fsFaogCZ6xDqbPzQLdj9d/+S415l83h1Eq
+         imxwRFxspL5kMR85wP4BbLlJqUxvxMZYMkXI5KJuKDxdB4eBEIzeGAHFTPWBKtblzRQG
+         B91w==
+X-Gm-Message-State: AOAM5300cn7yvh04jg/U5ZpDVfnDcUuFtwuZJUyTQ3ZFxHv0Juvyb34+
+	mkL3aByS+sSFf5r8i3gYqXiMYz8nwmRx8YgpOXtWWQ==
+X-Google-Smtp-Source: ABdhPJw/8Kbx1/bdnv7iOEbWdknY8BbvvUvThRPw7aqvnIeHYlAeIqwGVHirPg4m6UtNvCENnXVgYQiwBwoexLKostU=
+X-Received: by 2002:a17:906:b888:: with SMTP id hb8mr51820947ejb.124.1594223414714;
+ Wed, 08 Jul 2020 08:50:14 -0700 (PDT)
 MIME-Version: 1.0
-X-Antivirus: Avast (VPS 200707-4, 07.07.2020), Outbound message
-X-Antivirus-Status: Clean
-Message-ID-Hash: ZU3PBGLBGUCA4HVBGJJB5TBMKGYMAFB3
-X-Message-ID-Hash: ZU3PBGLBGUCA4HVBGJJB5TBMKGYMAFB3
-X-MailFrom: mail-sent@meta.ua
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+References: <20200707180043.GA386073@linux.ibm.com> <CAPcyv4iB-vP8U4pH_3jptfODbiNqJZXoTmA6+7EHoddk9jBgEQ@mail.gmail.com>
+ <20200708052626.GB386073@linux.ibm.com> <9a009cf6-6c30-91ca-a1a5-9aa090c66631@redhat.com>
+ <CAPcyv4jyk_tkDRewTVvRAv0g4LwemEyKYQyuJBXkF4VuYrBdrw@mail.gmail.com>
+ <999ea296-4695-1219-6a4d-a027718f61e5@redhat.com> <20200708083951.GH386073@linux.ibm.com>
+ <cdb0510e-4271-1c97-4305-5fd52da282dc@redhat.com> <20200708091520.GE128651@kernel.org>
+ <df0e5f64-10bc-4c3c-a515-288a6f501065@redhat.com> <20200708094549.GA781326@linux.ibm.com>
+ <98166184-3aaf-479e-bfb3-fc737f4ac98d@redhat.com>
+In-Reply-To: <98166184-3aaf-479e-bfb3-fc737f4ac98d@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 8 Jul 2020 08:50:03 -0700
+Message-ID: <CAPcyv4guv2wjLDNJ4VN+4ZKiSC-FDvxoRxy5_OvUJ5C1tJsAGA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as EXPORT_SYMBOL_GPL
+To: David Hildenbrand <david@redhat.com>
+Message-ID-Hash: WOFHQSB24RVPL5IQ3YQBTD3ZZ67V5EAM
+X-Message-ID-Hash: WOFHQSB24RVPL5IQ3YQBTD3ZZ67V5EAM
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@kernel.org>, Jia He <justin.he@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZU3PBGLBGUCA4HVBGJJB5TBMKGYMAFB3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WOFHQSB24RVPL5IQ3YQBTD3ZZ67V5EAM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RW1haWwg7ODw6uXy6O3jDQoNCtDg8fH76+roIP/i6//+8vH/IPLl7CDo7fHy8PPs5e3y7uwsIOru
-8u7w++kg4+Dw4O3y6PDu4uDt7e4g7/Do4u7k6PIg6uvo5e3y7uIuIKANCg0K0ODx8fvr6uAg7+jx
-5ewg7+4g7O3u4+736PHr5e3t++wgxS1tYWlsIODk8OXx4Owg/+Lr//7y8f8g7vfl7fwg7O757fvs
-IOgg8OXn8+v88uDy6OLt++wg6O3x8vDz7OXt8u7sLCDh6+Dj7uTg8P8g6u7y7vDu7PMg4vsg8ezu
-5uXy5SDv8O7o7fTu8Ozo8O7i4PL8IPHu8u3oIPL78f/3IOv+5OXpIO4g8eLu6PUg8u7i4PDg9SDo
-IPPx6/Pj4PUuIKANCtDg8fH76+rgIO3gIP3r5ery8O7t7fP+IO/u9/LzIOjs5eXyIOzt7ubl8fLi
-7iDv8OXo7PP55fHy4joNCjEuoML78e7q4P8g8OXn8+v88uDy6OLt7vHy/DogoA0K7uH/5+Dy5ev8
-7e4g9e7y/CDu5OjtIPfl6+7i5eog6Ocg7eXx6u7r/Oro9SDx7vLl7SDn4Ojt8uXw5fHz5fLx/yDi
-4Pjo7CDv8OXk6+7m5e3o5ewsIP3y7iDh8+Tl8iDn4OLo8eXy/CDu8iDy7uPuLCD38u4g4vsg7/Dl
-5Ovg4+Dl8uUsIOgg9+XsIOTl+OXi6+Ug4fPk5fIg8fLu6PL8IOLg+OAg8/Hr8+PgIOjr6CDy7uLg
-8Cwg8u4g8uXsIOHu6/z45SDt4CDt5ePuIOHz5OXyIPHv8O7xLiCgDQoyLqDR6u7w7vHy/DogoA0K
-wuD44CDw5err4OzgIO3g9+3l8iDx8uDw8u7i4PL8IPHw4OfzIOblIO/u8evlIOW4IOfg6uDn4C4g
-wuDsIO3lIO3z5u3uIOHz5OXyIObk4PL8IO/u9/LoIOzl8f/2LCDq4Oog/fLuIPfg8fLuIPHr8/fg
-5fLx/ywg5fHr6CDi+yDn4Org5/vi4OXy5SDw5err4OzzIO3gIPLl6+Xi6OTl7ejlLCDw4OTo7iDo
-6+gg4iDv8OXx8eUuIOfg6uDn4CEgoA0KMy6gzeXyIO3g5O7h7e7x8ugg4iDx7uHx8uLl7e3u7CDx
-4Ony5TogoA0KwuDsIOLu4vHlIO3lIO3z5u3uIOjs5fL8IPHu4fHy4uXt7fvpIPHg6fIsIO3g+CDu
-7/vy7fvpIOTo5+Dp7eXwIOrg9+Xx8uLl7e3uIO707vDs6PIg6/7h7uUg4uD45SDq7uzs5fD35fHq
-7uUg7/Dl5Ovu5uXt6OUsIOIg6u7y7vDu7CDi+yDx7O7m5fLlIPPq4Ofg8vwg4vH+IO3l7uH17uTo
-7PP+IOjt9O7w7OD26P8g5Ov/IPHi7uj1IOrr6OXt8u7iLiCgDQo0LqDE5e3l5u3g/yD96u7t7uzo
-/zogoA0K0ODx8fvr6uAg4fPk5fIg8fLu6PL8IOft4Pfo8uXr/O3uIOTl+OXi6+UsIOXm5evoIOH7
-IP3y7iDx8u7o6+Ag6/7h4P8g5PDz4+D/IPDl6uvg7OAsIO3g7/Do7OXwLCDw4OTo7iwg7/Dl8fHg
-IOjr6CDy5evl4ujk5e3o5S4g0yDi4PEg7+7/4uv/5fLx/yDi5evo6u7r5e/t4P8g4u7n7O7m7e7x
-8vwg5+Ag7OXt/Pjo5SDk5e384+gg7/Do4uvl9/wg4u3o7ODt6OUg8u737e4g8uDq7uUg9+jx6+4g
-7+7y5e326ODr/O379SDq6+jl7fLu4iwg5fHr6CDh+yDi+yD98u4g8eTl6+Dr6CDn4CDh7uv8+PP+
-IPHz7OzzLg0KNS6gwu7n7O7m7e7x8vwg7+7x8u7/7e3u6SDw4OHu8vs6IKANCsz7IO7h7e7i6//l
-7CDFLW1haWwg4eDn+yDq4Obk8/4g7eXk5ev+LCD98u4g7uft4Pfg5fIsIPfy7iDi+yDs7ubl8uUg
-7eUg4eXx7+7q7ujy/PH/LCD38u4g4uD48yDw4PHx++vq8yDh8+Tz8iDv7uvz9+Dy/CDu5O3oIOgg
-8uUg5uUg6/7k6C4goA0KDQrR8u7o7O7x8vwg8ODx8fvr7uo6DQoNCi0gz/Dl5O/w6P/y6P8g0+rw
-4Ojt+6AtIDg1MCDj8O0uoCg2ODUgNjk3IODk8C4pDQotINTo5yDr6PbgINPq8ODo7fsgLaAxNjAw
-IOPw7S6gKDUgNDU3IDM5MSDg5PAuKQ0KLSDO4fng/yDw4PHx++vq4CDv7iDT6vDg6O3lIC2gMjAw
-MCDj8O0uoCjh7uvl5aA2IDAwMCAwMDAg4OTwLikNCg0K0uDqIOblIO/w7uLu5OjsIEUtTWFpbCDw
-4PHx++vq6CDv7iDo7fvsIPHy8ODt4Owg7Ojw4Cwg5fHr6CDC4PEg6O3y5fDl8fPl8iDw4PHx++vq
-4CDv7iDq7u3q8OXy7e7pIPHy8ODt5SAtIO3g7+j46PLlLCDoIOz7IO7y4uXy6Owg7+4g8fLu6Ozu
-8fLoIOgg6u7r6Pfl8fLi8yDv7uvz9+Dy5evl6S4NCg0KyiDw4PHx++vq4OzoIO/w6O3o7OD+8vH/
-IO/o8fzs4CDt5SDv8O7y6OLu8OX34Pno5SDn4Oru7e7k4PLl6/zx8uLzINPq8ODo7fshDQoNCi0t
-DQpDIPPi4Obl7ejl7Cwgwuvg5Ojs6PANCg0K0ODn4ujy6OUg4uD45ePuIOHo5+3l8eAg4iDo7fLl
-8O3l8uUgoA0KDQrS5evl9O7tOqAzOCAwOTctMjA0LTIwNDANCg0KRS1tYWlsOqBpbmZvby11YUBi
-aWdtaXIubmV0DQoNCg0KLS0gDQrd8u4g8e7u4fnl7ejlIO/w7uLl8OXt7iDt4CDi6PDz8fsg4O3y
-6OLo8PPx7uwgQXZhc3QuDQpodHRwczovL3d3dy5hdmFzdC5jb20vYW50aXZpcnVzDQpfX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFp
-bGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2Vu
-ZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Wed, Jul 8, 2020 at 3:04 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> On 08.07.20 11:45, Mike Rapoport wrote:
+> > On Wed, Jul 08, 2020 at 11:25:36AM +0200, David Hildenbrand wrote:
+> >> On 08.07.20 11:15, Mike Rapoport wrote:
+> >>>>>>>>
+> >>>>> But on more theoretical/fundmanetal level, I think we lack a generic
+> >>>>> abstraction similar to e.g. x86 'struct numa_meminfo' that serves as
+> >>>>> translaton of firmware supplied information into data that can be used
+> >>>>> by the generic mm without need to reimplement it for each and every
+> >>>>> arch.
+> >>>>
+> >>>> Right. As I expressed, I am not a friend of using memblock for that, and
+> >>>> the pgdat node span is tricky.
+> >>>>
+> >>>> Maybe abstracting that x86 concept is possible in some way (and we could
+> >>>> restrict the information to boot-time properties, so we don't have to
+> >>>> mess with memory hot(un)plug - just as done for numa_meminfo AFAIKS).
+> >>>
+> >>> I agree with pgdat part and disagree about memblock. It already has
+> >>> non-init physmap, why won't we add memblock.memory to the mix? ;-)
+> >>
+> >> Can we generalize and tweak physmap to contain node info? That's all we
+> >> need, no? (the special mem= parameter handling should not matter for our
+> >> use case, where "physmap" and "memory" would differ)
+> >
+> > TBH, I have only random vague thoughts at the moment. This might be an
+> > option. But then we need to enable physmap on !s390, right?
+>
+> Yes, looks like it.
+>
+> >
+> >>> Now, seriously, memblock already has all the necessary information about
+> >>> the coldplug memory for several architectures. x86 being an exception
+> >>> because for some reason the reserved memory is not considered memory
+> >>> there. The infrastructure for quiering and iterating memory regions is
+> >>> already there. We just need to leave out the irrelevant parts, like
+> >>> memblock.reserved and allocation funcions.
+> >>
+> >> I *really* don't want to mess with memblocks on memory hot(un)plug on
+> >> x86 and s390x (+other architectures in the future). I also thought about
+> >> stopping to create memblocks for hotplugged memory on arm64, by tweaking
+> >> pfn_valid() to query memblocks only for early sections.
+> >>
+> >> If "physmem" is not an option, can we at least introduce something like
+> >> ARCH_UPDTAE_MEMBLOCK_ON_HOTPLUG to avoid doing that on x86 and s390x for
+> >> now (and later maybe for others)?
+> >
+> > I have to do more memory hotplug howework to answer that ;-)
+> >
+> > My general point is that we don't have to reinvent the wheel to have
+> > coldplug memory representation, it's already there. We just need a way
+> > to use it properly.
+>
+> Yes, I tend to agree. Details to be clarified :)
+
+I'm not quite understanding the concern, or requirement about
+"updating memblock" in the hotplug path. The routines
+memory_add_physaddr_to_nid() and phys_to_target_node() are helpers to
+interrogate platform-firmware numa info through a common abstraction.
+They place no burden on the memory hotplug code they're just used to
+see if a hot-added range lies within an existing node span when
+platform-firmware otherwise fails to communicate a node. x86 can
+continue to back those helpers with numa_meminfo, arm64 can use a
+generic memblock implementation and other archs can follow the arm64
+example if they want better numa answers for drivers.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
