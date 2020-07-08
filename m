@@ -1,52 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C90421800D
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 08:59:34 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F80821801E
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  8 Jul 2020 09:00:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D096D110BDB35;
-	Tue,  7 Jul 2020 23:59:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id 339B6110BDB38;
+	Wed,  8 Jul 2020 00:00:29 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 63CC7110BC281
-	for <linux-nvdimm@lists.01.org>; Tue,  7 Jul 2020 23:59:29 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E2BF1110BC281
+	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 00:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1594191568;
+	s=mimecast20190719; t=1594191625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Az+NbGEqpxE1mhacuWneq+VUUYoQV1fpfa73pWlsTG8=;
-	b=MfH3Gjg9gfDI97WkbRU4YYogv4L9zJ6IPHURFsLzzqWMYDWiK+EkNCjqiffZQZI4U7CiOr
-	h3aAKK98cYak5epLOwJOz+0L4F3dhoPIBcnR0C5YVhrDZOMIONm6oXE8owF+w5UuTaMq6L
-	EtlFGygcH38E7hJcteZGJSUtWLz3lAc=
+	bh=P+pB41ag935VHpya9CnswAR3Lx824tdMEksUnjGyp0g=;
+	b=UzGrW7W1x/bnd+Kpi2F8eIIuOdQOS1Fp1LK3jRQvGJ0lkoyQCOMVLBhBq7uX9r2WywCMf9
+	heivPjPaUV8hh4wL9Epm4P/k5WvPOQmASZuO657bbrnDEfRLG/yFWOEsChUb3l25N/+fEi
+	C2e1Au/+vRHSeUw5RdSrrWT6bu2wRrM=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-276-_TFbW2XVPn-VrCKTbkvjFg-1; Wed, 08 Jul 2020 02:59:25 -0400
-X-MC-Unique: _TFbW2XVPn-VrCKTbkvjFg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+ us-mta-155-kHPJQVmwPieWykhIljztNQ-1; Wed, 08 Jul 2020 03:00:22 -0400
+X-MC-Unique: kHPJQVmwPieWykhIljztNQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 076AF805EF3;
-	Wed,  8 Jul 2020 06:59:23 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CFF412CCC;
+	Wed,  8 Jul 2020 07:00:19 +0000 (UTC)
 Received: from [10.36.113.117] (ovpn-113-117.ams2.redhat.com [10.36.113.117])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6CE2B5BAC3;
-	Wed,  8 Jul 2020 06:59:19 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B7D53619C4;
+	Wed,  8 Jul 2020 07:00:16 +0000 (UTC)
 Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid as
  EXPORT_SYMBOL_GPL
-To: Mike Rapoport <rppt@linux.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>
+To: Justin He <Justin.He@arm.com>, Dan Williams <dan.j.williams@intel.com>
 References: <20200707055917.143653-1-justin.he@arm.com>
  <20200707055917.143653-2-justin.he@arm.com>
  <20200707115454.GN5913@dhcp22.suse.cz>
  <AM6PR08MB406907F9F2B13DA6DC893AD9F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
  <CAPcyv4ipu4qwKhk4pzJ8nZB2sp+=AndahS8eCgUvFvVP6dEkeA@mail.gmail.com>
- <AM6PR08MB4069D0D1FD8FB31B6A56DDB5F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
- <CAPcyv4ivyJsyzcbkBWcqBYZMx3VdJF7+VPCNs177DU2rYqtz_A@mail.gmail.com>
- <20200708062217.GE386073@linux.ibm.com>
+ <20200708053239.GC386073@linux.ibm.com>
+ <CAPcyv4i2gnrugO5n715WsDoj+gxV9Mjt-49zNnv+ROMLYy79LQ@mail.gmail.com>
+ <AM6PR08MB4069AC46B435AB32BE9E2834F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -92,24 +91,24 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <c4ee0a94-c980-80ca-c43d-15729e1a3663@redhat.com>
-Date: Wed, 8 Jul 2020 08:59:18 +0200
+Message-ID: <e7bba217-bade-f9c1-8e44-f6b5ca378832@redhat.com>
+Date: Wed, 8 Jul 2020 09:00:15 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200708062217.GE386073@linux.ibm.com>
+In-Reply-To: <AM6PR08MB4069AC46B435AB32BE9E2834F7670@AM6PR08MB4069.eurprd08.prod.outlook.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Message-ID-Hash: 72AWPFD23C3SLBMVNQ5V24ZCE34VHBVV
-X-Message-ID-Hash: 72AWPFD23C3SLBMVNQ5V24ZCE34VHBVV
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Message-ID-Hash: FIQYEDX5PG2QPAWE6HL33LP5V73GFKUP
+X-Message-ID-Hash: FIQYEDX5PG2QPAWE6HL33LP5V73GFKUP
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Justin He <Justin.He@arm.com>, Michal Hocko <mhocko@kernel.org>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>
+CC: Michal Hocko <mhocko@kernel.org>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Kaly Xin <Kaly.Xin@arm.com>, Mike Rapoport <rppt@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/72AWPFD23C3SLBMVNQ5V24ZCE34VHBVV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FIQYEDX5PG2QPAWE6HL33LP5V73GFKUP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -118,46 +117,155 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 08.07.20 08:22, Mike Rapoport wrote:
-> On Tue, Jul 07, 2020 at 09:27:43PM -0700, Dan Williams wrote:
->> On Tue, Jul 7, 2020 at 9:08 PM Justin He <Justin.He@arm.com> wrote:
->> [..]
+On 08.07.20 08:56, Justin He wrote:
+> Hi Dan
+> 
+>> -----Original Message-----
+>> From: Dan Williams <dan.j.williams@intel.com>
+>> Sent: Wednesday, July 8, 2020 1:48 PM
+>> To: Mike Rapoport <rppt@linux.ibm.com>
+>> Cc: Justin He <Justin.He@arm.com>; Michal Hocko <mhocko@kernel.org>; David
+>> Hildenbrand <david@redhat.com>; Catalin Marinas <Catalin.Marinas@arm.com>;
+>> Will Deacon <will@kernel.org>; Vishal Verma <vishal.l.verma@intel.com>;
+>> Dave Jiang <dave.jiang@intel.com>; Andrew Morton <akpm@linux-
+>> foundation.org>; Baoquan He <bhe@redhat.com>; Chuhong Yuan
+>> <hslester96@gmail.com>; linux-arm-kernel@lists.infradead.org; linux-
+>> kernel@vger.kernel.org; linux-mm@kvack.org; linux-nvdimm@lists.01.org;
+>> Kaly Xin <Kaly.Xin@arm.com>
+>> Subject: Re: [PATCH v2 1/3] arm64/numa: export memory_add_physaddr_to_nid
+>> as EXPORT_SYMBOL_GPL
+>>
+>> On Tue, Jul 7, 2020 at 10:33 PM Mike Rapoport <rppt@linux.ibm.com> wrote:
+>>>
+>>> On Tue, Jul 07, 2020 at 08:56:36PM -0700, Dan Williams wrote:
+>>>> On Tue, Jul 7, 2020 at 7:20 PM Justin He <Justin.He@arm.com> wrote:
+>>>>>
+>>>>> Hi Michal and David
+>>>>>
+>>>>>> -----Original Message-----
+>>>>>> From: Michal Hocko <mhocko@kernel.org>
+>>>>>> Sent: Tuesday, July 7, 2020 7:55 PM
+>>>>>> To: Justin He <Justin.He@arm.com>
+>>>>>> Cc: Catalin Marinas <Catalin.Marinas@arm.com>; Will Deacon
+>>>>>> <will@kernel.org>; Dan Williams <dan.j.williams@intel.com>; Vishal
+>> Verma
+>>>>>> <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>;
+>> Andrew
+>>>>>> Morton <akpm@linux-foundation.org>; Mike Rapoport
+>> <rppt@linux.ibm.com>;
+>>>>>> Baoquan He <bhe@redhat.com>; Chuhong Yuan <hslester96@gmail.com>;
+>> linux-
+>>>>>> arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org;
+>> linux-
+>>>>>> mm@kvack.org; linux-nvdimm@lists.01.org; Kaly Xin
+>> <Kaly.Xin@arm.com>
+>>>>>> Subject: Re: [PATCH v2 1/3] arm64/numa: export
+>> memory_add_physaddr_to_nid
+>>>>>> as EXPORT_SYMBOL_GPL
+>>>>>>
+>>>>>> On Tue 07-07-20 13:59:15, Jia He wrote:
+>>>>>>> This exports memory_add_physaddr_to_nid() for module driver to
+>> use.
+>>>>>>>
+>>>>>>> memory_add_physaddr_to_nid() is a fallback option to get the nid
+>> in case
+>>>>>>> NUMA_NO_NID is detected.
+>>>>>>>
+>>>>>>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>>>>>> Signed-off-by: Jia He <justin.he@arm.com>
+>>>>>>> ---
+>>>>>>>  arch/arm64/mm/numa.c | 5 +++--
+>>>>>>>  1 file changed, 3 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+>>>>>>> index aafcee3e3f7e..7eeb31740248 100644
+>>>>>>> --- a/arch/arm64/mm/numa.c
+>>>>>>> +++ b/arch/arm64/mm/numa.c
+>>>>>>> @@ -464,10 +464,11 @@ void __init arm64_numa_init(void)
+>>>>>>>
+>>>>>>>  /*
+>>>>>>>   * We hope that we will be hotplugging memory on nodes we
+>> already know
+>>>>>> about,
+>>>>>>> - * such that acpi_get_node() succeeds and we never fall back to
+>> this...
+>>>>>>> + * such that acpi_get_node() succeeds. But when SRAT is not
+>> present,
+>>>>>> the node
+>>>>>>> + * id may be probed as NUMA_NO_NODE by acpi, Here provide a
+>> fallback
+>>>>>> option.
+>>>>>>>   */
+>>>>>>>  int memory_add_physaddr_to_nid(u64 addr)
+>>>>>>>  {
+>>>>>>> -   pr_warn("Unknown node for memory at 0x%llx, assuming node
+>> 0\n",
+>>>>>> addr);
+>>>>>>>     return 0;
+>>>>>>>  }
+>>>>>>> +EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
+>>>>>>
+>>>>>> Does it make sense to export a noop function? Wouldn't make more
+>> sense
+>>>>>> to simply make it static inline somewhere in a header? I haven't
+>> checked
+>>>>>> whether there is an easy way to do that sanely bu this just hit my
+>> eyes.
+>>>>>
+>>>>> Okay, I can make a change in memory_hotplug.h, sth like:
+>>>>> --- a/include/linux/memory_hotplug.h
+>>>>> +++ b/include/linux/memory_hotplug.h
+>>>>> @@ -149,13 +149,13 @@ int add_pages(int nid, unsigned long start_pfn,
+>> unsigned long nr_pages,
+>>>>>               struct mhp_params *params);
+>>>>>  #endif /* ARCH_HAS_ADD_PAGES */
+>>>>>
+>>>>> -#ifdef CONFIG_NUMA
+>>>>> -extern int memory_add_physaddr_to_nid(u64 start);
+>>>>> -#else
+>>>>> +#if !defined(CONFIG_NUMA) || !defined(memory_add_physaddr_to_nid)
+>>>>>  static inline int memory_add_physaddr_to_nid(u64 start)
+>>>>>  {
+>>>>>         return 0;
+>>>>>  }
+>>>>> +#else
+>>>>> +extern int memory_add_physaddr_to_nid(u64 start);
+>>>>>  #endif
+>>>>>
+>>>>> And then check the memory_add_physaddr_to_nid() helper on all arches,
+>>>>> if it is noop(return 0), I can simply remove it.
+>>>>> if it is not noop, after the helper,
+>>>>> #define memory_add_physaddr_to_nid
+>>>>>
+>>>>> What do you think of this proposal?
+>>>>
 >>>> Especially for architectures that use memblock info for numa info
 >>>> (which seems to be everyone except x86) why not implement a generic
 >>>> memory_add_physaddr_to_nid() that does:
->>>>
->>>> int memory_add_physaddr_to_nid(u64 addr)
->>>> {
->>>>         unsigned long start_pfn, end_pfn, pfn = PHYS_PFN(addr);
->>>>         int nid;
->>>>
->>>>         for_each_online_node(nid) {
->>>>                 get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
->>>>                 if (pfn >= start_pfn && pfn <= end_pfn)
->>>>                         return nid;
->>>>         }
->>>>         return NUMA_NO_NODE;
->>>> }
 >>>
->>> Thanks for your suggestion,
->>> Could I wrap the codes and let memory_add_physaddr_to_nid simply invoke
->>> phys_to_target_node()?
+>>> That would be only arm64.
+>>>
 >>
->> I think it needs to be the reverse. phys_to_target_node() should call
->> memory_add_physaddr_to_nid() by default, but fall back to searching
->> reserved memory address ranges in memblock. See phys_to_target_node()
->> in arch/x86/mm/numa.c. That one uses numa_meminfo instead of memblock,
->> but the principle is the same i.e. that a target node may not be
->> represented in memblock.memory, but memblock.reserved. I'm working on
->> a patch to provide a function similar to get_pfn_range_for_nid() that
->> operates on reserved memory.
+>> Darn, I saw ARCH_KEEP_MEMBLOCK and had delusions of grandeur that it
+>> could solve my numa api woes. At least for x86 the problem is already
+>> solved with reserved numa_meminfo, but now I'm trying to write generic
+>> drivers that use those apis and finding these gaps on other archs.
 > 
-> Do we really need yet another memblock iterator?
-> I think only x86 has memory that is not in memblock.memory but only in
-> memblock.reserved.
+> Even on arm64, there is a dependency issue in dax_pmem kmem case.
+> If dax pmem uses memory_add_physaddr_to_nid() to decide which node that
+> memblock should add into, get_pfn_range_for_nid() might not have
+> the correct memblock info at that time. That is, get_pfn_range_for_nid()
+> can't get the correct memblock info before add_memory()
+> 
+> So IMO, memory_add_physaddr_to_nid() still have to implement as noop on
+> arm64 (return 0) together with sh,s390x? Powerpc, x86,ia64 can use their
+> own implementation. And phys_to_target_node() can use your suggested(
+> for_each_online_node() ...)
+> 
+> What do you think of it? Thanks
 
-Reading about abusing the memblock allcoator once again in memory
-hotplug paths makes me shiver.
+You are trying to fix the "we only have one dummy node" AFAIU, so what
+you propose here is certainly good enough for now.
 
 -- 
 Thanks,
