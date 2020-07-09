@@ -2,41 +2,41 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D389219BC0
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 11:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFEE5219BCF
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 11:12:19 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 38011111FF49B;
-	Thu,  9 Jul 2020 02:10:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id 6B386111FF49B;
+	Thu,  9 Jul 2020 02:12:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1EEE911202AC9
-	for <linux-nvdimm@lists.01.org>; Thu,  9 Jul 2020 02:10:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 92036111FF49B
+	for <linux-nvdimm@lists.01.org>; Thu,  9 Jul 2020 02:12:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1594285851;
+	s=mimecast20190719; t=1594285934;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FdfoFQjpgiNtZWSFBHj/7nzvOM1EzQEIkUtwS/EdNs4=;
-	b=MTHrsHjFx54Bmbgc13+x9CLppoE/sZQeTD3N77ZAlQnLOIOXu2UdB8phTSqVdY1+hzQZRc
-	dhwSaFhc98IaWKvFmnINIo98Wq4vDFmYrEsEVtuwUmQ+9mCp0IkDpY9od9ot/AxJ+m8cIv
-	UbA1PeP2AW3ZyygHvlxEHamu/KVvs+0=
+	bh=QpwS1vWzxNYsRbVzCpxXy92PEVS5TzvhnObTcapX3Nk=;
+	b=hd5Go24ANdtD8X01XCbiCS+KqQnOCnKh31VcIPRh26rNa2gn4MtsIt1RpC089GOXbFky1P
+	S2TibDA2mflXXqtunG6OM0dNnOYnEuHRU5dtSmYiYZqDzAzOcObmuDZNJQO/kVrXhV4+K4
+	uQ6VBgx3bwv6hQNQOPrQQDT+0feJPxc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-458-MOeGgnKhNx2d_3uf2L-FWQ-1; Thu, 09 Jul 2020 05:10:46 -0400
-X-MC-Unique: MOeGgnKhNx2d_3uf2L-FWQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-59-DKd0UOzSMmOKiLY4--yi-A-1; Thu, 09 Jul 2020 05:12:10 -0400
+X-MC-Unique: DKd0UOzSMmOKiLY4--yi-A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3B4C3107ACF4;
-	Thu,  9 Jul 2020 09:10:43 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1B86A107ACCA;
+	Thu,  9 Jul 2020 09:12:07 +0000 (UTC)
 Received: from [10.36.114.174] (ovpn-114-174.ams2.redhat.com [10.36.114.174])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8711D70100;
-	Thu,  9 Jul 2020 09:10:37 +0000 (UTC)
-Subject: Re: [PATCH v3 3/6] sh/mm: use default dummy
- memory_add_physaddr_to_nid()
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B998010013C2;
+	Thu,  9 Jul 2020 09:11:58 +0000 (UTC)
+Subject: Re: [PATCH v3 6/6] mm/memory_hotplug: fix unpaired
+ mem_hotplug_begin/done
 To: Jia He <justin.he@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
  Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
  Fenghua Yu <fenghua.yu@intel.com>,
@@ -44,9 +44,9 @@ To: Jia He <justin.he@arm.com>, Catalin Marinas <catalin.marinas@arm.com>,
  Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
  <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>
+ Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>
 References: <20200709020629.91671-1-justin.he@arm.com>
- <20200709020629.91671-4-justin.he@arm.com>
+ <20200709020629.91671-7-justin.he@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -92,24 +92,24 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <f1a172b2-80c2-1ec7-483f-f3fba761ccb0@redhat.com>
-Date: Thu, 9 Jul 2020 11:10:36 +0200
+Message-ID: <2dfaf00b-9b08-8b90-6056-b53f7aa9b51c@redhat.com>
+Date: Thu, 9 Jul 2020 11:11:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200709020629.91671-4-justin.he@arm.com>
+In-Reply-To: <20200709020629.91671-7-justin.he@arm.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: KZB6BTOMXEPLNOUDVIGAVQJVWL66S6JX
-X-Message-ID-Hash: KZB6BTOMXEPLNOUDVIGAVQJVWL66S6JX
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: X324FGNKU25Z6CUHBISYTVSDIKZDNI5Q
+X-Message-ID-Hash: X324FGNKU25Z6CUHBISYTVSDIKZDNI5Q
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Kaly Xin <Kaly.Xin@arm.com>
+CC: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Kaly Xin <Kaly.Xin@arm.com>, stable@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KZB6BTOMXEPLNOUDVIGAVQJVWL66S6JX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X324FGNKU25Z6CUHBISYTVSDIKZDNI5Q/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -119,37 +119,67 @@ Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
 On 09.07.20 04:06, Jia He wrote:
-> After making default memory_add_physaddr_to_nid in mm/memory_hotplug,
-> there is no use to define a similar one in arch specific directory.
+> When check_memblock_offlined_cb() returns failed rc(e.g. the memblock is
+> online at that time), mem_hotplug_begin/done is unpaired in such case.
 > 
+> Therefore a warning:
+>  Call Trace:
+>   percpu_up_write+0x33/0x40
+>   try_remove_memory+0x66/0x120
+>   ? _cond_resched+0x19/0x30
+>   remove_memory+0x2b/0x40
+>   dev_dax_kmem_remove+0x36/0x72 [kmem]
+>   device_release_driver_internal+0xf0/0x1c0
+>   device_release_driver+0x12/0x20
+>   bus_remove_device+0xe1/0x150
+>   device_del+0x17b/0x3e0
+>   unregister_dev_dax+0x29/0x60
+>   devm_action_release+0x15/0x20
+>   release_nodes+0x19a/0x1e0
+>   devres_release_all+0x3f/0x50
+>   device_release_driver_internal+0x100/0x1c0
+>   driver_detach+0x4c/0x8f
+>   bus_remove_driver+0x5c/0xd0
+>   driver_unregister+0x31/0x50
+>   dax_pmem_exit+0x10/0xfe0 [dax_pmem]
+> 
+> Fixes: f1037ec0cc8a ("mm/memory_hotplug: fix remove_memory() lockdep splat")
+> Cc: stable@vger.kernel.org # v5.6+
 > Signed-off-by: Jia He <justin.he@arm.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Acked-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  arch/sh/mm/init.c | 9 ---------
->  1 file changed, 9 deletions(-)
+>  mm/memory_hotplug.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index a70ba0fdd0b3..f75932ba87a6 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -430,15 +430,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
->  	return ret;
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index b49ab743d914..3e0645387daf 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1752,7 +1752,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+>  	 */
+>  	rc = walk_memory_blocks(start, size, NULL, check_memblock_offlined_cb);
+>  	if (rc)
+> -		goto done;
+> +		return rc;
+>  
+>  	/* remove memmap entry */
+>  	firmware_map_remove(start, start + size, "System RAM");
+> @@ -1776,9 +1776,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+>  
+>  	try_offline_node(nid);
+>  
+> -done:
+>  	mem_hotplug_done();
+> -	return rc;
+> +	return 0;
 >  }
 >  
-> -#ifdef CONFIG_NUMA
-> -int memory_add_physaddr_to_nid(u64 addr)
-> -{
-> -	/* Node 0 for now.. */
-> -	return 0;
-> -}
-> -EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-> -#endif
-> -
->  void arch_remove_memory(int nid, u64 start, u64 size,
->  			struct vmem_altmap *altmap)
->  {
+>  /**
 > 
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+@Andrew, can you pick that up directly? It's independent of the other stuff.
 
 -- 
 Thanks,
