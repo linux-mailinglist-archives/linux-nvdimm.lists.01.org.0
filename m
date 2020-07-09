@@ -1,121 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3652195FE
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 04:07:50 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86268219613
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 04:13:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 733AC111661AC;
-	Wed,  8 Jul 2020 19:07:49 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=justin.he@arm.com; receiver=<UNKNOWN> 
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by ml01.01.org (Postfix) with ESMTP id 15A941007A824
-	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 19:07:47 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 501621396;
-	Wed,  8 Jul 2020 19:07:46 -0700 (PDT)
-Received: from localhost.localdomain (entos-thunderx2-02.shanghai.arm.com [10.169.212.213])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id B5F703F887;
-	Wed,  8 Jul 2020 19:07:36 -0700 (PDT)
-From: Jia He <justin.he@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 6/6] mm/memory_hotplug: fix unpaired mem_hotplug_begin/done
-Date: Thu,  9 Jul 2020 10:06:29 +0800
-Message-Id: <20200709020629.91671-7-justin.he@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200709020629.91671-1-justin.he@arm.com>
+	by ml01.01.org (Postfix) with ESMTP id ECBBD11167BDB;
+	Wed,  8 Jul 2020 19:13:55 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 2A3E5111661B8
+	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 19:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qi5089B5TBHI+zy9mDefYNvDdHyy2eklBkVImsmfAA8=; b=XR04+03woT3Wc7Z/57jVKd4hjt
+	3/E+cPTx2AQKCpc/7RreVQxlA9fQYhnyQYvjGihVTwBeUhMvD1az1bE+aXIowHLHsO4PPVi+sxQwA
+	w3nQAbkppGId8GQAhA5vINNi51acayCJgaGvH8tDYh9hhuTWECwDBu6AGIzdVjzzQC3Zgoo+4Dbnz
+	AZjcV2gbkzzZX2ShVFGcqhY1KThJMO/jobs64MREKH5Ezengt4WKDQkr3yw0rrWp+e+/1nIZ1URDR
+	u8M4sp6A3rWRF3TEykU38Xw06lEG6SCF2w3ZwXpgRBaTt6syvQbk7T5XdAmus0UblYhhdytIy8B1y
+	yTszHv4A==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1jtM1h-0006v4-Cd; Thu, 09 Jul 2020 02:11:06 +0000
+Date: Thu, 9 Jul 2020 03:11:04 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jia He <justin.he@arm.com>
+Subject: Re: [PATCH v3 4/6] mm: don't export memory_add_physaddr_to_nid in
+ arch specific directory
+Message-ID: <20200709021104.GZ25523@casper.infradead.org>
 References: <20200709020629.91671-1-justin.he@arm.com>
-Message-ID-Hash: R6BI3HVM5ZUVOH3KP6775OSGGTRROM4O
-X-Message-ID-Hash: R6BI3HVM5ZUVOH3KP6775OSGGTRROM4O
-X-MailFrom: justin.he@arm.com
+ <20200709020629.91671-5-justin.he@arm.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20200709020629.91671-5-justin.he@arm.com>
+Message-ID-Hash: 6O4UMR6WZC6A3NMKEOOJBM2CTYDSALMK
+X-Message-ID-Hash: 6O4UMR6WZC6A3NMKEOOJBM2CTYDSALMK
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Kaly Xin <Kaly.Xin@arm.com>, Jia He <justin.he@arm.com>, stable@vger.kernel.org
+CC: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Kaly Xin <Kaly.Xin@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R6BI3HVM5ZUVOH3KP6775OSGGTRROM4O/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6O4UMR6WZC6A3NMKEOOJBM2CTYDSALMK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-When check_memblock_offlined_cb() returns failed rc(e.g. the memblock is
-online at that time), mem_hotplug_begin/done is unpaired in such case.
+On Thu, Jul 09, 2020 at 10:06:27AM +0800, Jia He wrote:
+> After a general version of __weak memory_add_physaddr_to_nid implemented
+> and exported , it is no use exporting twice in arch directory even if
+> e,g, ia64/x86 have their specific version.
+> 
+> This is to suppress the modpost warning:
+> WARNING: modpost: vmlinux: 'memory_add_physaddr_to_nid' exported twice.
+> Previous export was in vmlinux
 
-Therefore a warning:
- Call Trace:
-  percpu_up_write+0x33/0x40
-  try_remove_memory+0x66/0x120
-  ? _cond_resched+0x19/0x30
-  remove_memory+0x2b/0x40
-  dev_dax_kmem_remove+0x36/0x72 [kmem]
-  device_release_driver_internal+0xf0/0x1c0
-  device_release_driver+0x12/0x20
-  bus_remove_device+0xe1/0x150
-  device_del+0x17b/0x3e0
-  unregister_dev_dax+0x29/0x60
-  devm_action_release+0x15/0x20
-  release_nodes+0x19a/0x1e0
-  devres_release_all+0x3f/0x50
-  device_release_driver_internal+0x100/0x1c0
-  driver_detach+0x4c/0x8f
-  bus_remove_driver+0x5c/0xd0
-  driver_unregister+0x31/0x50
-  dax_pmem_exit+0x10/0xfe0 [dax_pmem]
-
-Fixes: f1037ec0cc8a ("mm/memory_hotplug: fix remove_memory() lockdep splat")
-Cc: stable@vger.kernel.org # v5.6+
-Signed-off-by: Jia He <justin.he@arm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Dan Williams <dan.j.williams@intel.com>
----
- mm/memory_hotplug.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b49ab743d914..3e0645387daf 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1752,7 +1752,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 	 */
- 	rc = walk_memory_blocks(start, size, NULL, check_memblock_offlined_cb);
- 	if (rc)
--		goto done;
-+		return rc;
- 
- 	/* remove memmap entry */
- 	firmware_map_remove(start, start + size, "System RAM");
-@@ -1776,9 +1776,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 
- 	try_offline_node(nid);
- 
--done:
- 	mem_hotplug_done();
--	return rc;
-+	return 0;
- }
- 
- /**
--- 
-2.17.1
+It's bad form to introduce a warning and then send a follow-up patch to
+fix the warning.  Just fold this patch into patch 1/6.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
