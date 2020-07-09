@@ -2,155 +2,67 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80332197B7
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 07:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AAD219809
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  9 Jul 2020 07:39:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 347931007A824;
-	Wed,  8 Jul 2020 22:13:36 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.15.47; helo=eur01-db5-obe.outbound.protection.outlook.com; envelope-from=justin.he@arm.com; receiver=<UNKNOWN> 
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (mail-eopbgr150047.outbound.protection.outlook.com [40.107.15.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 41C4F111E7BFD;
+	Wed,  8 Jul 2020 22:39:47 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1042; helo=mail-pj1-x1042.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6F74B110CC32D
-	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 22:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6sN+udc5fe7rcS4kOYX0bFZpVWtQBB+c87d5Xdiyt0Q=;
- b=78LAvTS6+lh3bxCxaSawrml6yAPVzm1T90ysCP68srNIeY5iPiE3WZZZRhsuzaI2jkcSqm+cbhIskFWcoNr87Flx4s/+GFArODNWtkcxiAQil/ewz6OaxQRNzhItXyCMxqTCbQ/PQjUk3dosH5HON4LFZHjnQIUtWLsYd+NLcR4=
-Received: from AM6P194CA0002.EURP194.PROD.OUTLOOK.COM (2603:10a6:209:90::15)
- by AM6PR08MB5029.eurprd08.prod.outlook.com (2603:10a6:20b:e7::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.22; Thu, 9 Jul
- 2020 05:13:28 +0000
-Received: from AM5EUR03FT033.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:209:90:cafe::4f) by AM6P194CA0002.outlook.office365.com
- (2603:10a6:209:90::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.20 via Frontend
- Transport; Thu, 9 Jul 2020 05:13:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; lists.01.org; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;lists.01.org; dmarc=bestguesspass action=none
- header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM5EUR03FT033.mail.protection.outlook.com (10.152.16.99) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3174.21 via Frontend Transport; Thu, 9 Jul 2020 05:13:28 +0000
-Received: ("Tessian outbound 1c27ecaec3d6:v62"); Thu, 09 Jul 2020 05:13:27 +0000
-X-CR-MTA-TID: 64aa7808
-Received: from f52441a98fb4.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 4007E773-5DA6-4C6A-B5A2-3FB6CEF10A18.1;
-	Thu, 09 Jul 2020 05:13:21 +0000
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id f52441a98fb4.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Thu, 09 Jul 2020 05:13:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PFh2x/GAO2XMmi/DRIOrhF1wfVKb7ahSpKYTu1ffQnZfgtgtFRUwkcsRY2OE7xCVR9ffFreL6iSYUA/PL2Bo4S9+Rn8WP7j4Adh7R2aDglDqkDh6qqN5hoZjEjBhfh4G9DarF0B/v3636m+JSiuoLdae3a8+s7TQdOGiNBKqdGos6+rcIRrfgbQ0Zh+ecem+DyWrKQspgvzUNebkvo68OzKNPs4978tLZz5/p/7203vU1qFmHKcr9ctt+YKnyDdNyU/QZzGhQKDxa6fj8HW2AvC50wFcCPNaYc5chRP2f+OnSX6CUfP0QxsLt3maQtrA5+1QdcG8LkrQzUdXkLTW1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6sN+udc5fe7rcS4kOYX0bFZpVWtQBB+c87d5Xdiyt0Q=;
- b=VWi12XQ2NnMohOZ6J+zYEOhkiggspcxRMaTo6r+oPiEFVbNiowHfuE2obFPkroLUgCGUEhbLzRIdsFrtXJK4C9r/CRV4rj4Hd5isKWtQ08uKZWn/p/f3acdtGKIElvyksgne09MmL4qOJ6O2Kwq9GZDQuLpuvZS9+kOXIDPsBwnyHV7PYI/txulMeD+5cLv96g40j50LBn1+w7e1jKA6vT5v7c8oDV5mcbZyFg1sE3jp4Ch1yRzBraMrfwVuXl1gMaYJ5TyJ1Jjm+nDYjQVlXuLc4avKV8O/IX+ft+yW0xBzdcSwrfturWIFl94Nc/WLHO6kUSqi62hPe1cJ9TFWFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6sN+udc5fe7rcS4kOYX0bFZpVWtQBB+c87d5Xdiyt0Q=;
- b=78LAvTS6+lh3bxCxaSawrml6yAPVzm1T90ysCP68srNIeY5iPiE3WZZZRhsuzaI2jkcSqm+cbhIskFWcoNr87Flx4s/+GFArODNWtkcxiAQil/ewz6OaxQRNzhItXyCMxqTCbQ/PQjUk3dosH5HON4LFZHjnQIUtWLsYd+NLcR4=
-Received: from AM6PR08MB4069.eurprd08.prod.outlook.com (2603:10a6:20b:af::32)
- by AM7PR08MB5335.eurprd08.prod.outlook.com (2603:10a6:20b:101::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3153.29; Thu, 9 Jul
- 2020 05:13:20 +0000
-Received: from AM6PR08MB4069.eurprd08.prod.outlook.com
- ([fe80::8c97:9695:2f8d:3ae0]) by AM6PR08MB4069.eurprd08.prod.outlook.com
- ([fe80::8c97:9695:2f8d:3ae0%5]) with mapi id 15.20.3174.021; Thu, 9 Jul 2020
- 05:13:20 +0000
-From: Justin He <Justin.He@arm.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: RE: [PATCH v3 5/6] device-dax: use fallback nid when numa_node is
- invalid
-Thread-Topic: [PATCH v3 5/6] device-dax: use fallback nid when numa_node is
- invalid
-Thread-Index: AQHWVZW+nx78d4gAuUOw9EWfEfkjTKj+macAgAAZ3LA=
-Date: Thu, 9 Jul 2020 05:13:19 +0000
-Message-ID: 
- <AM6PR08MB4069D206048464CFCBBFDC9EF7640@AM6PR08MB4069.eurprd08.prod.outlook.com>
-References: <20200709020629.91671-1-justin.he@arm.com>
- <20200709020629.91671-6-justin.he@arm.com>
- <CAPcyv4gfVhHyo-c=9bXd=z3=9Xqy7ato30D8p2aNsKBUONosug@mail.gmail.com>
-In-Reply-To: 
- <CAPcyv4gfVhHyo-c=9bXd=z3=9Xqy7ato30D8p2aNsKBUONosug@mail.gmail.com>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ts-tracking-id: 569fc01c-900f-4ac6-9a2e-06ed3fe017b2.1
-x-checkrecipientchecked: true
-Authentication-Results-Original: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=arm.com;
-x-originating-ip: [203.126.0.112]
-x-ms-publictraffictype: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 521337bb-6dcf-472a-5e1c-08d823c6d081
-x-ms-traffictypediagnostic: AM7PR08MB5335:|AM6PR08MB5029:
-x-ms-exchange-transport-forked: True
-X-Microsoft-Antispam-PRVS: 
-	<AM6PR08MB5029669A6F8FC061452F0144F7640@AM6PR08MB5029.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-nodisclaimer: true
-x-ms-oob-tlc-oobclassifiers: OLM:3968;OLM:3968;
-x-forefront-prvs: 04599F3534
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: 
- 8Xbtp0259dtbnwCyTYPbOIVhEFoz+RPJOv7cNTnlI3Ff6NCyJBeGnEQj9r8qJEIuGZRM8BljAbbZkv9gvhNAjvCES85YbpE7ezGy/U82BfQm2vYB1MdovrMiugzggiztqeuNBO5ycNKAFOKloPWexdp3NLoZuCdTZ/Z8V7dbTF8xpwBDxwR2vsptRn+H/59sT+CjdW3yxD+BQ3SeNpizverlZ1Uyh6VvYonkgisZfW+ffcDBzdNtlmxUWOpy0W6kHhag9mm4t9NzJ6s/ZfgUcZHcjkUg4KmUhFHqd+z3PU5dsG1lKeWJwIZTQMIZaPHJOElcJ6bFc7Qi0HbysnkOQQ==
-X-Forefront-Antispam-Report-Untrusted: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB4069.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(376002)(366004)(346002)(136003)(396003)(54906003)(6506007)(26005)(8676002)(83380400001)(6916009)(76116006)(7406005)(7416002)(4326008)(8936002)(66446008)(7696005)(71200400001)(53546011)(478600001)(66946007)(66556008)(66476007)(316002)(64756008)(2906002)(5660300002)(9686003)(33656002)(86362001)(186003)(55016002)(52536014);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata: 
- fkW/kph5UtYTIUPfsMjWGqBZaEYj9emNUlh9LjN0Tgpq3mTQxjGDzJC6w2tjJZP+faSBLrzfpLJCc52N27Njd7rFX/lLFmSUgVInJv+TL3AX2ZuJlEF7Ur9k5uTW89OSfnj6g3+z707uztDSUiGA6JJ7Lkpn0782fA6iZtK3LbGVBgATToe7bKhw2/FUjRoqtjihdK1sAIbM//koG1NF517P+FDLdta8ENbUPzOD49wcB5WNad8kUT/LWPIN4gy8rUj3Aoxal8fis1c7wtY3yiuQqj9FJehKA6HZA5VdOnDQYy+t/FzRz7/ELT96urZ2HlyZ/lXmGq0n5/M5NEcvrKNcoMTA7coOzGg/bwV3BAMQxZcDOkMG1Wr9TrniwVRG6h5rK/wK7YLVJEQg1Zq8EoHX5JmhxHORBkTlEc6ueKjJhM0a5fjSY7GhN2i2diWQ4HnkMoHC7gWS0meFtKTN17ccNOP2fqTidWXGfju3Tlg=
+	by ml01.01.org (Postfix) with ESMTPS id 788DA1118BAE7
+	for <linux-nvdimm@lists.01.org>; Wed,  8 Jul 2020 22:39:45 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id o22so598134pjw.2
+        for <linux-nvdimm@lists.01.org>; Wed, 08 Jul 2020 22:39:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:in-reply-to:references:date:message-id
+         :mime-version;
+        bh=9c81TSIbCZKp6JD2DVQj8nUdKOC/bv5lSEFksVXMAhY=;
+        b=Jz0FOkoBSmF19wKLrGnv6k7IgJCZHMLHAbCVfGOpuUGbMlTFEGyL1f++ecTr2pMGLt
+         Y81qlkeL53U6ojq/2hgh8sGpnGiTNRzVD0vD6G1ZSSF3YSFPwL7AQSFd5OAtLVgg1WN8
+         /1xxkO80yu6UYV8oHXdTOT8E8rxLEe2ZmYzkRFNh094KmukLkcatg+Sq/+gGNH3j8uBA
+         Lhzeh1BirWtWVmLqe+M69FQojhX45hQthpxmnt60yuPRH9PKBk18z0y1J8ZangeNQaBU
+         czEXDTVrZBFUwEBvW+AjkHAK1ZEC9UE3R/HWjrc3XzXuwHNTGGWTvdQIkoBKLwBq+Me+
+         2jUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=9c81TSIbCZKp6JD2DVQj8nUdKOC/bv5lSEFksVXMAhY=;
+        b=XHSbNX/M6RoO5f5utsw/dj9I4jdOD+PjEWlP4KbTV5d/L55pGMiBEjgDxvoFXeHS++
+         nuA/3kFZM4A4sqH93G6GQNX2JNfoad82N6DlRYxRnixypsGdOj8KDBHb0Ola3Bfg0NaC
+         fyO7DHloXSnhwesL8TarJdslcgL+6D0ADhcsAHieM82eCO36xvaMuaH0bUMCZtDbPD3u
+         JlLlt8+YUpgn9YAIyRDI8hMxWUYRMC8G7ouE2CRkpS5hpOJTzMT84TsKlyJMpr1xTIqj
+         EDpAbE4KYknOaFn16TCNu1MZqbCOyOyeNyWhOClB8tTSQAv9ZskjaVmQz+CxU7jzuKd1
+         inwQ==
+X-Gm-Message-State: AOAM532LvTbOFMqi8EqV7dckz+xYx2lXzxzz/hRTFw3Id8hqkiMwI4ZO
+	bKYvXJqaO2MhJSGb9EiilWhFMw==
+X-Google-Smtp-Source: ABdhPJzaMbs69W+izWHsHVKi9/rTQgx7LqOadZ5dQC4MCiXRM1y/J0qQTK3w0q1TBpKXqP7cNGZKlw==
+X-Received: by 2002:a17:902:8a8f:: with SMTP id p15mr53204802plo.172.1594273184854;
+        Wed, 08 Jul 2020 22:39:44 -0700 (PDT)
+Received: from localhost ([203.223.190.240])
+        by smtp.gmail.com with ESMTPSA id 15sm1147828pjs.8.2020.07.08.22.39.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jul 2020 22:39:44 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Hannes Reinecke <hare@suse.de>, Dan Williams <dan.williams@intel.com>
+Subject: Re: [PATCH] libnvdimm: call devm_namespace_disable() on error
+In-Reply-To: <20200703111856.40280-1-hare@suse.de>
+References: <20200703111856.40280-1-hare@suse.de>
+Date: Thu, 09 Jul 2020 11:09:41 +0530
+Message-ID: <87zh89qmaq.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR08MB5335
-Original-Authentication-Results: intel.com; dkim=none (message not signed)
- header.d=none;intel.com; dmarc=none action=none header.from=arm.com;
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
- AM5EUR03FT033.eop-EUR03.prod.protection.outlook.com
-X-Forefront-Antispam-Report: 
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFTY:;SFS:(4636009)(136003)(396003)(376002)(39860400002)(346002)(46966005)(53546011)(478600001)(82310400002)(356005)(54906003)(6506007)(81166007)(2906002)(36906005)(47076004)(7696005)(86362001)(82740400003)(316002)(52536014)(83380400001)(26005)(5660300002)(4326008)(6862004)(9686003)(336012)(33656002)(55016002)(70586007)(70206006)(186003)(8936002)(8676002);DIR:OUT;SFP:1101;
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 
-	c56af25b-e866-4f30-64fa-08d823c6cbdc
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	yWs/Ku1rNF/wn8kaszjOmQO05VXUsUACKjBhUO89VM4EueZ8cw/FXE9XcQzT3EqMFRFIdki8YlR4UJlhCBA3yqXw31b9yJuyy7Sa+PfPwy647oy7tQ+x/igDuGAaLgmWi9ENlzh3ks6fAv3LQLZULGMsNgaHuQ1vwOSRbS8RTILjuJU+5UCiyzcsim/XezVw2VRx6KDy6GnKjLi7lRdEz1rBukfyS3dIdAoVXkBo9QzzRZ+UnDSYubjV2vDavo7CTT+whu6b6xuW5iilrPZ8KPpA4lF1Ne4M7WGMOmtTq6+ag2swzOU60CyXZWK9Xc2F6pXqpMlvKpgNRMxGvS0LilOkl5QVNXfQvicbmRjjWVRc/jTF49GiKYt5LC/KrRwGNUnzu4xOZy9OQu5xPqF+DQ==
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jul 2020 05:13:28.0961
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 521337bb-6dcf-472a-5e1c-08d823c6d081
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	AM5EUR03FT033.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR08MB5029
-Message-ID-Hash: IJ7IV2BUT52QPRS5LKTUPFSL2VXWDRP6
-X-Message-ID-Hash: IJ7IV2BUT52QPRS5LKTUPFSL2VXWDRP6
-X-MailFrom: Justin.He@arm.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>, Linux-sh <linux-sh@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org
- >, Linux MM <linux-mm@kvack.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Kaly Xin <Kaly.Xin@arm.com>
+Message-ID-Hash: IVJQRZY4WNIHK7HVRQQV5ZMGPZOUOSYQ
+X-Message-ID-Hash: IVJQRZY4WNIHK7HVRQQV5ZMGPZOUOSYQ
+X-MailFrom: santosh@fossix.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm@lists.01.org, Hannes Reinecke <hare@suse.de>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7LUSEYGQNAOV2SVUYB7Y7R6KE6UV4WB5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IVJQRZY4WNIHK7HVRQQV5ZMGPZOUOSYQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -159,99 +71,151 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Dan
+Hi Hannes,
 
-> -----Original Message-----
-> From: Dan Williams <dan.j.williams@intel.com>
-> Sent: Thursday, July 9, 2020 11:39 AM
-> To: Justin He <Justin.He@arm.com>
-> Cc: Catalin Marinas <Catalin.Marinas@arm.com>; Will Deacon
-> <will@kernel.org>; Tony Luck <tony.luck@intel.com>; Fenghua Yu
-> <fenghua.yu@intel.com>; Yoshinori Sato <ysato@users.sourceforge.jp>; Rich
-> Felker <dalias@libc.org>; Dave Hansen <dave.hansen@linux.intel.com>; Andy
-> Lutomirski <luto@kernel.org>; Peter Zijlstra <peterz@infradead.org>;
-> Thomas Gleixner <tglx@linutronix.de>; Ingo Molnar <mingo@redhat.com>;
-> Borislav Petkov <bp@alien8.de>; David Hildenbrand <david@redhat.com>; X86
-> ML <x86@kernel.org>; H. Peter Anvin <hpa@zytor.com>; Vishal Verma
-> <vishal.l.verma@intel.com>; Dave Jiang <dave.jiang@intel.com>; Andrew
-> Morton <akpm@linux-foundation.org>; Baoquan He <bhe@redhat.com>; Chuhong
-> Yuan <hslester96@gmail.com>; Mike Rapoport <rppt@linux.ibm.com>; Logan
-> Gunthorpe <logang@deltatee.com>; Masahiro Yamada <masahiroy@kernel.org>;
-> Michal Hocko <mhocko@suse.com>; Linux ARM <linux-arm-
-> kernel@lists.infradead.org>; Linux Kernel Mailing List <linux-
-> kernel@vger.kernel.org>; linux-ia64@vger.kernel.org; Linux-sh <linux-
-> sh@vger.kernel.org>; linux-nvdimm <linux-nvdimm@lists.01.org>; Linux MM
-> <linux-mm@kvack.org>; Jonathan Cameron <Jonathan.Cameron@huawei.com>; Kaly
-> Xin <Kaly.Xin@arm.com>
-> Subject: Re: [PATCH v3 5/6] device-dax: use fallback nid when numa_node is
-> invalid
-> 
-> On Wed, Jul 8, 2020 at 7:07 PM Jia He <justin.he@arm.com> wrote:
-> >
-> > numa_off is set unconditionally at the end of dummy_numa_init(),
-> > even with a fake numa node. ACPI detects node id as NUMA_NO_NODE(-1) in
-> > acpi_map_pxm_to_node() because it regards numa_off as turning off the
-> numa
-> > node. Hence dev_dax->target_node is NUMA_NO_NODE on arm64 with fake numa.
-> >
-> > Without this patch, pmem can't be probed as a RAM device on arm64 if
-> SRAT table
-> > isn't present:
-> > $ndctl create-namespace -fe namespace0.0 --mode=devdax --map=dev -s 1g -
-> a 64K
-> > kmem dax0.0: rejecting DAX region [mem 0x240400000-0x2bfffffff] with
-> invalid node: -1
-> > kmem: probe of dax0.0 failed with error -22
-> >
-> > This fixes it by using fallback memory_add_physaddr_to_nid() as nid.
-> >
-> > Suggested-by: David Hildenbrand <david@redhat.com>
-> > Signed-off-by: Jia He <justin.he@arm.com>
-> > ---
-> >  drivers/dax/kmem.c | 21 +++++++++++++--------
-> >  1 file changed, 13 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> > index 275aa5f87399..218f66057994 100644
-> > --- a/drivers/dax/kmem.c
-> > +++ b/drivers/dax/kmem.c
-> > @@ -31,22 +31,23 @@ int dev_dax_kmem_probe(struct device *dev)
-> >         int numa_node;
-> >         int rc;
-> >
-> > +       /* Hotplug starting at the beginning of the next block: */
-> > +       kmem_start = ALIGN(res->start, memory_block_size_bytes());
-> > +
-> >         /*
-> >          * Ensure good NUMA information for the persistent memory.
-> >          * Without this check, there is a risk that slow memory
-> >          * could be mixed in a node with faster memory, causing
-> > -        * unavoidable performance issues.
-> > +        * unavoidable performance issues. Furthermore, fallback node
-> > +        * id can be used when numa_node is invalid.
-> >          */
-> >         numa_node = dev_dax->target_node;
-> >         if (numa_node < 0) {
-> > -               dev_warn(dev, "rejecting DAX region %pR with invalid
-> node: %d\n",
-> > -                        res, numa_node);
-> > -               return -EINVAL;
-> > +               numa_node = memory_add_physaddr_to_nid(kmem_start);
-> 
-> I think this fixup belongs to the core to set a fallback value for
-> dev_dax->target_node.
-> 
-> I'm close to having patches to provide a functional
-> phys_addr_to_target_node() for arm64.
+Hannes Reinecke <hare@suse.de> writes:
 
-Should My this patch(5/6) wait on your new phys_addr_to_target_node() patch?
-Thanks for the clarification.
+> Once devm_namespace_enable() has been called the error path in the
+> calling function will not call devm_namespace_disable(), leaving the
+> namespace enabled on error.
+>
+> Signed-off-by: Hannes Reinecke <hare@suse.de>
+> ---
+>  drivers/dax/pmem/core.c   |  2 +-
+>  drivers/nvdimm/btt.c      |  5 ++++-
+>  drivers/nvdimm/claim.c    |  8 +++++++-
+>  drivers/nvdimm/pfn_devs.c |  1 +
+>  drivers/nvdimm/pmem.c     | 20 ++++++++++----------
+>  5 files changed, 23 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/dax/pmem/core.c b/drivers/dax/pmem/core.c
+> index 2bedf8414fff..4b26434f0aca 100644
+> --- a/drivers/dax/pmem/core.c
+> +++ b/drivers/dax/pmem/core.c
+> @@ -31,9 +31,9 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
+>  	if (rc)
+>  		return ERR_PTR(rc);
+>  	rc = nvdimm_setup_pfn(nd_pfn, &pgmap);
+> +	devm_namespace_disable(dev, ndns);
+>  	if (rc)
+>  		return ERR_PTR(rc);
+> -	devm_namespace_disable(dev, ndns);
+>  
+>  	/* reserve the metadata area, device-dax will reserve the data */
+>  	pfn_sb = nd_pfn->pfn_sb;
+> diff --git a/drivers/nvdimm/btt.c b/drivers/nvdimm/btt.c
+> index 48e9d169b6f9..bd4747f2c99b 100644
+> --- a/drivers/nvdimm/btt.c
+> +++ b/drivers/nvdimm/btt.c
+> @@ -1704,13 +1704,16 @@ int nvdimm_namespace_attach_btt(struct nd_namespace_common *ndns)
+>  		dev_dbg(&nd_btt->dev, "%s must be at least %ld bytes\n",
+>  				dev_name(&ndns->dev),
+>  				ARENA_MIN_SIZE + nd_btt->initial_offset);
+> +		devm_namespace_disable(&nd_btt->dev, ndns);
+>  		return -ENXIO;
+>  	}
+>  	nd_region = to_nd_region(nd_btt->dev.parent);
+>  	btt = btt_init(nd_btt, rawsize, nd_btt->lbasize, nd_btt->uuid,
+>  			nd_region);
+> -	if (!btt)
+> +	if (!btt) {
+> +		devm_namespace_disable(&nd_btt->dev, ndns);
+>  		return -ENOMEM;
+> +	}
+>  	nd_btt->btt = btt;
+>  
+>  	return 0;
+> diff --git a/drivers/nvdimm/claim.c b/drivers/nvdimm/claim.c
+> index 45964acba944..15fd1b92d32f 100644
+> --- a/drivers/nvdimm/claim.c
+> +++ b/drivers/nvdimm/claim.c
+> @@ -314,12 +314,18 @@ int devm_nsio_enable(struct device *dev, struct nd_namespace_io *nsio,
+>  	}
+>  
+>  	ndns->rw_bytes = nsio_rw_bytes;
+> -	if (devm_init_badblocks(dev, &nsio->bb))
+> +	if (devm_init_badblocks(dev, &nsio->bb)) {
+> +		devm_release_mem_region(dev, res->start, size);
+>  		return -ENOMEM;
+> +	}
+>  	nvdimm_badblocks_populate(to_nd_region(ndns->dev.parent), &nsio->bb,
+>  			&nsio->res);
+>  
+>  	nsio->addr = devm_memremap(dev, res->start, size, ARCH_MEMREMAP_PMEM);
+> +	if (IS_ERR(nsio->addr)) {
+> +		devm_exit_badblocks(dev, &nsio->bb);
+> +		devm_release_mem_region(dev, res->start, size);
+> +	}
+>  
+>  	return PTR_ERR_OR_ZERO(nsio->addr);
+>  }
+> diff --git a/drivers/nvdimm/pfn_devs.c b/drivers/nvdimm/pfn_devs.c
+> index 34db557dbad1..9faa92662643 100644
+> --- a/drivers/nvdimm/pfn_devs.c
+> +++ b/drivers/nvdimm/pfn_devs.c
+> @@ -408,6 +408,7 @@ static int nd_pfn_clear_memmap_errors(struct nd_pfn *nd_pfn)
+>  				nsoff += chunk;
+>  			}
+>  			if (rc) {
+> +				devm_namespace_disable(&nd_pfn->dev, ndns);
 
---
-Cheers,
-Justin (Jia He)
+The disable here seems to be wrong.
 
+This function called from the pmem_attach_disk path, where its expected the
+namespace is enabled after the setup_pfn. Also in case of an error, we do
+another disable in pmem_attach_disk.
+Thanks,
+Santosh
 
+>  				dev_err(&nd_pfn->dev,
+>  					"error clearing %x badblocks at %llx\n",
+>  					num_bad, first_bad);
+> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> index d25e66fd942d..4f667fe6ef72 100644
+> --- a/drivers/nvdimm/pmem.c
+> +++ b/drivers/nvdimm/pmem.c
+> @@ -401,8 +401,10 @@ static int pmem_attach_disk(struct device *dev,
+>  	if (is_nd_pfn(dev)) {
+>  		nd_pfn = to_nd_pfn(dev);
+>  		rc = nvdimm_setup_pfn(nd_pfn, &pmem->pgmap);
+> -		if (rc)
+> +		if (rc) {
+> +			devm_namespace_disable(dev, ndns);
+>  			return rc;
+> +		}
+>  	}
+>  
+>  	/* we're attaching a block device, disable raw namespace access */
+> @@ -549,17 +551,15 @@ static int nd_pmem_probe(struct device *dev)
+>  	ret = nd_pfn_probe(dev, ndns);
+>  	if (ret == 0)
+>  		return -ENXIO;
+> -	else if (ret == -EOPNOTSUPP)
+> -		return ret;
+> -
+> -	ret = nd_dax_probe(dev, ndns);
+> -	if (ret == 0)
+> -		return -ENXIO;
+> -	else if (ret == -EOPNOTSUPP)
+> -		return ret;
+> -
+> +	else if (ret != EOPNOTSUPP) {
+> +		ret = nd_dax_probe(dev, ndns);
+> +		if (ret == 0)
+> +			return -ENXIO;
+> +	}
+>  	/* probe complete, attach handles namespace enabling */
+>  	devm_namespace_disable(dev, ndns);
+> +	if (ret == -EOPNOTSUPP)
+> +		return ret;
+>  
+>  	return pmem_attach_disk(dev, ndns);
+>  }
+> -- 
+> 2.16.4
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
