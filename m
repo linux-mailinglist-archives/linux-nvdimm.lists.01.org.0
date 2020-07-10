@@ -2,120 +2,96 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29D521AD5F
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jul 2020 05:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D265221B3D4
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jul 2020 13:14:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8C5B511D3F626;
-	Thu,  9 Jul 2020 20:17:00 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=justin.he@arm.com; receiver=<UNKNOWN> 
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by ml01.01.org (Postfix) with ESMTP id 7DE9711D3F625
-	for <linux-nvdimm@lists.01.org>; Thu,  9 Jul 2020 20:16:58 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C604D113E;
-	Thu,  9 Jul 2020 20:16:57 -0700 (PDT)
-Received: from localhost.localdomain (entos-thunderx2-02.shanghai.arm.com [10.169.212.213])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 43D383F9AB;
-	Thu,  9 Jul 2020 20:16:48 -0700 (PDT)
-From: Jia He <justin.he@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 2/2] mm/memory_hotplug: fix unpaired mem_hotplug_begin/done
-Date: Fri, 10 Jul 2020 11:16:19 +0800
-Message-Id: <20200710031619.18762-3-justin.he@arm.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200710031619.18762-1-justin.he@arm.com>
-References: <20200710031619.18762-1-justin.he@arm.com>
-Message-ID-Hash: FXADW7HMSNESIAEEDJZVEQXDTYJ6SERQ
-X-Message-ID-Hash: FXADW7HMSNESIAEEDJZVEQXDTYJ6SERQ
-X-MailFrom: justin.he@arm.com
+	by ml01.01.org (Postfix) with ESMTP id C1F4A10FC539D;
+	Fri, 10 Jul 2020 04:14:29 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=189.202.85.224; helo=189.202.85.224.cable.dyn.cableonline.com.mx; envelope-from=bikingd@ruralnetusa.net; receiver=<UNKNOWN> 
+Received: from 189.202.85.224.cable.dyn.cableonline.com.mx (189.202.85.224.cable.dyn.cableonline.com.mx [189.202.85.224])
+	by ml01.01.org (Postfix) with ESMTP id 9A3AF10114FF3
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 04:14:27 -0700 (PDT)
+From: <bikingd@ruralnetusa.net>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?Q2jDoW5nZSB5b3VyIHDDoXNzd29yZCDDrW1tZWRpw6F0ZWx5LiBZb3VyIMOhY2NvdW50IGjDoXMgYmVl?= =?utf-8?B?biBow6Fja2VkLg==?=
+Date: 9 Jul 2020 19:39:25 -0800
+Message-ID: <001e01d65670$069bcfed$5848c987$@ruralnetusa.net>
+MIME-Version: 1.0
+X-Mailer: Microsoft Office Outlook 11
+Thread-Index: Ac756ujcfifk5trk756ujcfifk5trk==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7601.17514
+Message-ID-Hash: CMPL7UX4K5GNZTXSAXIHJUG5A3CVR6XX
+X-Message-ID-Hash: CMPL7UX4K5GNZTXSAXIHJUG5A3CVR6XX
+X-MailFrom: bikingd@ruralnetusa.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Kaly Xin <Kaly.Xin@arm.com>, Jia He <justin.he@arm.com>, stable@vger.kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FXADW7HMSNESIAEEDJZVEQXDTYJ6SERQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CMPL7UX4K5GNZTXSAXIHJUG5A3CVR6XX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-When check_memblock_offlined_cb() returns failed rc(e.g. the memblock is
-online at that time), mem_hotplug_begin/done is unpaired in such case.
+Hello!
 
-Therefore a warning:
- Call Trace:
-  percpu_up_write+0x33/0x40
-  try_remove_memory+0x66/0x120
-  ? _cond_resched+0x19/0x30
-  remove_memory+0x2b/0x40
-  dev_dax_kmem_remove+0x36/0x72 [kmem]
-  device_release_driver_internal+0xf0/0x1c0
-  device_release_driver+0x12/0x20
-  bus_remove_device+0xe1/0x150
-  device_del+0x17b/0x3e0
-  unregister_dev_dax+0x29/0x60
-  devm_action_release+0x15/0x20
-  release_nodes+0x19a/0x1e0
-  devres_release_all+0x3f/0x50
-  device_release_driver_internal+0x100/0x1c0
-  driver_detach+0x4c/0x8f
-  bus_remove_driver+0x5c/0xd0
-  driver_unregister+0x31/0x50
-  dax_pmem_exit+0x10/0xfe0 [dax_pmem]
+&#205; h&#225;ve b&#225;d news for you.
+14/03/2020 - on th&#237;s d&#225;y &#205; h&#225;cked your oper&#225;t&#237;ng system &#225;nd got full &#225;ccess to your &#225;ccount linux-nvdimm@lists.01.org
 
-Fixes: f1037ec0cc8a ("mm/memory_hotplug: fix remove_memory() lockdep splat")
-Cc: stable@vger.kernel.org # v5.6+
-Signed-off-by: Jia He <justin.he@arm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Dan Williams <dan.j.williams@intel.com>
----
- mm/memory_hotplug.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+&#205;t &#237;s useless to ch&#225;nge the p&#225;ssword, my m&#225;lw&#225;re &#237;ntercepts &#237;t every t&#237;me.
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b49ab743d914..3e0645387daf 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1752,7 +1752,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 	 */
- 	rc = walk_memory_blocks(start, size, NULL, check_memblock_offlined_cb);
- 	if (rc)
--		goto done;
-+		return rc;
- 
- 	/* remove memmap entry */
- 	firmware_map_remove(start, start + size, "System RAM");
-@@ -1776,9 +1776,8 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
- 
- 	try_offline_node(nid);
- 
--done:
- 	mem_hotplug_done();
--	return rc;
-+	return 0;
- }
- 
- /**
--- 
-2.17.1
+How &#237;t w&#225;s:
+&#205;n the softw&#225;re of the router to wh&#237;ch you were connected th&#225;t d&#225;y, there w&#225;s &#225; vulner&#225;b&#237;l&#237;ty.
+&#205; f&#237;rst h&#225;cked th&#237;s router &#225;nd pl&#225;ced my m&#225;l&#237;c&#237;ous code on &#237;t.
+When you entered &#237;n the &#237;nternet, my troj&#225;n w&#225;s &#237;nst&#225;lled on the oper&#225;t&#237;ng system of your dev&#237;ce.
+
+&#196;fter th&#225;t, &#205; m&#225;de &#225; full dump of your d&#237;sk (&#205; h&#225;ve &#225;ll your &#225;ddress book, h&#237;story of v&#237;ew&#237;ng s&#237;tes, &#225;ll f&#237;les, phone numbers &#225;nd &#225;ddresses of &#225;ll your cont&#225;cts).
+
+&#196; month &#225;go, &#205; w&#225;nted to lock your dev&#237;ce &#225;nd &#225;sk for &#225; sm&#225;ll &#225;mount of money to unlock.
+But &#205; looked &#225;t the s&#237;tes th&#225;t you regul&#225;rly v&#237;s&#237;t, &#225;nd c&#225;me to the b&#237;g del&#237;ght of your f&#225;vor&#237;te resources.
+&#205;'m t&#225;lk&#237;ng &#225;bout s&#237;tes for &#225;dults.
+
+&#205; w&#225;nt to s&#225;y - you &#225;re &#225; b&#237;g pervert. You h&#225;ve unbr&#237;dled f&#225;nt&#225;sy!
+
+&#196;fter th&#225;t, &#225;n &#237;de&#225; c&#225;me to my m&#237;nd.
+&#205; m&#225;de &#225; screenshot of the &#237;nt&#237;m&#225;te webs&#237;te where you h&#225;ve fun (how d&#237;d you m&#225;sturb&#225;te).
+&#196;fter th&#225;t, &#237; took off your joys (us&#237;ng the c&#225;mer&#225; of your dev&#237;ce). &#205;t turned out be&#225;ut&#237;fully, do not hes&#237;t&#225;te.
+
+&#205; &#225;m strongly bel&#237;ve th&#225;t you would not l&#237;ke to show these p&#237;ctures to your rel&#225;t&#237;ves, fr&#237;ends or colle&#225;gues.
+&#205; th&#237;nk $999 &#237;s &#225; very sm&#225;ll &#225;mount for my s&#237;lence.
+Bes&#237;des, &#205; spent &#225; lot of t&#237;me on you!
+
+&#205; &#225;ccept money only &#237;n B&#237;tco&#237;ns.
+My BTC w&#225;llet: 1CRKWJcwVofS7HqP4UnezYFTWv1g4sKYqb
+
+You do not know how to replen&#237;sh &#225; B&#237;tco&#237;n w&#225;llet?
+&#205;n &#225;ny se&#225;rch eng&#237;ne wr&#237;te "how to send money to btc w&#225;llet".
+&#205;t's e&#225;s&#237;er th&#225;n send money to &#225; cred&#237;t c&#225;rd!
+
+For p&#225;yment you h&#225;ve &#225; l&#237;ttle more th&#225;n two d&#225;ys (ex&#225;ctly 50 hours).
+Do not worry, the t&#237;mer w&#237;ll st&#225;rt &#225;t the moment when you open th&#237;s letter. Yes, yes .. &#237;t h&#225;s &#225;lre&#225;dy st&#225;rted!
+
+&#196;fter p&#225;yment, my v&#237;rus &#225;nd d&#237;rty photos w&#237;th you self-destruct &#225;utom&#225;t&#237;c&#225;lly.
+N&#225;rr&#225;t&#237;ve, &#237;f &#237; do not rece&#237;ve the spec&#237;f&#237;ed &#225;mount from you, then your dev&#237;ce w&#237;ll be blocked, &#225;nd &#225;ll your cont&#225;cts w&#237;ll rece&#237;ve &#225; photos w&#237;th your "joys".
+
+&#205; w&#225;nt you to be prudent.
+- Do not try to f&#237;nd and destroy my v&#237;rus! (&#225;ll your d&#225;t&#225; &#237;s &#225;lre&#225;dy uplo&#225;ded to &#225; remote server)
+- Do not try to contact me (th&#237;s &#237;s not fe&#225;s&#237;ble, sender &#225;ddress gener&#225;ted &#225;utom&#225;t&#237;c&#225;lly)
+- V&#225;r&#237;ous secur&#237;ty serv&#237;ces w&#237;ll not help you; form&#225;tt&#237;ng &#225; d&#237;sk or destroy&#237;ng &#225; dev&#237;ce w&#237;ll not help e&#237;ther, s&#237;nce your d&#225;t&#225; &#237;s &#225;lre&#225;dy on &#225; remote server.
+
+P.S. &#205; gu&#225;r&#225;ntee you th&#225;t &#205; w&#237;ll not d&#237;sturb you &#225;g&#225;&#237;n &#225;fter p&#225;yment, &#225;s you &#225;re not my s&#237;ngle v&#237;ct&#237;m.
+ Th&#237;s &#237;s &#225; h&#225;cker code of honor.
+
+From now on, &#205; &#225;dv&#237;se you to use good &#225;nt&#237;v&#237;ruses &#225;nd upd&#225;te them regul&#225;rly (sever&#225;l t&#237;mes &#225; d&#225;y)!
+
+Don't be m&#225;d at me, everyone h&#225;s the&#237;r own work.
+
+F&#225;rewell.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
