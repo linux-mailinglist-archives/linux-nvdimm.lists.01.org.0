@@ -1,92 +1,127 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC1321B76D
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jul 2020 16:00:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656EF21B79E
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jul 2020 16:02:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 370E41104D610;
-	Fri, 10 Jul 2020 07:00:30 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::842; helo=mail-qt1-x842.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 91E951104C279;
+	Fri, 10 Jul 2020 07:02:56 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 910BB10FEAAB9
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 07:00:28 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id k18so4413920qtm.10
-        for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 07:00:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DeBGSFa6JpLDSEOobydkMfjCm7xXfWYBIoiGgmJvsiY=;
-        b=xtDwzbDKceDPrdb2OHoramfVkpsxDADJ71nfnkU/U11ey7QyoCDreWzdTySdP3Bf95
-         ko7FnPp1/f2cIaGMh3ZNzsz0Tk0c89dEXFz4xGd5qoKP5aeVtETNGjgveKn8G+bB5ZCU
-         qyeoRvjQsFDUXwssBBeR5gc17mrpKDHaW6DNckwXSdhPayaI4sq6JiGfGAg/1e2NR2+K
-         w6m5jVpJb5U2aiGes5SDDt8L5Ld6vOLLHfwgmQEAIJsjgIr3JCFEvBQidjQjLrOvLaeG
-         nuz08QDD1+u1/1rB2NI5RZsufXulW3Zf9eAmgXzpRcA2d94ETiaosy+RpJuCDqUAnBzH
-         1skA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DeBGSFa6JpLDSEOobydkMfjCm7xXfWYBIoiGgmJvsiY=;
-        b=HZ4CgJWBWKPDutssWrk/cqrf2lgJQYYcjvbZTXNxfGY6yNY9txH+JsZwwUfPt5eH6v
-         NnnKR9d7s4chI/x4MQpJmUdCXbNA9t7MMc5ptNEiEsjJHixj7WIiNJTOPTAZv9XTyNI5
-         ryuLoer4ZaYrcFYGbAhwTGSgv3aOZ8fIkSpqdHnB+XZwHbKkVQC8mJeDMspeALDDQNKa
-         zkeGHSfNJLg4JxDkwbmbWv73DgSsLv5n8+OkEyHZVz6j8x64FWlPgYe7N9f8+Ub79j29
-         Uz2VVYIAP+DRRG2eVLMHxrJ19lZvB4IexrnqAjfBaw9gnT5sh9Nxo0fWlxLTN+QhdsYy
-         K9zQ==
-X-Gm-Message-State: AOAM533nRYKSSrt8BIZvtsL2jzozQBNA+fXuSN9ij03f2IydE8Vb8jw7
-	PXFn+eSKy2brcOjQtYO2e+iwyAjifJx40R0lTYZA+w==
-X-Google-Smtp-Source: ABdhPJyl6xq9PxhonQS0J3Dx+J5gbm1PIhxGa1brPjByYujkui0S6cvVgDWfdJGYhmVAV084h8/4qpdI7H3iU+5xBUo=
-X-Received: by 2002:ac8:396c:: with SMTP id t41mr71181576qtb.45.1594389627173;
- Fri, 10 Jul 2020 07:00:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200710031619.18762-1-justin.he@arm.com>
-In-Reply-To: <20200710031619.18762-1-justin.he@arm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 10 Jul 2020 07:00:15 -0700
-Message-ID: <CAPcyv4izHex9W0m3voSXM5J69gFWhHj_a-XsmJ4HF01Uh4jp6w@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Fix and enable pmem as RAM device on arm64
-To: Jia He <justin.he@arm.com>
-Message-ID-Hash: 35JJTTUW4CJJPOZWJM3UG6YSQDVGBP7W
-X-Message-ID-Hash: 35JJTTUW4CJJPOZWJM3UG6YSQDVGBP7W
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, David Hildenbrand <david@redhat.com>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chuhong Yuan <hslester96@gmail.com>, Mike Rapoport <rppt@linux.ibm.com>, Masahiro Yamada <masahiroy@kernel.org>, Michal Hocko <mhocko@suse.com>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux MM <linux-mm@kvack.org
- >, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Kaly Xin <Kaly.Xin@arm.com>
+	by ml01.01.org (Postfix) with ESMTPS id F277D11003ED8
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 07:02:49 -0700 (PDT)
+Received: from localhost (unknown [137.135.114.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 9033520849;
+	Fri, 10 Jul 2020 14:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1594389769;
+	bh=3yFXOIlf/jaJ9LVqAKz8KOR8fQJjduxx7bKp5GcEi+M=;
+	h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
+	 References:From;
+	b=Enpoo6ixM4fMy/bPcm4iVhfl8HFW2OiAwWW6Nh5+D+Lfi3hZWeF+AYiXuNXq71h8r
+	 bydkTP2/FSmKV/606lfR0VVJKK9jlozErg+Ouz7rJCBiqcRnpnnN1BXRMvLa9PIO1h
+	 l4PNEyfAtJv9taiw7eNd5ZzJaLq9zDf0B4JfrATE=
+Date: Fri, 10 Jul 2020 14:02:48 +0000
+From: Sasha Levin <sashal@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+To: linux-nvdimm@lists.01.org
+Subject: Re: [PATCH 01/12] libnvdimm: Validate command family indices
+In-Reply-To: <159312902579.1850128.3536310031352445291.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <159312902579.1850128.3536310031352445291.stgit@dwillia2-desk3.amr.corp.intel.com>
+Message-Id: <20200710140249.9033520849@mail.kernel.org>
+Message-ID-Hash: HZ6YSTID3IKJOK4LZ5V6JEXUYOGC3XLB
+X-Message-ID-Hash: HZ6YSTID3IKJOK4LZ5V6JEXUYOGC3XLB
+X-MailFrom: sashal@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, stable@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/35JJTTUW4CJJPOZWJM3UG6YSQDVGBP7W/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HZ6YSTID3IKJOK4LZ5V6JEXUYOGC3XLB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 9, 2020 at 8:17 PM Jia He <justin.he@arm.com> wrote:
->
-> This fixies a few issues when I tried to enable pmem as RAM device on arm64.
->
-> To use memory_add_physaddr_to_nid as a fallback nid, it would be better
-> implement a general version (__weak) in mm/memory_hotplug. After that, arm64/
-> sh/s390 can simply use the general version, and PowerPC/ia64/x86 will use
-> arch specific version.
->
-> Tested on ThunderX2 host/qemu "-M virt" guest with a nvdimm device. The
-> memblocks from the dax pmem device can be either hot-added or hot-removed
-> on arm64 guest. Also passed the compilation test on x86.
->
-> Changes:
-> v4: - remove "device-dax: use fallback nid when numa_node is invalid", wait
->       for Dan Williams' phys_addr_to_target_node() patch
+Hi
 
-FWIW, I put these patches through a 0-day run overnight and will be
-posting them today.
+[This is an automated email]
+
+This commit has been processed because it contains a "Fixes:" tag
+fixing commit: 31eca76ba2fc ("nfit, libnvdimm: limited/whitelisted dimm command marshaling mechanism").
+
+The bot has tested the following trees: v5.7.6, v5.4.49, v4.19.130, v4.14.186, v4.9.228.
+
+v5.7.6: Failed to apply! Possible dependencies:
+    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
+
+v5.4.49: Failed to apply! Possible dependencies:
+    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
+    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
+
+v4.19.130: Failed to apply! Possible dependencies:
+    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
+    0ead11181fe0c ("acpi, nfit: Collect shutdown status")
+    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
+    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
+    b3ed2ce024c36 ("acpi/nfit: Add support for Intel DSM 1.8 commands")
+    b5beae5e224f1 ("powerpc/pseries: Add driver for PAPR SCM regions")
+    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
+    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
+
+v4.14.186: Failed to apply! Possible dependencies:
+    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
+    0e7f0741450b1 ("acpi, nfit: validate commands against the device type")
+    1194c4133195d ("nfit: Add Hyper-V NVDIMM DSM command set to white list")
+    11e1427016095 ("acpi, nfit: add support for NVDIMM_FAMILY_INTEL v1.6 DSMs")
+    466d1493ea830 ("acpi, nfit: rework NVDIMM leaf method detection")
+    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
+    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
+    b37b3fd33d034 ("acpi nfit: Enable to show what feature is supported via ND_CMD_CALL for nfit_test")
+    b9b1504d3c6d6 ("acpi, nfit: hide unknown commands from nmemX/commands")
+    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
+
+v4.9.228: Failed to apply! Possible dependencies:
+    095ab4b39f91b ("acpi, nfit: allow override of built-in bitmasks for nvdimm DSMs")
+    0f817ae696b04 ("usb: dwc3: pci: add a private driver structure")
+    36daf3aa399c0 ("usb: dwc3: pci: avoid build warning")
+    3f23df72dc351 ("mmc: sdhci-pci: Use ACPI to get max frequency for Intel NI byt sdio")
+    41c8bdb3ab10c ("acpi, nfit: Switch to use new generic UUID API")
+    42237e393f64d ("libnvdimm: allow a platform to force enable label support")
+    42b06496407c0 ("mmc: sdhci-pci: Add PCI ID for Intel NI byt sdio")
+    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
+    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
+    8f078b38dd382 ("libnvdimm: convert NDD_ flags to use bitops, introduce NDD_LOCKED")
+    94116f8126de9 ("ACPI: Switch to use generic guid_t in acpi_evaluate_dsm()")
+    9cecca75b5a0d ("usb: dwc3: pci: call _DSM for suspend/resume")
+    9d62ed9651182 ("libnvdimm: handle locked label storage areas")
+    b7fe92999a98a ("ACPI / extlog: Switch to use new generic UUID API")
+    b917078c1c107 ("net: hns: Add ACPI support to check SFP present")
+    ba650cfcf9409 ("acpi, nfit: allow specifying a default DSM family")
+    c959a6b00ff58 ("mmc: sdhci-pci: Don't re-tune with runtime pm for some Intel devices")
+    d2061f9cc32db ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
+    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
+    fab9288428ec0 ("usb: USB Type-C connector class")
+
+
+NOTE: The patch will not be queued to stable trees until it is upstream.
+
+How should we proceed with this patch?
+
+-- 
+Thanks
+Sasha
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
