@@ -1,127 +1,180 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB9321B7A2
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 10 Jul 2020 16:02:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0374A21C12C
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 11 Jul 2020 02:45:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AF9DC110605C1;
-	Fri, 10 Jul 2020 07:02:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=sashal@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 370501116894C;
+	Fri, 10 Jul 2020 17:45:05 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0E16411003ED8
-	for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 07:02:52 -0700 (PDT)
-Received: from localhost (unknown [137.135.114.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id A02E920857;
-	Fri, 10 Jul 2020 14:02:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594389771;
-	bh=BWcfdF4SOViC4CYrJIgAVmv8l2cCHCM/PxYBkWm+YjE=;
-	h=Date:From:To:To:To:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Cc:Subject:In-Reply-To:
-	 References:From;
-	b=bPoTabPa3MV9z1YgTwLHahC7PzUZbXEi1a1H3NhVoaW5dhzsmLcXp4nb1KqjSveWW
-	 bM/dlUEKW8gr2D0i3zwnA5g+JTYiU6zuYoN/lMh/82FJFZ8Fpirf+kISKhigfgiowA
-	 b31TZJQvClM8TDu2l2SIheee5y1J5gbdd7LdCjYk=
-Date: Fri, 10 Jul 2020 14:02:51 +0000
-From: Sasha Levin <sashal@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-To: linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2 01/12] libnvdimm: Validate command family indices
-In-Reply-To: <159408711877.2385045.5738278265729770877.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <159408711877.2385045.5738278265729770877.stgit@dwillia2-desk3.amr.corp.intel.com>
-Message-Id: <20200710140251.A02E920857@mail.kernel.org>
-Message-ID-Hash: PWE6PJGVLVGY2KQEPHWQULSUH7VA2ST5
-X-Message-ID-Hash: PWE6PJGVLVGY2KQEPHWQULSUH7VA2ST5
-X-MailFrom: sashal@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, stable@vger.kernel.org
+	by ml01.01.org (Postfix) with ESMTPS id E19B61116894B
+	for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 17:45:02 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id d16so5916857edz.12
+        for <linux-nvdimm@lists.01.org>; Fri, 10 Jul 2020 17:45:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cIfMfLrIcR4z15WKttA1evNrYOPo0JXT17THF0rBRHI=;
+        b=LoQsRabZHG5ATQdm3coYlG1Zrqchdk/PP7xuyYfANxu+sMXaqUJ70hLILaaT+rFK1I
+         YrRpC2IsCfR0psHUbklaxhyUrqA4T/aMv8efT1HSW24iFfeqvPtREByCPauaC4eQJBsp
+         CSzC3S+gn9B+HJAjZamlWbVPgAE2OcD+aDlGKFEj5GU/93PRADu4wM/PP3bgi2bH7Z88
+         bxe9A8orYs1/RI/p2OWaR4ASDRKh0/cnU2Lz9bv7TM+m2aZE0jzbCRX2lbAK8MtiUWn2
+         UdfZcoI64G3Bip7FJcjfi/35SSQ/TUiCY4LaWcMr6a8hZ5UY7sZEL/qYXYNl4Dxn3Xeg
+         0WIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cIfMfLrIcR4z15WKttA1evNrYOPo0JXT17THF0rBRHI=;
+        b=eeZdAwwPosYSCIpvvZkyDGCzHp6O54gw+r0Cxuvm0sw3OwOP7ZBpM2kAP8Fh64IqhK
+         NvecD+QY4pdRFaoCmZPMuUb2qzSNUXj9pDVtFx/tER10+I9ZMkAOEnDuRira/N/hso/4
+         acAAPmxJdTSowj0gxEmi6b0vbT9rWMBMPh6FsR1Zdq5V9J5oOq92eYIGOTUOgpSGYDwb
+         E+BGo2yZSius/TX3Zwho5EPlV01lAL7tcIdCYFJFfF0i3aKvgIE+HvHVOmEveqZnjBVI
+         +6CWUF8XaW+sLktb2xoLl0nKnXLeXr+sTdIZL5MZh8zRUcPyInTqHU7aWPPO0e5qreST
+         u1sw==
+X-Gm-Message-State: AOAM531Higtgpb5nBxxTnnSNQ1kwJw+PfT/h8oOrsttg1PsvqPaIdeDd
+	WrwPle8N5EB0uVjonczNIr/m+0wpZ9xm3ObwYWOQ7g==
+X-Google-Smtp-Source: ABdhPJwpGJfvAKHE4idln3hDFMDRVKJAY4yZCP6ZY9+qFOXeHXc4+TgRZRKzVAwvSYFZvXtpNAWmNrHSO7iiYsqdtlI=
+X-Received: by 2002:a05:6402:21c2:: with SMTP id bi2mr79476078edb.296.1594428299892;
+ Fri, 10 Jul 2020 17:44:59 -0700 (PDT)
+MIME-Version: 1.0
+References: <158500767138.2088294.17131646259803932461.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <158500773552.2088294.8756587190550753100.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <9a6ff83f-095c-0689-d6d1-693a6e9c07e6@oracle.com>
+In-Reply-To: <9a6ff83f-095c-0689-d6d1-693a6e9c07e6@oracle.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 10 Jul 2020 17:44:48 -0700
+Message-ID: <CAPcyv4ijYVx0C3ocEaT+LB=qxAyy7t0g+yfkhXab5TXQ+s_owA@mail.gmail.com>
+Subject: Re: [PATCH 11/12] device-dax: Add dis-contiguous resource support
+To: Joao Martins <joao.m.martins@oracle.com>
+Message-ID-Hash: 5UFE45EE6T5TWCRMTKTOOYPO3ZNGXVU7
+X-Message-ID-Hash: 5UFE45EE6T5TWCRMTKTOOYPO3ZNGXVU7
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linux MM <linux-mm@kvack.org>, Dave Hansen <dave.hansen@linux.intel.com>, Christoph Hellwig <hch@lst.de>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PWE6PJGVLVGY2KQEPHWQULSUH7VA2ST5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5UFE45EE6T5TWCRMTKTOOYPO3ZNGXVU7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi
+On Tue, Mar 24, 2020 at 9:12 AM Joao Martins <joao.m.martins@oracle.com> wrote:
+>
+> On 3/23/20 11:55 PM, Dan Williams wrote:
+> >  static ssize_t dev_dax_resize(struct dax_region *dax_region,
+> >               struct dev_dax *dev_dax, resource_size_t size)
+> >  {
+> >       resource_size_t avail = dax_region_avail_size(dax_region), to_alloc;
+> > -     resource_size_t dev_size = range_len(&dev_dax->range);
+> > +     resource_size_t dev_size = dev_dax_size(dev_dax);
+> >       struct resource *region_res = &dax_region->res;
+> >       struct device *dev = &dev_dax->dev;
+> > -     const char *name = dev_name(dev);
+> >       struct resource *res, *first;
+> > +     resource_size_t alloc = 0;
+> > +     int rc;
+> >
+> >       if (dev->driver)
+> >               return -EBUSY;
+> > @@ -684,38 +766,47 @@ static ssize_t dev_dax_resize(struct dax_region *dax_region,
+> >        * allocating a new resource.
+> >        */
+> >       first = region_res->child;
+> > -     if (!first)
+> > -             return __alloc_dev_dax_range(dev_dax, dax_region->res.start,
+> > -                             to_alloc);
+>
+> You probably want to retain the condition above?
+>
+> Otherwise it removes the ability to create new devices or resizing it , once we
+> have zero-ed the last one.
+>
+> > -     for (res = first; to_alloc && res; res = res->sibling) {
+> > +retry:
+> > +     rc = -ENOSPC;
+> > +     for (res = first; res; res = res->sibling) {
+> >               struct resource *next = res->sibling;
+> > -             resource_size_t free;
+> >
+> >               /* space at the beginning of the region */
+> > -             free = 0;
+> > -             if (res == first && res->start > dax_region->res.start)
+> > -                     free = res->start - dax_region->res.start;
+> > -             if (free >= to_alloc && dev_size == 0)
+> > -                     return __alloc_dev_dax_range(dev_dax,
+> > -                                     dax_region->res.start, to_alloc);
+> > -
+> > -             free = 0;
+> > +             if (res == first && res->start > dax_region->res.start) {
+> > +                     alloc = min(res->start - dax_region->res.start,
+> > +                                     to_alloc);
+> > +                     rc = __alloc_dev_dax_range(dev_dax,
+> > +                                     dax_region->res.start, alloc);
+> > +                     break;
+> > +             }
+> > +
+> > +             alloc = 0;
+> >               /* space between allocations */
+> >               if (next && next->start > res->end + 1)
+> > -                     free = next->start - res->end + 1;
+> > +                     alloc = min(next->start - (res->end + 1), to_alloc);
+> >
+> >               /* space at the end of the region */
+> > -             if (free < to_alloc && !next && res->end < region_res->end)
+> > -                     free = region_res->end - res->end;
+> > -
+> > -             if (free >= to_alloc && strcmp(name, res->name) == 0)
+> > -                     return __adjust_dev_dax_range(dev_dax, res,
+> > -                                     resource_size(res) + to_alloc);
+> > -             else if (free >= to_alloc && dev_size == 0)
+> > -                     return __alloc_dev_dax_range(dev_dax, res->end + 1,
+> > -                                     to_alloc);
+> > +             if (!alloc && !next && res->end < region_res->end)
+> > +                     alloc = min(region_res->end - res->end, to_alloc);
+> > +
+> > +             if (!alloc)
+> > +                     continue;
+> > +
+> > +             if (adjust_ok(dev_dax, res)) {
+> > +                     rc = __adjust_dev_dax_range(dev_dax, res,
+> > +                                     resource_size(res) + alloc);
+> > +                     break;
+> > +             }
+> > +             rc = __alloc_dev_dax_range(dev_dax, res->end + 1,
+> > +                             alloc);
+>
+> I am wondering if we should switch to:
+>
+>         if (adjust_ok(...))
+>                 rc = __adjust_dev_dax_range(...);
+>         else
+>                 rc = __alloc_dev_dax_range(...);
+>
+> And then a debug print at the end depicting whether and how did we grabbed
+> space? Something like:
+>
+>         dev_dbg(&dev_dax->dev, "%s(%d) %d", action, location, rc);
+>
+> Assuming we set @location to its values when we allocate space at the end,
+> beginning or middle; and @action to whether we adjusted up/down or allocated new
+> range.
+>
+> Essentially, something similar to namespaces scan_allocate() just to help
+> troubleshoot?
 
-[This is an automated email]
-
-This commit has been processed because it contains a "Fixes:" tag
-fixing commit: 31eca76ba2fc ("nfit, libnvdimm: limited/whitelisted dimm command marshaling mechanism").
-
-The bot has tested the following trees: v5.7.7, v5.4.50, v4.19.131, v4.14.187, v4.9.229.
-
-v5.7.7: Failed to apply! Possible dependencies:
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v5.4.50: Failed to apply! Possible dependencies:
-    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v4.19.131: Failed to apply! Possible dependencies:
-    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
-    0ead11181fe0c ("acpi, nfit: Collect shutdown status")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    72c4ebbac476b ("powerpc/papr_scm: Mark papr_scm_ndctl() as static")
-    b3ed2ce024c36 ("acpi/nfit: Add support for Intel DSM 1.8 commands")
-    b5beae5e224f1 ("powerpc/pseries: Add driver for PAPR SCM regions")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-    f517f7925b7b4 ("ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods")
-
-v4.14.187: Failed to apply! Possible dependencies:
-    01091c496f920 ("acpi/nfit: improve bounds checking for 'func'")
-    0e7f0741450b1 ("acpi, nfit: validate commands against the device type")
-    1194c4133195d ("nfit: Add Hyper-V NVDIMM DSM command set to white list")
-    11e1427016095 ("acpi, nfit: add support for NVDIMM_FAMILY_INTEL v1.6 DSMs")
-    466d1493ea830 ("acpi, nfit: rework NVDIMM leaf method detection")
-    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    b37b3fd33d034 ("acpi nfit: Enable to show what feature is supported via ND_CMD_CALL for nfit_test")
-    b9b1504d3c6d6 ("acpi, nfit: hide unknown commands from nmemX/commands")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-
-v4.9.229: Failed to apply! Possible dependencies:
-    095ab4b39f91b ("acpi, nfit: allow override of built-in bitmasks for nvdimm DSMs")
-    0f817ae696b04 ("usb: dwc3: pci: add a private driver structure")
-    36daf3aa399c0 ("usb: dwc3: pci: avoid build warning")
-    3f23df72dc351 ("mmc: sdhci-pci: Use ACPI to get max frequency for Intel NI byt sdio")
-    41c8bdb3ab10c ("acpi, nfit: Switch to use new generic UUID API")
-    42237e393f64d ("libnvdimm: allow a platform to force enable label support")
-    42b06496407c0 ("mmc: sdhci-pci: Add PCI ID for Intel NI byt sdio")
-    4b27db7e26cdb ("acpi, nfit: add support for the _LSI, _LSR, and _LSW label methods")
-    6f07f86c49407 ("acpi, nfit: Introduce nfit_mem flags")
-    8f078b38dd382 ("libnvdimm: convert NDD_ flags to use bitops, introduce NDD_LOCKED")
-    94116f8126de9 ("ACPI: Switch to use generic guid_t in acpi_evaluate_dsm()")
-    9cecca75b5a0d ("usb: dwc3: pci: call _DSM for suspend/resume")
-    9d62ed9651182 ("libnvdimm: handle locked label storage areas")
-    b7fe92999a98a ("ACPI / extlog: Switch to use new generic UUID API")
-    b917078c1c107 ("net: hns: Add ACPI support to check SFP present")
-    ba650cfcf9409 ("acpi, nfit: allow specifying a default DSM family")
-    c959a6b00ff58 ("mmc: sdhci-pci: Don't re-tune with runtime pm for some Intel devices")
-    d2061f9cc32db ("usb: typec: add driver for Intel Whiskey Cove PMIC USB Type-C PHY")
-    d6548ae4d16dc ("acpi/nfit, libnvdimm: Store dimm id as a member to struct nvdimm")
-    fab9288428ec0 ("usb: USB Type-C connector class")
-
-
-NOTE: The patch will not be queued to stable trees until it is upstream.
-
-How should we proceed with this patch?
-
--- 
-Thanks
-Sasha
+I went ahead and just added "alloc", "extend", "shrink", and "delete
+debug prints in the right places.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
