@@ -2,48 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2244E21CB67
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 22:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C83C721CB3E
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 22:04:38 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6F22B1161D3FE;
-	Sun, 12 Jul 2020 13:49:49 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=200.37.86.186; helo=zimbra.bomberosperu.gob.pe; envelope-from=jurbina@inbp.gob.pe; receiver=<UNKNOWN> 
-Received: from zimbra.bomberosperu.gob.pe (mail.inbp.gob.pe [200.37.86.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 78EBA11613729;
-	Sun, 12 Jul 2020 13:49:47 -0700 (PDT)
-Received: from zimbra.bomberosperu.gob.pe (localhost [127.0.0.1])
-	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTPS id 14390AF395;
-	Sun, 12 Jul 2020 14:53:48 -0500 (PET)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTP id D0C6C83D2E;
-	Sun, 12 Jul 2020 14:12:22 -0500 (PET)
-Received: from zimbra.bomberosperu.gob.pe ([127.0.0.1])
-	by localhost (zimbra.bomberosperu.gob.pe [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 7_hPlNcaDCIr; Sun, 12 Jul 2020 14:12:22 -0500 (PET)
-Received: from User (unknown [51.120.74.68])
-	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTPA id 0F17283C2D;
-	Sun, 12 Jul 2020 14:10:56 -0500 (PET)
-From: "Ms. Reem Al-Hashimi"<jurbina@inbp.gob.pe>
-Subject: Re: Investment
-Date: Sun, 12 Jul 2020 19:12:07 -0000
-MIME-Version: 1.0
+	by ml01.01.org (Postfix) with ESMTP id EAE79115D479B;
+	Sun, 12 Jul 2020 13:04:36 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=31.60.226.150; helo=public-gprs276309.centertel.pl; envelope-from=headcoach@boatclub.org; receiver=<UNKNOWN> 
+Received: from public-gprs276309.centertel.pl (public-gprs276309.centertel.pl [31.60.226.150])
+	by ml01.01.org (Postfix) with ESMTP id AA83A115D4786
+	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 13:04:34 -0700 (PDT)
+Date: 12 Jul 2020 22:33:30 +0100
+From: <headcoach@boatclub.org>
 X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-Id: <20200712191058.0F17283C2D@zimbra.bomberosperu.gob.pe>
-Message-ID-Hash: NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB
-X-Message-ID-Hash: NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB
-X-MailFrom: jurbina@inbp.gob.pe
+Message-ID: <951305319.202007122304@boatclub.org>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?Q2jDoW5nZSB5b3VyIHDDoXNzd29yZCDDrW1tZWRpw6F0ZWx5LiBZb3VyIMOhY2NvdW50IGjDoXMgYmVl?= =?utf-8?B?biBow6Fja2VkLg==?=
+MIME-Version: 1.0
+Message-ID-Hash: 4KZIHN76POVD2YNILNZBYHEVI4A6CL7G
+X-Message-ID-Hash: 4KZIHN76POVD2YNILNZBYHEVI4A6CL7G
+X-MailFrom: headcoach@boatclub.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: reemalhashimi@daum.net
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4KZIHN76POVD2YNILNZBYHEVI4A6CL7G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,17 +36,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+Hello!
 
-My name is Reem E. Al-Hashimi, the Emirates Minister of State and Managing Director of the United Arab Emirates (Dubai) World Expo 2020 Committee. I am writing to you to stand as my partner to receive my share of gratification from foreign companies whom I helped during the bidding exercise towards the Dubai World Expo 2020 Committee and also i want to use this funds to assist Coronavirus Symptoms and Causes.
+&#205; h&#225;ve b&#225;d news for you.
+14/03/2020 - on th&#237;s d&#225;y &#205; h&#225;cked your oper&#225;t&#237;ng system &#225;nd got full &#225;ccess to your &#225;ccount linux-nvdimm@lists.01.org
 
-Am a single Arab women and serving as a minister, there is a limit to my personal income and investment level and  For this reason, I cannot receive such a huge sum back to my country or my personal account, so an agreement was reached with the foreign companies to direct the gratifications to an open beneficiary account with a financial institution where it will be possible for me to instruct further transfer of the fund to a third party account for investment purpose which is the reason i contacted you to receive the fund as my partner for investment in your country.
+&#205;t &#237;s useless to ch&#225;nge the p&#225;ssword, my m&#225;lw&#225;re &#237;ntercepts &#237;t every t&#237;me.
 
-The amount is valued at Euro 47,745,533.00 with a financial institution waiting my instruction for further transfer to a destination account as soon as I have your information indicating interest to receive and invest the fund, I will compensate you with 30% of the total amount and you will also get benefit from the investment.
+How &#237;t w&#225;s:
+&#205;n the softw&#225;re of the router to wh&#237;ch you were connected th&#225;t d&#225;y, there w&#225;s &#225; vulner&#225;b&#237;l&#237;ty.
+&#205; f&#237;rst h&#225;cked th&#237;s router &#225;nd pl&#225;ced my m&#225;l&#237;c&#237;ous code on &#237;t.
+When you entered &#237;n the &#237;nternet, my troj&#225;n w&#225;s &#237;nst&#225;lled on the oper&#225;t&#237;ng system of your dev&#237;ce.
 
-If you can handle the fund in a good investment. reply on this email only: alreemhas109@daum.net       
+&#196;fter th&#225;t, &#205; m&#225;de &#225; full dump of your d&#237;sk (&#205; h&#225;ve &#225;ll your &#225;ddress book, h&#237;story of v&#237;ew&#237;ng s&#237;tes, &#225;ll f&#237;les, phone numbers &#225;nd &#225;ddresses of &#225;ll your cont&#225;cts).
 
-Regards,
-Ms. Reem
+&#196; month &#225;go, &#205; w&#225;nted to lock your dev&#237;ce &#225;nd &#225;sk for &#225; sm&#225;ll &#225;mount of money to unlock.
+But &#205; looked &#225;t the s&#237;tes th&#225;t you regul&#225;rly v&#237;s&#237;t, &#225;nd c&#225;me to the b&#237;g del&#237;ght of your f&#225;vor&#237;te resources.
+&#205;'m t&#225;lk&#237;ng &#225;bout s&#237;tes for &#225;dults.
+
+&#205; w&#225;nt to s&#225;y - you &#225;re &#225; b&#237;g pervert. You h&#225;ve unbr&#237;dled f&#225;nt&#225;sy!
+
+&#196;fter th&#225;t, &#225;n &#237;de&#225; c&#225;me to my m&#237;nd.
+&#205; m&#225;de &#225; screenshot of the &#237;nt&#237;m&#225;te webs&#237;te where you h&#225;ve fun (how d&#237;d you m&#225;sturb&#225;te).
+&#196;fter th&#225;t, &#237; took off your joys (us&#237;ng the c&#225;mer&#225; of your dev&#237;ce). &#205;t turned out be&#225;ut&#237;fully, do not hes&#237;t&#225;te.
+
+&#205; &#225;m strongly bel&#237;ve th&#225;t you would not l&#237;ke to show these p&#237;ctures to your rel&#225;t&#237;ves, fr&#237;ends or colle&#225;gues.
+&#205; th&#237;nk $900 &#237;s &#225; very sm&#225;ll &#225;mount for my s&#237;lence.
+Bes&#237;des, &#205; spent &#225; lot of t&#237;me on you!
+
+&#205; &#225;ccept money only &#237;n B&#237;tco&#237;ns.
+My BTC w&#225;llet: 1CRKWJcwVofS7HqP4UnezYFTWv1g4sKYqb
+
+You do not know how to replen&#237;sh &#225; B&#237;tco&#237;n w&#225;llet?
+&#205;n &#225;ny se&#225;rch eng&#237;ne wr&#237;te "how to send money to btc w&#225;llet".
+&#205;t's e&#225;s&#237;er th&#225;n send money to &#225; cred&#237;t c&#225;rd!
+
+For p&#225;yment you h&#225;ve &#225; l&#237;ttle more th&#225;n two d&#225;ys (ex&#225;ctly 50 hours).
+Do not worry, the t&#237;mer w&#237;ll st&#225;rt &#225;t the moment when you open th&#237;s letter. Yes, yes .. &#237;t h&#225;s &#225;lre&#225;dy st&#225;rted!
+
+&#196;fter p&#225;yment, my v&#237;rus &#225;nd d&#237;rty photos w&#237;th you self-destruct &#225;utom&#225;t&#237;c&#225;lly.
+N&#225;rr&#225;t&#237;ve, &#237;f &#237; do not rece&#237;ve the spec&#237;f&#237;ed &#225;mount from you, then your dev&#237;ce w&#237;ll be blocked, &#225;nd &#225;ll your cont&#225;cts w&#237;ll rece&#237;ve &#225; photos w&#237;th your "joys".
+
+&#205; w&#225;nt you to be prudent.
+- Do not try to f&#237;nd and destroy my v&#237;rus! (&#225;ll your d&#225;t&#225; &#237;s &#225;lre&#225;dy uplo&#225;ded to &#225; remote server)
+- Do not try to contact me (th&#237;s &#237;s not fe&#225;s&#237;ble, sender &#225;ddress gener&#225;ted &#225;utom&#225;t&#237;c&#225;lly)
+- V&#225;r&#237;ous secur&#237;ty serv&#237;ces w&#237;ll not help you; form&#225;tt&#237;ng &#225; d&#237;sk or destroy&#237;ng &#225; dev&#237;ce w&#237;ll not help e&#237;ther, s&#237;nce your d&#225;t&#225; &#237;s &#225;lre&#225;dy on &#225; remote server.
+
+P.S. &#205; gu&#225;r&#225;ntee you th&#225;t &#205; w&#237;ll not d&#237;sturb you &#225;g&#225;&#237;n &#225;fter p&#225;yment, &#225;s you &#225;re not my s&#237;ngle v&#237;ct&#237;m.
+ Th&#237;s &#237;s &#225; h&#225;cker code of honor.
+
+From now on, &#205; &#225;dv&#237;se you to use good &#225;nt&#237;v&#237;ruses &#225;nd upd&#225;te them regul&#225;rly (sever&#225;l t&#237;mes &#225; d&#225;y)!
+
+Don't be m&#225;d at me, everyone h&#225;s the&#237;r own work.
+
+F&#225;rewell.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
