@@ -1,33 +1,35 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83C721CB3E
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 22:04:38 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42B321C992
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 15:48:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EAE79115D479B;
-	Sun, 12 Jul 2020 13:04:36 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=31.60.226.150; helo=public-gprs276309.centertel.pl; envelope-from=headcoach@boatclub.org; receiver=<UNKNOWN> 
-Received: from public-gprs276309.centertel.pl (public-gprs276309.centertel.pl [31.60.226.150])
-	by ml01.01.org (Postfix) with ESMTP id AA83A115D4786
-	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 13:04:34 -0700 (PDT)
-Date: 12 Jul 2020 22:33:30 +0100
-From: <headcoach@boatclub.org>
-X-Priority: 3
-Message-ID: <951305319.202007122304@boatclub.org>
+	by ml01.01.org (Postfix) with ESMTP id 7253111152D11;
+	Sun, 12 Jul 2020 06:47:59 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=121.169.6.157; helo=[121.169.6.157]; envelope-from=stan@berteloot.com; receiver=<UNKNOWN> 
+Received: from [121.169.6.157] (unknown [121.169.6.157])
+	by ml01.01.org (Postfix) with ESMTP id 80FAB1003F509
+	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 06:47:56 -0700 (PDT)
+From: <stan@berteloot.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?Q2jDoW5nZSB5b3VyIHDDoXNzd29yZCDDrW1tZWRpw6F0ZWx5LiBZb3VyIMOhY2NvdW50IGjDoXMgYmVl?= =?utf-8?B?biBow6Fja2VkLg==?=
+Date: 13 Jul 2020 06:35:53 +0800
 MIME-Version: 1.0
-Message-ID-Hash: 4KZIHN76POVD2YNILNZBYHEVI4A6CL7G
-X-Message-ID-Hash: 4KZIHN76POVD2YNILNZBYHEVI4A6CL7G
-X-MailFrom: headcoach@boatclub.org
+Subject: =?utf-8?B?Q2jDoW5nZSB5b3VyIHDDoXNzd29yZCDDrW1tZWRpw6F0ZWx5LiBZb3VyIMOhY2NvdW50IGjDoXMgYmVl?= =?utf-8?B?biBow6Fja2VkLg==?=
+Message-ID: <5F0B9319.4186.E55C2D@stan.berteloot.com>
+Priority: normal
+X-mailer: Pegasus Mail for Windows (4.41)
+Message-ID-Hash: NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB
+X-Message-ID-Hash: NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB
+X-MailFrom: stan@berteloot.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Description: Mail message body
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4KZIHN76POVD2YNILNZBYHEVI4A6CL7G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -61,7 +63,7 @@ But &#205; looked &#225;t the s&#237;tes th&#225;t you regul&#225;rly v&#237;s&#
 &#196;fter th&#225;t, &#237; took off your joys (us&#237;ng the c&#225;mer&#225; of your dev&#237;ce). &#205;t turned out be&#225;ut&#237;fully, do not hes&#237;t&#225;te.
 
 &#205; &#225;m strongly bel&#237;ve th&#225;t you would not l&#237;ke to show these p&#237;ctures to your rel&#225;t&#237;ves, fr&#237;ends or colle&#225;gues.
-&#205; th&#237;nk $900 &#237;s &#225; very sm&#225;ll &#225;mount for my s&#237;lence.
+&#205; th&#237;nk $916 &#237;s &#225; very sm&#225;ll &#225;mount for my s&#237;lence.
 Bes&#237;des, &#205; spent &#225; lot of t&#237;me on you!
 
 &#205; &#225;ccept money only &#237;n B&#237;tco&#237;ns.
