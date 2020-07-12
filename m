@@ -2,50 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4826521CA92
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 19:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2244E21CB67
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 22:49:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8E0E21159133A;
-	Sun, 12 Jul 2020 10:09:52 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 6F22B1161D3FE;
+	Sun, 12 Jul 2020 13:49:49 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=200.37.86.186; helo=zimbra.bomberosperu.gob.pe; envelope-from=jurbina@inbp.gob.pe; receiver=<UNKNOWN> 
+Received: from zimbra.bomberosperu.gob.pe (mail.inbp.gob.pe [200.37.86.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 952F61159132B
-	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 10:09:50 -0700 (PDT)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 8DFDF20702;
-	Sun, 12 Jul 2020 17:09:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1594573790;
-	bh=a848+2Ogmip7OA1pq5ZWFjhMfOh9SLYFsM119KDBbhQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OZqzQZEoZxSAGSrZFfXjXZQUtkypTiKs2Oet5qlnQPBEPa6ZT4u2d206gYnjrbJlG
-	 BxemuBXiEumBOik0eAXItqnjOv/68W9VGr6zWzI0KQhtqMhYMb+hxYxeobXV6CpOk6
-	 myjlUwl2om3T4Vi71OVbj9wKlmHuif0siks+8bGo=
-Date: Sun, 12 Jul 2020 19:09:45 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 17/22] drivers/base: Make device_find_child_by_name()
- compatible with sysfs inputs
-Message-ID: <20200712170945.GA194499@kroah.com>
-References: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159457125753.754248.6000936585361264069.stgit@dwillia2-desk3.amr.corp.intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 78EBA11613729;
+	Sun, 12 Jul 2020 13:49:47 -0700 (PDT)
+Received: from zimbra.bomberosperu.gob.pe (localhost [127.0.0.1])
+	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTPS id 14390AF395;
+	Sun, 12 Jul 2020 14:53:48 -0500 (PET)
+Received: from localhost (localhost [127.0.0.1])
+	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTP id D0C6C83D2E;
+	Sun, 12 Jul 2020 14:12:22 -0500 (PET)
+Received: from zimbra.bomberosperu.gob.pe ([127.0.0.1])
+	by localhost (zimbra.bomberosperu.gob.pe [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 7_hPlNcaDCIr; Sun, 12 Jul 2020 14:12:22 -0500 (PET)
+Received: from User (unknown [51.120.74.68])
+	by zimbra.bomberosperu.gob.pe (Postfix) with ESMTPA id 0F17283C2D;
+	Sun, 12 Jul 2020 14:10:56 -0500 (PET)
+From: "Ms. Reem Al-Hashimi"<jurbina@inbp.gob.pe>
+Subject: Re: Investment
+Date: Sun, 12 Jul 2020 19:12:07 -0000
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <159457125753.754248.6000936585361264069.stgit@dwillia2-desk3.amr.corp.intel.com>
-Message-ID-Hash: 7E4YAOGW5Z3PXHZFSYGFJV73I64KL2IG
-X-Message-ID-Hash: 7E4YAOGW5Z3PXHZFSYGFJV73I64KL2IG
-X-MailFrom: gregkh@linuxfoundation.org
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20200712191058.0F17283C2D@zimbra.bomberosperu.gob.pe>
+Message-ID-Hash: NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB
+X-Message-ID-Hash: NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB
+X-MailFrom: jurbina@inbp.gob.pe
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, "Rafael J. Wysocki" <rafael@kernel.org>, peterz@infradead.org, dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, hch@lst.de, joao.m.martins@oracle.com
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: reemalhashimi@daum.net
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7E4YAOGW5Z3PXHZFSYGFJV73I64KL2IG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NC3L2YFZ36OXGUNYVTB47P2NVYYOH4OB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,39 +52,17 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sun, Jul 12, 2020 at 09:27:37AM -0700, Dan Williams wrote:
-> Use sysfs_streq() in device_find_child_by_name() to allow it to use a
-> sysfs input string that might contain a trailing newline.
-> 
-> The other "device by name" interfaces,
-> {bus,driver,class}_find_device_by_name(), already account for sysfs
-> strings.
-> 
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
->  drivers/base/core.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 67d39a90b45c..5d31b962c898 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -3078,7 +3078,7 @@ struct device *device_find_child_by_name(struct device *parent,
->  
->  	klist_iter_init(&parent->p->klist_children, &i);
->  	while ((child = next_device(&i)))
-> -		if (!strcmp(dev_name(child), name) && get_device(child))
-> +		if (sysfs_streq(dev_name(child), name) && get_device(child))
 
-Who wants to call this function with a name passed from userspace?
+My name is Reem E. Al-Hashimi, the Emirates Minister of State and Managing Director of the United Arab Emirates (Dubai) World Expo 2020 Committee. I am writing to you to stand as my partner to receive my share of gratification from foreign companies whom I helped during the bidding exercise towards the Dubai World Expo 2020 Committee and also i want to use this funds to assist Coronavirus Symptoms and Causes.
 
-Not objecting to it, just curious...
+Am a single Arab women and serving as a minister, there is a limit to my personal income and investment level and  For this reason, I cannot receive such a huge sum back to my country or my personal account, so an agreement was reached with the foreign companies to direct the gratifications to an open beneficiary account with a financial institution where it will be possible for me to instruct further transfer of the fund to a third party account for investment purpose which is the reason i contacted you to receive the fund as my partner for investment in your country.
 
-thanks,
+The amount is valued at Euro 47,745,533.00 with a financial institution waiting my instruction for further transfer to a destination account as soon as I have your information indicating interest to receive and invest the fund, I will compensate you with 30% of the total amount and you will also get benefit from the investment.
 
-greg k-h
+If you can handle the fund in a good investment. reply on this email only: alreemhas109@daum.net       
+
+Regards,
+Ms. Reem
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
