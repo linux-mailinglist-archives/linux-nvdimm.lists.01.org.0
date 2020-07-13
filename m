@@ -2,34 +2,34 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42B321C992
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 15:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C6321CAA5
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 12 Jul 2020 19:24:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7253111152D11;
-	Sun, 12 Jul 2020 06:47:59 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=121.169.6.157; helo=[121.169.6.157]; envelope-from=stan@berteloot.com; receiver=<UNKNOWN> 
-Received: from [121.169.6.157] (unknown [121.169.6.157])
-	by ml01.01.org (Postfix) with ESMTP id 80FAB1003F509
-	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 06:47:56 -0700 (PDT)
-From: <stan@berteloot.com>
+	by ml01.01.org (Postfix) with ESMTP id A21B111076B53;
+	Sun, 12 Jul 2020 10:24:16 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.17.247.170; helo=ipv4-170-247-17.as55666.net; envelope-from=oracle@orisun.com; receiver=<UNKNOWN> 
+Received: from ipv4-170-247-17.as55666.net (unknown [103.17.247.170])
+	by ml01.01.org (Postfix) with ESMTP id C1FAA11076B50
+	for <linux-nvdimm@lists.01.org>; Sun, 12 Jul 2020 10:24:10 -0700 (PDT)
+From: <oracle@orisun.com>
 To: <linux-nvdimm@lists.01.org>
-Date: 13 Jul 2020 06:35:53 +0800
+Subject: =?utf-8?B?SMKhZ2ggbGV2ZWwgb2YgcsKhc2suIFlvdXIgYWNjb3VudCBoYXMgYmVlbiBoYWNrZWQuIENoYW5nZSB5?= =?utf-8?B?w7h1ciBwYXNzd8O4cmQu?=
+Date: 13 Jul 2020 07:54:32 +0700
+Message-ID: <004101d658b4$06dfc155$8d55fea4$@orisun.com>
 MIME-Version: 1.0
-Subject: =?utf-8?B?Q2jDoW5nZSB5b3VyIHDDoXNzd29yZCDDrW1tZWRpw6F0ZWx5LiBZb3VyIMOhY2NvdW50IGjDoXMgYmVl?= =?utf-8?B?biBow6Fja2VkLg==?=
-Message-ID: <5F0B9319.4186.E55C2D@stan.berteloot.com>
-Priority: normal
-X-mailer: Pegasus Mail for Windows (4.41)
-Message-ID-Hash: NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB
-X-Message-ID-Hash: NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB
-X-MailFrom: stan@berteloot.com
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: Ac125nta2h45g52i125nta2h45g52i==
+Content-Language: en-us
+Message-ID-Hash: O32W5J2K6DC5GRSP2PTH5I5WWKEICBF5
+X-Message-ID-Hash: O32W5J2K6DC5GRSP2PTH5I5WWKEICBF5
+X-MailFrom: oracle@orisun.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Description: Mail message body
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NBXYOMCJJ4DYITTFWH63PVOKXURKQ3UB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O32W5J2K6DC5GRSP2PTH5I5WWKEICBF5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -40,58 +40,36 @@ Content-Transfer-Encoding: 7bit
 
 Hello!
 
-&#205; h&#225;ve b&#225;d news for you.
-14/03/2020 - on th&#237;s d&#225;y &#205; h&#225;cked your oper&#225;t&#237;ng system &#225;nd got full &#225;ccess to your &#225;ccount linux-nvdimm@lists.01.org
+&#206; am a hacker who ha&#537; acce&#537;&#537; to your operat&#238;ng &#537;y&#537;tem.
+&#206; al&#537;o have full acce&#537;&#537; to your account.
 
-&#205;t &#237;s useless to ch&#225;nge the p&#225;ssword, my m&#225;lw&#225;re &#237;ntercepts &#237;t every t&#237;me.
+&#206;'ve been watch&#238;ng you for a few month&#537; now.
+The fact &#238;&#537; that you were &#238;nfected w&#238;th malware through an adult &#537;&#238;te that you v&#238;&#537;&#238;ted.
 
-How &#237;t w&#225;s:
-&#205;n the softw&#225;re of the router to wh&#237;ch you were connected th&#225;t d&#225;y, there w&#225;s &#225; vulner&#225;b&#237;l&#237;ty.
-&#205; f&#237;rst h&#225;cked th&#237;s router &#225;nd pl&#225;ced my m&#225;l&#237;c&#237;ous code on &#237;t.
-When you entered &#237;n the &#237;nternet, my troj&#225;n w&#225;s &#237;nst&#225;lled on the oper&#225;t&#237;ng system of your dev&#237;ce.
+&#238;f you are not fam&#238;l&#238;ar w&#238;th th&#238;&#537;, &#238; w&#238;ll expla&#238;n.
+Trojan V&#238;ru&#537; g&#238;ve&#537; me full acce&#537;&#537; and control over a computer or other dev&#238;ce.
+Th&#238;&#537; mean&#537; that &#238; can &#537;ee everyth&#238;ng on your &#537;creen, turn on the camera and m&#238;crophone, but you do not know about &#238;t.
 
-&#196;fter th&#225;t, &#205; m&#225;de &#225; full dump of your d&#237;sk (&#205; h&#225;ve &#225;ll your &#225;ddress book, h&#237;story of v&#237;ew&#237;ng s&#237;tes, &#225;ll f&#237;les, phone numbers &#225;nd &#225;ddresses of &#225;ll your cont&#225;cts).
+&#206; al&#537;o have acce&#537;&#537; to all your contact&#537; and all your corre&#537;pondence.
+Why your ant&#238;v&#238;ru&#537; d&#238;d not detect malware?
+An&#537;wer: My malware u&#537;e&#537; the dr&#238;ver, &#238; update &#238;t&#537; &#537;&#238;gnature&#537; every 4 hour&#537; &#537;o that your ant&#238;v&#238;ru&#537; &#238;&#537; &#537;&#238;lent.
 
-&#196; month &#225;go, &#205; w&#225;nted to lock your dev&#237;ce &#225;nd &#225;sk for &#225; sm&#225;ll &#225;mount of money to unlock.
-But &#205; looked &#225;t the s&#237;tes th&#225;t you regul&#225;rly v&#237;s&#237;t, &#225;nd c&#225;me to the b&#237;g del&#237;ght of your f&#225;vor&#237;te resources.
-&#205;'m t&#225;lk&#237;ng &#225;bout s&#237;tes for &#225;dults.
+&#206; made a v&#238;deo &#537;how&#238;ng how you ma&#537;turbate on the left half of the &#537;creen, and &#238;n the r&#238;ght half you &#537;ee the v&#238;deo that you watched. W&#238;th one cl&#238;ck of the mou&#537;e,
+&#206; can &#537;end th&#238;&#537; v&#238;deo to all your ema&#238;l&#537; and contact&#537; on &#537;oc&#238;al network&#537;. &#238; can al&#537;o po&#537;t acce&#537;&#537; to all your e-ma&#238;l corre&#537;pondence and me&#537;&#537;enger&#537; that you u&#537;e.
 
-&#205; w&#225;nt to s&#225;y - you &#225;re &#225; b&#237;g pervert. You h&#225;ve unbr&#237;dled f&#225;nt&#225;sy!
+&#206;f you want to prevent th&#238;&#537;, tran&#537;fer the amount of $1200(USD) to my b&#238;tco&#238;n addre&#537;&#537; (&#238;f you do not know how to do th&#238;&#537;, wr&#238;te to Google: 'Buy BTC').
 
-&#196;fter th&#225;t, &#225;n &#237;de&#225; c&#225;me to my m&#237;nd.
-&#205; m&#225;de &#225; screenshot of the &#237;nt&#237;m&#225;te webs&#237;te where you h&#225;ve fun (how d&#237;d you m&#225;sturb&#225;te).
-&#196;fter th&#225;t, &#237; took off your joys (us&#237;ng the c&#225;mer&#225; of your dev&#237;ce). &#205;t turned out be&#225;ut&#237;fully, do not hes&#237;t&#225;te.
+My b&#238;tco&#238;n addre&#537;&#537; (BTC Wallet) &#238;&#537;: 12ZLU11k4T1MCk8Kc5uxweTqTSamPiK5fD
 
-&#205; &#225;m strongly bel&#237;ve th&#225;t you would not l&#237;ke to show these p&#237;ctures to your rel&#225;t&#237;ves, fr&#237;ends or colle&#225;gues.
-&#205; th&#237;nk $916 &#237;s &#225; very sm&#225;ll &#225;mount for my s&#237;lence.
-Bes&#237;des, &#205; spent &#225; lot of t&#237;me on you!
+After rece&#238;v&#238;ng the payment, &#238; w&#238;ll delete the v&#238;deo and you w&#238;ll never hear me aga&#238;n.
+&#206; g&#238;ve you 48 hour&#537; to pay.
+&#206; have a not&#238;ce read&#238;ng th&#238;&#537; letter, and the t&#238;mer w&#238;ll work when you &#537;ee th&#238;&#537; letter.
+F&#238;l&#238;ng a compla&#238;nt &#537;omewhere doe&#537; not make &#537;en&#537;e becau&#537;e th&#238;&#537; ema&#238;l cannot be tracked l&#238;ke my b&#238;tco&#238;n addre&#537;&#537;.
+&#206; do not make any m&#238;&#537;take&#537;.
 
-&#205; &#225;ccept money only &#237;n B&#237;tco&#237;ns.
-My BTC w&#225;llet: 1CRKWJcwVofS7HqP4UnezYFTWv1g4sKYqb
+&#206;f &#238; f&#238;nd that you have &#537;hared th&#238;&#537; me&#537;&#537;age w&#238;th &#537;omeone el&#537;e, the v&#238;deo w&#238;ll be &#238;mmed&#238;ately d&#238;&#537;tr&#238;buted.
 
-You do not know how to replen&#237;sh &#225; B&#237;tco&#237;n w&#225;llet?
-&#205;n &#225;ny se&#225;rch eng&#237;ne wr&#237;te "how to send money to btc w&#225;llet".
-&#205;t's e&#225;s&#237;er th&#225;n send money to &#225; cred&#237;t c&#225;rd!
-
-For p&#225;yment you h&#225;ve &#225; l&#237;ttle more th&#225;n two d&#225;ys (ex&#225;ctly 50 hours).
-Do not worry, the t&#237;mer w&#237;ll st&#225;rt &#225;t the moment when you open th&#237;s letter. Yes, yes .. &#237;t h&#225;s &#225;lre&#225;dy st&#225;rted!
-
-&#196;fter p&#225;yment, my v&#237;rus &#225;nd d&#237;rty photos w&#237;th you self-destruct &#225;utom&#225;t&#237;c&#225;lly.
-N&#225;rr&#225;t&#237;ve, &#237;f &#237; do not rece&#237;ve the spec&#237;f&#237;ed &#225;mount from you, then your dev&#237;ce w&#237;ll be blocked, &#225;nd &#225;ll your cont&#225;cts w&#237;ll rece&#237;ve &#225; photos w&#237;th your "joys".
-
-&#205; w&#225;nt you to be prudent.
-- Do not try to f&#237;nd and destroy my v&#237;rus! (&#225;ll your d&#225;t&#225; &#237;s &#225;lre&#225;dy uplo&#225;ded to &#225; remote server)
-- Do not try to contact me (th&#237;s &#237;s not fe&#225;s&#237;ble, sender &#225;ddress gener&#225;ted &#225;utom&#225;t&#237;c&#225;lly)
-- V&#225;r&#237;ous secur&#237;ty serv&#237;ces w&#237;ll not help you; form&#225;tt&#237;ng &#225; d&#237;sk or destroy&#237;ng &#225; dev&#237;ce w&#237;ll not help e&#237;ther, s&#237;nce your d&#225;t&#225; &#237;s &#225;lre&#225;dy on &#225; remote server.
-
-P.S. &#205; gu&#225;r&#225;ntee you th&#225;t &#205; w&#237;ll not d&#237;sturb you &#225;g&#225;&#237;n &#225;fter p&#225;yment, &#225;s you &#225;re not my s&#237;ngle v&#237;ct&#237;m.
- Th&#237;s &#237;s &#225; h&#225;cker code of honor.
-
-From now on, &#205; &#225;dv&#237;se you to use good &#225;nt&#237;v&#237;ruses &#225;nd upd&#225;te them regul&#225;rly (sever&#225;l t&#237;mes &#225; d&#225;y)!
-
-Don't be m&#225;d at me, everyone h&#225;s the&#237;r own work.
-
-F&#225;rewell.
+Be&#537;t regard&#537;!
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
