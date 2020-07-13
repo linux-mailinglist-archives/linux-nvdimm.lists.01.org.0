@@ -2,120 +2,119 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E6F21D8A8
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 16:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF5621DA48
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 17:40:03 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EB7EF100A859B;
-	Mon, 13 Jul 2020 07:35:45 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D4A5C117FA595;
+	Mon, 13 Jul 2020 08:40:01 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DB260117A732C
-	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 07:35:43 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 0AAB4AC24;
-	Mon, 13 Jul 2020 14:35:44 +0000 (UTC)
-Subject: Re: [PATCH] libnvdimm: call devm_namespace_disable() on error
-To: Santosh Sivaraj <santosh@fossix.org>,
- Dan Williams <dan.williams@intel.com>
-References: <20200703111856.40280-1-hare@suse.de>
- <87zh89qmaq.fsf@santosiv.in.ibm.com>
-From: Hannes Reinecke <hare@suse.de>
-Message-ID: <3ee5b9ed-a42d-425b-1f0e-ee1591cd5cec@suse.de>
-Date: Mon, 13 Jul 2020 16:35:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+	by ml01.01.org (Postfix) with ESMTPS id 78D5D117E12B1
+	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 08:39:58 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id dg28so14075549edb.3
+        for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 08:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=du57OarKMFj2//aqQNh8usAhJGOEHYQoIDCsSqzfRrA=;
+        b=p5NtX2gb+X8NBTzJ3q4wi1YSieEG+HNt+0otz/H/s/4MmLGrJII8dW/W0UVEpeW0Hg
+         qC3dEPnVuhhvBwHhOLmT0GIL1CYUYMo9ubUoSer6T64yW74mkvzKKDKlZDVr19K+cYri
+         LtlbMnBKoOcwmDXe/2csa9LQ7/dQV+rttec6lQsYqYKQLaZDSoi1NaLa2MvaowwAoBYv
+         FeI+RRFcbGjItkCjE4SunsxqoBYnRp76pca1wVuHw/7y67Q/sHjhAzl/ezQtIiTEEG4j
+         yQVjwihttrowt+w804UNoet1fmlmsFKNkFYmUigdIXnkpiItEwYkP2N/ahsYzcyDUeNq
+         Dsyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=du57OarKMFj2//aqQNh8usAhJGOEHYQoIDCsSqzfRrA=;
+        b=bv473GJGL1VIDUKhQM2cDsVy1MYE9P7tqaru/5P8QOIufjStdpSL7l4EQr1Osh7QWm
+         KPGAguxpFW16FieDhcqRxjYaMFo9xq5J2h5PfpWaiFzlS6M1ASbfl0RCZj8/wMoHhzz/
+         XKg0Op44EE2kzEb+4x3OsqqMSbwzbfXqmDo9s/HRU2pVZG6qY8b6UhqbgoaSI+9JMFfQ
+         p1Hqc2wk+BpfQdlq+hs0bbQllg5M2uESfz1CmI3aC/eEGnq2Sa426zftTqyU2YBFhqas
+         U5Zy2hiWh8IbjWg/kl6si89ZPiN6kYfhjxPF31V5M30Ly1LG102mnTndNvItAlmHL+hF
+         NvEQ==
+X-Gm-Message-State: AOAM5322SS5mHQbREOPnmQ/gnLDzD5160tXUWi5JPm6UHIw95cbU8Atd
+	yEFtW1mHeM18Ge9+PO3H1QM6eZYwgb9XaJlW46qALQ==
+X-Google-Smtp-Source: ABdhPJwvCxFFHwbU4mztcnMn5QN22D7JN5cZqYOUrLmDBOAdReDdsMY67wCR/9JL04AtkGrUTxK3CfgbBEbrs6JuO2k=
+X-Received: by 2002:aa7:c24d:: with SMTP id y13mr95634335edo.123.1594654794604;
+ Mon, 13 Jul 2020 08:39:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87zh89qmaq.fsf@santosiv.in.ibm.com>
-Content-Language: en-US
-Message-ID-Hash: 26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV
-X-Message-ID-Hash: 26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV
-X-MailFrom: hare@suse.de
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org
+References: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159457125753.754248.6000936585361264069.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200712170945.GA194499@kroah.com>
+In-Reply-To: <20200712170945.GA194499@kroah.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 13 Jul 2020 08:39:43 -0700
+Message-ID: <CAPcyv4h=7oB+PHEUa6otkoXYx+r_8GFbmuF-j_kOmHjpGB-=eg@mail.gmail.com>
+Subject: Re: [PATCH v2 17/22] drivers/base: Make device_find_child_by_name()
+ compatible with sysfs inputs
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Message-ID-Hash: DAPPWPKQ6QRNSXK5TOTY7DBENHLHBXZR
+X-Message-ID-Hash: DAPPWPKQ6QRNSXK5TOTY7DBENHLHBXZR
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Linux MM <linux-mm@kvack.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, Joao Martins <joao.m.martins@oracle.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DAPPWPKQ6QRNSXK5TOTY7DBENHLHBXZR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gNy85LzIwIDc6MzkgQU0sIFNhbnRvc2ggU2l2YXJhaiB3cm90ZToNCj4gSGkgSGFubmVzLA0K
-PiANCj4gSGFubmVzIFJlaW5lY2tlIDxoYXJlQHN1c2UuZGU+IHdyaXRlczoNCj4gDQo+PiBPbmNl
-IGRldm1fbmFtZXNwYWNlX2VuYWJsZSgpIGhhcyBiZWVuIGNhbGxlZCB0aGUgZXJyb3IgcGF0aCBp
-biB0aGUNCj4+IGNhbGxpbmcgZnVuY3Rpb24gd2lsbCBub3QgY2FsbCBkZXZtX25hbWVzcGFjZV9k
-aXNhYmxlKCksIGxlYXZpbmcgdGhlDQo+PiBuYW1lc3BhY2UgZW5hYmxlZCBvbiBlcnJvci4NCj4+
-DQo+PiBTaWduZWQtb2ZmLWJ5OiBIYW5uZXMgUmVpbmVja2UgPGhhcmVAc3VzZS5kZT4NCj4+IC0t
-LQ0KPj4gICBkcml2ZXJzL2RheC9wbWVtL2NvcmUuYyAgIHwgIDIgKy0NCj4+ICAgZHJpdmVycy9u
-dmRpbW0vYnR0LmMgICAgICB8ICA1ICsrKystDQo+PiAgIGRyaXZlcnMvbnZkaW1tL2NsYWltLmMg
-ICAgfCAgOCArKysrKysrLQ0KPj4gICBkcml2ZXJzL252ZGltbS9wZm5fZGV2cy5jIHwgIDEgKw0K
-Pj4gICBkcml2ZXJzL252ZGltbS9wbWVtLmMgICAgIHwgMjAgKysrKysrKysrKy0tLS0tLS0tLS0N
-Cj4+ICAgNSBmaWxlcyBjaGFuZ2VkLCAyMyBpbnNlcnRpb25zKCspLCAxMyBkZWxldGlvbnMoLSkN
-Cj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvcG1lbS9jb3JlLmMgYi9kcml2ZXJzL2Rh
-eC9wbWVtL2NvcmUuYw0KPj4gaW5kZXggMmJlZGY4NDE0ZmZmLi40YjI2NDM0ZjBhY2EgMTAwNjQ0
-DQo+PiAtLS0gYS9kcml2ZXJzL2RheC9wbWVtL2NvcmUuYw0KPj4gKysrIGIvZHJpdmVycy9kYXgv
-cG1lbS9jb3JlLmMNCj4+IEBAIC0zMSw5ICszMSw5IEBAIHN0cnVjdCBkZXZfZGF4ICpfX2RheF9w
-bWVtX3Byb2JlKHN0cnVjdCBkZXZpY2UgKmRldiwgZW51bSBkZXZfZGF4X3N1YnN5cyBzdWJzeXMp
-DQo+PiAgIAlpZiAocmMpDQo+PiAgIAkJcmV0dXJuIEVSUl9QVFIocmMpOw0KPj4gICAJcmMgPSBu
-dmRpbW1fc2V0dXBfcGZuKG5kX3BmbiwgJnBnbWFwKTsNCj4+ICsJZGV2bV9uYW1lc3BhY2VfZGlz
-YWJsZShkZXYsIG5kbnMpOw0KPj4gICAJaWYgKHJjKQ0KPj4gICAJCXJldHVybiBFUlJfUFRSKHJj
-KTsNCj4+IC0JZGV2bV9uYW1lc3BhY2VfZGlzYWJsZShkZXYsIG5kbnMpOw0KPj4gICANCj4+ICAg
-CS8qIHJlc2VydmUgdGhlIG1ldGFkYXRhIGFyZWEsIGRldmljZS1kYXggd2lsbCByZXNlcnZlIHRo
-ZSBkYXRhICovDQo+PiAgIAlwZm5fc2IgPSBuZF9wZm4tPnBmbl9zYjsNCj4+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL252ZGltbS9idHQuYyBiL2RyaXZlcnMvbnZkaW1tL2J0dC5jDQo+PiBpbmRleCA0
-OGU5ZDE2OWI2ZjkuLmJkNDc0N2YyYzk5YiAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1t
-L2J0dC5jDQo+PiArKysgYi9kcml2ZXJzL252ZGltbS9idHQuYw0KPj4gQEAgLTE3MDQsMTMgKzE3
-MDQsMTYgQEAgaW50IG52ZGltbV9uYW1lc3BhY2VfYXR0YWNoX2J0dChzdHJ1Y3QgbmRfbmFtZXNw
-YWNlX2NvbW1vbiAqbmRucykNCj4+ICAgCQlkZXZfZGJnKCZuZF9idHQtPmRldiwgIiVzIG11c3Qg
-YmUgYXQgbGVhc3QgJWxkIGJ5dGVzXG4iLA0KPj4gICAJCQkJZGV2X25hbWUoJm5kbnMtPmRldiks
-DQo+PiAgIAkJCQlBUkVOQV9NSU5fU0laRSArIG5kX2J0dC0+aW5pdGlhbF9vZmZzZXQpOw0KPj4g
-KwkJZGV2bV9uYW1lc3BhY2VfZGlzYWJsZSgmbmRfYnR0LT5kZXYsIG5kbnMpOw0KPj4gICAJCXJl
-dHVybiAtRU5YSU87DQo+PiAgIAl9DQo+PiAgIAluZF9yZWdpb24gPSB0b19uZF9yZWdpb24obmRf
-YnR0LT5kZXYucGFyZW50KTsNCj4+ICAgCWJ0dCA9IGJ0dF9pbml0KG5kX2J0dCwgcmF3c2l6ZSwg
-bmRfYnR0LT5sYmFzaXplLCBuZF9idHQtPnV1aWQsDQo+PiAgIAkJCW5kX3JlZ2lvbik7DQo+PiAt
-CWlmICghYnR0KQ0KPj4gKwlpZiAoIWJ0dCkgew0KPj4gKwkJZGV2bV9uYW1lc3BhY2VfZGlzYWJs
-ZSgmbmRfYnR0LT5kZXYsIG5kbnMpOw0KPj4gICAJCXJldHVybiAtRU5PTUVNOw0KPj4gKwl9DQo+
-PiAgIAluZF9idHQtPmJ0dCA9IGJ0dDsNCj4+ICAgDQo+PiAgIAlyZXR1cm4gMDsNCj4+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL252ZGltbS9jbGFpbS5jIGIvZHJpdmVycy9udmRpbW0vY2xhaW0uYw0K
-Pj4gaW5kZXggNDU5NjRhY2JhOTQ0Li4xNWZkMWI5MmQzMmYgMTAwNjQ0DQo+PiAtLS0gYS9kcml2
-ZXJzL252ZGltbS9jbGFpbS5jDQo+PiArKysgYi9kcml2ZXJzL252ZGltbS9jbGFpbS5jDQo+PiBA
-QCAtMzE0LDEyICszMTQsMTggQEAgaW50IGRldm1fbnNpb19lbmFibGUoc3RydWN0IGRldmljZSAq
-ZGV2LCBzdHJ1Y3QgbmRfbmFtZXNwYWNlX2lvICpuc2lvLA0KPj4gICAJfQ0KPj4gICANCj4+ICAg
-CW5kbnMtPnJ3X2J5dGVzID0gbnNpb19yd19ieXRlczsNCj4+IC0JaWYgKGRldm1faW5pdF9iYWRi
-bG9ja3MoZGV2LCAmbnNpby0+YmIpKQ0KPj4gKwlpZiAoZGV2bV9pbml0X2JhZGJsb2NrcyhkZXYs
-ICZuc2lvLT5iYikpIHsNCj4+ICsJCWRldm1fcmVsZWFzZV9tZW1fcmVnaW9uKGRldiwgcmVzLT5z
-dGFydCwgc2l6ZSk7DQo+PiAgIAkJcmV0dXJuIC1FTk9NRU07DQo+PiArCX0NCj4+ICAgCW52ZGlt
-bV9iYWRibG9ja3NfcG9wdWxhdGUodG9fbmRfcmVnaW9uKG5kbnMtPmRldi5wYXJlbnQpLCAmbnNp
-by0+YmIsDQo+PiAgIAkJCSZuc2lvLT5yZXMpOw0KPj4gICANCj4+ICAgCW5zaW8tPmFkZHIgPSBk
-ZXZtX21lbXJlbWFwKGRldiwgcmVzLT5zdGFydCwgc2l6ZSwgQVJDSF9NRU1SRU1BUF9QTUVNKTsN
-Cj4+ICsJaWYgKElTX0VSUihuc2lvLT5hZGRyKSkgew0KPj4gKwkJZGV2bV9leGl0X2JhZGJsb2Nr
-cyhkZXYsICZuc2lvLT5iYik7DQo+PiArCQlkZXZtX3JlbGVhc2VfbWVtX3JlZ2lvbihkZXYsIHJl
-cy0+c3RhcnQsIHNpemUpOw0KPj4gKwl9DQo+PiAgIA0KPj4gICAJcmV0dXJuIFBUUl9FUlJfT1Jf
-WkVSTyhuc2lvLT5hZGRyKTsNCj4+ICAgfQ0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1t
-L3Bmbl9kZXZzLmMgYi9kcml2ZXJzL252ZGltbS9wZm5fZGV2cy5jDQo+PiBpbmRleCAzNGRiNTU3
-ZGJhZDEuLjlmYWE5MjY2MjY0MyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1tL3Bmbl9k
-ZXZzLmMNCj4+ICsrKyBiL2RyaXZlcnMvbnZkaW1tL3Bmbl9kZXZzLmMNCj4+IEBAIC00MDgsNiAr
-NDA4LDcgQEAgc3RhdGljIGludCBuZF9wZm5fY2xlYXJfbWVtbWFwX2Vycm9ycyhzdHJ1Y3QgbmRf
-cGZuICpuZF9wZm4pDQo+PiAgIAkJCQluc29mZiArPSBjaHVuazsNCj4+ICAgCQkJfQ0KPj4gICAJ
-CQlpZiAocmMpIHsNCj4+ICsJCQkJZGV2bV9uYW1lc3BhY2VfZGlzYWJsZSgmbmRfcGZuLT5kZXYs
-IG5kbnMpOw0KPiANCj4gVGhlIGRpc2FibGUgaGVyZSBzZWVtcyB0byBiZSB3cm9uZy4NCj4gDQo+
-IFRoaXMgZnVuY3Rpb24gY2FsbGVkIGZyb20gdGhlIHBtZW1fYXR0YWNoX2Rpc2sgcGF0aCwgd2hl
-cmUgaXRzIGV4cGVjdGVkIHRoZQ0KPiBuYW1lc3BhY2UgaXMgZW5hYmxlZCBhZnRlciB0aGUgc2V0
-dXBfcGZuLiBBbHNvIGluIGNhc2Ugb2YgYW4gZXJyb3IsIHdlIGRvDQo+IGFub3RoZXIgZGlzYWJs
-ZSBpbiBwbWVtX2F0dGFjaF9kaXNrLg0KDQpPaC4gQ29ycmVjdC4gV2lsbCBiZSBmaXhpbmcgaXQg
-dXAuDQoNCkNoZWVycywNCg0KSGFubmVzDQotLSANCkRyLiBIYW5uZXMgUmVpbmVja2UgICAgICAg
-ICAgICBUZWFtbGVhZCBTdG9yYWdlICYgTmV0d29ya2luZw0KaGFyZUBzdXNlLmRlICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg4DQpTVVNFIFNvZnR3YXJlIFNv
-bHV0aW9ucyBHbWJILCBNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcNCkhSQiAzNjgwOSAo
-QUcgTsO8cm5iZXJnKSwgR2VzY2jDpGZ0c2bDvGhyZXI6IEZlbGl4IEltZW5kw7ZyZmZlcgpfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
-bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
-c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+On Sun, Jul 12, 2020 at 10:09 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sun, Jul 12, 2020 at 09:27:37AM -0700, Dan Williams wrote:
+> > Use sysfs_streq() in device_find_child_by_name() to allow it to use a
+> > sysfs input string that might contain a trailing newline.
+> >
+> > The other "device by name" interfaces,
+> > {bus,driver,class}_find_device_by_name(), already account for sysfs
+> > strings.
+> >
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > ---
+> >  drivers/base/core.c |    2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > index 67d39a90b45c..5d31b962c898 100644
+> > --- a/drivers/base/core.c
+> > +++ b/drivers/base/core.c
+> > @@ -3078,7 +3078,7 @@ struct device *device_find_child_by_name(struct device *parent,
+> >
+> >       klist_iter_init(&parent->p->klist_children, &i);
+> >       while ((child = next_device(&i)))
+> > -             if (!strcmp(dev_name(child), name) && get_device(child))
+> > +             if (sysfs_streq(dev_name(child), name) && get_device(child))
+>
+> Who wants to call this function with a name passed from userspace?
+>
+> Not objecting to it, just curious...
+>
+
+The series that incorporates this patch adds a partitioning mechanism
+to "device-dax region" devices with an:
+    "echo 1 > regionX/create" to create a new partition / sub-instance
+of a region, and...
+    "echo $devname > regionX/delete" to delete. Where $devname is
+searched in the child devices of regionX to trigger device_del().
+
+This arrangement avoids one of the design mistakes of libnvdimm which
+uses a sysfs attribute of the device to delete itself. Parent-device
+triggered deletion rather than self-deletion avoids those locking
+entanglements.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
