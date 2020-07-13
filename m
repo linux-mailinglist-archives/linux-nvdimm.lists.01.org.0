@@ -1,75 +1,75 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF76321DB41
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 18:09:14 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A88B21DB42
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 18:09:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BFC8711812903;
-	Mon, 13 Jul 2020 09:09:12 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+	by ml01.01.org (Postfix) with ESMTP id E6A2511812906;
+	Mon, 13 Jul 2020 09:09:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A543A11812905
-	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 09:09:10 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG2oG9153678;
-	Mon, 13 Jul 2020 16:09:09 GMT
+	by ml01.01.org (Postfix) with ESMTPS id E489C11812904
+	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 09:09:11 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG23DU125041;
+	Mon, 13 Jul 2020 16:09:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=4s2mSg9kYaDxi57G6K467sUZRbv15wkylcd6Wz2Kx7Y=;
- b=NWUiI7bbBftlpuDLSqEVtpn5uK1/aqODF8O1xVrD1hn9AcCA4mfcC+8iWY//FrzbuwYY
- aM+kFRhDHRZf6qvZah5yJz+aQdXgwoXVLouHnzWfW2ORQu4S+EFtqDGfXkUUpK+iFw85
- tChaeZP1g4HrLuTiCNQlos+fWs/g/IK9LOAFn2Aj+Ai+1prX4Y7KTwebYScXX3wSMoY2
- EMxoUF46Q5aCq/GdKFGAWHEiNHxNOJNaj1ezckGw3QBwq6+Yp1t7arCmg8w0PZJwcQnF
- 3aLc8rtoIMRhWCcBgHFxnMp60ed06w4Di9rlgKBi3AWwHM778ciIwehfz5R4GcHveR2O 3Q==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2120.oracle.com with ESMTP id 32762n7v3k-1
+ bh=3wo52LLAfM7RoNMtM2VCMPzkZlYfWPmm6hiLrvJWFDE=;
+ b=TMDiQe6T0gw64CsraXrQnjkhjA1W1kVACm90wH69o9pfKjLZUgyz2uWo9b+qV6rj/VZD
+ CGU87ba1IA14TGIXmVm/f9dsw6LY+S7gwER4J9EQw+ybyJkD/pVrIGKa4GqqFzeCwCR/
+ BbaWoRThGr5ARMW2iV5B6wl0aKwaI77+6RKdwY8rLkBQXfbsow606QHVecHn4+o+tDKf
+ HAdhCMQUZh1CRjxxjOd9e9fP+WDFHZldpoFTr9g6PiDKNAIRcGZpUVlWPRbQMWR6MJ6l
+ 9IxOPFGWHVxNEYCyXczmQx88b8MkUc7TPcJxj5zfA7vBFbapsFI7p1heep3T7b6pJ5v6 9Q==
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+	by userp2130.oracle.com with ESMTP id 3274ur0145-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 13 Jul 2020 16:09:09 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG3VBM127198;
-	Mon, 13 Jul 2020 16:09:08 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by aserp3020.oracle.com with ESMTP id 327qb11jqh-1
+	Mon, 13 Jul 2020 16:09:10 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG3YCl062768;
+	Mon, 13 Jul 2020 16:09:10 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by userp3020.oracle.com with ESMTP id 327q6qgsyu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jul 2020 16:09:08 +0000
+	Mon, 13 Jul 2020 16:09:09 +0000
 Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06DG97qS010835;
-	Mon, 13 Jul 2020 16:09:07 GMT
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06DG99I6011472;
+	Mon, 13 Jul 2020 16:09:09 GMT
 Received: from paddy.uk.oracle.com (/10.175.167.147)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Mon, 13 Jul 2020 09:09:07 -0700
+	with ESMTP ; Mon, 13 Jul 2020 09:09:08 -0700
 From: Joao Martins <joao.m.martins@oracle.com>
 To: linux-nvdimm@lists.01.org
 Cc: Dan Williams <dan.j.williams@intel.com>,
         Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH ndctl v2 09/10] daxctl: add command to destroy device
-Date: Mon, 13 Jul 2020 17:08:36 +0100
-Message-Id: <20200713160837.13774-10-joao.m.martins@oracle.com>
+Subject: [PATCH ndctl v2 10/10] daxctl/test: Add tests for dynamic dax regions
+Date: Mon, 13 Jul 2020 17:08:37 +0100
+Message-Id: <20200713160837.13774-11-joao.m.martins@oracle.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200713160837.13774-1-joao.m.martins@oracle.com>
 References: <20200713160837.13774-1-joao.m.martins@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 spamscore=0 phishscore=0 suspectscore=1 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=1
+ phishscore=0 malwarescore=0 mlxlogscore=841 bulkscore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007130119
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 spamscore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
- bulkscore=0 suspectscore=1 phishscore=0 adultscore=0 impostorscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
+ suspectscore=1 phishscore=0 spamscore=0 mlxlogscore=835 malwarescore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007130119
-Message-ID-Hash: LCLSLAV7MSCXESM2SIP5Q54VLPYFNVTA
-X-Message-ID-Hash: LCLSLAV7MSCXESM2SIP5Q54VLPYFNVTA
+Message-ID-Hash: IPVDINCS2B724HDBMP6SSFB4GEMEY5QM
+X-Message-ID-Hash: IPVDINCS2B724HDBMP6SSFB4GEMEY5QM
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LCLSLAV7MSCXESM2SIP5Q54VLPYFNVTA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IPVDINCS2B724HDBMP6SSFB4GEMEY5QM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -79,259 +79,354 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add a 'destroy-device' command which destroys a
-dax device. Like namespaces, the device needs to
-be disabled in order to be destroyed. Example usage:
+Add a couple tests which exercise the new sysfs based
+interface for Soft-Reserved regions (by EFI/HMAT, or
+efi_fake_mem).
 
-	$ daxctl disable-device dax0.1
-	disabled 1 device
-	$ daxctl destroy-device dax0.1
-	destroyed 1 device
+The tests exercise the daxctl orchestration surrounding
+for creating/disabling/destroying/reconfiguring devices.
+Furthermore it exercises dax region space allocation
+code paths particularly:
+
+ 1) zeroing out and reconfiguring a dax device from
+ its current size to be max available and back to initial
+ size
+
+ 2) creates devices from holes in the beginning,
+ middle of the region.
+
+ 3) reconfigures devices in a interleaving fashion
+
+ 4) test adjust of the region towards beginning and end
+
+The tests assume you pass a valid efi_fake_mem parameter
+marked as EFI_MEMORY_SP e.g.
+
+	efi_fake_mem=112G@16G:0x40000
+
+Naturally it bails out from the test if hmem device driver
+isn't loaded or builtin. If hmem regions are found, only
+region 0 is used, and the others remain untouched.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- Documentation/daxctl/Makefile.am               |  3 +-
- Documentation/daxctl/daxctl-destroy-device.txt | 63 ++++++++++++++++++++++++
- daxctl/builtin.h                               |  1 +
- daxctl/daxctl.c                                |  1 +
- daxctl/device.c                                | 66 ++++++++++++++++++++++++++
- 5 files changed, 133 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/daxctl/daxctl-destroy-device.txt
+ test/Makefile.am      |   1 +
+ test/daxctl-create.sh | 294 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 295 insertions(+)
+ create mode 100755 test/daxctl-create.sh
 
-diff --git a/Documentation/daxctl/Makefile.am b/Documentation/daxctl/Makefile.am
-index 27e201dfc254..2b3f92ca5b96 100644
---- a/Documentation/daxctl/Makefile.am
-+++ b/Documentation/daxctl/Makefile.am
-@@ -34,7 +34,8 @@ man1_MANS = \
- 	daxctl-offline-memory.1 \
- 	daxctl-disable-device.1 \
- 	daxctl-enable-device.1 \
--	daxctl-create-device.1
-+	daxctl-create-device.1 \
-+	daxctl-destroy-device.1
+diff --git a/test/Makefile.am b/test/Makefile.am
+index 1d24a65ded8b..6b7c82f9a4e2 100644
+--- a/test/Makefile.am
++++ b/test/Makefile.am
+@@ -58,6 +58,7 @@ TESTS +=\
+ 	device-dax \
+ 	device-dax-fio.sh \
+ 	daxctl-devices.sh \
++	daxctl-create.sh \
+ 	dm.sh \
+ 	mmap.sh
  
- EXTRA_DIST = $(man1_MANS)
- 
-diff --git a/Documentation/daxctl/daxctl-destroy-device.txt b/Documentation/daxctl/daxctl-destroy-device.txt
-new file mode 100644
-index 000000000000..1c91cb2fab75
+diff --git a/test/daxctl-create.sh b/test/daxctl-create.sh
+new file mode 100755
+index 000000000000..0d35112b4119
 --- /dev/null
-+++ b/Documentation/daxctl/daxctl-destroy-device.txt
-@@ -0,0 +1,63 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/test/daxctl-create.sh
+@@ -0,0 +1,294 @@
++#!/bin/bash -Ex
++# SPDX-License-Identifier: GPL-2.0
++# Copyright(c) 2020 Oracle Corporation.
 +
-+daxctl-destroy-device(1)
-+========================
++rc=77
++. $(dirname $0)/common
 +
-+NAME
-+----
-+daxctl-destroy-device - Destroy a devdax device
++trap 'cleanup $LINENO' ERR
 +
-+SYNOPSIS
-+--------
-+[verse]
-+'daxctl destroy-device' <dax0.0> [<dax1.0>...<daxY.Z>] [<options>]
-+
-+EXAMPLES
-+--------
-+
-+* Destroys dax0.1
-+----
-+# daxctl disable-device dax0.1
-+disabled 1 device
-+# daxctl destroy-device dax0.1
-+destroyed 1 device
-+----
-+
-+* Destroys all devices in region id 0
-+----
-+# daxctl disable-device -r 0 all
-+disabled 3 devices
-+# daxctl destroy-device -r 0 all
-+destroyed 2 devices
-+----
-+
-+DESCRIPTION
-+-----------
-+
-+Destroys a dax device in 'devdax' mode.
-+
-+OPTIONS
-+-------
-+-r::
-+--region=::
-+	Restrict the operation to devices belonging to the specified region(s).
-+	A device-dax region is a contiguous range of memory that hosts one or
-+	more /dev/daxX.Y devices, where X is the region id and Y is the device
-+	instance id.
-+
-+-u::
-+--human::
-+	By default the command will output machine-friendly raw-integer
-+	data. Instead, with this flag, numbers representing storage size
-+	will be formatted as human readable strings with units, other
-+	fields are converted to hexadecimal strings.
-+
-+-v::
-+--verbose::
-+	Emit more debug messages
-+
-+include::../copyright.txt[]
-+
-+SEE ALSO
-+--------
-+linkdaxctl:daxctl-list[1],daxctl-reconfigure-device[1],daxctl-create-device[1]
-diff --git a/daxctl/builtin.h b/daxctl/builtin.h
-index 19b33933b91b..29ba63ca17aa 100644
---- a/daxctl/builtin.h
-+++ b/daxctl/builtin.h
-@@ -7,6 +7,7 @@ struct daxctl_ctx;
- int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx);
- int cmd_migrate(int argc, const char **argv, struct daxctl_ctx *ctx);
- int cmd_create_device(int argc, const char **argv, struct daxctl_ctx *ctx);
-+int cmd_destroy_device(int argc, const char **argv, struct daxctl_ctx *ctx);
- int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx);
- int cmd_disable_device(int argc, const char **argv, struct daxctl_ctx *ctx);
- int cmd_enable_device(int argc, const char **argv, struct daxctl_ctx *ctx);
-diff --git a/daxctl/daxctl.c b/daxctl/daxctl.c
-index 1f315168c513..bd5539900391 100644
---- a/daxctl/daxctl.c
-+++ b/daxctl/daxctl.c
-@@ -72,6 +72,7 @@ static struct cmd_struct commands[] = {
- 	{ "help", .d_fn = cmd_help },
- 	{ "migrate-device-model", .d_fn = cmd_migrate },
- 	{ "create-device", .d_fn = cmd_create_device },
-+	{ "destroy-device", .d_fn = cmd_destroy_device },
- 	{ "reconfigure-device", .d_fn = cmd_reconfig_device },
- 	{ "online-memory", .d_fn = cmd_online_memory },
- 	{ "offline-memory", .d_fn = cmd_offline_memory },
-diff --git a/daxctl/device.c b/daxctl/device.c
-index c038abba8063..05293d6c38ee 100644
---- a/daxctl/device.c
-+++ b/daxctl/device.c
-@@ -52,6 +52,7 @@ enum device_action {
- 	ACTION_CREATE,
- 	ACTION_DISABLE,
- 	ACTION_ENABLE,
-+	ACTION_DESTROY,
- };
- 
- #define BASE_OPTIONS() \
-@@ -69,6 +70,10 @@ OPT_BOOLEAN('f', "force", &param.force, \
- #define CREATE_OPTIONS() \
- OPT_STRING('s', "size", &param.size, "size", "size to switch the device to")
- 
-+#define DESTROY_OPTIONS() \
-+OPT_BOOLEAN('f', "force", &param.force, \
-+		"attempt to disable before destroying device")
-+
- #define ZONE_OPTIONS() \
- OPT_BOOLEAN('\0', "no-movable", &param.no_movable, \
- 		"online memory in ZONE_NORMAL")
-@@ -110,6 +115,12 @@ static const struct option enable_options[] = {
- 	OPT_END(),
- };
- 
-+static const struct option destroy_options[] = {
-+	BASE_OPTIONS(),
-+	DESTROY_OPTIONS(),
-+	OPT_END(),
-+};
-+
- static const char *parse_device_options(int argc, const char **argv,
- 		enum device_action action, const struct option *options,
- 		const char *usage, struct daxctl_ctx *ctx)
-@@ -144,6 +155,9 @@ static const char *parse_device_options(int argc, const char **argv,
- 		case ACTION_ENABLE:
- 			action_string = "enable";
- 			break;
-+		case ACTION_DESTROY:
-+			action_string = "destroy";
-+			break;
- 		default:
- 			action_string = "<>";
- 			break;
-@@ -199,6 +213,7 @@ static const char *parse_device_options(int argc, const char **argv,
- 		if (param.no_movable)
- 			mem_zone = MEM_ZONE_NORMAL;
- 		/* fall through */
-+	case ACTION_DESTROY:
- 	case ACTION_OFFLINE:
- 	case ACTION_DISABLE:
- 	case ACTION_ENABLE:
-@@ -364,6 +379,35 @@ static int dev_resize(struct daxctl_dev *dev, unsigned long long val)
- 	return 0;
- }
- 
-+static int dev_destroy(struct daxctl_dev *dev)
++cleanup()
 +{
-+	const char *devname = daxctl_dev_get_devname(dev);
-+	int rc;
-+
-+	if (daxctl_dev_is_enabled(dev) && !param.force) {
-+		fprintf(stderr, "%s is active, specify --force for deletion\n",
-+			devname);
-+		return -ENXIO;
-+	} else {
-+		rc = daxctl_dev_disable(dev);
-+		if (rc) {
-+			fprintf(stderr, "%s: disable failed: %s\n",
-+				daxctl_dev_get_devname(dev), strerror(-rc));
-+			return rc;
-+		}
-+	}
-+
-+	rc = daxctl_dev_set_size(dev, 0);
-+	if (rc < 0)
-+		return rc;
-+
-+	rc = daxctl_region_destroy_dev(daxctl_dev_get_region(dev), dev);
-+	if (rc < 0)
-+		return rc;
-+
-+	return 0;
++	printf "Error at line %d\n" "$1"
++	[[ $testdev ]] && reset
++	exit $rc
 +}
 +
- static int disable_devdax_device(struct daxctl_dev *dev)
- {
- 	struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
-@@ -689,6 +733,11 @@ static int do_xaction_device(const char *device, enum device_action action,
- 				if (rc == 0)
- 					(*processed)++;
- 				break;
-+			case ACTION_DESTROY:
-+				rc = dev_destroy(dev);
-+				if (rc == 0)
-+					(*processed)++;
-+				break;
- 			default:
- 				rc = -EINVAL;
- 				break;
-@@ -725,6 +774,23 @@ int cmd_create_device(int argc, const char **argv, struct daxctl_ctx *ctx)
- 	return rc;
- }
- 
-+int cmd_destroy_device(int argc, const char **argv, struct daxctl_ctx *ctx)
++find_testdev()
 +{
-+	char *usage = "daxctl destroy-device <device> [<options>]";
-+	const char *device = parse_device_options(argc, argv, ACTION_DESTROY,
-+			destroy_options, usage, ctx);
-+	int processed, rc;
++	local rc=77
 +
-+	rc = do_xaction_device(device, ACTION_DESTROY, ctx, &processed);
-+	if (rc < 0)
-+		fprintf(stderr, "error destroying devices: %s\n",
-+				strerror(-rc));
++	# The hmem driver is needed to change the device mode, only
++	# kernels >= v5.6 might have it available. Skip if not.
++	if ! modinfo hmem; then
++		# check if hmem is builtin
++		if [ ! -d "/sys/module/device_hmem" ]; then
++			printf "Unable to find hmem module\n"
++			exit $rc
++		fi
++	fi
 +
-+	fprintf(stderr, "destroyed %d device%s\n", processed,
-+			processed == 1 ? "" : "s");
-+	return rc;
++	# find a victim region provided by dax_hmem
++	testpath=$("$DAXCTL" list -r 0 | jq -er '.[0].path | .//""')
++	if [[ ! "$testpath" == *"hmem"* ]]; then
++		printf "Unable to find a victim region\n"
++		exit "$rc"
++	fi
++
++	# find a victim device
++	testdev=$("$DAXCTL" list -D -r 0 | jq -er '.[0].chardev | .//""')
++	if [[ ! $testdev  ]]; then
++		printf "Unable to find a victim device\n"
++		exit "$rc"
++	fi
++	printf "Found victim dev: %s on region id 0\n" "$testdev"
 +}
 +
- int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx)
- {
- 	char *usage = "daxctl reconfigure-device <device> [<options>]";
++setup_dev()
++{
++	test -n "$testdev"
++
++	"$DAXCTL" disable-device "$testdev"
++	"$DAXCTL" reconfigure-device -s 0 "$testdev"
++	available=$("$DAXCTL" list -r 0 | jq -er '.[0].available_size | .//""')
++}
++
++reset_dev()
++{
++	test -n "$testdev"
++
++	"$DAXCTL" disable-device "$testdev"
++	"$DAXCTL" reconfigure-device -s $available "$testdev"
++	"$DAXCTL" enable-device "$testdev"
++}
++
++reset()
++{
++	test -n "$testdev"
++
++	"$DAXCTL" disable-device -r 0 all
++	"$DAXCTL" destroy-device -r 0 all
++	"$DAXCTL" reconfigure-device -s $available "$testdev"
++}
++
++clear_dev()
++{
++	"$DAXCTL" disable-device "$testdev"
++	"$DAXCTL" reconfigure-device -s 0 "$testdev"
++}
++
++test_pass()
++{
++	local rc=1
++
++	# Available size
++	_available_size=$("$DAXCTL" list -r 0 | jq -er '.[0].available_size | .//""')
++	if [[ ! $_available_size == $available ]]; then
++		printf "Unexpected available size $_available_size != $available\n"
++		exit "$rc"
++	fi
++}
++
++fail_if_available()
++{
++	local rc=1
++
++	_size=$("$DAXCTL" list -r 0 | jq -er '.[0].available_size | .//""')
++	if [[ $_size ]]; then
++		printf "Unexpected available size $_size\n"
++		exit "$rc"
++	fi
++}
++
++daxctl_get_dev()
++{
++	"$DAXCTL" list -d "$1" | jq -er '.[].chardev'
++}
++
++daxctl_get_mode()
++{
++	"$DAXCTL" list -d "$1" | jq -er '.[].mode'
++}
++
++daxctl_test_multi()
++{
++	local daxdev
++
++	size=$(expr $available / 4)
++
++	if [[ $2 ]]; then
++		"$DAXCTL" disable-device "$testdev"
++		"$DAXCTL" reconfigure-device -s $size "$testdev"
++	fi
++
++	daxdev_1=$("$DAXCTL" create-device -r 0 -s $size | jq -er '.[].chardev')
++	test -n $daxdev_1
++
++	daxdev_2=$("$DAXCTL" create-device -r 0 -s $size | jq -er '.[].chardev')
++	test -n $daxdev_2
++
++	if [[ ! $2 ]]; then
++		daxdev_3=$("$DAXCTL" create-device -r 0 -s $size | jq -er '.[].chardev')
++		test -n $daxdev_3
++	fi
++
++	# Hole
++	"$DAXCTL" disable-device  $1 &&	"$DAXCTL" destroy-device  $1
++
++	# Pick space in the created hole and at the end
++	new_size=$(expr $size \* 2)
++	daxdev_4=$("$DAXCTL" create-device -r 0 -s $new_size | jq -er '.[].chardev')
++	test -n $daxdev_4
++
++	fail_if_available
++
++	"$DAXCTL" disable-device -r 0 all
++	"$DAXCTL" destroy-device -r 0 all
++}
++
++daxctl_test_multi_reconfig()
++{
++	local ncfgs=$1
++	local daxdev
++
++	size=$(expr $available / $ncfgs)
++
++	test -n "$testdev"
++
++	"$DAXCTL" disable-device "$testdev"
++	"$DAXCTL" reconfigure-device -s $size "$testdev"
++	"$DAXCTL" disable-device "$testdev"
++
++	daxdev_1=$("$DAXCTL" create-device -r 0 -s $size | jq -er '.[].chardev')
++	"$DAXCTL" disable-device "$daxdev_1"
++
++	start=$(expr $size + $size)
++	max=$(expr $ncfgs / 2 \* $size)
++	for i in $(seq $start $size $max)
++	do
++		"$DAXCTL" disable-device "$testdev"
++		"$DAXCTL" reconfigure-device -s $i "$testdev"
++
++		"$DAXCTL" disable-device "$daxdev_1"
++		"$DAXCTL" reconfigure-device -s $i "$daxdev_1"
++	done
++
++	fail_if_available
++
++	"$DAXCTL" disable-device "$daxdev_1" && "$DAXCTL" destroy-device "$daxdev_1"
++}
++
++daxctl_test_adjust()
++{
++	local rc=1
++	local ncfgs=4
++	local daxdev
++
++	size=$(expr $available / $ncfgs)
++
++	test -n "$testdev"
++
++	start=$(expr $size + $size)
++	for i in $(seq 1 1 $ncfgs)
++	do
++		daxdev=$("$DAXCTL" create-device -r 0 -s $size)
++	done
++
++	daxdev=$(daxctl_get_dev "dax0.1")
++	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
++	daxdev=$(daxctl_get_dev "dax0.4")
++	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
++
++	daxdev=$(daxctl_get_dev "dax0.2")
++	"$DAXCTL" disable-device "$daxdev"
++	"$DAXCTL" reconfigure-device -s $(expr $size \* 2) "$daxdev"
++
++	daxdev=$(daxctl_get_dev "dax0.3")
++	"$DAXCTL" disable-device "$daxdev"
++	"$DAXCTL" reconfigure-device -s $(expr $size \* 2) "$daxdev"
++
++	fail_if_available
++
++	daxdev=$(daxctl_get_dev "dax0.3")
++	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
++	daxdev=$(daxctl_get_dev "dax0.2")
++	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
++}
++
++# Test 0:
++# Sucessfully zero out the region device and allocate the whole space again.
++daxctl_test0()
++{
++	clear_dev
++	test_pass
++}
++
++# Test 1:
++# Sucessfully creates and destroys a device with the whole available space
++daxctl_test1()
++{
++	local daxdev
++
++	daxdev=$("$DAXCTL" create-device -r 0 | jq -er '.[].chardev')
++
++	test -n "$daxdev"
++	fail_if_available
++
++	"$DAXCTL" disable-device "$daxdev" && "$DAXCTL" destroy-device "$daxdev"
++
++	clear_dev
++	test_pass
++}
++
++# Test 2: space at the middle and at the end
++# Successfully pick space in the middle and space at the end, by
++# having the region device reconfigured with some of the memory.
++daxctl_test2()
++{
++	daxctl_test_multi "dax0.1" 1
++	clear_dev
++	test_pass
++}
++
++# Test 3: space at the beginning and at the end
++# Successfully pick space in the beginning and space at the end, by
++# having the region device emptied (so region beginning starts with dax0.1).
++daxctl_test3()
++{
++	daxctl_test_multi "dax0.1"
++	clear_dev
++	test_pass
++}
++
++# Test 4: space at the end
++# Successfully reconfigure two devices in increasingly bigger allocations.
++# The difference is that it reuses an existing resource, and only needs to
++# pick at the end of the region
++daxctl_test4()
++{
++	daxctl_test_multi_reconfig 8
++	clear_dev
++	test_pass
++}
++
++# Test 5: space adjust
++# Successfully adjusts two resources to fill the whole region
++# First adjusts towards the beginning of region, the second towards the end.
++daxctl_test5()
++{
++	daxctl_test_adjust
++	clear_dev
++	test_pass
++}
++
++find_testdev
++rc=1
++setup_dev
++daxctl_test0
++daxctl_test1
++daxctl_test2
++daxctl_test3
++daxctl_test4
++daxctl_test5
++reset_dev
++exit 0
 -- 
 1.8.3.1
 _______________________________________________
