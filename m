@@ -2,101 +2,120 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7764E21D7C2
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 16:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E6F21D8A8
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 16:35:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6D3AC117E125B;
-	Mon, 13 Jul 2020 07:03:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=79.96.170.134; helo=cloudserver094114.home.pl; envelope-from=rjw@rjwysocki.net; receiver=<UNKNOWN> 
-Received: from cloudserver094114.home.pl (cloudserver094114.home.pl [79.96.170.134])
+	by ml01.01.org (Postfix) with ESMTP id EB7EF100A859B;
+	Mon, 13 Jul 2020 07:35:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=hare@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D79F3117A72E9
-	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 07:03:41 -0700 (PDT)
-Received: from 89-64-85-181.dynamic.chello.pl (89.64.85.181) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.415)
- id c54b7b5dd9a458f8; Mon, 13 Jul 2020 16:03:38 +0200
-From: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH v2 11/12] PM, libnvdimm: Add 'mem-quiet' state and callback for firmware activation
-Date: Mon, 13 Jul 2020 16:03:36 +0200
-Message-ID: <9508531.urFA0jK61m@kreacher>
-In-Reply-To: <CAPcyv4iiYMXO1fH0yQ2eBzpOWqPag0W=ebJwV6spGpNJQ9hnrg@mail.gmail.com>
-References: <159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com> <23449996.3uVv1d17cZ@kreacher> <CAPcyv4iiYMXO1fH0yQ2eBzpOWqPag0W=ebJwV6spGpNJQ9hnrg@mail.gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id DB260117A732C
+	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 07:35:43 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id 0AAB4AC24;
+	Mon, 13 Jul 2020 14:35:44 +0000 (UTC)
+Subject: Re: [PATCH] libnvdimm: call devm_namespace_disable() on error
+To: Santosh Sivaraj <santosh@fossix.org>,
+ Dan Williams <dan.williams@intel.com>
+References: <20200703111856.40280-1-hare@suse.de>
+ <87zh89qmaq.fsf@santosiv.in.ibm.com>
+From: Hannes Reinecke <hare@suse.de>
+Message-ID: <3ee5b9ed-a42d-425b-1f0e-ee1591cd5cec@suse.de>
+Date: Mon, 13 Jul 2020 16:35:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Message-ID-Hash: 62WRZYNR2V2QVA4KAVZMSDNUXGT5HELM
-X-Message-ID-Hash: 62WRZYNR2V2QVA4KAVZMSDNUXGT5HELM
-X-MailFrom: rjw@rjwysocki.net
+In-Reply-To: <87zh89qmaq.fsf@santosiv.in.ibm.com>
+Content-Language: en-US
+Message-ID-Hash: 26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV
+X-Message-ID-Hash: 26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV
+X-MailFrom: hare@suse.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@mellanox.com>, Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>, Linux ACPI <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/62WRZYNR2V2QVA4KAVZMSDNUXGT5HELM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/26GD2DXA5Y7RU4FGLRXIGCV7IH425SGV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On Thursday, July 9, 2020 9:04:30 PM CEST Dan Williams wrote:
-> On Thu, Jul 9, 2020 at 7:57 AM Rafael J. Wysocki <rjw@rjwysocki.net> wrote:
-> >
-> > On Tuesday, July 7, 2020 3:59:32 AM CEST Dan Williams wrote:
-> > > The runtime firmware activation capability of Intel NVDIMM devices
-> > > requires memory transactions to be disabled for 100s of microseconds.
-> > > This timeout is large enough to cause in-flight DMA to fail and other
-> > > application detectable timeouts. Arrange for firmware activation to be
-> > > executed while the system is "quiesced", all processes and device-DMA
-> > > frozen.
-> > >
-> > > It is already required that invoking device ->freeze() callbacks is
-> > > sufficient to cease DMA. A device that continues memory writes outside
-> > > of user-direction violates expectations of the PM core to be to
-> > > establish a coherent hibernation image.
-> > >
-> > > That said, RDMA devices are an example of a device that access memory
-> > > outside of user process direction. RDMA drivers also typically assume
-> > > the system they are operating in will never be hibernated. A solution
-> > > for RDMA collisions with firmware activation is outside the scope of
-> > > this change and may need to rely on being able to survive the platform
-> > > imposed memory controller quiesce period.
-> >
-> > Thanks for following my suggestion to use the hibernation infrastructure
-> > rather than the suspend one, but I think it would be better to go a bit
-> > further with that.
-> >
-> > Namely, after thinking about this a bit more I have come to the conclusion
-> > that what is needed is an ability to execute a function, inside of the
-> > kernel, in a "quiet" environment in which memory updates are unlikely.
-> >
-> > While the hibernation infrastructure as is can be used for that, kind of, IMO
-> > it would be cleaner to introduce a helper for that, like in the (untested)
-> > patch below, so if the "quiet execution environment" is needed, whoever
-> > needs it may simply pass a function to hibernate_quiet_exec() and provide
-> > whatever user-space I/F is suitable on top of that.
-> >
-> > Please let me know what you think.
-> 
-> This looks good to me in concept.
-> 
-> Would you expect that I trigger this from libnvdimm sysfs, or any
-> future users of this functionality to trigger it through their own
-> subsystem specific mechanisms?
-
-Yes, I would.
-
-> I have a place for it in libvdimm and could specify the activation
-> method directly as "suspend" vs "live" activation.
-
-Sounds good to me.
-
-Cheers!
-
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+T24gNy85LzIwIDc6MzkgQU0sIFNhbnRvc2ggU2l2YXJhaiB3cm90ZToNCj4gSGkgSGFubmVzLA0K
+PiANCj4gSGFubmVzIFJlaW5lY2tlIDxoYXJlQHN1c2UuZGU+IHdyaXRlczoNCj4gDQo+PiBPbmNl
+IGRldm1fbmFtZXNwYWNlX2VuYWJsZSgpIGhhcyBiZWVuIGNhbGxlZCB0aGUgZXJyb3IgcGF0aCBp
+biB0aGUNCj4+IGNhbGxpbmcgZnVuY3Rpb24gd2lsbCBub3QgY2FsbCBkZXZtX25hbWVzcGFjZV9k
+aXNhYmxlKCksIGxlYXZpbmcgdGhlDQo+PiBuYW1lc3BhY2UgZW5hYmxlZCBvbiBlcnJvci4NCj4+
+DQo+PiBTaWduZWQtb2ZmLWJ5OiBIYW5uZXMgUmVpbmVja2UgPGhhcmVAc3VzZS5kZT4NCj4+IC0t
+LQ0KPj4gICBkcml2ZXJzL2RheC9wbWVtL2NvcmUuYyAgIHwgIDIgKy0NCj4+ICAgZHJpdmVycy9u
+dmRpbW0vYnR0LmMgICAgICB8ICA1ICsrKystDQo+PiAgIGRyaXZlcnMvbnZkaW1tL2NsYWltLmMg
+ICAgfCAgOCArKysrKysrLQ0KPj4gICBkcml2ZXJzL252ZGltbS9wZm5fZGV2cy5jIHwgIDEgKw0K
+Pj4gICBkcml2ZXJzL252ZGltbS9wbWVtLmMgICAgIHwgMjAgKysrKysrKysrKy0tLS0tLS0tLS0N
+Cj4+ICAgNSBmaWxlcyBjaGFuZ2VkLCAyMyBpbnNlcnRpb25zKCspLCAxMyBkZWxldGlvbnMoLSkN
+Cj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvcG1lbS9jb3JlLmMgYi9kcml2ZXJzL2Rh
+eC9wbWVtL2NvcmUuYw0KPj4gaW5kZXggMmJlZGY4NDE0ZmZmLi40YjI2NDM0ZjBhY2EgMTAwNjQ0
+DQo+PiAtLS0gYS9kcml2ZXJzL2RheC9wbWVtL2NvcmUuYw0KPj4gKysrIGIvZHJpdmVycy9kYXgv
+cG1lbS9jb3JlLmMNCj4+IEBAIC0zMSw5ICszMSw5IEBAIHN0cnVjdCBkZXZfZGF4ICpfX2RheF9w
+bWVtX3Byb2JlKHN0cnVjdCBkZXZpY2UgKmRldiwgZW51bSBkZXZfZGF4X3N1YnN5cyBzdWJzeXMp
+DQo+PiAgIAlpZiAocmMpDQo+PiAgIAkJcmV0dXJuIEVSUl9QVFIocmMpOw0KPj4gICAJcmMgPSBu
+dmRpbW1fc2V0dXBfcGZuKG5kX3BmbiwgJnBnbWFwKTsNCj4+ICsJZGV2bV9uYW1lc3BhY2VfZGlz
+YWJsZShkZXYsIG5kbnMpOw0KPj4gICAJaWYgKHJjKQ0KPj4gICAJCXJldHVybiBFUlJfUFRSKHJj
+KTsNCj4+IC0JZGV2bV9uYW1lc3BhY2VfZGlzYWJsZShkZXYsIG5kbnMpOw0KPj4gICANCj4+ICAg
+CS8qIHJlc2VydmUgdGhlIG1ldGFkYXRhIGFyZWEsIGRldmljZS1kYXggd2lsbCByZXNlcnZlIHRo
+ZSBkYXRhICovDQo+PiAgIAlwZm5fc2IgPSBuZF9wZm4tPnBmbl9zYjsNCj4+IGRpZmYgLS1naXQg
+YS9kcml2ZXJzL252ZGltbS9idHQuYyBiL2RyaXZlcnMvbnZkaW1tL2J0dC5jDQo+PiBpbmRleCA0
+OGU5ZDE2OWI2ZjkuLmJkNDc0N2YyYzk5YiAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1t
+L2J0dC5jDQo+PiArKysgYi9kcml2ZXJzL252ZGltbS9idHQuYw0KPj4gQEAgLTE3MDQsMTMgKzE3
+MDQsMTYgQEAgaW50IG52ZGltbV9uYW1lc3BhY2VfYXR0YWNoX2J0dChzdHJ1Y3QgbmRfbmFtZXNw
+YWNlX2NvbW1vbiAqbmRucykNCj4+ICAgCQlkZXZfZGJnKCZuZF9idHQtPmRldiwgIiVzIG11c3Qg
+YmUgYXQgbGVhc3QgJWxkIGJ5dGVzXG4iLA0KPj4gICAJCQkJZGV2X25hbWUoJm5kbnMtPmRldiks
+DQo+PiAgIAkJCQlBUkVOQV9NSU5fU0laRSArIG5kX2J0dC0+aW5pdGlhbF9vZmZzZXQpOw0KPj4g
+KwkJZGV2bV9uYW1lc3BhY2VfZGlzYWJsZSgmbmRfYnR0LT5kZXYsIG5kbnMpOw0KPj4gICAJCXJl
+dHVybiAtRU5YSU87DQo+PiAgIAl9DQo+PiAgIAluZF9yZWdpb24gPSB0b19uZF9yZWdpb24obmRf
+YnR0LT5kZXYucGFyZW50KTsNCj4+ICAgCWJ0dCA9IGJ0dF9pbml0KG5kX2J0dCwgcmF3c2l6ZSwg
+bmRfYnR0LT5sYmFzaXplLCBuZF9idHQtPnV1aWQsDQo+PiAgIAkJCW5kX3JlZ2lvbik7DQo+PiAt
+CWlmICghYnR0KQ0KPj4gKwlpZiAoIWJ0dCkgew0KPj4gKwkJZGV2bV9uYW1lc3BhY2VfZGlzYWJs
+ZSgmbmRfYnR0LT5kZXYsIG5kbnMpOw0KPj4gICAJCXJldHVybiAtRU5PTUVNOw0KPj4gKwl9DQo+
+PiAgIAluZF9idHQtPmJ0dCA9IGJ0dDsNCj4+ICAgDQo+PiAgIAlyZXR1cm4gMDsNCj4+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL252ZGltbS9jbGFpbS5jIGIvZHJpdmVycy9udmRpbW0vY2xhaW0uYw0K
+Pj4gaW5kZXggNDU5NjRhY2JhOTQ0Li4xNWZkMWI5MmQzMmYgMTAwNjQ0DQo+PiAtLS0gYS9kcml2
+ZXJzL252ZGltbS9jbGFpbS5jDQo+PiArKysgYi9kcml2ZXJzL252ZGltbS9jbGFpbS5jDQo+PiBA
+QCAtMzE0LDEyICszMTQsMTggQEAgaW50IGRldm1fbnNpb19lbmFibGUoc3RydWN0IGRldmljZSAq
+ZGV2LCBzdHJ1Y3QgbmRfbmFtZXNwYWNlX2lvICpuc2lvLA0KPj4gICAJfQ0KPj4gICANCj4+ICAg
+CW5kbnMtPnJ3X2J5dGVzID0gbnNpb19yd19ieXRlczsNCj4+IC0JaWYgKGRldm1faW5pdF9iYWRi
+bG9ja3MoZGV2LCAmbnNpby0+YmIpKQ0KPj4gKwlpZiAoZGV2bV9pbml0X2JhZGJsb2NrcyhkZXYs
+ICZuc2lvLT5iYikpIHsNCj4+ICsJCWRldm1fcmVsZWFzZV9tZW1fcmVnaW9uKGRldiwgcmVzLT5z
+dGFydCwgc2l6ZSk7DQo+PiAgIAkJcmV0dXJuIC1FTk9NRU07DQo+PiArCX0NCj4+ICAgCW52ZGlt
+bV9iYWRibG9ja3NfcG9wdWxhdGUodG9fbmRfcmVnaW9uKG5kbnMtPmRldi5wYXJlbnQpLCAmbnNp
+by0+YmIsDQo+PiAgIAkJCSZuc2lvLT5yZXMpOw0KPj4gICANCj4+ICAgCW5zaW8tPmFkZHIgPSBk
+ZXZtX21lbXJlbWFwKGRldiwgcmVzLT5zdGFydCwgc2l6ZSwgQVJDSF9NRU1SRU1BUF9QTUVNKTsN
+Cj4+ICsJaWYgKElTX0VSUihuc2lvLT5hZGRyKSkgew0KPj4gKwkJZGV2bV9leGl0X2JhZGJsb2Nr
+cyhkZXYsICZuc2lvLT5iYik7DQo+PiArCQlkZXZtX3JlbGVhc2VfbWVtX3JlZ2lvbihkZXYsIHJl
+cy0+c3RhcnQsIHNpemUpOw0KPj4gKwl9DQo+PiAgIA0KPj4gICAJcmV0dXJuIFBUUl9FUlJfT1Jf
+WkVSTyhuc2lvLT5hZGRyKTsNCj4+ICAgfQ0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbnZkaW1t
+L3Bmbl9kZXZzLmMgYi9kcml2ZXJzL252ZGltbS9wZm5fZGV2cy5jDQo+PiBpbmRleCAzNGRiNTU3
+ZGJhZDEuLjlmYWE5MjY2MjY0MyAxMDA2NDQNCj4+IC0tLSBhL2RyaXZlcnMvbnZkaW1tL3Bmbl9k
+ZXZzLmMNCj4+ICsrKyBiL2RyaXZlcnMvbnZkaW1tL3Bmbl9kZXZzLmMNCj4+IEBAIC00MDgsNiAr
+NDA4LDcgQEAgc3RhdGljIGludCBuZF9wZm5fY2xlYXJfbWVtbWFwX2Vycm9ycyhzdHJ1Y3QgbmRf
+cGZuICpuZF9wZm4pDQo+PiAgIAkJCQluc29mZiArPSBjaHVuazsNCj4+ICAgCQkJfQ0KPj4gICAJ
+CQlpZiAocmMpIHsNCj4+ICsJCQkJZGV2bV9uYW1lc3BhY2VfZGlzYWJsZSgmbmRfcGZuLT5kZXYs
+IG5kbnMpOw0KPiANCj4gVGhlIGRpc2FibGUgaGVyZSBzZWVtcyB0byBiZSB3cm9uZy4NCj4gDQo+
+IFRoaXMgZnVuY3Rpb24gY2FsbGVkIGZyb20gdGhlIHBtZW1fYXR0YWNoX2Rpc2sgcGF0aCwgd2hl
+cmUgaXRzIGV4cGVjdGVkIHRoZQ0KPiBuYW1lc3BhY2UgaXMgZW5hYmxlZCBhZnRlciB0aGUgc2V0
+dXBfcGZuLiBBbHNvIGluIGNhc2Ugb2YgYW4gZXJyb3IsIHdlIGRvDQo+IGFub3RoZXIgZGlzYWJs
+ZSBpbiBwbWVtX2F0dGFjaF9kaXNrLg0KDQpPaC4gQ29ycmVjdC4gV2lsbCBiZSBmaXhpbmcgaXQg
+dXAuDQoNCkNoZWVycywNCg0KSGFubmVzDQotLSANCkRyLiBIYW5uZXMgUmVpbmVja2UgICAgICAg
+ICAgICBUZWFtbGVhZCBTdG9yYWdlICYgTmV0d29ya2luZw0KaGFyZUBzdXNlLmRlICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg4DQpTVVNFIFNvZnR3YXJlIFNv
+bHV0aW9ucyBHbWJILCBNYXhmZWxkc3RyLiA1LCA5MDQwOSBOw7xybmJlcmcNCkhSQiAzNjgwOSAo
+QUcgTsO8cm5iZXJnKSwgR2VzY2jDpGZ0c2bDvGhyZXI6IEZlbGl4IEltZW5kw7ZyZmZlcgpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
+bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
+c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
