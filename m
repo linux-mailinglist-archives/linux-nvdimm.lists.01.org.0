@@ -2,58 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADDBC21DB4E
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 18:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C2321DB4F
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 13 Jul 2020 18:11:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 603A8117E12B1;
-	Mon, 13 Jul 2020 09:11:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 76F8211812916;
+	Mon, 13 Jul 2020 09:11:05 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
 Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3D237118128FA
-	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 09:11:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 11991118128FF
+	for <linux-nvdimm@lists.01.org>; Mon, 13 Jul 2020 09:11:03 -0700 (PDT)
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG21Cx124931;
+	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG2B9D125089;
 	Mon, 13 Jul 2020 16:11:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
  subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
- bh=NRrv/MewWLA7Zo9aIabo5WeLfhrLsA2v49PBPELlUqQ=;
- b=xZQkL92cHIZ/ZX2KFLNygKdkIYJjH+B59r9iuUOcwWcbKzP4g7Hp78vqPBQtV1l3QD8X
- 0SA8N6iHxge83Hwz0Zoanw0U8qVO9PG7nQHnhwEAewEw65DagD8lfddzhVa/WunHXGDO
- X1xCfQLTEpI5EWMzMI4XcBJRdLJJwR/KECLxwo3ZuGcC12Zycs6mg3YrQcSk4czPbPu4
- JYQ3PemOzy+l7/zNfhYBct/PUgHfKwnWmsVQkxBpRuqYc//kVD6R53IaSbios+Qorx0W
- Pu4X4V/ZBZtwS5VJKZ5B7PlaSb59yX6ZVcwXf5H3ac0ZAooCoYLfOcJ61T+xRK7qnzxP 4w==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2130.oracle.com with ESMTP id 3274ur01ee-1
+ bh=/5cJdvZqwicZ2ywaLEdgmv/rSktSHf+hONT2vIXxwk8=;
+ b=JzyFwS9WHQzpC69szgQXZJy+kjcfLD7yUYk6CRRLNMQUpwkSV7kXK9VO6KTDh7l8twD6
+ L6yV9kaki9KqrciPe2neeJg17u/NY1o6VDpG+cJ56zCyu33XpGAPNOocfwPsiP0B+kO7
+ sxO0YE/rizLe2Qkqqk6iM4e8LlVAxXN8SD+RVtajTHWYBgAs2XFRhxXvC38FMolOWpLD
+ BfVh+mTzHPYf7+bWxkIQdgPJBO6BouQ4sJDPxTU4oAmi+dJy1elNPQ3YgmtWyQmLfGCq
+ oixr/dUFTF8ktzftkT+Uaz9+D7FcDWNtykyw7wyhF5bcUrA7xqG/rD3axi1q2Q+AyVUc hg==
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+	by userp2130.oracle.com with ESMTP id 3274ur01eg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
 	Mon, 13 Jul 2020 16:11:01 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG3WmX127445;
-	Mon, 13 Jul 2020 16:09:00 GMT
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06DG4a06008077;
+	Mon, 13 Jul 2020 16:09:01 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-	by aserp3020.oracle.com with ESMTP id 327qb11j9f-1
+	by userp3030.oracle.com with ESMTP id 327qbvu1w2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jul 2020 16:09:00 +0000
+	Mon, 13 Jul 2020 16:09:01 +0000
 Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06DG8wcV011403;
-	Mon, 13 Jul 2020 16:08:59 GMT
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06DG90Z7011414;
+	Mon, 13 Jul 2020 16:09:00 GMT
 Received: from paddy.uk.oracle.com (/10.175.167.147)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Mon, 13 Jul 2020 09:08:58 -0700
+	with ESMTP ; Mon, 13 Jul 2020 09:09:00 -0700
 From: Joao Martins <joao.m.martins@oracle.com>
 To: linux-nvdimm@lists.01.org
 Cc: Dan Williams <dan.j.williams@intel.com>,
         Vishal Verma <vishal.l.verma@intel.com>
-Subject: [PATCH ndctl v2 03/10] daxctl: add resize support in reconfigure-device
-Date: Mon, 13 Jul 2020 17:08:30 +0100
-Message-Id: <20200713160837.13774-4-joao.m.martins@oracle.com>
+Subject: [PATCH ndctl v2 04/10] daxctl: add command to disable devdax device
+Date: Mon, 13 Jul 2020 17:08:31 +0100
+Message-Id: <20200713160837.13774-5-joao.m.martins@oracle.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20200713160837.13774-1-joao.m.martins@oracle.com>
 References: <20200713160837.13774-1-joao.m.martins@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 spamscore=0 phishscore=0 suspectscore=1 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 phishscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007130119
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9681 signatures=668680
@@ -62,14 +62,14 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=
  mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007130119
-Message-ID-Hash: 3RNTK42HY2UJHZA6TXFHFFC553N6U5I4
-X-Message-ID-Hash: 3RNTK42HY2UJHZA6TXFHFFC553N6U5I4
+Message-ID-Hash: 4QTNJNVLGUP3GZC7EKM53XKFQ6YZM55I
+X-Message-ID-Hash: 4QTNJNVLGUP3GZC7EKM53XKFQ6YZM55I
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3RNTK42HY2UJHZA6TXFHFFC553N6U5I4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4QTNJNVLGUP3GZC7EKM53XKFQ6YZM55I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -79,164 +79,239 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Add the ability to change the size of an inactive dax
-device. Uses of this includes adjusting existing devices
-or enterily freeing the region device to make the space
-available.
+Add a 'disable-device' command, required prior to
+reconfiguration or destruction of the dax device.
 
-	$ daxctl disable-device dax0.0
-	disabled 1 device
-	$ daxctl reconfigure-device -s 0 dax0.0
-	reconfigured 1 device
-	$ daxctl reconfigure-device -s 4G dax0.0
-	reconfigured 1 device
-
-@size (-s) and @mode (-m) are mutually exclusive as the latter relates
-to assigning memory to System-RAM through kmem as opposed
-to reconfiguring dynamic dax devices.
+Mimmics the same functionality as seen in
+ndctl-disable-namespace.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- Documentation/daxctl/daxctl-reconfigure-device.txt | 16 +++++++++++
- daxctl/device.c                                    | 32 ++++++++++++++++++++--
- 2 files changed, 45 insertions(+), 3 deletions(-)
+ Documentation/daxctl/Makefile.am               |  3 +-
+ Documentation/daxctl/daxctl-disable-device.txt | 58 ++++++++++++++++++++++++
+ daxctl/builtin.h                               |  1 +
+ daxctl/daxctl.c                                |  1 +
+ daxctl/device.c                                | 61 ++++++++++++++++++++++++++
+ 5 files changed, 123 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/daxctl/daxctl-disable-device.txt
 
-diff --git a/Documentation/daxctl/daxctl-reconfigure-device.txt b/Documentation/daxctl/daxctl-reconfigure-device.txt
-index cb28fed24e52..8caae436faae 100644
---- a/Documentation/daxctl/daxctl-reconfigure-device.txt
-+++ b/Documentation/daxctl/daxctl-reconfigure-device.txt
-@@ -75,6 +75,14 @@ daxctl_dev_get_target_node() or 'daxctl list')
- # numactl --cpunodebind=0-1 --membind=2 -- some-service --opt1 --opt2
- ----
+diff --git a/Documentation/daxctl/Makefile.am b/Documentation/daxctl/Makefile.am
+index 7696e23cc9c0..1f070771cd95 100644
+--- a/Documentation/daxctl/Makefile.am
++++ b/Documentation/daxctl/Makefile.am
+@@ -31,7 +31,8 @@ man1_MANS = \
+ 	daxctl-migrate-device-model.1 \
+ 	daxctl-reconfigure-device.1 \
+ 	daxctl-online-memory.1 \
+-	daxctl-offline-memory.1
++	daxctl-offline-memory.1 \
++	daxctl-disable-device.1
  
-+* Change the size of a dax device
+ EXTRA_DIST = $(man1_MANS)
+ 
+diff --git a/Documentation/daxctl/daxctl-disable-device.txt b/Documentation/daxctl/daxctl-disable-device.txt
+new file mode 100644
+index 000000000000..383aeeb58150
+--- /dev/null
++++ b/Documentation/daxctl/daxctl-disable-device.txt
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0
++
++daxctl-disable-device(1)
++========================
++
++NAME
 +----
-+# daxctl reconfigure-device dax0.1 -s 16G
-+reconfigured 1 device
-+# daxctl reconfigure-device dax0.1 -s 0
-+reconfigured 1 device
++daxctl-disable-device - Disables a devdax device
++
++SYNOPSIS
++--------
++[verse]
++'daxctl disable-device' [<options>]
++
++EXAMPLES
++--------
++
++* Disables dax0.1
++----
++# daxctl disable-device dax0.1
 +----
 +
- DESCRIPTION
- -----------
- 
-@@ -120,6 +128,14 @@ OPTIONS
- 	more /dev/daxX.Y devices, where X is the region id and Y is the device
- 	instance id.
- 
-+-s::
-+--size=::
-+	For regions that support dax device creation, change the device size
-+	in bytes. This option supports the suffixes "k" or "K" for KiB, "m" or
-+	"M" for MiB, "g" or "G" for GiB and "t" or "T" for TiB.
++* Disables all devices in region id 0
++----
++# daxctl disable-device -r 0 all
++disabled 3 devices
++----
 +
-+	The size must be a multiple of the region alignment.
++DESCRIPTION
++-----------
 +
- -m::
- --mode=::
- 	Specify the mode to which the dax device(s) should be reconfigured.
-diff --git a/daxctl/device.c b/daxctl/device.c
-index 705f1f8ff7f6..033e098eafe0 100644
---- a/daxctl/device.c
-+++ b/daxctl/device.c
-@@ -9,6 +9,7 @@
- #include <sys/stat.h>
- #include <sys/types.h>
- #include <sys/sysmacros.h>
-+#include <util/size.h>
- #include <util/json.h>
- #include <util/filter.h>
- #include <json-c/json.h>
-@@ -20,6 +21,7 @@ static struct {
- 	const char *dev;
- 	const char *mode;
- 	const char *region;
-+	const char *size;
- 	bool no_online;
- 	bool no_movable;
- 	bool force;
-@@ -34,6 +36,7 @@ enum dev_mode {
++Disables a dax device in 'devdax' mode.
++
++OPTIONS
++-------
++-r::
++--region=::
++	Restrict the operation to devices belonging to the specified region(s).
++	A device-dax region is a contiguous range of memory that hosts one or
++	more /dev/daxX.Y devices, where X is the region id and Y is the device
++	instance id.
++
++-u::
++--human::
++	By default the command will output machine-friendly raw-integer
++	data. Instead, with this flag, numbers representing storage size
++	will be formatted as human readable strings with units, other
++	fields are converted to hexadecimal strings.
++
++-v::
++--verbose::
++	Emit more debug messages
++
++include::../copyright.txt[]
++
++SEE ALSO
++--------
++linkdaxctl:daxctl-list[1],daxctl-reconfigure-device[1],daxctl-create-device[1]
+diff --git a/daxctl/builtin.h b/daxctl/builtin.h
+index f5a0147f0e11..c9848953bbd8 100644
+--- a/daxctl/builtin.h
++++ b/daxctl/builtin.h
+@@ -7,6 +7,7 @@ struct daxctl_ctx;
+ int cmd_list(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_migrate(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx);
++int cmd_disable_device(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_online_memory(int argc, const char **argv, struct daxctl_ctx *ctx);
+ int cmd_offline_memory(int argc, const char **argv, struct daxctl_ctx *ctx);
+ #endif /* _DAXCTL_BUILTIN_H_ */
+diff --git a/daxctl/daxctl.c b/daxctl/daxctl.c
+index 1ab073200313..1707a9ff0791 100644
+--- a/daxctl/daxctl.c
++++ b/daxctl/daxctl.c
+@@ -74,6 +74,7 @@ static struct cmd_struct commands[] = {
+ 	{ "reconfigure-device", .d_fn = cmd_reconfig_device },
+ 	{ "online-memory", .d_fn = cmd_online_memory },
+ 	{ "offline-memory", .d_fn = cmd_offline_memory },
++	{ "disable-device", .d_fn = cmd_disable_device },
  };
  
- static enum dev_mode reconfig_mode = DAXCTL_DEV_MODE_UNKNOWN;
-+static long long size = -1;
- static unsigned long flags;
+ int main(int argc, const char **argv)
+diff --git a/daxctl/device.c b/daxctl/device.c
+index 033e098eafe0..20df2b844774 100644
+--- a/daxctl/device.c
++++ b/daxctl/device.c
+@@ -49,6 +49,7 @@ enum device_action {
+ 	ACTION_RECONFIG,
+ 	ACTION_ONLINE,
+ 	ACTION_OFFLINE,
++	ACTION_DISABLE,
+ };
  
- enum memory_zone {
-@@ -60,12 +63,16 @@ OPT_BOOLEAN('N', "no-online", &param.no_online, \
- OPT_BOOLEAN('f', "force", &param.force, \
- 		"attempt to offline memory sections before reconfiguration")
- 
-+#define CREATE_OPTIONS() \
-+OPT_STRING('s', "size", &param.size, "size", "size to switch the device to")
-+
- #define ZONE_OPTIONS() \
- OPT_BOOLEAN('\0', "no-movable", &param.no_movable, \
- 		"online memory in ZONE_NORMAL")
- 
- static const struct option reconfig_options[] = {
- 	BASE_OPTIONS(),
-+	CREATE_OPTIONS(),
- 	RECONFIG_OPTIONS(),
- 	ZONE_OPTIONS(),
+ #define BASE_OPTIONS() \
+@@ -89,6 +90,11 @@ static const struct option offline_options[] = {
  	OPT_END(),
-@@ -90,6 +97,7 @@ static const char *parse_device_options(int argc, const char **argv,
- 		usage,
- 		NULL
- 	};
-+	unsigned long long units = 1;
- 	int i, rc = 0;
+ };
  
- 	argc = parse_options(argc, argv, options, u, 0);
-@@ -135,12 +143,14 @@ static const char *parse_device_options(int argc, const char **argv,
- 	/* Handle action-specific options */
- 	switch (action) {
- 	case ACTION_RECONFIG:
--		if (!param.mode) {
--			fprintf(stderr, "error: a 'mode' option is required\n");
-+		if (!param.size && !param.mode) {
-+			fprintf(stderr, "error: a 'mode' or 'size' option is required\n");
- 			usage_with_options(u, reconfig_options);
- 			rc = -EINVAL;
- 		}
--		if (strcmp(param.mode, "system-ram") == 0) {
-+		if (param.size) {
-+			size = __parse_size64(param.size, &units);
-+		} else if (strcmp(param.mode, "system-ram") == 0) {
- 			reconfig_mode = DAXCTL_DEV_MODE_RAM;
- 			if (param.no_movable)
- 				mem_zone = MEM_ZONE_NORMAL;
-@@ -309,6 +319,17 @@ static int dev_offline_memory(struct daxctl_dev *dev)
- 	return 0;
++static const struct option disable_options[] = {
++	BASE_OPTIONS(),
++	OPT_END(),
++};
++
+ static const char *parse_device_options(int argc, const char **argv,
+ 		enum device_action action, const struct option *options,
+ 		const char *usage, struct daxctl_ctx *ctx)
+@@ -116,6 +122,9 @@ static const char *parse_device_options(int argc, const char **argv,
+ 		case ACTION_OFFLINE:
+ 			action_string = "offline memory for";
+ 			break;
++		case ACTION_DISABLE:
++			action_string = "disable";
++			break;
+ 		default:
+ 			action_string = "<>";
+ 			break;
+@@ -168,6 +177,7 @@ static const char *parse_device_options(int argc, const char **argv,
+ 			mem_zone = MEM_ZONE_NORMAL;
+ 		/* fall through */
+ 	case ACTION_OFFLINE:
++	case ACTION_DISABLE:
+ 		/* nothing special */
+ 		break;
+ 	}
+@@ -497,6 +507,35 @@ static int do_xline(struct daxctl_dev *dev, enum device_action action)
+ 	return rc;
  }
  
-+static int dev_resize(struct daxctl_dev *dev, unsigned long long val)
++static int do_xble(struct daxctl_dev *dev, enum device_action action)
 +{
++	struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
++	const char *devname = daxctl_dev_get_devname(dev);
 +	int rc;
 +
-+	rc = daxctl_dev_set_size(dev, val);
-+	if (rc < 0)
-+		return rc;
-+
-+	return 0;
-+}
-+
- static int disable_devdax_device(struct daxctl_dev *dev)
- {
- 	struct daxctl_memory *mem = daxctl_dev_get_memory(dev);
-@@ -418,6 +439,11 @@ static int do_reconfig(struct daxctl_dev *dev, enum dev_mode mode,
- 	struct json_object *jdev;
- 	int rc = 0;
- 
-+	if (size >= 0) {
-+		rc = dev_resize(dev, size);
-+		return rc;
++	if (mem) {
++		fprintf(stderr,
++			"%s: status operations are only applicable in devdax mode\n",
++			devname);
++		return -ENXIO;
 +	}
 +
- 	switch (mode) {
- 	case DAXCTL_DEV_MODE_RAM:
- 		rc = reconfig_mode_system_ram(dev);
++	switch (action) {
++	case ACTION_DISABLE:
++		rc = daxctl_dev_disable(dev);
++		if (rc) {
++			fprintf(stderr, "%s: disable failed: %s\n",
++				daxctl_dev_get_devname(dev), strerror(-rc));
++			return rc;
++		}
++		break;
++	default:
++		fprintf(stderr, "%s: invalid action: %d\n", devname, action);
++		rc = -EINVAL;
++	}
++	return rc;
++}
++
+ static int do_xaction_device(const char *device, enum device_action action,
+ 		struct daxctl_ctx *ctx, int *processed)
+ {
+@@ -531,6 +570,11 @@ static int do_xaction_device(const char *device, enum device_action action,
+ 				if (rc == 0)
+ 					(*processed)++;
+ 				break;
++			case ACTION_DISABLE:
++				rc = do_xble(dev, action);
++				if (rc == 0)
++					(*processed)++;
++				break;
+ 			default:
+ 				rc = -EINVAL;
+ 				break;
+@@ -566,6 +610,23 @@ int cmd_reconfig_device(int argc, const char **argv, struct daxctl_ctx *ctx)
+ 	return rc;
+ }
+ 
++int cmd_disable_device(int argc, const char **argv, struct daxctl_ctx *ctx)
++{
++	char *usage = "daxctl disable-device <device>";
++	const char *device = parse_device_options(argc, argv, ACTION_DISABLE,
++			disable_options, usage, ctx);
++	int processed, rc;
++
++	rc = do_xaction_device(device, ACTION_DISABLE, ctx, &processed);
++	if (rc < 0)
++		fprintf(stderr, "error disabling device: %s\n",
++				strerror(-rc));
++
++	fprintf(stderr, "disabled %d device%s\n", processed,
++			processed == 1 ? "" : "s");
++	return rc;
++}
++
+ int cmd_online_memory(int argc, const char **argv, struct daxctl_ctx *ctx)
+ {
+ 	char *usage = "daxctl online-memory <device> [<options>]";
 -- 
 1.8.3.1
 _______________________________________________
