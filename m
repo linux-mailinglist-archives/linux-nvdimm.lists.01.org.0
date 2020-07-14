@@ -2,38 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC0D21EFB9
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 13:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A3521F399
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 16:13:40 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 68C2C11553E88;
-	Tue, 14 Jul 2020 04:46:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id AFFAE1162E2E5;
+	Tue, 14 Jul 2020 07:13:38 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=huawei.com; envelope-from=weiyongjun1@huawei.com; receiver=<UNKNOWN> 
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1A7DE11553E85
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 04:46:00 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 5B238AB3D
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 11:46:01 +0000 (UTC)
-From: Michal Suchanek <msuchanek@suse.de>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH] Documentation: use includes in more ndctl command pages.
-Date: Tue, 14 Jul 2020 13:45:52 +0200
-Message-Id: <20200714114552.21685-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.26.2
+	by ml01.01.org (Postfix) with ESMTPS id BE3E11162E2E2
+	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 07:13:35 -0700 (PDT)
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+	by Forcepoint Email with ESMTP id E4EB4544F1D0A41C85A6;
+	Tue, 14 Jul 2020 22:13:31 +0800 (CST)
+Received: from kernelci-master.huawei.com (10.175.101.6) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.487.0; Tue, 14 Jul 2020 22:13:25 +0800
+From: Wei Yongjun <weiyongjun1@huawei.com>
+To: Hulk Robot <hulkci@huawei.com>, Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH -next] libnvdimm/security: Make __nvdimm_security_overwrite_query() static
+Date: Tue, 14 Jul 2020 22:23:28 +0800
+Message-ID: <20200714142328.78838-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Message-ID-Hash: ULGJSDNATAXHYWZAKOZFIDK3REDEZ7AH
-X-Message-ID-Hash: ULGJSDNATAXHYWZAKOZFIDK3REDEZ7AH
-X-MailFrom: msuchanek@suse.de
+X-Originating-IP: [10.175.101.6]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: XBOKNDEDSCSZ6LCEKYS3OIWA3HQWWOES
+X-Message-ID-Hash: XBOKNDEDSCSZ6LCEKYS3OIWA3HQWWOES
+X-MailFrom: weiyongjun1@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Michal Suchanek <msuchanek@suse.de>
+CC: Wei Yongjun <weiyongjun1@huawei.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ULGJSDNATAXHYWZAKOZFIDK3REDEZ7AH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XBOKNDEDSCSZ6LCEKYS3OIWA3HQWWOES/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -42,89 +48,33 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-While backporting commit 498ee3d100c3 ("Documentation: clarify bus/dimm/region filtering")
-I noticed not all instances of --bus, --dimm, and --region use the
-include and hence do not get the clarification.
+The sparse tool complains as follows:
 
-Fixes: 498ee3d100c3 ("Documentation: clarify bus/dimm/region filtering")
+drivers/nvdimm/security.c:416:6: warning:
+ symbol '__nvdimm_security_overwrite_query' was not declared. Should it be static?
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+__nvdimm_security_overwrite_query() is not used outside of this
+file, so marks it static.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- Documentation/ndctl/labels-options.txt     |  7 ++-----
- Documentation/ndctl/ndctl-inject-smart.txt |  4 +---
- Documentation/ndctl/ndctl-monitor.txt      | 11 +++--------
- 3 files changed, 6 insertions(+), 16 deletions(-)
+ drivers/nvdimm/security.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/ndctl/labels-options.txt b/Documentation/ndctl/labels-options.txt
-index 4aee37969fd5..c7649cfd2aab 100644
---- a/Documentation/ndctl/labels-options.txt
-+++ b/Documentation/ndctl/labels-options.txt
-@@ -1,9 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
+index 89b85970912d..11fb5ada70ad 100644
+--- a/drivers/nvdimm/security.c
++++ b/drivers/nvdimm/security.c
+@@ -413,7 +413,7 @@ static int security_overwrite(struct nvdimm *nvdimm, unsigned int keyid)
+ 	return rc;
+ }
  
- <memory device(s)>::
--	One or more 'nmemX' device names. The keyword 'all' can be specified to
--	operate on every dimm in the system, optionally filtered by bus id (see
--        --bus= option).
-+include::xable-dimm-options.txt[]
- 
- -s::
- --size=::
-@@ -16,8 +14,7 @@
- 
- -b::
- --bus=::
--	Limit operation to memory devices (dimms) that are on the given bus.
--	Where 'bus' can be a provider name or a bus id number.
-+include::xable-bus-options.txt[]
- 
- -v::
- 	Turn on verbose debug messages in the library (if ndctl was built with
-diff --git a/Documentation/ndctl/ndctl-inject-smart.txt b/Documentation/ndctl/ndctl-inject-smart.txt
-index d28be46cae1c..9fd63bae2729 100644
---- a/Documentation/ndctl/ndctl-inject-smart.txt
-+++ b/Documentation/ndctl/ndctl-inject-smart.txt
-@@ -38,9 +38,7 @@ OPTIONS
- -------
- -b::
- --bus=::
--	Enforce that the operation only be carried on devices that are
--	attached to the given bus. Where 'bus' can be a provider name or a bus
--	id number.
-+include::xable-bus-options.txt[]
- 
- -m::
- --media-temperature=::
-diff --git a/Documentation/ndctl/ndctl-monitor.txt b/Documentation/ndctl/ndctl-monitor.txt
-index 2239f047266d..c0273d378b59 100644
---- a/Documentation/ndctl/ndctl-monitor.txt
-+++ b/Documentation/ndctl/ndctl-monitor.txt
-@@ -49,20 +49,15 @@ OPTIONS
- -------
- -b::
- --bus=::
--	Enforce that the operation only be carried on devices that are
--	attached to the given bus. Where 'bus' can be a provider name
--	or a bus id number.
-+include::xable-bus-options.txt[]
- 
- -d::
- --dimm=::
--	A 'nmemX' device name, or dimm id number. Select the devices to
--	monitor reference the given dimm.
-+include::xable-dimm-options.txt[]
- 
- -r::
- --region=::
--	A 'regionX' device name, or a region id number. The keyword 'all'
--	can be specified to carry out the operation on every region in
--	the system, optionally filtered by bus id (see --bus= option).
-+include::xable-region-options.txt[]
- 
- -n::
- --namespace=::
--- 
-2.26.2
+-void __nvdimm_security_overwrite_query(struct nvdimm *nvdimm)
++static void __nvdimm_security_overwrite_query(struct nvdimm *nvdimm)
+ {
+ 	struct nvdimm_bus *nvdimm_bus = walk_to_nvdimm_bus(&nvdimm->dev);
+ 	int rc;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
