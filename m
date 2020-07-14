@@ -1,53 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2204F21E8FE
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 09:04:03 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0DD21E902
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 09:04:05 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5E06410056AF9;
-	Tue, 14 Jul 2020 00:04:01 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id 7191010056AFC;
+	Tue, 14 Jul 2020 00:04:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0843910056AF5
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 00:03:58 -0700 (PDT)
-IronPort-SDR: b7v0W31mBTez32sMBaxu4s8id+P68cTKF2QLagVNudUt+dbIuX98Nv9GE04ybALksKCbaY8fz6
- RQlmUW3dk+1g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9681"; a="136970569"
+	by ml01.01.org (Postfix) with ESMTPS id 3041D10056AF5
+	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 00:04:01 -0700 (PDT)
+IronPort-SDR: cneN2jgNplluNmZZ4icINHkGY0adEVrmVhm3aibc83ffFhRts+T8o8hjl6zQESVvpIjhxSlied
+ XC5AZEDyX5oQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9681"; a="233684256"
 X-IronPort-AV: E=Sophos;i="5.75,350,1589266800";
-   d="scan'208";a="136970569"
+   d="scan'208";a="233684256"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:03:58 -0700
-IronPort-SDR: tM25IeT0oQgBH5uG3/kK2J0KSx7XiyneX5daRv7CSqmQsPrqx31C4FcIseGNA7K/Pmx2qph+pY
- 1rGgJw6HtyFw==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:04:01 -0700
+IronPort-SDR: SSi5GJb0V/HMXSKbaAyXk6HDmW4dB1Grr5oZA4rgflGb+mamJz9w29PyxLPPix1ZRfBr/DOI4L
+ Lp6bL5FQa6zg==
 X-IronPort-AV: E=Sophos;i="5.75,350,1589266800";
-   d="scan'208";a="459583331"
+   d="scan'208";a="429666461"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:03:57 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:04:00 -0700
 From: ira.weiny@intel.com
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [RFC PATCH 00/15] PKS: Add Protection Keys Supervisor (PKS) support
-Date: Tue, 14 Jul 2020 00:02:05 -0700
-Message-Id: <20200714070220.3500839-1-ira.weiny@intel.com>
+Subject: [RFC PATCH 01/15] x86/pkeys: Create pkeys_internal.h
+Date: Tue, 14 Jul 2020 00:02:06 -0700
+Message-Id: <20200714070220.3500839-2-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200714070220.3500839-1-ira.weiny@intel.com>
+References: <20200714070220.3500839-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: WLQUEZ5UEKPRQWZZOIDLR5A5OBOLWHI7
-X-Message-ID-Hash: WLQUEZ5UEKPRQWZZOIDLR5A5OBOLWHI7
+Message-ID-Hash: LT6QVHEZYVAVQ2RLRMF2DEDWKBODEN47
+X-Message-ID-Hash: LT6QVHEZYVAVQ2RLRMF2DEDWKBODEN47
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WLQUEZ5UEKPRQWZZOIDLR5A5OBOLWHI7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LT6QVHEZYVAVQ2RLRMF2DEDWKBODEN47/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,173 +60,176 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-This RFC series has been reviewed by Dave Hansen.
+Protection Keys User (PKU) and Protection Keys Supervisor (PKS) work in
+similar fashions.
 
-This patch set introduces a new page protection mechanism for supervisor pages,
-Protection Key Supervisor (PKS) and an initial user of them, persistent memory,
-PMEM.
+Share code between them by creating a header with common defines, move
+those defines into this header, change their names to reflect the new
+use, and include the header where needed.
 
-PKS enables protections on 'domains' of supervisor pages to limit supervisor
-mode access to those pages beyond the normal paging protections.  They work in
-a similar fashion to user space pkeys.  Like User page pkeys (PKU), supervisor
-pkeys are checked in addition to normal paging protections and Access or Writes
-can be disabled via a MSR update without TLB flushes when permissions change.
-A page mapping is assigned to a domain by setting a pkey in the page table
-entry.
-
-Unlike User pkeys no new instructions are added; rather WRMSR/RDMSR are used to
-update the PKRS register.
-
-XSAVE is not supported for the PKRS MSR.  To reduce software complexity the
-implementation saves/restores the MSR across context switches but not during
-irqs.  This is a compromise which results is a hardening of unwanted access
-without absolute restriction.
-
-For consistent behavior with current paging protections, pkey 0 is reserved and
-configured to allow full access via the pkey mechanism, thus preserving the
-default paging protections on mappings with the default pkey value of 0.
-
-Other keys, (1-15) are allocated by an allocator which prepares us for key
-contention from day one.  Kernel users should be prepared for the allocator to
-fail either because of key exhaustion or due to PKS not being supported on the
-arch and/or CPU instance.
-
-Protecting against stray writes is particularly important for PMEM because,
-unlike writes to anonymous memory, writes to PMEM persists across a reboot.
-Thus data corruption could result in permanent loss of data.
-
-The following attributes of PKS makes it perfect as a mechanism to protect PMEM
-from stray access within the kernel:
-
-   1) Fast switching of permissions
-   2) Prevents access without page table manipulations
-   3) Works on a per thread basis
-   4) No TLB flushes required
-
-The second half of this series thus uses the PKS mechanism to protect PMEM from
-stray access.
-
-
-Implementation details
-----------------------
-
-Modifications of task struct in patches:
-	(x86/pks: Preserve the PKRS MSR on context switch)
-	(memremap: Add zone device access protection)
-
-Because pkey access is per-thread 2 modifications are made to the task struct.
-The first is a saved copy of the MSR during context switches.  The second
-reference counts access to the device domain to correctly handle kmap nesting
-properly.
-
-
-Maintain PKS setting in a re-entrant manner in patch:
-	(memremap: Add zone device access protection)
-
-Using local_irq_save() seems to be the safest and fastest way to maintain kmap
-as re-entrant.  But there may be a better way.  spin_lock_irq() and atomic
-counters were considered.  But atomic counters do not properly protect the pkey
-update and spin_lock_irq() is unnecessary as the pkey protections are thread
-local.  Suggestions are welcome.
-
-
-The use of kmap in patch:
-	(kmap: Add stray write protection for device pages)
-
-To keep general access to PMEM pages general, we piggy back on the kmap()
-interface as there are many places in the kernel who do not have, nor should be
-required to have, a priori knowledge that a page is PMEM.  The modifications to
-the kmap code is careful to quickly determine which pages don't require special
-handling to reduce overhead for non PMEM pages.
-
-
-
-Breakdown of patches
---------------------
-
-Implement PKS within x86 arch:
-
-	x86/pkeys: Create pkeys_internal.h
-	x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
-	x86/pks: Enable Protection Keys Supervisor (PKS)
-	x86/pks: Preserve the PKRS MSR on context switch
-	x86/pks: Add PKS kernel API
-	x86/pks: Add a debugfs file for allocated PKS keys
-	Documentation/pkeys: Update documentation for kernel pkeys
-	x86/pks: Add PKS Test code
-
-pre-req bug fixes for dax:
-
-	fs/dax: Remove unused size parameter
-	drivers/dax: Expand lock scope to cover the use of addresses
-
-Add stray write protection to PMEM:
-
-	memremap: Add zone device access protection
-	kmap: Add stray write protection for device pages
-	dax: Stray write protection for dax_direct_access()
-	nvdimm/pmem: Stray write protection for pmem->virt_addr
-	[dax|pmem]: Enable stray write protection
-
-Fenghua Yu (4):
-  x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
-  x86/pks: Enable Protection Keys Supervisor (PKS)
-  x86/pks: Add PKS kernel API
-  x86/pks: Add a debugfs file for allocated PKS keys
-
-Ira Weiny (11):
-  x86/pkeys: Create pkeys_internal.h
-  x86/pks: Preserve the PKRS MSR on context switch
-  Documentation/pkeys: Update documentation for kernel pkeys
-  x86/pks: Add PKS Test code
-  fs/dax: Remove unused size parameter
-  drivers/dax: Expand lock scope to cover the use of addresses
-  memremap: Add zone device access protection
-  kmap: Add stray write protection for device pages
-  dax: Stray write protection for dax_direct_access()
-  nvdimm/pmem: Stray write protection for pmem->virt_addr
-  [dax|pmem]: Enable stray write protection
-
- Documentation/core-api/protection-keys.rst  |  81 +++-
- arch/x86/Kconfig                            |   1 +
- arch/x86/include/asm/cpufeatures.h          |   1 +
- arch/x86/include/asm/msr-index.h            |   1 +
- arch/x86/include/asm/pgtable.h              |  13 +-
- arch/x86/include/asm/pgtable_types.h        |   4 +
- arch/x86/include/asm/pkeys.h                |  43 ++
- arch/x86/include/asm/pkeys_internal.h       |  35 ++
- arch/x86/include/asm/processor.h            |  13 +
- arch/x86/include/uapi/asm/processor-flags.h |   2 +
- arch/x86/kernel/cpu/common.c                |  17 +
- arch/x86/kernel/fpu/xstate.c                |  17 +-
- arch/x86/kernel/process.c                   |  35 ++
- arch/x86/mm/fault.c                         |  16 +-
- arch/x86/mm/pkeys.c                         | 174 +++++++-
- drivers/dax/device.c                        |   2 +
- drivers/dax/super.c                         |   5 +-
- drivers/nvdimm/pmem.c                       |   6 +
- fs/dax.c                                    |  13 +-
- include/linux/highmem.h                     |  32 +-
- include/linux/memremap.h                    |   1 +
- include/linux/mm.h                          |  33 ++
- include/linux/pkeys.h                       |  18 +
- include/linux/sched.h                       |   3 +
- init/init_task.c                            |   3 +
- kernel/fork.c                               |   3 +
- lib/Kconfig.debug                           |  12 +
- lib/Makefile                                |   3 +
- lib/pks/Makefile                            |   3 +
- lib/pks/pks_test.c                          | 452 ++++++++++++++++++++
- mm/Kconfig                                  |  15 +
- mm/memremap.c                               | 111 +++++
- tools/testing/selftests/x86/Makefile        |   3 +-
- tools/testing/selftests/x86/test_pks.c      |  65 +++
- 34 files changed, 1175 insertions(+), 61 deletions(-)
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+ arch/x86/include/asm/pgtable.h        | 13 ++++++-------
+ arch/x86/include/asm/pkeys.h          |  2 ++
+ arch/x86/include/asm/pkeys_internal.h | 11 +++++++++++
+ arch/x86/include/asm/processor.h      |  1 +
+ arch/x86/kernel/fpu/xstate.c          |  8 ++++----
+ arch/x86/mm/pkeys.c                   | 14 ++++++--------
+ 6 files changed, 30 insertions(+), 19 deletions(-)
  create mode 100644 arch/x86/include/asm/pkeys_internal.h
- create mode 100644 lib/pks/Makefile
- create mode 100644 lib/pks/pks_test.c
- create mode 100644 tools/testing/selftests/x86/test_pks.c
 
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 76aa21e8128d..30e97fc8a683 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1364,9 +1364,7 @@ static inline pmd_t pmd_swp_clear_uffd_wp(pmd_t pmd)
+ }
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+ 
+-#define PKRU_AD_BIT 0x1
+-#define PKRU_WD_BIT 0x2
+-#define PKRU_BITS_PER_PKEY 2
++#include <asm/pkeys_internal.h>
+ 
+ #ifdef CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS
+ extern u32 init_pkru_value;
+@@ -1376,18 +1374,19 @@ extern u32 init_pkru_value;
+ 
+ static inline bool __pkru_allows_read(u32 pkru, u16 pkey)
+ {
+-	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
+-	return !(pkru & (PKRU_AD_BIT << pkru_pkey_bits));
++	int pkru_pkey_bits = pkey * PKR_BITS_PER_PKEY;
++
++	return !(pkru & (PKR_AD_BIT << pkru_pkey_bits));
+ }
+ 
+ static inline bool __pkru_allows_write(u32 pkru, u16 pkey)
+ {
+-	int pkru_pkey_bits = pkey * PKRU_BITS_PER_PKEY;
++	int pkru_pkey_bits = pkey * PKR_BITS_PER_PKEY;
+ 	/*
+ 	 * Access-disable disables writes too so we need to check
+ 	 * both bits here.
+ 	 */
+-	return !(pkru & ((PKRU_AD_BIT|PKRU_WD_BIT) << pkru_pkey_bits));
++	return !(pkru & ((PKR_AD_BIT|PKR_WD_BIT) << pkru_pkey_bits));
+ }
+ 
+ static inline u16 pte_flags_pkey(unsigned long pte_flags)
+diff --git a/arch/x86/include/asm/pkeys.h b/arch/x86/include/asm/pkeys.h
+index 2ff9b98812b7..be8b3e448f76 100644
+--- a/arch/x86/include/asm/pkeys.h
++++ b/arch/x86/include/asm/pkeys.h
+@@ -2,6 +2,8 @@
+ #ifndef _ASM_X86_PKEYS_H
+ #define _ASM_X86_PKEYS_H
+ 
++#include <asm/pkeys_internal.h>
++
+ #define ARCH_DEFAULT_PKEY	0
+ 
+ /*
+diff --git a/arch/x86/include/asm/pkeys_internal.h b/arch/x86/include/asm/pkeys_internal.h
+new file mode 100644
+index 000000000000..a9f086f1e4b4
+--- /dev/null
++++ b/arch/x86/include/asm/pkeys_internal.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_X86_PKEYS_INTERNAL_H
++#define _ASM_X86_PKEYS_INTERNAL_H
++
++#define PKR_AD_BIT 0x1
++#define PKR_WD_BIT 0x2
++#define PKR_BITS_PER_PKEY 2
++
++#define PKR_AD_KEY(pkey)	(PKR_AD_BIT << ((pkey) * PKR_BITS_PER_PKEY))
++
++#endif /*_ASM_X86_PKEYS_INTERNAL_H */
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index 03b7c4ca425a..7da9855b5068 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -27,6 +27,7 @@ struct vm86;
+ #include <asm/unwind_hints.h>
+ #include <asm/vmxfeatures.h>
+ #include <asm/vdso/processor.h>
++#include <asm/pkeys_internal.h>
+ 
+ #include <linux/personality.h>
+ #include <linux/cache.h>
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index bda2e5eaca0e..fc1ec2986e03 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -955,7 +955,7 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+ 		unsigned long init_val)
+ {
+ 	u32 old_pkru;
+-	int pkey_shift = (pkey * PKRU_BITS_PER_PKEY);
++	int pkey_shift = (pkey * PKR_BITS_PER_PKEY);
+ 	u32 new_pkru_bits = 0;
+ 
+ 	/*
+@@ -974,16 +974,16 @@ int arch_set_user_pkey_access(struct task_struct *tsk, int pkey,
+ 
+ 	/* Set the bits we need in PKRU:  */
+ 	if (init_val & PKEY_DISABLE_ACCESS)
+-		new_pkru_bits |= PKRU_AD_BIT;
++		new_pkru_bits |= PKR_AD_BIT;
+ 	if (init_val & PKEY_DISABLE_WRITE)
+-		new_pkru_bits |= PKRU_WD_BIT;
++		new_pkru_bits |= PKR_WD_BIT;
+ 
+ 	/* Shift the bits in to the correct place in PKRU for pkey: */
+ 	new_pkru_bits <<= pkey_shift;
+ 
+ 	/* Get old PKRU and mask off any old bits in place: */
+ 	old_pkru = read_pkru();
+-	old_pkru &= ~((PKRU_AD_BIT|PKRU_WD_BIT) << pkey_shift);
++	old_pkru &= ~((PKR_AD_BIT|PKR_WD_BIT) << pkey_shift);
+ 
+ 	/* Write old part along with new part: */
+ 	write_pkru(old_pkru | new_pkru_bits);
+diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
+index 8873ed1438a9..f5efb4007e74 100644
+--- a/arch/x86/mm/pkeys.c
++++ b/arch/x86/mm/pkeys.c
+@@ -111,19 +111,17 @@ int __arch_override_mprotect_pkey(struct vm_area_struct *vma, int prot, int pkey
+ 	return vma_pkey(vma);
+ }
+ 
+-#define PKRU_AD_KEY(pkey)	(PKRU_AD_BIT << ((pkey) * PKRU_BITS_PER_PKEY))
+-
+ /*
+  * Make the default PKRU value (at execve() time) as restrictive
+  * as possible.  This ensures that any threads clone()'d early
+  * in the process's lifetime will not accidentally get access
+  * to data which is pkey-protected later on.
+  */
+-u32 init_pkru_value = PKRU_AD_KEY( 1) | PKRU_AD_KEY( 2) | PKRU_AD_KEY( 3) |
+-		      PKRU_AD_KEY( 4) | PKRU_AD_KEY( 5) | PKRU_AD_KEY( 6) |
+-		      PKRU_AD_KEY( 7) | PKRU_AD_KEY( 8) | PKRU_AD_KEY( 9) |
+-		      PKRU_AD_KEY(10) | PKRU_AD_KEY(11) | PKRU_AD_KEY(12) |
+-		      PKRU_AD_KEY(13) | PKRU_AD_KEY(14) | PKRU_AD_KEY(15);
++u32 init_pkru_value = PKR_AD_KEY( 1) | PKR_AD_KEY( 2) | PKR_AD_KEY( 3) |
++		      PKR_AD_KEY( 4) | PKR_AD_KEY( 5) | PKR_AD_KEY( 6) |
++		      PKR_AD_KEY( 7) | PKR_AD_KEY( 8) | PKR_AD_KEY( 9) |
++		      PKR_AD_KEY(10) | PKR_AD_KEY(11) | PKR_AD_KEY(12) |
++		      PKR_AD_KEY(13) | PKR_AD_KEY(14) | PKR_AD_KEY(15);
+ 
+ /*
+  * Called from the FPU code when creating a fresh set of FPU
+@@ -173,7 +171,7 @@ static ssize_t init_pkru_write_file(struct file *file,
+ 	 * up immediately if someone attempts to disable access
+ 	 * or writes to pkey 0.
+ 	 */
+-	if (new_init_pkru & (PKRU_AD_BIT|PKRU_WD_BIT))
++	if (new_init_pkru & (PKR_AD_BIT|PKR_WD_BIT))
+ 		return -EINVAL;
+ 
+ 	WRITE_ONCE(init_pkru_value, new_init_pkru);
 -- 
 2.25.1
 _______________________________________________
