@@ -2,54 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B3721E921
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 09:04:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D344B21EB47
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 14 Jul 2020 10:27:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 18BE210056B1A;
-	Tue, 14 Jul 2020 00:04:34 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id ED399111B91F6;
+	Tue, 14 Jul 2020 01:27:15 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN> 
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2E7CF10056B0F
-	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 00:04:31 -0700 (PDT)
-IronPort-SDR: xDqMjruGZVTZZpXJAPWNNrkdhhr3dAIchzdAWw1CwYB+BYqSeKx4OxZu3nUOj4DkfEwp50JLLp
- z26SQsb4OWMQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9681"; a="128914600"
-X-IronPort-AV: E=Sophos;i="5.75,350,1589266800";
-   d="scan'208";a="128914600"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:04:30 -0700
-IronPort-SDR: OlctpnIJwdlGQxS+Bsa4EvBdFZhgaMgi6E93HtogmUqsYd+MIKqgpv8ZX2Fg+6KeQMAbeYu29A
- wm1rPhIk0yOg==
-X-IronPort-AV: E=Sophos;i="5.75,350,1589266800";
-   d="scan'208";a="459583558"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2020 00:04:29 -0700
-From: ira.weiny@intel.com
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [RFC PATCH 15/15] [dax|pmem]: Enable stray write protection
-Date: Tue, 14 Jul 2020 00:02:20 -0700
-Message-Id: <20200714070220.3500839-16-ira.weiny@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200714070220.3500839-1-ira.weiny@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id DB9BD111B91F3
+	for <linux-nvdimm@lists.01.org>; Tue, 14 Jul 2020 01:27:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=A51ag8nDs9zuaekV72PLvRRRTy65GcHBqX/h7vCoPM8=; b=Qliqg88yubr5gTr0CebRm5zHyM
+	VmoSi0W8BiWxbo8q0BQItVbTESnzPp2YQGxipV4dST4DFJUBsJEgrytU7IzP9Ptmtt31ahpakJj6W
+	pvVJgC5LHcsQYfqFGy5fNdrhBWJcuZf7H3SfDGiu09ZMSL4+z0b4A+hAncBX1lLJRahHM4aEJlNXj
+	lWa0NgagAQJSPYr3J9uR3wRQOov3bvouDKlbm6svybYdiMyh2k7P7B7hdk3PoyRtrnU8/ltNHbyf4
+	4872KPEM7cf358Zm+G7TVXFu4J9ua11eoXXrDYwTVxnobsO9G7E1mpGrwznsBUZ6VolO/a5+BQvvh
+	bjtbmldw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+	by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1jvGHI-0003qe-0A; Tue, 14 Jul 2020 08:27:04 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client did not present a certificate)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id E72DC305C22;
+	Tue, 14 Jul 2020 10:27:01 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C5FA120D27C6B; Tue, 14 Jul 2020 10:27:01 +0200 (CEST)
+Date: Tue, 14 Jul 2020 10:27:01 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: ira.weiny@intel.com
+Subject: Re: [RFC PATCH 04/15] x86/pks: Preserve the PKRS MSR on context
+ switch
+Message-ID: <20200714082701.GO10769@hirez.programming.kicks-ass.net>
 References: <20200714070220.3500839-1-ira.weiny@intel.com>
+ <20200714070220.3500839-5-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: 3YBERHXPQYWXOSWW4XJIDTVDBHF7SIBO
-X-Message-ID-Hash: 3YBERHXPQYWXOSWW4XJIDTVDBHF7SIBO
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Disposition: inline
+In-Reply-To: <20200714070220.3500839-5-ira.weiny@intel.com>
+Message-ID-Hash: PVJMYXC5F62LJ6NTOLX376HBBTYXTO66
+X-Message-ID-Hash: PVJMYXC5F62LJ6NTOLX376HBBTYXTO66
+X-MailFrom: peterz@infradead.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3YBERHXPQYWXOSWW4XJIDTVDBHF7SIBO/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PVJMYXC5F62LJ6NTOLX376HBBTYXTO66/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,51 +62,16 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Ira Weiny <ira.weiny@intel.com>
+On Tue, Jul 14, 2020 at 12:02:09AM -0700, ira.weiny@intel.com wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> The PKRS MSR is defined as a per-core register.  This isolates memory
+> access by CPU.  Unfortunately, the MSR is not preserved by XSAVE.
+> Therefore, We must preserve the protections for individual tasks even if
+> they are context switched out and placed on another cpu later.
 
-Protecting against stray writes is particularly important for PMEM
-because, unlike writes to anonymous memory, writes to PMEM persists
-across a reboot.  Thus data corruption could result in permanent loss of
-data.  Therefore, there is no option presented to the user.
-
-Enable stray write protection by setting the flag in pgmap which
-requests it.  Note if Zone Device Access Protection not be supported
-this flag will have no affect.
-
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
----
- drivers/dax/device.c  | 2 ++
- drivers/nvdimm/pmem.c | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-index 4c0af2eb7e19..884f66d73d32 100644
---- a/drivers/dax/device.c
-+++ b/drivers/dax/device.c
-@@ -430,6 +430,8 @@ int dev_dax_probe(struct device *dev)
- 	}
- 
- 	dev_dax->pgmap.type = MEMORY_DEVICE_DEVDAX;
-+	dev_dax->pgmap.flags |= PGMAP_PROT_ENABLED;
-+
- 	addr = devm_memremap_pages(dev, &dev_dax->pgmap);
- 	if (IS_ERR(addr))
- 		return PTR_ERR(addr);
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 46c11a09b813..9416a660eede 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -427,6 +427,8 @@ static int pmem_attach_disk(struct device *dev,
- 		return -EBUSY;
- 	}
- 
-+	pmem->pgmap.flags |= PGMAP_PROT_ENABLED;
-+
- 	q = blk_alloc_queue(pmem_make_request, dev_to_node(dev));
- 	if (!q)
- 		return -ENOMEM;
--- 
-2.25.1
+This is a contradiction and utter trainwreck. We're not going to do more
+per-core MSRs and pretend they make sense per-task.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
