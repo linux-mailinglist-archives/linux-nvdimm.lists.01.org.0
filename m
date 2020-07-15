@@ -1,56 +1,95 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBF1221447
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 15 Jul 2020 20:30:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C726F2218AA
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 01:59:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4E4A0119BD3AC;
-	Wed, 15 Jul 2020 11:30:57 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=125.140.134.231; helo=win-daono245hjf; envelope-from=campbellckark23@gmail.com; receiver=<UNKNOWN> 
-Received: from WIN-DAONO245HJF (unknown [125.140.134.231])
-	by ml01.01.org (Postfix) with ESMTP id DA054119BD3A8;
-	Wed, 15 Jul 2020 11:30:54 -0700 (PDT)
-Received: from User ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-	 Thu, 16 Jul 2020 03:27:38 +0900
-From: "Mr Campbell Clark"<campbellckark23@gmail.com>
-Subject: INVESTMENT BOND
-Date: Wed, 15 Jul 2020 11:27:41 -0700
+	by ml01.01.org (Postfix) with ESMTP id A5AC311AD4BAD;
+	Wed, 15 Jul 2020 16:59:50 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=89.216.99.123; helo=mail.jomapeks.com; envelope-from=vincent.vn345@gmail.com; receiver=<UNKNOWN> 
+Received: from mail.jomapeks.com (mail.jomapeks.com [89.216.99.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 0617111AD4BAB
+	for <linux-nvdimm@lists.01.org>; Wed, 15 Jul 2020 16:59:47 -0700 (PDT)
+Received: from [127.0.0.1] (helo=mail.jomapeks.com)
+	by mail.jomapeks.com with esmtp (Exim 4.89)
+	(envelope-from <vincent.vn345@gmail.com>)
+	id 1jvrJ0-0008QA-6s; Thu, 16 Jul 2020 01:59:18 +0200
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WIN-DAONO245HJFV1iS007da710@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 15 Jul 2020 18:27:38.0965 (UTC) FILETIME=[9E9D4850:01D65AD5]
-Message-ID-Hash: OHUHZPYMC62SMPYZA76YFIBYSI2F2O3Z
-X-Message-ID-Hash: OHUHZPYMC62SMPYZA76YFIBYSI2F2O3Z
-X-MailFrom: campbellckark23@gmail.com
+Date: Thu, 16 Jul 2020 07:59:18 +0800
+From: Vincent Brooks <vincent.vn345@gmail.com>
+To: undisclosed-recipients:;
+Subject: Vincent Brooks
+Mail-Reply-To: vincent.brooks4578@gmail.com
+Message-ID: <4c935993f67bea0d289ea4cb8befec47@gmail.com>
+X-Sender: vincent.vn345@gmail.com
+User-Agent: Roundcube Webmail/1.3.8
+Message-ID-Hash: TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5
+X-Message-ID-Hash: TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5
+X-MailFrom: vincent.vn345@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: campbellclark156@yahoo.com
+Reply-To: vincent.brooks4578@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OHUHZPYMC62SMPYZA76YFIBYSI2F2O3Z/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-
-Good day,
-
- You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days. The total value of the bond is 100 million pounds sterling, in a million pound denominations. If you can handle this, do contact me at your earliest convenience via my email campbellclark156@yahoo.com So we can discuss the finer details
-
-
-Thank you
-
-
-Mr Campbell Clark
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+TWFqb2l0dGFqYTogVmluY2VudCBCcm9va3MNClJha2FzIHlzdMOkdsOkLg0KDQpPbGVuIFZpbmNl
+bnQgQnJvb2tzIEJyb25kZXNidXJ5c3RhLCBMdW90ZWlzLUxvbnRvb3N0YSwgdMOkw6RsdMOkIA0K
+RW5nbGFubmlzdGEuIFR5w7Zza2VudGVsZW4gVUJTIElOVkVTVE1FTlQgQmFuayBMb25kb24gLWtv
+bnR0b3Jpc3NhLiANCktpcmpvaXRhbiB0ZWlsbGUgdG9pbWlzdG9zdGFuaSwgam9zdGEgb24gdmFs
+dGF2YSBoecO2dHkgbW9sZW1taWxsZS4gT21hbiANCm9zYXN0b25pIHJ5aG3DpG4gdG9pbWVlbnBh
+bm9rb21pdGVhbiBqw6RzZW5lbsOkIGphIHJpc2tpZW4gcMOkw6Rqb2h0YWphbmEgDQooU3V1ci1M
+b250b29uIGFsdWV0b2ltaXN0bykgbMO2eXNpbiBoeWzDpHR5biAxNSBtaWxqb29uYW4gcHVubmFu
+IHN1bW1hbiANCklzb24tQnJpdGFubmlhbiBwdW50YW4gKHZpaWRlbnRvaXN0YSBtaWxqb29uYW4g
+SXNvbiBCcml0YW5uaWFuIHB1bm5hbikgDQpzdW1tYW4geWhkZWxsZSBrdXVsdXZhbGxlIHRpbGls
+bGUuIHVsa29tYWlzaXN0YSBhc2lha2thaXN0YW1tZSBtecO2aMOkc3PDpCANCmhlcnJhIFN0ZXZl
+IEFsbGVuLCBqb2thIHZhbGl0ZXR0YXZhc3RpIG1lbmV0dGkgaGVua2Vuc8OkIA0KYXV0by1vbm5l
+dHRvbXV1ZGVzc2EsIG11a2FhbiBsdWtpZW4gdmFpbW8gamEgYWlub2EgdHl0w6RyLg0KDQpWYWxp
+bnRhIG90dGFhIHNpbnV1biB5aHRleXR0w6Qgam9odHV1IGFzdWlucGFpa2FuIG1hYW50aWV0ZWVs
+bGlzZXN0w6QgDQpsdW9udGVlc3RhLCBldGVua2luIHTDpG3DpG4gdGFwYWh0dW1hbiBoZXJra3l5
+ZGVuIHZ1b2tzaS4gUGFua2luIA0Kdmlya2FtaWVoZXQgb3ZhdCBvZG90dGFuZWV0LCBldHTDpCBq
+b2t1IHN1a3VsYWlzaXN0YSB0dWxlZSBlc2l0dMOkbcOkw6RuIA0KdMOkdMOkIHZhYXRpbXVzdGEs
+IG11dHRhIGt1a2FhbiBlaSBvbGUgdGVobnl0IHNpdMOkLiBPbGVuIA0KaGVua2lsw7Zrb2h0YWlz
+ZXN0aSBlcMOkb25uaXN0dW51dCBwYWlrYWxsaXN0YW1hYW4gc3VrdWxhaXNpYS4gUHl5ZMOkbiAN
+CnN1b3N0dW11c3Rhc2kgZXNpdGVsbMOkIHNpbnVhIHNldXJhYXZhbmEgc3VrdWxhaXNpbmEgLyBz
+YWFqYWluYSB0w6Rtw6RuIA0KcmFoYXN0b24ga3VvbGxlZWxsZSwgam90dGEgdMOkbcOkbiB0aWxp
+biB0dW90b3QsIGpvaWRlbiBhcnZvIG9uIDE1IA0KbWlsam9vbmFhIHB1bnRhYSwgc2lpcnJldMOk
+w6RuIHBhbmtraWlzaS4gdGlsaSBzZXVyYWF2YW5hIHN1a3VsYWlzZW5hIA0KbXnDtmjDpGlzZWxs
+ZSBoZXJyYSBTdGV2ZSBBbGxlbmlsbGUuDQoNClNlIG1ha3NldGFhbiB0YWkgamFldGFhbiBuw6Rp
+c3PDpCBwcm9zZW50dGVpc3NhLCA2MCUgbWludWxsZSBqYSA0MCUgDQpzaW51bGxlLiBPbGVuIHR1
+cnZhbm51dCBrYWlra2kgdGFydml0dGF2YXQgb2lrZXVkZWxsaXNldCBhc2lha2lyamF0LCANCmpv
+aXRhIGvDpHl0ZXTDpMOkbiB0w6Rtw6RuIHZhYXRpbXVrc2VuIHZhcm11dXNrb3Bpb2ludGlpbi4g
+QWlub2EgbWl0w6QgbWludW4gDQpvbiB0ZWh0w6R2w6QsIG9uIHTDpHl0dMOkw6QgbmltZXNpIGFz
+aWFraXJqb2loaW4gamEgbGFpbGxpc3RhYSBzZSB0w6TDpGxsw6QgDQp0dW9taW9pc3R1aW1lc3Nh
+IHRvZGlzdGFha3Nlc2kgc2ludXQgcmFoYXN0b24gbGFpbGxpc2VuYSBlZHVuc2FhamFuYS4NCg0K
+VGFydml0c2VuIG55dCB2YWluIHJlaGVsbGlzdMOkIHlodGVpc3R5w7Z0w6QsIGx1b3R0YW11a3Nl
+bGxpc3V1dHRhIGphIA0KbHVvdHRhbXVzdGEsIGpvdHRhIHZvaW1tZSBuw6RoZMOkIHTDpG3DpG4g
+dGFwYWh0dW1hbi4gVGFrYWFuLCBldHTDpCB0w6Rtw6QgDQp0b3RldXRldGFhbiBsYWlsbGlzZWxs
+YSBqw6RyamVzdGVseWxsw6QsIGpva2Egc3VvamFhIHNpbnVhIGthaWtpbHRhIGxha2llbiANCnJp
+a2tvbXVrc2lsdGEuIEhhbHVhbiBzaW51biB5bW3DpHJ0w6R2w6RuLCBldHTDpCBvbGVuIHR5w7Zz
+a2VubmVsbHl0IHTDpHNzw6QgDQpwYW5raXNzYSAxNyB2dW90dGEgamEgb2xlbiB2b2ludXQgc3Vv
+amF0YSBrYWlra2kgbGFpbGxpc2V0IGFzaWFraXJqYXQsIA0Kam90dGEgdm9pdCBwZXJpw6QgdMOk
+bcOkbiByYWhhc3Rvbg0KDQpBbnRha2FhIG1pbnVsbGUgc2V1cmFhdmE6IEtvc2thIG1laWxsw6Qg
+b24gbXV1dGFtYSBww6RpdsOkIGtlc3TDpMOkIHNlIGzDpHBpLCANCnTDpG3DpCBvbiBlcml0dMOk
+aW4ga2lpcmVlbGxpc3TDpC4NCg0KMS4gS29rbyBuaW1pDQoyLiBTdW9yYSBtYXRrYXB1aGVsaW5u
+dW1lcm9zaQ0KMy4gT2xldCB5aHRleXNvc29pdGUNCjQuIFN5bnR5bcOkYWlrYQ0KDQpUdXRraXR0
+dWFuaSBtZXRvZGlzZW4gaGF1biBww6TDpHRpbiBvdHRhYSBzaW51dW4geWh0ZXl0dMOkIHRvaXZv
+ZW4sIGV0dMOkIA0KbMO2eWTDpHQgdMOkbcOkbiBrYXVwYW4gbWllbGVua2lpbnRvaXNla3NpLiBB
+bnRha2FhIHNpbnVsbGUgbGlzw6R0aWV0b2phLCBrdW4gDQp2YWh2aXN0YXQgdMOkbcOkbiB2aWVz
+dGluIGphIGlsbW9pdGF0IGtpaW5ub3N0dWtzZXN0YXNpLiBZcml0w6QgaWxtb2l0dGFhIA0KcMOk
+w6R0w7Zrc2VzdMOkc2kgbWFoZG9sbGlzaW1tYW4gcGlhbi4NCg0KUGFyaGFpbiB0ZXJ2ZWlzaW4s
+DQpWaW5jZW50IEJyb29rcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
+MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
+bGlzdHMuMDEub3JnCg==
