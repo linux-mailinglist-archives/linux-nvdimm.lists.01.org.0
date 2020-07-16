@@ -2,72 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BBF2229E6
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 19:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FB12229E8
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 19:29:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2986311BB486E;
-	Thu, 16 Jul 2020 10:29:44 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 561F611C6719B;
+	Thu, 16 Jul 2020 10:29:51 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
 Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 287CB114DE55B
-	for <linux-nvdimm@lists.01.org>; Thu, 16 Jul 2020 10:29:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id C0FF111C67198
+	for <linux-nvdimm@lists.01.org>; Thu, 16 Jul 2020 10:29:48 -0700 (PDT)
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06GHMCCs108201;
-	Thu, 16 Jul 2020 17:29:37 GMT
+	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06GHMrg7108489;
+	Thu, 16 Jul 2020 17:29:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to; s=corp-2020-01-29;
- bh=ZkLmXaQi9ugUcPGIWCmMgZ6iQMhcjVJkBMoXeOQwmyM=;
- b=RUBQfUgmGKChbgMYUmEvIcVT3+aJZYhwqkHWUKpO5rPrQkilijpWXETaWT4LmQ96BF7y
- P/oKa+3s6SFsI7CYFSlnZRD/x9AVlbiugk+uKy4Ry8kt7WtR+aQai9iIO4jC7DtJl+nn
- HLXPSAGelTdcbvi3LLlduGK4hxHTOObWVHxs731Sz64ppe9UaW/V53mFmddjReVQ0R1n
- akCk8xVzPJF9UjkAW9t0vyjd8Vo5koDzZa6q+UkTP+WAY1yXOTVPZRnX8ROBN0CM41iU
- PDOgoL08ydnGbrdA5iPFyB/T1MKQp/O+1FRVP1IhrnS2BRpSG1rilgv92WJoNmHfN0ON qg==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by userp2130.oracle.com with ESMTP id 3274urjv5v-1
+ subject : date : message-id : in-reply-to : references; s=corp-2020-01-29;
+ bh=/DojH78Za5gXTe4CFdrD9/E9liFW6vuu4N1QfjS7cME=;
+ b=IsO4I4K/0EC29A+KQC6ljCJGfAbFH0C2iLEN0W2370NcHp8FAKnH5iQeskKw0BPWpiep
+ xDnRuGbD5Sf2f3MK3wpNjFtWfTB1n12AGnmulgiowFQr2oI99mlFnw3CdkPYjhNtgKmR
+ x7TPatP8tnaHtsru5/wueuOp+a9P1eOt/Pu8fTESQ5YyhqRWXA0e3xwn12ACVq7bxBQy
+ 9i7wkWVGrNtasJlD9jdDBttMZ9C3piHIHxKSlKzzNp1mOzVf0k8nqNKjuE8IqVA1uWwF
+ sRFboFAcnpAD9A1E5E6YwQd9hV/wzN1rK3spWX+GpY2vPgfM4cmegoEjGQ96pGGIqudT rg==
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+	by userp2130.oracle.com with ESMTP id 3274urjv6m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 16 Jul 2020 17:29:37 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06GHHlFm071570;
-	Thu, 16 Jul 2020 17:29:37 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-	by userp3020.oracle.com with ESMTP id 32akr3qw0r-1
+	Thu, 16 Jul 2020 17:29:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06GHIk0l086528;
+	Thu, 16 Jul 2020 17:29:45 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by userp3030.oracle.com with ESMTP id 327qc3tuw4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Jul 2020 17:29:36 +0000
+	Thu, 16 Jul 2020 17:29:44 +0000
 Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06GHTZVM019031;
-	Thu, 16 Jul 2020 17:29:35 GMT
+	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 06GHTh5Z016792;
+	Thu, 16 Jul 2020 17:29:43 GMT
 Received: from paddy.uk.oracle.com (/10.175.173.87)
 	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Thu, 16 Jul 2020 10:29:35 -0700
+	with ESMTP ; Thu, 16 Jul 2020 10:29:43 -0700
 From: Joao Martins <joao.m.martins@oracle.com>
 To: Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH v1 0/4] device-dax: Further improvements to subdivision
-Date: Thu, 16 Jul 2020 18:29:09 +0100
-Message-Id: <20200716172913.19658-1-joao.m.martins@oracle.com>
+Subject: [PATCH v1 4/4] device-dax: Add a range mapping allocation attribute
+Date: Thu, 16 Jul 2020 18:29:13 +0100
+Message-Id: <20200716172913.19658-5-joao.m.martins@oracle.com>
 X-Mailer: git-send-email 2.11.0
-In-Reply-To: <159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <20200716172913.19658-1-joao.m.martins@oracle.com>
+References: <20200716172913.19658-1-joao.m.martins@oracle.com>
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9684 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=999 spamscore=0 mlxscore=0 bulkscore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 mlxscore=0 phishscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2006250000 definitions=main-2007160126
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9684 signatures=668680
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
  suspectscore=0 phishscore=0 spamscore=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1011
+ mlxscore=0 priorityscore=1501 adultscore=0 bulkscore=0 clxscore=1015
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
  definitions=main-2007160126
-Message-ID-Hash: NZPANO3XYIW7CH2BTUGTQJUEPNEDV4WY
-X-Message-ID-Hash: NZPANO3XYIW7CH2BTUGTQJUEPNEDV4WY
+Message-ID-Hash: RMQJS7QNW6Y5RTR2CFKXROGYQBF527T3
+X-Message-ID-Hash: RMQJS7QNW6Y5RTR2CFKXROGYQBF527T3
 X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, Jason Zeng <jason.zeng@intel.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NZPANO3XYIW7CH2BTUGTQJUEPNEDV4WY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RMQJS7QNW6Y5RTR2CFKXROGYQBF527T3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -77,46 +78,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hey,
+Add a sysfs attribute which denotes a range from the dax region
+to be allocated. It's an write only @mapping sysfs attribute in
+the format of '<start>-<end>' to allocate a range. @start and
+@end use hexadecimal values and the @pgoff is implicitly ordered
+wrt to previous writes to @mapping sysfs e.g. a write of a range
+of length 1G the pgoff is 0..1G(-4K), a second write will use
+@pgoff for 1G+4K..<size>.
 
-Here's a small set of improvements that I was hoping you would consider as part
-of your Soft-Reserved series[0]; should you think they make sense. It does the
-following:
+This range mapping interface is useful for:
 
-  Patch 1-2: Add an align sysfs attribute, as opposed to being limited to 2M.
-  This brings parity to static dax regions, which support 1G.
+ 1) Application which want to implement its own allocation logic,
+ and thus pick the desired ranges from dax_region.
 
-  Patch 3. Add a module parameter to hmem, to initialize the region as idle
-  with full available_size for child devices. When the region is gonna be
-  partiotined by default and assigned to guests, doesn't help to
-  initialize the region. Also if the majority of the region starts
-  non-idle and it's a region which memmap is bigger than System-Ram,
-  then there not be enough space for the device to be probed successfully.
+ 2) For use cases like VMM fast restart[0] where after kexec we
+ want to the same gpa<->phys mappings (as originally created
+ before kexec).
 
-  Patch 4: Add an sysfs attribute for range allocation. It is a single entry
-  where you pass a range <start>-<end> and where the ordering plus range
-  length designate the page_offset. It is meant for recreate the same
-  mappings after kexec (retaining the GPA->HPA association), but could
-  also allow application to implement their own allocation strategy.
+[0] https://static.sched.com/hosted_files/kvmforum2019/66/VMM-fast-restart_kvmforum2019.pdf
 
-I will submit a separate daxctl counterpart shortly, to help visualize its use.
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+---
+ drivers/dax/bus.c | 64 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 64 insertions(+)
 
-[0] https://lore.kernel.org/linux-mm/159457116473.754248.7879464730875147365.stgit@dwillia2-desk3.amr.corp.intel.com
-
-	Joao
-
-Joao Martins (4):
-  device-dax: Make align a per-device property
-  device-dax: Add an 'align' attribute
-  dax/hmem: Introduce dax_hmem.region_idle parameter
-  device-dax: Add a range mapping allocation attribute
-
- drivers/dax/bus.c         | 166 +++++++++++++++++++++++++++++++++++---
- drivers/dax/dax-private.h |   1 +
- drivers/dax/device.c      |  35 ++++----
- drivers/dax/hmem/hmem.c   |   5 +-
- 4 files changed, 177 insertions(+), 30 deletions(-)
-
+diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
+index eb384dd6a376..83cc55d7517d 100644
+--- a/drivers/dax/bus.c
++++ b/drivers/dax/bus.c
+@@ -1041,6 +1041,67 @@ static ssize_t size_store(struct device *dev, struct device_attribute *attr,
+ }
+ static DEVICE_ATTR_RW(size);
+ 
++static ssize_t range_parse(const char *opt, size_t len, struct range *range)
++{
++	unsigned long long addr = 0;
++	char *start, *end, *str;
++	ssize_t rc = EINVAL;
++
++	str = kstrdup(opt, GFP_KERNEL);
++	if (!str)
++		return rc;
++
++	end = str;
++	start = strsep(&end, "-");
++	if (!start || !end)
++		goto err;
++
++	rc = kstrtoull(start, 16, &addr);
++	if (rc)
++		goto err;
++	range->start = addr;
++
++	rc = kstrtoull(end, 16, &addr);
++	if (rc)
++		goto err;
++	range->end = addr;
++
++err:
++	kfree(str);
++	return rc;
++}
++
++static ssize_t mapping_store(struct device *dev, struct device_attribute *attr,
++		const char *buf, size_t len)
++{
++	struct dev_dax *dev_dax = to_dev_dax(dev);
++	struct dax_region *dax_region = dev_dax->region;
++	size_t to_alloc;
++	struct range r;
++	ssize_t rc;
++
++	rc = range_parse(buf, len, &r);
++	if (rc)
++		return rc;
++
++	rc = -ENXIO;
++	device_lock(dax_region->dev);
++	if (!dax_region->dev->driver) {
++		device_unlock(dax_region->dev);
++		return rc;
++	}
++	device_lock(dev);
++
++	to_alloc = range_len(&r);
++	if (alloc_is_aligned(to_alloc, dev_dax->align))
++		rc = alloc_dev_dax_range(dev_dax, r.start, to_alloc);
++	device_unlock(dev);
++	device_unlock(dax_region->dev);
++
++	return rc == 0 ? len : rc;
++}
++static DEVICE_ATTR_WO(mapping);
++
+ static ssize_t align_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+@@ -1182,6 +1243,8 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ 		return 0;
+ 	if (a == &dev_attr_numa_node.attr && !IS_ENABLED(CONFIG_NUMA))
+ 		return 0;
++	if (a == &dev_attr_mapping.attr && is_static(dax_region))
++		return 0;
+ 	if ((a == &dev_attr_align.attr ||
+ 	     a == &dev_attr_size.attr) && is_static(dax_region))
+ 		return 0444;
+@@ -1191,6 +1254,7 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ static struct attribute *dev_dax_attributes[] = {
+ 	&dev_attr_modalias.attr,
+ 	&dev_attr_size.attr,
++	&dev_attr_mapping.attr,
+ 	&dev_attr_target_node.attr,
+ 	&dev_attr_align.attr,
+ 	&dev_attr_resource.attr,
 -- 
 2.17.1
 _______________________________________________
