@@ -1,55 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215D722219B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 13:37:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD92D222254
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 14:24:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0C34A11BC8653;
-	Thu, 16 Jul 2020 04:37:41 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.229.105.64; helo=rsno.com; envelope-from=dbyx@rsno.com; receiver=<UNKNOWN> 
-Received: from rsno.com (unknown [120.229.105.64])
-	by ml01.01.org (Postfix) with ESMTP id 63F6E11BB486E
-	for <linux-nvdimm@lists.01.org>; Thu, 16 Jul 2020 04:37:32 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Thu, 16 Jul 2020 19:36:57 +0800
-Message-ID: 9a4c0885-dce4-4129-b3be-8fd39ff97c1b
+	by ml01.01.org (Postfix) with ESMTP id 1AC1911BCA433;
+	Thu, 16 Jul 2020 05:24:46 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=130.185.193.188; helo=ip-188-193.optinet.bg; envelope-from=eatst9@pvma00192.prod.fedex.com; receiver=<UNKNOWN> 
+Received: from ip-188-193.optinet.bg (unknown [130.185.193.188])
+	by ml01.01.org (Postfix) with ESMTP id A640611BB48ED;
+	Thu, 16 Jul 2020 05:24:42 -0700 (PDT)
+Received: from [100.177.181.71] (account eatst9@pvma00192.prod.fedex.com HELO dwxxpgyn.trrocsoyzl.pvma00192.prod.fedex.com)
+	by ip-188-193.optinet.bg (Exim 4.89)
+	with ESMTPA id 5fhsHULJSq7W.001 for igvt-g@lists.01.org; Thu, 16 Jul 2020 14:24:41 +0200
+Received: from [83.182.4.199] (account eatst9@pvma00192.prod.fedex.com HELO LOPIWAN.KARUREN.pvma00192.prod.fedex.com)
+	by ip-188-193.optinet.bg (Postfix)
+	with esmtpa (Exim 4.86) id 7DE0Bbd3 for igvt-g@lists.01.org; Thu, 16 Jul 2020 14:24:41 +0200
+To: igvt-g@lists.01.org
+From: BillingOnline <BillingOnline@fedex.com>
+Subject: FedEx Billing Online - Invoice Ready for Payment
+Message-ID: <397540.943d20392f3fc6@ljyv.pvsiv.sgs>
+Date: Thu, 16 Jul 2020 14:24:41 +0200
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=B8=93=E4=B8=9A=E5=8A=9E=E7=90=86=E9=A6?=
- =?utf-8?Q?=99=E6=B8=AF=E5=BA=A7=E6=9C=BA---=E6=8C=89=E6=9C=88=E6=94=B6?=
- =?utf-8?Q?=E8=B4=B9---=E4=B8=8D=E9=99=90=E5=88=B6=E9=80=9A=E8=AF=9D=E6?=
- =?utf-8?Q?=97=B6=E9=97=B4?=
- <dbyx@rsno.com>
-From: =?utf-8?Q?=E4=B8=93=E4=B8=9A=E5=8A=9E=E7=90=86=E9=A6=99?=
- =?utf-8?Q?=E6=B8=AF=E5=BA=A7=E6=9C=BA---=E6=8C=89=E6=9C=88=E6=94=B6=E8?=
- =?utf-8?Q?=B4=B9---=E4=B8=8D=E9=99=90=E5=88=B6=E9=80=9A=E8=AF=9D=E6=97?=
- =?utf-8?Q?=B6=E9=97=B4?=
- <hktel852@hotmail.com>
-To: linux-nvdimm@lists.01.org
-Date: 16 Jul 2020 19:36:57 +0800
-Subject: =?utf-8?B?5LiT5Lia5Yqe55CG6aaZ5riv5bqn5py6LS0t5oyJ5pyI5pS2?=
- =?utf-8?B?6LS5LS0t5LiN6ZmQ5Yi26YCa6K+d5pe26Ze0?=
-Message-ID-Hash: KENIWIFZMH5LDHFHGPB2I44YTKIOH2CP
-X-Message-ID-Hash: KENIWIFZMH5LDHFHGPB2I44YTKIOH2CP
-X-MailFrom: dbyx@rsno.com
+Message-ID-Hash: MCYJEJVYNV4HBIAJCRQ7CVLMTWBZS373
+X-Message-ID-Hash: MCYJEJVYNV4HBIAJCRQ7CVLMTWBZS373
+X-MailFrom: eatst9@pvma00192.prod.fedex.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: BillingOnline <BillingOnline@fedex.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KENIWIFZMH5LDHFHGPB2I44YTKIOH2CP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MCYJEJVYNV4HBIAJCRQ7CVLMTWBZS373/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Jm5ic3A7DQrkuJPkuJrlip7nkIbpppnmuK/luqfmnLrlnKjlpKfpmYbkuqvnlKjpppnmuK/kv6Hl
-j7fkuI3pmZDliLYt6YCa6K+d5pe26Ze05bqn5py65aWX6aSQ5oyJ5pyI5pS26LS5DQombmJzcDsg
-USZuYnNwOyZuYnNwOyBRJm5ic3A7Jm5ic3A777yaNDgzNDU2NjY1Jm5ic3A755S1ICZuYnNwO+iv
-ne+8mjE1OTkyODkzMTg3Jm5ic3A7RS1tYWlsIO+8mmhrdGVsODUyQGhvdG1haWwuY29tDQombmJz
-cDsKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgt
-bnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vi
-c2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+New invoices are ready for payment
+Invoice number
+6-006-86431
+
+
+
+Thank you for your business,
+FedEx
+
+
+Note: Please do not use this email to submit payment. This email may not be used as a remittance notice.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
