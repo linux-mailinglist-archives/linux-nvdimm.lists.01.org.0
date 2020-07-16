@@ -2,94 +2,53 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C726F2218AA
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 01:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A86A221D88
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 16 Jul 2020 09:41:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A5AC311AD4BAD;
-	Wed, 15 Jul 2020 16:59:50 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=89.216.99.123; helo=mail.jomapeks.com; envelope-from=vincent.vn345@gmail.com; receiver=<UNKNOWN> 
-Received: from mail.jomapeks.com (mail.jomapeks.com [89.216.99.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0617111AD4BAB
-	for <linux-nvdimm@lists.01.org>; Wed, 15 Jul 2020 16:59:47 -0700 (PDT)
-Received: from [127.0.0.1] (helo=mail.jomapeks.com)
-	by mail.jomapeks.com with esmtp (Exim 4.89)
-	(envelope-from <vincent.vn345@gmail.com>)
-	id 1jvrJ0-0008QA-6s; Thu, 16 Jul 2020 01:59:18 +0200
+	by ml01.01.org (Postfix) with ESMTP id 66EC611B5F8E7;
+	Thu, 16 Jul 2020 00:41:31 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.229.105.64; helo=ijwk.com; envelope-from=yktqr@ijwk.com; receiver=<UNKNOWN> 
+Received: from ijwk.com (unknown [120.229.105.64])
+	by ml01.01.org (Postfix) with ESMTP id 4479111B5925E
+	for <linux-nvdimm@lists.01.org>; Thu, 16 Jul 2020 00:41:17 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Thu, 16 Jul 2020 15:41:09 +0800
+Message-ID: 6bc076b4-455f-459d-9550-8f4bd6ad6f2e
 MIME-Version: 1.0
-Date: Thu, 16 Jul 2020 07:59:18 +0800
-From: Vincent Brooks <vincent.vn345@gmail.com>
-To: undisclosed-recipients:;
-Subject: Vincent Brooks
-Mail-Reply-To: vincent.brooks4578@gmail.com
-Message-ID: <4c935993f67bea0d289ea4cb8befec47@gmail.com>
-X-Sender: vincent.vn345@gmail.com
-User-Agent: Roundcube Webmail/1.3.8
-Message-ID-Hash: TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5
-X-Message-ID-Hash: TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5
-X-MailFrom: vincent.vn345@gmail.com
+Sender: =?utf-8?Q?=E7=89=A9=E6=B5=81=E5=A5=BD=E5=B8=AE=E6=89?=
+ =?utf-8?Q?=8B---=E5=85=A8=E7=90=83=E7=89=A9=E6=B5=81=E8=B5=84=E6=BA=90?=
+ =?utf-8?Q?=E5=8F=91=E5=B8=83=E6=9F=A5=E6=89=BE=E6=B8=A0=E9=81=93=E5=B9?=
+ =?utf-8?Q?=B3=E5=8F=B0?=
+ <yktqr@ijwk.com>
+From: =?utf-8?Q?=E7=89=A9=E6=B5=81=E5=A5=BD=E5=B8=AE=E6=89=8B?=
+ =?utf-8?Q?---=E5=85=A8=E7=90=83=E7=89=A9=E6=B5=81=E8=B5=84=E6=BA=90=E5?=
+ =?utf-8?Q?=8F=91=E5=B8=83=E6=9F=A5=E6=89=BE=E6=B8=A0=E9=81=93=E5=B9=B3?=
+ =?utf-8?Q?=E5=8F=B0?=
+ <guntm@ijwk.com>
+To: linux-nvdimm@lists.01.org
+Date: 16 Jul 2020 15:41:09 +0800
+Subject: =?utf-8?B?54mp5rWB5aW95biu5omLLS0t5YWo55CD54mp5rWB6LWE5rqQ?=
+ =?utf-8?B?5Y+R5biD5p+l5om+5rig6YGT5bmz5Y+w?=
+Message-ID-Hash: VS7WFENGYRF7UOGBFNPFYH4JQ5S65YHB
+X-Message-ID-Hash: VS7WFENGYRF7UOGBFNPFYH4JQ5S65YHB
+X-MailFrom: yktqr@ijwk.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: vincent.brooks4578@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TKJ63RPRBY5J3GJB2CXFMLU2KJYKAYS5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VS7WFENGYRF7UOGBFNPFYH4JQ5S65YHB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-TWFqb2l0dGFqYTogVmluY2VudCBCcm9va3MNClJha2FzIHlzdMOkdsOkLg0KDQpPbGVuIFZpbmNl
-bnQgQnJvb2tzIEJyb25kZXNidXJ5c3RhLCBMdW90ZWlzLUxvbnRvb3N0YSwgdMOkw6RsdMOkIA0K
-RW5nbGFubmlzdGEuIFR5w7Zza2VudGVsZW4gVUJTIElOVkVTVE1FTlQgQmFuayBMb25kb24gLWtv
-bnR0b3Jpc3NhLiANCktpcmpvaXRhbiB0ZWlsbGUgdG9pbWlzdG9zdGFuaSwgam9zdGEgb24gdmFs
-dGF2YSBoecO2dHkgbW9sZW1taWxsZS4gT21hbiANCm9zYXN0b25pIHJ5aG3DpG4gdG9pbWVlbnBh
-bm9rb21pdGVhbiBqw6RzZW5lbsOkIGphIHJpc2tpZW4gcMOkw6Rqb2h0YWphbmEgDQooU3V1ci1M
-b250b29uIGFsdWV0b2ltaXN0bykgbMO2eXNpbiBoeWzDpHR5biAxNSBtaWxqb29uYW4gcHVubmFu
-IHN1bW1hbiANCklzb24tQnJpdGFubmlhbiBwdW50YW4gKHZpaWRlbnRvaXN0YSBtaWxqb29uYW4g
-SXNvbiBCcml0YW5uaWFuIHB1bm5hbikgDQpzdW1tYW4geWhkZWxsZSBrdXVsdXZhbGxlIHRpbGls
-bGUuIHVsa29tYWlzaXN0YSBhc2lha2thaXN0YW1tZSBtecO2aMOkc3PDpCANCmhlcnJhIFN0ZXZl
-IEFsbGVuLCBqb2thIHZhbGl0ZXR0YXZhc3RpIG1lbmV0dGkgaGVua2Vuc8OkIA0KYXV0by1vbm5l
-dHRvbXV1ZGVzc2EsIG11a2FhbiBsdWtpZW4gdmFpbW8gamEgYWlub2EgdHl0w6RyLg0KDQpWYWxp
-bnRhIG90dGFhIHNpbnV1biB5aHRleXR0w6Qgam9odHV1IGFzdWlucGFpa2FuIG1hYW50aWV0ZWVs
-bGlzZXN0w6QgDQpsdW9udGVlc3RhLCBldGVua2luIHTDpG3DpG4gdGFwYWh0dW1hbiBoZXJra3l5
-ZGVuIHZ1b2tzaS4gUGFua2luIA0Kdmlya2FtaWVoZXQgb3ZhdCBvZG90dGFuZWV0LCBldHTDpCBq
-b2t1IHN1a3VsYWlzaXN0YSB0dWxlZSBlc2l0dMOkbcOkw6RuIA0KdMOkdMOkIHZhYXRpbXVzdGEs
-IG11dHRhIGt1a2FhbiBlaSBvbGUgdGVobnl0IHNpdMOkLiBPbGVuIA0KaGVua2lsw7Zrb2h0YWlz
-ZXN0aSBlcMOkb25uaXN0dW51dCBwYWlrYWxsaXN0YW1hYW4gc3VrdWxhaXNpYS4gUHl5ZMOkbiAN
-CnN1b3N0dW11c3Rhc2kgZXNpdGVsbMOkIHNpbnVhIHNldXJhYXZhbmEgc3VrdWxhaXNpbmEgLyBz
-YWFqYWluYSB0w6Rtw6RuIA0KcmFoYXN0b24ga3VvbGxlZWxsZSwgam90dGEgdMOkbcOkbiB0aWxp
-biB0dW90b3QsIGpvaWRlbiBhcnZvIG9uIDE1IA0KbWlsam9vbmFhIHB1bnRhYSwgc2lpcnJldMOk
-w6RuIHBhbmtraWlzaS4gdGlsaSBzZXVyYWF2YW5hIHN1a3VsYWlzZW5hIA0KbXnDtmjDpGlzZWxs
-ZSBoZXJyYSBTdGV2ZSBBbGxlbmlsbGUuDQoNClNlIG1ha3NldGFhbiB0YWkgamFldGFhbiBuw6Rp
-c3PDpCBwcm9zZW50dGVpc3NhLCA2MCUgbWludWxsZSBqYSA0MCUgDQpzaW51bGxlLiBPbGVuIHR1
-cnZhbm51dCBrYWlra2kgdGFydml0dGF2YXQgb2lrZXVkZWxsaXNldCBhc2lha2lyamF0LCANCmpv
-aXRhIGvDpHl0ZXTDpMOkbiB0w6Rtw6RuIHZhYXRpbXVrc2VuIHZhcm11dXNrb3Bpb2ludGlpbi4g
-QWlub2EgbWl0w6QgbWludW4gDQpvbiB0ZWh0w6R2w6QsIG9uIHTDpHl0dMOkw6QgbmltZXNpIGFz
-aWFraXJqb2loaW4gamEgbGFpbGxpc3RhYSBzZSB0w6TDpGxsw6QgDQp0dW9taW9pc3R1aW1lc3Nh
-IHRvZGlzdGFha3Nlc2kgc2ludXQgcmFoYXN0b24gbGFpbGxpc2VuYSBlZHVuc2FhamFuYS4NCg0K
-VGFydml0c2VuIG55dCB2YWluIHJlaGVsbGlzdMOkIHlodGVpc3R5w7Z0w6QsIGx1b3R0YW11a3Nl
-bGxpc3V1dHRhIGphIA0KbHVvdHRhbXVzdGEsIGpvdHRhIHZvaW1tZSBuw6RoZMOkIHTDpG3DpG4g
-dGFwYWh0dW1hbi4gVGFrYWFuLCBldHTDpCB0w6Rtw6QgDQp0b3RldXRldGFhbiBsYWlsbGlzZWxs
-YSBqw6RyamVzdGVseWxsw6QsIGpva2Egc3VvamFhIHNpbnVhIGthaWtpbHRhIGxha2llbiANCnJp
-a2tvbXVrc2lsdGEuIEhhbHVhbiBzaW51biB5bW3DpHJ0w6R2w6RuLCBldHTDpCBvbGVuIHR5w7Zz
-a2VubmVsbHl0IHTDpHNzw6QgDQpwYW5raXNzYSAxNyB2dW90dGEgamEgb2xlbiB2b2ludXQgc3Vv
-amF0YSBrYWlra2kgbGFpbGxpc2V0IGFzaWFraXJqYXQsIA0Kam90dGEgdm9pdCBwZXJpw6QgdMOk
-bcOkbiByYWhhc3Rvbg0KDQpBbnRha2FhIG1pbnVsbGUgc2V1cmFhdmE6IEtvc2thIG1laWxsw6Qg
-b24gbXV1dGFtYSBww6RpdsOkIGtlc3TDpMOkIHNlIGzDpHBpLCANCnTDpG3DpCBvbiBlcml0dMOk
-aW4ga2lpcmVlbGxpc3TDpC4NCg0KMS4gS29rbyBuaW1pDQoyLiBTdW9yYSBtYXRrYXB1aGVsaW5u
-dW1lcm9zaQ0KMy4gT2xldCB5aHRleXNvc29pdGUNCjQuIFN5bnR5bcOkYWlrYQ0KDQpUdXRraXR0
-dWFuaSBtZXRvZGlzZW4gaGF1biBww6TDpHRpbiBvdHRhYSBzaW51dW4geWh0ZXl0dMOkIHRvaXZv
-ZW4sIGV0dMOkIA0KbMO2eWTDpHQgdMOkbcOkbiBrYXVwYW4gbWllbGVua2lpbnRvaXNla3NpLiBB
-bnRha2FhIHNpbnVsbGUgbGlzw6R0aWV0b2phLCBrdW4gDQp2YWh2aXN0YXQgdMOkbcOkbiB2aWVz
-dGluIGphIGlsbW9pdGF0IGtpaW5ub3N0dWtzZXN0YXNpLiBZcml0w6QgaWxtb2l0dGFhIA0KcMOk
-w6R0w7Zrc2VzdMOkc2kgbWFoZG9sbGlzaW1tYW4gcGlhbi4NCg0KUGFyaGFpbiB0ZXJ2ZWlzaW4s
-DQpWaW5jZW50IEJyb29rcwpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
-MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
-bGlzdHMuMDEub3JnCg==
+Jm5ic3A7DQombmJzcDsg54mp5rWB5aW95biu5omLLS0t5YWo55CD54mp5rWB6LWE5rqQ5Y+R5biD
+5p+l5om+5rig6YGT5bmz5Y+wDQombmJzcDsg5LqG6Kej5bmz5Y+w6K+35Yqg5b6u5L+h77yaeHl6
+eHl6ODAyM++8iOWPqumZkOeJqea1ge+8iQ0KJm5ic3A7Jm5ic3A7Cl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3Qg
+LS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWls
+IHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
