@@ -2,54 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2BF223563
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 09:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C044223565
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 09:21:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8C89A11EDD969;
-	Fri, 17 Jul 2020 00:21:09 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+	by ml01.01.org (Postfix) with ESMTP id B63FB11571BF6;
+	Fri, 17 Jul 2020 00:21:13 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D1DC411EB8DF8
-	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 00:21:06 -0700 (PDT)
-IronPort-SDR: OLVdE9MDNkZgw7DezLNAiRwj6ycmzTYjIJ04JpXNmQKXZiOuxm4ucoBZ21CaNvSA1vgLc4tvXm
- KY6Bpj5SP5Ew==
-X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="147535672"
+	by ml01.01.org (Postfix) with ESMTPS id 4252C11E9F62D
+	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 00:21:07 -0700 (PDT)
+IronPort-SDR: Czks2kYUej3w6+8Y8cvVnnjln20w0zi7nlKa1Z8/g7CWBFN4y+vHb1qb1AKSl7fZ7wY1GdCpXn
+ CL+TuWbVGArQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="137010664"
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
-   d="scan'208";a="147535672"
+   d="scan'208";a="137010664"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
-IronPort-SDR: SpuOyWqnLmOe+gy1lr8SUmikVFfb6NOmjlt8qmzgs7esLkKOTHHgnMN1Tf86OkViIwr3GcIVrE
- LFTaSVYSpZYw==
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
+IronPort-SDR: UzMMytv3b1Qxm4D4n9gaTEFqECDrP0ucHi6x9ptuP9XRozCIl0BMdyTn15dPEcX9F+OQRLFbiS
+ 15stgd4RI0rA==
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
-   d="scan'208";a="460761744"
+   d="scan'208";a="430760950"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:05 -0700
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
 From: ira.weiny@intel.com
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH RFC V2 09/17] memremap: Convert devmap static branch to {inc,dec}
-Date: Fri, 17 Jul 2020 00:20:48 -0700
-Message-Id: <20200717072056.73134-10-ira.weiny@intel.com>
+Subject: [PATCH RFC V2 10/17] fs/dax: Remove unused size parameter
+Date: Fri, 17 Jul 2020 00:20:49 -0700
+Message-Id: <20200717072056.73134-11-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20200717072056.73134-1-ira.weiny@intel.com>
 References: <20200717072056.73134-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: 4UXMOP3PTIRGY2JDA7CBF6UZEEQVB2DN
-X-Message-ID-Hash: 4UXMOP3PTIRGY2JDA7CBF6UZEEQVB2DN
+Message-ID-Hash: QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G
+X-Message-ID-Hash: QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+CC: Ben Widawsky <ben.widawsky@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4UXMOP3PTIRGY2JDA7CBF6UZEEQVB2DN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,52 +60,64 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-While reviewing Protection Key Supervisor support it was pointed out
-that using a counter to track static branch enable was an anti-pattern
-which was better solved using the provided static_branch_{inc,dec}
-functions.[1]
+Passing size to copy_user_dax implies it can copy variable sizes of data
+when in fact it calls copy_user_page() which is exactly a page.
 
-Fix up devmap_managed_key to work the same way.  Also this should be
-safer because there is a very small (very unlikely) race when multiple
-callers try to enable at the same time.
+We are safe because the only caller uses PAGE_SIZE anyway so just remove
+the variable for clarity.
 
-[1] https://lore.kernel.org/lkml/20200714194031.GI5523@worktop.programming.kicks-ass.net/
+While we are at it change copy_user_dax() to copy_cow_page_dax() to make
+it clear it is a singleton helper for this one case not implementing
+what dax_iomap_actor() does.
 
-To: Dan Williams <dan.j.williams@intel.com>
-To: Vishal Verma <vishal.l.verma@intel.com>
+Reviewed-by: Ben Widawsky <ben.widawsky@intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- mm/memremap.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/dax.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 03e38b7a38f1..9fb9ad500e78 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -40,12 +40,10 @@ EXPORT_SYMBOL_GPL(memremap_compat_align);
- #ifdef CONFIG_DEV_PAGEMAP_OPS
- DEFINE_STATIC_KEY_FALSE(devmap_managed_key);
- EXPORT_SYMBOL(devmap_managed_key);
--static atomic_t devmap_managed_enable;
+diff --git a/fs/dax.c b/fs/dax.c
+index 11b16729b86f..3e0babeb0365 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -680,21 +680,20 @@ int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
+ 	return __dax_invalidate_entry(mapping, index, false);
+ }
  
- static void devmap_managed_enable_put(void)
+-static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
+-		sector_t sector, size_t size, struct page *to,
+-		unsigned long vaddr)
++static int copy_cow_page_dax(struct block_device *bdev, struct dax_device *dax_dev,
++			     sector_t sector, struct page *to, unsigned long vaddr)
  {
--	if (atomic_dec_and_test(&devmap_managed_enable))
--		static_branch_disable(&devmap_managed_key);
-+	static_branch_dec(&devmap_managed_key);
- }
+ 	void *vto, *kaddr;
+ 	pgoff_t pgoff;
+ 	long rc;
+ 	int id;
  
- static int devmap_managed_enable_get(struct dev_pagemap *pgmap)
-@@ -56,8 +54,7 @@ static int devmap_managed_enable_get(struct dev_pagemap *pgmap)
- 		return -EINVAL;
- 	}
+-	rc = bdev_dax_pgoff(bdev, sector, size, &pgoff);
++	rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
+ 	if (rc)
+ 		return rc;
  
--	if (atomic_inc_return(&devmap_managed_enable) == 1)
--		static_branch_enable(&devmap_managed_key);
-+	static_branch_inc(&devmap_managed_key);
- 	return 0;
- }
- #else
+ 	id = dax_read_lock();
+-	rc = dax_direct_access(dax_dev, pgoff, PHYS_PFN(size), &kaddr, NULL);
++	rc = dax_direct_access(dax_dev, pgoff, PHYS_PFN(PAGE_SIZE), &kaddr, NULL);
+ 	if (rc < 0) {
+ 		dax_read_unlock(id);
+ 		return rc;
+@@ -1305,8 +1304,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
+ 			clear_user_highpage(vmf->cow_page, vaddr);
+ 			break;
+ 		case IOMAP_MAPPED:
+-			error = copy_user_dax(iomap.bdev, iomap.dax_dev,
+-					sector, PAGE_SIZE, vmf->cow_page, vaddr);
++			error = copy_cow_page_dax(iomap.bdev, iomap.dax_dev,
++						  sector, vmf->cow_page, vaddr);
+ 			break;
+ 		default:
+ 			WARN_ON_ONCE(1);
 -- 
 2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
