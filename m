@@ -1,203 +1,145 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE42C224316
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 20:25:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA77722432E
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 20:35:42 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EFE8D115E518D;
-	Fri, 17 Jul 2020 11:25:18 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a01:4f8:c0c:1465::1; helo=smtp.al2klimov.de; envelope-from=grandmaster@al2klimov.de; receiver=<UNKNOWN> 
-Received: from smtp.al2klimov.de (smtp.al2klimov.de [IPv6:2a01:4f8:c0c:1465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E26571166404F;
+	Fri, 17 Jul 2020 11:35:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CE0FA100A302D
-	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 11:24:54 -0700 (PDT)
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by smtp.al2klimov.de (Postfix) with ESMTPA id 120AEBC070;
-	Fri, 17 Jul 2020 18:24:44 +0000 (UTC)
-From: "Alexander A. Klimov" <grandmaster@al2klimov.de>
-To: rjw@rjwysocki.net,
-	lenb@kernel.org,
-	dan.j.williams@intel.com,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	ira.weiny@intel.com,
-	sakari.ailus@linux.intel.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-nvdimm@lists.01.org
-Subject: [PATCH] ACPI: Replace HTTP links with HTTPS ones
-Date: Fri, 17 Jul 2020 20:24:36 +0200
-Message-Id: <20200717182436.75214-1-grandmaster@al2klimov.de>
+	by ml01.01.org (Postfix) with ESMTPS id 8503211664050
+	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 11:35:39 -0700 (PDT)
+IronPort-SDR: wcihTpixlB/Awk2psALbG4GcEKeVNiT3UdVaA4O8IkLxmnOc7rh7GEtmVmVPp6AOn/A848iyed
+ xLm/KS7Ipjiw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9685"; a="211200603"
+X-IronPort-AV: E=Sophos;i="5.75,364,1589266800";
+   d="scan'208";a="211200603"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 11:35:38 -0700
+IronPort-SDR: NM0cihuSUbRCIDOLyO/wBY2MF3ksevxSGDa5V+IUtDhZZaOYtFM2Tniyt0T2c8qqZVGvMEg7QH
+ jYrVMRbFM3mQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,364,1589266800";
+   d="scan'208";a="270882934"
+Received: from orsmsx107.amr.corp.intel.com ([10.22.240.5])
+  by fmsmga008.fm.intel.com with ESMTP; 17 Jul 2020 11:35:38 -0700
+Received: from orsmsx121.amr.corp.intel.com ([169.254.10.122]) by
+ ORSMSX107.amr.corp.intel.com ([169.254.1.92]) with mapi id 14.03.0439.000;
+ Fri, 17 Jul 2020 11:35:37 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "Jiang, Dave"
+	<dave.jiang@intel.com>, "lenb@kernel.org" <lenb@kernel.org>,
+	"rjw@rjwysocki.net" <rjw@rjwysocki.net>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Williams, Dan J" <dan.j.williams@intel.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "Weiny, Ira"
+	<ira.weiny@intel.com>, "sakari.ailus@linux.intel.com"
+	<sakari.ailus@linux.intel.com>, "grandmaster@al2klimov.de"
+	<grandmaster@al2klimov.de>
+Subject: Re: [PATCH] ACPI: Replace HTTP links with HTTPS ones
+Thread-Topic: [PATCH] ACPI: Replace HTTP links with HTTPS ones
+Thread-Index: AQHWXGeTmvbPt1aLLEiZkNSAVB7nYakMjqkA
+Date: Fri, 17 Jul 2020 18:35:37 +0000
+Message-ID: <7a2bdfafc7c8e22e87aa142b18390e1e8c921e4a.camel@intel.com>
+References: <20200717182436.75214-1-grandmaster@al2klimov.de>
+In-Reply-To: <20200717182436.75214-1-grandmaster@al2klimov.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+x-originating-ip: [10.18.116.7]
+Content-ID: <F90A9ADFCEFEFF4498B736AC8AD77289@intel.com>
 MIME-Version: 1.0
-Authentication-Results: smtp.al2klimov.de;
-	auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
-X-Spamd-Bar: /
-Message-ID-Hash: 3Y76WCQRA4BGXVBJJJ7F2SCNFLG2ERW6
-X-Message-ID-Hash: 3Y76WCQRA4BGXVBJJJ7F2SCNFLG2ERW6
-X-MailFrom: grandmaster@al2klimov.de
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Message-ID-Hash: XJZAD5UEIGSRIRSAVAFLHWGCN36OWEEM
+X-Message-ID-Hash: XJZAD5UEIGSRIRSAVAFLHWGCN36OWEEM
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3Y76WCQRA4BGXVBJJJ7F2SCNFLG2ERW6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XJZAD5UEIGSRIRSAVAFLHWGCN36OWEEM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-UmF0aW9uYWxlOg0KUmVkdWNlcyBhdHRhY2sgc3VyZmFjZSBvbiBrZXJuZWwgZGV2cyBvcGVuaW5n
-IHRoZSBsaW5rcyBmb3IgTUlUTQ0KYXMgSFRUUFMgdHJhZmZpYyBpcyBtdWNoIGhhcmRlciB0byBt
-YW5pcHVsYXRlLg0KDQpEZXRlcm1pbmlzdGljIGFsZ29yaXRobToNCkZvciBlYWNoIGZpbGU6DQog
-IElmIG5vdCAuc3ZnOg0KICAgIEZvciBlYWNoIGxpbmU6DQogICAgICBJZiBkb2Vzbid0IGNvbnRh
-aW4gYFxieG1sbnNcYmA6DQogICAgICAgIEZvciBlYWNoIGxpbmssIGBcYmh0dHA6Ly9bXiMgXHRc
-clxuXSooPzpcd3wvKWA6DQoJICBJZiBuZWl0aGVyIGBcYmdudVwub3JnL2xpY2Vuc2VgLCBub3Ig
-YFxibW96aWxsYVwub3JnL01QTFxiYDoNCiAgICAgICAgICAgIElmIGJvdGggdGhlIEhUVFAgYW5k
-IEhUVFBTIHZlcnNpb25zDQogICAgICAgICAgICByZXR1cm4gMjAwIE9LIGFuZCBzZXJ2ZSB0aGUg
-c2FtZSBjb250ZW50Og0KICAgICAgICAgICAgICBSZXBsYWNlIEhUVFAgd2l0aCBIVFRQUy4NCg0K
-U2lnbmVkLW9mZi1ieTogQWxleGFuZGVyIEEuIEtsaW1vdiA8Z3JhbmRtYXN0ZXJAYWwya2xpbW92
-LmRlPg0KLS0tDQogQ29udGludWluZyBteSB3b3JrIHN0YXJ0ZWQgYXQgOTM0MzFlMDYwN2U1Lg0K
-IFNlZSBhbHNvOiBnaXQgbG9nIC0tb25lbGluZSAnLS1hdXRob3I9QWxleGFuZGVyIEEuIEtsaW1v
-diA8Z3JhbmRtYXN0ZXJAYWwya2xpbW92LmRlPicgdjUuNy4ubWFzdGVyDQoNCiBJZiB0aGVyZSBh
-cmUgYW55IFVSTHMgdG8gYmUgcmVtb3ZlZCBjb21wbGV0ZWx5IG9yIGF0IGxlYXN0IG5vdCBqdXN0
-IEhUVFBTaWZpZWQ6DQogSnVzdCBjbGVhcmx5IHNheSBzbyBhbmQgSSdsbCAqdW5kbyBteSBjaGFu
-Z2UqLg0KIFNlZSBhbHNvOiBodHRwczovL2xrbWwub3JnL2xrbWwvMjAyMC82LzI3LzY0DQoNCiBJ
-ZiB0aGVyZSBhcmUgYW55IHZhbGlkLCBidXQgeWV0IG5vdCBjaGFuZ2VkIFVSTHM6DQogU2VlOiBo
-dHRwczovL2xrbWwub3JnL2xrbWwvMjAyMC82LzI2LzgzNw0KDQogSWYgeW91IGFwcGx5IHRoZSBw
-YXRjaCwgcGxlYXNlIGxldCBtZSBrbm93Lg0KDQogU29ycnkgYWdhaW4gdG8gYWxsIG1haW50YWlu
-ZXJzIHdobyBjb21wbGFpbmVkIGFib3V0IHN1YmplY3QgbGluZXMuDQogTm93IEkgcmVhbGl6ZWQg
-dGhhdCB5b3Ugd2FudCBhbiBhY3R1YWxseSBwZXJmZWN0IHByZWZpeGVzLA0KIG5vdCBqdXN0IHN1
-YnN5c3RlbSBvbmVzLg0KIEkgdHJpZWQgbXkgYmVzdC4uLg0KIEFuZCB5ZXMsICpJIGNvdWxkKiAo
-YXQgbGVhc3QgaGFsZi0pYXV0b21hdGUgaXQuDQogSW1wb3NzaWJsZSBpcyBub3RoaW5nISA6KQ0K
-DQoNCiAuLi4vZmlybXdhcmUtZ3VpZGUvYWNwaS9EU0QtcHJvcGVydGllcy1ydWxlcy5yc3QgICAg
-ICAgfCAgNCArKy0tDQogLi4uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNkL2RhdGEtbm9kZS1yZWZl
-cmVuY2VzLnJzdCAgIHwgIDQgKystLQ0KIERvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNw
-aS9kc2QvZ3JhcGgucnN0ICAgICAgICB8IDEwICsrKysrLS0tLS0NCiBEb2N1bWVudGF0aW9uL2Zp
-cm13YXJlLWd1aWRlL2FjcGkvZHNkL2xlZHMucnN0ICAgICAgICAgfCAgNiArKystLS0NCiBEb2N1
-bWVudGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvbHBpdC5yc3QgICAgICAgICAgICAgfCAgMiAr
-LQ0KIGRyaXZlcnMvYWNwaS9LY29uZmlnICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICB8ICAyICstDQogZHJpdmVycy9hY3BpL25maXQvbmZpdC5oICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwgIDIgKy0NCiA3IGZpbGVzIGNoYW5nZWQsIDE1IGluc2VydGlvbnMoKyksIDE1
-IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvRG9jdW1lbnRhdGlvbi9maXJtd2FyZS1ndWlk
-ZS9hY3BpL0RTRC1wcm9wZXJ0aWVzLXJ1bGVzLnJzdCBiL0RvY3VtZW50YXRpb24vZmlybXdhcmUt
-Z3VpZGUvYWNwaS9EU0QtcHJvcGVydGllcy1ydWxlcy5yc3QNCmluZGV4IDQzMDZmMjliNjEwMy4u
-OGIyZDhkMDg2NGMyIDEwMDY0NA0KLS0tIGEvRG9jdW1lbnRhdGlvbi9maXJtd2FyZS1ndWlkZS9h
-Y3BpL0RTRC1wcm9wZXJ0aWVzLXJ1bGVzLnJzdA0KKysrIGIvRG9jdW1lbnRhdGlvbi9maXJtd2Fy
-ZS1ndWlkZS9hY3BpL0RTRC1wcm9wZXJ0aWVzLXJ1bGVzLnJzdA0KQEAgLTk2LDUgKzk2LDUgQEAg
-Y29udGVudHMuDQogUmVmZXJlbmNlcw0KID09PT09PT09PT0NCiANCi0uLiBbMV0gaHR0cDovL3d3
-dy51ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVzL3Jlc291cmNlcy9fRFNELWRldmljZS1wcm9w
-ZXJ0aWVzLVVVSUQucGRmDQotLi4gWzJdIGh0dHA6Ly93d3cudWVmaS5vcmcvc2l0ZXMvZGVmYXVs
-dC9maWxlcy9yZXNvdXJjZXMvX0RTRC1oaWVyYXJjaGljYWwtZGF0YS1leHRlbnNpb24tVVVJRC12
-MS4xLnBkZg0KKy4uIFsxXSBodHRwczovL3d3dy51ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVz
-L3Jlc291cmNlcy9fRFNELWRldmljZS1wcm9wZXJ0aWVzLVVVSUQucGRmDQorLi4gWzJdIGh0dHBz
-Oi8vd3d3LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19EU0QtaGllcmFy
-Y2hpY2FsLWRhdGEtZXh0ZW5zaW9uLVVVSUQtdjEuMS5wZGYNCmRpZmYgLS1naXQgYS9Eb2N1bWVu
-dGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNkL2RhdGEtbm9kZS1yZWZlcmVuY2VzLnJzdCBi
-L0RvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNwaS9kc2QvZGF0YS1ub2RlLXJlZmVyZW5j
-ZXMucnN0DQppbmRleCBmZWJjY2JjNTY4OWQuLjliMTdkYzc3ZDE4YyAxMDA2NDQNCi0tLSBhL0Rv
-Y3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNwaS9kc2QvZGF0YS1ub2RlLXJlZmVyZW5jZXMu
-cnN0DQorKysgYi9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNkL2RhdGEtbm9k
-ZS1yZWZlcmVuY2VzLnJzdA0KQEAgLTg1LDkgKzg1LDkgQEAgUmVmZXJlbmNlcw0KID09PT09PT09
-PT0NCiANCiBbMV0gSGllcmFyY2hpY2FsIERhdGEgRXh0ZW5zaW9uIFVVSUQgRm9yIF9EU0QuDQot
-PGh0dHA6Ly93d3cudWVmaS5vcmcvc2l0ZXMvZGVmYXVsdC9maWxlcy9yZXNvdXJjZXMvX0RTRC1o
-aWVyYXJjaGljYWwtZGF0YS1leHRlbnNpb24tVVVJRC12MS4xLnBkZj4sDQorPGh0dHBzOi8vd3d3
-LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19EU0QtaGllcmFyY2hpY2Fs
-LWRhdGEtZXh0ZW5zaW9uLVVVSUQtdjEuMS5wZGY+LA0KIHJlZmVyZW5jZWQgMjAxOC0wNy0xNy4N
-CiANCiBbMl0gRGV2aWNlIFByb3BlcnRpZXMgVVVJRCBGb3IgX0RTRC4NCi08aHR0cDovL3d3dy51
-ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVzL3Jlc291cmNlcy9fRFNELWRldmljZS1wcm9wZXJ0
-aWVzLVVVSUQucGRmPiwNCis8aHR0cHM6Ly93d3cudWVmaS5vcmcvc2l0ZXMvZGVmYXVsdC9maWxl
-cy9yZXNvdXJjZXMvX0RTRC1kZXZpY2UtcHJvcGVydGllcy1VVUlELnBkZj4sDQogcmVmZXJlbmNl
-ZCAyMDE2LTEwLTA0Lg0KZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUv
-YWNwaS9kc2QvZ3JhcGgucnN0IGIvRG9jdW1lbnRhdGlvbi9maXJtd2FyZS1ndWlkZS9hY3BpL2Rz
-ZC9ncmFwaC5yc3QNCmluZGV4IDFhNmNlN2FmYmE1ZS4uNzA3MmRiODAxYWViIDEwMDY0NA0KLS0t
-IGEvRG9jdW1lbnRhdGlvbi9maXJtd2FyZS1ndWlkZS9hY3BpL2RzZC9ncmFwaC5yc3QNCisrKyBi
-L0RvY3VtZW50YXRpb24vZmlybXdhcmUtZ3VpZGUvYWNwaS9kc2QvZ3JhcGgucnN0DQpAQCAtMTU0
-LDIzICsxNTQsMjMgQEAgUmVmZXJlbmNlcw0KID09PT09PT09PT0NCiANCiBbMV0gX0RTRCAoRGV2
-aWNlIFNwZWNpZmljIERhdGEpIEltcGxlbWVudGF0aW9uIEd1aWRlLg0KLSAgICBodHRwOi8vd3d3
-LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19EU0QtaW1wbGVtZW50YXRp
-b24tZ3VpZGUtdG9wbGV2ZWwtMV8xLmh0bSwNCisgICAgaHR0cHM6Ly93d3cudWVmaS5vcmcvc2l0
-ZXMvZGVmYXVsdC9maWxlcy9yZXNvdXJjZXMvX0RTRC1pbXBsZW1lbnRhdGlvbi1ndWlkZS10b3Bs
-ZXZlbC0xXzEuaHRtLA0KICAgICByZWZlcmVuY2VkIDIwMTYtMTAtMDMuDQogDQotWzJdIERldmlj
-ZXRyZWUuIGh0dHA6Ly93d3cuZGV2aWNldHJlZS5vcmcsIHJlZmVyZW5jZWQgMjAxNi0xMC0wMy4N
-CitbMl0gRGV2aWNldHJlZS4gaHR0cHM6Ly93d3cuZGV2aWNldHJlZS5vcmcsIHJlZmVyZW5jZWQg
-MjAxNi0xMC0wMy4NCiANCiBbM13CoERvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9n
-cmFwaC50eHQNCiANCiBbNF0gRGV2aWNlIFByb3BlcnRpZXMgVVVJRCBGb3IgX0RTRC4NCi0gICAg
-aHR0cDovL3d3dy51ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVzL3Jlc291cmNlcy9fRFNELWRl
-dmljZS1wcm9wZXJ0aWVzLVVVSUQucGRmLA0KKyAgICBodHRwczovL3d3dy51ZWZpLm9yZy9zaXRl
-cy9kZWZhdWx0L2ZpbGVzL3Jlc291cmNlcy9fRFNELWRldmljZS1wcm9wZXJ0aWVzLVVVSUQucGRm
-LA0KICAgICByZWZlcmVuY2VkIDIwMTYtMTAtMDQuDQogDQogWzVdIEhpZXJhcmNoaWNhbCBEYXRh
-IEV4dGVuc2lvbiBVVUlEIEZvciBfRFNELg0KLSAgICBodHRwOi8vd3d3LnVlZmkub3JnL3NpdGVz
-L2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19EU0QtaGllcmFyY2hpY2FsLWRhdGEtZXh0ZW5zaW9u
-LVVVSUQtdjEuMS5wZGYsDQorICAgIGh0dHBzOi8vd3d3LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQv
-ZmlsZXMvcmVzb3VyY2VzL19EU0QtaGllcmFyY2hpY2FsLWRhdGEtZXh0ZW5zaW9uLVVVSUQtdjEu
-MS5wZGYsDQogICAgIHJlZmVyZW5jZWQgMjAxNi0xMC0wNC4NCiANCiBbNl0gQWR2YW5jZWQgQ29u
-ZmlndXJhdGlvbiBhbmQgUG93ZXIgSW50ZXJmYWNlIFNwZWNpZmljYXRpb24uDQotICAgIGh0dHA6
-Ly93d3cudWVmaS5vcmcvc2l0ZXMvZGVmYXVsdC9maWxlcy9yZXNvdXJjZXMvQUNQSV82XzEucGRm
-LA0KKyAgICBodHRwczovL3d3dy51ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVzL3Jlc291cmNl
-cy9BQ1BJXzZfMS5wZGYsDQogICAgIHJlZmVyZW5jZWQgMjAxNi0xMC0wNC4NCiANCiBbN10gX0RT
-RCBEZXZpY2UgUHJvcGVydGllcyBVc2FnZSBSdWxlcy4NCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0
-aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNkL2xlZHMucnN0IGIvRG9jdW1lbnRhdGlvbi9maXJt
-d2FyZS1ndWlkZS9hY3BpL2RzZC9sZWRzLnJzdA0KaW5kZXggOTQ2ZWZlMmIyOTM2Li5hYmExZTlh
-YmZlZWIgMTAwNjQ0DQotLS0gYS9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNk
-L2xlZHMucnN0DQorKysgYi9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvZHNkL2xl
-ZHMucnN0DQpAQCAtOTAsNyArOTAsNyBAQCB3aGVyZQ0KIFJlZmVyZW5jZXMNCiA9PT09PT09PT09
-DQogDQotWzFdIERldmljZSB0cmVlLiA8VVJMOmh0dHA6Ly93d3cuZGV2aWNldHJlZS5vcmc+LCBy
-ZWZlcmVuY2VkIDIwMTktMDItMjEuDQorWzFdIERldmljZSB0cmVlLiA8VVJMOmh0dHBzOi8vd3d3
-LmRldmljZXRyZWUub3JnPiwgcmVmZXJlbmNlZCAyMDE5LTAyLTIxLg0KIA0KIFsyXSBBZHZhbmNl
-ZCBDb25maWd1cmF0aW9uIGFuZCBQb3dlciBJbnRlcmZhY2UgU3BlY2lmaWNhdGlvbi4NCiAgICAg
-PFVSTDpodHRwczovL3VlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL0FDUElf
-Nl8zX2ZpbmFsX0phbjMwLnBkZj4sDQpAQCAtMTAxLDExICsxMDEsMTEgQEAgUmVmZXJlbmNlcw0K
-IFs0XSBEb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvbWVkaWEvdmlkZW8taW50ZXJm
-YWNlcy50eHQNCiANCiBbNV0gRGV2aWNlIFByb3BlcnRpZXMgVVVJRCBGb3IgX0RTRC4NCi0gICAg
-PFVSTDpodHRwOi8vd3d3LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19E
-U0QtZGV2aWNlLXByb3BlcnRpZXMtVVVJRC5wZGY+LA0KKyAgICA8VVJMOmh0dHBzOi8vd3d3LnVl
-Zmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL19EU0QtZGV2aWNlLXByb3BlcnRp
-ZXMtVVVJRC5wZGY+LA0KICAgICByZWZlcmVuY2VkIDIwMTktMDItMjEuDQogDQogWzZdIEhpZXJh
-cmNoaWNhbCBEYXRhIEV4dGVuc2lvbiBVVUlEIEZvciBfRFNELg0KLSAgICA8VVJMOmh0dHA6Ly93
-d3cudWVmaS5vcmcvc2l0ZXMvZGVmYXVsdC9maWxlcy9yZXNvdXJjZXMvX0RTRC1oaWVyYXJjaGlj
-YWwtZGF0YS1leHRlbnNpb24tVVVJRC12MS4xLnBkZj4sDQorICAgIDxVUkw6aHR0cHM6Ly93d3cu
-dWVmaS5vcmcvc2l0ZXMvZGVmYXVsdC9maWxlcy9yZXNvdXJjZXMvX0RTRC1oaWVyYXJjaGljYWwt
-ZGF0YS1leHRlbnNpb24tVVVJRC12MS4xLnBkZj4sDQogICAgIHJlZmVyZW5jZWQgMjAxOS0wMi0y
-MS4NCiANCiBbN10gRG9jdW1lbnRhdGlvbi9maXJtd2FyZS1ndWlkZS9hY3BpL2RzZC9kYXRhLW5v
-ZGUtcmVmZXJlbmNlcy5yc3QNCmRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1
-aWRlL2FjcGkvbHBpdC5yc3QgYi9Eb2N1bWVudGF0aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvbHBp
-dC5yc3QNCmluZGV4IGFjYTkyOGZhYjAyNy4uMzc5MjJhOTAzNTczIDEwMDY0NA0KLS0tIGEvRG9j
-dW1lbnRhdGlvbi9maXJtd2FyZS1ndWlkZS9hY3BpL2xwaXQucnN0DQorKysgYi9Eb2N1bWVudGF0
-aW9uL2Zpcm13YXJlLWd1aWRlL2FjcGkvbHBpdC5yc3QNCkBAIC03LDcgKzcsNyBAQCBMb3cgUG93
-ZXIgSWRsZSBUYWJsZSAoTFBJVCkNCiBUbyBlbnVtZXJhdGUgcGxhdGZvcm0gTG93IFBvd2VyIElk
-bGUgc3RhdGVzLCBJbnRlbCBwbGF0Zm9ybXMgYXJlIHVzaW5nDQog4oCcTG93IFBvd2VyIElkbGUg
-VGFibGXigJ0gKExQSVQpLiBNb3JlIGRldGFpbHMgYWJvdXQgdGhpcyB0YWJsZSBjYW4gYmUNCiBk
-b3dubG9hZGVkIGZyb206DQotaHR0cDovL3d3dy51ZWZpLm9yZy9zaXRlcy9kZWZhdWx0L2ZpbGVz
-L3Jlc291cmNlcy9JbnRlbF9BQ1BJX0xvd19Qb3dlcl9TMF9JZGxlLnBkZg0KK2h0dHBzOi8vd3d3
-LnVlZmkub3JnL3NpdGVzL2RlZmF1bHQvZmlsZXMvcmVzb3VyY2VzL0ludGVsX0FDUElfTG93X1Bv
-d2VyX1MwX0lkbGUucGRmDQogDQogUmVzaWRlbmNpZXMgZm9yIGVhY2ggbG93IHBvd2VyIHN0YXRl
-IGNhbiBiZSByZWFkIHZpYSBGRkgNCiAoRnVuY3Rpb24gZml4ZWQgaGFyZHdhcmUpIG9yIGEgbWVt
-b3J5IG1hcHBlZCBpbnRlcmZhY2UuDQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9hY3BpL0tjb25maWcg
-Yi9kcml2ZXJzL2FjcGkvS2NvbmZpZw0KaW5kZXggY2UyNzMwZDYxYThmLi4xNmQ3Y2E5OWRkYmUg
-MTAwNjQ0DQotLS0gYS9kcml2ZXJzL2FjcGkvS2NvbmZpZw0KKysrIGIvZHJpdmVycy9hY3BpL0tj
-b25maWcNCkBAIC0zMiw3ICszMiw3IEBAIG1lbnVjb25maWcgQUNQSQ0KIAkgIExpbnV4IHN1cHBv
-cnQgZm9yIEFDUEkgaXMgYmFzZWQgb24gSW50ZWwgQ29ycG9yYXRpb24ncyBBQ1BJDQogCSAgQ29t
-cG9uZW50IEFyY2hpdGVjdHVyZSAoQUNQSSBDQSkuICBGb3IgbW9yZSBpbmZvcm1hdGlvbiBvbiB0
-aGUNCiAJICBBQ1BJIENBLCBzZWU6DQotCSAgPGh0dHA6Ly9hY3BpY2Eub3JnLz4NCisJICA8aHR0
-cHM6Ly9hY3BpY2Eub3JnLz4NCiANCiAJICBBQ1BJIGlzIGFuIG9wZW4gaW5kdXN0cnkgc3BlY2lm
-aWNhdGlvbiBvcmlnaW5hbGx5IGNvLWRldmVsb3BlZCBieQ0KIAkgIEhld2xldHQtUGFja2FyZCwg
-SW50ZWwsIE1pY3Jvc29mdCwgUGhvZW5peCwgYW5kIFRvc2hpYmEuIEN1cnJlbnRseSwNCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL2FjcGkvbmZpdC9uZml0LmggYi9kcml2ZXJzL2FjcGkvbmZpdC9uZml0
-LmgNCmluZGV4IGY1NTI1ZjhiYjc3MC4uYTMwM2YwMTIzMzk0IDEwMDY0NA0KLS0tIGEvZHJpdmVy
-cy9hY3BpL25maXQvbmZpdC5oDQorKysgYi9kcml2ZXJzL2FjcGkvbmZpdC9uZml0LmgNCkBAIC0x
-Niw3ICsxNiw3IEBADQogLyogQUNQSSA2LjEgKi8NCiAjZGVmaW5lIFVVSURfTkZJVF9CVVMgIjJm
-MTBlN2E0LTllOTEtMTFlNC04OWQzLTEyM2I5M2Y3NWNiYSINCiANCi0vKiBodHRwOi8vcG1lbS5p
-by9kb2N1bWVudHMvTlZESU1NX0RTTV9JbnRlcmZhY2UtVjEuNi5wZGYgKi8NCisvKiBodHRwczov
-L3BtZW0uaW8vZG9jdW1lbnRzL05WRElNTV9EU01fSW50ZXJmYWNlLVYxLjYucGRmICovDQogI2Rl
-ZmluZSBVVUlEX05GSVRfRElNTSAiNDMwOWFjMzAtMGQxMS0xMWU0LTkxOTEtMDgwMDIwMGM5YTY2
-Ig0KIA0KIC8qIGh0dHBzOi8vZ2l0aHViLmNvbS9IZXdsZXR0UGFja2FyZC9ocGUtbnZtL2Jsb2Iv
-bWFzdGVyL0RvY3VtZW50YXRpb24vICovDQotLSANCjIuMjcuMA0KX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAt
-LSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwg
-dG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+On Fri, 2020-07-17 at 20:24 +0200, Alexander A. Klimov wrote:
+> Rationale:
+> Reduces attack surface on kernel devs opening the links for MITM
+> as HTTPS traffic is much harder to manipulate.
+> 
+> Deterministic algorithm:
+> For each file:
+>   If not .svg:
+>     For each line:
+>       If doesn't contain `\bxmlns\b`:
+>         For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+> 	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+>             If both the HTTP and HTTPS versions
+>             return 200 OK and serve the same content:
+>               Replace HTTP with HTTPS.
+> 
+> Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+> ---
+>  Continuing my work started at 93431e0607e5.
+>  See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+> 
+>  If there are any URLs to be removed completely or at least not just HTTPSified:
+>  Just clearly say so and I'll *undo my change*.
+>  See also: https://lkml.org/lkml/2020/6/27/64
+> 
+>  If there are any valid, but yet not changed URLs:
+>  See: https://lkml.org/lkml/2020/6/26/837
+> 
+>  If you apply the patch, please let me know.
+> 
+>  Sorry again to all maintainers who complained about subject lines.
+>  Now I realized that you want an actually perfect prefixes,
+>  not just subsystem ones.
+>  I tried my best...
+>  And yes, *I could* (at least half-)automate it.
+>  Impossible is nothing! :)
+> 
+> 
+>  .../firmware-guide/acpi/DSD-properties-rules.rst       |  4 ++--
+>  .../firmware-guide/acpi/dsd/data-node-references.rst   |  4 ++--
+>  Documentation/firmware-guide/acpi/dsd/graph.rst        | 10 +++++-----
+>  Documentation/firmware-guide/acpi/dsd/leds.rst         |  6 +++---
+>  Documentation/firmware-guide/acpi/lpit.rst             |  2 +-
+>  drivers/acpi/Kconfig                                   |  2 +-
+>  drivers/acpi/nfit/nfit.h                               |  2 +-
+>  7 files changed, 15 insertions(+), 15 deletions(-)
+
+For nfit/nfit.h,
+Acked-by: Vishal Verma <vishal.l.verma@intel.com>
+
+> diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+> index f5525f8bb770..a303f0123394 100644
+> --- a/drivers/acpi/nfit/nfit.h
+> +++ b/drivers/acpi/nfit/nfit.h
+> @@ -16,7 +16,7 @@
+>  /* ACPI 6.1 */
+>  #define UUID_NFIT_BUS "2f10e7a4-9e91-11e4-89d3-123b93f75cba"
+>  
+> -/* http://pmem.io/documents/NVDIMM_DSM_Interface-V1.6.pdf */
+> +/* https://pmem.io/documents/NVDIMM_DSM_Interface-V1.6.pdf */
+>  #define UUID_NFIT_DIMM "4309ac30-0d11-11e4-9191-0800200c9a66"
+>  
+>  /* https://github.com/HewlettPackard/hpe-nvm/blob/master/Documentation/ */
+> -- 
+> 2.27.0
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
