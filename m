@@ -1,55 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C044223565
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 09:21:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE2B223566
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 09:21:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B63FB11571BF6;
+	by ml01.01.org (Postfix) with ESMTP id CC6BA11EDD965;
 	Fri, 17 Jul 2020 00:21:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4252C11E9F62D
+	by ml01.01.org (Postfix) with ESMTPS id 5E8DD11E9F62D
 	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 00:21:07 -0700 (PDT)
-IronPort-SDR: Czks2kYUej3w6+8Y8cvVnnjln20w0zi7nlKa1Z8/g7CWBFN4y+vHb1qb1AKSl7fZ7wY1GdCpXn
- CL+TuWbVGArQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="137010664"
+IronPort-SDR: qzdL7ouCz7WOdnmaP65MM7844aaPssvtkLsRytXKFtxNk7GPwLX3AjCLxljm07g0mO04ZqJK/E
+ phumKoquU0rQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="129633006"
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
-   d="scan'208";a="137010664"
+   d="scan'208";a="129633006"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
-IronPort-SDR: UzMMytv3b1Qxm4D4n9gaTEFqECDrP0ucHi6x9ptuP9XRozCIl0BMdyTn15dPEcX9F+OQRLFbiS
- 15stgd4RI0rA==
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:07 -0700
+IronPort-SDR: d+rBzvIqgHnaR+GhYVSKdQJaqDgG6px7MwHBlQpAXhhFUwBpMJADWMQT0thDv3dy+A5eGuvTxT
+ jexEd3Xx6KHQ==
 X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
-   d="scan'208";a="430760950"
+   d="scan'208";a="486880410"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:06 -0700
 From: ira.weiny@intel.com
 To: Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH RFC V2 10/17] fs/dax: Remove unused size parameter
-Date: Fri, 17 Jul 2020 00:20:49 -0700
-Message-Id: <20200717072056.73134-11-ira.weiny@intel.com>
+Subject: [PATCH RFC V2 11/17] drivers/dax: Expand lock scope to cover the use of addresses
+Date: Fri, 17 Jul 2020 00:20:50 -0700
+Message-Id: <20200717072056.73134-12-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20200717072056.73134-1-ira.weiny@intel.com>
 References: <20200717072056.73134-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G
-X-Message-ID-Hash: QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G
+Message-ID-Hash: AEZV7KSGYAITZKQEEL2ZHR7NSWIIFHSM
+X-Message-ID-Hash: AEZV7KSGYAITZKQEEL2ZHR7NSWIIFHSM
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Ben Widawsky <ben.widawsky@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QNNGFQ3YIALDEKQF2IXQOAGGZKVB4K6G/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AEZV7KSGYAITZKQEEL2ZHR7NSWIIFHSM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -60,64 +60,46 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-Passing size to copy_user_dax implies it can copy variable sizes of data
-when in fact it calls copy_user_page() which is exactly a page.
+The addition of PKS protection to dax read lock/unlock will require that
+the address returned by dax_direct_access() be protected by this lock.
 
-We are safe because the only caller uses PAGE_SIZE anyway so just remove
-the variable for clarity.
+While not technically necessary for this series, this corrects the
+locking by ensuring that the use of kaddr and end_kaddr are covered by
+the dax read lock/unlock.
 
-While we are at it change copy_user_dax() to copy_cow_page_dax() to make
-it clear it is a singleton helper for this one case not implementing
-what dax_iomap_actor() does.
+Change the lock scope to cover the kaddr and end_kaddr use.
 
-Reviewed-by: Ben Widawsky <ben.widawsky@intel.com>
 Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- fs/dax.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/dax/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/dax.c b/fs/dax.c
-index 11b16729b86f..3e0babeb0365 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -680,21 +680,20 @@ int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
- 	return __dax_invalidate_entry(mapping, index, false);
- }
- 
--static int copy_user_dax(struct block_device *bdev, struct dax_device *dax_dev,
--		sector_t sector, size_t size, struct page *to,
--		unsigned long vaddr)
-+static int copy_cow_page_dax(struct block_device *bdev, struct dax_device *dax_dev,
-+			     sector_t sector, struct page *to, unsigned long vaddr)
- {
- 	void *vto, *kaddr;
- 	pgoff_t pgoff;
- 	long rc;
- 	int id;
- 
--	rc = bdev_dax_pgoff(bdev, sector, size, &pgoff);
-+	rc = bdev_dax_pgoff(bdev, sector, PAGE_SIZE, &pgoff);
- 	if (rc)
- 		return rc;
- 
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 8e32345be0f7..021739768093 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -103,11 +103,11 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
  	id = dax_read_lock();
--	rc = dax_direct_access(dax_dev, pgoff, PHYS_PFN(size), &kaddr, NULL);
-+	rc = dax_direct_access(dax_dev, pgoff, PHYS_PFN(PAGE_SIZE), &kaddr, NULL);
- 	if (rc < 0) {
- 		dax_read_unlock(id);
- 		return rc;
-@@ -1305,8 +1304,8 @@ static vm_fault_t dax_iomap_pte_fault(struct vm_fault *vmf, pfn_t *pfnp,
- 			clear_user_highpage(vmf->cow_page, vaddr);
- 			break;
- 		case IOMAP_MAPPED:
--			error = copy_user_dax(iomap.bdev, iomap.dax_dev,
--					sector, PAGE_SIZE, vmf->cow_page, vaddr);
-+			error = copy_cow_page_dax(iomap.bdev, iomap.dax_dev,
-+						  sector, vmf->cow_page, vaddr);
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
+ 	len = dax_direct_access(dax_dev, pgoff, 1, &kaddr, &pfn);
+ 	len2 = dax_direct_access(dax_dev, pgoff_end, 1, &end_kaddr, &end_pfn);
+-	dax_read_unlock(id);
+ 
+ 	if (len < 1 || len2 < 1) {
+ 		pr_debug("%s: error: dax access failed (%ld)\n",
+ 				bdevname(bdev, buf), len < 1 ? len : len2);
++		dax_read_unlock(id);
+ 		return false;
+ 	}
+ 
+@@ -137,6 +137,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+ 		put_dev_pagemap(end_pgmap);
+ 
+ 	}
++	dax_read_unlock(id);
+ 
+ 	if (!dax_enabled) {
+ 		pr_debug("%s: error: dax support not enabled\n",
 -- 
 2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
