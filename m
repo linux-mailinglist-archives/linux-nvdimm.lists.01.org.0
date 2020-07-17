@@ -2,37 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352A422333B
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 08:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6692B223555
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 17 Jul 2020 09:21:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5BA1F11E8D20C;
-	Thu, 16 Jul 2020 23:02:44 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=80.247.111.66; helo=interkad.alt.ru; envelope-from=mrbrianstewart2015@gmail.com; receiver=<UNKNOWN> 
-Received: from interkad.alt.ru (interkad.alt.ru [80.247.111.66])
-	by ml01.01.org (Postfix) with ESMTP id E830811E8D20A;
-	Thu, 16 Jul 2020 23:02:28 -0700 (PDT)
-Received: from User ([41.215.169.11] RDNS failed) by interkad.alt.ru with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 17 Jul 2020 13:02:21 +0700
-From: "Brian"<mrbrianstewart2015@gmail.com>
-Subject: Re: Partner.
-Date: Thu, 16 Jul 2020 23:02:32 -0700
+	by ml01.01.org (Postfix) with ESMTP id 6B84B11E99A00;
+	Fri, 17 Jul 2020 00:21:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 38C0711571BF6
+	for <linux-nvdimm@lists.01.org>; Fri, 17 Jul 2020 00:21:01 -0700 (PDT)
+IronPort-SDR: O+TUmQfHCAaH/SISZxVmWGEO+narmskTWM2a0fP0Y9bwu1Cd8IFNJ3y2gYe+xW/VRZpaRanxwV
+ tcf5HuRt7Sjw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9684"; a="167682216"
+X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
+   d="scan'208";a="167682216"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:00 -0700
+IronPort-SDR: I2kPLSZY3sAJB+AtMjz54IDv5wzrL5svBf5Z2YmpNMJTlVEZtD0KsDT1urlyovYN6eDZ/bnV7t
+ EEcE83OL6BIw==
+X-IronPort-AV: E=Sophos;i="5.75,362,1589266800";
+   d="scan'208";a="325362807"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2020 00:21:00 -0700
+From: ira.weiny@intel.com
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH RFC V2 00/17] PKS: Add Protection Keys Supervisor (PKS) support
+Date: Fri, 17 Jul 2020 00:20:39 -0700
+Message-Id: <20200717072056.73134-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <INTER-FWPUoUydnlYSZ00008209@interkad.alt.ru>
-X-OriginalArrivalTime: 17 Jul 2020 06:02:23.0103 (UTC) FILETIME=[D6B5B8F0:01D65BFF]
-Message-ID-Hash: KAFNBEZXJFZNVAIC73XXEWHSWS6NVLRN
-X-Message-ID-Hash: KAFNBEZXJFZNVAIC73XXEWHSWS6NVLRN
-X-MailFrom: mrbrianstewart2015@gmail.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Message-ID-Hash: KGPANRQBJINXHDAL5JQCT5R5BPEUPUJQ
+X-Message-ID-Hash: KGPANRQBJINXHDAL5JQCT5R5BPEUPUJQ
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: brianestewarts@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KAFNBEZXJFZNVAIC73XXEWHSWS6NVLRN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KGPANRQBJINXHDAL5JQCT5R5BPEUPUJQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -41,27 +56,205 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+From: Ira Weiny <ira.weiny@intel.com>
 
-Good day to you Partner.
-Funds For nvestment:-
+This RFC series has been reviewed by Dave Hansen.
 
-My late princpal moved out huge amount of funds to Europe for an undisclosed Foreign partner which  alone is aware of and  now that 
-he's no more/dead. I want you to liase wth me to reprofile and reprocess the funds over to you as that "Partner" of my late principal and move over ths funds to you
-either in your country or any other country of your choice where you have the ability to receive the funds for us to share and invest.
+Changes from RFC:
+	Clean up commit messages based on Peter Zijlstra's and Dave Hansen's
+		feedback
+	Fix static branch anti-pattern
+	New patch:
+	(memremap: Convert devmap static branch to {inc,dec})
+		This was the code I used as a model for my static branch which
+		I believe is wrong now.
+	New Patch:
+	(x86/entry: Preserve PKRS MSR through exceptions)
+		This attempts to preserve the per-logical-processor MSR, and
+		reference counting during exceptions.  I'd really like feed
+		back on this because I _think_ it should work but I'm afraid
+		I'm missing something as my testing has shown a lot of spotty
+		crashes which don't make sense to me.
 
-If you are interested and prepared to work out this transaction wth me to Retrieve this funds from the custody of the deposit  firm(Storage Firm) that is holding the funds, 
+This patch set introduces a new page protection mechanism for supervisor pages,
+Protection Key Supervisor (PKS) and an initial user of them, persistent memory,
+PMEM.
 
-Your Full Name:..........................................................................
-Delvery Address:....................................................................... 
-Phone No:.................................................................................
-Country of Residence:.....................................................................
+PKS enables protections on 'domains' of supervisor pages to limit supervisor
+mode access to those pages beyond the normal paging protections.  They work in
+a similar fashion to user space pkeys.  Like User page pkeys (PKU), supervisor
+pkeys are checked in addition to normal paging protections and Access or Writes
+can be disabled via a MSR update without TLB flushes when permissions change.
+A page mapping is assigned to a domain by setting a pkey in the page table
+entry.
 
-Upon the successful secured and claims of the funds we shall share 50/50 to each of us.
-Do contact me immediately for more detaled nformaton. However, be informed that the sole aim of this transaction is to use your position to Retrieve this funds and share as agreed.
-Whle anticpating for your unalloyed response.
-From me with Care.
-Regards.
-Brian Stewarts.
+Unlike User pkeys no new instructions are added; rather WRMSR/RDMSR are used to
+update the PKRS register.
+
+XSAVE is not supported for the PKRS MSR.  To reduce software complexity the
+implementation saves/restores the MSR across context switches but not during
+irqs.  This is a compromise which results is a hardening of unwanted access
+without absolute restriction.
+
+For consistent behavior with current paging protections, pkey 0 is reserved and
+configured to allow full access via the pkey mechanism, thus preserving the
+default paging protections on mappings with the default pkey value of 0.
+
+Other keys, (1-15) are allocated by an allocator which prepares us for key
+contention from day one.  Kernel users should be prepared for the allocator to
+fail either because of key exhaustion or due to PKS not being supported on the
+arch and/or CPU instance.
+
+Protecting against stray writes is particularly important for PMEM because,
+unlike writes to anonymous memory, writes to PMEM persists across a reboot.
+Thus data corruption could result in permanent loss of data.
+
+The following attributes of PKS makes it perfect as a mechanism to protect PMEM
+from stray access within the kernel:
+
+   1) Fast switching of permissions
+   2) Prevents access without page table manipulations
+   3) Works on a per thread basis
+   4) No TLB flushes required
+
+The second half of this series thus uses the PKS mechanism to protect PMEM from
+stray access.
+
+PKS is available with 4 and 5 level paging.  Like PKRU is takes 4 bits from the
+PTE to store the pkey within the entry.
+
+
+Implementation details
+----------------------
+
+Modifications of task struct in patches:
+	(x86/pks: Preserve the PKRS MSR on context switch)
+	(memremap: Add zone device access protection)
+
+Because pkey access is per-thread 2 modifications are made to the task struct.
+The first is a saved copy of the MSR during context switches.  The second
+reference counts access to the device domain to correctly handle kmap nesting
+properly.
+
+
+Maintain PKS setting in a re-entrant manner in patch:
+	(memremap: Add zone device access protection)
+	(x86/entry: Preserve PKRS MSR through exceptions)
+
+Using local_irq_save() seems to be the safest and fastest way to maintain kmap
+as re-entrant.  But there may be a better way.  spin_lock_irq() and atomic
+counters were considered.  But atomic counters do not properly protect the pkey
+update and spin_lock_irq() would deadlock.  Suggestions are welcome.
+
+Also preserving the pks state requires the exception handling code to store the
+ref count during exception processing.  This seems like a layering violation
+but it works.
+
+
+The use of kmap in patch:
+	(kmap: Add stray write protection for device pages)
+
+To keep general access to PMEM pages general, we piggy back on the kmap()
+interface as there are many places in the kernel who do not have, nor should be
+required to have, a priori knowledge that a page is PMEM.  The modifications to
+the kmap code is careful to quickly determine which pages don't require special
+handling to reduce overhead for non PMEM pages.
+
+
+
+Breakdown of patches
+--------------------
+
+Implement PKS within x86 arch:
+
+	x86/pkeys: Create pkeys_internal.h
+	x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+	x86/pks: Enable Protection Keys Supervisor (PKS)
+	x86/pks: Preserve the PKRS MSR on context switch
+	x86/pks: Add PKS kernel API
+	x86/pks: Add a debugfs file for allocated PKS keys
+	Documentation/pkeys: Update documentation for kernel pkeys
+	x86/pks: Add PKS Test code
+
+pre-req bug fixes for dax:
+
+	fs/dax: Remove unused size parameter
+	drivers/dax: Expand lock scope to cover the use of addresses
+
+Add stray write protection to PMEM:
+
+	memremap: Add zone device access protection
+	kmap: Add stray write protection for device pages
+	dax: Stray write protection for dax_direct_access()
+	nvdimm/pmem: Stray write protection for pmem->virt_addr
+	[dax|pmem]: Enable stray write protection
+
+
+Fenghua Yu (4):
+  x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+  x86/pks: Enable Protection Keys Supervisor (PKS)
+  x86/pks: Add PKS kernel API
+  x86/pks: Add a debugfs file for allocated PKS keys
+
+Ira Weiny (13):
+  x86/pkeys: Create pkeys_internal.h
+  x86/pks: Preserve the PKRS MSR on context switch
+  Documentation/pkeys: Update documentation for kernel pkeys
+  x86/pks: Add PKS Test code
+  memremap: Convert devmap static branch to {inc,dec}
+  fs/dax: Remove unused size parameter
+  drivers/dax: Expand lock scope to cover the use of addresses
+  memremap: Add zone device access protection
+  kmap: Add stray write protection for device pages
+  dax: Stray write protection for dax_direct_access()
+  nvdimm/pmem: Stray write protection for pmem->virt_addr
+  [dax|pmem]: Enable stray write protection
+  x86/entry: Preserve PKRS MSR across exceptions
+
+ Documentation/core-api/protection-keys.rst  |  81 +++-
+ arch/x86/Kconfig                            |   1 +
+ arch/x86/entry/common.c                     |  78 +++-
+ arch/x86/include/asm/cpufeatures.h          |   1 +
+ arch/x86/include/asm/idtentry.h             |   2 +
+ arch/x86/include/asm/msr-index.h            |   1 +
+ arch/x86/include/asm/pgtable.h              |  13 +-
+ arch/x86/include/asm/pgtable_types.h        |   4 +
+ arch/x86/include/asm/pkeys.h                |  43 ++
+ arch/x86/include/asm/pkeys_internal.h       |  36 ++
+ arch/x86/include/asm/processor.h            |  13 +
+ arch/x86/include/uapi/asm/processor-flags.h |   2 +
+ arch/x86/kernel/cpu/common.c                |  17 +
+ arch/x86/kernel/fpu/xstate.c                |  17 +-
+ arch/x86/kernel/process.c                   |  34 ++
+ arch/x86/mm/fault.c                         |  16 +-
+ arch/x86/mm/pkeys.c                         | 174 +++++++-
+ drivers/dax/device.c                        |   2 +
+ drivers/dax/super.c                         |   5 +-
+ drivers/nvdimm/pmem.c                       |   6 +
+ fs/dax.c                                    |  13 +-
+ include/linux/highmem.h                     |  32 +-
+ include/linux/memremap.h                    |   1 +
+ include/linux/mm.h                          |  33 ++
+ include/linux/pkeys.h                       |  18 +
+ include/linux/sched.h                       |   3 +
+ init/init_task.c                            |   3 +
+ kernel/fork.c                               |   3 +
+ lib/Kconfig.debug                           |  12 +
+ lib/Makefile                                |   3 +
+ lib/pks/Makefile                            |   3 +
+ lib/pks/pks_test.c                          | 452 ++++++++++++++++++++
+ mm/Kconfig                                  |  15 +
+ mm/memremap.c                               | 105 ++++-
+ tools/testing/selftests/x86/Makefile        |   3 +-
+ tools/testing/selftests/x86/test_pks.c      |  65 +++
+ 36 files changed, 1243 insertions(+), 67 deletions(-)
+ create mode 100644 arch/x86/include/asm/pkeys_internal.h
+ create mode 100644 lib/pks/Makefile
+ create mode 100644 lib/pks/pks_test.c
+ create mode 100644 tools/testing/selftests/x86/test_pks.c
+
+-- 
+2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
