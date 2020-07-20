@@ -1,50 +1,70 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17C2225B8C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jul 2020 11:26:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB90D225D79
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jul 2020 13:30:39 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6DF1412379C65;
-	Mon, 20 Jul 2020 02:26:03 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 08D1E12385F8E;
+	Mon, 20 Jul 2020 04:30:38 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=212.227.126.134; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN> 
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9E27B123757CB
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 02:26:00 -0700 (PDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id C6D012176B;
-	Mon, 20 Jul 2020 09:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595237160;
-	bh=xIW2F2IJFqxTzMmaAs6C8+3yiJvBuUFpN7ht+vECA5A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrNLOpGtsBkLwzoA0ZoHKqviCVJ3KJRCdTwu93rSdZ36ELhztooGsQ2e4T8KUYbwf
-	 g95kfDYYhWT0rijSXjiKDluNKSd11vd3VHc2VWrEE5zvJz5wMrVk6WVbraWxItZhwN
-	 Z/wN2S6aNtjO+InKcFYziVst7pgrShtls+s5WRPo=
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] mm: secretmem: add ability to reserve memory at boot
-Date: Mon, 20 Jul 2020 12:24:35 +0300
-Message-Id: <20200720092435.17469-7-rppt@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200720092435.17469-1-rppt@kernel.org>
-References: <20200720092435.17469-1-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id D47F012385F8A
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 04:30:34 -0700 (PDT)
+Received: from mail-qt1-f178.google.com ([209.85.160.178]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MCska-1k6Jho00PI-008tD9 for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020
+ 13:30:32 +0200
+Received: by mail-qt1-f178.google.com with SMTP id g13so12601240qtv.8
+        for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 04:30:31 -0700 (PDT)
+X-Gm-Message-State: AOAM530S7J/ixSDXugeX0E2U7qNI9Yi13jGeqdAXXNCeIdUFPRZemWkL
+	5oygvVbsQFudZZmpX1wGaOq1X+0dU9QQE56oZGQ=
+X-Google-Smtp-Source: ABdhPJybaWn8qrmG7q01lgvZCZBti2IcqiiH7/UJUKpkh5l1pzukFrbCvJJFdRaOz1n0M6O3nf2Yvp55077wbmpCEEY=
+X-Received: by 2002:a05:620a:1654:: with SMTP id c20mr20996310qko.138.1595244629225;
+ Mon, 20 Jul 2020 04:30:29 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: AE3RFBTPEEJXCJVA5LUF6Q5O3BT6FVBL
-X-Message-ID-Hash: AE3RFBTPEEJXCJVA5LUF6Q5O3BT6FVBL
-X-MailFrom: rppt@kernel.org
+References: <20200720092435.17469-1-rppt@kernel.org> <20200720092435.17469-4-rppt@kernel.org>
+In-Reply-To: <20200720092435.17469-4-rppt@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 20 Jul 2020 13:30:13 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0NyvRMqH7X0YNO5E6DGtvZXD5ZcD6Y6n7AkocufkMnHA@mail.gmail.com>
+Message-ID: <CAK8P3a0NyvRMqH7X0YNO5E6DGtvZXD5ZcD6Y6n7AkocufkMnHA@mail.gmail.com>
+Subject: Re: [PATCH 3/6] mm: introduce secretmemfd system call to create
+ "secret" memory areas
+To: Mike Rapoport <rppt@kernel.org>
+X-Provags-ID: V03:K1:bG+54+abyrBEW8hKb6a+84xT9TijIiEjLPipeyI7axptWjMjXu1
+ KKTQ2w7jzOUKVU1Wz6pJD6Gw9AMAbGmCoeRNDyUzh5WMHQ3ymNisdLZCWXCrw+741t1OvnG
+ 7rsZQ8ymqqMG6AGS3adZLxX6Pl/WTZQCR03hMaHEJTg2YVlKBsVOZNa0YZdrBFrqS7wwd45
+ 4QL522XTCbMVNspDTEGUA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mRRTgqd1FkI=:tc8K/nqbxof4UVgloPkgZH
+ YjFuq2dTGKCuUDrRyxhHIeIHCLw7vW8cjqgBp61wKigni2yRhWUopqV59jxc2KS9En61whIDT
+ zGkytcXbrFgFtVD1i1MWyR8UaSNMayg0I5qrCXo0ekWdLOf2JMur7LVoWKh8JBgcnafPTyMQU
+ 8jB30BufmEwl1uv1+xKpRiCcFITX+rkFIM27HInJS4EKxgmzl1s97Zoiwt+ChXkBrzyhY5kpq
+ LQA1JKqY10YkSzJWWmg4pWTcFT1lGTJn2gXDAlvHWZEmlOMW8xz6mervXz6YJzDOhltVoqTpF
+ tTbB0QbNYfIuQAYv44vlT2QHnWPqYxRhwITkLSemRCuRBbj7ToeNLbktcVogYSMu7LdWANf31
+ datFAw0tZFEln40lZVaOzgFV1TGVlQjcUsUKaWkBS2rix9fDgT9x0aKbvg/oxZEQ7TAvgwypM
+ U7Bps8K6G+m3YkA3HCJ40xwItr9x5QIqRhPWzULhifJmjfRDI+yGI1ndnOntBCmKH3nuzEJxG
+ NMv0RTjRHq2NU9YmcOt7erKpHGAGfdktWYhFX8NJAf0bFlS9ZXNFdwM0QvFxDP8V5bcOxV1uq
+ LzLICei5sCv3Rr/mokvlLucbgbhdiMOLnbzhbpvHtmu3NxfT3SXCkfR+Hrv8bq3vjkIStOJz+
+ KCa1W3mmgsjoruQxs2Cn5IInacCBJyyzsnYfQs3vugo+/0l041YH7qW7FXHRzPQZUtUntHUFE
+ WNd97BE+TrqjPVQBfcErVk503wqbYmiHw1JDKPsvxRr01aHIZVxZJyEgU3A0Z89mvPczn4iJW
+ LIXnXKwQwNNXDYxK1LGPfPZ8NbocQHTLz3EY/3W8YgqEeeMBSEdNQxaA7pAuWRoPMS3aZYPXa
+ VQ/yMnnkgOgqvWOEJfh7d0RZ6Se4SkfdwOSywN+GTz+RFbX4SOu9qLcOJdgp44jGAp0P7zSF3
+ 4bMOqNSS3+0rM9s37c1EmybY/gYaAsD175J4Nd4UZ3B33BEDFPvYw
+Message-ID-Hash: NZ5FYYB7NSJPOEDBIK5IYZKHGEJ2MM6H
+X-Message-ID-Hash: NZ5FYYB7NSJPOEDBIK5IYZKHGEJ2MM6H
+X-MailFrom: arnd@arndb.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kv
- ack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Linux API <linux-api@vger.kernel.org>, linux-arch <linux-arch@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Linux 
+ FS-devel Mailing List <linux-fsdevel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-nvdimm@lists.01.org, linux-riscv <linux-riscv@lists.infradead.org>, the arch/x86 maintainers <x86@kernel.org>, linaro-mm-sig@lists.linaro.org, Sumit Semwal <sumit.semwal@linaro.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AE3RFBTPEEJXCJVA5LUF6Q5O3BT6FVBL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NZ5FYYB7NSJPOEDBIK5IYZKHGEJ2MM6H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,217 +73,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+On Mon, Jul 20, 2020 at 11:25 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> Introduce "secretmemfd" system call with the ability to create memory areas
+> visible only in the context of the owning process and not mapped not only
+> to other processes but in the kernel page tables as well.
+>
+> The user will create a file descriptor using the secretmemfd system call
+> where flags supplied as a parameter to this system call will define the
+> desired protection mode for the memory associated with that file
+> descriptor. Currently there are two protection modes:
+>
+> * exclusive - the memory area is unmapped from the kernel direct map and it
+>               is present only in the page tables of the owning mm.
+> * uncached  - the memory area is present only in the page tables of the
+>               owning mm and it is mapped there as uncached.
+>
+> For instance, the following example will create an uncached mapping (error
+> handling is omitted):
+>
+>         fd = secretmemfd(SECRETMEM_UNCACHED);
+>         ftruncate(fd, MAP_SIZE);
+>         ptr = mmap(NULL, MAP_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED,
+>                    fd, 0);
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Taking pages out from the direct map and bringing them back may create
-undesired fragmentation and usage of the smaller pages in the direct
-mapping of the physical memory.
+I wonder if this should be more closely related to dmabuf file
+descriptors, which
+are already used for a similar purpose: sharing access to secret memory areas
+that are not visible to the OS but can be shared with hardware through device
+drivers that can import a dmabuf file descriptor.
 
-This can be avoided if a significantly large area of the physical memory
-would be reserved for secretmem purposes at boot time.
-
-Add ability to reserve physical memory for secretmem at boot time using
-"secretmem" kernel parameter and then use that reserved memory as a global
-pool for secret memory needs.
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- mm/secretmem.c | 134 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 126 insertions(+), 8 deletions(-)
-
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index dce56f84968f..322f425dbb22 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -8,6 +8,7 @@
- #include <linux/pagemap.h>
- #include <linux/genalloc.h>
- #include <linux/syscalls.h>
-+#include <linux/memblock.h>
- #include <linux/pseudo_fs.h>
- #include <linux/set_memory.h>
- #include <linux/sched/signal.h>
-@@ -30,6 +31,39 @@ struct secretmem_ctx {
- 	unsigned int mode;
- };
- 
-+struct secretmem_pool {
-+	struct gen_pool *pool;
-+	unsigned long reserved_size;
-+	void *reserved;
-+};
-+
-+static struct secretmem_pool secretmem_pool;
-+
-+static struct page *secretmem_alloc_huge_page(gfp_t gfp)
-+{
-+	struct gen_pool *pool = secretmem_pool.pool;
-+	unsigned long addr = 0;
-+	struct page *page = NULL;
-+
-+	if (pool) {
-+		if (gen_pool_avail(pool) < PMD_SIZE)
-+			return NULL;
-+
-+		addr = gen_pool_alloc(pool, PMD_SIZE);
-+		if (!addr)
-+			return NULL;
-+
-+		page = virt_to_page(addr);
-+	} else {
-+		page = alloc_pages(gfp, PMD_PAGE_ORDER);
-+
-+		if (page)
-+			split_page(page, PMD_PAGE_ORDER);
-+	}
-+
-+	return page;
-+}
-+
- static int secretmem_pool_increase(struct secretmem_ctx *ctx, gfp_t gfp)
- {
- 	unsigned long nr_pages = (1 << PMD_PAGE_ORDER);
-@@ -38,12 +72,11 @@ static int secretmem_pool_increase(struct secretmem_ctx *ctx, gfp_t gfp)
- 	struct page *page;
- 	int err;
- 
--	page = alloc_pages(gfp, PMD_PAGE_ORDER);
-+	page = secretmem_alloc_huge_page(gfp);
- 	if (!page)
- 		return -ENOMEM;
- 
- 	addr = (unsigned long)page_address(page);
--	split_page(page, PMD_PAGE_ORDER);
- 
- 	err = gen_pool_add(pool, addr, PMD_SIZE, NUMA_NO_NODE);
- 	if (err) {
-@@ -266,11 +299,13 @@ SYSCALL_DEFINE1(secretmemfd, unsigned long, flags)
- 	return err;
- }
- 
--static void secretmem_cleanup_chunk(struct gen_pool *pool,
--				    struct gen_pool_chunk *chunk, void *data)
-+static void secretmem_recycle_range(unsigned long start, unsigned long end)
-+{
-+	gen_pool_free(secretmem_pool.pool, start, PMD_SIZE);
-+}
-+
-+static void secretmem_release_range(unsigned long start, unsigned long end)
- {
--	unsigned long start = chunk->start_addr;
--	unsigned long end = chunk->end_addr;
- 	unsigned long nr_pages, addr;
- 
- 	nr_pages = (end - start + 1) / PAGE_SIZE;
-@@ -280,6 +315,18 @@ static void secretmem_cleanup_chunk(struct gen_pool *pool,
- 		put_page(virt_to_page(addr));
- }
- 
-+static void secretmem_cleanup_chunk(struct gen_pool *pool,
-+				    struct gen_pool_chunk *chunk, void *data)
-+{
-+	unsigned long start = chunk->start_addr;
-+	unsigned long end = chunk->end_addr;
-+
-+	if (secretmem_pool.pool)
-+		secretmem_recycle_range(start, end);
-+	else
-+		secretmem_release_range(start, end);
-+}
-+
- static void secretmem_cleanup_pool(struct secretmem_ctx *ctx)
- {
- 	struct gen_pool *pool = ctx->pool;
-@@ -319,14 +366,85 @@ static struct file_system_type secretmem_fs = {
- 	.kill_sb	= kill_anon_super,
- };
- 
-+static int secretmem_reserved_mem_init(void)
-+{
-+	struct gen_pool *pool;
-+	struct page *page;
-+	void *addr;
-+	int err;
-+
-+	if (!secretmem_pool.reserved)
-+		return 0;
-+
-+	pool = gen_pool_create(PMD_SHIFT, NUMA_NO_NODE);
-+	if (!pool)
-+		return -ENOMEM;
-+
-+	err = gen_pool_add(pool, (unsigned long)secretmem_pool.reserved,
-+			   secretmem_pool.reserved_size, NUMA_NO_NODE);
-+	if (err)
-+		goto err_destroy_pool;
-+
-+	for (addr = secretmem_pool.reserved;
-+	     addr < secretmem_pool.reserved + secretmem_pool.reserved_size;
-+	     addr += PAGE_SIZE) {
-+		page = virt_to_page(addr);
-+		__ClearPageReserved(page);
-+		set_page_count(page, 1);
-+	}
-+
-+	secretmem_pool.pool = pool;
-+	page = virt_to_page(secretmem_pool.reserved);
-+	__kernel_map_pages(page, secretmem_pool.reserved_size / PAGE_SIZE, 0);
-+	return 0;
-+
-+err_destroy_pool:
-+	gen_pool_destroy(pool);
-+	return err;
-+}
-+
- static int secretmem_init(void)
- {
--	int ret = 0;
-+	int ret;
-+
-+	ret = secretmem_reserved_mem_init();
-+	if (ret)
-+		return ret;
- 
- 	secretmem_mnt = kern_mount(&secretmem_fs);
--	if (IS_ERR(secretmem_mnt))
-+	if (IS_ERR(secretmem_mnt)) {
-+		gen_pool_destroy(secretmem_pool.pool);
- 		ret = PTR_ERR(secretmem_mnt);
-+	}
- 
- 	return ret;
- }
- fs_initcall(secretmem_init);
-+
-+static int __init secretmem_setup(char *str)
-+{
-+	phys_addr_t align = PMD_SIZE;
-+	unsigned long reserved_size;
-+	void *reserved;
-+
-+	reserved_size = memparse(str, NULL);
-+	if (!reserved_size)
-+		return 0;
-+
-+	if (reserved_size * 2 > PUD_SIZE)
-+		align = PUD_SIZE;
-+
-+	reserved = memblock_alloc(reserved_size, align);
-+	if (!reserved) {
-+		pr_err("failed to reserve %zu bytes\n", secretmem_pool.reserved_size);
-+		return 0;
-+	}
-+
-+	secretmem_pool.reserved_size = reserved_size;
-+	secretmem_pool.reserved = reserved;
-+
-+	pr_info("reserved %zuM\n", reserved_size >> 20);
-+
-+	return 1;
-+}
-+__setup("secretmem=", secretmem_setup);
--- 
-2.26.2
+      Arnd
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
