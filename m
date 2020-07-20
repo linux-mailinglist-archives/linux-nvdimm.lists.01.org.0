@@ -1,49 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554F6227233
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 Jul 2020 00:23:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72EE227234
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 Jul 2020 00:23:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5AB10124059A5;
-	Mon, 20 Jul 2020 15:23:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id 81D97124059A7;
+	Mon, 20 Jul 2020 15:23:50 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 11CE6124059A3
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 15:23:42 -0700 (PDT)
-IronPort-SDR: IwXCp9Auq/L/wXeNNL9ySIIV95NfsE2ZM1/Rfs26+MeqO8bg4A19wxfLvzoUnI1ruq7hZ5drw/
- WN8bFwMqJzSA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="234872172"
+	by ml01.01.org (Postfix) with ESMTPS id B5A1C100A6D47
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 15:23:47 -0700 (PDT)
+IronPort-SDR: mePUxWer5QGI/nafOonrBQZwau0ZMQrMFGzSl6BasUy+Jw6Quz+fZ7Tt0wE19Hz71KOtnhYsul
+ r69ZzvQg6RfQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="129589096"
 X-IronPort-AV: E=Sophos;i="5.75,375,1589266800";
-   d="scan'208";a="234872172"
+   d="scan'208";a="129589096"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:23:41 -0700
-IronPort-SDR: AgaDJwrke57QLb9b+KUIwJFC5H28Pzg1JMmMTEUr8UW+brmvJX22eo3exMVQKWagsBkzXTf6YO
- jAIMAiYYdDFQ==
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:23:47 -0700
+IronPort-SDR: kmKn9RjYXaNn3nGZ+7bK90zmriF2zraooeBkrwvp4f0lz7ooTt+8zKETTtoXn8kbRB2lSzFNrf
+ cbVhrgCWEBcg==
 X-IronPort-AV: E=Sophos;i="5.75,375,1589266800";
-   d="scan'208";a="487871967"
+   d="scan'208";a="326188633"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:23:41 -0700
-Subject: [PATCH v3 00/11] ACPI/NVDIMM: Runtime Firmware Activation
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 15:23:47 -0700
+Subject: [PATCH v3 01/11] libnvdimm: Validate command family indices
 From: Dan Williams <dan.j.williams@intel.com>
 To: linux-nvdimm@lists.01.org
-Date: Mon, 20 Jul 2020 15:07:24 -0700
-Message-ID: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Mon, 20 Jul 2020 15:07:30 -0700
+Message-ID: <159528284995.993790.5816012252622710464.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
+References: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: EUZJNKC3DTKKXCWQB352JQ67EQ3EG67U
-X-Message-ID-Hash: EUZJNKC3DTKKXCWQB352JQ67EQ3EG67U
+Message-ID-Hash: SCRGTBPUIOC63MHXQKQZ2WWNWGM4TYYU
+X-Message-ID-Hash: SCRGTBPUIOC63MHXQKQZ2WWNWGM4TYYU
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Len Brown <len.brown@intel.com>, Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Pavel Machek <pavel@ucw.cz>, stable@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, stable@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EUZJNKC3DTKKXCWQB352JQ67EQ3EG67U/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SCRGTBPUIOC63MHXQKQZ2WWNWGM4TYYU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -52,153 +54,156 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Changes since v2 [1]:
-- Drop the "mem-quiet" pm-debug interface in favor of an explicit
-  hibernate_quiet_exec() helper that executes firmware activation, or
-  any other subsystem provided routine, in a system-quiet context.
-  (Rafael)
+The ND_CMD_CALL format allows for a general passthrough of passlisted
+commands targeting a given command set. However there is no validation
+of the family index relative to what the bus supports.
 
-- Rework the sysfs interface to add an explicit trigger to run
-  activation under hibernate_quiet_exec(). Rename
-  ndbusX/firmware_activate to ndbusX/firmware/activate, and add a
-  ndbusX/firmware/capability. Some ndctl reworks are needed to catch up
-  with this change.
+- Update the NFIT bus implementation (the only one that supports
+  ND_CMD_CALL passthrough) to also passlist the valid set of command
+  family indices.
 
-- The new ndbusX/firmware/capability attribute indicates the default
-  activation method / execution context between "live" and "suspend".
+- Update the generic __nd_ioctl() path to validate that field on behalf
+  of all implementations.
 
-[1]: http://lore.kernel.org/r/159408711335.2385045.2567600405906448375.stgit@dwillia2-desk3.amr.corp.intel.com
-
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+Cc: Len Brown <lenb@kernel.org>
+Fixes: 31eca76ba2fc ("nfit, libnvdimm: limited/whitelisted dimm command marshaling mechanism")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
+ drivers/acpi/nfit/core.c   |   11 +++++++++--
+ drivers/acpi/nfit/nfit.h   |    1 -
+ drivers/nvdimm/bus.c       |   16 ++++++++++++++++
+ include/linux/libnvdimm.h  |    2 ++
+ include/uapi/linux/ndctl.h |    4 ++++
+ 5 files changed, 31 insertions(+), 3 deletions(-)
 
-Quoting the documentation:
-
-    Some persistent memory devices run a firmware locally on the device /
-    "DIMM" to perform tasks like media management, capacity provisioning,
-    and health monitoring. The process of updating that firmware typically
-    involves a reboot because it has implications for in-flight memory
-    transactions. However, reboots are disruptive and at least the Intel
-    persistent memory platform implementation, described by the Intel ACPI
-    DSM specification [1], has added support for activating firmware at
-    runtime.
-
-    [1]: https://docs.pmem.io/persistent-memory/
-
-The approach taken is to abstract the Intel platform specific mechanism
-behind a libnvdimm-generic sysfs interface. The interface could support
-runtime-firmware-activation on another architecture without need to
-change userspace tooling.
-
-The ACPI NFIT implementation involves a set of device-specific-methods
-(DSMs) to 'arm' individual devices for activation and bus-level
-'trigger' method to execute the activation. Informational / enumeration
-methods are also provided at the bus and device level.
-
-One complicating aspect of the memory device firmware activation is that
-the memory controller may need to be quiesced, no memory cycles, during
-the activation. While the platform has mechanisms to support holding off
-in-flight DMA during the activation, the device response to that delay
-is potentially undefined. The platform may reject a runtime firmware
-update if, for example a PCI-E device does not support its completion
-timeout value being increased to meet the activation time. Outside of
-device timeouts the quiesce period may also violate application
-timeouts.
-
-Given the above device and application timeout considerations the
-implementation uses a new hibernate_quiet_exec() facility to carry-out
-firmware activation. This imposes the same conditions that allow for a
-stable memory image snapshot to be taken for a hibernate-to-disk
-sequence. However, if desired, runtime activation without the hibernate
-freeze can be forced as an override.
-
-The ndctl utility grows the following extensions / commands to drive
-this mechanism:
-
-1/ The existing update-firmware command will 'arm' devices where the
-   firmware image is staged by default.
-
-    ndctl update-firmware all -f firmware_image.bin
-
-2/ The existing ability to enumerate firmware-update capabilities now
-   includes firmware activate capabilities at the 'bus' and 'dimm/device'
-   level:
-
-    ndctl list -BDF -b nfit_test.0
-    [
-      {
-        "provider":"nfit_test.0",
-        "dev":"ndbus2",
-        "scrub_state":"idle",
-        "firmware":{
-          "activate_method":"suspend",
-          "activate_state":"idle"
-        },
-        "dimms":[
-          {
-            "dev":"nmem1",
-            "id":"cdab-0a-07e0-ffffffff",
-            "handle":0,
-            "phys_id":0,
-            "security":"disabled",
-            "firmware":{
-              "current_version":0,
-              "can_update":true
-            }
-          },
-    ...
-
-3/ The new activate-firmware command triggers firmware activation per
-   the platform enumerated context, "suspend" vs "live", or can be forced
-   to "live" if there is a explicit knowledge that allowing applications
-   and devices to race the quiesce timeout will have no adverse effects.
-
-    ndctl activate-firmware nfit_test.0 [--force]
-
-These patches are passing an updated version of the ndctl
-"firmware-update.sh" unit test (to be posted).
-
----
-
-Dan Williams (11):
-      libnvdimm: Validate command family indices
-      ACPI: NFIT: Move bus_dsm_mask out of generic nvdimm_bus_descriptor
-      ACPI: NFIT: Define runtime firmware activation commands
-      tools/testing/nvdimm: Cleanup dimm index passing
-      tools/testing/nvdimm: Add command debug messages
-      tools/testing/nvdimm: Prepare nfit_ctl_test() for ND_CMD_CALL emulation
-      tools/testing/nvdimm: Emulate firmware activation commands
-      driver-core: Introduce DEVICE_ATTR_ADMIN_{RO,RW}
-      libnvdimm: Convert to DEVICE_ATTR_ADMIN_RO()
-      PM, libnvdimm: Add runtime firmware activation support
-      ACPI: NFIT: Add runtime firmware activate support
-
-
- Documentation/ABI/testing/sysfs-bus-nfit           |   19 +
- Documentation/ABI/testing/sysfs-bus-nvdimm         |    2 
- .../driver-api/nvdimm/firmware-activate.rst        |   86 ++++
- drivers/acpi/nfit/core.c                           |  142 +++++--
- drivers/acpi/nfit/intel.c                          |  386 ++++++++++++++++++++
- drivers/acpi/nfit/intel.h                          |   61 +++
- drivers/acpi/nfit/nfit.h                           |   38 ++
- drivers/nvdimm/bus.c                               |   16 +
- drivers/nvdimm/core.c                              |  149 ++++++++
- drivers/nvdimm/dimm_devs.c                         |  119 ++++++
- drivers/nvdimm/namespace_devs.c                    |    2 
- drivers/nvdimm/nd-core.h                           |    1 
- drivers/nvdimm/pfn_devs.c                          |    2 
- drivers/nvdimm/region_devs.c                       |    2 
- include/linux/device.h                             |    4 
- include/linux/libnvdimm.h                          |   52 +++
- include/linux/suspend.h                            |    6 
- include/linux/sysfs.h                              |    7 
- include/uapi/linux/ndctl.h                         |    5 
- kernel/power/hibernate.c                           |   97 +++++
- tools/testing/nvdimm/test/nfit.c                   |  367 +++++++++++++++----
- 21 files changed, 1449 insertions(+), 114 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-nvdimm
- create mode 100644 Documentation/driver-api/nvdimm/firmware-activate.rst
-
-base-commit: 48778464bb7d346b47157d21ffde2af6b2d39110
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 7c138a4edc03..1f72ce1a782b 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -1823,6 +1823,7 @@ static void populate_shutdown_status(struct nfit_mem *nfit_mem)
+ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
+ 		struct nfit_mem *nfit_mem, u32 device_handle)
+ {
++	struct nvdimm_bus_descriptor *nd_desc = &acpi_desc->nd_desc;
+ 	struct acpi_device *adev, *adev_dimm;
+ 	struct device *dev = acpi_desc->dev;
+ 	unsigned long dsm_mask, label_mask;
+@@ -1834,6 +1835,7 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
+ 	/* nfit test assumes 1:1 relationship between commands and dsms */
+ 	nfit_mem->dsm_mask = acpi_desc->dimm_cmd_force_en;
+ 	nfit_mem->family = NVDIMM_FAMILY_INTEL;
++	set_bit(NVDIMM_FAMILY_INTEL, &nd_desc->dimm_family_mask);
+ 
+ 	if (dcr->valid_fields & ACPI_NFIT_CONTROL_MFG_INFO_VALID)
+ 		sprintf(nfit_mem->id, "%04x-%02x-%04x-%08x",
+@@ -1886,10 +1888,13 @@ static int acpi_nfit_add_dimm(struct acpi_nfit_desc *acpi_desc,
+ 	 * Note, that checking for function0 (bit0) tells us if any commands
+ 	 * are reachable through this GUID.
+ 	 */
++	clear_bit(NVDIMM_FAMILY_INTEL, &nd_desc->dimm_family_mask);
+ 	for (i = 0; i <= NVDIMM_FAMILY_MAX; i++)
+-		if (acpi_check_dsm(adev_dimm->handle, to_nfit_uuid(i), 1, 1))
++		if (acpi_check_dsm(adev_dimm->handle, to_nfit_uuid(i), 1, 1)) {
++			set_bit(i, &nd_desc->dimm_family_mask);
+ 			if (family < 0 || i == default_dsm_family)
+ 				family = i;
++		}
+ 
+ 	/* limit the supported commands to those that are publicly documented */
+ 	nfit_mem->family = family;
+@@ -2153,6 +2158,9 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
+ 
+ 	nd_desc->cmd_mask = acpi_desc->bus_cmd_force_en;
+ 	nd_desc->bus_dsm_mask = acpi_desc->bus_nfit_cmd_force_en;
++	set_bit(ND_CMD_CALL, &nd_desc->cmd_mask);
++	set_bit(NVDIMM_BUS_FAMILY_NFIT, &nd_desc->bus_family_mask);
++
+ 	adev = to_acpi_dev(acpi_desc);
+ 	if (!adev)
+ 		return;
+@@ -2160,7 +2168,6 @@ static void acpi_nfit_init_dsms(struct acpi_nfit_desc *acpi_desc)
+ 	for (i = ND_CMD_ARS_CAP; i <= ND_CMD_CLEAR_ERROR; i++)
+ 		if (acpi_check_dsm(adev->handle, guid, 1, 1ULL << i))
+ 			set_bit(i, &nd_desc->cmd_mask);
+-	set_bit(ND_CMD_CALL, &nd_desc->cmd_mask);
+ 
+ 	dsm_mask =
+ 		(1 << ND_CMD_ARS_CAP) |
+diff --git a/drivers/acpi/nfit/nfit.h b/drivers/acpi/nfit/nfit.h
+index f5525f8bb770..5c5e7ebba8dc 100644
+--- a/drivers/acpi/nfit/nfit.h
++++ b/drivers/acpi/nfit/nfit.h
+@@ -33,7 +33,6 @@
+ 		| ACPI_NFIT_MEM_RESTORE_FAILED | ACPI_NFIT_MEM_FLUSH_FAILED \
+ 		| ACPI_NFIT_MEM_NOT_ARMED | ACPI_NFIT_MEM_MAP_FAILED)
+ 
+-#define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_HYPERV
+ #define NVDIMM_CMD_MAX 31
+ 
+ #define NVDIMM_STANDARD_CMDMASK \
+diff --git a/drivers/nvdimm/bus.c b/drivers/nvdimm/bus.c
+index 09087c38fabd..955265656b96 100644
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -1037,9 +1037,25 @@ static int __nd_ioctl(struct nvdimm_bus *nvdimm_bus, struct nvdimm *nvdimm,
+ 		dimm_name = "bus";
+ 	}
+ 
++	/* Validate command family support against bus declared support */
+ 	if (cmd == ND_CMD_CALL) {
++		unsigned long *mask;
++
+ 		if (copy_from_user(&pkg, p, sizeof(pkg)))
+ 			return -EFAULT;
++
++		if (nvdimm) {
++			if (pkg.nd_family > NVDIMM_FAMILY_MAX)
++				return -EINVAL;
++			mask = &nd_desc->dimm_family_mask;
++		} else {
++			if (pkg.nd_family > NVDIMM_BUS_FAMILY_MAX)
++				return -EINVAL;
++			mask = &nd_desc->bus_family_mask;
++		}
++
++		if (!test_bit(pkg.nd_family, mask))
++			return -EINVAL;
+ 	}
+ 
+ 	if (!desc ||
+diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+index 18da4059be09..bd39a2cf7972 100644
+--- a/include/linux/libnvdimm.h
++++ b/include/linux/libnvdimm.h
+@@ -78,6 +78,8 @@ struct nvdimm_bus_descriptor {
+ 	const struct attribute_group **attr_groups;
+ 	unsigned long bus_dsm_mask;
+ 	unsigned long cmd_mask;
++	unsigned long dimm_family_mask;
++	unsigned long bus_family_mask;
+ 	struct module *module;
+ 	char *provider_name;
+ 	struct device_node *of_node;
+diff --git a/include/uapi/linux/ndctl.h b/include/uapi/linux/ndctl.h
+index 0e09dc5cec19..e9468b9332bd 100644
+--- a/include/uapi/linux/ndctl.h
++++ b/include/uapi/linux/ndctl.h
+@@ -245,6 +245,10 @@ struct nd_cmd_pkg {
+ #define NVDIMM_FAMILY_MSFT 3
+ #define NVDIMM_FAMILY_HYPERV 4
+ #define NVDIMM_FAMILY_PAPR 5
++#define NVDIMM_FAMILY_MAX NVDIMM_FAMILY_PAPR
++
++#define NVDIMM_BUS_FAMILY_NFIT 0
++#define NVDIMM_BUS_FAMILY_MAX NVDIMM_BUS_FAMILY_NFIT
+ 
+ #define ND_IOCTL_CALL			_IOWR(ND_IOCTL, ND_CMD_CALL,\
+ 					struct nd_cmd_pkg)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
