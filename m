@@ -1,71 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C08226DC4
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jul 2020 20:09:16 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63906226E61
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 20 Jul 2020 20:35:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9E6D7123C0AAE;
-	Mon, 20 Jul 2020 11:09:13 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=212.227.126.130; helo=mout.kundenserver.de; envelope-from=arnd@arndb.de; receiver=<UNKNOWN> 
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9D137100A6D48;
+	Mon, 20 Jul 2020 11:35:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D3FA5123C0AAC
-	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 11:09:04 -0700 (PDT)
-Received: from mail-io1-f50.google.com ([209.85.166.50]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MI59b-1k1Ai13Bfr-00FCB9 for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020
- 20:09:02 +0200
-Received: by mail-io1-f50.google.com with SMTP id k23so18563229iom.10
-        for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 11:09:02 -0700 (PDT)
-X-Gm-Message-State: AOAM532ZCC8MA7/mcCIPPeCkvh4zBWG4IZV7I8lmLnUV+pQDfKsSgESk
-	CF79cR65jPc6U/eP3eNJO+cQaNJeztP2+KuCyjE=
-X-Google-Smtp-Source: ABdhPJxk8AXvQoaaSyG6TPpWGlRFg6r3NFnqCF1QtWJiuwzUOgkiVS3DL9DQU7SzABQpPR/Um1zIkILDDVb8zZFAISI=
-X-Received: by 2002:a37:b484:: with SMTP id d126mr22851253qkf.394.1595268540113;
- Mon, 20 Jul 2020 11:09:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4BA6B100A6D46
+	for <linux-nvdimm@lists.01.org>; Mon, 20 Jul 2020 11:35:17 -0700 (PDT)
+IronPort-SDR: F8pjRYlY1qtG8z4gii1N7aTnryq+AqhppP7AqpP8I3IadhcnUTRvgPCjfULX4+vxXLOJTwxc8i
+ BVKMmmGA8rPg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9688"; a="211527667"
+X-IronPort-AV: E=Sophos;i="5.75,375,1589266800";
+   d="scan'208";a="211527667"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2020 11:35:16 -0700
+IronPort-SDR: wK7wo3tDMannoMaWGv9oSkwguhLqP6DavKpuU2XXsLRCL8yJhaDeTIBrq75zM686eRl+HmbVUR
+ EPP//W3JMNMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,375,1589266800";
+   d="scan'208";a="309946010"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+  by fmsmga004.fm.intel.com with ESMTP; 20 Jul 2020 11:35:16 -0700
+Date: Mon, 20 Jul 2020 11:35:16 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH RFC V2 04/17] x86/pks: Preserve the PKRS MSR on context
+ switch
+Message-ID: <20200720183515.GF478573@iweiny-DESK2.sc.intel.com>
+References: <20200717072056.73134-1-ira.weiny@intel.com>
+ <20200717072056.73134-5-ira.weiny@intel.com>
+ <20200717085954.GY10769@hirez.programming.kicks-ass.net>
+ <20200717223407.GS3008823@iweiny-DESK2.sc.intel.com>
+ <20200720091554.GN10769@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20200720092435.17469-1-rppt@kernel.org> <20200720092435.17469-4-rppt@kernel.org>
- <CAK8P3a0NyvRMqH7X0YNO5E6DGtvZXD5ZcD6Y6n7AkocufkMnHA@mail.gmail.com> <1595260305.4554.9.camel@linux.ibm.com>
-In-Reply-To: <1595260305.4554.9.camel@linux.ibm.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 20 Jul 2020 20:08:43 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a34kx4aAFY=-SBHX3suCLwxeZY7+YSRzct93YM_OFbSWA@mail.gmail.com>
-Message-ID: <CAK8P3a34kx4aAFY=-SBHX3suCLwxeZY7+YSRzct93YM_OFbSWA@mail.gmail.com>
-Subject: Re: [PATCH 3/6] mm: introduce secretmemfd system call to create
- "secret" memory areas
-To: "James E.J. Bottomley" <jejb@linux.ibm.com>
-X-Provags-ID: V03:K1:ohHpD+bg3lMLcpZOCloqg6b9r1+3Tl3EVXsnEKgE13Xrhixv4iA
- IDliSc+GmiEYdnSwO9oaM7/TrTztIp5+0GHYkmHHEZIBFcwJEGgwVz5A+VS5fk7D8eyjMx/
- O8txdiSb6aFtBIoLu21GJdgreszgAyyDAa0I7sWrdEbdiVTxmZUyXRfbu1anTS4seA7KQi5
- +MpuoHUNS8hBgvpfGo5xA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Tvek4F3GAoQ=:fx7y8nuaizkbmPE7Bn6BlO
- +0UJxpHybHTK7a1RE69O2IRV+Yxci+lxLqapc8AqgO2y+j0oxEdq4nP8rdDlAKxf2z7CXEt4i
- Q45S2zMkFB1NuUtjrLx8W1ZwbLsrjae2PJ9qOyS3AUWjrzriSzG0/T5wzgoFVmO8a5MIgOJQC
- Fw0Wbb4qVEIdpLwkQPcdKBeQIWERQX+w4qHSySAjYGNLByi/YVWhtpONPkXKRjiZ+djcIVZG0
- xSv0v2glFQULp1E+5+Gr4cxT872GcjL1LO12KDsmgAGQLnNPEUvJbrQs6UilEJEj39ImM/IM4
- S6KznvFSJZeGMIr08hMbtnNouSSOQrsAzKVaYHHg7VvQ4mLHDNDjUX6UWorcY26BF8rsWSRUT
- EiTlWgIq+fEcUYKn+beAxP+cUy/h+Sbrxowfsu7uUIAFbI5jcl6vTjqS4ZBk8thVsAfoiRHY2
- C2QD8D9n5yfJzFAmv1a6ump+Fi/ejNB9B2gHgKkSsO/FGMlZy1R+bmHk2q9qgpvoX37p+hwr7
- sH8C2ivU3U1bwvukIJuVO7kpw+YSNz+O3xzpHwHjaQiRI1j4YqMqKFzV9H2UGV7d7K6IOBKvw
- bbxDJEOKxTGrxMn0jgYba/T1wRCK4d576Bw+qHuc+ufR+IMO8plVGE14lxCfa9uNQ0IDhmp1p
- Dq/F4wRf6pV+7BcN39qHv2Wmn0I3VMLSCD7XnOMrK+7fWRm9zAYCwb+PsHXdHiAR8++HGKV5m
- R0fY4jcQCSBz1eglGKPutAt8BTYLb++hxylH+zdr0mAVC8rD9gumR+5m66MadMBe9EHAEzAPP
- O38Mu8n/dtbcpZlUA/V2EF713xFerCZTMmdVBobgRARUDY9J9xpisZ5Jm+QqzSjqMVUB4C0MT
- ZgUW+S6VnC3/fPmlzc5lvy4wfd11jvNEmZ06cBST3ZaRplvM8DI/YOIFQ01WZ1stu70zdsjVX
- bcieOWRx722+BRdXfiPC/A10DfDYPY6HGTVMT++Jz91onkrM6Nwbr
-Message-ID-Hash: ZDR5BCSWI6EU5EFGAWJ6L2LWP6OHGE5V
-X-Message-ID-Hash: ZDR5BCSWI6EU5EFGAWJ6L2LWP6OHGE5V
-X-MailFrom: arnd@arndb.de
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Linux API <linux-api@vger.kernel.org>, linux-arch <linux-arch@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>, Linux FS-de
- vel Mailing List <linux-fsdevel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-nvdimm@lists.01.org, linux-riscv <linux-riscv@lists.infradead.org>, the arch/x86 maintainers <x86@kernel.org>, linaro-mm-sig@lists.linaro.org, Sumit Semwal <sumit.semwal@linaro.org>
+Content-Disposition: inline
+In-Reply-To: <20200720091554.GN10769@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: JPE432ORBFTOB5V6NYHSAFEG23T74HWO
+X-Message-ID-Hash: JPE432ORBFTOB5V6NYHSAFEG23T74HWO
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZDR5BCSWI6EU5EFGAWJ6L2LWP6OHGE5V/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JPE432ORBFTOB5V6NYHSAFEG23T74HWO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -74,54 +61,55 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 20, 2020 at 5:52 PM James Bottomley <jejb@linux.ibm.com> wrote:
-> On Mon, 2020-07-20 at 13:30 +0200, Arnd Bergmann wrote:
->
-> I'll assume you mean the dmabuf userspace API?  Because the kernel API
-> is completely device exchange specific and wholly inappropriate for
-> this use case.
->
-> The user space API of dmabuf uses a pseudo-filesystem.  So you mount
-> the dmabuf file type (and by "you" I mean root because an ordinary user
-> doesn't have sufficient privilege).  This is basically because every
-> dmabuf is usable by any user who has permissions.  This really isn't
-> the initial interface we want for secret memory because secret regions
-> are supposed to be per process and not shared (at least we don't want
-> other tenants to see who's using what).
->
-> Once you have the fd, you can seek to find the size, mmap, poll and
-> ioctl it.  The ioctls are all to do with memory synchronization (as
-> you'd expect from a device backed region) and the mmap is handled by
-> the dma_buf_ops, which is device specific.  Sizing is missing because
-> that's reported by the device not settable by the user.
+On Mon, Jul 20, 2020 at 11:15:54AM +0200, Peter Zijlstra wrote:
+> On Fri, Jul 17, 2020 at 03:34:07PM -0700, Ira Weiny wrote:
+> > On Fri, Jul 17, 2020 at 10:59:54AM +0200, Peter Zijlstra wrote:
+> > > On Fri, Jul 17, 2020 at 12:20:43AM -0700, ira.weiny@intel.com wrote:
+> > > > +/*
+> > > > + * Write the PKey Register Supervisor.  This must be run with preemption
+> > > > + * disabled as it does not guarantee the atomicity of updating the pkrs_cache
+> > > > + * and MSR on its own.
+> > > > + */
+> > > > +void write_pkrs(u32 pkrs_val)
+> > > > +{
+> > > > +	this_cpu_write(pkrs_cache, pkrs_val);
+> > > > +	wrmsrl(MSR_IA32_PKRS, pkrs_val);
+> > > > +}
+> > > 
+> > > Should we write that like:
+> > > 
+> > > void write_pkrs(u32 pkr)
+> > > {
+> > > 	u32 *pkrs = get_cpu_ptr(pkrs_cache);
+> > > 	if (*pkrs != pkr) {
+> > > 		*pkrs = pkr;
+> > > 		wrmsrl(MSR_IA32_PKRS, pkr);
+> > > 	}
+> > > 	put_cpu_ptrpkrs_cache);
+> > > }
+> > > 
+> > > given that we fundamentally need to serialize againt schedule() here.
+> > 
+> > Yes.  That seems better.
+> > 
+> > That also means pks_sched_in() can be simplified to just
+> > 
+> > static inline void pks_sched_in(void)
+> > {
+> > 	write_pkrs(current->thread.saved_pkrs);
+> > }
+> > 
+> > Because of the built WRMSR avoidance.
+> > 
+> > However, pkrs_cache is static so I think I need to use {get,put}_cpu_var() here
+> > don't I?
+> 
+> Or get_cpu_ptr(&pkrs_cache), sorry for the typo :-)
 
-I was mainly talking about the in-kernel interface that is used for
-sharing a buffer with hardware. Aside from the limited ioctls, anything
-in the kernel can decide on how it wants to export a dma_buf by
-calling dma_buf_export()/dma_buf_fd(), which is roughly what the
-new syscall does as well. Using dma_buf vs the proposed
-implementation for this is not a big difference in complexity.
+Ah I see...  sorry, yes that will work.
 
-The one thing that a dma_buf does is that it allows devices to
-do DMA on it. This is either something that can turn out to be
-useful later, or it is not. From the description, it sounded like
-the sharing might be useful, since we already have known use
-cases in which "secret" data is exchanged with a trusted execution
-environment using the dma-buf interface.
-
-If there is no way the data stored in this new secret memory area
-would relate to secret data in a TEE or some other hardware
-device, then I agree that dma-buf has no value.
-
-> What we want is the ability to get an fd, set the properties and the
-> size and mmap it.  This is pretty much a 100% overlap with the memfd
-> API and not much overlap with the dmabuf one, which is why I don't
-> think the interface is very well suited.
-
-Does that mean you are suggesting to use additional flags on
-memfd_create() instead of a new system call?
-
-      Arnd
+Done,
+Ira
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
