@@ -2,67 +2,70 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EDF227DF2
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 Jul 2020 12:59:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A52227F2C
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 21 Jul 2020 13:43:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A649F12452ED7;
-	Tue, 21 Jul 2020 03:59:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::343; helo=mail-ot1-x343.google.com; envelope-from=mtk.manpages@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id B1A9712458EA8;
+	Tue, 21 Jul 2020 04:43:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9DE7412452ED5
-	for <linux-nvdimm@lists.01.org>; Tue, 21 Jul 2020 03:59:34 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id d4so14757019otk.2
-        for <linux-nvdimm@lists.01.org>; Tue, 21 Jul 2020 03:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:reply-to:from:date:message-id
-         :subject:to:cc;
-        bh=/EF7Qison7+OGXQXe8tCTGM4PP/e4Mdg4NPhl6XK730=;
-        b=Uk4f9jfGhs5DkBWkywVYSxv+RjvPtlBJKwNzxDQJRM4oyUlZeJHH9Ay0Dz9S3T+O86
-         I1k8wcSU5qjlnQbQS1Cc5u/Di5a8oxU0TqNANIeZ+urK3ruLtTD1rFzoDtPyUq0zyw1t
-         TKTa7dYj3q558MX8C2dCAhl0Kx3BnS6PKK14W3du9GA95iORa8+JZDbW/DQ6a9DT5Fmy
-         8za6hMaHY5YNv55f0k+a+Ti8u5YKEfdRVS6vRWc0m6bcU1eZA57gEbg14Y3/HWJqEceg
-         I6AApXJum8MPc7FIX+9Iv2OU5g/1PXoIJOC9VdOjehdpKQ5Gaotz84w3/VSWkS/6Omc3
-         Mlbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:reply-to
-         :from:date:message-id:subject:to:cc;
-        bh=/EF7Qison7+OGXQXe8tCTGM4PP/e4Mdg4NPhl6XK730=;
-        b=Yl2SUVm4/wIOctp7+tH+zy/+SLZJMuG1gcORHC2qewthY1GwyZCY3fyxeiliD6NBBd
-         Rg4TgfxLyAd9EMxtSERPO33qIkBqXVQ03Qy9ikZtEcWqearMwSkDhvtdEWfsRyOuKzaX
-         KUPqTFXQ8xGf4yC8hA/0UAjKUsrL0N+rSWIW5LrthYfVBPibI/JVhwfj72XSWLQ6nS0j
-         Uks9lKnn4OVMstJrbpeERgrOcaZz4+FUN5TwZjM1m+/IFSc8hsyVUZvLC3pwBqY5g6V1
-         vlfJFmIT4dJ5Np2B3/arztwj/JmTnDo7b7mIgIMxGSjIFqXThHEf8nTP6hpb2qFuB/Tj
-         0OIg==
-X-Gm-Message-State: AOAM530r7/3SBZ9FYjDdkpVG6/CyNd/I/5XtSRzGyu8MgrSsXkc02M9k
-	JnZGdcgqFiQz3yLKpNjq93A3OCRGOeGI2CZ/vaA=
-X-Google-Smtp-Source: ABdhPJwDn1K9lCXh3r6H2duEArkbw7P69YNYfj8OXMApUjXADa+z15C6AlqxraRlKJPBGg9bBd1HTcPmXTNgIEWHZIw=
-X-Received: by 2002:a05:6830:2081:: with SMTP id y1mr23521903otq.114.1595329173244;
- Tue, 21 Jul 2020 03:59:33 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id C86CF12458EA6
+	for <linux-nvdimm@lists.01.org>; Tue, 21 Jul 2020 04:43:40 -0700 (PDT)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06LBVxEg047277;
+	Tue, 21 Jul 2020 07:43:38 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 32d91v3y0q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2020 07:43:38 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06LBZKHm023915;
+	Tue, 21 Jul 2020 11:43:36 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma03ams.nl.ibm.com with ESMTP id 32brq7ktx9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 21 Jul 2020 11:43:35 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 06LBhXB919202414
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 21 Jul 2020 11:43:33 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0FB694C052;
+	Tue, 21 Jul 2020 11:43:33 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC3C84C050;
+	Tue, 21 Jul 2020 11:43:29 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.102.17.203])
+	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Tue, 21 Jul 2020 11:43:29 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Tue, 21 Jul 2020 17:13:28 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linux-nvdimm@lists.01.org
+Subject: [ndctl PATCH] papr: Check for command type in papr_xlat_firmware_status()
+Date: Tue, 21 Jul 2020 17:13:26 +0530
+Message-Id: <20200721114326.305790-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200720092435.17469-1-rppt@kernel.org> <20200720092435.17469-4-rppt@kernel.org>
-In-Reply-To: <20200720092435.17469-4-rppt@kernel.org>
-From: "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
-Date: Tue, 21 Jul 2020 12:59:22 +0200
-Message-ID: <CAKgNAkgdOZXsVVkYveqnjODOr_cHYWiRssw2Tu1dZEBd+GnOnA@mail.gmail.com>
-Subject: Re: [PATCH 3/6] mm: introduce secretmemfd system call to create
- "secret" memory areas
-To: Mike Rapoport <rppt@kernel.org>
-Message-ID-Hash: X3D6QPYWEZHSQSNUP3W7MQO4NCDDKQYS
-X-Message-ID-Hash: X3D6QPYWEZHSQSNUP3W7MQO4NCDDKQYS
-X-MailFrom: mtk.manpages@gmail.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-21_05:2020-07-21,2020-07-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 impostorscore=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 adultscore=0 suspectscore=1 clxscore=1015
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007210077
+Message-ID-Hash: 4RD5BUE7FHDMKFMP4IUGNPSURJWFUJUR
+X-Message-ID-Hash: 4RD5BUE7FHDMKFMP4IUGNPSURJWFUJUR
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: lkml <linux-kernel@vger.kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Linux API <linux-api@vger.kernel.org>, linux-arch <linux-arch@vger.kernel.org>, linux-arm-kernel@lists.infradead.org, "linux-fsdeve
- l@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: mtk.manpages@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X3D6QPYWEZHSQSNUP3W7MQO4NCDDKQYS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4RD5BUE7FHDMKFMP4IUGNPSURJWFUJUR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -71,80 +74,67 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Mike,
+We recently discovered intermittent failures while reading label-area
+of PAPR-NVDimms and the command 'read-labels' would in such a case
+generated empty output like below:
 
-On Mon, 20 Jul 2020 at 11:26, Mike Rapoport <rppt@kernel.org> wrote:
->
-> From: Mike Rapoport <rppt@linux.ibm.com>
->
-> Introduce "secretmemfd" system call with the ability to create memory areas
-> visible only in the context of the owning process and not mapped not only
-> to other processes but in the kernel page tables as well.
->
-> The user will create a file descriptor using the secretmemfd system call
+$ sudo ndctl read-labels -j nmem0
+[
+]
+read 0 nmem
 
-Without wanting to start a bikeshed discussion, the more common
-convention in recently added system calls is to use an underscore in
-names that consist of multiple clearly distinct words. See many
-examples in  https://man7.org/linux/man-pages/man2/syscalls.2.html.
+Upon investigation we found that this was caused by a spurious error
+code returned from ndctl_cmd_submit_xlat() when its called from
+ndctl_dimm_read_label_extent() while trying to read the label-area
+contents of the NVDIMM.
 
-Thus, I'd suggest at least secret_memfd().
+Digging further it was relieved that ndctl_cmd_submit_xlat() would
+always call papr_xlat_firmware_status() via pointer
+'papr_dimm_ops->xlat_firmware_status' to retrieve translated firmware
+status for all ndctl_cmds even though they arent really PAPR PDSM
+commands.
 
-Also, I wonder whether memfd_secret() might not be even better.
-There's plenty of precedent for the naming style where related APIs
-share a common prefix [1].
+In this case ndctl_cmd->type == ND_CMD_GET_CONFIG_DATA and was
+represented by type 'struct nd_cmd_get_config_data_hdr' and
+papr_xlat_firmware_status() incorrectly assumed it to be of type
+'struct nd_pkg_pdsm' and wrongly dereferenced it returning an invalid
+value.
 
-Thanks,
+A proper fix for this would probably need introducing a new ndctl_cmd
+callback like 'ndctl_cmd.get_xlat_firmware_status' similar to one
+introduced in [1]. However such a change could be disruptive, hence
+the patch introduces a small workaround in papr_xlat_firmware_status()
+that checks if the 'struct ndctl_cmd *' provided if of correct type
+CMD_CALL and if not then it ignores it and return '0'
 
-Michael
+References:
+[1]: commit fa754dd8acdb ("ndctl/dimm: Rework dimm command status
+reporting")
 
-[1] Some examples:
+Fixes: 151d2876c49e ("papr: Add scaffolding to issue and handle PDSM requests")
+Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ ndctl/lib/papr.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-       epoll_create(2)
-       epoll_create1(2)
-       epoll_ctl(2)
-       epoll_pwait(2)
-       epoll_wait(2)
-
-       mq_getsetattr(2)
-       mq_notify(2)
-       mq_open(2)
-       mq_timedreceive(2)
-       mq_timedsend(2)
-       mq_unlink(2)
-
-       sched_get_affinity(2)
-       sched_get_priority_max(2)
-       sched_get_priority_min(2)
-       sched_getaffinity(2)
-       sched_getattr(2)
-       sched_getparam(2)
-       sched_getscheduler(2)
-       sched_rr_get_interval(2)
-       sched_set_affinity(2)
-       sched_setaffinity(2)
-       sched_setattr(2)
-       sched_setparam(2)
-       sched_setscheduler(2)
-       sched_yield(2)
-
-       timer_create(2)
-       timer_delete(2)
-       timer_getoverrun(2)
-       timer_gettime(2)
-       timer_settime(2)
-
-       timerfd_create(2)
-       timerfd_gettime(2)
-       timerfd_settime(2)
-
-
-
-
+diff --git a/ndctl/lib/papr.c b/ndctl/lib/papr.c
+index d9ce253369b3..63561f8f9797 100644
+--- a/ndctl/lib/papr.c
++++ b/ndctl/lib/papr.c
+@@ -56,9 +56,7 @@ static u32 papr_get_firmware_status(struct ndctl_cmd *cmd)
+ 
+ static int papr_xlat_firmware_status(struct ndctl_cmd *cmd)
+ {
+-	const struct nd_pkg_pdsm *pcmd = to_pdsm(cmd);
+-
+-	return pcmd->cmd_status;
++	return (cmd->type == ND_CMD_CALL) ? to_pdsm(cmd)->cmd_status : 0;
+ }
+ 
+ /* Verify if the given command is supported and valid */
 -- 
-Michael Kerrisk
-Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
-Linux/UNIX System Programming Training: http://man7.org/training/
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
