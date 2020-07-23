@@ -1,106 +1,88 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC7D22A325
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 Jul 2020 01:34:20 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FD322A46F
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 23 Jul 2020 03:18:29 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4E179124CD270;
-	Wed, 22 Jul 2020 16:34:18 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=77.32.212.194; helo=vedicisland.com; envelope-from=noreply@vedicisland.com; receiver=<UNKNOWN> 
-Received: from vedicisland.com (vedicisland.com [77.32.212.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 846ED124B445E;
+	Wed, 22 Jul 2020 18:18:27 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DD1D9124CD26D
-	for <linux-nvdimm@lists.01.org>; Wed, 22 Jul 2020 16:34:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vedicisland.com;
- q=dns/txt; s=mail; bh=Dh89etcrt8qcuAG1riUVLy6D7FOue1JoG9KPVXyT87Y=;
- h=from:reply-to:subject:date:mime-version:content-type:list-id:list-unsubscribe:x-csa-complaints:list-unsubscribe-post;
-        b=1ia0qtflJsbcdqcpmtgmMvKr8X0Ibxdje0DbdZ5H6HlQWx+AbsTeJSKrm48vTpczV84dcgju8MeC
-        v196i2jIlqnfab0bSr9IREMra09w7W5E5AXBTu0uXoL/cmwb3RZegIbnc2hoTMqR6/HsDiqqffgw
-        8LjmbM0nPZSHG0kyP9k=
+	by ml01.01.org (Postfix) with ESMTPS id 8AB87123323D2
+	for <linux-nvdimm@lists.01.org>; Wed, 22 Jul 2020 18:18:25 -0700 (PDT)
+IronPort-SDR: 6DkMM46T6iXroZACxaIY0KsFwCPJLzjsHQPbmSoO5E/K1xemdFE5lCueZySj4om941+vTTEOmx
+ GhWLSDPIxOSw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9690"; a="150434263"
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800";
+   d="scan'208";a="150434263"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2020 18:18:24 -0700
+IronPort-SDR: TqB/ygLKZ5Ngd0Lm4i0UzCt5Rb2vPVBcLyo7hEM9TWy/GZBGZPVf6Td4tJ8qyuEYRYXwkoHtY3
+ pFbA3zDuJEQg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,383,1589266800";
+   d="scan'208";a="272160023"
+Received: from vverma7-mobl4.lm.intel.com ([10.255.75.57])
+  by fmsmga008.fm.intel.com with ESMTP; 22 Jul 2020 18:18:24 -0700
+From: Vishal Verma <vishal.l.verma@intel.com>
 To: <linux-nvdimm@lists.01.org>
-Subject: Bamboo Bottle Making Village
-Date: Wed, 22 Jul 2020 23:33:18 +0000
-Feedback-ID: 77.32.212.194:2732417_59:2732417:Sendinblue
-From: Agarwal G <g@vedicisland.com>
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Cc: Vishal Verma <vishal.l.verma@intel.com>,
+	Santosh Sivaraj <santosh@fossix.org>
+Subject: [ndctl PATCH] ndctl/lib: fix new symbol location in the symbol script
+Date: Wed, 22 Jul 2020 19:00:34 -0600
+Message-Id: <20200723010034.28561-1-vishal.l.verma@intel.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Message-Id: <202022072333.wpcbzaljv0i7j@vedicisland.com>
-Precedence: bulk
-X-Csa-Complaints: whitelist-complaints@eco.de
-X-Mailer: Sendinblue
-X-Mailin-Campaign: 59
-X-Mailin-Client: 2732417
-X-sib-id: KtX3s2pIYGz0wZVu1WE4XJDjnSFH-V8qALxUt4kNrAoieAkry0kIlyjNpQ5jlHrD4fkk133YGlijTNKyqOSzVC6hkqVEs0CDelneWsItNpvthbHt7mA5tRibvFcE0OaKNmBVKvJMPYyyVSB_f57zhY7iZQsaKdCkoE2xiXgbpbDVl8Y
-Message-ID-Hash: 5PZV7J4G6AL3U5WRQWEDF63ARYNRKPNY
-X-Message-ID-Hash: 5PZV7J4G6AL3U5WRQWEDF63ARYNRKPNY
-X-MailFrom: noreply@vedicisland.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+Message-ID-Hash: 6ATHMND3SXTYZQF5NCPYGVNIBR336UVI
+X-Message-ID-Hash: 6ATHMND3SXTYZQF5NCPYGVNIBR336UVI
+X-MailFrom: vishal.l.verma@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
-Reply-To: life@vedicheaven.space
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5PZV7J4G6AL3U5WRQWEDF63ARYNRKPNY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6ATHMND3SXTYZQF5NCPYGVNIBR336UVI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-W0RFRkFVTFRfSEVBREVSXVsgIF0oICMgKQ0KWyAgXSggIyApIMKgDQoNCsKgDQpbICBdKCAjICkg
-ICAgIEJhbWJvbyBib3R0bGXCoA0KQnVpbHRzIGltbXVuaXR5IHByb3RlY3RzIHlvdXIgYm9keSBm
-cm9tIGRpc2Vhc2VzLsKgDQoNCg0KDQrCoA0KWyAgXSggIyApIMKgDQpXZSBoYXZlIG1vcmUgdGhl
-biA0MDAgcHJvZHVjdHMgbWFkZSBmcm9tIEJhbWJvby4NCldlIGFyZSBMb29raW5nIGZvciBkaXN0
-cmlidXRvcnMuDQp3YXRjaCBvdXIgZmlsbSBvbiBiYW1ib28gdmlsbGFnZSBhdCB0aGlzIGxpbmsN
-Cg0KaHR0cHM6Ly95b3V0dS5iZS9tOWQ1eXowSnhIZw0KDQoNCndoYXRzYXBwICs5MSA5NSA5NCA1
-NjU2NTYgZm9yIGRldGFpbHMgICDCoA0KWyAgXSggIyApIMKgDQoNCg0KwqAgIEJhbWJvbyBjdXR0
-bGVyeSBhbmQga2l0Y2hlbiBpdGVtcyDCoA0KDQp3aGF0c2FwcCArOTEgOTUgOTQgNTY1NjU2IGZv
-ciBkZXRhaWxzICAgwqAgICAgWyBCdXR0b24gXSggaHR0cDovL3IudmVkaWNpc2xhbmQuY29tL21r
-L2NsL2YvbWE1S0tucktRUlUzTFZUVkxUbWFMLTh2SHA3Wld6S0ZCWGN5MGtZNnNLck1ZVUtRWW45
-QnJtUE12cFg3c1plcFhpalZnQnhrM3V5Y2VVWl9makl5UnlWU1E4RVJydWUzUzRnWlJEcl9TTWk5
-cUJVdWctV3hSOTloeThxMGhZWHhGbzNMblhDcVZlb2RqeDB4T0xiZWtqY0oxSWwxNW45djdiQTVO
-eHRaWnJSaDRfX0VJVHV0ZVlkcTJBICkgICAgICDCoA0KWyAgXSggIyApIMKgDQoNCg0KwqAgIEJh
-bWJvbyBwZW4gwqANCg0Kd2hhdHNhcHAgKzkxIDk1IDk0IDU2NTY1NiBmb3IgZGV0YWlscyAgIMKg
-ICAgIFsgQnV0dG9uIF0oIGh0dHA6Ly9yLnZlZGljaXNsYW5kLmNvbS9tay9jbC9mL2x5RTRKNVF3
-d3JabzN1THhNemk0aXVxaW02SlZRSWtGNnpEcjZfTFdCZE1udDRLNU13TTdPWk5qeU1JUU8tTzdz
-ODM2Y3ppN0paemx5TmZpOXdCS01GSml3eHl2ck05ZlJybjMxZi0wYzBGUUhVM0xXQUxwSVFodGZW
-eTB0S3R5VUFuMXlNTVJfeXU4RmVZampKZkltSzRtUEZLbEF4VnZtOGxFN2dEOWFVUWVWVGhBYlBV
-c2lGdmRoUSApDQoNCg0KwqAgIEJhbWJvbyB0b290aGJydXNoIHdpdGggTmF0dXJhbCBjb3JuIGJy
-aXN0bGVzIMKgDQoNCndoYXRzYXBwICs5MSA5NSA5NCA1NjU2NTYgZm9yIGRldGFpbHMgICDCoCAg
-ICBbIEJ1dHRvbiBdKCBodHRwOi8vci52ZWRpY2lzbGFuZC5jb20vbWsvY2wvZi9rX3pIVWJQbUJE
-LWRmRXB0TXg3YVluTHYzYkJmRFF4UVUta0N5aU5tbVRZMFRpQlR1RXlLeURvUGtQY1RVaHhnbUZf
-bmhJbFJrcE1FcEE2Y1FzV2dWMWx1R0FIMTVDUW5IMmNRYWFpV3FjUUFiX2xhTU8xM2hlWVJDc0s0
-N3ZtV3h6WjJJMHhPWllGRG9hV3dNQmpZVmNFMnFLS1ViMzBnUWdmVjlFVHhsN3lkV3htdWVoeWlx
-U1FTNHcgKSAgICAgIMKgICAgICBbICBdKCAjICkNClsgIF0oICMgKSDCoA0KDQpXb3JsZCBCYW1i
-b28gVmlsbGFnZQ0KQXNzYW0gaW5kaWENCg0KDQoNCg0KDQrCoA0KWyAgXSggIyApIMKgDQpUaGlz
-IGVtYWlsIHdhcyBzZW50IHRvIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcNCllvdSByZWNlaXZl
-ZCB0aGlzIGVtYWlsIGJlY2F1c2UgeW91IGFyZSByZWdpc3RlcmVkIHdpdGggVmVkaWMgSGVhdmVu
-DQrCoA0KWyBVbnN1YnNjcmliZSBoZXJlIF0oIGh0dHA6Ly9yLnZlZGljaXNsYW5kLmNvbS9tay91
-bi96QzJzQmFQVnh5aktsMEVTU21tLVM1bjJrSnNWRndMRC15ZHh6S3VwTXJxMlNSdmtnZ0NUMHJa
-QllXSDN3T1B3aFBobThSM2l0RHBnZEhlS2xfUkhKaXRENWoxdXllZ0tKQTFsU25wSlVoa3R1Y2No
-ZngxZ0RxVm1mNTI1c2hycDhvZ2VNYzktYllJOWVvMCApICDCoA0KWyAgXSggaHR0cDovL3IudmVk
-aWNpc2xhbmQuY29tL21rL2NsL2YvdGxMWWhvUW1QeU1TUzVwR2RGdFhVSHBQbWttekxFY3R6bWlx
-NFRiUjNBWVRBOS16MDctOEp4NXdQekRGNklJd2d0WHkzVGs0RVE2Wkc1VnI0QVNkS1VjWDhWa1dz
-LVc1VGxna2Q3c25YSXVrcUVNOVp6dDRBdklyQjlPWHNmRjRUUTY2Sjl6enYxdUZrQnl5Rkh5SmFM
-bk1tb25CLXRNQzhFQnI1VmJUaUJLaWxlR2o0ZnNJdWE5aEVyX09VUDk4eU9TdEZzSEEwTEVwVk42
-ajZ2U3FidmJkbWxkTTNreGVRU3NQZWZydGRLZ2JidDRYSTJvaDVGSHJ5aU1wbkwyS1Q5LVpsMDFt
-STJpbkxON2RUdlhQTHhTRG9UTWQ5emF1bGcgKSAgwqANClsgIF0oICMgKSDCoA0KwqkgMjAyMCBW
-ZWRpYyBIZWF2ZW4gwqANClsgIF0oICMgKSDCoCAgIE1hdXJpcyBjb21tb2RvIG1hc3NhIHRvcnRv
-ciwgdSBbIHNpdCBhbWV0LGNvbnNlY3RldHVyIGFkaXBpc2ljaW5nIF0oICMgKSBOdW5jIGZlcm1l
-bnR1bSBuZXF1ZSBxdWFtLCBzb2RhbGVzIGVsZWlmZW5kIGVsaXQgaW1wZXJkaWV0IHZpdGFlLiBB
-bGlxdWFtIGlkIGV1aXNtb2QgbnVsbGEuIFN1c3BlbmRpc3NlIGltcGVyZGlldCwgc2VtIGV0IHNv
-bGxpY2l0dWRpbiBlZ2VzdGFzLCB1cm5hIG51bmMgYXVjdG9yIG1hc3NhLCB2dWxwdXRhdGUgcGhh
-cmV0cmEgbWkgb2RpbyBuZWMgdG9ydG9yLiBVdCB1bHRyaWNpZXMgbWFzc2Egdml2ZXJyYSBxdWlz
-LiAgwqANClsgIF0oICMgKSDCoCAgIE1hdXJpcyBjb21tb2RvIG1hc3NhIHRvcnRvciwgdSBbIHNp
-dCBhbWV0LGNvbnNlY3RldHVyIGFkaXBpc2ljaW5nIF0oICMgKSBOdW5jIGZlcm1lbnR1bSBuZXF1
-ZSBxdWFtLCBzb2RhbGVzIGVsZWlmZW5kIGVsaXQgaW1wZXJkaWV0IHZpdGFlLiBBbGlxdWFtIGlk
-IGV1aXNtb2QgbnVsbGEuIFN1c3BlbmRpc3NlIGltcGVyZGlldCwgc2VtIGV0IHNvbGxpY2l0dWRp
-biBlZ2VzdGFzLCB1cm5hIG51bmMgYXVjdG9yIG1hc3NhLCB2dWxwdXRhdGUgcGhhcmV0cmEgbWkg
-b2RpbyBuZWMgdG9ydG9yLiBVdCB1bHRyaWNpZXMgbWFzc2Egdml2ZXJyYSBxdWlzLiAgwqANCg0K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZk
-aW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2Ny
-aWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+The commit referenced below added a new symbol in an existing section in
+the symbol script, which is incorrect. Move it to the new LIBNDCTL_24
+section.
+
+Fixes: 1e840d56f123 ("Skip region filtering if numa_node attribute is not present")
+Cc: Santosh Sivaraj <santosh@fossix.org>
+Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
+---
+ ndctl/lib/libndctl.sym | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ndctl/lib/libndctl.sym b/ndctl/lib/libndctl.sym
+index 805c3ca..7ba1dcc 100644
+--- a/ndctl/lib/libndctl.sym
++++ b/ndctl/lib/libndctl.sym
+@@ -430,10 +430,10 @@ LIBNDCTL_23 {
+ 	ndctl_region_get_target_node;
+ 	ndctl_region_get_align;
+ 	ndctl_region_set_align;
+-	ndctl_region_has_numa;
+ } LIBNDCTL_22;
+ 
+ LIBNDCTL_24 {
+ 	ndctl_bus_has_of_node;
+ 	ndctl_bus_is_papr_scm;
++	ndctl_region_has_numa;
+ } LIBNDCTL_23;
+-- 
+2.26.2
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
