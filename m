@@ -1,39 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C311622D8AA
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 25 Jul 2020 18:25:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D4222DEEC
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 26 Jul 2020 14:20:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 872D912532439;
-	Sat, 25 Jul 2020 09:25:00 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id D158111D54C4A;
+	Sun, 26 Jul 2020 05:20:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6274312532438
-	for <linux-nvdimm@lists.01.org>; Sat, 25 Jul 2020 09:24:58 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 86B24AC2D;
-	Sat, 25 Jul 2020 16:25:05 +0000 (UTC)
-From: Coly Li <colyli@suse.de>
-To: dan.j.williams@intel.com,
-	linux-nvdimm@lists.01.org
-Subject: [PATCH v3] dax: print error message by pr_info() in __generic_fsdax_supported()
-Date: Sun, 26 Jul 2020 00:24:50 +0800
-Message-Id: <20200725162450.95999-1-colyli@suse.de>
+	by ml01.01.org (Postfix) with ESMTPS id 7C58E11D15746
+	for <linux-nvdimm@lists.01.org>; Sun, 26 Jul 2020 05:20:49 -0700 (PDT)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06QC37Tw065500;
+	Sun, 26 Jul 2020 08:20:42 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 32gdmbmg07-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 Jul 2020 08:20:41 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06QC541Q068942;
+	Sun, 26 Jul 2020 08:20:41 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 32gdmbmfyd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 Jul 2020 08:20:41 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06QCC7sJ030975;
+	Sun, 26 Jul 2020 12:20:39 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma06ams.nl.ibm.com with ESMTP id 32gcqgh6n6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 26 Jul 2020 12:20:39 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 06QCJBw266388354
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 26 Jul 2020 12:19:11 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4359A11C050;
+	Sun, 26 Jul 2020 12:20:36 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0391511C04A;
+	Sun, 26 Jul 2020 12:20:33 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.81.63])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Sun, 26 Jul 2020 12:20:32 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Sun, 26 Jul 2020 17:50:31 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [RESEND PATCH v2 0/2] powerpc/papr_scm: add support for reporting NVDIMM 'life_used_percentage' metric
+Date: Sun, 26 Jul 2020 17:50:28 +0530
+Message-Id: <20200726122030.31529-1-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Message-ID-Hash: HDNVCMBSRNZJIZYJW3YMJFJUP6GC76WN
-X-Message-ID-Hash: HDNVCMBSRNZJIZYJW3YMJFJUP6GC76WN
-X-MailFrom: colyli@suse.de
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: msuchanek@suse.com, ailiopoulos@suse.com, Coly Li <colyli@suse.de>, Jan Kara <jack@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-26_03:2020-07-24,2020-07-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007260093
+Message-ID-Hash: 22YQQUUV4ML46OQSIBBBHHMV2ECL6R45
+X-Message-ID-Hash: 22YQQUUV4ML46OQSIBBBHHMV2ECL6R45
+X-MailFrom: vaibhav@linux.ibm.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HDNVCMBSRNZJIZYJW3YMJFJUP6GC76WN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/22YQQUUV4ML46OQSIBBBHHMV2ECL6R45/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -42,116 +81,58 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-In struct dax_operations, the callback routine dax_supported() returns
-a bool type result. For false return value, the caller has no idea
-whether the device does not support dax at all, or it is just some mis-
-configuration issue.
+Changes since v2[1]:
 
-An example is formatting an Ext4 file system on pmem device on top of
-a NVDIMM namespace by,
- # mkfs.ext4 /dev/pmem0
-If the fs block size does not match kernel space memory page size (which
-is possible on non-x86 platform), mount this Ext4 file system will fail,
-  # mount -o dax /dev/pmem0 /mnt
-  mount: /mnt: wrong fs type, bad option, bad superblock on /dev/pmem0,
-  missing codepage or helper program, or other error.
-And from the dmesg output there is only the following information,
-  [  307.853148] EXT4-fs (pmem0): DAX unsupported by block device.
+* Rebased the patch series on latest ppc-next tree located [2]
 
-The above information is quite confusing. Because definitely the pmem0
-device supports dax operation, and the super block is consistent as how
-it was created by mkfs.ext4.
-
-Indeed the failure is from __generic_fsdax_supported() by the following
-code piece,
-        if (blocksize != PAGE_SIZE) {
-               pr_debug("%s: error: unsupported blocksize for dax\n",
-                                bdevname(bdev, buf));
-                return false;
-        }
-It is because the Ext4 block size is 4KB and kernel page size is 8KB or
-16KB.
-
-It is not simple to make dax_supported() from struct dax_operations
-or __generic_fsdax_supported() to return exact failure type right now.
-So the simplest fix is to use pr_info() to print all the error messages
-inside __generic_fsdax_supported(). Then users may find informative clue
-from the kernel message at least.
-
-Message printed by pr_debug() is very easy to be ignored by users. This
-patch prints error message by pr_info() in __generic_fsdax_supported(),
-when then mount fails, following lines can be found from dmesg output,
- [ 2705.500885] pmem0: error: unsupported blocksize for dax
- [ 2705.500888] EXT4-fs (pmem0): DAX unsupported by block device.
-Now the users may have idea the mount failure is from pmem driver for
-unsupported block size.
-
-Reported-by: Michal Suchanek <msuchanek@suse.com>
-Suggested-by: Jan Kara <jack@suse.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Reviewed-by: Jan Kara <jack@suse.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Anthony Iliopoulos <ailiopoulos@suse.com>
+[1] https://lore.kernel.org/linux-nvdimm/20200701133510.4613-1-vaibhav@linux.ibm.com/
+[2] git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
 ---
-Changelog:
-v3: Fix a typo in commit log, add reviewed-by from Ira Weiny and
-    Pankaj Gupta.
-v2: Add reviewed-by from Jan Kara
-v1: initial version.
 
- drivers/dax/super.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+This small patchset implements kernel side support for reporting
+'life_used_percentage' metric in NDCTL with dimm health output for
+papr-scm NVDIMMs. With corresponding NDCTL side changes output for
+should be like:
 
-diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-index 8e32345be0f7..de0d02ec0347 100644
---- a/drivers/dax/super.c
-+++ b/drivers/dax/super.c
-@@ -80,14 +80,14 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	int err, id;
- 
- 	if (blocksize != PAGE_SIZE) {
--		pr_debug("%s: error: unsupported blocksize for dax\n",
-+		pr_info("%s: error: unsupported blocksize for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
- 
- 	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
- 	if (err) {
--		pr_debug("%s: error: unaligned partition for dax\n",
-+		pr_info("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
-@@ -95,7 +95,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	last_page = PFN_DOWN((start + sectors - 1) * 512) * PAGE_SIZE / 512;
- 	err = bdev_dax_pgoff(bdev, last_page, PAGE_SIZE, &pgoff_end);
- 	if (err) {
--		pr_debug("%s: error: unaligned partition for dax\n",
-+		pr_info("%s: error: unaligned partition for dax\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
-@@ -106,7 +106,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	dax_read_unlock(id);
- 
- 	if (len < 1 || len2 < 1) {
--		pr_debug("%s: error: dax access failed (%ld)\n",
-+		pr_info("%s: error: dax access failed (%ld)\n",
- 				bdevname(bdev, buf), len < 1 ? len : len2);
- 		return false;
- 	}
-@@ -139,7 +139,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 	}
- 
- 	if (!dax_enabled) {
--		pr_debug("%s: error: dax support not enabled\n",
-+		pr_info("%s: error: dax support not enabled\n",
- 				bdevname(bdev, buf));
- 		return false;
- 	}
+$ sudo ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "life_used_percentage":0,
+      "shutdown_state":"clean"
+    }
+  }
+]
+
+PHYP supports H_SCM_PERFORMANCE_STATS hcall through which an LPAR can
+fetch various performance stats including 'fuel_gauge' percentage for
+an NVDIMM. 'fuel_gauge' metric indicates the usable life remaining of
+an NVDIMM expressed as percentage and  'life_used_percentage' can be
+calculated as 'life_used_percentage = 100 - fuel_gauge'.
+
+Structure of the patchset
+=========================
+First patch implements necessary scaffolding needed to issue the
+H_SCM_PERFORMANCE_STATS hcall and fetch performance stats
+catalogue. The patch also implements support for 'perf_stats' sysfs
+attribute to report the full catalogue of supported performance stats
+by PHYP.
+
+Second and final patch implements support for sending this value to
+libndctl by extending the PAPR_PDSM_HEALTH pdsm payload to add a new
+field named 'dimm_fuel_gauge' to it.
+
+Vaibhav Jain (2):
+  powerpc/papr_scm: Fetch nvdimm performance stats from PHYP
+  powerpc/papr_scm: Add support for fetching nvdimm 'fuel-gauge' metric
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 +++
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     |   9 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 184 ++++++++++++++++++
+ 3 files changed, 220 insertions(+)
+
 -- 
 2.26.2
 _______________________________________________
