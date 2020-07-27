@@ -1,75 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC96E22E5E3
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 08:31:40 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E819022E6B9
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 09:38:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 96A931216B403;
-	Sun, 26 Jul 2020 23:31:38 -0700 (PDT)
-Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6B570120956F5
-	for <linux-nvdimm@lists.01.org>; Sun, 26 Jul 2020 23:31:34 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	by ml01.01.org (Postfix) with ESMTP id DAC3411FB72C8;
+	Mon, 27 Jul 2020 00:38:28 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.207.254.173; helo=cloudhost-505127.us-midwest-1.nxcli.net; envelope-from=customersupport@dhl.com; receiver=<UNKNOWN> 
+Received: from cloudhost-505127.us-midwest-1.nxcli.net (cloudhost-505127.us-midwest-1.nxcli.net [104.207.254.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id D927911FB72C5
+	for <linux-nvdimm@lists.01.org>; Mon, 27 Jul 2020 00:38:24 -0700 (PDT)
+Received: (qmail 12590 invoked by uid 108); 27 Jul 2020 06:43:21 +0000
+Received: from unknown (HELO cloudhost-505127.us-midwest-1.nxcli.net) (::1)
+  by cloudhost-505127.us-midwest-1.nxcli.net with SMTP; 27 Jul 2020 06:43:21 +0000
 MIME-Version: 1.0
-Subject: =?utf-8?q?Is_online_best_essay_writing_service_fine_for_writing_academic?=
- =?utf-8?b?4oCZcyBlc3NheXM/?=
-From: lawrencesanchez1256@yahoo.com
-To: linux-nvdimm@lists.01.org
-Date: Mon, 27 Jul 2020 06:31:34 -0000
-Message-ID: <20200727063134.2837.13830@ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://ml01.01.org/
-Message-ID-Hash: BSCJQMGYXMK5NYAGD7IEAQ6TAVLEZQJP
-X-Message-ID-Hash: BSCJQMGYXMK5NYAGD7IEAQ6TAVLEZQJP
-X-MailFrom: lawrencesanchez1256@yahoo.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Date: Mon, 27 Jul 2020 07:43:18 +0100
+From: =?UTF-8?Q?DHL_Express_INC=C2=AE?= <Customersupport@dhl.com>
+To: undisclosed-recipients:;
+Subject: DHL/DB00118380920182/07/20/final notification!!!)
+Message-ID: <a1ad49b39696bfa4f4708da6d1182a4f@dhl.com>
+X-Sender: Customersupport@dhl.com (info@examwizzapp.com)
+User-Agent: Roundcube Webmail/1.3.6
+Message-ID-Hash: GMZASKGS6K2RM2P6SQWFWF32N7VRQOKM
+X-Message-ID-Hash: GMZASKGS6K2RM2P6SQWFWF32N7VRQOKM
+X-MailFrom: Customersupport@dhl.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BSCJQMGYXMK5NYAGD7IEAQ6TAVLEZQJP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GMZASKGS6K2RM2P6SQWFWF32N7VRQOKM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RXNzYXkgd3JpdGluZyBpcyBhIHZlcnkgc2lnbmlmaWNhbnQgYW5kIGVzc2VudGlhbCB0YXNrIGZv
-ciBhY2FkZW1pY+KAmXMgaW50ZXJuYWwgZ3JhZGVzLiBUaGVyZWZvcmUgbm93YWRheXMgdGhlIGFj
-YWRlbWljIGVzc2F5IHdyaXRpbmcgdGFzayBpcyByaXNpbmcgaW4gYSB2ZXJ5IHR5cGljYWwgd2F5
-LiBUaGlzIHRhc2sgaW50ZW50aW9uIGlzIHRvIG1ha2Ugc3R1ZGVudHMgaW4gYSBkZWVwIHN0dWR5
-IG9uIHRoZWlyIGFjYWRlbWljIHRhc2tzIHRvIGdldCBtb3JlIGtub3dsZWRnZS4gVGhlIHRhc2sg
-aXMgYWxzbyBoZWxwaW5nIHRvIGdyb3cgcmVzZWFyY2hpbmcgY2FwYWNpdHkgb2Ygc3R1ZGVudHMg
-aW4gdGhlaXIgb3duIHN1YmplY3QgYW5kIGV2ZW4gdGhpcyB3aWxsIHN1cHBvcnQgc3R1ZGVudHMg
-dG8gZ2V0IGdvb2Qgd3JpdGluZyBza2lsbHMgZXZlbiBzcGVlZCBpbiB3cml0aW5nIHdvcmtzLiBJ
-ZiBhIHN0dWRlbnQgaGFzIGEgcGFzdCB3cml0dGVuIHByYWN0aWNlIHRoZW4gdGhleSBjYW4gZWFz
-aWx5IHdyaXRlIHRoZWlyIGZ1dHVyZSBlc3NheSB3b3JrcyBieSB0aGVtLiBUaGVuIHdobyBpcyBu
-b3QgZ29vZCBhdCB3cml0aW5nIHdvcmtzIHRoZXkgd2lsbCBhbHdheXMgdHJ5IHRvIGxvb2sgZm9y
-IHRoZSBiZXN0IG9ubGluZSBiZXN0IGVzc2F5IHdyaXRpbmcgc2VydmljZSBmb3IgZmluaXNoaW5n
-IHRoZWlyIGVzc2F5LiBCdXQgdGhlIGNvbmZ1c2lvbiBpcyB3aGlsZSBwaWNraW5nIHRoZSBiZXN0
-IHNlcnZpY2UgZnJvbSB0aGUgb25saW5lLiBUaGVyZSBhcmUgYSBmZXcgYmVzdCBlc3NheSB3cml0
-aW5nIHNlcnZpY2VzIHRoYXQgYXJlIGZpbmUgZm9yIGNvbXBsZXRpbmcgc3R1ZGVudOKAmXMgZXNz
-YXlzLiBTb21lIG9ubGluZSBzZXJ2aWNlIGludGVudGlvbiBpcyB0byBtYWtlIG1vbmV5IGZyb20g
-dGhlIHN0dWRlbnRzIGJ5IGNoZWF0aW5nIHRoZW0uDQoNCllvdSBjYW4gdW5kZXJzdGFuZCB0aGUg
-Y29tcGFuaWVzIGJ5IHVuZGVyc3RhbmRpbmcgdGhlaXIgYmVoYXZpb3IgYW5kIHJlbWVtYmVyIHRo
-YXQgdGhlIGJlc3QgZXNzYXkgd3JpdGluZyBzZXJ2aWNlIHdpbGwgYWx3YXlzIGtlZXAgYSBwbGVh
-c2FudCBhcHByb2FjaCB3aXRoIHRoZWlyIGN1c3RvbWVycyBmcm9tIHRoZSBvcmRlciBvZiBlc3Nh
-eSB0byBkZWxpdmVyaW5nIHRoZSBlc3NheSBodHRwczovL2NsYXp3b3JrLmNvbS8uIEV2ZW4geW91
-IGNhbiBzZWUgdGhhdCB0aGVpciBmZWVkYmFjayBzZWN0aW9uIGlzIGZpbGxlZCB3aXRoIHBvc2l0
-aXZlIHJldmlld3MuIFRoZXNlIHJldmlld3Mgd2lsbCBoZWxwIHlvdSB0byB1bmRlcnN0YW5kIHRo
-ZSBzZXJ2aWNlIGNvcnJlY3RseS4gVGhleSB3aWxsIGtlZXAgcHJvZmVzc2lvbmFsbHkgdGFsZW50
-ZWQgd3JpdGVycyB0byBjb21wbGV0ZSB5b3VyIG9yZGVycy4gVW5kZXJzdGFuZCB0aGVzZSBmcm9t
-IHlvdXIgc2VsZWN0ZWQgc2VydmljZS4gSGVyZSBhZ2Fpbiwgc2F5aW5nIHlvdSBob3cgdG8gZ2V0
-IGFuIGVzc2F5IHdyaXRpbmcgc2VydmljZSBmcm9tIHRoZSBvbmxpbmUuIEZpcnN0IG9mIGFsbCwg
-dHJ5IHRvIGRvIHRoZSBiZXN0IHN0dWR5IGluIHRoZWlyIHJldmlld3MuIFRyeSB0byB1bmRlcnN0
-YW5kIHRoZSB3ZWJzaXRlIHJldmlld3MgZnJvbSB0aGUgc2VsZWN0ZWQgc2l0ZSBiZWZvcmUgc3Vi
-bWl0dGluZyB5b3VyIG9yZGVycy4gRXZlcnkgcG9zaXRpdmUgYW5kIG5lZ2F0aXZlIHJldmlldyBh
-bmQgc3VnZ2VzdGlvbnMgYXJlIG1heSBub3QgYmUgdHJ1ZSBmb3IgZXZlcnkgc2l0ZS4gVGhlcmVm
-b3JlIGJlIHJlZmluZWQgYW5kIHZpZ2lsYW50IHRvIHNlbGVjdCB0aGUgcmlnaHQgZXNzYXkgd3Jp
-dGluZyBzZXJ2aWNlIGZvciB5b3VyIGVzc2F5cy4gRW5zdXJlIHRoYXQgdGhlIHNlbGVjdGVkIGVz
-c2F5IHdyaXRpbmcgc2VydmljZSBpcyBkaXN0cmlidXRpbmcgdGhlIGVzc2F5IG9uIHRoZWlyIGdp
-dmVuIGRlYWRsaW5lIHdpdGggYSBxdWFsaXR5IGVzc2F5LiBDaGVjayB5b3VyIGVzc2F5IHByb3Bl
-cmx5IGFmdGVyIHlvdSBnZXQgZnJvbSB0aGUgc2l0ZS4KX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Dear Customer, 
+
+The shipment(s) Document attached are expected to be delivered to you
+today.
+--------------------------------------------------------
+AWB Number: 00118380920182
+Pickup Date: 2020-07-28 16:44:09
+Description: Original Shipment Document
+--------------------------------------------------------- 
+
+Read the enclosed file for details. 
+
+DHL Customer Service. 
+
+2020 (c) DHL International GmbH. All rights reserved.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
