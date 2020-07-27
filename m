@@ -2,92 +2,105 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825BE22F55A
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 18:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C5422F608
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 19:04:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5CD2C123E3929;
-	Mon, 27 Jul 2020 09:30:49 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id D071D123CCCC8;
+	Mon, 27 Jul 2020 10:04:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.78; helo=aserp2120.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4F97F123E3923
-	for <linux-nvdimm@lists.01.org>; Mon, 27 Jul 2020 09:30:47 -0700 (PDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 286AF2074F;
-	Mon, 27 Jul 2020 16:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1595867447;
-	bh=/Qw/NeLTpR/6aCJ04huD3Mp72u1Bfe6uWLUqSL0Zn2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtM0Agb5HnPUkY+CbqIdR37o127nhQKSy5Dq+iFtbhAZ5rXOrCF/TCi/y9dVBPJgG
-	 ESLcg0dYR67EEDk5MwOpPeS2zHrUXad+3m3RPRP3kklfQeu9q9pdGF6IS3dzaGLPnI
-	 xswjDrT4XhuX8HarB2l6OUZFzMfxbAPY98Qdg+hQ=
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/7] mm: secretmem: add ability to reserve memory at boot
-Date: Mon, 27 Jul 2020 19:29:35 +0300
-Message-Id: <20200727162935.31714-8-rppt@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200727162935.31714-1-rppt@kernel.org>
-References: <20200727162935.31714-1-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 8DD05123C2E0B
+	for <linux-nvdimm@lists.01.org>; Mon, 27 Jul 2020 10:04:18 -0700 (PDT)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+	by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RH1mhh115294;
+	Mon, 27 Jul 2020 17:04:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=w//J/2mDfCHLIaLXFVh9GpgHfZ0i+OErWDD1y/jPnaA=;
+ b=oHaF03+mMohgORSzI2bUndmENyCDPn9OoZj0ZqWRy4x2cfYeKwyQiOYsFnCGgHS8wsss
+ lQZfBivQfvHadJ5J/v2NvGU15MTc+zdGiXsL6TtAbNoq6kFRJr9zzqkpwh2m1EgUlDXc
+ 2zgrHjt2VSw2vlmFhbRDv/wAz0PQuPBWfqNIybjKeNyX4PuhOOfZqs3Sh7oRh1KVoTvG
+ h9DEcxarduydClC2youAycKxyWV/sBfJO1j+7IXQJleHmfu0BHn0cZ5/BQ4u/OK35qov
+ pF6ConPlPEXdKgMrj9Efo38Z/vzpfs9YpWEKnQ5yi/Sfbfb7SQn4f3Or0cfgMC7Jltqy vQ==
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+	by aserp2120.oracle.com with ESMTP id 32hu1j2rp2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 27 Jul 2020 17:04:15 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 06RGgeuQ080737;
+	Mon, 27 Jul 2020 17:02:15 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserp3030.oracle.com with ESMTP id 32hu5swhnk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jul 2020 17:02:15 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 06RH2Diw006807;
+	Mon, 27 Jul 2020 17:02:13 GMT
+Received: from [10.159.128.109] (/10.159.128.109)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Mon, 27 Jul 2020 10:02:13 -0700
+Subject: Re: [PATCH v3] dax: print error message by pr_info() in
+ __generic_fsdax_supported()
+To: Coly Li <colyli@suse.de>, dan.j.williams@intel.com,
+        linux-nvdimm@lists.01.org
+References: <20200725162450.95999-1-colyli@suse.de>
+From: Jane Chu <jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <7366fc46-48ee-8c9a-c8f2-8e4e03919880@oracle.com>
+Date: Mon, 27 Jul 2020 10:02:11 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Message-ID-Hash: YE7C5CXKONS6SP55HY4Y4KSD5TM4DQJQ
-X-Message-ID-Hash: YE7C5CXKONS6SP55HY4Y4KSD5TM4DQJQ
-X-MailFrom: rppt@kernel.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+In-Reply-To: <20200725162450.95999-1-colyli@suse.de>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9695 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ mlxscore=0 adultscore=0 spamscore=0 phishscore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007270116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9695 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 mlxscore=0 impostorscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007270117
+Message-ID-Hash: 7QR6IC4S3ZA5NKWHXXAHWBFAPSP2XUL7
+X-Message-ID-Hash: 7QR6IC4S3ZA5NKWHXXAHWBFAPSP2XUL7
+X-MailFrom: jane.chu@oracle.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: msuchanek@suse.com, ailiopoulos@suse.com, Jan Kara <jack@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YE7C5CXKONS6SP55HY4Y4KSD5TM4DQJQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7QR6IC4S3ZA5NKWHXXAHWBFAPSP2XUL7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Hi,
 
-Taking pages out from the direct map and bringing them back may create
-undesired fragmentation and usage of the smaller pages in the direct
-mapping of the physical memory.
+On 7/25/2020 9:24 AM, Coly Li wrote:
+> It is not simple to make dax_supported() from struct dax_operations
+> or __generic_fsdax_supported() to return exact failure type right now.
+> So the simplest fix is to use pr_info() to print all the error messages
+> inside __generic_fsdax_supported(). Then users may find informative clue
+> from the kernel message at least.
 
-This can be avoided if a significantly large area of the physical memory
-would be reserved for secretmem purposes at boot time.
+I happen to notice that some servers set their printk levels at 4 by 
+default to minimize console messages:
+# cat /proc/sys/kernel/printk
+  4   4   1  7
+So I'm wondering if you would consider pr_error() instead of pr_info() ?
 
-Add ability to reserve physical memory for secretmem at boot time using
-"secretmem" kernel parameter and then use that reserved memory as a global
-pool for secret memory needs.
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- Documentation/admin-guide/kernel-parameters.txt | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index fb95fad81c79..6f3c2f28160f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4548,6 +4548,10 @@
- 			Format: integer between 0 and 10
- 			Default is 0.
- 
-+	secretmem=n[KMG]
-+			[KNL,BOOT] Reserve specified amount of memory to
-+			back mappings of secret memory.
-+
- 	skew_tick=	[KNL] Offset the periodic timer tick per cpu to mitigate
- 			xtime_lock contention on larger systems, and/or RCU lock
- 			contention on all systems with CONFIG_MAXSMP set.
--- 
-2.26.2
+thanks,
+-jane
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
