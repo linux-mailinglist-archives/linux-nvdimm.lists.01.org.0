@@ -1,59 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2471122FAD7
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 22:59:16 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DFD22FB96
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 27 Jul 2020 23:44:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9CFF91240ED85;
-	Mon, 27 Jul 2020 13:59:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	by ml01.01.org (Postfix) with ESMTP id 05FC7123D91FA;
+	Mon, 27 Jul 2020 14:44:52 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B23FA1240ED6C
-	for <linux-nvdimm@lists.01.org>; Mon, 27 Jul 2020 13:59:11 -0700 (PDT)
-IronPort-SDR: pHV3OYf5WTI5SiJ34gZSfk1ceEXdwDGAJP53Zu3bHFVqPYTzgp370mLP5YyR1er6yBxy5HtDIl
- cO20x0A4uUbA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9695"; a="130673563"
-X-IronPort-AV: E=Sophos;i="5.75,403,1589266800";
-   d="scan'208";a="130673563"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2020 13:59:10 -0700
-IronPort-SDR: F6x4TaH2xUbkqcHOlkYVCRLa84X160LomB+gQPSLrqqclZ5rkG41zSJgbumVGi5uDGCsUe7wk1
- 4OgHP9BbFWkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,403,1589266800";
-   d="scan'208";a="320157680"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga008.jf.intel.com with ESMTP; 27 Jul 2020 13:59:10 -0700
-Date: Mon, 27 Jul 2020 13:59:09 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH RFC V2 17/17] x86/entry: Preserve PKRS MSR across
- exceptions
-Message-ID: <20200727205909.GP844235@iweiny-DESK2.sc.intel.com>
-References: <20200717072056.73134-1-ira.weiny@intel.com>
- <20200717072056.73134-18-ira.weiny@intel.com>
- <87r1t2vwi7.fsf@nanos.tec.linutronix.de>
- <20200723220435.GI844235@iweiny-DESK2.sc.intel.com>
- <87mu3pvly7.fsf@nanos.tec.linutronix.de>
- <874kpwtxlh.fsf@nanos.tec.linutronix.de>
+	by ml01.01.org (Postfix) with ESMTPS id BA3B0123D91D7
+	for <linux-nvdimm@lists.01.org>; Mon, 27 Jul 2020 14:44:49 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id F2018AC97;
+	Mon, 27 Jul 2020 21:44:57 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 471021E12C7; Mon, 27 Jul 2020 23:44:47 +0200 (CEST)
+Date: Mon, 27 Jul 2020 23:44:47 +0200
+From: Jan Kara <jack@suse.cz>
+To: Jane Chu <jane.chu@oracle.com>
+Subject: Re: [PATCH v3] dax: print error message by pr_info() in
+ __generic_fsdax_supported()
+Message-ID: <20200727214447.GN5284@quack2.suse.cz>
+References: <20200725162450.95999-1-colyli@suse.de>
+ <7366fc46-48ee-8c9a-c8f2-8e4e03919880@oracle.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <874kpwtxlh.fsf@nanos.tec.linutronix.de>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: ETGTAFRFRKZKSWWOGHEV7SKCAOXB5VRB
-X-Message-ID-Hash: ETGTAFRFRKZKSWWOGHEV7SKCAOXB5VRB
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+In-Reply-To: <7366fc46-48ee-8c9a-c8f2-8e4e03919880@oracle.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: N5K4AXVXNTV4D34NJNYMNRHXK7I2C7NN
+X-Message-ID-Hash: N5K4AXVXNTV4D34NJNYMNRHXK7I2C7NN
+X-MailFrom: jack@suse.cz
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Coly Li <colyli@suse.de>, linux-nvdimm@lists.01.org, msuchanek@suse.com, ailiopoulos@suse.com, Jan Kara <jack@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ETGTAFRFRKZKSWWOGHEV7SKCAOXB5VRB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/N5K4AXVXNTV4D34NJNYMNRHXK7I2C7NN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,94 +49,34 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Jul 24, 2020 at 11:24:58PM +0200, Thomas Gleixner wrote:
-> Ira,
+On Mon 27-07-20 10:02:11, Jane Chu wrote:
+> Hi,
 > 
-> Thomas Gleixner <tglx@linutronix.de> writes:
-> > Ira Weiny <ira.weiny@intel.com> writes:
-> >> On Thu, Jul 23, 2020 at 09:53:20PM +0200, Thomas Gleixner wrote:
-> >> I think, after fixing my code (see below), using idtentry_state could still
-> >> work.  If the per-cpu cache and the MSR is updated in idtentry_exit() that
-> >> should carry the state to the new cpu, correct?
-> >
-> > I'm way too tired to think about that now. Will have a look tomorrow
-> > with brain awake.
+> On 7/25/2020 9:24 AM, Coly Li wrote:
+> > It is not simple to make dax_supported() from struct dax_operations
+> > or __generic_fsdax_supported() to return exact failure type right now.
+> > So the simplest fix is to use pr_info() to print all the error messages
+> > inside __generic_fsdax_supported(). Then users may find informative clue
+> > from the kernel message at least.
 > 
-> Not that I'm way more awake now, but at least I have the feeling that my
-> brain is not completely useless.
-> 
-> Let me summarize what I understood:
-> 
->   1) A per CPU cache which shadows the current state of the MSR, i.e. the
->      current valid key. You use that to avoid costly MSR writes if the
->      key does not change.
+> I happen to notice that some servers set their printk levels at 4 by default
+> to minimize console messages:
+> # cat /proc/sys/kernel/printk
+>  4   4   1  7
+> So I'm wondering if you would consider pr_error() instead of pr_info() ?
 
-Yes
+I don't think this is a good reason to raise priority of this message -
+with this logic applied, all info messages should be raised to error level
+because someone may find them useful :). And then people raise printk
+loglevel because the kernel is too noisy... Personally I think that
+pr_info() is fine because there will be error message about unsupported dax
+setup from the filesystem and if sysadmin wishes, (s)he can always lookup
+info messages in dmesg.
 
-> 
->   2) On idtentry you store the key on entry in idtentry_state, clear it
->      in the MSR and shadow state if necessary and restore it on exit.
-
-Yes, but I've subsequently found a bug here but yea that was the intention.
-:-D
-
-I also maintain the ref count of the number of nested calls to kmap to ensure
-that kmap_atomic() is nestable during an exception independent of the number
-of nested calls of the interrupted thread.
-
->   3) On context switch out you save the per CPU cache value in the task
->      and on context switch in you restore it from there.
-
-yes
-
-> 
-> Yes, that works (see below for #2) and sorry for my confusion yesterday
-> about storing this in task state.
-
-No problem.
-
-> 
-> #2 requires to handle the exceptions which do not go through
-> idtentry_enter/exit() seperately, but that's a manageable amount. It's
-> the ones which use IDTENTRY_RAW or a variant of it.
-> 
-> #BP, #MC, #NMI, #DB, #DF need extra local storage as all the kernel
-> entries for those use nmi_enter()/exit(). So you just can create
-> wrappers around those. Somehting like this
-> 
-> static __always_inline idtentry_state_t idtentry_nmi_enter(void)
-> {
->      	idtentry_state_t state = {};
-> 
->         nmi_enter();
->         instrumentation_begin();
->         state.key = save_and_clear_key();
->         instrumentation_end();
-> }
-> 
-> static __always_inline void idtentry_nmi_exit(idtentry_state_t state)
-> {
->         instrumentation_begin();
->         restore_key(state.key);
->         instrumentation_end();
->         nmi_exit();
-> }
-> 
-
-Thanks!
-
-> #UD and #PF are using the raw entry variant as well but still invoke
-> idtentry_enter()/exit(). #PF does not need any work. #UD handles
-> WARN/BUG without going through idtentry_enter() first, but I don't think
-> that's an issue unless a not 0 key would prevent writing to the console
-> device. You surely can figure that out.
-> 
-> Hope that helps.
-
-Yes it does thank you.  I'm also trying to simplify the API per Peters
-comments while refactoring this.
-
-Ira
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
