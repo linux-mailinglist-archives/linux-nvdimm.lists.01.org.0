@@ -1,41 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7331231008
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 28 Jul 2020 18:44:14 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B807E231265
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 28 Jul 2020 21:20:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF4AE12403BFF;
-	Tue, 28 Jul 2020 09:44:12 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.16; helo=hzhus.com; envelope-from=lrqb@hzhus.com; receiver=<UNKNOWN> 
-Received: from hzhus.com (unknown [223.73.128.16])
-	by ml01.01.org (Postfix) with ESMTP id B146212403BFE
-	for <linux-nvdimm@lists.01.org>; Tue, 28 Jul 2020 09:44:06 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Wed, 29 Jul 2020 00:43:43 +0800
-Message-ID: 4efab322-39a6-48ee-9adf-c48bbdb7ec81
+	by ml01.01.org (Postfix) with ESMTP id AF3221249400A;
+	Tue, 28 Jul 2020 12:20:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=103.48.51.4; helo=rksarovarportico.securehostdns.com; envelope-from=store@rksarovarportico.com; receiver=<UNKNOWN> 
+Received: from rksarovarportico.securehostdns.com (unknown [103.48.51.4])
+	by ml01.01.org (Postfix) with ESMTP id CC2B512494008
+	for <linux-nvdimm@lists.01.org>; Tue, 28 Jul 2020 12:20:31 -0700 (PDT)
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns;
+        d=rksarovarportico.com; s=rksarovarportico;
+        h=received:from:to:subject:date:reply-to:message-id:mime-version
+          :content-type:x-originating-ip;
+        b=YwpW0RSXWFsllEwjhfu18xjg7ViB1kqM6NBVl41sQ2CIJ8xLOAhOKDkjy3dgEtOoT
+          iqqtQy7wYtkKKGZIVpd3AX3uH/DNNk5aGO7VdsiIhBqxEitYTLHdfWI3Ms45nFzsN
+          Evx/VvamPslJAMIuyJERoZIXYEl90H58BXGdPLQwQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rksarovarportico.com; s=rksarovarportico;
+        h=x-originating-ip:content-type:mime-version:message-id:reply-to
+          :date:subject:to:from;
+        bh=QBjirmnaryxUFpH6Zkt+16qrkxRiz0aHrxh9iJIfk1M=;
+        b=J4p9fFdATKoCO3BjhdlbT0VpiqvCU7Ky3EFsaO9yWm+/gN1riakbLN0wpWDkNe3h6
+          5b7U6ycxr8QQLSKqeOMZxOmY7B6qOcjZ554dAHGwFYM4B/IHEtNJKqIhYOvPad1vV
+          gMfWbSyQ/nZEReWMPc8qxjfWBSvfeU19ZZEQG+tTc=
+Received: by rksarovarportico.securehostdns.com via HTTP;
+	Wed, 29 Jul 2020 00:41:09 +0530
+From: "Mr.Warren E. Buffett" <store@rksarovarportico.com>
+To: 
+Subject: DONATION DONATION !!
+Date: Wed, 29 Jul 2020 00:41:09 +0530
+Message-ID: <165c47f9$4215151b$4dfb049d$@rksarovarportico.com>
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=BB=A3=E5=AE=A2=E6=8E=A8=E5=B9=BF=E7=94?=
- =?utf-8?Q?=B5=E9=82=AE=EF=BC=8C=E5=AE=A2=E6=88=B7=E4=B8=BB=E5=8A=A8=E6?=
- =?utf-8?Q?=89=BE=E4=B8=8A=E9=97=A8?=
- <lrqb@hzhus.com>
-From: =?utf-8?Q?=E4=BB=A3=E5=AE=A2=E6=8E=A8=E5=B9=BF=E7=94=B5?=
- =?utf-8?Q?=E9=82=AE=EF=BC=8C=E5=AE=A2=E6=88=B7=E4=B8=BB=E5=8A=A8=E6=89?=
- =?utf-8?Q?=BE=E4=B8=8A=E9=97=A8?=
- <sales8023@hotmail.com>
-To: linux-nvdimm@lists.01.org
-Date: 29 Jul 2020 00:43:43 +0800
-Subject: =?utf-8?B?5Luj5a6i5o6o5bm/55S16YKu77yM5a6i5oi35Li75Yqo5om+?=
- =?utf-8?B?5LiK6Zeo?=
-Message-ID-Hash: 2F4MSN66MTQOWK73H2YIFNKHK6MUB2MP
-X-Message-ID-Hash: 2F4MSN66MTQOWK73H2YIFNKHK6MUB2MP
-X-MailFrom: lrqb@hzhus.com
+X-Originating-IP: [129.205.112.221]
+Message-ID-Hash: RSEFIKZABI27IZYV5JMLWIPWZ7ON5AWG
+X-Message-ID-Hash: RSEFIKZABI27IZYV5JMLWIPWZ7ON5AWG
+X-MailFrom: store@rksarovarportico.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mr.warrene.buffett21@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2F4MSN66MTQOWK73H2YIFNKHK6MUB2MP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RSEFIKZABI27IZYV5JMLWIPWZ7ON5AWG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -44,15 +54,24 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-Jm5ic3A7DQrku6PlrqLmjqjlub/nlLXpgq7vvIzlrqLmiLfkuLvliqjmib7kuIrpl6gNCuaTjeS9
-nOa1geeoi++8muaPkOS+m+W8gOWPkeS/oe+8jOS4u+mimO+8jOWbnuWkjemCrueuseetieedgOaU
-tuivouebmO+8jOWuouaIt+S4u+WKqOaJvuS4iumXqA0K5o6o5bm/55S16YKu5aWX6aSQ5aaC5LiL
-77yaDQrmjqjlub8xMOS4h+eUtemCruaVsOaNriZuYnNwOyAmbmJzcDsmbmJzcDsgMTAwMOWFg+aO
-qOW5vzUw5LiH55S16YKu5pWw5o2uJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IDI1MDDlhYPmjqjl
-ub8xMDDkuIfnlLXpgq7mlbDmja4gJm5ic3A7NDAwMOWFg+aOqOW5vzIwMOS4h+eUtemCruaVsOaN
-riZuYnNwOyZuYnNwOyA3MDAw5YWD6YeP5aSn5Lu35qC85pu05LyY5oOgDQrmjqjlub/lpb3luK7m
-iYtFLW1haWzvvJpzYWxlczgwMjNAaG90bWFpbC5jb21RJm5ic3A7Jm5ic3A7IFEgOiZuYnNwOyAy
-MjM0MzQwODIzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-CkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpU
-byB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4w
-MS5vcmcK
+DQoNCiBIaSwgDQogTXkgbmFtZSBpcyBXYXJyZW4gRS4gQnVmZmV0dCBhbiBBbWVyaWNhbiBidXNp
+bmVzcyBtYWduYXRlLCBpbnZlc3RvciBhbmQgcGhpbGFudGhyb3Bpc3QuIGFtIHRoZSBtb3N0IHN1
+Y2Nlc3NmdWwgaW52ZXN0b3IgaW4gdGhlIHdvcmxkLiBJIGJlbGlldmUgc3Ryb25nbHkgaW7igJhn
+aXZpbmcgd2hpbGUgbGl2aW5n4oCZIEkgaGFkIG9uZSBpZGVhIHRoYXQgbmV2ZXIgY2hhbmdlZCBp
+biBteSBtaW5kID8gdGhhdCB5b3Ugc2hvdWxkIHVzZSB5b3VyIHdlYWx0aCB0byBoZWxwIHBlb3Bs
+ZSBhbmQgaSBoYXZlIGRlY2lkZWQgdG8gZ2l2ZSB7JDEsNTAwLDAwMC4wMH0gT25lIE1pbGxpb24g
+Rml2ZSBIdW5kcmVkIFRob3VzYW5kIFVuaXRlZCBEb2xsYXJzLCB0byByYW5kb21seSBzZWxlY3Rl
+ZCBpbmRpdmlkdWFscyB3b3JsZHdpZGUuIE9uIHJlY2VpcHQgb2YgdGhpcyBlbWFpbCwgeW91IHNo
+b3VsZCBjb3VudCB5b3Vyc2VsZiBhcyB0aGUgbHVja3kgaW5kaXZpZHVhbC4gDQogWW91ciBlbWFp
+bCBhZGRyZXNzIHdhcyBjaG9zZW4gb25saW5lIHdoaWxlIHNlYXJjaGluZyBhdCByYW5kb20uIEtp
+bmRseSBnZXQgYmFjayB0byBtZSBhdCB5b3VyIGVhcmxpZXN0IGNvbnZlbmllbmNlIGJlZm9yZSBp
+IHRyYXZlbCB0byBqYXBhbiBmb3IgbXkgdHJlYXRtZW50ICwgc28gSSBrbm93IHlvdXIgZW1haWwg
+YWRkcmVzcyBpcyB2YWxpZC4gKG1yLndhcnJlbmUuYnVmZmV0dDIxQGdtYWlsLmNvbSkgRW1haWwg
+bWUuIA0KIFRoYW5rIHlvdSBmb3IgYWNjZXB0aW5nIG91ciBvZmZlciwgd2UgYXJlIGluZGVlZCBn
+cmF0ZWZ1bCBZb3UgQ2FuIEdvb2dsZSBteSBuYW1lIGZvciBtb3JlIGluZm9ybWF0aW9uOiBXYXJy
+ZW4gQnVmZmV0dCBPUiBZb3UgdmlzaXQgbXkgd2Vic2l0ZSBodHRwczovL2VuLndpa2lwZWRpYS5v
+cmcvd2lraS9XYXJyZW5fQnVmZmV0dCANCiBHb2QgYmxlc3MgeW91LiBCZXN0IFJlZ2FyZCBNci5X
+YXJyZW4gRS4gQnVmZmV0dCBCaWxsaW9uYWlyZSBpbnZlc3RvciANCl9fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3Qg
+LS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWls
+IHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
