@@ -2,110 +2,110 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D98231798
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 04:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE10231829
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 05:35:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 83E9E1268E0C6;
-	Tue, 28 Jul 2020 19:23:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=211.128.242.40; helo=mgwym01.jp.fujitsu.com; envelope-from=y-goto@fujitsu.com; receiver=<UNKNOWN> 
-Received: from mgwym01.jp.fujitsu.com (mgwym01.jp.fujitsu.com [211.128.242.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 69A1E1268E0C3
-	for <linux-nvdimm@lists.01.org>; Tue, 28 Jul 2020 19:23:29 -0700 (PDT)
-Received: from yt-mxoi1.gw.nic.fujitsu.com (unknown [192.168.229.67]) by mgwym01.jp.fujitsu.com with smtp
-	 id 07f1_1f58_27e18af3_caca_4024_aad9_288cefbc803a;
-	Wed, 29 Jul 2020 11:23:22 +0900
-Received: from m3051.s.css.fujitsu.com (m3051.s.css.fujitsu.com [10.134.21.209])
-	by yt-mxoi1.gw.nic.fujitsu.com (Postfix) with ESMTP id AD7BCAC0100
-	for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 11:23:21 +0900 (JST)
-Received: from [10.133.122.138] (VPC-Y08P0560358.g01.fujitsu.local [10.133.122.138])
-	by m3051.s.css.fujitsu.com (Postfix) with ESMTP id A19C7320;
-	Wed, 29 Jul 2020 11:23:21 +0900 (JST)
-Subject: Re: Can we change the S_DAX flag immediately on XFS without dropping
- caches?
-To: Dave Chinner <david@fromorbit.com>,
- "Li, Hao" <lihao2018.fnst@cn.fujitsu.com>
-References: <9dc179147f6a47279d801445f3efeecc@G08CNEXMBPEKD04.g08.fujitsu.local>
- <20200728022059.GX2005@dread.disaster.area>
-From: Yasunori Goto <y-goto@fujitsu.com>
-Message-ID: <573feb69-bc38-8eb4-ee9b-7c49802eb737@fujitsu.com>
-Date: Wed, 29 Jul 2020 11:23:21 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.1
-MIME-Version: 1.0
-In-Reply-To: <20200728022059.GX2005@dread.disaster.area>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-Message-ID-Hash: MSFJDYMZTV5WCKJC2DI72MDYAZ7UBG3D
-X-Message-ID-Hash: MSFJDYMZTV5WCKJC2DI72MDYAZ7UBG3D
-X-MailFrom: y-goto@fujitsu.com
+	by ml01.01.org (Postfix) with ESMTP id D4AB91143B072;
+	Tue, 28 Jul 2020 20:35:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=justin.he@arm.com; receiver=<UNKNOWN> 
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by ml01.01.org (Postfix) with ESMTP id 75F6B12693EC9
+	for <linux-nvdimm@lists.01.org>; Tue, 28 Jul 2020 20:35:13 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 309D631B;
+	Tue, 28 Jul 2020 20:35:12 -0700 (PDT)
+Received: from localhost.localdomain (entos-thunderx2-02.shanghai.arm.com [10.169.212.213])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A94CC3F66E;
+	Tue, 28 Jul 2020 20:35:04 -0700 (PDT)
+From: Jia He <justin.he@arm.com>
+To: Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Mike Rapoport <rppt@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [RFC PATCH 0/6] decrease unnecessary gap due to pmem kmem alignment
+Date: Wed, 29 Jul 2020 11:34:18 +0800
+Message-Id: <20200729033424.2629-1-justin.he@arm.com>
+X-Mailer: git-send-email 2.17.1
+Message-ID-Hash: JFWKKAKU6KNYZS5EZ74NWGMHA3FVWNJ7
+X-Message-ID-Hash: JFWKKAKU6KNYZS5EZ74NWGMHA3FVWNJ7
+X-MailFrom: justin.he@arm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Steve Capper <steve.capper@arm.com>, Mark Rutland <mark.rutland@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, Hsin-Yi Wang <hsinyi@chromium.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Hansen <dave.hansen@linux.intel.com>, Kees Cook <keescook@chromium.org>, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Kaly Xin <Kaly.Xin@arm.com>, Jia He <justin.he@arm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MSFJDYMZTV5WCKJC2DI72MDYAZ7UBG3D/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JFWKKAKU6KNYZS5EZ74NWGMHA3FVWNJ7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi,
+When enabling dax pmem as RAM device on arm64, I noticed that kmem_start
+addr in dev_dax_kmem_probe() should be aligned w/ SECTION_SIZE_BITS(30),i.e.
+1G memblock size. Even Dan Williams' sub-section patch series [1] had been
+upstream merged, it was not helpful due to hard limitation of kmem_start:
+$ndctl create-namespace -e namespace0.0 --mode=devdax --map=dev -s 2g -f -a 2M
+$echo dax0.0 > /sys/bus/dax/drivers/device_dax/unbind
+$echo dax0.0 > /sys/bus/dax/drivers/kmem/new_id
+$cat /proc/iomem
+...
+23c000000-23fffffff : System RAM
+  23dd40000-23fecffff : reserved
+  23fed0000-23fffffff : reserved
+240000000-33fdfffff : Persistent Memory
+  240000000-2403fffff : namespace0.0
+  280000000-2bfffffff : dax0.0          <- aligned with 1G boundary
+    280000000-2bfffffff : System RAM
+Hence there is a big gap between 0x2403fffff and 0x280000000 due to the 1G
+alignment.
+ 
+Without this series, if qemu creates a 4G bytes nvdimm device, we can only
+use 2G bytes for dax pmem(kmem) in the worst case.
+e.g.
+240000000-33fdfffff : Persistent Memory 
+We can only use the memblock between [240000000, 2ffffffff] due to the hard
+limitation. It wastes too much memory space.
 
-On 2020/07/28 11:20, Dave Chinner wrote:
-> On Tue, Jul 28, 2020 at 02:00:08AM +0000, Li, Hao wrote:
->> Hi,
->>
->> I have noticed that we have to drop caches to make the changing of S_DAX
->> flag take effect after using chattr +x to turn on DAX for a existing
->> regular file. The related function is xfs_diflags_to_iflags, whose
->> second parameter determines whether we should set S_DAX immediately.
-> Yup, as documented in Documentation/filesystems/dax.txt. Specifically:
->
->   6. When changing the S_DAX policy via toggling the persistent FS_XFLAG_DAX flag,
->      the change in behaviour for existing regular files may not occur
->      immediately.  If the change must take effect immediately, the administrator
->      needs to:
->
->      a) stop the application so there are no active references to the data set
->         the policy change will affect
->
->      b) evict the data set from kernel caches so it will be re-instantiated when
->         the application is restarted. This can be achieved by:
->
->         i. drop-caches
->         ii. a filesystem unmount and mount cycle
->         iii. a system reboot
->
->> I can't figure out why we do this. Is this because the page caches in
->> address_space->i_pages are hard to deal with?
-> Because of unfixable races in the page fault path that prevent
-> changing the caching behaviour of the inode while concurrent access
-> is possible. The only way to guarantee races can't happen is to
-> cycle the inode out of cache.
+Decreasing the SECTION_SIZE_BITS on arm64 might be an alternative, but there
+are too many concerns from other constraints, e.g. PAGE_SIZE, hugetlb,
+SPARSEMEM_VMEMMAP, page bits in struct page ...
 
-I understand why the drop_cache operation is necessary. Thanks.
+Beside decreasing the SECTION_SIZE_BITS, we can also relax the kmem alignment
+with memory_block_size_bytes().
 
-BTW, even normal user becomes to able to change DAX flag for an inode,
-drop_cache operation still requires root permission, right?
+Tested on arm64 guest and x86 guest, qemu creates a 4G pmem device. dax pmem
+can be used as ram with smaller gap. Also the kmem hotplug add/remove are both
+tested on arm64/x86 guest.
 
-So, if kernel have a feature for normal user can operate drop cache for 
-"a inode" with
-its permission, I think it improve the above limitation, and
-we would like to try to implement it recently.
+This patch series (mainly patch6/6) is based on the fixing patch, ~v5.8-rc5 [2].
 
-Do you have any opinion making such feature?
-(Agree/opposition, or any other comment?)
+[1] https://lkml.org/lkml/2019/6/19/67
+[2] https://lkml.org/lkml/2020/7/8/1546
+Jia He (6):
+  mm/memory_hotplug: remove redundant memory block size alignment check
+  resource: export find_next_iomem_res() helper
+  mm/memory_hotplug: allow pmem kmem not to align with memory_block_size
+  mm/page_alloc: adjust the start,end in dax pmem kmem case
+  device-dax: relax the memblock size alignment for kmem_start
+  arm64: fall back to vmemmap_populate_basepages if not aligned  with
+    PMD_SIZE
 
-Thanks,
+ arch/arm64/mm/mmu.c    |  4 ++++
+ drivers/base/memory.c  | 24 ++++++++++++++++--------
+ drivers/dax/kmem.c     | 22 +++++++++++++---------
+ include/linux/ioport.h |  3 +++
+ kernel/resource.c      |  3 ++-
+ mm/memory_hotplug.c    | 39 ++++++++++++++++++++++++++++++++++++++-
+ mm/page_alloc.c        | 14 ++++++++++++++
+ 7 files changed, 90 insertions(+), 19 deletions(-)
 
 -- 
-Yasunori Goto
+2.17.1
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
