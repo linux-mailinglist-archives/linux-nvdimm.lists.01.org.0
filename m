@@ -2,112 +2,114 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35FE3231CC9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 12:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B59FA231E76
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 14:21:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4AB721269EC08;
-	Wed, 29 Jul 2020 03:35:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=103.14.98.202; helo=us-reseller1.managedns.org; envelope-from=info@bsel.com; receiver=<UNKNOWN> 
-Received: from us-reseller1.managedns.org (202.98.trunkoz.com [103.14.98.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id D4F38126B7ADD;
+	Wed, 29 Jul 2020 05:21:53 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.66; helo=mail-ot1-f66.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 694811269A4EA
-	for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 03:35:21 -0700 (PDT)
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns;
-        d=bsel.com; s=default;
-        h=received:message-id:from:to:subject:date:mime-version
-          :content-type:content-transfer-encoding:x-priority
-          :x-msmail-priority:x-mailer:x-mimeole;
-        b=ppsXOcTToLB9ImDEvuFxPFoDBwYNnDUatFNdH7Gnes0dFEvX88H9ykFzTKL38/DwI
-          krz8Ptnc48mI2PRkdzmdS/WATaw/ANM5sNJhY/f/pmyfhhriThs9LGRcPRoAxueGf
-          vm6lDp8wjwEdYSK+yKedjLaHiTOBpMZm6IOALtsZs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bsel.com; s=default;
-        h=x-mimeole:x-mailer:x-msmail-priority:x-priority
-          :content-transfer-encoding:content-type:mime-version:date:subject
-          :to:from:message-id;
-        bh=T4rEOETX+pXoWB7FKEPNcosFRtEOilKMBa+VGjbhlpk=;
-        b=XMLNyFI5tBNvifX5MPd0IimwOH4617LKM8CT2+5iSDLzeIHmBrC+fXb+j4SUJrVH/
-          CTbIVzmreEj9jbP9QbrR9WQQP+1mJ/GPL+4avPiejAG/MjN9eIzG2xqxFpnthsWoe
-          m0/4tX9ksT3T/T1J8idqryHhdpi1i6pIHcCi85N4o=
-Received: from ncmiem (225.132.70.125.broad.cd.sc.dynamic.163data.com.cn [125.70.132.225]) by us-reseller1.managedns.org with SMTP;
-   Wed, 29 Jul 2020 06:34:22 -0400
-Message-ID: <09FB324E976BD3DC3CB667761B507FCB@ncmiem>
-From: "wihvenh" <info@bsel.com>
-To: <account@onlyou1999.com>,
-	<linux-nvdimm@lists.01.org>,
-	<shb@jinbaopack.com>,
-	<linji@mikeo2o.com>,
-	<xmzhao66@sdau.edu.cn>,
-	<yzx@k8soft.cn>,
-	<info@boyaprinting.com>,
-	<zhuangqin@anta.cn>,
-	<gzcw@aotaihua.com>,
-	<william@kwgproperty.com>,
-	<tuyan@rakuto.com.cn>,
-	<ylmaster@yulian.com.cn>,
-	<steve.shao@serviceindeed.com>,
-	<service@yikaida.com>,
-	<tyler@asana.com>,
-	<terrymao@boyaa.com>,
-	<hil@almaden.ibm.com>,
-	<zhouyuehua@shengyuan.com.cn>,
-	<cotton@chinatex.com>,
-	<001@chinaimd.com>,
-	<ab@cdyad.com>
-Subject: =?gb2312?B?xb7FvtfUxcTK08a1?=
-Date: Wed, 29 Jul 2020 18:34:12 +0800
+	by ml01.01.org (Postfix) with ESMTPS id 49409126B4C1A
+	for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 05:21:51 -0700 (PDT)
+Received: by mail-ot1-f66.google.com with SMTP id v21so10056445otj.9
+        for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 05:21:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2mnnHyWC547JExbWvUCq+tIdDHLBBpQ7TBTnFeNVHVU=;
+        b=Fml2tb3zkW50USukTO2/Fydzhj1gMDatvn/ahVrsq2UtKOszbt7di+L76R9wBXOilZ
+         Xb+WDjMkQiyKh00QLwj52QMx82aUseJHbCwjI6qjw18zsJ8IXkshUMTY2IsKczYoDSh2
+         MwLFBzAucDWnp/kDD0oDgiM47mvZJdkEXFdraUFYYYHMGVDhkRnAue04ZgqHs5VGeEuc
+         Wq14cishbcFtbjcsWJ9EQs7AB6Xr8yhaBus5skYaUxjrBmpdlLsYu8D6XjvHJcd9scZD
+         5ztJZ1JF8fK5NxpVI3GgWHtJGxVqTpUhtLLMP1smM3L9Q9eJFY60NjVIwEKn2ujD9AqR
+         sNMA==
+X-Gm-Message-State: AOAM53300nPoEuoVqPiBOB7C/fdyk4yYLIpcSIe/1wsNfhIFUcR/Q7iC
+	6vBd5WZ7oTP4WVb15UB/L/3caUpTqcaZkR06Z5g=
+X-Google-Smtp-Source: ABdhPJwuvKQsPSVhOzwdYxBYA7KiJ/wJpm+ub0Wy7vHkExajp6uOO58dSKNk4G5BNIH2CvVx7N1UP9PNTCbrk72CpIw=
+X-Received: by 2002:a05:6830:1e5c:: with SMTP id e28mr9763613otj.118.1596025308833;
+ Wed, 29 Jul 2020 05:21:48 -0700 (PDT)
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: F6IGN5BXSWGYIXCDZJCU4SXW3QZUGLJI
-X-Message-ID-Hash: F6IGN5BXSWGYIXCDZJCU4SXW3QZUGLJI
-X-MailFrom: info@bsel.com
+References: <159528284411.993790.11733759435137949717.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <159528289856.993790.11787167534159675987.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAJZ5v0jb87PnwVXKuvgFeP=c-BGstc4YmANGpbOOnXi-b1oL8w@mail.gmail.com> <25cb1c0c35d2ea2aa233c1db726abd86dadc54c0.camel@intel.com>
+In-Reply-To: <25cb1c0c35d2ea2aa233c1db726abd86dadc54c0.camel@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 29 Jul 2020 14:21:35 +0200
+Message-ID: <CAJZ5v0h3=xkSjZ3tWjK3NEJjtBw5KpfNOrHJ1yQ8nXpSG=SBBg@mail.gmail.com>
+Subject: Re: [PATCH v3 10/11] PM, libnvdimm: Add runtime firmware activation support
+To: Vishal Verma <vishal.l.verma@intel.com>
+Message-ID-Hash: JXWINLK6NXAUBM4BW66MZAWQINEEO4CU
+X-Message-ID-Hash: JXWINLK6NXAUBM4BW66MZAWQINEEO4CU
+X-MailFrom: rjwysocki@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Rafael J. Wysocki" <rafael@kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>, Jonathan Corbet <corbet@lwn.net>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F6IGN5BXSWGYIXCDZJCU4SXW3QZUGLJI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JXWINLK6NXAUBM4BW66MZAWQINEEO4CU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4403882941939552964=="
-
---===============4403882941939552964==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFk+DQo8UCBhbGlnbj1j
-ZW50ZXI+PEEgaHJlZj0iaHR0cDovL3Zpa3JhbXZpcm9kaGlhLmNvbS8iPjxGT05UIA0Kc3R5bGU9
-IkJBQ0tHUk9VTkQtQ09MT1I6IG9saXZlIiBjb2xvcj1kYXJrYmx1ZSANCnNpemU9ND48U1RST05H
-PjxFTT5odHRwOi8vdmlrcmFtdmlyb2RoaWEuY29tLzwvRU0+PC9TVFJPTkc+PC9GT05UPjwvQT48
-L1A+DQo8UD48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogb2xpdmUiIHNpemU9ND48RU0+
-PFNUUk9ORz48Rk9OVCANCnN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBzaWx2ZXIiIGNvbG9yPWRh
-cmtibHVlPsW+xb7X1MXEytPGtTwvRk9OVD4gDQo8L1NUUk9ORz48L0VNPjwvRk9OVD48L1A+DQo8
-UD48U1RST05HPjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzgwODAwMCIgDQpz
-aXplPTQ+PC9GT05UPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFA+PFNUUk9ORz48RU0+PEZPTlQgc3R5
-bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4MDgwMDAiIA0Kc2l6ZT00PjwvRk9OVD48L0VNPjwvU1RS
-T05HPjwvUD4NCjxQPsW+xb7X1MXEytPGtTwvUD48L0JPRFk+PC9IVE1MPg0K
-
-
-
---===============4403882941939552964==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Wed, Jul 29, 2020 at 3:35 AM Vishal Verma <vishal.l.verma@intel.com> wrote:
+>
+> On Mon, 2020-07-27 at 14:37 +0200, Rafael J. Wysocki wrote:
+> > On Tue, Jul 21, 2020 at 12:24 AM Dan Williams <dan.j.williams@intel.com> wrote:
+> > > Abstract platform specific mechanics for nvdimm firmware activation
+> > > behind a handful of generic ops. At the bus level ->activate_state()
+> > > indicates the unified state (idle, busy, armed) of all DIMMs on the bus,
+> > > and ->capability() indicates the system state expectations for activate.
+> > > At the DIMM level ->activate_state() indicates the per-DIMM state,
+> > > ->activate_result() indicates the outcome of the last activation
+> > > attempt, and ->arm() attempts to transition the DIMM from 'idle' to
+> > > 'armed'.
+> > >
+> > > A new hibernate_quiet_exec() facility is added to support firmware
+> > > activation in an OS defined system quiesce state. It leverages the fact
+> > > that the hibernate-freeze state wants to assert that a memory
+> > > hibernation snapshot can be taken. This is in contrast to a platform
+> > > firmware defined quiesce state that may forcefully quiet the memory
+> > > controller independent of whether an individual device-driver properly
+> > > supports hibernate-freeze.
+> > >
+> > > The libnvdimm sysfs interface is extended to support detection of a
+> > > firmware activate capability. The mechanism supports enumeration and
+> > > triggering of firmware activate, optionally in the
+> > > hibernate_quiet_exec() context.
+> > >
+> > > Cc: Pavel Machek <pavel@ucw.cz>
+> > > Cc: Ira Weiny <ira.weiny@intel.com>
+> > > Cc: Len Brown <len.brown@intel.com>
+> > > Cc: Jonathan Corbet <corbet@lwn.net>
+> > > Cc: Dave Jiang <dave.jiang@intel.com>
+> > > Cc: Vishal Verma <vishal.l.verma@intel.com>
+> > > [rafael: hibernate_quiet_exec() proposal]
+> > > Co-developed-by: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> >
+> > IMO it's better to change this to
+> >
+> > Co-developed-by: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> >
+> > and please to add
+> >
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> >
+> > to it as per the development process documentation.
+>
+> Thanks Rafael, I've fixed this up in the branch I've prepared for the pull
+> request:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git/log/?h=libnvdimm-for-next
+
+LGTM, thanks!
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4403882941939552964==--
