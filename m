@@ -1,245 +1,135 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3452231B77
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 10:44:47 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C2E231B86
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 29 Jul 2020 10:45:34 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 036A01269A4E6;
-	Wed, 29 Jul 2020 01:44:46 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.74; helo=us-smtp-delivery-74.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [63.128.21.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 427D11269A4EB;
+	Wed, 29 Jul 2020 01:45:33 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1D7DC125B96DC
-	for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 01:44:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1596012280;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5y6sLodwxeVWldEuLL7e40j+rSSieWkQYEctvruINb4=;
-	b=DdkIpYLKcu3yzmuwY8+Ms6y4lv9/RNxSn4b+NZzxrV8iaQD3HxdulPQm3QATh+q6tOvQyO
-	0QsnC9MovDRa+7BGvvoNZxCI2Z7bMbA8xg0wMu/e8FSd8NcmZgmuR28NmA/mRBH7HBStr6
-	qZvdWkIeH1u+jL+tFcMVe51YXfD4Rg8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-192-zesZOHQjPKmULJPKd38RQw-1; Wed, 29 Jul 2020 04:44:34 -0400
-X-MC-Unique: zesZOHQjPKmULJPKd38RQw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8656B59;
-	Wed, 29 Jul 2020 08:44:31 +0000 (UTC)
-Received: from [10.36.114.111] (ovpn-114-111.ams2.redhat.com [10.36.114.111])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C10175C1BD;
-	Wed, 29 Jul 2020 08:44:21 +0000 (UTC)
-Subject: Re: [RFC PATCH 0/6] decrease unnecessary gap due to pmem kmem
- alignment
-To: Justin He <Justin.He@arm.com>
-References: <20200729033424.2629-1-justin.he@arm.com>
- <D1981D47-61F1-42E9-A426-6FEF0EC310C8@redhat.com>
- <AM6PR08MB40690714A2E77A7128B2B2ADF7700@AM6PR08MB4069.eurprd08.prod.outlook.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABtCREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT6JAlgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63W5Ag0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAGJAjwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <a6c56f12-9978-88b2-3cc5-2947356b3294@redhat.com>
-Date: Wed, 29 Jul 2020 10:44:20 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+	by ml01.01.org (Postfix) with ESMTPS id 1945A125B96B3
+	for <linux-nvdimm@lists.01.org>; Wed, 29 Jul 2020 01:45:30 -0700 (PDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06T8WR1Q053522;
+	Wed, 29 Jul 2020 04:45:30 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 32jpw40reg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2020 04:45:29 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+	by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06T8TnkI026980;
+	Wed, 29 Jul 2020 08:45:28 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+	by ppma03ams.nl.ibm.com with ESMTP id 32gcpx4u4c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jul 2020 08:45:27 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+	by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 06T8i0xC55640444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Jul 2020 08:44:00 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 36A6A11C05C;
+	Wed, 29 Jul 2020 08:45:25 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E610911C050;
+	Wed, 29 Jul 2020 08:45:23 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.199.33.112])
+	by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Jul 2020 08:45:23 +0000 (GMT)
+From: Ritesh Harjani <riteshh@linux.ibm.com>
+To: linux-nvdimm@lists.01.org
+Subject: [RFC 1/1] pmem: Add cond_resched() in bio_for_each_segment loop in pmem_make_request
+Date: Wed, 29 Jul 2020 14:15:18 +0530
+Message-Id: <0d96e2481f292de2cda8828b03d5121004308759.1596011292.git.riteshh@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <AM6PR08MB40690714A2E77A7128B2B2ADF7700@AM6PR08MB4069.eurprd08.prod.outlook.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: DN3BQ3WSBEWZFH4IZMMRULF4YXVGMTEY
-X-Message-ID-Hash: DN3BQ3WSBEWZFH4IZMMRULF4YXVGMTEY
-X-MailFrom: david@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@linux.ibm.com>, Catalin Marinas <Catalin.Marinas@arm.com>, Will Deacon <will@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Steve Capper <Steve.Capper@arm.com>, Mark Rutland <Mark.Rutland@arm.com>, Anshuman Khandual <Anshuman.Khandual@arm.com>, Hsin-Yi Wang <hsinyi@chromium.org>, Jason Gunthorpe <jgg@ziepe.ca>, Dave Hansen <dave.hansen@linux.intel.com>, Kees Cook <keescook@chromium.org>, "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Kaly Xin <Kaly.Xin@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-29_03:2020-07-28,2020-07-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=842
+ malwarescore=0 spamscore=0 impostorscore=0 suspectscore=1 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2007290055
+Message-ID-Hash: ZSOP7XAKCO2QK2DGQMOD4YEQXUJJIRH5
+X-Message-ID-Hash: ZSOP7XAKCO2QK2DGQMOD4YEQXUJJIRH5
+X-MailFrom: riteshh@linux.ibm.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DN3BQ3WSBEWZFH4IZMMRULF4YXVGMTEY/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZSOP7XAKCO2QK2DGQMOD4YEQXUJJIRH5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gMjkuMDcuMjAgMTA6MjcsIEp1c3RpbiBIZSB3cm90ZToNCj4gSGkgRGF2aWQNCj4gDQo+PiAt
-LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPj4gRnJvbTogRGF2aWQgSGlsZGVuYnJhbmQgPGRh
-dmlkQHJlZGhhdC5jb20+DQo+PiBTZW50OiBXZWRuZXNkYXksIEp1bHkgMjksIDIwMjAgMjozNyBQ
-TQ0KPj4gVG86IEp1c3RpbiBIZSA8SnVzdGluLkhlQGFybS5jb20+DQo+PiBDYzogRGFuIFdpbGxp
-YW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+OyBWaXNoYWwgVmVybWENCj4+IDx2aXNoYWwu
-bC52ZXJtYUBpbnRlbC5jb20+OyBNaWtlIFJhcG9wb3J0IDxycHB0QGxpbnV4LmlibS5jb20+OyBE
-YXZpZA0KPj4gSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+OyBDYXRhbGluIE1hcmluYXMg
-PENhdGFsaW4uTWFyaW5hc0Bhcm0uY29tPjsNCj4+IFdpbGwgRGVhY29uIDx3aWxsQGtlcm5lbC5v
-cmc+OyBHcmVnIEtyb2FoLUhhcnRtYW4NCj4+IDxncmVna2hAbGludXhmb3VuZGF0aW9uLm9yZz47
-IFJhZmFlbCBKLiBXeXNvY2tpIDxyYWZhZWxAa2VybmVsLm9yZz47IERhdmUNCj4+IEppYW5nIDxk
-YXZlLmppYW5nQGludGVsLmNvbT47IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlv
-bi5vcmc+Ow0KPj4gU3RldmUgQ2FwcGVyIDxTdGV2ZS5DYXBwZXJAYXJtLmNvbT47IE1hcmsgUnV0
-bGFuZCA8TWFyay5SdXRsYW5kQGFybS5jb20+Ow0KPj4gTG9nYW4gR3VudGhvcnBlIDxsb2dhbmdA
-ZGVsdGF0ZWUuY29tPjsgQW5zaHVtYW4gS2hhbmR1YWwNCj4+IDxBbnNodW1hbi5LaGFuZHVhbEBh
-cm0uY29tPjsgSHNpbi1ZaSBXYW5nIDxoc2lueWlAY2hyb21pdW0ub3JnPjsgSmFzb24NCj4+IEd1
-bnRob3JwZSA8amdnQHppZXBlLmNhPjsgRGF2ZSBIYW5zZW4gPGRhdmUuaGFuc2VuQGxpbnV4Lmlu
-dGVsLmNvbT47IEtlZXMNCj4+IENvb2sgPGtlZXNjb29rQGNocm9taXVtLm9yZz47IGxpbnV4LWFy
-bS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZzsgbGludXgtDQo+PiBrZXJuZWxAdmdlci5rZXJu
-ZWwub3JnOyBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnOyBsaW51eC1tbUBrdmFjay5vcmc7IFdl
-aQ0KPj4gWWFuZyA8cmljaGFyZHcueWFuZ0BsaW51eC5pbnRlbC5jb20+OyBQYW5rYWogR3VwdGEN
-Cj4+IDxwYW5rYWouZ3VwdGEubGludXhAZ21haWwuY29tPjsgSXJhIFdlaW55IDxpcmEud2VpbnlA
-aW50ZWwuY29tPjsgS2FseSBYaW4NCj4+IDxLYWx5LlhpbkBhcm0uY29tPg0KPj4gU3ViamVjdDog
-UmU6IFtSRkMgUEFUQ0ggMC82XSBkZWNyZWFzZSB1bm5lY2Vzc2FyeSBnYXAgZHVlIHRvIHBtZW0g
-a21lbQ0KPj4gYWxpZ25tZW50DQo+Pg0KPj4NCj4+DQo+Pj4gQW0gMjkuMDcuMjAyMCB1bSAwNToz
-NSBzY2hyaWViIEppYSBIZSA8anVzdGluLmhlQGFybS5jb20+Og0KPj4+DQo+Pj4g77u/V2hlbiBl
-bmFibGluZyBkYXggcG1lbSBhcyBSQU0gZGV2aWNlIG9uIGFybTY0LCBJIG5vdGljZWQgdGhhdCBr
-bWVtX3N0YXJ0DQo+Pj4gYWRkciBpbiBkZXZfZGF4X2ttZW1fcHJvYmUoKSBzaG91bGQgYmUgYWxp
-Z25lZCB3Lw0KPj4gU0VDVElPTl9TSVpFX0JJVFMoMzApLGkuZS4NCj4+PiAxRyBtZW1ibG9jayBz
-aXplLiBFdmVuIERhbiBXaWxsaWFtcycgc3ViLXNlY3Rpb24gcGF0Y2ggc2VyaWVzIFsxXSBoYWQN
-Cj4+IGJlZW4NCj4+PiB1cHN0cmVhbSBtZXJnZWQsIGl0IHdhcyBub3QgaGVscGZ1bCBkdWUgdG8g
-aGFyZCBsaW1pdGF0aW9uIG9mIGttZW1fc3RhcnQ6DQo+Pj4gJG5kY3RsIGNyZWF0ZS1uYW1lc3Bh
-Y2UgLWUgbmFtZXNwYWNlMC4wIC0tbW9kZT1kZXZkYXggLS1tYXA9ZGV2IC1zIDJnIC1mDQo+PiAt
-YSAyTQ0KPj4+ICRlY2hvIGRheDAuMCA+IC9zeXMvYnVzL2RheC9kcml2ZXJzL2RldmljZV9kYXgv
-dW5iaW5kDQo+Pj4gJGVjaG8gZGF4MC4wID4gL3N5cy9idXMvZGF4L2RyaXZlcnMva21lbS9uZXdf
-aWQNCj4+PiAkY2F0IC9wcm9jL2lvbWVtDQo+Pj4gLi4uDQo+Pj4gMjNjMDAwMDAwLTIzZmZmZmZm
-ZiA6IFN5c3RlbSBSQU0NCj4+PiAgMjNkZDQwMDAwLTIzZmVjZmZmZiA6IHJlc2VydmVkDQo+Pj4g
-IDIzZmVkMDAwMC0yM2ZmZmZmZmYgOiByZXNlcnZlZA0KPj4+IDI0MDAwMDAwMC0zM2ZkZmZmZmYg
-OiBQZXJzaXN0ZW50IE1lbW9yeQ0KPj4+ICAyNDAwMDAwMDAtMjQwM2ZmZmZmIDogbmFtZXNwYWNl
-MC4wDQo+Pj4gIDI4MDAwMDAwMC0yYmZmZmZmZmYgOiBkYXgwLjAgICAgICAgICAgPC0gYWxpZ25l
-ZCB3aXRoIDFHIGJvdW5kYXJ5DQo+Pj4gICAgMjgwMDAwMDAwLTJiZmZmZmZmZiA6IFN5c3RlbSBS
-QU0NCj4+PiBIZW5jZSB0aGVyZSBpcyBhIGJpZyBnYXAgYmV0d2VlbiAweDI0MDNmZmZmZiBhbmQg
-MHgyODAwMDAwMDAgZHVlIHRvIHRoZQ0KPj4gMUcNCj4+PiBhbGlnbm1lbnQuDQo+Pj4NCj4+PiBX
-aXRob3V0IHRoaXMgc2VyaWVzLCBpZiBxZW11IGNyZWF0ZXMgYSA0RyBieXRlcyBudmRpbW0gZGV2
-aWNlLCB3ZSBjYW4NCj4+IG9ubHkNCj4+PiB1c2UgMkcgYnl0ZXMgZm9yIGRheCBwbWVtKGttZW0p
-IGluIHRoZSB3b3JzdCBjYXNlLg0KPj4+IGUuZy4NCj4+PiAyNDAwMDAwMDAtMzNmZGZmZmZmIDog
-UGVyc2lzdGVudCBNZW1vcnkNCj4+PiBXZSBjYW4gb25seSB1c2UgdGhlIG1lbWJsb2NrIGJldHdl
-ZW4gWzI0MDAwMDAwMCwgMmZmZmZmZmZmXSBkdWUgdG8gdGhlDQo+PiBoYXJkDQo+Pj4gbGltaXRh
-dGlvbi4gSXQgd2FzdGVzIHRvbyBtdWNoIG1lbW9yeSBzcGFjZS4NCj4+Pg0KPj4+IERlY3JlYXNp
-bmcgdGhlIFNFQ1RJT05fU0laRV9CSVRTIG9uIGFybTY0IG1pZ2h0IGJlIGFuIGFsdGVybmF0aXZl
-LCBidXQNCj4+IHRoZXJlDQo+Pj4gYXJlIHRvbyBtYW55IGNvbmNlcm5zIGZyb20gb3RoZXIgY29u
-c3RyYWludHMsIGUuZy4gUEFHRV9TSVpFLCBodWdldGxiLA0KPj4+IFNQQVJTRU1FTV9WTUVNTUFQ
-LCBwYWdlIGJpdHMgaW4gc3RydWN0IHBhZ2UgLi4uDQo+Pj4NCj4+PiBCZXNpZGUgZGVjcmVhc2lu
-ZyB0aGUgU0VDVElPTl9TSVpFX0JJVFMsIHdlIGNhbiBhbHNvIHJlbGF4IHRoZSBrbWVtDQo+PiBh
-bGlnbm1lbnQNCj4+PiB3aXRoIG1lbW9yeV9ibG9ja19zaXplX2J5dGVzKCkuDQo+Pj4NCj4+PiBU
-ZXN0ZWQgb24gYXJtNjQgZ3Vlc3QgYW5kIHg4NiBndWVzdCwgcWVtdSBjcmVhdGVzIGEgNEcgcG1l
-bSBkZXZpY2UuIGRheA0KPj4gcG1lbQ0KPj4+IGNhbiBiZSB1c2VkIGFzIHJhbSB3aXRoIHNtYWxs
-ZXIgZ2FwLiBBbHNvIHRoZSBrbWVtIGhvdHBsdWcgYWRkL3JlbW92ZQ0KPj4gYXJlIGJvdGgNCj4+
-PiB0ZXN0ZWQgb24gYXJtNjQveDg2IGd1ZXN0Lg0KPj4+DQo+Pg0KPj4gSGksDQo+Pg0KPj4gSSBh
-bSBub3QgY29udmluY2VkIHRoaXMgdXNlIGNhc2UgaXMgd29ydGggc3VjaCBoYWNrcyAodGhhdOKA
-mXMgd2hhdCBpdCBpcykNCj4+IGZvciBub3cuIE9uIHJlYWwgbWFjaGluZXMgcG1lbSBpcyBiaWcg
-LSB5b3VyIGV4YW1wbGUgKGxvc2luZyA1MCUgaXMNCj4+IGV4dHJlbWUpLg0KPj4NCj4+IEkgd291
-bGQgbXVjaCByYXRoZXIgd2FudCB0byBzZWUgdGhlIHNlY3Rpb24gc2l6ZSBvbiBhcm02NCByZWR1
-Y2VkLiBJDQo+PiByZW1lbWJlciB0aGVyZSB3ZXJlIHBhdGNoZXMgYW5kIHRoYXQgYXQgbGVhc3Qg
-d2l0aCBhIGJhc2UgcGFnZSBzaXplIG9mIDRrDQo+PiBpdCBjYW4gYmUgcmVkdWNlZCBkcmFzdGlj
-YWxseSAoNjRrIGJhc2UgcGFnZXMgYXJlIG1vcmUgcHJvYmxlbWF0aWMgZHVlIHRvDQo+PiB0aGUg
-cmlkaWN1bG91cyBUSFAgc2l6ZSBvZiA1MTJNKS4gQnV0IGNvdWxkIGJlIGEgc2VjdGlvbiBzaXpl
-IG9mIDUxMiBpcw0KPj4gcG9zc2libGUgb24gYWxsIGNvbmZpZ3MgcmlnaHQgbm93Lg0KPiANCj4g
-WWVzLCBJIG9uY2UgaW52ZXN0aWdhdGVkIGhvdyB0byByZWR1Y2Ugc2VjdGlvbiBzaXplIG9uIGFy
-bTY0IHRob3VnaHRmdWxseToNCj4gVGhlcmUgYXJlIG1hbnkgY29uc3RyYWludHMgZm9yIHJlZHVj
-aW5nIFNFQ1RJT05fU0laRV9CSVRTDQo+IDEuIEdpdmVuIHBhZ2UtPmZsYWdzIGJpdHMgaXMgbGlt
-aXRlZCwgU0VDVElPTl9TSVpFX0JJVFMgY2FuJ3QgYmUgcmVkdWNlZCB0b28NCj4gICAgbXVjaC4N
-Cj4gMi4gT25jZSBDT05GSUdfU1BBUlNFTUVNX1ZNRU1NQVAgaXMgZW5hYmxlZCwgc2VjdGlvbiBp
-ZCB3aWxsIG5vdCBiZSBjb3VudGVkDQo+ICAgIGludG8gcGFnZS0+ZmxhZ3MuDQoNClllcC4NCg0K
-PiAzLiBNQVhfT1JERVIgZGVwZW5kcyBvbiBTRUNUSU9OX1NJWkVfQklUUyANCj4gIC0gMy4xIG1t
-em9uZS5oDQo+ICNpZiAoTUFYX09SREVSIC0gMSArIFBBR0VfU0hJRlQpID4gU0VDVElPTl9TSVpF
-X0JJVFMNCj4gI2Vycm9yIEFsbG9jYXRvciBNQVhfT1JERVIgZXhjZWVkcyBTRUNUSU9OX1NJWkUN
-Cj4gI2VuZGlmDQoNClllcCwgd2l0aCA0ayBiYXNlIHBhZ2VzIGl0J3MgNCBNQi4gSG93ZXZlciwg
-d2l0aCA2NGsgYmFzZSBwYWdlcyBpdHMNCjUxMk1CICggOiggKS4NCg0KPiAgLSAzLjIgaHVnZXBh
-Z2VfaW5pdCgpDQo+IE1BWUJFX0JVSUxEX0JVR19PTihIUEFHRV9QTURfT1JERVIgPj0gTUFYX09S
-REVSKTsNCj4gDQo+IEhlbmNlIHdoZW4gQVJNNjRfNEtfUEFHRVMgJiYgQ09ORklHX1NQQVJTRU1F
-TV9WTUVNTUFQIGFyZSBlbmFibGVkLA0KPiBTRUNUSU9OX1NJWkVfQklUUyBjYW4gYmUgcmVkdWNl
-ZCB0byAyNy4NCj4gQnV0IHdoZW4gQVJNNjRfNjRLX1BBR0VTLCBnaXZlbiAzLjIsIE1BWF9PUkRF
-UiA+IDI5LTE2ID0gMTMuDQo+IEdpdmVuIDMuMSBTRUNUSU9OX1NJWkVfQklUUyA+PSBNQVhfT1JE
-RVIrMTUgPiAyOC4gU28gU0VDVElPTl9TSVpFX0JJVFMgY2FuIG5vdA0KPiBiZSByZWR1Y2VkIHRv
-IDI3Lg0KDQpJIHRoaW5rIHRoZXJlIHdlcmUgcGxhbnMgdG8gZXZlbnR1YWxseSBzd2l0Y2ggdG8g
-Mk1CIFRIUCB3aXRoIDY0ayBiYXNlDQpwYWdlcyBhcyB3ZWxsICh3aGljaCBjYW4gYmUgZW11bGF0
-ZWQgdXNpbmcgc29tZSBzb3J0IG9mIGNvbnNlY3V0aXZlIFBURQ0KZW50cmllcyB1bmRlciBhcm02
-NCwgZG9uJ3QgYXNrIG1lIGhvdyB0aGlzIGZlYXR1cmUgaXMgY2FsbGVkKSwNCnRoZW9yZXRpY2Fs
-bHkgYWxzbyBhbGxvd2luZyBzbWFsbGVyIHNlY3Rpb24gc2l6ZXMgKHdoZW4gYWxzbyByZWR1Y2lu
-Zw0KTUFYX09SREVSIHByb3Blcmx5KSBJIHdvdWxkIGhpZ2hseSBhcHByZWNpYXRlIHRoYXQgc3dp
-dGNoLiBIYXZpbmcgbWF4DQphbGxvY2F0aW9uL1RIUCBpbiB0aGUgc2l6ZSBvZiBnaWdhbnRpYyBw
-YWdlcyBzb3VuZHMgdmVyeSB3ZWlyZCB0byBtZQ0KKGFuZCBjcmVhdGVzIGlzc3VlcyBlLmcuLCB0
-byBzdXBwb3J0IGhvdCh1bilwbHVnIG9mIHNtYWxsIG1lbW9yeSBibG9ja3MNCmZvciB2aXJ0aW8t
-bWVtKS4gQnV0IEkgZ3Vlc3MgdGhpcyBpcyBub3QgdW5kZXIgb3VyIGNvbnRyb2wgOikNCg0KPiAN
-Cj4gSW4gb25lIHdvcmQsIGlmIHdlIGNvbnNpZGVyZWQgdG8gcmVkdWNlIFNFQ1RJT05fU0laRV9C
-SVRTIG9uIGFybTY0LCB0aGUgS2NvbmZpZw0KPiBtaWdodCBiZSB2ZXJ5IGNvbXBsaWNhdGVkLGUu
-Zy4gd2Ugc3RpbGwgbmVlZCB0byBjb25zaWRlciB0aGUgY2FzZSBmb3INCj4gQVJNNjRfMTZLX1BB
-R0VTLg0KDQpIYXZlbid0IGxvb2tlZCBpbnRvIDE2ayBiYXNlIHBhZ2VzIHlldC4gQnV0IEkgcmVt
-ZW1iZXIgaXQncyBpbiBnZW5lcmFsDQptb3JlIHNpbWlsYXIgdG8gNGsgdGhhbiB0byA2NGsgKHNw
-ZWFraW5nIGFib3V0IHNhbmUgVEhQIHNpemVzIGFuZA0Kc2ltaWxhciAuLi4pLg0KDQo+IA0KPj4N
-Cj4+IEluIHRoZSBsb25nIHRlcm0gd2UgbWlnaHQgd2FudCB0byByZXdvcmsgdGhlIG1lbW9yeSBi
-bG9jayBkZXZpY2UgbW9kZWwNCj4+IChldmVudHVhbGx5IHN1cHBvcnRpbmcgb2xkL25ldyBhcyBk
-aXNjdXNzZWQgd2l0aCBNaWNoYWwgc29tZSB0aW1lIGFnbw0KPj4gdXNpbmcgYSBrZXJuZWwgcGFy
-YW1ldGVyKSwgZHJvcHBpbmcgdGhlIGZpeGVkIHNpemVzDQo+IA0KPiBIYXMgdGhpcyBiZWVuIHBv
-c3RlZCB0byBMaW51eCBtbSBtYWlsbGlzdD8gU29ycnksIHNlYXJjaGVkIGFuZCBkaWRuJ3QgZmlu
-ZCBpdC4NCg0KWWVhaCwgYnV0IEkgbWlnaHQgbm90IGJlIGFibGUgdG8gZGlnIGl0IG91dCBhbnlt
-b3JlIC4uLg0KDQpBbnlob3csIHRoZSBpZGVhIHdvdWxkIGJlIHRvIGhhdmUgc29tZSBtYWdpYyBz
-d2l0Y2ggdGhhdCBjb252ZXJ0cw0KYmV0d2VlbiBvbGQgYW5kIG5ldyB3b3JsZCwgdG8gbm90IGJy
-ZWFrIHVzZXJzcGFjZSB0aGF0IHJlbGllcyBvbiB0aGF0Lg0KDQpXaXRoIG9sZCwgZXZlcnl0aGlu
-ZyB3b3VsZCBjb250aW51ZSB0byB3b3JrIGFzIGl0IGlzLiBXaXRoICpuZXcqIHdlDQp3b3VsZCBo
-YXZlIHRoZSByZWR1Y2VkIG51bWJlciBvZiBtZW1vcnkgYmxvY2tzIGZvciBib290IG1lbW9yeSBh
-bmQNCmRlY291cGxlZCBpdCBmcm9tIGEgc3RyaWN0LCBzdGF0aWMgbWVtb3J5IGJsb2NrIHNpemUu
-DQoNCg0KVGhlcmUgd291bGQgYmUgYW5vdGhlciBvcHRpb24gaW4gY29ybmVyIGNhc2VzIHJpZ2h0
-IG5vdy4gSWYgeW91IHdvdWxkDQoqa25vdyogdGhhdCB0aGUgbWV0YWRhdGEgbWVtb3J5IGhhcyBu
-byBtZW1tYXAvaWRlbmRpdHkgbWFwcGluZyBhbmQgaGF2ZQ0KMUcgYWxpZ25tZW50IGZvciB5b3Vy
-IHBtZW0gZGV2aWNlIChpbmNsdWRpbmcgdGhlIG1ldGFkYXRhIHBhcnQpDQoNCjEuIGFkZF9tZW1v
-cnlfZGV2aWNlX21hbmFnZWQoKSB0aGUgd2hvbGUgbWVtb3J5LCBpbmNsdWRpbmcgdGhlIG1ldGFk
-YXRhIHBhcnQNCjIuIHVzZSBnZW5lcmljX29ubGluZV9wYWdlcygpIHRvIG5vdCBleHBvc2UgbWV0
-YWRhdGEgcGFnZXMgdG8gdGhlIGJ1ZGR5DQozLiBNYXJrIG1ldGRhdGEgcGFnZXMgaW4gYSBzcGVj
-aWFsIHdheSwgc3VjaCB0aGF0IHlvdSBjYW4gZS5nLiwgYWxsb3cgdG8NCm9mZmxpbmUgbWVtb3J5
-IGFnYWluLCBpbmNsdWRpbmcgdGhlIG1ldGRhdGEgcGFnZXMgKGUuZy4sIFBHX29mZmxpbmUgKw0K
-bWVtb3J5IG5vdGlmaWVyIGxpa2UgdmlydGlvLW1lbSBkb2VzKQ0KDQozLiB3b3VsZCBvbmx5IGJl
-IHJlbGV2YW50IHRvIHN1cHBvcnQgb2ZmbGluaW5nIG9mIG1lbW9yeSBhZ2Fpbi4NCg0KSWYgdGhl
-IG1ldGFkYXRhIHBhcnQgaXMsIGhvd2V2ZXIsIGFscmVhZHkgWk9ORV9ERVZJQ0Ugd2l0aCBhIG1l
-bW1hcCwNCnRoZW4gdGhhdCdzIG5vdCBhbiBvcHRpb24uIChJIGhhdmUgbm8gaWRlYSBob3cgdGhh
-dCBtZXRhZGF0YSBwYXJ0IGlzDQp1c2VkLCBzb3JyeSkNCg0KDQotLSANClRoYW5rcywNCg0KRGF2
-aWQgLyBkaGlsZGVuYg0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEu
-b3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxp
-c3RzLjAxLm9yZwo=
+For systems which do not have CONFIG_PREEMPT set and
+if there is a heavy multi-threaded load/store operation happening
+on pmem + sometimes along with device latencies, softlockup warnings like
+this could trigger. This was seen on Power where pagesize is 64K.
+
+To avoid softlockup, this patch adds a cond_resched() in this path.
+
+<...>
+watchdog: BUG: soft lockup - CPU#31 stuck for 22s!
+<...>
+CPU: 31 PID: 15627 <..> 5.3.18-20
+<...>
+NIP memcpy_power7+0x43c/0x7e0
+LR memcpy_flushcache+0x28/0xa0
+
+Call Trace:
+memcpy_power7+0x274/0x7e0 (unreliable)
+memcpy_flushcache+0x28/0xa0
+write_pmem+0xa0/0x100 [nd_pmem]
+pmem_do_bvec+0x1f0/0x420 [nd_pmem]
+pmem_make_request+0x14c/0x370 [nd_pmem]
+generic_make_request+0x164/0x400
+submit_bio+0x134/0x2e0
+submit_bio_wait+0x70/0xc0
+blkdev_issue_zeroout+0xf4/0x2a0
+xfs_zero_extent+0x90/0xc0 [xfs]
+xfs_bmapi_convert_unwritten+0x198/0x230 [xfs]
+xfs_bmapi_write+0x284/0x630 [xfs]
+xfs_iomap_write_direct+0x1f0/0x3e0 [xfs]
+xfs_file_iomap_begin+0x344/0x690 [xfs]
+dax_iomap_pmd_fault+0x488/0xc10
+__xfs_filemap_fault+0x26c/0x2b0 [xfs]
+__handle_mm_fault+0x794/0x1af0
+handle_mm_fault+0x12c/0x220
+__do_page_fault+0x290/0xe40
+do_page_fault+0x38/0xc0
+handle_page_fault+0x10/0x30
+
+Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
+---
+ drivers/nvdimm/pmem.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+index 2df6994acf83..fcf7af13897e 100644
+--- a/drivers/nvdimm/pmem.c
++++ b/drivers/nvdimm/pmem.c
+@@ -214,6 +214,7 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+ 			bio->bi_status = rc;
+ 			break;
+ 		}
++		cond_resched();
+ 	}
+ 	if (do_acct)
+ 		nd_iostat_end(bio, start);
+-- 
+2.25.4
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
