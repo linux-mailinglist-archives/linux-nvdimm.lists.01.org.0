@@ -2,191 +2,139 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B492330E0
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Jul 2020 13:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA6A2331B2
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 30 Jul 2020 14:13:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 108261274724D;
-	Thu, 30 Jul 2020 04:22:50 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=211.53.128.215; helo=mail.isd.co.kr; envelope-from=choimj@isd.co.kr; receiver=<UNKNOWN> 
-Received: from MAIL.isd.co.kr (unknown [211.53.128.215])
-	(using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A5CDA12763D30;
+	Thu, 30 Jul 2020 05:13:33 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 672F512745C7A
-	for <linux-nvdimm@lists.01.org>; Thu, 30 Jul 2020 04:22:45 -0700 (PDT)
-Received: from udhzm (125.70.132.248) by MAIL.isd.co.kr (10.10.10.22) with
- Microsoft SMTP Server id 14.3.123.3; Thu, 30 Jul 2020 20:18:33 +0900
-Message-ID: <E9EFD537456D6CF262538F729D436834@udhzm>
-From: ixaulz <choimj@isd.co.kr>
-To: <westar@westarcn.com>, <news@abnn.cn>, <eli08@eli-switch.com>,
-	<qinling@p-shipping.com>, <mellisaingeryw@afterwork.com>, <qyd@njit.edu.cn>,
-	<ldjjyts@harbin.gov.cn>, <lei.wu@1hai.cn>, <thychen427@jnu.edu.cn>,
-	<lhall@thorlo.com>, <ygp@hziam.com>, <zhangxiaojie@bonc.com.cn>,
-	<rebecca@neweyes.com.cn>, <lijiahui001@chinasofti.com>,
-	<likun@legion.com.cn>, <wangyj@shu.edu.cn>, <lily@zjab.com>,
-	<linden.sun@hisense.com>, <xukuncai@creditease.cn>,
-	<linux-nvdimm@lists.01.org>, <liu.nian@fengniao.com>
-Subject: =?gb2312?B?uMnN6ru5zsrA27K7wNs=?=
-Date: Thu, 30 Jul 2020 19:22:33 +0800
+	by ml01.01.org (Postfix) with ESMTPS id C30C512763D2E
+	for <linux-nvdimm@lists.01.org>; Thu, 30 Jul 2020 05:13:31 -0700 (PDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 06UC3d1f109102;
+	Thu, 30 Jul 2020 08:13:19 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 32krethy2a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2020 08:13:18 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 06UC4Bxb112196;
+	Thu, 30 Jul 2020 08:13:18 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 32krethy1j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2020 08:13:18 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 06UC9gR1011508;
+	Thu, 30 Jul 2020 12:13:16 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+	by ppma04ams.nl.ibm.com with ESMTP id 32gcy4p50t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Jul 2020 12:13:15 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 06UCDDgU20316424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Jul 2020 12:13:13 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC333AE056;
+	Thu, 30 Jul 2020 12:13:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD301AE04D;
+	Thu, 30 Jul 2020 12:13:09 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.89.216])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Thu, 30 Jul 2020 12:13:09 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Thu, 30 Jul 2020 17:43:08 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH v3 0/2] powerpc/papr_scm: add support for reporting NVDIMM 'life_used_percentage' metric
+Date: Thu, 30 Jul 2020 17:43:01 +0530
+Message-Id: <20200730121303.134230-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Originating-IP: [125.70.132.248]
-Message-ID-Hash: ZL4D65MHZFXAP2HK7K4O35T7FG5C77XJ
-X-Message-ID-Hash: ZL4D65MHZFXAP2HK7K4O35T7FG5C77XJ
-X-MailFrom: choimj@isd.co.kr
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-07-30_09:2020-07-30,2020-07-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2007300086
+Message-ID-Hash: E6YVE4N7S7DCJW62WHU5OENBBDNM5WDD
+X-Message-ID-Hash: E6YVE4N7S7DCJW62WHU5OENBBDNM5WDD
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZL4D65MHZFXAP2HK7K4O35T7FG5C77XJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E6YVE4N7S7DCJW62WHU5OENBBDNM5WDD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2432891064985921536=="
-
---===============2432891064985921536==
-Content-Type: text/html; charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFkgYmdDb2xvcj1zaWx2
-ZXI+DQo8UCBhbGlnbj1sZWZ0PjxBIGhyZWY9Imh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vIj48
-U1RST05HPjxGT05UIA0Kc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xvcj1k
-YXJrcmVkIA0Kc2l6ZT01Pmh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vPC9GT05UPjwvU1RST05H
-PjwvQT48L1A+DQo8UCBhbGlnbj1sZWZ0PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBk
-YXJrY3lhbiI+PC9GT05UPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
-TkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xvcj1kYXJrcmVkPjwvRk9OVD48L1A+DQo8UCBhbGlnbj1s
-ZWZ0PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgY29sb3I9ZGFya3Jl
-ZCANCnNpemU9NT48RU0+uMnN6ru5zsrA27K7wNs8L0VNPjwvRk9OVD48L1A+DQo8UCBhbGlnbj1s
-ZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrY3lh
-biIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogZGFya2N5YW4iIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RS
-T05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj0jZmZmZmZmIHNpemU9MT48L0ZPTlQ+PC9V
-PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQg
-c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT0x
-PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
-CnNpemU9MT53ZXN0YXI8L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmln
-aHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAi
-IGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFs
-aWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAj
-OGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+
-DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tH
-Uk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VN
-PjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxl
-PSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48
-L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9O
-VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48
-L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+
-PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpz
-aXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJP
-Tkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1n
-cmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdo
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
-Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
-Z249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4
-YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4N
-CjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNP
-TE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9O
-Rz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
-T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
-PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9
-IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwv
-VT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05U
-IHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01Pjwv
-Rk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9O
-Rz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdy
-YXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0
-PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBj
-b2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGln
-bj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
-T1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05H
-PjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JP
-VU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48
-L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
-PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQg
-c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9G
-T05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxV
-PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6
-ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05H
-PjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3Jh
-eSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+
-PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNv
-bG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWdu
-PXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIw
-MDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8
-UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
-TkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwv
-U1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJC
-QUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+
-PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+
-PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXpl
-PTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+
-PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5
-IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48
-Rk9OVCBjb2xvcj1ncmF5PjwvRk9OVD48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9O
-Rz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdy
-YXkgDQpzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0
-PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBj
-b2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGln
-bj1yaWdodD48Rk9OVCBjb2xvcj1ncmF5PjwvRk9OVD48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RS
-T05HPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBibGFjayIgY29sb3I9Z3JheSANCnNp
-emU9MT48VT48L1U+PC9GT05UPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+
-PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICMwMDAwMDAiIGNvbG9yPWdyYXkgDQpz
-aXplPTE+PC9GT05UPjwvVT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48RU0+PEZPTlQg
-c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtibHVlIiANCmNvbG9yPXJlZD48VT53ZXN0YXI8
-L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEVNPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiAjMDAwMDhiIiANCmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9Q
-Pg0KPFAgYWxpZ249cmlnaHQ+PFU+PEZPTlQgY29sb3I9cmVkPjwvRk9OVD48L1U+PC9QPg0KPFAg
-YWxpZ249cmlnaHQ+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDAwMDhiIiAN
-CmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEVNPjxV
-PjxGT05UIGNvbG9yPXJlZD48L0ZPTlQ+PC9VPjwvRU0+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEVN
-PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1yZWQ+PFU+PC9V
-PjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dS
-T1VORC1DT0xPUjogZ3JlZW4iIA0KY29sb3I9cmVkPjxVPjwvVT48L0ZPTlQ+PC9FTT48L1A+DQo8
-UCBhbGlnbj1yaWdodD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
-CmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEVNPjxG
-T05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwv
-Rk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogZ3JlZW4iIA0KY29sb3I9cmVkPjxVPjEwILjJzeq7uc7KwNuyu8DbPC9VPjwvRk9O
-VD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogZ3JlZW4iIA0KY29sb3I9bWFnZW50YT48L0ZPTlQ+PC9FTT48L1A+DQo8UCBhbGlnbj1y
-aWdodD48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZ3JlZW4iIA0KY29sb3I9bWFnZW50
-YT53ZXN0YXI8L0ZPTlQ+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
-TkQtQ09MT1I6IGRhcmtyZWQiIA0KY29sb3I9cHVycGxlPjYyNDg2MjMxMDYyPC9GT05UPjwvUD48
-L0JPRFk+PC9IVE1MPg0K
-
-
---===============2432891064985921536==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Changes since v2[1]:
+
+* Updated drc_pmem_query_stats() to reduce the number of input args
+  to the function based suggestions from Aneesh.
+
+[1] https://lore.kernel.org/linux-nvdimm/20200726122030.31529-1-vaibhav@linux.ibm.com
+---
+
+This small patchset implements kernel side support for reporting
+'life_used_percentage' metric in NDCTL with dimm health output for
+papr-scm NVDIMMs. With corresponding NDCTL side changes output for
+should be like:
+
+$ sudo ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "life_used_percentage":0,
+      "shutdown_state":"clean"
+    }
+  }
+]
+
+PHYP supports H_SCM_PERFORMANCE_STATS hcall through which an LPAR can
+fetch various performance stats including 'fuel_gauge' percentage for
+an NVDIMM. 'fuel_gauge' metric indicates the usable life remaining of
+an NVDIMM expressed as percentage and  'life_used_percentage' can be
+calculated as 'life_used_percentage = 100 - fuel_gauge'.
+
+Structure of the patchset
+=========================
+First patch implements necessary scaffolding needed to issue the
+H_SCM_PERFORMANCE_STATS hcall and fetch performance stats
+catalogue. The patch also implements support for 'perf_stats' sysfs
+attribute to report the full catalogue of supported performance stats
+by PHYP.
+
+Second and final patch implements support for sending this value to
+libndctl by extending the PAPR_PDSM_HEALTH pdsm payload to add a new
+field named 'dimm_fuel_gauge' to it.
+
+Vaibhav Jain (2):
+  powerpc/papr_scm: Fetch nvdimm performance stats from PHYP
+  powerpc/papr_scm: Add support for fetching nvdimm 'fuel-gauge' metric
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 +++
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     |   9 +
+ arch/powerpc/platforms/pseries/papr_scm.c     | 199 ++++++++++++++++++
+ 3 files changed, 235 insertions(+)
+
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============2432891064985921536==--
