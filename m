@@ -2,217 +2,128 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52AE23597B
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  2 Aug 2020 19:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF79239CF1
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 01:01:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AB9081242E6A6;
-	Sun,  2 Aug 2020 10:23:26 -0700 (PDT)
-Received-SPF: Pass (helo) identity=helo; client-ip=218.201.202.178; helo=mail.evsny.com; envelope-from=fangwei@evsny.com; receiver=<UNKNOWN> 
-Received: from mail.evsny.com (unknown [218.201.202.178])
-	by ml01.01.org (Postfix) with ESMTP id BA37C119BC047
-	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 10:23:22 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-	by mail.evsny.com (EMOS V1.5 (Postfix)) with ESMTP id 09010133833F;
-	Sun,  2 Aug 2020 22:20:02 +0800 (CST)
-X-DSPAM-Result: Innocent
-X-DSPAM-Processed: Sun Aug  2 22:20:01 2020
-X-DSPAM-Confidence: 0.9975
-X-DSPAM-Probability: 0.0000
-X-DSPAM-Signature: 1,5f26cb9133481651410925
-X-Virus-Scanned: amavisd-new at evsny.com
-X-Spam-Flag: NO
-X-Spam-Score: -2.186
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.186 tagged_above=-10 required=5
-	tests=[DSPAM:Innocent=-1.000, ALL_TRUSTED=-1.44, DSPAM_HAM_99=-3.23,
-	FH_DATE_PAST_20XX=3.384, TVD_SPACE_RATIO=0.1] autolearn=no
-Received: from mail.evsny.com ([127.0.0.1])
-	by localhost (mail.evsny.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id kNbTDevEeMPR; Sun,  2 Aug 2020 22:19:59 +0800 (CST)
-Received: from qz (unknown [171.93.9.75])
-	by mail.evsny.com (EMOS V1.5 (Postfix)) with ESMTPA id 3A5681338334;
-	Sun,  2 Aug 2020 22:19:56 +0800 (CST)
-Message-ID: <C6D23EE55AD74F62B2FC46A4ED0C4CB8@qz>
-From: "hcsiy" <fangwei@evsny.com>
-To: <tl@hcis.com.cn>,
-	<zhanghq@ustbcm.com>,
-	<liming@chinasofti.com>,
-	<linggw@hzxjhs.com>,
-	<linux-nvdimm@lists.01.org>,
-	<liruyu@anymacro.com>,
-	<guoxue@xxsb.com>,
-	<liuhaiyan@mychery.com>,
-	<liusq@youzu.com>,
-	<liuyh@hayao.com>,
-	<zhy@cn-passion.com>,
-	<jiaomj@strongit.com.cn>,
-	<iewangfei@zzu.edu.cn>,
-	<lrx@zyicl.com>,
-	<ckpaydbi@cpdc.com>,
-	<peixun@fanfanlo.com>,
-	<sales@caifly.com>,
-	<hr@leadingmetal.com>,
-	<raylee@chinaenro.com>,
-	<webmaster@laboroot.com>,
-	<hr@fuzhi99.com>
-Subject: =?gb2312?B?ye2yxNH5w7KzrNX9tcTEs7Tz0afN4tPvz7XDwMWuus3R883ivczFvg==?=
-	=?gb2312?B?xb7K08a1wfez9g==?=
-Date: Sun, 2 Aug 2020 22:20:00 +0800
+	by ml01.01.org (Postfix) with ESMTP id 40CDD129765DC;
+	Sun,  2 Aug 2020 16:01:56 -0700 (PDT)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.97; helo=mail110.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail110.syd.optusnet.com.au (mail110.syd.optusnet.com.au [211.29.132.97])
+	by ml01.01.org (Postfix) with ESMTP id 9EFD7129765DB
+	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 16:01:53 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-53-24.pa.nsw.optusnet.com.au [49.180.53.24])
+	by mail110.syd.optusnet.com.au (Postfix) with ESMTPS id 9F77B109820;
+	Mon,  3 Aug 2020 09:01:50 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+	(envelope-from <david@fromorbit.com>)
+	id 1k2MzE-0000Mk-Pv; Mon, 03 Aug 2020 09:01:48 +1000
+Date: Mon, 3 Aug 2020 09:01:48 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Ritesh Harjani <riteshh@linux.ibm.com>
+Subject: Re: [RFC 1/1] pmem: Add cond_resched() in bio_for_each_segment loop
+ in pmem_make_request
+Message-ID: <20200802230148.GA2114@dread.disaster.area>
+References: <0d96e2481f292de2cda8828b03d5121004308759.1596011292.git.riteshh@linux.ibm.com>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: JEE35RBS7KGL6D6ELTTMKO5R6MGUJI52
-X-Message-ID-Hash: JEE35RBS7KGL6D6ELTTMKO5R6MGUJI52
-X-MailFrom: fangwei@evsny.com
+Content-Disposition: inline
+In-Reply-To: <0d96e2481f292de2cda8828b03d5121004308759.1596011292.git.riteshh@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=QIgWuTDL c=1 sm=1 tr=0
+	a=moVtWZxmCkf3aAMJKIb/8g==:117 a=moVtWZxmCkf3aAMJKIb/8g==:17
+	a=kj9zAlcOel0A:10 a=y4yBn9ojGxQA:10 a=VnNF1IyMAAAA:8 a=7-415B0cAAAA:8
+	a=qczKg5P-FDsFxSpMrEAA:9 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: DYKLH5NNFJEGKE3DAIGPGS742LDAGZ4P
+X-Message-ID-Hash: DYKLH5NNFJEGKE3DAIGPGS742LDAGZ4P
+X-MailFrom: david@fromorbit.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JEE35RBS7KGL6D6ELTTMKO5R6MGUJI52/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DYKLH5NNFJEGKE3DAIGPGS742LDAGZ4P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6822084640200471217=="
-
---===============6822084640200471217==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFkgYmdDb2xvcj1zaWx2
-ZXI+DQo8UCBhbGlnbj1sZWZ0PjwvUD4NCjxQIGFsaWduPWxlZnQ+PC9QPg0KPFAgYWxpZ249bGVm
-dD48L1A+DQo8UCBhbGlnbj1sZWZ0PjxBIGhyZWY9Imh0dHA6Ly9ua2N5Lm5ldC8iPjxTVFJPTkc+
-PEZPTlQgDQpzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogeWVsbG93IiBjb2xvcj1kYXJrcmVkIA0K
-c2l6ZT01Pmh0dHA6Ly9ua2N5Lm5ldC88L0ZPTlQ+PC9TVFJPTkc+PC9BPjwvUD4NCjxQIGFsaWdu
-PWxlZnQ+PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9S
-OiB5ZWxsb3ciIGNvbG9yPWRhcmtyZWQ+PC9GT05UPjwvUD4NCjxQIGFsaWduPWNlbnRlcj48U1RS
-T05HPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrcmVkIiBjb2xvcj13aGl0
-ZSANCnNpemU9NT48RU0+ye2yxNH5w7KzrNX9tcTEs7Tz0afN4tPvz7XDwMWuus3R883ivczFvsW+
-ytPGtcH3s/Y8L0VNPjwvRk9OVD48L1U+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxT
-VFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNv
-bG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz4mbmJzcDs8L1A+DQo8
-UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+Jm5ic3A7PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9
-IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTE+dGw8L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+
-PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBz
-aXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJP
-Tkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9y
-PSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1y
-aWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAw
-MCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
-T1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RS
-T05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+
-PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48
-L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+
-PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZm
-ZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxT
-VFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNv
-bG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGln
-bj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
-Pg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQt
-Q09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwv
-U1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJC
-QUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48
-L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9O
-VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9
-NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48
-RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2Zm
-ZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0
-PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiAN
-CmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBh
-bGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
-IzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9V
-TkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VN
-PjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxl
-PSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9O
-VD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9O
-Rz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9
-I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJp
-Z2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAw
-IiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8
-UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tH
-Uk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48
-L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0
-eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01Pjwv
-Rk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZm
-IHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNU
-Uk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29s
-b3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWdu
-PXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIw
-MDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+
-DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
-VFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJB
-Q0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwv
-VT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05U
-IHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01
-PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZm
-ZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+
-PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0K
-Y29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFs
-aWduPXJpZ2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAj
-OGIwMDAwIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48
-L1A+DQo8UCBhbGlnbj1yaWdodD48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgDQpjb2xvcj0jZmZmZmZmIHNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PFNUUk9O
-Rz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9
-I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPXJp
-Z2h0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAw
-IiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8
-UCBhbGlnbj1yaWdodD48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxGT05UIHN0eWxlPSJC
-QUNLR1JPVU5ELUNPTE9SOiBibGFjayIgY29sb3I9YmxhY2sgDQpzaXplPTE+PFU+PC9VPjwvRk9O
-VD48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1yaWdodD48U1RST05HPjxVPjxGT05UIHN0eWxlPSJC
-QUNLR1JPVU5ELUNPTE9SOiAjMDAwMDAwIiANCnNpemU9MT48L0ZPTlQ+PC9VPjwvU1RST05HPjwv
-UD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFy
-a2JsdWUiIA0KY29sb3I9bWFnZW50YT50bDwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0
-PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzAwMDA4YiIgDQpjb2xvcj0jZmYw
-MGZmPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjwvUD4NCjxQIGFsaWduPXJpZ2h0
-PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzAwMDA4YiIgDQpjb2xvcj0jZmYw
-MGZmPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBjb2xvcj0jZmYw
-MGZmPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogZ3JlZW4iIA0KY29sb3I9I2ZmMDBmZj48L0ZPTlQ+PC9FTT48L1A+DQo8
-UCBhbGlnbj1yaWdodD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
-CmNvbG9yPW1hZ2VudGE+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249cmlnaHQ+PEVNPjxGT05U
-IHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1tYWdlbnRhPjwvRk9OVD48
-L0VNPjwvUD4NCjxQIGFsaWduPXJpZ2h0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogZ3JlZW4iIA0KY29sb3I9bWFnZW50YT48L0ZPTlQ+PC9FTT48L1A+DQo8UCBhbGlnbj1yaWdo
-dD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPW1hZ2Vu
-dGE+MzYwODEgye2yxNH5w7KzrNX9tcTEs7Tz0afN4tPvz7XDwMWuus3R883ivczFvsW+ytPGtcH3
-s/Y8L0ZPTlQ+PC9FTT48L1A+DQo8UCBhbGlnbj1yaWdodD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tH
-Uk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPW1hZ2VudGE+PC9GT05UPjwvRU0+PC9QPg0KPFAg
-YWxpZ249cmlnaHQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9y
-PW1hZ2VudGE+dGw8L0ZPTlQ+PC9QPjwvQk9EWT48L0hUTUw+DQo=
-
-
---===============6822084640200471217==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+On Wed, Jul 29, 2020 at 02:15:18PM +0530, Ritesh Harjani wrote:
+> For systems which do not have CONFIG_PREEMPT set and
+> if there is a heavy multi-threaded load/store operation happening
+> on pmem + sometimes along with device latencies, softlockup warnings like
+> this could trigger. This was seen on Power where pagesize is 64K.
+> 
+> To avoid softlockup, this patch adds a cond_resched() in this path.
+> 
+> <...>
+> watchdog: BUG: soft lockup - CPU#31 stuck for 22s!
+> <...>
+> CPU: 31 PID: 15627 <..> 5.3.18-20
+> <...>
+> NIP memcpy_power7+0x43c/0x7e0
+> LR memcpy_flushcache+0x28/0xa0
+> 
+> Call Trace:
+> memcpy_power7+0x274/0x7e0 (unreliable)
+> memcpy_flushcache+0x28/0xa0
+> write_pmem+0xa0/0x100 [nd_pmem]
+> pmem_do_bvec+0x1f0/0x420 [nd_pmem]
+> pmem_make_request+0x14c/0x370 [nd_pmem]
+> generic_make_request+0x164/0x400
+> submit_bio+0x134/0x2e0
+> submit_bio_wait+0x70/0xc0
+> blkdev_issue_zeroout+0xf4/0x2a0
+> xfs_zero_extent+0x90/0xc0 [xfs]
+> xfs_bmapi_convert_unwritten+0x198/0x230 [xfs]
+> xfs_bmapi_write+0x284/0x630 [xfs]
+> xfs_iomap_write_direct+0x1f0/0x3e0 [xfs]
+> xfs_file_iomap_begin+0x344/0x690 [xfs]
+> dax_iomap_pmd_fault+0x488/0xc10
+> __xfs_filemap_fault+0x26c/0x2b0 [xfs]
+> __handle_mm_fault+0x794/0x1af0
+> handle_mm_fault+0x12c/0x220
+> __do_page_fault+0x290/0xe40
+> do_page_fault+0x38/0xc0
+> handle_page_fault+0x10/0x30
+> 
+> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
+> ---
+>  drivers/nvdimm/pmem.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> index 2df6994acf83..fcf7af13897e 100644
+> --- a/drivers/nvdimm/pmem.c
+> +++ b/drivers/nvdimm/pmem.c
+> @@ -214,6 +214,7 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+>  			bio->bi_status = rc;
+>  			break;
+>  		}
+> +		cond_resched();
+
+There are already cond_resched() calls between submitted bios in
+blkdev_issue_zeroout() via both __blkdev_issue_zero_pages() and
+__blkdev_issue_write_zeroes(), so I'm kinda wondering where the
+problem is coming from here.
+
+Just how big is the bio being issued here that it spins for 22s
+trying to copy it?
+
+And, really, if the system is that bound on cacheline bouncing that
+it prevents memcpy() from making progress, I think we probably
+should be issuing a soft lockup warning like this...
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============6822084640200471217==--
