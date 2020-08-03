@@ -2,93 +2,160 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16C123A948
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 17:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2CB23ABD3
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 19:51:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BE47912941D74;
-	Mon,  3 Aug 2020 08:20:45 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=115.236.45.142; helo=mail.adbest.com; envelope-from=service@adbest.com; receiver=<UNKNOWN> 
-Received: from mail.adbest.com (unknown [115.236.45.142])
+	by ml01.01.org (Postfix) with ESMTP id C72E5129A9141;
+	Mon,  3 Aug 2020 10:51:54 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DCF4B12941D62
-	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 08:20:42 -0700 (PDT)
-Received: from hcqj (unknown [115.236.45.138])
-	by mail.adbest.com (Postfix - by adbest.com) with ESMTPA id EE5FD5411A0;
-	Mon,  3 Aug 2020 23:20:10 +0800 (CST)
-Message-ID: <5D0B567A8ECE30B4FF226D03B9DD65C8@hcqj>
-From: "wzka" <service@adbest.com>
-To: <cr@rongda.com.cn>,
-	<linux-nvdimm@lists.01.org>,
-	<qb@cnhuafas.com>,
-	<jeamizhang@seipher.com>,
-	<hr@hsiangen.cn>,
-	<support@fjhtc.com>,
-	<qinyangyuan@huihehonda.com>,
-	<xiemiao@ls1111.cn>,
-	<hr@xinye-tex.com>,
-	<press@magaseek.com>,
-	<info@yubaohk.com>,
-	<rnd@bj-odyssey.com>,
-	<zhuyaming@tqedu.net>,
-	<calvinyang@mooresrowland.com.cn>,
-	<hr@softknow.com>,
-	<kwanhing09@czfittings.cn>,
-	<yangj@penalogi.com>,
-	<sales@tiandachem.com>,
-	<hbq1230@gxtc.edu.cn>,
-	<zhangqingchuan@btbu.edu.cn>,
-	<shaochen@szwbtz.com.cn>
-Subject: =?gb2312?B?zMCyu8jIv6jN29LBw8DJ2cWuv9rLrsPDtPOz37bIVklQytWy2A==?=
-	=?gb2312?B?vKvP3r/avbu/2rGsv8nS1LDRv9rLrs3mtb3I57TL0NS40LXExa66og==?=
-Date: Mon, 3 Aug 2020 23:20:31 +0800
+	by ml01.01.org (Postfix) with ESMTPS id 8B34E129A909B
+	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 10:51:51 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 073HfwvR185594;
+	Mon, 3 Aug 2020 17:51:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : cc : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=BJlgC8gpeW+JpyNpqxR4bB2p3QaB/etkA9V9OMvw9V4=;
+ b=UaSzJKUNyScl9W0jXdAzgk+wLhRnaxpOLu1BIGFAo/zgWZZwuy3M74udTdOFx9i6wTDB
+ F5hk3SwJ601Qv66uFlYnRi7JSb4dytkgyPNylFgHqeISWmBGFU08RDgczqI1hlgbQVq4
+ Q0tH8pUGFhhSIeVQA1Fpwk12jjoxYzCHgIsibgBIoNK9PPpjNA96DkeDBzzJAFlovGYc
+ eEAfHTv34jfYdQnjPCJYRhSsFpqFpB2dk2cASEmj9yBAOtkC6ZZcfGv2zGEHFZlfp1FM
+ AGM6cZgnl2tBZJG9jktqIfG6TM9Wd0L4oT4Fy2Mfxkg6V4duwBd4Z8mEgNfzdNRMJlf8 gA==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by userp2120.oracle.com with ESMTP id 32n11myu40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 03 Aug 2020 17:51:49 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 073Hgm8Q067974;
+	Mon, 3 Aug 2020 17:51:48 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserp3020.oracle.com with ESMTP id 32pdnnqchf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Aug 2020 17:51:48 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 073Hpk2M019633;
+	Mon, 3 Aug 2020 17:51:46 GMT
+Received: from [10.159.240.44] (/10.159.240.44)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Mon, 03 Aug 2020 10:51:46 -0700
+Subject: Re: [PATCH 1/2] libnvdimm/security: 'security' attr never show
+ 'overwrite' state
+To: dan.j.williams@intel.com, vishal.l.verma@intel.com, ira.weiny@intel.com
+References: <1595606959-8516-1-git-send-email-jane.chu@oracle.com>
+From: Jane Chu <jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <4bff2fec-735d-df27-2d34-f00dac4caee6@oracle.com>
+Date: Mon, 3 Aug 2020 10:51:44 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: 2IKUFE5T7BLS7LK2NABMFBFETNGFMM4K
-X-Message-ID-Hash: 2IKUFE5T7BLS7LK2NABMFBFETNGFMM4K
-X-MailFrom: service@adbest.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+In-Reply-To: <1595606959-8516-1-git-send-email-jane.chu@oracle.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9702 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 mlxscore=0
+ bulkscore=0 adultscore=0 phishscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008030126
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9702 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008030126
+Message-ID-Hash: XBJEHCWJ7TJ3ME4IC5D7POMXJLEPQJ37
+X-Message-ID-Hash: XBJEHCWJ7TJ3ME4IC5D7POMXJLEPQJ37
+X-MailFrom: jane.chu@oracle.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2IKUFE5T7BLS7LK2NABMFBFETNGFMM4K/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XBJEHCWJ7TJ3ME4IC5D7POMXJLEPQJ37/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============7249329317399139677=="
-
---===============7249329317399139677==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFk+DQo8UD48QSBocmVm
-PSJodHRwOi8vdmlrcmFtdmlyb2RoaWEuY29tLyI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
-T1I6IG9saXZlIiANCmNvbG9yPWRhcmtibHVlIHNpemU9ND48U1RST05HPmh0dHA6Ly92aWtyYW12
-aXJvZGhpYS5jb20vPC9TVFJPTkc+PC9GT05UPjwvQT48L1A+DQo8UD48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogb2xpdmUiIHNpemU9ND48RU0+PFNUUk9ORz48Rk9OVCANCmNvbG9yPWRh
-cmtibHVlPszAsrvIyL+ozdvSwcPAydnFrr/ay67Dw7Tzs9+2yFZJUMrVsti8q8/ev9q9u7/asay/
-ydLUsNG/2suuzea1vcjntMvQ1LjQtcTFrrqiPC9GT05UPiA8L1NUUk9ORz48L0VNPjwvRk9OVD48
-L1A+PC9CT0RZPjwvSFRNTD4NCg==
-
-
---===============7249329317399139677==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+Hi,
+
+Any taker on this and next patch
+   [PATCH 2/2] libnvdimm/security: ensure sysfs poll thread woke up and 
+fetch updated attr
+?
+According to our test, they're bugs, and folks are waiting to get
+the issues fixed.
+
+Thanks!
+-jane
+
+On 7/24/2020 9:09 AM, Jane Chu wrote:
+> Since
+> commit d78c620a2e82 ("libnvdimm/security: Introduce a 'frozen' attribute"),
+> when issue
+>   # ndctl sanitize-dimm nmem0 --overwrite
+> then immediately check the 'security' attribute,
+>   # cat /sys/devices/LNXSYSTM:00/LNXSYBUS:00/ACPI0012:00/ndbus0/nmem0/security
+>   unlocked
+> Actually the attribute stays 'unlocked' through out the entire overwrite
+> operation, never changed.  That's because 'nvdimm->sec.flags' is a bitmap
+> that has both bits set indicating 'overwrite' and 'unlocked'.
+> But security_show() checks the mutually exclusive bits before it checks
+> the 'overwrite' bit at last. The order should be reversed.
+> 
+> The commit also has a typo: in one occasion, 'nvdimm->sec.ext_state'
+> assignment is replaced with 'nvdimm->sec.flags' assignment for
+> the NVDIMM_MASTER type.
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Fixes: d78c620a2e82 ("libnvdimm/security: Introduce a 'frozen' attribute")
+> Signed-off-by: Jane Chu <jane.chu@oracle.com>
+> ---
+>   drivers/nvdimm/dimm_devs.c | 4 ++--
+>   drivers/nvdimm/security.c  | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+> index b7b77e8..5d72026 100644
+> --- a/drivers/nvdimm/dimm_devs.c
+> +++ b/drivers/nvdimm/dimm_devs.c
+> @@ -363,14 +363,14 @@ __weak ssize_t security_show(struct device *dev,
+>   {
+>   	struct nvdimm *nvdimm = to_nvdimm(dev);
+>   
+> +	if (test_bit(NVDIMM_SECURITY_OVERWRITE, &nvdimm->sec.flags))
+> +		return sprintf(buf, "overwrite\n");
+>   	if (test_bit(NVDIMM_SECURITY_DISABLED, &nvdimm->sec.flags))
+>   		return sprintf(buf, "disabled\n");
+>   	if (test_bit(NVDIMM_SECURITY_UNLOCKED, &nvdimm->sec.flags))
+>   		return sprintf(buf, "unlocked\n");
+>   	if (test_bit(NVDIMM_SECURITY_LOCKED, &nvdimm->sec.flags))
+>   		return sprintf(buf, "locked\n");
+> -	if (test_bit(NVDIMM_SECURITY_OVERWRITE, &nvdimm->sec.flags))
+> -		return sprintf(buf, "overwrite\n");
+>   	return -ENOTTY;
+>   }
+>   
+> diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
+> index 4cef69b..8f3971c 100644
+> --- a/drivers/nvdimm/security.c
+> +++ b/drivers/nvdimm/security.c
+> @@ -457,7 +457,7 @@ void __nvdimm_security_overwrite_query(struct nvdimm *nvdimm)
+>   	clear_bit(NDD_WORK_PENDING, &nvdimm->flags);
+>   	put_device(&nvdimm->dev);
+>   	nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_USER);
+> -	nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
+> +	nvdimm->sec.ext_flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
+>   }
+>   
+>   void nvdimm_security_overwrite_query(struct work_struct *work)
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============7249329317399139677==--
