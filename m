@@ -1,52 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF346239EC8
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 07:19:36 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D854E239ECA
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 07:19:41 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 860D112A6D4C1;
-	Sun,  2 Aug 2020 22:19:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	by ml01.01.org (Postfix) with ESMTP id AC05C12A6D4CB;
+	Sun,  2 Aug 2020 22:19:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1DA7B12A6D4C0
-	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 22:19:33 -0700 (PDT)
-IronPort-SDR: 1EvFoAwKZn67jvFqDc0ovgJUukgO8ZEk7a6G7A4lrobcyW2L3xStJICCGGEfuH97b7OEx1jTTC
- 8ZlhQXA+Glbw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9701"; a="131611121"
+	by ml01.01.org (Postfix) with ESMTPS id 79D8A12A6D4C3
+	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 22:19:38 -0700 (PDT)
+IronPort-SDR: pq8td45ylVmYPXE1xzMJUio40C1NsvuuJpwDMrhTqlxGvZjvoQLnvqz3NVS+ThquZIEH/l9Kkc
+ H2pn+h2/BAow==
+X-IronPort-AV: E=McAfee;i="6000,8403,9701"; a="216472156"
 X-IronPort-AV: E=Sophos;i="5.75,429,1589266800";
-   d="scan'208";a="131611121"
+   d="scan'208";a="216472156"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:19:32 -0700
-IronPort-SDR: xgSN7LuDBztttPvRwXwahH2wKu3/cXRemn3lBKOgjSYVW+SBnlQfGEZrEIXSrKssjt9ZCAqvXi
- sqNRQeqpu+hA==
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:19:38 -0700
+IronPort-SDR: WFDsqK1YdlBiBoRRenfPv3zDignsuJm/iea75Lsufl9kEoS5lxblPDNWKBXVyJjprWu4e8qTR3
+ 9/5IyVr4xe7g==
 X-IronPort-AV: E=Sophos;i="5.75,429,1589266800";
-   d="scan'208";a="329890491"
+   d="scan'208";a="305681151"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:19:32 -0700
-Subject: [PATCH v4 09/23] device-dax: Move instance creation parameters to
- 'struct dev_dax_data'
+  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:19:38 -0700
+Subject: [PATCH v4 10/23] device-dax: Make pgmap optional for instance
+ creation
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Sun, 02 Aug 2020 22:03:14 -0700
-Message-ID: <159643099411.4062302.1337305960720423895.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sun, 02 Aug 2020 22:03:19 -0700
+Message-ID: <159643099958.4062302.10379230791041872886.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: FQVPLASNRINGFNB6WG4BBA6OU4JC5JCL
-X-Message-ID-Hash: FQVPLASNRINGFNB6WG4BBA6OU4JC5JCL
+Message-ID-Hash: I75PMGKULWKK22BPJUY6VPR26PZAD4VE
+X-Message-ID-Hash: I75PMGKULWKK22BPJUY6VPR26PZAD4VE
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: peterz@infradead.org, dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, joao.m.martins@oracle.com, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FQVPLASNRINGFNB6WG4BBA6OU4JC5JCL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I75PMGKULWKK22BPJUY6VPR26PZAD4VE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,160 +55,331 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-In preparation for adding more parameters to instance creation, move
-existing parameters to a new struct.
+The passed in dev_pagemap is only required in the pmem case as the
+libnvdimm core may have reserved a vmem_altmap for dev_memremap_pages()
+to place the memmap in pmem directly. In the hmem case there is no
+agent reserving an altmap so it can all be handled by a core internal
+default.
+
+Pass the resource range via a new @range property of 'struct
+dev_dax_data'.
 
 Cc: Vishal Verma <vishal.l.verma@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/bus.c       |   14 +++++++-------
- drivers/dax/bus.h       |   16 ++++++++--------
- drivers/dax/hmem/hmem.c |    8 +++++++-
- drivers/dax/pmem/core.c |    9 ++++++++-
- 4 files changed, 30 insertions(+), 17 deletions(-)
+ drivers/dax/bus.c              |   29 +++++++++++++++--------------
+ drivers/dax/bus.h              |    2 ++
+ drivers/dax/dax-private.h      |    9 ++++++++-
+ drivers/dax/device.c           |   28 +++++++++++++++++++---------
+ drivers/dax/hmem/hmem.c        |    8 ++++----
+ drivers/dax/kmem.c             |   12 ++++++------
+ drivers/dax/pmem/core.c        |    4 ++++
+ tools/testing/nvdimm/dax-dev.c |    8 ++++----
+ 8 files changed, 62 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index f06ffa66cd78..dffa4655e128 100644
+index dffa4655e128..96bd64ba95a5 100644
 --- a/drivers/dax/bus.c
 +++ b/drivers/dax/bus.c
-@@ -395,9 +395,9 @@ static void unregister_dev_dax(void *dev)
- 	put_device(dev);
+@@ -271,7 +271,7 @@ static ssize_t size_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct dev_dax *dev_dax = to_dev_dax(dev);
+-	unsigned long long size = resource_size(&dev_dax->region->res);
++	unsigned long long size = range_len(&dev_dax->range);
+ 
+ 	return sprintf(buf, "%llu\n", size);
+ }
+@@ -293,19 +293,12 @@ static ssize_t target_node_show(struct device *dev,
+ }
+ static DEVICE_ATTR_RO(target_node);
+ 
+-static unsigned long long dev_dax_resource(struct dev_dax *dev_dax)
+-{
+-	struct dax_region *dax_region = dev_dax->region;
+-
+-	return dax_region->res.start;
+-}
+-
+ static ssize_t resource_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct dev_dax *dev_dax = to_dev_dax(dev);
+ 
+-	return sprintf(buf, "%#llx\n", dev_dax_resource(dev_dax));
++	return sprintf(buf, "%#llx\n", dev_dax->range.start);
+ }
+ static DEVICE_ATTR(resource, 0400, resource_show, NULL);
+ 
+@@ -376,6 +369,7 @@ static void dev_dax_release(struct device *dev)
+ 
+ 	dax_region_put(dax_region);
+ 	put_dax(dax_dev);
++	kfree(dev_dax->pgmap);
+ 	kfree(dev_dax);
  }
  
--struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
--		struct dev_pagemap *pgmap, enum dev_dax_subsys subsys)
-+struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
- {
-+	struct dax_region *dax_region = data->dax_region;
- 	struct device *parent = dax_region->dev;
- 	struct dax_device *dax_dev;
- 	struct dev_dax *dev_dax;
-@@ -405,14 +405,14 @@ struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
- 	struct device *dev;
- 	int rc = -ENOMEM;
- 
--	if (id < 0)
-+	if (data->id < 0)
- 		return ERR_PTR(-EINVAL);
- 
- 	dev_dax = kzalloc(sizeof(*dev_dax), GFP_KERNEL);
+@@ -412,7 +406,12 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
  	if (!dev_dax)
  		return ERR_PTR(-ENOMEM);
  
--	memcpy(&dev_dax->pgmap, pgmap, sizeof(*pgmap));
-+	memcpy(&dev_dax->pgmap, data->pgmap, sizeof(struct dev_pagemap));
+-	memcpy(&dev_dax->pgmap, data->pgmap, sizeof(struct dev_pagemap));
++	if (data->pgmap) {
++		dev_dax->pgmap = kmemdup(data->pgmap,
++				sizeof(struct dev_pagemap), GFP_KERNEL);
++		if (!dev_dax->pgmap)
++			goto err_pgmap;
++	}
  
  	/*
  	 * No 'host' or dax_operations since there is no access to this
-@@ -438,13 +438,13 @@ struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
+@@ -421,18 +420,19 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
+ 	dax_dev = alloc_dax(dev_dax, NULL, NULL, DAXDEV_F_SYNC);
+ 	if (IS_ERR(dax_dev)) {
+ 		rc = PTR_ERR(dax_dev);
+-		goto err;
++		goto err_alloc_dax;
+ 	}
  
- 	inode = dax_inode(dax_dev);
- 	dev->devt = inode->i_rdev;
--	if (subsys == DEV_DAX_BUS)
-+	if (data->subsys == DEV_DAX_BUS)
- 		dev->bus = &dax_bus_type;
- 	else
- 		dev->class = dax_class;
- 	dev->parent = parent;
- 	dev->type = &dev_dax_type;
--	dev_set_name(dev, "dax%d.%d", dax_region->id, id);
-+	dev_set_name(dev, "dax%d.%d", dax_region->id, data->id);
+ 	/* a device_dax instance is dead while the driver is not attached */
+ 	kill_dax(dax_dev);
  
- 	rc = device_add(dev);
- 	if (rc) {
-@@ -464,7 +464,7 @@ struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
+-	/* from here on we're committed to teardown via dax_dev_release() */
++	/* from here on we're committed to teardown via dev_dax_release() */
+ 	dev = &dev_dax->dev;
+ 	device_initialize(dev);
+ 
+ 	dev_dax->dax_dev = dax_dev;
+ 	dev_dax->region = dax_region;
++	dev_dax->range = data->range;
+ 	dev_dax->target_node = dax_region->target_node;
+ 	kref_get(&dax_region->kref);
+ 
+@@ -458,8 +458,9 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
+ 		return ERR_PTR(rc);
+ 
+ 	return dev_dax;
+-
+- err:
++err_alloc_dax:
++	kfree(dev_dax->pgmap);
++err_pgmap:
+ 	kfree(dev_dax);
  
  	return ERR_PTR(rc);
- }
--EXPORT_SYMBOL_GPL(__devm_create_dev_dax);
-+EXPORT_SYMBOL_GPL(devm_create_dev_dax);
- 
- static int match_always_count;
- 
 diff --git a/drivers/dax/bus.h b/drivers/dax/bus.h
-index 55577e9791da..299c2e7fac09 100644
+index 299c2e7fac09..4aeb36da83a4 100644
 --- a/drivers/dax/bus.h
 +++ b/drivers/dax/bus.h
-@@ -13,18 +13,18 @@ struct dax_region *alloc_dax_region(struct device *parent, int region_id,
- 		struct resource *res, int target_node, unsigned int align);
+@@ -3,6 +3,7 @@
+ #ifndef __DAX_BUS_H__
+ #define __DAX_BUS_H__
+ #include <linux/device.h>
++#include <linux/range.h>
  
- enum dev_dax_subsys {
--	DEV_DAX_BUS,
-+	DEV_DAX_BUS = 0, /* zeroed dev_dax_data picks this by default */
- 	DEV_DAX_CLASS,
+ struct dev_dax;
+ struct resource;
+@@ -21,6 +22,7 @@ struct dev_dax_data {
+ 	struct dax_region *dax_region;
+ 	struct dev_pagemap *pgmap;
+ 	enum dev_dax_subsys subsys;
++	struct range range;
+ 	int id;
  };
  
--struct dev_dax *__devm_create_dev_dax(struct dax_region *dax_region, int id,
--		struct dev_pagemap *pgmap, enum dev_dax_subsys subsys);
-+struct dev_dax_data {
-+	struct dax_region *dax_region;
+diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
+index 8a4c40ccd2ef..6779f683671d 100644
+--- a/drivers/dax/dax-private.h
++++ b/drivers/dax/dax-private.h
+@@ -41,6 +41,7 @@ struct dax_region {
+  * @target_node: effective numa node if dev_dax memory range is onlined
+  * @dev - device core
+  * @pgmap - pgmap for memmap setup / lifetime (driver owned)
++ * @range: resource range for the instance
+  * @dax_mem_res: physical address range of hotadded DAX memory
+  * @dax_mem_name: name for hotadded DAX memory via add_memory_driver_managed()
+  */
+@@ -49,10 +50,16 @@ struct dev_dax {
+ 	struct dax_device *dax_dev;
+ 	int target_node;
+ 	struct device dev;
+-	struct dev_pagemap pgmap;
 +	struct dev_pagemap *pgmap;
-+	enum dev_dax_subsys subsys;
-+	int id;
-+};
++	struct range range;
+ 	struct resource *dax_kmem_res;
+ };
  
--static inline struct dev_dax *devm_create_dev_dax(struct dax_region *dax_region,
--		int id, struct dev_pagemap *pgmap)
--{
--	return __devm_create_dev_dax(dax_region, id, pgmap, DEV_DAX_BUS);
--}
-+struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data);
++static inline u64 range_len(struct range *range)
++{
++	return range->end - range->start + 1;
++}
++
+ static inline struct dev_dax *to_dev_dax(struct device *dev)
+ {
+ 	return container_of(dev, struct dev_dax, dev);
+diff --git a/drivers/dax/device.c b/drivers/dax/device.c
+index bffef1b21144..a86b2c9788c5 100644
+--- a/drivers/dax/device.c
++++ b/drivers/dax/device.c
+@@ -55,12 +55,12 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
+ __weak phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
+ 		unsigned long size)
+ {
+-	struct resource *res = &dev_dax->region->res;
++	struct range *range = &dev_dax->range;
+ 	phys_addr_t phys;
  
- /* to be deleted when DEV_DAX_CLASS is removed */
- struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys);
+-	phys = pgoff * PAGE_SIZE + res->start;
+-	if (phys >= res->start && phys <= res->end) {
+-		if (phys + size - 1 <= res->end)
++	phys = pgoff * PAGE_SIZE + range->start;
++	if (phys >= range->start && phys <= range->end) {
++		if (phys + size - 1 <= range->end)
+ 			return phys;
+ 	}
+ 
+@@ -396,21 +396,31 @@ int dev_dax_probe(struct device *dev)
+ {
+ 	struct dev_dax *dev_dax = to_dev_dax(dev);
+ 	struct dax_device *dax_dev = dev_dax->dax_dev;
+-	struct resource *res = &dev_dax->region->res;
++	struct range *range = &dev_dax->range;
++	struct dev_pagemap *pgmap;
+ 	struct inode *inode;
+ 	struct cdev *cdev;
+ 	void *addr;
+ 	int rc;
+ 
+ 	/* 1:1 map region resource range to device-dax instance range */
+-	if (!devm_request_mem_region(dev, res->start, resource_size(res),
++	if (!devm_request_mem_region(dev, range->start, range_len(range),
+ 				dev_name(dev))) {
+-		dev_warn(dev, "could not reserve region %pR\n", res);
++		dev_warn(dev, "could not reserve range: %#llx - %#llx\n",
++				range->start, range->end);
+ 		return -EBUSY;
+ 	}
+ 
+-	dev_dax->pgmap.type = MEMORY_DEVICE_DEVDAX;
+-	addr = devm_memremap_pages(dev, &dev_dax->pgmap);
++	pgmap = dev_dax->pgmap;
++	if (!pgmap) {
++		pgmap = devm_kzalloc(dev, sizeof(*pgmap), GFP_KERNEL);
++		if (!pgmap)
++			return -ENOMEM;
++		pgmap->res.start = range->start;
++		pgmap->res.end = range->end;
++	}
++	pgmap->type = MEMORY_DEVICE_DEVDAX;
++	addr = devm_memremap_pages(dev, pgmap);
+ 	if (IS_ERR(addr))
+ 		return PTR_ERR(addr);
+ 
 diff --git a/drivers/dax/hmem/hmem.c b/drivers/dax/hmem/hmem.c
-index 506893861253..b84fe17178d8 100644
+index b84fe17178d8..af82d6ba820a 100644
 --- a/drivers/dax/hmem/hmem.c
 +++ b/drivers/dax/hmem/hmem.c
-@@ -11,6 +11,7 @@ static int dax_hmem_probe(struct platform_device *pdev)
- 	struct dev_pagemap pgmap = { };
+@@ -8,7 +8,6 @@
+ static int dax_hmem_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+-	struct dev_pagemap pgmap = { };
  	struct dax_region *dax_region;
  	struct memregion_info *mri;
-+	struct dev_dax_data data;
- 	struct dev_dax *dev_dax;
- 	struct resource *res;
- 
-@@ -26,7 +27,12 @@ static int dax_hmem_probe(struct platform_device *pdev)
- 	if (!dax_region)
+ 	struct dev_dax_data data;
+@@ -20,8 +19,6 @@ static int dax_hmem_probe(struct platform_device *pdev)
  		return -ENOMEM;
  
--	dev_dax = devm_create_dev_dax(dax_region, 0, &pgmap);
-+	data = (struct dev_dax_data) {
-+		.dax_region = dax_region,
-+		.id = 0,
-+		.pgmap = &pgmap,
-+	};
-+	dev_dax = devm_create_dev_dax(&data);
+ 	mri = dev->platform_data;
+-	memcpy(&pgmap.res, res, sizeof(*res));
+-
+ 	dax_region = alloc_dax_region(dev, pdev->id, res, mri->target_node,
+ 			PMD_SIZE);
+ 	if (!dax_region)
+@@ -30,7 +27,10 @@ static int dax_hmem_probe(struct platform_device *pdev)
+ 	data = (struct dev_dax_data) {
+ 		.dax_region = dax_region,
+ 		.id = 0,
+-		.pgmap = &pgmap,
++		.range = {
++			.start = res->start,
++			.end = res->end,
++		},
+ 	};
+ 	dev_dax = devm_create_dev_dax(&data);
  	if (IS_ERR(dev_dax))
- 		return PTR_ERR(dev_dax);
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index 275aa5f87399..5bb133df147d 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -22,7 +22,7 @@ static bool any_hotremove_failed;
+ int dev_dax_kmem_probe(struct device *dev)
+ {
+ 	struct dev_dax *dev_dax = to_dev_dax(dev);
+-	struct resource *res = &dev_dax->region->res;
++	struct range *range = &dev_dax->range;
+ 	resource_size_t kmem_start;
+ 	resource_size_t kmem_size;
+ 	resource_size_t kmem_end;
+@@ -39,17 +39,17 @@ int dev_dax_kmem_probe(struct device *dev)
+ 	 */
+ 	numa_node = dev_dax->target_node;
+ 	if (numa_node < 0) {
+-		dev_warn(dev, "rejecting DAX region %pR with invalid node: %d\n",
+-			 res, numa_node);
++		dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
++				numa_node);
+ 		return -EINVAL;
+ 	}
  
+ 	/* Hotplug starting at the beginning of the next block: */
+-	kmem_start = ALIGN(res->start, memory_block_size_bytes());
++	kmem_start = ALIGN(range->start, memory_block_size_bytes());
+ 
+-	kmem_size = resource_size(res);
++	kmem_size = range_len(range);
+ 	/* Adjust the size down to compensate for moving up kmem_start: */
+-	kmem_size -= kmem_start - res->start;
++	kmem_size -= kmem_start - range->start;
+ 	/* Align the size down to cover only complete blocks: */
+ 	kmem_size &= ~(memory_block_size_bytes() - 1);
+ 	kmem_end = kmem_start + kmem_size;
 diff --git a/drivers/dax/pmem/core.c b/drivers/dax/pmem/core.c
-index ea52bb77a294..08ee5947a49c 100644
+index 08ee5947a49c..4fa81d3d2f65 100644
 --- a/drivers/dax/pmem/core.c
 +++ b/drivers/dax/pmem/core.c
-@@ -14,6 +14,7 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
- 	resource_size_t offset;
- 	struct nd_pfn_sb *pfn_sb;
- 	struct dev_dax *dev_dax;
-+	struct dev_dax_data data;
- 	struct nd_namespace_io *nsio;
- 	struct dax_region *dax_region;
- 	struct dev_pagemap pgmap = { };
-@@ -57,7 +58,13 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
- 	if (!dax_region)
- 		return ERR_PTR(-ENOMEM);
+@@ -63,6 +63,10 @@ struct dev_dax *__dax_pmem_probe(struct device *dev, enum dev_dax_subsys subsys)
+ 		.id = id,
+ 		.pgmap = &pgmap,
+ 		.subsys = subsys,
++		.range = {
++			.start = res.start,
++			.end = res.end,
++		},
+ 	};
+ 	dev_dax = devm_create_dev_dax(&data);
  
--	dev_dax = __devm_create_dev_dax(dax_region, id, &pgmap, subsys);
-+	data = (struct dev_dax_data) {
-+		.dax_region = dax_region,
-+		.id = id,
-+		.pgmap = &pgmap,
-+		.subsys = subsys,
-+	};
-+	dev_dax = devm_create_dev_dax(&data);
+diff --git a/tools/testing/nvdimm/dax-dev.c b/tools/testing/nvdimm/dax-dev.c
+index 7e5d979e73cb..38d8e55c4a0d 100644
+--- a/tools/testing/nvdimm/dax-dev.c
++++ b/tools/testing/nvdimm/dax-dev.c
+@@ -9,12 +9,12 @@
+ phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff,
+ 		unsigned long size)
+ {
+-	struct resource *res = &dev_dax->region->res;
++	struct range *range = &dev_dax->range;
+ 	phys_addr_t addr;
  
- 	/* child dev_dax instances now own the lifetime of the dax_region */
- 	dax_region_put(dax_region);
+-	addr = pgoff * PAGE_SIZE + res->start;
+-	if (addr >= res->start && addr <= res->end) {
+-		if (addr + size - 1 <= res->end) {
++	addr = pgoff * PAGE_SIZE + range->start;
++	if (addr >= range->start && addr <= range->end) {
++		if (addr + size - 1 <= range->end) {
+ 			if (get_nfit_res(addr)) {
+ 				struct page *page;
+ 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
