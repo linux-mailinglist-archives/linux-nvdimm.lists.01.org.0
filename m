@@ -2,89 +2,159 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D73F23AFA7
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 23:26:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8910723AFCF
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 23:51:54 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 29BC7129E8167;
-	Mon,  3 Aug 2020 14:26:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dave.jiang@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0FD451294F0A5
-	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 14:26:19 -0700 (PDT)
-IronPort-SDR: u3OnlY+s7KSI/vS+lJubGm5HaC/ZqQ3K//0ULdvXI5cyzdy2Mz3Jtz/XsmKv6X+hkLw8Hz8S2w
- hquaNl5HGqxA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9702"; a="237067244"
-X-IronPort-AV: E=Sophos;i="5.75,431,1589266800";
-   d="scan'208";a="237067244"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2020 14:26:19 -0700
-IronPort-SDR: RulXwNywhv1eI8mAx/l2FWKIOuoPQn3y862B8fRMfSTGFJVWGCJfUoaFdi2W5KFVaVNAJJW7qT
- 9QbcAWE9RiPw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,431,1589266800";
-   d="scan'208";a="314981446"
-Received: from djiang5-mobl1.amr.corp.intel.com (HELO [10.255.79.119]) ([10.255.79.119])
-  by fmsmga004.fm.intel.com with ESMTP; 03 Aug 2020 14:26:19 -0700
-Subject: Re: [PATCH 1/2] libnvdimm/security: 'security' attr never show
- 'overwrite' state
-To: Jane Chu <jane.chu@oracle.com>, dan.j.williams@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, jmoyer@redhat.com,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
-References: <1595606959-8516-1-git-send-email-jane.chu@oracle.com>
- <cb8c1944-f72c-ecfa-bd3d-276f504542e1@intel.com>
- <73f2eadf-3377-db62-ebd1-1eff99d4842e@oracle.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Message-ID: <69576669-632e-1821-2076-7bc47c0bbd85@intel.com>
-Date: Mon, 3 Aug 2020 14:26:18 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+	by ml01.01.org (Postfix) with ESMTP id A6285129B36A6;
+	Mon,  3 Aug 2020 14:51:52 -0700 (PDT)
+Received-SPF: Pass (helo) identity=helo; client-ip=211.29.132.59; helo=mail108.syd.optusnet.com.au; envelope-from=david@fromorbit.com; receiver=<UNKNOWN> 
+Received: from mail108.syd.optusnet.com.au (mail108.syd.optusnet.com.au [211.29.132.59])
+	by ml01.01.org (Postfix) with ESMTP id 5A112129B36A3
+	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 14:51:49 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-53-24.pa.nsw.optusnet.com.au [49.180.53.24])
+	by mail108.syd.optusnet.com.au (Postfix) with ESMTPS id 3B98B1A8F2C;
+	Tue,  4 Aug 2020 07:51:45 +1000 (AEST)
+Received: from dave by dread.disaster.area with local (Exim 4.92.3)
+	(envelope-from <david@fromorbit.com>)
+	id 1k2iMy-0008H2-Kw; Tue, 04 Aug 2020 07:51:44 +1000
+Date: Tue, 4 Aug 2020 07:51:44 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Ritesh Harjani <riteshh@linux.ibm.com>
+Subject: Re: [RFC 1/1] pmem: Add cond_resched() in bio_for_each_segment loop
+ in pmem_make_request
+Message-ID: <20200803215144.GB2114@dread.disaster.area>
+References: <0d96e2481f292de2cda8828b03d5121004308759.1596011292.git.riteshh@linux.ibm.com>
+ <20200802230148.GA2114@dread.disaster.area>
+ <20200803071405.64C0711C058@d06av25.portsmouth.uk.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <73f2eadf-3377-db62-ebd1-1eff99d4842e@oracle.com>
-Content-Language: en-US
-Message-ID-Hash: OEXROATNRHJQTW25JZ5EHR4CJJVE7UPS
-X-Message-ID-Hash: OEXROATNRHJQTW25JZ5EHR4CJJVE7UPS
-X-MailFrom: dave.jiang@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Content-Disposition: inline
+In-Reply-To: <20200803071405.64C0711C058@d06av25.portsmouth.uk.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Optus-CM-Score: 0
+X-Optus-CM-Analysis: v=2.3 cv=QIgWuTDL c=1 sm=1 tr=0
+	a=moVtWZxmCkf3aAMJKIb/8g==:117 a=moVtWZxmCkf3aAMJKIb/8g==:17
+	a=kj9zAlcOel0A:10 a=y4yBn9ojGxQA:10 a=VnNF1IyMAAAA:8 a=7-415B0cAAAA:8
+	a=O2OWZLGCkADlNaEqX4IA:9 a=CjuIK1q_8ugA:10 a=biEYGPWJfzWAr4FL6Ov7:22
+Message-ID-Hash: VHLX2ZXND5RODQLDG4Z4FHRIRAVTUL6H
+X-Message-ID-Hash: VHLX2ZXND5RODQLDG4Z4FHRIRAVTUL6H
+X-MailFrom: david@fromorbit.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: linux-nvdimm@lists.01.org, linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OEXROATNRHJQTW25JZ5EHR4CJJVE7UPS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VHLX2ZXND5RODQLDG4Z4FHRIRAVTUL6H/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCk9uIDgvMy8yMDIwIDI6MTAgUE0sIEphbmUgQ2h1IHdyb3RlOg0KPiBIaSwgRGF2ZSwNCj4g
-DQo+IE9uIDgvMy8yMDIwIDE6NDEgUE0sIERhdmUgSmlhbmcgd3JvdGU6DQo+PiBPbiA3LzI0LzIw
-MjAgOTowOSBBTSwgSmFuZSBDaHUgd3JvdGU6DQo+Pj4gU2luY2UNCj4+PiBjb21taXQgZDc4YzYy
-MGEyZTgyICgibGlibnZkaW1tL3NlY3VyaXR5OiBJbnRyb2R1Y2UgYSAnZnJvemVuJyBhdHRyaWJ1
-dGUiKSwNCj4+PiB3aGVuIGlzc3VlDQo+Pj4gwqAgIyBuZGN0bCBzYW5pdGl6ZS1kaW1tIG5tZW0w
-IC0tb3ZlcndyaXRlDQo+Pj4gdGhlbiBpbW1lZGlhdGVseSBjaGVjayB0aGUgJ3NlY3VyaXR5JyBh
-dHRyaWJ1dGUsDQo+Pj4gwqAgIyBjYXQgL3N5cy9kZXZpY2VzL0xOWFNZU1RNOjAwL0xOWFNZQlVT
-OjAwL0FDUEkwMDEyOjAwL25kYnVzMC9ubWVtMC9zZWN1cml0eQ0KPj4+IMKgIHVubG9ja2VkDQo+
-Pj4gQWN0dWFsbHkgdGhlIGF0dHJpYnV0ZSBzdGF5cyAndW5sb2NrZWQnIHRocm91Z2ggb3V0IHRo
-ZSBlbnRpcmUgb3ZlcndyaXRlDQo+Pj4gb3BlcmF0aW9uLCBuZXZlciBjaGFuZ2VkLsKgIFRoYXQn
-cyBiZWNhdXNlICdudmRpbW0tPnNlYy5mbGFncycgaXMgYSBiaXRtYXANCj4+PiB0aGF0IGhhcyBi
-b3RoIGJpdHMgc2V0IGluZGljYXRpbmcgJ292ZXJ3cml0ZScgYW5kICd1bmxvY2tlZCcuDQo+Pj4g
-QnV0IHNlY3VyaXR5X3Nob3coKSBjaGVja3MgdGhlIG11dHVhbGx5IGV4Y2x1c2l2ZSBiaXRzIGJl
-Zm9yZSBpdCBjaGVja3MNCj4+PiB0aGUgJ292ZXJ3cml0ZScgYml0IGF0IGxhc3QuIFRoZSBvcmRl
-ciBzaG91bGQgYmUgcmV2ZXJzZWQuDQo+Pj4NCj4+PiBUaGUgY29tbWl0IGFsc28gaGFzIGEgdHlw
-bzogaW4gb25lIG9jY2FzaW9uLCAnbnZkaW1tLT5zZWMuZXh0X3N0YXRlJw0KPj4+IGFzc2lnbm1l
-bnQgaXMgcmVwbGFjZWQgd2l0aCAnbnZkaW1tLT5zZWMuZmxhZ3MnIGFzc2lnbm1lbnQgZm9yDQo+
-Pj4gdGhlIE5WRElNTV9NQVNURVIgdHlwZS4NCj4+DQo+PiBNYXkgYmUgYmVzdCB0byBzcGxpdCB0
-aGlzIGZpeCB0byBhIGRpZmZlcmVudCBwYXRjaD8gSnVzdCB0aGlua2luZyBnaXQgYmlzZWN0IA0K
-Pj4gbGF0ZXIgb24gdG8gdHJhY2sgaXNzdWVzLiBPdGhlcndpc2UgUmV2aWV3ZWQtYnk6IERhdmUg
-SmlhbmcgDQo+PiA8ZGF2ZS5qaWFuZ0BpbnRlbC5jb20+DQo+IA0KPiBTdXJlLiBJIHRha2UgaXQg
-eW91IG1lYW50IHRvIHNlcGFyYXRlIHRoZSB0eXBvIGZpeCBmcm9tIHRoZSBjaGFuZ2UgdGhhdCB0
-ZXN0cyANCj4gdGhlIE9WRVJXUklURSBiaXQgZmlyc3Q/DQoNClllcCENCg0KPiANCj4gUmVnYXJk
-cywNCj4gLWphbmUKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
-LjAxLm9yZwo=
+On Mon, Aug 03, 2020 at 12:44:04PM +0530, Ritesh Harjani wrote:
+> 
+> 
+> On 8/3/20 4:31 AM, Dave Chinner wrote:
+> > On Wed, Jul 29, 2020 at 02:15:18PM +0530, Ritesh Harjani wrote:
+> > > For systems which do not have CONFIG_PREEMPT set and
+> > > if there is a heavy multi-threaded load/store operation happening
+> > > on pmem + sometimes along with device latencies, softlockup warnings like
+> > > this could trigger. This was seen on Power where pagesize is 64K.
+> > > 
+> > > To avoid softlockup, this patch adds a cond_resched() in this path.
+> > > 
+> > > <...>
+> > > watchdog: BUG: soft lockup - CPU#31 stuck for 22s!
+> > > <...>
+> > > CPU: 31 PID: 15627 <..> 5.3.18-20
+> > > <...>
+> > > NIP memcpy_power7+0x43c/0x7e0
+> > > LR memcpy_flushcache+0x28/0xa0
+> > > 
+> > > Call Trace:
+> > > memcpy_power7+0x274/0x7e0 (unreliable)
+> > > memcpy_flushcache+0x28/0xa0
+> > > write_pmem+0xa0/0x100 [nd_pmem]
+> > > pmem_do_bvec+0x1f0/0x420 [nd_pmem]
+> > > pmem_make_request+0x14c/0x370 [nd_pmem]
+> > > generic_make_request+0x164/0x400
+> > > submit_bio+0x134/0x2e0
+> > > submit_bio_wait+0x70/0xc0
+> > > blkdev_issue_zeroout+0xf4/0x2a0
+> > > xfs_zero_extent+0x90/0xc0 [xfs]
+> > > xfs_bmapi_convert_unwritten+0x198/0x230 [xfs]
+> > > xfs_bmapi_write+0x284/0x630 [xfs]
+> > > xfs_iomap_write_direct+0x1f0/0x3e0 [xfs]
+> > > xfs_file_iomap_begin+0x344/0x690 [xfs]
+> > > dax_iomap_pmd_fault+0x488/0xc10
+> > > __xfs_filemap_fault+0x26c/0x2b0 [xfs]
+> > > __handle_mm_fault+0x794/0x1af0
+> > > handle_mm_fault+0x12c/0x220
+> > > __do_page_fault+0x290/0xe40
+> > > do_page_fault+0x38/0xc0
+> > > handle_page_fault+0x10/0x30
+> > > 
+> > > Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> > > Signed-off-by: Ritesh Harjani <riteshh@linux.ibm.com>
+> > > ---
+> > >   drivers/nvdimm/pmem.c | 1 +
+> > >   1 file changed, 1 insertion(+)
+> > > 
+> > > diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
+> > > index 2df6994acf83..fcf7af13897e 100644
+> > > --- a/drivers/nvdimm/pmem.c
+> > > +++ b/drivers/nvdimm/pmem.c
+> > > @@ -214,6 +214,7 @@ static blk_qc_t pmem_make_request(struct request_queue *q, struct bio *bio)
+> > >   			bio->bi_status = rc;
+> > >   			break;
+> > >   		}
+> > > +		cond_resched();
+> > 
+> > There are already cond_resched() calls between submitted bios in
+> > blkdev_issue_zeroout() via both __blkdev_issue_zero_pages() and
+> > __blkdev_issue_write_zeroes(), so I'm kinda wondering where the
+> > problem is coming from here.
+> 
+> This problem is coming from that bio call- submit_bio()
+> 
+> > 
+> > Just how big is the bio being issued here that it spins for 22s
+> > trying to copy it?
+> 
+> It's 256 (due to BIO_MAX_PAGES) * 64KB (pagesize) = 16MB.
+> So this is definitely not an easy trigger as per tester was mainly seen
+> on a VM.
+
+Right, so a memcpy() of 16MB of data in a single bio is taking >22s?
+
+If so, then you can't solve this problem with cond_resched() - if
+something that should only take half a millisecond to run is taking
+22s of CPU time, there are bigger problems occurring that need
+fixing.
+
+i.e. if someone is running a workload that has effectively
+livelocked the hardware cache coherency protocol across the entire
+machine, then changing kernel code that requires memory bandwidth to
+be available is not going to fix the problem. All is does is shoot
+the messenger that tells you there is something going wrong.
+
+> Looking at the cond_resched() inside dax_writeback_mapping_range()
+> in xas_for_each_marked() loop, I thought it should be good to have a
+> cond_resched() in the above path as well.
+
+That's not done on every page/bio - that'd done every 4096 pages, or
+every 256MB of memory written back on 64k page machines. IOWs, using
+cond_resched() here is a sensible thing to do if you have a locked
+loop that might run for seconds.
+
+Cheers,
+
+Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
