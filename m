@@ -1,115 +1,112 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3DF23AE53
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 22:42:12 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F2C23AF7E
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 23:12:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 329C9129C0252;
-	Mon,  3 Aug 2020 13:42:11 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=dave.jiang@intel.com; receiver=<UNKNOWN> 
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	by ml01.01.org (Postfix) with ESMTP id B7AC6129E8142;
+	Mon,  3 Aug 2020 14:12:19 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=jane.chu@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8407C129C0247
-	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 13:42:09 -0700 (PDT)
-IronPort-SDR: NMMAk+w3GmuAExHyl9D/4WawezBvznRIs6ymZ0ifO4DdsDsfi4n+Uhipx4217O5vuv/MATvSZ5
- 11yUJYB6UmTg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9702"; a="213739782"
-X-IronPort-AV: E=Sophos;i="5.75,431,1589266800";
-   d="scan'208";a="213739782"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Aug 2020 13:42:09 -0700
-IronPort-SDR: G8qehCHuJl7G+oYeLcNmtNncs+SV1quOrUt0k6EZCvNZVKFommktmxwqbgieIgWw+BfsL8TLcb
- 7N/nz6Urovhg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,431,1589266800";
-   d="scan'208";a="314944197"
-Received: from djiang5-mobl1.amr.corp.intel.com (HELO [10.255.79.119]) ([10.255.79.119])
-  by fmsmga004.fm.intel.com with ESMTP; 03 Aug 2020 13:42:08 -0700
-Subject: Re: [PATCH 2/2] libnvdimm/security: ensure sysfs poll thread woke up
- and fetch updated attr
-To: Jane Chu <jane.chu@oracle.com>, dan.j.williams@intel.com,
- vishal.l.verma@intel.com, ira.weiny@intel.com, jmoyer@redhat.com,
- linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+	by ml01.01.org (Postfix) with ESMTPS id 52671129E8142
+	for <linux-nvdimm@lists.01.org>; Mon,  3 Aug 2020 14:12:17 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 073LC5Aj155693;
+	Mon, 3 Aug 2020 21:12:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=coPlDp690bVQKrb6CgS9uUoXxxJcdWaAyy5rOJSG0HM=;
+ b=q2T67BfyWrRvIyCoyKQjU6vzRXQ3Tox/4eS6Jx+x2ekBHmLHkDEngbBmZid/mZdHGoVG
+ QOziUzwm/obj/ygJBlywfENFUjsNE/4CMGLmyoR/FncUq+0BOSz08E2w/5NKJzFJLADC
+ /ZPv5as1Z1sUiSSQzWHMdCuXf3zY4Bt7jArYCnvnp2MRivFfMZoPlKfKtjEbZe6JBMoQ
+ x6xMmS0qoYOIkg5qVaL9eYPzrk41mdgmRxd+q4DKB5bfShK/I8WH6S2eBROFIitncXbZ
+ 1xJ6vjtle/glQNwfAFuPvnyan/lxujVQ8G7iduL5zhtqSFvgNHB+Beq7csiCR/9Vcbgn Cg==
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+	by userp2120.oracle.com with ESMTP id 32n11n0r9b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 03 Aug 2020 21:12:15 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 073L8tLg176648;
+	Mon, 3 Aug 2020 21:10:15 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+	by userp3020.oracle.com with ESMTP id 32pdhb054u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Aug 2020 21:10:14 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+	by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 073LADtD008707;
+	Mon, 3 Aug 2020 21:10:13 GMT
+Received: from [10.159.240.44] (/10.159.240.44)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Mon, 03 Aug 2020 14:10:13 -0700
+Subject: Re: [PATCH 1/2] libnvdimm/security: 'security' attr never show
+ 'overwrite' state
+To: Dave Jiang <dave.jiang@intel.com>, dan.j.williams@intel.com,
+        vishal.l.verma@intel.com, ira.weiny@intel.com, jmoyer@redhat.com,
+        linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 References: <1595606959-8516-1-git-send-email-jane.chu@oracle.com>
- <1595606959-8516-2-git-send-email-jane.chu@oracle.com>
-From: Dave Jiang <dave.jiang@intel.com>
-Message-ID: <b9957db2-c130-f2ae-14a1-e711a98c7c69@intel.com>
-Date: Mon, 3 Aug 2020 13:42:08 -0700
+ <cb8c1944-f72c-ecfa-bd3d-276f504542e1@intel.com>
+From: Jane Chu <jane.chu@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <73f2eadf-3377-db62-ebd1-1eff99d4842e@oracle.com>
+Date: Mon, 3 Aug 2020 14:10:10 -0700
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <1595606959-8516-2-git-send-email-jane.chu@oracle.com>
+In-Reply-To: <cb8c1944-f72c-ecfa-bd3d-276f504542e1@intel.com>
 Content-Language: en-US
-Message-ID-Hash: GEGEBUHQMSBOYDR7DJHOMLCX3OEWXZDT
-X-Message-ID-Hash: GEGEBUHQMSBOYDR7DJHOMLCX3OEWXZDT
-X-MailFrom: dave.jiang@intel.com
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9702 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008030146
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9702 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 priorityscore=1501
+ impostorscore=0 lowpriorityscore=0 malwarescore=0 spamscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008030147
+Message-ID-Hash: 5T4DICQR3HTALBE6MIFRAS6NY2EL733W
+X-Message-ID-Hash: 5T4DICQR3HTALBE6MIFRAS6NY2EL733W
+X-MailFrom: jane.chu@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GEGEBUHQMSBOYDR7DJHOMLCX3OEWXZDT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5T4DICQR3HTALBE6MIFRAS6NY2EL733W/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-
-
-On 7/24/2020 9:09 AM, Jane Chu wrote:
-> commit 7d988097c546 ("acpi/nfit, libnvdimm/security: Add security DSM overwrite support")
-> adds a sysfs_notify_dirent() to wake up userspace poll thread when the "overwrite"
-> operation has completed. But the notification is issued before the internal
-> dimm security state and flags have been updated, so the userspace poll thread
-> wakes up and fetches the not-yet-updated attr and falls back to sleep, forever.
-> But if user from another terminal issue "ndctl wait-overwrite nmemX" again,
-> the command returns instantly.
-> 
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Fixes: 7d988097c546 ("acpi/nfit, libnvdimm/security: Add security DSM overwrite support")
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-
-> ---
->   drivers/nvdimm/security.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
-> index 8f3971c..4b80150 100644
-> --- a/drivers/nvdimm/security.c
-> +++ b/drivers/nvdimm/security.c
-> @@ -450,14 +450,19 @@ void __nvdimm_security_overwrite_query(struct nvdimm *nvdimm)
->   	else
->   		dev_dbg(&nvdimm->dev, "overwrite completed\n");
->   
-> -	if (nvdimm->sec.overwrite_state)
-> -		sysfs_notify_dirent(nvdimm->sec.overwrite_state);
-> +	/*
-> +	 * Mark the overwrite work done and update dimm security flags,
-> +	 * then send a sysfs event notification to wake up userspace
-> +	 * poll threads to picked up the changed state.
-> +	 */
->   	nvdimm->sec.overwrite_tmo = 0;
->   	clear_bit(NDD_SECURITY_OVERWRITE, &nvdimm->flags);
->   	clear_bit(NDD_WORK_PENDING, &nvdimm->flags);
-> -	put_device(&nvdimm->dev);
->   	nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_USER);
->   	nvdimm->sec.ext_flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
-> +	if (nvdimm->sec.overwrite_state)
-> +		sysfs_notify_dirent(nvdimm->sec.overwrite_state);
-> +	put_device(&nvdimm->dev);
->   }
->   
->   void nvdimm_security_overwrite_query(struct work_struct *work)
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+SGksIERhdmUsDQoNCk9uIDgvMy8yMDIwIDE6NDEgUE0sIERhdmUgSmlhbmcgd3JvdGU6DQo+IE9u
+IDcvMjQvMjAyMCA5OjA5IEFNLCBKYW5lIENodSB3cm90ZToNCj4+IFNpbmNlDQo+PiBjb21taXQg
+ZDc4YzYyMGEyZTgyICgibGlibnZkaW1tL3NlY3VyaXR5OiBJbnRyb2R1Y2UgYSAnZnJvemVuJyAN
+Cj4+IGF0dHJpYnV0ZSIpLA0KPj4gd2hlbiBpc3N1ZQ0KPj4gwqAgIyBuZGN0bCBzYW5pdGl6ZS1k
+aW1tIG5tZW0wIC0tb3ZlcndyaXRlDQo+PiB0aGVuIGltbWVkaWF0ZWx5IGNoZWNrIHRoZSAnc2Vj
+dXJpdHknIGF0dHJpYnV0ZSwNCj4+IMKgICMgY2F0IA0KPj4gL3N5cy9kZXZpY2VzL0xOWFNZU1RN
+OjAwL0xOWFNZQlVTOjAwL0FDUEkwMDEyOjAwL25kYnVzMC9ubWVtMC9zZWN1cml0eQ0KPj4gwqAg
+dW5sb2NrZWQNCj4+IEFjdHVhbGx5IHRoZSBhdHRyaWJ1dGUgc3RheXMgJ3VubG9ja2VkJyB0aHJv
+dWdoIG91dCB0aGUgZW50aXJlIG92ZXJ3cml0ZQ0KPj4gb3BlcmF0aW9uLCBuZXZlciBjaGFuZ2Vk
+LsKgIFRoYXQncyBiZWNhdXNlICdudmRpbW0tPnNlYy5mbGFncycgaXMgYSBiaXRtYXANCj4+IHRo
+YXQgaGFzIGJvdGggYml0cyBzZXQgaW5kaWNhdGluZyAnb3ZlcndyaXRlJyBhbmQgJ3VubG9ja2Vk
+Jy4NCj4+IEJ1dCBzZWN1cml0eV9zaG93KCkgY2hlY2tzIHRoZSBtdXR1YWxseSBleGNsdXNpdmUg
+Yml0cyBiZWZvcmUgaXQgY2hlY2tzDQo+PiB0aGUgJ292ZXJ3cml0ZScgYml0IGF0IGxhc3QuIFRo
+ZSBvcmRlciBzaG91bGQgYmUgcmV2ZXJzZWQuDQo+Pg0KPj4gVGhlIGNvbW1pdCBhbHNvIGhhcyBh
+IHR5cG86IGluIG9uZSBvY2Nhc2lvbiwgJ252ZGltbS0+c2VjLmV4dF9zdGF0ZScNCj4+IGFzc2ln
+bm1lbnQgaXMgcmVwbGFjZWQgd2l0aCAnbnZkaW1tLT5zZWMuZmxhZ3MnIGFzc2lnbm1lbnQgZm9y
+DQo+PiB0aGUgTlZESU1NX01BU1RFUiB0eXBlLg0KPiANCj4gTWF5IGJlIGJlc3QgdG8gc3BsaXQg
+dGhpcyBmaXggdG8gYSBkaWZmZXJlbnQgcGF0Y2g/IEp1c3QgdGhpbmtpbmcgZ2l0IA0KPiBiaXNl
+Y3QgbGF0ZXIgb24gdG8gdHJhY2sgaXNzdWVzLiBPdGhlcndpc2UgUmV2aWV3ZWQtYnk6IERhdmUg
+SmlhbmcgDQo+IDxkYXZlLmppYW5nQGludGVsLmNvbT4NCg0KU3VyZS4gSSB0YWtlIGl0IHlvdSBt
+ZWFudCB0byBzZXBhcmF0ZSB0aGUgdHlwbyBmaXggZnJvbSB0aGUgY2hhbmdlIHRoYXQgDQp0ZXN0
+cyB0aGUgT1ZFUldSSVRFIGJpdCBmaXJzdD8NCg0KUmVnYXJkcywNCi1qYW5lCl9fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5n
+IGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFu
+IGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
