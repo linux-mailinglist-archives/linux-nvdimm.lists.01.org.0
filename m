@@ -1,51 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B59239EDD
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 07:20:36 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FA9239EDF
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  3 Aug 2020 07:20:41 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 03D4C12A6D4D0;
-	Sun,  2 Aug 2020 22:20:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	by ml01.01.org (Postfix) with ESMTP id 189AC12A6D4D5;
+	Sun,  2 Aug 2020 22:20:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 18EF512A6D4C7
-	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 22:20:33 -0700 (PDT)
-IronPort-SDR: dYGhhyNmDuRliIy8tWQ80fVAyzPcwW4iVcRLcp1FY0ZxxKHsups57jIcqfTNZMRj2F6weT1aK9
- AJ4wcdBt3B2A==
-X-IronPort-AV: E=McAfee;i="6000,8403,9701"; a="151252266"
+	by ml01.01.org (Postfix) with ESMTPS id 6D62912A6D4C7
+	for <linux-nvdimm@lists.01.org>; Sun,  2 Aug 2020 22:20:38 -0700 (PDT)
+IronPort-SDR: NhhbLUvpclzDxMLhuyCoH6mkTJu84PbDtm32RvSsLlHmuuMXLisZ0I1P32tJ+9JVquftmNp4JA
+ NMUSdHZC4Mmw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9701"; a="149487779"
 X-IronPort-AV: E=Sophos;i="5.75,429,1589266800";
-   d="scan'208";a="151252266"
+   d="scan'208";a="149487779"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:20:32 -0700
-IronPort-SDR: Q4wqFp6NHlXuXQJz/1u4ACuBKdO7iqNqFIYE446SgNcM7iR/d/jzaKrY5zPk3IbBbdo7/GpsCn
- qDO+PvICOLHg==
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:20:38 -0700
+IronPort-SDR: G2veJs/iBAmISV7wJ+PFNDAKCadTwf8F6X08x1viboWKeHK+W9F9WtvrmlUkVIolbxWXIbzU6t
+ BtqM3uy3JICQ==
 X-IronPort-AV: E=Sophos;i="5.75,429,1589266800";
-   d="scan'208";a="329890662"
+   d="scan'208";a="331770063"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:20:32 -0700
-Subject: [PATCH v4 20/23] device-dax: Make align a per-device property
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2020 22:20:37 -0700
+Subject: [PATCH v4 21/23] device-dax: Add an 'align' attribute
 From: Dan Williams <dan.j.williams@intel.com>
 To: akpm@linux-foundation.org
-Date: Sun, 02 Aug 2020 22:04:13 -0700
-Message-ID: <159643105377.4062302.4159447829955683131.stgit@dwillia2-desk3.amr.corp.intel.com>
+Date: Sun, 02 Aug 2020 22:04:19 -0700
+Message-ID: <159643105944.4062302.3131761052969132784.stgit@dwillia2-desk3.amr.corp.intel.com>
 In-Reply-To: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
 References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: O4COHXDIUM2WYJ6OETU4Z5XC7UM6RRFL
-X-Message-ID-Hash: O4COHXDIUM2WYJ6OETU4Z5XC7UM6RRFL
+Message-ID-Hash: 5FII2Z3OAIRY4SZ6FKO2Q45JHTOAO5GI
+X-Message-ID-Hash: 5FII2Z3OAIRY4SZ6FKO2Q45JHTOAO5GI
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: joao.m.martins@oracle.com, peterz@infradead.org, dave.hansen@linux.intel.com, ard.biesheuvel@linaro.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/O4COHXDIUM2WYJ6OETU4Z5XC7UM6RRFL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5FII2Z3OAIRY4SZ6FKO2Q45JHTOAO5GI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,176 +56,215 @@ Content-Transfer-Encoding: 7bit
 
 From: Joao Martins <joao.m.martins@oracle.com>
 
-Introduce @align to struct dev_dax.
+Introduce a device align attribute. While doing so,
+rename the region align attribute to be more explicitly
+named as so, but keep it named as @align to retain the API
+for tools like daxctl.
 
-When creating a new device, we still initialize to the default
-dax_region @align. Child devices belonging to a region may wish
-to keep a different alignment property instead of a global
-region-defined one.
+Changes on align may not always be valid, when say certain
+mappings were created with 2M and then we switch to 1G. So, we
+validate all ranges against the new value being attempted,
+post resizing.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Link: https://lore.kernel.org/r/20200716172913.19658-2-joao.m.martins@oracle.com
+Link: https://lore.kernel.org/r/20200716172913.19658-3-joao.m.martins@oracle.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 ---
- drivers/dax/bus.c         |    1 +
- drivers/dax/dax-private.h |    3 +++
- drivers/dax/device.c      |   37 +++++++++++++++----------------------
- 3 files changed, 19 insertions(+), 22 deletions(-)
+ drivers/dax/bus.c         |   93 ++++++++++++++++++++++++++++++++++++++++-----
+ drivers/dax/dax-private.h |   18 +++++++++
+ 2 files changed, 101 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 2779c65dc7c0..9edfdf83408e 100644
+index 9edfdf83408e..b984213c315f 100644
 --- a/drivers/dax/bus.c
 +++ b/drivers/dax/bus.c
-@@ -1215,6 +1215,7 @@ struct dev_dax *devm_create_dev_dax(struct dev_dax_data *data)
+@@ -230,14 +230,15 @@ static ssize_t region_size_show(struct device *dev,
+ static struct device_attribute dev_attr_region_size = __ATTR(size, 0444,
+ 		region_size_show, NULL);
  
- 	dev_dax->dax_dev = dax_dev;
- 	dev_dax->target_node = dax_region->target_node;
-+	dev_dax->align = dax_region->align;
- 	ida_init(&dev_dax->ida);
- 	kref_get(&dax_region->kref);
+-static ssize_t align_show(struct device *dev,
++static ssize_t region_align_show(struct device *dev,
+ 		struct device_attribute *attr, char *buf)
+ {
+ 	struct dax_region *dax_region = dev_get_drvdata(dev);
  
+ 	return sprintf(buf, "%u\n", dax_region->align);
+ }
+-static DEVICE_ATTR_RO(align);
++static struct device_attribute dev_attr_region_align =
++		__ATTR(align, 0400, region_align_show, NULL);
+ 
+ #define for_each_dax_region_resource(dax_region, res) \
+ 	for (res = (dax_region)->res.child; res; res = res->sibling)
+@@ -488,7 +489,7 @@ static umode_t dax_region_visible(struct kobject *kobj, struct attribute *a,
+ static struct attribute *dax_region_attributes[] = {
+ 	&dev_attr_available_size.attr,
+ 	&dev_attr_region_size.attr,
+-	&dev_attr_align.attr,
++	&dev_attr_region_align.attr,
+ 	&dev_attr_create.attr,
+ 	&dev_attr_seed.attr,
+ 	&dev_attr_delete.attr,
+@@ -855,15 +856,13 @@ static ssize_t size_show(struct device *dev,
+ 	return sprintf(buf, "%llu\n", size);
+ }
+ 
+-static bool alloc_is_aligned(struct dax_region *dax_region,
+-		resource_size_t size)
++static bool alloc_is_aligned(struct dev_dax *dev_dax, resource_size_t size)
+ {
+ 	/*
+ 	 * The minimum mapping granularity for a device instance is a
+ 	 * single subsection, unless the arch says otherwise.
+ 	 */
+-	return IS_ALIGNED(size, max_t(unsigned long, dax_region->align,
+-				memremap_compat_align()));
++	return IS_ALIGNED(size, max_t(unsigned long, dev_dax->align, memremap_compat_align()));
+ }
+ 
+ static int dev_dax_shrink(struct dev_dax *dev_dax, resource_size_t size)
+@@ -958,7 +957,7 @@ static ssize_t dev_dax_resize(struct dax_region *dax_region,
+ 		return dev_dax_shrink(dev_dax, size);
+ 
+ 	to_alloc = size - dev_size;
+-	if (dev_WARN_ONCE(dev, !alloc_is_aligned(dax_region, to_alloc),
++	if (dev_WARN_ONCE(dev, !alloc_is_aligned(dev_dax, to_alloc),
+ 			"resize of %pa misaligned\n", &to_alloc))
+ 		return -ENXIO;
+ 
+@@ -1022,7 +1021,7 @@ static ssize_t size_store(struct device *dev, struct device_attribute *attr,
+ 	if (rc)
+ 		return rc;
+ 
+-	if (!alloc_is_aligned(dax_region, val)) {
++	if (!alloc_is_aligned(dev_dax, val)) {
+ 		dev_dbg(dev, "%s: size: %lld misaligned\n", __func__, val);
+ 		return -EINVAL;
+ 	}
+@@ -1041,6 +1040,78 @@ static ssize_t size_store(struct device *dev, struct device_attribute *attr,
+ }
+ static DEVICE_ATTR_RW(size);
+ 
++static ssize_t align_show(struct device *dev,
++		struct device_attribute *attr, char *buf)
++{
++	struct dev_dax *dev_dax = to_dev_dax(dev);
++
++	return sprintf(buf, "%d\n", dev_dax->align);
++}
++
++static ssize_t dev_dax_validate_align(struct dev_dax *dev_dax)
++{
++	resource_size_t dev_size = dev_dax_size(dev_dax);
++	struct device *dev = &dev_dax->dev;
++	int i;
++
++	if (dev_size > 0 && !alloc_is_aligned(dev_dax, dev_size)) {
++		dev_dbg(dev, "%s: align %u invalid for size %pa\n",
++			__func__, dev_dax->align, &dev_size);
++		return -EINVAL;
++	}
++
++	for (i = 0; i < dev_dax->nr_range; i++) {
++		size_t len = range_len(&dev_dax->ranges[i].range);
++
++		if (!alloc_is_aligned(dev_dax, len)) {
++			dev_dbg(dev, "%s: align %u invalid for range %d\n",
++				__func__, dev_dax->align, i);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
++
++static ssize_t align_store(struct device *dev, struct device_attribute *attr,
++		const char *buf, size_t len)
++{
++	struct dev_dax *dev_dax = to_dev_dax(dev);
++	struct dax_region *dax_region = dev_dax->region;
++	unsigned long val, align_save;
++	ssize_t rc;
++
++	rc = kstrtoul(buf, 0, &val);
++	if (rc)
++		return -ENXIO;
++
++	if (!dax_align_valid(val))
++		return -EINVAL;
++
++	device_lock(dax_region->dev);
++	if (!dax_region->dev->driver) {
++		device_unlock(dax_region->dev);
++		return -ENXIO;
++	}
++
++	device_lock(dev);
++	if (dev->driver) {
++		rc = -EBUSY;
++		goto out_unlock;
++	}
++
++	align_save = dev_dax->align;
++	dev_dax->align = val;
++	rc = dev_dax_validate_align(dev_dax);
++	if (rc)
++		dev_dax->align = align_save;
++out_unlock:
++	device_unlock(dev);
++	device_unlock(dax_region->dev);
++	return rc == 0 ? len : rc;
++}
++static DEVICE_ATTR_RW(align);
++
+ static int dev_dax_target_node(struct dev_dax *dev_dax)
+ {
+ 	struct dax_region *dax_region = dev_dax->region;
+@@ -1101,7 +1172,8 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ 		return 0;
+ 	if (a == &dev_attr_numa_node.attr && !IS_ENABLED(CONFIG_NUMA))
+ 		return 0;
+-	if (a == &dev_attr_size.attr && is_static(dax_region))
++	if ((a == &dev_attr_align.attr ||
++	     a == &dev_attr_size.attr) && is_static(dax_region))
+ 		return 0444;
+ 	return a->mode;
+ }
+@@ -1110,6 +1182,7 @@ static struct attribute *dev_dax_attributes[] = {
+ 	&dev_attr_modalias.attr,
+ 	&dev_attr_size.attr,
+ 	&dev_attr_target_node.attr,
++	&dev_attr_align.attr,
+ 	&dev_attr_resource.attr,
+ 	&dev_attr_numa_node.attr,
+ 	NULL,
 diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-index 13780f62b95e..5fd3a26cfcea 100644
+index 5fd3a26cfcea..fe337436d7f5 100644
 --- a/drivers/dax/dax-private.h
 +++ b/drivers/dax/dax-private.h
-@@ -62,6 +62,7 @@ struct dax_mapping {
- struct dev_dax {
- 	struct dax_region *region;
- 	struct dax_device *dax_dev;
-+	unsigned int align;
- 	int target_node;
- 	int id;
- 	struct ida ida;
-@@ -84,4 +85,6 @@ static inline struct dax_mapping *to_dax_mapping(struct device *dev)
- {
- 	return container_of(dev, struct dax_mapping, dev);
+@@ -87,4 +87,22 @@ static inline struct dax_mapping *to_dax_mapping(struct device *dev)
  }
+ 
+ phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff, unsigned long size);
 +
-+phys_addr_t dax_pgoff_to_phys(struct dev_dax *dev_dax, pgoff_t pgoff, unsigned long size);
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++static inline bool dax_align_valid(unsigned int align)
++{
++	if (align == PUD_SIZE && IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
++		return true;
++	if (align == PMD_SIZE && has_transparent_hugepage())
++		return true;
++	if (align == PAGE_SIZE)
++		return true;
++	return false;
++}
++#else
++static inline bool dax_align_valid(unsigned int align)
++{
++	return align == PAGE_SIZE;
++}
++#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
  #endif
-diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-index 2bfc5c83e3b0..d2b1892cb1b2 100644
---- a/drivers/dax/device.c
-+++ b/drivers/dax/device.c
-@@ -17,7 +17,6 @@
- static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
- 		const char *func)
- {
--	struct dax_region *dax_region = dev_dax->region;
- 	struct device *dev = &dev_dax->dev;
- 	unsigned long mask;
- 
-@@ -32,7 +31,7 @@ static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
- 		return -EINVAL;
- 	}
- 
--	mask = dax_region->align - 1;
-+	mask = dev_dax->align - 1;
- 	if (vma->vm_start & mask || vma->vm_end & mask) {
- 		dev_info_ratelimited(dev,
- 				"%s: %s: fail, unaligned vma (%#lx - %#lx, %#lx)\n",
-@@ -78,21 +77,19 @@ static vm_fault_t __dev_dax_pte_fault(struct dev_dax *dev_dax,
- 				struct vm_fault *vmf, pfn_t *pfn)
- {
- 	struct device *dev = &dev_dax->dev;
--	struct dax_region *dax_region;
- 	phys_addr_t phys;
- 	unsigned int fault_size = PAGE_SIZE;
- 
- 	if (check_vma(dev_dax, vmf->vma, __func__))
- 		return VM_FAULT_SIGBUS;
- 
--	dax_region = dev_dax->region;
--	if (dax_region->align > PAGE_SIZE) {
-+	if (dev_dax->align > PAGE_SIZE) {
- 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
--			dax_region->align, fault_size);
-+			dev_dax->align, fault_size);
- 		return VM_FAULT_SIGBUS;
- 	}
- 
--	if (fault_size != dax_region->align)
-+	if (fault_size != dev_dax->align)
- 		return VM_FAULT_SIGBUS;
- 
- 	phys = dax_pgoff_to_phys(dev_dax, vmf->pgoff, PAGE_SIZE);
-@@ -120,15 +117,15 @@ static vm_fault_t __dev_dax_pmd_fault(struct dev_dax *dev_dax,
- 		return VM_FAULT_SIGBUS;
- 
- 	dax_region = dev_dax->region;
--	if (dax_region->align > PMD_SIZE) {
-+	if (dev_dax->align > PMD_SIZE) {
- 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
--			dax_region->align, fault_size);
-+			dev_dax->align, fault_size);
- 		return VM_FAULT_SIGBUS;
- 	}
- 
--	if (fault_size < dax_region->align)
-+	if (fault_size < dev_dax->align)
- 		return VM_FAULT_SIGBUS;
--	else if (fault_size > dax_region->align)
-+	else if (fault_size > dev_dax->align)
- 		return VM_FAULT_FALLBACK;
- 
- 	/* if we are outside of the VMA */
-@@ -164,15 +161,15 @@ static vm_fault_t __dev_dax_pud_fault(struct dev_dax *dev_dax,
- 		return VM_FAULT_SIGBUS;
- 
- 	dax_region = dev_dax->region;
--	if (dax_region->align > PUD_SIZE) {
-+	if (dev_dax->align > PUD_SIZE) {
- 		dev_dbg(dev, "alignment (%#x) > fault size (%#x)\n",
--			dax_region->align, fault_size);
-+			dev_dax->align, fault_size);
- 		return VM_FAULT_SIGBUS;
- 	}
- 
--	if (fault_size < dax_region->align)
-+	if (fault_size < dev_dax->align)
- 		return VM_FAULT_SIGBUS;
--	else if (fault_size > dax_region->align)
-+	else if (fault_size > dev_dax->align)
- 		return VM_FAULT_FALLBACK;
- 
- 	/* if we are outside of the VMA */
-@@ -267,9 +264,8 @@ static int dev_dax_split(struct vm_area_struct *vma, unsigned long addr)
- {
- 	struct file *filp = vma->vm_file;
- 	struct dev_dax *dev_dax = filp->private_data;
--	struct dax_region *dax_region = dev_dax->region;
- 
--	if (!IS_ALIGNED(addr, dax_region->align))
-+	if (!IS_ALIGNED(addr, dev_dax->align))
- 		return -EINVAL;
- 	return 0;
- }
-@@ -278,9 +274,8 @@ static unsigned long dev_dax_pagesize(struct vm_area_struct *vma)
- {
- 	struct file *filp = vma->vm_file;
- 	struct dev_dax *dev_dax = filp->private_data;
--	struct dax_region *dax_region = dev_dax->region;
- 
--	return dax_region->align;
-+	return dev_dax->align;
- }
- 
- static const struct vm_operations_struct dax_vm_ops = {
-@@ -319,13 +314,11 @@ static unsigned long dax_get_unmapped_area(struct file *filp,
- {
- 	unsigned long off, off_end, off_align, len_align, addr_align, align;
- 	struct dev_dax *dev_dax = filp ? filp->private_data : NULL;
--	struct dax_region *dax_region;
- 
- 	if (!dev_dax || addr)
- 		goto out;
- 
--	dax_region = dev_dax->region;
--	align = dax_region->align;
-+	align = dev_dax->align;
- 	off = pgoff << PAGE_SHIFT;
- 	off_end = off + len;
- 	off_align = round_up(off, align);
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
