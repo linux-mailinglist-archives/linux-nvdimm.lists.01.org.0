@@ -1,269 +1,213 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD17A23B835
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 Aug 2020 11:51:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD30123BBF8
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 Aug 2020 16:24:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9C81812AC19BB;
-	Tue,  4 Aug 2020 02:51:45 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	by ml01.01.org (Postfix) with ESMTP id 9F3F912A0D0D9;
+	Tue,  4 Aug 2020 07:24:34 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=115.236.45.142; helo=mail.adbest.com; envelope-from=service@adbest.com; receiver=<UNKNOWN> 
+Received: from mail.adbest.com (unknown [115.236.45.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 558FD12AB9F09
-	for <linux-nvdimm@lists.01.org>; Tue,  4 Aug 2020 02:51:43 -0700 (PDT)
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id DA0AE22B45;
-	Tue,  4 Aug 2020 09:51:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1596534703;
-	bh=x0DAxp5W8dl2Y9jNBG2mD6C6l9O/uu9bnorpOsB3o5U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wb/i9DqCCGMY1sy+ymVE2IwBdDO3PPSz+UTA8Mo0f0h/pscUMpmqT5WulteBV4oQZ
-	 FyeWJ0852XMneG9X+T4hrFXC/Y1pepOy2YVe94MJZsZb2c8aukRwjJQmGDZxCCGpZ6
-	 r1vibdwZ//4Q6PlZPZ3+MksZdbDrecbblYOex86c=
-From: Mike Rapoport <rppt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 6/6] mm: secretmem: add ability to reserve memory at boot
-Date: Tue,  4 Aug 2020 12:50:35 +0300
-Message-Id: <20200804095035.18778-7-rppt@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200804095035.18778-1-rppt@kernel.org>
-References: <20200804095035.18778-1-rppt@kernel.org>
+	by ml01.01.org (Postfix) with ESMTPS id 1812C12A0D0D9
+	for <linux-nvdimm@lists.01.org>; Tue,  4 Aug 2020 07:24:31 -0700 (PDT)
+Received: from uzen (unknown [115.236.45.138])
+	by mail.adbest.com (Postfix - by adbest.com) with ESMTPA id 195D9541E90;
+	Tue,  4 Aug 2020 22:23:50 +0800 (CST)
+Message-ID: <F9208D7AA42CD001372545F8DE4F46C8@uzen>
+From: "vtnzlxgj" <service@adbest.com>
+To: <hr@ironarmy.com>,
+	<2@bmh.cn>,
+	<linux-nvdimm@lists.01.org>,
+	<xu.yulin@adways.net>,
+	<johnson@sid.com.cn>,
+	<gaoshengyuan@yongshangtech.com>,
+	<yanghua@lufeng.com>,
+	<fanghaizhou@essex.com.cn>,
+	<hzdt@cndaton.com>,
+	<lipeng@91bub.com>,
+	<snzhang@wil.com.cn>,
+	<pen@almaden.ibm.com>,
+	<service@meanssoft.com>,
+	<office@fxld-hk.com>,
+	<ddbaby0531@2008.sina.com>,
+	<lzh@bjfbc.com>,
+	<rainbow@oxymatdk.com>,
+	<lxf@easytrade.com.cn>,
+	<toffy@chinaacc.com>,
+	<jjian@jlu.edu.cn>,
+	<sales02@cnhtfurniture.com>
+Subject: =?gb2312?B?t/7SqsTQtcS4z730uMk=?=
+Date: Tue, 4 Aug 2020 22:24:08 +0800
 MIME-Version: 1.0
-Message-ID-Hash: LLMX7Q5AAFBPKJKM224WPJ3KZKACQMEZ
-X-Message-ID-Hash: LLMX7Q5AAFBPKJKM224WPJ3KZKACQMEZ
-X-MailFrom: rppt@kernel.org
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+Message-ID-Hash: DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7
+X-Message-ID-Hash: DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7
+X-MailFrom: service@adbest.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, l
- inux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LLMX7Q5AAFBPKJKM224WPJ3KZKACQMEZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: multipart/mixed; boundary="===============1693360116992172119=="
+
+--===============1693360116992172119==
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
+MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
+ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFkgYmdDb2xvcj1saW1l
+Pg0KPFAgYWxpZ249Y2VudGVyPjxBIGhyZWY9Imh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vIj48
+U1RST05HPjxGT05UIA0Kc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xvcj1k
+YXJrcmVkIA0Kc2l6ZT01Pmh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vPC9GT05UPjwvU1RST05H
+PjwvQT48L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
+IGRhcmtjeWFuIj48L0ZPTlQ+PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxGT05UIHN0eWxlPSJCQUNL
+R1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj1kYXJrcmVkPjwvRk9OVD48L1A+DQo8UCBh
+bGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xv
+cj1kYXJrcmVkIA0Kc2l6ZT01PjxFTT63/tKqxNC1xLjPvfS4yTwvRU0+PC9GT05UPjwvUD4NCjxQ
+IGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDA4YjhiIiBj
+b2xvcj0jOGIwMDAwIA0Kc2l6ZT01PjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVN
+PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDA4YjhiIiBjb2xvcj0jOGIwMDAwIA0K
+c2l6ZT01PjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZP
+TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6
+ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+
+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj0j
+ZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
+dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2N5YW4i
+IA0KY29sb3I9I2ZmZmZmZiBzaXplPTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQ
+IGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
+IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT0xPjwvRk9OVD48L1U+PC9FTT48L1NUUk9O
+Rz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JP
+VU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT0xPmhyPC9GT05UPjwvVT48L0VN
+PjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9
+IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9IzgwODA4MCBzaXplPTE+PC9GT05U
+PjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZP
+TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9IzgwODA4MCBzaXpl
+PTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PC9QPg0KPFAg
+YWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
+IzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
+Pg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
+T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
+Tkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
+T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
+QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
+PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
+dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
+TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
+Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
+NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
+TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
+CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
+T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
+Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
+dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
+Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
+Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
+MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
+PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
+UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
+RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
+VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
+S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
+RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHls
+ZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+
+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9O
+VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48
+L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48
+VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
+emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05H
+PjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3Jh
+eSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48
+U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29s
+b3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249
+bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAw
+MCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAg
+YWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
+IzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
+Pg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
+T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
+Tkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
+T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
+QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
+PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
+dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
+TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
+Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
+NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
+TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
+CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
+T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
+Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
+dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
+Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
+Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
+MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
+PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
+UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
+RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
+VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
+S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
+RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBjb2xvcj1ncmF5PjwvRk9OVD48
+L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5E
+LUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NU
+Uk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNL
+R1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9F
+TT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxl
+PSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48
+L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxGT05UIGNvbG9yPWdyYXk+PC9G
+T05UPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
+T0xPUjogYmxhY2siIGNvbG9yPWdyYXkgDQpzaXplPTE+PFU+PC9VPjwvRk9OVD48L1NUUk9ORz48
+L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
+T1I6ICMwMDAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTE+PC9GT05UPjwvVT48L1NUUk9ORz48L1A+
+DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2Js
+dWUiIA0KY29sb3I9cmVkPjxVPmhyPC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+
+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDAwMDhiIiANCmNvbG9yPXJlZD48
+VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48VT48Rk9OVCBjb2xvcj1yZWQ+
+PC9GT05UPjwvVT48L1A+DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
+RC1DT0xPUjogIzAwMDA4YiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQ
+IGFsaWduPWxlZnQ+PEVNPjxVPjxGT05UIGNvbG9yPXJlZD48L0ZPTlQ+PC9VPjwvRU0+PC9QPg0K
+PFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
+CmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZP
+TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT48L1U+PC9G
+T05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQt
+Q09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxp
+Z249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9y
+PXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5
+bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT4xMDg1ILf+0qrE0LXE
+uM+99LjJPC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxl
+PSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1tYWdlbnRhPjwvRk9OVD48L0VNPjwv
+UD4NCjxQIGFsaWduPWxlZnQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
+CmNvbG9yPW1hZ2VudGE+aHI8L0ZPTlQ+PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBzdHlsZT0i
+QkFDS0dST1VORC1DT0xPUjogZGFya3JlZCIgDQpjb2xvcj1wdXJwbGU+NDQ4ODIzNjY3NTQ8L0ZP
+TlQ+PC9QPjwvQk9EWT48L0hUTUw+DQo=
+
+
+--===============1693360116992172119==
 Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-From: Mike Rapoport <rppt@linux.ibm.com>
-
-Taking pages out from the direct map and bringing them back may create
-undesired fragmentation and usage of the smaller pages in the direct
-mapping of the physical memory.
-
-This can be avoided if a significantly large area of the physical memory
-would be reserved for secretmem purposes at boot time.
-
-Add ability to reserve physical memory for secretmem at boot time using
-"secretmem" kernel parameter and then use that reserved memory as a global
-pool for secret memory needs.
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- mm/secretmem.c | 134 ++++++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 126 insertions(+), 8 deletions(-)
-
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index e42616785a88..0f3e7b30a0a7 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -8,6 +8,7 @@
- #include <linux/pagemap.h>
- #include <linux/genalloc.h>
- #include <linux/syscalls.h>
-+#include <linux/memblock.h>
- #include <linux/pseudo_fs.h>
- #include <linux/set_memory.h>
- #include <linux/sched/signal.h>
-@@ -35,6 +36,39 @@ struct secretmem_ctx {
- 	unsigned int mode;
- };
- 
-+struct secretmem_pool {
-+	struct gen_pool *pool;
-+	unsigned long reserved_size;
-+	void *reserved;
-+};
-+
-+static struct secretmem_pool secretmem_pool;
-+
-+static struct page *secretmem_alloc_huge_page(gfp_t gfp)
-+{
-+	struct gen_pool *pool = secretmem_pool.pool;
-+	unsigned long addr = 0;
-+	struct page *page = NULL;
-+
-+	if (pool) {
-+		if (gen_pool_avail(pool) < PMD_SIZE)
-+			return NULL;
-+
-+		addr = gen_pool_alloc(pool, PMD_SIZE);
-+		if (!addr)
-+			return NULL;
-+
-+		page = virt_to_page(addr);
-+	} else {
-+		page = alloc_pages(gfp, PMD_PAGE_ORDER);
-+
-+		if (page)
-+			split_page(page, PMD_PAGE_ORDER);
-+	}
-+
-+	return page;
-+}
-+
- static int secretmem_pool_increase(struct secretmem_ctx *ctx, gfp_t gfp)
- {
- 	unsigned long nr_pages = (1 << PMD_PAGE_ORDER);
-@@ -43,12 +77,11 @@ static int secretmem_pool_increase(struct secretmem_ctx *ctx, gfp_t gfp)
- 	struct page *page;
- 	int err;
- 
--	page = alloc_pages(gfp, PMD_PAGE_ORDER);
-+	page = secretmem_alloc_huge_page(gfp);
- 	if (!page)
- 		return -ENOMEM;
- 
- 	addr = (unsigned long)page_address(page);
--	split_page(page, PMD_PAGE_ORDER);
- 
- 	err = gen_pool_add(pool, addr, PMD_SIZE, NUMA_NO_NODE);
- 	if (err) {
-@@ -274,11 +307,13 @@ SYSCALL_DEFINE1(memfd_secret, unsigned long, flags)
- 	return err;
- }
- 
--static void secretmem_cleanup_chunk(struct gen_pool *pool,
--				    struct gen_pool_chunk *chunk, void *data)
-+static void secretmem_recycle_range(unsigned long start, unsigned long end)
-+{
-+	gen_pool_free(secretmem_pool.pool, start, PMD_SIZE);
-+}
-+
-+static void secretmem_release_range(unsigned long start, unsigned long end)
- {
--	unsigned long start = chunk->start_addr;
--	unsigned long end = chunk->end_addr;
- 	unsigned long nr_pages, addr;
- 
- 	nr_pages = (end - start + 1) / PAGE_SIZE;
-@@ -288,6 +323,18 @@ static void secretmem_cleanup_chunk(struct gen_pool *pool,
- 		put_page(virt_to_page(addr));
- }
- 
-+static void secretmem_cleanup_chunk(struct gen_pool *pool,
-+				    struct gen_pool_chunk *chunk, void *data)
-+{
-+	unsigned long start = chunk->start_addr;
-+	unsigned long end = chunk->end_addr;
-+
-+	if (secretmem_pool.pool)
-+		secretmem_recycle_range(start, end);
-+	else
-+		secretmem_release_range(start, end);
-+}
-+
- static void secretmem_cleanup_pool(struct secretmem_ctx *ctx)
- {
- 	struct gen_pool *pool = ctx->pool;
-@@ -327,14 +374,85 @@ static struct file_system_type secretmem_fs = {
- 	.kill_sb	= kill_anon_super,
- };
- 
-+static int secretmem_reserved_mem_init(void)
-+{
-+	struct gen_pool *pool;
-+	struct page *page;
-+	void *addr;
-+	int err;
-+
-+	if (!secretmem_pool.reserved)
-+		return 0;
-+
-+	pool = gen_pool_create(PMD_SHIFT, NUMA_NO_NODE);
-+	if (!pool)
-+		return -ENOMEM;
-+
-+	err = gen_pool_add(pool, (unsigned long)secretmem_pool.reserved,
-+			   secretmem_pool.reserved_size, NUMA_NO_NODE);
-+	if (err)
-+		goto err_destroy_pool;
-+
-+	for (addr = secretmem_pool.reserved;
-+	     addr < secretmem_pool.reserved + secretmem_pool.reserved_size;
-+	     addr += PAGE_SIZE) {
-+		page = virt_to_page(addr);
-+		__ClearPageReserved(page);
-+		set_page_count(page, 1);
-+	}
-+
-+	secretmem_pool.pool = pool;
-+	page = virt_to_page(secretmem_pool.reserved);
-+	__kernel_map_pages(page, secretmem_pool.reserved_size / PAGE_SIZE, 0);
-+	return 0;
-+
-+err_destroy_pool:
-+	gen_pool_destroy(pool);
-+	return err;
-+}
-+
- static int secretmem_init(void)
- {
--	int ret = 0;
-+	int ret;
-+
-+	ret = secretmem_reserved_mem_init();
-+	if (ret)
-+		return ret;
- 
- 	secretmem_mnt = kern_mount(&secretmem_fs);
--	if (IS_ERR(secretmem_mnt))
-+	if (IS_ERR(secretmem_mnt)) {
-+		gen_pool_destroy(secretmem_pool.pool);
- 		ret = PTR_ERR(secretmem_mnt);
-+	}
- 
- 	return ret;
- }
- fs_initcall(secretmem_init);
-+
-+static int __init secretmem_setup(char *str)
-+{
-+	phys_addr_t align = PMD_SIZE;
-+	unsigned long reserved_size;
-+	void *reserved;
-+
-+	reserved_size = memparse(str, NULL);
-+	if (!reserved_size)
-+		return 0;
-+
-+	if (reserved_size * 2 > PUD_SIZE)
-+		align = PUD_SIZE;
-+
-+	reserved = memblock_alloc(reserved_size, align);
-+	if (!reserved) {
-+		pr_err("failed to reserve %lu bytes\n", secretmem_pool.reserved_size);
-+		return 0;
-+	}
-+
-+	secretmem_pool.reserved_size = reserved_size;
-+	secretmem_pool.reserved = reserved;
-+
-+	pr_info("reserved %luM\n", reserved_size >> 20);
-+
-+	return 1;
-+}
-+__setup("secretmem=", secretmem_setup);
--- 
-2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============1693360116992172119==--
