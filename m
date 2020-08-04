@@ -2,212 +2,87 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD30123BBF8
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 Aug 2020 16:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 064C323BDF1
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  4 Aug 2020 18:18:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9F3F912A0D0D9;
-	Tue,  4 Aug 2020 07:24:34 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=115.236.45.142; helo=mail.adbest.com; envelope-from=service@adbest.com; receiver=<UNKNOWN> 
-Received: from mail.adbest.com (unknown [115.236.45.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EC5C61297655F;
+	Tue,  4 Aug 2020 09:18:07 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1812C12A0D0D9
-	for <linux-nvdimm@lists.01.org>; Tue,  4 Aug 2020 07:24:31 -0700 (PDT)
-Received: from uzen (unknown [115.236.45.138])
-	by mail.adbest.com (Postfix - by adbest.com) with ESMTPA id 195D9541E90;
-	Tue,  4 Aug 2020 22:23:50 +0800 (CST)
-Message-ID: <F9208D7AA42CD001372545F8DE4F46C8@uzen>
-From: "vtnzlxgj" <service@adbest.com>
-To: <hr@ironarmy.com>,
-	<2@bmh.cn>,
-	<linux-nvdimm@lists.01.org>,
-	<xu.yulin@adways.net>,
-	<johnson@sid.com.cn>,
-	<gaoshengyuan@yongshangtech.com>,
-	<yanghua@lufeng.com>,
-	<fanghaizhou@essex.com.cn>,
-	<hzdt@cndaton.com>,
-	<lipeng@91bub.com>,
-	<snzhang@wil.com.cn>,
-	<pen@almaden.ibm.com>,
-	<service@meanssoft.com>,
-	<office@fxld-hk.com>,
-	<ddbaby0531@2008.sina.com>,
-	<lzh@bjfbc.com>,
-	<rainbow@oxymatdk.com>,
-	<lxf@easytrade.com.cn>,
-	<toffy@chinaacc.com>,
-	<jjian@jlu.edu.cn>,
-	<sales02@cnhtfurniture.com>
-Subject: =?gb2312?B?t/7SqsTQtcS4z730uMk=?=
-Date: Tue, 4 Aug 2020 22:24:08 +0800
+	by ml01.01.org (Postfix) with ESMTPS id 026F512976554
+	for <linux-nvdimm@lists.01.org>; Tue,  4 Aug 2020 09:18:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=KiHlXYS4cF7DbYKmhvpQJucCJKOOEpy6PdUPrjFSFcU=; b=mpVj2g/h7OLKGHc/P8PtqZSCwY
+	JwFqnxG75JALlCY9NeAC3OGGbHXe4B5iN4snjrWt8zUx4pLU2uIOd/uuy0uU28ddRaQ8svacINH+z
+	zZVaSleGpmpBhP6PxeQb8NUaNIEXi/eU46KSlms0Hw05G1Fe8y2zJAmhCR7oRilU2DNX1fHgTkV3A
+	6Th/ybwF4TUC6PflViuoiuHdsy4lKnVlaKFL2qbeSEwnTJV+SJqGs2aS4zwMPV7yzpM2HLZ+Opn+J
+	3QvbOT9w6uccaH6iBfWzgLDUXIP2agGAM2/hw4lXUp2qXUM/vvlRXiwIwNvKf1yBa21ZexQ0csOd2
+	CH7DzTQg==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1k2zdV-0002dy-B6; Tue, 04 Aug 2020 16:17:57 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 0/4] Remove nrexceptional tracking
+Date: Tue,  4 Aug 2020 17:17:51 +0100
+Message-Id: <20200804161755.10100-1-willy@infradead.org>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-Message-ID-Hash: DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7
-X-Message-ID-Hash: DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7
-X-MailFrom: service@adbest.com
+Message-ID-Hash: OHZIDEJE2V4TKPTXCS6QA36XT4IY6ZPV
+X-Message-ID-Hash: OHZIDEJE2V4TKPTXCS6QA36XT4IY6ZPV
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DV3S3Q66XFJ52XY4X6XSRPSYXE2DPRM7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OHZIDEJE2V4TKPTXCS6QA36XT4IY6ZPV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1693360116992172119=="
-
---===============1693360116992172119==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFkgYmdDb2xvcj1saW1l
-Pg0KPFAgYWxpZ249Y2VudGVyPjxBIGhyZWY9Imh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vIj48
-U1RST05HPjxGT05UIA0Kc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xvcj1k
-YXJrcmVkIA0Kc2l6ZT01Pmh0dHA6Ly92aWtyYW12aXJvZGhpYS5jb20vPC9GT05UPjwvU1RST05H
-PjwvQT48L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
-IGRhcmtjeWFuIj48L0ZPTlQ+PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj1kYXJrcmVkPjwvRk9OVD48L1A+DQo8UCBh
-bGlnbj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xv
-cj1kYXJrcmVkIA0Kc2l6ZT01PjxFTT63/tKqxNC1xLjPvfS4yTwvRU0+PC9GT05UPjwvUD4NCjxQ
-IGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDA4YjhiIiBj
-b2xvcj0jOGIwMDAwIA0Kc2l6ZT01PjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVN
-PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDA4YjhiIiBjb2xvcj0jOGIwMDAwIA0K
-c2l6ZT01PjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZP
-TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6
-ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+
-PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj0j
-ZmZmZmZmIHNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2N5YW4i
-IA0KY29sb3I9I2ZmZmZmZiBzaXplPTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQ
-IGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
-IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT0xPjwvRk9OVD48L1U+PC9FTT48L1NUUk9O
-Rz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JP
-VU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT0xPmhyPC9GT05UPjwvVT48L0VN
-PjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9
-IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9IzgwODA4MCBzaXplPTE+PC9GT05U
-PjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZP
-TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29sb3I9IzgwODA4MCBzaXpl
-PTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PC9QPg0KPFAg
-YWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
-IzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
-Pg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
-T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
-PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
-PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
-NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
-CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
-T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
-Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
-Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
-Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
-VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
-RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHls
-ZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+
-PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9O
-VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48
-L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05H
-PjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3Jh
-eSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48
-U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29s
-b3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249
-bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAw
-MCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAg
-YWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
-IzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
-Pg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
-T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
-PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
-PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
-NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
-CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
-T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
-Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
-Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
-Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
-VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
-RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBjb2xvcj1ncmF5PjwvRk9OVD48
-L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5E
-LUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NU
-Uk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9F
-TT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxl
-PSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48
-L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxGT05UIGNvbG9yPWdyYXk+PC9G
-T05UPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogYmxhY2siIGNvbG9yPWdyYXkgDQpzaXplPTE+PFU+PC9VPjwvRk9OVD48L1NUUk9ORz48
-L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09M
-T1I6ICMwMDAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTE+PC9GT05UPjwvVT48L1NUUk9ORz48L1A+
-DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2Js
-dWUiIA0KY29sb3I9cmVkPjxVPmhyPC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+
-PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjMDAwMDhiIiANCmNvbG9yPXJlZD48
-VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48VT48Rk9OVCBjb2xvcj1yZWQ+
-PC9GT05UPjwvVT48L1A+DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogIzAwMDA4YiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQ
-IGFsaWduPWxlZnQ+PEVNPjxVPjxGT05UIGNvbG9yPXJlZD48L0ZPTlQ+PC9VPjwvRU0+PC9QPg0K
-PFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
-CmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZP
-TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT48L1U+PC9G
-T05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQt
-Q09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxp
-Z249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9y
-PXJlZD48VT48L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5
-bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPXJlZD48VT4xMDg1ILf+0qrE0LXE
-uM+99LjJPC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxl
-PSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1tYWdlbnRhPjwvRk9OVD48L0VNPjwv
-UD4NCjxQIGFsaWduPWxlZnQ+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiAN
-CmNvbG9yPW1hZ2VudGE+aHI8L0ZPTlQ+PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogZGFya3JlZCIgDQpjb2xvcj1wdXJwbGU+NDQ4ODIzNjY3NTQ8L0ZP
-TlQ+PC9QPjwvQk9EWT48L0hUTUw+DQo=
-
-
---===============1693360116992172119==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
+We actually use nrexceptional for very little these days.  It's a constant
+source of pain with the THP patches because we don't know how large a
+shadow entry is, so either we have to ask the xarray how many indices
+it covers, or store that information in the shadow entry (and reduce
+the amount of other information in the shadow entry proportionally).
+While tracking down the most recent case of "evict tells me I've got
+the accounting wrong again", I wondered if it might not be simpler to
+just remove it.  So here's a patch set to do just that.  I think each
+of these patches is an improvement in isolation, but the combination of
+all four is larger than the sum of its parts.
+
+I'm running xfstests on this patchset right now.  If one of the DAX
+people could try it out, that'd be fantastic.
+
+Matthew Wilcox (Oracle) (4):
+  mm: Introduce and use page_cache_empty
+  mm: Stop accounting shadow entries
+  dax: Account DAX entries as nrpages
+  mm: Remove nrexceptional from inode
+
+ fs/block_dev.c          |  2 +-
+ fs/dax.c                |  8 ++++----
+ fs/inode.c              |  2 +-
+ include/linux/fs.h      |  2 --
+ include/linux/pagemap.h |  5 +++++
+ mm/filemap.c            | 15 ---------------
+ mm/truncate.c           | 19 +++----------------
+ mm/workingset.c         |  1 -
+ 8 files changed, 14 insertions(+), 40 deletions(-)
+
+-- 
+2.27.0
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============1693360116992172119==--
