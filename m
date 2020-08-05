@@ -1,240 +1,157 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4442623C595
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Aug 2020 08:11:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6547A23C767
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Aug 2020 10:10:19 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 11AE112B1D8D7;
-	Tue,  4 Aug 2020 23:11:51 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=213.139.0.17; helo=smtp.easynet.es; envelope-from=bounce@easynet.es; receiver=<UNKNOWN> 
-Received: from smtp.easynet.es (smtp.easynet.es [213.139.0.17])
-	by ml01.01.org (Postfix) with ESMTP id 12F2D12B1D8D6
-	for <linux-nvdimm@lists.01.org>; Tue,  4 Aug 2020 23:11:47 -0700 (PDT)
-Received: from [171.93.9.82] (helo=winth)
-	by smtp.easynet.es with esmtpa (Exim 4.72)
-	(envelope-from <bounce@easynet.es>)
-	id 1k3CeC-0007N3-EL; Wed, 05 Aug 2020 08:11:33 +0200
-Message-ID: <DDB3EA5DACA9697EA3FD140246EC8A60@winth>
-From: "avzl" <bounce@easynet.es>
-To: <xwdong@xidian.edu.cn>,
-	<caren@rosedata.com>,
-	<wy@xxmu.edu.cn>,
-	<lf@lfrq.com>,
-	<yld@lnchg.com>,
-	<lecture4282@office.bishulim.com>,
-	<jj@yierda.cn>,
-	<jiaohuanhuan@eefung.com>,
-	<dinghs@mhtvu.com>,
-	<luoheng@yiview.com>,
-	<liuzheping@dongguan.gd.cn>,
-	<linux-nvdimm@lists.01.org>,
-	<bgs_jw@shzu.edu.cn>,
-	<yangmingxin@rdtcom.com>,
-	<310111@cib.com.cn>,
-	<worthgarden@worthgarden.com>,
-	<a@xhl.com.cn>,
-	<info@jjszjs.com>,
-	<hetgy7h2z@enamewhois.com>,
-	<keyan@hytc.edu.cn>,
-	<op@fflog.net>
-Subject: =?gb2312?B?09C49sTQtcSwp8fzsOvM7NOyysfCp9fFxqi5ydPWyeTSu7TOufrT7w==?=
-Date: Wed, 5 Aug 2020 14:11:28 +0800
+	by ml01.01.org (Postfix) with ESMTP id 41CCF12866BD2;
+	Wed,  5 Aug 2020 01:10:17 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=183.91.158.132; helo=heian.cn.fujitsu.com; envelope-from=lihao2018.fnst@cn.fujitsu.com; receiver=<UNKNOWN> 
+Received: from heian.cn.fujitsu.com (mail.cn.fujitsu.com [183.91.158.132])
+	by ml01.01.org (Postfix) with ESMTP id DB37512866BCF
+	for <linux-nvdimm@lists.01.org>; Wed,  5 Aug 2020 01:10:14 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="5.75,436,1589212800";
+   d="scan'208";a="97639989"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 05 Aug 2020 16:10:10 +0800
+Received: from G08CNEXMBPEKD04.g08.fujitsu.local (unknown [10.167.33.201])
+	by cn.fujitsu.com (Postfix) with ESMTP id 5AB0B4CE34DE;
+	Wed,  5 Aug 2020 16:10:06 +0800 (CST)
+Received: from [10.167.225.206] (10.167.225.206) by
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Wed, 5 Aug 2020 16:10:06 +0800
+Subject: Re: Can we change the S_DAX flag immediately on XFS without dropping
+ caches?
+From: "Li, Hao" <lihao2018.fnst@cn.fujitsu.com>
+To: Ira Weiny <ira.weiny@intel.com>
+References: <9dc179147f6a47279d801445f3efeecc@G08CNEXMBPEKD04.g08.fujitsu.local>
+ <20200728022059.GX2005@dread.disaster.area>
+ <573feb69-bc38-8eb4-ee9b-7c49802eb737@fujitsu.com>
+ <20200729161040.GA1250504@iweiny-DESK2.sc.intel.com>
+ <5717e1e5-79fb-af3c-0859-eea3cd8d9626@cn.fujitsu.com>
+Message-ID: <ed4b2df4-086f-a384-3695-4ea721a70326@cn.fujitsu.com>
+Date: Wed, 5 Aug 2020 16:10:05 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.0.1
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
-X-Easynet-ES-Outgoing-Spam-Score: 2.1 (++)
-X-Outgoing-Spam-Report: =?unknown-8bit?q?Spam_detection_software=2C_running_on_the_system_=22aspam2=2Ensa=2Ees=2Eeasynet=2Enet=22=2C_has?=
- =?unknown-8bit?q?_identified_this_incoming_email_as_possible_spam=2E__The_original_message?=
- =?unknown-8bit?q?_has_been_attached_to_this_so_you_can_view_it_=28if_it_isn=27t_spam=29_or_label?=
- =?unknown-8bit?q?_similar_future_email=2E__If_you_have_any_questions=2C_see?=
- =?unknown-8bit?b?IEBAQ09OVEFDVF9BRERSRVNTQEAgZm9yIGRldGFpbHMu?=
- =?unknown-8bit?q?_?=
- =?unknown-8bit?b?IENvbnRlbnQgcHJldmlldzogIGh0dHA6Ly9ua2N5Lm5ldC8g09C49sTQtcSwp8fzsOvM7NOyysfCp9fFxqi5ydPWyeTSu7TOufrT7w==?=
- =?unknown-8bit?b?IHh3ZG9uZyBbLi4uXSA=?=
- =?unknown-8bit?q?_?=
- =?unknown-8bit?q?_Content_analysis_details=3A___=282=2E1_points=2C_5=2E0_required=29?=
- =?unknown-8bit?q?_?=
- =?unknown-8bit?q?_pts_rule_name______________description?=
- =?unknown-8bit?q?_----_----------------------_--------------------------------------------------?=
- =?unknown-8bit?q?_0=2E0_T=5FURIBL=5FSEM=5FRED________Contains_a_URI_listed_in_urired=2Espameatingmonkey=2Enet?=
- =?unknown-8bit?b?IFtVUklzOiBua2N5Lm5ldF0=?=
- =?unknown-8bit?q?_1=2E9_URIBL=5FJP=5FSURBL_________Contains_an_URL_listed_in_the_JP_SURBL_blocklist?=
- =?unknown-8bit?b?IFtVUklzOiBua2N5Lm5ldF0=?=
- =?unknown-8bit?q?_0=2E0_T=5FURIBL=5FSEM____________Contains_a_URI_listed_in_uribl=2Espameatingmonkey=2Enet?=
- =?unknown-8bit?b?IFtVUklzOiBua2N5Lm5ldF0=?=
- =?unknown-8bit?q?_-1=2E0_ALL=5FTRUSTED____________Passed_through_trusted_hosts_only_via_SMTP?=
- =?unknown-8bit?q?_0=2E0_HTML=5FMESSAGE___________BODY=3A_HTML_included_in_message?=
- =?unknown-8bit?q?_1=2E1_MIME=5FHTML=5FONLY_________BODY=3A_Message_only_has_text/html_MIME_parts?=
- =?unknown-8bit?q?_0=2E0_MIME=5FBASE64=5FBLANKS_____RAW=3A_Extra_blank_lines_in_base64_encoding?=
- =?unknown-8bit?q?_0=2E0_FORGED=5FOUTLOOK=5FHTML____Outlook_can=27t_send_HTML_message_only?=
-X-Outgoing-SpamScan-Signature: 431733b72baf513207e2ca6c164e9201
-X-Easynet-bounce-key: easynet.es;bounce@easynet.es;1596607908;c6b69e9f;
-Message-ID-Hash: MYTNCHFUYGTKFEDZQ2VU366ZQDMKDAH7
-X-Message-ID-Hash: MYTNCHFUYGTKFEDZQ2VU366ZQDMKDAH7
-X-MailFrom: bounce@easynet.es
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+In-Reply-To: <5717e1e5-79fb-af3c-0859-eea3cd8d9626@cn.fujitsu.com>
+Content-Language: en-US
+X-Originating-IP: [10.167.225.206]
+X-ClientProxiedBy: G08CNEXCHPEKD06.g08.fujitsu.local (10.167.33.205) To
+ G08CNEXMBPEKD04.g08.fujitsu.local (10.167.33.201)
+X-yoursite-MailScanner-ID: 5AB0B4CE34DE.ACE7A
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: lihao2018.fnst@cn.fujitsu.com
+X-Spam-Status: No
+Message-ID-Hash: ITG7CY47FFPIQVRGOOJJ4HPMEXGBS2BY
+X-Message-ID-Hash: ITG7CY47FFPIQVRGOOJJ4HPMEXGBS2BY
+X-MailFrom: lihao2018.fnst@cn.fujitsu.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Dave Chinner <david@fromorbit.com>, "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, yangx.jy@cn.fujitsu.com, gujx@cn.fujitsu.com, Yasunori Goto <y-goto@fujitsu.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MYTNCHFUYGTKFEDZQ2VU366ZQDMKDAH7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ITG7CY47FFPIQVRGOOJJ4HPMEXGBS2BY/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============4583031254266073718=="
-
---===============4583031254266073718==
-Content-Type: text/html;
-	charset="gb2312"
-Content-Transfer-Encoding: base64
-
-PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
-L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PWdi
-MjMxMiIgaHR0cC1lcXVpdj1Db250ZW50LVR5cGU+DQo8TUVUQSBuYW1lPUdFTkVSQVRPUiBjb250
-ZW50PSJNU0hUTUwgMTEuMDAuMTA1NzAuMTAwMSI+PC9IRUFEPg0KPEJPRFkgYmdDb2xvcj1zaWx2
-ZXI+DQo8UCBhbGlnbj1jZW50ZXI+PEEgaHJlZj0iaHR0cDovL25rY3kubmV0LyI+PFNUUk9ORz48
-Rk9OVCANCnN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJrY3lhbiIgY29sb3I9ZGFya3JlZCAN
-CnNpemU9NT5odHRwOi8vbmtjeS5uZXQvPC9GT05UPjwvU1RST05HPjwvQT48L1A+DQo8UCBhbGln
-bj1jZW50ZXI+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIj48L0ZPTlQ+
-PC9QPg0KPFAgYWxpZ249Y2VudGVyPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBkYXJr
-Y3lhbiIgDQpjb2xvcj1kYXJrcmVkPjwvRk9OVD48L1A+DQo8UCBhbGlnbj1jZW50ZXI+PEZPTlQg
-c3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGRhcmtjeWFuIiBjb2xvcj1kYXJrcmVkIA0Kc2l6ZT01
-PjxFTT7T0Lj2xNC1xLCnx/Ow68zs07LKx8Kn18XGqLnJ09bJ5NK7tM65+tPvPC9FTT48L0ZPTlQ+
-PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICMw
-MDhiOGIiIGNvbG9yPSM4YjAwMDAgDQpzaXplPTU+PC9GT05UPjwvRU0+Jm5ic3A7PC9QPg0KPFAg
-YWxpZ249bGVmdD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICMwMDhiOGIiIGNv
-bG9yPSM4YjAwMDAgDQpzaXplPTU+PC9GT05UPjwvRU0+Jm5ic3A7PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2N5YW4i
-IA0KY29sb3I9I2ZmZmZmZiBzaXplPTU+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQ
-IGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6
-IGRhcmtjeWFuIiANCmNvbG9yPSNmZmZmZmYgc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9O
-Rz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JP
-VU5ELUNPTE9SOiBkYXJrY3lhbiIgDQpjb2xvcj0jZmZmZmZmIHNpemU9MT48L0ZPTlQ+PC9VPjwv
-RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHls
-ZT0iQkFDS0dST1VORC1DT0xPUjogZGFya2N5YW4iIA0KY29sb3I9I2ZmZmZmZiBzaXplPTE+PC9G
-T05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48RU0+PFU+
-PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIGNvbG9yPWdyYXkgDQpzaXpl
-PTE+eHdkb25nPC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNU
-Uk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAwMDAiIA0KY29s
-b3I9IzgwODA4MCBzaXplPTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4NCjxQIGFsaWdu
-PWxlZnQ+PFNUUk9ORz48RU0+PFU+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICM4YjAw
-MDAiIA0KY29sb3I9IzgwODA4MCBzaXplPTE+PC9GT05UPjwvVT48L0VNPjwvU1RST05HPjwvUD4N
-CjxQIGFsaWduPWxlZnQ+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
-NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
-CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
-T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
-Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
-Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
-Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
-VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
-RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHls
-ZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+
-PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9O
-VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48
-L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05H
-PjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3Jh
-eSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48
-U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29s
-b3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249
-bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAw
-MCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAg
-YWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjog
-IzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9Q
-Pg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJP
-Tkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dS
-T1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+
-PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9V
-PjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZP
-TlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9
-NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxF
-TT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSAN
-CnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RS
-T05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9
-Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVm
-dD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIg
-Y29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxp
-Z249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhi
-MDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0K
-PFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xP
-UjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+
-PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VO
-RC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9T
-VFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHlsZT0iQkFD
-S0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+PC9VPjwv
-RU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9OVCBzdHls
-ZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48L0ZPTlQ+
-PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48VT48Rk9O
-VCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNpemU9NT48
-L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05HPjxFTT48
-VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3JheSANCnNp
-emU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48U1RST05H
-PjxFTT48VT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogIzhiMDAwMCIgY29sb3I9Z3Jh
-eSANCnNpemU9NT48L0ZPTlQ+PC9VPjwvRU0+PC9TVFJPTkc+PC9QPg0KPFAgYWxpZ249bGVmdD48
-Rk9OVCBjb2xvcj1ncmF5PjwvRk9OVD48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PEVNPjxV
-PjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5IA0Kc2l6
-ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+
-PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xvcj1ncmF5
-IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxT
-VFJPTkc+PEVNPjxVPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiAjOGIwMDAwIiBjb2xv
-cj1ncmF5IA0Kc2l6ZT01PjwvRk9OVD48L1U+PC9FTT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1s
-ZWZ0PjxGT05UIGNvbG9yPWdyYXk+PC9GT05UPjwvUD4NCjxQIGFsaWduPWxlZnQ+PFNUUk9ORz48
-Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogYmxhY2siIGNvbG9yPWdyYXkgDQpzaXplPTE+
-PFU+PC9VPjwvRk9OVD48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxTVFJPTkc+PFU+PEZP
-TlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICMwMDAwMDAiIGNvbG9yPWdyYXkgDQpzaXplPTE+
-PC9GT05UPjwvVT48L1NUUk9ORz48L1A+DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0i
-QkFDS0dST1VORC1DT0xPUjogZGFya2JsdWUiIA0KY29sb3I9cmVkPjxVPnh3ZG9uZzwvVT48L0ZP
-TlQ+PC9FTT48L1A+DQo8UCBhbGlnbj1sZWZ0PjxFTT48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1D
-T0xPUjogIzAwMDA4YiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFs
-aWduPWxlZnQ+PFU+PEZPTlQgY29sb3I9cmVkPjwvRk9OVD48L1U+PC9QPg0KPFAgYWxpZ249bGVm
-dD48RU0+PEZPTlQgc3R5bGU9IkJBQ0tHUk9VTkQtQ09MT1I6ICMwMDAwOGIiIA0KY29sb3I9cmVk
-PjxVPjwvVT48L0ZPTlQ+PC9FTT48L1A+DQo8UCBhbGlnbj1sZWZ0PjxFTT48VT48Rk9OVCBjb2xv
-cj1yZWQ+PC9GT05UPjwvVT48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxl
-PSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VN
-PjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBn
-cmVlbiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+
-PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1yZWQ+PFU+
-PC9VPjwvRk9OVD48L0VNPjwvUD4NCjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxlPSJCQUNL
-R1JPVU5ELUNPTE9SOiBncmVlbiIgDQpjb2xvcj1yZWQ+PFU+PC9VPjwvRk9OVD48L0VNPjwvUD4N
-CjxQIGFsaWduPWxlZnQ+PEVNPjxGT05UIHN0eWxlPSJCQUNLR1JPVU5ELUNPTE9SOiBncmVlbiIg
-DQpjb2xvcj1yZWQ+PFU+ODcwNjEwMDgyINPQuPbE0LXEsKfH87DrzOzTssrHwqfXxcaoucnT1snk
-0ru0zrn60+88L1U+PC9GT05UPjwvRU0+PC9QPg0KPFAgYWxpZ249bGVmdD48RU0+PEZPTlQgc3R5
-bGU9IkJBQ0tHUk9VTkQtQ09MT1I6IGdyZWVuIiANCmNvbG9yPW1hZ2VudGE+PC9GT05UPjwvRU0+
-PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBzdHlsZT0iQkFDS0dST1VORC1DT0xPUjogZ3JlZW4i
-IA0KY29sb3I9bWFnZW50YT54d2Rvbmc8L0ZPTlQ+PC9QPg0KPFAgYWxpZ249bGVmdD48Rk9OVCBz
-dHlsZT0iQkFDS0dST1VORC1DT0xPUjogZGFya3JlZCIgDQpjb2xvcj1wdXJwbGU+ODc5NjM3OTg2
-OTM1PC9GT05UPjwvUD48L0JPRFk+PC9IVE1MPg0K
-
-
---===============4583031254266073718==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+Hello,
+
+Ping.
+
+Thanks,
+Hao Li
+
+
+On 2020/7/31 17:12, Li, Hao wrote:
+> On 2020/7/30 0:10, Ira Weiny wrote:
+>
+>> On Wed, Jul 29, 2020 at 11:23:21AM +0900, Yasunori Goto wrote:
+>>> Hi,
+>>>
+>>> On 2020/07/28 11:20, Dave Chinner wrote:
+>>>> On Tue, Jul 28, 2020 at 02:00:08AM +0000, Li, Hao wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I have noticed that we have to drop caches to make the changing of S_DAX
+>>>>> flag take effect after using chattr +x to turn on DAX for a existing
+>>>>> regular file. The related function is xfs_diflags_to_iflags, whose
+>>>>> second parameter determines whether we should set S_DAX immediately.
+>>>> Yup, as documented in Documentation/filesystems/dax.txt. Specifically:
+>>>>
+>>>>   6. When changing the S_DAX policy via toggling the persistent FS_XFLAG_DAX flag,
+>>>>      the change in behaviour for existing regular files may not occur
+>>>>      immediately.  If the change must take effect immediately, the administrator
+>>>>      needs to:
+>>>>
+>>>>      a) stop the application so there are no active references to the data set
+>>>>         the policy change will affect
+>>>>
+>>>>      b) evict the data set from kernel caches so it will be re-instantiated when
+>>>>         the application is restarted. This can be achieved by:
+>>>>
+>>>>         i. drop-caches
+>>>>         ii. a filesystem unmount and mount cycle
+>>>>         iii. a system reboot
+>>>>
+>>>>> I can't figure out why we do this. Is this because the page caches in
+>>>>> address_space->i_pages are hard to deal with?
+>>>> Because of unfixable races in the page fault path that prevent
+>>>> changing the caching behaviour of the inode while concurrent access
+>>>> is possible. The only way to guarantee races can't happen is to
+>>>> cycle the inode out of cache.
+>>> I understand why the drop_cache operation is necessary. Thanks.
+>>>
+>>> BTW, even normal user becomes to able to change DAX flag for an inode,
+>>> drop_cache operation still requires root permission, right?
+>>>
+>>> So, if kernel have a feature for normal user can operate drop cache for "a
+>>> inode" with
+>>> its permission, I think it improve the above limitation, and
+>>> we would like to try to implement it recently.
+>>>
+>>> Do you have any opinion making such feature?
+>>> (Agree/opposition, or any other comment?)
+>> I would not be opposed but there were many hurdles to that implementation.
+>>
+>> What is the use case you are thinking of here?
+>>
+>> The compromise of dropping caches was reached because we envisioned that many
+>> users would simply want to chose the file mode when a file was created and
+>> maintain that mode through the lifetime of the file.  To that end one can
+>> simply create directories which have the desired dax mode and any files created
+>> in that directory will inherit the dax mode immediately.  
+> Inheriting mechanism for DAX mode is reasonable but chattr&drop_caches
+> makes things complicated.
+>> So there is no need
+>> to switch the file mode directly as a normal user.
+> The question is, the normal users can indeed use chattr to change the DAX
+> mode for a regular file as long as they want. However, when they do this,
+> they have no way to make the change take effect. I think this behavior is
+> weird. We can say chattr executes successfully because XFS_DIFLAG2_DAX has
+> been set onto xfs_inode->i_d.di_flags2, but we can also say chattr doesn't
+> finish things completely because S_DAX is not set onto inode->i_flags.
+> The user may be confused about why chattr +/-x doesn't work at all. Maybe
+> we should find a way for the normal user to make chattr take effects
+> without calling the administrator, or we can make the chattr +/x command
+> request root permission now that if the user has root permission, he can
+> make DAX changing take effect through echo 2 > /proc/sys/vm/drop_caches.
+>
+>
+> Regards,
+>
+> Hao Li
+>
+>> Would that work for your use case?
+>>
+>> Ira
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============4583031254266073718==--
