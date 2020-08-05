@@ -2,54 +2,80 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BE223CAD7
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Aug 2020 15:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 620B023CB39
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  5 Aug 2020 15:44:56 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0260A12B54564;
-	Wed,  5 Aug 2020 06:05:43 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E29C3117DDD65;
+	Wed,  5 Aug 2020 06:44:54 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=mst@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6E2A512B54562
-	for <linux-nvdimm@lists.01.org>; Wed,  5 Aug 2020 06:05:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=da1gRr0zZ2t7B4lRqNuRkoPDQjMi6ltCJuE8Al1tVCE=; b=HWXVkRHwN832dRG05UXHB0oBIw
-	bVIHmST3idcP9ekdGW3zfjwF0Pw9NtKHZriMtDEWG2IfLDr6OCBzltDSMhOl6UaR4VB+MKj5TLP04
-	D+y2OfSJNRXduO2wurxCTyIhNrEbjOfxiC3fQ9kowloxLDsXYz+qNZBWskWkV4r67YJb5rni6tnxu
-	zEaPdgkZf+diFOhUAogaiUm5PlxPfMHj+JY1pUqMrnKYwv3swkoiKxzB+3OAJw82jZfkAD5C/RvSG
-	ZSbD7oGskSaQ/+z+rKi6n9bG70XhVIbZNtZ+0+ODNHwM6cKpRLNKr0S7UXSrAbxLcx/udZsOs7w26
-	cmMvbHww==;
-Received: from [2601:1c0:6280:3f0::19c2]
-	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1k3J6n-0003pL-49; Wed, 05 Aug 2020 13:05:31 +0000
-Subject: Re: [PATCH v3 3/6] mm: introduce memfd_secret system call to create
- "secret" memory areas
-To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
-References: <20200804095035.18778-1-rppt@kernel.org>
- <20200804095035.18778-4-rppt@kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <1f52d43e-29e4-b175-73d5-0aa3c3e79f23@infradead.org>
-Date: Wed, 5 Aug 2020 06:05:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+	by ml01.01.org (Postfix) with ESMTPS id 36700117DDD64
+	for <linux-nvdimm@lists.01.org>; Wed,  5 Aug 2020 06:44:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1596635090;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WBH1LHbCDthOlF25HB1GNrSGXvGdUkDAo8hvALVyXYI=;
+	b=et3kZHN5GgQWvP0XtDxVoTL2zhpFYIyZPrhSLTJ41yZKHVNsa/E1X8Dzd1StXJmuRg/nhU
+	zM9jryYHNaNV7C+ZGU8QWzmcrV25yofT+kItmV+kMh/WTolxp+5SvrDkG+fHqvjvvK9RNm
+	dqbCA9WSr8tket3ei3ugV8Vkb82ysMg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-190-p5D9afSXM-qj4DHPfU4iRw-1; Wed, 05 Aug 2020 09:44:49 -0400
+X-MC-Unique: p5D9afSXM-qj4DHPfU4iRw-1
+Received: by mail-wr1-f71.google.com with SMTP id 89so13595315wrr.15
+        for <linux-nvdimm@lists.01.org>; Wed, 05 Aug 2020 06:44:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WBH1LHbCDthOlF25HB1GNrSGXvGdUkDAo8hvALVyXYI=;
+        b=sLLsJFCtdsXQwyqs95Rq4NL7q+2xBhEqlTQgwv8IUI4OkhN1fkfdOFHVymNZksZ7I4
+         UECH9gdUn82SOoYZhh4dTLcq1/oajCmcxnrdwNLWeXNRGj26kf+HC7pnvRMXXQ0AF9hh
+         /yGuHs1V8low7JH2pYJWLKMdtz4qT+07zmXexCuRyXmxlopk8Xb/VrqocNNpvz6PvNaF
+         rNb/fiJOh7foLJMDU3XSkPPH/+zc275zTAcdhI5EY7g+QlF+tijSdHNrrzj+XoiqfErs
+         MpbXy7JLhJ45hA9KcgUPxPzlx9cx1Nt8OpiUN0OyAQBC0QKgEpmKbVTczZ8kWgRuCw+V
+         CndQ==
+X-Gm-Message-State: AOAM531gaGLIwW2DTX1inXOzZ1BOTP0xhCAEp3EWr2Z29H6Zdh6Az8l+
+	tXM7q3GzlFJLTt6tm5U+XogwUhhDVVr/tTFPcok1JVQdg0R8mA0RM0Ir5TeFwjF8bG5kFIxxn6C
+	VWB+p0ZcJp3PffCvZMF+J
+X-Received: by 2002:adf:ab0d:: with SMTP id q13mr2728302wrc.134.1596635087916;
+        Wed, 05 Aug 2020 06:44:47 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxc8ukE7mtzF0Xw22J8QjnJI7RUP7Alfizi2qIlpwN9G61AnzGldaFn2ZneBCQ7Es9dgmyqZg==
+X-Received: by 2002:adf:ab0d:: with SMTP id q13mr2728292wrc.134.1596635087769;
+        Wed, 05 Aug 2020 06:44:47 -0700 (PDT)
+Received: from redhat.com (bzq-79-178-123-8.red.bezeqint.net. [79.178.123.8])
+        by smtp.gmail.com with ESMTPSA id n24sm2989133wmi.36.2020.08.05.06.44.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Aug 2020 06:44:47 -0700 (PDT)
+Date: Wed, 5 Aug 2020 09:44:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH v3 33/38] virtio_pmem: convert to LE accessors
+Message-ID: <20200805134226.1106164-34-mst@redhat.com>
+References: <20200805134226.1106164-1-mst@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200804095035.18778-4-rppt@kernel.org>
-Content-Language: en-US
-Message-ID-Hash: RJFFGBVTXV22UWILBTMUCX4LOPJKWTL2
-X-Message-ID-Hash: RJFFGBVTXV22UWILBTMUCX4LOPJKWTL2
-X-MailFrom: rdunlap@infradead.org
+In-Reply-To: <20200805134226.1106164-1-mst@redhat.com>
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=mst@redhat.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Disposition: inline
+Message-ID-Hash: HXCS5G7GYUUNQVWOYZR3STJUOV2X6NIB
+X-Message-ID-Hash: HXCS5G7GYUUNQVWOYZR3STJUOV2X6NIB
+X-MailFrom: mst@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
- rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+CC: linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RJFFGBVTXV22UWILBTMUCX4LOPJKWTL2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HXCS5G7GYUUNQVWOYZR3STJUOV2X6NIB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,27 +84,31 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 8/4/20 2:50 AM, Mike Rapoport wrote:
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index f2104cc0d35c..8378175e72a4 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -872,4 +872,8 @@ config ARCH_HAS_HUGEPD
->  config MAPPING_DIRTY_HELPERS
->          bool
->  
-> +config SECRETMEM
-> +        def_bool ARCH_HAS_SET_DIRECT_MAP && !EMBEDDED
+Virtio pmem is modern-only. Use LE accessors for config space.
 
-use tab above, not spaces.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+---
+ drivers/nvdimm/virtio_pmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> +	select GENERIC_ALLOCATOR
-> +
->  endmenu
-
-
+diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
+index 5e3d07b47e0c..726c7354d465 100644
+--- a/drivers/nvdimm/virtio_pmem.c
++++ b/drivers/nvdimm/virtio_pmem.c
+@@ -58,9 +58,9 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
+ 		goto out_err;
+ 	}
+ 
+-	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
++	virtio_cread_le(vpmem->vdev, struct virtio_pmem_config,
+ 			start, &vpmem->start);
+-	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
++	virtio_cread_le(vpmem->vdev, struct virtio_pmem_config,
+ 			size, &vpmem->size);
+ 
+ 	res.start = vpmem->start;
 -- 
-~Randy
+MST
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
