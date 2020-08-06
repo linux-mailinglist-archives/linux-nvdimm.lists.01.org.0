@@ -2,66 +2,57 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8092623D6B7
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 08:14:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2841923D725
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 09:06:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4C59512967E60;
-	Wed,  5 Aug 2020 23:14:51 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=162.241.204.248; helo=162-241-204-248.unifiedlayer.com; envelope-from=server@hinet.net; receiver=<UNKNOWN> 
-Received: from 162-241-204-248.unifiedlayer.com (unknown [162.241.204.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9303F12967E5F
-	for <linux-nvdimm@lists.01.org>; Wed,  5 Aug 2020 23:14:48 -0700 (PDT)
-Received: from [45.137.22.67] (port=56764 helo=hinet.net)
-	by server.radhashyampaints.partners with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <server@hinet.net>)
-	id 1k3ZAh-0009x2-Te
-	for linux-nvdimm@lists.01.org; Thu, 06 Aug 2020 06:14:37 +0000
-From: Daniel Chen < server@hinet.net>
-To: linux-nvdimm@lists.01.org
-Subject: Immediate quote required
-Date: 5 Aug 2020 23:14:35 -0700
-Message-ID: <20200805231435.D7EF90CD4EB699EE@hinet.net>
+	by ml01.01.org (Postfix) with ESMTP id 9FA0F12B509AE;
+	Thu,  6 Aug 2020 00:06:13 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.229.105.61; helo=jzow.com; envelope-from=orycq@fbgi.com; receiver=<UNKNOWN> 
+Received: from jzow.com (unknown [120.229.105.61])
+	by ml01.01.org (Postfix) with ESMTP id 3085B12866BCB
+	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 00:05:47 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Thu, 06 Aug 2020 13:28:27 +0800
+Message-ID: 603efc9e-a0c8-4dec-87bb-07960e21fd77
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
-	boundary="----=_NextPart_000_0012_625146C4.6C9811DA"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.radhashyampaints.partners
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - hinet.net
-X-Get-Message-Sender-Via: server.radhashyampaints.partners: authenticated_id: server@hinet.net
-X-Authenticated-Sender: server.radhashyampaints.partners: server@hinet.net
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Message-ID-Hash: 3DBHMFYJP4Y7SIUU6WDSU3NF33XOINWW
-X-Message-ID-Hash: 3DBHMFYJP4Y7SIUU6WDSU3NF33XOINWW
-X-MailFrom: server@hinet.net
+Sender: =?utf-8?Q?=E9=82=AE=E4=BB=B6=E7=BE=A4=E5=8F=91=E8=BD?=
+ =?utf-8?Q?=AF=E4=BB=B6---=E4=B8=8D=E9=99=90=E5=88=B6=E7=BE=A4=E5=8F=91?=
+ =?utf-8?Q?=E9=A2=9D=E5=BA=A6=EF=BC=8C=E5=8A=A0Q=E5=85=8D=E8=B4=B9=E7?=
+ =?utf-8?Q?=BE=A4=E5=8F=9130=E4=B8=87=E9=82=AE=E7=AE=B1=E9=A2=9D=E5=BA?=
+ =?utf-8?Q?=A6?=
+ <orycq@fbgi.com>
+From: =?utf-8?Q?=E9=82=AE=E4=BB=B6=E7=BE=A4=E5=8F=91=E8=BD=AF?=
+ =?utf-8?Q?=E4=BB=B6---=E4=B8=8D=E9=99=90=E5=88=B6=E7=BE=A4=E5=8F=91=E9?=
+ =?utf-8?Q?=A2=9D=E5=BA=A6=EF=BC=8C=E5=8A=A0Q=E5=85=8D=E8=B4=B9=E7=BE?=
+ =?utf-8?Q?=A4=E5=8F=9130=E4=B8=87=E9=82=AE=E7=AE=B1=E9=A2=9D=E5=BA=A6?=
+ <btocf@fbgi.com>
+To: linux-nvdimm@lists.01.org
+Date: 6 Aug 2020 13:28:27 +0800
+Subject: =?utf-8?B?6YKu5Lu2576k5Y+R6L2v5Lu2LS0t5LiN6ZmQ5Yi2576k5Y+R?=
+ =?utf-8?B?6aKd5bqm77yM5YqgUeWFjei0uee+pOWPkTMw5LiH6YKu566x6aKd5bqm?=
+ =?utf-8?B??=
+Message-ID-Hash: QIMOA55GODTLAHUEZUKJMVSFLN7DTJA6
+X-Message-ID-Hash: QIMOA55GODTLAHUEZUKJMVSFLN7DTJA6
+X-MailFrom: orycq@fbgi.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3DBHMFYJP4Y7SIUU6WDSU3NF33XOINWW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QIMOA55GODTLAHUEZUKJMVSFLN7DTJA6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-This is a multi-part message in MIME format.
-
-------=_NextPart_000_0012_625146C4.6C9811DA
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
-------=_NextPart_000_0012_625146C4.6C9811DA--
+Jm5ic3A7DQrml6Dku7vkvZXpmZDliLbvvIzmgKXpgJ/mj5DljYfnvqTlj5HmlYjnjofvvIzorqnm
+gqjlj5HliLDniL3vvIzlrqLmiLfnlLXor53ku47mraTlk43kuI3lgZzvvIHova/ku7boh6rliqjk
+uIDnp5Lpkp/lj5HpgIHkuIDlsIHvvIzlj6/ku6XmjIflrprlj5Hku7bnrrHvvIzlrqLmiLfnnIvk
+uI3liLDnvqTlj5ENCuWFjei0uea1i+ivleivt+iBlOezu++8miBRJm5ic3A7ICZuYnNwOyBRIO+8
+mjMzNTE2NjU2MjUgRS1tYWls77yaYmVuZ3BhbzY2NjZAaG90bWFpbC5jb20KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcg
+bGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4g
+ZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
