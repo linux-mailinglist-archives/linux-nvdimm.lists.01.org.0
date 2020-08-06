@@ -2,64 +2,65 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F8E23D921
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 12:11:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C9123D93F
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 12:27:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5342D12BD9DB0;
-	Thu,  6 Aug 2020 03:11:10 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::143; helo=mail-lf1-x143.google.com; envelope-from=kirill@shutemov.name; receiver=<UNKNOWN> 
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+	by ml01.01.org (Postfix) with ESMTP id DD19212BCD29D;
+	Thu,  6 Aug 2020 03:27:53 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::243; helo=mail-lj1-x243.google.com; envelope-from=kirill@shutemov.name; receiver=<UNKNOWN> 
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EECF912BD9DAB
-	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 03:11:08 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id j22so19932112lfm.2
-        for <linux-nvdimm@lists.01.org>; Thu, 06 Aug 2020 03:11:08 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id D6DCD12BCD29C
+	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 03:27:51 -0700 (PDT)
+Received: by mail-lj1-x243.google.com with SMTP id i10so16394645ljn.2
+        for <linux-nvdimm@lists.01.org>; Thu, 06 Aug 2020 03:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=shutemov-name.20150623.gappssmtp.com; s=20150623;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=FmHNrmiGc1oEc9Yta/aBuQn+1EulEN2xZuLGLoeLXHQ=;
-        b=vdAe04pQJi4piGZ5+mZ0j2zhjTn6XVtWXoKVvfYvjkZt497I/uZbgq0bCXUw9yqxv1
-         aDwbG4fQLRxllT940g4JJIoLaihdHAzLTznrUByrMW1Sxn0NV4LG6ITrocLkxfQ/UbR8
-         /22r5p3LxUUJDP/bT5Lo9OvmnoXmRxUSyOPo0gH4uKUH+elU8Mn1VlYg4xH7/Swt6AEz
-         woNXvCrI7kpsrhxnMJDhchfVxMGgUKsXYC/i/xUa92sA04Rdaab+RLuwLDiP7hERRYMU
-         MGSXXRnFS4yE+plzwECIlQPOIq5Q9sL11BNdJXjz4h7FpV4jOJJQ0vybui6R3DGZ4y4F
-         e/Cw==
+        bh=kMBgMZhsaHkiYpNXe6mnulxBmErGl6mZVT718X/hP1s=;
+        b=q44JM/MhPtGS1X8CEtdPT8jY1IsznRmL/EUJCRVKZ0SQjpJuKmiF3MRSg0V201k6/0
+         7wdleRwGXgcpS6GBcJQn3aN4+K1pHDGZuvFRDvTF9APAIhXb+a2xl9Jp+eur4UHwQKOG
+         a+RLO7aCLHiHjNUkqDHv3KHpAByqNpYKygFYVYfjG2rDRNZ1boVJjHid9G6QxHXMRDHj
+         lxu6G5SWy3EMKBtlkZJxRZeLycn9DXYVVNUnw64xSNl8FhKmMBKmB/5GaDUrg6bknGVy
+         69EcKcUZE3qqrUPWzoTffaHacemMJWCOZb/G6QEBjYa8rAKMuVSkNGFwC876gdtvvS/j
+         Xp6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=FmHNrmiGc1oEc9Yta/aBuQn+1EulEN2xZuLGLoeLXHQ=;
-        b=YwA8aSWlZ6hO7mYgcM01tP3IORuh+vPyiJoOgjKtR86QGAxpweo3PQSDbQWYLcoLG1
-         2FoYRz51nVx9CpjxKIJapwZ9UrXRP9FH7lhgs85fL563FXyABMXpmWcBfUbjVnfEgobi
-         Hg/ry/3P3OPopqhrJfeq5QnB5Lt5KYgYeZ+IThcb3qTyN6MnMvIMO2SchRLUOQJQsl1e
-         6/DEAz0TFcslzPV78LIgQx53jx7slopal6asnS7d7mTTlsE1uDxZsXf9qRkOIEhQzfnT
-         D7ku8Ply7idkLSSmwTlT+B0ZvwJNCJzD7K+MEHH/4+8t4wYqhyQeWjL6e+z2ia1mZ0on
-         6gwQ==
-X-Gm-Message-State: AOAM53228u7mJzv0rVoJLx0iLa6d44foj6WXQenU0bGVMiHAPzWn+UC+
-	2TASjGivYYFnoVXfdDzTBsnXLg==
-X-Google-Smtp-Source: ABdhPJztxQdmUqdlmLCUV07uqArQbN1pckvCcR5Q9hxz1Dr0Q7jnsmbBT95GM1N8CkcdipmeoNGGIA==
-X-Received: by 2002:a19:70c:: with SMTP id 12mr3611270lfh.207.1596708665300;
-        Thu, 06 Aug 2020 03:11:05 -0700 (PDT)
+        bh=kMBgMZhsaHkiYpNXe6mnulxBmErGl6mZVT718X/hP1s=;
+        b=Jduh8YvGE1HI0+G2Va7m9qh11cG71lmL6SxsOgtDQBh9IuorYd9NjgCpnFjktA558D
+         +ooJNr7DmLbe6rKPxsnZ/Ynp+6XT2Ql7jaocvlkOwCSHc74ln1emnb1c9qo8KBvLk0Bx
+         EmYx+jVL+7lFBwtdj4lHXUZbNM8+sUQSMhOISqpL5h0xe7lj+xOPtRcqsc3lgVA4AUWR
+         jSvQ/X+brBXivgqtje+Y9M0s/Li43FRKZOq24XukPRNwBlyHgqprMx4fEtmok/qyyCwo
+         Uf7YtOKRgK8kw5Y5N48AR31e2vDEjRdIc3c8l5qMe1Fc+Z4MBMYPLYRHFqT4cIqIG6d1
+         zo0A==
+X-Gm-Message-State: AOAM531uqX20YA8Il2htRVdKT+2Y9ukQ6qO4qur09bPXZkWzJW3NAqB1
+	O8LqmNN51aT6DsG9rvV5Lmi/Jw==
+X-Google-Smtp-Source: ABdhPJwKs0kOBphzk4nhXY72GuBZVVKvwfIRMs8kMWmC7io4Zo82tk1RHZ72Ob2Qcz50sTYcK1DvmA==
+X-Received: by 2002:a05:651c:201b:: with SMTP id s27mr3653296ljo.468.1596709669841;
+        Thu, 06 Aug 2020 03:27:49 -0700 (PDT)
 Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id v9sm2356183lja.81.2020.08.06.03.11.04
+        by smtp.gmail.com with ESMTPSA id h18sm2208204ljk.7.2020.08.06.03.27.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2020 03:11:04 -0700 (PDT)
+        Thu, 06 Aug 2020 03:27:49 -0700 (PDT)
 Received: by box.localdomain (Postfix, from userid 1000)
-	id 92823102E1B; Thu,  6 Aug 2020 13:11:12 +0300 (+03)
-Date: Thu, 6 Aug 2020 13:11:12 +0300
+	id 80A47102E1B; Thu,  6 Aug 2020 13:27:57 +0300 (+03)
+Date: Thu, 6 Aug 2020 13:27:57 +0300
 From: "Kirill A. Shutemov" <kirill@shutemov.name>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v3 1/6] mm: add definition of PMD_PAGE_ORDER
-Message-ID: <20200806101112.bjw4mxu2odpsg2hh@box>
+Subject: Re: [PATCH v3 3/6] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-ID: <20200806102757.7vobcaewdukr2xdl@box>
 References: <20200804095035.18778-1-rppt@kernel.org>
- <20200804095035.18778-2-rppt@kernel.org>
+ <20200804095035.18778-4-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200804095035.18778-2-rppt@kernel.org>
-Message-ID-Hash: 6NNGPXTWV3ECN4BIKEW4RNQHESNWDOJT
-X-Message-ID-Hash: 6NNGPXTWV3ECN4BIKEW4RNQHESNWDOJT
+In-Reply-To: <20200804095035.18778-4-rppt@kernel.org>
+Message-ID-Hash: QMCAYPGG4X6T64OTIBEKNYRT2I2TGJGA
+X-Message-ID-Hash: QMCAYPGG4X6T64OTIBEKNYRT2I2TGJGA
 X-MailFrom: kirill@shutemov.name
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -68,7 +69,7 @@ CC: linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, Andr
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6NNGPXTWV3ECN4BIKEW4RNQHESNWDOJT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QMCAYPGG4X6T64OTIBEKNYRT2I2TGJGA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -77,51 +78,26 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 04, 2020 at 12:50:30PM +0300, Mike Rapoport wrote:
+On Tue, Aug 04, 2020 at 12:50:32PM +0300, Mike Rapoport wrote:
 > From: Mike Rapoport <rppt@linux.ibm.com>
 > 
-> The definition of PMD_PAGE_ORDER denoting the number of base pages in the
-> second-level leaf page is already used by DAX and maybe handy in other
-> cases as well.
+> Introduce "memfd_secret" system call with the ability to create memory
+> areas visible only in the context of the owning process and not mapped not
+> only to other processes but in the kernel page tables as well.
 > 
-> Several architectures already have definition of PMD_ORDER as the size of
-> second level page table, so to avoid conflict with these definitions use
-> PMD_PAGE_ORDER name and update DAX respectively.
+> The user will create a file descriptor using the memfd_secret() system call
+> where flags supplied as a parameter to this system call will define the
+> desired protection mode for the memory associated with that file
+> descriptor. Currently there are two protection modes:
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  fs/dax.c                | 10 +++++-----
->  include/linux/pgtable.h |  3 +++
->  2 files changed, 8 insertions(+), 5 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 11b16729b86f..b91d8c8dda45 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -50,7 +50,7 @@ static inline unsigned int pe_order(enum page_entry_size pe_size)
->  #define PG_PMD_NR	(PMD_SIZE >> PAGE_SHIFT)
->  
->  /* The order of a PMD entry */
-> -#define PMD_ORDER	(PMD_SHIFT - PAGE_SHIFT)
-> +#define PMD_PAGE_ORDER	(PMD_SHIFT - PAGE_SHIFT)
+> * exclusive - the memory area is unmapped from the kernel direct map and it
+>               is present only in the page tables of the owning mm.
+> * uncached  - the memory area is present only in the page tables of the
+>               owning mm and it is mapped there as uncached.
 
-Hm. Wouldn't it conflict with definition in pgtable.h? Or should we
-include it instead?
-
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 56c1e8eb7bb0..79f8443609e7 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -28,6 +28,9 @@
->  #define USER_PGTABLES_CEILING	0UL
->  #endif
->  
-> +/* Number of base pages in a second level leaf page */
-> +#define PMD_PAGE_ORDER	(PMD_SHIFT - PAGE_SHIFT)
-> +
->  /*
->   * A page table page can be thought of an array like this: pXd_t[PTRS_PER_PxD]
->   *
+I'm not sure why flag for exclusive mode is needed. It has to be default.
+And if you want uncached on top of that set the flag.
+What am I missing?
 
 -- 
  Kirill A. Shutemov
