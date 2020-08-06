@@ -2,54 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E1823E223
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 21:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E0923E278
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  6 Aug 2020 21:45:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12BAA12BB676F;
-	Thu,  6 Aug 2020 12:26:41 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	by ml01.01.org (Postfix) with ESMTP id C6E8412BD2D02;
+	Thu,  6 Aug 2020 12:45:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BDAF41293B91B
-	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 12:26:38 -0700 (PDT)
-IronPort-SDR: qygweJjSKrx9gk14oBe/EhKBqnNguHcVdfbxPwJCVOYIKU1ysHcdBx4fFfPlzD6U24+6+z0wZM
- MLH+yUn1562g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9705"; a="132990436"
-X-IronPort-AV: E=Sophos;i="5.75,441,1589266800";
-   d="scan'208";a="132990436"
+	by ml01.01.org (Postfix) with ESMTPS id B01CA12ADC877
+	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 12:44:55 -0700 (PDT)
+IronPort-SDR: UtzYtgsATkVXa7RQ/urbDTnBS+LGH3KkPwywqNwe7mHEhO1A8h0nUG/ymPwQjagAyn+reCnBWa
+ wR2jCWy2iNmg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9705"; a="150365735"
+X-IronPort-AV: E=Sophos;i="5.75,443,1589266800";
+   d="scan'208";a="150365735"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2020 12:26:38 -0700
-IronPort-SDR: dBZabNtMYg4WmnmsghcQq2ljNwJqcGP6+gd4BZC1t7IEktnfXuBISk9F9V3Q8B9djC+MIDE0UN
- 7J9b8wRmI2aA==
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2020 12:44:55 -0700
+IronPort-SDR: nycQsiqLFmbGL0LtGtGFYgb+gTscrpr/0xgzIYgwxbr49DUCUbwZL9hBeN1k9fG89L9bEYw1DC
+ JtW7ybZiE1XA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.75,443,1589266800";
-   d="scan'208";a="289379037"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by orsmga003.jf.intel.com with ESMTP; 06 Aug 2020 12:26:37 -0700
-Date: Thu, 6 Aug 2020 12:26:37 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Jane Chu <jane.chu@oracle.com>
-Subject: Re: [PATCH v2 3/3] libnvdimm/security: ensure sysfs poll thread woke
- up and fetch updated attr
-Message-ID: <20200806192637.GM1573827@iweiny-DESK2.sc.intel.com>
-References: <1596494499-9852-1-git-send-email-jane.chu@oracle.com>
- <1596494499-9852-3-git-send-email-jane.chu@oracle.com>
+   d="scan'208";a="323540390"
+Received: from orsmsx604.amr.corp.intel.com ([10.22.229.17])
+  by orsmga008.jf.intel.com with ESMTP; 06 Aug 2020 12:44:54 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX604.amr.corp.intel.com (10.22.229.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 6 Aug 2020 12:44:54 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Thu, 6 Aug 2020 12:44:54 -0700
+Received: from orsmsx612.amr.corp.intel.com ([10.22.229.25]) by
+ ORSMSX612.amr.corp.intel.com ([10.22.229.25]) with mapi id 15.01.1713.004;
+ Thu, 6 Aug 2020 12:44:54 -0700
+From: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: "linux-mm@kvack.org" <linux-mm@kvack.org>, "willy@infradead.org"
+	<willy@infradead.org>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH 0/4] Remove nrexceptional tracking
+Thread-Topic: [PATCH 0/4] Remove nrexceptional tracking
+Thread-Index: AQHWanrcgiyE+gZ1T06GDixOiuOZv6kr8b+A
+Date: Thu, 6 Aug 2020 19:44:54 +0000
+Message-ID: <898e058f12c7340703804ed9d05df5ead9ecb50d.camel@intel.com>
+References: <20200804161755.10100-1-willy@infradead.org>
+In-Reply-To: <20200804161755.10100-1-willy@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+x-originating-ip: [10.254.22.71]
+Content-ID: <6DAC71C4E387FB48878F27E18F96C0B8@intel.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1596494499-9852-3-git-send-email-jane.chu@oracle.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: AHRKGREQ3BRG26TIQ6FXXZHQ2QO3V3X7
-X-Message-ID-Hash: AHRKGREQ3BRG26TIQ6FXXZHQ2QO3V3X7
-X-MailFrom: ira.weiny@intel.com
+Message-ID-Hash: ESP5GAL36JLFVY4MTOXNZ4LAG32AGU54
+X-Message-ID-Hash: ESP5GAL36JLFVY4MTOXNZ4LAG32AGU54
+X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AHRKGREQ3BRG26TIQ6FXXZHQ2QO3V3X7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESP5GAL36JLFVY4MTOXNZ4LAG32AGU54/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,56 +76,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 03, 2020 at 04:41:39PM -0600, Jane Chu wrote:
-> commit 7d988097c546 ("acpi/nfit, libnvdimm/security: Add security DSM overwrite support")
-> adds a sysfs_notify_dirent() to wake up userspace poll thread when the "overwrite"
-> operation has completed. But the notification is issued before the internal
-> dimm security state and flags have been updated, so the userspace poll thread
-> wakes up and fetches the not-yet-updated attr and falls back to sleep, forever.
-> But if user from another terminal issue "ndctl wait-overwrite nmemX" again,
-> the command returns instantly.
+On Tue, 2020-08-04 at 17:17 +0100, Matthew Wilcox (Oracle) wrote:
+> We actually use nrexceptional for very little these days.  It's a
+> constant
+> source of pain with the THP patches because we don't know how large a
+> shadow entry is, so either we have to ask the xarray how many indices
+> it covers, or store that information in the shadow entry (and reduce
+> the amount of other information in the shadow entry proportionally).
+> While tracking down the most recent case of "evict tells me I've got
+> the accounting wrong again", I wondered if it might not be simpler to
+> just remove it.  So here's a patch set to do just that.  I think each
+> of these patches is an improvement in isolation, but the combination
+> of
+> all four is larger than the sum of its parts.
 > 
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Fixes: 7d988097c546 ("acpi/nfit, libnvdimm/security: Add security DSM overwrite support")
-> Signed-off-by: Jane Chu <jane.chu@oracle.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-
-> ---
->  drivers/nvdimm/security.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+> I'm running xfstests on this patchset right now.  If one of the DAX
+> people could try it out, that'd be fantastic.
 > 
-> diff --git a/drivers/nvdimm/security.c b/drivers/nvdimm/security.c
-> index 8f3971c..4b80150 100644
-> --- a/drivers/nvdimm/security.c
-> +++ b/drivers/nvdimm/security.c
-> @@ -450,14 +450,19 @@ void __nvdimm_security_overwrite_query(struct nvdimm *nvdimm)
->  	else
->  		dev_dbg(&nvdimm->dev, "overwrite completed\n");
->  
-> -	if (nvdimm->sec.overwrite_state)
-> -		sysfs_notify_dirent(nvdimm->sec.overwrite_state);
-> +	/*
-> +	 * Mark the overwrite work done and update dimm security flags,
-> +	 * then send a sysfs event notification to wake up userspace
-> +	 * poll threads to picked up the changed state.
-> +	 */
->  	nvdimm->sec.overwrite_tmo = 0;
->  	clear_bit(NDD_SECURITY_OVERWRITE, &nvdimm->flags);
->  	clear_bit(NDD_WORK_PENDING, &nvdimm->flags);
-> -	put_device(&nvdimm->dev);
->  	nvdimm->sec.flags = nvdimm_security_flags(nvdimm, NVDIMM_USER);
->  	nvdimm->sec.ext_flags = nvdimm_security_flags(nvdimm, NVDIMM_MASTER);
-> +	if (nvdimm->sec.overwrite_state)
-> +		sysfs_notify_dirent(nvdimm->sec.overwrite_state);
-> +	put_device(&nvdimm->dev);
->  }
->  
->  void nvdimm_security_overwrite_query(struct work_struct *work)
-> -- 
-> 1.8.3.1
+> Matthew Wilcox (Oracle) (4):
+>   mm: Introduce and use page_cache_empty
+>   mm: Stop accounting shadow entries
+>   dax: Account DAX entries as nrpages
+>   mm: Remove nrexceptional from inode
+
+Hi Matthew,
+
+I applied these on top of 5.8 and ran them through the nvdimm unit test
+suite, and saw some test failures. The first failing test signature is:
+
+  + umount test_dax_mnt
+  ./dax-ext4.sh: line 62: 15749 Segmentation fault      umount $MNT
+  FAIL dax-ext4.sh (exit status: 139)
+
+The line is: https://github.com/pmem/ndctl/blob/master/test/dax.sh#L79
+And the failing umount happens right after 'run_test', which calls this:
+https://github.com/pmem/ndctl/blob/master/test/dax-pmd.c
+
+
+> 
+>  fs/block_dev.c          |  2 +-
+>  fs/dax.c                |  8 ++++----
+>  fs/inode.c              |  2 +-
+>  include/linux/fs.h      |  2 --
+>  include/linux/pagemap.h |  5 +++++
+>  mm/filemap.c            | 15 ---------------
+>  mm/truncate.c           | 19 +++----------------
+>  mm/workingset.c         |  1 -
+>  8 files changed, 14 insertions(+), 40 deletions(-)
 > 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
