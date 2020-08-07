@@ -2,53 +2,61 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303B123F2CB
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 20:33:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C74023F33E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 21:55:55 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4170412B8B9ED;
-	Fri,  7 Aug 2020 11:33:33 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 30A6B12BC1AE4;
+	Fri,  7 Aug 2020 12:55:54 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 154A4119A18DC
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 11:33:30 -0700 (PDT)
-IronPort-SDR: XrrVtd2yo4TmASqZ29YHZCl+5BTX8W+cw9mjj9A1wufrXA771ZMwqSefskXwo6pF/8zrJOVck7
- cf6n4JsaD74Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9706"; a="150878524"
-X-IronPort-AV: E=Sophos;i="5.75,446,1589266800";
-   d="scan'208";a="150878524"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2020 11:33:30 -0700
-IronPort-SDR: pkIsI4Zv9vbuywWRtP2kf1b48AP7lVZrxMdJbV1zsOl0Rmkxhz0SFMCvgwRj9SM0hxfbVAZBKR
- 9MQ3pqnUfZGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,446,1589266800";
-   d="scan'208";a="397667364"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Aug 2020 11:33:30 -0700
-Date: Fri, 7 Aug 2020 11:33:30 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Santosh Sivaraj <santosh@fossix.org>
-Subject: Re: [ndctl PATCH trivial] test: Remove a redundant
- ndctl_namespace_foreach
-Message-ID: <20200807183329.GC2467625@iweiny-DESK2.sc.intel.com>
-References: <20200806124702.305084-1-santosh@fossix.org>
+	by ml01.01.org (Postfix) with ESMTPS id CDD9612BC1AE0
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 12:55:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1596830150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L9RWbojIVQ2p7jm03k2G6KoVG69ya+D8xde31L+iPHE=;
+	b=KSVpAUoNmCDBdagy6HTVFcnIls55O1Rkinto4EuSOZQMJTS/zYXOABuQKqlkLyBd3nemKo
+	X2sptbY0sVPWr5XAIWpGVbYWEc3VELsj05zQh+aTwG8f+VEiOZdfXHia7rbGH8pxCh8ovd
+	PLrtLZOoJ8AMg92jcWlQ3KcsRtlsArw=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-78-gIhu-hKBPyyoar0_g8woZw-1; Fri, 07 Aug 2020 15:55:46 -0400
+X-MC-Unique: gIhu-hKBPyyoar0_g8woZw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F333E57;
+	Fri,  7 Aug 2020 19:55:44 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-113-142.rdu2.redhat.com [10.10.113.142])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 2625710027AB;
+	Fri,  7 Aug 2020 19:55:39 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+	id A6969222E40; Fri,  7 Aug 2020 15:55:38 -0400 (EDT)
+From: Vivek Goyal <vgoyal@redhat.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	virtio-fs@redhat.com
+Subject: [PATCH v2 01/20] dax: Modify bdev_dax_pgoff() to handle NULL bdev
+Date: Fri,  7 Aug 2020 15:55:07 -0400
+Message-Id: <20200807195526.426056-2-vgoyal@redhat.com>
+In-Reply-To: <20200807195526.426056-1-vgoyal@redhat.com>
+References: <20200807195526.426056-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200806124702.305084-1-santosh@fossix.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: C3SLZ363DGO2ROWXQTNXOPXM3YHQ7EOK
-X-Message-ID-Hash: C3SLZ363DGO2ROWXQTNXOPXM3YHQ7EOK
-X-MailFrom: ira.weiny@intel.com
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: 2M7FHZT7TT2WRO33W3LOSD6N7GNCI2YA
+X-Message-ID-Hash: 2M7FHZT7TT2WRO33W3LOSD6N7GNCI2YA
+X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux NVDIMM <linux-nvdimm@lists.01.org>
+CC: miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com, Christoph Hellwig <hch@infradead.org>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C3SLZ363DGO2ROWXQTNXOPXM3YHQ7EOK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2M7FHZT7TT2WRO33W3LOSD6N7GNCI2YA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,34 +65,56 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 06, 2020 at 06:17:02PM +0530, Santosh Sivaraj wrote:
-> I don't think this was intended to be in the code.
-> 
-> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+virtiofs does not have a block device but it has dax device.
+Modify bdev_dax_pgoff() to be able to handle that.
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+If there is no bdev, that means dax offset is 0. (It can't be a partition
+block device starting at an offset in dax device).
 
-> ---
->  test/multi-pmem.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/test/multi-pmem.c b/test/multi-pmem.c
-> index 668662c..cb7cd40 100644
-> --- a/test/multi-pmem.c
-> +++ b/test/multi-pmem.c
-> @@ -162,7 +162,6 @@ static int do_multi_pmem(struct ndctl_ctx *ctx, struct ndctl_test *test)
->  		char uuid_str1[40], uuid_str2[40];
->  		uuid_t uuid_check;
->  
-> -		ndctl_namespace_foreach(region, ndns)
->  		sprintf(devname, "namespace%d.%d",
->  				ndctl_region_get_id(region), i);
->  		ndctl_namespace_foreach(region, ndns)
-> -- 
-> 2.26.2
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+This is little hackish. There have been discussions about getting rid
+of dax not supporting partitions.
+
+https://lore.kernel.org/linux-fsdevel/20200107125159.GA15745@infradead.org/
+
+IMHO, this path can easily break exisitng users. For example
+ioctl(BLKPG_ADD_PARTITION) will start breaking on block devices
+supporting DAX. Also, I personally find it very useful to be able to
+partition dax devices and still be able to use DAX.
+
+Alternatively, I tried to store offset into dax device information in iomap
+interface, but that got NACKed.
+
+https://lore.kernel.org/linux-fsdevel/20200217133117.GB20444@infradead.org/
+
+I can't think of a good path to solve this issue properly. So to make
+progress, it seems this patch is least bad option for now and I hope
+we can take it.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: linux-nvdimm@lists.01.org
+---
+ drivers/dax/super.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 8e32345be0f7..c4bec437e88b 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -46,7 +46,8 @@ EXPORT_SYMBOL_GPL(dax_read_unlock);
+ int bdev_dax_pgoff(struct block_device *bdev, sector_t sector, size_t size,
+ 		pgoff_t *pgoff)
+ {
+-	phys_addr_t phys_off = (get_start_sect(bdev) + sector) * 512;
++	sector_t start_sect = bdev ? get_start_sect(bdev) : 0;
++	phys_addr_t phys_off = (start_sect + sector) * 512;
+ 
+ 	if (pgoff)
+ 		*pgoff = PHYS_PFN(phys_off);
+-- 
+2.25.4
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
