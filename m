@@ -1,73 +1,58 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3785F23E457
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 01:24:10 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468BB23E7A6
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 09:17:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 70A9E12BEE455;
-	Thu,  6 Aug 2020 16:24:08 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::241; helo=mail-lj1-x241.google.com; envelope-from=kirill@shutemov.name; receiver=<UNKNOWN> 
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5CDEE12C2F65A;
+	Fri,  7 Aug 2020 00:17:27 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=rong.a.chen@intel.com; receiver=<UNKNOWN> 
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BAEE412BEE455
-	for <linux-nvdimm@lists.01.org>; Thu,  6 Aug 2020 16:24:04 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id v12so170684ljc.10
-        for <linux-nvdimm@lists.01.org>; Thu, 06 Aug 2020 16:24:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=VgoGp2DsY5zPhxqgq4Oy4vGUjLnQwWQ4gdyr/irKbY4=;
-        b=KKjv6IjJr551lE/pPran8bv8Ogy5tkDSNLx76eFZojKkUnVAn2sW5C+XQ3q8V2XFLA
-         V7+Wn1pUyanc8nJFL9bTVroQYKH3the5ZGn3R83H4HGh9TIOvNCDCdkPUFk9G7PJ8trd
-         jinz+MsfUDev7qSSJMzyxMJeIgW672xXAPhb1ZsqAhs0x+WalXFxXX1BBlL7yuzxyfft
-         282qE4rzfyui+Gpk/nneyyJGnOKcnJorIshj0AKBI9lfPlGQfORQ/FpXU8HFt6ymBdYG
-         65XEiehWmKpvlMEBxKO6PUpzrSFuXtbh07scxPiU/bbYUUq7xzkGS894iUxwKD8+PzyN
-         h2jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=VgoGp2DsY5zPhxqgq4Oy4vGUjLnQwWQ4gdyr/irKbY4=;
-        b=l/060oDBDj7lgxKKUZY8sy4UEDcBMbZNac+1jhELIk6aBe5wT8Uj5lzj9lI9S4YMve
-         lwHpxTz68uu1JIyITXsI8DsnBTYwAAXu6jWuyUIHXCeOet+QULTolLGR2LutTpdw9be8
-         5TMBa8pD7zVZlUFXMO6FjxGFhH+X20MvTJkS++js+Ri7nBeAEBhGRZsljUzV0MDfrarA
-         qT2EmCKsKsJ9ZC0DI9IIeIrQ3hn2sh/qOl3CPu2Cakf6hXXssQITbpxmHlnrhsrXec/0
-         HiYjU3dqcsIutFlgug1humwH+5zpNP9l/9g9ALUm+ATJKl57f15t4gAN4hjnjjYyxqQ/
-         oClA==
-X-Gm-Message-State: AOAM530MHVc1G/qQJHrL9zMcMybpJOF7T2ifkFJ1Nd2lrTTt8yatsXLz
-	esKoxALP2OVp4kj/DtcDJ7coKw==
-X-Google-Smtp-Source: ABdhPJyBZ5SbubFpFJf+5IGHmjYhSBID5NxEHXK4QhhnQaAU6p2DsBsTuKPl3r88jI+j0IrrKSEqnw==
-X-Received: by 2002:a2e:91d4:: with SMTP id u20mr4619135ljg.87.1596756242133;
-        Thu, 06 Aug 2020 16:24:02 -0700 (PDT)
-Received: from box.localdomain ([86.57.175.117])
-        by smtp.gmail.com with ESMTPSA id g24sm3063504ljl.139.2020.08.06.16.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Aug 2020 16:24:01 -0700 (PDT)
-Received: by box.localdomain (Postfix, from userid 1000)
-	id D228C102F9C; Fri,  7 Aug 2020 02:24:00 +0300 (+03)
-Date: Fri, 7 Aug 2020 02:24:00 +0300
-From: "Kirill A. Shutemov" <kirill@shutemov.name>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH 1/4] mm: Introduce and use page_cache_empty
-Message-ID: <20200806232400.s7nhmnoi3tkk7p2r@box>
-References: <20200804161755.10100-1-willy@infradead.org>
- <20200804161755.10100-2-willy@infradead.org>
+	by ml01.01.org (Postfix) with ESMTPS id 53B5D12C2F656;
+	Fri,  7 Aug 2020 00:17:25 -0700 (PDT)
+IronPort-SDR: bpN3xgxF38dopFc++KLUA0r9RDCAIJ27NUTz5dzaADVhGKvKB4L6I+UYpEGHvxkp6O4Ou2CQDT
+ AkTylQJp+43w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9705"; a="132580744"
+X-IronPort-AV: E=Sophos;i="5.75,444,1589266800";
+   d="scan'208";a="132580744"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2020 00:17:24 -0700
+IronPort-SDR: TW2/Rs+oqVNyglT8SzPM1QCZ+r337k9xEfMIf6xTm3CR693d7jRwYZJWOfJqpBWRiswXg1Gb0R
+ FKA72pWheM4Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,444,1589266800";
+   d="scan'208";a="289534895"
+Received: from shao2-debian.sh.intel.com (HELO localhost) ([10.239.13.3])
+  by orsmga003.jf.intel.com with ESMTP; 07 Aug 2020 00:17:20 -0700
+Date: Fri, 7 Aug 2020 15:16:43 +0800
+From: kernel test robot <rong.a.chen@intel.com>
+To: Ingo Molnar <mingo@kernel.org>
+Subject: Re: [x86/copy_mc] a0ac629ebe: fio.read_iops -43.3% regression
+Message-ID: <20200807071643.GL23458@shao2-debian>
+References: <159630256804.3143511.8894023468833792004.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <20200803094257.GA23458@shao2-debian>
+ <20200806133452.GA2077191@gmail.com>
+ <CAPcyv4hS7K0Arrd+C0LhjrFH=yGJf3g55_WkHOET4z58AcWrJw@mail.gmail.com>
+ <20200806153500.GC2131635@gmail.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200804161755.10100-2-willy@infradead.org>
-Message-ID-Hash: ITTXXRJR3LJVXNXJZ5SOZ6POVA5WYKRR
-X-Message-ID-Hash: ITTXXRJR3LJVXNXJZ5SOZ6POVA5WYKRR
-X-MailFrom: kirill@shutemov.name
+In-Reply-To: <20200806153500.GC2131635@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: AO32IRVXF4I4U4NKIFTVAVDUM7JD5QHD
+X-Message-ID-Hash: AO32IRVXF4I4U4NKIFTVAVDUM7JD5QHD
+X-MailFrom: rong.a.chen@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, X86 ML <x86@kernel.org>, stable <stable@vger.kernel.org>, Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 0day robot <lkp@intel.com>, lkp@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ITTXXRJR3LJVXNXJZ5SOZ6POVA5WYKRR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AO32IRVXF4I4U4NKIFTVAVDUM7JD5QHD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -76,35 +61,56 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 04, 2020 at 05:17:52PM +0100, Matthew Wilcox (Oracle) wrote:
-> diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-> index 484a36185bb5..a474a92a2a72 100644
-> --- a/include/linux/pagemap.h
-> +++ b/include/linux/pagemap.h
-> @@ -18,6 +18,11 @@
->  
->  struct pagevec;
->  
-> +static inline bool page_cache_empty(struct address_space *mapping)
-> +{
-> +	return xa_empty(&mapping->i_pages);
+On Thu, Aug 06, 2020 at 05:35:00PM +0200, Ingo Molnar wrote:
+> 
+> * Dan Williams <dan.j.williams@intel.com> wrote:
+> 
+> > On Thu, Aug 6, 2020 at 6:35 AM Ingo Molnar <mingo@kernel.org> wrote:
+> > >
+> > >
+> > > * kernel test robot <rong.a.chen@intel.com> wrote:
+> > >
+> > > > Greeting,
+> > > >
+> > > > FYI, we noticed a -43.3% regression of fio.read_iops due to commit:
+> > > >
+> > > >
+> > > > commit: a0ac629ebe7b3d248cb93807782a00d9142fdb98 ("x86/copy_mc: Introduce copy_mc_generic()")
+> > > > url: https://github.com/0day-ci/linux/commits/Dan-Williams/Renovate-memcpy_mcsafe-with-copy_mc_to_-user-kernel/20200802-014046
+> > > >
+> > > >
+> > > > in testcase: fio-basic
+> > > > on test machine: 96 threads Intel(R) Xeon(R) Gold 6252 CPU @ 2.10GHz with 256G memory
+> > > > with following parameters:
+> > >
+> > > So this performance regression, if it isn't a spurious result, looks
+> > > concerning. Is this expected?
+> > 
+> > This is not expected and I think delays these patches until I'm back
+> > from leave in a few weeks. I know that we might lose some inlining
+> > effect due to replacing native memcpy, but I did not expect it would
+> > have an impact like this. In my testing I was seeing a performance
+> > improvement from replacing the careful / open-coded copy with rep;
+> > mov;, which increases the surprise of this result.
+> 
+> It would be nice to double check this on the kernel-test-robot side as 
+> well, to make sure it's not a false positive.
+> 
 
-What about something like
+Hi Ingo,
 
-	bool empty = xa_empty(&mapping->i_pages);
-	VM_BUG_ON(empty && mapping->nrpages);
-	return empty;
+We recompiled the kernels with option "-falign-functions=32", and the
+regression still exists:
 
-?
+7476b91d4db369d8  a0ac629ebe7b3d248cb9380778  testcase/testparams/testbox
+----------------  --------------------------  ---------------------------
+         %stddev      change         %stddev
+             \          |                \  
+     22103             -43%      12551        fio-basic/2M-performance-2pmem-xfs-libaio-dax-50%-200s-read-200G-tb-ucode=0x5002f01/lkp-csl-2sp6
+     22103             -43%      12551        GEO-MEAN fio.read_iops
 
-> +}
-> +
->  /*
->   * Bits in mapping->flags.
->   */
-
--- 
- Kirill A. Shutemov
+Best Regards,
+Rong Chen
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
