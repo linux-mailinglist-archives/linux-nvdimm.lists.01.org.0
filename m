@@ -1,50 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F9723EE59
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 15:39:08 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F224823EFE5
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 17:20:41 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B36DB1270CEDC;
-	Fri,  7 Aug 2020 06:39:06 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 03ADF12B716B3;
+	Fri,  7 Aug 2020 08:20:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::c44; helo=mail-oo1-xc44.google.com; envelope-from=matoutinastella@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com [IPv6:2607:f8b0:4864:20::c44])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DE88F1270CED5
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 06:39:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eNlt5+MOMqdMiipq56av3Q5dInH/0IZEcBwwhkePOhw=; b=jooGZOBZPN+/zhWloZREEQs9Qe
-	1Gm0HEqpmKTnkfVygGtCjNGPDIVzbn6Oy4iJaZzm2CfGsgeL8I6RGXh+QirerafkOCyyFLowQfn04
-	IChcKEfRifcIOwSxygkNiijBPFeNHpOZTqM6nCUYljV7yii6nwcVfTblozH6g8PM6Q312CvbDI25M
-	zjBglzIXAyMENEhkum19A1pCMt7D7s7lweM2Z4sd2VbM7V6c6Cd5CwISpe/CWHJm+3fcz7fTwgtvK
-	Rlxfs1dl7r8mlxzgjjjbi+UlFk1MHOgX7V6pvrUvfVUZV9ivnPN/+OOwdWfrzlX5EzJ1coyIw+I7X
-	K4lH3vDg==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1k42aH-0003o5-B8; Fri, 07 Aug 2020 13:38:57 +0000
-Date: Fri, 7 Aug 2020 14:38:57 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [RFC PATCH 0/8] fsdax: introduce FS query interface to support
- reflink
-Message-ID: <20200807133857.GC17456@casper.infradead.org>
-References: <20200807131336.318774-1-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTPS id 1603F12B716B2
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 08:20:36 -0700 (PDT)
+Received: by mail-oo1-xc44.google.com with SMTP id y30so493591ooj.3
+        for <linux-nvdimm@lists.01.org>; Fri, 07 Aug 2020 08:20:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=08vNShpdv6AsP5HmF3VtyS7DVG8FXitN2LOD3KFuJO8=;
+        b=LJO9lCZMUOcCDsNWveViQ+YRiAIJciuSBEzf7f+yEi8DCTFW9dC7yxFCW0USM2pvBp
+         NaNdjOBzgdPwWY/gv2kwobqGl6Rv8UqSZaKcxZiL6qLTnp655S7KxFS7oopSbIH7BvCL
+         qzDMYSIh3jEHNGFWnxL/l+/x0hzjEqonQj9jqlsZZc0cihziPMIRxxiiTNkwFC2ZiKqR
+         4aEcrwrWRbzFxpILW1KqgLEGs2qu/yXnO4SKg66S3DU8XO7oq1GuDnolrl7Qzkq46Vp8
+         iDnYY4bGWAjkkTgH1OMrlcuIso2S/j4CCmsu9GX/aAwULtvFai3Y0LPRC3jZsCYrbSy3
+         pHoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=08vNShpdv6AsP5HmF3VtyS7DVG8FXitN2LOD3KFuJO8=;
+        b=k75wjGoDn6zRg7OhZsUuvBF2J+QN151PSk/qkSOugQs11Gf62MWT+KkUA2wfC76WMM
+         3NUQrV+xLL/dolMzhdGvS19VvShABaR8f671V4UTQWsmvKS23kiv4MM61XHN5x8tentL
+         49cjAMZK99uP5ii7bk3ZU1PuMzTKuRTHueCqJPCLcpTTyC6+VFSnEyngh/gFi5yLDG8b
+         UUOWRIuLqSm22zXhVAEPsXnNMxxefMSy5ijZNXXnUZqd4quT2bMT8rY74mlHbX+fywoq
+         slvRPBP39tp2+vhchDjrUJzuUUhFoVVoUvlTnlaxRo8MtUe5Rz6G7Eu+Waoc1IwlxBqw
+         3DRQ==
+X-Gm-Message-State: AOAM531brK9K8AtiMHROJfNBTs8gNbbdJx6+RFPHD5K8XGSzECoQkhPK
+	nSzId+XbXW+XNDW4zYsOCrSYEYG0DtapUO2gJMc=
+X-Google-Smtp-Source: ABdhPJytmarAHmhVAnlJ/OZwigatBbHjkbPfQ7ouVytdATIKaxyyRYZgr0k5lwlgy20/yVt9LpEMBi8NHU2KnrgTwjk=
+X-Received: by 2002:a4a:6252:: with SMTP id y18mr12995392oog.45.1596813635583;
+ Fri, 07 Aug 2020 08:20:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200807131336.318774-1-ruansy.fnst@cn.fujitsu.com>
-Message-ID-Hash: RMXVJIVOKJXBWOTR57CY3EZ3HB7BUK35
-X-Message-ID-Hash: RMXVJIVOKJXBWOTR57CY3EZ3HB7BUK35
-X-MailFrom: willy@infradead.org
+From: IsabellaWilliam Helmreich <matoutinastella@gmail.com>
+Date: Fri, 7 Aug 2020 15:21:11 +0000
+Message-ID: <CABjX5JvdSf-S9KDsn1KXmOVNU+FP30DY9DaWR6hhWY5jhtXpDA@mail.gmail.com>
+Subject: Can you?
+To: undisclosed-recipients:;
+Message-ID-Hash: XBOWOV5KRQXMNR6YKC6Z5DDHK7CVN36P
+X-Message-ID-Hash: XBOWOV5KRQXMNR6YKC6Z5DDHK7CVN36P
+X-MailFrom: matoutinastella@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, darrick.wong@oracle.com, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: mrsisabellawilliamhelmreich20@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RMXVJIVOKJXBWOTR57CY3EZ3HB7BUK35/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XBOWOV5KRQXMNR6YKC6Z5DDHK7CVN36P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,23 +66,7 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 07, 2020 at 09:13:28PM +0800, Shiyang Ruan wrote:
-> This patchset is a try to resolve the problem of tracking shared page
-> for fsdax.
-> 
-> Instead of per-page tracking method, this patchset introduces a query
-> interface: get_shared_files(), which is implemented by each FS, to
-> obtain the owners of a shared page.  It returns an owner list of this
-> shared page.  Then, the memory-failure() iterates the list to be able
-> to notify each process using files that sharing this page.
-> 
-> The design of the tracking method is as follow:
-> 1. dax_assocaite_entry() associates the owner's info to this page
-
-I think that's the first problem with this design.  dax_associate_entry is
-a horrendous idea which needs to be ripped out, not made more important.
-It's all part of the general problem of trying to do something on a
-per-page basis instead of per-extent basis.
+Can you supply us??
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
