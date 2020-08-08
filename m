@@ -2,29 +2,26 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B60923F59B
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Aug 2020 02:44:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A1223F6EC
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Aug 2020 10:14:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F2A8B12CC8FE1;
-	Fri,  7 Aug 2020 17:44:22 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=150.95.221.196; helo=rakuten.co.jp; envelope-from=account-update@rakuten.co.jp; receiver=<UNKNOWN> 
-Received: from rakuten.co.jp (v150-95-221-196.ydvw.static.cnode.io [150.95.221.196])
-	by ml01.01.org (Postfix) with ESMTP id B341912CC8FDF
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 17:44:19 -0700 (PDT)
-Received: from oio (unknown [171.99.243.195])
-	by rakuten.co.jp with SMTP id 50jkhfDXVczNKg8J.1
-	for <linux-nvdimm@lists.01.org>; Sat, 08 Aug 2020 09:44:19 +0900
+	by ml01.01.org (Postfix) with ESMTP id D670112D0E086;
+	Sat,  8 Aug 2020 01:14:40 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.74.103; helo=rakuten.co.jp; envelope-from=account-update@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v118-27-74-103.eqwx.static.cnode.io [118.27.74.103])
+	by ml01.01.org (Postfix) with ESMTP id F2A0A129FFB84
+	for <linux-nvdimm@lists.01.org>; Sat,  8 Aug 2020 01:14:37 -0700 (PDT)
 Sender: account-update@rakuten.co.jp
-Message-ID: <202008080944194647282@rakuten.co.jp>
+Message-ID: <202008081714387043475@rakuten.co.jp>
 From: "Rakuten" <account-update@rakuten.co.jp>
 To: <linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?5qW95aSp5a6J5YWo55Ww5bi4?=
-Date: Sat, 8 Aug 2020 09:44:07 +0900
+Date: Sat, 8 Aug 2020 17:14:27 +0900
 Mime-Version: 1.0
 X-Priority: 3
-X-Mailer: Rsn 0
-Message-ID-Hash: 5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R
-X-Message-ID-Hash: 5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R
+X-Mailer: Jgjdrjtdkia 2
+Message-ID-Hash: F3ZLJWNFMNQGIPFTKVBOG6KKA6U3VXWH
+X-Message-ID-Hash: F3ZLJWNFMNQGIPFTKVBOG6KKA6U3VXWH
 X-MailFrom: account-update@rakuten.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -32,7 +29,7 @@ X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F3ZLJWNFMNQGIPFTKVBOG6KKA6U3VXWH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
