@@ -2,93 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E132D23F385
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  7 Aug 2020 22:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B60923F59B
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Aug 2020 02:44:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E2A6F12BC1B18;
-	Fri,  7 Aug 2020 13:05:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.136; helo=mga12.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A296812BAA74A
-	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 13:05:38 -0700 (PDT)
-IronPort-SDR: ElajurXxYs4aPV2l+fix8OiSrtgdek5DiNqwQjYwhH7MlheUcd6oV3UJFt+JOUUlvEnNTo9L8O
- xq8ugne427QA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9706"; a="132738286"
-X-IronPort-AV: E=Sophos;i="5.75,446,1589266800";
-   d="scan'208";a="132738286"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Aug 2020 13:05:38 -0700
-IronPort-SDR: iN9afJV0a8iKNGDrKwlY/zfIRTfZOsKW1t/FEpub7fHuyHY/ALiRqNmEgG/cOqSeiy78Jgvoay
- show9POj62vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,446,1589266800";
-   d="scan'208";a="275462904"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
-  by fmsmga007.fm.intel.com with ESMTP; 07 Aug 2020 13:05:38 -0700
-Date: Fri, 7 Aug 2020 13:05:38 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH v3 33/38] virtio_pmem: convert to LE accessors
-Message-ID: <20200807200537.GD2467625@iweiny-DESK2.sc.intel.com>
-References: <20200805134226.1106164-1-mst@redhat.com>
- <20200805134226.1106164-34-mst@redhat.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200805134226.1106164-34-mst@redhat.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: 7OFGOFFZB3Q5FYMYAIVA4WDWRRMGP55C
-X-Message-ID-Hash: 7OFGOFFZB3Q5FYMYAIVA4WDWRRMGP55C
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+	by ml01.01.org (Postfix) with ESMTP id F2A8B12CC8FE1;
+	Fri,  7 Aug 2020 17:44:22 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=150.95.221.196; helo=rakuten.co.jp; envelope-from=account-update@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v150-95-221-196.ydvw.static.cnode.io [150.95.221.196])
+	by ml01.01.org (Postfix) with ESMTP id B341912CC8FDF
+	for <linux-nvdimm@lists.01.org>; Fri,  7 Aug 2020 17:44:19 -0700 (PDT)
+Received: from oio (unknown [171.99.243.195])
+	by rakuten.co.jp with SMTP id 50jkhfDXVczNKg8J.1
+	for <linux-nvdimm@lists.01.org>; Sat, 08 Aug 2020 09:44:19 +0900
+Sender: account-update@rakuten.co.jp
+Message-ID: <202008080944194647282@rakuten.co.jp>
+From: "Rakuten" <account-update@rakuten.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5qW95aSp5a6J5YWo55Ww5bi4?=
+Date: Sat, 8 Aug 2020 09:44:07 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-Mailer: Rsn 0
+Message-ID-Hash: 5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R
+X-Message-ID-Hash: 5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R
+X-MailFrom: account-update@rakuten.co.jp
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7OFGOFFZB3Q5FYMYAIVA4WDWRRMGP55C/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5S4O7PIB4IDU24VUT2ECPV6TU4M4ZR3R/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Wed, Aug 05, 2020 at 09:44:45AM -0400, Michael S. Tsirkin wrote:
-> Virtio pmem is modern-only. Use LE accessors for config space.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> ---
->  drivers/nvdimm/virtio_pmem.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/nvdimm/virtio_pmem.c b/drivers/nvdimm/virtio_pmem.c
-> index 5e3d07b47e0c..726c7354d465 100644
-> --- a/drivers/nvdimm/virtio_pmem.c
-> +++ b/drivers/nvdimm/virtio_pmem.c
-> @@ -58,9 +58,9 @@ static int virtio_pmem_probe(struct virtio_device *vdev)
->  		goto out_err;
->  	}
->  
-> -	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> +	virtio_cread_le(vpmem->vdev, struct virtio_pmem_config,
->  			start, &vpmem->start);
-> -	virtio_cread(vpmem->vdev, struct virtio_pmem_config,
-> +	virtio_cread_le(vpmem->vdev, struct virtio_pmem_config,
->  			size, &vpmem->size);
-
-FWIW I think squashing patch 15/38 and this patch would have made more sense.
-
-Acked-by: Ira Weiny <ira.weiny@intel.com>
-
->  
->  	res.start = vpmem->start;
-> -- 
-> MST
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+ICANCiAgDQogIFJha3V0ZW7jgYrlrqLmp5ggDQrmrovlv7XjgarjgYzjgonjgIHjgYLjgarjgZ/j
+ga7jgqLjgqvjgqbjg7Pjg4gg44KS5pu05paw44Gn44GN44G+44Gb44KT44Gn44GX44Gf44CC44GT
+44KM44Gv44CB44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CCDQroq4vm
+sYLlhYjkvY/miYDjgYzlpInmm7TjgZXjgozjgZ/jgarjganjgIHjgZXjgb7jgZbjgb7jgarnkIbn
+lLHjgafnmbrnlJ/jgZnjgovlj6/og73mgKfjgYzjgYLjgorjgb7jgZnjgIINCg0K5LuK44Ki44Kr
+44Km44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQoNCualveWkqeODreOCsOOCpOODsw0K
+44Gq44GK44CBMjTmmYLplpPku6XlhoXjgavjgZTnorroqo3jgYzjgarjgYTloLTlkIjjgIHoqqDj
+gavpgbrmhr7jgarjgYzjgonjgIHjgqLjgqvjgqbjg7Pjg4jjgpLjg63jg4Pjgq/jgZXjgZvjgabj
+gYTjgZ/jgaDjgY/jgZPjgajjgpLorablkYrjgYTjgZ/jgZfjgb7jgZnjgIIgDQrjg5Hjgrnjg6/j
+g7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/jgIHoh7PmgKXvvIgw
+MSktNTAtNTgzMC02ODYw44G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCIA0KICANCuOBiuef
+peOCieOBmzoNCsK3IOODkeOCueODr+ODvOODieOBr+iqsOOBq+OCguaVmeOBiOOBquOBhOOBp+OB
+j+OBoOOBleOBhOOAgiANCsK3IOWAi+S6uuaDheWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4
+rOOBl+OBq+OBj+OBhOODkeOCueODr+ODvOODieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOA
+guWkp+aWh+Wtl+OBqOWwj+aWh+Wtl+OAgeaVsOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOB
+muS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgiANCsK3IOOCquODs+ODqeOCpOODs+OCouOCq+OC
+puODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOCi+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OB
+puOBj+OBoOOBleOBhOOAgiANCg0KDQrjganjgYbjgZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTj
+gZ/jgZfjgb7jgZnjgIIgDQpSYWt1dGVu77yMSW5jLg0KDQogIA0KDQogIApfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBl
+bWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
