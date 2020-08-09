@@ -2,59 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF82723F8C3
-	for <lists+linux-nvdimm@lfdr.de>; Sat,  8 Aug 2020 22:34:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B43823FD39
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  9 Aug 2020 09:45:28 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ADF5E12D3EFD1;
-	Sat,  8 Aug 2020 13:34:11 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=104.168.215.162; helo=hwsrv-757670.hostwindsdns.com; envelope-from=info@exp-marketing.com; receiver=<UNKNOWN> 
-Received: from hwsrv-757670.hostwindsdns.com (slot0.exp-marketing.com [104.168.215.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F3E9912D3EFD1
-	for <linux-nvdimm@lists.01.org>; Sat,  8 Aug 2020 13:34:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=exp-marketing.com; s=mail; h=Message-Id:Reply-To:Date:From:To:Subject:
-	MIME-Version:Content-Type:Sender:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ZwvX0cIj32B5bTagOSPELkchS5LoMI2PNNGFQQ0WAYA=; b=OQCq+5F9BJsEsVLGaq/ZcKDqKR
-	x5T4FwgPgIRBWgi2AXgxEUMk+cPPzA104j9mkmXJZRAPicaCQk1qnyFKssrV9LYF6LftqIsvuAZoa
-	68jcKIopoNaP4I9CCHcGD+kTtJirNx96guxctwrXq1YEAMWRa65vfINw7zZiNUY3S7V4=;
-Received: from [37.120.135.171] (helo=[10.144.0.230])
-	by hwsrv-757670.hostwindsdns.com with esmtpsa (TLSv1:DHE-RSA-AES256-SHA:256)
-	(Exim 4.92.3)
-	(envelope-from <info@exp-marketing.com>)
-	id 1k40Z8-00036V-Jr; Fri, 07 Aug 2020 11:29:38 +0000
+	by ml01.01.org (Postfix) with ESMTP id 534A312D6AC60;
+	Sun,  9 Aug 2020 00:45:26 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.128.116; helo=dlvo.com; envelope-from=ztatds@dlvo.com; receiver=<UNKNOWN> 
+Received: from dlvo.com (unknown [223.73.128.116])
+	by ml01.01.org (Postfix) with ESMTP id 078A812D5CE36
+	for <linux-nvdimm@lists.01.org>; Sun,  9 Aug 2020 00:45:21 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sun, 09 Aug 2020 15:44:50 +0800
+Message-ID: b77e6f9c-7cf7-4edf-82e4-9e88ba5935fe
 MIME-Version: 1.0
-Subject: URGENT BUSINESS ADVISE NEEDED
-To: Recipients <info@exp-marketing.com>
-From: Joseph H <info@exp-marketing.com>
-Date: Thu, 06 Aug 2020 23:29:24 -1200
-Message-Id: <E1k40Z8-00036V-Jr@hwsrv-757670.hostwindsdns.com>
-Message-ID-Hash: WLW6U3T4PZ4WPQCFDJDLVO2ZOZ4QQNS4
-X-Message-ID-Hash: WLW6U3T4PZ4WPQCFDJDLVO2ZOZ4QQNS4
-X-MailFrom: info@exp-marketing.com
+Sender: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6?=
+ =?utf-8?Q?=99=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5?=
+ =?utf-8?Q?=8C=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C?=
+ =?utf-8?Q?=E6=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6?=
+ =?utf-8?Q?=B2=E7=AD=89?=
+ <ztatds@dlvo.com>
+From: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6=99?=
+ =?utf-8?Q?=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5=8C?=
+ =?utf-8?Q?=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C=E6?=
+ =?utf-8?Q?=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6=B2?=
+ =?utf-8?Q?=E7=AD=89?=
+ <hk13642980935@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 9 Aug 2020 15:44:50 +0800
+Subject: =?utf-8?B?5aSn6ZmG5Ye65Y+j6aaZ5riv5LiT57q/77yM5Y+v5o6l5YyW?=
+ =?utf-8?B?5aaG5ZOB77yM5Y+j572p77yM5rSX5Y+R5rC077yM5rSX5omL5ray562J?=
+ =?utf-8?B??=
+Message-ID-Hash: EMBBK4LBXPLP44CMJT4RRO4Z7NYB3C3L
+X-Message-ID-Hash: EMBBK4LBXPLP44CMJT4RRO4Z7NYB3C3L
+X-MailFrom: ztatds@dlvo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Description: Mail message body
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: josephhaveyrye@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WLW6U3T4PZ4WPQCFDJDLVO2ZOZ4QQNS4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EMBBK4LBXPLP44CMJT4RRO4Z7NYB3C3L/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hello,   I'm Joseph Harvey  from London. I contacted you because I am planning to invest $6.000,000 million in your country. I need your acceptance to help me and also to advise me on how I can make a good and profitable investment in your country. I will offer you 30% of the $ 6.000,000 million for your assistance and advice. I look forward to your urgent reply with your full names and phone number. God bless you. 
-  Sincerely Joseph Harvey
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDvlpKfpmYblh7rlj6PpppnmuK/kuJPnur/vvIzlj6/mjqXljJblpoblk4Hv
+vIzlj6PnvanvvIzmtJflj5HmsLTvvIzmtJfmiYvmtrLnrYkNCiZuYnNwO+KWoCZuYnNwOyDlpKfp
+mYbkuIrpl6jmj5DotKfvvIzov5DovpPmiqXlhbPkuIDmnaHpvpnmnI3liqENCiZuYnNwO+KWoCZu
+YnNwOyDpppnmuK/mnInljbjotKflubPlj7DvvIzlj6/mj5Dkvpvoo4XljbjotKfvvIzmi7znrrHv
+vIzku5PlgqjmnI3liqENCiZuYnNwO+KWoCZuYnNwOyDkuZ3pvpkv5paw55WML+a4r+Wym+a0vumA
+geWFrOWPuOS7peWPiuS7k+W6kw0KJm5ic3A74pagICZuYnNwO+mmmea4r+acuuWcui/ku5PnoIHl
+pLTku5PlhaXku5PmnI3liqENCiZuYnNwOw0K6IGU57O75oiR5LusDQrogZTns7vkurrvvJpKYWNr
+DQpNb2JpbGUmbmJzcDvvvJorODYtMTM2NDI5ODA5MzUgKOW+ruS/oeWQjOWPt++8iQ0KRS1tYWls
+IDombmJzcDtoazEzNjQyOTgwOTM1QGhvdG1haWwuY29tCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
+dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
+bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
