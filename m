@@ -1,35 +1,35 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E902426D5
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Aug 2020 10:38:08 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02CF42426FE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 12 Aug 2020 10:56:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BEC6D12F462C5;
-	Wed, 12 Aug 2020 01:38:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=147.11.146.13; helo=mail1.windriver.com; envelope-from=qiang.zhang@windriver.com; receiver=<UNKNOWN> 
-Received: from mail1.windriver.com (mail1.windriver.com [147.11.146.13])
-	(using TLSv1.1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 0C67F12F4631A;
+	Wed, 12 Aug 2020 01:56:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.103.53.11; helo=mail5.wrs.com; envelope-from=qiang.zhang@windriver.com; receiver=<UNKNOWN> 
+Received: from mail5.wrs.com (mail5.windriver.com [192.103.53.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 42AE712F3D259
-	for <linux-nvdimm@lists.01.org>; Wed, 12 Aug 2020 01:38:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id CA8E712F3F3DD
+	for <linux-nvdimm@lists.01.org>; Wed, 12 Aug 2020 01:56:12 -0700 (PDT)
 Received: from ALA-HCA.corp.ad.wrs.com (ala-hca.corp.ad.wrs.com [147.11.189.40])
-	by mail1.windriver.com (8.15.2/8.15.2) with ESMTPS id 07C8bw4R004857
+	by mail5.wrs.com (8.15.2/8.15.2) with ESMTPS id 07C8tDEr000485
 	(version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
-	Wed, 12 Aug 2020 01:37:58 -0700 (PDT)
+	Wed, 12 Aug 2020 01:55:33 -0700
 Received: from pek-qzhang2-d1.wrs.com (128.224.162.183) by
  ALA-HCA.corp.ad.wrs.com (147.11.189.40) with Microsoft SMTP Server id
- 14.3.487.0; Wed, 12 Aug 2020 01:37:58 -0700
+ 14.3.487.0; Wed, 12 Aug 2020 01:55:03 -0700
 From: <qiang.zhang@windriver.com>
 To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
         <dave.jiang@intel.com>, <ira.weiny@intel.com>
-Subject: [PATCH] libnvdimm: KASAN: global-out-of-bounds Read in internal_create_group
-Date: Wed, 12 Aug 2020 16:37:55 +0800
-Message-ID: <20200812083755.30220-1-qiang.zhang@windriver.com>
+Subject: [PATCH v2] libnvdimm: KASAN: global-out-of-bounds Read in internal_create_group
+Date: Wed, 12 Aug 2020 16:55:01 +0800
+Message-ID: <20200812085501.30963-1-qiang.zhang@windriver.com>
 X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Message-ID-Hash: PKC5VKX35QPK4WDVARG5K57YGTHZ7FCL
-X-Message-ID-Hash: PKC5VKX35QPK4WDVARG5K57YGTHZ7FCL
+Message-ID-Hash: TENQWKJS5ASWIDCMC2U32OFZG4RWM5H7
+X-Message-ID-Hash: TENQWKJS5ASWIDCMC2U32OFZG4RWM5H7
 X-MailFrom: Qiang.Zhang@windriver.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -37,7 +37,7 @@ CC: linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PKC5VKX35QPK4WDVARG5K57YGTHZ7FCL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TENQWKJS5ASWIDCMC2U32OFZG4RWM5H7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -49,12 +49,13 @@ Content-Transfer-Encoding: 7bit
 From: Zqiang <qiang.zhang@windriver.com>
 
 Because the last member of the "nvdimm_firmware_attributes" array
-was not assigned a null ptr, when traversal of "group" array is out of
-bounds in "internal_create_groups" func.
+was not assigned a null ptr, when traversal of "grp->attrs" array
+is out of bounds in "create_files" func.
 
-internal_create_groups:
-	->for (i = 0; groups[i]; i++)
-		->...
+func:
+	create_files:
+		->for (i = 0, attr = grp->attrs; *attr && !error; i++, attr++)
+			->....
 
 BUG: KASAN: global-out-of-bounds in create_files fs/sysfs/group.c:43 [inline]
 BUG: KASAN: global-out-of-bounds in internal_create_group+0x9d8/0xb20
@@ -92,6 +93,9 @@ The buggy address belongs to the variable:
 Reported-by: syzbot+1cf0ffe61aecf46f588f@syzkaller.appspotmail.com
 Signed-off-by: Zqiang <qiang.zhang@windriver.com>
 ---
+ v1->v2:
+ Modify the description of the error.
+
  drivers/nvdimm/dimm_devs.c | 1 +
  1 file changed, 1 insertion(+)
 
