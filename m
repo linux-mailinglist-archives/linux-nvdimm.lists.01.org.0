@@ -1,54 +1,61 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD89244C21
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Aug 2020 17:29:10 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67487244D2B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Aug 2020 18:55:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 62FC31311C13D;
-	Fri, 14 Aug 2020 08:29:08 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.66; helo=mail-ot1-f66.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	by ml01.01.org (Postfix) with ESMTP id 475231311C195;
+	Fri, 14 Aug 2020 09:55:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::342; helo=mail-ot1-x342.google.com; envelope-from=aishagaddafi190@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com [IPv6:2607:f8b0:4864:20::342])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0D2771311C13B
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 08:29:05 -0700 (PDT)
-Received: by mail-ot1-f66.google.com with SMTP id q9so7855136oth.5
-        for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 08:29:05 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 957A21311C195
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 09:55:25 -0700 (PDT)
+Received: by mail-ot1-x342.google.com with SMTP id k12so8104003otr.1
+        for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 09:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=hEkR1aiV3FgqWifUDRZ/LnwAKRgtXp8YBx05IH2xt3I=;
+        b=kk1JWl5YYEAPa8IFd0flSkIi3PY07S02goI3KJfK98OwVnYTST9pvRU3nQMaEw3wQi
+         hGQr/IworGKkWgcKDcf01dWP93rJ608YqcUj5TJRZybPAn67RG+V8exnH0K5W1xm+q0F
+         QIIcXI1nWTyTkpL3P9bCDr46mO9XJZkaAAQIM+0XpzL5sx9O0MnxrlfRBDy2mFwB1TjH
+         FaiydaD3/dMAKRY6ZFgW/wS9bOMtn1WmrvoMLhp6MeF1WNc8EkOQFvUBR6tlv1nsoSJc
+         KjaAr0WTMCo7FaBT6Sm8UcCq2a8q2NO4LPHTiMjUk8mYktNm2hKd3GU8p70ptHsYuMW6
+         7zCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=vBVBMvKKxks/kGkJ4ndBszEEsQk9CsCHA7aFPfw0OnY=;
-        b=q3XWFgVkBAOBVF4ByZYkohyisvMTCZRXwmxWbfG9sYABzrk6Q5O12x2byx0bOM7M+v
-         LF6G4k422LVCXwICkpMSpRUdrxkdQpDQ6SCHjpxsNPwRUC20up4cS+jG31coQxt9RiiV
-         GdwhXtN+zfUIdRqZYN5ZHBVhkaOUZKbzoRPd+HfCABug606jw8kN3ylCHF5280aH2OHk
-         zwn700MLWrVaMo6mJ4ekTPBQu976MCTsj++YxqLTUj603Z4ldmNNzAMfCYYGHaZXRa2K
-         kuzoOK76yhOvUOuUu8udsxRw0oYjuQsPJhasc7eWAIRdYovww53ypsgD5h7zKmktI39l
-         urTQ==
-X-Gm-Message-State: AOAM530rUPguOVo/qxLrc4u1siApuE7PRr0xT8U8Hkoa+WDGFEXyhIaa
-	FJPpRO6v84NMiSh2yZXw8OqyK/WaAZ/VbBgB/Y0=
-X-Google-Smtp-Source: ABdhPJz1T4tJ8ofzUGM0XQjCNBZ6PvK5Zq6i4UC8Y+eAkenmq/nx3KmnaWGeq6j/7fuAaFaAt8U6C3Dv5bPtU6dw8Nw=
-X-Received: by 2002:a05:6830:1c74:: with SMTP id s20mr2165582otg.167.1597418944007;
- Fri, 14 Aug 2020 08:29:04 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=hEkR1aiV3FgqWifUDRZ/LnwAKRgtXp8YBx05IH2xt3I=;
+        b=FNqwIpyYJchzOkZRPen6LjdaQuk0kJZUPAjsSWlZnB41+z5wJg2Q3kufPRp14+Ayec
+         1rC0KzJsDjeecpFSMVvJ1/4JkLxLnKWxTEgKgZdERFtVv22Z/l0Xx/DmzrG4KAcYRFL7
+         FCnlVhif+vky2HBZ6hCFGZ5eGlfGnhTNKvKO8DQotjII4PdEISe8JjjDoaPiojFN6z0q
+         3DuRycMruVS61delrMJPhF0Xd0mGrjaUVbuCUrs/4THm7oGjTQfvUEv/cJdL/4yuRprw
+         uvHD0g2/xI5G3p93uNlEDdoBS+m6f6X5mo04P2IDtZ6hznHPpE1weUUqXyzLFkXiRusW
+         1Ncw==
+X-Gm-Message-State: AOAM532qlcZOxy7wEqKyZpiNFQ7Z4qDptTFhO2Ny6LtfYMNJp3X/0d9b
+	1HEBht/K+rVnkWP7GETEGOXWPXiKrkfUZzlu35g=
+X-Google-Smtp-Source: ABdhPJwcpnuNzeNJ4V0OdouQ8iglNwlSukh6Q1sN4L5kfWcSq8gO5cUx34ULz5zqzAYtjslvGhIeqC9iRb9Hrjesabs=
+X-Received: by 2002:a9d:4b01:: with SMTP id q1mr1587943otf.15.1597424124293;
+ Fri, 14 Aug 2020 09:55:24 -0700 (PDT)
 MIME-Version: 1.0
-References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
-In-Reply-To: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 14 Aug 2020 17:28:52 +0200
-Message-ID: <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com>
-Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
-To: Wang Qing <wangqing@vivo.com>, Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE
-X-Message-ID-Hash: NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE
-X-MailFrom: rjwysocki@gmail.com
+From: Aisha Muammar Gaddafi <aishagaddafi190@gmail.com>
+Date: Fri, 14 Aug 2020 16:55:09 +0100
+Message-ID: <CAJVkJvmUc78HpBEOLJ0VmHngGiwnMx=f=fHCkzJz=Fii=w0_iQ@mail.gmail.com>
+Subject: Dr Aisha Muammar Gaddafi       
+To: undisclosed-recipients:;
+Message-ID-Hash: KPOOCXT3BWDRK7I5I26D7R55T7X7AKL4
+X-Message-ID-Hash: KPOOCXT3BWDRK7I5I26D7R55T7X7AKL4
+X-MailFrom: aishagaddafi190@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KPOOCXT3BWDRK7I5I26D7R55T7X7AKL4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -57,45 +64,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
->
-> Use kobj_to_dev() instead of container_of()
->
-> Signed-off-by: Wang Qing <wangqing@vivo.com>
+As you know I'm Aisha Gaddafi the daughter of the former president of Libya
+late president Muammar Gaddafi who was killed in the civil war which took
+place in the year 2011 which ended up his life on the 20th October
+2011.Before the death of my father the Late President of Libya he made a
+deposit of 10 million US dollars with a security company there in Ghana .
+That no one knows about except we the children and now my brother is in
+prison for trial for war crime so i am the only one left out and i got an
+mail from the security company , that i have to come for the funds but now
+i can't because After the death of my father the UN and Libya Government
+has been tracking all my father's wealth and money everywhere around the
+globe my dear but, this was the last deposit my father made before he
+died,so i am looking for a trust worthy person to stand as my foreign
+beneficiary to help me claim the funds and i am ready to reward  whoever he
+or she may be and i will also let the security company  know that i am
+appointing the person as my beneficiary, and help me receive my funds from
+the security company  so i can come out of my present ordeal and to go
+somewhere to start a new good life somewhere my friend....Please i will
+love to read from you and let me know if you will be able to help me with
+this and i promise that this transaction will be smooth and free there is
+no need to be afraid and please this must be a secret between  both of us
+hope to hear from you soonest.
 
-LGTM
-
-Dan, any objections?
-
-> ---
->  drivers/acpi/nfit/core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index fa4500f..3bb350b
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
->
->  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -       struct device *dev = container_of(kobj, struct device, kobj);
-> +       struct device *dev = kobj_to_dev(kobj);
->         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
->
->         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
-> @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
->  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
->                 struct attribute *a, int n)
->  {
-> -       struct device *dev = container_of(kobj, struct device, kobj);
-> +       struct device *dev = kobj_to_dev(kobj);
->         struct nvdimm *nvdimm = to_nvdimm(dev);
->         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
->
-> --
-> 2.7.4
->
+Best Regards.
+Dr Aisha Muammar Gaddafi
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
