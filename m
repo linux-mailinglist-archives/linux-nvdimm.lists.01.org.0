@@ -2,79 +2,81 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74FB244FF8
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Aug 2020 00:52:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCDE244FFA
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 15 Aug 2020 00:56:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1DE29131A5188;
-	Fri, 14 Aug 2020 15:52:27 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 70968131A5196;
+	Fri, 14 Aug 2020 15:56:19 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
 Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 24867131A5187
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 15:52:24 -0700 (PDT)
-IronPort-SDR: l4bBCtgbIS0BxQ67jkKyIUYmZQ4iq6+PUjCt6GtVy0Yr0PgoUmRvsxsz4l0c/gB75CZUDjcH95
- 1a2oewKRMX6Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9713"; a="218826062"
+	by ml01.01.org (Postfix) with ESMTPS id 8DC8C131A5195
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 15:56:16 -0700 (PDT)
+IronPort-SDR: hq28ebqKJ2PZ56kv3G6IAiVJEO1wPpZ0QkwITA9ZTdewDxJlVCjpjoPjmftuzCT0t7QrQiro3v
+ R8MEjJJfErDw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9713"; a="218826289"
 X-IronPort-AV: E=Sophos;i="5.76,313,1592895600";
-   d="scan'208";a="218826062"
+   d="scan'208";a="218826289"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2020 15:52:24 -0700
-IronPort-SDR: QtYe4ERaVseq+kun6wFxk7mE42lBWQgAOOMGQ/RKzYPpmMR/E9NRIKE6J+A0D+pB2U5eTREaSG
- ZxdaSUyW4VUA==
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2020 15:56:14 -0700
+IronPort-SDR: jGxjcOjVPF1nD0sfIwbBtkkq7alEJpkURYLR81SmBfa5skL0MhhytA/vn6ferncs4ZBTFRH5XP
+ OeLdqQKeCCpg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.76,313,1592895600";
-   d="scan'208";a="440253926"
-Received: from unknown (HELO fmsmsx605.amr.corp.intel.com) ([10.18.84.215])
-  by orsmga004.jf.intel.com with ESMTP; 14 Aug 2020 15:52:23 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx605.amr.corp.intel.com (10.18.126.85) with Microsoft SMTP Server
+   d="scan'208";a="291865190"
+Received: from fmsmsx601-2.cps.intel.com (HELO fmsmsx601.amr.corp.intel.com) ([10.18.84.211])
+  by orsmga003.jf.intel.com with ESMTP; 14 Aug 2020 15:56:13 -0700
+Received: from fmsmsx606.amr.corp.intel.com (10.18.126.86) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Fri, 14 Aug 2020 15:52:23 -0700
-Received: from FMSEDG001.ED.cps.intel.com (10.1.192.133) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ 15.1.1713.5; Fri, 14 Aug 2020 15:56:13 -0700
+Received: from FMSEDG002.ED.cps.intel.com (10.1.192.134) by
+ fmsmsx606.amr.corp.intel.com (10.18.126.86) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id 15.1.1713.5
- via Frontend Transport; Fri, 14 Aug 2020 15:52:23 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.177)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server (TLS) id
- 14.3.439.0; Fri, 14 Aug 2020 15:52:22 -0700
+ via Frontend Transport; Fri, 14 Aug 2020 15:56:13 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.176)
+ by edgegateway.intel.com (192.55.55.69) with Microsoft SMTP Server (TLS) id
+ 14.3.439.0; Fri, 14 Aug 2020 15:55:31 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=To0YaHOOomsZhiQeWcxHNRwWsI+EXy1N6Hcqb2qn9ycO3VGVKOYZnXj2bmwpd1f+IFM50w0gwQzMD8JpZfiSYF2S/YbZElTwLFagzDv9+P0NlvCTyu86a1j2dvzrBR0JyhP94UGIjP3WJ8Fz2F/G+oIhdNzilmhsojkIb+3Oj7Np+ayDHcb9D58RqH0osS4phEZTE69Qtg+9eEMi5eeC5N1COuvvrzgJVPpwzCwPOy2VJz6g0/uabsO5I7s9oKhEputWzlxVSD58QXzlAcywnQninhyH0OOBWyQES0HQ4gCaiGJEUidOZxHJKRh7V6EAYVPzDmnETWG/qDA09netyQ==
+ b=JkBoi6G4TJjUFL7NR5KGoS5f3LW6qLoR1n3A+7jiVsksZw1mFEHUIHnwdwP4XqJGarIS6VhuDLG4ghI4IMr4AJHKxAk1jyHMBzNWmdYSuaRgBXOheK5NSZFP+Goi2kwe6R1iUKwhq14aDEmWUMVuokoEpv+tCK9RMuXNtEj3gOk47c2oqHW4wVNob/zTTXshbiemrhasYNI4tf/6+/Ue5pNO2PLQr18CkGOiJaorMKLoHp/yM/v+1Eft3UN+5YDBaSjppEAmeKyJRkaQM3WfE7Tt0ZLUfenQ0A3ZhutWI+pVrkrdjs0ZsDkt2oyatbD2pMvewsx1Lxi/yJFPLsfmkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wGjKIYh2MkKStzQgtUxKeRMmPzuXeAHwOfLWyTA/tmk=;
- b=Bpw5dQ9Nk5XhMpXid5zzJHO9sMdHaXpejQ9wGjFvZly8aVvVAkax6EgWUaJCa+vcyRZJHCpWaqdSUO4a8F52er2LvcKckKoqMijfsXw4ePBdYQKE0XO5dFVpEpwIFOvPjEuqve3vK5HS+z6VN9Snfy9cvoH0+cYR7TdUOjYN//YF4lRBL4f8B1F+SqP8cGKUTT+EW/qN3aqB2q38TZZU6urvN74V4T0FJmBQfBoZt/SrpkBMibIOj6DifXCBka9I+07ke7AiMJ+wWKcQr1smP64PYTk5vemACncpUkWv6M13js7kfbcHBrlI2ipTNVrGtO8RUzfo6Xpb45cmrFinuQ==
+ bh=HSBTxjlCc1k/auq6OVPW2S1EvmNXDCwEPhXFj5G/jDk=;
+ b=JGXrftxFrdepfXDDhrJCbWm5+lhBwlmiTCQgit3jPiAGijzBbwnFG7cR+ehYlvINjSQcBt7vPvhR+8I60KqfqblUL617/tl0CNdWxErm0umvEY1GRKhFIdtHddUqqqXl2PWEKwAHQ6fhKOG+jOgb5+5hv1mWpFftxLetJhZ+YcRML2q/5BP3jiOhaASUJEo9l3dqTMmvhFaLHCEmrOhcSwc/rIdqHwkq4nUp010O9nJ9UxraVFo6KHid28fWiwNwN0ZqTOxEItrmAJm93WICDZXcGqUjnhUu931mwEQk9d/Zc8I7dZ3Nia8G9rqcDQVXaWHYjFZ1C41YWjK2KhJhDg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
  s=selector2-intel-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wGjKIYh2MkKStzQgtUxKeRMmPzuXeAHwOfLWyTA/tmk=;
- b=n4RjppD397tWb8PWRfhm41k6ik572CTqRFe4zsu1oRRJfmSHX89tMaGfY2Mp/sHPPASozmnIDw1bkRJTbxrYXamQLpxjxyluYr9jHVJmTea9f1PLuJy1Mn0n/KZ6mwOzNIh6/MR0UhtmbI6w2RyI+mKP0xSyxfX/mj1cnRqPLnA=
+ bh=HSBTxjlCc1k/auq6OVPW2S1EvmNXDCwEPhXFj5G/jDk=;
+ b=mBAIbl5395IDubiF7KVhXnLURcqVvrvj9Yd6FDZxvREmZSavOmyr8WtuNDamiBw44vAJQivIaqbXx0Hqk2VPhvVvY1l8u++55lS4t13qXQ22EnI3df8Z7fTzkyeIGzPEo36qHYM2z4IXw9IPnbikdRqaIokvHSTM1t+6pXWGGLg=
 Received: from BYAPR11MB3448.namprd11.prod.outlook.com (2603:10b6:a03:76::21)
- by BYAPR11MB3477.namprd11.prod.outlook.com (2603:10b6:a03:7c::28) with
+ by BYAPR11MB3671.namprd11.prod.outlook.com (2603:10b6:a03:b3::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.22; Fri, 14 Aug
- 2020 22:52:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3283.20; Fri, 14 Aug
+ 2020 22:55:29 +0000
 Received: from BYAPR11MB3448.namprd11.prod.outlook.com
  ([fe80::1084:a79c:5a4f:f115]) by BYAPR11MB3448.namprd11.prod.outlook.com
  ([fe80::1084:a79c:5a4f:f115%5]) with mapi id 15.20.3283.016; Fri, 14 Aug 2020
- 22:52:20 +0000
+ 22:55:29 +0000
 From: "Verma, Vishal L" <vishal.l.verma@intel.com>
-To: "Williams, Dan J" <dan.j.williams@intel.com>, "rafael@kernel.org"
-	<rafael@kernel.org>, "wangqing@vivo.com" <wangqing@vivo.com>
-Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
-Thread-Topic: [PATCH] acpi/nfit: Use kobj_to_dev() instead
-Thread-Index: AQHWcRxpj/rghooL6kKeKlMDqnI2Vqk3vQEAgAB75oA=
-Date: Fri, 14 Aug 2020 22:52:20 +0000
-Message-ID: <4e23dc722419e82d13772afc8e060d3203fd5a86.camel@intel.com>
-References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
-	 <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com>
-In-Reply-To: <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com>
+To: "Weiny, Ira" <ira.weiny@intel.com>, "vaibhav@linux.ibm.com"
+	<vaibhav@linux.ibm.com>
+Subject: Re: [PATCH] libnvdimm: Add a NULL entry to
+ 'nvdimm_firmware_attributes'
+Thread-Topic: [PATCH] libnvdimm: Add a NULL entry to
+ 'nvdimm_firmware_attributes'
+Thread-Index: AQHWckx4y0fiAEVmJkid5IaXXixqHqk31uoAgABgfgA=
+Date: Fri, 14 Aug 2020 22:55:29 +0000
+Message-ID: <e8ab54c4e147cbfe037a6aa5926d0cd74346a684.camel@intel.com>
+References: <20200814150509.225615-1-vaibhav@linux.ibm.com>
+	 <20200814171005.GB3142014@iweiny-DESK2.sc.intel.com>
+In-Reply-To: <20200814171005.GB3142014@iweiny-DESK2.sc.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -84,39 +86,39 @@ authentication-results: intel.com; dkim=none (message not signed)
  header.d=none;intel.com; dmarc=none action=none header.from=intel.com;
 x-originating-ip: [192.55.55.39]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: a00d7bb8-2ec7-411a-2f1f-08d840a4b39a
-x-ms-traffictypediagnostic: BYAPR11MB3477:
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr,ExtFwd
+x-ms-office365-filtering-correlation-id: 8be6eaba-c7ce-4aad-19c6-08d840a52461
+x-ms-traffictypediagnostic: BYAPR11MB3671:
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <BYAPR11MB3477A6E6CCA61F463EC4B285C7400@BYAPR11MB3477.namprd11.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:359;
+x-microsoft-antispam-prvs: <BYAPR11MB36711D0BB3CB0140D3F00DB7C7400@BYAPR11MB3671.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:201;
 x-ms-exchange-senderadcheck: 1
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DWYKV3JQbRLXmKxuJ+/nUfCZCan8qUjV6dGBY1vAVxpF3KHPok9nW6hSDCQ3rxvf2P42x5cHga+WvxEPNhon3SPB+rH3B3WKuPeB6MyZoPo90SPrmjljAOPUCzvPOkNg12e0DEzVBVrxBGrYtuDKX7mT9eUrU/RFd9Nm/wIE6fLwWADR7qQJ0qjW/+xThLLCIwOf0K8r9MI5tIUhIrG2hqJzW4P+ovAJxTcNec4ElmEHfmNYHU3hC2h7EAmSyIebHaz2wylesMJn4Uo3RX+7Va+DqonplW5l4u9qGeKIfQQYZQKzvrmqXlVm+1IHxhey/osErU5w1ALAkMKLfq2qaw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(39860400002)(136003)(396003)(366004)(346002)(54906003)(4326008)(64756008)(8936002)(66946007)(2906002)(8676002)(2616005)(83380400001)(66476007)(66556008)(76116006)(186003)(66446008)(5660300002)(26005)(316002)(478600001)(6506007)(71200400001)(53546011)(36756003)(110136005)(86362001)(6486002)(6512007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata: 0gsoDWFQLB0VAe3pjYtdYnCr0dahtV0pz1UotAmdmvMRk20zrYmANobodV13was1+og5UEYifTLjSw8LfSpqWUbfi977gsqccpjOq5FtF6QZld5c57cDLXvuUOcfhAPYLLT4e728dnK0LQDYXy6GnBQJaKq27ZIeaE+DJTh1MGyGhHFko5PrDP+dJ32MFCcAYrz3x+/uDl1hWsEQZbvwGft2d4vk9jvc+gxzpI6IfhdMsPfpZ/WiQ3oEnSyb2xuwRbNesggie7a4M+EoXguQeddJLACfSWotBWeEvkuyYbFDoXXMdH0bEEJk8VVTlwVH6joef18AHbcQLwEoFrPIWDP1PMEdqIgFMKfhEobCd7xVFuh5Jjc1egCJRNJumnbsqRFdwezGGsqUxtNqIqC8Wq2Hw9vLEVLL6m/iuBCwA1BXhlPGOFpceina5cxTVHpw9CLYA78OUovkb80ignOeIHq8bv28vT14k2g/G3yltNeDey22+Z+IzoeyDwdLx3ClilKFzeXJA4zs5UtS6LlSWPWRPDyCaoaHKqXRgAZbSEK1Df0iMRfW+yyQHzV5TSPdlRQ7P18R1BqAbabDuZ/cN7nLuBgtH6wk0/pYxKG5GLfgFSE1lq9ialQEiH5gALYWttFVz6yGplIMT+Goe/2BPA==
-Content-ID: <1BEEF98980247B4E865FB383C7D5DC8D@namprd11.prod.outlook.com>
+x-microsoft-antispam-message-info: fyZHsV4fjtfGvzMNElJ+M/9p0EKxG4LFr2WUVn5Jg+V5QP9QJTlBGq5wSZ885CoIXEkzPSHA6qdNTA4r9cHLBmTEZSOxO1wBr9TjhfCqx4urfx/efUxD+btLn+J4hLsOop15h1YUpUO+8Mc0tA9Wh0ZmfOuEqdftYEEIzPIPKPQwWohtwh6auKYZTfup9ZWyyW3Z4DzuMHFfb9G8JYUh6Ipbk6vZmETs+rNWLx0gXQVHJkRachkw843P1eBx63O27t4O4Hh1tlBJiQmBoOVX6A6iLyT7uWP6jXowmh55hkC9+AfEwwmx3PfX22X05D2OyVK/tIsrZBOmUFoYfouTNw==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3448.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(376002)(366004)(346002)(396003)(39860400002)(54906003)(26005)(4326008)(66446008)(66556008)(66476007)(64756008)(66946007)(110136005)(83380400001)(478600001)(6506007)(316002)(8936002)(6512007)(2616005)(2906002)(71200400001)(6486002)(86362001)(5660300002)(186003)(8676002)(36756003)(76116006);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: +b8Ur00uUaKJGUcFTKBf0zywk42EsHZfMt8tAoevw48A5etbS0pgapyDS/0hZotc/K1sOh8AmwOf9d9IAdrPidqDdNnkLondxN1Apg0YsyE4TaUsq3p2SgptHFFIpwfIQipjxZEdoA/DKQ400d1sNJ6TdNl1XTcWt/oxMt+icWtUqq3gzj9Q2btdqqOLt6ogrRsL+z2hrRkDUfQ2wL1zV5q7CkGmJtHwIIC9hWgee1wrm4/m8af9qMBWi3tqya42MI8MaoQXGqDkDPsY2nr4JjiSCaovW5lA+9jz9dWaxw7CvJ43KFILi7T1GaUjihz4tpdLyJz7pyEwK+fIaJuqW7BhA6tvZ3FUUMStjBK+p2AjECya4MyKLQSVYV3a0UvLtDQ/HCMJiqDsm+KDgBmugy73KZP/qKLOHwHLMX49/If0aGmTLOW66/ju5Vv6WXneKp9x3/EfZOY6FpIHi2wMb03iVldSu/9ShIIZHBgzFQe0sJsMVC2BuxoYlzbzAWZzgd7ixx0ZOgiTAla5OPKUmOPuEz9sNkmW1aQbVZ6F1vx0gs7B4X+JRBQ7tIRWHWmu9UytrtcnyqMrnlYbrJc0jdzpNq8W9TgQlv4ZlWNPwyIrf7HaR879YmyBfTILZsGB/w2kf3YHGQaUtQdpscYVdQ==
+Content-ID: <7034EB549DB1854E96890AFE09C6BDC9@namprd11.prod.outlook.com>
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3448.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a00d7bb8-2ec7-411a-2f1f-08d840a4b39a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2020 22:52:20.1747
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8be6eaba-c7ce-4aad-19c6-08d840a52461
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Aug 2020 22:55:29.5271
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tf2wdwrIyOBfbLClc/QcJn8/SM0m//welJzAR0Gwp65GbqvyGZOIKlAff1tJpf/GQgstsErWl835zTtQ9jVgR95K2XRiF8q1an6e5nD3aVk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3477
+X-MS-Exchange-CrossTenant-userprincipalname: B0GWQaKlpvqEWs9xmOPy2uijLTSnikxJBe4ggHU7pudZcfOZT3jg3KDFeWO5+D8lFsOx2H8ZbuAKrUtBpYoolZmmMAgbX8clwXJMxF2k0Tw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR11MB3671
 X-OriginatorOrg: intel.com
-Message-ID-Hash: 5K4IITNEJDYM22HXOVSN42TGNQTXYTTR
-X-Message-ID-Hash: 5K4IITNEJDYM22HXOVSN42TGNQTXYTTR
+Message-ID-Hash: Q6RWLYPATQEZ3SVXPMM43PR5SVGO2V4P
+X-Message-ID-Hash: Q6RWLYPATQEZ3SVXPMM43PR5SVGO2V4P
 X-MailFrom: vishal.l.verma@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "lenb@kernel.org" <lenb@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rjw@rjwysocki.net" <rjw@rjwysocki.net>
+CC: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "mpe@ellerman.id.au" <mpe@ellerman.id.au>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>, "sandipan@linux.ibm.com" <sandipan@linux.ibm.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5K4IITNEJDYM22HXOVSN42TGNQTXYTTR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/Q6RWLYPATQEZ3SVXPMM43PR5SVGO2V4P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -125,48 +127,66 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, 2020-08-14 at 17:28 +0200, Rafael J. Wysocki wrote:
-> On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
-> > Use kobj_to_dev() instead of container_of()
+On Fri, 2020-08-14 at 10:10 -0700, Ira Weiny wrote:
+> On Fri, Aug 14, 2020 at 08:35:09PM +0530, Vaibhav Jain wrote:
+> > We recently discovered a kernel oops with 'papr_scm' module while
+> > booting ppc64 phyp guest with following back-trace:
 > > 
-> > Signed-off-by: Wang Qing <wangqing@vivo.com>
+> > BUG: Kernel NULL pointer dereference on write at 0x00000188
+> > Faulting instruction address: 0xc0000000005d7084
+> > Oops: Kernel access of bad area, sig: 11 [#1]
+> > <snip>
+> > Call Trace:
+> >  internal_create_group+0x128/0x4c0 (unreliable)
+> >  internal_create_groups.part.4+0x70/0x130
+> >  device_add+0x458/0x9c0
+> >  nd_async_device_register+0x28/0xa0 [libnvdimm]
+> >  async_run_entry_fn+0x78/0x1f0
+> >  process_one_work+0x2c0/0x5b0
+> >  worker_thread+0x88/0x650
+> >  kthread+0x1a8/0x1b0
+> >  ret_from_kernel_thread+0x5c/0x6c
+> > 
+> > A bisect lead to the 'commit 48001ea50d17f ("PM, libnvdimm: Add runtime
+> > firmware activation support")' and on investigation discovered that
+> > the newly introduced 'struct attribute *nvdimm_firmware_attributes[]'
+> > is missing a terminating NULL entry in the array. This causes a loop
+> > in sysfs's 'create_files()' to read garbage beyond bounds of
+> > 'nvdimm_firmware_attributes' and trigger the oops.
+> > 
+> > Fixes: 48001ea50d17f ("PM, libnvdimm: Add runtime firmware activation support")
+> > Reported-by: Sandipan Das <sandipan@linux.ibm.com>
+> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > 
-> LGTM
-> 
-> Dan, any objections?
+> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Looks good to me - you can add:
-Acked-by: Vishal Verma <vishal.l.verma@intel.com>
+Thanks Vaibhav and Ira. I see this was also reported and fixed by Zqiang
+a couple days ago. I'll pick that, merge these trailers and add it to
+the fixes queue.
+
 > 
 > > ---
-> >  drivers/acpi/nfit/core.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >  drivers/nvdimm/dimm_devs.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > > 
-> > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> > index fa4500f..3bb350b
-> > --- a/drivers/acpi/nfit/core.c
-> > +++ b/drivers/acpi/nfit/core.c
-> > @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
+> > diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
+> > index 61374def51555..b59032e0859b7 100644
+> > --- a/drivers/nvdimm/dimm_devs.c
+> > +++ b/drivers/nvdimm/dimm_devs.c
+> > @@ -529,6 +529,7 @@ static DEVICE_ATTR_ADMIN_RW(activate);
+> >  static struct attribute *nvdimm_firmware_attributes[] = {
+> >  	&dev_attr_activate.attr,
+> >  	&dev_attr_result.attr,
+> > +	NULL,
+> >  };
+> >  
+> >  static umode_t nvdimm_firmware_visible(struct kobject *kobj, struct attribute *a, int n)
+> > -- 
+> > 2.26.2
 > > 
-> >  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
-> >  {
-> > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > +       struct device *dev = kobj_to_dev(kobj);
-> >         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
-> > 
-> >         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
-> > @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
-> >  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
-> >                 struct attribute *a, int n)
-> >  {
-> > -       struct device *dev = container_of(kobj, struct device, kobj);
-> > +       struct device *dev = kobj_to_dev(kobj);
-> >         struct nvdimm *nvdimm = to_nvdimm(dev);
-> >         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
-> > 
-> > --
-> > 2.7.4
-> > 
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
