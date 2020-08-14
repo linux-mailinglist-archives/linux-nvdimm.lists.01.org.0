@@ -2,78 +2,53 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634B0244B92
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Aug 2020 17:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD89244C21
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 14 Aug 2020 17:29:10 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A8BEB12F6E11E;
-	Fri, 14 Aug 2020 08:05:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 62FC31311C13D;
+	Fri, 14 Aug 2020 08:29:08 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.210.66; helo=mail-ot1-f66.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BAE5D12F6E11C
-	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 08:05:37 -0700 (PDT)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07EF4D5p128363;
-	Fri, 14 Aug 2020 11:05:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=9lfdzU0VXKwmw8ic/GIjVJrz9F+3Dca+bz7+pCbHQpU=;
- b=P6TcOYR5rXv5oFiu55rnML7Z4d6gWNhuIFeUHoEeYxkIQbRyqjRlMexsHWWnNxDoqcwF
- w8PV5Oqj4WcXM4vA+gR4pwqHxTXkx7FPfBCGBP0LZpQ4vwb/MZsMMFkL24e8DTySHy/E
- mJTCPfFimlTxovmgcwN1vWupI5+BTlNT8mvmU7Z8Yues0xubQ9gfS7WzowEVGyvFD/nG
- 7Mzc5uzNeh6y3u8B6c38ohyPSgJouxe50pmNn8xaxIJi8Bd4rbdzsmF1TImOCLWTMEDN
- 0vGYBi7VoPZQ/WEfBG2YzFAZxUdjp516fGhKIi2WSEcZDArLphoeJoJD3kBrWmymTNJD wA==
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 32wvxb01x0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2020 11:05:25 -0400
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-	by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07EF4H8F028033;
-	Fri, 14 Aug 2020 15:05:23 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
-	by ppma06ams.nl.ibm.com with ESMTP id 32skaher6f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Aug 2020 15:05:23 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-	by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07EF5Kvr24445262
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Aug 2020 15:05:20 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2550F4C040;
-	Fri, 14 Aug 2020 15:05:20 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9A104C04A;
-	Fri, 14 Aug 2020 15:05:17 +0000 (GMT)
-Received: from vajain21-in-ibm-com (unknown [9.199.37.20])
-	by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Fri, 14 Aug 2020 15:05:17 +0000 (GMT)
-Received: by vajain21-in-ibm-com (sSMTP sendmail emulation); Fri, 14 Aug 2020 20:35:16 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [PATCH] libnvdimm: Add a NULL entry to 'nvdimm_firmware_attributes'
-Date: Fri, 14 Aug 2020 20:35:09 +0530
-Message-Id: <20200814150509.225615-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+	by ml01.01.org (Postfix) with ESMTPS id 0D2771311C13B
+	for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 08:29:05 -0700 (PDT)
+Received: by mail-ot1-f66.google.com with SMTP id q9so7855136oth.5
+        for <linux-nvdimm@lists.01.org>; Fri, 14 Aug 2020 08:29:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vBVBMvKKxks/kGkJ4ndBszEEsQk9CsCHA7aFPfw0OnY=;
+        b=q3XWFgVkBAOBVF4ByZYkohyisvMTCZRXwmxWbfG9sYABzrk6Q5O12x2byx0bOM7M+v
+         LF6G4k422LVCXwICkpMSpRUdrxkdQpDQ6SCHjpxsNPwRUC20up4cS+jG31coQxt9RiiV
+         GdwhXtN+zfUIdRqZYN5ZHBVhkaOUZKbzoRPd+HfCABug606jw8kN3ylCHF5280aH2OHk
+         zwn700MLWrVaMo6mJ4ekTPBQu976MCTsj++YxqLTUj603Z4ldmNNzAMfCYYGHaZXRa2K
+         kuzoOK76yhOvUOuUu8udsxRw0oYjuQsPJhasc7eWAIRdYovww53ypsgD5h7zKmktI39l
+         urTQ==
+X-Gm-Message-State: AOAM530rUPguOVo/qxLrc4u1siApuE7PRr0xT8U8Hkoa+WDGFEXyhIaa
+	FJPpRO6v84NMiSh2yZXw8OqyK/WaAZ/VbBgB/Y0=
+X-Google-Smtp-Source: ABdhPJz1T4tJ8ofzUGM0XQjCNBZ6PvK5Zq6i4UC8Y+eAkenmq/nx3KmnaWGeq6j/7fuAaFaAt8U6C3Dv5bPtU6dw8Nw=
+X-Received: by 2002:a05:6830:1c74:: with SMTP id s20mr2165582otg.167.1597418944007;
+ Fri, 14 Aug 2020 08:29:04 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-14_09:2020-08-14,2020-08-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 spamscore=0 phishscore=0 clxscore=1015
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008140111
-Message-ID-Hash: HMPSVB7VHHVCP6GT7JYJDPHQ6IRO4DBN
-X-Message-ID-Hash: HMPSVB7VHHVCP6GT7JYJDPHQ6IRO4DBN
-X-MailFrom: vaibhav@linux.ibm.com
+References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
+In-Reply-To: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 14 Aug 2020 17:28:52 +0200
+Message-ID: <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
+To: Wang Qing <wangqing@vivo.com>, Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE
+X-Message-ID-Hash: NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE
+X-MailFrom: rjwysocki@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Sandipan Das <sandipan@linux.ibm.com>
+CC: "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, ACPI Devel Maling List <linux-acpi@vger.kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HMPSVB7VHHVCP6GT7JYJDPHQ6IRO4DBN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NDFTULT32OOQLNMXAVY4AM2QGDW2NGNE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -82,52 +57,45 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-We recently discovered a kernel oops with 'papr_scm' module while
-booting ppc64 phyp guest with following back-trace:
+On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
+>
+> Use kobj_to_dev() instead of container_of()
+>
+> Signed-off-by: Wang Qing <wangqing@vivo.com>
 
-BUG: Kernel NULL pointer dereference on write at 0x00000188
-Faulting instruction address: 0xc0000000005d7084
-Oops: Kernel access of bad area, sig: 11 [#1]
-<snip>
-Call Trace:
- internal_create_group+0x128/0x4c0 (unreliable)
- internal_create_groups.part.4+0x70/0x130
- device_add+0x458/0x9c0
- nd_async_device_register+0x28/0xa0 [libnvdimm]
- async_run_entry_fn+0x78/0x1f0
- process_one_work+0x2c0/0x5b0
- worker_thread+0x88/0x650
- kthread+0x1a8/0x1b0
- ret_from_kernel_thread+0x5c/0x6c
+LGTM
 
-A bisect lead to the 'commit 48001ea50d17f ("PM, libnvdimm: Add runtime
-firmware activation support")' and on investigation discovered that
-the newly introduced 'struct attribute *nvdimm_firmware_attributes[]'
-is missing a terminating NULL entry in the array. This causes a loop
-in sysfs's 'create_files()' to read garbage beyond bounds of
-'nvdimm_firmware_attributes' and trigger the oops.
+Dan, any objections?
 
-Fixes: 48001ea50d17f ("PM, libnvdimm: Add runtime firmware activation support")
-Reported-by: Sandipan Das <sandipan@linux.ibm.com>
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- drivers/nvdimm/dimm_devs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index 61374def51555..b59032e0859b7 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -529,6 +529,7 @@ static DEVICE_ATTR_ADMIN_RW(activate);
- static struct attribute *nvdimm_firmware_attributes[] = {
- 	&dev_attr_activate.attr,
- 	&dev_attr_result.attr,
-+	NULL,
- };
- 
- static umode_t nvdimm_firmware_visible(struct kobject *kobj, struct attribute *a, int n)
--- 
-2.26.2
+> ---
+>  drivers/acpi/nfit/core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> index fa4500f..3bb350b
+> --- a/drivers/acpi/nfit/core.c
+> +++ b/drivers/acpi/nfit/core.c
+> @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
+>
+>  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
+>  {
+> -       struct device *dev = container_of(kobj, struct device, kobj);
+> +       struct device *dev = kobj_to_dev(kobj);
+>         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
+>
+>         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
+> @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
+>  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
+>                 struct attribute *a, int n)
+>  {
+> -       struct device *dev = container_of(kobj, struct device, kobj);
+> +       struct device *dev = kobj_to_dev(kobj);
+>         struct nvdimm *nvdimm = to_nvdimm(dev);
+>         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+>
+> --
+> 2.7.4
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
