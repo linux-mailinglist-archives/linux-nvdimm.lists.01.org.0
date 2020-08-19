@@ -2,182 +2,119 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCED24A393
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 17:54:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AFFB24A4FA
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 19:34:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3778512F414B6;
-	Wed, 19 Aug 2020 08:54:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id E1C6D1343C735;
+	Wed, 19 Aug 2020 10:34:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 5A2EB1342F390
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 08:54:40 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id B980EB648;
-	Wed, 19 Aug 2020 15:55:05 +0000 (UTC)
-Subject: Re: [PATCH 1/1] dax: do not print error message for non-persistent
- memory block device
-To: Adrian Huang <adrianhuang0701@gmail.com>
-References: <20200819154236.24191-1-adrianhuang0701@gmail.com>
-From: Coly Li <colyli@suse.de>
-Autocrypt: addr=colyli@suse.de; keydata=
- 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
-Message-ID: <83384271-1131-0d82-8dd4-ba0f1fa25ca0@suse.de>
-Date: Wed, 19 Aug 2020 23:54:34 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.11.0
+	by ml01.01.org (Postfix) with ESMTPS id 692651313D5DC
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 10:34:00 -0700 (PDT)
+Received: from kernel.org (unknown [87.70.91.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 2E536206FA;
+	Wed, 19 Aug 2020 17:33:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1597858440;
+	bh=1Kuiv8iGgm6SalVVkZfBiL4OHWxQAxShozxNk+zBolU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PfCq2RYoBnpI+rRZ0w6qSWuewp0KRf89Aalz44HYo9TFEhrDUQICW5QIJCrh8Ca0K
+	 uLAW8PYxM/i8eVvlbksIuqNR9MKaOckhfOZhXePVk3EU37CkhLrBof1KFmHs22XZC0
+	 sszvftR/cJX4BhW1GWf6wauiWhaZ3R/1Xv2rD11Y=
+Date: Wed, 19 Aug 2020 20:33:47 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v4 6/6] mm: secretmem: add ability to reserve memory at
+ boot
+Message-ID: <20200819173347.GW752365@kernel.org>
+References: <20200818141554.13945-1-rppt@kernel.org>
+ <20200818141554.13945-7-rppt@kernel.org>
+ <03ec586d-c00c-c57e-3118-7186acb7b823@redhat.com>
+ <20200819115335.GU752365@kernel.org>
+ <10bf57a9-c3c2-e13c-ca50-e872b7a2db0c@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200819154236.24191-1-adrianhuang0701@gmail.com>
-Content-Language: en-US
-Message-ID-Hash: AMC3SOHPQZA5RMJTZNMXMJNLAHAQJX6W
-X-Message-ID-Hash: AMC3SOHPQZA5RMJTZNMXMJNLAHAQJX6W
-X-MailFrom: colyli@suse.de
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, Adrian Huang <ahuang12@lenovo.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>
+Content-Disposition: inline
+In-Reply-To: <10bf57a9-c3c2-e13c-ca50-e872b7a2db0c@redhat.com>
+Message-ID-Hash: GBUI2ABRLFXJ2ECQLPRGRZAZ2ZEVCMG2
+X-Message-ID-Hash: GBUI2ABRLFXJ2ECQLPRGRZAZ2ZEVCMG2
+X-MailFrom: rppt@kernel.org
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
+ rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AMC3SOHPQZA5RMJTZNMXMJNLAHAQJX6W/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GBUI2ABRLFXJ2ECQLPRGRZAZ2ZEVCMG2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-T24gMjAyMC84LzE5IDIzOjQyLCBBZHJpYW4gSHVhbmcgd3JvdGU6DQo+IEZyb206IEFkcmlhbiBI
-dWFuZyA8YWh1YW5nMTJAbGVub3ZvLmNvbT4NCj4gDQo+IEZyb206IEFkcmlhbiBIdWFuZyA8YWh1
-YW5nMTJAbGVub3ZvLmNvbT4NCj4gDQo+IENvbW1pdCAyMzE2MDk3ODVjYmYgKCJkYXg6IHByaW50
-IGVycm9yIG1lc3NhZ2UgYnkgcHJfaW5mbygpDQo+IGluIF9fZ2VuZXJpY19mc2RheF9zdXBwb3J0
-ZWQoKSIpIGhhcHBlbnMgdG8gcHJpbnQgdGhlIGZvbGxvd2luZw0KPiBlcnJvciBtZXNzYWdlIGR1
-cmluZyBib290aW5nIHdoZW4gdGhlIG5vbi1wZXJzaXN0ZW50IG1lbW9yeSBibG9jaw0KPiBkZXZp
-Y2VzIGFyZSBjb25maWd1cmVkIGJ5IGRldmljZSBtYXBwZXIuIFRob3NlIGVycm9yIG1lc3NhZ2Vz
-IGFyZQ0KPiBjYXVzZWQgYnkgdGhlIHZhcmlhYmxlICdkYXhfZGV2JyBpcyBOVUxMLiBVc2VycyBt
-aWdodCBiZSBjb25mdXNlZA0KPiB3aXRoIHRob3NlIGVycm9yIG1lc3NhZ2VzIHNpbmNlIHRoZXkg
-ZG8gbm90IHVzZSB0aGUgcGVyc2lzdGVudA0KPiBtZW1vcnkgZGV2aWNlLiBNb3Jlb3ZlciwgdXNl
-cnMgbWlnaHQgc2NhcmUgYWJvdXQgIndoYXQncyB3cm9uZw0KPiB3aXRoIG15IGRpc2tzIiBiZWNh
-dXNlIHRoZXkgc2VlIHRoZSAnZXJyb3InIGFuZCAnZmFpbGVkJyBrZXl3b3Jkcy4NCj4gDQo+ICAg
-IyBkbWVzZyB8IGdyZXAgZmFpbA0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAo
-LTk1KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6
-IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNj
-ZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1
-KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6IGVy
-cm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNz
-IGZhaWxlZCAoLTk1KQ0KPiAgIHNkazM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0K
-PiAgIHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9y
-OiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZh
-aWxlZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAg
-IHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9yOiBk
-YXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxl
-ZCAoLTk1KQ0KPiAgIHNkYjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiAgIHNk
-YjM6IGVycm9yOiBkYXggYWNjZXNzIGZhaWxlZCAoLTk1KQ0KPiANCj4gICAjIGxzYmxrDQo+ICAg
-TkFNRSAgICAgICAgICAgIE1BSjpNSU4gUk0gICBTSVpFIFJPIFRZUEUgTU9VTlRQT0lOVA0KPiAg
-IHNkYSAgICAgICAgICAgICAgIDg6MCAgICAwICAgMS4xVCAgMCBkaXNrDQo+ICAg4pSc4pSAc2Rh
-MSAgICAgICAgICAgIDg6MSAgICAwICAgMTU2TSAgMCBwYXJ0DQo+ICAg4pSc4pSAc2RhMiAgICAg
-ICAgICAgIDg6MiAgICAwICAgIDQwRyAgMCBwYXJ0DQo+ICAg4pSU4pSAc2RhMyAgICAgICAgICAg
-IDg6MyAgICAwICAgMS4xVCAgMCBwYXJ0DQo+ICAgc2RiICAgICAgICAgICAgICAgODoxNiAgIDAg
-ICAxLjFUICAwIGRpc2sNCj4gICDilJzilIBzZGIxICAgICAgICAgICAgODoxNyAgIDAgICA2MDBN
-ICAwIHBhcnQNCj4gICDilJzilIBzZGIyICAgICAgICAgICAgODoxOCAgIDAgICAgIDFHICAwIHBh
-cnQNCj4gICDilJTilIBzZGIzICAgICAgICAgICAgODoxOSAgIDAgICAxLjFUICAwIHBhcnQNCj4g
-ICAgIOKUnOKUgHJoZWwwMC1zd2FwIDI1NDozICAgIDAgICAgIDRHICAwIGx2bQ0KPiAgICAg4pSc
-4pSAcmhlbDAwLWhvbWUgMjU0OjQgICAgMCAgICAgMVQgIDAgbHZtDQo+ICAgICDilJTilIByaGVs
-MDAtcm9vdCAyNTQ6NSAgICAwICAgIDUwRyAgMCBsdm0NCj4gICBzZGMgICAgICAgICAgICAgICA4
-OjMyICAgMCAgIDEuMVQgIDAgZGlzaw0KPiAgIHNkZCAgICAgICAgICAgICAgIDg6NDggICAwICAg
-MS4xVCAgMCBkaXNrDQo+ICAgc2RlICAgICAgICAgICAgICAgODo2NCAgIDAgICAxLjFUICAwIGRp
-c2sNCj4gICBzZGYgICAgICAgICAgICAgICA4OjgwICAgMCAgIDEuMVQgIDAgZGlzaw0KPiAgIHNk
-ZyAgICAgICAgICAgICAgIDg6OTYgICAwICAgMS4xVCAgMCBkaXNrDQo+ICAgc2RoICAgICAgICAg
-ICAgICAgODoxMTIgIDAgICAzLjNUICAwIGRpc2sNCj4gICDilJzilIBzZGgxICAgICAgICAgICAg
-ODoxMTMgIDAgICA1MDBNICAwIHBhcnQgL2Jvb3QvZWZpDQo+ICAg4pSc4pSAc2RoMiAgICAgICAg
-ICAgIDg6MTE0ICAwICAgIDQwRyAgMCBwYXJ0IC8NCj4gICDilJzilIBzZGgzICAgICAgICAgICAg
-ODoxMTUgIDAgICAyLjlUICAwIHBhcnQgL2hvbWUNCj4gICDilJTilIBzZGg0ICAgICAgICAgICAg
-ODoxMTYgIDAgMzE0LjZHICAwIHBhcnQgW1NXQVBdDQo+ICAgc2RpICAgICAgICAgICAgICAgODox
-MjggIDAgICAxLjFUICAwIGRpc2sNCj4gICBzZGogICAgICAgICAgICAgICA4OjE0NCAgMCAgIDMu
-M1QgIDAgZGlzaw0KPiAgIOKUnOKUgHNkajEgICAgICAgICAgICA4OjE0NSAgMCAgIDUxMk0gIDAg
-cGFydA0KPiAgIOKUlOKUgHNkajIgICAgICAgICAgICA4OjE0NiAgMCAgIDMuM1QgIDAgcGFydA0K
-PiAgIHNkayAgICAgICAgICAgICAgIDg6MTYwICAwIDExOS4yRyAgMCBkaXNrDQo+ICAg4pSc4pSA
-c2RrMSAgICAgICAgICAgIDg6MTYxICAwICAgMjAwTSAgMCBwYXJ0DQo+ICAg4pSc4pSAc2RrMiAg
-ICAgICAgICAgIDg6MTYyICAwICAgICAxRyAgMCBwYXJ0DQo+ICAg4pSU4pSAc2RrMyAgICAgICAg
-ICAgIDg6MTYzICAwICAgMTE4RyAgMCBwYXJ0DQo+ICAgICDilJzilIByaGVsLXN3YXAgICAyNTQ6
-MCAgICAwICAgICA0RyAgMCBsdm0NCj4gICAgIOKUnOKUgHJoZWwtaG9tZSAgIDI1NDoxICAgIDAg
-ICAgNjRHICAwIGx2bQ0KPiAgICAg4pSU4pSAcmhlbC1yb290ICAgMjU0OjIgICAgMCAgICA1MEcg
-IDAgbHZtDQo+ICAgc2RsICAgICAgICAgICAgICAgODoxNzYgIDAgMTE5LjJHICAwIGRpc2sNCj4g
-DQo+IFRoZSBjYWxsIHBhdGggaXMgc2hvd24gYXMgZm9sbG93czoNCj4gICBkbV90YWJsZV9kZXRl
-cm1pbmVfdHlwZQ0KPiAgICAgZG1fdGFibGVfc3VwcG9ydHNfZGF4DQo+ICAgICAgZGV2aWNlX3N1
-cHBvcnRzX2RheA0KPiAgICAgICAgZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQNCj4gICAgICAgICBf
-X2dlbmVyaWNfZnNkYXhfc3VwcG9ydGVkDQo+IA0KPiBXaXRoIHRoZSBkaXNrIGNvbmZpZ3VyYXRp
-b24gbGlzdGluZyBmcm9tIHRoZSBjb21tYW5kICdsc2JsaycsDQo+IHRoZSBtZW1iZXIgJ2Rldi0+
-ZGF4X2Rldicgb2YgdGhlIGJsb2NrIGRldmljZXMgJ3NkYjMnIGFuZCAnc2RrMycNCj4gKGNvbmZp
-Z3VyZWQgYnkgZGV2aWNlIG1hcHBlcikgaXMgTlVMTCBpbiBmdW5jdGlvbg0KPiBnZW5lcmljX2Zz
-ZGF4X3N1cHBvcnRlZCgpIGJlY2F1c2UgdGhlIG1lbWJlciBpcyBjb25maWd1cmVkIGluDQo+IGZ1
-bmN0aW9uIG9wZW5fdGFibGVfZGV2aWNlKCkuDQo+IA0KPiBUbyBwcmV2ZW50IHRoZSBjb25mdXNp
-bmcgZXJyb3IgbWVzc2FnZXMgaW4gdGhpcyBzY2VuYXJpbyAodGhpcyBpcw0KPiBub3JtYWwgYmVo
-YXZpb3IpLCBqdXN0IHByaW50IHRob3NlIGVycm9yIG1lc3NhZ2VzIGJ5IHByX2RlYnVnKCkNCj4g
-YnkgY2hlY2tpbmcgaWYgZGF4X2RldiBpcyBOVUxMIGFuZCB0aGUgYmxvY2sgZGV2aWNlIGRvZXMg
-bm90IHN1cHBvcnQNCj4gREFYLg0KPiANCj4gRml4ZXM6IDIzMTYwOTc4NWNiZiAoImRheDogcHJp
-bnQgZXJyb3IgbWVzc2FnZSBieSBwcl9pbmZvKCkgaW4gX19nZW5lcmljX2ZzZGF4X3N1cHBvcnRl
-ZCgpIikNCj4gQ2M6IENvbHkgTGkgPGNvbHlsaUBzdXNlLmRlPg0KPiBDYzogRGFuIFdpbGxpYW1z
-IDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+DQo+IENjOiBBbGFzZGFpciBLZXJnb24gPGFna0By
-ZWRoYXQuY29tPg0KPiBDYzogTWlrZSBTbml0emVyIDxzbml0emVyQHJlZGhhdC5jb20+DQo+IFNp
-Z25lZC1vZmYtYnk6IEFkcmlhbiBIdWFuZyA8YWh1YW5nMTJAbGVub3ZvLmNvbT4NCg0KSXQgbWFr
-ZXMgc2Vuc2UgdG8gbWUuIFRoYW5rcyBmb3IgdGhlIGZpeCB1cC4NCg0KQWNrZWQtYnk6IENvbHkg
-TGkgPGNvbHlsaUBzdXNlLmRlPg0KDQoNCkNvbHkgTGkNCg0KDQo+IC0tLQ0KPiAgZHJpdmVycy9k
-YXgvc3VwZXIuYyB8IDYgKysrKysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgNiBpbnNlcnRpb25zKCsp
-DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9kYXgvc3VwZXIuYyBiL2RyaXZlcnMvZGF4L3N1
-cGVyLmMNCj4gaW5kZXggYzgyY2JjYjY0MjAyLi4zMjY0MjYzNGMxYmIgMTAwNjQ0DQo+IC0tLSBh
-L2RyaXZlcnMvZGF4L3N1cGVyLmMNCj4gKysrIGIvZHJpdmVycy9kYXgvc3VwZXIuYw0KPiBAQCAt
-MTAwLDYgKzEwMCwxMiBAQCBib29sIF9fZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQoc3RydWN0IGRh
-eF9kZXZpY2UgKmRheF9kZXYsDQo+ICAJCXJldHVybiBmYWxzZTsNCj4gIAl9DQo+ICANCj4gKwlp
-ZiAoIWRheF9kZXYgJiYgIWJkZXZfZGF4X3N1cHBvcnRlZChiZGV2LCBibG9ja3NpemUpKSB7DQo+
-ICsJCXByX2RlYnVnKCIlczogZXJyb3I6IGRheCB1bnN1cHBvcnRlZCBieSBibG9jayBkZXZpY2Vc
-biIsDQo+ICsJCQkJYmRldm5hbWUoYmRldiwgYnVmKSk7DQo+ICsJCXJldHVybiBmYWxzZTsNCj4g
-Kwl9DQo+ICsNCj4gIAlpZCA9IGRheF9yZWFkX2xvY2soKTsNCj4gIAlsZW4gPSBkYXhfZGlyZWN0
-X2FjY2VzcyhkYXhfZGV2LCBwZ29mZiwgMSwgJmthZGRyLCAmcGZuKTsNCj4gIAlsZW4yID0gZGF4
-X2RpcmVjdF9hY2Nlc3MoZGF4X2RldiwgcGdvZmZfZW5kLCAxLCAmZW5kX2thZGRyLCAmZW5kX3Bm
-bik7DQo+IA0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
-IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
-Lm9yZwo=
+On Wed, Aug 19, 2020 at 02:10:43PM +0200, David Hildenbrand wrote:
+> On 19.08.20 13:53, Mike Rapoport wrote:
+> > On Wed, Aug 19, 2020 at 12:49:05PM +0200, David Hildenbrand wrote:
+> >> On 18.08.20 16:15, Mike Rapoport wrote:
+> >>> From: Mike Rapoport <rppt@linux.ibm.com>
+> >>>
+> >>> Taking pages out from the direct map and bringing them back may create
+> >>> undesired fragmentation and usage of the smaller pages in the direct
+> >>> mapping of the physical memory.
+> >>>
+> >>> This can be avoided if a significantly large area of the physical memory
+> >>> would be reserved for secretmem purposes at boot time.
+> >>>
+> >>> Add ability to reserve physical memory for secretmem at boot time using
+> >>> "secretmem" kernel parameter and then use that reserved memory as a global
+> >>> pool for secret memory needs.
+> >>
+> >> Wouldn't something like CMA be the better fit? Just wondering. Then, the
+> >> memory can actually be reused for something else while not needed.
+> > 
+> > The memory allocated as secret is removed from the direct map and the
+> > boot time reservation is intended to reduce direct map fragmentatioan
+> > and to avoid splitting 1G pages there. So with CMA I'd still need to
+> > allocate 1G chunks for this and once 1G page is dropped from the direct
+> > map it still cannot be reused for anything else until it is freed.
+> > 
+> > I could use CMA to do the boot time reservation, but doing the
+> > reservesion directly seemed simpler and more explicit to me.
+> 
+> Well, using CMA would give you the possibility to let the memory be used
+> for other purposes until you decide it's the right time to take it +
+> remove the direct mapping etc.
+
+I still can't say I follow you here. If I reseve a CMA area as a pool
+for secret memory 1G pages, it is still reserved and it still cannot be
+used for other purposes, right?
+
+> I wonder if a sane approach would be to require to allocate a pool
+> during boot and only take pages ever from that pool. That would avoid
+> spilling many unmovable pages all over the place, locally limiting them
+> to your area here.
+
+That's what I tried to implement. The pool reserved at boot time is in a
+way similar to booting with mem=X and then splitting the remaining
+memory between the VMs.
+In this case, the memory reserved at boot is never in the direct map and
+allocations from such pool will not cause fragmentation.
+
+> -- 
+> Thanks,
+> 
+> David / dhildenb
+> 
+
+-- 
+Sincerely yours,
+Mike.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
