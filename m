@@ -1,34 +1,33 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73F1249DD6
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 14:29:01 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A664249E44
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 14:41:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C95EC13505CC9;
-	Wed, 19 Aug 2020 05:28:59 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN> 
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+	by ml01.01.org (Postfix) with ESMTP id ACB181350A3BB;
+	Wed, 19 Aug 2020 05:41:04 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN> 
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9382713505CC6
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 05:28:56 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id E54C413505CC6
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 05:41:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-	s=dbaedf251592; t=1597840117;
-	bh=LunTLKJJ1JcbEznPbkQKD+DItyAuEDXtX1Anemwap1s=;
+	s=dbaedf251592; t=1597840844;
+	bh=d1QvhiU0EQDguAu6Bm+SahJUccuqRek3ApeKnL30RM0=;
 	h=X-UI-Sender-Class:Subject:To:References:Cc:From:Date:In-Reply-To;
-	b=gMxv6otEktFO0QixfeJpITEkdkh2VaWRkigk9IdU8yJu14MV2HSG9KaOgdJhFbaR0
-	 /BAYlheHMfmAJE8SUBt3RovOHWPX02zp2cQlwXa1TMFg5TemwkAaOesE0Q9stxdmcJ
-	 OeVnZfpBEBXSvrBSDf12a57GNqYSXsOnPqZEDzsc=
+	b=Mw23gUw481OZl3/UzZzuGeNCNnNZS/k5+JUMUDPGI/OnxRgwfVAyC6vFl14NZmoFQ
+	 4LCn5w411kjf809hKRRo3dgGEeMIfKz9FmLjctY5KBD3gPQ1SW9RKWwgumGwx36EX/
+	 EoBbunumImJE8NMT+gaVhiVnVqsA6/FmTCAg3vcY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.132.88]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MAdol-1jxfp82ECR-00BuH0; Wed, 19
- Aug 2020 14:28:37 +0200
-Subject: Re: [PATCH v2 1/4] libnvdimm: Fix memory leaks in of_pmem.c
-To: Zhen Lei <thunder.leizhen@huawei.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Received: from [192.168.1.2] ([93.135.132.88]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MXYeQ-1kCJGn3hag-00WWo4; Wed, 19
+ Aug 2020 14:40:44 +0200
+Subject: Re: [PATCH v2 3/4] libnvdimm/bus: simplify walk_to_nvdimm_bus()
+To: Zhen Lei <thunder.leizhen@huawei.com>, linux-nvdimm@lists.01.org
 References: <20200819020503.3079-1-thunder.leizhen@huawei.com>
- <20200819020503.3079-2-thunder.leizhen@huawei.com>
+ <20200819020503.3079-4-thunder.leizhen@huawei.com>
 From: Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,64 +72,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5cc26ce3-963e-3ab6-6f97-706cea00c5f3@web.de>
-Date: Wed, 19 Aug 2020 14:28:36 +0200
+Message-ID: <ff1333cb-9917-6a2c-4454-325d161d8650@web.de>
+Date: Wed, 19 Aug 2020 14:40:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200819020503.3079-2-thunder.leizhen@huawei.com>
+In-Reply-To: <20200819020503.3079-4-thunder.leizhen@huawei.com>
 Content-Language: en-GB
-X-Provags-ID: V03:K1:eZLDlBeanQCQstde04APr19Hec66rOtfFRzGiTObsXarYp8KqgP
- oVy5m4kj+L46TKw7ksKpidRylEVOom/b+/O7nLFovK/aaDRZVRSDqjPN8NQ6h8j7niGhi6S
- t3nkbhAiHuKlD2gLZVeokvTE19xpJNYCubQoYkeDczwXb3NSZrVhvlgXMNQma64UIkr0LGt
- Ak4mx1OK7biH9/GoczKxQ==
+X-Provags-ID: V03:K1:5SYZFwycDRQ6Nd5TrVjROq5e0N9Rn2cXoZ6pa8JFlNibw6y0Me1
+ hKEq0eGQzmVw1kGccEs1swTJ8zupzP8pb6jVkOeCD+IvstGxAaOdatNokS8YFa0O27ynq+Z
+ wJ1VnK9A3f0OwL1+riUGjv2SqNCTTthvdZuiBrnX2c2JyD24FNSvyuf6caoeEhK03TvcUcn
+ nKLgOTWVmhGX/U1dOo/Tw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:OzDgz783024=:dHWsrBy6zQhTLOlRST4OE4
- vIJzIc66uO1iY1q4tm2Rf2z75H/eC6r2hkEfn7B2nqpAeJzy/a/VGIrZCzUneLxrOcVqfUc2c
- msZveRgFxepsgiRBVvobUPlT8fYRlcFofW0p39wnpjwRiFgG2kuPE+qjsoH9/9fyJ8e68PouC
- rP+G+BB37Ksltn/I4UQ+eP10ptSgitGDo2AdEZJupsUTsVm8KVBK41TGZ9Soqbjq+Tii/9rtb
- /x07SgAp4STj8V2X9Sw3KKIEo0rg83u6weR7EmJ4niWwXOh1+SzYZ/E1k6xK8aP3uZF/fEPr/
- iuinVDKI4uqqhZ9eBIAUSwjWore2aEyllR1Ln0LCAjA3PqpqDU3sOO7owNbvrN0yifNn9O0CY
- QqMf4PTC9LJ5I1jmoaYCrGW/bmkH9u34dO5jWTGUeLvQ0TQs8F4kbDM4msSo6cTGy399tqfZ0
- WYL/ZTjovU59PeVpQ9XbyJrtcVIj72syGstQsakEthVVm5SkBKmgAZ8dH5xoh0nXxnfQaODnu
- bhVhQCATl/gvKD8bBFOqyyeW9MwMhv58QkspKe7z6+d5ouPcC+P7vb3wNcKvgbP3H0R9MwevW
- 1PVeEckmvcTtEP6XHKaM0Jycz6lz84eNMmfn3xU8CPYC2vFZfEChrlMbC5geBQ5E1pLNjdMXA
- +I3ZFDNmL+r4Ms+WzZ3jyRnT/XkkWfzKst4mi09RioQ3yXxMC7KJyMi9PygF4E/0qVr7p0dST
- 9sY6FQPQMzhkde0Q/a/GB2+4q9t1/ifebh9rxK47O2r1qQiMOWLGpgEp/OJ/+oardX6KXk5oR
- MIC7zTggNIHBj3kHf/jnTn+Terc8wTyaH36z8j9LLB5jGvPxUX7nYDc6/1ug/LEW9RJ3cglVv
- YjnlZegKImu4AmG+vmlof2w3UKwQ5pMjBT8nm/KEJMBs0ECQcwWyM+q9Y85obJkW7qd3itLur
- PXed71zGU9ljp6fn7eM9YpYQ6QHDUAm4RqLc2fiqa6ZY0AhUqd3VPM60hzJ27DVxUCl2LCOv/
- wgIVrz05NtUuBcCVNTEkf8EPC49kKXTDIox+y3YZYEuoRgfmbjFOdbTogdINDe947oBs2zrOj
- Abl2VLBaa4T8tONx4uDB1OrW7smpIO9sm2TjPf9ARErFtoRE5YcUXTp6W2x0uB6qWAXwTn5JH
- 9XzSnpRAyj4sqBXn0cWS7m8eDxrctdQ7TFhFX8JPWIfi/ig/8AtczNMUIWnAiLtGhRDlOE/J9
- d0oIfP3sR2G4JhOtNYmTl1+/8bPVhLVwgLUX97g==
-Message-ID-Hash: JTRG7LESRO4FKWBO7QBKYN57L6ODXQMW
-X-Message-ID-Hash: JTRG7LESRO4FKWBO7QBKYN57L6ODXQMW
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MpkknXMA8lI=:ZfGcJ85c93oFY0oVDd+dOn
+ Vp1uqgdJBM27ecWBxLj4Wih2tjx2S39ER9VSdCizB6lK+2vRmMxxy5/0xnZZ1d8fSJ/Dp6kpp
+ UkTc7awX2+KbpIx0CKfvHtjGZxXXOGan6q8AlBOBHc84DSan5bpoaI3MwQ0PeupjsqbcuMpHv
+ n2nUcF/BWUn/VfrXvxO1x+3c+Ef4wbISuf7sS9NuU4Skdz9gqm0oBDgssXcTuQjxCsAV4T7ef
+ jud1bNASwpk7SyPduhcB43nwTzUvNpQnww+p0wbNeuW2er9kXhlINkQhsd81EEHst1lVeti+K
+ kd7oL0xsOun+LfmON9WLFoOcRbi1mqS+O/o0+O3NnsRE2wb+oocmjDhFGTbt99pusFcnAbrZp
+ Si7RpZriSta/oIKJU1dMzJNapnZ84WeLZW0NncZura8xRBOkwuHq+M8JIm1rVTqK8Fea3EqfT
+ Ny22KcQezK10HFurkn/TbSPb6JKe6FaxrA0j6nERLmOWxyrxGxOThXlBEniCZ8hvbW1xZoPU+
+ SJcyNVYTRGQUXM79j+Bi0HctkV7uB7O3q3dgW3AvB6oJt86h1fWdvzdwSsRqotNxl9HA0LN2U
+ RV3T7b7zeJwIuZ47k/ITVyL6RRxljlGS7STR9VWs11WbPsA4E3LKRLqjDhyirO3zHqDJOrV5t
+ XgaFZAVkLSVcuvaR5ZM11fTxtF3jfFN7F5Pmv6gu4hN0RGYjuA2x76nxcHormd8I9+7qgqU0y
+ be1hc8p+tvPxL2qhq5DNj0+qgJzx3uGUjwmUXpM7wrtRaNEnEGaPnG0zS1cMDdvAmkZBtKsEF
+ U0jSuhaMmEf4dbLTNo9IqoMxa1xjPu58MADL/AOteA55sxJ+FE2P+62qEREyfNjpsuGb9eML4
+ TGdzf9NHZlAbVfRI39WjALWZoPGaNl1ED1j86piODSFt18Tjqw2r5eSfe/HkD2X+NGrIW+Ay7
+ 4uJnmxnSh0kZNC+sWOK6l54VOVDd9xg4ThbkxMd3GPkn7Gn9XSlUBwuR5qIo0j6nhxG1dIj4t
+ HzmkXNAkcv9Tf04mXovsjAUs/47AOzNSuyGptRVr9lDT+bSfUhKnIUXVNsBKIyx+uXpSYEtBy
+ 4kn+Anh1fwc18bZrFcQDqKFbsuuezbFzwL0t13GQBOWxRA30CCpZp3TmfSI3Vcb023KXAB2qW
+ Ir8cVALO91v9yzkh8ZruwBeFodwgeaH+cKg49VDpxNDEzFf0uZkWb7rzLsWImrIff8PNO0MkL
+ g7+ZXfWumMZjU7ur6n/ggXF3eXhqgdd3HHCvXaA==
+Message-ID-Hash: 6UKX65UVJPTNI2TAO43ZOVKVEK4WSXJU
+X-Message-ID-Hash: 6UKX65UVJPTNI2TAO43ZOVKVEK4WSXJU
 X-MailFrom: Markus.Elfring@web.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel <linux-kernel@vger.kernel.org>
+CC: linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JTRG7LESRO4FKWBO7QBKYN57L6ODXQMW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6UKX65UVJPTNI2TAO43ZOVKVEK4WSXJU/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-> The memory priv->bus_desc.provider_name allocated by kstrdup() is not
-> freed correctly.
-
-How do you think about to choose an imperative wording for
-a corresponding change description?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=18445bf405cb331117bc98427b1ba6f12418ad17#n151
-
-Regards,
-Markus
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+PiDigKYgd2hlbiBpc19udmRpbW1fYnVzKGRldikgc3VjY2Vzc2VkLg0KDQpJIGltYWdpbmUgdGhh
+dCB0aGF0IGFuIG90aGVyIHdvcmRpbmcgd2lsbCBiZSBtb3JlIGFwcHJvcHJpYXRlIGhlcmUuDQoN
+ClJlZ2FyZHMsDQpNYXJrdXMKX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
+MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
+QGxpc3RzLjAxLm9yZwo=
