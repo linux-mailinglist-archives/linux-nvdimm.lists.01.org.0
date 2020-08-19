@@ -1,63 +1,63 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFEE24A91A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 00:21:24 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B759E24A916
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 00:21:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 649F8134BE066;
-	Wed, 19 Aug 2020 15:21:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
+	by ml01.01.org (Postfix) with ESMTP id 37D4D134BE06C;
+	Wed, 19 Aug 2020 15:21:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A1134134BE050
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 15:21:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id B35BC1347A1B8
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 15:21:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1597875668;
+	s=mimecast20190719; t=1597875665;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3r9Ws0y/w/73f6Yi8dzj7Ayu3FnCAIQyynyIBB67ZrI=;
-	b=QJowQYhqiCXHLQ8zwPYJAFXdpzex1S7f4/TTLjtbCDTf4UH0rz/xaaO2A1hNs9d589P/Ja
-	GicOgjDfNl83/Zn41QEq4xY33csOT0QJ2WUVu+CdTKXlgMqMkMIn9XJmyHMms3y+Rn3gpo
-	//b7BZVHVHVg2OnPiU4RjLfyQBNfaMk=
+	bh=a8Fv9LTgyRB5SSl/Lk6ZNgWdBq14YjztlZgeO1B398g=;
+	b=CtAam1YraxNUtA3TOgNJ+SEJK9vauir6MiVP5zSG+doiXtVdjP38Bh1XdMXN48my/K12EK
+	pOMgTHbWuopW9cDBQrbT70Exyrux6iMVG9HYnP/IIzDeJv/WY3Xe9pSkbPhs6akmjjovFc
+	oZ32hf8sWeISKhHhBZTh+yejZBxU/oI=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-50-GglbAcrKMWOfk_Pf1lgtbQ-1; Wed, 19 Aug 2020 18:21:06 -0400
-X-MC-Unique: GglbAcrKMWOfk_Pf1lgtbQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+ us-mta-473-gPsvGkkkNICwda23EDgoVg-1; Wed, 19 Aug 2020 18:21:03 -0400
+X-MC-Unique: gPsvGkkkNICwda23EDgoVg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 929921007475;
-	Wed, 19 Aug 2020 22:21:04 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 276FD425D2;
+	Wed, 19 Aug 2020 22:21:02 +0000 (UTC)
 Received: from horse.redhat.com (ovpn-115-197.rdu2.redhat.com [10.10.115.197])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D4C575C70C;
-	Wed, 19 Aug 2020 22:21:01 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 04FDC7E303;
+	Wed, 19 Aug 2020 22:21:02 +0000 (UTC)
 Received: by horse.redhat.com (Postfix, from userid 10451)
-	id 1BEEC2256EC; Wed, 19 Aug 2020 18:20:54 -0400 (EDT)
+	id 2B19C2256ED; Wed, 19 Aug 2020 18:20:54 -0400 (EDT)
 From: Vivek Goyal <vgoyal@redhat.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-nvdimm@lists.01.org,
 	virtio-fs@redhat.com
-Subject: [PATCH v3 14/18] fuse,dax: add DAX mmap support
-Date: Wed, 19 Aug 2020 18:19:52 -0400
-Message-Id: <20200819221956.845195-15-vgoyal@redhat.com>
+Subject: [PATCH v3 15/18] fuse,virtiofs: Define dax address space operations
+Date: Wed, 19 Aug 2020 18:19:53 -0400
+Message-Id: <20200819221956.845195-16-vgoyal@redhat.com>
 In-Reply-To: <20200819221956.845195-1-vgoyal@redhat.com>
 References: <20200819221956.845195-1-vgoyal@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: NHIRDPWH2EMSI2727UO7KLYEKJNH4IKB
-X-Message-ID-Hash: NHIRDPWH2EMSI2727UO7KLYEKJNH4IKB
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Message-ID-Hash: VBE4U4WOKYAJ54FVYLCKLRX4UMJEEYH5
+X-Message-ID-Hash: VBE4U4WOKYAJ54FVYLCKLRX4UMJEEYH5
 X-MailFrom: vgoyal@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: miklos@szeredi.hu, stefanha@redhat.com, dgilbert@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NHIRDPWH2EMSI2727UO7KLYEKJNH4IKB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VBE4U4WOKYAJ54FVYLCKLRX4UMJEEYH5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,108 +66,60 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+This is done along the lines of ext4 and xfs. I primarily wanted ->writepages
+hook at this time so that I could call into dax_writeback_mapping_range().
+This in turn will decide which pfns need to be written back.
 
-Add DAX mmap() support.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
 ---
- fs/fuse/file.c | 62 +++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 61 insertions(+), 1 deletion(-)
+ fs/fuse/file.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
 diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 99457d0b14b9..f1ad8b95b546 100644
+index f1ad8b95b546..0eecb4097c14 100644
 --- a/fs/fuse/file.c
 +++ b/fs/fuse/file.c
-@@ -2841,10 +2841,15 @@ static const struct vm_operations_struct fuse_file_vm_ops = {
- 	.page_mkwrite	= fuse_page_mkwrite,
+@@ -2669,6 +2669,16 @@ static int fuse_writepages_fill(struct page *page,
+ 	return err;
+ }
+ 
++static int fuse_dax_writepages(struct address_space *mapping,
++				struct writeback_control *wbc)
++{
++
++	struct inode *inode = mapping->host;
++	struct fuse_conn *fc = get_fuse_conn(inode);
++
++	return dax_writeback_mapping_range(mapping, fc->dax_dev, wbc);
++}
++
+ static int fuse_writepages(struct address_space *mapping,
+ 			   struct writeback_control *wbc)
+ {
+@@ -4021,6 +4031,13 @@ static const struct address_space_operations fuse_file_aops  = {
+ 	.write_end	= fuse_write_end,
  };
  
-+static int fuse_dax_mmap(struct file *file, struct vm_area_struct *vma);
- static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
- {
- 	struct fuse_file *ff = file->private_data;
- 
-+	/* DAX mmap is superior to direct_io mmap */
-+	if (IS_DAX(file_inode(file)))
-+		return fuse_dax_mmap(file, vma);
-+
- 	if (ff->open_flags & FOPEN_DIRECT_IO) {
- 		/* Can't provide the coherency needed for MAP_SHARED */
- 		if (vma->vm_flags & VM_MAYSHARE)
-@@ -2863,9 +2868,63 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
- 	return 0;
- }
- 
-+static vm_fault_t __fuse_dax_fault(struct vm_fault *vmf,
-+				   enum page_entry_size pe_size, bool write)
-+{
-+	vm_fault_t ret;
-+	struct inode *inode = file_inode(vmf->vma->vm_file);
-+	struct super_block *sb = inode->i_sb;
-+	pfn_t pfn;
-+
-+	if (write)
-+		sb_start_pagefault(sb);
-+
-+	ret = dax_iomap_fault(vmf, pe_size, &pfn, NULL, &fuse_iomap_ops);
-+
-+	if (ret & VM_FAULT_NEEDDSYNC)
-+		ret = dax_finish_sync_fault(vmf, pe_size, pfn);
-+
-+	if (write)
-+		sb_end_pagefault(sb);
-+
-+	return ret;
-+}
-+
-+static vm_fault_t fuse_dax_fault(struct vm_fault *vmf)
-+{
-+	return __fuse_dax_fault(vmf, PE_SIZE_PTE,
-+				vmf->flags & FAULT_FLAG_WRITE);
-+}
-+
-+static vm_fault_t fuse_dax_huge_fault(struct vm_fault *vmf,
-+			       enum page_entry_size pe_size)
-+{
-+	return __fuse_dax_fault(vmf, pe_size, vmf->flags & FAULT_FLAG_WRITE);
-+}
-+
-+static vm_fault_t fuse_dax_page_mkwrite(struct vm_fault *vmf)
-+{
-+	return __fuse_dax_fault(vmf, PE_SIZE_PTE, true);
-+}
-+
-+static vm_fault_t fuse_dax_pfn_mkwrite(struct vm_fault *vmf)
-+{
-+	return __fuse_dax_fault(vmf, PE_SIZE_PTE, true);
-+}
-+
-+static const struct vm_operations_struct fuse_dax_vm_ops = {
-+	.fault		= fuse_dax_fault,
-+	.huge_fault	= fuse_dax_huge_fault,
-+	.page_mkwrite	= fuse_dax_page_mkwrite,
-+	.pfn_mkwrite	= fuse_dax_pfn_mkwrite,
++static const struct address_space_operations fuse_dax_file_aops  = {
++	.writepages	= fuse_dax_writepages,
++	.direct_IO	= noop_direct_IO,
++	.set_page_dirty	= noop_set_page_dirty,
++	.invalidatepage	= noop_invalidatepage,
 +};
 +
- static int fuse_dax_mmap(struct file *file, struct vm_area_struct *vma)
+ void fuse_init_file_inode(struct inode *inode)
  {
--	return -EINVAL; /* TODO */
-+	file_accessed(file);
-+	vma->vm_ops = &fuse_dax_vm_ops;
-+	vma->vm_flags |= VM_MIXEDMAP | VM_HUGEPAGE;
-+	return 0;
- }
+ 	struct fuse_inode *fi = get_fuse_inode(inode);
+@@ -4036,6 +4053,8 @@ void fuse_init_file_inode(struct inode *inode)
+ 	fi->writepages = RB_ROOT;
+ 	fi->dmap_tree = RB_ROOT_CACHED;
  
- static int convert_fuse_file_lock(struct fuse_conn *fc,
-@@ -3938,6 +3997,7 @@ static const struct file_operations fuse_file_operations = {
- 	.release	= fuse_release,
- 	.fsync		= fuse_fsync,
- 	.lock		= fuse_file_lock,
-+	.get_unmapped_area = thp_get_unmapped_area,
- 	.flock		= fuse_file_flock,
- 	.splice_read	= generic_file_splice_read,
- 	.splice_write	= iter_file_splice_write,
+-	if (fc->dax_dev)
++	if (fc->dax_dev) {
+ 		inode->i_flags |= S_DAX;
++		inode->i_data.a_ops = &fuse_dax_file_aops;
++	}
+ }
 -- 
 2.25.4
 _______________________________________________
