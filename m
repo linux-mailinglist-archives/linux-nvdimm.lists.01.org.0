@@ -1,161 +1,131 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDF2249D87
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 14:11:05 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063B6249DAE
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 19 Aug 2020 14:21:05 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 10794134FC6EC;
-	Wed, 19 Aug 2020 05:11:04 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2F44513505CA0;
+	Wed, 19 Aug 2020 05:21:03 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=212.227.17.11; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=<UNKNOWN> 
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2E432134FC6EC
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 05:11:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1597839059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=857NeQfKqudCr8cv76Y2wKGCFtbyrEb0PXm+ZG9knDI=;
-	b=HeWD4tY7tOJF2kTW+xaw005bhPEWnnrt/H3FX9ZvVZ0p3sCU6XLzltainhVEVI8Q20yulI
-	lqt/1eiE9Zmh2qbJ63spqp9sqJJ23/PnjnZD49gOdIqcDK4CIisfa8UoqFgd/iOauEKE3z
-	yRbEFsmGL6iI7ag1fxmgQbDQyy4/z+M=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-239-iKTZXu92MdmkJASAmtw_Ug-1; Wed, 19 Aug 2020 08:10:55 -0400
-X-MC-Unique: iKTZXu92MdmkJASAmtw_Ug-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 553461084C8D;
-	Wed, 19 Aug 2020 12:10:51 +0000 (UTC)
-Received: from [10.36.114.11] (ovpn-114-11.ams2.redhat.com [10.36.114.11])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id AC72E5D9E8;
-	Wed, 19 Aug 2020 12:10:44 +0000 (UTC)
-Subject: Re: [PATCH v4 6/6] mm: secretmem: add ability to reserve memory at
- boot
-To: Mike Rapoport <rppt@kernel.org>
-References: <20200818141554.13945-1-rppt@kernel.org>
- <20200818141554.13945-7-rppt@kernel.org>
- <03ec586d-c00c-c57e-3118-7186acb7b823@redhat.com>
- <20200819115335.GU752365@kernel.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <10bf57a9-c3c2-e13c-ca50-e872b7a2db0c@redhat.com>
-Date: Wed, 19 Aug 2020 14:10:43 +0200
+	by ml01.01.org (Postfix) with ESMTPS id 512D9134FC6EC
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 05:21:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+	s=dbaedf251592; t=1597839643;
+	bh=v23jcDeGLgtsG3K4AD5B8PpZFv5q6Wp5N8tUvFrTPu4=;
+	h=X-UI-Sender-Class:Subject:To:References:From:Cc:Date:In-Reply-To;
+	b=qKckbMWbCkNEcSXCKsxjC3LbmKL8JPy5U6/a/jM/0DdK13Q0BvCDQ+M9N4oDSUIqD
+	 eRHQ+sX1xnLk+0mAw/GS4auY1+26ySZuerY3I9wj3nBQWd9CiDfUJepa1XR0sdfro4
+	 WnXPNnHZWvb0oKgFPM6moDUSDLT/eBNZ9LCoS3bM=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.132.88]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LcgVn-1kY7f33Clj-00k87H; Wed, 19
+ Aug 2020 14:20:42 +0200
+Subject: Re: [PATCH v2 0/4] bug fix and optimize for drivers/nvdimm
+To: Zhen Lei <thunder.leizhen@huawei.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
+References: <20200819020503.3079-1-thunder.leizhen@huawei.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <ce85d12b-f0bf-8cdd-0477-8ee87ff5a4c9@web.de>
+Date: Wed, 19 Aug 2020 14:20:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200819115335.GU752365@kernel.org>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Message-ID-Hash: SNFINDCLQ7KGLBZHAZIOZIOQMMQLKOGM
-X-Message-ID-Hash: SNFINDCLQ7KGLBZHAZIOZIOQMMQLKOGM
-X-MailFrom: david@redhat.com
+In-Reply-To: <20200819020503.3079-1-thunder.leizhen@huawei.com>
+Content-Language: en-GB
+X-Provags-ID: V03:K1:BfN9rJFl67mBIpUeOhw4vdlTDfHfkVpmH0v03UkAhJhcoofYGfC
+ 1JP/T6ruDmKM8TWKxqz47zGu6wNE82PHyv9M4XIFcPwU63d0zKIWMhWWshJYzrDUuWU6Aty
+ dh0U3lt58uJkZ74u5VG5XZmCUHITZQZ2kXdOUiN1WRzfa4HI7cFkeTsbD2XDNXSPpYSzGHZ
+ BjtfuT0yX8xTuXR5eXsVg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dyc0cOxfPgA=:vpcmZTA4FhRgUFe5ygKoqO
+ 2YGxZsI7sU6+pFq6xpS6Q3nfL5lzH+0IiblKnk01GxY+yNIADVFfJ3KOVFYBRI4xnWR9vZXT0
+ VweIF0fXXkSIPpusXTJ3qA+G6pxBctcmxqxiMDsOsPl+ndLTyWXTQr5xsKjBO6XC30vLINfO3
+ kb/brieaM7Um5Fjz2AO919Qjcgp7lrs+e2y8b4vYLUQqhRMVT3VehJ77bOqIKZg84n9zZvTAO
+ I87GdRApEj0K42P0InxOMQO26CXDqMdN2wrDLQ7Ug5IRfWo9RZ7lfzFfO96x2+xdgsnIcC8Nw
+ WvjrUmO8Lm5ATPkL3eci0Ryc9jskIggia0s9TJkhcpUqZyjj9nH0GX06ED9sbYIoxWmIQxc+1
+ CqWXiXEESPOs8+vhvYOOJLIDiaWVB/2PBFplUv+jxnYdedQYmant4RicNaDDodUImvBgDN12H
+ 9pfoqpmyB7xT97REywFSw4OD63AQ1ItrvLzHyJ4azm3E8yXbDPSYUO7HZgz78hYGQ2koENRnT
+ m7Fj78nV00jk6dlfisaT8OEu4wWCoY4etphcqm1eBS1CDFkjS7rfk6mygjUyoWS3wjl/g+IFL
+ k6ea3fG0afumw4aFtI6VMPghhdFYBStZtHMQYrpwr1NAcnqulg1LhOHmlAPuEVkqEQd30X4gZ
+ OPhVADpHNq4ix2OUs3EWCAUW7HbIY5ejGNHAhiPHQxy/bn2YckHul2TDwxq+AGIOXXo67CEwG
+ NMDu9UgAs92bAhp7yJe7y7HWbLW7rUGbHLWSeAZgJf+l/qZU7l7SlYv5OpqGlcpCwPODrlviK
+ 6YEFgajXeNpsPec7CkNR88gg8TAOLtGLjdWM+5oESczLkrhlNIk/qgfL6HK2vPKS8Fd3aQyXm
+ TpakdNF/RYcyy9umnioGDPZw1idL2PSn6kJDaeodcQmH7M5cGfXXtUjIlLkDPmj3sNLHzQMl3
+ j//yc+59cR1F9Fmp90VJFDV6NQXEOLdp9PzV5T15J+cs/gD/Nre228LQvVZ3Ne/jb2BCm8Unf
+ K3r5G82BowKLMXwWenbNETOayp9B3CTANK4xGS3g4oDxCIn1VQz8tC5gv58+tlle0iQ9Y4zYQ
+ gJIjEPxpuMQocVjw9Rj9E4uoY1cAcjPUFkWdKkP4WPt6jNkiF54kfX4JHSywfZAXvUKelmNsj
+ XXtTNmGCpEideSqHr28/VOFAl69MK7Ja2DFZ0MFXPAlA3SubP+2mE0Iv/mZm82spYTaBeT5W/
+ iLvEUue/PQ3W95/pFw+l3dx0vmTbf6mHGgexuYg==
+Message-ID-Hash: RUUHWPYYAOYWKQCYJI25R27MHQB2VIK2
+X-Message-ID-Hash: RUUHWPYYAOYWKQCYJI25R27MHQB2VIK2
+X-MailFrom: Markus.Elfring@web.de
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
- rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+CC: linux-kernel <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SNFINDCLQ7KGLBZHAZIOZIOQMMQLKOGM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RUUHWPYYAOYWKQCYJI25R27MHQB2VIK2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 19.08.20 13:53, Mike Rapoport wrote:
-> On Wed, Aug 19, 2020 at 12:49:05PM +0200, David Hildenbrand wrote:
->> On 18.08.20 16:15, Mike Rapoport wrote:
->>> From: Mike Rapoport <rppt@linux.ibm.com>
->>>
->>> Taking pages out from the direct map and bringing them back may create
->>> undesired fragmentation and usage of the smaller pages in the direct
->>> mapping of the physical memory.
->>>
->>> This can be avoided if a significantly large area of the physical memory
->>> would be reserved for secretmem purposes at boot time.
->>>
->>> Add ability to reserve physical memory for secretmem at boot time using
->>> "secretmem" kernel parameter and then use that reserved memory as a global
->>> pool for secret memory needs.
->>
->> Wouldn't something like CMA be the better fit? Just wondering. Then, the
->> memory can actually be reused for something else while not needed.
-> 
-> The memory allocated as secret is removed from the direct map and the
-> boot time reservation is intended to reduce direct map fragmentatioan
-> and to avoid splitting 1G pages there. So with CMA I'd still need to
-> allocate 1G chunks for this and once 1G page is dropped from the direct
-> map it still cannot be reused for anything else until it is freed.
-> 
-> I could use CMA to do the boot time reservation, but doing the
-> reservesion directly seemed simpler and more explicit to me.
-
-Well, using CMA would give you the possibility to let the memory be used
-for other purposes until you decide it's the right time to take it +
-remove the direct mapping etc.
-
-I wonder if a sane approach would be to require to allocate a pool
-during boot and only take pages ever from that pool. That would avoid
-spilling many unmovable pages all over the place, locally limiting them
-to your area here.
-
--- 
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+PiB2MSAtLT4gdjI6DQo+IDEuIEFkZCBGaXhlcyBmb3IgUGF0Y2ggMS0yDQo+IDIuIFNsaWdodGx5
+IGNoYW5nZSB0aGUgc3ViamVjdCBhbmQgZGVzY3JpcHRpb24gb2YgUGF0Y2ggMQ0K4oCmDQo+ICAg
+bGlibnZkaW1tOiBmaXggbWVtbW9yeSBsZWFrcyBpbiBvZl9wbWVtLmMNCuKApg0KDQpJIHN1Z2dl
+c3QgdG8gYXZvaWQgYSB0eXBvIGluIHN1Y2ggYSBwYXRjaCBzdWJqZWN0Lg0KDQpSZWdhcmRzLA0K
+TWFya3VzCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fCkxp
+bnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1
+bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5v
+cmcK
