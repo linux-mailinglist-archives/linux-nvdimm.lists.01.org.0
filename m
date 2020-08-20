@@ -2,85 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B6124ACED
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 04:17:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4028C24ADE3
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 06:35:19 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 62FCD13515B4C;
-	Wed, 19 Aug 2020 19:17:37 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.190; helo=huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN> 
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 84CD713515B4D
-	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 19:17:32 -0700 (PDT)
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-	by Forcepoint Email with ESMTP id 970854FFC53A1C5449FA;
-	Thu, 20 Aug 2020 10:17:30 +0800 (CST)
-Received: from DESKTOP-C3MD9UG.china.huawei.com (10.174.177.253) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 20 Aug 2020 10:17:19 +0800
-From: Zhen Lei <thunder.leizhen@huawei.com>
-To: Oliver O'Halloran <oohall@gmail.com>, Dan Williams
-	<dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, Markus
- Elfring <Markus.Elfring@web.de>, linux-nvdimm <linux-nvdimm@lists.01.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 7/7] libnvdimm: slightly simplify available_slots_show()
-Date: Thu, 20 Aug 2020 10:16:41 +0800
-Message-ID: <20200820021641.3188-8-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20200820021641.3188-1-thunder.leizhen@huawei.com>
-References: <20200820021641.3188-1-thunder.leizhen@huawei.com>
+	by ml01.01.org (Postfix) with ESMTP id E341D13511DD6;
+	Wed, 19 Aug 2020 21:35:17 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.227.236.146; helo=hjfff.com; envelope-from=kxyyum@svye.com; receiver=<UNKNOWN> 
+Received: from hjfff.com (unknown [120.227.236.146])
+	by ml01.01.org (Postfix) with ESMTP id 4468D13511DD2
+	for <linux-nvdimm@lists.01.org>; Wed, 19 Aug 2020 21:35:04 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Thu, 20 Aug 2020 10:28:23 +0800
+Message-ID: 3438d836-f9d7-433b-be28-03cbbd20417d
 MIME-Version: 1.0
-X-Originating-IP: [10.174.177.253]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: LT44XQR3KW457YXGOYD6D47GGXJEWF2M
-X-Message-ID-Hash: LT44XQR3KW457YXGOYD6D47GGXJEWF2M
-X-MailFrom: thunder.leizhen@huawei.com
+Sender: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6?=
+ =?utf-8?Q?=99=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5?=
+ =?utf-8?Q?=8C=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C?=
+ =?utf-8?Q?=E6=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6?=
+ =?utf-8?Q?=B2=E7=AD=89?=
+ <kxyyum@svye.com>
+From: =?utf-8?Q?=E5=A4=A7=E9=99=86=E5=87=BA=E5=8F=A3=E9=A6=99?=
+ =?utf-8?Q?=E6=B8=AF=E4=B8=93=E7=BA=BF=EF=BC=8C=E5=8F=AF=E6=8E=A5=E5=8C?=
+ =?utf-8?Q?=96=E5=A6=86=E5=93=81=EF=BC=8C=E5=8F=A3=E7=BD=A9=EF=BC=8C=E6?=
+ =?utf-8?Q?=B4=97=E5=8F=91=E6=B0=B4=EF=BC=8C=E6=B4=97=E6=89=8B=E6=B6=B2?=
+ =?utf-8?Q?=E7=AD=89?=
+ <hk13642980935@hotmail.com>
+To: linux-nvdimm@lists.01.org
+Date: 20 Aug 2020 10:28:23 +0800
+Subject: =?utf-8?B?5aSn6ZmG5Ye65Y+j6aaZ5riv5LiT57q/77yM5Y+v5o6l5YyW?=
+ =?utf-8?B?5aaG5ZOB77yM5Y+j572p77yM5rSX5Y+R5rC077yM5rSX5omL5ray562J?=
+ =?utf-8?B??=
+Message-ID-Hash: PHSDP3FM5QYRJKREKUYWOZKNVOVEPFNN
+X-Message-ID-Hash: PHSDP3FM5QYRJKREKUYWOZKNVOVEPFNN
+X-MailFrom: kxyyum@svye.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Zhen Lei <thunder.leizhen@huawei.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LT44XQR3KW457YXGOYD6D47GGXJEWF2M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PHSDP3FM5QYRJKREKUYWOZKNVOVEPFNN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The type of "nfree" is u32, so "nfree - 1" can only be overflowed when
-"nfree" is zero. Replace "if (nfree - 1 > nfree)" with "if (nfree == 0)"
-seems more clear. And remove the assignment "nfree = 0", no need for it.
-
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- drivers/nvdimm/dimm_devs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/nvdimm/dimm_devs.c b/drivers/nvdimm/dimm_devs.c
-index 61374def515552f..bf7d0cdc147cb39 100644
---- a/drivers/nvdimm/dimm_devs.c
-+++ b/drivers/nvdimm/dimm_devs.c
-@@ -347,10 +347,9 @@ static ssize_t available_slots_show(struct device *dev,
- 
- 	nvdimm_bus_lock(dev);
- 	nfree = nd_label_nfree(ndd);
--	if (nfree - 1 > nfree) {
-+	if (nfree == 0)
- 		dev_WARN_ONCE(dev, 1, "we ate our last label?\n");
--		nfree = 0;
--	} else
-+	else
- 		nfree--;
- 	rc = sprintf(buf, "%d\n", nfree);
- 	nvdimm_bus_unlock(dev);
--- 
-1.8.3
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQombmJzcDvlpKfpmYblh7rlj6PpppnmuK/kuJPnur/vvIzlj6/mjqXljJblpoblk4Hv
+vIzlj6PnvanvvIzmtJflj5HmsLTvvIzmtJfmiYvmtrLnrYkNCiZuYnNwO+KWoCZuYnNwOyDlpKfp
+mYbkuIrpl6jmj5DotKfvvIzov5DovpPmiqXlhbPkuIDmnaHpvpnmnI3liqENCiZuYnNwO+KWoCZu
+YnNwOyDpppnmuK/mnInljbjotKflubPlj7DvvIzlj6/mj5Dkvpvoo4XljbjotKfvvIzmi7znrrHv
+vIzku5PlgqjmnI3liqENCiZuYnNwO+KWoCZuYnNwOyDkuZ3pvpkv5paw55WML+a4r+Wym+a0vumA
+geWFrOWPuOS7peWPiuS7k+W6kw0KJm5ic3A74pagICZuYnNwO+mmmea4r+acuuWcui/ku5PnoIHl
+pLTku5PlhaXku5PmnI3liqENCiZuYnNwOw0K6IGU57O75oiR5LusDQrogZTns7vkurrvvJpKYWNr
+DQpNb2JpbGUmbmJzcDvvvJorODYtMTM2NDI5ODA5MzUgKOW+ruS/oeWQjOWPt++8iQ0KRS1tYWls
+IDombmJzcDtoazEzNjQyOTgwOTM1QGhvdG1haWwuY29tCl9fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGlu
+dXgtbnZkaW1tQGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxp
+bnV4LW52ZGltbS1sZWF2ZUBsaXN0cy4wMS5vcmcK
