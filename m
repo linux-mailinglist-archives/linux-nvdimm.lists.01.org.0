@@ -2,47 +2,56 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 521B024C0A2
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 16:31:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DDEB24C293
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 20 Aug 2020 17:52:59 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DC8A9134A649D;
-	Thu, 20 Aug 2020 07:30:58 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN> 
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	by ml01.01.org (Postfix) with ESMTP id 9B105134FDB7C;
+	Thu, 20 Aug 2020 08:52:57 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 93B63134A649B
-	for <linux-nvdimm@lists.01.org>; Thu, 20 Aug 2020 07:30:55 -0700 (PDT)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-	by Forcepoint Email with ESMTP id A0524680DFEFE3E90D12;
-	Thu, 20 Aug 2020 22:30:51 +0800 (CST)
-Received: from DESKTOP-C3MD9UG.china.huawei.com (10.174.177.253) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.487.0; Thu, 20 Aug 2020 22:30:43 +0800
-From: Zhen Lei <thunder.leizhen@huawei.com>
-To: Oliver O'Halloran <oohall@gmail.com>, Dan Williams
-	<dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, linux-nvdimm
-	<linux-nvdimm@lists.01.org>, linux-kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH 4/4] libnvdimm: avoid unnecessary judgments in nvdimm_namespace_disk_name()
-Date: Thu, 20 Aug 2020 22:30:27 +0800
-Message-ID: <20200820143027.3241-5-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
-In-Reply-To: <20200820143027.3241-1-thunder.leizhen@huawei.com>
-References: <20200820143027.3241-1-thunder.leizhen@huawei.com>
+	by ml01.01.org (Postfix) with ESMTPS id 1B9A2134FDB79
+	for <linux-nvdimm@lists.01.org>; Thu, 20 Aug 2020 08:52:39 -0700 (PDT)
+Received: from kernel.org (unknown [87.70.91.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 50D6F22D02;
+	Thu, 20 Aug 2020 15:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1597938759;
+	bh=olFkF8WbsFuHtZd9ChmwDnMhq4dAB75kWwSK+0maCo0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rXdI/2i+uTIyui9Dqky2lOsnOB5jHumUoz9vyCWVksi+jCX/cin2X0NAhZkvzzrrA
+	 kwB1mQk9tmImk5FV5Ln6HbAMWznc6VF7fXJ8iI6/UHeReZUV1SP7agq0ae+f8/MDDg
+	 S/yXBOXnLzIrn/7Y0W5T1dTvbgWrpaeScrKjGVKk=
+Date: Thu, 20 Aug 2020 18:52:28 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v4 6/6] mm: secretmem: add ability to reserve memory at
+ boot
+Message-ID: <20200820155228.GZ752365@kernel.org>
+References: <20200818141554.13945-1-rppt@kernel.org>
+ <20200818141554.13945-7-rppt@kernel.org>
+ <03ec586d-c00c-c57e-3118-7186acb7b823@redhat.com>
+ <20200819115335.GU752365@kernel.org>
+ <10bf57a9-c3c2-e13c-ca50-e872b7a2db0c@redhat.com>
+ <20200819173347.GW752365@kernel.org>
+ <6c8b30fb-1b6c-d446-0b09-255b79468f7c@redhat.com>
 MIME-Version: 1.0
-X-Originating-IP: [10.174.177.253]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: TTTPW35D7QRO3V32P7F62DELVHUJX4U4
-X-Message-ID-Hash: TTTPW35D7QRO3V32P7F62DELVHUJX4U4
-X-MailFrom: thunder.leizhen@huawei.com
+Content-Disposition: inline
+In-Reply-To: <6c8b30fb-1b6c-d446-0b09-255b79468f7c@redhat.com>
+Message-ID-Hash: OQBVR5JWYIPW3BI55RODYP63RO7JELQS
+X-Message-ID-Hash: OQBVR5JWYIPW3BI55RODYP63RO7JELQS
+X-MailFrom: rppt@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Zhen Lei <thunder.leizhen@huawei.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
+ rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TTTPW35D7QRO3V32P7F62DELVHUJX4U4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OQBVR5JWYIPW3BI55RODYP63RO7JELQS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -51,64 +60,86 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-suffix ? suffix : "" appears three times, it's easy to get rid of it
-by initialize the local variable "suffix" to empty string.
+On Wed, Aug 19, 2020 at 07:45:29PM +0200, David Hildenbrand wrote:
+> On 19.08.20 19:33, Mike Rapoport wrote:
+> > On Wed, Aug 19, 2020 at 02:10:43PM +0200, David Hildenbrand wrote:
+> >> On 19.08.20 13:53, Mike Rapoport wrote:
+> >>> On Wed, Aug 19, 2020 at 12:49:05PM +0200, David Hildenbrand wrote:
+> >>>> On 18.08.20 16:15, Mike Rapoport wrote:
+> >>>>> From: Mike Rapoport <rppt@linux.ibm.com>
+> >>>>>
+> >>>>> Taking pages out from the direct map and bringing them back may create
+> >>>>> undesired fragmentation and usage of the smaller pages in the direct
+> >>>>> mapping of the physical memory.
+> >>>>>
+> >>>>> This can be avoided if a significantly large area of the physical memory
+> >>>>> would be reserved for secretmem purposes at boot time.
+> >>>>>
+> >>>>> Add ability to reserve physical memory for secretmem at boot time using
+> >>>>> "secretmem" kernel parameter and then use that reserved memory as a global
+> >>>>> pool for secret memory needs.
+> >>>>
+> >>>> Wouldn't something like CMA be the better fit? Just wondering. Then, the
+> >>>> memory can actually be reused for something else while not needed.
+> >>>
+> >>> The memory allocated as secret is removed from the direct map and the
+> >>> boot time reservation is intended to reduce direct map fragmentatioan
+> >>> and to avoid splitting 1G pages there. So with CMA I'd still need to
+> >>> allocate 1G chunks for this and once 1G page is dropped from the direct
+> >>> map it still cannot be reused for anything else until it is freed.
+> >>>
+> >>> I could use CMA to do the boot time reservation, but doing the
+> >>> reservesion directly seemed simpler and more explicit to me.
+> >>
+> >> Well, using CMA would give you the possibility to let the memory be used
+> >> for other purposes until you decide it's the right time to take it +
+> >> remove the direct mapping etc.
+> > 
+> > I still can't say I follow you here. If I reseve a CMA area as a pool
+> > for secret memory 1G pages, it is still reserved and it still cannot be
+> > used for other purposes, right?
+> 
+> So, AFAIK, if you create a CMA pool it can be used for any MOVABLE
+> allocations (similar to ZONE_MOVABLE) until you actually allocate CMA
+> memory from that region. Other allocations on that are will then be
+> migrated away (using alloc_contig_range()).
+> 
+> For example, if you have a 1~GiB CMA area, you could allocate 4~MB pages
+> from that CMA area on demand (removing the direct mapping, etc ..), and
+> free when no longer needed (instantiating the direct mapping). The free
+> memory in that area could used for MOVABLE allocations.
 
-To avoid having rows that exceed 80 columns, add a new local variable
-"region_id".
+The boot time resrvation is intended to avoid splitting 1G pages in the
+direct map. Without the boot time reservation, we maintain a pool of 2M
+pages so the 1G pages are split and 2M pages remain unsplit.
 
-No functional change, but it can reduce the code size.
-Before:
-   text    data     bss     dec     hex filename
-  41749    3697      16   45462    b196 drivers/nvdimm/namespace_devs.o
+If I scale your example to match the requirement to avoid splitting 1G
+pages in the direct map, that would mean creating a CMA area of several
+tens of gigabytes and then doing cma_alloc() of 1G each time we need to
+refill the secretmem pool. 
 
-After:
-   text    data     bss     dec     hex filename
-  41653    3697      16   45366    b136 drivers/nvdimm/namespace_devs.o
+It is quite probable that we won't be able to get 1G from CMA after the
+system worked for some time.
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
- drivers/nvdimm/namespace_devs.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+With boot time reservation we won't need physcally contiguous 1G to
+satisfy smaller allocation requests for secretmem because we don't need
+to maintain 1G mappings in the secretmem pool.
 
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 6da67f4d641a27c..ef2800c5da4c99c 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -157,7 +157,8 @@ const char *nvdimm_namespace_disk_name(struct nd_namespace_common *ndns,
- 		char *name)
- {
- 	struct nd_region *nd_region = to_nd_region(ndns->dev.parent);
--	const char *suffix = NULL;
-+	const char *suffix = "";
-+	int region_id = nd_region->id;
- 
- 	if (ndns->claim && is_nd_btt(ndns->claim))
- 		suffix = "s";
-@@ -173,17 +174,14 @@ const char *nvdimm_namespace_disk_name(struct nd_namespace_common *ndns,
- 		}
- 
- 		if (nsidx)
--			sprintf(name, "pmem%d.%d%s", nd_region->id, nsidx,
--					suffix ? suffix : "");
-+			sprintf(name, "pmem%d.%d%s", region_id, nsidx, suffix);
- 		else
--			sprintf(name, "pmem%d%s", nd_region->id,
--					suffix ? suffix : "");
-+			sprintf(name, "pmem%d%s", region_id, suffix);
- 	} else if (is_namespace_blk(&ndns->dev)) {
- 		struct nd_namespace_blk *nsblk;
- 
- 		nsblk = to_nd_namespace_blk(&ndns->dev);
--		sprintf(name, "ndblk%d.%d%s", nd_region->id, nsblk->id,
--				suffix ? suffix : "");
-+		sprintf(name, "ndblk%d.%d%s", region_id, nsblk->id, suffix);
- 	} else {
- 		return NULL;
- 	}
+That said, I believe the addition of the boot time reservation, either
+direct or with CMA, can be added as an incrememntal patch after the
+"core" functionality is merged.
+
+> Please let me know if I am missing something important.
+> 
+> -- 
+> Thanks,
+> 
+> David / dhildenb
+> 
+
 -- 
-1.8.3
-
+Sincerely yours,
+Mike.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
