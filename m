@@ -1,44 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE09424D1F4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Aug 2020 12:06:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EAA24D20F
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 21 Aug 2020 12:15:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 66668135507BF;
-	Fri, 21 Aug 2020 03:06:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	by ml01.01.org (Postfix) with ESMTP id 2735B1354C392;
+	Fri, 21 Aug 2020 03:15:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D013E135507BC
-	for <linux-nvdimm@lists.01.org>; Fri, 21 Aug 2020 03:06:52 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 5C26C1348A271
+	for <linux-nvdimm@lists.01.org>; Fri, 21 Aug 2020 03:15:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1598004410;
+	s=mimecast20190719; t=1598004924;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zdZamnckdNbt37JHYyUQS6PF6rFNL7QUKZrWQzXeUes=;
-	b=Cd2Yg+5MEwKuU67kzS3N0X4qzw1/hMEKPIvTzcbc6sZZK+yI4XpAV4T58QDX6XAwziDoUr
-	rXkUyw7dbQ5T66A8agWL9huteJooV9OQaXRngJKEePOVOdYEfGliCI2dSVBBBQZv3Di4Ko
-	T4eCKp9LzMSBJo7dj9y7HRY+/u9jfLc=
+	bh=PmsTrWC7QL0R7Dl8wMRdta4a1oPLZaekFOdsDnhXsJY=;
+	b=M6rmpRRrT+iXLXG/8wXowAlhZLctSt2Itd3O7NNoe2FglW5SB6qNteQ3M7dDXwDlTH6YqQ
+	uQS47twzsvXRwcxWtdrPwO80XYyt8bseUuH5sHKk60+9tFGa6DE2JntbgBMmJTOuUzQC+n
+	I9AZC+1JL9I44mCJfnVGejP9WsfEKmA=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-102-jE53C10DM5GX5Q25Zgz-DA-1; Fri, 21 Aug 2020 06:06:47 -0400
-X-MC-Unique: jE53C10DM5GX5Q25Zgz-DA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+ us-mta-85-UcZwKt8kPgaJ_9wxSbWINA-1; Fri, 21 Aug 2020 06:15:20 -0400
+X-MC-Unique: UcZwKt8kPgaJ_9wxSbWINA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id C39C21005E74;
-	Fri, 21 Aug 2020 10:06:44 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A8B2A80733B;
+	Fri, 21 Aug 2020 10:15:14 +0000 (UTC)
 Received: from [10.36.114.87] (ovpn-114-87.ams2.redhat.com [10.36.114.87])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D831F7AEC2;
-	Fri, 21 Aug 2020 10:06:41 +0000 (UTC)
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1404219C78;
+	Fri, 21 Aug 2020 10:15:03 +0000 (UTC)
+Subject: Re: [PATCH v4 00/23] device-dax: Support sub-dividing soft-reserved
+ ranges
+To: Dan Williams <dan.j.williams@intel.com>
 References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <c59111f9-7c94-8b9e-2b8c-4cb96b9aa848@redhat.com>
+ <CAPcyv4j8-5nWU5GPDBoFicwR84qM=hWRtd78DkcCg4PW-8i6Vg@mail.gmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -85,24 +87,25 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com>
-Date: Fri, 21 Aug 2020 12:06:40 +0200
+Message-ID: <6af3de0d-ffdc-8942-3922-ebaeef20dd63@redhat.com>
+Date: Fri, 21 Aug 2020 12:15:03 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <CAPcyv4j8-5nWU5GPDBoFicwR84qM=hWRtd78DkcCg4PW-8i6Vg@mail.gmail.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: NIZCZBKQOQHE3KMOQ65S4RQBXHTYSMR3
-X-Message-ID-Hash: NIZCZBKQOQHE3KMOQ65S4RQBXHTYSMR3
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Message-ID-Hash: HFUIOM6D33FY5OONPNVZCC7BVHYJ4NTO
+X-Message-ID-Hash: HFUIOM6D33FY5OONPNVZCC7BVHYJ4NTO
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, peterz@infradead.org, ard.biesheuvel@linaro.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, joao.m.martins@oracle.com, linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org, dri-devel@lists.freedesktop.org
+CC: Andrew Morton <akpm@linux-foundation.org>, Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, David Airlie <airlied@linux.ie>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Joao Martins <joao.m.martins@oracle.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Pavel Tatashin <pasha.tatashin@soleen.com>, Peter Zijlstra <peterz@infradead.org>, Ben Skeggs <bskeggs@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Jason Gunthorpe <jgg@mellanox.com>, Jia He <justin.he@arm.com>, Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@ozlabs.org>, Brice Goglin <Brice.Goglin@inr
+ ia.fr>, Michael Ellerman <mpe@ellerman.id.au>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Daniel Vetter <daniel@ffwll.ch>, Andy Lutomirski <luto@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Maling list - DRI developers <dri-devel@lists.freedesktop.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NIZCZBKQOQHE3KMOQ65S4RQBXHTYSMR3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HFUIOM6D33FY5OONPNVZCC7BVHYJ4NTO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -111,234 +114,150 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 03.08.20 07:03, Dan Williams wrote:
-> Several related issues around this unneeded attribute:
+>>
+>> 1. On x86-64, e820 indicates "soft-reserved" memory. This memory is not
+>> automatically used in the buddy during boot, but remains untouched
+>> (similar to pmem). But as it involves ACPI as well, it could also be
+>> used on arm64 (-e820), correct?
 > 
-> - The dax_kmem_res property allows the kmem driver to stash the adjusted
->   resource range that was used for the hotplug operation, but that can be
->   recalculated from the original base range.
+> Correct, arm64 also gets the EFI support for enumerating memory this
+> way. However, I would clarify that whether soft-reserved is given to
+> the buddy allocator by default or not is the kernel's policy choice,
+> "buddy-by-default" is ok and is what will happen anyways with older
+> kernels on platforms that enumerate a memory range this way.
+
+Is "soft-reserved" then the right terminology for that? It sounds very
+x86-64/e820 specific. Maybe a compressed for of "performance
+differentiated memory" might be a better fit to expose to user space, no?
+
 > 
-> - kmem is using an open coded release_resource() + kfree() when an
->   idiomatic release_mem_region() is sufficient.
+>> 2. Soft-reserved memory is volatile RAM with differing performance
+>> characteristics ("performance differentiated memory"). What would be
+>> examples of such memory?
 > 
-> - The driver managed resource need only manage the busy flag. Other flags
->   are of no concern to the kmem driver. In fact if kmem inherits some
->   memory range that add_memory_driver_managed() rejects that is a
->   memory-hotplug-core policy that the driver is in no position to
->   override.
+> Likely the most prominent one that drove the creation of the "EFI
+> Specific Purpose" attribute bit is high-bandwidth memory. One concrete
+> example of that was a platform called Knights Landing [1] that ended
+> up shipping firmware that lied to the OS about the latency
+> characteristics of the memory to try to reverse engineer OS behavior
+> to not allocate from that memory range by default. With the EFI
+> attribute firmware performance tables can tell the truth about the
+> performance characteristics of the memory range *and* indicate that
+> the OS not use it for general purpose allocations by default.
+
+Thanks for clarifying!
+
 > 
-> - The implementation trusts that failed remove_memory() results in the
->   entire resource range remaining pinned busy. The driver need not make
->   that layering violation assumption and just maintain the busy state in
->   its local resource.
+> [1]: https://software.intel.com/content/www/us/en/develop/blogs/an-intro-to-mcdram-high-bandwidth-memory-on-knights-landing.html
 > 
-> - The "Hot-remove not yet implemented." comment is stale since hotremove
->   support is now included.
-
-I think some of these changes could have been nicely split out to
-simplify reviewing. E.g., comment update, release_mem_region(),  &=
-~IORESOURCE_BUSY ...
-
-[...]
-
-> +
->  int dev_dax_kmem_probe(struct device *dev)
->  {
->  	struct dev_dax *dev_dax = to_dev_dax(dev);
-> -	struct range *range = &dev_dax->range;
-> -	resource_size_t kmem_start;
-> -	resource_size_t kmem_size;
-> -	resource_size_t kmem_end;
-> -	struct resource *new_res;
-> -	const char *new_res_name;
-> -	int numa_node;
-> +	struct range range = dax_kmem_range(dev_dax);
-> +	int numa_node = dev_dax->target_node;
-> +	struct resource *res;
-> +	char *res_name;
->  	int rc;
->  
->  	/*
-> @@ -37,109 +45,94 @@ int dev_dax_kmem_probe(struct device *dev)
->  	 * could be mixed in a node with faster memory, causing
->  	 * unavoidable performance issues.
->  	 */
-> -	numa_node = dev_dax->target_node;
->  	if (numa_node < 0) {
->  		dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
->  				numa_node);
->  		return -EINVAL;
->  	}
->  
-> -	/* Hotplug starting at the beginning of the next block: */
-> -	kmem_start = ALIGN(range->start, memory_block_size_bytes());
-> -
-> -	kmem_size = range_len(range);
-> -	/* Adjust the size down to compensate for moving up kmem_start: */
-> -	kmem_size -= kmem_start - range->start;
-> -	/* Align the size down to cover only complete blocks: */
-> -	kmem_size &= ~(memory_block_size_bytes() - 1);
-> -	kmem_end = kmem_start + kmem_size;
-> -
-> -	new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> -	if (!new_res_name)
-> +	res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> +	if (!res_name)
->  		return -ENOMEM;
->  
-> -	/* Region is permanently reserved if hotremove fails. */
-> -	new_res = request_mem_region(kmem_start, kmem_size, new_res_name);
-> -	if (!new_res) {
-> -		dev_warn(dev, "could not reserve region [%pa-%pa]\n",
-> -			 &kmem_start, &kmem_end);
-> -		kfree(new_res_name);
-> +	res = request_mem_region(range.start, range_len(&range), res_name);
-
-I think our range could be empty after aligning. I assume
-request_mem_region() would check that, but maybe we could report a
-better error/warning in that case.
-
-> +	if (!res) {
-> +		dev_warn(dev, "could not reserve region [%#llx-%#llx]\n",
-> +				range.start, range.end);
-> +		kfree(res_name);
->  		return -EBUSY;
->  	}
->  
->  	/*
-> -	 * Set flags appropriate for System RAM.  Leave ..._BUSY clear
-> -	 * so that add_memory() can add a child resource.  Do not
-> -	 * inherit flags from the parent since it may set new flags
-> -	 * unknown to us that will break add_memory() below.
-> +	 * Temporarily clear busy to allow add_memory_driver_managed()
-> +	 * to claim it.
->  	 */
-> -	new_res->flags = IORESOURCE_SYSTEM_RAM;
-> +	res->flags &= ~IORESOURCE_BUSY;
-
-Right, same approach is taken by virtio-mem.
-
->  
->  	/*
->  	 * Ensure that future kexec'd kernels will not treat this as RAM
->  	 * automatically.
->  	 */
-> -	rc = add_memory_driver_managed(numa_node, new_res->start,
-> -				       resource_size(new_res), kmem_name);
-> +	rc = add_memory_driver_managed(numa_node, res->start,
-> +				       resource_size(res), kmem_name);
-> +
-> +	res->flags |= IORESOURCE_BUSY;
-
-Hm, I don't think that's correct. Any specific reason why to mark the
-not-added, unaligned parts BUSY? E.g., walk_system_ram_range() could
-suddenly stumble over it - and e.g., similarly kexec code when trying to
-find memory for placing kexec images. I think we should leave this
-!BUSY, just as it is right now.
-
->  	if (rc) {
-> -		release_resource(new_res);
-> -		kfree(new_res);
-> -		kfree(new_res_name);
-> +		release_mem_region(range.start, range_len(&range));
-> +		kfree(res_name);
->  		return rc;
->  	}
-> -	dev_dax->dax_kmem_res = new_res;
-> +
-> +	dev_set_drvdata(dev, res_name);
->  
->  	return 0;
->  }
->  
->  #ifdef CONFIG_MEMORY_HOTREMOVE
-> -static int dev_dax_kmem_remove(struct device *dev)
-> +static void dax_kmem_release(struct dev_dax *dev_dax)
->  {
-> -	struct dev_dax *dev_dax = to_dev_dax(dev);
-> -	struct resource *res = dev_dax->dax_kmem_res;
-> -	resource_size_t kmem_start = res->start;
-> -	resource_size_t kmem_size = resource_size(res);
-> -	const char *res_name = res->name;
->  	int rc;
-> +	struct device *dev = &dev_dax->dev;
-> +	const char *res_name = dev_get_drvdata(dev);
-> +	struct range range = dax_kmem_range(dev_dax);
->  
->  	/*
->  	 * We have one shot for removing memory, if some memory blocks were not
->  	 * offline prior to calling this function remove_memory() will fail, and
->  	 * there is no way to hotremove this memory until reboot because device
-> -	 * unbind will succeed even if we return failure.
-> +	 * unbind will proceed regardless of the remove_memory result.
->  	 */
-> -	rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-> -	if (rc) {
-> -		any_hotremove_failed = true;
-> -		dev_err(dev,
-> -			"DAX region %pR cannot be hotremoved until the next reboot\n",
-> -			res);
-> -		return rc;
-> +	rc = remove_memory(dev_dax->target_node, range.start, range_len(&range));
-> +	if (rc == 0) {
-
-if (!rc) ?
-
-> +		release_mem_region(range.start, range_len(&range));
-
-remove_memory() does a release_mem_region_adjustable(). Don't you
-actually want to release the *unaligned* region you requested?
-
-> +		dev_set_drvdata(dev, NULL);
-> +		kfree(res_name);
-> +		return;
->  	}
-
-Not sure if inverting the error handling improved the code / review here.
->  
-> -	/* Release and free dax resources */
-> -	release_resource(res);
-> -	kfree(res);
-> -	kfree(res_name);
-> -	dev_dax->dax_kmem_res = NULL;
-> -
-> -	return 0;
-> +	any_hotremove_failed = true;
-> +	dev_err(dev, "%#llx-%#llx cannot be hotremoved until the next reboot\n",
-> +			range.start, range.end);
->  }
->  #else
-> -static int dev_dax_kmem_remove(struct device *dev)
-> +static void dax_kmem_release(struct dev_dax *dev_dax)
->  {
->  	/*
-> -	 * Without hotremove purposely leak the request_mem_region() for the
-> -	 * device-dax range and return '0' to ->remove() attempts. The removal
-> -	 * of the device from the driver always succeeds, but the region is
-> -	 * permanently pinned as reserved by the unreleased
-> -	 * request_mem_region().
-> +	 * Without hotremove purposely leak the request_mem_region() for
-> +	 * the device-dax range attempts. The removal of the device from
-> +	 * the driver always succeeds, but the region is permanently
-> +	 * pinned as reserved by the unreleased request_mem_region().
->  	 */
->  	any_hotremove_failed = true;
-> -	return 0;
->  }
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
->  
-> +static int dev_dax_kmem_remove(struct device *dev)
-> +{
-> +	dax_kmem_release(to_dev_dax(dev));
-> +	return 0;
-> +}
-> +
->  static struct dax_device_driver device_dax_kmem_driver = {
->  	.drv = {
->  		.probe = dev_dax_kmem_probe,
+>> Like, memory that is faster than RAM (scratch
+>> pad), or slower (pmem)? Or both? :)
 > 
+> Both, but note that PMEM is already hard-reserved by default.
+> Soft-reserved is about a memory range that, for example, an
+> administrator may want to reserve 100% for a weather simulation where
+> if even a small amount of memory was stolen for the page cache the
+> application may not meet its performance targets. It could also be a
+> memory range that is so slow that only applications with higher
+> latency tolerances would be prepared to consume it.
+> 
+> In other words the soft-reserved memory can be used to indicate memory
+> that is either too precious, or too slow for general purpose OS
+> allocations.
 
-Maybe split some of these changes out. Would at least help me to review ;)
+Right, so actually performance-differentiated in any way :)
+
+> 
+>> Is it a valid use case to use pmem
+>> in a hypervisor to back this memory?
+> 
+> Depends on the pmem. That performance capability is indicated by the
+> ACPI HMAT, not the EFI soft-reserved designation.
+> 
+>> 3. There seem to be use cases where "soft-reserved" memory is used via
+>> DAX. What is an example use case? I assume it's *not* to treat it like
+>> PMEM but instead e.g., use it as a fast buffer inside applications or
+>> similar.
+> 
+> Right, in that weather-simulation example that application could just
+> mmap /dev/daxX.Y and never worry about contending for the "fast
+> memory" resource on the platform. Alternatively if that resource needs
+> to be shared and/or over-commited then kernel memory-management
+> services are needed and that dax-device can be assigned to kmem.
+> 
+>> 4. There seem to be use cases where some part of "soft-reserved" memory
+>> is used via DAX, some other is given to the buddy. What is an example
+>> use case? Is this really necessary or only some theoretical use case?
+> 
+> It's as necessary as pmem namespace partitioning, or the inclusion of
+> dax-kmem upstream in the first place. In that kmem case the motivation
+> was that some users want a portion of pmem provisioned for storage and
+> some for volatile usage. The motivation is similar here, platform
+> firmware can only identify memory attributes on coarse boundaries,
+> finer grained provisioning decisions are up to the administrator /
+> platform-owner and the kernel is a just a facilitator of that policy.
+> 
+>>
+>> 5. The "provisioned along performance relevant address boundaries." part
+>> is unclear to me. Can you give an example of how this would look like
+>> from user space? Like, split that memory in blocks of size X with
+>> alignment Y and give them to separate applications?
+> 
+> One example of platform address boundaries are the memory address
+> ranges that alias in a direct-mapped memory-side-cache. In the
+> direct-map-cache aliasing may repeat every N GBs where N is the ratio
+> of far-to-near memory. ("Near memory" ==  cache "Far memory" ==
+> backing memory). Also refer back to the background in the page
+> allocator shuffling patches [2]. With this partitioning mechanism you
+> could, for one example use case, assign different VMs to exclusive
+> colors in the memory side cache.
+
+Interesting, thanks!
+
+> 
+> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e900a918b098
+> 
+>> 6. If you add such memory to the buddy, is there any way the system can
+>> differentiate it from other memory? E.g., via fake/other NUMA nodes?
+> 
+> Numa node numbers / are how performance differentiated memory ranges
+> are enumerated. The expectation is that all distinct performance
+> memory targets have unique ACPI proximity domains and Linux numa node
+> numbers as a result.
+
+Makes sense to me (although it's somehow weird, because memory of the
+same socket/node would be represented via different NUMA nodes), thanks!
+
+> 
+>> Also, can you give examples of how kmem-added memory is represented in
+>> /proc/iomem for a) pmem and b) soft-resered memory after this series
+>> (skimming over the patches, I think there is a change for pmem, right?)?
+> 
+> I don't expect a change. The only difference is the parent resource
+> will be marked "Soft Reserved" instead of "Persistent Memory".
+
+Right, I misread patch #11 while skimming - I thought the device
+resource would be dropped.
+
+> 
+>> I am really wondering if it's the right approach to squeeze this into
+>> our pmem/nvdimm infrastructure just because it's easy to do. E.g., man
+>> "ndctl" - "ndctl - Manage "libnvdimm" subsystem devices (Non-volatile
+>> Memory)" speaks explicitly about non-volatile memory.
+> 
+> In fact it's not squeezed into PMEM infrastructure. dax-kmem and
+> device-dax are independent of PMEM. PMEM is one source of potential
+> device-dax instances, soft-reserved memory is another orthogonal
+> source. This is why device-dax needs its own userspace policy directed
+> partitioning mechanism because there is no PMEM to store the
+> configuration for partitioned higph-bandwidth memory. The userspace
+> tooling for this mechanism is targeted for a tool called daxctl that
+> has no PMEM dependencies. Look to Joao's use case that is using this
+> infrastructure independent of PMEM with manual soft-reservations
+> specified on the kernel command-line.
+
+Thanks for clarifying, I was under the impression we would be reusing
+libnvdimm to manage that memory.
 
 -- 
 Thanks,
