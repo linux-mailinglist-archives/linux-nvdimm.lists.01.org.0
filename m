@@ -2,16 +2,16 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0623224E2FD
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 22 Aug 2020 00:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E6A24E303
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 22 Aug 2020 00:08:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2EC7E123B96FF;
+	by ml01.01.org (Postfix) with ESMTP id 07D0C123B96FE;
 	Fri, 21 Aug 2020 15:07:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CD2D1123B72FD
+	by ml01.01.org (Postfix) with ESMTPS id 5F9AE123B72FD
 	for <linux-nvdimm@lists.01.org>; Fri, 21 Aug 2020 15:07:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	s=mimecast20190719; t=1598047670;
@@ -19,44 +19,44 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XjtI18d1f2H/aKTyFHmileH6IrtXVHmAbfK2HkX3dk0=;
-	b=cRxzOahG7oxP4yxBF6gGv1UnnIVbQBZt/uBOIi/MDnL79jACh7KQHwIuBaZICKeiXxg1Uf
-	kYLkV34F/KCJlWbEOnoPeglM7d0QzuIzivaL3TjTWgpG0Yhnc/fTxt+t7JBNiuHZt/sC79
-	Zt2rzzhcnJZRPkMkYwNWws4DLpwXA1c=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-480-JshuvdwfPrWtlhCE4n6U9w-1; Fri, 21 Aug 2020 18:07:47 -0400
-X-MC-Unique: JshuvdwfPrWtlhCE4n6U9w-1
-Received: by mail-ej1-f70.google.com with SMTP id d24so1288785ejb.3
-        for <linux-nvdimm@lists.01.org>; Fri, 21 Aug 2020 15:07:46 -0700 (PDT)
+	bh=+Ghw+o5+dr+bNDRCy44b4u1duUjDbA9r6jkFwxNcpSY=;
+	b=dLGUENF+5kzEnPTkycAqQ2Q6Df/oVijRlzaHp22BKj+okGPKfxNiKX7EnjFo5jwW+JuHDe
+	x/uS+C8K0BC781FfH0Z2wKzOy2U0TQIwMEUaDHsKbx1OGLJbj1Ffkpwo4DV1iXftuWqgaQ
+	epMF1xWEwIrLyFyFyTF+xQ36TlFKbu8=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-234-pOLe6LFwMGeFVwFiYCZ9YQ-1; Fri, 21 Aug 2020 18:07:48 -0400
+X-MC-Unique: pOLe6LFwMGeFVwFiYCZ9YQ-1
+Received: by mail-ej1-f69.google.com with SMTP id bx27so1279160ejc.15
+        for <linux-nvdimm@lists.01.org>; Fri, 21 Aug 2020 15:07:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:content-transfer-encoding:from:mime-version
          :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=6/wi0Nw+OScWqjXUa7deT7et3gd07Go77zu0NJl9auw=;
-        b=AqySdDRJTJOVOLz/dHP6ZNeih+JyjfMNxfNB6Sl7u3jPFA3k621sS1fRI1/xd19dzB
-         YI2GwBD34n8TZFc1xnpFwjuLOYASROVfBJPdpEm940Bd1ddevDtFZDp7q5h7i5OFRnVb
-         zsV39M+z2RLu05e4bSZc5d+GpiU010mjoaEOvNepw5sz1ysYoHw9XkR6qbXIuzVBKz+H
-         oNY0VZkiwWpZeVx3+hemppJHq1L+upNbjQAEMAI6BPBHVSCCB6qmtQRG4dO8aAjgtQYU
-         bUzMBGUUvoJ1+pa4h02jiEjeNoAeZ7FeI0VXHl/WJTn5CoyltxQc5ZgbH6TsgFK+Ytmo
-         KBnQ==
-X-Gm-Message-State: AOAM531naTmoPPiCpagaAR5Xt9xrSyU6lQU0OAA/XO6F68ymfTDnlfzT
-	VXpgLaOfSZkyMBCQNmfo2L0QKDhUSGAg8hBJR92GNp2dQprH+iQJhR99DPDN7KytBP7DKYpKRuF
-	QsGWc0qLBDMSYJ51dHhv5
-X-Received: by 2002:a17:906:6d91:: with SMTP id h17mr4593048ejt.531.1598047665749;
-        Fri, 21 Aug 2020 15:07:45 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz2fGCDlUrSC0ozVrUImslz75nvdXz6gshUl15sF6TxX4V9+R9BHsd6i/JypP0Cf8+w6d3+oA==
-X-Received: by 2002:a17:906:6d91:: with SMTP id h17mr4593016ejt.531.1598047665540;
-        Fri, 21 Aug 2020 15:07:45 -0700 (PDT)
+        bh=DkSg3luBHRm0cvkVLNBpsnCZK9HVFB0m9kyx8QwK1QI=;
+        b=MQ4amPRdSzNaE6QnrcUj4gZpYQt+JEZ82cAJt7v8BPwIkPQMlMnizIL9QovpyISCaL
+         pRdv9+xMQbmyjPQXhoV5vhhYaFRgIOfHxiYYMFA4r2XE1IvHMeZuvvGO9+oEanO7ML90
+         IdTC/E6ItrUdZ/bP2hZqmM9Y2C+uCCDVJpZRXzOsAywDhiBme5rJydxSpMLJzIgT2nx9
+         EFa5QWV7wszQRb5J3RXIYREvOCkOeMuM6/QlZ7fonBQwtI/ZtpJKcdPtVO2ho6ZOVSJZ
+         kzUOgCVr1FVA/czpQomqFVJyLroAGrH0xDhsQ/Q/uiWcYZmQCsT7PV4pDIU+sBGFZZHs
+         wpNw==
+X-Gm-Message-State: AOAM5302zALKsn52Z0RtBRHnZLfazsi//ncGoLXut4hWtewxAtwynhDM
+	ZEoLqitraPe7V+/IcbKY4yM+LDZB3DdoK7Dv8xF/jZWam6hGKwzBdGicYv0JnEeokI/ClZFwjUn
+	FBYSEs6CwJL6IUeaW3vUR
+X-Received: by 2002:a17:906:2a04:: with SMTP id j4mr5244870eje.440.1598047667319;
+        Fri, 21 Aug 2020 15:07:47 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwhvJaQ8AyV/ONfuc3qKwQ/zzerkQ6ZDcGPqYKrvzzg0K+cbZJ1cq8ZccJ0IrDrvfkZ/kgetQ==
+X-Received: by 2002:a17:906:2a04:: with SMTP id j4mr5244849eje.440.1598047667115;
+        Fri, 21 Aug 2020 15:07:47 -0700 (PDT)
 Received: from [192.168.3.122] (p5b0c6231.dip0.t-ipconnect.de. [91.12.98.49])
-        by smtp.gmail.com with ESMTPSA id n10sm1810467edo.43.2020.08.21.15.07.44
+        by smtp.gmail.com with ESMTPSA id zc8sm181245ejb.103.2020.08.21.15.07.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Aug 2020 15:07:45 -0700 (PDT)
+        Fri, 21 Aug 2020 15:07:46 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 Mime-Version: 1.0 (1.0)
 Subject: Re: [PATCH v4 00/23] device-dax: Support sub-dividing soft-reserved ranges
-Date: Fri, 21 Aug 2020 23:42:49 +0200
-Message-Id: <1FB395E7-633D-4F3E-82F5-12E2FDAF33EC@redhat.com>
+Date: Fri, 21 Aug 2020 23:43:50 +0200
+Message-Id: <D0A25288-C72D-47C1-BD8F-C1C1A6BFA0BF@redhat.com>
 References: <646DDE9B-90C2-493A-958C-90EFA1CCA475@redhat.com>
 In-Reply-To: <646DDE9B-90C2-493A-958C-90EFA1CCA475@redhat.com>
 To: Dan Williams <dan.j.williams@intel.com>
@@ -65,8 +65,8 @@ Authentication-Results: relay.mimecast.com;
 	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=david@redhat.com
 X-Mimecast-Spam-Score: 0.502
 X-Mimecast-Originator: redhat.com
-Message-ID-Hash: P6254IB56GEFCX75XY74J5PWZFRIHN32
-X-Message-ID-Hash: P6254IB56GEFCX75XY74J5PWZFRIHN32
+Message-ID-Hash: 2IKC4O34O7SZKLOLYNDNG6QQIUFEHWTZ
+X-Message-ID-Hash: 2IKC4O34O7SZKLOLYNDNG6QQIUFEHWTZ
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -75,7 +75,7 @@ CC: Andrew Morton <akpm@linux-foundation.org>, Ard Biesheuvel <ardb@kernel.org>,
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P6254IB56GEFCX75XY74J5PWZFRIHN32/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2IKC4O34O7SZKLOLYNDNG6QQIUFEHWTZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -141,8 +141,8 @@ bGluZyB0byBldmVuIHVuZGVyc3RhbmQgd2hhdCDigJ5zb2Z0LXJlc2VydmVk4oCcIGlzIGFuZCBJ
 IGNvdWxkIGJldCBtb3N0IHBlb3BsZSBoYXZlIG5vIGNsdWUgd2hhdCB0aGF0IGlzIHN1cHBvc2Vk
 IHRvIGJlLg0KPiANCj4gSW4gY29udHJhc3Qg4oCecGVyc2lzdGVudCBtZW1vcnnigJwgb3Ig4oCe
 c3BlY2lhbCBwdXJwb3NlIG1lbW9yeeKAnCBpbiAvcHJvYy9pb21lbSBpcyBzb21ldGhpbmcgbm9y
-bWFsIChMaW51eCB1c2luZykgaHVtYW4gYmVpbmdzIGNhbiB1bmRlcnN0YW5kLg0KDQpzL25vcm1h
-bC9tb3N0LyBvZiBjb3Vyc2UgOikNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxp
-c3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1s
-ZWF2ZUBsaXN0cy4wMS5vcmcK
+bWFsIChMaW51eCB1c2luZykgaHVtYW4gYmVpbmdzIGNhbiB1bmRlcnN0YW5kLg0KDQpPYnZpb3Vz
+bHkgcy9ub3JtYWwvbW9zdC8NCg0KQ2hlZXJzIQ0KX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1u
+dmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgt
+bnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
