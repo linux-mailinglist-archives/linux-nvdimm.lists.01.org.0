@@ -2,247 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A9F525238E
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Aug 2020 00:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4402524FC
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Aug 2020 03:16:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D0D7911154CDB;
-	Tue, 25 Aug 2020 15:24:05 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EA55311154CD9
-	for <linux-nvdimm@lists.01.org>; Tue, 25 Aug 2020 15:24:03 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PM9F6M152383;
-	Tue, 25 Aug 2020 22:23:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=oeKJZmmYR5uMQ5BCN6pmoROIcHs/c+lN/lZTS/iI3aw=;
- b=xHgPNBM/tXzqFEXOXJ1PdoMNsD3RpLtGKA2eLTAcqps33vmj44wVAurox4de08xBUvUV
- RKs3G8sD0ijRTWdo8zYoJzh+kc6fvqF9OOdz49BtwOlDZi5D4gPlirkLlvIJ+y/UhFtr
- 6fSUeGywJ2OE3v2BJYH1uUJ0S16f4cjcE+HGGU1CCc+2fGGecbU047LBgIvwhD9TGzy7
- zWOwSAnvE9+8ABCF12vrXlsFGJvPaXkMTtCpYzHhx5Y5k0OXK+vm07JNoEq8myeLfNe+
- /sXhhKD2uW3k7kCJwJ5Qju0f2h1AMmFemeBTmUW8ah+EI+EPf4h7WGdCnlRfUMUKtXVE 8w==
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-	by userp2120.oracle.com with ESMTP id 333w6tusfs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 25 Aug 2020 22:23:59 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PMACVc058270;
-	Tue, 25 Aug 2020 22:23:59 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by aserp3020.oracle.com with ESMTP id 333ru8n88f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Aug 2020 22:23:58 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 07PMNvr9015301;
-	Tue, 25 Aug 2020 22:23:57 GMT
-Received: from localhost (/10.159.234.29)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 25 Aug 2020 15:23:56 -0700
-Date: Tue, 25 Aug 2020 15:23:55 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH 9/9] iomap: Change calling convention for zeroing
-Message-ID: <20200825222355.GL6096@magnolia>
-References: <20200824145511.10500-1-willy@infradead.org>
- <20200824145511.10500-10-willy@infradead.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200824145511.10500-10-willy@infradead.org>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9724 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 phishscore=0
- bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008250166
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9724 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 impostorscore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2008250166
-Message-ID-Hash: APO24FOKPJ2GOFX6HXPDDR72Q653B34H
-X-Message-ID-Hash: APO24FOKPJ2GOFX6HXPDDR72Q653B34H
-X-MailFrom: darrick.wong@oracle.com
+	by ml01.01.org (Postfix) with ESMTP id 8C74F11FC5CB7;
+	Tue, 25 Aug 2020 18:16:42 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=150.95.221.220; helo=rakuten.co.jp; envelope-from=account-update@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v150-95-221-220.ydvw.static.cnode.io [150.95.221.220])
+	by ml01.01.org (Postfix) with ESMTP id 28F4611FC5CB5
+	for <linux-nvdimm@lists.01.org>; Tue, 25 Aug 2020 18:16:39 -0700 (PDT)
+Received: from duenyiejsl (unknown [162.210.233.162])
+	by rakuten.co.jp with SMTP id 4G2g1PMN98kKZLlc.1
+	for <linux-nvdimm@lists.01.org>; Wed, 26 Aug 2020 10:16:40 +0900
+Sender: account-update@rakuten.co.jp
+Message-ID: <202008261016405478758@rakuten.co.jp>
+From: "Rakuten" <account-update@rakuten.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5qW95aSp5a6J5YWo55Ww5bi4?=
+Date: Wed, 26 Aug 2020 10:16:33 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-Mailer: Bnduyfqir 3
+Message-ID-Hash: CMRT6IWW6QHID347KG6L2IU3EXJ7HI3W
+X-Message-ID-Hash: CMRT6IWW6QHID347KG6L2IU3EXJ7HI3W
+X-MailFrom: account-update@rakuten.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/APO24FOKPJ2GOFX6HXPDDR72Q653B34H/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CMRT6IWW6QHID347KG6L2IU3EXJ7HI3W/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Mon, Aug 24, 2020 at 03:55:10PM +0100, Matthew Wilcox (Oracle) wrote:
-> Pass the full length to iomap_zero() and dax_iomap_zero(), and have
-> them return how many bytes they actually handled.  This is preparatory
-> work for handling THP, although it looks like DAX could actually take
-> advantage of it if there's a larger contiguous area.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> ---
->  fs/dax.c               | 13 ++++++-------
->  fs/iomap/buffered-io.c | 33 +++++++++++++++------------------
->  include/linux/dax.h    |  3 +--
->  3 files changed, 22 insertions(+), 27 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 95341af1a966..f2b912cb034e 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -1037,18 +1037,18 @@ static vm_fault_t dax_load_hole(struct xa_state *xas,
->  	return ret;
->  }
->  
-> -int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-> -		   struct iomap *iomap)
-> +loff_t dax_iomap_zero(loff_t pos, u64 length, struct iomap *iomap)
-
-Sorry for my ultra-slow response to this.  The u64 length seems ok to me
-(or uint64_t, I don't care all /that/ much), but using loff_t as a
-return type bothers me because I see that and think that this function
-is returning a new file offset, e.g. (pos + number of bytes zeroed).
-
-So please, let's use s64 or something that isn't so misleading.
-
-FWIW, Linus also[0] doesn't[1] like using loff_t for the number of bytes
-copied.
-
---D
-
-[0] https://lore.kernel.org/linux-fsdevel/CAHk-=wgcPAfOSigMf0xwaGfVjw413XN3UPATwYWHrss+QuivhQ@mail.gmail.com/
-[1] https://lore.kernel.org/linux-fsdevel/CAHk-=wgvROUnrEVADVR_zTHY8NmYo-_jVjV37O1MdDm2de+Lmw@mail.gmail.com/
-
->  {
->  	sector_t sector = iomap_sector(iomap, pos & PAGE_MASK);
->  	pgoff_t pgoff;
->  	long rc, id;
->  	void *kaddr;
->  	bool page_aligned = false;
-> -
-> +	unsigned offset = offset_in_page(pos);
-> +	unsigned size = min_t(u64, PAGE_SIZE - offset, length);
->  
->  	if (IS_ALIGNED(sector << SECTOR_SHIFT, PAGE_SIZE) &&
-> -	    IS_ALIGNED(size, PAGE_SIZE))
-> +	    (size == PAGE_SIZE))
->  		page_aligned = true;
->  
->  	rc = bdev_dax_pgoff(iomap->bdev, sector, PAGE_SIZE, &pgoff);
-> @@ -1058,8 +1058,7 @@ int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
->  	id = dax_read_lock();
->  
->  	if (page_aligned)
-> -		rc = dax_zero_page_range(iomap->dax_dev, pgoff,
-> -					 size >> PAGE_SHIFT);
-> +		rc = dax_zero_page_range(iomap->dax_dev, pgoff, 1);
->  	else
->  		rc = dax_direct_access(iomap->dax_dev, pgoff, 1, &kaddr, NULL);
->  	if (rc < 0) {
-> @@ -1072,7 +1071,7 @@ int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
->  		dax_flush(iomap->dax_dev, kaddr + offset, size);
->  	}
->  	dax_read_unlock(id);
-> -	return 0;
-> +	return size;
->  }
->  
->  static loff_t
-> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index 7f618ab4b11e..2dba054095e8 100644
-> --- a/fs/iomap/buffered-io.c
-> +++ b/fs/iomap/buffered-io.c
-> @@ -901,11 +901,13 @@ iomap_file_unshare(struct inode *inode, loff_t pos, loff_t len,
->  }
->  EXPORT_SYMBOL_GPL(iomap_file_unshare);
->  
-> -static int iomap_zero(struct inode *inode, loff_t pos, unsigned offset,
-> -		unsigned bytes, struct iomap *iomap, struct iomap *srcmap)
-> +static loff_t iomap_zero(struct inode *inode, loff_t pos, u64 length,
-> +		struct iomap *iomap, struct iomap *srcmap)
->  {
->  	struct page *page;
->  	int status;
-> +	unsigned offset = offset_in_page(pos);
-> +	unsigned bytes = min_t(u64, PAGE_SIZE - offset, length);
->  
->  	status = iomap_write_begin(inode, pos, bytes, 0, &page, iomap, srcmap);
->  	if (status)
-> @@ -917,38 +919,33 @@ static int iomap_zero(struct inode *inode, loff_t pos, unsigned offset,
->  	return iomap_write_end(inode, pos, bytes, bytes, page, iomap, srcmap);
->  }
->  
-> -static loff_t
-> -iomap_zero_range_actor(struct inode *inode, loff_t pos, loff_t count,
-> -		void *data, struct iomap *iomap, struct iomap *srcmap)
-> +static loff_t iomap_zero_range_actor(struct inode *inode, loff_t pos,
-> +		loff_t length, void *data, struct iomap *iomap,
-> +		struct iomap *srcmap)
->  {
->  	bool *did_zero = data;
->  	loff_t written = 0;
-> -	int status;
->  
->  	/* already zeroed?  we're done. */
->  	if (srcmap->type == IOMAP_HOLE || srcmap->type == IOMAP_UNWRITTEN)
-> -		return count;
-> +		return length;
->  
->  	do {
-> -		unsigned offset, bytes;
-> -
-> -		offset = offset_in_page(pos);
-> -		bytes = min_t(loff_t, PAGE_SIZE - offset, count);
-> +		loff_t bytes;
->  
->  		if (IS_DAX(inode))
-> -			status = dax_iomap_zero(pos, offset, bytes, iomap);
-> +			bytes = dax_iomap_zero(pos, length, iomap);
->  		else
-> -			status = iomap_zero(inode, pos, offset, bytes, iomap,
-> -					srcmap);
-> -		if (status < 0)
-> -			return status;
-> +			bytes = iomap_zero(inode, pos, length, iomap, srcmap);
-> +		if (bytes < 0)
-> +			return bytes;
->  
->  		pos += bytes;
-> -		count -= bytes;
-> +		length -= bytes;
->  		written += bytes;
->  		if (did_zero)
->  			*did_zero = true;
-> -	} while (count > 0);
-> +	} while (length > 0);
->  
->  	return written;
->  }
-> diff --git a/include/linux/dax.h b/include/linux/dax.h
-> index 6904d4e0b2e0..80f17946f940 100644
-> --- a/include/linux/dax.h
-> +++ b/include/linux/dax.h
-> @@ -214,8 +214,7 @@ vm_fault_t dax_finish_sync_fault(struct vm_fault *vmf,
->  int dax_delete_mapping_entry(struct address_space *mapping, pgoff_t index);
->  int dax_invalidate_mapping_entry_sync(struct address_space *mapping,
->  				      pgoff_t index);
-> -int dax_iomap_zero(loff_t pos, unsigned offset, unsigned size,
-> -			struct iomap *iomap);
-> +loff_t dax_iomap_zero(loff_t pos, u64 length, struct iomap *iomap);
->  static inline bool dax_mapping(struct address_space *mapping)
->  {
->  	return mapping->host && IS_DAX(mapping->host);
-> -- 
-> 2.28.0
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+ICANCiAgDQogIFJha3V0ZW7jgYrlrqLmp5ggDQrmrovlv7XjgarjgYzjgonjgIHjgYLjgarjgZ/j
+ga7jgqLjgqvjgqbjg7Pjg4gg44KS5pu05paw44Gn44GN44G+44Gb44KT44Gn44GX44Gf44CC44GT
+44KM44Gv44CB44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CCDQroq4vm
+sYLlhYjkvY/miYDjgYzlpInmm7TjgZXjgozjgZ/jgarjganjgIHjgZXjgb7jgZbjgb7jgarnkIbn
+lLHjgafnmbrnlJ/jgZnjgovlj6/og73mgKfjgYzjgYLjgorjgb7jgZnjgIINCg0K5LuK44Ki44Kr
+44Km44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQoNCualveWkqeODreOCsOOCpOODsw0K
+44Gq44GK44CBMjTmmYLplpPku6XlhoXjgavjgZTnorroqo3jgYzjgarjgYTloLTlkIjjgIHoqqDj
+gavpgbrmhr7jgarjgYzjgonjgIHjgqLjgqvjgqbjg7Pjg4jjgpLjg63jg4Pjgq/jgZXjgZvjgabj
+gYTjgZ/jgaDjgY/jgZPjgajjgpLorablkYrjgYTjgZ/jgZfjgb7jgZnjgIIgDQrjg5Hjgrnjg6/j
+g7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/jgIHoh7PmgKXvvIgw
+MSktNTAtNTgzMC02ODYw44G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCIA0KICANCuOBiuef
+peOCieOBmzoNCsK3IOODkeOCueODr+ODvOODieOBr+iqsOOBq+OCguaVmeOBiOOBquOBhOOBp+OB
+j+OBoOOBleOBhOOAgiANCsK3IOWAi+S6uuaDheWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4
+rOOBl+OBq+OBj+OBhOODkeOCueODr+ODvOODieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOA
+guWkp+aWh+Wtl+OBqOWwj+aWh+Wtl+OAgeaVsOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOB
+muS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgiANCsK3IOOCquODs+ODqeOCpOODs+OCouOCq+OC
+puODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOCi+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OB
+puOBj+OBoOOBleOBhOOAgiANCg0KDQrjganjgYbjgZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTj
+gZ/jgZfjgb7jgZnjgIIgDQpSYWt1dGVu77yMSW5jLg0KDQogIA0KDQogIApfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBl
+bWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
