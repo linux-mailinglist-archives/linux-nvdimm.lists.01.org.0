@@ -2,134 +2,39 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB2D252ECA
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Aug 2020 14:38:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B1F253062
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 26 Aug 2020 15:51:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E2B7E123F0FE3;
-	Wed, 26 Aug 2020 05:38:44 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.179.83.124; helo=www.respector.by; envelope-from=support@respector.by; receiver=<UNKNOWN> 
-Received: from www.respector.by (unknown [185.179.83.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2DA13123F0FE3
-	for <linux-nvdimm@lists.01.org>; Wed, 26 Aug 2020 05:38:40 -0700 (PDT)
-Received: from respector by www.respector.by with local (Exim 4.92)
-	(envelope-from <support@respector.by>)
-	id 1kAuhJ-00038A-Az
-	for linux-nvdimm@lists.01.org; Wed, 26 Aug 2020 15:38:37 +0300
-To: linux-nvdimm@lists.01.org
-Subject: Auszeichnungen gewinnen
-X-PHP-Originating-Script: 507:oro.php
-Date: Wed, 26 Aug 2020 15:38:37 +0300
-From: El Gordo de la Primitiva Lotterien Spanien <support@respector.by>
-Message-ID: <6e9c37dd916c097b0ceb45ccc2aa114b@respector.by>
+	by ml01.01.org (Postfix) with ESMTP id 8170510078B3A;
+	Wed, 26 Aug 2020 06:51:18 -0700 (PDT)
+Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
+	by ml01.01.org (Postfix) with ESMTP id 9E0671007B163
+	for <linux-nvdimm@lists.01.org>; Wed, 26 Aug 2020 06:51:16 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: I3M4X4FKGTLTDEJH7656GBGDM54L6Z44
-X-Message-ID-Hash: I3M4X4FKGTLTDEJH7656GBGDM54L6Z44
-X-MailFrom: support@respector.by
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Subject: =?utf-8?q?11_Best_IVF_Centers_in_Hyderabad_=7C_IVF_=40_79k_-_Free_Consult?=
+ =?utf-8?b?YXRpb24gaW4gVG9wIElWRiBDZW50cmVz77iP77iP?=
+From: "Best IVF Centers" <bestivfcenters@gmail.com>
+To: linux-nvdimm@lists.01.org
+Date: Wed, 26 Aug 2020 13:51:16 -0000
+Message-ID: <20200826135116.2753.1933@ml01.vlan13.01.org>
+User-Agent: HyperKitty on https://lists.01.org/
+Message-ID-Hash: 26M6KD56IWY2QRWWZRMZS4UH322UJHZW
+X-Message-ID-Hash: 26M6KD56IWY2QRWWZRMZS4UH322UJHZW
+X-MailFrom: bestivfcenters@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: beratergabriel.sp@consultant.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I3M4X4FKGTLTDEJH7656GBGDM54L6Z44/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/26M6KD56IWY2QRWWZRMZS4UH322UJHZW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIExvdHRlcmllbiBTcGFuaWVuIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpBZHJlc3NlOiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KQ2FsbGUgZGVsIFByw61u
-Y2lwZSBkZSBWZXJnYXJhLCAzOCwgMjgwMDEgTWFkcmlkIEVzcGHDsWEgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgDQpFIG1h
-aWw6XWFuc3BydWNoZ2V3aW5uLm1tdC5lc0BzcGFpbm1haWwuY29tXQ0KS29udGFrdCBhdWZuZWht
-ZW4gdW50ZXI6XSAgMzQ2MDIgODEwIDE4NSBmYXggIDM0OTM1NDU3NDkwXQ0KQWt0ZW56ZWljaGVu
-Ol1QMDkvMDEvMDIvMjAyMC5dDQpMb3NudW1tZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0K
-wqBEYXR1bTogMTgvMDgvMjAyMA0KwqANCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpIYWxsbywgwqAg
-wqAgwqAgwqAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICBPRkZJWklFTExFIE1J
-VFRFSUxVTkcsDQrCoA0KRGllc2UgRWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIFNvbW1lciBCb25h
-bnphIMKgTG90dGVyaWUgd3VyZGUgwqAgdW5kIE1pbmlzdGVyaW8gZGUgSW5kdXN0cmlhLCBDb21l
-cmNpbyB5IFR1cmlzbW8gwqBnZXNwb25zZXJ0IHVtIFRvdXJpc211cyBpbiBFc3Bhw7FhIMKgenUg
-ZsO2cmRlcm4uDQrCoA0KV2lyIHNpbmQgZXJmcmV1dCBJaG5lbiBtaXQgenUgdGVpbGVuLCBkYXNz
-IGRpZSBHZXdpbm5lciBkZXMgU29uZGVyIFNwYW5pc2ggVG91cmlzbXVzIFByb21vdGlvbmFsIERy
-YXcgYmVrYW5udCBnZWdlYmVuIHdvcmRlbiBzaW5kLiBEaWUgb2ZmaXppZWxsZSBMaXN0ZSBkZXIg
-R2V3aW5uZXIgwqBlcnNjaGllbiBhbSDCoFNhbXN0YWcgZGVyIDIyLzA3LzIwMjAuIA0KwqANCklo
-cmUgZW1haWwgYWRyZXNzZSDCoG1pdCBkZXIgYW5ow6RuZ2VuZGVuIExvc251bW1lcjogRVNQIDQ0
-NDcvMTE0NjQxMTg4MDIwMSDCoHVuZCBtaXQgZGVyIFNlcmllbm51bW1lcjogRVNQLzAxODgxMS0y
-MDIwIHpvZyBkaWUgR2zDvGNrc251bW1lcjogNi4xNi4xOC4zMy40Ny41MSBCb251OjI5LEVsIEdv
-cmRvIGRlIGxhIFByaW1pdGl2YSDCoExvdHRlcmllIMKgNiAvNDkgaW4gZGVyIDMuIEthdGVnb3Jp
-ZS4NCsKgDQpTaWUgc2luZCBkYW1pdCBnZXdpbm5lciB2b246IOKCrDk5MSwwMDAuMDAgRXVyby4g
-RGllIFN1bW1lIGVyZ2lidCBzaWNoIGF1cyBlaW5lciBHZXdpbm5hdXNzY2jDvHR0dW5nIHZvbjog
-4oKsNjkzNywwMDAuMDAgRXVybywgZGllIGR1cmNoIGRpZSBlcnN0ZW4gc2llYmVuICg3KSBHZXdp
-bm5lciBhdXMgZGVyIGdsZWljaGVuIEthdGVnb3JpZSBnZXRlaWx0IHd1cmRlLiDCoERpciBnZXdp
-bm4gaXN0IGJlaSBlaW5lciBzaWNoZXJoZWl0c2Zpcm1hIGhpbnRlcmxlZ3QgdW5kIGluIGlocmVu
-IG5hbWVuL2VtYWlsIMKgdmVyc2ljaGVydC4gdW0ga2VpbmUga29tcGxpa2F0aW9uZW4gYmVpIGRl
-ciBhYndpY2tsdW5nIGRlciB6YWhsdW5nIHp1IHZlcnVyc2FjaGVuIGJpdHRlbiB3aXIgc2llIGRp
-ZXNlIG9mZml6aWVsbGUgbWl0dGVpbHVuZyAsIGRpc2tyZXQgenUgYmVoYW5kZWxuLixlcyBpc3Qg
-ZWluIHRlaWwgdW5zZXJlcyBzaWNoZXJoZWl0c3Byb3Rva29sbHMgdW5kIGdhcmFudGllcnQgaWhu
-ZW4gZWluZW4gcmVpYnVuZ3Nsb3NlbiBBYmxhdWYuDQrCoA0KQWxsZSBnZXdpbm5lciB3dXJkZW4g
-cGVyIGNvbXB1dGVyIGF1cyBVcmxhdWJzaG90ZWxzLCBGbHVnZ2VzZWxsc2NoYWZ0ZW4gdW5kIFJl
-aXNlYsO8cm9zIG1haWxlbiBEYXRlbiB2b24gZsO8bmYgTWlsbGlvbmVuICg1MDAwMDAwKSBFbWFp
-bCBhZHJlc3NlbiBhdXNnZXfDpGhsdCwgYWxzIHRlaWwgdW5zZXJlciBJbnRlcm5hdGlvbmFsZW4g
-dG91cmlzbXVzIHByb21vdGlvbiBwcm9ncmFtbXMsIHdlbGNoZXMgd2lyIGVpbm1hbCBpbSBqYWhy
-IHZlcmFuc3RhbHRlbiB1bSBUb3VyaXNtdXMgaW4gU3BhbmllbiB6dSBmw7ZyZGVybi4NCsKgDQpC
-aXR0ZSBrb250YWt0aWVyZW4gc2llIHVuc2VyZW4gYXVzbGFuZHMgc2FjaGJlYXJiZWl0ZXIgSGVy
-ciBHYWJyaWVsIMKgYmVpIGRlciBzaWNoZXJoZWl0c2Zpcm1hIFNhbnRhbHVjaWEgU2ljaGVyaGVp
-dHNmaXJtYTpQZXIgRW1haWwgYW46YmVyYXRlcmdhYnJpZWwuc3BAY29uc3VsdGFudC5jb20gb2Rl
-ciBhbnJ1ZmVuOiAzNCA2MDIgODEwIDE4NSAmIEZheDogIDM0IDkzMSA3MCAyMTIwLCB1bSBJaHIg
-R2VsZCBzY2huZWxsIHp1IGJla29tbWVuLg0KwqANCkRlbmtlbiBTaWUgZGFyYW4sIGplZGVyIGdl
-d2lubmFuc3BydWNoIG11c3MgYmlzIHp1bSAyMi85LzIwMjAgQW5nZW1lbGRldGUgc2Vpbi4gSmVk
-ZXIgbmljaHQgYW5nZW1lbGRldCBHZXdpbm5hbnNwcnVjaCB2ZXJmw6RsbHQgdW5kIGdlaHQgenVy
-dWNrIGFuIGRhcyBTcGFuaXNjaGUgU3RhYXRza2Fzc2UuDQrCoCANCldJQ0hUSUc6IHVtIHZlcnrD
-tmdlcnVuZ2VuIHVuZCBrb21wbGlrYXRpb25lbiB6dSB2ZXJtZWlkZW4sIGJpdHRlIGltbWVyIEFr
-dGVuemVpY2hlbiBhbmdlYmVuLiDCoEFuYmVpIGVpbiBhbm1lbGRlZm9ybXVsYXIsIGJpdHRlIGF1
-c2bDvGxsZW4gdW5kIHp1csO8Y2sgUGVyIGVtYWlsIGFuOmJlcmF0ZXJnYWJyaWVsLnNwQGNvbnN1
-bHRhbnQuY29tIG9kZXIgYW5ydWZlbjogIDM0IDYwMiA4MTAxODUgJiBGYXg6ICAzNCA5MzEgNzAg
-MjEyMCBkaWUgc2ljaGVyaGVpdHNmaXJtYSBTYW50YWx1Y2lhIFNpY2hlcmhlaXRzZmlybWEuDQrC
-oA0KSEVSWkxJQ0hFTiBHTFVDS1dVTlNDSOKApiENCk1pdCBmcmV1bmRsaWNoZW4gR3LDvMOfZW4N
-Ck1BUklBIEhJREFMR08NClZJWkVQUsOEU0lERU5USU4NCsKgDQpCw5xSTyxTQU5UQUxVQ0lBIFNF
-R1VST1MgUy5BIEVzcGHDsWEgDQpQbGF6YSBFc3Bhw7FhLCAxNSAtIC0xNiDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KTWFkcmlkLCAyODAwOCBFc3Bhw7FhDQrCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KwqANCkFOTUVMREVGT1JNVUxB
-UiBaVVIgR0VXSU5OQU5TUFJVQ0hTDQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX18gDQpCaXR0ZSBmw7xsbGVuIFNpZSBkYXMgRm9ybXVsYXIgc29yZ2bDpGx0aWcg
-YXVzIHVuZCBzZW5kZW4gZXMgcGVyIGUgbWFpbDpzYW50YWx1Y2lhLnNnLmVzQHNwYWlubWFpbC5j
-b20gYW4gZGVyIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYSBtaXQgS29waWUgSWhyZXMgUGVy
-c29uYWxhdXN3ZWlzZXMgb2RlciBSZWlzZXBhc3Nlcy4NCsKgDQpHRVdJTk5CRVRSQUc6X19fX18g
-QUtURU5aRUlDSEVOIF9fX19fX19fX18NCk5BTUU6X19fX19fX19fX19fIFZPUk5BTUU6X19fX19f
-X19fX19fX19fX18NCkdFQlVSVFNEQVRVTTpfX19fX05BVElPTkFMSVRBVF9fX19fX19fX19fX18N
-CkxPU05VTU1FUjpfX19fX19fX19fXyBHTMOcQ0tTWkFITEVOIF9fX19fX19fDQpTVFJBU1NFOl9f
-X19fX19fX19fX19fXyBOVU1NRVI6X19fX19fX19fX19fXw0KV09ITk9SVDpfX19fXyBQT1NUTEVJ
-VFpBSExfX19fX0xBTkQgX19fX19fX18NCkRpcmVrdGVyIEtvbnRha3QgRS1NYWlsX19fX19fX19f
-X19fX19fX19fX19fDQpURUxFRk9OOl9fX19fX19fX18gSEFORFk6X19fX19fX19fXyBGQVg6X19f
-X18NCkJFUlVGOl9fX19fIEZBTUlMSUVOU1RBTkQ6X19fX18oR0VTQ0hMRUNIVClfX18gwqAgwqAN
-CsKgDQpXRUxDSEUgWkFITFVOR1NGT1JNIEJFVk9SWlVHRU4gU0lFPyDCoChBKSBCQU5Lw5xCRVJX
-RUlTVU5HOiDCoChCKSBCQVJTQ0hFQ0sgwqANCkJBTktEQVRFTiBTSU5EIE5VUiBOT1RXRU5ESUcg
-V0VOTiBTSUUgU0lDSCBGw5xSIEVJTkUgQkFOS8OcQkVSV0VJU1VORyBFTlRTQ0hJRURFTiBIQUJF
-Ti4NCsKgDQpOQU1FIERFUyBHRUxESU5TVElUVVRTOl9fX19fX19fX19fX19fDQpLT05UT05VTU1F
-UjpfX19fX19fX19fX19fX19fX19fX19fX18gDQpJQkFOOl9fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18NCkJBTksgQUREUkVTUzpfX19fX19fX19fX19fX19fX19fX19fX18NCg0KwqANCsKg
-IMKgICBFUktMw4RSVU5HIERFUyBCRUfDnE5TVElHVEVODQpJQ0ggX19fX19fX19fX19fX19fX19f
-X19fX19fX19fQkVTVMOEVElHRSBISUVSTUlULCBEQVNTIEFMTEUgSU5GT1JNQVRJT05FTiwgS09S
-UkVLVCBTSU5ELCBVTkQgRElFIFZFUkFOU1RBTFRFUiBERVIgRWwgU1BBTklTSCBMT1RURVJZIC8g
-U0FOVEFMVUNJQSBTSUNIRVJIRUlUU0ZJUk1BIE5JQ0hUIFZFUkFOVFdPUlRMSUNIIEdFTUFDSFQg
-V0VSREVOLCBXRU5OIEVTIFpVIEVJTkVSIFVOQkVSRUNIVElHVEVOIFpBSExVTkcgRFVSQ0ggVU5H
-RU5BVUUgSU5GT1JNQVRJT05FTiwgRElFIElDSCBJTiBESUVTRU0gRk9STVVMQVIgQU5HRUJFIEtP
-TU1ULkRBU1MgMTAlIFBST1ZJU0lPTiBERVIgU0FOVEEgTFVDSUEgU0VDVVJJVFkgQ09NUEFOWSBH
-RUg/UkVOLCBTT0JBTEQgU0lFIElIUkVOIEdFV0lOTiBGT05EUyBFUkhBTFRFTi4gRElFU0UgWkVI
-TiBQUk9aRU5UIFdFUkRFTiBJSE5FTiBTT0ZPUlQgWlVSw5xDS0dFR0VCRU4sIFNJRSBFUkhBTFRF
-TiBJSFJFTiBHRVdJTk4gQVVGIElIUkVNIEtPTlRPLiAoQUNIVFVORyBXaXIgYml0dGVuIFNpZSwg
-YXVmIGRpZXNlIEUtTWFpbC1BZHJlc3NlIHp1IGFudHdvcnRlbihzYW50YWx1Y2lhLnNnLmVzQHNw
-YWlubWFpbC5jb20pIELDnFJPLUtPTlRPSU5GT1JNQVRJT05FTi1JQkFOIEVTMTcgMjEwMCA1NjI0
-IDExMDIgMDAxMSA3NzE5IFNXSUZUIENPREU6IENBSVhFU0JCWFhYLiDCoEtPTlRPTkFNRSxMQSBQ
-TEFDSVRBIERFTCBNSVJBRE9SIFMuTCBTUEFJTi4NClVyaGViZXJyZWNodMKpIDIwMDItMjAyMCBN
-dWx0aS1TdGFhdCBMb3R0ZXJpZSBWZXJiYW5kLiBBbGxlIFJlY2h0ZQ0KX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlz
-dCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1h
-aWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+Best IVF Centers in Hyderabad provide affordable IVF / Fertility Treatment Cost in Hyderabad. Book a FREE IVF CONSULTATION with Top 11 Fertility Centres & Doctors Near Your location. For more information visit us: https://bestivfcenters.com/hyderabad/best-ivf-centres/
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
