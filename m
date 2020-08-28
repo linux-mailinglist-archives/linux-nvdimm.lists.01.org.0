@@ -1,69 +1,65 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE51254114
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 27 Aug 2020 10:41:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D0A255371
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Aug 2020 06:00:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D97261257EAB8;
-	Thu, 27 Aug 2020 01:41:17 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+811462fdb5f870f212f0+6213+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D566A1257EAB7
-	for <linux-nvdimm@lists.01.org>; Thu, 27 Aug 2020 01:41:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=kCDwh714vx6JpM9OxrrZFig4MnZIKPAe4emls/wRWFk=; b=e4xV2hx1QjxcBvvjPLZC2yQKC2
-	z0p+A9rzXH46HU6Hnb0Fa44YAEV8lfbtJs7ITmMrdaUzQvGQdkcLzq26/ZWVnMG7o9Xq6XoeEWOq4
-	z0NNwRkoo1DOfGglwB6OUlp5h0mN1LZL1UugAyanNoGhh/A1UfAvWkkW7Nhwe/QMh4ohCZvFSA8eG
-	AnXOhzHJhZ1cGnqlcpv8zx6p1fVdNNM10G66Ctr0ApExmF1uQA5hr0AG4ZVVgdB7CY7eTnduqJKVJ
-	7QsqjYYmHqNXzm4DrOsUdvZsQW8es6U+OifFi+pOFSzE0mwFPaZwKYFZ3TYj2dFoEmLPe9tZmL5iF
-	sSIHc6CA==;
-Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kBDT5-000480-Om; Thu, 27 Aug 2020 08:41:11 +0000
-Date: Thu, 27 Aug 2020 09:41:11 +0100
-From: Christoph Hellwig <hch@infradead.org>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH 8/9] iomap: Convert iomap_write_end types
-Message-ID: <20200827084111.GF11067@infradead.org>
-References: <20200824145511.10500-1-willy@infradead.org>
- <20200824145511.10500-9-willy@infradead.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200824145511.10500-9-willy@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: YXMRQYSZLZ24J47WFHRTB7YVFXM2RUTG
-X-Message-ID-Hash: YXMRQYSZLZ24J47WFHRTB7YVFXM2RUTG
-X-MailFrom: BATV+811462fdb5f870f212f0+6213+infradead.org+hch@casper.srs.infradead.org
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, "Darrick J . Wong" <darrick.wong@oracle.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+	by ml01.01.org (Postfix) with ESMTP id B3EF1128421B8;
+	Thu, 27 Aug 2020 21:00:54 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.75.228; helo=rakuten.co.jp; envelope-from=account-update@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v118-27-75-228.h9iy.static.cnode.io [118.27.75.228])
+	by ml01.01.org (Postfix) with ESMTP id 3C3E8128421B6
+	for <linux-nvdimm@lists.01.org>; Thu, 27 Aug 2020 21:00:52 -0700 (PDT)
+Received: from wn (unknown [122.186.170.245])
+	by rakuten.co.jp with SMTP id kglnlhuQDNLfV5ga.1
+	for <linux-nvdimm@lists.01.org>; Fri, 28 Aug 2020 13:00:53 +0900
+Sender: account-update@rakuten.co.jp
+Message-ID: <202008281300534356160@rakuten.co.jp>
+From: "Rakuten.co.jp" <account-update@rakuten.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5qW95aSp5a6J5YWo55Ww5bi4?=
+Date: Fri, 28 Aug 2020 13:00:47 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-Mailer: Nfwouccatur 6
+Message-ID-Hash: DRJ6GBPH5FK5BDELOI3MQJPAXYZBQYWS
+X-Message-ID-Hash: DRJ6GBPH5FK5BDELOI3MQJPAXYZBQYWS
+X-MailFrom: account-update@rakuten.co.jp
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YXMRQYSZLZ24J47WFHRTB7YVFXM2RUTG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DRJ6GBPH5FK5BDELOI3MQJPAXYZBQYWS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Mon, Aug 24, 2020 at 03:55:09PM +0100, Matthew Wilcox (Oracle) wrote:
-> iomap_write_end cannot return an error, so switch it to return
-> size_t instead of int and remove the error checking from the callers.
-> Also convert the arguments to size_t from unsigned int, in case anyone
-> ever wants to support a page size larger than 2GB.
-> 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-Looks good:
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+ICANCiAgDQogIFJha3V0ZW7jgYrlrqLmp5ggDQrmrovlv7XjgarjgYzjgonjgIHjgYLjgarjgZ/j
+ga7jgqLjgqvjgqbjg7Pjg4gg44KS5pu05paw44Gn44GN44G+44Gb44KT44Gn44GX44Gf44CC44GT
+44KM44Gv44CB44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CCDQroq4vm
+sYLlhYjkvY/miYDjgYzlpInmm7TjgZXjgozjgZ/jgarjganjgIHjgZXjgb7jgZbjgb7jgarnkIbn
+lLHjgafnmbrnlJ/jgZnjgovlj6/og73mgKfjgYzjgYLjgorjgb7jgZnjgIINCg0K5LuK44Ki44Kr
+44Km44Oz44OI44KS56K66KqN44Gn44GN44G+44GZ44CCDQoNCualveWkqeODreOCsOOCpOODsw0K
+44Gq44GK44CBMjTmmYLplpPku6XlhoXjgavjgZTnorroqo3jgYzjgarjgYTloLTlkIjjgIHoqqDj
+gavpgbrmhr7jgarjgYzjgonjgIHjgqLjgqvjgqbjg7Pjg4jjgpLjg63jg4Pjgq/jgZXjgZvjgabj
+gYTjgZ/jgaDjgY/jgZPjgajjgpLorablkYrjgYTjgZ/jgZfjgb7jgZnjgIIgDQrjg5Hjgrnjg6/j
+g7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzjgarjgYTloLTlkIjjga/jgIHoh7PmgKXvvIgw
+MSktNTAtNTgzMC02ODYw44G+44Gn44GK6Zu76Kmx44GP44Gg44GV44GE44CCIA0KICANCuOBiuef
+peOCieOBmzoNCsK3IOODkeOCueODr+ODvOODieOBr+iqsOOBq+OCguaVmeOBiOOBquOBhOOBp+OB
+j+OBoOOBleOBhOOAgiANCsK3IOWAi+S6uuaDheWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4
+rOOBl+OBq+OBj+OBhOODkeOCueODr+ODvOODieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOA
+guWkp+aWh+Wtl+OBqOWwj+aWh+Wtl+OAgeaVsOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOB
+muS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOAgiANCsK3IOOCquODs+ODqeOCpOODs+OCouOCq+OC
+puODs+ODiOOBlOOBqOOBq+OAgeeVsOOBquOCi+ODkeOCueODr+ODvOODieOCkuS9v+eUqOOBl+OB
+puOBj+OBoOOBleOBhOOAgiANCg0KDQrjganjgYbjgZ7jgojjgo3jgZfjgY/jgYrpoZjjgYTjgYTj
+gZ/jgZfjgb7jgZnjgIIgDQpSYWt1dGVu77yMSW5jLg0KDQogIA0KDQogIApfX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBs
+aXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBl
+bWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
