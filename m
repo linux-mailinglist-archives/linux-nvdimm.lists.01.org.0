@@ -2,62 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88043256982
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Aug 2020 19:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B83B2569EC
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Aug 2020 21:53:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D7D73137E5AED;
-	Sat, 29 Aug 2020 10:51:09 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=67.229.29.4; helo=imi.amazon.co.jp; envelope-from=account-update@imi.amazon.co.jp; receiver=<UNKNOWN> 
-Received: from IMI.amazon.co.jp (unknown [67.229.29.4])
-	by ml01.01.org (Postfix) with ESMTP id 2CD89137E5AEB
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Aug 2020 10:51:06 -0700 (PDT)
-Received: from irzdvqxjq (unknown [223.100.237.46])
-	by amazon.co.jp with SMTP id xwrQBgQC3AsxCkbm.1
-	for <linux-nvdimm@lists.01.org>; Sun, 30 Aug 2020 01:51:07 +0800
-Sender: account-update@IMI.amazon.co.jp
-Message-ID: <20200830015107354821@IMI.amazon.co.jp>
-From: "Amazon.co.jp" <account-update@amazon.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?QW1hem9u44K744Kt44Ol44Oq44OG44Kj6K2m5ZGKOiDjgrXjgqTjg7PjgqQ=?=
-	=?utf-8?B?44Oz44GM5qSc5Ye644GV44KM44G+44GX44Gf?=
-Date: Sun, 30 Aug 2020 01:51:01 +0800
+	by ml01.01.org (Postfix) with ESMTP id C1FCC1383F971;
+	Sat, 29 Aug 2020 12:53:19 -0700 (PDT)
+Received-SPF: Neutral (mailfrom) identity=mailfrom; client-ip=192.101.1.252; helo=192.168.250.32; envelope-from=nicole_clark21@yahoo.com; receiver=<UNKNOWN> 
+Received: from 192.168.250.32 (unknown [192.101.1.252])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id AD0D21383F96F
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Aug 2020 12:53:16 -0700 (PDT)
+Received: from User ([196.171.49.52])
+	by 192.168.250.32.localdomain  with SMTP id 07TJp7Q4012942-07TJp7Q6012942;
+	Sat, 29 Aug 2020 21:51:08 +0200
+Message-Id: <202008291951.07TJp7Q4012942-07TJp7Q6012942@192.168.250.32.localdomain>
+From: "Nicole Clark"<nicole_clark21@yahoo.com>
+Subject: Mr.Nicole Clark!!
+Date: Sat, 29 Aug 2020 12:51:21 -0700
 MIME-Version: 1.0
-X-Priority: 1
-X-mailer: Uoqziwuqu 1
-Message-ID-Hash: CAULURZSDV2BX64OBOCBC25FZKUP47J4
-X-Message-ID-Hash: CAULURZSDV2BX64OBOCBC25FZKUP47J4
-X-MailFrom: account-update@IMI.amazon.co.jp
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID-Hash: HOFZ64HEHRE2G7ZBIJT3V3AUINYFYEN4
+X-Message-ID-Hash: HOFZ64HEHRE2G7ZBIJT3V3AUINYFYEN4
+X-MailFrom: nicole_clark21@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: nicole_clark1@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CAULURZSDV2BX64OBOCBC25FZKUP47J4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HOFZ64HEHRE2G7ZBIJT3V3AUINYFYEN4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============6092098688186665097=="
 
-IOOCteOCpOODs+OCpOODs+OBjOaknOWHuuOBleOCjOOBvuOBl+OBnw0KDQogDQrjgYrlrqLmp5jj
-gYTjgaTjgoLjgpLjgZTliKnnlKjjgYTjgZ/jgaDjgY3jgIHjgYLjgorjgYzjgajjgYbjgZTjgZbj
-gYTjgb7jgZnjgILmlrDjgZfjgYTjg4fjg5DjgqTjgrnjgYvjgonjgYrlrqLmp5jjga7jgqLjgqvj
-gqbjg7Pjg4jjgbjjga7jgrXjgqTjg7PjgqTjg7PjgYzmpJzlh7rjgZXjgozjgb7jgZfjgZ/jgIIg
-DQrml6XmmYIgW0NVUlJFTlRfREFURV0gW0NVUlJFTlRfVElNRV0gSmFwYW4gU3RhbmRhcmQgVGlt
-ZSANCuODh+ODkOOCpOOCuSBHb29nbGUgQ2hyb21lIFdpbmRvd3MgKOODh+OCueOCr+ODiOODg+OD
-lykgDQrku5jov5EgVG9reW8sIEphcGFuDQoNCuOBk+OCjOOBjOOBiuWuouanmOOBlOiHqui6q+OB
-q+OCiOOCi+aTjeS9nOOBoOOBo+OBn+WgtOWQiOOAgeOBk+OBruODoeODg+OCu+ODvOOCuOOBr+eE
-oeimluOBl+OBpuOBj+OBoOOBleOBhOOAgiANCg0K44GU5pys5Lq644Gu5pON5L2c44Gn44Gv44Gq
-44GE5aC05ZCI44CB5Lul5LiL44GuSVDjgqLjg4njg6zjgrnjgpLjgq/jg6rjg4Pjgq/jgZfjgabj
-gIFJROaDheWgseOCkuabtOaWsOOBl+OBpuOBj+OBoOOBleOBhOOAgg0K5pSv5omV5pa55rOV44Gu
-5oOF5aCx44KS5pu05paw44GZ44KLIA0KDQoNCg0K5rOo5oSP77ya5pys6YCa55+l44Oh44O844Or
-44Gv6YCB5L+h5bCC55So44Ki44OJ44Os44K544Gn6YCB5L+h44GX44Gm44GK44KK44G+44GZ44CC
-6L+U5L+h44GE44Gf44Gg44GE44Gm44KC5Y+X5L+h44Gn44GN44G+44Gb44KT44Gu44Gn44GU5LqG
-5om/5LiL44GV44GE44CC44GT44Gu44Oh44OD44K744O844K444GvW1JFQ0VJVkVSX0FERFJFU1Nd
-IOOBq+mAgeS/oeOBleOCjOOBvuOBl+OBn+OAgg0KIA0KIApfX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxp
-bnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBs
-aW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+--===============6092098688186665097==
+Content-Type: text/html;
+	charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+
+<HTML><HEAD><TITLE></TITLE>
+</HEAD>
+<BODY bgcolor=#FFFFFF leftmargin=5 topmargin=5 rightmargin=5 bottommargin=5>
+<FONT size=2 color=#000000 face="Arial">
+<DIV>
+Dear&nbsp; friend,</DIV>
+<DIV>
+I know this means of communication may not be morally right to you as a person but I also have had a great thought about it and I have come to this conclusion which I am about to share with you.</DIV>
+<DIV>
+INTRODUCTION: I am a banker and in one way or the other was hoping you will cooperate with me as a partner in a project of transferring an abandoned fund of a late customer of the bank worth of $18,000,000 (Eighteen Million Dollars US).</DIV>
+<DIV>
+This will be disbursed or shared between the both of us in these percentages, 45% for me and 45% for you while 10% will be for expenses both parties might have incurred during the process of transferring.</DIV>
+<DIV>
+Also according to the agreement if the payment year expires and the account holder or partner wishes to claim the said funds, the claimer has to re-activate the account. The cost of the re-activation will be paid by both of us.</DIV>
+<DIV>
+Contact me immediately if that is alright for you so that we can enter in agreement before we start processing for the transfer of the funds. If you are satisfied with this proposal, please provide the below details for the Mutual Confidential Agreement:</DIV>
+<DIV>
+1. Full Name and Address</DIV>
+<DIV>
+2. Occupation and Country of Origin</DIV>
+<DIV>
+3. Telephone Number and Next of Kin</DIV>
+<DIV>
+I wait for your response so that we can commence on this project as soon as possible.</DIV>
+<DIV>
+Kind Regards</DIV>
+<DIV>
+Mr.Nicole Clark</DIV>
+</FONT>
+</BODY></HTML>
+--===============6092098688186665097==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============6092098688186665097==--
