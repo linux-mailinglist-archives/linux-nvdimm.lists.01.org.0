@@ -2,38 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A18C256271
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 28 Aug 2020 23:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88043256982
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 29 Aug 2020 19:51:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DDA6012A5F0B6;
-	Fri, 28 Aug 2020 14:31:36 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=107.6.246.38; helo=gvl.amazon.co.jp; envelope-from=account-update@gvl.amazon.co.jp; receiver=<UNKNOWN> 
-Received: from gVL.amazon.co.jp (ip-107-6-246-38.KRYPTCOLO.NET [107.6.246.38])
-	by ml01.01.org (Postfix) with ESMTP id 9542712A5F0A6
-	for <linux-nvdimm@lists.01.org>; Fri, 28 Aug 2020 14:31:34 -0700 (PDT)
-Received: from kc (unknown [145.192.255.29])
-	by amazon.co.jp with SMTP id 4m0shcUpPsXQXmYz.1
-	for <linux-nvdimm@lists.01.org>; Sat, 29 Aug 2020 05:31:34 +0800
-Sender: account-update@gVL.amazon.co.jp
-Message-ID: <20200829053134138187@gVL.amazon.co.jp>
+	by ml01.01.org (Postfix) with ESMTP id D7D73137E5AED;
+	Sat, 29 Aug 2020 10:51:09 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=67.229.29.4; helo=imi.amazon.co.jp; envelope-from=account-update@imi.amazon.co.jp; receiver=<UNKNOWN> 
+Received: from IMI.amazon.co.jp (unknown [67.229.29.4])
+	by ml01.01.org (Postfix) with ESMTP id 2CD89137E5AEB
+	for <linux-nvdimm@lists.01.org>; Sat, 29 Aug 2020 10:51:06 -0700 (PDT)
+Received: from irzdvqxjq (unknown [223.100.237.46])
+	by amazon.co.jp with SMTP id xwrQBgQC3AsxCkbm.1
+	for <linux-nvdimm@lists.01.org>; Sun, 30 Aug 2020 01:51:07 +0800
+Sender: account-update@IMI.amazon.co.jp
+Message-ID: <20200830015107354821@IMI.amazon.co.jp>
 From: "Amazon.co.jp" <account-update@amazon.co.jp>
 To: <linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?QW1hem9u44K744Kt44Ol44Oq44OG44Kj6K2m5ZGKOiDjgrXjgqTjg7PjgqQ=?=
 	=?utf-8?B?44Oz44GM5qSc5Ye644GV44KM44G+44GX44Gf?=
-Date: Sat, 29 Aug 2020 05:31:27 +0800
+Date: Sun, 30 Aug 2020 01:51:01 +0800
 MIME-Version: 1.0
 X-Priority: 1
-X-mailer: Byopteuke 0
-Message-ID-Hash: 3ORME6SFCBZN2MDGN4LYMXV6U4WPKLKD
-X-Message-ID-Hash: 3ORME6SFCBZN2MDGN4LYMXV6U4WPKLKD
-X-MailFrom: account-update@gVL.amazon.co.jp
+X-mailer: Uoqziwuqu 1
+Message-ID-Hash: CAULURZSDV2BX64OBOCBC25FZKUP47J4
+X-Message-ID-Hash: CAULURZSDV2BX64OBOCBC25FZKUP47J4
+X-MailFrom: account-update@IMI.amazon.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3ORME6SFCBZN2MDGN4LYMXV6U4WPKLKD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CAULURZSDV2BX64OBOCBC25FZKUP47J4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
