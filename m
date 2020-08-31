@@ -1,52 +1,57 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50FB257F16
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 31 Aug 2020 18:55:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E132257FA7
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 31 Aug 2020 19:34:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id F200D12604A43;
-	Mon, 31 Aug 2020 09:55:40 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 478F112604A5D;
+	Mon, 31 Aug 2020 10:34:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.163.190.146; helo=sonic315-20.consmr.mail.ne1.yahoo.com; envelope-from=abenpamads@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic315-20.consmr.mail.ne1.yahoo.com (sonic315-20.consmr.mail.ne1.yahoo.com [66.163.190.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BD0E412604A41
-	for <linux-nvdimm@lists.01.org>; Mon, 31 Aug 2020 09:55:38 -0700 (PDT)
-IronPort-SDR: V5sGLhK3B1LsD/AUIDwTRbicG7+ESrBO9eUoPxPZCKcGIFBpA89/oiNnf0hTuHSCkozkHyQZtN
- M5WZPr5ViZ7Q==
-X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="158026746"
-X-IronPort-AV: E=Sophos;i="5.76,376,1592895600";
-   d="scan'208";a="158026746"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 09:55:37 -0700
-IronPort-SDR: RdDWlhackG2fa1GfQ9/UIinriQGEYMNoRxCtVttRxYb5H62b+5nCoQ/kUM6NEryYxmErR85Zs6
- SiXW5991Q/GQ==
-X-IronPort-AV: E=Sophos;i="5.76,376,1592895600";
-   d="scan'208";a="476802257"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 09:55:37 -0700
-Date: Mon, 31 Aug 2020 09:55:37 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Tian Tao <tiantao6@hisilicon.com>
-Subject: Re: [PATCH] dax: Use kobj_to_dev() instead of container_of()
-Message-ID: <20200831165536.GE1422350@iweiny-DESK2.sc.intel.com>
-References: <1598837565-18095-1-git-send-email-tiantao6@hisilicon.com>
+	by ml01.01.org (Postfix) with ESMTPS id AEB1012604A5B
+	for <linux-nvdimm@lists.01.org>; Mon, 31 Aug 2020 10:34:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1598895251; bh=/wWE/srJrz9OuGq81agug6j8cDZKLJjOEAHUvES6oeE=; h=Date:From:Reply-To:Subject:References:From:Subject; b=sbZ6AzqbF7Jf1H4l+ZzBEY046IzzF3v2sVyKvK4VV3imNkYC7rWjMUaIwijAQSOYIWFDhHEM07+cFMT4sopja6C/tNUIvD8UC8GGDHozQuua4ka3eLhpoPdwvapvhljKKjJu8e1EMebFcym73+fl+pplhwiBYbh/Tc4GGsknvcyasxpN+bC/SO1Ci+wkWODivTptBePyKRllfbL+3sZ9Zl/0Vvges9BeJdejOEFpjS3yudPcqTq1+ADsC1xvGSUbHYltS6Drf7+p3GCSyJcOUbI7h7+4Tku0XY8UfvXVe0dZDAGsXKZ+MYIxdB03V6lttc+VHyj6NIbJdAWFZnWyGw==
+X-YMail-OSG: bMP7QA0VM1n6sfLr480FyoJ8OnRfqv7.D_JaARBeVm.s4iQVAmRC38.xiBTyusm
+ FfNdinDdhnGI4RSojJoMwbPY4KqJ5ViEslGBkXxq3LaQDbsLoqbkE_XZkIxMe3tITcg6wGy469T_
+ WfBLfObBFzPh8kXOYuoa1RQffkXTsPurL5Wegx6TsQCvWjweDrWfLNtn91i.AysT19y06NdBnRrW
+ 7X5jFuuz5ee4qVET_VewSMa8qo1XUWsXmOLd2xS2c2a97KeMMQ0Se7Tz9xswReXP6rIlzdIa3z6m
+ 0nfRJmSLGR.0Pd.2n.0fcVp.3mZFT92w17duIN11p.Eucb2941pm08JsG.nxbZoLYDRc9Lxq1xcO
+ 570jpYwYS.h6rfrPfTSiwoLFtKOhc3SlMjZ8B8.iiT02lW488f9SqhX6oeUR2iYqVB9jZHL8BgF8
+ b9H.aQv8TD8IAJSKfcig6iH7uSfg.8ArQe8SumK2yqi5qvw7n6KbergopmiyampeiEf.IF9Had3_
+ 3DUhvEMzD15CrNeBzMmzBhmyr8_1I2RchvcdOkduQV77oTh4Pwi8ZA.0CxZu.hJ0RxWZj6Mj6PaR
+ xwYh5vzVjS.matXx_M7nQ7aein8DaNznxlxu3PFhW1KbRcbBAC_b8JziooBktxDyRbaULkSaGPRq
+ 66cv5N2Y7P0iKaQcC22mfzHOinN5xXUYJfQipyu9BcMUxc_2dzt1VPdvHZr5meJkSvYFbu86nO7b
+ qwU9UJFv3QsSF0ojtdbz0H3.pP7vXQCKedSXaGodjAlrZpxbb_lkjFqh53JspswhHnBC38cB5wBt
+ jasDAvYplhreojnByKfmZSquJoKSGYN5b6TjEq8aPu.lHlGlgjA7OZQRQv_YLmT1iq9b4bJ8I52i
+ aEgFYzvDoppbyJiihk9GQ.mKPNvjEUPjnMdqdYG2vMnaspNRoCUyj2V1DYW6dikq9oHh1rqhbNM1
+ IOkuQFPw11YFHYOfGv2E6FX2MOXTej8FS.9NNHbrbHgicqIA0ueDQ359rAExXUc6GNYJum7AxyMO
+ f6wXA1XoMgpcIy7GW_4kcING45pGko7trNeklFGpoIglfJilEJwGmtULOzS7hUAr4mo3mIEt_KyU
+ JE4UuBKzowxFtr8O04ZTGpEyiMfJA7roXvlyJuRmUUx1huzHJ2wLVaZnxEWOvZmni6hxL7MnfaG_
+ nIrfankcenLTHzM_RnznL6gh7ztZOvqKiC3a7dkouAuFY..7VFNIOg0Y7MQ1mspw_vFfsEq9zyVA
+ wKZjpNeYvuyQl6AzH8xpF7HDF0jcSHLaD5Pr7af5EIeCzvn_qBkP009Wy8RpviR951TqlRhM08hu
+ Zz7G6R6rZWVksyjOLz_PyI4GBxnHuJTDjzKCYw_DdgAd2RHW7bGK.pcpvLggf3JFa_WzW0FqlhzV
+ e5IPMtUGiJwq1Avv3.5O_LFHpIIEoPkzfX9xd7RguFw--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Mon, 31 Aug 2020 17:34:11 +0000
+Date: Mon, 31 Aug 2020 17:34:07 +0000 (UTC)
+From: "Mrs. Johanna maaly bob" <abenpamads@yahoo.com>
+Message-ID: <2133829573.965029.1598895247634@mail.yahoo.com>
+Subject: Dear God's Chosen,
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <1598837565-18095-1-git-send-email-tiantao6@hisilicon.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: AMN6W42BL3DCJ5AMF4OOMHM5JJYSA2SQ
-X-Message-ID-Hash: AMN6W42BL3DCJ5AMF4OOMHM5JJYSA2SQ
-X-MailFrom: ira.weiny@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, linuxarm@huawei.com
+References: <2133829573.965029.1598895247634.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16565 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:80.0) Gecko/20100101 Firefox/80.0
+Message-ID-Hash: RTAKT6C6ZBGPOFQAHSCFQZVHJZBMK6NG
+X-Message-ID-Hash: RTAKT6C6ZBGPOFQAHSCFQZVHJZBMK6NG
+X-MailFrom: abenpamads@yahoo.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: maalybobm@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AMN6W42BL3DCJ5AMF4OOMHM5JJYSA2SQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RTAKT6C6ZBGPOFQAHSCFQZVHJZBMK6NG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,44 +60,13 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Mon, Aug 31, 2020 at 09:32:45AM +0800, Tian Tao wrote:
-> Use kobj_to_dev() instead of container_of()
-> 
-> Signed-off-by: Tian Tao <tiantao6@hisilicon.com>
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Good Day Dearest,
 
-> ---
->  drivers/dax/bus.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-> index 092112b..9464b56 100644
-> --- a/drivers/dax/bus.c
-> +++ b/drivers/dax/bus.c
-> @@ -474,7 +474,7 @@ static DEVICE_ATTR_WO(delete);
->  static umode_t dax_region_visible(struct kobject *kobj, struct attribute *a,
->  		int n)
->  {
-> -	struct device *dev = container_of(kobj, struct device, kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct dax_region *dax_region = dev_get_drvdata(dev);
->  
->  	if (is_static(dax_region))
-> @@ -1225,7 +1225,7 @@ static DEVICE_ATTR_RO(numa_node);
->  
->  static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
->  {
-> -	struct device *dev = container_of(kobj, struct device, kobj);
-> +	struct device *dev = kobj_to_dev(kobj);
->  	struct dev_dax *dev_dax = to_dev_dax(dev);
->  	struct dax_region *dax_region = dev_dax->region;
->  
-> -- 
-> 2.7.4
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+I am Mrs. johanna maaly bob from Australia. It is understandable that you may be a bit apprehensive because you do not know me; I found your email address from a Human resources data base and decided to contact you. I would love to employ you into my charity work; I am ready to donate some money to you to carry on the Charity work in your country. Please reply so that I will give you further details and tell you about myself via email: maalybobm@gmail.com
+
+Thanks and God bless you,
+Mrs. Johanna maaly bob,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
