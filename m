@@ -1,40 +1,52 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17713258818
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Sep 2020 08:24:07 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D1732588DE
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Sep 2020 09:17:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 291EF139DC564;
-	Mon, 31 Aug 2020 23:24:05 -0700 (PDT)
-Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B73C8139DC564
-	for <linux-nvdimm@lists.01.org>; Mon, 31 Aug 2020 23:24:02 -0700 (PDT)
-MIME-Version: 1.0
-Subject: Best International Schools in Bangalore
-From: redbridgeacademy22@gmail.com
+	by ml01.01.org (Postfix) with ESMTP id BB90F1252D378;
+	Tue,  1 Sep 2020 00:17:11 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a01:4f8:c2c:93df::1; helo=sd1.tributariarh.com; envelope-from=root@sd1.tributariarh.com; receiver=<UNKNOWN> 
+Received: from sd1.tributariarh.com (unknown [IPv6:2a01:4f8:c2c:93df::1])
+	by ml01.01.org (Postfix) with ESMTP id 837201252D374
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 00:17:08 -0700 (PDT)
+Received: by sd1.tributariarh.com (Postfix, from userid 0)
+	id 086FC44E6C; Tue,  1 Sep 2020 09:13:04 +0200 (CEST)
 To: linux-nvdimm@lists.01.org
-Date: Tue, 01 Sep 2020 06:24:02 -0000
-Message-ID: <20200901062402.2753.99202@ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.01.org/
-Message-ID-Hash: 7O7YXNHLHLDQD3BAHDC5SQR6NOLC5Q5W
-X-Message-ID-Hash: 7O7YXNHLHLDQD3BAHDC5SQR6NOLC5Q5W
-X-MailFrom: redbridgeacademy22@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Subject: =?unknown-8bit?q?Fwd=3A_Urgente_-_Proceso_de_trabajo_Extrajudicial_N=BA___=28893969=29?=
+X-Mailer: Microsoft Office Outlook, Build 17.551210
+From: Ministerio de Trabajo<contacto@accesofinanciero.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="93d04ae406a261308d16e4192963bbb8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20200901071304.086FC44E6C@sd1.tributariarh.com>
+Date: Tue,  1 Sep 2020 09:13:04 +0200 (CEST)
+Message-ID-Hash: DBPERPZ4FNI7XMR4RLKXM26L2QBCZNEK
+X-Message-ID-Hash: DBPERPZ4FNI7XMR4RLKXM26L2QBCZNEK
+X-MailFrom: root@sd1.tributariarh.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7O7YXNHLHLDQD3BAHDC5SQR6NOLC5Q5W/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DBPERPZ4FNI7XMR4RLKXM26L2QBCZNEK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 
-RBIA is one of the best international schools in Bangalore providing ICSE/IGCSE/IB curriculums. Winner of the prestigious Infrastructure Provision Award & Best Institutional Architecture Award by BERG, Singapore.
-visit:https://www.rbia.in/
+This is a MIME encoded message.
+
+--93d04ae406a261308d16e4192963bbb8
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--93d04ae406a261308d16e4192963bbb8--
