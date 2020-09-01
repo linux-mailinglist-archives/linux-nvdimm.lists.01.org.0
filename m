@@ -1,43 +1,43 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB0B2595FA
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Sep 2020 17:58:17 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4792259600
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Sep 2020 17:58:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BBF9E1396FC02;
-	Tue,  1 Sep 2020 08:58:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 317BD1396FC0A;
+	Tue,  1 Sep 2020 08:58:17 -0700 (PDT)
 Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+00d723da4443b0556009+6218+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 980F2125E5506
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 08:58:09 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id B79CB1396FBF8
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 08:58:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=JwoxFn1DL9AgOwWsToHdZ13/MHJxRG0CnbCzjhSpNDE=; b=b9sm9foZ2KknJ4znljpLx2tUxn
-	oHaDHjiuyz2grgulygPpo/Qt19o7EEhlKBaFQaye8aVAHlUOdgjRbIwQiMFNOILeJK413BVET1RBr
-	NFu4/Mlx40CLQIMWWTQ+H2/QZeN4oP3V9c18i7Zj/x0HMX+2Pz0AusBSB9/N2trHMtImLm7AIgVcw
-	sRURjlZOujAIrW1S9ej6ASWNNxjKaSL0+d1g6HOJ6p6m0vY4ZUkTZuPXR5rF+FzGcCaoCQakWXoUF
-	ZC+KtpVnczDr9Kk+XrKuWXSyKhqAWMOBdsnSXK12OmCmbaGCHAAlmwQZqGcYiUe3ywrUitxTV3IJy
-	eOb7kBaQ==;
+	bh=X/wfONNMX9AkocUJrvkgvfoHlYcJ3otMPBdPBvDFSjg=; b=a3R6hLNAfPXw6R8QRXbGznXJl/
+	XYw3Qcp5GUZVdLvYz3g7yZTdhLBPVHDMlSfggoOPLUZWWTlpi4VSyTLAeSxeaGxz4415i0HuxYlHn
+	Rrzp4jXd9c1wB6Wl3fp75EZkwMR2pMOu0V4GqphS42Sy5cwGMmFOYSTu0f0WbNwh1AsqMoTho9gFC
+	RdhXzlE/7Zkah6VP7mUGqtnJKwpPFotBogYpnKN+bSpdkd42Pcgek9fWuBUDFm0apHm4YOMPi1N2y
+	tFJ5Kmb07jMbKgTkS/gXIrjXeu0LFRibRlegC43oSpS4bZjr/7ucSGkobwgV+XWFLT35JhGnmQ+r9
+	HsMdIZtA==;
 Received: from [2001:4bb8:18c:45ba:2f95:e5:ca6b:9b4a] (helo=localhost)
 	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kD8fV-0004PE-1e; Tue, 01 Sep 2020 15:57:57 +0000
+	id 1kD8fX-0004QE-CS; Tue, 01 Sep 2020 15:57:59 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4/9] block: add a new revalidate_disk_size helper
-Date: Tue,  1 Sep 2020 17:57:43 +0200
-Message-Id: <20200901155748.2884-5-hch@lst.de>
+Subject: [PATCH 5/9] block: use revalidate_disk_size in set_capacity_revalidate_and_notify
+Date: Tue,  1 Sep 2020 17:57:44 +0200
+Message-Id: <20200901155748.2884-6-hch@lst.de>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200901155748.2884-1-hch@lst.de>
 References: <20200901155748.2884-1-hch@lst.de>
 MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-Message-ID-Hash: AI22XV37Y4MPTD66XQYQYVPQK2BM5ZIA
-X-Message-ID-Hash: AI22XV37Y4MPTD66XQYQYVPQK2BM5ZIA
+Message-ID-Hash: GCD2ESIXUSI5U52LVMYNW5HPZVFVPMRQ
+X-Message-ID-Hash: GCD2ESIXUSI5U52LVMYNW5HPZVFVPMRQ
 X-MailFrom: BATV+00d723da4443b0556009+6218+infradead.org+hch@casper.srs.infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -45,7 +45,7 @@ CC: Josef Bacik <josef@toxicpanda.com>, dm-devel@redhat.com, linux-kernel@vger.k
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AI22XV37Y4MPTD66XQYQYVPQK2BM5ZIA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GCD2ESIXUSI5U52LVMYNW5HPZVFVPMRQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,278 +54,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-revalidate_disk is a relative awkward helper for driver use, as it first
-calls an optional driver method and then updates the block device size,
-while most callers either don't need the method call at all, or want to
-keep state between the caller and the called method.
-
-Add a revalidate_disk_size helper that just performs the update of the
-block device size from the gendisk one, and switch all drivers that do
-not implement ->revalidate_disk to use the new helper instead of
-revalidate_disk()
+Only virtio_blk and xen-blkfront set the revalidate argument to true,
+and both do not implement the ->revalidate_disk method.  So switch
+to the helper that just updates the size instead.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/block/rbd.c           |  2 +-
- drivers/block/rnbd/rnbd-clt.c | 10 ++-------
- drivers/block/virtio_blk.c    |  2 +-
- drivers/block/zram/zram_drv.c |  4 ++--
- drivers/md/dm-raid.c          |  2 +-
- drivers/md/md-cluster.c       |  6 ++---
- drivers/md/md-linear.c        |  2 +-
- drivers/md/md.c               | 10 ++++-----
- fs/block_dev.c                | 42 ++++++++++++++++++++++++-----------
- include/linux/genhd.h         |  1 +
- 10 files changed, 46 insertions(+), 35 deletions(-)
+ block/genhd.c         | 7 +++----
+ include/linux/genhd.h | 4 ++--
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 01153903969321..5d3923c0997ce0 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -4921,7 +4921,7 @@ static void rbd_dev_update_size(struct rbd_device *rbd_dev)
- 		size = (sector_t)rbd_dev->mapping.size / SECTOR_SIZE;
- 		dout("setting size to %llu sectors", (unsigned long long)size);
- 		set_capacity(rbd_dev->disk, size);
--		revalidate_disk(rbd_dev->disk);
-+		revalidate_disk_size(rbd_dev->disk, true);
- 	}
- }
- 
-diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
-index cc6a4e2587aec2..157538fc8be515 100644
---- a/drivers/block/rnbd/rnbd-clt.c
-+++ b/drivers/block/rnbd/rnbd-clt.c
-@@ -102,18 +102,12 @@ static int rnbd_clt_set_dev_attr(struct rnbd_clt_dev *dev,
- static int rnbd_clt_change_capacity(struct rnbd_clt_dev *dev,
- 				    size_t new_nsectors)
+diff --git a/block/genhd.c b/block/genhd.c
+index a2c0ec694918e5..431d4081b50ec7 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -50,14 +50,13 @@ static void disk_release_events(struct gendisk *disk);
+  * zero and will not be set to zero
+  */
+ void set_capacity_revalidate_and_notify(struct gendisk *disk, sector_t size,
+-					bool revalidate)
++					bool update_bdev)
  {
--	int err = 0;
+ 	sector_t capacity = get_capacity(disk);
+ 
+ 	set_capacity(disk, size);
 -
- 	rnbd_clt_info(dev, "Device size changed from %zu to %zu sectors\n",
- 		       dev->nsectors, new_nsectors);
- 	dev->nsectors = new_nsectors;
- 	set_capacity(dev->gd, dev->nsectors);
--	err = revalidate_disk(dev->gd);
--	if (err)
--		rnbd_clt_err(dev,
--			      "Failed to change device size from %zu to %zu, err: %d\n",
--			      dev->nsectors, new_nsectors, err);
--	return err;
-+	revalidate_disk_size(dev->gd, true);
-+	return 0;
- }
- 
- static int process_msg_open_rsp(struct rnbd_clt_dev *dev,
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index ca63a41059d68e..a314b9382442b6 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -598,7 +598,7 @@ static void virtblk_update_cache_mode(struct virtio_device *vdev)
- 	struct virtio_blk *vblk = vdev->priv;
- 
- 	blk_queue_write_cache(vblk->disk->queue, writeback, false);
--	revalidate_disk(vblk->disk);
-+	revalidate_disk_size(vblk->disk, true);
- }
- 
- static const char *const virtblk_cache_types[] = {
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index 9100ac36670afc..a356275605b104 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -1739,7 +1739,7 @@ static ssize_t disksize_store(struct device *dev,
- 	zram->disksize = disksize;
- 	set_capacity(zram->disk, zram->disksize >> SECTOR_SHIFT);
- 
--	revalidate_disk(zram->disk);
-+	revalidate_disk_size(zram->disk, true);
- 	up_write(&zram->init_lock);
- 
- 	return len;
-@@ -1786,7 +1786,7 @@ static ssize_t reset_store(struct device *dev,
- 	/* Make sure all the pending I/O are finished */
- 	fsync_bdev(bdev);
- 	zram_reset_device(zram);
--	revalidate_disk(zram->disk);
-+	revalidate_disk_size(zram->disk, true);
- 	bdput(bdev);
- 
- 	mutex_lock(&bdev->bd_mutex);
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index 8d2b835d7a108c..56b723d012ac15 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -701,7 +701,7 @@ static void rs_set_capacity(struct raid_set *rs)
- 	struct gendisk *gendisk = dm_disk(dm_table_get_md(rs->ti->table));
- 
- 	set_capacity(gendisk, rs->md.array_sectors);
--	revalidate_disk(gendisk);
-+	revalidate_disk_size(gendisk, true);
- }
- 
- /*
-diff --git a/drivers/md/md-cluster.c b/drivers/md/md-cluster.c
-index d50737ec403946..0580b51a156a1c 100644
---- a/drivers/md/md-cluster.c
-+++ b/drivers/md/md-cluster.c
-@@ -582,7 +582,7 @@ static int process_recvd_msg(struct mddev *mddev, struct cluster_msg *msg)
- 		break;
- 	case CHANGE_CAPACITY:
- 		set_capacity(mddev->gendisk, mddev->array_sectors);
--		revalidate_disk(mddev->gendisk);
-+		revalidate_disk_size(mddev->gendisk, true);
- 		break;
- 	case RESYNCING:
- 		set_bit(MD_RESYNCING_REMOTE, &mddev->recovery);
-@@ -1296,12 +1296,12 @@ static void update_size(struct mddev *mddev, sector_t old_dev_sectors)
- 			pr_err("%s:%d: failed to send CHANGE_CAPACITY msg\n",
- 			       __func__, __LINE__);
- 		set_capacity(mddev->gendisk, mddev->array_sectors);
--		revalidate_disk(mddev->gendisk);
-+		revalidate_disk_size(mddev->gendisk, true);
- 	} else {
- 		/* revert to previous sectors */
- 		ret = mddev->pers->resize(mddev, old_dev_sectors);
- 		if (!ret)
--			revalidate_disk(mddev->gendisk);
-+			revalidate_disk_size(mddev->gendisk, true);
- 		ret = __sendmsg(cinfo, &cmsg);
- 		if (ret)
- 			pr_err("%s:%d: failed to send METADATA_UPDATED msg\n",
-diff --git a/drivers/md/md-linear.c b/drivers/md/md-linear.c
-index c2ae9125c4c381..5ab22069b5be9c 100644
---- a/drivers/md/md-linear.c
-+++ b/drivers/md/md-linear.c
-@@ -202,7 +202,7 @@ static int linear_add(struct mddev *mddev, struct md_rdev *rdev)
- 	md_set_array_sectors(mddev, linear_size(mddev, 0, 0));
- 	set_capacity(mddev->gendisk, mddev->array_sectors);
- 	mddev_resume(mddev);
--	revalidate_disk(mddev->gendisk);
-+	revalidate_disk_size(mddev->gendisk, true);
- 	kfree_rcu(oldconf, rcu);
- 	return 0;
- }
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 60727820702300..9562ef598ae1f4 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -5358,7 +5358,7 @@ array_size_store(struct mddev *mddev, const char *buf, size_t len)
- 		mddev->array_sectors = sectors;
- 		if (mddev->pers) {
- 			set_capacity(mddev->gendisk, mddev->array_sectors);
--			revalidate_disk(mddev->gendisk);
-+			revalidate_disk_size(mddev->gendisk, true);
- 		}
- 	}
- 	mddev_unlock(mddev);
-@@ -6109,7 +6109,7 @@ int do_md_run(struct mddev *mddev)
- 	md_wakeup_thread(mddev->sync_thread); /* possibly kick off a reshape */
- 
- 	set_capacity(mddev->gendisk, mddev->array_sectors);
--	revalidate_disk(mddev->gendisk);
-+	revalidate_disk_size(mddev->gendisk, true);
- 	clear_bit(MD_NOT_READY, &mddev->flags);
- 	mddev->changed = 1;
- 	kobject_uevent(&disk_to_dev(mddev->gendisk)->kobj, KOBJ_CHANGE);
-@@ -6427,7 +6427,7 @@ static int do_md_stop(struct mddev *mddev, int mode,
- 		set_capacity(disk, 0);
- 		mutex_unlock(&mddev->open_mutex);
- 		mddev->changed = 1;
+-	if (revalidate)
 -		revalidate_disk(disk);
++	if (update_bdev)
 +		revalidate_disk_size(disk, true);
  
- 		if (mddev->ro)
- 			mddev->ro = 0;
-@@ -7259,7 +7259,7 @@ static int update_size(struct mddev *mddev, sector_t num_sectors)
- 			md_cluster_ops->update_size(mddev, old_dev_sectors);
- 		else if (mddev->queue) {
- 			set_capacity(mddev->gendisk, mddev->array_sectors);
--			revalidate_disk(mddev->gendisk);
-+			revalidate_disk_size(mddev->gendisk, true);
- 		}
- 	}
- 	return rv;
-@@ -9018,7 +9018,7 @@ void md_do_sync(struct md_thread *thread)
- 		mddev_unlock(mddev);
- 		if (!mddev_is_clustered(mddev)) {
- 			set_capacity(mddev->gendisk, mddev->array_sectors);
--			revalidate_disk(mddev->gendisk);
-+			revalidate_disk_size(mddev->gendisk, true);
- 		}
- 	}
- 
-diff --git a/fs/block_dev.c b/fs/block_dev.c
-index 0207623769715d..85f013315d48b3 100644
---- a/fs/block_dev.c
-+++ b/fs/block_dev.c
-@@ -1311,6 +1311,34 @@ static void check_disk_size_change(struct gendisk *disk,
- 	}
- }
- 
-+/**
-+ * revalidate_disk_size - checks for disk size change and adjusts bdev size.
-+ * @disk: struct gendisk to check
-+ * @verbose: if %true log a message about a size change if there is any
-+ *
-+ * This routine checks to see if the bdev size does not match the disk size
-+ * and adjusts it if it differs. When shrinking the bdev size, its all caches
-+ * are freed.
-+ */
-+void revalidate_disk_size(struct gendisk *disk, bool verbose)
-+{
-+	struct block_device *bdev;
-+
-+	/*
-+	 * Hidden disks don't have associated bdev so there's no point in
-+	 * revalidating them.
-+	 */
-+	if (disk->flags & GENHD_FL_HIDDEN)
-+		return;
-+
-+	bdev = bdget_disk(disk, 0);
-+	if (bdev) {
-+		check_disk_size_change(disk, bdev, verbose);
-+		bdput(bdev);
-+	}
-+}
-+EXPORT_SYMBOL(revalidate_disk_size);
-+
- /**
-  * revalidate_disk - wrapper for lower-level driver's revalidate_disk call-back
-  * @disk: struct gendisk to be revalidated
-@@ -1325,19 +1353,7 @@ int revalidate_disk(struct gendisk *disk)
- 
- 	if (disk->fops->revalidate_disk)
- 		ret = disk->fops->revalidate_disk(disk);
--
--	/*
--	 * Hidden disks don't have associated bdev so there's no point in
--	 * revalidating it.
--	 */
--	if (!(disk->flags & GENHD_FL_HIDDEN)) {
--		struct block_device *bdev = bdget_disk(disk, 0);
--
--		if (bdev) {
--			check_disk_size_change(disk, bdev, ret == 0);
--			bdput(bdev);
--		}
--	}
-+	revalidate_disk_size(disk, ret == 0);
- 	return ret;
- }
- EXPORT_SYMBOL(revalidate_disk);
+ 	if (capacity != size && capacity != 0 && size != 0) {
+ 		char *envp[] = { "RESIZE=1", NULL };
 diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-index 39025dc0397c04..8e9c9d3a493fae 100644
+index 8e9c9d3a493fae..c340b392452ce6 100644
 --- a/include/linux/genhd.h
 +++ b/include/linux/genhd.h
-@@ -373,6 +373,7 @@ int register_blkdev(unsigned int major, const char *name);
- void unregister_blkdev(unsigned int major, const char *name);
+@@ -315,8 +315,8 @@ static inline int get_disk_ro(struct gendisk *disk)
+ extern void disk_block_events(struct gendisk *disk);
+ extern void disk_unblock_events(struct gendisk *disk);
+ extern void disk_flush_events(struct gendisk *disk, unsigned int mask);
+-extern void set_capacity_revalidate_and_notify(struct gendisk *disk,
+-			sector_t size, bool revalidate);
++void set_capacity_revalidate_and_notify(struct gendisk *disk, sector_t size,
++		bool update_bdev);
+ extern unsigned int disk_clear_events(struct gendisk *disk, unsigned int mask);
  
- int revalidate_disk(struct gendisk *disk);
-+void revalidate_disk_size(struct gendisk *disk, bool verbose);
- int check_disk_change(struct block_device *bdev);
- int __invalidate_device(struct block_device *bdev, bool kill_dirty);
- void bd_set_nr_sectors(struct block_device *bdev, sector_t sectors);
+ /* drivers/char/random.c */
 -- 
 2.28.0
 _______________________________________________
