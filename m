@@ -2,106 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A7C259D80
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  1 Sep 2020 19:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F01F25A16E
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Sep 2020 00:28:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 438C213A1B1A8;
-	Tue,  1 Sep 2020 10:46:06 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=josef@toxicpanda.com; receiver=<UNKNOWN> 
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 63B43139EF942
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 10:46:04 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id f2so1792399qkh.3
-        for <linux-nvdimm@lists.01.org>; Tue, 01 Sep 2020 10:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=cSy4+2RDeeEJIAWSQYiuQheGRdiGJb8NlbxFbBqq2AM=;
-        b=cXlpMLt/MZjGGJxxIXI3dRVI4uswoqGbuubaqPQro5E+Vxlidjbo5VD4YxUte9yV9n
-         JGggD9c+n5hNtPF04P2fLwYCnLrn2PjcBNJ2TPdvwxby+LqAdjuTStUJWwXWsv7+VmVM
-         5mRh+XQTeS1ZkGcYpcS2I2jsA3aNfqqxESdch/Lfa1suLKFyKj7pL/q/CaFoZCr613vh
-         nMtVSMocVtIEc52WDjqw2OvCz5cwb6gn8KIGuZiEbNTm8mwhjITdAQNlXSR/HEbhcE/I
-         OWouCb9f0F3A8GvtPJWlYO2AuTtiExzS5h17AM3EKMSVIiqlJsvrIIghN+G9eZ0GdcD3
-         223Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=cSy4+2RDeeEJIAWSQYiuQheGRdiGJb8NlbxFbBqq2AM=;
-        b=CM0TDa5yX9O5tLSgx0VOKgXpdi8dA7klyQlK5kshU/sG21aCJXTa99RYfToRk7Z6Mr
-         8iQbwlP1ug+D+7ZU0aCym+8LTg3+Q/s0DMdmfBlRaco72QcQwai5Yj72PLiPIjy1daeX
-         JA5MTeAvURKUj1Q/iof+KkjJz6Hq1qW85tJ8wPeWkh4Y8c9DRHXeXkHcBhgn1nCrPdMF
-         bwoIE3n7SNsJCu2iyMVc5YXQ7qF/L0067MCshzo31easQIqBjq3ENtTYJNuHyaKSbVl8
-         YEA1vo588V8Cad4qM79UpDsCErmhzAj86FI8bLDyCf0woPVGemy1L16xyP8yYqx7Macl
-         /AmA==
-X-Gm-Message-State: AOAM5317SXc2ZxwMoHEV5W7frSuNV3Dl7lpOIhblu3/jRKXb30tdilFO
-	mMGrfGBVtiap4XxcsQRdOZMGfQ==
-X-Google-Smtp-Source: ABdhPJzuyOEEW4u0szMWmuV8qaZb9/osteZ8Kxw8co7ysE17hCNMDWr3cE6A6fD+O8okSgr6GveAkA==
-X-Received: by 2002:a37:2d07:: with SMTP id t7mr2973895qkh.255.1598982360401;
-        Tue, 01 Sep 2020 10:46:00 -0700 (PDT)
-Received: from [192.168.1.45] (cpe-174-109-172-136.nc.res.rr.com. [174.109.172.136])
-        by smtp.gmail.com with ESMTPSA id w20sm2217486qki.108.2020.09.01.10.45.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Sep 2020 10:45:59 -0700 (PDT)
-Subject: Re: remove revalidate_disk()
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-References: <20200901155748.2884-1-hch@lst.de>
-From: Josef Bacik <josef@toxicpanda.com>
-Message-ID: <b89fe35d-cdf9-e652-2016-599d67bdc5eb@toxicpanda.com>
-Date: Tue, 1 Sep 2020 13:45:58 -0400
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.0
+	by ml01.01.org (Postfix) with ESMTP id 8899213A38BF7;
+	Tue,  1 Sep 2020 15:28:44 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=160.251.2.226; helo=qwo.mobi; envelope-from=mpqov@qwo.mobi; receiver=<UNKNOWN> 
+Received: from qwo.mobi (v160-251-2-226.mwqa.static.cnode.io [160.251.2.226])
+	by ml01.01.org (Postfix) with ESMTP id B7F4013A37EBC
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 15:28:41 -0700 (PDT)
+From: =?utf-8?B?W+alveWkqeW4guWgtOe3iuaApeOBiuefpeOCieOBm10=?= <irie-k@ninus.ocn.ne.jp>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44CQ5qW95aSp57eK5oCl44GK55+l44KJ44Gb44CR?=
+Date: Wed, 2 Sep 2020 07:28:36 +0900
+Message-ID: <00d0a7fd0e09$672d335b$8ba4a722$@qwo.mobi>
 MIME-Version: 1.0
-In-Reply-To: <20200901155748.2884-1-hch@lst.de>
-Content-Language: en-US
-Message-ID-Hash: KD4C6JX55JTHFBBELOE3T4K62GBBTAVR
-X-Message-ID-Hash: KD4C6JX55JTHFBBELOE3T4K62GBBTAVR
-X-MailFrom: josef@toxicpanda.com
+X-Mailer: Microsoft Outlook 16.0
+Message-ID-Hash: YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD
+X-Message-ID-Hash: YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD
+X-MailFrom: mpqov@qwo.mobi
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: dm-devel@redhat.com, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, nbd@other.debian.org, ceph-devel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-raid@vger.kernel.org, linux-nvdimm@lists.01.org, linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org, linux-fsdevel@vger.kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KD4C6JX55JTHFBBELOE3T4K62GBBTAVR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 9/1/20 11:57 AM, Christoph Hellwig wrote:
-> Hi Jens,
-> 
-> this series removes the revalidate_disk() function, which has been a
-> really odd duck in the last years.  The prime reason why most people
-> use it is because it propagates a size change from the gendisk to
-> the block_device structure.  But it also calls into the rather ill
-> defined ->revalidate_disk method which is rather useless for the
-> callers.  So this adds a new helper to just propagate the size, and
-> cleans up all kinds of mess around this area.  Follow on patches
-> will eventuall kill of ->revalidate_disk entirely, but ther are a lot
-> more patches needed for that.
-> 
-
-I applied and built everything on Jens's for-next, patch #2 was fuzzy but it 
-applied.
-
-I checked through everything, the only thing that was strange to me is not 
-calling revalidate_disk_size() in nvdimm, but since it's during attach you point 
-out it doesn't matter.  You can add
-
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-
-To the series, thanks,
-
-Josef
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCg0KDQoNCuacrOODoeODvOODq+OBr+OBiuWuouanmOOBq+OCiOOCi+OBiuaUr+aJleOBhOaW
+ueazleOBruOBlOeiuuiqjeOBjOW/heimgeOBquWgtOWQiOOBq+OBiuefpeOCieOBm+OBmeOCi+OA
+geiHquWLlemFjeS/oeODoeODvOODq+OBp+OBmeOAgg0KDQrlrqLmp5gNCg0KICAgICAgICDjgZPj
+ga7luqbjga/mpb3lpKnluILloLTlhoXjga7jgrfjg6fjg4Pjg5fjgIxaRVJPQe+8iOOCvOODreOC
+ou+8iealveWkqeW4guWgtOW6l+OAjeOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBvuOBl+OBpuOA
+geiqoOOBq+OBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KICAgICAgICDjgYrlrqLm
+p5jjga7jgqLjgqvjgqbjg7Pjg4jjgafnlbDluLjjgarooYzngrrjgYzmpJzlh7rjgZXjgozjgZ/j
+gZ/jgoHjgIHjgYrlrqLmp5jjga7ms6jmlofjgaggUmFrdXRlbiDjgqLjgqvjgqbjg7Pjg4jjgpLl
+gZzmraLjgZXjgZvjgabjgYTjgZ/jgaDjgYTjgabjgYrjgorjgb7jgZnjgILjgqLjgqvjgqbjg7Pj
+g4jjgavjg63jgrDjgqTjg7PjgZfjgabnlLvpnaLjga7mjIfnpLrjgavlvpPjgYbjgZPjgajjgafj
+gIHjgqLjgqvjgqbjg7Pjg4jjga7lgZzmraLnirbmhYvjgpLop6PpmaTjgZfjgabjgYTjgZ/jgaDj
+gZHjgb7jgZnjgIINCiAgICAgICAg5oGQ44KM5YWl44KK44G+44GZ44GM44CB5Lul5LiL44Gu5oOF
+5aCx44KS44GU56K66KqN44Gu44GG44GI44CB44GK5pSv5omV44GE5pa55rOV44Gu5aSJ5pu044CC
+DQoNCiANCg0KICAgICAgICAgICAgIFvms6jmlofnlarlj7ddIDI2MzEyNi0yMDIwMDkwMi0wMDkN
+CiAgICAgICAgICAgICBb5bqX6IiX5Y+X5LuY5pel5pmCXSAyMDIwLzA5LzAyIDM0MjoxNSANCiAg
+ICAgICAgICAgICBb44GK5pSv5omV44GE5pa55rOVXSDjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nm
+sbrmuIgg5LiA5ous5omV44GEDQoNCiAgICAgICAgICAgICDigLvjgq/jg6zjgrjjg4Pjg4jjgqvj
+g7zjg4nnlarlj7fjg7vmnInlirnmnJ/pmZDjga7lhaXlipvjgavplpPpgZXjgYTjgYzjgarjgYTj
+gYvjgZTnorroqo3jgY/jgaDjgZXjgYTjgIINCiAgICAgICAgICAgICDjgq/jg6zjgrjjg4Pjg4jj
+gqvjg7zjg4njgYzliKnnlKjjgYTjgZ/jgaDjgZHjgarjgYTnkIbnlLHjgavjgaTjgYTjgabjga/j
+gIHjgZTliKnnlKjjga7jgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nkvJrnpL7jgb7jgafjgYrllY/l
+kIjjgZvjgY/jgaDjgZXjgYTjgIINCualveWkqeODreOCsOOCpOODsyDvvJ4NCg0KDQoNCg0KDQoN
+Cg0K5byK56S+44GL44KJ44Gu44Oh44O844Or44KS5biM5pyb44GV44KM44Gq44GE5Lya5ZOh5qeY
+44G444KC6YeN6KaB44Gq44GK55+l44KJ44Gb44Go44GX44Gm44GK6YCB44KK44GX44Gm44GK44KK
+44G+44GZ44CCDQrmnKzjg6Hjg7zjg6vjgqLjg4njg6zjgrnjga/pgIHkv6HlsILnlKjjgajjgarj
+gorjgIHov5Tkv6Hjga/jgYrlj5fjgZHjgZfjgabjgYrjgorjgb7jgZvjgpPjgILjg6Hjg7zjg6vj
+gqLjg4njg6zjgrnjga7lpInmm7Tjga/jgIHmpb3lpKllLU5BVknjgojjgorjgYrmiYvntprjgY3j
+gY/jgaDjgZXjgYTjgIINCg0K55m66KGM5YWD77ya5qW95aSp44Kr44O844OJ5qCq5byP5Lya56S+
+DQoNCiAgICDmpb3lpKnjgqvjg7zjg4njgqLjg5fjg6oNCg0KDQoNCiAgICDjgqLjg5fjg6rjgafj
+ga/jgqvjg7Pjgr/jg7PmmI7ntLDnorroqo0NCg0KDQogICAg5oyH57SL6KqN6Ki844Gn44Op44Kv
+44Op44Kv44Ot44Kw44Kk44OzDQoNCg0KICAgIOaJi+i7veOBquaTjeS9nOOBp+OCteOCr+OCteOC
+r+OBlOWIqeeUqA0KDQoNCg0KDQogICAgDQoNCg0KIA0KDQoNCiANCg0KDQoNCg0KDQoNCg0KDQog
+DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
+dmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJz
+Y3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
