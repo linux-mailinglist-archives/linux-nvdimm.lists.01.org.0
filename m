@@ -2,32 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F01F25A16E
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Sep 2020 00:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E003F25A30D
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  2 Sep 2020 04:32:27 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8899213A38BF7;
-	Tue,  1 Sep 2020 15:28:44 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=160.251.2.226; helo=qwo.mobi; envelope-from=mpqov@qwo.mobi; receiver=<UNKNOWN> 
-Received: from qwo.mobi (v160-251-2-226.mwqa.static.cnode.io [160.251.2.226])
-	by ml01.01.org (Postfix) with ESMTP id B7F4013A37EBC
-	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 15:28:41 -0700 (PDT)
-From: =?utf-8?B?W+alveWkqeW4guWgtOe3iuaApeOBiuefpeOCieOBm10=?= <irie-k@ninus.ocn.ne.jp>
-To: linux-nvdimm <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44CQ5qW95aSp57eK5oCl44GK55+l44KJ44Gb44CR?=
-Date: Wed, 2 Sep 2020 07:28:36 +0900
-Message-ID: <00d0a7fd0e09$672d335b$8ba4a722$@qwo.mobi>
+	by ml01.01.org (Postfix) with ESMTP id 214D913A4CC42;
+	Tue,  1 Sep 2020 19:32:26 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=67.229.29.40; helo=ubg.amazon.co.jp; envelope-from=account-update@ubg.amazon.co.jp; receiver=<UNKNOWN> 
+Received: from UBg.amazon.co.jp (unknown [67.229.29.40])
+	by ml01.01.org (Postfix) with ESMTP id 0269E13A4CC41
+	for <linux-nvdimm@lists.01.org>; Tue,  1 Sep 2020 19:32:22 -0700 (PDT)
+Received: from yvp (unknown [78.52.247.196])
+	by amazon.co.jp with SMTP id 4vYwWPecWEFiCHVL.1
+	for <linux-nvdimm@lists.01.org>; Wed, 02 Sep 2020 10:32:23 +0800
+Sender: account-update@UBg.amazon.co.jp
+Message-ID: <20200902103223284736@UBg.amazon.co.jp>
+From: "Amazon.co.jp" <account-update@amazon.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?QW1hem9u44Ki44Kr44Km44Oz44OI44KS5Yip55So5Yi26ZmQ44GX44Gm44GE44G+?=
+	=?utf-8?B?44GZ?=
+Date: Wed, 2 Sep 2020 10:32:12 +0800
 MIME-Version: 1.0
-X-Mailer: Microsoft Outlook 16.0
-Message-ID-Hash: YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD
-X-Message-ID-Hash: YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD
-X-MailFrom: mpqov@qwo.mobi
+X-Priority: 1
+X-mailer: Wxmfrkqw 9
+Message-ID-Hash: 2IILQ2HHQQWO7KG62BUMUIIFV5VSOUAA
+X-Message-ID-Hash: 2IILQ2HHQQWO7KG62BUMUIIFV5VSOUAA
+X-MailFrom: account-update@UBg.amazon.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YQ6GUYYPWPRA37PVWFC4XTAK76KKFASD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2IILQ2HHQQWO7KG62BUMUIIFV5VSOUAA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -36,38 +42,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-DQoNCg0KDQoNCuacrOODoeODvOODq+OBr+OBiuWuouanmOOBq+OCiOOCi+OBiuaUr+aJleOBhOaW
-ueazleOBruOBlOeiuuiqjeOBjOW/heimgeOBquWgtOWQiOOBq+OBiuefpeOCieOBm+OBmeOCi+OA
-geiHquWLlemFjeS/oeODoeODvOODq+OBp+OBmeOAgg0KDQrlrqLmp5gNCg0KICAgICAgICDjgZPj
-ga7luqbjga/mpb3lpKnluILloLTlhoXjga7jgrfjg6fjg4Pjg5fjgIxaRVJPQe+8iOOCvOODreOC
-ou+8iealveWkqeW4guWgtOW6l+OAjeOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBvuOBl+OBpuOA
-geiqoOOBq+OBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KICAgICAgICDjgYrlrqLm
-p5jjga7jgqLjgqvjgqbjg7Pjg4jjgafnlbDluLjjgarooYzngrrjgYzmpJzlh7rjgZXjgozjgZ/j
-gZ/jgoHjgIHjgYrlrqLmp5jjga7ms6jmlofjgaggUmFrdXRlbiDjgqLjgqvjgqbjg7Pjg4jjgpLl
-gZzmraLjgZXjgZvjgabjgYTjgZ/jgaDjgYTjgabjgYrjgorjgb7jgZnjgILjgqLjgqvjgqbjg7Pj
-g4jjgavjg63jgrDjgqTjg7PjgZfjgabnlLvpnaLjga7mjIfnpLrjgavlvpPjgYbjgZPjgajjgafj
-gIHjgqLjgqvjgqbjg7Pjg4jjga7lgZzmraLnirbmhYvjgpLop6PpmaTjgZfjgabjgYTjgZ/jgaDj
-gZHjgb7jgZnjgIINCiAgICAgICAg5oGQ44KM5YWl44KK44G+44GZ44GM44CB5Lul5LiL44Gu5oOF
-5aCx44KS44GU56K66KqN44Gu44GG44GI44CB44GK5pSv5omV44GE5pa55rOV44Gu5aSJ5pu044CC
-DQoNCiANCg0KICAgICAgICAgICAgIFvms6jmlofnlarlj7ddIDI2MzEyNi0yMDIwMDkwMi0wMDkN
-CiAgICAgICAgICAgICBb5bqX6IiX5Y+X5LuY5pel5pmCXSAyMDIwLzA5LzAyIDM0MjoxNSANCiAg
-ICAgICAgICAgICBb44GK5pSv5omV44GE5pa55rOVXSDjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nm
-sbrmuIgg5LiA5ous5omV44GEDQoNCiAgICAgICAgICAgICDigLvjgq/jg6zjgrjjg4Pjg4jjgqvj
-g7zjg4nnlarlj7fjg7vmnInlirnmnJ/pmZDjga7lhaXlipvjgavplpPpgZXjgYTjgYzjgarjgYTj
-gYvjgZTnorroqo3jgY/jgaDjgZXjgYTjgIINCiAgICAgICAgICAgICDjgq/jg6zjgrjjg4Pjg4jj
-gqvjg7zjg4njgYzliKnnlKjjgYTjgZ/jgaDjgZHjgarjgYTnkIbnlLHjgavjgaTjgYTjgabjga/j
-gIHjgZTliKnnlKjjga7jgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nkvJrnpL7jgb7jgafjgYrllY/l
-kIjjgZvjgY/jgaDjgZXjgYTjgIINCualveWkqeODreOCsOOCpOODsyDvvJ4NCg0KDQoNCg0KDQoN
-Cg0K5byK56S+44GL44KJ44Gu44Oh44O844Or44KS5biM5pyb44GV44KM44Gq44GE5Lya5ZOh5qeY
-44G444KC6YeN6KaB44Gq44GK55+l44KJ44Gb44Go44GX44Gm44GK6YCB44KK44GX44Gm44GK44KK
-44G+44GZ44CCDQrmnKzjg6Hjg7zjg6vjgqLjg4njg6zjgrnjga/pgIHkv6HlsILnlKjjgajjgarj
-gorjgIHov5Tkv6Hjga/jgYrlj5fjgZHjgZfjgabjgYrjgorjgb7jgZvjgpPjgILjg6Hjg7zjg6vj
-gqLjg4njg6zjgrnjga7lpInmm7Tjga/jgIHmpb3lpKllLU5BVknjgojjgorjgYrmiYvntprjgY3j
-gY/jgaDjgZXjgYTjgIINCg0K55m66KGM5YWD77ya5qW95aSp44Kr44O844OJ5qCq5byP5Lya56S+
-DQoNCiAgICDmpb3lpKnjgqvjg7zjg4njgqLjg5fjg6oNCg0KDQoNCiAgICDjgqLjg5fjg6rjgafj
-ga/jgqvjg7Pjgr/jg7PmmI7ntLDnorroqo0NCg0KDQogICAg5oyH57SL6KqN6Ki844Gn44Op44Kv
-44Op44Kv44Ot44Kw44Kk44OzDQoNCg0KICAgIOaJi+i7veOBquaTjeS9nOOBp+OCteOCr+OCteOC
-r+OBlOWIqeeUqA0KDQoNCg0KDQogICAgDQoNCg0KIA0KDQoNCiANCg0KDQoNCg0KDQoNCg0KDQog
-DQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1u
-dmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJz
-Y3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+IOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBl+OBnw0KDQog
+DQrmlrDjgZfjgYTjg4fjg5DjgqTjgrnjgYvjgonjgqLjgqvjgqbjg7Pjg4jjgrXjg7zjg5Pjgrnj
+gbjjga7jgrXjgqTjg7PjgqTjg7PjgYzmpJzlh7rjgZXjgozjgb7jgZfjgZ/jgIINCuiqsOOBi+OB
+jOOBguOBquOBn+OBrkFbUkFORF9MRVRURVItTE9XXzBdbWFbUkFORF9MRVRURVItTE9XXzBdem9u
+44Ki44Kr44Km44Oz44OI44Gn5LuW44Gu44OH44OQ44Kk44K544GL44KJ6LO85YWl44GX44KI44GG
+44Go44GX44G+44GX44Gf44CCQVtSQU5EX0xFVFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1df
+MF16b27jga7kv53orbfjgavjgYrjgZHjgovjgrvjgq3jg6Xjg6rjg4bjgqPjgajmlbTlkIjmgKfj
+ga7llY/poYzjgavjgojjgorjgIHjgrvjgq3jg6Xjg6rjg4bjgqPkuIrjga7nkIbnlLHjgYvjgonj
+gqLjgqvjgqbjg7Pjg4jjgYzjg63jg4Pjgq/jgZXjgozjgb7jgZnjgIINCuOCouOCq+OCpuODs+OD
+iOOCkuW8leOBjee2muOBjeS9v+eUqOOBmeOCi+OBq+OBr+OAgTI05pmC6ZaT5YmN44Gr5oOF5aCx
+44KS5pu05paw44GZ44KL44GT44Go44KS44GK5Yun44KB44GX44G+44GZ44CC44Gd44KM5Lul5aSW
+44Gu5aC05ZCI44CB44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OI44Gv5rC45LmF44Ot44OD44Kv
+44CCIA0KDQoNCueiuuiqjeeUqOOCouOCq+OCpuODs+ODiCANCg0KDQoNCg0KwqkgMjAyMCBBW1JB
+TkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbltSQU5EX0xFVFRFUi1MT1df
+MF0uY29tLCBJbmMuIG9yIGl0cyBhZmZpbGlhdGVzLiBBbGwgcmlnaHRzIHJlc2VydmVkLiBBW1JB
+TkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbiwgQVtSQU5EX0xFVFRFUi1M
+T1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9XXzBdLmNvLmpwLCBB
+W1JBTkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbltSQU5EX0xFVFRFUi1M
+T1dfMF0sIFByaW1lIOOBiuOCiOOBs0FbUkFORF9MRVRURVItTE9XXzBdbWFbUkFORF9MRVRURVIt
+TE9XXzBdem9uW1JBTkRfTEVUVEVSLUxPV18wXS5jby5qcCDjga7jg63jgrTjga8gQVtSQU5EX0xF
+VFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9XXzBdLmNv
+bSAsIEluYy7jgb7jgZ/jga/jgZ3jga7plqLpgKPkvJrnpL7jga7llYbmqJnjgafjgZnjgIIgQVtS
+QU5EX0xFVFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9X
+XzBdLmNvbSwgNDEwIFRlcnJ5IEF2ZW51ZSBOLiwgU2VhdHRsZSwgV0EgOTgxMDktNTIxMCAKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
+IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
+IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
