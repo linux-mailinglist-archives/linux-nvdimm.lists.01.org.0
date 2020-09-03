@@ -1,28 +1,30 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9091B25B943
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Sep 2020 05:32:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A63125B9FB
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  3 Sep 2020 07:05:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B00D113B18D92;
-	Wed,  2 Sep 2020 20:32:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 7F65F13B80ED5;
+	Wed,  2 Sep 2020 22:05:23 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6504D13B1689D
-	for <linux-nvdimm@lists.01.org>; Wed,  2 Sep 2020 20:32:49 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 9042C13B595D1
+	for <linux-nvdimm@lists.01.org>; Wed,  2 Sep 2020 22:05:20 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id BA322ADBD;
-	Thu,  3 Sep 2020 03:32:48 +0000 (UTC)
+	by mx2.suse.de (Postfix) with ESMTP id 1CD7BAC2B;
+	Thu,  3 Sep 2020 05:05:20 +0000 (UTC)
 Subject: Re: flood of "dm-X: error: dax access failed" due to 5.9 commit
  231609785cbfb
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
+To: Mike Snitzer <snitzer@redhat.com>
 References: <20200902160432.GA5513@redhat.com>
  <df0203fa-7f75-53ac-8bf1-79a1c861918e@suse.de>
- <8dc419e607ffa0e2baa6bd5795b4956fb945ebad.camel@intel.com>
+ <20200902164456.GA5928@redhat.com>
+ <4968af50-663d-74cf-1be2-aaed48a380d5@suse.de>
+ <20200902165101.GB5928@redhat.com>
 From: Coly Li <colyli@suse.de>
 Autocrypt: addr=colyli@suse.de; keydata=
  mQINBFYX6S8BEAC9VSamb2aiMTQREFXK4K/W7nGnAinca7MRuFUD4JqWMJ9FakNRd/E0v30F
@@ -67,78 +69,142 @@ Autocrypt: addr=colyli@suse.de; keydata=
  K0Jx4CEZubakJe+894sX6pvNFiI7qUUdB882i5GR3v9ijVPhaMr8oGuJ3kvwBIA8lvRBGVGn
  9xvzkQ8Prpbqh30I4NMp8MjFdkwCN6znBKPHdjNTwE5PRZH0S9J0o67IEIvHfH0eAWAsgpTz
  +jwc7VKH7vkvgscUhq/v1/PEWCAqh9UHy7R/jiUxwzw/288OpgO+i+2l11Y=
-Message-ID: <a091cc35-893a-fc10-6b4f-231c399b9629@suse.de>
-Date: Thu, 3 Sep 2020 11:32:42 +0800
+Message-ID: <d175dda1-d196-8283-d099-9e4db70f96aa@suse.de>
+Date: Thu, 3 Sep 2020 13:05:13 +0800
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
  Gecko/20100101 Thunderbird/68.12.0
 MIME-Version: 1.0
-In-Reply-To: <8dc419e607ffa0e2baa6bd5795b4956fb945ebad.camel@intel.com>
+In-Reply-To: <20200902165101.GB5928@redhat.com>
+Content-Type: multipart/mixed;
+ boundary="------------0F92E39F92669280CF59FFE0"
 Content-Language: en-US
-Message-ID-Hash: NET4Y4WGY5XFVD5K3IVMUU57FQHNKMGM
-X-Message-ID-Hash: NET4Y4WGY5XFVD5K3IVMUU57FQHNKMGM
+Message-ID-Hash: 4BTVBJEMGP6IULEI26NZPQR6Z4WKAOED
+X-Message-ID-Hash: 4BTVBJEMGP6IULEI26NZPQR6Z4WKAOED
 X-MailFrom: colyli@suse.de
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "pankaj.gupta.linux@gmail.com" <pankaj.gupta.linux@gmail.com>, "snitzer@redhat.com" <snitzer@redhat.com>, "jack@suse.com" <jack@suse.com>, "dm-devel@redhat.com" <dm-devel@redhat.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: Jan Kara <jack@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, linux-nvdimm@lists.01.org, dm-devel@redhat.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NET4Y4WGY5XFVD5K3IVMUU57FQHNKMGM/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4BTVBJEMGP6IULEI26NZPQR6Z4WKAOED/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+
+This is a multi-part message in MIME format.
+--------------0F92E39F92669280CF59FFE0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On 2020/9/3 07:05, Verma, Vishal L wrote:
-> On Thu, 2020-09-03 at 00:40 +0800, Coly Li wrote:
->> On 2020/9/3 00:04, Mike Snitzer wrote:
->>> 5.9 commit 231609785cbfb ("dax: print error message by pr_info() in
->>> __generic_fsdax_supported()") switched from pr_debug() to pr_info().
->>>
->>> The justification in the commit header is really inadequate.  If there
->>> is a problem that you need to drill in on, repeat the testing after
->>> enabling the dynamic debugging.
->>>
->>> Otherwise, now all DM devices that aren't layered on DAX capable devices
->>> spew really confusing noise to users when they simply activate their
->>> non-DAX DM devices:
->>>
->>> [66567.129798] dm-6: error: dax access failed (-5)
->>> [66567.134400] dm-6: error: dax access failed (-5)
->>> [66567.139152] dm-6: error: dax access failed (-5)
->>> [66567.314546] dm-2: error: dax access failed (-95)
->>> [66567.319380] dm-2: error: dax access failed (-95)
->>> [66567.324254] dm-2: error: dax access failed (-95)
->>> [66567.479025] dm-2: error: dax access failed (-95)
->>> [66567.483713] dm-2: error: dax access failed (-95)
->>> [66567.488722] dm-2: error: dax access failed (-95)
->>> [66567.494061] dm-2: error: dax access failed (-95)
->>> [66567.498823] dm-2: error: dax access failed (-95)
->>> [66567.503693] dm-2: error: dax access failed (-95)
->>>
->>> commit 231609785cbfb must be reverted.
->>>
->>> Please advise, thanks.
->>
->> Adrian Huang from Lenovo posted a patch, which titled: dax: do not print
->> error message for non-persistent memory block device
->>
->> It fixes the issue, but no response for now. Maybe we should take this fix.
->>
+On 2020/9/3 00:51, Mike Snitzer wrote:
+> On Wed, Sep 02 2020 at 12:46pm -0400,
+> Coly Li <colyli@suse.de> wrote:
 > 
-> Mike, Coly,
+>> On 2020/9/3 00:44, Mike Snitzer wrote:
+>>> On Wed, Sep 02 2020 at 12:40pm -0400,
+>>> Coly Li <colyli@suse.de> wrote:
+>>>
+>>>> On 2020/9/3 00:04, Mike Snitzer wrote:
+>>>>> 5.9 commit 231609785cbfb ("dax: print error message by pr_info() in
+>>>>> __generic_fsdax_supported()") switched from pr_debug() to pr_info().
+>>>>>
+>>>>> The justification in the commit header is really inadequate.  If there
+>>>>> is a problem that you need to drill in on, repeat the testing after
+>>>>> enabling the dynamic debugging.
+>>>>>
+>>>>> Otherwise, now all DM devices that aren't layered on DAX capable devices
+>>>>> spew really confusing noise to users when they simply activate their
+>>>>> non-DAX DM devices:
+>>>>>
+>>>>> [66567.129798] dm-6: error: dax access failed (-5)
+>>>>> [66567.134400] dm-6: error: dax access failed (-5)
+>>>>> [66567.139152] dm-6: error: dax access failed (-5)
+>>>>> [66567.314546] dm-2: error: dax access failed (-95)
+>>>>> [66567.319380] dm-2: error: dax access failed (-95)
+>>>>> [66567.324254] dm-2: error: dax access failed (-95)
+>>>>> [66567.479025] dm-2: error: dax access failed (-95)
+>>>>> [66567.483713] dm-2: error: dax access failed (-95)
+>>>>> [66567.488722] dm-2: error: dax access failed (-95)
+>>>>> [66567.494061] dm-2: error: dax access failed (-95)
+>>>>> [66567.498823] dm-2: error: dax access failed (-95)
+>>>>> [66567.503693] dm-2: error: dax access failed (-95)
+>>>>>
+>>>>> commit 231609785cbfb must be reverted.
+>>>>>
+>>>>> Please advise, thanks.
+>>>>
+>>>> Adrian Huang from Lenovo posted a patch, which titled: dax: do not print
+>>>> error message for non-persistent memory block device
+>>>>
+>>>> It fixes the issue, but no response for now. Maybe we should take this fix.
+>>>
+>>> OK, yes sounds like it.  It was merged and is commit c2affe920b0e066
+>>> ("dax: do not print error message for non-persistent memory block
+>>> device")
+>>
+>> Thanks for informing me this patch is merged, I am going to update my
+>> local one :-)
 > 
-> I applied Adrians patch, and submitted it - it is already in v5.9-rc3 -
-> c2affe920b0e dax: do not print error message for non-persistent memory block device
-> 
+> So the thing is I'm running v5.9-rc3 (which includes this commit) but
+> I'm still seeing all these warnings when I run the lvm2 testsuite.  The
+> reason _seems_ to be because the lvm2 testsuite uses brd devices for
+> test devices.  So there is something about the brd device that shows
+> commit c2affe920b0e066 isn't enough :(
 
-Hi Verma,
+Could you please apply and test this attached patch based on v5.9-rc3 ?
 
-Thank you for taking it into mainline :-)
+It seems the pointer dax_dev of __generic_fsdax_supported() parameter is
+not initialized (IMHO this is not a dm bug), therefore the && should be
+|| to check the dax support state.
+
+Also I add two pr_info() to print the variables value, let's see whether
+my guess makes sense.
+
+Thanks.
 
 Coly Li
+
+
+--------------0F92E39F92669280CF59FFE0
+Content-Type: text/plain; charset=UTF-8; x-mac-type="0"; x-mac-creator="0";
+ name="0001-dax-fix-for-do-not-print-error-message-for-non-persi.patch"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+ filename*0="0001-dax-fix-for-do-not-print-error-message-for-non-persi.pa";
+ filename*1="tch"
+
+RnJvbSAzNzE0YjkxMzYyNjY5YzRkM2UyODFhY2ZlMTk3ZTkyMmExZGQxYjRhIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBDb2x5IExpIDxjb2x5bGlAc3VzZS5kZT4KRGF0ZTog
+VGh1LCAzIFNlcCAyMDIwIDEyOjI1OjEzICswODAwClN1YmplY3Q6IFtQQVRDSF0gZGF4OiBm
+aXggZm9yIGRvIG5vdCBwcmludCBlcnJvciBtZXNzYWdlIGZvciBub24tcGVyc2lzdGVudAog
+bWVtb3J5IGJsb2NrIGRldmljZQoKV2hlbiBjYWxsaW5nIF9fZ2VuZXJpY19mc2RheF9zdXBw
+b3J0ZWQoKSwgYSBkYXgtdW5zdXBwb3J0ZWQgZGV2aWNlIG1heQpub3QgaGF2ZSBkYXhfZGV2
+IGFzIE5VTEwuIFRoZXJlZm9yZSBldmVuIGRheF9kZXYgaXMgbm90IE5VTEwsIGl0IGlzCnN0
+aWxsIG5lY2Vzc2FyeSB0byBjYWxsIGJkZXZfZGF4X3N1cHBvcnRlZCgpIHRvIGNoZWNrIHdo
+ZXRoZXIgdGhlIGRldmljZQpzdXBwb3J0cyBkYXguCgpTaWduZWQtb2ZmLWJ5OiBDb2x5IExp
+IDxjb2x5bGlAc3VzZS5kZT4KLS0tCiBkcml2ZXJzL2RheC9zdXBlci5jIHwgNCArKystCiAx
+IGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0t
+Z2l0IGEvZHJpdmVycy9kYXgvc3VwZXIuYyBiL2RyaXZlcnMvZGF4L3N1cGVyLmMKaW5kZXgg
+MzI2NDI2MzRjMWJiLi5hNWJkZmNhMDUyOWEgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvZGF4L3N1
+cGVyLmMKKysrIGIvZHJpdmVycy9kYXgvc3VwZXIuYwpAQCAtMTAwLDcgKzEwMCw5IEBAIGJv
+b2wgX19nZW5lcmljX2ZzZGF4X3N1cHBvcnRlZChzdHJ1Y3QgZGF4X2RldmljZSAqZGF4X2Rl
+diwKIAkJcmV0dXJuIGZhbHNlOwogCX0KIAotCWlmICghZGF4X2RldiAmJiAhYmRldl9kYXhf
+c3VwcG9ydGVkKGJkZXYsIGJsb2Nrc2l6ZSkpIHsKKwlwcl9pbmZvKCJkYXhfZGV2OiAlcFxu
+IiwgZGF4X2Rldik7CisJcHJfaW5mbygiYmRldl9kYXhfc3VwcG9ydGVkKCk6ICVkXG4iLCBi
+ZGV2X2RheF9zdXBwb3J0ZWQoYmRldiwgYmxvY2tzaXplKSk7CisJaWYgKCFkYXhfZGV2IHx8
+ICFiZGV2X2RheF9zdXBwb3J0ZWQoYmRldiwgYmxvY2tzaXplKSkgewogCQlwcl9kZWJ1Zygi
+JXM6IGVycm9yOiBkYXggdW5zdXBwb3J0ZWQgYnkgYmxvY2sgZGV2aWNlXG4iLAogCQkJCWJk
+ZXZuYW1lKGJkZXYsIGJ1ZikpOwogCQlyZXR1cm4gZmFsc2U7Ci0tIAoyLjI2LjIKCg==
+--------------0F92E39F92669280CF59FFE0
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--------------0F92E39F92669280CF59FFE0--
