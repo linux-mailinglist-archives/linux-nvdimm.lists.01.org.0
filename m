@@ -1,132 +1,92 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BEF25DF67
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Sep 2020 18:09:35 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05A1125DFAF
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Sep 2020 18:21:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CF2F513AABECA;
-	Fri,  4 Sep 2020 09:09:33 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=87.76.28.30; helo=server.samueleschiavo.it; envelope-from=support@videomakervicenza.it; receiver=<UNKNOWN> 
-Received: from server.samueleschiavo.it (server.samueleschiavo.it [87.76.28.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F385013AB52F1;
+	Fri,  4 Sep 2020 09:21:41 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [205.139.110.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D080013AABEC7
-	for <linux-nvdimm@lists.01.org>; Fri,  4 Sep 2020 09:09:31 -0700 (PDT)
-Received: by server.samueleschiavo.it (Postfix, from userid 10036)
-	id 2BEA754D8E0; Fri,  4 Sep 2020 18:09:15 +0200 (CEST)
-To: linux-nvdimm@lists.01.org
-Subject: Auszeichnungen gewinnen
-Date: Fri, 4 Sep 2020 16:09:15 +0000
-From: El Gordo de la Primitiva Lotterien Spanien <support@videomakervicenza.it>
-Message-ID: <99e6e8a3b934a52ea7cf4c6885e4d7bd@www.videomakervicenza.it>
+	by ml01.01.org (Postfix) with ESMTPS id 2A40D13AB52F0
+	for <linux-nvdimm@lists.01.org>; Fri,  4 Sep 2020 09:21:39 -0700 (PDT)
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-218-rbseevaSOzmvEljWHFsisw-1; Fri, 04 Sep 2020 12:21:36 -0400
+X-MC-Unique: rbseevaSOzmvEljWHFsisw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6AE1F189E621;
+	Fri,  4 Sep 2020 16:21:34 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id E453E7E40A;
+	Fri,  4 Sep 2020 16:21:30 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 084GLUdx030258;
+	Fri, 4 Sep 2020 12:21:30 -0400
+Received: from localhost (mpatocka@localhost)
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 084GLTGx030254;
+	Fri, 4 Sep 2020 12:21:29 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date: Fri, 4 Sep 2020 12:21:29 -0400 (EDT)
+From: Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: make misbehavior on ext2 in dax mode (was: a crash when running
+ strace from persistent memory)
+In-Reply-To: <alpine.LRH.2.02.2009031328040.6929@file01.intranet.prod.int.rdu2.redhat.com>
+Message-ID: <alpine.LRH.2.02.2009041200570.27312@file01.intranet.prod.int.rdu2.redhat.com>
+References: <alpine.LRH.2.02.2009031328040.6929@file01.intranet.prod.int.rdu2.redhat.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-Message-ID-Hash: IDAKO7LQYOLCLG6NIICC7FGTVDYWEZNG
-X-Message-ID-Hash: IDAKO7LQYOLCLG6NIICC7FGTVDYWEZNG
-X-MailFrom: support@videomakervicenza.it
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Message-ID-Hash: TYYFISK3N4SPKP4NU7G62AGFPWWOXECV
+X-Message-ID-Hash: TYYFISK3N4SPKP4NU7G62AGFPWWOXECV
+X-MailFrom: mpatocka@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Jann Horn <jannh@google.com>, Christoph Hellwig <hch@lst.de>, Oleg Nesterov <oleg@redhat.com>, Kirill Shutemov <kirill@shutemov.name>, Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>, Andrea Arcangeli <aarcange@redhat.com>, Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-ext4@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: santalucia.sg.es@spainmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IDAKO7LQYOLCLG6NIICC7FGTVDYWEZNG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TYYFISK3N4SPKP4NU7G62AGFPWWOXECV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIExvdHRlcmllbiBTcGFuaWVuIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpBZHJlc3NlOiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KQ2FsbGUgZGVsIFByw61u
-Y2lwZSBkZSBWZXJnYXJhLCAzOCwgMjgwMDEgTWFkcmlkIEVzcGHDsWEgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgDQpFIG1h
-aWw6XWFuc3BydWNoZ2V3aW5uLm1tdC5lc0BzcGFpbm1haWwuY29tXQ0KS29udGFrdCBhdWZuZWht
-ZW4gdW50ZXI6XSAgMzQ2MDIgODEwIDE4NSBmYXggIDM0OTM1NDU3NDkwXQ0KQWt0ZW56ZWljaGVu
-Ol1QMDkvMDEvMDIvMjAyMC5dDQpMb3NudW1tZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0K
-wqBEYXR1bTogMDEvMDkvMjAyMA0KwqANCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpIYWxsbywgwqAg
-wqAgwqAgwqAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-IE9GRklaSUVMTEUgTUlUVEVJTFVORywNCsKgDQpEaWVzZSBFbCBHb3JkbyBkZSBsYSBQcmltaXRp
-dmEgU29tbWVyIEJvbmFuemEgwqBMb3R0ZXJpZSB3dXJkZSDCoCB1bmQgTWluaXN0ZXJpbyBkZSBJ
-bmR1c3RyaWEsIENvbWVyY2lvIHkgVHVyaXNtbyDCoGdlc3BvbnNlcnQgdW0gVG91cmlzbXVzIGlu
-IEVzcGHDsWEgwqB6dSBmw7ZyZGVybi4NCsKgDQpXaXIgc2luZCBlcmZyZXV0IElobmVuIG1pdCB6
-dSB0ZWlsZW4sIGRhc3MgZGllIEdld2lubmVyIGRlcyBTb25kZXIgU3BhbmlzaCBUb3VyaXNtdXMg
-UHJvbW90aW9uYWwgRHJhdyBiZWthbm50IGdlZ2ViZW4gd29yZGVuIHNpbmQuIERpZSBvZmZpemll
-bGxlIExpc3RlIGRlciBHZXdpbm5lciDCoGVyc2NoaWVuIGFtIMKgU2Ftc3RhZyBkZXIgMTAgLzA4
-LzIwMjAuIA0KwqANCklocmUgZW1haWwgYWRyZXNzZSDCoG1pdCBkZXIgYW5ow6RuZ2VuZGVuIExv
-c251bW1lcjogRVNQIDQ0NDcvMTE0NjQxMTg4MDIwMSDCoHVuZCBtaXQgZGVyIFNlcmllbm51bW1l
-cjogRVNQLzAxODgxMS0yMDIwIHpvZyBkaWUgR2zDvGNrc251bW1lcjogNi4xNi4xOC4zMy40Ny41
-MSBCb251OjI5LEVsIEdvcmRvIGRlIGxhIFByaW1pdGl2YSDCoExvdHRlcmllIMKgNiAvNDkgaW4g
-ZGVyIDMuIEthdGVnb3JpZS4NCsKgDQpTaWUgc2luZCBkYW1pdCBnZXdpbm5lciB2b246IOKCrDk5
-MSwwMDAuMDAgRXVyby4gRGllIFN1bW1lIGVyZ2lidCBzaWNoIGF1cyBlaW5lciBHZXdpbm5hdXNz
-Y2jDvHR0dW5nIHZvbjog4oKsNjkzNywwMDAuMDAgRXVybywgZGllIGR1cmNoIGRpZSBlcnN0ZW4g
-c2llYmVuICg3KSBHZXdpbm5lciBhdXMgZGVyIGdsZWljaGVuIEthdGVnb3JpZSBnZXRlaWx0IHd1
-cmRlLiDCoERpciBnZXdpbm4gaXN0IGJlaSBlaW5lciBzaWNoZXJoZWl0c2Zpcm1hIGhpbnRlcmxl
-Z3QgdW5kIGluIGlocmVuIG5hbWVuL2VtYWlsIMKgdmVyc2ljaGVydC4gdW0ga2VpbmUga29tcGxp
-a2F0aW9uZW4gYmVpIGRlciBhYndpY2tsdW5nIGRlciB6YWhsdW5nIHp1IHZlcnVyc2FjaGVuIGJp
-dHRlbiB3aXIgc2llIGRpZXNlIG9mZml6aWVsbGUgbWl0dGVpbHVuZyAsIGRpc2tyZXQgenUgYmVo
-YW5kZWxuLixlcyBpc3QgZWluIHRlaWwgdW5zZXJlcyBzaWNoZXJoZWl0c3Byb3Rva29sbHMgdW5k
-IGdhcmFudGllcnQgaWhuZW4gZWluZW4gcmVpYnVuZ3Nsb3NlbiBBYmxhdWYuDQrCoA0KQWxsZSBn
-ZXdpbm5lciB3dXJkZW4gcGVyIGNvbXB1dGVyIGF1cyBVcmxhdWJzaG90ZWxzLCBGbHVnZ2VzZWxs
-c2NoYWZ0ZW4gdW5kIFJlaXNlYsO8cm9zIG1haWxlbiBEYXRlbiB2b24gZsO8bmYgTWlsbGlvbmVu
-ICg1MDAwMDAwKSBFbWFpbCBhZHJlc3NlbiBhdXNnZXfDpGhsdCwgYWxzIHRlaWwgdW5zZXJlciBJ
-bnRlcm5hdGlvbmFsZW4gdG91cmlzbXVzIHByb21vdGlvbiBwcm9ncmFtbXMsIHdlbGNoZXMgd2ly
-IGVpbm1hbCBpbSBqYWhyIHZlcmFuc3RhbHRlbiB1bSBUb3VyaXNtdXMgaW4gU3BhbmllbiB6dSBm
-w7ZyZGVybi4NCsKgDQpCaXR0ZSBrb250YWt0aWVyZW4gc2llIHVuc2VyZW4gYXVzbGFuZHMgc2Fj
-aGJlYXJiZWl0ZXIgSGVyciBHYWJyaWVsIMKgYmVpIGRlciBzaWNoZXJoZWl0c2Zpcm1hIFNhbnRh
-bHVjaWEgU2ljaGVyaGVpdHNmaXJtYTpQZXIgRW1haWwgYW46YmVyYXRlcmdhYnJpZWwuc3BAY29u
-c3VsdGFudC5jb20gb2RlciBhbnJ1ZmVuOiAzNCA2MDIgODEwIDE4NSAmIEZheDogIDM0IDkzMSA3
-MCAyMTIwLCB1bSBJaHIgR2VsZCBzY2huZWxsIHp1IGJla29tbWVuLg0KwqANCkRlbmtlbiBTaWUg
-ZGFyYW4sIGplZGVyIGdld2lubmFuc3BydWNoIG11c3MgYmlzIHp1bSAzMC85LzIwMjAgQW5nZW1l
-bGRldGUgc2Vpbi4gSmVkZXIgbmljaHQgYW5nZW1lbGRldCBHZXdpbm5hbnNwcnVjaCB2ZXJmw6Rs
-bHQgdW5kIGdlaHQgenVydWNrIGFuIGRhcyBTcGFuaXNjaGUgU3RhYXRza2Fzc2UuDQrCoCANCldJ
-Q0hUSUc6IHVtIHZlcnrDtmdlcnVuZ2VuIHVuZCBrb21wbGlrYXRpb25lbiB6dSB2ZXJtZWlkZW4s
-IGJpdHRlIGltbWVyIEFrdGVuemVpY2hlbiBhbmdlYmVuLiDCoEFuYmVpIGVpbiBhbm1lbGRlZm9y
-bXVsYXIsIGJpdHRlIGF1c2bDvGxsZW4gdW5kIHp1csO8Y2sgUGVyIGVtYWlsIGFuOmJlcmF0ZXJn
-YWJyaWVsLnNwQGNvbnN1bHRhbnQuY29tIG9kZXIgYW5ydWZlbjogIDM0IDYwMiA4MTAxODUgJiBG
-YXg6ICAzNCA5MzEgNzAgMjEyMCBkaWUgc2ljaGVyaGVpdHNmaXJtYSBTYW50YWx1Y2lhIFNpY2hl
-cmhlaXRzZmlybWEuDQrCoA0KSEVSWkxJQ0hFTiBHTFVDS1dVTlNDSOKApiENCk1pdCBmcmV1bmRs
-aWNoZW4gR3LDvMOfZW4NCk1BUklBIEhJREFMR08NClZJWkVQUsOEU0lERU5USU4NCsKgDQpCw5xS
-TyxTQU5UQUxVQ0lBIFNFR1VST1MgUy5BIEVzcGHDsWEgDQpQbGF6YSBFc3Bhw7FhLCAxNSAtIC0x
-NiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KTWFkcmlkLCAyODAw
-OCBFc3Bhw7FhDQrCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KwqAN
-CkFOTUVMREVGT1JNVUxBUiBaVVIgR0VXSU5OQU5TUFJVQ0hTDQpfX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18gDQpCaXR0ZSBmw7xsbGVuIFNpZSBkYXMgRm9ybXVs
-YXIgc29yZ2bDpGx0aWcgYXVzIHVuZCBzZW5kZW4gZXMgcGVyIGUgbWFpbDpzYW50YWx1Y2lhLnNn
-LmVzQHNwYWlubWFpbC5jb20gYW4gZGVyIFNhbnRhbHVjaWEgU2ljaGVyaGVpdHNmaXJtYSBtaXQg
-S29waWUgSWhyZXMgUGVyc29uYWxhdXN3ZWlzZXMgb2RlciBSZWlzZXBhc3Nlcy4NCsKgDQpHRVdJ
-Tk5CRVRSQUc6X19fX18gQUtURU5aRUlDSEVOIF9fX19fX19fX18NCk5BTUU6X19fX19fX19fX19f
-IFZPUk5BTUU6X19fX19fX19fX19fX19fX18NCkdFQlVSVFNEQVRVTTpfX19fX05BVElPTkFMSVRB
-VF9fX19fX19fX19fX18NCkxPU05VTU1FUjpfX19fX19fX19fXyBHTMOcQ0tTWkFITEVOIF9fX19f
-X19fDQpTVFJBU1NFOl9fX19fX19fX19fX19fXyBOVU1NRVI6X19fX19fX19fX19fXw0KV09ITk9S
-VDpfX19fXyBQT1NUTEVJVFpBSExfX19fX0xBTkQgX19fX19fX18NCkRpcmVrdGVyIEtvbnRha3Qg
-RS1NYWlsX19fX19fX19fX19fX19fX19fX19fDQpURUxFRk9OOl9fX19fX19fX18gSEFORFk6X19f
-X19fX19fXyBGQVg6X19fX18NCkJFUlVGOl9fX19fIEZBTUlMSUVOU1RBTkQ6X19fX18oR0VTQ0hM
-RUNIVClfX18gwqAgwqANCsKgDQpXRUxDSEUgWkFITFVOR1NGT1JNIEJFVk9SWlVHRU4gU0lFPyDC
-oChBKSBCQU5Lw5xCRVJXRUlTVU5HOiDCoChCKSBCQVJTQ0hFQ0sgwqANCkJBTktEQVRFTiBTSU5E
-IE5VUiBOT1RXRU5ESUcgV0VOTiBTSUUgU0lDSCBGw5xSIEVJTkUgQkFOS8OcQkVSV0VJU1VORyBF
-TlRTQ0hJRURFTiBIQUJFTi4NCsKgDQpOQU1FIERFUyBHRUxESU5TVElUVVRTOl9fX19fX19fX19f
-X19fDQpLT05UT05VTU1FUjpfX19fX19fX19fX19fX19fX19fX19fX18gDQpJQkFOOl9fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18NCkJBTksgQUREUkVTUzpfX19fX19fX19fX19fX19fX19f
-X19fX18NCg0KwqANCsKgIMKgICBFUktMw4RSVU5HIERFUyBCRUfDnE5TVElHVEVODQpJQ0ggX19f
-X19fX19fX19fX19fX19fX19fX19fX19fQkVTVMOEVElHRSBISUVSTUlULCBEQVNTIEFMTEUgSU5G
-T1JNQVRJT05FTiwgS09SUkVLVCBTSU5ELCBVTkQgRElFIFZFUkFOU1RBTFRFUiBERVIgRWwgU1BB
-TklTSCBMT1RURVJZIC8gU0FOVEFMVUNJQSBTSUNIRVJIRUlUU0ZJUk1BIE5JQ0hUIFZFUkFOVFdP
-UlRMSUNIIEdFTUFDSFQgV0VSREVOLCBXRU5OIEVTIFpVIEVJTkVSIFVOQkVSRUNIVElHVEVOIFpB
-SExVTkcgRFVSQ0ggVU5HRU5BVUUgSU5GT1JNQVRJT05FTiwgRElFIElDSCBJTiBESUVTRU0gRk9S
-TVVMQVIgQU5HRUJFIEtPTU1ULkRBU1MgMTAlIFBST1ZJU0lPTiBERVIgU0FOVEEgTFVDSUEgU0VD
-VVJJVFkgQ09NUEFOWSBHRUg/UkVOLCBTT0JBTEQgU0lFIElIUkVOIEdFV0lOTiBGT05EUyBFUkhB
-TFRFTi4gRElFU0UgWkVITiBQUk9aRU5UIFdFUkRFTiBJSE5FTiBTT0ZPUlQgWlVSw5xDS0dFR0VC
-RU4sIFNJRSBFUkhBTFRFTiBJSFJFTiBHRVdJTk4gQVVGIElIUkVNIEtPTlRPLiAoQUNIVFVORyBX
-aXIgYml0dGVuIFNpZSwgYXVmIGRpZXNlIEUtTWFpbC1BZHJlc3NlIHp1IGFudHdvcnRlbihzYW50
-YWx1Y2lhLnNnLmVzQHNwYWlubWFpbC5jb20pIELDnFJPLUtPTlRPSU5GT1JNQVRJT05FTi1JQkFO
-IEVTMTcgMjEwMCA1NjI0IDExMDIgMDAxMSA3NzE5IFNXSUZUIENPREU6IENBSVhFU0JCWFhYLiDC
-oEtPTlRPTkFNRSxMQSBQTEFDSVRBIERFTCBNSVJBRE9SIFMuTCBTUEFJTi4NClVyaGViZXJyZWNo
-dMKpIDIwMDItMjAyMCBNdWx0aS1TdGFhdCBMb3R0ZXJpZSBWZXJiYW5kLiBBbGxlIFJlY2h0ZQ0K
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZk
-aW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2Ny
-aWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+
+
+On Thu, 3 Sep 2020, Mikulas Patocka wrote:
+
+> Hi
+> 
+> There's a bug when you run strace from dax-based filesystem.
+
+Hmm, so I've found another bug in dax mode.
+
+If you extract the Linux kernel tree on dax-based ext2 filesystem (use the 
+real ext2 driver, not ext4), and then you run make twice, the second 
+invocation will rebuild everything. It seems like a problem with 
+timestamps.
+
+mount -t ext2 -o dax /dev/pmem0 /mnt/ext2/
+cd /mnt/ext2/usr/src/git/linux-2.6
+make clean
+make -j12
+make -j12	<--- this rebuilds the whole tree, althought it shouldn't
+
+I wasn't able to bisect it because this bug seems to be present in every 
+kernel I tried (back to 4.16.0). Ext4 doesn't seem to have this bug.
+
+Mikulas
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
