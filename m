@@ -1,38 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5FE25E188
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  4 Sep 2020 20:42:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEC625E44B
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  5 Sep 2020 01:49:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5B28613D00712;
-	Fri,  4 Sep 2020 11:42:50 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=120.228.162.140; helo=dqhw.com; envelope-from=eueo@gqvz.com; receiver=<UNKNOWN> 
-Received: from dqhw.com (unknown [120.228.162.140])
-	by ml01.01.org (Postfix) with ESMTP id 8446613AAF6D5
-	for <linux-nvdimm@lists.01.org>; Fri,  4 Sep 2020 11:42:47 -0700 (PDT)
-Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Sat, 12 Sep 2020 02:43:11 +0800
-Message-ID: ac99afb6-8a62-4e38-9687-0db486730647
+	by ml01.01.org (Postfix) with ESMTP id 6423613D45FC8;
+	Fri,  4 Sep 2020 16:49:24 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=67.229.29.44; helo=kqf.amazon.co.jp; envelope-from=account-update@kqf.amazon.co.jp; receiver=<UNKNOWN> 
+Received: from KQf.amazon.co.jp (unknown [67.229.29.44])
+	by ml01.01.org (Postfix) with ESMTP id A5E4313D45FC4
+	for <linux-nvdimm@lists.01.org>; Fri,  4 Sep 2020 16:49:20 -0700 (PDT)
+Received: from tqqyma (unknown [147.241.56.219])
+	by amazon.co.jp with SMTP id Q07t6lukssnhRNHi.1
+	for <linux-nvdimm@lists.01.org>; Sat, 05 Sep 2020 07:49:20 +0800
+Sender: account-update@KQf.amazon.co.jp
+Message-ID: <20200905074920450571@KQf.amazon.co.jp>
+From: "Amazon.co.jp" <account-update@amazon.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?QW1hem9u44Ki44Kr44Km44Oz44OI44KS5Yip55So5Yi26ZmQ44GX44Gm44GE44G+?=
+	=?utf-8?B?44GZ?=
+Date: Sat, 5 Sep 2020 07:49:12 +0800
 MIME-Version: 1.0
-Sender: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E9=A6=99=E6=B8=AF=E7=A9?=
- =?utf-8?Q?=BA=E8=BF=90=E8=87=B3=E5=85=A8=E7=90=83=E6=9C=BA=E5=9C=BA?=
- <eueo@gqvz.com>
-From: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E9=A6=99=E6=B8=AF=E7=A9=BA?=
- =?utf-8?Q?=E8=BF=90=E8=87=B3=E5=85=A8=E7=90=83=E6=9C=BA=E5=9C=BA?=
- <txpdd@gqvz.com>
-To: linux-nvdimm@lists.01.org
-Date: 12 Sep 2020 02:43:11 +0800
-Subject: =?utf-8?B?5LiT5rOo6aaZ5riv56m66L+Q6Iez5YWo55CD5py65Zy6?=
-Message-ID-Hash: 3BIV7PQUTQXQQBCFEITBYMK4IUYA4AVS
-X-Message-ID-Hash: 3BIV7PQUTQXQQBCFEITBYMK4IUYA4AVS
-X-MailFrom: eueo@gqvz.com
+X-Priority: 1
+X-mailer: Hxzhwg 7
+Message-ID-Hash: TOZGRQQEO2HHT424BYRCRFWCEE4CRNGN
+X-Message-ID-Hash: TOZGRQQEO2HHT424BYRCRFWCEE4CRNGN
+X-MailFrom: account-update@KQf.amazon.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3BIV7PQUTQXQQBCFEITBYMK4IUYA4AVS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TOZGRQQEO2HHT424BYRCRFWCEE4CRNGN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -41,11 +42,30 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: base64
 
-Jm5ic3A7DQrkuJPms6jpppnmuK/nqbrov5Doh7PlhajnkIPmnLrlnLrpppnmuK/miZPmnb/vvJpF
-SyxCQSxTUSxUSyxNSCxURyxQTyxSVeetiQ0K5om/6L+Q6LSn54mp6IyD5Zu05LiA6Iis6LSn54mp
-77yM5ray5L2T77yM57KJ5pyr77yM5bim55S16LSn54mp5YyW5aaG5ZOB77yM5aKo5rC077yM57K+
-5rK577yM56GS6byT5aKo55uS77yM5bim56OB5oCn6LSn54mp77yM5Lu/54mM77yM5Yy755aX5Zmo
-5qKw562JDQrnqbrov5DorqLku5Png63nur86ICsgODYgMTU4IDE3NzAgNjYwOQpfX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGlu
-ZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBh
-biBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+IOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBl+OBnw0KDQog
+DQrmlrDjgZfjgYTjg4fjg5DjgqTjgrnjgYvjgonjgqLjgqvjgqbjg7Pjg4jjgrXjg7zjg5Pjgrnj
+gbjjga7jgrXjgqTjg7PjgqTjg7PjgYzmpJzlh7rjgZXjgozjgb7jgZfjgZ/jgIINCuiqsOOBi+OB
+jOOBguOBquOBn+OBrkFbUkFORF9MRVRURVItTE9XXzBdbWFbUkFORF9MRVRURVItTE9XXzBdem9u
+44Ki44Kr44Km44Oz44OI44Gn5LuW44Gu44OH44OQ44Kk44K544GL44KJ6LO85YWl44GX44KI44GG
+44Go44GX44G+44GX44Gf44CCQVtSQU5EX0xFVFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1df
+MF16b27jga7kv53orbfjgavjgYrjgZHjgovjgrvjgq3jg6Xjg6rjg4bjgqPjgajmlbTlkIjmgKfj
+ga7llY/poYzjgavjgojjgorjgIHjgrvjgq3jg6Xjg6rjg4bjgqPkuIrjga7nkIbnlLHjgYvjgonj
+gqLjgqvjgqbjg7Pjg4jjgYzjg63jg4Pjgq/jgZXjgozjgb7jgZnjgIINCuOCouOCq+OCpuODs+OD
+iOOCkuW8leOBjee2muOBjeS9v+eUqOOBmeOCi+OBq+OBr+OAgTI05pmC6ZaT5YmN44Gr5oOF5aCx
+44KS5pu05paw44GZ44KL44GT44Go44KS44GK5Yun44KB44GX44G+44GZ44CC44Gd44KM5Lul5aSW
+44Gu5aC05ZCI44CB44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OI44Gv5rC45LmF44Ot44OD44Kv
+44CCIA0KDQoNCueiuuiqjeeUqOOCouOCq+OCpuODs+ODiCANCg0KDQoNCg0KwqkgMjAyMCBBW1JB
+TkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbltSQU5EX0xFVFRFUi1MT1df
+MF0uY29tLCBJbmMuIG9yIGl0cyBhZmZpbGlhdGVzLiBBbGwgcmlnaHRzIHJlc2VydmVkLiBBW1JB
+TkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbiwgQVtSQU5EX0xFVFRFUi1M
+T1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9XXzBdLmNvLmpwLCBB
+W1JBTkRfTEVUVEVSLUxPV18wXW1hW1JBTkRfTEVUVEVSLUxPV18wXXpvbltSQU5EX0xFVFRFUi1M
+T1dfMF0sIFByaW1lIOOBiuOCiOOBs0FbUkFORF9MRVRURVItTE9XXzBdbWFbUkFORF9MRVRURVIt
+TE9XXzBdem9uW1JBTkRfTEVUVEVSLUxPV18wXS5jby5qcCDjga7jg63jgrTjga8gQVtSQU5EX0xF
+VFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9XXzBdLmNv
+bSAsIEluYy7jgb7jgZ/jga/jgZ3jga7plqLpgKPkvJrnpL7jga7llYbmqJnjgafjgZnjgIIgQVtS
+QU5EX0xFVFRFUi1MT1dfMF1tYVtSQU5EX0xFVFRFUi1MT1dfMF16b25bUkFORF9MRVRURVItTE9X
+XzBdLmNvbSwgNDEwIFRlcnJ5IEF2ZW51ZSBOLiwgU2VhdHRsZSwgV0EgOTgxMDktNTIxMCAKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
+IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
+IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
