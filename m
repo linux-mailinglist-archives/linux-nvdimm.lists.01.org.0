@@ -2,58 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 152B7262059
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 22:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 581612621ED
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 23:28:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BF47713E5613A;
-	Tue,  8 Sep 2020 13:11:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 390B913C614A5;
+	Tue,  8 Sep 2020 14:27:58 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7A17113C4BD04
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 13:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599595899;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zY1KxFC7EFvzYJR4Wj3X5XMawS5fc09cdTTHbV84zuU=;
-	b=DMi58U4box6H1AWqskYx1yjVaviUS72m9QrDjDoGXXZFJMKuzNzY+8HSq+puLtjT/cld6Q
-	WoXXqZQ6l2q6JWTNfn+nHW+uEFDZy2ia62zPqKMtl5Pgpq9JOC9x4GlPT/80dE8J7itCU5
-	91CS2O+5dhR0tbz5WBi3RqmBIQGwZ3w=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-214-sGVI5rclMmeYN5bEAccY4Q-1; Tue, 08 Sep 2020 16:11:33 -0400
-X-MC-Unique: sGVI5rclMmeYN5bEAccY4Q-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6A1D5801FDF;
-	Tue,  8 Sep 2020 20:11:31 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-115-46.ams2.redhat.com [10.36.115.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 264B05D9E8;
-	Tue,  8 Sep 2020 20:11:25 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 7/7] hv_balloon: try to merge system ram resources
-Date: Tue,  8 Sep 2020 22:10:12 +0200
-Message-Id: <20200908201012.44168-8-david@redhat.com>
-In-Reply-To: <20200908201012.44168-1-david@redhat.com>
-References: <20200908201012.44168-1-david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 4C35713C046E7
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 14:27:54 -0700 (PDT)
+IronPort-SDR: fK5EvxZIaHZqORFq/+OGf2sMNBIHc2CQHLfAuSK+Gu12crzPXs5IIrhamoblU2hxxvMALOqLO9
+ Yoyyv4K8hvYg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9738"; a="155628050"
+X-IronPort-AV: E=Sophos;i="5.76,407,1592895600";
+   d="scan'208";a="155628050"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2020 14:27:53 -0700
+IronPort-SDR: hwcjq7Pqa0jT08ahd3lviO5aItJ8tdYYEohvQkRbr5SMQYLLE0tI/WJR/vWuSO8HZXglMKmkMe
+ GDGZw9vyLKtw==
+X-IronPort-AV: E=Sophos;i="5.76,407,1592895600";
+   d="scan'208";a="299929072"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2020 14:27:52 -0700
+Date: Tue, 8 Sep 2020 14:27:52 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v2] powerpc/papr_scm: Limit the readability of
+ 'perf_stats' sysfs attribute
+Message-ID: <20200908212752.GD1930795@iweiny-DESK2.sc.intel.com>
+References: <20200907110540.21349-1-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Message-ID-Hash: RQGOU6H73BIZS7KIC7IUFXV7WLWIK75M
-X-Message-ID-Hash: RQGOU6H73BIZS7KIC7IUFXV7WLWIK75M
-X-MailFrom: david@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
+Content-Disposition: inline
+In-Reply-To: <20200907110540.21349-1-vaibhav@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: PMRIT4K7VCFVYE3UCRPMO4R6FIW4UPFO
+X-Message-ID-Hash: PMRIT4K7VCFVYE3UCRPMO4R6FIW4UPFO
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RQGOU6H73BIZS7KIC7IUFXV7WLWIK75M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PMRIT4K7VCFVYE3UCRPMO4R6FIW4UPFO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,39 +56,61 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Let's try to merge system ram resources we add, to minimize the number
-of resources in /proc/iomem. We don't care about the boundaries of
-individual chunks we added.
+On Mon, Sep 07, 2020 at 04:35:40PM +0530, Vaibhav Jain wrote:
+> The newly introduced 'perf_stats' attribute uses the default access
+> mode of 0444 letting non-root users access performance stats of an
+> nvdimm and potentially force the kernel into issuing large number of
+> expensive HCALLs. Since the information exposed by this attribute
+> cannot be cached hence its better to ward of access to this attribute
+	                                   ^^^
+                                           off?
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Stephen Hemminger <sthemmin@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Wei Yang <richardw.yang@linux.intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- drivers/hv/hv_balloon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> from users who don't need to access these performance statistics.
+> 
+> Hence this patch updates access mode of 'perf_stats' attribute to
+> be only readable by root users.
 
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 0194bed1a5736..b64d2efbefe71 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -726,7 +726,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
- 
- 		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
- 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
--				(HA_CHUNK << PAGE_SHIFT), 0);
-+				(HA_CHUNK << PAGE_SHIFT), MEMHP_MERGE_RESOURCE);
- 
- 		if (ret) {
- 			pr_err("hot_add memory failed error is %d\n", ret);
--- 
-2.26.2
+Generally it is bad form to say "this patch".  See 4c here:
+
+	-- https://www.ozlabs.org/~akpm/stuff/tpp.txt
+
+But I'm not picky...  :-D
+
+With the s/of/off/ change:
+
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+
+> 
+> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance stats from PHYP')
+> Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Change-log:
+> 
+> v2:
+> * Instead of checking for perfmon_capable() inside show_perf_stats()
+>   set the attribute as DEVICE_ATTR_ADMIN_RO [ Aneesh ]
+> * Update patch description
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index f439f0dfea7d1..a88a707a608aa 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -822,7 +822,7 @@ static ssize_t perf_stats_show(struct device *dev,
+>  	kfree(stats);
+>  	return rc ? rc : seq_buf_used(&s);
+>  }
+> -DEVICE_ATTR_RO(perf_stats);
+> +DEVICE_ATTR_ADMIN_RO(perf_stats);
+>  
+>  static ssize_t flags_show(struct device *dev,
+>  			  struct device_attribute *attr, char *buf)
+> -- 
+> 2.26.2
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
