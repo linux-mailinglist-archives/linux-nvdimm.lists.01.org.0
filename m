@@ -2,50 +2,47 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84AD2260E55
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 11:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C97261037
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 12:46:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CA5AC13BDA783;
-	Tue,  8 Sep 2020 02:09:36 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 57A0E13BCFD6A;
+	Tue,  8 Sep 2020 03:46:29 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
 Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3574613B39C40
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 02:09:34 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id CC80813BCFD69
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 03:46:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599556173;
+	s=mimecast20190719; t=1599561984;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cRDtdR6wTLU9IRX/JjyB2JuVfrGlE34QbR2ewYFxEPM=;
-	b=EyaPD8FCjw/ZlhgIqp5ER3cEKP+Iu1gSDNaL5iouRYRRZReRCrd9HZjwnpoGi29R1Olu8d
-	3BH4kTlJuYrCWl90GkhYYYwm19az7mHQSLpxaUQiTsNC2gDK91ZLYWk4zZ1dBEJDfAAt5y
-	dHN9QeZM/Gwm0zEmIU1t2CCSKiF+jSo=
+	bh=+6Gv2kEINyzTI8X0o0qvP4LBrcsHQuR8t59d0gVrO7Y=;
+	b=P4F5FxjM2RRlAPCciWISA6tBV6tJYpIn2Z8fXJQuK0q7SZAfhVSB8aAis3x3ojl/V/eb2P
+	DZbdlVfZF/x/+tYJ0ZCHYPV1ymH0WDcTCUhbQlEJv8cll0ZQjpRXNAJ1gel0x8hOPVm0n9
+	tIYtzngzUMgubiwsS/QXPP61A/IZnLM=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-454-teqCorgwNEqDKSqOOWZICA-1; Tue, 08 Sep 2020 05:09:31 -0400
-X-MC-Unique: teqCorgwNEqDKSqOOWZICA-1
+ us-mta-372-EfoSdPOaNNSmGkQtAIc0gA-1; Tue, 08 Sep 2020 06:46:22 -0400
+X-MC-Unique: EfoSdPOaNNSmGkQtAIc0gA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A96501007465;
-	Tue,  8 Sep 2020 09:09:27 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 0969F64091;
+	Tue,  8 Sep 2020 10:46:18 +0000 (UTC)
 Received: from [10.36.115.46] (ovpn-115-46.ams2.redhat.com [10.36.115.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6FD335C1BB;
-	Tue,  8 Sep 2020 09:09:20 +0000 (UTC)
-Subject: Re: [PATCH v4 6/6] mm: secretmem: add ability to reserve memory at
- boot
-To: Mike Rapoport <rppt@kernel.org>
-References: <20200818141554.13945-1-rppt@kernel.org>
- <20200818141554.13945-7-rppt@kernel.org>
- <03ec586d-c00c-c57e-3118-7186acb7b823@redhat.com>
- <20200819115335.GU752365@kernel.org>
- <10bf57a9-c3c2-e13c-ca50-e872b7a2db0c@redhat.com>
- <20200819173347.GW752365@kernel.org>
- <6c8b30fb-1b6c-d446-0b09-255b79468f7c@redhat.com>
- <20200820155228.GZ752365@kernel.org>
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 39C9A5C26C;
+	Tue,  8 Sep 2020 10:46:03 +0000 (UTC)
+Subject: Re: [PATCH v4 00/23] device-dax: Support sub-dividing soft-reserved
+ ranges
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Dan Williams <dan.j.williams@intel.com>
+References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <c59111f9-7c94-8b9e-2b8c-4cb96b9aa848@redhat.com>
+ <CAPcyv4j8-5nWU5GPDBoFicwR84qM=hWRtd78DkcCg4PW-8i6Vg@mail.gmail.com>
+ <20200821162134.97d551c6fe45b489992841a8@linux-foundation.org>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -92,25 +89,25 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <fdda6ba7-9418-2b52-eee8-ce5e9bfdb6ad@redhat.com>
-Date: Tue, 8 Sep 2020 11:09:19 +0200
+Message-ID: <7d51834a-9544-b2e8-bfba-1c3e2da0e470@redhat.com>
+Date: Tue, 8 Sep 2020 12:45:58 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200820155228.GZ752365@kernel.org>
+In-Reply-To: <20200821162134.97d551c6fe45b489992841a8@linux-foundation.org>
 Content-Language: en-US
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: CASUIDA7SESFH3IHFJQ2HR2CMMQ6V46M
-X-Message-ID-Hash: CASUIDA7SESFH3IHFJQ2HR2CMMQ6V46M
+Message-ID-Hash: FFY6KMSSAHE2I7LYULQRSTKU44OEEWM5
+X-Message-ID-Hash: FFY6KMSSAHE2I7LYULQRSTKU44OEEWM5
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.o
- rg, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+CC: Ard Biesheuvel <ardb@kernel.org>, Mike Rapoport <rppt@linux.ibm.com>, Borislav Petkov <bp@alien8.de>, David Airlie <airlied@linux.ie>, Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Joao Martins <joao.m.martins@oracle.com>, Tom Lendacky <thomas.lendacky@amd.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, X86 ML <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Pavel Tatashin <pasha.tatashin@soleen.com>, Peter Zijlstra <peterz@infradead.org>, Ben Skeggs <bskeggs@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Jason Gunthorpe <jgg@mellanox.com>, Jia He <justin.he@arm.com>, Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@ozlabs.org>, Brice Goglin <Brice.Goglin@inria.fr>, Michael Ellerman <mpe@ellerman.id.a
+ u>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Daniel Vetter <daniel@ffwll.ch>, Andy Lutomirski <luto@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Maling list - DRI developers <dri-devel@lists.freedesktop.org>, Zhen Lei <thunder.leizhen@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CASUIDA7SESFH3IHFJQ2HR2CMMQ6V46M/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FFY6KMSSAHE2I7LYULQRSTKU44OEEWM5/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -119,97 +116,26 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 20.08.20 17:52, Mike Rapoport wrote:
-> On Wed, Aug 19, 2020 at 07:45:29PM +0200, David Hildenbrand wrote:
->> On 19.08.20 19:33, Mike Rapoport wrote:
->>> On Wed, Aug 19, 2020 at 02:10:43PM +0200, David Hildenbrand wrote:
->>>> On 19.08.20 13:53, Mike Rapoport wrote:
->>>>> On Wed, Aug 19, 2020 at 12:49:05PM +0200, David Hildenbrand wrote:
->>>>>> On 18.08.20 16:15, Mike Rapoport wrote:
->>>>>>> From: Mike Rapoport <rppt@linux.ibm.com>
->>>>>>>
->>>>>>> Taking pages out from the direct map and bringing them back may create
->>>>>>> undesired fragmentation and usage of the smaller pages in the direct
->>>>>>> mapping of the physical memory.
->>>>>>>
->>>>>>> This can be avoided if a significantly large area of the physical memory
->>>>>>> would be reserved for secretmem purposes at boot time.
->>>>>>>
->>>>>>> Add ability to reserve physical memory for secretmem at boot time using
->>>>>>> "secretmem" kernel parameter and then use that reserved memory as a global
->>>>>>> pool for secret memory needs.
->>>>>>
->>>>>> Wouldn't something like CMA be the better fit? Just wondering. Then, the
->>>>>> memory can actually be reused for something else while not needed.
->>>>>
->>>>> The memory allocated as secret is removed from the direct map and the
->>>>> boot time reservation is intended to reduce direct map fragmentatioan
->>>>> and to avoid splitting 1G pages there. So with CMA I'd still need to
->>>>> allocate 1G chunks for this and once 1G page is dropped from the direct
->>>>> map it still cannot be reused for anything else until it is freed.
->>>>>
->>>>> I could use CMA to do the boot time reservation, but doing the
->>>>> reservesion directly seemed simpler and more explicit to me.
->>>>
->>>> Well, using CMA would give you the possibility to let the memory be used
->>>> for other purposes until you decide it's the right time to take it +
->>>> remove the direct mapping etc.
->>>
->>> I still can't say I follow you here. If I reseve a CMA area as a pool
->>> for secret memory 1G pages, it is still reserved and it still cannot be
->>> used for other purposes, right?
+On 22.08.20 01:21, Andrew Morton wrote:
+> On Wed, 19 Aug 2020 18:53:57 -0700 Dan Williams <dan.j.williams@intel.com> wrote:
+> 
+>>> I think I am missing some important pieces. Bear with me.
 >>
->> So, AFAIK, if you create a CMA pool it can be used for any MOVABLE
->> allocations (similar to ZONE_MOVABLE) until you actually allocate CMA
->> memory from that region. Other allocations on that are will then be
->> migrated away (using alloc_contig_range()).
->>
->> For example, if you have a 1~GiB CMA area, you could allocate 4~MB pages
->> from that CMA area on demand (removing the direct mapping, etc ..), and
->> free when no longer needed (instantiating the direct mapping). The free
->> memory in that area could used for MOVABLE allocations.
+>> No worries, also bear with me, I'm going to be offline intermittently
+>> until at least mid-September. Hopefully Joao and/or Vishal can jump in
+>> on this discussion.
 > 
-> The boot time resrvation is intended to avoid splitting 1G pages in the
-> direct map. Without the boot time reservation, we maintain a pool of 2M
-> pages so the 1G pages are split and 2M pages remain unsplit.
+> Ordinarily I'd prefer a refresh&resend for 2+ week-old series such as
+> this.
 > 
-> If I scale your example to match the requirement to avoid splitting 1G
-> pages in the direct map, that would mean creating a CMA area of several
-> tens of gigabytes and then doing cma_alloc() of 1G each time we need to
-> refill the secretmem pool. 
+> But given that v4 all applies OK and that Dan has pending outages, I'll
+> scoop up this version, even though at least one change has been suggested.
 > 
-> It is quite probable that we won't be able to get 1G from CMA after the
-> system worked for some time.
 
-Why? It should only contain movable pages, and if that is not the case,
-it's a bug we have to fix. It should behave just as ZONE_MOVABLE.
-(although I agree that in corner cases, alloc_contig_pages() might
-temporarily fail on some chunks - e.g., with long/short-term page
-pinnings - in contrast to memory offlining, it won't retry forever)
+Should I try to fix patch #11 while Dan is away? Because I think at
+least two things in there are wrong (and it would have been better to
+split that patch into reviewable pieces).
 
-> 
-> With boot time reservation we won't need physcally contiguous 1G to
-> satisfy smaller allocation requests for secretmem because we don't need
-> to maintain 1G mappings in the secretmem pool.
-
-You can allocate within your CMA area however you want - doesn't need to
-be whole gigabytes in case there is no need for it.
-
-Again, the big benefit of CMA is that the reserved memory can be reused
-for other purpose while nobody is actually making use of it.
-
-> 
-> That said, I believe the addition of the boot time reservation, either
-> direct or with CMA, can be added as an incrememntal patch after the
-> "core" functionality is merged.
-
-I am not convinced that we want to let random processes to do
-alloc_pages() in the range of tens of gigabytes. It's not just mlocked
-memory. I prefer either using CMA or relying on the boot time
-reservations. But let's see if there are other opinions and people just
-don't care.
-
-Having that said, I have no further comments.
 
 -- 
 Thanks,
