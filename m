@@ -2,335 +2,186 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B0426203D
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 22:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CD4262040
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  8 Sep 2020 22:11:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4853F13C4BD00;
-	Tue,  8 Sep 2020 13:11:08 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [205.139.110.120])
+	by ml01.01.org (Postfix) with ESMTP id 6BE4313C4BD12;
+	Tue,  8 Sep 2020 13:11:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DB7F713C4BCFE
-	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 13:11:05 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 7943113C4BD04
+	for <linux-nvdimm@lists.01.org>; Tue,  8 Sep 2020 13:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599595864;
+	s=mimecast20190719; t=1599595871;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PHh9yTaQskuEJRAm5o+M7DhIX95+QKUF77hJAwduF0Q=;
-	b=Nv6KNPMNzDgcM5fWxztNd0lkE/Zu4VPZAlMIOnI8sPiW2NtN6fxk5nQD9NUyPb6jT0euQ6
-	uX24B4jp1DLm3nomNNyIgoMClxahrYSGDChK8aphqMA326jz0c7fCBdV1ENn6vbrs+FmCh
-	ISWm53fQYCkynv+6IlYiMDhmTY1VcIk=
+	bh=XWGa3qSfN9Odfx6sHlIPwO9T/8fSKtz1FdQi3pBhRQ0=;
+	b=fmJwwx/yLiiDaUw2tz0cH2djPZWOd+UwB8ClaG1Np5FgNH+2tb/EQ0iWHsA7/KCicJuQQP
+	dYlWRgt0RtIHuBcd7pZ44DNLhCMqNz6q4QyOm/1F026N2OFG59n8eMBQCnwfilGycJExm5
+	IugipTAEMIM2vc6wsut1Myf7OpYpoQY=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-212-J7S5DbiCMd-DHsm7Kygr7A-1; Tue, 08 Sep 2020 16:11:00 -0400
-X-MC-Unique: J7S5DbiCMd-DHsm7Kygr7A-1
+ us-mta-217-ugEopWE8Oy6O8LRJQsXXwg-1; Tue, 08 Sep 2020 16:11:07 -0400
+X-MC-Unique: ugEopWE8Oy6O8LRJQsXXwg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F1A552FD02;
-	Tue,  8 Sep 2020 20:10:55 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4701F1007465;
+	Tue,  8 Sep 2020 20:11:04 +0000 (UTC)
 Received: from t480s.redhat.com (ovpn-115-46.ams2.redhat.com [10.36.115.46])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 92CFB5D9E8;
-	Tue,  8 Sep 2020 20:10:42 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 4E9B75D9E8;
+	Tue,  8 Sep 2020 20:10:56 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to add_memory() and friends
-Date: Tue,  8 Sep 2020 22:10:08 +0200
-Message-Id: <20200908201012.44168-4-david@redhat.com>
+Subject: [PATCH v2 4/7] mm/memory_hotplug: MEMHP_MERGE_RESOURCE to specify merging of System RAM resources
+Date: Tue,  8 Sep 2020 22:10:09 +0200
+Message-Id: <20200908201012.44168-5-david@redhat.com>
 In-Reply-To: <20200908201012.44168-1-david@redhat.com>
 References: <20200908201012.44168-1-david@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Message-ID-Hash: RLUINCDV2DBH42TPX6ASPDC64TSBQO3U
-X-Message-ID-Hash: RLUINCDV2DBH42TPX6ASPDC64TSBQO3U
+Message-ID-Hash: TCSPSBEJYYPJNHKPC6XGOM33LVXWXUBA
+X-Message-ID-Hash: TCSPSBEJYYPJNHKPC6XGOM33LVXWXUBA
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@de.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang 
- <jasowang@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Pingfan Liu <kernelfans@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>, Libor Pechacek <lpechacek@suse.cz>, Anton Blanchard <anton@ozlabs.org>, Leonardo Bras <leobras.c@gmail.com>, linuxppc-dev@lists.ozlabs.org
+CC: virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>, Julien Grall <julien@xen.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RLUINCDV2DBH42TPX6ASPDC64TSBQO3U/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TCSPSBEJYYPJNHKPC6XGOM33LVXWXUBA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-We soon want to pass flags, e.g., to mark added System RAM resources.
-mergeable. Prepare for that.
-
-This patch is based on a similar patch by Oscar Salvador:
-
-https://lkml.kernel.org/r/20190625075227.15193-3-osalvador@suse.de
-
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Wei Yang <richardw.yang@linux.intel.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Len Brown <lenb@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Stephen Hemminger <sthemmin@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: "Oliver O'Halloran" <oohall@gmail.com>
-Cc: Pingfan Liu <kernelfans@gmail.com>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>
-Cc: Libor Pechacek <lpechacek@suse.cz>
-Cc: Anton Blanchard <anton@ozlabs.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-acpi@vger.kernel.org
-Cc: linux-nvdimm@lists.01.org
-Cc: linux-hyperv@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: virtualization@lists.linux-foundation.org
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- arch/powerpc/platforms/powernv/memtrace.c       |  2 +-
- arch/powerpc/platforms/pseries/hotplug-memory.c |  2 +-
- drivers/acpi/acpi_memhotplug.c                  |  2 +-
- drivers/base/memory.c                           |  2 +-
- drivers/dax/kmem.c                              |  2 +-
- drivers/hv/hv_balloon.c                         |  2 +-
- drivers/s390/char/sclp_cmd.c                    |  2 +-
- drivers/virtio/virtio_mem.c                     |  2 +-
- drivers/xen/balloon.c                           |  2 +-
- include/linux/memory_hotplug.h                  | 10 ++++++----
- mm/memory_hotplug.c                             | 15 ++++++++-------
- 11 files changed, 23 insertions(+), 20 deletions(-)
-
-diff --git a/arch/powerpc/platforms/powernv/memtrace.c b/arch/powerpc/platforms/powernv/memtrace.c
-index 13b369d2cc454..a7475d18c671c 100644
---- a/arch/powerpc/platforms/powernv/memtrace.c
-+++ b/arch/powerpc/platforms/powernv/memtrace.c
-@@ -224,7 +224,7 @@ static int memtrace_online(void)
- 			ent->mem = 0;
- 		}
- 
--		if (add_memory(ent->nid, ent->start, ent->size)) {
-+		if (add_memory(ent->nid, ent->start, ent->size, 0)) {
- 			pr_err("Failed to add trace memory to node %d\n",
- 				ent->nid);
- 			ret += 1;
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 5d545b78111f9..54a888ea7f751 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -606,7 +606,7 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
- 	block_sz = memory_block_size_bytes();
- 
- 	/* Add the memory */
--	rc = __add_memory(lmb->nid, lmb->base_addr, block_sz);
-+	rc = __add_memory(lmb->nid, lmb->base_addr, block_sz, 0);
- 	if (rc) {
- 		invalidate_lmb_associativity_index(lmb);
- 		return rc;
-diff --git a/drivers/acpi/acpi_memhotplug.c b/drivers/acpi/acpi_memhotplug.c
-index e294f44a78504..d91b3584d4b2b 100644
---- a/drivers/acpi/acpi_memhotplug.c
-+++ b/drivers/acpi/acpi_memhotplug.c
-@@ -207,7 +207,7 @@ static int acpi_memory_enable_device(struct acpi_memory_device *mem_device)
- 		if (node < 0)
- 			node = memory_add_physaddr_to_nid(info->start_addr);
- 
--		result = __add_memory(node, info->start_addr, info->length);
-+		result = __add_memory(node, info->start_addr, info->length, 0);
- 
- 		/*
- 		 * If the memory block has been used by the kernel, add_memory()
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 4db3c660de831..2287bcf86480e 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -432,7 +432,7 @@ static ssize_t probe_store(struct device *dev, struct device_attribute *attr,
- 
- 	nid = memory_add_physaddr_to_nid(phys_addr);
- 	ret = __add_memory(nid, phys_addr,
--			   MIN_MEMORY_BLOCK_SIZE * sections_per_block);
-+			   MIN_MEMORY_BLOCK_SIZE * sections_per_block, 0);
- 
- 	if (ret)
- 		goto out;
-diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-index 7dcb2902e9b1b..8e66b28ef5bc6 100644
---- a/drivers/dax/kmem.c
-+++ b/drivers/dax/kmem.c
-@@ -95,7 +95,7 @@ int dev_dax_kmem_probe(struct dev_dax *dev_dax)
- 		 * this as RAM automatically.
- 		 */
- 		rc = add_memory_driver_managed(numa_node, range.start,
--				range_len(&range), kmem_name);
-+				range_len(&range), kmem_name, 0);
- 
- 		res->flags |= IORESOURCE_BUSY;
- 		if (rc) {
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 32e3bc0aa665a..0194bed1a5736 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -726,7 +726,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
- 
- 		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
- 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
--				(HA_CHUNK << PAGE_SHIFT));
-+				(HA_CHUNK << PAGE_SHIFT), 0);
- 
- 		if (ret) {
- 			pr_err("hot_add memory failed error is %d\n", ret);
-diff --git a/drivers/s390/char/sclp_cmd.c b/drivers/s390/char/sclp_cmd.c
-index a864b21af602a..a6a908244c742 100644
---- a/drivers/s390/char/sclp_cmd.c
-+++ b/drivers/s390/char/sclp_cmd.c
-@@ -406,7 +406,7 @@ static void __init add_memory_merged(u16 rn)
- 	if (!size)
- 		goto skip_add;
- 	for (addr = start; addr < start + size; addr += block_size)
--		add_memory(0, addr, block_size);
-+		add_memory(0, addr, block_size, 0);
- skip_add:
- 	first_rn = rn;
- 	num = 1;
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 834b7c13ef3dc..314ab753139d1 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -424,7 +424,7 @@ static int virtio_mem_mb_add(struct virtio_mem *vm, unsigned long mb_id)
- 
- 	dev_dbg(&vm->vdev->dev, "adding memory block: %lu\n", mb_id);
- 	return add_memory_driver_managed(nid, addr, memory_block_size_bytes(),
--					 vm->resource_name);
-+					 vm->resource_name, 0);
- }
- 
- /*
-diff --git a/drivers/xen/balloon.c b/drivers/xen/balloon.c
-index 51427c752b37b..7bac38764513d 100644
---- a/drivers/xen/balloon.c
-+++ b/drivers/xen/balloon.c
-@@ -331,7 +331,7 @@ static enum bp_state reserve_additional_memory(void)
- 	mutex_unlock(&balloon_mutex);
- 	/* add_memory_resource() requires the device_hotplug lock */
- 	lock_device_hotplug();
--	rc = add_memory_resource(nid, resource);
-+	rc = add_memory_resource(nid, resource, 0);
- 	unlock_device_hotplug();
- 	mutex_lock(&balloon_mutex);
- 
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 51a877fec8da8..5cd48332ce119 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -345,11 +345,13 @@ extern void set_zone_contiguous(struct zone *zone);
- extern void clear_zone_contiguous(struct zone *zone);
- 
- extern void __ref free_area_init_core_hotplug(int nid);
--extern int __add_memory(int nid, u64 start, u64 size);
--extern int add_memory(int nid, u64 start, u64 size);
--extern int add_memory_resource(int nid, struct resource *resource);
-+extern int __add_memory(int nid, u64 start, u64 size, unsigned long flags);
-+extern int add_memory(int nid, u64 start, u64 size, unsigned long flags);
-+extern int add_memory_resource(int nid, struct resource *resource,
-+			       unsigned long flags);
- extern int add_memory_driver_managed(int nid, u64 start, u64 size,
--				     const char *resource_name);
-+				     const char *resource_name,
-+				     unsigned long flags);
- extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- 				   unsigned long nr_pages,
- 				   struct vmem_altmap *altmap, int migratetype);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 8e1cd18b5cf14..64b07f006bc10 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1039,7 +1039,8 @@ static int online_memory_block(struct memory_block *mem, void *arg)
-  *
-  * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
-  */
--int __ref add_memory_resource(int nid, struct resource *res)
-+int __ref add_memory_resource(int nid, struct resource *res,
-+			      unsigned long flags)
- {
- 	struct mhp_params params = { .pgprot = PAGE_KERNEL };
- 	u64 start, size;
-@@ -1118,7 +1119,7 @@ int __ref add_memory_resource(int nid, struct resource *res)
- }
- 
- /* requires device_hotplug_lock, see add_memory_resource() */
--int __ref __add_memory(int nid, u64 start, u64 size)
-+int __ref __add_memory(int nid, u64 start, u64 size, unsigned long flags)
- {
- 	struct resource *res;
- 	int ret;
-@@ -1127,18 +1128,18 @@ int __ref __add_memory(int nid, u64 start, u64 size)
- 	if (IS_ERR(res))
- 		return PTR_ERR(res);
- 
--	ret = add_memory_resource(nid, res);
-+	ret = add_memory_resource(nid, res, flags);
- 	if (ret < 0)
- 		release_memory_resource(res);
- 	return ret;
- }
- 
--int add_memory(int nid, u64 start, u64 size)
-+int add_memory(int nid, u64 start, u64 size, unsigned long flags)
- {
- 	int rc;
- 
- 	lock_device_hotplug();
--	rc = __add_memory(nid, start, size);
-+	rc = __add_memory(nid, start, size, flags);
- 	unlock_device_hotplug();
- 
- 	return rc;
-@@ -1167,7 +1168,7 @@ EXPORT_SYMBOL_GPL(add_memory);
-  * "System RAM ($DRIVER)".
-  */
- int add_memory_driver_managed(int nid, u64 start, u64 size,
--			      const char *resource_name)
-+			      const char *resource_name, unsigned long flags)
- {
- 	struct resource *res;
- 	int rc;
-@@ -1185,7 +1186,7 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
- 		goto out_unlock;
- 	}
- 
--	rc = add_memory_resource(nid, res);
-+	rc = add_memory_resource(nid, res, flags);
- 	if (rc < 0)
- 		release_memory_resource(res);
- 
--- 
-2.26.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+U29tZSBhZGRfbWVtb3J5KigpIHVzZXJzIGFkZCBtZW1vcnkgaW4gc21hbGwsIGNvbnRpZ3VvdXMg
+bWVtb3J5IGJsb2Nrcy4NCkV4YW1wbGVzIGluY2x1ZGUgdmlydGlvLW1lbSwgaHlwZXItdiBiYWxs
+b29uLCBhbmQgdGhlIFhFTiBiYWxsb29uLg0KDQpUaGlzIGNhbiBxdWlja2x5IHJlc3VsdCBpbiBh
+IGxvdCBvZiBtZW1vcnkgcmVzb3VyY2VzLCB3aGVyZWJ5IHRoZSBhY3R1YWwNCnJlc291cmNlIGJv
+dW5kYXJpZXMgYXJlIG5vdCBvZiBpbnRlcmVzdCAoZS5nLiwgaXQgbWlnaHQgYmUgcmVsZXZhbnQg
+Zm9yDQpESU1NcywgZXhwb3NlZCB2aWEgL3Byb2MvaW9tZW0gdG8gdXNlciBzcGFjZSkuIFdlIHJl
+YWxseSB3YW50IHRvIG1lcmdlDQphZGRlZCByZXNvdXJjZXMgaW4gdGhpcyBzY2VuYXJpbyB3aGVy
+ZSBwb3NzaWJsZS4NCg0KTGV0J3MgcHJvdmlkZSBhIGZsYWcgKE1FTUhQX01FUkdFX1JFU09VUkNF
+KSB0byBzcGVjaWZ5IHRoYXQgYSByZXNvdXJjZQ0KZWl0aGVyIGNyZWF0ZWQgd2l0aGluIGFkZF9t
+ZW1vcnkqKCkgb3IgcGFzc2VkIHZpYSBhZGRfbWVtb3J5X3Jlc291cmNlKCkNCnNoYWxsIGJlIG1h
+cmtlZCBtZXJnZWFibGUgYW5kIG1lcmdlZCB3aXRoIGFwcGxpY2FibGUgc2libGluZ3MuDQoNClRv
+IGltcGxlbWVudCB0aGF0LCB3ZSBuZWVkIGEga2VybmVsL3Jlc291cmNlIGludGVyZmFjZSB0byBt
+YXJrIHNlbGVjdGVkDQpTeXN0ZW0gUkFNIHJlc291cmNlcyBtZXJnZWFibGUgKElPUkVTT1VSQ0Vf
+U1lTUkFNX01FUkdFQUJMRSkgYW5kIHRyaWdnZXINCm1lcmdpbmcuDQoNCk5vdGU6IFdlIHJlYWxs
+eSB3YW50IHRvIG1lcmdlIGFmdGVyIHRoZSB3aG9sZSBvcGVyYXRpb24gc3VjY2VlZGVkLCBub3QN
+CmRpcmVjdGx5IHdoZW4gYWRkaW5nIGEgcmVzb3VyY2UgdG8gdGhlIHJlc291cmNlIHRyZWUgKGl0
+IHdvdWxkIGJyZWFrDQphZGRfbWVtb3J5X3Jlc291cmNlKCkgYW5kIHJlcXVpcmUgc3BsaXR0aW5n
+IHJlc291cmNlcyBhZ2FpbiB3aGVuIHRoZQ0Kb3BlcmF0aW9uIGZhaWxlZCAtIGUuZy4sIGR1ZSB0
+byAtRU5PTUVNKS4NCg0KQ2M6IEFuZHJldyBNb3J0b24gPGFrcG1AbGludXgtZm91bmRhdGlvbi5v
+cmc+DQpDYzogTWljaGFsIEhvY2tvIDxtaG9ja29Ac3VzZS5jb20+DQpDYzogRGFuIFdpbGxpYW1z
+IDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+DQpDYzogSmFzb24gR3VudGhvcnBlIDxqZ2dAemll
+cGUuY2E+DQpDYzogS2VlcyBDb29rIDxrZWVzY29va0BjaHJvbWl1bS5vcmc+DQpDYzogQXJkIEJp
+ZXNoZXV2ZWwgPGFyZGJAa2VybmVsLm9yZz4NCkNjOiBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAbGlu
+dXRyb25peC5kZT4NCkNjOiAiSy4gWS4gU3Jpbml2YXNhbiIgPGt5c0BtaWNyb3NvZnQuY29tPg0K
+Q2M6IEhhaXlhbmcgWmhhbmcgPGhhaXlhbmd6QG1pY3Jvc29mdC5jb20+DQpDYzogU3RlcGhlbiBI
+ZW1taW5nZXIgPHN0aGVtbWluQG1pY3Jvc29mdC5jb20+DQpDYzogV2VpIExpdSA8d2VpLmxpdUBr
+ZXJuZWwub3JnPg0KQ2M6IEJvcmlzIE9zdHJvdnNreSA8Ym9yaXMub3N0cm92c2t5QG9yYWNsZS5j
+b20+DQpDYzogSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuY29tPg0KQ2M6IFN0ZWZhbm8gU3Rh
+YmVsbGluaSA8c3N0YWJlbGxpbmlAa2VybmVsLm9yZz4NCkNjOiBSb2dlciBQYXUgTW9ubsOpIDxy
+b2dlci5wYXVAY2l0cml4LmNvbT4NCkNjOiBKdWxpZW4gR3JhbGwgPGp1bGllbkB4ZW4ub3JnPg0K
+Q2M6IFBhbmthaiBHdXB0YSA8cGFua2FqLmd1cHRhLmxpbnV4QGdtYWlsLmNvbT4NCkNjOiBCYW9x
+dWFuIEhlIDxiaGVAcmVkaGF0LmNvbT4NCkNjOiBXZWkgWWFuZyA8cmljaGFyZHcueWFuZ0BsaW51
+eC5pbnRlbC5jb20+DQpTaWduZWQtb2ZmLWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVk
+aGF0LmNvbT4NCi0tLQ0KIGluY2x1ZGUvbGludXgvaW9wb3J0LmggICAgICAgICB8ICA0ICsrKw0K
+IGluY2x1ZGUvbGludXgvbWVtb3J5X2hvdHBsdWcuaCB8ICA5ICsrKysrDQoga2VybmVsL3Jlc291
+cmNlLmMgICAgICAgICAgICAgIHwgNjAgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+Kw0KIG1tL21lbW9yeV9ob3RwbHVnLmMgICAgICAgICAgICB8ICA3ICsrKysNCiA0IGZpbGVzIGNo
+YW5nZWQsIDgwIGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2luY2x1ZGUvbGludXgvaW9w
+b3J0LmggYi9pbmNsdWRlL2xpbnV4L2lvcG9ydC5oDQppbmRleCBkNzYyMGQ3Yzk0MWEwLi43ZTYx
+Mzg5ZGNiMDE3IDEwMDY0NA0KLS0tIGEvaW5jbHVkZS9saW51eC9pb3BvcnQuaA0KKysrIGIvaW5j
+bHVkZS9saW51eC9pb3BvcnQuaA0KQEAgLTYwLDYgKzYwLDcgQEAgc3RydWN0IHJlc291cmNlIHsN
+CiANCiAvKiBJT1JFU09VUkNFX1NZU1JBTSBzcGVjaWZpYyBiaXRzLiAqLw0KICNkZWZpbmUgSU9S
+RVNPVVJDRV9TWVNSQU1fRFJJVkVSX01BTkFHRUQJMHgwMjAwMDAwMCAvKiBBbHdheXMgZGV0ZWN0
+ZWQgdmlhIGEgZHJpdmVyLiAqLw0KKyNkZWZpbmUgSU9SRVNPVVJDRV9TWVNSQU1fTUVSR0VBQkxF
+CQkweDA0MDAwMDAwIC8qIFJlc291cmNlIGNhbiBiZSBtZXJnZWQuICovDQogDQogI2RlZmluZSBJ
+T1JFU09VUkNFX0VYQ0xVU0lWRQkweDA4MDAwMDAwCS8qIFVzZXJsYW5kIG1heSBub3QgbWFwIHRo
+aXMgcmVzb3VyY2UgKi8NCiANCkBAIC0yNTMsNiArMjU0LDkgQEAgZXh0ZXJuIHZvaWQgX19yZWxl
+YXNlX3JlZ2lvbihzdHJ1Y3QgcmVzb3VyY2UgKiwgcmVzb3VyY2Vfc2l6ZV90LA0KIGV4dGVybiB2
+b2lkIHJlbGVhc2VfbWVtX3JlZ2lvbl9hZGp1c3RhYmxlKHN0cnVjdCByZXNvdXJjZSAqLCByZXNv
+dXJjZV9zaXplX3QsDQogCQkJCQkgIHJlc291cmNlX3NpemVfdCk7DQogI2VuZGlmDQorI2lmZGVm
+IENPTkZJR19NRU1PUllfSE9UUExVRw0KK2V4dGVybiB2b2lkIG1lcmdlX3N5c3RlbV9yYW1fcmVz
+b3VyY2Uoc3RydWN0IHJlc291cmNlICpyZXMpOw0KKyNlbmRpZg0KIA0KIC8qIFdyYXBwZXJzIGZv
+ciBtYW5hZ2VkIGRldmljZXMgKi8NCiBzdHJ1Y3QgZGV2aWNlOw0KZGlmZiAtLWdpdCBhL2luY2x1
+ZGUvbGludXgvbWVtb3J5X2hvdHBsdWcuaCBiL2luY2x1ZGUvbGludXgvbWVtb3J5X2hvdHBsdWcu
+aA0KaW5kZXggNWNkNDgzMzJjZTExOS4uZmViNGFhYzAzZjJlYiAxMDA2NDQNCi0tLSBhL2luY2x1
+ZGUvbGludXgvbWVtb3J5X2hvdHBsdWcuaA0KKysrIGIvaW5jbHVkZS9saW51eC9tZW1vcnlfaG90
+cGx1Zy5oDQpAQCAtNjgsNiArNjgsMTUgQEAgc3RydWN0IG1ocF9wYXJhbXMgew0KIAlwZ3Byb3Rf
+dCBwZ3Byb3Q7DQogfTsNCiANCisvKiBGbGFncyB1c2VkIGZvciBhZGRfbWVtb3J5KCkgYW5kIGZy
+aWVuZHMuICovDQorDQorLyoNCisgKiBBbGxvdyBtZXJnaW5nIG9mIHRoZSBhZGRlZCBTeXN0ZW0g
+UkFNIHJlc291cmNlIHdpdGggYWRqYWNlbnQsIG1lcmdlYWJsZQ0KKyAqIHJlc291cmNlcy4gQWZ0
+ZXIgYSBzdWNjZXNzZnVsIGNhbGwgdG8gYWRkX21lbW9yeV9yZXNvdXJjZSgpIHdpdGggdGhpcyBm
+bGFnDQorICogc2V0LCB0aGUgcmVzb3VyY2UgcG9pbnRlciBtdXN0IG5vIGxvbmdlciBiZSB1c2Vk
+IGFzIGl0IG1pZ2h0IGJlIHN0YWxlLg0KKyAqLw0KKyNkZWZpbmUgTUVNSFBfTUVSR0VfUkVTT1VS
+Q0UJCTENCisNCiAvKg0KICAqIFpvbmUgcmVzaXppbmcgZnVuY3Rpb25zDQogICoNCmRpZmYgLS1n
+aXQgYS9rZXJuZWwvcmVzb3VyY2UuYyBiL2tlcm5lbC9yZXNvdXJjZS5jDQppbmRleCAzNmIzNTUy
+MjEwMTIwLi43YTkxYjkzNWY0YzIwIDEwMDY0NA0KLS0tIGEva2VybmVsL3Jlc291cmNlLmMNCisr
+KyBiL2tlcm5lbC9yZXNvdXJjZS5jDQpAQCAtMTM2Myw2ICsxMzYzLDY2IEBAIHZvaWQgcmVsZWFz
+ZV9tZW1fcmVnaW9uX2FkanVzdGFibGUoc3RydWN0IHJlc291cmNlICpwYXJlbnQsDQogfQ0KICNl
+bmRpZgkvKiBDT05GSUdfTUVNT1JZX0hPVFJFTU9WRSAqLw0KIA0KKyNpZmRlZiBDT05GSUdfTUVN
+T1JZX0hPVFBMVUcNCitzdGF0aWMgYm9vbCBzeXN0ZW1fcmFtX3Jlc291cmNlc19tZXJnZWFibGUo
+c3RydWN0IHJlc291cmNlICpyMSwNCisJCQkJCSAgIHN0cnVjdCByZXNvdXJjZSAqcjIpDQorew0K
+KwkvKiBXZSBhc3N1bWUgZWl0aGVyIHIxIG9yIHIyIGlzIElPUkVTT1VSQ0VfU1lTUkFNX01FUkdF
+QUJMRS4gKi8NCisJcmV0dXJuIHIxLT5mbGFncyA9PSByMi0+ZmxhZ3MgJiYgcjEtPmVuZCArIDEg
+PT0gcjItPnN0YXJ0ICYmDQorCSAgICAgICByMS0+bmFtZSA9PSByMi0+bmFtZSAmJiByMS0+ZGVz
+YyA9PSByMi0+ZGVzYyAmJg0KKwkgICAgICAgIXIxLT5jaGlsZCAmJiAhcjItPmNoaWxkOw0KK30N
+CisNCisvKg0KKyAqIG1lcmdlX3N5c3RlbV9yYW1fcmVzb3VyY2UgLSBtYXJrIHRoZSBTeXN0ZW0g
+UkFNIHJlc291cmNlIG1lcmdlYWJsZSBhbmQgdHJ5IHRvDQorICogbWVyZ2UgaXQgd2l0aCBhZGph
+Y2VudCwgbWVyZ2VhYmxlIHJlc291cmNlcw0KKyAqIEByZXM6IHJlc291cmNlIGRlc2NyaXB0b3IN
+CisgKg0KKyAqIFRoaXMgaW50ZXJmYWNlIGlzIGludGVuZGVkIGZvciBtZW1vcnkgaG90cGx1Zywg
+d2hlcmVieSBsb3RzIG9mIGNvbnRpZ3VvdXMNCisgKiBzeXN0ZW0gcmFtIHJlc291cmNlcyBhcmUg
+YWRkZWQgKGUuZy4sIHZpYSBhZGRfbWVtb3J5KigpKSBieSBhIGRyaXZlciwgYW5kDQorICogdGhl
+IGFjdHVhbCByZXNvdXJjZSBib3VuZGFyaWVzIGFyZSBub3Qgb2YgaW50ZXJlc3QgKGUuZy4sIGl0
+IG1pZ2h0IGJlDQorICogcmVsZXZhbnQgZm9yIERJTU1zKS4gT25seSByZXNvdXJjZXMgdGhhdCBh
+cmUgbWFya2VkIG1lcmdlYWJsZSwgdGhhdCBoYXZlIHRoZQ0KKyAqIHNhbWUgcGFyZW50LCBhbmQg
+dGhhdCBkb24ndCBoYXZlIGFueSBjaGlsZHJlbiBhcmUgY29uc2lkZXJlZC4gQWxsIG1lcmdlYWJs
+ZQ0KKyAqIHJlc291cmNlcyBtdXN0IGJlIGltbXV0YWJsZSBkdXJpbmcgdGhlIHJlcXVlc3QuDQor
+ICoNCisgKiBOb3RlOg0KKyAqIC0gVGhlIGNhbGxlciBoYXMgdG8gbWFrZSBzdXJlIHRoYXQgbm8g
+cG9pbnRlcnMgdG8gcmVzb3VyY2VzIHRoYXQgYXJlDQorICogICBtYXJrZWQgbWVyZ2VhYmxlIGFy
+ZSB1c2VkIGFueW1vcmUgYWZ0ZXIgdGhpcyBjYWxsIC0gdGhlIHJlc291cmNlIG1pZ2h0DQorICog
+ICBiZSBmcmVlZCBhbmQgdGhlIHBvaW50ZXIgbWlnaHQgYmUgc3RhbGUhDQorICogLSByZWxlYXNl
+X21lbV9yZWdpb25fYWRqdXN0YWJsZSgpIHdpbGwgc3BsaXQgb24gZGVtYW5kIG9uIG1lbW9yeSBo
+b3R1bnBsdWcNCisgKi8NCit2b2lkIG1lcmdlX3N5c3RlbV9yYW1fcmVzb3VyY2Uoc3RydWN0IHJl
+c291cmNlICpyZXMpDQorew0KKwljb25zdCB1bnNpZ25lZCBsb25nIGZsYWdzID0gSU9SRVNPVVJD
+RV9TWVNURU1fUkFNIHwgSU9SRVNPVVJDRV9CVVNZOw0KKwlzdHJ1Y3QgcmVzb3VyY2UgKmN1cjsN
+CisNCisJaWYgKFdBUk5fT05fT05DRSgocmVzLT5mbGFncyAmIGZsYWdzKSAhPSBmbGFncykpDQor
+CQlyZXR1cm47DQorDQorCXdyaXRlX2xvY2soJnJlc291cmNlX2xvY2spOw0KKwlyZXMtPmZsYWdz
+IHw9IElPUkVTT1VSQ0VfU1lTUkFNX01FUkdFQUJMRTsNCisNCisJLyogVHJ5IHRvIG1lcmdlIHdp
+dGggbmV4dCBpdGVtIGluIHRoZSBsaXN0LiAqLw0KKwljdXIgPSByZXMtPnNpYmxpbmc7DQorCWlm
+IChjdXIgJiYgc3lzdGVtX3JhbV9yZXNvdXJjZXNfbWVyZ2VhYmxlKHJlcywgY3VyKSkgew0KKwkJ
+cmVzLT5lbmQgPSBjdXItPmVuZDsNCisJCXJlcy0+c2libGluZyA9IGN1ci0+c2libGluZzsNCisJ
+CWZyZWVfcmVzb3VyY2UoY3VyKTsNCisJfQ0KKw0KKwkvKiBUcnkgdG8gbWVyZ2Ugd2l0aCBwcmV2
+aW91cyBpdGVtIGluIHRoZSBsaXN0LiAqLw0KKwljdXIgPSByZXMtPnBhcmVudC0+Y2hpbGQ7DQor
+CXdoaWxlIChjdXIgJiYgY3VyLT5zaWJsaW5nICE9IHJlcykNCisJCWN1ciA9IGN1ci0+c2libGlu
+ZzsNCisJaWYgKGN1ciAmJiBzeXN0ZW1fcmFtX3Jlc291cmNlc19tZXJnZWFibGUoY3VyLCByZXMp
+KSB7DQorCQljdXItPmVuZCA9IHJlcy0+ZW5kOw0KKwkJY3VyLT5zaWJsaW5nID0gcmVzLT5zaWJs
+aW5nOw0KKwkJZnJlZV9yZXNvdXJjZShyZXMpOw0KKwl9DQorCXdyaXRlX3VubG9jaygmcmVzb3Vy
+Y2VfbG9jayk7DQorfQ0KKyNlbmRpZgkvKiBDT05GSUdfTUVNT1JZX0hPVFBMVUcgKi8NCisNCiAv
+Kg0KICAqIE1hbmFnZWQgcmVnaW9uIHJlc291cmNlDQogICovDQpkaWZmIC0tZ2l0IGEvbW0vbWVt
+b3J5X2hvdHBsdWcuYyBiL21tL21lbW9yeV9ob3RwbHVnLmMNCmluZGV4IDY0YjA3ZjAwNmJjMTAu
+LmY2MmMyYTQ2ZGY4YjEgMTAwNjQ0DQotLS0gYS9tbS9tZW1vcnlfaG90cGx1Zy5jDQorKysgYi9t
+bS9tZW1vcnlfaG90cGx1Zy5jDQpAQCAtMTEwMyw2ICsxMTAzLDEzIEBAIGludCBfX3JlZiBhZGRf
+bWVtb3J5X3Jlc291cmNlKGludCBuaWQsIHN0cnVjdCByZXNvdXJjZSAqcmVzLA0KIAkvKiBkZXZp
+Y2Vfb25saW5lKCkgd2lsbCB0YWtlIHRoZSBsb2NrIHdoZW4gY2FsbGluZyBvbmxpbmVfcGFnZXMo
+KSAqLw0KIAltZW1faG90cGx1Z19kb25lKCk7DQogDQorCS8qDQorCSAqIEluIGNhc2Ugd2UncmUg
+YWxsb3dlZCB0byBtZXJnZSB0aGUgcmVzb3VyY2UsIGZsYWcgaXQgYW5kIHRyaWdnZXINCisJICog
+bWVyZ2luZyBub3cgdGhhdCBhZGRpbmcgc3VjY2VlZGVkLg0KKwkgKi8NCisJaWYgKGZsYWdzICYg
+TUVNSFBfTUVSR0VfUkVTT1VSQ0UpDQorCQltZXJnZV9zeXN0ZW1fcmFtX3Jlc291cmNlKHJlcyk7
+DQorDQogCS8qIG9ubGluZSBwYWdlcyBpZiByZXF1ZXN0ZWQgKi8NCiAJaWYgKG1lbWhwX2RlZmF1
+bHRfb25saW5lX3R5cGUgIT0gTU1PUF9PRkZMSU5FKQ0KIAkJd2Fsa19tZW1vcnlfYmxvY2tzKHN0
+YXJ0LCBzaXplLCBOVUxMLCBvbmxpbmVfbWVtb3J5X2Jsb2NrKTsNCi0tIA0KMi4yNi4yDQpfX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
+bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
+c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
