@@ -2,48 +2,49 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A6E262DF5
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Sep 2020 13:38:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6869B262E35
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Sep 2020 13:52:08 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 961A513CB0E91;
-	Wed,  9 Sep 2020 04:38:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=205.139.110.61; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [205.139.110.61])
+	by ml01.01.org (Postfix) with ESMTP id BD15A13CD3744;
+	Wed,  9 Sep 2020 04:52:06 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 573A713CB0E90
-	for <linux-nvdimm@lists.01.org>; Wed,  9 Sep 2020 04:38:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id A602B13CBFD91
+	for <linux-nvdimm@lists.01.org>; Wed,  9 Sep 2020 04:52:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599651482;
+	s=mimecast20190719; t=1599652322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=FCFUYYeoBcjmQ0F9ueGasNRUTC8JgiuKj1I3e23EEys=;
-	b=CQ/zcpVWvMbvGxQlBZ0dAyeUuAfdgoBqHhGE5wkL8OEGjY6qe1Fjqk8OuljW3mTZa2PO4k
-	j76px4l+Bg3zDHPfBKl37l5L1ONM75Pf8LiMa5yvTI+SR5rFe8MhTfZC5Rj9SIS0na3RoJ
-	MZrpUiBkLXbcugtGs0FheseJAJPsjFE=
+	bh=eUouh1bk+Xc6NMfj6Wwsz4gM4esEPlLXRWSoWFarQ/U=;
+	b=In+smlhpnkClbLp9uoHZCMvLHGqQQ5IdLmEPq3ZhBRRGjUtk8bB1ow849Eem6tuiea0e+p
+	54Z7C2qAnN1FgzAkpPsC9hmJ1tfowV1ZxOSe3io+/lgp42mtQnfK/dVgRnsGjnKmGijo+n
+	CaGTxtdlHBxxMVOxGPPuotnoVTO6qAc=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-388-C1TRk_n8PX6w3j9z38H1gA-1; Wed, 09 Sep 2020 07:37:58 -0400
-X-MC-Unique: C1TRk_n8PX6w3j9z38H1gA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+ us-mta-243-wAUM1KqrMFK4TOvqtacRug-1; Wed, 09 Sep 2020 07:51:58 -0400
+X-MC-Unique: wAUM1KqrMFK4TOvqtacRug-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 655BB80B702;
-	Wed,  9 Sep 2020 11:37:53 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7627710BBED2;
+	Wed,  9 Sep 2020 11:51:53 +0000 (UTC)
 Received: from [10.36.113.90] (ovpn-113-90.ams2.redhat.com [10.36.113.90])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id E5A997E46E;
-	Wed,  9 Sep 2020 11:37:41 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 092FD60C0F;
+	Wed,  9 Sep 2020 11:51:41 +0000 (UTC)
 Subject: Re: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to
  add_memory() and friends
+From: David Hildenbrand <david@redhat.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20200908201012.44168-1-david@redhat.com>
  <20200908201012.44168-4-david@redhat.com> <20200909071759.GD435421@kroah.com>
  <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
  <87eenbry5p.fsf@mpe.ellerman.id.au>
-From: David Hildenbrand <david@redhat.com>
+ <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -89,16 +90,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
-Date: Wed, 9 Sep 2020 13:37:41 +0200
+Message-ID: <4e83103c-14a0-6cc4-ae1b-438282edaea3@redhat.com>
+Date: Wed, 9 Sep 2020 13:51:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <87eenbry5p.fsf@mpe.ellerman.id.au>
+In-Reply-To: <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: MIZVJLVZINRARQG4R32RF3QLNDLCAFHS
-X-Message-ID-Hash: MIZVJLVZINRARQG4R32RF3QLNDLCAFHS
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Message-ID-Hash: K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236
+X-Message-ID-Hash: K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -107,7 +108,7 @@ CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, lin
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MIZVJLVZINRARQG4R32RF3QLNDLCAFHS/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -116,46 +117,41 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 09.09.20 13:24, Michael Ellerman wrote:
-> David Hildenbrand <david@redhat.com> writes:
->> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
->>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
->>>> We soon want to pass flags, e.g., to mark added System RAM resources.
->>>> mergeable. Prepare for that.
+On 09.09.20 13:37, David Hildenbrand wrote:
+> On 09.09.20 13:24, Michael Ellerman wrote:
+>> David Hildenbrand <david@redhat.com> writes:
+>>> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
+>>>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
+>>>>> We soon want to pass flags, e.g., to mark added System RAM resources.
+>>>>> mergeable. Prepare for that.
+>>>>
+>>>> What are these random "flags", and how do we know what should be passed
+>>>> to them?
+>>>>
+>>>> Why not make this an enumerated type so that we know it all works
+>>>> properly, like the GPF_* flags are?  Passing around a random unsigned
+>>>> long feels very odd/broken...
 >>>
->>> What are these random "flags", and how do we know what should be passed
->>> to them?
->>>
->>> Why not make this an enumerated type so that we know it all works
->>> properly, like the GPF_* flags are?  Passing around a random unsigned
->>> long feels very odd/broken...
+>>> Agreed, an enum (mhp_flags) seems to give a better hint what can
+>>> actually be passed. Thanks!
 >>
->> Agreed, an enum (mhp_flags) seems to give a better hint what can
->> actually be passed. Thanks!
+>> You probably know this but ...
+>>
+>> Just using a C enum doesn't get you any type safety.
+>>
+>> You can get some checking via sparse by using __bitwise, which is what
+>> gfp_t does. You don't actually have to use an enum for that, it works
+>> with #defines also.
 > 
-> You probably know this but ...
+> Yeah, we seem to be using different approaches. And there is always a
+> way to mess things up :)
 > 
-> Just using a C enum doesn't get you any type safety.
+> gfp_t is one (extreme) example, enum memblock_flags is another example.
+> I tend to prefer an enum in this particular case, because it's simple
+> and at least tells the user which values are expected.
 > 
-> You can get some checking via sparse by using __bitwise, which is what
-> gfp_t does. You don't actually have to use an enum for that, it works
-> with #defines also.
 
-Yeah, we seem to be using different approaches. And there is always a
-way to mess things up :)
-
-gfp_t is one (extreme) example, enum memblock_flags is another example.
-I tend to prefer an enum in this particular case, because it's simple
-and at least tells the user which values are expected.
-
-Thoughts?
-
-> 
-> Or you can wrap the flag in a struct, the way atomic_t does, and then
-> the compiler will prevent passing plain integers in place of your custom
-> type.
-
-
+Gave it another try, looks like mhp_t (like gfp_t) is actually nicer.
 
 -- 
 Thanks,
