@@ -2,161 +2,127 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6869B262E35
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Sep 2020 13:52:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A3D263513
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  9 Sep 2020 19:55:28 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BD15A13CD3744;
-	Wed,  9 Sep 2020 04:52:06 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 5BE2813D0B6C7;
+	Wed,  9 Sep 2020 10:55:26 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.18.26; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=will.jonson22085@outlook.com; receiver=<UNKNOWN> 
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2026.outbound.protection.outlook.com [40.92.18.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A602B13CBFD91
-	for <linux-nvdimm@lists.01.org>; Wed,  9 Sep 2020 04:52:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599652322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=eUouh1bk+Xc6NMfj6Wwsz4gM4esEPlLXRWSoWFarQ/U=;
-	b=In+smlhpnkClbLp9uoHZCMvLHGqQQ5IdLmEPq3ZhBRRGjUtk8bB1ow849Eem6tuiea0e+p
-	54Z7C2qAnN1FgzAkpPsC9hmJ1tfowV1ZxOSe3io+/lgp42mtQnfK/dVgRnsGjnKmGijo+n
-	CaGTxtdlHBxxMVOxGPPuotnoVTO6qAc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-243-wAUM1KqrMFK4TOvqtacRug-1; Wed, 09 Sep 2020 07:51:58 -0400
-X-MC-Unique: wAUM1KqrMFK4TOvqtacRug-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7627710BBED2;
-	Wed,  9 Sep 2020 11:51:53 +0000 (UTC)
-Received: from [10.36.113.90] (ovpn-113-90.ams2.redhat.com [10.36.113.90])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 092FD60C0F;
-	Wed,  9 Sep 2020 11:51:41 +0000 (UTC)
-Subject: Re: [PATCH v2 3/7] mm/memory_hotplug: prepare passing flags to
- add_memory() and friends
-From: David Hildenbrand <david@redhat.com>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20200908201012.44168-1-david@redhat.com>
- <20200908201012.44168-4-david@redhat.com> <20200909071759.GD435421@kroah.com>
- <3bc5b464-3229-d442-714a-ec33b5728ac6@redhat.com>
- <87eenbry5p.fsf@mpe.ellerman.id.au>
- <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <4e83103c-14a0-6cc4-ae1b-438282edaea3@redhat.com>
-Date: Wed, 9 Sep 2020 13:51:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <5145c5c4-d9c0-85a8-7e0b-ccfa03eb0427@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id A2BF013D0B6C6
+	for <linux-nvdimm@lists.01.org>; Wed,  9 Sep 2020 10:55:24 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bOzNPUwOqPwkp6iPqEmsRjlCD+Dti4RHtxw50RW3mGaBM/Si2Rgs+cTuBHvKs7RNKZK3t1RegAXRqtMcvadtq+9hqsCB+ncN2Ikj0efJLo7IwNvaJFdUA5XqLAF2J4jsPrJyiZ/kdzP1/mW7C8teN0sgO9p5+YzP/NdCqzDqVUYDJLFUIXq2k+SbaLrewCm/0IEMIgrJf5yScnQ3qweoOudSFzzP9v0m1GrKQCE3scsYi4fkNO42OkYKR79NEmfk6a1fSWcdjzXMq5243t+zGVFy3vX6xOKxTGBVwlmV5O+CW4js1Zgsm8cbjLKlY37VI0tkjK/BCfIRHfP30b9lDQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qN0KKjBv2TyXDs4wzxpOy2JCLOwG9U6LlSUzZC5Ie80=;
+ b=oTpOTDkghra/ZGOKO2LzPI4qOUZMODK88ih915QeTRvWGCZ+681LgOEqVzJi3A5DsPtK/+tTkp/dWSGhUQqI9ioUlKvsRNbkEWQ5ClQ5TgD2Xn/G1EDdQ6d6iyYujXT0bee45SN0i66OaDC53BGeXNvrRFDIg84VuvXxjFFYp/HzNeGtLcBxbMkoTLm02Fj7q2+1PW1oC7NyOjsPUG21b3MC9TsgtwyvHJfBiRNUuZTArRhwJosCtC1CWwG3qOBFNcF6djnw86FPSV+ONbhhDDv6V9O5affFG2Yh+7ORnDP2UtIphTBX7XI3n9pTDaHdCXlpwJXs3I/7GNVloc+zzg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qN0KKjBv2TyXDs4wzxpOy2JCLOwG9U6LlSUzZC5Ie80=;
+ b=oBb9nIvHDrWmP2ltQKUHFN9qaf7VzsWj4Nzqg2T3+tK/w0NCuLQ2rdUlHuhCYqZsUqXPQIOMOBPhHQZV0c2xqUTMzVxMg40GMI2DHjMBjxE++bh5L1rwVcU2vm4XGh0etNIKJ1MELAyMUdM0dTTFvvPEYciXRxdEEIRFqsoL8ltOU8WzRz6XAskGvdO748UhseAXu6wBtxNJyir0QN89QzqJd2mluK9F04EHEY5p9tsttK8WzxvNtEb7fi2F4CQZDCYNRx/ZftiWuG0vprTS7xKtd6ntbEWJGCV5AV03+nJlybcx6Onj+KkwrK7F43aKC3aOfW+sxwrJA1yJO9E3BQ==
+Received: from CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
+ (2a01:111:e400:3861::53) by
+ CO1NAM11HT204.eop-nam11.prod.protection.outlook.com (2a01:111:e400:3861::106)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.21; Wed, 9 Sep
+ 2020 17:55:23 +0000
+Received: from BYAPR02MB3959.namprd02.prod.outlook.com
+ (2a01:111:e400:3861::4d) by CO1NAM11FT019.mail.protection.outlook.com
+ (2a01:111:e400:3861::313) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16 via Frontend
+ Transport; Wed, 9 Sep 2020 17:55:23 +0000
+Received: from BYAPR02MB3959.namprd02.prod.outlook.com
+ ([fe80::b852:6526:4c3a:96c2]) by BYAPR02MB3959.namprd02.prod.outlook.com
+ ([fe80::b852:6526:4c3a:96c2%7]) with mapi id 15.20.3348.019; Wed, 9 Sep 2020
+ 17:55:23 +0000
+From: will jonson <will.jonson22085@outlook.com>
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Subject: Obstetrician-Gynecologist Contact Details
+Thread-Topic: Obstetrician-Gynecologist Contact Details
+Thread-Index: AdaGxAodH7Fhv9a2SZmc4/G7Rt9aVg==
+Date: Wed, 9 Sep 2020 17:55:23 +0000
+Message-ID: 
+ <BYAPR02MB3959E8A038FCAA07BCAC4114C8260@BYAPR02MB3959.namprd02.prod.outlook.com>
+Accept-Language: en-US
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236
-X-Message-ID-Hash: K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236
-X-MailFrom: david@redhat.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-incomingtopheadermarker: 
+ OriginalChecksum:9E1C28BBDB9EDA4FA15723A64D059BAEE6625B01F6F92392A9B89E581FC21C81;UpperCasedChecksum:D4DE548767AEC10207FC1BB7556E94494CBFB756605846165E60B4E4E523438B;SizeAsReceived:7045;Count:44
+x-tmn: [JhP3nWi/Ajp30C8xfJNARUpN0It9SxGAnnF4lBSd0c1qjUUDIgLVcqe3asy3EuUT]
+x-ms-publictraffictype: Email
+x-incomingheadercount: 44
+x-eopattributedmessage: 0
+x-ms-office365-filtering-correlation-id: a83abcaa-e3ed-4a76-73c1-08d854e986be
+x-ms-traffictypediagnostic: CO1NAM11HT204:
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ rnRXhe7Xpn4z6l7PTikzPAKy94hfDoZP/VoOROO21nDHr9Rwiqm9XmgmEju45XIAXLTtH3MT8oemREe+r/Tnu82SzBti0JREE1XVoQKMxdXxKH46kvtNOV0Gg3N3sV4RLSUgsj60ZOLBgGZKV4n2WKaueJ+qIdDkFKy7OdtDbFZ2Zlq5akO+fRTbHn7KCHnH87q59OVfDrze3rnXYTqqKw==
+x-ms-exchange-antispam-messagedata: 
+ aIUDqlnXs9YMq9B+UVd4kWdfPA9pmXxSReLpJr8QHu/ocszr7OdC3lLpJzndqviuHGHqmzYEFPrvu/sf1LR3Ac3hZvUsObvsuoKlESgAR0FQ7wMZie4e3RGxJrQ561idwWewNIE5s9DjWGllQ6KuRDVmOZLA1fqCC8CJoa4b1XU8ieQpXMV0OMCd0SC9v+o4/+e9CRvmUuXGu/8BQSJsPw==
+x-ms-exchange-transport-forked: True
+MIME-Version: 1.0
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: a83abcaa-e3ed-4a76-73c1-08d854e986be
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2020 17:55:23.6537
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Internet
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1NAM11HT204
+Message-ID-Hash: POOXLR7S3IJ46QRWDRTO75RY3ASFHY2W
+X-Message-ID-Hash: POOXLR7S3IJ46QRWDRTO75RY3ASFHY2W
+X-MailFrom: will.jonson22085@outlook.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, "Rafael J. Wysocki" <rjw@rjwysocki.net>, Len Brown <lenb@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@de.ibm.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.
- com>, Stefano Stabellini <sstabellini@kernel.org>, Pingfan Liu <kernelfans@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>, Libor Pechacek <lpechacek@suse.cz>, Anton Blanchard <anton@ozlabs.org>, Leonardo Bras <leobras.c@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="us-ascii"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/K3SAQFT6UN66ATVR5CXHGRIRWLGGJ236/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BPMLNMAUTGWOUTSDZE4IU4LQL2TSUQY3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 09.09.20 13:37, David Hildenbrand wrote:
-> On 09.09.20 13:24, Michael Ellerman wrote:
->> David Hildenbrand <david@redhat.com> writes:
->>> On 09.09.20 09:17, Greg Kroah-Hartman wrote:
->>>> On Tue, Sep 08, 2020 at 10:10:08PM +0200, David Hildenbrand wrote:
->>>>> We soon want to pass flags, e.g., to mark added System RAM resources.
->>>>> mergeable. Prepare for that.
->>>>
->>>> What are these random "flags", and how do we know what should be passed
->>>> to them?
->>>>
->>>> Why not make this an enumerated type so that we know it all works
->>>> properly, like the GPF_* flags are?  Passing around a random unsigned
->>>> long feels very odd/broken...
->>>
->>> Agreed, an enum (mhp_flags) seems to give a better hint what can
->>> actually be passed. Thanks!
->>
->> You probably know this but ...
->>
->> Just using a C enum doesn't get you any type safety.
->>
->> You can get some checking via sparse by using __bitwise, which is what
->> gfp_t does. You don't actually have to use an enum for that, it works
->> with #defines also.
-> 
-> Yeah, we seem to be using different approaches. And there is always a
-> way to mess things up :)
-> 
-> gfp_t is one (extreme) example, enum memblock_flags is another example.
-> I tend to prefer an enum in this particular case, because it's simple
-> and at least tells the user which values are expected.
-> 
+Hi,
 
-Gave it another try, looks like mhp_t (like gfp_t) is actually nicer.
 
--- 
-Thanks,
 
-David / dhildenb
+I wanted to check if you'd be interested in acquiring Obstetrician-Gynecologist Contact List for your sales and marketing initiatives?
+
+
+
+Note: We can help customize the lists for any specific requirement based on your criteria.
+
+
+
+Please send me your target geographical location, so that I can send you the available counts and pricing for your review.
+
+
+
+Regards,
+
+Will Jonson
+
+Sr. Marketing Manager
+
+
+
+If you do not wish to receive further emails, please respond with "Opt Out" in subject line.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
