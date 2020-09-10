@@ -2,58 +2,85 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1123E26412A
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 11:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C87264189
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 11:22:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DB7811414DD5F;
-	Thu, 10 Sep 2020 02:14:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id B7D281412EDB2;
+	Thu, 10 Sep 2020 02:22:34 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id E6D921414DD5F
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 02:14:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1599729291;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YsfsAQ2XAkLrSeK5gDaCbmO+kEOKaYFgY1Wng1dGBy0=;
-	b=Q69G4RFVHHK/W6Jrw+wNa65ycMJjAmBmaW3xOxkEpTGSl0xBiwjvm1OfIiVqeU2V7/fTqi
-	bu2SG5ZJ7kG5IcEuV76jf0YAixLfxzAJUlLd7nZdIz2EA+F/SWmu0yz6f2svtPyElxWJu6
-	JHtp/swa2vFmsY39t0x8vSJT5pGxWg0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-475-HBflxYiUOtC-j12zoJgTEQ-1; Thu, 10 Sep 2020 05:14:47 -0400
-X-MC-Unique: HBflxYiUOtC-j12zoJgTEQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A191D109106C;
-	Thu, 10 Sep 2020 09:14:45 +0000 (UTC)
-Received: from t480s.redhat.com (ovpn-113-88.ams2.redhat.com [10.36.113.88])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 445081A8EC;
-	Thu, 10 Sep 2020 09:14:42 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/7] hv_balloon: try to merge system ram resources
-Date: Thu, 10 Sep 2020 11:13:40 +0200
-Message-Id: <20200910091340.8654-8-david@redhat.com>
-In-Reply-To: <20200910091340.8654-1-david@redhat.com>
-References: <20200910091340.8654-1-david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 377CC1412EDB2
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 02:22:32 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08A92jxi016335;
+	Thu, 10 Sep 2020 05:22:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=XV+b+l4EK1i++0wxPJ2Ef+aZ1FchdQdLkP57dxe0STQ=;
+ b=AtJd4BZNeENMAcMdUCLP8F39dmPhGUXHWqrxmH6P16iPDqxoU0VDmEUB9CsDPF8aFDoG
+ OrN/l+bSqcsBxjdWplYN6Xx8d5p6qahYLoImeD3SwUKmNXfYPcdj9ZBlmdjdaUqWJK1L
+ 53+0GQ2dMyLBpKtgeXctx4ZOd7bJegOsLkX3p7JNijKfa6SQ7284IHESXmzFxDYQbo+E
+ YVrbOdWqcb97ESUdBxHzObLTs6biAmp4JQ94dvMlH6BIUTvJJ/QvP+rHtcj2LwRVO5cS
+ +nbw89UF5AT+QAD7BnmP3ADjbXjQrFn+7hw1wy8Gi0Ppbg7vcWO9ipkwphD4xbI1KE8C 3g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejbvj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Sep 2020 05:22:26 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08A93bvL019978;
+	Thu, 10 Sep 2020 05:22:25 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejbuf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Sep 2020 05:22:24 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08A9Cfpf030248;
+	Thu, 10 Sep 2020 09:22:22 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma04ams.nl.ibm.com with ESMTP id 33c2a8dvdj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Sep 2020 09:22:22 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08A9MJlf37880154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Sep 2020 09:22:19 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 74761A405F;
+	Thu, 10 Sep 2020 09:22:19 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 994F4A405B;
+	Thu, 10 Sep 2020 09:22:15 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.85.112.148])
+	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Thu, 10 Sep 2020 09:22:15 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Thu, 10 Sep 2020 14:52:14 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH] powerpc/papr_scm: Fix warning triggered by perf_stats_show()
+Date: Thu, 10 Sep 2020 14:52:12 +0530
+Message-Id: <20200910092212.107674-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: XZBTB2QHNP3JMSHM2LTUY6EAW4IHNKIF
-X-Message-ID-Hash: XZBTB2QHNP3JMSHM2LTUY6EAW4IHNKIF
-X-MailFrom: david@redhat.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-10_01:2020-09-10,2020-09-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1011 adultscore=0
+ spamscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009100080
+Message-ID-Hash: MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG
+X-Message-ID-Hash: MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Wei Liu <wei.liu@kernel.org>, Michal Hocko <mhocko@suse.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XZBTB2QHNP3JMSHM2LTUY6EAW4IHNKIF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,38 +89,47 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Let's try to merge system ram resources we add, to minimize the number
-of resources in /proc/iomem. We don't care about the boundaries of
-individual chunks we added.
+A warning is reported by the kernel in case perf_stats_show() returns
+an error code. The warning is of the form below:
 
-Reviewed-by: Wei Liu <wei.liu@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Stephen Hemminger <sthemmin@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Wei Yang <richardw.yang@linux.intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
+ papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
+ 	  Failed to query performance stats, Err:-10
+ dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
+ fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
+
+On investigation it looks like that the compiler is silently truncating the
+return value of drc_pmem_query_stats() from 'long' to 'int', since the
+variable used to store the return code 'rc' is an 'int'. This
+truncated value is then returned back as a 'ssize_t' back from
+perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
+unsigned number and triggers this warning..
+
+To fix this we update the type of variable 'rc' from 'int' to
+'ssize_t' that prevents the compiler from truncating the return value
+of drc_pmem_query_stats() and returning correct signed value back from
+perf_stats_show().
+
+Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
+       stats from PHYP')
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 ---
- drivers/hv/hv_balloon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/papr_scm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hv/hv_balloon.c b/drivers/hv/hv_balloon.c
-index 3c0d52e244520..b64d2efbefe71 100644
---- a/drivers/hv/hv_balloon.c
-+++ b/drivers/hv/hv_balloon.c
-@@ -726,7 +726,7 @@ static void hv_mem_hot_add(unsigned long start, unsigned long size,
- 
- 		nid = memory_add_physaddr_to_nid(PFN_PHYS(start_pfn));
- 		ret = add_memory(nid, PFN_PHYS((start_pfn)),
--				(HA_CHUNK << PAGE_SHIFT), MHP_NONE);
-+				(HA_CHUNK << PAGE_SHIFT), MEMHP_MERGE_RESOURCE);
- 
- 		if (ret) {
- 			pr_err("hot_add memory failed error is %d\n", ret);
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index a88a707a608aa..9f00b61676ab9 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -785,7 +785,8 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+ static ssize_t perf_stats_show(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+-	int index, rc;
++	int index;
++	ssize_t rc;
+ 	struct seq_buf s;
+ 	struct papr_scm_perf_stat *stat;
+ 	struct papr_scm_perf_stats *stats;
 -- 
 2.26.2
 _______________________________________________
