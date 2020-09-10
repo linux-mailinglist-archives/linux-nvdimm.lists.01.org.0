@@ -1,53 +1,75 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1433264927
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 17:55:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305C02650CE
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 22:29:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 16BA513D73CD3;
-	Thu, 10 Sep 2020 08:55:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F3B5714263EA1;
+	Thu, 10 Sep 2020 13:29:22 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=jpittman@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 35F9F13D73CC4
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 08:55:53 -0700 (PDT)
-IronPort-SDR: aE6f7HfrQYJ1kiXgv5NbjC2maHPDxwiZ05aUnBjDhGhUoerGJbj3GwQQbbRYIycOQY0jNbs+M1
- BhM0JyLhliAw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9739"; a="157848867"
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600";
-   d="scan'208";a="157848867"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2020 08:55:53 -0700
-IronPort-SDR: mdE+NB6LIJFFEpYlXw+w/dp1bIOLDHSskRELYdPHSV87quvSW71AhFkqp6C9isjWBxvi00K/Ij
- QcMBUzhKiWiA==
-X-IronPort-AV: E=Sophos;i="5.76,413,1592895600";
-   d="scan'208";a="480943809"
-Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2020 08:55:52 -0700
-Date: Thu, 10 Sep 2020 08:55:52 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Fix warning triggered by
- perf_stats_show()
-Message-ID: <20200910155552.GN1930795@iweiny-DESK2.sc.intel.com>
-References: <20200910092212.107674-1-vaibhav@linux.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 6340A13FCC906
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 13:29:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1599769758;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IX9w0ZSjp7THQg9dmlFf36s3FmxJM6HIjwaAJlUDQm4=;
+	b=JtxFbB/ns1X4M98Jzdsa3CtIhVB3B1AXscRkM8yZRDsgC2XlivnwiLbo3Q029psLrDZ6aK
+	0KqlBnwqjHKFbstQ4oNYo6SIbeOH0ML1uHR7yVSQsMXVOTfdhzki8Ofq/oKrMqASxE4kJo
+	dlSJHkU9CQPxXO5o77FVLYcJlOQFAr0=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-583-rbri9uTbO2-d7Hp5R7g9ug-1; Thu, 10 Sep 2020 16:29:16 -0400
+X-MC-Unique: rbri9uTbO2-d7Hp5R7g9ug-1
+Received: by mail-ot1-f70.google.com with SMTP id z5so1753986oti.21
+        for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 13:29:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=IX9w0ZSjp7THQg9dmlFf36s3FmxJM6HIjwaAJlUDQm4=;
+        b=IZb7bIJ7gr4olWTaT1NZKBNcmIq3YTGpSIL7tz1Y45XQReRu2V/ylCgsvJO3Ie4A51
+         IesPLmLASOijXg8fXQUyZzcSAkCHNeDx4WzNLOqJ+WmsnplhwziBNi2zI4ybEyPICWeX
+         /suSGFuuIaDCZ52NIhhsUsmkxp8lZbHvM5JhBeFBMMmO2oHiIlObYhNUY+1aAjHjKqaJ
+         RU/vg+tvr9rjBunCUsNeShkZa2bF6PolcFGjmb/2rj2A9k6DRDWNCD77TuCDP8oTJx3Q
+         nirAXuwHepIaAXTk0vufcP0C9I1gg6gkwpMQ+KyM0xcjgcVRv/yA+sh5nqpwCrPmjdXD
+         fq4A==
+X-Gm-Message-State: AOAM531mwyq+/+5mqKhc5kAL437Uyc3mjxOzWC64sRIijHoupW9p1znV
+	S1FiCcnYfBm7JfQa/fDV2zQ5xgkoo0+neo8HoXK4a3YLIzZ0qwj6a5TU19cVsrBx9eF/+4/wbbl
+	uXrwQ1e7v+EmnTEJ+BmcnhoilCJD6ihzCECOC
+X-Received: by 2002:aca:f0d:: with SMTP id 13mr1138358oip.124.1599769755489;
+        Thu, 10 Sep 2020 13:29:15 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzjagZZP1DlG8twkBZt8brPitsRQEPgllvGSumjuHvcGgaTG91J1VqlKvZW8YrM3QuHJBH7viGKbpl/JTn/L68=
+X-Received: by 2002:aca:f0d:: with SMTP id 13mr1138331oip.124.1599769754904;
+ Thu, 10 Sep 2020 13:29:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200910092212.107674-1-vaibhav@linux.ibm.com>
-User-Agent: Mutt/1.11.1 (2018-12-01)
-Message-ID-Hash: HSQDIJOCDYBM6PMXBIOXBWFNEAXIYGGB
-X-Message-ID-Hash: HSQDIJOCDYBM6PMXBIOXBWFNEAXIYGGB
-X-MailFrom: ira.weiny@intel.com
+References: <20200903115549.17845-1-colyli@suse.de> <20200903160608.GU878166@iweiny-DESK2.sc.intel.com>
+ <c202e410-99af-3f15-0f76-def5fba7a83a@suse.de>
+In-Reply-To: <c202e410-99af-3f15-0f76-def5fba7a83a@suse.de>
+From: John Pittman <jpittman@redhat.com>
+Date: Thu, 10 Sep 2020 16:29:04 -0400
+Message-ID: <CA+RJvhxBHriCuJhm-D8NvJRe3h2MLM+ZMFgjeJjrRPerMRLvdg@mail.gmail.com>
+Subject: Re: [PATCH] dax: fix for do not print error message for
+ non-persistent memory block device
+To: Coly Li <colyli@suse.de>
+Authentication-Results: relay.mimecast.com;
+	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=jpittman@redhat.com
+X-Mimecast-Spam-Score: 0.003
+X-Mimecast-Originator: redhat.com
+Message-ID-Hash: SMQW2LY3QHPXOAW76RKNSCGG3QJFO7HT
+X-Message-ID-Hash: SMQW2LY3QHPXOAW76RKNSCGG3QJFO7HT
+X-MailFrom: jpittman@redhat.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+CC: linux-nvdimm@lists.01.org, dm-devel@redhat.com, Adrian Huang <ahuang12@lenovo.com>, Jan Kara <jack@suse.com>, Mike Snitzer <snitzer@redhat.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HSQDIJOCDYBM6PMXBIOXBWFNEAXIYGGB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMQW2LY3QHPXOAW76RKNSCGG3QJFO7HT/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -56,74 +78,102 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 10, 2020 at 02:52:12PM +0530, Vaibhav Jain wrote:
-> A warning is reported by the kernel in case perf_stats_show() returns
-> an error code. The warning is of the form below:
-> 
->  papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
->  	  Failed to query performance stats, Err:-10
->  dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
->  fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
-> 
-> On investigation it looks like that the compiler is silently truncating the
-> return value of drc_pmem_query_stats() from 'long' to 'int', since the
-> variable used to store the return code 'rc' is an 'int'. This
-> truncated value is then returned back as a 'ssize_t' back from
-> perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
-> unsigned number and triggers this warning..
-> 
-> To fix this we update the type of variable 'rc' from 'int' to
-> 'ssize_t' that prevents the compiler from truncating the return value
-> of drc_pmem_query_stats() and returning correct signed value back from
-> perf_stats_show().
-> 
-> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
->        stats from PHYP')
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index a88a707a608aa..9f00b61676ab9 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -785,7 +785,8 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
->  static ssize_t perf_stats_show(struct device *dev,
->  			       struct device_attribute *attr, char *buf)
->  {
-> -	int index, rc;
-> +	int index;
-> +	ssize_t rc;
+But it should be moved prior to the two bdev_dax_pgoff() checks right?
+ Else a misaligned partition on a dax unsupported block device can
+print the below messages.
 
-I'm not sure this is really fixing everything here.
+kernel: sda1: error: unaligned partition for dax
+kernel: sda2: error: unaligned partition for dax
+kernel: sda3: error: unaligned partition for dax
 
-drc_pmem_query_stats() can return negative errno's.  Why are those not checked
-somewhere in perf_stats_show()?
+Reviewed-by: John Pittman <jpittman@redhat.com>
 
-It seems like all this fix is handling is a > 0 return value: 'ret[0]' from
-line 289 in papr_scm.c...  Or something?
-
-Worse yet drc_pmem_query_stats() is returning ssize_t which is a signed value.
-Therefore, it should not be returning -errno.  I'm surprised the static
-checkers did not catch that.
-
-I believe I caught similar errors with a patch series before which did not pay
-attention to variable types.
-
-Please audit this code for these types of errors and ensure you are really
-doing the correct thing when using the sysfs interface.  I'm pretty sure bad
-things will eventually happen (if they are not already) if you return some
-really big number to the sysfs core from *_show().
-
-Ira
-
->  	struct seq_buf s;
->  	struct papr_scm_perf_stat *stat;
->  	struct papr_scm_perf_stats *stats;
-> -- 
-> 2.26.2
-> 
+On Thu, Sep 3, 2020 at 12:12 PM Coly Li <colyli@suse.de> wrote:
+>
+> On 2020/9/4 00:06, Ira Weiny wrote:
+> > On Thu, Sep 03, 2020 at 07:55:49PM +0800, Coly Li wrote:
+> >> When calling __generic_fsdax_supported(), a dax-unsupported device may
+> >> not have dax_dev as NULL, e.g. the dax related code block is not enabled
+> >> by Kconfig.
+> >>
+> >> Therefore in __generic_fsdax_supported(), to check whether a device
+> >> supports DAX or not, the following order should be performed,
+> >> - If dax_dev pointer is NULL, it means the device driver explicitly
+> >>   announce it doesn't support DAX. Then it is OK to directly return
+> >>   false from __generic_fsdax_supported().
+> >> - If dax_dev pointer is NOT NULL, it might be because the driver doesn't
+> >>   support DAX and not explicitly initialize related data structure. Then
+> >>   bdev_dax_supported() should be called for further check.
+> >>
+> >> IMHO if device driver desn't explicitly set its dax_dev pointer to NULL,
+> >> this is not a bug. Calling bdev_dax_supported() makes sure they can be
+> >> recognized as dax-unsupported eventually.
+> >>
+> >> This patch does the following change for the above purpose,
+> >>     -       if (!dax_dev && !bdev_dax_supported(bdev, blocksize)) {
+> >>     +       if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
+> >>
+> >>
+> >> Fixes: c2affe920b0e ("dax: do not print error message for non-persistent memory block device")
+> >> Signed-off-by: Coly Li <colyli@suse.de>
+> >
+> > I hate to do this because I realize this is a bug which people really need
+> > fixed.
+> >
+> > However, shouldn't we also check (!dax_dev || !bdev_dax_supported()) as the
+> > _first_ check in __generic_fsdax_supported()?
+> >
+> > It seems like the other pr_info's could also be called when DAX is not
+> > supported and we probably don't want them to be?
+> >
+> > Perhaps that should be a follow on patch though.  So...
+>
+> I am not author of c2affe920b0e, but I guess it was because
+> bdev_dax_supported() needed blocksize, so blocksize should pass previous
+> checks firstly to make sure bdev_dax_supported() has a correct blocksize
+> to check.
+>
+> >
+> > As a direct fix to c2affe920b0e
+> >
+> > Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+>
+> Thanks.
+>
+> Coly Li
+>
+>
+> >
+> >> Cc: Adrian Huang <ahuang12@lenovo.com>
+> >> Cc: Ira Weiny <ira.weiny@intel.com>
+> >> Cc: Jan Kara <jack@suse.com>
+> >> Cc: Mike Snitzer <snitzer@redhat.com>
+> >> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+> >> Cc: Vishal Verma <vishal.l.verma@intel.com>
+> >> ---
+> >>  drivers/dax/super.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+> >> index 32642634c1bb..e5767c83ea23 100644
+> >> --- a/drivers/dax/super.c
+> >> +++ b/drivers/dax/super.c
+> >> @@ -100,7 +100,7 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
+> >>              return false;
+> >>      }
+> >>
+> >> -    if (!dax_dev && !bdev_dax_supported(bdev, blocksize)) {
+> >> +    if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
+> >>              pr_debug("%s: error: dax unsupported by block device\n",
+> >>                              bdevname(bdev, buf));
+> >>              return false;
+> >> --
+> >> 2.26.2
+> >>
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
