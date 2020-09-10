@@ -2,85 +2,56 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C87264189
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 11:22:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F022641B1
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 11:27:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B7D281412EDB2;
-	Thu, 10 Sep 2020 02:22:34 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6B2C7141A4588;
+	Thu, 10 Sep 2020 02:27:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=74.6.128.31; helo=sonic304-56.consmr.mail.bf2.yahoo.com; envelope-from=rosefranca198@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic304-56.consmr.mail.bf2.yahoo.com (sonic304-56.consmr.mail.bf2.yahoo.com [74.6.128.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 377CC1412EDB2
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 02:22:32 -0700 (PDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08A92jxi016335;
-	Thu, 10 Sep 2020 05:22:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=XV+b+l4EK1i++0wxPJ2Ef+aZ1FchdQdLkP57dxe0STQ=;
- b=AtJd4BZNeENMAcMdUCLP8F39dmPhGUXHWqrxmH6P16iPDqxoU0VDmEUB9CsDPF8aFDoG
- OrN/l+bSqcsBxjdWplYN6Xx8d5p6qahYLoImeD3SwUKmNXfYPcdj9ZBlmdjdaUqWJK1L
- 53+0GQ2dMyLBpKtgeXctx4ZOd7bJegOsLkX3p7JNijKfa6SQ7284IHESXmzFxDYQbo+E
- YVrbOdWqcb97ESUdBxHzObLTs6biAmp4JQ94dvMlH6BIUTvJJ/QvP+rHtcj2LwRVO5cS
- +nbw89UF5AT+QAD7BnmP3ADjbXjQrFn+7hw1wy8Gi0Ppbg7vcWO9ipkwphD4xbI1KE8C 3g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejbvj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2020 05:22:26 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08A93bvL019978;
-	Thu, 10 Sep 2020 05:22:25 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0b-001b2d01.pphosted.com with ESMTP id 33fg9ejbuf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2020 05:22:24 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08A9Cfpf030248;
-	Thu, 10 Sep 2020 09:22:22 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 33c2a8dvdj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2020 09:22:22 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08A9MJlf37880154
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Sep 2020 09:22:19 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 74761A405F;
-	Thu, 10 Sep 2020 09:22:19 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 994F4A405B;
-	Thu, 10 Sep 2020 09:22:15 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.85.112.148])
-	by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Thu, 10 Sep 2020 09:22:15 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Thu, 10 Sep 2020 14:52:14 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
-Subject: [PATCH] powerpc/papr_scm: Fix warning triggered by perf_stats_show()
-Date: Thu, 10 Sep 2020 14:52:12 +0530
-Message-Id: <20200910092212.107674-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+	by ml01.01.org (Postfix) with ESMTPS id E6ADE141A4586
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 02:27:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1599730062; bh=GIslt9wQR8F4NESZCVXXpFf3iW5Q5Osnbck8IUhCqf4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=dq23XFia4VQy2ZBVwat0QuOEBQBKT01vNAg6TdmvfFjGl4/u52bj4ZFntsp9W9VR7QSVmLk/NNYwqEDEX+N6wUzFqNLfKuGVsSh+raWoFy1fMP3ni9A4Pho+XDzwZTnut+Q1vhgmVz3KeUKprLWSYGTq8ApbUtFltXjwFUReMw+VHeu8NbYPSol8KU96k9BxB5YNJSx9G5T/Bz8QP2ohIs3v93C1vC2TIQiZ7DaN0bi4vgqkI6jqYa77vU8tdxQahnSI+zJAwibcVTNU+INVnB75U13HaFY16vBbl+NrO+AyRDl3g82/jbTlu6XGVoo77oVBc6vImIR/XzoTiuuQGg==
+X-YMail-OSG: _A97oS8VM1lztjfhw1h3Glwtx0OI_CwrTcafUtl098emmtVSEJDA6172D_uCHXq
+ pUfPlVKjlhtQX.cQIcJcq.DA5xSFBYhzGPR_Wt._.7Dhwt220iGVZNv9X31drPz4xMfP6TUxvITX
+ Xr31gBQDruVl734lbRtnmWL9E9FEFCFjSa82xbbrmsiSeQdxrt8teklrqeZBmeXGoB_0EKYeRS03
+ I7bdiIqb3KIgRgW0Xe5rLn85AvLwdLM4wXBlK4mpwXELEwxIrCPfzSmmf3Yk3dZr9kCOpbbk2CSi
+ 6i1rQQBcE6uuAtIJv_qgE_yPsvhRdsT1TcOPc74rs7D9nnWlEpPF2V1B9wjOQeUtigyIRlw9W6.5
+ U_DDBoxV7dPEDfv.2NTMuRf9lExcBv.H7o8EwET4.Dzu7PW5sEZimAvBbByTrOJ_AyaY4W2M2wzo
+ KgYgKiVMR.6SfJ3YBESFB9R5Ksm317pMFLaoYS7oiKiextdxAmotXlL2bop15Uka.3WvUnenFvvK
+ gUAVu9AXdUKD78i.MKNlw0ON0LpHk10.TJ5JJlyC7Vf.pb6gxMnZSXg.ptWawyZfqI.i0w8iFnMx
+ SLdYkVGmfb1UiNHvyVpvopC3GYQnPDT9M.P9N8GiCTsN6oMwqF3AGxQpgtMfs.IKYIrN3MXc0Mw8
+ FfnZgCtfdXojiyM.Cc1..n5LQ_X6v28VltWQPxApLW_t6NulHulR7_ZIUYtGWSVVHwZDRH.JqHOR
+ d5YigLsbRb2GRepT7v0AJdA0AfCFv9KnFVYKwiWtWgKW0PWV9JqSO.5H7vzGyFus15uUkx5_YgOR
+ jWzGVdcRBh3jz4fKrK3394MfNU_A_Ur27qg1AiUFsuTl5PC.n_x2VCshAhRa0lS7hvzzQwWBKyHE
+ LkALlAQ.rXbngdi6zAGQlnZwQ53JBON9mzOdBOvYhr5mM2Mt9wB2PwLfgylIrrD9d0Y.y92wp7Lh
+ SsrPms.pn4CjW0N42q9OJAP7MjavD45U3CNeoePVf99NzIbIq6JAT8ipvzNoBgiUDgc..nf3J._E
+ bCXcwP9myTjDseYD4AhP2_sPFgHIurWlwgyendwZ21.S7dhSKD5AumvocSxQY5nlaIhdUzAffOFs
+ xhyGe5aR1j.FucMBYg55Xx0_FbADqcHMpnHSovXBS7hOa79CWlS8M2C_aVYs_yKsX8_o6cXbMUMU
+ HTnBJ5X4JJhyy86ChWnxiC1XFXH7dNBEWDnnIeOL0cQBATcKjebafmuOv0v.OAh5qkM2xdfC.kFR
+ 4yofpOOpNQmIkIBkIVRJXtO_ZpZogjcNWMYSft_Vo9Yj6KwkI2lpZgMSiXs10ZhWX4s_IHkICJeE
+ W1A1MDg.lLhz_QDiATYgnmIdz6Y3lg2CUqJBKu26YHjKKeMVRGDJzr_7rM_u6A8hkzOrD7Pg3v05
+ qW4nUUuhFlA9iic.iX9JabA_eU.bzJgNbcyUpWg.BRX_gjflz.icg1Q--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.bf2.yahoo.com with HTTP; Thu, 10 Sep 2020 09:27:42 +0000
+Date: Thu, 10 Sep 2020 09:27:41 +0000 (UTC)
+From: Franca Rose <rosefranca198@yahoo.com>
+Message-ID: <75850349.596797.1599730061421@mail.yahoo.com>
+Subject: Hi,
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-10_01:2020-09-10,2020-09-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxscore=0 suspectscore=0 clxscore=1011 adultscore=0
- spamscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009100080
-Message-ID-Hash: MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG
-X-Message-ID-Hash: MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG
-X-MailFrom: vaibhav@linux.ibm.com
+References: <75850349.596797.1599730061421.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16583 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36
+Message-ID-Hash: QIEMW5JEOJDHD3MU2PPABPE4LTHU25TB
+X-Message-ID-Hash: QIEMW5JEOJDHD3MU2PPABPE4LTHU25TB
+X-MailFrom: rosefranca198@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: rosefranca32@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MIL47BU5BRC7XTPBZWNCYH6VD7RGBYXG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QIEMW5JEOJDHD3MU2PPABPE4LTHU25TB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -89,49 +60,14 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-A warning is reported by the kernel in case perf_stats_show() returns
-an error code. The warning is of the form below:
 
- papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
- 	  Failed to query performance stats, Err:-10
- dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
- fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
 
-On investigation it looks like that the compiler is silently truncating the
-return value of drc_pmem_query_stats() from 'long' to 'int', since the
-variable used to store the return code 'rc' is an 'int'. This
-truncated value is then returned back as a 'ssize_t' back from
-perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
-unsigned number and triggers this warning..
+Hi,
 
-To fix this we update the type of variable 'rc' from 'int' to
-'ssize_t' that prevents the compiler from truncating the return value
-of drc_pmem_query_stats() and returning correct signed value back from
-perf_stats_show().
+i am trying to reach you hope this message get to
+you.from franca
 
-Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
-       stats from PHYP')
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/papr_scm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index a88a707a608aa..9f00b61676ab9 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -785,7 +785,8 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
- static ssize_t perf_stats_show(struct device *dev,
- 			       struct device_attribute *attr, char *buf)
- {
--	int index, rc;
-+	int index;
-+	ssize_t rc;
- 	struct seq_buf s;
- 	struct papr_scm_perf_stat *stat;
- 	struct papr_scm_perf_stats *stats;
--- 
-2.26.2
+thanks,
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
