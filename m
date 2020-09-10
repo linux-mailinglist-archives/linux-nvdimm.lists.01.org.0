@@ -1,77 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031D4263F5F
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 10:09:44 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B694263F41
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 10 Sep 2020 10:04:34 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 25703140E0D62;
-	Thu, 10 Sep 2020 01:09:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=118.27.39.103; helo=kwawgof.cn; envelope-from=admin@moqingyuan.cn; receiver=<UNKNOWN> 
-Received: from kwawgof.cn (v118-27-39-103.al0z.static.cnode.io [118.27.39.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 30BE3140E0D61
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 01:09:40 -0700 (PDT)
-Received: from vqypdvku (unknown [112.121.165.186])
-	by kwawgof.cn (Postfix) with ESMTPA id 7D98524E8CE
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 15:59:19 +0800 (CST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 kwawgof.cn 7D98524E8CE
-From: Rakuten-update@rakuten.co.jp <Rakuten-update@rakuten.co.jp>
-To: linux-nvdimm <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OI44KS5pu05paw44Gn44GN44G+44Gb44KT44Gn44GX44Gf?=
-	=?utf-8?B?44CC44GT44KM44Gv44CB44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC?=
-Date: Thu, 10 Sep 2020 15:59:14 +0800
-Message-ID: <00fd1435cb56$814c65d8$22307e69$@vqypdvku>
+	by ml01.01.org (Postfix) with ESMTP id 9993D140DFB5D;
+	Thu, 10 Sep 2020 01:04:32 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=139.99.133.125; helo=vps-e62a430c.vps.ovh.ca; envelope-from=purchase@ferrotiger.com; receiver=<UNKNOWN> 
+Received: from vps-e62a430c.vps.ovh.ca (vps-e62a430c.vps.ovh.ca [139.99.133.125])
+	by ml01.01.org (Postfix) with ESMTP id 91C45140DFB4F
+	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 01:04:28 -0700 (PDT)
+From: purchase@ferrotiger.com
+To: linux-nvdimm@lists.01.org
+Subject: PO.# 52/FF/20-21/0460/ S-1
+Date: 10 Sep 2020 01:04:26 -0700
+Message-ID: <20200910010426.73D4A4C7FB0563C0@ferrotiger.com>
 MIME-Version: 1.0
-X-Mailer: Microsoft Outlook 16.0
-Message-ID-Hash: VOHFMSQAVD7O2I5UDSCGJMOAN4AJ4E7L
-X-Message-ID-Hash: VOHFMSQAVD7O2I5UDSCGJMOAN4AJ4E7L
-X-MailFrom: admin@moqingyuan.cn
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0012_0F799F6B.275FE91D"
+Message-ID-Hash: 3GXZW4ZJ4C5TQBXQWNLQ2XOIG4M7Y5HA
+X-Message-ID-Hash: 3GXZW4ZJ4C5TQBXQWNLQ2XOIG4M7Y5HA
+X-MailFrom: purchase@ferrotiger.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VOHFMSQAVD7O2I5UDSCGJMOAN4AJ4E7L/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3GXZW4ZJ4C5TQBXQWNLQ2XOIG4M7Y5HA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 
-5qW95aSp5a6J5YWo44K744Oz44K/44O8ICANCg0KDQoNCg0KDQoNClJha3V0ZW7jgYrlrqLmp5gg
-DQoNCuaui+W/teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOCkuabtOaW
-sOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAguOBk+OCjOOBr+OAgeOCq+ODvOODieOBjOacn+mZ
-kOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAgg0K6KuL5rGC5YWI5L2P5omA44GM5aSJ5pu044GV44KM
-44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf44GZ44KL5Y+v6IO95oCn
-44GM44GC44KK44G+44GZ44CCIA0KDQoNCg0K5LuK44Ki44Kr44Km44Oz44OI44KS56K66KqN44Gn
-44GN44G+44GZ44CCIA0KDQoNCualveWkqeODreOCsOOCpOODsw0KDQoNCg0KDQrjgarjgYrjgIEy
-NOaZgumWk+S7peWGheOBq+OBlOeiuuiqjeOBjOOBquOBhOWgtOWQiOOAgeiqoOOBq+mBuuaGvuOB
-quOBjOOCieOAgeOCouOCq+OCpuODs+ODiOOCkuODreODg+OCr+OBleOBm+OBpuOBhOOBn+OBoOOB
-j+OBk+OBqOOCkuitpuWRiuOBhOOBn+OBl+OBvuOBmeOAgiANCg0K44OR44K544Ov44O844OJ44KS
-5aSJ5pu044GX44Gf6Kaa44GI44GM44Gq44GE5aC05ZCI44Gv44CB6Iez5oCl77yIMDEpLTUwLTU4
-MzAtNjg2MOOBvuOBp+OBiumbu+ipseOBj+OBoOOBleOBhOOAgiANCg0KDQoNCuOBiuefpeOCieOB
-mzogDQroq4vmsYLlhYjkvY/miYDjgYzlpInmm7TjgZXjgozjgZ/jgarjganjgIHjgZXjgb7jgZbj
-gb7jgarnkIbnlLHjgafnmbrnlJ/jgZnjgovlj6/og73mgKfjgYzjgYLjgorjgb7jgZnjgIIgDQoN
-Cg0KDQrku4rjgqLjgqvjgqbjg7Pjg4jjgpLnorroqo3jgafjgY3jgb7jgZnjgIIgDQoNCg0K5qW9
-5aSp44Ot44Kw44Kk44OzDQoNCg0KDQoNCuOBquOBiuOAgTI05pmC6ZaT5Lul5YaF44Gr44GU56K6
-6KqN44GM44Gq44GE5aC05ZCI44CB6Kqg44Gr6YG65oa+44Gq44GM44KJ44CB44Ki44Kr44Km44Oz
-44OI44KS44Ot44OD44Kv44GV44Gb44Gm44GE44Gf44Gg44GP44GT44Go44KS6K2m5ZGK44GE44Gf
-44GX44G+44GZ44CCIA0KDQrjg5Hjgrnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzj
-garjgYTloLTlkIjjga/jgIHoh7PmgKXvvIgwMSktNTAtNTgzMC02ODYw44G+44Gn44GK6Zu76Kmx
-44GP44Gg44GV44GE44CCIA0KDQrjgYrnn6XjgonjgZs6IA0KDQrCtyDjg5Hjgrnjg6/jg7zjg4nj
-ga/oqrDjgavjgoLmlZnjgYjjgarjgYTjgafjgY/jgaDjgZXjgYTjgIIgDQoNCsK3IOWAi+S6uuaD
-heWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4rOOBl+OBq+OBj+OBhOODkeOCueODr+ODvOOD
-ieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOAguWkp+aWh+Wtl+OBqOWwj+aWh+Wtl+OAgeaV
-sOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOBmuS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOA
-giANCg0Kwrcg44Kq44Oz44Op44Kk44Oz44Ki44Kr44Km44Oz44OI44GU44Go44Gr44CB55Ww44Gq
-44KL44OR44K544Ov44O844OJ44KS5L2/55So44GX44Gm44GP44Gg44GV44GE44CCIA0KDQoNCg0K
-44Gp44GG44Ge44KI44KN44GX44GP44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCIA0KUmFrdXRl
-bu+8jEluYy4gDQoNCg0KDQoNCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
-QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
-bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0012_0F799F6B.275FE91D
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+------=_NextPart_000_0012_0F799F6B.275FE91D--
