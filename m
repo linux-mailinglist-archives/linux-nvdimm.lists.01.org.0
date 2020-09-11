@@ -1,89 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF900265636
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Sep 2020 02:55:00 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9B62656F5
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 11 Sep 2020 04:21:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2373E14342C8E;
-	Thu, 10 Sep 2020 17:54:59 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id 7408A14373019;
+	Thu, 10 Sep 2020 19:21:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.88; helo=mga01.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN> 
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2697814342C8D
-	for <linux-nvdimm@lists.01.org>; Thu, 10 Sep 2020 17:54:55 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 24C56ABCC;
-	Fri, 11 Sep 2020 00:55:09 +0000 (UTC)
-To: John Pittman <jpittman@redhat.com>
-References: <20200903115549.17845-1-colyli@suse.de>
- <20200903160608.GU878166@iweiny-DESK2.sc.intel.com>
- <c202e410-99af-3f15-0f76-def5fba7a83a@suse.de>
- <CA+RJvhxBHriCuJhm-D8NvJRe3h2MLM+ZMFgjeJjrRPerMRLvdg@mail.gmail.com>
-From: Coly Li <colyli@suse.de>
-Autocrypt: addr=colyli@suse.de; keydata=
- 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
-Subject: Re: [PATCH] dax: fix for do not print error message for
- non-persistent memory block device
-Message-ID: <92b65cc3-37b6-d038-148a-a32db682830b@suse.de>
-Date: Fri, 11 Sep 2020 08:54:46 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.12.0
+	by ml01.01.org (Postfix) with ESMTPS id F28C714373018;
+	Thu, 10 Sep 2020 19:21:41 -0700 (PDT)
+IronPort-SDR: XlNTIDIbadTMoEJt5aceUiy10xKagvr6oDaxns6ZMRJ3/EflbSKDr+a+/aQ3Rj/0obJqtz3MRk
+ dI+2djkNUH5A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9740"; a="176739879"
+X-IronPort-AV: E=Sophos;i="5.76,413,1592895600";
+   d="gz'50?scan'50,208,50";a="176739879"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2020 19:21:41 -0700
+IronPort-SDR: Wz+QqN5+gaYW9XSHpQcGUtjjHRkld++URLvFOE6vbozoPfyly6hf6DyVkzwD+Va4pywV/Gcokm
+ bzElFeZ1R88Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,413,1592895600";
+   d="gz'50?scan'50,208,50";a="318127151"
+Received: from lkp-server01.sh.intel.com (HELO 12ff3cf3f2e9) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 10 Sep 2020 19:21:37 -0700
+Received: from kbuild by 12ff3cf3f2e9 with local (Exim 4.92)
+	(envelope-from <lkp@intel.com>)
+	id 1kGYgy-0001B8-9k; Fri, 11 Sep 2020 02:21:36 +0000
+Date: Fri, 11 Sep 2020 10:21:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] mm/memory_hotplug: prepare passing flags to
+ add_memory() and friends
+Message-ID: <202009111020.boR8gVOT%lkp@intel.com>
+References: <20200910091340.8654-4-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CA+RJvhxBHriCuJhm-D8NvJRe3h2MLM+ZMFgjeJjrRPerMRLvdg@mail.gmail.com>
-Content-Language: en-US
-Message-ID-Hash: GSIMWNC2N7RININEMWADYBIY4HCWLGFX
-X-Message-ID-Hash: GSIMWNC2N7RININEMWADYBIY4HCWLGFX
-X-MailFrom: colyli@suse.de
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm@lists.01.org, dm-devel@redhat.com, Adrian Huang <ahuang12@lenovo.com>, Jan Kara <jack@suse.com>, Mike Snitzer <snitzer@redhat.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+In-Reply-To: <20200910091340.8654-4-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: D4CTQUPUAAV7AZGWWTVUN7OXCKD3GQ4V
+X-Message-ID-Hash: D4CTQUPUAAV7AZGWWTVUN7OXCKD3GQ4V
+X-MailFrom: lkp@intel.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: kbuild-all@lists.01.org, clang-built-linux@googlegroups.com, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GSIMWNC2N7RININEMWADYBIY4HCWLGFX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/D4CTQUPUAAV7AZGWWTVUN7OXCKD3GQ4V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -92,78 +63,75 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 2020/9/11 04:29, John Pittman wrote:
-> But it should be moved prior to the two bdev_dax_pgoff() checks right?
->  Else a misaligned partition on a dax unsupported block device can
-> print the below messages.
-> 
-> kernel: sda1: error: unaligned partition for dax
-> kernel: sda2: error: unaligned partition for dax
-> kernel: sda3: error: unaligned partition for dax
-> 
+Hi David,
 
-Aha, yes you are right, I agree with you.
+I love your patch! Yet something to improve:
 
-Coly Li
+[auto build test ERROR on next-20200909]
+[cannot apply to mmotm/master hnaz-linux-mm/master xen-tip/linux-next powerpc/next linus/master v5.9-rc4 v5.9-rc3 v5.9-rc2 v5.9-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
+url:    https://github.com/0day-ci/linux/commits/David-Hildenbrand/mm-memory_hotplug-selective-merging-of-system-ram-resources/20200910-171630
+base:    7204eaa2c1f509066486f488c9dcb065d7484494
+config: x86_64-randconfig-a016-20200909 (attached as .config)
+compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 0a5dc7effb191eff740e0e7ae7bd8e1f6bdb3ad9)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install x86_64 cross compiling tool for clang build
+        # apt-get install binutils-x86-64-linux-gnu
+        # save the attached .config to linux build tree
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64 
 
-> Reviewed-by: John Pittman <jpittman@redhat.com>
-> 
-> On Thu, Sep 3, 2020 at 12:12 PM Coly Li <colyli@suse.de> wrote:
->>
->> On 2020/9/4 00:06, Ira Weiny wrote:
->>> On Thu, Sep 03, 2020 at 07:55:49PM +0800, Coly Li wrote:
->>>> When calling __generic_fsdax_supported(), a dax-unsupported device may
->>>> not have dax_dev as NULL, e.g. the dax related code block is not enabled
->>>> by Kconfig.
->>>>
->>>> Therefore in __generic_fsdax_supported(), to check whether a device
->>>> supports DAX or not, the following order should be performed,
->>>> - If dax_dev pointer is NULL, it means the device driver explicitly
->>>>   announce it doesn't support DAX. Then it is OK to directly return
->>>>   false from __generic_fsdax_supported().
->>>> - If dax_dev pointer is NOT NULL, it might be because the driver doesn't
->>>>   support DAX and not explicitly initialize related data structure. Then
->>>>   bdev_dax_supported() should be called for further check.
->>>>
->>>> IMHO if device driver desn't explicitly set its dax_dev pointer to NULL,
->>>> this is not a bug. Calling bdev_dax_supported() makes sure they can be
->>>> recognized as dax-unsupported eventually.
->>>>
->>>> This patch does the following change for the above purpose,
->>>>     -       if (!dax_dev && !bdev_dax_supported(bdev, blocksize)) {
->>>>     +       if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
->>>>
->>>>
->>>> Fixes: c2affe920b0e ("dax: do not print error message for non-persistent memory block device")
->>>> Signed-off-by: Coly Li <colyli@suse.de>
->>>
->>> I hate to do this because I realize this is a bug which people really need
->>> fixed.
->>>
->>> However, shouldn't we also check (!dax_dev || !bdev_dax_supported()) as the
->>> _first_ check in __generic_fsdax_supported()?
->>>
->>> It seems like the other pr_info's could also be called when DAX is not
->>> supported and we probably don't want them to be?
->>>
->>> Perhaps that should be a follow on patch though.  So...
->>
->> I am not author of c2affe920b0e, but I guess it was because
->> bdev_dax_supported() needed blocksize, so blocksize should pass previous
->> checks firstly to make sure bdev_dax_supported() has a correct blocksize
->> to check.
->>
->>>
->>> As a direct fix to c2affe920b0e
->>>
->>> Reviewed-by: Ira Weiny <ira.weiny@intel.com>
->>
->> Thanks.
->>
->> Coly Li
->>
-[snipped]
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
+
+All errors (new ones prefixed by >>):
+
+   WARNING: unmet direct dependencies detected for PHY_SAMSUNG_UFS
+   Depends on OF && (ARCH_EXYNOS || COMPILE_TEST
+   Selected by
+   - SCSI_UFS_EXYNOS && SCSI_LOWLEVEL && SCSI && SCSI_UFSHCD_PLATFORM && (ARCH_EXYNOS || COMPILE_TEST
+   In file included from arch/x86/kernel/asm-offsets.c:9:
+   In file included from include/linux/crypto.h:20:
+   In file included from include/linux/slab.h:15:
+   In file included from include/linux/gfp.h:6:
+   In file included from include/linux/mmzone.h:853:
+>> include/linux/memory_hotplug.h:354:55: error: unknown type name 'mhp_t'
+   extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+   ^
+   include/linux/memory_hotplug.h:355:53: error: unknown type name 'mhp_t'
+   extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+   ^
+   include/linux/memory_hotplug.h:357:11: error: unknown type name 'mhp_t'
+   mhp_t mhp_flags);
+   ^
+   include/linux/memory_hotplug.h:360:10: error: unknown type name 'mhp_t'
+   mhp_t mhp_flags);
+   ^
+   4 errors generated.
+   Makefile Module.symvers System.map arch block certs crypto drivers fs include init ipc kernel lib mm modules.builtin modules.builtin.modinfo modules.order net scripts security sound source tools usr virt vmlinux vmlinux.o vmlinux.symvers [scripts/Makefile.build:117: arch/x86/kernel/asm-offsets.s] Error 1
+   Target '__build' not remade because of errors.
+   Makefile Module.symvers System.map arch block certs crypto drivers fs include init ipc kernel lib mm modules.builtin modules.builtin.modinfo modules.order net scripts security sound source tools usr virt vmlinux vmlinux.o vmlinux.symvers [Makefile:1196: prepare0] Error 2
+   Target 'prepare' not remade because of errors.
+   make: Makefile Module.symvers System.map arch block certs crypto drivers fs include init ipc kernel lib mm modules.builtin modules.builtin.modinfo modules.order net scripts security sound source tools usr virt vmlinux vmlinux.o vmlinux.symvers [Makefile:185: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
+
+# https://github.com/0day-ci/linux/commit/d88270d1c0783a7f99f24a85692be90fd2ae0d7d
+git remote add linux-review https://github.com/0day-ci/linux
+git fetch --no-tags linux-review David-Hildenbrand/mm-memory_hotplug-selective-merging-of-system-ram-resources/20200910-171630
+git checkout d88270d1c0783a7f99f24a85692be90fd2ae0d7d
+vim +/mhp_t +354 include/linux/memory_hotplug.h
+
+   352	
+   353	extern void __ref free_area_init_core_hotplug(int nid);
+ > 354	extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
