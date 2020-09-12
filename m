@@ -1,110 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7477267760
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 12 Sep 2020 05:05:01 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81F7267792
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 12 Sep 2020 05:39:57 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6C186147AAC40;
-	Fri, 11 Sep 2020 20:04:59 -0700 (PDT)
-Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 1A1E61468D279
-	for <linux-nvdimm@lists.01.org>; Fri, 11 Sep 2020 20:04:57 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+	by ml01.01.org (Postfix) with ESMTP id F1A9E14781CAA;
+	Fri, 11 Sep 2020 20:39:55 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.35; helo=huawei.com; envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN> 
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 0A8CD14781CA7
+	for <linux-nvdimm@lists.01.org>; Fri, 11 Sep 2020 20:39:53 -0700 (PDT)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+	by Forcepoint Email with ESMTP id 05D30E854B4617ACA241;
+	Sat, 12 Sep 2020 11:39:51 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.487.0; Sat, 12 Sep 2020
+ 11:39:40 +0800
+From: Jason Yan <yanaijie@huawei.com>
+To: <dan.j.williams@intel.com>, <vishal.l.verma@intel.com>,
+	<dave.jiang@intel.com>, <akpm@linux-foundation.org>, <sfr@canb.auug.org.au>,
+	<linux-nvdimm@lists.01.org>
+Subject: [PATCH] device-dax: make dev_dax_kmem_probe() static
+Date: Sat, 12 Sep 2020 11:39:01 +0800
+Message-ID: <20200912033901.143382-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Subject: =?utf-8?q?Saisissez_les_offres_attrayantes_avec_les_meilleures_offres_de_?=
- =?utf-8?q?t=C3=A9l=C3=A9phonie_mobile?=
-From: hegmannkrisfhgr@gmail.com
-To: linux-nvdimm@lists.01.org
-Date: Sat, 12 Sep 2020 03:04:57 -0000
-Message-ID: <20200912030457.2828.97841@ml01.vlan13.01.org>
-User-Agent: HyperKitty on https://lists.01.org/
-Message-ID-Hash: SWCLZX6GO4EV4W63TEYDTWOK274VUQS3
-X-Message-ID-Hash: SWCLZX6GO4EV4W63TEYDTWOK274VUQS3
-X-MailFrom: hegmannkrisfhgr@gmail.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+X-Originating-IP: [10.175.127.227]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: HR6HZBDIYO3HTAWNU2BEORV6UYF3KB4L
+X-Message-ID-Hash: HR6HZBDIYO3HTAWNU2BEORV6UYF3KB4L
+X-MailFrom: yanaijie@huawei.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Jason Yan <yanaijie@huawei.com>, Hulk Robot <hulkci@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SWCLZX6GO4EV4W63TEYDTWOK274VUQS3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HR6HZBDIYO3HTAWNU2BEORV6UYF3KB4L/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-U2kgcG91ciB1biBpUGhvbmUsIGlsIG4nZXN0IHBhcyBxdWVzdGlvbiBkJ2FpbWVyIHNlcyBmb25j
-dGlvbm5hbGl0w6lzLCBzb24gbG9vayBldCBzZXMgY2FwYWNpdMOpcyBpbmNyb3lhYmxlcy4gQydl
-c3QgdW4gZXhjZWxsZW50IHTDqWzDqXBob25lIHF1aSBleMOpY3V0ZSBwcmVzcXVlIHRvdXQgY2Ug
-cXVlIHZvdXMgZMOpc2lyZXouIExvcnNxdWUgdm91cyBvYnRlbmV6IHZvdHJlIGlQaG9uZSwgbGEg
-cGVyc29ubmFsaXNhdGlvbiBmYWl0IHByb2JhYmxlbWVudCBwYXJ0aWUgZGUgdm90cmUgbGlzdGUu
-IFNpIHZvdXMgc291aGFpdGV6IHF1ZSB2b3RyZSB0w6lsw6lwaG9uZSBzb2l0IHVuaXF1ZSBldCBw
-ZXJzb25uYWxpc8OpLCBhdm9pciBzYSBwcm9wcmUgc29ubmVyaWUgZm9uY3Rpb25uZXJhIGV4YWN0
-ZW1lbnQuIFZvdXMgcG91dmV6IHZvdXMgcsOpZsOpcmVyIMOgIHF1ZWxxdWVzIHNvbm5lcmllcyBp
-Y2k6IGh0dHBzOi8vc29ubmVyaWVwb3J0YWJsZS5jb20vDQoNClVuZSBmb2lzIHVuZSBwZXJzb25u
-ZSwgY2VzIMOpbMOpbWVudHMgZG9pdmVudCDDqnRyZSBjb2xsZWN0w6lzLiBBdXRvdXIgZGUgY2Ug
-cG9pbnQsIHZvdXMgdm91ZHJleiBwZXV0LcOqdHJlIHNhdm9pciBzaSBjZSBuJ2VzdCBwYXMgdnJh
-aW1lbnQgbGUgY2FzIHBvdXIgbCd1bml2ZXJzZWwuIENlbGEgc2lnbmlmaWUgbGEgbcOqbWUgY2hh
-bnNvbiBwb3VyIGNoYXF1ZSBhcHBlbC4gTGEgY29uZmlndXJhdGlvbiBwZXV0IMOqdHJlIGVmZmVj
-dHXDqWUgYXZlYyBsJ29wdGlvbiBQYXJhbcOodHJlcyBkZSB2b3RyZSB0w6lsw6lwaG9uZS4gSmUg
-c3VpcyBhbGzDqSB2b2lyIHF1ZWxxdWUgY2hvc2UgcG91ciBkw6lmaW5pciBvdSBwZXJzb25uYWxp
-c2VyIGRlcyBzb25uZXJpZXMuIEzDoCBvw7kgdm91cyBsZXMgYWpvdXRlei4gTGVzIHNvbm5lcmll
-cyBuZSBzb250IHBhcyB1bmUgY2hvc2UgZW4gcGFydGljdWxpZXIgc3VyIGxhcXVlbGxlIHZvdXMg
-dHJvdXZlcmV6IHZyYWltZW50IGJlYXVjb3VwIGRlIGRvbm7DqWVzLiBPbiBwb3VycmFpdCB2b3Vs
-b2lyIHbDqXJpZmllciBTb25uZXJpZVBvcnRhYmxlLiBTaSB2b3VzIGTDqWZpbmlzc2V6IGRlcyB0
-b25hbGl0w6lzIHBhciByYXBwb3J0IMOgIGRhbnMgdm90cmUgcsOpcGVydG9pcmUsIHVuZSBwZXJz
-b25uZSBkb2l0IGNvbW1lbmNlciBzZXMgbm9tcyBkYW5zIGxlIHLDqXBlcnRvaXJlLiBQYXIgbm9t
-LCBwbHVzIGlsIHBldXQgdnJhaW1lbnQgYXZvaXIgw6AgcmVnYXJkZXIgdW4gc291cy1tZW51IHF1
-aSB2b3VzIHBlcm1ldHRyYSBkZSBkw6lmaW5pciBkZXMgZG9ubsOpZXMgcGVyc29ubmFsaXPDqWVz
-LiBDZWxhIHMnZXN0IGF2w6lyw6kgdW5lIGFsdGVybmF0aXZlIGludMOpcmVzc2FudGUgYXUgZmls
-dHJhZ2UgZGVzIGFwcGVscyBhdXNzaSBjbGFpcmVtZW50Lg0KDQpKZSBuZSBwcsOpY29uaXNlIHBh
-cyBuw6ljZXNzYWlyZW1lbnQgZGUgZmFpcmUgZGVzIG1vdXZlbWVudHMgZCdlbXBvcnRlLXBpw6hj
-ZS4gQ2VwZW5kYW50LCBzaSB2b3RyZSBtdXNpcXVlIGVzdCBhYnNvbHVtZW50IGJvbm5lIChhcHLD
-qHMgdG91dCwgdXRpbGlzZXIgdW5lIGNvdXJ0ZSBpbnRybyBuJ2VzdCBjbGFpcmVtZW50IHBhcyBs
-YSBzZXVsZSBjaG9zZSBxdWUgbGVzIHByb2Zlc3Npb25uZWxzIGFtdXNhbnRzIHJlY2hlcmNoZW50
-KSBldCBxdWUgdm91cyB2b3VsZXogYXVnbWVudGVyIGxlcyBjaGFuY2VzIHF1J2VsbGUgc29pdCBl
-bnRlbmR1ZSwgY2V0dGUgYnLDqHZlIGludHJvIGVzdCB1biB0csOocyBib24gY2hvaXguIEplIHNh
-aXMgcXUnaWwgeSBhDQogDQpiZWF1Y291cCBkJ2V4ZW1wbGVzIGRlIGNoYW5zb25zIMOgIHN1Y2PD
-qHMgYXZlYyBkZSBsb25ndWVzIGludHJvcyAoZW4gcGFydGljdWxpZXIgZGFucyBsZXMgY2hhbnNv
-bnMgZGUgcm9jayBjbGFzc2lxdWUpLCBtYWlzIGNlIG4nZXN0IGVuIGZhaXQgcGFzIG5vcm1hbCBk
-ZSBub3Mgam91cnMgw6AgZGVzIHNlbWFpbmVzLg0KDQpWb3VzIHBvdXZleiB0w6lsw6ljaGFyZ2Vy
-IGRlcyBzb25uZXJpZXMgZ3JhdHVpdGVzIHN1ciBJbnRlcm5ldCBzYW5zIHRyYWNhcy4gVm91cyBu
-J2F2ZXogcGFzIHZyYWltZW50IGJlc29pbiBkJ8OqdHJlIHRlY2huaXF1ZW1lbnQgZW5jbGluIMOg
-IGVzc2F5ZXIgY2VsYS4gVHJhdmFpbGxleiBtw6ptZSBwb3VyIGFpZGVyIMOgIHBheWVyIG91IHZv
-dXMgYWJvbm5lciBwb3VyIG9idGVuaXIgZGVzIHNvbm5lcmllcyBjYXIgdm91cyBwb3V2ZXogbGUg
-c3RpbXVsZXIgYWJzb2x1bWVudCBzYW5zIGZyYWlzLiBUb3V0IGNlIHF1ZSB2b3VzIGF2ZXogw6Ag
-ZmFpcmUgZXN0IGRlIHBhc3NlciBwbHVzaWV1cnMgbWludXRlcyBkdSB0ZW1wcyBldCBkJ2FsbGVy
-IGVuIGxpZ25lIHBvdXIgcmVjaGVyY2hlciBkZXMgc29ubmVyaWVzIGdyYXR1aXRlcy4gVm91cyBz
-ZXJpZXogc3VibWVyZ8OpIHBhciBsZXMgcsOpc3VsdGF0cyBkZXMgc2l0ZXMgV2ViIHF1J3VuZSBw
-ZXJzb25uZSBwZXV0IHZpc2l0ZXIuIFBhcmNvdXJleiB0b3V0IGNlIHF1ZSB2b3VzIHZvdWxleiBl
-dCBjb21wYXJleiBsZXMgc2l0ZXMgV2ViIHF1aSB0w6lsw6ljaGFyZ2VudCB0b3RhbGVtZW50IGdy
-YXR1aXRlbWVudC4NCg0KRHVyw6llIHJhaXNvbm5hYmxlIC0gamUgc3VpcyB0b3RhbGVtZW50IGNv
-bnRyZSBsZXMgY2hhbnNvbnMgcXVpIGR1cmVudCAyMCBtaW51dGVzLiBMYSBjaGFuc29uIHR5cGlx
-dWUgcG91ciBlbnZpcm9uIDMtNSBtaW51dGVzLiBTaSB2b3VzIG4nw6p0ZXMgcGFzIGVuIG1lc3Vy
-ZSBkZSBwYXJsZXIgZGFucyBjZSBsYXBzIGRlIHRlbXBzLCBqJ2FpIHNpbXBsZW1lbnQgdW4gY29u
-c2VpbCwgdm91cyBmb3JtZXIgcG91ciBmaW5hbGVtZW50IHZvdXMgcmVuZHJlIHJhcGlkZW1lbnQg
-w6AgbGEgc2l0dWF0aW9uLg0KDQpWb3VzIMOqdGVzIGNhcGFibGUgZGUgZ2FnbmVyIGRlcyBzb25u
-ZXJpZXMgbW9ub3Bob25pcXVlcy4gSWwgZXhpc3RlIGRlcyBsb2dpY2llbHMgZ3JhdHVpdHMgb3Ug
-cGF5YW50cyDDoCB1dGlsaXNlciBwb3VyIGNlcyB0ZWludGVzIG1vbm9waG9uaXF1ZXMuIFJvY2ss
-IEFsdGVybmF0aXZlLCBQb3AsIFJlZ2dhZSBvdSBjbGFzc2lxdWUsIHZvdXMgb2ZmcmV6IGxlIGNo
-b2l4IGRlIGNyw6llciB2b3RyZSBwcm9wcmUgc29ubmVyaWUuIENlIHF1aSB2b3VzIGxpbWl0ZXJh
-LCBjZSBuJ2VzdCBxdWUgdm90cmUgY3LDqWF0aXZpdMOpLiBFc3NheWV6IGVuZmluIGRlIGNyw6ll
-ciB2b3RyZSBwcm9wcmUgc29ubmVyaWUuDQoNClBvdXIgcHJvY8OpZGVyIMOgIGwnYW5hbG9naWUg
-ZHUgbWFyaWFnZSwgY29uc2lkw6lyZXogcXVlIGxlcyBtYXJpw6llcyBtYXJjaGVudCBkYW5zIGwn
-YWxsw6llIHNhbnMgbXVzaXF1ZS4gKEplIHZvdWRyYWlzIHNlcnZpciBsZSBwYXMgcmFwaWRlIHBv
-dXIgYXJyaXZlciDDoCBtb24gbWFyacOpLikgTGEgbXVzaXF1ZSBzZSByw6l2w6hsZSDDqnRyZSBl
-dCBkb25uZSBkZSBsYSBkaWduaXTDqSDDoCBsYSBwcm9jZXNzaW9uLiBWb3MgcGFydGljaXBhbnRz
-IHNhdmVudCDDoCBxdWVscyBwb2ludHMgc2UgdHJvdXZlbnQgbGVzIGTDqWJhdHMgZW4gdXRpbGlz
-YW50IGxhIGd1aXRhcmUuIElsIG4neSBhIHBhcyBiZXNvaW4gZGUgdm9zIGNvbW1lbnRhaXJlcyBv
-dSBhdmlzLiBMYSBtdXNpcXVlIGRlIGZvbmQgcmFjb250ZSBsJ2hpc3RvaXJlLiBQb3VycXVvaSBu
-b3VzIGF2b25zIGRlIGxhIG11c2lxdWUsIGMnZXN0IHBvdXIgcXVhbnRpZmllci4gTGEgbWFuacOo
-cmUgZG9udCBub3VzIHV0aWxpc29ucyBsYSBtdXNpcXVlIGV0IHBvdXJxdW9pIG5vdXMgdXRpbGlz
-b25zIGxhIG11c2lxdWUgY29tbWUgbm91cyBsZSBmYWlzb25zIHRvdXMgZXN0IGJpZW4gbWlldXgg
-w6AgZXhwbGlxdWVyLiBMYSBtdXNpcXVlIGltcHLDqGduZSBsYSB2aWUuIERlIGxhIG11c2lxdWUg
-ZCfDqWdsaXNlIHByaW1pdGl2ZSwgZW4gcGFzc2FudCBwYXIgbGEgbXVzaXF1ZSBkZSBjb21iYXQg
-ZXQgbGUgZGl2ZXJ0aXNzZW1lbnQsIGxhIG11c2lxdWUgZXN0IGNvbnN0YW1tZW50IGVudGVuZHVl
-IGV0IHV0aWxpc8OpZSBkYW5zIGxlcyBkw6liYXRzLgpfX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4
-LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51
-eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+This eliminates the following sparse warning:
+
+drivers/dax/kmem.c:38:5: warning: symbol 'dev_dax_kmem_probe' was not
+declared. Should it be static?
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ drivers/dax/kmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+index 7dcb2902e9b1..e79afbadd4e0 100644
+--- a/drivers/dax/kmem.c
++++ b/drivers/dax/kmem.c
+@@ -35,7 +35,7 @@ static int dax_kmem_range(struct dev_dax *dev_dax, int i, struct range *r)
+ 	return 0;
+ }
+ 
+-int dev_dax_kmem_probe(struct dev_dax *dev_dax)
++static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+ {
+ 	int numa_node = dev_dax->target_node;
+ 	struct device *dev = &dev_dax->dev;
+-- 
+2.25.4
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
