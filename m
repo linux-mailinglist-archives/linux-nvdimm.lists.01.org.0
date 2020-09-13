@@ -2,149 +2,125 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94750268119
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 13 Sep 2020 22:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F55A268160
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 13 Sep 2020 23:19:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 16C6C13A1DAD2;
-	Sun, 13 Sep 2020 13:01:31 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.154.167.57; helo=iskasoft.local; envelope-from=support@gulsumkaymaz.com.tr; receiver=<UNKNOWN> 
-Received: from iskasoft.local (195-154-167-57.rev.poneytelecom.eu [195.154.167.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id B03AC13F5FB33;
+	Sun, 13 Sep 2020 14:19:28 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id EEFBF13A1CFE0
-	for <linux-nvdimm@lists.01.org>; Sun, 13 Sep 2020 13:01:27 -0700 (PDT)
-Received: from iskasoft.local (localhost.localdomain [127.0.0.1])
-	by iskasoft.local (Postfix) with ESMTP id 41593CEC1336
-	for <linux-nvdimm@lists.01.org>; Sun, 13 Sep 2020 23:01:26 +0300 (+03)
-Authentication-Results: iskasoft.local;
-	spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=support@gulsumkaymaz.com.tr smtp.helo=iskasoft.local
-Received-SPF: pass (iskasoft.local: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=support@gulsumkaymaz.com.tr; helo=iskasoft.local;
-X-Spam-Flag: NO
-X-Spam-Score: 6.415
-X-Spam-Level: ******
-X-Spam-Status: No, score=6.415 tagged_above=-9999 required=7
-	tests=[BAYES_50=0.8, FREEMAIL_FORGED_REPLYTO=2.095, HK_LOTTO=1,
-	LOTS_OF_MONEY=0.001, MONEY_FORM_SHORT=2.499, NO_RELAYS=-0.001,
-	T_FILL_THIS_FORM_FRAUD_PHISH=0.01, T_FILL_THIS_FORM_SHORT=0.01,
-	URIBL_BLOCKED=0.001] autolearn=no autolearn_force=no
-Received: from iskasoft.local ([127.0.0.1])
-	by iskasoft.local (iskasoft.local [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id rcgFue8f_Ta0 for <linux-nvdimm@lists.01.org>;
-	Sun, 13 Sep 2020 23:01:25 +0300 (+03)
-Received: by iskasoft.local (Postfix, from userid 10005)
-	id 1D039CEC1A64; Sun, 13 Sep 2020 22:43:41 +0300 (+03)
-To: linux-nvdimm@lists.01.org
-Subject: Auszeichnungen gewinnen
-Date: Sun, 13 Sep 2020 19:43:41 +0000
-From: El Gordo de la Primitiva Lotterien Spanien <support@gulsumkaymaz.com.tr>
-Message-ID: <67036389146ae7df616c5b9bde3ceb59@gulsumkaymaz.com.tr>
+	by ml01.01.org (Postfix) with ESMTPS id 9CC8E13A2201F
+	for <linux-nvdimm@lists.01.org>; Sun, 13 Sep 2020 14:19:26 -0700 (PDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08DL26hT132547;
+	Sun, 13 Sep 2020 17:19:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=GaVExhh2fuV3sLgBobU5UHWtwLeHmR57GjEx7SaPh6A=;
+ b=BK4qSTSC+SVKaQ1bvRdJ7cW63PS1IV2dzPskR2AXasERIFL578nc8ROyEIJ6YmRdPRH8
+ AP80d9ZnV0LN/48TNt2+teumKHW4ZATl8F1HvhPdpGLoEB+dnajk/4U3GG4XBo6PdRpz
+ mYGo5K33x+zzoxILGqPlXuf3iB1rIYJtPietJVlbyMg3qtbkKvIrHKMTE0fh1F1b2cSJ
+ WRxPJbyu+cUxj1LPDiDFQSRPFCVLrnfoeEsJqg+86MTGNHhng9Lw22XCxhN/SQB6XAS3
+ 5A3qhIynfo/tK7zRCeH3516l5pMnvtqTknuqd95on2jwm+mLVJXkNHue46btNT3+CgMG +w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 33htfv0p6g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Sep 2020 17:19:16 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08DLG7YB163782;
+	Sun, 13 Sep 2020 17:19:16 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+	by mx0b-001b2d01.pphosted.com with ESMTP id 33htfv0p60-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Sep 2020 17:19:16 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+	by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08DL7nuF004459;
+	Sun, 13 Sep 2020 21:19:14 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+	by ppma06ams.nl.ibm.com with ESMTP id 33hb1j0n2s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Sep 2020 21:19:14 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08DLJB459306568
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 13 Sep 2020 21:19:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7AA7AE04D;
+	Sun, 13 Sep 2020 21:19:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A392CAE045;
+	Sun, 13 Sep 2020 21:19:08 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.199.56.137])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+	Sun, 13 Sep 2020 21:19:08 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Mon, 14 Sep 2020 02:49:07 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org
+Subject: [PATCH] powerpc/papr_scm: Add PAPR command family to pass-through command-set
+Date: Mon, 14 Sep 2020 02:49:04 +0530
+Message-Id: <20200913211904.24472-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Message-ID-Hash: KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF
-X-Message-ID-Hash: KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF
-X-MailFrom: support@gulsumkaymaz.com.tr
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-13_08:2020-09-10,2020-09-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 priorityscore=1501
+ adultscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009130191
+Message-ID-Hash: AY5NDTOY725EVH4ORML33FKM6WFVCDRJ
+X-Message-ID-Hash: AY5NDTOY725EVH4ORML33FKM6WFVCDRJ
+X-MailFrom: vaibhav@linux.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Vaibhav Jain <vaibhav@linux.ibm.com>, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: santalucia.sg.es@spainmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/AY5NDTOY725EVH4ORML33FKM6WFVCDRJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-RWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIExvdHRlcmllbiBTcGFuaWVuIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpBZHJlc3NlOiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
-oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KQ2FsbGUgZGVsIFByw61u
-Y2lwZSBkZSBWZXJnYXJhLCAzOCwgMjgwMDEgTWFkcmlkIEVzcGHDsWEgwqAgwqAgwqAgwqAgwqAg
-wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgDQpFIG1h
-aWw6XWFuc3BydWNoZ2V3aW5uLm1tdC5lc0BzcGFpbm1haWwuY29tXQ0KS29udGFrdCBhdWZuZWht
-ZW4gdW50ZXI6XSAgMzQ2MDIgODEwIDE4NSBmYXggIDM0OTM1NDU3NDkwXQ0KQWt0ZW56ZWljaGVu
-Ol1QMDkvMDEvMDIvMjAyMC5dDQpMb3NudW1tZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0K
-wqBEYXR1bTogMTAvMDkvMjAyMA0KwqANCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpIYWxsbywgwqAg
-wqAgwqAgwqAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgICAgICAgICAgICAg
-IE9GRklaSUVMTEUgTUlUVEVJTFVORywNCsKgDQpEaWVzZSBFbCBHb3JkbyBkZSBsYSBQcmltaXRp
-dmEgU29tbWVyIEJvbmFuemEgwqBMb3R0ZXJpZSB3dXJkZSDCoCB1bmQgTWluaXN0ZXJpbyBkZSBJ
-bmR1c3RyaWEsIENvbWVyY2lvIHkgVHVyaXNtbyDCoGdlc3BvbnNlcnQgdW0gVG91cmlzbXVzIGlu
-IEVzcGHDsWEgwqB6dSBmw7ZyZGVybi4NCsKgDQpXaXIgc2luZCBlcmZyZXV0IElobmVuIG1pdCB6
-dSB0ZWlsZW4sIGRhc3MgZGllIEdld2lubmVyIGRlcyBTb25kZXIgU3BhbmlzaCBUb3VyaXNtdXMg
-UHJvbW90aW9uYWwgRHJhdyBiZWthbm50IGdlZ2ViZW4gd29yZGVuIHNpbmQuIERpZSBvZmZpemll
-bGxlIExpc3RlIGRlciBHZXdpbm5lciDCoGVyc2NoaWVuIGFtIMKgU2Ftc3RhZyBkZXIgMjIvMDgv
-MjAyMC4gDQrCoA0KSWhyZSBlbWFpbCBhZHJlc3NlIMKgbWl0IGRlciBhbmjDpG5nZW5kZW4gTG9z
-bnVtbWVyOiBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxIMKgdW5kIG1pdCBkZXIgU2VyaWVubnVtbWVy
-OiBFU1AvMDE4ODExLTIwMjAgem9nIGRpZSBHbMO8Y2tzbnVtbWVyOiA2LjE2LjE4LjMzLjQ3LjUx
-IEJvbnU6MjksRWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIMKgTG90dGVyaWUgwqA2IC80OSBpbiBk
-ZXIgMy4gS2F0ZWdvcmllLg0KwqANClNpZSBzaW5kIGRhbWl0IGdld2lubmVyIHZvbjog4oKsOTkx
-LDAwMC4wMCBFdXJvLiBEaWUgU3VtbWUgZXJnaWJ0IHNpY2ggYXVzIGVpbmVyIEdld2lubmF1c3Nj
-aMO8dHR1bmcgdm9uOiDigqw2OTM3LDAwMC4wMCBFdXJvLCBkaWUgZHVyY2ggZGllIGVyc3RlbiBz
-aWViZW4gKDcpIEdld2lubmVyIGF1cyBkZXIgZ2xlaWNoZW4gS2F0ZWdvcmllIGdldGVpbHQgd3Vy
-ZGUuIMKgRGlyIGdld2lubiBpc3QgYmVpIGVpbmVyIHNpY2hlcmhlaXRzZmlybWEgaGludGVybGVn
-dCB1bmQgaW4gaWhyZW4gbmFtZW4vZW1haWwgwqB2ZXJzaWNoZXJ0LiB1bSBrZWluZSBrb21wbGlr
-YXRpb25lbiBiZWkgZGVyIGFid2lja2x1bmcgZGVyIHphaGx1bmcgenUgdmVydXJzYWNoZW4gYml0
-dGVuIHdpciBzaWUgZGllc2Ugb2ZmaXppZWxsZSBtaXR0ZWlsdW5nICwgZGlza3JldCB6dSBiZWhh
-bmRlbG4uLGVzIGlzdCBlaW4gdGVpbCB1bnNlcmVzIHNpY2hlcmhlaXRzcHJvdG9rb2xscyB1bmQg
-Z2FyYW50aWVydCBpaG5lbiBlaW5lbiByZWlidW5nc2xvc2VuIEFibGF1Zi4NCsKgDQpBbGxlIGdl
-d2lubmVyIHd1cmRlbiBwZXIgY29tcHV0ZXIgYXVzIFVybGF1YnNob3RlbHMsIEZsdWdnZXNlbGxz
-Y2hhZnRlbiB1bmQgUmVpc2Viw7xyb3MgbWFpbGVuIERhdGVuIHZvbiBmw7xuZiBNaWxsaW9uZW4g
-KDUwMDAwMDApIEVtYWlsIGFkcmVzc2VuIGF1c2dld8OkaGx0LCBhbHMgdGVpbCB1bnNlcmVyIElu
-dGVybmF0aW9uYWxlbiB0b3VyaXNtdXMgcHJvbW90aW9uIHByb2dyYW1tcywgd2VsY2hlcyB3aXIg
-ZWlubWFsIGltIGphaHIgdmVyYW5zdGFsdGVuIHVtIFRvdXJpc211cyBpbiBTcGFuaWVuIHp1IGbD
-tnJkZXJuLg0KwqANCkJpdHRlIGtvbnRha3RpZXJlbiBzaWUgdW5zZXJlbiBhdXNsYW5kcyBzYWNo
-YmVhcmJlaXRlciBIZXJyIEdhYnJpZWwgwqBiZWkgZGVyIHNpY2hlcmhlaXRzZmlybWEgU2FudGFs
-dWNpYSBTaWNoZXJoZWl0c2Zpcm1hOlBlciBFbWFpbCBhbjpiZXJhdGVyZ2FicmllbC5zcEBjb25z
-dWx0YW50LmNvbSBvZGVyIGFucnVmZW46IDM0IDYwMiA4MTAgMTg1ICYgRmF4OiAgMzQgOTMxIDcw
-IDIxMjAsIHVtIElociBHZWxkIHNjaG5lbGwgenUgYmVrb21tZW4uDQrCoA0KRGVua2VuIFNpZSBk
-YXJhbiwgamVkZXIgZ2V3aW5uYW5zcHJ1Y2ggbXVzcyBiaXMgenVtIDMwLzkvMjAyMCBBbmdlbWVs
-ZGV0ZSBzZWluLiBKZWRlciBuaWNodCBhbmdlbWVsZGV0IEdld2lubmFuc3BydWNoIHZlcmbDpGxs
-dCB1bmQgZ2VodCB6dXJ1Y2sgYW4gZGFzIFNwYW5pc2NoZSBTdGFhdHNrYXNzZS4NCsKgIA0KV0lD
-SFRJRzogdW0gdmVyesO2Z2VydW5nZW4gdW5kIGtvbXBsaWthdGlvbmVuIHp1IHZlcm1laWRlbiwg
-Yml0dGUgaW1tZXIgQWt0ZW56ZWljaGVuIGFuZ2ViZW4uIMKgQW5iZWkgZWluIGFubWVsZGVmb3Jt
-dWxhciwgYml0dGUgYXVzZsO8bGxlbiB1bmQgenVyw7xjayBQZXIgZW1haWwgYW46YmVyYXRlcmdh
-YnJpZWwuc3BAY29uc3VsdGFudC5jb20gb2RlciBhbnJ1ZmVuOiAgMzQgNjAyIDgxMDE4NSAmIEZh
-eDogIDM0IDkzMSA3MCAyMTIwIGRpZSBzaWNoZXJoZWl0c2Zpcm1hIFNhbnRhbHVjaWEgU2ljaGVy
-aGVpdHNmaXJtYS4NCsKgDQpIRVJaTElDSEVOIEdMVUNLV1VOU0NI4oCmIQ0KTWl0IGZyZXVuZGxp
-Y2hlbiBHcsO8w59lbg0KTUFSSUEgSElEQUxHTw0KVklaRVBSw4RTSURFTlRJTg0KwqANCkLDnFJP
-LFNBTlRBTFVDSUEgU0VHVVJPUyBTLkEgRXNwYcOxYSANClBsYXphIEVzcGHDsWEsIDE1IC0gLTE2
-IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpNYWRyaWQsIDI4MDA4
-IEVzcGHDsWENCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQrCoA0K
-QU5NRUxERUZPUk1VTEFSIFpVUiBHRVdJTk5BTlNQUlVDSFMNCl9fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fXyANCkJpdHRlIGbDvGxsZW4gU2llIGRhcyBGb3JtdWxh
-ciBzb3JnZsOkbHRpZyBhdXMgdW5kIHNlbmRlbiBlcyBwZXIgZSBtYWlsOnNhbnRhbHVjaWEuc2cu
-ZXNAc3BhaW5tYWlsLmNvbSBhbiBkZXIgU2FudGFsdWNpYSBTaWNoZXJoZWl0c2Zpcm1hIG1pdCBL
-b3BpZSBJaHJlcyBQZXJzb25hbGF1c3dlaXNlcyBvZGVyIFJlaXNlcGFzc2VzLg0KwqANCkdFV0lO
-TkJFVFJBRzpfX19fXyBBS1RFTlpFSUNIRU4gX19fX19fX19fXw0KTkFNRTpfX19fX19fX19fX18g
-Vk9STkFNRTpfX19fX19fX19fX19fX19fXw0KR0VCVVJUU0RBVFVNOl9fX19fTkFUSU9OQUxJVEFU
-X19fX19fX19fX19fXw0KTE9TTlVNTUVSOl9fX19fX19fX19fIEdMw5xDS1NaQUhMRU4gX19fX19f
-X18NClNUUkFTU0U6X19fX19fX19fX19fX19fIE5VTU1FUjpfX19fX19fX19fX19fDQpXT0hOT1JU
-Ol9fX19fIFBPU1RMRUlUWkFITF9fX19fTEFORCBfX19fX19fXw0KRGlyZWt0ZXIgS29udGFrdCBF
-LU1haWxfX19fX19fX19fX19fX19fX19fX18NClRFTEVGT046X19fX19fX19fXyBIQU5EWTpfX19f
-X19fX19fIEZBWDpfX19fXw0KQkVSVUY6X19fX18gRkFNSUxJRU5TVEFORDpfX19fXyhHRVNDSExF
-Q0hUKV9fXyDCoCDCoA0KwqANCldFTENIRSBaQUhMVU5HU0ZPUk0gQkVWT1JaVUdFTiBTSUU/IMKg
-KEEpIEJBTkvDnEJFUldFSVNVTkc6IMKgKEIpIEJBUlNDSEVDSyDCoA0KQkFOS0RBVEVOIFNJTkQg
-TlVSIE5PVFdFTkRJRyBXRU5OIFNJRSBTSUNIIEbDnFIgRUlORSBCQU5Lw5xCRVJXRUlTVU5HIEVO
-VFNDSElFREVOIEhBQkVOLg0KwqANCk5BTUUgREVTIEdFTERJTlNUSVRVVFM6X19fX19fX19fX19f
-X18NCktPTlRPTlVNTUVSOl9fX19fX19fX19fX19fX19fX19fX19fXyANCklCQU46X19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fXw0KQkFOSyBBRERSRVNTOl9fX19fX19fX19fX19fX19fX19f
-X19fXw0KDQrCoA0KwqAgwqAgIEVSS0zDhFJVTkcgREVTIEJFR8OcTlNUSUdURU4NCklDSCBfX19f
-X19fX19fX19fX19fX19fX19fX19fX19CRVNUw4RUSUdFIEhJRVJNSVQsIERBU1MgQUxMRSBJTkZP
-Uk1BVElPTkVOLCBLT1JSRUtUIFNJTkQsIFVORCBESUUgVkVSQU5TVEFMVEVSIERFUiBFbCBTUEFO
-SVNIIExPVFRFUlkgLyBTQU5UQUxVQ0lBIFNJQ0hFUkhFSVRTRklSTUEgTklDSFQgVkVSQU5UV09S
-VExJQ0ggR0VNQUNIVCBXRVJERU4sIFdFTk4gRVMgWlUgRUlORVIgVU5CRVJFQ0hUSUdURU4gWkFI
-TFVORyBEVVJDSCBVTkdFTkFVRSBJTkZPUk1BVElPTkVOLCBESUUgSUNIIElOIERJRVNFTSBGT1JN
-VUxBUiBBTkdFQkUgS09NTVQuREFTUyAxMCUgUFJPVklTSU9OIERFUiBTQU5UQSBMVUNJQSBTRUNV
-UklUWSBDT01QQU5ZIEdFSD9SRU4sIFNPQkFMRCBTSUUgSUhSRU4gR0VXSU5OIEZPTkRTIEVSSEFM
-VEVOLiBESUVTRSBaRUhOIFBST1pFTlQgV0VSREVOIElITkVOIFNPRk9SVCBaVVLDnENLR0VHRUJF
-TiwgU0lFIEVSSEFMVEVOIElIUkVOIEdFV0lOTiBBVUYgSUhSRU0gS09OVE8uIChBQ0hUVU5HIFdp
-ciBiaXR0ZW4gU2llLCBhdWYgZGllc2UgRS1NYWlsLUFkcmVzc2UgenUgYW50d29ydGVuKHNhbnRh
-bHVjaWEuc2cuZXNAc3BhaW5tYWlsLmNvbSkgQsOcUk8tS09OVE9JTkZPUk1BVElPTkVOLUlCQU4g
-RVMxNyAyMTAwIDU2MjQgMTEwMiAwMDExIDc3MTkgU1dJRlQgQ09ERTogQ0FJWEVTQkJYWFguIMKg
-S09OVE9OQU1FLExBIFBMQUNJVEEgREVMIE1JUkFET1IgUy5MIFNQQUlOLg0KVXJoZWJlcnJlY2h0
-wqkgMjAwMi0yMDIwIE11bHRpLVN0YWF0IExvdHRlcmllIFZlcmJhbmQuIEFsbGUgUmVjaHRlDQpf
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRp
-bW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3Jp
-YmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+Add NVDIMM_FAMILY_PAPR to the list of valid 'dimm_family_mask'
+acceptable by papr_scm. This is needed as since commit
+92fe2aa859f5 ("libnvdimm: Validate command family indices") libnvdimm
+performs a validation of 'nd_cmd_pkg.nd_family' received as part of
+ND_CMD_CALL processing to ensure only known command families can use
+the general ND_CMD_CALL pass-through functionality.
+
+Without this change the ND_CMD_CALL pass-through targeting
+NVDIMM_FAMILY_PAPR error out with -EINVAL.
+
+Fixes: 92fe2aa859f5 ("libnvdimm: Validate command family indices")
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index 5493bc847bd08..27268370dee00 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -898,6 +898,9 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 	p->bus_desc.of_node = p->pdev->dev.of_node;
+ 	p->bus_desc.provider_name = kstrdup(p->pdev->name, GFP_KERNEL);
+ 
++	/* Set the dimm command family mask to accept PDSMs */
++	set_bit(NVDIMM_FAMILY_PAPR, &p->bus_desc.dimm_family_mask);
++
+ 	if (!p->bus_desc.provider_name)
+ 		return -ENOMEM;
+ 
+-- 
+2.26.2
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
