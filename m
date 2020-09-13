@@ -1,155 +1,150 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F1268109
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 13 Sep 2020 21:52:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94750268119
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 13 Sep 2020 22:01:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4545E13F3FC8D;
-	Sun, 13 Sep 2020 12:52:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=185.221.172.127; helo=web.crytrex.com; envelope-from=support@cryptocap.it; receiver=<UNKNOWN> 
-Received: from web.crytrex.com (web.crytrex.com [185.221.172.127])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 16C6C13A1DAD2;
+	Sun, 13 Sep 2020 13:01:31 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.154.167.57; helo=iskasoft.local; envelope-from=support@gulsumkaymaz.com.tr; receiver=<UNKNOWN> 
+Received: from iskasoft.local (195-154-167-57.rev.poneytelecom.eu [195.154.167.57])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 598B413C27BD7;
-	Sun, 13 Sep 2020 12:52:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cryptocap.it; s=default; h=Content-Transfer-Encoding:Content-Type:
-	Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=H/n7uX5A820w9Roh7v+0h/WFbqZKS125d0c6aMTkFWw=; b=m1XQpLHYbOQf5T8TDGHkqAs/cD
-	IrL0torlDYq9FEZMC6uoHa10OQXwxEu5SbxlwBZEV+gomEPVnQ7Sndqq+XLu2fPoHlAE82s3p8Hgs
-	QwAs3ilQ3LFFqhhbCYjLzvC3evXAHgy1VIAwmnpyPRBTWtp5CDkDMH5WZF2v3EoS87NC7ojC6BFrl
-	1m3h9qUM31KzZWU31/4eNKuSHYrToighy2+Qp3BS6faJDuyd25fmANDHIXy8w9roQU6S6gHIy9i2b
-	SG62c9vbKS3YlLWMuQ8ew6GhVFEZmX/jYLcLKpxT7gX2nZ9MrDVP3fPPl0AC7TD6SoRFlWGR0x6e6
-	VxpgUVIg==;
-Received: from [::1] (port=52520 helo=web.crytrex.com)
-	by web.crytrex.com with esmtpa (Exim 4.93)
-	(envelope-from <support@cryptocap.it>)
-	id 1kHXoP-0003eb-DU; Sun, 13 Sep 2020 21:37:21 +0200
+	by ml01.01.org (Postfix) with ESMTPS id EEFBF13A1CFE0
+	for <linux-nvdimm@lists.01.org>; Sun, 13 Sep 2020 13:01:27 -0700 (PDT)
+Received: from iskasoft.local (localhost.localdomain [127.0.0.1])
+	by iskasoft.local (Postfix) with ESMTP id 41593CEC1336
+	for <linux-nvdimm@lists.01.org>; Sun, 13 Sep 2020 23:01:26 +0300 (+03)
+Authentication-Results: iskasoft.local;
+	spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=support@gulsumkaymaz.com.tr smtp.helo=iskasoft.local
+Received-SPF: pass (iskasoft.local: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=support@gulsumkaymaz.com.tr; helo=iskasoft.local;
+X-Spam-Flag: NO
+X-Spam-Score: 6.415
+X-Spam-Level: ******
+X-Spam-Status: No, score=6.415 tagged_above=-9999 required=7
+	tests=[BAYES_50=0.8, FREEMAIL_FORGED_REPLYTO=2.095, HK_LOTTO=1,
+	LOTS_OF_MONEY=0.001, MONEY_FORM_SHORT=2.499, NO_RELAYS=-0.001,
+	T_FILL_THIS_FORM_FRAUD_PHISH=0.01, T_FILL_THIS_FORM_SHORT=0.01,
+	URIBL_BLOCKED=0.001] autolearn=no autolearn_force=no
+Received: from iskasoft.local ([127.0.0.1])
+	by iskasoft.local (iskasoft.local [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id rcgFue8f_Ta0 for <linux-nvdimm@lists.01.org>;
+	Sun, 13 Sep 2020 23:01:25 +0300 (+03)
+Received: by iskasoft.local (Postfix, from userid 10005)
+	id 1D039CEC1A64; Sun, 13 Sep 2020 22:43:41 +0300 (+03)
+To: linux-nvdimm@lists.01.org
+Subject: Auszeichnungen gewinnen
+Date: Sun, 13 Sep 2020 19:43:41 +0000
+From: El Gordo de la Primitiva Lotterien Spanien <support@gulsumkaymaz.com.tr>
+Message-ID: <67036389146ae7df616c5b9bde3ceb59@gulsumkaymaz.com.tr>
 MIME-Version: 1.0
-Date: Sun, 13 Sep 2020 21:37:20 +0200
-From: Greg Marume <support@cryptocap.it>
-To: undisclosed-recipients:;
-Subject: YOUR PAYMENT ARRANGEMENT
-User-Agent: Roundcube Webmail/1.4.7
-Message-ID: <36b2951fba9947ea86dea4aa04ec7d4c@cryptocap.it>
-X-Sender: support@cryptocap.it
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - web.crytrex.com
-X-AntiAbuse: Original Domain - lists.01.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - cryptocap.it
-X-Get-Message-Sender-Via: web.crytrex.com: authenticated_id: support@cryptocap.it
-X-Authenticated-Sender: web.crytrex.com: support@cryptocap.it
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Message-ID-Hash: CL37TYLOJCDIFC6K34OTM2R5M2ZPRRT3
-X-Message-ID-Hash: CL37TYLOJCDIFC6K34OTM2R5M2ZPRRT3
-X-MailFrom: support@cryptocap.it
+Message-ID-Hash: KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF
+X-Message-ID-Hash: KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF
+X-MailFrom: support@gulsumkaymaz.com.tr
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: s197811@vivaldi.net
+Reply-To: santalucia.sg.es@spainmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CL37TYLOJCDIFC6K34OTM2R5M2ZPRRT3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KBWLGV3YTZ5VA7AYSUQLEH2WMK2ZVVTF/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-
-
--- 
-FEDERAL REPUBLIC OF NIGERIA
-COMMITTEE ON FOREIGN PAYMENT
-(RESOLUTION PANEL ON CONTRACT PAYMENT)
-ABUJA-NIGERIA
-http://www.nassnig.org
-Our Ref: FGN /SNT/STB Your ref:
-
-I, The Senate Representative ,Federal Republic of Nigeria , DR GREG 
-MARUME
-(GCFR)
-and the Governor of Central Bank Of Nigeria , Mr. EMEIFELE in
-Conjunction with the EFCC Director , MR MAGU, held a meeting
-last week concerning contract payment , both foreign and local 
-contractors
-and some inheritance funds.
-
-On going through contractors file yesterday, we discovered that your 
-file
-was dumped untreated, so at this juncture, we apologize for the delay of
-your contract payment and please stop communicating with any office now 
-and
-attention to the appointed office below for you to receive your payment
-accordingly.
-
-However,I wish to inform you now that your outstanding contract payment 
-is
-($15,000,000. fifteen Million United States dollars).
-
-Now you?re new Payment Reference No.-35460021, Allocation No: 674632
-Password No: 339331 , Pin Code No: 55674 and your Certificate of Merit
-Payment
-No : 103 , CBN Released Code No: 0763; Immediate Telex confirmation No:
--1114433 ; Secret Code No: XXTN013, Having received these vital payment
-number , therefore You are qualified now to received and confirm Your 
-payment with
-the Federal Government of Nigeria immediately within the next week.
-
-We the entire members of the house of senate are using this urgent 
-medium to
-
-advise you to make payment of your GNAB fee of $350 without any further
-delay. Be rest assured that our appointment to handle and take care of 
-the
-movement of the fund will not be in vain as we are giving you 100% 
-guarantee
-
-to deliver the work as soon as your western union information reach us 
-at
-our house email addresses it is not less than 24hours that the order was
-placed.
-Note that your fund will be free to move from the bank without any delay 
-if
-you get the governments non assessment bonds (GNAB) which is $350 only 
-to
-make sure that no government monitor or agent can access the fund during 
-the
-
-delivery remittance. You have to get the gnab written on your name and
-stamped before the fund credit to your bank account.
-This was why we have not approved or sign off the bonds of your transfer
-registry today as the bank insists on the GNAB.
-Based on these explanations, you are hereby advised to send payment
-information of $350 through our direct email address on or before ten
-working days.as the closing date placed.
-This gnab will show that the transaction was made through the full 
-capacity
-of the government and will not be queried for certain circumstance. Use 
-the
-information bellow for the payment of the $350 GNAB requirements:
-Receiver name: Mr IGBOKWE TIMOTHY
-location: Lagos- Nigeria.
-Text question---gnab,
-Answer----final
-Bear in mind that this is the final stage of this transfer.
-As soon as this is done, it will take only 24hours for the fund to be
-credited in your designated bank account, you will be contacted by your 
-Bank
-herself.
-Best Regards.
-DR GREG MARUME
-Senate Representative
-(Federal Republic of Nigeria)
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+RWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIExvdHRlcmllbiBTcGFuaWVuIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpBZHJlc3NlOiDCoCDCoCDCoCDCoCDCoCDCoCDCoCDC
+oCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoCDCoA0KQ2FsbGUgZGVsIFByw61u
+Y2lwZSBkZSBWZXJnYXJhLCAzOCwgMjgwMDEgTWFkcmlkIEVzcGHDsWEgwqAgwqAgwqAgwqAgwqAg
+wqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgwqAgDQpFIG1h
+aWw6XWFuc3BydWNoZ2V3aW5uLm1tdC5lc0BzcGFpbm1haWwuY29tXQ0KS29udGFrdCBhdWZuZWht
+ZW4gdW50ZXI6XSAgMzQ2MDIgODEwIDE4NSBmYXggIDM0OTM1NDU3NDkwXQ0KQWt0ZW56ZWljaGVu
+Ol1QMDkvMDEvMDIvMjAyMC5dDQpMb3NudW1tZXI6XSBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxXQ0K
+wqBEYXR1bTogMTAvMDkvMjAyMA0KwqANCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKg
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpIYWxsbywgwqAg
+wqAgwqAgwqAgDQogICAgICAgICAgICAgICAgICANCiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IE9GRklaSUVMTEUgTUlUVEVJTFVORywNCsKgDQpEaWVzZSBFbCBHb3JkbyBkZSBsYSBQcmltaXRp
+dmEgU29tbWVyIEJvbmFuemEgwqBMb3R0ZXJpZSB3dXJkZSDCoCB1bmQgTWluaXN0ZXJpbyBkZSBJ
+bmR1c3RyaWEsIENvbWVyY2lvIHkgVHVyaXNtbyDCoGdlc3BvbnNlcnQgdW0gVG91cmlzbXVzIGlu
+IEVzcGHDsWEgwqB6dSBmw7ZyZGVybi4NCsKgDQpXaXIgc2luZCBlcmZyZXV0IElobmVuIG1pdCB6
+dSB0ZWlsZW4sIGRhc3MgZGllIEdld2lubmVyIGRlcyBTb25kZXIgU3BhbmlzaCBUb3VyaXNtdXMg
+UHJvbW90aW9uYWwgRHJhdyBiZWthbm50IGdlZ2ViZW4gd29yZGVuIHNpbmQuIERpZSBvZmZpemll
+bGxlIExpc3RlIGRlciBHZXdpbm5lciDCoGVyc2NoaWVuIGFtIMKgU2Ftc3RhZyBkZXIgMjIvMDgv
+MjAyMC4gDQrCoA0KSWhyZSBlbWFpbCBhZHJlc3NlIMKgbWl0IGRlciBhbmjDpG5nZW5kZW4gTG9z
+bnVtbWVyOiBFU1AgNDQ0Ny8xMTQ2NDExODgwMjAxIMKgdW5kIG1pdCBkZXIgU2VyaWVubnVtbWVy
+OiBFU1AvMDE4ODExLTIwMjAgem9nIGRpZSBHbMO8Y2tzbnVtbWVyOiA2LjE2LjE4LjMzLjQ3LjUx
+IEJvbnU6MjksRWwgR29yZG8gZGUgbGEgUHJpbWl0aXZhIMKgTG90dGVyaWUgwqA2IC80OSBpbiBk
+ZXIgMy4gS2F0ZWdvcmllLg0KwqANClNpZSBzaW5kIGRhbWl0IGdld2lubmVyIHZvbjog4oKsOTkx
+LDAwMC4wMCBFdXJvLiBEaWUgU3VtbWUgZXJnaWJ0IHNpY2ggYXVzIGVpbmVyIEdld2lubmF1c3Nj
+aMO8dHR1bmcgdm9uOiDigqw2OTM3LDAwMC4wMCBFdXJvLCBkaWUgZHVyY2ggZGllIGVyc3RlbiBz
+aWViZW4gKDcpIEdld2lubmVyIGF1cyBkZXIgZ2xlaWNoZW4gS2F0ZWdvcmllIGdldGVpbHQgd3Vy
+ZGUuIMKgRGlyIGdld2lubiBpc3QgYmVpIGVpbmVyIHNpY2hlcmhlaXRzZmlybWEgaGludGVybGVn
+dCB1bmQgaW4gaWhyZW4gbmFtZW4vZW1haWwgwqB2ZXJzaWNoZXJ0LiB1bSBrZWluZSBrb21wbGlr
+YXRpb25lbiBiZWkgZGVyIGFid2lja2x1bmcgZGVyIHphaGx1bmcgenUgdmVydXJzYWNoZW4gYml0
+dGVuIHdpciBzaWUgZGllc2Ugb2ZmaXppZWxsZSBtaXR0ZWlsdW5nICwgZGlza3JldCB6dSBiZWhh
+bmRlbG4uLGVzIGlzdCBlaW4gdGVpbCB1bnNlcmVzIHNpY2hlcmhlaXRzcHJvdG9rb2xscyB1bmQg
+Z2FyYW50aWVydCBpaG5lbiBlaW5lbiByZWlidW5nc2xvc2VuIEFibGF1Zi4NCsKgDQpBbGxlIGdl
+d2lubmVyIHd1cmRlbiBwZXIgY29tcHV0ZXIgYXVzIFVybGF1YnNob3RlbHMsIEZsdWdnZXNlbGxz
+Y2hhZnRlbiB1bmQgUmVpc2Viw7xyb3MgbWFpbGVuIERhdGVuIHZvbiBmw7xuZiBNaWxsaW9uZW4g
+KDUwMDAwMDApIEVtYWlsIGFkcmVzc2VuIGF1c2dld8OkaGx0LCBhbHMgdGVpbCB1bnNlcmVyIElu
+dGVybmF0aW9uYWxlbiB0b3VyaXNtdXMgcHJvbW90aW9uIHByb2dyYW1tcywgd2VsY2hlcyB3aXIg
+ZWlubWFsIGltIGphaHIgdmVyYW5zdGFsdGVuIHVtIFRvdXJpc211cyBpbiBTcGFuaWVuIHp1IGbD
+tnJkZXJuLg0KwqANCkJpdHRlIGtvbnRha3RpZXJlbiBzaWUgdW5zZXJlbiBhdXNsYW5kcyBzYWNo
+YmVhcmJlaXRlciBIZXJyIEdhYnJpZWwgwqBiZWkgZGVyIHNpY2hlcmhlaXRzZmlybWEgU2FudGFs
+dWNpYSBTaWNoZXJoZWl0c2Zpcm1hOlBlciBFbWFpbCBhbjpiZXJhdGVyZ2FicmllbC5zcEBjb25z
+dWx0YW50LmNvbSBvZGVyIGFucnVmZW46IDM0IDYwMiA4MTAgMTg1ICYgRmF4OiAgMzQgOTMxIDcw
+IDIxMjAsIHVtIElociBHZWxkIHNjaG5lbGwgenUgYmVrb21tZW4uDQrCoA0KRGVua2VuIFNpZSBk
+YXJhbiwgamVkZXIgZ2V3aW5uYW5zcHJ1Y2ggbXVzcyBiaXMgenVtIDMwLzkvMjAyMCBBbmdlbWVs
+ZGV0ZSBzZWluLiBKZWRlciBuaWNodCBhbmdlbWVsZGV0IEdld2lubmFuc3BydWNoIHZlcmbDpGxs
+dCB1bmQgZ2VodCB6dXJ1Y2sgYW4gZGFzIFNwYW5pc2NoZSBTdGFhdHNrYXNzZS4NCsKgIA0KV0lD
+SFRJRzogdW0gdmVyesO2Z2VydW5nZW4gdW5kIGtvbXBsaWthdGlvbmVuIHp1IHZlcm1laWRlbiwg
+Yml0dGUgaW1tZXIgQWt0ZW56ZWljaGVuIGFuZ2ViZW4uIMKgQW5iZWkgZWluIGFubWVsZGVmb3Jt
+dWxhciwgYml0dGUgYXVzZsO8bGxlbiB1bmQgenVyw7xjayBQZXIgZW1haWwgYW46YmVyYXRlcmdh
+YnJpZWwuc3BAY29uc3VsdGFudC5jb20gb2RlciBhbnJ1ZmVuOiAgMzQgNjAyIDgxMDE4NSAmIEZh
+eDogIDM0IDkzMSA3MCAyMTIwIGRpZSBzaWNoZXJoZWl0c2Zpcm1hIFNhbnRhbHVjaWEgU2ljaGVy
+aGVpdHNmaXJtYS4NCsKgDQpIRVJaTElDSEVOIEdMVUNLV1VOU0NI4oCmIQ0KTWl0IGZyZXVuZGxp
+Y2hlbiBHcsO8w59lbg0KTUFSSUEgSElEQUxHTw0KVklaRVBSw4RTSURFTlRJTg0KwqANCkLDnFJP
+LFNBTlRBTFVDSUEgU0VHVVJPUyBTLkEgRXNwYcOxYSANClBsYXphIEVzcGHDsWEsIDE1IC0gLTE2
+IMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQpNYWRyaWQsIDI4MDA4
+IEVzcGHDsWENCsKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgIMKgDQrCoA0K
+QU5NRUxERUZPUk1VTEFSIFpVUiBHRVdJTk5BTlNQUlVDSFMNCl9fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fXyANCkJpdHRlIGbDvGxsZW4gU2llIGRhcyBGb3JtdWxh
+ciBzb3JnZsOkbHRpZyBhdXMgdW5kIHNlbmRlbiBlcyBwZXIgZSBtYWlsOnNhbnRhbHVjaWEuc2cu
+ZXNAc3BhaW5tYWlsLmNvbSBhbiBkZXIgU2FudGFsdWNpYSBTaWNoZXJoZWl0c2Zpcm1hIG1pdCBL
+b3BpZSBJaHJlcyBQZXJzb25hbGF1c3dlaXNlcyBvZGVyIFJlaXNlcGFzc2VzLg0KwqANCkdFV0lO
+TkJFVFJBRzpfX19fXyBBS1RFTlpFSUNIRU4gX19fX19fX19fXw0KTkFNRTpfX19fX19fX19fX18g
+Vk9STkFNRTpfX19fX19fX19fX19fX19fXw0KR0VCVVJUU0RBVFVNOl9fX19fTkFUSU9OQUxJVEFU
+X19fX19fX19fX19fXw0KTE9TTlVNTUVSOl9fX19fX19fX19fIEdMw5xDS1NaQUhMRU4gX19fX19f
+X18NClNUUkFTU0U6X19fX19fX19fX19fX19fIE5VTU1FUjpfX19fX19fX19fX19fDQpXT0hOT1JU
+Ol9fX19fIFBPU1RMRUlUWkFITF9fX19fTEFORCBfX19fX19fXw0KRGlyZWt0ZXIgS29udGFrdCBF
+LU1haWxfX19fX19fX19fX19fX19fX19fX18NClRFTEVGT046X19fX19fX19fXyBIQU5EWTpfX19f
+X19fX19fIEZBWDpfX19fXw0KQkVSVUY6X19fX18gRkFNSUxJRU5TVEFORDpfX19fXyhHRVNDSExF
+Q0hUKV9fXyDCoCDCoA0KwqANCldFTENIRSBaQUhMVU5HU0ZPUk0gQkVWT1JaVUdFTiBTSUU/IMKg
+KEEpIEJBTkvDnEJFUldFSVNVTkc6IMKgKEIpIEJBUlNDSEVDSyDCoA0KQkFOS0RBVEVOIFNJTkQg
+TlVSIE5PVFdFTkRJRyBXRU5OIFNJRSBTSUNIIEbDnFIgRUlORSBCQU5Lw5xCRVJXRUlTVU5HIEVO
+VFNDSElFREVOIEhBQkVOLg0KwqANCk5BTUUgREVTIEdFTERJTlNUSVRVVFM6X19fX19fX19fX19f
+X18NCktPTlRPTlVNTUVSOl9fX19fX19fX19fX19fX19fX19fX19fXyANCklCQU46X19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fXw0KQkFOSyBBRERSRVNTOl9fX19fX19fX19fX19fX19fX19f
+X19fXw0KDQrCoA0KwqAgwqAgIEVSS0zDhFJVTkcgREVTIEJFR8OcTlNUSUdURU4NCklDSCBfX19f
+X19fX19fX19fX19fX19fX19fX19fX19CRVNUw4RUSUdFIEhJRVJNSVQsIERBU1MgQUxMRSBJTkZP
+Uk1BVElPTkVOLCBLT1JSRUtUIFNJTkQsIFVORCBESUUgVkVSQU5TVEFMVEVSIERFUiBFbCBTUEFO
+SVNIIExPVFRFUlkgLyBTQU5UQUxVQ0lBIFNJQ0hFUkhFSVRTRklSTUEgTklDSFQgVkVSQU5UV09S
+VExJQ0ggR0VNQUNIVCBXRVJERU4sIFdFTk4gRVMgWlUgRUlORVIgVU5CRVJFQ0hUSUdURU4gWkFI
+TFVORyBEVVJDSCBVTkdFTkFVRSBJTkZPUk1BVElPTkVOLCBESUUgSUNIIElOIERJRVNFTSBGT1JN
+VUxBUiBBTkdFQkUgS09NTVQuREFTUyAxMCUgUFJPVklTSU9OIERFUiBTQU5UQSBMVUNJQSBTRUNV
+UklUWSBDT01QQU5ZIEdFSD9SRU4sIFNPQkFMRCBTSUUgSUhSRU4gR0VXSU5OIEZPTkRTIEVSSEFM
+VEVOLiBESUVTRSBaRUhOIFBST1pFTlQgV0VSREVOIElITkVOIFNPRk9SVCBaVVLDnENLR0VHRUJF
+TiwgU0lFIEVSSEFMVEVOIElIUkVOIEdFV0lOTiBBVUYgSUhSRU0gS09OVE8uIChBQ0hUVU5HIFdp
+ciBiaXR0ZW4gU2llLCBhdWYgZGllc2UgRS1NYWlsLUFkcmVzc2UgenUgYW50d29ydGVuKHNhbnRh
+bHVjaWEuc2cuZXNAc3BhaW5tYWlsLmNvbSkgQsOcUk8tS09OVE9JTkZPUk1BVElPTkVOLUlCQU4g
+RVMxNyAyMTAwIDU2MjQgMTEwMiAwMDExIDc3MTkgU1dJRlQgQ09ERTogQ0FJWEVTQkJYWFguIMKg
+S09OVE9OQU1FLExBIFBMQUNJVEEgREVMIE1JUkFET1IgUy5MIFNQQUlOLg0KVXJoZWJlcnJlY2h0
+wqkgMjAwMi0yMDIwIE11bHRpLVN0YWF0IExvdHRlcmllIFZlcmJhbmQuIEFsbGUgUmVjaHRlDQpf
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRp
+bW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3Jp
+YmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
