@@ -2,44 +2,54 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E298C26A100
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 10:37:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4DF26A0F4
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 10:34:34 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0421B141048F6;
-	Tue, 15 Sep 2020 01:37:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	by ml01.01.org (Postfix) with ESMTP id 64F19141048E6;
+	Tue, 15 Sep 2020 01:34:32 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=lkp@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BFD70141048F4
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 01:37:18 -0700 (PDT)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id B4E16AFA9;
-	Tue, 15 Sep 2020 08:37:32 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id 025AB1E12EF; Tue, 15 Sep 2020 10:37:16 +0200 (CEST)
-Date: Tue, 15 Sep 2020 10:37:16 +0200
-From: Jan Kara <jack@suse.cz>
-To: Adrian Huang <adrianhuang0701@gmail.com>
-Subject: Re: [PATCH 1/1] dax: Fix stack overflow when mounting fsdax pmem
- device
-Message-ID: <20200915083716.GA29863@quack2.suse.cz>
-References: <20200915075729.12518-1-adrianhuang0701@gmail.com>
+	by ml01.01.org (Postfix) with ESMTPS id ED715141048E0;
+	Tue, 15 Sep 2020 01:34:29 -0700 (PDT)
+IronPort-SDR: MqMABfUNrYHw1ssw5CdOuZcF6NM7IBLPQ72i29Ou/TqNRBYxH/sFDDWtTla9QOob0qmzcBA9gR
+ v5e4V3Y2nVrA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9744"; a="220777137"
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600";
+   d="gz'50?scan'50,208,50";a="220777137"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 01:34:29 -0700
+IronPort-SDR: cMdGwN/hJvDDAQDNGFAFhdopT8HFUFhef3UWh8ITDKEFpTezQkkH937bsxdQftdukwqlHg2uN/
+ RwWkTv1gqCgw==
+X-IronPort-AV: E=Sophos;i="5.76,429,1592895600";
+   d="gz'50?scan'50,208,50";a="482681307"
+Received: from xsang-optiplex-9020.sh.intel.com (HELO xsang-OptiPlex-9020) ([10.239.159.140])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2020 01:34:25 -0700
+Date: Tue, 15 Sep 2020 16:46:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/7] mm/memory_hotplug: prepare passing flags to
+ add_memory() and friends
+Message-ID: <20200915084606.GB20631@xsang-OptiPlex-9020>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200915075729.12518-1-adrianhuang0701@gmail.com>
+In-Reply-To: <20200910091340.8654-4-david@redhat.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: P4SC5YWCLMJHM3M4WKTK6FJCNATJRGA7
-X-Message-ID-Hash: P4SC5YWCLMJHM3M4WKTK6FJCNATJRGA7
-X-MailFrom: jack@suse.cz
+Message-ID-Hash: 6IX4E3RRJY6VPDRITTFGQETKDIQQF6AW
+X-Message-ID-Hash: 6IX4E3RRJY6VPDRITTFGQETKDIQQF6AW
+X-MailFrom: lkp@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Adrian Huang <ahuang12@lenovo.com>
+Content-Disposition: inline
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: kbuild-all@lists.01.org, clang-built-linux@googlegroups.com, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P4SC5YWCLMJHM3M4WKTK6FJCNATJRGA7/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6IX4E3RRJY6VPDRITTFGQETKDIQQF6AW/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -48,144 +58,98 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue 15-09-20 15:57:29, Adrian Huang wrote:
-> From: Adrian Huang <ahuang12@lenovo.com>
-> 
-> When mounting fsdax pmem device, commit 6180bb446ab6 ("dax: fix
-> detection of dax support for non-persistent memory block devices")
-> introduces the stack overflow [1][2]. Here is the call path for
-> mounting ext4 file system:
->   ext4_fill_super
->     bdev_dax_supported
->       __bdev_dax_supported
->         dax_supported
->           generic_fsdax_supported
->             __generic_fsdax_supported
->               bdev_dax_supported
-> 
-> The call path leads to the infinite calling loop, so we cannot
-> call bdev_dax_supported() in __generic_fsdax_supported(). The sanity
-> checking of the variable 'dax_dev' is moved prior to the two
-> bdev_dax_pgoff() checks [3][4].
-> 
-> To fix the issue triggered by lvm2-testsuite (the issue that the
-> above-mentioned commit wants to fix), this patch does not print the
-> "error: dax access failed" message if the physical disk does not
-> support DAX (dax_dev is NULL). The detail info is described as follows:
+Hi David,
 
-Thanks for looking into this!
+I love your patch! Perhaps something to improve:
 
-> 
->   1. The dax_dev of the dm devices (dm-0, dm-1..) is always allocated
->      in alloc_dev() [drivers/md/dm.c].
->   2. When calling __generic_fsdax_supported() with dm-0 device, the
->      call path is shown as follows (the physical disks of dm-0 do
->      not support DAX):
->         dax_direct_access (valid dax_dev with dm-0)
->           dax_dev->ops->direct_access
->             dm_dax_direct_access
->               ti->type->direct_access
->                 linear_dax_direct_access (assume the target is linear)
->                   dax_direct_access (dax_dev is NULLL with ram0, or sdaX)
+[auto build test WARNING on next-20200909]
+[cannot apply to mmotm/master hnaz-linux-mm/master xen-tip/linux-next powerpc/next linus/master v5.9-rc4 v5.9-rc3 v5.9-rc2 v5.9-rc4]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-I'm not sure how you can get __generic_fsdax_supported() called for dm-0?
-Possibly because there's another dm device stacked on top of it and
-dm_table_supports_dax() calls generic_fsdax_supported()? That actually
-seems to be a bug in dm_table_supports_dax() (device_supports_dax() in
-particular). I'd think it should be calling dax_supported() instead of
-generic_fsdax_supported() so that proper device callback gets called when
-determining whether a device supports DAX or not.
+url:    https://github.com/0day-ci/linux/commits/David-Hildenbrand/mm-memory_hotplug-selective-merging-of-system-ram-resources/20200910-171630
+base:    7204eaa2c1f509066486f488c9dcb065d7484494
+:::::: branch date: 9 hours ago
+:::::: commit date: 9 hours ago
+config: powerpc-randconfig-r011-20200909 (attached as .config)
+compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project 0a5dc7effb191eff740e0e7ae7bd8e1f6bdb3ad9)
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install powerpc cross compiling tool for clang build
+        # apt-get install binutils-powerpc-linux-gnu
+        # save the attached .config to linux build tree
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=powerpc 
 
->   3. The call 'dax_direct_access()' in __generic_fsdax_supported() gets
->      the returned value '-EOPNOTSUPP'.
+If you fix the issue, kindly add following tag as appropriate
+Reported-by: kernel test robot <lkp@intel.com>
 
-I don't think this should happen under any normal conditions after the
-above bug is fixed. -EOPNOTSUPP is returned when dax_dev is NULL and that
-should have been caught earlier... So at this poing I don't think your
-changes to printing errors after dax_direct_access() are needed.
+All warnings (new ones prefixed by >>):
 
-								Honza
+   In file included from arch/powerpc/kernel/asm-offsets.c:14:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:15:
+   In file included from include/linux/radix-tree.h:18:
+   In file included from include/linux/xarray.h:14:
+   In file included from include/linux/gfp.h:6:
+   In file included from include/linux/mmzone.h:853:
+   include/linux/memory_hotplug.h:354:55: error: unknown type name 'mhp_t'
+   extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+                                                         ^
+   include/linux/memory_hotplug.h:355:53: error: unknown type name 'mhp_t'
+   extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+                                                       ^
+   include/linux/memory_hotplug.h:357:11: error: unknown type name 'mhp_t'
+                                  mhp_t mhp_flags);
+                                  ^
+   include/linux/memory_hotplug.h:360:10: error: unknown type name 'mhp_t'
+                                        mhp_t mhp_flags);
+                                        ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:21:
+>> include/linux/mman.h:137:9: warning: division by zero is undefined [-Wdivision-by-zero]
+                  _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
+                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/mman.h:115:21: note: expanded from macro '_calc_vm_trans'
+      : ((x) & (bit1)) / ((bit1) / (bit2))))
+                       ^ ~~~~~~~~~~~~~~~~~
+   include/linux/mman.h:138:9: warning: division by zero is undefined [-Wdivision-by-zero]
+                  _calc_vm_trans(flags, MAP_SYNC,       VM_SYNC      );
+                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/mman.h:115:21: note: expanded from macro '_calc_vm_trans'
+      : ((x) & (bit1)) / ((bit1) / (bit2))))
+                       ^ ~~~~~~~~~~~~~~~~~
+   2 warnings and 4 errors generated.
+   make[2]: *** [scripts/Makefile.build:117: arch/powerpc/kernel/asm-offsets.s] Error 1
+   make[2]: Target '__build' not remade because of errors.
+   make[1]: *** [Makefile:1196: prepare0] Error 2
+   make[1]: Target 'prepare' not remade because of errors.
+   make: *** [Makefile:185: __sub-make] Error 2
+   make: Target 'prepare' not remade because of errors.
 
->   4. However, the message 'dm-3: error: dax access failed (-5)' is still
->      printed for the dm target 'error' since io_err_dax_direct_access()
->      always returns the status '-EIO'. Cc' device mapper maintainers to
->      see if they have concerns.
-> 
-> [1] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/BULZHRILK7N2WS2JVISNF2QZNRQK6JU4/
-> [2] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/OOZGFY3RNQGTGJJCH52YXCSYIDXMOPXO/
-> [3] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMQW2LY3QHPXOAW76RKNSCGG3QJFO7HT/
-> [4] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7E2X6UGX5RQ2ISGYNAF66VLY5BKBFI4M/
-> 
-> Fixes: 6180bb446ab6 ("dax: fix detection of dax support for non-persistent memory block devices")
-> Cc: Coly Li <colyli@suse.de>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: John Pittman <jpittman@redhat.com>
-> Cc: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: Alasdair Kergon <agk@redhat.com>
-> Cc: Mike Snitzer <snitzer@redhat.com>
-> Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
-> ---
->  drivers/dax/super.c | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-> index e5767c83ea23..fb151417ec10 100644
-> --- a/drivers/dax/super.c
-> +++ b/drivers/dax/super.c
-> @@ -85,6 +85,12 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
->  		return false;
->  	}
->  
-> +	if (!dax_dev) {
-> +		pr_debug("%s: error: dax unsupported by block device\n",
-> +				bdevname(bdev, buf));
-> +		return false;
-> +	}
-> +
->  	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
->  	if (err) {
->  		pr_info("%s: error: unaligned partition for dax\n",
-> @@ -100,19 +106,22 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
->  		return false;
->  	}
->  
-> -	if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
-> -		pr_debug("%s: error: dax unsupported by block device\n",
-> -				bdevname(bdev, buf));
-> -		return false;
-> -	}
-> -
->  	id = dax_read_lock();
->  	len = dax_direct_access(dax_dev, pgoff, 1, &kaddr, &pfn);
->  	len2 = dax_direct_access(dax_dev, pgoff_end, 1, &end_kaddr, &end_pfn);
->  
->  	if (len < 1 || len2 < 1) {
-> -		pr_info("%s: error: dax access failed (%ld)\n",
-> +		/*
-> +		 * Only print the real error message: do not need to print
-> +		 * the message for the underlying raw disk (physical disk)
-> +		 * that does not support DAX (dax_dev = NULL). This case
-> +		 * is observed when physical disks are configured by
-> +		 * lvm2 (device mapper).
-> +		 */
-> +		if (len != -EOPNOTSUPP && len2 != -EOPNOTSUPP) {
-> +			pr_info("%s: error: dax access failed (%ld)\n",
->  				bdevname(bdev, buf), len < 1 ? len : len2);
-> +		}
->  		dax_read_unlock(id);
->  		return false;
->  	}
-> -- 
-> 2.17.1
-> _______________________________________________
-> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+# https://github.com/0day-ci/linux/commit/d88270d1c0783a7f99f24a85692be90fd2ae0d7d
+git remote add linux-review https://github.com/0day-ci/linux
+git fetch --no-tags linux-review David-Hildenbrand/mm-memory_hotplug-selective-merging-of-system-ram-resources/20200910-171630
+git checkout d88270d1c0783a7f99f24a85692be90fd2ae0d7d
+vim +137 include/linux/mman.h
+
+^1da177e4c3f41 Linus Torvalds  2005-04-16  128  
+^1da177e4c3f41 Linus Torvalds  2005-04-16  129  /*
+^1da177e4c3f41 Linus Torvalds  2005-04-16  130   * Combine the mmap "flags" argument into "vm_flags" used internally.
+^1da177e4c3f41 Linus Torvalds  2005-04-16  131   */
+^1da177e4c3f41 Linus Torvalds  2005-04-16  132  static inline unsigned long
+^1da177e4c3f41 Linus Torvalds  2005-04-16  133  calc_vm_flag_bits(unsigned long flags)
+^1da177e4c3f41 Linus Torvalds  2005-04-16  134  {
+^1da177e4c3f41 Linus Torvalds  2005-04-16  135  	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
+^1da177e4c3f41 Linus Torvalds  2005-04-16  136  	       _calc_vm_trans(flags, MAP_DENYWRITE,  VM_DENYWRITE ) |
+b6fb293f2497a9 Jan Kara        2017-11-01 @137  	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
+b6fb293f2497a9 Jan Kara        2017-11-01  138  	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      );
+^1da177e4c3f41 Linus Torvalds  2005-04-16  139  }
+00619bcc44d6b7 Jerome Marchand 2013-11-12  140  
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
