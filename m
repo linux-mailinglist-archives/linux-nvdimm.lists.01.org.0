@@ -1,46 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25DFE269FE4
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 09:35:53 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E3E269FED
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 09:37:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5BA5A1404C1FB;
-	Tue, 15 Sep 2020 00:35:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id A1AC11412E92D;
+	Tue, 15 Sep 2020 00:37:24 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com [207.211.31.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A6D8C14049BA0
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:35:49 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id CC3CC1412E92B
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:37:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600155348;
+	s=mimecast20190719; t=1600155440;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yFoamWwaWe8V8qUR+so0sTwUxa5mKHWUIK4wzmuz5cA=;
-	b=jHbqNQe7/g96aIE5mHvNbEoIAot+VVuDqHicvuOoAlUsiEuRbKWqr22U1EU/bokE87rHWg
-	5JUZgD7Y13QiQNyuASpMuD2z6WF7IQ5/Iz8Cudz5vytalbyZBzr+zjUGCf9sFmM/kUlwQX
-	Mr2IJOH5x74w6U4rTsqASBOLENbmI3Q=
+	bh=LUihYCOFGsNQqFfjENLSTSa0QkwMpwvtwdi/Mex61+4=;
+	b=MW4bhmN1wGYfUh0nT0MBeTx/rbG5kr8doWgWumVD6506zHURdCN5B/Kox8BzyxV/ZCL7IB
+	P59Hl430oXBJMaHzoMTBt64OwaHXY7u/Z5NMyztAu3TLMDgbONVX7WG7ZTsBouU/pdN9lL
+	iqExeqzW7vOMZB639NG30LdM8VO9Tw0=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-409-zMcs8GfzNaeiwFL8I3NGYg-1; Tue, 15 Sep 2020 03:35:37 -0400
-X-MC-Unique: zMcs8GfzNaeiwFL8I3NGYg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+ us-mta-375-ar7V8RlRNcqnXa2ZYlqxrg-1; Tue, 15 Sep 2020 03:37:17 -0400
+X-MC-Unique: ar7V8RlRNcqnXa2ZYlqxrg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 899C3801FDD;
-	Tue, 15 Sep 2020 07:35:35 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E5B3A425CB;
+	Tue, 15 Sep 2020 07:37:14 +0000 (UTC)
 Received: from [10.36.114.89] (ovpn-114-89.ams2.redhat.com [10.36.114.89])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0A4A110023A5;
-	Tue, 15 Sep 2020 07:35:30 +0000 (UTC)
-Subject: Re: [PATCH v2 1/7] kernel/resource: make
- release_mem_region_adjustable() never fail
+	by smtp.corp.redhat.com (Postfix) with ESMTP id B9FF17512C;
+	Tue, 15 Sep 2020 07:37:10 +0000 (UTC)
+Subject: Re: [PATCH v2 2/7] kernel/resource: move and rename
+ IORESOURCE_MEM_DRIVER_MANAGED
 To: Wei Yang <richard.weiyang@linux.alibaba.com>
 References: <20200908201012.44168-1-david@redhat.com>
- <20200908201012.44168-2-david@redhat.com>
- <20200915021012.GC2007@L-31X9LVDL-1304.local>
+ <20200908201012.44168-3-david@redhat.com>
+ <20200915022023.GD2007@L-31X9LVDL-1304.local>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -87,24 +87,24 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <927904b1-1909-f11f-483e-8012bda8ad0c@redhat.com>
-Date: Tue, 15 Sep 2020 09:35:30 +0200
+Message-ID: <b4eced44-00af-fcd2-be0d-d7abf8a2cc99@redhat.com>
+Date: Tue, 15 Sep 2020 09:37:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200915021012.GC2007@L-31X9LVDL-1304.local>
+In-Reply-To: <20200915022023.GD2007@L-31X9LVDL-1304.local>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Message-ID-Hash: X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I
-X-Message-ID-Hash: X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
+Message-ID-Hash: 54OUXHLMMJCDWV4SK5CT27T327ZMGPCZ
+X-Message-ID-Hash: 54OUXHLMMJCDWV4SK5CT27T327ZMGPCZ
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
+CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>, Eric Biederman <ebiederm@xmission.com>, Thomas Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, kexec@lists.infradead.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/54OUXHLMMJCDWV4SK5CT27T327ZMGPCZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -113,29 +113,22 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-
->> static int __ref try_remove_memory(int nid, u64 start, u64 size)
->> {
->> 	int rc = 0;
->> @@ -1777,7 +1757,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
->> 		memblock_remove(start, size);
->> 	}
+On 15.09.20 04:20, Wei Yang wrote:
+> On Tue, Sep 08, 2020 at 10:10:07PM +0200, David Hildenbrand wrote:
+>> IORESOURCE_MEM_DRIVER_MANAGED currently uses an unused PnP bit, which is
+>> always set to 0 by hardware. This is far from beautiful (and confusing),
+>> and the bit only applies to SYSRAM. So let's move it out of the
+>> bus-specific (PnP) defined bits.
 >>
->> -	__release_memory_resource(start, size);
->> +	release_mem_region_adjustable(&iomem_resource, start, size);
->>
+>> We'll add another SYSRAM specific bit soon. If we ever need more bits for
+>> other purposes, we can steal some from "desc", or reshuffle/regroup what we
+>> have.
 > 
-> Seems the only user of release_mem_region_adjustable() is here, can we move
-> iomem_resource into the function body? Actually, we don't iterate the resource
-> tree from any level. We always start from the root.
+> I think you make this definition because we use IORESOURCE_SYSRAM_RAM for
+> hotpluged memory? So we make them all in IORESOURCE_SYSRAM_XXX family?
 
-You mean, making iomem_resource implicit? I can spot that something
-similar was done for
-
-#define devm_release_mem_region(dev, start, n) \
-	__devm_release_region(dev, &iomem_resource, (start), (n))
-
-I'll send an addon patch for that, ok? - thanks.
+Yeah, to specify based on the extended MEM type SYSRAM. Because it
+really only applies to that.
 
 -- 
 Thanks,
