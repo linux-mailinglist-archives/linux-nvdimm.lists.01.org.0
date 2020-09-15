@@ -1,98 +1,110 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED5626AAD2
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 19:38:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456B826AADC
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 19:39:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C2AA114D825AA;
-	Tue, 15 Sep 2020 10:38:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id F3DF714DD0A54;
+	Tue, 15 Sep 2020 10:39:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=209.85.167.194; helo=mail-oi1-f194.google.com; envelope-from=rjwysocki@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com [209.85.167.194])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 07C5B14D82596
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 10:38:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600191497;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RxByhYJNtAoO/ydyFRO1RXTNjxPYd9rIcotBMI+uGJE=;
-	b=FzVGkyTKzzmMbHR03oemCHSiyGD5h5Fk8NFhSzOyrSOBa7lFQ1RD7kh0VvPvW5H6ZWcgEy
-	sGhD7T2pCMNls0SnxXccqZGSMP7MyFrN3FkSlpy/+ceJF+KIUcKs8KeMUOyRJxTn+EfSz3
-	GW0oOoRoWnJfy4cw7mc3NPNOT0UD1iA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-203-IsF8JrMIPgSPuKStpjnk1A-1; Tue, 15 Sep 2020 13:38:13 -0400
-X-MC-Unique: IsF8JrMIPgSPuKStpjnk1A-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 06D56AF206;
-	Tue, 15 Sep 2020 17:38:11 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id CAAA65C3E0;
-	Tue, 15 Sep 2020 17:38:10 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08FHcAsU004160;
-	Tue, 15 Sep 2020 13:38:10 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08FHcAxo004156;
-	Tue, 15 Sep 2020 13:38:10 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Tue, 15 Sep 2020 13:38:09 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [RFC] nvfs: a filesystem for persistent memory
-In-Reply-To: <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
-Message-ID: <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com> <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 454D114D825AF
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 10:39:43 -0700 (PDT)
+Received: by mail-oi1-f194.google.com with SMTP id m7so4862340oie.0
+        for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 10:39:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cgIuMsWuKwLw8HKrfM3Yi4VFysbOGkj72Chl+nIZli0=;
+        b=Jc5yzqDbnVGBwt9ytdNcfC3kJOWoREjyci9G3QEvzyn+GWIWhrzyEDaHSfgxs2NCFX
+         Dmt7c8aslVQPZ2T6PYwKiKAlchIwJOH0VzpWlnc1C19D9Tcpnf4w7rcUoi/rGY1bCbAo
+         fviKJyGRmkZ+ZB6AA2g+IH3e8NP8NxDDAksaGLnuRJBq2tsXgFDmPEcJp/b7+LLNhWTV
+         6y2Q+zj2/HeerFtLJ7jsHdeXgpHXbRVJDkI/CMVcQ0ryqA1BWsCBXU7mDmrzx34a9BuJ
+         xbI1/JkgwTeXDeF03W4AmUgeADM4Hk7ujuMxqO1Ut5vFaKX0lQoYJEbR23kF7lyjlI39
+         1qsQ==
+X-Gm-Message-State: AOAM533CUlDjvzgFROdbFWT6xOywA6ZvsnnKepKzpw5A3BdG4TD0E0Ct
+	XVycxZudXnvkYEFLFDEca3W/Jxjc3AZQtmpra/Q=
+X-Google-Smtp-Source: ABdhPJxTm261fqP6s7VUyOJQXiMU4X0GOiKkSTJ3sNxgOmXbn0mO9MLalI7UITQ64YpedQWLzF8Gls774vUxN4TYflI=
+X-Received: by 2002:aca:fd95:: with SMTP id b143mr396668oii.68.1600191582446;
+ Tue, 15 Sep 2020 10:39:42 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Message-ID-Hash: B2RVAT7SV2LXO3CAPAQS33ZQ7SDMKQT6
-X-Message-ID-Hash: B2RVAT7SV2LXO3CAPAQS33ZQ7SDMKQT6
-X-MailFrom: mpatocka@redhat.com
+References: <1597286952-5706-1-git-send-email-wangqing@vivo.com>
+ <CAJZ5v0h=UmD33X_i80X3ww7nC=xQL7V8XaoNq2XvU_XcdQGfZQ@mail.gmail.com> <4e23dc722419e82d13772afc8e060d3203fd5a86.camel@intel.com>
+In-Reply-To: <4e23dc722419e82d13772afc8e060d3203fd5a86.camel@intel.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 15 Sep 2020 19:39:31 +0200
+Message-ID: <CAJZ5v0jG-8Cwi1TfVDfgu+=q1MT+aY+aG15cAuthK7AvS1vYuQ@mail.gmail.com>
+Subject: Re: [PATCH] acpi/nfit: Use kobj_to_dev() instead
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>, "wangqing@vivo.com" <wangqing@vivo.com>
+Message-ID-Hash: T3R5J3DJ5ZKWZJTETBN4HYIIYFQPAZQG
+X-Message-ID-Hash: T3R5J3DJ5ZKWZJTETBN4HYIIYFQPAZQG
+X-MailFrom: rjwysocki@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "lenb@kernel.org" <lenb@kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "rjw@rjwysocki.net" <rjw@rjwysocki.net>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/B2RVAT7SV2LXO3CAPAQS33ZQ7SDMKQT6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/T3R5J3DJ5ZKWZJTETBN4HYIIYFQPAZQG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Sat, Aug 15, 2020 at 12:52 AM Verma, Vishal L
+<vishal.l.verma@intel.com> wrote:
+>
+> On Fri, 2020-08-14 at 17:28 +0200, Rafael J. Wysocki wrote:
+> > On Thu, Aug 13, 2020 at 4:54 AM Wang Qing <wangqing@vivo.com> wrote:
+> > > Use kobj_to_dev() instead of container_of()
+> > >
+> > > Signed-off-by: Wang Qing <wangqing@vivo.com>
+> >
+> > LGTM
+> >
+> > Dan, any objections?
+>
+> Looks good to me - you can add:
+> Acked-by: Vishal Verma <vishal.l.verma@intel.com>
 
+Applied as 5.10 material, thanks!
 
-On Tue, 15 Sep 2020, Mikulas Patocka wrote:
-
-> > > - __copy_from_user_inatomic_nocache doesn't flush cache for leading and
-> > > trailing bytes.
-> > 
-> > You want copy_user_flushcache(). See how fs/dax.c arranges for
-> > dax_copy_from_iter() to route to pmem_copy_from_iter().
-> 
-> Is it something new for the kernel 5.10? I see only __copy_user_flushcache 
-> that is implemented just for x86 and arm64.
-> 
-> There is __copy_from_user_flushcache implemented for x86, arm64 and power. 
-> It is used in lib/iov_iter.c under
-> #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE - so should I use this?
-> 
-> Mikulas
-
-... and __copy_user_flushcache is not exported for modules. So, I am stuck 
-with __copy_from_user_inatomic_nocache.
-
-Mikulas
+> > > ---
+> > >  drivers/acpi/nfit/core.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+> > > index fa4500f..3bb350b
+> > > --- a/drivers/acpi/nfit/core.c
+> > > +++ b/drivers/acpi/nfit/core.c
+> > > @@ -1382,7 +1382,7 @@ static bool ars_supported(struct nvdimm_bus *nvdimm_bus)
+> > >
+> > >  static umode_t nfit_visible(struct kobject *kobj, struct attribute *a, int n)
+> > >  {
+> > > -       struct device *dev = container_of(kobj, struct device, kobj);
+> > > +       struct device *dev = kobj_to_dev(kobj);
+> > >         struct nvdimm_bus *nvdimm_bus = to_nvdimm_bus(dev);
+> > >
+> > >         if (a == &dev_attr_scrub.attr && !ars_supported(nvdimm_bus))
+> > > @@ -1667,7 +1667,7 @@ static struct attribute *acpi_nfit_dimm_attributes[] = {
+> > >  static umode_t acpi_nfit_dimm_attr_visible(struct kobject *kobj,
+> > >                 struct attribute *a, int n)
+> > >  {
+> > > -       struct device *dev = container_of(kobj, struct device, kobj);
+> > > +       struct device *dev = kobj_to_dev(kobj);
+> > >         struct nvdimm *nvdimm = to_nvdimm(dev);
+> > >         struct nfit_mem *nfit_mem = nvdimm_provider_data(nvdimm);
+> > >
+> > > --
+> > > 2.7.4
+> > >
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
