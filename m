@@ -1,149 +1,247 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E35F26927D
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 14 Sep 2020 19:06:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CC2C269BBE
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 04:07:28 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4A1F313F87141;
-	Mon, 14 Sep 2020 10:06:41 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.92.18.108; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=will.jonson22085@outlook.com; receiver=<UNKNOWN> 
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2108.outbound.protection.outlook.com [40.92.18.108])
+	by ml01.01.org (Postfix) with ESMTP id 1743D14B47C3A;
+	Mon, 14 Sep 2020 19:07:26 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.45; helo=out30-45.freemail.mail.aliyun.com; envelope-from=richard.weiyang@linux.alibaba.com; receiver=<UNKNOWN> 
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 182A013F87140
-	for <linux-nvdimm@lists.01.org>; Mon, 14 Sep 2020 10:06:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HSZj+CfrC8dLBKXOqTYhrvAjGo+qb9viDo04oeRK2/T4pu2fMzaF/sxKQAgzPqIkbETbm8Rs+WkbnYVX7GitDylmSKg/W5x1v8tBLLy3feWuJc9iPcL7M2X/vWinMvNfKcWvAftlh9yy45++vJ9f+v2qUs7ZBVpoHxI/OXjIR/d+/QCKTu0rc+uGg7nkuZcgaMXk/r6Igf6aFRfEuYYlw5iwCeKywNPpSbnO4qgfwCKG4knKWaEewqpD3FPWtwo4tvYV6HTvF0emLjzsNGGR9y+PJRvF92Nq79L5Z6DJVSXvHPMm2zravFuZUNHlY4AVHse+LXOeOYxvWi2YtrLRVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fDWhIu3UOx5+bYA9o1/j56DEG3aaMC7HPwTihjPTGyo=;
- b=kx4IuYiEqiKp2TVvQx1FPfqOzgyl3ajEhNDdUv30TRh/ILVc40Vr378CUVG5Xaa/CKc/QZUlXMpoZvsji87HKAcdxZt9SsnbCsxVT056YVMnCKnsVoigIEuQ75jjbUCE5EvdK59YlKU10Q5NC8g9uGkSKaRY8ZffUpcvjb4jyph6Vh/RBWWOa32Pw0HfWg+pqg+ZURqUY4kKtLQ/ne+AnxLlM+FvTOtnqdfbvZBGm/ItBX5v4+nIfv6TVzGldNBUYp+CHcV8sD3OcyDy08+Whsal3F5sEwl7xRyifYO/pgFFUU3mbVik748OO8ysctrNFH7CJ6rbdAFj0v/1imtrfw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fDWhIu3UOx5+bYA9o1/j56DEG3aaMC7HPwTihjPTGyo=;
- b=jDbG7bmoN0puk4QktFXiC8WASaHjt+4nDgnx+7z/6uYTiMsR5MrYrwaZ1T+47+3GJZa/X12iYCT27/yhWkOM6kTWbQMl75jbpAKVKPlu1Eo+52UhGOk9SQ13J2Nxat5+E0eJaW7CbgqMmyE3T/o5FuRsA9LEE2aFW3oft8I9+fLlGQ4uj3L3uCxVs+jphUchadWeT5K/yCo68IzC4oaFN4EnMebfaEpkAJDUDRNnviiui1DZar0Iwd5ZwhmMRU1kAHPKPoA4vZD9Rtq75HHDIsnlESfIUSYA20QHfT2fbtZOtfC6DWnQL06BihFsKxDxCdUvcSjvfZ2aB6oiIqU1kw==
-Received: from DM6NAM11FT015.eop-nam11.prod.protection.outlook.com
- (2a01:111:e400:fc4d::4d) by
- DM6NAM11HT083.eop-nam11.prod.protection.outlook.com (2a01:111:e400:fc4d::125)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
- 2020 17:06:37 +0000
-Received: from DM6PR02MB3963.namprd02.prod.outlook.com
- (2a01:111:e400:fc4d::52) by DM6NAM11FT015.mail.protection.outlook.com
- (2a01:111:e400:fc4d::133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16 via Frontend
- Transport; Mon, 14 Sep 2020 17:06:37 +0000
-Received: from DM6PR02MB3963.namprd02.prod.outlook.com
- ([fe80::b0bd:dfaf:cb2:3333]) by DM6PR02MB3963.namprd02.prod.outlook.com
- ([fe80::b0bd:dfaf:cb2:3333%6]) with mapi id 15.20.3370.019; Mon, 14 Sep 2020
- 17:06:37 +0000
-From: will jonson <will.jonson22085@outlook.com>
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-Subject: RE: Obstetrician-Gynecologist Contact Details
-Thread-Topic: Obstetrician-Gynecologist Contact Details
-Thread-Index: AdaGxAodH7Fhv9a2SZmc4/G7Rt9aVgD9egiA
-Date: Mon, 14 Sep 2020 17:06:36 +0000
-Message-ID: 
- <DM6PR02MB3963AA6E727276EBC941715EC8230@DM6PR02MB3963.namprd02.prod.outlook.com>
-References: 
- <BYAPR02MB3959E8A038FCAA07BCAC4114C8260@BYAPR02MB3959.namprd02.prod.outlook.com>
-In-Reply-To: 
- <BYAPR02MB3959E8A038FCAA07BCAC4114C8260@BYAPR02MB3959.namprd02.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-incomingtopheadermarker: 
- OriginalChecksum:9EDC71DBDF7111D5A84C971CB4CCAA2A49CBD58E506DFB3B82956FCEFBDDAEF1;UpperCasedChecksum:1D13DDEB3A6B7C34D89DEE7E25C3D2ABF87879188AD842016C688B64F0B33A05;SizeAsReceived:3084;Count:45
-x-tmn: [ZEcK9FOmM1dZHpGsMDsSxwrmp2YyN0ekFRjwJa2DtmylrWDFfRWvgAmsmKKSxfUK]
-x-ms-publictraffictype: Email
-x-incomingheadercount: 45
-x-eopattributedmessage: 0
-x-ms-office365-filtering-correlation-id: 5e2d485e-cf57-467a-389c-08d858d08a5a
-x-ms-traffictypediagnostic: DM6NAM11HT083:
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- O2bLK7ORvtCwvQURMFpRg2yNy2i8sgZM0cwQsEyAX0EmtMb+h2Ge5Yi+QcSaD+6Zk/JCCxaKnViGjWDbJOAz8jUggsoO3tBUtkr5p3x2C+/C6aXhKRl+0tQtOWMCI3ZIJJevXe47w/5Ca3N+tV8+qWCmefzOh6IoA3xhKqVHpS09vRCf3+T9n0rncQVAAyQh
-x-ms-exchange-antispam-messagedata: 
- 4+qtTThuwVXtelPkqD58H1ZcQzN2Z8Y3yTJ+DT6GkIt8d2yX8mdKjN2eSMwoInKKs8PKXS4HDduI3NHRCrYKAcCCkcq0exzqBv8bHkqNvx3PJ0UBeyh/wRslD9Rx5UrZObFLsL4WlJk+hFjHbVZH5PQ5Rlr31bpaoQIVq7qY5lL0tM0jMeQcWA5pfg/x/mHXLziYxNW7socYkUt0RdOVYg==
-x-ms-exchange-transport-forked: True
+	by ml01.01.org (Postfix) with ESMTPS id 3081714B47C39
+	for <linux-nvdimm@lists.01.org>; Mon, 14 Sep 2020 19:07:22 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04357;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0U9-Pd4L_1600135638;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9-Pd4L_1600135638)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 15 Sep 2020 10:07:18 +0800
+Date: Tue, 15 Sep 2020 10:07:18 +0800
+From: Wei Yang <richard.weiyang@linux.alibaba.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 1/7] kernel/resource: make
+ release_mem_region_adjustable() never fail
+Message-ID: <20200915020718.GB2007@L-31X9LVDL-1304.local>
+References: <20200908201012.44168-1-david@redhat.com>
+ <20200908201012.44168-2-david@redhat.com>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT015.eop-nam11.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e2d485e-cf57-467a-389c-08d858d08a5a
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2020 17:06:36.9456
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Internet
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6NAM11HT083
-Message-ID-Hash: HURJPVVO56LEYH2QRDUKKYHGPNF3UZ6P
-X-Message-ID-Hash: HURJPVVO56LEYH2QRDUKKYHGPNF3UZ6P
-X-MailFrom: will.jonson22085@outlook.com
+Content-Disposition: inline
+In-Reply-To: <20200908201012.44168-2-david@redhat.com>
+Message-ID-Hash: E6UIUYJ33SFHTEL7VYEVEOCV6WGS4YRK
+X-Message-ID-Hash: E6UIUYJ33SFHTEL7VYEVEOCV6WGS4YRK
+X-MailFrom: richard.weiyang@linux.alibaba.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="us-ascii"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C6COWWP5I7K3CIU4VXMLEOXNWDKSV4NU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E6UIUYJ33SFHTEL7VYEVEOCV6WGS4YRK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On Tue, Sep 08, 2020 at 10:10:06PM +0200, David Hildenbrand wrote:
+>Let's make sure splitting a resource on memory hotunplug will never fail.
+>This will become more relevant once we merge selected System RAM
+>resources - then, we'll trigger that case more often on memory hotunplug.
+>
+>In general, this function is already unlikely to fail. When we remove
+>memory, we free up quite a lot of metadata (memmap, page tables, memory
+>block device, etc.). The only reason it could really fail would be when
+>injecting allocation errors.
+>
+>All other error cases inside release_mem_region_adjustable() seem to be
+>sanity checks if the function would be abused in different context -
+>let's add WARN_ON_ONCE() in these cases so we can catch them.
+>
+>Cc: Andrew Morton <akpm@linux-foundation.org>
+>Cc: Michal Hocko <mhocko@suse.com>
+>Cc: Dan Williams <dan.j.williams@intel.com>
+>Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>Cc: Kees Cook <keescook@chromium.org>
+>Cc: Ard Biesheuvel <ardb@kernel.org>
+>Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+>Cc: Baoquan He <bhe@redhat.com>
+>Cc: Wei Yang <richardw.yang@linux.intel.com>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
+>---
+> include/linux/ioport.h |  4 ++--
+> kernel/resource.c      | 49 ++++++++++++++++++++++++------------------
+> mm/memory_hotplug.c    | 22 +------------------
+> 3 files changed, 31 insertions(+), 44 deletions(-)
+>
+>diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+>index 6c2b06fe8beb7..52a91f5fa1a36 100644
+>--- a/include/linux/ioport.h
+>+++ b/include/linux/ioport.h
+>@@ -248,8 +248,8 @@ extern struct resource * __request_region(struct resource *,
+> extern void __release_region(struct resource *, resource_size_t,
+> 				resource_size_t);
+> #ifdef CONFIG_MEMORY_HOTREMOVE
+>-extern int release_mem_region_adjustable(struct resource *, resource_size_t,
+>-				resource_size_t);
+>+extern void release_mem_region_adjustable(struct resource *, resource_size_t,
+>+					  resource_size_t);
+> #endif
+> 
+> /* Wrappers for managed devices */
+>diff --git a/kernel/resource.c b/kernel/resource.c
+>index f1175ce93a1d5..36b3552210120 100644
+>--- a/kernel/resource.c
+>+++ b/kernel/resource.c
+>@@ -1258,21 +1258,28 @@ EXPORT_SYMBOL(__release_region);
+>  *   assumes that all children remain in the lower address entry for
+>  *   simplicity.  Enhance this logic when necessary.
+>  */
+>-int release_mem_region_adjustable(struct resource *parent,
+>-				  resource_size_t start, resource_size_t size)
+>+void release_mem_region_adjustable(struct resource *parent,
+>+				   resource_size_t start, resource_size_t size)
+> {
+>+	struct resource *new_res = NULL;
+>+	bool alloc_nofail = false;
+> 	struct resource **p;
+> 	struct resource *res;
+>-	struct resource *new_res;
+> 	resource_size_t end;
+>-	int ret = -EINVAL;
+> 
+> 	end = start + size - 1;
+>-	if ((start < parent->start) || (end > parent->end))
+>-		return ret;
+>+	if (WARN_ON_ONCE((start < parent->start) || (end > parent->end)))
+>+		return;
+> 
+>-	/* The alloc_resource() result gets checked later */
+>-	new_res = alloc_resource(GFP_KERNEL);
+>+	/*
+>+	 * We free up quite a lot of memory on memory hotunplug (esp., memap),
+>+	 * just before releasing the region. This is highly unlikely to
+>+	 * fail - let's play save and make it never fail as the caller cannot
+>+	 * perform any error handling (e.g., trying to re-add memory will fail
+>+	 * similarly).
+>+	 */
+>+retry:
+>+	new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
+> 
 
-Did you had a chance to review the email which I sent across?
+It looks like a bold change, while I don't find a reason to object it.
 
-Please let me know if you are interested or have any questions so that I will provide you more information on counts and pricing.
+> 	p = &parent->child;
+> 	write_lock(&resource_lock);
+>@@ -1298,7 +1305,6 @@ int release_mem_region_adjustable(struct resource *parent,
+> 		 * so if we are dealing with them, let us just back off here.
+> 		 */
+> 		if (!(res->flags & IORESOURCE_SYSRAM)) {
+>-			ret = 0;
+> 			break;
+> 		}
+> 
+>@@ -1315,20 +1321,23 @@ int release_mem_region_adjustable(struct resource *parent,
+> 			/* free the whole entry */
+> 			*p = res->sibling;
+> 			free_resource(res);
+>-			ret = 0;
+> 		} else if (res->start == start && res->end != end) {
+> 			/* adjust the start */
+>-			ret = __adjust_resource(res, end + 1,
+>-						res->end - end);
+>+			WARN_ON_ONCE(__adjust_resource(res, end + 1,
+>+						       res->end - end));
+> 		} else if (res->start != start && res->end == end) {
+> 			/* adjust the end */
+>-			ret = __adjust_resource(res, res->start,
+>-						start - res->start);
+>+			WARN_ON_ONCE(__adjust_resource(res, res->start,
+>+						       start - res->start));
+> 		} else {
+>-			/* split into two entries */
+>+			/* split into two entries - we need a new resource */
+> 			if (!new_res) {
+>-				ret = -ENOMEM;
+>-				break;
+>+				new_res = alloc_resource(GFP_ATOMIC);
+>+				if (!new_res) {
+>+					alloc_nofail = true;
+>+					write_unlock(&resource_lock);
+>+					goto retry;
+>+				}
+> 			}
+> 			new_res->name = res->name;
+> 			new_res->start = end + 1;
+>@@ -1339,9 +1348,8 @@ int release_mem_region_adjustable(struct resource *parent,
+> 			new_res->sibling = res->sibling;
+> 			new_res->child = NULL;
+> 
+>-			ret = __adjust_resource(res, res->start,
+>-						start - res->start);
+>-			if (ret)
+>+			if (WARN_ON_ONCE(__adjust_resource(res, res->start,
+>+							   start - res->start)))
+> 				break;
+> 			res->sibling = new_res;
+> 			new_res = NULL;
+>@@ -1352,7 +1360,6 @@ int release_mem_region_adjustable(struct resource *parent,
+> 
+> 	write_unlock(&resource_lock);
+> 	free_resource(new_res);
+>-	return ret;
+> }
+> #endif	/* CONFIG_MEMORY_HOTREMOVE */
+> 
+>diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+>index baded53b9ff92..4c47b68a9f4b5 100644
+>--- a/mm/memory_hotplug.c
+>+++ b/mm/memory_hotplug.c
+>@@ -1724,26 +1724,6 @@ void try_offline_node(int nid)
+> }
+> EXPORT_SYMBOL(try_offline_node);
+> 
+>-static void __release_memory_resource(resource_size_t start,
+>-				      resource_size_t size)
+>-{
+>-	int ret;
+>-
+>-	/*
+>-	 * When removing memory in the same granularity as it was added,
+>-	 * this function never fails. It might only fail if resources
+>-	 * have to be adjusted or split. We'll ignore the error, as
+>-	 * removing of memory cannot fail.
+>-	 */
+>-	ret = release_mem_region_adjustable(&iomem_resource, start, size);
+>-	if (ret) {
+>-		resource_size_t endres = start + size - 1;
+>-
+>-		pr_warn("Unable to release resource <%pa-%pa> (%d)\n",
+>-			&start, &endres, ret);
+>-	}
+>-}
+>-
+> static int __ref try_remove_memory(int nid, u64 start, u64 size)
+> {
+> 	int rc = 0;
+>@@ -1777,7 +1757,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+> 		memblock_remove(start, size);
+> 	}
+> 
+>-	__release_memory_resource(start, size);
+>+	release_mem_region_adjustable(&iomem_resource, start, size);
+> 
+> 	try_offline_node(nid);
+> 
+>-- 
+>2.26.2
 
-I would appreciate your reaction.
-
-Regards,
-Will
-
-From: will jonson
-Sent: Wednesday, 9 September, 2020 11:25 PM
-To: linux-nvdimm@lists.01.org
-Subject: Obstetrician-Gynecologist Contact Details
-
-
-Hi,
-
-
-
-I wanted to check if you'd be interested in acquiring Obstetrician-Gynecologist Contact List for your sales and marketing initiatives?
-
-
-
-Note: We can help customize the lists for any specific requirement based on your criteria.
-
-
-
-Please send me your target geographical location, so that I can send you the available counts and pricing for your review.
-
-
-
-Regards,
-
-Will Jonson
-
-Sr. Marketing Manager
-
-
-
-If you do not wish to receive further emails, please respond with "Opt Out" in subject line.
+-- 
+Wei Yang
+Help you, Help me
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
