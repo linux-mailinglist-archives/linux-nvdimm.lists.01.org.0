@@ -1,233 +1,128 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7DF26A9D9
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 18:33:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37C826AA26
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 18:59:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DA90013D9A1EF;
-	Tue, 15 Sep 2020 09:33:24 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A84AF13DCA2DB;
+	Tue, 15 Sep 2020 09:58:58 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 53E5013D4EA31
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 09:33:23 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FGUxkp137274;
-	Tue, 15 Sep 2020 16:33:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=EySSFs/mkWAdsBkj1u/J5ie8Sv/9oH6sVII8xbItpCw=;
- b=p5iQS7y18Ip+5cIDhWFg1wnPX0miaN9TSUk18AqKYQnOWi9sblfvEOreraAEaPnPs9Gi
- GJpmffca68bOdAGLz7c6GDNVE1LSAZHyExlQEWpkSsiDQ+padABKXNo/rkQ5RyklpaB6
- xv8bwcdCYXMLX//tElU1CFQqEqvjaME4Gwvie+mfI4hVcMIAdCJlsodG6cKH+qLo+EPJ
- fbjPDMktxCS2JUDcuKNWlyFF/xQK69MkjQW9l649+ZEVCDfRa1c0j3qraTdJdBb8ugWX
- GXlEbtCJUJAHs3z/sF62QySDF2awj7iFUNqB3I4s/Y2MOHkbODYmjDDkZC/RhCmgHoTY TA==
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-	by userp2120.oracle.com with ESMTP id 33j91dfu6u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 15 Sep 2020 16:33:07 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FGTwFn120010;
-	Tue, 15 Sep 2020 16:31:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-	by aserp3030.oracle.com with ESMTP id 33h7wpd5gb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Sep 2020 16:31:07 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-	by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 08FGV4nB012357;
-	Tue, 15 Sep 2020 16:31:05 GMT
-Received: from localhost (/67.169.218.210)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Tue, 15 Sep 2020 16:31:04 +0000
-Date: Tue, 15 Sep 2020 09:31:04 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-Subject: Re: [RFC PATCH 2/4] pagemap: introduce ->memory_failure()
-Message-ID: <20200915163104.GG7964@magnolia>
-References: <20200915101311.144269-1-ruansy.fnst@cn.fujitsu.com>
- <20200915101311.144269-3-ruansy.fnst@cn.fujitsu.com>
+	by ml01.01.org (Postfix) with ESMTPS id 35D9E13D6FB91
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 09:58:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1600189134;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=walQ61YYGzyVqfuTJ3FRBx41wBNDB3XgqTy7en19sog=;
+	b=AiTLTSfgnicP3KYFgSBdyn/KDwvSHwiRuHFm3OTUXPAV99DkdWDrPXC0OWkOyfGtgu9um9
+	LSFDoqxx2IGAkJQIsnrp3jX7C8nlkfEMZemltXkrP7A8XjqE7TDCPr64NAVpUEfy3eYJ0X
+	tt77+b6BE8Bji1FGzjYu5VtQtN914N0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-459-c5pfAVJMMm2Wno7Kl1o0YA-1; Tue, 15 Sep 2020 12:58:52 -0400
+X-MC-Unique: c5pfAVJMMm2Wno7Kl1o0YA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 77D1D18BFECB;
+	Tue, 15 Sep 2020 16:58:49 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 237865DC17;
+	Tue, 15 Sep 2020 16:58:49 +0000 (UTC)
+Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08FGwmjQ031604;
+	Tue, 15 Sep 2020 12:58:48 -0400
+Received: from localhost (mpatocka@localhost)
+	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08FGwkUQ031600;
+	Tue, 15 Sep 2020 12:58:47 -0400
+X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
+Date: Tue, 15 Sep 2020 12:58:46 -0400 (EDT)
+From: Mikulas Patocka <mpatocka@redhat.com>
+X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [RFC] nvfs: a filesystem for persistent memory
+In-Reply-To: <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com>
+Message-ID: <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
+References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com>
+User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200915101311.144269-3-ruansy.fnst@cn.fujitsu.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- adultscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009150134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 suspectscore=1 mlxlogscore=999
- clxscore=1015 adultscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009150134
-Message-ID-Hash: VIL6ADFQABQ3MGSON34F7SCISDM2HGT5
-X-Message-ID-Hash: VIL6ADFQABQ3MGSON34F7SCISDM2HGT5
-X-MailFrom: darrick.wong@oracle.com
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: M2H7WODXZFO2NAWNXE4LYLNR3P5ET77W
+X-Message-ID-Hash: M2H7WODXZFO2NAWNXE4LYLNR3P5ET77W
+X-MailFrom: mpatocka@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VIL6ADFQABQ3MGSON34F7SCISDM2HGT5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/M2H7WODXZFO2NAWNXE4LYLNR3P5ET77W/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: TEXT/PLAIN; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 15, 2020 at 06:13:09PM +0800, Shiyang Ruan wrote:
-> When memory-failure occurs, we call this function which is implemented
-> by each devices.  For fsdax, pmem device implements it.  Pmem device
-> will find out the block device where the error page located in, gets the
-> filesystem on this block device, and finally call ->storage_lost() to
-> handle the error in filesystem layer.
+
+
+On Tue, 15 Sep 2020, Dan Williams wrote:
+
+> > - when the fsck.nvfs tool mmaps the device /dev/pmem0, the kernel uses
+> > buffer cache for the mapping. The buffer cache slows does fsck by a factor
+> > of 5 to 10. Could it be possible to change the kernel so that it maps DAX
+> > based block devices directly?
 > 
-> Normally, a pmem device may contain one or more partitions, each
-> partition contains a block device, each block device contains a
-> filesystem.  So we are able to find out the filesystem by one offset on
-> this pmem device.  However, in other cases, such as mapped device, I
-> didn't find a way to obtain the filesystem laying on it.  It is a
-> problem need to be fixed.
+> We've been down this path before.
 > 
-> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
-> ---
->  block/genhd.c            | 12 ++++++++++++
->  drivers/nvdimm/pmem.c    | 31 +++++++++++++++++++++++++++++++
->  include/linux/genhd.h    |  2 ++
->  include/linux/memremap.h |  3 +++
->  4 files changed, 48 insertions(+)
+> 5a023cdba50c block: enable dax for raw block devices
+> 9f4736fe7ca8 block: revert runtime dax control of the raw block device
+> acc93d30d7d4 Revert "block: enable dax for raw block devices"
+
+It says "The functionality is superseded by the new 'Device DAX' 
+facility". But the fsck tool can't change a fsdax device into a devdax 
+device just for checking. Or can it?
+
+> EXT2/4 metadata buffer management depends on the page cache and we
+> eliminated a class of bugs by removing that support. The problems are
+> likely tractable, but there was not a straightforward fix visible at
+> the time.
+
+Thinking about it - it isn't as easy as it looks...
+
+Suppose that the user mounts an ext2 filesystem and then uses the tune2fs 
+tool on the mounted block device. The tune2fs tool reads and writes the 
+mounted superblock directly.
+
+So, read/write must be coherent with the buffer cache (otherwise the 
+kernel would not see the changes written by tune2fs). And mmap must be 
+coherent with read/write.
+
+So, if we want to map the pmem device directly, we could add a new flag 
+MAP_DAX. Or we could test if the fd has O_DIRECT flag and map it directly 
+in this case. But the default must be to map it coherently in order to not 
+break existing programs.
+
+> > - __copy_from_user_inatomic_nocache doesn't flush cache for leading and
+> > trailing bytes.
 > 
-> diff --git a/block/genhd.c b/block/genhd.c
-> index 99c64641c314..e7442b60683e 100644
-> --- a/block/genhd.c
-> +++ b/block/genhd.c
-> @@ -1063,6 +1063,18 @@ struct block_device *bdget_disk(struct gendisk *disk, int partno)
->  }
->  EXPORT_SYMBOL(bdget_disk);
->  
-> +struct block_device *bdget_disk_sector(struct gendisk *disk, sector_t sector)
-> +{
-> +	struct block_device *bdev = NULL;
-> +	struct hd_struct *part = disk_map_sector_rcu(disk, sector);
-> +
-> +	if (part)
-> +		bdev = bdget(part_devt(part));
-> +
-> +	return bdev;
-> +}
-> +EXPORT_SYMBOL(bdget_disk_sector);
-> +
->  /*
->   * print a full list of all partitions - intended for places where the root
->   * filesystem can't be mounted and thus to give the victim some idea of what
-> diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-> index fab29b514372..3ed96486c883 100644
-> --- a/drivers/nvdimm/pmem.c
-> +++ b/drivers/nvdimm/pmem.c
-> @@ -364,9 +364,40 @@ static void pmem_release_disk(void *__pmem)
->  	put_disk(pmem->disk);
->  }
->  
-> +static int pmem_pagemap_memory_failure(struct dev_pagemap *pgmap,
-> +		struct mf_recover_controller *mfrc)
-> +{
-> +	struct pmem_device *pdev;
-> +	struct block_device *bdev;
-> +	sector_t disk_sector;
-> +	loff_t bdev_offset;
-> +
-> +	pdev = container_of(pgmap, struct pmem_device, pgmap);
-> +	if (!pdev->disk)
-> +		return -ENXIO;
-> +
-> +	disk_sector = (PFN_PHYS(mfrc->pfn) - pdev->phys_addr) >> SECTOR_SHIFT;
+> You want copy_user_flushcache(). See how fs/dax.c arranges for
+> dax_copy_from_iter() to route to pmem_copy_from_iter().
 
-Ah, I see, looking at the current x86 MCE code, the MCE handler gets a
-physical address, which is then rounded down to a PFN, which is then
-blown back up into a byte address(?) and then rounded down to sectors.
-That is then blown back up into a byte address and passed on to XFS,
-which rounds it down to fs blocksize.
+Is it something new for the kernel 5.10? I see only __copy_user_flushcache 
+that is implemented just for x86 and arm64.
 
-/me wishes that wasn't so convoluted, but reforming the whole mm poison
-system to have smaller blast radii isn't the purpose of this patch. :)
+There is __copy_from_user_flushcache implemented for x86, arm64 and power. 
+It is used in lib/iov_iter.c under
+#ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE - so should I use this?
 
-> +	bdev = bdget_disk_sector(pdev->disk, disk_sector);
-> +	if (!bdev)
-> +		return -ENXIO;
-> +
-> +	// TODO what if block device contains a mapped device
-
-Find its dev_pagemap_ops and invoke its memory_failure function? ;)
-
-> +	if (!bdev->bd_super)
-> +		goto out;
-> +
-> +	bdev_offset = ((disk_sector - get_start_sect(bdev)) << SECTOR_SHIFT) -
-> +			pdev->data_offset;
-> +	bdev->bd_super->s_op->storage_lost(bdev->bd_super, bdev_offset, mfrc);
-
-->storage_lost is required for all filesystems?
-
---D
-
-> +
-> +out:
-> +	bdput(bdev);
-> +	return 0;
-> +}
-> +
->  static const struct dev_pagemap_ops fsdax_pagemap_ops = {
->  	.kill			= pmem_pagemap_kill,
->  	.cleanup		= pmem_pagemap_cleanup,
-> +	.memory_failure		= pmem_pagemap_memory_failure,
->  };
->  
->  static int pmem_attach_disk(struct device *dev,
-> diff --git a/include/linux/genhd.h b/include/linux/genhd.h
-> index 4ab853461dff..16e9e13e0841 100644
-> --- a/include/linux/genhd.h
-> +++ b/include/linux/genhd.h
-> @@ -303,6 +303,8 @@ static inline void add_disk_no_queue_reg(struct gendisk *disk)
->  extern void del_gendisk(struct gendisk *gp);
->  extern struct gendisk *get_gendisk(dev_t dev, int *partno);
->  extern struct block_device *bdget_disk(struct gendisk *disk, int partno);
-> +extern struct block_device *bdget_disk_sector(struct gendisk *disk,
-> +			sector_t sector);
->  
->  extern void set_device_ro(struct block_device *bdev, int flag);
->  extern void set_disk_ro(struct gendisk *disk, int flag);
-> diff --git a/include/linux/memremap.h b/include/linux/memremap.h
-> index 5f5b2df06e61..efebefa70d00 100644
-> --- a/include/linux/memremap.h
-> +++ b/include/linux/memremap.h
-> @@ -6,6 +6,7 @@
->  
->  struct resource;
->  struct device;
-> +struct mf_recover_controller;
->  
->  /**
->   * struct vmem_altmap - pre-allocated storage for vmemmap_populate
-> @@ -87,6 +88,8 @@ struct dev_pagemap_ops {
->  	 * the page back to a CPU accessible page.
->  	 */
->  	vm_fault_t (*migrate_to_ram)(struct vm_fault *vmf);
-> +	int (*memory_failure)(struct dev_pagemap *pgmap,
-> +			      struct mf_recover_controller *mfrc);
->  };
->  
->  #define PGMAP_ALTMAP_VALID	(1 << 0)
-> -- 
-> 2.28.0
-> 
-> 
-> 
+Mikulas
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
