@@ -1,46 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37659269FA5
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 09:25:45 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DFE269FE4
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 09:35:53 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 52B8D14B9B1EA;
-	Tue, 15 Sep 2020 00:25:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	by ml01.01.org (Postfix) with ESMTP id 5BA5A1404C1FB;
+	Tue, 15 Sep 2020 00:35:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8F32114B9B1E9
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:25:41 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id A6D8C14049BA0
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:35:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600154740;
+	s=mimecast20190719; t=1600155348;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=o/LqNu4dLYqyDNzMqmf20UBqxRsVSz1bWcbpTiCUA3I=;
-	b=LLDIAaO5s8DYx2WMY7X3Ga3dMkPW/Wjb3O1FCG9S7azGfamse/6+vLobm0iE5HKucDvlJ2
-	9LQD2g5GTEKonp5zzM4I8dzvUVtWcw4jTPCn7/BJYsnvohA/Txo4+BgeBdXOad9QUwVLro
-	e8rpCoeRx+t2+lt6xdAdj5FiyZ2mQs0=
+	bh=yFoamWwaWe8V8qUR+so0sTwUxa5mKHWUIK4wzmuz5cA=;
+	b=jHbqNQe7/g96aIE5mHvNbEoIAot+VVuDqHicvuOoAlUsiEuRbKWqr22U1EU/bokE87rHWg
+	5JUZgD7Y13QiQNyuASpMuD2z6WF7IQ5/Iz8Cudz5vytalbyZBzr+zjUGCf9sFmM/kUlwQX
+	Mr2IJOH5x74w6U4rTsqASBOLENbmI3Q=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-29--S5t59YONZuVzNRcp-6X9A-1; Tue, 15 Sep 2020 03:25:36 -0400
-X-MC-Unique: -S5t59YONZuVzNRcp-6X9A-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-409-zMcs8GfzNaeiwFL8I3NGYg-1; Tue, 15 Sep 2020 03:35:37 -0400
+X-MC-Unique: zMcs8GfzNaeiwFL8I3NGYg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3B26064080;
-	Tue, 15 Sep 2020 07:25:32 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 899C3801FDD;
+	Tue, 15 Sep 2020 07:35:35 +0000 (UTC)
 Received: from [10.36.114.89] (ovpn-114-89.ams2.redhat.com [10.36.114.89])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3665560BE2;
-	Tue, 15 Sep 2020 07:25:25 +0000 (UTC)
-Subject: Re: [PATCH v4 5/8] mm/memory_hotplug: MEMHP_MERGE_RESOURCE to specify
- merging of System RAM resources
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 0A4A110023A5;
+	Tue, 15 Sep 2020 07:35:30 +0000 (UTC)
+Subject: Re: [PATCH v2 1/7] kernel/resource: make
+ release_mem_region_adjustable() never fail
 To: Wei Yang <richard.weiyang@linux.alibaba.com>
-References: <20200911103459.10306-1-david@redhat.com>
- <20200911103459.10306-6-david@redhat.com>
- <20200915024348.GA2685@L-31X9LVDL-1304.local>
+References: <20200908201012.44168-1-david@redhat.com>
+ <20200908201012.44168-2-david@redhat.com>
+ <20200915021012.GC2007@L-31X9LVDL-1304.local>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -87,24 +87,24 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <e807e983-b10a-a731-4eaa-da208fabda84@redhat.com>
-Date: Tue, 15 Sep 2020 09:25:25 +0200
+Message-ID: <927904b1-1909-f11f-483e-8012bda8ad0c@redhat.com>
+Date: Tue, 15 Sep 2020 09:35:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200915024348.GA2685@L-31X9LVDL-1304.local>
+In-Reply-To: <20200915021012.GC2007@L-31X9LVDL-1304.local>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Message-ID-Hash: UV34UKABQWHWBDJE4F6BR5QKY7C2CGPW
-X-Message-ID-Hash: UV34UKABQWHWBDJE4F6BR5QKY7C2CGPW
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Message-ID-Hash: X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I
+X-Message-ID-Hash: X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, =?UTF-8?Q?Roger_Pau_Monn=c3=a9?= <roger.pau@citrix.com>, Julien Grall <julien@xen.org>, Baoquan He <bhe@redhat.com>
+CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Baoquan He <bhe@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UV34UKABQWHWBDJE4F6BR5QKY7C2CGPW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X4FU7WAYVGFUWAIFCDOWSKLZD6DFZS6I/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -113,42 +113,29 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 15.09.20 04:43, Wei Yang wrote:
-> On Fri, Sep 11, 2020 at 12:34:56PM +0200, David Hildenbrand wrote:
->> Some add_memory*() users add memory in small, contiguous memory blocks.
->> Examples include virtio-mem, hyper-v balloon, and the XEN balloon.
+
+>> static int __ref try_remove_memory(int nid, u64 start, u64 size)
+>> {
+>> 	int rc = 0;
+>> @@ -1777,7 +1757,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
+>> 		memblock_remove(start, size);
+>> 	}
 >>
->> This can quickly result in a lot of memory resources, whereby the actual
->> resource boundaries are not of interest (e.g., it might be relevant for
->> DIMMs, exposed via /proc/iomem to user space). We really want to merge
->> added resources in this scenario where possible.
+>> -	__release_memory_resource(start, size);
+>> +	release_mem_region_adjustable(&iomem_resource, start, size);
 >>
->> Let's provide a flag (MEMHP_MERGE_RESOURCE) to specify that a resource
->> either created within add_memory*() or passed via add_memory_resource()
->> shall be marked mergeable and merged with applicable siblings.
->>
->> To implement that, we need a kernel/resource interface to mark selected
->> System RAM resources mergeable (IORESOURCE_SYSRAM_MERGEABLE) and trigger
->> merging.
->>
->> Note: We really want to merge after the whole operation succeeded, not
->> directly when adding a resource to the resource tree (it would break
->> add_memory_resource() and require splitting resources again when the
->> operation failed - e.g., due to -ENOMEM).
 > 
-> Oops, the latest version is here.
+> Seems the only user of release_mem_region_adjustable() is here, can we move
+> iomem_resource into the function body? Actually, we don't iterate the resource
+> tree from any level. We always start from the root.
 
-Yeah, sorry, I dropped the "mm" prefix on the subject of the cover
-letter by mistake.
+You mean, making iomem_resource implicit? I can spot that something
+similar was done for
 
-> 
-> BTW, I don't see patch 4. Not sure it is junked by my mail system?
+#define devm_release_mem_region(dev, start, n) \
+	__devm_release_region(dev, &iomem_resource, (start), (n))
 
-At least you're in the CC list below with your old mail address (I
-assume you monitor that).
-
-I'll try to use your new address in the future.
-
+I'll send an addon patch for that, ok? - thanks.
 
 -- 
 Thanks,
