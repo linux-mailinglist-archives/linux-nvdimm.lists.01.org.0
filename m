@@ -2,256 +2,149 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53B0D269C06
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 04:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2576D269C38
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 05:03:43 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 345B41401B3E0;
-	Mon, 14 Sep 2020 19:43:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.44; helo=out30-44.freemail.mail.aliyun.com; envelope-from=richard.weiyang@linux.alibaba.com; receiver=<UNKNOWN> 
-Received: from out30-44.freemail.mail.aliyun.com (out30-44.freemail.mail.aliyun.com [115.124.30.44])
+	by ml01.01.org (Postfix) with ESMTP id E6D281401B3F5;
+	Mon, 14 Sep 2020 20:03:40 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=colyli@suse.de; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BEAB013D5CBA3
-	for <linux-nvdimm@lists.01.org>; Mon, 14 Sep 2020 19:43:53 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0U9.4qNm_1600137829;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U9.4qNm_1600137829)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 15 Sep 2020 10:43:49 +0800
-Date: Tue, 15 Sep 2020 10:43:48 +0800
-From: Wei Yang <richard.weiyang@linux.alibaba.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v4 5/8] mm/memory_hotplug: MEMHP_MERGE_RESOURCE to
- specify merging of System RAM resources
-Message-ID: <20200915024348.GA2685@L-31X9LVDL-1304.local>
-References: <20200911103459.10306-1-david@redhat.com>
- <20200911103459.10306-6-david@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 100B113D07012
+	for <linux-nvdimm@lists.01.org>; Mon, 14 Sep 2020 20:03:37 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id D6046AB9F;
+	Tue, 15 Sep 2020 03:03:51 +0000 (UTC)
+Date: Tue, 15 Sep 2020 11:03:29 +0800
+Subject: =?UTF-8?Q?=E5=9B=9E=E5=A4=8D=EF=BC=9Aregression_cau?=
+ =?UTF-8?Q?sed_by_patch_6180bb?=
+ =?UTF-8?Q?446ab624b9ab8bf201ed251ca87f07b413=0D=0A_("?=
+ =?UTF-8?Q?dax:_fix_detection_of_dax_support_for?=
+ =?UTF-8?Q?_non-persistent_memory_block=0D=0A_devices")?=
+X-Priority: 3
+Message-ID: <211sy17ij47lox90ncna7kwk-k7cl0b-ubtml5jg8ocd-r7lb68jgkncbq5ng3g-koqyd471rzfh-t231u5-sxwvexwht98i-b7in5pxxck0j-3b40lqlmuelf13q0uk-ye4ohhsbgodw-xuloz9wpp7tf.1600139009031@email.android.com>
+References: <alpine.LRH.2.02.2009141131220.30651@file01.intranet.prod.int.rdu2.redhat.com>
+From: "colyli@suse.de" <colyli@suse.de>
+To: Adrian Huang <ahuang12@lenovo.com>
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200911103459.10306-6-david@redhat.com>
-Message-ID-Hash: 34OU25IOTH7ZOZSP7CMDWRB2AESDUUNN
-X-Message-ID-Hash: 34OU25IOTH7ZOZSP7CMDWRB2AESDUUNN
-X-MailFrom: richard.weiyang@linux.alibaba.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>, Julien Grall <julien@xen.org>, Baoquan He <bhe@redhat.com>
+Message-ID-Hash: KDVBIVYAAOCADYQGTF5MSYNU6ZDUDQVL
+X-Message-ID-Hash: KDVBIVYAAOCADYQGTF5MSYNU6ZDUDQVL
+X-MailFrom: colyli@suse.de
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Jan Kara <jack@suse.com>, Mike Snitzer <snitzer@redhat.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Mikulas Patocka <mpatocka@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/34OU25IOTH7ZOZSP7CMDWRB2AESDUUNN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KDVBIVYAAOCADYQGTF5MSYNU6ZDUDQVL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="===============7457544542796121228=="
 
-On Fri, Sep 11, 2020 at 12:34:56PM +0200, David Hildenbrand wrote:
->Some add_memory*() users add memory in small, contiguous memory blocks.
->Examples include virtio-mem, hyper-v balloon, and the XEN balloon.
->
->This can quickly result in a lot of memory resources, whereby the actual
->resource boundaries are not of interest (e.g., it might be relevant for
->DIMMs, exposed via /proc/iomem to user space). We really want to merge
->added resources in this scenario where possible.
->
->Let's provide a flag (MEMHP_MERGE_RESOURCE) to specify that a resource
->either created within add_memory*() or passed via add_memory_resource()
->shall be marked mergeable and merged with applicable siblings.
->
->To implement that, we need a kernel/resource interface to mark selected
->System RAM resources mergeable (IORESOURCE_SYSRAM_MERGEABLE) and trigger
->merging.
->
->Note: We really want to merge after the whole operation succeeded, not
->directly when adding a resource to the resource tree (it would break
->add_memory_resource() and require splitting resources again when the
->operation failed - e.g., due to -ENOMEM).
+--===============7457544542796121228==
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Oops, the latest version is here.
+PGRpdiBkaXI9ImF1dG8iPkhpIEFuZHJpYW4sIDxkaXY+PGJyPjwvZGl2PjxkaXY+Q291bGQgeW91
+IHBsZWFzZSB0byB0YWtlIGEgbG9vaz8gSSBhbSBvZmZsaW5lIGluIHRoZSBuZXh0IHR3byB3ZWVr
+cy4gPC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5UaGFua3MgaW4gYWR2YW5jZS4gPC9kaXY+PGRp
+dj48YnI+PC9kaXY+PGRpdj5Db2x5ICBMaTxicj48L2Rpdj48ZGl2Pjxicj48L2Rpdj48L2Rpdj48
+ZGl2IHN0eWxlPSJsaW5lLWhlaWdodDoxLjUiPjxicj48YnI+LS0tLS0tLS0g5Y6f5aeL6YKu5Lu2
+IC0tLS0tLS0tPGJyPuWPkeS7tuS6uu+8miBNaWt1bGFzIFBhdG9ja2EgJmx0O21wYXRvY2thQHJl
+ZGhhdC5jb20mZ3Q7PGJyPuaXpeacn++8miAyMDIw5bm0OeaciDE05pel5ZGo5LiAIOWNiuWknDEx
+OjQ4PGJyPuaUtuS7tuS6uu+8miBDb2x5IExpICZsdDtjb2x5bGlAc3VzZS5kZSZndDssIERhbiBX
+aWxsaWFtcyAmbHQ7ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tJmd0OywgRGF2ZSBKaWFuZyAmbHQ7
+ZGF2ZS5qaWFuZ0BpbnRlbC5jb20mZ3Q7PGJyPuaKhOmAge+8miBKYW4gS2FyYSAmbHQ7amFja0Bz
+dXNlLmNvbSZndDssIFZpc2hhbCBWZXJtYSAmbHQ7dmlzaGFsLmwudmVybWFAaW50ZWwuY29tJmd0
+OywgQWRyaWFuIEh1YW5nICZsdDthaHVhbmcxMkBsZW5vdm8uY29tJmd0OywgSXJhIFdlaW55ICZs
+dDtpcmEud2VpbnlAaW50ZWwuY29tJmd0OywgTWlrZSBTbml0emVyICZsdDtzbml0emVyQHJlZGhh
+dC5jb20mZ3Q7LCBQYW5rYWogR3VwdGEgJmx0O3Bhbmthai5ndXB0YS5saW51eEBnbWFpbC5jb20m
+Z3Q7LCBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnPGJyPuS4uyAgICDpopjvvJogcmVncmVzc2lv
+biBjYXVzZWQgYnkgcGF0Y2ggNjE4MGJiNDQ2YWI2MjRiOWFiOGJmMjAxZWQyNTFjYTg3ZjA3YjQx
+Mzxicj4gKCJkYXg6IGZpeCBkZXRlY3Rpb24gb2YgZGF4IHN1cHBvcnQgZm9yIG5vbi1wZXJzaXN0
+ZW50IG1lbW9yeSBibG9jazxicj4gZGV2aWNlcyIpPGJyPjxibG9ja3F1b3RlPkhpPGJyPjxicj5U
+aGUgcGF0Y2ggNjE4MGJiNDQ2YWI2MjRiOWFiOGJmMjAxZWQyNTFjYTg3ZjA3YjQxMyAoImRheDog
+Zml4IGRldGVjdGlvbiBvZiA8YnI+ZGF4IHN1cHBvcnQgZm9yIG5vbi1wZXJzaXN0ZW50IG1lbW9y
+eSBibG9jayBkZXZpY2VzIikgY2F1c2VzIGNyYXNoIHdoZW4gPGJyPmF0dGVtcHRpbmcgdG8gbW91
+bnQgdGhlIGV4dDQgZmlsZXN5c3RlbSBvbiAvZGV2L3BtZW0wICgibWtmcy5leHQ0IDxicj4vZGV2
+L3BtZW0wOyBtb3VudCAtdCBleHQ0IC9kZXYvcG1lbTAgL21udC90ZXN0IikuIFRoZSBkZXZpY2Ug
+L2Rldi9wbWVtMCBpcyA8YnI+ZW11bGF0ZWQgdXNpbmcgdGhlICJtZW1tYXAiIGtlcm5lbCBwYXJh
+bWV0ZXIuPGJyPjxicj5UaGUgcGF0Y2ggY2F1c2VzIGluZmluaXRlIHJlY3Vyc2lvbiBhbmQgZG91
+YmxlLWZhdWx0IGV4Y2VwdGlvbjo8YnI+PGJyPl9fZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQ8YnI+
+YmRldl9kYXhfc3VwcG9ydGVkPGJyPl9fYmRldl9kYXhfc3VwcG9ydGVkPGJyPmRheF9zdXBwb3J0
+ZWQ8YnI+ZGF4X2Rldi0mZ3Q7b3BzLSZndDtkYXhfc3VwcG9ydGVkPGJyPmdlbmVyaWNfZnNkYXhf
+c3VwcG9ydGVkPGJyPl9fZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQ8YnI+PGJyPk1pa3VsYXM8YnI+
+PGJyPjxicj48YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MTldIHRyYXBzOiBQQU5JQzogZG91Ymxl
+IGZhdWx0LCBlcnJvcl9jb2RlOiAweDA8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MTldIGRvdWJs
+ZSBmYXVsdDogMDAwMCBbIzFdIFBSRUVNUFQgU01QPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjIw
+XSBDUFU6IDAgUElEOiAxMzI2IENvbW06IG1vdW50IE5vdCB0YWludGVkIDUuOS4wLXJjMS1iaXNl
+Y3QgIzEwPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjIwXSBIYXJkd2FyZSBuYW1lOiBCb2NocyBC
+b2NocywgQklPUyBCb2NocyAwMS8wMS8yMDExPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjIxXSBS
+SVA6IDAwMTA6X19nZW5lcmljX2ZzZGF4X3N1cHBvcnRlZCsweDZhLzB4NTAwPGJyPlsmbmJzcDsm
+bmJzcDsgMTcuNTAwNjIyXSBDb2RlOiBmZiBmZiBmZiBmZiBmZiA3ZiAwMCA0OCAyMSBmMyA0OCAw
+MSBjMyA0OCBjMSBlMyAwOSBmNiBjNyAwZSAwZiA4NSBmYSAwMSAwMCAwMCA0OCA4NSBmZiA0OSA4
+OSBmZCA3NCAxMSBiZSAwMCAxMCAwMCAwMCA0YyA4OSBlNyAmbHQ7ZTgmZ3Q7IGIxIGZlIGZmIGZm
+IDg0IGMwIDc1IDExIDMxIGMwIDQ4IDgzIGM0IDQ4IDViIDVkIDQxIDVjIDQxIDVkIDQxPGJyPlsm
+bmJzcDsmbmJzcDsgMTcuNTAwNjIzXSBSU1A6IDAwMTg6ZmZmZjg4OTQwYjRmZGZmOCBFRkxBR1M6
+IDAwMDEwMjg2PGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjI0XSBSQVg6IDAwMDAwMDAwMDAwMDAw
+MDAgUkJYOiAwMDAwMDAwN2ZmZmZmMDAwIFJDWDogMDAwMDAwMDAwMDAwMDAwMDxicj5bJm5ic3A7
+Jm5ic3A7IDE3LjUwMDYyNV0gUkRYOiAwMDAwMDAwMDAwMDAxMDAwIFJTSTogMDAwMDAwMDAwMDAw
+MTAwMCBSREk6IGZmZmY4ODk0MGIzNGMzMDA8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MjVdIFJC
+UDogMDAwMDAwMDAwMDAwMDAwMCBSMDg6IDAwMDAwMDAwMDQwMDAwMDAgUjA5OiA4MDgwODA4MDgw
+ODA4MDgwPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjI2XSBSMTA6IDAwMDAwMDAwMDAwMDAwMDAg
+UjExOiBmZWZlZmVmZWZlZmVmZWZmIFIxMjogZmZmZjg4OTQwYjM0YzMwMDxicj5bJm5ic3A7Jm5i
+c3A7IDE3LjUwMDYyNl0gUjEzOiBmZmZmODg5NDBiM2RjMDAwIFIxNDogZmZmZjg4OTQwYmFkZDAw
+MCBSMTU6IDAwMDAwMDAwMDAwMDAwMDE8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MjddIEZTOiZu
+YnNwOyAwMDAwMDAwMGY3YzI1NzgwKDAwMDApIEdTOmZmZmY4ODk0MGZhMDAwMDAoMDAwMCkga25s
+R1M6MDAwMDAwMDAwMDAwMDAwMDxicj5bJm5ic3A7Jm5ic3A7IDE3LjUwMDYyOF0gQ1M6Jm5ic3A7
+IDAwMTAgRFM6IDAwMmIgRVM6IDAwMmIgQ1IwOiAwMDAwMDAwMDgwMDUwMDMzPGJyPlsmbmJzcDsm
+bmJzcDsgMTcuNTAwNjI4XSBDUjI6IGZmZmY4ODk0MGI0ZmRmZTggQ1IzOiAwMDAwMDAxNDBiZDE1
+MDAwIENSNDogMDAwMDAwMDAwMDAwMDZiMDxicj5bJm5ic3A7Jm5ic3A7IDE3LjUwMDYyOF0gQ2Fs
+bCBUcmFjZTo8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MjldIE1vZHVsZXMgbGlua2VkIGluOiB1
+dmVzYWZiIGNmYmZpbGxyZWN0IGNmYmltZ2JsdCBjbiBjZmJjb3B5YXJlYSBmYiBmYmRldiBpcHY2
+IHR1biBhdXRvZnM0IGJpbmZtdF9taXNjIGNvbmZpZ2ZzIGFmX3BhY2tldCB2aXJ0aW9fcm5nIHJu
+Z19jb3JlIG1vdXNlZGV2IGV2ZGV2IHBjc3BrciB2aXJ0aW9fYmFsbG9vbiBidXR0b24gcmFpZDEw
+IHJhaWQ0NTYgYXN5bmNfcmFpZDZfcmVjb3YgYXN5bmNfbWVtY3B5IGFzeW5jX3BxIHJhaWQ2X3Bx
+IGFzeW5jX3hvciB4b3IgYXN5bmNfdHggbGliY3JjMzJjIHJhaWQxIHJhaWQwIG1kX21vZCBzZF9t
+b2QgdDEwX3BpIHZpcnRpb19zY3NpIHZpcnRpb19uZXQgbmV0X2ZhaWxvdmVyIHBzbW91c2Ugc2Nz
+aV9tb2QgZmFpbG92ZXI8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2MzhdIC0tLVsgZW5kIHRyYWNl
+IDNjODc3ZmNiNWI4NjU0NTkgXS0tLTxicj5bJm5ic3A7Jm5ic3A7IDE3LjUwMDYzOF0gUklQOiAw
+MDEwOl9fZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQrMHg2YS8weDUwMDxicj5bJm5ic3A7Jm5ic3A7
+IDE3LjUwMDYzOV0gQ29kZTogZmYgZmYgZmYgZmYgZmYgN2YgMDAgNDggMjEgZjMgNDggMDEgYzMg
+NDggYzEgZTMgMDkgZjYgYzcgMGUgMGYgODUgZmEgMDEgMDAgMDAgNDggODUgZmYgNDkgODkgZmQg
+NzQgMTEgYmUgMDAgMTAgMDAgMDAgNGMgODkgZTcgJmx0O2U4Jmd0OyBiMSBmZSBmZiBmZiA4NCBj
+MCA3NSAxMSAzMSBjMCA0OCA4MyBjNCA0OCA1YiA1ZCA0MSA1YyA0MSA1ZCA0MTxicj5bJm5ic3A7
+Jm5ic3A7IDE3LjUwMDY0MF0gUlNQOiAwMDE4OmZmZmY4ODk0MGI0ZmRmZjggRUZMQUdTOiAwMDAx
+MDI4Njxicj5bJm5ic3A7Jm5ic3A7IDE3LjUwMDY0MV0gUkFYOiAwMDAwMDAwMDAwMDAwMDAwIFJC
+WDogMDAwMDAwMDdmZmZmZjAwMCBSQ1g6IDAwMDAwMDAwMDAwMDAwMDA8YnI+WyZuYnNwOyZuYnNw
+OyAxNy41MDA2NDFdIFJEWDogMDAwMDAwMDAwMDAwMTAwMCBSU0k6IDAwMDAwMDAwMDAwMDEwMDAg
+UkRJOiBmZmZmODg5NDBiMzRjMzAwPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjQyXSBSQlA6IDAw
+MDAwMDAwMDAwMDAwMDAgUjA4OiAwMDAwMDAwMDA0MDAwMDAwIFIwOTogODA4MDgwODA4MDgwODA4
+MDxicj5bJm5ic3A7Jm5ic3A7IDE3LjUwMDY0Ml0gUjEwOiAwMDAwMDAwMDAwMDAwMDAwIFIxMTog
+ZmVmZWZlZmVmZWZlZmVmZiBSMTI6IGZmZmY4ODk0MGIzNGMzMDA8YnI+WyZuYnNwOyZuYnNwOyAx
+Ny41MDA2NDNdIFIxMzogZmZmZjg4OTQwYjNkYzAwMCBSMTQ6IGZmZmY4ODk0MGJhZGQwMDAgUjE1
+OiAwMDAwMDAwMDAwMDAwMDAxPGJyPlsmbmJzcDsmbmJzcDsgMTcuNTAwNjQzXSBGUzombmJzcDsg
+MDAwMDAwMDBmN2MyNTc4MCgwMDAwKSBHUzpmZmZmODg5NDBmYTAwMDAwKDAwMDApIGtubEdTOjAw
+MDAwMDAwMDAwMDAwMDA8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2NDRdIENTOiZuYnNwOyAwMDEw
+IERTOiAwMDJiIEVTOiAwMDJiIENSMDogMDAwMDAwMDA4MDA1MDAzMzxicj5bJm5ic3A7Jm5ic3A7
+IDE3LjUwMDY0NF0gQ1IyOiBmZmZmODg5NDBiNGZkZmU4IENSMzogMDAwMDAwMTQwYmQxNTAwMCBD
+UjQ6IDAwMDAwMDAwMDAwMDA2YjA8YnI+WyZuYnNwOyZuYnNwOyAxNy41MDA2NDVdIEtlcm5lbCBw
+YW5pYyAtIG5vdCBzeW5jaW5nOiBGYXRhbCBleGNlcHRpb24gaW4gaW50ZXJydXB0PGJyPlsmbmJz
+cDsmbmJzcDsgMTcuNTAwOTQxXSBLZXJuZWwgT2Zmc2V0OiBkaXNhYmxlZDxicj48YnI+PC9ibG9j
+a3F1b3RlPjwvZGl2Pg==
 
-BTW, I don't see patch 4. Not sure it is junked by my mail system?
+--===============7457544542796121228==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
->
->Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->Cc: Andrew Morton <akpm@linux-foundation.org>
->Cc: Michal Hocko <mhocko@suse.com>
->Cc: Dan Williams <dan.j.williams@intel.com>
->Cc: Jason Gunthorpe <jgg@ziepe.ca>
->Cc: Kees Cook <keescook@chromium.org>
->Cc: Ard Biesheuvel <ardb@kernel.org>
->Cc: Thomas Gleixner <tglx@linutronix.de>
->Cc: "K. Y. Srinivasan" <kys@microsoft.com>
->Cc: Haiyang Zhang <haiyangz@microsoft.com>
->Cc: Stephen Hemminger <sthemmin@microsoft.com>
->Cc: Wei Liu <wei.liu@kernel.org>
->Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
->Cc: Juergen Gross <jgross@suse.com>
->Cc: Stefano Stabellini <sstabellini@kernel.org>
->Cc: Roger Pau Monn=E9 <roger.pau@citrix.com>
->Cc: Julien Grall <julien@xen.org>
->Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->Cc: Baoquan He <bhe@redhat.com>
->Cc: Wei Yang <richardw.yang@linux.intel.com>
->Signed-off-by: David Hildenbrand <david@redhat.com>
->---
-> include/linux/ioport.h         |  4 +++
-> include/linux/memory_hotplug.h |  7 ++++
-> kernel/resource.c              | 60 ++++++++++++++++++++++++++++++++++
-> mm/memory_hotplug.c            |  7 ++++
-> 4 files changed, 78 insertions(+)
->
->diff --git a/include/linux/ioport.h b/include/linux/ioport.h
->index d7620d7c941a0..7e61389dcb017 100644
->--- a/include/linux/ioport.h
->+++ b/include/linux/ioport.h
->@@ -60,6 +60,7 @@ struct resource {
->=20
-> /* IORESOURCE_SYSRAM specific bits. */
-> #define IORESOURCE_SYSRAM_DRIVER_MANAGED	0x02000000 /* Always detected vi=
-a a driver. */
->+#define IORESOURCE_SYSRAM_MERGEABLE		0x04000000 /* Resource can be merged=
-. */
->=20
-> #define IORESOURCE_EXCLUSIVE	0x08000000	/* Userland may not map this reso=
-urce */
->=20
->@@ -253,6 +254,9 @@ extern void __release_region(struct resource *, resour=
-ce_size_t,
-> extern void release_mem_region_adjustable(struct resource *, resource_siz=
-e_t,
-> 					  resource_size_t);
-> #endif
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+extern void merge_system_ram_resource(struct resource *res);
->+#endif
->=20
-> /* Wrappers for managed devices */
-> struct device;
->diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug=
-.h
->index 33eb80fdba22f..d65c6fdc5cfc3 100644
->--- a/include/linux/memory_hotplug.h
->+++ b/include/linux/memory_hotplug.h
->@@ -62,6 +62,13 @@ typedef int __bitwise mhp_t;
->=20
-> /* No special request */
-> #define MHP_NONE		((__force mhp_t)0)
->+/*
->+ * Allow merging of the added System RAM resource with adjacent,
->+ * mergeable resources. After a successful call to add_memory_resource()
->+ * with this flag set, the resource pointer must no longer be used as it
->+ * might be stale, or the resource might have changed.
->+ */
->+#define MEMHP_MERGE_RESOURCE	((__force mhp_t)BIT(0))
->=20
-> /*
->  * Extended parameters for memory hotplug:
->diff --git a/kernel/resource.c b/kernel/resource.c
->index 36b3552210120..7a91b935f4c20 100644
->--- a/kernel/resource.c
->+++ b/kernel/resource.c
->@@ -1363,6 +1363,66 @@ void release_mem_region_adjustable(struct resource =
-*parent,
-> }
-> #endif	/* CONFIG_MEMORY_HOTREMOVE */
->=20
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+static bool system_ram_resources_mergeable(struct resource *r1,
->+					   struct resource *r2)
->+{
->+	/* We assume either r1 or r2 is IORESOURCE_SYSRAM_MERGEABLE. */
->+	return r1->flags =3D=3D r2->flags && r1->end + 1 =3D=3D r2->start &&
->+	       r1->name =3D=3D r2->name && r1->desc =3D=3D r2->desc &&
->+	       !r1->child && !r2->child;
->+}
->+
->+/*
->+ * merge_system_ram_resource - mark the System RAM resource mergeable and=
- try to
->+ * merge it with adjacent, mergeable resources
->+ * @res: resource descriptor
->+ *
->+ * This interface is intended for memory hotplug, whereby lots of contigu=
-ous
->+ * system ram resources are added (e.g., via add_memory*()) by a driver, =
-and
->+ * the actual resource boundaries are not of interest (e.g., it might be
->+ * relevant for DIMMs). Only resources that are marked mergeable, that ha=
-ve the
->+ * same parent, and that don't have any children are considered. All merg=
-eable
->+ * resources must be immutable during the request.
->+ *
->+ * Note:
->+ * - The caller has to make sure that no pointers to resources that are
->+ *   marked mergeable are used anymore after this call - the resource mig=
-ht
->+ *   be freed and the pointer might be stale!
->+ * - release_mem_region_adjustable() will split on demand on memory hotun=
-plug
->+ */
->+void merge_system_ram_resource(struct resource *res)
->+{
->+	const unsigned long flags =3D IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->+	struct resource *cur;
->+
->+	if (WARN_ON_ONCE((res->flags & flags) !=3D flags))
->+		return;
->+
->+	write_lock(&resource_lock);
->+	res->flags |=3D IORESOURCE_SYSRAM_MERGEABLE;
->+
->+	/* Try to merge with next item in the list. */
->+	cur =3D res->sibling;
->+	if (cur && system_ram_resources_mergeable(res, cur)) {
->+		res->end =3D cur->end;
->+		res->sibling =3D cur->sibling;
->+		free_resource(cur);
->+	}
->+
->+	/* Try to merge with previous item in the list. */
->+	cur =3D res->parent->child;
->+	while (cur && cur->sibling !=3D res)
->+		cur =3D cur->sibling;
->+	if (cur && system_ram_resources_mergeable(cur, res)) {
->+		cur->end =3D res->end;
->+		cur->sibling =3D res->sibling;
->+		free_resource(res);
->+	}
->+	write_unlock(&resource_lock);
->+}
->+#endif	/* CONFIG_MEMORY_HOTPLUG */
->+
-> /*
->  * Managed region resource
->  */
->diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->index 8f0bd7c9a63a5..553c718226b3e 100644
->--- a/mm/memory_hotplug.c
->+++ b/mm/memory_hotplug.c
->@@ -1102,6 +1102,13 @@ int __ref add_memory_resource(int nid, struct resou=
-rce *res, mhp_t mhp_flags)
-> 	/* device_online() will take the lock when calling online_pages() */
-> 	mem_hotplug_done();
->=20
->+	/*
->+	 * In case we're allowed to merge the resource, flag it and trigger
->+	 * merging now that adding succeeded.
->+	 */
->+	if (mhp_flags & MEMHP_MERGE_RESOURCE)
->+		merge_system_ram_resource(res);
->+
-> 	/* online pages if requested */
-> 	if (memhp_default_online_type !=3D MMOP_OFFLINE)
-> 		walk_memory_blocks(start, size, NULL, online_memory_block);
->--=20
->2.26.2
-
---=20
-Wei Yang
-Help you, Help me
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============7457544542796121228==--
