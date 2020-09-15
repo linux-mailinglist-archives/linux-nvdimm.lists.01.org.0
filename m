@@ -2,184 +2,160 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E5C26A049
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 09:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B185D26A051
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 10:01:12 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B54DF13B555AD;
-	Tue, 15 Sep 2020 00:58:35 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::441; helo=mail-pf1-x441.google.com; envelope-from=adrianhuang0701@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2F70E14C38D0E;
+	Tue, 15 Sep 2020 01:01:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CCCF8139F1654
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:58:32 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id o68so1486442pfg.2
-        for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 00:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=iwB0ggowT8cczHqL1ugYrdGX597SyXNgGzaHvB3ziPE=;
-        b=rF62UQUXKgRvQobLYFre0WN8lTptjd810pNITPo8KBCVQwkqQhpymcz1/8+jiS7I9G
-         l8UAH6DDinmByhEzMZbCZP41JIdFabc4+EOFfO1FkMJr7HkUm/FRakQgccVHJlvqT2Nq
-         9WSvxSJA2HYxXqiJDQMZA1a82XMWXZSIhKzMvC0EWAi/HchC20aDl8SrwiBsHQ2oZpJ9
-         ekHs4S1YAldFqY2cSZe4NzS8vngljwnyq5cD6enUc2ZIaHgro3bJS2jGBM6WzUI77iMz
-         d9eRu+VKtCkgrauhBuWGhlHYwmcDRjLb4ecNskB7HGGE+i7DwrGwgeg0QCvDmRqYZeUf
-         +gXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=iwB0ggowT8cczHqL1ugYrdGX597SyXNgGzaHvB3ziPE=;
-        b=sKW9MlzzBQP4Pr+KTXok4RFmYjRa//Aj4ZfQXiuO2cIzpcVKEoEgtgk4P9BEVULR4h
-         LJ/RXJVOjSAvTNtjLpRF/ntQQWTXuhNczKsdVQLPyjsTnP3rSPeuAtqpPFrq5rYpBgAP
-         b+WIBs0T3GwyChA8Uct1f/vb9Iqxgc6C4QKUOuHU2tyC8XbeJh5UJpmDpQxv8OVZtImr
-         UoypgKB2NtTLOrPKAmR3+68sjxmZKsEBqdJxLC+KNdlmtOLkZduJZnxy1LTk6tlSIDnV
-         bG5rv9NClo9lykpqvyOBCcxlvLWss23B0NLCDf9dZQRcMAk6v8mB8foVe6KY59+xPme5
-         20bg==
-X-Gm-Message-State: AOAM530thYjzWc+Cdx66hyOiyHRFQ2V/zZwGSV0jJiY/tysW9u5OFyf1
-	Ke3emr7H7NLfZ6T+EqQslFMSRnZtAGPTN8NR
-X-Google-Smtp-Source: ABdhPJyCvswryKFBsp6zDdWz/6I0hBFF15bixQb+jHt4JOwcgSuJsspNTD+A/E46LEnmd2DZoVXdJA==
-X-Received: by 2002:a62:1d51:0:b029:13e:d13d:a07f with SMTP id d78-20020a621d510000b029013ed13da07fmr16782219pfd.22.1600156712048;
-        Tue, 15 Sep 2020 00:58:32 -0700 (PDT)
-Received: from AHUANG12-1LT7M0.lenovo.com (220-143-144-42.dynamic-ip.hinet.net. [220.143.144.42])
-        by smtp.googlemail.com with ESMTPSA id t15sm4990877pjq.3.2020.09.15.00.58.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 00:58:31 -0700 (PDT)
-From: Adrian Huang <adrianhuang0701@gmail.com>
-To: linux-nvdimm@lists.01.org
-Subject: [PATCH 1/1] dax: Fix stack overflow when mounting fsdax pmem device
-Date: Tue, 15 Sep 2020 15:57:29 +0800
-Message-Id: <20200915075729.12518-1-adrianhuang0701@gmail.com>
-X-Mailer: git-send-email 2.17.1
-Message-ID-Hash: 2JDBSE2WK75LSGCFEOY3RXRN3CNLBPB2
-X-Message-ID-Hash: 2JDBSE2WK75LSGCFEOY3RXRN3CNLBPB2
-X-MailFrom: adrianhuang0701@gmail.com
+	by ml01.01.org (Postfix) with ESMTPS id 3C49D14C38D0E
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 01:01:07 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id D6FF4AC7D;
+	Tue, 15 Sep 2020 08:01:21 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 268261E12EF; Tue, 15 Sep 2020 10:01:06 +0200 (CEST)
+Date: Tue, 15 Sep 2020 10:01:06 +0200
+From: Jan Kara <jack@suse.cz>
+To: "colyli@suse.de" <colyli@suse.de>
+Subject: Re: =?utf-8?B?5Zue5aSN77yacmVncmVzc2lvbiBj?=
+ =?utf-8?Q?aused_by_patch_6180bb446ab624b9ab8bf201ed251ca87f07b413=3F=3F_?=
+ =?utf-8?Q?=28=22dax=3A_fix_detectio?= =?utf-8?Q?n?= of dax support for
+ non-persistent memory block?? devices")
+Message-ID: <20200915080106.GG4863@quack2.suse.cz>
+References: <alpine.LRH.2.02.2009141131220.30651@file01.intranet.prod.int.rdu2.redhat.com>
+ <211sy17ij47lox90ncna7kwk-k7cl0b-ubtml5jg8ocd-r7lb68jgkncbq5ng3g-koqyd471rzfh-t231u5-sxwvexwht98i-b7in5pxxck0j-3b40lqlmuelf13q0uk-ye4ohhsbgodw-xuloz9wpp7tf.1600139009031@email.android.com>
+MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <211sy17ij47lox90ncna7kwk-k7cl0b-ubtml5jg8ocd-r7lb68jgkncbq5ng3g-koqyd471rzfh-t231u5-sxwvexwht98i-b7in5pxxck0j-3b40lqlmuelf13q0uk-ye4ohhsbgodw-xuloz9wpp7tf.1600139009031@email.android.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: IPL5GN4PCIMOMVO6TGBEVWIBLFCFRWNZ
+X-Message-ID-Hash: IPL5GN4PCIMOMVO6TGBEVWIBLFCFRWNZ
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Adrian Huang <adrianhuang0701@gmail.com>, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Adrian Huang <ahuang12@lenovo.com>
+CC: Adrian Huang <ahuang12@lenovo.com>, Jan Kara <jack@suse.com>, Mike Snitzer <snitzer@redhat.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Mikulas Patocka <mpatocka@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2JDBSE2WK75LSGCFEOY3RXRN3CNLBPB2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IPL5GN4PCIMOMVO6TGBEVWIBLFCFRWNZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-From: Adrian Huang <ahuang12@lenovo.com>
-
-When mounting fsdax pmem device, commit 6180bb446ab6 ("dax: fix
-detection of dax support for non-persistent memory block devices")
-introduces the stack overflow [1][2]. Here is the call path for
-mounting ext4 file system:
-  ext4_fill_super
-    bdev_dax_supported
-      __bdev_dax_supported
-        dax_supported
-          generic_fsdax_supported
-            __generic_fsdax_supported
-              bdev_dax_supported
-
-The call path leads to the infinite calling loop, so we cannot
-call bdev_dax_supported() in __generic_fsdax_supported(). The sanity
-checking of the variable 'dax_dev' is moved prior to the two
-bdev_dax_pgoff() checks [3][4].
-
-To fix the issue triggered by lvm2-testsuite (the issue that the
-above-mentioned commit wants to fix), this patch does not print the
-"error: dax access failed" message if the physical disk does not
-support DAX (dax_dev is NULL). The detail info is described as follows:
-
-  1. The dax_dev of the dm devices (dm-0, dm-1..) is always allocated
-     in alloc_dev() [drivers/md/dm.c].
-  2. When calling __generic_fsdax_supported() with dm-0 device, the
-     call path is shown as follows (the physical disks of dm-0 do
-     not support DAX):
-        dax_direct_access (valid dax_dev with dm-0)
-          dax_dev->ops->direct_access
-            dm_dax_direct_access
-              ti->type->direct_access
-                linear_dax_direct_access (assume the target is linear)
-                  dax_direct_access (dax_dev is NULLL with ram0, or sdaX)
-  3. The call 'dax_direct_access()' in __generic_fsdax_supported() gets
-     the returned value '-EOPNOTSUPP'.
-  4. However, the message 'dm-3: error: dax access failed (-5)' is still
-     printed for the dm target 'error' since io_err_dax_direct_access()
-     always returns the status '-EIO'. Cc' device mapper maintainers to
-     see if they have concerns.
-
-[1] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/BULZHRILK7N2WS2JVISNF2QZNRQK6JU4/
-[2] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/thread/OOZGFY3RNQGTGJJCH52YXCSYIDXMOPXO/
-[3] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SMQW2LY3QHPXOAW76RKNSCGG3QJFO7HT/
-[4] https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7E2X6UGX5RQ2ISGYNAF66VLY5BKBFI4M/
-
-Fixes: 6180bb446ab6 ("dax: fix detection of dax support for non-persistent memory block devices")
-Cc: Coly Li <colyli@suse.de>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: Dave Jiang <dave.jiang@intel.com>
-Cc: Ira Weiny <ira.weiny@intel.com>
-Cc: John Pittman <jpittman@redhat.com>
-Cc: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Alasdair Kergon <agk@redhat.com>
-Cc: Mike Snitzer <snitzer@redhat.com>
-Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
----
- drivers/dax/super.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-index e5767c83ea23..fb151417ec10 100644
---- a/drivers/dax/super.c
-+++ b/drivers/dax/super.c
-@@ -85,6 +85,12 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 		return false;
- 	}
- 
-+	if (!dax_dev) {
-+		pr_debug("%s: error: dax unsupported by block device\n",
-+				bdevname(bdev, buf));
-+		return false;
-+	}
-+
- 	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
- 	if (err) {
- 		pr_info("%s: error: unaligned partition for dax\n",
-@@ -100,19 +106,22 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
- 		return false;
- 	}
- 
--	if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
--		pr_debug("%s: error: dax unsupported by block device\n",
--				bdevname(bdev, buf));
--		return false;
--	}
--
- 	id = dax_read_lock();
- 	len = dax_direct_access(dax_dev, pgoff, 1, &kaddr, &pfn);
- 	len2 = dax_direct_access(dax_dev, pgoff_end, 1, &end_kaddr, &end_pfn);
- 
- 	if (len < 1 || len2 < 1) {
--		pr_info("%s: error: dax access failed (%ld)\n",
-+		/*
-+		 * Only print the real error message: do not need to print
-+		 * the message for the underlying raw disk (physical disk)
-+		 * that does not support DAX (dax_dev = NULL). This case
-+		 * is observed when physical disks are configured by
-+		 * lvm2 (device mapper).
-+		 */
-+		if (len != -EOPNOTSUPP && len2 != -EOPNOTSUPP) {
-+			pr_info("%s: error: dax access failed (%ld)\n",
- 				bdevname(bdev, buf), len < 1 ? len : len2);
-+		}
- 		dax_read_unlock(id);
- 		return false;
- 	}
--- 
-2.17.1
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+SGkhDQoNCk9uIFR1ZSAxNS0wOS0yMCAxMTowMzoyOSwgY29seWxpQHN1c2UuZGUgd3JvdGU6DQo+
+IENvdWxkIHlvdSBwbGVhc2UgdG8gdGFrZSBhIGxvb2s/IEkgYW0gb2ZmbGluZSBpbiB0aGUgbmV4
+dCB0d28gd2Vla3MuDQoNCkkganVzdCBoYWQgYSBsb29rIGludG8gdGhpcy4gSU1ITyB0aGUganVz
+dGlmaWNhdGlvbiBpbiA2MTgwYmI0NDZhICJkYXg6IGZpeA0KZGV0ZWN0aW9uIG9mIGRheCBzdXBw
+b3J0IGZvciBub24tcGVyc2lzdGVudCBtZW1vcnkgYmxvY2sgZGV2aWNlcyIgaXMganVzdA0KYm9n
+dXMgYW5kIHBlb3BsZSBnb3QgY29uZnVzZWQgYnkgdGhlIHByZXZpb3VzIGNvbmRpdGlvbg0KDQpp
+ZiAoIWRheF9kZXYgJiYgIWJkZXZfZGF4X3N1cHBvcnRlZChiZGV2LCBibG9ja3NpemUpKQ0KDQp3
+aGljaCB3YXMgYm9ndXMgYXMgd2VsbC4gYmRldl9kYXhfc3VwcG9ydGVkKCkgYWx3YXlzIHJldHVy
+bnMgZmFsc2UgZm9yIGJkZXYNCnRoYXQgZG9lc24ndCBoYXZlIGRheF9kZXYgKG5hdHVyYWxseSBz
+bykuIFNvIGluIHRoZSBvcmlnaW5hbCBjb25kaXRpb24NCnRoZXJlIHdhcyBubyBwb2ludCBpbiBj
+YWxsaW5nIGJkZXZfZGF4X3N1cHBvcnRlZCgpIGlmIHdlIGtub3cgZGF4X2RldiBpcw0KTlVMTC4N
+Cg0KVGhlbiB0aGlzIHdhcyBjaGFuZ2VkIHRvOg0KDQppZiAoIWRheF9kZXYgfHwgIWJkZXZfZGF4
+X3N1cHBvcnRlZChiZGV2LCBibG9ja3NpemUpKQ0KDQp3aGljaCBsb29rcyBtb3JlIHNlbnNpYmxl
+IGF0IHRoZSBmaXJzdCBzaWdodC4gQnV0IG9ubHkgYXQgdGhlIGZpcnN0IHNpZ2h0IC0NCmlmIHlv
+dSBsb29rIGF0IHdpZGVyIGNvbnRleHQsIF9fZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQoKSBpcyB0
+aGUgYnVsayBvZg0KY29kZSB0aGF0IGRlY2lkZXMgd2hldGhlciBhIGRldmljZSBzdXBwb3J0cyBE
+QVggc28gY2FsbGluZw0KYmRldl9kYXhfc3VwcG9ydGVkKCkgZnJvbSBpdCBpbmRlZWQgZG9lc24n
+dCBsb29rIGFzIHN1Y2ggYSBncmVhdCBpZGVhLiBTbw0KSU1PIHRoZSBjb25kaXRpb24gc2hvdWxk
+IGJlIGp1c3Q6DQoNCmlmICghZGF4X2RldikNCg0KSSdsbCBzZW5kIGEgZml4IGZvciB0aGlzLg0K
+DQpBbHNvIHRoZXJlJ3MgdGhlIHByb2Nlc3MgcXVlc3Rpb24gaG93IHRoaXMgcGF0Y2ggY291bGQg
+Z2V0IHRvIExpbnVzIHdoZW4NCmFueSBhdHRlbXB0IHRvIHVzZSBEQVggd291bGQgaW1tZWRpYXRl
+bHkga2lsbCB0aGUgbWFjaGluZSBsaWtlIE1pa3VsYXMNCnNwb3R0ZWQuIFRoaXMgc2hvd3MgdGhl
+IHRoYXQgcGF0Y2ggd2FzIHVudGVzdGVkIHdpdGggREFYIGJ5IGFueWJvZHkgb24gdGhlDQpwYXRo
+IGZyb20gdGhlIGRldmVsb3BlciB0byBMaW51cy4uLg0KDQoJCQkJCQkJCUhvbnphDQoNCj4gLS0t
+LS0tLS0g5Y6f5aeL6YKu5Lu2IC0tLS0tLS0tDQo+IOWPkeS7tuS6uu+8miBNaWt1bGFzIFBhdG9j
+a2EgPG1wYXRvY2thQHJlZGhhdC5jb20+DQo+IOaXpeacn++8miAyMDIw5bm0OeaciDE05pel5ZGo
+5LiA5Y2K5aScMTE6NDgNCj4g5pS25Lu25Lq677yaIENvbHkgTGkgPGNvbHlsaUBzdXNlLmRlPiwg
+RGFuIFdpbGxpYW1zIDxkYW4uai53aWxsaWFtc0BpbnRlbC5jb20+LA0KPiBEYXZlIEppYW5nIDxk
+YXZlLmppYW5nQGludGVsLmNvbT4NCj4g5oqE6YCB77yaIEphbiBLYXJhIDxqYWNrQHN1c2UuY29t
+PiwgVmlzaGFsIFZlcm1hIDx2aXNoYWwubC52ZXJtYUBpbnRlbC5jb20+LA0KPiBBZHJpYW4gSHVh
+bmcgPGFodWFuZzEyQGxlbm92by5jb20+LCBJcmEgV2VpbnkgPGlyYS53ZWlueUBpbnRlbC5jb20+
+LCBNaWtlDQo+IFNuaXR6ZXIgPHNuaXR6ZXJAcmVkaGF0LmNvbT4sIFBhbmthaiBHdXB0YSA8cGFu
+a2FqLmd1cHRhLmxpbnV4QGdtYWlsLmNvbT4sDQo+IGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcN
+Cj4g5Li76aKY77yaIHJlZ3Jlc3Npb24gY2F1c2VkIGJ5IHBhdGNoIDYxODBiYjQ0NmFiNjI0Yjlh
+YjhiZjIwMWVkMjUxY2E4N2YwN2I0MTMNCj4gKCJkYXg6IGZpeCBkZXRlY3Rpb24gb2YgZGF4IHN1
+cHBvcnQgZm9yIG5vbi1wZXJzaXN0ZW50IG1lbW9yeSBibG9jaw0KPiBkZXZpY2VzIikNCj4gDQo+
+ICAgICBIaQ0KPiANCj4gICAgIFRoZSBwYXRjaCA2MTgwYmI0NDZhYjYyNGI5YWI4YmYyMDFlZDI1
+MWNhODdmMDdiNDEzICgiZGF4OiBmaXggZGV0ZWN0aW9uIG9mDQo+ICAgICBkYXggc3VwcG9ydCBm
+b3Igbm9uLXBlcnNpc3RlbnQgbWVtb3J5IGJsb2NrIGRldmljZXMiKSBjYXVzZXMgY3Jhc2ggd2hl
+bg0KPiAgICAgYXR0ZW1wdGluZyB0byBtb3VudCB0aGUgZXh0NCBmaWxlc3lzdGVtIG9uIC9kZXYv
+cG1lbTAgKCJta2ZzLmV4dDQNCj4gICAgIC9kZXYvcG1lbTA7IG1vdW50IC10IGV4dDQgL2Rldi9w
+bWVtMCAvbW50L3Rlc3QiKS4gVGhlIGRldmljZSAvZGV2L3BtZW0wIGlzDQo+ICAgICBlbXVsYXRl
+ZCB1c2luZyB0aGUgIm1lbW1hcCIga2VybmVsIHBhcmFtZXRlci4NCj4gDQo+ICAgICBUaGUgcGF0
+Y2ggY2F1c2VzIGluZmluaXRlIHJlY3Vyc2lvbiBhbmQgZG91YmxlLWZhdWx0IGV4Y2VwdGlvbjoN
+Cj4gDQo+ICAgICBfX2dlbmVyaWNfZnNkYXhfc3VwcG9ydGVkDQo+ICAgICBiZGV2X2RheF9zdXBw
+b3J0ZWQNCj4gICAgIF9fYmRldl9kYXhfc3VwcG9ydGVkDQo+ICAgICBkYXhfc3VwcG9ydGVkDQo+
+ICAgICBkYXhfZGV2LT5vcHMtPmRheF9zdXBwb3J0ZWQNCj4gICAgIGdlbmVyaWNfZnNkYXhfc3Vw
+cG9ydGVkDQo+ICAgICBfX2dlbmVyaWNfZnNkYXhfc3VwcG9ydGVkDQo+IA0KPiAgICAgTWlrdWxh
+cw0KPiANCj4gDQo+IA0KPiAgICAgWyAgIDE3LjUwMDYxOV0gdHJhcHM6IFBBTklDOiBkb3VibGUg
+ZmF1bHQsIGVycm9yX2NvZGU6IDB4MA0KPiAgICAgWyAgIDE3LjUwMDYxOV0gZG91YmxlIGZhdWx0
+OiAwMDAwIFsjMV0gUFJFRU1QVCBTTVANCj4gICAgIFsgICAxNy41MDA2MjBdIENQVTogMCBQSUQ6
+IDEzMjYgQ29tbTogbW91bnQgTm90IHRhaW50ZWQgNS45LjAtcmMxLWJpc2VjdCAjDQo+ICAgICAx
+MA0KPiAgICAgWyAgIDE3LjUwMDYyMF0gSGFyZHdhcmUgbmFtZTogQm9jaHMgQm9jaHMsIEJJT1Mg
+Qm9jaHMgMDEvMDEvMjAxMQ0KPiAgICAgWyAgIDE3LjUwMDYyMV0gUklQOiAwMDEwOl9fZ2VuZXJp
+Y19mc2RheF9zdXBwb3J0ZWQrMHg2YS8weDUwMA0KPiAgICAgWyAgIDE3LjUwMDYyMl0gQ29kZTog
+ZmYgZmYgZmYgZmYgZmYgN2YgMDAgNDggMjEgZjMgNDggMDEgYzMgNDggYzEgZTMgMDkgZjYNCj4g
+ICAgIGM3IDBlIDBmIDg1IGZhIDAxIDAwIDAwIDQ4IDg1IGZmIDQ5IDg5IGZkIDc0IDExIGJlIDAw
+IDEwIDAwIDAwIDRjIDg5IGU3DQo+ICAgICA8ZTg+IGIxIGZlIGZmIGZmIDg0IGMwIDc1IDExIDMx
+IGMwIDQ4IDgzIGM0IDQ4IDViIDVkIDQxIDVjIDQxIDVkIDQxDQo+ICAgICBbICAgMTcuNTAwNjIz
+XSBSU1A6IDAwMTg6ZmZmZjg4OTQwYjRmZGZmOCBFRkxBR1M6IDAwMDEwMjg2DQo+ICAgICBbICAg
+MTcuNTAwNjI0XSBSQVg6IDAwMDAwMDAwMDAwMDAwMDAgUkJYOiAwMDAwMDAwN2ZmZmZmMDAwIFJD
+WDoNCj4gICAgIDAwMDAwMDAwMDAwMDAwMDANCj4gICAgIFsgICAxNy41MDA2MjVdIFJEWDogMDAw
+MDAwMDAwMDAwMTAwMCBSU0k6IDAwMDAwMDAwMDAwMDEwMDAgUkRJOg0KPiAgICAgZmZmZjg4OTQw
+YjM0YzMwMA0KPiAgICAgWyAgIDE3LjUwMDYyNV0gUkJQOiAwMDAwMDAwMDAwMDAwMDAwIFIwODog
+MDAwMDAwMDAwNDAwMDAwMCBSMDk6DQo+ICAgICA4MDgwODA4MDgwODA4MDgwDQo+ICAgICBbICAg
+MTcuNTAwNjI2XSBSMTA6IDAwMDAwMDAwMDAwMDAwMDAgUjExOiBmZWZlZmVmZWZlZmVmZWZmIFIx
+MjoNCj4gICAgIGZmZmY4ODk0MGIzNGMzMDANCj4gICAgIFsgICAxNy41MDA2MjZdIFIxMzogZmZm
+Zjg4OTQwYjNkYzAwMCBSMTQ6IGZmZmY4ODk0MGJhZGQwMDAgUjE1Og0KPiAgICAgMDAwMDAwMDAw
+MDAwMDAwMQ0KPiAgICAgWyAgIDE3LjUwMDYyN10gRlM6ICAwMDAwMDAwMGY3YzI1NzgwKDAwMDAp
+IEdTOmZmZmY4ODk0MGZhMDAwMDAoMDAwMCkNCj4gICAgIGtubEdTOjAwMDAwMDAwMDAwMDAwMDAN
+Cj4gICAgIFsgICAxNy41MDA2MjhdIENTOiAgMDAxMCBEUzogMDAyYiBFUzogMDAyYiBDUjA6IDAw
+MDAwMDAwODAwNTAwMzMNCj4gICAgIFsgICAxNy41MDA2MjhdIENSMjogZmZmZjg4OTQwYjRmZGZl
+OCBDUjM6IDAwMDAwMDE0MGJkMTUwMDAgQ1I0Og0KPiAgICAgMDAwMDAwMDAwMDAwMDZiMA0KPiAg
+ICAgWyAgIDE3LjUwMDYyOF0gQ2FsbCBUcmFjZToNCj4gICAgIFsgICAxNy41MDA2MjldIE1vZHVs
+ZXMgbGlua2VkIGluOiB1dmVzYWZiIGNmYmZpbGxyZWN0IGNmYmltZ2JsdCBjbg0KPiAgICAgY2Zi
+Y29weWFyZWEgZmIgZmJkZXYgaXB2NiB0dW4gYXV0b2ZzNCBiaW5mbXRfbWlzYyBjb25maWdmcyBh
+Zl9wYWNrZXQNCj4gICAgIHZpcnRpb19ybmcgcm5nX2NvcmUgbW91c2VkZXYgZXZkZXYgcGNzcGty
+IHZpcnRpb19iYWxsb29uIGJ1dHRvbiByYWlkMTANCj4gICAgIHJhaWQ0NTYgYXN5bmNfcmFpZDZf
+cmVjb3YgYXN5bmNfbWVtY3B5IGFzeW5jX3BxIHJhaWQ2X3BxIGFzeW5jX3hvciB4b3INCj4gICAg
+IGFzeW5jX3R4IGxpYmNyYzMyYyByYWlkMSByYWlkMCBtZF9tb2Qgc2RfbW9kIHQxMF9waSB2aXJ0
+aW9fc2NzaSB2aXJ0aW9fbmV0DQo+ICAgICBuZXRfZmFpbG92ZXIgcHNtb3VzZSBzY3NpX21vZCBm
+YWlsb3Zlcg0KPiAgICAgWyAgIDE3LjUwMDYzOF0gLS0tWyBlbmQgdHJhY2UgM2M4NzdmY2I1Yjg2
+NTQ1OSBdLS0tDQo+ICAgICBbICAgMTcuNTAwNjM4XSBSSVA6IDAwMTA6X19nZW5lcmljX2ZzZGF4
+X3N1cHBvcnRlZCsweDZhLzB4NTAwDQo+ICAgICBbICAgMTcuNTAwNjM5XSBDb2RlOiBmZiBmZiBm
+ZiBmZiBmZiA3ZiAwMCA0OCAyMSBmMyA0OCAwMSBjMyA0OCBjMSBlMyAwOSBmNg0KPiAgICAgYzcg
+MGUgMGYgODUgZmEgMDEgMDAgMDAgNDggODUgZmYgNDkgODkgZmQgNzQgMTEgYmUgMDAgMTAgMDAg
+MDAgNGMgODkgZTcNCj4gICAgIDxlOD4gYjEgZmUgZmYgZmYgODQgYzAgNzUgMTEgMzEgYzAgNDgg
+ODMgYzQgNDggNWIgNWQgNDEgNWMgNDEgNWQgNDENCj4gICAgIFsgICAxNy41MDA2NDBdIFJTUDog
+MDAxODpmZmZmODg5NDBiNGZkZmY4IEVGTEFHUzogMDAwMTAyODYNCj4gICAgIFsgICAxNy41MDA2
+NDFdIFJBWDogMDAwMDAwMDAwMDAwMDAwMCBSQlg6IDAwMDAwMDA3ZmZmZmYwMDAgUkNYOg0KPiAg
+ICAgMDAwMDAwMDAwMDAwMDAwMA0KPiAgICAgWyAgIDE3LjUwMDY0MV0gUkRYOiAwMDAwMDAwMDAw
+MDAxMDAwIFJTSTogMDAwMDAwMDAwMDAwMTAwMCBSREk6DQo+ICAgICBmZmZmODg5NDBiMzRjMzAw
+DQo+ICAgICBbICAgMTcuNTAwNjQyXSBSQlA6IDAwMDAwMDAwMDAwMDAwMDAgUjA4OiAwMDAwMDAw
+MDA0MDAwMDAwIFIwOToNCj4gICAgIDgwODA4MDgwODA4MDgwODANCj4gICAgIFsgICAxNy41MDA2
+NDJdIFIxMDogMDAwMDAwMDAwMDAwMDAwMCBSMTE6IGZlZmVmZWZlZmVmZWZlZmYgUjEyOg0KPiAg
+ICAgZmZmZjg4OTQwYjM0YzMwMA0KPiAgICAgWyAgIDE3LjUwMDY0M10gUjEzOiBmZmZmODg5NDBi
+M2RjMDAwIFIxNDogZmZmZjg4OTQwYmFkZDAwMCBSMTU6DQo+ICAgICAwMDAwMDAwMDAwMDAwMDAx
+DQo+ICAgICBbICAgMTcuNTAwNjQzXSBGUzogIDAwMDAwMDAwZjdjMjU3ODAoMDAwMCkgR1M6ZmZm
+Zjg4OTQwZmEwMDAwMCgwMDAwKQ0KPiAgICAga25sR1M6MDAwMDAwMDAwMDAwMDAwMA0KPiAgICAg
+WyAgIDE3LjUwMDY0NF0gQ1M6ICAwMDEwIERTOiAwMDJiIEVTOiAwMDJiIENSMDogMDAwMDAwMDA4
+MDA1MDAzMw0KPiAgICAgWyAgIDE3LjUwMDY0NF0gQ1IyOiBmZmZmODg5NDBiNGZkZmU4IENSMzog
+MDAwMDAwMTQwYmQxNTAwMCBDUjQ6DQo+ICAgICAwMDAwMDAwMDAwMDAwNmIwDQo+ICAgICBbICAg
+MTcuNTAwNjQ1XSBLZXJuZWwgcGFuaWMgLSBub3Qgc3luY2luZzogRmF0YWwgZXhjZXB0aW9uIGlu
+IGludGVycnVwdA0KPiAgICAgWyAgIDE3LjUwMDk0MV0gS2VybmVsIE9mZnNldDogZGlzYWJsZWQN
+Cj4gDQo+IA0KLS0gDQpKYW4gS2FyYSA8amFja0BzdXNlLmNvbT4NClNVU0UgTGFicywgQ1IKX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
+IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
+IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
