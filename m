@@ -1,90 +1,78 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3790726A948
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 18:03:57 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 579F826A978
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 18:16:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7852214004CB4;
-	Tue, 15 Sep 2020 09:03:55 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id 7076E13FD9ED7;
+	Tue, 15 Sep 2020 09:16:34 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.86; helo=userp2130.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2499613FB28A8
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 09:03:52 -0700 (PDT)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08FG1SIm119032;
-	Tue, 15 Sep 2020 12:03:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=SwR/NUKjqj9dDzt+IBXdDhZdkVJA83w5Z/hX3YGGBtg=;
- b=bNX9tn2dIB06r/QNkD5Z9DLDAagvsRbcmLjoJfX0CzPGwULtLI9ElgZMox9XII3f9J92
- WPfHApxMgXnOcgSpxJmPC15ZJD2twQDseo/O3oP3K7AO0ZT57Msk1/tXrfKXAqEH7pOE
- xclHhdydaLG+Z6lonLx9NH+HEXkymdf18IC05+kZsz61nzCHVZIXlh5yYdSfUBT7FQHh
- 8R64Q6e+OynWC4/UQLxyH/s8gi72wsLrZZq5RGfNhpv4/YcSIjg9yBZi/W4Dy6tLEtcE
- +Boik+/aDj//fbi71B5fPMcY5U1m3YSbgcZwheZOYq6AvBISvykvBH+3onESOGSwKvme 3g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 33k0ah0rkw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2020 12:03:44 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08FG1oRB120083;
-	Tue, 15 Sep 2020 12:03:44 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 33k0ah0rhk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2020 12:03:43 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-	by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08FG2xdo008654;
-	Tue, 15 Sep 2020 16:03:41 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-	by ppma04fra.de.ibm.com with ESMTP id 33guvm1tad-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2020 16:03:41 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-	by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08FG3dma16253300
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Sep 2020 16:03:39 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33DDD42041;
-	Tue, 15 Sep 2020 16:03:39 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E66434203F;
-	Tue, 15 Sep 2020 16:03:35 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.199.46.1])
-	by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Tue, 15 Sep 2020 16:03:35 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Tue, 15 Sep 2020 21:33:34 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
-        linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2] powerpc/papr_scm: Fix warning triggered by
- perf_stats_show()
-In-Reply-To: <87imcfp9a7.fsf@mpe.ellerman.id.au>
-References: <20200912081451.66225-1-vaibhav@linux.ibm.com>
- <87imcfp9a7.fsf@mpe.ellerman.id.au>
-Date: Tue, 15 Sep 2020 21:33:34 +0530
-Message-ID: <87mu1rdo2x.fsf@vajain21.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id A944E13FD9ED6
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 09:16:32 -0700 (PDT)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+	by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FGFZfu160482;
+	Tue, 15 Sep 2020 16:16:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=XT+yvQZiRbm8/UYbzOSiuWASepQF3mZn7H7wTZi/Cp8=;
+ b=rxNuxNpvSiBY67BhGaZVFf7Lzy7cDpj39QD3Ggz4KUPcJyxFvis7DrTYpvOssCP0yvWF
+ 9EdMCxKq1JlSDAFQ7oe4or98/K6AJRz5DRgXq5G9fU7veW4664CvF3gi8dC3izjSrXV3
+ No8w0pUT72uyfbb2gXyN0shy1DofMElXb0wjf1GPVGw08H74Yn69Gnj+EbX/RtCOoouK
+ v2RdLJBW0DYxkM+lTzqt0h8GUn8qdWWxUEAACbvNVBCGidHu3Yw8NbYkp5mGBd8JpQ89
+ CjBjuAybJnE5wvNwlFlVCX6VvEd80FbdLoVfOWo7eYTkNG7FaTFP+tXAlWw2kBVLd11R pQ==
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+	by userp2130.oracle.com with ESMTP id 33gnrqx52n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 15 Sep 2020 16:16:10 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+	by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08FGBQQe094538;
+	Tue, 15 Sep 2020 16:16:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserp3020.oracle.com with ESMTP id 33h885bn7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Sep 2020 16:16:09 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08FGG7HT015423;
+	Tue, 15 Sep 2020 16:16:07 GMT
+Received: from localhost (/67.169.218.210)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Tue, 15 Sep 2020 16:16:07 +0000
+Date: Tue, 15 Sep 2020 09:16:06 -0700
+From: "Darrick J. Wong" <darrick.wong@oracle.com>
+To: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+Subject: Re: [RFC PATCH 1/4] fs: introduce ->storage_lost() for memory-failure
+Message-ID: <20200915161606.GD7955@magnolia>
+References: <20200915101311.144269-1-ruansy.fnst@cn.fujitsu.com>
+ <20200915101311.144269-2-ruansy.fnst@cn.fujitsu.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-15_11:2020-09-15,2020-09-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- spamscore=0 priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
- impostorscore=0 suspectscore=1 clxscore=1015 mlxlogscore=999 bulkscore=0
+Content-Disposition: inline
+In-Reply-To: <20200915101311.144269-2-ruansy.fnst@cn.fujitsu.com>
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 adultscore=0
+ suspectscore=5 phishscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2009150128
-Message-ID-Hash: OQJ2L4FTEA7ZJVGC73KU7ABOPA4MYYMU
-X-Message-ID-Hash: OQJ2L4FTEA7ZJVGC73KU7ABOPA4MYYMU
-X-MailFrom: vaibhav@linux.ibm.com
+ definitions=main-2009150131
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9745 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 bulkscore=0 suspectscore=5
+ clxscore=1011 mlxlogscore=999 adultscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009150131
+Message-ID-Hash: 4GQRV5F3AOGLV5TQKZH5HBNBP4NY6FDM
+X-Message-ID-Hash: 4GQRV5F3AOGLV5TQKZH5HBNBP4NY6FDM
+X-MailFrom: darrick.wong@oracle.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+CC: linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, linux-nvdimm@lists.01.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, david@fromorbit.com, hch@lst.de, rgoldwyn@suse.de, qi.fuli@fujitsu.com, y-goto@fujitsu.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OQJ2L4FTEA7ZJVGC73KU7ABOPA4MYYMU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4GQRV5F3AOGLV5TQKZH5HBNBP4NY6FDM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -93,44 +81,187 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
+On Tue, Sep 15, 2020 at 06:13:08PM +0800, Shiyang Ruan wrote:
+> This function is used to handle errors which may cause data lost in
+> filesystem.  Such as memory-failure in fsdax mode.
+> 
+> In XFS, it requires "rmapbt" feature in order to query for files or
+> metadata which associated to the error block.  Then we could call fs
+> recover functions to try to repair the damaged data.(did not implemented
+> in this patch)
+> 
+> After that, the memory-failure also needs to kill processes who are
+> using those files.  The struct mf_recover_controller is created to store
+> necessary parameters.
+> 
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@cn.fujitsu.com>
+> ---
+>  fs/xfs/xfs_super.c | 80 ++++++++++++++++++++++++++++++++++++++++++++++
+>  include/linux/fs.h |  1 +
+>  include/linux/mm.h |  6 ++++
+>  3 files changed, 87 insertions(+)
+> 
+> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> index 71ac6c1cdc36..118d9c5d9e1e 100644
+> --- a/fs/xfs/xfs_super.c
+> +++ b/fs/xfs/xfs_super.c
+> @@ -35,6 +35,10 @@
+>  #include "xfs_refcount_item.h"
+>  #include "xfs_bmap_item.h"
+>  #include "xfs_reflink.h"
+> +#include "xfs_alloc.h"
+> +#include "xfs_rmap.h"
+> +#include "xfs_rmap_btree.h"
+> +#include "xfs_bit.h"
+>  
+>  #include <linux/magic.h>
+>  #include <linux/fs_context.h>
+> @@ -1104,6 +1108,81 @@ xfs_fs_free_cached_objects(
+>  	return xfs_reclaim_inodes_nr(XFS_M(sb), sc->nr_to_scan);
+>  }
+>  
+> +static int
+> +xfs_storage_lost_helper(
+> +	struct xfs_btree_cur		*cur,
+> +	struct xfs_rmap_irec		*rec,
+> +	void				*priv)
+> +{
+> +	struct xfs_inode		*ip;
+> +	struct mf_recover_controller	*mfrc = priv;
+> +	int				rc = 0;
+> +
+> +	if (XFS_RMAP_NON_INODE_OWNER(rec->rm_owner)) {
+> +		// TODO check and try to fix metadata
+> +	} else {
+> +		/*
+> +		 * Get files that incore, filter out others that are not in use.
+> +		 */
+> +		xfs_iget(cur->bc_mp, cur->bc_tp, rec->rm_owner, XFS_IGET_INCORE,
+> +			 0, &ip);
 
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->> A warning is reported by the kernel in case perf_stats_show() returns
->> an error code. The warning is of the form below:
->>
->>  papr_scm ibm,persistent-memory:ibm,pmemory@44100001:
->>  	  Failed to query performance stats, Err:-10
->>  dev_attr_show: perf_stats_show+0x0/0x1c0 [papr_scm] returned bad count
->>  fill_read_buffer: dev_attr_show+0x0/0xb0 returned bad count
->>
->> On investigation it looks like that the compiler is silently truncating the
->> return value of drc_pmem_query_stats() from 'long' to 'int', since the
->> variable used to store the return code 'rc' is an 'int'. This
->> truncated value is then returned back as a 'ssize_t' back from
->> perf_stats_show() to 'dev_attr_show()' which thinks of it as a large
->> unsigned number and triggers this warning..
->>
->> To fix this we update the type of variable 'rc' from 'int' to
->> 'ssize_t' that prevents the compiler from truncating the return value
->> of drc_pmem_query_stats() and returning correct signed value back from
->> perf_stats_show().
->>
->> Fixes: 2d02bf835e573 ('powerpc/papr_scm: Fetch nvdimm performance
->>        stats from PHYP')
->
-> Please don't word wrap the Fixes tag it breaks b4.
->
-> I've fixed it up this time.
+Missing return value check here.
 
-Thanks Mpe
+> +		if (!ip)
+> +			return 0;
+> +		if (!VFS_I(ip)->i_mapping)
+> +			goto out;
+> +
+> +		rc = mfrc->recover_fn(mfrc->pfn, mfrc->flags,
+> +				      VFS_I(ip)->i_mapping, rec->rm_offset);
+> +
+> +		// TODO try to fix data
+> +out:
+> +		xfs_irele(ip);
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+> +static int
+> +xfs_fs_storage_lost(
+> +	struct super_block	*sb,
+> +	loff_t			offset,
 
->
-> cheers
+offset into which device?  XFS supports three...
 
--- 
-Cheers
-~ Vaibhav
+I'm also a little surprised you don't pass in a length.
+
+I guess that means this function will get called repeatedly for every
+byte in the poisoned range?
+
+> +	void			*priv)
+> +{
+> +	struct xfs_mount	*mp = XFS_M(sb);
+> +	struct xfs_trans	*tp = NULL;
+> +	struct xfs_btree_cur	*cur = NULL;
+> +	struct xfs_rmap_irec	rmap_low, rmap_high;
+> +	struct xfs_buf		*agf_bp = NULL;
+> +	xfs_fsblock_t		fsbno = XFS_B_TO_FSB(mp, offset);
+> +	xfs_agnumber_t		agno = XFS_FSB_TO_AGNO(mp, fsbno);
+> +	xfs_agblock_t		agbno = XFS_FSB_TO_AGBNO(mp, fsbno);
+> +	int			error = 0;
+> +
+> +	error = xfs_trans_alloc_empty(mp, &tp);
+> +	if (error)
+> +		return error;
+> +
+> +	error = xfs_alloc_read_agf(mp, tp, agno, 0, &agf_bp);
+> +	if (error)
+> +		return error;
+> +
+> +	cur = xfs_rmapbt_init_cursor(mp, tp, agf_bp, agno);
+
+...and this is definitely the wrong call sequence if the malfunctioning
+device is the realtime device.  If a dax rt device dies, you'll be
+shooting down files on the data device, which will cause all sorts of
+problems.
+
+Question: Should all this poison recovery stuff go into a new file?
+xfs_poison.c?  There's already a lot of code in xfs_super.c.
+
+--D
+
+> +
+> +	/* Construct a range for rmap query */
+> +	memset(&rmap_low, 0, sizeof(rmap_low));
+> +	memset(&rmap_high, 0xFF, sizeof(rmap_high));
+> +	rmap_low.rm_startblock = rmap_high.rm_startblock = agbno;
+> +
+> +	error = xfs_rmap_query_range(cur, &rmap_low, &rmap_high,
+> +				     xfs_storage_lost_helper, priv);
+> +	if (error == -ECANCELED)
+> +		error = 0;
+> +
+> +	xfs_btree_del_cursor(cur, error);
+> +	xfs_trans_brelse(tp, agf_bp);
+> +	return error;
+> +}
+> +
+>  static const struct super_operations xfs_super_operations = {
+>  	.alloc_inode		= xfs_fs_alloc_inode,
+>  	.destroy_inode		= xfs_fs_destroy_inode,
+> @@ -1117,6 +1196,7 @@ static const struct super_operations xfs_super_operations = {
+>  	.show_options		= xfs_fs_show_options,
+>  	.nr_cached_objects	= xfs_fs_nr_cached_objects,
+>  	.free_cached_objects	= xfs_fs_free_cached_objects,
+> +	.storage_lost		= xfs_fs_storage_lost,
+>  };
+>  
+>  static int
+> diff --git a/include/linux/fs.h b/include/linux/fs.h
+> index e019ea2f1347..bd90485cfdc9 100644
+> --- a/include/linux/fs.h
+> +++ b/include/linux/fs.h
+> @@ -1951,6 +1951,7 @@ struct super_operations {
+>  				  struct shrink_control *);
+>  	long (*free_cached_objects)(struct super_block *,
+>  				    struct shrink_control *);
+> +	int (*storage_lost)(struct super_block *sb, loff_t offset, void *priv);
+>  };
+>  
+>  /*
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1983e08f5906..3f0c36e1bf3d 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3002,6 +3002,12 @@ extern void shake_page(struct page *p, int access);
+>  extern atomic_long_t num_poisoned_pages __read_mostly;
+>  extern int soft_offline_page(unsigned long pfn, int flags);
+>  
+> +struct mf_recover_controller {
+> +	int (*recover_fn)(unsigned long pfn, int flags,
+> +		struct address_space *mapping, pgoff_t index);
+> +	unsigned long pfn;
+> +	int flags;
+> +};
+>  
+>  /*
+>   * Error handlers for various types of pages.
+> -- 
+> 2.28.0
+> 
+> 
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
