@@ -2,54 +2,66 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC2626C4C8
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 18:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 547F426C505
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 18:21:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A6311454546F;
-	Wed, 16 Sep 2020 08:59:59 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6CC1C13FE81DA;
+	Wed, 16 Sep 2020 09:21:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4C7A514409C87
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:59:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-	:Reply-To:Content-ID:Content-Description;
-	bh=2L8WeVvRo1osqjjhclSBTpn136Oyr6chq2WMPl65EcM=; b=sha7upVR0ozVlTJFDWdFS4KUrg
-	Dlh504xPkCjJ6bcnR0tgQmZYiIutQK/G0ONBD+iomCp+zVQ82oPYqYPfOa29q6UCwl36D+BB9FNFs
-	pSeTBdPEiVQz6llxOwpNLZRraxMD45Yt9agHPf8ceWEhufE5EkURg5LtEm+1DjoRnfjJ/WOFs5+4j
-	BadKgeBe/qwlbda6A6xYg/rSWFAOIGOJ/+qKGuMxZNBtCJ1ZUglDN7/DVuOWKZv/bNRIhqme65n0j
-	CV7jlQDHwCcs1yfZz07j2hPdh6zbICLmsA3R4X5f+JNoZnWPrhrt60ytieQyxK1LeEjJ519udtgbv
-	hAy+S0yQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kIZqU-0000qm-87; Wed, 16 Sep 2020 15:59:46 +0000
-Subject: Re: [PATCH v5 3/5] mm: introduce memfd_secret system call to create
- "secret" memory areas
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20200916073539.3552-1-rppt@kernel.org>
- <20200916073539.3552-4-rppt@kernel.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <6319035d-73db-4b4d-3fa7-aaa11d3843a0@infradead.org>
-Date: Wed, 16 Sep 2020 08:59:37 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
+	by ml01.01.org (Postfix) with ESMTPS id 84E9C13FE81B8
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 09:21:15 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id w1so6907872edr.3
+        for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 09:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yFYB36o5sQGOopQLIZ3LmVh5DVkQCsLHuBBKUkF022U=;
+        b=gfng9FWV0J0yb5BbFoXNVi6dZSBG/a54FXDC6xO+b/rTexcJnOWoPzO2/a311RfdwU
+         DndBlAsVoWq4m+KQxFxruPUXfOu/H/4aLqR+oqmcepZCVdQTeqAY9wXyPg1oxjdISGWz
+         gxKXAXmkYpxOqulD0ZtwHmI63UlmamOH+5KeY8Ewl5owECC7J4+/0xTe9BKFYWPLvR/G
+         Gh4/swNnN+GowPmGP9+0t9WAvKqz9INT9J7grCQpb5LVfUk+xEjovR4QWxt/hEKBc/Ne
+         MM/a/bzu/8Q2+EooAIv4i8PFQEts7EHmlv/ZDeS4LScQoEdZ9rnfCtw53Dx3UPFL411n
+         3B7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yFYB36o5sQGOopQLIZ3LmVh5DVkQCsLHuBBKUkF022U=;
+        b=hXsztMZ8VsGmE5s+T6n09vTfW4U0EbmO5vwkvyFyW48WrvlGeLFpas/Xs844WC6tk1
+         UTwElil4ML+y31sPTpOvh7XYGsmxHWn/RpFmJiTjzkuisTnuxsVBTsBH1JwCnoqIeFRi
+         BaHeHJZcG4pHxfFlgAl/BYKqdubVCIue0XycUbk4MKzbHs+QCN6HH9Dmt9CoKXZNYeYV
+         pxmJ6bpTJsG/syvsWy0r63kkGy7i4KLrHoe0mhuUR+DYEGzUuWPR9ekhdYh3/DKPUMRr
+         HiPIvJhdpk1p3k2nIqpweym5Hi2Hc9EICG8fh5NMSNLwJo462f9JnrbAApsgni8qxPmV
+         7hyQ==
+X-Gm-Message-State: AOAM531WWV227T2h9j+mW5d27gBmsyTmrWJxPe8udXSygswDiqTDoKgT
+	PR/r6JWgbkj8CvScAStTF3RZ8nznzKK1QkhyJRw5KQ==
+X-Google-Smtp-Source: ABdhPJwI88G6wJzJR/w0a81ppKmua0R7ZF2T841uxc4i05zvl4D9vTqu2QlDOKyf+whND4urfI7hRks/8DB+WSLHUoA=
+X-Received: by 2002:aa7:d04d:: with SMTP id n13mr29447035edo.354.1600273273498;
+ Wed, 16 Sep 2020 09:21:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200916073539.3552-4-rppt@kernel.org>
-Content-Language: en-US
-Message-ID-Hash: JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP
-X-Message-ID-Hash: JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP
-X-MailFrom: rdunlap@infradead.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, l
- inux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com>
+ <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com>
+ <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
+ <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
+In-Reply-To: <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 16 Sep 2020 09:21:02 -0700
+Message-ID: <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com>
+Subject: Re: [PATCH] pmem: export the symbols __copy_user_flushcache and __copy_from_user_flushcache
+To: Mikulas Patocka <mpatocka@redhat.com>
+Message-ID-Hash: ZYXR272VH535Y4P4WKQXDAWPLARD4RDD
+X-Message-ID-Hash: ZYXR272VH535Y4P4WKQXDAWPLARD4RDD
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZYXR272VH535Y4P4WKQXDAWPLARD4RDD/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,70 +70,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Mike,
+On Wed, Sep 16, 2020 at 3:57 AM Mikulas Patocka <mpatocka@redhat.com> wrote:
+>
+>
+>
+> On Tue, 15 Sep 2020, Mikulas Patocka wrote:
+>
+> >
+> >
+> > On Tue, 15 Sep 2020, Mikulas Patocka wrote:
+> >
+> > > > > - __copy_from_user_inatomic_nocache doesn't flush cache for leading and
+> > > > > trailing bytes.
+> > > >
+> > > > You want copy_user_flushcache(). See how fs/dax.c arranges for
+> > > > dax_copy_from_iter() to route to pmem_copy_from_iter().
+> > >
+> > > Is it something new for the kernel 5.10? I see only __copy_user_flushcache
+> > > that is implemented just for x86 and arm64.
+> > >
+> > > There is __copy_from_user_flushcache implemented for x86, arm64 and power.
+> > > It is used in lib/iov_iter.c under
+> > > #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE - so should I use this?
 
+Yes, but maybe not directly.
 
-On 9/16/20 12:35 AM, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/Kconfig                   |   7 +
->  arch/x86/Kconfig               |   1 +
->  include/uapi/linux/magic.h     |   1 +
->  include/uapi/linux/secretmem.h |   8 +
->  kernel/sys_ni.c                |   2 +
->  mm/Kconfig                     |   4 +
->  mm/Makefile                    |   1 +
->  mm/secretmem.c                 | 264 +++++++++++++++++++++++++++++++++
->  8 files changed, 288 insertions(+)
->  create mode 100644 include/uapi/linux/secretmem.h
->  create mode 100644 mm/secretmem.c
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index af14a567b493..8d161bd4142d 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -975,6 +975,13 @@ config HAVE_SPARSE_SYSCALL_NR
->  config ARCH_HAS_VDSO_DATA
->  	bool
->  
-> +config HAVE_SECRETMEM_UNCACHED
-> +       bool
-> +       help
-> +          An architecture can select this if its semantics of non-cached
-> +          mappings can be used to prevent speculative loads and it is
-> +          useful for secret protection.
+> > >
+> > > Mikulas
+> >
+> > ... and __copy_user_flushcache is not exported for modules. So, I am stuck
+> > with __copy_from_user_inatomic_nocache.
+> >
+> > Mikulas
+>
+> I'm submitting this patch that adds the required exports (so that we could
+> use __copy_from_user_flushcache on x86, arm64 and powerpc). Please, queue
+> it for the next merge window.
 
-Please use tabs instead of spaces for indentation.
+Why? This should go with the first user, and it's not clear that it
+needs to be relative to the current dax_operations export scheme.
 
-> +
->  source "kernel/gcov/Kconfig"
->  
->  source "scripts/gcc-plugins/Kconfig"
-
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 6c974888f86f..70cfc20d7caa 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -868,4 +868,8 @@ config ARCH_HAS_HUGEPD
->  config MAPPING_DIRTY_HELPERS
->          bool
->  
-> +config SECRETMEM
-> +        def_bool ARCH_HAS_SET_DIRECT_MAP && !EMBEDDED
-
-Use tab above for indentation.
-
-> +	select GENERIC_ALLOCATOR
-> +
->  endmenu
-
-
-thanks.
--- 
-~Randy
+My first question about nvfs is how it compares to a daxfs with
+executables and other binaries configured to use page cache with the
+new per-file dax facility?
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
