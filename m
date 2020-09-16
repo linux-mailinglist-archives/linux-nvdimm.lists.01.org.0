@@ -1,188 +1,73 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA2B26C414
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 17:22:18 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A3826C4A9
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 17:56:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BE61014518B2D;
-	Wed, 16 Sep 2020 08:22:16 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=msnitzer@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 52EBB1454545E;
+	Wed, 16 Sep 2020 08:56:56 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a06:dd00:1:4:1::25a; helo=s305957.savps.ru; envelope-from=admin@s305957.savps.ru; receiver=<UNKNOWN> 
+Received: from s305957.savps.ru (unknown [IPv6:2a06:dd00:1:4:1::25a])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2F60214518B2C
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:22:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600269731;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cjF2GTwA7gL/I5MK7tLcOog/hAPgLrIkOT7IjuYm6qc=;
-	b=IOdVATpa3VhZUzDoVOzj0VDK53uTLDeo7JkC4oBlifPAWua6wRiSv7KMv6u73sgy/+/UAb
-	6g7h32KIG9VNvK54xYvYtrmmf42BbHjY4guXJLBjBHb1KciHUG8bw0CwuLB833md2p5MXQ
-	YGXictn1FqZg3befLMRXK7DM0T/7GwY=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-44-eYS53MYtPuGnamtd7H2f7w-1; Wed, 16 Sep 2020 11:22:07 -0400
-X-MC-Unique: eYS53MYtPuGnamtd7H2f7w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 302BB186DD2A;
-	Wed, 16 Sep 2020 15:22:06 +0000 (UTC)
-Received: from localhost (unknown [10.18.25.174])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id DB4B51002D60;
-	Wed, 16 Sep 2020 15:22:05 +0000 (UTC)
-Date: Wed, 16 Sep 2020 11:22:05 -0400
-From: Mike Snitzer <snitzer@redhat.com>
-To: Jan Kara <jack@suse.cz>, Dan Williams <dan.j.williams@intel.com>
-Subject: Re: dm: Call proper helper to determine dax support
-Message-ID: <20200916152204.GA29829@redhat.com>
-References: <20200916151445.450-1-jack@suse.cz>
+	by ml01.01.org (Postfix) with ESMTPS id 56DDE1454545C
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:56:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=s305957.savps.ru; s=dkim; h=Sender:Content-Type:MIME-Version:Date:Subject:
+	From:Message-ID:Reply-To:To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=74It6JeWAVOLELT/s77wTp6rkixC2vqNKKnWnSt1bOI=; b=NzuAXdWBU7xKo1uKtMMpJZwTCZ
+	RaWv9yWjuOql/FQ5BvEEb59NCLJGTZZ7LfIcIZ+ktJeroVc2FVfECLoR7r3VEx0xDvxZWMT6h1GLi
+	qqanyTlXsZq25pqnvdbfce1MKXQncdzZpIgMcDzta/4ACoRPvnhBDHoYoKk8ZBS6zWD0=;
+Received: by s305957.savps.ru with esmtpa (Exim 4.94)
+	id 1kIZnB-0005yO-6y; Wed, 16 Sep 2020 18:56:21 +0300
+Message-ID: <A9AC1A494296ACBF63662FACE848446C@meta.ua>
+From: "SEO-STUDIO" <innforms@meta.ua>
+Subject: =?windows-1251?B?0ODn8ODh7vLq4CDx4Ony7uIg6CDv8O7k4ujm?=
+	=?windows-1251?B?5e3o5SDiIO/u6PHq7uL79SDx6PHy5ezg9SDt?=
+	=?windows-1251?B?4CDv5fDi8/4g8fLw4O3o9vMh?=
+Date: Wed, 16 Sep 2020 18:53:03 +0300
 MIME-Version: 1.0
-In-Reply-To: <20200916151445.450-1-jack@suse.cz>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Authentication-Results: relay.mimecast.com;
-	auth=pass smtp.auth=CUSA124A263 smtp.mailfrom=msnitzer@redhat.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Disposition: inline
-Message-ID-Hash: PL6WJ3U2VTVVD7HOANRMQZNZX2GDJCOF
-X-Message-ID-Hash: PL6WJ3U2VTVVD7HOANRMQZNZX2GDJCOF
-X-MailFrom: msnitzer@redhat.com
+X-Antivirus: Avast (VPS 200915-12, 15.09.2020), Outbound message
+X-Antivirus-Status: Clean
+Sender: admin@s305957.savps.ru
+Message-ID-Hash: JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL
+X-Message-ID-Hash: JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL
+X-MailFrom: admin@s305957.savps.ru
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-nvdimm@lists.01.org, Adrian Huang <adrianhuang0701@gmail.com>, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>
+Content-Type: text/plain; charset="windows-1251"
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PL6WJ3U2VTVVD7HOANRMQZNZX2GDJCOF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-On Wed, Sep 16 2020 at 11:14am -0400,
-Jan Kara <jack@suse.cz> wrote:
-
-> DM was calling generic_fsdax_supported() to determine whether a device
-> referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
-> they don't have to duplicate common generic checks. High level code
-> should call dax_supported() helper which that calls into appropriate
-> helper for the particular device. This problem manifested itself as
-> kernel messages:
-> 
-> dm-3: error: dax access failed (-95)
-> 
-> when lvm2-testsuite run in cases where a DM device was stacked on top of
-> another DM device.
-> 
-> Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
-> Tested-by: Adrian Huang <ahuang12@lenovo.com>
-> Signed-off-by: Jan Kara <jack@suse.cz>
-
-Looked good:
-
-Acked-by: Mike Snitzer <snitzer@redhat.com>
-
-This fix should Cc stable@ right?
-
-> ---
->  drivers/dax/super.c   |  4 ++++
->  drivers/md/dm-table.c |  3 +--
->  include/linux/dax.h   | 11 +++++++++--
->  3 files changed, 14 insertions(+), 4 deletions(-)
-> 
-> This patch should go in together with Adrian's
-> https://lore.kernel.org/linux-nvdimm/20200916133923.31-1-adrianhuang0701@gmail.com
-
-Sure, but there really isn't a dependency right?
-
-Dan, will you be picking these up to send to Linux for 5.9-rc?
-
-Thanks,
-Mike
-
-
-> 
-> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-> index e5767c83ea23..b6284c5cae0a 100644
-> --- a/drivers/dax/super.c
-> +++ b/drivers/dax/super.c
-> @@ -325,11 +325,15 @@ EXPORT_SYMBOL_GPL(dax_direct_access);
->  bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
->  		int blocksize, sector_t start, sector_t len)
->  {
-> +	if (!dax_dev)
-> +		return false;
-> +
->  	if (!dax_alive(dax_dev))
->  		return false;
->  
->  	return dax_dev->ops->dax_supported(dax_dev, bdev, blocksize, start, len);
->  }
-> +EXPORT_SYMBOL_GPL(dax_supported);
->  
->  size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
->  		size_t bytes, struct iov_iter *i)
-> diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-> index 5edc3079e7c1..bed1ff0744ec 100644
-> --- a/drivers/md/dm-table.c
-> +++ b/drivers/md/dm-table.c
-> @@ -862,8 +862,7 @@ int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
->  {
->  	int blocksize = *(int *) data;
->  
-> -	return generic_fsdax_supported(dev->dax_dev, dev->bdev, blocksize,
-> -				       start, len);
-> +	return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
->  }
->  
->  /* Check devices support synchronous DAX */
-> diff --git a/include/linux/dax.h b/include/linux/dax.h
-> index 6904d4e0b2e0..9f916326814a 100644
-> --- a/include/linux/dax.h
-> +++ b/include/linux/dax.h
-> @@ -130,6 +130,8 @@ static inline bool generic_fsdax_supported(struct dax_device *dax_dev,
->  	return __generic_fsdax_supported(dax_dev, bdev, blocksize, start,
->  			sectors);
->  }
-> +bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
-> +		int blocksize, sector_t start, sector_t len);
->  
->  static inline void fs_put_dax(struct dax_device *dax_dev)
->  {
-> @@ -157,6 +159,13 @@ static inline bool generic_fsdax_supported(struct dax_device *dax_dev,
->  	return false;
->  }
->  
-> +static inline bool dax_supported(struct dax_device *dax_dev,
-> +		struct block_device *bdev, int blocksize, sector_t start,
-> +		sector_t len)
-> +{
-> +	return false;
-> +}
-> +
->  static inline void fs_put_dax(struct dax_device *dax_dev)
->  {
->  }
-> @@ -195,8 +204,6 @@ bool dax_alive(struct dax_device *dax_dev);
->  void *dax_get_private(struct dax_device *dax_dev);
->  long dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff, long nr_pages,
->  		void **kaddr, pfn_t *pfn);
-> -bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
-> -		int blocksize, sector_t start, sector_t len);
->  size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
->  		size_t bytes, struct iov_iter *i);
->  size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
-> -- 
-> 2.16.4
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+x+Tw4OLx8uLz6fLlLg0KDQrM+yDn4O3o7ODl7PH/IPHu5+Tg7ejl7CDoIO/w7uTi6Obl7ejl7CDx
+4Ony7uIg4iDSzs8tMyBHT09HTEUg7+4g7fPm7fvsIMLg7CDv7ujx6u7i++wg9PDg5+DsLg0KDQrR
+7ufk4O3o5SDx4Ony7uI6DQoNCtHg6fIg4ujn6PLq4CDr4OnyIC0gMjUwMCDj8O0uDQoNCtHg6fIg
+4ujn6PLq4CAtIDM1MDAg4/DtLg0KDQrB6Oft5fEg8eDp8iAtIO7yIDYwMDAg4/DtLg0KDQrI7fLl
+8O3l8iDs4OPg5+jtIC0g7vIgOTAwMCDj8O0uDQoNCs/w7uTi6Obl7ejlIOggU0VPOg0KDQpTRU8g
+7u/y6Ozo5+D26P8g8eDp8uAgLSDu8iA4MDAg4/DtLg0KDQrR7vHy4OLr5e3o5SDx5ezg7fLo9+Xx
+6u7j7iD/5PDgIC0g7vIgMTIwMCDj8O0uDQoNCs3g7+jx4O3o5SBTRU8g7u/y6Ozo5+jw7uLg7e37
+9SDx8uDy5ekgLSAxMTAg4/DtXDEwMDAg8ejs4u7r7uINCg0Kz/Du5OLo5uXt6OUg8eDp8uAg7+4g
+6uv+9+Xi++wg9PDg5+DsIC0g7vIgMzIwMCDj8O1c7OXxDQoNCsDt4Ovo5yDq4OogwuD45ePuIPHg
+6fLgLCDy4Oog6CDx4Ony7uIg6u7t6vPw5e3y7uIgLSDh5fHv6+Dy7e4uDQoNCsXx6+ggwuDxIOfg
+6O3y5fDl8e7i4OvuIOTg7e3u5SDv8OXk6+7m5e3o5SAtIO/o+Ojy5Swg7vLi5fLo7CDiIO/u5PDu
+4e3u8fL/9S4NCg0KLS0NCg0K0SDT4uDm5e3o5ewgwuvg5Ojs6PAgwOvl6vHg7eTw7uLo9w0KDQpU
+ZWw6ICszOCgwOTYpMDU4MjM0Mi4gVGVsOiArMzgoMDYzKTQwMTA3NDENCg0Kc2t5cGU6IG9yZy1y
+ZWVzdHINCg0KbWFpbDogaW5mb28tdWFAYmlnbWlyLm5ldA0KDQoNCi0tIA0K3fLuIPHu7uH55e3o
+5SDv8O7i5fDl7e4g7eAg4ujw8/H7IODt8uji6PDz8e7sIEF2YXN0Lg0KaHR0cHM6Ly93d3cuYXZh
+c3QuY29tL2FudGl2aXJ1cw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
+MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
+QGxpc3RzLjAxLm9yZwo=
