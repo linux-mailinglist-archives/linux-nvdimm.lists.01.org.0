@@ -2,73 +2,72 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0B026CAC3
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 22:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BE626CF86
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Sep 2020 01:20:27 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D83D714413785;
-	Wed, 16 Sep 2020 13:14:14 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.75.5; helo=vpass.ne.jp; envelope-from=user-safety@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v118-27-75-5.h9iy.static.cnode.io [118.27.75.5])
-	by ml01.01.org (Postfix) with ESMTP id 912C713FE81D7
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 13:14:10 -0700 (PDT)
-Received: from KEzEfSssy (unknown [197.246.25.235])
-	by vpass.ne.jp with SMTP id BuClUc58MgNnMpsF.1
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Sep 2020 05:14:11 +0900
-Message-ID: <002235666601$60733550$83103001@KEzEfSssy>
-Sender: User-safety@vpass.ne.jp
-From: "Smbc.co.jp" <User-safety@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CQ6YeN6KaB44CR?=
-Date: Thu, 17 Sep 2020 05:14:11 +0900
-MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: 
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: 62H6BEBSP3R3CAYRBA4N55RPJAYLNS6R
-X-Message-ID-Hash: 62H6BEBSP3R3CAYRBA4N55RPJAYLNS6R
-X-MailFrom: User-safety@vpass.ne.jp
+	by ml01.01.org (Postfix) with ESMTP id 0CD9E14542DF7;
+	Wed, 16 Sep 2020 16:20:26 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 3C1BB14542DF5
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 16:20:24 -0700 (PDT)
+Received: from X1 (unknown [67.22.170.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id AA81722205;
+	Wed, 16 Sep 2020 23:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1600298423;
+	bh=g39pvrmQ7hfk10VvG24PcSf7yUXQxh3QrCaIs2OFPxw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GGy3cWrY1KWygiIV+LN8jdTlPMczqnmnOowS6kdzNzT02rztNefpmWOud0sB5DuhW
+	 tYPB2wewkh27YeY5ELsjeG6otz7U7l9BXGGjwZ40yc/FJb39YCYRFP4SKYro0qWLdA
+	 08KKQW84Cld8I364URHf5f0fJMPvSvi2987Kgz9w=
+Date: Wed, 16 Sep 2020 16:20:20 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v5 0/5] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-Id: <20200916162020.0d68c2bd6711024cfcaa8bd7@linux-foundation.org>
+In-Reply-To: <20200916073539.3552-1-rppt@kernel.org>
+References: <20200916073539.3552-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Message-ID-Hash: DAALTM5KTSVB4INGCY2MZ5MP3Z7R2TAQ
+X-Message-ID-Hash: DAALTM5KTSVB4INGCY2MZ5MP3Z7R2TAQ
+X-MailFrom: akpm@linux-foundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, l
+ inux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/62H6BEBSP3R3CAYRBA4N55RPJAYLNS6R/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DAALTM5KTSVB4INGCY2MZ5MP3Z7R2TAQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZyDmp5gNCg0K44GU5Yip55So5Lit44Gu5LiJ5LqV5L2P
-5Y+L44Kr44O844OJ44Ki44Kr44Km44Oz44OI44G444Gu44Ot44Kw44Kk44Oz44GM56K66KqN44GV
-44KM44G+44GX44Gf44CCDQoNCiDil4bjg63jgrDjgqTjg7Pmg4XloLENCuODu+ODreOCsOOCpOOD
-s+aXpeaZgiDvvJoyMDIwLzA5LzE3IDU6MTQ6MTANCuODu0lQ44Ki44OJ44Os44K544CAIO+8mjE3
-NS4yNDAuNjkuMTA3DQoNClZwYXNzSUTjgYrjgojjgbPjg5Hjgrnjg6/jg7zjg4njgpLku5bjga7j
-grXjgqTjg4jjgajkvbXnlKjjgZfjgabjgYTjgovloLTlkIjjgavjga/jgIHmvI/jgYjjgYTjgZfj
-gZ/mg4XloLENCuOCiOOCiuOAgeaCquaEj+OBruOBguOCi+esrOS4ieiAheOBq+OCiOOCi+ODjeOD
-g+ODiOOCt+ODp+ODg+ODlOODs+OCsOOBp+OBruaCqueUqOOBruWPr+iDveaAp+OCguOBlOOBluOB
-hOOBvuOBmeOAgg0KDQpWcGFzc0lE44GK44KI44Gz44OR44K544Ov44O844OJ44Gv5LuW44Gu44K1
-44Kk44OI44Gn44Gv5L2/55So44Gb44Ga44Gr44CB5a6a5pyf55qE44Gr44GU5aSJ5pu044GE44Gf
-44Gg44GNDQrjgb7jgZnjgojjgYbjgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIJWcGFzc0lE44O7
-44OR44K544Ov44O844OJ44Gu44GU5aSJ5pu044Gv44GT44Gh44KJ44KS44GU6Kan44GP44Gg44GV
-44GE44CCDQoNCuKGklZwYXNzSUTmg4XloLHnhafkvJrjg7vlpInmm7QNCg0K44GK5a6i5qeY44Gu
-44K744Kt44Ol44Oq44OG44Kj44Gv5byK56S+44Gr44Go44Gj44Gm6Z2e5bi444Gr6YeN6KaB44Gq
-44KC44Gu44Gn44GU44GW44GE44G+44GZ44CCDQrjgZTnkIbop6Pjga7nqIvjgIHjgojjgo3jgZfj
-gY/jgYrpoZjjgYTnlLPjgZfkuIrjgZLjgb7jgZnjgIINCg0K4oC75pys44Oh44O844Or44Gv44GU
-55m76Yyy44GE44Gf44Gg44GE44Gf44Oh44O844Or44Ki44OJ44Os44K55a6b44Gr6Ieq5YuV55qE
-44Gr6YCB5L+h44GV44KM44Gm44GE44G+44GZ44CCDQrigLvmnKzjg6Hjg7zjg6vjga/pgIHkv6Hl
-sILnlKjjgafjgZnjgILjgZTov5Tkv6HjgYTjgZ/jgaDjgY3jgb7jgZfjgabjgoLjgYrnrZTjgYjj
-gafjgY3jgb7jgZvjgpPjga7jgafjgZTkuobmib/jgY/jgaDjgZXjgYTjgIINCg0K5LiJ5LqV5L2P
-5Y+L44Kr44O844OJ5qCq5byP5Lya56S+DQrmnbHkuqzmnKznpL4g5p2x5Lqs6YO95riv5Yy65rW3
-5bK4MS0yLTIwIOaxkOeVmeODk+ODq+ODh+OCo+ODs+OCsA0K5aSn6Ziq5pys56S+IOWkp+mYquW4
-guS4reWkruWMuuS7iuapizQtNS0xNQ0KDQrjgYTjgaTjgoLkuInkupXkvY/lj4vpioDooYzjgpLj
-gZTliKnnlKjjgYTjgZ/jgaDjgY3jgYLjgorjgYzjgajjgYbjgZTjgZbjgYTjgb7jgZlDb3B5cmln
-aHQgwqkgMjAyMCBTdW1pdG9tbyBNaXRzdWkgQmFua2luZyBDb3Jwb3JhdGlvbi5BbGwgUmlnaHRz
-IFJlc2VydmVkLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcK
-VG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMu
-MDEub3JnCg==
+On Wed, 16 Sep 2020 10:35:34 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+
+> This is an implementation of "secret" mappings backed by a file descriptor. 
+> I've dropped the boot time reservation patch for now as it is not strictly
+> required for the basic usage and can be easily added later either with or
+> without CMA.
+
+It seems early days for this, especially as regards reviewer buyin. 
+But I'll toss it in there to get it some additional testing.
+
+A test suite in tools/testging/selftests/ would be helpful, especially
+for arch maintainers.
+
+I assume that user-facing manpage alterations are planned?
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
