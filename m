@@ -1,156 +1,190 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C902E26C1E9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 12:57:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CAF26C202
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 13:19:11 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D172B13E17824;
-	Wed, 16 Sep 2020 03:57:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.120; helo=us-smtp-1.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com [207.211.31.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BEE7E14321B65;
+	Wed, 16 Sep 2020 04:19:09 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 307E913E17823
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 03:57:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600253839;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4m/h+yY/PVAaaASlrExFZfjTuXa07+sxs0XLIUnFi6k=;
-	b=Z1L8qVpre+lnWQWgKPnyBuFEAG0jNHSY1YTHaWr/PXvu79P03ZyveMDu8VKihKLZAmoKQ6
-	cjxU0zJURLeXvk1RdVrmVZwIHwk9e5iukd2JcW58DV7SNpC6rc6TS4bWJCUEpKjP7EX1rg
-	I+7UHoZicK03ki4aRoP/Klo2Ztl6XII=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-485-JHbHg4c9NlaKwI5bE_0bzQ-1; Wed, 16 Sep 2020 06:57:15 -0400
-X-MC-Unique: JHbHg4c9NlaKwI5bE_0bzQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2C02D1006712;
-	Wed, 16 Sep 2020 10:57:13 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 9E3CC7880C;
-	Wed, 16 Sep 2020 10:57:12 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08GAvCZm014220;
-	Wed, 16 Sep 2020 06:57:12 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08GAvA4V014216;
-	Wed, 16 Sep 2020 06:57:10 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Wed, 16 Sep 2020 06:57:10 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH] pmem: export the symbols __copy_user_flushcache and
- __copy_from_user_flushcache
-In-Reply-To: <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com>
-Message-ID: <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com> <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 48C4D14321B65
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 04:19:06 -0700 (PDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+	by mx2.suse.de (Postfix) with ESMTP id B0AF6ACBF;
+	Wed, 16 Sep 2020 11:19:20 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+	id 08DA11E12E1; Wed, 16 Sep 2020 13:19:05 +0200 (CEST)
+Date: Wed, 16 Sep 2020 13:19:05 +0200
+From: Jan Kara <jack@suse.cz>
+To: Adrian Huang12 <ahuang12@lenovo.com>
+Subject: Re: [External]  Re: [PATCH 1/1] dax: Fix stack overflow when
+ mounting fsdax pmem device
+Message-ID: <20200916111904.GD3607@quack2.suse.cz>
+References: <20200915075729.12518-1-adrianhuang0701@gmail.com>
+ <20200915083716.GA29863@quack2.suse.cz>
+ <HK2PR0302MB25945D758119BECF62C7DC73B3210@HK2PR0302MB2594.apcprd03.prod.outlook.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: ZJZHKUUMYN6YETQPHBSUCENUONIKQI7P
-X-Message-ID-Hash: ZJZHKUUMYN6YETQPHBSUCENUONIKQI7P
-X-MailFrom: mpatocka@redhat.com
+Content-Type: multipart/mixed; boundary="tThc/1wpZn/ma/RB"
+Content-Disposition: inline
+In-Reply-To: <HK2PR0302MB25945D758119BECF62C7DC73B3210@HK2PR0302MB2594.apcprd03.prod.outlook.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Message-ID-Hash: ZCKRVHQHTYE3ICLAPJF4KX5XFG7D7D42
+X-Message-ID-Hash: ZCKRVHQHTYE3ICLAPJF4KX5XFG7D7D42
+X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Jan Kara <jack@suse.cz>, Adrian Huang <adrianhuang0701@gmail.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZJZHKUUMYN6YETQPHBSUCENUONIKQI7P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZCKRVHQHTYE3ICLAPJF4KX5XFG7D7D42/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 
 
+--tThc/1wpZn/ma/RB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Tue, 15 Sep 2020, Mikulas Patocka wrote:
-
-> 
-> 
-> On Tue, 15 Sep 2020, Mikulas Patocka wrote:
-> 
-> > > > - __copy_from_user_inatomic_nocache doesn't flush cache for leading and
-> > > > trailing bytes.
-> > > 
-> > > You want copy_user_flushcache(). See how fs/dax.c arranges for
-> > > dax_copy_from_iter() to route to pmem_copy_from_iter().
+On Wed 16-09-20 07:02:12, Adrian Huang12 wrote:
+> > -----Original Message-----
+> > From: Jan Kara <jack@suse.cz>
 > > 
-> > Is it something new for the kernel 5.10? I see only __copy_user_flushcache 
-> > that is implemented just for x86 and arm64.
+> > I'm not sure how you can get __generic_fsdax_supported() called for dm-0?
+> > Possibly because there's another dm device stacked on top of it and
+> > dm_table_supports_dax() calls generic_fsdax_supported()? That actually seems
+> > to be a bug in dm_table_supports_dax() (device_supports_dax() in particular).
+> > I'd think it should be calling dax_supported() instead of
+> > generic_fsdax_supported() so that proper device callback gets called when
+> > determining whether a device supports DAX or not.
 > > 
-> > There is __copy_from_user_flushcache implemented for x86, arm64 and power. 
-> > It is used in lib/iov_iter.c under
-> > #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE - so should I use this?
-> > 
-> > Mikulas
 > 
-> ... and __copy_user_flushcache is not exported for modules. So, I am stuck 
-> with __copy_from_user_inatomic_nocache.
+> Yes, you're right. There's another dm device stacked on top of it. 
 > 
-> Mikulas
+> When applying the following patch and running 'lvm2-testsuite --only activate-minor.sh', the following error messages are observed.
+> 
+> dm-3: error: dax access failed (-95)
+> dm-3: error: dax access failed (-95)
+> dm-3: error: dax access failed (-95)
 
-I'm submitting this patch that adds the required exports (so that we could 
-use __copy_from_user_flushcache on x86, arm64 and powerpc). Please, queue 
-it for the next merge window.
+Right, and that's result of the problem I also describe above. Attached
+patch should fix these errors.
 
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+--tThc/1wpZn/ma/RB
+Content-Type: text/x-patch; charset=us-ascii
+Content-Disposition: attachment; filename="0001-dm-Call-proper-helper-to-determine-dax-support.patch"
 
-Export the symbols __copy_user_flushcache and __copy_from_user_flushcache,
-so that modules can use this functionality.
+From edb67c5b213526a169c13cefbebc26b3ce8ad959 Mon Sep 17 00:00:00 2001
+From: Jan Kara <jack@suse.cz>
+Date: Wed, 16 Sep 2020 13:08:44 +0200
+Subject: [PATCH] dm: Call proper helper to determine dax support
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+DM was calling generic_fsdax_supported() to determine whether a device
+referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
+they don't have to duplicate common generic checks. High level code
+should call dax_supported() helper which that calls into appropriate
+helper for the particular device. This problem manifested itself as
+kernel messages:
 
+dm-3: error: dax access failed (-95)
+
+when lvm2-testsuite run in cases where a DM device was stacked on top of
+another DM device.
+
+Signed-off-by: Jan Kara <jack@suse.cz>
 ---
- arch/arm64/lib/uaccess_flushcache.c |    1 +
- arch/powerpc/lib/pmem.c             |    1 +
- arch/x86/lib/usercopy_64.c          |    1 +
- 3 files changed, 3 insertions(+)
+ drivers/dax/super.c   |  1 +
+ drivers/md/dm-table.c |  3 +--
+ include/linux/dax.h   | 11 +++++++++--
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-Index: linux-2.6/arch/arm64/lib/uaccess_flushcache.c
-===================================================================
---- linux-2.6.orig/arch/arm64/lib/uaccess_flushcache.c	2020-09-16 12:44:15.068038000 +0200
-+++ linux-2.6/arch/arm64/lib/uaccess_flushcache.c	2020-09-16 12:44:15.068038000 +0200
-@@ -38,3 +38,4 @@ unsigned long __copy_user_flushcache(voi
- 	__clean_dcache_area_pop(to, n - rc);
- 	return rc;
- }
-+EXPORT_SYMBOL_GPL(__copy_user_flushcache);
-Index: linux-2.6/arch/x86/lib/usercopy_64.c
-===================================================================
---- linux-2.6.orig/arch/x86/lib/usercopy_64.c	2020-09-16 12:44:15.068038000 +0200
-+++ linux-2.6/arch/x86/lib/usercopy_64.c	2020-09-16 12:44:15.068038000 +0200
-@@ -134,6 +134,7 @@ long __copy_user_flushcache(void *dst, c
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index e5767c83ea23..533230bef33c 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -330,6 +330,7 @@ bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
  
- 	return rc;
+ 	return dax_dev->ops->dax_supported(dax_dev, bdev, blocksize, start, len);
  }
-+EXPORT_SYMBOL_GPL(__copy_user_flushcache);
++EXPORT_SYMBOL_GPL(dax_supported);
  
- void __memcpy_flushcache(void *_dst, const void *_src, size_t size)
+ size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+ 		size_t bytes, struct iov_iter *i)
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index 5edc3079e7c1..bed1ff0744ec 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -862,8 +862,7 @@ int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
  {
-Index: linux-2.6/arch/powerpc/lib/pmem.c
-===================================================================
---- linux-2.6.orig/arch/powerpc/lib/pmem.c	2020-09-16 12:44:15.068038000 +0200
-+++ linux-2.6/arch/powerpc/lib/pmem.c	2020-09-16 12:44:15.068038000 +0200
-@@ -75,6 +75,7 @@ long __copy_from_user_flushcache(void *d
+ 	int blocksize = *(int *) data;
  
- 	return copied;
+-	return generic_fsdax_supported(dev->dax_dev, dev->bdev, blocksize,
+-				       start, len);
++	return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
  }
-+EXPORT_SYMBOL_GPL(__copy_from_user_flushcache);
  
- void memcpy_flushcache(void *dest, const void *src, size_t size)
+ /* Check devices support synchronous DAX */
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index 6904d4e0b2e0..9f916326814a 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -130,6 +130,8 @@ static inline bool generic_fsdax_supported(struct dax_device *dax_dev,
+ 	return __generic_fsdax_supported(dax_dev, bdev, blocksize, start,
+ 			sectors);
+ }
++bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
++		int blocksize, sector_t start, sector_t len);
+ 
+ static inline void fs_put_dax(struct dax_device *dax_dev)
  {
+@@ -157,6 +159,13 @@ static inline bool generic_fsdax_supported(struct dax_device *dax_dev,
+ 	return false;
+ }
+ 
++static inline bool dax_supported(struct dax_device *dax_dev,
++		struct block_device *bdev, int blocksize, sector_t start,
++		sector_t len)
++{
++	return false;
++}
++
+ static inline void fs_put_dax(struct dax_device *dax_dev)
+ {
+ }
+@@ -195,8 +204,6 @@ bool dax_alive(struct dax_device *dax_dev);
+ void *dax_get_private(struct dax_device *dax_dev);
+ long dax_direct_access(struct dax_device *dax_dev, pgoff_t pgoff, long nr_pages,
+ 		void **kaddr, pfn_t *pfn);
+-bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
+-		int blocksize, sector_t start, sector_t len);
+ size_t dax_copy_from_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+ 		size_t bytes, struct iov_iter *i);
+ size_t dax_copy_to_iter(struct dax_device *dax_dev, pgoff_t pgoff, void *addr,
+-- 
+2.16.4
+
+
+--tThc/1wpZn/ma/RB
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--tThc/1wpZn/ma/RB--
