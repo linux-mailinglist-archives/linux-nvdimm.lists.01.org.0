@@ -1,73 +1,127 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A3826C4A9
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 17:56:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC2626C4C8
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 18:00:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 52EBB1454545E;
-	Wed, 16 Sep 2020 08:56:56 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2a06:dd00:1:4:1::25a; helo=s305957.savps.ru; envelope-from=admin@s305957.savps.ru; receiver=<UNKNOWN> 
-Received: from s305957.savps.ru (unknown [IPv6:2a06:dd00:1:4:1::25a])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9A6311454546F;
+	Wed, 16 Sep 2020 08:59:59 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=rdunlap@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 56DDE1454545C
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:56:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 4C7A514409C87
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:59:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=s305957.savps.ru; s=dkim; h=Sender:Content-Type:MIME-Version:Date:Subject:
-	From:Message-ID:Reply-To:To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=74It6JeWAVOLELT/s77wTp6rkixC2vqNKKnWnSt1bOI=; b=NzuAXdWBU7xKo1uKtMMpJZwTCZ
-	RaWv9yWjuOql/FQ5BvEEb59NCLJGTZZ7LfIcIZ+ktJeroVc2FVfECLoR7r3VEx0xDvxZWMT6h1GLi
-	qqanyTlXsZq25pqnvdbfce1MKXQncdzZpIgMcDzta/4ACoRPvnhBDHoYoKk8ZBS6zWD0=;
-Received: by s305957.savps.ru with esmtpa (Exim 4.94)
-	id 1kIZnB-0005yO-6y; Wed, 16 Sep 2020 18:56:21 +0300
-Message-ID: <A9AC1A494296ACBF63662FACE848446C@meta.ua>
-From: "SEO-STUDIO" <innforms@meta.ua>
-Subject: =?windows-1251?B?0ODn8ODh7vLq4CDx4Ony7uIg6CDv8O7k4ujm?=
-	=?windows-1251?B?5e3o5SDiIO/u6PHq7uL79SDx6PHy5ezg9SDt?=
-	=?windows-1251?B?4CDv5fDi8/4g8fLw4O3o9vMh?=
-Date: Wed, 16 Sep 2020 18:53:03 +0300
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+	:Reply-To:Content-ID:Content-Description;
+	bh=2L8WeVvRo1osqjjhclSBTpn136Oyr6chq2WMPl65EcM=; b=sha7upVR0ozVlTJFDWdFS4KUrg
+	Dlh504xPkCjJ6bcnR0tgQmZYiIutQK/G0ONBD+iomCp+zVQ82oPYqYPfOa29q6UCwl36D+BB9FNFs
+	pSeTBdPEiVQz6llxOwpNLZRraxMD45Yt9agHPf8ceWEhufE5EkURg5LtEm+1DjoRnfjJ/WOFs5+4j
+	BadKgeBe/qwlbda6A6xYg/rSWFAOIGOJ/+qKGuMxZNBtCJ1ZUglDN7/DVuOWKZv/bNRIhqme65n0j
+	CV7jlQDHwCcs1yfZz07j2hPdh6zbICLmsA3R4X5f+JNoZnWPrhrt60ytieQyxK1LeEjJ519udtgbv
+	hAy+S0yQ==;
+Received: from [2601:1c0:6280:3f0::19c2]
+	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kIZqU-0000qm-87; Wed, 16 Sep 2020 15:59:46 +0000
+Subject: Re: [PATCH v5 3/5] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+References: <20200916073539.3552-1-rppt@kernel.org>
+ <20200916073539.3552-4-rppt@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <6319035d-73db-4b4d-3fa7-aaa11d3843a0@infradead.org>
+Date: Wed, 16 Sep 2020 08:59:37 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-X-Antivirus: Avast (VPS 200915-12, 15.09.2020), Outbound message
-X-Antivirus-Status: Clean
-Sender: admin@s305957.savps.ru
-Message-ID-Hash: JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL
-X-Message-ID-Hash: JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL
-X-MailFrom: admin@s305957.savps.ru
+In-Reply-To: <20200916073539.3552-4-rppt@kernel.org>
+Content-Language: en-US
+Message-ID-Hash: JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP
+X-Message-ID-Hash: JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP
+X-MailFrom: rdunlap@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-Content-Type: text/plain; charset="windows-1251"
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, l
+ inux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JJPF4EDOQ7YKC5QWZIKHQSEVOX4CG3GL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JUUVOZYDK3MSIUAQAFI62TNXOKX3H5FP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-x+Tw4OLx8uLz6fLlLg0KDQrM+yDn4O3o7ODl7PH/IPHu5+Tg7ejl7CDoIO/w7uTi6Obl7ejl7CDx
-4Ony7uIg4iDSzs8tMyBHT09HTEUg7+4g7fPm7fvsIMLg7CDv7ujx6u7i++wg9PDg5+DsLg0KDQrR
-7ufk4O3o5SDx4Ony7uI6DQoNCtHg6fIg4ujn6PLq4CDr4OnyIC0gMjUwMCDj8O0uDQoNCtHg6fIg
-4ujn6PLq4CAtIDM1MDAg4/DtLg0KDQrB6Oft5fEg8eDp8iAtIO7yIDYwMDAg4/DtLg0KDQrI7fLl
-8O3l8iDs4OPg5+jtIC0g7vIgOTAwMCDj8O0uDQoNCs/w7uTi6Obl7ejlIOggU0VPOg0KDQpTRU8g
-7u/y6Ozo5+D26P8g8eDp8uAgLSDu8iA4MDAg4/DtLg0KDQrR7vHy4OLr5e3o5SDx5ezg7fLo9+Xx
-6u7j7iD/5PDgIC0g7vIgMTIwMCDj8O0uDQoNCs3g7+jx4O3o5SBTRU8g7u/y6Ozo5+jw7uLg7e37
-9SDx8uDy5ekgLSAxMTAg4/DtXDEwMDAg8ejs4u7r7uINCg0Kz/Du5OLo5uXt6OUg8eDp8uAg7+4g
-6uv+9+Xi++wg9PDg5+DsIC0g7vIgMzIwMCDj8O1c7OXxDQoNCsDt4Ovo5yDq4OogwuD45ePuIPHg
-6fLgLCDy4Oog6CDx4Ony7uIg6u7t6vPw5e3y7uIgLSDh5fHv6+Dy7e4uDQoNCsXx6+ggwuDxIOfg
-6O3y5fDl8e7i4OvuIOTg7e3u5SDv8OXk6+7m5e3o5SAtIO/o+Ojy5Swg7vLi5fLo7CDiIO/u5PDu
-4e3u8fL/9S4NCg0KLS0NCg0K0SDT4uDm5e3o5ewgwuvg5Ojs6PAgwOvl6vHg7eTw7uLo9w0KDQpU
-ZWw6ICszOCgwOTYpMDU4MjM0Mi4gVGVsOiArMzgoMDYzKTQwMTA3NDENCg0Kc2t5cGU6IG9yZy1y
-ZWVzdHINCg0KbWFpbDogaW5mb28tdWFAYmlnbWlyLm5ldA0KDQoNCi0tIA0K3fLuIPHu7uH55e3o
-5SDv8O7i5fDl7e4g7eAg4ujw8/H7IODt8uji6PDz8e7sIEF2YXN0Lg0KaHR0cHM6Ly93d3cuYXZh
-c3QuY29tL2FudGl2aXJ1cw0KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMu
-MDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZl
-QGxpc3RzLjAxLm9yZwo=
+Hi Mike,
+
+
+On 9/16/20 12:35 AM, Mike Rapoport wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  arch/Kconfig                   |   7 +
+>  arch/x86/Kconfig               |   1 +
+>  include/uapi/linux/magic.h     |   1 +
+>  include/uapi/linux/secretmem.h |   8 +
+>  kernel/sys_ni.c                |   2 +
+>  mm/Kconfig                     |   4 +
+>  mm/Makefile                    |   1 +
+>  mm/secretmem.c                 | 264 +++++++++++++++++++++++++++++++++
+>  8 files changed, 288 insertions(+)
+>  create mode 100644 include/uapi/linux/secretmem.h
+>  create mode 100644 mm/secretmem.c
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index af14a567b493..8d161bd4142d 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -975,6 +975,13 @@ config HAVE_SPARSE_SYSCALL_NR
+>  config ARCH_HAS_VDSO_DATA
+>  	bool
+>  
+> +config HAVE_SECRETMEM_UNCACHED
+> +       bool
+> +       help
+> +          An architecture can select this if its semantics of non-cached
+> +          mappings can be used to prevent speculative loads and it is
+> +          useful for secret protection.
+
+Please use tabs instead of spaces for indentation.
+
+> +
+>  source "kernel/gcov/Kconfig"
+>  
+>  source "scripts/gcc-plugins/Kconfig"
+
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 6c974888f86f..70cfc20d7caa 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -868,4 +868,8 @@ config ARCH_HAS_HUGEPD
+>  config MAPPING_DIRTY_HELPERS
+>          bool
+>  
+> +config SECRETMEM
+> +        def_bool ARCH_HAS_SET_DIRECT_MAP && !EMBEDDED
+
+Use tab above for indentation.
+
+> +	select GENERIC_ALLOCATOR
+> +
+>  endmenu
+
+
+thanks.
+-- 
+~Randy
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
