@@ -1,102 +1,114 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7640F26C6DE
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 20:06:55 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2877F26C870
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 20:49:44 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9DD901462D914;
-	Wed, 16 Sep 2020 11:06:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4009714DF579F;
+	Wed, 16 Sep 2020 11:49:42 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=luto@kernel.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 48C111462D90F
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 11:06:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600279600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XOZJZdrt+409MPzx7FHPcsrccxwoUMGEk7L/i2mTWJY=;
-	b=FAf9lPnGqe1uXE8lZFqlnpGPGr26db3V3EvaMqLEJrkqTdtrjK0AduF8nRnNEZ/Fx1svHv
-	uuqQS/HOTtW+h2lRicFv0n/qWtPkVT+ApnKiBncdP5oq6A8sZDWf3krFD8+6MpOYazvxJU
-	BaUmC7W2W0VuQexww1ZoWdRRfFleFuw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-190-HsoummUsO9qRP3CaGZBICA-1; Wed, 16 Sep 2020 14:06:36 -0400
-X-MC-Unique: HsoummUsO9qRP3CaGZBICA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTPS id 5C4F114DF579D
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 11:49:40 -0700 (PDT)
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7C56D80734C;
-	Wed, 16 Sep 2020 18:06:34 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id C468F709BB;
-	Wed, 16 Sep 2020 18:06:32 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08GI6Wlw021462;
-	Wed, 16 Sep 2020 14:06:32 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08GI6VJK021458;
-	Wed, 16 Sep 2020 14:06:31 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Wed, 16 Sep 2020 14:06:31 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Dan Williams <dan.j.williams@intel.com>
-Subject: Re: [PATCH] pmem: export the symbols __copy_user_flushcache and
- __copy_from_user_flushcache
-In-Reply-To: <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com>
-Message-ID: <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gh=QaDB61_9_QTgtt-pZuTFdR6td0orE0VMH6=6SA2vw@mail.gmail.com> <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com>
- <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by mail.kernel.org (Postfix) with ESMTPSA id 7882922224
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 18:49:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1600282179;
+	bh=16sTH0SegakzZKBjY8U3FsytaAxRFzwi1y28PIc8vKg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Qatkcq3nv+S9pPj+P3JFSXG9oKzt2ivfBeSNtIFNuwDO8ZBcYBS3134yWRyvjTXiQ
+	 4L7IXkhOodRGI+KFpKt3pj2oao09DdAJWwhNU7tUkWacyJbacCR2xaFA2YuokWC5fS
+	 mD3KTRcCOuu+Cqd3yKSH66vZQHQDEZkKLTJ91ngA=
+Received: by mail-wr1-f48.google.com with SMTP id w5so7963776wrp.8
+        for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 11:49:39 -0700 (PDT)
+X-Gm-Message-State: AOAM531fgSImPgo4JZxT3LdzyV+eTMI5b81O2dyQ6o4bCj5HL3XCDelN
+	SoxVepseknRqQjpGrMKwQo7VibRWpnwKA/We59oeOQ==
+X-Google-Smtp-Source: ABdhPJwUX3bHQLCL84qG4wIC/JlN+nYNkgmXwAB8lo/1k8NF8oo4sGXt7L/6GSwGvTFkR4oICcgx71syaFhCR+ehMOk=
+X-Received: by 2002:a5d:5111:: with SMTP id s17mr28001448wrt.70.1600282177590;
+ Wed, 16 Sep 2020 11:49:37 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: 46LJI2AG3BSSVZMTL2DCXB4CHRXNJ4NG
-X-Message-ID-Hash: 46LJI2AG3BSSVZMTL2DCXB4CHRXNJ4NG
-X-MailFrom: mpatocka@redhat.com
+References: <20200916072842.3502-1-rppt@kernel.org>
+In-Reply-To: <20200916072842.3502-1-rppt@kernel.org>
+From: Andy Lutomirski <luto@kernel.org>
+Date: Wed, 16 Sep 2020 11:49:25 -0700
+X-Gmail-Original-Message-ID: <CALCETrV6nFQ4tzhxKPSnK+Ec=U8ojY0k_-G2EqEG-WMGT4TkUw@mail.gmail.com>
+Message-ID: <CALCETrV6nFQ4tzhxKPSnK+Ec=U8ojY0k_-G2EqEG-WMGT4TkUw@mail.gmail.com>
+Subject: Re: [PATCH v5 0/5] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+To: Mike Rapoport <rppt@kernel.org>
+Message-ID-Hash: OPGPFAGV5SWLX2AIA2BMNZNRM3SBJCJP
+X-Message-ID-Hash: OPGPFAGV5SWLX2AIA2BMNZNRM3SBJCJP
+X-MailFrom: luto@kernel.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, Linux API <linux-api@vger.kernel.org>, linux-arch <
+ linux-arch@vger.kernel.org>, linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, Linux FS Devel <linux-fsdevel@vger.kernel.org>, Linux-MM <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-riscv@lists.infradead.org, X86 ML <x86@kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/46LJI2AG3BSSVZMTL2DCXB4CHRXNJ4NG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OPGPFAGV5SWLX2AIA2BMNZNRM3SBJCJP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Wed, Sep 16, 2020 at 12:28 AM Mike Rapoport <rppt@kernel.org> wrote:
+>
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> Hi,
+>
+> This is an implementation of "secret" mappings backed by a file descriptor.
+> I've dropped the boot time reservation patch for now as it is not strictly
+> required for the basic usage and can be easily added later either with or
+> without CMA.
+>
+> v5 changes:
+> * rebase on v5.9-rc5
+> * drop boot time memory reservation patch
+>
+> v4 changes:
+> * rebase on v5.9-rc1
+> * Do not redefine PMD_PAGE_ORDER in fs/dax.c, thanks Kirill
+> * Make secret mappings exclusive by default and only require flags to
+>   memfd_secret() system call for uncached mappings, thanks again Kirill :)
+>
+> v3 changes:
+> * Squash kernel-parameters.txt update into the commit that added the
+>   command line option.
+> * Make uncached mode explicitly selectable by architectures. For now enable
+>   it only on x86.
+>
+> v2 changes:
+> * Follow Michael's suggestion and name the new system call 'memfd_secret'
+> * Add kernel-parameters documentation about the boot option
+> * Fix i386-tinyconfig regression reported by the kbuild bot.
+>   CONFIG_SECRETMEM now depends on !EMBEDDED to disable it on small systems
+>   from one side and still make it available unconditionally on
+>   architectures that support SET_DIRECT_MAP.
+>
+> The file descriptor backing secret memory mappings is created using a
+> dedicated memfd_secret system call The desired protection mode for the
+> memory is configured using flags parameter of the system call. The mmap()
+> of the file descriptor created with memfd_secret() will create a "secret"
+> memory mapping. The pages in that mapping will be marked as not present in
+> the direct map and will have desired protection bits set in the user page
+> table. For instance, current implementation allows uncached mappings.
 
+I still have serious concerns with uncached mappings.  I'm not saying
+I can't be convinced, but I'm not currently convinced that we should
+allow user code to create UC mappings on x86.
 
-On Wed, 16 Sep 2020, Dan Williams wrote:
-
-> On Wed, Sep 16, 2020 at 10:24 AM Mikulas Patocka <mpatocka@redhat.com> wrote:
-> >
-> > > My first question about nvfs is how it compares to a daxfs with
-> > > executables and other binaries configured to use page cache with the
-> > > new per-file dax facility?
-> >
-> > nvfs is faster than dax-based filesystems on metadata-heavy operations
-> > because it doesn't have the overhead of the buffer cache and bios. See
-> > this: http://people.redhat.com/~mpatocka/nvfs/BENCHMARKS
-> 
-> ...and that metadata problem is intractable upstream? Christoph poked
-> at bypassing the block layer for xfs metadata operations [1], I just
-> have not had time to carry that further.
-> 
-> [1]: "xfs: use dax_direct_access for log writes", although it seems
-> he's dropped that branch from his xfs.git
-
-XFS is very big. I wanted to create something small.
-
-Mikulas
+--Andy
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
