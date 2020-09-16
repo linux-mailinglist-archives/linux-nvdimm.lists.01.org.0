@@ -2,137 +2,76 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5771B26AE85
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 15 Sep 2020 22:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F7A26B7A2
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 02:27:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4D7A3142AF3B9;
-	Tue, 15 Sep 2020 13:12:08 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7C717142B0F2B;
+	Tue, 15 Sep 2020 17:26:59 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=118.27.2.65; helo=wf69i.cn; envelope-from=mail@wf69i.cn; receiver=<UNKNOWN> 
+Received: from wf69i.cn (v118-27-2-65.1xts.static.cnode.io [118.27.2.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 11C93142AF3B7
-	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 13:12:05 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id a12so4248225eds.13
-        for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 13:12:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cFOxjIBnPWa+tUxvtScNRMNkM/Rq7DWWcPcpqEr+OnU=;
-        b=FwmvzEfj5WCP2nU3wZBoMHWDNOi4GN0JrczEj93mABch5op8aDrriCnV+P3NBJ95CN
-         iLEzef5zUTzk3YZxfJnQIuTzAuiflCoVn106C4Bt4+g9W4v2JT+xoBSh1HuoCbeRmklC
-         2X7gir4VkqIRsfLzcNI3g8OqGEYRsmm/TMTmZx2nDSgUnhzoJVu0tpKOfhk52THE1t/n
-         43JNLnF7QdgSoA/Na1lkmRsnM+tiVKL4/ZV49eSVtVoSTgSwycJFIdT7FvLWi1ma389k
-         uSN8wMg22mqAcoqp1Rp337KONjn5vdxQpAEC/VJn4s1zeT3VaKEqbD5/6Bd+9pAfobLM
-         Y8gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cFOxjIBnPWa+tUxvtScNRMNkM/Rq7DWWcPcpqEr+OnU=;
-        b=boOwrrvaHFnkW05qojEW2MfIxBCL9aKQudXVLd0j4+nQPPpdm48K8AswByR5vDDN44
-         xtWx0gp4oa1kvuJNGpEIOV8pI5e6qdfr2ygFtVMoY8sGLavKa2dEGw9GmT+iJFmYG3VI
-         BH+sAQibJO1pvtKXXhxEAsPii9n1HTihwYgPq8kUGW3PxEAIRSRH7BTrpK0r1y888k10
-         B4Fyn9urJdKloZ3vqJko9HG4Eo++HzagJagcgxtkKxuhXSY8WsApdr1cjGsjhqVJKN8h
-         ZdJXpjeAYjaYxSH6BGjXl7FfvHK8Dnjkgc//KO7ONRP1Oi4T5afxhTELB+FGlNNdhqBT
-         QmgA==
-X-Gm-Message-State: AOAM533iH62F6NdNLqWs1NaWH61ckH5lmPSViApnJkfoj5uNqbVb3PMV
-	9BkNZWpVtotxrTJE31r7vpKylXCtboBedfdiiwOhtg==
-X-Google-Smtp-Source: ABdhPJxsopp6jBRRY8lGI8VYrbENlHLOufKBifRJemW5k5Q/zj0z7CoEVAbr27SwbhTDBcO6b9mZQeoxBW5k8TU/eJQ=
-X-Received: by 2002:aa7:c511:: with SMTP id o17mr24793563edq.300.1600200724195;
- Tue, 15 Sep 2020 13:12:04 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id EB1A3142B0F26
+	for <linux-nvdimm@lists.01.org>; Tue, 15 Sep 2020 17:26:52 -0700 (PDT)
+Received: from rplms (unknown [112.121.165.186])
+	by wf69i.cn (Postfix) with ESMTPA id 849A01A96A3
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 08:13:27 +0800 (CST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 wf69i.cn 849A01A96A3
+From: Rakuten-update@rakuten.co.jp <Rakuten-update@rakuten.co.jp>
+To: linux-nvdimm <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44GC44Gq44Gf44Gu44Ki44Kr44Km44Oz44OI44KS5pu05paw44Gn44GN44G+44Gb44KT44Gn44GX44Gf?=
+	=?utf-8?B?44CC44GT44KM44Gv44CB44Kr44O844OJ44GM5pyf6ZmQ5YiH44KM44Gr44Gq44Gj44Gf44GL44CC?=
+Date: Wed, 16 Sep 2020 08:13:13 +0800
+Message-ID: <006d739ae6e7$782ff11a$a483e11c$@rplms>
 MIME-Version: 1.0
-References: <alpine.LRH.2.02.2009141131220.30651@file01.intranet.prod.int.rdu2.redhat.com>
- <211sy17ij47lox90ncna7kwk-k7cl0b-ubtml5jg8ocd-r7lb68jgkncbq5ng3g-koqyd471rzfh-t231u5-sxwvexwht98i-b7in5pxxck0j-3b40lqlmuelf13q0uk-ye4ohhsbgodw-xuloz9wpp7tf.1600139009031@email.android.com>
- <20200915080106.GG4863@quack2.suse.cz> <CAPcyv4jHG7Lp0RrX+WmNHY5iSE5FjgrvYxd_d6TN5CKfc5LReQ@mail.gmail.com>
- <20200915195656.GA21635@redhat.com>
-In-Reply-To: <20200915195656.GA21635@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 15 Sep 2020 13:11:53 -0700
-Message-ID: <CAPcyv4g3=qVcXELKB7aR6HoPjOvVqAkWkQ3AJ8zr2hM8WDvdxw@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=E5=9B=9E=E5=A4=8D=EF=BC=9Aregression_caused_by_patch_6180bb446ab6?=
-	=?UTF-8?Q?24b9ab8bf201ed251ca87f07b413=3F=3F_=28=22dax=3A_fix_detection_of_dax_s?=
-	=?UTF-8?Q?upport_for_non=2Dpersistent_memory_block=3F=3F_devices=22=29?=
-To: Mike Snitzer <snitzer@redhat.com>
-Message-ID-Hash: NHPBRI3GCKGN46QD6KMKVXZY2IFUDBPH
-X-Message-ID-Hash: NHPBRI3GCKGN46QD6KMKVXZY2IFUDBPH
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Jan Kara <jack@suse.cz>, "colyli@suse.de" <colyli@suse.de>, Adrian Huang <ahuang12@lenovo.com>, Jan Kara <jack@suse.com>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, Mikulas Patocka <mpatocka@redhat.com>
+X-Mailer: Microsoft Outlook 16.0
+Message-ID-Hash: 3NP65HCK6ECDDPYD6R7VQYNSSDBHUX7U
+X-Message-ID-Hash: 3NP65HCK6ECDDPYD6R7VQYNSSDBHUX7U
+X-MailFrom: mail@wf69i.cn
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NHPBRI3GCKGN46QD6KMKVXZY2IFUDBPH/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3NP65HCK6ECDDPYD6R7VQYNSSDBHUX7U/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Sep 15, 2020 at 12:58 PM Mike Snitzer <snitzer@redhat.com> wrote:
->
-> On Tue, Sep 15 2020 at  3:49pm -0400,
-> Dan Williams <dan.j.williams@intel.com> wrote:
->
-> > On Tue, Sep 15, 2020 at 1:01 AM Jan Kara <jack@suse.cz> wrote:
-> > >
-> > > Hi!
-> > >
-> > > On Tue 15-09-20 11:03:29, colyli@suse.de wrote:
-> > > > Could you please to take a look? I am offline in the next two weeks.
-> > >
-> > > I just had a look into this. IMHO the justification in 6180bb446a "dax: fix
-> > > detection of dax support for non-persistent memory block devices" is just
-> > > bogus and people got confused by the previous condition
-> > >
-> > > if (!dax_dev && !bdev_dax_supported(bdev, blocksize))
-> > >
-> > > which was bogus as well. bdev_dax_supported() always returns false for bdev
-> > > that doesn't have dax_dev (naturally so). So in the original condition
-> > > there was no point in calling bdev_dax_supported() if we know dax_dev is
-> > > NULL.
-> > >
-> > > Then this was changed to:
-> > >
-> > > if (!dax_dev || !bdev_dax_supported(bdev, blocksize))
-> > >
-> > > which looks more sensible at the first sight. But only at the first sight -
-> > > if you look at wider context, __generic_fsdax_supported() is the bulk of
-> > > code that decides whether a device supports DAX so calling
-> > > bdev_dax_supported() from it indeed doesn't look as such a great idea. So
-> > > IMO the condition should be just:
-> > >
-> > > if (!dax_dev)
-> > >
-> > > I'll send a fix for this.
-> >
-> > If you beat me to it, great, but you might be sleeping now. I agree
-> > the original condition was bogus and looks to be a result of previous
-> > non-thorough refactoring on my part. I think we can move that !dax_dev
-> > into dax_supported(). I'll take a look.
->
-> You trimmed the relevant portion of Jan's reply
-
-Vishal already owned up to the process escape.
-
-> but: can you also
-> weigh-in one whether DM is using the wrong function to test for DAX?
-
-That might be the original source of the bug because I would expect DM
-to be using dax_supported() which should route to all the component
-devices. I'll have a talk with whomever put that call to
-generic_fsdax_supported() in DM:
-
-git blame drivers/md/dm-table.c
-...
-7bf7eac8d6480 (Dan Williams         2019-05-16 13:26:29 -0700  865)
- return generic_fsdax_supported(dev->dax_dev, dev->bdev, blocksize,
-...
-
-oh...
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+5qW95aSp5a6J5YWo44K744Oz44K/44O8ICANCg0KDQoNCg0KDQoNClJha3V0ZW7jgYrlrqLmp5gg
+DQoNCuaui+W/teOBquOBjOOCieOAgeOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOCkuabtOaW
+sOOBp+OBjeOBvuOBm+OCk+OBp+OBl+OBn+OAguOBk+OCjOOBr+OAgeOCq+ODvOODieOBjOacn+mZ
+kOWIh+OCjOOBq+OBquOBo+OBn+OBi+OAgg0K6KuL5rGC5YWI5L2P5omA44GM5aSJ5pu044GV44KM
+44Gf44Gq44Gp44CB44GV44G+44GW44G+44Gq55CG55Sx44Gn55m655Sf44GZ44KL5Y+v6IO95oCn
+44GM44GC44KK44G+44GZ44CCIA0KDQoNCg0K5LuK44Ki44Kr44Km44Oz44OI44KS56K66KqN44Gn
+44GN44G+44GZ44CCIA0KDQoNCualveWkqeODreOCsOOCpOODsw0KDQoNCg0KDQrjgarjgYrjgIEy
+NOaZgumWk+S7peWGheOBq+OBlOeiuuiqjeOBjOOBquOBhOWgtOWQiOOAgeiqoOOBq+mBuuaGvuOB
+quOBjOOCieOAgeOCouOCq+OCpuODs+ODiOOCkuODreODg+OCr+OBleOBm+OBpuOBhOOBn+OBoOOB
+j+OBk+OBqOOCkuitpuWRiuOBhOOBn+OBl+OBvuOBmeOAgiANCg0K44OR44K544Ov44O844OJ44KS
+5aSJ5pu044GX44Gf6Kaa44GI44GM44Gq44GE5aC05ZCI44Gv44CB6Iez5oCl77yIMDEpLTUwLTU4
+MzAtNjg2MOOBvuOBp+OBiumbu+ipseOBj+OBoOOBleOBhOOAgiANCg0KDQoNCuOBiuefpeOCieOB
+mzogDQroq4vmsYLlhYjkvY/miYDjgYzlpInmm7TjgZXjgozjgZ/jgarjganjgIHjgZXjgb7jgZbj
+gb7jgarnkIbnlLHjgafnmbrnlJ/jgZnjgovlj6/og73mgKfjgYzjgYLjgorjgb7jgZnjgIIgDQoN
+Cg0KDQrku4rjgqLjgqvjgqbjg7Pjg4jjgpLnorroqo3jgafjgY3jgb7jgZnjgIIgDQoNCg0K5qW9
+5aSp44Ot44Kw44Kk44OzDQoNCg0KDQoNCuOBquOBiuOAgTI05pmC6ZaT5Lul5YaF44Gr44GU56K6
+6KqN44GM44Gq44GE5aC05ZCI44CB6Kqg44Gr6YG65oa+44Gq44GM44KJ44CB44Ki44Kr44Km44Oz
+44OI44KS44Ot44OD44Kv44GV44Gb44Gm44GE44Gf44Gg44GP44GT44Go44KS6K2m5ZGK44GE44Gf
+44GX44G+44GZ44CCIA0KDQrjg5Hjgrnjg6/jg7zjg4njgpLlpInmm7TjgZfjgZ/opprjgYjjgYzj
+garjgYTloLTlkIjjga/jgIHoh7PmgKXvvIgwMSktNTAtNTgzMC02ODYw44G+44Gn44GK6Zu76Kmx
+44GP44Gg44GV44GE44CCIA0KDQrjgYrnn6XjgonjgZs6IA0KDQrCtyDjg5Hjgrnjg6/jg7zjg4nj
+ga/oqrDjgavjgoLmlZnjgYjjgarjgYTjgafjgY/jgaDjgZXjgYTjgIIgDQoNCsK3IOWAi+S6uuaD
+heWgseOBqOmWouS/guOBjOOBquOBj+OAgeaOqOa4rOOBl+OBq+OBj+OBhOODkeOCueODr+ODvOOD
+ieOCkuS9nOaIkOOBl+OBpuOBj+OBoOOBleOBhOOAguWkp+aWh+Wtl+OBqOWwj+aWh+Wtl+OAgeaV
+sOWtl+OAgeOBiuOCiOOBs+iomOWPt+OCkuW/heOBmuS9v+eUqOOBl+OBpuOBj+OBoOOBleOBhOOA
+giANCg0Kwrcg44Kq44Oz44Op44Kk44Oz44Ki44Kr44Km44Oz44OI44GU44Go44Gr44CB55Ww44Gq
+44KL44OR44K544Ov44O844OJ44KS5L2/55So44GX44Gm44GP44Gg44GV44GE44CCIA0KDQoNCg0K
+44Gp44GG44Ge44KI44KN44GX44GP44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCIA0KUmFrdXRl
+bu+8jEluYy4gDQoNCg0KDQoNCg0KDQoNCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
+QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
+bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
