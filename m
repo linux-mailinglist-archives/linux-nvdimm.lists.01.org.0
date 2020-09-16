@@ -2,90 +2,101 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7032226C2F3
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 14:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C5026C2F4
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 16 Sep 2020 14:52:22 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7068C144CFAA8;
-	Wed, 16 Sep 2020 05:52:07 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.44; helo=out30-44.freemail.mail.aliyun.com; envelope-from=richard.weiyang@linux.alibaba.com; receiver=<UNKNOWN> 
-Received: from out30-44.freemail.mail.aliyun.com (out30-44.freemail.mail.aliyun.com [115.124.30.44])
+	by ml01.01.org (Postfix) with ESMTP id 975F6144CFAAF;
+	Wed, 16 Sep 2020 05:52:21 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=115.124.30.45; helo=out30-45.freemail.mail.aliyun.com; envelope-from=richard.weiyang@linux.alibaba.com; receiver=<UNKNOWN> 
+Received: from out30-45.freemail.mail.aliyun.com (out30-45.freemail.mail.aliyun.com [115.124.30.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 851EB144CFAA7
-	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 05:52:03 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=28;SR=0;TI=SMTPD_---0U97fhx1_1600260718;
-Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U97fhx1_1600260718)
+	by ml01.01.org (Postfix) with ESMTPS id BDA48144137AF
+	for <linux-nvdimm@lists.01.org>; Wed, 16 Sep 2020 05:52:18 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R931e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=richard.weiyang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0U97x1KA_1600260734;
+Received: from localhost(mailfrom:richard.weiyang@linux.alibaba.com fp:SMTPD_---0U97x1KA_1600260734)
           by smtp.aliyun-inc.com(127.0.0.1);
-          Wed, 16 Sep 2020 20:51:58 +0800
-Date: Wed, 16 Sep 2020 20:51:58 +0800
+          Wed, 16 Sep 2020 20:52:14 +0800
+Date: Wed, 16 Sep 2020 20:52:14 +0800
 From: Wei Yang <richard.weiyang@linux.alibaba.com>
 To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v4 5/8] mm/memory_hotplug: MEMHP_MERGE_RESOURCE to
- specify merging of System RAM resources
-Message-ID: <20200916125158.GA48039@L-31X9LVDL-1304.local>
+Subject: Re: [PATCH v4 6/8] virtio-mem: try to merge system ram resources
+Message-ID: <20200916125214.GB48039@L-31X9LVDL-1304.local>
 References: <20200911103459.10306-1-david@redhat.com>
- <20200911103459.10306-6-david@redhat.com>
+ <20200911103459.10306-7-david@redhat.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20200911103459.10306-6-david@redhat.com>
-Message-ID-Hash: DFKESYA7GWSWQQN6JD2RQUUU443RAT3B
-X-Message-ID-Hash: DFKESYA7GWSWQQN6JD2RQUUU443RAT3B
+In-Reply-To: <20200911103459.10306-7-david@redhat.com>
+Message-ID-Hash: UX5C7DKJZRCWZJXCHKGTTKAZHZUV26SX
+X-Message-ID-Hash: UX5C7DKJZRCWZJXCHKGTTKAZHZUV26SX
 X-MailFrom: richard.weiyang@linux.alibaba.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Stephen Hemminger <sthemmin@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>, Julien Grall <julien@xen.org>, Baoquan He <bhe@redhat.com>
+CC: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org, linux-mm@kvack.org, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Pankaj Gupta <pankaj.gupta.linux@gmail.com>, Michal Hocko <mhocko@suse.com>, "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Baoquan He <bhe@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 Reply-To: Wei Yang <richard.weiyang@linux.alibaba.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DFKESYA7GWSWQQN6JD2RQUUU443RAT3B/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UX5C7DKJZRCWZJXCHKGTTKAZHZUV26SX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 11, 2020 at 12:34:56PM +0200, David Hildenbrand wrote:
->Some add_memory*() users add memory in small, contiguous memory blocks.
->Examples include virtio-mem, hyper-v balloon, and the XEN balloon.
+On Fri, Sep 11, 2020 at 12:34:57PM +0200, David Hildenbrand wrote:
+>virtio-mem adds memory in memory block granularity, to be able to
+>remove it in the same granularity again later, and to grow slowly on
+>demand. This, however, results in quite a lot of resources when
+>adding a lot of memory. Resources are effectively stored in a list-based
+>tree. Having a lot of resources not only wastes memory, it also makes
+>traversing that tree more expensive, and makes /proc/iomem explode in
+>size (e.g., requiring kexec-tools to manually merge resources later
+>when e.g., trying to create a kdump header).
 >
->This can quickly result in a lot of memory resources, whereby the actual
->resource boundaries are not of interest (e.g., it might be relevant for
->DIMMs, exposed via /proc/iomem to user space). We really want to merge
->added resources in this scenario where possible.
+>Before this patch, we get (/proc/iomem) when hotplugging 2G via virtio-mem
+>on x86-64:
+>        [...]
+>        100000000-13fffffff : System RAM
+>        140000000-33fffffff : virtio0
+>          140000000-147ffffff : System RAM (virtio_mem)
+>          148000000-14fffffff : System RAM (virtio_mem)
+>          150000000-157ffffff : System RAM (virtio_mem)
+>          158000000-15fffffff : System RAM (virtio_mem)
+>          160000000-167ffffff : System RAM (virtio_mem)
+>          168000000-16fffffff : System RAM (virtio_mem)
+>          170000000-177ffffff : System RAM (virtio_mem)
+>          178000000-17fffffff : System RAM (virtio_mem)
+>          180000000-187ffffff : System RAM (virtio_mem)
+>          188000000-18fffffff : System RAM (virtio_mem)
+>          190000000-197ffffff : System RAM (virtio_mem)
+>          198000000-19fffffff : System RAM (virtio_mem)
+>          1a0000000-1a7ffffff : System RAM (virtio_mem)
+>          1a8000000-1afffffff : System RAM (virtio_mem)
+>          1b0000000-1b7ffffff : System RAM (virtio_mem)
+>          1b8000000-1bfffffff : System RAM (virtio_mem)
+>        3280000000-32ffffffff : PCI Bus 0000:00
 >
->Let's provide a flag (MEMHP_MERGE_RESOURCE) to specify that a resource
->either created within add_memory*() or passed via add_memory_resource()
->shall be marked mergeable and merged with applicable siblings.
+>With this patch, we get (/proc/iomem):
+>        [...]
+>        fffc0000-ffffffff : Reserved
+>        100000000-13fffffff : System RAM
+>        140000000-33fffffff : virtio0
+>          140000000-1bfffffff : System RAM (virtio_mem)
+>        3280000000-32ffffffff : PCI Bus 0000:00
 >
->To implement that, we need a kernel/resource interface to mark selected
->System RAM resources mergeable (IORESOURCE_SYSRAM_MERGEABLE) and trigger
->merging.
->
->Note: We really want to merge after the whole operation succeeded, not
->directly when adding a resource to the resource tree (it would break
->add_memory_resource() and require splitting resources again when the
->operation failed - e.g., due to -ENOMEM).
+>Of course, with more hotplugged memory, it gets worse. When unplugging
+>memory blocks again, try_remove_memory() (via
+>offline_and_remove_memory()) will properly split the resource up again.
 >
 >Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 >Cc: Andrew Morton <akpm@linux-foundation.org>
 >Cc: Michal Hocko <mhocko@suse.com>
 >Cc: Dan Williams <dan.j.williams@intel.com>
->Cc: Jason Gunthorpe <jgg@ziepe.ca>
->Cc: Kees Cook <keescook@chromium.org>
->Cc: Ard Biesheuvel <ardb@kernel.org>
->Cc: Thomas Gleixner <tglx@linutronix.de>
->Cc: "K. Y. Srinivasan" <kys@microsoft.com>
->Cc: Haiyang Zhang <haiyangz@microsoft.com>
->Cc: Stephen Hemminger <sthemmin@microsoft.com>
->Cc: Wei Liu <wei.liu@kernel.org>
->Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
->Cc: Juergen Gross <jgross@suse.com>
->Cc: Stefano Stabellini <sstabellini@kernel.org>
->Cc: Roger Pau Monn=E9 <roger.pau@citrix.com>
->Cc: Julien Grall <julien@xen.org>
+>Cc: Michael S. Tsirkin <mst@redhat.com>
+>Cc: Jason Wang <jasowang@redhat.com>
 >Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
 >Cc: Baoquan He <bhe@redhat.com>
 >Signed-off-by: David Hildenbrand <david@redhat.com>
@@ -93,160 +104,27 @@ On Fri, Sep 11, 2020 at 12:34:56PM +0200, David Hildenbrand wrote:
 Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
 
 >---
-> include/linux/ioport.h         |  4 +++
-> include/linux/memory_hotplug.h |  7 ++++
-> kernel/resource.c              | 60 ++++++++++++++++++++++++++++++++++
-> mm/memory_hotplug.c            |  7 ++++
-> 4 files changed, 78 insertions(+)
+> drivers/virtio/virtio_mem.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
 >
->diff --git a/include/linux/ioport.h b/include/linux/ioport.h
->index d7620d7c941a0..7e61389dcb017 100644
->--- a/include/linux/ioport.h
->+++ b/include/linux/ioport.h
->@@ -60,6 +60,7 @@ struct resource {
->=20
-> /* IORESOURCE_SYSRAM specific bits. */
-> #define IORESOURCE_SYSRAM_DRIVER_MANAGED	0x02000000 /* Always detected vi=
-a a driver. */
->+#define IORESOURCE_SYSRAM_MERGEABLE		0x04000000 /* Resource can be merged=
-. */
->=20
-> #define IORESOURCE_EXCLUSIVE	0x08000000	/* Userland may not map this reso=
-urce */
->=20
->@@ -253,6 +254,9 @@ extern void __release_region(struct resource *, resour=
-ce_size_t,
-> extern void release_mem_region_adjustable(struct resource *, resource_siz=
-e_t,
-> 					  resource_size_t);
-> #endif
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+extern void merge_system_ram_resource(struct resource *res);
->+#endif
->=20
-> /* Wrappers for managed devices */
-> struct device;
->diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug=
-.h
->index 33eb80fdba22f..d65c6fdc5cfc3 100644
->--- a/include/linux/memory_hotplug.h
->+++ b/include/linux/memory_hotplug.h
->@@ -62,6 +62,13 @@ typedef int __bitwise mhp_t;
->=20
-> /* No special request */
-> #define MHP_NONE		((__force mhp_t)0)
->+/*
->+ * Allow merging of the added System RAM resource with adjacent,
->+ * mergeable resources. After a successful call to add_memory_resource()
->+ * with this flag set, the resource pointer must no longer be used as it
->+ * might be stale, or the resource might have changed.
->+ */
->+#define MEMHP_MERGE_RESOURCE	((__force mhp_t)BIT(0))
->=20
-> /*
->  * Extended parameters for memory hotplug:
->diff --git a/kernel/resource.c b/kernel/resource.c
->index 36b3552210120..7a91b935f4c20 100644
->--- a/kernel/resource.c
->+++ b/kernel/resource.c
->@@ -1363,6 +1363,66 @@ void release_mem_region_adjustable(struct resource =
-*parent,
+>diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
+>index ed99e43354010..ba4de598f6636 100644
+>--- a/drivers/virtio/virtio_mem.c
+>+++ b/drivers/virtio/virtio_mem.c
+>@@ -424,7 +424,8 @@ static int virtio_mem_mb_add(struct virtio_mem *vm, unsigned long mb_id)
+> 
+> 	dev_dbg(&vm->vdev->dev, "adding memory block: %lu\n", mb_id);
+> 	return add_memory_driver_managed(nid, addr, memory_block_size_bytes(),
+>-					 vm->resource_name, MHP_NONE);
+>+					 vm->resource_name,
+>+					 MEMHP_MERGE_RESOURCE);
 > }
-> #endif	/* CONFIG_MEMORY_HOTREMOVE */
->=20
->+#ifdef CONFIG_MEMORY_HOTPLUG
->+static bool system_ram_resources_mergeable(struct resource *r1,
->+					   struct resource *r2)
->+{
->+	/* We assume either r1 or r2 is IORESOURCE_SYSRAM_MERGEABLE. */
->+	return r1->flags =3D=3D r2->flags && r1->end + 1 =3D=3D r2->start &&
->+	       r1->name =3D=3D r2->name && r1->desc =3D=3D r2->desc &&
->+	       !r1->child && !r2->child;
->+}
->+
->+/*
->+ * merge_system_ram_resource - mark the System RAM resource mergeable and=
- try to
->+ * merge it with adjacent, mergeable resources
->+ * @res: resource descriptor
->+ *
->+ * This interface is intended for memory hotplug, whereby lots of contigu=
-ous
->+ * system ram resources are added (e.g., via add_memory*()) by a driver, =
-and
->+ * the actual resource boundaries are not of interest (e.g., it might be
->+ * relevant for DIMMs). Only resources that are marked mergeable, that ha=
-ve the
->+ * same parent, and that don't have any children are considered. All merg=
-eable
->+ * resources must be immutable during the request.
->+ *
->+ * Note:
->+ * - The caller has to make sure that no pointers to resources that are
->+ *   marked mergeable are used anymore after this call - the resource mig=
-ht
->+ *   be freed and the pointer might be stale!
->+ * - release_mem_region_adjustable() will split on demand on memory hotun=
-plug
->+ */
->+void merge_system_ram_resource(struct resource *res)
->+{
->+	const unsigned long flags =3D IORESOURCE_SYSTEM_RAM | IORESOURCE_BUSY;
->+	struct resource *cur;
->+
->+	if (WARN_ON_ONCE((res->flags & flags) !=3D flags))
->+		return;
->+
->+	write_lock(&resource_lock);
->+	res->flags |=3D IORESOURCE_SYSRAM_MERGEABLE;
->+
->+	/* Try to merge with next item in the list. */
->+	cur =3D res->sibling;
->+	if (cur && system_ram_resources_mergeable(res, cur)) {
->+		res->end =3D cur->end;
->+		res->sibling =3D cur->sibling;
->+		free_resource(cur);
->+	}
->+
->+	/* Try to merge with previous item in the list. */
->+	cur =3D res->parent->child;
->+	while (cur && cur->sibling !=3D res)
->+		cur =3D cur->sibling;
->+	if (cur && system_ram_resources_mergeable(cur, res)) {
->+		cur->end =3D res->end;
->+		cur->sibling =3D res->sibling;
->+		free_resource(res);
->+	}
->+	write_unlock(&resource_lock);
->+}
->+#endif	/* CONFIG_MEMORY_HOTPLUG */
->+
+> 
 > /*
->  * Managed region resource
->  */
->diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
->index 8f0bd7c9a63a5..553c718226b3e 100644
->--- a/mm/memory_hotplug.c
->+++ b/mm/memory_hotplug.c
->@@ -1102,6 +1102,13 @@ int __ref add_memory_resource(int nid, struct resou=
-rce *res, mhp_t mhp_flags)
-> 	/* device_online() will take the lock when calling online_pages() */
-> 	mem_hotplug_done();
->=20
->+	/*
->+	 * In case we're allowed to merge the resource, flag it and trigger
->+	 * merging now that adding succeeded.
->+	 */
->+	if (mhp_flags & MEMHP_MERGE_RESOURCE)
->+		merge_system_ram_resource(res);
->+
-> 	/* online pages if requested */
-> 	if (memhp_default_online_type !=3D MMOP_OFFLINE)
-> 		walk_memory_blocks(start, size, NULL, online_memory_block);
->--=20
+>-- 
 >2.26.2
 
---=20
+-- 
 Wei Yang
 Help you, Help me
 _______________________________________________
