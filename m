@@ -1,64 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C873D26D6D8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Sep 2020 10:38:26 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7247126D7A1
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 17 Sep 2020 11:29:15 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 23E1813E5D04B;
-	Thu, 17 Sep 2020 01:38:25 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::d44; helo=mail-io1-xd44.google.com; envelope-from=pankaj.gupta.linux@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+	by ml01.01.org (Postfix) with ESMTP id 8FD93142AE4C6;
+	Thu, 17 Sep 2020 02:29:13 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2103213E5D036
-	for <linux-nvdimm@lists.01.org>; Thu, 17 Sep 2020 01:38:22 -0700 (PDT)
-Received: by mail-io1-xd44.google.com with SMTP id g7so1264840iov.13
-        for <linux-nvdimm@lists.01.org>; Thu, 17 Sep 2020 01:38:21 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 8956D142AE4C5
+	for <linux-nvdimm@lists.01.org>; Thu, 17 Sep 2020 02:29:10 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id g4so1847872edk.0
+        for <linux-nvdimm@lists.01.org>; Thu, 17 Sep 2020 02:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=3SD5Nhn2XpQ1H9kVLH/qfgLHEz7YapANneIn1r8dtW0=;
-        b=TZSJDBlKn2juCBNKdJKkGxFA6d9tkU2NYk6fbYz/5pjucep8Xm9pIXb2u4iXyNLGO/
-         DuT9nL8k91Crr4kc/dF5KOOUQcMDcGQEkVQ6VfWjCXY9jijvwqxvOSubethpMY4/We8b
-         yoZpQLubk6ivZDbWKkce6ntZFL9xITFXNacYNtWvVN0PSX0M7m9OCbT7Lg1hV4IngvLZ
-         VY/2EKBI9VDQA1bPAEQtnve/J0t9Yo7qGAus6Eifth/VGsT3TUG/KuTIqYx0/cLFilpX
-         /ZTW7pZdgJE/kItf9BISJ/b2Giig7KKHdK5hxZ1qxbHRwOWejvpubQtrOfAdi+G8c3F4
-         eTcQ==
+        bh=HK3YG5YSCVv0t3rk3zTg7zbgjnHmoPLE+KOPPbS1kBc=;
+        b=GMEcJ9NNvgVXbDeeYZnABJMhaaupOEmt0Tl1975sHUWj04vWozuE2cTNBtOfEbzuIk
+         dMoIeOEyby6OTfp4LIQ+j49fwiioYgP6YJrqQDL63ryMYihp69q7RKdqPa8hUKi/N/uS
+         YuLvB9WhBr7uPZCp8AQ5wK9BQA+YX4qyQx4zWGmJbVqxPG0O3twYR/ijbmcP7q+Qs94g
+         z9n58lpgF2Ot030MHKXYzAaAz/1v6iBnSAvP+yuyGD5H0aeRJsibPrVfOSurupBndPU7
+         8oJYLEMpRBEBE2Y7msVyzjxW+mcTH2fejmT0NrwDXcuRzzzlfJ1Y96q/jNz2+Drlt+Su
+         NqDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3SD5Nhn2XpQ1H9kVLH/qfgLHEz7YapANneIn1r8dtW0=;
-        b=R/hdNEuRxo96SDuLCRLhhe99qZLyHhJCOCeavXKXnSTgi5B6jpGHDHhcxM+K4aqoeP
-         DQbyF8w0EFuz49Ul+9xoff/bFezc9zSUvHwGc28z0yZWzSKuC4LnVniuZPZNjPw/b+Bh
-         QKL5kkJY4vIG9fSJjsGmYb5E5/7iTK/QTaRQaOHP6ubcAkh1rwghSepaWsyRCTah3y9m
-         hnfKuTORzT9M+Q7hTqVxJjjUbr62r9lxtb8kxawLq6ZgRwiqpIHejxkplmT7rvNmFcg4
-         i0uws7ElnT+zFmKfsA0EMob7U8bkV1CXGjW5WLIF4jLmLXt64hRAim+/UsLsQa4ypQJn
-         DsKA==
-X-Gm-Message-State: AOAM531JWXb3HWFVe8BFq6xA9UErjb1hKma7IP5Bt92VaJF2ylXWlEJX
-	EgG1ULbO+B8LhscRewX2eGtRKjrjvyoCOXc8muk=
-X-Google-Smtp-Source: ABdhPJye4nHQnxEram0LW7eTW/fhSjkhInwdT8WfdziuSjNH4F9ult6sspc1ZO66OShNisImaNAnVcNEu1U4CW17HQw=
-X-Received: by 2002:a5e:8707:: with SMTP id y7mr23060083ioj.49.1600331900788;
- Thu, 17 Sep 2020 01:38:20 -0700 (PDT)
+        bh=HK3YG5YSCVv0t3rk3zTg7zbgjnHmoPLE+KOPPbS1kBc=;
+        b=OyUUEYQco9AlvJRBCCLWxIqQ2fpcoCBYbgK3+RxU/x6zcJ5LOX5oYmF27h4AZPGKDJ
+         183YtALUCBFygFnwooPe6lQ+VCZ2DpvK6YPesM6tcDKIYOZcXZqxOkrSgQLhm5T8MoM+
+         CuahjZe5yr9sgYJQUHAy6eIW9tGHbvZBoLKfjSs3sGBNu4jkWNYnpbBObW6UWQSBp+Sl
+         F/I5vpAmVjadd3P8BXtWUmcuVg0qAh+Eiw76wb1caD9rldoshOthkdW1gZFdeJ3vEaHp
+         HS/YKxnUWg6/XNL3Mlh7al91PoXPnzbVGWjHQz1OibtAJZzjGMA5Jt5lxQW3f2bNH1vr
+         6DCQ==
+X-Gm-Message-State: AOAM5336mQbeqcv06uMN/euEpbDnZONoRg0yXSEy479Ha+zuVyYpAGOu
+	1GPgFrMg5D6yG1ODjuhL4VCD3zibD/5c2/GjXKFPRA==
+X-Google-Smtp-Source: ABdhPJyFtQLzHUX2Y9EcTt7lK2203uddUXgbaIWtUe6GVn11GZsuKuVEhcPHpdV/ZaR9BCquqVfutlx7SPgli1+LdQk=
+X-Received: by 2002:aa7:c148:: with SMTP id r8mr32835886edp.210.1600334948236;
+ Thu, 17 Sep 2020 02:29:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200911103459.10306-1-david@redhat.com> <20200916073041.10355-1-david@redhat.com>
-In-Reply-To: <20200916073041.10355-1-david@redhat.com>
-From: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date: Thu, 17 Sep 2020 10:38:09 +0200
-Message-ID: <CAM9Jb+iAiBFoXL1eO0HHyhDmdiXMh0Oihnr8dMtPu+zAdC=2WQ@mail.gmail.com>
-Subject: Re: [PATCH] kernel/resource: make iomem_resource implicit in release_mem_region_adjustable()
-To: David Hildenbrand <david@redhat.com>
-Message-ID-Hash: DLAKEUW3OXCSOZ4AQ27BQCWQJATVEJL5
-X-Message-ID-Hash: DLAKEUW3OXCSOZ4AQ27BQCWQJATVEJL5
-X-MailFrom: pankaj.gupta.linux@gmail.com
+References: <20200916151445.450-1-jack@suse.cz>
+In-Reply-To: <20200916151445.450-1-jack@suse.cz>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 17 Sep 2020 02:28:57 -0700
+Message-ID: <CAPcyv4gfMY=k+SDsKWPPasZs9X=7schOgc=3VZSDj0kAbZcTTA@mail.gmail.com>
+Subject: Re: [PATCH] dm: Call proper helper to determine dax support
+To: Jan Kara <jack@suse.cz>
+Message-ID-Hash: CWKG2KTLK2IXL54ESEHRMZ3P7CLHGCQR
+X-Message-ID-Hash: CWKG2KTLK2IXL54ESEHRMZ3P7CLHGCQR
+X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: LKML <linux-kernel@vger.kernel.org>, virtualization@lists.linux-foundation.org, Linux MM <linux-mm@kvack.org>, linux-hyperv@vger.kernel.org, xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org, linux-nvdimm <linux-nvdimm@lists.01.org>, linux-s390@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, Wei Yang <richard.weiyang@linux.alibaba.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, Kees Cook <keescook@chromium.org>, Ard Biesheuvel <ardb@kernel.org>, Baoquan He <bhe@redhat.com>
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Adrian Huang <adrianhuang0701@gmail.com>, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DLAKEUW3OXCSOZ4AQ27BQCWQJATVEJL5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/CWKG2KTLK2IXL54ESEHRMZ3P7CLHGCQR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,90 +67,72 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> "mem" in the name already indicates the root, similar to
-> release_mem_region() and devm_request_mem_region(). Make it implicit.
-> The only single caller always passes iomem_resource, other parents are
-> not applicable.
+On Wed, Sep 16, 2020 at 8:15 AM Jan Kara <jack@suse.cz> wrote:
 >
-> Suggested-by: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: Kees Cook <keescook@chromium.org>
-> Cc: Ard Biesheuvel <ardb@kernel.org>
-> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> DM was calling generic_fsdax_supported() to determine whether a device
+> referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
+> they don't have to duplicate common generic checks. High level code
+> should call dax_supported() helper which that calls into appropriate
+> helper for the particular device. This problem manifested itself as
+> kernel messages:
+>
+> dm-3: error: dax access failed (-95)
+>
+> when lvm2-testsuite run in cases where a DM device was stacked on top of
+> another DM device.
+>
+> Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
+> Tested-by: Adrian Huang <ahuang12@lenovo.com>
+> Signed-off-by: Jan Kara <jack@suse.cz>
 > ---
+>  drivers/dax/super.c   |  4 ++++
+>  drivers/md/dm-table.c |  3 +--
+>  include/linux/dax.h   | 11 +++++++++--
+>  3 files changed, 14 insertions(+), 4 deletions(-)
 >
-> Based on next-20200915. Follow up on
->         "[PATCH v4 0/8] selective merging of system ram resources" [1]
-> That's in next-20200915. As noted during review of v2 by Wei [2].
+> This patch should go in together with Adrian's
+> https://lore.kernel.org/linux-nvdimm/20200916133923.31-1-adrianhuang0701@gmail.com
 >
-> [1] https://lkml.kernel.org/r/20200911103459.10306-1-david@redhat.com
-> [2] https://lkml.kernel.org/r/20200915021012.GC2007@L-31X9LVDL-1304.local
->
-> ---
->  include/linux/ioport.h | 3 +--
->  kernel/resource.c      | 5 ++---
->  mm/memory_hotplug.c    | 2 +-
->  3 files changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-> index 7e61389dcb01..5135d4b86cd6 100644
-> --- a/include/linux/ioport.h
-> +++ b/include/linux/ioport.h
-> @@ -251,8 +251,7 @@ extern struct resource * __request_region(struct resource *,
->  extern void __release_region(struct resource *, resource_size_t,
->                                 resource_size_t);
->  #ifdef CONFIG_MEMORY_HOTREMOVE
-> -extern void release_mem_region_adjustable(struct resource *, resource_size_t,
-> -                                         resource_size_t);
-> +extern void release_mem_region_adjustable(resource_size_t, resource_size_t);
->  #endif
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  extern void merge_system_ram_resource(struct resource *res);
-> diff --git a/kernel/resource.c b/kernel/resource.c
-> index 7a91b935f4c2..ca2a666e4317 100644
-> --- a/kernel/resource.c
-> +++ b/kernel/resource.c
-> @@ -1240,7 +1240,6 @@ EXPORT_SYMBOL(__release_region);
->  #ifdef CONFIG_MEMORY_HOTREMOVE
->  /**
->   * release_mem_region_adjustable - release a previously reserved memory region
-> - * @parent: parent resource descriptor
->   * @start: resource start address
->   * @size: resource region size
->   *
-> @@ -1258,9 +1257,9 @@ EXPORT_SYMBOL(__release_region);
->   *   assumes that all children remain in the lower address entry for
->   *   simplicity.  Enhance this logic when necessary.
->   */
-> -void release_mem_region_adjustable(struct resource *parent,
-> -                                  resource_size_t start, resource_size_t size)
-> +void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
+> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+> index e5767c83ea23..b6284c5cae0a 100644
+> --- a/drivers/dax/super.c
+> +++ b/drivers/dax/super.c
+> @@ -325,11 +325,15 @@ EXPORT_SYMBOL_GPL(dax_direct_access);
+>  bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
+>                 int blocksize, sector_t start, sector_t len)
 >  {
-> +       struct resource *parent = &iomem_resource;
->         struct resource *new_res = NULL;
->         bool alloc_nofail = false;
->         struct resource **p;
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 553c718226b3..7c5e4744ac51 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1764,7 +1764,7 @@ static int __ref try_remove_memory(int nid, u64 start, u64 size)
->                 memblock_remove(start, size);
->         }
->
-> -       release_mem_region_adjustable(&iomem_resource, start, size);
-> +       release_mem_region_adjustable(start, size);
->
->         try_offline_node(nid);
->
+> +       if (!dax_dev)
+> +               return false;
+> +
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Hi Jan, Thanks for this.
+
+>         if (!dax_alive(dax_dev))
+>                 return false;
+
+One small fixup to quiet lockdep because dax_supported() calls
+dax_alive() it expects that dax_read_lock() is held. So I'm testing
+with this incremental change:
+
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index bed1ff0744ec..229f461e7def 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -860,9 +860,14 @@ EXPORT_SYMBOL_GPL(dm_table_set_type);
+ int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
+                        sector_t start, sector_t len, void *data)
+ {
+-       int blocksize = *(int *) data;
++       int blocksize = *(int *) data, id;
++       bool rc;
+
+-       return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
++       id = dax_read_lock();
++       rc = dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
++       dax_read_unlock(id);
++
++       return rc;
+ }
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
