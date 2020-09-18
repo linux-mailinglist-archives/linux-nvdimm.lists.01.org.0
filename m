@@ -2,58 +2,58 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97DA426FC9A
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 14:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1E726FCBB
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 14:41:53 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B18F6150AE6CD;
-	Fri, 18 Sep 2020 05:35:14 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com; envelope-from=adrianhuang0701@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+	by ml01.01.org (Postfix) with ESMTP id 390731517C91A;
+	Fri, 18 Sep 2020 05:41:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::f44; helo=mail-qv1-xf44.google.com; envelope-from=adrianhuang0701@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id D860213F2CFFF
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:35:12 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id d20so5835402qka.5
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:35:12 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id BE3381517C912
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:41:47 -0700 (PDT)
+Received: by mail-qv1-xf44.google.com with SMTP id j10so2729000qvk.11
+        for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:41:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5HBCdC//R4zIGS8CTUeRsovMnhBhse73FMFaHrcL9mM=;
-        b=fk4RbmIufQG7PANpz6uw7KN0rBZvg9uLFw6XHCTcwFydetI6ABvmJH5dzgIDT5Vpy0
-         tO5pkVYUfZ+99+aFgmsx2Lz6Tva5qYjV1peCpko8PRwEbDg12WuP4oL9LYC3C/Wdx9t5
-         b/QdMCBJoYPPCf5GQPaBbDxTtGileFaZVFO+BDV0D9j2euIBMrPO2PSk8jujQFLdMP1W
-         1758z+AQxvoWy8ZR1kFz0DEDlFclPsfuL8Vn4Rrq3xIXCqrPaECGr4ethrbBqcMbajo6
-         Mgn7cIcqu1BlNJUMbdfEx8kuaS0FDOpFRPUiw9ANt2gGxj7fyUbPeSV59OOypBXH/aex
-         y00Q==
+        bh=XiXG8iQppO8GTwH6ndcPprcX32FRfEKiTCi+Cl97X8M=;
+        b=mqN3Ut7CblqxizB0cM+nBinO5gTvwH3YebX5eOkmq1SeQxCeNySqjvck7KHCsdzmVw
+         KuotlUgt5BrKZouF6S8U2lEnWO79N5oOYr663GrKJd64SpojPUqkL0nBftUbu2+fRcTR
+         jK2rnubn+oCF0vByaPpnLam+nof8YghQ6XaWpqygJp3Aqek6tPZZot8UdYUvzCSw14hZ
+         oIt50BQ1CTvk/UVIw/Da3d7wvmAS2BhQMLv3iIzIgicvWw8KnUz5syh7748uxaYa34zL
+         jn1hzo/UFkfMDvPPJ5J+MJCK3Qf5bISBf+m952sdcSgP3dFRhybRznPKqdaggAB/n0tf
+         f8bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5HBCdC//R4zIGS8CTUeRsovMnhBhse73FMFaHrcL9mM=;
-        b=ghG2ekfalNKQFsM77yDyuykJN8O1QjlqcCDWWikeD50/mU98ndJ30eYkXjV4uwkewj
-         PG9QGDdTD6zm1R3gYiEd2sMDBHexB6xUBPzYXLRmL2X2qwI0Ct4N7b9hqnC/pGh/nPkI
-         RXOpXyhxPPfHvwbEl9c2WHgLUgCXc0QQbfAM0BdTQcXSfb9gbsaIxtKsZqkh1j7h4Mq3
-         9aUCQ79wuH+FysIYF2uc+7/2KmvAmoBydGELc3qAB92G6ZS/SgVjWTesRpEezB7xGqOL
-         53xTqs0W7dqqn1OPE1vt5h1lDYpH+MthtuqQ3sD37jKK5IvrmhKDmw50jfXEClQYYgpT
-         tgog==
-X-Gm-Message-State: AOAM530DsONpXQeYNIngZOTtNCybi0Q54Yhy20v99q/Kx9fSfMGCXSZH
-	RHP9silbXeKyVieIeR85aUeA/APcnoBI0nVccP0=
-X-Google-Smtp-Source: ABdhPJwfqN6VYsGo6Ca9flSUaOLFam++Tlgnpa+jEeYggJ3105e+1i3PQWQ170KOdl1Zl8GYWmt3C3VbsbdcT4EJ9jE=
-X-Received: by 2002:a05:620a:1485:: with SMTP id w5mr30866870qkj.124.1600432511110;
- Fri, 18 Sep 2020 05:35:11 -0700 (PDT)
+        bh=XiXG8iQppO8GTwH6ndcPprcX32FRfEKiTCi+Cl97X8M=;
+        b=D5MUadENo3MzbHnD9KDfROW2WP7/fKe5kSSKcgsoPY7/PCdj8URqszFpXuxZ0CkxzC
+         31Jy2/5tiVTTzxUYtK4XsTPjJ4ysTnLVzZB3swCvh+V2Ywu9QoKoVZzmxU8doMq/GdFp
+         7Ccgi7dIe8qKhCkhHhX2UGVusfao1sylgDxpVUI7RWUp0TwTAWH3fdfWjZiew3aCiwxp
+         WYS0U32a6TxOrjIWzlb2ReBKIhJKQ1VLUPLCCp8otXCk2W2xMyHyz4PQXsgToDh4qZOM
+         eaA0Ggy4e29OL/RpGmgZNI2546F7lOo063wQbMOBlDprqxlBB+yIg25FVH9meIc0TPya
+         kGYA==
+X-Gm-Message-State: AOAM531zyuX4xp5mMy+jDdhU8mHyeLUdF/YDbHBzskA5d0+GvE+ZPTpw
+	Xm0JZyhMZSCcnP97+VOqjHn6DxwXg7DCH0Liye0=
+X-Google-Smtp-Source: ABdhPJx6/Puu/pGjXYWYgKokKkYj6ktAD9NVcoNZtjFsTpeR6Csqox13kq5qeps9LvpnfrR83ZMM+CMTxPwVL4zwoHU=
+X-Received: by 2002:a05:6214:a52:: with SMTP id ee18mr16984904qvb.39.1600432906137;
+ Fri, 18 Sep 2020 05:41:46 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200916151445.450-1-jack@suse.cz> <CAPcyv4gfMY=k+SDsKWPPasZs9X=7schOgc=3VZSDj0kAbZcTTA@mail.gmail.com>
  <20200917104216.GB16097@quack2.suse.cz> <CAHKZfL0xC4OTe_HDg93HdinmxnpPVCAK3eweWCoo2CsbDTvNYA@mail.gmail.com>
- <CAPcyv4hfFg=+fX+iJtfNn29Q3-d+uy1U0EswM6035CV3VHJ2Ww@mail.gmail.com>
-In-Reply-To: <CAPcyv4hfFg=+fX+iJtfNn29Q3-d+uy1U0EswM6035CV3VHJ2Ww@mail.gmail.com>
+ <CAPcyv4hfFg=+fX+iJtfNn29Q3-d+uy1U0EswM6035CV3VHJ2Ww@mail.gmail.com> <CAPcyv4iQyPP7_6EfwcHWiZ9Q_yxMPPbqL1_zjMQ=e4dsiH=fOA@mail.gmail.com>
+In-Reply-To: <CAPcyv4iQyPP7_6EfwcHWiZ9Q_yxMPPbqL1_zjMQ=e4dsiH=fOA@mail.gmail.com>
 From: Huang Adrian <adrianhuang0701@gmail.com>
-Date: Fri, 18 Sep 2020 20:34:59 +0800
-Message-ID: <CAHKZfL0wV8+Ek1xaWO3CeY6gorDBsM=W+cDqo0bwe1BaAoafrw@mail.gmail.com>
+Date: Fri, 18 Sep 2020 20:41:35 +0800
+Message-ID: <CAHKZfL2pQ=wqVNPrf2q2GKGWz=S4NSKzPqJMsyd-yHKZu+EDGQ@mail.gmail.com>
 Subject: Re: [PATCH] dm: Call proper helper to determine dax support
 To: Dan Williams <dan.j.williams@intel.com>
-Message-ID-Hash: P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV
-X-Message-ID-Hash: P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV
+Message-ID-Hash: 52XBYKBGKWHMXU5V3MVJOBKVSHZATCJE
+X-Message-ID-Hash: 52XBYKBGKWHMXU5V3MVJOBKVSHZATCJE
 X-MailFrom: adrianhuang0701@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -61,7 +61,7 @@ CC: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>, Coly Li <
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/52XBYKBGKWHMXU5V3MVJOBKVSHZATCJE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -70,104 +70,106 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2020 at 1:49 AM Dan Williams <dan.j.williams@intel.com> wrote:
+On Fri, Sep 18, 2020 at 1:41 PM Dan Williams <dan.j.williams@intel.com> wrote:
 >
-> On Thu, Sep 17, 2020 at 7:58 AM Huang Adrian <adrianhuang0701@gmail.com> wrote:
+> On Thu, Sep 17, 2020 at 10:49 AM Dan Williams <dan.j.williams@intel.com> wrote:
 > >
-> > On Thu, Sep 17, 2020 at 6:42 PM Jan Kara <jack@suse.cz> wrote:
+> > On Thu, Sep 17, 2020 at 7:58 AM Huang Adrian <adrianhuang0701@gmail.com> wrote:
 > > >
-> > > On Thu 17-09-20 02:28:57, Dan Williams wrote:
-> > > > On Wed, Sep 16, 2020 at 8:15 AM Jan Kara <jack@suse.cz> wrote:
+> > > On Thu, Sep 17, 2020 at 6:42 PM Jan Kara <jack@suse.cz> wrote:
+> > > >
+> > > > On Thu 17-09-20 02:28:57, Dan Williams wrote:
+> > > > > On Wed, Sep 16, 2020 at 8:15 AM Jan Kara <jack@suse.cz> wrote:
+> > > > > >
+> > > > > > DM was calling generic_fsdax_supported() to determine whether a device
+> > > > > > referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
+> > > > > > they don't have to duplicate common generic checks. High level code
+> > > > > > should call dax_supported() helper which that calls into appropriate
+> > > > > > helper for the particular device. This problem manifested itself as
+> > > > > > kernel messages:
+> > > > > >
+> > > > > > dm-3: error: dax access failed (-95)
+> > > > > >
+> > > > > > when lvm2-testsuite run in cases where a DM device was stacked on top of
+> > > > > > another DM device.
+> > > > > >
+> > > > > > Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
+> > > > > > Tested-by: Adrian Huang <ahuang12@lenovo.com>
+> > > > > > Signed-off-by: Jan Kara <jack@suse.cz>
+> > > > > > ---
+> > > > > >  drivers/dax/super.c   |  4 ++++
+> > > > > >  drivers/md/dm-table.c |  3 +--
+> > > > > >  include/linux/dax.h   | 11 +++++++++--
+> > > > > >  3 files changed, 14 insertions(+), 4 deletions(-)
+> > > > > >
+> > > > > > This patch should go in together with Adrian's
+> > > > > > https://lore.kernel.org/linux-nvdimm/20200916133923.31-1-adrianhuang0701@gmail.com
+> > > > > >
+> > > > > > diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+> > > > > > index e5767c83ea23..b6284c5cae0a 100644
+> > > > > > --- a/drivers/dax/super.c
+> > > > > > +++ b/drivers/dax/super.c
+> > > > > > @@ -325,11 +325,15 @@ EXPORT_SYMBOL_GPL(dax_direct_access);
+> > > > > >  bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
+> > > > > >                 int blocksize, sector_t start, sector_t len)
+> > > > > >  {
+> > > > > > +       if (!dax_dev)
+> > > > > > +               return false;
+> > > > > > +
 > > > > >
-> > > > > DM was calling generic_fsdax_supported() to determine whether a device
-> > > > > referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
-> > > > > they don't have to duplicate common generic checks. High level code
-> > > > > should call dax_supported() helper which that calls into appropriate
-> > > > > helper for the particular device. This problem manifested itself as
-> > > > > kernel messages:
+> > > > > Hi Jan, Thanks for this.
 > > > > >
-> > > > > dm-3: error: dax access failed (-95)
+> > > > > >         if (!dax_alive(dax_dev))
+> > > > > >                 return false;
 > > > > >
-> > > > > when lvm2-testsuite run in cases where a DM device was stacked on top of
-> > > > > another DM device.
+> > > > > One small fixup to quiet lockdep because dax_supported() calls
+> > > > > dax_alive() it expects that dax_read_lock() is held. So I'm testing
+> > > > > with this incremental change:
 > > > > >
-> > > > > Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
-> > > > > Tested-by: Adrian Huang <ahuang12@lenovo.com>
-> > > > > Signed-off-by: Jan Kara <jack@suse.cz>
-> > > > > ---
-> > > > >  drivers/dax/super.c   |  4 ++++
-> > > > >  drivers/md/dm-table.c |  3 +--
-> > > > >  include/linux/dax.h   | 11 +++++++++--
-> > > > >  3 files changed, 14 insertions(+), 4 deletions(-)
-> > > > >
-> > > > > This patch should go in together with Adrian's
-> > > > > https://lore.kernel.org/linux-nvdimm/20200916133923.31-1-adrianhuang0701@gmail.com
-> > > > >
-> > > > > diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-> > > > > index e5767c83ea23..b6284c5cae0a 100644
-> > > > > --- a/drivers/dax/super.c
-> > > > > +++ b/drivers/dax/super.c
-> > > > > @@ -325,11 +325,15 @@ EXPORT_SYMBOL_GPL(dax_direct_access);
-> > > > >  bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
-> > > > >                 int blocksize, sector_t start, sector_t len)
+> > > > > diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> > > > > index bed1ff0744ec..229f461e7def 100644
+> > > > > --- a/drivers/md/dm-table.c
+> > > > > +++ b/drivers/md/dm-table.c
+> > > > > @@ -860,9 +860,14 @@ EXPORT_SYMBOL_GPL(dm_table_set_type);
+> > > > >  int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
+> > > > >                         sector_t start, sector_t len, void *data)
 > > > > >  {
-> > > > > +       if (!dax_dev)
-> > > > > +               return false;
+> > > > > -       int blocksize = *(int *) data;
+> > > > > +       int blocksize = *(int *) data, id;
+> > > > > +       bool rc;
+> > > > >
+> > > > > -       return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
+> > > > > +       id = dax_read_lock();
+> > > > > +       rc = dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
+> > > > > +       dax_read_unlock(id);
 > > > > > +
+> > > > > +       return rc;
+> > > > >  }
 > > > >
-> > > > Hi Jan, Thanks for this.
-> > > >
-> > > > >         if (!dax_alive(dax_dev))
-> > > > >                 return false;
-> > > >
-> > > > One small fixup to quiet lockdep because dax_supported() calls
-> > > > dax_alive() it expects that dax_read_lock() is held. So I'm testing
-> > > > with this incremental change:
-> > > >
-> > > > diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-> > > > index bed1ff0744ec..229f461e7def 100644
-> > > > --- a/drivers/md/dm-table.c
-> > > > +++ b/drivers/md/dm-table.c
-> > > > @@ -860,9 +860,14 @@ EXPORT_SYMBOL_GPL(dm_table_set_type);
-> > > >  int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
-> > > >                         sector_t start, sector_t len, void *data)
-> > > >  {
-> > > > -       int blocksize = *(int *) data;
-> > > > +       int blocksize = *(int *) data, id;
-> > > > +       bool rc;
-> > > >
-> > > > -       return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
-> > > > +       id = dax_read_lock();
-> > > > +       rc = dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
-> > > > +       dax_read_unlock(id);
-> > > > +
-> > > > +       return rc;
-> > > >  }
+> > > > Yeah, thanks for this! I was actually looking into this when writing the
+> > > > patch and somehow convinced myself we will always be called through
+> > > > bdev_dax_supported() which does dax_read_lock() for us. But apparently I
+> > > > was wrong...
 > > >
-> > > Yeah, thanks for this! I was actually looking into this when writing the
-> > > patch and somehow convinced myself we will always be called through
-> > > bdev_dax_supported() which does dax_read_lock() for us. But apparently I
-> > > was wrong...
+> > > Hold on. This patch hit another regression when I ran the full test of
+> > > the lvm2-testsuite tool today.
 > >
-> > Hold on. This patch hit another regression when I ran the full test of
-> > the lvm2-testsuite tool today.
+> > Are you sure it's this patch?
+> >
+> > The dax_read_lock() should have zero interaction with the
+> > synchronize_srcu() that __dm_suspend() performs. The too srcu domains
+> > should not conflict... I don't even see a dax_read_lock() in this
+> > path.
 >
-> Are you sure it's this patch?
+> Confirmed. I hit the hang in the lvm2-testsuite on vanilla 5.9-rc5.
+> So, I'm going to proceed with Jan's patch plus my fixup.
 
-I'm pretty sure I applied this patch with your fixup. I tested it for
-three times:
-    1. `lvm2-testsuite --only pvmove-abort-all.sh` is always passed
-without the patch.
-    2. `lvm2-testsuite --only pvmove-abort-all.sh` is always blocked
-with the patch.
+Interestingly, the command `lvm2-testsuite --only pvmove-abort-all.sh`
+passed on vanilla 5.9-rc5 (on my two boxes).
+Is it the same symptom (call trace) with my reported one?
 
-> The dax_read_lock() should have zero interaction with the
-> synchronize_srcu() that __dm_suspend() performs. The too srcu domains
-> should not conflict... I don't even see a dax_read_lock() in this
-> path.
-
-Yup, I understand your observation. The call trace didn't show the
-dax_read_lock().
+Could you please run the above-mentioned command on your box (w/wo
+Jan's patch plus my fixup)?
 
 -- Adrian
 _______________________________________________
