@@ -2,186 +2,174 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E045026FB78
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 13:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DA426FC9A
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 14:35:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AF0EF150FADC3;
-	Fri, 18 Sep 2020 04:29:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id B18F6150AE6CD;
+	Fri, 18 Sep 2020 05:35:14 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com; envelope-from=adrianhuang0701@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 9A9F2150FADB9
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 04:29:52 -0700 (PDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08IB2YRI089428;
-	Fri, 18 Sep 2020 07:29:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3lF15t/M6ZHB7nmYDJTYaYsdaEXWYx4HfuUV1rWSBE4=;
- b=o1YUb82u85swYFAAIcXzI4/8h/gKPbnM5X8aiy+OSaY9IIKpNzK0fp58DV0lHP22PDIs
- dLnE3nFmCyvT5MJ5XIeUMBpy+fg7eHe3De3rEvKS7mCEZY9mKHORUZrNNb/3rQ6pxWTp
- YOsz+8S8j+/gKdJowjm6/DROHPY34aNeotIq50aamNQ9bLiAFqRHrKTV8cEgh+wIMhov
- 0US3Vfac0HYuzl28uY1Tq+Znuay3iHxf9VpWLW4Rs9pX6JNYTeL+eIIA2nAmX2j3K9zH
- LnwOjHc6XeYBNunGOqT3MUv8G7Eo3wvzkL6l/7rsNqsSJRH84Wb2IMxfHt0FWqJHUyMS /Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 33mun9grgb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2020 07:29:49 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
-	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08IB3nI4093098;
-	Fri, 18 Sep 2020 07:29:49 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 33mun9grfb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2020 07:29:49 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-	by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08IBRfuo003128;
-	Fri, 18 Sep 2020 11:29:47 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-	by ppma02fra.de.ibm.com with ESMTP id 33k623hm1w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2020 11:29:47 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08IBTi6T28508498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 18 Sep 2020 11:29:44 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BA2E2A4055;
-	Fri, 18 Sep 2020 11:29:44 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3DFB3A4040;
-	Fri, 18 Sep 2020 11:29:43 +0000 (GMT)
-Received: from [9.199.45.180] (unknown [9.199.45.180])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-	Fri, 18 Sep 2020 11:29:43 +0000 (GMT)
-Subject: Re: [PATCH v3 1/1] dax: Fix stack overflow when mounting fsdax pmem
- device
-To: Adrian Huang <adrianhuang0701@gmail.com>, linux-nvdimm@lists.01.org
-References: <20200917111549.6367-1-adrianhuang0701@gmail.com>
-From: Ritesh Harjani <riteshh@linux.ibm.com>
-Message-ID: <356f8764-9699-e268-681f-0531d284079f@linux.ibm.com>
-Date: Fri, 18 Sep 2020 16:59:42 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+	by ml01.01.org (Postfix) with ESMTPS id D860213F2CFFF
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:35:12 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id d20so5835402qka.5
+        for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 05:35:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5HBCdC//R4zIGS8CTUeRsovMnhBhse73FMFaHrcL9mM=;
+        b=fk4RbmIufQG7PANpz6uw7KN0rBZvg9uLFw6XHCTcwFydetI6ABvmJH5dzgIDT5Vpy0
+         tO5pkVYUfZ+99+aFgmsx2Lz6Tva5qYjV1peCpko8PRwEbDg12WuP4oL9LYC3C/Wdx9t5
+         b/QdMCBJoYPPCf5GQPaBbDxTtGileFaZVFO+BDV0D9j2euIBMrPO2PSk8jujQFLdMP1W
+         1758z+AQxvoWy8ZR1kFz0DEDlFclPsfuL8Vn4Rrq3xIXCqrPaECGr4ethrbBqcMbajo6
+         Mgn7cIcqu1BlNJUMbdfEx8kuaS0FDOpFRPUiw9ANt2gGxj7fyUbPeSV59OOypBXH/aex
+         y00Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5HBCdC//R4zIGS8CTUeRsovMnhBhse73FMFaHrcL9mM=;
+        b=ghG2ekfalNKQFsM77yDyuykJN8O1QjlqcCDWWikeD50/mU98ndJ30eYkXjV4uwkewj
+         PG9QGDdTD6zm1R3gYiEd2sMDBHexB6xUBPzYXLRmL2X2qwI0Ct4N7b9hqnC/pGh/nPkI
+         RXOpXyhxPPfHvwbEl9c2WHgLUgCXc0QQbfAM0BdTQcXSfb9gbsaIxtKsZqkh1j7h4Mq3
+         9aUCQ79wuH+FysIYF2uc+7/2KmvAmoBydGELc3qAB92G6ZS/SgVjWTesRpEezB7xGqOL
+         53xTqs0W7dqqn1OPE1vt5h1lDYpH+MthtuqQ3sD37jKK5IvrmhKDmw50jfXEClQYYgpT
+         tgog==
+X-Gm-Message-State: AOAM530DsONpXQeYNIngZOTtNCybi0Q54Yhy20v99q/Kx9fSfMGCXSZH
+	RHP9silbXeKyVieIeR85aUeA/APcnoBI0nVccP0=
+X-Google-Smtp-Source: ABdhPJwfqN6VYsGo6Ca9flSUaOLFam++Tlgnpa+jEeYggJ3105e+1i3PQWQ170KOdl1Zl8GYWmt3C3VbsbdcT4EJ9jE=
+X-Received: by 2002:a05:620a:1485:: with SMTP id w5mr30866870qkj.124.1600432511110;
+ Fri, 18 Sep 2020 05:35:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200917111549.6367-1-adrianhuang0701@gmail.com>
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-09-18_14:2020-09-16,2020-09-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxscore=0 suspectscore=0 phishscore=0 adultscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1011 spamscore=0 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2009180086
-Message-ID-Hash: KMOCQH2TNJ73OCPCIUJYDXESQNBTAOYA
-X-Message-ID-Hash: KMOCQH2TNJ73OCPCIUJYDXESQNBTAOYA
-X-MailFrom: riteshh@linux.ibm.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Yi Zhang <yi.zhang@redhat.com>, Mikulas Patocka <mpatocka@redhat.com>, Jan Kara <jack@suse.cz>, Adrian Huang <ahuang12@lenovo.com>, Coly Li <colyli@suse.de>, linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org
+References: <20200916151445.450-1-jack@suse.cz> <CAPcyv4gfMY=k+SDsKWPPasZs9X=7schOgc=3VZSDj0kAbZcTTA@mail.gmail.com>
+ <20200917104216.GB16097@quack2.suse.cz> <CAHKZfL0xC4OTe_HDg93HdinmxnpPVCAK3eweWCoo2CsbDTvNYA@mail.gmail.com>
+ <CAPcyv4hfFg=+fX+iJtfNn29Q3-d+uy1U0EswM6035CV3VHJ2Ww@mail.gmail.com>
+In-Reply-To: <CAPcyv4hfFg=+fX+iJtfNn29Q3-d+uy1U0EswM6035CV3VHJ2Ww@mail.gmail.com>
+From: Huang Adrian <adrianhuang0701@gmail.com>
+Date: Fri, 18 Sep 2020 20:34:59 +0800
+Message-ID: <CAHKZfL0wV8+Ek1xaWO3CeY6gorDBsM=W+cDqo0bwe1BaAoafrw@mail.gmail.com>
+Subject: Re: [PATCH] dm: Call proper helper to determine dax support
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV
+X-Message-ID-Hash: P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV
+X-MailFrom: adrianhuang0701@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>, Coly Li <colyli@suse.de>, Mikulas Patocka <mpatocka@redhat.com>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Adrian Huang12 <ahuang12@lenovo.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KMOCQH2TNJ73OCPCIUJYDXESQNBTAOYA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/P3PNI7UFK4YB5CUFZWDUFIS7OTXCSQWV/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-ccing fs list
+On Fri, Sep 18, 2020 at 1:49 AM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+> On Thu, Sep 17, 2020 at 7:58 AM Huang Adrian <adrianhuang0701@gmail.com> wrote:
+> >
+> > On Thu, Sep 17, 2020 at 6:42 PM Jan Kara <jack@suse.cz> wrote:
+> > >
+> > > On Thu 17-09-20 02:28:57, Dan Williams wrote:
+> > > > On Wed, Sep 16, 2020 at 8:15 AM Jan Kara <jack@suse.cz> wrote:
+> > > > >
+> > > > > DM was calling generic_fsdax_supported() to determine whether a device
+> > > > > referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
+> > > > > they don't have to duplicate common generic checks. High level code
+> > > > > should call dax_supported() helper which that calls into appropriate
+> > > > > helper for the particular device. This problem manifested itself as
+> > > > > kernel messages:
+> > > > >
+> > > > > dm-3: error: dax access failed (-95)
+> > > > >
+> > > > > when lvm2-testsuite run in cases where a DM device was stacked on top of
+> > > > > another DM device.
+> > > > >
+> > > > > Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
+> > > > > Tested-by: Adrian Huang <ahuang12@lenovo.com>
+> > > > > Signed-off-by: Jan Kara <jack@suse.cz>
+> > > > > ---
+> > > > >  drivers/dax/super.c   |  4 ++++
+> > > > >  drivers/md/dm-table.c |  3 +--
+> > > > >  include/linux/dax.h   | 11 +++++++++--
+> > > > >  3 files changed, 14 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > This patch should go in together with Adrian's
+> > > > > https://lore.kernel.org/linux-nvdimm/20200916133923.31-1-adrianhuang0701@gmail.com
+> > > > >
+> > > > > diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+> > > > > index e5767c83ea23..b6284c5cae0a 100644
+> > > > > --- a/drivers/dax/super.c
+> > > > > +++ b/drivers/dax/super.c
+> > > > > @@ -325,11 +325,15 @@ EXPORT_SYMBOL_GPL(dax_direct_access);
+> > > > >  bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
+> > > > >                 int blocksize, sector_t start, sector_t len)
+> > > > >  {
+> > > > > +       if (!dax_dev)
+> > > > > +               return false;
+> > > > > +
+> > > >
+> > > > Hi Jan, Thanks for this.
+> > > >
+> > > > >         if (!dax_alive(dax_dev))
+> > > > >                 return false;
+> > > >
+> > > > One small fixup to quiet lockdep because dax_supported() calls
+> > > > dax_alive() it expects that dax_read_lock() is held. So I'm testing
+> > > > with this incremental change:
+> > > >
+> > > > diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> > > > index bed1ff0744ec..229f461e7def 100644
+> > > > --- a/drivers/md/dm-table.c
+> > > > +++ b/drivers/md/dm-table.c
+> > > > @@ -860,9 +860,14 @@ EXPORT_SYMBOL_GPL(dm_table_set_type);
+> > > >  int device_supports_dax(struct dm_target *ti, struct dm_dev *dev,
+> > > >                         sector_t start, sector_t len, void *data)
+> > > >  {
+> > > > -       int blocksize = *(int *) data;
+> > > > +       int blocksize = *(int *) data, id;
+> > > > +       bool rc;
+> > > >
+> > > > -       return dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
+> > > > +       id = dax_read_lock();
+> > > > +       rc = dax_supported(dev->dax_dev, dev->bdev, blocksize, start, len);
+> > > > +       dax_read_unlock(id);
+> > > > +
+> > > > +       return rc;
+> > > >  }
+> > >
+> > > Yeah, thanks for this! I was actually looking into this when writing the
+> > > patch and somehow convinced myself we will always be called through
+> > > bdev_dax_supported() which does dax_read_lock() for us. But apparently I
+> > > was wrong...
+> >
+> > Hold on. This patch hit another regression when I ran the full test of
+> > the lvm2-testsuite tool today.
+>
+> Are you sure it's this patch?
 
-On 9/17/20 4:45 PM, Adrian Huang wrote:
-> From: Adrian Huang <ahuang12@lenovo.com>
-> 
-> When mounting fsdax pmem device, commit 6180bb446ab6 ("dax: fix
-> detection of dax support for non-persistent memory block devices")
-> introduces the stack overflow [1][2]. Here is the call path for
-> mounting ext4 file system:
->    ext4_fill_super
->      bdev_dax_supported
->        __bdev_dax_supported
->          dax_supported
->            generic_fsdax_supported
->              __generic_fsdax_supported
->                bdev_dax_supported
-> 
-> The call path leads to the infinite calling loop, so we cannot
-> call bdev_dax_supported() in __generic_fsdax_supported(). The sanity
-> checking of the variable 'dax_dev' is moved prior to the two
-> bdev_dax_pgoff() checks [3][4].
-> 
-> [1] https://lore.kernel.org/linux-nvdimm/1420999447.1004543.1600055488770.JavaMail.zimbra@redhat.com/
-> [2] https://lore.kernel.org/linux-nvdimm/alpine.LRH.2.02.2009141131220.30651@file01.intranet.prod.int.rdu2.redhat.com/
-> [3] https://lore.kernel.org/linux-nvdimm/CA+RJvhxBHriCuJhm-D8NvJRe3h2MLM+ZMFgjeJjrRPerMRLvdg@mail.gmail.com/
-> [4] https://lore.kernel.org/linux-nvdimm/20200903160608.GU878166@iweiny-DESK2.sc.intel.com/
-> 
-> Fixes: 6180bb446ab6 ("dax: fix detection of dax support for non-persistent memory block devices")
-> Reported-by: Yi Zhang <yi.zhang@redhat.com>
-> Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-> Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
-> Reviewed-by: Jan Kara <jack@suse.cz>
-> Cc: Coly Li <colyli@suse.de>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: John Pittman <jpittman@redhat.com>
+I'm pretty sure I applied this patch with your fixup. I tested it for
+three times:
+    1. `lvm2-testsuite --only pvmove-abort-all.sh` is always passed
+without the patch.
+    2. `lvm2-testsuite --only pvmove-abort-all.sh` is always blocked
+with the patch.
 
-Although I see that this is fix is already applied but ccing fsdevel and
-ext4 since I ended up debugging and coming to the same conclusion as
-this patch is fixing the recursion loop.
-If not already applied then feel free to add:
+> The dax_read_lock() should have zero interaction with the
+> synchronize_srcu() that __dm_suspend() performs. The too srcu domains
+> should not conflict... I don't even see a dax_read_lock() in this
+> path.
 
-Tested-by: Ritesh Harjani <riteshh@linux.ibm.com>
+Yup, I understand your observation. The call trace didn't show the
+dax_read_lock().
 
-
-> ---
-> Changelog:
-> v3:
->      1. Add Reviewed-by from Jan
->      2. Add Reported-by
->      3. Replace lists.01.org with lore.kernel
-> v2:
->      Remove the checking for the returned value '-EOPNOTSUPP' of
->      dax_direct_access(). Jan has prepared a patch to address the
->      issue in dm.
-> ---
->   drivers/dax/super.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/dax/super.c b/drivers/dax/super.c
-> index e5767c83ea23..11d0541e6f8f 100644
-> --- a/drivers/dax/super.c
-> +++ b/drivers/dax/super.c
-> @@ -85,6 +85,12 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
->   		return false;
->   	}
->   
-> +	if (!dax_dev) {
-> +		pr_debug("%s: error: dax unsupported by block device\n",
-> +				bdevname(bdev, buf));
-> +		return false;
-> +	}
-> +
->   	err = bdev_dax_pgoff(bdev, start, PAGE_SIZE, &pgoff);
->   	if (err) {
->   		pr_info("%s: error: unaligned partition for dax\n",
-> @@ -100,12 +106,6 @@ bool __generic_fsdax_supported(struct dax_device *dax_dev,
->   		return false;
->   	}
->   
-> -	if (!dax_dev || !bdev_dax_supported(bdev, blocksize)) {
-> -		pr_debug("%s: error: dax unsupported by block device\n",
-> -				bdevname(bdev, buf));
-> -		return false;
-> -	}
-> -
->   	id = dax_read_lock();
->   	len = dax_direct_access(dax_dev, pgoff, 1, &kaddr, &pfn);
->   	len2 = dax_direct_access(dax_dev, pgoff_end, 1, &end_kaddr, &end_pfn);
-> 
+-- Adrian
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
