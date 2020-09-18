@@ -1,63 +1,49 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BB72703F3
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 20:25:58 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9997F270603
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 22:09:45 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AF84413F50B21;
-	Fri, 18 Sep 2020 11:25:52 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=cai@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9FDDB13F1100F;
+	Fri, 18 Sep 2020 13:09:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.65; helo=mga03.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7CEB613F50B0F
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 11:25:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600453532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eg/2C71vV3EBvxwezzmYF9acSvHgEEsLNSCT9Xp2Ew0=;
-	b=copdo0IU+G3QmqasVpbRGg2GoEg0FGz4yvS7q1C0mMAT7BJrFQDrrNby8KPUX7ILg7YEjA
-	dIwV5UanJP1vnzwrsJLtxDmItI4nu8ENsXnR8WEt6CIcrU6rmCoBQfJLUtEi6AR9xEk3SR
-	W8R5fBGRpi6ktRVMwZDdGGsIW55YVO8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-453-kfXmF_4QNlaAc1bwQzkdqA-1; Fri, 18 Sep 2020 14:25:28 -0400
-X-MC-Unique: kfXmF_4QNlaAc1bwQzkdqA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3D64F9CC08;
-	Fri, 18 Sep 2020 18:25:23 +0000 (UTC)
-Received: from ovpn-113-208.rdu2.redhat.com (ovpn-113-208.rdu2.redhat.com [10.10.113.208])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 7F3425D9D5;
-	Fri, 18 Sep 2020 18:25:15 +0000 (UTC)
-Message-ID: <fdd0240c187f974fccc553acea895f638d5e822a.camel@redhat.com>
-Subject: Re: [PATCH v5 0/5] mm: introduce memfd_secret system call to create
- "secret" memory areas
-From: Qian Cai <cai@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>
-Date: Fri, 18 Sep 2020 14:25:15 -0400
-In-Reply-To: <5d97da4d86db258fdc9b20be3c12588089e17da2.camel@redhat.com>
-References: <20200916073539.3552-1-rppt@kernel.org>
-	 <5d97da4d86db258fdc9b20be3c12588089e17da2.camel@redhat.com>
-Mime-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-Message-ID-Hash: 4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK
-X-Message-ID-Hash: 4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK
-X-MailFrom: cai@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov  <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland" <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>, linux-next@vger.kernel.org
+	by ml01.01.org (Postfix) with ESMTPS id 3CA9813F1100F
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 13:09:41 -0700 (PDT)
+IronPort-SDR: LQWPA7i4E6JSr8tM7uRVx15xDXtuccnfjNVWN+7FfQZ0Zbfo5gcAtxhQGNsaKKWi/3Fbk7psaB
+ 6DAHqPqmxcag==
+X-IronPort-AV: E=McAfee;i="6000,8403,9748"; a="160082645"
+X-IronPort-AV: E=Sophos;i="5.77,274,1596524400";
+   d="scan'208";a="160082645"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2020 13:09:36 -0700
+IronPort-SDR: FJ/6JqWmW3mzc9id45K/pUifIhma9iO/tpvqENgotQ7/j0NXCucHsFf52V1O9z0gsd9NnEHi8d
+ RfrPozsiyvKQ==
+X-IronPort-AV: E=Sophos;i="5.77,274,1596524400";
+   d="scan'208";a="288094607"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2020 13:09:35 -0700
+Subject: [PATCH] dm/dax: Fix table reference counts
+From: Dan Williams <dan.j.williams@intel.com>
+To: dm-devel@redhat.com
+Date: Fri, 18 Sep 2020 12:51:15 -0700
+Message-ID: <160045867590.25663.7548541079217827340.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
+MIME-Version: 1.0
+Message-ID-Hash: DXO5PMHFDP4TU77JPGA2DP5XOHH427HC
+X-Message-ID-Hash: DXO5PMHFDP4TU77JPGA2DP5XOHH427HC
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: stable@vger.kernel.org, Jan Kara <jack@suse.cz>, Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@redhat.com>, Adrian Huang <ahuang12@lenovo.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DXO5PMHFDP4TU77JPGA2DP5XOHH427HC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -66,39 +52,74 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Thu, 2020-09-17 at 09:27 -0400, Qian Cai wrote:
-> On Wed, 2020-09-16 at 10:35 +0300, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > Hi,
-> > 
-> > This is an implementation of "secret" mappings backed by a file descriptor. 
-> > I've dropped the boot time reservation patch for now as it is not strictly
-> > required for the basic usage and can be easily added later either with or
-> > without CMA.
-> 
-> On powerpc: https://gitlab.com/cailca/linux-mm/-/blob/master/powerpc.config
-> 
-> There is a compiling warning from the today's linux-next:
-> 
-> <stdin>:1532:2: warning: #warning syscall memfd_secret not implemented [-Wcpp]
+A recent fix to the dm_dax_supported() flow uncovered a latent bug. When
+dm_get_live_table() fails it is still required to drop the
+srcu_read_lock(). Without this change the lvm2 test-suite triggers this
+warning:
 
-This should silence the warning:
+    # lvm2-testsuite --only pvmove-abort-all.sh
 
-diff --git a/scripts/checksyscalls.sh b/scripts/checksyscalls.sh
-index a18b47695f55..b7609958ee36 100755
---- a/scripts/checksyscalls.sh
-+++ b/scripts/checksyscalls.sh
-@@ -40,6 +40,10 @@ cat << EOF
- #define __IGNORE_setrlimit	/* setrlimit */
- #endif
+    WARNING: lock held when returning to user space!
+    5.9.0-rc5+ #251 Tainted: G           OE
+    ------------------------------------------------
+    lvm/1318 is leaving the kernel with locks still held!
+    1 lock held by lvm/1318:
+     #0: ffff9372abb5a340 (&md->io_barrier){....}-{0:0}, at: dm_get_live_table+0x5/0xb0 [dm_mod]
+
+...and later on this hang signature:
+
+    INFO: task lvm:1344 blocked for more than 122 seconds.
+          Tainted: G           OE     5.9.0-rc5+ #251
+    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+    task:lvm             state:D stack:    0 pid: 1344 ppid:     1 flags:0x00004000
+    Call Trace:
+     __schedule+0x45f/0xa80
+     ? finish_task_switch+0x249/0x2c0
+     ? wait_for_completion+0x86/0x110
+     schedule+0x5f/0xd0
+     schedule_timeout+0x212/0x2a0
+     ? __schedule+0x467/0xa80
+     ? wait_for_completion+0x86/0x110
+     wait_for_completion+0xb0/0x110
+     __synchronize_srcu+0xd1/0x160
+     ? __bpf_trace_rcu_utilization+0x10/0x10
+     __dm_suspend+0x6d/0x210 [dm_mod]
+     dm_suspend+0xf6/0x140 [dm_mod]
+
+Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
+Cc: <stable@vger.kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Alasdair Kergon <agk@redhat.com>
+Cc: Mike Snitzer <snitzer@redhat.com>
+Reported-by: Adrian Huang <ahuang12@lenovo.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/md/dm.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index fb0255d25e4b..4a40df8af7d3 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1136,15 +1136,16 @@ static bool dm_dax_supported(struct dax_device *dax_dev, struct block_device *bd
+ {
+ 	struct mapped_device *md = dax_get_private(dax_dev);
+ 	struct dm_table *map;
++	bool ret = false;
+ 	int srcu_idx;
+-	bool ret;
  
-+#ifndef __ARCH_WANT_MEMFD_SECRET
-+#define __IGNORE_memfd_secret
-+#endif
-+
- /* Missing flags argument */
- #define __IGNORE_renameat	/* renameat2 */
+ 	map = dm_get_live_table(md, &srcu_idx);
+ 	if (!map)
+-		return false;
++		goto out;
+ 
+ 	ret = dm_table_supports_dax(map, device_supports_dax, &blocksize);
+ 
++out:
+ 	dm_put_live_table(md, srcu_idx);
+ 
+ 	return ret;
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
