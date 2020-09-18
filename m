@@ -2,64 +2,62 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D922702AD
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 18:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BB72703F3
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 18 Sep 2020 20:25:58 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 16453151B21D8;
-	Fri, 18 Sep 2020 09:55:08 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id AF84413F50B21;
+	Fri, 18 Sep 2020 11:25:52 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=cai@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 305D814E595C2
-	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 09:55:04 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id w1so6774731edr.3
-        for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 09:55:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=yxwRMmZAvscI9qLISrOKxKWDWXBsK0Qiq++otHhpMpM=;
-        b=vW9xAgzLdO0QTngXP251avBoOv0g0D8jITnPZCJ5/Gugk+FHUHF/kvs6N/4BGb4yRp
-         kwWQrpEvWarWlY6oGD1By4fOTSpcnfY6T5RGy1jX3cdIMv/EEDhvGn5NMNtptRwMLdk9
-         TeIAV3rz/9S3/Lu+cwsk0KqQ/wvILgP0cetKg5Ci454hEpq8RvIg4WXN774E5PSIoMHa
-         DsJC9VcCZV4SAA+etDYxCrS/HmvNAGtSF0KuTLpB/dl9CdoduF6NOwxzGVgG6ZJCJvpV
-         bIXTRwy1i/WvQl4YY+EbOK5NGuWUtetdeY9jGfArhxhr2VbmzVU9ho3TRx2nE6NTGkEk
-         2xTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yxwRMmZAvscI9qLISrOKxKWDWXBsK0Qiq++otHhpMpM=;
-        b=T9b5vdpMrvmHTORyVE8s7imhkccWoxAnGeq/f595RVkxuDRNGZiQTZJssaVx4xdeVi
-         qjxWWvtDL7PvF1inNZNXeX+a/lB7Kub96P9gPDDOkZIxqU6i/xuXFOjkLnpdQsX6ZnGe
-         zePX1pILBD4KYcA9xyUBTZZAH/jzIhQ0gZRe/W7vX68UIbgbbUhaGXmphyg0dXip9gVU
-         E92mstTrD/QxLqpnstiUBa7WQupKZhiGFWPK+tntr85d+6bq/YLKcNOpUf/um+W6YlOO
-         3AoGy3eV+I/g6B/bsxsHz/P//uZprdfPoTd23Z6948qUkTrt1zNOZMtg0f6ZDbJxe6HJ
-         NJaQ==
-X-Gm-Message-State: AOAM5329VrH+4lEMcqPOKPHrKQM7f1dIWoDZNPuttsmqA02QabACEfGK
-	90BWz1/bqjKTspLsWGD/xkFw61slZERYx6xzjc2zCQ==
-X-Google-Smtp-Source: ABdhPJxcLHTp2HmWlgI7Su041TxmNFgVD/jngcdBcxMjvp5IOfJeNJy8OR2y4k4Bfa6ELWveIGOQjFysEqiHQiktakY=
-X-Received: by 2002:aa7:c511:: with SMTP id o17mr40445469edq.300.1600448103080;
- Fri, 18 Sep 2020 09:55:03 -0700 (PDT)
-MIME-Version: 1.0
-References: <160040692945.25320.13233625491405115889.stgit@dwillia2-desk3.amr.corp.intel.com>
- <20200918153041.GN7954@magnolia>
-In-Reply-To: <20200918153041.GN7954@magnolia>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 18 Sep 2020 09:54:51 -0700
-Message-ID: <CAPcyv4ii+NWnJhLWwz=Z+2aAJ=DdjwQoqPC+hO88CsM2ub5FEw@mail.gmail.com>
-Subject: Re: [dm-devel] [PATCH v2] dm: Call proper helper to determine dax support
-To: "Darrick J. Wong" <darrick.wong@oracle.com>
-Message-ID-Hash: 3BADOBAVFHG3G6QTRZRCIK7LUTGXESH6
-X-Message-ID-Hash: 3BADOBAVFHG3G6QTRZRCIK7LUTGXESH6
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Jan Kara <jack@suse.cz>, Mike Snitzer <snitzer@redhat.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>, device-mapper development <dm-devel@redhat.com>, Adrian Huang <ahuang12@lenovo.com>, Mikulas Patocka <mpatocka@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 7CEB613F50B0F
+	for <linux-nvdimm@lists.01.org>; Fri, 18 Sep 2020 11:25:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1600453532;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eg/2C71vV3EBvxwezzmYF9acSvHgEEsLNSCT9Xp2Ew0=;
+	b=copdo0IU+G3QmqasVpbRGg2GoEg0FGz4yvS7q1C0mMAT7BJrFQDrrNby8KPUX7ILg7YEjA
+	dIwV5UanJP1vnzwrsJLtxDmItI4nu8ENsXnR8WEt6CIcrU6rmCoBQfJLUtEi6AR9xEk3SR
+	W8R5fBGRpi6ktRVMwZDdGGsIW55YVO8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-453-kfXmF_4QNlaAc1bwQzkdqA-1; Fri, 18 Sep 2020 14:25:28 -0400
+X-MC-Unique: kfXmF_4QNlaAc1bwQzkdqA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3D64F9CC08;
+	Fri, 18 Sep 2020 18:25:23 +0000 (UTC)
+Received: from ovpn-113-208.rdu2.redhat.com (ovpn-113-208.rdu2.redhat.com [10.10.113.208])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 7F3425D9D5;
+	Fri, 18 Sep 2020 18:25:15 +0000 (UTC)
+Message-ID: <fdd0240c187f974fccc553acea895f638d5e822a.camel@redhat.com>
+Subject: Re: [PATCH v5 0/5] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+From: Qian Cai <cai@redhat.com>
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>
+Date: Fri, 18 Sep 2020 14:25:15 -0400
+In-Reply-To: <5d97da4d86db258fdc9b20be3c12588089e17da2.camel@redhat.com>
+References: <20200916073539.3552-1-rppt@kernel.org>
+	 <5d97da4d86db258fdc9b20be3c12588089e17da2.camel@redhat.com>
+Mime-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: 4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK
+X-Message-ID-Hash: 4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK
+X-MailFrom: cai@redhat.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov  <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland" <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>, linux-next@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3BADOBAVFHG3G6QTRZRCIK7LUTGXESH6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4C57ZA6O5J7OFLPOLAXMTATHSKUZ7IVK/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -68,42 +66,39 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 18, 2020 at 8:31 AM Darrick J. Wong <darrick.wong@oracle.com> wrote:
->
-> On Thu, Sep 17, 2020 at 10:30:03PM -0700, Dan Williams wrote:
-> > From: Jan Kara <jack@suse.cz>
-> >
-> > DM was calling generic_fsdax_supported() to determine whether a device
-> > referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
-> > they don't have to duplicate common generic checks. High level code
-> > should call dax_supported() helper which that calls into appropriate
-> > helper for the particular device. This problem manifested itself as
-> > kernel messages:
-> >
-> > dm-3: error: dax access failed (-95)
-> >
-> > when lvm2-testsuite run in cases where a DM device was stacked on top of
-> > another DM device.
->
-> Is there somewhere where it is documented which of:
->
-> bdev_dax_supported, generic_fsdax_supported, and dax_supported
->
-> one is supposed to use for a given circumstance?
+On Thu, 2020-09-17 at 09:27 -0400, Qian Cai wrote:
+> On Wed, 2020-09-16 at 10:35 +0300, Mike Rapoport wrote:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > Hi,
+> > 
+> > This is an implementation of "secret" mappings backed by a file descriptor. 
+> > I've dropped the boot time reservation patch for now as it is not strictly
+> > required for the basic usage and can be easily added later either with or
+> > without CMA.
+> 
+> On powerpc: https://gitlab.com/cailca/linux-mm/-/blob/master/powerpc.config
+> 
+> There is a compiling warning from the today's linux-next:
+> 
+> <stdin>:1532:2: warning: #warning syscall memfd_secret not implemented [-Wcpp]
 
-generic_fsdax_supported should be private to device drivers populating
-their dax_operations. I think it deserves a rename at this point.
-dax_supported() knows how to route through multiple layers of stacked
-block-devices to ask the "is dax supported" question at each level.
+This should silence the warning:
 
-> I guess the last two can test a given range w/ blocksize; the first one
-> only does blocksize; and the middle one also checks with whatever fs
-> might be mounted? <shrug>
->
-> (I ask because it took me a while to figure out how to revert correctly
-> the brokenness in rc3-5 that broke my nightly dax fstesting.)
-
-Again, apologies for that.
+diff --git a/scripts/checksyscalls.sh b/scripts/checksyscalls.sh
+index a18b47695f55..b7609958ee36 100755
+--- a/scripts/checksyscalls.sh
++++ b/scripts/checksyscalls.sh
+@@ -40,6 +40,10 @@ cat << EOF
+ #define __IGNORE_setrlimit	/* setrlimit */
+ #endif
+ 
++#ifndef __ARCH_WANT_MEMFD_SECRET
++#define __IGNORE_memfd_secret
++#endif
++
+ /* Missing flags argument */
+ #define __IGNORE_renameat	/* renameat2 */
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
