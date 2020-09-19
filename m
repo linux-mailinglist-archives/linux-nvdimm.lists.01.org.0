@@ -2,122 +2,73 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2722270C38
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 19 Sep 2020 11:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B81F4270CCF
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 19 Sep 2020 12:06:42 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id CC0C913C9F110;
-	Sat, 19 Sep 2020 02:37:11 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.190; helo=huawei.com; envelope-from=thunder.leizhen@huawei.com; receiver=<UNKNOWN> 
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BF5661356823F
-	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 02:37:08 -0700 (PDT)
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-	by Forcepoint Email with ESMTP id D23E5170A5BB9ACD5BC3;
-	Sat, 19 Sep 2020 17:37:05 +0800 (CST)
-Received: from thunder-town.china.huawei.com (10.174.177.253) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.487.0; Sat, 19 Sep 2020 17:36:56 +0800
-From: Zhen Lei <thunder.leizhen@huawei.com>
-To: Oliver O'Halloran <oohall@gmail.com>, Dan Williams
-	<dan.j.williams@intel.com>, Vishal Verma <vishal.l.verma@intel.com>, "Dave
- Jiang" <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>, Markus
- Elfring <Markus.Elfring@web.de>, linux-nvdimm <linux-nvdimm@lists.01.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/1] libnvdimm/namespace: avoid repeated judgment in nvdimm_namespace_disk_name()
-Date: Sat, 19 Sep 2020 17:36:29 +0800
-Message-ID: <20200919093629.3792-1-thunder.leizhen@huawei.com>
-X-Mailer: git-send-email 2.26.0.windows.1
+	by ml01.01.org (Postfix) with ESMTP id D11FF13FD589B;
+	Sat, 19 Sep 2020 03:06:40 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=160.251.2.158; helo=vpass.ne.jp; envelope-from=user-safety@vpass.ne.jp; receiver=<UNKNOWN> 
+Received: from vpass.ne.jp (v160-251-2-158.mwqa.static.cnode.io [160.251.2.158])
+	by ml01.01.org (Postfix) with ESMTP id 29F1E1252DA2D
+	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 03:06:31 -0700 (PDT)
+Received: from nNvE (unknown [169.37.16.213])
+	by vpass.ne.jp with SMTP id 3vVkTS4L0MhO56RN.1
+	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 19:06:32 +0900
+Message-ID: <006676888787$38303131$62762572@nNvE>
+Sender: User-safety@vpass.ne.jp
+From: "Smbc.co.jp" <User-safety@vpass.ne.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CQ6YeN6KaB44CR?=
+Date: Sat, 19 Sep 2020 19:06:32 +0900
 MIME-Version: 1.0
-X-Originating-IP: [10.174.177.253]
-X-CFilter-Loop: Reflected
-Message-ID-Hash: 75MAXMFSVLRUBBUDI7UY5XTKV5KIDZIP
-X-Message-ID-Hash: 75MAXMFSVLRUBBUDI7UY5XTKV5KIDZIP
-X-MailFrom: thunder.leizhen@huawei.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: 
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4
+X-Message-ID-Hash: IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4
+X-MailFrom: User-safety@vpass.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Zhen Lei <thunder.leizhen@huawei.com>, Libin <huawei.libin@huawei.com>, Kefeng Wang <wangkefeng.wang@huawei.com>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/75MAXMFSVLRUBBUDI7UY5XTKV5KIDZIP/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The judgment (suffix ? suffix : "") appears three times, we do this just
-because the initial value of local variable "suffix" is NULL, should be
-replaced with empty string "" to avoid null pointer reference. It's easy
-to get rid of it as below:
--	const char *suffix = NULL;
-+	const char *suffix = "";
-
-To avoid having rows that exceed 80 columns, add a new local variable
-"region_id".
-
-No functional change, but it can reduce the code size.
-Before:
-   text    data     bss     dec     hex filename
-  41749    3697      16   45462    b196 drivers/nvdimm/namespace_devs.o
-
-After:
-   text    data     bss     dec     hex filename
-  41653    3697      16   45366    b136 drivers/nvdimm/namespace_devs.o
-
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
----
-v1 --> v2:
-1. Only the title and description are modified.
-
-v1:
-https://lore.kernel.org/patchwork/patch/1292584/
-
- drivers/nvdimm/namespace_devs.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index 6da67f4d641a27c..ef2800c5da4c99c 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -157,7 +157,8 @@ const char *nvdimm_namespace_disk_name(struct nd_namespace_common *ndns,
- 		char *name)
- {
- 	struct nd_region *nd_region = to_nd_region(ndns->dev.parent);
--	const char *suffix = NULL;
-+	const char *suffix = "";
-+	int region_id = nd_region->id;
- 
- 	if (ndns->claim && is_nd_btt(ndns->claim))
- 		suffix = "s";
-@@ -173,17 +174,14 @@ const char *nvdimm_namespace_disk_name(struct nd_namespace_common *ndns,
- 		}
- 
- 		if (nsidx)
--			sprintf(name, "pmem%d.%d%s", nd_region->id, nsidx,
--					suffix ? suffix : "");
-+			sprintf(name, "pmem%d.%d%s", region_id, nsidx, suffix);
- 		else
--			sprintf(name, "pmem%d%s", nd_region->id,
--					suffix ? suffix : "");
-+			sprintf(name, "pmem%d%s", region_id, suffix);
- 	} else if (is_namespace_blk(&ndns->dev)) {
- 		struct nd_namespace_blk *nsblk;
- 
- 		nsblk = to_nd_namespace_blk(&ndns->dev);
--		sprintf(name, "ndblk%d.%d%s", nd_region->id, nsblk->id,
--				suffix ? suffix : "");
-+		sprintf(name, "ndblk%d.%d%s", region_id, nsblk->id, suffix);
- 	} else {
- 		return NULL;
- 	}
--- 
-1.8.3
-
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZyDmp5gNCg0K44GU5Yip55So5Lit44Gu5LiJ5LqV5L2P
+5Y+L44Kr44O844OJ44Ki44Kr44Km44Oz44OI44G444Gu44Ot44Kw44Kk44Oz44GM56K66KqN44GV
+44KM44G+44GX44Gf44CCDQoNCiDil4bjg63jgrDjgqTjg7Pmg4XloLENCuODu+ODreOCsOOCpOOD
+s+aXpeaZgiDvvJoyMDIwLzA5LzE5IDE5OjA2OjMxDQrjg7tJUOOCouODieODrOOCueOAgCDvvJox
+ODYuMjQ5LjEyOC41MQ0KDQpWcGFzc0lE44GK44KI44Gz44OR44K544Ov44O844OJ44KS5LuW44Gu
+44K144Kk44OI44Go5L2155So44GX44Gm44GE44KL5aC05ZCI44Gr44Gv44CB5ryP44GI44GE44GX
+44Gf5oOF5aCxDQrjgojjgorjgIHmgqrmhI/jga7jgYLjgovnrKzkuInogIXjgavjgojjgovjg43j
+g4Pjg4jjgrfjg6fjg4Pjg5Tjg7PjgrDjgafjga7mgqrnlKjjga7lj6/og73mgKfjgoLjgZTjgZbj
+gYTjgb7jgZnjgIINCg0KVnBhc3NJROOBiuOCiOOBs+ODkeOCueODr+ODvOODieOBr+S7luOBruOC
+teOCpOODiOOBp+OBr+S9v+eUqOOBm+OBmuOBq+OAgeWumuacn+eahOOBq+OBlOWkieabtOOBhOOB
+n+OBoOOBjQ0K44G+44GZ44KI44GG44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCVnBhc3NJROOD
+u+ODkeOCueODr+ODvOODieOBruOBlOWkieabtOOBr+OBk+OBoeOCieOCkuOBlOimp+OBj+OBoOOB
+leOBhOOAgg0KDQrihpJWcGFzc0lE5oOF5aCx54Wn5Lya44O75aSJ5pu0DQoNCuOBiuWuouanmOOB
+ruOCu+OCreODpeODquODhuOCo+OBr+W8iuekvuOBq+OBqOOBo+OBpumdnuW4uOOBq+mHjeimgeOB
+quOCguOBruOBp+OBlOOBluOBhOOBvuOBmeOAgg0K44GU55CG6Kej44Gu56iL44CB44KI44KN44GX
+44GP44GK6aGY44GE55Sz44GX5LiK44GS44G+44GZ44CCDQoNCuKAu+acrOODoeODvOODq+OBr+OB
+lOeZu+mMsuOBhOOBn+OBoOOBhOOBn+ODoeODvOODq+OCouODieODrOOCueWum+OBq+iHquWLleea
+hOOBq+mAgeS/oeOBleOCjOOBpuOBhOOBvuOBmeOAgg0K4oC75pys44Oh44O844Or44Gv6YCB5L+h
+5bCC55So44Gn44GZ44CC44GU6L+U5L+h44GE44Gf44Gg44GN44G+44GX44Gm44KC44GK562U44GI
+44Gn44GN44G+44Gb44KT44Gu44Gn44GU5LqG5om/44GP44Gg44GV44GE44CCDQoNCuS4ieS6leS9
+j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K5p2x5Lqs5pys56S+IOadseS6rOmDvea4r+WMuua1
+t+WyuDEtMi0yMCDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCuWkp+mYquacrOekviDlpKfpmKrl
+uILkuK3lpK7ljLrku4rmqYs0LTUtMTUNCg0K44GE44Gk44KC5LiJ5LqV5L2P5Y+L6YqA6KGM44KS
+44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZQ29weXJp
+Z2h0IMKpIDIwMjAgU3VtaXRvbW8gTWl0c3VpIEJhbmtpbmcgQ29ycG9yYXRpb24uQWxsIFJpZ2h0
+cyBSZXNlcnZlZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
+ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
+LjAxLm9yZwo=
