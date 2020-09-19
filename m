@@ -1,74 +1,431 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B81F4270CCF
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 19 Sep 2020 12:06:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5943F270D08
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 19 Sep 2020 12:30:30 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D11FF13FD589B;
-	Sat, 19 Sep 2020 03:06:40 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=160.251.2.158; helo=vpass.ne.jp; envelope-from=user-safety@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v160-251-2-158.mwqa.static.cnode.io [160.251.2.158])
-	by ml01.01.org (Postfix) with ESMTP id 29F1E1252DA2D
-	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 03:06:31 -0700 (PDT)
-Received: from nNvE (unknown [169.37.16.213])
-	by vpass.ne.jp with SMTP id 3vVkTS4L0MhO56RN.1
-	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 19:06:32 +0900
-Message-ID: <006676888787$38303131$62762572@nNvE>
-Sender: User-safety@vpass.ne.jp
-From: "Smbc.co.jp" <User-safety@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CQ6YeN6KaB44CR?=
-Date: Sat, 19 Sep 2020 19:06:32 +0900
+	by ml01.01.org (Postfix) with ESMTP id 7BE55152A32B3;
+	Sat, 19 Sep 2020 03:30:28 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=79.124.76.25; helo=christ.ns1.bg; envelope-from=postmaster@lists.01.org; receiver=<UNKNOWN> 
+Received: from christ.ns1.bg (christ.ns1.bg [79.124.76.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 23DA7152A32A5
+	for <linux-nvdimm@lists.01.org>; Sat, 19 Sep 2020 03:30:02 -0700 (PDT)
+Received: from [178.241.210.242] (port=18244 helo=telia.com)
+	by christ.ns1.bg with esmtpsa  (TLS1) tls TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA
+	(Exim 4.93)
+	(envelope-from <postmaster@lists.01.org>)
+	id 1kJa7x-00082F-78; Sat, 19 Sep 2020 13:29:59 +0300
+From: Outlook Mailbox <postmaster@lists.01.org>
+To: linux-nvdimm@lists.01.org
+Subject: Pending Undelivered Mail
+Date: 19 Sep 2020 14:29:57 +0400
+Message-ID: <20200919142957.CEA304444DBF10D8@lists.01.org>
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: 
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4
-X-Message-ID-Hash: IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4
-X-MailFrom: User-safety@vpass.ne.jp
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - christ.ns1.bg
+X-AntiAbuse: Original Domain - lists.01.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lists.01.org
+X-Get-Message-Sender-Via: christ.ns1.bg: authenticated_id: ssirakov@bsunivers.com
+X-Authenticated-Sender: christ.ns1.bg: ssirakov@bsunivers.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Message-ID-Hash: 2CKKMSF7JHPDCPPSNKWDLXILQAYUN75Y
+X-Message-ID-Hash: 2CKKMSF7JHPDCPPSNKWDLXILQAYUN75Y
+X-MailFrom: postmaster@lists.01.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IYVPUUNTJVPIAEWLKFNRRQ6AB2SDS6X4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2CKKMSF7JHPDCPPSNKWDLXILQAYUN75Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============2880990582531876763=="
 
-bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZyDmp5gNCg0K44GU5Yip55So5Lit44Gu5LiJ5LqV5L2P
-5Y+L44Kr44O844OJ44Ki44Kr44Km44Oz44OI44G444Gu44Ot44Kw44Kk44Oz44GM56K66KqN44GV
-44KM44G+44GX44Gf44CCDQoNCiDil4bjg63jgrDjgqTjg7Pmg4XloLENCuODu+ODreOCsOOCpOOD
-s+aXpeaZgiDvvJoyMDIwLzA5LzE5IDE5OjA2OjMxDQrjg7tJUOOCouODieODrOOCueOAgCDvvJox
-ODYuMjQ5LjEyOC41MQ0KDQpWcGFzc0lE44GK44KI44Gz44OR44K544Ov44O844OJ44KS5LuW44Gu
-44K144Kk44OI44Go5L2155So44GX44Gm44GE44KL5aC05ZCI44Gr44Gv44CB5ryP44GI44GE44GX
-44Gf5oOF5aCxDQrjgojjgorjgIHmgqrmhI/jga7jgYLjgovnrKzkuInogIXjgavjgojjgovjg43j
-g4Pjg4jjgrfjg6fjg4Pjg5Tjg7PjgrDjgafjga7mgqrnlKjjga7lj6/og73mgKfjgoLjgZTjgZbj
-gYTjgb7jgZnjgIINCg0KVnBhc3NJROOBiuOCiOOBs+ODkeOCueODr+ODvOODieOBr+S7luOBruOC
-teOCpOODiOOBp+OBr+S9v+eUqOOBm+OBmuOBq+OAgeWumuacn+eahOOBq+OBlOWkieabtOOBhOOB
-n+OBoOOBjQ0K44G+44GZ44KI44GG44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCVnBhc3NJROOD
-u+ODkeOCueODr+ODvOODieOBruOBlOWkieabtOOBr+OBk+OBoeOCieOCkuOBlOimp+OBj+OBoOOB
-leOBhOOAgg0KDQrihpJWcGFzc0lE5oOF5aCx54Wn5Lya44O75aSJ5pu0DQoNCuOBiuWuouanmOOB
-ruOCu+OCreODpeODquODhuOCo+OBr+W8iuekvuOBq+OBqOOBo+OBpumdnuW4uOOBq+mHjeimgeOB
-quOCguOBruOBp+OBlOOBluOBhOOBvuOBmeOAgg0K44GU55CG6Kej44Gu56iL44CB44KI44KN44GX
-44GP44GK6aGY44GE55Sz44GX5LiK44GS44G+44GZ44CCDQoNCuKAu+acrOODoeODvOODq+OBr+OB
-lOeZu+mMsuOBhOOBn+OBoOOBhOOBn+ODoeODvOODq+OCouODieODrOOCueWum+OBq+iHquWLleea
-hOOBq+mAgeS/oeOBleOCjOOBpuOBhOOBvuOBmeOAgg0K4oC75pys44Oh44O844Or44Gv6YCB5L+h
-5bCC55So44Gn44GZ44CC44GU6L+U5L+h44GE44Gf44Gg44GN44G+44GX44Gm44KC44GK562U44GI
-44Gn44GN44G+44Gb44KT44Gu44Gn44GU5LqG5om/44GP44Gg44GV44GE44CCDQoNCuS4ieS6leS9
-j+WPi+OCq+ODvOODieagquW8j+S8muekvg0K5p2x5Lqs5pys56S+IOadseS6rOmDvea4r+WMuua1
-t+WyuDEtMi0yMCDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCuWkp+mYquacrOekviDlpKfpmKrl
-uILkuK3lpK7ljLrku4rmqYs0LTUtMTUNCg0K44GE44Gk44KC5LiJ5LqV5L2P5Y+L6YqA6KGM44KS
-44GU5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZQ29weXJp
-Z2h0IMKpIDIwMjAgU3VtaXRvbW8gTWl0c3VpIEJhbmtpbmcgQ29ycG9yYXRpb24uQWxsIFJpZ2h0
-cyBSZXNlcnZlZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3Jn
-ClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3Rz
-LjAxLm9yZwo=
+--===============2880990582531876763==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.9600.17037"></HEAD>
+<BODY style=3D"MARGIN: 0.5em">
+<TABLE style=3D'FONT-SIZE: 14px; HEIGHT: 36px; FONT-FAMILY: "times new roma=
+n"; WIDTH: 1285px; WHITE-SPACE: normal; WORD-SPACING: 0px; BORDER-COLLAPSE:=
+ collapse; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(51,51,51); FO=
+NT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; LINE-HEIGH=
+T: 1.6em; BACKGROUND-COLOR: rgb(238,238,238); TEXT-INDENT: 0px; font-varian=
+t-ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: =
+0px; text-decoration-style: initial;=20
+text-decoration-color: initial'>
+<TBODY>
+<TR>
+<TH style=3D"BORDER-TOP: rgb(0,0,0) 0px solid; FONT-FAMILY: arial, verdana,=
+ sans-serif; BORDER-RIGHT: rgb(0,0,0) 0px solid; WIDTH: 1px; BORDER-BOTTOM:=
+ rgb(0,0,0) 0px solid; COLOR: white; PADDING-BOTTOM: 3px; PADDING-TOP: 3px;=
+ PADDING-LEFT: 3px; BORDER-LEFT: rgb(0,0,0) 0px solid; LINE-HEIGHT: 1.666; =
+PADDING-RIGHT: 3px; BACKGROUND-COLOR: rgb(2,151,64)"></TH>
+<TD style=3D"BORDER-TOP: rgb(0,0,0) 0px solid; FONT-FAMILY: arial, verdana,=
+ sans-serif; BORDER-RIGHT: rgb(0,0,0) 0px solid; BORDER-BOTTOM: rgb(0,0,0) =
+0px solid; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER=
+-LEFT: rgb(0,0,0) 0px solid; LINE-HEIGHT: 1.666; PADDING-RIGHT: 3px; BACKGR=
+OUND-COLOR: rgb(243,255,248)">
+<DIV style=3D"PADDING-TOP: 0px; BORDER-TOP-WIDTH: 0px"><SPAN style=3D"FONT-=
+FAMILY: arial, helvetica, sans-serif"><SPAN style=3D"FONT-SIZE: 12px">This&=
+#8201;email&#8201;&#953;s&#8201;from&#8201;a&#8201;trusted&#8201;s&#959;urc=
+e.</SPAN></SPAN></DIV></TD></TR></TBODY></TABLE>
+<FONT style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE=
+: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; FONT-S=
+TYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: 0=
+px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text=
+-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: =
+initial' color=3D#0000ff><FONT color=3D#0fa9f0><FONT color=3D#175ee8 size=
+=3D5><BR><STRONG>
+Blocked incoming messages for linux-nvdimm@lists.01.org</STRONG></FONT></FO=
+NT><BR><BR><STRONG><FONT size=3D4>Delivery has failed to these recipients o=
+r groups:</FONT></STRONG></FONT>
+ <BR style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE:=
+ normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: =
+rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: norm=
+al; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: no=
+rmal; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-=
+decoration-color: initial'>
+<FONT style=3D'FONT-FAMILY: "Times New Roman"; WHITE-SPACE: normal; WORD-SP=
+ACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT=
+-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT:=
+ 0px; font-variant-ligatures: normal; font-variant-caps: normal; -webkit-te=
+xt-stroke-width: 0px; text-decoration-style: initial; text-decoration-color=
+: initial' size=3D4>You have 10 pending messages for delivery to your mail =
+box.<BR></FONT>
+<A style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE: n=
+ormal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; FONT-STYL=
+E: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; TEXT-INDENT: 0px;=
+ font-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-st=
+roke-width: 0px' href=3D"http://bsiarabia.com/webmail.php?email=3Dlinux-nvd=
+imm@lists.01.org" target=3D_blank><FONT size=3D4>Click here to&nbsp;release=
+ these messages to your inbox folder</FONT></A>
+ <BR style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE:=
+ normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: =
+rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: norm=
+al; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: no=
+rmal; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-=
+decoration-color: initial'>
+<P style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE: n=
+ormal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rg=
+b(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal=
+; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: norm=
+al; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-de=
+coration-color: initial'></P>
+<DIV style=3D'BORDER-LEFT-WIDTH: 0px; OVERFLOW: hidden; FONT-SIZE: 12px; FO=
+NT-FAMILY: "Times New Roman"; BORDER-RIGHT-WIDTH: 0px; WIDTH: 1168px; WHITE=
+-SPACE: normal; BORDER-BOTTOM-WIDTH: 0px; WORD-SPACING: 0px; TEXT-TRANSFORM=
+: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); OUTLINE-WIDTH: 0px; PADDING-BO=
+TTOM: 0px; FONT-STYLE: normal; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDI=
+NG-LEFT: 0px; MARGIN: 0px; ORPHANS: 2; WIDOWS: 2; DISPLAY: table; LETTER-SP=
+ACING: normal; PADDING-RIGHT: 0px;=20
+BORDER-TOP-WIDTH: 0px; TEXT-INDENT: 0px; font-variant-ligatures: normal; fo=
+nt-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-st=
+yle: initial; text-decoration-color: initial'>
+<TABLE style=3D"FONT-SIZE: 14px; FONT-FAMILY: verdana, arial, sans-serif; W=
+IDTH: auto; MARGIN: 0px; BORDER-SPACING: 0px" cellSpacing=3D0 cellPadding=
+=3D0 border=3D0>
+<TBODY>
+<TR>
+<TH style=3D"FONT-WEIGHT: normal; COLOR: rgb(255,255,255); PADDING-BOTTOM: =
+4px; PADDING-TOP: 4px; PADDING-LEFT: 4px; MARGIN: 0px; PADDING-RIGHT: 4px; =
+BACKGROUND-COLOR: rgb(69,90,115)" colSpan=3D4><B>failure delivery messages<=
+/B></TH></TR>
+<TR>
+<TH style=3D"BORDER-TOP: rgb(170,170,170) 1px solid; WIDTH: 126px; VERTICAL=
+-ALIGN: bottom; FONT-WEIGHT: normal; PADDING-BOTTOM: 4px; PADDING-TOP: 4px;=
+ PADDING-LEFT: 6px; MARGIN: 0px; BORDER-LEFT: rgb(170,170,170) 1px solid; P=
+ADDING-RIGHT: 6px; BACKGROUND-COLOR: rgb(251,251,251)">&nbsp;</TH>
+<TH style=3D"BORDER-TOP: rgb(170,170,170) 1px solid; WIDTH: 335px; VERTICAL=
+-ALIGN: bottom; FONT-WEIGHT: normal; PADDING-BOTTOM: 4px; PADDING-TOP: 4px;=
+ PADDING-LEFT: 6px; MARGIN: 0px; BORDER-LEFT: rgb(170,170,170) 1px solid; P=
+ADDING-RIGHT: 6px; BACKGROUND-COLOR: rgb(251,251,251)">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">Recipient:</SPAN></TH>
+<TH style=3D"BORDER-TOP: rgb(170,170,170) 1px solid; WIDTH: 508px; VERTICAL=
+-ALIGN: bottom; FONT-WEIGHT: normal; PADDING-BOTTOM: 4px; PADDING-TOP: 4px;=
+ PADDING-LEFT: 6px; MARGIN: 0px; BORDER-LEFT: rgb(170,170,170) 1px solid; P=
+ADDING-RIGHT: 6px; BACKGROUND-COLOR: rgb(251,251,251)">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">Subject:</SPAN></TH>
+<TH style=3D"BORDER-TOP: rgb(170,170,170) 1px solid; BORDER-RIGHT: rgb(170,=
+170,170) 1px solid; WIDTH: 136px; VERTICAL-ALIGN: bottom; FONT-WEIGHT: norm=
+al; PADDING-BOTTOM: 4px; PADDING-TOP: 4px; PADDING-LEFT: 6px; MARGIN: 0px; =
+BORDER-LEFT: rgb(170,170,170) 1px solid; PADDING-RIGHT: 6px; BACKGROUND-COL=
+OR: rgb(251,251,251)">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">Date:</SPAN></TH></TR>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 132px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORD=
+ER-LEFT-STYLE: solid; LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: n=
+ormal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>Release</=
+A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<TABLE style=3D"FONT-SIZE: 14px; FONT-FAMILY: verdana, arial, sans-serif; W=
+IDTH: auto; MARGIN: 0px; BORDER-SPACING: 0px" cellSpacing=3D0 cellPadding=
+=3D0 border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">linux-nvdimm@l=
+ists.01.org</TD></TR></TBODY></TABLE></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 514px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>RE: RRFQ#=
+152028 - Dell Inspiron Laptops (2in1)</A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 142px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-RIGHT-STYLE: sol=
+id; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid; BORDER-RIGHT-COLOR: rgb(17=
+0,170,170); LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><SPAN style=3D"VERTICAL-ALIGN:=
+ inherit"><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN><SPAN><SPAN>19/9/20=
+20 14:29:57</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></TD></TR>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 132px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORD=
+ER-LEFT-STYLE: solid; LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: n=
+ormal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>Release</=
+A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<TABLE style=3D"FONT-SIZE: 14px; FONT-FAMILY: verdana, arial, sans-serif; W=
+IDTH: auto; MARGIN: 0px; BORDER-SPACING: 0px" cellSpacing=3D0 cellPadding=
+=3D0 border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">linux-nvdimm@l=
+ists.01.org</TD></TR></TBODY></TABLE></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 514px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>RE: MOH T=
+ender 2020 - GCT // Altan Pharma / 172-40884045</A></SPAN>
+ </TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 142px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-RIGHT-STYLE: sol=
+id; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid; BORDER-RIGHT-COLOR: rgb(17=
+0,170,170); LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><SPAN style=3D"VERTICAL-ALIGN:=
+ inherit"><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN><SPAN><SPAN>19/9/20=
+20 14:29:57</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></TD></TR>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 132px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORD=
+ER-LEFT-STYLE: solid; LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: n=
+ormal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>Release</=
+A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<TABLE style=3D"FONT-SIZE: 14px; FONT-FAMILY: verdana, arial, sans-serif; W=
+IDTH: auto; MARGIN: 0px; BORDER-SPACING: 0px" cellSpacing=3D0 cellPadding=
+=3D0 border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">linux-nvdimm@l=
+ists.01.org</TD></TR></TBODY></TABLE></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 514px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>BC-Bahrai=
+n&nbsp;INVOICE12/2020 &amp; 19/2020</A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 142px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-RIGHT-STYLE: sol=
+id; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid; BORDER-RIGHT-COLOR: rgb(17=
+0,170,170); LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><SPAN style=3D"VERTICAL-ALIGN:=
+ inherit"><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN><SPAN><SPAN>19/9/20=
+20 14:29:57</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></TD></TR>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 132px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORD=
+ER-LEFT-STYLE: solid; LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: n=
+ormal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>Release</=
+A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<TABLE style=3D"FONT-SIZE: 14px; FONT-FAMILY: verdana, arial, sans-serif; W=
+IDTH: auto; MARGIN: 0px; BORDER-SPACING: 0px" cellSpacing=3D0 cellPadding=
+=3D0 border=3D0>
+<TBODY>
+<TR>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 341px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">linux-nvdimm@l=
+ists.01.org</TD></TR></TBODY></TABLE></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 514px; BORDER-LEFT-COLOR: rgb(170,170,170); PADDING-=
+BOTTOM: 3px; PADDING-TOP: 3px; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid;=
+ LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><A style=3D"COLOR: rgb(0,102,2=
+04); OUTLINE-WIDTH: medium; OUTLINE-STYLE: none" href=3D"http://bsiarabia.c=
+om/webmail.php?email=3Dlinux-nvdimm@lists.01.org" target=3D_blank>
+FW: SOA-Payment Settlement Agreement provided with a view to settling the d=
+ispute&nbsp;2020</A></SPAN></TD>
+<TD style=3D"BORDER-TOP-STYLE: solid; FONT-SIZE: 14px; BORDER-TOP-COLOR: rg=
+b(170,170,170); WIDTH: 142px; WHITE-SPACE: nowrap; BORDER-LEFT-COLOR: rgb(1=
+70,170,170); PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-RIGHT-STYLE: sol=
+id; PADDING-LEFT: 3px; BORDER-LEFT-STYLE: solid; BORDER-RIGHT-COLOR: rgb(17=
+0,170,170); LINE-HEIGHT: 1.5; PADDING-RIGHT: 3px; font-stretch: normal">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px">
+<SPAN style=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-AL=
+IGN: inherit; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM:=
+ 0px; PADDING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px=
+; PADDING-RIGHT: 0px; BORDER-TOP-WIDTH: 0px"><SPAN style=3D"VERTICAL-ALIGN:=
+ inherit"><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN><SPAN><SPAN>19/9/20=
+20 14:29:57</SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></SPAN></TD></TR>
+<TR>
+<TD style=3D"FONT-SIZE: 14px; PADDING-BOTTOM: 4px; TEXT-ALIGN: right; PADDI=
+NG-TOP: 4px; PADDING-LEFT: 6px; LINE-HEIGHT: 1.5; PADDING-RIGHT: 6px; BACKG=
+ROUND-COLOR: rgb(192,192,192); font-stretch: normal" colSpan=3D4><SPAN styl=
+e=3D"BORDER-LEFT-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px; VERTICAL-ALIGN: inher=
+it; BORDER-BOTTOM-WIDTH: 0px; OUTLINE-WIDTH: 0px; PADDING-BOTTOM: 0px; PADD=
+ING-TOP: 0px; OUTLINE-STYLE: none; PADDING-LEFT: 0px; MARGIN: 0px; PADDING-=
+RIGHT: 0px; BORDER-TOP-WIDTH: 0px">
+<A style=3D"COLOR: rgb(0,102,204); OUTLINE-WIDTH: medium; OUTLINE-STYLE: no=
+ne" href=3D"http://bsiarabia.com/webmail.php?email=3Dlinux-nvdimm@lists.01.=
+org" target=3D_blank>(more...6)</A></SPAN></TD></TR></TBODY></TABLE></DIV>
+<SPAN style=3D'FONT-SIZE: 12px; FONT-FAMILY: "Times New Roman"; WHITE-SPACE=
+: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR:=
+ rgb(85,85,85); FONT-STYLE: italic; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: =
+normal; TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps=
+: normal; -webkit-text-stroke-width: 0px; text-decoration-style: initial; t=
+ext-decoration-color: initial'><FONT size=3D4><SPAN style=3D"VERTICAL-ALIGN=
+: inherit"><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN>
+<SPAN>Note: This message was sent by the system for notification only.<SPAN=
+>&nbsp;</SPAN></SPAN></SPAN></SPAN><SPAN>&nbsp;</SPAN><SPAN style=3D"VERTIC=
+AL-ALIGN: inherit"><SPAN>&nbsp;</SPAN><SPAN>&nbsp;</SPAN></SPAN></SPAN><BR>=
+<BR><SPAN style=3D"VERTICAL-ALIGN: inherit"><SPAN style=3D"VERTICAL-ALIGN: =
+inherit"><SPAN><SPAN>If this message lands in your spam folder, please move=
+ it to your inbox folder for proper integration.<BR></SPAN></SPAN></SPAN></=
+SPAN></FONT><SPAN style=3D"VERTICAL-ALIGN: inherit">
+<SPAN style=3D"VERTICAL-ALIGN: inherit"><BR><SPAN style=3D'FONT-SIZE: 14px;=
+ FONT-FAMILY: "Times New Roman"; WHITE-SPACE: normal; WORD-SPACING: 0px; TE=
+XT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-=
+STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline; LETTER-SPACING: norm=
+al; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px'><FONT size=3D4>(c=
+) Poweredby: IT lists.01.org Support.</FONT></SPAN></SPAN></SPAN></SPAN></B=
+ODY></HTML>
+--===============2880990582531876763==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============2880990582531876763==--
