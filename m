@@ -2,73 +2,89 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F5D2717E7
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 20 Sep 2020 22:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EDB827185A
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 00:04:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2827C1414E314;
-	Sun, 20 Sep 2020 13:46:55 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.74.31; helo=vpass.ne.jp; envelope-from=user-safety@vpass.ne.jp; receiver=<UNKNOWN> 
-Received: from vpass.ne.jp (v118-27-74-31.eqwx.static.cnode.io [118.27.74.31])
-	by ml01.01.org (Postfix) with ESMTP id 2E42513CCA59E
-	for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 13:46:51 -0700 (PDT)
-Received: from NAnX (unknown [132.43.186.13])
-	by vpass.ne.jp with SMTP id vRBAS2iRkdgl7Noj.1
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 05:46:52 +0900
-Message-ID: <006183368568$24042602$56412243@NAnX>
-Sender: User-safety@vpass.ne.jp
-From: "Smbc.co.jp" <User-safety@vpass.ne.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CQ6YeN6KaB44CR?=
-Date: Mon, 21 Sep 2020 05:46:52 +0900
+	by ml01.01.org (Postfix) with ESMTP id 931D614CAF104;
+	Sun, 20 Sep 2020 15:03:59 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::144; helo=mail-lf1-x144.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 9A5F014CAF103
+	for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 15:03:57 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id 77so4573266lfj.0
+        for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 15:03:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ri07SWB636BQu9HeTZXldjDnXsp6QhYO/5gj4FXNUIo=;
+        b=ehY/ZfgBKBZu+aLDoJAH14zbHNeQQ4gPKz81o3C3zMJoYWW+yWIZcVreq3Bx9P2Kbq
+         B4WYpqJ4sY4sPF0L4iVeGXgGQYf4oxxPGdpLAEYNYEBQrbTiD3o+Bh45zKmRlQcOmARx
+         jtQ+yhKP/y6+y2YXVRrsKT1ot1Q5AvF0e2b7o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ri07SWB636BQu9HeTZXldjDnXsp6QhYO/5gj4FXNUIo=;
+        b=ZtbRf5oGzcLfrtfsJXYKtcCPb2DePrpOpJ7IRfUDvnhAvYdDDsuF+0DdKD8rJ2o4NG
+         IYDEVpp1Idl+kEwaB/hAOrzC4azeS0jkLX82tk3Z3G30PLqDVGCanMrcDwQqBRIQpdPl
+         CR9gXU7UB47yAo6f3Zbq2qwgV9JNr1ci3RrxXwM8AfrDjxopFE7a8OTEhxqQc2BBK+/o
+         L3EYcR1s4c5XL8x1wTWSLldnt/bhus1RakOsk48+fsq20CAXngx1PwZLxo2QFCXkGUvI
+         fWxs/9jONr4x8iKR87AbKIedThmupYcJdKQJGLW86oI+JGl0twr3NANJUkIPLSDOR2s5
+         uNCA==
+X-Gm-Message-State: AOAM5300Dqo+NAB0AQW1GqpH4/c0f+5QauH91fQRwozCzF+sVkSniOWp
+	ZO54m4cna7sZDDukWuGPekgolMNUAsmvFA==
+X-Google-Smtp-Source: ABdhPJxGG2xPKbb4N5lYUoyv1l3aohmt5CDTFc/DHKy3JU3MDjs2NMLLQ2z9lCiqILXFGhErJcVx+A==
+X-Received: by 2002:a19:383:: with SMTP id 125mr15198269lfd.356.1600639434558;
+        Sun, 20 Sep 2020 15:03:54 -0700 (PDT)
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com. [209.85.208.175])
+        by smtp.gmail.com with ESMTPSA id x11sm2047651lfa.174.2020.09.20.15.03.52
+        for <linux-nvdimm@lists.01.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Sep 2020 15:03:53 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id v23so9515489ljd.1
+        for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 15:03:52 -0700 (PDT)
+X-Received: by 2002:a05:651c:32e:: with SMTP id b14mr14128964ljp.314.1600639432685;
+ Sun, 20 Sep 2020 15:03:52 -0700 (PDT)
 MIME-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: 
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
-Message-ID-Hash: LHVZI4I5BBEPH4CFGWEBYEBLMTO2EX3O
-X-Message-ID-Hash: LHVZI4I5BBEPH4CFGWEBYEBLMTO2EX3O
-X-MailFrom: User-safety@vpass.ne.jp
+References: <CAPcyv4h3oKM-2hoG=FWHJwzVqjptnpQV9C+W6txfp_qcBhd7yQ@mail.gmail.com>
+In-Reply-To: <CAPcyv4h3oKM-2hoG=FWHJwzVqjptnpQV9C+W6txfp_qcBhd7yQ@mail.gmail.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 20 Sep 2020 15:03:36 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whuR1ZHV4c6a7d3EmgRBFfQfYGckD2t1kQXDpwnf50ATA@mail.gmail.com>
+Message-ID: <CAHk-=whuR1ZHV4c6a7d3EmgRBFfQfYGckD2t1kQXDpwnf50ATA@mail.gmail.com>
+Subject: Re: libnvdimm fixes 5.9-rc6
+To: Dan Williams <dan.j.williams@intel.com>
+Message-ID-Hash: 5XIX2QSD3O3HYCATWB2DXZUNV32NSKR7
+X-Message-ID-Hash: 5XIX2QSD3O3HYCATWB2DXZUNV32NSKR7
+X-MailFrom: torvalds@linuxfoundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, device-mapper development <dm-devel@redhat.com>, Jan Kara <jack@suse.cz>, Adrian Huang12 <ahuang12@lenovo.com>, Mike Snitzer <snitzer@redhat.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LHVZI4I5BBEPH4CFGWEBYEBLMTO2EX3O/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5XIX2QSD3O3HYCATWB2DXZUNV32NSKR7/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZyDmp5gNCg0K44GU5Yip55So5Lit44Gu5LiJ5LqV5L2P
-5Y+L44Kr44O844OJ44Ki44Kr44Km44Oz44OI44G444Gu44Ot44Kw44Kk44Oz44GM56K66KqN44GV
-44KM44G+44GX44Gf44CCDQoNCiDil4bjg63jgrDjgqTjg7Pmg4XloLENCuODu+ODreOCsOOCpOOD
-s+aXpeaZgiDvvJoyMDIwLzA5LzIxIDU6NDY6NTENCuODu0lQ44Ki44OJ44Os44K544CAIO+8mjk2
-Ljc5Ljc0LjE2Mg0KDQpWcGFzc0lE44GK44KI44Gz44OR44K544Ov44O844OJ44KS5LuW44Gu44K1
-44Kk44OI44Go5L2155So44GX44Gm44GE44KL5aC05ZCI44Gr44Gv44CB5ryP44GI44GE44GX44Gf
-5oOF5aCxDQrjgojjgorjgIHmgqrmhI/jga7jgYLjgovnrKzkuInogIXjgavjgojjgovjg43jg4Pj
-g4jjgrfjg6fjg4Pjg5Tjg7PjgrDjgafjga7mgqrnlKjjga7lj6/og73mgKfjgoLjgZTjgZbjgYTj
-gb7jgZnjgIINCg0KVnBhc3NJROOBiuOCiOOBs+ODkeOCueODr+ODvOODieOBr+S7luOBruOCteOC
-pOODiOOBp+OBr+S9v+eUqOOBm+OBmuOBq+OAgeWumuacn+eahOOBq+OBlOWkieabtOOBhOOBn+OB
-oOOBjQ0K44G+44GZ44KI44GG44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCVnBhc3NJROODu+OD
-keOCueODr+ODvOODieOBruOBlOWkieabtOOBr+OBk+OBoeOCieOCkuOBlOimp+OBj+OBoOOBleOB
-hOOAgg0KDQrihpJWcGFzc0lE5oOF5aCx54Wn5Lya44O75aSJ5pu0DQoNCuOBiuWuouanmOOBruOC
-u+OCreODpeODquODhuOCo+OBr+W8iuekvuOBq+OBqOOBo+OBpumdnuW4uOOBq+mHjeimgeOBquOC
-guOBruOBp+OBlOOBluOBhOOBvuOBmeOAgg0K44GU55CG6Kej44Gu56iL44CB44KI44KN44GX44GP
-44GK6aGY44GE55Sz44GX5LiK44GS44G+44GZ44CCDQoNCuKAu+acrOODoeODvOODq+OBr+OBlOeZ
-u+mMsuOBhOOBn+OBoOOBhOOBn+ODoeODvOODq+OCouODieODrOOCueWum+OBq+iHquWLleeahOOB
-q+mAgeS/oeOBleOCjOOBpuOBhOOBvuOBmeOAgg0K4oC75pys44Oh44O844Or44Gv6YCB5L+h5bCC
-55So44Gn44GZ44CC44GU6L+U5L+h44GE44Gf44Gg44GN44G+44GX44Gm44KC44GK562U44GI44Gn
-44GN44G+44Gb44KT44Gu44Gn44GU5LqG5om/44GP44Gg44GV44GE44CCDQoNCuS4ieS6leS9j+WP
-i+OCq+ODvOODieagquW8j+S8muekvg0K5p2x5Lqs5pys56S+IOadseS6rOmDvea4r+WMuua1t+Wy
-uDEtMi0yMCDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCuWkp+mYquacrOekviDlpKfpmKrluILk
-uK3lpK7ljLrku4rmqYs0LTUtMTUNCg0K44GE44Gk44KC5LiJ5LqV5L2P5Y+L6YqA6KGM44KS44GU
-5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZQ29weXJpZ2h0
-IMKpIDIwMjAgU3VtaXRvbW8gTWl0c3VpIEJhbmtpbmcgQ29ycG9yYXRpb24uQWxsIFJpZ2h0cyBS
-ZXNlcnZlZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
-TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
-IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
-Lm9yZwo=
+On Sun, Sep 20, 2020 at 11:56 AM Dan Williams <dan.j.williams@intel.com> wrote:
+>
+>    You will notice that this branch was rebased this
+> morning and it has not appeared in -next. I decided to cut short the
+> soak time because the infinite-recursion regression is currently
+> crashing anyone attempting to test filesystem-dax in 5.9-rc5+.
+
+Thanks for the explanation, all looks fine.
+
+             Linus
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
