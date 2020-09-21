@@ -2,137 +2,192 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC76271D24
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 10:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4284F271E56
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 10:50:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 67C87143B17F5;
-	Mon, 21 Sep 2020 01:08:00 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=203.11.71.1; helo=ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=<UNKNOWN> 
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 7917E1446238F;
+	Mon, 21 Sep 2020 01:50:18 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::443; helo=mail-pf1-x443.google.com; envelope-from=unixbhaskar@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C6EB7143B2593
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 01:07:56 -0700 (PDT)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4BvxrN6CR4z9sRf;
-	Mon, 21 Sep 2020 18:07:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-	s=201702; t=1600675674;
-	bh=iaBdLJOvxyJXfcUEqmY+3Nksf5Jf9xHCFLBtVdF2GM8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K5wKwexmDJAci9TTwYRSQ0w9PM5CiPqAwagC2tcao/hBigyuoMxG1C8D0UmTRvwbU
-	 EhPScTRFe/siLj3BjXiyv9uIFmQY0S4UmOdPSVysuZGSDahrfPB83W3uawREPQpzd0
-	 kHld44CU++GsPbN3dC1XVd4QoBpM6Lgj+V1kNNdSetTvjN8TgT8QvRc6F00jrjsQD6
-	 lDVtnrJaxh5Jw5LEvG/jpEkcuTha5XPYFINClW5XVtzMcKkHT38c4BYivb3A3RLDRr
-	 JaS6Iuw/LnkzJSYvM742RWyWBJTrmzSqPEqXAqPcsYg8niNwEgDNwWig1CMgfOS4OB
-	 vkx4v/7kdkZQQ==
-Date: Mon, 21 Sep 2020 18:07:48 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Qian Cai <cai@redhat.com>
-Subject: Re: [PATCH v5 0/5] mm: introduce memfd_secret system call to create
- "secret" memory areas
-Message-ID: <20200921180748.4f88028d@canb.auug.org.au>
-In-Reply-To: <fdd0240c187f974fccc553acea895f638d5e822a.camel@redhat.com>
-References: <20200916073539.3552-1-rppt@kernel.org>
-	<5d97da4d86db258fdc9b20be3c12588089e17da2.camel@redhat.com>
-	<fdd0240c187f974fccc553acea895f638d5e822a.camel@redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id 93B621446238D
+	for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 01:50:16 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id d9so8688063pfd.3
+        for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 01:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WGZPvNZ6AV/nbZDpa0AhDOJ7MJQfLtXPAyzzNP7GSmI=;
+        b=azJctfI68YJCLulsccoZaFy7rZQJ+Friy8H6IQgGvx+NoUdUvSDRePKKc0LsZOKAiE
+         hfBcDCH1Qz4UaHs8bfIuJ5kUi6Atb+8t48nVr5PZxm71a/Y5cNfxy2TyDcViVYLbsz7V
+         HSy39BF/ZJJ11CBcKqtINMQFKvkp9LUh9uN/N12qYt15Oeh7l05rfl516lNjPi8Nr+IS
+         flLVAJ5sD4A8RWVOv77hnlAvp5CgXlLP97xoCglESzYo69scCqfSLaE0ePq17DOsR6cP
+         K4aVPV8IGCDEr0smLs0nU8FljAGPkhDyWma4KPwsIga3K3skAMqBTayX6+wzjoBmeBx0
+         0OsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=WGZPvNZ6AV/nbZDpa0AhDOJ7MJQfLtXPAyzzNP7GSmI=;
+        b=JIa+ORJl6K6tiq6tQYAqEH0C2yK5xZiKfI1CKox2blYfXFsA9SthVegg4eAR+d+p7M
+         ys7IKuEalrmlUL52ajkhGjbD+UxkYn3vQjHjlG0GRhb61ptX3k7mrW4w5ML0LW344WBW
+         GghB9cTJzc7wpuQ5a9eYp/ZtudS13DD9TyPSPWoMn/L2GBZZjduRS4FNm0l3DpTFYVXI
+         g+B2l9yLl2fiqTu6mEbDBGn2NAP8tvUvPZnhG0fc82eZah3YWPUEa/ZOWc/YuBj7W8/Y
+         NiXs07MQdJLiYv8MV1QzdbWcmNb4mPVRk/3gFlGD1dPJOVJ4irFyM+8XbF4ZggRbFM9a
+         vaRw==
+X-Gm-Message-State: AOAM532N/XJYrG9rAz6T6+f5jv27p0u8f0pdlpegiNBLN/9Ff5iSRsiD
+	e+QGYtenDfw8PErIvpXSxTQ=
+X-Google-Smtp-Source: ABdhPJwKrtp2q8bS+ncENJczUdH2aZZ+0GiHQClvxQKFk5ML2cC4iNlg0w7e67PTihFKrex0ZDhcpw==
+X-Received: by 2002:a05:6a00:8c5:b029:13e:ce2c:88bd with SMTP id s5-20020a056a0008c5b029013ece2c88bdmr43001094pfu.0.1600678216079;
+        Mon, 21 Sep 2020 01:50:16 -0700 (PDT)
+Received: from Slackware (sau-465d4-or.servercontrol.com.au. [43.250.207.1])
+        by smtp.gmail.com with ESMTPSA id kt18sm9948148pjb.56.2020.09.21.01.50.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2020 01:50:14 -0700 (PDT)
+Date: Mon, 21 Sep 2020 14:19:48 +0530
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: PROBLEM: 5.9.0-rc6 fails =?utf-8?Q?to_?=
+ =?utf-8?Q?compile_due_to_'redefinition_of_=E2=80=98dax=5Fsupported?=
+ =?utf-8?B?4oCZJw==?=
+Message-ID: <20200921084948.GA20254@Slackware>
+Mail-Followup-To: Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Stuart Little <achirvasub@gmail.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, linux-nvdimm@lists.01.org,
+	kernel list <linux-kernel@vger.kernel.org>,
+	linux- stable <stable@vger.kernel.org>,
+	Adrian Huang <ahuang12@lenovo.com>,
+	Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+	Ira Weiny <ira.weiny@intel.com>, mpatocka@redhat.com,
+	lkft-triage@lists.linaro.org, Jan Kara <jack@suse.cz>
+References: <20200921010359.GO3027113@arch-chirva.localdomain>
+ <CA+G9fYtCg2KjdB2oBUDJ2DKAzUxq3u8ZnMY9Et-RG9Pnrmuf9w@mail.gmail.com>
+ <20200921073218.GA3142611@kroah.com>
 MIME-Version: 1.0
-Message-ID-Hash: E2PD543NPWZYERUIMJ3ZFWT6V3Z7T3BC
-X-Message-ID-Hash: E2PD543NPWZYERUIMJ3ZFWT6V3Z7T3BC
-X-MailFrom: sfr@canb.auug.org.au
+In-Reply-To: <20200921073218.GA3142611@kroah.com>
+Message-ID-Hash: HMUQ2YB6QHLS7OU4SENQWTOTREBGIL4Y
+X-Message-ID-Hash: HMUQ2YB6QHLS7OU4SENQWTOTREBGIL4Y
+X-MailFrom: unixbhaskar@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.ker
- nel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org, linux-next@vger.kernel.org
+CC: Naresh Kamboju <naresh.kamboju@linaro.org>, Stuart Little <achirvasub@gmail.com>, linux-nvdimm@lists.01.org, kernel list <linux-kernel@vger.kernel.org>, linux- stable <stable@vger.kernel.org>, Adrian Huang <ahuang12@lenovo.com>, Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com, mpatocka@redhat.com, lkft-triage@lists.linaro.org, Jan Kara <jack@suse.cz>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E2PD543NPWZYERUIMJ3ZFWT6V3Z7T3BC/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/HMUQ2YB6QHLS7OU4SENQWTOTREBGIL4Y/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============5073416077294117825=="
+Content-Type: multipart/mixed; boundary="===============4032156376307939936=="
 
---===============5073416077294117825==
-Content-Type: multipart/signed; boundary="Sig_/qIGimAfxVKTvCJ+PllFC0A/";
- protocol="application/pgp-signature"; micalg=pgp-sha256
 
---Sig_/qIGimAfxVKTvCJ+PllFC0A/
-Content-Type: text/plain; charset=US-ASCII
+--===============4032156376307939936==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
+Content-Disposition: inline
+
+
+--UlVJffcvxoiEqYs2
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi all,
-
-On Fri, 18 Sep 2020 14:25:15 -0400 Qian Cai <cai@redhat.com> wrote:
+On 09:32 Mon 21 Sep 2020, Greg KH wrote:
+>On Mon, Sep 21, 2020 at 11:34:17AM +0530, Naresh Kamboju wrote:
+>> On Mon, 21 Sep 2020 at 06:34, Stuart Little <achirvasub@gmail.com> wrote:
+>> >
+>> > I am trying to compile for an x86_64 machine (Intel(R) Core(TM) i7-750=
+0U CPU @ 2.70GHz). The config file I am currently using is at
+>> >
+>> > https://termbin.com/xin7
+>> >
+>> > The build for 5.9.0-rc6 fails with the following errors:
+>> >
+>>=20
+>> arm and mips allmodconfig build breaks due to this error.
 >
-> On Thu, 2020-09-17 at 09:27 -0400, Qian Cai wrote:
-> > On Wed, 2020-09-16 at 10:35 +0300, Mike Rapoport wrote: =20
-> > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > >=20
-> > > This is an implementation of "secret" mappings backed by a file descr=
-iptor.=20
-> > > I've dropped the boot time reservation patch for now as it is not str=
-ictly
-> > > required for the basic usage and can be easily added later either wit=
-h or
-> > > without CMA. =20
-> >=20
-> > On powerpc: https://gitlab.com/cailca/linux-mm/-/blob/master/powerpc.co=
-nfig
-> >=20
-> > There is a compiling warning from the today's linux-next:
-> >=20
-> > <stdin>:1532:2: warning: #warning syscall memfd_secret not implemented =
-[-Wcpp] =20
->=20
-> This should silence the warning:
->=20
-> diff --git a/scripts/checksyscalls.sh b/scripts/checksyscalls.sh
-> index a18b47695f55..b7609958ee36 100755
-> --- a/scripts/checksyscalls.sh
-> +++ b/scripts/checksyscalls.sh
-> @@ -40,6 +40,10 @@ cat << EOF
->  #define __IGNORE_setrlimit	/* setrlimit */
->  #endif
-> =20
-> +#ifndef __ARCH_WANT_MEMFD_SECRET
-> +#define __IGNORE_memfd_secret
-> +#endif
-> +
->  /* Missing flags argument */
->  #define __IGNORE_renameat	/* renameat2 */
->=20
+>all my local builds are breaking now too with this :(
+>
+>Was there a proposed patch anywhere for this?
+>
+>thanks,
+>
+>greg k-h
 
-Added to linux-next today.
+I don't know Greg,but it builds for me with these config :
 
---=20
-Cheers,
-Stephen Rothwell
+bhaskar@Slackware_14:14:31_Mon Sep 21:~> cd /data/linux
+=E2=9C=94 /data/linux [master|=E2=9A=91 1]
+14:14 $ grep DAX .config
+CONFIG_NVDIMM_DAX=3Dy
+CONFIG_DAX_DRIVER=3Dy
+CONFIG_DAX=3Dy
+CONFIG_DEV_DAX=3Dm
+CONFIG_DEV_DAX_PMEM=3Dm
+CONFIG_DEV_DAX_KMEM=3Dm
+CONFIG_DEV_DAX_PMEM_COMPAT=3Dm
+CONFIG_FS_DAX=3Dy
+CONFIG_FS_DAX_PMD=3Dy
 
---Sig_/qIGimAfxVKTvCJ+PllFC0A/
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+
+and it gets booted by qemu ....like this=20
+
+[    5.134563] devtmpfs: mounted
+[    5.164729] Freeing unused decrypted memory: 2040K
+[    5.314950] Freeing unused kernel image (initmem) memory: 1600K
+[    5.316543] Write protecting the kernel read-only data: 26624k
+[    5.327037] Freeing unused kernel image (text/rodata gap) memory: 2040K
+[    5.331005] Freeing unused kernel image (rodata/data gap) memory: 876K
+[    5.331861] rodata_test: all tests were successful
+[    5.332872] Run /sbin/init as init process
+[    5.694654] EXT4-fs (sda): re-mounted. Opts: (null)
+[    5.695839] ext4 filesystem being remounted at / supports timestamps unt=
+il 2038 (0x7fffffff)
+Starting syslogd: OK
+Starting klogd: OK
+Running sysctl: [    6.974188] random: crng init done
+OK
+Initializing random number generator: OK
+Saving random seed: OK
+Starting network: [    8.293018] hrtimer: interrupt took 4569776 ns
+OK
+
+Welcome to Buildroot_Linux
+Bhaskar_Thinkpad_x250 login: root
+# uname -a
+Linux Bhaskar_Thinkpad_x250 5.9.0-rc6-Slackware #1 SMP Mon Sep 21 11:42:03 =
+IST 2020 x86_64 GNU/Linux
+
+
+~Bhaskar
+
+--UlVJffcvxoiEqYs2
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl9oX1QACgkQAVBC80lX
-0GwVfQgAho6bGSHnGAjI0IiMmFRLcHM+KMH0XiVgh9bvUjVASl1mVgeIe7v//Oef
-uyH9zCWyUFof0EnaT4f5uZctC2pe/qvb7BsEdaSlLUSz4X8J1xLWfdYbdJHMvtYR
-WnrFHwGCmEtpImNTTZtXcdDZeliVgq41XGd/h1Z59o6givzPYTtIK59LlOOcZj3y
-KIY0ELXUPauFOINBbfRzs0xlB6upYfVrHUdh9/glsrY4wVcEfPhjgFVAk+Ua/4/E
-/ksLJ+WeUZxJ/2SOPL5Vm23vZvmSE0fD4krBBiANbBiKShRgJRU21uc/ulEdHh5E
-qZjQA6jjcKFGbIbi78Sb6LxIzI/mKQ==
-=OfZk
+iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAl9oaSgACgkQsjqdtxFL
+KRWNQwgAmjlpIbY42uBabMCy++pqyyzc4Jq9sz9SHbENTdvsPvBV6FPDleUI6DMP
+3egPCVbC5vEB19r6MYqFuq4L9Y7kuXdDd3P+52v8/gJ7HOOQDDd4lIG0YCyxH1RI
+Lx7Lb/9/WTISo2JYsqlrgaPY8PWjF+aGZrN24TFXuH6YlSTf+ck24RfZxPoRtAO9
+kTp9s4HBHPXlQcHHBscLIRdq9sGlHbYew3VxtlGz0DhP9bbMOuvER8Ick3Y+rGSb
+DyUfgPU3T8Q/SinM51LUBR7WGqAoi1x4DjcAp1ZGOXB0AF5XKz2nLkvAbwBe2bqH
+NF1e9TEZ4GLiQK4oKjhvXvl58jz1JA==
+=yKt3
 -----END PGP SIGNATURE-----
 
---Sig_/qIGimAfxVKTvCJ+PllFC0A/--
+--UlVJffcvxoiEqYs2--
 
---===============5073416077294117825==
+--===============4032156376307939936==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -142,4 +197,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============5073416077294117825==--
+--===============4032156376307939936==--
