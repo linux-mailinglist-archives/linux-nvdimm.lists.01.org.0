@@ -1,135 +1,130 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21183271947
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 04:25:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B5E2719AD
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 05:50:23 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E2DE014FEABE6;
-	Sun, 20 Sep 2020 19:25:56 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::f44; helo=mail-qv1-xf44.google.com; envelope-from=achirvasub@gmail.com; receiver=<UNKNOWN> 
-Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com [IPv6:2607:f8b0:4864:20::f44])
+	by ml01.01.org (Postfix) with ESMTP id A509014C64997;
+	Sun, 20 Sep 2020 20:50:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::1041; helo=mail-pj1-x1041.google.com; envelope-from=rhgadsdon@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 85DC414FEABE4
-	for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 19:25:54 -0700 (PDT)
-Received: by mail-qv1-xf44.google.com with SMTP id f11so6567185qvw.3
-        for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 19:25:54 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 43A1B14C64996
+	for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 20:50:17 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id jw11so6445311pjb.0
+        for <linux-nvdimm@lists.01.org>; Sun, 20 Sep 2020 20:50:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=lFSktLUg4vlJvFR6j+da57CRrfVvfFDzsNGXcJskpWg=;
-        b=WijXhVtHinjwUial10pwIzB6tFdj9f7sYNeCvlh7wyq3AT2G2FbkKm5BieT99Q56Wd
-         VYRcXPC1N91NugEuLTa6orlyl6dmthJJa9WtSs5RJDe/31LNgPXVPQRmiu52d+HPXdqV
-         RONcqR38ovOMJ9pqh4hv4s5YjWVlv2Xl3x3hfPuJzkqcxrA+JPR3TeL+FbbzG2Kz7Wog
-         nIC/Iy9R8gaWyINgl8SEn3hy23QYrK8UTz4CmdkY+sXZs/xeEsP8AHXnResdLuW/R69X
-         M2l7U01gK4o2hW57vddMS4qdm4WPOYneDsJvwCmID1/4P00fAqnCRrped7wtIbjkAR8l
-         BEnQ==
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=y9gUatZD9QuyqAlm05aGA5o/i3RPKk46CeyCbsRfLsg=;
+        b=ku6LGz56JeKHjeFmpWEl07wzZy//X6hghxfPTUEs2dJ//VVW/KfW1ovvdU8tWcIBBg
+         oY6Y12jkFgBgyeUWiJC0ycVjVFPeJtn9IwXdiRMUFqcnLEtyWp/FzcJT2u30Ni0q/Vcl
+         qrQ4hjlGi+TBVTxnzdS2tkxg8g9X/P/MGkMaqLLj3uGtfB9hURWx4ZYSuIwKZ257Jrg0
+         SWoTMUV4vv3OIglvI8/1JAxJ9wsmmHcxgy6C/5GrcFPaAa24V5N/HSbiYqH/9y6jNEO3
+         C/tabc174d9sBGPwf6uqIuJ0KbMRwBcICpLaeY3h30PCW9WEF4ZYp4OddN6vpO9DJ1lp
+         NHag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=lFSktLUg4vlJvFR6j+da57CRrfVvfFDzsNGXcJskpWg=;
-        b=JR2AN0ijzeaMnyzM1k0ufoOpZ8XAnhB4UFCLOA+Dm/TO5UEhp2T93rkMthHrAfxkG3
-         AJaoL3Yw+X6FmJ8ukCn8n8ppFyS8Vd/HEpjheJIVXcBM7HosGRKnbfuu6FNQkFeP67o/
-         YIE0+coOYkQaZdnO3wgRu9OV9meOsXV1qYPzTKvmfb5ZvdshqhFMmgoz6kZn6Pemdggb
-         sVlMbys2WVM7pmZ/6UFYWBLGXPStC7OjQfeUAKt7q/KY5gEtaat0oYZzTqvafBjyYVc2
-         CymclmxrAMvvZ57bwpSEd30+C4qPAX56jAk7mWgzrJd/qim/QRoSqYShQoZShxP/lF8H
-         SMcg==
-X-Gm-Message-State: AOAM532xOkzeAf2t24eiHg0VczkUJkrHJOuQQWn3qU1zBALH1pLzme8g
-	B7e+z5kDUzNPZACMUkWF+Mc=
-X-Google-Smtp-Source: ABdhPJxB3XAhWC2X9pslRsVbnBITL/SE6RQDK8MbXF4CJ3WmAPUe41uo94GaO/8AlPphAuQKeZySoQ==
-X-Received: by 2002:a0c:e788:: with SMTP id x8mr41799676qvn.27.1600655152779;
-        Sun, 20 Sep 2020 19:25:52 -0700 (PDT)
-Received: from arch-chirva.localdomain (pool-68-133-6-220.bflony.fios.verizon.net. [68.133.6.220])
-        by smtp.gmail.com with ESMTPSA id w44sm9044859qth.9.2020.09.20.19.25.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2020 19:25:52 -0700 (PDT)
-Date: Sun, 20 Sep 2020 22:25:50 -0400
-From: Stuart Little <achirvasub@gmail.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, linux-nvdimm@lists.01.org
-Subject: Re: PROBLEM: 5.9.0-rc6 fails =?utf-8?Q?to_?=
- =?utf-8?Q?compile_due_to_'redefinition_of_=E2=80=98dax=5Fsupported?=
- =?utf-8?B?4oCZJw==?=
-Message-ID: <20200921022550.GE3027080@arch-chirva.localdomain>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=y9gUatZD9QuyqAlm05aGA5o/i3RPKk46CeyCbsRfLsg=;
+        b=jHDjraOI12/Te1yid8T6sBZzs71WSYL2R/4ia8Q9N+/Nlf8HhK4pkFpQTrCBtMhtiJ
+         /YSXIz9Jk0DzDwoLjmgvRyj+7/F/amHPzfYtlICv2dO47h5r50yaEmDUS95xCR39gnlu
+         zAJA4KhQlF12xfju46bJfRIR+/JyIovSDwzwI4ybmwbBorC7vPuviX3Qk/ZjA41p43aa
+         t++LrzWj0nuAsFHZrgsjm7uJyK7WirArIm9+xM6Ge5vac7cwzwk5r3Q153Qv6a+2RJFw
+         w0n+GVJ07qopFYI2bblghdHpDHEXsxOXvF6s9mk9qZ2lr4jiQPyC9MYFywX2Vi4H1eVe
+         HlHw==
+X-Gm-Message-State: AOAM530Suv/SJzZMn4h6lY7tWosDF0P1WuOobfdd5YmuEiACP+hp33n+
+	JWRrWcjGNa9oQEaP3GWa5S4=
+X-Google-Smtp-Source: ABdhPJw2vIajcVfKCt3bhM061zRNdAkhPwk4vl26wbvV7XFnD1bwaY77tGt0/V5JmqyzzYFYta1g6Q==
+X-Received: by 2002:a17:90a:e60d:: with SMTP id j13mr23401859pjy.61.1600660216667;
+        Sun, 20 Sep 2020 20:50:16 -0700 (PDT)
+Received: from [10.203.4.217] ([209.58.129.104])
+        by smtp.googlemail.com with ESMTPSA id e14sm10075566pgu.47.2020.09.20.20.50.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 20 Sep 2020 20:50:15 -0700 (PDT)
+Subject: =?UTF-8?Q?Re=3a_PROBLEM=3a_5=2e9=2e0-rc6_fails_to_compile_due_to_?=
+ =?UTF-8?B?J3JlZGVmaW5pdGlvbiBvZiDigJhkYXhfc3VwcG9ydGVk4oCZJw==?=
+To: Stuart Little <achirvasub@gmail.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm@lists.01.org
 References: <20200921010359.GO3027113@arch-chirva.localdomain>
+ <20200921022550.GE3027080@arch-chirva.localdomain>
+From: Robert Gadsdon <rhgadsdon@gmail.com>
+Message-ID: <6a352fb6-ae2d-606d-34a0-cfc8ac1c88af@gmail.com>
+Date: Sun, 20 Sep 2020 20:50:14 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.2.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200921010359.GO3027113@arch-chirva.localdomain>
-Message-ID-Hash: RZQ5O65QXM3EOA6HWGIDHIWQYLC3BAAA
-X-Message-ID-Hash: RZQ5O65QXM3EOA6HWGIDHIWQYLC3BAAA
-X-MailFrom: achirvasub@gmail.com
+In-Reply-To: <20200921022550.GE3027080@arch-chirva.localdomain>
+Content-Language: en-GB
+Message-ID-Hash: R7GGRHSGSK2GGE7PCEY5RQTNN2KX75N4
+X-Message-ID-Hash: R7GGRHSGSK2GGE7PCEY5RQTNN2KX75N4
+X-MailFrom: rhgadsdon@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: kernel list <linux-kernel@vger.kernel.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RZQ5O65QXM3EOA6HWGIDHIWQYLC3BAAA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/R7GGRHSGSK2GGE7PCEY5RQTNN2KX75N4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
+Content-Transfer-Encoding: 7bit
 
-QW4gdXBkYXRlIG9uIHRoaXM6IEkndmUgZG9uZSBhIGJpc2VjdCwgd2l0aCB0aGUgZm9sbG93aW5n
-IHJlc3VsdC4NCg0KLS0tIGN1dCBoZXJlIC0tLQ0KDQplMmVjNTEyODI1NDUxOGNhZTMyMGQ1ZGM2
-MzFiNzFiOTQxNjBmNjYzIGlzIHRoZSBmaXJzdCBiYWQgY29tbWl0DQpjb21taXQgZTJlYzUxMjgy
-NTQ1MThjYWUzMjBkNWRjNjMxYjcxYjk0MTYwZjY2Mw0KQXV0aG9yOiBKYW4gS2FyYSA8amFja0Bz
-dXNlLmN6Pg0KRGF0ZTogICBTdW4gU2VwIDIwIDA4OjU0OjQyIDIwMjAgLTA3MDANCg0KICAgIGRt
-OiBDYWxsIHByb3BlciBoZWxwZXIgdG8gZGV0ZXJtaW5lIGRheCBzdXBwb3J0DQogICAgDQogICAg
-RE0gd2FzIGNhbGxpbmcgZ2VuZXJpY19mc2RheF9zdXBwb3J0ZWQoKSB0byBkZXRlcm1pbmUgd2hl
-dGhlciBhIGRldmljZQ0KICAgIHJlZmVyZW5jZWQgaW4gdGhlIERNIHRhYmxlIHN1cHBvcnRzIERB
-WC4gSG93ZXZlciB0aGlzIGlzIGEgaGVscGVyIGZvciAibGVhZiIgZGV2aWNlIGRyaXZlcnMgc28g
-dGhhdA0KICAgIHRoZXkgZG9uJ3QgaGF2ZSB0byBkdXBsaWNhdGUgY29tbW9uIGdlbmVyaWMgY2hl
-Y2tzLiBIaWdoIGxldmVsIGNvZGUNCiAgICBzaG91bGQgY2FsbCBkYXhfc3VwcG9ydGVkKCkgaGVs
-cGVyIHdoaWNoIHRoYXQgY2FsbHMgaW50byBhcHByb3ByaWF0ZQ0KICAgIGhlbHBlciBmb3IgdGhl
-IHBhcnRpY3VsYXIgZGV2aWNlLiBUaGlzIHByb2JsZW0gbWFuaWZlc3RlZCBpdHNlbGYgYXMNCiAg
-ICBrZXJuZWwgbWVzc2FnZXM6DQogICAgDQogICAgZG0tMzogZXJyb3I6IGRheCBhY2Nlc3MgZmFp
-bGVkICgtOTUpDQogICAgDQogICAgd2hlbiBsdm0yLXRlc3RzdWl0ZSBydW4gaW4gY2FzZXMgd2hl
-cmUgYSBETSBkZXZpY2Ugd2FzIHN0YWNrZWQgb24gdG9wIG9mDQogICAgYW5vdGhlciBETSBkZXZp
-Y2UuDQogICAgDQogICAgRml4ZXM6IDdiZjdlYWM4ZDY0OCAoImRheDogQXJyYW5nZSBmb3IgZGF4
-X3N1cHBvcnRlZCBjaGVjayB0byBzcGFuIG11bHRpcGxlIGRldmljZXMiKQ0KICAgIENjOiA8c3Rh
-YmxlQHZnZXIua2VybmVsLm9yZz4NCiAgICBUZXN0ZWQtYnk6IEFkcmlhbiBIdWFuZyA8YWh1YW5n
-MTJAbGVub3ZvLmNvbT4NCiAgICBTaWduZWQtb2ZmLWJ5OiBKYW4gS2FyYSA8amFja0BzdXNlLmN6
-Pg0KICAgIEFja2VkLWJ5OiBNaWtlIFNuaXR6ZXIgPHNuaXR6ZXJAcmVkaGF0LmNvbT4NCiAgICBS
-ZXBvcnRlZC1ieToga2VybmVsIHRlc3Qgcm9ib3QgPGxrcEBpbnRlbC5jb20+DQogICAgTGluazog
-aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8xNjAwNjE3MTUxOTUuMTMxMzEuNTUwMzE3MzI0NzYz
-MjA0MTk3NS5zdGdpdEBkd2lsbGlhMi1kZXNrMy5hbXIuY29ycC5pbnRlbC5jb20NCiAgICBTaWdu
-ZWQtb2ZmLWJ5OiBEYW4gV2lsbGlhbXMgPGRhbi5qLndpbGxpYW1zQGludGVsLmNvbT4NCg0KIGRy
-aXZlcnMvZGF4L3N1cGVyLmMgICB8ICA0ICsrKysNCiBkcml2ZXJzL21kL2RtLXRhYmxlLmMgfCAx
-MCArKysrKysrLS0tDQogaW5jbHVkZS9saW51eC9kYXguaCAgIHwgMjIgKysrKysrKysrKysrKysr
-KysrKystLQ0KIDMgZmlsZXMgY2hhbmdlZCwgMzEgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMo
-LSkNCg0KLS0tIGVuZCAtLS0NCg0KT24gU3VuLCBTZXAgMjAsIDIwMjAgYXQgMDk6MDM6NTlQTSAt
-MDQwMCwgU3R1YXJ0IExpdHRsZSB3cm90ZToNCj4gSSBhbSB0cnlpbmcgdG8gY29tcGlsZSBmb3Ig
-YW4geDg2XzY0IG1hY2hpbmUgKEludGVsKFIpIENvcmUoVE0pIGk3LTc1MDBVIENQVSBAIDIuNzBH
-SHopLiBUaGUgY29uZmlnIGZpbGUgSSBhbSBjdXJyZW50bHkgdXNpbmcgaXMgYXQNCj4gDQo+IGh0
-dHBzOi8vdGVybWJpbi5jb20veGluNw0KPiANCj4gVGhlIGJ1aWxkIGZvciA1LjkuMC1yYzYgZmFp
-bHMgd2l0aCB0aGUgZm9sbG93aW5nIGVycm9yczoNCj4gDQo+IC0tLSBjdXQgaGVyZSAtLS0NCj4g
-DQo+IGRyaXZlcnMvZGF4L3N1cGVyLmM6MzI1OjY6IGVycm9yOiByZWRlZmluaXRpb24gb2Yg4oCY
-ZGF4X3N1cHBvcnRlZOKAmQ0KPiAgIDMyNSB8IGJvb2wgZGF4X3N1cHBvcnRlZChzdHJ1Y3QgZGF4
-X2RldmljZSAqZGF4X2Rldiwgc3RydWN0IGJsb2NrX2RldmljZSAqYmRldiwNCj4gICAgICAgfCAg
-ICAgIF5+fn5+fn5+fn5+fn4NCj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIGRyaXZlcnMvZGF4L3N1
-cGVyLmM6MTY6DQo+IC4vaW5jbHVkZS9saW51eC9kYXguaDoxNjI6MjA6IG5vdGU6IHByZXZpb3Vz
-IGRlZmluaXRpb24gb2Yg4oCYZGF4X3N1cHBvcnRlZOKAmSB3YXMgaGVyZQ0KPiAgIDE2MiB8IHN0
-YXRpYyBpbmxpbmUgYm9vbCBkYXhfc3VwcG9ydGVkKHN0cnVjdCBkYXhfZGV2aWNlICpkYXhfZGV2
-LA0KPiAgICAgICB8ICAgICAgICAgICAgICAgICAgICBefn5+fn5+fn5+fn5+DQo+ICAgQ0MgICAg
-ICBsaWIvbWVtcmVnaW9uLm8NCj4gICBDQyBbTV0gIGRyaXZlcnMvZ3B1L2RybS9kcm1fZ2VtX3Zy
-YW1faGVscGVyLm8NCj4gbWFrZVsyXTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjI4Mzog
-ZHJpdmVycy9kYXgvc3VwZXIub10gRXJyb3IgMQ0KPiBtYWtlWzFdOiAqKiogW3NjcmlwdHMvTWFr
-ZWZpbGUuYnVpbGQ6NTAwOiBkcml2ZXJzL2RheF0gRXJyb3IgMg0KPiBtYWtlWzFdOiAqKiogV2Fp
-dGluZyBmb3IgdW5maW5pc2hlZCBqb2JzLi4uLg0KPiANCj4gLS0tIGVuZCAtLS0NCj4gDQo+IFRo
-YXQncyBlYXJsaWVyIG9uLCBhbmQgdGhlbiBsYXRlciwgYXQgdGhlIGVuZCBvZiB0aGUgKGZhaWxl
-ZCkgYnVpbGQ6DQo+IA0KPiBtYWtlOiAqKiogW01ha2VmaWxlOjE3ODQ6IGRyaXZlcnNdIEVycm9y
-IDINCj4gDQo+IFRoZSBmdWxsIGJ1aWxkIGxvZyBpcyBhdA0KPiANCj4gaHR0cHM6Ly90ZXJtYmlu
-LmNvbS9paHhqDQo+IA0KPiBidXQgSSBkbyBub3Qgc2VlIGFueXRoaW5nIGVsc2UgYW1pc3MuIDUu
-OS4wLXJjNSBidWlsdCBmaW5lIGxhc3Qgd2Vlay4KX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1u
-dmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgt
-bnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+
+On 9/20/20 7:25 PM, Stuart Little wrote:
+> An update on this: I've done a bisect, with the following result.
+>
+> --- cut here ---
+>
+> e2ec5128254518cae320d5dc631b71b94160f663 is the first bad commit
+> commit e2ec5128254518cae320d5dc631b71b94160f663
+> Author: Jan Kara <jack@suse.cz>
+> Date:   Sun Sep 20 08:54:42 2020 -0700
+>
+>      dm: Call proper helper to determine dax support
+>      
+>      DM was calling generic_fsdax_supported() to determine whether a device
+>      referenced in the DM table supports DAX. However this is a helper for "leaf" device drivers so that
+>      they don't have to duplicate common generic checks. High level code
+>      should call dax_supported() helper which that calls into appropriate
+>      helper for the particular device. This problem manifested itself as
+>      kernel messages:
+>      
+>      dm-3: error: dax access failed (-95)
+>      
+>      when lvm2-testsuite run in cases where a DM device was stacked on top of
+>      another DM device.
+>      
+>      Fixes: 7bf7eac8d648 ("dax: Arrange for dax_supported check to span multiple devices")
+>      Cc: <stable@vger.kernel.org>
+>      Tested-by: Adrian Huang <ahuang12@lenovo.com>
+>      Signed-off-by: Jan Kara <jack@suse.cz>
+>      Acked-by: Mike Snitzer <snitzer@redhat.com>
+>      Reported-by: kernel test robot <lkp@intel.com>
+>      Link: https://lore.kernel.org/r/160061715195.13131.5503173247632041975.stgit@dwillia2-desk3.amr.corp.intel.com
+>      Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>
+>   drivers/dax/super.c   |  4 ++++
+>   drivers/md/dm-table.c | 10 +++++++---
+>   include/linux/dax.h   | 22 ++++++++++++++++++++--
+>   3 files changed, 31 insertions(+), 5 deletions(-)
+>
+> --- end ---
+>
+Confirm that reverting this patch, 5.9-rc6 compiles OK ...
+
+RG.
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
