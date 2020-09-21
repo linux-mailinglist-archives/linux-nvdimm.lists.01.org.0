@@ -1,49 +1,46 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E71D271F48
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 11:50:42 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982F0271F51
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 21 Sep 2020 11:53:50 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 76DF114FF874E;
-	Mon, 21 Sep 2020 02:50:40 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id DE10F143FE21F;
+	Mon, 21 Sep 2020 02:53:48 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz; receiver=<UNKNOWN> 
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3008714FF874D
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 02:50:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id CB0F9143FE21E;
+	Mon, 21 Sep 2020 02:53:44 -0700 (PDT)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.221.27])
-	by mx2.suse.de (Postfix) with ESMTP id 42C96AF0B;
-	Mon, 21 Sep 2020 09:51:12 +0000 (UTC)
+	by mx2.suse.de (Postfix) with ESMTP id 53D91AD83;
+	Mon, 21 Sep 2020 09:54:19 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
-	id DE1BB1E12E1; Mon, 21 Sep 2020 11:50:35 +0200 (CEST)
-Date: Mon, 21 Sep 2020 11:50:35 +0200
+	id 076491E12E1; Mon, 21 Sep 2020 11:53:43 +0200 (CEST)
+Date: Mon, 21 Sep 2020 11:53:43 +0200
 From: Jan Kara <jack@suse.cz>
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: PROBLEM: 5.9.0-rc6 fails =?utf-8?Q?to_?=
- =?utf-8?Q?compile_due_to_'redefinition_of_=E2=80=98dax=5Fsupported?=
- =?utf-8?B?4oCZJw==?=
-Message-ID: <20200921095035.GC5862@quack2.suse.cz>
-References: <20200921010359.GO3027113@arch-chirva.localdomain>
- <CA+G9fYtCg2KjdB2oBUDJ2DKAzUxq3u8ZnMY9Et-RG9Pnrmuf9w@mail.gmail.com>
- <20200921073218.GA3142611@kroah.com>
+To: kernel test robot <lkp@intel.com>
+Subject: Re: [linux-nvdimm:libnvdimm-fixes 2/3] drivers/dax/super.c:325:6:
+ error: redefinition of 'dax_supported'
+Message-ID: <20200921095342.GD5862@quack2.suse.cz>
+References: <202009210706.QnE7d195%lkp@intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="CE+1k2dSO48ffgeK"
+Content-Type: multipart/mixed; boundary="XF85m9dhOBO43t/C"
 Content-Disposition: inline
-In-Reply-To: <20200921073218.GA3142611@kroah.com>
+In-Reply-To: <202009210706.QnE7d195%lkp@intel.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Message-ID-Hash: OPBZDHMSNRQJ3G5LXPY7I4KVBVSEUSB3
-X-Message-ID-Hash: OPBZDHMSNRQJ3G5LXPY7I4KVBVSEUSB3
+Message-ID-Hash: FEN3OLII7AOWHQ275WC3L2BIBCXW2D2Z
+X-Message-ID-Hash: FEN3OLII7AOWHQ275WC3L2BIBCXW2D2Z
 X-MailFrom: jack@suse.cz
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Naresh Kamboju <naresh.kamboju@linaro.org>, Stuart Little <achirvasub@gmail.com>, linux-nvdimm@lists.01.org, kernel list <linux-kernel@vger.kernel.org>, linux- stable <stable@vger.kernel.org>, Adrian Huang <ahuang12@lenovo.com>, Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com, mpatocka@redhat.com, lkft-triage@lists.linaro.org, Jan Kara <jack@suse.cz>
+CC: Jan Kara <jack@suse.cz>, kbuild-all@lists.01.org, clang-built-linux@googlegroups.com, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OPBZDHMSNRQJ3G5LXPY7I4KVBVSEUSB3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FEN3OLII7AOWHQ275WC3L2BIBCXW2D2Z/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -51,39 +48,57 @@ List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 
 
---CE+1k2dSO48ffgeK
+--XF85m9dhOBO43t/C
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon 21-09-20 09:32:18, Greg KH wrote:
-> On Mon, Sep 21, 2020 at 11:34:17AM +0530, Naresh Kamboju wrote:
-> > On Mon, 21 Sep 2020 at 06:34, Stuart Little <achirvasub@gmail.com> wrote:
-> > >
-> > > I am trying to compile for an x86_64 machine (Intel(R) Core(TM) i7-7500U CPU @ 2.70GHz). The config file I am currently using is at
-> > >
-> > > https://termbin.com/xin7
-> > >
-> > > The build for 5.9.0-rc6 fails with the following errors:
-> > >
-> > 
-> > arm and mips allmodconfig build breaks due to this error.
+On Mon 21-09-20 07:12:11, kernel test robot wrote:
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/nvdimm/nvdimm.git libnvdimm-fixes
+> head:   d4c5da5049ac27c6ef8f6f98548c3a1ade352d25
+> commit: e2ec5128254518cae320d5dc631b71b94160f663 [2/3] dm: Call proper helper to determine dax support
+> config: x86_64-randconfig-a011-20200920 (attached as .config)
+> compiler: clang version 12.0.0 (https://github.com/llvm/llvm-project f4e554180962aa6bc93678898b6933ea712bde50)
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # install x86_64 cross compiling tool for clang build
+>         # apt-get install binutils-x86-64-linux-gnu
+>         git checkout e2ec5128254518cae320d5dc631b71b94160f663
+>         # save the attached .config to linux build tree
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=x86_64 
 > 
-> all my local builds are breaking now too with this :(
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kernel test robot <lkp@intel.com>
 > 
-> Was there a proposed patch anywhere for this?
+> All errors (new ones prefixed by >>):
+> 
+> >> drivers/dax/super.c:325:6: error: redefinition of 'dax_supported'
+>    bool dax_supported(struct dax_device *dax_dev, struct block_device *bdev,
+>         ^
+>    include/linux/dax.h:162:20: note: previous definition is here
+>    static inline bool dax_supported(struct dax_device *dax_dev,
+>                       ^
+>    drivers/dax/super.c:451:6: warning: no previous prototype for function 'run_dax' [-Wmissing-prototypes]
+>    void run_dax(struct dax_device *dax_dev)
+>         ^
+>    drivers/dax/super.c:451:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+>    void run_dax(struct dax_device *dax_dev)
+>    ^
+>    static 
+>    1 warning and 1 error generated.
 
-Attached patch should fix the build breakage. I'm sorry for that.
+Attached patch should fix the build error.
 
 								Honza
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
 
---CE+1k2dSO48ffgeK
+--XF85m9dhOBO43t/C
 Content-Type: text/x-patch; charset=us-ascii
 Content-Disposition: attachment; filename="0001-dax-Fix-compilation-for-CONFIG_DAX-CONFIG_FS_DAX.patch"
 
-From 8b8c7d6148bc1bab3cf88cac49038a05db7dd938 Mon Sep 17 00:00:00 2001
+From c48c9d1ee41ca17561dfd7ec5247b5afc527d40e Mon Sep 17 00:00:00 2001
 From: Jan Kara <jack@suse.cz>
 Date: Mon, 21 Sep 2020 11:33:23 +0200
 Subject: [PATCH] dax: Fix compilation for CONFIG_DAX && !CONFIG_FS_DAX
@@ -96,6 +111,7 @@ Fixes: e2ec51282545 ("dm: Call proper helper to determine dax support")
 Cc: <stable@vger.kernel.org>
 Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 ---
  include/linux/dax.h | 17 ++++++++---------
@@ -154,7 +170,7 @@ index 497031392e0a..43b39ab9de1a 100644
 2.16.4
 
 
---CE+1k2dSO48ffgeK
+--XF85m9dhOBO43t/C
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -164,4 +180,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---CE+1k2dSO48ffgeK--
+--XF85m9dhOBO43t/C--
