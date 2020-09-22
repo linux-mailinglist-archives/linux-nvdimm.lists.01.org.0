@@ -2,180 +2,121 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39C1D273AC5
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Sep 2020 08:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D75273F2D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 22 Sep 2020 12:05:05 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 355BD144C858E;
-	Mon, 21 Sep 2020 23:23:13 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=207.211.31.81; helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com [207.211.31.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id EA06D14781C20;
+	Tue, 22 Sep 2020 03:05:02 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 358FA14479972
-	for <linux-nvdimm@lists.01.org>; Mon, 21 Sep 2020 23:23:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600755788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Mzmhfdv4n5rZyzbrasI27bxC5DpWgPB4WGSFctyqRwY=;
-	b=E69akbOXzsMIvbBLKicP5N0JJ1JR+ehqytVoWZQE8hETTHXCrfmB11WuE5yeVOD/ZYpwpF
-	iDJOvEOn3Gqj8+nqfYxVYcyQJy3pZzdJ4SCBIK4tRgeRrV3HPBDPwfYzsJdeHI9XPupX1X
-	J+UdSYoJTP9CNotubsy2CjbHP7zmh6k=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-537-_Mdf06wSMq2VG4_GlCXl0g-1; Tue, 22 Sep 2020 02:23:04 -0400
-X-MC-Unique: _Mdf06wSMq2VG4_GlCXl0g-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A31B41005E5E;
-	Tue, 22 Sep 2020 06:22:59 +0000 (UTC)
-Received: from [10.36.113.20] (ovpn-113-20.ams2.redhat.com [10.36.113.20])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 91CE073682;
-	Tue, 22 Sep 2020 06:22:55 +0000 (UTC)
-Subject: Re: [PATCH] kernel/resource: Fix use of ternary condition in
- release_mem_region_adjustable
-To: Nathan Chancellor <natechancellor@gmail.com>
-References: <20200911103459.10306-2-david@redhat.com>
- <20200922060748.2452056-1-natechancellor@gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <330ff427-6971-25ec-2380-d1c8ad2dc7bc@redhat.com>
-Date: Tue, 22 Sep 2020 08:22:54 +0200
+	by ml01.01.org (Postfix) with ESMTPS id DA5BD143B300A
+	for <linux-nvdimm@lists.01.org>; Tue, 22 Sep 2020 03:04:59 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08MA3bd3075189;
+	Tue, 22 Sep 2020 06:04:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=xap9xZDBEoQ31ceOF8DdsfiPqgBfihwBvB7r2Zr7KNI=;
+ b=LnOf884PsFCVyw8yIy7Dh7YgA4jq/XL+Pp7lD92M5tNXowfUEtuE3LTypDfQOdvx6yeD
+ FfNfZr4ZOKxdgyDIHpClewISe9NQ6Y4/6w6m1B/dIZUiiuYaJSOq0lU+g6luH7eUrZok
+ DLAePVHbuoHw514CLz73u13lD1UxuiPwhD/2fKpz0XXHlTKjWDgAojfj8z1uot3c2ugk
+ WrQ6bF/EAd1U/sngTbNRWtPmufY21kxS5kvt31CAvML09MiHpKWlYIzdogRCBv5yU/UR
+ PIjxovpLxWrIzGoRLiPdPkMKpBnbwbL56LET35ghgS/DotgkkHeBEjFyqTi0Q6kF0qVo vA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 33qf6dg197-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2020 06:04:47 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+	by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08MA3mIE075613;
+	Tue, 22 Sep 2020 06:04:46 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 33qf6dg17t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2020 06:04:46 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+	by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08MA1ZHt010123;
+	Tue, 22 Sep 2020 10:04:43 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+	by ppma04fra.de.ibm.com with ESMTP id 33n9m7sh4n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Sep 2020 10:04:43 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08MA4dQJ29950400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Sep 2020 10:04:39 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 19D6FAE05A;
+	Tue, 22 Sep 2020 10:04:41 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D3D5AE051;
+	Tue, 22 Sep 2020 10:04:38 +0000 (GMT)
+Received: from [9.199.40.71] (unknown [9.199.40.71])
+	by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Sep 2020 10:04:37 +0000 (GMT)
+Subject: Re: [RFC] nvfs: a filesystem for persistent memory
+To: Matthew Wilcox <willy@infradead.org>,
+        Mikulas Patocka <mpatocka@redhat.com>
+References: <alpine.LRH.2.02.2009140852030.22422@file01.intranet.prod.int.rdu2.redhat.com>
+ <20200915130012.GC5449@casper.infradead.org>
+From: Ritesh Harjani <riteshh@linux.ibm.com>
+Message-ID: <20d31308-e60a-99f2-3309-c9f6c115e32b@linux.ibm.com>
+Date: Tue, 22 Sep 2020 15:34:37 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200922060748.2452056-1-natechancellor@gmail.com>
+In-Reply-To: <20200915130012.GC5449@casper.infradead.org>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-Message-ID-Hash: ZMECPHT2EZTKUBJT5IHGWIJM7CQQVDSX
-X-Message-ID-Hash: ZMECPHT2EZTKUBJT5IHGWIJM7CQQVDSX
-X-MailFrom: david@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: akpm@linux-foundation.org, ardb@kernel.org, bhe@redhat.com, jgg@ziepe.ca, keescook@chromium.org, linux-acpi@vger.kernel.org, linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-s390@vger.kernel.org, mhocko@suse.com, pankaj.gupta.linux@gmail.com, virtualization@lists.linux-foundation.org, xen-devel@lists.xenproject.org, clang-built-linux@googlegroups.com
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-22_06:2020-09-21,2020-09-22 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ clxscore=1011 adultscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009220082
+Message-ID-Hash: TJTLSJNLLRZAWLVXFKNHMVHZEDJ4LB23
+X-Message-ID-Hash: TJTLSJNLLRZAWLVXFKNHMVHZEDJ4LB23
+X-MailFrom: riteshh@linux.ibm.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZMECPHT2EZTKUBJT5IHGWIJM7CQQVDSX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TJTLSJNLLRZAWLVXFKNHMVHZEDJ4LB23/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On 22.09.20 08:07, Nathan Chancellor wrote:
-> Clang warns:
-> 
-> kernel/resource.c:1281:53: warning: operator '?:' has lower precedence
-> than '|'; '|' will be evaluated first
-> [-Wbitwise-conditional-parentheses]
->         new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
->                                  ~~~~~~~~~~~~~~~~~~~~~~~~~ ^
-> kernel/resource.c:1281:53: note: place parentheses around the '|'
-> expression to silence this warning
->         new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
->                                  ~~~~~~~~~~~~~~~~~~~~~~~~~ ^
-> kernel/resource.c:1281:53: note: place parentheses around the '?:'
-> expression to evaluate it first
->         new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
->                                                            ^
->                                               (                              )
-> 1 warning generated.
-> 
-> Add the parentheses as it was clearly intended for the ternary condition
-> to be evaluated first.
-> 
-> Fixes: 5fd23bd0d739 ("kernel/resource: make release_mem_region_adjustable() never fail")
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1159
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
-> 
-> Presumably, this will be squashed but I included a fixes tag
-> nonetheless. Apologies if this has already been noticed and fixed
-> already, I did not find anything on LKML.
-
-Hasn't been noticed before (I guess most people build with GCC, which
-does not warn in this instance, at least for me) thanks!
-
-Commit ids are not stable yet, so Andrew will most probably squash it.
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
-> 
->  kernel/resource.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/resource.c b/kernel/resource.c
-> index ca2a666e4317..3ae2f56cc79d 100644
-> --- a/kernel/resource.c
-> +++ b/kernel/resource.c
-> @@ -1278,7 +1278,7 @@ void release_mem_region_adjustable(resource_size_t start, resource_size_t size)
->  	 * similarly).
->  	 */
->  retry:
-> -	new_res = alloc_resource(GFP_KERNEL | alloc_nofail ? __GFP_NOFAIL : 0);
-> +	new_res = alloc_resource(GFP_KERNEL | (alloc_nofail ? __GFP_NOFAIL : 0));
->  
->  	p = &parent->child;
->  	write_lock(&resource_lock);
-> 
-> base-commit: 40ee82f47bf297e31d0c47547cd8f24ede52415a
-> 
 
 
--- 
-Thanks,
+On 9/15/20 6:30 PM, Matthew Wilcox wrote:
+> On Tue, Sep 15, 2020 at 08:34:41AM -0400, Mikulas Patocka wrote:
+>> - when the fsck.nvfs tool mmaps the device /dev/pmem0, the kernel uses
+>> buffer cache for the mapping. The buffer cache slows does fsck by a factor
+>> of 5 to 10. Could it be possible to change the kernel so that it maps DAX
+>> based block devices directly?
+> 
+> Oh, because fs/block_dev.c has:
+>          .mmap           = generic_file_mmap,
+> 
+> I don't see why we shouldn't have a blkdev_mmap modelled after
+> ext2_file_mmap() with the corresponding blkdev_dax_vm_ops.
+> 
 
-David / dhildenb
+pls help with below 2 queries:-
+
+1. Can't we use ->direct_IO here to avoid the mentioned performance problem?
+2. Any other existing use case where having this blkdev_dax_vm_ops be 
+useful?
+
+-ritesh
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
