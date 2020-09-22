@@ -1,80 +1,59 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050F2274C68
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 00:47:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576FF274D2B
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 01:16:48 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 194321486BC0D;
-	Tue, 22 Sep 2020 15:47:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=160.251.15.30; helo=nimnlxda.icu; envelope-from=admin@nimnlxda.icu; receiver=<UNKNOWN> 
-Received: from nimnlxda.icu (v160-251-15-30.awl1.static.cnode.io [160.251.15.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3F2901486BC0B
-	for <linux-nvdimm@lists.01.org>; Tue, 22 Sep 2020 15:47:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=nimnlxda.icu;
- h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
- i=admin@nimnlxda.icu;
- bh=hasLIk0P0qkzsS83x0sCmcTDD1oJhb7JdvEVDCNkaeg=;
- b=D3DLVj+zlPrvpBxvvT+ky5JsU3a+HQD6jKiUevfLqJSd4q8HqWF2InJW5GLLID8Cjz8GJzs61r4R
-   FvX2GZx/VxpUZAHmQ/oC3AG0k18PKudwhZgKBRmaYpEbWaA74BCFHoxrDx5C8C+pIuVET4EvxSwH
-   JQPbqZiEj0ezj2SDUe8=
-Message-ID: <20200923064715787631@nimnlxda.icu>
-From: "Amazon" <admin@nimnlxda.icu>
+	by ml01.01.org (Postfix) with ESMTP id 9A860148A59A8;
+	Tue, 22 Sep 2020 16:16:46 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.79.153; helo=xdwjmfhx.net; envelope-from=by@xdwjmfhx.net; receiver=<UNKNOWN> 
+Received: from xdwjmfhx.net (v118-27-79-153.foid.static.cnode.io [118.27.79.153])
+	by ml01.01.org (Postfix) with ESMTP id 6232E14816692
+	for <linux-nvdimm@lists.01.org>; Tue, 22 Sep 2020 16:16:43 -0700 (PDT)
+Message-ID: <439F85A6BD6027AC1632D84655AF1386@xdwjmfhx.net>
+From: "Amazon.co.jp" <account-update@amazon.co.jp>
 To: <linux-nvdimm@lists.01.org>
-Subject: =?iso-2022-jp?B?GyRCJCo7WUonJCRKfUshJE4+cEpzJHI5OT83GyhC?=
-Date: Wed, 23 Sep 2020 06:47:04 +0800
-MIME-Version: 1.0
-Message-ID-Hash: 22RA72N2UGRESNYIKFQ3LAXAHTS3RAHB
-X-Message-ID-Hash: 22RA72N2UGRESNYIKFQ3LAXAHTS3RAHB
-X-MailFrom: admin@nimnlxda.icu
+Subject: =?utf-8?B?QW1hem9uLmNvLmpwIOOCouOCq+OCpuODs+ODiOaJgOaciQ==?=
+	=?utf-8?B?5qip44Gu6Ki85piO77yI5ZCN5YmN44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqN?=
+Date: Wed, 23 Sep 2020 08:16:32 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.17763.1
+Message-ID-Hash: QOTGQAKC43WWHL5GHPHZ2FL23HCH57ON
+X-Message-ID-Hash: QOTGQAKC43WWHL5GHPHZ2FL23HCH57ON
+X-MailFrom: by@xdwjmfhx.net
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/22RA72N2UGRESNYIKFQ3LAXAHTS3RAHB/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QOTGQAKC43WWHL5GHPHZ2FL23HCH57ON/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-お支払い方法の情報を更新してください。Update default card for your membership.
-
- 
- マイストア? |タイムセール? |ギフト券 
-
- 
-
-Amazonプライムをご利用頂きありがとうございます。お客様のAmazonプライム会員資格は、2020/09/23に更新を迎えます。お調べしたところ、会費のお支払いに使用できる有効なクレジットカードがアカウントに登録されていません。クレジットカード情報の更新、新しいクレジットカードの追加については以下の手順をご確認ください。
-
-
-1. アカウントサービスからAmazonプライム会員情報を管理するにアクセスします。
-
-2. Amazonプライムに登録したAmazon.co.jpのアカウントを使用してサインインします。
-
-3. 左側に表示されている「現在の支払方法」の下にある「支払方法を変更する」のリンクをクリックします。
-
-4. 有効期限の更新または新しいクレジットカード情報を入力してください。
-
-
-Amazonプライムを継続してご利用いただくために、会費のお支払いにご指定いただいたクレジットカードが使用できない場合は、アカウントに登録されている別 のクレジットカードに会費を請求させて頂きます。会費の請求が出来ない場合は、お客様のAmazonプライム会員資格は失効し、特典をご利用できなくなります。
-
-
-Amazon.co.jpカスタマーサービス 
-
-
- 
-支払方法の情報を更新する 
-
-
-
- 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+IA0KDQoNCg0KDQoNCuW5s+e0oOOBryBBbWF6b24uY28uanAg44KS44GU5Yip55So44GE44Gf44Gg
+44GN44CB6Kqg44Gr44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQoNCg0K44GK5a6i
+5qeY44Gu44Ki44Kr44Km44Oz44OI44Gn55Ww5bi444Gq44Ki44Kv44OG44Kj44OT44OG44Kj44GM
+5qSc5Ye644GV44KM44Gf44Gf44KBQW1hem9uIOOCouOCq+OCpuODs+ODiOOCkuWBnOatouOBleOB
+m+OBpuOBhOOBn+OBoOOBhOOBpuOBiuOCiuOBvuOBmeOAguOCouOCq+OCpuODs+ODiOOBq+ODreOC
+sOOCpOODs+OBl+OBpueUu+mdouOBruaMh+ekuuOBq+W+k+OBhuOBk+OBqOOBp+OAgeOCouOCq+OC
+puODs+ODiOOBruODreODg+OCr+OCkuino+mZpOOBl+OBpuOBhOOBn+OBoOOBkeOBvuOBmeOAgg0K
+DQoNCkFtYXpvbiDjg63jgrDjgqTjg7MgDQoNCg0K6KuL5rGC5YWI5oOF5aCx44Gu56K66KqN44GM
+5a6M5LqG44GZ44KL44G+44Gn44CB44GK5a6i5qeY44Gu44Ki44Kr44Km44Oz44OI44G444Gu44Ki
+44Kv44K744K544KS5YGc5q2i44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GZ44Gu44Gn44CB44GU
+5LqG5om/44GP44Gg44GV44GE44CCDQoNCueVsOW4uOOBquODreOCsOOCpOODs0lQ77yaMTg1LjEz
+Ny4xMDYuMjUyDQoNCg0K5L2V5Y2S44CB44KI44KN44GX44GP44GK6aGY44GE55Sz44GX5LiK44GS
+44G+44GZ44CCDQoNCg0KQW1hem9uLmNvLmpw44Gu44G+44Gf44Gu44GU5Yip55So44KS44GK5b6F
+44Gh44GX44Gm44GK44KK44G+44GZ44CCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
+QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
+bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
