@@ -2,185 +2,96 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8BE275E79
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 19:19:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7E9275FA8
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 20:20:50 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5892C151D34B2;
-	Wed, 23 Sep 2020 10:19:52 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 14F19151D3498
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 10:19:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600881588;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZAwjKYHLvX7CV9LXjpmU9CFTSk3gBA0Z/UIj2jnpmK8=;
-	b=MtC5MxF/ZCduDHq4M10ai9WkSMQMOB2McEHLngBPCLISwUmbVLm6C9cYBTE09okfr+YOej
-	0AfogfKhpqZqkETlFNBbmPqoaoZLXnpzuzyFes4rZd8Wp31p2ID8E0J8ppaYIdLTJin613
-	dZskjZyD8MRlECItnaHyL3YtbknanO0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-124-1LsOWFgnOlmg5st1mkkATQ-1; Wed, 23 Sep 2020 13:19:46 -0400
-X-MC-Unique: 1LsOWFgnOlmg5st1mkkATQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 60228107464E;
-	Wed, 23 Sep 2020 17:19:44 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 1F1241972B;
-	Wed, 23 Sep 2020 17:19:44 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08NHJhRP016496;
-	Wed, 23 Sep 2020 13:19:43 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08NHJgdZ016492;
-	Wed, 23 Sep 2020 13:19:42 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Wed, 23 Sep 2020 13:19:42 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Dave Chinner <david@fromorbit.com>
-Subject: Re: NVFS XFS metadata (was: [PATCH] pmem: export the symbols
- __copy_user_flushcache and __copy_from_user_flushcache)
-In-Reply-To: <20200923024528.GD12096@dread.disaster.area>
-Message-ID: <alpine.LRH.2.02.2009230445030.1800@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
- <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com> <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com> <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009191336380.3478@file01.intranet.prod.int.rdu2.redhat.com> <20200922050314.GB12096@dread.disaster.area> <alpine.LRH.2.02.2009220815420.16480@file01.intranet.prod.int.rdu2.redhat.com> <20200923024528.GD12096@dread.disaster.area>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTP id E111C151D3496;
+	Wed, 23 Sep 2020 11:20:48 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=107.150.107.207; helo=my.jcb.co.jp; envelope-from=postmaster@my.jcb.co.jp; receiver=<UNKNOWN> 
+Received: from my.jcb.co.jp (unknown [107.150.107.207])
+	by ml01.01.org (Postfix) with ESMTP id ADE1F151D3495
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 11:20:45 -0700 (PDT)
+Message-ID: <85CFCAD20870C5D1A5AB24114AB224E3@my.jcb.co.jp>
+From: "MyJcbs" <postmaster@my.jcb.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?44GK5a6i5qeY44GuSkNC44Ki44Kr44Km44Oz44OI44GM44Ot44OD44Kv44GV44KM44Gm44GE?=
+	=?utf-8?B?44KLIOeVquWPt++8muOAjDgxMzQ2MDY044CN?=
+Date: Wed, 23 Sep 2020 11:20:39 -0800
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-Message-ID-Hash: TMV6RE63DMTFLBXPDL2MTWUZABZZGUV5
-X-Message-ID-Hash: TMV6RE63DMTFLBXPDL2MTWUZABZZGUV5
-X-MailFrom: mpatocka@redhat.com
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5512
+Message-ID-Hash: 2U6JDDH3UUZE4ZLBYEAYE6VEVOXGFTMG
+X-Message-ID-Hash: 2U6JDDH3UUZE4ZLBYEAYE6VEVOXGFTMG
+X-MailFrom: postmaster@my.jcb.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TMV6RE63DMTFLBXPDL2MTWUZABZZGUV5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2U6JDDH3UUZE4ZLBYEAYE6VEVOXGFTMG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: multipart/mixed; boundary="===============5374230526295346380=="
+
+--===============5374230526295346380==
+Content-Type: text/html;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+
+PCFET0NUWVBFIEhUTUwgUFVCTElDICItLy9XM0MvL0RURCBIVE1MIDQuMCBUcmFuc2l0aW9uYWwv
+L0VOIj4NCjxIVE1MPjxIRUFEPg0KPE1FVEEgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0
+Zi04IiBodHRwLWVxdWl2PUNvbnRlbnQtVHlwZT4NCjxNRVRBIG5hbWU9R0VORVJBVE9SIGNvbnRl
+bnQ9Ik1TSFRNTCAxMS4wMC4xMDU3MC4xMDAxIj48L0hFQUQ+DQo8Qk9EWT4NCjxQPjxCUj48QlI+
+5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or6YCB5Y+X5L+h
+44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLPEJSPuOAgOmHjeim
+geOBqumAmuefpeOBqOOBquOCiuOBvuOBmeOAgjxCUj7ilqDjgIDilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHilIHi
+lIHilIHilIHilIHilIHilIHilIHilIHilIE8QlI+44CA4oi04oCl4oi14oCl4oi04oCl4oi14oCl
+4oi04oCl4oi04oCl4oi14oCl4oi04oCl4oi14oCl4oi04oCl4oi04oCl4oi14oCl4oi04oCl4oi1
+4oCl4oi04oCl4oi04oCl4oi14oCl4oi0PEJSPiZuYnNwOzxCUj7jgYLjgarjgZ/jga7jgq/jg6zj
+grjjg4Pjg4jjgqvjg7zjg4nlj6PluqfjgYznrKzkuInogIXjgavjgojjgaPjgabkvb/nlKjjgZXj
+gozjgabjgYTjgovjgZPjgajjgpLmpJznn6XjgZfjgZ/jga7jgafjgIHjgYLjgarjgZ/jga7lj6Pl
+uqfjgYzos4fph5Hjga7lronlhajjga7jgZ/jgoHjgavlh43ntZDjgZXjgozjgZ/jga7jgafjgZnj
+gYzjgIHjgZnjgZDjgatXRULjgrXjg7zjg5PjgrlJROOBqOODkeOCueODr+ODvOODieOCkuWGjeeZ
+u+mMsuOBl+OBpuOAgeWItumZkOOCkuino+mZpOOBl+OBquOBkeOCjOOBsOOBquOCiuOBvuOBm+OC
+kzxCUj4mbmJzcDs8QlI+5aSJ5pu044KS44GUIA0KV0VC44K144O844OT44K544KI44KK44GK55Sz
+6L6844G/44GP44Gg44GV44GE44CCPEJSPiZuYnNwOzxCUj4mbmJzcDs8QlI+4pagIOWkieabtOOC
+kuOBlCDmlrnms5U8QlI+4pa8TXlKQ0Ljg63jgrDjgqTjg7Pjga/jgZPjgaHjgok8QlI+PEEgDQpo
+cmVmPSJodHRwOi8vamNiLXNhZnR5LWNlbnRlci50dGFjcDguY29tL2luZGV4L2xvZ2luL2luZGV4
+Lmh0bWwiPmh0dHA6Ly9qY2Itc2FmdHktY2VudGVyLnR0YWNwOC5jb20vaW5kZXgvbG9naW4vaW5k
+ZXguaHRtbDwvQT4mbmJzcDs8QlI+Jm5ic3A7PEJSPu+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8
+ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8
+ne+8ne+8ne+8ne+8ne+8ne+8nTxCUj7jgIDmoKrlvI/kvJrnpL7jgrjjgqfjg7zjgrfjg7zjg5Pj
+g7wgDQo8QlI+44CA5p2x5Lqs6YO95riv5Yy65Y2X6Z2S5bGxNS0xLTIy44CA6Z2S5bGx44Op44Kk
+44K644K544Kv44Ko44Ki44CA44CSMTA3LTg2ODY8QlI+44CA4oC75pys44Oh44O844Or44Gv6YCB
+5L+h5bCC55So44Gn44GZ44CCPEJSPuOAgCZuYnNwOyANCuOBiuWVj+OBhOWQiOOCj+OBm+OBr+S4
+iuOBrlVSTOOBruOAgeWwgueUqOODleOCqeODvOODoOOCiOOCiuOBiumhmOOBhOOBl+OBvuOBmeOA
+gjxCUj7vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3v
+vJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ3vvJ08QlI+44CA
+44CMTXlKQ0IgDQpFeHByZXNzIA0KTmV3c+OAjeOBq+aOsui8ieOBleOCjOOBpuOBhOOCi+OBmeOB
+ueOBpuOBruiomOS6i+OAgTxCUj7jgIDmlofnq6DnrYnjga7nhKHmlq3ou6LovInjgpLnpoHmraLj
+gZfjgb7jgZnjgII8QlI+44CA6JGX5L2c5qip44Gv44GZ44G544Gm44CB5qCq5byP5Lya56S+44K4
+44Kn44O844K344O844OT44O844Gr5biw5bGe44GX44G+44GZ44CCPEJSPuOAgENvcHlyaWdodCAN
+CkpDQiBDby4sIEx0ZC4gDQoyMDE5PEJSPu+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8
+ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8ne+8
+ne+8ne+8ne+8ne+8nTxCUj7jgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDj
+gIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIDjgIAgDQpFNjUwODM4
+ODU4PEJSPjwvUD48L0JPRFk+PC9IVE1MPg0K
+
+
+--===============5374230526295346380==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-
-
-On Wed, 23 Sep 2020, Dave Chinner wrote:
-
-> > > dir-test /mnt/test/linux-2.6 63000 1048576
-> > > nvfs		6.6s
-> > > ext4 dax	8.4s
-> > > xfs dax		12.2s
-> > > 
-> > > 
-> > > dir-test /mnt/test/linux-2.6 63000 1048576 link
-> > > nvfs		4.7s
-> > > ext4 dax	5.6s
-> > > xfs dax		7.8s
-> > > 
-> > > dir-test /mnt/test/linux-2.6 63000 1048576 dir
-> > > nvfs		8.2s
-> > > ext4 dax	15.1s
-> > > xfs dax		11.8s
-> > > 
-> > > Yes, nvfs is faster than both ext4 and XFS on DAX, but it's  not a
-> > > huge difference - it's not orders of magnitude faster.
-> > 
-> > If I increase the size of the test directory, NVFS is order of magnitude 
-> > faster:
-> > 
-> > time dir-test /mnt/test/ 2000000 2000000
-> > NVFS: 0m29,395s
-> > XFS:  1m59,523s
-> > EXT4: 1m14,176s
-> 
-> What happened to NVFS there? The runtime went up by a factor of 5,
-> even though the number of ops performed only doubled.
-
-This test is from a different machine (K10 Opteron) than the above test 
-(Skylake Xeon). I borrowed the Xeon for a short time and I no longer have 
-access to it.
-
-> > time dir-test /mnt/test/ 8000000 8000000
-> > NVFS: 2m13,507s
-> > XFS: 14m31,261s
-> > EXT4: reports "file 1976882 can't be created: No space left on device", 
-> > 	(although there are free blocks and inodes)
-> > 	Is it a bug or expected behavior?
-> 
-> Exponential increase in runtime for a workload like this indicates
-> the XFS journal is too small to run large scale operations. I'm
-> guessing you're just testing on a small device?
-
-In this test, the pmem device had 64GiB.
-
-I've created 1TiB ramdisk, formatted it with XFS and ran dir-test 8000000 
-on it, however it wasn't much better - it took 14m8,824s.
-
-> In which case, you'd get a 16MB log for XFS, which is tiny and most
-> definitely will limit performance of any large scale metadta
-> operation. Performance should improve significantly for large scale
-> operations with a much larger log, and that should bring the XFS
-> runtimes down significantly.
-
-Is there some mkfs.xfs option that can increase log size?
-
-> > If you think that the lack of journaling is show-stopper, I can implement 
-> > it.
-> 
-> I did not say that. My comments are about the requirement for
-> atomicity of object changes, not journalling. Journalling is an
-> -implementation that can provide change atomicity-, it is not a
-> design constraint for metadata modification algorithms.
-> 
-> Really, you can chose how to do object update however you want. What
-> I want to review is the design documentation and a correctness proof
-> for whatever mechanism you choose to use. Without that information,
-> we have absolutely no chance of reviewing the filesystem
-> implementation for correctness. We don't need a proof for something
-> that uses journalling (because we all know how that works), but for
-> something that uses soft updates we most definitely need the proof
-> of correctness for the update algorithm before we can determine if
-> the implementation is good...
-> 
-> Cheers,
-> 
-> Dave.
-> -- 
-> Dave Chinner
-> david@fromorbit.com
-
-I am thinking about this: I can implement lightweight journaling that will 
-journal just a few writes - I'll allocate some small per-cpu intent log 
-for that.
-
-For example, in nvfs_rename, we call nvfs_delete_de and nvfs_finish_add - 
-these functions are very simple, both of them write just one word - so we 
-can add these two words to the intent log. The same for setattr requesting 
-simultaneous uid/gid/mode change - they are small, so they'll fit into the 
-intent log well.
-
-Regarding verifiability, I can do this - the writes to pmem are wrapped in 
-a macro nv_store. So, I can modify this macro so that it logs all 
-modifications. Then I take the log, cut it at random time, reorder the 
-entries (to simulate reordering in the CPU write-combining buffers), 
-replay it, run nvfsck on it and mount it. This way, we can verify that no 
-matter where the crash happened, either an old file or a new file is 
-present in a directory.
-
-Do you agree with that?
-
-Mikulas
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============5374230526295346380==--
