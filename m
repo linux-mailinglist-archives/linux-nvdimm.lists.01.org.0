@@ -1,160 +1,81 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BCD27586F
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 15:11:59 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39144275B21
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 17:04:51 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5D05914FC6C54;
-	Wed, 23 Sep 2020 06:11:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 2DFE013E1160D;
+	Wed, 23 Sep 2020 08:04:49 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id CF82414FC33B5
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 06:11:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1600866712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kDxFW0Zci5a4gqRLOX3WWCWSqU2y/VaKVhoCtZvVWrs=;
-	b=ZGkP/NDrjVBk1hUW9PJbmxuCpHuhhvIf3SFU4pV3x5gxuOkxj6a03Z+ce7SuFwAUM+4Cba
-	5C0jt8EpUefShXxsIquWkIQZD/qiCoNBmDUSW5itd56Zb46PpQSM8CYgG+/BNX5SwnQf0n
-	nNoo9+NxvQIRbGLQ/xfRY3m85uAcr0I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-118-LjZwdbeiODmyd-uDEwuOfA-1; Wed, 23 Sep 2020 09:11:47 -0400
-X-MC-Unique: LjZwdbeiODmyd-uDEwuOfA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5830B802B4C;
-	Wed, 23 Sep 2020 13:11:45 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B90DB78822;
-	Wed, 23 Sep 2020 13:11:44 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08NDBiOY022621;
-	Wed, 23 Sep 2020 09:11:44 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08NDBhOr022617;
-	Wed, 23 Sep 2020 09:11:43 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Wed, 23 Sep 2020 09:11:43 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Jan Kara <jack@suse.cz>
+	by ml01.01.org (Postfix) with ESMTPS id C81B613E1160C
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 08:04:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ose8ctZCTv8oUOd9k3tTT76nITLXgVZlsCte1r4Sf9c=; b=MkYEExTq1+wkaz83zMuspp5RjA
+	Ql+JlgSLUtPgJQMk5ZRNIO+I2UvxTYWBAkIXlCxSLKN0kKXI86QBoGjW7A+yKUpkqMuuehrinsPuf
+	iwX4oT+QNjApAyJGa8cH3EwMkixriTNBrfTFPhwDoOaCloAwyeLBZpcBeXr6ULKd7x6mz/VU1mrTF
+	rjgPBXE/KVXkfXpLPhqrWyo99AM+ADFVOdaGRg6A3iJrv8o6ovKyridoI1mwkForkyoK8bF8rFGrw
+	fd8w+PRxzla1bKvhyrYdLqm3AOmAqwCzB8te5Y2Zk6g0lBF64zMFMDuAmKdoz1JjyoTd9K7oNNJHv
+	KnkoQvSQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kL6Jn-0005Kf-EE; Wed, 23 Sep 2020 15:04:27 +0000
+Date: Wed, 23 Sep 2020 16:04:27 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Mikulas Patocka <mpatocka@redhat.com>
 Subject: Re: NVFS XFS metadata (was: [PATCH] pmem: export the symbols
  __copy_user_flushcache and __copy_from_user_flushcache)
-In-Reply-To: <20200923095739.GC6719@quack2.suse.cz>
-Message-ID: <alpine.LRH.2.02.2009230841110.1800@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
- <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com> <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com> <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009191336380.3478@file01.intranet.prod.int.rdu2.redhat.com> <20200922050314.GB12096@dread.disaster.area> <alpine.LRH.2.02.2009220815420.16480@file01.intranet.prod.int.rdu2.redhat.com> <20200923095739.GC6719@quack2.suse.cz>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+Message-ID: <20200923150427.GP32101@casper.infradead.org>
+References: <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
+ <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com>
+ <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com>
+ <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com>
+ <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
+ <alpine.LRH.2.02.2009191336380.3478@file01.intranet.prod.int.rdu2.redhat.com>
+ <20200922050314.GB12096@dread.disaster.area>
+ <alpine.LRH.2.02.2009220815420.16480@file01.intranet.prod.int.rdu2.redhat.com>
+ <20200923095739.GC6719@quack2.suse.cz>
+ <alpine.LRH.2.02.2009230841110.1800@file01.intranet.prod.int.rdu2.redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: I5W432D4PLJYVICVUPSQCZ27M5XKQD4Y
-X-Message-ID-Hash: I5W432D4PLJYVICVUPSQCZ27M5XKQD4Y
-X-MailFrom: mpatocka@redhat.com
+Content-Disposition: inline
+In-Reply-To: <alpine.LRH.2.02.2009230841110.1800@file01.intranet.prod.int.rdu2.redhat.com>
+Message-ID-Hash: ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL
+X-Message-ID-Hash: ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL
+X-MailFrom: willy@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Chinner <david@fromorbit.com>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+CC: Jan Kara <jack@suse.cz>, Dave Chinner <david@fromorbit.com>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/I5W432D4PLJYVICVUPSQCZ27M5XKQD4Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
+On Wed, Sep 23, 2020 at 09:11:43AM -0400, Mikulas Patocka wrote:
+> I also don't know how to implement journling on persistent memory :) On 
+> EXT4 or XFS you can pin dirty buffers in memory until the journal is 
+> flushed. This is obviously impossible on persistent memory. So, I'm 
+> considering implementing only some lightweight journaling that will 
+> guarantee atomicity between just a few writes.
 
+That's a bit disappointing considering people have been publishing
+papers on how to do umpteen different variations on persistent memory
+journalling for the last five years.
 
-On Wed, 23 Sep 2020, Jan Kara wrote:
+https://www.google.com/search?q=intel+persistent+memory+atomic+updates
 
-> On Tue 22-09-20 12:46:05, Mikulas Patocka wrote:
-> > > mapping 2^21 blocks requires a 5 level indirect tree. Which one if going 
-> > > to be faster to truncate away - a single record or 2 million individual 
-> > > blocks?
-> > > 
-> > > IOWs, we can take afford to take an extra cacheline miss or two on a
-> > > tree block search, because we're accessing and managing orders of
-> > > magnitude fewer records in the mapping tree than an indirect block
-> > > tree.
-> > > 
-> > > PMEM doesn't change this: extents are more time and space efficient
-> > > at scale for mapping trees than indirect block trees regardless
-> > > of the storage medium in use.
-> > 
-> > PMEM doesn't have to be read linearly, so the attempts to allocate large 
-> > linear space are not needed. They won't harm but they won't help either.
-> > 
-> > That's why NVFS has very simple block allocation alrogithm - it uses a 
-> > per-cpu pointer and tries to allocate by a bit scan from this pointer. If 
-> > the group is full, it tries a random group with above-average number of 
-> > free blocks.
-> 
-> I agree with Dave here. People are interested in 2MB or 1GB contiguous
-> allocations for DAX so that files can be mapped at PMD or event PUD levels
-> thus saving a lot of CPU time on page faults and TLB.
-
-NVFS has upper limit on block size 1MB. So, should raise it to 2MB? Will 
-2MB blocks be useful to someone?
-
-Is there some API how userspace can ask the kernel for aligned allocation? 
-fallocate() doesn't seem to offer an option for alignment.
-
-> > EXT4 uses bit scan for allocations and people haven't complained that it's 
-> > inefficient, so it is probably OK.
-> 
-> Yes, it is more or less OK but once you get to 1TB filesystem size and
-> larger, the number of block groups grows enough that it isn't that great
-> anymore. We are actually considering new allocation schemes for ext4 for
-> this large filesystems...
-
-NVFS can run with block size larger than page size, so you can reduce the 
-number of block groups by increasing block size.
-
-(ext4 also has bigalloc feature that will do it)
-
-> > If you think that the lack of journaling is show-stopper, I can implement 
-> > it. But then, I'll have something that has complexity of EXT4 and 
-> > performance of EXT4. So that there will no longer be any reason why to use 
-> > NVFS over EXT4. Without journaling, it will be faster than EXT4 and it may 
-> > attract some users who want good performance and who don't care about GID 
-> > and UID being updated atomically, etc.
-> 
-> I'd hope that your filesystem offers more performance benefits than just
-> what you can get from a lack of journalling :). ext4 can be configured to
-
-I also don't know how to implement journling on persistent memory :) On 
-EXT4 or XFS you can pin dirty buffers in memory until the journal is 
-flushed. This is obviously impossible on persistent memory. So, I'm 
-considering implementing only some lightweight journaling that will 
-guarantee atomicity between just a few writes.
-
-> run without a journal as well - mkfs.ext4 -O ^has_journal. And yes, it does
-> significantly improve performance for some workloads but you have to have
-> some way to recover from crashes so it's mostly used for scratch
-> filesystems (e.g. in build systems, Google uses this feature a lot for some
-> of their infrastructure as well).
-> 
-> 								Honza
-> -- 
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
-
-I've run "dir-test /mnt/test/ 8000000 8000000" and the result is:
-EXT4 with journal	- 5m54,019s
-EXT4 without journal	- 4m4,444s
-NVFS			- 2m9,482s
-
-Mikulas
+for example
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
