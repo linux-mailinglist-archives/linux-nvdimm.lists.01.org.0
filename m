@@ -2,58 +2,48 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39144275B21
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 17:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4546F275E11
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 23 Sep 2020 18:59:53 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2DFE013E1160D;
-	Wed, 23 Sep 2020 08:04:49 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6E217151A0A49;
+	Wed, 23 Sep 2020 09:59:51 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.115; helo=mga14.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C81B613E1160C
-	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 08:04:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ose8ctZCTv8oUOd9k3tTT76nITLXgVZlsCte1r4Sf9c=; b=MkYEExTq1+wkaz83zMuspp5RjA
-	Ql+JlgSLUtPgJQMk5ZRNIO+I2UvxTYWBAkIXlCxSLKN0kKXI86QBoGjW7A+yKUpkqMuuehrinsPuf
-	iwX4oT+QNjApAyJGa8cH3EwMkixriTNBrfTFPhwDoOaCloAwyeLBZpcBeXr6ULKd7x6mz/VU1mrTF
-	rjgPBXE/KVXkfXpLPhqrWyo99AM+ADFVOdaGRg6A3iJrv8o6ovKyridoI1mwkForkyoK8bF8rFGrw
-	fd8w+PRxzla1bKvhyrYdLqm3AOmAqwCzB8te5Y2Zk6g0lBF64zMFMDuAmKdoz1JjyoTd9K7oNNJHv
-	KnkoQvSQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kL6Jn-0005Kf-EE; Wed, 23 Sep 2020 15:04:27 +0000
-Date: Wed, 23 Sep 2020 16:04:27 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Mikulas Patocka <mpatocka@redhat.com>
-Subject: Re: NVFS XFS metadata (was: [PATCH] pmem: export the symbols
- __copy_user_flushcache and __copy_from_user_flushcache)
-Message-ID: <20200923150427.GP32101@casper.infradead.org>
-References: <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
- <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com>
- <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com>
- <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com>
- <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009191336380.3478@file01.intranet.prod.int.rdu2.redhat.com>
- <20200922050314.GB12096@dread.disaster.area>
- <alpine.LRH.2.02.2009220815420.16480@file01.intranet.prod.int.rdu2.redhat.com>
- <20200923095739.GC6719@quack2.suse.cz>
- <alpine.LRH.2.02.2009230841110.1800@file01.intranet.prod.int.rdu2.redhat.com>
+	by ml01.01.org (Postfix) with ESMTPS id D1AB9151A0A49
+	for <linux-nvdimm@lists.01.org>; Wed, 23 Sep 2020 09:59:48 -0700 (PDT)
+IronPort-SDR: x/B+sjE8cEV1+iu4g+g94HNAqNfzBUrt6cFJy2LrbNs0VIgQBwW8z5Ftj1n+qXlS8PJ1fLDY4Q
+ NhRcZ6lDNWMg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9753"; a="160237949"
+X-IronPort-AV: E=Sophos;i="5.77,293,1596524400";
+   d="scan'208";a="160237949"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2020 09:59:47 -0700
+IronPort-SDR: Uk3FpZWtjC6MxaY2DpATud/gCLigyWCbeA2NfdUXbwu2fTZl13//C7v+skd5M53i4aVDYwi05+
+ R65xu4Hv6T4Q==
+X-IronPort-AV: E=Sophos;i="5.77,293,1596524400";
+   d="scan'208";a="511067966"
+Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2020 09:59:47 -0700
+Subject: [PATCH v9 0/2] Renovate memcpy_mcsafe with copy_mc_to_{user, kernel}
+From: Dan Williams <dan.j.williams@intel.com>
+To: mingo@redhat.com
+Date: Wed, 23 Sep 2020 09:41:26 -0700
+Message-ID: <160087928642.3520.17063139768910633998.stgit@dwillia2-desk3.amr.corp.intel.com>
+User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <alpine.LRH.2.02.2009230841110.1800@file01.intranet.prod.int.rdu2.redhat.com>
-Message-ID-Hash: ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL
-X-Message-ID-Hash: ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL
-X-MailFrom: willy@infradead.org
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Jan Kara <jack@suse.cz>, Dave Chinner <david@fromorbit.com>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Message-ID-Hash: BRBR47ZUXZWMGL674NBKCWXI3OQKHZ2P
+X-Message-ID-Hash: BRBR47ZUXZWMGL674NBKCWXI3OQKHZ2P
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Tony Luck <tony.luck@intel.com>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Borislav Petkov <bp@alien8.de>, stable@vger.kernel.org, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, tglx@linutronix.de, Andy Lutomirski <luto@kernel.org>, Paul Mackerras <paulus@samba.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Erwin Tsaur <erwin.tsaur@intel.com>, Michael Ellerman <mpe@ellerman.id.au>, Mikulas Patocka <mpatocka@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 0day robot <lkp@intel.com>, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, jack@suse.cz
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ADGAV76VHTZWMI4ICG2IBCOVG3TVGKRL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BRBR47ZUXZWMGL674NBKCWXI3OQKHZ2P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,20 +52,96 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 23, 2020 at 09:11:43AM -0400, Mikulas Patocka wrote:
-> I also don't know how to implement journling on persistent memory :) On 
-> EXT4 or XFS you can pin dirty buffers in memory until the journal is 
-> flushed. This is obviously impossible on persistent memory. So, I'm 
-> considering implementing only some lightweight journaling that will 
-> guarantee atomicity between just a few writes.
+Changes since v8 [1]:
+- Rebase on v5.9-rc6
 
-That's a bit disappointing considering people have been publishing
-papers on how to do umpteen different variations on persistent memory
-journalling for the last five years.
+- Fix a performance regression in the x86 copy_mc_to_user()
+  implementation that was duplicating copies in the "fragile" case.
 
-https://www.google.com/search?q=intel+persistent+memory+atomic+updates
+- Refreshed the cover letter.
 
-for example
+[1]: http://lore.kernel.org/r/159630255616.3143511.18110575960499749012.stgit@dwillia2-desk3.amr.corp.intel.com
+
+---
+
+The motivations to go rework memcpy_mcsafe() are that the benefit of
+doing slow and careful copies is obviated on newer CPUs, and that the
+current opt-in list of cpus to instrument recovery is broken relative to
+those cpus.  There is no need to keep an opt-in list up to date on an
+ongoing basis if pmem/dax operations are instrumented for recovery by
+default. With recovery enabled by default the old "mcsafe_key" opt-in to
+careful copying can be made a "fragile" opt-out. Where the "fragile"
+list takes steps to not consume poison across cachelines.
+
+The discussion with Linus made clear that the current "_mcsafe" suffix
+was imprecise to a fault. The operations that are needed by pmem/dax are
+to copy from a source address that might throw #MC to a destination that
+may write-fault, if it is a user page. So copy_to_user_mcsafe() becomes
+copy_mc_to_user() to indicate the separate precautions taken on source
+and destination. copy_mc_to_kernel() is introduced as a version that
+does not expect write-faults on the destination, but is still prepared
+to abort with an error code upon taking #MC.
+
+These patches have received a kbuild-robot build success notification
+across 114 configs, the rebase to v5.9-rc6 did not encounter any
+conflicts, and the merge with tip/master is conflict-free.
+
+---
+
+Dan Williams (2):
+      x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user,kernel}()
+      x86/copy_mc: Introduce copy_mc_generic()
+
+
+ arch/powerpc/Kconfig                               |    2 
+ arch/powerpc/include/asm/string.h                  |    2 
+ arch/powerpc/include/asm/uaccess.h                 |   40 +++--
+ arch/powerpc/lib/Makefile                          |    2 
+ arch/powerpc/lib/copy_mc_64.S                      |    4 
+ arch/x86/Kconfig                                   |    2 
+ arch/x86/Kconfig.debug                             |    2 
+ arch/x86/include/asm/copy_mc_test.h                |   75 +++++++++
+ arch/x86/include/asm/mcsafe_test.h                 |   75 ---------
+ arch/x86/include/asm/string_64.h                   |   32 ----
+ arch/x86/include/asm/uaccess.h                     |   21 +++
+ arch/x86/include/asm/uaccess_64.h                  |   20 --
+ arch/x86/kernel/cpu/mce/core.c                     |    8 -
+ arch/x86/kernel/quirks.c                           |    9 -
+ arch/x86/lib/Makefile                              |    1 
+ arch/x86/lib/copy_mc.c                             |   65 ++++++++
+ arch/x86/lib/copy_mc_64.S                          |  165 ++++++++++++++++++++
+ arch/x86/lib/memcpy_64.S                           |  115 --------------
+ arch/x86/lib/usercopy_64.c                         |   21 ---
+ drivers/md/dm-writecache.c                         |   15 +-
+ drivers/nvdimm/claim.c                             |    2 
+ drivers/nvdimm/pmem.c                              |    6 -
+ include/linux/string.h                             |    9 -
+ include/linux/uaccess.h                            |    9 +
+ include/linux/uio.h                                |   10 +
+ lib/Kconfig                                        |    7 +
+ lib/iov_iter.c                                     |   43 +++--
+ tools/arch/x86/include/asm/mcsafe_test.h           |   13 --
+ tools/arch/x86/lib/memcpy_64.S                     |  115 --------------
+ tools/objtool/check.c                              |    5 -
+ tools/perf/bench/Build                             |    1 
+ tools/perf/bench/mem-memcpy-x86-64-lib.c           |   24 ---
+ tools/testing/nvdimm/test/nfit.c                   |   48 +++---
+ .../testing/selftests/powerpc/copyloops/.gitignore |    2 
+ tools/testing/selftests/powerpc/copyloops/Makefile |    6 -
+ .../selftests/powerpc/copyloops/copy_mc_64.S       |    1 
+ .../selftests/powerpc/copyloops/memcpy_mcsafe_64.S |    1 
+ 37 files changed, 452 insertions(+), 526 deletions(-)
+ rename arch/powerpc/lib/{memcpy_mcsafe_64.S => copy_mc_64.S} (98%)
+ create mode 100644 arch/x86/include/asm/copy_mc_test.h
+ delete mode 100644 arch/x86/include/asm/mcsafe_test.h
+ create mode 100644 arch/x86/lib/copy_mc.c
+ create mode 100644 arch/x86/lib/copy_mc_64.S
+ delete mode 100644 tools/arch/x86/include/asm/mcsafe_test.h
+ delete mode 100644 tools/perf/bench/mem-memcpy-x86-64-lib.c
+ create mode 120000 tools/testing/selftests/powerpc/copyloops/copy_mc_64.S
+ delete mode 120000 tools/testing/selftests/powerpc/copyloops/memcpy_mcsafe_64.S
+
+base-commit: ba4f184e126b751d1bffad5897f263108befc780
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
