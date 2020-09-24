@@ -2,81 +2,111 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169B12778E8
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 21:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF9127796D
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 21:36:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 366FC1526194A;
-	Thu, 24 Sep 2020 12:02:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::642; helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 9A4911547D702;
+	Thu, 24 Sep 2020 12:36:50 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.30.42; helo=cthdty.icu; envelope-from=admin@cthdty.icu; receiver=<UNKNOWN> 
+Received: from cthdty.icu (v118-27-30-42.1qlq.static.cnode.io [118.27.30.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1EBC913C0B44D
-	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 12:02:53 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id o8so217766ejb.10
-        for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 12:02:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Zwh0H2Di2EjtS2oxRbwDl/g8AzPPtz4bTYVlHB6Q43U=;
-        b=PSB3PcPl255zINexLzD5htRXOK8A7IpaIdKXFGiLO32U75F2k9xaAm8mZS7ely1gPq
-         yZLW+0hCIn45DdWUyYO8G9jfS8J6+rlp2nsVNrm8+l/5IaMYV707qmr5UQ0dfW8t8mFM
-         TGM/ejnQq6OR4f+ghs/rkS7hDoJYuUJW4L657stRoYQr04STf5dpZEl4CMwmFaDzfbER
-         EPIt5iCUQqcQiTMaJpgnlFWhAOySGAsfIYSWvKD+cpfQaaZ8pNFsj3lLaMbMZTcQHkyw
-         RvAYj9nOfidFYdho2D68Le7t2VZhia2mhnOBKQiCeSv5uNiyhRaV9CGBi+SEG1SSy/ah
-         LHlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Zwh0H2Di2EjtS2oxRbwDl/g8AzPPtz4bTYVlHB6Q43U=;
-        b=kerOYwneZ7lzEcoXchUTrKZg/eltGl+kzMh3zvrVNHjjSPJC7B1qGGdR1VzzeOgO1E
-         hX6OJhn/Z1X3CLwm46E1Cbt9cHb6AlNJBIT9JrSSkEWKH0nqoNkrERlWW4IJyX4OtFyJ
-         Sl7eypZUuRjSx5nomjMRW+ZSO8JyZYkSbcU2XpF+NlysreeiOXEGlPcEAy14QZCwl7qo
-         O2WV0o9aANlm5B+f6kD8THpcCPQtNcf6EpTNKk6sUWcXmhWtSeApMhwd3trL92AIIp+4
-         QTl36MzODpobfrRdzpemR/BU5LruBl637MdtRddYK2Bbq4JkuziY+Jzq74HBZxOmByI0
-         mIyw==
-X-Gm-Message-State: AOAM532S/EMoo9tYHKOH2wtCthOcmCalPrAOew0tcZm2j82Fabpm/fYy
-	XP94GXRPNG5K5wxJGpMsGMX18Hn68jBqjBnhKBbG1Q==
-X-Google-Smtp-Source: ABdhPJyIjxPAbvw6mQwJDfqAdCr+NXbyHb0p0fA9nsaaQoL9Tj0/ldsUQQNqjWQJKZxocvoYQ0aBvveDA8qxbuKZJtY=
-X-Received: by 2002:a17:907:4035:: with SMTP id nk5mr79283ejb.418.1600974171842;
- Thu, 24 Sep 2020 12:02:51 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 6E188152E6714
+	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 12:36:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=cthdty.icu;
+ h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
+ i=admin@cthdty.icu;
+ bh=qkNXov9EGG9pligAs2R2kxElvy32gULTd0X4/Phx8PY=;
+ b=CHKq/rpfrqVh+Imnz990ex3KcD6gJi7eXEO2e1JRMr++oRg1mFgJv5pCc6AkKPobx15CQ3tVnLLr
+   kGLR1CtMvvi7afDaQUKd+/81PZzX/6gzXamV6uvq9PNK5wV4mN+Ji2wL2Dm9dpDPpTmLHNOWLNyv
+   gyuuu9AbcJWwDDmQcIk=
+Message-ID: <20200925033644340741@cthdty.icu>
+From: "Amazon" <admin@cthdty.icu>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5Zue5aSN77yaIOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBlw==?=
+	=?utf-8?B?44Gf?=
+Date: Fri, 25 Sep 2020 03:36:31 +0800
 MIME-Version: 1.0
-References: <20200901083326.21264-1-roger.pau@citrix.com> <20200901083326.21264-3-roger.pau@citrix.com>
-In-Reply-To: <20200901083326.21264-3-roger.pau@citrix.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 24 Sep 2020 12:02:40 -0700
-Message-ID: <CAPcyv4isGqsNXqz7tmVbu3UZMNSpZUphCKUkyBMgWYwv5o6OLw@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] memremap: rename MEMORY_DEVICE_DEVDAX to MEMORY_DEVICE_GENERIC
-To: Roger Pau Monne <roger.pau@citrix.com>
-Message-ID-Hash: GABXEDH6POROAS4RTIOCTYGAE5GMH64Y
-X-Message-ID-Hash: GABXEDH6POROAS4RTIOCTYGAE5GMH64Y
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, Logan Gunthorpe <logang@deltatee.com>, Juergen Gross <jgross@suse.com>, linux-nvdimm <linux-nvdimm@lists.01.org>, xen-devel <xen-devel@lists.xenproject.org>, Linux MM <linux-mm@kvack.org>
+Message-ID-Hash: 2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6
+X-Message-ID-Hash: 2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6
+X-MailFrom: admin@cthdty.icu
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GABXEDH6POROAS4RTIOCTYGAE5GMH64Y/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Sep 1, 2020 at 1:33 AM Roger Pau Monne <roger.pau@citrix.com> wrote:
->
-> This is in preparation for the logic behind MEMORY_DEVICE_DEVDAX also
-> being used by non DAX devices.
->
-
-FWIW I would not call this MEMORY_DEVICE_GENERIC. This is really
-MEMORY_DEVICE_SIMPLE and the kernel-doc can clarify in contrast to the
-other MEMORY_DEVICE types this type implies no need for driver or
-filesystem notification when a page goes idle.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+56K66KqN55So44Ki44Kr44Km44Oz44OIIA0KDQoNCg0KDQoNCuOBgiMjbWl4X25vcm1hbF8xMCMj
+44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8x
+MCMj44KiIyNtaXhfbm9ybWFsXzEwIyPjgqsjI21peF9ub3JtYWxfMTAjI+OCpiMjbWl4X25vcm1h
+bF8xMCMj44OzIyNtaXhfbm9ybWFsXzEwIyPjg4gjI21peF9ub3JtYWxfMTAjI+OBryMjbWl4X25v
+cm1hbF8xMCMj5YGcIyNtaXhfbm9ybWFsXzEwIyPmraIjI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4
+X25vcm1hbF8xMCMj44KMIyNtaXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBlyMj
+bWl4X25vcm1hbF8xMCMj44GfDQoNCuOBk+OCk+OBq+OBoeOBryDjgIEgDQoNCuiqsCMjbWl4X25v
+cm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+OBgiMjbWl4
+X25vcm1hbF8xMCMj44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBrkEj
+I21peF9ub3JtYWxfMTAjI21heiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OC
+oiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21peF9ub3JtYWxfMTAj
+I+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjgacjI21peF9ub3JtYWxf
+MTAjI+S7liMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPjg4cjI21peF9ub3Jt
+YWxfMTAjI+ODkCMjbWl4X25vcm1hbF8xMCMj44KkIyNtaXhfbm9ybWFsXzEwIyPjgrkjI21peF9u
+b3JtYWxfMTAjI+OBiyMjbWl4X25vcm1hbF8xMCMj44KJIyNtaXhfbm9ybWFsXzEwIyPos7wjI21p
+eF9ub3JtYWxfMTAjI+WFpSMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEwIyPjgogj
+I21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEwIyPj
+gZcjI21peF9ub3JtYWxfMTAjI+OBviMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEw
+IyPjgZ/jgILjgZ0jI21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GnIyNtaXhf
+bm9ybWFsXzEwIyPjgaojI21peF9ub3JtYWxfMTAjI+OBkSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
+aXhfbm9ybWFsXzEwIyPjgbDjgIFBIyNtaXhfbm9ybWFsXzEwIyNtIyNtaXhfbm9ybWFsXzEwIyNh
+eiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8xMCMj
+5L+dIyNtaXhfbm9ybWFsXzEwIyPorbcjI21peF9ub3JtYWxfMTAjI+OBqyMjbWl4X25vcm1hbF8x
+MCMj44GKIyNtaXhfbm9ybWFsXzEwIyPjgZEjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1h
+bF8xMCMj44K7IyNtaXhfbm9ybWFsXzEwIyPjgq0jI21peF9ub3JtYWxfMTAjI+ODpSMjbWl4X25v
+cm1hbF8xMCMj44OqIyNtaXhfbm9ybWFsXzEwIyPjg4bjgqMjI21peF9ub3JtYWxfMTAjI+OBqCMj
+bWl4X25vcm1hbF8xMCMj5pW0IyNtaXhfbm9ybWFsXzEwIyPlkIgjI21peF9ub3JtYWxfMTAjI+aA
+pyMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPllY8jI21peF9ub3JtYWxfMTAj
+I+mhjCMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEwIyPjgogjI21peF9ub3JtYWxf
+MTAjI+OCiuOAgeOCuyMjbWl4X25vcm1hbF8xMCMj44KtIyNtaXhfbm9ybWFsXzEwIyPjg6UjI21p
+eF9ub3JtYWxfMTAjI+ODqiMjbWl4X25vcm1hbF8xMCMj44OGIyNtaXhfbm9ybWFsXzEwIyPjgqMj
+I21peF9ub3JtYWxfMTAjI+S4iiMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPn
+kIYjI21peF9ub3JtYWxfMTAjI+eUsSMjbWl4X25vcm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEw
+IyPjgokjI21peF9ub3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFs
+XzEwIyPjgqYjI21peF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9y
+bWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8xMCMj44ODIyNtaXhf
+bm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
+aXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBmeOAgg0KDQrjgqIjI21peF9ub3Jt
+YWxfMTAjI+OCqyMjbWl4X25vcm1hbF8xMCMj44KmIyNtaXhfbm9ybWFsXzEwIyPjg7MjI21peF9u
+b3JtYWxfMTAjI+ODiCMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPlvJUjI21p
+eF9ub3JtYWxfMTAjI+OBjSMjbWl4X25vcm1hbF8xMCMj57aaIyNtaXhfbm9ybWFsXzEwIyPjgY0j
+I21peF9ub3JtYWxfMTAjI+S9vyMjbWl4X25vcm1hbF8xMCMj55SoIyNtaXhfbm9ybWFsXzEwIyPj
+gZkjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEw
+IyPjga/jgIEyIyNtaXhfbm9ybWFsXzEwIyM0IyNtaXhfbm9ybWFsXzEwIyPmmYIjI21peF9ub3Jt
+YWxfMTAjI+mWkyMjbWl4X25vcm1hbF8xMCMj5YmNIyNtaXhfbm9ybWFsXzEwIyPjgavmg4UjI21p
+eF9ub3JtYWxfMTAjI+WgsSMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPmm7Qj
+I21peF9ub3JtYWxfMTAjI+aWsCMjbWl4X25vcm1hbF8xMCMj44GZIyNtaXhfbm9ybWFsXzEwIyPj
+gosjI21peF9ub3JtYWxfMTAjI+OBkyMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEw
+IyPjgpIjI21peF9ub3JtYWxfMTAjI+OBiiMjbWl4X25vcm1hbF8xMCMj5YunIyNtaXhfbm9ybWFs
+XzEwIyPjgoEjI21peF9ub3JtYWxfMTAjI+OBlyMjbWl4X25vcm1hbF8xMCMj44G+IyNtaXhfbm9y
+bWFsXzEwIyPjgZkjI21peF9ub3JtYWxfMTAjI+OAgiDjgZ0jI21peF9ub3JtYWxfMTAjI+OCjCMj
+bWl4X25vcm1hbF8xMCMj5LulIyNtaXhfbm9ybWFsXzEwIyPlpJYjI21peF9ub3JtYWxfMTAjI+OB
+riMjbWl4X25vcm1hbF8xMCMj5aC0IyNtaXhfbm9ybWFsXzEwIyPlkIjjgIHjgYIjI21peF9ub3Jt
+YWxfMTAjI+OBqiMjbWl4X25vcm1hbF8xMCMj44GfIyNtaXhfbm9ybWFsXzEwIyPjga4jI21peF9u
+b3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21p
+eF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjga8g
+5rC4IyNtaXhfbm9ybWFsXzEwIyPkuYUjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8x
+MCMj44ODIyNtaXhfbm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjIy4gDQoNCueiuuiqjeeU
+qOOCouOCq+OCpuODs+ODiCANCg0KDQoNCuWunOOBl+OBj+OBiumhmOOBhOOBl+OBvuOBmQ0KDQpB
+bWF6b24gUHJvdGVjdGlvbg0KDQoNCg0KDQpDb3B5cmlnaHQgQCAyMDIwIEFtYXpvbiBJbmMuIDEg
+SW5maW5pdGUgTG9vcOOAgeOCr+ODkeODgeODvOODjuOAgUNBIDk1MDE044CBQWxsIFJpZ2h0cyBS
+ZXNlcnZlZOOAgg0KDQoNCg0KDQoNCg0KDQoNCg0KICAKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
+eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
+dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
