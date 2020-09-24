@@ -2,296 +2,96 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9368A27732B
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 15:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE2227746A
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 16:56:01 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id ACDA915192628;
-	Thu, 24 Sep 2020 06:55:05 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+	by ml01.01.org (Postfix) with ESMTP id AEBEB149D9082;
+	Thu, 24 Sep 2020 07:55:59 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::344; helo=mail-wm1-x344.google.com; envelope-from=colomar.6.4.3@gmail.com; receiver=<UNKNOWN> 
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 51CF515192625
-	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 06:55:02 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id o8so4573883ejb.10
-        for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 06:55:02 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 96F12149D9081
+	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 07:55:56 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id e2so3932685wme.1
+        for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 07:55:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=u0Wwg44LAJ97oDid02lb/yWA2qTwaA94VroM35bUtxs=;
-        b=fz2dCKCM6gYh+e67Fsuthj+EMQFSxTJF23dMNMiOXOgepOQmYJQnfdSExcrz7soelL
-         wuGYNZKdLFhitgSzfhEAbih8kf0GQohxFDDfvtCoarw/kIX6KKuAnhbIRVPrjZz+n6q9
-         d7WXqr4o/GJuJBLuNSYV3w85Bvj/ZTcO5YksdZItI0/vlU79FujjL8YoTvCEIOFoJTd/
-         6vh4w4rlArULZPlhTQxbI54J/EVnN66/GrClQeJzzzAKB5VTq/3tEC1NP2kze3HRI0t1
-         MDhjq+kPKXdETW6F6AFWe4S+sh4xowCGkxzQBf/hmAJjVKqUnIt8HIYWV/Xq13aVAWO5
-         zV8A==
+        d=gmail.com; s=20161025;
+        h=to:cc:references:subject:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=cxvl2MAleQcMTiG0WSrWtQ8ZVgZ+BIbKryf5RRhV2Ew=;
+        b=UF9OPLc72qF28w6y+ivkNrmXc5fop6lS4sjwHWDd9rzAFwH/YxcaJyc57rdANGsIN4
+         rYSEqsboWQ/6Rad3EEZAYH6sJkptJizRO8lNfWk6XYA0XKnfcTxYON3ug44BYQg9EMER
+         pVgAFcgLfPn4DVLiJ3Hib3T01PXbwRe+Vojn0wE3Yok5pMEIejrXlJffXDd6qKuKAg44
+         VtKof8h0scpGdPAcmiLAwTnzsODA8lRMiZPWSwQRsP90h1aLFuABF5VbrFI/sWnrFX0b
+         uEmRRAQsmZaOnouVl0mGoQ3uar4fcGrE+qSzboc3C0J0BGGDyYXkJ66tiP5wIrQLNFZH
+         wH4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=u0Wwg44LAJ97oDid02lb/yWA2qTwaA94VroM35bUtxs=;
-        b=q6V4qP/NlcUaknWV82K2jRqpnqnlYnx9im0gQ/13hNU6nJ/gstGOH4+shXKZNcaZ9B
-         PufoWTgKKD8pAQphwqhK+CjFL6XzXQBPfiCZLtpC13Xmd2brbCbHp0LyyxbWsNKWHDgE
-         ecoLiASTE6qgUtntvYkwsLWCbkKN+VH67A5dALyozJdSjYtzknz1Udh5zkuaAMKh6JYC
-         CVP5IBpzfxSPbszE1bf69hdjG7gs2cmOjryynh5YPRtV96rkO3fYxBl6jMh45pnZzA1L
-         EXYduyfnvcAAxDAeegflc3iGZ6bJRFWwDZYLkD16qd0jnGpX8lJFdQX/24+1jqTGzQPu
-         vupg==
-X-Gm-Message-State: AOAM532seNXIWYrEDhu+CEgUS3m7p8AGCpGmlB+6dMB5Iqmx/R/41xcS
-	dpJWzDHnRBIYD+SoT3L//gAs/PMgl0o3IjhtiMArMA==
-X-Google-Smtp-Source: ABdhPJy+gShDa4M5BCxb6FmTsKMUNxD9KbnGrAI9AWRrw57kRj5wOs7HEgWWpD+B+1/E1a7KpQVWWVvv5CfNF8IG2sw=
-X-Received: by 2002:a17:906:8143:: with SMTP id z3mr1107180ejw.323.1600955701310;
- Thu, 24 Sep 2020 06:55:01 -0700 (PDT)
+        h=x-gm-message-state:to:cc:references:subject:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=cxvl2MAleQcMTiG0WSrWtQ8ZVgZ+BIbKryf5RRhV2Ew=;
+        b=nKeGshxgZ3v6sW0ItiTuZOzxIhcYegLc90jJqefNGpsDFLAg+csdymDfpRNpH85V/X
+         ExYApzAj5ELh4HbQ7E8rGLrttHOzcVJmm8l5pGOFxkOx/pLvUI0NuZhz3TOXeoXT2r/A
+         9T11mCcaVTARCmzDO+wo+CWYDOed5J+GNUsySzwCXMPWCTISCR1oP1RjuIuthChQNnux
+         GW9I076o0x8OTmMxz2o9fxCUdizn7op4eppNVYJYDDepSv6eBA3qpDHwsBta+XRYKKXp
+         oD4vM8567FJjOtKAY0mi+Dk+zyt99O401LICZq1yDE8AkfsmRJzU5BKnRhLffaLRLJ9m
+         eBDw==
+X-Gm-Message-State: AOAM532wA4W65+NrftXiXZVp5CiNCxX1RGD9nnmizUeS8CqHVGKJSIJk
+	v3wPpRpNouOm7HP8AiHi/Ug=
+X-Google-Smtp-Source: ABdhPJwA7ld5rBdiNBafXko+QQDLwn3uoHLR26xm9fJkwIdPYX0Ec6468qIEwFlntmVrZ1YEq/Neew==
+X-Received: by 2002:a1c:4b17:: with SMTP id y23mr5136571wma.162.1600959354790;
+        Thu, 24 Sep 2020 07:55:54 -0700 (PDT)
+Received: from [192.168.1.143] ([170.253.60.68])
+        by smtp.gmail.com with ESMTPSA id h76sm4156994wme.10.2020.09.24.07.55.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2020 07:55:54 -0700 (PDT)
+To: rppt@kernel.org
+References: <20200924133513.1589-1-rppt@kernel.org>
+Subject: Re: [PATCH] man2: new page describing memfd_secret() system call
+From: Alejandro Colomar <colomar.6.4.3@gmail.com>
+Message-ID: <efb6d051-2104-af26-bfb0-995f4716feb2@gmail.com>
+Date: Thu, 24 Sep 2020 16:55:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-References: <159643094279.4062302.17779410714418721328.stgit@dwillia2-desk3.amr.corp.intel.com>
- <159643100485.4062302.976628339798536960.stgit@dwillia2-desk3.amr.corp.intel.com>
- <a3ad70a2-77a8-d50e-f372-731a8e27c03b@redhat.com> <17686fcc-202e-0982-d0de-54d5349cfb5d@oracle.com>
- <9acc6148-72eb-7016-dba9-46fa87ded5a5@redhat.com> <CAPcyv4h5GGV3F-0rFY_pyv9Bj8LAkrwXruxGE=K2y9=dA8oDHw@mail.gmail.com>
- <d160c05b-9caa-1ffb-9c01-5bb261c744b5@redhat.com>
-In-Reply-To: <d160c05b-9caa-1ffb-9c01-5bb261c744b5@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 24 Sep 2020 06:54:49 -0700
-Message-ID: <CAPcyv4jf9fK5oOcROMx=c-3q6aGFp89MNi-+GoZ-dy1gdNTrJw@mail.gmail.com>
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To: David Hildenbrand <david@redhat.com>
-Message-ID-Hash: TB5UASC4QBUH4TGIJ7EMS564BE364W2F
-X-Message-ID-Hash: TB5UASC4QBUH4TGIJ7EMS564BE364W2F
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Joao Martins <joao.m.martins@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Maling list - DRI developers <dri-devel@lists.freedesktop.org>
+In-Reply-To: <20200924133513.1589-1-rppt@kernel.org>
+Content-Language: en-US
+Message-ID-Hash: 4QYV5MLYYDRPPSIRVZW337MFQQ22TF6R
+X-Message-ID-Hash: 4QYV5MLYYDRPPSIRVZW337MFQQ22TF6R
+X-MailFrom: colomar.6.4.3@gmail.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: akpm@linux-foundation.org, arnd@arndb.de, bp@alien8.de, catalin.marinas@arm.com, cl@linux.com, dave.hansen@linux.intel.com, david@redhat.com, elena.reshetova@intel.com, hpa@zytor.com, idan.yaniv@ibm.com, jejb@linux.ibm.com, kirill@shutemov.name, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-man@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, luto@kernel.org, mark.rutland@arm.com, mingo@redhat.com, mtk.manpages@gmail.com, palmer@dabbelt.com, paul.walmsley@sifive.com, peterz@infradead.org, rppt@linux.ibm.com, shuah@kernel.org, tglx@linutronix.de, tycho@tycho.ws, viro@zeniv.linux.org.uk, will@kernel.org, willy@infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TB5UASC4QBUH4TGIJ7EMS564BE364W2F/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4QYV5MLYYDRPPSIRVZW337MFQQ22TF6R/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"; format="flowed"
 Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 24, 2020 at 12:26 AM David Hildenbrand <david@redhat.com> wrote:
->
-> On 23.09.20 23:41, Dan Williams wrote:
-> > On Wed, Sep 23, 2020 at 1:04 AM David Hildenbrand <david@redhat.com> wrote:
-> >>
-> >> On 08.09.20 17:33, Joao Martins wrote:
-> >>> [Sorry for the late response]
-> >>>
-> >>> On 8/21/20 11:06 AM, David Hildenbrand wrote:
-> >>>> On 03.08.20 07:03, Dan Williams wrote:
-> >>>>> @@ -37,109 +45,94 @@ int dev_dax_kmem_probe(struct device *dev)
-> >>>>>      * could be mixed in a node with faster memory, causing
-> >>>>>      * unavoidable performance issues.
-> >>>>>      */
-> >>>>> -   numa_node = dev_dax->target_node;
-> >>>>>     if (numa_node < 0) {
-> >>>>>             dev_warn(dev, "rejecting DAX region with invalid node: %d\n",
-> >>>>>                             numa_node);
-> >>>>>             return -EINVAL;
-> >>>>>     }
-> >>>>>
-> >>>>> -   /* Hotplug starting at the beginning of the next block: */
-> >>>>> -   kmem_start = ALIGN(range->start, memory_block_size_bytes());
-> >>>>> -
-> >>>>> -   kmem_size = range_len(range);
-> >>>>> -   /* Adjust the size down to compensate for moving up kmem_start: */
-> >>>>> -   kmem_size -= kmem_start - range->start;
-> >>>>> -   /* Align the size down to cover only complete blocks: */
-> >>>>> -   kmem_size &= ~(memory_block_size_bytes() - 1);
-> >>>>> -   kmem_end = kmem_start + kmem_size;
-> >>>>> -
-> >>>>> -   new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> >>>>> -   if (!new_res_name)
-> >>>>> +   res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> >>>>> +   if (!res_name)
-> >>>>>             return -ENOMEM;
-> >>>>>
-> >>>>> -   /* Region is permanently reserved if hotremove fails. */
-> >>>>> -   new_res = request_mem_region(kmem_start, kmem_size, new_res_name);
-> >>>>> -   if (!new_res) {
-> >>>>> -           dev_warn(dev, "could not reserve region [%pa-%pa]\n",
-> >>>>> -                    &kmem_start, &kmem_end);
-> >>>>> -           kfree(new_res_name);
-> >>>>> +   res = request_mem_region(range.start, range_len(&range), res_name);
-> >>>>
-> >>>> I think our range could be empty after aligning. I assume
-> >>>> request_mem_region() would check that, but maybe we could report a
-> >>>> better error/warning in that case.
-> >>>>
-> >>> dax_kmem_range() already returns a memory-block-aligned @range but
-> >>> IIUC request_mem_region() isn't checking for that. Having said that
-> >>> the returned @res wouldn't be different from the passed range.start.
-> >>>
-> >>>>>     /*
-> >>>>>      * Ensure that future kexec'd kernels will not treat this as RAM
-> >>>>>      * automatically.
-> >>>>>      */
-> >>>>> -   rc = add_memory_driver_managed(numa_node, new_res->start,
-> >>>>> -                                  resource_size(new_res), kmem_name);
-> >>>>> +   rc = add_memory_driver_managed(numa_node, res->start,
-> >>>>> +                                  resource_size(res), kmem_name);
-> >>>>> +
-> >>>>> +   res->flags |= IORESOURCE_BUSY;
-> >>>>
-> >>>> Hm, I don't think that's correct. Any specific reason why to mark the
-> >>>> not-added, unaligned parts BUSY? E.g., walk_system_ram_range() could
-> >>>> suddenly stumble over it - and e.g., similarly kexec code when trying to
-> >>>> find memory for placing kexec images. I think we should leave this
-> >>>> !BUSY, just as it is right now.
-> >>>>
-> >>> Agreed.
-> >>>
-> >>>>>     if (rc) {
-> >>>>> -           release_resource(new_res);
-> >>>>> -           kfree(new_res);
-> >>>>> -           kfree(new_res_name);
-> >>>>> +           release_mem_region(range.start, range_len(&range));
-> >>>>> +           kfree(res_name);
-> >>>>>             return rc;
-> >>>>>     }
-> >>>>> -   dev_dax->dax_kmem_res = new_res;
-> >>>>> +
-> >>>>> +   dev_set_drvdata(dev, res_name);
-> >>>>>
-> >>>>>     return 0;
-> >>>>>  }
-> >>>>>
-> >>>>>  #ifdef CONFIG_MEMORY_HOTREMOVE
-> >>>>> -static int dev_dax_kmem_remove(struct device *dev)
-> >>>>> +static void dax_kmem_release(struct dev_dax *dev_dax)
-> >>>>>  {
-> >>>>> -   struct dev_dax *dev_dax = to_dev_dax(dev);
-> >>>>> -   struct resource *res = dev_dax->dax_kmem_res;
-> >>>>> -   resource_size_t kmem_start = res->start;
-> >>>>> -   resource_size_t kmem_size = resource_size(res);
-> >>>>> -   const char *res_name = res->name;
-> >>>>>     int rc;
-> >>>>> +   struct device *dev = &dev_dax->dev;
-> >>>>> +   const char *res_name = dev_get_drvdata(dev);
-> >>>>> +   struct range range = dax_kmem_range(dev_dax);
-> >>>>>
-> >>>>>     /*
-> >>>>>      * We have one shot for removing memory, if some memory blocks were not
-> >>>>>      * offline prior to calling this function remove_memory() will fail, and
-> >>>>>      * there is no way to hotremove this memory until reboot because device
-> >>>>> -    * unbind will succeed even if we return failure.
-> >>>>> +    * unbind will proceed regardless of the remove_memory result.
-> >>>>>      */
-> >>>>> -   rc = remove_memory(dev_dax->target_node, kmem_start, kmem_size);
-> >>>>> -   if (rc) {
-> >>>>> -           any_hotremove_failed = true;
-> >>>>> -           dev_err(dev,
-> >>>>> -                   "DAX region %pR cannot be hotremoved until the next reboot\n",
-> >>>>> -                   res);
-> >>>>> -           return rc;
-> >>>>> +   rc = remove_memory(dev_dax->target_node, range.start, range_len(&range));
-> >>>>> +   if (rc == 0) {
-> >>>>
-> >>>> if (!rc) ?
-> >>>>
-> >>> Better off would be to keep the old order:
-> >>>
-> >>>       if (rc) {
-> >>>               any_hotremove_failed = true;
-> >>>               dev_err(dev, "%#llx-%#llx cannot be hotremoved until the next reboot\n",
-> >>>                               range.start, range.end);
-> >>>               return;
-> >>>       }
-> >>>
-> >>>       release_mem_region(range.start, range_len(&range));
-> >>>       dev_set_drvdata(dev, NULL);
-> >>>       kfree(res_name);
-> >>>       return;
-> >>>
-> >>>
-> >>>>> +           release_mem_region(range.start, range_len(&range));
-> >>>>
-> >>>> remove_memory() does a release_mem_region_adjustable(). Don't you
-> >>>> actually want to release the *unaligned* region you requested?
-> >>>>
-> >>> Isn't it what we're doing here?
-> >>> (The release_mem_region_adjustable() is using the same
-> >>> dax_kmem-aligned range and there's no split/adjust)
-> >>>
-> >>> Meaning right now (+ parent marked as !BUSY), and if I am understanding
-> >>> this correctly:
-> >>>
-> >>> request_mem_region(range.start, range_len)
-> >>>    __request_region(iomem_res, range.start, range_len) -> alloc @parent
-> >>> add_memory_driver_managed(parent.start, resource_size(parent))
-> >>>    __request_region(parent.start, resource_size(parent)) -> alloc @child
-> >>>
-> >>> [...]
-> >>>
-> >>> remove_memory(range.start, range_len)
-> >>>  request_mem_region_adjustable(range.start, range_len)
-> >>>   __release_region(range.start, range_len) -> remove @child
-> >>>
-> >>> release_mem_region(range.start, range_len)
-> >>>   __release_region(range.start, range_len) -> doesn't remove @parent because !BUSY?
-> >>>
-> >>> The add/removal of this relies on !BUSY. But now I am wondering if the parent remaining
-> >>> unreleased is deliberate even on CONFIG_MEMORY_HOTREMOVE=y.
-> >>>
-> >>>       Joao
-> >>>
-> >>
-> >> Thinking about it, if we don't set the parent resource BUSY (which is
-> >> what I think is the right way of doing things), and don't want to store
-> >> the parent resource pointer, we could add something like
-> >> lookup_resource() - e.g., lookup_mem_resource() - , however, searching
-> >> properly in the whole hierarchy (instead of only the first level), and
-> >> traversing down to the last hierarchy. Then it would be as simple as
-> >>
-> >> remove_memory(range.start, range_len)
-> >> res = lookup_mem_resource(range.start);
-> >> release_resource(res);
-> >
-> > Another thought... I notice that you've taught
-> > register_memory_resource() a IORESOURCE_MEM_DRIVER_MANAGED special
-> > case. Lets just make the assumption of add_memory_driver_managed()
-> > that it is the driver's responsibility to mark the range busy before
-> > calling, and the driver's responsibility to release the region. I.e.
-> > validate (rather than request) that the range is busy in
-> > register_memory_resource(), and teach release_memory_resource() to
-> > skip releasing the region when the memory is marked driver managed.
-> > That would let dax_kmem drop its manipulation of the 'busy' flag which
-> > is a layering violation no matter how many comments we put around it.
->
-> IIUC, that won't work for virtio-mem, whereby the parent resource spans
-> multiple possible (future) add_memory_driver_managed() calls and is
-> (just like for kmem) a pure indication to which device memory ranges belong.
->
-> For example, when exposing 2GB via a virtio-mem device with max 4GB:
->
-> (/proc/iomem)
-> 240000000-33fffffff : virtio0
->   240000000-2bfffffff : System RAM (virtio_mem)
->
-> And after hotplugging additional 2GB:
->
-> 240000000-33fffffff : virtio0
->   240000000-33fffffff : System RAM (virtio_mem)
->
-> So marking "virtio0" always BUSY (especially right from the start) would
-> be wrong.
+* Mike Rapoport:
+ > +.PP
+ > +.IR Note :
+ > +There is no glibc wrapper for this system call; see NOTES.
 
-I'm not suggesting to busy the whole "virtio" range, just the portion
-that's about to be passed to add_memory_driver_managed().
+You added a reference to NOTES, but then in notes there is nothing about 
+it.  I guess you wanted to add the following to NOTES (taken from 
+membarrier.2):
 
-> The assumption is that anything that's IORESOURCE_SYSTEM_RAM
-> and IORESOUCE_BUSY is currently added to the system as system RAM (e.g.,
-> after add_memory() and friends, or during boot).
->
-> I do agree that manually clearing the busy flag is ugly. What we most
-> probably want is request_mem_region() that performs similar checks (no
-> overlaps with existing BUSY resources), but doesn't set the region busy.
->
+.PP
+Glibc does not provide a wrapper for this system call; call it using
+.BR syscall (2).
 
-I can't see that working without some way to export and hold the
-resource lock until some agent can atomically claim the range.
+Cheers,
+
+Alex
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
