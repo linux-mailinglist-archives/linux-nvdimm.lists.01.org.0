@@ -1,112 +1,100 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF9127796D
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 21:36:52 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA38A277A2E
+	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 22:28:03 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 9A4911547D702;
-	Thu, 24 Sep 2020 12:36:50 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=118.27.30.42; helo=cthdty.icu; envelope-from=admin@cthdty.icu; receiver=<UNKNOWN> 
-Received: from cthdty.icu (v118-27-30-42.1qlq.static.cnode.io [118.27.30.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6E188152E6714
-	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 12:36:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=cthdty.icu;
- h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
- i=admin@cthdty.icu;
- bh=qkNXov9EGG9pligAs2R2kxElvy32gULTd0X4/Phx8PY=;
- b=CHKq/rpfrqVh+Imnz990ex3KcD6gJi7eXEO2e1JRMr++oRg1mFgJv5pCc6AkKPobx15CQ3tVnLLr
-   kGLR1CtMvvi7afDaQUKd+/81PZzX/6gzXamV6uvq9PNK5wV4mN+Ji2wL2Dm9dpDPpTmLHNOWLNyv
-   gyuuu9AbcJWwDDmQcIk=
-Message-ID: <20200925033644340741@cthdty.icu>
-From: "Amazon" <admin@cthdty.icu>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5Zue5aSN77yaIOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBlw==?=
-	=?utf-8?B?44Gf?=
-Date: Fri, 25 Sep 2020 03:36:31 +0800
+	by ml01.01.org (Postfix) with ESMTP id A34CF15497D75;
+	Thu, 24 Sep 2020 13:28:01 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=125.140.134.231; helo=win-daono245hjf; envelope-from=samthong5555@gmail.com; receiver=<UNKNOWN> 
+Received: from WIN-DAONO245HJF (unknown [125.140.134.231])
+	by ml01.01.org (Postfix) with ESMTP id 5220B1547D71F;
+	Thu, 24 Sep 2020 13:27:57 -0700 (PDT)
+Received: from User ([185.191.231.247]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
+	 Fri, 25 Sep 2020 05:26:42 +0900
+From: "SAM THONG"< samthong5555@gmail.com>
+Subject: Business Acquisition 1
+Date: Thu, 24 Sep 2020 13:26:43 -0700
 MIME-Version: 1.0
-Message-ID-Hash: 2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6
-X-Message-ID-Hash: 2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6
-X-MailFrom: admin@cthdty.icu
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <WIN-DAONO245HJF0ktt00e70a07@WIN-DAONO245HJF>
+X-OriginalArrivalTime: 24 Sep 2020 20:26:42.0882 (UTC) FILETIME=[040CC220:01D692B1]
+Message-ID-Hash: ZCSJZA4O4GNO6DEGBJI7DIIK74NPMLSX
+X-Message-ID-Hash: ZCSJZA4O4GNO6DEGBJI7DIIK74NPMLSX
+X-MailFrom: samthong5555@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: samthong5555@yahoo.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2E5ROVDV2JLLJDQ45PRFRYK4Z6CNQMT6/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZCSJZA4O4GNO6DEGBJI7DIIK74NPMLSX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-56K66KqN55So44Ki44Kr44Km44Oz44OIIA0KDQoNCg0KDQoNCuOBgiMjbWl4X25vcm1hbF8xMCMj
-44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8x
-MCMj44KiIyNtaXhfbm9ybWFsXzEwIyPjgqsjI21peF9ub3JtYWxfMTAjI+OCpiMjbWl4X25vcm1h
-bF8xMCMj44OzIyNtaXhfbm9ybWFsXzEwIyPjg4gjI21peF9ub3JtYWxfMTAjI+OBryMjbWl4X25v
-cm1hbF8xMCMj5YGcIyNtaXhfbm9ybWFsXzEwIyPmraIjI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4
-X25vcm1hbF8xMCMj44KMIyNtaXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBlyMj
-bWl4X25vcm1hbF8xMCMj44GfDQoNCuOBk+OCk+OBq+OBoeOBryDjgIEgDQoNCuiqsCMjbWl4X25v
-cm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+OBgiMjbWl4
-X25vcm1hbF8xMCMj44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBrkEj
-I21peF9ub3JtYWxfMTAjI21heiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OC
-oiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21peF9ub3JtYWxfMTAj
-I+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjgacjI21peF9ub3JtYWxf
-MTAjI+S7liMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPjg4cjI21peF9ub3Jt
-YWxfMTAjI+ODkCMjbWl4X25vcm1hbF8xMCMj44KkIyNtaXhfbm9ybWFsXzEwIyPjgrkjI21peF9u
-b3JtYWxfMTAjI+OBiyMjbWl4X25vcm1hbF8xMCMj44KJIyNtaXhfbm9ybWFsXzEwIyPos7wjI21p
-eF9ub3JtYWxfMTAjI+WFpSMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEwIyPjgogj
-I21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEwIyPj
-gZcjI21peF9ub3JtYWxfMTAjI+OBviMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEw
-IyPjgZ/jgILjgZ0jI21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GnIyNtaXhf
-bm9ybWFsXzEwIyPjgaojI21peF9ub3JtYWxfMTAjI+OBkSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
-aXhfbm9ybWFsXzEwIyPjgbDjgIFBIyNtaXhfbm9ybWFsXzEwIyNtIyNtaXhfbm9ybWFsXzEwIyNh
-eiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8xMCMj
-5L+dIyNtaXhfbm9ybWFsXzEwIyPorbcjI21peF9ub3JtYWxfMTAjI+OBqyMjbWl4X25vcm1hbF8x
-MCMj44GKIyNtaXhfbm9ybWFsXzEwIyPjgZEjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1h
-bF8xMCMj44K7IyNtaXhfbm9ybWFsXzEwIyPjgq0jI21peF9ub3JtYWxfMTAjI+ODpSMjbWl4X25v
-cm1hbF8xMCMj44OqIyNtaXhfbm9ybWFsXzEwIyPjg4bjgqMjI21peF9ub3JtYWxfMTAjI+OBqCMj
-bWl4X25vcm1hbF8xMCMj5pW0IyNtaXhfbm9ybWFsXzEwIyPlkIgjI21peF9ub3JtYWxfMTAjI+aA
-pyMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPllY8jI21peF9ub3JtYWxfMTAj
-I+mhjCMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEwIyPjgogjI21peF9ub3JtYWxf
-MTAjI+OCiuOAgeOCuyMjbWl4X25vcm1hbF8xMCMj44KtIyNtaXhfbm9ybWFsXzEwIyPjg6UjI21p
-eF9ub3JtYWxfMTAjI+ODqiMjbWl4X25vcm1hbF8xMCMj44OGIyNtaXhfbm9ybWFsXzEwIyPjgqMj
-I21peF9ub3JtYWxfMTAjI+S4iiMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPn
-kIYjI21peF9ub3JtYWxfMTAjI+eUsSMjbWl4X25vcm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEw
-IyPjgokjI21peF9ub3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFs
-XzEwIyPjgqYjI21peF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9y
-bWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8xMCMj44ODIyNtaXhf
-bm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
-aXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBmeOAgg0KDQrjgqIjI21peF9ub3Jt
-YWxfMTAjI+OCqyMjbWl4X25vcm1hbF8xMCMj44KmIyNtaXhfbm9ybWFsXzEwIyPjg7MjI21peF9u
-b3JtYWxfMTAjI+ODiCMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPlvJUjI21p
-eF9ub3JtYWxfMTAjI+OBjSMjbWl4X25vcm1hbF8xMCMj57aaIyNtaXhfbm9ybWFsXzEwIyPjgY0j
-I21peF9ub3JtYWxfMTAjI+S9vyMjbWl4X25vcm1hbF8xMCMj55SoIyNtaXhfbm9ybWFsXzEwIyPj
-gZkjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEw
-IyPjga/jgIEyIyNtaXhfbm9ybWFsXzEwIyM0IyNtaXhfbm9ybWFsXzEwIyPmmYIjI21peF9ub3Jt
-YWxfMTAjI+mWkyMjbWl4X25vcm1hbF8xMCMj5YmNIyNtaXhfbm9ybWFsXzEwIyPjgavmg4UjI21p
-eF9ub3JtYWxfMTAjI+WgsSMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPmm7Qj
-I21peF9ub3JtYWxfMTAjI+aWsCMjbWl4X25vcm1hbF8xMCMj44GZIyNtaXhfbm9ybWFsXzEwIyPj
-gosjI21peF9ub3JtYWxfMTAjI+OBkyMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEw
-IyPjgpIjI21peF9ub3JtYWxfMTAjI+OBiiMjbWl4X25vcm1hbF8xMCMj5YunIyNtaXhfbm9ybWFs
-XzEwIyPjgoEjI21peF9ub3JtYWxfMTAjI+OBlyMjbWl4X25vcm1hbF8xMCMj44G+IyNtaXhfbm9y
-bWFsXzEwIyPjgZkjI21peF9ub3JtYWxfMTAjI+OAgiDjgZ0jI21peF9ub3JtYWxfMTAjI+OCjCMj
-bWl4X25vcm1hbF8xMCMj5LulIyNtaXhfbm9ybWFsXzEwIyPlpJYjI21peF9ub3JtYWxfMTAjI+OB
-riMjbWl4X25vcm1hbF8xMCMj5aC0IyNtaXhfbm9ybWFsXzEwIyPlkIjjgIHjgYIjI21peF9ub3Jt
-YWxfMTAjI+OBqiMjbWl4X25vcm1hbF8xMCMj44GfIyNtaXhfbm9ybWFsXzEwIyPjga4jI21peF9u
-b3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21p
-eF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjga8g
-5rC4IyNtaXhfbm9ybWFsXzEwIyPkuYUjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8x
-MCMj44ODIyNtaXhfbm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjIy4gDQoNCueiuuiqjeeU
-qOOCouOCq+OCpuODs+ODiCANCg0KDQoNCuWunOOBl+OBj+OBiumhmOOBhOOBl+OBvuOBmQ0KDQpB
-bWF6b24gUHJvdGVjdGlvbg0KDQoNCg0KDQpDb3B5cmlnaHQgQCAyMDIwIEFtYXpvbiBJbmMuIDEg
-SW5maW5pdGUgTG9vcOOAgeOCr+ODkeODgeODvOODjuOAgUNBIDk1MDE044CBQWxsIFJpZ2h0cyBS
-ZXNlcnZlZOOAgg0KDQoNCg0KDQoNCg0KDQoNCg0KICAKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+
+
+Dear sir
+
+Our underwriter company is seeking the attention of genuine and reliable persons, companies
+
+who are indeed in need of funds as investment capital or business expansion in form of a
+
+direct loan to partner with us and benefit in our new Loan and Project funding programs.
+
+
+
+We offer flexible loans and funding for various projects at very affordable low interest
+
+rate of 3% annually for a period of 1-15 years on Non collateral loan/funding . We offer
+
+loan/funding from a minimum of Euro ? / USD$ 1 Million to Euro ? / USD$ 1 Billion. Max,
+
+depending on the nature of business/project.
+
+We are currently funding for:-
+
+
+
+* Starting up a Franchise
+
+* Business Acquisition
+
+* Business Expansion
+
+* Commercial Real Estate purchase
+
+* Consultancy and Contract Execution, Marine , ETC.
+
+
+
+Kindly get in touch for further details and procedure. samthong5555@yahoo.com 
+
+
+
+Respectfully,
+
+
+SAM THONG
+
+
+
+
+
+
+
+	
+
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
