@@ -2,51 +2,76 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055C0279182
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 21:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0562792AE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 22:52:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A9F0015508B27;
-	Fri, 25 Sep 2020 12:31:38 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.20; helo=mga02.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+	by ml01.01.org (Postfix) with ESMTP id CA648155030A7;
+	Fri, 25 Sep 2020 13:52:24 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=joao.m.martins@oracle.com; receiver=<UNKNOWN> 
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7BE8415508B21
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Sep 2020 12:31:36 -0700 (PDT)
-IronPort-SDR: FvZ2yehQt0CfDxeBUA3XuThzmgf5hHinAkeQ2+eT+RrbGSj8Msk7kRwO/4U+OiyqN8MHSY/OZ1
- wBc3I9BqOAcQ==
-X-IronPort-AV: E=McAfee;i="6000,8403,9755"; a="149272236"
-X-IronPort-AV: E=Sophos;i="5.77,303,1596524400";
-   d="scan'208";a="149272236"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2020 12:31:36 -0700
-IronPort-SDR: VMbc7ZmBQB/F8HKZReuENs4o+rZepmL6hLQ53EkUQItqX8nx6NIeOUZnodDC+yf9ejTO0Iw0Rz
- xkvwopeQ9iCQ==
-X-IronPort-AV: E=Sophos;i="5.77,303,1596524400";
-   d="scan'208";a="349880741"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.16])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2020 12:31:36 -0700
-Subject: [PATCH v5 17/17] device-dax: add a range mapping allocation
- attribute
-From: Dan Williams <dan.j.williams@intel.com>
-To: akpm@linux-foundation.org
-Date: Fri, 25 Sep 2020 12:13:15 -0700
-Message-ID: <160106119570.30709.4548889722645210610.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 3EF72154E35B1
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Sep 2020 13:52:22 -0700 (PDT)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08PKmv4v039167;
+	Fri, 25 Sep 2020 20:51:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=wN+2rYSC9ofNeKmi/78S9j/Oal936OwOLOU4JH5JdTk=;
+ b=l2Zc8AaanbXbd0x81/d4RSfo7B1DvOom3kbSA/3lBQ+Yb0OmfaMI3VUk3OAckrxpW4VF
+ QIkD6DDN9JapxrNrz0rIYkQDE2QNxlCaILEESwpCTOkoZE4xliMlu483RNLulgLhBeO2
+ vw2tiAW+gsB5j10doRqXVYuuR27GomAeIb4yFkJf6Rk9ylL7kLB8ejL84muKtIRGe8X4
+ ZbuSfqYn9O1s5go+NeJaEpR0HKSiDBJNDPVNHaQWUrrZyxUP2rDccnQMW9J5hq7Bd8Ky
+ lqAPyKYHMyWpuOmXnUVlIe0YdiAHarIf1SRRiBGyY2mfLKy13G1JCm47XbNic8PrsO4B 7w==
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+	by userp2120.oracle.com with ESMTP id 33ndnuysd5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 25 Sep 2020 20:51:51 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+	by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 08PKoYSj138802;
+	Fri, 25 Sep 2020 20:51:50 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+	by aserp3030.oracle.com with ESMTP id 33s75kab32-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Sep 2020 20:51:50 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+	by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 08PKpWJN031863;
+	Fri, 25 Sep 2020 20:51:32 GMT
+Received: from [192.168.1.188] (/83.132.28.144)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Fri, 25 Sep 2020 13:51:32 -0700
+Subject: Re: [PATCH v5 00/17] device-dax: support sub-dividing soft-reserved
+ ranges
+To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
 References: <160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+From: Joao Martins <joao.m.martins@oracle.com>
+Message-ID: <8370d493-e38d-cbac-1233-14cbbef63936@oracle.com>
+Date: Fri, 25 Sep 2020 21:51:22 +0100
 MIME-Version: 1.0
-Message-ID-Hash: BA3276KPPE3LYHGNTJWHLAZIXMIVAEGG
-X-Message-ID-Hash: BA3276KPPE3LYHGNTJWHLAZIXMIVAEGG
-X-MailFrom: dan.j.williams@intel.com
+In-Reply-To: <160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0
+ malwarescore=0 adultscore=0 phishscore=0 spamscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009250150
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9755 signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0 bulkscore=0
+ clxscore=1011 impostorscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2009250150
+Message-ID-Hash: RLRCHDCEBOLMJNDUSPTQLOQHTMQOYDHE
+X-Message-ID-Hash: RLRCHDCEBOLMJNDUSPTQLOQHTMQOYDHE
+X-MailFrom: joao.m.martins@oracle.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Joao Martins <joao.m.martins@oracle.com>, dave.hansen@linux.intel.com, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
+CC: David Hildenbrand <david@redhat.com>, Bjorn Helgaas <bhelgaas@google.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Airlie <airlied@linux.ie>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Pavel Tatashin <pasha.tatashin@soleen.com>, Hulk Robot <hulkci@huawei.com>, Ben Skeggs <bskeggs@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Jia He <justin.he@arm.com>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, Jason Yan <yanaijie@huawei.com>, Paul Mackerras <paulus@ozlabs.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Brice Goglin <Brice.Goglin@inria.fr>, Stefano Stabellini <sstabellini@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Juergen Gross <jgross@suse.com>, Daniel Vetter <daniel@ffwll.ch>, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BA3276KPPE3LYHGNTJWHLAZIXMIVAEGG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RLRCHDCEBOLMJNDUSPTQLOQHTMQOYDHE/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,123 +80,50 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-From: Joao Martins <joao.m.martins@oracle.com>
+Hey Dan,
 
-Add a sysfs attribute which denotes a range from the dax region to be
-allocated.  It's an write only @mapping sysfs attribute in the format of
-'<start>-<end>' to allocate a range.  @start and @end use hexadecimal
-values and the @pgoff is implicitly ordered wrt to previous writes to
-@mapping sysfs e.g.  a write of a range of length 1G the pgoff is
-0..1G(-4K), a second write will use @pgoff for 1G+4K..<size>.
+On 9/25/20 8:11 PM, Dan Williams wrote:
+> Changes since v4 [1]:
+> - Rebased on
+>   device-dax-move-instance-creation-parameters-to-struct-dev_dax_data.patch
+>   in -mm [2]. I.e. patches that did not need fixups from v4 are not
+>   included.
+> 
+> - Folded all fixes
+> 
 
-This range mapping interface is useful for:
+Hmm, perhaps you missed the fixups before the above mentioned patch?
 
- 1) Application which want to implement its own allocation logic,
- and thus pick the desired ranges from dax_region.
+From:
 
- 2) For use cases like VMM fast restart[0] where after kexec we
- want to the same gpa<->phys mappings (as originally created
- before kexec).
+	https://www.ozlabs.org/~akpm/mmots/series
 
-[0] https://static.sched.com/hosted_files/kvmforum2019/66/VMM-fast-restart_kvmforum2019.pdf
+under "mm/dax", I am listing those fixups here:
 
-Link: https://lkml.kernel.org/r/159643106970.4062302.10402616567780784722.stgit@dwillia2-desk3.amr.corp.intel.com
-Link: https://lore.kernel.org/r/20200716172913.19658-5-joao.m.martins@oracle.com
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/dax/bus.c |   64 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+x86-numa-add-nohmat-option-fix.patch
+acpi-hmat-refactor-hmat_register_target_device-to-hmem_register_device-fix.patch
+mm-memory_hotplug-introduce-default-phys_to_target_node-implementation-fix.patch
+acpi-hmat-attach-a-device-for-each-soft-reserved-range-fix.patch
 
-diff --git a/drivers/dax/bus.c b/drivers/dax/bus.c
-index 0ac4a9c0fd18..27513d311242 100644
---- a/drivers/dax/bus.c
-+++ b/drivers/dax/bus.c
-@@ -1043,6 +1043,67 @@ static ssize_t size_store(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RW(size);
- 
-+static ssize_t range_parse(const char *opt, size_t len, struct range *range)
-+{
-+	unsigned long long addr = 0;
-+	char *start, *end, *str;
-+	ssize_t rc = EINVAL;
-+
-+	str = kstrdup(opt, GFP_KERNEL);
-+	if (!str)
-+		return rc;
-+
-+	end = str;
-+	start = strsep(&end, "-");
-+	if (!start || !end)
-+		goto err;
-+
-+	rc = kstrtoull(start, 16, &addr);
-+	if (rc)
-+		goto err;
-+	range->start = addr;
-+
-+	rc = kstrtoull(end, 16, &addr);
-+	if (rc)
-+		goto err;
-+	range->end = addr;
-+
-+err:
-+	kfree(str);
-+	return rc;
-+}
-+
-+static ssize_t mapping_store(struct device *dev, struct device_attribute *attr,
-+		const char *buf, size_t len)
-+{
-+	struct dev_dax *dev_dax = to_dev_dax(dev);
-+	struct dax_region *dax_region = dev_dax->region;
-+	size_t to_alloc;
-+	struct range r;
-+	ssize_t rc;
-+
-+	rc = range_parse(buf, len, &r);
-+	if (rc)
-+		return rc;
-+
-+	rc = -ENXIO;
-+	device_lock(dax_region->dev);
-+	if (!dax_region->dev->driver) {
-+		device_unlock(dax_region->dev);
-+		return rc;
-+	}
-+	device_lock(dev);
-+
-+	to_alloc = range_len(&r);
-+	if (alloc_is_aligned(dev_dax, to_alloc))
-+		rc = alloc_dev_dax_range(dev_dax, r.start, to_alloc);
-+	device_unlock(dev);
-+	device_unlock(dax_region->dev);
-+
-+	return rc == 0 ? len : rc;
-+}
-+static DEVICE_ATTR_WO(mapping);
-+
- static ssize_t align_show(struct device *dev,
- 		struct device_attribute *attr, char *buf)
- {
-@@ -1175,6 +1236,8 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
- 		return 0;
- 	if (a == &dev_attr_numa_node.attr && !IS_ENABLED(CONFIG_NUMA))
- 		return 0;
-+	if (a == &dev_attr_mapping.attr && is_static(dax_region))
-+		return 0;
- 	if ((a == &dev_attr_align.attr ||
- 	     a == &dev_attr_size.attr) && is_static(dax_region))
- 		return 0444;
-@@ -1184,6 +1247,7 @@ static umode_t dev_dax_visible(struct kobject *kobj, struct attribute *a, int n)
- static struct attribute *dev_dax_attributes[] = {
- 	&dev_attr_modalias.attr,
- 	&dev_attr_size.attr,
-+	&dev_attr_mapping.attr,
- 	&dev_attr_target_node.attr,
- 	&dev_attr_align.attr,
- 	&dev_attr_resource.attr,
+(in https://www.ozlabs.org/~akpm/mmots/broken-out/)
+
+[...]
+
+> ---
+> 
+> Andrew, this series replaces
+> 
+> device-dax-make-pgmap-optional-for-instance-creation.patch
+> 
+> ...through...
+> 
+> dax-hmem-introduce-dax_hmemregion_idle-parameter.patch
+> 
+> ...in your stack.
+> 
+> Let me know if there is a different / preferred way to refresh a bulk of
+> patches in your queue when only a subset need updates.
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
