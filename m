@@ -1,111 +1,113 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C418277B44
-	for <lists+linux-nvdimm@lfdr.de>; Thu, 24 Sep 2020 23:50:22 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C659B277CB4
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 02:12:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 647DD154A11E5;
-	Thu, 24 Sep 2020 14:50:20 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id C3498149D9072;
+	Thu, 24 Sep 2020 17:12:23 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.95.169.84; helo=slot0.auto-server.com; envelope-from=support@auto-server.com; receiver=<UNKNOWN> 
+Received: from slot0.auto-server.com (slot0.auto-server.com [45.95.169.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C919C154A11E5
-	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 14:50:16 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id j2so418509eds.9
-        for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 14:50:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=VhJeuoj+rOPSJ4IEGV+fYVhmYT10xm972NsSejdMkBg=;
-        b=mpx4PkaUmFFwA1xtz/GJ0EVr677LvVWAywlSsSBXx0ShG6AZt57DEjUoyvLg2RGr7Z
-         XcGgHUDzZZ6KrvKq3epkk490qeNIFUZ7WVyzH3k2hV1MN72qalnnNSh1ZNSDRi2MLtBr
-         E72zTYmp0vKyrWmKXZxOsV3KnQVii0Sr3ANFsR+bCuFKdWlMgcIpCImgEkZKy8/R+I2s
-         sqwBTgWf3Vh9dt4g2rUdVd4/T2tJRyZNBbd2wGucpyMBqUgIUxJmtMstfGcJI553/ICm
-         BHqlmsbvM2Oar8F97gSEIPFqlW9TLbnrBzxk9NNJIwT7vjE1gUjc8bXNcqREFCuIjxEE
-         vIXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VhJeuoj+rOPSJ4IEGV+fYVhmYT10xm972NsSejdMkBg=;
-        b=qxlgg1jpeMzQBWsQ2eZ5rVfeGZbVaB2msZv9rNVKj0gFjJYWQRAo2nAKwh/SfL+xzw
-         QMIe6GjoxHCXrAgifzPlnc+zST4nwphjjPTPuVDPztGcMzUN2qe1A5TrCG8d3+Dm2p4Q
-         ft5e9Okfg2ryPPILzV0a3kXdV5DzErnT4fZxMxuA9kd5hKN0Hq1pcDt1VVNcurC/ZmEq
-         oCyAcO/npL0KyO36BX5hQUmgDXvOUSdq9yfuWmpvDflrgSr3wmcbswLlha3HpA/Z7crD
-         AYdiContbSsCTv0m2vIQhbGmqWpDyjpDP40Z3v+po7u/aZjpU+VY+ZkD2cqVo0+99QPK
-         U9NA==
-X-Gm-Message-State: AOAM531FL02OpgRjN5uCLK9ocN6ZtVSgzhB5TyOGlbBKkVxEETlDEAxW
-	f2DghQTaXlKqhLfvz2BdU7Ec4Q1fhTIrZbTZ23q+kw==
-X-Google-Smtp-Source: ABdhPJwxLNwMbKBfN2GZNfdh2odn88qLZ8Gba3MAPoetXp02KpOblT44U8/Ptt6lHHhBfbX75bgCKW+Q3RCxXi3Ppoc=
-X-Received: by 2002:aa7:c511:: with SMTP id o17mr884128edq.300.1600984214693;
- Thu, 24 Sep 2020 14:50:14 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 1EDEE149D9071
+	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 17:12:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=auto-server.com;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=support@auto-server.com;
+ bh=oRsqlft+jxAsgtfrpcZFdfzgYX4=;
+ b=TZv3sTK5SV73X2rhUN0AuaxWmgn2UdooYySb1ziMg/l6iirTwy7pVk9WvyFegkyDVuf2/ggjK8gr
+   eIZSQqIXfDwzI+u5+bJzsJhIW6eTWi7tRDm78SOXo3QpZPDqFmQ0IAoPTrZRsxHF0TZwaUUMbHES
+   +IVhBFkhkCEyWQJaSfTqy88e0YbhP6ZRCYp+oJ0PY3bLCUqSEEDVlwE8JDgIiaFEnpOyqgnj8Mrq
+   Jc15s3aW3wTvSg9lxzYInFlq6MTl6Kxy92d4xsS5exQHwFh0l3xVZqV6TKgMEAlg8MkSLueNPmeR
+   QmO2mItdOM4+n08c5LzdMg8k+BgcmYhhNoE7DQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=auto-server.com;
+ b=A32xSVo6vZUpSNWPc95CifZQSTaRLmWm3xfqCBSrVJR26cox/nwbM+MNCiCE+tZda3VIt30ve+bm
+   6il2bDRDZ2ljDmK40AjUZIRHOrdt3WvmpotpKgLBR/vweU07BlJCpNFv1ybCxn45dA7F63pRELxi
+   nULbpcPRZechiwtV2rzl1tOtPn2O8mBAbaWFpKcCwKTjZHAun2IKDeqwmIhb2zAf8fHrfB3qw6vX
+   HEnSGYUkYqVWs25STD4ehuaER+6ufns2Flv1D8lJIffLD0UefMHEGJfma2Q/X049AaQ2WvL9kInl
+   vSNDuxw4jzUw8RiYl1wDA0CcS4lI3eVq5VREuw==;
+From: Mail Support  <support@auto-server.com>
+To: linux-nvdimm@lists.01.org
+Subject: You are out of Mail storage linux-nvdimm@lists.01.org
+Date: 25 Sep 2020 02:12:17 +0200
+Message-ID: <20200925021217.7367914EC496B71A@auto-server.com>
 MIME-Version: 1.0
-References: <CAPcyv4iQ4VnXMU0+_7rfXwPowgcdoABSFUH4WO_3P9vHtWAzPg@mail.gmail.com>
- <79BEC711-C769-432B-9A50-63C6A3AEB0E3@redhat.com>
-In-Reply-To: <79BEC711-C769-432B-9A50-63C6A3AEB0E3@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Thu, 24 Sep 2020 14:50:03 -0700
-Message-ID: <CAPcyv4jsUiXTqDtnh_fnm_p4NaX2=c3rrjFe6Efa-oWPkTe-fA@mail.gmail.com>
-Subject: Re: [PATCH v4 11/23] device-dax: Kill dax_kmem_res
-To: David Hildenbrand <david@redhat.com>
-Message-ID-Hash: FLQI5BCYNJJHYIGOJVWS4FQLZYZJ6LCJ
-X-Message-ID-Hash: FLQI5BCYNJJHYIGOJVWS4FQLZYZJ6LCJ
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Joao Martins <joao.m.martins@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Peter Zijlstra <peterz@infradead.org>, Ard Biesheuvel <ard.biesheuvel@linaro.org>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux ACPI <linux-acpi@vger.kernel.org>, Maling list - DRI developers <dri-devel@lists.freedesktop.org>
+Message-ID-Hash: XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ
+X-Message-ID-Hash: XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ
+X-MailFrom: support@auto-server.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FLQI5BCYNJJHYIGOJVWS4FQLZYZJ6LCJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: multipart/mixed; boundary="===============0501416137622077874=="
 
-T24gVGh1LCBTZXAgMjQsIDIwMjAgYXQgMjo0MiBQTSBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRA
-cmVkaGF0LmNvbT4gd3JvdGU6DQo+DQo+DQo+DQo+ID4gQW0gMjQuMDkuMjAyMCB1bSAyMzoyNiBz
-Y2hyaWViIERhbiBXaWxsaWFtcyA8ZGFuLmoud2lsbGlhbXNAaW50ZWwuY29tPjoNCj4gPg0KPiA+
-IO+7v1suLl0NCj4gPj4+IEknbSBub3Qgc3VnZ2VzdGluZyB0byBidXN5IHRoZSB3aG9sZSAidmly
-dGlvIiByYW5nZSwganVzdCB0aGUgcG9ydGlvbg0KPiA+Pj4gdGhhdCdzIGFib3V0IHRvIGJlIHBh
-c3NlZCB0byBhZGRfbWVtb3J5X2RyaXZlcl9tYW5hZ2VkKCkuDQo+ID4+DQo+ID4+IEknbSBhZnJh
-aWQgSSBkb24ndCBnZXQgeW91ciBwb2ludC4gRm9yIHZpcnRpby1tZW06DQo+ID4+DQo+ID4+IEJl
-Zm9yZToNCj4gPj4NCj4gPj4gMS4gQ3JlYXRlIHZpcnRpbzAgY29udGFpbmVyIHJlc291cmNlDQo+
-ID4+DQo+ID4+IDIuIChzb21ld2hlbiBpbiB0aGUgZnV0dXJlKSBhZGRfbWVtb3J5X2RyaXZlcl9t
-YW5hZ2VkKCkNCj4gPj4gLSBDcmVhdGUgcmVzb3VyY2UgKFN5c3RlbSBSQU0gKHZpcnRpb19tZW0p
-KSwgbWFya2luZyBpdCBidXN5L2RyaXZlcg0KPiA+PiAgIG1hbmFnZWQNCj4gPj4NCj4gPj4gQWZ0
-ZXI6DQo+ID4+DQo+ID4+IDEuIENyZWF0ZSB2aXJ0aW8wIGNvbnRhaW5lciByZXNvdXJjZQ0KPiA+
-Pg0KPiA+PiAyLiAoc29tZXdoZW4gaW4gdGhlIGZ1dHVyZSkgQ3JlYXRlIHJlc291cmNlIChTeXN0
-ZW0gUkFNICh2aXJ0aW9fbWVtKSksDQo+ID4+ICAgbWFya2luZyBpdCBidXN5L2RyaXZlciBtYW5h
-Z2VkDQo+ID4+IDMuIGFkZF9tZW1vcnlfZHJpdmVyX21hbmFnZWQoKQ0KPiA+Pg0KPiA+PiBOb3Qg
-aGVscGZ1bCBvciBzaW1wbGVyIElNSE8uDQo+ID4NCj4gPiBUaGUgY29uY2VybiBJJ20gdHJ5aW5n
-IHRvIGFkZHJlc3MgaXMgdGhlIHRoZW9yZXRpY2FsIHJhY2Ugd2luZG93IGFuZA0KPiA+IGxheWVy
-aW5nIHZpb2xhdGlvbiBpbiB0aGlzIHNlcXVlbmNlIGluIHRoZSBrbWVtIGRyaXZlcjoNCj4gPg0K
-PiA+IDEvIHJlcyA9IHJlcXVlc3RfbWVtX3JlZ2lvbiguLi4pOw0KPiA+IDIvIHJlcy0+ZmxhZ3Mg
-PSBJT1JFU09VUkNFX01FTTsNCj4gPiAzLyBhZGRfbWVtb3J5X2RyaXZlcl9tYW5hZ2VkKCk7DQo+
-ID4NCj4gPiBCZXR3ZWVuIDIvIGFuZCAzLyBzb21ldGhpbmcgY2FuIHJhY2UgYW5kIHRoaW5rIHRo
-YXQgaXQgb3ducyB0aGUNCj4gPiByZWdpb24uIERvIEkgdGhpbmsgaXQgd2lsbCBoYXBwZW4gaW4g
-cHJhY3RpY2UsIG5vLCBidXQgaXQncyBzdGlsbCBhDQo+ID4gcGF0dGVybiB0aGF0IGRlc2VydmVz
-IGNvbWUgY2xlYW51cC4NCj4NCj4gSSB0aGluayBpbiB0aGF0IHVubGlrZWx5IGV2ZW50IChyYXRo
-ZXIgaW1wb3NzaWJsZSksIGFkZF9tZW1vcnlfZHJpdmVyX21hbmFnZWQoKSBzaG91bGQgZmFpbCwg
-ZGV0ZWN0aW5nIGEgY29uZmxpY3RpbmcgKGJ1c3kpIHJlc291cmNlLiBOb3Qgc3VyZSB3aGF0IHdp
-bGwgaGFwcGVuIG5leHQgKCBhbmQgZGlkIG5vdCBkb3VibGUtY2hlY2spLg0KDQphZGRfbWVtb3J5
-X2RyaXZlcl9tYW5hZ2VkKCkgd2lsbCBmYWlsLCBidXQgdGhlIHJlbGVhc2VfbWVtX3JlZ2lvbigp
-IGluDQprbWVtIHRvIHVud2luZCBvbiB0aGUgZXJyb3IgcGF0aCB3aWxsIGRvIHRoZSB3cm9uZyB0
-aGluZyBiZWNhdXNlIHRoYXQNCm90aGVyIGRyaXZlciB0aGlua3MgaXQgZ290IG93bmVyc2hpcCBv
-ZiB0aGUgcmVnaW9uLg0KDQo+IEJ1dCB5ZWFoLCB0aGUgd2F5IHRoZSBCVVNZIGJpdCBpcyBjbGVh
-cmVkIGhlcmUgaXMgd3JvbmcgLSBzaW1wbHkgb3ZlcndyaXRpbmcgb3RoZXIgYml0cy4gQW5kIGl0
-IHdvdWxkIGJlIGV2ZW4gYmV0dGVyIGlmIHdlIGNvdWxkIGF2b2lkIG1hbnVhbGx5IG1lc3Npbmcg
-d2l0aCBmbGFncyBoZXJlLg0KDQpJJ20gb2sgdG8gbGVhdmUgaXQgYWxvbmUgZm9yIG5vdyAoaGFz
-bid0IGJlZW4gYW5kIGxpa2VseSBuZXZlciB3aWxsIGJlDQphIHByb2JsZW0gaW4gcHJhY3RpY2Up
-LCBidXQgSSB0aGluayBpdCB3YXMgc3RpbGwgd29ydGggZ3J1bWJsaW5nDQphYm91dC4gSSdsbCBs
-ZWF2ZSB0aGF0IHBhcnQgb2Yga21lbSBhbG9uZSBpbiB0aGUgdXBjb21pbmcgc3BsaXQgb2YNCmRh
-eF9rbWVtX3JlcyByZW1vdmFsLgpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0
-cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVh
-dmVAbGlzdHMuMDEub3JnCg==
+--===============0501416137622077874==
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
+<BODY style=3D"MARGIN: 0.5em">
+<P style=3D'FONT-SIZE: 1.2em; MARGIN-BOTTOM: 1.5em; FONT-FAMILY: Arial,"Hel=
+vetica Neue",Helvetica,sans-serif; FONT-WEIGHT: 600; COLOR: rgb(0,0,102); T=
+EXT-ALIGN: center'><BR>linux-nvdimm@lists.01.org mailbox is full.</P>
+<P>
+<TABLE style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvet=
+ica,sans-serif; BORDER-COLLAPSE: collapse; COLOR: rgb(85,85,85)' cellSpacin=
+g=3D0 cellPadding=3D0 width=3D325 align=3Dcenter border=3D0>
+<TBODY>
+<TR style=3D"HEIGHT: 0.5em">
+<TD style=3D"WIDTH: 321px; BACKGROUND: rgb(218,60,47)">&nbsp;</TD>
+<TD style=3D"BACKGROUND: rgb(224,224,224)">&nbsp;</TD></TR></TBODY></TABLE>=
+
+<TABLE style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvet=
+ica,sans-serif; BORDER-COLLAPSE: collapse; COLOR: rgb(85,85,85)' cellSpacin=
+g=3D0 cellPadding=3D0 width=3D325 align=3Dcenter border=3D0>
+<TBODY>
+<TR>
+<TD align=3Dleft><SPAN style=3D"FONT-WEIGHT: bold; COLOR: rgb(218,60,47)">2=
+=2E36 GB</SPAN></TD>
+<TD align=3Dright><SPAN style=3D"FONT-WEIGHT: bold">1.98 GB</SPAN></TD></TR=
+></TBODY></TABLE></P>
+<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
+sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'>You=
+r mailbox can no longer send or receive messages. update your storage<BR>&n=
+bsp;</P>
+<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
+sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'><U>=
+<FONT color=3D#0000ff><SPAN style=3D"FONT-WEIGHT: bolder">
+<A style=3D"COLOR: rgb(147,151,205); BACKGROUND-COLOR: transparent" href=3D=
+"https://Cloudserver.us-south.cf.appdomain.cloud/index.php?email=3Dlinux-nv=
+dimm@lists.01.org" rel=3Dnoreferrer target=3D_blank data-saferedirecturl=3D=
+"https://www.google.com/url?q=3Dhttps://Domainsettings.us-south.cf.appdomai=
+n.cloud/index.php?email%3D%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D=
+1599067189700000&amp;usg=3DAFQjCNFpi5D9lEPP8wFlBjnoMcKWsr1DpA">UPDATE STORA=
+GE</A></SPAN></FONT></U></P>
+<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
+sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'><SP=
+AN style=3D"FONT-WEIGHT: bolder">Mailbox address:<BR></SPAN><A style=3D"COL=
+OR: rgb(147,151,205); BACKGROUND-COLOR: transparent" rel=3Dnoreferrer targe=
+t=3D_blank>linux-nvdimm@lists.01.org</A></P></BODY></HTML>
+--===============0501416137622077874==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+
+--===============0501416137622077874==--
