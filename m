@@ -1,87 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A30A278B66
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 16:57:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5623F27903B
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 20:24:59 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0CF1114B7EA7C;
-	Fri, 25 Sep 2020 07:57:30 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.111.4.221; helo=new1-smtp.messagingengine.com; envelope-from=tycho@tycho.pizza; receiver=<UNKNOWN> 
-Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 56516154E302A;
+	Fri, 25 Sep 2020 11:24:57 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id B5C9014B7EA7A
-	for <linux-nvdimm@lists.01.org>; Fri, 25 Sep 2020 07:57:26 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 6C28D580762;
-	Fri, 25 Sep 2020 10:57:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Fri, 25 Sep 2020 10:57:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tycho.pizza; h=
-	date:from:to:cc:subject:message-id:references:mime-version
-	:content-type:in-reply-to; s=fm1; bh=tBfuOWmQyjKgArCfu4khNo2TUG7
-	Jq21FgCLcBIcnmPM=; b=OofIQppgkot+WhAGmGPKk5hZgjNlpN1ZlHwJkZhHUT7
-	KzQ9a4UKLvBtvt6IoY28ep/w/+2zSquvjNGRBmkSersamyUPK4mq6bGc213GAiGs
-	6eeA6co4G2jngyV6y9+g8szoci4GiiwwXywXX2pXq0HGjzmMhlmRWxQ85LK/DlDy
-	irsPbph5wkukocpS6KgwRtiTKpYoXd3eKdxCN9qwKIkQcRRXIio+zFQ2SjqkppTg
-	SNQPkGiduZegcLFBIHP5gJ/Op/FSZLeDDXJiOr9hfVgoldvcVMrRECA9TV6Wq7zO
-	8FAbll8jR/Sd8TZyP6RpX6gZdv/A69N8+b8xGORjw1A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=tBfuOW
-	mQyjKgArCfu4khNo2TUG7Jq21FgCLcBIcnmPM=; b=O2AlydY1ltQyDVNghirgyE
-	d0O51zrG8EUimzMadviff/NiqC0auMDDpsNj82EjtYhLCHLnvp4ul7cmJcKB4oic
-	8GyaGwvleCXSsdBrsydeqkvzbq2T7kD4/ki04+EPu9S3o67WbG3C4srDADzAbfLV
-	SaqsEs/JPQPxAl+TMoyLW00k6FlCJFMhhZSC9xeH5+0jlcUcku9NsJuXufMDdzoq
-	zdAtNnQpSuuO9acwwrKLSyqcC1vJ24Bg4hY3bq8wGRJsi/GvmWV6uSzubM/akmk0
-	XCtdH3b4xnADHi4BE95Cgt9gxaWKV/9k1KSsSHPJtWhz0FVMgsaL4L1E5bop9FyA
-	==
-X-ME-Sender: <xms:UwVuXzT2_EVK-X89sY8bB0QEc5kSSYKtd5Y6-1axvefCEYWOlYSnYA>
-    <xme:UwVuX0yozWkEYrLjnjNMdRGhiQbd_yK2RWC7ovDaSPkcaNL6mvOJ2S11sWTDI9fTG
-    93ab4J4YjRsXoIH6_s>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrvddtgdekudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfihtghhohcu
-    tehnuggvrhhsvghnuceothihtghhohesthihtghhohdrphhiiiiirgeqnecuggftrfgrth
-    htvghrnhepgeekfeejgeektdejgfefudelkeeuteejgefhhfeugffffeelheegieefvdfg
-    tefhnecukfhppedukeegrdduieejrddvtddruddvjeenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehthigthhhosehthigthhhordhpihiiiigr
-X-ME-Proxy: <xmx:UwVuX41INdcWU29T0AMGhJaB3HJIGlhdpwpZMI-KwyruwPc6EXwYOw>
-    <xmx:UwVuXzD-ve1UN48X78PrtetY1smAql28prAO4tEFqGl7ymEh84gqxQ>
-    <xmx:UwVuX8geyBzOSq6I0Ijh-k5-hQ3NuL4eld4Pjyi37IJqiLjeZx6tRA>
-    <xmx:VQVuX1Bsar3AUsWBYtFGXXzyHoYMRcAzPxIbRAmmT678sqzqCjgIfI7lyA7qd_3J>
-Received: from cisco (184-167-020-127.res.spectrum.com [184.167.20.127])
-	by mail.messagingengine.com (Postfix) with ESMTPA id B8B0B328005D;
-	Fri, 25 Sep 2020 10:57:18 -0400 (EDT)
-Date: Fri, 25 Sep 2020 08:57:17 -0600
-From: Tycho Andersen <tycho@tycho.pizza>
-To: Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v6 5/6] mm: secretmem: use PMD-size pages to amortize
- direct map fragmentation
-Message-ID: <20200925145717.GA284424@cisco>
-References: <20200924132904.1391-1-rppt@kernel.org>
- <20200924132904.1391-6-rppt@kernel.org>
- <20200925074125.GQ2628@hirez.programming.kicks-ass.net>
- <8435eff6-7fa9-d923-45e5-d8850e4c6d73@redhat.com>
- <20200925095029.GX2628@hirez.programming.kicks-ass.net>
- <20200925103114.GA7407@C02TD0UTHF1T.local>
+	by ml01.01.org (Postfix) with ESMTPS id 6F4CB154E3013
+	for <linux-nvdimm@lists.01.org>; Fri, 25 Sep 2020 11:24:54 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id gx22so4911312ejb.5
+        for <linux-nvdimm@lists.01.org>; Fri, 25 Sep 2020 11:24:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pXgmtUU/9M0jPBUXCBFaK9jFUYs5RNAYLDl2lgNz+xk=;
+        b=TJ1V1mcLvIdUyYEBPeZZf8Tfgct5pegeON5gPiyhBZr1rj17HE/LSz06S1yqB2DxYo
+         qUgsLXOmkEy5RUYXfcsu0ev0abrlc4ZZG1Kd1c1m4lTDq68R5G9rMfjf6bsPVZCPaC2c
+         hjmBZ2gsyAsr5qvl7+14h/LhF3yKRti91f/lEFgZMmWKoNpWPuRvpAQzJuHh4plWqn2a
+         SG0Fl+mvzZFp1BwxsoO5Oa4eeHjtBqhkQjxPY1U1QpTism1hHmxOxed/IqXCTtbR4Wj2
+         RtTIhITx/uLerytC7wwKxf8ACB/2IIW3+wJoebKPD28UIrlYlJBVsNJlYgeIrBLUskhW
+         Rvig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pXgmtUU/9M0jPBUXCBFaK9jFUYs5RNAYLDl2lgNz+xk=;
+        b=PI+sruwvhyzYhPv+4dbj0S7eYCgMSM4dKeDGGFcwqHH+yihEtvQ4KiTSQHTeWkclo7
+         x85HNs2tP1TX+BGyzXk6ZLyLVy7rPnb9GNIi6GqImPJDSLnIE3rMh2anVcgFksU24Y+R
+         Xv23ag/Ewga6TcdTHwK4lWC2mwCksFEW0eXe5K+Qn+h0zEuCg5d4y2v8nqna/s0cJbLA
+         Tm6Zg141+e2qB99VcO8ssum9Yik4wKRnpBVndDk1FLWoWRbvXOBB0bOUUAOV1TGVT1+s
+         i9YTn4ukd0u6QlMO14HBUQwgDQguenpOaNKS0cHPc5sz33tnZRBU/6MHFZRuICxMriVu
+         IgbA==
+X-Gm-Message-State: AOAM532oKXCSttUM1fUwZKoPryWroysQupUvq6+Q1O7cTuALBHSdhDqm
+	ezAhOHJQ7W8gF5l5VHBuQsuASDIzncLW4QXfPlsejw==
+X-Google-Smtp-Source: ABdhPJzSN+8TPy4k3k2Pvbt2ULzLKI4qrWjpydNNs/74YbTACwo+2SKE6EfKy9Pf30DhtxFV2BurROECzyjWqYIq3so=
+X-Received: by 2002:a17:906:8143:: with SMTP id z3mr3919252ejw.323.1601058292066;
+ Fri, 25 Sep 2020 11:24:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20200925103114.GA7407@C02TD0UTHF1T.local>
-Message-ID-Hash: DEOCN6OUEVIOHBBH7W2QZQL2S6K5KZO3
-X-Message-ID-Hash: DEOCN6OUEVIOHBBH7W2QZQL2S6K5KZO3
-X-MailFrom: tycho@tycho.pizza
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Peter Zijlstra <peterz@infradead.org>, David Hildenbrand <david@redhat.com>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, li
- nux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
+References: <20200925091806.1860663-1-yanaijie@huawei.com>
+In-Reply-To: <20200925091806.1860663-1-yanaijie@huawei.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 25 Sep 2020 11:24:41 -0700
+Message-ID: <CAPcyv4jgCp4_rSWs2SipiR3Jhz2jbSGWuLjtPExGDdTOEztAXA@mail.gmail.com>
+Subject: Re: [PATCH] device-dax: include bus.h in super.c
+To: Jason Yan <yanaijie@huawei.com>
+Message-ID-Hash: ZIIAHDTIYXLMFDT3TYNUTDJZUS6YEGPC
+X-Message-ID-Hash: ZIIAHDTIYXLMFDT3TYNUTDJZUS6YEGPC
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Hulk Robot <hulkci@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DEOCN6OUEVIOHBBH7W2QZQL2S6K5KZO3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZIIAHDTIYXLMFDT3TYNUTDJZUS6YEGPC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -90,64 +67,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 25, 2020 at 11:31:14AM +0100, Mark Rutland wrote:
-> Hi,
-> 
-> Sorry to come to this so late; I've been meaning to provide feedback on
-> this for a while but have been indisposed for a bit due to an injury.
-> 
-> On Fri, Sep 25, 2020 at 11:50:29AM +0200, Peter Zijlstra wrote:
-> > On Fri, Sep 25, 2020 at 11:00:30AM +0200, David Hildenbrand wrote:
-> > > On 25.09.20 09:41, Peter Zijlstra wrote:
-> > > > On Thu, Sep 24, 2020 at 04:29:03PM +0300, Mike Rapoport wrote:
-> > > >> From: Mike Rapoport <rppt@linux.ibm.com>
-> > > >>
-> > > >> Removing a PAGE_SIZE page from the direct map every time such page is
-> > > >> allocated for a secret memory mapping will cause severe fragmentation of
-> > > >> the direct map. This fragmentation can be reduced by using PMD-size pages
-> > > >> as a pool for small pages for secret memory mappings.
-> > > >>
-> > > >> Add a gen_pool per secretmem inode and lazily populate this pool with
-> > > >> PMD-size pages.
-> > > > 
-> > > > What's the actual efficacy of this? Since the pmd is per inode, all I
-> > > > need is a lot of inodes and we're in business to destroy the directmap,
-> > > > no?
-> > > > 
-> > > > Afaict there's no privs needed to use this, all a process needs is to
-> > > > stay below the mlock limit, so a 'fork-bomb' that maps a single secret
-> > > > page will utterly destroy the direct map.
-> > > > 
-> > > > I really don't like this, at all.
-> > > 
-> > > As I expressed earlier, I would prefer allowing allocation of secretmem
-> > > only from a previously defined CMA area. This would physically locally
-> > > limit the pain.
-> > 
-> > Given that this thing doesn't have a migrate hook, that seems like an
-> > eminently reasonable contraint. Because not only will it mess up the
-> > directmap, it will also destroy the ability of the page-allocator /
-> > compaction to re-form high order blocks by sprinkling holes throughout.
-> > 
-> > Also, this is all very close to XPFO, yet I don't see that mentioned
-> > anywhere.
-> 
-> Agreed. I think if we really need something like this, something between
-> XPFO and DEBUG_PAGEALLOC would be generally better, since:
+On Fri, Sep 25, 2020 at 2:17 AM Jason Yan <yanaijie@huawei.com> wrote:
+>
+> This addresses the following sparse warning:
+>
+> drivers/dax/super.c:452:6: warning: symbol 'run_dax' was not declared.
+> Should it be static?
 
-Perhaps we can brainstorm on this? XPFO has mostly been abandoned
-because there's no good/safe way to make it faster. There was work on
-eliminating TLB flushes, but that waters down the protection. When I
-was last thinking about it in anger, it just seemed like it was
-destined to be slow, especially on $large_num_cores machines, since
-you have to flush everyone else's map too.
-
-I think the idea of "opt in to XPFO" is mostly attractive because then
-people only have to pay the slowness cost for memory they really care
-about. But if there's some way to make XPFO, or some alternative
-design, that may be better.
-
-Tycho
+run_dax() is a core helper defined in drivers/dax/super.c that is
+meant to hide the definition of 'struct dax_device' from the wider
+kernel that does not need to poke into its internals. There's also no
+need for drivers/dax/super.c to be given knowledge of other core
+details that are contained within bus.h. So, I think this patch
+provides no value and goes against the principle of least privilege
+(https://en.wikipedia.org/wiki/Principle_of_least_privilege)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
