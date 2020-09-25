@@ -2,112 +2,95 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C659B277CB4
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 02:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3654D277DF5
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 25 Sep 2020 04:34:37 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C3498149D9072;
-	Thu, 24 Sep 2020 17:12:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.95.169.84; helo=slot0.auto-server.com; envelope-from=support@auto-server.com; receiver=<UNKNOWN> 
-Received: from slot0.auto-server.com (slot0.auto-server.com [45.95.169.84])
+	by ml01.01.org (Postfix) with ESMTP id 8BDB813D00029;
+	Thu, 24 Sep 2020 19:34:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=<UNKNOWN> 
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1EDEE149D9071
-	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 17:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=auto-server.com;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=support@auto-server.com;
- bh=oRsqlft+jxAsgtfrpcZFdfzgYX4=;
- b=TZv3sTK5SV73X2rhUN0AuaxWmgn2UdooYySb1ziMg/l6iirTwy7pVk9WvyFegkyDVuf2/ggjK8gr
-   eIZSQqIXfDwzI+u5+bJzsJhIW6eTWi7tRDm78SOXo3QpZPDqFmQ0IAoPTrZRsxHF0TZwaUUMbHES
-   +IVhBFkhkCEyWQJaSfTqy88e0YbhP6ZRCYp+oJ0PY3bLCUqSEEDVlwE8JDgIiaFEnpOyqgnj8Mrq
-   Jc15s3aW3wTvSg9lxzYInFlq6MTl6Kxy92d4xsS5exQHwFh0l3xVZqV6TKgMEAlg8MkSLueNPmeR
-   QmO2mItdOM4+n08c5LzdMg8k+BgcmYhhNoE7DQ==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=auto-server.com;
- b=A32xSVo6vZUpSNWPc95CifZQSTaRLmWm3xfqCBSrVJR26cox/nwbM+MNCiCE+tZda3VIt30ve+bm
-   6il2bDRDZ2ljDmK40AjUZIRHOrdt3WvmpotpKgLBR/vweU07BlJCpNFv1ybCxn45dA7F63pRELxi
-   nULbpcPRZechiwtV2rzl1tOtPn2O8mBAbaWFpKcCwKTjZHAun2IKDeqwmIhb2zAf8fHrfB3qw6vX
-   HEnSGYUkYqVWs25STD4ehuaER+6ufns2Flv1D8lJIffLD0UefMHEGJfma2Q/X049AaQ2WvL9kInl
-   vSNDuxw4jzUw8RiYl1wDA0CcS4lI3eVq5VREuw==;
-From: Mail Support  <support@auto-server.com>
-To: linux-nvdimm@lists.01.org
-Subject: You are out of Mail storage linux-nvdimm@lists.01.org
-Date: 25 Sep 2020 02:12:17 +0200
-Message-ID: <20200925021217.7367914EC496B71A@auto-server.com>
-MIME-Version: 1.0
-Message-ID-Hash: XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ
-X-Message-ID-Hash: XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ
-X-MailFrom: support@auto-server.com
+	by ml01.01.org (Postfix) with ESMTPS id 274F613D00022
+	for <linux-nvdimm@lists.01.org>; Thu, 24 Sep 2020 19:34:31 -0700 (PDT)
+Received: from X1 (unknown [104.245.68.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail.kernel.org (Postfix) with ESMTPSA id 6CF7620888;
+	Fri, 25 Sep 2020 02:34:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=default; t=1601001271;
+	bh=Smg4DQZKLT8m1LXboOjRbYbEEA4933QtuIJr9GOx1d4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=t2Am+bOL7aQc+oLElXbYFnp8Y1wlGgthaRTiSGvzkHwzblFnwyTLhHkGuKwh6cPPK
+	 dGNyh6ea1G8zhcYz+2jZ/HAlJJzZS2Hb5uMncrKXCFHO9WgB/ShnWeWBcyoD4aVexB
+	 fTMs8EfOHnI33GKShzqA790tDOYNu8QPGgMsLH84=
+Date: Thu, 24 Sep 2020 19:34:28 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH v6 0/6] mm: introduce memfd_secret system call to create
+ "secret" memory areas
+Message-Id: <20200924193428.6642e0cc3436bb67ddf8024a@linux-foundation.org>
+In-Reply-To: <20200924132904.1391-1-rppt@kernel.org>
+References: <20200924132904.1391-1-rppt@kernel.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Message-ID-Hash: NPWY54MZQJUOKS7NJJEFUHVATKLO5Q2E
+X-Message-ID-Hash: NPWY54MZQJUOKS7NJJEFUHVATKLO5Q2E
+X-MailFrom: akpm@linux-foundation.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: Alexander Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, Christopher Lameter <cl@linux.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, Elena Reshetova <elena.reshetova@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Idan Yaniv <idan.yaniv@ibm.com>, Ingo Molnar <mingo@redhat.com>, James Bottomley <jejb@linux.ibm.com>, "Kirill A. Shutemov" <kirill@shutemov.name>, Matthew Wilcox <willy@infradead.org>, Mark Rutland <mark.rutland@arm.com>, Mike Rapoport <rppt@linux.ibm.com>, Michael Kerrisk <mtk.manpages@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Shuah Khan <shuah@kernel.org>, Tycho Andersen <tycho@tycho.ws>, Will Deacon <will@kernel.org>, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-ar
+ m-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, x86@kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XBVSWTA2CT7I2CCEKKFG2H2CBDQMN4AZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NPWY54MZQJUOKS7NJJEFUHVATKLO5Q2E/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============0501416137622077874=="
-
---===============0501416137622077874==
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
-w3.org/TR/html4/loose.dtd">
-
-<HTML><HEAD>
-<META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
-<BODY style=3D"MARGIN: 0.5em">
-<P style=3D'FONT-SIZE: 1.2em; MARGIN-BOTTOM: 1.5em; FONT-FAMILY: Arial,"Hel=
-vetica Neue",Helvetica,sans-serif; FONT-WEIGHT: 600; COLOR: rgb(0,0,102); T=
-EXT-ALIGN: center'><BR>linux-nvdimm@lists.01.org mailbox is full.</P>
-<P>
-<TABLE style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvet=
-ica,sans-serif; BORDER-COLLAPSE: collapse; COLOR: rgb(85,85,85)' cellSpacin=
-g=3D0 cellPadding=3D0 width=3D325 align=3Dcenter border=3D0>
-<TBODY>
-<TR style=3D"HEIGHT: 0.5em">
-<TD style=3D"WIDTH: 321px; BACKGROUND: rgb(218,60,47)">&nbsp;</TD>
-<TD style=3D"BACKGROUND: rgb(224,224,224)">&nbsp;</TD></TR></TBODY></TABLE>=
-
-<TABLE style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvet=
-ica,sans-serif; BORDER-COLLAPSE: collapse; COLOR: rgb(85,85,85)' cellSpacin=
-g=3D0 cellPadding=3D0 width=3D325 align=3Dcenter border=3D0>
-<TBODY>
-<TR>
-<TD align=3Dleft><SPAN style=3D"FONT-WEIGHT: bold; COLOR: rgb(218,60,47)">2=
-=2E36 GB</SPAN></TD>
-<TD align=3Dright><SPAN style=3D"FONT-WEIGHT: bold">1.98 GB</SPAN></TD></TR=
-></TBODY></TABLE></P>
-<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
-sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'>You=
-r mailbox can no longer send or receive messages. update your storage<BR>&n=
-bsp;</P>
-<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
-sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'><U>=
-<FONT color=3D#0000ff><SPAN style=3D"FONT-WEIGHT: bolder">
-<A style=3D"COLOR: rgb(147,151,205); BACKGROUND-COLOR: transparent" href=3D=
-"https://Cloudserver.us-south.cf.appdomain.cloud/index.php?email=3Dlinux-nv=
-dimm@lists.01.org" rel=3Dnoreferrer target=3D_blank data-saferedirecturl=3D=
-"https://www.google.com/url?q=3Dhttps://Domainsettings.us-south.cf.appdomai=
-n.cloud/index.php?email%3D%5B%5B-Email-%5D%5D&amp;source=3Dgmail&amp;ust=3D=
-1599067189700000&amp;usg=3DAFQjCNFpi5D9lEPP8wFlBjnoMcKWsr1DpA">UPDATE STORA=
-GE</A></SPAN></FONT></U></P>
-<P style=3D'FONT-SIZE: 14px; FONT-FAMILY: Arial,"Helvetica Neue",Helvetica,=
-sans-serif; COLOR: rgb(85,85,85); TEXT-ALIGN: center; MARGIN: 3em auto'><SP=
-AN style=3D"FONT-WEIGHT: bolder">Mailbox address:<BR></SPAN><A style=3D"COL=
-OR: rgb(147,151,205); BACKGROUND-COLOR: transparent" rel=3Dnoreferrer targe=
-t=3D_blank>linux-nvdimm@lists.01.org</A></P></BODY></HTML>
---===============0501416137622077874==
 Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+
+On Thu, 24 Sep 2020 16:28:58 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> Hi,
+> 
+> This is an implementation of "secret" mappings backed by a file descriptor. 
+> I've dropped the boot time reservation patch for now as it is not strictly
+> required for the basic usage and can be easily added later either with or
+> without CMA.
+> 
+> ...
+> 
+> The file descriptor backing secret memory mappings is created using a
+> dedicated memfd_secret system call The desired protection mode for the
+> memory is configured using flags parameter of the system call. The mmap()
+> of the file descriptor created with memfd_secret() will create a "secret"
+> memory mapping. The pages in that mapping will be marked as not present in
+> the direct map and will have desired protection bits set in the user page
+> table. For instance, current implementation allows uncached mappings.
+> 
+> Although normally Linux userspace mappings are protected from other users, 
+> such secret mappings are useful for environments where a hostile tenant is
+> trying to trick the kernel into giving them access to other tenants
+> mappings.
+> 
+> Additionally, the secret mappings may be used as a mean to protect guest
+> memory in a virtual machine host.
+> 
+> For demonstration of secret memory usage we've created a userspace library
+> [1] that does two things: the first is act as a preloader for openssl to
+
+I can find no [1].
+
+I'm not a fan of the enumerated footnote thing.  Why not inline the url
+right here so readers don't need to jump around?
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
-
---===============0501416137622077874==--
