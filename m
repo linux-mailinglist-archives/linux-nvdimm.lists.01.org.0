@@ -2,79 +2,111 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C881C2797BE
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Sep 2020 10:07:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF3C279C62
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Sep 2020 22:33:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DA63B15017083;
-	Sat, 26 Sep 2020 01:07:14 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=160.16.151.142; helo=eaxydwhhe.icu; envelope-from=admin@eaxydwhhe.icu; receiver=<UNKNOWN> 
-Received: from eaxydwhhe.icu (tk2-411-46888.vs.sakura.ne.jp [160.16.151.142])
+	by ml01.01.org (Postfix) with ESMTP id EBFEA14409EFF;
+	Sat, 26 Sep 2020 13:33:43 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=160.16.98.237; helo=ewyqgjx.icu; envelope-from=admin@ewyqgjx.icu; receiver=<UNKNOWN> 
+Received: from ewyqgjx.icu (tk2-225-22233.vs.sakura.ne.jp [160.16.98.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id DB89F1501707F
-	for <linux-nvdimm@lists.01.org>; Sat, 26 Sep 2020 01:07:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=eaxydwhhe.icu;
+	by ml01.01.org (Postfix) with ESMTPS id 2DD5D14409EFD
+	for <linux-nvdimm@lists.01.org>; Sat, 26 Sep 2020 13:33:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=ewyqgjx.icu;
  h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
- i=admin@eaxydwhhe.icu;
- bh=9BDt4naxSQ7SMTUuAdnaCNHCjPQETGPY+F7f+JJLSxo=;
- b=Zm9ywF4VR7KDKZm+gKBE7PophShQ5j+PhPyytlBZJnOf613FyZu7nMwcNJuuxoCc09tqZBcpqtYG
-   KuN4OP42PT2nVte8TTsOY+WutjGUiogxdzJpIlA8TYGw7UO0497uPaN5wyBdCEBqlTP3pQKbmZP7
-   BTTupafswlprx08/Wuc=
-Message-ID: <20200926160708247247@eaxydwhhe.icu>
-From: "Amazon" <admin@eaxydwhhe.icu>
+ i=admin@ewyqgjx.icu;
+ bh=4JXWhg6CrAoiX2Nggc7wrb4KSCCZIh4zGrU6Q6Q/b/Q=;
+ b=1q/3LVWkUT2yQ6Y7SpR63ZT371VPqdrADNd7+vLpR0rOz71ExSYJazAtGeGWoyY6HQC1Bm9eTdGs
+   omn1Gf4rXIZFZKXNYuY5uTDzULUglYF/PPS6Rt+ADiWj4/hgvOB56O+JcEvnaeIwlX2xuhWqBenx
+   fA0huyWCs5AF6Ek3D1E=
+Message-ID: <20200927043338446888@ewyqgjx.icu>
+From: "Amazon" <admin@ewyqgjx.icu>
 To: <linux-nvdimm@lists.01.org>
-Subject: =?iso-2022-jp?B?GyRCJCo7WUonJCRKfUshJE4+cEpzJHI5OT83GyhC?=
-Date: Sat, 26 Sep 2020 16:06:54 +0800
+Subject: =?utf-8?B?5Zue5aSN77yaIOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBlw==?=
+	=?utf-8?B?44Gf?=
+Date: Sun, 27 Sep 2020 04:33:24 +0800
 MIME-Version: 1.0
-Message-ID-Hash: F6JHNXP6IHBDBJS6EEOG2YTPZWKFQMM4
-X-Message-ID-Hash: F6JHNXP6IHBDBJS6EEOG2YTPZWKFQMM4
-X-MailFrom: admin@eaxydwhhe.icu
+Message-ID-Hash: XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ
+X-Message-ID-Hash: XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ
+X-MailFrom: admin@ewyqgjx.icu
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F6JHNXP6IHBDBJS6EEOG2YTPZWKFQMM4/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-お支払い方法の情報を更新してください。Update default card for your membership.
-
- 
- マイストア? |タイムセール? |ギフト券 
-
- 
-
-Amazonプライムをご利用頂きありがとうございます。お客様のAmazonプライム会員資格は、2020/09/26に更新を迎えます。お調べしたところ、会費のお支払いに使用できる有効なクレジットカードがアカウントに登録されていません。クレジットカード情報の更新、新しいクレジットカードの追加については以下の手順をご確認ください。
-
-
-1. アカウントサービスからAmazonプライム会員情報を管理するにアクセスします。
-
-2. Amazonプライムに登録したAmazon.co.jpのアカウントを使用してサインインします。
-
-3. 左側に表示されている「現在の支払方法」の下にある「支払方法を変更する」のリンクをクリックします。
-
-4. 有効期限の更新または新しいクレジットカード情報を入力してください。
-
-
-Amazonプライムを継続してご利用いただくために、会費のお支払いにご指定いただいたクレジットカードが使用できない場合は、アカウントに登録されている別 のクレジットカードに会費を請求させて頂きます。会費の請求が出来ない場合は、お客様のAmazonプライム会員資格は失効し、特典をご利用できなくなります。
-
-
-Amazon.co.jpカスタマーサービス 
-
-
- 
-支払方法の情報を更新する 
-
-
-
- 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+56K66KqN55So44Ki44Kr44Km44Oz44OIIA0KDQoNCg0KDQoNCuOBgiMjbWl4X25vcm1hbF8xMCMj
+44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8x
+MCMj44KiIyNtaXhfbm9ybWFsXzEwIyPjgqsjI21peF9ub3JtYWxfMTAjI+OCpiMjbWl4X25vcm1h
+bF8xMCMj44OzIyNtaXhfbm9ybWFsXzEwIyPjg4gjI21peF9ub3JtYWxfMTAjI+OBryMjbWl4X25v
+cm1hbF8xMCMj5YGcIyNtaXhfbm9ybWFsXzEwIyPmraIjI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4
+X25vcm1hbF8xMCMj44KMIyNtaXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBlyMj
+bWl4X25vcm1hbF8xMCMj44GfDQoNCuOBk+OCk+OBq+OBoeOBryDjgIEgDQoNCuiqsCMjbWl4X25v
+cm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+OBgiMjbWl4
+X25vcm1hbF8xMCMj44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBrkEj
+I21peF9ub3JtYWxfMTAjI21heiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OC
+oiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21peF9ub3JtYWxfMTAj
+I+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjgacjI21peF9ub3JtYWxf
+MTAjI+S7liMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPjg4cjI21peF9ub3Jt
+YWxfMTAjI+ODkCMjbWl4X25vcm1hbF8xMCMj44KkIyNtaXhfbm9ybWFsXzEwIyPjgrkjI21peF9u
+b3JtYWxfMTAjI+OBiyMjbWl4X25vcm1hbF8xMCMj44KJIyNtaXhfbm9ybWFsXzEwIyPos7wjI21p
+eF9ub3JtYWxfMTAjI+WFpSMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEwIyPjgogj
+I21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEwIyPj
+gZcjI21peF9ub3JtYWxfMTAjI+OBviMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEw
+IyPjgZ/jgILjgZ0jI21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GnIyNtaXhf
+bm9ybWFsXzEwIyPjgaojI21peF9ub3JtYWxfMTAjI+OBkSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
+aXhfbm9ybWFsXzEwIyPjgbDjgIFBIyNtaXhfbm9ybWFsXzEwIyNtIyNtaXhfbm9ybWFsXzEwIyNh
+eiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8xMCMj
+5L+dIyNtaXhfbm9ybWFsXzEwIyPorbcjI21peF9ub3JtYWxfMTAjI+OBqyMjbWl4X25vcm1hbF8x
+MCMj44GKIyNtaXhfbm9ybWFsXzEwIyPjgZEjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1h
+bF8xMCMj44K7IyNtaXhfbm9ybWFsXzEwIyPjgq0jI21peF9ub3JtYWxfMTAjI+ODpSMjbWl4X25v
+cm1hbF8xMCMj44OqIyNtaXhfbm9ybWFsXzEwIyPjg4bjgqMjI21peF9ub3JtYWxfMTAjI+OBqCMj
+bWl4X25vcm1hbF8xMCMj5pW0IyNtaXhfbm9ybWFsXzEwIyPlkIgjI21peF9ub3JtYWxfMTAjI+aA
+pyMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPllY8jI21peF9ub3JtYWxfMTAj
+I+mhjCMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEwIyPjgogjI21peF9ub3JtYWxf
+MTAjI+OCiuOAgeOCuyMjbWl4X25vcm1hbF8xMCMj44KtIyNtaXhfbm9ybWFsXzEwIyPjg6UjI21p
+eF9ub3JtYWxfMTAjI+ODqiMjbWl4X25vcm1hbF8xMCMj44OGIyNtaXhfbm9ybWFsXzEwIyPjgqMj
+I21peF9ub3JtYWxfMTAjI+S4iiMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPn
+kIYjI21peF9ub3JtYWxfMTAjI+eUsSMjbWl4X25vcm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEw
+IyPjgokjI21peF9ub3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFs
+XzEwIyPjgqYjI21peF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9y
+bWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8xMCMj44ODIyNtaXhf
+bm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
+aXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBmeOAgg0KDQrjgqIjI21peF9ub3Jt
+YWxfMTAjI+OCqyMjbWl4X25vcm1hbF8xMCMj44KmIyNtaXhfbm9ybWFsXzEwIyPjg7MjI21peF9u
+b3JtYWxfMTAjI+ODiCMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPlvJUjI21p
+eF9ub3JtYWxfMTAjI+OBjSMjbWl4X25vcm1hbF8xMCMj57aaIyNtaXhfbm9ybWFsXzEwIyPjgY0j
+I21peF9ub3JtYWxfMTAjI+S9vyMjbWl4X25vcm1hbF8xMCMj55SoIyNtaXhfbm9ybWFsXzEwIyPj
+gZkjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEw
+IyPjga/jgIEyIyNtaXhfbm9ybWFsXzEwIyM0IyNtaXhfbm9ybWFsXzEwIyPmmYIjI21peF9ub3Jt
+YWxfMTAjI+mWkyMjbWl4X25vcm1hbF8xMCMj5YmNIyNtaXhfbm9ybWFsXzEwIyPjgavmg4UjI21p
+eF9ub3JtYWxfMTAjI+WgsSMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPmm7Qj
+I21peF9ub3JtYWxfMTAjI+aWsCMjbWl4X25vcm1hbF8xMCMj44GZIyNtaXhfbm9ybWFsXzEwIyPj
+gosjI21peF9ub3JtYWxfMTAjI+OBkyMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEw
+IyPjgpIjI21peF9ub3JtYWxfMTAjI+OBiiMjbWl4X25vcm1hbF8xMCMj5YunIyNtaXhfbm9ybWFs
+XzEwIyPjgoEjI21peF9ub3JtYWxfMTAjI+OBlyMjbWl4X25vcm1hbF8xMCMj44G+IyNtaXhfbm9y
+bWFsXzEwIyPjgZkjI21peF9ub3JtYWxfMTAjI+OAgiDjgZ0jI21peF9ub3JtYWxfMTAjI+OCjCMj
+bWl4X25vcm1hbF8xMCMj5LulIyNtaXhfbm9ybWFsXzEwIyPlpJYjI21peF9ub3JtYWxfMTAjI+OB
+riMjbWl4X25vcm1hbF8xMCMj5aC0IyNtaXhfbm9ybWFsXzEwIyPlkIjjgIHjgYIjI21peF9ub3Jt
+YWxfMTAjI+OBqiMjbWl4X25vcm1hbF8xMCMj44GfIyNtaXhfbm9ybWFsXzEwIyPjga4jI21peF9u
+b3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21p
+eF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjga8g
+5rC4IyNtaXhfbm9ybWFsXzEwIyPkuYUjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8x
+MCMj44ODIyNtaXhfbm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjIy4gDQoNCueiuuiqjeeU
+qOOCouOCq+OCpuODs+ODiCANCg0KDQoNCuWunOOBl+OBj+OBiumhmOOBhOOBl+OBvuOBmQ0KDQpB
+bWF6b24gUHJvdGVjdGlvbg0KDQoNCg0KDQpDb3B5cmlnaHQgQCAyMDIwIEFtYXpvbiBJbmMuIDEg
+SW5maW5pdGUgTG9vcOOAgeOCr+ODkeODgeODvOODjuOAgUNBIDk1MDE044CBQWxsIFJpZ2h0cyBS
+ZXNlcnZlZOOAgg0KDQoNCg0KDQoNCg0KDQoNCg0KICAKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
+eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
+dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
