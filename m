@@ -1,112 +1,69 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF3C279C62
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 26 Sep 2020 22:33:46 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193FB279CEB
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 27 Sep 2020 01:51:04 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EBFEA14409EFF;
-	Sat, 26 Sep 2020 13:33:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=160.16.98.237; helo=ewyqgjx.icu; envelope-from=admin@ewyqgjx.icu; receiver=<UNKNOWN> 
-Received: from ewyqgjx.icu (tk2-225-22233.vs.sakura.ne.jp [160.16.98.237])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 989F214E7CAE1;
+	Sat, 26 Sep 2020 16:51:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=66.163.189.147; helo=sonic314-21.consmr.mail.ne1.yahoo.com; envelope-from=anitadominic50@yahoo.com; receiver=<UNKNOWN> 
+Received: from sonic314-21.consmr.mail.ne1.yahoo.com (sonic314-21.consmr.mail.ne1.yahoo.com [66.163.189.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2DD5D14409EFD
-	for <linux-nvdimm@lists.01.org>; Sat, 26 Sep 2020 13:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=ewyqgjx.icu;
- h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
- i=admin@ewyqgjx.icu;
- bh=4JXWhg6CrAoiX2Nggc7wrb4KSCCZIh4zGrU6Q6Q/b/Q=;
- b=1q/3LVWkUT2yQ6Y7SpR63ZT371VPqdrADNd7+vLpR0rOz71ExSYJazAtGeGWoyY6HQC1Bm9eTdGs
-   omn1Gf4rXIZFZKXNYuY5uTDzULUglYF/PPS6Rt+ADiWj4/hgvOB56O+JcEvnaeIwlX2xuhWqBenx
-   fA0huyWCs5AF6Ek3D1E=
-Message-ID: <20200927043338446888@ewyqgjx.icu>
-From: "Amazon" <admin@ewyqgjx.icu>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5Zue5aSN77yaIOOBguOBquOBn+OBruOCouOCq+OCpuODs+ODiOOBr+WBnOatouOBleOCjOOBvuOBlw==?=
-	=?utf-8?B?44Gf?=
-Date: Sun, 27 Sep 2020 04:33:24 +0800
+	by ml01.01.org (Postfix) with ESMTPS id BCA5314E7CAE0
+	for <linux-nvdimm@lists.01.org>; Sat, 26 Sep 2020 16:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1601164255; bh=L2gqQLBGncqe+MprhY8+G5Q64NzPa7pslg2nGpaQtao=; h=Date:From:Reply-To:Subject:References:From:Subject; b=IktR/nAUPHlfvwv6JYRBBQqfLleGpVqpRi33Su5xxG74fEohuYbsP1bGGsuYtfnqNIkV4GFkDnxN/IX3azExNnmJeAMEnwwLZWcJkaKH+VZLxKpWQ+ngzpKnFcv8pDUbs1GqAVGavuDbeHbG409hkMdUnW8eaD+nMQ+No/63d506XkssC5WoYEBVP7Vdc/e/IQSq/lMbPH/4qWNcAGGxhvIJhN3E2gLaFiaawsWGRN1TksbzqI8ax++vgIMqUJ/d7Vyg1aBxa4e68CorMznFFvKxddEJUjihH/vY9BnXbKRoZpAQTUSR/wtfNPzIaTeqGLyPdAC1LSJF5dSg7RVRig==
+X-YMail-OSG: Xje3GkUVM1kYiXw1tNre4rJNRGfXjsxOmwEYVKgDYFmznSeoog3BrDVnl9P6Ur2
+ zrqA9vTVo2ZF3CC1BQifTD1rhkzG46c1f.Vn79.9BDhNWrICMYPenJADJGqPiyAJek2kF0r0uHHb
+ yZvsrzPiIweUobO_GYdWE42mgvJYdOFNyL3Lx7SxI78LVzOI7Wr5nCCn5XoN10Qr8xzrQ4Lkfzrv
+ YLSxjWZTZPG1CI3HeyhrRTspoH0ZmSdJ48vbE0yX4Sjs13csSX6Cp3dyRV0c4Vp9FZEGwARg6b7f
+ 5kqTGQZnAYCtF270.6ag5FOQiPjLgrZsQN9A8iDePd6uGq8cGRZObfcFx8b0HsrRMRNc7.3KC1hA
+ gfoaOeN7ZrFlvIR_ewqjK72gVK3b9SRKyEgLSFOrm_ENrOIHREiGiHfhEiBOkUqTnvTSWyMnMOkm
+ GVvGFi4.RcMVc4WfdVET4ITW.MULS5YUep.nZEWHQNN3Yqdeb_eGPRHuujVWTbvlxTcI5p8tQO4K
+ NLMl.cAO1YDOlV41DeuwxR1hV41zALYU.5iHJE.vOH1XmeOR.STbLLMrmxUwAbmR0Qn_nM78RO_M
+ 13ktI8noHjJCRTJ_oNndglGTOrUKyD2zDZPt5CHgRa6ukxYJ6rBj1nYvjVIE9np3GJxd4Xo8h7LW
+ Un4Pmrg51y6cIV1HhU42qohz6zUSIz5QyTZq76l3EKo7FQqOpWsoYN0ZnZiRyAvJYFGkU68pO7Nf
+ GCoQceEBwjvw6H9Tb5GKw6UBh4WaPot9jgC6rB5T6e5vXw5MbNSitzTrEOkKMumgRmpPKd2WXXpb
+ UF1_CtsDGICmLZ8dppy6bq8z72iRdIeU.UHa.GNjgu8LNJJ9XxipiQq_ZE450P631tu8nFfIoRfF
+ 8AimIMqfwFTWswV_Wb9wlCxina809g1SamJu0y03jQMojdHwfbBTmwyZkP7gD6jWu2w_izHM.514
+ cZUakAcNPbZo6mlvyEvMIOWdDLh63kxAHTpQtSOybk3LXZIIiOxdqleP.DHEy8tgT6bsyWodkMik
+ YV3r7bj.KDZmBB_VmU8Zra4nuIJFTkkgiCopSALCkmhWRopIk_MFiUWky5w.WBFJzcNIyoRNAhin
+ RsbFZR6S3VCU_FDVyMEX_6e.4C3CfSj6oPgW4APiOIKhczi9WJQUJaxs8tL32tNR1AnIVm6SSgIN
+ RZRAM3Jz_ONtlJW_gZhKDv1F7KRNLfkilcfKjqBnueyR_8OVp0y2wCIB_Z0QLYDlcrW6_r4FD0p0
+ zFtUb1LadGQYcNYbWF60b84eImHDWal4549qjJS5ODY_lYc3XunEUMggxpMGBIOMfX62jHYO43cR
+ c9XFLRnIxJ9n7CijaSzu0l3tdb7iJElKRVejhD0WtjNh5MHSW3MEz.hdADFQgq4.rr7ZrQilh7s3
+ FRPiFId5QOlraXj.w_iw_JZDUy6tFuOtysXuWXwl2jvmKbTpeo_c-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Sat, 26 Sep 2020 23:50:55 +0000
+Date: Sat, 26 Sep 2020 23:50:54 +0000 (UTC)
+From: anitadominic50@yahoo.com
+Message-ID: <1600741060.1184971.1601164254120@mail.yahoo.com>
+Subject: hi
 MIME-Version: 1.0
-Message-ID-Hash: XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ
-X-Message-ID-Hash: XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ
-X-MailFrom: admin@ewyqgjx.icu
+References: <1600741060.1184971.1601164254120.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16674 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.0.1611 Safari/537.36
+Message-ID-Hash: 7F2ZH422UDIN6RTND7SFM3SBGKUVL5CS
+X-Message-ID-Hash: 7F2ZH422UDIN6RTND7SFM3SBGKUVL5CS
+X-MailFrom: anitadominic50@yahoo.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: augstinemichelle00@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XYGGZN3X6362VZ6364WD6HPJ6CCKGCTQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7F2ZH422UDIN6RTND7SFM3SBGKUVL5CS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-56K66KqN55So44Ki44Kr44Km44Oz44OIIA0KDQoNCg0KDQoNCuOBgiMjbWl4X25vcm1hbF8xMCMj
-44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8x
-MCMj44KiIyNtaXhfbm9ybWFsXzEwIyPjgqsjI21peF9ub3JtYWxfMTAjI+OCpiMjbWl4X25vcm1h
-bF8xMCMj44OzIyNtaXhfbm9ybWFsXzEwIyPjg4gjI21peF9ub3JtYWxfMTAjI+OBryMjbWl4X25v
-cm1hbF8xMCMj5YGcIyNtaXhfbm9ybWFsXzEwIyPmraIjI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4
-X25vcm1hbF8xMCMj44KMIyNtaXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBlyMj
-bWl4X25vcm1hbF8xMCMj44GfDQoNCuOBk+OCk+OBq+OBoeOBryDjgIEgDQoNCuiqsCMjbWl4X25v
-cm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+OBgiMjbWl4
-X25vcm1hbF8xMCMj44GqIyNtaXhfbm9ybWFsXzEwIyPjgZ8jI21peF9ub3JtYWxfMTAjI+OBrkEj
-I21peF9ub3JtYWxfMTAjI21heiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OC
-oiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21peF9ub3JtYWxfMTAj
-I+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjgacjI21peF9ub3JtYWxf
-MTAjI+S7liMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPjg4cjI21peF9ub3Jt
-YWxfMTAjI+ODkCMjbWl4X25vcm1hbF8xMCMj44KkIyNtaXhfbm9ybWFsXzEwIyPjgrkjI21peF9u
-b3JtYWxfMTAjI+OBiyMjbWl4X25vcm1hbF8xMCMj44KJIyNtaXhfbm9ybWFsXzEwIyPos7wjI21p
-eF9ub3JtYWxfMTAjI+WFpSMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEwIyPjgogj
-I21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEwIyPj
-gZcjI21peF9ub3JtYWxfMTAjI+OBviMjbWl4X25vcm1hbF8xMCMj44GXIyNtaXhfbm9ybWFsXzEw
-IyPjgZ/jgILjgZ0jI21peF9ub3JtYWxfMTAjI+OBhiMjbWl4X25vcm1hbF8xMCMj44GnIyNtaXhf
-bm9ybWFsXzEwIyPjgaojI21peF9ub3JtYWxfMTAjI+OBkSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
-aXhfbm9ybWFsXzEwIyPjgbDjgIFBIyNtaXhfbm9ybWFsXzEwIyNtIyNtaXhfbm9ybWFsXzEwIyNh
-eiMjbWl4X25vcm1hbF8xMCMjb24jI21peF9ub3JtYWxfMTAjI+OBriMjbWl4X25vcm1hbF8xMCMj
-5L+dIyNtaXhfbm9ybWFsXzEwIyPorbcjI21peF9ub3JtYWxfMTAjI+OBqyMjbWl4X25vcm1hbF8x
-MCMj44GKIyNtaXhfbm9ybWFsXzEwIyPjgZEjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1h
-bF8xMCMj44K7IyNtaXhfbm9ybWFsXzEwIyPjgq0jI21peF9ub3JtYWxfMTAjI+ODpSMjbWl4X25v
-cm1hbF8xMCMj44OqIyNtaXhfbm9ybWFsXzEwIyPjg4bjgqMjI21peF9ub3JtYWxfMTAjI+OBqCMj
-bWl4X25vcm1hbF8xMCMj5pW0IyNtaXhfbm9ybWFsXzEwIyPlkIgjI21peF9ub3JtYWxfMTAjI+aA
-pyMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPllY8jI21peF9ub3JtYWxfMTAj
-I+mhjCMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEwIyPjgogjI21peF9ub3JtYWxf
-MTAjI+OCiuOAgeOCuyMjbWl4X25vcm1hbF8xMCMj44KtIyNtaXhfbm9ybWFsXzEwIyPjg6UjI21p
-eF9ub3JtYWxfMTAjI+ODqiMjbWl4X25vcm1hbF8xMCMj44OGIyNtaXhfbm9ybWFsXzEwIyPjgqMj
-I21peF9ub3JtYWxfMTAjI+S4iiMjbWl4X25vcm1hbF8xMCMj44GuIyNtaXhfbm9ybWFsXzEwIyPn
-kIYjI21peF9ub3JtYWxfMTAjI+eUsSMjbWl4X25vcm1hbF8xMCMj44GLIyNtaXhfbm9ybWFsXzEw
-IyPjgokjI21peF9ub3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFs
-XzEwIyPjgqYjI21peF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9y
-bWFsXzEwIyPjgYwjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8xMCMj44ODIyNtaXhf
-bm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjI+OBlSMjbWl4X25vcm1hbF8xMCMj44KMIyNt
-aXhfbm9ybWFsXzEwIyPjgb4jI21peF9ub3JtYWxfMTAjI+OBmeOAgg0KDQrjgqIjI21peF9ub3Jt
-YWxfMTAjI+OCqyMjbWl4X25vcm1hbF8xMCMj44KmIyNtaXhfbm9ybWFsXzEwIyPjg7MjI21peF9u
-b3JtYWxfMTAjI+ODiCMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPlvJUjI21p
-eF9ub3JtYWxfMTAjI+OBjSMjbWl4X25vcm1hbF8xMCMj57aaIyNtaXhfbm9ybWFsXzEwIyPjgY0j
-I21peF9ub3JtYWxfMTAjI+S9vyMjbWl4X25vcm1hbF8xMCMj55SoIyNtaXhfbm9ybWFsXzEwIyPj
-gZkjI21peF9ub3JtYWxfMTAjI+OCiyMjbWl4X25vcm1hbF8xMCMj44GrIyNtaXhfbm9ybWFsXzEw
-IyPjga/jgIEyIyNtaXhfbm9ybWFsXzEwIyM0IyNtaXhfbm9ybWFsXzEwIyPmmYIjI21peF9ub3Jt
-YWxfMTAjI+mWkyMjbWl4X25vcm1hbF8xMCMj5YmNIyNtaXhfbm9ybWFsXzEwIyPjgavmg4UjI21p
-eF9ub3JtYWxfMTAjI+WgsSMjbWl4X25vcm1hbF8xMCMj44KSIyNtaXhfbm9ybWFsXzEwIyPmm7Qj
-I21peF9ub3JtYWxfMTAjI+aWsCMjbWl4X25vcm1hbF8xMCMj44GZIyNtaXhfbm9ybWFsXzEwIyPj
-gosjI21peF9ub3JtYWxfMTAjI+OBkyMjbWl4X25vcm1hbF8xMCMj44GoIyNtaXhfbm9ybWFsXzEw
-IyPjgpIjI21peF9ub3JtYWxfMTAjI+OBiiMjbWl4X25vcm1hbF8xMCMj5YunIyNtaXhfbm9ybWFs
-XzEwIyPjgoEjI21peF9ub3JtYWxfMTAjI+OBlyMjbWl4X25vcm1hbF8xMCMj44G+IyNtaXhfbm9y
-bWFsXzEwIyPjgZkjI21peF9ub3JtYWxfMTAjI+OAgiDjgZ0jI21peF9ub3JtYWxfMTAjI+OCjCMj
-bWl4X25vcm1hbF8xMCMj5LulIyNtaXhfbm9ybWFsXzEwIyPlpJYjI21peF9ub3JtYWxfMTAjI+OB
-riMjbWl4X25vcm1hbF8xMCMj5aC0IyNtaXhfbm9ybWFsXzEwIyPlkIjjgIHjgYIjI21peF9ub3Jt
-YWxfMTAjI+OBqiMjbWl4X25vcm1hbF8xMCMj44GfIyNtaXhfbm9ybWFsXzEwIyPjga4jI21peF9u
-b3JtYWxfMTAjI+OCoiMjbWl4X25vcm1hbF8xMCMj44KrIyNtaXhfbm9ybWFsXzEwIyPjgqYjI21p
-eF9ub3JtYWxfMTAjI+ODsyMjbWl4X25vcm1hbF8xMCMj44OIIyNtaXhfbm9ybWFsXzEwIyPjga8g
-5rC4IyNtaXhfbm9ybWFsXzEwIyPkuYUjI21peF9ub3JtYWxfMTAjI+ODrSMjbWl4X25vcm1hbF8x
-MCMj44ODIyNtaXhfbm9ybWFsXzEwIyPjgq8jI21peF9ub3JtYWxfMTAjIy4gDQoNCueiuuiqjeeU
-qOOCouOCq+OCpuODs+ODiCANCg0KDQoNCuWunOOBl+OBj+OBiumhmOOBhOOBl+OBvuOBmQ0KDQpB
-bWF6b24gUHJvdGVjdGlvbg0KDQoNCg0KDQpDb3B5cmlnaHQgQCAyMDIwIEFtYXpvbiBJbmMuIDEg
-SW5maW5pdGUgTG9vcOOAgeOCr+ODkeODgeODvOODjuOAgUNBIDk1MDE044CBQWxsIFJpZ2h0cyBS
-ZXNlcnZlZOOAgg0KDQoNCg0KDQoNCg0KDQoNCg0KICAKX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
-eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
-dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+
+
+
+Hello, Can we be friends? If you don't mind
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
