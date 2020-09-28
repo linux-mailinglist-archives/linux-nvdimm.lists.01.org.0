@@ -1,106 +1,114 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA33F27B0D7
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 17:22:44 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860EE27B11D
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 17:45:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 22764151FB5C2;
-	Mon, 28 Sep 2020 08:22:43 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mpatocka@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 609EB151C4E4F;
+	Mon, 28 Sep 2020 08:45:20 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 40EE9151DCCF9
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 08:22:40 -0700 (PDT)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1601306559;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bGZWgwzuGIdAypUrofmdQnD4jfN7gEMGxpknQBWzkOA=;
-	b=bWKpSV84fCJoGfvh51gy/4AsCRlN09CVxudA/M84xu8xVsS5EWX1Josov29hrj5yMvKjzO
-	7izR/MkhGz1hFH6kjlwwqo4sI1+eRxUmX8gK2OKKCRKQhC/4HDjW+m9VrSIOjiMNPt7Xfw
-	KWiGz5udHKF3SZdOjxng0KdgjlbCD+A=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-326-X5AXtCc6OP6C_QKUxT9PQQ-1; Mon, 28 Sep 2020 11:22:34 -0400
-X-MC-Unique: X5AXtCc6OP6C_QKUxT9PQQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 22FF81868405;
-	Mon, 28 Sep 2020 15:22:32 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (file01.intranet.prod.int.rdu2.redhat.com [10.11.5.7])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id 6887D100238C;
-	Mon, 28 Sep 2020 15:22:31 +0000 (UTC)
-Received: from file01.intranet.prod.int.rdu2.redhat.com (localhost [127.0.0.1])
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id 08SFMUjU032257;
-	Mon, 28 Sep 2020 11:22:30 -0400
-Received: from localhost (mpatocka@localhost)
-	by file01.intranet.prod.int.rdu2.redhat.com (8.14.4/8.14.4/Submit) with ESMTP id 08SFMS8e032253;
-	Mon, 28 Sep 2020 11:22:29 -0400
-X-Authentication-Warning: file01.intranet.prod.int.rdu2.redhat.com: mpatocka owned process doing -bs
-Date: Mon, 28 Sep 2020 11:22:28 -0400 (EDT)
-From: Mikulas Patocka <mpatocka@redhat.com>
-X-X-Sender: mpatocka@file01.intranet.prod.int.rdu2.redhat.com
-To: Matthew Wilcox <willy@infradead.org>
-Subject: Re: NVFS XFS metadata (was: [PATCH] pmem: export the symbols
- __copy_user_flushcache and __copy_from_user_flushcache)
-In-Reply-To: <alpine.LRH.2.02.2009240853200.3485@file01.intranet.prod.int.rdu2.redhat.com>
-Message-ID: <alpine.LRH.2.02.2009281105200.27411@file01.intranet.prod.int.rdu2.redhat.com>
-References: <alpine.LRH.2.02.2009151216050.16057@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009151332280.3851@file01.intranet.prod.int.rdu2.redhat.com> <alpine.LRH.2.02.2009160649560.20720@file01.intranet.prod.int.rdu2.redhat.com>
- <CAPcyv4gW6AvR+RaShHdQzOaEPv9nrq5myXDmywuoCTYDZxk-hw@mail.gmail.com> <alpine.LRH.2.02.2009161254400.745@file01.intranet.prod.int.rdu2.redhat.com> <CAPcyv4gD0ZFkfajKTDnJhEEjf+5Av-GH+cHRFoyhzGe8bNEgAA@mail.gmail.com> <alpine.LRH.2.02.2009161359540.20710@file01.intranet.prod.int.rdu2.redhat.com>
- <alpine.LRH.2.02.2009191336380.3478@file01.intranet.prod.int.rdu2.redhat.com> <20200922050314.GB12096@dread.disaster.area> <alpine.LRH.2.02.2009220815420.16480@file01.intranet.prod.int.rdu2.redhat.com> <20200922172553.GL32101@casper.infradead.org>
- <alpine.LRH.2.02.2009240853200.3485@file01.intranet.prod.int.rdu2.redhat.com>
-User-Agent: Alpine 2.02 (LRH 1266 2009-07-14)
+	by ml01.01.org (Postfix) with ESMTPS id 7C332151C4E45
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 08:45:18 -0700 (PDT)
+IronPort-SDR: E6QzXyYL8YUJF1GtlNLHvEli8M6Qu4Ss3bK/JJaoaPRYGDuLFLKX3WohltaZb0pNsKfvmVpGsg
+ XxKNAMJSC0ng==
+X-IronPort-AV: E=McAfee;i="6000,8403,9758"; a="223609116"
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400";
+   d="scan'208";a="223609116"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 08:45:17 -0700
+IronPort-SDR: qOPJKrzOfDHGsK9qtB8ba1xH7UmUmktOCif20xZeUHjB03krI6qr5hcOb45D6THF5KmSq7VCXO
+ cX0DwyyHa9ZA==
+X-IronPort-AV: E=Sophos;i="5.77,313,1596524400";
+   d="scan'208";a="456875203"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2020 08:45:17 -0700
+Date: Mon, 28 Sep 2020 08:45:16 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/papr_scm: Add PAPR command family to
+ pass-through command-set
+Message-ID: <20200928154516.GA458519@iweiny-DESK2.sc.intel.com>
+References: <20200913211904.24472-1-vaibhav@linux.ibm.com>
+ <87pn662gc3.fsf@vajain21.in.ibm.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-Message-ID-Hash: FW7MT4V4MI5DBOOHVNP3OFG5YCD4RXS3
-X-Message-ID-Hash: FW7MT4V4MI5DBOOHVNP3OFG5YCD4RXS3
-X-MailFrom: mpatocka@redhat.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Chinner <david@fromorbit.com>, Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>, Eric Sandeen <esandeen@redhat.com>, Dave Chinner <dchinner@redhat.com>, "Tadakamadla, Rajesh (DCIG/CDI/HPS Perf)" <rajesh.tadakamadla@hpe.com>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
+Content-Disposition: inline
+In-Reply-To: <87pn662gc3.fsf@vajain21.in.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: QLKRIZQJG2CPZF2555MZVYQZXJO7HEQI
+X-Message-ID-Hash: QLKRIZQJG2CPZF2555MZVYQZXJO7HEQI
+X-MailFrom: ira.weiny@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FW7MT4V4MI5DBOOHVNP3OFG5YCD4RXS3/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QLKRIZQJG2CPZF2555MZVYQZXJO7HEQI/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: TEXT/PLAIN; charset="us-ascii"
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-
-
-On Thu, 24 Sep 2020, Mikulas Patocka wrote:
-
-> On Tue, 22 Sep 2020, Matthew Wilcox wrote:
+On Mon, Sep 28, 2020 at 06:44:52PM +0530, Vaibhav Jain wrote:
+> Hi Dan, Ira and Vishal,
 > 
-> > > There is a small window when renamed inode is neither in source nor in 
-> > > target directory. Fsck will reclaim such inode and add it to lost+found - 
-> > > just like on EXT2.
-> > 
-> > ... ouch.  If you have to choose, it'd be better to link it to the second
-> > directory then unlink it from the first one.  Then your fsck can detect
-> > it has the wrong count and fix up the count (ie link it into both
-> > directories rather than neither).
+> Can you please take a look at this patch. Without it the functionality
+> to report nvdimm health via ndctl breaks on 5.9
+
+Sorry...
+
 > 
-> I admit that this is lame and I'll fix it. Rename is not so 
-> performance-critical, so I can add a small journal for this.
+> Thanks,
+> ~ Vaibhav
+> 
+> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+> 
+> > Add NVDIMM_FAMILY_PAPR to the list of valid 'dimm_family_mask'
+> > acceptable by papr_scm. This is needed as since commit
+> > 92fe2aa859f5 ("libnvdimm: Validate command family indices") libnvdimm
+> > performs a validation of 'nd_cmd_pkg.nd_family' received as part of
+> > ND_CMD_CALL processing to ensure only known command families can use
+> > the general ND_CMD_CALL pass-through functionality.
+> >
+> > Without this change the ND_CMD_CALL pass-through targeting
+> > NVDIMM_FAMILY_PAPR error out with -EINVAL.
+> >
+> > Fixes: 92fe2aa859f5 ("libnvdimm: Validate command family indices")
+> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-Hi
+LGTM
 
-I have implmemented transactions in nvfs and I use them for rename, 
-setattr, atomic xattr replacement and for RENAME_EXCHANGE.
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-You can download the current version here:
-git://leontynka.twibright.com/nvfs.git
-
-Mikulas
+> > ---
+> >  arch/powerpc/platforms/pseries/papr_scm.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >
+> > diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> > index 5493bc847bd08..27268370dee00 100644
+> > --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> > +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> > @@ -898,6 +898,9 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+> >  	p->bus_desc.of_node = p->pdev->dev.of_node;
+> >  	p->bus_desc.provider_name = kstrdup(p->pdev->name, GFP_KERNEL);
+> >  
+> > +	/* Set the dimm command family mask to accept PDSMs */
+> > +	set_bit(NVDIMM_FAMILY_PAPR, &p->bus_desc.dimm_family_mask);
+> > +
+> >  	if (!p->bus_desc.provider_name)
+> >  		return -ENOMEM;
+> >  
+> > -- 
+> > 2.26.2
+> >
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
