@@ -1,59 +1,68 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F3527A6A8
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 06:46:09 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FF1227A7D0
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 08:49:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DE75B14FD54C9;
-	Sun, 27 Sep 2020 21:46:06 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.251; helo=xclaaf.cc; envelope-from=feiuahy@xclaaf.cc; receiver=<UNKNOWN> 
-Received: from xclaaf.cc (unknown [103.140.238.251])
-	by ml01.01.org (Postfix) with ESMTP id C5FD414FD54C7
-	for <linux-nvdimm@lists.01.org>; Sun, 27 Sep 2020 21:46:03 -0700 (PDT)
-Message-ID: <D8C28E77E5F675621A6B89177BD73ECE@xclaaf.cc>
-From: "Amazon.co.jp" <account-update@amazon.co.jp>
+	by ml01.01.org (Postfix) with ESMTP id BA24813AA075D;
+	Sun, 27 Sep 2020 23:49:24 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.148.61.177; helo=gmail.com; envelope-from=smithejoseph18vibz@gmail.com; receiver=<UNKNOWN> 
+Received: from gmail.com (unknown [104.148.61.177])
+	by ml01.01.org (Postfix) with SMTP id 38DF513AA075B
+	for <linux-nvdimm@lists.01.org>; Sun, 27 Sep 2020 23:49:21 -0700 (PDT)
+Received: from smtp.mixedthings.net ([Sun, 27 Sep 2020 22:36:35 -0800])
+	by mx03.listsystemsf.net with NNFMP; Sun, 27 Sep 2020 22:36:35 -0800
+Received: from unknown (HELO m1.gns.snv.thisdomainl.com) (Sun, 27 Sep 2020 22:34:46 -0800)
+	by nntp.pinxodet.net with QMQP; Sun, 27 Sep 2020 22:34:46 -0800
+Received: from rly04.hottestmile.com ([Sun, 27 Sep 2020 22:30:29 -0800])
+	by smtp.mixedthings.net with SMTP; Sun, 27 Sep 2020 22:30:29 -0800
+Received: from [4.44.53.85] by rly04.hottestmile.com with ESMTP; Sun, 27 Sep 2020 22:21:07 -0800
+Message-ID: <5699DFBD.6075FFF2@gmail.com>
+Date: Sun, 27 Sep 2020 22:11:45 -0800
+From: "Jayne Warrington" <smithejoseph18vibz@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.10) Gecko/20100621 Fedora/3.0.5-1.fc13 Lightning/1.0b2pre Thunderbird/3.0.5
+X-Accept-Language: en-us
+MIME-Version: 1.0
 To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?QW1hem9uLmNvLmpwIOOCouOCq+OCpuODs+ODiOaJgOaciQ==?=
-	=?utf-8?B?5qip44Gu6Ki85piO77yI5ZCN5YmN44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqN?=
-Date: Mon, 28 Sep 2020 12:45:56 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19811
-Message-ID-Hash: 6BDQN46GB52MOWMKUYDHWMMWKGF5P6LF
-X-Message-ID-Hash: 6BDQN46GB52MOWMKUYDHWMMWKGF5P6LF
-X-MailFrom: feiuahy@xclaaf.cc
+Subject: Recover your ranks with a proper link clean up service
+X-Priority: 1
+Message-ID-Hash: KVXXEONU7RF7UYUEA452XMWARZVFLGY2
+X-Message-ID-Hash: KVXXEONU7RF7UYUEA452XMWARZVFLGY2
+X-MailFrom: smithejoseph18vibz@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: Jayne Warrington <smithejoseph18vibz@gmail.com>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6BDQN46GB52MOWMKUYDHWMMWKGF5P6LF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KVXXEONU7RF7UYUEA452XMWARZVFLGY2/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-IA0KDQoNCg0KDQoNCuW5s+e0oOOBryBBbWF6b24uY28uanAg44KS44GU5Yip55So44GE44Gf44Gg
-44GN44CB6Kqg44Gr44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZ44CCDQoNCg0K44GK5a6i
-5qeY44Gu44Ki44Kr44Km44Oz44OI44Gn55Ww5bi444Gq44Ki44Kv44OG44Kj44OT44OG44Kj44GM
-5qSc5Ye644GV44KM44Gf44Gf44KBQW1hem9uIOOCouOCq+OCpuODs+ODiOOCkuWBnOatouOBleOB
-m+OBpuOBhOOBn+OBoOOBhOOBpuOBiuOCiuOBvuOBmeOAguOCouOCq+OCpuODs+ODiOOBq+ODreOC
-sOOCpOODs+OBl+OBpueUu+mdouOBruaMh+ekuuOBq+W+k+OBhuOBk+OBqOOBp+OAgeOCouOCq+OC
-puODs+ODiOOBruODreODg+OCr+OCkuino+mZpOOBl+OBpuOBhOOBn+OBoOOBkeOBvuOBmeOAgg0K
-DQoNCkFtYXpvbiDjg63jgrDjgqTjg7MgDQoNCg0K6KuL5rGC5YWI5oOF5aCx44Gu56K66KqN44GM
-5a6M5LqG44GZ44KL44G+44Gn44CB44GK5a6i5qeY44Gu44Ki44Kr44Km44Oz44OI44G444Gu44Ki
-44Kv44K744K544KS5YGc5q2i44GV44Gb44Gm44GE44Gf44Gg44GN44G+44GZ44Gu44Gn44CB44GU
-5LqG5om/44GP44Gg44GV44GE44CCDQoNCueVsOW4uOOBquODreOCsOOCpOODs0lQ77yaMTczLjE5
-NC4xNjYuMjMxDQoNCg0K5L2V5Y2S44CB44KI44KN44GX44GP44GK6aGY44GE55Sz44GX5LiK44GS
-44G+44GZ44CCDQoNCg0KQW1hem9uLmNvLmpw44Gu44G+44Gf44Gu44GU5Yip55So44KS44GK5b6F
-44Gh44GX44Gm44GK44KK44G+44GZ44CCCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1t
-QGxpc3RzLjAxLm9yZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGlt
-bS1sZWF2ZUBsaXN0cy4wMS5vcmcK
+Hi=20
+
+Clean up your linkbase with us today
+mgdots.co/detail.php?id=3D32
+
+
+thanks and regards
+Jayne Warrington
+
+
+
+
+Sun, 27 Sep 2020 22:11:45 -0800 tr, 19:37 linux-nvdimm
+<linux-nvdimm@lists.01.org> ra=9Ae:
+Ok, send m$e the link.
+
+
+
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
