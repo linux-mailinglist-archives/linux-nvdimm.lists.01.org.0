@@ -1,25 +1,25 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D3227B250
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 18:47:32 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB4B27B251
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 18:47:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 3C033153A89E4;
-	Mon, 28 Sep 2020 09:47:21 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.237.60; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=nmeeramohide@micron.com; receiver=<UNKNOWN> 
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2060.outbound.protection.outlook.com [40.107.237.60])
+	by ml01.01.org (Postfix) with ESMTP id 9D138153A89F0;
+	Mon, 28 Sep 2020 09:47:25 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.93.84; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=nmeeramohide@micron.com; receiver=<UNKNOWN> 
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id F0785152EDBDB
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 09:47:18 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 79DE2153A89E0
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 09:47:19 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eTyEV3dsAz7x1hlYNko7rl0LmSr26djQPaju/IF2Nz8BId/rneDywWbe5Gr9mLMAVYkr1IoDCZXhwFHiwcSdIfCw8O1jPXNpD+m1GFQ+p0u4ybzqBIFWZYBpxInulxQNHKbShPfngEp97aMjhhhJiIBZlU11hfK8GGuIR75H4UGLPxYMW+1OVvfOCCe6KE2wYfycNHsfAMCgk2zMcDhJJ83pYcH0kUnOU57cGMOS6cmTiK97lKakKHXfWtyOtTflX3iBmTpFpzAy70vGkW8V6ZFsPvyHSDJOZ91p8LH3RfLj09VWrCO7joWbsPP4Kqjf56pvY/mxRYkrS9aFUYCQ+Q==
+ b=EtCC92ARPPfcpqR1dzlFGByVOWHkxuoNXnsnWIoeyNzM2znlf5NwOaW5sEMJMIpNxw3a8HrsodjdoBI0In+KnAf3fyiY6gYHW2RzpUShNvhFGd2bhs/JaHW61dolw5fLzYSNaXEhDgk2Gt2xU9QYaN16O0Lxw+elhhKy6RQkz/Urx6oKBCedmKhvVQ/9YlcBgdZz9qqUnuYrsDSWZbp8Aod8/Yk/5Jg/50D1UQl+NWNJ5FODKaEOPit8n8YBNPnriUC+P7sGo63oJM9nMI3qTcL+qS2C0+WEVXIAlMpYWeEFlnTByksykp2mfWGbSTHDiQCYifeAaAT3ZovknKYrfA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7RHDNWUfqmpnHjrfDw4vN4WgeuOvyEyptdDpxvEOPWQ=;
- b=j8m/fDqFIiQv9Lm55NDGp2pt8jpNM8Qkjs+2qeVlJLCbsNXEUVL2lnNqc/gtvT6rsCtPAu+2okvxSrp6eWFQoFWsuTza3RnzhY+jW3vz5BayY8kNNOuR2gpPxyKeMFX2aYPSClXiq9nxLdLujfr3AjvUO30C5Ja5IX61Gf6CNnkXefqHv6yEDs1EG7RsYgvOYk+5y8+0eJsolkloF4sNLWp2RTeKL8oMB2ly1UR0nYDou/NeGb6yWNA77Y+VNzqywFe6fjTrJWnvG/wjGAe1o9sYy+xCAXCh0Vu7DmwEbgrciitnEfK9hNPi1zN9JhxjMeIGfDixDjZsYsGHXit6Nw==
+ bh=QAKKfvORnGotFJyve2DtMFNoiL/gMzGI2rxg0no78qA=;
+ b=IdO6fjgZowQtsC4XvtO3G20pZTV33hkgE+DbOZFcJttWA6rzfarIirG/Bs+5lBMgvaTJkiqSlG0k7MpSXfHsuFMGzk+sWx4EjFdrrYkseBD92Ja7fwpQrxcYUqHRSpZs2xs6v1uY93vaofvp2ID7jjpuEjFCJaQX+Q3zFggl4kCoGwk0sjXfsyED0+nyySp1sEt+BJOsFHWJ1zGK1mdJOWVr4MUwQQu5qct14XUF9ITelhDM2rQ9et0SjShcu+mk/MnjrrHraKQy1UxxlmVHkiD67HPbp5u2931xm8VkdtG2yiaCg4TYoMAZsnyC5YdO/WBPuouIkaPDliAqX9P9+Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  137.201.242.130) smtp.rcpttodomain=kvack.org smtp.mailfrom=micron.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=micron.com;
@@ -27,18 +27,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=micron.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7RHDNWUfqmpnHjrfDw4vN4WgeuOvyEyptdDpxvEOPWQ=;
- b=QAgCRTtL/k/nJcX1dXj1niOa5X0SKo0LBo97LqZOUv+v2AnqerM8Pq9VHQbUdoYhLla4w/lWYl18knbI3qu//GkJey+izixdj+RmW1B9f4d2/eycuQt6MmYC0lQWt8a7b/p1IC1PnsQW+2hPMoeQXbeNF1wItQ2sWwpa3sS8VPg=
+ bh=QAKKfvORnGotFJyve2DtMFNoiL/gMzGI2rxg0no78qA=;
+ b=dLVvuACUraQ6N73CVZJgsg/SG6Tavt6LtuNXOtNPw5mon2Nomc27y9Yt1Q9UeIj2KJImYd9nN6QP2+Gtb8vl4p1w8xfKq7imvwLc+C60/CtehjVZDOTynBE19mKTBecWGFinVZMTW2XvqxS9TDI4aSbrIGWCWQdnriinGgpMDHA=
 Received: from BN6PR17CA0049.namprd17.prod.outlook.com (2603:10b6:405:75::38)
- by BL0PR08MB4643.namprd08.prod.outlook.com (2603:10b6:208:57::22) with
+ by BY5PR08MB6311.namprd08.prod.outlook.com (2603:10b6:a03:1e1::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.28; Mon, 28 Sep
- 2020 16:47:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20; Mon, 28 Sep
+ 2020 16:47:16 +0000
 Received: from BN3NAM01FT020.eop-nam01.prod.protection.outlook.com
- (2603:10b6:405:75:cafe::22) by BN6PR17CA0049.outlook.office365.com
+ (2603:10b6:405:75:cafe::db) by BN6PR17CA0049.outlook.office365.com
  (2603:10b6:405:75::38) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21 via Frontend
- Transport; Mon, 28 Sep 2020 16:47:15 +0000
+ Transport; Mon, 28 Sep 2020 16:47:16 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 137.201.242.130)
  smtp.mailfrom=micron.com; kvack.org; dkim=none (message not signed)
  header.d=none;kvack.org; dmarc=pass action=none header.from=micron.com;
@@ -48,7 +48,7 @@ Received-SPF: Pass (protection.outlook.com: domain of micron.com designates
 Received: from mail.micron.com (137.201.242.130) by
  BN3NAM01FT020.mail.protection.outlook.com (10.152.67.227) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.3412.21 via Frontend Transport; Mon, 28 Sep 2020 16:47:15 +0000
+ 15.20.3412.21 via Frontend Transport; Mon, 28 Sep 2020 16:47:16 +0000
 Received: from micron.com (10.114.5.55) by bowex17c.micron.com
  (137.201.21.211) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 28 Sep
  2020 10:47:12 -0600
@@ -56,9 +56,9 @@ From: <nmeeramohide@micron.com>
 To: <linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
 	<linux-nvme@lists.infradead.org>, <linux-mm@kvack.org>,
 	<linux-nvdimm@lists.01.org>
-Subject: [PATCH 15/22] mpool: add mpool lifecycle management routines
-Date: Mon, 28 Sep 2020 11:45:27 -0500
-Message-ID: <20200928164534.48203-16-nmeeramohide@micron.com>
+Subject: [PATCH 16/22] mpool: add mpool control plane utility routines
+Date: Mon, 28 Sep 2020 11:45:28 -0500
+Message-ID: <20200928164534.48203-17-nmeeramohide@micron.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20200928164534.48203-1-nmeeramohide@micron.com>
 References: <20200928164534.48203-1-nmeeramohide@micron.com>
@@ -66,48 +66,47 @@ MIME-Version: 1.0
 X-ClientProxiedBy: bowex17d.micron.com (137.201.21.212) To bowex17c.micron.com
  (137.201.21.211)
 X-TM-AS-Product-Ver: SMEX-12.0.0.1782-8.200.1013-24646.005
-X-TM-AS-Result: No--9.403300-0.000000-31
-X-TM-AS-MatchedID: 700076-702732-121588-700069-703140-700863-701791-700717-7
-	05063-701475-121367-703750-704978-702727-702501-702542-701073-704401-701029
-	-703851-700028-704397-702876-703226-704961-700073-700060-701480-703017-7023
-	95-188019-703213-121336-701105-704673-703967-703027-701275-700864-704502-70
-	2754-704521-139549-702162-704962-703285-703958-704381-702922-704477-700714-
-	702688-701750-825159-701478-701343-701342-702415-701586-705244-704714-70319
-	2-701124-705022-701194-701336-701337-700737-700071-701031-701744-703215-702
-	298-188199-702898-704959-704053-704559-701432-702444-704574-704475-700876-1
-	05630-701893-703976-702914-702874-702438-705018-148004-148036-29997-42000-4
-	2003
+X-TM-AS-Result: No--14.691100-0.000000-31
+X-TM-AS-MatchedID: 700076-703504-702422-704714-704926-701342-701478-703215-7
+	03967-704983-704929-701330-703027-701480-701809-703017-702395-188019-703812
+	-702914-704318-121224-702299-704477-300015-703140-703213-121336-701105-7046
+	73-702754-702617-702433-705022-703173-702298-105700-702876-703285-700863-12
+	1367-139504-703279-701270-704978-703904-703534-701919-704949-703932-700064-
+	702877-701510-703865-704239-117072-701750-700050-702853-106420-704960-70400
+	2-701964-703405-703160-700716-700714-700512-703532-703080-704061-701628-701
+	963-703357-702415-702490-704718-700069-703878-703347-701443-704397-704127-1
+	88199-702102-148004-148036-42000-42003
 X-TM-AS-User-Approved-Sender: Yes
 X-TM-AS-User-Blocked-Sender: No
 X-MT-Whitelisted: matched
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 494b6515-bfb3-413c-647a-08d863ce27e2
-X-MS-TrafficTypeDiagnostic: BL0PR08MB4643:
+X-MS-Office365-Filtering-Correlation-Id: 506a84fc-6d57-4582-9d6e-08d863ce283b
+X-MS-TrafficTypeDiagnostic: BY5PR08MB6311:
 X-Microsoft-Antispam-PRVS: 
- <BL0PR08MB4643D1B203A2A460D5F1DFA7B3350@BL0PR08MB4643.namprd08.prod.outlook.com>
+ <BY5PR08MB6311A752554229FD06F3F284B3350@BY5PR08MB6311.namprd08.prod.outlook.com>
 X-MS-Exchange-Transport-Forked: True
 X-EXT-ByPass: 1
 X-MT-RULE-Whitelisted: Triggered
-X-MS-Oob-TLC-OOBClassifiers: OLM:862;
+X-MS-Oob-TLC-OOBClassifiers: OLM:348;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	uOKtx/1MGciWLvvF3y9Yqf5Z2z4CUWM9S+hPIR9QRGvRJrI2x1nSqOZV2WoJRN/Qdj/1pFIIZYyBqYS0PzK0GVbYnO63Vg5QFt7Q+mLfyt8pgOJta3X4QvtxKh9bdtV2nBOoeMFZyhwWBf8tXgCONeJBf67YS3t24b49AIjs4b8VAbrLEOlyzsp/dwu6Y4mnzI/V85iifdm9h4dRKjZ7JpzuTBaJyMoAUaSZ/ieBXxPUfCtD4D6VRJW9vEPC5Z55UFLjeHIyRhw+nfl6a6g10SSnGMomfwyF/5Mfb9JhoGOYHX0IGaCTNpOplOU9tEuLIOQii4DtiApmTVGM/5gZ50ASLyUkxq4uN5ThrzcSiu8u4Mi2v/5j8BGMEjw8e5s5ukCy23K4LJlDzNWunN3kl2ar5+5+OT3ZP137VT7J8QZdDsulEORNqoyPZsE9aj+rZ1X7Tiej3Et59tkkaymu69aVOLmJdlHXDqRuMjsksEybpA5eR5JqHlB8S6zguQTS
+	HrycJmhehAkd3nEUNdHXtAxAIXWTbND7G/hGAUYYFDcCbv3BaPCPDZyGxAYqTQgrUpV+JGhSWrF6IDTVovMF5hNHGn0rxAg3rQvW2G059NrPJFIziXOZ7uuGuKOp9pKPZOAvJWs+NDJws4Fv51tic1k9W1eE6eHh8V8Z8MG60M+pO2vg81dbCqvyA3y7wMP/cEu5E2hvpZFMVhRR51dlGMNrRJuwsOdUFSDnuibKyZpRtTXKQI2VIaJVNHkgGICnYyvfc2f1hLxlPmtROBINZHzDPuc2sUM9c9evKLjeexHbutyBCcGbF0ZTiLcJMjn0eP69MmMUjGgjxjeAzO+OB2wt3Fuecoay2YCHPNia7Rap0DOiaLhzOo74pLW6zvpzwZB6ixlAjyVkfHNhWaAi6a87XzV6yA0HZXcTnNeEYll5m9AmS4B1iCXEdo26GJ55h2JMSO72/TmJ52cqM6IYR8Ky3HAWO47yYH4/Us2QS61VIvODf2R5er7eHLltXgiF
 X-Forefront-Antispam-Report: 
-	CIP:137.201.242.130;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.micron.com;PTR:masquerade.micron.com;CAT:NONE;SFS:(4636009)(136003)(396003)(346002)(376002)(39860400002)(46966005)(2876002)(4326008)(2616005)(86362001)(26005)(426003)(186003)(7696005)(336012)(83380400001)(82310400003)(356005)(47076004)(82740400003)(7636003)(33310700002)(478600001)(2906002)(8936002)(1076003)(8676002)(5660300002)(36756003)(6666004)(316002)(6286002)(30864003)(107886003)(110136005)(55016002)(54906003)(70586007)(70206006)(2101003);DIR:OUT;SFP:1101;
+	CIP:137.201.242.130;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.micron.com;PTR:masquerade.micron.com;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(39860400002)(136003)(46966005)(8676002)(478600001)(1076003)(54906003)(316002)(110136005)(6286002)(83380400001)(86362001)(356005)(33310700002)(7636003)(70586007)(70206006)(82310400003)(82740400003)(7696005)(36756003)(2616005)(6666004)(2876002)(4326008)(5660300002)(8936002)(2906002)(426003)(107886003)(26005)(186003)(55016002)(30864003)(336012)(47076004)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: micron.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 16:47:15.4897
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 16:47:16.0644
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 494b6515-bfb3-413c-647a-08d863ce27e2
+X-MS-Exchange-CrossTenant-Network-Message-Id: 506a84fc-6d57-4582-9d6e-08d863ce283b
 X-MS-Exchange-CrossTenant-Id: f38a5ecd-2813-4862-b11b-ac1d563c806f
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f38a5ecd-2813-4862-b11b-ac1d563c806f;Ip=[137.201.242.130];Helo=[mail.micron.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN3NAM01FT020.eop-nam01.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR08MB4643
-Message-ID-Hash: JHVXVUQTFIZDLGQZPWHUTOY73HFVUXMN
-X-Message-ID-Hash: JHVXVUQTFIZDLGQZPWHUTOY73HFVUXMN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR08MB6311
+Message-ID-Hash: J6OYDOUNG6MDCTDTXFUW7WSKGZUVSR4P
+X-Message-ID-Hash: J6OYDOUNG6MDCTDTXFUW7WSKGZUVSR4P
 X-MailFrom: nmeeramohide@micron.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -115,7 +114,7 @@ CC: smoyer@micron.com, gbecker@micron.com, plabat@micron.com, jgroves@micron.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JHVXVUQTFIZDLGQZPWHUTOY73HFVUXMN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/J6OYDOUNG6MDCTDTXFUW7WSKGZUVSR4P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -126,33 +125,21 @@ Content-Transfer-Encoding: 7bit
 
 From: Nabeel M Mohamed <nmeeramohide@micron.com>
 
-This adds mpool lifecycle management functions: create,
-activate, deactivate, destroy, rename, add a new media
-class, fetch properties etc.
+This adds the mpool control plane infrastructure to manage
+mpools.
 
-An mpool is created with a mandatory capacity media class
-volume. A pool drive (PD) instance is initialized for each
-media class volume using the attributes pushed from the mpool
-user library. The metadata manager interfaces are then
-invoked to activate this mpool and allocate the initial set
-of metadata containers. The media class attributes, spare
-percent, mpool configuration etc. are persisted in MDC-0.
+There is a unit object instance for each device object
+created by the mpool driver. A minor number is reserved
+for each unit object.
 
-At mpool activation, the records from MDC-0 containing the
-mpool properties and metadata for accessing MDC-1 through
-MDC-N are first loaded into memory, initializing all the
-necessary in-core structures using the metadata manager and
-space map interfaces.  Then the records from MDC-1 through
-MDC-N containing the metadata for accessing client mblock
-and mlog objects are loaded into memory, again initializing
-all the necessary in-core structures using the metadata
-manager and space map interfaces.
+The mpool control device (/dev/mpoolctl) gets a minor
+number of 0. An mpool device (/dev/mpool/<mpool_name>)
+gets a minor number > 0. Utility routines exist to lookup
+an mpool unit given its minor number or name.
 
-An mpool is destroyed by erasing the superblock on all its
-constituent media class volumes. Renaming an mpool updates
-the superblock on all the media class volumes with the new
-name.  Adding a new media class volume to an activated mpool
-is handled like initializing a volume at mpool create.
+All units are born with a reference count of two -
+one for the caller and a birth reference that can be released
+only by either destroying the unit or unloading the module.
 
 Co-developed-by: Greg Becker <gbecker@micron.com>
 Signed-off-by: Greg Becker <gbecker@micron.com>
@@ -162,1102 +149,717 @@ Co-developed-by: John Groves <jgroves@micron.com>
 Signed-off-by: John Groves <jgroves@micron.com>
 Signed-off-by: Nabeel M Mohamed <nmeeramohide@micron.com>
 ---
- drivers/mpool/mp.c | 1086 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 1086 insertions(+)
- create mode 100644 drivers/mpool/mp.c
+ drivers/mpool/init.c  |  20 ++
+ drivers/mpool/init.h  |   3 +
+ drivers/mpool/mpctl.c | 466 ++++++++++++++++++++++++++++++++++++++++++
+ drivers/mpool/mpctl.h |  50 +++++
+ drivers/mpool/sysfs.c |  48 +++++
+ drivers/mpool/sysfs.h |  48 +++++
+ 6 files changed, 635 insertions(+)
+ create mode 100644 drivers/mpool/mpctl.c
+ create mode 100644 drivers/mpool/mpctl.h
+ create mode 100644 drivers/mpool/sysfs.c
+ create mode 100644 drivers/mpool/sysfs.h
 
-diff --git a/drivers/mpool/mp.c b/drivers/mpool/mp.c
+diff --git a/drivers/mpool/init.c b/drivers/mpool/init.c
+index eb1217f63746..126c6c7142b5 100644
+--- a/drivers/mpool/init.c
++++ b/drivers/mpool/init.c
+@@ -12,10 +12,23 @@
+ #include "smap.h"
+ #include "pmd_obj.h"
+ #include "sb.h"
++#include "mpctl.h"
+ 
+ /*
+  * Module params...
+  */
++unsigned int maxunits __read_mostly = 1024;
++module_param(maxunits, uint, 0444);
++MODULE_PARM_DESC(maxunits, " max mpools");
++
++unsigned int rwsz_max_mb __read_mostly = 32;
++module_param(rwsz_max_mb, uint, 0444);
++MODULE_PARM_DESC(rwsz_max_mb, " max mblock/mlog r/w size (mB)");
++
++unsigned int rwconc_max __read_mostly = 8;
++module_param(rwconc_max, uint, 0444);
++MODULE_PARM_DESC(rwconc_max, " max mblock/mlog large r/w concurrency");
++
+ unsigned int rsvd_bios_max __read_mostly = 16;
+ module_param(rsvd_bios_max, uint, 0444);
+ MODULE_PARM_DESC(rsvd_bios_max, "max reserved bios in mpool bioset");
+@@ -26,6 +39,7 @@ MODULE_PARM_DESC(chunk_size_kb, "Chunk size (in KiB) for device I/O");
+ 
+ static void mpool_exit_impl(void)
+ {
++	mpctl_exit();
+ 	pmd_exit();
+ 	smap_exit();
+ 	sb_exit();
+@@ -68,6 +82,12 @@ static __init int mpool_init(void)
+ 		goto errout;
+ 	}
+ 
++	rc = mpctl_init();
++	if (rc) {
++		errmsg = "mpctl init failed";
++		goto errout;
++	}
++
+ errout:
+ 	if (rc) {
+ 		mp_pr_err("%s", rc, errmsg);
+diff --git a/drivers/mpool/init.h b/drivers/mpool/init.h
+index e02a9672e727..3d8f809a5e45 100644
+--- a/drivers/mpool/init.h
++++ b/drivers/mpool/init.h
+@@ -6,6 +6,9 @@
+ #ifndef MPOOL_INIT_H
+ #define MPOOL_INIT_H
+ 
++extern unsigned int maxunits;
++extern unsigned int rwsz_max_mb;
++extern unsigned int rwconc_max;
+ extern unsigned int rsvd_bios_max;
+ extern int chunk_size_kb;
+ 
+diff --git a/drivers/mpool/mpctl.c b/drivers/mpool/mpctl.c
 new file mode 100644
-index 000000000000..6b8c51c23fec
+index 000000000000..4f3600840ff0
 --- /dev/null
-+++ b/drivers/mpool/mp.c
-@@ -0,0 +1,1086 @@
++++ b/drivers/mpool/mpctl.c
+@@ -0,0 +1,466 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
 + * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
 + */
 +
-+/*
-+ * Media pool (mpool) manager module.
-+ *
-+ * Defines functions to create and maintain mpools comprising multiple drives
-+ * in multiple media classes used for storing mblocks and mlogs.
-+ */
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/device.h>
++#include <linux/cdev.h>
++#include <linux/log2.h>
++#include <linux/idr.h>
++#include <linux/fs.h>
++#include <linux/mm.h>
++#include <linux/blkdev.h>
++#include <linux/vmalloc.h>
++#include <linux/memcontrol.h>
++#include <linux/pagemap.h>
++#include <linux/kobject.h>
++#include <linux/mm_inline.h>
++#include <linux/version.h>
++#include <linux/kref.h>
 +
-+#include <linux/string.h>
-+#include <linux/mutex.h>
-+#include <crypto/hash.h>
++#include <linux/backing-dev.h>
++#include <linux/spinlock.h>
++#include <linux/list.h>
++#include <linux/rbtree.h>
++#include <linux/migrate.h>
++#include <linux/delay.h>
++#include <linux/ctype.h>
++#include <linux/uio.h>
++#include <linux/prefetch.h>
 +
-+#include "assert.h"
 +#include "mpool_printk.h"
++#include "assert.h"
 +
-+#include "sb.h"
-+#include "upgrade.h"
-+#include "mpcore.h"
++#include "mpool_ioctl.h"
++#include "mlog.h"
 +#include "mp.h"
++#include "mpctl.h"
++#include "sysfs.h"
++#include "init.h"
 +
-+/*
-+ * Lock for serializing certain mpool ops where required/desirable; could be per
-+ * mpool in some cases but no meaningful performance benefit for these rare ops;
-+ * also protects mpool_pools and certain mpool_descriptor fields.
++
++#define NODEV               MKDEV(0, 0)    /* Non-existent device */
++
++/* mpc pseudo-driver instance data (i.e., all globals live here). */
++struct mpc_softstate {
++	struct mutex        ss_lock;        /* Protects ss_unitmap */
++	struct idr          ss_unitmap;     /* minor-to-unit map */
++
++	____cacheline_aligned
++	struct semaphore    ss_op_sema;     /* Serialize mgmt. ops */
++	dev_t               ss_devno;       /* Control device devno */
++	struct cdev         ss_cdev;
++	struct class       *ss_class;
++	bool                ss_inited;
++};
++
++/* Unit-type specific information. */
++struct mpc_uinfo {
++	const char     *ui_typename;
++	const char     *ui_subdirfmt;
++};
++
++/* One mpc_mpool object per mpool. */
++struct mpc_mpool {
++	struct kref                 mp_ref;
++	struct rw_semaphore         mp_lock;
++	struct mpool_descriptor    *mp_desc;
++	struct mp_mdc              *mp_mdc;
++	uint                        mp_dpathc;
++	char                      **mp_dpathv;
++	char                        mp_name[];
++};
++
++/* The following structures are initialized at the end of this file. */
++static const struct file_operations mpc_fops_default;
++
++static struct mpc_softstate mpc_softstate;
++
++static unsigned int mpc_ctl_uid __read_mostly;
++static unsigned int mpc_ctl_gid __read_mostly = 6;
++static unsigned int mpc_ctl_mode __read_mostly = 0664;
++
++static const struct mpc_uinfo mpc_uinfo_ctl = {
++	.ui_typename = "mpoolctl",
++	.ui_subdirfmt = "%s",
++};
++
++static const struct mpc_uinfo mpc_uinfo_mpool = {
++	.ui_typename = "mpool",
++	.ui_subdirfmt = "mpool/%s",
++};
++
++static inline bool mpc_unit_isctldev(const struct mpc_unit *unit)
++{
++	return (unit->un_uinfo == &mpc_uinfo_ctl);
++}
++
++static inline bool mpc_unit_ismpooldev(const struct mpc_unit *unit)
++{
++	return (unit->un_uinfo == &mpc_uinfo_mpool);
++}
++
++static inline uid_t mpc_current_uid(void)
++{
++	return from_kuid(current_user_ns(), current_uid());
++}
++
++static inline gid_t mpc_current_gid(void)
++{
++	return from_kgid(current_user_ns(), current_gid());
++}
++
++/**
++ * mpc_mpool_release() - release kref handler for mpc_mpool object
++ * @refp:  kref pointer
 + */
-+static DEFINE_MUTEX(mpool_s_lock);
-+
-+int mpool_create(const char *mpname, u32 flags, char **dpaths, struct pd_prop *pd_prop,
-+		 struct mpcore_params *params, u64 mlog_cap)
++static void mpc_mpool_release(struct kref *refp)
 +{
-+	struct omf_sb_descriptor *sbmdc0;
-+	struct mpool_descriptor *mp;
-+	struct pmd_layout *mdc01, *mdc02;
-+	bool active, sbvalid;
-+	u16 sidx;
-+	int err;
++	struct mpc_mpool *mpool = container_of(refp, struct mpc_mpool, mp_ref);
++	int rc;
 +
-+	if (!mpname || !*mpname || !dpaths || !pd_prop)
++	if (mpool->mp_desc) {
++		rc = mpool_deactivate(mpool->mp_desc);
++		if (rc)
++			mp_pr_err("mpool %s deactivate failed", rc, mpool->mp_name);
++	}
++
++	kfree(mpool->mp_dpathv);
++	kfree(mpool);
++
++	module_put(THIS_MODULE);
++}
++
++static void mpc_mpool_put(struct mpc_mpool *mpool)
++{
++	kref_put(&mpool->mp_ref, mpc_mpool_release);
++}
++
++/**
++ * mpc_unit_create() - Create and install a unit object
++ * @path:         device path under "/dev/" to create
++ * @mpool:        mpool ptr
++ * @unitp:        unit ptr
++ *
++ * Create a unit object and install a NULL ptr for it in the units map,
++ * thereby reserving a minor number.  The unit cannot be found by any
++ * of the lookup routines until the NULL ptr is replaced by the actual
++ * ptr to the unit.
++ *
++ * A unit maps an mpool device (.e.g., /dev/mpool/foo)  to an mpool object
++ * created by mpool_create().
++ *
++ * All units are born with two references, one for the caller and one that
++ * can only be released by destroying the unit or unloading the module.
++ *
++ * Return:  Returns 0 if successful and sets *unitp.
++ *          Returns -errno on error.
++ */
++static int mpc_unit_create(const char *name, struct mpc_mpool *mpool, struct mpc_unit **unitp)
++{
++	struct mpc_softstate *ss = &mpc_softstate;
++	struct mpc_unit *unit;
++	size_t unitsz;
++	int minor;
++
++	if (!ss || !name || !unitp)
 +		return -EINVAL;
 +
-+	mdc01 = mdc02 = NULL;
-+	active = sbvalid = false;
++	unitsz = sizeof(*unit) + strlen(name) + 1;
 +
-+	mp = mpool_desc_alloc();
-+	if (!mp) {
-+		err = -ENOMEM;
-+		mp_pr_err("mpool %s, alloc desc failed", err, mpname);
-+		return err;
++	unit = kzalloc(unitsz, GFP_KERNEL);
++	if (!unit)
++		return -ENOMEM;
++
++	strcpy(unit->un_name, name);
++
++	sema_init(&unit->un_open_lock, 1);
++	unit->un_open_excl = false;
++	unit->un_open_cnt = 0;
++	unit->un_devno = NODEV;
++	kref_init(&unit->un_ref);
++	unit->un_mpool = mpool;
++
++	mutex_lock(&ss->ss_lock);
++	minor = idr_alloc(&ss->ss_unitmap, NULL, 0, -1, GFP_KERNEL);
++	mutex_unlock(&ss->ss_lock);
++
++	if (minor < 0) {
++		kfree(unit);
++		return minor;
 +	}
 +
-+	sbmdc0 = &(mp->pds_sbmdc0);
-+	strlcpy((char *)mp->pds_name, mpname, sizeof(mp->pds_name));
-+	mpool_generate_uuid(&mp->pds_poolid);
++	kref_get(&unit->un_ref); /* acquire additional ref for the caller */
 +
-+	if (params)
-+		mp->pds_params = *params;
-+
-+	mp->pds_pdvcnt = 0;
-+
-+	mutex_lock(&mpool_s_lock);
-+
-+	/*
-+	 * Allocate the per-mpool workqueue.
-+	 * TODO: Make this per-driver
-+	 */
-+	mp->pds_erase_wq = alloc_workqueue("mperasewq", WQ_HIGHPRI, 0);
-+	if (!mp->pds_erase_wq) {
-+		err = -ENOMEM;
-+		mp_pr_err("mpool %s, alloc per-mpool wq failed", err, mpname);
-+		goto errout;
-+	}
-+
-+	/*
-+	 * Set the devices parameters from the ones placed by the discovery
-+	 * in pd_prop.
-+	 */
-+	err = mpool_dev_init_all(mp->pds_pdv, 1, dpaths, pd_prop);
-+	if (err) {
-+		mp_pr_err("mpool %s, failed to get device parameters", err, mpname);
-+		goto errout;
-+	}
-+
-+	mp->pds_pdvcnt = 1;
-+
-+	mpool_mdc_cap_init(mp, &mp->pds_pdv[0]);
-+
-+	/* Init new pool drives uuid and mclassp */
-+	mpool_generate_uuid(&mp->pds_pdv[0].pdi_devid);
-+
-+	/*
-+	 * Init mpool descriptor from new drive info.
-+	 * Creates the media classes and place the PDs in them.
-+	 * Determine the media class used for the metadata.
-+	 */
-+	err = mpool_desc_init_newpool(mp, flags);
-+	if (err) {
-+		mp_pr_err("mpool %s, desc init from new drive info failed", err, mpname);
-+		goto errout;
-+	}
-+
-+	/*
-+	 * Alloc empty mdc0 and write superblocks to all drives; if
-+	 * crash drives with superblocks will not be recognized as mpool
-+	 * members because there are not yet any drive state records in mdc0
-+	 */
-+	sbvalid = true;
-+	err = mpool_dev_sbwrite_newpool(mp, sbmdc0);
-+	if (err) {
-+		mp_pr_err("mpool %s, couldn't write superblocks", err, mpname);
-+		goto errout;
-+	}
-+
-+	/* Alloc mdc0 mlog layouts and activate mpool with empty mdc0 */
-+	err = mpool_mdc0_sb2obj(mp, sbmdc0, &mdc01, &mdc02);
-+	if (err) {
-+		mp_pr_err("mpool %s, alloc of MDC0 mlogs failed", err, mpname);
-+		goto errout;
-+	}
-+
-+	err = pmd_mpool_activate(mp, mdc01, mdc02, 1);
-+	if (err) {
-+		mp_pr_err("mpool %s, activation failed", err, mpname);
-+		goto errout;
-+	}
-+
-+	active = true;
-+
-+	/*
-+	 * Add the version record (always first record) in MDC0.
-+	 * The version record is used only from version 1.0.0.1.
-+	 */
-+	if (omfu_mdcver_cmp2(omfu_mdcver_cur(), ">=", 1, 0, 0, 1)) {
-+		err = pmd_mdc_addrec_version(mp, 0);
-+		if (err) {
-+			mp_pr_err("mpool %s, writing MDC version record in MDC0 failed",
-+				  err, mpname);
-+			goto errout;
-+		}
-+	}
-+
-+	/*
-+	 * Add drive state records to mdc0; if crash before complete will
-+	 * detect if attempt to open same drive list; it may be possible to
-+	 * open the subset of the drive list for which state records were
-+	 * written without detection, in which case the other drives can be
-+	 * added
-+	 */
-+	err = pmd_prop_mcconfig(mp, &mp->pds_pdv[0], false);
-+	if (err) {
-+		mp_pr_err("mpool %s, add drive state to MDC0 failed", err, mpname);
-+		goto errout;
-+	}
-+
-+	/*
-+	 * Create mdcs so user can create mlog/mblock objects;
-+	 * if crash before all the configured mdcs are created, or if create
-+	 * fails, will detect in activate and re-try.
-+	 *
-+	 * mp_cmdcn corresponds to the number of MDCNs used for client
-+	 * objects, i.e., [1 - mp_cmdcn]
-+	 */
-+	for (sidx = 1; sidx <= mp->pds_params.mp_mdcnum; sidx++) {
-+		err = pmd_mdc_alloc(mp, mp->pds_params.mp_mdcncap, sidx - 1);
-+		if (err) {
-+			mp_pr_info("mpool %s, only %u MDCs out of %lu MDCs were created",
-+				  mpname, sidx - 1, (ulong)mp->pds_params.mp_mdcnum);
-+			/*
-+			 * For MDCN creation failure, mask the error and
-+			 * continue further with create.
-+			 */
-+			err = 0;
-+			break;
-+		}
-+	}
-+	pmd_update_credit(mp);
-+
-+	/*
-+	 * Attempt root mlog creation only if MDC1 was successfully created.
-+	 * If MDC1 doesn't exist, it will be re-created during activate.
-+	 */
-+	if (sidx > 1) {
-+		err = mpool_create_rmlogs(mp, mlog_cap);
-+		if (err) {
-+			mp_pr_info("mpool %s, root mlog creation failed", mpname);
-+			/*
-+			 * If root mlog creation fails, mask the error and
-+			 * proceed with create. root mlogs will be re-created
-+			 * during activate.
-+			 */
-+			err = 0;
-+		}
-+	}
-+
-+	/* Add mp to the list of all open mpools */
-+	uuid_to_mpdesc_insert(&mpool_pools, mp);
-+
-+errout:
-+
-+	if (mp->pds_erase_wq)
-+		destroy_workqueue(mp->pds_erase_wq);
-+
-+	if (active)
-+		pmd_mpool_deactivate(mp);
-+
-+	if (err && sbvalid) {
-+		struct mpool_dev_info *pd;
-+		int err1;
-+
-+		/* Erase super blocks on the drives */
-+		pd = &mp->pds_pdv[0];
-+		if (mpool_pd_status_get(pd) != PD_STAT_ONLINE) {
-+			err1 = -EIO;
-+			mp_pr_err("%s:%s unavailable or offline, status %d",
-+				  err1, mp->pds_name, pd->pdi_name, mpool_pd_status_get(pd));
-+		} else {
-+			err1 = sb_erase(&pd->pdi_parm);
-+			if (err1)
-+				mp_pr_info("%s: cleanup, sb erase failed on device %s",
-+					   mp->pds_name, pd->pdi_name);
-+		}
-+	}
-+
-+	mpool_desc_free(mp);
-+
-+	mutex_unlock(&mpool_s_lock);
-+
-+	return err;
-+}
-+
-+int mpool_activate(u64 dcnt, char **dpaths, struct pd_prop *pd_prop, u64 mlog_cap,
-+		   struct mpcore_params *params, u32 flags, struct mpool_descriptor **mpp)
-+{
-+	struct omf_sb_descriptor *sbmdc0;
-+	struct mpool_descriptor *mp;
-+	struct pmd_layout *mdc01 = NULL;
-+	struct pmd_layout *mdc02 = NULL;
-+	struct media_class *mcmeta;
-+	u64 mdcmax, mdcnum, mdcncap, mdc0cap;
-+	bool force = ((flags & (1 << MP_FLAGS_FORCE)) != 0);
-+	bool mc_resize[MP_MED_NUMBER] = { };
-+	bool active;
-+	int dup, doff, err, i;
-+	u8  pdh;
-+
-+	active = false;
-+	*mpp = NULL;
-+
-+	if (dcnt > MPOOL_DRIVES_MAX) {
-+		err = -EINVAL;
-+		mp_pr_err("too many drives in input %lu, first drive path %s",
-+			  err, (ulong)dcnt, dpaths[0]);
-+		return err;
-+	}
-+
-+	/*
-+	 * Verify no duplicate drive paths
-+	 */
-+	err = check_for_dups(dpaths, dcnt, &dup, &doff);
-+	if (err) {
-+		mp_pr_err("duplicate drive check failed", err);
-+		return err;
-+	} else if (dup) {
-+		err = -EINVAL;
-+		mp_pr_err("duplicate drive path %s", err, (doff == -1) ? "" : dpaths[doff]);
-+		return err;
-+	}
-+
-+	/* Alloc mpool descriptor and fill in device-indepdendent values */
-+	mp = mpool_desc_alloc();
-+	if (!mp) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc mpool desc failed", err);
-+		return err;
-+	}
-+
-+	sbmdc0 = &(mp->pds_sbmdc0);
-+
-+	mp->pds_pdvcnt = 0;
-+
-+	if (params)
-+		mp->pds_params = *params;
-+
-+	mutex_lock(&mpool_s_lock);
-+
-+	mp->pds_workq = alloc_workqueue("mpoolwq", WQ_UNBOUND, 0);
-+	if (!mp->pds_workq) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc mpoolwq failed, first drive path %s", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	mp->pds_erase_wq = alloc_workqueue("mperasewq", WQ_HIGHPRI, 0);
-+	if (!mp->pds_erase_wq) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc mperasewq failed, first drive path %s", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	/* Get device parm for all drive paths */
-+	err = mpool_dev_init_all(mp->pds_pdv, dcnt, dpaths, pd_prop);
-+	if (err) {
-+		mp_pr_err("can't get drive device params, first drive path %s", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	/* Set mp.pdvcnt so dpaths will get closed in cleanup if activate fails. */
-+	mp->pds_pdvcnt = dcnt;
-+
-+	/* Init mpool descriptor from superblocks on drives */
-+	err = mpool_desc_init_sb(mp, sbmdc0, flags, mc_resize);
-+	if (err) {
-+		mp_pr_err("mpool_desc_init_sb failed, first drive path %s", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	mcmeta = &mp->pds_mc[mp->pds_mdparm.md_mclass];
-+	if (mcmeta->mc_pdmc < 0) {
-+		err = -ENODEV;
-+		mp_pr_err("mpool %s, too many unavailable drives", err, mp->pds_name);
-+		goto errout;
-+	}
-+
-+	/* Alloc mdc0 mlog layouts from superblock and activate mpool */
-+	err = mpool_mdc0_sb2obj(mp, sbmdc0, &mdc01, &mdc02);
-+	if (err) {
-+		mp_pr_err("mpool %s, allocation of MDC0 mlogs layouts failed", err, mp->pds_name);
-+		goto errout;
-+	}
-+
-+	err = pmd_mpool_activate(mp, mdc01, mdc02, 0);
-+	if (err) {
-+		mp_pr_err("mpool %s, activation failed", err, mp->pds_name);
-+		goto errout;
-+	}
-+
-+	active = true;
-+
-+	for (pdh = 0; pdh < mp->pds_pdvcnt; pdh++) {
-+		struct mpool_dev_info  *pd;
-+
-+		pd = &mp->pds_pdv[pdh];
-+
-+		if (mc_resize[pd->pdi_mclass]) {
-+			err = pmd_prop_mcconfig(mp, pd, false);
-+			if (err) {
-+				mp_pr_err("mpool %s, updating MCCONFIG record for resize failed",
-+					  err, mp->pds_name);
-+				goto errout;
-+			}
-+		}
-+
-+		if (pd->pdi_mclass == MP_MED_CAPACITY)
-+			mpool_mdc_cap_init(mp, pd);
-+	}
-+
-+	/* Tolerate unavailable drives only if force flag specified */
-+	for (i = 0; !force && i < MP_MED_NUMBER; i++) {
-+		struct media_class *mc;
-+
-+		mc = &mp->pds_mc[i];
-+		if (mc->mc_uacnt) {
-+			err = -ENODEV;
-+			mp_pr_err("mpool %s, unavailable drives present", err, mp->pds_name);
-+			goto errout;
-+		}
-+	}
-+
-+	/*
-+	 * Create mdcs if needed so user can create mlog/mblock objects;
-+	 * Only needed if the configured number of mdcs did not get created
-+	 * during mpool create due to crash or failure.
-+	 */
-+	mdcmax = mdcncap = mdc0cap = 0;
-+	mdcnum = mp->pds_params.mp_mdcnum;
-+
-+	pmd_mdc_cap(mp, &mdcmax, &mdcncap, &mdc0cap);
-+
-+	if (mdc0cap)
-+		mp->pds_params.mp_mdc0cap = mdc0cap;
-+
-+	if (mdcncap && mdcmax) {
-+		mdcncap = mdcncap / mdcmax;
-+		mp->pds_params.mp_mdcncap = mdcncap;
-+		mp->pds_params.mp_mdcnum  = mdcmax;
-+	}
-+
-+	if (mdcmax < mdcnum) {
-+		mp_pr_info("mpool %s, detected missing MDCs %lu %lu",
-+			   mp->pds_name, (ulong)mdcnum, (ulong)mdcmax);
-+
-+		for (mdcmax++; mdcmax <= mdcnum; mdcmax++) {
-+
-+			err = pmd_mdc_alloc(mp, mp->pds_params.mp_mdcncap,
-+					    mdcmax);
-+			if (!err)
-+				continue;
-+
-+			/* MDC1 creation failure - non-functional mpool */
-+			if (mdcmax < 2) {
-+				mp_pr_err("mpool %s, MDC1 can't be created", err, mp->pds_name);
-+				goto errout;
-+			}
-+
-+			mp_pr_notice("mpool %s, couldn't create %lu MDCs out of %lu MDCs",
-+				     mp->pds_name, (ulong)(mdcnum - mdcmax + 1), (ulong)mdcnum);
-+
-+			/*
-+			 * For MDCN (N > 1) creation failure, log a warning,
-+			 * mask the error and continue with activate. Mpool
-+			 * only needs a minimum of 1 MDC to be functional.
-+			 */
-+			err = 0;
-+
-+			break;
-+		}
-+		mp->pds_params.mp_mdcnum = mdcmax - 1;
-+	}
-+
-+	pmd_update_credit(mp);
-+
-+	/*
-+	 * If we reach here, then MDC1 must exist. Now, make sure that the
-+	 * root mlogs also exist and if they don't, re-create them.
-+	 */
-+	err = mpool_create_rmlogs(mp, mlog_cap);
-+	if (err) {
-+		/* Root mlogs creation failure - non-functional mpool */
-+		mp_pr_err("mpool %s, root mlogs creation failed", err, mp->pds_name);
-+		goto errout;
-+	}
-+
-+	/* Add mp to the list of all activated mpools */
-+	uuid_to_mpdesc_insert(&mpool_pools, mp);
-+
-+	/* Start the background thread doing pre-compaction of MDC1/255 */
-+	pmd_precompact_start(mp);
-+
-+errout:
-+	if (err) {
-+		if (mp->pds_workq)
-+			destroy_workqueue(mp->pds_workq);
-+		if (mp->pds_erase_wq)
-+			destroy_workqueue(mp->pds_erase_wq);
-+
-+		if (active)
-+			pmd_mpool_deactivate(mp);
-+
-+		mpool_desc_free(mp);
-+		mp = NULL;
-+	}
-+
-+	mutex_unlock(&mpool_s_lock);
-+
-+	*mpp = mp;
-+
-+	if (!err) {
-+		/*
-+		 * Start the periodic background job which logs a message
-+		 * when an mpool's usable space is close to its limits.
-+		 */
-+		struct smap_usage_work *usagew;
-+
-+		usagew = &mp->pds_smap_usage_work;
-+
-+		INIT_DELAYED_WORK(&usagew->smapu_wstruct, smap_log_mpool_usage);
-+		usagew->smapu_mp = mp;
-+		smap_log_mpool_usage(&usagew->smapu_wstruct.work);
-+	}
-+
-+	return err;
-+}
-+
-+int mpool_deactivate(struct mpool_descriptor *mp)
-+{
-+	pmd_precompact_stop(mp);
-+	smap_wait_usage_done(mp);
-+
-+	mutex_lock(&mpool_s_lock);
-+	destroy_workqueue(mp->pds_workq);
-+	destroy_workqueue(mp->pds_erase_wq);
-+
-+	pmd_mpool_deactivate(mp);
-+
-+	mpool_desc_free(mp);
-+	mutex_unlock(&mpool_s_lock);
++	unit->un_devno = MKDEV(MAJOR(ss->ss_cdev.dev), minor);
++	*unitp = unit;
 +
 +	return 0;
 +}
 +
-+int mpool_destroy(u64 dcnt, char **dpaths, struct pd_prop *pd_prop, u32 flags)
++/**
++ * mpc_unit_release() - Destroy a unit object created by mpc_unit_create().
++ * @unit:
++ */
++static void mpc_unit_release(struct kref *refp)
 +{
-+	struct omf_sb_descriptor *sbmdc0;
-+	struct mpool_descriptor *mp;
-+	int dup, doff;
-+	int err, i;
++	struct mpc_unit *unit = container_of(refp, struct mpc_unit, un_ref);
++	struct mpc_softstate *ss = &mpc_softstate;
 +
-+	if (dcnt > MPOOL_DRIVES_MAX) {
-+		err = -EINVAL;
-+		mp_pr_err("first pd %s, too many drives %lu %d",
-+			  err, dpaths[0], (ulong)dcnt, MPOOL_DRIVES_MAX);
-+		return err;
-+	} else if (dcnt == 0) {
-+		return -EINVAL;
-+	}
++	mutex_lock(&ss->ss_lock);
++	idr_remove(&ss->ss_unitmap, MINOR(unit->un_devno));
++	mutex_unlock(&ss->ss_lock);
 +
-+	/*
-+	 * Verify no duplicate drive paths
-+	 */
-+	err = check_for_dups(dpaths, dcnt, &dup, &doff);
-+	if (err) {
-+		mp_pr_err("check_for_dups failed, dcnt %lu", err, (ulong)dcnt);
-+		return err;
-+	} else if (dup) {
-+		err = -ENOMEM;
-+		mp_pr_err("duplicate drives found", err);
-+		return err;
-+	}
++	if (unit->un_mpool)
++		mpc_mpool_put(unit->un_mpool);
 +
-+	sbmdc0 = kzalloc(sizeof(*sbmdc0), GFP_KERNEL);
-+	if (!sbmdc0) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc sb %zu failed", err, sizeof(*sbmdc0));
-+		return err;
-+	}
++	if (unit->un_device)
++		device_destroy(ss->ss_class, unit->un_devno);
 +
-+	mp = mpool_desc_alloc();
-+	if (!mp) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc mpool desc failed", err);
-+		kfree(sbmdc0);
-+		return err;
-+	}
-+
-+	mp->pds_pdvcnt = 0;
-+
-+	mutex_lock(&mpool_s_lock);
-+
-+	/* Get device parm for all drive paths */
-+	err = mpool_dev_init_all(mp->pds_pdv, dcnt, dpaths, pd_prop);
-+	if (err) {
-+		mp_pr_err("first pd %s, get device params failed", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	/* Set pdvcnt so dpaths will get closed in cleanup if open fails. */
-+	mp->pds_pdvcnt = dcnt;
-+
-+	/* Init mpool descriptor from superblocks on drives */
-+	err = mpool_desc_init_sb(mp, sbmdc0, flags, NULL);
-+	if (err) {
-+		mp_pr_err("mpool %s, first pd %s, mpool desc init from sb failed",
-+			  err, (mp->pds_name == NULL) ? "" : mp->pds_name, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	/* Erase super blocks on the drives */
-+	for (i = 0; i < mp->pds_pdvcnt; i++) {
-+		struct mpool_dev_info *pd;
-+
-+		pd = &mp->pds_pdv[i];
-+		if (mpool_pd_status_get(pd) != PD_STAT_ONLINE) {
-+			err = -EIO;
-+			mp_pr_err("pd %s unavailable or offline, status %d",
-+				  err, pd->pdi_name, mpool_pd_status_get(pd));
-+		} else {
-+			err = sb_erase(&pd->pdi_parm);
-+			if (err)
-+				mp_pr_err("pd %s, sb erase failed", err, pd->pdi_name);
-+		}
-+
-+		if (err)
-+			break;
-+	}
-+
-+errout:
-+	mpool_desc_free(mp);
-+
-+	mutex_unlock(&mpool_s_lock);
-+
-+	kfree(sbmdc0);
-+
-+	return err;
++	kfree(unit);
 +}
 +
-+int mpool_rename(u64 dcnt, char **dpaths, struct pd_prop *pd_prop,
-+		 u32 flags, const char *mp_newname)
++static void mpc_unit_put(struct mpc_unit *unit)
 +{
-+	struct omf_sb_descriptor *sb;
-+	struct mpool_descriptor *mp;
-+	struct mpool_dev_info *pd = NULL;
-+	u16 omf_ver = OMF_SB_DESC_UNDEF;
-+	bool force = ((flags & (1 << MP_FLAGS_FORCE)) != 0);
-+	u8 pdh;
-+	int dup, doff;
-+	int err = 0;
-+
-+	if (!mp_newname || dcnt == 0)
-+		return -EINVAL;
-+
-+	if (dcnt > MPOOL_DRIVES_MAX) {
-+		err = -EINVAL;
-+		mp_pr_err("first pd %s, too many drives %lu %d",
-+			  err, dpaths[0], (ulong)dcnt, MPOOL_DRIVES_MAX);
-+		return err;
-+	}
-+
-+	/*
-+	 * Verify no duplicate drive paths
-+	 */
-+	err = check_for_dups(dpaths, dcnt, &dup, &doff);
-+	if (err) {
-+		mp_pr_err("check_for_dups failed, dcnt %lu", err, (ulong)dcnt);
-+		return err;
-+	} else if (dup) {
-+		err = -ENOMEM;
-+		mp_pr_err("duplicate drives found", err);
-+		return err;
-+	}
-+
-+	sb = kzalloc(sizeof(*sb), GFP_KERNEL);
-+	if (!sb) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc sb %zu failed", err, sizeof(*sb));
-+		return err;
-+	}
-+
-+	mp = mpool_desc_alloc();
-+	if (!mp) {
-+		err = -ENOMEM;
-+		mp_pr_err("alloc mpool desc failed", err);
-+		kfree(sb);
-+		return err;
-+	}
-+
-+	mp->pds_pdvcnt = 0;
-+
-+	mutex_lock(&mpool_s_lock);
-+
-+	/* Get device parm for all drive paths */
-+	err = mpool_dev_init_all(mp->pds_pdv, dcnt, dpaths, pd_prop);
-+	if (err) {
-+		mp_pr_err("first pd %s, get device params failed", err, dpaths[0]);
-+		goto errout;
-+	}
-+
-+	/* Set pdvcnt so dpaths will get closed in cleanup if open fails.
-+	 */
-+	mp->pds_pdvcnt = dcnt;
-+
-+	for (pdh = 0; pdh < mp->pds_pdvcnt; pdh++) {
-+		pd = &mp->pds_pdv[pdh];
-+
-+		if (mpool_pd_status_get(pd) != PD_STAT_ONLINE) {
-+			err = -EIO;
-+			mp_pr_err("pd %s unavailable or offline, status %d",
-+				  err, pd->pdi_name, mpool_pd_status_get(pd));
-+			goto errout;
-+		}
-+
-+		/*
-+		 * Read superblock; init and validate pool drive info
-+		 * from device parameters stored in the super block.
-+		 */
-+		err = sb_read(&pd->pdi_parm, sb, &omf_ver, force);
-+		if (err) {
-+			mp_pr_err("pd %s, sb read failed", err, pd->pdi_name);
-+			goto errout;
-+		}
-+
-+		if (omf_ver > OMF_SB_DESC_VER_LAST ||
-+		    omf_ver < OMF_SB_DESC_VER_LAST) {
-+			err = -EOPNOTSUPP;
-+			mp_pr_err("pd %s, invalid sb version %d %d",
-+				  err, pd->pdi_name, omf_ver, OMF_SB_DESC_VER_LAST);
-+			goto errout;
-+		}
-+
-+		if (!strcmp(mp_newname, sb->osb_name))
-+			continue;
-+
-+		strlcpy(sb->osb_name, mp_newname, sizeof(sb->osb_name));
-+
-+		err = sb_write_update(&pd->pdi_parm, sb);
-+		if (err) {
-+			mp_pr_err("Failed to rename mpool %s on device %s",
-+				  err, mp->pds_name, pd->pdi_name);
-+			goto errout;
-+		}
-+	}
-+
-+errout:
-+	mutex_unlock(&mpool_s_lock);
-+
-+	mpool_desc_free(mp);
-+	kfree(sb);
-+
-+	return err;
++	if (unit)
++		kref_put(&unit->un_ref, mpc_unit_release);
 +}
 +
-+int mpool_drive_add(struct mpool_descriptor *mp, char *dpath, struct pd_prop *pd_prop)
++/**
++ * mpc_unit_setup() - Create a device unit object and special file
++ * @uinfo:
++ * @name:
++ * @cfg:
++ * @mpool:
++ * @unitp: unitp can be NULL. *unitp is updated only if unitp is not NULL
++ *	and no error is returned.
++ *
++ * If successful, this function adopts mpool.  On failure, mpool
++ * remains the responsibility of the caller.
++ *
++ * All units are born with two references, one for the caller and one
++ * that can only be released by destroying the unit or unloading the
++ * module. If the caller passes in nil for unitp then this function
++ * will drop the caller's "caller reference" on his behalf.
++ *
++ * Return:  Returns 0 on success, -errno otherwise...
++ */
++static int mpc_unit_setup(const struct mpc_uinfo *uinfo, const char *name,
++			  const struct mpool_config *cfg, struct mpc_mpool *mpool,
++			  struct mpc_unit **unitp)
 +{
-+	struct mpool_dev_info *pd;
-+	struct mc_smap_parms mcsp;
-+	char *dpathv[1] = { dpath };
-+	bool erase = false;
-+	bool smap = false;
-+	int err;
++	struct mpc_softstate *ss = &mpc_softstate;
++	struct mpc_unit *unit;
++	struct device *device;
++	int rc;
 +
-+	/*
-+	 * All device list changes are serialized via mpool_s_lock so
-+	 * don't need to acquire mp.pdvlock until ready to update mpool
-+	 * descriptor
-+	 */
-+	mutex_lock(&mpool_s_lock);
-+
-+	if (mp->pds_pdvcnt >= MPOOL_DRIVES_MAX) {
-+		mutex_unlock(&mpool_s_lock);
-+
-+		mp_pr_warn("%s: pd %s, too many drives %u %d",
-+			   mp->pds_name, dpath, mp->pds_pdvcnt, MPOOL_DRIVES_MAX);
++	if (!ss || !uinfo || !name || !name[0] || !cfg || !unitp)
 +		return -EINVAL;
-+	}
++
++	if (cfg->mc_uid == -1 || cfg->mc_gid == -1 || cfg->mc_mode == -1)
++		return -EINVAL;
++
++	if (!capable(CAP_MKNOD))
++		return -EPERM;
++
++	if (cfg->mc_uid != mpc_current_uid() && !capable(CAP_CHOWN))
++		return -EPERM;
++
++	if (cfg->mc_gid != mpc_current_gid() && !capable(CAP_CHOWN))
++		return -EPERM;
++
++	if (mpool && strcmp(mpool->mp_name, name))
++		return -EINVAL;
++
++	*unitp = NULL;
++	unit = NULL;
 +
 +	/*
-+	 * get device parm for dpath; use next slot in mp.pdv which won't
-+	 * be visible until we update mp.pdvcnt
++	 * Try to create a new unit object.  If successful, then all error
++	 * handling beyond this point must route through the errout label
++	 * to ensure the unit is fully destroyed.
 +	 */
-+	pd = &mp->pds_pdv[mp->pds_pdvcnt];
++	rc = mpc_unit_create(name, mpool, &unit);
++	if (rc)
++		return rc;
 +
-+	/*
-+	 * Some leftover may be present due to a previous try to add a PD
-+	 * at this position. Clear up.
-+	 */
-+	memset(pd, 0, sizeof(*pd));
++	unit->un_uid = cfg->mc_uid;
++	unit->un_gid = cfg->mc_gid;
++	unit->un_mode = cfg->mc_mode;
 +
-+	err = mpool_dev_init_all(pd, 1, dpathv, pd_prop);
-+	if (err) {
-+		mutex_unlock(&mpool_s_lock);
++	unit->un_mdc_captgt = cfg->mc_captgt;
++	memcpy(&unit->un_utype, &cfg->mc_utype, sizeof(unit->un_utype));
++	strlcpy(unit->un_label, cfg->mc_label, sizeof(unit->un_label));
++	unit->un_ds_oidv[0] = cfg->mc_oid1;
++	unit->un_ds_oidv[1] = cfg->mc_oid2;
++	unit->un_ra_pages_max = cfg->mc_ra_pages_max;
 +
-+		mp_pr_err("%s: pd %s, getting drive params failed", err, mp->pds_name, dpath);
-+		return err;
-+	}
-+
-+	/* Confirm drive meets all criteria for adding to this mpool */
-+	err = mpool_dev_check_new(mp, pd);
-+	if (err) {
-+		mp_pr_err("%s: pd %s, drive doesn't pass criteria", err, mp->pds_name, dpath);
++	device = device_create(ss->ss_class, NULL, unit->un_devno, unit, uinfo->ui_subdirfmt, name);
++	if (IS_ERR(device)) {
++		rc = PTR_ERR(device);
++		mp_pr_err("device_create %s failed", rc, name);
 +		goto errout;
 +	}
 +
-+	/*
-+	 * Check that the drive can be added in a media class.
-+	 */
-+	down_read(&mp->pds_pdvlock);
-+	err = mpool_desc_pdmc_add(mp, mp->pds_pdvcnt, NULL, true);
-+	up_read(&mp->pds_pdvlock);
-+	if (err) {
-+		mp_pr_err("%s: pd %s, can't place in any media class", err, mp->pds_name, dpath);
-+		goto errout;
-+	}
++	unit->un_device = device;
++	unit->un_uinfo = uinfo;
 +
++	dev_info(unit->un_device, "minor %u, uid %u, gid %u, mode 0%02o",
++		 MINOR(unit->un_devno), cfg->mc_uid, cfg->mc_gid, cfg->mc_mode);
 +
-+	mpool_generate_uuid(&pd->pdi_devid);
-+
-+	/* Write mpool superblock to drive */
-+	erase = true;
-+	err = mpool_dev_sbwrite(mp, pd, NULL);
-+	if (err) {
-+		mp_pr_err("%s: pd %s, sb write failed", err, mp->pds_name, dpath);
-+		goto errout;
-+	}
-+
-+	/* Get percent spare */
-+	down_read(&mp->pds_pdvlock);
-+	err = mc_smap_parms_get(&mp->pds_mc[pd->pdi_mclass], &mp->pds_params, &mcsp);
-+	up_read(&mp->pds_pdvlock);
-+	if (err)
-+		goto errout;
-+
-+	/* Alloc space map for drive */
-+	err = smap_drive_init(mp, &mcsp, mp->pds_pdvcnt);
-+	if (err) {
-+		mp_pr_err("%s: pd %s, smap init failed", err, mp->pds_name, dpath);
-+		goto errout;
-+	}
-+	smap = true;
-+
-+	/*
-+	 * Take MDC0 compact lock to prevent race with MDC0 compaction.
-+	 * Take it across memory and media update.
-+	 */
-+	PMD_MDC0_COMPACTLOCK(mp);
-+
-+	/*
-+	 * Add drive state record to mdc0; if crash any time prior to adding
-+	 * this record the drive will not be recognized as an mpool member
-+	 * on next open
-+	 */
-+	err = pmd_prop_mcconfig(mp, pd, false);
-+	if (err) {
-+		PMD_MDC0_COMPACTUNLOCK(mp);
-+		mp_pr_err("%s: pd %s, adding drive state to MDC0 failed", err, mp->pds_name, dpath);
-+		goto errout;
-+	}
-+
-+	/* Make new drive visible in mpool */
-+	down_write(&mp->pds_pdvlock);
-+	mp->pds_pdvcnt++;
-+
-+	/*
-+	 * Add the PD in its class. That should NOT fail because we already
-+	 * checked that the drive can be added in a media class.
-+	 */
-+	err = mpool_desc_pdmc_add(mp, mp->pds_pdvcnt - 1, NULL, false);
-+	if (err)
-+		mp->pds_pdvcnt--;
-+
-+	up_write(&mp->pds_pdvlock);
-+	PMD_MDC0_COMPACTUNLOCK(mp);
++	*unitp = unit;
 +
 +errout:
-+	if (err) {
++	if (rc) {
 +		/*
-+		 * No pd could have been be added at mp->pds_pdvcnt since we
-+		 * dropped pds_pdvlock because mpool_s_lock is held.
++		 * Acquire an additional reference on mpool so that it is not
++		 * errantly destroyed along with the unit, then release both
++		 * the unit's birth and caller's references which should
++		 * destroy the unit.
 +		 */
-+		if (smap)
-+			smap_drive_free(mp, mp->pds_pdvcnt);
-+
-+		/*
-+		 * Erase the pd super blocks only if the pd doesn't already
-+		 * belong to this mpool or another one.
-+		 */
-+		if (erase)
-+			sb_erase(&pd->pdi_parm);
-+
-+		pd_dev_close(&pd->pdi_parm);
++		kref_get(&mpool->mp_ref);
++		mpc_unit_put(unit);
++		mpc_unit_put(unit);
 +	}
 +
-+	mutex_unlock(&mpool_s_lock);
-+
-+	return err;
++	return rc;
 +}
 +
-+void mpool_mclass_get_cnt(struct mpool_descriptor *mp, u32 *cnt)
++/**
++ * mpc_uevent() - Hook to intercept and modify uevents before they're posted to udev
++ * @dev:    mpc driver device
++ * @env:
++ *
++ * See man 7 udev for more info.
++ */
++static int mpc_uevent(struct device *dev, struct kobj_uevent_env *env)
 +{
++	struct mpc_unit *unit = dev_get_drvdata(dev);
++
++	if (unit) {
++		add_uevent_var(env, "DEVMODE=%#o", unit->un_mode);
++		add_uevent_var(env, "DEVUID=%u", unit->un_uid);
++		add_uevent_var(env, "DEVGID=%u", unit->un_gid);
++	}
++
++	return 0;
++}
++
++static int mpc_exit_unit(int minor, void *item, void *arg)
++{
++	mpc_unit_put(item);
++
++	return ITERCB_NEXT;
++}
++
++/**
++ * mpctl_exit() - Tear down and unload the mpool control module.
++ */
++void mpctl_exit(void)
++{
++	struct mpc_softstate *ss = &mpc_softstate;
++
++	if (ss->ss_inited) {
++		idr_for_each(&ss->ss_unitmap, mpc_exit_unit, NULL);
++		idr_destroy(&ss->ss_unitmap);
++
++		if (ss->ss_devno != NODEV) {
++			if (ss->ss_class) {
++				if (ss->ss_cdev.ops)
++					cdev_del(&ss->ss_cdev);
++				class_destroy(ss->ss_class);
++			}
++			unregister_chrdev_region(ss->ss_devno, maxunits);
++		}
++
++		ss->ss_inited = false;
++	}
++}
++
++/**
++ * mpctl_init() - Load and initialize the mpool control module.
++ */
++int mpctl_init(void)
++{
++	struct mpc_softstate *ss = &mpc_softstate;
++	struct mpool_config *cfg = NULL;
++	struct mpc_unit *ctlunit;
++	const char *errmsg = NULL;
++	int rc;
++
++	if (ss->ss_inited)
++		return -EBUSY;
++
++	ctlunit = NULL;
++
++	maxunits = clamp_t(uint, maxunits, 8, 8192);
++
++	cdev_init(&ss->ss_cdev, &mpc_fops_default);
++	ss->ss_cdev.owner = THIS_MODULE;
++
++	mutex_init(&ss->ss_lock);
++	idr_init(&ss->ss_unitmap);
++	ss->ss_class = NULL;
++	ss->ss_devno = NODEV;
++	sema_init(&ss->ss_op_sema, 1);
++	ss->ss_inited = true;
++
++	rc = alloc_chrdev_region(&ss->ss_devno, 0, maxunits, "mpool");
++	if (rc) {
++		errmsg = "cannot allocate control device major";
++		ss->ss_devno = NODEV;
++		goto errout;
++	}
++
++	ss->ss_class = class_create(THIS_MODULE, module_name(THIS_MODULE));
++	if (IS_ERR(ss->ss_class)) {
++		errmsg = "class_create() failed";
++		rc = PTR_ERR(ss->ss_class);
++		ss->ss_class = NULL;
++		goto errout;
++	}
++
++	ss->ss_class->dev_uevent = mpc_uevent;
++
++	rc = cdev_add(&ss->ss_cdev, ss->ss_devno, maxunits);
++	if (rc) {
++		errmsg = "cdev_add() failed";
++		ss->ss_cdev.ops = NULL;
++		goto errout;
++	}
++
++	cfg = kzalloc(sizeof(*cfg), GFP_KERNEL);
++	if (!cfg) {
++		errmsg = "cfg alloc failed";
++		rc = -ENOMEM;
++		goto errout;
++	}
++
++	cfg->mc_uid = mpc_ctl_uid;
++	cfg->mc_gid = mpc_ctl_gid;
++	cfg->mc_mode = mpc_ctl_mode;
++
++	rc = mpc_unit_setup(&mpc_uinfo_ctl, MPC_DEV_CTLNAME, cfg, NULL, &ctlunit);
++	if (rc) {
++		errmsg = "cannot create control device";
++		goto errout;
++	}
++
++	mutex_lock(&ss->ss_lock);
++	idr_replace(&ss->ss_unitmap, ctlunit, MINOR(ctlunit->un_devno));
++	mutex_unlock(&ss->ss_lock);
++
++	mpc_unit_put(ctlunit);
++
++errout:
++	if (rc) {
++		mp_pr_err("%s", rc, errmsg);
++		mpctl_exit();
++	}
++
++	kfree(cfg);
++
++	return rc;
++}
+diff --git a/drivers/mpool/mpctl.h b/drivers/mpool/mpctl.h
+new file mode 100644
+index 000000000000..ff3ec9fc24a9
+--- /dev/null
++++ b/drivers/mpool/mpctl.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
++ */
++
++#ifndef MPOOL_MPCTL_H
++#define MPOOL_MPCTL_H
++
++#include <linux/rbtree.h>
++#include <linux/kref.h>
++#include <linux/device.h>
++#include <linux/semaphore.h>
++
++#define ITERCB_NEXT     (0)
++#define ITERCB_DONE     (1)
++
++/* There is one unit object for each device object created by the driver. */
++struct mpc_unit {
++	struct kref                 un_ref;
++	int                         un_open_cnt;    /* Unit open count */
++	struct semaphore            un_open_lock;   /* Protects un_open_* */
++	bool                        un_open_excl;   /* Unit exclusively open */
++	uid_t                       un_uid;
++	gid_t                       un_gid;
++	mode_t                      un_mode;
++	dev_t                       un_devno;
++	const struct mpc_uinfo     *un_uinfo;
++	struct mpc_mpool           *un_mpool;
++	struct address_space       *un_mapping;
++	struct device              *un_device;
++	struct backing_dev_info    *un_saved_bdi;
++	struct mpc_attr            *un_attr;
++	uint                        un_rawio;       /* log2(max_mblock_size) */
++	u64                         un_ds_oidv[2];
++	u32                         un_ra_pages_max;
++	u64                         un_mdc_captgt;
++	uuid_le                     un_utype;
++	u8                          un_label[MPOOL_LABELSZ_MAX];
++	char                        un_name[];
++};
++
++static inline struct mpc_unit *dev_to_unit(struct device *dev)
++{
++	return dev_get_drvdata(dev);
++}
++
++int mpctl_init(void) __cold;
++void mpctl_exit(void) __cold;
++
++#endif /* MPOOL_MPCTL_H */
+diff --git a/drivers/mpool/sysfs.c b/drivers/mpool/sysfs.c
+new file mode 100644
+index 000000000000..638106a77669
+--- /dev/null
++++ b/drivers/mpool/sysfs.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
++ */
++
++#include <linux/slab.h>
++
++#include "sysfs.h"
++
++struct mpc_attr *mpc_attr_create(struct device *dev, const char *name, int acnt)
++{
++	struct mpc_attr *attr;
 +	int i;
 +
-+	*cnt = 0;
++	attr = kzalloc(sizeof(*attr) + acnt * sizeof(*attr->a_dattr) +
++		       (acnt + 1) * sizeof(*attr->a_attrs), GFP_KERNEL);
++	if (!attr)
++		return NULL;
 +
-+	down_read(&mp->pds_pdvlock);
-+	for (i = 0; i < MP_MED_NUMBER; i++) {
-+		struct media_class *mc;
++	attr->a_kobj = &dev->kobj;
 +
-+		mc = &mp->pds_mc[i];
-+		if (mc->mc_pdmc >= 0)
-+			(*cnt)++;
-+	}
-+	up_read(&mp->pds_pdvlock);
++	attr->a_dattr = (void *)(attr + 1);
++
++	attr->a_attrs = (void *)(attr->a_dattr + acnt);
++	for (i = 0; i < acnt; i++)
++		attr->a_attrs[i] = &attr->a_dattr[i].attr;
++	attr->a_attrs[i] = NULL;
++
++	attr->a_group.attrs = attr->a_attrs;
++	attr->a_group.name = name;
++
++	return attr;
 +}
 +
-+int mpool_mclass_get(struct mpool_descriptor *mp, u32 *mcxc, struct mpool_mclass_xprops *mcxv)
++void mpc_attr_destroy(struct mpc_attr *attr)
 +{
-+	int i, n;
-+
-+	if (!mp || !mcxc || !mcxv)
-+		return -EINVAL;
-+
-+	mutex_lock(&mpool_s_lock);
-+	down_read(&mp->pds_pdvlock);
-+
-+	for (n = i = 0; i < MP_MED_NUMBER && n < *mcxc; i++) {
-+		struct media_class *mc;
-+
-+		mc = &mp->pds_mc[i];
-+		if (mc->mc_pdmc < 0)
-+			continue;
-+
-+		mcxv->mc_mclass = mc->mc_parms.mcp_classp;
-+		mcxv->mc_devtype = mc->mc_parms.mcp_devtype;
-+		mcxv->mc_spare = mc->mc_sparms.mcsp_spzone;
-+
-+		mcxv->mc_zonepg = mc->mc_parms.mcp_zonepg;
-+		mcxv->mc_sectorsz = mc->mc_parms.mcp_sectorsz;
-+		mcxv->mc_features = mc->mc_parms.mcp_features;
-+		mcxv->mc_uacnt = mc->mc_uacnt;
-+		smap_mclass_usage(mp, i, &mcxv->mc_usage);
-+
-+		++mcxv;
-+		++n;
-+	}
-+
-+	up_read(&mp->pds_pdvlock);
-+	mutex_unlock(&mpool_s_lock);
-+
-+	*mcxc = n;
-+
-+	return 0;
++	kfree(attr);
 +}
 +
-+int mpool_drive_spares(struct mpool_descriptor *mp, enum mp_media_classp mclassp, u8 drive_spares)
++int mpc_attr_group_create(struct mpc_attr *attr)
 +{
-+	struct media_class *mc;
-+	int err;
-+
-+	if (!mclass_isvalid(mclassp) || drive_spares > 100) {
-+		err = -EINVAL;
-+		mp_pr_err("mpool %s, setting percent %u spare for drives in media class %d failed",
-+			  err, mp->pds_name, drive_spares, mclassp);
-+		return err;
-+	}
-+
-+	/*
-+	 * Do not write the spare record or try updating spare if there are
-+	 * no PDs in the specified media class.
-+	 */
-+	down_read(&mp->pds_pdvlock);
-+	mc = &mp->pds_mc[mclassp];
-+	up_read(&mp->pds_pdvlock);
-+
-+	if (mc->mc_pdmc < 0) {
-+		err = -ENOENT;
-+		goto skip_update;
-+	}
-+
-+	mutex_lock(&mpool_s_lock);
-+
-+	/*
-+	 * Take mdc0 compact lock to prevent race with mdc0 compaction.
-+	 * Also make memory and media update to look atomic to compaction.
-+	 */
-+	PMD_MDC0_COMPACTLOCK(mp);
-+
-+	/*
-+	 * update media class spare record in mdc0; no effect if crash before
-+	 * complete
-+	 */
-+	err = pmd_prop_mcspare(mp, mclassp, drive_spares, false);
-+	if (err) {
-+		mp_pr_err("mpool %s, setting spare %u mclass %d failed, could not record in MDC0",
-+			  err, mp->pds_name, drive_spares, mclassp);
-+	} else {
-+		/* Update spare zone accounting for media class */
-+		down_write(&mp->pds_pdvlock);
-+
-+		err = mc_set_spzone(&mp->pds_mc[mclassp], drive_spares);
-+		if (err)
-+			mp_pr_err("mpool %s, setting spare %u mclass %d failed",
-+				  err, mp->pds_name, drive_spares, mclassp);
-+		else
-+			/*
-+			 * smap accounting update always succeeds when
-+			 * mclassp/zone are valid
-+			 */
-+			smap_drive_spares(mp, mclassp, drive_spares);
-+
-+		up_write(&mp->pds_pdvlock);
-+	}
-+
-+	PMD_MDC0_COMPACTUNLOCK(mp);
-+
-+	mutex_unlock(&mpool_s_lock);
-+
-+skip_update:
-+	return err;
++	return sysfs_create_group(attr->a_kobj, &attr->a_group);
 +}
 +
-+void mpool_get_xprops(struct mpool_descriptor *mp, struct mpool_xprops *xprops)
++void mpc_attr_group_destroy(struct mpc_attr *attr)
 +{
-+	struct media_class *mc;
-+	int mclassp, i;
-+	u16 ftmax;
-+
-+	mutex_lock(&mpool_s_lock);
-+	down_read(&mp->pds_pdvlock);
-+
-+	memcpy(xprops->ppx_params.mp_poolid.b, mp->pds_poolid.uuid, MPOOL_UUID_SIZE);
-+	ftmax = 0;
-+
-+	for (mclassp = 0; mclassp < MP_MED_NUMBER; mclassp++) {
-+		xprops->ppx_pd_mclassv[mclassp] = MP_MED_INVALID;
-+
-+		mc = &mp->pds_mc[mclassp];
-+		if (mc->mc_pdmc < 0) {
-+			xprops->ppx_drive_spares[mclassp] = 0;
-+			xprops->ppx_uacnt[mclassp] = 0;
-+
-+			xprops->ppx_params.mp_mblocksz[mclassp] = 0;
-+			continue;
-+		}
-+
-+		xprops->ppx_drive_spares[mclassp] = mc->mc_sparms.mcsp_spzone;
-+		xprops->ppx_uacnt[mclassp] = mc->mc_uacnt;
-+		ftmax = max((u16)ftmax, (u16)(xprops->ppx_uacnt[mclassp]));
-+		xprops->ppx_params.mp_mblocksz[mclassp] =
-+			(mc->mc_parms.mcp_zonepg << PAGE_SHIFT) >> 20;
-+	}
-+
-+	for (i = 0; i < mp->pds_pdvcnt; ++i) {
-+		mc = &mp->pds_mc[mp->pds_pdv[i].pdi_mclass];
-+		if (mc->mc_pdmc < 0)
-+			continue;
-+
-+		xprops->ppx_pd_mclassv[i] = mc->mc_parms.mcp_classp;
-+
-+		strlcpy(xprops->ppx_pd_namev[i], mp->pds_pdv[i].pdi_name,
-+			sizeof(xprops->ppx_pd_namev[i]));
-+	}
-+
-+	up_read(&mp->pds_pdvlock);
-+	mutex_unlock(&mpool_s_lock);
-+
-+	xprops->ppx_params.mp_stat = ftmax ? MPOOL_STAT_FAULTED : MPOOL_STAT_OPTIMAL;
++	sysfs_remove_group(attr->a_kobj, &attr->a_group);
 +}
+diff --git a/drivers/mpool/sysfs.h b/drivers/mpool/sysfs.h
+new file mode 100644
+index 000000000000..b161eceec75f
+--- /dev/null
++++ b/drivers/mpool/sysfs.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
++ */
 +
-+int mpool_get_devprops_by_name(struct mpool_descriptor *mp, char *pdname,
-+			       struct mpool_devprops *dprop)
-+{
-+	int i;
++#ifndef MPOOL_SYSFS_H
++#define MPOOL_SYSFS_H
 +
-+	down_read(&mp->pds_pdvlock);
++#include <linux/device.h>
++#include <linux/sysfs.h>
 +
-+	for (i = 0; i < mp->pds_pdvcnt; i++) {
-+		if (!strcmp(pdname, mp->pds_pdv[i].pdi_name))
-+			fill_in_devprops(mp, i, dprop);
-+	}
 +
-+	up_read(&mp->pds_pdvlock);
++#define MPC_ATTR(_da, _name, _mode)                \
++	(_da)->attr.name = __stringify(_name);     \
++	(_da)->attr.mode = (_mode);                \
++	(_da)->show      = mpc_##_name##_show      \
 +
-+	return 0;
-+}
++#define MPC_ATTR_RO(_dattr, _name)                 \
++	do {                                       \
++		__typeof(_dattr) da = (_dattr);    \
++		MPC_ATTR(da, _name, 0444);         \
++		da->store = NULL;                  \
++	} while (0)
 +
-+void mpool_get_usage(struct mpool_descriptor *mp, enum mp_media_classp mclassp,
-+		     struct mpool_usage *usage)
-+{
-+	memset(usage, 0, sizeof(*usage));
++#define MPC_ATTR_RW(_dattr, _name)                 \
++	do {                                       \
++		__typeof(_dattr) da = (_dattr);    \
++		MPC_ATTR(da, _name, 0644);         \
++		da->store = mpc_##_name##_store;   \
++	} while (0)
 +
-+	down_read(&mp->pds_pdvlock);
-+	if (mclassp != MP_MED_ALL) {
-+		struct media_class *mc;
 +
-+		ASSERT(mclassp < MP_MED_NUMBER);
++struct mpc_attr {
++	struct attribute_group       a_group;
++	struct kobject              *a_kobj;
++	struct device_attribute     *a_dattr;
++	struct attribute           **a_attrs;
++};
 +
-+		mc = &mp->pds_mc[mclassp];
-+		if (mc->mc_pdmc < 0) {
-+			/* Not an error, this media class is empty. */
-+			up_read(&mp->pds_pdvlock);
-+			return;
-+		}
-+	}
-+	smap_mpool_usage(mp, mclassp, usage);
-+	up_read(&mp->pds_pdvlock);
++struct mpc_attr *mpc_attr_create(struct device *d, const char *name, int acnt);
 +
-+	if (mclassp == MP_MED_ALL)
-+		pmd_mpool_usage(mp, usage);
-+}
++void mpc_attr_destroy(struct mpc_attr *attr);
 +
-+int mpool_config_store(struct mpool_descriptor *mp, const struct mpool_config *cfg)
-+{
-+	int err;
++int mpc_attr_group_create(struct mpc_attr *attr);
 +
-+	if (!mp || !cfg)
-+		return -EINVAL;
++void mpc_attr_group_destroy(struct mpc_attr *attr);
 +
-+	mp->pds_cfg = *cfg;
-+
-+	err = pmd_prop_mpconfig(mp, cfg, false);
-+	if (err)
-+		mp_pr_err("mpool %s, logging config record failed", err, mp->pds_name);
-+
-+	return err;
-+}
-+
-+int mpool_config_fetch(struct mpool_descriptor *mp, struct mpool_config *cfg)
-+{
-+	if (!mp || !cfg)
-+		return -EINVAL;
-+
-+	*cfg = mp->pds_cfg;
-+
-+	return 0;
-+}
++#endif /* MPOOL_SYSFS_H */
 -- 
 2.17.2
 _______________________________________________
