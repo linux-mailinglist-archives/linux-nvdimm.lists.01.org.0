@@ -1,72 +1,72 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE3827A293
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 27 Sep 2020 21:28:56 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A8B27A528
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 03:15:18 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D56E914F28B8C;
-	Sun, 27 Sep 2020 12:28:54 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=160.16.146.195; helo=lzbjoqtmm.icu; envelope-from=admin@lzbjoqtmm.icu; receiver=<UNKNOWN> 
-Received: from lzbjoqtmm.icu (tk2-409-45691.vs.sakura.ne.jp [160.16.146.195])
+	by ml01.01.org (Postfix) with ESMTP id 3621513E2CA83;
+	Sun, 27 Sep 2020 18:15:16 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=45.249.212.32; helo=huawei.com; envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN> 
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7379E14C1157E
-	for <linux-nvdimm@lists.01.org>; Sun, 27 Sep 2020 12:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=default; d=lzbjoqtmm.icu;
- h=Message-ID:From:To:Subject:Date:MIME-Version:Content-Type;
- i=admin@lzbjoqtmm.icu;
- bh=QRISHJV8DdhAfELxa5e94qcK085E8RzLraH9OvKYrV0=;
- b=eysDiz1iYi14qRTxkUTyuTzvNbhOCCd8VCQxWFOhtafnJwI5x9LcFcwxaYwLD9jSLYP9D2G0rKXY
-   6EprqPmLM9C84lBLKWbQQs5vUwxuILEmTUDCLhHQzbqFY0pgSA9bvLnqr6deabNwxpmpxXNnvJ8z
-   DB47DFH9mGsz5q8+2/w=
-Message-ID: <20200928032849845541@lzbjoqtmm.icu>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L?= <admin@lzbjoqtmm.icu>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or6YCB5Y+X5L+h44KE?=
-	=?utf-8?B?44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KL?=
-Date: Mon, 28 Sep 2020 03:28:40 +0800
+	by ml01.01.org (Postfix) with ESMTPS id 1C6C713E2CA81
+	for <linux-nvdimm@lists.01.org>; Sun, 27 Sep 2020 18:15:13 -0700 (PDT)
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+	by Forcepoint Email with ESMTP id 15C96901B7B793B28AB4;
+	Mon, 28 Sep 2020 09:15:11 +0800 (CST)
+Received: from [10.174.179.92] (10.174.179.92) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.487.0; Mon, 28 Sep 2020 09:15:02 +0800
+Subject: Re: [PATCH] device-dax: include bus.h in super.c
+To: Dan Williams <dan.j.williams@intel.com>
+References: <20200925091806.1860663-1-yanaijie@huawei.com>
+ <CAPcyv4jgCp4_rSWs2SipiR3Jhz2jbSGWuLjtPExGDdTOEztAXA@mail.gmail.com>
+From: Jason Yan <yanaijie@huawei.com>
+Message-ID: <306e724d-00f1-648c-9018-0ec1f3be9da4@huawei.com>
+Date: Mon, 28 Sep 2020 09:15:01 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-Message-ID-Hash: 6GQZE433D5CXQEJA4F5RMXY4MH4QMVHT
-X-Message-ID-Hash: 6GQZE433D5CXQEJA4F5RMXY4MH4QMVHT
-X-MailFrom: admin@lzbjoqtmm.icu
+In-Reply-To: <CAPcyv4jgCp4_rSWs2SipiR3Jhz2jbSGWuLjtPExGDdTOEztAXA@mail.gmail.com>
+X-Originating-IP: [10.174.179.92]
+X-CFilter-Loop: Reflected
+Message-ID-Hash: KV4UP6KDMIEUVPYJGFETNYQ3LNQJJPIQ
+X-Message-ID-Hash: KV4UP6KDMIEUVPYJGFETNYQ3LNQJJPIQ
+X-MailFrom: yanaijie@huawei.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: linux-nvdimm <linux-nvdimm@lists.01.org>, Hulk Robot <hulkci@huawei.com>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6GQZE433D5CXQEJA4F5RMXY4MH4QMVHT/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KV4UP6KDMIEUVPYJGFETNYQ3LNQJJPIQ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="utf-8"; format="flowed"
 Content-Transfer-Encoding: base64
 
-DQogDQoNCg0K5pys44Oh44O844Or44Gv44OJ44Oh44Kk44Oz44Gu6YGL55So77yI44Oh44O844Or
-6YCB5Y+X5L+h44KE44Ob44O844Og44Oa44O844K444Gu6KGo56S677yJ44Gr6Zai44KP44KLDQrp
-h43opoHjgarpgJrnn6Xjgajjgarjgorjgb7jgZnjgIINCg0KDQoNCg0K44GE44Gk44KCUyBNIEIg
-Q+OCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOB
-hOOBvuOBmeOAgiANCuW8iuekvuOBp+OBr+OAgeOBiuWuouanmOOBq+WuieW/g+OBl+OBpuOCq+OD
-vOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBj+OBk+OBqOOCkuebrueahOOBq+OAgQ0K56ys5LiJ
-6ICF44Gr44KI44KL5LiN5q2j5L2/55So44KS6Ziy5q2i44GZ44KL44Oi44OL44K/44Oq44Oz44Kw
-44KS6KGM44Gj44Gm44GE44G+44GZ44CCDQrlvZPnpL7jga7mpJzlh7rjgpLntYzjgabjgIHnrKwz
-6ICF44GM5LiN5rOV5oKq5oSP44Ot44Kw44Kk44Oz44GC44Gq44Gf44Gu5LiJ5LqV5L2P5Y+L44OL
-44Kz44K5d2Vi44K144O844OT44K544CCIA0KDQrjgYrlv5njgZfjgYTjgajjgZPjgo3lpKflpInm
-gZDjgozlhaXjgorjgb7jgZnjgYzjgIHkuIvjga7jgJDjgYrllY/jgYTlkIjjgo/jgZvnqpPlj6Pj
-gJHjgb7jgafjgIENCuOBquOBiuOAgeOBlOWlkee0hOOBhOOBn+OBoOOBhOOBpuOBhOOCi+OCq+OD
-vOODieOBq+OBpOOBhOOBpuOBr+OAgeesrOS4ieiAheOBq+OCiOOCi+S4jeato+S9v+eUqOOBrg0K
-5Y+v6IO95oCn44GM44GU44GW44GE44G+44GZ44Gu44Gn44CB44Kr44O844OJ44Gu44GU5Yip55So
-44KS5LiA5pmC55qE44Gr5YGc5q2i44GV44Gb44Gm44GE44Gf44Gg44GE44Gm44GE44KL44CBDQrj
-goLjgZfjgY/jga/ku4rlvozlgZzmraLjgZXjgZvjgabjgYTjgZ/jgaDjgY/loLTlkIjjgYzjgZTj
-gZbjgYTjgb7jgZnjgIINCuOBlOS4jeS+v+OBqOOBlOW/g+mFjeOCkuOBiuOBi+OBkeOBl+OBvuOB
-l+OBpuiqoOOBq+eUs+OBl+ios+OBlOOBluOBhOOBvuOBm+OCk+OBjOOAgQ0K5L2V44Go44Ge44GU
-55CG6Kej6LOc44KK44Gf44GP44GK6aGY44GE55Sz44GX44GC44GS44G+44GZ44CCDQoNCuiHs+aA
-peOAgVMgTSBCIEPjgqvjg7zjg4nkvJrlk6HjgrXjg7zjg5Pjgrnjgavkv67mraPmg4XloLHjgpLl
-ho3nmbvpjLLjgZfjgabjgY/jgaDjgZXjgYQNCiANCg0KVnBhc3NJRCDjg63jgrDjgqTjg7MNCg0K
-DQrjgIANCg0KIApfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcK
-VG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMu
-MDEub3JnCg==
+SGkgRGFu77yMDQoNCuWcqCAyMDIwLzkvMjYgMjoyNCwgRGFuIFdpbGxpYW1zIOWGmemBkzoNCj4g
+T24gRnJpLCBTZXAgMjUsIDIwMjAgYXQgMjoxNyBBTSBKYXNvbiBZYW4gPHlhbmFpamllQGh1YXdl
+aS5jb20+IHdyb3RlOg0KPj4NCj4+IFRoaXMgYWRkcmVzc2VzIHRoZSBmb2xsb3dpbmcgc3BhcnNl
+IHdhcm5pbmc6DQo+Pg0KPj4gZHJpdmVycy9kYXgvc3VwZXIuYzo0NTI6Njogd2FybmluZzogc3lt
+Ym9sICdydW5fZGF4JyB3YXMgbm90IGRlY2xhcmVkLg0KPj4gU2hvdWxkIGl0IGJlIHN0YXRpYz8N
+Cj4gDQo+IHJ1bl9kYXgoKSBpcyBhIGNvcmUgaGVscGVyIGRlZmluZWQgaW4gZHJpdmVycy9kYXgv
+c3VwZXIuYyB0aGF0IGlzDQo+IG1lYW50IHRvIGhpZGUgdGhlIGRlZmluaXRpb24gb2YgJ3N0cnVj
+dCBkYXhfZGV2aWNlJyBmcm9tIHRoZSB3aWRlcg0KPiBrZXJuZWwgdGhhdCBkb2VzIG5vdCBuZWVk
+IHRvIHBva2UgaW50byBpdHMgaW50ZXJuYWxzLiBUaGVyZSdzIGFsc28gbm8NCj4gbmVlZCBmb3Ig
+ZHJpdmVycy9kYXgvc3VwZXIuYyB0byBiZSBnaXZlbiBrbm93bGVkZ2Ugb2Ygb3RoZXIgY29yZQ0K
+PiBkZXRhaWxzIHRoYXQgYXJlIGNvbnRhaW5lZCB3aXRoaW4gYnVzLmguIFNvLCBJIHRoaW5rIHRo
+aXMgcGF0Y2gNCj4gcHJvdmlkZXMgbm8gdmFsdWUgYW5kIGdvZXMgYWdhaW5zdCB0aGUgcHJpbmNp
+cGxlIG9mIGxlYXN0IHByaXZpbGVnZQ0KPiAoaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kv
+UHJpbmNpcGxlX29mX2xlYXN0X3ByaXZpbGVnZSkNCj4gDQoNClNvcnJ5IEkgZGlkIG5vdCBnZXQg
+d2hhdCB5b3UgbWVhbi4gSSBvbmx5IGluY2x1ZGVkIHRoZSBpbnRlcm5hbCBidXMuaA0Kd2hpY2gg
+aXMgZHJpdmVycy9kYXgvYnVzLmguIFdoeSBpcyB0aGlzIGFmZmVjdGluZyB0aGUgb3RoZXIgcGFy
+dCBvZiB0aGUNCmtlcm5lbD8NCg0KVGhhbmtzLA0KSmFzb24KX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
+aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
+bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
