@@ -1,25 +1,25 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A35027B23C
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 18:47:12 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E907B27B23F
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 28 Sep 2020 18:47:16 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id DE971152EDBD3;
-	Mon, 28 Sep 2020 09:47:08 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.92.84; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=nmeeramohide@micron.com; receiver=<UNKNOWN> 
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2084.outbound.protection.outlook.com [40.107.92.84])
+	by ml01.01.org (Postfix) with ESMTP id 42235152EDBDF;
+	Mon, 28 Sep 2020 09:47:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.92.81; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=nmeeramohide@micron.com; receiver=<UNKNOWN> 
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2081.outbound.protection.outlook.com [40.107.92.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 24AB3152EDBC3
-	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 09:47:06 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 7CDAD152EDBD0
+	for <linux-nvdimm@lists.01.org>; Mon, 28 Sep 2020 09:47:11 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DIOBziP23GH5+d8cOf1knAV/HLfPD9R5BiYphJhqmsNlh58xB/X/FntvhIXVF6mEVs0awbvIitKc/DaPvBuA39MGtIvmCYUg9jSv13Ub/ByI2VvPMDac5u102xDrmUQZncrsrjNzWHbktqV7j/dNXkzxqgQpelbMvkus5Bjxk3NYBFMwIV6s7GRQ6sFecmd6hPxoDFFjbBRGPwuOHivyYhQCQLbY+QUr+PwTMHcpYelySW8M/0lA772wKvlc6Z49qc9i+4KuMwTy4WJEbudtzZnJI0E7V/sgMVpADQP69qMAwSL9QORQvox+LFHDfWS60kOrdrWzR6Du5TkmkOSBNA==
+ b=GeMyby7h9Nl6LYIyEpe1C02YT0ZKz1TLkFGZ2n2/VdAf7TTlgmaGerj9H6q+Mg4zLXr6tn59kc1AeFadsH5j6Wi6sxRC0OmQy9AEvB9AQI/oPwwNpEwLepLjj907wWNGkvc93BWA6ZblBSLOdWtEDPAcf4LIaaiGl6ckxUyzvPDQe8qOkVtdI5cswvPtyTae9/6vhs7/Jg2NutZCtjzGg1LhNlsBcLLP98yDFQt+IWtVzHdlEKW1FFmDhH74HPc19iQMz6CUUmpvsRDkoc0nnnT1UzoTfg2wLeGAJPfsigufNvjYe0t1+1wxHZUmGguE8jK0cQs/f3WKciyQgvYsmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oj+SoNh5VN2/IkKkoXF+cNWrpsfwJiOWkGpx4+0PHS8=;
- b=kLGUZkwdJCbY/gEApJ9YxhsnKNbrauwADz/G25+siAst1ytQlNbSuiUctQ5GZm84U81CRQtEbIdmmPumz9ZRYaWm1w6F2Q7PZ4Gs0T8nxtXQ1dNMZL299lgGW2eSaOejAm5F5qktuOXGABWs/VmHuf6XGrbW7838eyL1J6PbWDkK4ryHqRVTKD6pG5McEKL59KjVOwKy5lEcqq5bMzYUmF3FTbRUqPoAD3lpyQowfaKAUMswMSrQgvOipS06bWAivdII7u1Spq10DN8Ifg8ByPF2mBJW0zoaDsJGEY+1punUnBknJVkHzGIodQy/zv0Gw55GiV7AI7eI/T5gP0uaYQ==
+ bh=BEb/tGUrnOB84Qhl9ns3icObuQ67W0plCSTRyEFYOzU=;
+ b=eaTxDM7Vnnx6IptlP7qRYEQeJoWI0dAE8Wwz7k+l6P4s9SXnj089kQhgfFL5UveuNs9SegjPBfn8IxCqi3sSLF1aIqLVf90Yj3jkQ+f0nU/qcSZApjsZhCsodr4ZQ4nmV8fu2jKyiZX9fs/LAHAzWIv4Xh2/6Om6EDSptEZvWL0dkDIcDdraw0+rDNBtnvhBqez9O4qSYrbluRD4+5TopqwMb1XOOiSLcht14ykatdRtdZFwq+dzBP7bmyRnSpb/WnczsdrHc+0dEoMjMmYDWm6ayf92Kfn7FPAPDV9dPhMusjQbl3N/2uke4AjvSd3LxYEuN78tiuL68IfFtmrDDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  137.201.242.130) smtp.rcpttodomain=kvack.org smtp.mailfrom=micron.com;
  dmarc=pass (p=none sp=none pct=100) action=none header.from=micron.com;
@@ -27,18 +27,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=micron.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oj+SoNh5VN2/IkKkoXF+cNWrpsfwJiOWkGpx4+0PHS8=;
- b=v4NDFmkhWMM/nadMuvfZCHGvRYFXmjJoJ+554xUh26gpGcEi5Pmh3+qn6GSGIa3BovGmdmHK3dbTMW34nKE8sSgqvURd3MsCp4Fbnr/s1UIgFqiLC96wiBDTj+at58luk44CQtzmDiNSxQAGhSDcFZCoz5+zojPyVOs87FU6fN0=
-Received: from BN6PR17CA0034.namprd17.prod.outlook.com (2603:10b6:405:75::23)
- by MWHPR08MB3325.namprd08.prod.outlook.com (2603:10b6:301:6a::26) with
+ bh=BEb/tGUrnOB84Qhl9ns3icObuQ67W0plCSTRyEFYOzU=;
+ b=QvVLPFxkMc2lFy73XayboS5aXforl3ritdsbuhqxggaYwsLSEyU05FrVWK3hvTbUz5ptRRuAUgPc6AmrqPM8x1fdzWqePxfMYB+kS87CsVGBs+Ia3bPLc8yrmDbs7ee393UvXU+TnJpUCDA7z44CS4TSgLe7E/czrUF2HffiyWc=
+Received: from BN6PR17CA0029.namprd17.prod.outlook.com (2603:10b6:405:75::18)
+ by DM6PR08MB4202.namprd08.prod.outlook.com (2603:10b6:5:97::30) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21; Mon, 28 Sep
- 2020 16:47:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20; Mon, 28 Sep
+ 2020 16:47:04 +0000
 Received: from BN3NAM01FT020.eop-nam01.prod.protection.outlook.com
- (2603:10b6:405:75:cafe::ed) by BN6PR17CA0034.outlook.office365.com
- (2603:10b6:405:75::23) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10b6:405:75:cafe::77) by BN6PR17CA0029.outlook.office365.com
+ (2603:10b6:405:75::18) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.20 via Frontend
- Transport; Mon, 28 Sep 2020 16:47:02 +0000
+ Transport; Mon, 28 Sep 2020 16:47:04 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 137.201.242.130)
  smtp.mailfrom=micron.com; kvack.org; dkim=none (message not signed)
  header.d=none;kvack.org; dmarc=pass action=none header.from=micron.com;
@@ -48,17 +48,17 @@ Received-SPF: Pass (protection.outlook.com: domain of micron.com designates
 Received: from mail.micron.com (137.201.242.130) by
  BN3NAM01FT020.mail.protection.outlook.com (10.152.67.227) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.20.3412.21 via Frontend Transport; Mon, 28 Sep 2020 16:47:02 +0000
+ 15.20.3412.21 via Frontend Transport; Mon, 28 Sep 2020 16:47:04 +0000
 Received: from micron.com (10.114.5.55) by bowex17c.micron.com
  (137.201.21.211) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 28 Sep
- 2020 10:47:00 -0600
+ 2020 10:47:01 -0600
 From: <nmeeramohide@micron.com>
 To: <linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
 	<linux-nvme@lists.infradead.org>, <linux-mm@kvack.org>,
 	<linux-nvdimm@lists.01.org>
-Subject: [PATCH 03/22] mpool: add on-media struct definitions
-Date: Mon, 28 Sep 2020 11:45:15 -0500
-Message-ID: <20200928164534.48203-4-nmeeramohide@micron.com>
+Subject: [PATCH 04/22] mpool: add pool drive component which handles mpool IO using the block layer API
+Date: Mon, 28 Sep 2020 11:45:16 -0500
+Message-ID: <20200928164534.48203-5-nmeeramohide@micron.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20200928164534.48203-1-nmeeramohide@micron.com>
 References: <20200928164534.48203-1-nmeeramohide@micron.com>
@@ -66,48 +66,46 @@ MIME-Version: 1.0
 X-ClientProxiedBy: bowex17d.micron.com (137.201.21.212) To bowex17c.micron.com
  (137.201.21.211)
 X-TM-AS-Product-Ver: SMEX-12.0.0.1782-8.200.1013-24646.005
-X-TM-AS-Result: No--15.128200-0.000000-31
-X-TM-AS-MatchedID: 155702-700076-702178-701912-703851-704959-847575-701029-7
-	00863-704401-705022-702177-701480-704962-701809-703017-703140-702395-188019
-	-703213-121336-701105-704673-703967-701475-701910-703027-701275-701073-7049
-	83-704500-701604-702754-704376-701589-705220-702965-700535-704477-702433-70
-	4990-701576-704318-851458-702914-700864-704997-701772-700809-701342-702346-
-	704481-704463-703173-704978-704397-702940-704210-701366-700025-853544-70078
-	7-704183-702688-703215-700524-704792-703393-703357-703080-121104-702779-703
-	957-704718-704895-700071-188199-704815-188198-702888-705279-704418-702504-1
-	21536-702972-705023-702171-702837-702008-703958-148004-148036-42000-42003-1
-	90014
+X-TM-AS-Result: No--16.147700-0.000000-31
+X-TM-AS-MatchedID: 701475-702501-702686-703812-705244-703226-701342-704949-7
+	04318-860560-703027-703953-702559-701480-701809-701280-703017-702395-188019
+	-702754-121224-702914-703967-702299-704477-300015-703140-703213-121336-7011
+	05-704673-701343-701275-703815-701443-704388-704895-704183-704264-117072-70
+	2230-704481-137717-121665-703881-702558-700946-703878-851458-701847-703816-
+	705161-704193-701590-703357-704542-701705-700458-704184-113872-702898-86459
+	6-702700-188199-700069-702617-704978-704397-701813-704239-702613-703285-186
+	035-148004-148036-42000-42003-190014
 X-TM-AS-User-Approved-Sender: Yes
 X-TM-AS-User-Blocked-Sender: No
 X-MT-Whitelisted: matched
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 0e62ef3b-1f50-4bf2-bc4f-08d863ce203f
-X-MS-TrafficTypeDiagnostic: MWHPR08MB3325:
+X-MS-Office365-Filtering-Correlation-Id: aca267e2-89eb-4402-7abd-08d863ce2116
+X-MS-TrafficTypeDiagnostic: DM6PR08MB4202:
 X-Microsoft-Antispam-PRVS: 
- <MWHPR08MB33259277360E3D405E040531B3350@MWHPR08MB3325.namprd08.prod.outlook.com>
+ <DM6PR08MB420230A8AE88990D53A582BCB3350@DM6PR08MB4202.namprd08.prod.outlook.com>
 X-MS-Exchange-Transport-Forked: True
 X-EXT-ByPass: 1
 X-MT-RULE-Whitelisted: Triggered
-X-MS-Oob-TLC-OOBClassifiers: OLM:2958;
+X-MS-Oob-TLC-OOBClassifiers: OLM:826;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	weXO76dV4sOgNKm/Myepk2QM1H46eezShTC/d+oTa3B4XSpNOCgiv1Ls78O8i1Kyprs5u1VQZAPYFWNPErhVfYsLgW2KCGIOupdE+bjoYAhivb4Ng9VT4Brx1HDbYcvytyeaimmeakdb/wYsP/XSV5zxYYxOjQ/sXoEti/G5mxFB97i0ESxdh0wKwdJ6hVlcTb0bjG4bOFyA9aUMm1As2PTzIittiO0RrrCOrM2QuU1XwAR2IY5rI9U+MQ0J7zqk1TQckSoIlulbCNnWqGmfOxTbJ8YzhHmTAFyBXLZGlzuW0IcAkw/HcyuQxnf7pYxPBvtK6klXIYTy4QC37rtUissF4SfhBeR2s9WtwhYj9006XkZbzG8KrimPm/i9naUJWTE8PATCsduOSrPKYRszcodnAVP0IzqHC1EfxQ0/FGKvQh6H02LmVvxFqkKDu93k04K7Zo6ilsNFf5Kgg1K/c34mDFWm0l104GDusskNYjMyPaXYCklTN8q8grWfvM132dxQjd7EsvlHT2F4XvZjtw==
+	DendoKxTbPzcW3eEbcEEXgPYZzg2xRbKqGWMZ8W+lZNCq/0WOUvKUnNdipxlA2XWdUleayPvMTxNQz1hXc3gCHwk8MVGsIVFM0peBLVE7uA2idhe7CWCidAxfcNoGm8zfxrf3+6jzlsFO0gtfyC3yRso/SkQ3i7kR/tgqBsM0L9vsCrc0bXUVeBxVa4YdeDNy1huCVeM0pPVTTqxaVr1e0cDk4gmiBfr/JvF0D4WuMOLkSRqoljcyZ/SHoi4qhAH7sbh8ip7693xQLc1J1Dhkxcadw20lW0qX5DG6jFhbV2hQ3aX/NsQCtYeyJowNJpsuigh5CN9yuDQxvIJIsH9lymOez5n5XxficjqumJegEOF683AKtkFqBfukxfFR45XRql50dO+evRG6cl1wXXdUeO5UePoTeOW3dkBWO+hN/Ch28agrIuI80mPFwwNQhIQhO0SZxnsr1ghNKZkauWJRp5uNihv7lWSbk5Rb9P+eZT8gdytEzelWCIPjnU6oist
 X-Forefront-Antispam-Report: 
-	CIP:137.201.242.130;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.micron.com;PTR:masquerade.micron.com;CAT:NONE;SFS:(4636009)(39860400002)(376002)(396003)(346002)(136003)(46966005)(2876002)(33310700002)(107886003)(110136005)(4326008)(316002)(2906002)(6286002)(8676002)(86362001)(8936002)(6666004)(54906003)(55016002)(30864003)(478600001)(7636003)(186003)(426003)(336012)(5660300002)(26005)(1076003)(356005)(47076004)(83380400001)(82310400003)(82740400003)(2616005)(70206006)(7696005)(36756003)(70586007)(461764006)(2101003);DIR:OUT;SFP:1101;
+	CIP:137.201.242.130;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.micron.com;PTR:masquerade.micron.com;CAT:NONE;SFS:(4636009)(136003)(346002)(39860400002)(376002)(396003)(46966005)(356005)(107886003)(30864003)(82740400003)(86362001)(1076003)(36756003)(47076004)(4326008)(2876002)(2906002)(336012)(316002)(2616005)(110136005)(8936002)(478600001)(8676002)(6666004)(426003)(54906003)(70206006)(70586007)(5660300002)(82310400003)(26005)(6286002)(33310700002)(186003)(7696005)(83380400001)(55016002)(7636003)(2101003);DIR:OUT;SFP:1101;
 X-OriginatorOrg: micron.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 16:47:02.6786
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2020 16:47:04.0870
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e62ef3b-1f50-4bf2-bc4f-08d863ce203f
+X-MS-Exchange-CrossTenant-Network-Message-Id: aca267e2-89eb-4402-7abd-08d863ce2116
 X-MS-Exchange-CrossTenant-Id: f38a5ecd-2813-4862-b11b-ac1d563c806f
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f38a5ecd-2813-4862-b11b-ac1d563c806f;Ip=[137.201.242.130];Helo=[mail.micron.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN3NAM01FT020.eop-nam01.prod.protection.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR08MB3325
-Message-ID-Hash: E7UECFKFHDLKIUPJTBWYTFW2EQPCJZYW
-X-Message-ID-Hash: E7UECFKFHDLKIUPJTBWYTFW2EQPCJZYW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR08MB4202
+Message-ID-Hash: BNQUTTOSXWC5LLRHCANNQURSSAB47HPG
+X-Message-ID-Hash: BNQUTTOSXWC5LLRHCANNQURSSAB47HPG
 X-MailFrom: nmeeramohide@micron.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -115,7 +113,7 @@ CC: smoyer@micron.com, gbecker@micron.com, plabat@micron.com, jgroves@micron.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E7UECFKFHDLKIUPJTBWYTFW2EQPCJZYW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BNQUTTOSXWC5LLRHCANNQURSSAB47HPG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -126,13 +124,18 @@ Content-Transfer-Encoding: 7bit
 
 From: Nabeel M Mohamed <nmeeramohide@micron.com>
 
-This adds headers containing the following on-media formats:
-- Mpool superblock
-- Object management records: create, update, delete, and erase
-- Mpool configuration record
-- Media class config and spare record
-- OID checkpoint and version record
-- Mlog page header and framing records
+The pool drive (pd) component interfaces with the block layer to
+read, write, flush, and discard mpool objects.
+
+The underlying block device(s) are opened during mpool activation
+and remains open until deactivated.
+
+Read/write IO to an mpool device is chunked by the PD layer.
+Chunking interleaves IO from different streams providing better
+QoS.  The size of each chunk (or BIO size) is determined by the
+module parameter 'chunk_size_kb'.  All the chunks from a single
+r/w request is issued asynchronously to the block layer using
+BIO chaining.
 
 Co-developed-by: Greg Becker <gbecker@micron.com>
 Signed-off-by: Greg Becker <gbecker@micron.com>
@@ -142,1134 +145,511 @@ Co-developed-by: John Groves <jgroves@micron.com>
 Signed-off-by: John Groves <jgroves@micron.com>
 Signed-off-by: Nabeel M Mohamed <nmeeramohide@micron.com>
 ---
- drivers/mpool/omf.h     | 593 ++++++++++++++++++++++++++++++++++++++++
- drivers/mpool/omf_if.h  | 381 ++++++++++++++++++++++++++
- drivers/mpool/upgrade.h | 128 +++++++++
- 3 files changed, 1102 insertions(+)
- create mode 100644 drivers/mpool/omf.h
- create mode 100644 drivers/mpool/omf_if.h
- create mode 100644 drivers/mpool/upgrade.h
+ drivers/mpool/init.c |  31 +++-
+ drivers/mpool/init.h |  12 ++
+ drivers/mpool/pd.c   | 426 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 468 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/mpool/init.h
+ create mode 100644 drivers/mpool/pd.c
 
-diff --git a/drivers/mpool/omf.h b/drivers/mpool/omf.h
-new file mode 100644
-index 000000000000..c750573720dd
---- /dev/null
-+++ b/drivers/mpool/omf.h
-@@ -0,0 +1,593 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
-+ */
-+/*
-+ * Pool on-drive format (omf) module.
-+ *
-+ * Defines:
-+ * + on-drive format for mpool superblocks
-+ * + on-drive formats for mlogs, mblocks, and metadata containers (mdc)
-+ * + utility functions for working with these on-drive formats
-+ * That includes structures and enums used by the on-drive format.
-+ *
-+ * All mpool metadata is versioned and stored on media in little-endian format.
-+ *
-+ * Naming conventions:
-+ * -------------------
-+ * The name of the structures ends with _omf
-+ * The name of the structure members start with a "p" that means "packed".
-+ */
+diff --git a/drivers/mpool/init.c b/drivers/mpool/init.c
+index 0493fb5b1157..294cf3cbbaa7 100644
+--- a/drivers/mpool/init.c
++++ b/drivers/mpool/init.c
+@@ -5,13 +5,42 @@
+ 
+ #include <linux/module.h>
+ 
++#include "mpool_printk.h"
 +
-+#ifndef MPOOL_OMF_H
-+#define MPOOL_OMF_H
-+
-+#include <linux/bug.h>
-+#include <asm/byteorder.h>
++#include "pd.h"
 +
 +/*
-+ * The following two macros exist solely to enable the OMF_SETGET macros to
-+ * work on 8 bit members as well as 16, 32 and 64 bit members.
++ * Module params...
 + */
-+#define le8_to_cpu(x)  (x)
-+#define cpu_to_le8(x)  (x)
-+
-+
-+/* Helper macro to define set/get methods for 8, 16, 32 or 64 bit scalar OMF struct members. */
-+#define OMF_SETGET(type, member, bits) \
-+	OMF_SETGET2(type, member, bits, member)
-+
-+#define OMF_SETGET2(type, member, bits, name)				\
-+	static __always_inline u##bits omf_##name(const type * s)	\
-+	{								\
-+		BUILD_BUG_ON(sizeof(((type *)0)->member)*8 != (bits));	\
-+		return le##bits##_to_cpu(s->member);			\
-+	}								\
-+	static __always_inline void omf_set_##name(type *s, u##bits val)\
-+	{								\
-+		s->member = cpu_to_le##bits(val);			\
-+	}
-+
-+/* Helper macro to define set/get methods for character strings embedded in OMF structures. */
-+#define OMF_SETGET_CHBUF(type, member) \
-+	OMF_SETGET_CHBUF2(type, member, member)
-+
-+#define OMF_SETGET_CHBUF2(type, member, name)				\
-+	static inline void omf_set_##name(type *s, const void *p, size_t plen) \
-+	{								\
-+		size_t len = sizeof(((type *)0)->member);		\
-+		memcpy(s->member, p, len < plen ? len : plen);		\
-+	}								\
-+	static inline void omf_##name(const type *s, void *p, size_t plen)\
-+	{								\
-+		size_t len = sizeof(((type *)0)->member);		\
-+		memcpy(p, s->member, len < plen ? len : plen);		\
-+	}
-+
-+
-+/* MPOOL_NAMESZ_MAX should match OMF_MPOOL_NAME_LEN */
-+#define OMF_MPOOL_NAME_LEN 32
-+
-+/* MPOOL_UUID_SIZE should match OMF_UUID_PACKLEN */
-+#define OMF_UUID_PACKLEN 16
-+
-+/**
-+ * enum mc_features_omf - Drive features that participate in media classes
-+ *	                  definition. These values are ored in a 64 bits field.
-+ */
-+enum mc_features_omf {
-+	OMF_MC_FEAT_MLOG_TGT   = 0x1,
-+	OMF_MC_FEAT_MBLOCK_TGT = 0x2,
-+	OMF_MC_FEAT_CHECKSUM   = 0x4,
-+};
-+
-+
-+/**
-+ * enum devtype_omf -
-+ * @OMF_PD_DEV_TYPE_BLOCK_STREAM: Block device implementing streams.
-+ * @OMF_PD_DEV_TYPE_BLOCK_STD:    Standard (non-streams) device (SSD, HDD).
-+ * @OMF_PD_DEV_TYPE_FILE:	  File in user space for UT.
-+ * @OMF_PD_DEV_TYPE_MEM:	  Memory semantic device. Such as NVDIMM
-+ *                                direct access (raw or dax mode).
-+ * @OMF_PD_DEV_TYPE_ZONE:	  zone-like device, such as open channel SSD
-+ *				  (OC-SSD) and SMR HDD (using ZBC/ZAC).
-+ * @OMF_PD_DEV_TYPE_BLOCK_NVDIMM: Standard (non-streams) NVDIMM in sector mode.
-+ */
-+enum devtype_omf {
-+	OMF_PD_DEV_TYPE_BLOCK_STREAM	= 1,
-+	OMF_PD_DEV_TYPE_BLOCK_STD	= 2,
-+	OMF_PD_DEV_TYPE_FILE		= 3,
-+	OMF_PD_DEV_TYPE_MEM		= 4,
-+	OMF_PD_DEV_TYPE_ZONE		= 5,
-+	OMF_PD_DEV_TYPE_BLOCK_NVDIMM    = 6,
-+};
-+
-+
-+/**
-+ * struct layout_descriptor_omf - Layout descriptor version 1.
-+ * @pol_zcnt: number of zones
-+ * @pol_zaddr: zone start addr
-+ *
-+ * Introduced with binary version 1.0.0.0.
-+ * "pol_" = packed omf layout
-+ */
-+struct layout_descriptor_omf {
-+	__le32 pol_zcnt;
-+	__le64 pol_zaddr;
-+} __packed;
-+
-+/* Define set/get methods for layout_descriptor_omf */
-+OMF_SETGET(struct layout_descriptor_omf, pol_zcnt, 32)
-+OMF_SETGET(struct layout_descriptor_omf, pol_zaddr, 64)
-+#define OMF_LAYOUT_DESC_PACKLEN (sizeof(struct layout_descriptor_omf))
-+
-+
-+/**
-+ * struct devparm descriptor_omf - packed omf devparm descriptor
-+ * @podp_devid:    UUID for drive
-+ * @podp_zonetot:  total number of zones
-+ * @podp_devsz:    size of partition in bytes
-+ * @podp_features: Features, ored bits of enum mc_features_omf
-+ * @podp_mclassp:   enum mp_media_classp
-+ * @podp_devtype:   PD type (enum devtype_omf)
-+ * @podp_sectorsz:  2^podp_sectorsz = sector size
-+ * @podp_zonepg:    zone size in number of zone pages
-+ *
-+ * The fields mclassp, devtype, sectosz, and zonepg uniquely identify the media class of the PD.
-+ * All drives in a media class must have the same values in these fields.
-+ */
-+struct devparm_descriptor_omf {
-+	u8     podp_mclassp;
-+	u8     podp_devtype;
-+	u8     podp_sectorsz;
-+	u8     podp_devid[OMF_UUID_PACKLEN];
-+	u8     podp_pad[5];
-+	__le32 podp_zonepg;
-+	__le32 podp_zonetot;
-+	__le64 podp_devsz;
-+	__le64 podp_features;
-+} __packed;
-+
-+/* Define set/get methods for devparm_descriptor_omf */
-+OMF_SETGET(struct devparm_descriptor_omf, podp_mclassp, 8)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_devtype, 8)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_sectorsz, 8)
-+OMF_SETGET_CHBUF(struct devparm_descriptor_omf, podp_devid)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_zonepg, 32)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_zonetot, 32)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_devsz, 64)
-+OMF_SETGET(struct devparm_descriptor_omf, podp_features, 64)
-+#define OMF_DEVPARM_DESC_PACKLEN (sizeof(struct devparm_descriptor_omf))
-+
-+
-+/*
-+ * mlog structure:
-+ * + An mlog comprises a consecutive sequence of log blocks,
-+ *   where each log block is a single page within a zone
-+ * + A log block comprises a header and a consecutive sequence of records
-+ * + A record is a typed blob
-+ *
-+ * Log block headers must be versioned. Log block records do not
-+ * require version numbers because they are typed and new types can
-+ * always be added.
-+ */
-+
-+/*
-+ * Log block format -- version 1
-+ *
-+ * log block := header record+ eolb? trailer?
-+ *
-+ * header := struct omf_logblock_header where vers=2
-+ *
-+ * record := lrd byte*
-+ *
-+ * lrd := struct omf_logrec_descriptor with value
-+ *   (<record length>, <chunk length>, enum logrec_type_omf value)
-+ *
-+ * eolb (end of log block marker) := struct omf_logrec_descriptor with value
-+ *   (0, 0, enum logrec_type_omf.EOLB/0)
-+ *
-+ * trailer := zero bytes from end of last log block record to end of log block
-+ *
-+ * OMF_LOGREC_CEND must be the max. value for this enum.
-+ */
-+
-+/**
-+ * enum logrec_type_omf -
-+ * @OMF_LOGREC_EOLB:      end of log block marker (start of trailer)
-+ * @OMF_LOGREC_DATAFULL:  data record; contains all specified data
-+ * @OMF_LOGREC_DATAFIRST: data record; contains first part of specified data
-+ * @OMF_LOGREC_DATAMID:   data record; contains interior part of data
-+ * @OMF_LOGREC_DATALAST:  data record; contains final part of specified data
-+ * @OMF_LOGREC_CSTART:    compaction start marker
-+ * @OMF_LOGREC_CEND:      compaction end marker
-+ *
-+ * A log record type of 0 signifies EOLB. This is really the start of the
-+ * trailer but this simplifies parsing for partially filled log blocks.
-+ * DATAFIRST, -MID, -LAST types are used for chunking logical data records.
-+ */
-+enum logrec_type_omf {
-+	OMF_LOGREC_EOLB      = 0,
-+	OMF_LOGREC_DATAFULL  = 1,
-+	OMF_LOGREC_DATAFIRST = 2,
-+	OMF_LOGREC_DATAMID   = 3,
-+	OMF_LOGREC_DATALAST  = 4,
-+	OMF_LOGREC_CSTART    = 5,
-+	OMF_LOGREC_CEND      = 6,
-+};
-+
-+
-+/**
-+ * struct logrec_descriptor_omf -packed omf logrec descriptor
-+ * @polr_tlen:  logical length of data record (all chunks)
-+ * @polr_rlen:  length of data chunk in this log record
-+ * @polr_rtype: enum logrec_type_omf value
-+ */
-+struct logrec_descriptor_omf {
-+	__le32 polr_tlen;
-+	__le16 polr_rlen;
-+	u8     polr_rtype;
-+	u8     polr_pad;
-+} __packed;
-+
-+/* Define set/get methods for logrec_descriptor_omf */
-+OMF_SETGET(struct logrec_descriptor_omf, polr_tlen, 32)
-+OMF_SETGET(struct logrec_descriptor_omf, polr_rlen, 16)
-+OMF_SETGET(struct logrec_descriptor_omf, polr_rtype, 8)
-+#define OMF_LOGREC_DESC_PACKLEN (sizeof(struct logrec_descriptor_omf))
-+#define OMF_LOGREC_DESC_RLENMAX 65535
-+
-+
-+#define OMF_LOGBLOCK_VERS    1
-+
-+/**
-+ * struct logblock_header_omf - packed omf logblock header for all versions
-+ * @polh_vers:    log block hdr version, offset 0 in all vers
-+ * @polh_magic:   unique magic per mlog
-+ * @polh_pfsetid: flush set ID of the previous log block
-+ * @polh_cfsetid: flush set ID this log block belongs to
-+ * @polh_gen:     generation number
-+ */
-+struct logblock_header_omf {
-+	__le16 polh_vers;
-+	u8     polh_magic[OMF_UUID_PACKLEN];
-+	u8     polh_pad[6];
-+	__le32 polh_pfsetid;
-+	__le32 polh_cfsetid;
-+	__le64 polh_gen;
-+} __packed;
-+
-+/* Define set/get methods for logblock_header_omf */
-+OMF_SETGET(struct logblock_header_omf, polh_vers, 16)
-+OMF_SETGET_CHBUF(struct logblock_header_omf, polh_magic)
-+OMF_SETGET(struct logblock_header_omf, polh_pfsetid, 32)
-+OMF_SETGET(struct logblock_header_omf, polh_cfsetid, 32)
-+OMF_SETGET(struct logblock_header_omf, polh_gen, 64)
-+/* On-media log block header length */
-+#define OMF_LOGBLOCK_HDR_PACKLEN (sizeof(struct logblock_header_omf))
-+
-+
-+/*
-+ * Metadata container (mdc) mlog data record formats.
-+ *
-+ * NOTE: mdc records are typed and as such do not need a version number as new
-+ * types can always be added as required.
-+ */
-+/**
-+ * enum mdcrec_type_omf -
-+ * @OMF_MDR_UNDEF:   undefined; should never occur
-+ * @OMF_MDR_OCREATE:  object create
-+ * @OMF_MDR_OUPDATE:  object update
-+ * @OMF_MDR_ODELETE:  object delete
-+ * @OMF_MDR_OIDCKPT:  object id checkpoint
-+ * @OMF_MDR_OERASE:   object erase, also log mlog gen number
-+ * @OMF_MDR_MCCONFIG: media class config
-+ * @OMF_MDR_MCSPARE:  media class spare zones set
-+ * @OMF_MDR_VERSION:  MDC content version.
-+ * @OMF_MDR_MPCONFIG:  mpool config record
-+ */
-+enum mdcrec_type_omf {
-+	OMF_MDR_UNDEF       = 0,
-+	OMF_MDR_OCREATE     = 1,
-+	OMF_MDR_OUPDATE     = 2,
-+	OMF_MDR_ODELETE     = 3,
-+	OMF_MDR_OIDCKPT     = 4,
-+	OMF_MDR_OERASE      = 5,
-+	OMF_MDR_MCCONFIG    = 6,
-+	OMF_MDR_MCSPARE     = 7,
-+	OMF_MDR_VERSION     = 8,
-+	OMF_MDR_MPCONFIG    = 9,
-+	OMF_MDR_MAX         = 10,
-+};
-+
-+/**
-+ * struct mdcver_omf - packed mdc version, version of an mpool MDC content.
-+ * @pv_rtype:      OMF_MDR_VERSION
-+ * @pv_mdcv_major: to compare with MAJOR in binary version.
-+ * @pv_mdcv_minor: to compare with MINOR in binary version.
-+ * @pv_mdcv_patch: to compare with PATCH in binary version.
-+ * @pv_mdcv_dev:   used during development cycle when the above
-+ *                 numbers don't change.
-+ *
-+ * This is not the version of the message framing used for the MDC. This is
-+ * version of the binary that introduced that version of the MDC content.
-+ */
-+struct mdcver_omf {
-+	u8     pv_rtype;
-+	u8     pv_pad;
-+	__le16 pv_mdcv_major;
-+	__le16 pv_mdcv_minor;
-+	__le16 pv_mdcv_patch;
-+	__le16 pv_mdcv_dev;
-+} __packed;
-+
-+/* Define set/get methods for mdcrec_version_omf */
-+OMF_SETGET(struct mdcver_omf, pv_rtype, 8)
-+OMF_SETGET(struct mdcver_omf, pv_mdcv_major, 16)
-+OMF_SETGET(struct mdcver_omf, pv_mdcv_minor, 16)
-+OMF_SETGET(struct mdcver_omf, pv_mdcv_patch, 16)
-+OMF_SETGET(struct mdcver_omf, pv_mdcv_dev,   16)
-+
-+
-+/**
-+ * struct mdcrec_data_odelete_omf - packed data record odelete
-+ * @pdro_rtype: mdrec_type_omf:OMF_MDR_ODELETE, OMF_MDR_OIDCKPT
-+ * @pdro_objid: object identifier
-+ */
-+struct mdcrec_data_odelete_omf {
-+	u8     pdro_rtype;
-+	u8     pdro_pad[7];
-+	__le64 pdro_objid;
-+} __packed;
-+
-+/* Define set/get methods for  mdcrec_data_odelete_omf */
-+OMF_SETGET(struct  mdcrec_data_odelete_omf, pdro_rtype, 8)
-+OMF_SETGET(struct  mdcrec_data_odelete_omf, pdro_objid, 64)
-+
-+
-+/**
-+ * struct mdcrec_data_oerase_omf - packed data record oerase
-+ * @pdrt_rtype: mdrec_type_omf: OMF_MDR_OERASE
-+ * @pdrt_objid: object identifier
-+ * @pdrt_gen:   object generation number
-+ */
-+struct mdcrec_data_oerase_omf {
-+	u8     pdrt_rtype;
-+	u8     pdrt_pad[7];
-+	__le64 pdrt_objid;
-+	__le64 pdrt_gen;
-+} __packed;
-+
-+/* Define set/get methods for mdcrec_data_oerase_omf */
-+OMF_SETGET(struct mdcrec_data_oerase_omf, pdrt_rtype, 8)
-+OMF_SETGET(struct mdcrec_data_oerase_omf, pdrt_objid, 64)
-+OMF_SETGET(struct mdcrec_data_oerase_omf, pdrt_gen, 64)
-+#define OMF_MDCREC_OERASE_PACKLEN (sizeof(struct mdcrec_data_oerase_omf))
-+
-+
-+/**
-+ * struct mdcrec_data_mcconfig_omf - packed data record mclass config
-+ * @pdrs_rtype: mdrec_type_omf: OMF_MDR_MCCONFIG
-+ * @pdrs_parm:
-+ */
-+struct mdcrec_data_mcconfig_omf {
-+	u8                             pdrs_rtype;
-+	u8                             pdrs_pad[7];
-+	struct devparm_descriptor_omf  pdrs_parm;
-+} __packed;
-+
-+
-+OMF_SETGET(struct mdcrec_data_mcconfig_omf, pdrs_rtype, 8)
-+#define OMF_MDCREC_MCCONFIG_PACKLEN (sizeof(struct mdcrec_data_mcconfig_omf))
-+
-+
-+/**
-+ * struct mdcrec_data_mcspare_omf - packed data record mcspare
-+ * @pdra_rtype:   mdrec_type_omf: OMF_MDR_MCSPARE
-+ * @pdra_mclassp: enum mp_media_classp
-+ * @pdra_spzone:   percent spare zones for drives in media class
-+ */
-+struct mdcrec_data_mcspare_omf {
-+	u8     pdra_rtype;
-+	u8     pdra_mclassp;
-+	u8     pdra_spzone;
-+} __packed;
-+
-+/* Define set/get methods for mdcrec_data_mcspare_omf */
-+OMF_SETGET(struct mdcrec_data_mcspare_omf, pdra_rtype, 8)
-+OMF_SETGET(struct mdcrec_data_mcspare_omf, pdra_mclassp, 8)
-+OMF_SETGET(struct mdcrec_data_mcspare_omf, pdra_spzone, 8)
-+#define OMF_MDCREC_CLS_SPARE_PACKLEN (sizeof(struct mdcrec_data_mcspare_omf))
-+
-+
-+/**
-+ * struct mdcrec_data_ocreate_omf - packed data record ocreate
-+ * @pdrc_rtype:     mdrec_type_omf: OMF_MDR_OCREATE or OMF_MDR_OUPDATE
-+ * @pdrc_mclass:
-+ * @pdrc_uuid:
-+ * @pdrc_ld:
-+ * @pdrc_objid:     object identifier
-+ * @pdrc_gen:       object generation number
-+ * @pdrc_mblen:     amount of data written in the mblock, for mlog this is 0
-+ * @pdrc_uuid:      Used only for mlogs. Must be at the end of this struct.
-+ */
-+struct mdcrec_data_ocreate_omf {
-+	u8                             pdrc_rtype;
-+	u8                             pdrc_mclass;
-+	u8                             pdrc_pad[2];
-+	struct layout_descriptor_omf   pdrc_ld;
-+	__le64                         pdrc_objid;
-+	__le64                         pdrc_gen;
-+	__le64                         pdrc_mblen;
-+	u8                             pdrc_uuid[];
-+} __packed;
-+
-+/* Define set/get methods for mdcrec_data_ocreate_omf */
-+OMF_SETGET(struct mdcrec_data_ocreate_omf, pdrc_rtype, 8)
-+OMF_SETGET(struct mdcrec_data_ocreate_omf, pdrc_mclass, 8)
-+OMF_SETGET(struct mdcrec_data_ocreate_omf, pdrc_objid, 64)
-+OMF_SETGET(struct mdcrec_data_ocreate_omf, pdrc_gen, 64)
-+OMF_SETGET(struct mdcrec_data_ocreate_omf, pdrc_mblen, 64)
-+#define OMF_MDCREC_OBJCMN_PACKLEN (sizeof(struct mdcrec_data_ocreate_omf) + \
-+				   OMF_UUID_PACKLEN)
-+
-+
-+/**
-+ * struct mdcrec_data_mpconfig_omf - packed data mpool config
-+ * @pdmc_rtype:
-+ * @pdmc_oid1:
-+ * @pdmc_oid2:
-+ * @pdmc_uid:
-+ * @pdmc_gid:
-+ * @pdmc_mode:
-+ * @pdmc_mclassp:
-+ * @pdmc_captgt:
-+ * @pdmc_ra_pages_max:
-+ * @pdmc_vma_size_max:
-+ * @pdmc_utype:         user-defined type (uuid)
-+ * @pdmc_label:         user-defined label (ascii)
-+ */
-+struct mdcrec_data_mpconfig_omf {
-+	u8      pdmc_rtype;
-+	u8      pdmc_pad[7];
-+	__le64  pdmc_oid1;
-+	__le64  pdmc_oid2;
-+	__le32  pdmc_uid;
-+	__le32  pdmc_gid;
-+	__le32  pdmc_mode;
-+	__le32  pdmc_rsvd0;
-+	__le64  pdmc_captgt;
-+	__le32  pdmc_ra_pages_max;
-+	__le32  pdmc_vma_size_max;
-+	__le32  pdmc_rsvd1;
-+	__le32  pdmc_rsvd2;
-+	__le64  pdmc_rsvd3;
-+	__le64  pdmc_rsvd4;
-+	u8      pdmc_utype[16];
-+	u8      pdmc_label[MPOOL_LABELSZ_MAX];
-+} __packed;
-+
-+/* Define set/get methods for mdcrec_data_mpconfig_omf */
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rtype, 8)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_oid1, 64)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_oid2, 64)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_uid, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_gid, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_mode, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rsvd0, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_captgt, 64)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_ra_pages_max, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_vma_size_max, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rsvd1, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rsvd2, 32)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rsvd3, 64)
-+OMF_SETGET(struct mdcrec_data_mpconfig_omf, pdmc_rsvd4, 64)
-+OMF_SETGET_CHBUF(struct mdcrec_data_mpconfig_omf, pdmc_utype)
-+OMF_SETGET_CHBUF(struct mdcrec_data_mpconfig_omf, pdmc_label)
-+#define OMF_MDCREC_MPCONFIG_PACKLEN (sizeof(struct mdcrec_data_mpconfig_omf))
-+
-+
-+/*
-+ * Object types embedded in opaque uint64 object ids by the pmd module.
-+ * This encoding is also present in the object ids stored in the
-+ * data records on media.
-+ *
-+ * The obj_type field is 4 bits. There are two valid obj types.
-+ */
-+enum obj_type_omf {
-+	OMF_OBJ_UNDEF       = 0,
-+	OMF_OBJ_MBLOCK      = 1,
-+	OMF_OBJ_MLOG        = 2,
-+};
-+
-+/**
-+ * sb_descriptor_ver_omf - Mpool super block version
-+ * @OMF_SB_DESC_UNDEF: value not on media
-+ */
-+enum sb_descriptor_ver_omf {
-+	OMF_SB_DESC_UNDEF        = 0,
-+	OMF_SB_DESC_V1           = 1,
-+
-+};
-+#define OMF_SB_DESC_VER_LAST   OMF_SB_DESC_V1
-+
-+
-+/**
-+ * struct sb_descriptor_omf - packed super block, super block descriptor format version 1.
-+ * @psb_magic:  mpool magic value; offset 0 in all vers
-+ * @psb_name:   mpool name
-+ * @psb_poolid: UUID of pool this drive belongs to
-+ * @psb_vers:   sb format version; offset 56
-+ * @psb_gen:    sb generation number on this drive
-+ * @psb_cksum1: checksum of all fields above
-+ * @psb_parm:   parameters for this drive
-+ * @psb_cksum2: checksum of psb_parm
-+ * @psb_mdc01gen:   mdc0 log1 generation number
-+ * @psb_mdc01uuid:
-+ * @psb_mdc01devid: mdc0 log1 device UUID
-+ * @psb_mdc01strip: mdc0 log1 strip desc.
-+ * @psb_mdc01desc:  mdc0 log1 layout
-+ * @psb_mdc02gen:   mdc0 log2 generation number
-+ * @psb_mdc02uuid:
-+ * @psb_mdc02devid: mdc0 log2 device UUID
-+ * @psb_mdc02strip: mdc0 log2 strip desc.
-+ * @psb_mdc02desc:  mdc0 log2 layout
-+ * @psb_mdc0dev:    drive param for mdc0 strip
-+ *
-+ * Note: these fields, up to and including psb_cksum1, are known to libblkid.
-+ * cannot change them without havoc. Fields from psb_magic to psb_cksum1
-+ * included are at same offset in all versions.
-+ */
-+struct sb_descriptor_omf {
-+	__le64                         psb_magic;
-+	u8                             psb_name[OMF_MPOOL_NAME_LEN];
-+	u8                             psb_poolid[OMF_UUID_PACKLEN];
-+	__le16                         psb_vers;
-+	__le32                         psb_gen;
-+	u8                             psb_cksum1[4];
-+
-+	u8                             psb_pad1[6];
-+	struct devparm_descriptor_omf  psb_parm;
-+	u8                             psb_cksum2[4];
-+
-+	u8                             psb_pad2[4];
-+	__le64                         psb_mdc01gen;
-+	u8                             psb_mdc01uuid[OMF_UUID_PACKLEN];
-+	u8                             psb_mdc01devid[OMF_UUID_PACKLEN];
-+	struct layout_descriptor_omf   psb_mdc01desc;
-+
-+	u8                             psb_pad3[4];
-+	__le64                         psb_mdc02gen;
-+	u8                             psb_mdc02uuid[OMF_UUID_PACKLEN];
-+	u8                             psb_mdc02devid[OMF_UUID_PACKLEN];
-+	struct layout_descriptor_omf   psb_mdc02desc;
-+
-+	u8                             psb_pad4[4];
-+	struct devparm_descriptor_omf  psb_mdc0dev;
-+} __packed;
-+
-+OMF_SETGET(struct sb_descriptor_omf, psb_magic, 64)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_name)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_poolid)
-+OMF_SETGET(struct sb_descriptor_omf, psb_vers, 16)
-+OMF_SETGET(struct sb_descriptor_omf, psb_gen, 32)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_cksum1)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_cksum2)
-+OMF_SETGET(struct sb_descriptor_omf, psb_mdc01gen, 64)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_mdc01uuid)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_mdc01devid)
-+OMF_SETGET(struct sb_descriptor_omf, psb_mdc02gen, 64)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_mdc02uuid)
-+OMF_SETGET_CHBUF(struct sb_descriptor_omf, psb_mdc02devid)
-+#define OMF_SB_DESC_PACKLEN (sizeof(struct sb_descriptor_omf))
-+
-+/*
-+ * For object-related records OCREATE/OUPDATE is max so compute that here as:
-+ * rtype + objid + gen + layout desc
-+ */
-+#define OMF_MDCREC_PACKLEN_MAX max(OMF_MDCREC_OBJCMN_PACKLEN,            \
-+				   max(OMF_MDCREC_MCCONFIG_PACKLEN,      \
-+				       max(OMF_MDCREC_CLS_SPARE_PACKLEN, \
-+					   OMF_MDCREC_MPCONFIG_PACKLEN)))
-+
-+#endif /* MPOOL_OMF_H */
-diff --git a/drivers/mpool/omf_if.h b/drivers/mpool/omf_if.h
-new file mode 100644
-index 000000000000..5f11a03ef500
---- /dev/null
-+++ b/drivers/mpool/omf_if.h
-@@ -0,0 +1,381 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
-+ */
-+
-+#ifndef MPOOL_OMF_IF_H
-+#define MPOOL_OMF_IF_H
-+
-+#include "uuid.h"
-+#include "mpool_ioctl.h"
-+
-+#include "mp.h"
-+#include "omf.h"
-+
-+struct mpool_descriptor;
-+struct pmd_layout;
-+
-+/*
-+ * Common defs: versioned via version number field of enclosing structs
-+ */
-+
-+/**
-+ * struct omf_layout_descriptor - version 1 layout descriptor
-+ * @ol_zaddr:
-+ * @ol_zcnt: number of zones
-+ * @ol_pdh:
-+ */
-+struct omf_layout_descriptor {
-+	u64    ol_zaddr;
-+	u32    ol_zcnt;
-+	u16    ol_pdh;
-+};
-+
-+/**
-+ * struct omf_devparm_descriptor - version 1 devparm descriptor
-+ * @odp_devid:    UUID for drive
-+ * @odp_devsz:    size, in bytes, of the volume/device
-+ * @odp_zonetot:  total number of zones
-+ * @odp_zonepg:   zone size in number of zone pages
-+ * @odp_mclassp:  enum mp_media_classp
-+ * @odp_devtype:  PD type. Enum pd_devtype
-+ * @odp_sectorsz: 2^podp_sectorsz = sector size
-+ * @odp_features: Features, ored bits of enum mp_mc_features
-+ *
-+ * The fields zonepg, mclassp, devtype, sectosz, and features uniquely identify
-+ * the media class of the PD.
-+ * All drives in a media class must have the same values in the below fields.
-+ */
-+struct omf_devparm_descriptor {
-+	struct mpool_uuid  odp_devid;
-+	u64                odp_devsz;
-+	u32                odp_zonetot;
-+
-+	u32                odp_zonepg;
-+	u8                 odp_mclassp;
-+	u8                 odp_devtype;
-+	u8                 odp_sectorsz;
-+	u64                odp_features;
-+};
-+
-+/*
-+ * Superblock (sb) -- version 1
-+ *
-+ * Note this is 8-byte-wide reversed to get correct ascii order
-+ */
-+#define OMF_SB_MAGIC  0x7665446c6f6f706dULL  /* ASCII mpoolDev - no null */
-+
-+/**
-+ * struct omf_sb_descriptor - version 1 superblock descriptor
-+ * @osb_magic:  mpool magic value
-+ * @osb_name:   mpool name, contains a terminating 0 byte
-+ * @osb_cktype: enum mp_cksum_type value
-+ * @osb_vers:   sb format version
-+ * @osb_poolid: UUID of pool this drive belongs to
-+ * @osb_gen:    sb generation number on this drive
-+ * @osb_parm:   parameters for this drive
-+ * @osb_mdc01gen:   mdc0 log1 generation number
-+ * @osb_mdc01uuid:
-+ * @osb_mdc01devid:
-+ * @osb_mdc01desc:  mdc0 log1 layout
-+ * @osb_mdc02gen:   mdc0 log2 generation number
-+ * @osb_mdc02uuid:
-+ * @osb_mdc02devid:
-+ * @osb_mdc02desc:  mdc0 log2 layout
-+ * @osb_mdc0dev:   drive param for mdc0
-+ */
-+struct omf_sb_descriptor {
-+	u64                            osb_magic;
-+	u8                             osb_name[MPOOL_NAMESZ_MAX];
-+	u8                             osb_cktype;
-+	u16                            osb_vers;
-+	struct mpool_uuid              osb_poolid;
-+	u32                            osb_gen;
-+	struct omf_devparm_descriptor  osb_parm;
-+
-+	u64                            osb_mdc01gen;
-+	struct mpool_uuid              osb_mdc01uuid;
-+	struct mpool_uuid              osb_mdc01devid;
-+	struct omf_layout_descriptor   osb_mdc01desc;
-+
-+	u64                            osb_mdc02gen;
-+	struct mpool_uuid              osb_mdc02uuid;
-+	struct mpool_uuid              osb_mdc02devid;
-+	struct omf_layout_descriptor   osb_mdc02desc;
-+
-+	struct omf_devparm_descriptor  osb_mdc0dev;
-+};
-+
-+/**
-+ * struct omf_logrec_descriptor -
-+ * @olr_tlen:  logical length of data record (all chunks)
-+ * @olr_rlen:  length of data chunk in this log record
-+ * @olr_rtype: enum logrec_type_omf value
-+ *
-+ */
-+struct omf_logrec_descriptor {
-+	u32    olr_tlen;
-+	u16    olr_rlen;
-+	u8     olr_rtype;
-+};
-+
-+/**
-+ * struct omf_logblock_header -
-+ * @olh_magic:   unique ID per mlog
-+ * @olh_pfsetid: flush set ID of the previous log block
-+ * @olh_cfsetid: flush set ID this log block
-+ * @olh_gen:     generation number
-+ * @olh_vers:    log block format version
-+ */
-+struct omf_logblock_header {
-+	struct mpool_uuid    olh_magic;
-+	u32                olh_pfsetid;
-+	u32                olh_cfsetid;
-+	u64                olh_gen;
-+	u16                olh_vers;
-+};
-+
-+/**
-+ * struct omf_mdcver - version of an mpool MDC content.
-+ * @mdcver:
-+ *
-+ * mdcver[0]: major version number
-+ * mdcver[1]: minor version number
-+ * mdcver[2]: patch version number
-+ * mdcver[3]: development version number. Used during development cycle when
-+ *            the above numbers don't change.
-+ *
-+ * This is not the version of the message framing used for the MDC.
-+ * This the version of the binary that introduced that version of the MDC
-+ * content.
-+ */
-+struct omf_mdcver {
-+	u16    mdcver[4];
-+};
-+
-+#define mdcv_major    mdcver[0]
-+#define mdcv_minor    mdcver[1]
-+#define mdcv_patch    mdcver[2]
-+#define mdcv_dev      mdcver[3]
-+
-+/**
-+ * struct omf_mdcrec_data -
-+ * @omd_version:  OMF_MDR_VERSION record
-+ * @omd_objid:  object identifier
-+ * @omd_gen:    object generation number
-+ * @omd_layout:
-+ * @omd_mblen:  Length of written data in object
-+ * @omd_old:
-+ * @omd_uuid:
-+ * @omd_parm:
-+ * @omd_mclassp: mp_media_classp
-+ * @omd_spzone:   percent spare zones for drives in media class
-+ * @omd_cfg:
-+ * @omd_rtype: enum mdcrec_type_omf value
-+ *
-+ * object-related rtypes:
-+ * ODELETE, OIDCKPT: objid field only; others ignored
-+ * OERASE: objid and gen fields only; others ignored
-+ * OCREATE, OUPDATE: layout field only; others ignored
-+ */
-+struct omf_mdcrec_data {
-+	union ustruct {
-+		struct omf_mdcver omd_version;
-+
-+		struct object {
-+			u64                             omd_objid;
-+			u64                             omd_gen;
-+			struct pmd_layout              *omd_layout;
-+			u64                             omd_mblen;
-+			struct omf_layout_descriptor    omd_old;
-+			struct mpool_uuid               omd_uuid;
-+			u8                              omd_mclass;
-+		} obj;
-+
-+		struct drive_state {
-+			struct omf_devparm_descriptor  omd_parm;
-+		} dev;
-+
-+		struct media_cls_spare {
-+			u8 omd_mclassp;
-+			u8 omd_spzone;
-+		} mcs;
-+
-+		struct mpool_config    omd_cfg;
-+	} u;
-+
-+	u8             omd_rtype;
-+};
-+
-+/**
-+ * objid_type() - Return the type field from an objid
-+ * @objid:
-+ */
-+static inline int objid_type(u64 objid)
++unsigned int rsvd_bios_max __read_mostly = 16;
++module_param(rsvd_bios_max, uint, 0444);
++MODULE_PARM_DESC(rsvd_bios_max, "max reserved bios in mpool bioset");
++
++int chunk_size_kb __read_mostly = 128;
++module_param(chunk_size_kb, uint, 0644);
++MODULE_PARM_DESC(chunk_size_kb, "Chunk size (in KiB) for device I/O");
++
++static void mpool_exit_impl(void)
 +{
-+	return ((objid & 0xF00) >> 8);
++	pd_exit();
 +}
 +
-+static inline bool objtype_valid(enum obj_type_omf otype)
-+{
-+	return otype && (otype <= 2);
-+};
+ static __init int mpool_init(void)
+ {
+-	return 0;
++	int rc;
 +
-+/*
-+ * omf API functions -- exported functions for working with omf structures
-+ */
++	rc = pd_init();
++	if (rc) {
++		mp_pr_err("pd init failed", rc);
++		mpool_exit_impl();
++	}
 +
-+/**
-+ * omf_sb_pack_htole() - pack superblock
-+ * @sb: struct omf_sb_descriptor *
-+ * @outbuf: char *
-+ *
-+ * Pack superblock into outbuf little-endian computing specified checksum.
-+ *
-+ * Return: 0 if successful, -EINVAL otherwise
-+ */
-+int omf_sb_pack_htole(struct omf_sb_descriptor *sb, char *outbuf);
-+
-+/**
-+ * omf_sb_unpack_letoh() - unpack superblock
-+ * @sb: struct omf_sb_descriptor *
-+ * @inbuf: char *
-+ * @omf_ver: on-media-format superblock version
-+ *
-+ * Unpack little-endian superblock from inbuf into sb verifying checksum.
-+ *
-+ * Return: 0 if successful, -errno otherwise
-+ */
-+int omf_sb_unpack_letoh(struct omf_sb_descriptor *sb, const char *inbuf, u16 *omf_ver);
-+
-+/**
-+ * omf_sb_has_magic_le() - Determine if buffer has superblock magic value
-+ * @inbuf: char *
-+ *
-+ * Determine if little-endian buffer inbuf has superblock magic value
-+ * where expected; does NOT imply inbuf is a valid superblock.
-+ *
-+ * Return: 1 if true; 0 otherwise
-+ */
-+bool omf_sb_has_magic_le(const char *inbuf);
-+
-+/**
-+ * omf_logblock_header_pack_htole() - pack log block header
-+ * @lbh: struct omf_logblock_header *
-+ * @outbuf: char *
-+ *
-+ * Pack header into little-endian log block buffer lbuf, ex-checksum.
-+ *
-+ * Return: 0 if successful, -errno otherwise
-+ */
-+int omf_logblock_header_pack_htole(struct omf_logblock_header *lbh, char *lbuf);
-+
-+/**
-+ * omf_logblock_header_len_le() - Determine header length of log block
-+ * @lbuf: char *
-+ *
-+ * Check little-endian log block in lbuf to determine header length.
-+ *
-+ * Return: bytes in packed header; -EINVAL if invalid header vers
-+ */
-+int omf_logblock_header_len_le(char *lbuf);
-+
-+/**
-+ * omf_logblock_header_unpack_letoh() - unpack log block header
-+ * @lbh: struct omf_logblock_header *
-+ * @inbuf: char *
-+ *
-+ * Unpack little-endian log block header from lbuf into lbh; does not
-+ * verify checksum.
-+ *
-+ * Return: 0 if successful, -EINVAL if invalid log block header vers
-+ */
-+int omf_logblock_header_unpack_letoh(struct omf_logblock_header *lbh, const char *inbuf);
-+
-+/**
-+ * omf_logrec_desc_pack_htole() - pack log record descriptor
-+ * @lrd: struct omf_logrec_descriptor *
-+ * @outbuf: char *
-+ *
-+ * Pack log record descriptor into outbuf little-endian.
-+ *
-+ * Return: 0 if successful, -EINVAL if invalid log rec type
-+ */
-+int omf_logrec_desc_pack_htole(struct omf_logrec_descriptor *lrd, char *outbuf);
-+
-+/**
-+ * omf_logrec_desc_unpack_letoh() - unpack log record descriptor
-+ * @lrd: struct omf_logrec_descriptor *
-+ * @inbuf: char *
-+ *
-+ * Unpack little-endian log record descriptor from inbuf into lrd.
-+ */
-+void omf_logrec_desc_unpack_letoh(struct omf_logrec_descriptor *lrd, const char *inbuf);
-+
-+/**
-+ * omf_mdcrec_pack_htole() - pack mdc record
-+ * @mp: struct mpool_descriptor *
-+ * @cdr: struct omf_mdcrec_data *
-+ * @outbuf: char *
-+ *
-+ * Pack mdc record into outbuf little-endian.
-+ * NOTE: Assumes outbuf has enough space for the layout structure.
-+ *
-+ * Return: bytes packed if successful, -EINVAL otherwise
-+ */
-+int omf_mdcrec_pack_htole(struct mpool_descriptor *mp, struct omf_mdcrec_data *cdr, char *outbuf);
-+
-+/**
-+ * omf_mdcrec_unpack_letoh() - unpack mdc record
-+ * @mdcver: mdc content version of the mdc from which this data comes.
-+ *          NULL means latest MDC content version known by this binary.
-+ * @mp:     struct mpool_descriptor *
-+ * @cdr:    struct omf_mdcrec_data *
-+ * @inbuf:  char *
-+ *
-+ * Unpack little-endian mdc record from inbuf into cdr.
-+ *
-+ * Return: 0 if successful, -errno on error
-+ */
-+int omf_mdcrec_unpack_letoh(struct omf_mdcver *mdcver, struct mpool_descriptor *mp,
-+			    struct omf_mdcrec_data *cdr, const char *inbuf);
-+
-+/**
-+ * omf_mdcrec_isobj_le() - determine if mdc recordis object-related
-+ * @inbuf: char *
-+ *
-+ * Return true if little-endian mdc record in inbuf is object-related.
-+ */
-+int omf_mdcrec_isobj_le(const char *inbuf);
-+
-+/**
-+ * omf_mdcver_unpack_letoh() - Unpack le mdc version record from inbuf.
-+ * @cdr:
-+ * @inbuf:
-+ */
-+void omf_mdcver_unpack_letoh(struct omf_mdcrec_data *cdr, const char *inbuf);
-+
-+/**
-+ * omf_mdcrec_unpack_type_letoh() - extract the record type from a packed MDC record.
-+ * @inbuf: packed MDC record.
-+ */
-+u8 omf_mdcrec_unpack_type_letoh(const char *inbuf);
-+
-+/**
-+ * logrec_type_datarec() - data record or not
-+ * @rtype:
-+ *
-+ * Return: true if the log record type is related to a data record.
-+ */
-+bool logrec_type_datarec(enum logrec_type_omf rtype);
-+
-+/**
-+ * omf_sbver_to_mdcver() - Returns the matching mdc version for a given superblock version
-+ * @sbver: superblock version
-+ */
-+struct omf_mdcver *omf_sbver_to_mdcver(enum sb_descriptor_ver_omf sbver);
-+
-+int omf_init(void) __cold;
-+void omf_exit(void) __cold;
-+
-+#endif /* MPOOL_OMF_IF_H */
-diff --git a/drivers/mpool/upgrade.h b/drivers/mpool/upgrade.h
++	return rc;
+ }
+ 
+ static __exit void mpool_exit(void)
+ {
++	mpool_exit_impl();
+ }
+ 
+ module_init(mpool_init);
+diff --git a/drivers/mpool/init.h b/drivers/mpool/init.h
 new file mode 100644
-index 000000000000..3b3748c47a3e
+index 000000000000..e02a9672e727
 --- /dev/null
-+++ b/drivers/mpool/upgrade.h
-@@ -0,0 +1,128 @@
++++ b/drivers/mpool/init.h
+@@ -0,0 +1,12 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
 + * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
 + */
 +
++#ifndef MPOOL_INIT_H
++#define MPOOL_INIT_H
++
++extern unsigned int rsvd_bios_max;
++extern int chunk_size_kb;
++
++#endif /* MPOOL_INIT_H */
+diff --git a/drivers/mpool/pd.c b/drivers/mpool/pd.c
+new file mode 100644
+index 000000000000..25a7cc4f3f98
+--- /dev/null
++++ b/drivers/mpool/pd.c
+@@ -0,0 +1,426 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Defines structures for upgrading MPOOL meta data
++ * Copyright (C) 2015-2020 Micron Technology, Inc.  All rights reserved.
++ */
++/*
++ * Pool drive module with backing block devices.
++ *
++ * Defines functions for probing, reading, and writing drives in an mpool.
++ * IO is done using kerel BIO facilities.
 + */
 +
-+#ifndef MPOOL_UPGRADE_H
-+#define MPOOL_UPGRADE_H
++#define _LARGEFILE64_SOURCE
 +
++#include <linux/fs.h>
++#include <linux/blkdev.h>
++#include <linux/blk_types.h>
++
++#include "mpool_printk.h"
++#include "assert.h"
++
++#include "init.h"
 +#include "omf_if.h"
++#include "pd.h"
 +
-+/*
-+ * Size of version converted to string.
-+ * 4 * (5 bytes for a u16) + 3 * (1 byte for the '.') + 1 byte for \0
-+ */
-+#define MAX_MDCVERSTR          24
++#ifndef SECTOR_SHIFT
++#define SECTOR_SHIFT   9
++#endif
 +
-+/*
-+ * Naming conventions:
-+ *
-+ * omf structures:
-+ * ---------------
-+ * The old structure names end with _omf_v<version number>.
-+ * For example: layout_descriptor_omf_v1
-+ * The current/latest structure name end simply with _omf.
-+ * For example: layout_descriptor_omf
-+ *
-+ * Conversion functions:
-+ * ---------------------
-+ * They are named like:
-+ * omf_convert_<blabla>_<maj>_<min>_<patch>_<dev>to<maj>_<min>_<patch>_<dev>()
-+ *
-+ * For example: omf_convert_sb_1_0_0_0to1_0_0_1()
-+ *
-+ * They are not named like omf_convert_<blabla>_v1tov2() because sometimes the
-+ * input and output structures are exactly the same and the conversion is
-+ * related to some subtle interpretation of structure filed[s] content.
-+ *
-+ * Unpack functions:
-+ * -----------------
-+ * They are named like:
-+ * omf_<blabla>_unpack_letoh_v<version number>()
-+ * <version number> being the version of the structure.
-+ *
-+ * For example: omf_layout_unpack_letoh_v1()
-+ * Note that for the latest/current version of the structure we cannot
-+ * name the unpack function omf_<blabla>_unpack_letoh() because that would
-+ * introduce a name conflict with the top unpack function that calls
-+ * omf_unpack_letoh_and_convert()
-+ *
-+ * For example for layout we have:
-+ * omf_layout_unpack_letoh_v1() unpacks layout_descriptor_omf_v1
-+ * omf_layout_unpack_letoh_v2() unpacks layout_descriptor_omf
-+ * omf_layout_unpack_letoh() calls one of the two above.
-+ */
++static struct bio_set mpool_bioset;
 +
-+/**
-+ * struct upgrade_history -
-+ * @uh_size:    size of the current version in-memory structure
-+ * @uh_unpack:  unpacking function from on-media format to in-memory format
-+ * @uh_conv:    conversion function from previous version to current version,
-+ *              set to NULL for the first version
-+ * @uh_sbver:   corresponding superblock version since which the change has
-+ *              been introduced. If this structure is not used by superblock
-+ *              set uh_sbver =  OMF_SB_DESC_UNDEF.
-+ * @uh_mdcver: corresponding mdc ver since which the change has been
-+ *              introduced
-+ *
-+ * Every time we update a nested structure in superblock or MDC, we need to
-+ * save the following information about this update, such that we can keep the
-+ * update history of this structure
-+ */
-+struct upgrade_history {
-+	size_t                      uh_size;
-+	int (*uh_unpack)(void *out, const char *inbuf);
-+	int (*uh_conv)(const void *pre, void *cur);
-+	enum sb_descriptor_ver_omf  uh_sbver;
-+	struct omf_mdcver          uh_mdcver;
-+};
++static const fmode_t    pd_bio_fmode = FMODE_READ | FMODE_WRITE | FMODE_EXCL;
++static char            *pd_bio_holder = "mpool";
++
++int pd_dev_open(const char *path, struct pd_dev_parm *dparm, struct pd_prop *pd_prop)
++{
++	struct block_device *bdev;
++
++	bdev = blkdev_get_by_path(path, pd_bio_fmode, pd_bio_holder);
++	if (IS_ERR(bdev))
++		return PTR_ERR(bdev);
++
++	dparm->dpr_dev_private = bdev;
++	dparm->dpr_prop = *pd_prop;
++
++	if ((pd_prop->pdp_devtype != PD_DEV_TYPE_BLOCK_STD) &&
++	    (pd_prop->pdp_devtype != PD_DEV_TYPE_BLOCK_NVDIMM)) {
++		int rc = -EINVAL;
++
++		mp_pr_err("unsupported PD type %d", rc, pd_prop->pdp_devtype);
++		return rc;
++	}
++
++	return 0;
++}
++
++int pd_dev_close(struct pd_dev_parm *dparm)
++{
++	struct block_device *bdev = dparm->dpr_dev_private;
++
++	if (bdev) {
++		dparm->dpr_dev_private = NULL;
++		sync_blockdev(bdev);
++		invalidate_bdev(bdev);
++		blkdev_put(bdev, pd_bio_fmode);
++	}
++
++	return bdev ? 0 : -EINVAL;
++}
++
++int pd_dev_flush(struct pd_dev_parm *dparm)
++{
++	struct block_device *bdev;
++	int rc;
++
++	bdev = dparm->dpr_dev_private;
++	if (!bdev) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s not registered", rc, dparm->dpr_name);
++		return rc;
++	}
++
++	rc = blkdev_issue_flush(bdev, GFP_NOIO);
++	if (rc)
++		mp_pr_err("bdev %s, flush failed", rc, dparm->dpr_name);
++
++	return rc;
++}
 +
 +/**
-+ * omfu_mdcver_cur() - Return the latest mpool MDC content version understood by this binary
++ * pd_bio_discard() - issue discard command to erase a byte-aligned region
++ * @dparm:
++ * @off:
++ * @len:
 + */
-+struct omf_mdcver *omfu_mdcver_cur(void);
++static int pd_bio_discard(struct pd_dev_parm *dparm, u64 off, size_t len)
++{
++	struct block_device *bdev;
++	int rc;
++
++	bdev = dparm->dpr_dev_private;
++	if (!bdev) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s not registered", rc, dparm->dpr_name);
++		return rc;
++	}
++
++	/* Validate I/O offset is sector-aligned */
++	if (off & PD_SECTORMASK(&dparm->dpr_prop)) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s, offset 0x%lx not multiple of sec size %u",
++			  rc, dparm->dpr_name, (ulong)off, (1 << PD_SECTORSZ(&dparm->dpr_prop)));
++		return rc;
++	}
++
++	if (off > PD_LEN(&dparm->dpr_prop)) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s, offset 0x%lx past end 0x%lx",
++			  rc, dparm->dpr_name, (ulong)off, (ulong)PD_LEN(&dparm->dpr_prop));
++		return rc;
++	}
++
++	rc = blkdev_issue_discard(bdev, off >> SECTOR_SHIFT, len >> SECTOR_SHIFT, GFP_NOIO, 0);
++	if (rc)
++		mp_pr_err("bdev %s, offset 0x%lx len 0x%lx, discard faiure",
++			  rc, dparm->dpr_name, (ulong)off, (ulong)len);
++
++	return rc;
++}
 +
 +/**
-+ * omfu_mdcver_comment() - Return mpool MDC content version comment passed in via "mdcver".
-+ * @mdcver:
++ * pd_zone_erase() - issue write-zeros or discard commands to erase PD
++ * @dparm:
++ * @zaddr:
++ * @zonecnt:
++ * @flag:
++ * @afp:
 + */
-+const char *omfu_mdcver_comment(struct omf_mdcver *mdcver);
++int pd_zone_erase(struct pd_dev_parm *dparm, u64 zaddr, u32 zonecnt, bool reads_erased)
++{
++	int rc = 0;
++	u64 cmdopt;
++
++	/* Validate args against zone param */
++	if (zaddr >= dparm->dpr_zonetot)
++		return -EINVAL;
++
++	if (zonecnt == 0)
++		zonecnt = dparm->dpr_zonetot - zaddr;
++
++	if (zonecnt > (dparm->dpr_zonetot - zaddr))
++		return -EINVAL;
++
++	if (zonecnt == 0)
++		return 0;
++
++	/*
++	 * When both DIF and SED are enabled, read from a discared block
++	 * would fail, so we can't discard blocks if both DIF and SED are
++	 * enabled AND we need to read blocks after erase.
++	 */
++	cmdopt = dparm->dpr_cmdopt;
++	if ((cmdopt & PD_CMD_DISCARD) &&
++	    !(reads_erased && (cmdopt & PD_CMD_DIF_ENABLED) && (cmdopt & PD_CMD_SED_ENABLED))) {
++		size_t zlen;
++
++		zlen = dparm->dpr_zonepg << PAGE_SHIFT;
++		rc = pd_bio_discard(dparm, zaddr * zlen, zonecnt * zlen);
++	}
++
++	return rc;
++}
++
++static void pd_bio_init(struct bio *bio, struct block_device *bdev, int rw, loff_t off, int flags)
++{
++	bio_set_op_attrs(bio, rw, flags);
++	bio->bi_iter.bi_sector = off >> SECTOR_SHIFT;
++	bio_set_dev(bio, bdev);
++}
++
++static struct bio *pd_bio_chain(struct bio *target, unsigned int nr_pages, gfp_t gfp)
++{
++	struct bio *new;
++
++	new = bio_alloc_bioset(gfp, nr_pages, &mpool_bioset);
++
++	if (!target)
++		return new;
++
++	if (new) {
++		bio_chain(target, new);
++		submit_bio(target);
++	} else {
++		submit_bio_wait(target);
++		bio_put(target);
++	}
++
++	return new;
++}
 +
 +/**
-+ * omfu_mdcver_to_str() - convert a version into a string.
-+ * @mdcver: version to convert
-+ * @buf:    buffer in which to place the conversion.
-+ * @sz:     size of "buf" in bytes.
++ * pd_bio_rw() -
++ * @dparm:
++ * @iov:
++ * @iovcnt:
++ * @off: offset in bytes on disk
++ * @rw:
++ * @opflags:
 + *
-+ * Returns "buf"
-+ */
-+char *omfu_mdcver_to_str(struct omf_mdcver *mdcver, char *buf, size_t sz);
-+
-+/**
-+ * omfu_mdcver_cmp() - compare two versions a and b
-+ * @a:  first version
-+ * @op: compare operator (C syntax), can be "<", "<=", ">", ">=", "==".
-+ * @b:  second version
++ * pd_bio_rw() expects a list of kvecs wherein each base ptr is sector
++ * aligned and each length is multiple of sectors.
 + *
-+ * Return (a op b)
++ * If the IO is bigger than 1MiB (BIO_MAX_PAGES pages) or chunk_size_kb,
++ * it is split in several IOs.
 + */
-+bool omfu_mdcver_cmp(struct omf_mdcver *a, char *op, struct omf_mdcver *b);
++static int pd_bio_rw(struct pd_dev_parm *dparm, const struct kvec *iov,
++		     int iovcnt, loff_t off, int rw, int opflags)
++{
++	struct block_device *bdev;
++	struct page *page;
++	struct bio *bio;
++	u64 iov_base, sector_mask;
++	u32 tot_pages, tot_len, len, iov_len, left;
++	u32 iolimit;
++	int i, cc, op;
++	int rc = 0;
 +
-+/**
-+ * omfu_mdcver_cmp2() - compare two versions
-+ * @a:     first version
-+ * @op:    compare operator (C syntax), can be "<", "<=", ">", ">=", "==".
-+ * @major: major, minor, patch and dev which composes the second version
-+ * @minor:
-+ * @patch:
-+ * @dev:
-+ *
-+ * Return true (a op b)
-+ */
-+bool omfu_mdcver_cmp2(struct omf_mdcver *a, char *op, u16 major, u16 minor, u16 patch, u16 dev);
++	if (iovcnt < 1)
++		return 0;
 +
-+#endif /* MPOOL_UPGRADE_H */
++	bdev = dparm->dpr_dev_private;
++	if (!bdev) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s not registered", rc, dparm->dpr_name);
++		return rc;
++	}
++
++	sector_mask = PD_SECTORMASK(&dparm->dpr_prop);
++	if (off & sector_mask) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s, %s offset 0x%lx not multiple of sector size %u",
++			  rc, dparm->dpr_name, (rw == REQ_OP_READ) ? "read" : "write",
++			  (ulong)off, (1 << PD_SECTORSZ(&dparm->dpr_prop)));
++		return rc;
++	}
++
++	if (off > PD_LEN(&dparm->dpr_prop)) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s, %s offset 0x%lx past device end 0x%lx",
++			  rc, dparm->dpr_name, (rw == REQ_OP_READ) ? "read" : "write",
++			  (ulong)off, (ulong)PD_LEN(&dparm->dpr_prop));
++		return rc;
++	}
++
++	tot_pages = 0;
++	tot_len = 0;
++	for (i = 0; i < iovcnt; i++) {
++		if (!PAGE_ALIGNED((uintptr_t)iov[i].iov_base) || (iov[i].iov_len & sector_mask)) {
++			rc = -EINVAL;
++			mp_pr_err("bdev %s, %s off 0x%lx, misaligned kvec, base 0x%lx, len 0x%lx",
++				  rc, dparm->dpr_name, (rw == REQ_OP_READ) ? "read" : "write",
++				  (ulong)off, (ulong)iov[i].iov_base, (ulong)iov[i].iov_len);
++			return rc;
++		}
++
++		iov_len = iov[i].iov_len;
++		tot_len += iov_len;
++		while (iov_len > 0) {
++			len = min_t(size_t, PAGE_SIZE, iov_len);
++			iov_len -= len;
++			tot_pages++;
++		}
++	}
++
++	if (off + tot_len > PD_LEN(&dparm->dpr_prop)) {
++		rc = -EINVAL;
++		mp_pr_err("bdev %s, %s I/O end past device end 0x%lx, 0x%lx:0x%x",
++			  rc, dparm->dpr_name, (rw == REQ_OP_READ) ? "read" : "write",
++			  (ulong)PD_LEN(&dparm->dpr_prop), (ulong)off, tot_len);
++		return rc;
++	}
++
++	if (tot_len == 0)
++		return 0;
++
++	/* IO size for each bio is determined by the chunk size. */
++	iolimit = chunk_size_kb >> (PAGE_SHIFT - 10);
++	iolimit = clamp_t(u32, iolimit, 32, BIO_MAX_PAGES);
++
++	left = 0;
++	bio = NULL;
++	op = (rw == REQ_OP_READ) ? READ : WRITE;
++
++	for (i = 0; i < iovcnt; i++) {
++		iov_base = (u64)iov[i].iov_base;
++		iov_len = iov[i].iov_len;
++
++		while (iov_len > 0) {
++			if (left == 0) {
++				left = min_t(size_t, tot_pages, iolimit);
++
++				bio = pd_bio_chain(bio, left, GFP_NOIO);
++				if (!bio)
++					return -ENOMEM;
++
++				pd_bio_init(bio, bdev, rw, off, opflags);
++			}
++
++			len = min_t(size_t, PAGE_SIZE, iov_len);
++			page = virt_to_page(iov_base);
++			cc = -1;
++
++			if (page)
++				cc = bio_add_page(bio, page, len, 0);
++
++			if (cc != len) {
++				if (cc == 0 && bio->bi_vcnt > 0) {
++					left = 0;
++					continue;
++				}
++
++				bio_io_error(bio);
++				bio_put(bio);
++				return -ENOTRECOVERABLE;
++			}
++
++			iov_len -= len;
++			iov_base += len;
++			off += len;
++			left--;
++			tot_pages--;
++		}
++	}
++
++	ASSERT(bio);
++	ASSERT(tot_pages == 0);
++
++	rc = submit_bio_wait(bio);
++	bio_put(bio);
++
++	return rc;
++}
++
++int pd_zone_pwritev(struct pd_dev_parm *dparm, const struct kvec *iov,
++		    int iovcnt, u64 zaddr, loff_t boff, int opflags)
++{
++	loff_t woff;
++
++	woff = ((u64)dparm->dpr_zonepg << PAGE_SHIFT) * zaddr + boff;
++
++	return pd_bio_rw(dparm, iov, iovcnt, woff, REQ_OP_WRITE, opflags);
++}
++
++int pd_zone_pwritev_sync(struct pd_dev_parm *dparm, const struct kvec *iov,
++			 int iovcnt, u64 zaddr, loff_t boff)
++{
++	struct block_device *bdev;
++	int rc;
++
++	rc = pd_zone_pwritev(dparm, iov, iovcnt, zaddr, boff, REQ_FUA);
++	if (rc)
++		return rc;
++
++	/*
++	 * This sync & invalidate bdev ensures that the data written from the
++	 * kernel is immediately visible to the user-space.
++	 */
++	bdev = dparm->dpr_dev_private;
++	if (bdev) {
++		sync_blockdev(bdev);
++		invalidate_bdev(bdev);
++	}
++
++	return 0;
++}
++
++int pd_zone_preadv(struct pd_dev_parm *dparm, const struct kvec *iov,
++		   int iovcnt, u64 zaddr, loff_t boff)
++{
++	loff_t roff;
++
++	roff = ((u64)dparm->dpr_zonepg << PAGE_SHIFT) * zaddr + boff;
++
++	return pd_bio_rw(dparm, iov, iovcnt, roff, REQ_OP_READ, 0);
++}
++
++void pd_dev_set_unavail(struct pd_dev_parm *dparm, struct omf_devparm_descriptor *omf_devparm)
++{
++	struct pd_prop *pd_prop = &(dparm->dpr_prop);
++
++	/*
++	 * Fill in dparm for unavailable drive; sets zone parm and other
++	 * PD properties we keep in metadata; no ops vector because we need
++	 * the device to be available to know it (the discovery gets it).
++	 */
++	strncpy(dparm->dpr_prop.pdp_didstr, PD_DEV_ID_PDUNAVAILABLE, PD_DEV_ID_LEN);
++	pd_prop->pdp_devstate = PD_DEV_STATE_UNAVAIL;
++	pd_prop->pdp_cmdopt = PD_CMD_NONE;
++
++	pd_prop->pdp_zparam.dvb_zonepg  = omf_devparm->odp_zonepg;
++	pd_prop->pdp_zparam.dvb_zonetot = omf_devparm->odp_zonetot;
++	pd_prop->pdp_mclassp  = omf_devparm->odp_mclassp;
++	pd_prop->pdp_phys_if  = 0;
++	pd_prop->pdp_sectorsz = omf_devparm->odp_sectorsz;
++	pd_prop->pdp_devsz    = omf_devparm->odp_devsz;
++}
++
++
++int pd_init(void)
++{
++	int rc;
++
++	chunk_size_kb = clamp_t(uint, chunk_size_kb, 128, 1024);
++
++	rsvd_bios_max = clamp_t(uint, rsvd_bios_max, 1, 1024);
++
++	rc = bioset_init(&mpool_bioset, rsvd_bios_max, 0, BIOSET_NEED_BVECS);
++	if (rc)
++		mp_pr_err("mpool bioset init failed", rc);
++
++	return rc;
++}
++
++void pd_exit(void)
++{
++	bioset_exit(&mpool_bioset);
++}
 -- 
 2.17.2
 _______________________________________________
