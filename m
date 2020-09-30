@@ -2,65 +2,106 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC9BD27F082
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Sep 2020 19:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6254A27F2CD
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Sep 2020 22:00:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id C1B4A154A7BF5;
-	Wed, 30 Sep 2020 10:28:42 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::641; helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 4AC7C154B2A28;
+	Wed, 30 Sep 2020 13:00:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=40.107.220.53; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=nmeeramohide@micron.com; receiver=<UNKNOWN> 
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2053.outbound.protection.outlook.com [40.107.220.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A515E1519864B
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Sep 2020 10:28:40 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id p15so3991726ejm.7
-        for <linux-nvdimm@lists.01.org>; Wed, 30 Sep 2020 10:28:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=K7sPk6Sik27AWrREdtUYnYe92i3vslb/zKKVkOgBVaQ=;
-        b=zmyxtM718bJxbCH+GLRAIs/H47BTp2R1awvT53QplORdnHGWVeJTQdK9fdRVtvBv5W
-         ZZFMGzmU2zd4bdTHGfpR4tVDd1Y0Otit4r7u3R2D/10aTTTl9ESuMHc7s8OzpDsc1AmQ
-         7KFl9Ey9DKu3G0yrF0FT/zZ+60uBSEAJcZeq0yQ67A6v6Hw9k7bWJHF1ay4LU+UHikkk
-         +6hYpTQSopFGY9z8J2KLxvVqdRC9FZS2YYvVRND4NXtYyWogwO3aEEB9ydcWm6G7YAY+
-         anaXgr8WTNEHkZfbgg/UocgrBOEELE7O0mBzxih/A2gUQEIuX1xMkxLYYueDwJzCOT7Y
-         fYHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=K7sPk6Sik27AWrREdtUYnYe92i3vslb/zKKVkOgBVaQ=;
-        b=IBlszKI1JO5lDY95hIWLFV9LqfzBM1aK//hJzHxIrjiJgCd7aBG/l4SHNYXAnZMRsD
-         S3Jm/cO4wTmgKW1AaPM4HfgXDDRwj/nRNrY/Zcj5y9Z3JgaAMnz/e41NEybXZI38B03x
-         qDbgY2KM+5bZqB9xguyqpQmPbGVRE8ZAl9q82u6aQt/IdUt0fRQIqEXMCLEDnW7XjHV/
-         PoswXIOI+IzCIraGEDmgyocMivJ4lrJkFGpLT5mRGhC7IROhKfl8yhVx+uE7Vf7S7u0h
-         NoDelSv/cs26pKdIPp20KHf7pX2OUe9Fb1DGHCF9oUVcHa8cEoQDLxtqiNFgf90XGeEz
-         ZwSQ==
-X-Gm-Message-State: AOAM531oNALetqW9T+ULecC2ep742HNeddpvaZzsD+xXK3Wv0r/VwXCR
-	pGo1MNHZg3k/Cf/bO6ficVopwdM/UlgAZQkP9Ur6DA==
-X-Google-Smtp-Source: ABdhPJwHTh9jNRUe26y/9bRenkD0CrDNpv/b4M+zhuDvrSCF8so++nqTlmejCH4CxF24yboF7SB9F7SGef38jSfloJI=
-X-Received: by 2002:a17:906:2354:: with SMTP id m20mr3803912eja.341.1601486917942;
- Wed, 30 Sep 2020 10:28:37 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id A48E314C11643
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Sep 2020 13:00:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=kt9WEdTH+mKHKx99cQ9/jOcU8JjSyb4wJ5VdPr1hSq1IaGFUyB2+G8gW1gWsABWnP4AKjh4+3RIP8BfBWt01CvPopa+5G+W5qMjL6BYSBHOtAB9Wc+nN18gm9+kyhoeOCrlBzM6vt89CoAzgiSq4F6ynJyYBGJAwQAgPc618ypeq2BwAvaZLDtlXQzum7XaOrAPDbh7Y/nIuaozgpKFHLUVkrXubGhLSpVq60vpNmCyJhXJ7t76S7EfEOvOIw65tg8u1IcY1rA1YrQLIUcJuh4N52ntRFIjf3ooZHPZtD5e3jpSrsETzceCaAm6N4rd6r+bqajYpF9QxBOxQy5pVgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XS0EqSIbRvhHf02ES3DP1MYUjHDpTDJIztV5UUySz7A=;
+ b=ocwqKyg4rz8QoUk0JF9MIRduZFKwg4NbNsllXLTx2JA7CWM7utZIaZr53Cc2rE/0Lv+CqaaTCabZkc6hNLdwJB6Vpnf2Xn5PnH3KnjCYDuPyRdPWCSmZKKI7uE22IeURb7ix6gNikjB8OTImq/45v26J8vw78yATI387XegfULJg8kZoQ5PEB9vJ0ZHtNHwKJ+WqaPUfcy8VA2wvxxCp2IDFrUGlZhPZFkoWje1PuaJ1Bsj9k54xtj3zLCMEVatdw6b6sv1QvpyWaRQO/Dbs7F19JH392zlylD9zuwplVaTF2t8gMDAjJODYNJoZvHeRUY4neEMQCKf+rqsAlI+YVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=micron.com; dmarc=pass action=none header.from=micron.com;
+ dkim=pass header.d=micron.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=micron.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XS0EqSIbRvhHf02ES3DP1MYUjHDpTDJIztV5UUySz7A=;
+ b=Sy0HR9ahGIlpZ3EMgD3oOzTp7Hx+KpketaJUMNd/VbxEXpu/c9/4X3LXJPnz+AmAmJj8My+8YfmjG76ObvCiIjJHk7KZZoz9JsAstvTaGoip0QVSdVnmEfjIa4B4YPwJH7A6eR9dKyD6qH0TrCrDjdcvKly4TlcfOzegHQIilC8=
+Received: from SN6PR08MB4208.namprd08.prod.outlook.com (2603:10b6:805:3b::21)
+ by SN6PR08MB4623.namprd08.prod.outlook.com (2603:10b6:805:9c::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.21; Wed, 30 Sep
+ 2020 20:00:06 +0000
+Received: from SN6PR08MB4208.namprd08.prod.outlook.com
+ ([fe80::f459:dd7f:5b2:effa]) by SN6PR08MB4208.namprd08.prod.outlook.com
+ ([fe80::f459:dd7f:5b2:effa%7]) with mapi id 15.20.3433.035; Wed, 30 Sep 2020
+ 20:00:06 +0000
+From: "Nabeel Meeramohideen Mohamed (nmeeramohide)" <nmeeramohide@micron.com>
+To: Randy Dunlap <rdunlap@infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-block@vger.kernel.org"
+	<linux-block@vger.kernel.org>, "linux-nvme@lists.infradead.org"
+	<linux-nvme@lists.infradead.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Subject: RE: [EXT] Re: [PATCH 17/22] mpool: add mpool lifecycle management
+ ioctls
+Thread-Topic: [EXT] Re: [PATCH 17/22] mpool: add mpool lifecycle management
+ ioctls
+Thread-Index: AQHWlbcLPnsRCBRfHEK8v2KQZl9QlqmAUZwAgAFG53A=
+Date: Wed, 30 Sep 2020 20:00:06 +0000
+Message-ID: 
+ <SN6PR08MB420825E40A88DBDFE66C5E13B3330@SN6PR08MB4208.namprd08.prod.outlook.com>
+References: <20200928164534.48203-1-nmeeramohide@micron.com>
+ <20200928164534.48203-18-nmeeramohide@micron.com>
+ <43f24e68-2625-36ce-1727-fcf981955b17@infradead.org>
+In-Reply-To: <43f24e68-2625-36ce-1727-fcf981955b17@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: infradead.org; dkim=none (message not signed)
+ header.d=none;infradead.org; dmarc=none action=none header.from=micron.com;
+x-originating-ip: [104.129.198.89]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: dd8972c7-5afe-4341-8fd4-08d8657b6d54
+x-ms-traffictypediagnostic: SN6PR08MB4623:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: 
+ <SN6PR08MB4623FB781AC4642D5249E1B0B3330@SN6PR08MB4623.namprd08.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3513;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ 4zrnwoW9XzFV1vnyzqopa3Tja1Ofr+HikE47t5qySZlBjDynzHZc+WvovD/7eTf/7qwZmkKQlEfjQODHeerByxQKia0gmAPTaXLrfWU7gXpOiKfMNJh+Rv9fX9JBEefoZ+rR1VFUhobJTIA/3AMFdvPStHau1D0Rhir9JCx6E3Aggi1wZjZw3sGvfx8UEIJGdCgMyps2nbyhE0LyRUd+E8aRQKvyJ2P3VkpFXrr58jnL5WAxrVBWUr8oYFXOj8VTpsq4WxTRCMN0p7fZfs3P1LCKBvUYUUQXmAHjXCzMXJl7xoAwRqVkAyft63j+dPnRax2an1lwwUYL9y1EVMgwwh7XgeLsDPX0NfJL4nxqwWj0MOe6hzbzEjf2TYkI5gV+
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR08MB4208.namprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(396003)(136003)(346002)(376002)(39860400002)(366004)(9686003)(52536014)(55236004)(76116006)(66476007)(64756008)(66556008)(66446008)(86362001)(316002)(53546011)(5660300002)(6506007)(186003)(54906003)(55016002)(2906002)(8676002)(8936002)(66946007)(7696005)(4326008)(4744005)(33656002)(478600001)(110136005)(26005)(71200400001)(107886003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ B5J51C/gFl99K26sQ+RFIZ9HUliHC/50xSIYkve2BeI7hjOF35y6KnzxcP6wRacR+22uKJgZUvE6h+YJA1ttmNZJKEJOtLK2z2RQYrWVMZ8YFOWmWntlvQsAMUtRNGxs1acJuwvxJIm8gjRJtNxaYnlj1V5k6z5cxGxRnOl7ARMsHn6HAJD0BHKK4hGmuAFhHPiTEt6pg6Uqh3ATXUVUxYKkIpGPSZEG2S9/MK1ifSYfXteSaom7EYZ8i30UZCEMmGQRDeH0M0GUn6rYYN+eVyVm9SZyItbaya71x7D2udnww8N91fXPY/R3MhBCYxQe8QIkTK5e7zVK7hiifqdw8t/1CeuG0JN9fux7oo8mzd+PYToJciZmvjffprZqj+GuIo38mtjMAnO7Z2KWrEXMNJAB1B4b4fQXcMxM30LPjm0u4c/A66lKwJlnnLnbCt30tjtcKEj5B6lFhztV4fdpLbEgB+ix+amlhO6T3Qp7lO/fMpT7x3X+JNfbX7vsjp2d2YW0rM69vTQSp04wSBWDfZ4CtURng4Hul6V8fWSekSH+TjHNCbVQi3Yuz+gh2T+CMZTknR++YrUUqbAckXUlquq2hwGkePlTp2eBlTRTHOuytJJyfS896Up7E6mx9hvDkD/gMG+ZOsWB7CyxwG2pIw==
 MIME-Version: 1.0
-References: <160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com>
- <160106112239.30709.15909567572288425294.stgit@dwillia2-desk3.amr.corp.intel.com>
- <86f450e7-d1a7-3d82-b486-afd6682c5942@redhat.com>
-In-Reply-To: <86f450e7-d1a7-3d82-b486-afd6682c5942@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 30 Sep 2020 10:28:26 -0700
-Message-ID: <CAPcyv4iZUFR5v-tr8zgxHuy2dotNSRGr1jdNpBFAsDYk8oUTFw@mail.gmail.com>
-Subject: Re: [PATCH v5 04/17] device-dax/kmem: replace release_resource() with release_mem_region()
-To: David Hildenbrand <david@redhat.com>
-Message-ID-Hash: ZOPKSMRTRFXKNNK4COHH2EQCTE734BOR
-X-Message-ID-Hash: ZOPKSMRTRFXKNNK4COHH2EQCTE734BOR
-X-MailFrom: dan.j.williams@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Brice Goglin <Brice.Goglin@inria.fr>, Jia He <justin.he@arm.com>, Joao Martins <joao.m.martins@oracle.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Linux MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+X-OriginatorOrg: micron.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR08MB4208.namprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd8972c7-5afe-4341-8fd4-08d8657b6d54
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Sep 2020 20:00:06.0917
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: f38a5ecd-2813-4862-b11b-ac1d563c806f
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QKKRe6Af0gaKqt4adsv/b14kpxVyq6mUF0mfiVrOV4an5Kxj8qoKYciCvYS2/BzFLRDR4CXzVL05qMd12loU5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR08MB4623
+Message-ID-Hash: VW46ZAE63UAWJN2JABVZPJMOVBY72K5E
+X-Message-ID-Hash: VW46ZAE63UAWJN2JABVZPJMOVBY72K5E
+X-MailFrom: nmeeramohide@micron.com
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+CC: "Steve Moyer (smoyer)" <smoyer@micron.com>,
+	"Greg Becker (gbecker)" <gbecker@micron.com>,
+	"Pierre Labat (plabat)" <plabat@micron.com>,
+	jgroves <John@ml01.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZOPKSMRTRFXKNNK4COHH2EQCTE734BOR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PUU73BR66QCPDWJS42BIWGHMTZATE2Z4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -69,137 +110,21 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 30, 2020 at 9:23 AM David Hildenbrand <david@redhat.com> wrote:
->
-> On 25.09.20 21:12, Dan Williams wrote:
-> > Towards removing the mode specific @dax_kmem_res attribute from the
-> > generic 'struct dev_dax', and preparing for multi-range support, change
-> > the kmem driver to use the idiomatic release_mem_region() to pair with
-> > the initial request_mem_region(). This also eliminates the need to open
-> > code the release of the resource allocated by request_mem_region().
-> >
-> > As there are no more dax_kmem_res users, delete this struct member.
-> >
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Vishal Verma <vishal.l.verma@intel.com>
-> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> > Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> > Cc: Brice Goglin <Brice.Goglin@inria.fr>
-> > Cc: Dave Jiang <dave.jiang@intel.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Ira Weiny <ira.weiny@intel.com>
-> > Cc: Jia He <justin.he@arm.com>
-> > Cc: Joao Martins <joao.m.martins@oracle.com>
-> > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> > ---
-> >  drivers/dax/dax-private.h |    3 ---
-> >  drivers/dax/kmem.c        |   20 +++++++-------------
-> >  2 files changed, 7 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-> > index 6779f683671d..12a2dbc43b40 100644
-> > --- a/drivers/dax/dax-private.h
-> > +++ b/drivers/dax/dax-private.h
-> > @@ -42,8 +42,6 @@ struct dax_region {
-> >   * @dev - device core
-> >   * @pgmap - pgmap for memmap setup / lifetime (driver owned)
-> >   * @range: resource range for the instance
-> > - * @dax_mem_res: physical address range of hotadded DAX memory
-> > - * @dax_mem_name: name for hotadded DAX memory via add_memory_driver_managed()
-> >   */
-> >  struct dev_dax {
-> >       struct dax_region *region;
-> > @@ -52,7 +50,6 @@ struct dev_dax {
-> >       struct device dev;
-> >       struct dev_pagemap *pgmap;
-> >       struct range range;
-> > -     struct resource *dax_kmem_res;
-> >  };
-> >
-> >  static inline u64 range_len(struct range *range)
-> > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> > index 6fe2cb1c5f7c..e56fc688bdc5 100644
-> > --- a/drivers/dax/kmem.c
-> > +++ b/drivers/dax/kmem.c
-> > @@ -33,7 +33,7 @@ int dev_dax_kmem_probe(struct device *dev)
-> >  {
-> >       struct dev_dax *dev_dax = to_dev_dax(dev);
-> >       struct range range = dax_kmem_range(dev_dax);
-> > -     struct resource *new_res;
-> > +     struct resource *res;
-> >       char *res_name;
-> >       int numa_node;
-> >       int rc;
-> > @@ -56,8 +56,8 @@ int dev_dax_kmem_probe(struct device *dev)
-> >               return -ENOMEM;
-> >
-> >       /* Region is permanently reserved if hotremove fails. */
-> > -     new_res = request_mem_region(range.start, range_len(&range), res_name);
-> > -     if (!new_res) {
-> > +     res = request_mem_region(range.start, range_len(&range), res_name);
-> > +     if (!res) {
-> >               dev_warn(dev, "could not reserve region [%#llx-%#llx]\n", range.start, range.end);
-> >               kfree(res_name);
-> >               return -EBUSY;
-> > @@ -69,23 +69,20 @@ int dev_dax_kmem_probe(struct device *dev)
-> >        * inherit flags from the parent since it may set new flags
-> >        * unknown to us that will break add_memory() below.
-> >        */
-> > -     new_res->flags = IORESOURCE_SYSTEM_RAM;
-> > +     res->flags = IORESOURCE_SYSTEM_RAM;
-> >
-> >       /*
-> >        * Ensure that future kexec'd kernels will not treat this as RAM
-> >        * automatically.
-> >        */
-> > -     rc = add_memory_driver_managed(numa_node, new_res->start,
-> > -                                    resource_size(new_res), kmem_name);
-> > +     rc = add_memory_driver_managed(numa_node, range.start, range_len(&range), kmem_name);
-> >       if (rc) {
-> > -             release_resource(new_res);
-> > -             kfree(new_res);
-> > +             release_mem_region(range.start, range_len(&range));
-> >               kfree(res_name);
-> >               return rc;
-> >       }
-> >
-> >       dev_set_drvdata(dev, res_name);
-> > -     dev_dax->dax_kmem_res = new_res;
-> >
-> >       return 0;
-> >  }
-> > @@ -95,7 +92,6 @@ static int dev_dax_kmem_remove(struct device *dev)
-> >  {
-> >       struct dev_dax *dev_dax = to_dev_dax(dev);
-> >       struct range range = dax_kmem_range(dev_dax);
-> > -     struct resource *res = dev_dax->dax_kmem_res;
-> >       const char *res_name = dev_get_drvdata(dev);
-> >       int rc;
-> >
-> > @@ -114,10 +110,8 @@ static int dev_dax_kmem_remove(struct device *dev)
-> >       }
-> >
-> >       /* Release and free dax resources */
-> > -     release_resource(res);
-> > -     kfree(res);
-> > +     release_mem_region(range.start, range_len(&range));
->
-> Does that work? AFAIKs,
->
-> __release_region(&iomem_resource, (start), (n)) -> __release_region()
->
-> will only remove stuff that is IORESOURCE_BUSY.
+Hi Randy,
 
-Oh, crud, indeed. More fallout from futzing with the flags.
+On Tuesday, September 29, 2020 6:13 PM, Randy Dunlap <rdunlap@infradead.org> wrote:
+> On 9/28/20 9:45 AM, nmeeramohide@micron.com wrote:
+> > +	if (_IOC_TYPE(cmd) != MPIOC_MAGIC)
+> Hi,
+> 
+> MPIOC_MAGIC is defined in patch 01/22.
+> It should also be added to Documentation/userspace-api/ioctl/ioctl-number.rst.
+> 
 
-> Maybe storing it in drvdata is indeed the easiest way to remove it from
-> struct dax_region.
+Sure, thanks! I've made a note of this and will address it in v2.
 
-My first choice is still to get the driver out of the layering
-violation of touching resource flags, but we don't seem to be
-converging on a way forward there. So, stuffing more tracking into
-drvdata (especially for the multi-range case) is the next best option.
+Thanks,
+Nabeel
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
