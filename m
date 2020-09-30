@@ -2,44 +2,44 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F70727EED8
-	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Sep 2020 18:20:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D47627EF07
+	for <lists+linux-nvdimm@lfdr.de>; Wed, 30 Sep 2020 18:23:39 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 569A8154CE714;
-	Wed, 30 Sep 2020 09:19:59 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.205.24.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [216.205.24.124])
+	by ml01.01.org (Postfix) with ESMTP id ABA2315446E59;
+	Wed, 30 Sep 2020 09:23:37 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 1F9AC154CE712
-	for <linux-nvdimm@lists.01.org>; Wed, 30 Sep 2020 09:19:57 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 253C8153F4C84
+	for <linux-nvdimm@lists.01.org>; Wed, 30 Sep 2020 09:23:33 -0700 (PDT)
 Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1601482796;
+	s=mimecast20190719; t=1601483012;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uKHuH9gfvnBJHwuaFiorJLnujaRINjTiPs8W+xg/oe8=;
-	b=iSobk10Q90GAUA9ap2/vybLLodNQW+24SDYJYLoh3dyhbQ38PpIHoEbZdValGe6QH9J9Bx
-	RI4LNiZ+hVPKh9AGAccffU1lWPdm2w9tP5PdUniI6DYsEzKkGXgyCWLEU3s9gpXoqiAFDn
-	jmzjl1aAubVlUm59V/4jY4nFYpQeDTQ=
+	bh=9S+BmjiS7UIOm1/vk3QmBdmFzkjQ9DHvoMiK/KH/PnQ=;
+	b=S6xKbo1IHGnlnsPIEzUbvenIeQ52yaZ+zAI1MGoa87e5kRwPQzP2BXLWTg981e7MrgbABY
+	YLK72uB32RE/+OM+HE+yHFD9zHODHX14TmcUFWcn2Mgh6GPsSVijNm/bTOBcZUlrtdKuhJ
+	qtFG7Nw8632ItpQputtH4NNajhEqRbw=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-253-fC1XBErsOAOFrforCjbAhA-1; Wed, 30 Sep 2020 12:19:51 -0400
-X-MC-Unique: fC1XBErsOAOFrforCjbAhA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+ us-mta-162-NjajD40hMg2GSghFOvXfkw-1; Wed, 30 Sep 2020 12:23:28 -0400
+X-MC-Unique: NjajD40hMg2GSghFOvXfkw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6495C807344;
-	Wed, 30 Sep 2020 16:19:49 +0000 (UTC)
+	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 169F5188C126;
+	Wed, 30 Sep 2020 16:23:26 +0000 (UTC)
 Received: from [10.36.112.204] (ovpn-112-204.ams2.redhat.com [10.36.112.204])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 1CB4878833;
-	Wed, 30 Sep 2020 16:19:45 +0000 (UTC)
-Subject: Re: [PATCH v5 03/17] device-dax/kmem: move resource name tracking to
- drvdata
+	by smtp.corp.redhat.com (Postfix) with ESMTP id A96215D9D3;
+	Wed, 30 Sep 2020 16:23:22 +0000 (UTC)
+Subject: Re: [PATCH v5 04/17] device-dax/kmem: replace release_resource() with
+ release_mem_region()
 To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
 References: <160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com>
- <160106111639.30709.17624822766862009183.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <160106112239.30709.15909567572288425294.stgit@dwillia2-desk3.amr.corp.intel.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -86,16 +86,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <316f7227-caf9-f207-1dd9-45bb4a6d0fde@redhat.com>
-Date: Wed, 30 Sep 2020 18:19:45 +0200
+Message-ID: <86f450e7-d1a7-3d82-b486-afd6682c5942@redhat.com>
+Date: Wed, 30 Sep 2020 18:23:21 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <160106111639.30709.17624822766862009183.stgit@dwillia2-desk3.amr.corp.intel.com>
+In-Reply-To: <160106112239.30709.15909567572288425294.stgit@dwillia2-desk3.amr.corp.intel.com>
 Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: OU7VLMKVB3DHE2R3HR4G6OC2NFLK4RRF
-X-Message-ID-Hash: OU7VLMKVB3DHE2R3HR4G6OC2NFLK4RRF
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Message-ID-Hash: 7YJ3CU3KBX3B2NCENBST7VMNHNQZQDLJ
+X-Message-ID-Hash: 7YJ3CU3KBX3B2NCENBST7VMNHNQZQDLJ
 X-MailFrom: david@redhat.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -103,7 +103,7 @@ CC: Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@so
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OU7VLMKVB3DHE2R3HR4G6OC2NFLK4RRF/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7YJ3CU3KBX3B2NCENBST7VMNHNQZQDLJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -112,13 +112,14 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On 25.09.20 21:11, Dan Williams wrote:
+On 25.09.20 21:12, Dan Williams wrote:
 > Towards removing the mode specific @dax_kmem_res attribute from the
-> generic 'struct dev_dax', and preparing for multi-range support, move
-> resource name tracking to driver data.  The memory for the resource name
-> needs to have its own lifetime separate from the device bind lifetime
-> for cases where the driver is unbound, but the kmem range could not be
-> unplugged from the page allocator.
+> generic 'struct dev_dax', and preparing for multi-range support, change
+> the kmem driver to use the idiomatic release_mem_region() to pair with
+> the initial request_mem_region(). This also eliminates the need to open
+> code the release of the resource allocated by request_mem_region().
+> 
+> As there are no more dax_kmem_res users, delete this struct member.
 > 
 > Cc: David Hildenbrand <david@redhat.com>
 > Cc: Vishal Verma <vishal.l.verma@intel.com>
@@ -133,81 +134,106 @@ On 25.09.20 21:11, Dan Williams wrote:
 > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  drivers/dax/kmem.c |   16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+>  drivers/dax/dax-private.h |    3 ---
+>  drivers/dax/kmem.c        |   20 +++++++-------------
+>  2 files changed, 7 insertions(+), 16 deletions(-)
 > 
+> diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
+> index 6779f683671d..12a2dbc43b40 100644
+> --- a/drivers/dax/dax-private.h
+> +++ b/drivers/dax/dax-private.h
+> @@ -42,8 +42,6 @@ struct dax_region {
+>   * @dev - device core
+>   * @pgmap - pgmap for memmap setup / lifetime (driver owned)
+>   * @range: resource range for the instance
+> - * @dax_mem_res: physical address range of hotadded DAX memory
+> - * @dax_mem_name: name for hotadded DAX memory via add_memory_driver_managed()
+>   */
+>  struct dev_dax {
+>  	struct dax_region *region;
+> @@ -52,7 +50,6 @@ struct dev_dax {
+>  	struct device dev;
+>  	struct dev_pagemap *pgmap;
+>  	struct range range;
+> -	struct resource *dax_kmem_res;
+>  };
+>  
+>  static inline u64 range_len(struct range *range)
 > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
-> index b0d6a99cf12d..6fe2cb1c5f7c 100644
+> index 6fe2cb1c5f7c..e56fc688bdc5 100644
 > --- a/drivers/dax/kmem.c
 > +++ b/drivers/dax/kmem.c
-> @@ -34,7 +34,7 @@ int dev_dax_kmem_probe(struct device *dev)
+> @@ -33,7 +33,7 @@ int dev_dax_kmem_probe(struct device *dev)
+>  {
 >  	struct dev_dax *dev_dax = to_dev_dax(dev);
 >  	struct range range = dax_kmem_range(dev_dax);
->  	struct resource *new_res;
-> -	const char *new_res_name;
-> +	char *res_name;
-
-I wonder why that change ...
-
+> -	struct resource *new_res;
+> +	struct resource *res;
+>  	char *res_name;
 >  	int numa_node;
 >  	int rc;
->  
-> @@ -51,15 +51,15 @@ int dev_dax_kmem_probe(struct device *dev)
->  		return -EINVAL;
->  	}
->  
-> -	new_res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> -	if (!new_res_name)
-> +	res_name = kstrdup(dev_name(dev), GFP_KERNEL);
-> +	if (!res_name)
+> @@ -56,8 +56,8 @@ int dev_dax_kmem_probe(struct device *dev)
 >  		return -ENOMEM;
 >  
 >  	/* Region is permanently reserved if hotremove fails. */
-> -	new_res = request_mem_region(range.start, range_len(&range), new_res_name);
-> +	new_res = request_mem_region(range.start, range_len(&range), res_name);
->  	if (!new_res) {
+> -	new_res = request_mem_region(range.start, range_len(&range), res_name);
+> -	if (!new_res) {
+> +	res = request_mem_region(range.start, range_len(&range), res_name);
+> +	if (!res) {
 >  		dev_warn(dev, "could not reserve region [%#llx-%#llx]\n", range.start, range.end);
-> -		kfree(new_res_name);
-> +		kfree(res_name);
+>  		kfree(res_name);
 >  		return -EBUSY;
->  	}
->  
-> @@ -80,9 +80,11 @@ int dev_dax_kmem_probe(struct device *dev)
->  	if (rc) {
->  		release_resource(new_res);
->  		kfree(new_res);
-> -		kfree(new_res_name);
-> +		kfree(res_name);
->  		return rc;
->  	}
-> +
-> +	dev_set_drvdata(dev, res_name);
->  	dev_dax->dax_kmem_res = new_res;
->  
->  	return 0;
-> @@ -94,7 +96,7 @@ static int dev_dax_kmem_remove(struct device *dev)
->  	struct dev_dax *dev_dax = to_dev_dax(dev);
->  	struct range range = dax_kmem_range(dev_dax);
->  	struct resource *res = dev_dax->dax_kmem_res;
-> -	const char *res_name = res->name;
-> +	const char *res_name = dev_get_drvdata(dev);
-
-... because here you're back to "const".
-
->  	int rc;
+> @@ -69,23 +69,20 @@ int dev_dax_kmem_probe(struct device *dev)
+>  	 * inherit flags from the parent since it may set new flags
+>  	 * unknown to us that will break add_memory() below.
+>  	 */
+> -	new_res->flags = IORESOURCE_SYSTEM_RAM;
+> +	res->flags = IORESOURCE_SYSTEM_RAM;
 >  
 >  	/*
-> 
+>  	 * Ensure that future kexec'd kernels will not treat this as RAM
+>  	 * automatically.
+>  	 */
+> -	rc = add_memory_driver_managed(numa_node, new_res->start,
+> -				       resource_size(new_res), kmem_name);
+> +	rc = add_memory_driver_managed(numa_node, range.start, range_len(&range), kmem_name);
+>  	if (rc) {
+> -		release_resource(new_res);
+> -		kfree(new_res);
+> +		release_mem_region(range.start, range_len(&range));
+>  		kfree(res_name);
+>  		return rc;
+>  	}
+>  
+>  	dev_set_drvdata(dev, res_name);
+> -	dev_dax->dax_kmem_res = new_res;
+>  
+>  	return 0;
+>  }
+> @@ -95,7 +92,6 @@ static int dev_dax_kmem_remove(struct device *dev)
+>  {
+>  	struct dev_dax *dev_dax = to_dev_dax(dev);
+>  	struct range range = dax_kmem_range(dev_dax);
+> -	struct resource *res = dev_dax->dax_kmem_res;
+>  	const char *res_name = dev_get_drvdata(dev);
+>  	int rc;
+>  
+> @@ -114,10 +110,8 @@ static int dev_dax_kmem_remove(struct device *dev)
+>  	}
+>  
+>  	/* Release and free dax resources */
+> -	release_resource(res);
+> -	kfree(res);
+> +	release_mem_region(range.start, range_len(&range));
 
-I do wonder if it wouldn't all be easier to just have some
+Does that work? AFAIKs,
 
-struct {
-	const char *res_name;
-	struct resource *res;
-};
+__release_region(&iomem_resource, (start), (n)) -> __release_region()
 
-allocating that and storing it as drvdata. But let's see what the next
-patch brings :)
+will only remove stuff that is IORESOURCE_BUSY.
+
+Maybe storing it in drvdata is indeed the easiest way to remove it from
+struct dax_region.
 
 -- 
 Thanks,
