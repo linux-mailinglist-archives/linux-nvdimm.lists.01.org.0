@@ -2,84 +2,75 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3EB2807DB
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Oct 2020 21:38:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2A9280841
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  1 Oct 2020 22:12:40 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2651C155D74EA;
-	Thu,  1 Oct 2020 12:38:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=vishal.l.verma@intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C12D5155D74E9
-	for <linux-nvdimm@lists.01.org>; Thu,  1 Oct 2020 12:38:26 -0700 (PDT)
-IronPort-SDR: KJMqu4Y4pmLhmq+rQmOxcCOSkYSX1/U9EjuJN9k1FVWW7IaLmpiEkeQGCXWrXStoqz0h2JPpZC
- 9pHrf9FSs9ow==
-X-IronPort-AV: E=McAfee;i="6000,8403,9761"; a="226944934"
-X-IronPort-AV: E=Sophos;i="5.77,324,1596524400";
-   d="scan'208";a="226944934"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 12:38:23 -0700
-IronPort-SDR: eKgkDWww0mzeNYx2OhFK+78ELAwMQs75cTF2UIhoXQyFR9A6Jz1bP9nd0EBPArQ6c0GlQDrGdw
- dGHjkOV39OVw==
-X-IronPort-AV: E=Sophos;i="5.77,324,1596524400";
-   d="scan'208";a="351279753"
-Received: from loppedah-mobl.amr.corp.intel.com (HELO omniknight.intel.com) ([10.212.30.3])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2020 12:38:23 -0700
-From: Vishal Verma <vishal.l.verma@intel.com>
+	by ml01.01.org (Postfix) with ESMTP id D0E49156373FD;
+	Thu,  1 Oct 2020 13:12:37 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=160.251.1.110; helo=rakuten.co.jp; envelope-from=apdu@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v160-251-1-110.wcb6.static.cnode.io [160.251.1.110])
+	by ml01.01.org (Postfix) with ESMTP id 5CC9F156373FD
+	for <linux-nvdimm@lists.01.org>; Thu,  1 Oct 2020 13:12:33 -0700 (PDT)
+Message-ID: <DC0B9CF86F290898CF099F03942C0F88@rakuten.co.jp>
+From: =?utf-8?B?44CQ5qW95aSp5biC5aC044CR?= <order@rakuten.co.jp>
 To: <linux-nvdimm@lists.01.org>
-Cc: Dan Williams <dan.j.williams@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>
-Subject: [ndctl PATCH 2/2] ndctl/inject-error: remove logically dead code
-Date: Thu,  1 Oct 2020 13:38:16 -0600
-Message-Id: <20201001193816.975987-2-vishal.l.verma@intel.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201001193816.975987-1-vishal.l.verma@intel.com>
-References: <20201001193816.975987-1-vishal.l.verma@intel.com>
-MIME-Version: 1.0
-Message-ID-Hash: DJLG3EUYUWBSQ3UZPXC5O5SETTACIXIV
-X-Message-ID-Hash: DJLG3EUYUWBSQ3UZPXC5O5SETTACIXIV
-X-MailFrom: vishal.l.verma@intel.com
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+Subject: =?utf-8?B?44CQ5qW95aSp5biC5aC044CR5pSv5omV5oOF5aCx5LiA6Ie044GX44Gm44GE44G+44Gb44KTICA=?=
+	=?utf-8?B?MjAyMC8xMC8wMiA1OjEyOjMz?=
+Date: Fri, 2 Oct 2020 05:12:24 +0900
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
+Message-ID-Hash: ESSYSSMVKS4BERBNBC7XZPJK4PRTZGAJ
+X-Message-ID-Hash: ESSYSSMVKS4BERBNBC7XZPJK4PRTZGAJ
+X-MailFrom: apdu@rakuten.co.jp
+X-Mailman-Rule-Hits: nonmember-moderation
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DJLG3EUYUWBSQ3UZPXC5O5SETTACIXIV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ESSYSSMVKS4BERBNBC7XZPJK4PRTZGAJ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Static analysis reports that the bb != NULL check is redundant because
-ndctl_namespace_bb_foreach already uses that as a loop condition. Remove
-it.
-
-Signed-off-by: Vishal Verma <vishal.l.verma@intel.com>
----
- ndctl/inject-error.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/ndctl/inject-error.c b/ndctl/inject-error.c
-index fe599ef..f6be6a5 100644
---- a/ndctl/inject-error.c
-+++ b/ndctl/inject-error.c
-@@ -255,9 +255,6 @@ static int injection_status(struct ndctl_namespace *ndns)
- 	}
- 
- 	ndctl_namespace_bb_foreach(ndns, bb) {
--		if (!bb)
--			break;
--
- 		block = ndctl_bb_get_block(bb);
- 		count = ndctl_bb_get_count(bb);
- 		jbb = util_badblock_rec_to_json(block, count, ictx.json_flags);
--- 
-2.26.2
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQrmnKzjg6Hjg7zjg6vjga/jgYrlrqLmp5jjgavjgojjgovjgYrmpb3lpKnjgqLjgqvjgqbjg7Pj
+g4jjga7jgZTmm7TmlrDjgYzlv4XopoHjgarloLTlkIjjgavjgYrnn6XjgonjgZvjgZnjgosNCmxp
+bnV4LW52ZGltbeanmA0KICAg44GK5a6i5qeY44Gu5rOo5paH44Go5qW95aSp44Ki44Kr44Km44Oz
+44OI44KS5YGc5q2i44GV44Gb44Gm44GE44Gf44Gg44GE44Gm44GK44KK44G+44GZ44CC6KuL5rGC
+5YWI5L2P5omA44GM5aSJ5pu044GV44KM44Gf44Gq44Gp44CB55CG55Sx44Gn55m655Sf44GZ44KL
+5Y+v6IO95oCn44GM44GC44KK44G+44GZ44CC44Ki44Kr44Km44Oz44OI44Gr44Ot44Kw44Kk44Oz
+44GX44Gm55S76Z2i44Gu5oyH56S644Gr5b6T44GG44GT44Go44Gn44CB44Ki44Kr44Km44Oz44OI
+44Gu5YGc5q2i54q25oWL44KS6Kej6Zmk44GX44Gm44GE44Gf44Gg44GR44G+44GZ44CCDQogIOS4
+i+iomOOBq+OBguOCi+OCv+ODluOCkuOCr+ODquODg+OCr+OBl+OBpuOBhOOBn+OBoOOBjeOAgeaz
+qOaWh+aDheWgseOCkuOBlOeiuuiqjeOBvuOBn+OBr+WkieabtOOAgg0KW+azqOaWh+eVquWPt10g
+MzAxOTA2LTIwMjAwOTI5LTc0NA0KW+W6l+iIl+WPl+S7mOaXpeaZgl0gMjAyMC8xMC8wMiA1OjEy
+OjMzDQpb44GK5pSv5omV44GE5pa55rOVXSDjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nmsbrmuIgN
+CualveWkqeODreOCsOOCpOODsyDvvJ4NCg0KDQoNCg0KDQrigLvjgq/jg6zjgrjjg4Pjg4jjgqvj
+g7zjg4nnlarlj7fjg7vmnInlirnmnJ/pmZDjga7lhaXlipvjgavplpPpgZXjgYTjgYzjgarjgYTj
+gYvjgZTnorroqo3jgY/jgaDjgZXjgYTjgIINCuKAu+OCr+ODrOOCuOODg+ODiOOCq+ODvOODieOB
+jOWIqeeUqOOBhOOBn+OBoOOBkeOBquOBhOeQhueUseOBq+OBpOOBhOOBpuOBr+OAgeOBlOWIqeeU
+qOOBruOCr+ODrOOCuOODg+ODiOOCq+ODvOODieS8muekvuOBvuOBp+OBiuWVj+WQiOOBm+OBj+OB
+oOOBleOBhOOAgg0KDQrkuIvoqJjpgKPntaHlhYjjgb7jgafjgYrpm7voqbHjgafjgZTpgKPntaHj
+gpLjgYTjgZ/jgaDjgY3jgb7jgZnjgojjgYbjgYrpoZjjgYTjgYTjgZ/jgZfjgb7jgZnjgIIgDQrv
+vJzjgZTpgKPntaHlhYjvvJ4NCualveWkqeOCq+ODvOODieagquW8j+S8muekvg0K5L+h55So566h
+55CG44Kw44Or44O844OX44CA44Oi44OL44K/44Oq44Oz44Kw44OB44O844OgIA0K6Zu76Kmx55Wq
+5Y+3IO+8miAwOTAtMzAzNC0xMDAwIO+8iOWPl+S7mOaZgumWk++8muaXpeacrOaZgumWkzk6MDAg
+LSAyMTowMO+8iQ0K4oC75rW35aSW44GL44KJ44Gu6YCj57Wh44Gu5aC05ZCIIO+8miANCjgx77yI
+5Zu944Kz44O844OJ77yJLTA5MC0zMDM0LTExMDANCuKAu+a1t+WkluOBi+OCieOCs+ODrOOCr+OD
+iOOCs+ODvOODq+OBp+OBrumAo+e1oeOBruWgtOWQiOOAgQ0K5rih6Iiq5YWI44Gn44Gu44Kz44Os
+44Kv44OI44Kz44O844Or5Y+X5LuY6Zu76Kmx55Wq5Y+344Gr44GU6YCj57Wh44GE44Gf44Gg44GE
+44Gf5b6MIO+8miANCjgx77yI5Zu944Kz44O844OJ77yJLTA5MC00NzQwLTMyNDANCualveWkqeag
+quW8j+S8muekvuOAgOOAgA0KaHR0cHM6Ly93d3cucmFrdXRlbi5jby5qcC8NCg0KDQoNCueZuuih
+jOWFg++8mualveWkqeOCq+ODvOODieagquW8j+S8muekvg0K44GT44GuReODoeODvOODq+OBr+as
+oeOBruOCouODieODrOOCueWum+OBq+mAgeS/oeOBleOCjOOBvuOBl+OBnzpsaW51eC1udmRpbW1A
+bGlzdHMuMDEub3JnCl9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fCkxpbnV4LW52ZGltbSBtYWlsaW5nIGxpc3QgLS0gbGludXgtbnZkaW1tQGxpc3RzLjAxLm9y
+ZwpUbyB1bnN1YnNjcmliZSBzZW5kIGFuIGVtYWlsIHRvIGxpbnV4LW52ZGltbS1sZWF2ZUBsaXN0
+cy4wMS5vcmcK
