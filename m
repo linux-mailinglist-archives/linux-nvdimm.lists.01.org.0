@@ -1,60 +1,80 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281FD281AE7
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Oct 2020 20:33:19 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1198D281B6E
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Oct 2020 21:15:29 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2ED4714E83632;
-	Fri,  2 Oct 2020 11:33:17 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.236; helo=mounxorg.cn; envelope-from=nuueqdm@mounxorg.cn; receiver=<UNKNOWN> 
-Received: from mounxorg.cn (unknown [103.140.238.236])
-	by ml01.01.org (Postfix) with ESMTP id 7F54714B6CBA3
-	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 11:33:14 -0700 (PDT)
-Message-ID: <671FB45B2D0DFADE5BC822C119A171FE@mounxorg.cn>
-From: "Amazon.co.jp" <account-update@amazon.co.jp>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?QW1hem9uLmNvLmpwIOOBq+OBlOeZu+mMsuOBruOCouOCqw==?=
-	=?utf-8?B?44Km44Oz44OI77yI5ZCN5YmN44CB44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx?=
-	=?utf-8?B?77yJ44Gu56K66KqNLi4=?=
-Date: Sat, 3 Oct 2020 02:33:07 +0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
-Message-ID-Hash: C4CDZXY7ZRESYJV76WK6HAR66QLQLFYX
-X-Message-ID-Hash: C4CDZXY7ZRESYJV76WK6HAR66QLQLFYX
-X-MailFrom: nuueqdm@mounxorg.cn
+	by ml01.01.org (Postfix) with ESMTP id 2185F151DA2FB;
+	Fri,  2 Oct 2020 12:15:27 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=81.198.125.103; helo=mx.metalurgs.lv; envelope-from=financialcapability6@gmail.com; receiver=<UNKNOWN> 
+Received: from mx.metalurgs.lv (mx.metalurgs.lv [81.198.125.103])
+	(using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 6D8B9151DA2F8
+	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 12:15:24 -0700 (PDT)
+Received: from mx.metalurgs.lv (localhost [127.0.0.1])
+	by mx.metalurgs.lv (Postfix) with ESMTP id 8E2A35F3F1
+	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 22:15:22 +0300 (EEST)
+Received: from kas30pipe.localhost (localhost [127.0.0.1])
+	by mx.metalurgs.lv (Postfix) with ESMTP id 6A2295F370
+	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 22:15:22 +0300 (EEST)
+Received: by mx.metalurgs.lv (Postfix, from userid 1005)
+	id 6A8DF5CBAE; Fri,  2 Oct 2020 22:15:20 +0300 (EEST)
+Received: from [100.64.1.74] (unknown [190.15.125.50])
+	(Authenticated sender: admin)
+	by mx.metalurgs.lv (Postfix) with ESMTPA id C849862B9C;
+	Fri,  2 Oct 2020 22:15:14 +0300 (EEST)
+MIME-Version: 1.0
+Content-Description: Mail message body
+To: Recipients <financialcapability6@gmail.com>
+From: "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date: Fri, 02 Oct 2020 16:15:08 -0300
+X-SpamTest-Envelope-From: financialcapability6@gmail.com
+X-SpamTest-Group-ID: 00000000
+X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
+X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
+X-SpamTest-Info: {DATE: unreal year}
+X-SpamTest-Method: none
+X-SpamTest-Rate: 55
+X-SpamTest-Status: Not detected
+X-SpamTest-Status-Extended: not_detected
+X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
+Message-ID: <20201002191521.6A8DF5CBAE@mx.metalurgs.lv>
+Subject: Low Rate Loan.
+X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
+	 bases: 20140401 #7726142, check: 20201002 notchecked
+Message-ID-Hash: F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P
+X-Message-ID-Hash: F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P
+X-MailFrom: financialcapability6@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: binmurrah@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/C4CDZXY7ZRESYJV76WK6HAR66QLQLFYX/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQrnorroqo3nlKjjgqLjgqvjgqbjg7Pjg4gNCiANCuOBguOBquOBn+OBruOCouOCq+OCpuODs+OD
-iOOBr+WBnOatouOBleOCjOOBvuOBl+OBnw0K44GT44KT44Gr44Gh44Gv44CBDQoNCuiqsOOBi+OB
-jOOBguOBquOBn+OBrkFtYXpvbuOCouOCq+OCpuODs+ODiOOBp+S7luOBruODh+ODkOOCpOOCueOB
-i+OCieizvOWFpeOBl+OCh+OBhuOBqOOBl+OBvuOBl+OBn+OAguOBneOBhuOBp+OBquOBkeOCjOOB
-sOOAgUFtYXpvbuOBruS/neitt+OBq+OBiuOBkeOCi+OCu+OCreODpeODquODhuOCo+OBqOaVtOWQ
-iOaAp+OBruWVj+mhjOOBq+OCiOOCiuOAgeOCu+OCreODpeODquODhuOCo+S4iuOBrueQhueUseOB
-i+OCieOCouOCq+OCpuODs+ODiOOBjOODreODg+OCr+OBleOCjOOBvuOBmeOAgg0KDQrjgqLjgqvj
-gqbjg7Pjg4jjgpLlvJXjgY3ntprjgY3kvb/nlKjjgZnjgovjgavjga/jgIEyNOaZgumWk+WJjeOB
-q+aDheWgseOCkuabtOaWsOOBmeOCi+OBk+OBqOOCkuOBiuWLp+OCgeOBl+OBviLjgZnjgILjgZ3j
-gozku6XlpJbjga7loLTlkIjjgIHjgYLjgarjgZ/jga7jgqLjgqvjgqbjg7Pjg4jjga/msLjkuYXj
-g63jg4Pjgq8uDQrnorroqo3nlKjjgqLjgqvjgqbjg7Pjg4ggDQrlrpzjgZfjgY/jgYrpoZjjgYTj
-gZfjgb7jgZkuDQoNCkFtYXpvbiBQcm90ZWN0aW9uDQpDb3B5dGlnaHQgZSAyMTkgQW1hem9uIGlu
-Yy4gMSBJbmludGUgTG9vcC7jgq/jg5Hjg4Hjg7zjg47jgIFDQSA5NTAxNCwgQWwgUmxpZ2h0cyBS
-ZXNlcnZlZOOAggpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-XwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcK
-VG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMu
-MDEub3JnCg==
+Hello Dear,
+
+We are Investment Company offering Corporate and Personal
+Loan at 3% Interest Rate for a duration of 10Years.
+
+We also pay 1% commission to brokers, who introduce project
+owners for finance or other opportunities.
+
+Please get back to me if you are interested for more
+details.
+
+Yours faithfully,
+Hashim Bin 
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
