@@ -1,39 +1,39 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B0CD280D69
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Oct 2020 08:20:55 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421A2280D6D
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Oct 2020 08:23:25 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2E68214341891;
-	Thu,  1 Oct 2020 23:20:53 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 77C311434189E;
+	Thu,  1 Oct 2020 23:23:23 -0700 (PDT)
 Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=142.11.244.234; helo=dhl.com; envelope-from=customersupport@dhl.com; receiver=<UNKNOWN> 
 Received: from dhl.com (hwsrv-781182.hostwindsdns.com [142.11.244.234])
-	by ml01.01.org (Postfix) with ESMTP id 54EE314341890
-	for <linux-nvdimm@lists.01.org>; Thu,  1 Oct 2020 23:20:50 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id CB2151434189D
+	for <linux-nvdimm@lists.01.org>; Thu,  1 Oct 2020 23:23:19 -0700 (PDT)
 From: DHL Express Courier <customersupport@dhl.com>
 To: linux-nvdimm@lists.01.org
 Subject: DHL DELIVERY PACKAGE : CONFIRM YOUR PACKAGE
-Date: 2 Oct 2020 06:20:49 +0000
-Message-ID: <20201002062049.A9C445CACDE2E255@dhl.com>
+Date: 2 Oct 2020 06:23:19 +0000
+Message-ID: <20201002062319.3E05DC61563468B8@dhl.com>
 MIME-Version: 1.0
-Message-ID-Hash: 3KBCZC4HEMDUCFB6HT4XMNXC6LVHKGIZ
-X-Message-ID-Hash: 3KBCZC4HEMDUCFB6HT4XMNXC6LVHKGIZ
+Message-ID-Hash: UIB3VCZFVDH6VZZJ47MYPY73BPCN6XMG
+X-Message-ID-Hash: UIB3VCZFVDH6VZZJ47MYPY73BPCN6XMG
 X-MailFrom: customersupport@dhl.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3KBCZC4HEMDUCFB6HT4XMNXC6LVHKGIZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UIB3VCZFVDH6VZZJ47MYPY73BPCN6XMG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============2337466653483363135=="
+Content-Type: multipart/mixed; boundary="===============5021475653309894588=="
 
---===============2337466653483363135==
+--===============5021475653309894588==
 Content-Type: text/html
 Content-Transfer-Encoding: quoted-printable
 
@@ -177,7 +177,7 @@ nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</SPAN>
 74568842707_3918>Copyright 1999-2020 DHL WorldWide Delivery. All rights res=
 erved</SPAN></SPAN><SPAN style=3D"COLOR: rgb(255,0,0)">.</SPAN></FONT></B><=
 /SPAN></SPAN></P></BODY></HTML>
---===============2337466653483363135==
+--===============5021475653309894588==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -187,4 +187,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============2337466653483363135==--
+--===============5021475653309894588==--
