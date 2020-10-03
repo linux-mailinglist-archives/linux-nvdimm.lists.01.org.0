@@ -1,59 +1,38 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1198D281B6E
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  2 Oct 2020 21:15:29 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5A62825FC
+	for <lists+linux-nvdimm@lfdr.de>; Sat,  3 Oct 2020 21:09:00 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 2185F151DA2FB;
-	Fri,  2 Oct 2020 12:15:27 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=81.198.125.103; helo=mx.metalurgs.lv; envelope-from=financialcapability6@gmail.com; receiver=<UNKNOWN> 
-Received: from mx.metalurgs.lv (mx.metalurgs.lv [81.198.125.103])
-	(using TLSv1 with cipher DHE-RSA-CAMELLIA256-SHA (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 20D5213A09E94;
+	Sat,  3 Oct 2020 12:08:58 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=194.39.124.91; helo=hs10.home; envelope-from=zhengfuqing@yandex.com; receiver=<UNKNOWN> 
+Received: from HS10.home (hosting10.serverhs.org [194.39.124.91])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6D8B9151DA2F8
-	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 12:15:24 -0700 (PDT)
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-	by mx.metalurgs.lv (Postfix) with ESMTP id 8E2A35F3F1
-	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 22:15:22 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-	by mx.metalurgs.lv (Postfix) with ESMTP id 6A2295F370
-	for <linux-nvdimm@lists.01.org>; Fri,  2 Oct 2020 22:15:22 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-	id 6A8DF5CBAE; Fri,  2 Oct 2020 22:15:20 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-	(Authenticated sender: admin)
-	by mx.metalurgs.lv (Postfix) with ESMTPA id C849862B9C;
-	Fri,  2 Oct 2020 22:15:14 +0300 (EEST)
+	by ml01.01.org (Postfix) with ESMTPS id 4121013A09E93
+	for <linux-nvdimm@lists.01.org>; Sat,  3 Oct 2020 12:08:54 -0700 (PDT)
+Received: from [100.120.56.34] ([84.17.46.222]) by home with
+ MailEnable ESMTPA; Sat, 3 Oct 2020 02:52:43 +0100
 MIME-Version: 1.0
 Content-Description: Mail message body
-To: Recipients <financialcapability6@gmail.com>
-From: "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date: Fri, 02 Oct 2020 16:15:08 -0300
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191521.6A8DF5CBAE@mx.metalurgs.lv>
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-	 bases: 20140401 #7726142, check: 20201002 notchecked
-Message-ID-Hash: F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P
-X-Message-ID-Hash: F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P
-X-MailFrom: financialcapability6@gmail.com
+Subject: Good Day!!
+To: linux-nvdimm@lists.01.org
+From: zhengfuqing@yandex.com
+Date: Sat, 03 Oct 2020 03:52:43 +0200
+Message-ID: <F68FF6625A984A5C8D0B95ECACDB2171.MAI@home>
+X-ME-Bayesian: 0.000000
+Message-ID-Hash: IRNJYMTWRUTILCYLBUMCHYK2W24AJ7NH
+X-Message-ID-Hash: IRNJYMTWRUTILCYLBUMCHYK2W24AJ7NH
+X-MailFrom: zhengfuqing@yandex.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
-Reply-To: binmurrah@gmail.com
+Reply-To: fuqingzheng342@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/F7FJ2KGAJ7KUKAAR6V6SLVBEWOM7I66P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IRNJYMTWRUTILCYLBUMCHYK2W24AJ7NH/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,19 +41,14 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hello Dear,
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Greetings,
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+There is an urgent matter i would want to bring to your attention privately and i would appreciate your swift response, I will give you more information about the project as soon as I have your response.
 
-Please get back to me if you are interested for more
-details.
+Best Regards,
 
-Yours faithfully,
-Hashim Bin 
+Executive director.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
