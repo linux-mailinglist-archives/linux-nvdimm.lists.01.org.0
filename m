@@ -1,249 +1,60 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0D2282B5D
-	for <lists+linux-nvdimm@lfdr.de>; Sun,  4 Oct 2020 17:11:43 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA4E282C06
+	for <lists+linux-nvdimm@lfdr.de>; Sun,  4 Oct 2020 19:39:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id A10FC14F5E336;
-	Sun,  4 Oct 2020 08:11:41 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=222.93.110.179; helo=aqozj.org; envelope-from=xvgoxvdc@aqozj.org; receiver=<UNKNOWN> 
-Received: from aqozj.org (unknown [222.93.110.179])
-	by ml01.01.org (Postfix) with ESMTP id 71EA914F5E334
-	for <linux-nvdimm@lists.01.org>; Sun,  4 Oct 2020 08:11:35 -0700 (PDT)
-Received: from pyzlnk (unknown [177.197.132.233])
-	by aqozj with SMTP id skYKVXpPgfExYLR8.1
-	for <linux-nvdimm@lists.01.org>; Sun, 04 Oct 2020 23:11:46 +0800
-Date: Sun, 4 Oct 2020 23:11:40 +0800
-From: =?utf-8?B?6LS+5rqi546y?= <xvgoxvdc@aqozj.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?5aaC5L2V5o6M5o+h6Z2i5ZCR5Yi26YCg57O757uf55qE5Lqn5ZOB6K6+6K6h77yIREZN77yJ?=
-	=?utf-8?B?55qE5pa55rOV5LiO5a6e5pa96L+H56iLICAgIOW5v+W3nuW4guiLseaymeeUteWtkOezuw==?=
-	=?utf-8?B?57uf5pyJ6ZmQ5YWs5Y+4MjAyMC8xMC80MjM6MTE6?=
-	=?utf-8?B?NDQ=?=
-Message-ID: <20201004231146057777@aqozj.org>
-X-mailer: Foxmail 6, 13, 102, 15 [cn]
-Mime-Version: 1.0
-Message-ID-Hash: NPGZBQWLURQDEUSM34N5R5QHY7B52DGJ
-X-Message-ID-Hash: NPGZBQWLURQDEUSM34N5R5QHY7B52DGJ
-X-MailFrom: xvgoxvdc@aqozj.org
+	by ml01.01.org (Postfix) with ESMTP id BFD141509977A;
+	Sun,  4 Oct 2020 10:39:07 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=45.12.215.229; helo=slot0.coinbaze.xyz; envelope-from=financialcapability6@gmail.com; receiver=<UNKNOWN> 
+Received: from slot0.coinbaze.xyz (vm1437720.3ssd.had.wf [45.12.215.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 9F13A15099763
+	for <linux-nvdimm@lists.01.org>; Sun,  4 Oct 2020 10:39:04 -0700 (PDT)
+MIME-Version: 1.0
+Content-Description: Mail message body
+Subject: Low Rate Loan.1
+To: Recipients <financialcapability6@gmail.com>
+From: "Mr. Hashim Bin" <financialcapability6@gmail.com>
+Date: Sun, 04 Oct 2020 14:38:52 -0300
+Message-ID: <0.0.1.491.1D69A753BD2C0BC.0@slot0.coinbaze.xyz>
+Message-ID-Hash: W54JKXJSYPGPPLQMQBBM7HGIMPJVFKIS
+X-Message-ID-Hash: W54JKXJSYPGPPLQMQBBM7HGIMPJVFKIS
+X-MailFrom: financialcapability6@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: binmurrah@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NPGZBQWLURQDEUSM34N5R5QHY7B52DGJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/W54JKXJSYPGPPLQMQBBM7HGIMPJVFKIS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-DQoNCjQ1DQrmiJAg5YqfIOeahCDkuqcg5ZOBIOe7jyDnkIYNCg0KDQrigJTigJQg5LqnIOWTgSDn
-u48g55CGIOeahCDph44g6JuuIOaIkCDplb8NCg0KDQrkuL7lip7ml7bpl7TvvJoyMDIw5bm0ICA5
-5pyIMjQtMjXml6XkuIrmtbcgICAgIDnmnIgyOC0yOeaXpea3seWcsw0K5Z+56K6t6LS555So77ya
-5Y2V54us5oql5ZCNMzk4MOWFgy/kurrvvIzkvJjmg6DmtLvliqg2NjAw5YWDMuS6uu+8jOS4jeWG
-jeaKmOaJo+OAgu+8iOWQq+aVmeadkOOAgeiMtueCueOAgeivgeS5pu+8jOWQq+WNiOmkkO+8iQ0K
-5Y+C5Yqg5a+56LGh77ya5LyB5LiaQ0VPL+aAu+e7j+eQhuOAgeeglOWPkeaAu+e7j+eQhi/lia/m
-gLvjgIHmtYvor5Xpg6jnu4/nkIbjgIHkuK3or5Uv6K+V5Lqn6YOo57uP55CG44CB5Yi26YCg6YOo
-57uP55CG44CB5bel6Im6L+W3peeoi+mDqOe7j+eQhuOAgei0qOmHj+mDqOe7j+eQhuOAgemhueeb
-rue7j+eQhi/kuqflk4Hnu4/nkIbjgIHpq5jnuqfliLbpgKDlt6XnqIvluIjnrYnjgIINCuWSqOiv
-oueUteivne+8mueoi+WFiOeUnyAgIDE3NzE1NTQzOTc077yI5ZCM5b6u5L+h77yJDQoNCg0K6K++
-56iL6IOM5pmvDQoNCuaIkeS7rOWcqOS4uuS8geS4muaPkOS+m+eglOWPkeeuoeeQhuWSqOivouac
-jeWKoeeahOi/h+eoi+S4reWPkeeOsO+8jOW+iOWkmuS8geS4mueahOaWsOS6p+WTgeW8gOWPkeS7
-juagt+acuuWIsOmHj+S6p+eahOi/h+eoi+S4re+8iOS6p+WTgeWMlui/h+eoi++8ieWtmOWcqOed
-gOWFseWQjOeahOmXrumimO+8mg0KMS7mlrDlk4HmsqHmnInnu4/ov4fkuK3or5XmiJbkuK3or5Xn
-moTml7bpl7Tlvojnn63vvIzliLbpgKDpg6jpl6jmiI/np7DnoJTlj5HnmoTmlrDlk4HmmK/igJzk
-uInml6DigJ3kuqflk4HvvIzmsqHmnInnlJ/kuqfmlofku7bjgIHmsqHmnInlt6Xoo4XjgIHnlJ/k
-uqfnjrDlnLrlh7rkuobpl67popjmsqHkurrnrqHvvJsNCjIu6L2s5Lqn5rKh5pyJ5qCH5YeG77yM
-56CU5Y+R5oOz5b+r54K56L2s5Lqn77yM55Sf5Lqn5a+55pyJ6Zeu6aKY55qE5Lqn5ZOB5Y+I5LiN
-5oS/5o6l5pS277yM5biM5pyb56CU5Y+R5oqK6Zeu6aKY6YO96Kej5Yaz5LqG5omN6L2s6L+H5p2l
-77yM6ICM5biC5Zy65Y+I5YKs5b6X5oCl77yM57uP5bi46KKr6L+r5o6l5pS277yM6ZW/5q2k5Lul
-5b6A77yM5a+86Ie056CU5Y+R5LiO55Sf5Lqn55qE55+b55u+5r+A5YyW77ybDQozLuacieS6m+S8
-geS4muW8gOWni+aIkOeri+S4reivlemDqOmXqO+8jOW4jOacm+WcqOS4reivlemYtuauteaKiuS6
-p+WTgei0qOmHj+mXrumimOino+WGs+aOie+8jOS9huS4reivleeahOWumuS9jeS4jui/kOS9nOS5
-n+W+iOWbsOaDke+8jOWPkeeUn+i0qOmHj+S4jui/m+W6pueahOWGsueqgeaXtu+8jOWmguS9leWP
-luiIjeS4juW5s+ihoe+8jOS7peWJjeeglOWPkeS4juWItumAoOeahOefm+ebvui9rOWMluS4uueg
-lOWPkeS4juS4reivleOAgeS4reivleS4jueUn+S6p+eahOefm+ebvu+8jOS4reivleaIkOS6huef
-m+ebvumbhuaVo+S4reW/g++8mw0KNC7luILlnLrnmoTljovlipvlubbkuI3lm6DkuK3or5XnmoTk
-uqfnlJ/ogIzlh4/lsJHvvIzkuK3or5XpnIDopoHku47lk6rkupvmlrnpnaLliqrlipvmiY3og73m
-u6HotrPkuqflk4HnmoTotKjph4/jgIHov5vluqbnmoTopoHmsYLvvJ/kuK3or5XnmoTkuJrliqHm
-mK/pnaLlkJHnoJTlj5Hov5jmmK/pnaLlkJHliLbpgKDvvIzov5jmmK/lhbzogIzmnInkuYvvvJ8N
-CjUu6YeP5Lqn5ZCO5omN5Y+R546w5Lqn5ZOB5Y+v5Yi26YCg5oCn5beu44CB5oiQ5ZOB546H5L2O
-44CB57uP5bi46L+U5bel77yM5b2x5ZON5Y+R6LSn77ybDQo2LuS6p+WTgeWIsOS6hueUn+S6p+WQ
-jui/mOWPkeeUn+Wkp+mHj+eahOiuvuiuoeWPmOabtO+8mw0KNy7kuqflk4HliLDkuoblrqLmiLfm
-iYvkuK3ov5jlhpLlh7rlkITnp43lkITmoLfnmoTpl67popjku6Xoh7TopoHnoJTlj5HkurrlkZjl
-iLDlpITljrvigJzmlZHngavigJ3jgILjgILjgILjgILjgILjgIINCuacrOivvueoi+WwhuWfuuS6
-juWkmuW5tOeahOWunui3teOAgemVv+acn+eahOeglOWPkeWSqOivouenr+e0r++8jOaAu+e7k+WH
-uuS4gOWll+eQhuiuuuS4juWunui3teebuOe7k+WQiOeahOWPr+aTjeS9nOeahOaWueazle+8jOmF
-jeS7peWkp+mHj+WunumZheahiOS+i++8jOS7peaMh+WvvOeglOWPkS/or5Xkuqcv5Yi26YCg6YOo
-6Zeo5Li7566h5aaC5L2V6auY5pWI55qE5a6e546w5Lqn5ZOB5LuO5qC35ZOB6LWw5ZCR6YeP5Lqn
-44CCDQoNCg0K5Z+56K6t5pS255uKDQoNCjEu5LqG6Kej5Lia55WM5YWs5Y+45Zyo5LiN5ZCM5Y+R
-5bGV6Zi25q6155qE5Lqn5ZOB5Lit6K+V566h55CG5qih5byP5LiO5a6e6Le1DQoyLuaOjOaPoemd
-ouWQkeWItumAoOezu+e7n+eahOS6p+WTgeiuvuiuoe+8iERGTe+8ieeahOaWueazleS4juWunuaW
-vei/h+eoiw0KMy7mjozmj6HpnaLlkJHnlJ/kuqfmtYvor5XnmoTkuqflk4Horr7orqHvvIhERlTv
-vInnmoTmlrnms5XkuI7lrp7mlr3ov4fnqIsNCjQu5o6M5o+h6Z2i5ZCR5Yi26YCg57O757uf55qE
-5paw5Lqn5ZOB6aqM6K+B55qE6L+H56iL5LiO5pa55rOVDQo1LuaOjOaPoeWcqOa7oei2s+i0qOmH
-j+agh+WHhueahOWJjeaPkOS4i+e8qeefreS6p+WTgeivleWItuWRqOacn+eahOaWueazleWSjOaK
-gOW3pw0KNi7kuobop6PlpoLkvZXlu7rnq4vku47moLflk4HliLDph4/kuqfnmoTnrqHnkIbmnLrl
-iLYNCg0KDQoNCuivvueoi+WGheWuuQ0KDQrkuIDjgIHmoYjkvovnoJTorqgNCuS6jOOAgeS7juag
-t+WTgeWIsOmHj+S6p+amgui/sA0KMS7kvIHkuJrlnKjov73msYLku4DkuYjvvJrmioDmnK/vvJ/m
-oLflk4HvvJ/kuqflk4HvvJ/llYblk4HvvJ8NCjIu56CU5Y+R5LiO5Yi26YCg55qE55+b55u+77ya
-DQox77yJLuWItumAoOezu+e7n+WmguS9lemdouWvueeglOWPkeeahOS4ieaXoOS6p+WTge+8nw0K
-Mu+8iS7noJTlj5HlpoLkvZXpnaLlr7nliLbpgKDns7vnu5/otormnaXotorpq5jnmoTpl6jmp5vv
-vJ8NCjMu56CU5Y+R5LiO5Yi26YCg55+b55u+55qE5r+A5YyW77ya5Lit6K+V55qE5Lqn55Sf5oiQ
-5Li65b+F54S2DQo0LuS4reivleeahOWumuS9jeS4juWPkeWxle+8mg0KMe+8iS7noJTlj5HvvIhS
-RO+8ieOAgeS4reivle+8iEQmUO+8ieOAgeeUn+S6p++8iFDvvInnmoTlhbPns7sNCjLvvIku5Lit
-6K+V55qE5L2/5ZG95piv5LuA5LmI77yfIA0KM++8iS7kuK3or5XlpoLkvZXlrprkvY3vvJ8gDQo0
-77yJLuS4reivleeahOWPkeWxlemXrumimO+8mg0K74Gs5aSn6ICM5YWo77yfDQrvgazkuJPkuJrl
-jJbliIblt6XvvJ8NCu+BrOS6p+WTgee6v+WIkuWIhuS4juWFseS6q+W5s+WPsA0K74Gs5Lit6K+V
-5Lq65ZGY55qE5Y+R5bGV5a6a5L2N77ya5bm/5bqm5LiO5rex5bqm6Zeu6aKYDQo1LuS4reivleea
-hOS4muWKoeiMg+WbtA0KMe+8iS7kuK3or5XkuJrliqHvvJrmlrDkuqflk4Hlr7zlhaXvvIhOUEnv
-vIkNCjLvvIku5om/5LiK77ya5aaC5L2V6Z2i5ZCR5Lqn5ZOB55qE56CU5Y+R77yfDQoz77yJLuWQ
-r+S4i++8muWmguS9lemdouWQkeS6p+WTgeeahOWItumAoO+8nw0KNO+8iS7moaXmooHvvJrkuK3o
-r5XkvZzkuLrov57mjqXnoJTlj5HkuI7liLbpgKDnmoTmoaXmooHvvIzni6zmnKjmoaXov5jmmK/p
-mLPlhbPpgZPvvJ8NCjYu5ryU57uD5LiO6Zeu6aKY6K6o6K66DQox77yJLuagueaNruS8geS4muea
-hOWunumZheaDheWGte+8jOaYr+WQpumcgOimgeW7uueri+W5tuWPkeWxleS4reivleeahOiBjOiD
-ve+8nw0K5LiJ44CB5paw5Lqn5ZOB5a+85YWl5Zui6ZifDQoxMS7mlrDkuqflk4Hlr7zlhaXlm6Lp
-mJ/nmoTmnoTmiJANCjHvvIku5bel6Im65bel56iLDQoy77yJLuiuvuWkh+W3peeoiw0KM++8iS7m
-tYvor5Xlt6XnqIsNCjTvvIku5bel5Lia5bel56iLDQo177yJLuS6p+WTgemqjOivgQ0KNu+8iS7o
-r5XnlJ/kuqfvvIjorqHliJLjgIHnlJ/kuqfjgIHotKjph4/vvIkNCjIu5paw5Lqn5ZOB5a+85YWl
-5Zui6Zif55qE6IGM6LSjDQozLuaWsOS6p+WTgeWvvOWFpeWboumYn+S4juS6p+WTgeW8gOWPkeWb
-oumYn+eahOWFs+ezuw0KMe+8iS7lvIDlj5HmqKHlvI/nmoTmvJTlj5jvvJrkuLLooYzlj5jlubbo
-oYwNCjLvvIku5bm26KGM5bel56iL5Zyo5Lqn5ZOB5byA5Y+R5Lit5aaC5L2V5L2T546w77yfDQoz
-77yJLuaWsOS6p+WTgeWvvOWFpeWboumYn+WmguS9leaPkOWJjeS7i+WFpeeglOWPke+8nw0K74Gs
-5Li65LuA5LmI6KaB5o+Q5YmN5LuL5YWl77yfDQrvgazmj5DliY3liLDku4DkuYjml7blgJnku4vl
-haXvvJ8NCu+BrOaPkOWJjeS7i+WFpeWBmuS7gOS5iO+8nw0KNO+8iS7mlrDkuqflk4Hlr7zlhaXl
-m6LpmJ/nmoTnrqHnkIYNCu+BrOaWsOS6p+WTgeWvvOWFpeWboumYn+S4juS6p+WTgeW8gOWPkeWb
-oumYn+OAgeiBjOiDvemDqOmXqOeahOayn+mAmg0K74Gs5paw5Lqn5ZOB5a+85YWl5Zui6Zif5oiQ
-5ZGY55qE5rGH5oql44CB6ICD5qC45ZKM566h55CG5py65Yi2DQo0Lua8lOe7g+S4jumXrumimOiu
-qOiuug0KMe+8iS7moLnmja7kvIHkuJrnmoTlrp7pmYXmg4XlhrXvvIznoJTorqjlu7rnq4vmlrDk
-uqflk4Hlr7zlhaXlm6LpmJ/nmoTml7bmnLoNCuWbm+OAgemdouWQkeWItumAoOezu+e7n+eahOS6
-p+WTgeiuvuiuoe+8iERGTe+8iQ0KMS7lpoLkvZXlnKjkuqflk4Horr7orqHkuI7lvIDlj5Hov4fn
-qIvkuK3ov5vooYzlj6/liLbpgKDmgKforr7orqENCjHvvIku5LuO5Yi26YCg55qE6KeS5bqm5p2l
-55yL5Lqn5ZOB6K6+6K6hDQoy77yJLuW3peiJuuS6uuWRmOS7i+WFpeS6p+WTgeW8gOWPkei/h+eo
-i+eahOWIh+WFpeeCue+8muS7jueri+mhueWwseW8gOWniw0KM++8iS7lt6XoibrnrqHnkIbnmoTk
-uInkuKrpmLbmrrXvvJrlt6Xoibrorr7orqHjgIHlt6XoibrosIPliLbkuI7pqozor4HjgIHlt6Xo
-ibrnrqHliLYNCjTvvIku5bel6Im66K6+6K6h77yaDQrvgazlpoLkvZXmj5Dlh7rlj6/liLbpgKDm
-gKfpnIDmsYLvvJ8NCu+BrOmcgOimgeWTquS6m+WFuOWei+eahOW3peiJuuinhOiMg++8nw0K74Gs
-5Y+v5Yi26YCg5oCn6ZyA5rGC5aaC5L2V6JC95a6e5Yiw5Lqn5ZOB6K6+6K6h5pa55qGI5Lit77yf
-DQrvgazlt6Xoibrorr7orqHkuI7kuqflk4Horr7orqHlpoLkvZXlubbooYzvvJ8NCu+BrOS6p+WT
-geW3peiJuua1geeoi+iuvuiuoQ0K74Gs55S16KOF44CB5pW06KOF44CB5YyF6KOF5LiO54mp5rWB
-55qE5Y+v5Yi26YCg5oCn6K6+6K6h5YiG5p6QDQrvgazlpoLkvZXnoa7kv53lj6/liLbpgKDmgKfp
-nIDmsYLlnKjkuqflk4HlvIDlj5HkuK3lt7Looqvlrp7njrDvvJ8NCu+BrOW3peiJuuivhOWuoeWm
-guS9leaTjeS9nO+8nw0K74Gs5LuA5LmI5pe25YCZ6ICD6JmR5bel6KOF77yfDQrvgazlpoLkvZXl
-nKjlvIDlj5Hov4fnqIvkuK3lkIzmraXovpPlh7rlt6Xoibrmlofku7bkuI7nlJ/kuqfmk43kvZzm
-jIflr7zmlofku7YNCjXvvIku5bel6Im66LCD5Yi25LiO6aqM6K+BDQrvgazlt6Xoibrpqozor4Hn
-moTml7bmnLoNCu+BrOW3peiJuumqjOivgeaWueahiOWMheaLrOWTquS6m+WGheWuue+8nw0K74Gs
-5aaC5L2V5a6e5pa95bel6Im66aqM6K+B77yfDQrvgazlt6Xoibrpqozor4HmiqXlkYrnmoTlhoXl
-rrkNCu+BrOWmguS9leaOqOWKqOW3peiJuumqjOivgeeahOmXrumimOino+WGs++8nw0K74Gs56CU
-5Y+R5Lq65ZGY5aaC5L2V6YWN5ZCI5paw5Lqn5ZOB55qE5bel6Im66aqM6K+B77yfDQrvgazliLbp
-gKDlpJbljIXmqKHlvI/kuIvnmoTlt6XoibrlpoLkvZXpqozor4HvvJ8NCjbvvIku5bel6Im6566h
-5Yi2DQrvgazlt6XoibrnrqHliLbnmoTlm7Dmg5HvvJrmlZHngavkvZXml7bmmK/lsL3lpLTvvJ8N
-Cu+BrOW3peiJuui9rOS6p+ivhOWuoe+8iOagh+WHhuOAgea1geeoi+OAgei0o+S7u++8iQ0K74Gs
-6YeP5Lqn6L+H56iL5Lit55qE5L6L6KGM55uR5o6n5LiO5byC5bi4566h55CGDQoyLua8lOe7g+S4
-jumXrumimOiuqOiuug0KMe+8iS7liIbmnpDlrablkZjkvIHkuJrnmoTlt6XoibrnrqHnkIblt6Xk
-vZzlgZrliLDku4DkuYjnqIvluqbvvJ/lrZjlnKjlk6rkupvlt67ot53vvJ8NCjMu5bel6Im6566h
-55CG5bmz5Y+w5bu66K6+DQox77yJLuiwgei0n+i0o+W3peiJuuW5s+WPsOeahOW7uuiuvu+8nw0K
-Mu+8iS7lt6Xoibrlp5TlkZjkvJrnmoTkuqfnlJ/vvJrotKPku7vkuI7ov5DkvZzmqKHlvI8NCjPv
-vIku5aaC5L2V6L+b6KGM5bel6Im66KeE5YiS77yfDQo077yJLuWfuuehgOW3peiJuueglOeptuS4
-juW6lOeUqA0KNe+8iS7mlK/mkpHlt6XoibrnrqHnkIblubPlj7DnmoTlm5vlpKfop4TojIPvvJoN
-Cu+BrOWTgei0qOinhOiMgw0K74Gs6K6+5aSH6KeE6IyDDQrvgazlt6Xoibrop4TojIMNCu+BrOiu
-vuiuoeinhOWIkg0KNu+8iS7lt6XoibrnrqHnkIbpg6jpl6jlpoLkvZXmjqjliqhERk3kuJrliqHn
-moTlvIDlsZXvvJ8NCjfvvIku5bel6Im65L2T57O755qE57uE57uH5p6E5oiQ44CB5Y+R5bGV5LiO
-5ryU5Y+YDQo477yJLuW3peiJuuS6uuWRmOeahOWfueWFu+S4juaKgOiDveaPkOWNhw0KNC7mvJTn
-u4PkuI7pl67popjorqjorroNCjHvvIku5YiG5p6Q5a2m5ZGY5LyB5Lia55qE5bel6Im65bmz5Y+w
-5bu66K6+5bel5L2c5YGa5Yiw5LuA5LmI56iL5bqm77yf5a2Y5Zyo5ZOq5Lqb5beu6Led77yf5aaC
-5L2V5pS56L+b77yfDQrkupTjgIHpnaLlkJHnlJ/kuqfmtYvor5XnmoTkuqflk4Horr7orqHvvIhE
-RlTvvIkNCjEu5Z+65LqO5Lqn5ZOB55Sf5ZG95ZGo5pyf5YWo5rWB56iL55qE5rWL6K+V562W55Wl
-DQox77yJLueglOWPkea1i+ivle+8iEFscGhh77yJ44CB6K+V6aqM5bGA5rWL6K+V77yIQmV0Ye+8
-ieOAgeeUn+S6p+a1i+ivlSANCjIu56CU5Y+R5rWL6K+V77yIQWxwaGHvvInkuI5CRVRB5rWL6K+V
-DQox77yJLua1i+ivleS6uuWRmOS7i+WFpeS6p+WTgeW8gOWPkei/h+eoi+eahOaXtuacuu+8iOaP
-kOWPr+a1i+ivleaAp+mcgOaxgueahOaXtuacuu+8iQ0KMu+8iS7lj6/mtYvor5XmgKfpnIDmsYLp
-nIDopoHogIPomZHnmoTlhoXlrrnvvIjnpLrkvovvvIkNCjPvvIku5Y2V5YWD5rWL6K+V44CB5qih
-5Z2X5rWL6K+V44CB57O757uf6ZuG5oiQ5rWL6K+V44CB5LiT5Lia5YyW5rWL6K+V44CBQkVUQea1
-i+ivleeahOmHjeeCueWIhuaekA0KNO+8iS7kuqflk4HlvIDlj5Hov4fnqIvkuK3mtYvor5XkuJrl
-iqHmtYHnqIvliIbmnpANCjXvvIku5LyB5Lia5Zyo5LiN5ZCM55qE5Y+R5bGV6Zi25q615aaC5L2V
-5byA5bGV5rWL6K+V55qE55u45YWz5bel5L2c77yI55+t5bmz5b+r55qE6aG555uu5rWL6K+V5bel
-5L2c5aaC5L2V5byA5bGV77yJDQozLumdouWQkeeUn+S6p+a1i+ivleS4muWKoeeahOS6p+WTgeiu
-vuiuoeS4juW8gOWPkQ0KMe+8iS7nlJ/kuqfmtYvor5XkuJrliqHmtYHnqIvliIbmnpANCjLvvIku
-5YW45Z6L55qE6YOo5ZOB5rWL6K+V44CB5pW05py65rWL6K+V5pa55rOV5LuL57uNDQoz77yJLuW8
-gOWPkeS4k+mXqOeahOeUn+S6p+a1i+ivleW3peijheeahOadoeS7tuWIhuaekA0KNO+8iS7nlJ/k
-uqfmtYvor5Xlt6Xoo4XnmoTlvIDlj5HnrqHnkIYNCjXvvIku5Zyo5Lqn5ZOB5byA5Y+R6L+H56iL
-5Lit5aaC5L2V5a6e5pa96Z2i5ZCR55Sf5Lqn5rWL6K+V55qE5Lqn5ZOB6K6+6K6h77yfDQrvgazl
-poLkvZXmj5Dlh7rlj6/mtYvor5XmgKfpnIDmsYLvvJ8NCu+BrOWPr+a1i+ivleaAp+mcgOaxguWm
-guS9leiQveWunuWIsOS6p+WTgeiuvuiuoeaWueahiOS4re+8nw0K74Gs56CU5Y+R6Z2i5a+55LyX
-5aSa55qE6ZyA5rGC5aaC5L2V5Y+W6IiN77yf5Y+v5rWL6K+V5oCn6ZyA5rGC55qE5LyY5YWI57qn
-5YiG5p6QDQrvgazlpoLkvZXlnKjkuqflk4HlvIDlj5Hov4fnqIvkuK3lkIzmraXlvIDlj5HnlJ/k
-uqfmtYvor5Xlt6Xoo4XvvJ8NCu+BrOWmguS9leWcqOS6p+WTgeW8gOWPkei/h+eoi+S4reWQjOat
-pei+k+WHuueUn+S6p+a1i+ivleaJgOmcgOeahOaTjeS9nOaMh+WvvOaWh+S7tu+8nw0K74Gs5aaC
-5L2V6L+b6KGM5rWL6K+V5bel6KOF55qE6aqM6K+B77yfDQrvgazlpoLkvZXmjqjliqjmtYvor5Xp
-qozor4Hpl67popjnmoTop6PlhrPvvJ8NCjbvvIku5aaC5L2V5o6o5Yqo5Y+v5rWL6K+V5oCn6K6+
-6K6h77yIREZU77yJ5Lia5Yqh55qE5byA5bGVDQo377yJLuWmguS9lei/m+ihjOa1i+ivleW5s+WP
-sOeahOW7uuiuvu+8nw0KNC7mvJTnu4PkuI7pl67popjorqjorroNCjHvvIku5YiG5p6Q5a2m5ZGY
-5LyB5Lia55qEREZU5bel5L2c5YGa5Yiw5LuA5LmI56iL5bqm77yf5a2Y5Zyo5ZOq5Lqb5beu6Led
-77yf5aaC5L2V5pS56L+b77yfDQrlha3jgIHkuqflk4Hor5XliLbpqozor4HnrqHnkIYNCjEu5b2x
-5ZON5Lqn5ZOB6K+V5Yi25ZGo5pyf55qE5Zug57Sg5YiG5p6QDQoyLueglOWPkeS6uuWRmOWvueiv
-leWItuWHhuWkh+aPkOS+m+eahOaUr+aMgQ0KMy7or5XliLblm6LpmJ/nmoTmnoTmiJDjgIHogYzo
-tKPkuI7lrprkvY3vvIjorr7nva7or5XliLbpg6jpl6jnmoTml7bmnLrkuI7kvJjnvLrngrnliIbm
-npDvvIkNCjQu6K+V5Yi25Lq65ZGY5LuL5YWl5Lqn5ZOB5byA5Y+R6L+H56iL55qE5pe25py6DQox
-77yJLuWmguS9lei/m+ihjOivleWItuWHhuWkh++8iOWHhuWkh+imgee0oOekuuS+i++8iQ0KNS7p
-naLlkJHliLbpgKDns7vnu5/nmoTpqozor4ENCjHvvIku56CU5Y+R5Lq65ZGY5aaC5L2V5Zyo6K+V
-5Yi26L+H56iL5Lit6L+b6KGM5Lqn5ZOB6K6+6K6h55qE5LyY5YyWDQoy77yJLuWItumAoOezu+e7
-n+eahOmqjOivgeetlueVpeS4juiuoeWIkg0KM++8iS7liLbpgKDns7vnu5/nmoTpqozor4Hmlrnm
-oYgNCjTvvIku5aaC5L2V5a6e5pa95Yi26YCg57O757uf55qE6aqM6K+B77yaDQrvgazlt6Xoibrp
-qozor4HvvIjlt6XoibrmtYHnqIvjgIHlt6Xoibrot6/nur/jgIHljZXmnb/lt6XoibrjgIHmlbTm
-nLrlt6XoibrjgIHljIXoo4Xlt6XoibrjgIHnianmtYHlt6XoibrvvIkNCu+BrOW3peijhemqjOiv
-ge+8iOijhemFjeW3peijheOAgea1i+ivleW3peijheOAgeeUn+S6p+iuvuWkh++8iQ0K74Gs57uT
-5p6E6aqM6K+BDQrvgazkuqflk4HmlbDmja7pqozor4HvvIhCT03pqozor4HjgIHliLbpgKDmlofm
-oaPpqozor4HvvIkNCu+BrOS6p+WTgeivleWItumqjOivge+8iOi0qOmHj+OAgeaViOeOh+OAgeaI
-kOacrO+8iQ0KNe+8iS7mibnmrKHpqozor4HmiqXlkYrvvIzpqozor4HlpJrlsJHmibnmiY3lkIjp
-gILvvJ8NCjbvvIku5aaC5L2V5o6o5Yqo6aqM6K+B6Zeu6aKY55qE6Kej5Yaz77yfDQo2Lui9rOS6
-p+ivhOWuoQ0KMe+8iS7noJTlj5HkurrlkZjlpoLkvZXmlK/mjIHmlrDkuqflk4HnmoTovazkuqfl
-t6XkvZwNCjLvvIku6L2s5Lqn6K+E5a6h55qE6K+E5a6h57uE57uH5aaC5L2V5p6E5oiQ77yfDQoz
-77yJLuivhOWuoeagh+WHhuaYr+S7gOS5iO+8nw0KNO+8iS7lpoLkvZXliKTlrprmmK/lkKbovazk
-uqfvvJ8NCjXvvIku6K+E5a6h5rWB56iL5LiO6L+Q5L2c5py65Yi2DQo3LuS6p+WTgei9rOS6p+WQ
-jueahOeuoeeQhg0KMe+8iS7mlrDkuqflk4HnmoTor5XliLbmlYjmnpzor4Tku7cNCjLvvIku5paw
-5Lqn5ZOB55qE6LSo6YeP55uu5qCH6L6+5oiQ5oOF5Ya1DQoz77yJLuW3peeoi+WPmOabtOeuoeeQ
-hg0KNO+8iS7nvLrpmbfkuI7pl67popjnrqHnkIYNCjXvvIku6LSo6YeP5a6h6K6hDQo4Lua8lOe7
-g+S4jumXrumimOiuqOiuug0KMe+8iS7liIbmnpDlrablkZjkvIHkuJrnmoTkuqflk4Hor5XliLbp
-qozor4Hov4fnqIvvvIzliIbmnpDlt67ot53vvIzmj5Dlh7rmlLnov5vlu7rorq7jgIINCuS4g+OA
-geaAu+e7kw0K6K6y5biI6LWE6LSoDQoNCkNoYXJsZXPvvJrnoJTlj5HnrqHnkIblkqjor6LotYTm
-t7Hpob7pl67jgIHlm73lrrblj5HmlLnlp5TliJvmlrDnrqHnkIbln7norq3kuK3lv4PnibnpgoDo
-rrLluIjjgIHmuIXljY7lpKflrablm73pmYXlt6XnqIvpobnnm67nrqHnkIbnoJTnqbbpmaLnibnp
-goDorrLluIgNCiAgIDE25bm055qE6auY56eR5oqA5LyB5Lia5LuO5Lia6IOM5pmv77yM5YW35pyJ
-5Liw5a+M55qE5Lqn5ZOB562W5YiS44CB5Lqn5ZOB56CU5Y+R44CB5Lqn5ZOB5Lit6K+V44CB5Lqn
-5ZOB5pyN5Yqh562J6aKG5Z+f55qE5a6e6Le15LiO566h55CG57uP6aqM44CC5LuO5LqL6L+H5Lqn
-5ZOB6K6+6K6h5LiO5byA5Y+R44CBTlBJ44CB6aG555uu57uP55CG44CB5Lqn5ZOB57uP55CG44CB
-56CU5Y+R566h55CG6YOo57uP55CG44CB5LyB5Lia566h55CG6aG+6Zeu562J6IGM5Yqh77ybDQrm
-m77lnKjlm73lhoXmn5DokZflkI3pgJrkv6Horr7lpIflhazlj7jlt6XkvZzov4fvvJflubTvvIg5
-N++9njA077yJ77yM5pyf6Ze05LiO5Zu96ZmF6aG25bCW5ZKo6K+i6aG+6Zeu5LiA6LW35bel5L2c
-77yM5L2c5Li65qC45b+D5oiQ5ZGY5YWo56iL5Y+C5LiO5o6o5Yqo6K+l5YWs5Y+456CU5Y+R566h
-55CG5L2T57O755qE5Y+Y6Z2p5bel5L2c77yM5bm25L2c5Li65Lqn5ZOB57uP55CG5Li75a+85LqG
-5p+Q5Lqn5ZOB57q/5aSa5Liq5aSn5Z6L6aG555uu55qE5Lqn5ZOB6K6+6K6h44CB5byA5Y+R44CB
-5Lit6K+V44CB6L2s5Lqn5LiO5LiK5biC5bel5L2c44CCDQrvga7noJTlj5HnrqHnkIblkqjor6Ln
-u4/pqowNCu+8l+W5tOeahOeglOWPkeeuoeeQhuWSqOivoue7j+mqjO+8jOS4u+WvvOS6hjIw5aSa
-5Liq56CU5Y+R566h55CG5ZKo6K+i6aG555uu77yM6aG555uu6IyD5Zu05raJ5Y+K5Yiw5biC5Zy6
-6ZyA5rGC44CB5Lqn5ZOB6KeE5YiS44CB5Lqn5ZOB5byA5Y+R44CB5Lqn5ZOB5Yaz562W44CB5oqA
-5pyv6K+E5a6h44CB5oqA5pyv5byA5Y+R44CB56CU5Y+R57uE57uH44CB56CU5Y+R57up5pWI44CB
-5oqA5pyv5Lu76IGM6LWE5qC844CB6aG555uu566h55CG44CB5Y+Y5pu0566h55CG44CB55+l6K+G
-566h55CG44CB56CU5Y+RSVTop4TliJLnrYnpoobln5/igKbigKYNClJlZ2lzdHJhdGlvbiAvIOmi
-hCDorqIg5bitIOS9jQ0K56iL5YWI55SfDQrnlLXor53vvJoxNzctMTU1NC0zOTc077yI5ZCM5b6u
-5L+h77yJDQrmiqUg5ZCNIOmCriDnrrHvvJozODQ2MzEzNzhAcXEuY29tDQoNCiAo6K+35aGr5YaZ
-5Lul5LiL5oql5ZCN5L+h5oGv5Zue5aSN6Iez5q2k6YKu566xKQ0K5Y+C5Lya5Zyw5Yy677yaDQrl
-hawg5Y+477yaDQrlp5Mg5ZCN77yaDQrogYwg5L2N77yaDQrnlLUg6K+d77yaDQrpgq4g566x77ya
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
-Cg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0K
-DQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoN
-Cg0KDQoNCg0KDQrlub/lt57luILoi7HmspnnlLXlrZDns7vnu5/mnInpmZDlhazlj7gNCuW5v+W3
-nuW4guiLseaymeeUteWtkOezu+e7n+aciemZkOWFrOWPuA0K5bm/5bee5biC6Iux5rKZ55S15a2Q
-57O757uf5pyJ6ZmQ5YWs5Y+4DQrlub/lt57luILoi7HmspnnlLXlrZDns7vnu5/mnInpmZDlhazl
-j7gNCuW5v+W3nuW4guiLseaymeeUteWtkOezu+e7n+aciemZkOWFrOWPuA0K5bm/5bee5biC6Iux
-5rKZ55S15a2Q57O757uf5pyJ6ZmQ5YWs5Y+4DQrlub/lt57luILoi7HmspnnlLXlrZDns7vnu5/m
-nInpmZDlhazlj7gNCuW5v+W3nuW4guiLseaymeeUteWtkOezu+e7n+aciemZkOWFrOWPuApfX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXwpMaW51eC1udmRpbW0g
-bWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUg
-c2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMuMDEub3JnCg==
+Hello Dear,
+
+
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
+
+
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
+
+
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
