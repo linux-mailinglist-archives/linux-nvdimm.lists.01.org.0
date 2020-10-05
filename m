@@ -1,93 +1,74 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01B92830E6
-	for <lists+linux-nvdimm@lfdr.de>; Mon,  5 Oct 2020 09:33:03 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D0E282F29
+	for <lists+linux-nvdimm@lfdr.de>; Mon,  5 Oct 2020 05:52:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id AE8EA154B90EC;
-	Mon,  5 Oct 2020 00:33:01 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=198.145.29.99; helo=mail.kernel.org; envelope-from=rppt@kernel.org; receiver=<UNKNOWN> 
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4C3BA154B90E9
-	for <linux-nvdimm@lists.01.org>; Mon,  5 Oct 2020 00:33:00 -0700 (PDT)
-Received: from kernel.org (unknown [87.71.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.kernel.org (Postfix) with ESMTPSA id 1B3A2205F4;
-	Mon,  5 Oct 2020 07:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=default; t=1601883179;
-	bh=gu2e4JQFDSqeZWow6iyo4Sn010Xx6I+yVapiH4qL/Pg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rRppAU54V8DEObp+MMdOt/Qh6/tYptGxCZD0d0JUBUsgfjFRXBYR9T5DRxj3l7S37
-	 MwsFewTjq6L/jeLT6JBFXNLQs8oMquIF/iKYT0EyoFb76l/4ucdWZqUZpBV5Z1a8sh
-	 78sT/k94nxu5ViB56a1MsSarM7FzjYQx1SkG4Vb4=
-Date: Mon, 5 Oct 2020 10:32:42 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Alejandro Colomar <colomar.6.4.3@gmail.com>
-Subject: Re: [PATCH] man2: new page describing memfd_secret() system call
-Message-ID: <20201005073242.GA4251@kernel.org>
-References: <20200924133513.1589-1-rppt@kernel.org>
- <efb6d051-2104-af26-bfb0-995f4716feb2@gmail.com>
- <94cf1b3a-e191-a896-a27d-cd7649cb2c59@gmail.com>
+	by ml01.01.org (Postfix) with ESMTP id 0FE82154A558A;
+	Sun,  4 Oct 2020 20:52:07 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=173.82.22.89; helo=vpass.ne.jp; envelope-from=user-safety@vpass.ne.jp; receiver=<UNKNOWN> 
+Received: from vpass.ne.jp (unknown [173.82.22.89])
+	by ml01.01.org (Postfix) with ESMTP id 07E59154A1161
+	for <linux-nvdimm@lists.01.org>; Sun,  4 Oct 2020 20:52:04 -0700 (PDT)
+Received: from bQ (unknown [62.122.255.101])
+	by vpass.ne.jp with SMTP id OQ6E7UFeHRFS1sXk.1
+	for <linux-nvdimm@lists.01.org>; Mon, 05 Oct 2020 03:51:59 -0800
+Message-ID: <003871657428$10745234$57136631@bQ>
+Sender: User-safety@vpass.ne.jp
+From: "Smbc.co.jp" <User-safety@vpass.ne.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CQ6YeN6KaB44CR?=
+Date: Mon, 5 Oct 2020 03:51:59 -0800
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <94cf1b3a-e191-a896-a27d-cd7649cb2c59@gmail.com>
-Message-ID-Hash: NRYVZSVO5YKVWOHGLN47RADNNM4UZBDJ
-X-Message-ID-Hash: NRYVZSVO5YKVWOHGLN47RADNNM4UZBDJ
-X-MailFrom: rppt@kernel.org
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: 
+X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
+Message-ID-Hash: WGADZMRPOPT7D5W6XUIQH5GQN4UURGF6
+X-Message-ID-Hash: WGADZMRPOPT7D5W6XUIQH5GQN4UURGF6
+X-MailFrom: User-safety@vpass.ne.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: mtk.manpages@gmail.com, akpm@linux-foundation.org, arnd@arndb.de, bp@alien8.de, catalin.marinas@arm.com, cl@linux.com, dave.hansen@linux.intel.com, david@redhat.com, elena.reshetova@intel.com, hpa@zytor.com, idan.yaniv@ibm.com, jejb@linux.ibm.com, kirill@shutemov.name, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-man@vger.kernel.org, linux-mm@kvack.org, linux-nvdimm@lists.01.org, linux-riscv@lists.infradead.org, luto@kernel.org, mark.rutland@arm.com, mingo@redhat.com, palmer@dabbelt.com, paul.walmsley@sifive.com, peterz@infradead.org, rppt@linux.ibm.com, shuah@kernel.org, tglx@linutronix.de, tycho@tycho.ws, viro@zeniv.linux.org.uk, will@kernel.org, willy@infradead.org, x86@kernel.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NRYVZSVO5YKVWOHGLN47RADNNM4UZBDJ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/WGADZMRPOPT7D5W6XUIQH5GQN4UURGF6/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hi Alex,
-
-On Sat, Oct 03, 2020 at 11:32:43AM +0200, Alejandro Colomar wrote:
-> Hi Mike and Michael,
-
-I'll add the note to the man page, thanks!
-
-> Ping. :)
->=20
-> Thanks,
->=20
-> Alex
->=20
-> On 2020-09-24 16:55, Alejandro Colomar wrote:
-> > * Mike Rapoport:
-> >  > +.PP
-> >  > +.IR Note :
-> >  > +There is no glibc wrapper for this system call; see NOTES.
-> >=20
-> > You added a reference to NOTES, but then in notes there is nothing about
-> > it.=A0 I guess you wanted to add the following to NOTES (taken from
-> > membarrier.2):
-> >=20
-> > .PP
-> > Glibc does not provide a wrapper for this system call; call it using
-> > .BR syscall (2).
-> >=20
-> > Cheers,
-> >=20
-> > Alex
-
---=20
-Sincerely yours,
-Mike.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+bGludXgtbnZkaW1tQGxpc3RzLjAxLm9yZyDmp5gNCg0K44GU5Yip55So5Lit44Gu5LiJ5LqV5L2P
+5Y+L44Kr44O844OJ44Ki44Kr44Km44Oz44OI44G444Gu44Ot44Kw44Kk44Oz44GM56K66KqN44GV
+44KM44G+44GX44Gf44CCDQoNCiDil4bjg63jgrDjgqTjg7Pmg4XloLENCuODu+ODreOCsOOCpOOD
+s+aXpeaZgiDvvJoyMDIwLzEwLzUgMzo1MTo1OA0K44O7SVDjgqLjg4njg6zjgrnjgIAg77yaMTgy
+LjE5LjY3LjE4Nw0KDQpWcGFzc0lE44GK44KI44Gz44OR44K544Ov44O844OJ44KS5LuW44Gu44K1
+44Kk44OI44Go5L2155So44GX44Gm44GE44KL5aC05ZCI44Gr44Gv44CB5ryP44GI44GE44GX44Gf
+5oOF5aCxDQrjgojjgorjgIHmgqrmhI/jga7jgYLjgovnrKzkuInogIXjgavjgojjgovjg43jg4Pj
+g4jjgrfjg6fjg4Pjg5Tjg7PjgrDjgafjga7mgqrnlKjjga7lj6/og73mgKfjgoLjgZTjgZbjgYTj
+gb7jgZnjgIINCg0KVnBhc3NJROOBiuOCiOOBs+ODkeOCueODr+ODvOODieOBr+S7luOBruOCteOC
+pOODiOOBp+OBr+S9v+eUqOOBm+OBmuOBq+OAgeWumuacn+eahOOBq+OBlOWkieabtOOBhOOBn+OB
+oOOBjQ0K44G+44GZ44KI44GG44GK6aGY44GE44GE44Gf44GX44G+44GZ44CCVnBhc3NJROODu+OD
+keOCueODr+ODvOODieOBruOBlOWkieabtOOBr+OBk+OBoeOCieOCkuOBlOimp+OBj+OBoOOBleOB
+hOOAgg0KDQrihpJWcGFzc0lE5oOF5aCx54Wn5Lya44O75aSJ5pu0DQoNCuOBiuWuouanmOOBruOC
+u+OCreODpeODquODhuOCo+OBr+W8iuekvuOBq+OBqOOBo+OBpumdnuW4uOOBq+mHjeimgeOBquOC
+guOBruOBp+OBlOOBluOBhOOBvuOBmeOAgg0K44GU55CG6Kej44Gu56iL44CB44KI44KN44GX44GP
+44GK6aGY44GE55Sz44GX5LiK44GS44G+44GZ44CCDQoNCuKAu+acrOODoeODvOODq+OBr+OBlOeZ
+u+mMsuOBhOOBn+OBoOOBhOOBn+ODoeODvOODq+OCouODieODrOOCueWum+OBq+iHquWLleeahOOB
+q+mAgeS/oeOBleOCjOOBpuOBhOOBvuOBmeOAgg0K4oC75pys44Oh44O844Or44Gv6YCB5L+h5bCC
+55So44Gn44GZ44CC44GU6L+U5L+h44GE44Gf44Gg44GN44G+44GX44Gm44KC44GK562U44GI44Gn
+44GN44G+44Gb44KT44Gu44Gn44GU5LqG5om/44GP44Gg44GV44GE44CCDQoNCuS4ieS6leS9j+WP
+i+OCq+ODvOODieagquW8j+S8muekvg0K5p2x5Lqs5pys56S+IOadseS6rOmDvea4r+WMuua1t+Wy
+uDEtMi0yMCDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCuWkp+mYquacrOekviDlpKfpmKrluILk
+uK3lpK7ljLrku4rmqYs0LTUtMTUNCg0K44GE44Gk44KC5LiJ5LqV5L2P5Y+L6YqA6KGM44KS44GU
+5Yip55So44GE44Gf44Gg44GN44GC44KK44GM44Go44GG44GU44GW44GE44G+44GZQ29weXJpZ2h0
+IMKpIDIwMjAgU3VtaXRvbW8gTWl0c3VpIEJhbmtpbmcgQ29ycG9yYXRpb24uQWxsIFJpZ2h0cyBS
+ZXNlcnZlZC4KX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18K
+TGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRv
+IHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAx
+Lm9yZwo=
