@@ -1,52 +1,50 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241B6284471
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Oct 2020 05:59:04 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2652846D6
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Oct 2020 09:13:19 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E5F94156235E0;
-	Mon,  5 Oct 2020 20:59:02 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+	by ml01.01.org (Postfix) with ESMTP id E543F1557A1AA;
+	Tue,  6 Oct 2020 00:13:17 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.126; helo=mga18.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BC5F9154B90E6
-	for <linux-nvdimm@lists.01.org>; Mon,  5 Oct 2020 20:58:59 -0700 (PDT)
-IronPort-SDR: UAzFz9TVIWd++hx+kFgqNMLXTMS2tCSNqfFHuMa/QJVGQ7QB2jKfwTeJzBo1vYuHQnKgEobr9Q
- F9EYm+KJAm4g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9765"; a="228468140"
-X-IronPort-AV: E=Sophos;i="5.77,341,1596524400";
-   d="scan'208";a="228468140"
+	by ml01.01.org (Postfix) with ESMTPS id CB1991557A1A9
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 00:13:16 -0700 (PDT)
+IronPort-SDR: ghjfh7pJ1nRQkVeLcLf2/X/MiUdqkyDWl6baSlpfZhPWnsBowZzqTWourHE4R773IT1EBK7GC0
+ LG525Gt2NJVA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9765"; a="152159803"
+X-IronPort-AV: E=Sophos;i="5.77,342,1596524400";
+   d="scan'208";a="152159803"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2020 20:58:59 -0700
-IronPort-SDR: bujbWSfLueXkxKq2cztZb+793JlesbU9H3RPddQ/N06nD8PoX1oyo1SR7q+Em8PaVVsHmedtcv
- BckjvUByW8eg==
-X-IronPort-AV: E=Sophos;i="5.77,341,1596524400";
-   d="scan'208";a="348128442"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 00:13:14 -0700
+IronPort-SDR: vcgGUu7WlIYrv4VD8PDkh5CIoeMcIDP4+bChL0d+gnApWeoemTap4O0E7Nlwp5N91yARWoKuXp
+ piFM9xB+kNoA==
+X-IronPort-AV: E=Sophos;i="5.77,342,1596524400";
+   d="scan'208";a="460671753"
 Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2020 20:58:57 -0700
-Subject: [PATCH v10 2/2] x86/copy_mc: Introduce
- copy_mc_enhanced_fast_string()
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 00:13:13 -0700
+Subject: [PATCH v6 00/11] device-dax: support sub-dividing soft-reserved
+ ranges
 From: Dan Williams <dan.j.williams@intel.com>
-To: bp@alien8.de
-Date: Mon, 05 Oct 2020 20:40:25 -0700
-Message-ID: <160195562556.2163339.18063423034951948973.stgit@dwillia2-desk3.amr.corp.intel.com>
-In-Reply-To: <160195561059.2163339.8787400120285484198.stgit@dwillia2-desk3.amr.corp.intel.com>
-References: <160195561059.2163339.8787400120285484198.stgit@dwillia2-desk3.amr.corp.intel.com>
+To: akpm@linux-foundation.org
+Date: Mon, 05 Oct 2020 23:54:44 -0700
+Message-ID: <160196728453.2166475.12832711415715687418.stgit@dwillia2-desk3.amr.corp.intel.com>
 User-Agent: StGit/0.18-3-g996c
 MIME-Version: 1.0
-Message-ID-Hash: 45BW5WI3E53ASVGMI7IZNBKBLDIYVSGA
-X-Message-ID-Hash: 45BW5WI3E53ASVGMI7IZNBKBLDIYVSGA
+Message-ID-Hash: UMWPRVFSJ2PSIK26GENGPSRINARTAMU3
+X-Message-ID-Hash: UMWPRVFSJ2PSIK26GENGPSRINARTAMU3
 X-MailFrom: dan.j.williams@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: x86@kernel.org, stable@vger.kernel.org, Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, Linus Torvalds <torvalds@linux-foundation.org>, Tony Luck <tony.luck@intel.com>, Erwin Tsaur <erwin.tsaur@intel.com>, 0day robot <lkp@intel.com>, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+CC: david@redhat.com, Bjorn Helgaas <bhelgaas@google.com>, Dave Hansen <dave.hansen@linux.intel.com>, David Airlie <airlied@linux.ie>, joao.m.martins@oracle.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Pavel Tatashin <pasha.tatashin@soleen.com>, Hulk Robot <hulkci@huawei.com>, Ben Skeggs <bskeggs@redhat.com>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Jia He <justin.he@arm.com>, =?utf-8?b?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>, Jason Yan <yanaijie@huawei.com>, Paul Mackerras <paulus@ozlabs.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Brice Goglin <Brice.Goglin@inria.fr>, Stefano Stabellini <sstabellini@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Dan Carpenter <dan.carpenter@oracle.com>, Juergen Gross <jgross@suse.com>, Daniel Vetter <daniel@ffwll.ch>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/45BW5WI3E53ASVGMI7IZNBKBLDIYVSGA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/UMWPRVFSJ2PSIK26GENGPSRINARTAMU3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -55,168 +53,125 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-The original copy_mc_fragile() implementation had negative performance
-implications since it did not use the fast-string instruction sequence
-to perform copies. For this reason copy_mc_to_kernel() fell back to
-plain memcpy() to preserve performance on platform that did not indicate
-the capability to recover from machine check exceptions. However, that
-capability detection was not architectural and now that some platforms
-can recover from fast-string consumption of memory errors the memcpy()
-fallback now causes these more capable platforms to fail.
+Changes since v5 [1]:
+- (David) Introduce range_len() to include/linux/range.h immediately in
+  "device-dax: make pgmap optional for instance creation" rather than
+  wait until "mm/memremap_pages: convert to 'struct range'" to move it.
 
-Introduce copy_mc_enhanced_fast_string() as the fast default
-implementation of copy_mc_to_kernel() and finalize the transition of
-copy_mc_fragile() to be a platform quirk to indicate 'copy-carefully'.
-With this in place copy_mc_to_kernel() is fast and recovery-ready by
-default regardless of hardware capability.
+- (David) David points out that release_mem_region() can not be used in
+  the kmem driver since it depends on the resource range being busy at
+  free. The dance the driver does to hand-off busy/free management to
+  add_memory_driver_managed() breaks request_mem_region()'s assumptions
+  and requires the driver to continue to use a open-coded
+  release_resource() + kfree() sequence. For the new multi-range case,
+  expand the driver-data to hold all the resulting 'struct resource'
+  instances from mapping the ranges.
 
-Thanks to Vivek for identifying that copy_user_generic() is not suitable
-as the copy_mc_to_user() backend since the #MC handler explicitly checks
-ex_has_fault_handler(). Thanks to the 0day robot for catching a
-performance bug in the x86/copy_mc_to_user implementation.
+- (Boris) consolidate pgmap manipulation code in the
+  xen_alloc_unpopulated_pages() path. Since this touched
+  "mm/memremap_pages: convert to 'struct range'" with the pending fix from
+  Dan, I folded in that fix and gave him a Reported-by credit.
 
-Cc: x86@kernel.org
-Cc: <stable@vger.kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Tested-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Reported-by: 0day robot <lkp@intel.com>
-Fixes: 92b0729c34ca ("x86/mm, x86/mce: Add memcpy_mcsafe()")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+[1]: http://lore.kernel.org/r/160106109960.30709.7379926726669669398.stgit@dwillia2-desk3.amr.corp.intel.com
+
 ---
- arch/x86/lib/copy_mc.c    |   32 +++++++++++++++++++++++---------
- arch/x86/lib/copy_mc_64.S |   36 ++++++++++++++++++++++++++++++++++++
- tools/objtool/check.c     |    1 +
- 3 files changed, 60 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-index 2633635530b7..c13e8c9ee926 100644
---- a/arch/x86/lib/copy_mc.c
-+++ b/arch/x86/lib/copy_mc.c
-@@ -45,6 +45,8 @@ void enable_copy_mc_fragile(void)
- #define copy_mc_fragile_enabled (0)
- #endif
- 
-+unsigned long copy_mc_enhanced_fast_string(void *dst, const void *src, unsigned len);
-+
- /**
-  * copy_mc_to_kernel - memory copy that handles source exceptions
-  *
-@@ -52,9 +54,11 @@ void enable_copy_mc_fragile(void)
-  * @src:	source address
-  * @len:	number of bytes to copy
-  *
-- * Call into the 'fragile' version on systems that have trouble
-- * actually do machine check recovery. Everyone else can just
-- * use memcpy().
-+ * Call into the 'fragile' version on systems that benefit from avoiding
-+ * corner case poison consumption scenarios, For example, accessing
-+ * poison across 2 cachelines with a single instruction. Almost all
-+ * other uses case can use copy_mc_enhanced_fast_string() for a fast
-+ * recoverable copy, or fallback to plain memcpy.
-  *
-  * Return 0 for success, or number of bytes not copied if there was an
-  * exception.
-@@ -63,6 +67,8 @@ unsigned long __must_check copy_mc_to_kernel(void *dst, const void *src, unsigne
- {
- 	if (copy_mc_fragile_enabled)
- 		return copy_mc_fragile(dst, src, len);
-+	if (static_cpu_has(X86_FEATURE_ERMS))
-+		return copy_mc_enhanced_fast_string(dst, src, len);
- 	memcpy(dst, src, len);
- 	return 0;
- }
-@@ -72,11 +78,19 @@ unsigned long __must_check copy_mc_to_user(void *dst, const void *src, unsigned
- {
- 	unsigned long ret;
- 
--	if (!copy_mc_fragile_enabled)
--		return copy_user_generic(dst, src, len);
-+	if (copy_mc_fragile_enabled) {
-+		__uaccess_begin();
-+		ret = copy_mc_fragile(dst, src, len);
-+		__uaccess_end();
-+		return ret;
-+	}
-+
-+	if (static_cpu_has(X86_FEATURE_ERMS)) {
-+		__uaccess_begin();
-+		ret = copy_mc_enhanced_fast_string(dst, src, len);
-+		__uaccess_end();
-+		return ret;
-+	}
- 
--	__uaccess_begin();
--	ret = copy_mc_fragile(dst, src, len);
--	__uaccess_end();
--	return ret;
-+	return copy_user_generic(dst, src, len);
- }
-diff --git a/arch/x86/lib/copy_mc_64.S b/arch/x86/lib/copy_mc_64.S
-index c3b613c4544a..892d8915f609 100644
---- a/arch/x86/lib/copy_mc_64.S
-+++ b/arch/x86/lib/copy_mc_64.S
-@@ -124,4 +124,40 @@ EXPORT_SYMBOL_GPL(copy_mc_fragile)
- 	_ASM_EXTABLE(.L_write_words, .E_write_words)
- 	_ASM_EXTABLE(.L_write_trailing_bytes, .E_trailing_bytes)
- #endif /* CONFIG_X86_MCE */
-+
-+/*
-+ * copy_mc_enhanced_fast_string - memory copy with exception handling
-+ *
-+ * Fast string copy + fault / exception handling. If the CPU does
-+ * support machine check exception recovery, but does not support
-+ * recovering from fast-string exceptions then this CPU needs to be
-+ * added to the copy_mc_fragile_key set of quirks. Otherwise, absent any
-+ * machine check recovery support this version should be no slower than
-+ * standard memcpy.
-+ */
-+SYM_FUNC_START(copy_mc_enhanced_fast_string)
-+	movq %rdi, %rax
-+	movq %rdx, %rcx
-+.L_copy:
-+	rep movsb
-+	/* Copy successful. Return zero */
-+	xorl %eax, %eax
-+	ret
-+SYM_FUNC_END(copy_mc_enhanced_fast_string)
-+
-+	.section .fixup, "ax"
-+.E_copy:
-+	/*
-+	 * On fault %rcx is updated such that the copy instruction could
-+	 * optionally be restarted at the fault position, i.e. it
-+	 * contains 'bytes remaining'. A non-zero return indicates error
-+	 * to copy_mc_generic() users, or indicate short transfers to
-+	 * user-copy routines.
-+	 */
-+	movq %rcx, %rax
-+	ret
-+
-+	.previous
-+
-+	_ASM_EXTABLE_FAULT(.L_copy, .E_copy)
- #endif /* !CONFIG_UML */
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index cf2d076f6ba5..42ac19e0299c 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -550,6 +550,7 @@ static const char *uaccess_safe_builtin[] = {
- 	"csum_partial_copy_generic",
- 	"copy_mc_fragile",
- 	"copy_mc_fragile_handle_tail",
-+	"copy_mc_enhanced_fast_string",
- 	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
- 	NULL
- };
+Hi Andrew,
+
+As before patches that are in your tree and did not change as a result
+of these updates are not re-sent. This set replaces:
+
+device-dax-make-pgmap-optional-for-instance-creation.patch
+
+...through...
+
+device-dax-add-dis-contiguous-resource-support.patch
+
+...in your stack.
+
+I let this soak over the weekend in kbuild-robot visible tree and it
+received a build success notification over 160 configs, and no other
+regression notices.
+
+---
+
+The device-dax facility allows an address range to be directly mapped
+through a chardev, or optionally hotplugged to the core kernel page
+allocator as System-RAM. It is the mechanism for converting persistent
+memory (pmem) to be used as another volatile memory pool i.e. the
+current Memory Tiering hot topic on linux-mm.
+
+In the case of pmem the nvdimm-namespace-label mechanism can sub-divide
+it, but that labeling mechanism is not available / applicable to
+soft-reserved ("EFI specific purpose") memory [2]. This series provides
+a sysfs-mechanism for the daxctl utility to enable provisioning of
+volatile-soft-reserved memory ranges.
+
+The motivations for this facility are:
+
+1/ Allow performance differentiated memory ranges to be split between
+   kernel-managed and directly-accessed use cases.
+
+2/ Allow physical memory to be provisioned along performance relevant
+   address boundaries. For example, divide a memory-side cache [3] along
+   cache-color boundaries.
+
+3/ Parcel out soft-reserved memory to VMs using device-dax as a security
+   / permissions boundary [4]. Specifically I have seen people (ab)using
+   memmap=nn!ss (mark System-RAM as Persistent Memory) just to get the
+   device-dax interface on custom address ranges. A follow-on for the VM
+   use case is to teach device-dax to dynamically allocate 'struct page' at
+   runtime to reduce the duplication of 'struct page' space in both the
+   guest and the host kernel for the same physical pages.
+
+[2]: http://lore.kernel.org/r/157309097008.1579826.12818463304589384434.stgit@dwillia2-desk3.amr.corp.intel.com
+[3]: http://lore.kernel.org/r/154899811738.3165233.12325692939590944259.stgit@dwillia2-desk3.amr.corp.intel.com
+[4]: http://lore.kernel.org/r/20200110190313.17144-1-joao.m.martins@oracle.com
+
+---
+
+Dan Williams (11):
+      device-dax: make pgmap optional for instance creation
+      device-dax/kmem: introduce dax_kmem_range()
+      device-dax/kmem: move resource tracking to drvdata
+      device-dax: add an allocation interface for device-dax instances
+      device-dax: introduce 'struct dev_dax' typed-driver operations
+      device-dax: introduce 'seed' devices
+      drivers/base: make device_find_child_by_name() compatible with sysfs inputs
+      device-dax: add resize support
+      mm/memremap_pages: convert to 'struct range'
+      mm/memremap_pages: support multiple ranges per invocation
+      device-dax: add dis-contiguous resource support
+
+
+ arch/powerpc/kvm/book3s_hv_uvmem.c     |   14 -
+ drivers/base/core.c                    |    2 
+ drivers/dax/bus.c                      |  708 ++++++++++++++++++++++++++++++--
+ drivers/dax/bus.h                      |   11 
+ drivers/dax/dax-private.h              |   23 +
+ drivers/dax/device.c                   |   71 ++-
+ drivers/dax/hmem/hmem.c                |   14 -
+ drivers/dax/kmem.c                     |  198 ++++++---
+ drivers/dax/pmem/compat.c              |    2 
+ drivers/dax/pmem/core.c                |   14 -
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |   15 -
+ drivers/nvdimm/badrange.c              |   26 +
+ drivers/nvdimm/claim.c                 |   13 -
+ drivers/nvdimm/nd.h                    |    3 
+ drivers/nvdimm/pfn_devs.c              |   13 -
+ drivers/nvdimm/pmem.c                  |   27 +
+ drivers/nvdimm/region.c                |   21 +
+ drivers/pci/p2pdma.c                   |   12 -
+ drivers/xen/unpopulated-alloc.c        |   49 +-
+ include/linux/memremap.h               |   11 
+ include/linux/range.h                  |    6 
+ lib/test_hmm.c                         |   51 +-
+ mm/memremap.c                          |  299 ++++++++------
+ tools/testing/nvdimm/dax-dev.c         |   22 +
+ tools/testing/nvdimm/test/iomap.c      |    2 
+ 25 files changed, 1216 insertions(+), 411 deletions(-)
+
+base-commit: d524ed85683d657593ac1e58098407bed0601a84
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
