@@ -2,94 +2,168 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B81285454
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 00:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 355322854D4
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 01:09:47 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 7541B15872067;
-	Tue,  6 Oct 2020 15:10:48 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.38.202.179; helo=cha5.chairmaneventsummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@chairmaneventsummit.info; receiver=<UNKNOWN> 
-Received: from cha5.chairmaneventsummit.info (ip179.ip-54-38-202.eu [54.38.202.179])
+	by ml01.01.org (Postfix) with ESMTP id 21584155F22F8;
+	Tue,  6 Oct 2020 16:09:45 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=216.228.121.65; helo=hqnvemgate26.nvidia.com; envelope-from=rcampbell@nvidia.com; receiver=<UNKNOWN> 
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com [216.228.121.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8658715872067
-	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 15:10:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=chairmaneventsummit.info;
- h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@chairmaneventsummit.info;
- bh=Q+QbE2BpnrLj0eGo2amdFSZGe80=;
- b=mIqw3AQOMCLADlTAgYPpFfrSoBQgRgUnq1zlzPewhnU2UvrZi2LYMXwnCSCTHUjH+v3upE8GAND8
-   rkDLDZ2vk3vMPbk5pHhu+Fbqun+ugeJcMpGGEd0kzyI//oPx+I1Z8yzv774VJuPhMZf/kRveSflK
-   AWOX0Hx8WpRTciDZpKRqiRQfhUHT+J+s3jxtOs1A0K2CwUtEj72GwCR05i9vQMMEwrpTI94SLqqG
-   izFS/ir1/sqP1lJsWI+z1zUQWCe3SpPGBdaiWjOry46wIZeMR57mJpjyg3UhEz+sHxGdlRdSyDjO
-   Z+2mrAobvJVtsCosju7Q3KjT/lWbTOMT8UOuVw==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=chairmaneventsummit.info;
- b=k/jBClJl5eLnu8ugOFSdjeEwz9S7sp8XuGJhPAeDB8aGInsdEHAU0+NC0okUmUqR3gkak+l0DMS2
-   bpslQ03F39vMMsYmgJu2zvz0uh9Qy6cd8MOQ7TaL2IdtObl7wlBRRpchxLINUms3hyq/7/k66X0E
-   rbDxdL8wLlFGBPvEbn9iiebk09W8g71vN5hZCBB/fNHW1NN7Qk/+AUXI3bOqtR+DDxtTm/WJ0o0h
-   8wbRjnJuCC05+PFqWsTqK0NwjCUuFm5RGjT+b2MnebkCDLHQL1jpwg2yR2bvDNWMJKMpxceIg07p
-   gqULux+fPZ/OmPzXv+qfiv34Mc1cRlC6wJgvFg==;
-Received: from chairmaneventsummit.info (51.83.131.67) by cha1.chairmaneventsummit.info id hfjlmbi19tkm for <linux-nvdimm@lists.01.org>; Tue, 6 Oct 2020 22:06:38 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info>)
-Date: Tue, 6 Oct 2020 22:06:38 +0000
-To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-From: Emma Johnson <info@chairmaneventsummit.info>
-Subject: RE: Conference call request
-Message-ID: <c28d107a96a4719a204dbec55bbae882@chairmaneventsummit.info>
-X-Trgm-Campaign-Uid: rz347jx7d41a9
-X-Trgm-Subscriber-Uid: ek460shgxm55f
-X-Trgm-Customer-Uid: cl716wf5hl7c7
-X-Trgm-Customer-Gid: 0
-X-Trgm-Delivery-Sid: 1
-X-Trgm-Tracking-Did: 0
-X-Report-Abuse: Please report abuse for this campaign here: https://chairmaneventsummit.info/emm/index.php/campaigns/rz347jx7d41a9/report-abuse/ks05428k240e4/ek460shgxm55f
-Feedback-ID: rz347jx7d41a9:ek460shgxm55f:ks05428k240e4:cl716wf5hl7c7
-Precedence: bulk
-X-Trgm-EBS: https://chairmaneventsummit.info/emm/index.php/lists/block-address
-X-Sender: info@chairmaneventsummit.info
-X-Receiver: linux-nvdimm@lists.01.org
-X-Trgm-Mailer: PHPMailer - 5.2.21
+	by ml01.01.org (Postfix) with ESMTPS id CC4FD155BF278
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 16:09:42 -0700 (PDT)
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate26.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+	id <B5f7cf9280000>; Tue, 06 Oct 2020 16:09:28 -0700
+Received: from HQMAIL111.nvidia.com (172.20.187.18) by HQMAIL111.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 6 Oct
+ 2020 23:09:37 +0000
+Received: from rcampbell-dev.nvidia.com (10.124.1.5) by mail.nvidia.com
+ (172.20.187.18) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
+ Transport; Tue, 6 Oct 2020 23:09:37 +0000
+From: Ralph Campbell <rcampbell@nvidia.com>
+To: <linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-nvdimm@lists.01.org>,
+	<linux-kernel@vger.kernel.org>, <linux-ext4@vger.kernel.org>
+Subject: [PATCH] ext4/xfs: add page refcount helper
+Date: Tue, 6 Oct 2020 16:09:30 -0700
+Message-ID: <20201006230930.3908-1-rcampbell@nvidia.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Message-ID-Hash: PQ344E2JCEFLUUZKDBTSOYEXDBCG5J7P
-X-Message-ID-Hash: PQ344E2JCEFLUUZKDBTSOYEXDBCG5J7P
-X-MailFrom: info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info
+X-NVConfidentiality: public
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+	t=1602025768; bh=E0cxvA4vU4/wkdnPscc9MTh2dGOKgzOFQvaQ+2UKi60=;
+	h=From:To:CC:Subject:Date:Message-ID:X-Mailer:MIME-Version:
+	 X-NVConfidentiality:Content-Transfer-Encoding:Content-Type;
+	b=AUgsYXGQGWBxrale+BYRsfEFTPAuUyQI9CuVa7/Ku4eOaD9ZGr7Do59J4s5qsUqml
+	 1MEW+PGQbtMbc9CvXgvtAT05KeB/s2DypJO3A+zcXX3cc1XOOiBRpjQ3K9scBIH6US
+	 z9RE9nEow7wQvFNvKV1cgXz/ZpsmTm/g+fzVYXtugLdA3TSQP+ABXddyx0hka75ziw
+	 Jo6BbL0r7BCL7iD6Hi4ovmO8nA03mPrueqlCz3ynhmyfboKR8IatKcaxFkHKChe7Ke
+	 0uDowqYmCT2Lp6wBnVK3P7Bluv/nZQVVo6beZ00BDkqWegnPQFtLT2v30XS7vdH7Um
+	 epFTlUr1gBk5Q==
+Message-ID-Hash: ZVSTGZVKG56DFGWLSJHJJQPTJJMQIFWM
+X-Message-ID-Hash: ZVSTGZVKG56DFGWLSJHJJQPTJJMQIFWM
+X-MailFrom: rcampbell@nvidia.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
+CC: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Theodore Ts'o <tytso@mit.edu>, Christoph Hellwig <hch@lst.de>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	"Darrick J. Wong" <darrick.wong@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Ralph@ml01.01.org
 X-Mailman-Version: 3.1.1
-Reply-To: Emma Johnson <emma@ceoeventsummit2020.info>
+Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PQ344E2JCEFLUUZKDBTSOYEXDBCG5J7P/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZVSTGZVKG56DFGWLSJHJJQPTJJMQIFWM/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-SSBob3BlIHlvdSBhcmUgZG9pbmcgd2VsbCBhbmQgSSBwcmF5IHRvIGFsbCBtaWdodHkgR29kIHRv
-IGtlZXAgeW91cg0KZmFtaWx5IHNhZmUuIFdoaWxlIHByb2Zlc3Npb25hbHMgYXJlIHdvcmtpbmcg
-ZnJvbSBob21lLCBmb2xsb3dpbmcNCnNlcnZpY2VzIGNhbiBoZWxwIGluIHlvdXIgYnVzaW5lc3Mg
-YWx3YXlzLg0KMS7CoFdlIGNhbiB1cGRhdGUgeW91ciBleGlzdGluZyBwcm9zcGVjdHMgZGF0YWJh
-c2Ugd2l0aCB2YWxpZCBlbWFpbA0KYWRkcmVzcy9waG9uZSBudW1iZXIvTGlua2VkSW4gUHJvZmls
-ZSBsaW5rIGFuZCBvdGhlciBkZXRhaWxzIHlvdSBtYXkNCm5lZWQuDQoyLsKgVGFyZ2V0ZWQgRW1h
-aWwgbWFya2V0aW5nIGNhbXBhaWduIHVzaW5nIG91ciBkYXRhYmFzZSBmcm9tIHlvdXINCnRhcmdl
-dCBtYXJrZXQ6IEF0ICQ0OTkgd2Ugc2VuZCA1MDAsMDAwIGVtYWlscyB0byB5b3VyIHRhcmdldCBh
-dWRpZW5jZQ0KdG8gZ2VuZXJhdGUgbGVhZHMvc2lnbiB1cHMvc2FsZS9hcHBvaW50bWVudHMvc3Vy
-dmV5cy9pbnZpdGF0aW9ucw0KMy7CoFRlbGVtYXJrZXRpbmc6IEF0ICQ5OTkgd2Ugd2lsbCBtYWtl
-IDMsMDAwIHBob25lIGNhbGxzIHRvIGdlbmVyYXRlDQpsZWFkcy9zaWduIHVwcy9zYWxlL2FwcG9p
-bnRtZW50cy9zdXJ2ZXlzL2ludml0YXRpb25zDQo0LsKgTGlua2VkSW4gZGF0YSBwdXJjaGFzZTog
-QXQgJDUwMCBmcm9tIHlvdXIgdGFyZ2V0IGF1ZGllbmNlIHdlIHdpbGwNCmRlbGl2ZXIgeW91IDUs
-MDAwIGxlYWRzIGZyb20gTGlua2VkSW4gd2l0aCBuYW1lLCB0aXRsZSwgTGlua2VkSW4gbGluaywN
-CmVtYWlsLCBhZGRyZXNzLCBpbmR1c3RyeSBhbmQgY29tcGFueSBkZXRhaWxzLg0KNS7CoEV2ZW50
-IExlYWRzOiAxMCwwMDAgdGFyZ2V0ZWQgbGVhZHMgZ2VuZXJhdGVkIGZyb20geW91ciB0YXJnZXQN
-CmV2ZW50cyBhdCAkNTAwDQo2LsKgV2UgYWxzbyBndWFyYW50ZWUgaW4gUHJvbW90aW5nIHlvdXIg
-YnVzaW5lc3MgbG9jYWxseSB0aHJvdWdoDQpjaXRhdGlvbiwgYmFja2xpbmtzLCBzb2NpYWwgbWVk
-aWEgcHJvbW90aW9uIGV0Yy4NClRoYW5rcyBhbmQgbGV0IG1lIGtub3cgaWYgeW91IHdpc2ggdG8g
-c2VlIGEgc2FtcGxlIG9yIGtub3cgbW9yZS4NCkVtbWEgSm9obnNvbg0KKzEtKDY3OCkgNzQ1LTgz
-ODUNCkVtYWlsIExpc3QgfCBFbWFpbCBDYW1wYWlnbiB8IEVtYWlsIEFwcGVuZGluZyB8IFRlbGVt
-YXJrZXRpbmcgfCBMZWFkDQpnZW5lcmF0aW9uIHwgU0VPIHwgU29jaWFsIG1lZGlhIENhbXBhaWdu
-IHwgVmlkZW8gTWFya2V0aW5nIHwgQ29tcGxldGUNCkRpZ2l0YWwgTWFya2V0aW5nDQpodHRwczov
-L2NoYWlybWFuZXZlbnRzdW1taXQuaW5mby9lbW0vaW5kZXgucGhwL2xpc3RzL2tzMDU0MjhrMjQw
-ZTQvdW5zdWJzY3JpYmUvZWs0NjBzaGd4bTU1Zi9yejM0N2p4N2Q0MWE5DQrCoA0KwqANCg0KX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1t
-IG1haWxpbmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJl
-IHNlbmQgYW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+There are several places where ZONE_DEVICE struct pages assume a reference
+count == 1 means the page is idle and free. Instead of open coding this,
+add a helper function to hide this detail.
+
+Signed-off-by: Ralph Campbell <rcampbell@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+---
+
+I'm resending this as a separate patch since I think it is ready to
+merge. Originally, this was part of an RFC and is unchanged from v3:
+https://lore.kernel.org/linux-mm/20201001181715.17416-1-rcampbell@nvidia.com
+
+It applies cleanly to linux-5.9.0-rc7-mm1 but doesn't really
+depend on anything, just simple merge conflicts when applied to
+other trees.
+I'll let the various maintainers decide which tree and when to merge.
+It isn't urgent since it is a clean up patch.
+
+ fs/dax.c            |  4 ++--
+ fs/ext4/inode.c     |  5 +----
+ fs/xfs/xfs_file.c   |  4 +---
+ include/linux/dax.h | 10 ++++++++++
+ 4 files changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/fs/dax.c b/fs/dax.c
+index 5b47834f2e1b..85c63f735909 100644
+--- a/fs/dax.c
++++ b/fs/dax.c
+@@ -358,7 +358,7 @@ static void dax_disassociate_entry(void *entry, struct address_space *mapping,
+ 	for_each_mapped_pfn(entry, pfn) {
+ 		struct page *page = pfn_to_page(pfn);
+ 
+-		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
++		WARN_ON_ONCE(trunc && !dax_layout_is_idle_page(page));
+ 		WARN_ON_ONCE(page->mapping && page->mapping != mapping);
+ 		page->mapping = NULL;
+ 		page->index = 0;
+@@ -372,7 +372,7 @@ static struct page *dax_busy_page(void *entry)
+ 	for_each_mapped_pfn(entry, pfn) {
+ 		struct page *page = pfn_to_page(pfn);
+ 
+-		if (page_ref_count(page) > 1)
++		if (!dax_layout_is_idle_page(page))
+ 			return page;
+ 	}
+ 	return NULL;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 771ed8b1fadb..132620cbfa13 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3937,10 +3937,7 @@ int ext4_break_layouts(struct inode *inode)
+ 		if (!page)
+ 			return 0;
+ 
+-		error = ___wait_var_event(&page->_refcount,
+-				atomic_read(&page->_refcount) == 1,
+-				TASK_INTERRUPTIBLE, 0, 0,
+-				ext4_wait_dax_page(ei));
++		error = dax_wait_page(ei, page, ext4_wait_dax_page);
+ 	} while (error == 0);
+ 
+ 	return error;
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 3d1b95124744..a5304aaeaa3a 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -749,9 +749,7 @@ xfs_break_dax_layouts(
+ 		return 0;
+ 
+ 	*retry = true;
+-	return ___wait_var_event(&page->_refcount,
+-			atomic_read(&page->_refcount) == 1, TASK_INTERRUPTIBLE,
+-			0, 0, xfs_wait_dax_page(inode));
++	return dax_wait_page(inode, page, xfs_wait_dax_page);
+ }
+ 
+ int
+diff --git a/include/linux/dax.h b/include/linux/dax.h
+index b52f084aa643..8909a91cd381 100644
+--- a/include/linux/dax.h
++++ b/include/linux/dax.h
+@@ -243,6 +243,16 @@ static inline bool dax_mapping(struct address_space *mapping)
+ 	return mapping->host && IS_DAX(mapping->host);
+ }
+ 
++static inline bool dax_layout_is_idle_page(struct page *page)
++{
++	return page_ref_count(page) == 1;
++}
++
++#define dax_wait_page(_inode, _page, _wait_cb)				\
++	___wait_var_event(&(_page)->_refcount,				\
++		dax_layout_is_idle_page(_page),				\
++		TASK_INTERRUPTIBLE, 0, 0, _wait_cb(_inode))
++
+ #ifdef CONFIG_DEV_DAX_HMEM_DEVICES
+ void hmem_register_device(int target_nid, struct resource *r);
+ #else
+-- 
+2.20.1
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
