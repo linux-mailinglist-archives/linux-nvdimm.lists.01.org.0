@@ -1,151 +1,64 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF2E284831
-	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Oct 2020 10:14:25 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E292C2849A2
+	for <lists+linux-nvdimm@lfdr.de>; Tue,  6 Oct 2020 11:48:27 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 6B53B15583336;
-	Tue,  6 Oct 2020 01:14:23 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=63.128.21.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=<UNKNOWN> 
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [63.128.21.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 8DAD015583333
-	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 01:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1601972058;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3WYv1Mp0VvNRnKAiPIjAGPXvKYJUNrJ37TUk6L8shGg=;
-	b=bwa2I8Gsi9V+L5JLqCpmHgzKF6wnz8uh/YGApEZnNgHV5K502LfnBcR/SPmj8KtgyQ8HiI
-	8zQZWOugP+RzGXafcA4HE2FG4DbPBmNlLQeSUxb2qAhEFDItzaB/baIwBNkmxeuTiGFuIH
-	3KJHwpxFFdnHAWCbzvQYdW/Lptn4Ft8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-582-OAndu4Q0Nwam07G_XTQKqg-1; Tue, 06 Oct 2020 04:14:14 -0400
-X-MC-Unique: OAndu4Q0Nwam07G_XTQKqg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DC49618C5201;
-	Tue,  6 Oct 2020 08:14:11 +0000 (UTC)
-Received: from [10.36.114.219] (ovpn-114-219.ams2.redhat.com [10.36.114.219])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 703E99CBA;
-	Tue,  6 Oct 2020 08:14:08 +0000 (UTC)
-Subject: Re: [PATCH v6 03/11] device-dax/kmem: move resource tracking to
- drvdata
-To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
-References: <160196728453.2166475.12832711415715687418.stgit@dwillia2-desk3.amr.corp.intel.com>
- <160196730203.2166475.10332959995680506711.stgit@dwillia2-desk3.amr.corp.intel.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <82beb6ec-b6c0-47ff-d02d-b823436ba08a@redhat.com>
-Date: Tue, 6 Oct 2020 10:14:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+	by ml01.01.org (Postfix) with ESMTP id 4025A154B5D0C;
+	Tue,  6 Oct 2020 02:48:26 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=223.73.35.54; helo=bamt.com; envelope-from=iyqj@bamt.com; receiver=<UNKNOWN> 
+Received: from bamt.com (unknown [223.73.35.54])
+	by ml01.01.org (Postfix) with ESMTP id 419E313E23E5C
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 02:48:21 -0700 (PDT)
+Received: from desktop ([127.0.0.1]) by localhost via TCP with ESMTPA; Tue, 06 Oct 2020 17:48:08 +0800
+Message-ID: 37cbf68b-4a4c-4ee9-81b5-166f6ac5d5ad
 MIME-Version: 1.0
-In-Reply-To: <160196730203.2166475.10332959995680506711.stgit@dwillia2-desk3.amr.corp.intel.com>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Message-ID-Hash: FTF44T343IQKXNFYFQXYXH5C3APP4JVG
-X-Message-ID-Hash: FTF44T343IQKXNFYFQXYXH5C3APP4JVG
-X-MailFrom: david@redhat.com
+Sender: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=9A=E9=A9=AC=E9=80?=
+ =?utf-8?Q?=8AFBA=E5=A4=B4=E7=A8=8B=E8=BF=90=E8=BE=93?=
+ <iyqj@bamt.com>
+From: =?utf-8?Q?=E4=B8=93=E6=B3=A8=E4=BA=9A=E9=A9=AC=E9=80=8A?=
+ =?utf-8?Q?FBA=E5=A4=B4=E7=A8=8B=E8=BF=90=E8=BE=93?=
+ <dyiema@bamt.com>
+To: linux-nvdimm@lists.01.org
+Date: 6 Oct 2020 17:48:08 +0800
+Subject: =?utf-8?B?5LiT5rOo5Lqa6ams6YCKRkJB5aS056iL6L+Q6L6T?=
+Message-ID-Hash: DGC63MLDGT4NGL3DD7VVLUZFRFXUE4M3
+X-Message-ID-Hash: DGC63MLDGT4NGL3DD7VVLUZFRFXUE4M3
+X-MailFrom: iyqj@bamt.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Dave Hansen <dave.hansen@linux.intel.com>, Pavel Tatashin <pasha.tatashin@soleen.com>, Brice Goglin <Brice.Goglin@inria.fr>, Jia He <justin.he@arm.com>, Joao Martins <joao.m.martins@oracle.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/FTF44T343IQKXNFYFQXYXH5C3APP4JVG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/DGC63MLDGT4NGL3DD7VVLUZFRFXUE4M3/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 06.10.20 08:55, Dan Williams wrote:
-> Towards removing the mode specific @dax_kmem_res attribute from the
-> generic 'struct dev_dax', and preparing for multi-range support, move
-> resource tracking to driver data.  The memory for the resource name
-> needs to have its own lifetime separate from the device bind lifetime
-> for cases where the driver is unbound, but the kmem range could not be
-> unplugged from the page allocator.
-> 
-> The resource reservation also needs to be released manually via
-> release_resource() given the awkward manipulation of the
-> IORESOURCE_BUSY flag.
-> 
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Vishal Verma <vishal.l.verma@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Brice Goglin <Brice.Goglin@inria.fr>
-> Cc: Dave Jiang <dave.jiang@intel.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Ira Weiny <ira.weiny@intel.com>
-> Cc: Jia He <justin.he@arm.com>
-> Cc: Joao Martins <joao.m.martins@oracle.com>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-
-Reviewed-by: David Hildenbrand <david@redhat.com>
-
-Thanks!
-
-
--- 
-Thanks,
-
-David / dhildenb
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+Jm5ic3A7DQrkuJPms6jkuprpqazpgIpGQkHlpLTnqIvov5DovpMmbmJzcDsmbmJzcDvmj5Dkvpvn
+i6zlrrblvIDlj5HnmoTot6/nur/nu5nkuprpqazpgIrljZblrrbvvIzmnInnu4/mtY7lnovvvIzl
+v6vmjbflnovmnI3liqHkvpvlrqLmiLfpgInmi6njgILmlbTnrrHvvIzmi7znrrHpg73mmK/miJHk
+u6znmoTlvLrpobnvvIzlubbmoLnmja7lrqLmiLfoh6rouqvpnIDmsYLlrprliLbkuKrmgKfljJbm
+nI3liqHvvIzkuJPpl6jlrqLmiLfkuJPkurrot5/ov5vvvIzkuJPpl6jlpITnkIbvvIzkuI3kvJrm
+t7fnrrHvvIzkv53or4HmuIXlhbPpgJ/luqbjgILlj6blpJbmiJHku6zkuI5BbWF6b27mjIflrprn
+moTmi5bovabooYzlkIjkvZzvvIzkv53or4HmgKfku7fmr5TmnIDpq5jnmoTmtL7pgIHmnI3liqHj
+gILmiJHku6zmj5Dkvpvmtbfov5DjgIHnqbrov5DjgIHlv6vpgJLnm7Tovr5GQkHku5PjgIINCuaL
+peacieiHquW3seeahOa4heWFs+S7o+eQhuS7peWPiui/kOi+k+S7o+eQhuWVhu+8jOa0vumAgeiM
+g+WbtOi+kOWwhOaVtOS4quasp+ebn+aIkOWRmOWbveS7peWPiuaVtOS4quWMl+e+juWMuuWfn++8
+m+S4gOa1geeahOa4heWFs+a0vumAgeiDveWKm++8jOS/neivgeWuouaIt+eahOi0p+eJqeWuieWF
+qOi/hemAn+WIsOi+vkZCQeS7k+OAguWcqOe+juWbve+8jOWKoOaLv+Wkp++8jOaXpeacrO+8jOas
+p+a0suiLseWbve+8jOW+t+WbveiDveiDveaPkOS+m+aOpeWPl+mAgOaNoui0p++8jOaNouagh+Wk
+hOeQhu+8jOmHjeaWsOaJk+WMhe+8jOS7o+WPkei0p+S6mumprOmAiuacjeWKoe+8jOiuqeaCqOea
+hOS6p+WTgemHjeaWsOWGjeasoeiOt+W+l+S7t+WAvO+8jOmBv+WFjei0p+eJqeaNn+WkseOAgg0K
+5Lqa6ams6YCKRkJB54mp5rWB5LiT5a625omL5py677yaKzg2LTEzNjQyOTgwOTM1Jm5ic3A75p2o
+55Sf77yIMjTlsI/ml7bng63nur/vvInlvq7kv6HomZ/vvJoxMzY0Mjk4MDkzNUUtTWFpbO+8mmhr
+cnQ1NkBob3RtYWlsLmNvbQpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4w
+MS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVA
+bGlzdHMuMDEub3JnCg==
