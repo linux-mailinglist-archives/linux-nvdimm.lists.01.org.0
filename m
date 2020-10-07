@@ -1,50 +1,74 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D7E2856E2
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 05:11:55 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D7E285787
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 06:23:35 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B7F79158AFE82;
-	Tue,  6 Oct 2020 20:11:53 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 23D5F158AFE8D;
+	Tue,  6 Oct 2020 21:23:32 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::643; helo=mail-pl1-x643.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4FF33158AFE81
-	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 20:11:50 -0700 (PDT)
-IronPort-SDR: tUSAjR77D76BqnAuEdUe4dvyexEVnzHxIDpBngwiVFESkAC+ivxAIF/RgHZZu9vP3e4B5R3pqM
- SbgBFby1gmTw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9766"; a="249510692"
-X-IronPort-AV: E=Sophos;i="5.77,345,1596524400";
-   d="scan'208";a="249510692"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 20:11:50 -0700
-IronPort-SDR: +uZNm6tMztulcsNPbamcFIaeGNq+G2pkkWAUrYqTXju9hsrk1O9zDTtmNidqPQomSG/KZFpViB
- 0mhTDZOKTyjA==
-X-IronPort-AV: E=Sophos;i="5.77,345,1596524400";
-   d="scan'208";a="527744123"
-Received: from dwillia2-desk3.jf.intel.com (HELO dwillia2-desk3.amr.corp.intel.com) ([10.54.39.25])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2020 20:11:49 -0700
-Subject: [ndctl PATCH] ndctl/namespace: Catch attempts to sub-divide legacy
- / label-less capacity
-From: Dan Williams <dan.j.williams@intel.com>
-To: vishal.l.verma@intel.com
-Date: Tue, 06 Oct 2020 19:53:21 -0700
-Message-ID: <160203920105.2317828.2025624736239651180.stgit@dwillia2-desk3.amr.corp.intel.com>
-User-Agent: StGit/0.18-3-g996c
+	by ml01.01.org (Postfix) with ESMTPS id 93218158AFE86
+	for <linux-nvdimm@lists.01.org>; Tue,  6 Oct 2020 21:23:27 -0700 (PDT)
+Received: by mail-pl1-x643.google.com with SMTP id p11so356162pld.5
+        for <linux-nvdimm@lists.01.org>; Tue, 06 Oct 2020 21:23:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fossix-org.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=M2jawmy9m8mGudIyMIRSabZxFA56ZmnT7YOuDoL4vaI=;
+        b=TLodmtUmSCfZVZ+zt8ja5tyzSGiiY7zCH3/Wu4vIDVDvNZU09SN1XtnKAharG56dgX
+         cMZG9MZDB/gyduaIti/SOmzJXcj1FXCqZ/KGhs2FP6AtiPJfLzqWvTie/xSbZjmwV7y5
+         xJZYt/G+aodplA9zvSv40UJJFNd4q+BfPQRq/tqbbHwEjnt3NOGasUtu3ddlAkbli1t+
+         ihcR0/M4cJGlsvkSo436w8Hftnwvem+/wTVn1aPZmTPZ9yRJiT3LRK6D+noOW9ZLS+wC
+         98Fje0RIHT72QEFTGOQ2e4b6IldYfDFsiNXGVOMHayDYhk3OMmLpdNVyQCCRE+aCJsPH
+         Pq4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=M2jawmy9m8mGudIyMIRSabZxFA56ZmnT7YOuDoL4vaI=;
+        b=Lrg2V8XpPdtkMfS7vpff9dKDmf7CW53Xf4rKrZDXCp9qHTxvPEfCOptxFDNFpoZRh9
+         B4hGUSoUi1NWTTXvm8hVkWsCn1nozZ/EQKKurB727t2NNOfoUqr6rRoDDVNRNO6chjtV
+         /UmFbxWl3S+Zv0CqvdlH1gKMpLHf9xxC79/19pIW9U6DGxBTcFcfz2/oyS/5cql8U+VK
+         8Nst/4AuIC+pHeGpLOe7q6BMnpp+ynKI5LD+D7XDgyqUMKSPMkF8q0UxG+X3OU676ywK
+         5vQHV8/ItyiWqjZWy87brk7oEzTpJjHaGMufP57gj5mQhxQztq3Dh1pTrTGlwp+EMWKa
+         594A==
+X-Gm-Message-State: AOAM533VWM6Flrj1JNGdGbseSoMMCXLQ9z5ZxTg3uMl9pUI1ozrZ1JqH
+	lB8aQBz25igeTGxCd561nFxAZVs3Y5a2vA==
+X-Google-Smtp-Source: ABdhPJwnk64UBb9uS4TXmgedMgHWJaPvobC4+LjgBBbQ1I/ypFvp+MA2FEiN1NHbyGfSueEgItldZw==
+X-Received: by 2002:a17:90a:fd97:: with SMTP id cx23mr1191844pjb.3.1602044606367;
+        Tue, 06 Oct 2020 21:23:26 -0700 (PDT)
+Received: from santosiv.in.ibm.com.com ([103.21.79.4])
+        by smtp.gmail.com with ESMTPSA id t186sm844499pgc.49.2020.10.06.21.23.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Oct 2020 21:23:25 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: Linux NVDIMM <linux-nvdimm@lists.01.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Harish Sriram <harish@linux.ibm.com>,
+	Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: Santosh Sivaraj <santosh@fossix.org>
+Subject: [PATCH RFC ndctl 1/9] libndctl: test enablement for non-nfit devices
+Date: Wed,  7 Oct 2020 09:52:48 +0530
+Message-Id: <20201007042256.1110626-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201006010013.848302-1-santosh@fossix.org>
+References: <20201006010013.848302-1-santosh@fossix.org>
 MIME-Version: 1.0
-Message-ID-Hash: TS6CDY7KBCH6RLGTA37NY2IK46SWG233
-X-Message-ID-Hash: TS6CDY7KBCH6RLGTA37NY2IK46SWG233
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: LPUKUCYSTUCRPAZHPYIPTWSL2N6XBTJZ
+X-Message-ID-Hash: LPUKUCYSTUCRPAZHPYIPTWSL2N6XBTJZ
+X-MailFrom: santosh@fossix.org
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: Eric Sandeen <esandeen@redhat.com>, linux-nvdimm@lists.01.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/TS6CDY7KBCH6RLGTA37NY2IK46SWG233/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LPUKUCYSTUCRPAZHPYIPTWSL2N6XBTJZ/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -53,59 +77,85 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Fail attempts to specify a size smaller than the host region to
-'create-namespace' when labels are not available. Otherwise ndctl
-confusingly succeeds and reports that the namespace is still statically
-sized to the region:
+Add attributes to generic dimms that are independent of platforms like the
+test dimms.
 
-Example before:
-
-  # ndctl create-namespace -s 32g
-    "size":"63.00 GiB (67.64 GB)",
-
-Example after:
-
-  # ndctl create-namespace -e namespace0.0 -s 2G -f
-    Error: Legacy / label-less namespaces do not support sub-dividing a region retry without -s/--size=
-
-  failed to reconfigure namespace: Invalid argument
-
-The memmap= parameter while useful, does not emulate many of the
-provisioning flows of real persistent memory devices. The set of useful
-namespace configuration that can be performed on top of memmap= defined
-region+namespace is reconfiguring the namespace between operation modes:
-
-   create-namespace -e namespace0.0 -f -m {devdax,fsdax,sector}
-
-Link: https://github.com/pmem/ndctl/issues/150
-Reported-by: Eric Sandeen <esandeen@redhat.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
 ---
- ndctl/namespace.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ ndctl/lib/libndctl.c | 51 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
-diff --git a/ndctl/namespace.c b/ndctl/namespace.c
-index e734248c9752..e946bb6c9bfa 100644
---- a/ndctl/namespace.c
-+++ b/ndctl/namespace.c
-@@ -684,6 +684,17 @@ static int validate_namespace_options(struct ndctl_region *region,
- 			return rc;
- 	}
- 
-+	/*
-+	 * Block attempts to set a custom size on legacy (label-less)
-+	 * namespaces
-+	 */
-+	if (ndctl_region_get_nstype(region) == ND_DEVICE_NAMESPACE_IO
-+			&& p->size != ndctl_region_get_size(region)) {
-+		error("Legacy / label-less namespaces do not support sub-dividing a region\n");
-+		error("Retry without -s/--size=\n");
-+		return -EINVAL;
-+	}
+diff --git a/ndctl/lib/libndctl.c b/ndctl/lib/libndctl.c
+index 952192c..852cb4d 100644
+--- a/ndctl/lib/libndctl.c
++++ b/ndctl/lib/libndctl.c
+@@ -1619,6 +1619,53 @@ static int add_nfit_dimm(struct ndctl_dimm *dimm, const char *dimm_base)
+ 	free(path);
+ 	return rc;
+ }
++static void populate_dimm_attributes(struct ndctl_dimm *dimm,
++				     const char *dimm_base)
++{
++	char buf[SYSFS_ATTR_SIZE];
++	struct ndctl_ctx *ctx = dimm->bus->ctx;
++	char *path = calloc(1, strlen(dimm_base) + 100);
 +
- 	if (param.uuid) {
- 		if (uuid_parse(param.uuid, p->uuid) != 0) {
- 			err("%s: invalid uuid\n", __func__);
++	sprintf(path, "%s/phys_id", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) < 0)
++		goto err_read;
++	dimm->phys_id = strtoul(buf, NULL, 0);
++
++	sprintf(path, "%s/handle", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) < 0)
++		goto err_read;
++	dimm->handle = strtoul(buf, NULL, 0);
++
++	sprintf(path, "%s/vendor", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) == 0)
++		dimm->vendor_id = strtoul(buf, NULL, 0);
++
++	sprintf(path, "%s/id", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) == 0) {
++		unsigned int b[9];
++
++		dimm->unique_id = strdup(buf);
++		if (!dimm->unique_id)
++			goto err_read;
++		if (sscanf(dimm->unique_id, "%02x%02x-%02x-%02x%02x-%02x%02x%02x%02x",
++					&b[0], &b[1], &b[2], &b[3], &b[4],
++					&b[5], &b[6], &b[7], &b[8]) == 9) {
++			dimm->manufacturing_date = b[3] << 8 | b[4];
++			dimm->manufacturing_location = b[2];
++		}
++	}
++	sprintf(path, "%s/subsystem_vendor", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) == 0)
++		dimm->subsystem_vendor_id = strtoul(buf, NULL, 0);
++
++
++	sprintf(path, "%s/dirty_shutdown", dimm_base);
++	if (sysfs_read_attr(ctx, path, buf) == 0)
++		dimm->dirty_shutdown = strtoll(buf, NULL, 0);
++
++err_read:
++	free(path);
++}
+ 
+ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ {
+@@ -1694,6 +1741,10 @@ static void *add_dimm(void *parent, int id, const char *dimm_base)
+ 	} else
+ 		parse_dimm_flags(dimm, buf);
+ 
++	/* add the available dimm attributes, the platform can override or add
++	 * additional attributes later */
++	populate_dimm_attributes(dimm, dimm_base);
++
+ 	/* Check if the given dimm supports nfit */
+ 	if (ndctl_bus_has_nfit(bus)) {
+ 		dimm->formats = formats;
+-- 
+2.26.2
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
