@@ -2,195 +2,93 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE89128623D
-	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 17:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7813528640D
+	for <lists+linux-nvdimm@lfdr.de>; Wed,  7 Oct 2020 18:30:39 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EC18B1568AE6D;
-	Wed,  7 Oct 2020 08:36:49 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=156.151.31.85; helo=userp2120.oracle.com; envelope-from=darrick.wong@oracle.com; receiver=<UNKNOWN> 
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 3DA691568FCC1;
+	Wed,  7 Oct 2020 09:30:38 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=74.6.133.123; helo=sonic313-13.consmr.mail.bf2.yahoo.com; envelope-from=fredodinga22@gmail.com; receiver=<UNKNOWN> 
+Received: from sonic313-13.consmr.mail.bf2.yahoo.com (sonic313-13.consmr.mail.bf2.yahoo.com [74.6.133.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 168C61568AE6B
-	for <linux-nvdimm@lists.01.org>; Wed,  7 Oct 2020 08:36:47 -0700 (PDT)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-	by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097FXS7M021665;
-	Wed, 7 Oct 2020 15:36:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=5f69miCPt+NV0LANFf/qO1h0nLQY1MwO9sbrOzCAKXg=;
- b=A3gBZ56H1novabUez4R1w5Sej3V87adyElfnlhPv4YAW+IMki1gknRxoArFhu/hvDAJ2
- n1iqburVQ+/f8wX66ajrL4xQ+XBLT2th0ZLHzcMkyNkctAiQYjLhg6NR+JtetIa4wi8y
- DG7mbgV27hqknqaHdLnJhXgbgHW2RFG7Rr+nNTHF+qyKSqrBifdQG93TtWcDWvmLwItt
- ZbkcHPG/TSkVlxOLuSP6QiKqBXKJ7Up45WwlayF9lRAhMconbPSSumdcdHLcelw/HHLM
- wMQIUfDyJRB0zB+In2+AQKQ0jx8FIwGI1oC9V8IFwuQV3M8t7EIYBExw42D2Ro6uECeP JQ==
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-	by userp2120.oracle.com with ESMTP id 33xhxn2f9h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 07 Oct 2020 15:36:33 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-	by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 097FZIEx008693;
-	Wed, 7 Oct 2020 15:36:32 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-	by userp3020.oracle.com with ESMTP id 33yyjhc1at-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 07 Oct 2020 15:36:32 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 097FaKhX018653;
-	Wed, 7 Oct 2020 15:36:20 GMT
-Received: from localhost (/67.169.218.210)
-	by default (Oracle Beehive Gateway v4.0)
-	with ESMTP ; Wed, 07 Oct 2020 08:36:20 -0700
-Date: Wed, 7 Oct 2020 08:36:19 -0700
-From: "Darrick J. Wong" <darrick.wong@oracle.com>
-To: Ralph Campbell <rcampbell@nvidia.com>
-Subject: Re: [PATCH] ext4/xfs: add page refcount helper
-Message-ID: <20201007153619.GD49547@magnolia>
-References: <20201006230930.3908-1-rcampbell@nvidia.com>
+	by ml01.01.org (Postfix) with ESMTPS id 879C215683B21
+	for <linux-nvdimm@lists.01.org>; Wed,  7 Oct 2020 09:30:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602088233; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Xveu13YBQiHv317sGkFgvikmy3mava58k2VVfYBA/1XyzTXAspxIZuO+B5LhJllyq5ICjyg/z/WSQ0bKXFANgygpBrZE+htXBphnIF4p0ATEgQ2a6RxG9ZqiudJu6fqV7w4+DUR1ReRxyhfryQOQIbUSyWoK9MjtlNETouovt80MWpnqCqUjjF+0rOtnJlbHOe5s/fyXZ7M06MeY5ebOedjIuaiPnEcv78eHegRfgE0VwDUhIfOS57u8sYu3KUz0F9qwi4Svjxz61f0jyWcV2bCm9coFjBwdvH+BKJ2npyar+iK9KH2d4fdy7TlYXAqu/hSFtbNGlfB+qAsP2ND93A==
+X-YMail-OSG: xOC7ozAVM1mQHi7BAvhOII7MTxYE_Z2ypiHIDcDDl8vL50ooACzNzJBQHxM.QIL
+ CuxYNg5KcS5Nicx4txjt9pys6E7jqO.1GhvR5h33hqkwXqShyX5.C.S2kWHNgNQAIl_mXUTAKzkT
+ 4Q1RQuwTUqhnAn9rPDz..C37w_1WJIoMXVJx5eX1MXd0Wxj7IMVbIPu0RZpKbTOKvNP76Ur9cfFN
+ DGwWLMPzYZGvQxInxFwuV2OFPr7KSnxwsZu3nS_apjIvarjBWgrwwGxgiEUUuiQnrNhghwZtTJpK
+ GC7FSCPn6nT4L8SYXqsKtv3oulhyjFXzBbr6RiJvS_KDD7lkzmgVOUSxSkRB6dXHLkeOXSse9P8P
+ xOdpUQgNJovI_d5dKboGY9ULQF2ldKW5tTFVyDIM2UPeTufLg70qtqYyp2eLRkvNyeYxqjkiPrNm
+ PDWXBMGQij8xQZwirrqRWx.H6w.Vha1fOKs_mCNhJnA1FQtbvzG6XZuhGkW4oZrk7anKaqr5rKYV
+ 7OjV_qtozRbF5bVfP7WH6OdkD_Iew9sRqagLqXwvLk9yqFOTXOLplcm1z5e2J2txEHSqi4CBiYWr
+ TB3HeDtwbUWapOaWh5L6v7PN5VwloCKX0OQ27MC33a1nMzVEBbfrM3ZuwWYf9LT1N2ijOCwsYz4G
+ wVYUFCOjOM7.SF33oS47Y1.jHrOmH8yT8bVQV1dkIQB776VBGMKs3RWfmaA9SaVd5Yc7gVW_Ss9E
+ stzCFJZStta0ff2JMuq6PxQrZ4dqvdKgsd_G2n0orjOWfBNpqzIqhNwULR9ec56vGkRhMj9nh53u
+ NGe_KxfWO1wHUndx.K24d9yePQRSjjK.kU6lmmS8sJS0NXGPh9If_xfx8nzQmvq.V8l5xDb0OrIB
+ vEJJXoNt9St2NCidNBBpiG66wMb2D9fRnwfBIT9PmPwGDivZA5CvWd7e2OMQ1l.SG4KW2ALLjCOb
+ vruHHN8GB7j2N44rOW3788v1Wp9TUvPg427I4IHTYaErX7Q5XhTlF20nBt6daXU_FzuwZrcjw34c
+ tjhCQsP.UgcY5Plsifow1mweOsNCanaoPsk.P841luTTQAihyvQcLsqC9se44fwRyA_iPmWB2VWL
+ 7vOMRxjZcHfiMQilRwQBe1B14C6qW6tk_ZXWTYVQ9Fct4d6HLZIYagy6iIKx6OGWwmawVbtJYNri
+ eUkDFT9.caB2Z_I0e1y1q4im8QwFUPhwIkciibQY1i8O5XH74NafHwJ1xK_UbZd_9Htt4L1H7apK
+ jrF3eRaPgn_3Dgwn1oYCnrzmb5upHnYj31nydT7r9HA.3dYRAUGWtnxG5B8t89Rm88ShEejjynPa
+ 9fL1TCaq5rzbpE9OMx4y3gO1XCWTTvpE3Zc5r3nHEOdLsLxWBIWbR3lbPrd3oJpRhwDgomjZ5m5k
+ qj2o4IqOUoyMDRACHBmEi9IIqQ61VLQ2mznE7F6e.
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:30:33 +0000
+Date: Wed, 7 Oct 2020 16:30:01 +0000 (UTC)
+From: Marilyn Robert <fredodinga22@gmail.com>
+Message-ID: <1346318531.150693.1602088201295@mail.yahoo.com>
+Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20201006230930.3908-1-rcampbell@nvidia.com>
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 bulkscore=0
- phishscore=0 mlxlogscore=999 mlxscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070099
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9767 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 bulkscore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0
- mlxlogscore=999 adultscore=0 clxscore=1011 spamscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
- definitions=main-2010070099
-Message-ID-Hash: E2X367CRJSSBJSFBT7BZWLJRFHEYP3DV
-X-Message-ID-Hash: E2X367CRJSSBJSFBT7BZWLJRFHEYP3DV
-X-MailFrom: darrick.wong@oracle.com
+References: <1346318531.150693.1602088201295.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+Message-ID-Hash: BL43I7DCSQATYYBTMCAMIR4HEP4V3XAP
+X-Message-ID-Hash: BL43I7DCSQATYYBTMCAMIR4HEP4V3XAP
+X-MailFrom: fredodinga22@gmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: linux-mm@kvack.org, linux-xfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Christoph Hellwig <hch@lst.de>, Andreas Dilger <adilger.kernel@dilger.ca>, Andrew Morton <akpm@linux-foundation.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: marilyobert@gmail.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/E2X367CRJSSBJSFBT7BZWLJRFHEYP3DV/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BL43I7DCSQATYYBTMCAMIR4HEP4V3XAP/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Tue, Oct 06, 2020 at 04:09:30PM -0700, Ralph Campbell wrote:
-> There are several places where ZONE_DEVICE struct pages assume a reference
-> count == 1 means the page is idle and free. Instead of open coding this,
-> add a helper function to hide this detail.
-> 
-> Signed-off-by: Ralph Campbell <rcampbell@nvidia.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> ---
-> 
-> I'm resending this as a separate patch since I think it is ready to
-> merge. Originally, this was part of an RFC and is unchanged from v3:
-> https://lore.kernel.org/linux-mm/20201001181715.17416-1-rcampbell@nvidia.com
-> 
-> It applies cleanly to linux-5.9.0-rc7-mm1 but doesn't really
-> depend on anything, just simple merge conflicts when applied to
-> other trees.
-> I'll let the various maintainers decide which tree and when to merge.
-> It isn't urgent since it is a clean up patch.
-> 
->  fs/dax.c            |  4 ++--
->  fs/ext4/inode.c     |  5 +----
->  fs/xfs/xfs_file.c   |  4 +---
->  include/linux/dax.h | 10 ++++++++++
->  4 files changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 5b47834f2e1b..85c63f735909 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -358,7 +358,7 @@ static void dax_disassociate_entry(void *entry, struct address_space *mapping,
->  	for_each_mapped_pfn(entry, pfn) {
->  		struct page *page = pfn_to_page(pfn);
->  
-> -		WARN_ON_ONCE(trunc && page_ref_count(page) > 1);
-> +		WARN_ON_ONCE(trunc && !dax_layout_is_idle_page(page));
->  		WARN_ON_ONCE(page->mapping && page->mapping != mapping);
->  		page->mapping = NULL;
->  		page->index = 0;
-> @@ -372,7 +372,7 @@ static struct page *dax_busy_page(void *entry)
->  	for_each_mapped_pfn(entry, pfn) {
->  		struct page *page = pfn_to_page(pfn);
->  
-> -		if (page_ref_count(page) > 1)
-> +		if (!dax_layout_is_idle_page(page))
->  			return page;
->  	}
->  	return NULL;
-> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-> index 771ed8b1fadb..132620cbfa13 100644
-> --- a/fs/ext4/inode.c
-> +++ b/fs/ext4/inode.c
-> @@ -3937,10 +3937,7 @@ int ext4_break_layouts(struct inode *inode)
->  		if (!page)
->  			return 0;
->  
-> -		error = ___wait_var_event(&page->_refcount,
-> -				atomic_read(&page->_refcount) == 1,
-> -				TASK_INTERRUPTIBLE, 0, 0,
-> -				ext4_wait_dax_page(ei));
-> +		error = dax_wait_page(ei, page, ext4_wait_dax_page);
->  	} while (error == 0);
->  
->  	return error;
-> diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-> index 3d1b95124744..a5304aaeaa3a 100644
-> --- a/fs/xfs/xfs_file.c
-> +++ b/fs/xfs/xfs_file.c
-> @@ -749,9 +749,7 @@ xfs_break_dax_layouts(
->  		return 0;
->  
->  	*retry = true;
-> -	return ___wait_var_event(&page->_refcount,
-> -			atomic_read(&page->_refcount) == 1, TASK_INTERRUPTIBLE,
-> -			0, 0, xfs_wait_dax_page(inode));
-> +	return dax_wait_page(inode, page, xfs_wait_dax_page);
-
-I don't mind this open-coded soup getting cleaned up into a macro,
-though my general opinion is that if the mm/dax developers are ok with
-this then:
-
-Acked-by: Darrick J. Wong <darrick.wong@oracle.com>
-
---D
-
->  }
->  
->  int
-> diff --git a/include/linux/dax.h b/include/linux/dax.h
-> index b52f084aa643..8909a91cd381 100644
-> --- a/include/linux/dax.h
-> +++ b/include/linux/dax.h
-> @@ -243,6 +243,16 @@ static inline bool dax_mapping(struct address_space *mapping)
->  	return mapping->host && IS_DAX(mapping->host);
->  }
->  
-> +static inline bool dax_layout_is_idle_page(struct page *page)
-> +{
-> +	return page_ref_count(page) == 1;
-> +}
-> +
-> +#define dax_wait_page(_inode, _page, _wait_cb)				\
-> +	___wait_var_event(&(_page)->_refcount,				\
-> +		dax_layout_is_idle_page(_page),				\
-> +		TASK_INTERRUPTIBLE, 0, 0, _wait_cb(_inode))
-> +
->  #ifdef CONFIG_DEV_DAX_HMEM_DEVICES
->  void hmem_register_device(int target_nid, struct resource *r);
->  #else
-> -- 
-> 2.20.1
-> 
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
+0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
+0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
+INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
+vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
+0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
+tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
+0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
+0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
+0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
+s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
+vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
+gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
+vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
+vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
+0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
+0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
+0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
+vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
+uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
+0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
+0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
+0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
+0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
+0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
+0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
+sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
+v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
+gNC40LvQuNC9INCg0L7QsdC10YDRggpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fXwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBs
+aXN0cy4wMS5vcmcKVG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0t
+bGVhdmVAbGlzdHMuMDEub3JnCg==
