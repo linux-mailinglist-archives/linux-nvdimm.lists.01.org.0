@@ -2,96 +2,120 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA14287C86
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Oct 2020 21:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE2D287CA7
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Oct 2020 21:53:17 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12630153BFF7A;
-	Thu,  8 Oct 2020 12:33:14 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=<UNKNOWN> 
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id 88A591544614D;
+	Thu,  8 Oct 2020 12:53:15 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=141.146.126.79; helo=aserp2130.oracle.com; envelope-from=boris.ostrovsky@oracle.com; receiver=<UNKNOWN> 
+Received: from aserp2130.oracle.com (aserp2130.oracle.com [141.146.126.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 390D0153BFF79
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 12:33:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BHYNWcWHIFZvVZFOrN5msKH7zebNjbiD4DhvwYAYv8g=; b=WtKqtTYFnWStgYMZ2Ii4ZkWL/J
-	5VcSFFsPi/0uUCZ3Bgy/wKp/PsALEneWOFem2MTRPmtdVymmgotP68cHfrWos4OuKduHZzIl2zIJQ
-	BOBnSQ4xy9IoePSftqZq5TxYBwXQMESJQV2wHwivsBCp2EbN9chVJcBPnDXfGN5RM6WDESexMEZxb
-	TXsk60h68uXyRkqnspvPQW+qo7o1BntcHL6TQunHEk3ssVMKe8dNpqK/lrfAp+s88E4IvchIrBr9H
-	YiMRHY+ZMGDBLQSMtL41gw2gCHd2dq1pk93L5VH8nbEUUgkGbIv9QpJSLfgsmkK8HPkgcMOyHVNw0
-	ovZZsPHw==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kQbev-0007bI-Rb; Thu, 08 Oct 2020 19:33:01 +0000
-Date: Thu, 8 Oct 2020 20:33:01 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
-Subject: Re: [PATCH 0/4] Remove nrexceptional tracking
-Message-ID: <20201008193301.GN20115@casper.infradead.org>
-References: <20200804161755.10100-1-willy@infradead.org>
- <898e058f12c7340703804ed9d05df5ead9ecb50d.camel@intel.com>
- <ee26fdf05127b7aea69db9d025d6ba5e677479bb.camel@intel.com>
+	by ml01.01.org (Postfix) with ESMTPS id 0F90D1544614B
+	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 12:53:12 -0700 (PDT)
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+	by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098JiY01121352;
+	Thu, 8 Oct 2020 19:52:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=TOXYoPq7dhn6DY/1xOASv8Mqfnor1vAExhw+DTAwaGY=;
+ b=l+BVAMIQHQuI/buil576rcNVLNwOWWg9XHB8Kka1ny5c+3NiQAiu6yGmEmqdDyJrVkIa
+ 9MgaV1Ri/GwGb3JkAvufPKriR7tEfbgnRq1qEn8Uur1iz3Q9CMdV9Juq76SSP3KcEbRz
+ M4IHIZgsD0WhxSzmIfrEA4GW56W3qxW459Vhm0jZBHlKjsRN804PBm7PFqa/XKVRQJqi
+ Z6mgNF4EiCMlZjqlRkVn0HVljEhu1zRDQaoJJDUst+C11z1U3UWxzunfjFTnIyIij/Go
+ ZThcSZYBoht2G01MamvOOHUAdX+aAmQhyS9w/3NhLRXAeOImUCsJToZVvyr6AfIPhJEC ew==
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+	by aserp2130.oracle.com with ESMTP id 33xetb9vxn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 08 Oct 2020 19:52:50 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+	by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 098JkGT2068959;
+	Thu, 8 Oct 2020 19:52:50 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+	by userp3030.oracle.com with ESMTP id 33y381mmvk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 08 Oct 2020 19:52:50 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+	by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 098JqXsO027511;
+	Thu, 8 Oct 2020 19:52:33 GMT
+Received: from [10.74.86.78] (/10.74.86.78)
+	by default (Oracle Beehive Gateway v4.0)
+	with ESMTP ; Thu, 08 Oct 2020 12:52:32 -0700
+Subject: Re: [PATCH v6 09/11] mm/memremap_pages: convert to 'struct range'
+To: Dan Williams <dan.j.williams@intel.com>, akpm@linux-foundation.org
+References: <160196728453.2166475.12832711415715687418.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <160196733645.2166475.12840692906594512941.stgit@dwillia2-desk3.amr.corp.intel.com>
+From: boris.ostrovsky@oracle.com
+Organization: Oracle Corporation
+Message-ID: <a2a740e2-424c-69ff-45a6-3d71feac5c50@oracle.com>
+Date: Thu, 8 Oct 2020 15:52:14 -0400
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <ee26fdf05127b7aea69db9d025d6ba5e677479bb.camel@intel.com>
-Message-ID-Hash: 7VITH3BPDCIKEZOY434N7CDGNFBPKSAL
-X-Message-ID-Hash: 7VITH3BPDCIKEZOY434N7CDGNFBPKSAL
-X-MailFrom: willy@infradead.org
+In-Reply-To: <160196733645.2166475.12840692906594512941.stgit@dwillia2-desk3.amr.corp.intel.com>
+Content-Language: en-US
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 spamscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 adultscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010080138
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9768 signatures=668681
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxscore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2010080138
+Message-ID-Hash: YFQIIZI7PY4HEQIZCMRRGCVWM5PZJA3C
+X-Message-ID-Hash: YFQIIZI7PY4HEQIZCMRRGCVWM5PZJA3C
+X-MailFrom: boris.ostrovsky@oracle.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+CC: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, Dan Carpenter <dan.carpenter@oracle.com>, dave.hansen@linux.intel.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, david@redhat.com, joao.m.martins@oracle.com
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7VITH3BPDCIKEZOY434N7CDGNFBPKSAL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YFQIIZI7PY4HEQIZCMRRGCVWM5PZJA3C/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Thu, Aug 06, 2020 at 08:16:02PM +0000, Verma, Vishal L wrote:
-> On Thu, 2020-08-06 at 19:44 +0000, Verma, Vishal L wrote:
-> > > 
-> > > I'm running xfstests on this patchset right now.  If one of the DAX
-> > > people could try it out, that'd be fantastic.
-> > > 
-> > > Matthew Wilcox (Oracle) (4):
-> > >   mm: Introduce and use page_cache_empty
-> > >   mm: Stop accounting shadow entries
-> > >   dax: Account DAX entries as nrpages
-> > >   mm: Remove nrexceptional from inode
-> > 
-> > Hi Matthew,
-> > 
-> > I applied these on top of 5.8 and ran them through the nvdimm unit test
-> > suite, and saw some test failures. The first failing test signature is:
-> > 
-> >   + umount test_dax_mnt
-> >   ./dax-ext4.sh: line 62: 15749 Segmentation fault      umount $MNT
-> >   FAIL dax-ext4.sh (exit status: 139)
-
-Thanks.  Fixed:
-
-+++ b/fs/dax.c
-@@ -644,7 +644,7 @@ static int __dax_invalidate_entry(struct address_space *mapping,
-                goto out;
-        dax_disassociate_entry(entry, mapping, trunc);
-        xas_store(&xas, NULL);
--       mapping->nrpages -= dax_entry_order(entry);
-+       mapping->nrpages -= 1UL << dax_entry_order(entry);
-        ret = 1;
- out:
-        put_unlocked_entry(&xas, entry);
-
-Updated git tree at
-https://git.infradead.org/users/willy/pagecache.git/
-
-It survives an xfstests run on an fsdax namespace which supports 2MB pages.
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQpPbiAxMC82LzIwIDI6NTUgQU0sIERhbiBXaWxsaWFtcyB3cm90ZToNCj4gVGhlICdzdHJ1Y3Qg
+cmVzb3VyY2UnIGluICdzdHJ1Y3QgZGV2X3BhZ2VtYXAnIGlzIG9ubHkgdXNlZCBmb3IgaG9sZGlu
+Zw0KPiByZXNvdXJjZSBzcGFuIGluZm9ybWF0aW9uLiAgVGhlIG90aGVyIGZpZWxkcywgJ25hbWUn
+LCAnZmxhZ3MnLCAnZGVzYycsDQo+ICdwYXJlbnQnLCAnc2libGluZycsIGFuZCAnY2hpbGQnIGFy
+ZSBhbGwgdW51c2VkIHdhc3RlZCBzcGFjZS4NCj4NCj4gVGhpcyBpcyBpbiBwcmVwYXJhdGlvbiBm
+b3IgaW50cm9kdWNpbmcgYSBtdWx0aS1yYW5nZSBleHRlbnNpb24gb2YNCj4gZGV2bV9tZW1yZW1h
+cF9wYWdlcygpLg0KPg0KPiBUaGUgYnVsayBvZiB0aGlzIGNoYW5nZSBpcyB1bndpbmRpbmcgYWxs
+IHRoZSBwbGFjZXMgaW50ZXJuYWwgdG8gbGlibnZkaW1tDQo+IHRoYXQgdXNlZCAnc3RydWN0IHJl
+c291cmNlJyB1bm5lY2Vzc2FyaWx5LCBhbmQgcmVwbGFjaW5nIGluc3RhbmNlcyBvZg0KPiAnc3Ry
+dWN0IGRldl9wYWdlbWFwJy5yZXMgd2l0aCAnc3RydWN0IGRldl9wYWdlbWFwJy5yYW5nZS4NCj4N
+Cj4gUDJQRE1BIGhhZCBhIG1pbm9yIHVzYWdlIG9mIHRoZSByZXNvdXJjZSBmbGFncyBmaWVsZCwg
+YnV0IG9ubHkgdG8gcmVwb3J0DQo+IGZhaWx1cmVzIHdpdGggIiVwUiIuICBUaGF0IGlzIHJlcGxh
+Y2VkIHdpdGggYW4gb3BlbiBjb2RlZCBwcmludCBvZiB0aGUNCj4gcmFuZ2UuDQo+DQo+IExpbms6
+IGh0dHBzOi8vbGttbC5rZXJuZWwub3JnL3IvMTU5NjQzMTAzMTczLjQwNjIzMDIuNzY4OTk4ODg1
+NjkxNzExNTMyLnN0Z2l0QGR3aWxsaWEyLWRlc2szLmFtci5jb3JwLmludGVsLmNvbQ0KPiBMaW5r
+OiBodHRwczovL2xrbWwua2VybmVsLm9yZy9yLzIwMjAwOTI2MTIxNDAyLkdBNzQ2N0BrYWRhbQ0K
+PiBDYzogUGF1bCBNYWNrZXJyYXMgPHBhdWx1c0BvemxhYnMub3JnPg0KPiBDYzogTWljaGFlbCBF
+bGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1Pg0KPiBDYzogQmVuamFtaW4gSGVycmVuc2NobWlk
+dCA8YmVuaEBrZXJuZWwuY3Jhc2hpbmcub3JnPg0KPiBDYzogVmlzaGFsIFZlcm1hIDx2aXNoYWwu
+bC52ZXJtYUBpbnRlbC5jb20+DQo+IENjOiBWaXZlayBHb3lhbCA8dmdveWFsQHJlZGhhdC5jb20+
+DQo+IENjOiBEYXZlIEppYW5nIDxkYXZlLmppYW5nQGludGVsLmNvbT4NCj4gQ2M6IEJlbiBTa2Vn
+Z3MgPGJza2VnZ3NAcmVkaGF0LmNvbT4NCj4gQ2M6IERhdmlkIEFpcmxpZSA8YWlybGllZEBsaW51
+eC5pZT4NCj4gQ2M6IERhbmllbCBWZXR0ZXIgPGRhbmllbEBmZndsbC5jaD4NCj4gQ2M6IElyYSBX
+ZWlueSA8aXJhLndlaW55QGludGVsLmNvbT4NCj4gQ2M6IEJqb3JuIEhlbGdhYXMgPGJoZWxnYWFz
+QGdvb2dsZS5jb20+DQo+IENjOiBCb3JpcyBPc3Ryb3Zza3kgPGJvcmlzLm9zdHJvdnNreUBvcmFj
+bGUuY29tPg0KPiBDYzogSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1c2UuY29tPg0KPiBDYzogU3Rl
+ZmFubyBTdGFiZWxsaW5pIDxzc3RhYmVsbGluaUBrZXJuZWwub3JnPg0KPiBDYzogIkrDqXLDtG1l
+IEdsaXNzZSIgPGpnbGlzc2VAcmVkaGF0LmNvbT4NCj4gQ2M6IEFuZHJldyBNb3J0b24gPGFrcG1A
+bGludXgtZm91bmRhdGlvbi5vcmc+DQo+IFJlcG9ydGVkLWJ5OiBEYW4gQ2FycGVudGVyIDxkYW4u
+Y2FycGVudGVyQG9yYWNsZS5jb20+DQo+IFNpZ25lZC1vZmYtYnk6IERhbiBXaWxsaWFtcyA8ZGFu
+Lmoud2lsbGlhbXNAaW50ZWwuY29tPg0KDQoNCkZvciBYZW4gYml0cw0KDQoNClJldmlld2VkLWJ5
+OiBCb3JpcyBPc3Ryb3Zza3kgPGJvcmlzLm9zdHJvdnNreUBvcmFjbGUuY29tPg0KX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxp
+bmcgbGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQg
+YW4gZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
