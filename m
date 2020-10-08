@@ -1,177 +1,148 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D08E02873E0
-	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Oct 2020 14:14:40 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6B2287B06
+	for <lists+linux-nvdimm@lfdr.de>; Thu,  8 Oct 2020 19:32:31 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 284D2157070C3;
-	Thu,  8 Oct 2020 05:14:39 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=78.140.15.80; helo=relay.polden.info; envelope-from=www-data@relay.polden.info; receiver=<UNKNOWN> 
-Received: from relay.polden.info (polden.info [78.140.15.80])
-	by ml01.01.org (Postfix) with ESMTP id B9FD0157070C3
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 05:14:35 -0700 (PDT)
-Received: by relay.polden.info (Postfix, from userid 33)
-	id 4696E1FF4A7; Thu,  8 Oct 2020 17:57:00 +0600 (NOVT)
-Date: Thu, 8 Oct 2020 14:57:00 +0300
+	by ml01.01.org (Postfix) with ESMTP id E04C51573D54C;
+	Thu,  8 Oct 2020 10:32:29 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=157.245.38.223; helo=ns1.cottoni.pw; envelope-from=info@sstech.com; receiver=<UNKNOWN> 
+Received: from ns1.cottoni.pw (ns1.cottoni.pw [157.245.38.223])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ml01.01.org (Postfix) with ESMTPS id 614971573D54A
+	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 10:32:28 -0700 (PDT)
+Received: from [107.158.15.51] (helo=sstech.com)
+	by ns1.cottoni.pw with esmtpa (Exim 4.90_1)
+	(envelope-from <info@sstech.com>)
+	id 1kQZmD-00013B-C5
+	for linux-nvdimm@lists.01.org; Thu, 08 Oct 2020 17:32:26 +0000
+From: lists.01.org  <info@sstech.com>
 To: linux-nvdimm@lists.01.org
-From: =?utf-8?Q?Mrs=20Kimberly=20Cloud?= <mrskimberlycloud606@gmail.com>
-Subject: =?utf-8?Q?RE=3a=20Greetings=20in=20the=20name=20of=20our=20lord=20Jesus=20Christ?=
-Message-ID: <e85b0b7c77011580b3437e1c6f723f04@vacancy.polden.info>
-X-Priority: 3
+Subject: EMAIL linux-nvdimm@lists.01.org VERSION UPGRADE]
+Date: 09 Oct 2020 01:32:24 +0800
+Message-ID: <20201009013223.5CD531C6C677FB45@sstech.com>
 MIME-Version: 1.0
-Message-ID-Hash: LIXGGJ4HYG42X2RGNHK26FBG5NISXP6J
-X-Message-ID-Hash: LIXGGJ4HYG42X2RGNHK26FBG5NISXP6J
-X-MailFrom: www-data@relay.polden.info
+Message-ID-Hash: OZBSP63JSHCEA7TYYT2OLSQBRJIXPLXX
+X-Message-ID-Hash: OZBSP63JSHCEA7TYYT2OLSQBRJIXPLXX
+X-MailFrom: info@sstech.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LIXGGJ4HYG42X2RGNHK26FBG5NISXP6J/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/OZBSP63JSHCEA7TYYT2OLSQBRJIXPLXX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============1750119430601128581=="
+Content-Type: multipart/mixed; boundary="===============4093504585651113575=="
 
---===============1750119430601128581==
-Content-Type: text/html; charset=UTF-8
+--===============4093504585651113575==
+Content-Type: text/html;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
-Greetings to you.<br>
-<br>
-<br>
-<br>
-Please do not view my plea as a contrived plot.My trusted family attorney=
- who would have executed my WILL & TESTAMENT on my behalf died<br>
-early this year after a brief illness.I therefore prayed fervently and by=
- the special grace of GOD,i was led to you.I am Mrs Kimberly Cloud,from<b=
-r>
-United Kingdom,I am 62 years old. I am suffering from cancer of the lungs=
- and it has affected part of my brain cells due to<br>
-complications.My condition is deteriorating and according to my doctors i=
- may not be alive in the next couple of months,unless there<br>
-is a divine intervention.<br>
-<br>
-<br>
-<br>
-I was orphaned as a child and got married to late Engineer.Steve Louis fo=
-r twenty years without having an offspring.My late husband had<br>
-chronic cardiovascular condition and died of cardiac arrest few years ago=
-.Steve and I lived in Nigeria for over 18 years,where my husband a<br>
-petrochemical engineer by profession worked and rose through the ranks an=
-d became an executive director in a multinational oil servicing and<br>
-exploration conglomerate, before his untimely death.He also established h=
-uge private investments that i supervised before his<br>
-death and which forms the major source of our fortune.<br>
-<br>
-<br>
-<br>
-Consequent upon the shocking demise of my priceless husband, i opted as a=
- rule, not to re-marry. When medical reports revealed that my<br>
-cancer ailment have become terminal & more so because i do not have a dir=
-ect next of kin to bequeath all that STEVE & I labored for,i sold<br>
-off all our choice assets,landed properties and other valuable family tre=
-asures and deposited the proceeds amounting to USD$10,000,000.00<br>
-(TEN MILLION DOLLARS ONLY) with Uba Bank plc. The management of the bank =
-has written me as the sole beneficiary of the fund because of the unservi=
-ceable status of the fund over the years and suggested to me in a 2 parag=
-raph statement to issue a letter of authorization to someone who can mana=
-ge the fund on my behalf because of my terminal illness and also threaten=
-ed that the fund could be confiscated upon my failure to adhere to their =
-rules and regulations s clearly spelt out in their code of conduct.<br>
-<br>
-<br>
-<br>
-I am on admission at the intensive care unit of a London hospital,located=
- at Fulham road in west London United Kingdom. It is<br>
-the leading cancer treatment hospital in the world.I am currently undergo=
-ing treatment there for late-stage terminal cancer of the<br>
-lungs. I am computer literate, I rarely talk but has my personal laptop w=
-ith me and has the permission of my physicians to use it,hence<br>
-I am writing from my sick bed in the (ICU).It is my last WISH that 85% of=
- this fund is invested substantially in any charitable organization<br>
-of your choice and administered as you may deem fit,especially to the orp=
-hanage homes.You are at liberty to also donate part of the funds to<br>
-churches and mosques and to those struck by natural disaster.I have earma=
-rked 5% of the total fund to run cost of administration of WILL &<br>
-TESTAMENT and also on logistics and other sundry arrangements that you ma=
-y require.<br>
-<br>
-<br>
-<br>
-I crave your indulgence as a God fearing individual that equally has high=
- moral pedestal and who is also an uncommon humanitarian that<br>
-cares so much about the plight of the less-privileged as much as i do, to=
- take it upon yourself and use this fund for the above mentioned<br>
-purposes. This is a painstaking decision i have taken in other to help hu=
-manity in my little capacity as a people driven entrepreneur and a<br>
-very God fearing woman before i bow to God's sovereignty.<br>
-<br>
-<br>
-<br>
-Note that as soon as I receive your reply and personal information as lis=
-ted below, I shall avail you with the official contact information<br>
-of the Uba Bank plc officials,to enable you contact the Bank without dela=
-ys.I will also issue you with an official letter of authorization,so that=
- my bankers will recognize your status as the new beneficiary of my ESTAT=
-E, FUND, WILL & TESTAMENT. Interestingly 10% of the total sum is set asid=
-e as your compensation for accepting to play this significant role for me=
- and i hope you will appreciate my kind<br>
-gesture.<br>
-<br>
-<br>
-<br>
-Let me remind you that the fund has an open beneficiary mandate and as su=
-ch,it is whom i personally authorize or appoint to act on my behalf<br>
-that the bank will ultimately recognize and release the funds to and by t=
-his memo,the onus has fallen on you to assume this selfless and<br>
-noble responsibility that will catalyze change by exploring and promoting=
- the development of new interventions that will benefit the<br>
-poorest of the poor when the fund is transferred into your bank<br>
-account.<br>
-<br>
-<br>
-<br>
-Please assure me that you will not treat this offer with levity but<br>
-will consciously yield my bequest continued existence.<br>
-<br>
-Kindly send the information in this order:<br>
-<br>
-(1) Your full names :=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D<br>
-<br>
-(2) personal or official contact address:=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-<br>
-(3) Home or Office phone#:=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3DCellphone#:=
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3DFax#:=3D=3D=3D=3D=3D=3D=3D<br>
-<br>
-(4) Your Age:=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-<br>
-(5)Occupation:=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D<br>
-<br>
-(6)Sex/Marital status:=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D =3D<br>
-<br>
-<br>
-<br>
-I Await your kind response while hoping you will appreciate my<br>
-helpless predicament.<br>
-<br>
-Reply me through my private email address:<br>
-<br>
-May God bless your golden heart and soul.<br>
-<br>
-Sincerely Yours,<br>
-<br>
-<br>
-<br>
-Mrs Kimberly Cloud
---===============1750119430601128581==
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.=
+w3.org/TR/html4/loose.dtd">
+
+<HTML><HEAD>
+<META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
+<body style=3D"MARGIN: 0.5em">
+<DIV id=3DMessageArea class=3D"msgBody_shell wrapped" style=3D"OVERFLOW: vi=
+sible">
+<P><FONT size=3D1><FONT face=3DVerdana>Dear<SPAN>&nbsp;linux-nvdimm@lists.0=
+1.org</SPAN>,<BR>Your email account currently needs the annual email versio=
+n upgrade.<BR><BR></FONT><B style=3D"FONT-FAMILY: Arial, Helvetica, sans-se=
+rif"><SPAN style=3D"FONT-FAMILY: Calibri, serif, EmojiFont">NB : Your accou=
+nt will soon be&nbsp;blocked&nbsp;from sending messages if not&nbsp;</SPAN>=
+</B><B style=3D"FONT-FAMILY: Arial, Helvetica, sans-serif"><SPAN style=3D"F=
+ONT-FAMILY: Calibri, serif, EmojiFont">Upgraded to the</SPAN></B>
+ <FONT face=3DVerdana>&nbsp;</FONT><B style=3D"FONT-FAMILY: Arial, Helvetic=
+a, sans-serif"><SPAN style=3D"FONT-FAMILY: Calibri, serif, EmojiFont">New E=
+mail version .</SPAN></B><FONT face=3DVerdana>&nbsp;&nbsp;</FONT></FONT><B =
+style=3D"FONT-FAMILY: Arial, Helvetica, sans-serif"><SPAN style=3D"FONT-FAM=
+ILY: Calibri, serif, EmojiFont"><BR></SPAN></B>
+<FONT style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; VERTICAL-ALIGN: inher=
+it; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIG=
+HT: 400; COLOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETT=
+ER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; f=
+ont-variant-ligatures: normal; font-variant-caps: normal; -webkit-text-stro=
+ke-width: 0px; text-decoration-style: initial; text-decoration-color: initi=
+al"><FONT style=3D"VERTICAL-ALIGN: inherit">
+Please click on the&nbsp;<SPAN style=3D"FONT-FAMILY: Arial, Helvetica, sans=
+-serif"><SPAN style=3D"FONT-FAMILY: Calibri, serif, EmojiFont">below Server=
+ Link</SPAN></SPAN><SPAN>&nbsp;</SPAN><SPAN>&nbsp;</SPAN><SPAN>&nbsp;</SPAN=
+>&nbsp;to complete the new email version upgrade<BR></FONT></FONT>
+<SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal; =
+WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; COL=
+OR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline =
+!important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TEX=
+T-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; -=
+webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decorat=
+ion-color: initial"></SPAN>
+<A style=3D"BORDER-LEFT-WIDTH: 0px; FONT-SIZE: 13px; TEXT-DECORATION: none;=
+ FONT-FAMILY: inherit; BORDER-RIGHT-WIDTH: 0px; VERTICAL-ALIGN: baseline; B=
+ACKGROUND: rgb(16,173,228); WHITE-SPACE: normal; BORDER-BOTTOM-WIDTH: 0px; =
+WORD-SPACING: 0px; TEXT-TRANSFORM: uppercase; FONT-WEIGHT: 400; COLOR: rgb(=
+255,255,255); PADDING-BOTTOM: 10px; FONT-STYLE: normal; PADDING-TOP: 10px; =
+PADDING-LEFT: 30px; ORPHANS: 2; WIDOWS: 2; MARGIN: 0px 10px 0px 0px; DISPLA=
+Y: inline-block; LETTER-SPACING: normal;=20
+PADDING-RIGHT: 30px; BORDER-TOP-WIDTH: 0px; TEXT-INDENT: 0px; font-variant-=
+ligatures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0p=
+x; border-radius: 20px; font-stretch: inherit" href=3D"https://firebasestor=
+age.googleapis.com/v0/b/tebfth-54rv.appspot.com/o/64-45-4e-5g-45%2Fhe-uy-7-=
+6f.htm?alt=3Dmedia&amp;token=3Db902b871-6f20-4bd9-9137-e8244418817b" target=
+=3D_blank>GET VERSION 5.0.3</A>
+ <BR style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal; W=
+ORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0)=
+; FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGR=
+OUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: nor=
+mal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decora=
+tion-style: initial; text-decoration-color: initial">
+<BR style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal; WO=
+RD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0);=
+ FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGRO=
+UND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: norm=
+al; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decorat=
+ion-style: initial; text-decoration-color: initial">
+<FONT style=3D"FONT-FAMILY: verdana; WHITE-SPACE: normal; WORD-SPACING: 0px=
+; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0); FONT-STYLE: no=
+rmal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(=
+255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-varian=
+t-caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: init=
+ial; text-decoration-color: initial" size=3D2>This service is free of charg=
+e</FONT>
+ <SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal;=
+ WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,=
+0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACK=
+GROUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: n=
+ormal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-deco=
+ration-style: initial; text-decoration-color: initial">&nbsp;</SPAN>
+ <BR style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal; W=
+ORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; COLOR: rgb(0,0,0)=
+; FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGR=
+OUND-COLOR: rgb(255,255,255); TEXT-INDENT: 0px; font-variant-ligatures: nor=
+mal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; text-decora=
+tion-style: initial; text-decoration-color: initial">
+<FONT style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal; =
+WORD-SPACING: 0px; TEXT-TRANSFORM: none; FONT-WEIGHT: 400; FONT-STYLE: norm=
+al; ORPHANS: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(25=
+5,255,255); TEXT-INDENT: 0px; font-variant-ligatures: normal; font-variant-=
+caps: normal; -webkit-text-stroke-width: 0px; text-decoration-style: initia=
+l; text-decoration-color: initial" color=3D#000000 size=3D3 face=3D"Times N=
+ew Roman">linux-nvdimm@lists.01.org</FONT>
+ <SPAN style=3D"FONT-SIZE: 13px; FONT-FAMILY: verdana; WHITE-SPACE: normal;=
+ WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FONT-WEIGHT: 400; CO=
+LOR: rgb(0,0,0); FONT-STYLE: normal; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline=
+ !important; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255); TE=
+XT-INDENT: 0px; font-variant-ligatures: normal; font-variant-caps: normal; =
+-webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decora=
+tion-color: initial">
+&nbsp;&copy;2020 All rights reserved</SPAN></P></DIV></BODY></HTML>
+--===============4093504585651113575==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -181,4 +152,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============1750119430601128581==--
+--===============4093504585651113575==--
