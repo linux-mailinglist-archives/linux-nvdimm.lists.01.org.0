@@ -2,32 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8282893C5
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DA82893CF
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:53:20 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 21F8B159A285D;
-	Fri,  9 Oct 2020 12:53:16 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id 397CD159C2200;
+	Fri,  9 Oct 2020 12:53:19 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.100; helo=mga07.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 3B67C159A2850
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:53:14 -0700 (PDT)
-IronPort-SDR: dt9eJMgNnkcC7dR7wCuKgZf2JJiPKBuJozmXvYSzd3nzbTGZu9+l9CfJorTVemTHF01+ZD/rQK
- K2tVYHLe5png==
-X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="250226259"
+	by ml01.01.org (Postfix) with ESMTPS id A60E4159C2202
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:53:16 -0700 (PDT)
+IronPort-SDR: 4M9QMTsH9wJJvZ4D+P9iIShJg+FNAVRbt0VZSQrSs2o3q5uVLF/Uux/AK2Kjr6coeogMehU5L0
+ wSRVLH3+20kQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="229715312"
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="250226259"
+   d="scan'208";a="229715312"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:53:13 -0700
-IronPort-SDR: kHLawvWt7hk0hVI10Fetwn7tOzYF5yIQvhqqrAQq3flxek1V3ypdWT/2gH8vwQndln/BZvc5kH
- kTRjULDVKoGw==
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:53:16 -0700
+IronPort-SDR: tpdf2AjeaRc5H+9J2CTgDjuzQWeL2r1NHpqYA6zEYh1sueM+cncDhIB0ZXYbhrsfqtXGL/LVMU
+ w/znFNAZKmjw==
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="312652948"
+   d="scan'208";a="518801571"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:53:12 -0700
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:53:15 -0700
 From: ira.weiny@intel.com
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -35,23 +35,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH RFC PKS/PMEM 40/58] net: Utilize new kmap_thread()
-Date: Fri,  9 Oct 2020 12:50:15 -0700
-Message-Id: <20201009195033.3208459-41-ira.weiny@intel.com>
+Subject: [PATCH RFC PKS/PMEM 41/58] drivers/target: Utilize new kmap_thread()
+Date: Fri,  9 Oct 2020 12:50:16 -0700
+Message-Id: <20201009195033.3208459-42-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20201009195033.3208459-1-ira.weiny@intel.com>
 References: <20201009195033.3208459-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: EDNQJDU4274Q2MSX2BD6GRDMFAAHZGVR
-X-Message-ID-Hash: EDNQJDU4274Q2MSX2BD6GRDMFAAHZGVR
+Message-ID-Hash: 6IBFX6JFK7HWHV6OT6Q2PN3JTPVEX62Q
+X-Message-ID-Hash: 6IBFX6JFK7HWHV6OT6Q2PN3JTPVEX62Q
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna.schumaker@netapp.com>, Boris Pismenny <borisp@nvidia.com>, Aviad Yehezkel <aviadye@nvidia.com>, John Fastabend <john.fastabend@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.
- org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org
+ , linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/EDNQJDU4274Q2MSX2BD6GRDMFAAHZGVR/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/6IBFX6JFK7HWHV6OT6Q2PN3JTPVEX62Q/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,188 +62,73 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-These kmap() calls in these drivers are localized to a single thread.
-To avoid the over head of global PKRS updates use the new kmap_thread()
+These kmap() calls in this driver are localized to a single thread.  To
+avoid the over head of global PKRS updates use the new kmap_thread()
 call.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>
-Cc: Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: Anna Schumaker <anna.schumaker@netapp.com>
-Cc: Boris Pismenny <borisp@nvidia.com>
-Cc: Aviad Yehezkel <aviadye@nvidia.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- net/ceph/messenger.c | 4 ++--
- net/core/datagram.c  | 4 ++--
- net/core/sock.c      | 8 ++++----
- net/ipv4/ip_output.c | 4 ++--
- net/sunrpc/cache.c   | 4 ++--
- net/sunrpc/xdr.c     | 8 ++++----
- net/tls/tls_device.c | 4 ++--
- 7 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/target/target_core_iblock.c    | 4 ++--
+ drivers/target/target_core_rd.c        | 4 ++--
+ drivers/target/target_core_transport.c | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/ceph/messenger.c b/net/ceph/messenger.c
-index d4d7a0e52491..0c49b8e333da 100644
---- a/net/ceph/messenger.c
-+++ b/net/ceph/messenger.c
-@@ -1535,10 +1535,10 @@ static u32 ceph_crc32c_page(u32 crc, struct page *page,
- {
- 	char *kaddr;
+diff --git a/drivers/target/target_core_iblock.c b/drivers/target/target_core_iblock.c
+index 1c181d31f4c8..df7b1568edb3 100644
+--- a/drivers/target/target_core_iblock.c
++++ b/drivers/target/target_core_iblock.c
+@@ -415,7 +415,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
+ 	unsigned char *buf, *not_zero;
+ 	int ret;
  
--	kaddr = kmap(page);
-+	kaddr = kmap_thread(page);
- 	BUG_ON(kaddr == NULL);
- 	crc = crc32c(crc, kaddr + page_offset, length);
--	kunmap(page);
-+	kunmap_thread(page);
+-	buf = kmap(sg_page(sg)) + sg->offset;
++	buf = kmap_thread(sg_page(sg)) + sg->offset;
+ 	if (!buf)
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+ 	/*
+@@ -423,7 +423,7 @@ iblock_execute_zero_out(struct block_device *bdev, struct se_cmd *cmd)
+ 	 * incoming WRITE_SAME payload does not contain zeros.
+ 	 */
+ 	not_zero = memchr_inv(buf, 0x00, cmd->data_length);
+-	kunmap(sg_page(sg));
++	kunmap_thread(sg_page(sg));
  
- 	return crc;
- }
-diff --git a/net/core/datagram.c b/net/core/datagram.c
-index 639745d4f3b9..cbd0a343074a 100644
---- a/net/core/datagram.c
-+++ b/net/core/datagram.c
-@@ -441,14 +441,14 @@ static int __skb_datagram_iter(const struct sk_buff *skb, int offset,
- 		end = start + skb_frag_size(frag);
- 		if ((copy = end - offset) > 0) {
- 			struct page *page = skb_frag_page(frag);
--			u8 *vaddr = kmap(page);
-+			u8 *vaddr = kmap_thread(page);
+ 	if (not_zero)
+ 		return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+diff --git a/drivers/target/target_core_rd.c b/drivers/target/target_core_rd.c
+index 408bd975170b..dbbdd39c5bf9 100644
+--- a/drivers/target/target_core_rd.c
++++ b/drivers/target/target_core_rd.c
+@@ -159,9 +159,9 @@ static int rd_allocate_sgl_table(struct rd_dev *rd_dev, struct rd_dev_sg_table *
+ 			sg_assign_page(&sg[j], pg);
+ 			sg[j].length = PAGE_SIZE;
  
- 			if (copy > len)
- 				copy = len;
- 			n = INDIRECT_CALL_1(cb, simple_copy_to_iter,
- 					vaddr + skb_frag_off(frag) + offset - start,
- 					copy, data, to);
--			kunmap(page);
-+			kunmap_thread(page);
- 			offset += n;
- 			if (n != copy)
- 				goto short_copy;
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 6c5c6b18eff4..9b46a75cd8c1 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2846,11 +2846,11 @@ ssize_t sock_no_sendpage(struct socket *sock, struct page *page, int offset, siz
- 	ssize_t res;
- 	struct msghdr msg = {.msg_flags = flags};
- 	struct kvec iov;
--	char *kaddr = kmap(page);
-+	char *kaddr = kmap_thread(page);
- 	iov.iov_base = kaddr + offset;
- 	iov.iov_len = size;
- 	res = kernel_sendmsg(sock, &msg, &iov, 1, size);
--	kunmap(page);
-+	kunmap_thread(page);
- 	return res;
- }
- EXPORT_SYMBOL(sock_no_sendpage);
-@@ -2861,12 +2861,12 @@ ssize_t sock_no_sendpage_locked(struct sock *sk, struct page *page,
- 	ssize_t res;
- 	struct msghdr msg = {.msg_flags = flags};
- 	struct kvec iov;
--	char *kaddr = kmap(page);
-+	char *kaddr = kmap_thread(page);
+-			p = kmap(pg);
++			p = kmap_thread(pg);
+ 			memset(p, init_payload, PAGE_SIZE);
+-			kunmap(pg);
++			kunmap_thread(pg);
+ 		}
  
- 	iov.iov_base = kaddr + offset;
- 	iov.iov_len = size;
- 	res = kernel_sendmsg_locked(sk, &msg, &iov, 1, size);
--	kunmap(page);
-+	kunmap_thread(page);
- 	return res;
- }
- EXPORT_SYMBOL(sock_no_sendpage_locked);
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index e6f2ada9e7d5..05304fb251a4 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -949,9 +949,9 @@ csum_page(struct page *page, int offset, int copy)
- {
- 	char *kaddr;
- 	__wsum csum;
--	kaddr = kmap(page);
-+	kaddr = kmap_thread(page);
- 	csum = csum_partial(kaddr + offset, copy, 0);
--	kunmap(page);
-+	kunmap_thread(page);
- 	return csum;
- }
+ 		page_offset += sg_per_table;
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index ff26ab0a5f60..8d0bae5a92e5 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -1692,11 +1692,11 @@ int target_submit_cmd_map_sgls(struct se_cmd *se_cmd, struct se_session *se_sess
+ 			unsigned char *buf = NULL;
  
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index baef5ee43dbb..88193f2a8e6f 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -935,9 +935,9 @@ static ssize_t cache_downcall(struct address_space *mapping,
- 	if (!page)
- 		goto out_slow;
+ 			if (sgl)
+-				buf = kmap(sg_page(sgl)) + sgl->offset;
++				buf = kmap_thread(sg_page(sgl)) + sgl->offset;
  
--	kaddr = kmap(page);
-+	kaddr = kmap_thread(page);
- 	ret = cache_do_downcall(kaddr, buf, count, cd);
--	kunmap(page);
-+	kunmap_thread(page);
- 	unlock_page(page);
- 	put_page(page);
- 	return ret;
-diff --git a/net/sunrpc/xdr.c b/net/sunrpc/xdr.c
-index be11d672b5b9..00afbb48fb0a 100644
---- a/net/sunrpc/xdr.c
-+++ b/net/sunrpc/xdr.c
-@@ -1353,7 +1353,7 @@ xdr_xcode_array2(struct xdr_buf *buf, unsigned int base,
- 		base &= ~PAGE_MASK;
- 		avail_page = min_t(unsigned int, PAGE_SIZE - base,
- 					avail_here);
--		c = kmap(*ppages) + base;
-+		c = kmap_thread(*ppages) + base;
- 
- 		while (avail_here) {
- 			avail_here -= avail_page;
-@@ -1429,9 +1429,9 @@ xdr_xcode_array2(struct xdr_buf *buf, unsigned int base,
- 				}
+ 			if (buf) {
+ 				memset(buf, 0, sgl->length);
+-				kunmap(sg_page(sgl));
++				kunmap_thread(sg_page(sgl));
  			}
- 			if (avail_here) {
--				kunmap(*ppages);
-+				kunmap_thread(*ppages);
- 				ppages++;
--				c = kmap(*ppages);
-+				c = kmap_thread(*ppages);
- 			}
+ 		}
  
- 			avail_page = min(avail_here,
-@@ -1471,7 +1471,7 @@ xdr_xcode_array2(struct xdr_buf *buf, unsigned int base,
- out:
- 	kfree(elem);
- 	if (ppages)
--		kunmap(*ppages);
-+		kunmap_thread(*ppages);
- 	return err;
- }
- 
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index b74e2741f74f..ead5b1c485f8 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -576,13 +576,13 @@ int tls_device_sendpage(struct sock *sk, struct page *page,
- 		goto out;
- 	}
- 
--	kaddr = kmap(page);
-+	kaddr = kmap_thread(page);
- 	iov.iov_base = kaddr + offset;
- 	iov.iov_len = size;
- 	iov_iter_kvec(&msg_iter, WRITE, &iov, 1, size);
- 	rc = tls_push_data(sk, &msg_iter, size,
- 			   flags, TLS_RECORD_TYPE_DATA);
--	kunmap(page);
-+	kunmap_thread(page);
- 
- out:
- 	release_sock(sk);
 -- 
 2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
