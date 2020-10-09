@@ -2,61 +2,59 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727D02881F0
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 08:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A9D28852F
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 10:27:06 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id B333C1597317E;
-	Thu,  8 Oct 2020 23:04:15 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2401:3900:2:1::2; helo=ozlabs.org; envelope-from=michael@ozlabs.org; receiver=<UNKNOWN> 
-Received: from ozlabs.org (ozlabs.org [IPv6:2401:3900:2:1::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id A8D8E15973159
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 23:04:13 -0700 (PDT)
-Received: by ozlabs.org (Postfix, from userid 1034)
-	id 4C6yFN3dBGz9sVl; Fri,  9 Oct 2020 17:04:07 +1100 (AEDT)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-nvdimm@lists.01.org, linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>
-In-Reply-To: <20200913211904.24472-1-vaibhav@linux.ibm.com>
-References: <20200913211904.24472-1-vaibhav@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/papr_scm: Add PAPR command family to pass-through command-set
-Message-Id: <160222339640.867048.1720728622452479198.b4-ty@ellerman.id.au>
-Date: Fri,  9 Oct 2020 17:04:07 +1100 (AEDT)
-Message-ID-Hash: PK2AAUDMQEUSED4FDRMWLYZJIRTEWJRG
-X-Message-ID-Hash: PK2AAUDMQEUSED4FDRMWLYZJIRTEWJRG
-X-MailFrom: michael@ozlabs.org
+	by ml01.01.org (Postfix) with ESMTP id 6D5BD15715CD6;
+	Fri,  9 Oct 2020 01:27:04 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=103.140.238.239; helo=sbxhotg.cn; envelope-from=adv@sbxhotg.cn; receiver=<UNKNOWN> 
+Received: from sbxhotg.cn (unknown [103.140.238.239])
+	by ml01.01.org (Postfix) with ESMTP id 0EF7F15715CD6
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 01:27:00 -0700 (PDT)
+Message-ID: <7436041518EFF2626D89550CFD85FA64@sbxhotg.cn>
+From: "Amazon.co.jp" <account-update@amazon.co.jp>
+To: <linux-nvdimm@lists.01.org>
+Subject: =?utf-8?B?QW1hem9uLmNvLmpwIOOBq+OBlOeZu+mMsuOBruOCouOCqw==?=
+	=?utf-8?B?44Km44Oz44OI77yI5ZCN5YmN44CB44OR44K544Ov44O844OJ44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx?=
+	=?utf-8?B?77yJ44Gu56K66KqNLi4=?=
+Date: Fri, 9 Oct 2020 16:26:52 +0800
+Mime-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.5512
+X-MimeOLE: Produced By Microsoft MimeOLE V6.3.9600.19431
+Message-ID-Hash: SWSOL55QDHEDQLFZUYRWLZ22NATG5BS4
+X-Message-ID-Hash: SWSOL55QDHEDQLFZUYRWLZ22NATG5BS4
+X-MailFrom: adv@sbxhotg.cn
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PK2AAUDMQEUSED4FDRMWLYZJIRTEWJRG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/SWSOL55QDHEDQLFZUYRWLZ22NATG5BS4/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Mon, 14 Sep 2020 02:49:04 +0530, Vaibhav Jain wrote:
-> Add NVDIMM_FAMILY_PAPR to the list of valid 'dimm_family_mask'
-> acceptable by papr_scm. This is needed as since commit
-> 92fe2aa859f5 ("libnvdimm: Validate command family indices") libnvdimm
-> performs a validation of 'nd_cmd_pkg.nd_family' received as part of
-> ND_CMD_CALL processing to ensure only known command families can use
-> the general ND_CMD_CALL pass-through functionality.
-> 
-> [...]
-
-Applied to powerpc/next.
-
-[1/1] powerpc/papr_scm: Add PAPR command family to pass-through command-set
-      https://git.kernel.org/powerpc/c/13135b461cf205941308984bd3271ec7d403dc40
-
-cheers
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+DQrnorroqo3nlKjjgqLjgqvjgqbjg7Pjg4gNCiANCuOBguOBquOBn+OBruOCouOCq+OCpuODs+OD
+iOOBr+WBnOatouOBleOCjOOBvuOBl+OBnw0K44GT44KT44Gr44Gh44Gv44CBDQoNCuiqsOOBi+OB
+jOOBguOBquOBn+OBrkFtYXpvbuOCouOCq+OCpuODs+ODiOOBp+S7luOBruODh+ODkOOCpOOCueOB
+i+OCieizvOWFpeOBl+OCh+OBhuOBqOOBl+OBvuOBl+OBn+OAguOBneOBhuOBp+OBquOBkeOCjOOB
+sOOAgUFtYXpvbuOBruS/neitt+OBq+OBiuOBkeOCi+OCu+OCreODpeODquODhuOCo+OBqOaVtOWQ
+iOaAp+OBruWVj+mhjOOBq+OCiOOCiuOAgeOCu+OCreODpeODquODhuOCo+S4iuOBrueQhueUseOB
+i+OCieOCouOCq+OCpuODs+ODiOOBjOODreODg+OCr+OBleOCjOOBvuOBmeOAgg0KDQrjgqLjgqvj
+gqbjg7Pjg4jjgpLlvJXjgY3ntprjgY3kvb/nlKjjgZnjgovjgavjga/jgIEyNOaZgumWk+WJjeOB
+q+aDheWgseOCkuabtOaWsOOBmeOCi+OBk+OBqOOCkuOBiuWLp+OCgeOBl+OBviLjgZnjgILjgZ3j
+gozku6XlpJbjga7loLTlkIjjgIHjgYLjgarjgZ/jga7jgqLjgqvjgqbjg7Pjg4jjga/msLjkuYXj
+g63jg4Pjgq8uDQrnorroqo3nlKjjgqLjgqvjgqbjg7Pjg4ggDQrlrpzjgZfjgY/jgYrpoZjjgYTj
+gZfjgb7jgZkuDQoNCkFtYXpvbiBQcm90ZWN0aW9uDQpDb3B5dGlnaHQgZSAyMTkgQW1hem9uIGlu
+Yy4gMSBJbmludGUgTG9vcC7jgq/jg5Hjg4Hjg7zjg47jgIFDQSA5NTAxNCwgQWwgUmxpZ2h0cyBS
+ZXNlcnZlZOOAggpfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+XwpMaW51eC1udmRpbW0gbWFpbGluZyBsaXN0IC0tIGxpbnV4LW52ZGltbUBsaXN0cy4wMS5vcmcK
+VG8gdW5zdWJzY3JpYmUgc2VuZCBhbiBlbWFpbCB0byBsaW51eC1udmRpbW0tbGVhdmVAbGlzdHMu
+MDEub3JnCg==
