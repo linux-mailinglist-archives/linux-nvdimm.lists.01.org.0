@@ -2,63 +2,52 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA15E28916A
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 20:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 951D12891E9
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:43:09 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0BC6C1594851B;
-	Fri,  9 Oct 2020 11:49:29 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id CE7D81594D29B;
+	Fri,  9 Oct 2020 12:43:07 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2BF781594851A
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 11:49:25 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id x1so10429571eds.1
-        for <linux-nvdimm@lists.01.org>; Fri, 09 Oct 2020 11:49:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zCV6S1HyAN5XArKAUV7/fo64BD6KTJE5/ZG14qnHALs=;
-        b=Dlr+Vz8yhr8fKTsibtOTAmulle2ZOZ9aqZhcQozdfBtg1/IYb65k85Ngq/8NmnvLpS
-         fSkkI2YuXXVi4jkTzVNoH8bc2lZQf6X8iUFjx8LvI9gjdXSoisHs0LioLEoxPgW5gGYF
-         gaM91Qw+MFZFN6pOEvzEK6j2Y7Bo1cbM/mOcQfaMzAm5apbJtfWvbqbFPixBNTS9DkF8
-         z/Fc1kdHKgr9f2bnopZyvyalCJ/WRT2fAJBEl4F9tdoCwJlRmO5Sji7rgXO18jj/FJAd
-         GLeKvoq6Ep1iloKp/B3AQ/puk0QMM6cchXXt/sh6IjarFbGvWZ36NVH1q7ImC6ACRCtZ
-         7FuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zCV6S1HyAN5XArKAUV7/fo64BD6KTJE5/ZG14qnHALs=;
-        b=XAVLr0ZUPztjgbphcKsgttF2/37yzLqVr3ardflpa+Bnx2H279OtktgCegpsTAeOjV
-         cl4O69JUQP0bF6rA5fHcDglpGgbeNmBD7ZoKEzcbg15Oxqaq+ELVvECqUXX/tAOSMWFq
-         QA8R/QY3CM3k81DgZk5Mxc7QoVarwlv+Kz1fZRZ+ff6ugPU5O9NQ7hoHMkWKcPqUR8ch
-         5KXhs/7o7ckdo60l3C6kDpy1PlZhXz2jQn3L8gn51NcCWk9K82Dbe+oLm4s0FuViOjfm
-         bPDdnBk16Zixn/zqniLa/kujAHhjHVWXt1b7+tXBYUc9vl4EbuDP3V8SDW/NHYvupAvn
-         EIRA==
-X-Gm-Message-State: AOAM5327Ap1AD7MRqzBdKS9q2nlQMC7DWX9BKwLT9AqJH5qkUcBqCLZA
-	sfuJqZ7q/lEx4pfHg4lVg0L+wC7F1f8nzRzJCUPcU4BDXGw=
-X-Google-Smtp-Source: ABdhPJyypl2Y4O3MUWcL9YonD1uYrWzIHozYyM6NDMoHyLnu8mls0BNgV9kQwuLRr2vO9l9fKf/hDblecLLRf3IjULE=
-X-Received: by 2002:a05:6402:31b3:: with SMTP id dj19mr645033edb.210.1602269364054;
- Fri, 09 Oct 2020 11:49:24 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 443991594D298
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:43:06 -0700 (PDT)
+IronPort-SDR: iMKbMVpXa5Zh8xeV2lInUq9lDfU9c5kiUaKTtF+c9DzTlGX0mjyY7H96Q5Kx6c8R+6DVcDx4oK
+ /jFl5aRPYTbg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="165642217"
+X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
+   d="scan'208";a="165642217"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:43:04 -0700
+IronPort-SDR: rMdjjxowOVNBlu7aeC3rxeSAfOjMt26FkSg07m7V85+JIoYQHT8XGRHWJYiXG8+tNUyd0OV/IV
+ R48BN9FuohTw==
+X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
+   d="scan'208";a="462299345"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:43:03 -0700
+From: ira.weiny@intel.com
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH RFC V3 0/9] PKS: Add Protection Keys Supervisor (PKS) support RFC v3
+Date: Fri,  9 Oct 2020 12:42:49 -0700
+Message-Id: <20201009194258.3207172-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 MIME-Version: 1.0
-References: <20201009120009.243108-1-vaibhav@linux.ibm.com> <145db3d86fa6bddf55c0e7c4aa149984676cd723.camel@intel.com>
-In-Reply-To: <145db3d86fa6bddf55c0e7c4aa149984676cd723.camel@intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 9 Oct 2020 11:49:12 -0700
-Message-ID: <CAPcyv4j89a_Nevq1y92UPGedm74VUYCunkf62T5S3UeXzW6vKg@mail.gmail.com>
-Subject: Re: [ndctl PATCH] libndctl: Fix probe of non-nfit nvdimms
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>
-Message-ID-Hash: IMIDD3TQOESYNPHCIXOUBO3BPV65ATKZ
-X-Message-ID-Hash: IMIDD3TQOESYNPHCIXOUBO3BPV65ATKZ
-X-MailFrom: dan.j.williams@intel.com
+Message-ID-Hash: 2DI3PKEHYY3AJXT5T4VTBMUIFPZKAXCS
+X-Message-ID-Hash: 2DI3PKEHYY3AJXT5T4VTBMUIFPZKAXCS
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "vaibhav@linux.ibm.com" <vaibhav@linux.ibm.com>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
+CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/IMIDD3TQOESYNPHCIXOUBO3BPV65ATKZ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2DI3PKEHYY3AJXT5T4VTBMUIFPZKAXCS/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,45 +56,124 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 9, 2020 at 11:36 AM Verma, Vishal L
-<vishal.l.verma@intel.com> wrote:
->
-> On Fri, 2020-10-09 at 17:30 +0530, Vaibhav Jain wrote:
-> > commit 107a24ff429f ("ndctl/list: Add firmware activation
-> > enumeration") introduced changes in add_dimm() to enumerate the status
-> > of firmware activation. However a branch added in that commit broke
-> > the probe for non-nfit nvdimms like one provided by papr-scm. This
-> > cause an error reported when listing namespaces like below:
-> >
-> > $ sudo ndctl list
-> > libndctl: add_dimm: nmem0: probe failed: No such device
-> > libndctl: __sysfs_device_parse: nmem0: add_dev() failed
-> >
-> > Do a fix for this by removing the offending branch in the add_dimm()
-> > patch. This continues the flow of add_dimm() probe even if the nfit is
-> > not detected on the associated bus.
-> >
-> > Fixes: 107a24ff429fa("ndctl/list: Add firmware activation enumeration")
-> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > ---
-> >  ndctl/lib/libndctl.c | 3 ---
-> >  1 file changed, 3 deletions(-)
->
-> Ah apologies - this snuck in when I reflowed Dan's patches on top of the
-> papr work for v70.
->
-> I expect you'd like a point release with this fix asap?
->
-> Is there a way for me to incorporate some papr unit tests into my
-> release workflow so I can avoid breaking things like this again?
->
-> I'll also try to do a better job of pushing things out to the pending
-> branch more frequently so if you're monitoring that branch, hopefully
-> things like this will get caught before a release happens :)
+From: Ira Weiny <ira.weiny@intel.com>
 
-Would be nice to have something like a papr_test next to nfit_test for
-such regression testing. These kinds of mistakes are really only
-avoidable with regression tests.
+This RFC series has been reviewed by Dave Hansen.
+
+Introduce a new page protection mechanism for supervisor pages, Protection Key
+Supervisor (PKS).
+
+2 use cases for PKS are being developed, trusted keys and PMEM.  Trusted keys
+is a newer use case which is still being explored.  PMEM was submitted as part
+of the RFC (v2) series[1].  However, since then it was found that some callers
+of kmap() require a global implementation of PKS.  Specifically some users of
+kmap() expect mappings to be available to all kernel threads.  While global use
+of PKS is rare it needs to be included for correctness.  Unfortunately the
+kmap() updates required a large patch series to make the needed changes at the
+various kmap() call sites so that patch set has been split out.  Because the
+global PKS feature is only required for that use case it will be deferred to
+that set as well.[2]  This patch set is being submitted as a precursor to both
+of the use cases.
+
+For an overview of the entire PKS ecosystem, a git tree including this series
+and the 2 use cases can be found here:
+
+	https://github.com/weiny2/linux-kernel/tree/pks-rfc-v3
+
+
+PKS enables protections on 'domains' of supervisor pages to limit supervisor
+mode access to those pages beyond the normal paging protections.  PKS works in
+a similar fashion to user space pkeys, PKU.  As with PKU, supervisor pkeys are
+checked in addition to normal paging protections and Access or Writes can be
+disabled via a MSR update without TLB flushes when permissions change.  Also
+like PKU, a page mapping is assigned to a domain by setting pkey bits in the
+page table entry for that mapping.
+
+Access is controlled through a PKRS register which is updated via WRMSR/RDMSR.
+
+XSAVE is not supported for the PKRS MSR.  Therefore the implementation
+saves/restores the MSR across context switches and during exceptions.  Nested
+exceptions are supported by each exception getting a new PKS state.
+
+For consistent behavior with current paging protections, pkey 0 is reserved and
+configured to allow full access via the pkey mechanism, thus preserving the
+default paging protections on mappings with the default pkey value of 0.
+
+Other keys, (1-15) are allocated by an allocator which prepares us for key
+contention from day one.  Kernel users should be prepared for the allocator to
+fail either because of key exhaustion or due to PKS not being supported on the
+arch and/or CPU instance.
+
+The following are key attributes of PKS.
+
+   1) Fast switching of permissions
+	1a) Prevents access without page table manipulations
+	1b) No TLB flushes required
+   2) Works on a per thread basis
+
+PKS is available with 4 and 5 level paging.  Like PKRU it consumes 4 bits from
+the PTE to store the pkey within the entry.
+
+
+[1] https://lore.kernel.org/lkml/20200717072056.73134-1-ira.weiny@intel.com/
+[2] https://github.com/weiny2/linux-kernel/commit/f10abb0f0d7b4e14f03fc8890313a5830cde1e49
+	and a testing patch
+    https://github.com/weiny2/linux-kernel/commit/2a8e0fc7654a7c69b243d628f63b01ff26a5a797
+
+
+Fenghua Yu (3):
+  x86/fpu: Refactor arch_set_user_pkey_access() for PKS support
+  x86/pks: Enable Protection Keys Supervisor (PKS)
+  x86/pks: Add PKS kernel API
+
+Ira Weiny (6):
+  x86/pkeys: Create pkeys_common.h
+  x86/pks: Preserve the PKRS MSR on context switch
+  x86/entry: Pass irqentry_state_t by reference
+  x86/entry: Preserve PKRS MSR across exceptions
+  x86/fault: Report the PKRS state on fault
+  x86/pks: Add PKS test code
+
+ Documentation/core-api/protection-keys.rst  | 102 ++-
+ arch/x86/Kconfig                            |   1 +
+ arch/x86/entry/common.c                     |  57 +-
+ arch/x86/include/asm/cpufeatures.h          |   1 +
+ arch/x86/include/asm/idtentry.h             |  29 +-
+ arch/x86/include/asm/msr-index.h            |   1 +
+ arch/x86/include/asm/pgtable.h              |  13 +-
+ arch/x86/include/asm/pgtable_types.h        |  12 +
+ arch/x86/include/asm/pkeys.h                |  15 +
+ arch/x86/include/asm/pkeys_common.h         |  36 +
+ arch/x86/include/asm/processor.h            |  13 +
+ arch/x86/include/uapi/asm/processor-flags.h |   2 +
+ arch/x86/kernel/cpu/common.c                |  17 +
+ arch/x86/kernel/cpu/mce/core.c              |   4 +
+ arch/x86/kernel/fpu/xstate.c                |  22 +-
+ arch/x86/kernel/kvm.c                       |   4 +-
+ arch/x86/kernel/nmi.c                       |   7 +-
+ arch/x86/kernel/process.c                   |  21 +
+ arch/x86/kernel/traps.c                     |  21 +-
+ arch/x86/mm/fault.c                         |  86 ++-
+ arch/x86/mm/pkeys.c                         | 188 +++++-
+ include/linux/entry-common.h                |  19 +-
+ include/linux/pgtable.h                     |   4 +
+ include/linux/pkeys.h                       |  23 +-
+ kernel/entry/common.c                       |  28 +-
+ lib/Kconfig.debug                           |  12 +
+ lib/Makefile                                |   3 +
+ lib/pks/Makefile                            |   3 +
+ lib/pks/pks_test.c                          | 690 ++++++++++++++++++++
+ mm/Kconfig                                  |   2 +
+ tools/testing/selftests/x86/Makefile        |   3 +-
+ tools/testing/selftests/x86/test_pks.c      |  65 ++
+ 32 files changed, 1376 insertions(+), 128 deletions(-)
+ create mode 100644 arch/x86/include/asm/pkeys_common.h
+ create mode 100644 lib/pks/Makefile
+ create mode 100644 lib/pks/pks_test.c
+ create mode 100644 tools/testing/selftests/x86/test_pks.c
+
+-- 
+2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
