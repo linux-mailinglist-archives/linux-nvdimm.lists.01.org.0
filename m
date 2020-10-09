@@ -1,33 +1,33 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830CE28929C
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:51:31 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8322C2892A6
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:51:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 55007159A284C;
-	Fri,  9 Oct 2020 12:51:30 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+	by ml01.01.org (Postfix) with ESMTP id 7B695159A2855;
+	Fri,  9 Oct 2020 12:51:31 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2C36D159A284E
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:51:28 -0700 (PDT)
-IronPort-SDR: 9LeXjCoOBQuFV49sSrHLPm/+xnSBzRAE8+tZXtBUGKa+E2zN091ca6VTwKmhoXyvSrxNkBgJ9S
- ccJMZYHCtMlw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="162893288"
+	by ml01.01.org (Postfix) with ESMTPS id AF013159A284F
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:51:29 -0700 (PDT)
+IronPort-SDR: FmA3AEoxYTEYR0MMidhNNH+jh0r2Uk7S+jo4wT1CDuKDkww872p+/+JvY3fJawYs4WYT81epNc
+ GaJYb4HcqIHQ==
+X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="165642917"
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="162893288"
+   d="scan'208";a="165642917"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:27 -0700
-IronPort-SDR: zNYl6viNpTmcuoOUFeW6ebDlF6mcWw7xHrLDRpkX9eSJEFyww70EqY5cZFdXSl9ODsqjoVqJW/
- EpbiFUFW5goQ==
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:29 -0700
+IronPort-SDR: 0+lGONiHFSeyE/0kQGUe/v/Z0vqstKsQGCedA4TvP63fkNzDWGjPYFj9hsR1yECUQTFrwG697Z
+ McTBAsxZaLwQ==
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="329006240"
+   d="scan'208";a="298419323"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:25 -0700
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:28 -0700
 From: ira.weiny@intel.com
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -35,23 +35,23 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH RFC PKS/PMEM 11/58] drivers/net: Utilize new kmap_thread()
-Date: Fri,  9 Oct 2020 12:49:46 -0700
-Message-Id: <20201009195033.3208459-12-ira.weiny@intel.com>
+Subject: [PATCH RFC PKS/PMEM 12/58] fs/afs: Utilize new kmap_thread()
+Date: Fri,  9 Oct 2020 12:49:47 -0700
+Message-Id: <20201009195033.3208459-13-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20201009195033.3208459-1-ira.weiny@intel.com>
 References: <20201009195033.3208459-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: XSU4CNXRYO26ZKTY53RY4KZ4A2TX77PD
-X-Message-ID-Hash: XSU4CNXRYO26ZKTY53RY4KZ4A2TX77PD
+Message-ID-Hash: 7WU6JHOZOCWQCO4VY2RXU25M3K66OUWR
+X-Message-ID-Hash: 7WU6JHOZOCWQCO4VY2RXU25M3K66OUWR
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Jesse Brandeburg <jesse.brandeburg@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.so
- urceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+CC: David Howells <dhowells@redhat.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.k
+ ernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/XSU4CNXRYO26ZKTY53RY4KZ4A2TX77PD/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7WU6JHOZOCWQCO4VY2RXU25M3K66OUWR/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,61 +62,202 @@ Content-Transfer-Encoding: 7bit
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-The kmap() calls in these drivers are localized to a single thread.  To
+The kmap() calls in this FS are localized to a single thread.  To
 avoid the over head of global PKRS updates use the new kmap_thread()
 call.
 
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Cc: David Howells <dhowells@redhat.com>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c     | 4 ++--
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/afs/dir.c      | 16 ++++++++--------
+ fs/afs/dir_edit.c | 16 ++++++++--------
+ fs/afs/mntpt.c    |  4 ++--
+ fs/afs/write.c    |  4 ++--
+ 4 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index 6e8231c1ddf0..ac9189752012 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -1794,14 +1794,14 @@ static int igb_check_lbtest_frame(struct igb_rx_buffer *rx_buffer,
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 1d2e61e0ab04..5d01cdb590de 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -127,14 +127,14 @@ static bool afs_dir_check_page(struct afs_vnode *dvnode, struct page *page,
+ 	qty /= sizeof(union afs_xdr_dir_block);
  
- 	frame_size >>= 1;
+ 	/* check them */
+-	dbuf = kmap(page);
++	dbuf = kmap_thread(page);
+ 	for (tmp = 0; tmp < qty; tmp++) {
+ 		if (dbuf->blocks[tmp].hdr.magic != AFS_DIR_MAGIC) {
+ 			printk("kAFS: %s(%lx): bad magic %d/%d is %04hx\n",
+ 			       __func__, dvnode->vfs_inode.i_ino, tmp, qty,
+ 			       ntohs(dbuf->blocks[tmp].hdr.magic));
+ 			trace_afs_dir_check_failed(dvnode, off, i_size);
+-			kunmap(page);
++			kunmap_thread(page);
+ 			trace_afs_file_error(dvnode, -EIO, afs_file_error_dir_bad_magic);
+ 			goto error;
+ 		}
+@@ -146,7 +146,7 @@ static bool afs_dir_check_page(struct afs_vnode *dvnode, struct page *page,
+ 		((u8 *)&dbuf->blocks[tmp])[AFS_DIR_BLOCK_SIZE - 1] = 0;
+ 	}
  
--	data = kmap(rx_buffer->page);
-+	data = kmap_thread(rx_buffer->page);
+-	kunmap(page);
++	kunmap_thread(page);
  
- 	if (data[3] != 0xFF ||
- 	    data[frame_size + 10] != 0xBE ||
- 	    data[frame_size + 12] != 0xAF)
- 		match = false;
+ checked:
+ 	afs_stat_v(dvnode, n_read_dir);
+@@ -177,13 +177,13 @@ static bool afs_dir_check_pages(struct afs_vnode *dvnode, struct afs_read *req)
+ 		req->pos, req->index, req->nr_pages, req->offset);
  
--	kunmap(rx_buffer->page);
-+	kunmap_thread(rx_buffer->page);
+ 	for (i = 0; i < req->nr_pages; i++) {
+-		dbuf = kmap(req->pages[i]);
++		dbuf = kmap_thread(req->pages[i]);
+ 		for (j = 0; j < qty; j++) {
+ 			union afs_xdr_dir_block *block = &dbuf->blocks[j];
  
- 	return match;
+ 			pr_warn("[%02x] %32phN\n", i * qty + j, block);
+ 		}
+-		kunmap(req->pages[i]);
++		kunmap_thread(req->pages[i]);
+ 	}
+ 	return false;
  }
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 71ec908266a6..7d469425f8b4 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -1963,14 +1963,14 @@ static bool ixgbe_check_lbtest_frame(struct ixgbe_rx_buffer *rx_buffer,
+@@ -481,7 +481,7 @@ static int afs_dir_iterate(struct inode *dir, struct dir_context *ctx,
  
- 	frame_size >>= 1;
+ 		limit = blkoff & ~(PAGE_SIZE - 1);
  
--	data = kmap(rx_buffer->page) + rx_buffer->page_offset;
-+	data = kmap_thread(rx_buffer->page) + rx_buffer->page_offset;
+-		dbuf = kmap(page);
++		dbuf = kmap_thread(page);
  
- 	if (data[3] != 0xFF ||
- 	    data[frame_size + 10] != 0xBE ||
- 	    data[frame_size + 12] != 0xAF)
- 		match = false;
+ 		/* deal with the individual blocks stashed on this page */
+ 		do {
+@@ -489,7 +489,7 @@ static int afs_dir_iterate(struct inode *dir, struct dir_context *ctx,
+ 					       sizeof(union afs_xdr_dir_block)];
+ 			ret = afs_dir_iterate_block(dvnode, ctx, dblock, blkoff);
+ 			if (ret != 1) {
+-				kunmap(page);
++				kunmap_thread(page);
+ 				goto out;
+ 			}
  
--	kunmap(rx_buffer->page);
-+	kunmap_thread(rx_buffer->page);
+@@ -497,7 +497,7 @@ static int afs_dir_iterate(struct inode *dir, struct dir_context *ctx,
  
- 	return match;
- }
+ 		} while (ctx->pos < dir->i_size && blkoff < limit);
+ 
+-		kunmap(page);
++		kunmap_thread(page);
+ 		ret = 0;
+ 	}
+ 
+diff --git a/fs/afs/dir_edit.c b/fs/afs/dir_edit.c
+index b108528bf010..35ed6828e205 100644
+--- a/fs/afs/dir_edit.c
++++ b/fs/afs/dir_edit.c
+@@ -218,7 +218,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 	need_slots = round_up(12 + name->len + 1 + 4, AFS_DIR_DIRENT_SIZE);
+ 	need_slots /= AFS_DIR_DIRENT_SIZE;
+ 
+-	meta_page = kmap(page0);
++	meta_page = kmap_thread(page0);
+ 	meta = &meta_page->blocks[0];
+ 	if (i_size == 0)
+ 		goto new_directory;
+@@ -247,7 +247,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 				set_page_private(page, 1);
+ 				SetPagePrivate(page);
+ 			}
+-			dir_page = kmap(page);
++			dir_page = kmap_thread(page);
+ 		}
+ 
+ 		/* Abandon the edit if we got a callback break. */
+@@ -284,7 +284,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 
+ 		if (page != page0) {
+ 			unlock_page(page);
+-			kunmap(page);
++			kunmap_thread(page);
+ 			put_page(page);
+ 		}
+ 	}
+@@ -323,7 +323,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 	afs_set_contig_bits(block, slot, need_slots);
+ 	if (page != page0) {
+ 		unlock_page(page);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		put_page(page);
+ 	}
+ 
+@@ -337,7 +337,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 
+ out_unmap:
+ 	unlock_page(page0);
+-	kunmap(page0);
++	kunmap_thread(page0);
+ 	put_page(page0);
+ 	_leave("");
+ 	return;
+@@ -346,7 +346,7 @@ void afs_edit_dir_add(struct afs_vnode *vnode,
+ 	trace_afs_edit_dir(vnode, why, afs_edit_dir_create_inval, 0, 0, 0, 0, name->name);
+ 	clear_bit(AFS_VNODE_DIR_VALID, &vnode->flags);
+ 	if (page != page0) {
+-		kunmap(page);
++		kunmap_thread(page);
+ 		put_page(page);
+ 	}
+ 	goto out_unmap;
+@@ -398,7 +398,7 @@ void afs_edit_dir_remove(struct afs_vnode *vnode,
+ 	need_slots = round_up(12 + name->len + 1 + 4, AFS_DIR_DIRENT_SIZE);
+ 	need_slots /= AFS_DIR_DIRENT_SIZE;
+ 
+-	meta_page = kmap(page0);
++	meta_page = kmap_thread(page0);
+ 	meta = &meta_page->blocks[0];
+ 
+ 	/* Find a page that has sufficient slots available.  Each VM page
+@@ -410,7 +410,7 @@ void afs_edit_dir_remove(struct afs_vnode *vnode,
+ 			page = find_lock_page(vnode->vfs_inode.i_mapping, index);
+ 			if (!page)
+ 				goto error;
+-			dir_page = kmap(page);
++			dir_page = kmap_thread(page);
+ 		} else {
+ 			page = page0;
+ 			dir_page = meta_page;
+diff --git a/fs/afs/mntpt.c b/fs/afs/mntpt.c
+index 79bc5f1338ed..562454e2fd5c 100644
+--- a/fs/afs/mntpt.c
++++ b/fs/afs/mntpt.c
+@@ -139,11 +139,11 @@ static int afs_mntpt_set_params(struct fs_context *fc, struct dentry *mntpt)
+ 			return ret;
+ 		}
+ 
+-		buf = kmap(page);
++		buf = kmap_thread(page);
+ 		ret = -EINVAL;
+ 		if (buf[size - 1] == '.')
+ 			ret = vfs_parse_fs_string(fc, "source", buf, size - 1);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		put_page(page);
+ 		if (ret < 0)
+ 			return ret;
+diff --git a/fs/afs/write.c b/fs/afs/write.c
+index 4b2265cb1891..c56e5b4db4ae 100644
+--- a/fs/afs/write.c
++++ b/fs/afs/write.c
+@@ -38,9 +38,9 @@ static int afs_fill_page(struct afs_vnode *vnode, struct key *key,
+ 	if (pos >= vnode->vfs_inode.i_size) {
+ 		p = pos & ~PAGE_MASK;
+ 		ASSERTCMP(p + len, <=, PAGE_SIZE);
+-		data = kmap(page);
++		data = kmap_thread(page);
+ 		memset(data + p, 0, len);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		return 0;
+ 	}
+ 
 -- 
 2.28.0.rc0.12.gb6a658bd00c9
 _______________________________________________
