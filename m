@@ -2,196 +2,104 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12DE52880EF
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 05:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310AF28818D
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 06:56:33 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5030F159535B8;
-	Thu,  8 Oct 2020 20:59:54 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=104.168.242.22; helo=dhl.com; envelope-from=noreply@dhl.com; receiver=<UNKNOWN> 
-Received: from dhl.com (hwsrv-787319.hostwindsdns.com [104.168.242.22])
-	by ml01.01.org (Postfix) with ESMTP id 330FF159535B7
-	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 20:59:50 -0700 (PDT)
-From: =?UTF-8?B?REhMIEV4cHJlc3MgSU5Dwq4=?= <Noreply@dhl.com>
+	by ml01.01.org (Postfix) with ESMTP id 7EE5F15974F6A;
+	Thu,  8 Oct 2020 21:56:31 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=194.9.172.138; helo=ml01.01.org; envelope-from=colis.service@dhl.com; receiver=<UNKNOWN> 
+Received: from ml01.01.org (unknown [194.9.172.138])
+	by ml01.01.org (Postfix) with ESMTP id 47EF415974F69
+	for <linux-nvdimm@lists.01.org>; Thu,  8 Oct 2020 21:56:27 -0700 (PDT)
+From: colis.service@dhl.com
 To: linux-nvdimm@lists.01.org
-Subject: DHL DELIVERY PACKAGE : CONFIRM YOUR PACKAGE
-Date: 9 Oct 2020 03:59:50 +0000
-Message-ID: <20201009035950.61DC8549CE699A97@dhl.com>
+Subject: Rappel : Votre colis est toujours en attente de confirmation  !!!!!
+Date: 08 Oct 2020 21:56:27 -0700
+Message-ID: <20201008215626.7B2BEDB3F443E467@dhl.com>
 MIME-Version: 1.0
-Message-ID-Hash: 3G5ZBGSTUXN6TBPEAS43GC4SRCCJIRC5
-X-Message-ID-Hash: 3G5ZBGSTUXN6TBPEAS43GC4SRCCJIRC5
-X-MailFrom: Noreply@dhl.com
+Message-ID-Hash: LXRMWSQFJ7CCGHKSNV4I2ADLUDM5RE2V
+X-Message-ID-Hash: LXRMWSQFJ7CCGHKSNV4I2ADLUDM5RE2V
+X-MailFrom: colis.service@dhl.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/3G5ZBGSTUXN6TBPEAS43GC4SRCCJIRC5/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/LXRMWSQFJ7CCGHKSNV4I2ADLUDM5RE2V/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: multipart/mixed; boundary="===============6733359072129265306=="
+Content-Type: multipart/mixed; boundary="===============0232273578083179201=="
 
---===============6733359072129265306==
-Content-Type: text/html
+--===============0232273578083179201==
+Content-Type: text/html;
+	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 
 <HTML><HEAD>
 <META name=3DGENERATOR content=3D"MSHTML 11.00.10570.1001"></HEAD>
 <BODY>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym19_1=
-_1474568842707_2748 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva,=
- sans-serif; COLOR: rgb(51,51,51)">
-<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72=
-14027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643=
-6929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012=
-447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976=
-08836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym1=
-9_1_1474568842707_2747><STRONG><SPAN style=3D"FONT-SIZE: large">
-<IMG id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_721=
-4027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-5586436=
-929947732899m_-1716766571918477440m_7791961132844259468m_-43851254972390124=
-47m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-429760=
-8836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym19=
-_1_1474568842707_2746 style=3D"BORDER-TOP: 0px; BORDER-RIGHT: 0px; BORDER-B=
-OTTOM: 0px; BORDER-LEFT: 0px"=20
-name=3Dm_2795806810043734521_m_2678583487516685969_m_7214027000234261513_m_=
-6389018591953478706_m_-7770160424752588588_m_-5586436929947732899_m_-171676=
-6571918477440_m_7791961132844259468_m_-4385125497239012447_m_24360727155681=
-61017_m_7238670329847519654_m_-3037077972752025965_m_-4297608836553398163_m=
-_-3136666976745818181_m_-124640877975542939_m_8197756494023052447_m_-554325=
-650147384007_m_-6905302920834034547_1517d2e47def9295_1517d270ab83996f_1517c=
-8d13e6d153c_1517c8b6fa366595_1513db61e04fc1c2_1513da
-d6b6be1b08_1513bd744a08f845_1513bd3cb572a648_x_x_150e891289c86b98_ alt=3D"I=
-mage result for dhl" src=3D"https://ci5.googleusercontent.com/proxy/lLAAmFu=
-twaZFCOb0fgtDgmesDTvnAjI_zzlA6l0g3WpM7nJg9-WVu6xZbk-W0ATIrb9sUWt3k5gJtZkpFj=
-yVcExdEgZH5lGEeDmS9_CGvk0PIbn2Ssnoe09IppJgg3kUYnDcXVgiKhbLvkZDoVaf8yUOcNMrk=
-lT5TK8cvT2xKYE=3Ds0-d-e1-ft#https://encrypted-tbn2.gstatic.com/images?q=3Dt=
-bn:ANd9GcQ5s9BczqebBzoJsn1pcmPBlwg-Dt9cn1HnOEL_p894UrHiPBTYhA"></SPAN></STR=
-ONG></SPAN></P>
-<P style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLO=
-R: rgb(51,51,51)"><STRONG><SPAN style=3D"FONT-SIZE: large">
-<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72=
-14027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643=
-6929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012=
-447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976=
-08836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym1=
-9_1_1474568842707_2788>Dear&nbsp;</SPAN><U><SPAN style=3D"COLOR: rgb(204,0,=
-0)">linux-nvdimm@lists.01.org,</SPAN></U></SPAN></STRONG></P>
-<P style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; COLO=
-R: rgb(51,51,51)"><STRONG><SPAN id=3Dgmail-m_2795806810043734521gmail-m_267=
-8583487516685969gmail-m_7214027000234261513gmail-m_6389018591953478706m_-77=
-70160424752588588m_-5586436929947732899m_-1716766571918477440m_779196113284=
-4259468m_-4385125497239012447m_2436072715568161017m_7238670329847519654m_-3=
-037077972752025965m_-4297608836553398163gmail-m_-3136666976745818181gmail-y=
-ui_3_16_0_ym19_1_1480590234733_3839>
-<SPAN style=3D"FONT-SIZE: large"><SPAN style=3D"COLOR: rgb(0,0,0)">
-Your parcel has arrived at 22<SPAN id=3Dgmail-m_2795806810043734521gmail-m_=
-2678583487516685969gmail-m_7214027000234261513gmail-m_6389018591953478706m_=
--7770160424752588588m_-5586436929947732899m_-1716766571918477440m_779196113=
-2844259468m_-4385125497239012447m_2436072715568161017m_7238670329847519654m=
-_-3037077972752025965m_-4297608836553398163gmail-m_-3136666976745818181gmai=
-l-yiv7405415688gmail-m_450708363397388531yiv4274483704yui_3_16_0_1_14460185=
-95911_2535>
-&nbsp;<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmai=
-l-m_7214027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-=
-5586436929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497=
-239012447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_=
--4297608836553398163gmail-m_-3136666976745818181gmail-yiv7405415688gmail-m_=
-450708363397388531yiv4274483704yui_3_16_0_1_1446018595911_2534>:35:00 GMT,<=
-/SPAN></SPAN></SPAN>&nbsp;10-07-2020.</SPAN></SPAN>
-</STRONG></P>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yui_3_16_0_ym19_1_148059023473=
-3_3838 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; =
-COLOR: rgb(51,51,51)"><STRONG>
-<SPAN style=3D'FONT-SIZE: large; FONT-FAMILY: "trebuchet ms", sans-serif'>O=
-ur Courier agent was unable to deliver the parcel to you&nbsp;<SPAN style=
-=3D"COLOR: rgb(204,0,0)">due to the wrong&nbsp;delivery address.</SPAN></SP=
-AN></STRONG></P>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yui_3_16_0_ym19_1_148059023473=
-3_3838 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; =
-COLOR: rgb(51,51,51)"><STRONG>
-<SPAN style=3D"FONT-SIZE: large">
-To view the enclosed file for correction kindly&nbsp;&nbsp;<A id=3Dgmail-m_=
-2795806810043734521gmail-m_2678583487516685969gmail-m_7214027000234261513gm=
-ail-m_6389018591953478706m_-7770160424752588588m_-5586436929947732899m_-171=
-6766571918477440m_7791961132844259468m_-4385125497239012447m_24360727155681=
-61017m_7238670329847519654m_-3037077972752025965m_-4297608836553398163gmail=
--m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym19_1_1474568842707_2=
-793 style=3D"COLOR: rgb(1,134,186)"=20
-href=3D"http://apexacupuncture.in/WAYBILL/DHL/portal/index.php?email=3Dlinu=
-x-nvdimm@lists.01.org" rel=3Dnoreferrer target=3D_blank>CLICK HERE</A></SPA=
-N></STRONG></P>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yui_3_16_0_ym19_1_148059023473=
-3_3838 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; =
-COLOR: rgb(51,51,51)">
-<STRONG style=3D"COLOR: rgb(1,134,186)"><SPAN style=3D"FONT-SIZE: large"><A=
- style=3D"COLOR: rgb(1,134,186)" href=3D"http://apexacupuncture.in/WAYBILL/=
-DHL/portal/index.php?email=3Dlinux-nvdimm@lists.01.org" rel=3Dnoreferrer ta=
-rget=3D_blank>Service (s): Delivery Confirmation</A></SPAN></STRONG></P>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yui_3_16_0_ym19_1_148059023473=
-3_3838 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; =
-COLOR: rgb(51,51,51)">
-<A style=3D"FONT-SIZE: 13px; COLOR: rgb(1,134,186)" href=3D"http://apexacup=
-uncture.in/WAYBILL/DHL/portal/index.php?email=3Dlinux-nvdimm@lists.01.org" =
-rel=3Dnoreferrer target=3D_blank><STRONG><SPAN style=3D"FONT-SIZE: large">S=
-tatus: eNotification Sent</SPAN></STRONG></A></P>
-<P id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72140=
-27000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643692=
-9947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012447=
-m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976088=
-36553398163gmail-m_-3136666976745818181gmail-yui_3_16_0_ym19_1_148059023473=
-3_3838 style=3D"FONT-SIZE: 13px; FONT-FAMILY: Verdana, Geneva, sans-serif; =
-COLOR: rgb(51,51,51)">
-<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72=
-14027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643=
-6929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012=
-447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976=
-08836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym1=
-9_1_1474568842707_3921>
-<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72=
-14027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643=
-6929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012=
-447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976=
-08836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym1=
-9_1_1474568842707_3920><STRONG><SPAN style=3D"FONT-SIZE: large">
-i&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<S=
-PAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_7214=
-027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-55864369=
-29947732899m_-1716766571918477440m_7791961132844259468m_-438512549723901244=
-7m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-4297608=
-836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym19_=
-1_1474568842707_3919>
-<SPAN id=3Dgmail-m_2795806810043734521gmail-m_2678583487516685969gmail-m_72=
-14027000234261513gmail-m_6389018591953478706m_-7770160424752588588m_-558643=
-6929947732899m_-1716766571918477440m_7791961132844259468m_-4385125497239012=
-447m_2436072715568161017m_7238670329847519654m_-3037077972752025965m_-42976=
-08836553398163gmail-m_-3136666976745818181gmail-yiv7405415688yui_3_16_0_ym1=
-9_1_1474568842707_3918>Copyright 1999-2020 DHL WorldWide Delivery. All righ=
-ts reserved</SPAN></SPAN>.</SPAN></STRONG></SPAN>
-</SPAN></P></BODY></HTML>
---===============6733359072129265306==
+<P style=3D"FONT-SIZE: 15px; FONT-FAMILY: 'Segoe UI', 'Segoe UI Web (West E=
+uropean)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetic=
+a Neue', sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM=
+: none; FONT-WEIGHT: 400; COLOR: rgb(33,33,33); FONT-STYLE: normal; ORPHANS=
+: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255);=
+ TEXT-INDENT: 0px; -webkit-font-smoothing: antialiased; font-variant-ligatu=
+res: normal; font-variant-caps: normal;=20
+-webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decora=
+tion-color: initial"><BR style=3D"-webkit-font-smoothing: antialiased">Cher=
+(e) Client(e),<BR><BR>Nous avons l'honneur de vous &eacute;crie cette lettr=
+e a fin de vous annoncer que&nbsp; votre<FONT color=3D#ffffff>c</FONT>colis=
+<FONT color=3D#ffffff>c</FONT>est<FONT color=3D#ffffff>c</FONT>bloqu&eacute=
+; au<FONT color=3D#ffffff>c</FONT>service<FONT color=3D#ffffff>c</FONT>de<F=
+ONT color=3D#ffffff>c</FONT>distribution<FONT color=3D#ffffff>
+ </FONT>douane ,<FONT color=3D#ffffff>c</FONT>cette<FONT color=3D#ffffff>c<=
+/FONT> blocage<FONT color=3D#ffffff>c</FONT>et<FONT color=3D#ffffff>c</FONT=
+>retoure a une facture de TVA impay&eacute;e .<BR><BR>Vous n'avez pas le dr=
+oit de le r&eacute;cuperer si le d&eacute;lai d&eacute;passera les <STRONG>=
+48 H . <BR></STRONG><BR>Veuillez confirmer l'envoi du colis , En suivant le=
+s &eacute;tapes au dessous&nbsp; : <BR><BR><FONT style=3D"BACKGROUND-COLOR:=
+ #ffffff">1. <FONT color=3D#000000>
+Achetez un code PIN <A href=3D"https://www.paysafecard.com/ch-fr/"><FONT si=
+ze=3D3 face=3D"Times New Roman">Paysafecard en ligne (75 CHF )</FONT></A></=
+FONT></FONT>
+ <SPAN style=3D"FONT-SIZE: 16px; FONT-FAMILY: Roboto, Arial, sans-serif; WH=
+ITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM: none; FLOAT: none; FO=
+NT-WEIGHT: 300; COLOR: rgb(102,102,102); FONT-STYLE: normal; TEXT-ALIGN: le=
+ft; ORPHANS: 2; WIDOWS: 2; DISPLAY: inline !important; LETTER-SPACING: norm=
+al; BACKGROUND-COLOR: rgb(249,249,249); TEXT-INDENT: 0px; font-variant-liga=
+tures: normal; font-variant-caps: normal; -webkit-text-stroke-width: 0px; t=
+ext-decoration-style: initial;=20
+text-decoration-color: initial"><STRONG><FONT style=3D"BACKGROUND-COLOR: #f=
+fffff" color=3D#000000><BR></FONT></STRONG></SPAN>2. Recevoir le code de co=
+nfirmation .<BR>3. Envoyer le code de confirmation &agrave; l'adresse suiva=
+nt : <A href=3D"mailto:colis.service@dr.com">colis.service@dhl.com</A><BR>4=
+=2E Vous receverez &nbsp;d'un lien pour confirmer l'adresse de livaison de =
+votre colis . <BR><BR></P>
+<P>Article 134-I et II-1&Acirc;&deg; du CGI : LOI n&Acirc;&deg;2012-1510 du=
+ 03 mai 2017 - art. 68 (V) la validation du solde Paysafecard pour le regle=
+ment des frais de DHL est valable .</P>
+<P style=3D"FONT-SIZE: 15px; FONT-FAMILY: 'Segoe UI', 'Segoe UI Web (West E=
+uropean)', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetic=
+a Neue', sans-serif; WHITE-SPACE: normal; WORD-SPACING: 0px; TEXT-TRANSFORM=
+: none; FONT-WEIGHT: 400; COLOR: rgb(33,33,33); FONT-STYLE: normal; ORPHANS=
+: 2; WIDOWS: 2; LETTER-SPACING: normal; BACKGROUND-COLOR: rgb(255,255,255);=
+ TEXT-INDENT: 0px; -webkit-font-smoothing: antialiased; font-variant-ligatu=
+res: normal; font-variant-caps: normal;=20
+-webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decora=
+tion-color: initial"><BR style=3D"-webkit-font-smoothing: antialiased">DHL =
+Service Client<SPAN style=3D"BORDER-TOP: 0px; BORDER-RIGHT: 0px; VERTICAL-A=
+LIGN: baseline; BORDER-BOTTOM: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; =
+PADDING-LEFT: 0px; BORDER-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; -webk=
+it-font-smoothing: antialiased">&nbsp;</SPAN><SPAN>&nbsp;</SPAN>
+ <SPAN style=3D"BORDER-TOP: 0px; BORDER-RIGHT: 0px; VERTICAL-ALIGN: baselin=
+e; BORDER-BOTTOM: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT:=
+ 0px; BORDER-LEFT: 0px; MARGIN: 0px; PADDING-RIGHT: 0px; -webkit-font-smoot=
+hing: antialiased"><STRONG style=3D"-webkit-font-smoothing: antialiased">(2=
+4/24h).</STRONG></SPAN></P></BODY></HTML>
+--===============0232273578083179201==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -201,4 +109,4 @@ _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
 
---===============6733359072129265306==--
+--===============0232273578083179201==--
