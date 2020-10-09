@@ -2,32 +2,32 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DD62892F9
-	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC452892FF
+	for <lists+linux-nvdimm@lfdr.de>; Fri,  9 Oct 2020 21:51:59 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 5980A1594D2F2;
-	Fri,  9 Oct 2020 12:51:54 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 71A3D1594D2E2;
+	Fri,  9 Oct 2020 12:51:58 -0700 (PDT)
 Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.93; helo=mga11.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
 Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 2625D1594D2EF
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:51:52 -0700 (PDT)
-IronPort-SDR: BT6GbT37ue0aZ2fa1eLFSDCAgEy97VyVGOfw5pkVFpX+D7gp3qU17hdyjWi7xlHsK+WdjHyw3/
- za6/HTKs+e0g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="162067906"
+	by ml01.01.org (Postfix) with ESMTPS id EADE51594D2F4
+	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 12:51:55 -0700 (PDT)
+IronPort-SDR: dO+3q5NIop42gkV9K3eFi7C9zzs9HZfuKSGjtObFeSpBvxf9+QwfEsCbjfjLjcxMevSYkG31ND
+ Hi1H45AZTy+A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9769"; a="162067923"
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="162067906"
+   d="scan'208";a="162067923"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:51 -0700
-IronPort-SDR: OASmflq+Rx+yTtbdwfMJ0o3fYX/22afbp7t4aASuh19KdC4DJdh+fKQIdVVFr7y3ZwUlZzPFTz
- pRsXSfU26jow==
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:55 -0700
+IronPort-SDR: vmw0BK7OYY8h0fZsnTgtJRpvmXsWJvpJiZ/O3ONyZujh0oi54UYOLunW4B1xesRkeTs3uxMx1d
+ pOHAzA+ZEWzg==
 X-IronPort-AV: E=Sophos;i="5.77,355,1596524400";
-   d="scan'208";a="529053257"
+   d="scan'208";a="529053305"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:50 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2020 12:51:54 -0700
 From: ira.weiny@intel.com
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
@@ -35,15 +35,15 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Borislav Petkov <bp@alien8.de>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH RFC PKS/PMEM 18/58] fs/hfs: Utilize new kmap_thread()
-Date: Fri,  9 Oct 2020 12:49:53 -0700
-Message-Id: <20201009195033.3208459-19-ira.weiny@intel.com>
+Subject: [PATCH RFC PKS/PMEM 19/58] fs/hfsplus: Utilize new kmap_thread()
+Date: Fri,  9 Oct 2020 12:49:54 -0700
+Message-Id: <20201009195033.3208459-20-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.28.0.rc0.12.gb6a658bd00c9
 In-Reply-To: <20201009195033.3208459-1-ira.weiny@intel.com>
 References: <20201009195033.3208459-1-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: ZKM4MAIIJPYWBCIRPCTWXCPTMJMKV6AA
-X-Message-ID-Hash: ZKM4MAIIJPYWBCIRPCTWXCPTMJMKV6AA
+Message-ID-Hash: BCCHDFOJGEOEEKQGZFKGBYF3QCVMMDGC
+X-Message-ID-Hash: BCCHDFOJGEOEEKQGZFKGBYF3QCVMMDGC
 X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
 CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org
@@ -51,7 +51,7 @@ CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fengh
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/ZKM4MAIIJPYWBCIRPCTWXCPTMJMKV6AA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/BCCHDFOJGEOEEKQGZFKGBYF3QCVMMDGC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -67,73 +67,349 @@ the over head of global PKRS updates use the new kmap_thread() call.
 
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 ---
- fs/hfs/bnode.c | 14 +++++++-------
- fs/hfs/btree.c | 20 ++++++++++----------
- 2 files changed, 17 insertions(+), 17 deletions(-)
+ fs/hfsplus/bitmap.c |  20 ++++-----
+ fs/hfsplus/bnode.c  | 102 ++++++++++++++++++++++----------------------
+ fs/hfsplus/btree.c  |  18 ++++----
+ 3 files changed, 70 insertions(+), 70 deletions(-)
 
-diff --git a/fs/hfs/bnode.c b/fs/hfs/bnode.c
-index b63a4df7327b..8b4d02576405 100644
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -23,8 +23,8 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf,
- 	off += node->page_offset;
- 	page = node->page[0];
- 
--	memcpy(buf, kmap(page) + off, len);
--	kunmap(page);
-+	memcpy(buf, kmap_thread(page) + off, len);
-+	kunmap_thread(page);
- }
- 
- u16 hfs_bnode_read_u16(struct hfs_bnode *node, int off)
-@@ -108,9 +108,9 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
- 	src_page = src_node->page[0];
- 	dst_page = dst_node->page[0];
- 
--	memcpy(kmap(dst_page) + dst, kmap(src_page) + src, len);
--	kunmap(src_page);
--	kunmap(dst_page);
-+	memcpy(kmap_thread(dst_page) + dst, kmap_thread(src_page) + src, len);
-+	kunmap_thread(src_page);
-+	kunmap_thread(dst_page);
- 	set_page_dirty(dst_page);
- }
- 
-@@ -125,9 +125,9 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
- 	src += node->page_offset;
- 	dst += node->page_offset;
- 	page = node->page[0];
--	ptr = kmap(page);
-+	ptr = kmap_thread(page);
- 	memmove(ptr + dst, ptr + src, len);
--	kunmap(page);
-+	kunmap_thread(page);
+diff --git a/fs/hfsplus/bitmap.c b/fs/hfsplus/bitmap.c
+index cebce0cfe340..9ec7c1559a0c 100644
+--- a/fs/hfsplus/bitmap.c
++++ b/fs/hfsplus/bitmap.c
+@@ -39,7 +39,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ 		start = size;
+ 		goto out;
+ 	}
+-	pptr = kmap(page);
++	pptr = kmap_thread(page);
+ 	curr = pptr + (offset & (PAGE_CACHE_BITS - 1)) / 32;
+ 	i = offset % 32;
+ 	offset &= ~(PAGE_CACHE_BITS - 1);
+@@ -74,7 +74,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ 			}
+ 			curr++;
+ 		}
+-		kunmap(page);
++		kunmap_thread(page);
+ 		offset += PAGE_CACHE_BITS;
+ 		if (offset >= size)
+ 			break;
+@@ -84,7 +84,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ 			start = size;
+ 			goto out;
+ 		}
+-		curr = pptr = kmap(page);
++		curr = pptr = kmap_thread(page);
+ 		if ((size ^ offset) / PAGE_CACHE_BITS)
+ 			end = pptr + PAGE_CACHE_BITS / 32;
+ 		else
+@@ -127,7 +127,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ 			len -= 32;
+ 		}
+ 		set_page_dirty(page);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		offset += PAGE_CACHE_BITS;
+ 		page = read_mapping_page(mapping, offset / PAGE_CACHE_BITS,
+ 					 NULL);
+@@ -135,7 +135,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ 			start = size;
+ 			goto out;
+ 		}
+-		pptr = kmap(page);
++		pptr = kmap_thread(page);
+ 		curr = pptr;
+ 		end = pptr + PAGE_CACHE_BITS / 32;
+ 	}
+@@ -151,7 +151,7 @@ int hfsplus_block_allocate(struct super_block *sb, u32 size,
+ done:
+ 	*curr = cpu_to_be32(n);
  	set_page_dirty(page);
- }
- 
-diff --git a/fs/hfs/btree.c b/fs/hfs/btree.c
-index 19017d296173..bd4a6d35e361 100644
---- a/fs/hfs/btree.c
-+++ b/fs/hfs/btree.c
-@@ -80,7 +80,7 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
- 		goto free_inode;
- 
- 	/* Load the header */
--	head = (struct hfs_btree_header_rec *)(kmap(page) + sizeof(struct hfs_bnode_desc));
-+	head = (struct hfs_btree_header_rec *)(kmap_thread(page) + sizeof(struct hfs_bnode_desc));
- 	tree->root = be32_to_cpu(head->root);
- 	tree->leaf_count = be32_to_cpu(head->leaf_count);
- 	tree->leaf_head = be32_to_cpu(head->leaf_head);
-@@ -119,7 +119,7 @@ struct hfs_btree *hfs_btree_open(struct super_block *sb, u32 id, btree_keycmp ke
- 	tree->node_size_shift = ffs(size) - 1;
- 	tree->pages_per_bnode = (tree->node_size + PAGE_SIZE - 1) >> PAGE_SHIFT;
- 
 -	kunmap(page);
 +	kunmap_thread(page);
- 	put_page(page);
- 	return tree;
+ 	*max = offset + (curr - pptr) * 32 + i - start;
+ 	sbi->free_blocks -= *max;
+ 	hfsplus_mark_mdb_dirty(sb);
+@@ -185,7 +185,7 @@ int hfsplus_block_free(struct super_block *sb, u32 offset, u32 count)
+ 	page = read_mapping_page(mapping, pnr, NULL);
+ 	if (IS_ERR(page))
+ 		goto kaboom;
+-	pptr = kmap(page);
++	pptr = kmap_thread(page);
+ 	curr = pptr + (offset & (PAGE_CACHE_BITS - 1)) / 32;
+ 	end = pptr + PAGE_CACHE_BITS / 32;
+ 	len = count;
+@@ -215,11 +215,11 @@ int hfsplus_block_free(struct super_block *sb, u32 offset, u32 count)
+ 		if (!count)
+ 			break;
+ 		set_page_dirty(page);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		page = read_mapping_page(mapping, ++pnr, NULL);
+ 		if (IS_ERR(page))
+ 			goto kaboom;
+-		pptr = kmap(page);
++		pptr = kmap_thread(page);
+ 		curr = pptr;
+ 		end = pptr + PAGE_CACHE_BITS / 32;
+ 	}
+@@ -231,7 +231,7 @@ int hfsplus_block_free(struct super_block *sb, u32 offset, u32 count)
+ 	}
+ out:
+ 	set_page_dirty(page);
+-	kunmap(page);
++	kunmap_thread(page);
+ 	sbi->free_blocks += len;
+ 	hfsplus_mark_mdb_dirty(sb);
+ 	mutex_unlock(&sbi->alloc_mutex);
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index 177fae4e6581..62757d92fbbd 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -29,14 +29,14 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 	off &= ~PAGE_MASK;
  
-@@ -268,7 +268,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
+ 	l = min_t(int, len, PAGE_SIZE - off);
+-	memcpy(buf, kmap(*pagep) + off, l);
+-	kunmap(*pagep);
++	memcpy(buf, kmap_thread(*pagep) + off, l);
++	kunmap_thread(*pagep);
+ 
+ 	while ((len -= l) != 0) {
+ 		buf += l;
+ 		l = min_t(int, len, PAGE_SIZE);
+-		memcpy(buf, kmap(*++pagep), l);
+-		kunmap(*pagep);
++		memcpy(buf, kmap_thread(*++pagep), l);
++		kunmap_thread(*pagep);
+ 	}
+ }
+ 
+@@ -82,16 +82,16 @@ void hfs_bnode_write(struct hfs_bnode *node, void *buf, int off, int len)
+ 	off &= ~PAGE_MASK;
+ 
+ 	l = min_t(int, len, PAGE_SIZE - off);
+-	memcpy(kmap(*pagep) + off, buf, l);
++	memcpy(kmap_thread(*pagep) + off, buf, l);
+ 	set_page_dirty(*pagep);
+-	kunmap(*pagep);
++	kunmap_thread(*pagep);
+ 
+ 	while ((len -= l) != 0) {
+ 		buf += l;
+ 		l = min_t(int, len, PAGE_SIZE);
+-		memcpy(kmap(*++pagep), buf, l);
++		memcpy(kmap_thread(*++pagep), buf, l);
+ 		set_page_dirty(*pagep);
+-		kunmap(*pagep);
++		kunmap_thread(*pagep);
+ 	}
+ }
+ 
+@@ -112,15 +112,15 @@ void hfs_bnode_clear(struct hfs_bnode *node, int off, int len)
+ 	off &= ~PAGE_MASK;
+ 
+ 	l = min_t(int, len, PAGE_SIZE - off);
+-	memset(kmap(*pagep) + off, 0, l);
++	memset(kmap_thread(*pagep) + off, 0, l);
+ 	set_page_dirty(*pagep);
+-	kunmap(*pagep);
++	kunmap_thread(*pagep);
+ 
+ 	while ((len -= l) != 0) {
+ 		l = min_t(int, len, PAGE_SIZE);
+-		memset(kmap(*++pagep), 0, l);
++		memset(kmap_thread(*++pagep), 0, l);
+ 		set_page_dirty(*pagep);
+-		kunmap(*pagep);
++		kunmap_thread(*pagep);
+ 	}
+ }
+ 
+@@ -142,24 +142,24 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 
+ 	if (src == dst) {
+ 		l = min_t(int, len, PAGE_SIZE - src);
+-		memcpy(kmap(*dst_page) + src, kmap(*src_page) + src, l);
+-		kunmap(*src_page);
++		memcpy(kmap_thread(*dst_page) + src, kmap_thread(*src_page) + src, l);
++		kunmap_thread(*src_page);
+ 		set_page_dirty(*dst_page);
+-		kunmap(*dst_page);
++		kunmap_thread(*dst_page);
+ 
+ 		while ((len -= l) != 0) {
+ 			l = min_t(int, len, PAGE_SIZE);
+-			memcpy(kmap(*++dst_page), kmap(*++src_page), l);
+-			kunmap(*src_page);
++			memcpy(kmap_thread(*++dst_page), kmap_thread(*++src_page), l);
++			kunmap_thread(*src_page);
+ 			set_page_dirty(*dst_page);
+-			kunmap(*dst_page);
++			kunmap_thread(*dst_page);
+ 		}
+ 	} else {
+ 		void *src_ptr, *dst_ptr;
+ 
+ 		do {
+-			src_ptr = kmap(*src_page) + src;
+-			dst_ptr = kmap(*dst_page) + dst;
++			src_ptr = kmap_thread(*src_page) + src;
++			dst_ptr = kmap_thread(*dst_page) + dst;
+ 			if (PAGE_SIZE - src < PAGE_SIZE - dst) {
+ 				l = PAGE_SIZE - src;
+ 				src = 0;
+@@ -171,9 +171,9 @@ void hfs_bnode_copy(struct hfs_bnode *dst_node, int dst,
+ 			}
+ 			l = min(len, l);
+ 			memcpy(dst_ptr, src_ptr, l);
+-			kunmap(*src_page);
++			kunmap_thread(*src_page);
+ 			set_page_dirty(*dst_page);
+-			kunmap(*dst_page);
++			kunmap_thread(*dst_page);
+ 			if (!dst)
+ 				dst_page++;
+ 			else
+@@ -202,27 +202,27 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 
+ 		if (src == dst) {
+ 			while (src < len) {
+-				memmove(kmap(*dst_page), kmap(*src_page), src);
+-				kunmap(*src_page);
++				memmove(kmap_thread(*dst_page), kmap_thread(*src_page), src);
++				kunmap_thread(*src_page);
+ 				set_page_dirty(*dst_page);
+-				kunmap(*dst_page);
++				kunmap_thread(*dst_page);
+ 				len -= src;
+ 				src = PAGE_SIZE;
+ 				src_page--;
+ 				dst_page--;
+ 			}
+ 			src -= len;
+-			memmove(kmap(*dst_page) + src,
+-				kmap(*src_page) + src, len);
+-			kunmap(*src_page);
++			memmove(kmap_thread(*dst_page) + src,
++				kmap_thread(*src_page) + src, len);
++			kunmap_thread(*src_page);
+ 			set_page_dirty(*dst_page);
+-			kunmap(*dst_page);
++			kunmap_thread(*dst_page);
+ 		} else {
+ 			void *src_ptr, *dst_ptr;
+ 
+ 			do {
+-				src_ptr = kmap(*src_page) + src;
+-				dst_ptr = kmap(*dst_page) + dst;
++				src_ptr = kmap_thread(*src_page) + src;
++				dst_ptr = kmap_thread(*dst_page) + dst;
+ 				if (src < dst) {
+ 					l = src;
+ 					src = PAGE_SIZE;
+@@ -234,9 +234,9 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 				}
+ 				l = min(len, l);
+ 				memmove(dst_ptr - l, src_ptr - l, l);
+-				kunmap(*src_page);
++				kunmap_thread(*src_page);
+ 				set_page_dirty(*dst_page);
+-				kunmap(*dst_page);
++				kunmap_thread(*dst_page);
+ 				if (dst == PAGE_SIZE)
+ 					dst_page--;
+ 				else
+@@ -251,26 +251,26 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 
+ 		if (src == dst) {
+ 			l = min_t(int, len, PAGE_SIZE - src);
+-			memmove(kmap(*dst_page) + src,
+-				kmap(*src_page) + src, l);
+-			kunmap(*src_page);
++			memmove(kmap_thread(*dst_page) + src,
++				kmap_thread(*src_page) + src, l);
++			kunmap_thread(*src_page);
+ 			set_page_dirty(*dst_page);
+-			kunmap(*dst_page);
++			kunmap_thread(*dst_page);
+ 
+ 			while ((len -= l) != 0) {
+ 				l = min_t(int, len, PAGE_SIZE);
+-				memmove(kmap(*++dst_page),
+-					kmap(*++src_page), l);
+-				kunmap(*src_page);
++				memmove(kmap_thread(*++dst_page),
++					kmap_thread(*++src_page), l);
++				kunmap_thread(*src_page);
+ 				set_page_dirty(*dst_page);
+-				kunmap(*dst_page);
++				kunmap_thread(*dst_page);
+ 			}
+ 		} else {
+ 			void *src_ptr, *dst_ptr;
+ 
+ 			do {
+-				src_ptr = kmap(*src_page) + src;
+-				dst_ptr = kmap(*dst_page) + dst;
++				src_ptr = kmap_thread(*src_page) + src;
++				dst_ptr = kmap_thread(*dst_page) + dst;
+ 				if (PAGE_SIZE - src <
+ 						PAGE_SIZE - dst) {
+ 					l = PAGE_SIZE - src;
+@@ -283,9 +283,9 @@ void hfs_bnode_move(struct hfs_bnode *node, int dst, int src, int len)
+ 				}
+ 				l = min(len, l);
+ 				memmove(dst_ptr, src_ptr, l);
+-				kunmap(*src_page);
++				kunmap_thread(*src_page);
+ 				set_page_dirty(*dst_page);
+-				kunmap(*dst_page);
++				kunmap_thread(*dst_page);
+ 				if (!dst)
+ 					dst_page++;
+ 				else
+@@ -502,14 +502,14 @@ struct hfs_bnode *hfs_bnode_find(struct hfs_btree *tree, u32 num)
+ 	if (!test_bit(HFS_BNODE_NEW, &node->flags))
+ 		return node;
+ 
+-	desc = (struct hfs_bnode_desc *)(kmap(node->page[0]) +
++	desc = (struct hfs_bnode_desc *)(kmap_thread(node->page[0]) +
+ 			node->page_offset);
+ 	node->prev = be32_to_cpu(desc->prev);
+ 	node->next = be32_to_cpu(desc->next);
+ 	node->num_recs = be16_to_cpu(desc->num_recs);
+ 	node->type = desc->type;
+ 	node->height = desc->height;
+-	kunmap(node->page[0]);
++	kunmap_thread(node->page[0]);
+ 
+ 	switch (node->type) {
+ 	case HFS_NODE_HEADER:
+@@ -593,14 +593,14 @@ struct hfs_bnode *hfs_bnode_create(struct hfs_btree *tree, u32 num)
+ 	}
+ 
+ 	pagep = node->page;
+-	memset(kmap(*pagep) + node->page_offset, 0,
++	memset(kmap_thread(*pagep) + node->page_offset, 0,
+ 	       min_t(int, PAGE_SIZE, tree->node_size));
+ 	set_page_dirty(*pagep);
+-	kunmap(*pagep);
++	kunmap_thread(*pagep);
+ 	for (i = 1; i < tree->pages_per_bnode; i++) {
+-		memset(kmap(*++pagep), 0, PAGE_SIZE);
++		memset(kmap_thread(*++pagep), 0, PAGE_SIZE);
+ 		set_page_dirty(*pagep);
+-		kunmap(*pagep);
++		kunmap_thread(*pagep);
+ 	}
+ 	clear_bit(HFS_BNODE_NEW, &node->flags);
+ 	wake_up(&node->lock_wq);
+diff --git a/fs/hfsplus/btree.c b/fs/hfsplus/btree.c
+index 66774f4cb4fd..74fcef3a1628 100644
+--- a/fs/hfsplus/btree.c
++++ b/fs/hfsplus/btree.c
+@@ -394,7 +394,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
  
  	off += node->page_offset;
  	pagep = node->page + (off >> PAGE_SHIFT);
@@ -142,7 +418,7 @@ index 19017d296173..bd4a6d35e361 100644
  	off &= ~PAGE_MASK;
  	idx = 0;
  
-@@ -281,7 +281,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
+@@ -407,7 +407,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
  						idx += i;
  						data[off] |= m;
  						set_page_dirty(*pagep);
@@ -151,7 +427,7 @@ index 19017d296173..bd4a6d35e361 100644
  						tree->free_nodes--;
  						mark_inode_dirty(tree->inode);
  						hfs_bnode_put(node);
-@@ -290,14 +290,14 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
+@@ -417,14 +417,14 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
  				}
  			}
  			if (++off >= PAGE_SIZE) {
@@ -168,8 +444,8 @@ index 19017d296173..bd4a6d35e361 100644
 +		kunmap_thread(*pagep);
  		nidx = node->next;
  		if (!nidx) {
- 			printk(KERN_DEBUG "create new bmap node...\n");
-@@ -313,7 +313,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
+ 			hfs_dbg(BNODE_MOD, "create new bmap node\n");
+@@ -440,7 +440,7 @@ struct hfs_bnode *hfs_bmap_alloc(struct hfs_btree *tree)
  		off = off16;
  		off += node->page_offset;
  		pagep = node->page + (off >> PAGE_SHIFT);
@@ -178,7 +454,7 @@ index 19017d296173..bd4a6d35e361 100644
  		off &= ~PAGE_MASK;
  	}
  }
-@@ -360,7 +360,7 @@ void hfs_bmap_free(struct hfs_bnode *node)
+@@ -490,7 +490,7 @@ void hfs_bmap_free(struct hfs_bnode *node)
  	}
  	off += node->page_offset + nidx / 8;
  	page = node->page[off >> PAGE_SHIFT];
@@ -187,7 +463,14 @@ index 19017d296173..bd4a6d35e361 100644
  	off &= ~PAGE_MASK;
  	m = 1 << (~nidx & 7);
  	byte = data[off];
-@@ -373,7 +373,7 @@ void hfs_bmap_free(struct hfs_bnode *node)
+@@ -498,13 +498,13 @@ void hfs_bmap_free(struct hfs_bnode *node)
+ 		pr_crit("trying to free free bnode "
+ 				"%u(%d)\n",
+ 			node->this, node->type);
+-		kunmap(page);
++		kunmap_thread(page);
+ 		hfs_bnode_put(node);
+ 		return;
  	}
  	data[off] = byte & ~m;
  	set_page_dirty(page);
