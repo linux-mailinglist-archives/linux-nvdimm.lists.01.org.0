@@ -1,84 +1,84 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC27289E7A
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Oct 2020 06:59:23 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0BF28A033
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Oct 2020 13:37:02 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 12C6D15A6E227;
-	Fri,  9 Oct 2020 21:59:22 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by ml01.01.org (Postfix) with ESMTP id 8E77B15A8C90C;
+	Sat, 10 Oct 2020 04:37:00 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bmt@zurich.ibm.com; receiver=<UNKNOWN> 
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 469D315A6E225
-	for <linux-nvdimm@lists.01.org>; Fri,  9 Oct 2020 21:59:19 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09A4oisw060035;
-	Sat, 10 Oct 2020 00:59:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : in-reply-to : references : date : message-id : mime-version :
- content-type; s=pp1; bh=9UawxoC2HHKkBe2OryDbseGZLMitLfUQER1BZ0mp8bw=;
- b=m58YXQq6jZJabTandgKrgZP9BTPiBzDQDdE8l7QfHnBWctH9xTMsPYX1A0xXWTwSXGFq
- S28iUsMvNq0eQO1VWDw3zH8dGnvdylfX/YgFQz3CuQRk6bBuk5iA2bYJ6+0tetQ0rgmF
- R5dsmYnSnjhUasqD07I/PMfeCPhG45Vga3EuoLNppd+eXJgGs7O76kgFrY7qyKkVHC2W
- fyo8SekZxHKM+rEeT1f67GloUfJyOU0ULTfI1aD+YLuyQPPr91ZW9ztKMf9krc77iTgK
- jZiyYLUuXao/gsI4qEvBR3RDM49qstjeO1A9LX+12Qx9goSVEpbij4m6F16DFnoJFn9r 2A==
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3435e911t5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 10 Oct 2020 00:59:12 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-	by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 09A4vwPI025703;
-	Sat, 10 Oct 2020 04:59:10 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
-	by ppma04ams.nl.ibm.com with ESMTP id 3434k7r26b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 10 Oct 2020 04:59:10 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
-	by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 09A4x8pQ25756064
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 10 Oct 2020 04:59:08 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6B5F9A4051;
-	Sat, 10 Oct 2020 04:59:08 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DB41DA404D;
-	Sat, 10 Oct 2020 04:59:05 +0000 (GMT)
-Received: from vajain21.in.ibm.com (unknown [9.77.203.213])
-	by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
-	Sat, 10 Oct 2020 04:59:05 +0000 (GMT)
-Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Sat, 10 Oct 2020 10:29:04 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Dan Williams <dan.j.williams@intel.com>,
-        "Verma, Vishal L"
- <vishal.l.verma@intel.com>
-Subject: Re: [ndctl PATCH] libndctl: Fix probe of non-nfit nvdimms
-In-Reply-To: <CAPcyv4j89a_Nevq1y92UPGedm74VUYCunkf62T5S3UeXzW6vKg@mail.gmail.com>
-References: <20201009120009.243108-1-vaibhav@linux.ibm.com>
- <145db3d86fa6bddf55c0e7c4aa149984676cd723.camel@intel.com>
- <CAPcyv4j89a_Nevq1y92UPGedm74VUYCunkf62T5S3UeXzW6vKg@mail.gmail.com>
-Date: Sat, 10 Oct 2020 10:29:04 +0530
-Message-ID: <87pn5qy8vb.fsf@vajain21.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 0FDC115A8C909
+	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 04:36:57 -0700 (PDT)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09ABX1rb052709
+	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 07:36:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=in-reply-to : subject :
+ from : to : cc : date : mime-version : references :
+ content-transfer-encoding : content-type : message-id; s=pp1;
+ bh=NiDLo4pOxkTOHNh379y2lMt59tGJeK9BGhibE+AHe30=;
+ b=fFl+sWZ60CJNW5vj7Uw0QdIFBZaJLDIK+TmFY7+uXdPQEExbAUVKU05YhKg5dS5u6J9M
+ gRTcbWK1ehAiHgiW0QiEErv4vh+5MOV1iJMmz3AgZqVrCWi+Nh1nNGlGLl5qNxYu9TT3
+ rsErWvzJTnT/TvD/yGmIkQ5cIJnW2dxyfP5KEerqQF50430xLTdRCdzrzGOBj/IVBjpb
+ ZIGntFQpbgC01amsKXwfy1cB65UwCiqnbdgLT6Z6Qd+CSe7yV4n3BXy+qSd8xdiYdQTK
+ an7SA2yY6csjDSnstIEkYdPhg6mYvKJGwGGY1NoLkcuzdqKyvDxx/5UGYpv3tzPn6Oq9 ZA==
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.91])
+	by mx0a-001b2d01.pphosted.com with ESMTP id 343bqd0h6u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 07:36:56 -0400
+Received: from localhost
+	by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+	for <linux-nvdimm@lists.01.org> from <BMT@zurich.ibm.com>;
+	Sat, 10 Oct 2020 11:36:55 -0000
+Received: from us1a3-smtp05.a3.dal06.isc4sb.com (10.146.71.159)
+	by smtp.notes.na.collabserv.com (10.106.227.143) with smtp.notes.na.collabserv.com ESMTP;
+	Sat, 10 Oct 2020 11:36:50 -0000
+Received: from us1a3-mail162.a3.dal06.isc4sb.com ([10.146.71.4])
+          by us1a3-smtp05.a3.dal06.isc4sb.com
+          with ESMTP id 2020101011364991-175970 ;
+          Sat, 10 Oct 2020 11:36:49 +0000
+In-Reply-To: <20201009195033.3208459-11-ira.weiny@intel.com>
+Subject: Re: [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize new kmap_thread()
+From: "Bernard Metzler" <BMT@zurich.ibm.com>
+To: ira.weiny@intel.com
+Date: Sat, 10 Oct 2020 11:36:49 +0000
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20201009195033.3208459-11-ira.weiny@intel.com>,<20201009195033.3208459-1-ira.weiny@intel.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
+ SCN1812108_20180501T0841_FP65 April 15, 2020 at 09:48
+X-LLNOutbound: False
+X-Disclaimed: 59823
+X-TNEFEvaluated: 1
+x-cbid: 20101011-2475-0000-0000-0000044A0339
+X-IBM-SpamModules-Scores: BY=0.233045; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.421684; ST=0; TS=0; UL=0; ISC=; MB=0.000000
+X-IBM-SpamModules-Versions: BY=3.00013982; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000295; SDB=6.01447073; UDB=6.00777937; IPR=6.01229775;
+ MB=3.00034472; MTD=3.00000008; XFM=3.00000015; UTC=2020-10-10 11:36:54
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2020-10-10 06:57:40 - 6.00011937
+x-cbparentid: 20101011-2476-0000-0000-0000DAA5035B
+Message-Id: <OF849D92D8.F4735ECA-ON002585FD.003F5F27-002585FD.003FCBD6@notes.na.collabserv.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-10-10_01:2020-10-09,2020-10-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 spamscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2009150000 definitions=main-2010100042
-Message-ID-Hash: QDYHWTRGNN2VJ3B4YSRTQD32B4HLYM22
-X-Message-ID-Hash: QDYHWTRGNN2VJ3B4YSRTQD32B4HLYM22
-X-MailFrom: vaibhav@linux.ibm.com
+ definitions=2020-10-10_07:2020-10-09,2020-10-10 signatures=0
+X-Proofpoint-Spam-Reason: orgsafe
+Message-ID-Hash: GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA
+X-Message-ID-Hash: GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA
+X-MailFrom: BMT@zurich.ibm.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mike Marciniszyn <mike.marciniszyn@intel.com>, Dennis Dalessandro <dennis.dalessandro@intel.com>, Doug Ledford <dledford@redhat.com>, "Jason Gunthorpe  <jgg@ziepe.ca>, Faisal Latif" <faisal.latif@intel.com>, "Shiraz Saleem  <shiraz.saleem@intel.com>, x86@kernel.org, Dave Hansen" <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel
+ .org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freed.esktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/QDYHWTRGNN2VJ3B4YSRTQD32B4HLYM22/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -87,70 +87,212 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Hi Dan and Vishal,
+-----ira.weiny@intel.com wrote: -----
 
-Thanks so much for quick turnaround on this.
-
-Dan Williams <dan.j.williams@intel.com> writes:
-
-> On Fri, Oct 9, 2020 at 11:36 AM Verma, Vishal L
-> <vishal.l.verma@intel.com> wrote:
->>
->> On Fri, 2020-10-09 at 17:30 +0530, Vaibhav Jain wrote:
->> > commit 107a24ff429f ("ndctl/list: Add firmware activation
->> > enumeration") introduced changes in add_dimm() to enumerate the status
->> > of firmware activation. However a branch added in that commit broke
->> > the probe for non-nfit nvdimms like one provided by papr-scm. This
->> > cause an error reported when listing namespaces like below:
->> >
->> > $ sudo ndctl list
->> > libndctl: add_dimm: nmem0: probe failed: No such device
->> > libndctl: __sysfs_device_parse: nmem0: add_dev() failed
->> >
->> > Do a fix for this by removing the offending branch in the add_dimm()
->> > patch. This continues the flow of add_dimm() probe even if the nfit is
->> > not detected on the associated bus.
->> >
->> > Fixes: 107a24ff429fa("ndctl/list: Add firmware activation enumeration")
->> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> > ---
->> >  ndctl/lib/libndctl.c | 3 ---
->> >  1 file changed, 3 deletions(-)
->>
->> Ah apologies - this snuck in when I reflowed Dan's patches on top of the
->> papr work for v70.
-No worries :-)
-
->>
->> I expect you'd like a point release with this fix asap?
-Yes, that will be great. Thanks
-
->>
->> Is there a way for me to incorporate some papr unit tests into my
->> release workflow so I can avoid breaking things like this again?
->>
->> I'll also try to do a better job of pushing things out to the pending
->> branch more frequently so if you're monitoring that branch, hopefully
->> things like this will get caught before a release happens :)
-
-Fully agree, if that happens we can incorporate it into our CI system to
-ensure that such regressions are caught early on before any release is
-tagged.
-
+>To: "Andrew Morton" <akpm@linux-foundation.org>, "Thomas Gleixner"
+><tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
+>Petkov" <bp@alien8.de>, "Andy Lutomirski" <luto@kernel.org>, "Peter
+>Zijlstra" <peterz@infradead.org>
+>From: ira.weiny@intel.com
+>Date: 10/09/2020 09:52PM
+>Cc: "Ira Weiny" <ira.weiny@intel.com>, "Mike Marciniszyn"
+><mike.marciniszyn@intel.com>, "Dennis Dalessandro"
+><dennis.dalessandro@intel.com>, "Doug Ledford" <dledford@redhat.com>,
+>"Jason Gunthorpe" <jgg@ziepe.ca>, "Faisal Latif"
+><faisal.latif@intel.com>, "Shiraz Saleem" <shiraz.saleem@intel.com>,
+>"Bernard Metzler" <bmt@zurich.ibm.com>, x86@kernel.org, "Dave Hansen"
+><dave.hansen@linux.intel.com>, "Dan Williams"
+><dan.j.williams@intel.com>, "Fenghua Yu" <fenghua.yu@intel.com>,
+>linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+>linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org,
+>linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+>linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+>netdev@vger.kernel.org, bpf@vger.kernel.org,
+>kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
+>linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
+>linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
+>linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+>linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+>linux-ext4@vger.kernel.org, linux-aio@kvack.org,
+>io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+>linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
+>reiserfs-devel@vger.kernel.org,
+>linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
+>cluster-devel@redhat.com, ecryptfs@vger.kernel.org,
+>linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org,
+>linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org,
+>amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+>intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com,
+>linux-block@vger.kernel.org, xen-devel@lists.xenproject.org,
+>linux-cachefs@redhat.com, samba-technical@lists.samba.org,
+>intel-wired-lan@lists.osuosl.org
+>Subject: [EXTERNAL] [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize
+>new kmap_thread()
 >
-> Would be nice to have something like a papr_test next to nfit_test for
-> such regression testing. These kinds of mistakes are really only
-> avoidable with regression tests.
-Yes Agree, fortunatly Santosh  has recently posted an RFC patchset
-implementing such tests at [1]. Once that gets merged, can used to
-perform regression testing.
+>From: Ira Weiny <ira.weiny@intel.com>
+>
+>The kmap() calls in these drivers are localized to a single thread.
+>To
+>avoid the over head of global PKRS updates use the new kmap_thread()
+>call.
+>
+>Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
+>Cc: Dennis Dalessandro <dennis.dalessandro@intel.com>
+>Cc: Doug Ledford <dledford@redhat.com>
+>Cc: Jason Gunthorpe <jgg@ziepe.ca>
+>Cc: Faisal Latif <faisal.latif@intel.com>
+>Cc: Shiraz Saleem <shiraz.saleem@intel.com>
+>Cc: Bernard Metzler <bmt@zurich.ibm.com>
+>Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>---
+> drivers/infiniband/hw/hfi1/sdma.c      |  4 ++--
+> drivers/infiniband/hw/i40iw/i40iw_cm.c | 10 +++++-----
+> drivers/infiniband/sw/siw/siw_qp_tx.c  | 14 +++++++-------
+> 3 files changed, 14 insertions(+), 14 deletions(-)
+>
+>diff --git a/drivers/infiniband/hw/hfi1/sdma.c
+>b/drivers/infiniband/hw/hfi1/sdma.c
+>index 04575c9afd61..09d206e3229a 100644
+>--- a/drivers/infiniband/hw/hfi1/sdma.c
+>+++ b/drivers/infiniband/hw/hfi1/sdma.c
+>@@ -3130,7 +3130,7 @@ int ext_coal_sdma_tx_descs(struct hfi1_devdata
+>*dd, struct sdma_txreq *tx,
+> 		}
+> 
+> 		if (type == SDMA_MAP_PAGE) {
+>-			kvaddr = kmap(page);
+>+			kvaddr = kmap_thread(page);
+> 			kvaddr += offset;
+> 		} else if (WARN_ON(!kvaddr)) {
+> 			__sdma_txclean(dd, tx);
+>@@ -3140,7 +3140,7 @@ int ext_coal_sdma_tx_descs(struct hfi1_devdata
+>*dd, struct sdma_txreq *tx,
+> 		memcpy(tx->coalesce_buf + tx->coalesce_idx, kvaddr, len);
+> 		tx->coalesce_idx += len;
+> 		if (type == SDMA_MAP_PAGE)
+>-			kunmap(page);
+>+			kunmap_thread(page);
+> 
+> 		/* If there is more data, return */
+> 		if (tx->tlen - tx->coalesce_idx)
+>diff --git a/drivers/infiniband/hw/i40iw/i40iw_cm.c
+>b/drivers/infiniband/hw/i40iw/i40iw_cm.c
+>index a3b95805c154..122d7a5642a1 100644
+>--- a/drivers/infiniband/hw/i40iw/i40iw_cm.c
+>+++ b/drivers/infiniband/hw/i40iw/i40iw_cm.c
+>@@ -3721,7 +3721,7 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct
+>iw_cm_conn_param *conn_param)
+> 		ibmr->device = iwpd->ibpd.device;
+> 		iwqp->lsmm_mr = ibmr;
+> 		if (iwqp->page)
+>-			iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
+>+			iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
+> 		dev->iw_priv_qp_ops->qp_send_lsmm(&iwqp->sc_qp,
+> 							iwqp->ietf_mem.va,
+> 							(accept.size + conn_param->private_data_len),
+>@@ -3729,12 +3729,12 @@ int i40iw_accept(struct iw_cm_id *cm_id,
+>struct iw_cm_conn_param *conn_param)
+> 
+> 	} else {
+> 		if (iwqp->page)
+>-			iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
+>+			iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
+> 		dev->iw_priv_qp_ops->qp_send_lsmm(&iwqp->sc_qp, NULL, 0, 0);
+> 	}
+> 
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap_thread(iwqp->page);
+> 
+> 	iwqp->cm_id = cm_id;
+> 	cm_node->cm_id = cm_id;
+>@@ -4102,10 +4102,10 @@ static void i40iw_cm_event_connected(struct
+>i40iw_cm_event *event)
+> 	i40iw_cm_init_tsa_conn(iwqp, cm_node);
+> 	read0 = (cm_node->send_rdma0_op == SEND_RDMA_READ_ZERO);
+> 	if (iwqp->page)
+>-		iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
+>+		iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
+> 	dev->iw_priv_qp_ops->qp_send_rtt(&iwqp->sc_qp, read0);
+> 	if (iwqp->page)
+>-		kunmap(iwqp->page);
+>+		kunmap_thread(iwqp->page);
+> 
+> 	memset(&attr, 0, sizeof(attr));
+> 	attr.qp_state = IB_QPS_RTS;
+>diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c
+>b/drivers/infiniband/sw/siw/siw_qp_tx.c
+>index d19d8325588b..4ed37c328d02 100644
+>--- a/drivers/infiniband/sw/siw/siw_qp_tx.c
+>+++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
+>@@ -76,7 +76,7 @@ static int siw_try_1seg(struct siw_iwarp_tx *c_tx,
+>void *paddr)
+> 			if (unlikely(!p))
+> 				return -EFAULT;
+> 
+>-			buffer = kmap(p);
+>+			buffer = kmap_thread(p);
+> 
+> 			if (likely(PAGE_SIZE - off >= bytes)) {
+> 				memcpy(paddr, buffer + off, bytes);
+>@@ -84,7 +84,7 @@ static int siw_try_1seg(struct siw_iwarp_tx *c_tx,
+>void *paddr)
+> 				unsigned long part = bytes - (PAGE_SIZE - off);
+> 
+> 				memcpy(paddr, buffer + off, part);
+>-				kunmap(p);
+>+				kunmap_thread(p);
+> 
+> 				if (!mem->is_pbl)
+> 					p = siw_get_upage(mem->umem,
+>@@ -96,10 +96,10 @@ static int siw_try_1seg(struct siw_iwarp_tx
+>*c_tx, void *paddr)
+> 				if (unlikely(!p))
+> 					return -EFAULT;
+> 
+>-				buffer = kmap(p);
+>+				buffer = kmap_thread(p);
+> 				memcpy(paddr + part, buffer, bytes - part);
+> 			}
+>-			kunmap(p);
+>+			kunmap_thread(p);
+> 		}
+> 	}
+> 	return (int)bytes;
+>@@ -505,7 +505,7 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx,
+>struct socket *s)
+> 				page_array[seg] = p;
+> 
+> 				if (!c_tx->use_sendpage) {
+>-					iov[seg].iov_base = kmap(p) + fp_off;
+>+					iov[seg].iov_base = kmap_thread(p) + fp_off;
 
-[1] "testing/nvdimm: Add test module for non-nfit platforms"
-https://lore.kernel.org/linux-nvdimm/20201006010013.848302-1-santosh@fossix.org/
+This misses a corresponding kunmap_thread() in siw_unmap_pages()
+(pls change line 403 in siw_qp_tx.c as well)
 
--- 
-Cheers
-~ Vaibhav
+Thanks,
+Bernard.
+
+> 					iov[seg].iov_len = plen;
+> 
+> 					/* Remember for later kunmap() */
+>@@ -518,9 +518,9 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx,
+>struct socket *s)
+> 							plen);
+> 				} else if (do_crc) {
+> 					crypto_shash_update(c_tx->mpa_crc_hd,
+>-							    kmap(p) + fp_off,
+>+							    kmap_thread(p) + fp_off,
+> 							    plen);
+>-					kunmap(p);
+>+					kunmap_thread(p);
+> 				}
+> 			} else {
+> 				u64 va = sge->laddr + sge_off;
+>-- 
+>2.28.0.rc0.12.gb6a658bd00c9
+>
+>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
