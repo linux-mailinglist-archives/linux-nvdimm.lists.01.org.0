@@ -2,297 +2,116 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0BF28A033
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Oct 2020 13:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D2B28A133
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 10 Oct 2020 21:15:36 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8E77B15A8C90C;
-	Sat, 10 Oct 2020 04:37:00 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=bmt@zurich.ibm.com; receiver=<UNKNOWN> 
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by ml01.01.org (Postfix) with ESMTP id 0498715B08713;
+	Sat, 10 Oct 2020 12:15:35 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=54.38.202.176; helo=cha1.chairmaneventsummit.info; envelope-from=info-linux+2dnvdimm=lists.01.org@chairmaneventsummit.info; receiver=<UNKNOWN> 
+Received: from cha1.chairmaneventsummit.info (ip176.ip-54-38-202.eu [54.38.202.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 0FDC115A8C909
-	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 04:36:57 -0700 (PDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 09ABX1rb052709
-	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 07:36:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=in-reply-to : subject :
- from : to : cc : date : mime-version : references :
- content-transfer-encoding : content-type : message-id; s=pp1;
- bh=NiDLo4pOxkTOHNh379y2lMt59tGJeK9BGhibE+AHe30=;
- b=fFl+sWZ60CJNW5vj7Uw0QdIFBZaJLDIK+TmFY7+uXdPQEExbAUVKU05YhKg5dS5u6J9M
- gRTcbWK1ehAiHgiW0QiEErv4vh+5MOV1iJMmz3AgZqVrCWi+Nh1nNGlGLl5qNxYu9TT3
- rsErWvzJTnT/TvD/yGmIkQ5cIJnW2dxyfP5KEerqQF50430xLTdRCdzrzGOBj/IVBjpb
- ZIGntFQpbgC01amsKXwfy1cB65UwCiqnbdgLT6Z6Qd+CSe7yV4n3BXy+qSd8xdiYdQTK
- an7SA2yY6csjDSnstIEkYdPhg6mYvKJGwGGY1NoLkcuzdqKyvDxx/5UGYpv3tzPn6Oq9 ZA==
-Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.91])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 343bqd0h6u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 07:36:56 -0400
-Received: from localhost
-	by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
-	for <linux-nvdimm@lists.01.org> from <BMT@zurich.ibm.com>;
-	Sat, 10 Oct 2020 11:36:55 -0000
-Received: from us1a3-smtp05.a3.dal06.isc4sb.com (10.146.71.159)
-	by smtp.notes.na.collabserv.com (10.106.227.143) with smtp.notes.na.collabserv.com ESMTP;
-	Sat, 10 Oct 2020 11:36:50 -0000
-Received: from us1a3-mail162.a3.dal06.isc4sb.com ([10.146.71.4])
-          by us1a3-smtp05.a3.dal06.isc4sb.com
-          with ESMTP id 2020101011364991-175970 ;
-          Sat, 10 Oct 2020 11:36:49 +0000
-In-Reply-To: <20201009195033.3208459-11-ira.weiny@intel.com>
-Subject: Re: [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize new kmap_thread()
-From: "Bernard Metzler" <BMT@zurich.ibm.com>
-To: ira.weiny@intel.com
-Date: Sat, 10 Oct 2020 11:36:49 +0000
+	by ml01.01.org (Postfix) with ESMTPS id D4A4D15B08711
+	for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 12:15:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=default; d=chairmaneventsummit.info;
+ h=Date:To:From:Reply-To:Subject:Message-ID:List-Unsubscribe:List-Id:MIME-Version:Content-Type; i=info@chairmaneventsummit.info;
+ bh=iKUSONvCMtk/6eCVMsefjjMrzO0=;
+ b=cJY1a0iuwG1ukouH1zWVyS03IaHjxhSxtjuVfINEepyE/jDnV3d24dn5U3GjX4SckPcFfWRfUalb
+   LisgZrBKpFz1Rizus8WH1YqoX7dXDIxwJZYe+cYmsh/vL2Xd6yGy3abt11V4Wse632yFhvZHAaS6
+   TYkCnsKRCPIdrqzPlXuk12B8R60YZ3cqp6MyCuLwtTH31XAAtKy/z83wLxEQdbvTzhyw5remS7IH
+   6m+d/zxEdP85Bq3lswRLnAVgqywEWd06AomEtsoAQM5Exf3TtqKqLc/OZG7IBRywGG3AnfzhyYaJ
+   WrDoMMjrVDn9VjzMOfGyRgLPaXrsLgJ9uGcpFQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=default; d=chairmaneventsummit.info;
+ b=fe6/hQyriiIUbQLXq3TcHR5Ngrwo40F48Jwf4rPnL84Vcms7JwvdWL7sBI5G3rOAWyvo2pJba1kt
+   pQ/Sn7z2Zu+K8yZhLsAx/LoxGqnTi6eeGXbtLKVwDz1793RvE+AoaLICAGTln9y+usSsVmiIDIYE
+   f10izYjlRw9h84N+w9eMi93LQ4XQI/7Umwu4QegdX2lEzv4oVwgwiO0XAdPW9hzbQHdudM3PLGkp
+   UuvgfgPtPez2qH7KBB4gzt5BdX357Np8X//4RaNagBygi7SscNT9l5/UIBLN8xNgAmQeiRHkfKmG
+   nv13MyafPyUPWbvkuV7va97wfe1UAPtU8NBzMw==;
+Received: from chairmaneventsummit.info (51.83.131.67) by cha1.chairmaneventsummit.info id hg845bi19tkg for <linux-nvdimm@lists.01.org>; Sat, 10 Oct 2020 14:43:17 +0000 (envelope-from <info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info>)
+Date: Sat, 10 Oct 2020 14:43:17 +0000
+To: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+From: Emma Johnson <info@chairmaneventsummit.info>
+Subject: RE: did you get my email
+Message-ID: <64de4922b1759027593b3de78351c972@chairmaneventsummit.info>
+X-Trgm-Campaign-Uid: cg842sfn3f3b5
+X-Trgm-Subscriber-Uid: vh937tpo5w327
+X-Trgm-Customer-Uid: cl716wf5hl7c7
+X-Trgm-Customer-Gid: 0
+X-Trgm-Delivery-Sid: 1
+X-Trgm-Tracking-Did: 0
+X-Report-Abuse: Please report abuse for this campaign here: https://chairmaneventsummit.info/emm/index.php/campaigns/cg842sfn3f3b5/report-abuse/vh543dkxdr339/vh937tpo5w327
+Feedback-ID: cg842sfn3f3b5:vh937tpo5w327:vh543dkxdr339:cl716wf5hl7c7
+Precedence: bulk
+X-Trgm-EBS: https://chairmaneventsummit.info/emm/index.php/lists/block-address
+X-Sender: info@chairmaneventsummit.info
+X-Receiver: linux-nvdimm@lists.01.org
+X-Trgm-Mailer: PHPMailer - 5.2.21
 MIME-Version: 1.0
-Sensitivity: 
-Importance: Normal
-X-Priority: 3 (Normal)
-References: <20201009195033.3208459-11-ira.weiny@intel.com>,<20201009195033.3208459-1-ira.weiny@intel.com>
-X-Mailer: IBM iNotes ($HaikuForm 1054.1) | IBM Domino Build
- SCN1812108_20180501T0841_FP65 April 15, 2020 at 09:48
-X-LLNOutbound: False
-X-Disclaimed: 59823
-X-TNEFEvaluated: 1
-x-cbid: 20101011-2475-0000-0000-0000044A0339
-X-IBM-SpamModules-Scores: BY=0.233045; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
- SC=0.421684; ST=0; TS=0; UL=0; ISC=; MB=0.000000
-X-IBM-SpamModules-Versions: BY=3.00013982; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000295; SDB=6.01447073; UDB=6.00777937; IPR=6.01229775;
- MB=3.00034472; MTD=3.00000008; XFM=3.00000015; UTC=2020-10-10 11:36:54
-X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
-X-IBM-AV-VERSION: SAVI=2020-10-10 06:57:40 - 6.00011937
-x-cbparentid: 20101011-2476-0000-0000-0000DAA5035B
-Message-Id: <OF849D92D8.F4735ECA-ON002585FD.003F5F27-002585FD.003FCBD6@notes.na.collabserv.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-10-10_07:2020-10-09,2020-10-10 signatures=0
-X-Proofpoint-Spam-Reason: orgsafe
-Message-ID-Hash: GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA
-X-Message-ID-Hash: GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA
-X-MailFrom: BMT@zurich.ibm.com
+Message-ID-Hash: L3LCM3FJIFZ7HAY2M6HJPUWAZDWEOHSX
+X-Message-ID-Hash: L3LCM3FJIFZ7HAY2M6HJPUWAZDWEOHSX
+X-MailFrom: info-linux+2Dnvdimm=lists.01.org@chairmaneventsummit.info
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Mike Marciniszyn <mike.marciniszyn@intel.com>, Dennis Dalessandro <dennis.dalessandro@intel.com>, Doug Ledford <dledford@redhat.com>, "Jason Gunthorpe  <jgg@ziepe.ca>, Faisal Latif" <faisal.latif@intel.com>, "Shiraz Saleem  <shiraz.saleem@intel.com>, x86@kernel.org, Dave Hansen" <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel
- .org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freed.esktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
-Precedence: list
+Reply-To: Emma Johnson <emma@ceoeventsummit2020.info>
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/GDNG4S2ESE2SK2A5KESGEIUB4PAIOBOA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/L3LCM3FJIFZ7HAY2M6HJPUWAZDWEOHSX/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
------ira.weiny@intel.com wrote: -----
-
->To: "Andrew Morton" <akpm@linux-foundation.org>, "Thomas Gleixner"
-><tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
->Petkov" <bp@alien8.de>, "Andy Lutomirski" <luto@kernel.org>, "Peter
->Zijlstra" <peterz@infradead.org>
->From: ira.weiny@intel.com
->Date: 10/09/2020 09:52PM
->Cc: "Ira Weiny" <ira.weiny@intel.com>, "Mike Marciniszyn"
-><mike.marciniszyn@intel.com>, "Dennis Dalessandro"
-><dennis.dalessandro@intel.com>, "Doug Ledford" <dledford@redhat.com>,
->"Jason Gunthorpe" <jgg@ziepe.ca>, "Faisal Latif"
-><faisal.latif@intel.com>, "Shiraz Saleem" <shiraz.saleem@intel.com>,
->"Bernard Metzler" <bmt@zurich.ibm.com>, x86@kernel.org, "Dave Hansen"
-><dave.hansen@linux.intel.com>, "Dan Williams"
-><dan.j.williams@intel.com>, "Fenghua Yu" <fenghua.yu@intel.com>,
->linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
->linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org,
->linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
->linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
->netdev@vger.kernel.org, bpf@vger.kernel.org,
->kexec@lists.infradead.org, linux-bcache@vger.kernel.org,
->linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org,
->linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org,
->linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
->linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
->linux-ext4@vger.kernel.org, linux-aio@kvack.org,
->io-uring@vger.kernel.org, linux-erofs@lists.ozlabs.org,
->linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net,
->reiserfs-devel@vger.kernel.org,
->linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org,
->cluster-devel@redhat.com, ecryptfs@vger.kernel.org,
->linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org,
->linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org,
->amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
->intel-gfx@lists.freedesktop.org, drbd-dev@tron.linbit.com,
->linux-block@vger.kernel.org, xen-devel@lists.xenproject.org,
->linux-cachefs@redhat.com, samba-technical@lists.samba.org,
->intel-wired-lan@lists.osuosl.org
->Subject: [EXTERNAL] [PATCH RFC PKS/PMEM 10/58] drivers/rdma: Utilize
->new kmap_thread()
->
->From: Ira Weiny <ira.weiny@intel.com>
->
->The kmap() calls in these drivers are localized to a single thread.
->To
->avoid the over head of global PKRS updates use the new kmap_thread()
->call.
->
->Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>
->Cc: Dennis Dalessandro <dennis.dalessandro@intel.com>
->Cc: Doug Ledford <dledford@redhat.com>
->Cc: Jason Gunthorpe <jgg@ziepe.ca>
->Cc: Faisal Latif <faisal.latif@intel.com>
->Cc: Shiraz Saleem <shiraz.saleem@intel.com>
->Cc: Bernard Metzler <bmt@zurich.ibm.com>
->Signed-off-by: Ira Weiny <ira.weiny@intel.com>
->---
-> drivers/infiniband/hw/hfi1/sdma.c      |  4 ++--
-> drivers/infiniband/hw/i40iw/i40iw_cm.c | 10 +++++-----
-> drivers/infiniband/sw/siw/siw_qp_tx.c  | 14 +++++++-------
-> 3 files changed, 14 insertions(+), 14 deletions(-)
->
->diff --git a/drivers/infiniband/hw/hfi1/sdma.c
->b/drivers/infiniband/hw/hfi1/sdma.c
->index 04575c9afd61..09d206e3229a 100644
->--- a/drivers/infiniband/hw/hfi1/sdma.c
->+++ b/drivers/infiniband/hw/hfi1/sdma.c
->@@ -3130,7 +3130,7 @@ int ext_coal_sdma_tx_descs(struct hfi1_devdata
->*dd, struct sdma_txreq *tx,
-> 		}
-> 
-> 		if (type == SDMA_MAP_PAGE) {
->-			kvaddr = kmap(page);
->+			kvaddr = kmap_thread(page);
-> 			kvaddr += offset;
-> 		} else if (WARN_ON(!kvaddr)) {
-> 			__sdma_txclean(dd, tx);
->@@ -3140,7 +3140,7 @@ int ext_coal_sdma_tx_descs(struct hfi1_devdata
->*dd, struct sdma_txreq *tx,
-> 		memcpy(tx->coalesce_buf + tx->coalesce_idx, kvaddr, len);
-> 		tx->coalesce_idx += len;
-> 		if (type == SDMA_MAP_PAGE)
->-			kunmap(page);
->+			kunmap_thread(page);
-> 
-> 		/* If there is more data, return */
-> 		if (tx->tlen - tx->coalesce_idx)
->diff --git a/drivers/infiniband/hw/i40iw/i40iw_cm.c
->b/drivers/infiniband/hw/i40iw/i40iw_cm.c
->index a3b95805c154..122d7a5642a1 100644
->--- a/drivers/infiniband/hw/i40iw/i40iw_cm.c
->+++ b/drivers/infiniband/hw/i40iw/i40iw_cm.c
->@@ -3721,7 +3721,7 @@ int i40iw_accept(struct iw_cm_id *cm_id, struct
->iw_cm_conn_param *conn_param)
-> 		ibmr->device = iwpd->ibpd.device;
-> 		iwqp->lsmm_mr = ibmr;
-> 		if (iwqp->page)
->-			iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
->+			iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
-> 		dev->iw_priv_qp_ops->qp_send_lsmm(&iwqp->sc_qp,
-> 							iwqp->ietf_mem.va,
-> 							(accept.size + conn_param->private_data_len),
->@@ -3729,12 +3729,12 @@ int i40iw_accept(struct iw_cm_id *cm_id,
->struct iw_cm_conn_param *conn_param)
-> 
-> 	} else {
-> 		if (iwqp->page)
->-			iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
->+			iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
-> 		dev->iw_priv_qp_ops->qp_send_lsmm(&iwqp->sc_qp, NULL, 0, 0);
-> 	}
-> 
-> 	if (iwqp->page)
->-		kunmap(iwqp->page);
->+		kunmap_thread(iwqp->page);
-> 
-> 	iwqp->cm_id = cm_id;
-> 	cm_node->cm_id = cm_id;
->@@ -4102,10 +4102,10 @@ static void i40iw_cm_event_connected(struct
->i40iw_cm_event *event)
-> 	i40iw_cm_init_tsa_conn(iwqp, cm_node);
-> 	read0 = (cm_node->send_rdma0_op == SEND_RDMA_READ_ZERO);
-> 	if (iwqp->page)
->-		iwqp->sc_qp.qp_uk.sq_base = kmap(iwqp->page);
->+		iwqp->sc_qp.qp_uk.sq_base = kmap_thread(iwqp->page);
-> 	dev->iw_priv_qp_ops->qp_send_rtt(&iwqp->sc_qp, read0);
-> 	if (iwqp->page)
->-		kunmap(iwqp->page);
->+		kunmap_thread(iwqp->page);
-> 
-> 	memset(&attr, 0, sizeof(attr));
-> 	attr.qp_state = IB_QPS_RTS;
->diff --git a/drivers/infiniband/sw/siw/siw_qp_tx.c
->b/drivers/infiniband/sw/siw/siw_qp_tx.c
->index d19d8325588b..4ed37c328d02 100644
->--- a/drivers/infiniband/sw/siw/siw_qp_tx.c
->+++ b/drivers/infiniband/sw/siw/siw_qp_tx.c
->@@ -76,7 +76,7 @@ static int siw_try_1seg(struct siw_iwarp_tx *c_tx,
->void *paddr)
-> 			if (unlikely(!p))
-> 				return -EFAULT;
-> 
->-			buffer = kmap(p);
->+			buffer = kmap_thread(p);
-> 
-> 			if (likely(PAGE_SIZE - off >= bytes)) {
-> 				memcpy(paddr, buffer + off, bytes);
->@@ -84,7 +84,7 @@ static int siw_try_1seg(struct siw_iwarp_tx *c_tx,
->void *paddr)
-> 				unsigned long part = bytes - (PAGE_SIZE - off);
-> 
-> 				memcpy(paddr, buffer + off, part);
->-				kunmap(p);
->+				kunmap_thread(p);
-> 
-> 				if (!mem->is_pbl)
-> 					p = siw_get_upage(mem->umem,
->@@ -96,10 +96,10 @@ static int siw_try_1seg(struct siw_iwarp_tx
->*c_tx, void *paddr)
-> 				if (unlikely(!p))
-> 					return -EFAULT;
-> 
->-				buffer = kmap(p);
->+				buffer = kmap_thread(p);
-> 				memcpy(paddr + part, buffer, bytes - part);
-> 			}
->-			kunmap(p);
->+			kunmap_thread(p);
-> 		}
-> 	}
-> 	return (int)bytes;
->@@ -505,7 +505,7 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx,
->struct socket *s)
-> 				page_array[seg] = p;
-> 
-> 				if (!c_tx->use_sendpage) {
->-					iov[seg].iov_base = kmap(p) + fp_off;
->+					iov[seg].iov_base = kmap_thread(p) + fp_off;
-
-This misses a corresponding kunmap_thread() in siw_unmap_pages()
-(pls change line 403 in siw_qp_tx.c as well)
-
-Thanks,
-Bernard.
-
-> 					iov[seg].iov_len = plen;
-> 
-> 					/* Remember for later kunmap() */
->@@ -518,9 +518,9 @@ static int siw_tx_hdt(struct siw_iwarp_tx *c_tx,
->struct socket *s)
-> 							plen);
-> 				} else if (do_crc) {
-> 					crypto_shash_update(c_tx->mpa_crc_hd,
->-							    kmap(p) + fp_off,
->+							    kmap_thread(p) + fp_off,
-> 							    plen);
->-					kunmap(p);
->+					kunmap_thread(p);
-> 				}
-> 			} else {
-> 				u64 va = sge->laddr + sge_off;
->-- 
->2.28.0.rc0.12.gb6a658bd00c9
->
->
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+QXQgJDQ5OSBhcmUgeW91IGludGVyZXN0ZWQgdG8gZG8gRW1haWwgTWFya2V0aW5nIENhbXBhaWdu
+IHdpdGgNCmFuYWx5dGljYWwgcmVwb3J0IHRvIGFueSBvZiB0aGUgZm9sbG93aW5nIGRhdGFiYXNl
+cz8NCiogQ0VPLCBvd25lciwgUHJlc2lkZW50IGFuZCBDT08gZW1haWwgbGlzdA0KKiBDRk8sIENv
+bnRyb2xsZXIsIFZQL0RpcmVjdG9yL01hbmFnZXIgb2YgRmluYW5jZSwgQWNjb3VudHMgUGF5YWJs
+ZSwNCkFjY291bnRzIFJlY2VpdmFibGUsIEF1ZGl0IGVtYWlsIGxpc3QNCiogUGh5c2ljaWFucywg
+RG9jdG9ycywgTnVyc2VzLCBEZW50aXN0cywgVGhlcmFwaXN0cyBlbWFpbCBsaXN0DQoqIENoaWVm
+IEh1bWFuIFJlc291cmNlcyBPZmZpY2VyLCBWUC9EaXJlY3Rvci9NYW5hZ2VyIG9mIEhSLCBFbXBs
+b3llZQ0KQmVuZWZpdHMsIEVtcGxveWVlIENvbW11bmljYXRpb25zLCBFbXBsb3llZSBDb21wZW5z
+YXRpb24sIEVtcGxveWVlDQpFbmdhZ2VtZW50LCBFbXBsb3llZSBFeHBlcmllbmNlIGFuZCBFbXBs
+b3llZSBSZWxhdGlvbnMsIFRhbGVudA0KQWNxdWlzaXRpb24sIFRhbGVudCBEZXZlbG9wbWVudCwg
+VGFsZW50IE1hbmFnZW1lbnQsIFJlY3J1aXRpbmcgZW1haWwNCmxpc3QNCiogQ0lPLENUTywgQ0lT
+TywgVlAvRGlyZWN0b3IvTWFuYWdlciBvZiBJVCwgSVQgQ29tcGxpYW5jZSwgSVQgUmlzaywNCkJJ
+LCBDbG91ZCwgRGF0YWJhc2UgYW5kIElUIFNlY3VyaXR5IGVtYWlsIGxpc3QNCiogQ01PLCBWUC9E
+aXJlY3Rvci9NYW5hZ2VyIG9mIE1hcmtldGluZywgc29jaWFsIG1lZGlhLCBTYWxlcywgZGVtYW5k
+DQpnZW5lcmF0aW9uLCBMZWFkIGdlbmVyYXRpb24sIGluc2lkZSBzYWxlcywgTWFya2V0aW5nIENv
+bW11bmljYXRpb25zDQplbWFpbCBsaXN0DQoqIENvbXBsaWFuY2UgYW5kIFJpc2sgTWFuYWdlbWVu
+dCBlbWFpbCBsaXN0DQoqIENQQSBhbmQgQm9va2tlZXBlcnMgZW1haWwgbGlzdA0KKiBEYXRhIEFu
+YWx5dGljcyBhbmQgRGF0YWJhc2UgQWRtaW5pc3RyYXRvcnMgZW1haWwgbGlzdA0KKiBEaXNhc3Rl
+ciBSZWNvdmVyeSBlbWFpbCBsaXN0DQoqIEUtY29tbWVyY2Ugb3Igb25saW5lIHJldGFpbGVycyBl
+bWFpbCBsaXN0DQoqIEVkdWNhdGlvbiBpbmR1c3RyeSBleGVjdXRpdmVzIGVtYWlsIGxpc3QgLSBQ
+cmluY2lwYWxzLCBEZWFuLA0KQWRtaW5zIGFuZCB0ZWFjaGVycyBmcm9tIFNjaG9vbHMsIENvbGxl
+Z2VzIGFuZCBVbml2ZXJzaXRpZXMNCiogRW5naW5lZXJzIGVtYWlsIGxpc3QNCiogRXZlbnQgYW5k
+IG1lZXRpbmcgcGxhbm5lcnMgZW1haWwgbGlzdA0KKiBGYWNpbGl0aWVzIGFuZCBvZmZpY2UgbWFu
+YWdlciBDb250YWN0cw0KKiBHZW5lcmFsIGFuZCBjb3Jwb3JhdGUgY291bnNlbCBhcyB3ZWxsIGxl
+Z2FsIHByb2Zlc3Npb25hbHMgZW1haWwNCmxpc3QNCiogR292ZXJubWVudCBjb250cmFjdG9ycyBl
+bWFpbCBsaXN0DQoqIEhlYWx0aCAmIFNhZmV0eSBlbWFpbCBsaXN0DQoqIEhpZ2ggbmV0IHdvcnRo
+IGluZGl2aWR1YWxzL2ludmVzdG9ycyBlbWFpbCBsaXN0DQoqIEhvc3BpdGFscywgY2xpbmljcywg
+cHJpdmF0ZSBwcmFjdGljZXMsIFBoYXJtYWNldXRpY2FsIGFuZA0KYmlvdGVjaG5vbG9neSBjb21w
+YW554oCZcyB0b3AgZGVjaXNpb24gbWFrZXJzIGVtYWlsIGxpc3QNCiogSHVtYW4gQ2FwaXRhbCBN
+YW5hZ2VtZW50IGVtYWlsIGxpc3QNCiogSW5kaXZpZHVhbCBpbnN1cmFuY2UgYWdlbnRzIGVtYWls
+IGxpc3QNCiogSVNWL1ZBUnMgZW1haWwgbGlzdA0KKiBBcmNoaXRlY3RzIGFuZCBpbnRlcmlvciBk
+ZXNpZ25lcnMgZW1haWwgbGlzdA0KKiBMZWFybmluZyAmIERldmVsb3BtZW50IGVtYWlsIGxpc3QN
+CiogTG9naXN0aWNzLCBzaGlwcGluZyBhbmQgc3VwcGx5IGNoYWluIG1hbmFnZXJzIGVtYWlsIGxp
+c3QNCiogTWFudWZhY3R1cmluZyBJbmR1c3RyeSBleGVjdXRpdmVzIGxpc3QNCiogTmV0d29yayBt
+YW5hZ2VyLCBTdXJ2ZWlsbGFuY2UsIFN5c3RlbSBBZG1pbmlzdHJhdG9yLCBUZWNobmljYWwNClN1
+cHBvcnQgZW1haWwgbGlzdA0KKiBOZXcgJiBVc2VkIENhciBEZWFsZXJzIGVtYWlsIGxpc3QNCiog
+T2lsLCBHYXMgYW5kIHV0aWxpdHkgaW5kdXN0cnkgZW1haWwgbGlzdA0KKiBQbGFudCBNYW5hZ2Vy
+IGVtYWlsIGxpc3QNCiogUHJvZHVjdCBhbmQgcHJvamVjdCBtYW5hZ2VtZW50IGVtYWlsIGxpc3QN
+CiogUHVyY2hhc2luZyBhbmQgUHJvY3VyZW1lbnQgZW1haWwgbGlzdA0KKiBTcGVjaWZpYyBFdmVu
+dCBhdHRlbmRlZXMgbGlzdA0KKiBUZWxlY29tIG1hbmFnZXJzLCBWT0lQIG1hbmFnZXJzLCBDbG91
+ZCBhcmNoaXRlY3QsIENsb3VkIG1hbmFnZXJzLA0KU3RvcmFnZSBtYW5hZ2VycyBlbWFpbCBsaXN0
+DQoqIFZQL0RpcmVjdG9yL01hbmFnZXIgb2YgQ3VzdG9tZXIgU2VydmljZSBhbmQgQ3VzdG9tZXIg
+U3VjY2VzcyBlbWFpbA0KbGlzdA0KVGhhbmtzIGFuZCBsZXQgbWUga25vdy4NCkVtbWEgSm9obnNv
+bg0KRGF0YWJhc2UgQ29uc3VsdGFudA0KNDJNaWwgQjJCIGFuZCAyMTBNaWwgQjJDIE9wdC1pbiBF
+bWFpbCBhbmQgcGhvbmUgbGlzdCB3aXRoIG90aGVyIGRhdGENCmZpZWxkcw0KaHR0cHM6Ly9jaGFp
+cm1hbmV2ZW50c3VtbWl0LmluZm8vZW1tL2luZGV4LnBocC9saXN0cy92aDU0M2RreGRyMzM5L3Vu
+c3Vic2NyaWJlL3ZoOTM3dHBvNXczMjcvY2c4NDJzZm4zZjNiNQ0KwqANCg0KX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcg
+bGlzdCAtLSBsaW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4g
+ZW1haWwgdG8gbGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
