@@ -1,72 +1,55 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0337828AD5B
-	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Oct 2020 06:51:22 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B029F28ADA0
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Oct 2020 07:28:28 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 106FD158AFE91;
-	Sun, 11 Oct 2020 21:51:20 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2607:f8b0:4864:20::544; helo=mail-pg1-x544.google.com; envelope-from=santosh@fossix.org; receiver=<UNKNOWN> 
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id B2847158C110B;
+	Sun, 11 Oct 2020 22:28:26 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.151; helo=mga17.intel.com; envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN> 
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 6A3D1158AFE8E
-	for <linux-nvdimm@lists.01.org>; Sun, 11 Oct 2020 21:51:18 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id o3so3112215pgr.11
-        for <linux-nvdimm@lists.01.org>; Sun, 11 Oct 2020 21:51:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fossix-org.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=MFSt4wsGHuW3F3ORtsjZB1lmBt34CEUDyR8ln68K7X4=;
-        b=TWc1rSFyiIBrlO6TJpX7i5avreepo4i9MCoTUoX2FhGOPSSEaFb3pcqY7m8INC8I60
-         1d+JOwyTacRH46m2KgPaQhQyEOzQ08zpDWo4tSx3jWmBsxKPK3au81a8nyeD/RqOvYek
-         0Zwlg68zaXTOGpeECn1GSNkXEdQiVBjCFR728M7L2GHDzHEsZlwV97GUFftniaT5UZBA
-         e3RmJNr2EykF7ajTCLN34um59Hg4Wl1cA4VP9B2yngLT9fYt4gc1gMbxTVBtSDXxdlmm
-         Uz8lEOkiWG6Rm3ggJP71sFrU463PhlPtiOCWou6OV/y3JnRrl0Z0IhMykiJBvu2puwdL
-         jjUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=MFSt4wsGHuW3F3ORtsjZB1lmBt34CEUDyR8ln68K7X4=;
-        b=QbrZlTr7uB334LvH9a5IoJUtOQyw3Hege3U+QkkjbWglB8E1JNRfjul51eQcFpJvC0
-         m0hoxTqdWp1JXFTHBbNAUB3LpzzKFd2GFbkyIjHJx5zSwEJxS0QjCk4UFh7AioHv77eT
-         /9QvzMdOhUjZiSMMW3IJK6z5FPtjVhSzMSCmy970mHTOwEwBonfrMJmdISMirLVgUoa/
-         PuxKIKs7KY6GMI1fiCRMVYI7Y4jSK4NY7t8UUCdVr++eRb9UH49x6IYHKr8PgPiXRKwz
-         lbuv5i6LN0rezHFkQGWTk1QwZFNNm/YcHxbum6Xqg7F4v6DyYliHxcjSB41dvAcnETsl
-         QOqA==
-X-Gm-Message-State: AOAM531nqxtLZaROPFhMgwcSfnmq3dw6pVroMFyEFUlTYu+KGInpTSXb
-	SJa83RTMIBymdePh96Iaj7+Pag==
-X-Google-Smtp-Source: ABdhPJybB3jv1MzNOwX5IWWkeanUaj4nSqoPa0neJlvQxhyMCAUBc7pPNoy9quht6RVbkla9asdPmQ==
-X-Received: by 2002:a17:90b:3649:: with SMTP id nh9mr18096298pjb.123.1602478277484;
-        Sun, 11 Oct 2020 21:51:17 -0700 (PDT)
-Received: from localhost ([103.21.79.4])
-        by smtp.gmail.com with ESMTPSA id f21sm1020377pfn.173.2020.10.11.21.51.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Oct 2020 21:51:16 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams
- <dan.j.williams@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>
-Subject: Re: [ndctl PATCH] libndctl: Fix probe of non-nfit nvdimms
-In-Reply-To: <87pn5qy8vb.fsf@vajain21.in.ibm.com>
-References: <20201009120009.243108-1-vaibhav@linux.ibm.com>
- <145db3d86fa6bddf55c0e7c4aa149984676cd723.camel@intel.com>
- <CAPcyv4j89a_Nevq1y92UPGedm74VUYCunkf62T5S3UeXzW6vKg@mail.gmail.com>
- <87pn5qy8vb.fsf@vajain21.in.ibm.com>
-Date: Mon, 12 Oct 2020 10:21:14 +0530
-Message-ID: <87v9fg3v3x.fsf@santosiv.in.ibm.com>
+	by ml01.01.org (Postfix) with ESMTPS id 41E19158BD04B
+	for <linux-nvdimm@lists.01.org>; Sun, 11 Oct 2020 22:28:24 -0700 (PDT)
+IronPort-SDR: Mui+awipRrHu+EwyrhLxpPdcYc6JINKOOcrCW4BypPaOP4HaxbJxpOxIb9usg9d4zGpzpLoOeW
+ H67Z4DtEUZ4A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9771"; a="145556283"
+X-IronPort-AV: E=Sophos;i="5.77,365,1596524400";
+   d="scan'208";a="145556283"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2020 22:28:23 -0700
+IronPort-SDR: Awdi9Evv+UAQx0jH4ny/s7+Nxcmli85F+a73BOsSCHQvCG+q13xwJ2JLwUM5pKItlqpgm8qi5b
+ o2XGvRLHUUbw==
+X-IronPort-AV: E=Sophos;i="5.77,365,1596524400";
+   d="scan'208";a="529816997"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2020 22:28:22 -0700
+Date: Sun, 11 Oct 2020 22:28:18 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Coly Li <colyli@suse.de>
+Subject: Re: [PATCH RFC PKS/PMEM 48/58] drivers/md: Utilize new kmap_thread()
+Message-ID: <20201012052817.GZ2046448@iweiny-DESK2.sc.intel.com>
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-49-ira.weiny@intel.com>
+ <c802fbf4-f67a-b205-536d-9c71b440f9c8@suse.de>
 MIME-Version: 1.0
-Message-ID-Hash: KZ2MT55IVTPB2PXXXYNJCGIZ24NGAKPW
-X-Message-ID-Hash: KZ2MT55IVTPB2PXXXYNJCGIZ24NGAKPW
-X-MailFrom: santosh@fossix.org
+Content-Disposition: inline
+In-Reply-To: <c802fbf4-f67a-b205-536d-9c71b440f9c8@suse.de>
+User-Agent: Mutt/1.11.1 (2018-12-01)
+Message-ID-Hash: 7U4PUTDELNV47B3X4G4SAB3VAU2WOHLA
+X-Message-ID-Hash: 7U4PUTDELNV47B3X4G4SAB3VAU2WOHLA
+X-MailFrom: ira.weiny@intel.com
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
-CC: "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>, "aneesh.kumar@linux.ibm.com" <aneesh.kumar@linux.ibm.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Kent Overstreet <kent.overstreet@gmail.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@l
+ ists.ozlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KZ2MT55IVTPB2PXXXYNJCGIZ24NGAKPW/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7U4PUTDELNV47B3X4G4SAB3VAU2WOHLA/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -75,79 +58,49 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+On Sat, Oct 10, 2020 at 10:20:34AM +0800, Coly Li wrote:
+> On 2020/10/10 03:50, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > These kmap() calls are localized to a single thread.  To avoid the over
+> > head of global PKRS updates use the new kmap_thread() call.
+> > 
+> 
+> Hi Ira,
+> 
+> There were a number of options considered.
+> 
+> 1) Attempt to change all the thread local kmap() calls to kmap_atomic()
+> 2) Introduce a flags parameter to kmap() to indicate if the mapping
+> should be global or not
+> 3) Change ~20-30 call sites to 'kmap_global()' to indicate that they
+> require a global mapping of the pages
+> 4) Change ~209 call sites to 'kmap_thread()' to indicate that the
+> mapping is to be used within that thread of execution only
+> 
+> 
+> I copied the above information from patch 00/58 to this message. The
+> idea behind kmap_thread() is fine to me, but as you said the new api is
+> very easy to be missed in new code (even for me). I would like to be
+> supportive to option 2) introduce a flag to kmap(), then we won't forget
+> the new thread-localized kmap method, and people won't ask why a
+> _thread() function is called but no kthread created.
 
-> Hi Dan and Vishal,
->
-> Thanks so much for quick turnaround on this.
->
-> Dan Williams <dan.j.williams@intel.com> writes:
->
->> On Fri, Oct 9, 2020 at 11:36 AM Verma, Vishal L
->> <vishal.l.verma@intel.com> wrote:
->>>
->>> On Fri, 2020-10-09 at 17:30 +0530, Vaibhav Jain wrote:
->>> > commit 107a24ff429f ("ndctl/list: Add firmware activation
->>> > enumeration") introduced changes in add_dimm() to enumerate the status
->>> > of firmware activation. However a branch added in that commit broke
->>> > the probe for non-nfit nvdimms like one provided by papr-scm. This
->>> > cause an error reported when listing namespaces like below:
->>> >
->>> > $ sudo ndctl list
->>> > libndctl: add_dimm: nmem0: probe failed: No such device
->>> > libndctl: __sysfs_device_parse: nmem0: add_dev() failed
->>> >
->>> > Do a fix for this by removing the offending branch in the add_dimm()
->>> > patch. This continues the flow of add_dimm() probe even if the nfit is
->>> > not detected on the associated bus.
->>> >
->>> > Fixes: 107a24ff429fa("ndctl/list: Add firmware activation enumeration")
->>> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->>> > ---
->>> >  ndctl/lib/libndctl.c | 3 ---
->>> >  1 file changed, 3 deletions(-)
->>>
->>> Ah apologies - this snuck in when I reflowed Dan's patches on top of the
->>> papr work for v70.
-> No worries :-)
->
->>>
->>> I expect you'd like a point release with this fix asap?
-> Yes, that will be great. Thanks
->
->>>
->>> Is there a way for me to incorporate some papr unit tests into my
->>> release workflow so I can avoid breaking things like this again?
->>>
->>> I'll also try to do a better job of pushing things out to the pending
->>> branch more frequently so if you're monitoring that branch, hopefully
->>> things like this will get caught before a release happens :)
->
-> Fully agree, if that happens we can incorporate it into our CI system to
-> ensure that such regressions are caught early on before any release is
-> tagged.
->
->>
->> Would be nice to have something like a papr_test next to nfit_test for
->> such regression testing. These kinds of mistakes are really only
->> avoidable with regression tests.
-> Yes Agree, fortunatly Santosh  has recently posted an RFC patchset
-> implementing such tests at [1]. Once that gets merged, can used to
-> perform regression testing.
->
-> [1] "testing/nvdimm: Add test module for non-nfit platforms"
-> https://lore.kernel.org/linux-nvdimm/20201006010013.848302-1-santosh@fossix.org/
->
+Thanks for the feedback.
 
-Thanks Vaibhav to point that out.
-
-Dan/Vishal/Ira,
-
-If you could provide your comments on the above RFC we could move forward on
-this.
+I'm going to hold off making any changes until others weigh in.  FWIW, I kind
+of like option 2 as well.  But there is already kmap_atomic() so it seemed like
+kmap_XXXX() was more in line with the current API.
 
 Thanks,
-Santosh
+Ira
+
+> 
+> Thanks.
+> 
+> 
+> Coly Li
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
