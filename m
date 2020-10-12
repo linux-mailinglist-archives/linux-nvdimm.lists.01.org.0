@@ -2,36 +2,36 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2743928AAC3
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 11 Oct 2020 23:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C1728AB40
+	for <lists+linux-nvdimm@lfdr.de>; Mon, 12 Oct 2020 02:43:52 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id BEFF41587B93D;
-	Sun, 11 Oct 2020 14:44:46 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=150.95.222.121; helo=rakuten.co.jp; envelope-from=xfmegnwreb@rakuten.co.jp; receiver=<UNKNOWN> 
-Received: from rakuten.co.jp (v150-95-222-121.15j2.static.cnode.io [150.95.222.121])
-	by ml01.01.org (Postfix) with ESMTP id 4E3251587B93A
-	for <linux-nvdimm@lists.01.org>; Sun, 11 Oct 2020 14:44:43 -0700 (PDT)
-Message-ID: <6EAC880766F2B131432303842FC8763D@rakuten.co.jp>
+	by ml01.01.org (Postfix) with ESMTP id A2C57158A0E3B;
+	Sun, 11 Oct 2020 17:43:50 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=118.27.76.104; helo=rakuten.co.jp; envelope-from=rwehqj@rakuten.co.jp; receiver=<UNKNOWN> 
+Received: from rakuten.co.jp (v118-27-76-104.l3za.static.cnode.io [118.27.76.104])
+	by ml01.01.org (Postfix) with ESMTP id CC9EB158A0E37
+	for <linux-nvdimm@lists.01.org>; Sun, 11 Oct 2020 17:43:47 -0700 (PDT)
+Message-ID: <D46679AAA4A416810A655CE828D49B8C@rakuten.co.jp>
 From: =?utf-8?B?5qW95aSp5biC5aC0?= <order@rakuten.co.jp>
 To: <linux-nvdimm@lists.01.org>
 Subject: =?utf-8?B?44CQ5qW95aSp5biC5aC044CR5pSv5omV5oOF5aCx5LiA6Ie044GX44Gm44GE44G+44Gb44KTICA=?=
-	=?utf-8?B?MjAyMC8xMC8xMiA2OjQ0OjQz?=
-Date: Mon, 12 Oct 2020 06:44:34 +0900
+	=?utf-8?B?MjAyMC8xMC8xMiA5OjQzOjQ3?=
+Date: Mon, 12 Oct 2020 09:43:37 +0900
 Mime-Version: 1.0
 X-Priority: 3
 X-MSMail-Priority: Normal
 X-Mailer: Microsoft Outlook Express 6.00.2900.5512
 X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
-Message-ID-Hash: PZANYCVS5EDVTA3AI5IIX527GBFY7XBQ
-X-Message-ID-Hash: PZANYCVS5EDVTA3AI5IIX527GBFY7XBQ
-X-MailFrom: xfmegnwreb@rakuten.co.jp
+Message-ID-Hash: RBEB54BQBT355MS62QL7KUKPWF4PHJBN
+X-Message-ID-Hash: RBEB54BQBT355MS62QL7KUKPWF4PHJBN
+X-MailFrom: rwehqj@rakuten.co.jp
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/PZANYCVS5EDVTA3AI5IIX527GBFY7XBQ/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/RBEB54BQBT355MS62QL7KUKPWF4PHJBN/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,8 +50,8 @@ bnV4LW52ZGltbeanmA0KICAg44GK5a6i5qeY44Gu5rOo5paH44Go5qW95aSp44Ki44Kr44Km44Oz
 44Gu5YGc5q2i54q25oWL44KS6Kej6Zmk44GX44Gm44GE44Gf44Gg44GR44G+44GZ44CCDQogIOS4
 i+iomOOBq+OBguOCi+OCv+ODluOCkuOCr+ODquODg+OCr+OBl+OBpuOBhOOBn+OBoOOBjeOAgeaz
 qOaWh+aDheWgseOCkuOBlOeiuuiqjeOBvuOBn+OBr+WkieabtOOAgg0KW+azqOaWh+eVquWPt10g
-NjY5Mzk1LTIwMjAxMDEyLTg5Mw0KW+W6l+iIl+WPl+S7mOaXpeaZgl0gMjAyMC8xMC8xMiA2OjQ0
-OjQzDQpb44GK5pSv5omV44GE5pa55rOVXSDjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nmsbrmuIgN
+NzczNDI4LTIwMjAxMDEyLTk2NQ0KW+W6l+iIl+WPl+S7mOaXpeaZgl0gMjAyMC8xMC8xMiA5OjQz
+OjQ3DQpb44GK5pSv5omV44GE5pa55rOVXSDjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nmsbrmuIgN
 CualveWkqeODreOCsOOCpOODsyDvvJ4NCg0KDQoNCg0KDQrigLvjgq/jg6zjgrjjg4Pjg4jjgqvj
 g7zjg4nnlarlj7fjg7vmnInlirnmnJ/pmZDjga7lhaXlipvjgavplpPpgZXjgYTjgYzjgarjgYTj
 gYvjgZTnorroqo3jgY/jgaDjgZXjgYTjgIINCuKAu+OCr+ODrOOCuOODg+ODiOOCq+ODvOODieOB
