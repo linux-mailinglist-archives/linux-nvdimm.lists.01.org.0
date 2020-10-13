@@ -1,40 +1,40 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B611928D349
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 19:50:11 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC30228D38D
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 20:23:13 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id E3CF015DC80EB;
-	Tue, 13 Oct 2020 10:50:09 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.43; helo=mga05.intel.com; envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN> 
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+	by ml01.01.org (Postfix) with ESMTP id E10141572E135;
+	Tue, 13 Oct 2020 11:23:11 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.31; helo=mga06.intel.com; envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN> 
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 7848A15DC80EB
-	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 10:50:07 -0700 (PDT)
-IronPort-SDR: vPVGectKIx9swr/qsY+jQQ/Ms5S2BnwTusNVDSuDwsothd9J5xbfn0jUUX3vswoqoOciJqVEA9
- pP5ywkWARNeA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9773"; a="250650348"
+	by ml01.01.org (Postfix) with ESMTPS id 280361572E133
+	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 11:23:10 -0700 (PDT)
+IronPort-SDR: 0zV6jxETCzwi/Dx8+Z//gfhksYDmlflfCF2aTwYbeuhNEybhTo5+NOjMKWfdyqHxgRKLBkFYee
+ 2vUqzMmDtAbA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9773"; a="227602615"
 X-IronPort-AV: E=Sophos;i="5.77,371,1596524400";
-   d="scan'208";a="250650348"
+   d="scan'208";a="227602615"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 10:50:06 -0700
-IronPort-SDR: RtfS0n683qj2WKcFXi5f+Sxsg83G7f/gvXW1lfZeGtXMUzz4/Xw662bQpkKZCOgv0DLm9CpDfx
- KqcCCzHStxbQ==
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 11:23:09 -0700
+IronPort-SDR: y9TXXuh5e1eeoBKQ1hSVopxpD4BEK5Ev5lOHm/BcNe8BcXHU3kk2TbU2myxrXItgFCwaIMq9v9
+ GN7i39xYdIhQ==
 X-IronPort-AV: E=Sophos;i="5.77,371,1596524400";
-   d="scan'208";a="346269023"
+   d="scan'208";a="346277003"
 Received: from murawskx-mobl.amr.corp.intel.com (HELO [10.209.9.29]) ([10.209.9.29])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 10:50:06 -0700
-Subject: Re: [PATCH RFC V3 2/9] x86/fpu: Refactor arch_set_user_pkey_access()
- for PKS support
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 11:23:09 -0700
+Subject: Re: [PATCH RFC V3 3/9] x86/pks: Enable Protection Keys Supervisor
+ (PKS)
 To: ira.weiny@intel.com, Thomas Gleixner <tglx@linutronix.de>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
 References: <20201009194258.3207172-1-ira.weiny@intel.com>
- <20201009194258.3207172-3-ira.weiny@intel.com>
+ <20201009194258.3207172-4-ira.weiny@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -79,15 +79,15 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <7ed91cb5-93e5-67ad-ad35-8489d16d283f@intel.com>
-Date: Tue, 13 Oct 2020 10:50:05 -0700
+Message-ID: <cfd8e361-9d5b-5b24-08d4-31ad3d392255@intel.com>
+Date: Tue, 13 Oct 2020 11:23:08 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201009194258.3207172-3-ira.weiny@intel.com>
+In-Reply-To: <20201009194258.3207172-4-ira.weiny@intel.com>
 Content-Language: en-US
-Message-ID-Hash: W4IU6CNRR2E623P765W645JAZ6GN6Z54
-X-Message-ID-Hash: W4IU6CNRR2E623P765W645JAZ6GN6Z54
+Message-ID-Hash: MDGH4NAVREKXXVYRWK67K45ALNVZ22GO
+X-Message-ID-Hash: MDGH4NAVREKXXVYRWK67K45ALNVZ22GO
 X-MailFrom: dave.hansen@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -95,7 +95,7 @@ CC: Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/W4IU6CNRR2E623P765W645JAZ6GN6Z54/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/MDGH4NAVREKXXVYRWK67K45ALNVZ22GO/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -106,32 +106,50 @@ Content-Transfer-Encoding: 7bit
 
 On 10/9/20 12:42 PM, ira.weiny@intel.com wrote:
 > +/*
-> + * Update the pk_reg value and return it.
-
-How about:
-
-	Replace disable bits for @pkey with values from @flags.
-
-> + * Kernel users use the same flags as user space:
-> + *     PKEY_DISABLE_ACCESS
-> + *     PKEY_DISABLE_WRITE
+> + * PKS is independent of PKU and either or both may be supported on a CPU.
+> + * Configure PKS if the cpu supports the feature.
 > + */
-> +u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags)
+
+Let's at least be consistent about CPU vs. cpu in a single comment. :)
+
+> +static void setup_pks(void)
 > +{
-> +	int pkey_shift = pkey * PKR_BITS_PER_PKEY;
+> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SUPERVISOR_PKEYS))
+> +		return;
+> +	if (!cpu_feature_enabled(X86_FEATURE_PKS))
+> +		return;
+
+If you put X86_FEATURE_PKS in disabled-features.h, you can get rid of
+the explicit CONFIG_ check.
+
+> +	cr4_set_bits(X86_CR4_PKS);
+> +}
 > +
-> +	pk_reg &= ~(((1 << PKR_BITS_PER_PKEY) - 1) << pkey_shift);
-> +
-> +	if (flags & PKEY_DISABLE_ACCESS)
-> +		pk_reg |= PKR_AD_BIT << pkey_shift;
-> +	if (flags & PKEY_DISABLE_WRITE)
-> +		pk_reg |= PKR_WD_BIT << pkey_shift;
-
-I still think this deserves two lines of comments:
-
-	/* Mask out old bit values */
-
-	/* Or in new values */
+>  /*
+>   * This does the hard work of actually picking apart the CPU stuff...
+>   */
+> @@ -1544,6 +1558,7 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+>  
+>  	x86_init_rdrand(c);
+>  	setup_pku(c);
+> +	setup_pks();
+>  
+>  	/*
+>  	 * Clear/Set all flags overridden by options, need do it
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 6c974888f86f..1b9bc004d9bc 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -822,6 +822,8 @@ config ARCH_USES_HIGH_VMA_FLAGS
+>  	bool
+>  config ARCH_HAS_PKEYS
+>  	bool
+> +config ARCH_HAS_SUPERVISOR_PKEYS
+> +	bool
+>  
+>  config PERCPU_STATS
+>  	bool "Collect percpu memory statistics"
+> 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
