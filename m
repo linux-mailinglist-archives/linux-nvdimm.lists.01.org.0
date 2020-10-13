@@ -1,47 +1,51 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCE228C9C0
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 10:11:34 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A120428CC79
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 13:26:11 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id D985A15823014;
-	Tue, 13 Oct 2020 01:11:32 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=5.249.159.217; helo=mail.fastestway24.com; envelope-from=william.jones@fastestway24.com; receiver=<UNKNOWN> 
-Received: from mail.fastestway24.com (mail.fastestway24.com [5.249.159.217])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id BC39915D45E8A;
+	Tue, 13 Oct 2020 04:26:09 -0700 (PDT)
+Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+347c3dad313745b9998d+6260+infradead.org+hch@casper.srs.infradead.org; receiver=<UNKNOWN> 
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 12CA415823012
-	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 01:11:30 -0700 (PDT)
-Received: by mail.fastestway24.com (Postfix, from userid 1001)
-	id B4A0AA2E50; Tue, 13 Oct 2020 09:11:22 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fastestway24.com;
-	s=mail; t=1602576687;
-	bh=YGOlxoddnI3PXnh41XMWUfU0z9xsorZLZcAPNbcZr/c=;
-	h=Date:From:To:Subject:From;
-	b=EZRLPtrSxp8bRUI+g61DcOgbyuQh/GHFTUXjzcXdsRe05tpil6r7D20FAnF52xMW7
-	 aw5tpCc7BLjkJDKL5YPQ8M59h4CjeYPXmn2Ow9dcXu3Kv7DfMOLVzPazRTpM7i+rK2
-	 RaGLy35QL6ao7pTHVsP7f6lymejkWHnfPlQ7TASzjIXLSVN4qwZY8Z5vEa0TF2nhvU
-	 CWHjO0ZKN86/ncYZxMXytzgdvbi2r285f9PCXxwaO/oAOq2hbiD4kAD7ncmyFgqgyu
-	 czjYLP5LqGEPBpVWomJ/BciSaw66POmHgihXWxQdLjipY9Z8vnNz4umikf29kiFami
-	 e2+4OsOKkdV+Q==
-Received: by mail.fastestway24.com for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 08:11:18 GMT
-Message-ID: <20201013074502-0.1.4d.9khr.0.fcrfardta5@fastestway24.com>
-Date: Tue, 13 Oct 2020 08:11:18 GMT
-From: "William Jones" <william.jones@fastestway24.com>
-To: <linux-nvdimm@lists.01.org>
-Subject: Disinfectant
-X-Mailer: mail.fastestway24.com
+	by ml01.01.org (Postfix) with ESMTPS id AA62915D45E8A
+	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 04:26:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ap+vugPRXoOSJhloW5EJc9FGxy9ZwiLwbnG+7+pEMhA=; b=a/Sp1GZZiVtkIrsbDZFKKgQTkQ
+	FS+JHTt9pp+5vCrBdk0ac5b7U8ZgZGFScrKiULCJv4PZD4wWqOSzzq06ZoGh/8vFLI33VuvYYBdii
+	wZ4VlXJvl5fnmlD+q4pIJJmvrTs/0jX/FIDmEAYUX2+Mt6vIwB3sAbRYRgWIA8hB4i4EWyZuWPFOQ
+	rIaV+GwSaVBgBLKvO/SsFSj7I46VHFxg38PLmJQ+Oh1DkRIQcIx5NIWLGcWnDXshQ14JMdlpURiF2
+	LxyBxRGv+1Wkfh31jf6dzRr+U4xHgvz3PsshAxeZoaF0OQPY6Fl5VA2XZOxLonra6CTBCfgsfUBp/
+	6eTYHzgA==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+	id 1kSIR6-0001VK-7P; Tue, 13 Oct 2020 11:25:44 +0000
+Date: Tue, 13 Oct 2020 12:25:44 +0100
+From: Christoph Hellwig <hch@infradead.org>
+To: ira.weiny@intel.com
+Subject: Re: [PATCH RFC PKS/PMEM 24/58] fs/freevxfs: Utilize new kmap_thread()
+Message-ID: <20201013112544.GA5249@infradead.org>
+References: <20201009195033.3208459-1-ira.weiny@intel.com>
+ <20201009195033.3208459-25-ira.weiny@intel.com>
 MIME-Version: 1.0
-Message-ID-Hash: 7MHPC7N44IACUOBSZS2TTO4UBUVSTXMA
-X-Message-ID-Hash: 7MHPC7N44IACUOBSZS2TTO4UBUVSTXMA
-X-MailFrom: william.jones@fastestway24.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
+Content-Disposition: inline
+In-Reply-To: <20201009195033.3208459-25-ira.weiny@intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Message-ID-Hash: YYCODMMDXCL4VO6SIAE3K7H45LDV4ZND
+X-Message-ID-Hash: YYCODMMDXCL4VO6SIAE3K7H45LDV4ZND
+X-MailFrom: BATV+347c3dad313745b9998d+6260+infradead.org+hch@casper.srs.infradead.org
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Christoph Hellwig <hch@infradead.org>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org, kexec@lists.infradead.org, linux-bcache@vger.kernel.org, linux-mtd@lists.infradead.org, devel@driverdev.osuosl.org, linux-efi@vger.kernel.org, linux-mmc@vger.kernel.org, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-aio@kvack.org, io-uring@vger.kernel.org, linux-erofs@lists.o
+ zlabs.org, linux-um@lists.infradead.org, linux-ntfs-dev@lists.sourceforge.net, reiserfs-devel@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, linux-nilfs@vger.kernel.org, cluster-devel@redhat.com, ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-afs@lists.infradead.org, linux-rdma@vger.kernel.org, amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, drbd-dev@lists.linbit.com, linux-block@vger.kernel.org, xen-devel@lists.xenproject.org, linux-cachefs@redhat.com, samba-technical@lists.samba.org, intel-wired-lan@lists.osuosl.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7MHPC7N44IACUOBSZS2TTO4UBUVSTXMA/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/YYCODMMDXCL4VO6SIAE3K7H45LDV4ZND/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -50,20 +54,20 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-Good morning,
+> -	kaddr = kmap(pp);
+> +	kaddr = kmap_thread(pp);
+>  	memcpy(kaddr, vip->vii_immed.vi_immed + offset, PAGE_SIZE);
+> -	kunmap(pp);
+> +	kunmap_thread(pp);
 
-looking for companies interested in raising additional capital by diversifying their offer in soaps, liquids and gels for hand disinfection and cosmetics for body and hair care.
+You only Cced me on this particular patch, which means I have absolutely
+no idea what kmap_thread and kunmap_thread actually do, and thus can't
+provide an informed review.
 
-The distribution of innovative products corresponding to the current preferences of customers in the field of hygiene and preventive healthcare allows our partners to gain new markets and achieve better economic results.
-
-In addition to products with bactericidal action, our range includes shower gels, shampoos and hair conditioners, as well as efficient, concentrated detergents.
-
-The versatility (suitable for all skin types) combined with an affordable price means that customers make an informed choice of a product among others available on the market.
-
-Are you interested in cooperation?
-
-
-William Jones
+That being said I think your life would be a lot easier if you add
+helpers for the above code sequence and its counterpart that copies
+to a potential hughmem page first, as that hides the implementation
+details from most users.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
