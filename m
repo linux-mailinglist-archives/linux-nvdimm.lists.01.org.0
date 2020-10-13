@@ -2,38 +2,38 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A002D28D41F
-	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 20:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A954228D430
+	for <lists+linux-nvdimm@lfdr.de>; Tue, 13 Oct 2020 21:02:14 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 4D4E615871FBC;
-	Tue, 13 Oct 2020 11:56:57 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=134.134.136.24; helo=mga09.intel.com; envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN> 
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+	by ml01.01.org (Postfix) with ESMTP id C633215DC80F3;
+	Tue, 13 Oct 2020 12:02:12 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=192.55.52.120; helo=mga04.intel.com; envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN> 
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 17C9C13DAF5F2
-	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 11:56:55 -0700 (PDT)
-IronPort-SDR: fnGpYeD3CPK1fHLJh7YyADe6+eRJoCTTTZQvP7chwZxLyEEbcn7zNxynlhXBMQjGGoFnC0Himp
- RBrjdU9Hpn3g==
-X-IronPort-AV: E=McAfee;i="6000,8403,9773"; a="166082972"
+	by ml01.01.org (Postfix) with ESMTPS id 6561315433031
+	for <linux-nvdimm@lists.01.org>; Tue, 13 Oct 2020 12:02:09 -0700 (PDT)
+IronPort-SDR: NEjdAF9oOodaV4b3RBROYC3h+7jB6TaCvKj7wJodTD9vP1jxVv5A7WQRMe/EDvT6K1/TO6jbGs
+ DgRGnSu82Fhw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9773"; a="163329398"
 X-IronPort-AV: E=Sophos;i="5.77,371,1596524400";
-   d="scan'208";a="166082972"
+   d="scan'208";a="163329398"
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 11:56:54 -0700
-IronPort-SDR: raLRTUXtVSOjhLMfYeYdRGnzdOVIY4ueopEECZr2H+GBbh+H95qwtBfdauyL8KJNgeuPWQS94c
- gW3RJpEE8e4A==
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 12:02:08 -0700
+IronPort-SDR: Ks8d3iW6VA2rHlMJV3z2sn2Xc4yY6st8MZ78zXSsxE3R3wJB3IbgG91rehKtBCb6H45fCfc393
+ cWtRORkWdzhQ==
 X-IronPort-AV: E=Sophos;i="5.77,371,1596524400";
-   d="scan'208";a="346283282"
+   d="scan'208";a="346284561"
 Received: from murawskx-mobl.amr.corp.intel.com (HELO [10.209.9.29]) ([10.209.9.29])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 11:56:54 -0700
-Subject: Re: [PATCH RFC V3 8/9] x86/fault: Report the PKRS state on fault
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2020 12:02:08 -0700
+Subject: Re: [PATCH RFC V3 9/9] x86/pks: Add PKS test code
 To: ira.weiny@intel.com, Thomas Gleixner <tglx@linutronix.de>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
 References: <20201009194258.3207172-1-ira.weiny@intel.com>
- <20201009194258.3207172-9-ira.weiny@intel.com>
+ <20201009194258.3207172-10-ira.weiny@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -78,23 +78,23 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
  ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
  z5cecg==
-Message-ID: <d6546e84-2196-25fd-3d8d-5e65fe22a71c@intel.com>
-Date: Tue, 13 Oct 2020 11:56:53 -0700
+Message-ID: <3f9ebe3b-5c1c-6a69-3779-6f90d66227bd@intel.com>
+Date: Tue, 13 Oct 2020 12:02:07 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20201009194258.3207172-9-ira.weiny@intel.com>
+In-Reply-To: <20201009194258.3207172-10-ira.weiny@intel.com>
 Content-Language: en-US
-Message-ID-Hash: 5MJT7R4KN2WMZWFK3TG2NXCCXLT4KYHI
-X-Message-ID-Hash: 5MJT7R4KN2WMZWFK3TG2NXCCXLT4KYHI
+Message-ID-Hash: VGMREKHTN5A7UKP5BCGQUWPBZW6NMZYG
+X-Message-ID-Hash: VGMREKHTN5A7UKP5BCGQUWPBZW6NMZYG
 X-MailFrom: dave.hansen@intel.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, Fenghua Yu <fenghua.yu@intel.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+CC: Fenghua Yu <fenghua.yu@intel.com>, x86@kernel.org, Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nvdimm@lists.01.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/5MJT7R4KN2WMZWFK3TG2NXCCXLT4KYHI/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VGMREKHTN5A7UKP5BCGQUWPBZW6NMZYG/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -103,49 +103,53 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-> @@ -548,6 +549,11 @@ show_fault_oops(struct pt_regs *regs, unsigned long error_code, unsigned long ad
->  		 (error_code & X86_PF_PK)    ? "protection keys violation" :
->  					       "permissions violation");
->  
-> +#ifdef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
-> +	if (irq_state && (error_code & X86_PF_PK))
-> +		pr_alert("PKRS: 0x%x\n", irq_state->pkrs);
-> +#endif
-
-This means everyone will see 'PKRS: 0x0', even if they're on non-PKS
-hardware.  I think I'd rather have this only show PKRS when we're on
-cpu_feature_enabled(PKS) hardware.
-
-...
-> @@ -1148,14 +1156,15 @@ static int fault_in_kernel_space(unsigned long address)
->   */
->  static void
->  do_kern_addr_fault(struct pt_regs *regs, unsigned long hw_error_code,
-> -		   unsigned long address)
-> +		   unsigned long address, irqentry_state_t *irq_state)
->  {
+On 10/9/20 12:42 PM, ira.weiny@intel.com wrote:
+>  #ifdef CONFIG_X86_32
 >  	/*
-> -	 * Protection keys exceptions only happen on user pages.  We
-> -	 * have no user pages in the kernel portion of the address
-> -	 * space, so do not expect them here.
-> +	 * If protection keys are not enabled for kernel space
-> +	 * do not expect Pkey errors here.
->  	 */
+>  	 * We can fault-in kernel-space virtual memory on-demand. The
+> diff --git a/include/linux/pkeys.h b/include/linux/pkeys.h
+> index cc3510cde64e..f9552bd9341f 100644
+> --- a/include/linux/pkeys.h
+> +++ b/include/linux/pkeys.h
+> @@ -47,7 +47,6 @@ static inline bool arch_pkeys_enabled(void)
+>  static inline void copy_init_pkru_to_fpregs(void)
+>  {
+>  }
+> -
+>  #endif /* ! CONFIG_ARCH_HAS_PKEYS */
 
-Let's fix the double-negative:
+^ Whitespace damage
 
-	/*
-	 * PF_PK is only expected on kernel addresses whenn
-	 * supervisor pkeys are enabled:
-	 */
+>  #ifndef CONFIG_ARCH_HAS_SUPERVISOR_PKEYS
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 0c781f912f9f..f015c09ba5a1 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2400,6 +2400,18 @@ config HYPERV_TESTING
+>  	help
+>  	  Select this option to enable Hyper-V vmbus testing.
+>  
+> +config PKS_TESTING
+> +	bool "PKey(S)upervisor testing"
 
-> -	WARN_ON_ONCE(hw_error_code & X86_PF_PK);
-> +	if (!IS_ENABLED(CONFIG_ARCH_HAS_SUPERVISOR_PKEYS) ||
-> +	    !cpu_feature_enabled(X86_FEATURE_PKS))
-> +		WARN_ON_ONCE(hw_error_code & X86_PF_PK);
+Seems like we need a space in there somewhere.
 
-Yeah, please stick X86_FEATURE_PKS in disabled-features so you can use
-cpu_feature_enabled(X86_FEATURE_PKS) by itself here..
+> +	pid = fork();
+> +	if (pid == 0) {
+> +		fd = open("/sys/kernel/debug/x86/run_pks", O_RDWR);
+> +		if (fd < 0) {
+> +			printf("cannot open file\n");
+> +			return -1;
+> +		}
+> +
+
+Will this return code make anybody mad?  Should we have a nicer return
+code for when this is running on non-PKS hardware?
+
+I'm not going to be too picky about this.  I'll just ask one question:
+Has this found real bugs for you?
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
