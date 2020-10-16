@@ -1,65 +1,62 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5DE290646
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Oct 2020 15:27:39 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870BA2911EC
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 17 Oct 2020 15:02:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 71730158385A7;
-	Fri, 16 Oct 2020 06:27:37 -0700 (PDT)
-Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=173.82.97.246; helo=smbc.co.jp; envelope-from=dgsygbnvm@smbc.co.jp; receiver=<UNKNOWN> 
-Received: from smbc.co.jp (unknown [173.82.97.246])
-	by ml01.01.org (Postfix) with ESMTP id 827A9158025C0
-	for <linux-nvdimm@lists.01.org>; Fri, 16 Oct 2020 06:27:35 -0700 (PDT)
-Sender: dgsygbnvm@smbc.co.jp
-Message-ID: <5140F5D835AE2434B0D43F69725926D8@smbc.co.jp>
-From: =?utf-8?B?5LiJ5LqV5L2P5Y+L44Kr44O844OJ?= <vpass.ne.jp@ml01.01.org>
-To: <linux-nvdimm@lists.01.org>
-Subject: =?utf-8?B?77yc6YeN6KaB77ye44CQ5LiJ5LqV5L2P5Y+L44Kr44O844OJ44CR44GU5Yip55So56K66KqN44Gu44GK?=
-	=?utf-8?B?6aGY44GE?=
-Date: Fri, 16 Oct 2020 13:27:18 -0800
-Mime-Version: 1.0
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2900.5512
-X-MimeOLE: Produced By Microsoft MimeOLE V10.0.14393.2007
-Message-ID-Hash: 2PF7GTCFYF4QDHYCY7ZQI6TCJWOSBHNG
-X-Message-ID-Hash: 2PF7GTCFYF4QDHYCY7ZQI6TCJWOSBHNG
-X-MailFrom: dgsygbnvm@smbc.co.jp
+	by ml01.01.org (Postfix) with ESMTP id DB064158F7D71;
+	Sat, 17 Oct 2020 06:02:19 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=203.73.70.65; helo=zmail.vector.com.tw; envelope-from=onufoundationes@hotmail.com; receiver=<UNKNOWN> 
+Received: from zmail.vector.com.tw (unknown [203.73.70.65])
+	by ml01.01.org (Postfix) with ESMTP id DA62C158F7D6B
+	for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 06:02:17 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by zmail.vector.com.tw (Postfix) with ESMTP id E310320320F;
+	Sat, 17 Oct 2020 15:37:28 +0800 (CST)
+Received: from zmail.vector.com.tw ([127.0.0.1])
+	by localhost (zmail.vector.com.tw [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id RIZXWNnHc3yg; Sat, 17 Oct 2020 15:37:28 +0800 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by zmail.vector.com.tw (Postfix) with ESMTP id 257D5209ED8;
+	Sat, 17 Oct 2020 08:56:10 +0800 (CST)
+X-Virus-Scanned: amavisd-new at zmail.vector.com.tw
+Received: from zmail.vector.com.tw ([127.0.0.1])
+	by localhost (zmail.vector.com.tw [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id XAkpxfe6avyD; Sat, 17 Oct 2020 08:56:09 +0800 (CST)
+Received: from [149.28.252.239] (unknown [149.28.252.239])
+	by zmail.vector.com.tw (Postfix) with ESMTPSA id BCBCE203FD6;
+	Sat, 17 Oct 2020 00:57:09 +0800 (CST)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Description: Mail message body
+Subject: Spende 
+To: Recipients <onufoundationes@hotmail.com>
+From: "Brown Ken" <onufoundationes@hotmail.com>
+Date: Fri, 16 Oct 2020 16:57:07 -0500
+Message-Id: <20201016165709.BCBCE203FD6@zmail.vector.com.tw>
+Message-ID-Hash: 7FK5J7AVJEEUDUAXWGGCQKO4ZYIL4I72
+X-Message-ID-Hash: 7FK5J7AVJEEUDUAXWGGCQKO4ZYIL4I72
+X-MailFrom: onufoundationes@hotmail.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
+Reply-To: onube@qq.com
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/2PF7GTCFYF4QDHYCY7ZQI6TCJWOSBHNG/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7FK5J7AVJEEUDUAXWGGCQKO4ZYIL4I72/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
 
-DQoNCuOBhOOBpOOCguW8iuekvuOCq+ODvOODieOCkuOBlOWIqeeUqOOBhOOBn+OBoOOBjeOBguOC
-iuOBjOOBqOOBhuOBlOOBluOBhOOBvuOBmeOAgg0KDQrmmKjku4rjga7nrKzkuInogIXkuI3mraPl
-iKnnlKjjga7mgKXlopfjgavkvLTjgYTjgIHlvIrnpL7jgafjga/jgIzkuI3mraPliKnnlKjnm6Po
-ppbjgrfjgrnjg4bjg6DjgI3jgpLlsI7lhaXjgZfjgIEyNOaZgumWkzM2NeaXpeS9k+WItuOBp+OC
-q+ODvOODieOBruOBlOWIqeeUqOOBq+WvvuOBmeOCi+ODouODi+OCv+ODquODs+OCsOOCkuihjOOB
-o+OBpuOBiuOCiuOBvuOBmeOAgg0KDQrjgZPjga7jgZ/jgbPjgIHjgZTmnKzkurrmp5jjga7jgZTl
-iKnnlKjjgYvjganjgYbjgYvjgpLnorroqo3jgZXjgZvjgabjgYTjgZ/jgaDjgY3jgZ/jgYTjgYrl
-j5blvJXjgYzjgYLjgorjgb7jgZfjgZ/jga7jgafjgIHoqqDjgavli53miYvjgarjgYzjgonjgIHj
-gqvjg7zjg4njga7jgZTliKnnlKjjgpLkuIDpg6jliLbpmZDjgZXjgZvjgabjgYTjgZ/jgaDjgY3j
-gIHjgZTpgKPntaHjgZXjgZvjgabjgYTjgZ/jgaDjgY3jgb7jgZfjgZ/jgIINCg0K44Gk44GN44G+
-44GX44Gm44Gv44CB5Lul5LiL44G444Ki44Kv44K744K544Gu5LiK44CB44Kr44O844OJ44Gu44GU
-5Yip55So56K66KqN44Gr44GU5Y2U5Yqb44KS44GK6aGY44GE6Ie044GX44G+44GZ44CCDQrjgZTl
-m57nrZTjgpLjgYTjgZ/jgaDjgZHjgarjgYTloLTlkIjjgIHjgqvjg7zjg4njga7jgZTliKnnlKjl
-iLbpmZDjgYzntpnntprjgZXjgozjgovjgZPjgajjgoLjgZTjgZbjgYTjgb7jgZnjga7jgafjgIHk
-uojjgoHjgZTkuobmib/kuIvjgZXjgYTjgIINCg0K4pag44GU5Yip55So56K66KqN44Gv44GT44Gh
-44KJDQoNCuOAgGh0dHA6Ly9zbWNjLWNhY2MuZ21qYnouY29tDQoNCuKWoOeZuuihjOiAheKWoA0K
-5LiJ5LqV5L2P5Y+L44Kr44O844OJ5qCq5byP5Lya56S+DQrjgIBodHRwOi8vc21jYy1jYWNjLmdt
-amJ6LmNvbQ0K44CSMTA1LTgwMTEg5p2x5Lqs6YO95riv5Yy65rW35bK4MeS4geebrjLnlaoyMOWP
-tyDmsZDnlZnjg5Pjg6vjg4fjgqPjg7PjgrANCg0KDQouLi4KX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBs
-aW51eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8g
-bGludXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
+You have a donation, for more information and claims please contact : kcgor=
+gorg@gmail.com
+
+Sie haben eine Spende f=FCr weitere Informationen und Anspr=FCche kontaktie=
+ren Sie bitte diese E-Mail:     (  kcgorgorg@gmail.com )
+_______________________________________________
+Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
