@@ -2,50 +2,50 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [198.145.21.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28C1290397
-	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Oct 2020 12:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 370AA2903BE
+	for <lists+linux-nvdimm@lfdr.de>; Fri, 16 Oct 2020 13:06:53 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 8EBD515C2C27F;
-	Fri, 16 Oct 2020 03:58:03 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTP id 45B9C15C010CA;
+	Fri, 16 Oct 2020 04:06:51 -0700 (PDT)
 Received-SPF: None (mailfrom) identity=mailfrom; client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=<UNKNOWN> 
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 62B0D15C2C27E
-	for <linux-nvdimm@lists.01.org>; Fri, 16 Oct 2020 03:58:00 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 804351577DEF2
+	for <linux-nvdimm@lists.01.org>; Fri, 16 Oct 2020 04:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vZekZ76KW1BiiwMFIl0NBOsPALzv6fOefXANoYwORjo=; b=s3sqnnAyqvzeCqqogltPaUvZEd
-	hgR7KOV9Fp54001uE9QNgg1AMWqHaFF5JgVauukBLqaKmERhe7h6OZuPB8JURXapZrfZATGcuctAT
-	2FHdhg5BHGWOxaGlMWilCHjdNkV1JkDDKEFiz9cDDj1n639XOPcv4wIOP4l6A/t1XTyTxIHPEzsW7
-	Fef+mSxOUoXwOKB4I2tTW7KtkIGOa86LcD9Sf4h2XhNC3QBU9iWQKu2iTqZKYXqS0uZ9fZ1a+hiUH
-	CA8hoABSndA1QINh/XC8/+hqZfNTqSO4Q80FrZoJwaVoy8PnFxFbI89lyknHaXGnX/yMRVUIBm0iW
-	DSJ6YZ5Q==;
+	bh=+HxT6lf8z2s6GX+yM9g2TG2m/mbY0AbXizuVmoeBCSI=; b=capeaNLUb3LFnGa/brHo4bIFTQ
+	QJQCo9AMK4SnBeVk0sX4k2XI9kRKM66EHK7p878iLEgmTG9DTgeNRK9CW4C5ZvWitr99zV5WD+9Gw
+	ytFSGteXDgy6qxNtniRa8OZBSn/DblzJ4SG5CS1qjKzxSzcBousHhBruuLTZZ5Z000k0dorzxRThr
+	uq4wcigwlAEJEZT89cgqbp0Ro3TJz09ioe2044DK7ZMHEdOFsYAWkflsH0qX8g6kkCktfa88f/Ccn
+	tq4jiLDAyn/dzjhhXdB4rtlSWS2yb5XJnLgGbujgvpvpfk0PA7w4f6G8Eqo5wABoMVBNPnvhIwiCO
+	o26+0dyQ==;
 Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-	id 1kTNQf-00024m-1i; Fri, 16 Oct 2020 10:57:45 +0000
+	id 1kTNZF-0002eY-9X; Fri, 16 Oct 2020 11:06:37 +0000
 Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(Client did not present a certificate)
-	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 787DB3011E6;
-	Fri, 16 Oct 2020 12:57:43 +0200 (CEST)
+	by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 76ACD30015A;
+	Fri, 16 Oct 2020 13:06:36 +0200 (CEST)
 Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 651BE203C7039; Fri, 16 Oct 2020 12:57:43 +0200 (CEST)
-Date: Fri, 16 Oct 2020 12:57:43 +0200
+	id 5CC0B203C7039; Fri, 16 Oct 2020 13:06:36 +0200 (CEST)
+Date: Fri, 16 Oct 2020 13:06:36 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: ira.weiny@intel.com
-Subject: Re: [PATCH RFC V3 2/9] x86/fpu: Refactor arch_set_user_pkey_access()
- for PKS support
-Message-ID: <20201016105743.GK2611@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH RFC V3 4/9] x86/pks: Preserve the PKRS MSR on context
+ switch
+Message-ID: <20201016110636.GL2611@hirez.programming.kicks-ass.net>
 References: <20201009194258.3207172-1-ira.weiny@intel.com>
- <20201009194258.3207172-3-ira.weiny@intel.com>
+ <20201009194258.3207172-5-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Disposition: inline
-In-Reply-To: <20201009194258.3207172-3-ira.weiny@intel.com>
-Message-ID-Hash: VFJ7RB5DFIWMFTC536HTAVOILJ53Q6CN
-X-Message-ID-Hash: VFJ7RB5DFIWMFTC536HTAVOILJ53Q6CN
+In-Reply-To: <20201009194258.3207172-5-ira.weiny@intel.com>
+Message-ID-Hash: NZ7KQQ7W4UL74XEK5TZVPV3PMS45PKZL
+X-Message-ID-Hash: NZ7KQQ7W4UL74XEK5TZVPV3PMS45PKZL
 X-MailFrom: peterz@infradead.org
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
@@ -53,7 +53,7 @@ CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borisl
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/VFJ7RB5DFIWMFTC536HTAVOILJ53Q6CN/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/NZ7KQQ7W4UL74XEK5TZVPV3PMS45PKZL/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -62,60 +62,65 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 09, 2020 at 12:42:51PM -0700, ira.weiny@intel.com wrote:
-> From: Fenghua Yu <fenghua.yu@intel.com>
-> 
-> Define a helper, update_pkey_val(), which will be used to support both
-> Protection Key User (PKU) and the new Protection Key for Supervisor
-> (PKS) in subsequent patches.
-> 
-> Co-developed-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-> ---
->  arch/x86/include/asm/pkeys.h |  2 ++
->  arch/x86/kernel/fpu/xstate.c | 22 ++++------------------
->  arch/x86/mm/pkeys.c          | 21 +++++++++++++++++++++
->  3 files changed, 27 insertions(+), 18 deletions(-)
+On Fri, Oct 09, 2020 at 12:42:53PM -0700, ira.weiny@intel.com wrote:
 
-This is not from Fenghua.
+> @@ -644,6 +663,8 @@ void __switch_to_xtra(struct task_struct *prev_p, struct task_struct *next_p)
+>  
+>  	if ((tifp ^ tifn) & _TIF_SLD)
+>  		switch_to_sld(tifn);
+> +
+> +	pks_sched_in();
+>  }
+>  
 
-  https://lkml.kernel.org/r/20200717085442.GX10769@hirez.programming.kicks-ass.net
+You seem to have lost the comment proposed here:
 
-This is your patch based on the code I wrote.
+  https://lkml.kernel.org/r/20200717083140.GW10769@hirez.programming.kicks-ass.net
+
+It is useful and important information that the wrmsr normally doesn't
+happen.
 
 > diff --git a/arch/x86/mm/pkeys.c b/arch/x86/mm/pkeys.c
-> index f5efb4007e74..3cf8f775f36d 100644
+> index 3cf8f775f36d..30f65dd3d0c5 100644
 > --- a/arch/x86/mm/pkeys.c
 > +++ b/arch/x86/mm/pkeys.c
-> @@ -208,3 +208,24 @@ static __init int setup_init_pkru(char *opt)
->  	return 1;
+> @@ -229,3 +229,31 @@ u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags)
+>  
+>  	return pk_reg;
 >  }
->  __setup("init_pkru=", setup_init_pkru);
 > +
-> +/*
-> + * Update the pk_reg value and return it.
+> +DEFINE_PER_CPU(u32, pkrs_cache);
+> +
+> +/**
+> + * It should also be noted that the underlying WRMSR(MSR_IA32_PKRS) is not
+> + * serializing but still maintains ordering properties similar to WRPKRU.
+> + * The current SDM section on PKRS needs updating but should be the same as
+> + * that of WRPKRU.  So to quote from the WRPKRU text:
 > + *
-> + * Kernel users use the same flags as user space:
-> + *     PKEY_DISABLE_ACCESS
-> + *     PKEY_DISABLE_WRITE
+> + * 	WRPKRU will never execute transiently. Memory accesses
+> + * 	affected by PKRU register will not execute (even transiently)
+> + * 	until all prior executions of WRPKRU have completed execution
+> + * 	and updated the PKRU register.
+
+(whitespace damage; space followed by tabstop)
+
 > + */
-> +u32 update_pkey_val(u32 pk_reg, int pkey, unsigned int flags)
+> +void write_pkrs(u32 new_pkrs)
 > +{
-> +	int pkey_shift = pkey * PKR_BITS_PER_PKEY;
+> +	u32 *pkrs;
 > +
-> +	pk_reg &= ~(((1 << PKR_BITS_PER_PKEY) - 1) << pkey_shift);
+> +	if (!static_cpu_has(X86_FEATURE_PKS))
+> +		return;
 > +
-> +	if (flags & PKEY_DISABLE_ACCESS)
-> +		pk_reg |= PKR_AD_BIT << pkey_shift;
-> +	if (flags & PKEY_DISABLE_WRITE)
-> +		pk_reg |= PKR_WD_BIT << pkey_shift;
-> +
-> +	return pk_reg;
+> +	pkrs = get_cpu_ptr(&pkrs_cache);
+> +	if (*pkrs != new_pkrs) {
+> +		*pkrs = new_pkrs;
+> +		wrmsrl(MSR_IA32_PKRS, new_pkrs);
+> +	}
+> +	put_cpu_ptr(pkrs);
 > +}
-> -- 
-> 2.28.0.rc0.12.gb6a658bd00c9
-> 
+
+looks familiar that... :-)
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
