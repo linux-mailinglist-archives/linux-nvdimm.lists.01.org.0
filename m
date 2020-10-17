@@ -2,50 +2,64 @@ Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
 Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67482913CA
-	for <lists+linux-nvdimm@lfdr.de>; Sat, 17 Oct 2020 21:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A76C291466
+	for <lists+linux-nvdimm@lfdr.de>; Sat, 17 Oct 2020 22:54:26 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 0CC8515AE2A6A;
-	Sat, 17 Oct 2020 12:00:16 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=216.40.44.172; helo=smtprelay.hostedemail.com; envelope-from=joe@perches.com; receiver=<UNKNOWN> 
-Received: from smtprelay.hostedemail.com (smtprelay0172.hostedemail.com [216.40.44.172])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id E21941583520D;
+	Sat, 17 Oct 2020 13:54:23 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::543; helo=mail-ed1-x543.google.com; envelope-from=dan.j.williams@intel.com; receiver=<UNKNOWN> 
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id BF3E715AE2A68;
-	Sat, 17 Oct 2020 12:00:11 -0700 (PDT)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-	by smtprelay08.hostedemail.com (Postfix) with ESMTP id 15895182CED2A;
-	Sat, 17 Oct 2020 19:00:10 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:967:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1434:1437:1515:1516:1518:1535:1542:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2525:2553:2561:2564:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3355:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4470:4823:5007:6117:6742:6743:7576:7903:8660:8792:8957:9010:9025:9108:10004:10400:10450:10455:11232:11658:11914:12043:12050:12295:12296:12297:12438:12555:12663:12740:12760:12895:12986:13138:13148:13230:13231:13439:14096:14097:14181:14659:14721:19904:19999:21080:21324:21451:21627:21939:21990:30029:30034:30054:30070:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: jewel08_4005cbe27228
-X-Filterd-Recvd-Size: 5179
-Received: from XPS-9350.home (unknown [47.151.133.149])
-	(Authenticated sender: joe@perches.com)
-	by omf01.hostedemail.com (Postfix) with ESMTPA;
-	Sat, 17 Oct 2020 19:00:02 +0000 (UTC)
-Message-ID: <503af4a57ca6daeb3e42a9be136dcd21e6d6e23d.camel@perches.com>
-Subject: Re: [Cocci] [RFC] treewide: cleanup unreachable breaks
-From: Joe Perches <joe@perches.com>
-To: Julia Lawall <julia.lawall@inria.fr>
-Date: Sat, 17 Oct 2020 12:00:01 -0700
-In-Reply-To: <alpine.DEB.2.22.394.2010172016370.9440@hadrien>
-References: <20201017160928.12698-1-trix@redhat.com>
-	 <f530b7aeecbbf9654b4540cfa20023a4c2a11889.camel@perches.com>
-	 <alpine.DEB.2.22.394.2010172016370.9440@hadrien>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+	by ml01.01.org (Postfix) with ESMTPS id 544F51583520B
+	for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 13:54:21 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id l16so6303245eds.3
+        for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 13:54:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=intel-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=gclTxwgudwqILxx80qh3Opdjv1pTyPGDlalzB4e0NIE=;
+        b=D194yODEDSY0phYrBqB+rZxx9oGs8Hp7A9sbiuVFcSN+RnhgTHu0oFXSq1PMsvdHpC
+         S6+pj86MinFH8hl2xfjg/AuHQAjXOvcPG9u8WPVHjNa3wAcTi72GZYTTGqfEUMyZWZnY
+         srqrqCRKrb1gdkGeZWW/nDEY0x+v5GNjUN0nDiIri3yYA7+zzk54plnEn8q/vz9d13Kr
+         /3C6vvgjxsDgPtqEvlhrFWv//kA0Y3CMFi0MDnvs+z8Kd9PQWVlqY94Ko6d9UvcYy/WD
+         JB/oTzDiTakpOBakbuXcw/h9bturE2wPt8qAxpKoLQASk8wHFrcqfxrPHaz5ar8pj5uW
+         WKuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=gclTxwgudwqILxx80qh3Opdjv1pTyPGDlalzB4e0NIE=;
+        b=X/0fMutrETCcGg6OoQYUYlpyQVVn3A8G7XUwkSI7ATacyx4bjezCHhF8q/tHJ9COBi
+         WA2dFFmKQCb9yrU6ubvRQyjjrH+WqUUpbr/PIFLGBybl5fKlanbbWtIn/h0UX9lEhzvs
+         Xe1YSaS2sa8Sm2GeOABd1cjUlPNv8koD8zkNuxsUIVC9w9L+8KElh9mHJ3CCe7GXdov3
+         pUdiNabJDDEIKpXjH7gmX/oNgr6u/fMI/vmz53Xi7tqQoVcp76/QTaCp+uOXwq9EYApB
+         9+gnh1o1C7pKyi0dd4pb4ozRxeX/DCYCFxbUCKBrbk2aDoCHVKP73NWmauTDaDNaj3DQ
+         6QAQ==
+X-Gm-Message-State: AOAM532JBaaZPw/+HUGO6Zbi+l1und7ogucVQ6w4uzOW6kU9fEE0awBB
+	XMG1K0HPKzpK+03z92KL7TKpjQ2NRTdlr/MuuB2Xrw==
+X-Google-Smtp-Source: ABdhPJxKTe02sV/xjDNzwUaiGFr+iX0TTarUAS7vSx3ygOAUPxPR7uFn+/0xFWsW1q35MvXTJeV+lFjdSEMySCrnXkM=
+X-Received: by 2002:a05:6402:31b3:: with SMTP id dj19mr10956568edb.210.1602968058286;
+ Sat, 17 Oct 2020 13:54:18 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID-Hash: KTJTWIN4FQGJOLRYQPSBGK73UX3O2CY2
-X-Message-ID-Hash: KTJTWIN4FQGJOLRYQPSBGK73UX3O2CY2
-X-MailFrom: joe@perches.com
-X-Mailman-Rule-Hits: nonmember-moderation
-X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: trix@redhat.com, linux-kernel@vger.kernel.org, cocci <cocci@systeme.lip6.fr>, alsa-devel@alsa-project.org, clang-built-linux@googlegroups.com, linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org, storagedev@microchip.com, dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org, keyrings@vger.kernel.org, linux-mtd@lists.infradead.org, ath10k@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, usb-storage@lists.one-eyed-alien.net, linux-watchdog@vger.kernel.org, devel@driverdev.osuosl.org, linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org, linux-nvdimm@lists.01.org, amd-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org, intel-wired-lan@lists.osuosl.org, industrypack-devel@lists.sourceforge.net, linux-pci@vger.kernel.org, spice-devel@lists.freedesktop.org, MPT-FusionLinux.pdl@broadcom.com, linux-media@vger.kernel.org, linux-serial@vger.kernel.org, linux-nfc@lists.01.org, linux-pm@vger.kernel.org, linux-can@vger.kernel.org, linux-blo
- ck@vger.kernel.org, linux-gpio@vger.kernel.org, xen-devel@lists.xenproject.org, linux-amlogic@lists.infradead.org, openipmi-developer@lists.sourceforge.net, platform-driver-x86@vger.kernel.org, linux-integrity@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, patches@opensource.cirrus.com, bpf@vger.kernel.org, ocfs2-devel@oss.oracle.com, linux-power@fi.rohmeurope.com
+References: <160288261564.3242821.6055291930923876456.stgit@dwillia2-desk3.amr.corp.intel.com>
+ <CAHk-=wg_HafvgLvyHcYk=K-gJFdj9aqap4At7DCFyroLVC04LQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wg_HafvgLvyHcYk=K-gJFdj9aqap4At7DCFyroLVC04LQ@mail.gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Sat, 17 Oct 2020 13:54:08 -0700
+Message-ID: <CAPcyv4jSji5KvLuouqSt-O_-iuKnCu4pXL1cEUqd1Ws+gjxqHw@mail.gmail.com>
+Subject: Re: [PATCH] device-dax/kmem: Use struct_size()
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Message-ID-Hash: 7UX6E3MZ3AVKVDWT37NNQ47WN2GT4P47
+X-Message-ID-Hash: 7UX6E3MZ3AVKVDWT37NNQ47WN2GT4P47
+X-MailFrom: dan.j.williams@intel.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+CC: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>, Linux-MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/KTJTWIN4FQGJOLRYQPSBGK73UX3O2CY2/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/7UX6E3MZ3AVKVDWT37NNQ47WN2GT4P47/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -54,76 +68,31 @@ List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 
-On Sat, 2020-10-17 at 20:21 +0200, Julia Lawall wrote:
-> On Sat, 17 Oct 2020, Joe Perches wrote:
-> > On Sat, 2020-10-17 at 09:09 -0700, trix@redhat.com wrote:
-> > > From: Tom Rix <trix@redhat.com>
-> > > 
-> > > This is a upcoming change to clean up a new warning treewide.
-> > > I am wondering if the change could be one mega patch (see below) or
-> > > normal patch per file about 100 patches or somewhere half way by collecting
-> > > early acks.
-> > > 
-> > > clang has a number of useful, new warnings see
-> > > https://clang.llvm.org/docs/DiagnosticsReference.html
-> > > 
-> > > This change cleans up -Wunreachable-code-break
-> > > https://clang.llvm.org/docs/DiagnosticsReference.html#wunreachable-code-break
-> > > for 266 of 485 warnings in this week's linux-next, allyesconfig on x86_64.
-> > 
-> > Early acks/individual patches by subsystem would be good.
-> > Better still would be an automated cocci script.
-> 
-> Coccinelle is not especially good at this, because it is based on control
-> flow, and a return or goto diverts the control flow away from the break.
-> A hack to solve the problem is to put an if around the return or goto, but
-> that gives the break a meaningless file name and line number.  I collected
-> the following list, but it only has 439 results, so fewer than clang.  But
-> maybe there are some files that are not considered by clang in the x86
-> allyesconfig configuration.
-> 
-> Probably checkpatch is the best solution here, since it is not
-> configuration sensitive and doesn't care about control flow.
+On Sat, Oct 17, 2020 at 11:39 AM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> On Fri, Oct 16, 2020 at 2:10 PM Dan Williams <dan.j.williams@intel.com> wrote:
+> >
+> > Link: http://lore.kernel.org/r/CAHk-=wgNTLbvAD8mNTvh+GQyapNWeX20PXhU_+frqEvVq4298w@mail.gmail.com
+>
+> Does that link work for you?
+>
+> Because I can't see it.
+>
+> In fact, I don't see my email at all on lore, even if I see Andrew's
+> email that I answered to:
+>
+>     https://lore.kernel.org/mm-commits/20201016024059.Ycwm4GmQ8%25akpm@linux-foundation.org/
+>
+> but your link gives me "Not Found", and when I search for emails from
+> me on mm-commits I don't see them either.
+>
+> Adding Konstantin just to solve the mystery. Some odd mirroring
+> problem, perhaps?
 
-Likely the clang compiler is the best option here.
-
-It might be useful to add -Wunreachable-code-break to W=1
-or just always enable it if it isn't already enabled.
-
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index 95e4cdb94fe9..3819787579d5 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -32,6 +32,7 @@ KBUILD_CFLAGS += $(call cc-option, -Wunused-but-set-variable)
- KBUILD_CFLAGS += $(call cc-option, -Wunused-const-variable)
- KBUILD_CFLAGS += $(call cc-option, -Wpacked-not-aligned)
- KBUILD_CFLAGS += $(call cc-option, -Wstringop-truncation)
-+KBUILD_CFLAGS += $(call cc-option, -Wunreachable-code-break)
- # The following turn off the warnings enabled by -Wextra
- KBUILD_CFLAGS += -Wno-missing-field-initializers
- KBUILD_CFLAGS += -Wno-sign-compare
-
-(and thank you Tom for pushing this forward)
-
-checkpatch can't find instances like:
-
-	case FOO:
-		if (foo)
-			return 1;
-		else
-			return 2;
-		break;
-
-As it doesn't track flow and relies on the number
-of tabs to be the same for any goto/return and break;
-
-checkpatch will warn on:
-
-	case FOO:
-		...
-		goto bar;
-		break;
-
+The link did not, and still does not work for me. I was hoping that
+was a temporary condition until the thread made it out to the
+mm-commits@ archive on lore, but it never seemed to resolve.
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
 To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
