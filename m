@@ -1,105 +1,79 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADFC29151B
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Oct 2020 02:05:28 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C4C291FBA
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Oct 2020 22:13:21 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id 57049158A3293;
-	Sat, 17 Oct 2020 17:05:26 -0700 (PDT)
-Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=2a00:1450:4864:20::144; helo=mail-lf1-x144.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=<UNKNOWN> 
-Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	by ml01.01.org (Postfix) with ESMTP id 6D79915948568;
+	Sun, 18 Oct 2020 13:13:19 -0700 (PDT)
+Received-SPF: Softfail (mailfrom) identity=mailfrom; client-ip=23.247.42.111; helo=jlqhltu.cn; envelope-from=mail@mtmottun.cn; receiver=<UNKNOWN> 
+Received: from jlqhltu.cn (unknown [23.247.42.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id C8696158A3288
-	for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 17:05:23 -0700 (PDT)
-Received: by mail-lf1-x144.google.com with SMTP id d24so8481649lfa.8
-        for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 17:05:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VwELQNGP6UkpPlOimYrMazMJwsHunIQQ9G2ROVl0mqc=;
-        b=eaFsjl/uJMvNGO77u8TJBI1lpj8JVCnyIv7lWC6siFEmD/+aSv1tgjGxgpdgys2rPg
-         t/798mY2oV/9HpYeSMQPhJD2qhaEWMwjE2nuMyUwHZLLI5KPcq5X9gjgf9KtIrjpJi8k
-         HMK/o6Iol06QIssjk+IlEeind+oAT5pf512mI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VwELQNGP6UkpPlOimYrMazMJwsHunIQQ9G2ROVl0mqc=;
-        b=e3AdD45iQJ4BoY9vX8RWi4ZFM29ZNLjiCWU+Nbh5AmMozn4qH2c/pXC/zRyhx8LuNd
-         oKMus1YsITwPrOGLoOLZEPs1NUwQQIRi/3V1TpJ2Bl3Q5X1oT7/MUnFNcqPb5fL59g8y
-         lslWUyk8YCE/TNKKg4uNs4Lf560pV3AzJUigYyJS9V72BFrehFoCrDTcnkZG+4On2Wu+
-         kadJ4Rbe3T3auXgoWnj1oomN6lVD87AfRaE/g+PRnGEEyXPaHLmp4JQanAOYVm+oTW7I
-         ykSC2WKBwHO5N7T46CwvpyFB62FEwUWHh1KT+ODs4KTwc3Y45PeSvm7nNYlvP1ki5kuf
-         Ee3A==
-X-Gm-Message-State: AOAM533eIayYNeZmTVQiZymTarUFb5lONKXUuIXhrX67QwWzIV4DKdHt
-	66ZkYzqgWdMscK3hKJcLlSs5mHLQVhZuzQ==
-X-Google-Smtp-Source: ABdhPJyJRbNlH6Rf+O9sZFsP9xZzetBJHsamGwL6z2GLCCSFG1kZTgZXF2LG2x3BoxZt5RNY2qxTGA==
-X-Received: by 2002:a19:c811:: with SMTP id y17mr3921251lff.259.1602979520495;
-        Sat, 17 Oct 2020 17:05:20 -0700 (PDT)
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com. [209.85.167.54])
-        by smtp.gmail.com with ESMTPSA id f10sm2582157ljn.87.2020.10.17.17.05.19
-        for <linux-nvdimm@lists.01.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Oct 2020 17:05:19 -0700 (PDT)
-Received: by mail-lf1-f54.google.com with SMTP id z2so8536843lfr.1
-        for <linux-nvdimm@lists.01.org>; Sat, 17 Oct 2020 17:05:19 -0700 (PDT)
-X-Received: by 2002:ac2:5f48:: with SMTP id 8mr3869391lfz.344.1602979518759;
- Sat, 17 Oct 2020 17:05:18 -0700 (PDT)
+	by ml01.01.org (Postfix) with ESMTPS id 6DC1515948566
+	for <linux-nvdimm@lists.01.org>; Sun, 18 Oct 2020 13:13:14 -0700 (PDT)
+Received: from amazon.co.jp (unknown [61.179.178.68])
+	by jlqhltu.cn (Postfix) with ESMTPA id 6C4025F1C9;
+	Sun, 18 Oct 2020 10:49:17 +0800 (CST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 jlqhltu.cn 6C4025F1C9
+Message-ID: <EEE742E654DDE3268E2974E68E244B56@amazon.co.jp>
+From: Amazon.co.jp <account-update@amazon.co.jp>
+Sender: mail@mtmottun.cn
+To: 
+Date: Sun, 18 Oct 2020 10:51:21 +0800
+Subject: =?utf-8?B?QW1hem9uLmNvLmpwIOOCouOCq+OCpuODs+ODiOaJgOaciQ==?=
+	=?utf-8?B?5qip44Gu6Ki85piO77yI5ZCN5YmN44CB44Gd44Gu5LuW5YCL5Lq65oOF5aCx77yJ44Gu56K66KqN?=
 MIME-Version: 1.0
-References: <160288261564.3242821.6055291930923876456.stgit@dwillia2-desk3.amr.corp.intel.com>
- <CAHk-=wg_HafvgLvyHcYk=K-gJFdj9aqap4At7DCFyroLVC04LQ@mail.gmail.com>
- <CAPcyv4jSji5KvLuouqSt-O_-iuKnCu4pXL1cEUqd1Ws+gjxqHw@mail.gmail.com> <20201017144351.faf85ca9880e43e68e7f9991@linux-foundation.org>
-In-Reply-To: <20201017144351.faf85ca9880e43e68e7f9991@linux-foundation.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 17 Oct 2020 17:05:02 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjvoCJVQXMTL+tKk5BsgwR5O1HSMwKfBOw=LAra65YBCA@mail.gmail.com>
-Message-ID: <CAHk-=wjvoCJVQXMTL+tKk5BsgwR5O1HSMwKfBOw=LAra65YBCA@mail.gmail.com>
-Subject: Re: [PATCH] device-dax/kmem: Use struct_size()
-To: Andrew Morton <akpm@linux-foundation.org>
-Message-ID-Hash: 476RTYRT6ZE44EPC4G5YO3FXFZJ2PLTU
-X-Message-ID-Hash: 476RTYRT6ZE44EPC4G5YO3FXFZJ2PLTU
-X-MailFrom: torvalds@linuxfoundation.org
+X-Priority: 3
+X-Mailer: 
+Message-ID-Hash: X343WAFD7SWE4CJ3ZSO7C4OXGETKPKAC
+X-Message-ID-Hash: X343WAFD7SWE4CJ3ZSO7C4OXGETKPKAC
+X-MailFrom: mail@mtmottun.cn
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
-CC: Konstantin Ryabitsev <konstantin@linuxfoundation.org>, Linux-MM <linux-mm@kvack.org>, linux-nvdimm <linux-nvdimm@lists.01.org>, David Miller <davem@davemloft.net>
+X-Content-Filtered-By: Mailman/MimeDel 3.1.1
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/476RTYRT6ZE44EPC4G5YO3FXFZJ2PLTU/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/X343WAFD7SWE4CJ3ZSO7C4OXGETKPKAC/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
 List-Subscribe: <mailto:linux-nvdimm-join@lists.01.org>
 List-Unsubscribe: <mailto:linux-nvdimm-leave@lists.01.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Sat, Oct 17, 2020 at 2:43 PM Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> mm-commits is writeable-only-by-akpm.
-
-Ahh.
-
-That's fine, it's only inconvenient for these kinds of "people replied
-to patches".
-
-It's not necessarily just me either - people reply with Ack's etc, and
-the fact that the list is write-by-akpm-only them means that "b4" etc
-won't see it.
-
-Normally I pick those things up personally, though, so apart from the
-whole lore link issue that's not necessarily a big deal either.
-
-And afaik, this is the first time somebody actually tried to refer to
-a lore link and it failed.
-
-Often you cc other lists as well, but that tends to be a
-patch-by-patch thing, so it's not reliable.
-
-            Linus
-_______________________________________________
-Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
-To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
+44GK5pSv5omV44GE5pa55rOV44Gu5oOF5aCx44KS5pu05paw44GX44Gm44GP44Gg44GV44GE44CC
+VXBkYXRlIGRlZmF1bHQgY2FyZCBmb3IgeW91ciBtZW1iZXJzaGlwLg0KDQogDQog44Oe44Kk44K5
+44OI44KiPyB844K/44Kk44Og44K744O844OrPyB844Ku44OV44OI5Yi4IA0KDQogDQoNCkFtYXpv
+buODl+ODqeOCpOODoOOCkuOBlOWIqeeUqOmgguOBjeOBguOCiuOBjOOBqOOBhuOBlOOBluOBhOOB
+vuOBmeOAguOBiuWuouanmOOBrkFtYXpvbuODl+ODqeOCpOODoOS8muWToeizh+agvOOBr+OAgTIw
+MTkvMDkvMjXjgavmm7TmlrDjgpLov47jgYjjgb7jgZnjgILjgYroqr/jgbnjgZfjgZ/jgajjgZPj
+go3jgIHkvJrosrvjga7jgYrmlK/miZXjgYTjgavkvb/nlKjjgafjgY3jgovmnInlirnjgarjgq/j
+g6zjgrjjg4Pjg4jjgqvjg7zjg4njgYzjgqLjgqvjgqbjg7Pjg4jjgavnmbvpjLLjgZXjgozjgabj
+gYTjgb7jgZvjgpPjgILjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nmg4XloLHjga7mm7TmlrDjgIHm
+lrDjgZfjgYTjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4njga7ov73liqDjgavjgaTjgYTjgabjga/k
+u6XkuIvjga7miYvpoIbjgpLjgZTnorroqo3jgY/jgaDjgZXjgYTjgIINCg0KDQoxLiDjgqLjgqvj
+gqbjg7Pjg4jjgrXjg7zjg5PjgrnjgYvjgolBbWF6b27jg5fjg6njgqTjg6DkvJrlk6Hmg4XloLHj
+gpLnrqHnkIbjgZnjgovjgavjgqLjgq/jgrvjgrnjgZfjgb7jgZnjgIINCg0KMi4gQW1hem9u44OX
+44Op44Kk44Og44Gr55m76Yyy44GX44GfQW1hem9uLmNvLmpw44Gu44Ki44Kr44Km44Oz44OI44KS
+5L2/55So44GX44Gm44K144Kk44Oz44Kk44Oz44GX44G+44GZ44CCDQoNCjMuIOW3puWBtOOBq+ih
+qOekuuOBleOCjOOBpuOBhOOCi+OAjOePvuWcqOOBruaUr+aJleaWueazleOAjeOBruS4i+OBq+OB
+guOCi+OAjOaUr+aJleaWueazleOCkuWkieabtOOBmeOCi+OAjeOBruODquODs+OCr+OCkuOCr+OD
+quODg+OCr+OBl+OBvuOBmeOAgg0KDQo0LiDmnInlirnmnJ/pmZDjga7mm7TmlrDjgb7jgZ/jga/m
+lrDjgZfjgYTjgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4nmg4XloLHjgpLlhaXlipvjgZfjgabjgY/j
+gaDjgZXjgYTjgIINCg0KDQpBbWF6b27jg5fjg6njgqTjg6DjgpLntpnntprjgZfjgabjgZTliKnn
+lKjjgYTjgZ/jgaDjgY/jgZ/jgoHjgavjgIHkvJrosrvjga7jgYrmlK/miZXjgYTjgavjgZTmjIfl
+rprjgYTjgZ/jgaDjgYTjgZ/jgq/jg6zjgrjjg4Pjg4jjgqvjg7zjg4njgYzkvb/nlKjjgafjgY3j
+garjgYTloLTlkIjjga/jgIHjgqLjgqvjgqbjg7Pjg4jjgavnmbvpjLLjgZXjgozjgabjgYTjgovl
+iKUg44Gu44Kv44Os44K444OD44OI44Kr44O844OJ44Gr5Lya6LK744KS6KuL5rGC44GV44Gb44Gm
+6aCC44GN44G+44GZ44CC5Lya6LK744Gu6KuL5rGC44GM5Ye65p2l44Gq44GE5aC05ZCI44Gv44CB
+44GK5a6i5qeY44GuQW1hem9u44OX44Op44Kk44Og5Lya5ZOh6LOH5qC844Gv5aSx5Yq544GX44CB
+54m55YW444KS44GU5Yip55So44Gn44GN44Gq44GP44Gq44KK44G+44GZ44CCDQoNCg0KQW1hem9u
+LmNvLmpw44Kr44K544K/44Oe44O844K144O844OT44K5IA0KDQoNCiANCuaUr+aJleaWueazleOB
+ruaDheWgseOCkuabtOaWsOOBmeOCiyANCg0KDQoNCiAKX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX19fX19fX19fX19fX19fX19fX18KTGludXgtbnZkaW1tIG1haWxpbmcgbGlzdCAtLSBsaW51
+eC1udmRpbW1AbGlzdHMuMDEub3JnClRvIHVuc3Vic2NyaWJlIHNlbmQgYW4gZW1haWwgdG8gbGlu
+dXgtbnZkaW1tLWxlYXZlQGxpc3RzLjAxLm9yZwo=
