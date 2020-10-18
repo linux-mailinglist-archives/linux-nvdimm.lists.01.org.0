@@ -1,42 +1,56 @@
 Return-Path: <linux-nvdimm-bounces@lists.01.org>
 X-Original-To: lists+linux-nvdimm@lfdr.de
 Delivered-To: lists+linux-nvdimm@lfdr.de
-Received: from ml01.01.org (ml01.01.org [IPv6:2001:19d0:306:5::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DF629191B
-	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Oct 2020 21:06:54 +0200 (CEST)
+Received: from ml01.01.org (ml01.01.org [198.145.21.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7426F291938
+	for <lists+linux-nvdimm@lfdr.de>; Sun, 18 Oct 2020 21:13:46 +0200 (CEST)
 Received: from ml01.vlan13.01.org (localhost [IPv6:::1])
-	by ml01.01.org (Postfix) with ESMTP id EE28D15D72304;
-	Sun, 18 Oct 2020 12:06:52 -0700 (PDT)
-Received-SPF: None (mailfrom) identity=mailfrom; client-ip=216.40.44.131; helo=smtprelay.hostedemail.com; envelope-from=joe@perches.com; receiver=<UNKNOWN> 
-Received: from smtprelay.hostedemail.com (smtprelay0131.hostedemail.com [216.40.44.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ml01.01.org (Postfix) with ESMTP id A58361595F43A;
+	Sun, 18 Oct 2020 12:13:44 -0700 (PDT)
+Received-SPF: Pass (mailfrom) identity=mailfrom; client-ip=96.44.175.130; helo=bedivere.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=<UNKNOWN> 
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ml01.01.org (Postfix) with ESMTPS id 4ACA415D72301;
-	Sun, 18 Oct 2020 12:06:51 -0700 (PDT)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-	by smtprelay01.hostedemail.com (Postfix) with ESMTP id 70CB3100E7B40;
-	Sun, 18 Oct 2020 19:06:49 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:967:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2525:2553:2561:2564:2682:2685:2692:2828:2859:2905:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4250:4321:5007:6119:6742:6743:7903:8957:8985:9025:10004:10400:10848:11232:11658:11914:12043:12295:12297:12438:12555:12740:12760:12895:12986:13069:13072:13311:13357:13439:14096:14097:14181:14659:14721:14777:21080:21347:21433:21451:21627:21811:21819:30003:30012:30022:30034:30054:30083:30090:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: year67_630d5f827230
-X-Filterd-Recvd-Size: 3209
-Received: from XPS-9350.home (unknown [47.151.133.149])
-	(Authenticated sender: joe@perches.com)
-	by omf09.hostedemail.com (Postfix) with ESMTPA;
-	Sun, 18 Oct 2020 19:06:42 +0000 (UTC)
-Message-ID: <18981cad4ac27b4a22b2e38d40bd112432d4a4e7.camel@perches.com>
+	by ml01.01.org (Postfix) with ESMTPS id 78A6B1581B0D8;
+	Sun, 18 Oct 2020 12:13:39 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 6E9191280300;
+	Sun, 18 Oct 2020 12:13:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+	s=20151216; t=1603048418;
+	bh=z260bBy56dgN8y3lDRHRQeuKrIr1eALRZNoNPoXlSSo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=QOZMzgTQH16i5avnDNVW0Ktw3okhOk0UWDzTWl7121p+F93A1Quw31cCRVLQH+SGW
+	 zn7QBaZkwCTKpROUCnm6j2wnXTspVYtdUU68F1++PaWc9wHgdj5YeqG30CVReBaxSQ
+	 7zgTTXbB0BvsKBkgxIK2UI/Iu/DopS5PndAYThf8=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+	by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id JsjuUxZpqgrR; Sun, 18 Oct 2020 12:13:38 -0700 (PDT)
+Received: from jarvis.int.hansenpartnership.com (unknown [IPv6:2601:600:8280:66d1::c447])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1ED2912802BA;
+	Sun, 18 Oct 2020 12:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+	s=20151216; t=1603048418;
+	bh=z260bBy56dgN8y3lDRHRQeuKrIr1eALRZNoNPoXlSSo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=QOZMzgTQH16i5avnDNVW0Ktw3okhOk0UWDzTWl7121p+F93A1Quw31cCRVLQH+SGW
+	 zn7QBaZkwCTKpROUCnm6j2wnXTspVYtdUU68F1++PaWc9wHgdj5YeqG30CVReBaxSQ
+	 7zgTTXbB0BvsKBkgxIK2UI/Iu/DopS5PndAYThf8=
+Message-ID: <45efa7780c79972eae9ca9bdeb9f7edbab4f3643.camel@HansenPartnership.com>
 Subject: Re: [Ocfs2-devel] [RFC] treewide: cleanup unreachable breaks
-From: Joe Perches <joe@perches.com>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
 To: Matthew Wilcox <willy@infradead.org>, trix@redhat.com
-Date: Sun, 18 Oct 2020 12:06:40 -0700
+Date: Sun, 18 Oct 2020 12:13:35 -0700
 In-Reply-To: <20201018185943.GM20115@casper.infradead.org>
 References: <20201017160928.12698-1-trix@redhat.com>
 	 <20201018185943.GM20115@casper.infradead.org>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+User-Agent: Evolution 3.34.4 
 MIME-Version: 1.0
-Message-ID-Hash: 4HRQ645ORN6RMMZ7D2XGRTDAYWOTOJRL
-X-Message-ID-Hash: 4HRQ645ORN6RMMZ7D2XGRTDAYWOTOJRL
-X-MailFrom: joe@perches.com
+Message-ID-Hash: JOSSAULEKVU57DAQQBUJZPXWVL5MD4TB
+X-Message-ID-Hash: JOSSAULEKVU57DAQQBUJZPXWVL5MD4TB
+X-MailFrom: James.Bottomley@HansenPartnership.com
 X-Mailman-Rule-Hits: nonmember-moderation
 X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation
 CC: linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, clang-built-linux@googlegroups.com, linux-iio@vger.kernel.org, nouveau@lists.freedesktop.org, storagedev@microchip.com, dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org, keyrings@vger.kernel.org, linux-mtd@lists.infradead.org, ath10k@lists.infradead.org, MPT-FusionLinux.pdl@broadcom.com, linux-stm32@st-md-mailman.stormreply.com, usb-storage@lists.one-eyed-alien.net, linux-watchdog@vger.kernel.org, devel@driverdev.osuosl.org, linux-samsung-soc@vger.kernel.org, linux-scsi@vger.kernel.org, linux-nvdimm@lists.01.org, amd-gfx@lists.freedesktop.org, linux-acpi@vger.kernel.org, intel-wired-lan@lists.osuosl.org, industrypack-devel@lists.sourceforge.net, linux-pci@vger.kernel.org, spice-devel@lists.freedesktop.org, linux-media@vger.kernel.org, linux-serial@vger.kernel.org, linux-nfc@lists.01.org, linux-pm@vger.kernel.org, linux-can@vger.kernel.org, linux-block@vger.kernel.org, linux-gpio@vger.kernel.org, 
@@ -44,7 +58,7 @@ CC: linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, clang-built-linux
 X-Mailman-Version: 3.1.1
 Precedence: list
 List-Id: "Linux-nvdimm developer list." <linux-nvdimm.lists.01.org>
-Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/4HRQ645ORN6RMMZ7D2XGRTDAYWOTOJRL/>
+Archived-At: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/message/JOSSAULEKVU57DAQQBUJZPXWVL5MD4TB/>
 List-Archive: <https://lists.01.org/hyperkitty/list/linux-nvdimm@lists.01.org/>
 List-Help: <mailto:linux-nvdimm-request@lists.01.org?subject=help>
 List-Post: <mailto:linux-nvdimm@lists.01.org>
@@ -58,22 +72,23 @@ On Sun, 2020-10-18 at 19:59 +0100, Matthew Wilcox wrote:
 > > clang has a number of useful, new warnings see
 > > https://urldefense.com/v3/__https://clang.llvm.org/docs/DiagnosticsReference.html__;!!GqivPVa7Brio!Krxz78O3RKcB9JBMVo_F98FupVhj_jxX60ddN6tKGEbv_cnooXc1nnBmchm-e_O9ieGnyQ$ 
 > 
-> Please get your IT department to remove that stupidity.  If you can't,
-> please send email from a non-Red Hat email address.
+> Please get your IT department to remove that stupidity.  If you
+> can't, please send email from a non-Red Hat email address.
 
-I didn't get it this way, neither did lore.
-It's on your end.
+Actually, the problem is at Oracle's end somewhere in the ocfs2 list
+... if you could fix it, that would be great.  The usual real mailing
+lists didn't get this transformation
 
-https://lore.kernel.org/lkml/20201017160928.12698-1-trix@redhat.com/
+https://lore.kernel.org/bpf/20201017160928.12698-1-trix@redhat.com/
 
-> I don't understand why this is a useful warning to fix.
+but the ocfs2 list archive did:
 
-Precision in coding style intent and code minimization
-would be the biggest factors IMO.
+https://oss.oracle.com/pipermail/ocfs2-devel/2020-October/015330.html
 
-> What actual problem is caused by the code below?
+I bet Oracle IT has put some spam filter on the list that mangles URLs
+this way.
 
-Obviously none.
+James
 
 _______________________________________________
 Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
